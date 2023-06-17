@@ -24,7 +24,9 @@ SVG="*res://src/SVG.gd"
 
 window/size/viewport_width=1024
 window/size/viewport_height=640
-window/size/resizable=false
+window/size/mode=2
+window/stretch/mode="canvas_items"
+window/stretch/aspect="expand"
 mouse_cursor/tooltip_position_offset=Vector2(0, 10)
 
 [gui]
