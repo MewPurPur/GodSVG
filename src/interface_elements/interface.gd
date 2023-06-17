@@ -1,6 +1,6 @@
 extends VBoxContainer
 
-const TagEditor = preload("res://interface_elements/tag_editor.tscn")
+const TagEditor = preload("tag_editor.tscn")
 
 @onready var shapes: VBoxContainer = $Shapes
 

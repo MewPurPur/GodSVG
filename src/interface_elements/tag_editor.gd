@@ -1,7 +1,7 @@
 extends HBoxContainer
 
-const NumberField = preload("res://interface_elements/number_field.tscn")
-const ColorField = preload("res://interface_elements/color_field.tscn")
+const NumberField = preload("number_field.tscn")
+const ColorField = preload("color_field.tscn")
 
 @onready var attribute_container: FlowContainer = $AttributeContainer
 @onready var label: Label = $Label
