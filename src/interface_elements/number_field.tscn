@@ -1,0 +1,194 @@
+[gd_scene load_steps=12 format=3 uid="uid://bp2vpf7g8w8aj"]
+
+[ext_resource type="Script" path="res://src/interface_elements/number_field.gd" id="1_me4eq"]
+[ext_resource type="Texture2D" uid="uid://wburo8uyoqy4" path="res://visual/icons/Up.svg" id="2_qoxs6"]
+[ext_resource type="Texture2D" uid="uid://coda6chhcatal" path="res://visual/icons/Down.svg" id="3_lure8"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yni7n"]
+content_margin_left = 1.0
+content_margin_top = 2.0
+content_margin_right = 2.0
+content_margin_bottom = 0.0
+bg_color = Color(0.0075, 0.0075, 0.15, 1)
+border_width_left = 1
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 1
+border_color = Color(0.057, 0.11775, 0.3, 1)
+corner_radius_top_right = 6
+corner_detail = 16
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0ilo3"]
+content_margin_left = 1.0
+content_margin_top = 2.0
+content_margin_right = 2.0
+content_margin_bottom = 0.0
+bg_color = Color(0.012, 0.012, 0.2, 1)
+border_width_left = 1
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 1
+border_color = Color(0.076, 0.157, 0.4, 1)
+corner_radius_top_right = 6
+corner_detail = 16
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wue2p"]
+content_margin_left = 1.0
+content_margin_top = 2.0
+content_margin_right = 2.0
+content_margin_bottom = 0.0
+bg_color = Color(0.27, 0.4275, 0.9, 1)
+border_width_left = 1
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 1
+border_color = Color(0.6, 0.8, 1, 1)
+corner_radius_top_right = 6
+corner_detail = 16
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_o12w0"]
+content_margin_left = 1.0
+content_margin_top = 2.0
+content_margin_right = 2.0
+content_margin_bottom = 0.0
+bg_color = Color(0.06, 0.06, 0.08, 1)
+border_width_left = 1
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 1
+border_color = Color(0.123, 0.123, 0.15, 1)
+corner_radius_top_right = 6
+corner_detail = 16
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_p5khm"]
+content_margin_left = 1.0
+content_margin_top = 2.0
+content_margin_right = 2.0
+content_margin_bottom = 2.0
+bg_color = Color(0.00784314, 0.00784314, 0.14902, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.057, 0.11775, 0.3, 1)
+corner_radius_bottom_right = 6
+corner_detail = 16
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0r17a"]
+content_margin_left = 1.0
+content_margin_top = 2.0
+content_margin_right = 2.0
+content_margin_bottom = 2.0
+bg_color = Color(0.012, 0.012, 0.2, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.076, 0.157, 0.4, 1)
+corner_radius_bottom_right = 6
+corner_detail = 16
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_flwce"]
+content_margin_left = 1.0
+content_margin_top = 2.0
+content_margin_right = 2.0
+content_margin_bottom = 2.0
+bg_color = Color(0.27, 0.4275, 0.9, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.6, 0.8, 1, 1)
+corner_radius_bottom_right = 6
+corner_detail = 16
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_iburr"]
+content_margin_left = 1.0
+content_margin_top = 2.0
+content_margin_right = 2.0
+content_margin_bottom = 2.0
+bg_color = Color(0.06, 0.06, 0.08, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.123, 0.123, 0.15, 1)
+corner_radius_bottom_right = 6
+corner_detail = 16
+
+[node name="NumberField" type="HBoxContainer"]
+custom_minimum_size = Vector2(0, 22)
+offset_right = 52.0
+offset_bottom = 22.0
+theme_override_constants/separation = 0
+script = ExtResource("1_me4eq")
+
+[node name="LineEdit" type="LineEdit" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+max_length = 6
+context_menu_enabled = false
+select_all_on_focus = true
+caret_blink = true
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="Up" type="Button" parent="VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(16, 0)
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 3
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_yni7n")
+theme_override_styles/hover = SubResource("StyleBoxFlat_0ilo3")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_wue2p")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_o12w0")
+action_mode = 0
+icon = ExtResource("2_qoxs6")
+icon_alignment = 1
+expand_icon = true
+
+[node name="Timer" type="Timer" parent="VBoxContainer/Up"]
+wait_time = 0.8
+one_shot = true
+
+[node name="Timer2" type="Timer" parent="VBoxContainer/Up"]
+
+[node name="Down" type="Button" parent="VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(16, 0)
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 3
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_p5khm")
+theme_override_styles/hover = SubResource("StyleBoxFlat_0r17a")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_flwce")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_iburr")
+action_mode = 0
+icon = ExtResource("3_lure8")
+icon_alignment = 1
+expand_icon = true
+
+[node name="Timer" type="Timer" parent="VBoxContainer/Down"]
+wait_time = 0.8
+one_shot = true
+
+[node name="Timer2" type="Timer" parent="VBoxContainer/Down"]
+
+[connection signal="focus_entered" from="LineEdit" to="." method="_on_focus_entered"]
+[connection signal="focus_exited" from="LineEdit" to="." method="_on_focus_exited"]
+[connection signal="text_submitted" from="LineEdit" to="." method="_on_text_submitted"]
+[connection signal="button_down" from="VBoxContainer/Up" to="." method="_on_up_button_down"]
+[connection signal="button_up" from="VBoxContainer/Up" to="." method="_on_up_button_up"]
+[connection signal="timeout" from="VBoxContainer/Up/Timer" to="." method="_on_up_buildup_timer_timeout"]
+[connection signal="timeout" from="VBoxContainer/Up/Timer2" to="." method="_on_up_repeat_timer_timeout"]
+[connection signal="button_down" from="VBoxContainer/Down" to="." method="_on_down_button_down"]
+[connection signal="button_up" from="VBoxContainer/Down" to="." method="_on_down_button_up"]
+[connection signal="timeout" from="VBoxContainer/Down/Timer" to="." method="_on_down_buildup_timer_timeout"]
+[connection signal="timeout" from="VBoxContainer/Down/Timer2" to="." method="_on_down_repeat_timer_timeout"]

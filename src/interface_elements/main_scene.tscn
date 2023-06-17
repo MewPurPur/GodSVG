@@ -1,0 +1,172 @@
+[gd_scene load_steps=7 format=3 uid="uid://ce6j54x27pom"]
+
+[ext_resource type="PackedScene" uid="uid://ccynisiuyn5qn" path="res://src/interface_elements/interface.tscn" id="1_afxvd"]
+[ext_resource type="Script" path="res://src/interface_elements/Display.gd" id="2_ylpv1"]
+[ext_resource type="Texture2D" uid="uid://c68og6bsqt0lb" path="res://visual/Checkerboard.svg" id="3_d58qh"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_082e3"]
+bg_color = Color(0.005, 0.005, 0.05, 1)
+border_width_right = 2
+border_color = Color(0.4, 0.7, 1, 1)
+
+[sub_resource type="CodeHighlighter" id="CodeHighlighter_jg7xq"]
+number_color = Color(0.631373, 1, 0.878431, 1)
+symbol_color = Color(0.670588, 0.788235, 1, 1)
+function_color = Color(0.341176, 0.701961, 1, 1)
+keyword_colors = {
+"circle": Color(1, 0.54902, 0.8, 1),
+"cx": Color(0.737255, 0.878431, 1, 1),
+"cy": Color(0.737255, 0.878431, 1, 1),
+"ellipse": Color(1, 0.54902, 0.8, 1),
+"fill": Color(0.737255, 0.878431, 1, 1),
+"g": Color(1, 0.54902, 0.8, 1),
+"height": Color(0.737255, 0.878431, 1, 1),
+"path": Color(1, 0.54902, 0.8, 1),
+"rect": Color(1, 0.54902, 0.8, 1),
+"rx": Color(0.737255, 0.878431, 1, 1),
+"ry": Color(0.737255, 0.878431, 1, 1),
+"stroke": Color(0.737255, 0.878431, 1, 1),
+"stroke-width": Color(0.737255, 0.878431, 1, 1),
+"svg": Color(1, 0.54902, 0.8, 1),
+"viewBox": Color(0.737255, 0.878431, 1, 1),
+"width": Color(0.737255, 0.878431, 1, 1),
+"x": Color(0.737255, 0.878431, 1, 1),
+"y": Color(0.737255, 0.878431, 1, 1)
+}
+color_regions = {
+"\" \"": Color(0.631373, 1, 0.878431, 1)
+}
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nxvgo"]
+bg_color = Color(0.005, 0.005, 0.05, 1)
+border_width_bottom = 2
+border_color = Color(0.4, 0.7, 1, 1)
+
+[node name="MainScene" type="HBoxContainer"]
+process_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 0
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_082e3")
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="MainContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="CodeEdit" type="CodeEdit" parent="PanelContainer/MarginContainer/MainContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 96)
+layout_mode = 2
+editable = false
+wrap_mode = 1
+highlight_all_occurrences = true
+syntax_highlighter = SubResource("CodeHighlighter_jg7xq")
+scroll_smooth = true
+scroll_v_scroll_speed = 30.0
+caret_blink = true
+caret_multiple = false
+auto_brace_completion_highlight_matching = true
+auto_brace_completion_pairs = {
+"\"": "\"",
+"(": ")",
+"<": ">"
+}
+
+[node name="Interface" parent="PanelContainer/MarginContainer/MainContainer" instance=ExtResource("1_afxvd")]
+layout_mode = 2
+
+[node name="Display" type="VBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 0
+script = ExtResource("2_ylpv1")
+
+[node name="PanelContainer" type="PanelContainer" parent="Display"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_nxvgo")
+
+[node name="MarginContainer" type="MarginContainer" parent="Display/PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Display/PanelContainer/MarginContainer"]
+layout_mode = 2
+alignment = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Display/PanelContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="ZoomOut" type="Button" parent="Display/PanelContainer/MarginContainer/HBoxContainer/HBoxContainer"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+text = " - "
+
+[node name="ZoomReset" type="Button" parent="Display/PanelContainer/MarginContainer/HBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(56, 0)
+layout_mode = 2
+mouse_default_cursor_shape = 2
+text = "100%"
+
+[node name="ZoomIn" type="Button" parent="Display/PanelContainer/MarginContainer/HBoxContainer/HBoxContainer"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+text = " + "
+
+[node name="ViewportContainer" type="SubViewportContainer" parent="Display"]
+layout_mode = 2
+size_flags_horizontal = 10
+
+[node name="Viewport" type="SubViewport" parent="Display/ViewportContainer"]
+handle_input_locally = false
+size = Vector2i(600, 600)
+size_2d_override_stretch = true
+render_target_update_mode = 4
+
+[node name="Checkerboard" type="TextureRect" parent="Display/ViewportContainer/Viewport"]
+unique_name_in_owner = true
+texture_filter = 1
+clip_contents = true
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_d58qh")
+expand_mode = 1
+stretch_mode = 1
+
+[node name="Texture" type="TextureRect" parent="Display/ViewportContainer/Viewport/Checkerboard"]
+unique_name_in_owner = true
+clip_contents = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+expand_mode = 1
+
+[connection signal="pressed" from="Display/PanelContainer/MarginContainer/HBoxContainer/HBoxContainer/ZoomOut" to="Display" method="_on_zoom_out_pressed"]
+[connection signal="pressed" from="Display/PanelContainer/MarginContainer/HBoxContainer/HBoxContainer/ZoomReset" to="Display" method="_on_zoom_reset_pressed"]
+[connection signal="pressed" from="Display/PanelContainer/MarginContainer/HBoxContainer/HBoxContainer/ZoomIn" to="Display" method="_on_zoom_in_pressed"]

@@ -1,0 +1,37 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=5
+
+[application]
+
+config/name="GodSVG"
+config/tags=PackedStringArray("project")
+run/main_scene="res://src/interface_elements/main_scene.tscn"
+config/features=PackedStringArray("4.1", "Forward Plus")
+config/icon="res://icon.png"
+
+[autoload]
+
+SVG="*res://src/SVG.gd"
+
+[display]
+
+window/size/viewport_width=1024
+window/size/viewport_height=640
+window/size/resizable=false
+mouse_cursor/tooltip_position_offset=Vector2(0, 10)
+
+[gui]
+
+theme/custom="res://visual/main_theme.tres"
+timers/tooltip_delay_sec=0.4
+
+[rendering]
+
+environment/defaults/default_clear_color=Color(0.12, 0.138667, 0.2, 1)
