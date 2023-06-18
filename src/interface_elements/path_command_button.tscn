@@ -1,0 +1,37 @@
+[gd_scene load_steps=4 format=3 uid="uid://co2btefrqrm0e"]
+
+[ext_resource type="FontFile" uid="uid://c7ury252fql35" path="res://visual/CodeFont.ttf" id="1_6fkrf"]
+[ext_resource type="Script" path="res://src/interface_elements/path_command_button.gd" id="1_q6blt"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_i5pvy"]
+bg_color = Color(0, 0, 0, 0)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.866667, 0.933333, 1, 1)
+corner_radius_top_left = 1
+corner_radius_top_right = 1
+corner_radius_bottom_right = 1
+corner_radius_bottom_left = 1
+corner_detail = 2
+
+[node name="M" type="PanelContainer"]
+tooltip_text = "Pure white"
+mouse_default_cursor_shape = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_i5pvy")
+script = ExtResource("1_q6blt")
+
+[node name="Margin" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 3
+theme_override_constants/margin_top = -3
+theme_override_constants/margin_right = 3
+theme_override_constants/margin_bottom = -5
+
+[node name="Label" type="Label" parent="Margin"]
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_fonts/font = ExtResource("1_6fkrf")
+horizontal_alignment = 1
