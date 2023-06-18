@@ -12,7 +12,9 @@ var min_value := 0
 var max_value := 1024
 var step := 1
 var is_float := true
+
 var attribute: SVGAttribute
+var attribute_name: String
 
 signal value_changed(new_value: float)
 var value: float:
@@ -30,6 +32,7 @@ func _ready() -> void:
 		num_edit.text = str(value)
 	down.disabled = (value <= min_value)
 	up.disabled = (value >= max_value)
+	num_edit.tooltip_text = attribute_name
 
 func validate(new_value: float) -> float:
 	return clampf(new_value, min_value, max_value)

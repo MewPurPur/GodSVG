@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=16 format=3 uid="uid://der6fnkliqqto"]
+[gd_resource type="Theme" load_steps=17 format=3 uid="uid://der6fnkliqqto"]
 
 [ext_resource type="FontFile" uid="uid://c7ury252fql35" path="res://visual/CodeFont.ttf" id="1_ulxqy"]
 [ext_resource type="FontFile" uid="uid://bd8rlfqek8f8u" path="res://visual/Font.ttf" id="2_d11o4"]
@@ -61,7 +61,7 @@ content_margin_left = 4.0
 content_margin_top = 4.0
 content_margin_right = 4.0
 content_margin_bottom = 4.0
-bg_color = Color(0.27, 0.4275, 0.9, 1)
+bg_color = Color(0.270588, 0.427451, 0.901961, 1)
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
@@ -133,6 +133,21 @@ corner_radius_bottom_right = 6
 corner_radius_bottom_left = 6
 corner_detail = 16
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ghiib"]
+content_margin_left = 8.0
+content_margin_right = 8.0
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.24, 0.28, 0.4, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+corner_detail = 2
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dptuh"]
 bg_color = Color(0.24, 0.33, 0.6, 1)
 corner_radius_top_left = 4
@@ -180,6 +195,9 @@ LineEdit/styles/focus = SubResource("StyleBoxEmpty_ri0uc")
 LineEdit/styles/normal = SubResource("StyleBoxFlat_730xo")
 PanelContainer/styles/panel = SubResource("StyleBoxFlat_c2si1")
 RichTextLabel/colors/selection_color = Color(0.4, 0.55, 1, 0.4)
+TooltipLabel/font_sizes/font_size = 14
+TooltipLabel/fonts/font = ExtResource("1_ulxqy")
+TooltipPanel/styles/panel = SubResource("StyleBoxFlat_ghiib")
 VScrollBar/styles/grabber = SubResource("StyleBoxFlat_dptuh")
 VScrollBar/styles/grabber_highlight = SubResource("StyleBoxFlat_jo7ks")
 VScrollBar/styles/grabber_pressed = SubResource("StyleBoxFlat_k6fme")

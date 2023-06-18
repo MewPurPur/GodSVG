@@ -1,29 +1,58 @@
-[gd_scene load_steps=4 format=3 uid="uid://cksx526iftj5d"]
+[gd_scene load_steps=5 format=3 uid="uid://cksx526iftj5d"]
 
 [ext_resource type="Script" path="res://src/interface_elements/tag_editor.gd" id="1_2kong"]
 [ext_resource type="FontFile" uid="uid://c7ury252fql35" path="res://visual/CodeFont.ttf" id="2_51lj2"]
 [ext_resource type="Texture2D" uid="uid://bywp6c8s6meq1" path="res://visual/icons/Cross.svg" id="3_fr0pw"]
 
-[node name="TagEditor" type="HBoxContainer"]
-anchors_preset = 10
-anchor_right = 1.0
-offset_bottom = 20.0
-grow_horizontal = 2
-size_flags_horizontal = 3
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_s1ahg"]
+bg_color = Color(0.6, 0.8, 1, 0.0666667)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[node name="TagEditor" type="PanelContainer"]
+offset_left = 1020.0
+offset_right = 1024.0
+offset_bottom = 30.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_s1ahg")
 script = ExtResource("1_2kong")
 
-[node name="Label" type="Label" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 3
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Title" type="Label" parent="MarginContainer/HBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_51lj2")
 theme_override_font_sizes/font_size = 14
 
-[node name="AttributeContainer" type="HFlowContainer" parent="."]
+[node name="AttributeContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Button" type="Button" parent="."]
+[node name="PaintAttributes" type="HFlowContainer" parent="MarginContainer/HBoxContainer/AttributeContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ShapeAttributes" type="HFlowContainer" parent="MarginContainer/HBoxContainer/AttributeContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="CloseButton" type="Button" parent="MarginContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 4
 mouse_default_cursor_shape = 2
 icon = ExtResource("3_fr0pw")
+
+[connection signal="pressed" from="MarginContainer/HBoxContainer/CloseButton" to="." method="_on_close_button_pressed"]
