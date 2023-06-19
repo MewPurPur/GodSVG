@@ -30,8 +30,8 @@ func _ready() -> void:
 	if attribute != null:
 		value = attribute.value
 		num_edit.text = str(value)
-	down.disabled = (value <= min_value)
-	up.disabled = (value >= max_value)
+	spinner_set_disabled(down, value <= min_value)
+	spinner_set_disabled(up, value >= max_value)
 	num_edit.tooltip_text = attribute_name
 
 func validate(new_value: float) -> float:
@@ -39,8 +39,8 @@ func validate(new_value: float) -> float:
 
 func _on_value_changed(new_value: float) -> void:
 	num_edit.text = str(new_value)
-	down.disabled = (new_value <= min_value)
-	up.disabled = (new_value >= max_value)
+	spinner_set_disabled(down, new_value <= min_value)
+	spinner_set_disabled(up, new_value >= max_value)
 	if attribute != null:
 		attribute.value = new_value
 		SVG.update()
@@ -96,3 +96,8 @@ func _input(event: InputEvent) -> void:
 	if (num_edit.has_focus() and event is InputEventMouseButton and\
 	not num_edit.get_global_rect().has_point(event.position)):
 		num_edit.release_focus()
+
+func spinner_set_disabled(spinner: Button, value: bool) -> void:
+	spinner.disabled = value
+	spinner.mouse_default_cursor_shape = Control.CURSOR_ARROW if value == true\
+			else Control.CURSOR_POINTING_HAND
