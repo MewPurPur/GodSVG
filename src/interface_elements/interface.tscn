@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://ccynisiuyn5qn"]
+[gd_scene load_steps=9 format=3 uid="uid://ccynisiuyn5qn"]
 
 [ext_resource type="Script" path="res://src/interface_elements/interface.gd" id="1_16ggy"]
 [ext_resource type="Script" path="res://src/interface_elements/view_box_edit.gd" id="2_osq0a"]
@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://dmnaqiwq4de1j" path="res://visual/icons/Circle.svg" id="5_cwjdk"]
 [ext_resource type="Texture2D" uid="uid://c8t8eiojuwjje" path="res://visual/icons/Ellipse.svg" id="6_komru"]
 [ext_resource type="Texture2D" uid="uid://cso2l5nvm6gm" path="res://visual/icons/Rect.svg" id="7_hdyp6"]
+[ext_resource type="Texture2D" uid="uid://xpm1e34xuk06" path="res://visual/icons/Path.svg" id="8_6tgkl"]
 
 [node name="Interface" type="VBoxContainer"]
 size_flags_horizontal = 3
@@ -54,7 +55,13 @@ layout_mode = 2
 mouse_default_cursor_shape = 2
 icon = ExtResource("7_hdyp6")
 
+[node name="Path" type="Button" parent="Shapes/HBoxContainer"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+icon = ExtResource("8_6tgkl")
+
 [connection signal="view_box_changed" from="MainConfiguration/ViewBoxEdit" to="." method="_change_view_box"]
 [connection signal="pressed" from="Shapes/HBoxContainer/Circle" to="." method="add_circle"]
 [connection signal="pressed" from="Shapes/HBoxContainer/Ellipse" to="." method="add_ellipse"]
 [connection signal="pressed" from="Shapes/HBoxContainer/Rect" to="." method="add_rect"]
+[connection signal="pressed" from="Shapes/HBoxContainer/Path" to="." method="add_path"]

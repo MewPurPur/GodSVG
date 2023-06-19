@@ -5,6 +5,7 @@ extends HBoxContainer
 @onready var color_picker: Popup = $ColorPopup
 
 var attribute: SVGAttribute
+var attribute_name: String
 
 signal value_changed(new_value: String)
 var value: String:
@@ -19,6 +20,7 @@ func _ready() -> void:
 	if attribute != null:
 		value = attribute.value
 		color_edit.text = value
+	color_edit.tooltip_text = attribute_name
 
 func validate(new_value: String, old_value: String) -> String:
 	if new_value == "none" or  (new_value.is_valid_html_color() and\
