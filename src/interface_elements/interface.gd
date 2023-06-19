@@ -4,53 +4,27 @@ const TagEditor = preload("tag_editor.tscn")
 
 @onready var shapes: VBoxContainer = $Shapes
 
+func add_shape(shape : GDScript) -> void :
+	print(shape)
+	var shape_editor := TagEditor.instantiate()
+	shape_editor.tag_index = SVG.data.tags.size()
+	shape_editor.deleted.connect(_on_tag_deleted)
+	shape_editor.tag = shape.new()
+	shapes.add_child(shape_editor) 
+
+# In the end all connection should go directly to add_shape with argument in binds 
+# But right now there is a bug preventing it so keeping them here for now
 func add_circle() -> void:
-	var circle_editor := TagEditor.instantiate()
-	circle_editor.tag_index = SVG.data.tags.size()
-	circle_editor.deleted.connect(_on_tag_deleted)
-	var circle := SVGTagCircle.new()
-	for attribute in circle.attributes:
-		match attribute:
-			"r": circle.attributes[attribute].value = 1.0
-			_: circle.attributes[attribute].value = circle.attributes[attribute].default
-	circle_editor.tag = circle
-	shapes.add_child(circle_editor)
+	add_shape(SVGTagCircle)
 
 func add_ellipse() -> void:
-	var ellipse_editor := TagEditor.instantiate()
-	ellipse_editor.tag_index = SVG.data.tags.size()
-	ellipse_editor.deleted.connect(_on_tag_deleted)
-	var ellipse := SVGTagEllipse.new()
-	for attribute in ellipse.attributes:
-		match attribute:
-			"rx": ellipse.attributes[attribute].value = 1.0
-			"ry": ellipse.attributes[attribute].value = 1.0
-			_: ellipse.attributes[attribute].value = ellipse.attributes[attribute].default
-	ellipse_editor.tag = ellipse
-	shapes.add_child(ellipse_editor)
+	add_shape(SVGTagEllipse)
 
 func add_rect() -> void:
-	var rect_editor := TagEditor.instantiate()
-	rect_editor.tag_index = SVG.data.tags.size()
-	rect_editor.deleted.connect(_on_tag_deleted)
-	var rect := SVGTagRect.new()
-	for attribute in rect.attributes:
-		match attribute:
-			"width": rect.attributes[attribute].value = 1.0
-			"height": rect.attributes[attribute].value = 1.0
-			_: rect.attributes[attribute].value = rect.attributes[attribute].default
-	rect_editor.tag = rect
-	shapes.add_child(rect_editor)
+	add_shape(SVGTagRect)
 
 func add_path() -> void:
-	var path_editor := TagEditor.instantiate()
-	path_editor.tag_index = SVG.data.tags.size()
-	path_editor.deleted.connect(_on_tag_deleted)
-	var path := SVGTagPath.new()
-	for attribute in path.attributes:
-		path.attributes[attribute].value = path.attributes[attribute].default
-	path_editor.tag = path
-	shapes.add_child(path_editor)
+	add_shape(SVGTagPath)
 
 func _change_view_box(w: int, h: int) -> void:
 	SVG.data.w = w
