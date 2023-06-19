@@ -43,4 +43,4 @@ func _change_view_box(w: int, h: int) -> void:
 	SVG.data.w = w
 	SVG.data.h = h
 	SVG.update()
-	%Checkerboard.custom_minimum_size = Vector2(w/float(h), h/float(w)) * 320
+	%Checkerboard.size = Vector2(w,h) * 15
