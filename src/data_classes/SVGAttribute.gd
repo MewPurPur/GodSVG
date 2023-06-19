@@ -1,6 +1,6 @@
 class_name SVGAttribute extends RefCounted
 
-enum Type {INT, FLOAT, UFLOAT, NFLOAT, COLOR, PATH_DEFINITION}
+enum Type {INT, FLOAT, UFLOAT, NFLOAT, COLOR, PATH_DEF}
 
 var type: Type
 var value: Variant
