@@ -7,10 +7,10 @@ var data := SVGData.new()
 @onready var texture_node: TextureRect = get_tree().current_scene.get_node(^"%Texture")
 @onready var code_editor: CodeEdit = get_tree().current_scene.get_node(^"%CodeEdit")
 
-func tags_to_string(superscaled := false, add_xmlns := false) -> String:
+func tags_to_string(superscaled := false, add_xmlns := true) -> String:
 	var w := data.w
 	var h := data.h
-	var scale := 1024.0/maxi(w, h) if (superscaled and w != 0 and h != 0) else 1.0
+	var scale := 1024.0 / maxi(w, h) if (superscaled and w != 0 and h != 0) else 1.0
 	# Opening
 	string = '<svg width="{w}" height="{h}" viewBox="({w} {h})"'.format(
 			{"w": w * scale, "h": h * scale})
