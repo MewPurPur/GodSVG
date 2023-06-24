@@ -11,6 +11,7 @@
 
 [node name="Interface" type="VBoxContainer"]
 size_flags_horizontal = 3
+size_flags_vertical = 3
 theme_override_constants/separation = 16
 script = ExtResource("1_16ggy")
 
@@ -33,35 +34,46 @@ layout_mode = 2
 [node name="HeightEdit" parent="MainConfiguration/ViewBoxEdit" instance=ExtResource("4_6tphi")]
 layout_mode = 2
 
-[node name="Shapes" type="VBoxContainer" parent="."]
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Shapes"]
-layout_mode = 2
-
-[node name="Circle" type="Button" parent="Shapes/HBoxContainer"]
+[node name="Circle" type="Button" parent="VBoxContainer/HBoxContainer"]
 layout_mode = 2
 mouse_default_cursor_shape = 2
 icon = ExtResource("5_cwjdk")
 icon_alignment = 1
 
-[node name="Ellipse" type="Button" parent="Shapes/HBoxContainer"]
+[node name="Ellipse" type="Button" parent="VBoxContainer/HBoxContainer"]
 layout_mode = 2
 mouse_default_cursor_shape = 2
 icon = ExtResource("6_komru")
 
-[node name="Rect" type="Button" parent="Shapes/HBoxContainer"]
+[node name="Rect" type="Button" parent="VBoxContainer/HBoxContainer"]
 layout_mode = 2
 mouse_default_cursor_shape = 2
 icon = ExtResource("7_hdyp6")
 
-[node name="Path" type="Button" parent="Shapes/HBoxContainer"]
+[node name="Path" type="Button" parent="VBoxContainer/HBoxContainer"]
 layout_mode = 2
 mouse_default_cursor_shape = 2
 icon = ExtResource("8_6tgkl")
 
+[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="Shapes" type="VBoxContainer" parent="VBoxContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
 [connection signal="view_box_changed" from="MainConfiguration/ViewBoxEdit" to="." method="_change_view_box"]
-[connection signal="pressed" from="Shapes/HBoxContainer/Circle" to="." method="add_circle"]
-[connection signal="pressed" from="Shapes/HBoxContainer/Ellipse" to="." method="add_ellipse"]
-[connection signal="pressed" from="Shapes/HBoxContainer/Rect" to="." method="add_rect"]
-[connection signal="pressed" from="Shapes/HBoxContainer/Path" to="." method="add_path"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/Circle" to="." method="add_circle"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/Ellipse" to="." method="add_ellipse"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/Rect" to="." method="add_rect"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/Path" to="." method="add_path"]
