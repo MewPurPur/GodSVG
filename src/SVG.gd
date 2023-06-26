@@ -37,6 +37,8 @@ func tags_to_string(superscaled := false, add_xmlns := true) -> String:
 						string += ' %s="%s"' % [attribute_key, attribute.value]
 					else:
 						string += ' %s="#%s"' % [attribute_key, attribute.value]
+				SVGAttribute.Type.PATH_DEF:
+					string += ' %s="%s"' % [attribute_key, attribute.value]
 		string += '/>'
 	# Closing
 	if superscaled:

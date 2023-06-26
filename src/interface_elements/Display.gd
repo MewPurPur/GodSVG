@@ -27,34 +27,30 @@ func _gui_input(event: InputEvent) -> void:
 		display.position += event.relative / zoom_level
 		clamp_view()
 	
-	if event is InputEventPanGesture :
-		if event.ctrl_pressed :
+	if event is InputEventPanGesture:
+		if event.ctrl_pressed:
 			zoom_level *= 1 + event.delta.y / 2
-		else :
+		else:
 			display.position -= event.delta * 32 / zoom_level
 			clamp_view()
 	
-	if event is InputEventMagnifyGesture :
+	if event is InputEventMagnifyGesture:
 		zoom_level *= event.factor
 	
-	if event is InputEventMouseButton :
-		if event.ctrl_pressed :
+	if event is InputEventMouseButton:
+		if event.ctrl_pressed:
 			pass
 
 func clamp_view() -> void:
-	var min_pos = vec_min((minimum_visible_proportion - 1) * display.size, minimum_visible_proportion * viewport.size / zoom_level - display.size)
-	var max_pos = vec_max(viewport.size / zoom_level - minimum_visible_proportion * display.size, (1-minimum_visible_proportion) * viewport.size / zoom_level)
+	var min_pos = vec_min((minimum_visible_proportion - 1) * display.size,
+			minimum_visible_proportion * viewport.size / zoom_level - display.size)
+	var max_pos = vec_max(viewport.size / zoom_level - minimum_visible_proportion *\
+			display.size, (1 - minimum_visible_proportion) * viewport.size / zoom_level)
 	display.position = display.position.clamp(min_pos, max_pos)
 
-func vec_min(first : Vector2, second : Vector2) -> Vector2 :
-	return Vector2(
-		min(first.x, second.x),
-		min(first.y, second.y)
-	)
+func vec_min(first: Vector2, second: Vector2) -> Vector2:
+	return Vector2(minf(first.x, second.x), minf(first.y, second.y))
 
 
-func vec_max(first : Vector2, second : Vector2) -> Vector2 :
-	return Vector2(
-		max(first.x, second.x),
-		max(first.y, second.y)
-	)
+func vec_max(first: Vector2, second: Vector2) -> Vector2:
+	return Vector2(maxf(first.x, second.x), maxf(first.y, second.y))
