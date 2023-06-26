@@ -19,7 +19,7 @@ func _ready() -> void:
 	value_changed.connect(_on_value_changed)
 	if attribute != null:
 		value = attribute.value
-		color_edit.text = value
+	color_edit.text = value
 	color_edit.tooltip_text = attribute_name
 
 func validate(new_value: String, old_value: String) -> String:

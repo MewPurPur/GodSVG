@@ -5,9 +5,27 @@ GodSVG is inspired by the need for an editor for programmers that produces optim
 
 ## Features
 
-- Interactive SVG editing: Modify individual elements of an SVG file using a user-friendly interface.
+- Interactive SVG editing: Modify individual elements of an SVG file using a simple interface.
 - Real-time code preview: Instantly view the SVG code as you make changes to the elements.
 - Optimized SVG output: Generate clean and efficient SVG files.
+
+| Name | Support level | Notes |
+| --- | --- | --- |
+| circle | Supported | |
+| clipPath | Not yet supported | Probably never, will evaluate later |
+| ellipse | Supported | |
+| g | Not yet supported | |
+| line | Not yet supported | May not support directly |
+| linearGradient | Not yet supported | |
+| mask | Not yet supported | |
+| path | Supported | |
+| polygon | Not yet supported | May not support directly |
+| polyline | Not yet supported | May not support directly |
+| radialGradient | Not yet supported | |
+| rect | Supported | |
+| stop | Not yet supported | |
+
+All other elements are currently not planned.
 
 ## Installation
 
