@@ -29,7 +29,7 @@ func _ready() -> void:
 	value_changed.connect(_on_value_changed)
 	if attribute != null:
 		value = attribute.value
-		num_edit.text = str(value)
+	num_edit.text = str(value)
 	spinner_set_disabled(down, value <= min_value)
 	spinner_set_disabled(up, value >= max_value)
 	num_edit.tooltip_text = attribute_name

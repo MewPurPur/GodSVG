@@ -1,6 +1,6 @@
-[gd_scene load_steps=13 format=3 uid="uid://dcqfsmcji4ch4"]
+[gd_scene load_steps=13 format=3 uid="uid://dqy5lv33sy5r7"]
 
-[ext_resource type="Script" path="res://path_field.gd" id="1_3aukc"]
+[ext_resource type="Script" path="res://src/interface_elements/path_field.gd" id="1_0jjls"]
 [ext_resource type="Texture2D" uid="uid://coda6chhcatal" path="res://visual/icons/Down.svg" id="2_sdndd"]
 [ext_resource type="Script" path="res://src/interface_elements/path_popup.gd" id="3_e1ate"]
 [ext_resource type="FontFile" uid="uid://c7ury252fql35" path="res://visual/CodeFont.ttf" id="3_gq1b1"]
@@ -111,23 +111,24 @@ corner_radius_bottom_right = 1
 corner_radius_bottom_left = 1
 corner_detail = 2
 
-[node name="PathField" type="HBoxContainer"]
-custom_minimum_size = Vector2(0, 22)
-offset_right = 50.0
-offset_bottom = 21.0
-theme_override_constants/separation = 0
-script = ExtResource("1_3aukc")
+[node name="PathField" type="VBoxContainer"]
+offset_bottom = 22.0
+script = ExtResource("1_0jjls")
 
-[node name="LineEdit" type="LineEdit" parent="."]
-custom_minimum_size = Vector2(54, 0)
+[node name="MainLine" type="HBoxContainer" parent="."]
+custom_minimum_size = Vector2(0, 22)
 layout_mode = 2
-max_length = 8
+theme_override_constants/separation = 0
+
+[node name="LineEdit" type="LineEdit" parent="MainLine"]
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
 editable = false
 context_menu_enabled = false
 select_all_on_focus = true
 caret_blink = true
 
-[node name="Button" type="Button" parent="."]
+[node name="Button" type="Button" parent="MainLine"]
 custom_minimum_size = Vector2(14, 0)
 layout_mode = 2
 mouse_default_cursor_shape = 2
@@ -136,6 +137,9 @@ theme_override_styles/hover = SubResource("StyleBoxFlat_r5acu")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_5n6p7")
 theme_override_styles/disabled = SubResource("StyleBoxFlat_16ktf")
 icon = ExtResource("2_sdndd")
+
+[node name="Commands" type="VBoxContainer" parent="."]
+layout_mode = 2
 
 [node name="PathPopup" type="Popup" parent="."]
 size = Vector2i(108, 132)
@@ -153,9 +157,10 @@ theme_override_constants/margin_top = 8
 theme_override_constants/margin_right = 8
 theme_override_constants/margin_bottom = 8
 
-[node name="MainContainer" type="HFlowContainer" parent="PathPopup/PanelContainer/MarginContainer"]
+[node name="MainContainer" type="GridContainer" parent="PathPopup/PanelContainer/MarginContainer"]
 unique_name_in_owner = true
 layout_mode = 2
+columns = 5
 
 [node name="M" type="Button" parent="PathPopup/PanelContainer/MarginContainer/MainContainer"]
 layout_mode = 2
@@ -197,6 +202,16 @@ theme_override_styles/pressed = SubResource("StyleBoxFlat_37g7w")
 script = ExtResource("4_rvfn1")
 command_char = "V"
 
+[node name="Z" type="Button" parent="PathPopup/PanelContainer/MarginContainer/MainContainer"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_fonts/font = ExtResource("3_gq1b1")
+theme_override_styles/normal = SubResource("StyleBoxFlat_jqdng")
+theme_override_styles/hover = SubResource("StyleBoxFlat_h3qkf")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_37g7w")
+script = ExtResource("4_rvfn1")
+command_char = "Z"
+
 [node name="A" type="Button" parent="PathPopup/PanelContainer/MarginContainer/MainContainer"]
 layout_mode = 2
 mouse_default_cursor_shape = 2
@@ -216,6 +231,16 @@ theme_override_styles/hover = SubResource("StyleBoxFlat_h3qkf")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_37g7w")
 script = ExtResource("4_rvfn1")
 command_char = "Q"
+
+[node name="T" type="Button" parent="PathPopup/PanelContainer/MarginContainer/MainContainer"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_fonts/font = ExtResource("3_gq1b1")
+theme_override_styles/normal = SubResource("StyleBoxFlat_jqdng")
+theme_override_styles/hover = SubResource("StyleBoxFlat_h3qkf")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_37g7w")
+script = ExtResource("4_rvfn1")
+command_char = "T"
 
 [node name="C" type="Button" parent="PathPopup/PanelContainer/MarginContainer/MainContainer"]
 layout_mode = 2
@@ -237,15 +262,5 @@ theme_override_styles/pressed = SubResource("StyleBoxFlat_37g7w")
 script = ExtResource("4_rvfn1")
 command_char = "S"
 
-[node name="Z" type="Button" parent="PathPopup/PanelContainer/MarginContainer/MainContainer"]
-layout_mode = 2
-mouse_default_cursor_shape = 2
-theme_override_fonts/font = ExtResource("3_gq1b1")
-theme_override_styles/normal = SubResource("StyleBoxFlat_jqdng")
-theme_override_styles/hover = SubResource("StyleBoxFlat_h3qkf")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_37g7w")
-script = ExtResource("4_rvfn1")
-command_char = "Z"
-
-[connection signal="pressed" from="Button" to="." method="_on_button_pressed"]
+[connection signal="pressed" from="MainLine/Button" to="." method="_on_button_pressed"]
 [connection signal="path_command_picked" from="PathPopup" to="." method="_on_path_command_picked"]
