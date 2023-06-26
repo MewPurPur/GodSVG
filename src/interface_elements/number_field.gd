@@ -97,7 +97,7 @@ func _input(event: InputEvent) -> void:
 	not num_edit.get_global_rect().has_point(event.position)):
 		num_edit.release_focus()
 
-func spinner_set_disabled(spinner: Button, value: bool) -> void:
-	spinner.disabled = value
-	spinner.mouse_default_cursor_shape = Control.CURSOR_ARROW if value == true\
+func spinner_set_disabled(spinner: Button, disabling: bool) -> void:
+	spinner.disabled = disabling
+	spinner.mouse_default_cursor_shape = Control.CURSOR_ARROW if disabling\
 			else Control.CURSOR_POINTING_HAND

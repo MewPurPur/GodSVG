@@ -5,6 +5,7 @@ const shape_attributes = ["cx", "cy", "x", "y", "r", "rx", "ry", "width", "heigh
 const NumberField = preload("number_field.tscn")
 const ColorField = preload("color_field.tscn")
 const PathField = preload("path_field.tscn")
+const EnumField = preload("enum_field.tscn")
 
 @onready var paint_container: FlowContainer = %AttributeContainer/PaintAttributes
 @onready var shape_container: FlowContainer = %AttributeContainer/ShapeAttributes
@@ -37,8 +38,10 @@ func _ready() -> void:
 				input_field.step = 0.01
 			SVGAttribute.Type.COLOR:
 				input_field = ColorField.instantiate()
-			SVGAttribute.Type.PATH_DEF:
+			SVGAttribute.Type.PATHDATA:
 				input_field = PathField.instantiate()
+			SVGAttribute.Type.ENUM:
+				input_field = EnumField.instantiate()
 		input_field.attribute = attribute_value
 		input_field.attribute_name = attribute_key
 		# Add the attribute to its corresponding container.
