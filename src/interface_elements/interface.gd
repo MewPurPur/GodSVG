@@ -2,7 +2,7 @@ extends VBoxContainer
 
 const TagEditor = preload("tag_editor.tscn")
 
-@onready var shapes: VBoxContainer = $Shapes
+@onready var shapes: VBoxContainer = $VBoxContainer/ScrollContainer/Shapes
 
 func add_shape(shape : GDScript) -> void :
 	print(shape)
