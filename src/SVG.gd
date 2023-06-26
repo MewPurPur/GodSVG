@@ -1,5 +1,7 @@
 extends Node
 
+var update_pending := false
+
 const display_path := "user://display.svg"
 
 var string := ""
@@ -37,7 +39,9 @@ func tags_to_string(superscaled := false, add_xmlns := true) -> String:
 						string += ' %s="%s"' % [attribute_key, attribute.value]
 					else:
 						string += ' %s="#%s"' % [attribute_key, attribute.value]
-				SVGAttribute.Type.PATH_DEF:
+				SVGAttribute.Type.PATHDATA:
+					string += ' %s="%s"' % [attribute_key, attribute.value]
+				SVGAttribute.Type.ENUM:
 					string += ' %s="%s"' % [attribute_key, attribute.value]
 		string += '/>'
 	# Closing
@@ -51,6 +55,13 @@ func string_to_tags() -> void:
 
 
 func update() -> void:
+	update_pending = true
+
+func _process(_delta: float) -> void:
+	if update_pending:
+		update_display()
+
+func update_display() -> void:
 	# Store the SVG string.
 	var file := FileAccess.open(display_path, FileAccess.WRITE)
 	file.store_string(tags_to_string(true))
@@ -58,6 +69,9 @@ func update() -> void:
 	code_editor.text = tags_to_string()
 	# Update the display.
 	if FileAccess.file_exists(display_path):
-		var image := Image.load_from_file(display_path) # when/if godot expose the scale argument of this function it could be used to replace superscaled argument.
+		# When/if godot exposes the scale argument of this function,
+		# it could be used to replace the superscaled argument.
+		var image := Image.load_from_file(display_path)
 		var image_texture := ImageTexture.create_from_image(image)
 		texture_node.texture = image_texture
+	update_pending = false
