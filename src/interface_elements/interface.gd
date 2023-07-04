@@ -4,15 +4,14 @@ const TagEditor = preload("tag_editor.tscn")
 
 @onready var shapes: VBoxContainer = $VBoxContainer/ScrollContainer/Shapes
 
-func add_shape(shape : GDScript) -> void :
-	print(shape)
+func add_shape(shape: GDScript) -> void:
 	var shape_editor := TagEditor.instantiate()
 	shape_editor.tag_index = SVG.data.tags.size()
 	shape_editor.deleted.connect(_on_tag_deleted)
 	shape_editor.tag = shape.new()
 	shapes.add_child(shape_editor) 
 
-# In the end all connection should go directly to add_shape with argument in binds 
+# In the end all connections should go directly to add_shape with argument in binds 
 # But right now there is a bug preventing it so keeping them here for now
 func add_circle() -> void:
 	add_shape(SVGTagCircle)
