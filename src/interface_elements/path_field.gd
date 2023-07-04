@@ -45,8 +45,8 @@ func path_commands_to_value() -> String:
 		generated_value += command.command_char
 		if command is EllipticalArcCommand:
 			generated_value += String.num(command.rx, 4) + " " +\
-					String.num(command.ry, 4) + " " + str(command.large_arc_flag) + " " +\
-					str(command.sweep_flag) + " "
+					String.num(command.ry, 4) + " " + String.num(command.rot, 2) + " " +\
+					str(command.large_arc_flag) + " " + str(command.sweep_flag) + " "
 		if command is QuadraticBezierCommand or command is CubicBezierCommand:
 			generated_value += String.num(command.x1, 4) + " " +\
 					String.num(command.y1, 4) + " "
@@ -57,7 +57,6 @@ func path_commands_to_value() -> String:
 			generated_value += String.num(command.x, 4) + " "
 		if not (command is CloseCommand or command is HorizontalLineCommand):
 			generated_value += String.num(command.y, 4) + " "
-	
 	return generated_value.substr(0, generated_value.length() - 1)
 
 func update_input_fields() -> void:
@@ -68,7 +67,7 @@ func update_input_fields() -> void:
 	for command_idx in commands.size():
 		var command := commands[command_idx]
 		var input_field := HBoxContainer.new()
-		# TODO split off this button into its own scene.
+		# TODO split off this button into its own scene?
 		var command_char_button := Button.new()
 		command_char_button.text = command.command_char
 		command_char_button.add_theme_font_override(&"font",
@@ -79,25 +78,32 @@ func update_input_fields() -> void:
 		if command is EllipticalArcCommand:
 			var field_rx: Control = NumberField.instantiate()
 			var field_ry: Control = NumberField.instantiate()
+			var field_rot: Control = NumberField.instantiate()
 			# TODO Add a flag_field
 			var field_large_arc_flag: Control = NumberField.instantiate()
 			var field_sweep_flag: Control = NumberField.instantiate()
 			field_rx.value = command.rx
 			field_ry.value = command.ry
+			field_rot.value = command.rot
 			field_large_arc_flag.value = command.large_arc_flag
 			field_sweep_flag.value = command.sweep_flag
 			field_rx.min_value = -1024
 			field_ry.min_value = -1024
+			field_rot.min_value = -360
+			field_rot.max_value = 360
 			field_rx.is_float = true
 			field_ry.is_float = true
+			field_rot.is_float = true
 			field_large_arc_flag.max_value = 1
 			field_sweep_flag.max_value = 1
 			input_field.add_child(field_rx)
 			input_field.add_child(field_ry)
+			input_field.add_child(field_rot)
 			input_field.add_child(field_large_arc_flag)
 			input_field.add_child(field_sweep_flag)
 			field_rx.value_changed.connect(_update_command_value.bind(command_idx, &"rx"))
 			field_ry.value_changed.connect(_update_command_value.bind(command_idx, &"ry"))
+			field_rot.value_changed.connect(_update_command_value.bind(command_idx, &"rot"))
 			field_large_arc_flag.value_changed.connect(
 						_update_command_value.bind(command_idx, &"field_large_arc"))
 			field_sweep_flag.value_changed.connect(
@@ -195,6 +201,7 @@ class VerticalLineCommand extends PathCommand:
 class EllipticalArcCommand extends PathCommand:
 	var rx := 0.0
 	var ry := 0.0
+	var rot := 0.0
 	var large_arc_flag := 0
 	var sweep_flag := 0
 	var x := 0.0
