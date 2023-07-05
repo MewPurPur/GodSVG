@@ -1,6 +1,7 @@
 extends VBoxContainer
 
 const NumberField = preload("number_field.tscn")
+const FlagField = preload("flag_field.tscn")
 
 var attribute: SVGAttribute
 var attribute_name: String
@@ -80,8 +81,8 @@ func update_input_fields() -> void:
 			var field_ry: Control = NumberField.instantiate()
 			var field_rot: Control = NumberField.instantiate()
 			# TODO Add a flag_field
-			var field_large_arc_flag: Control = NumberField.instantiate()
-			var field_sweep_flag: Control = NumberField.instantiate()
+			var field_large_arc_flag: Control = FlagField.instantiate()
+			var field_sweep_flag: Control = FlagField.instantiate()
 			field_rx.value = command.rx
 			field_ry.value = command.ry
 			field_rot.value = command.rot
@@ -94,8 +95,6 @@ func update_input_fields() -> void:
 			field_rx.is_float = true
 			field_ry.is_float = true
 			field_rot.is_float = true
-			field_large_arc_flag.max_value = 1
-			field_sweep_flag.max_value = 1
 			input_field.add_child(field_rx)
 			input_field.add_child(field_ry)
 			input_field.add_child(field_rot)
@@ -105,9 +104,9 @@ func update_input_fields() -> void:
 			field_ry.value_changed.connect(_update_command_value.bind(command_idx, &"ry"))
 			field_rot.value_changed.connect(_update_command_value.bind(command_idx, &"rot"))
 			field_large_arc_flag.value_changed.connect(
-						_update_command_value.bind(command_idx, &"field_large_arc"))
+						_update_command_value.bind(command_idx, &"large_arc_flag"))
 			field_sweep_flag.value_changed.connect(
-						_update_command_value.bind(command_idx, &"field_sweep"))
+						_update_command_value.bind(command_idx, &"sweep_flag"))
 		if command is QuadraticBezierCommand or command is CubicBezierCommand:
 			var field_x1: Control = NumberField.instantiate()
 			var field_y1: Control = NumberField.instantiate()
@@ -154,6 +153,7 @@ func update_input_fields() -> void:
 
 func _update_command_value(new_value, index: int, property: StringName) -> void:
 	commands[index].set(property, new_value)
+	print(commands[index].get(property))
 	value = path_commands_to_value()
 	line_edit.text = value
 	value_changed.emit(value)
