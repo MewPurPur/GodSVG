@@ -2,7 +2,7 @@ extends Popup
 
 signal path_command_picked(new_command: String)
 
-@onready var main_container: GridContainer = %MainContainer
+@onready var main_container: VBoxContainer = %MainContainer
 
 func _ready() -> void:
 	for command_button in main_container.get_children():

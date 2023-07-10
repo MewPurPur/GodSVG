@@ -28,7 +28,8 @@ func _ready() -> void:
 		value = attribute.value
 
 func _on_button_pressed() -> void:
-	command_picker.popup(Rect2(global_position + Vector2(0, size.y), size))
+	command_picker.popup(Rect2(global_position + Vector2(0, line_edit.size.y),
+			command_picker.size))
 
 func _on_path_command_picked(new_command: String) -> void:
 	commands.append(translation_dict[new_command].new())
