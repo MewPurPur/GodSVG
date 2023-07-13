@@ -88,8 +88,8 @@ func update_input_fields() -> void:
 			field_rot.value = command.rot
 			field_large_arc_flag.value = command.large_arc_flag
 			field_sweep_flag.value = command.sweep_flag
-			field_rx.min_value = -1024
-			field_ry.min_value = -1024
+			field_rx.min_value = 0.001
+			field_ry.min_value = 0.001
 			field_rot.min_value = -360
 			field_rot.max_value = 360
 			field_rx.is_float = true
@@ -200,8 +200,8 @@ class VerticalLineCommand extends PathCommand:
 		command_char = "V"
 
 class EllipticalArcCommand extends PathCommand:
-	var rx := 0.0
-	var ry := 0.0
+	var rx := 1.0
+	var ry := 1.0
 	var rot := 0.0
 	var large_arc_flag := 0
 	var sweep_flag := 0
