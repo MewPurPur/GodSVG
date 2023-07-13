@@ -154,7 +154,6 @@ func update_input_fields() -> void:
 
 func _update_command_value(new_value, index: int, property: StringName) -> void:
 	commands[index].set(property, new_value)
-	print(commands[index].get(property))
 	value = path_commands_to_value()
 	line_edit.text = value
 	value_changed.emit(value)
