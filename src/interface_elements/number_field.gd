@@ -8,9 +8,9 @@ extends HBoxContainer
 @onready var down_repeat_timer: Timer = %Down/Timer2
 @onready var num_edit: LineEdit = $LineEdit
 
-var min_value := 0
-var max_value := 1024
-var step := 1
+var min_value := 0.0
+var max_value := 1024.0
+var step := 1.0
 var is_float := true
 
 var attribute: SVGAttribute
@@ -22,7 +22,7 @@ var value: float:
 		var old_value := value
 		value = validate(new_value)
 		if value != old_value:
-			value_changed.emit(new_value)
+			value_changed.emit(value)
 
 
 func _ready() -> void:
