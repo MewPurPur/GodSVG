@@ -13,6 +13,9 @@ func _on_toggled(is_state_pressed: bool) -> void:
 
 func _ready() -> void:
 	value_changed.connect(_on_value_changed)
+	button_pressed = value == 1
+	text = str(value)
 
 func _on_value_changed(new_value: int) -> void:
+	button_pressed = new_value == 1
 	text = str(new_value)
