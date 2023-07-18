@@ -141,7 +141,7 @@ icon = ExtResource("2_sdndd")
 layout_mode = 2
 
 [node name="PathPopup" type="Popup" parent="."]
-size = Vector2i(269, 326)
+size = Vector2i(269, 361)
 script = ExtResource("3_e1ate")
 
 [node name="PanelContainer" type="PanelContainer" parent="PathPopup"]
@@ -159,6 +159,12 @@ theme_override_constants/margin_bottom = 8
 [node name="MainContainer" type="VBoxContainer" parent="PathPopup/PanelContainer/MarginContainer"]
 unique_name_in_owner = true
 layout_mode = 2
+
+[node name="RelativeToggle" type="CheckButton" parent="PathPopup/PanelContainer/MarginContainer/MainContainer"]
+layout_mode = 2
+text = "Relative"
+flat = true
+alignment = 2
 
 [node name="M" type="Button" parent="PathPopup/PanelContainer/MarginContainer/MainContainer"]
 layout_mode = 2
