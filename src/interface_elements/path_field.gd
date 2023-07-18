@@ -148,8 +148,14 @@ func update_input_fields() -> void:
 			field_y.is_float = true
 			input_field.add_child(field_y)
 			field_y.value_changed.connect(_update_command_value.bind(command_idx, &"y"))
-		
 		commands_container.add_child(input_field)
+		# Add close button
+		var close_button := Button.new()
+		close_button.icon = load("res://visual/icons/Cross.svg")
+		close_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+		close_button.size_flags_horizontal = Control.SIZE_SHRINK_END
+		close_button.pressed.connect(_on_close_button_pressed.bind(command_idx))
+		input_field.add_child(close_button)
 
 
 func _update_command_value(new_value, index: int, property: StringName) -> void:
@@ -163,6 +169,13 @@ func _on_value_changed(new_value: String) -> void:
 	if attribute != null:
 		attribute.value = new_value
 		SVG.update()
+
+func _on_close_button_pressed(idx: int) -> void:
+	commands.remove_at(idx)
+	value = path_commands_to_value()
+	line_edit.text = value
+	update_input_fields()
+	value_changed.emit(value)
 
 
 class PathCommand extends RefCounted:
