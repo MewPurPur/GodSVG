@@ -40,7 +40,6 @@ func _gui_input(event: InputEvent) -> void:
 		zoom_level *= event.factor
 
 	if event is InputEventMouseButton and event.is_pressed():
-		print(event.as_text())
 		match event.button_index:
 			MOUSE_BUTTON_WHEEL_UP:
 				zoom_in()
