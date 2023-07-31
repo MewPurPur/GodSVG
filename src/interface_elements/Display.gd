@@ -8,35 +8,47 @@ const minimum_visible_proportion : float = 0.2
 
 var zoom_level := 1.0:
 	set(value):
-		zoom_level = clampf(value, 0.25, 4.0)
+		zoom_level = clampf(value, 0.125, 8.0)
 		zoom_reset_button.text = "%d%%" % (zoom_level * 100)
 		viewport.size_2d_override = viewport.size / zoom_level
 		clamp_view()
 
-func _on_zoom_out_pressed() -> void:
-	zoom_level /= 2
 
-func _on_zoom_in_pressed() -> void:
+func zoom_in() -> void:
 	zoom_level *= 2
 
-func _on_zoom_reset_pressed() -> void:
+func zoom_out() -> void:
+	zoom_level /= 2
+
+func zoom_reset() -> void:
 	zoom_level = 1.0
+
 
 func _gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion and event.button_mask == MOUSE_BUTTON_MASK_LEFT:
 		display.position += event.relative / zoom_level
 		clamp_view()
-	
+
 	if event is InputEventPanGesture:
 		if event.ctrl_pressed:
 			zoom_level *= 1 + event.delta.y / 2
 		else:
 			display.position -= event.delta * 32 / zoom_level
 			clamp_view()
-	
+
 	if event is InputEventMagnifyGesture:
 		zoom_level *= event.factor
-	
+
+	if event is InputEventMouseButton and event.is_pressed():
+		print(event.as_text())
+		match event.button_index:
+			MOUSE_BUTTON_WHEEL_UP:
+				zoom_in()
+				print('in')
+			MOUSE_BUTTON_WHEEL_DOWN:
+				zoom_out()
+				print('out')
+
 	if event is InputEventMouseButton:
 		if event.ctrl_pressed:
 			pass
