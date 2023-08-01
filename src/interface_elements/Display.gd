@@ -43,10 +43,8 @@ func _gui_input(event: InputEvent) -> void:
 		match event.button_index:
 			MOUSE_BUTTON_WHEEL_UP:
 				zoom_in()
-				print('in')
 			MOUSE_BUTTON_WHEEL_DOWN:
 				zoom_out()
-				print('out')
 
 	if event is InputEventMouseButton:
 		if event.ctrl_pressed:
