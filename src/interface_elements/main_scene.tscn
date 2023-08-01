@@ -175,6 +175,6 @@ grow_horizontal = 2
 grow_vertical = 2
 expand_mode = 1
 
-[connection signal="pressed" from="Display/PanelContainer/MarginContainer/HBoxContainer/HBoxContainer/ZoomOut" to="Display" method="_on_zoom_out_pressed"]
-[connection signal="pressed" from="Display/PanelContainer/MarginContainer/HBoxContainer/HBoxContainer/ZoomReset" to="Display" method="_on_zoom_reset_pressed"]
-[connection signal="pressed" from="Display/PanelContainer/MarginContainer/HBoxContainer/HBoxContainer/ZoomIn" to="Display" method="_on_zoom_in_pressed"]
+[connection signal="pressed" from="Display/PanelContainer/MarginContainer/HBoxContainer/HBoxContainer/ZoomOut" to="Display" method="zoom_out"]
+[connection signal="pressed" from="Display/PanelContainer/MarginContainer/HBoxContainer/HBoxContainer/ZoomReset" to="Display" method="zoom_reset"]
+[connection signal="pressed" from="Display/PanelContainer/MarginContainer/HBoxContainer/HBoxContainer/ZoomIn" to="Display" method="zoom_in"]
