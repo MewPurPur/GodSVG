@@ -14,7 +14,7 @@ func tags_to_string(superscaled := false, add_xmlns := true) -> String:
 	var h := data.h
 	var scale := 128.0 if superscaled  else 1.0
 	# Opening
-	string = '<svg width="{w}" height="{h}" viewBox="({w} {h})"'.format(
+	string = '<svg width="{w}" height="{h}" viewBox="{w} {h}"'.format(
 			{"w": w * scale, "h": h * scale})
 	if add_xmlns:
 		string += ' xmlns="http://www.w3.org/2000/svg"'
