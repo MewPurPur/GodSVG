@@ -43,22 +43,26 @@ layout_mode = 2
 
 [node name="Circle" type="Button" parent="VBoxContainer/HBoxContainer"]
 layout_mode = 2
+tooltip_text = "Add circle"
 mouse_default_cursor_shape = 2
 icon = ExtResource("5_cwjdk")
 icon_alignment = 1
 
 [node name="Ellipse" type="Button" parent="VBoxContainer/HBoxContainer"]
 layout_mode = 2
+tooltip_text = "Add ellipse"
 mouse_default_cursor_shape = 2
 icon = ExtResource("6_komru")
 
 [node name="Rect" type="Button" parent="VBoxContainer/HBoxContainer"]
 layout_mode = 2
+tooltip_text = "Add rect"
 mouse_default_cursor_shape = 2
 icon = ExtResource("7_hdyp6")
 
 [node name="Path" type="Button" parent="VBoxContainer/HBoxContainer"]
 layout_mode = 2
+tooltip_text = "Add path"
 mouse_default_cursor_shape = 2
 icon = ExtResource("8_6tgkl")
 
