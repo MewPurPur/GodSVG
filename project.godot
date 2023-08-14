@@ -13,7 +13,7 @@ config_version=5
 config/name="GodSVG"
 config/tags=PackedStringArray("project")
 run/main_scene="res://src/interface_elements/main_scene.tscn"
-config/features=PackedStringArray("4.1", "Forward Plus")
+config/features=PackedStringArray("4.2", "Forward Plus")
 config/icon="res://icon.png"
 
 [autoload]
