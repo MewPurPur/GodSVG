@@ -36,3 +36,6 @@ func _on_tag_deleted(index: int) -> void:
 	for tag_editor in shapes.get_children():
 		if &"tag_index" in tag_editor and tag_editor.tag_index > index:
 			tag_editor.tag_index -= 1
+
+func _on_copy_button_pressed() -> void:
+	DisplayServer.clipboard_set(SVG.code_editor.text)
