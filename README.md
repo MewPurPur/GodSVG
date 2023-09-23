@@ -31,7 +31,7 @@ All other elements are currently not planned.
 
 Currently, there are no pre-built binaries available for GodSVG. However, you can still run it by following these steps:
 
-1. Clone the repository: `git clone https://github.com/mew-pur-pur/GodSVG.git`
+1. Clone the repository: `git clone https://github.com/MewPurPur/GodSVG.git`
 2. Open the project in the Godot Engine.
 3. Build and run the project within the Godot Engine editor.
 
