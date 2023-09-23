@@ -161,7 +161,7 @@ func update_input_fields() -> void:
 		input_field.add_child(close_button)
 
 
-func _update_command_value(new_value, index: int, property: StringName) -> void:
+func _update_command_value(new_value: float, index: int, property: StringName) -> void:
 	commands[index].set(property, new_value)
 	value = path_commands_to_value()
 	line_edit.text = value

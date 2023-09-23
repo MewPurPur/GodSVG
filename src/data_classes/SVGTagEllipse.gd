@@ -1,6 +1,6 @@
 class_name SVGTagEllipse extends SVGTag
 
-func _init():
+func _init() -> void:
 	title = "ellipse"
 	attributes = {
 		"cx": SVGAttribute.new(SVGAttribute.Type.FLOAT, 0.0),

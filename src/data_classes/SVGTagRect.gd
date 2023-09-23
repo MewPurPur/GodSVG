@@ -1,6 +1,6 @@
 class_name SVGTagRect extends SVGTag
 
-func _init():
+func _init() -> void:
 	title = "rect"
 	attributes = {
 		"x": SVGAttribute.new(SVGAttribute.Type.FLOAT, 0.0),

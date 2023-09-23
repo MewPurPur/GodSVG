@@ -19,6 +19,7 @@ config/icon="res://icon.png"
 [autoload]
 
 SVG="*res://src/SVG.gd"
+GlobalSettings="*res://src/GlobalSettings.gd"
 
 [display]
 

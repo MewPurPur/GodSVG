@@ -4,10 +4,12 @@ const TagEditor = preload("tag_editor.tscn")
 
 @onready var shapes: VBoxContainer = $VBoxContainer/ScrollContainer/Shapes
 
+# FIXME could be typed as SVGTag.
 func add_shape(shape: GDScript) -> void:
 	var shape_editor := TagEditor.instantiate()
 	shape_editor.tag_index = SVG.data.tags.size()
 	shape_editor.deleted.connect(_on_tag_deleted)
+	shape_editor.selected.connect(_on_tag_selected)
 	shape_editor.tag = shape.new()
 	shapes.add_child(shape_editor) 
 
@@ -37,5 +39,18 @@ func _on_tag_deleted(index: int) -> void:
 		if &"tag_index" in tag_editor and tag_editor.tag_index > index:
 			tag_editor.tag_index -= 1
 
+func _on_tag_selected(index: int) -> void:
+	for tag_editor in shapes.get_children():
+		if &"tag_index" in tag_editor and tag_editor.tag_index != index:
+			tag_editor.is_selected = false
+
+
 func _on_copy_button_pressed() -> void:
 	DisplayServer.clipboard_set(SVG.code_editor.text)
+
+
+func _on_gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.is_pressed() and\
+	event.button_index == MOUSE_BUTTON_LEFT:
+		for tag_editor in shapes.get_children():
+			tag_editor.selected = false
