@@ -10,13 +10,23 @@ const EnumField = preload("enum_field.tscn")
 @onready var paint_container: FlowContainer = %AttributeContainer/PaintAttributes
 @onready var shape_container: FlowContainer = %AttributeContainer/ShapeAttributes
 @onready var label: Label = %Title
+@onready var selected_highlight: Panel = $Panel
 
 signal deleted
+signal selected
+
+var is_selected := false:
+	set(value):
+		is_selected = value
+		selected_highlight.visible = value
+		if is_selected:
+			selected.emit(tag_index)
 
 var tag_index: int
 var tag: SVGTag
 
 func _ready() -> void:
+	is_selected = false
 	label.text = tag.title
 	for attribute_key in tag.attributes:
 		var attribute_value: SVGAttribute = tag.attributes[attribute_key]
@@ -58,3 +68,9 @@ func _on_close_button_pressed() -> void:
 	SVG.data.tags.remove_at(tag_index)
 	SVG.update()
 	queue_free()
+
+
+func _on_gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.is_pressed() and\
+	event.button_index == MOUSE_BUTTON_LEFT:
+		is_selected = not is_selected

@@ -1,9 +1,11 @@
-[gd_scene load_steps=8 format=3 uid="uid://ce6j54x27pom"]
+[gd_scene load_steps=16 format=3 uid="uid://ce6j54x27pom"]
 
 [ext_resource type="PackedScene" uid="uid://ccynisiuyn5qn" path="res://src/interface_elements/interface.tscn" id="1_afxvd"]
 [ext_resource type="Texture2D" uid="uid://ccvjkdd0s7rb4" path="res://visual/icons/Copy.svg" id="1_fm0ux"]
 [ext_resource type="Script" path="res://src/interface_elements/Display.gd" id="2_ylpv1"]
 [ext_resource type="Texture2D" uid="uid://c68og6bsqt0lb" path="res://visual/Checkerboard.svg" id="3_d58qh"]
+[ext_resource type="Texture2D" uid="uid://ckkkgof1hcbld" path="res://visual/icons/Gear.svg" id="4_3rshc"]
+[ext_resource type="Script" path="res://src/interface_elements/Controls.gd" id="5_pltvx"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_082e3"]
 bg_color = Color(0.005, 0.005, 0.05, 1)
@@ -46,6 +48,33 @@ color_regions = {
 bg_color = Color(0.005, 0.005, 0.05, 1)
 border_width_bottom = 2
 border_color = Color(0.4, 0.7, 1, 1)
+
+[sub_resource type="InputEventKey" id="InputEventKey_n13ij"]
+device = -1
+ctrl_pressed = true
+keycode = 45
+unicode = 45
+
+[sub_resource type="Shortcut" id="Shortcut_teo1i"]
+events = [SubResource("InputEventKey_n13ij")]
+
+[sub_resource type="InputEventKey" id="InputEventKey_g6r8v"]
+device = -1
+ctrl_pressed = true
+keycode = 48
+unicode = 48
+
+[sub_resource type="Shortcut" id="Shortcut_le5f5"]
+events = [SubResource("InputEventKey_g6r8v")]
+
+[sub_resource type="InputEventKey" id="InputEventKey_la6x6"]
+device = -1
+ctrl_pressed = true
+keycode = 61
+unicode = 61
+
+[sub_resource type="Shortcut" id="Shortcut_ihtjd"]
+events = [SubResource("InputEventKey_la6x6")]
 
 [node name="MainScene" type="HBoxContainer"]
 process_mode = 3
@@ -128,25 +157,39 @@ theme_override_constants/margin_bottom = 4
 layout_mode = 2
 alignment = 2
 
+[node name="Settings" type="Button" parent="Display/PanelContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 2
+tooltip_text = "Settings"
+mouse_default_cursor_shape = 2
+icon = ExtResource("4_3rshc")
+icon_alignment = 1
+
 [node name="HBoxContainer" type="HBoxContainer" parent="Display/PanelContainer/MarginContainer/HBoxContainer"]
 layout_mode = 2
 alignment = 1
 
 [node name="ZoomOut" type="Button" parent="Display/PanelContainer/MarginContainer/HBoxContainer/HBoxContainer"]
 layout_mode = 2
+tooltip_text = "Zoom Out"
 mouse_default_cursor_shape = 2
+shortcut = SubResource("Shortcut_teo1i")
 text = " - "
 
 [node name="ZoomReset" type="Button" parent="Display/PanelContainer/MarginContainer/HBoxContainer/HBoxContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(56, 0)
 layout_mode = 2
+tooltip_text = "Zoom Reset"
 mouse_default_cursor_shape = 2
+shortcut = SubResource("Shortcut_le5f5")
 text = "100%"
 
 [node name="ZoomIn" type="Button" parent="Display/PanelContainer/MarginContainer/HBoxContainer/HBoxContainer"]
 layout_mode = 2
+tooltip_text = "Zoom In"
 mouse_default_cursor_shape = 2
+shortcut = SubResource("Shortcut_ihtjd")
 text = " + "
 
 [node name="ViewportContainer" type="SubViewportContainer" parent="Display"]
@@ -163,15 +206,16 @@ render_target_update_mode = 4
 unique_name_in_owner = true
 texture_filter = 1
 clip_contents = true
+custom_minimum_size = Vector2(320, 320)
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -120.0
-offset_top = -120.0
-offset_right = -120.0
-offset_bottom = -120.0
+offset_left = -160.0
+offset_top = -160.0
+offset_right = 160.0
+offset_bottom = 160.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("3_d58qh")
@@ -189,7 +233,21 @@ grow_horizontal = 2
 grow_vertical = 2
 expand_mode = 1
 
+[node name="Controls" type="TextureRect" parent="Display/ViewportContainer/Viewport/Checkerboard"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+expand_mode = 1
+script = ExtResource("5_pltvx")
+
 [connection signal="pressed" from="PanelContainer/MarginContainer/MainContainer/CodeContainer/CodeButtons/CopyButton" to="PanelContainer/MarginContainer/MainContainer/Interface" method="_on_copy_button_pressed"]
+[connection signal="pressed" from="Display/PanelContainer/MarginContainer/HBoxContainer/Settings" to="Display" method="_on_settings_pressed"]
 [connection signal="pressed" from="Display/PanelContainer/MarginContainer/HBoxContainer/HBoxContainer/ZoomOut" to="Display" method="zoom_out"]
 [connection signal="pressed" from="Display/PanelContainer/MarginContainer/HBoxContainer/HBoxContainer/ZoomReset" to="Display" method="zoom_reset"]
 [connection signal="pressed" from="Display/PanelContainer/MarginContainer/HBoxContainer/HBoxContainer/ZoomIn" to="Display" method="zoom_in"]
+[connection signal="dropped_handle" from="Display/ViewportContainer/Viewport/Checkerboard/Controls" to="Display/ViewportContainer/Viewport/Checkerboard/Controls" method="update_handles"]
+[connection signal="gui_input" from="Display/ViewportContainer/Viewport/Checkerboard/Controls" to="Display/ViewportContainer/Viewport/Checkerboard/Controls" method="_on_gui_input"]

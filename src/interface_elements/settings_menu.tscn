@@ -1,0 +1,66 @@
+[gd_scene load_steps=3 format=3 uid="uid://1rylg17uwltw"]
+
+[ext_resource type="Script" path="res://src/interface_elements/settings_menu.gd" id="1_1gf4m"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hto7q"]
+content_margin_left = 6.0
+content_margin_top = 6.0
+content_margin_right = 6.0
+content_margin_bottom = 6.0
+bg_color = Color(0.005, 0.005, 0.05, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.4, 0.7, 1, 1)
+corner_radius_top_left = 1
+corner_radius_top_right = 1
+corner_radius_bottom_right = 1
+corner_radius_bottom_left = 1
+
+[node name="SettingsMenu" type="ColorRect"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.4)
+script = ExtResource("1_1gf4m")
+
+[node name="MainPanel" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -117.0
+offset_top = -46.0
+offset_right = 117.0
+offset_bottom = 46.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_hto7q")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MainPanel"]
+layout_mode = 2
+theme_override_constants/separation = 18
+
+[node name="Settings" type="VBoxContainer" parent="MainPanel/VBoxContainer"]
+layout_mode = 2
+
+[node name="WindowMode" type="CheckBox" parent="MainPanel/VBoxContainer/Settings"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_default_cursor_shape = 2
+text = "Remember window mode"
+
+[node name="Close" type="Button" parent="MainPanel/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
+mouse_default_cursor_shape = 2
+text = "Close"
+
+[connection signal="pressed" from="MainPanel/VBoxContainer/Settings/WindowMode" to="." method="_on_window_mode_pressed"]
+[connection signal="pressed" from="MainPanel/VBoxContainer/Close" to="." method="_on_close_pressed"]
