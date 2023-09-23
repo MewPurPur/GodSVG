@@ -1,6 +1,6 @@
 class_name SVGTagCircle extends SVGTag
 
-func _init():
+func _init() -> void:
 	title = "circle"
 	attributes = {
 		"cx": SVGAttribute.new(SVGAttribute.Type.UFLOAT, 0.0),

@@ -1,6 +1,6 @@
 class_name SVGTagPath extends SVGTag
 
-func _init():
+func _init() -> void:
 	title = "path"
 	attributes = {
 		"d": SVGAttribute.new(SVGAttribute.Type.PATHDATA, ""),
