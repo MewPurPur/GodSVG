@@ -33,7 +33,8 @@ func save_user_data() -> void:
 	ResourceSaver.save(save_data, save_path)
 
 func load_user_data() -> void:
-	save_data = ResourceLoader.load(save_path)
+	if FileAccess.file_exists(save_path):
+		save_data = ResourceLoader.load(save_path)
 
 func _exit_tree() -> void:
 	save_data.window_mode = DisplayServer.window_get_mode()
