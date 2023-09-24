@@ -12,7 +12,6 @@ const EnumField = preload("enum_field.tscn")
 @onready var label: Label = %Title
 @onready var selected_highlight: Panel = $Panel
 
-signal deleted
 signal selected
 
 var is_selected := false:
@@ -26,7 +25,6 @@ var tag_index: int
 var tag: SVGTag
 
 func _ready() -> void:
-	is_selected = false
 	label.text = tag.title
 	for attribute_key in tag.attributes:
 		var attribute_value: SVGAttribute = tag.attributes[attribute_key]
@@ -59,14 +57,10 @@ func _ready() -> void:
 			shape_container.add_child(input_field)
 		else:
 			paint_container.add_child(input_field)
-	SVG.data.tags.insert(tag_index, tag)
-	SVG.update()
 
 
 func _on_close_button_pressed() -> void:
-	deleted.emit(tag_index)
-	SVG.data.tags.remove_at(tag_index)
-	SVG.update()
+	SVG.data.delete_tag(tag_index)
 	queue_free()
 
 

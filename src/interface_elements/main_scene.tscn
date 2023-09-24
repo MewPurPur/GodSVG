@@ -1,11 +1,13 @@
-[gd_scene load_steps=16 format=3 uid="uid://ce6j54x27pom"]
+[gd_scene load_steps=18 format=3 uid="uid://ce6j54x27pom"]
 
 [ext_resource type="PackedScene" uid="uid://ccynisiuyn5qn" path="res://src/interface_elements/interface.tscn" id="1_afxvd"]
 [ext_resource type="Texture2D" uid="uid://ccvjkdd0s7rb4" path="res://visual/icons/Copy.svg" id="1_fm0ux"]
+[ext_resource type="Script" path="res://src/interface_elements/CodeEditor.gd" id="1_ry6k8"]
 [ext_resource type="Script" path="res://src/interface_elements/Display.gd" id="2_ylpv1"]
 [ext_resource type="Texture2D" uid="uid://c68og6bsqt0lb" path="res://visual/Checkerboard.svg" id="3_d58qh"]
 [ext_resource type="Texture2D" uid="uid://ckkkgof1hcbld" path="res://visual/icons/Gear.svg" id="4_3rshc"]
 [ext_resource type="Script" path="res://src/interface_elements/Controls.gd" id="5_pltvx"]
+[ext_resource type="Script" path="res://src/interface_elements/DisplayTexture.gd" id="7_cxx0h"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_082e3"]
 bg_color = Color(0.005, 0.005, 0.05, 1)
@@ -105,8 +107,7 @@ theme_override_constants/separation = 8
 [node name="CodeContainer" type="HBoxContainer" parent="PanelContainer/MarginContainer/MainContainer"]
 layout_mode = 2
 
-[node name="CodeEdit" type="CodeEdit" parent="PanelContainer/MarginContainer/MainContainer/CodeContainer"]
-unique_name_in_owner = true
+[node name="CodeEditor" type="CodeEdit" parent="PanelContainer/MarginContainer/MainContainer/CodeContainer"]
 custom_minimum_size = Vector2(0, 96)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -124,6 +125,7 @@ auto_brace_completion_pairs = {
 "(": ")",
 "<": ">"
 }
+script = ExtResource("1_ry6k8")
 
 [node name="CodeButtons" type="VBoxContainer" parent="PanelContainer/MarginContainer/MainContainer/CodeContainer"]
 layout_mode = 2
@@ -222,8 +224,7 @@ texture = ExtResource("3_d58qh")
 expand_mode = 1
 stretch_mode = 1
 
-[node name="Texture" type="TextureRect" parent="Display/ViewportContainer/Viewport/Checkerboard"]
-unique_name_in_owner = true
+[node name="DisplayTexture" type="TextureRect" parent="Display/ViewportContainer/Viewport/Checkerboard"]
 clip_contents = true
 layout_mode = 1
 anchors_preset = 15
@@ -232,9 +233,9 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 expand_mode = 1
+script = ExtResource("7_cxx0h")
 
 [node name="Controls" type="TextureRect" parent="Display/ViewportContainer/Viewport/Checkerboard"]
-unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -249,5 +250,4 @@ script = ExtResource("5_pltvx")
 [connection signal="pressed" from="Display/PanelContainer/MarginContainer/HBoxContainer/HBoxContainer/ZoomOut" to="Display" method="zoom_out"]
 [connection signal="pressed" from="Display/PanelContainer/MarginContainer/HBoxContainer/HBoxContainer/ZoomReset" to="Display" method="zoom_reset"]
 [connection signal="pressed" from="Display/PanelContainer/MarginContainer/HBoxContainer/HBoxContainer/ZoomIn" to="Display" method="zoom_in"]
-[connection signal="dropped_handle" from="Display/ViewportContainer/Viewport/Checkerboard/Controls" to="Display/ViewportContainer/Viewport/Checkerboard/Controls" method="update_handles"]
 [connection signal="gui_input" from="Display/ViewportContainer/Viewport/Checkerboard/Controls" to="Display/ViewportContainer/Viewport/Checkerboard/Controls" method="_on_gui_input"]

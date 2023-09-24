@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=17 format=3 uid="uid://der6fnkliqqto"]
+[gd_resource type="Theme" load_steps=18 format=3 uid="uid://der6fnkliqqto"]
 
 [ext_resource type="FontFile" uid="uid://c7ury252fql35" path="res://visual/CodeFont.ttf" id="1_ulxqy"]
 [ext_resource type="FontFile" uid="uid://bd8rlfqek8f8u" path="res://visual/Font.ttf" id="2_d11o4"]
@@ -67,6 +67,23 @@ border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
 border_color = Color(0.6, 0.8, 1, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+corner_detail = 16
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xs6y6"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.3325, 0.538333, 0.95, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.65, 0.854167, 1, 1)
 corner_radius_top_left = 5
 corner_radius_top_right = 5
 corner_radius_bottom_right = 5
@@ -180,6 +197,8 @@ Button/styles/focus = SubResource("StyleBoxEmpty_gu1eq")
 Button/styles/hover = SubResource("StyleBoxFlat_h5umu")
 Button/styles/normal = SubResource("StyleBoxFlat_yq2fk")
 Button/styles/pressed = SubResource("StyleBoxFlat_gnyjn")
+CheckBox/constants/h_separation = 6
+CheckBox/styles/hover_pressed = SubResource("StyleBoxFlat_xs6y6")
 CodeEdit/colors/selection_color = Color(0.4, 0.54902, 1, 0.4)
 CodeEdit/font_sizes/font_size = 12
 CodeEdit/fonts/font = ExtResource("1_ulxqy")

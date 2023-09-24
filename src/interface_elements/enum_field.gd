@@ -39,4 +39,3 @@ func _on_value_changed(new_value: String) -> void:
 	indicator.text = new_value
 	if attribute != null:
 		attribute.value = new_value
-		SVG.update()
