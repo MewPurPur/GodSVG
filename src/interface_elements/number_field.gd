@@ -1,4 +1,4 @@
-extends HBoxContainer
+extends AttributeEditor
 
 @onready var up: Button = %Up
 @onready var up_buildup_timer: Timer = %Up/Timer
@@ -12,9 +12,6 @@ var min_value := 0.0
 var max_value := 1024.0
 var step := 1.0
 var is_float := true
-
-var attribute: SVGAttribute
-var attribute_name: String
 
 signal value_changed(new_value: float)
 var value: float:

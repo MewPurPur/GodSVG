@@ -1,10 +1,7 @@
-extends VBoxContainer
+extends AttributeEditor
 
 const NumberField = preload("number_field.tscn")
 const FlagField = preload("flag_field.tscn")
-
-var attribute: SVGAttribute
-var attribute_name: String
 
 @onready var command_picker: Popup = $PathPopup
 @onready var line_edit: LineEdit = $MainLine/LineEdit
