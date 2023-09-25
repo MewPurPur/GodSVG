@@ -12,4 +12,6 @@ func _init() -> void:
 		"fill": SVGAttribute.new(SVGAttribute.Type.COLOR, "000"),
 		"stroke": SVGAttribute.new(SVGAttribute.Type.COLOR, "none"),
 		"stroke-width": SVGAttribute.new(SVGAttribute.Type.UFLOAT, 1.0),
+		"stroke-linejoin": SVGEnumAttribute.new(["miter", "round", "bevel"], 0),
 	}
+	super()

@@ -34,7 +34,6 @@ func _on_value_changed(new_value: String) -> void:
 	queue_redraw()
 	if attribute != null:
 		attribute.value = new_value
-		SVG.update()
 
 func _on_button_pressed() -> void:
 	color_picker.popup(Rect2(color_edit.global_position + Vector2(0, color_edit.size.y),

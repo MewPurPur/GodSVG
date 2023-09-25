@@ -6,12 +6,22 @@ signal moved_y(new_value: float)
 var pos: Vector2
 var hovered := false
 var dragged := false
-var tag: SVGTag
-var callable: Callable
-func _init(new_pos: Vector2, new_tag: SVGTag, new_callable: Callable) -> void:
-	pos = new_pos
-	tag = new_tag
-	callable = new_callable
+var x_attribute: SVGAttribute
+var y_attribute: SVGAttribute
+
+func _init(x_ref: SVGAttribute, y_ref: SVGAttribute) -> void:
+	x_attribute = x_ref
+	y_attribute = y_ref
+	sync()
+
 func set_pos(new_pos: Vector2) -> void:
-	pos = new_pos
-	callable.call(pos, tag)
+	if new_pos.x != pos.x:
+		pos.x = new_pos.x
+		x_attribute.value = new_pos.x
+	if new_pos.y != pos.y:
+		pos.y = new_pos.y
+		y_attribute.value = new_pos.y
+
+func sync() -> void:
+	pos = Vector2(x_attribute.value if x_attribute != null else 0.0,
+			y_attribute.value if y_attribute != null else 0.0)

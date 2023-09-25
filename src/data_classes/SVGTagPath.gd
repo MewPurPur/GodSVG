@@ -8,5 +8,6 @@ func _init() -> void:
 		"stroke": SVGAttribute.new(SVGAttribute.Type.COLOR, "none"),
 		"stroke-width": SVGAttribute.new(SVGAttribute.Type.UFLOAT, 1.0),
 		"stroke-linecap": SVGEnumAttribute.new(["butt", "round", "square"], 0),
-		"stroke-linejoin": SVGEnumAttribute.new(["butt", "round", "square"], 0),
+		"stroke-linejoin": SVGEnumAttribute.new(["miter", "round", "bevel"], 0),
 	}
+	super()

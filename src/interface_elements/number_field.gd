@@ -8,20 +8,6 @@ extends HBoxContainer
 @onready var down_repeat_timer: Timer = %Down/Timer2
 @onready var num_edit: LineEdit = $LineEdit
 
-# Related to control handles.
-var associated_handle: RefCounted
-
-func bind_to_handle_x() -> void:
-	associated_handle.moved_x.connect(set_value)
-
-func bind_to_handle_y() -> void:
-	associated_handle.moved_y.connect(set_value)
-
-func set_value(new_value: float) -> void:
-	value = new_value
-
-# Rest of the logic.
-
 var min_value := 0.0
 var max_value := 1024.0
 var step := 1.0
@@ -38,11 +24,15 @@ var value: float:
 		if value != old_value:
 			value_changed.emit(value)
 
+func set_value(new_value: float) -> void:
+	value = new_value
+
 
 func _ready() -> void:
 	value_changed.connect(_on_value_changed)
 	if attribute != null:
 		value = attribute.value
+		attribute.value_changed.connect(set_value)
 	num_edit.text = str(value)
 	spinner_set_disabled(down, value <= min_value)
 	spinner_set_disabled(up, value >= max_value)
@@ -57,7 +47,6 @@ func _on_value_changed(new_value: float) -> void:
 	spinner_set_disabled(up, new_value >= max_value)
 	if attribute != null:
 		attribute.value = new_value
-		SVG.update()
 
 
 func _on_up_button_down() -> void:
