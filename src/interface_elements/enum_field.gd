@@ -1,7 +1,4 @@
-extends VBoxContainer
-
-var attribute: SVGEnumAttribute
-var attribute_name: String
+extends AttributeEditor
 
 @onready var value_picker: Popup = $EnumPopup
 @onready var indicator: LineEdit = $MainLine/LineEdit

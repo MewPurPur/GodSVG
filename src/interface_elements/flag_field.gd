@@ -1,5 +1,7 @@
 extends Button
 
+# Flags don't show up in any supported attributes, so it's not an AttributeEditor.
+
 signal value_changed(new_value: int)
 var value: int:
 	set(new_value):
