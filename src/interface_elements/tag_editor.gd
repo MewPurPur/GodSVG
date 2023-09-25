@@ -28,7 +28,7 @@ func _ready() -> void:
 	label.text = tag.title
 	for attribute_key in tag.attributes:
 		var attribute_value: SVGAttribute = tag.attributes[attribute_key]
-		var input_field: Control
+		var input_field: AttributeEditor
 		match attribute_value.type:
 			SVGAttribute.Type.INT:
 				input_field = NumberField.instantiate()

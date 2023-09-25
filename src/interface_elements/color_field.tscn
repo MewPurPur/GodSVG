@@ -183,11 +183,6 @@ layout_mode = 2
 tooltip_text = "Node2D color"
 color_hex = "8da5f3"
 
-[node name="Node2DDark" parent="ColorPopup/PanelContainer/MarginContainer/MainContainer/Common/CommonSwatches" instance=ExtResource("3_38vpq")]
-layout_mode = 2
-tooltip_text = "Node2D dark color"
-color_hex = "4b70ea"
-
 [node name="Control" parent="ColorPopup/PanelContainer/MarginContainer/MainContainer/Common/CommonSwatches" instance=ExtResource("3_38vpq")]
 layout_mode = 2
 tooltip_text = "Control color"
