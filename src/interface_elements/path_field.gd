@@ -36,7 +36,6 @@ func _on_path_command_picked(new_command: String) -> void:
 	commands.append(translation_dict[new_command.to_upper()].new())
 	if new_command.to_upper() != new_command:
 		commands.back().toggle_relative()
-	var old_value := value
 	value = path_commands_to_value()
 	update_input_fields()
 	value_changed.emit(value)
@@ -171,7 +170,6 @@ func _on_value_changed(new_value: String) -> void:
 	line_edit.text = new_value
 	if attribute != null:
 		attribute.value = new_value
-		SVG.update()
 
 func _on_close_button_pressed(idx: int) -> void:
 	commands.remove_at(idx)

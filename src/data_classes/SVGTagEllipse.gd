@@ -11,3 +11,4 @@ func _init() -> void:
 		"stroke": SVGAttribute.new(SVGAttribute.Type.COLOR, "none"),
 		"stroke-width": SVGAttribute.new(SVGAttribute.Type.UFLOAT, 1.0),
 	}
+	super()

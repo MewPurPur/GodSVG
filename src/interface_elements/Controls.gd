@@ -1,39 +1,51 @@
 extends TextureRect
 
-signal dropped_handle
-
 var handles: Array[Handle]
+
+func _ready() -> void:
+	SVG.data.resized.connect(full_update)
+	SVG.data.attribute_changed.connect(sync_handles)
+	SVG.data.tag_added.connect(full_update)
+	SVG.data.tag_deleted.connect(full_update)
+	SVG.data.changed_unknown.connect(full_update)
+
+func full_update() -> void:
+	# Draw a SVG out of the shapes
+	var w := SVG.data.w
+	var h := SVG.data.h
+	var svg := '<svg width="{w}" height="{h}" viewBox="0 0 {w} {h}"'.format(
+			{"w": w, "h": h})
+	svg += ' xmlns="http://www.w3.org/2000/svg">'
+	for tag in SVG.data.tags:
+		if tag is SVGTagPath:
+			svg += '<path d="{d}" fill="none" stroke="gray" stroke-width=".1"/>'.format(
+					{"d": tag.attributes.d.value})
+	svg += "</svg>"
+	# Store the SVG string.
+	var img := Image.new()
+	img.load_svg_from_string(svg, 128.0)
+	# Update the display.
+	var image_texture := ImageTexture.create_from_image(img)
+	texture = image_texture
+	update_handles()
 
 func update_handles() -> void:
 	handles.clear()
-	for tag_idx in SVG.data.tags.size():
-		var tag := SVG.data.tags[tag_idx]
+	for tag in SVG.data.tags:
 		if tag is SVGTagCircle:
-			var handle := Handle.new(Vector2(tag.attributes.cx.value, tag.attributes.cy.value),
-					tag, pos_to_cx_and_cy)
+			var handle := Handle.new(tag.attributes.cx, tag.attributes.cy)
 			handles.append(handle)
-			var tag_editor: Control = SVG.interface.shapes.get_child(tag_idx)
-			var input_fields: Array[Node] = tag_editor.shape_container.get_children()
-			for input_field in input_fields:
-				if input_field.attribute_name == "cx":
-					input_field.associated_handle = handle
-					input_field.bind_to_handle_x()
-				if input_field.attribute_name == "cy":
-					input_field.associated_handle = handle
-					input_field.bind_to_handle_x()
 		if tag is SVGTagEllipse:
-			var handle := Handle.new(Vector2(tag.attributes.cx.value, tag.attributes.cy.value),
-					tag, pos_to_cx_and_cy)
+			var handle := Handle.new(tag.attributes.cx, tag.attributes.cy)
 			handles.append(handle)
-			var tag_editor: Control = SVG.interface.shapes.get_child(tag_idx)
-			var input_fields: Array[Node] = tag_editor.shape_container.get_children()
-			for input_field in input_fields:
-				if input_field.attribute_name == "cx":
-					input_field.associated_handle = handle
-					input_field.bind_to_handle_x()
-				if input_field.attribute_name == "cy":
-					input_field.associated_handle = handle
-					input_field.bind_to_handle_x()
+		if tag is SVGTagRect:
+			var handle := Handle.new(tag.attributes.x, tag.attributes.y)
+			handles.append(handle)
+
+func sync_handles():
+	for handle in handles:
+		handle.sync()
+		queue_redraw()
 
 func _draw() -> void:
 	for handle in handles:
@@ -85,7 +97,6 @@ func _on_gui_input(event: InputEvent) -> void:
 				if handle.dragged:
 					handle.dragged = false
 					queue_redraw()
-					dropped_handle.emit()
 
 func pos_to_cx_and_cy(pos: Vector2, tag: SVGTag) -> void:
 	tag.attributes.cx.value = pos.x
