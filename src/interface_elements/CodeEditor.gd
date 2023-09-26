@@ -17,4 +17,4 @@ func auto_update_text() -> void:
 
 
 func _on_copy_button_pressed() -> void:
-	DisplayServer.clipboard_set(SVG.code_editor.text)
+	DisplayServer.clipboard_set(code_edit.text)
