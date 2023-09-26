@@ -85,10 +85,12 @@ func update_input_fields() -> void:
 			field_large_arc_flag.value = command.large_arc_flag
 			field_sweep_flag.value = command.sweep_flag
 			field_rx.is_float = true
-			field_ry.is_float = true
-			field_rot.is_float = true
 			field_rx.min_value = 0.001
+			field_rx.allow_higher = true
+			field_ry.is_float = true
 			field_ry.min_value = 0.001
+			field_ry.allow_higher = true
+			field_rot.is_float = true
 			field_rot.min_value = -360
 			field_rot.max_value = 360
 			field_rx.value = command.rx
@@ -110,9 +112,11 @@ func update_input_fields() -> void:
 			var field_x1: Control = NumberField.instantiate()
 			var field_y1: Control = NumberField.instantiate()
 			field_x1.is_float = true
-			field_y1.is_float = true
 			field_x1.min_value = -1024
+			field_x1.remove_limits()
+			field_y1.is_float = true
 			field_y1.min_value = -1024
+			field_y1.remove_limits()
 			field_x1.value = command.x1
 			field_y1.value = command.y1
 			input_field.add_child(field_x1)
@@ -123,9 +127,11 @@ func update_input_fields() -> void:
 			var field_x2: Control = NumberField.instantiate()
 			var field_y2: Control = NumberField.instantiate()
 			field_x2.is_float = true
-			field_y2.is_float = true
 			field_x2.min_value = -1024
+			field_x2.remove_limits()
+			field_y2.is_float = true
 			field_y2.min_value = -1024
+			field_y2.remove_limits()
 			field_x2.value = command.x2
 			field_y2.value = command.y2
 			input_field.add_child(field_x2)
@@ -136,6 +142,7 @@ func update_input_fields() -> void:
 			var field_x: Control = NumberField.instantiate()
 			field_x.is_float = true
 			field_x.min_value = -1024
+			field_x.remove_limits()
 			field_x.value = command.x
 			input_field.add_child(field_x)
 			field_x.value_changed.connect(_update_command_value.bind(command_idx, &"x"))
@@ -143,6 +150,7 @@ func update_input_fields() -> void:
 			var field_y: Control = NumberField.instantiate()
 			field_y.is_float = true
 			field_y.min_value = -1024
+			field_y.remove_limits()
 			field_y.value = command.y
 			input_field.add_child(field_y)
 			field_y.value_changed.connect(_update_command_value.bind(command_idx, &"y"))

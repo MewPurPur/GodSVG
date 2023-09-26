@@ -7,6 +7,7 @@ const TagEditor = preload("tag_editor.tscn")
 func _ready() -> void:
 	SVG.data.resized.connect(update_viewbox)
 	SVG.data.tag_added.connect(full_rebuild)
+	SVG.data.tag_moved.connect(full_rebuild)
 	SVG.data.tag_deleted.connect(full_rebuild)
 	SVG.data.changed_unknown.connect(full_rebuild)
 
