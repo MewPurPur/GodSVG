@@ -1,4 +1,6 @@
-extends CodeEdit
+extends HBoxContainer
+
+@onready var code_edit: CodeEdit = $CodeEdit
 
 func _ready() -> void:
 	auto_update_text()
@@ -11,4 +13,8 @@ func _ready() -> void:
 
 func auto_update_text() -> void:
 	if not has_focus():
-		text = SVG.tags_to_string()
+		code_edit.text = SVG.tags_to_string()
+
+
+func _on_copy_button_pressed() -> void:
+	DisplayServer.clipboard_set(SVG.code_editor.text)

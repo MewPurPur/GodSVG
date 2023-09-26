@@ -54,10 +54,6 @@ func _on_tag_selected(index: int) -> void:
 			tag_editor.is_selected = false
 
 
-func _on_copy_button_pressed() -> void:
-	DisplayServer.clipboard_set(SVG.code_editor.text)
-
-
 func _on_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.is_pressed() and\
 	event.button_index == MOUSE_BUTTON_LEFT:

@@ -105,10 +105,11 @@ theme_override_constants/margin_bottom = 8
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="CodeContainer" type="HBoxContainer" parent="PanelContainer/MarginContainer/MainContainer"]
+[node name="CodeEditor" type="HBoxContainer" parent="PanelContainer/MarginContainer/MainContainer"]
 layout_mode = 2
+script = ExtResource("1_ry6k8")
 
-[node name="CodeEditor" type="CodeEdit" parent="PanelContainer/MarginContainer/MainContainer/CodeContainer"]
+[node name="CodeEdit" type="CodeEdit" parent="PanelContainer/MarginContainer/MainContainer/CodeEditor"]
 custom_minimum_size = Vector2(0, 96)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -126,12 +127,11 @@ auto_brace_completion_pairs = {
 "(": ")",
 "<": ">"
 }
-script = ExtResource("1_ry6k8")
 
-[node name="CodeButtons" type="VBoxContainer" parent="PanelContainer/MarginContainer/MainContainer/CodeContainer"]
+[node name="CodeButtons" type="VBoxContainer" parent="PanelContainer/MarginContainer/MainContainer/CodeEditor"]
 layout_mode = 2
 
-[node name="CopyButton" type="Button" parent="PanelContainer/MarginContainer/MainContainer/CodeContainer/CodeButtons"]
+[node name="CopyButton" type="Button" parent="PanelContainer/MarginContainer/MainContainer/CodeEditor/CodeButtons"]
 layout_mode = 2
 tooltip_text = "Copy all text"
 mouse_default_cursor_shape = 2
@@ -246,7 +246,7 @@ grow_vertical = 2
 expand_mode = 1
 script = ExtResource("5_pltvx")
 
-[connection signal="pressed" from="PanelContainer/MarginContainer/MainContainer/CodeContainer/CodeButtons/CopyButton" to="PanelContainer/MarginContainer/MainContainer/Interface" method="_on_copy_button_pressed"]
+[connection signal="pressed" from="PanelContainer/MarginContainer/MainContainer/CodeEditor/CodeButtons/CopyButton" to="PanelContainer/MarginContainer/MainContainer/CodeEditor" method="_on_copy_button_pressed"]
 [connection signal="pressed" from="Display/PanelContainer/MarginContainer/HBoxContainer/Settings" to="Display" method="_on_settings_pressed"]
 [connection signal="pressed" from="Display/PanelContainer/MarginContainer/HBoxContainer/HBoxContainer/ZoomOut" to="Display" method="zoom_out"]
 [connection signal="pressed" from="Display/PanelContainer/MarginContainer/HBoxContainer/HBoxContainer/ZoomReset" to="Display" method="zoom_reset"]
