@@ -32,13 +32,16 @@ func _ready() -> void:
 		match attribute_value.type:
 			SVGAttribute.Type.INT:
 				input_field = NumberField.instantiate()
+				input_field.remove_limits()
 			SVGAttribute.Type.FLOAT:
 				input_field = NumberField.instantiate()
 				input_field.is_float = true
 				input_field.min_value = -1024
+				input_field.remove_limits()
 			SVGAttribute.Type.UFLOAT:
 				input_field = NumberField.instantiate()
 				input_field.is_float = true
+				input_field.allow_higher
 			SVGAttribute.Type.NFLOAT:
 				input_field = NumberField.instantiate()
 				input_field.is_float = true

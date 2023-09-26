@@ -7,13 +7,16 @@ extends VBoxContainer
 const minimum_visible_proportion := 0.2
 const settings_menu := preload("res://src/interface_elements/settings_menu.tscn")
 
-var zoom_level := 1.0:
+var zoom_level:
 	set(value):
 		zoom_level = clampf(value, 0.125, 8.0)
 		zoom_reset_button.text = String.num(zoom_level * 100) + "%"
 		viewport.size_2d_override = viewport.size / zoom_level
 		clamp_view()
 
+
+func _ready() -> void:
+	zoom_level = 2
 
 func zoom_in() -> void:
 	zoom_level *= 2
