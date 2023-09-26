@@ -292,3 +292,9 @@ class ShorthandCubicBezierCommand extends PathCommand:
 class CloseCommand extends PathCommand:
 	func _init() -> void:
 		command_char = "Z"
+
+
+func parse_path_definition(path_string: String) -> Array[PathCommand]:
+	# TODO
+	var arr: Array[PathCommand] = []
+	return arr
