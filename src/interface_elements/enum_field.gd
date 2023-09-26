@@ -15,7 +15,7 @@ var value: String:
 func _ready() -> void:
 	value_changed.connect(_on_value_changed)
 	if attribute != null:
-		value = attribute.possible_values[0]
+		value = attribute.value
 		for enum_constant in attribute.possible_values:
 			var butt := Button.new()
 			butt.text = str(enum_constant)

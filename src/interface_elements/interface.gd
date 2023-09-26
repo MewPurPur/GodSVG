@@ -5,15 +5,18 @@ const TagEditor = preload("tag_editor.tscn")
 @onready var shapes: VBoxContainer = $VBoxContainer/ScrollContainer/Shapes
 
 func _ready() -> void:
-	SVG.data.resized.connect(full_rebuild)
+	SVG.data.resized.connect(update_viewbox)
 	SVG.data.tag_added.connect(full_rebuild)
 	SVG.data.tag_deleted.connect(full_rebuild)
 	SVG.data.changed_unknown.connect(full_rebuild)
 
 
-func full_rebuild() -> void:
+func update_viewbox() -> void:
 	$MainConfiguration/ViewBoxEdit/WidthEdit.value = SVG.data.w
 	$MainConfiguration/ViewBoxEdit/HeightEdit.value = SVG.data.h
+
+func full_rebuild() -> void:
+	update_viewbox()
 	for node in shapes.get_children():
 		node.queue_free()
 	
@@ -42,7 +45,6 @@ func add_path() -> void:
 func _change_view_box(w: int, h: int) -> void:
 	SVG.data.w = w
 	SVG.data.h = h
-	%Checkerboard.size = Vector2(w, h) * 15
 
 
 func _on_tag_selected(index: int) -> void:
