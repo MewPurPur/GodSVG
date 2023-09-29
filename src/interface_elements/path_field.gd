@@ -40,7 +40,7 @@ func _on_path_command_picked(new_command: String) -> void:
 func path_commands_to_value() -> String:
 	var generated_value := ""
 	for command in commands:
-		generated_value += command.command_char
+		generated_value += command.command_char + " "
 		if command is EllipticalArcCommand:
 			generated_value += String.num(command.rx, 4) + " " +\
 					String.num(command.ry, 4) + " " + String.num(command.rot, 2) + " " +\
@@ -222,14 +222,16 @@ class PathCommand extends RefCounted:
 		if relative:
 			relative = false
 			command_char = command_char.to_upper()
-			if &"x" in self and &"y" in self:
+			if &"x" in self:
 				set(&"x", start.x + get(&"x"))
+			if &"y" in self:
 				set(&"y", start.y + get(&"y"))
 		else:
 			relative = true
 			command_char = command_char.to_lower()
-			if &"x" in self and &"y" in self:
+			if &"x" in self:
 				set(&"x", get(&"x") - start.x)
+			if &"y" in self:
 				set(&"y", get(&"y") - start.y)
 
 class MoveCommand extends PathCommand:

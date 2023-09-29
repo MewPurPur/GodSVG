@@ -7,7 +7,24 @@ var data := SVGData.new()
 
 var selected_tag_idx: int
 
-func tags_to_string() -> String:
+func _ready() -> void:
+	sync_string()
+	SVG.data.resized.connect(sync_string)
+	SVG.data.attribute_changed.connect(sync_string)
+	SVG.data.tag_added.connect(sync_string)
+	SVG.data.tag_deleted.connect(sync_string)
+	SVG.data.tag_moved.connect(sync_string)
+	SVG.data.changed_unknown.connect(sync_string)
+
+func sync_string() -> void:
+	tags_to_string()
+
+func sync_data() -> void:
+	string_to_tags()
+	data.changed_unknown.emit()
+
+
+func tags_to_string() -> void:
 	var w := data.w
 	var h := data.h
 	# Opening
@@ -27,19 +44,38 @@ func tags_to_string() -> String:
 					string += ' %s="%d"' % [attribute_key, attribute.value]
 				SVGAttribute.Type.FLOAT, SVGAttribute.Type.UFLOAT, SVGAttribute.Type.NFLOAT:
 					string += ' %s="' % attribute_key + String.num(attribute.value, 4) + '"'
-				SVGAttribute.Type.COLOR:
-					if attribute.value == "none":
-						string += ' %s="%s"' % [attribute_key, attribute.value]
-					else:
-						string += ' %s="#%s"' % [attribute_key, attribute.value]
-				SVGAttribute.Type.PATHDATA:
-					string += ' %s="%s"' % [attribute_key, attribute.value]
-				SVGAttribute.Type.ENUM:
+				SVGAttribute.Type.COLOR, SVGAttribute.Type.PATHDATA, SVGAttribute.Type.ENUM:
 					string += ' %s="%s"' % [attribute_key, attribute.value]
 		string += '/>'
 	# Closing
 	string += '</svg>'
-	return string
 
 func string_to_tags() -> void:
-	pass  # TODO
+	var new_tags: Array[SVGTag] = []
+	var parser := XMLParser.new()
+	parser.open_buffer(string.to_ascii_buffer())
+	while parser.read() != ERR_FILE_EOF:
+		if parser.get_node_type() == XMLParser.NODE_ELEMENT:
+			var node_name := parser.get_node_name()
+			var attribute_dict := {}
+			for i in range(parser.get_attribute_count()):
+				attribute_dict[parser.get_attribute_name(i)] = parser.get_attribute_value(i)
+			
+			if node_name == "svg":
+				if attribute_dict.has("width"):
+					data.w = attribute_dict["width"]
+				if attribute_dict.has("height"):
+					data.h = attribute_dict["height"]
+			else:
+				var tag: SVGTag
+				match node_name:
+					"circle": tag = SVGTagCircle.new()
+					"ellipse": tag = SVGTagEllipse.new()
+					"rect": tag = SVGTagRect.new()
+					"path": tag = SVGTagPath.new()
+					_: tag = SVGTag.new()
+				for element in attribute_dict:
+					if tag.attributes.has(element):
+						tag.attributes[element].value = attribute_dict[element]
+				new_tags.append(tag)
+	data.tags = new_tags

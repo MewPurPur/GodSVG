@@ -8,9 +8,9 @@ signal value_changed(new_value: String)
 var value: String:
 	set(new_value):
 		var old_value := value
-		value = validate(new_value, old_value)
+		value = validate(new_value)
 		if value != old_value:
-			value_changed.emit(new_value)
+			value_changed.emit(value if value == "none" else "#" + value)
 
 func _ready() -> void:
 	value_changed.connect(_on_value_changed)
@@ -19,15 +19,13 @@ func _ready() -> void:
 	color_edit.text = value
 	color_edit.tooltip_text = attribute_name
 
-func validate(new_value: String, old_value: String) -> String:
-	if new_value == "none" or (new_value.is_valid_html_color() and\
-	not new_value.begins_with("#")):
-		return new_value
-	else:
-		return old_value
+func validate(new_value: String) -> String:
+	if new_value == "none" or new_value.is_valid_html_color():
+		return new_value.trim_prefix("#")
+	return "000"
 
 func _on_value_changed(new_value: String) -> void:
-	color_edit.text = new_value
+	color_edit.text = new_value.trim_prefix("#")
 	queue_redraw()
 	if attribute != null:
 		attribute.value = new_value
@@ -63,12 +61,6 @@ func _input(event: InputEvent) -> void:
 	if (color_edit.has_focus() and event is InputEventMouseButton and\
 	not color_edit.get_global_rect().has_point(event.position)):
 		color_edit.release_focus()
-
-
-func _on_text_changed(new_text: String) -> void:
-	# TODO
-	if new_text == "#":
-		color_edit.delete_char_at_caret()
 
 func _on_color_picked(new_color: String) -> void:
 	value = new_color

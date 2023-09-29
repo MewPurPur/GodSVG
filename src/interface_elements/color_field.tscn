@@ -270,7 +270,6 @@ color_hex = "ff4596"
 
 [connection signal="focus_entered" from="LineEdit" to="." method="_on_focus_entered"]
 [connection signal="focus_exited" from="LineEdit" to="." method="_on_focus_exited"]
-[connection signal="text_changed" from="LineEdit" to="." method="_on_text_changed"]
 [connection signal="text_submitted" from="LineEdit" to="." method="_on_text_submitted"]
 [connection signal="pressed" from="Button" to="." method="_on_button_pressed"]
 [connection signal="color_picked" from="ColorPopup" to="." method="_on_color_picked"]
