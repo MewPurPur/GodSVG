@@ -113,7 +113,6 @@ script = ExtResource("1_ry6k8")
 custom_minimum_size = Vector2(0, 96)
 layout_mode = 2
 size_flags_horizontal = 3
-editable = false
 wrap_mode = 1
 highlight_all_occurrences = true
 syntax_highlighter = SubResource("CodeHighlighter_jg7xq")
@@ -246,6 +245,7 @@ grow_vertical = 2
 expand_mode = 1
 script = ExtResource("5_pltvx")
 
+[connection signal="text_changed" from="PanelContainer/MarginContainer/MainContainer/CodeEditor/CodeEdit" to="PanelContainer/MarginContainer/MainContainer/CodeEditor" method="_on_code_edit_text_changed"]
 [connection signal="pressed" from="PanelContainer/MarginContainer/MainContainer/CodeEditor/CodeButtons/CopyButton" to="PanelContainer/MarginContainer/MainContainer/CodeEditor" method="_on_copy_button_pressed"]
 [connection signal="pressed" from="Display/PanelContainer/MarginContainer/HBoxContainer/Settings" to="Display" method="_on_settings_pressed"]
 [connection signal="pressed" from="Display/PanelContainer/MarginContainer/HBoxContainer/HBoxContainer/ZoomOut" to="Display" method="zoom_out"]

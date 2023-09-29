@@ -21,7 +21,7 @@ func _process(_delta: float) -> void:
 func svg_update() -> void:
 	# Store the SVG string.
 	var img := Image.new()
-	img.load_svg_from_string(SVG.tags_to_string(), 128.0)
+	img.load_svg_from_string(SVG.string, 128.0)
 	# Update the display.
 	var image_texture := ImageTexture.create_from_image(img)
 	texture = image_texture
