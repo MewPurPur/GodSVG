@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://bndmdmjlwqxfh"]
+
+[node name="SVGImport" type="FileDialog"]
+title = "Open a File"
+position = Vector2i(160, 180)
+size = Vector2i(700, 320)
+visible = true
+ok_button_text = "Open"
+file_mode = 0
+access = 2
+filters = PackedStringArray("*.svg ; Scalable vector graphics")
