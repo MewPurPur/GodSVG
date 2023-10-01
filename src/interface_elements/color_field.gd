@@ -4,6 +4,8 @@ extends AttributeEditor
 @onready var color_edit: LineEdit = $LineEdit
 @onready var color_picker: Popup = $ColorPopup
 
+@export var checkerboard: Texture2D
+
 signal value_changed(new_value: String)
 var value: String:
 	set(new_value):
@@ -37,11 +39,13 @@ func _on_button_pressed() -> void:
 func _draw() -> void:
 	var button_size := color_button.get_size()
 	var line_edit_size := color_edit.get_size()
-	var col := Color.from_string(value, Color(0, 0, 0, 0))
-	draw_rect(Rect2(Vector2(line_edit_size.x, 1), button_size - Vector2(5, 2)), col)
-	draw_rect(Rect2(Vector2(line_edit_size.x + button_size.x - 5, 5), Vector2(3, 12)), col)
-	draw_circle(Vector2(line_edit_size.x + button_size.x - 8, 7), 6, col)
-	draw_circle(Vector2(line_edit_size.x + button_size.x - 8, 15), 6, col)
+	draw_set_transform(Vector2(line_edit_size.x, 1))
+	var stylebox := StyleBoxFlat.new()
+	stylebox.corner_radius_top_right = 5
+	stylebox.corner_radius_bottom_right = 5
+	stylebox.bg_color = Color.from_string(value, Color(0, 0, 0, 0))
+	draw_texture(checkerboard, Vector2.ZERO)
+	draw_style_box(stylebox, Rect2(Vector2.ZERO, button_size - Vector2(2, 2)))
 
 
 # Hacks to make LineEdit bearable.
@@ -64,3 +68,9 @@ func _input(event: InputEvent) -> void:
 
 func _on_color_picked(new_color: String) -> void:
 	value = new_color
+
+
+func _on_button_resized() -> void:
+	# Not sure why this is needed, but the button doesn't have a correct size at first
+	# which screws with the drawing logic.
+	queue_redraw()

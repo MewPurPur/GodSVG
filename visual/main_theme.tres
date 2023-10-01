@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=18 format=3 uid="uid://der6fnkliqqto"]
+[gd_resource type="Theme" load_steps=19 format=3 uid="uid://der6fnkliqqto"]
 
 [ext_resource type="FontFile" uid="uid://c7ury252fql35" path="res://visual/CodeFont.ttf" id="1_ulxqy"]
 [ext_resource type="FontFile" uid="uid://bd8rlfqek8f8u" path="res://visual/Font.ttf" id="2_d11o4"]
@@ -150,6 +150,18 @@ corner_radius_bottom_right = 6
 corner_radius_bottom_left = 6
 corner_detail = 16
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vreq5"]
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.32, 0.8, 0.8, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ghiib"]
 content_margin_left = 8.0
 content_margin_right = 8.0
@@ -214,6 +226,7 @@ LineEdit/styles/focus = SubResource("StyleBoxEmpty_ri0uc")
 LineEdit/styles/normal = SubResource("StyleBoxFlat_730xo")
 PanelContainer/styles/panel = SubResource("StyleBoxFlat_c2si1")
 RichTextLabel/colors/selection_color = Color(0.4, 0.55, 1, 0.4)
+TextEdit/styles/focus = SubResource("StyleBoxFlat_vreq5")
 TooltipLabel/font_sizes/font_size = 14
 TooltipLabel/fonts/font = ExtResource("1_ulxqy")
 TooltipPanel/styles/panel = SubResource("StyleBoxFlat_ghiib")
