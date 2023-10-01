@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://ce6j54x27pom"]
+[gd_scene load_steps=21 format=3 uid="uid://ce6j54x27pom"]
 
 [ext_resource type="PackedScene" uid="uid://ccynisiuyn5qn" path="res://src/interface_elements/interface.tscn" id="1_afxvd"]
 [ext_resource type="Texture2D" uid="uid://ccvjkdd0s7rb4" path="res://visual/icons/Copy.svg" id="1_fm0ux"]
@@ -7,6 +7,7 @@
 [ext_resource type="Script" path="res://src/interface_elements/Display.gd" id="2_ylpv1"]
 [ext_resource type="Texture2D" uid="uid://c68og6bsqt0lb" path="res://visual/Checkerboard.svg" id="3_d58qh"]
 [ext_resource type="Texture2D" uid="uid://ckkkgof1hcbld" path="res://visual/icons/Gear.svg" id="4_3rshc"]
+[ext_resource type="Texture2D" uid="uid://6ymbl3jqersp" path="res://visual/icons/Import.svg" id="4_ehrkr"]
 [ext_resource type="Script" path="res://src/interface_elements/Controls.gd" id="5_pltvx"]
 [ext_resource type="Script" path="res://src/interface_elements/Viewport.gd" id="6_7hypx"]
 [ext_resource type="Script" path="res://src/interface_elements/DisplayTexture.gd" id="7_cxx0h"]
@@ -160,6 +161,11 @@ tooltip_text = "Copy all text"
 mouse_default_cursor_shape = 2
 icon = ExtResource("1_fm0ux")
 
+[node name="ImportButton" type="Button" parent="PanelContainer/MarginContainer/MainContainer/CodeEditor/CodeButtons"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+icon = ExtResource("4_ehrkr")
+
 [node name="Interface" parent="PanelContainer/MarginContainer/MainContainer" instance=ExtResource("1_afxvd")]
 layout_mode = 2
 
@@ -271,6 +277,7 @@ script = ExtResource("5_pltvx")
 
 [connection signal="text_changed" from="PanelContainer/MarginContainer/MainContainer/CodeEditor/CodeEdit" to="PanelContainer/MarginContainer/MainContainer/CodeEditor" method="_on_code_edit_text_changed"]
 [connection signal="pressed" from="PanelContainer/MarginContainer/MainContainer/CodeEditor/CodeButtons/CopyButton" to="PanelContainer/MarginContainer/MainContainer/CodeEditor" method="_on_copy_button_pressed"]
+[connection signal="pressed" from="PanelContainer/MarginContainer/MainContainer/CodeEditor/CodeButtons/ImportButton" to="PanelContainer/MarginContainer/MainContainer/CodeEditor" method="_on_import_button_pressed"]
 [connection signal="pressed" from="Display/PanelContainer/MarginContainer/HBoxContainer/Settings" to="Display" method="_on_settings_pressed"]
 [connection signal="pressed" from="Display/PanelContainer/MarginContainer/HBoxContainer/HBoxContainer/ZoomOut" to="Display" method="zoom_out"]
 [connection signal="pressed" from="Display/PanelContainer/MarginContainer/HBoxContainer/HBoxContainer/ZoomReset" to="Display" method="zoom_reset"]

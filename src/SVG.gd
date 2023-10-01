@@ -80,7 +80,10 @@ func string_to_tags() -> void:
 					_: tag = SVGTag.new()
 				for element in attribute_dict:
 					if tag.attributes.has(element):
-						tag.attributes[element].value = attribute_dict[element]
+						if typeof(tag.attributes[element].value) == Variant.Type.TYPE_STRING:
+							tag.attributes[element].value = attribute_dict[element]
+						elif typeof(tag.attributes[element].value) == Variant.Type.TYPE_FLOAT:
+							tag.attributes[element].value = attribute_dict[element].to_float()
 				new_tags.append(tag)
 	data.tags = new_tags
 
