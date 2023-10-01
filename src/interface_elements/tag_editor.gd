@@ -41,7 +41,7 @@ func _ready() -> void:
 			SVGAttribute.Type.UFLOAT:
 				input_field = NumberField.instantiate()
 				input_field.is_float = true
-				input_field.allow_higher
+				input_field.allow_higher = true
 			SVGAttribute.Type.NFLOAT:
 				input_field = NumberField.instantiate()
 				input_field.is_float = true

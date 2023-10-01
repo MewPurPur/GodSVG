@@ -7,6 +7,9 @@ var data := SVGData.new()
 
 var selected_tag_idx: int
 
+signal parsing_finished(err_text: String)
+
+
 func _ready() -> void:
 	sync_string()
 	SVG.data.resized.connect(sync_string)
@@ -20,8 +23,11 @@ func sync_string() -> void:
 	tags_to_string()
 
 func sync_data() -> void:
-	string_to_tags()
-	data.changed_unknown.emit()
+	var error_text := get_svg_error()
+	parsing_finished.emit(error_text)
+	if error_text.is_empty():
+		string_to_tags()
+		data.changed_unknown.emit()
 
 
 func tags_to_string() -> void:
@@ -54,7 +60,7 @@ func string_to_tags() -> void:
 	var new_tags: Array[SVGTag] = []
 	var parser := XMLParser.new()
 	parser.open_buffer(string.to_ascii_buffer())
-	while parser.read() != ERR_FILE_EOF:
+	while parser.read() == OK:
 		if parser.get_node_type() == XMLParser.NODE_ELEMENT:
 			var node_name := parser.get_node_name()
 			var attribute_dict := {}
@@ -62,10 +68,8 @@ func string_to_tags() -> void:
 				attribute_dict[parser.get_attribute_name(i)] = parser.get_attribute_value(i)
 			
 			if node_name == "svg":
-				if attribute_dict.has("width"):
-					data.w = attribute_dict["width"]
-				if attribute_dict.has("height"):
-					data.h = attribute_dict["height"]
+				data.w = attribute_dict["width"] if attribute_dict.has("width") else 0
+				data.h = attribute_dict["height"] if attribute_dict.has("height") else 0
 			else:
 				var tag: SVGTag
 				match node_name:
@@ -79,3 +83,37 @@ func string_to_tags() -> void:
 						tag.attributes[element].value = attribute_dict[element]
 				new_tags.append(tag)
 	data.tags = new_tags
+
+
+# TODO Can definitely be improved.
+func get_svg_error() -> String:
+	# Easy cases.
+	if string.is_empty():
+		return "SVG is empty."
+	
+	var parser := XMLParser.new()
+	parser.open_buffer(string.to_ascii_buffer())
+	if string.begins_with("<?"):
+		parser.skip_section()
+	
+	var nodes: Array[String] = []  # Serves as a sort of stack.
+	while parser.read() != ERR_FILE_EOF:
+		if parser.get_node_type() == XMLParser.NODE_ELEMENT:
+			var node_name := parser.get_node_name()
+			# First node must be "svg", last node must be closing "svg".
+			if nodes.is_empty():
+				if node_name != "svg":
+					return "Not a SVG."
+			
+			var offset := parser.get_node_offset()
+			# Don't add tags that were closed right away to the stack.
+			var closure_pos := string.find("/>", offset)
+			if closure_pos == -1 or not closure_pos < string.find(">", offset):
+				nodes.append(node_name)
+			
+		elif parser.get_node_type() == XMLParser.NODE_ELEMENT_END:
+			var node_name := parser.get_node_name()
+			if nodes.is_empty() or node_name != nodes.back():
+				return "Improper nesting."
+			nodes.pop_back()
+	return "" if nodes.is_empty() else "Not all tags are closed."

@@ -1,8 +1,9 @@
-[gd_scene load_steps=19 format=3 uid="uid://ce6j54x27pom"]
+[gd_scene load_steps=20 format=3 uid="uid://ce6j54x27pom"]
 
 [ext_resource type="PackedScene" uid="uid://ccynisiuyn5qn" path="res://src/interface_elements/interface.tscn" id="1_afxvd"]
 [ext_resource type="Texture2D" uid="uid://ccvjkdd0s7rb4" path="res://visual/icons/Copy.svg" id="1_fm0ux"]
 [ext_resource type="Script" path="res://src/interface_elements/CodeEditor.gd" id="1_ry6k8"]
+[ext_resource type="FontFile" uid="uid://c7ury252fql35" path="res://visual/CodeFont.ttf" id="2_w635r"]
 [ext_resource type="Script" path="res://src/interface_elements/Display.gd" id="2_ylpv1"]
 [ext_resource type="Texture2D" uid="uid://c68og6bsqt0lb" path="res://visual/Checkerboard.svg" id="3_d58qh"]
 [ext_resource type="Texture2D" uid="uid://ckkkgof1hcbld" path="res://visual/icons/Gear.svg" id="4_3rshc"]
@@ -126,6 +127,29 @@ auto_brace_completion_pairs = {
 "(": ")",
 "<": ">"
 }
+
+[node name="ErrorContainer" type="PanelContainer" parent="PanelContainer/MarginContainer/MainContainer/CodeEditor/CodeEdit"]
+visible = false
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -4.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="Padding" type="MarginContainer" parent="PanelContainer/MarginContainer/MainContainer/CodeEditor/CodeEdit/ErrorContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_right = 8
+
+[node name="ErrorLabel" type="RichTextLabel" parent="PanelContainer/MarginContainer/MainContainer/CodeEditor/CodeEdit/ErrorContainer/Padding"]
+layout_mode = 2
+theme_override_colors/default_color = Color(1, 0.4, 0.4, 1)
+theme_override_fonts/normal_font = ExtResource("2_w635r")
+theme_override_font_sizes/normal_font_size = 14
+fit_content = true
 
 [node name="CodeButtons" type="VBoxContainer" parent="PanelContainer/MarginContainer/MainContainer/CodeEditor"]
 layout_mode = 2
