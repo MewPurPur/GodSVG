@@ -17,8 +17,11 @@ var translation_dict := {
 }
 
 signal value_changed(new_value: String)
-var value: String
-
+var value := "":
+	set(new_value):
+		if value != new_value:
+			value = new_value
+			value_changed.emit(new_value)
 
 func _ready() -> void:
 	value_changed.connect(_on_value_changed)

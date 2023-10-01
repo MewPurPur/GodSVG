@@ -1,6 +1,7 @@
-[gd_scene load_steps=8 format=3 uid="uid://carf2o1y7wvmc"]
+[gd_scene load_steps=9 format=3 uid="uid://carf2o1y7wvmc"]
 
 [ext_resource type="Script" path="res://src/interface_elements/color_field.gd" id="1_330tl"]
+[ext_resource type="Texture2D" uid="uid://y0l74x73w0co" path="res://visual/CheckerboardMini.svg" id="2_gsj5a"]
 [ext_resource type="Script" path="res://src/interface_elements/color_popup.gd" id="2_hgyyv"]
 [ext_resource type="PackedScene" uid="uid://cpvtf3kaa2ltr" path="res://src/interface_elements/color_swatch.tscn" id="3_38vpq"]
 
@@ -70,6 +71,7 @@ offset_right = 50.0
 offset_bottom = 21.0
 theme_override_constants/separation = 0
 script = ExtResource("1_330tl")
+checkerboard = ExtResource("2_gsj5a")
 
 [node name="LineEdit" type="LineEdit" parent="."]
 custom_minimum_size = Vector2(54, 0)
@@ -272,4 +274,5 @@ color_hex = "ff4596"
 [connection signal="focus_exited" from="LineEdit" to="." method="_on_focus_exited"]
 [connection signal="text_submitted" from="LineEdit" to="." method="_on_text_submitted"]
 [connection signal="pressed" from="Button" to="." method="_on_button_pressed"]
+[connection signal="resized" from="Button" to="." method="_on_button_resized"]
 [connection signal="color_picked" from="ColorPopup" to="." method="_on_color_picked"]
