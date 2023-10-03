@@ -213,7 +213,7 @@ layout_mode = 2
 tooltip_text = "Zoom Out"
 mouse_default_cursor_shape = 2
 shortcut = SubResource("Shortcut_teo1i")
-text = " - "
+text = " – "
 
 [node name="ZoomReset" type="Button" parent="Display/PanelContainer/MarginContainer/HBoxContainer/HBoxContainer"]
 unique_name_in_owner = true

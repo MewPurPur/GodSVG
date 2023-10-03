@@ -478,6 +478,9 @@ func path_commands_from_parsed_data(data: Array[Array]) -> Array[PathCommand]:
 	return cmds
 
 
+func _input(event: InputEvent) -> void:
+	Utils.defocus_control_on_outside_click(line_edit, event)
+
 
 # DEBUG
 #func _enter_tree() -> void:

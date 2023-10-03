@@ -33,8 +33,17 @@ func _on_value_changed(new_value: String) -> void:
 		attribute.value = new_value
 
 func _on_button_pressed() -> void:
-	color_picker.popup(Rect2(color_edit.global_position + Vector2(0, color_edit.size.y),
-			color_picker.size))
+	var screen_h := get_viewport_rect().size.y * get_viewport_transform().get_scale().y
+	var color_edit_pos := color_edit.global_position
+	var color_edit_h := color_edit.size.y
+	var color_picker_h := color_picker.size.y
+	if color_edit_pos.y + color_edit_h + color_picker_h < screen_h and\
+	not color_edit_pos.y + color_edit_h / 2 < screen_h:
+		color_picker.popup(Rect2(color_edit_pos +\
+				Vector2(0, color_edit_h), color_picker.size))
+	else:
+		color_picker.popup(Rect2(color_edit_pos -\
+				Vector2(0, color_picker_h), color_picker.size))
 
 func _draw() -> void:
 	var button_size := color_button.get_size()
@@ -62,9 +71,7 @@ func _on_text_submitted(new_text: String) -> void:
 	color_edit.release_focus()
 
 func _input(event: InputEvent) -> void:
-	if (color_edit.has_focus() and event is InputEventMouseButton and\
-	not color_edit.get_global_rect().has_point(event.position)):
-		color_edit.release_focus()
+	Utils.defocus_control_on_outside_click(color_edit, event)
 
 func _on_color_picked(new_color: String) -> void:
 	value = new_color

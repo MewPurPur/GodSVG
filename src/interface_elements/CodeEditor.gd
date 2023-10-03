@@ -44,3 +44,8 @@ func apply_svg_from_path(path: String) -> void:
 func _on_code_edit_text_changed() -> void:
 	SVG.string = code_edit.text
 	SVG.sync_data()
+
+func _input(event: InputEvent) -> void:
+	if (code_edit.has_focus() and event is InputEventMouseButton and\
+	not code_edit.get_global_rect().has_point(event.position)):
+		code_edit.release_focus()

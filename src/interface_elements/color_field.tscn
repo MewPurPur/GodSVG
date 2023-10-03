@@ -91,6 +91,7 @@ theme_override_styles/pressed = SubResource("StyleBoxFlat_5n6p7")
 theme_override_styles/disabled = SubResource("StyleBoxFlat_16ktf")
 
 [node name="ColorPopup" type="Popup" parent="."]
+transparent_bg = true
 size = Vector2i(150, 142)
 script = ExtResource("2_hgyyv")
 
