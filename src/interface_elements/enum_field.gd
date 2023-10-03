@@ -36,3 +36,7 @@ func _on_value_changed(new_value: String) -> void:
 	indicator.text = new_value
 	if attribute != null:
 		attribute.value = new_value
+
+
+func _input(event: InputEvent) -> void:
+	Utils.defocus_control_on_outside_click(indicator, event)

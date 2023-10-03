@@ -106,9 +106,7 @@ func _on_text_submitted(new_text: String) -> void:
 	num_edit.release_focus()
 
 func _input(event: InputEvent) -> void:
-	if (num_edit.has_focus() and event is InputEventMouseButton and\
-	not num_edit.get_global_rect().has_point(event.position)):
-		num_edit.release_focus()
+	Utils.defocus_control_on_outside_click(num_edit, event)
 
 func spinner_set_disabled(spinner: Button, disabling: bool) -> void:
 	spinner.disabled = disabling

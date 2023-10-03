@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=20 format=3 uid="uid://der6fnkliqqto"]
+[gd_resource type="Theme" load_steps=21 format=3 uid="uid://der6fnkliqqto"]
 
 [ext_resource type="FontFile" uid="uid://c7ury252fql35" path="res://visual/CodeFont.ttf" id="1_ulxqy"]
 [ext_resource type="FontFile" uid="uid://bd8rlfqek8f8u" path="res://visual/Font.ttf" id="2_d11o4"]
@@ -25,12 +25,12 @@ content_margin_left = 4.0
 content_margin_top = 4.0
 content_margin_right = 4.0
 content_margin_bottom = 4.0
-bg_color = Color(0.0588235, 0.0588235, 0.0784314, 1)
+bg_color = Color(0.0352941, 0.0352941, 0.0509804, 1)
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
-border_color = Color(0.121569, 0.121569, 0.14902, 1)
+border_color = Color(0.0901961, 0.0901961, 0.101961, 1)
 corner_radius_top_left = 5
 corner_radius_top_right = 5
 corner_radius_bottom_right = 5
@@ -108,21 +108,17 @@ corner_radius_bottom_left = 5
 corner_detail = 16
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_uk6li"]
-bg_color = Color(0, 0, 0, 0)
+draw_center = false
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
-border_color = Color(0.6, 0.8, 1, 1)
-corner_radius_top_left = 1
-corner_radius_top_right = 1
-corner_radius_bottom_right = 1
-corner_radius_bottom_left = 1
-corner_detail = 1
-expand_margin_left = 2.0
-expand_margin_top = 2.0
-expand_margin_right = 2.0
-expand_margin_bottom = 2.0
+border_color = Color(0.3, 0.45, 0.6, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+corner_detail = 16
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ri0uc"]
 
@@ -134,6 +130,18 @@ border_width_top = 2
 border_width_right = 1
 border_width_bottom = 2
 border_color = Color(0.1368, 0.1368, 0.18, 1)
+corner_radius_top_left = 6
+corner_radius_bottom_left = 6
+corner_detail = 16
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_efvcd"]
+content_margin_left = 5.0
+bg_color = Color(0.0352941, 0.0352941, 0.0509804, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 1
+border_width_bottom = 2
+border_color = Color(0.0901961, 0.0901961, 0.101961, 1)
 corner_radius_top_left = 6
 corner_radius_bottom_left = 6
 corner_detail = 16
@@ -153,17 +161,19 @@ corner_radius_bottom_right = 6
 corner_radius_bottom_left = 6
 corner_detail = 16
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vreq5"]
-draw_center = false
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ichfn"]
+content_margin_left = 5.0
+bg_color = Color(0.062, 0.062, 0.1, 1)
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
-border_color = Color(0.32, 0.8, 0.8, 1)
-corner_radius_top_left = 4
-corner_radius_top_right = 4
-corner_radius_bottom_right = 4
-corner_radius_bottom_left = 4
+border_color = Color(0.1368, 0.1368, 0.18, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+corner_detail = 16
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ghiib"]
 content_margin_left = 8.0
@@ -246,9 +256,10 @@ LineEdit/font_sizes/font_size = 12
 LineEdit/fonts/font = ExtResource("1_ulxqy")
 LineEdit/styles/focus = SubResource("StyleBoxEmpty_ri0uc")
 LineEdit/styles/normal = SubResource("StyleBoxFlat_730xo")
+LineEdit/styles/read_only = SubResource("StyleBoxFlat_efvcd")
 PanelContainer/styles/panel = SubResource("StyleBoxFlat_c2si1")
 RichTextLabel/colors/selection_color = Color(0.4, 0.55, 1, 0.4)
-TextEdit/styles/focus = SubResource("StyleBoxFlat_vreq5")
+TextEdit/styles/normal = SubResource("StyleBoxFlat_ichfn")
 TooltipLabel/font_sizes/font_size = 14
 TooltipLabel/fonts/font = ExtResource("1_ulxqy")
 TooltipPanel/styles/panel = SubResource("StyleBoxFlat_ghiib")
