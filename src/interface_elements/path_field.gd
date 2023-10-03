@@ -34,10 +34,10 @@ func _on_button_pressed() -> void:
 
 func _on_path_command_picked(new_command: String) -> void:
 	commands.append(translation_dict[new_command.to_upper()].new())
-	if new_command.to_upper() != new_command:
+	if Utils.is_string_lower(new_command):
 		commands.back().toggle_relative()
 	value = path_commands_to_value()
-	update_input_fields()
+	full_rebuild()
 	value_changed.emit(value)
 
 func path_commands_to_value() -> String:
@@ -61,7 +61,11 @@ func path_commands_to_value() -> String:
 	locate_start_points()
 	return generated_value.rstrip(" ")
 
-func update_input_fields() -> void:
+func full_rebuild() -> void:
+	commands = path_commands_from_parsed_data(parse_path_data(value))
+	if commands.is_empty() and not value.is_empty():
+		return  # This means the path definition is invalid, so we don't rebuild.
+	
 	# Clear the container of the tags.
 	for node in commands_container.get_children():
 		node.queue_free()
@@ -176,19 +180,20 @@ func _update_command_value(new_value: float, index: int, property: StringName) -
 
 func _on_value_changed(new_value: String) -> void:
 	line_edit.text = new_value
+	full_rebuild()
 	if attribute != null:
 		attribute.value = new_value
 
 func _on_close_button_pressed(idx: int) -> void:
 	commands.remove_at(idx)
 	value = path_commands_to_value()
-	update_input_fields()
+	full_rebuild()
 	value_changed.emit(value)
 
 func toggle_relative(idx: int) -> void:
 	commands[idx].toggle_relative()
 	value = path_commands_to_value()
-	update_input_fields()
+	full_rebuild()
 	value_changed.emit(value)
 
 
@@ -219,95 +224,280 @@ func locate_start_points() -> void:
 
 class PathCommand extends RefCounted:
 	var command_char := ""
+	var arg_count := 0
 	var relative := false
 	var start: Vector2
 	func toggle_relative() -> void:
 		if relative:
 			relative = false
 			command_char = command_char.to_upper()
-			if &"x" in self:
-				set(&"x", start.x + get(&"x"))
-			if &"y" in self:
-				set(&"y", start.y + get(&"y"))
+			for property in [&"x", &"y", &"x1", &"y1", &"x2", &"y2"]:
+				if property in self:
+					set(property, start.x + get(property))
 		else:
 			relative = true
 			command_char = command_char.to_lower()
-			if &"x" in self:
-				set(&"x", get(&"x") - start.x)
-			if &"y" in self:
-				set(&"y", get(&"y") - start.y)
+			for property in [&"x", &"y", &"x1", &"y1", &"x2", &"y2"]:
+				if property in self:
+					set(property, get(property) - start.x)
 
 class MoveCommand extends PathCommand:
-	var x := 0.0
-	var y := 0.0
-	func _init() -> void:
+	var x: float
+	var y: float
+	func _init(new_x := 0.0, new_y := 0.0) -> void:
 		command_char = "M"
+		arg_count = 2
+		x = new_x
+		y = new_y
 
 class LineCommand extends PathCommand:
-	var x := 0.0
-	var y := 0.0
-	func _init() -> void:
+	var x: float
+	var y: float
+	func _init(new_x := 0.0, new_y := 0.0) -> void:
 		command_char = "L"
+		arg_count = 2
+		x = new_x
+		y = new_y
 
 class HorizontalLineCommand extends PathCommand:
-	var x := 0.0
-	func _init() -> void:
+	var x: float
+	func _init(new_x := 0.0) -> void:
 		command_char = "H"
+		arg_count = 1
+		x = new_x
 
 class VerticalLineCommand extends PathCommand:
-	var y := 0.0
-	func _init() -> void:
+	var y: float
+	func _init(new_y := 0.0) -> void:
 		command_char = "V"
+		arg_count = 1
+		y = new_y
 
 class EllipticalArcCommand extends PathCommand:
-	var rx := 1.0
-	var ry := 1.0
-	var rot := 0.0
-	var large_arc_flag := 0
-	var sweep_flag := 0
-	var x := 0.0
-	var y := 0.0
-	func _init() -> void:
+	var rx: float
+	var ry: float
+	var rot: float
+	var large_arc_flag: int
+	var sweep_flag: int
+	var x: float
+	var y: float
+	func _init(new_rx := 1.0, new_ry := 1.0, new_rot := 0.0, new_large_arc_flag := 0,
+	new_sweep_flag := 0, new_x := 0.0, new_y := 0.0) -> void:
 		command_char = "A"
+		arg_count = 7
+		rx = new_rx
+		ry = new_ry
+		rot = new_rot
+		large_arc_flag = new_large_arc_flag
+		sweep_flag = new_sweep_flag
+		x = new_x
+		y = new_y
 
 class QuadraticBezierCommand extends PathCommand:
-	var x1 := 0.0
-	var y1 := 0.0
-	var x := 0.0
-	var y := 0.0
-	func _init() -> void:
+	var x1: float
+	var y1: float
+	var x: float
+	var y: float
+	func _init(new_x1 := 0.0, new_y1 := 0.0, new_x := 0.0, new_y := 0.0) -> void:
 		command_char = "Q"
+		arg_count = 4
+		x1 = new_x1
+		y1 = new_y1
+		x = new_x
+		y = new_y
 
 class ShorthandQuadraticBezierCommand extends PathCommand:
-	var x := 0.0
-	var y := 0.0
-	func _init() -> void:
+	var x: float
+	var y: float
+	func _init(new_x := 0.0, new_y := 0.0) -> void:
 		command_char = "T"
+		arg_count = 2
+		x = new_x
+		y = new_y
 
 class CubicBezierCommand extends PathCommand:
-	var x1 := 0.0
-	var y1 := 0.0
-	var x2 := 0.0
-	var y2 := 0.0
-	var x := 0.0
-	var y := 0.0
-	func _init() -> void:
+	var x1: float
+	var y1: float
+	var x2: float
+	var y2: float
+	var x: float
+	var y: float
+	func _init(new_x1 := 0.0, new_y1 := 0.0, new_x2 := 0.0, new_y2 := 0.0,
+	new_x := 0.0, new_y := 0.0) -> void:
 		command_char = "C"
+		arg_count = 6
+		x1 = new_x1
+		y1 = new_y1
+		x2 = new_x2
+		y2 = new_y2
+		x = new_x
+		y = new_y
 
 class ShorthandCubicBezierCommand extends PathCommand:
-	var x2 := 0.0
-	var y2 := 0.0
-	var x := 0.0
-	var y := 0.0
-	func _init() -> void:
+	var x2: float
+	var y2: float
+	var x: float
+	var y: float
+	func _init(new_x2 := 0.0, new_y2 := 0.0, new_x := 0.0, new_y := 0.0) -> void:
 		command_char = "S"
+		arg_count = 4
+		x2 = new_x2
+		y2 = new_y2
+		x = new_x
+		y = new_y
 
 class CloseCommand extends PathCommand:
 	func _init() -> void:
 		command_char = "Z"
 
 
-func parse_path_definition(path_string: String) -> Array[PathCommand]:
-	# TODO
-	var arr: Array[PathCommand] = []
-	return arr
+# Path parsing and helpers.
+
+func parse_path_data(path_string: String) -> Array[Array]:
+	var new_commands: Array[Array] = []
+	var curr_command := ""
+	var prev_command := ""
+	var curr_command_args: Array = []
+	var args_left := 0
+	var comma_exhausted := false
+	
+	var idx := -1
+	while idx < path_string.length() - 1:
+		idx += 1
+		@warning_ignore("shadowed_global_identifier")
+		var char := path_string[idx]
+		# Stop parsing if we've hit a character that's not allowed.
+		if not char in ["M", "m", "L", "l", "H", "h", "V", "v", "A", "a", "Q", "q", "T",
+		"t", "C", "c", "S", "s", "Z", "z", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9",
+		"-", "+", ".", " ", ","]:
+			return new_commands
+		# Logic for finding out what the next command is going to be.
+		if args_left == 0:
+			match char:
+				"M", "m", "L", "l", "H", "h", "V", "v", "A", "a", "Q", "q", "T", "t",\
+				"C", "c", "S", "s", "Z", "z":
+					curr_command = char
+					args_left = translation_dict[curr_command.to_upper()].new().arg_count
+				" ": continue
+				"-", "+", ".", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9":
+					match prev_command:
+						"Z", "z":
+							return new_commands
+						"M", "m":
+							curr_command = "L" if prev_command == "M" else "l"
+							args_left = translation_dict[curr_command.to_upper()].new().arg_count
+						"L", "l", "H", "h", "V", "v", "A", "a", "Q", "q", "T", "t", "C", "c",\
+						"S", "s":
+							curr_command = prev_command
+							args_left = translation_dict[curr_command.to_upper()].new().arg_count
+					idx -= 1
+				_: return new_commands
+		# Logic for parsing new numbers until args_left == 0.
+		else:
+			if comma_exhausted and char != " ":
+				comma_exhausted = false
+			# Arc flags are represented by a single character.
+			if curr_command in ["a", "A"] and args_left in [4, 3]:
+				match char:
+					" ": continue
+					"0": curr_command_args.append(0)
+					"1": curr_command_args.append(1)
+					",":
+						if comma_exhausted:
+							return new_commands
+						else:
+							comma_exhausted = true
+							continue
+					_: return new_commands
+			else:
+				# Parse the number.
+				var num_string := ""
+				var number_proceed := true
+				var passed_decimal_point := false
+				while number_proceed and idx < path_string.length():
+					char = path_string[idx]
+					match char:
+						"0", "1", "2", "3", "4", "5", "6", "7", "8", "9":
+							idx += 1
+							num_string += char
+						"-", "+":
+							if num_string.is_empty():
+								num_string += char
+								idx += 1
+							else:
+								number_proceed = false
+								idx -= 1
+						".":
+							if not passed_decimal_point:
+								passed_decimal_point = true
+								num_string += char
+								idx += 1
+							else:
+								idx -= 1
+								number_proceed = false
+						" ":
+							if num_string.is_empty():
+								idx += 1
+								continue
+							number_proceed = false
+						",":
+							if comma_exhausted:
+								return new_commands
+							else:
+								comma_exhausted = true
+								number_proceed = false
+						_:
+							idx -= 1
+							break
+				curr_command_args.append(num_string.to_float())
+			args_left -= 1
+			if args_left == 0:
+				prev_command = curr_command
+				var finalized_arr: Array = [curr_command]
+				curr_command = ""
+				finalized_arr.append_array(curr_command_args)
+				curr_command_args.clear()
+				new_commands.append(finalized_arr)
+	return new_commands
+
+func path_commands_from_parsed_data(data: Array[Array]) -> Array[PathCommand]:
+	var cmds: Array[PathCommand] = []
+	for arr in data:
+		var new_cmd: PathCommand
+		var cmd_type = translation_dict[arr[0].to_upper()]
+		match arr.size():
+			1: new_cmd = cmd_type.new()
+			2: new_cmd = cmd_type.new(arr[1])
+			3: new_cmd = cmd_type.new(arr[1], arr[2])
+			5: new_cmd = cmd_type.new(arr[1], arr[2], arr[3], arr[4])
+			7: new_cmd = cmd_type.new(arr[1], arr[2], arr[3], arr[4], arr[5], arr[6])
+			8: new_cmd = cmd_type.new(arr[1], arr[2], arr[3], arr[4], arr[5], arr[6], arr[7])
+		if Utils.is_string_lower(arr[0]):
+			new_cmd.relative = true
+		cmds.append(new_cmd)
+	return cmds
+
+
+
+# DEBUG
+#func _enter_tree() -> void:
+	#var tests := {
+		#"Jerky": [],
+		#"M 0 0": [["M", 0.0, 0.0]],
+		#"M2 1 L3 4": [["M", 2.0, 1.0], ["L", 3.0, 4.0]],
+		#"m2 0 3 4": [["m", 2.0, 0.0], ["l", 3.0, 4.0]],
+		#"m-2.3.7-4,4": [["m", -2.3, 0.7], ["l", -4.0, 4.0]],
+		#"m2 3a7 3 0 101.2.3": [["m", 2.0, 3.0], ["a", 7.0, 3.0, 0.0, 1, 0, 1.2, 0.3]],
+		#"M 2 0  c3 2-.6.8 11.0 3Jh3": [["M", 2.0, 0.0], ["c", 3.0, 2.0, -0.6, 0.8, 11.0, 3.0]],
+	#}
+#
+	#var tests_passed := true
+	#for test in tests.keys():
+		#var result := parse_path_data(test)
+		#var expected: Array = tests[test]
+		#if result != expected:
+			#tests_passed = false
+			#print('"' + test + '" generated ' + str(result) + ', expected ' + str(expected))
+		#else:
+			#print('"' + test + '" generated ' + str(result) + ' (SUCCESS)')
+	#assert(tests_passed)

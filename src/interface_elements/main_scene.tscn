@@ -197,6 +197,13 @@ mouse_default_cursor_shape = 2
 icon = ExtResource("4_3rshc")
 icon_alignment = 1
 
+[node name="CodeBase" type="LinkButton" parent="Display/PanelContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 2
+tooltip_text = "Visit GodSVG's codebase"
+text = "GodSVG"
+uri = "https://github.com/MewPurPur/GodSVG"
+
 [node name="HBoxContainer" type="HBoxContainer" parent="Display/PanelContainer/MarginContainer/HBoxContainer"]
 layout_mode = 2
 alignment = 1
@@ -279,6 +286,7 @@ script = ExtResource("5_pltvx")
 [connection signal="pressed" from="PanelContainer/MarginContainer/MainContainer/CodeEditor/CodeButtons/CopyButton" to="PanelContainer/MarginContainer/MainContainer/CodeEditor" method="_on_copy_button_pressed"]
 [connection signal="pressed" from="PanelContainer/MarginContainer/MainContainer/CodeEditor/CodeButtons/ImportButton" to="PanelContainer/MarginContainer/MainContainer/CodeEditor" method="_on_import_button_pressed"]
 [connection signal="pressed" from="Display/PanelContainer/MarginContainer/HBoxContainer/Settings" to="Display" method="_on_settings_pressed"]
+[connection signal="pressed" from="Display/PanelContainer/MarginContainer/HBoxContainer/CodeBase" to="Display" method="_on_settings_pressed"]
 [connection signal="pressed" from="Display/PanelContainer/MarginContainer/HBoxContainer/HBoxContainer/ZoomOut" to="Display" method="zoom_out"]
 [connection signal="pressed" from="Display/PanelContainer/MarginContainer/HBoxContainer/HBoxContainer/ZoomReset" to="Display" method="zoom_reset"]
 [connection signal="pressed" from="Display/PanelContainer/MarginContainer/HBoxContainer/HBoxContainer/ZoomIn" to="Display" method="zoom_in"]

@@ -20,9 +20,10 @@ var value: float:
 	set(new_value):
 		var old_value := value
 		value = validate(new_value)
-		num_edit.text = str(value)
 		if value != old_value:
 			value_changed.emit(value)
+		elif num_edit != null:
+			num_edit.text = str(value)
 
 func set_value_no_restraint(new_value: float) -> void:
 	value = new_value
