@@ -9,7 +9,7 @@ const settings_menu := preload("res://src/interface_elements/settings_menu.tscn"
 
 var zoom_level:
 	set(value):
-		zoom_level = clampf(value, 0.125, 8.0)
+		zoom_level = clampf(value, 0.06125, 8.0)
 		zoom_reset_button.text = String.num(zoom_level * 100) + "%"
 		viewport.size_2d_override = viewport.size / zoom_level
 		clamp_view()

@@ -111,7 +111,8 @@ corner_radius_bottom_left = 1
 corner_detail = 2
 
 [node name="PathField" type="VBoxContainer"]
-offset_bottom = 22.0
+offset_right = 177.0
+offset_bottom = 26.0
 script = ExtResource("1_0jjls")
 
 [node name="MainLine" type="HBoxContainer" parent="."]
@@ -120,7 +121,7 @@ layout_mode = 2
 theme_override_constants/separation = 0
 
 [node name="LineEdit" type="LineEdit" parent="MainLine"]
-custom_minimum_size = Vector2(160, 0)
+custom_minimum_size = Vector2(240, 0)
 layout_mode = 2
 editable = false
 context_menu_enabled = false
