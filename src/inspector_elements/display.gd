@@ -5,7 +5,7 @@ extends VBoxContainer
 @onready var display: TextureRect = %Checkerboard
 
 const minimum_visible_proportion := 0.2
-const settings_menu := preload("res://src/interface_elements/settings_menu.tscn")
+const settings_menu := preload("settings_menu.tscn")
 
 var zoom_level:
 	set(value):

@@ -1,16 +1,16 @@
 [gd_scene load_steps=21 format=3 uid="uid://ce6j54x27pom"]
 
-[ext_resource type="PackedScene" uid="uid://ccynisiuyn5qn" path="res://src/interface_elements/interface.tscn" id="1_afxvd"]
+[ext_resource type="PackedScene" uid="uid://ccynisiuyn5qn" path="res://src/inspector_elements/inspector.tscn" id="1_afxvd"]
 [ext_resource type="Texture2D" uid="uid://ccvjkdd0s7rb4" path="res://visual/icons/Copy.svg" id="1_fm0ux"]
-[ext_resource type="Script" path="res://src/interface_elements/CodeEditor.gd" id="1_ry6k8"]
+[ext_resource type="Script" path="res://src/inspector_elements/code_editor.gd" id="1_ry6k8"]
 [ext_resource type="FontFile" uid="uid://c7ury252fql35" path="res://visual/CodeFont.ttf" id="2_w635r"]
-[ext_resource type="Script" path="res://src/interface_elements/Display.gd" id="2_ylpv1"]
+[ext_resource type="Script" path="res://src/inspector_elements/display.gd" id="2_ylpv1"]
 [ext_resource type="Texture2D" uid="uid://c68og6bsqt0lb" path="res://visual/Checkerboard.svg" id="3_d58qh"]
 [ext_resource type="Texture2D" uid="uid://ckkkgof1hcbld" path="res://visual/icons/Gear.svg" id="4_3rshc"]
 [ext_resource type="Texture2D" uid="uid://6ymbl3jqersp" path="res://visual/icons/Import.svg" id="4_ehrkr"]
-[ext_resource type="Script" path="res://src/interface_elements/Controls.gd" id="5_pltvx"]
-[ext_resource type="Script" path="res://src/interface_elements/Viewport.gd" id="6_7hypx"]
-[ext_resource type="Script" path="res://src/interface_elements/DisplayTexture.gd" id="7_cxx0h"]
+[ext_resource type="Script" path="res://src/inspector_elements/handles_manager.gd" id="5_pltvx"]
+[ext_resource type="Script" path="res://src/inspector_elements/viewport.gd" id="6_7hypx"]
+[ext_resource type="Script" path="res://src/inspector_elements/display_texture.gd" id="7_cxx0h"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_082e3"]
 bg_color = Color(0.005, 0.005, 0.05, 1)
@@ -43,6 +43,7 @@ keyword_colors = {
 "viewBox": Color(0.737255, 0.878431, 1, 1),
 "width": Color(0.737255, 0.878431, 1, 1),
 "x": Color(0.737255, 0.878431, 1, 1),
+"xmlns": Color(0.737255, 0.878431, 1, 1),
 "y": Color(0.737255, 0.878431, 1, 1)
 }
 color_regions = {
@@ -166,7 +167,7 @@ layout_mode = 2
 mouse_default_cursor_shape = 2
 icon = ExtResource("4_ehrkr")
 
-[node name="Interface" parent="PanelContainer/MarginContainer/MainContainer" instance=ExtResource("1_afxvd")]
+[node name="Inspector" parent="PanelContainer/MarginContainer/MainContainer" instance=ExtResource("1_afxvd")]
 layout_mode = 2
 
 [node name="Display" type="VBoxContainer" parent="."]

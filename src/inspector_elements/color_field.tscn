@@ -1,9 +1,9 @@
 [gd_scene load_steps=9 format=3 uid="uid://carf2o1y7wvmc"]
 
-[ext_resource type="Script" path="res://src/interface_elements/color_field.gd" id="1_330tl"]
+[ext_resource type="Script" path="res://src/inspector_elements/color_field.gd" id="1_330tl"]
 [ext_resource type="Texture2D" uid="uid://y0l74x73w0co" path="res://visual/CheckerboardMini.svg" id="2_gsj5a"]
-[ext_resource type="Script" path="res://src/interface_elements/color_popup.gd" id="2_hgyyv"]
-[ext_resource type="PackedScene" uid="uid://cpvtf3kaa2ltr" path="res://src/interface_elements/color_swatch.tscn" id="3_38vpq"]
+[ext_resource type="Script" path="res://src/inspector_elements/color_popup.gd" id="2_hgyyv"]
+[ext_resource type="PackedScene" uid="uid://cpvtf3kaa2ltr" path="res://src/inspector_elements/color_swatch.tscn" id="3_38vpq"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fpguh"]
 content_margin_left = 3.0

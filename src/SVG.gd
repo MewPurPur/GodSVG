@@ -85,7 +85,7 @@ func string_to_tags() -> void:
 						elif typeof(tag.attributes[element].value) == Variant.Type.TYPE_FLOAT:
 							tag.attributes[element].value = attribute_dict[element].to_float()
 				new_tags.append(tag)
-	data.tags = new_tags
+	data.replace_tags(new_tags)
 
 
 # TODO Can definitely be improved.

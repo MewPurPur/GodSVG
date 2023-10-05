@@ -40,3 +40,18 @@ func _on_value_changed(new_value: String) -> void:
 
 func _input(event: InputEvent) -> void:
 	Utils.defocus_control_on_outside_click(indicator, event)
+
+
+func _on_line_edit_text_submitted(new_text: String) -> void:
+	indicator.remove_theme_color_override(&"font_color")
+	indicator.release_focus()
+	if new_text in attribute.possible_values:
+		value = new_text
+	else:
+		indicator.text = value
+
+func _on_line_edit_text_changed(new_text: String) -> void:
+	if new_text in attribute.possible_values:
+		indicator.add_theme_color_override(&"font_color", Color(0.6, 1.0, 0.6))
+	else:
+		indicator.add_theme_color_override(&"font_color", Color(1.0, 0.6, 0.6))
