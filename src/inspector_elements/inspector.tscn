@@ -1,15 +1,15 @@
 [gd_scene load_steps=9 format=3 uid="uid://ccynisiuyn5qn"]
 
-[ext_resource type="Script" path="res://src/interface_elements/interface.gd" id="1_16ggy"]
-[ext_resource type="Script" path="res://src/interface_elements/view_box_edit.gd" id="2_osq0a"]
+[ext_resource type="Script" path="res://src/inspector_elements/inspector.gd" id="1_16ggy"]
+[ext_resource type="Script" path="res://src/inspector_elements/view_box_edit.gd" id="2_osq0a"]
 [ext_resource type="FontFile" uid="uid://c7ury252fql35" path="res://visual/CodeFont.ttf" id="3_8oiup"]
-[ext_resource type="PackedScene" uid="uid://bp2vpf7g8w8aj" path="res://src/interface_elements/number_field.tscn" id="4_6tphi"]
+[ext_resource type="PackedScene" uid="uid://bp2vpf7g8w8aj" path="res://src/inspector_elements/number_field.tscn" id="4_6tphi"]
 [ext_resource type="Texture2D" uid="uid://dmnaqiwq4de1j" path="res://visual/icons/Circle.svg" id="5_cwjdk"]
 [ext_resource type="Texture2D" uid="uid://c8t8eiojuwjje" path="res://visual/icons/Ellipse.svg" id="6_komru"]
 [ext_resource type="Texture2D" uid="uid://cso2l5nvm6gm" path="res://visual/icons/Rect.svg" id="7_hdyp6"]
 [ext_resource type="Texture2D" uid="uid://xpm1e34xuk06" path="res://visual/icons/Path.svg" id="8_6tgkl"]
 
-[node name="Interface" type="VBoxContainer"]
+[node name="Inspector" type="VBoxContainer"]
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/separation = 16
