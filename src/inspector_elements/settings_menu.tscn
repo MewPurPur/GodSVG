@@ -49,6 +49,12 @@ theme_override_constants/separation = 18
 [node name="Settings" type="VBoxContainer" parent="MainPanel/VBoxContainer"]
 layout_mode = 2
 
+[node name="SVG" type="CheckBox" parent="MainPanel/VBoxContainer/Settings"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_default_cursor_shape = 2
+text = "Remember SVG"
+
 [node name="WindowMode" type="CheckBox" parent="MainPanel/VBoxContainer/Settings"]
 unique_name_in_owner = true
 layout_mode = 2
@@ -62,5 +68,6 @@ size_flags_vertical = 8
 mouse_default_cursor_shape = 2
 text = "Close"
 
+[connection signal="pressed" from="MainPanel/VBoxContainer/Settings/SVG" to="." method="_on_svg_pressed"]
 [connection signal="pressed" from="MainPanel/VBoxContainer/Settings/WindowMode" to="." method="_on_window_mode_pressed"]
 [connection signal="pressed" from="MainPanel/VBoxContainer/Close" to="." method="_on_close_pressed"]
