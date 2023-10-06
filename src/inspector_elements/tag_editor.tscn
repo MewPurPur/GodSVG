@@ -67,6 +67,7 @@ theme_override_constants/margin_bottom = 4
 
 [node name="PanelContainer" type="PanelContainer" parent="MarginContainer/HBoxContainer/MarginContainer"]
 layout_mode = 2
+size_flags_horizontal = 4
 size_flags_vertical = 4
 theme_override_styles/panel = SubResource("StyleBoxFlat_xmwqw")
 

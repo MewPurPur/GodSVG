@@ -9,6 +9,7 @@ var config := ConfigFile.new()
 # Don't have the language setting here, so it's not reset
 const default_config = {
 	"session": {
+		"save_svg": true,
 		"save_window_mode": true,
 	},
 }
@@ -24,6 +25,11 @@ var save_window_mode := false:
 		save_window_mode = value
 		save_setting("session", "save_window_mode", save_window_mode)
 
+var save_svg := false:
+	set(value):
+		save_svg = value
+		save_setting("session", "save_svg", save_svg)
+
 
 func save_setting(section: String, setting: String, value: Variant) -> void:
 	config.set_value(section, setting, value)
@@ -38,12 +44,18 @@ func load_user_data() -> void:
 
 func _exit_tree() -> void:
 	save_data.window_mode = DisplayServer.window_get_mode()
+	save_data.svg = SVG.string
 	save_user_data()
 
 func _enter_tree() -> void:
 	load_settings()
 	load_user_data()
-	DisplayServer.window_set_mode(save_data.window_mode)
+	if save_window_mode:
+		DisplayServer.window_set_mode(save_data.window_mode)
+	await get_tree().process_frame
+	if save_svg:
+		SVG.string = save_data.svg
+		SVG.sync_data()
 
 
 func load_settings() -> void:
