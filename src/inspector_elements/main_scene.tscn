@@ -287,7 +287,6 @@ script = ExtResource("5_pltvx")
 [connection signal="pressed" from="PanelContainer/MarginContainer/MainContainer/CodeEditor/CodeButtons/CopyButton" to="PanelContainer/MarginContainer/MainContainer/CodeEditor" method="_on_copy_button_pressed"]
 [connection signal="pressed" from="PanelContainer/MarginContainer/MainContainer/CodeEditor/CodeButtons/ImportButton" to="PanelContainer/MarginContainer/MainContainer/CodeEditor" method="_on_import_button_pressed"]
 [connection signal="pressed" from="Display/PanelContainer/MarginContainer/HBoxContainer/Settings" to="Display" method="_on_settings_pressed"]
-[connection signal="pressed" from="Display/PanelContainer/MarginContainer/HBoxContainer/CodeBase" to="Display" method="_on_settings_pressed"]
 [connection signal="pressed" from="Display/PanelContainer/MarginContainer/HBoxContainer/HBoxContainer/ZoomOut" to="Display" method="zoom_out"]
 [connection signal="pressed" from="Display/PanelContainer/MarginContainer/HBoxContainer/HBoxContainer/ZoomReset" to="Display" method="zoom_reset"]
 [connection signal="pressed" from="Display/PanelContainer/MarginContainer/HBoxContainer/HBoxContainer/ZoomIn" to="Display" method="zoom_in"]
