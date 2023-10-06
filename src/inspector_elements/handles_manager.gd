@@ -1,5 +1,10 @@
 extends TextureRect
 
+var zoom := 1.0:
+	set(new_value):
+		zoom = new_value
+		queue_redraw()
+
 var handles: Array[Handle]
 
 func _ready() -> void:
@@ -69,37 +74,37 @@ func sync_handles():
 func _draw() -> void:
 	for handle in handles:
 		if handle.dragged:
-			draw_circle(coords_to_canvas(handle.pos), 3, Color(0.55, 0.55, 1.0))
+			draw_circle(coords_to_canvas(handle.pos), 4 / zoom, Color(0.55, 0.55, 1.0))
 		elif handle.hovered:
-			draw_circle(coords_to_canvas(handle.pos), 3, Color(0.7, 0.7, 0.7))
+			draw_circle(coords_to_canvas(handle.pos), 4 / zoom, Color(0.7, 0.7, 0.7))
 		else:
-			draw_circle(coords_to_canvas(handle.pos), 3, Color(0.45, 0.45, 0.45))
+			draw_circle(coords_to_canvas(handle.pos), 4 / zoom, Color(0.45, 0.45, 0.45))
 
 func coords_to_canvas(pos: Vector2) -> Vector2:
-	return size / 16 * pos
+	return size / Vector2(SVG.data.w, SVG.data.h) * pos
 
 func canvas_to_coords(pos: Vector2) -> Vector2:
-	return pos * 16 / size
+	return pos * Vector2(SVG.data.w, SVG.data.h) / size
 
 
-func _on_gui_input(event: InputEvent) -> void:
+func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion:
+		var event_pos = event.position - global_position
 		for handle in handles:
 			if handle.dragged:
-				var old_pos := handle.pos
-				handle.set_pos(canvas_to_coords(event.position))
+				handle.set_pos(canvas_to_coords(event_pos))
 				handle.moved.emit(handle.pos)
 				accept_event()
 		var picked_hover := false
 		for handle in handles:
-			if not picked_hover and event.position.distance_squared_to(
-			coords_to_canvas(handle.pos)) < 25:
+			if not picked_hover and event_pos.distance_to(
+			coords_to_canvas(handle.pos)) < (9 / zoom):
 				handle.hovered = true
 				picked_hover = true
 			if picked_hover and handle.hovered:
 				handle.hovered = false
-			if handle.hovered != (event.position.distance_squared_to(
-			coords_to_canvas(handle.pos)) < 25):
+			if handle.hovered != (event_pos.distance_to(
+			coords_to_canvas(handle.pos)) < 9 / zoom):
 				handle.hovered = not handle.hovered
 			queue_redraw()
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:

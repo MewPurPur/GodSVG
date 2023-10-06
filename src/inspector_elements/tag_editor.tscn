@@ -5,7 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://bywp6c8s6meq1" path="res://visual/icons/Cross.svg" id="3_1jsup"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_s1ahg"]
-bg_color = Color(0.6, 0.8, 1, 0.0666667)
+bg_color = Color(0.6, 0.8, 1, 0.0980392)
 corner_radius_top_left = 4
 corner_radius_top_right = 4
 corner_radius_bottom_right = 4
@@ -23,12 +23,12 @@ content_margin_left = 4.0
 content_margin_top = 6.0
 content_margin_right = 4.0
 content_margin_bottom = 6.0
-bg_color = Color(0.13, 0.13, 0.2, 1)
+bg_color = Color(0.129412, 0.129412, 0.2, 1)
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
-border_color = Color(0.225, 0.3375, 0.45, 1)
+border_color = Color(0.1785, 0.26425, 0.35, 1)
 corner_radius_top_left = 3
 corner_radius_top_right = 3
 corner_radius_bottom_right = 3

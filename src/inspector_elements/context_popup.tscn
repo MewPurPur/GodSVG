@@ -1,0 +1,20 @@
+[gd_scene load_steps=2 format=3 uid="uid://wp77eqhikp6k"]
+
+[ext_resource type="Script" path="res://src/inspector_elements/context_popup.gd" id="1_d45ly"]
+
+[node name="ContextPopup" type="Popup"]
+transparent_bg = true
+size = Vector2i(100, 27)
+visible = true
+script = ExtResource("1_d45ly")
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+custom_minimum_size = Vector2(96, 0)
+offset_right = 96.0
+offset_bottom = 27.0
+
+[node name="MainContainer" type="VBoxContainer" parent="PanelContainer"]
+unique_name_in_owner = true
+clip_contents = true
+layout_mode = 2
+theme_override_constants/separation = 0
