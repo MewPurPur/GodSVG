@@ -1,8 +1,7 @@
 extends AttributeEditor
 
-@onready var value_picker: Popup = $EnumPopup
+@onready var value_picker: Popup = $ContextPopup
 @onready var indicator: LineEdit = $MainLine/LineEdit
-@onready var main_container: VBoxContainer = %MainContainer
 
 signal value_changed(new_value: String)
 var value: String:
@@ -16,10 +15,13 @@ func _ready() -> void:
 	value_changed.connect(_on_value_changed)
 	if attribute != null:
 		value = attribute.value
-		for enum_constant in attribute.possible_values:
+		var enum_size: int = attribute.possible_values.size()
+		for enum_idx in enum_size:
+			var enum_constant = attribute.possible_values[enum_idx]
 			var butt := Button.new()
 			butt.text = str(enum_constant)
-			main_container.add_child(butt)
+			butt.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+			value_picker.add_button(butt, enum_idx == 0, enum_idx == enum_size - 1)
 			butt.pressed.connect(_on_option_pressed.bind(enum_constant))
 	indicator.text = str(value)
 	indicator.tooltip_text = attribute_name

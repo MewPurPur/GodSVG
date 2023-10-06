@@ -1,19 +1,20 @@
-[gd_scene load_steps=6 format=3 uid="uid://d2da0thyq5rq8"]
+[gd_scene load_steps=7 format=3 uid="uid://d2da0thyq5rq8"]
 
 [ext_resource type="Script" path="res://src/inspector_elements/enum_field.gd" id="1_vkd5r"]
 [ext_resource type="Texture2D" uid="uid://coda6chhcatal" path="res://visual/icons/Down.svg" id="2_3cosj"]
+[ext_resource type="PackedScene" uid="uid://wp77eqhikp6k" path="res://src/inspector_elements/context_popup.tscn" id="3_qw0q5"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fpguh"]
 content_margin_left = 3.0
 content_margin_top = 2.0
 content_margin_right = 2.0
 content_margin_bottom = 0.0
-bg_color = Color(0.00784314, 0.00784314, 0.14902, 1)
+bg_color = Color(0.0705882, 0.0705882, 0.2, 1)
 border_width_left = 1
 border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
-border_color = Color(0.0588235, 0.117647, 0.301961, 1)
+border_color = Color(0.105882, 0.14902, 0.301961, 1)
 corner_radius_top_right = 6
 corner_radius_bottom_right = 6
 corner_detail = 16
@@ -23,12 +24,12 @@ content_margin_left = 3.0
 content_margin_top = 2.0
 content_margin_right = 2.0
 content_margin_bottom = 0.0
-bg_color = Color(0.0117647, 0.0117647, 0.2, 1)
+bg_color = Color(0.0901961, 0.0901961, 0.2, 1)
 border_width_left = 1
 border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
-border_color = Color(0.0745098, 0.156863, 0.4, 1)
+border_color = Color(0.203922, 0.254902, 0.4, 1)
 corner_radius_top_right = 6
 corner_radius_bottom_right = 6
 corner_detail = 16
@@ -38,12 +39,12 @@ content_margin_left = 3.0
 content_margin_top = 2.0
 content_margin_right = 2.0
 content_margin_bottom = 0.0
-bg_color = Color(0.270588, 0.427451, 0.901961, 1)
+bg_color = Color(0.321569, 0.439216, 0.8, 1)
 border_width_left = 1
 border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
-border_color = Color(0.6, 0.8, 1, 1)
+border_color = Color(0.541176, 0.721569, 0.901961, 1)
 corner_radius_top_right = 6
 corner_radius_bottom_right = 6
 corner_detail = 16
@@ -73,25 +74,8 @@ theme_override_styles/hover = SubResource("StyleBoxFlat_r5acu")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_5n6p7")
 icon = ExtResource("2_3cosj")
 
-[node name="EnumPopup" type="Popup" parent="."]
-transparent_bg = true
-size = Vector2i(108, 132)
-
-[node name="PanelContainer" type="PanelContainer" parent="EnumPopup"]
-custom_minimum_size = Vector2(106, 0)
-offset_right = 106.0
-offset_bottom = 97.0
-
-[node name="MarginContainer" type="MarginContainer" parent="EnumPopup/PanelContainer"]
-layout_mode = 2
-theme_override_constants/margin_left = 8
-theme_override_constants/margin_top = 8
-theme_override_constants/margin_right = 8
-theme_override_constants/margin_bottom = 8
-
-[node name="MainContainer" type="VBoxContainer" parent="EnumPopup/PanelContainer/MarginContainer"]
-unique_name_in_owner = true
-layout_mode = 2
+[node name="ContextPopup" parent="." instance=ExtResource("3_qw0q5")]
+visible = false
 
 [connection signal="text_changed" from="MainLine/LineEdit" to="." method="_on_line_edit_text_changed"]
 [connection signal="text_submitted" from="MainLine/LineEdit" to="." method="_on_line_edit_text_submitted"]

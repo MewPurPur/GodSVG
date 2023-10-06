@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=21 format=3 uid="uid://der6fnkliqqto"]
+[gd_resource type="Theme" load_steps=22 format=3 uid="uid://der6fnkliqqto"]
 
 [ext_resource type="FontFile" uid="uid://c7ury252fql35" path="res://visual/CodeFont.ttf" id="1_ulxqy"]
 [ext_resource type="FontFile" uid="uid://bd8rlfqek8f8u" path="res://visual/Font.ttf" id="2_d11o4"]
@@ -44,12 +44,12 @@ content_margin_left = 4.0
 content_margin_top = 4.0
 content_margin_right = 4.0
 content_margin_bottom = 4.0
-bg_color = Color(0.012, 0.012, 0.2, 1)
+bg_color = Color(0.0901961, 0.0901961, 0.2, 1)
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
-border_color = Color(0.08, 0.16, 0.4, 1)
+border_color = Color(0.203922, 0.254902, 0.4, 1)
 corner_radius_top_left = 5
 corner_radius_top_right = 5
 corner_radius_bottom_right = 5
@@ -61,12 +61,12 @@ content_margin_left = 4.0
 content_margin_top = 4.0
 content_margin_right = 4.0
 content_margin_bottom = 4.0
-bg_color = Color(0.00784314, 0.00784314, 0.14902, 1)
+bg_color = Color(0.0705882, 0.0705882, 0.2, 1)
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
-border_color = Color(0.09, 0.1425, 0.3, 1)
+border_color = Color(0.105882, 0.14902, 0.301961, 1)
 corner_radius_top_left = 5
 corner_radius_top_right = 5
 corner_radius_bottom_right = 5
@@ -78,12 +78,12 @@ content_margin_left = 4.0
 content_margin_top = 4.0
 content_margin_right = 4.0
 content_margin_bottom = 4.0
-bg_color = Color(0.270588, 0.427451, 0.901961, 1)
+bg_color = Color(0.321569, 0.439216, 0.8, 1)
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
-border_color = Color(0.6, 0.8, 1, 1)
+border_color = Color(0.541176, 0.721569, 0.901961, 1)
 corner_radius_top_left = 5
 corner_radius_top_right = 5
 corner_radius_bottom_right = 5
@@ -191,28 +191,36 @@ corner_radius_bottom_left = 2
 corner_detail = 2
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dptuh"]
-bg_color = Color(0.24, 0.33, 0.6, 1)
-corner_radius_top_left = 4
-corner_radius_top_right = 4
-corner_radius_bottom_right = 4
-corner_radius_bottom_left = 4
-corner_detail = 16
+bg_color = Color(0.203922, 0.254902, 0.4, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jo7ks"]
-bg_color = Color(0.35, 0.4375, 0.7, 1)
-corner_radius_top_left = 4
-corner_radius_top_right = 4
-corner_radius_bottom_right = 4
-corner_radius_bottom_left = 4
-corner_detail = 16
+bg_color = Color(0.275, 0.335, 0.5, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_k6fme"]
-bg_color = Color(0.48, 0.64, 0.8, 1)
-corner_radius_top_left = 4
-corner_radius_top_right = 4
-corner_radius_bottom_right = 4
-corner_radius_bottom_left = 4
-corner_detail = 16
+bg_color = Color(0.541176, 0.721569, 0.901961, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wn4u7"]
+content_margin_left = 4.0
+content_margin_top = 0.0
+content_margin_right = 4.0
+content_margin_bottom = 0.0
+bg_color = Color(0.065, 0.065, 0.1, 0.6)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_k5a4y"]
 content_margin_left = 2.0
@@ -266,6 +274,6 @@ TooltipPanel/styles/panel = SubResource("StyleBoxFlat_ghiib")
 VScrollBar/styles/grabber = SubResource("StyleBoxFlat_dptuh")
 VScrollBar/styles/grabber_highlight = SubResource("StyleBoxFlat_jo7ks")
 VScrollBar/styles/grabber_pressed = SubResource("StyleBoxFlat_k6fme")
-VScrollBar/styles/scroll = null
+VScrollBar/styles/scroll = SubResource("StyleBoxFlat_wn4u7")
 VScrollBar/styles/scroll_focus = null
 Window/styles/embedded_border = SubResource("StyleBoxFlat_k5a4y")

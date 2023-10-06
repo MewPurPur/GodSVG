@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://carf2o1y7wvmc"]
+[gd_scene load_steps=8 format=3 uid="uid://carf2o1y7wvmc"]
 
 [ext_resource type="Script" path="res://src/inspector_elements/color_field.gd" id="1_330tl"]
 [ext_resource type="Texture2D" uid="uid://y0l74x73w0co" path="res://visual/CheckerboardMini.svg" id="2_gsj5a"]
@@ -10,12 +10,12 @@ content_margin_left = 3.0
 content_margin_top = 2.0
 content_margin_right = 2.0
 content_margin_bottom = 0.0
-bg_color = Color(0, 0, 0, 0)
+draw_center = false
 border_width_left = 1
 border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
-border_color = Color(0.0588235, 0.117647, 0.301961, 1)
+border_color = Color(0.105882, 0.14902, 0.301961, 1)
 corner_radius_top_right = 6
 corner_radius_bottom_right = 6
 corner_detail = 16
@@ -25,12 +25,12 @@ content_margin_left = 3.0
 content_margin_top = 2.0
 content_margin_right = 2.0
 content_margin_bottom = 0.0
-bg_color = Color(0, 0, 0, 0)
+draw_center = false
 border_width_left = 1
 border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
-border_color = Color(0.0745098, 0.156863, 0.4, 1)
+border_color = Color(0.203922, 0.254902, 0.4, 1)
 corner_radius_top_right = 6
 corner_radius_bottom_right = 6
 corner_detail = 16
@@ -40,27 +40,12 @@ content_margin_left = 3.0
 content_margin_top = 2.0
 content_margin_right = 2.0
 content_margin_bottom = 0.0
-bg_color = Color(0, 0, 0, 0)
+draw_center = false
 border_width_left = 1
 border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
-border_color = Color(0.6, 0.8, 1, 1)
-corner_radius_top_right = 6
-corner_radius_bottom_right = 6
-corner_detail = 16
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_16ktf"]
-content_margin_left = 3.0
-content_margin_top = 2.0
-content_margin_right = 2.0
-content_margin_bottom = 0.0
-bg_color = Color(0, 0, 0, 0)
-border_width_left = 1
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.121569, 0.121569, 0.14902, 1)
+border_color = Color(0.541176, 0.721569, 0.901961, 1)
 corner_radius_top_right = 6
 corner_radius_bottom_right = 6
 corner_detail = 16
@@ -88,7 +73,6 @@ mouse_default_cursor_shape = 2
 theme_override_styles/normal = SubResource("StyleBoxFlat_fpguh")
 theme_override_styles/hover = SubResource("StyleBoxFlat_r5acu")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_5n6p7")
-theme_override_styles/disabled = SubResource("StyleBoxFlat_16ktf")
 
 [node name="ColorPopup" type="Popup" parent="."]
 transparent_bg = true
