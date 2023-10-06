@@ -113,7 +113,7 @@ border_width_left = 2
 border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
-border_color = Color(0.3, 0.45, 0.6, 1)
+border_color = Color(0.301961, 0.45098, 0.6, 1)
 corner_radius_top_left = 6
 corner_radius_top_right = 6
 corner_radius_bottom_right = 6
@@ -163,7 +163,7 @@ corner_detail = 16
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ichfn"]
 content_margin_left = 5.0
-bg_color = Color(0.062, 0.062, 0.1, 1)
+bg_color = Color(0.0627451, 0.0627451, 0.101961, 1)
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2

@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://cpvtf3kaa2ltr"]
 
-[ext_resource type="Script" path="res://src/interface_elements/color_swatch.gd" id="1_2b2yq"]
+[ext_resource type="Script" path="res://src/inspector_elements/color_swatch.gd" id="1_2b2yq"]
 [ext_resource type="Texture2D" uid="uid://c68og6bsqt0lb" path="res://visual/Checkerboard.svg" id="2_f4i7i"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_i5pvy"]

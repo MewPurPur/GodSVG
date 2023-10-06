@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=3 uid="uid://d2da0thyq5rq8"]
 
-[ext_resource type="Script" path="res://src/interface_elements/enum_field.gd" id="1_vkd5r"]
+[ext_resource type="Script" path="res://src/inspector_elements/enum_field.gd" id="1_vkd5r"]
 [ext_resource type="Texture2D" uid="uid://coda6chhcatal" path="res://visual/icons/Down.svg" id="2_3cosj"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fpguh"]
@@ -58,10 +58,8 @@ layout_mode = 2
 theme_override_constants/separation = 0
 
 [node name="LineEdit" type="LineEdit" parent="MainLine"]
-custom_minimum_size = Vector2(72, 0)
+custom_minimum_size = Vector2(56, 0)
 layout_mode = 2
-alignment = 1
-editable = false
 context_menu_enabled = false
 select_all_on_focus = true
 caret_blink = true
@@ -95,4 +93,6 @@ theme_override_constants/margin_bottom = 8
 unique_name_in_owner = true
 layout_mode = 2
 
+[connection signal="text_changed" from="MainLine/LineEdit" to="." method="_on_line_edit_text_changed"]
+[connection signal="text_submitted" from="MainLine/LineEdit" to="." method="_on_line_edit_text_submitted"]
 [connection signal="pressed" from="MainLine/Button" to="." method="_on_button_pressed"]

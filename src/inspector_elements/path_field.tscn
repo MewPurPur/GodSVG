@@ -1,9 +1,9 @@
 [gd_scene load_steps=11 format=3 uid="uid://dqy5lv33sy5r7"]
 
-[ext_resource type="Script" path="res://src/interface_elements/path_field.gd" id="1_0jjls"]
-[ext_resource type="Texture2D" uid="uid://coda6chhcatal" path="res://visual/icons/Down.svg" id="2_sdndd"]
-[ext_resource type="Script" path="res://src/interface_elements/path_popup.gd" id="3_e1ate"]
-[ext_resource type="Script" path="res://src/interface_elements/path_command_button.gd" id="4_rvfn1"]
+[ext_resource type="Script" path="res://src/inspector_elements/path_field.gd" id="1_enb3p"]
+[ext_resource type="Texture2D" uid="uid://coda6chhcatal" path="res://visual/icons/Down.svg" id="2_mjare"]
+[ext_resource type="Script" path="res://src/inspector_elements/path_popup.gd" id="3_ocxcs"]
+[ext_resource type="Script" path="res://src/inspector_elements/path_command_button.gd" id="4_ej4hf"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fpguh"]
 content_margin_left = 3.0
@@ -98,7 +98,7 @@ corner_detail = 2
 [node name="PathField" type="VBoxContainer"]
 offset_right = 177.0
 offset_bottom = 26.0
-script = ExtResource("1_0jjls")
+script = ExtResource("1_enb3p")
 
 [node name="MainLine" type="HBoxContainer" parent="."]
 custom_minimum_size = Vector2(0, 22)
@@ -108,7 +108,7 @@ theme_override_constants/separation = 0
 [node name="LineEdit" type="LineEdit" parent="MainLine"]
 custom_minimum_size = Vector2(240, 0)
 layout_mode = 2
-editable = false
+tooltip_text = "d"
 context_menu_enabled = false
 select_all_on_focus = true
 caret_blink = true
@@ -120,7 +120,7 @@ mouse_default_cursor_shape = 2
 theme_override_styles/normal = SubResource("StyleBoxFlat_fpguh")
 theme_override_styles/hover = SubResource("StyleBoxFlat_r5acu")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_5n6p7")
-icon = ExtResource("2_sdndd")
+icon = ExtResource("2_mjare")
 
 [node name="Commands" type="VBoxContainer" parent="."]
 layout_mode = 2
@@ -128,7 +128,7 @@ layout_mode = 2
 [node name="PathPopup" type="Popup" parent="."]
 transparent_bg = true
 size = Vector2i(269, 361)
-script = ExtResource("3_e1ate")
+script = ExtResource("3_ocxcs")
 
 [node name="PanelContainer" type="PanelContainer" parent="PathPopup"]
 custom_minimum_size = Vector2(106, 0)
@@ -160,7 +160,7 @@ theme_override_styles/hover = SubResource("StyleBoxFlat_h3qkf")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_37g7w")
 text = "Move to"
 alignment = 0
-script = ExtResource("4_rvfn1")
+script = ExtResource("4_ej4hf")
 command_char = "M"
 
 [node name="L" type="Button" parent="PathPopup/PanelContainer/MarginContainer/MainContainer"]
@@ -171,7 +171,7 @@ theme_override_styles/hover = SubResource("StyleBoxFlat_h3qkf")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_37g7w")
 text = "Line to"
 alignment = 0
-script = ExtResource("4_rvfn1")
+script = ExtResource("4_ej4hf")
 command_char = "L"
 
 [node name="H" type="Button" parent="PathPopup/PanelContainer/MarginContainer/MainContainer"]
@@ -182,7 +182,7 @@ theme_override_styles/hover = SubResource("StyleBoxFlat_h3qkf")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_37g7w")
 text = "Horizontal Line to"
 alignment = 0
-script = ExtResource("4_rvfn1")
+script = ExtResource("4_ej4hf")
 command_char = "H"
 
 [node name="V" type="Button" parent="PathPopup/PanelContainer/MarginContainer/MainContainer"]
@@ -193,7 +193,7 @@ theme_override_styles/hover = SubResource("StyleBoxFlat_h3qkf")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_37g7w")
 text = "Vertical Line to"
 alignment = 0
-script = ExtResource("4_rvfn1")
+script = ExtResource("4_ej4hf")
 command_char = "V"
 
 [node name="Z" type="Button" parent="PathPopup/PanelContainer/MarginContainer/MainContainer"]
@@ -204,7 +204,7 @@ theme_override_styles/hover = SubResource("StyleBoxFlat_h3qkf")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_37g7w")
 text = "Close path"
 alignment = 0
-script = ExtResource("4_rvfn1")
+script = ExtResource("4_ej4hf")
 command_char = "Z"
 
 [node name="A" type="Button" parent="PathPopup/PanelContainer/MarginContainer/MainContainer"]
@@ -215,7 +215,7 @@ theme_override_styles/hover = SubResource("StyleBoxFlat_h3qkf")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_37g7w")
 text = "Elliptical arc to"
 alignment = 0
-script = ExtResource("4_rvfn1")
+script = ExtResource("4_ej4hf")
 command_char = "A"
 
 [node name="Q" type="Button" parent="PathPopup/PanelContainer/MarginContainer/MainContainer"]
@@ -226,7 +226,7 @@ theme_override_styles/hover = SubResource("StyleBoxFlat_h3qkf")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_37g7w")
 text = "Quadratic Bezier to"
 alignment = 0
-script = ExtResource("4_rvfn1")
+script = ExtResource("4_ej4hf")
 command_char = "Q"
 
 [node name="T" type="Button" parent="PathPopup/PanelContainer/MarginContainer/MainContainer"]
@@ -237,7 +237,7 @@ theme_override_styles/hover = SubResource("StyleBoxFlat_h3qkf")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_37g7w")
 text = "Shorthand Quadratic Bezier to"
 alignment = 0
-script = ExtResource("4_rvfn1")
+script = ExtResource("4_ej4hf")
 command_char = "T"
 
 [node name="C" type="Button" parent="PathPopup/PanelContainer/MarginContainer/MainContainer"]
@@ -248,7 +248,7 @@ theme_override_styles/hover = SubResource("StyleBoxFlat_h3qkf")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_37g7w")
 text = "Cubic Bezier to"
 alignment = 0
-script = ExtResource("4_rvfn1")
+script = ExtResource("4_ej4hf")
 command_char = "C"
 
 [node name="S" type="Button" parent="PathPopup/PanelContainer/MarginContainer/MainContainer"]
@@ -259,8 +259,9 @@ theme_override_styles/hover = SubResource("StyleBoxFlat_h3qkf")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_37g7w")
 text = "Shorthand Cubic Bezier to"
 alignment = 0
-script = ExtResource("4_rvfn1")
+script = ExtResource("4_ej4hf")
 command_char = "S"
 
+[connection signal="text_submitted" from="MainLine/LineEdit" to="." method="_on_line_edit_text_submitted"]
 [connection signal="pressed" from="MainLine/Button" to="." method="_on_button_pressed"]
 [connection signal="path_command_picked" from="PathPopup" to="." method="_on_path_command_picked"]

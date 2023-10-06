@@ -1,0 +1,30 @@
+[gd_scene load_steps=4 format=3 uid="uid://dcdrc3r60bgg3"]
+
+[ext_resource type="Script" path="res://src/inspector_elements/path_command_editor.gd" id="1_sxylw"]
+[ext_resource type="FontFile" uid="uid://c7ury252fql35" path="res://visual/CodeFont.ttf" id="2_32brs"]
+[ext_resource type="Texture2D" uid="uid://lpv1kxrwexmi" path="res://visual/icons/SmallCross.svg" id="3_gal4o"]
+
+[node name="PathCommandEditor" type="HBoxContainer"]
+offset_right = 14.0
+offset_bottom = 21.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+script = ExtResource("1_sxylw")
+
+[node name="RelativeButton" type="Button" parent="."]
+custom_minimum_size = Vector2(20, 0)
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_fonts/font = ExtResource("2_32brs")
+theme_override_font_sizes/font_size = 11
+text = "M"
+
+[node name="Fields" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="DeleteButton" type="Button" parent="."]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+icon = ExtResource("3_gal4o")
+
+[connection signal="pressed" from="RelativeButton" to="." method="_on_relative_button_pressed"]

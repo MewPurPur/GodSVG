@@ -4,7 +4,7 @@ extends HBoxContainer
 @onready var error_bar: PanelContainer = $CodeEdit/ErrorContainer
 @onready var error_label: RichTextLabel = $CodeEdit/ErrorContainer/Padding/ErrorLabel
 
-const SVGImport := preload("res://src/interface_elements/svg_import.tscn")
+const SVGImport := preload("svg_import.tscn")
 
 func _ready() -> void:
 	SVG.parsing_finished.connect(update_error)

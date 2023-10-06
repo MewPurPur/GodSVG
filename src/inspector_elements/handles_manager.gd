@@ -10,7 +10,7 @@ func _ready() -> void:
 	SVG.data.changed_unknown.connect(full_update)
 
 func full_update() -> void:
-	# Draw a SVG out of the shapes
+	# Draw a SVG out of the shapes.
 	var w := SVG.data.w
 	var h := SVG.data.h
 	var svg := '<svg width="{w}" height="{h}" viewBox="0 0 {w} {h}"'.format(
@@ -33,19 +33,38 @@ func update_handles() -> void:
 	handles.clear()
 	for tag in SVG.data.tags:
 		if tag is SVGTagCircle:
-			var handle := Handle.new(tag.attributes.cx, tag.attributes.cy)
+			var handle := XYHandle.new(tag.attributes.cx, tag.attributes.cy)
 			handles.append(handle)
 		if tag is SVGTagEllipse:
-			var handle := Handle.new(tag.attributes.cx, tag.attributes.cy)
+			var handle := XYHandle.new(tag.attributes.cx, tag.attributes.cy)
 			handles.append(handle)
 		if tag is SVGTagRect:
-			var handle := Handle.new(tag.attributes.x, tag.attributes.y)
+			var handle := XYHandle.new(tag.attributes.x, tag.attributes.y)
 			handles.append(handle)
+		if tag is SVGTagPath:
+			var path_data := PathCommandArray.new()
+			path_data.data = PathDataParser.parse_path_data(tag.attributes.d.value)
+			for idx in path_data.get_count():
+				if path_data.get_command(idx).command_char.to_upper() != "Z":
+					var handle := PathHandle.new(tag.attributes.d, idx)
+					handles.append(handle)
 
 func sync_handles():
-	for handle in handles:
-		handle.sync()
-		queue_redraw()
+	for handle_idx in range(handles.size() - 1, -1, -1):
+		var handle := handles[handle_idx]
+		if handle is XYHandle:
+			handle.sync()
+		else:
+			handles.remove_at(handle_idx)
+	for tag in SVG.data.tags:
+		if tag is SVGTagPath:
+			var path_data := PathCommandArray.new()
+			path_data.data = PathDataParser.parse_path_data(tag.attributes.d.value)
+			for idx in path_data.get_count():
+				if path_data.get_command(idx).command_char.to_upper() != "Z":
+					var handle := PathHandle.new(tag.attributes.d, idx)
+					handles.append(handle)
+	queue_redraw()
 
 func _draw() -> void:
 	for handle in handles:
@@ -69,10 +88,7 @@ func _on_gui_input(event: InputEvent) -> void:
 			if handle.dragged:
 				var old_pos := handle.pos
 				handle.set_pos(canvas_to_coords(event.position))
-				if old_pos.x != handle.pos.x:
-					handle.moved_x.emit(handle.pos.x)
-				if old_pos.y != handle.pos.y:
-					handle.moved_y.emit(handle.pos.y)
+				handle.moved.emit(handle.pos)
 				accept_event()
 		var picked_hover := false
 		for handle in handles:
@@ -97,7 +113,3 @@ func _on_gui_input(event: InputEvent) -> void:
 				if handle.dragged:
 					handle.dragged = false
 					queue_redraw()
-
-func pos_to_cx_and_cy(pos: Vector2, tag: SVGTag) -> void:
-	tag.attributes.cx.value = pos.x
-	tag.attributes.cy.value = pos.y
