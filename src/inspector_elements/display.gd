@@ -4,7 +4,9 @@ extends VBoxContainer
 @onready var zoom_reset_button: Button = %ZoomReset
 @onready var display: TextureRect = %Checkerboard
 @onready var controls: TextureRect = %Checkerboard/Controls
+@onready var grid_button: Button = %LeftMenu/GridVisible
 @onready var grid_popup: Popup = %LeftMenu/GridPopup
+@onready var more_button: Button = %LeftMenu/MoreOptions
 @onready var more_popup: Popup = %LeftMenu/MorePopup
 
 const minimum_visible_proportion := 0.2
@@ -77,7 +79,8 @@ func _on_settings_pressed() -> void:
 	get_tree().get_root().add_child(settings_menu_instance)
 
 func _on_grid_visible_pressed() -> void:
-	grid_popup.popup()
+	grid_popup.popup(Utils.calculate_popup_rect(
+			grid_button.global_position, grid_button.size, grid_popup.size, true))
 
 func _on_more_options_pressed() -> void:
 	# Add the options the first time this is clicked.
@@ -88,7 +91,8 @@ func _on_more_options_pressed() -> void:
 		butt.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 		more_popup.add_button(butt, true, true)
 		butt.pressed.connect(open_godsvg_repo)
-	more_popup.popup()
+	more_popup.popup(Utils.calculate_popup_rect(
+			more_button.global_position, more_button.size, more_popup.size, true))
 
 func open_godsvg_repo() -> void:
 	OS.shell_open("https://github.com/MewPurPur/GodSVG")
