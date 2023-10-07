@@ -32,8 +32,8 @@ func _on_value_changed(new_value: String) -> void:
 		attribute.value = new_value
 
 func _on_button_pressed() -> void:
-	command_picker.popup(Rect2(global_position + Vector2(0, line_edit.size.y),
-			command_picker.size))
+	command_picker.popup(Utils.calculate_popup_rect(
+			line_edit.global_position, line_edit.size, command_picker.size))
 
 func _on_path_command_picked(new_command: String) -> void:
 	commands.add_command(new_command)

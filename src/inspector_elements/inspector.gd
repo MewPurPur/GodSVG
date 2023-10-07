@@ -2,7 +2,7 @@ extends VBoxContainer
 
 const TagEditor = preload("tag_editor.tscn")
 
-@onready var shapes: VBoxContainer = $VBoxContainer/ScrollContainer/Shapes
+@onready var shapes: VBoxContainer = %Shapes
 
 func _ready() -> void:
 	SVG.data.resized.connect(update_viewbox)

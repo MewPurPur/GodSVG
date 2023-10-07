@@ -27,8 +27,8 @@ func _ready() -> void:
 	indicator.tooltip_text = attribute_name
 
 func _on_button_pressed() -> void:
-	value_picker.popup(Rect2(global_position + Vector2(0, size.y), size))
-
+	value_picker.popup(Utils.calculate_popup_rect(
+			indicator.global_position, indicator.size, value_picker.size))
 
 func _on_option_pressed(option: String) -> void:
 	value_picker.hide()
