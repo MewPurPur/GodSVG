@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://ccynisiuyn5qn"]
+[gd_scene load_steps=10 format=3 uid="uid://ccynisiuyn5qn"]
 
 [ext_resource type="Script" path="res://src/inspector_elements/inspector.gd" id="1_16ggy"]
 [ext_resource type="Script" path="res://src/inspector_elements/view_box_edit.gd" id="2_osq0a"]
@@ -8,6 +8,18 @@
 [ext_resource type="Texture2D" uid="uid://c8t8eiojuwjje" path="res://visual/icons/Ellipse.svg" id="6_komru"]
 [ext_resource type="Texture2D" uid="uid://cso2l5nvm6gm" path="res://visual/icons/Rect.svg" id="7_hdyp6"]
 [ext_resource type="Texture2D" uid="uid://xpm1e34xuk06" path="res://visual/icons/Path.svg" id="8_6tgkl"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4j4hv"]
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.0980392, 0.0980392, 0.14902, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
 
 [node name="Inspector" type="VBoxContainer"]
 size_flags_horizontal = 3
@@ -71,10 +83,19 @@ layout_mode = 2
 size_flags_vertical = 3
 horizontal_scroll_mode = 0
 
-[node name="Shapes" type="VBoxContainer" parent="VBoxContainer/ScrollContainer"]
+[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer/ScrollContainer"]
+clip_contents = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_4j4hv")
+
+[node name="Shapes" type="VBoxContainer" parent="VBoxContainer/ScrollContainer/PanelContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 5
 
 [connection signal="gui_input" from="." to="." method="_on_gui_input"]
 [connection signal="view_box_changed" from="MainConfiguration/ViewBoxEdit" to="." method="_change_view_box"]

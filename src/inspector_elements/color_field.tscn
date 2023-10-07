@@ -76,11 +76,10 @@ theme_override_styles/pressed = SubResource("StyleBoxFlat_5n6p7")
 
 [node name="ColorPopup" type="Popup" parent="."]
 transparent_bg = true
-size = Vector2i(150, 142)
+size = Vector2i(150, 220)
 script = ExtResource("2_hgyyv")
 
 [node name="PanelContainer" type="PanelContainer" parent="ColorPopup"]
-custom_minimum_size = Vector2(150, 0)
 offset_right = 150.0
 offset_bottom = 142.0
 

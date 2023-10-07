@@ -21,6 +21,8 @@ func add_button(butt: Button, top_corners := false, bottom_corners := false) -> 
 	butt.add_theme_stylebox_override(&"hover", hover_stylebox)
 	butt.add_theme_stylebox_override(&"pressed", pressed_stylebox)
 	main_container.add_child(butt)
+	reset_size()
+	
 
 func get_button_count() -> int:
 	return main_container.get_child_count()

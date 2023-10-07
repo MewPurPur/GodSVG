@@ -33,17 +33,8 @@ func _on_value_changed(new_value: String) -> void:
 		attribute.value = new_value
 
 func _on_button_pressed() -> void:
-	var screen_h := get_viewport_rect().size.y * get_viewport_transform().get_scale().y
-	var color_edit_pos := color_edit.global_position
-	var color_edit_h := color_edit.size.y
-	var color_picker_h := color_picker.size.y
-	if color_edit_pos.y + color_edit_h + color_picker_h < screen_h and\
-	not color_edit_pos.y + color_edit_h / 2 < screen_h:
-		color_picker.popup(Rect2(color_edit_pos +\
-				Vector2(0, color_edit_h), color_picker.size))
-	else:
-		color_picker.popup(Rect2(color_edit_pos -\
-				Vector2(0, color_picker_h), color_picker.size))
+	color_picker.popup(Utils.calculate_popup_rect(
+			color_edit.global_position, color_edit.size, color_picker.size))
 
 func _draw() -> void:
 	var button_size := color_button.get_size()
@@ -54,7 +45,7 @@ func _draw() -> void:
 	stylebox.corner_radius_bottom_right = 5
 	stylebox.bg_color = Color.from_string(value, Color(0, 0, 0, 0))
 	draw_texture(checkerboard, Vector2.ZERO)
-	draw_style_box(stylebox, Rect2(Vector2.ZERO, button_size - Vector2(2, 2)))
+	draw_style_box(stylebox, Rect2(Vector2.ZERO, button_size - Vector2(1, 2)))
 
 
 # Hacks to make LineEdit bearable.
