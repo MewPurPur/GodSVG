@@ -9,6 +9,7 @@ func _ready() -> void:
 	SVG.data.tag_deleted.connect(queue_update)
 	SVG.data.tag_moved.connect(queue_update)
 	SVG.data.changed_unknown.connect(queue_update)
+	queue_update()
 
 func queue_update() -> void:
 	update_pending = true

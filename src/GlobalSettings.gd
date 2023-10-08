@@ -52,10 +52,6 @@ func _enter_tree() -> void:
 	load_user_data()
 	if save_window_mode:
 		DisplayServer.window_set_mode(save_data.window_mode)
-	await get_tree().process_frame
-	if save_svg:
-		SVG.string = save_data.svg
-		SVG.sync_data()
 
 
 func load_settings() -> void:
