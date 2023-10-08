@@ -78,19 +78,19 @@ tooltip_text = "Add path"
 mouse_default_cursor_shape = 2
 icon = ExtResource("8_6tgkl")
 
-[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer"]
-layout_mode = 2
-size_flags_vertical = 3
-horizontal_scroll_mode = 0
-
-[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer/ScrollContainer"]
+[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer"]
 clip_contents = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_4j4hv")
 
-[node name="Shapes" type="VBoxContainer" parent="VBoxContainer/ScrollContainer/PanelContainer"]
+[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer/PanelContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="Shapes" type="VBoxContainer" parent="VBoxContainer/PanelContainer/ScrollContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3

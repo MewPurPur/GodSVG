@@ -9,15 +9,19 @@ var selected_tag_idx: int
 
 signal parsing_finished(err_text: String)
 
-
 func _ready() -> void:
-	sync_string()
+	SVG.data.changed_unknown.connect(sync_string)
 	SVG.data.resized.connect(sync_string)
 	SVG.data.attribute_changed.connect(sync_string)
 	SVG.data.tag_added.connect(sync_string)
 	SVG.data.tag_deleted.connect(sync_string)
 	SVG.data.tag_moved.connect(sync_string)
-	SVG.data.changed_unknown.connect(sync_string)
+	
+	if GlobalSettings.save_svg:
+		string = GlobalSettings.save_data.svg
+		sync_data()
+	else:
+		sync_string()
 
 func sync_string() -> void:
 	tags_to_string()
@@ -27,7 +31,6 @@ func sync_data() -> void:
 	parsing_finished.emit(error_text)
 	if error_text.is_empty():
 		string_to_tags()
-		data.changed_unknown.emit()
 
 
 func tags_to_string() -> void:

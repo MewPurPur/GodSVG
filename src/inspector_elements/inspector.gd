@@ -10,6 +10,7 @@ func _ready() -> void:
 	SVG.data.tag_moved.connect(full_rebuild)
 	SVG.data.tag_deleted.connect(full_rebuild)
 	SVG.data.changed_unknown.connect(full_rebuild)
+	full_rebuild()
 
 
 func update_viewbox() -> void:
