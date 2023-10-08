@@ -13,6 +13,7 @@ func _ready() -> void:
 	SVG.data.tag_added.connect(full_update)
 	SVG.data.tag_deleted.connect(full_update)
 	SVG.data.changed_unknown.connect(full_update)
+	full_update()
 
 func full_update() -> void:
 	# Draw a SVG out of the shapes.

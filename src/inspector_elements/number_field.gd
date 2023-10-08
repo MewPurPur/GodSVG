@@ -117,6 +117,11 @@ func setup_spinners_state() -> void:
 	spinner_set_disabled(down, value <= min_value or value > max_value)
 	spinner_set_disabled(up, value >= max_value or value < min_value)
 
+func add_tooltip(text: String) -> void:
+	if num_edit == null:
+		await ready
+	num_edit.tooltip_text = text
+
 
 # Common setups
 

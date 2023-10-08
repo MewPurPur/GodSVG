@@ -71,6 +71,11 @@ func rebuild_commands() -> void:
 			field_rx.value = command.rx
 			field_ry.value = command.ry
 			field_rot.value = command.rot
+			field_rx.add_tooltip("rx")
+			field_ry.add_tooltip("ry")
+			field_rot.add_tooltip("rot")
+			field_large_arc_flag.tooltip_text = "large_arc_flag"
+			field_sweep_flag.tooltip_text = "sweep_flag"
 			field_rx.value_changed.connect(_update_command_value.bind(command_idx, &"rx"))
 			field_ry.value_changed.connect(_update_command_value.bind(command_idx, &"ry"))
 			field_rot.value_changed.connect(_update_command_value.bind(command_idx, &"rot"))
@@ -89,6 +94,8 @@ func rebuild_commands() -> void:
 			field_y1.remove_limits()
 			field_x1.value = command.x1
 			field_y1.value = command.y1
+			field_x1.add_tooltip("x1")
+			field_y1.add_tooltip("y1")
 			field_x1.value_changed.connect(_update_command_value.bind(command_idx, &"x1"))
 			field_y1.value_changed.connect(_update_command_value.bind(command_idx, &"y1"))
 		if command_type == "C" or command_type == "S":
@@ -102,6 +109,8 @@ func rebuild_commands() -> void:
 			field_y2.remove_limits()
 			field_x2.value = command.x2
 			field_y2.value = command.y2
+			field_x2.add_tooltip("x2")
+			field_y2.add_tooltip("y2")
 			field_x2.value_changed.connect(_update_command_value.bind(command_idx, &"x2"))
 			field_y2.value_changed.connect(_update_command_value.bind(command_idx, &"y2"))
 		if command_type != "Z" and command_type != "V":
@@ -110,6 +119,7 @@ func rebuild_commands() -> void:
 			field_x.min_value = -1024
 			field_x.remove_limits()
 			field_x.value = command.x
+			field_x.add_tooltip("x")
 			field_x.value_changed.connect(_update_command_value.bind(command_idx, &"x"))
 		if command_type != "Z" and command_type != "H":
 			var field_y: Control = command_editor.add_number_field()
@@ -117,6 +127,7 @@ func rebuild_commands() -> void:
 			field_y.min_value = -1024
 			field_y.remove_limits()
 			field_y.value = command.y
+			field_y.add_tooltip("y")
 			field_y.value_changed.connect(_update_command_value.bind(command_idx, &"y"))
 		commands_container.add_child(command_editor)
 		command_editor.relative_button.pressed.connect(toggle_relative.bind(command_idx))
