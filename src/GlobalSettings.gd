@@ -6,7 +6,7 @@ var save_data := SaveData.new()
 const config_path = "user://config.tres"
 var config := ConfigFile.new()
 
-# Don't have the language setting here, so it's not reset
+# Don't have the language setting here, so it's not reset.
 const default_config = {
 	"session": {
 		"save_svg": true,

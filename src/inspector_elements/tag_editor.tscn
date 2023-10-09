@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://src/inspector_elements/tag_editor.gd" id="1_7i0c4"]
 [ext_resource type="FontFile" uid="uid://c7ury252fql35" path="res://visual/CodeFont.ttf" id="2_0lxvf"]
-[ext_resource type="Texture2D" uid="uid://bywp6c8s6meq1" path="res://visual/icons/Cross.svg" id="3_1jsup"]
+[ext_resource type="Texture2D" uid="uid://cj5x2ti8150ja" path="res://visual/icons/Delete.svg" id="3_vw87v"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_s1ahg"]
 bg_color = Color(0.6, 0.8, 1, 0.0980392)
@@ -20,9 +20,9 @@ corner_radius_bottom_left = 4
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xmwqw"]
 content_margin_left = 4.0
-content_margin_top = 6.0
+content_margin_top = 5.0
 content_margin_right = 4.0
-content_margin_bottom = 6.0
+content_margin_bottom = 5.0
 bg_color = Color(0.129412, 0.129412, 0.2, 1)
 border_width_left = 2
 border_width_top = 2
@@ -91,11 +91,12 @@ layout_mode = 2
 size_flags_horizontal = 3
 
 [node name="CloseButton" type="Button" parent="MarginContainer/HBoxContainer"]
+texture_filter = 2
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 4
 mouse_default_cursor_shape = 2
-icon = ExtResource("3_1jsup")
+icon = ExtResource("3_vw87v")
 
 [connection signal="gui_input" from="." to="." method="_on_gui_input"]
 [connection signal="pressed" from="MarginContainer/HBoxContainer/CloseButton" to="." method="_on_close_button_pressed"]
