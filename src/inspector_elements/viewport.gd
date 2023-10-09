@@ -54,16 +54,16 @@ func center_frame() -> void:
 	display.position = (size / zoom_level - display.size) / 2.0
 
 
-func _gui_input(event: InputEvent) -> void:
+func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion and event.button_mask == MOUSE_BUTTON_MASK_LEFT:
-		display.position += event.relative / zoom_level
+		display.position += event.relative
 		clamp_view()
 	
 	if event is InputEventPanGesture:
 		if event.ctrl_pressed:
 			zoom_level *= 1 + event.delta.y / 2
 		else:
-			display.position -= event.delta * 32 / zoom_level
+			display.position -= event.delta * 32
 			clamp_view()
 	
 	if event is InputEventMagnifyGesture:
