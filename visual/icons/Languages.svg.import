@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bywp6c8s6meq1"
-path="res://.godot/imported/Cross.svg-1addab1622bb50a6f721b72bae14687f.ctex"
+uid="uid://c528knojuxbw6"
+path="res://.godot/imported/Languages.svg-3edf7294fd0402c1da641f8f9a267120.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://visual/icons/Cross.svg"
-dest_files=["res://.godot/imported/Cross.svg-1addab1622bb50a6f721b72bae14687f.ctex"]
+source_file="res://visual/icons/Languages.svg"
+dest_files=["res://.godot/imported/Languages.svg-3edf7294fd0402c1da641f8f9a267120.ctex"]
 
 [params]
 

@@ -4,6 +4,7 @@ func _init() -> void:
 	title = "path"
 	attributes = {
 		"d": SVGAttribute.new(SVGAttribute.Type.PATHDATA, ""),
+		"opacity": SVGAttribute.new(SVGAttribute.Type.NFLOAT, 1.0),
 		"fill": SVGAttribute.new(SVGAttribute.Type.COLOR, "#000"),
 		"fill-opacity": SVGAttribute.new(SVGAttribute.Type.NFLOAT, 1.0),
 		"stroke": SVGAttribute.new(SVGAttribute.Type.COLOR, "none"),

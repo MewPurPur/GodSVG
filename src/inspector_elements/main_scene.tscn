@@ -29,11 +29,13 @@ keyword_colors = {
 "circle": Color(1, 0.54902, 0.8, 1),
 "cx": Color(0.737255, 0.878431, 1, 1),
 "cy": Color(0.737255, 0.878431, 1, 1),
+"d": Color(0.737255, 0.878431, 1, 1),
 "ellipse": Color(1, 0.54902, 0.8, 1),
 "fill": Color(0.737255, 0.878431, 1, 1),
 "g": Color(1, 0.54902, 0.8, 1),
 "height": Color(0.737255, 0.878431, 1, 1),
 "linearGradient": Color(1, 0.54902, 0.8, 1),
+"opacity": Color(0.737255, 0.878431, 1, 1),
 "path": Color(1, 0.54902, 0.8, 1),
 "radialGradient": Color(1, 0.54902, 0.8, 1),
 "rect": Color(1, 0.54902, 0.8, 1),
@@ -325,4 +327,3 @@ script = ExtResource("5_pltvx")
 [connection signal="pressed" from="Display/PanelContainer/MarginContainer/HBoxContainer/ZoomMenu/ZoomOut" to="Display/ViewportContainer/Viewport" method="zoom_out"]
 [connection signal="pressed" from="Display/PanelContainer/MarginContainer/HBoxContainer/ZoomMenu/ZoomReset" to="Display/ViewportContainer/Viewport" method="zoom_reset"]
 [connection signal="pressed" from="Display/PanelContainer/MarginContainer/HBoxContainer/ZoomMenu/ZoomIn" to="Display/ViewportContainer/Viewport" method="zoom_in"]
-[connection signal="gui_input" from="Display/ViewportContainer" to="Display/ViewportContainer/Viewport" method="_gui_input"]
