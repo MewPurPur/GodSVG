@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3 uid="uid://ce6j54x27pom"]
+[gd_scene load_steps=27 format=3 uid="uid://ce6j54x27pom"]
 
 [ext_resource type="PackedScene" uid="uid://ccynisiuyn5qn" path="res://src/inspector_elements/inspector.tscn" id="1_afxvd"]
 [ext_resource type="Texture2D" uid="uid://ccvjkdd0s7rb4" path="res://visual/icons/Copy.svg" id="1_fm0ux"]
@@ -15,6 +15,7 @@
 [ext_resource type="Texture2D" uid="uid://kkxyv1gyrjgj" path="res://visual/icons/Snap.svg" id="9_ojv7n"]
 [ext_resource type="PackedScene" uid="uid://wp77eqhikp6k" path="res://src/inspector_elements/context_popup.tscn" id="10_hraj8"]
 [ext_resource type="Shader" path="res://src/inspector_elements/zoom_shader.gdshader" id="12_wewnk"]
+[ext_resource type="Script" path="res://src/inspector_elements/snap_lines.gd" id="15_v2yj8"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_082e3"]
 bg_color = Color(0.016, 0.016, 0.08, 1)
@@ -34,6 +35,7 @@ keyword_colors = {
 "fill": Color(0.737255, 0.878431, 1, 1),
 "g": Color(1, 0.54902, 0.8, 1),
 "height": Color(0.737255, 0.878431, 1, 1),
+"line": Color(1, 0.54902, 0.8, 1),
 "linearGradient": Color(1, 0.54902, 0.8, 1),
 "opacity": Color(0.737255, 0.878431, 1, 1),
 "path": Color(1, 0.54902, 0.8, 1),
@@ -49,8 +51,12 @@ keyword_colors = {
 "viewBox": Color(0.737255, 0.878431, 1, 1),
 "width": Color(0.737255, 0.878431, 1, 1),
 "x": Color(0.737255, 0.878431, 1, 1),
+"x1": Color(0.737255, 0.878431, 1, 1),
+"x2": Color(0.737255, 0.878431, 1, 1),
 "xmlns": Color(0.737255, 0.878431, 1, 1),
-"y": Color(0.737255, 0.878431, 1, 1)
+"y": Color(0.737255, 0.878431, 1, 1),
+"y1": Color(0.737255, 0.878431, 1, 1),
+"y2": Color(0.737255, 0.878431, 1, 1)
 }
 color_regions = {
 "\" \"": Color(0.631373, 1, 0.878431, 1)
@@ -277,6 +283,15 @@ size = Vector2i(600, 600)
 size_2d_override_stretch = true
 render_target_update_mode = 4
 script = ExtResource("6_7hypx")
+
+[node name="SnapLines" type="Control" parent="Display/ViewportContainer/Viewport"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("15_v2yj8")
 
 [node name="Checkerboard" type="TextureRect" parent="Display/ViewportContainer/Viewport"]
 unique_name_in_owner = true

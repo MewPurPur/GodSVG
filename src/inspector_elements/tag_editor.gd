@@ -1,6 +1,7 @@
 extends PanelContainer
 
-const shape_attributes = ["cx", "cy", "x", "y", "r", "rx", "ry", "width", "height", "d"]
+const shape_attributes = ["cx", "cy", "x", "y", "r", "rx", "ry", "width", "height", "d",
+		"x1", "y1", "x2", "y2"]
 
 const NumberField = preload("number_field.tscn")
 const ColorField = preload("color_field.tscn")

@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://ccynisiuyn5qn"]
+[gd_scene load_steps=11 format=3 uid="uid://ccynisiuyn5qn"]
 
 [ext_resource type="Script" path="res://src/inspector_elements/inspector.gd" id="1_16ggy"]
 [ext_resource type="Script" path="res://src/inspector_elements/view_box_edit.gd" id="2_osq0a"]
@@ -8,6 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://c8t8eiojuwjje" path="res://visual/icons/Ellipse.svg" id="6_komru"]
 [ext_resource type="Texture2D" uid="uid://cso2l5nvm6gm" path="res://visual/icons/Rect.svg" id="7_hdyp6"]
 [ext_resource type="Texture2D" uid="uid://xpm1e34xuk06" path="res://visual/icons/Path.svg" id="8_6tgkl"]
+[ext_resource type="Texture2D" uid="uid://bspse53b7syd4" path="res://visual/icons/Line.svg" id="9_p3em5"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4j4hv"]
 draw_center = false
@@ -78,6 +79,12 @@ tooltip_text = "Add path"
 mouse_default_cursor_shape = 2
 icon = ExtResource("8_6tgkl")
 
+[node name="Line" type="Button" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+tooltip_text = "Add line"
+mouse_default_cursor_shape = 2
+icon = ExtResource("9_p3em5")
+
 [node name="PanelContainer" type="PanelContainer" parent="VBoxContainer"]
 clip_contents = true
 layout_mode = 2
@@ -103,3 +110,4 @@ theme_override_constants/separation = 5
 [connection signal="pressed" from="VBoxContainer/HBoxContainer/Ellipse" to="." method="add_ellipse"]
 [connection signal="pressed" from="VBoxContainer/HBoxContainer/Rect" to="." method="add_rect"]
 [connection signal="pressed" from="VBoxContainer/HBoxContainer/Path" to="." method="add_path"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/Line" to="." method="add_line"]

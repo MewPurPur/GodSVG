@@ -2,7 +2,7 @@
 
 ![image](https://github.com/MewPurPur/GodSVG/assets/85438892/6d67cb13-4b18-40b6-8f04-08581f2017bc)
 
-GodSVG is an application in very early development built with Godot for creating optimal Scalable Vector Graphics (SVG) files. It is specifically designed for programmers, allowing them to easily edit individual SVG elements and view the corresponding code in real-time.
+GodSVG is an application in very early development built with Godot for creating optimized Scalable Vector Graphics (SVG) files. It is specifically designed for programmers, allowing them to easily edit individual SVG elements and view the corresponding code in real-time.
 GodSVG is inspired by the need for an editor for programmers that produces optimized SVG without using unnecessary attributes or metadata.
 
 ## Features
@@ -48,8 +48,8 @@ Contributions to GodSVG are very welcome! To do so, do the following:
 5. Push to the branch: `git push origin implement-gradients`
 6. Create a new pull request and describe your changes in detail.
 
-Since the app is in early development, tidiness is not of utmost importance, so feel free to use a different PR workflow (but the above is still preferable).
-To report bugs, use Github's issue form. If features are proposed, please provide a mock-up UI or implementation details.
+Since the app is in early development, tidiness is not as important as work being done, so feel free to use a different PR workflow you're comfortable with.
+To report bugs, use Github's issue form. Before contributing features, please make sure to first post a proposal in Issues and have it approved.
 
 ## License
 
