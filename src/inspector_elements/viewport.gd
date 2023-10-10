@@ -5,6 +5,7 @@ const max_zoom = 32.0
 const minimum_visible_proportion = 0.3
 
 @onready var display: TextureRect = $Checkerboard
+@onready var snap_lines: Control = $SnapLines
 @onready var main_node: VBoxContainer = %Display
 @onready var controls: TextureRect = $Checkerboard/Controls
 
@@ -55,6 +56,7 @@ func center_frame() -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
+	snap_lines.queue_redraw()
 	if event is InputEventMouseMotion and event.button_mask == MOUSE_BUTTON_MASK_LEFT:
 		display.position += event.relative
 		clamp_view()

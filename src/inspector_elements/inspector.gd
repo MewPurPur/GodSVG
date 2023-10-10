@@ -44,6 +44,9 @@ func add_rect() -> void:
 func add_path() -> void:
 	SVG.data.add_tag(SVGTagPath.new())
 
+func add_line() -> void:
+	SVG.data.add_tag(SVGTagLine.new())
+
 func _change_view_box(w: int, h: int) -> void:
 	SVG.data.w = w
 	SVG.data.h = h
