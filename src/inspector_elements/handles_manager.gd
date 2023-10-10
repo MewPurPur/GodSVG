@@ -47,6 +47,11 @@ func update_handles() -> void:
 		if tag is SVGTagRect:
 			var handle := XYHandle.new(tag.attributes.x, tag.attributes.y)
 			handles.append(handle)
+		if tag is SVGTagLine:
+			var handle1 := XYHandle.new(tag.attributes.x1, tag.attributes.y1)
+			var handle2 := XYHandle.new(tag.attributes.x2, tag.attributes.y2)
+			handles.append(handle1)
+			handles.append(handle2)
 		if tag is SVGTagPath:
 			var path_data := PathCommandArray.new()
 			path_data.data = PathDataParser.parse_path_data(tag.attributes.d.value)

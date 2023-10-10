@@ -4,7 +4,7 @@ signal attribute_changed
 signal resized
 signal tag_added
 signal tag_deleted
-signal tag_moved  # TODO
+signal tag_moved
 signal changed_unknown
 
 var w := 16.0:
@@ -40,3 +40,12 @@ func replace_tags(new_tags: Array[SVGTag]) -> void:
 func delete_tag(idx: int) -> void:
 	tags.remove_at(idx)
 	tag_deleted.emit()
+
+func move_tag(old_idx: int, new_idx: int) -> void:
+	var tag: SVGTag = tags.pop_at(old_idx)  # Should be inferrable, GDScript bug.
+	tags.insert(new_idx, tag)
+	tag_moved.emit()
+
+
+func get_tag_count() -> int:
+	return tags.size()
