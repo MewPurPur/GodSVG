@@ -1,6 +1,7 @@
 extends VBoxContainer
 
 const settings_menu = preload("settings_menu.tscn")
+const about_menu = preload("about_menu.tscn")
 
 @onready var zoom_reset_button: Button = %ZoomReset
 @onready var viewport: SubViewport = $ViewportContainer/Viewport
@@ -17,6 +18,7 @@ func update_zoom_label(zoom_level: float) -> void:
 
 
 func _on_settings_pressed() -> void:
+	more_popup.hide()
 	var settings_menu_instance := settings_menu.instantiate()
 	get_tree().get_root().add_child(settings_menu_instance)
 
@@ -27,14 +29,29 @@ func _on_grid_visible_pressed() -> void:
 func _on_more_options_pressed() -> void:
 	# Add the options the first time this is clicked.
 	if more_popup.get_button_count() == 0:
-		var butt := Button.new()
-		butt.text = "GodSVG repository"
-		butt.icon = load("res://visual/icons/Link.svg")
-		butt.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-		more_popup.add_button(butt, true, true)
-		butt.pressed.connect(open_godsvg_repo)
+		var open_repo_button := Button.new()
+		open_repo_button.text = "GodSVG repository"
+		open_repo_button.icon = load("res://visual/icons/Link.svg")
+		open_repo_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+		open_repo_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
+		more_popup.add_button(open_repo_button, true, false)
+		open_repo_button.pressed.connect(open_godsvg_repo)
+		var about_button := Button.new()
+		about_button.text = "About GodSVG"
+		about_button.icon = load("res://icon.png")
+		about_button.expand_icon = true
+		about_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+		about_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
+		more_popup.add_button(about_button, false, true)
+		about_button.pressed.connect(open_about)
 	more_popup.popup(Utils.calculate_popup_rect(
 			more_button.global_position, more_button.size, more_popup.size, true))
 
 func open_godsvg_repo() -> void:
+	more_popup.hide()
 	OS.shell_open("https://github.com/MewPurPur/GodSVG")
+
+func open_about() -> void:
+	more_popup.hide()
+	var about_menu_instance := about_menu.instantiate()
+	get_tree().get_root().add_child(about_menu_instance)

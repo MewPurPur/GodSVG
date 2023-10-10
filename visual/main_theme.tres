@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=22 format=3 uid="uid://der6fnkliqqto"]
+[gd_resource type="Theme" load_steps=27 format=3 uid="uid://der6fnkliqqto"]
 
 [ext_resource type="FontFile" uid="uid://c7ury252fql35" path="res://visual/CodeFont.ttf" id="1_ulxqy"]
 [ext_resource type="FontFile" uid="uid://bd8rlfqek8f8u" path="res://visual/Font.ttf" id="2_d11o4"]
@@ -161,6 +161,29 @@ corner_radius_bottom_right = 6
 corner_radius_bottom_left = 6
 corner_detail = 16
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7qkcb"]
+bg_color = Color(0.029, 0.0455667, 0.1, 1)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_kohom"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_r2aev"]
+content_margin_left = 12.0
+content_margin_right = 12.0
+bg_color = Color(0.0901961, 0.0901961, 0.2, 1)
+border_color = Color(0.203922, 0.254902, 0.4, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nhytu"]
+content_margin_left = 12.0
+content_margin_right = 12.0
+bg_color = Color(0.105882, 0.14902, 0.301961, 1)
+border_width_top = 2
+border_color = Color(0.541176, 0.721569, 0.901961, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_c7arg"]
+content_margin_left = 12.0
+content_margin_right = 12.0
+bg_color = Color(0.0705882, 0.0705882, 0.2, 1)
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ichfn"]
 content_margin_left = 5.0
 bg_color = Color(0.0627451, 0.0627451, 0.101961, 1)
@@ -245,6 +268,7 @@ expand_margin_bottom = 8.0
 default_font = ExtResource("2_d11o4")
 default_font_size = 16
 AcceptDialog/styles/panel = SubResource("StyleBoxFlat_i4np8")
+Button/constants/h_separation = 6
 Button/styles/disabled = SubResource("StyleBoxFlat_6glqg")
 Button/styles/focus = SubResource("StyleBoxEmpty_gu1eq")
 Button/styles/hover = SubResource("StyleBoxFlat_h5umu")
@@ -267,6 +291,13 @@ LineEdit/styles/normal = SubResource("StyleBoxFlat_730xo")
 LineEdit/styles/read_only = SubResource("StyleBoxFlat_efvcd")
 PanelContainer/styles/panel = SubResource("StyleBoxFlat_c2si1")
 RichTextLabel/colors/selection_color = Color(0.4, 0.55, 1, 0.4)
+TabContainer/constants/side_margin = 0
+TabContainer/font_sizes/font_size = 14
+TabContainer/styles/panel = SubResource("StyleBoxFlat_7qkcb")
+TabContainer/styles/tab_focus = SubResource("StyleBoxEmpty_kohom")
+TabContainer/styles/tab_hovered = SubResource("StyleBoxFlat_r2aev")
+TabContainer/styles/tab_selected = SubResource("StyleBoxFlat_nhytu")
+TabContainer/styles/tab_unselected = SubResource("StyleBoxFlat_c7arg")
 TextEdit/styles/normal = SubResource("StyleBoxFlat_ichfn")
 TooltipLabel/font_sizes/font_size = 14
 TooltipLabel/fonts/font = ExtResource("1_ulxqy")

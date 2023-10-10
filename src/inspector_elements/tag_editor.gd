@@ -10,7 +10,8 @@ const EnumField = preload("enum_field.tscn")
 
 @onready var paint_container: FlowContainer = %AttributeContainer/PaintAttributes
 @onready var shape_container: FlowContainer = %AttributeContainer/ShapeAttributes
-@onready var label: Label = %Title
+@onready var title_button: Button = %TitleButton
+@onready var tag_context: Popup = $ContextPopup
 @onready var selected_highlight: Panel = $Panel
 
 signal selected
@@ -26,7 +27,8 @@ var tag_index: int
 var tag: SVGTag
 
 func _ready() -> void:
-	label.text = tag.title
+	# Fill up the containers.
+	title_button.text = tag.title
 	for attribute_key in tag.attributes:
 		var attribute_value: SVGAttribute = tag.attributes[attribute_key]
 		var input_field: AttributeEditor
@@ -63,9 +65,38 @@ func _ready() -> void:
 			paint_container.add_child(input_field)
 
 
-func _on_close_button_pressed() -> void:
+func _on_delete_button_pressed() -> void:
 	SVG.data.delete_tag(tag_index)
 	queue_free()
+
+func _on_title_button_pressed() -> void:
+	var tag_count := SVG.data.get_tag_count()
+	if tag_count <= 1:
+		return
+	
+	tag_context.reset()
+	if tag_index != 0:
+		var move_up_button := Button.new()
+		move_up_button.text = "Move up"
+		move_up_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
+		move_up_button.pressed.connect(_on_move_up_button_pressed)
+		tag_context.add_button(move_up_button)
+	if tag_index != tag_count - 1:
+		var move_down_button := Button.new()
+		move_down_button.text = "Move down"
+		move_down_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
+		move_down_button.pressed.connect(_on_move_down_button_pressed)
+		tag_context.add_button(move_down_button)
+	tag_context.popup(Utils.calculate_popup_rect(title_button.global_position,
+			title_button.size, tag_context.size))
+
+func _on_move_up_button_pressed() -> void:
+	tag_context.hide()
+	SVG.data.move_tag(tag_index, tag_index - 1)
+
+func _on_move_down_button_pressed() -> void:
+	tag_context.hide()
+	SVG.data.move_tag(tag_index, tag_index + 1)
 
 
 func _on_gui_input(event: InputEvent) -> void:

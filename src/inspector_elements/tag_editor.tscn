@@ -1,8 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://cksx526iftj5d"]
+[gd_scene load_steps=10 format=3 uid="uid://cksx526iftj5d"]
 
 [ext_resource type="Script" path="res://src/inspector_elements/tag_editor.gd" id="1_7i0c4"]
 [ext_resource type="FontFile" uid="uid://c7ury252fql35" path="res://visual/CodeFont.ttf" id="2_0lxvf"]
 [ext_resource type="Texture2D" uid="uid://cj5x2ti8150ja" path="res://visual/icons/Delete.svg" id="3_vw87v"]
+[ext_resource type="PackedScene" uid="uid://wp77eqhikp6k" path="res://src/inspector_elements/context_popup.tscn" id="4_2mart"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_s1ahg"]
 bg_color = Color(0.6, 0.8, 1, 0.0980392)
@@ -29,6 +30,38 @@ border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
 border_color = Color(0.1785, 0.26425, 0.35, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_50r0v"]
+content_margin_left = 4.0
+content_margin_top = 5.0
+content_margin_right = 4.0
+content_margin_bottom = 5.0
+bg_color = Color(0.1625, 0.1625, 0.25, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.208, 0.3008, 0.4, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dfilu"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.321569, 0.439216, 0.8, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.541176, 0.721569, 0.901961, 1)
 corner_radius_top_left = 3
 corner_radius_top_right = 3
 corner_radius_bottom_right = 3
@@ -65,17 +98,17 @@ theme_override_constants/margin_top = 4
 theme_override_constants/margin_right = 6
 theme_override_constants/margin_bottom = 4
 
-[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/HBoxContainer/MarginContainer"]
+[node name="TitleButton" type="Button" parent="MarginContainer/HBoxContainer/MarginContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
-theme_override_styles/panel = SubResource("StyleBoxFlat_xmwqw")
-
-[node name="Title" type="Label" parent="MarginContainer/HBoxContainer/MarginContainer/PanelContainer"]
-unique_name_in_owner = true
-layout_mode = 2
 theme_override_fonts/font = ExtResource("2_0lxvf")
 theme_override_font_sizes/font_size = 14
+theme_override_styles/normal = SubResource("StyleBoxFlat_xmwqw")
+theme_override_styles/hover = SubResource("StyleBoxFlat_50r0v")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_dfilu")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_xmwqw")
 
 [node name="AttributeContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
 unique_name_in_owner = true
@@ -90,7 +123,7 @@ size_flags_horizontal = 3
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="CloseButton" type="Button" parent="MarginContainer/HBoxContainer"]
+[node name="DeleteButton" type="Button" parent="MarginContainer/HBoxContainer"]
 texture_filter = 2
 layout_mode = 2
 size_flags_horizontal = 8
@@ -98,5 +131,9 @@ size_flags_vertical = 4
 mouse_default_cursor_shape = 2
 icon = ExtResource("3_vw87v")
 
+[node name="ContextPopup" parent="." instance=ExtResource("4_2mart")]
+visible = false
+
 [connection signal="gui_input" from="." to="." method="_on_gui_input"]
-[connection signal="pressed" from="MarginContainer/HBoxContainer/CloseButton" to="." method="_on_close_button_pressed"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/MarginContainer/TitleButton" to="." method="_on_title_button_pressed"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/DeleteButton" to="." method="_on_delete_button_pressed"]
