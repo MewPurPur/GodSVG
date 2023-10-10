@@ -28,6 +28,7 @@ color = Color(0, 0, 0, 0.4)
 script = ExtResource("1_1gf4m")
 
 [node name="MainPanel" type="PanelContainer" parent="."]
+custom_minimum_size = Vector2(240, 120)
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -61,7 +62,7 @@ layout_mode = 2
 mouse_default_cursor_shape = 2
 text = "Remember window mode"
 
-[node name="Close" type="Button" parent="MainPanel/VBoxContainer"]
+[node name="Close" type="Button" parent="MainPanel"]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 8
@@ -70,4 +71,4 @@ text = "Close"
 
 [connection signal="pressed" from="MainPanel/VBoxContainer/Settings/SVG" to="." method="_on_svg_pressed"]
 [connection signal="pressed" from="MainPanel/VBoxContainer/Settings/WindowMode" to="." method="_on_window_mode_pressed"]
-[connection signal="pressed" from="MainPanel/VBoxContainer/Close" to="." method="_on_close_pressed"]
+[connection signal="pressed" from="MainPanel/Close" to="." method="_on_close_pressed"]
