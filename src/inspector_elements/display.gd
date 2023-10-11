@@ -2,11 +2,12 @@ extends VBoxContainer
 
 const settings_menu = preload("settings_menu.tscn")
 const about_menu = preload("about_menu.tscn")
+const NumberField = preload("number_field.tscn")
 
 @onready var zoom_reset_button: Button = %ZoomReset
 @onready var viewport: SubViewport = $ViewportContainer/Viewport
 @onready var controls: TextureRect = %Checkerboard/Controls
-@onready var grid_button: Button = %LeftMenu/GridVisible
+@onready var grid_button: Button = %LeftMenu/Snapping
 @onready var grid_popup: Popup = %LeftMenu/GridPopup
 @onready var more_button: Button = %LeftMenu/MoreOptions
 @onready var more_popup: Popup = %LeftMenu/MorePopup
@@ -22,7 +23,10 @@ func _on_settings_pressed() -> void:
 	var settings_menu_instance := settings_menu.instantiate()
 	get_tree().get_root().add_child(settings_menu_instance)
 
-func _on_grid_visible_pressed() -> void:
+func _on_snap_button_pressed() -> void:
+	# TODO finish this.
+	var number_field = NumberField.instantiate()
+	grid_popup.add_child(number_field)
 	grid_popup.popup(Utils.calculate_popup_rect(
 			grid_button.global_position, grid_button.size, grid_popup.size, true))
 
