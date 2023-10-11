@@ -1,6 +1,6 @@
 # GodSVG
 
-![image](https://user-images.githubusercontent.com/85438892/273739933-717e67dc-e944-4d12-bcce-3dfd70196ff3.png)
+![image](https://user-images.githubusercontent.com/85438892/274312660-2ebd9c61-37cd-406d-83ab-d909466a0ed8.png)
 
 GodSVG is an application in very early development built with Godot for creating optimized Scalable Vector Graphics (SVG) files. It is specifically designed for programmers, allowing them to easily edit individual SVG elements and view the corresponding code in real-time.
 GodSVG is inspired by the need for a SVG editor without abstractions that produces optimized SVG without unnecessary attributes or metadata.
@@ -34,8 +34,8 @@ All other elements are currently not planned.
 Currently, there are no pre-built binaries available for GodSVG. However, you can still run it by following these steps:
 
 1. Clone the repository: `git clone https://github.com/MewPurPur/GodSVG.git`
-2. Open the project in the Godot Engine.
-3. Build and run the project within the Godot Engine editor (4.2.dev6 minimum needed).
+2. Open the project in Godot Engine. (4.2.dev5 minimum needed)
+3. Build and run the project within the Godot Engine editor.
 
 ## Contributing
 
@@ -43,12 +43,12 @@ Contributions to GodSVG are very welcome! To do so, do the following:
 
 1. Fork the repository.
 2. Create a new branch: `git checkout -b implement-gradients`
-3. Make your modifications.
+3. Make your modifications, add them with `git add .`
 4. Commit your changes: `git commit -m "Implement linear gradients"`
 5. Push to the branch: `git push origin implement-gradients`
 6. Create a new pull request and describe your changes in detail.
 
-Since the app is in early development, tidiness is not as important as work being done, so feel free to use a different PR workflow you're comfortable with.
+This is the preferred workflow, but tidiness is not as important as work being done, so feel free to use a different one you're comfortable with.
 To report bugs, use Github's issue form. Before contributing features, please make sure to first post a proposal in Issues and have it approved.
 
 ## License
