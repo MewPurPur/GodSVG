@@ -1,38 +1,72 @@
 extends Control
 
-const main_lines = Color(0.5, 0.5, 0.5, 0.8)
-const primary_grid_color = Color(0.5, 0.5, 0.5, 0.5)
-const secondary_grid_color = Color(0.5, 0.5, 0.5, 0.2)
+const main_line_color = Color(0.5, 0.5, 0.5, 0.8)
+const primary_grid_color = Color(0.5, 0.5, 0.5, 0.4)
+const pixel_grid_color = Color(0.5, 0.5, 0.5, 0.16)
 
-var snap_size := 2.0
+var ticks_interval := 4
 
 @onready var display: TextureRect = %Checkerboard
 
 func _ready() -> void:
 	SVG.data.resized.connect(queue_redraw)
 
-# TODO Expand on this feature with a different primary and secondary grid.
+# TODO Make it so 1 in 2^n ticks and numbers are hidden at smaller scales.
 func _draw() -> void:
-	var display_pos := display.position
-	draw_line(Vector2(display_pos.x, 0), Vector2(display_pos.x, size.y), main_lines)
-	draw_line(Vector2(0, display_pos.y), Vector2(size.x, display_pos.y), main_lines)
+	# free() is faster and we don't access the labels anyway.
+	for child in get_children():
+		child.free()
 	
-	if snap_size * get_parent().zoom_level < 3.0:
-		return  # Too zoomed out to draw a grid.
+	var display_pos := display.position
+	draw_line(Vector2(display_pos.x, 0), Vector2(display_pos.x, size.y), main_line_color)
+	draw_line(Vector2(0, display_pos.y), Vector2(size.x, display_pos.y), main_line_color)
 	
 	var primary_points := PackedVector2Array()
-	var secondary_points := PackedVector2Array()
-	var x_offset := fmod(display_pos.x, snap_size)
-	var y_offset := fmod(display_pos.y, snap_size)
+	var pixel_points := PackedVector2Array()
+	var x_offset := fmod(display_pos.x, 1.0)
+	var y_offset := fmod(display_pos.y, 1.0)
+	var tick_distance := float(ticks_interval)
+	var viewport_scale: float = get_parent().zoom_level
+	var draw_pixel_lines := viewport_scale >= 3.0
+	var draw_numbers := ticks_interval * viewport_scale >= 28.0
+	var draw_primary_lines := tick_distance < 3.0 * viewport_scale
+	
 	var i := x_offset
 	while i <= size.x:
-		secondary_points.append(Vector2(i, 0))
-		secondary_points.append(Vector2(i, size.y))
-		i += snap_size
+		if fposmod(display_pos.x, tick_distance) != fposmod(i, tick_distance):
+			pixel_points.append(Vector2(i, 0))
+			pixel_points.append(Vector2(i, size.y))
+		else:
+			primary_points.append(Vector2(i, 0))
+			primary_points.append(Vector2(i, size.y))
+			if draw_numbers:
+				var label := Label.new()
+				label.text = str(snappedi(i - display_pos.x, ticks_interval))
+				label.add_theme_color_override(&"font_color", main_line_color)
+				label.add_theme_font_size_override(&"font_size", 14)
+				label.scale = Vector2(1, 1) / viewport_scale
+				label.position = Vector2(i + 4 / viewport_scale, 0)
+				add_child(label)
+		i += 1.0
 	i = y_offset
 	while i < size.y:
-		secondary_points.append(Vector2(0, i))
-		secondary_points.append(Vector2(size.x, i))
-		i += snap_size
-	draw_multiline(secondary_points, secondary_grid_color)
-	draw_multiline(primary_points, primary_grid_color)
+		if fposmod(display_pos.y, tick_distance) != fposmod(i, tick_distance):
+			pixel_points.append(Vector2(0, i))
+			pixel_points.append(Vector2(size.x, i))
+		else:
+			primary_points.append(Vector2(0, i))
+			primary_points.append(Vector2(size.x, i))
+			if draw_numbers:
+				var label := Label.new()
+				label.text = str(snappedi(i - display_pos.y, ticks_interval))
+				label.add_theme_color_override(&"font_color", main_line_color)
+				label.add_theme_font_size_override(&"font_size", 14)
+				label.scale = Vector2(1, 1) / viewport_scale
+				label.position = Vector2(4 / viewport_scale, i)
+				add_child(label)
+		i += 1.0
+	if draw_primary_lines:
+		draw_multiline(primary_points, primary_grid_color)
+	# If zoomed in enough, draw the pixel grid too.
+	if draw_pixel_lines:
+		draw_multiline(pixel_points, pixel_grid_color)
