@@ -1,23 +1,23 @@
 [gd_scene load_steps=29 format=3 uid="uid://ce6j54x27pom"]
 
-[ext_resource type="PackedScene" uid="uid://ccynisiuyn5qn" path="res://src/inspector_elements/inspector.tscn" id="1_afxvd"]
+[ext_resource type="PackedScene" uid="uid://ccynisiuyn5qn" path="res://src/ui_parts/inspector.tscn" id="1_afxvd"]
 [ext_resource type="Texture2D" uid="uid://ccvjkdd0s7rb4" path="res://visual/icons/Copy.svg" id="1_fm0ux"]
-[ext_resource type="Script" path="res://src/inspector_elements/code_editor.gd" id="1_ry6k8"]
+[ext_resource type="Script" path="res://src/ui_parts/code_editor.gd" id="1_ry6k8"]
 [ext_resource type="FontFile" uid="uid://c7ury252fql35" path="res://visual/CodeFont.ttf" id="2_w635r"]
-[ext_resource type="Script" path="res://src/inspector_elements/display.gd" id="2_ylpv1"]
+[ext_resource type="Script" path="res://src/ui_parts/display.gd" id="2_ylpv1"]
 [ext_resource type="Texture2D" uid="uid://c68og6bsqt0lb" path="res://visual/Checkerboard.svg" id="3_d58qh"]
 [ext_resource type="Texture2D" uid="uid://ckkkgof1hcbld" path="res://visual/icons/Gear.svg" id="4_3rshc"]
 [ext_resource type="Texture2D" uid="uid://6ymbl3jqersp" path="res://visual/icons/Import.svg" id="4_ehrkr"]
-[ext_resource type="Script" path="res://src/inspector_elements/handles_manager.gd" id="5_pltvx"]
+[ext_resource type="Script" path="res://src/ui_parts/handles_manager.gd" id="5_pltvx"]
 [ext_resource type="Texture2D" uid="uid://d0uvwj0t44n6v" path="res://visual/icons/Export.svg" id="5_qe6jq"]
-[ext_resource type="Script" path="res://src/inspector_elements/viewport.gd" id="6_7hypx"]
+[ext_resource type="Script" path="res://src/ui_parts/viewport.gd" id="6_7hypx"]
 [ext_resource type="Texture2D" uid="uid://ccbta5q43jobk" path="res://visual/icons/More.svg" id="7_7iuuq"]
-[ext_resource type="Script" path="res://src/inspector_elements/display_texture.gd" id="7_cxx0h"]
+[ext_resource type="Script" path="res://src/ui_parts/display_texture.gd" id="7_cxx0h"]
 [ext_resource type="Texture2D" uid="uid://kkxyv1gyrjgj" path="res://visual/icons/Snap.svg" id="9_ojv7n"]
-[ext_resource type="PackedScene" uid="uid://wp77eqhikp6k" path="res://src/inspector_elements/context_popup.tscn" id="10_hraj8"]
-[ext_resource type="Script" path="res://src/inspector_elements/context_popup.gd" id="11_fmxtp"]
-[ext_resource type="Shader" path="res://src/inspector_elements/zoom_shader.gdshader" id="12_wewnk"]
-[ext_resource type="Script" path="res://src/inspector_elements/snap_lines.gd" id="15_v2yj8"]
+[ext_resource type="PackedScene" uid="uid://wp77eqhikp6k" path="res://src/small_editors/context_popup.tscn" id="10_hraj8"]
+[ext_resource type="PackedScene" uid="uid://bp2vpf7g8w8aj" path="res://src/small_editors/number_field.tscn" id="11_2603s"]
+[ext_resource type="Shader" path="res://src/ui_parts/zoom_shader.gdshader" id="12_wewnk"]
+[ext_resource type="Script" path="res://src/ui_parts/snap_lines.gd" id="15_v2yj8"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_082e3"]
 bg_color = Color(0.016, 0.016, 0.08, 1)
@@ -249,13 +249,22 @@ icon_alignment = 1
 
 [node name="GridPopup" type="Popup" parent="Display/PanelContainer/MarginContainer/HBoxContainer/LeftMenu"]
 transparent_bg = true
-size = Vector2i(100, 27)
-script = ExtResource("11_fmxtp")
+size = Vector2i(112, 61)
 
 [node name="PanelContainer" type="PanelContainer" parent="Display/PanelContainer/MarginContainer/HBoxContainer/LeftMenu/GridPopup"]
 custom_minimum_size = Vector2(96, 0)
 offset_right = 96.0
 offset_bottom = 27.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Display/PanelContainer/MarginContainer/HBoxContainer/LeftMenu/GridPopup/PanelContainer"]
+layout_mode = 2
+
+[node name="CheckBox" type="CheckBox" parent="Display/PanelContainer/MarginContainer/HBoxContainer/LeftMenu/GridPopup/PanelContainer/VBoxContainer"]
+layout_mode = 2
+text = "Show grid"
+
+[node name="NumberField" parent="Display/PanelContainer/MarginContainer/HBoxContainer/LeftMenu/GridPopup/PanelContainer/VBoxContainer" instance=ExtResource("11_2603s")]
+layout_mode = 2
 
 [node name="MorePopup" parent="Display/PanelContainer/MarginContainer/HBoxContainer/LeftMenu" instance=ExtResource("10_hraj8")]
 visible = false

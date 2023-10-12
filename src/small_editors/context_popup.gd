@@ -2,7 +2,8 @@ extends Popup
 
 @onready var main_container: VBoxContainer = $PanelContainer/MainContainer
 
-func add_button(butt: Button, top_corners := false, bottom_corners := false) -> void:
+func add_button(butt: Button, top_corners := false, bottom_corners := false,\
+should_reset_size := true) -> void:
 	var normal_stylebox := StyleBoxEmpty.new()
 	normal_stylebox.set_content_margin_all(2)
 	butt.add_theme_stylebox_override(&"normal", normal_stylebox)
@@ -21,12 +22,22 @@ func add_button(butt: Button, top_corners := false, bottom_corners := false) -> 
 	butt.add_theme_stylebox_override(&"hover", hover_stylebox)
 	butt.add_theme_stylebox_override(&"pressed", pressed_stylebox)
 	main_container.add_child(butt)
-	reset_size()
+	if should_reset_size:
+		reset_size()
 
-func reset() -> void:
+func set_btn_array(buttons: Array[Button]) -> void:
 	for button in main_container.get_children():
 		button.queue_free()
-	reset_size()
+	if buttons.is_empty():
+		return
+	elif buttons.size() == 1:
+		add_button(buttons[0], true, true)
+		return
+	else:
+		add_button(buttons.pop_front(), true, false)
+		for i in buttons.size() - 1:
+			add_button(buttons.pop_front(), false, false, false)
+		add_button(buttons[0], false, true)
 
 
 func get_button_count() -> int:
