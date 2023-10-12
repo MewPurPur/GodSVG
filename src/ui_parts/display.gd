@@ -2,7 +2,8 @@ extends VBoxContainer
 
 const settings_menu = preload("settings_menu.tscn")
 const about_menu = preload("about_menu.tscn")
-const NumberField = preload("number_field.tscn")
+
+const NumberField = preload("res://src/small_editors/number_field.tscn")
 
 @onready var zoom_reset_button: Button = %ZoomReset
 @onready var viewport: SubViewport = $ViewportContainer/Viewport
@@ -24,30 +25,26 @@ func _on_settings_pressed() -> void:
 	get_tree().get_root().add_child(settings_menu_instance)
 
 func _on_snap_button_pressed() -> void:
-	# TODO finish this.
-	var number_field = NumberField.instantiate()
-	grid_popup.add_child(number_field)
 	grid_popup.popup(Utils.calculate_popup_rect(
 			grid_button.global_position, grid_button.size, grid_popup.size, true))
 
 func _on_more_options_pressed() -> void:
-	# Add the options the first time this is clicked.
-	if more_popup.get_button_count() == 0:
-		var open_repo_button := Button.new()
-		open_repo_button.text = "GodSVG repository"
-		open_repo_button.icon = load("res://visual/icons/Link.svg")
-		open_repo_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-		open_repo_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
-		more_popup.add_button(open_repo_button, true, false)
-		open_repo_button.pressed.connect(open_godsvg_repo)
-		var about_button := Button.new()
-		about_button.text = "About GodSVG"
-		about_button.icon = load("res://icon.png")
-		about_button.expand_icon = true
-		about_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-		about_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
-		more_popup.add_button(about_button, false, true)
-		about_button.pressed.connect(open_about)
+	var open_repo_button := Button.new()
+	open_repo_button.text = "GodSVG repository"
+	open_repo_button.icon = load("res://visual/icons/Link.svg")
+	open_repo_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+	open_repo_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
+	open_repo_button.pressed.connect(open_godsvg_repo)
+	
+	var about_button := Button.new()
+	about_button.text = "About GodSVG"
+	about_button.icon = load("res://icon.png")
+	about_button.expand_icon = true
+	about_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+	about_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
+	about_button.pressed.connect(open_about)
+	
+	more_popup.set_btn_array([open_repo_button, about_button] as Array[Button])
 	more_popup.popup(Utils.calculate_popup_rect(
 			more_button.global_position, more_button.size, more_popup.size, true))
 

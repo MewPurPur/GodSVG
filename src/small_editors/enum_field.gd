@@ -15,14 +15,14 @@ func _ready() -> void:
 	value_changed.connect(_on_value_changed)
 	if attribute != null:
 		value = attribute.value
-		var enum_size: int = attribute.possible_values.size()
-		for enum_idx in enum_size:
-			var enum_constant = attribute.possible_values[enum_idx]
+		var buttons_arr: Array[Button] = []
+		for enum_constant in attribute.possible_values:
 			var butt := Button.new()
 			butt.text = str(enum_constant)
 			butt.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-			value_picker.add_button(butt, enum_idx == 0, enum_idx == enum_size - 1)
 			butt.pressed.connect(_on_option_pressed.bind(enum_constant))
+			buttons_arr.append(butt)
+		value_picker.set_btn_array(buttons_arr)
 	indicator.text = str(value)
 	indicator.tooltip_text = attribute_name
 

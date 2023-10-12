@@ -59,14 +59,14 @@ func _on_value_changed(new_value: float) -> void:
 
 func _on_up_button_down() -> void:
 	value += step
-	up_buildup_timer.start(0.5)
+	up_buildup_timer.start(0.4)
 
 func _on_up_button_up() -> void:
 	up_buildup_timer.stop()
 	up_repeat_timer.stop()
 
 func _on_up_buildup_timer_timeout() -> void:
-	up_repeat_timer.start(0.05)
+	up_repeat_timer.start(0.04)
 
 func _on_up_repeat_timer_timeout() -> void:
 	value += step
@@ -76,14 +76,14 @@ func _on_up_repeat_timer_timeout() -> void:
 
 func _on_down_button_down() -> void:
 	value -= step
-	down_buildup_timer.start(0.5)
+	down_buildup_timer.start(0.4)
 
 func _on_down_button_up() -> void:
 	down_buildup_timer.stop()
 	down_repeat_timer.stop()
 
 func _on_down_buildup_timer_timeout() -> void:
-	down_repeat_timer.start(0.05)
+	down_repeat_timer.start(0.04)
 
 func _on_down_repeat_timer_timeout() -> void:
 	value -= step
