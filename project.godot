@@ -20,6 +20,7 @@ config/icon="res://icon.png"
 
 SVG="*res://src/SVG.gd"
 GlobalSettings="*res://src/GlobalSettings.gd"
+Selections="*res://src/Selections.gd"
 
 [display]
 
