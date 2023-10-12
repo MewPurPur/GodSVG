@@ -3,7 +3,7 @@ class_name SVGData extends RefCounted
 signal attribute_changed
 signal resized
 signal tag_added
-signal tag_deleted
+signal tag_deleted(idx: int)
 signal tag_moved
 signal changed_unknown
 
@@ -38,8 +38,9 @@ func replace_tags(new_tags: Array[SVGTag]) -> void:
 	changed_unknown.emit()
 
 func delete_tag(idx: int) -> void:
-	tags.remove_at(idx)
-	tag_deleted.emit()
+	if idx >= 0:
+		tags.remove_at(idx)
+		tag_deleted.emit(idx)
 
 func move_tag(old_idx: int, new_idx: int) -> void:
 	var tag: SVGTag = tags.pop_at(old_idx)  # Should be inferrable, GDScript bug.

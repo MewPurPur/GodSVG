@@ -6,7 +6,7 @@ func _ready() -> void:
 	SVG.data.resized.connect(queue_update)
 	SVG.data.attribute_changed.connect(queue_update)
 	SVG.data.tag_added.connect(queue_update)
-	SVG.data.tag_deleted.connect(queue_update)
+	SVG.data.tag_deleted.connect(queue_update.unbind(1))
 	SVG.data.tag_moved.connect(queue_update)
 	SVG.data.changed_unknown.connect(queue_update)
 	queue_update()

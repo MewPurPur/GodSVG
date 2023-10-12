@@ -14,19 +14,11 @@ const EnumField = preload("res://src/small_editors/enum_field.tscn")
 @onready var tag_context: Popup = $ContextPopup
 @onready var selected_highlight: Panel = $Panel
 
-signal selected
-
-var is_selected := false:
-	set(value):
-		is_selected = value
-		selected_highlight.visible = value
-		if is_selected:
-			selected.emit(tag_index)
-
 var tag_index: int
 var tag: SVGTag
 
 func _ready() -> void:
+	Selections.selection_changed.connect(_on_selection_changed)
 	# Fill up the containers.
 	title_button.text = tag.title
 	for attribute_key in tag.attributes:
@@ -104,4 +96,10 @@ func _on_move_down_button_pressed() -> void:
 func _on_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.is_pressed() and\
 	event.button_index == MOUSE_BUTTON_LEFT:
-		is_selected = not is_selected
+		if event.ctrl_pressed:
+			Selections.toggle_index(tag_index)
+		else:
+			Selections.set_selection(tag_index)
+
+func _on_selection_changed() -> void:
+	selected_highlight.visible = tag_index in Selections.selected_tags
