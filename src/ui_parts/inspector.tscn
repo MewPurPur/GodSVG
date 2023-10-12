@@ -56,58 +56,58 @@ layout_mode = 2
 
 [node name="Circle" type="Button" parent="VBoxContainer/HBoxContainer"]
 layout_mode = 2
-tooltip_text = "Add circle"
+tooltip_text = "<circle>"
 mouse_default_cursor_shape = 2
 icon = ExtResource("5_cwjdk")
 icon_alignment = 1
 
 [node name="Ellipse" type="Button" parent="VBoxContainer/HBoxContainer"]
 layout_mode = 2
-tooltip_text = "Add ellipse"
+tooltip_text = "<ellipse>"
 mouse_default_cursor_shape = 2
 icon = ExtResource("6_komru")
 
 [node name="Rect" type="Button" parent="VBoxContainer/HBoxContainer"]
 layout_mode = 2
-tooltip_text = "Add rect"
+tooltip_text = "<rect>"
 mouse_default_cursor_shape = 2
 icon = ExtResource("7_hdyp6")
 
 [node name="Path" type="Button" parent="VBoxContainer/HBoxContainer"]
 layout_mode = 2
-tooltip_text = "Add path"
+tooltip_text = "<path>"
 mouse_default_cursor_shape = 2
 icon = ExtResource("8_6tgkl")
 
 [node name="Line" type="Button" parent="VBoxContainer/HBoxContainer"]
 layout_mode = 2
-tooltip_text = "Add line"
+tooltip_text = "<line>"
 mouse_default_cursor_shape = 2
 icon = ExtResource("9_p3em5")
 
-[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer"]
+[node name="TagContainer" type="PanelContainer" parent="VBoxContainer"]
 clip_contents = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_4j4hv")
 
-[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer/PanelContainer"]
+[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer/TagContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 horizontal_scroll_mode = 0
 
-[node name="Shapes" type="VBoxContainer" parent="VBoxContainer/PanelContainer/ScrollContainer"]
+[node name="Shapes" type="VBoxContainer" parent="VBoxContainer/TagContainer/ScrollContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/separation = 5
 
-[connection signal="gui_input" from="." to="." method="_on_gui_input"]
 [connection signal="view_box_changed" from="MainConfiguration/ViewBoxEdit" to="." method="_change_view_box"]
 [connection signal="pressed" from="VBoxContainer/HBoxContainer/Circle" to="." method="add_circle"]
 [connection signal="pressed" from="VBoxContainer/HBoxContainer/Ellipse" to="." method="add_ellipse"]
 [connection signal="pressed" from="VBoxContainer/HBoxContainer/Rect" to="." method="add_rect"]
 [connection signal="pressed" from="VBoxContainer/HBoxContainer/Path" to="." method="add_path"]
 [connection signal="pressed" from="VBoxContainer/HBoxContainer/Line" to="." method="add_line"]
+[connection signal="gui_input" from="VBoxContainer/TagContainer" to="." method="_on_tag_container_gui_input"]

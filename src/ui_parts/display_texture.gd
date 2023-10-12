@@ -24,5 +24,6 @@ func svg_update() -> void:
 	var img := Image.new()
 	img.load_svg_from_string(SVG.string, 128.0)
 	# Update the display.
-	var image_texture := ImageTexture.create_from_image(img)
-	texture = image_texture
+	if not img.is_empty():
+		var image_texture := ImageTexture.create_from_image(img)
+		texture = image_texture

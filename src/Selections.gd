@@ -22,6 +22,10 @@ func set_selection(idx: int) -> void:
 		selected_tags = [idx]
 		selection_changed.emit()
 
+func clear_selection() -> void:
+	selected_tags.clear()
+	selection_changed.emit()
+
 func _on_tag_deleted(idx: int) -> void:
 	selected_tags.erase(idx)
 

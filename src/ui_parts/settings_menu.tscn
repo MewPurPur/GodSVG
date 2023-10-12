@@ -1,6 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://1rylg17uwltw"]
+[gd_scene load_steps=5 format=3 uid="uid://1rylg17uwltw"]
 
 [ext_resource type="Script" path="res://src/ui_parts/settings_menu.gd" id="1_1gf4m"]
+[ext_resource type="Texture2D" uid="uid://c528knojuxbw6" path="res://visual/icons/Languages.svg" id="2_ndyp7"]
+[ext_resource type="PackedScene" uid="uid://wp77eqhikp6k" path="res://src/small_editors/context_popup.tscn" id="3_uyej8"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hto7q"]
 content_margin_left = 6.0
@@ -28,7 +30,7 @@ color = Color(0, 0, 0, 0.4)
 script = ExtResource("1_1gf4m")
 
 [node name="MainPanel" type="PanelContainer" parent="."]
-custom_minimum_size = Vector2(220, 120)
+custom_minimum_size = Vector2(220, 128)
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -50,27 +52,38 @@ theme_override_constants/separation = 18
 [node name="Settings" type="VBoxContainer" parent="MainPanel/VBoxContainer"]
 layout_mode = 2
 
+[node name="Language" type="Button" parent="MainPanel/VBoxContainer/Settings"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+mouse_default_cursor_shape = 2
+icon = ExtResource("2_ndyp7")
+
 [node name="SVG" type="CheckBox" parent="MainPanel/VBoxContainer/Settings"]
 unique_name_in_owner = true
 layout_mode = 2
-tooltip_text = "When this box is checked, the SVG string will be reverted back after starting a new session."
+tooltip_text = "#remember_svg_desc"
 mouse_default_cursor_shape = 2
-text = "Remember SVG"
+text = "#remember_svg_setting"
 
 [node name="WindowMode" type="CheckBox" parent="MainPanel/VBoxContainer/Settings"]
 unique_name_in_owner = true
 layout_mode = 2
-tooltip_text = "When this box is checked, the window can remain restored between sessions."
+tooltip_text = "#remember_window_mode_desc"
 mouse_default_cursor_shape = 2
-text = "Remember window mode"
+text = "#remember_window_mode_settings"
 
 [node name="Close" type="Button" parent="MainPanel"]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 8
 mouse_default_cursor_shape = 2
-text = "Close"
+text = "#close"
 
+[node name="LangPopup" parent="." instance=ExtResource("3_uyej8")]
+visible = false
+
+[connection signal="pressed" from="MainPanel/VBoxContainer/Settings/Language" to="." method="_on_language_pressed"]
 [connection signal="pressed" from="MainPanel/VBoxContainer/Settings/SVG" to="." method="_on_svg_pressed"]
 [connection signal="pressed" from="MainPanel/VBoxContainer/Settings/WindowMode" to="." method="_on_window_mode_pressed"]
 [connection signal="pressed" from="MainPanel/Close" to="." method="_on_close_pressed"]
