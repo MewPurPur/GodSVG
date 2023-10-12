@@ -52,7 +52,7 @@ func update_handles() -> void:
 			var path_data := PathCommandArray.new()
 			path_data.data = PathDataParser.parse_path_data(tag.attributes.d.value)
 			for idx in path_data.get_count():
-				if path_data.get_command(idx).command_char.to_upper() != "Z":
+				if not path_data.get_command(idx) is PathCommandArray.CloseCommand:
 					handles.append(PathHandle.new(tag.attributes.d, idx))
 
 func change_selection() -> void:
@@ -70,7 +70,7 @@ func sync_handles() -> void:
 			var path_data := PathCommandArray.new()
 			path_data.data = PathDataParser.parse_path_data(tag.attributes.d.value)
 			for idx in path_data.get_count():
-				if path_data.get_command(idx).command_char.to_upper() != "Z":
+				if not path_data.get_command(idx) is PathCommandArray.CloseCommand:
 					var handle := PathHandle.new(tag.attributes.d, idx)
 					handles.append(handle)
 	queue_redraw()
@@ -78,14 +78,14 @@ func sync_handles() -> void:
 func _draw() -> void:
 	for handle in handles:
 		if handle.dragged:
-			draw_circle(coords_to_canvas(handle.pos), 4 / zoom, Color(0.5, 0.6, 1.0))
-			draw_circle(coords_to_canvas(handle.pos), 2.25 / zoom, Color(0.8, 0.8, 1.0))
+			draw_circle(coords_to_canvas(handle.pos), 4 / zoom, Color(0.3, 0.4, 1.0))
+			draw_circle(coords_to_canvas(handle.pos), 2.25 / zoom, Color.WHITE)
 		elif handle.hovered:
-			draw_circle(coords_to_canvas(handle.pos), 4 / zoom, Color(0.3, 0.3, 0.3))
-			draw_circle(coords_to_canvas(handle.pos), 2.25 / zoom, Color(1.0, 1.0, 1.0))
+			draw_circle(coords_to_canvas(handle.pos), 4 / zoom, Color(0.7, 0.7, 0.7))
+			draw_circle(coords_to_canvas(handle.pos), 2.25 / zoom, Color.WHITE)
 		else:
-			draw_circle(coords_to_canvas(handle.pos), 4 / zoom, Color(0.2, 0.2, 0.2))
-			draw_circle(coords_to_canvas(handle.pos), 2.25 / zoom, Color(0.75, 0.75, 0.75))
+			draw_circle(coords_to_canvas(handle.pos), 4 / zoom, Color.BLACK)
+			draw_circle(coords_to_canvas(handle.pos), 2.25 / zoom, Color.WHITE)
 
 func coords_to_canvas(pos: Vector2) -> Vector2:
 	return size / Vector2(SVG.data.w, SVG.data.h) * pos
@@ -95,6 +95,7 @@ func canvas_to_coords(pos: Vector2) -> Vector2:
 
 
 func _unhandled_input(event: InputEvent) -> void:
+	var max_grab_distance := 9 / zoom
 	if event is InputEventMouseMotion:
 		var event_pos = event.position - global_position
 		for handle in handles:
@@ -105,14 +106,14 @@ func _unhandled_input(event: InputEvent) -> void:
 		var picked_hover := false
 		for handle in handles:
 			if not picked_hover and event_pos.distance_to(
-			coords_to_canvas(handle.pos)) < (9 / zoom):
+			coords_to_canvas(handle.pos)) < max_grab_distance:
 				handle.hovered = true
 				picked_hover = true
 				break
 			if picked_hover and handle.hovered:
 				handle.hovered = false
 			if handle.hovered != (event_pos.distance_to(
-			coords_to_canvas(handle.pos)) < 9 / zoom):
+			coords_to_canvas(handle.pos)) < max_grab_distance):
 				handle.hovered = not handle.hovered
 			queue_redraw()
 	elif event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
