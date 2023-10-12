@@ -52,14 +52,7 @@ func _change_view_box(w: int, h: int) -> void:
 	SVG.data.h = h
 
 
-func _on_tag_selected(index: int) -> void:
-	for tag_editor in shapes.get_children():
-		if &"tag_index" in tag_editor and tag_editor.tag_index != index:
-			tag_editor.is_selected = false
-
-
-func _on_gui_input(event: InputEvent) -> void:
+func _on_tag_container_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.is_pressed() and\
-	event.button_index == MOUSE_BUTTON_LEFT:
-		for tag_editor in shapes.get_children():
-			tag_editor.is_selected = false
+	event.button_index == MOUSE_BUTTON_LEFT and not event.ctrl_pressed:
+		Selections.clear_selection()

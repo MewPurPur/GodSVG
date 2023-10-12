@@ -14,7 +14,7 @@ config/name="GodSVG"
 config/tags=PackedStringArray("project")
 run/main_scene="res://src/ui_parts/main_scene.tscn"
 config/features=PackedStringArray("4.2", "Forward Plus")
-config/icon="res://icon.png"
+config/icon="res://visual/icon.png"
 
 [autoload]
 
@@ -35,6 +35,10 @@ mouse_cursor/tooltip_position_offset=Vector2(0, 10)
 
 theme/custom="res://visual/main_theme.tres"
 timers/tooltip_delay_sec=0.4
+
+[internationalization]
+
+locale/translations=PackedStringArray("res://translations/translation_sheet.bg.translation", "res://translations/translation_sheet.de.translation", "res://translations/translation_sheet.en.translation")
 
 [rendering]
 

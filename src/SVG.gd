@@ -94,7 +94,7 @@ func string_to_tags() -> void:
 func get_svg_error() -> String:
 	# Easy cases.
 	if string.is_empty():
-		return "SVG is empty."
+		return tr(&"#err_empty_svg")
 	
 	var parser := XMLParser.new()
 	parser.open_buffer(string.to_ascii_buffer())
@@ -108,7 +108,7 @@ func get_svg_error() -> String:
 			# First node must be "svg", last node must be closing "svg".
 			if nodes.is_empty():
 				if node_name != "svg":
-					return "Not a SVG."
+					return tr(&"#err_not_svg")
 			
 			var offset := parser.get_node_offset()
 			# Don't add tags that were closed right away to the stack.
@@ -119,6 +119,6 @@ func get_svg_error() -> String:
 		elif parser.get_node_type() == XMLParser.NODE_ELEMENT_END:
 			var node_name := parser.get_node_name()
 			if nodes.is_empty() or node_name != nodes.back():
-				return "Improper nesting."
+				return tr(&"#err_improper_nesting")
 			nodes.pop_back()
-	return "" if nodes.is_empty() else "Not all tags are closed."
+	return "" if nodes.is_empty() else tr(&"#err_improper_closing")

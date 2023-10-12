@@ -27,14 +27,14 @@ func _on_settings_pressed() -> void:
 
 func _on_snap_button_pressed() -> void:
 	var show_grid_button := CheckBox.new()
-	show_grid_button.text = "Show Grid"
+	show_grid_button.text = tr(&"#show_grid")
 	show_grid_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	show_grid_button.button_pressed = grid_visuals.visible
 	show_grid_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 	show_grid_button.pressed.connect(toggle_grid_visuals)
 	
 	var show_handles_button := CheckBox.new()
-	show_handles_button.text = "Show Handles"
+	show_handles_button.text = tr(&"#show_handles")
 	show_handles_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	show_handles_button.button_pressed = controls.visible
 	show_handles_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
@@ -46,15 +46,15 @@ func _on_snap_button_pressed() -> void:
 
 func _on_more_options_pressed() -> void:
 	var open_repo_button := Button.new()
-	open_repo_button.text = "GodSVG repository"
+	open_repo_button.text = tr(&"#repo_button_text")
 	open_repo_button.icon = load("res://visual/icons/Link.svg")
 	open_repo_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	open_repo_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 	open_repo_button.pressed.connect(open_godsvg_repo)
 	
 	var about_button := Button.new()
-	about_button.text = "About GodSVG"
-	about_button.icon = load("res://icon.png")
+	about_button.text = "About"
+	about_button.icon = load("res://visual/icon.png")
 	about_button.expand_icon = true
 	about_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	about_button.alignment = HORIZONTAL_ALIGNMENT_LEFT

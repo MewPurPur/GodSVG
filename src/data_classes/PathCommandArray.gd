@@ -23,26 +23,27 @@ func locate_start_points() -> void:
 	# Start points are absolute.
 	var last_end_point := Vector2.ZERO
 	var current_subpath_start := Vector2.ZERO
-	for path_command in data:
-		path_command.start = last_end_point
+	for command in data:
+		command.start = last_end_point
 		
-		if path_command is MoveCommand:
-			current_subpath_start = Vector2(path_command.x, path_command.y)
-		elif path_command is CloseCommand:
+		if command is MoveCommand:
+			current_subpath_start = command.start if command.relative else Vector2.ZERO
+			current_subpath_start += Vector2(command.x, command.y)
+		elif command is CloseCommand:
 			last_end_point = current_subpath_start
 			continue
 		
 		# Prepare for the next iteration.
-		if path_command.relative:
-			if &"x" in path_command:
-				last_end_point.x += path_command.x
-			if &"y" in path_command:
-				last_end_point.y += path_command.y
+		if command.relative:
+			if &"x" in command:
+				last_end_point.x += command.x
+			if &"y" in command:
+				last_end_point.y += command.y
 		else:
-			if &"x" in path_command:
-				last_end_point.x = path_command.x
-			if &"y" in path_command:
-				last_end_point.y = path_command.y
+			if &"x" in command:
+				last_end_point.x = command.x
+			if &"y" in command:
+				last_end_point.y = command.y
 
 
 func get_count() -> int:
