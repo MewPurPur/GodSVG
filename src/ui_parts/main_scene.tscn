@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=3 uid="uid://ce6j54x27pom"]
+[gd_scene load_steps=28 format=3 uid="uid://ce6j54x27pom"]
 
 [ext_resource type="PackedScene" uid="uid://ccynisiuyn5qn" path="res://src/ui_parts/inspector.tscn" id="1_afxvd"]
 [ext_resource type="Texture2D" uid="uid://ccvjkdd0s7rb4" path="res://visual/icons/Copy.svg" id="1_fm0ux"]
@@ -15,7 +15,6 @@
 [ext_resource type="Script" path="res://src/ui_parts/display_texture.gd" id="7_cxx0h"]
 [ext_resource type="Texture2D" uid="uid://kkxyv1gyrjgj" path="res://visual/icons/Snap.svg" id="9_ojv7n"]
 [ext_resource type="PackedScene" uid="uid://wp77eqhikp6k" path="res://src/small_editors/context_popup.tscn" id="10_hraj8"]
-[ext_resource type="PackedScene" uid="uid://bp2vpf7g8w8aj" path="res://src/small_editors/number_field.tscn" id="11_2603s"]
 [ext_resource type="Shader" path="res://src/ui_parts/zoom_shader.gdshader" id="12_wewnk"]
 [ext_resource type="Script" path="res://src/ui_parts/snap_lines.gd" id="15_v2yj8"]
 
@@ -247,24 +246,7 @@ mouse_default_cursor_shape = 2
 icon = ExtResource("9_ojv7n")
 icon_alignment = 1
 
-[node name="GridPopup" type="Popup" parent="Display/PanelContainer/MarginContainer/HBoxContainer/LeftMenu"]
-transparent_bg = true
-size = Vector2i(112, 61)
-
-[node name="PanelContainer" type="PanelContainer" parent="Display/PanelContainer/MarginContainer/HBoxContainer/LeftMenu/GridPopup"]
-custom_minimum_size = Vector2(96, 0)
-offset_right = 96.0
-offset_bottom = 27.0
-
-[node name="VBoxContainer" type="VBoxContainer" parent="Display/PanelContainer/MarginContainer/HBoxContainer/LeftMenu/GridPopup/PanelContainer"]
-layout_mode = 2
-
-[node name="CheckBox" type="CheckBox" parent="Display/PanelContainer/MarginContainer/HBoxContainer/LeftMenu/GridPopup/PanelContainer/VBoxContainer"]
-layout_mode = 2
-text = "Show grid"
-
-[node name="NumberField" parent="Display/PanelContainer/MarginContainer/HBoxContainer/LeftMenu/GridPopup/PanelContainer/VBoxContainer" instance=ExtResource("11_2603s")]
-layout_mode = 2
+[node name="GridPopup" parent="Display/PanelContainer/MarginContainer/HBoxContainer/LeftMenu" instance=ExtResource("10_hraj8")]
 
 [node name="MorePopup" parent="Display/PanelContainer/MarginContainer/HBoxContainer/LeftMenu" instance=ExtResource("10_hraj8")]
 visible = false
