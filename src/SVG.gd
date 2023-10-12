@@ -5,8 +5,6 @@ const display_path := "user://display.svg"
 var string := ""
 var data := SVGData.new()
 
-var selected_tag_idx: int
-
 signal parsing_finished(err_text: String)
 
 func _ready() -> void:
@@ -14,7 +12,7 @@ func _ready() -> void:
 	SVG.data.resized.connect(sync_string)
 	SVG.data.attribute_changed.connect(sync_string)
 	SVG.data.tag_added.connect(sync_string)
-	SVG.data.tag_deleted.connect(sync_string)
+	SVG.data.tag_deleted.connect(sync_string.unbind(1))
 	SVG.data.tag_moved.connect(sync_string)
 	
 	if GlobalSettings.save_svg:
@@ -80,6 +78,7 @@ func string_to_tags() -> void:
 					"ellipse": tag = SVGTagEllipse.new()
 					"rect": tag = SVGTagRect.new()
 					"path": tag = SVGTagPath.new()
+					"line": tag = SVGTagLine.new()
 					_: tag = SVGTag.new()
 				for element in attribute_dict:
 					if tag.attributes.has(element):

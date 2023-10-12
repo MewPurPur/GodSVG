@@ -11,8 +11,9 @@ func _ready() -> void:
 	SVG.data.resized.connect(full_update)
 	SVG.data.attribute_changed.connect(sync_handles)
 	SVG.data.tag_added.connect(full_update)
-	SVG.data.tag_deleted.connect(full_update)
+	SVG.data.tag_deleted.connect(full_update.unbind(1))
 	SVG.data.changed_unknown.connect(full_update)
+	Selections.selection_changed.connect(change_selection)
 	full_update()
 
 func full_update() -> void:
@@ -39,28 +40,25 @@ func update_handles() -> void:
 	handles.clear()
 	for tag in SVG.data.tags:
 		if tag is SVGTagCircle:
-			var handle := XYHandle.new(tag.attributes.cx, tag.attributes.cy)
-			handles.append(handle)
+			handles.append(XYHandle.new(tag.attributes.cx, tag.attributes.cy))
 		if tag is SVGTagEllipse:
-			var handle := XYHandle.new(tag.attributes.cx, tag.attributes.cy)
-			handles.append(handle)
+			handles.append(XYHandle.new(tag.attributes.cx, tag.attributes.cy))
 		if tag is SVGTagRect:
-			var handle := XYHandle.new(tag.attributes.x, tag.attributes.y)
-			handles.append(handle)
+			handles.append(XYHandle.new(tag.attributes.x, tag.attributes.y))
 		if tag is SVGTagLine:
-			var handle1 := XYHandle.new(tag.attributes.x1, tag.attributes.y1)
-			var handle2 := XYHandle.new(tag.attributes.x2, tag.attributes.y2)
-			handles.append(handle1)
-			handles.append(handle2)
+			handles.append(XYHandle.new(tag.attributes.x1, tag.attributes.y1))
+			handles.append(XYHandle.new(tag.attributes.x2, tag.attributes.y2))
 		if tag is SVGTagPath:
 			var path_data := PathCommandArray.new()
 			path_data.data = PathDataParser.parse_path_data(tag.attributes.d.value)
 			for idx in path_data.get_count():
 				if path_data.get_command(idx).command_char.to_upper() != "Z":
-					var handle := PathHandle.new(tag.attributes.d, idx)
-					handles.append(handle)
+					handles.append(PathHandle.new(tag.attributes.d, idx))
 
-func sync_handles():
+func change_selection() -> void:
+	return  # TODO
+
+func sync_handles() -> void:
 	for handle_idx in range(handles.size() - 1, -1, -1):
 		var handle := handles[handle_idx]
 		if handle is XYHandle:
@@ -80,11 +78,14 @@ func sync_handles():
 func _draw() -> void:
 	for handle in handles:
 		if handle.dragged:
-			draw_circle(coords_to_canvas(handle.pos), 4 / zoom, Color(0.55, 0.55, 1.0))
+			draw_circle(coords_to_canvas(handle.pos), 4 / zoom, Color(0.5, 0.6, 1.0))
+			draw_circle(coords_to_canvas(handle.pos), 2.25 / zoom, Color(0.8, 0.8, 1.0))
 		elif handle.hovered:
-			draw_circle(coords_to_canvas(handle.pos), 4 / zoom, Color(0.7, 0.7, 0.7))
+			draw_circle(coords_to_canvas(handle.pos), 4 / zoom, Color(0.3, 0.3, 0.3))
+			draw_circle(coords_to_canvas(handle.pos), 2.25 / zoom, Color(1.0, 1.0, 1.0))
 		else:
-			draw_circle(coords_to_canvas(handle.pos), 4 / zoom, Color(0.45, 0.45, 0.45))
+			draw_circle(coords_to_canvas(handle.pos), 4 / zoom, Color(0.2, 0.2, 0.2))
+			draw_circle(coords_to_canvas(handle.pos), 2.25 / zoom, Color(0.75, 0.75, 0.75))
 
 func coords_to_canvas(pos: Vector2) -> Vector2:
 	return size / Vector2(SVG.data.w, SVG.data.h) * pos
@@ -107,13 +108,14 @@ func _unhandled_input(event: InputEvent) -> void:
 			coords_to_canvas(handle.pos)) < (9 / zoom):
 				handle.hovered = true
 				picked_hover = true
+				break
 			if picked_hover and handle.hovered:
 				handle.hovered = false
 			if handle.hovered != (event_pos.distance_to(
 			coords_to_canvas(handle.pos)) < 9 / zoom):
 				handle.hovered = not handle.hovered
 			queue_redraw()
-	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
+	elif event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
 		if event.is_pressed():
 			for handle in handles:
 				if handle.hovered:

@@ -37,7 +37,6 @@ func _draw() -> void:
 				pixel_points.append(Vector2(i, size.y))
 		else:
 			var coord := snappedi(i - display_pos.x, ticks_interval)
-			@warning_ignore("integer_division")
 			if (coord / ticks_interval) % rate == 0:
 				primary_points.append(Vector2(i, 0))
 				primary_points.append(Vector2(i, size.y))
@@ -60,7 +59,6 @@ func _draw() -> void:
 				pixel_points.append(Vector2(size.x, i))
 		else:
 			var coord := snappedi(i - display_pos.y, ticks_interval)
-			@warning_ignore("integer_division")
 			if int(coord / ticks_interval) % rate == 0:
 				primary_points.append(Vector2(0, i))
 				primary_points.append(Vector2(size.x, i))
