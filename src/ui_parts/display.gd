@@ -8,6 +8,7 @@ const NumberField = preload("res://src/small_editors/number_field.tscn")
 @onready var zoom_reset_button: Button = %ZoomReset
 @onready var viewport: SubViewport = $ViewportContainer/Viewport
 @onready var controls: TextureRect = %Checkerboard/Controls
+@onready var grid_visuals: Control = $ViewportContainer/Viewport/SnapLines
 @onready var grid_button: Button = %LeftMenu/Snapping
 @onready var grid_popup: Popup = %LeftMenu/GridPopup
 @onready var more_button: Button = %LeftMenu/MoreOptions
@@ -25,6 +26,21 @@ func _on_settings_pressed() -> void:
 	get_tree().get_root().add_child(settings_menu_instance)
 
 func _on_snap_button_pressed() -> void:
+	var show_grid_button := CheckBox.new()
+	show_grid_button.text = "Show Grid"
+	show_grid_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+	show_grid_button.button_pressed = grid_visuals.visible
+	show_grid_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
+	show_grid_button.pressed.connect(toggle_grid_visuals)
+	
+	var show_handles_button := CheckBox.new()
+	show_handles_button.text = "Show Handles"
+	show_handles_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+	show_handles_button.button_pressed = controls.visible
+	show_handles_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
+	show_handles_button.pressed.connect(toggle_handles_visuals)
+	
+	grid_popup.set_btn_array([show_grid_button, show_handles_button] as Array[Button])
 	grid_popup.popup(Utils.calculate_popup_rect(
 			grid_button.global_position, grid_button.size, grid_popup.size, true))
 
@@ -56,3 +72,9 @@ func open_about() -> void:
 	more_popup.hide()
 	var about_menu_instance := about_menu.instantiate()
 	get_tree().get_root().add_child(about_menu_instance)
+
+func toggle_grid_visuals() -> void:
+	grid_visuals.visible = not grid_visuals.visible
+
+func toggle_handles_visuals() -> void:
+	controls.visible = not controls.visible
