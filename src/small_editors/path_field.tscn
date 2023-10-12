@@ -1,9 +1,9 @@
 [gd_scene load_steps=11 format=3 uid="uid://dqy5lv33sy5r7"]
 
-[ext_resource type="Script" path="res://src/inspector_elements/path_field.gd" id="1_enb3p"]
+[ext_resource type="Script" path="res://src/small_editors/path_field.gd" id="1_enb3p"]
 [ext_resource type="Texture2D" uid="uid://coda6chhcatal" path="res://visual/icons/Down.svg" id="2_mjare"]
-[ext_resource type="Script" path="res://src/inspector_elements/path_popup.gd" id="3_ocxcs"]
-[ext_resource type="Script" path="res://src/inspector_elements/path_command_button.gd" id="4_ej4hf"]
+[ext_resource type="Script" path="res://src/small_editors/path_popup.gd" id="3_ocxcs"]
+[ext_resource type="Script" path="res://src/small_editors/path_command_button.gd" id="4_ej4hf"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fpguh"]
 content_margin_left = 3.0

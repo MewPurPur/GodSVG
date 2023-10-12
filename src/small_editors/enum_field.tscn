@@ -1,8 +1,8 @@
 [gd_scene load_steps=7 format=3 uid="uid://d2da0thyq5rq8"]
 
-[ext_resource type="Script" path="res://src/inspector_elements/enum_field.gd" id="1_vkd5r"]
+[ext_resource type="Script" path="res://src/small_editors/enum_field.gd" id="1_vkd5r"]
 [ext_resource type="Texture2D" uid="uid://coda6chhcatal" path="res://visual/icons/Down.svg" id="2_3cosj"]
-[ext_resource type="PackedScene" uid="uid://wp77eqhikp6k" path="res://src/inspector_elements/context_popup.tscn" id="3_qw0q5"]
+[ext_resource type="PackedScene" uid="uid://wp77eqhikp6k" path="res://src/small_editors/context_popup.tscn" id="3_qw0q5"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fpguh"]
 content_margin_left = 3.0

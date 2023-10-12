@@ -18,6 +18,7 @@ var zoom_level: float:
 				nearest_po2(int(zoom_level * 32)) / 32.0)
 		clamp_view()
 		controls.zoom = zoom_level
+		snap_lines.queue_redraw()
 
 
 func _ready() -> void:

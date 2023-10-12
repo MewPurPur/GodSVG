@@ -3,10 +3,10 @@ extends PanelContainer
 const shape_attributes = ["cx", "cy", "x", "y", "r", "rx", "ry", "width", "height", "d",
 		"x1", "y1", "x2", "y2"]
 
-const NumberField = preload("number_field.tscn")
-const ColorField = preload("color_field.tscn")
-const PathField = preload("path_field.tscn")
-const EnumField = preload("enum_field.tscn")
+const NumberField = preload("res://src/small_editors/number_field.tscn")
+const ColorField = preload("res://src/small_editors/color_field.tscn")
+const PathField = preload("res://src/small_editors/path_field.tscn")
+const EnumField = preload("res://src/small_editors/enum_field.tscn")
 
 @onready var paint_container: FlowContainer = %AttributeContainer/PaintAttributes
 @onready var shape_container: FlowContainer = %AttributeContainer/ShapeAttributes
@@ -75,18 +75,20 @@ func _on_title_button_pressed() -> void:
 		return
 	
 	tag_context.reset()
+	var buttons_arr: Array[Button] = []
 	if tag_index != 0:
 		var move_up_button := Button.new()
 		move_up_button.text = "Move up"
 		move_up_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		move_up_button.pressed.connect(_on_move_up_button_pressed)
-		tag_context.add_button(move_up_button)
+		buttons_arr.append(move_up_button)
 	if tag_index != tag_count - 1:
 		var move_down_button := Button.new()
 		move_down_button.text = "Move down"
 		move_down_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		move_down_button.pressed.connect(_on_move_down_button_pressed)
-		tag_context.add_button(move_down_button)
+		buttons_arr.append(move_down_button)
+	tag_context.set_btn_array(buttons_arr)
 	tag_context.popup(Utils.calculate_popup_rect(title_button.global_position,
 			title_button.size, tag_context.size))
 
