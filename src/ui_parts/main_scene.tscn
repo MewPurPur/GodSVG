@@ -257,6 +257,7 @@ layout_mode = 2
 alignment = 1
 
 [node name="ZoomOut" type="Button" parent="Display/PanelContainer/MarginContainer/HBoxContainer/ZoomMenu"]
+unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "#zoom_out"
 mouse_default_cursor_shape = 2
@@ -274,6 +275,7 @@ shortcut = SubResource("Shortcut_le5f5")
 text = "100%"
 
 [node name="ZoomIn" type="Button" parent="Display/PanelContainer/MarginContainer/HBoxContainer/ZoomMenu"]
+unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "#zoom_in"
 mouse_default_cursor_shape = 2

@@ -7,17 +7,19 @@ const minimum_visible_proportion = 0.3
 @onready var display: TextureRect = $Checkerboard
 @onready var snap_lines: Control = $SnapLines
 @onready var main_node: VBoxContainer = %Display
+@onready var display_texture: TextureRect = $Checkerboard/DisplayTexture
 @onready var controls: TextureRect = $Checkerboard/Controls
 
 var zoom_level: float:
 	set(new_value):
 		zoom_level = clampf(new_value, min_zoom, max_zoom)
-		main_node.update_zoom_label(zoom_level)
+		main_node.update_zoom_widget(zoom_level)
 		size_2d_override = size / zoom_level
 		display.material.set_shader_parameter(&"uv_scale",
 				nearest_po2(int(zoom_level * 32)) / 32.0)
 		clamp_view()
 		controls.zoom = zoom_level
+		display_texture.zoom = zoom_level
 		snap_lines.queue_redraw()
 
 
@@ -44,7 +46,8 @@ func zoom_out() -> void:
 	center_frame()
 
 func zoom_reset() -> void:
-	zoom_level = float(nearest_po2(int(256 / maxf(SVG.data.width, SVG.data.height))))
+	zoom_level = float(
+			nearest_po2(int(8192 / maxf(SVG.data.width, SVG.data.height))) / 32.0)
 	center_frame()
 
 

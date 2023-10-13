@@ -1,5 +1,12 @@
 extends TextureRect
 
+var zoom := 1.0:
+	set(new_value):
+		var old_zoom := zoom
+		zoom = new_value
+		if old_zoom < zoom:
+			svg_update()
+
 var update_pending := false
 
 func _ready() -> void:
@@ -22,7 +29,7 @@ func _process(_delta: float) -> void:
 func svg_update() -> void:
 	# Store the SVG string.
 	var img := Image.new()
-	img.load_svg_from_string(SVG.string, 128.0)
+	img.load_svg_from_string(SVG.string, zoom * 4.0)
 	# Update the display.
 	if not img.is_empty():
 		var image_texture := ImageTexture.create_from_image(img)
