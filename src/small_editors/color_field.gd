@@ -7,18 +7,23 @@ extends AttributeEditor
 @export var checkerboard: Texture2D
 
 signal value_changed(new_value: String)
-var value: String:
-	set(new_value):
-		var old_value := value
-		value = validate(new_value)
-		if value != old_value:
-			value_changed.emit(value if value == "none" else "#" + value)
+var _value: String  # Must not be updated directly.
+
+func set_value(new_value: String, emit_value_changed := true):
+	var old_value := _value
+	_value = validate(new_value)
+	if _value != old_value and emit_value_changed:
+		value_changed.emit(_value if _value == "none" else "#" + _value)
+
+func get_value() -> String:
+	return _value
+
 
 func _ready() -> void:
 	value_changed.connect(_on_value_changed)
 	if attribute != null:
-		value = attribute.value
-	color_edit.text = value
+		set_value(attribute.value)
+	color_edit.text = get_value()
 	color_edit.tooltip_text = attribute_name
 
 func validate(new_value: String) -> String:
@@ -43,7 +48,7 @@ func _draw() -> void:
 	var stylebox := StyleBoxFlat.new()
 	stylebox.corner_radius_top_right = 5
 	stylebox.corner_radius_bottom_right = 5
-	stylebox.bg_color = Color.from_string(value, Color(0, 0, 0, 0))
+	stylebox.bg_color = Color.from_string(get_value(), Color(0, 0, 0, 0))
 	draw_texture(checkerboard, Vector2.ZERO)
 	draw_style_box(stylebox, Rect2(Vector2.ZERO, button_size - Vector2(1, 2)))
 
@@ -54,18 +59,18 @@ func _on_focus_entered() -> void:
 	get_tree().paused = true
 
 func _on_focus_exited() -> void:
-	value = color_edit.text
+	set_value(color_edit.text)
 	get_tree().paused = false
 
 func _on_text_submitted(new_text: String) -> void:
-	value = new_text
+	set_value(new_text)
 	color_edit.release_focus()
 
 func _input(event: InputEvent) -> void:
 	Utils.defocus_control_on_outside_click(color_edit, event)
 
 func _on_color_picked(new_color: String) -> void:
-	value = new_color
+	set_value(new_color)
 
 
 func _on_button_resized() -> void:

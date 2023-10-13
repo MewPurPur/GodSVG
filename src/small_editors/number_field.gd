@@ -16,25 +16,27 @@ var step := 1.0
 var is_float := true
 
 signal value_changed(new_value: float)
-var value: float:
-	set(new_value):
-		var old_value := value
-		value = validate(new_value)
-		if value != old_value:
-			value_changed.emit(value)
-		elif num_edit != null:
-			num_edit.text = str(value)
+var _value: float  # Must not be updated directly.
 
-func set_value_no_restraint(new_value: float) -> void:
-	value = new_value
+func set_value(new_value: float, emit_value_changed := true):
+	var old_value := _value
+	_value = validate(new_value)
+	if _value != old_value and emit_value_changed:
+		value_changed.emit(_value)
+	elif num_edit != null:
+		num_edit.text = str(_value)
+		setup_spinners_state()
+
+func get_value() -> float:
+	return _value
 
 
 func _ready() -> void:
 	value_changed.connect(_on_value_changed)
 	if attribute != null:
-		set_value_no_restraint(attribute.value)
-		attribute.value_changed.connect(set_value_no_restraint)
-	num_edit.text = str(value)
+		set_value(attribute.value)
+		attribute.value_changed.connect(set_value)
+	num_edit.text = str(get_value())
 	setup_spinners_state()
 	num_edit.tooltip_text = attribute_name
 
@@ -52,13 +54,12 @@ func validate(new_value: float) -> float:
 
 func _on_value_changed(new_value: float) -> void:
 	num_edit.text = str(new_value)
-	setup_spinners_state()
 	if attribute != null:
 		attribute.value = new_value
 
 
 func _on_up_button_down() -> void:
-	value += step
+	set_value(get_value() + step)
 	up_buildup_timer.start(0.4)
 
 func _on_up_button_up() -> void:
@@ -69,13 +70,13 @@ func _on_up_buildup_timer_timeout() -> void:
 	up_repeat_timer.start(0.04)
 
 func _on_up_repeat_timer_timeout() -> void:
-	value += step
-	if value >= max_value:
-		value = max_value
+	set_value(get_value() + step)
+	if get_value() >= max_value:
+		set_value(max_value)
 		up_repeat_timer.stop()
 
 func _on_down_button_down() -> void:
-	value -= step
+	set_value(get_value() - step)
 	down_buildup_timer.start(0.4)
 
 func _on_down_button_up() -> void:
@@ -86,9 +87,9 @@ func _on_down_buildup_timer_timeout() -> void:
 	down_repeat_timer.start(0.04)
 
 func _on_down_repeat_timer_timeout() -> void:
-	value -= step
-	if value <= min_value:
-		value = min_value
+	set_value(get_value() - step)
+	if get_value() <= min_value:
+		set_value(min_value)
 		down_repeat_timer.stop()
 
 
@@ -98,11 +99,11 @@ func _on_focus_entered() -> void:
 	get_tree().paused = true
 
 func _on_focus_exited() -> void:
-	value = num_edit.text.to_float()
+	set_value(num_edit.text.to_float())
 	get_tree().paused = false
 
 func _on_text_submitted(new_text: String) -> void:
-	value = new_text.to_float()
+	set_value(new_text.to_float())
 	num_edit.release_focus()
 
 func _input(event: InputEvent) -> void:
@@ -114,8 +115,8 @@ func spinner_set_disabled(spinner: Button, disabling: bool) -> void:
 			else Control.CURSOR_POINTING_HAND
 
 func setup_spinners_state() -> void:
-	spinner_set_disabled(down, value <= min_value or value > max_value)
-	spinner_set_disabled(up, value >= max_value or value < min_value)
+	spinner_set_disabled(down, get_value() <= min_value or get_value() > max_value)
+	spinner_set_disabled(up, get_value() >= max_value or get_value() < min_value)
 
 func add_tooltip(text: String) -> void:
 	if num_edit == null:
