@@ -18,8 +18,8 @@ func _ready() -> void:
 
 func full_update() -> void:
 	# Draw a SVG out of the shapes.
-	var w := SVG.data.w
-	var h := SVG.data.h
+	var w := SVG.data.width
+	var h := SVG.data.height
 	var svg := '<svg width="{w}" height="{h}" viewBox="0 0 {w} {h}"'.format(
 			{"w": w, "h": h})
 	svg += ' xmlns="http://www.w3.org/2000/svg">'
@@ -88,10 +88,10 @@ func _draw() -> void:
 			draw_circle(coords_to_canvas(handle.pos), 2.25 / zoom, Color.WHITE)
 
 func coords_to_canvas(pos: Vector2) -> Vector2:
-	return size / Vector2(SVG.data.w, SVG.data.h) * pos
+	return size / Vector2(SVG.data.width, SVG.data.height) * pos
 
 func canvas_to_coords(pos: Vector2) -> Vector2:
-	return pos * Vector2(SVG.data.w, SVG.data.h) / size
+	return pos * Vector2(SVG.data.width, SVG.data.height) / size
 
 
 func _unhandled_input(event: InputEvent) -> void:
