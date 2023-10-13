@@ -9,7 +9,8 @@ var _value: String  # Must not be updated directly.
 func set_value(new_value: String, emit_value_changed := true):
 	if _value != new_value:
 		_value = new_value
-		value_changed.emit(new_value)
+		if emit_value_changed:
+			value_changed.emit(new_value)
 
 func get_value() -> String:
 	return _value

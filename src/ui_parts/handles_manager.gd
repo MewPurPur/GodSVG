@@ -101,7 +101,6 @@ func _unhandled_input(event: InputEvent) -> void:
 		for handle in handles:
 			if handle.dragged:
 				handle.set_pos(canvas_to_coords(event_pos))
-				handle.moved.emit(handle.pos)
 				accept_event()
 		var picked_hover := false
 		for handle in handles:

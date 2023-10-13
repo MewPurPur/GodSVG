@@ -26,6 +26,7 @@ func set_pos(new_pos: Vector2) -> void:
 	else:
 		pos.y = command.start.y
 	path_attribute.value = PathDataParser.path_commands_to_value(commands)
+	super(new_pos)
 
 
 func sync() -> void:
