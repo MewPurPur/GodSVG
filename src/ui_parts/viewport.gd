@@ -10,8 +10,8 @@ const minimum_visible_proportion = 0.3
 @onready var controls: TextureRect = $Checkerboard/Controls
 
 var zoom_level: float:
-	set(value):
-		zoom_level = clampf(value, min_zoom, max_zoom)
+	set(new_value):
+		zoom_level = clampf(new_value, min_zoom, max_zoom)
 		main_node.update_zoom_label(zoom_level)
 		size_2d_override = size / zoom_level
 		display.material.set_shader_parameter(&"uv_scale",

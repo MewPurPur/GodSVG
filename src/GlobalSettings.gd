@@ -21,18 +21,18 @@ var language: StringName:
 		save_setting("text", "language", language)
 
 var save_window_mode := false:
-	set(value):
-		save_window_mode = value
+	set(new_value):
+		save_window_mode = new_value
 		save_setting("session", "save_window_mode", save_window_mode)
 
 var save_svg := false:
-	set(value):
-		save_svg = value
+	set(new_value):
+		save_svg = new_value
 		save_setting("session", "save_svg", save_svg)
 
 
-func save_setting(section: String, setting: String, value: Variant) -> void:
-	config.set_value(section, setting, value)
+func save_setting(section: String, setting: String, saved_value: Variant) -> void:
+	config.set_value(section, setting, saved_value)
 	config.save(config_path)
 
 func save_user_data() -> void:

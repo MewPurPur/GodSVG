@@ -9,6 +9,7 @@ const SVGFileDialog := preload("svg_file_dialog.tscn")
 func _ready() -> void:
 	SVG.parsing_finished.connect(update_error)
 	auto_update_text()
+	code_edit.clear_undo_history()
 	SVG.data.resized.connect(auto_update_text)
 	SVG.data.attribute_changed.connect(auto_update_text)
 	SVG.data.tag_added.connect(auto_update_text)

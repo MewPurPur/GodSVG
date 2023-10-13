@@ -23,16 +23,6 @@ func set_dimensions(new_width: float, new_height: float) -> void:
 			height = new_height
 		resized.emit()
 
-func set_width(new_width: float) -> void:
-	if width != new_width:
-		width = new_width
-		resized.emit()
-
-func set_height(new_height: float) -> void:
-	if height != new_height:
-		height = new_height
-		resized.emit()
-
 
 func emit_attribute_changed() -> void:
 	attribute_changed.emit()

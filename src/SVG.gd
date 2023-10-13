@@ -118,9 +118,14 @@ func get_svg_error() -> String:
 			var closure_pos := string.find("/>", offset)
 			if closure_pos == -1 or not closure_pos < string.find(">", offset):
 				nodes.append(node_name)
-			
+		
 		elif parser.get_node_type() == XMLParser.NODE_ELEMENT_END:
 			var node_name := parser.get_node_name()
+			# Workaround for XMLParser not checking for closing '>'.
+			var closure_expected_at := parser.get_node_offset() + node_name.length() + 2
+			if string.length() <= closure_expected_at or string[closure_expected_at] != ">":
+				return tr(&"#err_improper_nesting")
+			
 			if nodes.is_empty() or node_name != nodes.back():
 				return tr(&"#err_improper_nesting")
 			nodes.pop_back()

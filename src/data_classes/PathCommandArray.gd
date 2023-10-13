@@ -53,8 +53,8 @@ func get_command(idx: int) -> PathCommand:
 	return data[idx]
 
 
-func set_command_property(idx: int, property: StringName, value: float) -> void:
-	data[idx].set(property, value)
+func set_command_property(idx: int, property: StringName, new_value: float) -> void:
+	data[idx].set(property, new_value)
 	changed.emit()
 
 func add_command(command_char: String) -> void:
