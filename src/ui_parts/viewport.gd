@@ -44,12 +44,12 @@ func zoom_out() -> void:
 	center_frame()
 
 func zoom_reset() -> void:
-	zoom_level = float(nearest_po2(int(256 / maxf(SVG.data.w, SVG.data.h))))
+	zoom_level = float(nearest_po2(int(256 / maxf(SVG.data.width, SVG.data.height))))
 	center_frame()
 
 
 func resize() -> void:
-	display.size = Vector2(SVG.data.w, SVG.data.h)
+	display.size = Vector2(SVG.data.width, SVG.data.height)
 	center_frame()
 
 func center_frame() -> void:

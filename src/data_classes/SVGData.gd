@@ -7,21 +7,34 @@ signal tag_deleted(idx: int)
 signal tag_moved
 signal changed_unknown
 
-var w := 16.0:
-	set(new_w):
-		if w != new_w:
-			w = new_w
-			resized.emit()
-
-var h := 16.0:
-	set(new_h):
-		if h != new_h:
-			h = new_h
-			resized.emit()
-
+var width := 16.0
+var height := 16.0
 var tags: Array[SVGTag]
 
-func emit_attribute_changed():
+
+func set_dimensions(new_width: float, new_height: float) -> void:
+	var is_width_different := width != new_width
+	var is_height_different := height != new_height
+	# Ensure the signal is not emitted unless dimensions have really changed.
+	if is_width_different or is_height_different:
+		if is_width_different:
+			width = new_width
+		if is_height_different:
+			height = new_height
+		resized.emit()
+
+func set_width(new_width: float) -> void:
+	if width != new_width:
+		width = new_width
+		resized.emit()
+
+func set_height(new_height: float) -> void:
+	if height != new_height:
+		height = new_height
+		resized.emit()
+
+
+func emit_attribute_changed() -> void:
 	attribute_changed.emit()
 
 
