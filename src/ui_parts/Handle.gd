@@ -9,8 +9,8 @@ var dragged := false
 func _init() -> void:
 	pass
 
-func set_pos(_new_pos: Vector2) -> void:
-	pass
+func set_pos(new_pos: Vector2) -> void:
+	moved.emit(new_pos)
 
 func sync() -> void:
 	pass
