@@ -104,7 +104,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/separation = 5
 
-[connection signal="view_box_changed" from="MainConfiguration/ViewBoxEdit" to="." method="_change_view_box"]
+[connection signal="viewbox_changed" from="MainConfiguration/ViewBoxEdit" to="." method="_on_viewbox_changed"]
 [connection signal="pressed" from="VBoxContainer/HBoxContainer/Circle" to="." method="add_circle"]
 [connection signal="pressed" from="VBoxContainer/HBoxContainer/Ellipse" to="." method="add_ellipse"]
 [connection signal="pressed" from="VBoxContainer/HBoxContainer/Rect" to="." method="add_rect"]

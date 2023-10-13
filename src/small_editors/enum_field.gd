@@ -4,17 +4,21 @@ extends AttributeEditor
 @onready var indicator: LineEdit = $MainLine/LineEdit
 
 signal value_changed(new_value: String)
-var value: String:
-	set(new_value):
-		if value != new_value:
-			value = new_value
-			value_changed.emit(new_value)
+var _value: String  # Must not be updated directly.
+
+func set_value(new_value: String, emit_value_changed := true):
+	if _value != new_value:
+		_value = new_value
+		value_changed.emit(new_value)
+
+func get_value() -> String:
+	return _value
 
 
 func _ready() -> void:
 	value_changed.connect(_on_value_changed)
 	if attribute != null:
-		value = attribute.value
+		set_value(attribute.value)
 		var buttons_arr: Array[Button] = []
 		for enum_constant in attribute.possible_values:
 			var butt := Button.new()
@@ -23,7 +27,7 @@ func _ready() -> void:
 			butt.pressed.connect(_on_option_pressed.bind(enum_constant))
 			buttons_arr.append(butt)
 		value_picker.set_btn_array(buttons_arr)
-	indicator.text = str(value)
+	indicator.text = str(get_value())
 	indicator.tooltip_text = attribute_name
 
 func _on_button_pressed() -> void:
@@ -32,7 +36,7 @@ func _on_button_pressed() -> void:
 
 func _on_option_pressed(option: String) -> void:
 	value_picker.hide()
-	value = option
+	set_value(option)
 
 func _on_value_changed(new_value: String) -> void:
 	indicator.text = new_value
@@ -48,9 +52,11 @@ func _on_line_edit_text_submitted(new_text: String) -> void:
 	indicator.remove_theme_color_override(&"font_color")
 	indicator.release_focus()
 	if new_text in attribute.possible_values:
-		value = new_text
+		set_value(new_text)
+	elif new_text.is_empty():
+		indicator.text = attribute.default
 	else:
-		indicator.text = value
+		indicator.text = get_value()
 
 func _on_line_edit_text_changed(new_text: String) -> void:
 	if new_text in attribute.possible_values:

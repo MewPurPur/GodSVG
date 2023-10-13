@@ -3,9 +3,10 @@ extends VBoxContainer
 const TagEditor = preload("tag_editor.tscn")
 
 @onready var shapes: VBoxContainer = %Shapes
+@onready var viewbox_edit: HBoxContainer = $MainConfiguration/ViewBoxEdit
 
 func _ready() -> void:
-	SVG.data.resized.connect(update_viewbox)
+	SVG.data.resized.connect(viewbox_edit.update_viewbox)
 	SVG.data.tag_added.connect(full_rebuild)
 	SVG.data.tag_moved.connect(full_rebuild)
 	SVG.data.tag_deleted.connect(full_rebuild.unbind(1))
@@ -13,12 +14,8 @@ func _ready() -> void:
 	full_rebuild()
 
 
-func update_viewbox() -> void:
-	$MainConfiguration/ViewBoxEdit/WidthEdit.value = SVG.data.width
-	$MainConfiguration/ViewBoxEdit/HeightEdit.value = SVG.data.height
-
 func full_rebuild() -> void:
-	update_viewbox()
+	viewbox_edit.update_viewbox()
 	for node in shapes.get_children():
 		node.queue_free()
 	
@@ -47,9 +44,8 @@ func add_path() -> void:
 func add_line() -> void:
 	SVG.data.add_tag(SVGTagLine.new())
 
-func _change_view_box(w: float, h: float) -> void:
-	SVG.data.width = w
-	SVG.data.height = h
+func _on_viewbox_changed(w: float, h: float) -> void:
+	SVG.data.set_dimensions(w, h)
 
 
 func _on_tag_container_gui_input(event: InputEvent) -> void:
