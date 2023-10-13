@@ -2,21 +2,39 @@ extends TextureRect
 
 var zoom := 1.0:
 	set(new_value):
+		var old_zoom := zoom
 		zoom = new_value
+		if old_zoom < zoom:
+			update_texture()
 		queue_redraw()
+
+var full_update_pending := false
 
 var handles: Array[Handle]
 
 func _ready() -> void:
-	SVG.data.resized.connect(full_update)
+	SVG.data.resized.connect(queue_full_update)
 	SVG.data.attribute_changed.connect(sync_handles)
-	SVG.data.tag_added.connect(full_update)
-	SVG.data.tag_deleted.connect(full_update.unbind(1))
-	SVG.data.changed_unknown.connect(full_update)
+	SVG.data.tag_added.connect(queue_full_update)
+	SVG.data.tag_deleted.connect(queue_full_update.unbind(1))
+	SVG.data.changed_unknown.connect(queue_full_update)
 	Selections.selection_changed.connect(change_selection)
-	full_update()
+	queue_full_update()
+
+
+func queue_full_update() -> void:
+	full_update_pending = true
+
+func _process(_delta: float) -> void:
+	if full_update_pending:
+		full_update()
+		full_update_pending = false
 
 func full_update() -> void:
+	update_texture()
+	update_handles()
+
+func update_texture() -> void:
 	# Draw a SVG out of the shapes.
 	var w := SVG.data.width
 	var h := SVG.data.height
@@ -30,11 +48,10 @@ func full_update() -> void:
 	svg += "</svg>"
 	# Store the SVG string.
 	var img := Image.new()
-	img.load_svg_from_string(svg, 128.0)
+	img.load_svg_from_string(svg, 4.0 * zoom)
 	# Update the display.
 	var image_texture := ImageTexture.create_from_image(img)
 	texture = image_texture
-	update_handles()
 
 func update_handles() -> void:
 	handles.clear()
