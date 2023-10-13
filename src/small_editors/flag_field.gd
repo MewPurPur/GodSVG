@@ -8,7 +8,8 @@ var _value: int
 func set_value(new_value: int, emit_value_changed := true):
 	if _value != new_value:
 		_value = new_value
-		value_changed.emit(new_value)
+		if emit_value_changed:
+			value_changed.emit(new_value)
 
 func get_value() -> int:
 	return _value

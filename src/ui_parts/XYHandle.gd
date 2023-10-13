@@ -15,6 +15,7 @@ func set_pos(new_pos: Vector2) -> void:
 	if new_pos.y != pos.y:
 		y_attribute.value = new_pos.y
 		pos.y = new_pos.y
+	super(new_pos)
 
 func sync() -> void:
 	pos = Vector2(x_attribute.value if x_attribute != null else 0.0,
