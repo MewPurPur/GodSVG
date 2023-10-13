@@ -32,8 +32,8 @@ func sync_data() -> void:
 
 
 func tags_to_string() -> void:
-	var w := data.w
-	var h := data.h
+	var w := data.width
+	var h := data.height
 	# Opening
 	string = '<svg width="{w}" height="{h}" viewBox="0 0 {w} {h}"'.format(
 			{"w": w, "h": h})
@@ -69,8 +69,11 @@ func string_to_tags() -> void:
 				attribute_dict[parser.get_attribute_name(i)] = parser.get_attribute_value(i)
 			
 			if node_name == "svg":
-				data.w = attribute_dict["width"] if attribute_dict.has("width") else 0
-				data.h = attribute_dict["height"] if attribute_dict.has("height") else 0
+				var new_w: float = attribute_dict["width"].to_float() if\
+						attribute_dict.has("width") else 0.0
+				var new_h: float = attribute_dict["height"].to_float() if\
+						attribute_dict.has("height") else 0.0
+				data.set_dimensions(new_w, new_h)
 			else:
 				var tag: SVGTag
 				match node_name:
