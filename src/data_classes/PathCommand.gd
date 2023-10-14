@@ -1,4 +1,4 @@
-class_name PathCommandArray extends RefCounted
+class_name PathCommand extends RefCounted
 
 const translation_dict := {
 	"M": MoveCommand, "L": LineCommand, "H": HorizontalLineCommand,
@@ -7,100 +7,30 @@ const translation_dict := {
 	"C": CubicBezierCommand, "S": ShorthandCubicBezierCommand
 }
 
-signal changed
+var command_char := ""
+var arg_count := 0
+var relative := false
+var start: Vector2
+func toggle_relative() -> void:
+	if relative:
+		relative = false
+		command_char = command_char.to_upper()
+		for property in [&"x", &"x1", &"x2"]:
+			if property in self:
+				set(property, start.x + get(property))
+		for property in [&"y", &"y1", &"y2"]:
+			if property in self:
+				set(property, start.y + get(property))
+	else:
+		relative = true
+		command_char = command_char.to_lower()
+		for property in [&"x", &"x1", &"x2"]:
+			if property in self:
+				set(property, get(property) - start.x)
+		for property in [&"y", &"y1", &"y2"]:
+			if property in self:
+				set(property, get(property) - start.y)
 
-var data: Array[PathCommand] = []
-
-
-func _init() -> void:
-	changed.connect(_on_changed)
-
-func _on_changed() -> void:
-	locate_start_points()
-
-
-func locate_start_points() -> void:
-	# Start points are absolute.
-	var last_end_point := Vector2.ZERO
-	var current_subpath_start := Vector2.ZERO
-	for command in data:
-		command.start = last_end_point
-		
-		if command is MoveCommand:
-			current_subpath_start = command.start if command.relative else Vector2.ZERO
-			current_subpath_start += Vector2(command.x, command.y)
-		elif command is CloseCommand:
-			last_end_point = current_subpath_start
-			continue
-		
-		# Prepare for the next iteration.
-		if command.relative:
-			if &"x" in command:
-				last_end_point.x += command.x
-			if &"y" in command:
-				last_end_point.y += command.y
-		else:
-			if &"x" in command:
-				last_end_point.x = command.x
-			if &"y" in command:
-				last_end_point.y = command.y
-
-
-func get_count() -> int:
-	return data.size()
-
-func get_command(idx: int) -> PathCommand:
-	return data[idx]
-
-
-func set_command_property(idx: int, property: StringName, new_value: float) -> void:
-	data[idx].set(property, new_value)
-	changed.emit()
-
-func add_command(command_char: String) -> void:
-	data.append(translation_dict[command_char.to_upper()].new())
-	if Utils.is_string_lower(command_char):
-		data.back().toggle_relative()
-	changed.emit()
-
-func delete_command(idx: int) -> void:
-	data.remove_at(idx)
-	changed.emit()
-
-func toggle_relative_command(idx: int) -> void:
-	data[idx].toggle_relative()
-	changed.emit()
-
-func set_value(path_string: String) -> void:
-	# Don't emit changed, as this rebuilds the data.
-	data = PathDataParser.parse_path_data(path_string)
-	locate_start_points()
-
-
-class PathCommand extends RefCounted:
-	var command_char := ""
-	var arg_count := 0
-	var relative := false
-	var start: Vector2
-	func toggle_relative() -> void:
-		if relative:
-			relative = false
-			command_char = command_char.to_upper()
-			for property in [&"x", &"x1", &"x2"]:
-				if property in self:
-					set(property, start.x + get(property))
-			for property in [&"y", &"y1", &"y2"]:
-				if property in self:
-					set(property, start.y + get(property))
-		else:
-			relative = true
-			command_char = command_char.to_lower()
-			for property in [&"x", &"x1", &"x2"]:
-				if property in self:
-					set(property, get(property) - start.x)
-			for property in [&"y", &"y1", &"y2"]:
-				if property in self:
-					set(property, get(property) - start.y)
 
 class MoveCommand extends PathCommand:
 	var x: float

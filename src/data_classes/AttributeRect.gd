@@ -1,5 +1,11 @@
 class_name AttributeRect extends Attribute
 
+func _init(new_default: Variant = null, new_init: Variant = null) -> void:
+	type = Type.RECT
+	default = new_default
+	value = new_init if new_init != null else new_default
+
+
 static func string_to_rect(string: String) -> Rect2:
 	var nums_parsed: Array[float] = []
 	var current_num_string: String = ""

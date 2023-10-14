@@ -13,6 +13,7 @@ var handles: Array[Handle]
 
 func _ready() -> void:
 	SVG.root_tag.attribute_changed.connect(queue_full_update)
+	SVG.root_tag.child_tag_attribute_changed.connect(queue_update_texture)
 	SVG.root_tag.child_tag_attribute_changed.connect(sync_handles)
 	SVG.root_tag.tag_added.connect(queue_full_update)
 	SVG.root_tag.tag_deleted.connect(queue_full_update.unbind(1))
@@ -73,29 +74,28 @@ func update_handles() -> void:
 			handles.append(XYHandle.new(tag.attributes.x1, tag.attributes.y1))
 			handles.append(XYHandle.new(tag.attributes.x2, tag.attributes.y2))
 		if tag is TagPath:
-			var path_data := PathCommandArray.new()
-			path_data.data = PathDataParser.parse_path_data(tag.attributes.d.value)
-			for idx in path_data.get_count():
-				if not path_data.get_command(idx) is PathCommandArray.CloseCommand:
-					handles.append(PathHandle.new(tag.attributes.d, idx))
+			var path_attribute: AttributePath = tag.attributes.d
+			for idx in path_attribute.get_command_count():
+				if not path_attribute.get_command(idx) is PathCommand.CloseCommand:
+					handles.append(PathHandle.new(path_attribute, idx))
 
 func change_selection() -> void:
 	return  # TODO
 
 func sync_handles() -> void:
+	# For XYHandles, sync them. For path handles, sync all but the one being dragged.
 	for handle_idx in range(handles.size() - 1, -1, -1):
 		var handle := handles[handle_idx]
 		if handle is XYHandle:
 			handle.sync()
-		else:
+		elif handle is PathHandle and not handle.dragged:
 			handles.remove_at(handle_idx)
 	for tag in SVG.root_tag.child_tags:
 		if tag is TagPath:
-			var path_data := PathCommandArray.new()
-			path_data.data = PathDataParser.parse_path_data(tag.attributes.d.value)
-			for idx in path_data.get_count():
-				if not path_data.get_command(idx) is PathCommandArray.CloseCommand:
-					var handle := PathHandle.new(tag.attributes.d, idx)
+			var path_attribute: AttributePath = tag.attributes.d
+			for idx in path_attribute.get_command_count():
+				if not path_attribute.get_command(idx) is PathCommand.CloseCommand:
+					var handle := PathHandle.new(path_attribute, idx)
 					handles.append(handle)
 	queue_redraw()
 

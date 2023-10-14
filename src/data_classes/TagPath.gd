@@ -3,7 +3,7 @@ class_name TagPath extends Tag
 func _init() -> void:
 	title = "path"
 	attributes = {
-		"d": Attribute.new(Attribute.Type.PATHDATA, ""),
+		"d": AttributePath.new(),
 		"opacity": Attribute.new(Attribute.Type.NFLOAT, 1.0),
 		"fill": Attribute.new(Attribute.Type.COLOR, "#000"),
 		"fill-opacity": Attribute.new(Attribute.Type.NFLOAT, 1.0),

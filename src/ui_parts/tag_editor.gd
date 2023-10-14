@@ -27,21 +27,18 @@ func _ready() -> void:
 		match attribute.type:
 			Attribute.Type.INT:
 				input_field = NumberField.instantiate()
-				input_field.remove_limits()
+				input_field.is_float = false
 			Attribute.Type.FLOAT:
 				input_field = NumberField.instantiate()
-				input_field.is_float = true
-				input_field.min_value = -1024
-				input_field.remove_limits()
 			Attribute.Type.UFLOAT:
 				input_field = NumberField.instantiate()
-				input_field.is_float = true
-				input_field.allow_higher = true
+				input_field.allow_lower = false
 			Attribute.Type.NFLOAT:
 				input_field = NumberField.instantiate()
-				input_field.is_float = true
-				input_field.max_value = 1
-				input_field.step = 0.01
+				input_field.allow_lower = false
+				input_field.allow_higher = false
+				input_field.show_slider = true
+				input_field.slider_step = 0.01
 			Attribute.Type.COLOR:
 				input_field = ColorField.instantiate()
 			Attribute.Type.PATHDATA:

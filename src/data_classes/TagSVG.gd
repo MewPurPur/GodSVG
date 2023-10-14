@@ -5,7 +5,7 @@ func _init() -> void:
 	attributes = {
 		"height": Attribute.new(Attribute.Type.UFLOAT, null, 16.0),
 		"width": Attribute.new(Attribute.Type.UFLOAT, null, 16.0),
-		"viewBox": Attribute.new(Attribute.Type.RECT, null, Rect2(0, 0, 16, 16)),
+		"viewBox": AttributeRect.new(null, Rect2(0, 0, 16, 16)),
 	}
 	super()
 

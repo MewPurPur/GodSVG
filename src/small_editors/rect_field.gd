@@ -21,17 +21,9 @@ func get_value() -> Rect2:
 func _ready() -> void:
 	# FIXME Lift these limitations.
 	x_field.num_edit.editable = false
-	x_field.up.disabled = true
-	x_field.down.disabled = true
 	y_field.num_edit.editable = false
-	y_field.up.disabled = true
-	y_field.down.disabled = true
 	w_field.num_edit.editable = false
-	w_field.up.disabled = true
-	w_field.down.disabled = true
 	h_field.num_edit.editable = false
-	h_field.up.disabled = true
-	h_field.down.disabled = true
 	
 	x_field.min_value = -1024.0
 	y_field.min_value = -1024.0
