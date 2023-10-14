@@ -81,7 +81,7 @@ func string_to_tags() -> void:
 				var new_h: float = attribute_dict["height"].to_float() if\
 						attribute_dict.has("height") else 0.0
 				var new_viewbox := AttributeRect.string_to_rect(attribute_dict["viewBox"])\
-						if attribute_dict.has("height") else Rect2(0, 0, new_w, new_h)
+						if attribute_dict.has("viewBox") else Rect2(0, 0, new_w, new_h)
 				root_tag.set_canvas(new_w, new_h, new_viewbox)
 			else:
 				var tag: Tag
