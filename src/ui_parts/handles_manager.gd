@@ -2,49 +2,56 @@ extends TextureRect
 
 var zoom := 1.0:
 	set(new_value):
-		var old_zoom := zoom
 		zoom = new_value
-		if old_zoom < zoom:
-			update_texture()
+		queue_update_texture()
 		queue_redraw()
 
-var full_update_pending := false
+var texture_update_pending := false
+var handles_update_pending := false
 
 var handles: Array[Handle]
 
 func _ready() -> void:
-	SVG.data.resized.connect(queue_full_update)
-	SVG.data.attribute_changed.connect(sync_handles)
-	SVG.data.tag_added.connect(queue_full_update)
-	SVG.data.tag_deleted.connect(queue_full_update.unbind(1))
-	SVG.data.changed_unknown.connect(queue_full_update)
+	SVG.root_tag.attribute_changed.connect(queue_full_update)
+	SVG.root_tag.child_tag_attribute_changed.connect(sync_handles)
+	SVG.root_tag.tag_added.connect(queue_full_update)
+	SVG.root_tag.tag_deleted.connect(queue_full_update.unbind(1))
+	SVG.root_tag.changed_unknown.connect(queue_full_update)
 	Selections.selection_changed.connect(change_selection)
 	queue_full_update()
 
 
 func queue_full_update() -> void:
-	full_update_pending = true
+	queue_update_texture()
+	queue_update_handles()
+
+func queue_update_texture() -> void:
+	texture_update_pending = true
+
+func queue_update_handles() -> void:
+	handles_update_pending = true
 
 func _process(_delta: float) -> void:
-	if full_update_pending:
-		full_update()
-		full_update_pending = false
+	if texture_update_pending:
+		update_texture()
+		texture_update_pending = false
+	if handles_update_pending:
+		update_handles()
+		handles_update_pending = false
 
-func full_update() -> void:
-	update_texture()
-	update_handles()
 
 func update_texture() -> void:
 	# Draw a SVG out of the shapes.
-	var w := SVG.data.width
-	var h := SVG.data.height
-	var svg := '<svg width="{w}" height="{h}" viewBox="0 0 {w} {h}"'.format(
-			{"w": w, "h": h})
+	var w: float = SVG.root_tag.attributes.width.value
+	var h: float = SVG.root_tag.attributes.height.value
+	var viewbox: Rect2 = SVG.root_tag.attributes.viewBox.value
+	var svg := '<svg width="%f" height="%f" viewBox="%s"' % [w, h,
+			AttributeRect.rect_to_string(viewbox)]
 	svg += ' xmlns="http://www.w3.org/2000/svg">'
-	for tag in SVG.data.tags:
-		if tag is SVGTagPath:
-			svg += '<path d="{d}" fill="none" stroke="gray" stroke-width=".1"/>'.format(
-					{"d": tag.attributes.d.value})
+	for tag in SVG.root_tag.child_tags:
+		if tag is TagPath:
+			svg += '<path d="{d}" fill="none" stroke="#000" stroke-width="{s}"/>'.format(
+					{"d": tag.attributes.d.value, "s": 2.0 / zoom})
 	svg += "</svg>"
 	# Store the SVG string.
 	var img := Image.new()
@@ -55,17 +62,17 @@ func update_texture() -> void:
 
 func update_handles() -> void:
 	handles.clear()
-	for tag in SVG.data.tags:
-		if tag is SVGTagCircle:
+	for tag in SVG.root_tag.child_tags:
+		if tag is TagCircle:
 			handles.append(XYHandle.new(tag.attributes.cx, tag.attributes.cy))
-		if tag is SVGTagEllipse:
+		if tag is TagEllipse:
 			handles.append(XYHandle.new(tag.attributes.cx, tag.attributes.cy))
-		if tag is SVGTagRect:
+		if tag is TagRect:
 			handles.append(XYHandle.new(tag.attributes.x, tag.attributes.y))
-		if tag is SVGTagLine:
+		if tag is TagLine:
 			handles.append(XYHandle.new(tag.attributes.x1, tag.attributes.y1))
 			handles.append(XYHandle.new(tag.attributes.x2, tag.attributes.y2))
-		if tag is SVGTagPath:
+		if tag is TagPath:
 			var path_data := PathCommandArray.new()
 			path_data.data = PathDataParser.parse_path_data(tag.attributes.d.value)
 			for idx in path_data.get_count():
@@ -82,8 +89,8 @@ func sync_handles() -> void:
 			handle.sync()
 		else:
 			handles.remove_at(handle_idx)
-	for tag in SVG.data.tags:
-		if tag is SVGTagPath:
+	for tag in SVG.root_tag.child_tags:
+		if tag is TagPath:
 			var path_data := PathCommandArray.new()
 			path_data.data = PathDataParser.parse_path_data(tag.attributes.d.value)
 			for idx in path_data.get_count():
@@ -105,10 +112,12 @@ func _draw() -> void:
 			draw_circle(coords_to_canvas(handle.pos), 2.25 / zoom, Color.WHITE)
 
 func coords_to_canvas(pos: Vector2) -> Vector2:
-	return size / Vector2(SVG.data.width, SVG.data.height) * pos
+	return size / Vector2(SVG.root_tag.attributes.width.value,
+			SVG.root_tag.attributes.height.value) * pos
 
 func canvas_to_coords(pos: Vector2) -> Vector2:
-	return pos * Vector2(SVG.data.width, SVG.data.height) / size
+	return pos * Vector2(SVG.root_tag.attributes.width.value,
+			SVG.root_tag.attributes.height.value) / size
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -125,6 +134,7 @@ func _unhandled_input(event: InputEvent) -> void:
 			coords_to_canvas(handle.pos)) < max_grab_distance:
 				handle.hovered = true
 				picked_hover = true
+				queue_redraw()
 				break
 			if picked_hover and handle.hovered:
 				handle.hovered = false

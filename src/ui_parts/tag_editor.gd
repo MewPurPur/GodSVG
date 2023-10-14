@@ -15,40 +15,40 @@ const EnumField = preload("res://src/small_editors/enum_field.tscn")
 @onready var selected_highlight: Panel = $Panel
 
 var tag_index: int
-var tag: SVGTag
+var tag: Tag
 
 func _ready() -> void:
 	Selections.selection_changed.connect(_on_selection_changed)
 	# Fill up the containers.
 	title_button.text = tag.title
 	for attribute_key in tag.attributes:
-		var attribute_value: SVGAttribute = tag.attributes[attribute_key]
+		var attribute: Attribute = tag.attributes[attribute_key]
 		var input_field: AttributeEditor
-		match attribute_value.type:
-			SVGAttribute.Type.INT:
+		match attribute.type:
+			Attribute.Type.INT:
 				input_field = NumberField.instantiate()
 				input_field.remove_limits()
-			SVGAttribute.Type.FLOAT:
+			Attribute.Type.FLOAT:
 				input_field = NumberField.instantiate()
 				input_field.is_float = true
 				input_field.min_value = -1024
 				input_field.remove_limits()
-			SVGAttribute.Type.UFLOAT:
+			Attribute.Type.UFLOAT:
 				input_field = NumberField.instantiate()
 				input_field.is_float = true
 				input_field.allow_higher = true
-			SVGAttribute.Type.NFLOAT:
+			Attribute.Type.NFLOAT:
 				input_field = NumberField.instantiate()
 				input_field.is_float = true
 				input_field.max_value = 1
 				input_field.step = 0.01
-			SVGAttribute.Type.COLOR:
+			Attribute.Type.COLOR:
 				input_field = ColorField.instantiate()
-			SVGAttribute.Type.PATHDATA:
+			Attribute.Type.PATHDATA:
 				input_field = PathField.instantiate()
-			SVGAttribute.Type.ENUM:
+			Attribute.Type.ENUM:
 				input_field = EnumField.instantiate()
-		input_field.attribute = attribute_value
+		input_field.attribute = attribute
 		input_field.attribute_name = attribute_key
 		# Add the attribute to its corresponding container.
 		if attribute_key in shape_attributes:
@@ -58,11 +58,11 @@ func _ready() -> void:
 
 
 func _on_delete_button_pressed() -> void:
-	SVG.data.delete_tag(tag_index)
+	SVG.root_tag.delete_tag(tag_index)
 	queue_free()
 
 func _on_title_button_pressed() -> void:
-	var tag_count := SVG.data.get_tag_count()
+	var tag_count := SVG.root_tag.get_children_count()
 	if tag_count <= 1:
 		return
 	
@@ -86,11 +86,11 @@ func _on_title_button_pressed() -> void:
 
 func _on_move_up_button_pressed() -> void:
 	tag_context.hide()
-	SVG.data.move_tag(tag_index, tag_index - 1)
+	SVG.root_tag.move_tag(tag_index, tag_index - 1)
 
 func _on_move_down_button_pressed() -> void:
 	tag_context.hide()
-	SVG.data.move_tag(tag_index, tag_index + 1)
+	SVG.root_tag.move_tag(tag_index, tag_index + 1)
 
 
 func _on_gui_input(event: InputEvent) -> void:

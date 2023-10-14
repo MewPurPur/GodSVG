@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=3 uid="uid://ce6j54x27pom"]
+[gd_scene load_steps=29 format=3 uid="uid://ce6j54x27pom"]
 
 [ext_resource type="PackedScene" uid="uid://ccynisiuyn5qn" path="res://src/ui_parts/inspector.tscn" id="1_afxvd"]
 [ext_resource type="Texture2D" uid="uid://ccvjkdd0s7rb4" path="res://visual/icons/Copy.svg" id="1_fm0ux"]
@@ -13,7 +13,7 @@
 [ext_resource type="Script" path="res://src/ui_parts/viewport.gd" id="6_7hypx"]
 [ext_resource type="Texture2D" uid="uid://ccbta5q43jobk" path="res://visual/icons/More.svg" id="7_7iuuq"]
 [ext_resource type="Script" path="res://src/ui_parts/display_texture.gd" id="7_cxx0h"]
-[ext_resource type="Texture2D" uid="uid://kkxyv1gyrjgj" path="res://visual/icons/Snap.svg" id="9_ojv7n"]
+[ext_resource type="Texture2D" uid="uid://kkxyv1gyrjgj" path="res://visual/icons/Visuals.svg" id="9_ojv7n"]
 [ext_resource type="PackedScene" uid="uid://wp77eqhikp6k" path="res://src/small_editors/context_popup.tscn" id="10_hraj8"]
 [ext_resource type="Shader" path="res://src/ui_parts/zoom_shader.gdshader" id="12_wewnk"]
 [ext_resource type="Script" path="res://src/ui_parts/snap_lines.gd" id="15_v2yj8"]
@@ -62,6 +62,19 @@ keyword_colors = {
 color_regions = {
 "\" \"": Color(0.631373, 1, 0.878431, 1)
 }
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_k0een"]
+content_margin_left = 2.0
+content_margin_right = 2.0
+bg_color = Color(0.0975, 0.0975, 0.15, 1)
+border_width_left = 2
+border_width_top = 1
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.1875, 0.1875, 0.25, 1)
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+corner_detail = 16
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nxvgo"]
 bg_color = Color(0.016, 0.016, 0.08, 1)
@@ -129,7 +142,12 @@ theme_override_constants/separation = 8
 layout_mode = 2
 script = ExtResource("1_ry6k8")
 
-[node name="CodeEdit" type="CodeEdit" parent="PanelContainer/MarginContainer/MainContainer/CodeEditor"]
+[node name="ScriptEditor" type="VBoxContainer" parent="PanelContainer/MarginContainer/MainContainer/CodeEditor"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = -2
+
+[node name="CodeEdit" type="CodeEdit" parent="PanelContainer/MarginContainer/MainContainer/CodeEditor/ScriptEditor"]
 custom_minimum_size = Vector2(0, 96)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -147,23 +165,17 @@ auto_brace_completion_pairs = {
 "<": ">"
 }
 
-[node name="ErrorContainer" type="PanelContainer" parent="PanelContainer/MarginContainer/MainContainer/CodeEditor/CodeEdit"]
+[node name="ErrorBar" type="PanelContainer" parent="PanelContainer/MarginContainer/MainContainer/CodeEditor/ScriptEditor"]
 visible = false
-layout_mode = 1
-anchors_preset = 12
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_top = -4.0
-grow_horizontal = 2
-grow_vertical = 0
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_k0een")
 
-[node name="Padding" type="MarginContainer" parent="PanelContainer/MarginContainer/MainContainer/CodeEditor/CodeEdit/ErrorContainer"]
+[node name="Padding" type="MarginContainer" parent="PanelContainer/MarginContainer/MainContainer/CodeEditor/ScriptEditor/ErrorBar"]
 layout_mode = 2
 theme_override_constants/margin_left = 8
 theme_override_constants/margin_right = 8
 
-[node name="ErrorLabel" type="RichTextLabel" parent="PanelContainer/MarginContainer/MainContainer/CodeEditor/CodeEdit/ErrorContainer/Padding"]
+[node name="Label" type="RichTextLabel" parent="PanelContainer/MarginContainer/MainContainer/CodeEditor/ScriptEditor/ErrorBar/Padding"]
 layout_mode = 2
 theme_override_colors/default_color = Color(1, 0.4, 0.4, 1)
 theme_override_fonts/normal_font = ExtResource("2_w635r")
@@ -344,7 +356,7 @@ grow_vertical = 2
 mouse_filter = 1
 script = ExtResource("15_v2yj8")
 
-[connection signal="text_changed" from="PanelContainer/MarginContainer/MainContainer/CodeEditor/CodeEdit" to="PanelContainer/MarginContainer/MainContainer/CodeEditor" method="_on_code_edit_text_changed"]
+[connection signal="text_changed" from="PanelContainer/MarginContainer/MainContainer/CodeEditor/ScriptEditor/CodeEdit" to="PanelContainer/MarginContainer/MainContainer/CodeEditor" method="_on_code_edit_text_changed"]
 [connection signal="pressed" from="PanelContainer/MarginContainer/MainContainer/CodeEditor/CodeButtons/CopyButton" to="PanelContainer/MarginContainer/MainContainer/CodeEditor" method="_on_copy_button_pressed"]
 [connection signal="pressed" from="PanelContainer/MarginContainer/MainContainer/CodeEditor/CodeButtons/ImportButton" to="PanelContainer/MarginContainer/MainContainer/CodeEditor" method="_on_import_button_pressed"]
 [connection signal="pressed" from="PanelContainer/MarginContainer/MainContainer/CodeEditor/CodeButtons/ExportButton" to="PanelContainer/MarginContainer/MainContainer/CodeEditor" method="_on_export_button_pressed"]

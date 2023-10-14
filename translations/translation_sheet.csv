@@ -14,6 +14,7 @@
 #grids,Grids,Решетка,
 #show_grid,Show Grid,Покажи решетката,
 #show_handles,Show Handles,Покажи дръжките,
+#rasterize_svg,Rasterized SVG,Растеризирай SVG,
 #copy_button_tooltip,Copy All Text,Копирай всичкия текст,
 #import_button_tooltip,Import SVG,Импорт на SVG,
 #export_button_tooltip,Export SVG,Експорт на SVG,

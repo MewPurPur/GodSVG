@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://kkxyv1gyrjgj"
-path="res://.godot/imported/Snap.svg-aaf873ca94baf0be5c4181b38842ca88.ctex"
+path="res://.godot/imported/Visuals.svg-60921e039c6a3b2059ba1e1c9e297fcf.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://visual/icons/Snap.svg"
-dest_files=["res://.godot/imported/Snap.svg-aaf873ca94baf0be5c4181b38842ca88.ctex"]
+source_file="res://visual/icons/Visuals.svg"
+dest_files=["res://.godot/imported/Visuals.svg-60921e039c6a3b2059ba1e1c9e297fcf.ctex"]
 
 [params]
 
