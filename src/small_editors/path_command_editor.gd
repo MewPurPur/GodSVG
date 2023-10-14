@@ -42,7 +42,7 @@ func setup(command_char: String) -> void:
 		relative_button.add_theme_stylebox_override(&"pressed", create_stylebox(
 				Color.from_hsv(0.74, 0.6, 1.0), Color.from_hsv(0.7, 0.4, 1.0)))
 
-func add_number_field() -> Control:
+func add_number_field() -> AttributeEditor:
 	var new_number_field := NumberField.instantiate()
 	safely_add_field(new_number_field)
 	return new_number_field

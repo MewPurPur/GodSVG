@@ -1,118 +1,20 @@
-[gd_scene load_steps=12 format=3 uid="uid://bp2vpf7g8w8aj"]
+[gd_scene load_steps=3 format=3 uid="uid://bp2vpf7g8w8aj"]
 
 [ext_resource type="Script" path="res://src/small_editors/number_field.gd" id="1_vy4cm"]
-[ext_resource type="Texture2D" uid="uid://wburo8uyoqy4" path="res://visual/icons/Up.svg" id="2_odnw4"]
-[ext_resource type="Texture2D" uid="uid://coda6chhcatal" path="res://visual/icons/Down.svg" id="3_xhm16"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yni7n"]
-content_margin_left = 1.0
-content_margin_top = 2.0
-content_margin_right = 2.0
-content_margin_bottom = 0.0
-bg_color = Color(0.0705882, 0.0705882, 0.2, 1)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_smesa"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+draw_center = false
 border_width_left = 1
 border_width_top = 2
-border_width_right = 2
-border_width_bottom = 1
-border_color = Color(0.105882, 0.14902, 0.301961, 1)
-corner_radius_top_right = 6
-corner_detail = 16
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0ilo3"]
-content_margin_left = 1.0
-content_margin_top = 2.0
-content_margin_right = 2.0
-content_margin_bottom = 0.0
-bg_color = Color(0.0901961, 0.0901961, 0.2, 1)
-border_width_left = 1
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 1
-border_color = Color(0.203922, 0.254902, 0.4, 1)
-corner_radius_top_right = 6
-corner_detail = 16
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wue2p"]
-content_margin_left = 1.0
-content_margin_top = 2.0
-content_margin_right = 2.0
-content_margin_bottom = 0.0
-bg_color = Color(0.321569, 0.439216, 0.8, 1)
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 1
-border_color = Color(0.541176, 0.721569, 0.901961, 1)
-corner_radius_top_right = 6
-corner_detail = 16
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_o12w0"]
-content_margin_left = 1.0
-content_margin_top = 2.0
-content_margin_right = 2.0
-content_margin_bottom = 0.0
-bg_color = Color(0.0352941, 0.0352941, 0.0509804, 1)
-border_width_left = 1
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 1
-border_color = Color(0.0901961, 0.0901961, 0.101961, 1)
-corner_radius_top_right = 6
-corner_detail = 16
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_p5khm"]
-content_margin_left = 1.0
-content_margin_top = 2.0
-content_margin_right = 2.0
-content_margin_bottom = 2.0
-bg_color = Color(0.0705882, 0.0705882, 0.2, 1)
-border_width_left = 1
-border_width_top = 1
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.105882, 0.14902, 0.301961, 1)
-corner_radius_bottom_right = 6
-corner_detail = 16
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0r17a"]
-content_margin_left = 1.0
-content_margin_top = 2.0
-content_margin_right = 2.0
-content_margin_bottom = 2.0
-bg_color = Color(0.0901961, 0.0901961, 0.2, 1)
-border_width_left = 1
-border_width_top = 1
 border_width_right = 2
 border_width_bottom = 2
 border_color = Color(0.203922, 0.254902, 0.4, 1)
-corner_radius_bottom_right = 6
-corner_detail = 16
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_flwce"]
-content_margin_left = 1.0
-content_margin_top = 2.0
-content_margin_right = 2.0
-content_margin_bottom = 2.0
-bg_color = Color(0.321569, 0.439216, 0.8, 1)
-border_width_left = 1
-border_width_top = 1
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.541176, 0.721569, 0.901961, 1)
-corner_radius_bottom_right = 6
-corner_detail = 16
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_iburr"]
-content_margin_left = 1.0
-content_margin_top = 2.0
-content_margin_right = 2.0
-content_margin_bottom = 2.0
-bg_color = Color(0.0352941, 0.0352941, 0.0509804, 1)
-border_width_left = 1
-border_width_top = 1
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.0901961, 0.0901961, 0.101961, 1)
-corner_radius_bottom_right = 6
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
 corner_detail = 16
 
 [node name="NumberField" type="HBoxContainer"]
@@ -123,7 +25,7 @@ theme_override_constants/separation = 0
 script = ExtResource("1_vy4cm")
 
 [node name="LineEdit" type="LineEdit" parent="."]
-custom_minimum_size = Vector2(48, 0)
+custom_minimum_size = Vector2(46, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 max_length = 6
@@ -131,64 +33,18 @@ context_menu_enabled = false
 select_all_on_focus = true
 caret_blink = true
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
+[node name="Slider" type="Button" parent="."]
+visible = false
+clip_contents = true
+custom_minimum_size = Vector2(12, 0)
 layout_mode = 2
-theme_override_constants/separation = 0
-
-[node name="Up" type="Button" parent="VBoxContainer"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(16, 0)
-layout_mode = 2
-size_flags_horizontal = 8
-size_flags_vertical = 3
-focus_mode = 0
 mouse_default_cursor_shape = 2
-theme_override_styles/normal = SubResource("StyleBoxFlat_yni7n")
-theme_override_styles/hover = SubResource("StyleBoxFlat_0ilo3")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_wue2p")
-theme_override_styles/disabled = SubResource("StyleBoxFlat_o12w0")
-action_mode = 0
-icon = ExtResource("2_odnw4")
-icon_alignment = 1
-expand_icon = true
-
-[node name="Timer" type="Timer" parent="VBoxContainer/Up"]
-wait_time = 0.8
-one_shot = true
-
-[node name="Timer2" type="Timer" parent="VBoxContainer/Up"]
-
-[node name="Down" type="Button" parent="VBoxContainer"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(16, 0)
-layout_mode = 2
-size_flags_horizontal = 8
-size_flags_vertical = 3
-focus_mode = 0
-mouse_default_cursor_shape = 2
-theme_override_styles/normal = SubResource("StyleBoxFlat_p5khm")
-theme_override_styles/hover = SubResource("StyleBoxFlat_0r17a")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_flwce")
-theme_override_styles/disabled = SubResource("StyleBoxFlat_iburr")
-action_mode = 0
-icon = ExtResource("3_xhm16")
-icon_alignment = 1
-expand_icon = true
-
-[node name="Timer" type="Timer" parent="VBoxContainer/Down"]
-wait_time = 0.8
-one_shot = true
-
-[node name="Timer2" type="Timer" parent="VBoxContainer/Down"]
+theme_type_variation = &"LeftConnectedButtonTransparent"
+theme_override_styles/pressed = SubResource("StyleBoxFlat_smesa")
 
 [connection signal="focus_entered" from="LineEdit" to="." method="_on_focus_entered"]
 [connection signal="focus_exited" from="LineEdit" to="." method="_on_focus_exited"]
 [connection signal="text_submitted" from="LineEdit" to="." method="_on_text_submitted"]
-[connection signal="button_down" from="VBoxContainer/Up" to="." method="_on_up_button_down"]
-[connection signal="button_up" from="VBoxContainer/Up" to="." method="_on_up_button_up"]
-[connection signal="timeout" from="VBoxContainer/Up/Timer" to="." method="_on_up_buildup_timer_timeout"]
-[connection signal="timeout" from="VBoxContainer/Up/Timer2" to="." method="_on_up_repeat_timer_timeout"]
-[connection signal="button_down" from="VBoxContainer/Down" to="." method="_on_down_button_down"]
-[connection signal="button_up" from="VBoxContainer/Down" to="." method="_on_down_button_up"]
-[connection signal="timeout" from="VBoxContainer/Down/Timer" to="." method="_on_down_buildup_timer_timeout"]
-[connection signal="timeout" from="VBoxContainer/Down/Timer2" to="." method="_on_down_repeat_timer_timeout"]
+[connection signal="gui_input" from="Slider" to="." method="_on_slider_gui_input"]
+[connection signal="mouse_exited" from="Slider" to="." method="_on_slider_mouse_exited"]
+[connection signal="resized" from="Slider" to="." method="_on_slider_resized"]

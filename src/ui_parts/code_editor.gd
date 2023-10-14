@@ -32,12 +32,14 @@ func update_error(err: String) -> void:
 		# When the error is shown, the code editor's theme is changed to match up.
 		error_bar.show()
 		error_label.text = err
-		var stylebox := ThemeDB.get_project_theme().get_stylebox(&"normal", &"TextEdit")
+		var stylebox := ThemeDB.get_project_theme().\
+				get_stylebox(&"normal", &"TextEdit").duplicate()
 		stylebox.corner_radius_bottom_right = 0
 		stylebox.corner_radius_bottom_left = 0
 		stylebox.border_width_bottom = 1
 		code_edit.add_theme_stylebox_override(&"normal", stylebox)
-		var stylebox2 := ThemeDB.get_project_theme().get_stylebox(&"focus", &"CodeEdit")
+		var stylebox2 := ThemeDB.get_project_theme().\
+				get_stylebox(&"focus", &"CodeEdit").duplicate()
 		stylebox2.corner_radius_bottom_right = 0
 		stylebox2.corner_radius_bottom_left = 0
 		stylebox2.border_width_bottom = 1
