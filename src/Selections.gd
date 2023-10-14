@@ -5,7 +5,7 @@ signal selection_changed
 var selected_tags: Array[int] = []
 
 func _ready() -> void:
-	SVG.data.tag_deleted.connect(_on_tag_deleted)
+	SVG.root_tag.tag_deleted.connect(_on_tag_deleted)
 
 func toggle_index(idx: int) -> void:
 	if idx >= 0:
@@ -33,4 +33,4 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventKey:
 		if event.keycode == KEY_DELETE:
 			for tag_idx in Selections.selected_tags:
-				SVG.data.delete_tag(tag_idx)
+				SVG.root_tag.delete_tag(tag_idx)

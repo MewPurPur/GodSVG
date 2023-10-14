@@ -3,17 +3,17 @@ extends Node
 const display_path := "user://display.svg"
 
 var string := ""
-var data := SVGData.new()
+var root_tag := TagSVG.new()
 
 signal parsing_finished(err_text: String)
 
 func _ready() -> void:
-	SVG.data.changed_unknown.connect(sync_string)
-	SVG.data.resized.connect(sync_string)
-	SVG.data.attribute_changed.connect(sync_string)
-	SVG.data.tag_added.connect(sync_string)
-	SVG.data.tag_deleted.connect(sync_string.unbind(1))
-	SVG.data.tag_moved.connect(sync_string)
+	SVG.root_tag.changed_unknown.connect(sync_string)
+	SVG.root_tag.attribute_changed.connect(sync_string)
+	SVG.root_tag.child_tag_attribute_changed.connect(sync_string)
+	SVG.root_tag.tag_added.connect(sync_string)
+	SVG.root_tag.tag_deleted.connect(sync_string.unbind(1))
+	SVG.root_tag.tag_moved.connect(sync_string)
 	
 	if GlobalSettings.save_svg:
 		string = GlobalSettings.save_data.svg
@@ -32,33 +32,39 @@ func sync_data() -> void:
 
 
 func tags_to_string() -> void:
-	var w := data.width
-	var h := data.height
+	var w: float = root_tag.attributes.width.value
+	var h: float = root_tag.attributes.height.value
+	var viewbox: Rect2 = root_tag.attributes.viewBox.value
 	# Opening
-	string = '<svg width="{w}" height="{h}" viewBox="0 0 {w} {h}"'.format(
-			{"w": w, "h": h})
+	string = '<svg width="%s" height="%s" viewBox="%s"' % [String.num(w, 4),
+			String.num(h, 4), AttributeRect.rect_to_string(viewbox)]
 	string += ' xmlns="http://www.w3.org/2000/svg">'
-	# Inner tags
-	for tag in data.tags:
-		string += '<' + tag.title
-		for attribute_key in tag.attributes:
-			var attribute: SVGAttribute = tag.attributes[attribute_key]
-			if attribute.value == attribute.default:
+	
+	for inner_tag in root_tag.child_tags:
+		string += '<' + inner_tag.title
+		for attribute_key in inner_tag.attributes:
+			var attribute: Attribute = inner_tag.attributes[attribute_key]
+			var value: Variant = attribute.value
+			if value == attribute.default:
 				continue
 			
+			string += " " + attribute_key + '="'
 			match attribute.type:
-				SVGAttribute.Type.INT:
-					string += ' %s="%d"' % [attribute_key, attribute.value]
-				SVGAttribute.Type.FLOAT, SVGAttribute.Type.UFLOAT, SVGAttribute.Type.NFLOAT:
-					string += ' %s="' % attribute_key + String.num(attribute.value, 4) + '"'
-				SVGAttribute.Type.COLOR, SVGAttribute.Type.PATHDATA, SVGAttribute.Type.ENUM:
-					string += ' %s="%s"' % [attribute_key, attribute.value]
+				Attribute.Type.INT:
+					string += value.to_int()
+				Attribute.Type.FLOAT, Attribute.Type.UFLOAT, Attribute.Type.NFLOAT:
+					string += String.num(value, 4)
+				Attribute.Type.COLOR, Attribute.Type.PATHDATA, Attribute.Type.ENUM:
+					string += value
+				Attribute.Type.RECT:
+					string += AttributeRect.rect_to_string(value)
+			string += '"'
 		string += '/>'
 	# Closing
 	string += '</svg>'
 
 func string_to_tags() -> void:
-	var new_tags: Array[SVGTag] = []
+	var new_tags: Array[Tag] = []
 	var parser := XMLParser.new()
 	parser.open_buffer(string.to_ascii_buffer())
 	while parser.read() == OK:
@@ -68,21 +74,24 @@ func string_to_tags() -> void:
 			for i in range(parser.get_attribute_count()):
 				attribute_dict[parser.get_attribute_name(i)] = parser.get_attribute_value(i)
 			
+			# SVG tag requires width and height without defaults, so do the logic early.
 			if node_name == "svg":
 				var new_w: float = attribute_dict["width"].to_float() if\
 						attribute_dict.has("width") else 0.0
 				var new_h: float = attribute_dict["height"].to_float() if\
 						attribute_dict.has("height") else 0.0
-				data.set_dimensions(new_w, new_h)
+				var new_viewbox := AttributeRect.string_to_rect(attribute_dict["viewBox"])\
+						if attribute_dict.has("height") else Rect2(0, 0, new_w, new_h)
+				root_tag.set_canvas(new_w, new_h, new_viewbox)
 			else:
-				var tag: SVGTag
+				var tag: Tag
 				match node_name:
-					"circle": tag = SVGTagCircle.new()
-					"ellipse": tag = SVGTagEllipse.new()
-					"rect": tag = SVGTagRect.new()
-					"path": tag = SVGTagPath.new()
-					"line": tag = SVGTagLine.new()
-					_: tag = SVGTag.new()
+					"circle": tag = TagCircle.new()
+					"ellipse": tag = TagEllipse.new()
+					"rect": tag = TagRect.new()
+					"path": tag = TagPath.new()
+					"line": tag = TagLine.new()
+					_: tag = Tag.new()
 				for element in attribute_dict:
 					if tag.attributes.has(element):
 						if typeof(tag.attributes[element].value) == Variant.Type.TYPE_STRING:
@@ -90,7 +99,7 @@ func string_to_tags() -> void:
 						elif typeof(tag.attributes[element].value) == Variant.Type.TYPE_FLOAT:
 							tag.attributes[element].value = attribute_dict[element].to_float()
 				new_tags.append(tag)
-	data.replace_tags(new_tags)
+	root_tag.replace_tags(new_tags)
 
 
 # TODO Can definitely be improved.

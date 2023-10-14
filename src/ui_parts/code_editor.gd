@@ -1,8 +1,8 @@
 extends HBoxContainer
 
-@onready var code_edit: CodeEdit = $CodeEdit
-@onready var error_bar: PanelContainer = $CodeEdit/ErrorContainer
-@onready var error_label: RichTextLabel = $CodeEdit/ErrorContainer/Padding/ErrorLabel
+@onready var code_edit: CodeEdit = $ScriptEditor/CodeEdit
+@onready var error_bar: PanelContainer = $ScriptEditor/ErrorBar
+@onready var error_label: RichTextLabel = $ScriptEditor/ErrorBar/Padding/Label
 
 const SVGFileDialog := preload("svg_file_dialog.tscn")
 
@@ -10,12 +10,12 @@ func _ready() -> void:
 	SVG.parsing_finished.connect(update_error)
 	auto_update_text()
 	code_edit.clear_undo_history()
-	SVG.data.resized.connect(auto_update_text)
-	SVG.data.attribute_changed.connect(auto_update_text)
-	SVG.data.tag_added.connect(auto_update_text)
-	SVG.data.tag_deleted.connect(auto_update_text.unbind(1))
-	SVG.data.tag_moved.connect(auto_update_text)
-	SVG.data.changed_unknown.connect(auto_update_text)
+	SVG.root_tag.attribute_changed.connect(auto_update_text)
+	SVG.root_tag.child_tag_attribute_changed.connect(auto_update_text)
+	SVG.root_tag.tag_added.connect(auto_update_text)
+	SVG.root_tag.tag_deleted.connect(auto_update_text.unbind(1))
+	SVG.root_tag.tag_moved.connect(auto_update_text)
+	SVG.root_tag.changed_unknown.connect(auto_update_text)
 
 func auto_update_text() -> void:
 	if not code_edit.has_focus():
@@ -24,9 +24,26 @@ func auto_update_text() -> void:
 func update_error(err: String) -> void:
 	if err.is_empty():
 		error_bar.hide()
+		code_edit.remove_theme_stylebox_override(&"normal")
+		code_edit.remove_theme_stylebox_override(&"focus")
+		code_edit.custom_minimum_size.y = 96
+		code_edit.size.y = 0
 	else:
+		# When the error is shown, the code editor's theme is changed to match up.
 		error_bar.show()
 		error_label.text = err
+		var stylebox := ThemeDB.get_project_theme().get_stylebox(&"normal", &"TextEdit")
+		stylebox.corner_radius_bottom_right = 0
+		stylebox.corner_radius_bottom_left = 0
+		stylebox.border_width_bottom = 1
+		code_edit.add_theme_stylebox_override(&"normal", stylebox)
+		var stylebox2 := ThemeDB.get_project_theme().get_stylebox(&"focus", &"CodeEdit")
+		stylebox2.corner_radius_bottom_right = 0
+		stylebox2.corner_radius_bottom_left = 0
+		stylebox2.border_width_bottom = 1
+		code_edit.add_theme_stylebox_override(&"focus", stylebox2)
+		code_edit.custom_minimum_size.y = 75
+		code_edit.size.y = 0
 
 
 func _on_copy_button_pressed() -> void:

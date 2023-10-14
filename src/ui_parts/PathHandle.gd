@@ -1,9 +1,9 @@
 class_name PathHandle extends Handle
 
-var path_attribute: SVGAttribute
+var path_attribute: Attribute
 var command_index: int
 
-func _init(path_ref: SVGAttribute, idx: int) -> void:
+func _init(path_ref: Attribute, idx: int) -> void:
 	path_attribute = path_ref
 	command_index = idx
 	sync()

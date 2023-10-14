@@ -1,4 +1,4 @@
-class_name SVGEnumAttribute extends SVGAttribute
+class_name AttributeEnum extends Attribute
 
 var possible_values: Array[String]
 

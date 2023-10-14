@@ -9,7 +9,7 @@ var ticks_interval := 4
 @onready var display: TextureRect = %Checkerboard
 
 func _ready() -> void:
-	SVG.data.resized.connect(queue_redraw)
+	SVG.root_tag.attribute_changed.connect(queue_redraw)
 
 # Don't ask me to explain this.
 func _draw() -> void:

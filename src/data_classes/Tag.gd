@@ -1,9 +1,9 @@
-class_name SVGTag extends RefCounted
+class_name Tag extends RefCounted
 
 signal attribute_changed
 
 var title: String
-var attributes: Dictionary  # Dictionary{String: SVGAttribute}
+var attributes: Dictionary  # Dictionary{String: Attribute}
 
 func _init():
 	for attribute in attributes.values():

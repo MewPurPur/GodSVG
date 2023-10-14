@@ -1,0 +1,27 @@
+[gd_scene load_steps=3 format=3 uid="uid://bktmk76u7dsu0"]
+
+[ext_resource type="Script" path="res://src/ui_parts/svg_tag_editor.gd" id="1_5fglu"]
+[ext_resource type="FontFile" uid="uid://c7ury252fql35" path="res://visual/CodeFont.ttf" id="2_doloc"]
+
+[node name="SVGTagEditor" type="MarginContainer"]
+offset_right = 100.0
+offset_bottom = 35.0
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+script = ExtResource("1_5fglu")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_colors/font_color = Color(0.866667, 0.933333, 1, 0.2)
+theme_override_fonts/font = ExtResource("2_doloc")
+theme_override_font_sizes/font_size = 12
+text = "* viewBox is coupled with dimensions"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 8

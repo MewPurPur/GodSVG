@@ -1,4 +1,4 @@
 class_name AttributeEditor extends Control
 
-var attribute: SVGAttribute
+var attribute: Attribute
 var attribute_name: String
