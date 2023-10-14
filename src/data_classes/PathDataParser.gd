@@ -1,9 +1,8 @@
 class_name PathDataParser extends RefCounted
 
-const translation_dict = PathCommandArray.translation_dict
+const translation_dict = PathCommand.translation_dict
 
-
-static func parse_path_data(path_string: String) -> Array[PathCommandArray.PathCommand]:
+static func parse_path_data(path_string: String) -> Array[PathCommand]:
 	return path_commands_from_parsed_data(path_data_to_arrays(path_string))
 
 static func path_data_to_arrays(path_string: String) -> Array[Array]:
@@ -100,8 +99,11 @@ static func path_data_to_arrays(path_string: String) -> Array[Array]:
 								comma_exhausted = true
 								number_proceed = false
 						_:
-							idx -= 1
-							break
+							if args_left >= 1 and not num_string.is_valid_float():
+								return new_commands
+							else:
+								idx -= 1
+								break
 				curr_command_args.append(num_string.to_float())
 			args_left -= 1
 		
@@ -115,10 +117,10 @@ static func path_data_to_arrays(path_string: String) -> Array[Array]:
 			new_commands.append(finalized_arr)
 	return new_commands
 
-static func path_commands_from_parsed_data(data: Array[Array]) -> Array[PathCommandArray.PathCommand]:
-	var cmds: Array[PathCommandArray.PathCommand] = []
+static func path_commands_from_parsed_data(data: Array[Array]) -> Array[PathCommand]:
+	var cmds: Array[PathCommand] = []
 	for arr in data:
-		var new_cmd: PathCommandArray.PathCommand
+		var new_cmd: PathCommand
 		var cmd_type = translation_dict[arr[0].to_upper()]
 		match arr.size():
 			1: new_cmd = cmd_type.new()
@@ -134,9 +136,9 @@ static func path_commands_from_parsed_data(data: Array[Array]) -> Array[PathComm
 	return cmds
 
 
-static func path_commands_to_value(commands_arr: PathCommandArray) -> String:
+static func path_commands_to_value(commands_arr: Array[PathCommand]) -> String:
 	var generated_value := ""
-	for command in commands_arr.data:
+	for command in commands_arr:
 		var cmd_char := command.command_char.to_upper()
 		generated_value += command.command_char + " "
 		if cmd_char == "A":
@@ -161,6 +163,9 @@ static func path_commands_to_value(commands_arr: PathCommandArray) -> String:
 #func _init() -> void:
 	#var tests := {
 	#"Jerky": [],
+	#"M 3s 6 h 6 v 3 z": [],
+	#"M 3 s6 h 6 v 3 z": [],
+	#"M 3 .s6 h 6 v 3 z": [],
 	#"M 0 0": [["M", 0.0, 0.0]],
 	#"M2 1 L3 4": [["M", 2.0, 1.0], ["L", 3.0, 4.0]],
 	#"m2 0 3 4": [["m", 2.0, 0.0], ["l", 3.0, 4.0]],
@@ -170,10 +175,10 @@ static func path_commands_to_value(commands_arr: PathCommandArray) -> String:
 	#"z": [["z"]],
 	#"M 0 0 z 2 3": [["M", 0.0, 0.0], ["z"]],
 	#}
-#
+	#
 	#var tests_passed := true
 	#for test in tests.keys():
-		#var result := path_data_to_arrays(test)
+		#var result := PathDataParser.path_data_to_arrays(test)
 		#var expected: Array = tests[test]
 		#if result != expected:
 			#tests_passed = false

@@ -15,7 +15,6 @@ var viewbox_edit: AttributeEditor
 
 func _ready() -> void:
 	width_edit = NumberField.instantiate()
-	width_edit.is_float = true
 	width_edit.allow_higher = true
 	width_edit.attribute = tag.attributes.width
 	width_edit.attribute_name = "width"
@@ -23,7 +22,6 @@ func _ready() -> void:
 	width_edit.value_changed.connect(sync_dimensions_and_viewbox.unbind(1))
 	
 	height_edit = NumberField.instantiate()
-	height_edit.is_float = true
 	height_edit.allow_higher = true
 	height_edit.attribute = tag.attributes.height
 	height_edit.attribute_name = "height"

@@ -1,18 +1,21 @@
 extends AttributeEditor
 
-@onready var up: Button = %Up
-@onready var up_buildup_timer: Timer = %Up/Timer
-@onready var up_repeat_timer: Timer = %Up/Timer2
-@onready var down: Button = %Down
-@onready var down_buildup_timer: Timer = %Down/Timer
-@onready var down_repeat_timer: Timer = %Down/Timer2
 @onready var num_edit: LineEdit = $LineEdit
+@onready var slider: Button = $Slider
+
+var show_slider := true:
+	set(new_value):
+		if show_slider != new_value:
+			show_slider = new_value
+			setup_slider()
+
+var slider_step := 0.1
 
 var min_value := 0.0
-var max_value := 1024.0
-var allow_lower := false
-var allow_higher := false
-var step := 1.0
+var max_value := 1.0
+var allow_lower := true
+var allow_higher := true
+
 var is_float := true
 
 signal value_changed(new_value: float)
@@ -25,20 +28,25 @@ func set_value(new_value: float, emit_value_changed := true):
 		value_changed.emit(_value)
 	elif num_edit != null:
 		num_edit.text = str(_value)
-		setup_spinners_state()
+		set_text_tint()
+		queue_redraw()
 
 func get_value() -> float:
 	return _value
 
+
+func _init(show_slider_value := false) -> void:
+	show_slider = show_slider_value
 
 func _ready() -> void:
 	value_changed.connect(_on_value_changed)
 	if attribute != null:
 		set_value(attribute.value)
 		attribute.value_changed.connect(set_value)
+		set_text_tint()
 	num_edit.text = str(get_value())
-	setup_spinners_state()
 	num_edit.tooltip_text = attribute_name
+	setup_slider()
 
 func validate(new_value: float) -> float:
 	if allow_lower:
@@ -58,41 +66,6 @@ func _on_value_changed(new_value: float) -> void:
 		attribute.value = new_value
 
 
-func _on_up_button_down() -> void:
-	set_value(get_value() + step)
-	up_buildup_timer.start(0.4)
-
-func _on_up_button_up() -> void:
-	up_buildup_timer.stop()
-	up_repeat_timer.stop()
-
-func _on_up_buildup_timer_timeout() -> void:
-	up_repeat_timer.start(0.04)
-
-func _on_up_repeat_timer_timeout() -> void:
-	set_value(get_value() + step)
-	if get_value() >= max_value:
-		set_value(max_value)
-		up_repeat_timer.stop()
-
-func _on_down_button_down() -> void:
-	set_value(get_value() - step)
-	down_buildup_timer.start(0.4)
-
-func _on_down_button_up() -> void:
-	down_buildup_timer.stop()
-	down_repeat_timer.stop()
-
-func _on_down_buildup_timer_timeout() -> void:
-	down_repeat_timer.start(0.04)
-
-func _on_down_repeat_timer_timeout() -> void:
-	set_value(get_value() - step)
-	if get_value() <= min_value:
-		set_value(min_value)
-		down_repeat_timer.stop()
-
-
 # Hacks to make LineEdit bearable.
 
 func _on_focus_entered() -> void:
@@ -109,14 +82,6 @@ func _on_text_submitted(new_text: String) -> void:
 func _input(event: InputEvent) -> void:
 	Utils.defocus_control_on_outside_click(num_edit, event)
 
-func spinner_set_disabled(spinner: Button, disabling: bool) -> void:
-	spinner.disabled = disabling
-	spinner.mouse_default_cursor_shape = Control.CURSOR_ARROW if disabling\
-			else Control.CURSOR_POINTING_HAND
-
-func setup_spinners_state() -> void:
-	spinner_set_disabled(down, get_value() <= min_value or get_value() > max_value)
-	spinner_set_disabled(up, get_value() >= max_value or get_value() < min_value)
 
 func add_tooltip(text: String) -> void:
 	if num_edit == null:
@@ -124,8 +89,57 @@ func add_tooltip(text: String) -> void:
 	num_edit.tooltip_text = text
 
 
-# Common setups
+# Slider
 
-func remove_limits() -> void:
-	allow_lower = true
-	allow_higher = true
+func set_text_tint() -> void:
+	if num_edit != null:
+		if attribute != null and get_value() == attribute.default:
+			num_edit.add_theme_color_override(&"font_color", Color(0.65, 0.65, 0.65))
+		else:
+			num_edit.remove_theme_color_override(&"font_color")
+
+func setup_slider() -> void:
+	if slider == null:
+		await ready
+	slider.visible = show_slider
+	num_edit.theme_type_variation = &"RightConnectedLineEdit" if show_slider else &""
+	num_edit.custom_minimum_size.x = 46 if show_slider else 54
+	num_edit.size.x = 0
+
+var slider_hovered := false:
+	set(new_value):
+		if slider_hovered != new_value:
+			slider_hovered = new_value
+			queue_redraw()
+
+func _draw() -> void:
+	if show_slider:
+		var slider_size := slider.get_size()
+		var line_edit_size := num_edit.get_size()
+		draw_set_transform(Vector2(line_edit_size.x, 1))
+		var stylebox := StyleBoxFlat.new()
+		stylebox.corner_radius_top_right = 5
+		stylebox.corner_radius_bottom_right = 5
+		stylebox.bg_color = Color("#121233")
+		draw_style_box(stylebox, Rect2(Vector2.ZERO, slider_size - Vector2(1, 2)))
+		var fill_height := (slider_size.y - 4) * (get_value() - min_value) / max_value
+		if slider_hovered:
+			draw_rect(Rect2(0, 1 + slider_size.y - 4 - fill_height,
+					slider_size.x - 2, fill_height), Color("#def"))
+		else:
+			draw_rect(Rect2(0, 1 + slider_size.y - 4 - fill_height,
+					slider_size.x - 2, fill_height), Color("#defa"))
+
+func _on_slider_resized() -> void:
+	queue_redraw()  # Whyyyyy why are they a wrong size at first...
+
+func _on_slider_gui_input(event: InputEvent) -> void:
+	var slider_h := slider.get_size().y - 4
+	if event is InputEventMouseButton or event is InputEventMouseMotion:
+		slider_hovered = true
+		if event.button_mask == MOUSE_BUTTON_LEFT:
+			set_value(snappedf(lerpf(max_value, min_value,
+					(event.position.y - 4) / slider_h), slider_step))
+
+func _on_slider_mouse_exited() -> void:
+	slider_hovered = false
