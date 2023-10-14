@@ -1,9 +1,9 @@
 class_name XYHandle extends Handle
 
-var x_attribute: SVGAttribute
-var y_attribute: SVGAttribute
+var x_attribute: Attribute
+var y_attribute: Attribute
 
-func _init(x_ref: SVGAttribute, y_ref: SVGAttribute) -> void:
+func _init(x_ref: Attribute, y_ref: Attribute) -> void:
 	x_attribute = x_ref
 	y_attribute = y_ref
 	sync()

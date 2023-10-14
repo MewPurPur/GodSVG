@@ -25,7 +25,7 @@ var zoom_level: float:
 
 func _ready() -> void:
 	zoom_reset()  # Do this first so zoom_level is not 0.
-	SVG.data.resized.connect(resize)
+	SVG.root_tag.attribute_changed.connect(resize)
 	resize()
 
 func clamp_view() -> void:
@@ -46,13 +46,14 @@ func zoom_out() -> void:
 	center_frame()
 
 func zoom_reset() -> void:
-	zoom_level = float(
-			nearest_po2(int(8192 / maxf(SVG.data.width, SVG.data.height))) / 32.0)
+	zoom_level = float(nearest_po2(int(8192 / maxf(SVG.root_tag.attributes.width.value,
+			SVG.root_tag.attributes.height.value))) / 32.0)
 	center_frame()
 
 
 func resize() -> void:
-	display.size = Vector2(SVG.data.width, SVG.data.height)
+	display.size = Vector2(SVG.root_tag.attributes.width.value,
+			SVG.root_tag.attributes.height.value)
 	center_frame()
 
 func center_frame() -> void:

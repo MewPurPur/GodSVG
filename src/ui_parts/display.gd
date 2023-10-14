@@ -48,7 +48,15 @@ func _on_snap_button_pressed() -> void:
 	show_handles_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 	show_handles_button.pressed.connect(toggle_handles_visuals)
 	
-	grid_popup.set_btn_array([show_grid_button, show_handles_button] as Array[Button])
+	var rasterize_button := CheckBox.new()
+	rasterize_button.text = tr(&"#rasterize_svg")
+	rasterize_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+	rasterize_button.button_pressed = viewport.display_texture.rasterized
+	rasterize_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
+	rasterize_button.pressed.connect(toggle_rasterization)
+	
+	grid_popup.set_btn_array([show_grid_button, show_handles_button, rasterize_button]\
+			as Array[Button])
 	grid_popup.popup(Utils.calculate_popup_rect(
 			grid_button.global_position, grid_button.size, grid_popup.size, true))
 
@@ -86,3 +94,6 @@ func toggle_grid_visuals() -> void:
 
 func toggle_handles_visuals() -> void:
 	controls.visible = not controls.visible
+
+func toggle_rasterization() -> void:
+	viewport.display_texture.rasterized = not viewport.display_texture.rasterized
