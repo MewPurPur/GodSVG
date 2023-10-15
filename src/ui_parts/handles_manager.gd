@@ -50,9 +50,19 @@ func update_texture() -> void:
 			AttributeRect.rect_to_string(viewbox)]
 	svg += ' xmlns="http://www.w3.org/2000/svg">'
 	for tag in SVG.root_tag.child_tags:
-		if tag is TagPath:
-			svg += '<path d="{d}" fill="none" stroke="#000" stroke-width="{s}"/>'.format(
-					{"d": tag.attributes.d.value, "s": 2.0 / zoom})
+		var attribs := tag.attributes
+		match tag.title:
+			"circle": svg += '<circle cx="%f" cy="%f" r="%f"' % [attribs.cx.value,
+					attribs.cy.value, attribs.r.value]
+			"ellipse": svg += '<ellipse cx="%f" cy="%f" rx="%f" ry="%f"' % [attribs.cx.value,
+					attribs.cy.value, attribs.rx.value, attribs.ry.value]
+			"rect": svg += '<rect x="%f" y="%f" width="%f" height="%f" rx="%f" ry="%f"' %\
+					[attribs.x.value, attribs.y.value, attribs.width.value,
+					attribs.height.value, attribs.rx.value, attribs.ry.value]
+			"path": svg += '<path d="%s"' % [attribs.d.value, 2.0 / zoom]
+			"line": svg += '<line x1="%f" y1="%f" x2="%f" y2="%f"' % [attribs.x1.value,
+					attribs.y1.value, attribs.x2.value, attribs.y2.value]
+		svg += ' fill="none" stroke="#000" stroke-width="%f"/>' % [2.0 / zoom]
 	svg += "</svg>"
 	# Store the SVG string.
 	var img := Image.new()

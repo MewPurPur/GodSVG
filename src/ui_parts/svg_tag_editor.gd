@@ -15,14 +15,14 @@ var viewbox_edit: AttributeEditor
 
 func _ready() -> void:
 	width_edit = NumberField.instantiate()
-	width_edit.allow_higher = true
+	width_edit.allow_lower = false
 	width_edit.attribute = tag.attributes.width
 	width_edit.attribute_name = "width"
 	h_box_container.add_child(width_edit)
 	width_edit.value_changed.connect(sync_dimensions_and_viewbox.unbind(1))
 	
 	height_edit = NumberField.instantiate()
-	height_edit.allow_higher = true
+	height_edit.allow_lower = false
 	height_edit.attribute = tag.attributes.height
 	height_edit.attribute_name = "height"
 	h_box_container.add_child(height_edit)

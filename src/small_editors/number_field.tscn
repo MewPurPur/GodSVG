@@ -28,7 +28,7 @@ script = ExtResource("1_vy4cm")
 custom_minimum_size = Vector2(46, 0)
 layout_mode = 2
 size_flags_horizontal = 3
-max_length = 6
+max_length = 20
 context_menu_enabled = false
 select_all_on_focus = true
 caret_blink = true
@@ -46,5 +46,6 @@ theme_override_styles/pressed = SubResource("StyleBoxFlat_smesa")
 [connection signal="focus_exited" from="LineEdit" to="." method="_on_focus_exited"]
 [connection signal="text_submitted" from="LineEdit" to="." method="_on_text_submitted"]
 [connection signal="gui_input" from="Slider" to="." method="_on_slider_gui_input"]
+[connection signal="mouse_entered" from="Slider" to="." method="_on_slider_mouse_entered"]
 [connection signal="mouse_exited" from="Slider" to="." method="_on_slider_mouse_exited"]
 [connection signal="resized" from="Slider" to="." method="_on_slider_resized"]
