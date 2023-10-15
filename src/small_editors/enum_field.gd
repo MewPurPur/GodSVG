@@ -43,6 +43,7 @@ func _on_value_changed(new_value: String) -> void:
 	indicator.text = new_value
 	if attribute != null:
 		attribute.value = new_value
+		set_text_tint()
 
 
 func _input(event: InputEvent) -> void:
@@ -50,7 +51,6 @@ func _input(event: InputEvent) -> void:
 
 
 func _on_line_edit_text_submitted(new_text: String) -> void:
-	indicator.remove_theme_color_override(&"font_color")
 	indicator.release_focus()
 	if new_text in attribute.possible_values:
 		set_value(new_text)
@@ -64,3 +64,10 @@ func _on_line_edit_text_changed(new_text: String) -> void:
 		indicator.add_theme_color_override(&"font_color", Color(0.6, 1.0, 0.6))
 	else:
 		indicator.add_theme_color_override(&"font_color", Color(1.0, 0.6, 0.6))
+
+func set_text_tint() -> void:
+	if indicator != null:
+		if attribute != null and get_value() == attribute.default:
+			indicator.add_theme_color_override(&"font_color", Color(0.64, 0.64, 0.64))
+		else:
+			indicator.remove_theme_color_override(&"font_color")
