@@ -40,6 +40,7 @@ keyword_colors = {
 "linearGradient": Color(1, 0.54902, 0.8, 1),
 "opacity": Color(0.737255, 0.878431, 1, 1),
 "path": Color(1, 0.54902, 0.8, 1),
+"r": Color(0.737255, 0.878431, 1, 1),
 "radialGradient": Color(1, 0.54902, 0.8, 1),
 "rect": Color(1, 0.54902, 0.8, 1),
 "rx": Color(0.737255, 0.878431, 1, 1),

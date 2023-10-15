@@ -19,6 +19,8 @@ func get_value() -> Rect2:
 
 
 func _ready() -> void:
+	w_field.allow_lower = false
+	h_field.allow_lower = false
 	# FIXME Lift these limitations.
 	x_field.num_edit.editable = false
 	y_field.num_edit.editable = false
