@@ -13,7 +13,7 @@ func _ready() -> void:
 	SVG.root_tag.child_tag_attribute_changed.connect(sync_string)
 	SVG.root_tag.tag_added.connect(sync_string)
 	SVG.root_tag.tag_deleted.connect(sync_string.unbind(1))
-	SVG.root_tag.tag_moved.connect(sync_string)
+	SVG.root_tag.tag_moved.connect(sync_string.unbind(2))
 	
 	if GlobalSettings.save_svg:
 		string = GlobalSettings.save_data.svg

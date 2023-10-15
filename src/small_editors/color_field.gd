@@ -171,9 +171,6 @@ func get_value() -> String:
 
 
 func _ready() -> void:
-	for color in named_colors.keys():
-		if named_colors[color] != Color.from_string(color, Color(0, 0, 0, 0)):
-			print(color)
 	value_changed.connect(_on_value_changed)
 	if attribute != null:
 		set_value(attribute.value)

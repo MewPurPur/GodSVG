@@ -2,6 +2,7 @@ extends VBoxContainer
 
 const settings_menu = preload("settings_menu.tscn")
 const about_menu = preload("about_menu.tscn")
+const docs = preload("docs.tscn")
 
 const NumberField = preload("res://src/small_editors/number_field.tscn")
 
@@ -61,22 +62,30 @@ func _on_snap_button_pressed() -> void:
 			grid_button.global_position, grid_button.size, grid_popup.size, true))
 
 func _on_more_options_pressed() -> void:
-	var open_repo_button := Button.new()
-	open_repo_button.text = tr(&"#repo_button_text")
-	open_repo_button.icon = load("res://visual/icons/Link.svg")
-	open_repo_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-	open_repo_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
-	open_repo_button.pressed.connect(open_godsvg_repo)
+	var open_repo_btn := Button.new()
+	open_repo_btn.text = tr(&"#repo_button_text")
+	open_repo_btn.icon = load("res://visual/icons/Link.svg")
+	open_repo_btn.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+	open_repo_btn.alignment = HORIZONTAL_ALIGNMENT_LEFT
+	open_repo_btn.pressed.connect(open_godsvg_repo)
 	
-	var about_button := Button.new()
-	about_button.text = "About"
-	about_button.icon = load("res://visual/icon.png")
-	about_button.expand_icon = true
-	about_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-	about_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
-	about_button.pressed.connect(open_about)
+	var about_btn := Button.new()
+	about_btn.text = tr(&"#about_button_text")
+	about_btn.icon = load("res://visual/icon.png")
+	about_btn.expand_icon = true
+	about_btn.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+	about_btn.alignment = HORIZONTAL_ALIGNMENT_LEFT
+	about_btn.pressed.connect(open_about)
 	
-	more_popup.set_btn_array([open_repo_button, about_button] as Array[Button])
+	var docs_btn := Button.new()
+	docs_btn.text = tr(&"#docs_button_text")
+	docs_btn.icon = load("res://visual/icons/Docs.svg")
+	docs_btn.expand_icon = true
+	docs_btn.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+	docs_btn.alignment = HORIZONTAL_ALIGNMENT_LEFT
+	docs_btn.pressed.connect(open_docs)
+	
+	more_popup.set_btn_array([open_repo_btn, about_btn, docs_btn] as Array[Button])
 	more_popup.popup(Utils.calculate_popup_rect(
 			more_button.global_position, more_button.size, more_popup.size, true))
 
@@ -88,6 +97,11 @@ func open_about() -> void:
 	more_popup.hide()
 	var about_menu_instance := about_menu.instantiate()
 	get_tree().get_root().add_child(about_menu_instance)
+
+func open_docs() -> void:
+	more_popup.hide()
+	var docs_instance := docs.instantiate()
+	get_tree().get_root().add_child(docs_instance)
 
 func toggle_grid_visuals() -> void:
 	grid_visuals.visible = not grid_visuals.visible

@@ -59,7 +59,7 @@ func update_texture() -> void:
 			"rect": svg += '<rect x="%f" y="%f" width="%f" height="%f" rx="%f" ry="%f"' %\
 					[attribs.x.value, attribs.y.value, attribs.width.value,
 					attribs.height.value, attribs.rx.value, attribs.ry.value]
-			"path": svg += '<path d="%s"' % [attribs.d.value, 2.0 / zoom]
+			"path": svg += '<path d="%s"' % [attribs.d.value]
 			"line": svg += '<line x1="%f" y1="%f" x2="%f" y2="%f"' % [attribs.x1.value,
 					attribs.y1.value, attribs.x2.value, attribs.y2.value]
 		svg += ' fill="none" stroke="#000" stroke-width="%f"/>' % [2.0 / zoom]
