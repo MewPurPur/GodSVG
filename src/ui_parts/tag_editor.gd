@@ -12,12 +12,12 @@ const EnumField = preload("res://src/small_editors/enum_field.tscn")
 @onready var shape_container: FlowContainer = %AttributeContainer/ShapeAttributes
 @onready var title_button: Button = %TitleButton
 @onready var tag_context: Popup = $ContextPopup
-@onready var selected_highlight: Panel = $Panel
 
 var tag_index: int
 var tag: Tag
 
 func _ready() -> void:
+	determine_selection_highlight()
 	Selections.selection_changed.connect(_on_selection_changed)
 	# Fill up the containers.
 	title_button.text = tag.title
@@ -63,7 +63,6 @@ func _on_title_button_pressed() -> void:
 	if tag_count <= 1:
 		return
 	
-	tag_context.reset()
 	var buttons_arr: Array[Button] = []
 	if tag_index != 0:
 		var move_up_button := Button.new()
@@ -99,4 +98,13 @@ func _on_gui_input(event: InputEvent) -> void:
 			Selections.set_selection(tag_index)
 
 func _on_selection_changed() -> void:
-	selected_highlight.visible = tag_index in Selections.selected_tags
+	determine_selection_highlight()
+
+func determine_selection_highlight() -> void:
+	var stylebox := StyleBoxFlat.new()
+	stylebox.set_corner_radius_all(4)
+	if tag_index in Selections.selected_tags:
+		stylebox.bg_color = Color(0.6, 0.8, 1, 0.16)
+	else:
+		stylebox.bg_color = Color(0.6, 0.8, 1, 0.1)
+	add_theme_stylebox_override(&"panel", stylebox)

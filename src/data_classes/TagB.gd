@@ -3,7 +3,7 @@ class_name TagB extends Tag  # B as in branch.
 signal child_tag_attribute_changed
 signal tag_added
 signal tag_deleted(tag_idx: int)
-signal tag_moved
+signal tag_moved(old_idx: int, new_idx: int)
 signal changed_unknown
 
 var child_tags: Array[Tag]
@@ -28,7 +28,7 @@ func delete_tag(idx: int) -> void:
 func move_tag(old_idx: int, new_idx: int) -> void:
 	var tag: Tag = child_tags.pop_at(old_idx)  # Should be inferrable, GDScript bug.
 	child_tags.insert(new_idx, tag)
-	tag_moved.emit()
+	tag_moved.emit(old_idx, new_idx)
 
 
 func emit_child_tag_attribute_changed() -> void:
