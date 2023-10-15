@@ -61,7 +61,7 @@ func validate(new_value: float) -> float:
 			return clampf(new_value, min_value, max_value)
 
 func _on_value_changed(new_value: float) -> void:
-	num_edit.text = str(new_value)
+	num_edit.text = String.num(new_value, 4)
 	if attribute != null:
 		attribute.value = new_value
 
@@ -102,7 +102,8 @@ func setup_slider() -> void:
 	if slider == null:
 		await ready
 	slider.visible = show_slider
-	num_edit.theme_type_variation = &"RightConnectedLineEdit" if show_slider else &""
+	if show_slider:
+		num_edit.theme_type_variation = &"RightConnectedLineEdit"
 	num_edit.custom_minimum_size.x = 46 if show_slider else 54
 	num_edit.size.x = 0
 

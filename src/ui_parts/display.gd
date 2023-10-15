@@ -12,10 +12,11 @@ const NumberField = preload("res://src/small_editors/number_field.tscn")
 @onready var viewport: SubViewport = $ViewportContainer/Viewport
 @onready var controls: TextureRect = %Checkerboard/Controls
 @onready var grid_visuals: Control = $ViewportContainer/Viewport/SnapLines
-@onready var grid_button: Button = %LeftMenu/Snapping
-@onready var grid_popup: Popup = %LeftMenu/GridPopup
+@onready var visuals_button: Button = %LeftMenu/Visuals
+@onready var visuals_popup: Popup = %LeftMenu/VisualsPopup
 @onready var more_button: Button = %LeftMenu/MoreOptions
 @onready var more_popup: Popup = %LeftMenu/MorePopup
+@onready var snapper: AttributeEditor = %LeftMenu/Snapping/Snapper
 
 func update_zoom_widget(zoom_level: float) -> void:
 	await get_tree().process_frame
@@ -29,37 +30,40 @@ func update_zoom_widget(zoom_level: float) -> void:
 			if zoom_in_button.disabled else Control.CURSOR_POINTING_HAND
 
 
+func _ready() -> void:
+	snapper.set_value(0.1)
+
 func _on_settings_pressed() -> void:
 	more_popup.hide()
 	var settings_menu_instance := settings_menu.instantiate()
 	get_tree().get_root().add_child(settings_menu_instance)
 
 func _on_snap_button_pressed() -> void:
-	var show_grid_button := CheckBox.new()
-	show_grid_button.text = tr(&"#show_grid")
-	show_grid_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-	show_grid_button.button_pressed = grid_visuals.visible
-	show_grid_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
-	show_grid_button.pressed.connect(toggle_grid_visuals)
+	var show_visuals_btn := CheckBox.new()
+	show_visuals_btn.text = tr(&"#show_grid")
+	show_visuals_btn.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+	show_visuals_btn.button_pressed = grid_visuals.visible
+	show_visuals_btn.alignment = HORIZONTAL_ALIGNMENT_LEFT
+	show_visuals_btn.pressed.connect(toggle_grid_visuals)
 	
-	var show_handles_button := CheckBox.new()
-	show_handles_button.text = tr(&"#show_handles")
-	show_handles_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-	show_handles_button.button_pressed = controls.visible
-	show_handles_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
-	show_handles_button.pressed.connect(toggle_handles_visuals)
+	var show_handles_btn := CheckBox.new()
+	show_handles_btn.text = tr(&"#show_handles")
+	show_handles_btn.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+	show_handles_btn.button_pressed = controls.visible
+	show_handles_btn.alignment = HORIZONTAL_ALIGNMENT_LEFT
+	show_handles_btn.pressed.connect(toggle_handles_visuals)
 	
-	var rasterize_button := CheckBox.new()
-	rasterize_button.text = tr(&"#rasterize_svg")
-	rasterize_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-	rasterize_button.button_pressed = viewport.display_texture.rasterized
-	rasterize_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
-	rasterize_button.pressed.connect(toggle_rasterization)
+	var rasterize_btn := CheckBox.new()
+	rasterize_btn.text = tr(&"#rasterize_svg")
+	rasterize_btn.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+	rasterize_btn.button_pressed = viewport.display_texture.rasterized
+	rasterize_btn.alignment = HORIZONTAL_ALIGNMENT_LEFT
+	rasterize_btn.pressed.connect(toggle_rasterization)
 	
-	grid_popup.set_btn_array([show_grid_button, show_handles_button, rasterize_button]\
+	visuals_popup.set_btn_array([show_visuals_btn, show_handles_btn, rasterize_btn]\
 			as Array[Button])
-	grid_popup.popup(Utils.calculate_popup_rect(
-			grid_button.global_position, grid_button.size, grid_popup.size, true))
+	visuals_popup.popup(Utils.calculate_popup_rect(
+			visuals_button.global_position, visuals_button.size, visuals_popup.size, true))
 
 func _on_more_options_pressed() -> void:
 	var open_repo_btn := Button.new()
@@ -80,7 +84,6 @@ func _on_more_options_pressed() -> void:
 	var docs_btn := Button.new()
 	docs_btn.text = tr(&"#docs_button_text")
 	docs_btn.icon = load("res://visual/icons/Docs.svg")
-	docs_btn.expand_icon = true
 	docs_btn.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	docs_btn.alignment = HORIZONTAL_ALIGNMENT_LEFT
 	docs_btn.pressed.connect(open_docs)
@@ -111,3 +114,7 @@ func toggle_handles_visuals() -> void:
 
 func toggle_rasterization() -> void:
 	viewport.display_texture.rasterized = not viewport.display_texture.rasterized
+
+
+func _on_snap_button_toggled(toggled_on: bool) -> void:
+	snapper.get_node(^"LineEdit").editable = toggled_on
