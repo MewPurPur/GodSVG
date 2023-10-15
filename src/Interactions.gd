@@ -1,14 +1,16 @@
 extends Node
 
+signal hover_changed
 signal selection_changed
 
+var hovered_tag := -1
 var selected_tags: Array[int] = []
 
 func _ready() -> void:
 	SVG.root_tag.tag_deleted.connect(_on_tag_deleted)
 	SVG.root_tag.tag_moved.connect(_on_tag_moved)
 
-func toggle_index(idx: int) -> void:
+func toggle_selection(idx: int) -> void:
 	if idx >= 0:
 		var idx_idx := selected_tags.find(idx)
 		if idx_idx == -1:
@@ -27,6 +29,14 @@ func clear_selection() -> void:
 	selected_tags.clear()
 	selection_changed.emit()
 
+func set_hovered(idx: int) -> void:
+	hovered_tag = idx
+	hover_changed.emit()
+
+func remove_hovered(idx: int) -> void:
+	if hovered_tag == idx:
+		hovered_tag = -1
+		hover_changed.emit()
 
 func _on_tag_deleted(idx: int) -> void:
 	selected_tags.erase(idx)

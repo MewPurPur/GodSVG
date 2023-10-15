@@ -6,6 +6,9 @@ var zoom := 1.0:
 		queue_update_texture()
 		queue_redraw()
 
+var snap_enabled := false
+var snap_size := Vector2(0.1, 0.1)
+
 var texture_update_pending := false
 var handles_update_pending := false
 
@@ -18,7 +21,7 @@ func _ready() -> void:
 	SVG.root_tag.tag_added.connect(queue_full_update)
 	SVG.root_tag.tag_deleted.connect(queue_full_update.unbind(1))
 	SVG.root_tag.changed_unknown.connect(queue_full_update)
-	Selections.selection_changed.connect(change_selection)
+	Interactions.selection_changed.connect(change_selection)
 	queue_full_update()
 
 
@@ -136,7 +139,10 @@ func _unhandled_input(event: InputEvent) -> void:
 		var event_pos = event.position - global_position
 		for handle in handles:
 			if handle.dragged:
-				handle.set_pos(canvas_to_coords(event_pos))
+				var new_pos := canvas_to_coords(event_pos)
+				if snap_enabled:
+					new_pos = new_pos.snapped(snap_size)
+				handle.set_pos(new_pos)
 				accept_event()
 		var picked_hover := false
 		for handle in handles:
@@ -163,3 +169,10 @@ func _unhandled_input(event: InputEvent) -> void:
 				if handle.dragged:
 					handle.dragged = false
 					queue_redraw()
+
+
+func _on_snapper_value_changed(new_value: float) -> void:
+	snap_size = Vector2(new_value, new_value)
+
+func _on_snap_button_toggled(toggled_on: bool) -> void:
+	snap_enabled = toggled_on
