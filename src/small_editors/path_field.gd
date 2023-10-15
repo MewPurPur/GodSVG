@@ -61,9 +61,9 @@ func rebuild_commands() -> void:
 			var field_sweep_flag: Control = command_editor.add_flag_field()
 			field_large_arc_flag.set_value(command.large_arc_flag)
 			field_sweep_flag.set_value(command.sweep_flag)
-			field_rx.min_value = 0.001
+			field_rx.min_value = 0.0001
 			field_rx.allow_lower = false
-			field_ry.min_value = 0.001
+			field_ry.min_value = 0.0001
 			field_ry.allow_lower = false
 			field_rot.min_value = -360
 			field_rot.max_value = 360

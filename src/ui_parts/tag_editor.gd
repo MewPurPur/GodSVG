@@ -18,7 +18,8 @@ var tag: Tag
 
 func _ready() -> void:
 	determine_selection_highlight()
-	Selections.selection_changed.connect(_on_selection_changed)
+	Interactions.selection_changed.connect(determine_selection_highlight)
+	Interactions.hover_changed.connect(determine_selection_highlight)
 	# Fill up the containers.
 	title_button.text = tag.title
 	for attribute_key in tag.attributes:
@@ -66,13 +67,13 @@ func _on_title_button_pressed() -> void:
 	var buttons_arr: Array[Button] = []
 	if tag_index != 0:
 		var move_up_button := Button.new()
-		move_up_button.text = "Move up"
+		move_up_button.text = tr(&"move_up")
 		move_up_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		move_up_button.pressed.connect(_on_move_up_button_pressed)
 		buttons_arr.append(move_up_button)
 	if tag_index != tag_count - 1:
 		var move_down_button := Button.new()
-		move_down_button.text = "Move down"
+		move_down_button.text = tr(&"move_down")
 		move_down_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		move_down_button.pressed.connect(_on_move_down_button_pressed)
 		buttons_arr.append(move_down_button)
@@ -93,18 +94,32 @@ func _on_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.is_pressed() and\
 	event.button_index == MOUSE_BUTTON_LEFT:
 		if event.ctrl_pressed:
-			Selections.toggle_index(tag_index)
+			Interactions.toggle_index(tag_index)
 		else:
-			Selections.set_selection(tag_index)
+			Interactions.set_selection(tag_index)
 
-func _on_selection_changed() -> void:
-	determine_selection_highlight()
+func _process(_delta: float) -> void:
+	# Stupid, but works.
+	if get_global_rect().has_point(get_global_mouse_position()):
+		Interactions.set_hovered(tag_index)
+	else:
+		Interactions.remove_hovered(tag_index)
+
 
 func determine_selection_highlight() -> void:
 	var stylebox := StyleBoxFlat.new()
 	stylebox.set_corner_radius_all(4)
-	if tag_index in Selections.selected_tags:
-		stylebox.bg_color = Color(0.6, 0.8, 1, 0.16)
+	stylebox.set_border_width_all(2)
+	if tag_index in Interactions.selected_tags:
+		if Interactions.hovered_tag == tag_index:
+			stylebox.bg_color = Color(0.12, 0.15, 0.24).lightened(0.015)
+		else:
+			stylebox.bg_color = Color(0.12, 0.15, 0.24)
+		stylebox.border_color = Color(0.18, 0.24, 0.48)
+	elif Interactions.hovered_tag == tag_index:
+		stylebox.bg_color = Color(0.065, 0.085, 0.15).lightened(0.02)
+		stylebox.border_color = Color(0.065, 0.085, 0.15).lightened(0.08)
 	else:
-		stylebox.bg_color = Color(0.6, 0.8, 1, 0.1)
+		stylebox.bg_color = Color(0.065, 0.085, 0.15)
+		stylebox.border_color = Color(0.065, 0.085, 0.15).lightened(0.04)
 	add_theme_stylebox_override(&"panel", stylebox)
