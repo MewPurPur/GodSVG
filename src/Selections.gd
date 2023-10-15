@@ -6,6 +6,7 @@ var selected_tags: Array[int] = []
 
 func _ready() -> void:
 	SVG.root_tag.tag_deleted.connect(_on_tag_deleted)
+	SVG.root_tag.tag_moved.connect(_on_tag_moved)
 
 func toggle_index(idx: int) -> void:
 	if idx >= 0:
@@ -26,11 +27,41 @@ func clear_selection() -> void:
 	selected_tags.clear()
 	selection_changed.emit()
 
+
 func _on_tag_deleted(idx: int) -> void:
 	selected_tags.erase(idx)
 
+func _on_tag_moved(old_idx: int, new_idx: int) -> void:
+	for i in selected_tags.size():
+		var idx := selected_tags[i]
+		if (idx < old_idx and idx < new_idx) or (idx > old_idx and idx > new_idx):
+			continue
+		elif idx > old_idx and idx < new_idx:
+			selected_tags[i] += 1
+		elif idx <= old_idx and idx > new_idx:
+			selected_tags[i] -= 1
+		elif idx == old_idx:
+			selected_tags[i] = new_idx
+
+
 func _unhandled_input(event: InputEvent) -> void:
-	if event is InputEventKey:
-		if event.keycode == KEY_DELETE:
-			for tag_idx in Selections.selected_tags:
-				SVG.root_tag.delete_tag(tag_idx)
+	if event.is_action_pressed(&"delete"):
+		for tag_idx in selected_tags:
+			SVG.root_tag.delete_tag(tag_idx)
+	elif event.is_action_pressed(&"move_up"):
+		var unaffected := 0
+		selected_tags.sort()
+		for tag_idx in selected_tags:
+			if tag_idx == unaffected:
+				unaffected += 1
+				continue
+			SVG.root_tag.move_tag(tag_idx, tag_idx - 1)
+	elif event.is_action_pressed(&"move_down"):
+		var unaffected := SVG.root_tag.get_children_count() - 1
+		selected_tags.sort()
+		selected_tags.reverse()
+		for tag_idx in selected_tags:
+			if tag_idx == unaffected:
+				unaffected -= 1
+				continue
+			SVG.root_tag.move_tag(tag_idx, tag_idx + 1)

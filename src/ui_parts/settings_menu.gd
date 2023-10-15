@@ -10,7 +10,7 @@ func _ready() -> void:
 	var buttons_arr: Array[Button] = []
 	for lang in ["en", "bg"]:
 		var button := Button.new()
-		button.text = TranslationServer.get_locale_name(lang) + "(" + lang + ")"
+		button.text = TranslationServer.get_locale_name(lang) + " (" + lang + ")"
 		button.pressed.connect(_on_language_chosen.bind(lang))
 		button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		buttons_arr.append(button)
@@ -38,4 +38,4 @@ func _on_language_chosen(locale: String) -> void:
 	update_language_button()
 
 func update_language_button() -> void:
-	lang_button.text = tr(&"#language") + ": " + TranslationServer.get_locale().to_upper()
+	lang_button.text = tr(&"#language") + ":+ " + TranslationServer.get_locale().to_upper()

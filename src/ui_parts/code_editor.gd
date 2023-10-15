@@ -14,7 +14,7 @@ func _ready() -> void:
 	SVG.root_tag.child_tag_attribute_changed.connect(auto_update_text)
 	SVG.root_tag.tag_added.connect(auto_update_text)
 	SVG.root_tag.tag_deleted.connect(auto_update_text.unbind(1))
-	SVG.root_tag.tag_moved.connect(auto_update_text)
+	SVG.root_tag.tag_moved.connect(auto_update_text.unbind(2))
 	SVG.root_tag.changed_unknown.connect(auto_update_text)
 
 func auto_update_text() -> void:
