@@ -27,7 +27,7 @@ func set_value(new_value: float, emit_value_changed := true):
 	if _value != old_value and emit_value_changed:
 		value_changed.emit(_value)
 	elif num_edit != null:
-		num_edit.text = str(_value)
+		num_edit.text = String.num(_value, 4)
 		set_text_tint()
 		queue_redraw()
 
@@ -72,12 +72,22 @@ func _on_focus_entered() -> void:
 	get_tree().paused = true
 
 func _on_focus_exited() -> void:
-	set_value(num_edit.text.to_float())
+	set_value(_calculate_expression(num_edit.text))
 	get_tree().paused = false
 
 func _on_text_submitted(new_text: String) -> void:
-	set_value(new_text.to_float())
+	set_value(_calculate_expression(new_text))
 	num_edit.release_focus()
+
+func _calculate_expression(text: String) -> float:  # Returns previous value if expression fails
+	var expr := Expression.new()
+	var err := expr.parse(text)
+	if err:
+		return _value
+	var result: Variant = expr.execute()
+	if expr.has_execute_failed():
+		return _value
+	return result
 
 func _input(event: InputEvent) -> void:
 	Utils.defocus_control_on_outside_click(num_edit, event)
