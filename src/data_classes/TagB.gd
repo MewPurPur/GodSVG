@@ -34,5 +34,5 @@ func move_tag(old_idx: int, new_idx: int) -> void:
 func emit_child_tag_attribute_changed() -> void:
 	child_tag_attribute_changed.emit()
 
-func get_children_count() -> int:
+func get_child_count() -> int:
 	return child_tags.size()

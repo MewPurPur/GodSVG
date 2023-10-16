@@ -1,7 +1,7 @@
 extends SubViewport
 
 const min_zoom = 0.125
-const max_zoom = 32.0
+const max_zoom = 64.0
 const minimum_visible_proportion = 0.3
 
 @onready var display: TextureRect = $Checkerboard
