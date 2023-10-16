@@ -53,9 +53,17 @@ func _on_copy_button_pressed() -> void:
 	DisplayServer.clipboard_set(code_edit.text)
 
 func _on_import_button_pressed() -> void:
-	var svg_import_dialog := SVGFileDialog.instantiate()
-	get_tree().get_root().add_child(svg_import_dialog)
-	svg_import_dialog.file_selected.connect(apply_svg_from_path)
+	if DisplayServer.has_feature(DisplayServer.FEATURE_NATIVE_DIALOG):
+		DisplayServer.file_dialog_show('Import a .svg file', '', '', false,
+		DisplayServer.FILE_DIALOG_MODE_OPEN_FILE, ['*.svg'],
+		func(file_selected: bool, files: PackedStringArray, _filter_index: int):
+			if file_selected:
+				apply_svg_from_path(files[0])
+		)
+	else:
+		var svg_import_dialog := SVGFileDialog.instantiate()
+		get_tree().get_root().add_child(svg_import_dialog)
+		svg_import_dialog.file_selected.connect(apply_svg_from_path)
 
 func _on_export_button_pressed() -> void:
 	var svg_export_dialog := SVGFileDialog.instantiate()
