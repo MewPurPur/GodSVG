@@ -20,7 +20,7 @@ func full_rebuild() -> void:
 		node.queue_free()
 	
 	svg_tag_editor.tag = SVG.root_tag
-	for tag_idx in SVG.root_tag.get_children_count():
+	for tag_idx in SVG.root_tag.get_child_count():
 		var tag := SVG.root_tag.child_tags[tag_idx]
 		var tag_editor := TagEditor.instantiate()
 		tag_editor.tag = tag

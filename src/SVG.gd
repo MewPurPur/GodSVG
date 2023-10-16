@@ -3,6 +3,7 @@ extends Node
 const display_path := "user://display.svg"
 
 var string := ""
+
 var root_tag := TagSVG.new()
 
 signal parsing_finished(err_text: String)

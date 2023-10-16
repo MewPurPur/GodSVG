@@ -1,10 +1,11 @@
 extends HBoxContainer
 
+const SVGFileDialog := preload("svg_file_dialog.tscn")
+
 @onready var code_edit: CodeEdit = $ScriptEditor/CodeEdit
 @onready var error_bar: PanelContainer = $ScriptEditor/ErrorBar
 @onready var error_label: RichTextLabel = $ScriptEditor/ErrorBar/Padding/Label
 
-const SVGFileDialog := preload("svg_file_dialog.tscn")
 
 func _ready() -> void:
 	SVG.parsing_finished.connect(update_error)
@@ -74,6 +75,7 @@ func export_svg(path: String) -> void:
 func _on_code_edit_text_changed() -> void:
 	SVG.string = code_edit.text
 	SVG.sync_data()
+
 
 func _input(event: InputEvent) -> void:
 	if (code_edit.has_focus() and event is InputEventMouseButton and\
