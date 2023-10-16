@@ -30,13 +30,20 @@ func clear_selection() -> void:
 	selection_changed.emit()
 
 func set_hovered(idx: int) -> void:
-	hovered_tag = idx
-	hover_changed.emit()
+	if hovered_tag != idx:
+		hovered_tag = idx
+		hover_changed.emit()
 
 func remove_hovered(idx: int) -> void:
 	if hovered_tag == idx:
 		hovered_tag = -1
 		hover_changed.emit()
+
+func clear_hovered() -> void:
+	if hovered_tag != -1:
+		hovered_tag = -1
+		hover_changed.emit()
+
 
 func _on_tag_deleted(idx: int) -> void:
 	selected_tags.erase(idx)
@@ -67,7 +74,7 @@ func _unhandled_input(event: InputEvent) -> void:
 				continue
 			SVG.root_tag.move_tag(tag_idx, tag_idx - 1)
 	elif event.is_action_pressed(&"move_down"):
-		var unaffected := SVG.root_tag.get_children_count() - 1
+		var unaffected := SVG.root_tag.get_child_count() - 1
 		selected_tags.sort()
 		selected_tags.reverse()
 		for tag_idx in selected_tags:

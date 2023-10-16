@@ -60,20 +60,20 @@ func _on_delete_button_pressed() -> void:
 	queue_free()
 
 func _on_title_button_pressed() -> void:
-	var tag_count := SVG.root_tag.get_children_count()
+	var tag_count := SVG.root_tag.get_child_count()
 	if tag_count <= 1:
 		return
 	
 	var buttons_arr: Array[Button] = []
 	if tag_index != 0:
 		var move_up_button := Button.new()
-		move_up_button.text = tr(&"move_up")
+		move_up_button.text = tr(&"#move_up")
 		move_up_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		move_up_button.pressed.connect(_on_move_up_button_pressed)
 		buttons_arr.append(move_up_button)
 	if tag_index != tag_count - 1:
 		var move_down_button := Button.new()
-		move_down_button.text = tr(&"move_down")
+		move_down_button.text = tr(&"#move_down")
 		move_down_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		move_down_button.pressed.connect(_on_move_down_button_pressed)
 		buttons_arr.append(move_down_button)
@@ -98,12 +98,24 @@ func _on_gui_input(event: InputEvent) -> void:
 		else:
 			Interactions.set_selection(tag_index)
 
+# TODO This is stupid and doesn't always work. Look into better ways.
+# enter_mouse and exit_mouse didn't work either, but that might just be Godot bugs.
+
+var inside := false:
+	set(new_value):
+		inside = new_value
+		if inside:
+			Interactions.set_hovered(tag_index)
+		else:
+			Interactions.remove_hovered(tag_index)
+
 func _process(_delta: float) -> void:
-	# Stupid, but works.
 	if get_global_rect().has_point(get_global_mouse_position()):
-		Interactions.set_hovered(tag_index)
+		if not inside:
+			inside = true
 	else:
-		Interactions.remove_hovered(tag_index)
+		if inside:
+			inside = false
 
 
 func determine_selection_highlight() -> void:
@@ -115,7 +127,7 @@ func determine_selection_highlight() -> void:
 			stylebox.bg_color = Color(0.12, 0.15, 0.24).lightened(0.015)
 		else:
 			stylebox.bg_color = Color(0.12, 0.15, 0.24)
-		stylebox.border_color = Color(0.18, 0.24, 0.48)
+		stylebox.border_color = Color(0.18, 0.28, 0.44)
 	elif Interactions.hovered_tag == tag_index:
 		stylebox.bg_color = Color(0.065, 0.085, 0.15).lightened(0.02)
 		stylebox.border_color = Color(0.065, 0.085, 0.15).lightened(0.08)
