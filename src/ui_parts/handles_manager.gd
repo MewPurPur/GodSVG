@@ -1,7 +1,7 @@
 extends TextureRect
 
 const selection_color_string = "#46f"
-const hover_color_string = "#aaa"
+const hover_color_string = "#999"
 const default_color_string = "#000"
 
 var zoom := 1.0:
@@ -76,7 +76,8 @@ func update_texture() -> void:
 					attribs.y1.value, attribs.x2.value, attribs.y2.value]
 		svg += ' fill="none" stroke="%s" stroke-width="%f"/>' % [selection_color_string\
 				if tag_idx in Interactions.selected_tags else hover_color_string if\
-				tag_idx == Interactions.hovered_tag else default_color_string, 2.0 / zoom]
+				tag_idx == Interactions.hovered_tag else default_color_string,
+				2.0 / zoom / get_viewbox_zoom()]
 	svg += "</svg>"
 	# Store the SVG string.
 	var img := Image.new()
@@ -117,12 +118,14 @@ func sync_handles() -> void:
 			handle.sync()
 		elif handle is PathHandle and dragged_handle != handle:
 			handles.remove_at(handle_idx)
-	for tag in SVG.root_tag.child_tags:
+	for tag_idx in SVG.root_tag.get_child_count():
+		var tag := SVG.root_tag.child_tags[tag_idx]
 		if tag is TagPath:
 			var path_attribute: AttributePath = tag.attributes.d
 			for idx in path_attribute.get_command_count():
 				if not path_attribute.get_command(idx) is PathCommand.CloseCommand:
 					var handle := PathHandle.new(path_attribute, idx)
+					handle.tag_index = tag_idx
 					handles.append(handle)
 	queue_redraw()
 
@@ -138,13 +141,34 @@ func _draw() -> void:
 		draw_circle(coords_to_canvas(handle.pos), 4 / zoom, outer_circle_color)
 		draw_circle(coords_to_canvas(handle.pos), 2.25 / zoom, Color.WHITE)
 
+
+func get_viewbox_zoom() -> float:
+	var width: float = SVG.root_tag.attributes.width.value
+	var height: float = SVG.root_tag.attributes.height.value
+	var viewbox_size: Vector2 = SVG.root_tag.attributes.viewBox.value.size
+	return minf(width / viewbox_size.x, height / viewbox_size.y)
+
 func coords_to_canvas(pos: Vector2) -> Vector2:
-	return size / Vector2(SVG.root_tag.attributes.width.value,
-			SVG.root_tag.attributes.height.value) * pos
+	var width: float = SVG.root_tag.attributes.width.value
+	var height: float = SVG.root_tag.attributes.height.value
+	var viewbox: Rect2 = SVG.root_tag.attributes.viewBox.value
+	
+	pos = (size / Vector2(width, height) * pos - viewbox.position) * get_viewbox_zoom()
+	if viewbox.size.x / viewbox.size.y >= width / height:
+		return pos + Vector2(0, (height - width * viewbox.size.y / viewbox.size.x) / 2)
+	else:
+		return pos + Vector2((width - height * viewbox.size.x / viewbox.size.y) / 2, 0)
 
 func canvas_to_coords(pos: Vector2) -> Vector2:
-	return pos * Vector2(SVG.root_tag.attributes.width.value,
-			SVG.root_tag.attributes.height.value) / size
+	var width: float = SVG.root_tag.attributes.width.value
+	var height: float = SVG.root_tag.attributes.height.value
+	var viewbox: Rect2 = SVG.root_tag.attributes.viewBox.value
+	
+	if viewbox.size.x / viewbox.size.y >= width / height:
+		pos.y -= (height - width * viewbox.size.y / viewbox.size.x) / 2
+	else:
+		pos.x -= (width - height * viewbox.size.x / viewbox.size.y) / 2
+	return (pos / get_viewbox_zoom() + viewbox.position) * Vector2(width, height) / size
 
 
 var dragged_handle: Handle = null

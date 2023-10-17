@@ -6,7 +6,7 @@ const TagEditor = preload("tag_editor.tscn")
 @onready var svg_tag_editor: MarginContainer = $SVGTagEditor
 
 func _ready() -> void:
-	SVG.root_tag.attribute_changed.connect(svg_tag_editor.update_viewbox)
+	SVG.root_tag.attribute_changed.connect(svg_tag_editor.update_svg_attributes)
 	SVG.root_tag.tag_added.connect(full_rebuild)
 	SVG.root_tag.tag_moved.connect(full_rebuild.unbind(2))
 	SVG.root_tag.tag_deleted.connect(full_rebuild.unbind(1))
@@ -15,7 +15,7 @@ func _ready() -> void:
 
 
 func full_rebuild() -> void:
-	svg_tag_editor.update_viewbox()
+	svg_tag_editor.update_svg_attributes()
 	for node in shapes.get_children():
 		node.queue_free()
 	

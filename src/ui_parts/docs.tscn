@@ -3,10 +3,10 @@
 [ext_resource type="Script" path="res://src/ui_parts/docs.gd" id="1_v0u3p"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cr53y"]
-content_margin_left = 6.0
-content_margin_top = 6.0
-content_margin_right = 6.0
-content_margin_bottom = 6.0
+content_margin_left = 8.0
+content_margin_top = 8.0
+content_margin_right = 8.0
+content_margin_bottom = 8.0
 bg_color = Color(0.005, 0.005, 0.05, 1)
 border_width_left = 2
 border_width_top = 2

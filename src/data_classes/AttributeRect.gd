@@ -9,6 +9,7 @@ func _init(new_default: Variant = null, new_init: Variant = null) -> void:
 static func string_to_rect(string: String) -> Rect2:
 	var nums_parsed: Array[float] = []
 	var current_num_string: String = ""
+	var comma_exhausted := false
 	var pos := 0
 	while pos < string.length() and nums_parsed.size() < 5:
 		@warning_ignore("shadowed_global_identifier")
@@ -16,13 +17,26 @@ static func string_to_rect(string: String) -> Rect2:
 		match char:
 			"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "-", "+", ".":
 				current_num_string += char
-			" ", ",":
+			" ":
 				if current_num_string.is_empty():
+					pos += 1
+					continue
+				else:
+					nums_parsed.append(current_num_string.to_float())
+					current_num_string = ""
+			",":
+				if comma_exhausted or nums_parsed.size() >= 4:
+					return Rect2(0, 0, 0, 0)
+				elif current_num_string.is_empty():
+					comma_exhausted = true
+					pos += 1
 					continue
 				else:
 					nums_parsed.append(current_num_string.to_float())
 					current_num_string = ""
 		pos += 1
+	if not current_num_string.is_empty():
+		nums_parsed.append(current_num_string.to_float())
 	
 	if nums_parsed.size() < 4:
 		return Rect2(0, 0, 0, 0)
