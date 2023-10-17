@@ -21,11 +21,6 @@ func get_value() -> Rect2:
 func _ready() -> void:
 	w_field.allow_lower = false
 	h_field.allow_lower = false
-	# FIXME Lift these limitations.
-	x_field.num_edit.editable = false
-	y_field.num_edit.editable = false
-	w_field.num_edit.editable = false
-	h_field.num_edit.editable = false
 	
 	x_field.min_value = -1024.0
 	y_field.min_value = -1024.0
@@ -52,9 +47,9 @@ func _on_h_field_value_changed(new_value: float) -> void:
 			x_field.get_value(), y_field.get_value(), w_field.get_value(), new_value))
 
 func _on_value_changed(new_value: Rect2) -> void:
-	x_field.num_edit.text = str(new_value.position.x)
-	y_field.num_edit.text = str(new_value.position.y)
-	w_field.num_edit.text = str(new_value.size.x)
-	h_field.num_edit.text = str(new_value.size.y)
+	x_field.set_value(new_value.position.x, false)
+	y_field.set_value(new_value.position.y, false)
+	w_field.set_value(new_value.size.x, false)
+	h_field.set_value(new_value.size.y, false)
 	if attribute != null:
 		attribute.value = new_value

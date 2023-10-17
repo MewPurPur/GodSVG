@@ -20,4 +20,6 @@ func set_canvas(new_width: float, new_height: float, new_viewbox: Rect2) -> void
 			attributes.width.value = new_width
 		if is_height_different:
 			attributes.height.value = new_height
+		if is_viewbox_different:
+			attributes.viewBox.value = new_viewbox
 		attribute_changed.emit()

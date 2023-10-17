@@ -5,10 +5,10 @@
 [ext_resource type="PackedScene" uid="uid://wp77eqhikp6k" path="res://src/small_editors/context_popup.tscn" id="3_uyej8"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hto7q"]
-content_margin_left = 6.0
-content_margin_top = 6.0
-content_margin_right = 6.0
-content_margin_bottom = 6.0
+content_margin_left = 8.0
+content_margin_top = 8.0
+content_margin_right = 8.0
+content_margin_bottom = 8.0
 bg_color = Color(0.005, 0.005, 0.05, 1)
 border_width_left = 2
 border_width_top = 2
@@ -30,7 +30,7 @@ color = Color(0, 0, 0, 0.4)
 script = ExtResource("1_1gf4m")
 
 [node name="MainPanel" type="PanelContainer" parent="."]
-custom_minimum_size = Vector2(240, 160)
+custom_minimum_size = Vector2(240, 172)
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -59,18 +59,25 @@ icon = ExtResource("2_ndyp7")
 [node name="TabContainer" type="TabContainer" parent="MainPanel/VBoxContainer"]
 layout_mode = 2
 
-[node name="Session" type="VBoxContainer" parent="MainPanel/VBoxContainer/TabContainer"]
+[node name="Session" type="MarginContainer" parent="MainPanel/VBoxContainer/TabContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
+
+[node name="VBox" type="VBoxContainer" parent="MainPanel/VBoxContainer/TabContainer/Session"]
 layout_mode = 2
 theme_override_constants/separation = 0
 
-[node name="SVG" type="CheckBox" parent="MainPanel/VBoxContainer/TabContainer/Session"]
+[node name="SVG" type="CheckBox" parent="MainPanel/VBoxContainer/TabContainer/Session/VBox"]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "#remember_svg_desc"
 mouse_default_cursor_shape = 2
 text = "#remember_svg_setting"
 
-[node name="WindowMode" type="CheckBox" parent="MainPanel/VBoxContainer/TabContainer/Session"]
+[node name="WindowMode" type="CheckBox" parent="MainPanel/VBoxContainer/TabContainer/Session/VBox"]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "#remember_window_mode_desc"
@@ -88,6 +95,6 @@ text = "#close"
 visible = false
 
 [connection signal="pressed" from="MainPanel/VBoxContainer/Language" to="." method="_on_language_pressed"]
-[connection signal="pressed" from="MainPanel/VBoxContainer/TabContainer/Session/SVG" to="." method="_on_svg_pressed"]
-[connection signal="pressed" from="MainPanel/VBoxContainer/TabContainer/Session/WindowMode" to="." method="_on_window_mode_pressed"]
+[connection signal="pressed" from="MainPanel/VBoxContainer/TabContainer/Session/VBox/SVG" to="." method="_on_svg_pressed"]
+[connection signal="pressed" from="MainPanel/VBoxContainer/TabContainer/Session/VBox/WindowMode" to="." method="_on_window_mode_pressed"]
 [connection signal="pressed" from="MainPanel/Close" to="." method="_on_close_pressed"]

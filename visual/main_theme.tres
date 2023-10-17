@@ -1,9 +1,11 @@
-[gd_resource type="Theme" load_steps=48 format=3 uid="uid://der6fnkliqqto"]
+[gd_resource type="Theme" load_steps=50 format=3 uid="uid://der6fnkliqqto"]
 
 [ext_resource type="Texture2D" uid="uid://wdrpwa7gwmg" path="res://visual/icons/GuiChecked.svg" id="1_7xhhy"]
 [ext_resource type="FontFile" uid="uid://c7ury252fql35" path="res://visual/CodeFont.ttf" id="1_ulxqy"]
 [ext_resource type="FontFile" uid="uid://bd8rlfqek8f8u" path="res://visual/Font.ttf" id="2_d11o4"]
 [ext_resource type="Texture2D" uid="uid://d3a3xgsb8klyk" path="res://visual/icons/GuiUnchecked.svg" id="2_etwvy"]
+[ext_resource type="Texture2D" uid="uid://kkxyv1gyrjgj" path="res://visual/icons/Visuals.svg" id="4_j0oku"]
+[ext_resource type="Texture2D" uid="uid://cnig3sejwsrf3" path="res://visual/icons/SplitGrabber.svg" id="5_7sidk"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_i4np8"]
 content_margin_left = 12.0
@@ -80,12 +82,12 @@ content_margin_left = 4.0
 content_margin_top = 4.0
 content_margin_right = 4.0
 content_margin_bottom = 4.0
-bg_color = Color(0.321569, 0.439216, 0.8, 1)
+bg_color = Color(0.243137, 0.356863, 0.701961, 1)
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
-border_color = Color(0.541176, 0.721569, 0.901961, 1)
+border_color = Color(0.425, 0.6375, 0.85, 1)
 corner_radius_top_left = 5
 corner_radius_top_right = 5
 corner_radius_bottom_right = 5
@@ -189,12 +191,12 @@ content_margin_left = 4.0
 content_margin_top = 4.0
 content_margin_right = 4.0
 content_margin_bottom = 4.0
-bg_color = Color(0.321569, 0.439216, 0.8, 1)
+bg_color = Color(0.243137, 0.356863, 0.701961, 1)
 border_width_left = 1
 border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
-border_color = Color(0.541176, 0.721569, 0.901961, 1)
+border_color = Color(0.425, 0.6375, 0.85, 1)
 corner_radius_top_right = 5
 corner_radius_bottom_right = 5
 corner_detail = 16
@@ -378,12 +380,12 @@ content_margin_left = 4.0
 content_margin_top = 4.0
 content_margin_right = 4.0
 content_margin_bottom = 4.0
-bg_color = Color(0.321569, 0.439216, 0.8, 1)
+bg_color = Color(0.243137, 0.356863, 0.701961, 1)
 border_width_left = 2
 border_width_top = 2
 border_width_right = 1
 border_width_bottom = 2
-border_color = Color(0.541176, 0.721569, 0.901961, 1)
+border_color = Color(0.425, 0.6375, 0.85, 1)
 corner_radius_top_left = 5
 corner_radius_bottom_left = 5
 corner_detail = 16
@@ -535,6 +537,7 @@ CodeEdit/colors/selection_color = Color(0.4, 0.54902, 1, 0.4)
 CodeEdit/font_sizes/font_size = 12
 CodeEdit/fonts/font = ExtResource("1_ulxqy")
 CodeEdit/styles/focus = SubResource("StyleBoxFlat_uk6li")
+FileDialog/icons/toggle_hidden = ExtResource("4_j0oku")
 Label/colors/font_color = Color(0.866667, 0.933333, 1, 1)
 Label/font_sizes/font_size = 20
 LeftConnectedButton/base_type = &"Button"
@@ -590,4 +593,5 @@ VScrollBar/styles/grabber_highlight = SubResource("StyleBoxFlat_jo7ks")
 VScrollBar/styles/grabber_pressed = SubResource("StyleBoxFlat_k6fme")
 VScrollBar/styles/scroll = SubResource("StyleBoxFlat_wn4u7")
 VScrollBar/styles/scroll_focus = null
+VSplitContainer/icons/grabber = ExtResource("5_7sidk")
 Window/styles/embedded_border = SubResource("StyleBoxFlat_k5a4y")
