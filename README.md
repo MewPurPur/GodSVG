@@ -1,8 +1,8 @@
 # GodSVG
 
-![image](https://user-images.githubusercontent.com/85438892/274312660-2ebd9c61-37cd-406d-83ab-d909466a0ed8.png)
+![image](https://user-images.githubusercontent.com/85438892/275994100-90544358-5d7a-415b-b6d9-ebbf01c9b4bd.png)
 
-GodSVG is an application in very early development built with Godot for creating optimized Scalable Vector Graphics (SVG) files. It is specifically designed for programmers, allowing them to easily edit individual SVG elements and view the corresponding code in real-time.
+GodSVG is an application in early development built with Godot for creating optimized Scalable Vector Graphics (SVG) files. It is mainly designed for programmers, allowing them to easily edit individual SVG elements and view the corresponding code in real-time.
 GodSVG is inspired by the need for a SVG editor without abstractions that produces optimized SVG without unnecessary attributes or metadata.
 
 ## Features
@@ -18,14 +18,14 @@ GodSVG is inspired by the need for a SVG editor without abstractions that produc
 | ellipse | Supported | |
 | g | Not yet supported | |
 | line | Supported |
-| linearGradient | Not yet supported | |
+| linearGradient | Planned soon | |
 | mask | Not yet supported | |
 | path | Supported | |
 | polygon | Not yet supported | May not support directly |
 | polyline | Not yet supported | May not support directly |
-| radialGradient | Not yet supported | |
+| radialGradient | Planned soon | |
 | rect | Supported | |
-| stop | Not yet supported | |
+| stop | Planned soon | |
 
 All other elements are currently not planned.
 
@@ -48,8 +48,8 @@ Contributions to GodSVG are very welcome! To do so, do the following:
 5. Push to the branch: `git push origin implement-gradients`
 6. Create a new pull request and describe your changes in detail.
 
-This is the preferred workflow, but tidiness is not as important as work being done, so feel free to use a different one you're comfortable with.
-To report bugs, use Github's issue form. Before contributing features, please make sure to first post a proposal in Issues and have it approved.
+This is the preferred workflow, but tidiness is not as important as work being done, so feel free to do whatever you're comfortable with.
+To report bugs, use Github's issue form. Before contributing a feature, please make sure to first propose it in Issues and have it approved.
 
 ## License
 
