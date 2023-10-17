@@ -44,8 +44,8 @@ func _ready() -> void:
 		set_value(attribute.value)
 		attribute.value_changed.connect(set_value)
 		set_text_tint()
+		num_edit.tooltip_text = attribute_name
 	num_edit.text = str(get_value())
-	num_edit.tooltip_text = attribute_name
 	setup_slider()
 
 func validate(new_value: float) -> float:
@@ -72,25 +72,38 @@ func _on_focus_entered() -> void:
 	get_tree().paused = true
 
 func _on_focus_exited() -> void:
-	set_value(_calculate_expression(_replace_commas_with_dots(num_edit.text)))
+	set_value(calculate_expression(num_edit.text))
 	get_tree().paused = false
 
 func _on_text_submitted(submitted_text: String) -> void:
-	set_value(_calculate_expression(_replace_commas_with_dots(submitted_text)))
+	set_value(calculate_expression(submitted_text))
 	num_edit.release_focus()
 
-func _replace_commas_with_dots(text: String) -> String:
-	return RegEx.create_from_string(r'(?<=\d),(?=\d)').sub(text, '.', true)
-
-func _calculate_expression(text: String) -> float:  # Returns previous value if expression fails
+# This function evaluates expressions even if "," or ";" is used as a decimal separator.
+func calculate_expression(text: String) -> float:
 	var expr := Expression.new()
-	var err := expr.parse(text)
-	if err:
-		return _value
-	var result: Variant = expr.execute()
-	if expr.has_execute_failed():
-		return _value
-	return result
+	
+	var err := expr.parse(text.replace(",", "."))
+	if err == OK:
+		var result: Variant = expr.execute()
+		if not expr.has_execute_failed():
+			print("test")
+			return result
+	
+	err = expr.parse(text.replace(";", "."))
+	if err == OK:
+		var result: Variant = expr.execute()
+		if not expr.has_execute_failed():
+			return result
+	
+	err = expr.parse(text)
+	if err == OK:
+		var result: Variant = expr.execute()
+		if not expr.has_execute_failed():
+			return result
+	
+	return get_value()
+
 
 func _input(event: InputEvent) -> void:
 	Utils.defocus_control_on_outside_click(num_edit, event)

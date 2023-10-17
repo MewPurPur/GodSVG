@@ -1,6 +1,17 @@
-[gd_scene format=3 uid="uid://bndmdmjlwqxfh"]
+[gd_scene load_steps=2 format=3 uid="uid://bndmdmjlwqxfh"]
 
-[node name="SVGFileDialog" type="FileDialog"]
+[ext_resource type="Script" path="res://src/ui_parts/svg_file_dialog.gd" id="1_nw1bg"]
+
+[node name="SVGFileDialog" type="ColorRect"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.4)
+script = ExtResource("1_nw1bg")
+
+[node name="FileDialog" type="FileDialog" parent="."]
 title = "Open a File"
 position = Vector2i(160, 135)
 size = Vector2i(700, 400)
@@ -9,3 +20,7 @@ ok_button_text = "Open"
 file_mode = 0
 access = 2
 filters = PackedStringArray("*.svg ; Scalable vector graphics")
+
+[connection signal="canceled" from="FileDialog" to="." method="_on_file_dialog_canceled"]
+[connection signal="confirmed" from="FileDialog" to="." method="_on_file_dialog_confirmed"]
+[connection signal="file_selected" from="FileDialog" to="." method="_on_file_dialog_file_selected"]

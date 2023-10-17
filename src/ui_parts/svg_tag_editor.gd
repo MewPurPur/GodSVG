@@ -5,12 +5,16 @@ var coupled_viewbox := true
 const NumberField = preload("res://src/small_editors/number_field.tscn")
 const RectField = preload("res://src/small_editors/rect_field.tscn")
 
+const coupled_icon = preload("res://visual/icons/Coupled.svg")
+const decoupled_icon = preload("res://visual/icons/Decoupled.svg")
+
 signal viewbox_changed(w: float, h: float)
 
 @onready var tag := SVG.root_tag
 @onready var width_container: VBoxContainer = $Edits/Size/Width
 @onready var height_container: VBoxContainer = $Edits/Size/Height
 @onready var viewbox_container: VBoxContainer = $Edits/ViewBox
+@onready var couple_button: Button = $Edits/CoupleButton
 
 var width_edit: AttributeEditor
 var height_edit: AttributeEditor
@@ -59,4 +63,5 @@ func _on_couple_button_toggled(toggled_on: bool) -> void:
 func determine_viewbox_edit() -> void:
 	for number_edit in viewbox_edit.get_children():
 		number_edit.num_edit.editable = not coupled_viewbox
+	couple_button.icon = coupled_icon if coupled_viewbox else decoupled_icon
 	update_svg_attributes()
