@@ -28,7 +28,6 @@ script = ExtResource("1_vy4cm")
 custom_minimum_size = Vector2(46, 0)
 layout_mode = 2
 size_flags_horizontal = 3
-max_length = 20
 context_menu_enabled = false
 select_all_on_focus = true
 caret_blink = true
