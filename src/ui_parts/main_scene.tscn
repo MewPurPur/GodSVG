@@ -154,12 +154,14 @@ theme_override_constants/margin_top = 8
 theme_override_constants/margin_right = 8
 theme_override_constants/margin_bottom = 8
 
-[node name="MainContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer"]
+[node name="MainContainer" type="VSplitContainer" parent="PanelContainer/MarginContainer"]
 layout_mode = 2
 theme_override_constants/separation = 8
+split_offset = -400
 
 [node name="CodeEditor" type="HBoxContainer" parent="PanelContainer/MarginContainer/MainContainer"]
 layout_mode = 2
+size_flags_vertical = 3
 script = ExtResource("1_ry6k8")
 
 [node name="ScriptEditor" type="VBoxContainer" parent="PanelContainer/MarginContainer/MainContainer/CodeEditor"]
@@ -171,6 +173,7 @@ theme_override_constants/separation = -2
 custom_minimum_size = Vector2(0, 96)
 layout_mode = 2
 size_flags_horizontal = 3
+size_flags_vertical = 3
 wrap_mode = 1
 scroll_smooth = true
 scroll_v_scroll_speed = 30.0
@@ -285,7 +288,7 @@ theme_override_constants/separation = 0
 
 [node name="SnapButton" type="Button" parent="Display/PanelContainer/MarginContainer/HBoxContainer/LeftMenu/Snapping"]
 layout_mode = 2
-tooltip_text = "#show_grid"
+tooltip_text = "#enable_snap"
 mouse_default_cursor_shape = 2
 theme_type_variation = &"RightConnectedButton"
 toggle_mode = true
