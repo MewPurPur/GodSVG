@@ -52,24 +52,35 @@ func update_error(err: String) -> void:
 func _on_copy_button_pressed() -> void:
 	DisplayServer.clipboard_set(code_edit.text)
 
+
+func native_file_import(has_selected: bool, files: PackedStringArray, _filter_idx: int):
+	if has_selected:
+		apply_svg_from_path(files[0])
+
+func native_file_export(has_selected: bool, files: PackedStringArray, _filter_idx: int):
+	if has_selected:
+		export_svg(files[0])
+
 func _on_import_button_pressed() -> void:
 	if DisplayServer.has_feature(DisplayServer.FEATURE_NATIVE_DIALOG):
-		DisplayServer.file_dialog_show('Import a .svg file', '', '', false,
-		DisplayServer.FILE_DIALOG_MODE_OPEN_FILE, ['*.svg'],
-		func(file_selected: bool, files: PackedStringArray, _filter_index: int):
-			if file_selected:
-				apply_svg_from_path(files[0])
-		)
+		DisplayServer.file_dialog_show(
+				"Import a .svg file", "", "", false,
+				DisplayServer.FILE_DIALOG_MODE_OPEN_FILE, ["*.svg"], native_file_import)
 	else:
 		var svg_import_dialog := SVGFileDialog.instantiate()
 		get_tree().get_root().add_child(svg_import_dialog)
 		svg_import_dialog.file_selected.connect(apply_svg_from_path)
 
 func _on_export_button_pressed() -> void:
-	var svg_export_dialog := SVGFileDialog.instantiate()
-	svg_export_dialog.file_mode = FileDialog.FILE_MODE_SAVE_FILE
-	get_tree().get_root().add_child(svg_export_dialog)
-	svg_export_dialog.file_selected.connect(export_svg)
+	if DisplayServer.has_feature(DisplayServer.FEATURE_NATIVE_DIALOG):
+		DisplayServer.file_dialog_show(
+				"Export a .svg file", OS.get_system_dir(OS.SYSTEM_DIR_PICTURES), "", false,
+				DisplayServer.FILE_DIALOG_MODE_SAVE_FILE, ["*.svg"], native_file_export)
+	else:
+		var svg_export_dialog := SVGFileDialog.instantiate()
+		svg_export_dialog.file_mode = FileDialog.FILE_MODE_SAVE_FILE
+		get_tree().get_root().add_child(svg_export_dialog)
+		svg_export_dialog.file_selected.connect(export_svg)
 
 func apply_svg_from_path(path: String) -> void:
 	code_edit.text = FileAccess.open(path, FileAccess.READ).get_as_text()

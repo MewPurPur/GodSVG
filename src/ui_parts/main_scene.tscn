@@ -212,18 +212,21 @@ layout_mode = 2
 layout_mode = 2
 tooltip_text = "#copy_button_tooltip"
 mouse_default_cursor_shape = 2
+theme_type_variation = &"IconButton"
 icon = ExtResource("1_fm0ux")
 
 [node name="ImportButton" type="Button" parent="PanelContainer/MarginContainer/MainContainer/CodeEditor/CodeButtons"]
 layout_mode = 2
 tooltip_text = "#import_button_tooltip"
 mouse_default_cursor_shape = 2
+theme_type_variation = &"IconButton"
 icon = ExtResource("4_ehrkr")
 
 [node name="ExportButton" type="Button" parent="PanelContainer/MarginContainer/MainContainer/CodeEditor/CodeButtons"]
 layout_mode = 2
 tooltip_text = "#export_button_tooltip"
 mouse_default_cursor_shape = 2
+theme_type_variation = &"IconButton"
 icon = ExtResource("5_qe6jq")
 
 [node name="Inspector" parent="PanelContainer/MarginContainer/MainContainer" instance=ExtResource("1_afxvd")]
@@ -257,7 +260,7 @@ size_flags_horizontal = 2
 theme_override_constants/separation = 5
 
 [node name="MoreOptions" type="Button" parent="Display/PanelContainer/MarginContainer/HBoxContainer/LeftMenu"]
-custom_minimum_size = Vector2(30, 0)
+custom_minimum_size = Vector2(28, 0)
 layout_mode = 2
 size_flags_horizontal = 2
 mouse_default_cursor_shape = 2
@@ -265,7 +268,7 @@ icon = ExtResource("7_7iuuq")
 icon_alignment = 1
 
 [node name="Settings" type="Button" parent="Display/PanelContainer/MarginContainer/HBoxContainer/LeftMenu"]
-custom_minimum_size = Vector2(30, 0)
+custom_minimum_size = Vector2(28, 0)
 layout_mode = 2
 size_flags_horizontal = 2
 tooltip_text = "#settings"
@@ -274,7 +277,7 @@ icon = ExtResource("4_3rshc")
 icon_alignment = 1
 
 [node name="Visuals" type="Button" parent="Display/PanelContainer/MarginContainer/HBoxContainer/LeftMenu"]
-custom_minimum_size = Vector2(30, 0)
+custom_minimum_size = Vector2(28, 0)
 layout_mode = 2
 size_flags_horizontal = 2
 tooltip_text = "#visuals"
@@ -347,7 +350,7 @@ custom_minimum_size = Vector2(60, 0)
 layout_mode = 2
 tooltip_text = "#zoom_reset"
 mouse_default_cursor_shape = 2
-theme_override_font_sizes/font_size = 15
+theme_override_font_sizes/font_size = 14
 shortcut = SubResource("Shortcut_le5f5")
 text = "100%"
 
