@@ -72,12 +72,15 @@ func _on_focus_entered() -> void:
 	get_tree().paused = true
 
 func _on_focus_exited() -> void:
-	set_value(_calculate_expression(num_edit.text))
+	set_value(_calculate_expression(_replace_commas_with_dots(num_edit.text)))
 	get_tree().paused = false
 
-func _on_text_submitted(new_text: String) -> void:
-	set_value(_calculate_expression(new_text))
+func _on_text_submitted(submitted_text: String) -> void:
+	set_value(_calculate_expression(_replace_commas_with_dots(submitted_text)))
 	num_edit.release_focus()
+
+func _replace_commas_with_dots(text: String) -> String:
+	return RegEx.create_from_string(r'(?<=\d),(?=\d)').sub(text, '.', true)
 
 func _calculate_expression(text: String) -> float:  # Returns previous value if expression fails
 	var expr := Expression.new()
