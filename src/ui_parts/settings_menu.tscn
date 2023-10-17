@@ -54,6 +54,7 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
 mouse_default_cursor_shape = 2
+theme_type_variation = &"IconButton"
 icon = ExtResource("2_ndyp7")
 
 [node name="TabContainer" type="TabContainer" parent="MainPanel/VBoxContainer"]
