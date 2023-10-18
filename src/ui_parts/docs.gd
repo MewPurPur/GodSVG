@@ -8,6 +8,8 @@ func _ready() -> void:
 	desc.add_text(tr(&"#shortcut_inspector_alt_down"))
 	desc.newline()
 	desc.add_text(tr(&"#shortcut_inspector_alt_up"))
+	desc.newline()
+	desc.add_text(tr(&"#shortcut_inspector_ctrl_d"))
 
 
 func _on_close_pressed() -> void:

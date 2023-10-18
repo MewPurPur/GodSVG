@@ -55,29 +55,43 @@ func _ready() -> void:
 			paint_container.add_child(input_field)
 
 
-func _on_delete_button_pressed() -> void:
-	SVG.root_tag.delete_tag(tag_index)
-	queue_free()
-
-func _on_title_button_pressed() -> void:
+func tag_context_populate() -> void:
 	var tag_count := SVG.root_tag.get_child_count()
-	if tag_count <= 1:
-		return
-	
 	var buttons_arr: Array[Button] = []
-	if tag_index != 0:
+	
+	var duplicate_button := Button.new()
+	duplicate_button.text = tr(&"#duplicate")
+	duplicate_button.icon = load("res://visual/icons/Duplicate.svg")
+	duplicate_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
+	duplicate_button.pressed.connect(_on_duplicate_button_pressed)
+	buttons_arr.append(duplicate_button)
+	
+	if tag_index > 0:
 		var move_up_button := Button.new()
 		move_up_button.text = tr(&"#move_up")
+		move_up_button.icon = load("res://visual/icons/MoveUp.svg")
 		move_up_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		move_up_button.pressed.connect(_on_move_up_button_pressed)
 		buttons_arr.append(move_up_button)
-	if tag_index != tag_count - 1:
+	if tag_index < tag_count - 1:
 		var move_down_button := Button.new()
 		move_down_button.text = tr(&"#move_down")
+		move_down_button.icon = load("res://visual/icons/MoveDown.svg")
 		move_down_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		move_down_button.pressed.connect(_on_move_down_button_pressed)
 		buttons_arr.append(move_down_button)
+	
+	var delete_button := Button.new()
+	delete_button.text = tr(&"#delete")
+	delete_button.icon = load("res://visual/icons/Delete.svg")
+	delete_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
+	delete_button.pressed.connect(_on_delete_button_pressed)
+	buttons_arr.append(delete_button)
+	
 	tag_context.set_btn_array(buttons_arr)
+
+func _on_title_button_pressed() -> void:
+	tag_context_populate()
 	tag_context.popup(Utils.calculate_popup_rect(title_button.global_position,
 			title_button.size, tag_context.size))
 
@@ -89,14 +103,28 @@ func _on_move_down_button_pressed() -> void:
 	tag_context.hide()
 	SVG.root_tag.move_tag(tag_index, tag_index + 1)
 
+func _on_delete_button_pressed() -> void:
+	tag_context.hide()
+	SVG.root_tag.delete_tag(tag_index)
+
+func _on_duplicate_button_pressed() -> void:
+	tag_context.hide()
+	SVG.root_tag.duplicate_tag(tag_index)
+
 
 func _on_gui_input(event: InputEvent) -> void:
-	if event is InputEventMouseButton and event.is_pressed() and\
-	event.button_index == MOUSE_BUTTON_LEFT:
-		if event.ctrl_pressed:
-			Interactions.toggle_index(tag_index)
-		else:
+	if event is InputEventMouseButton and event.is_pressed():
+		if event.button_index == MOUSE_BUTTON_LEFT:
+			if event.ctrl_pressed:
+				Interactions.toggle_selection(tag_index)
+			else:
+				Interactions.set_selection(tag_index)
+		elif event.button_index == MOUSE_BUTTON_RIGHT:
 			Interactions.set_selection(tag_index)
+			tag_context_populate()
+			tag_context.popup(Utils.calculate_popup_rect(get_global_mouse_position(),
+					Vector2.ZERO, tag_context.size, true))
+
 
 # TODO This is stupid and doesn't always work. Look into better ways.
 # enter_mouse and exit_mouse didn't work either, but that might just be Godot bugs.

@@ -1,33 +1,37 @@
-,en,bg,de
-#remember_svg_setting,Remember SVG,Запомни SVG,
-#remember_svg_desc,"When this box is checked, the SVG will be persist between session.","Когато тази кутийка е отметната, SVG-то ще бъде запомнено между сесиите.",
-#remember_window_mode_settings,Remember window mode,Запомни режима на прозореца,
-#remember_window_mode_desc,"When this box is checked, the window can remain restored between sessions.","Когато тази кутийка е отметната, прозорецът може да остане малък между сесиите.",
-#language,Language,Език,
-#close,Close,Затвори,
-#repo_button_text,GodSVG Repository,Репозиторията на GodSVG,
-#about_button_text,About…,Относно приложението…,
-#docs_button_text,Documentation,Документация,
-#zoom_in,Zoom In,Увеличи,
-#zoom_reset,Zoom Reset,Рестартирай мащаба,
-#zoom_out,Zoom Out,Намали,
-#settings,Settings,Настройки,
-#visuals,Visuals,Графики,
-#show_grid,Show Grid,Покажи решетката,
-#show_handles,Show Handles,Покажи дръжките,
-#rasterize_svg,Rasterized SVG,Растеризирай SVG,
-#enable_snap,Enable Snapping,Включи захващането,
-#snap_size,Snap size,Размер на захващането,
-#copy_button_tooltip,Copy All Text,Копирай всичкия текст,
-#import_button_tooltip,Import SVG,Импорт на SVG,
-#export_button_tooltip,Export SVG,Експорт на SVG,
-#couple_button_tooltip,Couple/Decouple,Свържи/Отвържи,
-#move_up,Move Up,Премести нагоре,
-#move_down,Move Down,Премести надолу,
-#err_empty_svg,SVG is empty.,Текстът е празен.,
-#err_not_svg,Doesn’t describe a SVG.,Текстът не описва SVG.,
-#err_improper_nesting,Improper nesting.,Несъвместими тагове.,
-#err_improper_closing,Not all tags are closed.,Не всички тагове са затворени.,
-#shortcut_inspector_delete,Delete: Deletes the selected tags,Delete: Изтрива избраните тагове,
-#shortcut_inspector_alt_down,Alt+Down: Moves the selected tags down,Alt+Down: Премества избраните тагове надолу,
-#shortcut_inspector_alt_up,Alt+Up: Moves the selected tags up,Alt+Up: Премества избраните тагове нагоре,
+,en,bg
+#remember_svg_setting,Remember SVG,Запомни SVG
+#remember_svg_desc,"When this box is checked, the SVG will be persist between session.","Когато тази кутийка е отметната, SVG-то ще бъде запомнено между сесиите."
+#remember_window_mode_settings,Remember window mode,Запомни режима на прозореца
+#remember_window_mode_desc,"When this box is checked, the window can remain restored between sessions.","Когато тази кутийка е отметната, прозорецът може да остане малък между сесиите."
+#language,Language,Език
+#close,Close,Затвори
+#repo_button_text,GodSVG Repository,Репозиторията на GodSVG
+#about_button_text,About…,Относно приложението…
+#docs_button_text,Documentation…,Документация…
+#donate_button_text,Donate (Ko-fi),Дарение (Ko-fi)
+#zoom_in,Zoom In,Увеличи
+#zoom_reset,Zoom Reset,Рестартирай мащаба
+#zoom_out,Zoom Out,Намали
+#settings,Settings,Настройки
+#visuals,Visuals,Графики
+#show_grid,Show Grid,Покажи решетката
+#show_handles,Show Handles,Покажи дръжките
+#rasterize_svg,Rasterized SVG,Растеризирай SVG
+#enable_snap,Enable Snapping,Включи захващането
+#snap_size,Snap size,Размер на захващането
+#copy_button_tooltip,Copy All Text,Копирай всичкия текст
+#import_button_tooltip,Import SVG,Импорт на SVG
+#export_button_tooltip,Export SVG,Експорт на SVG
+#couple_button_tooltip,Couple/Decouple,Свържи/Отвържи
+#duplicate,Duplicate,Дублирай
+#move_up,Move Up,Премести нагоре
+#move_down,Move Down,Премести надолу
+#delete,Delete,Премахни
+#err_empty_svg,SVG is empty.,Текстът е празен.
+#err_not_svg,Doesn’t describe a SVG.,Текстът не описва SVG.
+#err_improper_nesting,Improper nesting.,Несъвместими тагове.
+#err_improper_closing,Not all tags are closed.,Не всички тагове са затворени.
+#shortcut_inspector_delete,Delete: Deletes the selected tags,Delete: Изтрива избраните тагове
+#shortcut_inspector_alt_down,Alt+Down: Moves the selected tags down,Alt+Down: Премества избраните тагове надолу
+#shortcut_inspector_alt_up,Alt+Up: Moves the selected tags up,Alt+Up: Премества избраните тагове нагоре
+#shortcut_inspector_ctrl_d,Ctrl+D: Duplicates the selected tags,Ctrl+D: Дублирай избраните тагове
