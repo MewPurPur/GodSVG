@@ -82,3 +82,8 @@ func _unhandled_input(event: InputEvent) -> void:
 				unaffected -= 1
 				continue
 			SVG.root_tag.move_tag(tag_idx, tag_idx + 1)
+	elif event.is_action_pressed(&"duplicate"):
+		selected_tags.sort()
+		selected_tags.reverse()
+		for tag_idx in selected_tags:
+			SVG.root_tag.duplicate_tag(tag_idx)

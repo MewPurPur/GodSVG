@@ -4,9 +4,9 @@
 [ext_resource type="Script" path="res://src/small_editors/flag_field.gd" id="2_0bhg4"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_oo47u"]
-content_margin_left = 6.0
+content_margin_left = 4.0
 content_margin_top = 0.0
-content_margin_right = 6.0
+content_margin_right = 4.0
 content_margin_bottom = 0.0
 bg_color = Color(0.4, 0.121569, 0.121569, 1)
 border_width_left = 2
@@ -21,9 +21,9 @@ corner_radius_bottom_left = 5
 corner_detail = 16
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_uepoa"]
-content_margin_left = 6.0
+content_margin_left = 4.0
 content_margin_top = 0.0
-content_margin_right = 6.0
+content_margin_right = 4.0
 content_margin_bottom = 0.0
 bg_color = Color(0.12, 0.4, 0.12, 1)
 border_width_left = 2
@@ -38,14 +38,15 @@ corner_radius_bottom_left = 5
 corner_detail = 16
 
 [node name="FlagField" type="Button"]
-custom_minimum_size = Vector2(24, 0)
-offset_bottom = 22.0
+custom_minimum_size = Vector2(23, 0)
+offset_right = 23.0
+offset_bottom = 20.0
 focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_override_colors/font_color = Color(1, 0.75, 0.75, 1)
 theme_override_colors/font_pressed_color = Color(0.74902, 1, 0.74902, 1)
 theme_override_fonts/font = ExtResource("1_p8s8y")
-theme_override_font_sizes/font_size = 16
+theme_override_font_sizes/font_size = 14
 theme_override_styles/normal = SubResource("StyleBoxFlat_oo47u")
 theme_override_styles/hover = SubResource("StyleBoxFlat_oo47u")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_uepoa")

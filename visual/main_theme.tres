@@ -551,7 +551,7 @@ corner_radius_bottom_right = 3
 corner_radius_bottom_left = 3
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_k6fme"]
-bg_color = Color(0.541176, 0.721569, 0.901961, 1)
+bg_color = Color(0.423529, 0.639216, 0.85098, 1)
 corner_radius_top_left = 3
 corner_radius_top_right = 3
 corner_radius_bottom_right = 3

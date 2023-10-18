@@ -11,7 +11,7 @@ var zoom := 1.0:
 		queue_redraw()
 
 var snap_enabled := false
-var snap_size := Vector2(0.1, 0.1)
+var snap_size := Vector2(0.5, 0.5)
 
 var texture_update_pending := false
 var handles_update_pending := false

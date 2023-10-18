@@ -16,6 +16,7 @@ checkerboard = ExtResource("2_gsj5a")
 [node name="LineEdit" type="LineEdit" parent="."]
 custom_minimum_size = Vector2(54, 0)
 layout_mode = 2
+focus_mode = 1
 theme_type_variation = &"RightConnectedLineEdit"
 max_length = 20
 context_menu_enabled = false
@@ -25,6 +26,7 @@ caret_blink = true
 [node name="Button" type="Button" parent="."]
 custom_minimum_size = Vector2(13, 0)
 layout_mode = 2
+focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_type_variation = &"LeftConnectedButtonTransparent"
 

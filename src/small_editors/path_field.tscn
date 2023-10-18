@@ -64,6 +64,7 @@ theme_override_constants/separation = 0
 custom_minimum_size = Vector2(260, 0)
 layout_mode = 2
 tooltip_text = "d"
+focus_mode = 1
 theme_type_variation = &"RightConnectedLineEdit"
 context_menu_enabled = false
 select_all_on_focus = true
@@ -72,6 +73,7 @@ caret_blink = true
 [node name="Button" type="Button" parent="MainLine"]
 custom_minimum_size = Vector2(15, 0)
 layout_mode = 2
+focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_type_variation = &"LeftConnectedButton"
 icon = ExtResource("2_fbpdu")
