@@ -31,7 +31,7 @@ func update_zoom_widget(zoom_level: float) -> void:
 
 
 func _ready() -> void:
-	snapper.set_value(0.1)
+	snapper.set_value(0.5)
 
 func _on_settings_pressed() -> void:
 	more_popup.hide()
@@ -88,7 +88,15 @@ func _on_more_options_pressed() -> void:
 	docs_btn.alignment = HORIZONTAL_ALIGNMENT_LEFT
 	docs_btn.pressed.connect(open_docs)
 	
-	more_popup.set_btn_array([open_repo_btn, about_btn, docs_btn] as Array[Button])
+	var donate_btn := Button.new()
+	donate_btn.text = tr(&"#donate_button_text")
+	donate_btn.icon = load("res://visual/icons/Heart.svg")
+	donate_btn.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+	donate_btn.alignment = HORIZONTAL_ALIGNMENT_LEFT
+	donate_btn.pressed.connect(open_sponsor)
+	
+	var buttons_arr: Array[Button] = [open_repo_btn, about_btn, docs_btn, donate_btn]
+	more_popup.set_btn_array(buttons_arr)
 	more_popup.popup(Utils.calculate_popup_rect(
 			more_button.global_position, more_button.size, more_popup.size, true))
 
@@ -105,6 +113,10 @@ func open_docs() -> void:
 	more_popup.hide()
 	var docs_instance := docs.instantiate()
 	get_tree().get_root().add_child(docs_instance)
+
+func open_sponsor() -> void:
+	more_popup.hide()
+	OS.shell_open("https://ko-fi.com/mewpurpur")
 
 func toggle_grid_visuals() -> void:
 	grid_visuals.visible = not grid_visuals.visible

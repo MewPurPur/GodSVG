@@ -1,8 +1,7 @@
-[gd_scene load_steps=8 format=3 uid="uid://cksx526iftj5d"]
+[gd_scene load_steps=7 format=3 uid="uid://cksx526iftj5d"]
 
 [ext_resource type="Script" path="res://src/ui_parts/tag_editor.gd" id="1_7i0c4"]
 [ext_resource type="FontFile" uid="uid://c7ury252fql35" path="res://visual/CodeFont.ttf" id="2_0lxvf"]
-[ext_resource type="Texture2D" uid="uid://cj5x2ti8150ja" path="res://visual/icons/Delete.svg" id="3_vw87v"]
 [ext_resource type="PackedScene" uid="uid://wp77eqhikp6k" path="res://src/small_editors/context_popup.tscn" id="4_2mart"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xmwqw"]
@@ -63,7 +62,7 @@ script = ExtResource("1_7i0c4")
 layout_mode = 2
 theme_override_constants/margin_left = 8
 theme_override_constants/margin_top = 3
-theme_override_constants/margin_right = 8
+theme_override_constants/margin_right = 5
 theme_override_constants/margin_bottom = 3
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
@@ -83,6 +82,8 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
+focus_mode = 0
+mouse_default_cursor_shape = 2
 theme_override_fonts/font = ExtResource("2_0lxvf")
 theme_override_font_sizes/font_size = 14
 theme_override_styles/normal = SubResource("StyleBoxFlat_xmwqw")
@@ -103,17 +104,8 @@ size_flags_horizontal = 3
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="DeleteButton" type="Button" parent="MarginContainer/HBoxContainer"]
-texture_filter = 2
-layout_mode = 2
-size_flags_horizontal = 8
-size_flags_vertical = 4
-mouse_default_cursor_shape = 2
-icon = ExtResource("3_vw87v")
-
 [node name="ContextPopup" parent="." instance=ExtResource("4_2mart")]
 visible = false
 
 [connection signal="gui_input" from="." to="." method="_on_gui_input"]
 [connection signal="pressed" from="MarginContainer/HBoxContainer/MarginContainer/TitleButton" to="." method="_on_title_button_pressed"]
-[connection signal="pressed" from="MarginContainer/HBoxContainer/DeleteButton" to="." method="_on_delete_button_pressed"]

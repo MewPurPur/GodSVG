@@ -53,6 +53,7 @@ theme_override_constants/separation = 12
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
+focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_type_variation = &"IconButton"
 icon = ExtResource("2_ndyp7")
@@ -75,6 +76,7 @@ theme_override_constants/separation = 0
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "#remember_svg_desc"
+focus_mode = 0
 mouse_default_cursor_shape = 2
 text = "#remember_svg_setting"
 
@@ -82,6 +84,7 @@ text = "#remember_svg_setting"
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "#remember_window_mode_desc"
+focus_mode = 0
 mouse_default_cursor_shape = 2
 text = "#remember_window_mode_settings"
 
@@ -89,6 +92,7 @@ text = "#remember_window_mode_settings"
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 8
+focus_mode = 0
 mouse_default_cursor_shape = 2
 text = "#close"
 
