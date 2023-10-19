@@ -1,12 +1,12 @@
 extends HBoxContainer
 
-const NumberField = preload("number_field.tscn")
+const MiniNumberField = preload("mini_number_field.tscn")
 const FlagField = preload("flag_field.tscn")
 
 var cmd_type := ""
 
 @onready var relative_button: Button = $RelativeButton
-@onready var delete_button: Button = $DeleteButton
+@onready var more_button: Button = $MoreButton
 @onready var fields_container: HBoxContainer = $Fields
 
 var fields_added_before_ready: Array[Control] = []
@@ -22,6 +22,10 @@ func create_stylebox(inside_color: Color, border_color: Color) -> StyleBoxFlat:
 	new_stylebox.border_color = border_color
 	new_stylebox.set_border_width_all(2)
 	new_stylebox.set_corner_radius_all(4)
+	new_stylebox.content_margin_bottom = 1
+	new_stylebox.content_margin_top = 1
+	new_stylebox.content_margin_left = 6
+	new_stylebox.content_margin_right = 6
 	return new_stylebox
 
 func setup(command_char: String) -> void:
@@ -42,12 +46,12 @@ func setup(command_char: String) -> void:
 		relative_button.add_theme_stylebox_override(&"pressed", create_stylebox(
 				Color.from_hsv(0.74, 0.6, 1.0), Color.from_hsv(0.7, 0.4, 1.0)))
 
-func add_number_field() -> AttributeEditor:
-	var new_number_field := NumberField.instantiate()
+func add_number_field() -> BetterLineEdit:
+	var new_number_field := MiniNumberField.instantiate()
 	safely_add_field(new_number_field)
 	return new_number_field
 
-func add_flag_field() -> Control:
+func add_flag_field() -> Button:
 	var new_flag_field := FlagField.instantiate()
 	safely_add_field(new_flag_field)
 	return new_flag_field

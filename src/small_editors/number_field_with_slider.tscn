@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://bp2vpf7g8w8aj"]
 
 [ext_resource type="Script" path="res://src/small_editors/number_field_with_slider.gd" id="1_q10gl"]
-[ext_resource type="Script" path="res://src/BetterLineEdit.gd" id="2_sbc18"]
+[ext_resource type="Script" path="res://src/small_editors/BetterLineEdit.gd" id="2_hvn86"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_e034s"]
 draw_center = false
@@ -19,7 +19,7 @@ border_width_left = 2
 border_width_top = 2
 border_width_right = 1
 border_width_bottom = 2
-border_color = Color(0.501961, 0.752941, 1, 0.133333)
+border_color = Color(0.501961, 0.752941, 1, 0.2)
 corner_radius_top_left = 5
 corner_radius_bottom_left = 5
 
@@ -54,7 +54,7 @@ theme_type_variation = &"RightConnectedLineEdit"
 context_menu_enabled = false
 select_all_on_focus = true
 caret_blink = true
-script = ExtResource("2_sbc18")
+script = ExtResource("2_hvn86")
 hover_stylebox = SubResource("StyleBoxFlat_e034s")
 focus_stylebox = SubResource("StyleBoxFlat_0nb8u")
 

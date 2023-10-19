@@ -1,6 +1,6 @@
 extends Button
 
-# Flags don't show up in any supported attributes, so it's not an AttributeEditor.
+var hovered := false
 
 signal value_changed(new_value: int)
 var _value: int
@@ -26,3 +26,21 @@ func _ready() -> void:
 func _on_value_changed(new_value: int) -> void:
 	button_pressed = new_value == 1
 	text = str(new_value)
+
+
+func _on_mouse_entered() -> void:
+	hovered = true
+	queue_redraw()
+
+func _on_mouse_exited() -> void:
+	hovered = false
+	queue_redraw()
+
+func _draw() -> void:
+	if hovered:
+		var hover_stylebox := StyleBoxFlat.new()
+		hover_stylebox.draw_center = false
+		hover_stylebox.set_corner_radius_all(5)
+		hover_stylebox.set_border_width_all(2)
+		hover_stylebox.border_color = Color(1, 1, 1, 0.15)
+		draw_style_box(hover_stylebox, Rect2(Vector2.ZERO, size))

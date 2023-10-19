@@ -5,6 +5,7 @@ const CommandEditor = preload("path_command_editor.tscn")
 @onready var command_picker: Popup = $PathPopup
 @onready var line_edit: LineEdit = $MainLine/LineEdit
 @onready var commands_container: VBoxContainer = $Commands
+@onready var action_popup: Popup = $ActionsPopup
 
 signal value_changed(new_value: String)
 var _value: String  # Must not be updated directly.
@@ -54,27 +55,22 @@ func rebuild_commands() -> void:
 		command_editor.cmd_type = command_char
 		# Instantiate the input fields.
 		if command_type == "A":
-			var field_rx: AttributeEditor = command_editor.add_number_field()
-			var field_ry: AttributeEditor = command_editor.add_number_field()
-			var field_rot: AttributeEditor = command_editor.add_number_field()
-			var field_large_arc_flag: Control = command_editor.add_flag_field()
-			var field_sweep_flag: Control = command_editor.add_flag_field()
+			var field_rx: BetterLineEdit = command_editor.add_number_field()
+			var field_ry: BetterLineEdit = command_editor.add_number_field()
+			var field_rot: BetterLineEdit = command_editor.add_number_field()
+			var field_large_arc_flag: Button = command_editor.add_flag_field()
+			var field_sweep_flag: Button = command_editor.add_flag_field()
 			field_large_arc_flag.set_value(command.large_arc_flag)
 			field_sweep_flag.set_value(command.sweep_flag)
-			field_rx.min_value = 0.0001
-			field_rx.allow_lower = false
-			field_ry.min_value = 0.0001
-			field_ry.allow_lower = false
-			field_rot.min_value = -360
-			field_rot.max_value = 360
-			field_rot.allow_lower = false
-			field_rot.allow_higher = false
+			field_rx.mode = field_rx.Mode.ONLY_POSITIVE
+			field_ry.mode = field_ry.Mode.ONLY_POSITIVE
+			field_rot.mode = field_rot.Mode.ANGLE
 			field_rx.set_value(command.rx)
 			field_ry.set_value(command.ry)
 			field_rot.set_value(command.rot)
-			field_rx.add_tooltip("rx")
-			field_ry.add_tooltip("ry")
-			field_rot.add_tooltip("rot")
+			field_rx.tooltip_text = "rx"
+			field_ry.tooltip_text = "ry"
+			field_rot.tooltip_text = "rot"
 			field_large_arc_flag.tooltip_text = "large_arc_flag"
 			field_sweep_flag.tooltip_text = "sweep_flag"
 			field_rx.value_changed.connect(_update_command_value.bind(command_idx, &"rx"))
@@ -85,42 +81,57 @@ func rebuild_commands() -> void:
 			field_sweep_flag.value_changed.connect(
 						_update_command_value.bind(command_idx, &"sweep_flag"))
 		if command_type == "Q" or command_type == "C":
-			var field_x1: AttributeEditor = command_editor.add_number_field()
-			var field_y1: AttributeEditor = command_editor.add_number_field()
+			var field_x1: BetterLineEdit = command_editor.add_number_field()
+			var field_y1: BetterLineEdit = command_editor.add_number_field()
 			field_x1.set_value(command.x1)
 			field_y1.set_value(command.y1)
-			field_x1.add_tooltip("x1")
-			field_y1.add_tooltip("y1")
+			field_x1.tooltip_text = "x1"
+			field_y1.tooltip_text = "y1"
 			field_x1.value_changed.connect(_update_command_value.bind(command_idx, &"x1"))
 			field_y1.value_changed.connect(_update_command_value.bind(command_idx, &"y1"))
 		if command_type == "C" or command_type == "S":
-			var field_x2: AttributeEditor = command_editor.add_number_field()
-			var field_y2: AttributeEditor = command_editor.add_number_field()
+			var field_x2: BetterLineEdit = command_editor.add_number_field()
+			var field_y2: BetterLineEdit = command_editor.add_number_field()
 			field_x2.set_value(command.x2)
 			field_y2.set_value(command.y2)
-			field_x2.add_tooltip("x2")
-			field_y2.add_tooltip("y2")
+			field_x2.tooltip_text = "x2"
+			field_y2.tooltip_text = "y2"
 			field_x2.value_changed.connect(_update_command_value.bind(command_idx, &"x2"))
 			field_y2.value_changed.connect(_update_command_value.bind(command_idx, &"y2"))
 		if command_type != "Z" and command_type != "V":
-			var field_x: AttributeEditor = command_editor.add_number_field()
+			var field_x: BetterLineEdit = command_editor.add_number_field()
 			field_x.set_value(command.x)
-			field_x.add_tooltip("x")
+			field_x.tooltip_text = "x"
 			field_x.value_changed.connect(_update_command_value.bind(command_idx, &"x"))
 		if command_type != "Z" and command_type != "H":
-			var field_y: AttributeEditor = command_editor.add_number_field()
+			var field_y: BetterLineEdit = command_editor.add_number_field()
 			field_y.set_value(command.y)
-			field_y.add_tooltip("y")
+			field_y.tooltip_text ="y"
 			field_y.value_changed.connect(_update_command_value.bind(command_idx, &"y"))
 		commands_container.add_child(command_editor)
 		command_editor.relative_button.pressed.connect(toggle_relative.bind(command_idx))
-		command_editor.delete_button.pressed.connect(delete.bind(command_idx))
+		command_editor.more_button.pressed.connect(open_actions.bind(command_idx))
 
 
 func _update_command_value(new_value: float, idx: int, property: StringName) -> void:
 	attribute.set_command_property(idx, property, new_value)
 
+func open_actions(idx: int) -> void:
+	var buttons_arr: Array[Button] = []
+	
+	var delete_button := Button.new()
+	delete_button.text = tr(&"#delete")
+	delete_button.icon = load("res://visual/icons/Delete.svg")
+	delete_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
+	delete_button.pressed.connect(delete.bind(idx))
+	buttons_arr.append(delete_button)
+	
+	action_popup.set_btn_array(buttons_arr)
+	action_popup.popup(Utils.calculate_popup_rect(get_global_mouse_position(),
+			Vector2.ZERO, action_popup.size, true))
+
 func delete(idx: int) -> void:
+	action_popup.hide()
 	attribute.delete_command(idx)
 
 func toggle_relative(idx: int) -> void:
