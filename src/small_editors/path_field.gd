@@ -127,9 +127,5 @@ func toggle_relative(idx: int) -> void:
 	attribute.toggle_relative_command(idx)
 
 
-func _input(event: InputEvent) -> void:
-	Utils.defocus_control_on_outside_click(line_edit, event)
-
 func _on_line_edit_text_submitted(new_text: String) -> void:
 	set_value(new_text)
-	line_edit.release_focus()

@@ -1,9 +1,30 @@
-[gd_scene load_steps=5 format=3 uid="uid://carf2o1y7wvmc"]
+[gd_scene load_steps=8 format=3 uid="uid://carf2o1y7wvmc"]
 
 [ext_resource type="Script" path="res://src/small_editors/color_field.gd" id="1_330tl"]
 [ext_resource type="Texture2D" uid="uid://y0l74x73w0co" path="res://visual/CheckerboardMini.svg" id="2_gsj5a"]
 [ext_resource type="Script" path="res://src/small_editors/color_popup.gd" id="2_hgyyv"]
 [ext_resource type="PackedScene" uid="uid://cpvtf3kaa2ltr" path="res://src/small_editors/color_swatch.tscn" id="3_38vpq"]
+[ext_resource type="Script" path="res://src/BetterLineEdit.gd" id="3_lamtl"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_q6tej"]
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 1
+border_width_bottom = 2
+border_color = Color(1, 1, 1, 0.0666667)
+corner_radius_top_left = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_edu3w"]
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 1
+border_width_bottom = 2
+border_color = Color(0.501961, 0.752941, 1, 0.133333)
+corner_radius_top_left = 5
+corner_radius_bottom_left = 5
 
 [node name="ColorField" type="HBoxContainer"]
 custom_minimum_size = Vector2(0, 22)
@@ -22,6 +43,9 @@ max_length = 20
 context_menu_enabled = false
 select_all_on_focus = true
 caret_blink = true
+script = ExtResource("3_lamtl")
+hover_stylebox = SubResource("StyleBoxFlat_q6tej")
+focus_stylebox = SubResource("StyleBoxFlat_edu3w")
 
 [node name="Button" type="Button" parent="."]
 custom_minimum_size = Vector2(13, 0)
@@ -210,7 +234,6 @@ layout_mode = 2
 tooltip_text = "Rainbow pink"
 color_hex = "ff4596"
 
-[connection signal="focus_entered" from="LineEdit" to="." method="_on_focus_entered"]
 [connection signal="focus_exited" from="LineEdit" to="." method="_on_focus_exited"]
 [connection signal="text_changed" from="LineEdit" to="." method="_on_line_edit_text_changed"]
 [connection signal="text_submitted" from="LineEdit" to="." method="_on_text_submitted"]

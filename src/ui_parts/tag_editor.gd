@@ -4,6 +4,7 @@ const shape_attributes = ["cx", "cy", "x", "y", "r", "rx", "ry", "width", "heigh
 		"x1", "y1", "x2", "y2"]
 
 const NumberField = preload("res://src/small_editors/number_field.tscn")
+const NumberSlider = preload("res://src/small_editors/number_field_with_slider.tscn")
 const ColorField = preload("res://src/small_editors/color_field.tscn")
 const PathField = preload("res://src/small_editors/path_field.tscn")
 const EnumField = preload("res://src/small_editors/enum_field.tscn")
@@ -35,10 +36,9 @@ func _ready() -> void:
 				input_field = NumberField.instantiate()
 				input_field.allow_lower = false
 			Attribute.Type.NFLOAT:
-				input_field = NumberField.instantiate()
+				input_field = NumberSlider.instantiate()
 				input_field.allow_lower = false
 				input_field.allow_higher = false
-				input_field.show_slider = true
 				input_field.slider_step = 0.01
 			Attribute.Type.COLOR:
 				input_field = ColorField.instantiate()

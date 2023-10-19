@@ -1,6 +1,9 @@
 extends AttributeEditor
 
 @onready var num_edit: LineEdit = $LineEdit
+@onready var slider: Button = $Slider
+
+var slider_step := 0.01
 
 var min_value := 0.0
 var max_value := 1.0
@@ -97,3 +100,55 @@ func set_text_tint() -> void:
 			num_edit.add_theme_color_override(&"font_color", Color(0.64, 0.64, 0.64))
 		else:
 			num_edit.remove_theme_color_override(&"font_color")
+
+# Slider
+
+var slider_dragged := false:
+	set(new_value):
+		if slider_dragged != new_value:
+			slider_dragged = new_value
+			queue_redraw()
+			if not slider_hovered:
+				get_viewport().update_mouse_cursor_state()
+
+var slider_hovered := false:
+	set(new_value):
+		if slider_hovered != new_value:
+			slider_hovered = new_value
+			queue_redraw()
+
+func _draw() -> void:
+	var slider_size := slider.get_size()
+	var line_edit_size := num_edit.get_size()
+	draw_set_transform(Vector2(line_edit_size.x, 1))
+	var stylebox := StyleBoxFlat.new()
+	stylebox.corner_radius_top_right = 5
+	stylebox.corner_radius_bottom_right = 5
+	stylebox.bg_color = Color("#121233")
+	draw_style_box(stylebox, Rect2(Vector2.ZERO, slider_size - Vector2(1, 2)))
+	var fill_height := (slider_size.y - 4) * (get_value() - min_value) / max_value
+	if slider_hovered or slider_dragged:
+		draw_rect(Rect2(0, 1 + slider_size.y - 4 - fill_height,
+				slider_size.x - 2, fill_height), Color("#def"))
+	else:
+		draw_rect(Rect2(0, 1 + slider_size.y - 4 - fill_height,
+				slider_size.x - 2, fill_height), Color("#defa"))
+
+func _on_slider_resized() -> void:
+	queue_redraw()  # Whyyyyy are their sizes wrong at first...
+
+func _on_slider_gui_input(event: InputEvent) -> void:
+	var slider_h := slider.get_size().y - 4
+	if event is InputEventMouseButton or event is InputEventMouseMotion:
+		if event.button_mask == MOUSE_BUTTON_LEFT:
+			slider_dragged = true
+			set_value(snappedf(lerpf(max_value, min_value,
+					(event.position.y - 4) / slider_h), slider_step))
+			return
+	slider_dragged = false
+
+func _on_slider_mouse_exited() -> void:
+	slider_hovered = false
+
+func _on_slider_mouse_entered() -> void:
+	slider_hovered = true
