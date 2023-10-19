@@ -27,8 +27,7 @@ corner_radius_bottom_right = 3
 corner_radius_bottom_left = 3
 
 [node name="PathCommandEditor" type="HBoxContainer"]
-offset_right = 34.0
-offset_bottom = 14.0
+offset_right = 18.0
 size_flags_horizontal = 3
 size_flags_vertical = 0
 script = ExtResource("1_om2fk")

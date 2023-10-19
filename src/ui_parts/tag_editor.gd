@@ -25,7 +25,7 @@ func _ready() -> void:
 	# Fill up the containers.
 	title_button.text = tag.title
 	if tag.title == "path":
-		margin_container.add_theme_constant_override(&"margin_right", -3)
+		margin_container.add_theme_constant_override(&"margin_right", 0)
 	for attribute_key in tag.attributes:
 		var attribute: Attribute = tag.attributes[attribute_key]
 		var input_field: AttributeEditor

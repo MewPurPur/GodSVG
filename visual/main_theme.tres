@@ -396,28 +396,22 @@ corner_detail = 16
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_rmu68"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_iof82"]
-content_margin_left = 3.0
+content_margin_left = 4.0
 content_margin_bottom = 0.0
 bg_color = Color(0.062, 0.062, 0.1, 1)
 border_width_bottom = 2
 border_color = Color(0.228, 0.228, 0.3, 1)
-corner_radius_top_left = 2
-corner_radius_top_right = 2
+corner_radius_top_left = 3
+corner_radius_top_right = 3
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_c4urh"]
-content_margin_left = 3.0
+content_margin_left = 4.0
 content_margin_bottom = 0.0
 bg_color = Color(0.0352941, 0.0352941, 0.0509804, 1)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
 border_width_bottom = 2
 border_color = Color(0.0901961, 0.0901961, 0.101961, 1)
-corner_radius_top_left = 5
-corner_radius_top_right = 5
-corner_radius_bottom_right = 5
-corner_radius_bottom_left = 5
-corner_detail = 16
+corner_radius_top_left = 3
+corner_radius_top_right = 3
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_c2si1"]
 content_margin_left = 2.0
@@ -682,7 +676,7 @@ MiniLineEdit/base_type = &"LineEdit"
 MiniLineEdit/colors/caret_color = Color(0.94902, 0.854902, 0.854902, 1)
 MiniLineEdit/colors/font_outline_color = Color(0.866667, 0.933333, 1, 1)
 MiniLineEdit/colors/selection_color = Color(0.4, 0.54902, 1, 0.4)
-MiniLineEdit/font_sizes/font_size = 11
+MiniLineEdit/font_sizes/font_size = 10
 MiniLineEdit/fonts/font = ExtResource("1_ulxqy")
 MiniLineEdit/styles/focus = SubResource("StyleBoxEmpty_rmu68")
 MiniLineEdit/styles/normal = SubResource("StyleBoxFlat_iof82")

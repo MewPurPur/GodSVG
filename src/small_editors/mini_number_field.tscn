@@ -13,9 +13,9 @@ border_width_bottom = 2
 border_color = Color(0.501961, 1, 1, 0.4)
 
 [node name="MiniNumberField" type="LineEdit"]
-custom_minimum_size = Vector2(46, 19)
-offset_right = 50.0
-offset_bottom = 17.0
+custom_minimum_size = Vector2(44, 19)
+offset_right = 44.0
+offset_bottom = 19.0
 theme_type_variation = &"MiniLineEdit"
 context_menu_enabled = false
 select_all_on_focus = true
