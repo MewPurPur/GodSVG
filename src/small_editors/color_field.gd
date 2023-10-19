@@ -207,21 +207,12 @@ func _draw() -> void:
 	draw_style_box(stylebox, Rect2(Vector2.ZERO, button_size - Vector2(1, 2)))
 
 
-# Hacks to make LineEdit bearable.
-
-func _on_focus_entered() -> void:
-	get_tree().paused = true
-
 func _on_focus_exited() -> void:
 	set_value(color_edit.text)
-	get_tree().paused = false
 
 func _on_text_submitted(new_text: String) -> void:
 	set_value(new_text)
-	color_edit.release_focus()
 
-func _input(event: InputEvent) -> void:
-	Utils.defocus_control_on_outside_click(color_edit, event)
 
 func _on_color_picked(new_color: String) -> void:
 	set_value(new_color)

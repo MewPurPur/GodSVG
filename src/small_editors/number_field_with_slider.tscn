@@ -1,0 +1,75 @@
+[gd_scene load_steps=6 format=3 uid="uid://bp2vpf7g8w8aj"]
+
+[ext_resource type="Script" path="res://src/small_editors/number_field_with_slider.gd" id="1_q10gl"]
+[ext_resource type="Script" path="res://src/BetterLineEdit.gd" id="2_sbc18"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_e034s"]
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 1
+border_width_bottom = 2
+border_color = Color(1, 1, 1, 0.0666667)
+corner_radius_top_left = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0nb8u"]
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 1
+border_width_bottom = 2
+border_color = Color(0.501961, 0.752941, 1, 0.133333)
+corner_radius_top_left = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_smesa"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+draw_center = false
+border_width_left = 1
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.203922, 0.254902, 0.4, 1)
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_detail = 16
+
+[node name="NumberFieldWithSlider" type="HBoxContainer"]
+custom_minimum_size = Vector2(0, 22)
+offset_right = 46.0
+offset_bottom = 22.0
+theme_override_constants/separation = 0
+script = ExtResource("1_q10gl")
+
+[node name="LineEdit" type="LineEdit" parent="."]
+custom_minimum_size = Vector2(46, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 1
+theme_type_variation = &"RightConnectedLineEdit"
+context_menu_enabled = false
+select_all_on_focus = true
+caret_blink = true
+script = ExtResource("2_sbc18")
+hover_stylebox = SubResource("StyleBoxFlat_e034s")
+focus_stylebox = SubResource("StyleBoxFlat_0nb8u")
+
+[node name="Slider" type="Button" parent="."]
+clip_contents = true
+custom_minimum_size = Vector2(12, 0)
+layout_mode = 2
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_type_variation = &"LeftConnectedButtonTransparent"
+theme_override_styles/pressed = SubResource("StyleBoxFlat_smesa")
+
+[connection signal="focus_exited" from="LineEdit" to="." method="_on_focus_exited"]
+[connection signal="text_submitted" from="LineEdit" to="." method="_on_text_submitted"]
+[connection signal="gui_input" from="Slider" to="." method="_on_slider_gui_input"]
+[connection signal="mouse_entered" from="Slider" to="." method="_on_slider_mouse_entered"]
+[connection signal="mouse_exited" from="Slider" to="." method="_on_slider_mouse_exited"]
+[connection signal="resized" from="Slider" to="." method="_on_slider_resized"]
