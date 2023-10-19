@@ -51,3 +51,6 @@ caret_blink = true
 script = ExtResource("2_gfns5")
 hover_stylebox = SubResource("StyleBoxFlat_kgadk")
 focus_stylebox = SubResource("StyleBoxFlat_m2p2n")
+
+[connection signal="focus_exited" from="LineEdit" to="." method="_on_focus_exited"]
+[connection signal="text_submitted" from="LineEdit" to="." method="_on_text_submitted"]

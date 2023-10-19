@@ -13,6 +13,7 @@ const EnumField = preload("res://src/small_editors/enum_field.tscn")
 @onready var shape_container: FlowContainer = %AttributeContainer/ShapeAttributes
 @onready var title_button: Button = %TitleButton
 @onready var tag_context: Popup = $ContextPopup
+@onready var margin_container: MarginContainer = $MarginContainer
 
 var tag_index: int
 var tag: Tag
@@ -23,6 +24,8 @@ func _ready() -> void:
 	Interactions.hover_changed.connect(determine_selection_highlight)
 	# Fill up the containers.
 	title_button.text = tag.title
+	if tag.title == "path":
+		margin_container.add_theme_constant_override(&"margin_right", -3)
 	for attribute_key in tag.attributes:
 		var attribute: Attribute = tag.attributes[attribute_key]
 		var input_field: AttributeEditor
