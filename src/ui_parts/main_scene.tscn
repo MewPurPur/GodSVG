@@ -1,4 +1,4 @@
-[gd_scene load_steps=34 format=3 uid="uid://ce6j54x27pom"]
+[gd_scene load_steps=36 format=3 uid="uid://ce6j54x27pom"]
 
 [ext_resource type="PackedScene" uid="uid://ccynisiuyn5qn" path="res://src/ui_parts/inspector.tscn" id="1_afxvd"]
 [ext_resource type="Texture2D" uid="uid://ccvjkdd0s7rb4" path="res://visual/icons/Copy.svg" id="1_fm0ux"]
@@ -18,7 +18,7 @@
 [ext_resource type="Script" path="res://src/small_editors/number_field.gd" id="11_sa433"]
 [ext_resource type="Texture2D" uid="uid://buire51l0mifg" path="res://visual/icons/Snap.svg" id="11_u7ddj"]
 [ext_resource type="Shader" path="res://src/ui_parts/zoom_shader.gdshader" id="12_wewnk"]
-[ext_resource type="Script" path="res://src/BetterLineEdit.gd" id="13_agirq"]
+[ext_resource type="Script" path="res://src/small_editors/BetterLineEdit.gd" id="13_agirq"]
 [ext_resource type="Texture2D" uid="uid://c2h5snkvemm4p" path="res://visual/icons/Minus.svg" id="13_uqus2"]
 [ext_resource type="Texture2D" uid="uid://eif2ioi0mw17" path="res://visual/icons/Plus.svg" id="14_t8hbh"]
 [ext_resource type="Script" path="res://src/ui_parts/snap_lines.gd" id="15_v2yj8"]
@@ -86,6 +86,26 @@ corner_detail = 16
 bg_color = Color(0.02, 0.02, 0.08, 1)
 border_width_bottom = 2
 border_color = Color(0.4, 0.7, 1, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nhyje"]
+draw_center = false
+border_width_left = 1
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 1, 1, 0.0666667)
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gocfv"]
+draw_center = false
+border_width_left = 1
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.501961, 0.752941, 1, 0.133333)
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
 
 [sub_resource type="InputEventKey" id="InputEventKey_n13ij"]
 device = -1
@@ -308,6 +328,8 @@ context_menu_enabled = false
 select_all_on_focus = true
 caret_blink = true
 script = ExtResource("13_agirq")
+hover_stylebox = SubResource("StyleBoxFlat_nhyje")
+focus_stylebox = SubResource("StyleBoxFlat_gocfv")
 
 [node name="VisualsPopup" parent="Display/PanelContainer/MarginContainer/HBoxContainer/LeftMenu" instance=ExtResource("10_hraj8")]
 visible = false

@@ -109,6 +109,9 @@ func get_svg_error() -> String:
 	if string.is_empty():
 		return tr(&"#err_empty_svg")
 	
+	if string.count("<") != string.count(">"):
+		return tr(&"#err_improper_nesting")
+	
 	var parser := XMLParser.new()
 	parser.open_buffer(string.to_ascii_buffer())
 	if string.begins_with("<?"):
@@ -131,11 +134,6 @@ func get_svg_error() -> String:
 		
 		elif parser.get_node_type() == XMLParser.NODE_ELEMENT_END:
 			var node_name := parser.get_node_name()
-			# Workaround for XMLParser not checking for closing '>'.
-			var closure_expected_at := parser.get_node_offset() + node_name.length() + 2
-			if string.length() <= closure_expected_at or string[closure_expected_at] != ">":
-				return tr(&"#err_improper_nesting")
-			
 			if nodes.is_empty() or node_name != nodes.back():
 				return tr(&"#err_improper_nesting")
 			nodes.pop_back()

@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://c6vgjud6wrdu4"]
 
 [ext_resource type="Script" path="res://src/small_editors/number_field.gd" id="1_vy4cm"]
-[ext_resource type="Script" path="res://src/BetterLineEdit.gd" id="2_c3tak"]
+[ext_resource type="Script" path="res://src/small_editors/BetterLineEdit.gd" id="2_gfns5"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kgadk"]
 draw_center = false
@@ -21,7 +21,7 @@ border_width_left = 2
 border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
-border_color = Color(0.501961, 0.752941, 1, 0.133333)
+border_color = Color(0.501961, 0.752941, 1, 0.2)
 corner_radius_top_left = 5
 corner_radius_top_right = 5
 corner_radius_bottom_right = 5
@@ -44,8 +44,10 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
+focus_mode = 1
+context_menu_enabled = false
+select_all_on_focus = true
 caret_blink = true
-caret_blink_interval = 0.5
-script = ExtResource("2_c3tak")
+script = ExtResource("2_gfns5")
 hover_stylebox = SubResource("StyleBoxFlat_kgadk")
 focus_stylebox = SubResource("StyleBoxFlat_m2p2n")
