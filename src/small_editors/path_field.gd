@@ -55,8 +55,9 @@ func rebuild_commands() -> void:
 		command_editor.cmd_type = command_char
 		# Instantiate the input fields.
 		if command_type == "A":
-			var field_rx: BetterLineEdit = command_editor.add_number_field()
-			var field_ry: BetterLineEdit = command_editor.add_number_field()
+			var fields_rx_ry: Array[BetterLineEdit] = command_editor.add_number_field_pair()
+			var field_rx := fields_rx_ry[0]
+			var field_ry := fields_rx_ry[1]
 			var field_rot: BetterLineEdit = command_editor.add_number_field()
 			var field_large_arc_flag: Button = command_editor.add_flag_field()
 			var field_sweep_flag: Button = command_editor.add_flag_field()
@@ -65,6 +66,7 @@ func rebuild_commands() -> void:
 			field_rx.mode = field_rx.Mode.ONLY_POSITIVE
 			field_ry.mode = field_ry.Mode.ONLY_POSITIVE
 			field_rot.mode = field_rot.Mode.ANGLE
+			field_rot.custom_minimum_size.x -= 6
 			field_rx.set_value(command.rx)
 			field_ry.set_value(command.ry)
 			field_rot.set_value(command.rot)
@@ -77,12 +79,13 @@ func rebuild_commands() -> void:
 			field_ry.value_changed.connect(_update_command_value.bind(command_idx, &"ry"))
 			field_rot.value_changed.connect(_update_command_value.bind(command_idx, &"rot"))
 			field_large_arc_flag.value_changed.connect(
-						_update_command_value.bind(command_idx, &"large_arc_flag"))
+					_update_command_value.bind(command_idx, &"large_arc_flag"))
 			field_sweep_flag.value_changed.connect(
-						_update_command_value.bind(command_idx, &"sweep_flag"))
+					_update_command_value.bind(command_idx, &"sweep_flag"))
 		if command_type == "Q" or command_type == "C":
-			var field_x1: BetterLineEdit = command_editor.add_number_field()
-			var field_y1: BetterLineEdit = command_editor.add_number_field()
+			var fields_x1_y1: Array[BetterLineEdit] = command_editor.add_number_field_pair()
+			var field_x1 := fields_x1_y1[0]
+			var field_y1 := fields_x1_y1[1]
 			field_x1.set_value(command.x1)
 			field_y1.set_value(command.y1)
 			field_x1.tooltip_text = "x1"
@@ -90,24 +93,37 @@ func rebuild_commands() -> void:
 			field_x1.value_changed.connect(_update_command_value.bind(command_idx, &"x1"))
 			field_y1.value_changed.connect(_update_command_value.bind(command_idx, &"y1"))
 		if command_type == "C" or command_type == "S":
-			var field_x2: BetterLineEdit = command_editor.add_number_field()
-			var field_y2: BetterLineEdit = command_editor.add_number_field()
+			var fields_x2_y2: Array[BetterLineEdit] = command_editor.add_number_field_pair()
+			var field_x2 := fields_x2_y2[0]
+			var field_y2 := fields_x2_y2[1]
 			field_x2.set_value(command.x2)
 			field_y2.set_value(command.y2)
 			field_x2.tooltip_text = "x2"
 			field_y2.tooltip_text = "y2"
 			field_x2.value_changed.connect(_update_command_value.bind(command_idx, &"x2"))
 			field_y2.value_changed.connect(_update_command_value.bind(command_idx, &"y2"))
-		if command_type != "Z" and command_type != "V":
-			var field_x: BetterLineEdit = command_editor.add_number_field()
-			field_x.set_value(command.x)
-			field_x.tooltip_text = "x"
-			field_x.value_changed.connect(_update_command_value.bind(command_idx, &"x"))
-		if command_type != "Z" and command_type != "H":
-			var field_y: BetterLineEdit = command_editor.add_number_field()
-			field_y.set_value(command.y)
-			field_y.tooltip_text ="y"
-			field_y.value_changed.connect(_update_command_value.bind(command_idx, &"y"))
+		if command_type != "Z":
+			if command_type == "H":
+				var field_x: BetterLineEdit = command_editor.add_number_field()
+				field_x.set_value(command.x)
+				field_x.tooltip_text = "x"
+				field_x.value_changed.connect(_update_command_value.bind(command_idx, &"x"))
+			elif command_type == "V":
+				var field_y: BetterLineEdit = command_editor.add_number_field()
+				field_y.set_value(command.y)
+				field_y.tooltip_text ="y"
+				field_y.value_changed.connect(_update_command_value.bind(command_idx, &"y"))
+			else:
+				var fields_x_y: Array[BetterLineEdit] = command_editor.add_number_field_pair()
+				var field_x := fields_x_y[0]
+				var field_y := fields_x_y[1]
+				field_x.set_value(command.x)
+				field_x.tooltip_text = "x"
+				field_x.value_changed.connect(_update_command_value.bind(command_idx, &"x"))
+				field_y.set_value(command.y)
+				field_y.tooltip_text ="y"
+				field_y.value_changed.connect(_update_command_value.bind(command_idx, &"y"))
+				
 		commands_container.add_child(command_editor)
 		command_editor.relative_button.pressed.connect(toggle_relative.bind(command_idx))
 		command_editor.more_button.pressed.connect(open_actions.bind(command_idx))

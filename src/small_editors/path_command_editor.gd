@@ -22,10 +22,10 @@ func create_stylebox(inside_color: Color, border_color: Color) -> StyleBoxFlat:
 	new_stylebox.border_color = border_color
 	new_stylebox.set_border_width_all(2)
 	new_stylebox.set_corner_radius_all(4)
-	new_stylebox.content_margin_bottom = 1
-	new_stylebox.content_margin_top = 1
-	new_stylebox.content_margin_left = 6
-	new_stylebox.content_margin_right = 6
+	new_stylebox.content_margin_bottom = 0.5
+	new_stylebox.content_margin_top = 0.5
+	new_stylebox.content_margin_left = 5
+	new_stylebox.content_margin_right = 5
 	return new_stylebox
 
 func setup(command_char: String) -> void:
@@ -47,14 +47,24 @@ func setup(command_char: String) -> void:
 				Color.from_hsv(0.74, 0.6, 1.0), Color.from_hsv(0.7, 0.4, 1.0)))
 
 func add_number_field() -> BetterLineEdit:
-	var new_number_field := MiniNumberField.instantiate()
-	safely_add_field(new_number_field)
-	return new_number_field
+	var new_field := MiniNumberField.instantiate()
+	safely_add_field(new_field)
+	return new_field
 
 func add_flag_field() -> Button:
-	var new_flag_field := FlagField.instantiate()
-	safely_add_field(new_flag_field)
-	return new_flag_field
+	var new_field := FlagField.instantiate()
+	safely_add_field(new_field)
+	return new_field
+
+func add_number_field_pair() -> Array[BetterLineEdit]:
+	var hbox := HBoxContainer.new()
+	hbox.add_theme_constant_override(&"separation", 3)
+	var new_fields: Array[BetterLineEdit] =\
+			[MiniNumberField.instantiate(), MiniNumberField.instantiate()]
+	hbox.add_child(new_fields[0])
+	hbox.add_child(new_fields[1])
+	safely_add_field(hbox)
+	return new_fields
 
 func safely_add_field(field: Control) -> void:
 	if fields_container == null:

@@ -1,13 +1,35 @@
-[gd_scene load_steps=4 format=3 uid="uid://dcdrc3r60bgg3"]
+[gd_scene load_steps=7 format=3 uid="uid://dcdrc3r60bgg3"]
 
 [ext_resource type="Script" path="res://src/small_editors/path_command_editor.gd" id="1_om2fk"]
 [ext_resource type="FontFile" uid="uid://c7ury252fql35" path="res://visual/CodeFont.ttf" id="2_dmgic"]
 [ext_resource type="Texture2D" uid="uid://cmepkbqde0jh0" path="res://visual/icons/SmallMore.svg" id="3_a76tm"]
 
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_dsai0"]
+content_margin_left = 2.0
+content_margin_right = 2.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ky4q6"]
+content_margin_left = 2.0
+content_margin_right = 2.0
+bg_color = Color(1, 1, 1, 0.0666667)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5jayv"]
+content_margin_left = 2.0
+content_margin_right = 2.0
+bg_color = Color(1, 1, 1, 0.2)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
 [node name="PathCommandEditor" type="HBoxContainer"]
 offset_right = 34.0
 offset_bottom = 14.0
-size_flags_horizontal = 0
+size_flags_horizontal = 3
 size_flags_vertical = 0
 script = ExtResource("1_om2fk")
 
@@ -22,14 +44,18 @@ theme_override_font_sizes/font_size = 13
 
 [node name="Fields" type="HBoxContainer" parent="."]
 layout_mode = 2
+theme_override_constants/separation = 5
 
 [node name="MoreButton" type="Button" parent="."]
 layout_mode = 2
+size_flags_horizontal = 10
 focus_mode = 0
 mouse_default_cursor_shape = 2
-theme_type_variation = &"FlatButton"
 theme_override_colors/icon_normal_color = Color(0.666667, 0.666667, 0.666667, 1)
 theme_override_colors/icon_hover_color = Color(0.866667, 0.866667, 0.866667, 1)
+theme_override_styles/normal = SubResource("StyleBoxEmpty_dsai0")
+theme_override_styles/hover = SubResource("StyleBoxFlat_ky4q6")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_5jayv")
 icon = ExtResource("3_a76tm")
 
 [connection signal="pressed" from="RelativeButton" to="." method="_on_relative_button_pressed"]
