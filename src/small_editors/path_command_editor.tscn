@@ -2,35 +2,34 @@
 
 [ext_resource type="Script" path="res://src/small_editors/path_command_editor.gd" id="1_om2fk"]
 [ext_resource type="FontFile" uid="uid://c7ury252fql35" path="res://visual/CodeFont.ttf" id="2_dmgic"]
-[ext_resource type="Texture2D" uid="uid://lpv1kxrwexmi" path="res://visual/icons/SmallCross.svg" id="3_7mxd2"]
+[ext_resource type="Texture2D" uid="uid://cmepkbqde0jh0" path="res://visual/icons/SmallMore.svg" id="3_a76tm"]
 
 [node name="PathCommandEditor" type="HBoxContainer"]
-offset_right = 51.0
-offset_bottom = 25.0
+offset_right = 34.0
+offset_bottom = 14.0
 size_flags_horizontal = 0
 size_flags_vertical = 0
 script = ExtResource("1_om2fk")
 
 [node name="RelativeButton" type="Button" parent="."]
-custom_minimum_size = Vector2(21, 0)
 layout_mode = 2
 size_flags_vertical = 4
 focus_mode = 0
 mouse_default_cursor_shape = 2
-theme_type_variation = &"IconButton"
 theme_override_colors/font_color = Color(0.866667, 0.933333, 1, 1)
 theme_override_fonts/font = ExtResource("2_dmgic")
-theme_override_font_sizes/font_size = 12
-text = "M"
+theme_override_font_sizes/font_size = 13
 
 [node name="Fields" type="HBoxContainer" parent="."]
 layout_mode = 2
 
-[node name="DeleteButton" type="Button" parent="."]
+[node name="MoreButton" type="Button" parent="."]
 layout_mode = 2
 focus_mode = 0
 mouse_default_cursor_shape = 2
-theme_type_variation = &"IconButton"
-icon = ExtResource("3_7mxd2")
+theme_type_variation = &"FlatButton"
+theme_override_colors/icon_normal_color = Color(0.666667, 0.666667, 0.666667, 1)
+theme_override_colors/icon_hover_color = Color(0.866667, 0.866667, 0.866667, 1)
+icon = ExtResource("3_a76tm")
 
 [connection signal="pressed" from="RelativeButton" to="." method="_on_relative_button_pressed"]
