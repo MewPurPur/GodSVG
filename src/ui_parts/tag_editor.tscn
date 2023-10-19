@@ -60,7 +60,7 @@ script = ExtResource("1_7i0c4")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2
-theme_override_constants/margin_left = 8
+theme_override_constants/margin_left = 4
 theme_override_constants/margin_top = 3
 theme_override_constants/margin_right = 5
 theme_override_constants/margin_bottom = 3
@@ -74,7 +74,7 @@ custom_minimum_size = Vector2(50, 0)
 layout_mode = 2
 theme_override_constants/margin_left = 0
 theme_override_constants/margin_top = 4
-theme_override_constants/margin_right = 6
+theme_override_constants/margin_right = 2
 theme_override_constants/margin_bottom = 4
 
 [node name="TitleButton" type="Button" parent="MarginContainer/HBoxContainer/MarginContainer"]

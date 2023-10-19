@@ -75,6 +75,7 @@ corner_detail = 2
 [node name="PathField" type="VBoxContainer"]
 offset_right = 177.0
 offset_bottom = 26.0
+size_flags_horizontal = 3
 script = ExtResource("1_enb3p")
 
 [node name="MainLine" type="HBoxContainer" parent="."]
@@ -83,7 +84,7 @@ layout_mode = 2
 theme_override_constants/separation = 0
 
 [node name="LineEdit" type="LineEdit" parent="MainLine"]
-custom_minimum_size = Vector2(300, 0)
+custom_minimum_size = Vector2(296, 0)
 layout_mode = 2
 tooltip_text = "d"
 focus_mode = 1
@@ -104,7 +105,9 @@ theme_type_variation = &"LeftConnectedButton"
 icon = ExtResource("2_fbpdu")
 
 [node name="Commands" type="VBoxContainer" parent="."]
+custom_minimum_size = Vector2(336, 0)
 layout_mode = 2
+size_flags_horizontal = 0
 
 [node name="PathPopup" type="Popup" parent="."]
 transparent_bg = true

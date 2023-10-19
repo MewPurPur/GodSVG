@@ -1,6 +1,7 @@
 extends BetterLineEdit
 
 enum Mode {DEFAULT, ONLY_POSITIVE, ANGLE}
+
 var mode := Mode.DEFAULT
 
 signal value_changed(new_value: float)
@@ -42,22 +43,22 @@ func _on_text_submitted(submitted_text: String) -> void:
 	super(submitted_text)
 
 # This function evaluates expressions even if "," or ";" is used as a decimal separator.
-func calculate_expression(text: String) -> float:
+func calculate_expression(num_text: String) -> float:
 	var expr := Expression.new()
 	
-	var err := expr.parse(text.replace(",", "."))
+	var err := expr.parse(num_text.replace(",", "."))
 	if err == OK:
 		var result: Variant = expr.execute()
 		if not expr.has_execute_failed():
 			return result
 	
-	err = expr.parse(text.replace(";", "."))
+	err = expr.parse(num_text.replace(";", "."))
 	if err == OK:
 		var result: Variant = expr.execute()
 		if not expr.has_execute_failed():
 			return result
 	
-	err = expr.parse(text)
+	err = expr.parse(num_text)
 	if err == OK:
 		var result: Variant = expr.execute()
 		if not expr.has_execute_failed():
