@@ -18,6 +18,7 @@
 [ext_resource type="Script" path="res://src/small_editors/number_field.gd" id="11_sa433"]
 [ext_resource type="Texture2D" uid="uid://buire51l0mifg" path="res://visual/icons/Snap.svg" id="11_u7ddj"]
 [ext_resource type="Shader" path="res://src/ui_parts/zoom_shader.gdshader" id="12_wewnk"]
+[ext_resource type="Script" path="res://src/BetterLineEdit.gd" id="13_agirq"]
 [ext_resource type="Texture2D" uid="uid://c2h5snkvemm4p" path="res://visual/icons/Minus.svg" id="13_uqus2"]
 [ext_resource type="Texture2D" uid="uid://eif2ioi0mw17" path="res://visual/icons/Plus.svg" id="14_t8hbh"]
 [ext_resource type="Script" path="res://src/ui_parts/snap_lines.gd" id="15_v2yj8"]
@@ -85,21 +86,6 @@ corner_detail = 16
 bg_color = Color(0.02, 0.02, 0.08, 1)
 border_width_bottom = 2
 border_color = Color(0.4, 0.7, 1, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_smesa"]
-content_margin_left = 4.0
-content_margin_top = 4.0
-content_margin_right = 4.0
-content_margin_bottom = 4.0
-draw_center = false
-border_width_left = 1
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.203922, 0.254902, 0.4, 1)
-corner_radius_top_right = 5
-corner_radius_bottom_right = 5
-corner_detail = 16
 
 [sub_resource type="InputEventKey" id="InputEventKey_n13ij"]
 device = -1
@@ -321,15 +307,7 @@ editable = false
 context_menu_enabled = false
 select_all_on_focus = true
 caret_blink = true
-
-[node name="Slider" type="Button" parent="Display/PanelContainer/MarginContainer/HBoxContainer/LeftMenu/Snapping/Snapper"]
-visible = false
-clip_contents = true
-custom_minimum_size = Vector2(12, 0)
-layout_mode = 2
-mouse_default_cursor_shape = 2
-theme_type_variation = &"LeftConnectedButtonTransparent"
-theme_override_styles/pressed = SubResource("StyleBoxFlat_smesa")
+script = ExtResource("13_agirq")
 
 [node name="VisualsPopup" parent="Display/PanelContainer/MarginContainer/HBoxContainer/LeftMenu" instance=ExtResource("10_hraj8")]
 visible = false
@@ -443,13 +421,8 @@ script = ExtResource("15_v2yj8")
 [connection signal="toggled" from="Display/PanelContainer/MarginContainer/HBoxContainer/LeftMenu/Snapping/SnapButton" to="Display" method="_on_snap_button_toggled"]
 [connection signal="toggled" from="Display/PanelContainer/MarginContainer/HBoxContainer/LeftMenu/Snapping/SnapButton" to="Display/ViewportContainer/Viewport/Checkerboard/Controls" method="_on_snap_button_toggled"]
 [connection signal="value_changed" from="Display/PanelContainer/MarginContainer/HBoxContainer/LeftMenu/Snapping/Snapper" to="Display/ViewportContainer/Viewport/Checkerboard/Controls" method="_on_snapper_value_changed"]
-[connection signal="focus_entered" from="Display/PanelContainer/MarginContainer/HBoxContainer/LeftMenu/Snapping/Snapper/LineEdit" to="Display/PanelContainer/MarginContainer/HBoxContainer/LeftMenu/Snapping/Snapper" method="_on_focus_entered" flags=18]
-[connection signal="focus_exited" from="Display/PanelContainer/MarginContainer/HBoxContainer/LeftMenu/Snapping/Snapper/LineEdit" to="Display/PanelContainer/MarginContainer/HBoxContainer/LeftMenu/Snapping/Snapper" method="_on_focus_exited" flags=18]
-[connection signal="text_submitted" from="Display/PanelContainer/MarginContainer/HBoxContainer/LeftMenu/Snapping/Snapper/LineEdit" to="Display/PanelContainer/MarginContainer/HBoxContainer/LeftMenu/Snapping/Snapper" method="_on_text_submitted" flags=18]
-[connection signal="gui_input" from="Display/PanelContainer/MarginContainer/HBoxContainer/LeftMenu/Snapping/Snapper/Slider" to="Display/PanelContainer/MarginContainer/HBoxContainer/LeftMenu/Snapping/Snapper" method="_on_slider_gui_input" flags=18]
-[connection signal="mouse_entered" from="Display/PanelContainer/MarginContainer/HBoxContainer/LeftMenu/Snapping/Snapper/Slider" to="Display/PanelContainer/MarginContainer/HBoxContainer/LeftMenu/Snapping/Snapper" method="_on_slider_mouse_entered" flags=18]
-[connection signal="mouse_exited" from="Display/PanelContainer/MarginContainer/HBoxContainer/LeftMenu/Snapping/Snapper/Slider" to="Display/PanelContainer/MarginContainer/HBoxContainer/LeftMenu/Snapping/Snapper" method="_on_slider_mouse_exited" flags=18]
-[connection signal="resized" from="Display/PanelContainer/MarginContainer/HBoxContainer/LeftMenu/Snapping/Snapper/Slider" to="Display/PanelContainer/MarginContainer/HBoxContainer/LeftMenu/Snapping/Snapper" method="_on_slider_resized" flags=18]
+[connection signal="focus_exited" from="Display/PanelContainer/MarginContainer/HBoxContainer/LeftMenu/Snapping/Snapper/LineEdit" to="Display/PanelContainer/MarginContainer/HBoxContainer/LeftMenu/Snapping/Snapper" method="_on_focus_exited"]
+[connection signal="text_submitted" from="Display/PanelContainer/MarginContainer/HBoxContainer/LeftMenu/Snapping/Snapper/LineEdit" to="Display/PanelContainer/MarginContainer/HBoxContainer/LeftMenu/Snapping/Snapper" method="_on_text_submitted"]
 [connection signal="pressed" from="Display/PanelContainer/MarginContainer/HBoxContainer/ZoomMenu/ZoomOut" to="Display/ViewportContainer/Viewport" method="zoom_out"]
 [connection signal="pressed" from="Display/PanelContainer/MarginContainer/HBoxContainer/ZoomMenu/ZoomReset" to="Display/ViewportContainer/Viewport" method="zoom_reset"]
 [connection signal="pressed" from="Display/PanelContainer/MarginContainer/HBoxContainer/ZoomMenu/ZoomIn" to="Display/ViewportContainer/Viewport" method="zoom_in"]

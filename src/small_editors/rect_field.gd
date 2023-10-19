@@ -1,9 +1,9 @@
 extends AttributeEditor
 
-@onready var x_field: HBoxContainer = $XField
-@onready var y_field: HBoxContainer = $YField
-@onready var w_field: HBoxContainer = $WField
-@onready var h_field: HBoxContainer = $HField
+@onready var x_field: Control = $XField
+@onready var y_field: Control = $YField
+@onready var w_field: Control = $WField
+@onready var h_field: Control = $HField
 
 signal value_changed(new_value: Rect2)
 var _value: Rect2  # Must not be updated directly.

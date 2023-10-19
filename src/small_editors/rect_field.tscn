@@ -1,30 +1,21 @@
 [gd_scene load_steps=3 format=3 uid="uid://dh0dj6qdbfrb0"]
 
 [ext_resource type="Script" path="res://src/small_editors/rect_field.gd" id="1_euct7"]
-[ext_resource type="PackedScene" uid="uid://bp2vpf7g8w8aj" path="res://src/small_editors/number_field.tscn" id="2_5lh3m"]
+[ext_resource type="PackedScene" uid="uid://c6vgjud6wrdu4" path="res://src/small_editors/number_field.tscn" id="2_dkxh3"]
 
 [node name="RectField" type="HBoxContainer"]
 offset_right = 64.0
 offset_bottom = 22.0
 script = ExtResource("1_euct7")
 
-[node name="XField" parent="." instance=ExtResource("2_5lh3m")]
+[node name="XField" parent="." instance=ExtResource("2_dkxh3")]
 layout_mode = 2
-tooltip_text = "x"
 
-[node name="YField" parent="." instance=ExtResource("2_5lh3m")]
+[node name="YField" parent="." instance=ExtResource("2_dkxh3")]
 layout_mode = 2
-tooltip_text = "y"
 
-[node name="WField" parent="." instance=ExtResource("2_5lh3m")]
+[node name="WField" parent="." instance=ExtResource("2_dkxh3")]
 layout_mode = 2
-tooltip_text = "w"
 
-[node name="HField" parent="." instance=ExtResource("2_5lh3m")]
+[node name="HField" parent="." instance=ExtResource("2_dkxh3")]
 layout_mode = 2
-tooltip_text = "h"
-
-[connection signal="value_changed" from="XField" to="." method="_on_x_field_value_changed"]
-[connection signal="value_changed" from="YField" to="." method="_on_y_field_value_changed"]
-[connection signal="value_changed" from="WField" to="." method="_on_w_field_value_changed"]
-[connection signal="value_changed" from="HField" to="." method="_on_h_field_value_changed"]

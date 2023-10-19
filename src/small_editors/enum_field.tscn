@@ -1,8 +1,29 @@
-[gd_scene load_steps=4 format=3 uid="uid://d2da0thyq5rq8"]
+[gd_scene load_steps=7 format=3 uid="uid://d2da0thyq5rq8"]
 
 [ext_resource type="Script" path="res://src/small_editors/enum_field.gd" id="1_vkd5r"]
 [ext_resource type="Texture2D" uid="uid://coda6chhcatal" path="res://visual/icons/Arrow.svg" id="2_owe3f"]
+[ext_resource type="Script" path="res://src/BetterLineEdit.gd" id="2_sry6s"]
 [ext_resource type="PackedScene" uid="uid://wp77eqhikp6k" path="res://src/small_editors/context_popup.tscn" id="3_qw0q5"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_y4kmw"]
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 1
+border_width_bottom = 2
+border_color = Color(1, 1, 1, 0.0666667)
+corner_radius_top_left = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qhmpn"]
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 1
+border_width_bottom = 2
+border_color = Color(0.501961, 0.752941, 1, 0.133333)
+corner_radius_top_left = 5
+corner_radius_bottom_left = 5
 
 [node name="EnumField" type="VBoxContainer"]
 offset_bottom = 22.0
@@ -21,6 +42,9 @@ theme_type_variation = &"RightConnectedLineEdit"
 context_menu_enabled = false
 select_all_on_focus = true
 caret_blink = true
+script = ExtResource("2_sry6s")
+hover_stylebox = SubResource("StyleBoxFlat_y4kmw")
+focus_stylebox = SubResource("StyleBoxFlat_qhmpn")
 
 [node name="Button" type="Button" parent="MainLine"]
 custom_minimum_size = Vector2(15, 0)
@@ -33,6 +57,6 @@ icon = ExtResource("2_owe3f")
 [node name="ContextPopup" parent="." instance=ExtResource("3_qw0q5")]
 visible = false
 
-[connection signal="text_changed" from="MainLine/LineEdit" to="." method="_on_line_edit_text_changed"]
-[connection signal="text_submitted" from="MainLine/LineEdit" to="." method="_on_line_edit_text_submitted"]
+[connection signal="text_changed" from="MainLine/LineEdit" to="." method="_on_text_changed"]
+[connection signal="text_submitted" from="MainLine/LineEdit" to="." method="_on_text_submitted"]
 [connection signal="pressed" from="MainLine/Button" to="." method="_on_button_pressed"]
