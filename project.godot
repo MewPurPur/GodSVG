@@ -14,6 +14,7 @@ config/name="GodSVG"
 config/tags=PackedStringArray("project")
 run/main_scene="res://src/ui_parts/main_scene.tscn"
 config/features=PackedStringArray("4.2", "Forward Plus")
+run/low_processor_mode=true
 config/icon="res://visual/icon.png"
 
 [autoload]
