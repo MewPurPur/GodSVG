@@ -1,11 +1,8 @@
-[gd_scene load_steps=12 format=3 uid="uid://dqy5lv33sy5r7"]
+[gd_scene load_steps=9 format=3 uid="uid://dqy5lv33sy5r7"]
 
 [ext_resource type="Script" path="res://src/small_editors/path_field.gd" id="1_enb3p"]
-[ext_resource type="Texture2D" uid="uid://coda6chhcatal" path="res://visual/icons/Arrow.svg" id="2_fbpdu"]
 [ext_resource type="Script" path="res://src/small_editors/BetterLineEdit.gd" id="2_iwuws"]
-[ext_resource type="Script" path="res://src/small_editors/path_popup.gd" id="3_ocxcs"]
-[ext_resource type="Script" path="res://src/small_editors/path_command_button.gd" id="4_ej4hf"]
-[ext_resource type="PackedScene" uid="uid://wp77eqhikp6k" path="res://src/small_editors/context_popup.tscn" id="6_31382"]
+[ext_resource type="Texture2D" uid="uid://eif2ioi0mw17" path="res://visual/icons/Plus.svg" id="3_cdafs"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4rmxx"]
 draw_center = false
@@ -27,55 +24,39 @@ border_color = Color(0.501961, 0.752941, 1, 0.2)
 corner_radius_top_left = 5
 corner_radius_bottom_left = 5
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jqdng"]
-content_margin_left = 8.0
-content_margin_right = 8.0
-draw_center = false
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.866667, 0.933333, 1, 1)
-corner_radius_top_left = 1
-corner_radius_top_right = 1
-corner_radius_bottom_right = 1
-corner_radius_bottom_left = 1
-corner_detail = 2
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_lcnxl"]
+content_margin_left = 2.0
+content_margin_top = 2.0
+content_margin_right = 2.0
+content_margin_bottom = 2.0
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_h3qkf"]
-content_margin_left = 8.0
-content_margin_right = 8.0
-bg_color = Color(1, 1, 1, 0.133333)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.866667, 0.933333, 1, 1)
-corner_radius_top_left = 1
-corner_radius_top_right = 1
-corner_radius_bottom_right = 1
-corner_radius_bottom_left = 1
-corner_detail = 2
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4yine"]
+content_margin_left = 2.0
+content_margin_top = 2.0
+content_margin_right = 2.0
+content_margin_bottom = 2.0
+bg_color = Color(1, 1, 1, 0.0666667)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_37g7w"]
-content_margin_left = 8.0
-content_margin_right = 8.0
-bg_color = Color(1, 1, 1, 0.4)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.866667, 0.933333, 1, 1)
-corner_radius_top_left = 1
-corner_radius_top_right = 1
-corner_radius_bottom_right = 1
-corner_radius_bottom_left = 1
-corner_detail = 2
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kmpxk"]
+content_margin_left = 2.0
+content_margin_top = 2.0
+content_margin_right = 2.0
+content_margin_bottom = 2.0
+bg_color = Color(1, 1, 1, 0.2)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
 
 [node name="PathField" type="VBoxContainer"]
-offset_right = 177.0
+offset_right = 332.0
 offset_bottom = 26.0
 size_flags_horizontal = 3
+theme_override_constants/separation = 2
 script = ExtResource("1_enb3p")
 
 [node name="MainLine" type="HBoxContainer" parent="."]
@@ -84,11 +65,10 @@ layout_mode = 2
 theme_override_constants/separation = 0
 
 [node name="LineEdit" type="LineEdit" parent="MainLine"]
-custom_minimum_size = Vector2(296, 0)
+custom_minimum_size = Vector2(300, 0)
 layout_mode = 2
 tooltip_text = "d"
 focus_mode = 1
-theme_type_variation = &"RightConnectedLineEdit"
 context_menu_enabled = false
 select_all_on_focus = true
 caret_blink = true
@@ -96,159 +76,22 @@ script = ExtResource("2_iwuws")
 hover_stylebox = SubResource("StyleBoxFlat_4rmxx")
 focus_stylebox = SubResource("StyleBoxFlat_wqlhg")
 
-[node name="Button" type="Button" parent="MainLine"]
-custom_minimum_size = Vector2(15, 0)
-layout_mode = 2
-focus_mode = 0
-mouse_default_cursor_shape = 2
-theme_type_variation = &"LeftConnectedButton"
-icon = ExtResource("2_fbpdu")
-
 [node name="Commands" type="VBoxContainer" parent="."]
 custom_minimum_size = Vector2(336, 0)
 layout_mode = 2
 size_flags_horizontal = 0
+mouse_filter = 0
+theme_override_constants/separation = 0
 
-[node name="PathPopup" type="Popup" parent="."]
-transparent_bg = true
-size = Vector2i(269, 361)
-script = ExtResource("3_ocxcs")
-
-[node name="PanelContainer" type="PanelContainer" parent="PathPopup"]
-custom_minimum_size = Vector2(106, 0)
-offset_right = 106.0
-offset_bottom = 97.0
-
-[node name="MarginContainer" type="MarginContainer" parent="PathPopup/PanelContainer"]
+[node name="AddMove" type="Button" parent="."]
 layout_mode = 2
-theme_override_constants/margin_left = 8
-theme_override_constants/margin_top = 8
-theme_override_constants/margin_right = 8
-theme_override_constants/margin_bottom = 8
-
-[node name="MainContainer" type="VBoxContainer" parent="PathPopup/PanelContainer/MarginContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-
-[node name="RelativeToggle" type="CheckButton" parent="PathPopup/PanelContainer/MarginContainer/MainContainer"]
-layout_mode = 2
-text = "Relative"
-flat = true
-alignment = 2
-
-[node name="M" type="Button" parent="PathPopup/PanelContainer/MarginContainer/MainContainer"]
-layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
 mouse_default_cursor_shape = 2
-theme_override_styles/normal = SubResource("StyleBoxFlat_jqdng")
-theme_override_styles/hover = SubResource("StyleBoxFlat_h3qkf")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_37g7w")
-text = "Move to"
-alignment = 0
-script = ExtResource("4_ej4hf")
-command_char = "M"
-
-[node name="L" type="Button" parent="PathPopup/PanelContainer/MarginContainer/MainContainer"]
-layout_mode = 2
-mouse_default_cursor_shape = 2
-theme_override_styles/normal = SubResource("StyleBoxFlat_jqdng")
-theme_override_styles/hover = SubResource("StyleBoxFlat_h3qkf")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_37g7w")
-text = "Line to"
-alignment = 0
-script = ExtResource("4_ej4hf")
-command_char = "L"
-
-[node name="H" type="Button" parent="PathPopup/PanelContainer/MarginContainer/MainContainer"]
-layout_mode = 2
-mouse_default_cursor_shape = 2
-theme_override_styles/normal = SubResource("StyleBoxFlat_jqdng")
-theme_override_styles/hover = SubResource("StyleBoxFlat_h3qkf")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_37g7w")
-text = "Horizontal Line to"
-alignment = 0
-script = ExtResource("4_ej4hf")
-command_char = "H"
-
-[node name="V" type="Button" parent="PathPopup/PanelContainer/MarginContainer/MainContainer"]
-layout_mode = 2
-mouse_default_cursor_shape = 2
-theme_override_styles/normal = SubResource("StyleBoxFlat_jqdng")
-theme_override_styles/hover = SubResource("StyleBoxFlat_h3qkf")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_37g7w")
-text = "Vertical Line to"
-alignment = 0
-script = ExtResource("4_ej4hf")
-command_char = "V"
-
-[node name="Z" type="Button" parent="PathPopup/PanelContainer/MarginContainer/MainContainer"]
-layout_mode = 2
-mouse_default_cursor_shape = 2
-theme_override_styles/normal = SubResource("StyleBoxFlat_jqdng")
-theme_override_styles/hover = SubResource("StyleBoxFlat_h3qkf")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_37g7w")
-text = "Close Path"
-alignment = 0
-script = ExtResource("4_ej4hf")
-command_char = "Z"
-
-[node name="A" type="Button" parent="PathPopup/PanelContainer/MarginContainer/MainContainer"]
-layout_mode = 2
-mouse_default_cursor_shape = 2
-theme_override_styles/normal = SubResource("StyleBoxFlat_jqdng")
-theme_override_styles/hover = SubResource("StyleBoxFlat_h3qkf")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_37g7w")
-text = "Elliptical Arc to"
-alignment = 0
-script = ExtResource("4_ej4hf")
-command_char = "A"
-
-[node name="Q" type="Button" parent="PathPopup/PanelContainer/MarginContainer/MainContainer"]
-layout_mode = 2
-mouse_default_cursor_shape = 2
-theme_override_styles/normal = SubResource("StyleBoxFlat_jqdng")
-theme_override_styles/hover = SubResource("StyleBoxFlat_h3qkf")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_37g7w")
-text = "Quadratic Bezier to"
-alignment = 0
-script = ExtResource("4_ej4hf")
-command_char = "Q"
-
-[node name="T" type="Button" parent="PathPopup/PanelContainer/MarginContainer/MainContainer"]
-layout_mode = 2
-mouse_default_cursor_shape = 2
-theme_override_styles/normal = SubResource("StyleBoxFlat_jqdng")
-theme_override_styles/hover = SubResource("StyleBoxFlat_h3qkf")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_37g7w")
-text = "Shorthand Quadratic Bezier to"
-alignment = 0
-script = ExtResource("4_ej4hf")
-command_char = "T"
-
-[node name="C" type="Button" parent="PathPopup/PanelContainer/MarginContainer/MainContainer"]
-layout_mode = 2
-mouse_default_cursor_shape = 2
-theme_override_styles/normal = SubResource("StyleBoxFlat_jqdng")
-theme_override_styles/hover = SubResource("StyleBoxFlat_h3qkf")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_37g7w")
-text = "Cubic Bezier to"
-alignment = 0
-script = ExtResource("4_ej4hf")
-command_char = "C"
-
-[node name="S" type="Button" parent="PathPopup/PanelContainer/MarginContainer/MainContainer"]
-layout_mode = 2
-mouse_default_cursor_shape = 2
-theme_override_styles/normal = SubResource("StyleBoxFlat_jqdng")
-theme_override_styles/hover = SubResource("StyleBoxFlat_h3qkf")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_37g7w")
-text = "Shorthand Cubic Bezier to"
-alignment = 0
-script = ExtResource("4_ej4hf")
-command_char = "S"
-
-[node name="ActionsPopup" parent="." instance=ExtResource("6_31382")]
-visible = false
+theme_override_styles/normal = SubResource("StyleBoxEmpty_lcnxl")
+theme_override_styles/hover = SubResource("StyleBoxFlat_4yine")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_kmpxk")
+icon = ExtResource("3_cdafs")
 
 [connection signal="text_submitted" from="MainLine/LineEdit" to="." method="_on_line_edit_text_submitted"]
-[connection signal="pressed" from="MainLine/Button" to="." method="_on_button_pressed"]
-[connection signal="path_command_picked" from="PathPopup" to="." method="_on_path_command_picked"]
+[connection signal="pressed" from="AddMove" to="." method="_on_add_move_pressed"]

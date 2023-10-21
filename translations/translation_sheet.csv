@@ -27,6 +27,7 @@
 #move_up,Move Up,Премести нагоре
 #move_down,Move Down,Премести надолу
 #delete,Delete,Премахни
+#insert_after,Insert After,Вмъкни отпред
 #err_empty_svg,SVG is empty.,Текстът е празен.
 #err_not_svg,Doesn’t describe a SVG.,Текстът не описва SVG.
 #err_improper_nesting,Improper nesting.,Несъвместими тагове.

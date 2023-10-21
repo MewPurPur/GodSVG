@@ -34,3 +34,33 @@ static func vec_min(vec1: Vector2, vec2: Vector2) -> Vector2:
 
 static func vec_max(vec1: Vector2, vec2: Vector2) -> Vector2:
 	return Vector2(maxf(vec1.x, vec2.x), maxf(vec1.y, vec2.y))
+
+static func get_cubic_bezier_points(cp1: Vector2, cp2: Vector2,
+cp3: Vector2, cp4: Vector2) -> PackedVector2Array:
+	var curve := Curve2D.new()
+	curve.add_point(cp1, Vector2(), cp2)
+	curve.add_point(cp4, cp3)
+	return curve.tessellate()
+
+static func get_quadratic_bezier_points(cp1: Vector2, cp2: Vector2,
+cp3: Vector2) -> PackedVector2Array:
+	var fcpo := 2/3.0 * (cp2 - cp1)
+	var fcpi := 2/3.0 * (cp2 - cp3)
+	
+	var curve := Curve2D.new()
+	curve.add_point(cp1, Vector2(), fcpo)
+	curve.add_point(cp3, fcpi)
+	return curve.tessellate()
+
+# Ellipse parametric equation.
+static func E(c: Vector2, r: Vector2, cosine: float, sine: float, t: float) -> Vector2:
+	prints(sine, cosine)
+	var xt := r.x * cos(t)
+	var yt := r.y * sin(t)
+	return c + Vector2(xt * cosine - yt * sine, xt * sine + yt * cosine)
+
+# Ellipse parametric equation derivative (for tangents).
+static func Et(r: Vector2, cosine: float, sine: float, t: float) -> Vector2:
+	var xt := -r.x * sin(t)
+	var yt := r.y * cos(t)
+	return Vector2(xt * cosine - yt * sine, xt * sine + yt * cosine)

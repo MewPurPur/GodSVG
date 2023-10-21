@@ -40,7 +40,8 @@ func _draw() -> void:
 	if hovered:
 		var hover_stylebox := StyleBoxFlat.new()
 		hover_stylebox.draw_center = false
-		hover_stylebox.set_corner_radius_all(5)
-		hover_stylebox.set_border_width_all(2)
-		hover_stylebox.border_color = Color(1, 1, 1, 0.15)
+		hover_stylebox.corner_radius_top_left = 3
+		hover_stylebox.corner_radius_top_right = 3
+		hover_stylebox.border_width_bottom = 2
+		hover_stylebox.border_color = Color(1, 1, 1, 0.2)
 		draw_style_box(hover_stylebox, Rect2(Vector2.ZERO, size))
