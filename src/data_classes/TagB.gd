@@ -21,10 +21,9 @@ func add_tag(new_tag: Tag,create_undo_redo:bool = true) -> void:
 	new_tag.attribute_changed.connect(emit_child_tag_attribute_changed)
 	tag_added.emit()
 
-func add_tag_and_move_to(new_tag:Tag,to_idx:int,create_undo_redo:bool = true) -> void:
-	add_tag(new_tag)
-	var from_idx = child_tags.find(new_tag)
-	move_tag(from_idx,to_idx,create_undo_redo)
+func add_tag_and_move_to(new_tag:Tag,to_idx:int) -> void:
+	child_tags.insert(to_idx, new_tag)
+	tag_added.emit()
 
 func replace_tags(new_tags: Array[Tag]) -> void:
 	child_tags.clear()
@@ -40,7 +39,7 @@ func delete_tag(idx: int,create_undo_redo:bool = true) -> void:
 		EditorUndoRedo.undo_redo.add_do_reference(tag)
 		EditorUndoRedo.undo_redo.add_undo_reference(tag)
 		EditorUndoRedo.undo_redo.add_do_method(delete_tag_with_reference.bind(tag,false))
-		EditorUndoRedo.undo_redo.add_undo_method(add_tag_and_move_to.bind(tag,idx,false))
+		EditorUndoRedo.undo_redo.add_undo_method(add_tag_and_move_to.bind(tag,idx))
 		EditorUndoRedo.undo_redo.commit_action()
 		return
 	if idx >= 0:
