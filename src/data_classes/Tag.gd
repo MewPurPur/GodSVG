@@ -11,3 +11,9 @@ func _init():
 
 func emit_attribute_changed(_new_value: Variant):
 	attribute_changed.emit()
+
+func duplicate() -> Tag:
+	var new_tag = Tag.new()
+	new_tag.title = title
+	new_tag.attributes = attributes
+	return new_tag
