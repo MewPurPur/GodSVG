@@ -21,10 +21,10 @@ func add_tag(new_tag: Tag,create_undo_redo:bool = true) -> void:
 	new_tag.attribute_changed.connect(emit_child_tag_attribute_changed)
 	tag_added.emit()
 
-func add_tag_and_move_to(new_tag:Tag,to_idx:int):
+func add_tag_and_move_to(new_tag:Tag,to_idx:int,create_undo_redo:bool = true) -> void:
 	add_tag(new_tag)
 	var from_idx = child_tags.find(new_tag)
-	move_tag(from_idx,to_idx)
+	move_tag(from_idx,to_idx,create_undo_redo)
 
 func replace_tags(new_tags: Array[Tag]) -> void:
 	child_tags.clear()
@@ -40,7 +40,7 @@ func delete_tag(idx: int,create_undo_redo:bool = true) -> void:
 		EditorUndoRedo.undo_redo.add_do_reference(tag)
 		EditorUndoRedo.undo_redo.add_undo_reference(tag)
 		EditorUndoRedo.undo_redo.add_do_method(delete_tag_with_reference.bind(tag,false))
-		EditorUndoRedo.undo_redo.add_undo_method(add_tag_and_move_to.bind(tag,idx))
+		EditorUndoRedo.undo_redo.add_undo_method(add_tag_and_move_to.bind(tag,idx,false))
 		EditorUndoRedo.undo_redo.commit_action()
 		return
 	if idx >= 0:
@@ -51,7 +51,13 @@ func delete_tag_with_reference(tag:Tag,create_undo_redo:bool = true) -> void:
 	var idx = child_tags.find(tag)
 	delete_tag(idx,create_undo_redo)
 
-func move_tag(old_idx: int, new_idx: int) -> void:
+func move_tag(old_idx: int, new_idx: int,create_undo_redo:bool = true) -> void:
+	if create_undo_redo:
+		EditorUndoRedo.undo_redo.create_action("Move tag")
+		EditorUndoRedo.undo_redo.add_do_method(move_tag.bind(old_idx , new_idx,false))
+		EditorUndoRedo.undo_redo.add_undo_method(move_tag.bind(new_idx, old_idx,false))
+		EditorUndoRedo.undo_redo.commit_action()
+		return
 	var tag: Tag = child_tags.pop_at(old_idx)  # Should be inferrable, GDScript bug.
 	child_tags.insert(new_idx, tag)
 	tag_moved.emit(old_idx, new_idx)
