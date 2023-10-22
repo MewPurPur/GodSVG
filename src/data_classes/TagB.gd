@@ -61,14 +61,19 @@ func move_tag(old_idx: int, new_idx: int,create_undo_redo:bool = true) -> void:
 	child_tags.insert(new_idx, tag)
 	tag_moved.emit(old_idx, new_idx)
 
-func duplicate_tag(idx: int) -> void:
+func duplicate_tag(idx: int, create_undo_redo:bool = true) -> void:
 	var new_tag :Tag = child_tags[idx].duplicate()
-	# Add the new tag.
-	child_tags.insert(idx + 1, new_tag)
 	new_tag.attribute_changed.connect(emit_child_tag_attribute_changed)
-	tag_added.emit()
-
-
+	if create_undo_redo:
+		EditorUndoRedo.undo_redo.create_action("Duplicate tag")
+		EditorUndoRedo.undo_redo.add_do_reference(new_tag)
+		EditorUndoRedo.undo_redo.add_undo_reference(new_tag)
+		EditorUndoRedo.undo_redo.add_do_method(add_tag_and_move_to.bind(new_tag,idx + 1))
+		EditorUndoRedo.undo_redo.add_undo_method(delete_tag_with_reference.bind(new_tag,false))
+		EditorUndoRedo.undo_redo.commit_action()
+		return
+	add_tag_and_move_to(new_tag,idx + 1)
+	
 func emit_child_tag_attribute_changed() -> void:
 	child_tag_attribute_changed.emit()
 
