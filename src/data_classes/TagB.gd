@@ -62,12 +62,7 @@ func move_tag(old_idx: int, new_idx: int,create_undo_redo:bool = true) -> void:
 	tag_moved.emit(old_idx, new_idx)
 
 func duplicate_tag(idx: int) -> void:
-	# Custom logic for this... Blah.
-	var tag_to_dupe := child_tags[idx]
-	var type: GDScript = child_tags[idx].get_script()
-	var new_tag = type.new()
-	for attribute in new_tag.attributes:
-		new_tag.attributes[attribute].value = tag_to_dupe.attributes[attribute].value
+	var new_tag :Tag = child_tags[idx].duplicate()
 	# Add the new tag.
 	child_tags.insert(idx + 1, new_tag)
 	new_tag.attribute_changed.connect(emit_child_tag_attribute_changed)
