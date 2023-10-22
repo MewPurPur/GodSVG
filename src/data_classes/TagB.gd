@@ -8,7 +8,15 @@ signal changed_unknown
 
 var child_tags: Array[Tag]
 
-func add_tag(new_tag: Tag) -> void:
+func add_tag(new_tag: Tag,create_undo_redo:bool = true) -> void:
+	if create_undo_redo:
+		EditorUndoRedo.undo_redo.create_action("Add tag")
+		EditorUndoRedo.undo_redo.add_do_reference(new_tag)
+		EditorUndoRedo.undo_redo.add_undo_reference(new_tag)
+		EditorUndoRedo.undo_redo.add_do_method(add_tag.bind(new_tag,false))
+		EditorUndoRedo.undo_redo.add_undo_method(delete_tag_with_reference.bind(new_tag))
+		EditorUndoRedo.undo_redo.commit_action()
+		return
 	child_tags.append(new_tag)
 	new_tag.attribute_changed.connect(emit_child_tag_attribute_changed)
 	tag_added.emit()
@@ -24,6 +32,10 @@ func delete_tag(idx: int) -> void:
 	if idx >= 0:
 		child_tags.remove_at(idx)
 		tag_deleted.emit(idx)
+
+func delete_tag_with_reference(tag:Tag) -> void:
+	var idx = child_tags.find(tag)
+	delete_tag(idx)
 
 func move_tag(old_idx: int, new_idx: int) -> void:
 	var tag: Tag = child_tags.pop_at(old_idx)  # Should be inferrable, GDScript bug.
