@@ -19,3 +19,8 @@ layout_mode = 2
 
 [node name="HField" parent="." instance=ExtResource("2_dkxh3")]
 layout_mode = 2
+
+[connection signal="value_changed" from="XField" to="." method="_on_x_field_value_changed"]
+[connection signal="value_changed" from="YField" to="." method="_on_y_field_value_changed"]
+[connection signal="value_changed" from="WField" to="." method="_on_w_field_value_changed"]
+[connection signal="value_changed" from="HField" to="." method="_on_h_field_value_changed"]
