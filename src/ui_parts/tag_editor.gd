@@ -17,8 +17,10 @@ const EnumField = preload("res://src/small_editors/enum_field.tscn")
 
 var tag_index: int
 var tag: Tag
+var old_value_tag:Tag
 
 func _ready() -> void:
+	old_value_tag = tag.duplicate()
 	determine_selection_highlight()
 	Interactions.selection_changed.connect(determine_selection_highlight)
 	Interactions.hover_changed.connect(determine_selection_highlight)
@@ -51,12 +53,26 @@ func _ready() -> void:
 				input_field = EnumField.instantiate()
 		input_field.attribute = attribute
 		input_field.attribute_name = attribute_key
-		# Add the attribute to its corresponding container.
+		input_field.value_changed.connect(input_field_undo_redo_action.bind(
+			input_field),CONNECT_REFERENCE_COUNTED)
 		if attribute_key in shape_attributes:
 			shape_container.add_child(input_field)
 		else:
 			paint_container.add_child(input_field)
-
+		
+func input_field_undo_redo_action(new_value,input_field:AttributeEditor):
+	var old_value = old_value_tag.attributes[input_field.attribute_name].value
+	old_value_tag.attributes[input_field.attribute_name].value = new_value
+	# Works with Attribute.Type : INT, FLOAT, UFLOAT, COLOR, ENUM, NFLOAT and PATHDATA
+	EditorUndoRedo.undo_redo.create_action(
+	tag.title + " change: " + input_field.attribute_name)
+	EditorUndoRedo.undo_redo.add_do_reference(input_field)
+	EditorUndoRedo.undo_redo.add_undo_reference(input_field)
+	EditorUndoRedo.undo_redo.add_do_method(input_field.set_value.bind(
+		new_value,false))
+	EditorUndoRedo.undo_redo.add_undo_method(input_field.set_value.bind(
+		old_value,false))
+	EditorUndoRedo.undo_redo.commit_action(false)
 
 func tag_context_populate() -> void:
 	var tag_count := SVG.root_tag.get_child_count()
