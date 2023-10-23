@@ -20,10 +20,11 @@ func set_value(new_value: float, emit_value_changed := true):
 	elif num_edit != null:
 		num_edit.text = String.num(_value, 4)
 		set_text_tint()
+		if attribute != null:
+			_on_value_changed(_value)
 
 func get_value() -> float:
 	return _value
-
 
 func _ready() -> void:
 	value_changed.connect(_on_value_changed)

@@ -24,10 +24,11 @@ func set_value(new_value: float, emit_value_changed := true):
 		num_edit.text = String.num(_value, 4)
 		set_text_tint()
 		queue_redraw()
+		if attribute != null:
+			_on_value_changed(_value)
 
 func get_value() -> float:
 	return _value
-
 
 func _ready() -> void:
 	value_changed.connect(_on_value_changed)

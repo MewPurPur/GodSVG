@@ -15,6 +15,8 @@ func set_value(new_value: String, emit_value_changed := true):
 		_value = new_value
 		if emit_value_changed:
 			value_changed.emit(new_value)
+		elif attribute != null:
+			_on_value_changed(_value)
 
 func get_value() -> String:
 	return _value
@@ -40,7 +42,6 @@ func _on_button_pressed() -> void:
 
 func _on_path_command_picked(new_command: String) -> void:
 	attribute.add_command(new_command)
-
 
 func rebuild_commands() -> void:
 	for node in commands_container.get_children():
@@ -128,7 +129,6 @@ func rebuild_commands() -> void:
 		command_editor.relative_button.pressed.connect(toggle_relative.bind(command_idx))
 		command_editor.more_button.pressed.connect(open_actions.bind(command_idx))
 
-
 func _update_command_value(new_value: float, idx: int, property: StringName) -> void:
 	attribute.set_command_property(idx, property, new_value)
 
@@ -152,7 +152,6 @@ func delete(idx: int) -> void:
 
 func toggle_relative(idx: int) -> void:
 	attribute.toggle_relative_command(idx)
-
 
 func _on_line_edit_text_submitted(new_text: String) -> void:
 	set_value(new_text)

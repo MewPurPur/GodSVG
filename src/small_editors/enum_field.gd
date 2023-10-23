@@ -11,10 +11,11 @@ func set_value(new_value: String, emit_value_changed := true):
 		_value = new_value
 		if emit_value_changed:
 			value_changed.emit(new_value)
+		elif attribute != null:
+			_on_value_changed(_value)
 
 func get_value() -> String:
 	return _value
-
 
 func _ready() -> void:
 	value_changed.connect(_on_value_changed)
@@ -44,7 +45,6 @@ func _on_value_changed(new_value: String) -> void:
 	if attribute != null:
 		attribute.value = new_value
 		set_text_tint()
-
 
 func _on_text_submitted(new_text: String) -> void:
 	indicator.release_focus()

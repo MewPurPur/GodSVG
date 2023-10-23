@@ -165,10 +165,11 @@ func set_value(new_value: String, emit_value_changed := true):
 	set_text_tint()
 	if _value != old_value and emit_value_changed:
 		value_changed.emit(_value if (is_color_named_or_none(_value)) else "#" + _value)
+	elif attribute != null:
+		_on_value_changed(_value if (is_color_named_or_none(_value)) else "#" + _value)
 
 func get_value() -> String:
 	return _value
-
 
 func _ready() -> void:
 	value_changed.connect(_on_value_changed)
@@ -206,13 +207,11 @@ func _draw() -> void:
 	draw_texture(checkerboard, Vector2.ZERO)
 	draw_style_box(stylebox, Rect2(Vector2.ZERO, button_size - Vector2(1, 2)))
 
-
 func _on_focus_exited() -> void:
 	set_value(color_edit.text)
 
 func _on_text_submitted(new_text: String) -> void:
 	set_value(new_text)
-
 
 func _on_color_picked(new_color: String) -> void:
 	set_value(new_color)
@@ -223,12 +222,10 @@ func is_color_named_or_none(color: String) -> bool:
 func is_color_valid(color: String) -> bool:
 	return color.is_valid_html_color() or is_color_named_or_none(color)
 
-
 func _on_button_resized() -> void:
 	# Not sure why this is needed, but the button doesn't have a correct size at first
 	# which screws with the drawing logic.
 	queue_redraw()
-
 
 func set_text_tint() -> void:
 	if color_edit != null:
