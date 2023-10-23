@@ -2,7 +2,8 @@ extends ColorRect
 
 const project_founder_list: Array[String] = ["MewPurPur"]
 const project_manager_list: Array[String] = ["MewPurPur"]
-const developers_list: Array[String] = ["ajreckof", "MewPurPur", "Swarkin"]
+const developers_list: Array[String] = ["ajreckof", "MewPurPur", "Swarkin",
+		"Serem Titus (SeremTitus)"]
 
 @onready var authors_label: RichTextLabel = %AuthorsLabel
 

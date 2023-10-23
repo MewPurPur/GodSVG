@@ -1,12 +1,14 @@
-[gd_resource type="Theme" load_steps=63 format=3 uid="uid://der6fnkliqqto"]
+[gd_resource type="Theme" load_steps=65 format=3 uid="uid://der6fnkliqqto"]
 
-[ext_resource type="Texture2D" uid="uid://wdrpwa7gwmg" path="res://visual/icons/GuiChecked.svg" id="1_7xhhy"]
+[ext_resource type="Texture2D" uid="uid://wdrpwa7gwmg" path="res://visual/icons/GuiBoxChecked.svg" id="1_agkhv"]
 [ext_resource type="FontFile" uid="uid://c7ury252fql35" path="res://visual/CodeFont.ttf" id="1_ulxqy"]
 [ext_resource type="FontFile" uid="uid://bd8rlfqek8f8u" path="res://visual/Font.ttf" id="2_d11o4"]
-[ext_resource type="Texture2D" uid="uid://d3a3xgsb8klyk" path="res://visual/icons/GuiUnchecked.svg" id="2_etwvy"]
+[ext_resource type="Texture2D" uid="uid://d3a3xgsb8klyk" path="res://visual/icons/GuiBoxUnchecked.svg" id="2_xwib4"]
+[ext_resource type="Texture2D" uid="uid://dwlr4bgptgwho" path="res://visual/icons/GuiToggleChecked.svg" id="3_ggukc"]
 [ext_resource type="Texture2D" uid="uid://rrhdja8l17cn" path="res://visual/icons/FolderUp.svg" id="4_1t13q"]
 [ext_resource type="Texture2D" uid="uid://cvh3kwbucf2n1" path="res://visual/icons/Reload.svg" id="4_8qjet"]
 [ext_resource type="Texture2D" uid="uid://kkxyv1gyrjgj" path="res://visual/icons/Visuals.svg" id="4_j0oku"]
+[ext_resource type="Texture2D" uid="uid://c12tg3dnydily" path="res://visual/icons/GuiToggleUnchecked.svg" id="4_w667w"]
 [ext_resource type="Texture2D" uid="uid://cnig3sejwsrf3" path="res://visual/icons/SplitGrabber.svg" id="5_7sidk"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_i4np8"]
@@ -539,14 +541,11 @@ bg_color = Color(0.0705882, 0.0705882, 0.2, 1)
 content_margin_left = 5.0
 bg_color = Color(0.0627451, 0.0627451, 0.101961, 1)
 border_width_left = 2
-border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
 border_color = Color(0.1368, 0.1368, 0.18, 1)
-corner_radius_top_left = 6
-corner_radius_top_right = 6
-corner_radius_bottom_right = 6
-corner_radius_bottom_left = 6
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
 corner_detail = 16
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ghiib"]
@@ -625,12 +624,14 @@ Button/styles/focus = SubResource("StyleBoxEmpty_gu1eq")
 Button/styles/hover = SubResource("StyleBoxFlat_h5umu")
 Button/styles/normal = SubResource("StyleBoxFlat_yq2fk")
 Button/styles/pressed = SubResource("StyleBoxFlat_gnyjn")
-CheckBox/icons/checked = ExtResource("1_7xhhy")
-CheckBox/icons/unchecked = ExtResource("2_etwvy")
+CheckBox/icons/checked = ExtResource("1_agkhv")
+CheckBox/icons/unchecked = ExtResource("2_xwib4")
 CheckBox/styles/hover = SubResource("StyleBoxFlat_ehixj")
 CheckBox/styles/hover_pressed = SubResource("StyleBoxFlat_xs6y6")
 CheckBox/styles/normal = SubResource("StyleBoxEmpty_kja1p")
 CheckBox/styles/pressed = SubResource("StyleBoxEmpty_qwstu")
+CheckButton/icons/checked = ExtResource("3_ggukc")
+CheckButton/icons/unchecked = ExtResource("4_w667w")
 CodeEdit/colors/selection_color = Color(0.4, 0.54902, 1, 0.4)
 CodeEdit/font_sizes/font_size = 12
 CodeEdit/fonts/font = ExtResource("1_ulxqy")

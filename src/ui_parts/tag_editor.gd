@@ -22,12 +22,11 @@ var old_value_tag:Tag
 func _ready() -> void:
 	old_value_tag = tag.duplicate()
 	determine_selection_highlight()
+	tag.attribute_changed.connect(select_conditionally)
 	Interactions.selection_changed.connect(determine_selection_highlight)
 	Interactions.hover_changed.connect(determine_selection_highlight)
 	# Fill up the containers.
 	title_button.text = tag.title
-	if tag.title == "path":
-		margin_container.add_theme_constant_override(&"margin_right", 0)
 	for attribute_key in tag.attributes:
 		var attribute: Attribute = tag.attributes[attribute_key]
 		var input_field: AttributeEditor
@@ -81,6 +80,7 @@ func tag_context_populate() -> void:
 	var duplicate_button := Button.new()
 	duplicate_button.text = tr(&"#duplicate")
 	duplicate_button.icon = load("res://visual/icons/Duplicate.svg")
+	duplicate_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	duplicate_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 	duplicate_button.pressed.connect(_on_duplicate_button_pressed)
 	buttons_arr.append(duplicate_button)
@@ -89,6 +89,7 @@ func tag_context_populate() -> void:
 		var move_up_button := Button.new()
 		move_up_button.text = tr(&"#move_up")
 		move_up_button.icon = load("res://visual/icons/MoveUp.svg")
+		move_up_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 		move_up_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		move_up_button.pressed.connect(_on_move_up_button_pressed)
 		buttons_arr.append(move_up_button)
@@ -96,6 +97,7 @@ func tag_context_populate() -> void:
 		var move_down_button := Button.new()
 		move_down_button.text = tr(&"#move_down")
 		move_down_button.icon = load("res://visual/icons/MoveDown.svg")
+		move_down_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 		move_down_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		move_down_button.pressed.connect(_on_move_down_button_pressed)
 		buttons_arr.append(move_down_button)
@@ -103,6 +105,7 @@ func tag_context_populate() -> void:
 	var delete_button := Button.new()
 	delete_button.text = tr(&"#delete")
 	delete_button.icon = load("res://visual/icons/Delete.svg")
+	delete_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	delete_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 	delete_button.pressed.connect(_on_delete_button_pressed)
 	buttons_arr.append(delete_button)
@@ -110,6 +113,7 @@ func tag_context_populate() -> void:
 	tag_context.set_btn_array(buttons_arr)
 
 func _on_title_button_pressed() -> void:
+	Interactions.set_selection(tag_index)
 	tag_context_populate()
 	tag_context.popup(Utils.calculate_popup_rect(title_button.global_position,
 			title_button.size, tag_context.size))
@@ -145,24 +149,22 @@ func _on_gui_input(event: InputEvent) -> void:
 					Vector2.ZERO, tag_context.size, true))
 
 
-# TODO This is stupid and doesn't always work. Look into better ways.
-# enter_mouse and exit_mouse didn't work either, but that might just be Godot bugs.
-
-var inside := false:
+var mouse_inside := false:
 	set(new_value):
-		inside = new_value
-		if inside:
-			Interactions.set_hovered(tag_index)
-		else:
-			Interactions.remove_hovered(tag_index)
+		if mouse_inside != new_value:
+			mouse_inside = new_value
+			if mouse_inside:
+				Interactions.set_hovered(tag_index)
+			else:
+				Interactions.remove_hovered(tag_index)
 
-func _process(_delta: float) -> void:
-	if get_global_rect().has_point(get_global_mouse_position()):
-		if not inside:
-			inside = true
-	else:
-		if inside:
-			inside = false
+func _input(event: InputEvent) -> void:
+	if event is InputEventMouseMotion:
+		if get_global_rect().has_point(get_global_mouse_position()) and\
+		Interactions.tag_with_inner_hovered != tag_index:
+			mouse_inside = true
+		else:
+			mouse_inside = false
 
 
 func determine_selection_highlight() -> void:
@@ -182,3 +184,7 @@ func determine_selection_highlight() -> void:
 		stylebox.bg_color = Color(0.065, 0.085, 0.15)
 		stylebox.border_color = Color(0.065, 0.085, 0.15).lightened(0.04)
 	add_theme_stylebox_override(&"panel", stylebox)
+
+func select_conditionally() -> void:
+	if Interactions.tag_with_inner_selections != tag_index:
+		Interactions.set_selection(tag_index)
