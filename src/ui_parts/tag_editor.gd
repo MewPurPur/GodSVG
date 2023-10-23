@@ -63,15 +63,15 @@ func input_field_undo_redo_action(new_value,input_field:AttributeEditor):
 	var old_value = old_value_tag.attributes[input_field.attribute_name].value
 	old_value_tag.attributes[input_field.attribute_name].value = new_value
 	# Works with Attribute.Type : INT, FLOAT, UFLOAT, COLOR, ENUM, NFLOAT and PATHDATA
-	UndoRedoManager.undo_redo.create_action(
+	UndoRedoManager.create_action(
 	tag.title + " change: " + input_field.attribute_name)
-	UndoRedoManager.undo_redo.add_do_reference(input_field)
-	UndoRedoManager.undo_redo.add_undo_reference(input_field)
-	UndoRedoManager.undo_redo.add_do_method(input_field.set_value.bind(
+	UndoRedoManager.add_do_reference(input_field)
+	UndoRedoManager.add_undo_reference(input_field)
+	UndoRedoManager.add_do_method(input_field.set_value.bind(
 		new_value,false))
-	UndoRedoManager.undo_redo.add_undo_method(input_field.set_value.bind(
+	UndoRedoManager.add_undo_method(input_field.set_value.bind(
 		old_value,false))
-	UndoRedoManager.undo_redo.commit_action(false)
+	UndoRedoManager.commit_action(false)
 
 func tag_context_populate() -> void:
 	var tag_count := SVG.root_tag.get_child_count()
