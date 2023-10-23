@@ -114,6 +114,7 @@ func generate_path_handles(path_attribute: AttributePath) -> Array[Handle]:
 func _draw() -> void:
 	var thickness := 2.0 / zoom
 	var viewbox_zoom := get_viewbox_zoom()
+	# Draw the contours of shapes, and also tangents of bezier curves in paths.
 	for tag_idx in SVG.root_tag.get_child_count():
 		var tag := SVG.root_tag.child_tags[tag_idx]
 		var attribs := tag.attributes
@@ -231,6 +232,10 @@ func _draw() -> void:
 							draw_polyline(Utils.get_cubic_bezier_points(convert_in(cp1),
 									convert_in(cp2), convert_in(cp3), convert_in(cp4)),
 									temp_color, thickness)
+							draw_line(convert_in(cp1), convert_in(cp1 + v1 if relative else v1),
+									Color(temp_color, 0.7), thickness / 1.4)
+							draw_line(convert_in(cp4), convert_in(cp1 + v2 if relative else v2),
+									Color(temp_color, 0.7), thickness / 1.4)
 						"S":
 							if cmd_idx == 0:
 								break
@@ -245,7 +250,7 @@ func _draw() -> void:
 											else cmd.start * 2 - prev_control_pt - prev_cmd.start
 								else:
 									v1 = cmd.start - prev_control_pt if relative\
-											else cmd.start - prev_control_pt + prev_cmd.start
+											else cmd.start * 2 - prev_control_pt
 							var v2 := Vector2(cmd.x2, cmd.y2)
 							
 							var cp1 := cmd.start
@@ -256,6 +261,10 @@ func _draw() -> void:
 							draw_polyline(Utils.get_cubic_bezier_points(convert_in(cp1),
 									convert_in(cp2), convert_in(cp3), convert_in(cp4)),
 									temp_color, thickness)
+							draw_line(convert_in(cp1), convert_in(cp1 + v1 if relative else v1),
+									Color(temp_color, 0.7), thickness / 1.4)
+							draw_line(convert_in(cp4), convert_in(cp1 + v2 if relative else v2),
+									Color(temp_color, 0.7), thickness / 1.4)
 						"Q":
 							var v := Vector2(cmd.x, cmd.y)
 							var v1 := Vector2(cmd.x1, cmd.y1)
@@ -265,6 +274,10 @@ func _draw() -> void:
 							
 							draw_polyline(Utils.get_quadratic_bezier_points(convert_in(cp1),
 									convert_in(cp2), convert_in(cp3)), temp_color, thickness)
+							draw_line(convert_in(cp1), convert_in(cp1 + v1 if relative else v1),
+									Color(temp_color, 0.7), thickness / 1.4)
+							draw_line(convert_in(cp3), convert_in(cp1 + v1 if relative else v1),
+									Color(temp_color, 0.7), thickness / 1.4)
 						"T":
 							var prevQ_idx := cmd_idx - 1
 							var prevQ_cmd := pathdata.get_command(prevQ_idx)
@@ -305,6 +318,10 @@ func _draw() -> void:
 							
 							draw_polyline(Utils.get_quadratic_bezier_points(convert_in(cp1),
 									convert_in(cp2), convert_in(cp3)), temp_color, thickness)
+							draw_line(convert_in(cp1), convert_in(cp2),
+									Color(temp_color, 0.7), thickness / 1.4)
+							draw_line(convert_in(cp3), convert_in(cp2),
+									Color(temp_color, 0.7), thickness / 1.4)
 						"A":
 							var start := cmd.start
 							var v := Vector2(cmd.x, cmd.y)
@@ -381,7 +398,7 @@ func _draw() -> void:
 							var points := PackedVector2Array()
 							for p in cp:
 								points += Utils.get_cubic_bezier_points(convert_in(p[0]),
-										convert_in(p[1]), convert_in(p[2]), convert_in(p[3]))
+										p[1] * viewbox_zoom, p[2] * viewbox_zoom, convert_in(p[3]))
 							
 							draw_polyline(points, temp_color, thickness)
 						"Z":
@@ -401,7 +418,7 @@ func _draw() -> void:
 							draw_line(convert_in(cmd.start), convert_in(end),
 									temp_color, thickness)
 						_: continue
-			
+	
 	for handle in handles:
 		var outer_circle_color: Color
 		var is_selected: bool = (handle is XYHandle and handle.tag_index in\
