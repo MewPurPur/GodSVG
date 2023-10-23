@@ -65,12 +65,12 @@ func determine_viewbox_edit() -> void:
 	update_svg_attributes()
 
 func svg_undo_redo_action(name:String,tag_attribute:Attribute,do_value) ->void:
-	EditorUndoRedo.undo_redo.create_action(name)
-	EditorUndoRedo.undo_redo.add_do_method(set_svg_attribute.bind(
+	UndoRedoManager.undo_redo.create_action(name)
+	UndoRedoManager.undo_redo.add_do_method(set_svg_attribute.bind(
 		tag_attribute,do_value))
-	EditorUndoRedo.undo_redo.add_undo_method(set_svg_attribute.bind(
+	UndoRedoManager.undo_redo.add_undo_method(set_svg_attribute.bind(
 		tag_attribute,tag_attribute.value))
-	EditorUndoRedo.undo_redo.commit_action()
+	UndoRedoManager.undo_redo.commit_action()
 
 func  set_svg_attribute(tag_attribute:Attribute,value) -> void:
 	tag_attribute.value = value

@@ -78,9 +78,9 @@ func get_child_count() -> int:
 	return child_tags.size()
 
 func tagb_undo_redo_action(name:String,do:Callable,undo:Callable,add_reference:Object = null) -> void:
-	EditorUndoRedo.undo_redo.create_action(name)
-	EditorUndoRedo.undo_redo.add_do_reference(add_reference)
-	EditorUndoRedo.undo_redo.add_undo_reference(add_reference)
-	EditorUndoRedo.undo_redo.add_do_method(do)
-	EditorUndoRedo.undo_redo.add_undo_method(undo)
-	EditorUndoRedo.undo_redo.commit_action()
+	UndoRedoManager.undo_redo.create_action(name)
+	UndoRedoManager.undo_redo.add_do_reference(add_reference)
+	UndoRedoManager.undo_redo.add_undo_reference(add_reference)
+	UndoRedoManager.undo_redo.add_do_method(do)
+	UndoRedoManager.undo_redo.add_undo_method(undo)
+	UndoRedoManager.undo_redo.commit_action()
