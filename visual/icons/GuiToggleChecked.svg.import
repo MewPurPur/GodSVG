@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://wdrpwa7gwmg"
-path="res://.godot/imported/GuiChecked.svg-e7dce4ad46e617dcd067aba2b7a4fe4a.ctex"
+uid="uid://dwlr4bgptgwho"
+path="res://.godot/imported/GuiToggleChecked.svg-49c27b1b11cfeb75354379e93bd58d75.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://visual/icons/GuiChecked.svg"
-dest_files=["res://.godot/imported/GuiChecked.svg-e7dce4ad46e617dcd067aba2b7a4fe4a.ctex"]
+source_file="res://visual/icons/GuiToggleChecked.svg"
+dest_files=["res://.godot/imported/GuiToggleChecked.svg-49c27b1b11cfeb75354379e93bd58d75.ctex"]
 
 [params]
 

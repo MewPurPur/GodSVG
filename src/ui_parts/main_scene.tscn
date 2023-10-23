@@ -1,4 +1,4 @@
-[gd_scene load_steps=36 format=3 uid="uid://ce6j54x27pom"]
+[gd_scene load_steps=38 format=3 uid="uid://ce6j54x27pom"]
 
 [ext_resource type="PackedScene" uid="uid://ccynisiuyn5qn" path="res://src/ui_parts/inspector.tscn" id="1_afxvd"]
 [ext_resource type="Texture2D" uid="uid://ccvjkdd0s7rb4" path="res://visual/icons/Copy.svg" id="1_fm0ux"]
@@ -24,9 +24,35 @@
 [ext_resource type="Script" path="res://src/ui_parts/snap_lines.gd" id="15_v2yj8"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_082e3"]
+content_margin_left = 6.0
+content_margin_top = 8.0
+content_margin_right = 6.0
+content_margin_bottom = 8.0
 bg_color = Color(0.02, 0.02, 0.08, 1)
 border_width_right = 2
 border_color = Color(0.4, 0.7, 1, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_q56qh"]
+content_margin_left = 8.0
+content_margin_top = 2.0
+content_margin_right = 6.0
+content_margin_bottom = 2.0
+bg_color = Color(0.0975, 0.0975, 0.15, 1)
+border_color = Color(0.1875, 0.1875, 0.25, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_detail = 16
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rppt3"]
+content_margin_left = 5.0
+content_margin_top = 2.0
+content_margin_right = 5.0
+content_margin_bottom = 2.0
+bg_color = Color(1, 1, 1, 0.0666667)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
 
 [sub_resource type="CodeHighlighter" id="CodeHighlighter_jg7xq"]
 number_color = Color(0.631373, 1, 0.878431, 1)
@@ -156,30 +182,69 @@ layout_mode = 2
 size_flags_horizontal = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_082e3")
 
-[node name="MarginContainer" type="MarginContainer" parent="PanelContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_constants/margin_left = 6
-theme_override_constants/margin_top = 8
-theme_override_constants/margin_right = 6
-theme_override_constants/margin_bottom = 8
-
-[node name="MainContainer" type="VSplitContainer" parent="PanelContainer/MarginContainer"]
+[node name="MainContainer" type="VSplitContainer" parent="PanelContainer"]
 layout_mode = 2
 theme_override_constants/separation = 8
 split_offset = -400
 
-[node name="CodeEditor" type="HBoxContainer" parent="PanelContainer/MarginContainer/MainContainer"]
+[node name="CodeEditor" type="VBoxContainer" parent="PanelContainer/MainContainer"]
 layout_mode = 2
 size_flags_vertical = 3
+theme_override_constants/separation = 0
 script = ExtResource("1_ry6k8")
 
-[node name="ScriptEditor" type="VBoxContainer" parent="PanelContainer/MarginContainer/MainContainer/CodeEditor"]
+[node name="PanelContainer" type="PanelContainer" parent="PanelContainer/MainContainer/CodeEditor"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_q56qh")
+
+[node name="CodeButtons" type="HBoxContainer" parent="PanelContainer/MainContainer/CodeEditor/PanelContainer"]
+layout_mode = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="PanelContainer/MainContainer/CodeEditor/PanelContainer/CodeButtons"]
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_styles/panel = SubResource("StyleBoxFlat_rppt3")
+
+[node name="SizeLabel" type="Label" parent="PanelContainer/MainContainer/CodeEditor/PanelContainer/CodeButtons/PanelContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_w635r")
+theme_override_font_sizes/font_size = 12
+
+[node name="MetaActions" type="HBoxContainer" parent="PanelContainer/MainContainer/CodeEditor/PanelContainer/CodeButtons"]
+layout_mode = 2
+size_flags_horizontal = 10
+
+[node name="CopyButton" type="Button" parent="PanelContainer/MainContainer/CodeEditor/PanelContainer/CodeButtons/MetaActions"]
+layout_mode = 2
+tooltip_text = "#copy_button_tooltip"
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_type_variation = &"IconButton"
+icon = ExtResource("1_fm0ux")
+
+[node name="ImportButton" type="Button" parent="PanelContainer/MainContainer/CodeEditor/PanelContainer/CodeButtons/MetaActions"]
+layout_mode = 2
+tooltip_text = "#import_button_tooltip"
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_type_variation = &"IconButton"
+icon = ExtResource("4_ehrkr")
+
+[node name="ExportButton" type="Button" parent="PanelContainer/MainContainer/CodeEditor/PanelContainer/CodeButtons/MetaActions"]
+layout_mode = 2
+tooltip_text = "#export_button_tooltip"
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_type_variation = &"IconButton"
+icon = ExtResource("5_qe6jq")
+
+[node name="ScriptEditor" type="VBoxContainer" parent="PanelContainer/MainContainer/CodeEditor"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = -2
 
-[node name="CodeEdit" type="CodeEdit" parent="PanelContainer/MarginContainer/MainContainer/CodeEditor/ScriptEditor"]
+[node name="CodeEdit" type="CodeEdit" parent="PanelContainer/MainContainer/CodeEditor/ScriptEditor"]
 custom_minimum_size = Vector2(0, 96)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -198,51 +263,24 @@ auto_brace_completion_pairs = {
 "<": ">"
 }
 
-[node name="ErrorBar" type="PanelContainer" parent="PanelContainer/MarginContainer/MainContainer/CodeEditor/ScriptEditor"]
+[node name="ErrorBar" type="PanelContainer" parent="PanelContainer/MainContainer/CodeEditor/ScriptEditor"]
 visible = false
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_k0een")
 
-[node name="Padding" type="MarginContainer" parent="PanelContainer/MarginContainer/MainContainer/CodeEditor/ScriptEditor/ErrorBar"]
+[node name="Padding" type="MarginContainer" parent="PanelContainer/MainContainer/CodeEditor/ScriptEditor/ErrorBar"]
 layout_mode = 2
 theme_override_constants/margin_left = 8
 theme_override_constants/margin_right = 8
 
-[node name="Label" type="RichTextLabel" parent="PanelContainer/MarginContainer/MainContainer/CodeEditor/ScriptEditor/ErrorBar/Padding"]
+[node name="Label" type="RichTextLabel" parent="PanelContainer/MainContainer/CodeEditor/ScriptEditor/ErrorBar/Padding"]
 layout_mode = 2
 theme_override_colors/default_color = Color(1, 0.4, 0.4, 1)
 theme_override_fonts/normal_font = ExtResource("2_w635r")
 theme_override_font_sizes/normal_font_size = 14
 fit_content = true
 
-[node name="CodeButtons" type="VBoxContainer" parent="PanelContainer/MarginContainer/MainContainer/CodeEditor"]
-layout_mode = 2
-
-[node name="CopyButton" type="Button" parent="PanelContainer/MarginContainer/MainContainer/CodeEditor/CodeButtons"]
-layout_mode = 2
-tooltip_text = "#copy_button_tooltip"
-focus_mode = 0
-mouse_default_cursor_shape = 2
-theme_type_variation = &"IconButton"
-icon = ExtResource("1_fm0ux")
-
-[node name="ImportButton" type="Button" parent="PanelContainer/MarginContainer/MainContainer/CodeEditor/CodeButtons"]
-layout_mode = 2
-tooltip_text = "#import_button_tooltip"
-focus_mode = 0
-mouse_default_cursor_shape = 2
-theme_type_variation = &"IconButton"
-icon = ExtResource("4_ehrkr")
-
-[node name="ExportButton" type="Button" parent="PanelContainer/MarginContainer/MainContainer/CodeEditor/CodeButtons"]
-layout_mode = 2
-tooltip_text = "#export_button_tooltip"
-focus_mode = 0
-mouse_default_cursor_shape = 2
-theme_type_variation = &"IconButton"
-icon = ExtResource("5_qe6jq")
-
-[node name="Inspector" parent="PanelContainer/MarginContainer/MainContainer" instance=ExtResource("1_afxvd")]
+[node name="Inspector" parent="PanelContainer/MainContainer" instance=ExtResource("1_afxvd")]
 layout_mode = 2
 
 [node name="Display" type="VBoxContainer" parent="."]
@@ -410,14 +448,13 @@ grow_vertical = 2
 expand_mode = 1
 script = ExtResource("7_cxx0h")
 
-[node name="Controls" type="TextureRect" parent="Display/ViewportContainer/Viewport/Checkerboard"]
+[node name="Controls" type="Control" parent="Display/ViewportContainer/Viewport/Checkerboard"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-expand_mode = 1
 script = ExtResource("5_pltvx")
 
 [node name="SnapLines" type="Control" parent="Display/ViewportContainer/Viewport"]
@@ -430,10 +467,10 @@ grow_vertical = 2
 mouse_filter = 1
 script = ExtResource("15_v2yj8")
 
-[connection signal="text_changed" from="PanelContainer/MarginContainer/MainContainer/CodeEditor/ScriptEditor/CodeEdit" to="PanelContainer/MarginContainer/MainContainer/CodeEditor" method="_on_code_edit_text_changed"]
-[connection signal="pressed" from="PanelContainer/MarginContainer/MainContainer/CodeEditor/CodeButtons/CopyButton" to="PanelContainer/MarginContainer/MainContainer/CodeEditor" method="_on_copy_button_pressed"]
-[connection signal="pressed" from="PanelContainer/MarginContainer/MainContainer/CodeEditor/CodeButtons/ImportButton" to="PanelContainer/MarginContainer/MainContainer/CodeEditor" method="_on_import_button_pressed"]
-[connection signal="pressed" from="PanelContainer/MarginContainer/MainContainer/CodeEditor/CodeButtons/ExportButton" to="PanelContainer/MarginContainer/MainContainer/CodeEditor" method="_on_export_button_pressed"]
+[connection signal="pressed" from="PanelContainer/MainContainer/CodeEditor/PanelContainer/CodeButtons/MetaActions/CopyButton" to="PanelContainer/MainContainer/CodeEditor" method="_on_copy_button_pressed"]
+[connection signal="pressed" from="PanelContainer/MainContainer/CodeEditor/PanelContainer/CodeButtons/MetaActions/ImportButton" to="PanelContainer/MainContainer/CodeEditor" method="_on_import_button_pressed"]
+[connection signal="pressed" from="PanelContainer/MainContainer/CodeEditor/PanelContainer/CodeButtons/MetaActions/ExportButton" to="PanelContainer/MainContainer/CodeEditor" method="_on_export_button_pressed"]
+[connection signal="text_changed" from="PanelContainer/MainContainer/CodeEditor/ScriptEditor/CodeEdit" to="PanelContainer/MainContainer/CodeEditor" method="_on_code_edit_text_changed"]
 [connection signal="pressed" from="Display/PanelContainer/HBoxContainer/LeftMenu/MoreOptions" to="Display" method="_on_more_options_pressed"]
 [connection signal="pressed" from="Display/PanelContainer/HBoxContainer/LeftMenu/Settings" to="Display" method="_on_settings_pressed"]
 [connection signal="pressed" from="Display/PanelContainer/HBoxContainer/LeftMenu/Visuals" to="Display" method="_on_snap_button_pressed"]

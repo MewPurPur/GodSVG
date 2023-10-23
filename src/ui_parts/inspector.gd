@@ -28,8 +28,6 @@ func full_rebuild() -> void:
 		shapes.add_child(tag_editor)
 
 
-# FIXME In the end all connections should go directly to add_shape with argument in binds 
-# But right now there is a bug preventing it so keeping them here for now
 func add_circle() -> void:
 	SVG.root_tag.add_tag(TagCircle.new())
 
@@ -45,11 +43,9 @@ func add_path() -> void:
 func add_line() -> void:
 	SVG.root_tag.add_tag(TagLine.new())
 
-func _on_viewbox_changed(w: float, h: float) -> void:
-	SVG.root_tag.set_dimensions(w, h)
-
 
 func _on_tag_container_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.is_pressed() and\
 	event.button_index == MOUSE_BUTTON_LEFT and not event.ctrl_pressed:
 		Interactions.clear_selection()
+		Interactions.clear_inner_selection()

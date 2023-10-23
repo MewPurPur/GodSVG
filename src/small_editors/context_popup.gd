@@ -28,14 +28,14 @@ should_reset_size := true) -> void:
 
 func set_btn_array(buttons: Array[Button]) -> void:
 	for button in main_container.get_children():
-		button.queue_free()
+		button.free()
 	if buttons.is_empty():
 		return
 	elif buttons.size() == 1:
 		add_button(buttons[0], true, true)
 		return
 	else:
-		add_button(buttons.pop_front(), true, false)
+		add_button(buttons.pop_front(), true, false, false)
 		for i in buttons.size() - 1:
 			add_button(buttons.pop_front(), false, false, false)
 		add_button(buttons[0], false, true)
