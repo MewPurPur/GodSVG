@@ -8,7 +8,7 @@ const minimum_visible_proportion = 0.3
 @onready var snap_lines: Control = $SnapLines
 @onready var main_node: VBoxContainer = %Display
 @onready var display_texture: TextureRect = $Checkerboard/DisplayTexture
-@onready var controls: TextureRect = $Checkerboard/Controls
+@onready var controls: Control = $Checkerboard/Controls
 
 var zoom_level: float:
 	set(new_value):
@@ -61,7 +61,8 @@ func center_frame() -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	snap_lines.queue_redraw()
+	if not event is InputEventMouseMotion or event.button_mask != 0:
+		snap_lines.queue_redraw()
 	if event is InputEventMouseMotion and event.button_mask == MOUSE_BUTTON_MASK_LEFT:
 		display.position += event.relative
 		clamp_view()

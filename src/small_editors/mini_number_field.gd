@@ -27,7 +27,7 @@ func _ready() -> void:
 func validate(new_value: float) -> float:
 	match mode:
 		Mode.ONLY_POSITIVE: return maxf(new_value, 0.0001)
-		Mode.ANGLE: return clampf(-360.0, new_value, 360.0)
+		Mode.ANGLE: return fmod(new_value, 180.0)
 		_: return new_value
 
 func _on_value_changed(new_value: float) -> void:

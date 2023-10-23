@@ -1,15 +1,16 @@
-extends HBoxContainer
+extends VBoxContainer
 
 const SVGFileDialog := preload("svg_file_dialog.tscn")
 
 @onready var code_edit: CodeEdit = $ScriptEditor/CodeEdit
 @onready var error_bar: PanelContainer = $ScriptEditor/ErrorBar
 @onready var error_label: RichTextLabel = $ScriptEditor/ErrorBar/Padding/Label
-
+@onready var size_label: Label = %SizeLabel
 
 func _ready() -> void:
 	SVG.parsing_finished.connect(update_error)
 	auto_update_text()
+	size_label.text = String.humanize_size(code_edit.text.length())
 	code_edit.clear_undo_history()
 	SVG.root_tag.attribute_changed.connect(auto_update_text)
 	SVG.root_tag.child_tag_attribute_changed.connect(auto_update_text)
@@ -21,6 +22,7 @@ func _ready() -> void:
 func auto_update_text() -> void:
 	if not code_edit.has_focus():
 		code_edit.text = SVG.string
+		size_label.text = String.humanize_size(code_edit.text.length())
 
 func update_error(err: String) -> void:
 	if err.is_empty():
@@ -94,6 +96,7 @@ func export_svg(path: String) -> void:
 func _on_code_edit_text_changed() -> void:
 	SVG.string = code_edit.text
 	SVG.sync_data()
+	size_label.text = String.humanize_size(code_edit.text.length())
 
 
 func _input(event: InputEvent) -> void:

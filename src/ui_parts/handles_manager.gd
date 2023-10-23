@@ -1,8 +1,11 @@
-extends TextureRect
+extends Control
 
 const selection_color_string = "#46f"
 const hover_color_string = "#999"
 const default_color_string = "#000"
+const selection_color = Color(selection_color_string)
+const hover_color = Color(hover_color_string)
+const default_color = Color(default_color_string)
 
 var zoom := 1.0:
 	set(new_value):
@@ -53,38 +56,7 @@ func _process(_delta: float) -> void:
 
 
 func update_texture() -> void:
-	# Draw a SVG out of the shapes.
-	var w: float = SVG.root_tag.attributes.width.value
-	var h: float = SVG.root_tag.attributes.height.value
-	var viewbox: Rect2 = SVG.root_tag.attributes.viewBox.value
-	var svg := '<svg width="%f" height="%f" viewBox="%s"' % [w, h,
-			AttributeRect.rect_to_string(viewbox)]
-	svg += ' xmlns="http://www.w3.org/2000/svg">'
-	for tag_idx in SVG.root_tag.get_child_count():
-		var tag := SVG.root_tag.child_tags[tag_idx]
-		var attribs := tag.attributes
-		match tag.title:
-			"circle": svg += '<circle cx="%f" cy="%f" r="%f"' % [attribs.cx.value,
-					attribs.cy.value, attribs.r.value]
-			"ellipse": svg += '<ellipse cx="%f" cy="%f" rx="%f" ry="%f"' % [attribs.cx.value,
-					attribs.cy.value, attribs.rx.value, attribs.ry.value]
-			"rect": svg += '<rect x="%f" y="%f" width="%f" height="%f" rx="%f" ry="%f"' %\
-					[attribs.x.value, attribs.y.value, attribs.width.value,
-					attribs.height.value, attribs.rx.value, attribs.ry.value]
-			"path": svg += '<path d="%s"' % [attribs.d.value]
-			"line": svg += '<line x1="%f" y1="%f" x2="%f" y2="%f"' % [attribs.x1.value,
-					attribs.y1.value, attribs.x2.value, attribs.y2.value]
-		svg += ' fill="none" stroke="%s" stroke-width="%f"/>' % [selection_color_string\
-				if tag_idx in Interactions.selected_tags else hover_color_string if\
-				tag_idx == Interactions.hovered_tag else default_color_string,
-				2.0 / zoom / get_viewbox_zoom()]
-	svg += "</svg>"
-	# Store the SVG string.
-	var img := Image.new()
-	img.load_svg_from_string(svg, 4.0 * zoom)
-	# Update the display.
-	var image_texture := ImageTexture.create_from_image(img)
-	texture = image_texture
+	queue_redraw()
 
 func update_handles() -> void:
 	handles.clear()
@@ -130,16 +102,315 @@ func sync_handles() -> void:
 	queue_redraw()
 
 func _draw() -> void:
+	var thickness := 2.0 / zoom
+	var viewbox_zoom := get_viewbox_zoom()
+	for tag_idx in SVG.root_tag.get_child_count():
+		var tag := SVG.root_tag.child_tags[tag_idx]
+		var attribs := tag.attributes
+		var color := selection_color if tag_idx in Interactions.selected_tags else\
+				hover_color if tag_idx == Interactions.hovered_tag else default_color
+		match tag.title:
+			"circle":
+				var cx: float = attribs.cx.value
+				var cy: float = attribs.cy.value
+				var r: float = attribs.r.value
+				draw_arc(convert_in(Vector2(cx, cy)), r * viewbox_zoom, 0, TAU,
+						maxi(10, int(r * zoom * viewbox_zoom)), color, thickness)
+			"ellipse":
+				var c := Vector2(attribs.cx.value, attribs.cy.value)
+				var rx: float = attribs.rx.value
+				var ry: float = attribs.ry.value
+				# Squished circle.
+				var points := PackedVector2Array()
+				for i in range(0, 361, 2):
+					var d := deg_to_rad(i)
+					points.append(convert_in(c + Vector2(cos(d) * rx, sin(d) * ry)))
+				draw_polyline(points, color, thickness)
+			"rect":
+				var x: float = attribs.x.value
+				var y: float = attribs.y.value
+				var height: float = attribs.height.value
+				var width: float = attribs.width.value
+				var rx: float = attribs.rx.value
+				var ry: float = attribs.ry.value
+				var points := PackedVector2Array()
+				if rx == 0 and ry == 0:
+					# Basic rectangle.
+					points.append(convert_in(Vector2(x, y)))
+					points.append(convert_in(Vector2(x + width, y)))
+					points.append(convert_in(Vector2(x + width, y + height)))
+					points.append(convert_in(Vector2(x, y + height)))
+					points.append(convert_in(Vector2(x, y)))
+				else:
+					if rx == 0:
+						rx = ry
+					elif ry == 0:
+						ry = rx
+					rx = minf(rx, width / 2)
+					ry = minf(ry, height / 2)
+					# Rounded rectangle.
+					points.append(convert_in(Vector2(x + rx, y)))
+					points.append(convert_in(Vector2(x + width - rx, y)))
+					for i in range(-88, 1, 2):
+						var d := deg_to_rad(i)
+						points.append(convert_in(Vector2(x + width - rx, y + ry) +\
+								Vector2(cos(d) * rx, sin(d) * ry)))
+					points.append(convert_in(Vector2(x + width, y + height - ry)))
+					for i in range(2, 92, 2):
+						var d := deg_to_rad(i)
+						points.append(convert_in(Vector2(x + width - rx, y + height - ry) +\
+								Vector2(cos(d) * rx, sin(d) * ry)))
+					points.append(convert_in(Vector2(x + rx, y + height)))
+					for i in range(92, 181, 2):
+						var d := deg_to_rad(i)
+						points.append(convert_in(Vector2(x + rx, y + height - ry) +\
+								Vector2(cos(d) * rx, sin(d) * ry)))
+					points.append(convert_in(Vector2(x, y + ry)))
+					for i in range(182, 272, 2):
+						var d := deg_to_rad(i)
+						points.append(convert_in(Vector2(x + rx, y + ry) +\
+								Vector2(cos(d) * rx, sin(d) * ry)))
+				draw_polyline(points, color, thickness)
+			"line":
+				var x1: float = attribs.x1.value
+				var y1: float = attribs.y1.value
+				var x2: float = attribs.x2.value
+				var y2: float = attribs.y2.value
+				draw_line(convert_in(Vector2(x1, y1)),
+						convert_in(Vector2(x2, y2)), color, thickness)
+			"path":
+				var pathdata: AttributePath = attribs.d
+				for cmd_idx in pathdata.get_command_count():
+					# Decide on color for the command.
+					var temp_color := color
+					if Interactions.tag_with_inner_hovered == tag_idx and\
+					not tag_idx in Interactions.selected_tags:
+						if Interactions.inner_hovered == cmd_idx:
+							temp_color = hover_color
+					if Interactions.tag_with_inner_selections == tag_idx:
+						if cmd_idx in Interactions.inner_selections:
+							temp_color = selection_color
+					# Drawing logic.
+					var cmd := pathdata.get_command(cmd_idx)
+					var relative := cmd.relative
+					match cmd.command_char.to_upper():
+						"L":
+							var end := cmd.start + Vector2(cmd.x, cmd.y) if relative\
+									else Vector2(cmd.x, cmd.y)
+							draw_line(convert_in(cmd.start), convert_in(end),
+									temp_color, thickness)
+						"H":
+							var end := cmd.start + Vector2(cmd.x, 0) if relative\
+									else Vector2(cmd.x, cmd.start.y)
+							draw_line(convert_in(cmd.start), convert_in(end),
+									temp_color, thickness)
+						"V":
+							var end := cmd.start + Vector2(0, cmd.y) if relative\
+									else Vector2(cmd.start.x, cmd.y)
+							draw_line(convert_in(cmd.start), convert_in(end),
+									temp_color, thickness)
+						"C":
+							var v := Vector2(cmd.x, cmd.y)
+							var v1 := Vector2(cmd.x1, cmd.y1)
+							var v2 := Vector2(cmd.x2, cmd.y2)
+							var cp1 := cmd.start
+							var cp4 := cp1 + v if relative else v
+							var cp2 := v1 if relative else v1 - cp1
+							var cp3 := v2 - v
+							
+							draw_polyline(Utils.get_cubic_bezier_points(convert_in(cp1),
+									convert_in(cp2), convert_in(cp3), convert_in(cp4)),
+									temp_color, thickness)
+						"S":
+							if cmd_idx == 0:
+								break
+							var prev_cmd := pathdata.get_command(cmd_idx - 1)
+							
+							var v := Vector2(cmd.x, cmd.y)
+							var v1 := Vector2() if relative else cmd.start
+							if prev_cmd.command_char.to_upper() in ["C", "S"]:
+								var prev_control_pt := Vector2(prev_cmd.x2, prev_cmd.y2)
+								if prev_cmd.relative:
+									v1 = cmd.start - prev_control_pt - prev_cmd.start if relative\
+											else cmd.start * 2 - prev_control_pt - prev_cmd.start
+								else:
+									v1 = cmd.start - prev_control_pt if relative\
+											else cmd.start - prev_control_pt + prev_cmd.start
+							var v2 := Vector2(cmd.x2, cmd.y2)
+							
+							var cp1 := cmd.start
+							var cp2 := v1 if relative else v1 - cp1
+							var cp3 := v2 - v
+							var cp4 := cp1 + v if relative else v
+							
+							draw_polyline(Utils.get_cubic_bezier_points(convert_in(cp1),
+									convert_in(cp2), convert_in(cp3), convert_in(cp4)),
+									temp_color, thickness)
+						"Q":
+							var v := Vector2(cmd.x, cmd.y)
+							var v1 := Vector2(cmd.x1, cmd.y1)
+							var cp1 := cmd.start
+							var cp2 := cp1 + v1 if relative else v1
+							var cp3 := cp1 + v if relative else v
+							
+							draw_polyline(Utils.get_quadratic_bezier_points(convert_in(cp1),
+									convert_in(cp2), convert_in(cp3)), temp_color, thickness)
+						"T":
+							var prevQ_idx := cmd_idx - 1
+							var prevQ_cmd := pathdata.get_command(prevQ_idx)
+							while prevQ_idx >= 0:
+								if prevQ_cmd.command_char.to_upper() == "Q":
+									break
+								elif prevQ_cmd.command_char.to_upper() != "T":
+									# Invalid T is drawn as a line.
+									var end := cmd.start + Vector2(cmd.x, cmd.y) if relative\
+											else Vector2(cmd.x, cmd.y)
+									draw_line(convert_in(cmd.start), convert_in(end),
+											temp_color, thickness)
+									prevQ_idx = -1
+									break
+								else:
+									prevQ_idx -= 1
+									prevQ_cmd = pathdata.get_command(prevQ_idx)
+							if prevQ_idx == -1:
+								continue
+							var prevQ_v := Vector2(prevQ_cmd.x, prevQ_cmd.y)
+							var prevQ_v1 := Vector2(prevQ_cmd.x1, prevQ_cmd.y1)
+							var prevQ_end := prevQ_cmd.start + prevQ_v\
+									if prevQ_cmd.relative else prevQ_v
+							var prevQ_control_pt := prevQ_cmd.start + prevQ_v1\
+									if prevQ_cmd.relative else prevQ_v1
+							
+							var v := Vector2(cmd.x, cmd.y)
+							var v1 := prevQ_end * 2 - prevQ_control_pt
+							for T_idx in range(prevQ_idx + 1, cmd_idx):
+								var T_cmd := pathdata.get_command(T_idx)
+								var T_v := Vector2(T_cmd.x, T_cmd.y)
+								var T_end := T_cmd.start + T_v if T_cmd.relative else T_v
+								v1 = T_end * 2 - v1
+							
+							var cp1 := cmd.start
+							var cp2 := v1
+							var cp3 := cp1 + v if relative else v
+							
+							draw_polyline(Utils.get_quadratic_bezier_points(convert_in(cp1),
+									convert_in(cp2), convert_in(cp3)), temp_color, thickness)
+						"A":
+							var start := cmd.start
+							var v := Vector2(cmd.x, cmd.y)
+							var end := start + v if relative else v
+							# Correct for out-of-range radii.
+							if start == end:
+								continue
+							elif cmd.rx == 0 or cmd.ry == 0:
+								draw_line(start, end, color, thickness)
+							
+							var r := Vector2(cmd.rx, cmd.ry).abs()
+							# Obtain center parametrization.
+							var rot := deg_to_rad(cmd.rot)
+							var cosine := cos(rot)
+							var sine := sin(rot)
+							var half := (start - end) / 2
+							var x1 := half.x * cosine + half.y * sine
+							var y1 := -half.x * sine + half.y * cosine
+							var r2 := Vector2(r.x * r.x, r.y * r.y)
+							var x12 := x1 * x1
+							var y12 := y1 * y1
+							var cr := x12 / r2.x + y12 / r2.y
+							if cr > 1:
+								cr = sqrt(cr)
+								r *= cr
+								r2 = Vector2(r.x * r.x, r.y * r.y)
+							
+							var dq := r2.x * y12 + r2.y * x12
+							var pq := (r2.x * r2.y - dq) / dq
+							var sc := sqrt(maxf(0, pq))
+							if cmd.large_arc_flag == cmd.sweep_flag:
+								sc = -sc
+							
+							var ct := Vector2(r.x * sc * y1 / r.y, -r.y * sc * x1 / r.x)
+							var c := Vector2(ct.x * cosine - ct.y * sine,
+									ct.x * sine + ct.y * cosine) + start.lerp(end, 0.5)
+							var tv := Vector2(x1 - ct.x, y1 - ct.y) / r
+							var theta1 := tv.angle()
+							var delta_theta := fposmod(tv.angle_to(
+									Vector2(-x1 - ct.x, -y1 - ct.y) / r), TAU)
+							if cmd.sweep_flag == 0:
+								theta1 = theta1 + delta_theta
+								delta_theta = TAU - delta_theta
+							
+							# Now we have a center parametrization (r, c, theta1, delta_theta).
+							# We will approximate the elliptical arc with Bezier curves.
+							# Use the method described in https://www.blog.akhil.cc/ellipse
+							# (but with modifications because it wasn't working fully).
+							var segments := delta_theta * 4/PI
+							var n := floori(segments)
+							var p1 := Utils.E(c, r, cosine, sine, theta1)
+							var e1 := Utils.Et(r, cosine, sine, theta1)
+							var alpha := 0.265115
+							var t := theta1 + PI/4
+							var cp: Array[PackedVector2Array] = []
+							for _i in n:
+								var p2 := Utils.E(c, r, cosine, sine, t)
+								var e2 := Utils.Et(r, cosine, sine, t)
+								var q1 := alpha * e1
+								var q2 := -alpha * e2
+								cp.append(PackedVector2Array([p1, q1, q2, p2]))
+								p1 = p2
+								e1 = e2
+								t += PI/4
+							
+							if n != ceili(segments):
+								t = theta1 + delta_theta
+								var p2 := Utils.E(c, r, cosine, sine, t)
+								var e2 := Utils.Et(r, cosine, sine, t)
+								var q1 := alpha * e1
+								var q2 := -alpha * e2
+								cp.append(PackedVector2Array([p1, q1, q2, p2]))
+							
+							var points := PackedVector2Array()
+							for p in cp:
+								points += Utils.get_cubic_bezier_points(convert_in(p[0]),
+										convert_in(p[1]), convert_in(p[2]), convert_in(p[3]))
+							
+							draw_polyline(points, temp_color, thickness)
+						"Z":
+							var prev_M_idx := cmd_idx - 1
+							var prev_M_cmd := pathdata.get_command(prev_M_idx)
+							while prev_M_idx >= 0:
+								if prev_M_cmd.command_char.to_upper() == "M":
+									break
+								prev_M_idx -= 1
+								prev_M_cmd = pathdata.get_command(prev_M_idx)
+							if prev_M_idx == -1:
+								break
+							
+							var end := convert_in(Vector2(prev_M_cmd.x, prev_M_cmd.y))
+							if prev_M_cmd.relative:
+								end += convert_in(prev_M_cmd.start)
+							draw_line(convert_in(cmd.start), convert_in(end),
+									temp_color, thickness)
+						_: continue
+			
 	for handle in handles:
 		var outer_circle_color: Color
-		if handle.tag_index in Interactions.selected_tags:
+		var is_selected: bool = (handle is XYHandle and handle.tag_index in\
+				Interactions.selected_tags) or (handle is PathHandle and ((
+				handle.tag_index == Interactions.tag_with_inner_selections and\
+				handle.command_index in Interactions.inner_selections) or\
+				handle.tag_index in Interactions.selected_tags))
+		var is_hovered: bool = (handle is XYHandle and handle.tag_index ==\
+				Interactions.hovered_tag) or (handle is PathHandle and ((handle.tag_index ==\
+				Interactions.tag_with_inner_hovered and handle.command_index ==\
+				Interactions.inner_hovered) or handle.tag_index == Interactions.hovered_tag))
+		if is_selected:
 			outer_circle_color = Color.from_string(selection_color_string, Color(0, 0, 0))
-		elif Interactions.hovered_tag == handle.tag_index:
+		elif is_hovered:
 			outer_circle_color = Color.from_string(hover_color_string, Color(0, 0, 0))
 		else:
 			outer_circle_color = Color.from_string(default_color_string, Color(0, 0, 0))
-		draw_circle(coords_to_canvas(handle.pos), 4 / zoom, outer_circle_color)
-		draw_circle(coords_to_canvas(handle.pos), 2.25 / zoom, Color.WHITE)
+		draw_circle(convert_in(handle.pos), 4 / zoom, outer_circle_color)
+		draw_circle(convert_in(handle.pos), 2.25 / zoom, Color.WHITE)
 
 
 func get_viewbox_zoom() -> float:
@@ -148,7 +419,7 @@ func get_viewbox_zoom() -> float:
 	var viewbox_size: Vector2 = SVG.root_tag.attributes.viewBox.value.size
 	return minf(width / viewbox_size.x, height / viewbox_size.y)
 
-func coords_to_canvas(pos: Vector2) -> Vector2:
+func convert_in(pos: Vector2) -> Vector2:
 	var width: float = SVG.root_tag.attributes.width.value
 	var height: float = SVG.root_tag.attributes.height.value
 	var viewbox: Rect2 = SVG.root_tag.attributes.viewBox.value
@@ -159,7 +430,7 @@ func coords_to_canvas(pos: Vector2) -> Vector2:
 	else:
 		return pos + Vector2((width - height * viewbox.size.x / viewbox.size.y) / 2, 0)
 
-func canvas_to_coords(pos: Vector2) -> Vector2:
+func convert_out(pos: Vector2) -> Vector2:
 	var width: float = SVG.root_tag.attributes.width.value
 	var height: float = SVG.root_tag.attributes.height.value
 	var viewbox: Rect2 = SVG.root_tag.attributes.viewBox.value
@@ -174,52 +445,81 @@ func canvas_to_coords(pos: Vector2) -> Vector2:
 var dragged_handle: Handle = null
 var hovered_handle: Handle = null
 var was_handle_moved := false
+var should_deselect_all = false
 
 func _unhandled_input(event: InputEvent) -> void:
-	var max_grab_dist := 9 / zoom
 	if event is InputEventMouseMotion:
+		should_deselect_all = false
 		var event_pos: Vector2 = event.position - global_position
 		
 		if dragged_handle != null:
 			# Move the handle that's being dragged.
-			var new_pos := canvas_to_coords(event_pos)
+			var new_pos := convert_out(event_pos)
 			if snap_enabled:
 				new_pos = new_pos.snapped(snap_size)
 			dragged_handle.set_pos(new_pos)
 			was_handle_moved = true
 			accept_event()
 		else:
-			# Find the closest handle.
-			var nearest_handle: Handle = null
-			var nearest_dist := max_grab_dist
-			for handle in handles:
-				var dist_to_handle := event_pos.distance_to(coords_to_canvas(handle.pos))
-				if dist_to_handle < nearest_dist:
-					nearest_dist = dist_to_handle
-					nearest_handle = handle
+			var nearest_handle := find_nearest_handle(event_pos)
 			if nearest_handle != null:
 				hovered_handle = nearest_handle
-				Interactions.set_hovered(hovered_handle.tag_index)
+				if hovered_handle is XYHandle:
+					Interactions.set_hovered(hovered_handle.tag_index)
+				elif hovered_handle is PathHandle:
+					Interactions.set_inner_hovered(hovered_handle.tag_index,
+							hovered_handle.command_index)
 			else:
 				hovered_handle = null
 				Interactions.clear_hovered()
+				Interactions.clear_inner_hovered()
 	elif event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
 		var event_pos: Vector2 = event.position - global_position
+		var nearest_handle := find_nearest_handle(event_pos)
+		if nearest_handle != null:
+			hovered_handle = nearest_handle
+			if hovered_handle is XYHandle:
+				Interactions.set_hovered(hovered_handle.tag_index)
+			elif hovered_handle is PathHandle:
+				Interactions.set_inner_hovered(hovered_handle.tag_index,
+						hovered_handle.command_index)
+		else:
+			hovered_handle = null
+			Interactions.clear_hovered()
+			Interactions.clear_inner_hovered()
 		# React to LMB actions.
 		if hovered_handle != null and event.is_pressed():
 			dragged_handle = hovered_handle
-			Interactions.set_selection(dragged_handle.tag_index)
+			if hovered_handle is XYHandle:
+				Interactions.set_selection(dragged_handle.tag_index)
+			elif hovered_handle is PathHandle:
+				Interactions.set_inner_selection(hovered_handle.tag_index,
+						hovered_handle.command_index)
 		elif dragged_handle != null and event.is_released():
 			if was_handle_moved:
-				var new_pos := canvas_to_coords(event_pos)
+				var new_pos := convert_out(event_pos)
 				if snap_enabled:
 					new_pos = new_pos.snapped(snap_size)
 				dragged_handle.set_pos(new_pos)
 				was_handle_moved = false
 			dragged_handle = null
 		elif hovered_handle == null and event.is_pressed():
+			should_deselect_all = true
+		elif hovered_handle == null and event.is_released() and should_deselect_all:
 			dragged_handle = null
 			Interactions.clear_selection()
+			Interactions.clear_inner_selection()
+
+func find_nearest_handle(event_pos: Vector2) -> Handle:
+	var max_grab_dist := 9 / zoom
+	var nearest_handle: Handle = null
+	var nearest_dist := max_grab_dist
+	for handle in handles:
+		var dist_to_handle := event_pos.distance_to(convert_in(handle.pos))
+		if dist_to_handle < nearest_dist:
+			nearest_dist = dist_to_handle
+			nearest_handle = handle
+	return nearest_handle
 
 
 func _on_snapper_value_changed(new_value: float) -> void:

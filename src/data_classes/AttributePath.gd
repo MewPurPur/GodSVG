@@ -56,6 +56,13 @@ func add_command(command_char: String) -> void:
 	locate_start_points()
 	command_changed.emit()
 
+func insert_command(idx: int, command_char: String) -> void:
+	commands.insert(idx, PathCommand.translation_dict[command_char.to_upper()].new())
+	if Utils.is_string_lower(command_char):
+		commands[idx].toggle_relative()
+	locate_start_points()
+	command_changed.emit()
+
 func delete_command(idx: int) -> void:
 	commands.remove_at(idx)
 	locate_start_points()
