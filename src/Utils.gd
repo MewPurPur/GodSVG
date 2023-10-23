@@ -54,7 +54,6 @@ cp3: Vector2) -> PackedVector2Array:
 
 # Ellipse parametric equation.
 static func E(c: Vector2, r: Vector2, cosine: float, sine: float, t: float) -> Vector2:
-	prints(sine, cosine)
 	var xt := r.x * cos(t)
 	var yt := r.y * sin(t)
 	return c + Vector2(xt * cosine - yt * sine, xt * sine + yt * cosine)

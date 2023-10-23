@@ -63,20 +63,18 @@ func update_handles() -> void:
 	for tag_idx in SVG.root_tag.get_child_count():
 		var tag := SVG.root_tag.child_tags[tag_idx]
 		var new_handles: Array[Handle] = []
-		if tag is TagCircle:
-			new_handles.append(XYHandle.new(tag.attributes.cx, tag.attributes.cy))
-		if tag is TagEllipse:
-			new_handles.append(XYHandle.new(tag.attributes.cx, tag.attributes.cy))
-		if tag is TagRect:
-			new_handles.append(XYHandle.new(tag.attributes.x, tag.attributes.y))
-		if tag is TagLine:
-			new_handles.append(XYHandle.new(tag.attributes.x1, tag.attributes.y1))
-			new_handles.append(XYHandle.new(tag.attributes.x2, tag.attributes.y2))
-		if tag is TagPath:
-			var path_attribute: AttributePath = tag.attributes.d
-			for idx in path_attribute.get_command_count():
-				if not path_attribute.get_command(idx) is PathCommand.CloseCommand:
-					new_handles.append(PathHandle.new(path_attribute, idx))
+		match tag.title:
+			"circle":
+				new_handles.append(XYHandle.new(tag.attributes.cx, tag.attributes.cy))
+			"ellipse":
+				new_handles.append(XYHandle.new(tag.attributes.cx, tag.attributes.cy))
+			"rect":
+				new_handles.append(XYHandle.new(tag.attributes.x, tag.attributes.y))
+			"line":
+				new_handles.append(XYHandle.new(tag.attributes.x1, tag.attributes.y1))
+				new_handles.append(XYHandle.new(tag.attributes.x2, tag.attributes.y2))
+			"path":
+				new_handles += generate_path_handles(tag.attributes.d)
 		for handle in new_handles:
 			handle.tag = tag
 			handle.tag_index = tag_idx
@@ -92,14 +90,26 @@ func sync_handles() -> void:
 			handles.remove_at(handle_idx)
 	for tag_idx in SVG.root_tag.get_child_count():
 		var tag := SVG.root_tag.child_tags[tag_idx]
-		if tag is TagPath:
-			var path_attribute: AttributePath = tag.attributes.d
-			for idx in path_attribute.get_command_count():
-				if not path_attribute.get_command(idx) is PathCommand.CloseCommand:
-					var handle := PathHandle.new(path_attribute, idx)
-					handle.tag_index = tag_idx
-					handles.append(handle)
+		if tag.title == "path":
+			handles += generate_path_handles(tag.attributes.d)
 	queue_redraw()
+
+func generate_path_handles(path_attribute: AttributePath) -> Array[Handle]:
+	var path_handles: Array[Handle]
+	for idx in path_attribute.get_command_count():
+		var path_command := path_attribute.get_command(idx)
+		if path_command.command_char.to_upper() != "Z":
+			path_handles.append(PathHandle.new(path_attribute, idx))
+			if path_command.command_char.to_upper() in ["C", "Q"]:
+				var new_path_handle := PathHandle.new(path_attribute, idx, &"x1", &"y1")
+				new_path_handle.display_mode = Handle.DisplayMode.SMALL
+				path_handles.append(new_path_handle)
+			if path_command.command_char.to_upper() in ["C", "S"]:
+				var new_path_handle := PathHandle.new(path_attribute, idx, &"x2", &"y2")
+				new_path_handle.display_mode = Handle.DisplayMode.SMALL
+				path_handles.append(new_path_handle)
+	return path_handles
+
 
 func _draw() -> void:
 	var thickness := 2.0 / zoom
@@ -403,14 +413,21 @@ func _draw() -> void:
 				Interactions.hovered_tag) or (handle is PathHandle and ((handle.tag_index ==\
 				Interactions.tag_with_inner_hovered and handle.command_index ==\
 				Interactions.inner_hovered) or handle.tag_index == Interactions.hovered_tag))
+		
 		if is_selected:
 			outer_circle_color = Color.from_string(selection_color_string, Color(0, 0, 0))
 		elif is_hovered:
 			outer_circle_color = Color.from_string(hover_color_string, Color(0, 0, 0))
 		else:
 			outer_circle_color = Color.from_string(default_color_string, Color(0, 0, 0))
-		draw_circle(convert_in(handle.pos), 4 / zoom, outer_circle_color)
-		draw_circle(convert_in(handle.pos), 2.25 / zoom, Color.WHITE)
+		
+		match handle.display_mode:
+			handle.DisplayMode.BIG:
+				draw_circle(convert_in(handle.pos), 4 / zoom, outer_circle_color)
+				draw_circle(convert_in(handle.pos), 2.25 / zoom, Color.WHITE)
+			handle.DisplayMode.SMALL:
+				draw_circle(convert_in(handle.pos), 3 / zoom, outer_circle_color)
+				draw_circle(convert_in(handle.pos), 1.75 / zoom, Color.WHITE)
 
 
 func get_viewbox_zoom() -> float:
