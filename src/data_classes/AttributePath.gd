@@ -6,8 +6,8 @@ var commands: Array[PathCommand]
 
 func _init() -> void:
 	type = Type.PATHDATA
-	value = ""
 	default = ""
+	set_value(default, false)
 
 
 func locate_start_points() -> void:
@@ -44,10 +44,13 @@ func get_command(idx: int) -> PathCommand:
 	return commands[idx]
 
 
-func set_command_property(idx: int, property: StringName, new_value: float) -> void:
-	commands[idx].set(property, new_value)
-	locate_start_points()
-	command_changed.emit()
+func set_command_property(idx: int, property: StringName, new_value: float,
+emit_command_changed := true) -> void:
+	if commands[idx].get(property) != new_value:
+		commands[idx].set(property, new_value)
+		locate_start_points()
+		if emit_command_changed:
+			command_changed.emit()
 
 func add_command(command_char: String) -> void:
 	commands.append(PathCommand.translation_dict[command_char.to_upper()].new())
@@ -72,8 +75,8 @@ func toggle_relative_command(idx: int) -> void:
 	commands[idx].toggle_relative()
 	command_changed.emit()
 
-func set_value(path_string: String) -> void:
+func set_value(path_string: Variant, _emit_attribute_changed := false) -> void:
 	# Don't emit changed, as this rebuilds the data.
 	commands = PathDataParser.parse_path_data(path_string)
 	locate_start_points()
-	value = path_string
+	super(path_string)
