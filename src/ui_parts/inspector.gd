@@ -7,9 +7,9 @@ const TagEditor = preload("tag_editor.tscn")
 
 func _ready() -> void:
 	SVG.root_tag.attribute_changed.connect(svg_tag_editor.update_svg_attributes)
-	SVG.root_tag.tag_added.connect(full_rebuild)
+	SVG.root_tag.tag_added.connect(full_rebuild.unbind(1))
 	SVG.root_tag.tag_moved.connect(full_rebuild.unbind(2))
-	SVG.root_tag.tag_deleted.connect(full_rebuild.unbind(1))
+	SVG.root_tag.tag_deleted.connect(full_rebuild.unbind(2))
 	SVG.root_tag.changed_unknown.connect(full_rebuild)
 	full_rebuild()
 
