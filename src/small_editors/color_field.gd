@@ -162,6 +162,7 @@ var _value: String  # Must not be updated directly.
 func set_value(new_value: String, emit_value_changed := true):
 	var old_value := _value
 	_value = validate(new_value)
+	queue_redraw()
 	set_text_tint()
 	if _value != old_value and emit_value_changed:
 		value_changed.emit(_value if (is_color_named_or_none(_value)) else "#" + _value)
@@ -173,6 +174,7 @@ func get_value() -> String:
 func _ready() -> void:
 	value_changed.connect(_on_value_changed)
 	if attribute != null:
+		attribute.value_changed.connect(set_value)
 		set_value(attribute.value)
 	color_edit.text = get_value()
 	color_edit.tooltip_text = attribute_name

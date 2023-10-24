@@ -20,6 +20,7 @@ func _ready() -> void:
 	value_changed.connect(_on_value_changed)
 	if attribute != null:
 		set_value(attribute.value)
+		attribute.value_changed.connect(set_value)
 		var buttons_arr: Array[Button] = []
 		for enum_constant in attribute.possible_values:
 			var butt := Button.new()

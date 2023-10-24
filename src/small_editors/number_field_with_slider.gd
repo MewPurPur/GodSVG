@@ -19,6 +19,7 @@ func set_value(new_value: float, emit_value_changed := true):
 	var old_value := _value
 	_value = validate(new_value)
 	if _value != old_value and emit_value_changed:
+		queue_redraw()
 		value_changed.emit(_value)
 	elif num_edit != null:
 		num_edit.text = String.num(_value, 4)

@@ -24,6 +24,7 @@ func sync_value() -> void:
 func _ready() -> void:
 	value_changed.connect(_on_value_changed)
 	if attribute != null:
+		attribute.value_changed.connect(_on_value_changed)
 		attribute.command_changed.connect(sync_value)
 		set_value(attribute.value)
 
