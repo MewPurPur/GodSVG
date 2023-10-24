@@ -22,6 +22,7 @@ config/icon="res://visual/icon.png"
 SVG="*res://src/SVG.gd"
 GlobalSettings="*res://src/GlobalSettings.gd"
 Interactions="*res://src/Interactions.gd"
+UndoRedoManager="*res://src/UndoRedoManager.gd"
 
 [display]
 
