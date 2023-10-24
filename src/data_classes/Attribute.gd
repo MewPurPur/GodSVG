@@ -18,3 +18,6 @@ func _init(new_type: Type, new_default: Variant = null, new_init: Variant = null
 	type = new_type
 	default = new_default
 	value = new_init if new_init != null else new_default
+
+func duplicate() -> Attribute:
+	return Attribute.new(type,default,value)

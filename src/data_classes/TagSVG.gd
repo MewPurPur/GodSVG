@@ -9,7 +9,6 @@ func _init() -> void:
 	}
 	super()
 
-
 func set_canvas(new_width: float, new_height: float, new_viewbox: Rect2) -> void:
 	var is_width_different: bool = attributes.width.value != new_width
 	var is_height_different: bool = attributes.height.value != new_height
@@ -23,3 +22,16 @@ func set_canvas(new_width: float, new_height: float, new_viewbox: Rect2) -> void
 		if is_viewbox_different:
 			attributes.viewBox.value = new_viewbox
 		attribute_changed.emit()
+
+func duplicate() -> TagSVG:
+	var new_tagSVG = TagSVG.new()
+	new_tagSVG.title = title
+	var new_attributes:Dictionary
+	for attribute_key in attributes:
+		new_attributes[attribute_key] = attributes[attribute_key].duplicate()
+	new_tagSVG.attributes = new_attributes
+	var new_child_tags:Array[Tag]
+	for child in child_tags:
+		new_child_tags.append(child.duplicate())
+	new_tagSVG.child_tags = new_child_tags
+	return new_tagSVG
