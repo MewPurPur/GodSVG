@@ -71,7 +71,7 @@ visible = false
 
 [node name="PathPopup" type="Popup" parent="."]
 transparent_bg = true
-size = Vector2i(269, 383)
+size = Vector2i(240, 285)
 script = ExtResource("5_3dynt")
 
 [node name="PanelContainer" type="PanelContainer" parent="PathPopup"]

@@ -63,20 +63,18 @@ func update_handles() -> void:
 	for tag_idx in SVG.root_tag.get_child_count():
 		var tag := SVG.root_tag.child_tags[tag_idx]
 		var new_handles: Array[Handle] = []
-		if tag is TagCircle:
-			new_handles.append(XYHandle.new(tag.attributes.cx, tag.attributes.cy))
-		if tag is TagEllipse:
-			new_handles.append(XYHandle.new(tag.attributes.cx, tag.attributes.cy))
-		if tag is TagRect:
-			new_handles.append(XYHandle.new(tag.attributes.x, tag.attributes.y))
-		if tag is TagLine:
-			new_handles.append(XYHandle.new(tag.attributes.x1, tag.attributes.y1))
-			new_handles.append(XYHandle.new(tag.attributes.x2, tag.attributes.y2))
-		if tag is TagPath:
-			var path_attribute: AttributePath = tag.attributes.d
-			for idx in path_attribute.get_command_count():
-				if not path_attribute.get_command(idx) is PathCommand.CloseCommand:
-					new_handles.append(PathHandle.new(path_attribute, idx))
+		match tag.title:
+			"circle":
+				new_handles.append(XYHandle.new(tag.attributes.cx, tag.attributes.cy))
+			"ellipse":
+				new_handles.append(XYHandle.new(tag.attributes.cx, tag.attributes.cy))
+			"rect":
+				new_handles.append(XYHandle.new(tag.attributes.x, tag.attributes.y))
+			"line":
+				new_handles.append(XYHandle.new(tag.attributes.x1, tag.attributes.y1))
+				new_handles.append(XYHandle.new(tag.attributes.x2, tag.attributes.y2))
+			"path":
+				new_handles += generate_path_handles(tag.attributes.d)
 		for handle in new_handles:
 			handle.tag = tag
 			handle.tag_index = tag_idx
@@ -92,18 +90,31 @@ func sync_handles() -> void:
 			handles.remove_at(handle_idx)
 	for tag_idx in SVG.root_tag.get_child_count():
 		var tag := SVG.root_tag.child_tags[tag_idx]
-		if tag is TagPath:
-			var path_attribute: AttributePath = tag.attributes.d
-			for idx in path_attribute.get_command_count():
-				if not path_attribute.get_command(idx) is PathCommand.CloseCommand:
-					var handle := PathHandle.new(path_attribute, idx)
-					handle.tag_index = tag_idx
-					handles.append(handle)
+		if tag.title == "path":
+			handles += generate_path_handles(tag.attributes.d)
 	queue_redraw()
+
+func generate_path_handles(path_attribute: AttributePath) -> Array[Handle]:
+	var path_handles: Array[Handle] = []
+	for idx in path_attribute.get_command_count():
+		var path_command := path_attribute.get_command(idx)
+		if path_command.command_char.to_upper() != "Z":
+			path_handles.append(PathHandle.new(path_attribute, idx))
+			if path_command.command_char.to_upper() in ["C", "Q"]:
+				var new_path_handle := PathHandle.new(path_attribute, idx, &"x1", &"y1")
+				new_path_handle.display_mode = Handle.DisplayMode.SMALL
+				path_handles.append(new_path_handle)
+			if path_command.command_char.to_upper() in ["C", "S"]:
+				var new_path_handle := PathHandle.new(path_attribute, idx, &"x2", &"y2")
+				new_path_handle.display_mode = Handle.DisplayMode.SMALL
+				path_handles.append(new_path_handle)
+	return path_handles
+
 
 func _draw() -> void:
 	var thickness := 2.0 / zoom
 	var viewbox_zoom := get_viewbox_zoom()
+	# Draw the contours of shapes, and also tangents of bezier curves in paths.
 	for tag_idx in SVG.root_tag.get_child_count():
 		var tag := SVG.root_tag.child_tags[tag_idx]
 		var attribs := tag.attributes
@@ -111,15 +122,15 @@ func _draw() -> void:
 				hover_color if tag_idx == Interactions.hovered_tag else default_color
 		match tag.title:
 			"circle":
-				var cx: float = attribs.cx.value
-				var cy: float = attribs.cy.value
-				var r: float = attribs.r.value
+				var cx: float = attribs.cx.get_value()
+				var cy: float = attribs.cy.get_value()
+				var r: float = attribs.r.get_value()
 				draw_arc(convert_in(Vector2(cx, cy)), r * viewbox_zoom, 0, TAU,
 						maxi(10, int(r * zoom * viewbox_zoom)), color, thickness)
 			"ellipse":
-				var c := Vector2(attribs.cx.value, attribs.cy.value)
-				var rx: float = attribs.rx.value
-				var ry: float = attribs.ry.value
+				var c := Vector2(attribs.cx.get_value(), attribs.cy.get_value())
+				var rx: float = attribs.rx.get_value()
+				var ry: float = attribs.ry.get_value()
 				# Squished circle.
 				var points := PackedVector2Array()
 				for i in range(0, 361, 2):
@@ -127,12 +138,12 @@ func _draw() -> void:
 					points.append(convert_in(c + Vector2(cos(d) * rx, sin(d) * ry)))
 				draw_polyline(points, color, thickness)
 			"rect":
-				var x: float = attribs.x.value
-				var y: float = attribs.y.value
-				var height: float = attribs.height.value
-				var width: float = attribs.width.value
-				var rx: float = attribs.rx.value
-				var ry: float = attribs.ry.value
+				var x: float = attribs.x.get_value()
+				var y: float = attribs.y.get_value()
+				var height: float = attribs.height.get_value()
+				var width: float = attribs.width.get_value()
+				var rx: float = attribs.rx.get_value()
+				var ry: float = attribs.ry.get_value()
 				var points := PackedVector2Array()
 				if rx == 0 and ry == 0:
 					# Basic rectangle.
@@ -172,10 +183,10 @@ func _draw() -> void:
 								Vector2(cos(d) * rx, sin(d) * ry)))
 				draw_polyline(points, color, thickness)
 			"line":
-				var x1: float = attribs.x1.value
-				var y1: float = attribs.y1.value
-				var x2: float = attribs.x2.value
-				var y2: float = attribs.y2.value
+				var x1: float = attribs.x1.get_value()
+				var y1: float = attribs.y1.get_value()
+				var x2: float = attribs.x2.get_value()
+				var y2: float = attribs.y2.get_value()
 				draw_line(convert_in(Vector2(x1, y1)),
 						convert_in(Vector2(x2, y2)), color, thickness)
 			"path":
@@ -183,16 +194,17 @@ func _draw() -> void:
 				for cmd_idx in pathdata.get_command_count():
 					# Decide on color for the command.
 					var temp_color := color
-					if Interactions.tag_with_inner_hovered == tag_idx and\
+					if Interactions.semi_hovered_tag == tag_idx and\
 					not tag_idx in Interactions.selected_tags:
 						if Interactions.inner_hovered == cmd_idx:
 							temp_color = hover_color
-					if Interactions.tag_with_inner_selections == tag_idx:
+					if Interactions.semi_selected_tag == tag_idx:
 						if cmd_idx in Interactions.inner_selections:
 							temp_color = selection_color
 					# Drawing logic.
 					var cmd := pathdata.get_command(cmd_idx)
 					var relative := cmd.relative
+					
 					match cmd.command_char.to_upper():
 						"L":
 							var end := cmd.start + Vector2(cmd.x, cmd.y) if relative\
@@ -221,6 +233,10 @@ func _draw() -> void:
 							draw_polyline(Utils.get_cubic_bezier_points(convert_in(cp1),
 									convert_in(cp2), convert_in(cp3), convert_in(cp4)),
 									temp_color, thickness)
+							draw_line(convert_in(cp1), convert_in(cp1 + v1 if relative else v1),
+									Color(temp_color, 0.7), thickness / 1.4)
+							draw_line(convert_in(cp4), convert_in(cp1 + v2 if relative else v2),
+									Color(temp_color, 0.7), thickness / 1.4)
 						"S":
 							if cmd_idx == 0:
 								break
@@ -235,7 +251,7 @@ func _draw() -> void:
 											else cmd.start * 2 - prev_control_pt - prev_cmd.start
 								else:
 									v1 = cmd.start - prev_control_pt if relative\
-											else cmd.start - prev_control_pt + prev_cmd.start
+											else cmd.start * 2 - prev_control_pt
 							var v2 := Vector2(cmd.x2, cmd.y2)
 							
 							var cp1 := cmd.start
@@ -246,6 +262,10 @@ func _draw() -> void:
 							draw_polyline(Utils.get_cubic_bezier_points(convert_in(cp1),
 									convert_in(cp2), convert_in(cp3), convert_in(cp4)),
 									temp_color, thickness)
+							draw_line(convert_in(cp1), convert_in(cp1 + v1 if relative else v1),
+									Color(temp_color, 0.7), thickness / 1.4)
+							draw_line(convert_in(cp4), convert_in(cp1 + v2 if relative else v2),
+									Color(temp_color, 0.7), thickness / 1.4)
 						"Q":
 							var v := Vector2(cmd.x, cmd.y)
 							var v1 := Vector2(cmd.x1, cmd.y1)
@@ -255,6 +275,10 @@ func _draw() -> void:
 							
 							draw_polyline(Utils.get_quadratic_bezier_points(convert_in(cp1),
 									convert_in(cp2), convert_in(cp3)), temp_color, thickness)
+							draw_line(convert_in(cp1), convert_in(cp1 + v1 if relative else v1),
+									Color(temp_color, 0.7), thickness / 1.4)
+							draw_line(convert_in(cp3), convert_in(cp1 + v1 if relative else v1),
+									Color(temp_color, 0.7), thickness / 1.4)
 						"T":
 							var prevQ_idx := cmd_idx - 1
 							var prevQ_cmd := pathdata.get_command(prevQ_idx)
@@ -295,6 +319,10 @@ func _draw() -> void:
 							
 							draw_polyline(Utils.get_quadratic_bezier_points(convert_in(cp1),
 									convert_in(cp2), convert_in(cp3)), temp_color, thickness)
+							draw_line(convert_in(cp1), convert_in(cp2),
+									Color(temp_color, 0.7), thickness / 1.4)
+							draw_line(convert_in(cp3), convert_in(cp2),
+									Color(temp_color, 0.7), thickness / 1.4)
 						"A":
 							var start := cmd.start
 							var v := Vector2(cmd.x, cmd.y)
@@ -371,7 +399,7 @@ func _draw() -> void:
 							var points := PackedVector2Array()
 							for p in cp:
 								points += Utils.get_cubic_bezier_points(convert_in(p[0]),
-										convert_in(p[1]), convert_in(p[2]), convert_in(p[3]))
+										p[1] * viewbox_zoom, p[2] * viewbox_zoom, convert_in(p[3]))
 							
 							draw_polyline(points, temp_color, thickness)
 						"Z":
@@ -385,44 +413,57 @@ func _draw() -> void:
 							if prev_M_idx == -1:
 								break
 							
-							var end := convert_in(Vector2(prev_M_cmd.x, prev_M_cmd.y))
+							var end := Vector2(prev_M_cmd.x, prev_M_cmd.y)
 							if prev_M_cmd.relative:
-								end += convert_in(prev_M_cmd.start)
+								end += prev_M_cmd.start
 							draw_line(convert_in(cmd.start), convert_in(end),
 									temp_color, thickness)
 						_: continue
-			
+	
+	var normal_handles: Array[Handle] = []
+	var selected_handles: Array[Handle] = []
+	var hovered_handles: Array[Handle] = []
 	for handle in handles:
-		var outer_circle_color: Color
-		var is_selected: bool = (handle is XYHandle and handle.tag_index in\
-				Interactions.selected_tags) or (handle is PathHandle and ((
-				handle.tag_index == Interactions.tag_with_inner_selections and\
-				handle.command_index in Interactions.inner_selections) or\
-				handle.tag_index in Interactions.selected_tags))
-		var is_hovered: bool = (handle is XYHandle and handle.tag_index ==\
-				Interactions.hovered_tag) or (handle is PathHandle and ((handle.tag_index ==\
-				Interactions.tag_with_inner_hovered and handle.command_index ==\
-				Interactions.inner_hovered) or handle.tag_index == Interactions.hovered_tag))
-		if is_selected:
-			outer_circle_color = Color.from_string(selection_color_string, Color(0, 0, 0))
-		elif is_hovered:
-			outer_circle_color = Color.from_string(hover_color_string, Color(0, 0, 0))
+		if (handle is XYHandle and handle.tag_index == Interactions.hovered_tag) or\
+		(handle is PathHandle and ((handle.tag_index == Interactions.semi_hovered_tag and\
+		handle.command_index == Interactions.inner_hovered) or\
+		handle.tag_index == Interactions.hovered_tag)):
+			hovered_handles.append(handle)
+		elif (handle is XYHandle and handle.tag_index in Interactions.selected_tags) or\
+		(handle is PathHandle and ((handle.tag_index == Interactions.semi_selected_tag and\
+		handle.command_index in Interactions.inner_selections) or\
+		handle.tag_index in Interactions.selected_tags)):
+			selected_handles.append(handle)
 		else:
-			outer_circle_color = Color.from_string(default_color_string, Color(0, 0, 0))
-		draw_circle(convert_in(handle.pos), 4 / zoom, outer_circle_color)
-		draw_circle(convert_in(handle.pos), 2.25 / zoom, Color.WHITE)
+			normal_handles.append(handle)
+	
+	for handle in normal_handles:
+		draw_handle(handle, default_color)
+	for handle in selected_handles:
+		draw_handle(handle, selection_color)
+	for handle in hovered_handles:
+		draw_handle(handle, hover_color)
+
+func draw_handle(handle: Handle, outer_circle_color: Color) -> void:
+	match handle.display_mode:
+		handle.DisplayMode.BIG:
+			draw_circle(convert_in(handle.pos), 4 / zoom, outer_circle_color)
+			draw_circle(convert_in(handle.pos), 2.25 / zoom, Color.WHITE)
+		handle.DisplayMode.SMALL:
+			draw_circle(convert_in(handle.pos), 3 / zoom, outer_circle_color)
+			draw_circle(convert_in(handle.pos), 1.75 / zoom, Color.WHITE)
 
 
 func get_viewbox_zoom() -> float:
-	var width: float = SVG.root_tag.attributes.width.value
-	var height: float = SVG.root_tag.attributes.height.value
-	var viewbox_size: Vector2 = SVG.root_tag.attributes.viewBox.value.size
+	var width: float = SVG.root_tag.attributes.width.get_value()
+	var height: float = SVG.root_tag.attributes.height.get_value()
+	var viewbox_size: Vector2 = SVG.root_tag.attributes.viewBox.get_value().size
 	return minf(width / viewbox_size.x, height / viewbox_size.y)
 
 func convert_in(pos: Vector2) -> Vector2:
-	var width: float = SVG.root_tag.attributes.width.value
-	var height: float = SVG.root_tag.attributes.height.value
-	var viewbox: Rect2 = SVG.root_tag.attributes.viewBox.value
+	var width: float = SVG.root_tag.attributes.width.get_value()
+	var height: float = SVG.root_tag.attributes.height.get_value()
+	var viewbox: Rect2 = SVG.root_tag.attributes.viewBox.get_value()
 	
 	pos = (size / Vector2(width, height) * pos - viewbox.position) * get_viewbox_zoom()
 	if viewbox.size.x / viewbox.size.y >= width / height:
@@ -431,9 +472,9 @@ func convert_in(pos: Vector2) -> Vector2:
 		return pos + Vector2((width - height * viewbox.size.x / viewbox.size.y) / 2, 0)
 
 func convert_out(pos: Vector2) -> Vector2:
-	var width: float = SVG.root_tag.attributes.width.value
-	var height: float = SVG.root_tag.attributes.height.value
-	var viewbox: Rect2 = SVG.root_tag.attributes.viewBox.value
+	var width: float = SVG.root_tag.attributes.width.get_value()
+	var height: float = SVG.root_tag.attributes.height.get_value()
+	var viewbox: Rect2 = SVG.root_tag.attributes.viewBox.get_value()
 	
 	if viewbox.size.x / viewbox.size.y >= width / height:
 		pos.y -= (height - width * viewbox.size.y / viewbox.size.x) / 2

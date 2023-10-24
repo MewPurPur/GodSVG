@@ -19,7 +19,7 @@ func get_value() -> String:
 func _ready() -> void:
 	value_changed.connect(_on_value_changed)
 	if attribute != null:
-		set_value(attribute.value)
+		set_value(attribute.get_value())
 		attribute.value_changed.connect(set_value)
 		var buttons_arr: Array[Button] = []
 		for enum_constant in attribute.possible_values:
@@ -43,7 +43,7 @@ func _on_option_pressed(option: String) -> void:
 func _on_value_changed(new_value: String) -> void:
 	indicator.text = new_value
 	if attribute != null:
-		attribute.value = new_value
+		attribute.set_value(new_value)
 		set_text_tint()
 
 

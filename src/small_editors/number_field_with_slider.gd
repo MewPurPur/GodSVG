@@ -15,7 +15,9 @@ var is_float := true
 signal value_changed(new_value: float)
 var _value: float  # Must not be updated directly.
 
-func set_value(new_value: float, emit_value_changed := true):
+func set_value(new_value: float, emit_value_changed := true) -> void:
+	if is_nan(new_value):
+		return
 	var old_value := _value
 	_value = validate(new_value)
 	if _value != old_value and emit_value_changed:
@@ -33,7 +35,7 @@ func get_value() -> float:
 func _ready() -> void:
 	value_changed.connect(_on_value_changed)
 	if attribute != null:
-		set_value(attribute.value)
+		set_value(attribute.get_value())
 		attribute.value_changed.connect(set_value)
 		set_text_tint()
 		num_edit.tooltip_text = attribute_name
@@ -54,40 +56,16 @@ func validate(new_value: float) -> float:
 func _on_value_changed(new_value: float) -> void:
 	num_edit.text = String.num(new_value, 4)
 	if attribute != null:
-		attribute.value = new_value
+		attribute.set_value(new_value)
 
 
 # Hacks to make LineEdit bearable.
 
 func _on_focus_exited() -> void:
-	set_value(calculate_expression(num_edit.text))
+	set_value(Utils.evaluate_numeric_expression(num_edit.text))
 
 func _on_text_submitted(submitted_text: String) -> void:
-	set_value(calculate_expression(submitted_text))
-
-# This function evaluates expressions even if "," or ";" is used as a decimal separator.
-func calculate_expression(text: String) -> float:
-	var expr := Expression.new()
-	
-	var err := expr.parse(text.replace(",", "."))
-	if err == OK:
-		var result: Variant = expr.execute()
-		if not expr.has_execute_failed():
-			return result
-	
-	err = expr.parse(text.replace(";", "."))
-	if err == OK:
-		var result: Variant = expr.execute()
-		if not expr.has_execute_failed():
-			return result
-	
-	err = expr.parse(text)
-	if err == OK:
-		var result: Variant = expr.execute()
-		if not expr.has_execute_failed():
-			return result
-	
-	return get_value()
+	set_value(Utils.evaluate_numeric_expression(submitted_text))
 
 
 func add_tooltip(text: String) -> void:

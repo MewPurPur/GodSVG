@@ -2,6 +2,9 @@ class_name Handle extends RefCounted
 
 signal moved(new_value: Vector2)
 
+enum DisplayMode {BIG, SMALL}
+var display_mode := DisplayMode.BIG
+
 var tag: Tag
 var tag_index := -1
 var pos: Vector2

@@ -26,7 +26,7 @@ func _ready() -> void:
 	if attribute != null:
 		attribute.value_changed.connect(_on_value_changed)
 		attribute.command_changed.connect(sync_value)
-		set_value(attribute.value)
+		set_value(attribute.get_value())
 
 func _on_value_changed(new_value: String) -> void:
 	line_edit.text = new_value

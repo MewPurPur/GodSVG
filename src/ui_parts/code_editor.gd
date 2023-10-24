@@ -10,7 +10,7 @@ const SVGFileDialog := preload("svg_file_dialog.tscn")
 func _ready() -> void:
 	SVG.parsing_finished.connect(update_error)
 	auto_update_text()
-	size_label.text = String.humanize_size(code_edit.text.length())
+	update_size_label()
 	code_edit.clear_undo_history()
 	SVG.root_tag.attribute_changed.connect(auto_update_text)
 	SVG.root_tag.child_tag_attribute_changed.connect(auto_update_text.unbind(1))
@@ -22,7 +22,7 @@ func _ready() -> void:
 func auto_update_text() -> void:
 	if not code_edit.has_focus():
 		code_edit.text = SVG.string
-		size_label.text = String.humanize_size(code_edit.text.length())
+		update_size_label()
 
 func update_error(err: String) -> void:
 	if err.is_empty():
@@ -96,10 +96,14 @@ func export_svg(path: String) -> void:
 func _on_code_edit_text_changed() -> void:
 	SVG.string = code_edit.text
 	SVG.sync_data()
-	size_label.text = String.humanize_size(code_edit.text.length())
+	update_size_label()
 
 
 func _input(event: InputEvent) -> void:
 	if (code_edit.has_focus() and event is InputEventMouseButton and\
 	not code_edit.get_global_rect().has_point(event.position)):
 		code_edit.release_focus()
+
+
+func update_size_label() -> void:
+	size_label.text = String.humanize_size(code_edit.text.length())

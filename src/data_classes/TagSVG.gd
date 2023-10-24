@@ -10,17 +10,17 @@ func _init() -> void:
 	super()
 
 func set_canvas(new_width: float, new_height: float, new_viewbox: Rect2) -> void:
-	var is_width_different: bool = attributes.width.value != new_width
-	var is_height_different: bool = attributes.height.value != new_height
-	var is_viewbox_different: bool = attributes.viewBox.value != new_viewbox
+	var is_width_different: bool = attributes.width.get_value() != new_width
+	var is_height_different: bool = attributes.height.get_value() != new_height
+	var is_viewbox_different: bool = attributes.viewBox.get_value() != new_viewbox
 	# Ensure the signal is not emitted unless dimensions have really changed.
 	if is_width_different or is_height_different or is_viewbox_different:
 		if is_width_different:
-			attributes.width.value = new_width
+			attributes.width.set_value(new_width)
 		if is_height_different:
-			attributes.height.value = new_height
+			attributes.height.set_value(new_height)
 		if is_viewbox_different:
-			attributes.viewBox.value = new_viewbox
+			attributes.viewBox.set_value(new_viewbox)
 		attribute_changed.emit()
 
 func duplicate() -> TagSVG:

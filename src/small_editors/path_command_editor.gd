@@ -283,16 +283,16 @@ func _on_gui_input(event: InputEvent) -> void:
 
 func determine_selection_highlight() -> void:
 	var stylebox: StyleBox
-	if tag_idx == Interactions.tag_with_inner_selections and\
+	if tag_idx == Interactions.semi_selected_tag and\
 	cmd_idx in Interactions.inner_selections:
 		stylebox = StyleBoxFlat.new()
 		stylebox.set_corner_radius_all(3)
-		if Interactions.tag_with_inner_hovered == tag_idx and\
+		if Interactions.semi_hovered_tag == tag_idx and\
 		Interactions.inner_hovered == cmd_idx:
 			stylebox.bg_color = Color(0.7, 0.7, 1.0, 0.17)
 		else:
 			stylebox.bg_color = Color(0.6, 0.6, 1.0, 0.16)
-	elif Interactions.tag_with_inner_hovered == tag_idx and\
+	elif Interactions.semi_hovered_tag == tag_idx and\
 	Interactions.inner_hovered == cmd_idx:
 		stylebox = StyleBoxFlat.new()
 		stylebox.set_corner_radius_all(3)
@@ -317,4 +317,6 @@ var mouse_inside := false:
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion:
-		mouse_inside = get_global_rect().has_point(get_global_mouse_position())
+		mouse_inside = get_global_rect().has_point(get_global_mouse_position()) and\
+		get_node(^"../../../../../../../../..").get_global_rect().\
+				has_point(get_global_mouse_position())

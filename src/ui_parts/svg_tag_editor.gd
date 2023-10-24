@@ -46,14 +46,14 @@ func _ready() -> void:
 
 
 func update_svg_attributes() -> void:
-	var new_width_value: float= SVG.root_tag.attributes.width.value
-	var new_height_value: float = SVG.root_tag.attributes.height.value
+	var new_width_value: float = SVG.root_tag.attributes.width.get_value()
+	var new_height_value: float = SVG.root_tag.attributes.height.get_value()
 	width_edit.set_value(new_width_value, false)
 	height_edit.set_value(new_height_value, false)
 	if coupled_viewbox:
 		viewbox_edit.set_value(Rect2(0, 0, new_width_value, new_height_value))
 	else:
-		viewbox_edit.set_value(SVG.root_tag.attributes.viewBox.value)
+		viewbox_edit.set_value(SVG.root_tag.attributes.viewBox.get_value())
 
 
 func _on_couple_button_toggled(toggled_on: bool) -> void:

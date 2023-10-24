@@ -46,14 +46,15 @@ func zoom_out() -> void:
 	center_frame()
 
 func zoom_reset() -> void:
-	zoom_level = float(nearest_po2(int(8192 / maxf(SVG.root_tag.attributes.width.value,
-			SVG.root_tag.attributes.height.value))) / 32.0)
+	var svg_attribs := SVG.root_tag.attributes
+	zoom_level = float(nearest_po2(int(8192 / maxf(svg_attribs.width.get_value(),
+			svg_attribs.height.get_value()))) / 32.0)
 	center_frame()
 
 
 func resize() -> void:
-	display.size = Vector2(SVG.root_tag.attributes.width.value,
-			SVG.root_tag.attributes.height.value)
+	var svg_attribs := SVG.root_tag.attributes
+	display.size = Vector2(svg_attribs.width.get_value(), svg_attribs.height.get_value())
 	center_frame()
 
 func center_frame() -> void:
