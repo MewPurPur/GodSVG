@@ -95,7 +95,7 @@ func sync_handles() -> void:
 	queue_redraw()
 
 func generate_path_handles(path_attribute: AttributePath) -> Array[Handle]:
-	var path_handles: Array[Handle]
+	var path_handles: Array[Handle] = []
 	for idx in path_attribute.get_command_count():
 		var path_command := path_attribute.get_command(idx)
 		if path_command.command_char.to_upper() != "Z":
@@ -122,15 +122,15 @@ func _draw() -> void:
 				hover_color if tag_idx == Interactions.hovered_tag else default_color
 		match tag.title:
 			"circle":
-				var cx: float = attribs.cx.value
-				var cy: float = attribs.cy.value
-				var r: float = attribs.r.value
+				var cx: float = attribs.cx.get_value()
+				var cy: float = attribs.cy.get_value()
+				var r: float = attribs.r.get_value()
 				draw_arc(convert_in(Vector2(cx, cy)), r * viewbox_zoom, 0, TAU,
 						maxi(10, int(r * zoom * viewbox_zoom)), color, thickness)
 			"ellipse":
-				var c := Vector2(attribs.cx.value, attribs.cy.value)
-				var rx: float = attribs.rx.value
-				var ry: float = attribs.ry.value
+				var c := Vector2(attribs.cx.get_value(), attribs.cy.get_value())
+				var rx: float = attribs.rx.get_value()
+				var ry: float = attribs.ry.get_value()
 				# Squished circle.
 				var points := PackedVector2Array()
 				for i in range(0, 361, 2):
@@ -138,12 +138,12 @@ func _draw() -> void:
 					points.append(convert_in(c + Vector2(cos(d) * rx, sin(d) * ry)))
 				draw_polyline(points, color, thickness)
 			"rect":
-				var x: float = attribs.x.value
-				var y: float = attribs.y.value
-				var height: float = attribs.height.value
-				var width: float = attribs.width.value
-				var rx: float = attribs.rx.value
-				var ry: float = attribs.ry.value
+				var x: float = attribs.x.get_value()
+				var y: float = attribs.y.get_value()
+				var height: float = attribs.height.get_value()
+				var width: float = attribs.width.get_value()
+				var rx: float = attribs.rx.get_value()
+				var ry: float = attribs.ry.get_value()
 				var points := PackedVector2Array()
 				if rx == 0 and ry == 0:
 					# Basic rectangle.
@@ -183,10 +183,10 @@ func _draw() -> void:
 								Vector2(cos(d) * rx, sin(d) * ry)))
 				draw_polyline(points, color, thickness)
 			"line":
-				var x1: float = attribs.x1.value
-				var y1: float = attribs.y1.value
-				var x2: float = attribs.x2.value
-				var y2: float = attribs.y2.value
+				var x1: float = attribs.x1.get_value()
+				var y1: float = attribs.y1.get_value()
+				var x2: float = attribs.x2.get_value()
+				var y2: float = attribs.y2.get_value()
 				draw_line(convert_in(Vector2(x1, y1)),
 						convert_in(Vector2(x2, y2)), color, thickness)
 			"path":
@@ -412,9 +412,9 @@ func _draw() -> void:
 							if prev_M_idx == -1:
 								break
 							
-							var end := convert_in(Vector2(prev_M_cmd.x, prev_M_cmd.y))
+							var end := Vector2(prev_M_cmd.x, prev_M_cmd.y)
 							if prev_M_cmd.relative:
-								end += convert_in(prev_M_cmd.start)
+								end += prev_M_cmd.start
 							draw_line(convert_in(cmd.start), convert_in(end),
 									temp_color, thickness)
 						_: continue
@@ -448,15 +448,15 @@ func _draw() -> void:
 
 
 func get_viewbox_zoom() -> float:
-	var width: float = SVG.root_tag.attributes.width.value
-	var height: float = SVG.root_tag.attributes.height.value
-	var viewbox_size: Vector2 = SVG.root_tag.attributes.viewBox.value.size
+	var width: float = SVG.root_tag.attributes.width.get_value()
+	var height: float = SVG.root_tag.attributes.height.get_value()
+	var viewbox_size: Vector2 = SVG.root_tag.attributes.viewBox.get_value().size
 	return minf(width / viewbox_size.x, height / viewbox_size.y)
 
 func convert_in(pos: Vector2) -> Vector2:
-	var width: float = SVG.root_tag.attributes.width.value
-	var height: float = SVG.root_tag.attributes.height.value
-	var viewbox: Rect2 = SVG.root_tag.attributes.viewBox.value
+	var width: float = SVG.root_tag.attributes.width.get_value()
+	var height: float = SVG.root_tag.attributes.height.get_value()
+	var viewbox: Rect2 = SVG.root_tag.attributes.viewBox.get_value()
 	
 	pos = (size / Vector2(width, height) * pos - viewbox.position) * get_viewbox_zoom()
 	if viewbox.size.x / viewbox.size.y >= width / height:
@@ -465,9 +465,9 @@ func convert_in(pos: Vector2) -> Vector2:
 		return pos + Vector2((width - height * viewbox.size.x / viewbox.size.y) / 2, 0)
 
 func convert_out(pos: Vector2) -> Vector2:
-	var width: float = SVG.root_tag.attributes.width.value
-	var height: float = SVG.root_tag.attributes.height.value
-	var viewbox: Rect2 = SVG.root_tag.attributes.viewBox.value
+	var width: float = SVG.root_tag.attributes.width.get_value()
+	var height: float = SVG.root_tag.attributes.height.get_value()
+	var viewbox: Rect2 = SVG.root_tag.attributes.viewBox.get_value()
 	
 	if viewbox.size.x / viewbox.size.y >= width / height:
 		pos.y -= (height - width * viewbox.size.y / viewbox.size.x) / 2

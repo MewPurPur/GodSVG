@@ -15,8 +15,10 @@ func _init(path_ref: Attribute, idx: int, x_name := &"x", y_name := &"y") -> voi
 func set_pos(new_pos: Vector2) -> void:
 	var command := path_attribute.get_command(command_index)
 	if x_param in command:
+		# Don't emit command_changed for the X change if there'll be a Y change too.
 		path_attribute.set_command_property(command_index, x_param,
-				new_pos.x - command.start.x if command.relative else new_pos.x)
+				new_pos.x - command.start.x if command.relative else new_pos.x,
+				not y_param in command)
 		pos.x = new_pos.x
 	else:
 		pos.x = command.start.x

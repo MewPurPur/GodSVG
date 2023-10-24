@@ -3,7 +3,7 @@ class_name AttributeRect extends Attribute
 func _init(new_default: Variant = null, new_init: Variant = null) -> void:
 	type = Type.RECT
 	default = new_default
-	value = new_init if new_init != null else new_default
+	set_value(new_init if new_init != null else new_default, false)
 
 
 static func string_to_rect(string: String) -> Rect2:
