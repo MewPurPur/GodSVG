@@ -144,11 +144,9 @@ var mouse_inside := false:
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion:
-		if get_global_rect().has_point(get_global_mouse_position()) and\
-		Interactions.tag_with_inner_hovered != tag_index:
-			mouse_inside = true
-		else:
-			mouse_inside = false
+		mouse_inside = get_global_rect().has_point(get_global_mouse_position()) and\
+		get_node(^"../..").get_global_rect().has_point(get_global_mouse_position()) and\
+		Interactions.semi_hovered_tag != tag_index
 
 
 func determine_selection_highlight() -> void:
@@ -170,5 +168,5 @@ func determine_selection_highlight() -> void:
 	add_theme_stylebox_override(&"panel", stylebox)
 
 func select_conditionally() -> void:
-	if Interactions.tag_with_inner_selections != tag_index:
+	if Interactions.semi_selected_tag != tag_index:
 		Interactions.set_selection(tag_index)

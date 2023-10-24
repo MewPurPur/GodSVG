@@ -194,16 +194,17 @@ func _draw() -> void:
 				for cmd_idx in pathdata.get_command_count():
 					# Decide on color for the command.
 					var temp_color := color
-					if Interactions.tag_with_inner_hovered == tag_idx and\
+					if Interactions.semi_hovered_tag == tag_idx and\
 					not tag_idx in Interactions.selected_tags:
 						if Interactions.inner_hovered == cmd_idx:
 							temp_color = hover_color
-					if Interactions.tag_with_inner_selections == tag_idx:
+					if Interactions.semi_selected_tag == tag_idx:
 						if cmd_idx in Interactions.inner_selections:
 							temp_color = selection_color
 					# Drawing logic.
 					var cmd := pathdata.get_command(cmd_idx)
 					var relative := cmd.relative
+					
 					match cmd.command_char.to_upper():
 						"L":
 							var end := cmd.start + Vector2(cmd.x, cmd.y) if relative\
@@ -419,32 +420,38 @@ func _draw() -> void:
 									temp_color, thickness)
 						_: continue
 	
+	var normal_handles: Array[Handle] = []
+	var selected_handles: Array[Handle] = []
+	var hovered_handles: Array[Handle] = []
 	for handle in handles:
-		var outer_circle_color: Color
-		var is_selected: bool = (handle is XYHandle and handle.tag_index in\
-				Interactions.selected_tags) or (handle is PathHandle and ((
-				handle.tag_index == Interactions.tag_with_inner_selections and\
-				handle.command_index in Interactions.inner_selections) or\
-				handle.tag_index in Interactions.selected_tags))
-		var is_hovered: bool = (handle is XYHandle and handle.tag_index ==\
-				Interactions.hovered_tag) or (handle is PathHandle and ((handle.tag_index ==\
-				Interactions.tag_with_inner_hovered and handle.command_index ==\
-				Interactions.inner_hovered) or handle.tag_index == Interactions.hovered_tag))
-		
-		if is_selected:
-			outer_circle_color = Color.from_string(selection_color_string, Color(0, 0, 0))
-		elif is_hovered:
-			outer_circle_color = Color.from_string(hover_color_string, Color(0, 0, 0))
+		if (handle is XYHandle and handle.tag_index == Interactions.hovered_tag) or\
+		(handle is PathHandle and ((handle.tag_index == Interactions.semi_hovered_tag and\
+		handle.command_index == Interactions.inner_hovered) or\
+		handle.tag_index == Interactions.hovered_tag)):
+			hovered_handles.append(handle)
+		elif (handle is XYHandle and handle.tag_index in Interactions.selected_tags) or\
+		(handle is PathHandle and ((handle.tag_index == Interactions.semi_selected_tag and\
+		handle.command_index in Interactions.inner_selections) or\
+		handle.tag_index in Interactions.selected_tags)):
+			selected_handles.append(handle)
 		else:
-			outer_circle_color = Color.from_string(default_color_string, Color(0, 0, 0))
-		
-		match handle.display_mode:
-			handle.DisplayMode.BIG:
-				draw_circle(convert_in(handle.pos), 4 / zoom, outer_circle_color)
-				draw_circle(convert_in(handle.pos), 2.25 / zoom, Color.WHITE)
-			handle.DisplayMode.SMALL:
-				draw_circle(convert_in(handle.pos), 3 / zoom, outer_circle_color)
-				draw_circle(convert_in(handle.pos), 1.75 / zoom, Color.WHITE)
+			normal_handles.append(handle)
+	
+	for handle in normal_handles:
+		draw_handle(handle, default_color)
+	for handle in selected_handles:
+		draw_handle(handle, selection_color)
+	for handle in hovered_handles:
+		draw_handle(handle, hover_color)
+
+func draw_handle(handle: Handle, outer_circle_color: Color) -> void:
+	match handle.display_mode:
+		handle.DisplayMode.BIG:
+			draw_circle(convert_in(handle.pos), 4 / zoom, outer_circle_color)
+			draw_circle(convert_in(handle.pos), 2.25 / zoom, Color.WHITE)
+		handle.DisplayMode.SMALL:
+			draw_circle(convert_in(handle.pos), 3 / zoom, outer_circle_color)
+			draw_circle(convert_in(handle.pos), 1.75 / zoom, Color.WHITE)
 
 
 func get_viewbox_zoom() -> float:
