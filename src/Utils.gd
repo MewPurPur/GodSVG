@@ -63,3 +63,23 @@ static func Et(r: Vector2, cosine: float, sine: float, t: float) -> Vector2:
 	var xt := -r.x * sin(t)
 	var yt := r.y * cos(t)
 	return Vector2(xt * cosine - yt * sine, xt * sine + yt * cosine)
+
+# This function evaluates expressions even if "," or ";" is used as a decimal separator.
+static func evaluate_numeric_expression(text: String) -> float:
+	var expr := Expression.new()
+	var err := expr.parse(text.replace(",", "."))
+	if err == OK:
+		var result: Variant = expr.execute()
+		if not expr.has_execute_failed():
+			return result
+	err = expr.parse(text.replace(";", "."))
+	if err == OK:
+		var result: Variant = expr.execute()
+		if not expr.has_execute_failed():
+			return result
+	err = expr.parse(text)
+	if err == OK:
+		var result: Variant = expr.execute()
+		if not expr.has_execute_failed():
+			return result
+	return NAN

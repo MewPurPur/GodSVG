@@ -36,7 +36,8 @@ func duplicate_tag(idx: int) -> void:
 	var type: GDScript = child_tags[idx].get_script()
 	var new_tag = type.new()
 	for attribute in new_tag.attributes:
-		new_tag.attributes[attribute].value = tag_to_dupe.attributes[attribute].value
+		new_tag.attributes[attribute].set_value(
+				tag_to_dupe.attributes[attribute].get_value())
 	# Add the new tag.
 	child_tags.insert(idx + 1, new_tag)
 	new_tag.attribute_changed.connect(emit_child_tag_attribute_changed)

@@ -1,29 +1,23 @@
 extends Node
 
-const display_path := "user://display.svg"
-
 var string := ""
-
 var root_tag := TagSVG.new()
 
 signal parsing_finished(err_text: String)
 
 func _ready() -> void:
-	SVG.root_tag.changed_unknown.connect(sync_string)
-	SVG.root_tag.attribute_changed.connect(sync_string)
-	SVG.root_tag.child_tag_attribute_changed.connect(sync_string)
-	SVG.root_tag.tag_added.connect(sync_string)
-	SVG.root_tag.tag_deleted.connect(sync_string.unbind(1))
-	SVG.root_tag.tag_moved.connect(sync_string.unbind(2))
+	SVG.root_tag.changed_unknown.connect(tags_to_string)
+	SVG.root_tag.attribute_changed.connect(tags_to_string)
+	SVG.root_tag.child_tag_attribute_changed.connect(tags_to_string)
+	SVG.root_tag.tag_added.connect(tags_to_string)
+	SVG.root_tag.tag_deleted.connect(tags_to_string.unbind(1))
+	SVG.root_tag.tag_moved.connect(tags_to_string.unbind(2))
 	
 	if GlobalSettings.save_svg:
 		string = GlobalSettings.save_data.svg
 		sync_data()
 	else:
-		sync_string()
-
-func sync_string() -> void:
-	tags_to_string()
+		tags_to_string()
 
 func sync_data() -> void:
 	var error_text := get_svg_error()
@@ -33,9 +27,9 @@ func sync_data() -> void:
 
 
 func tags_to_string() -> void:
-	var w: float = root_tag.attributes.width.value
-	var h: float = root_tag.attributes.height.value
-	var viewbox: Rect2 = root_tag.attributes.viewBox.value
+	var w: float = root_tag.attributes.width.get_value()
+	var h: float = root_tag.attributes.height.get_value()
+	var viewbox: Rect2 = root_tag.attributes.viewBox.get_value()
 	# Opening
 	string = '<svg width="%s" height="%s" viewBox="%s"' % [String.num(w, 4),
 			String.num(h, 4), AttributeRect.rect_to_string(viewbox)]
@@ -45,7 +39,7 @@ func tags_to_string() -> void:
 		string += '<' + inner_tag.title
 		for attribute_key in inner_tag.attributes:
 			var attribute: Attribute = inner_tag.attributes[attribute_key]
-			var value: Variant = attribute.value
+			var value: Variant = attribute.get_value()
 			if value == attribute.default:
 				continue
 			
@@ -95,10 +89,11 @@ func string_to_tags() -> void:
 					_: tag = Tag.new()
 				for element in attribute_dict:
 					if tag.attributes.has(element):
-						if typeof(tag.attributes[element].value) == Variant.Type.TYPE_STRING:
-							tag.attributes[element].value = attribute_dict[element]
-						elif typeof(tag.attributes[element].value) == Variant.Type.TYPE_FLOAT:
-							tag.attributes[element].value = attribute_dict[element].to_float()
+						var attribute: Attribute = tag.attributes[element]
+						if typeof(attribute.get_value()) == Variant.Type.TYPE_STRING:
+							attribute.set_value(attribute_dict[element], false)
+						elif typeof(attribute.get_value()) == Variant.Type.TYPE_FLOAT:
+							attribute.set_value(attribute_dict[element].to_float())
 				new_tags.append(tag)
 	root_tag.replace_tags(new_tags)
 

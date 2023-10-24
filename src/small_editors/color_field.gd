@@ -173,7 +173,7 @@ func get_value() -> String:
 func _ready() -> void:
 	value_changed.connect(_on_value_changed)
 	if attribute != null:
-		set_value(attribute.value)
+		set_value(attribute.get_value())
 	color_edit.text = get_value()
 	color_edit.tooltip_text = attribute_name
 
@@ -186,7 +186,7 @@ func _on_value_changed(new_value: String) -> void:
 	color_edit.text = new_value.trim_prefix("#")
 	queue_redraw()
 	if attribute != null:
-		attribute.value = new_value
+		attribute.set_value(new_value)
 
 func _on_button_pressed() -> void:
 	color_picker.popup(Utils.calculate_popup_rect(
