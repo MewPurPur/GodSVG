@@ -19,10 +19,11 @@ signal selection_changed
 var hovered_tag := -1
 var selected_tags: Array[int] = []
 
+# Semi-hovered means the tag has inner selections, but it is not selected itself.
 # For example, individual path commands.
-var tag_with_inner_selections: int = -1
+var semi_selected_tag: int = -1
 var inner_selections: Array[int] = []
-var tag_with_inner_hovered: int = -1
+var semi_hovered_tag: int = -1
 var inner_hovered: int = -1
 
 
@@ -53,14 +54,14 @@ func toggle_inner_selection(idx: int, inner_idx: int) -> void:
 
 func set_selection(idx: int) -> void:
 	if selected_tags.size() != 1 or selected_tags[0] != idx:
-		if tag_with_inner_selections != -1:
-			tag_with_inner_selections = -1
+		if semi_selected_tag != -1:
+			semi_selected_tag = -1
 			inner_selections.clear()
 		selected_tags = [idx]
 		selection_changed.emit()
 
 func set_inner_selection(idx: int, inner_idx: int) -> void:
-	tag_with_inner_selections = idx
+	semi_selected_tag = idx
 	inner_selections = [inner_idx]
 	selected_tags.clear()
 	selection_changed.emit()
@@ -71,7 +72,7 @@ func clear_selection() -> void:
 
 func clear_inner_selection() -> void:
 	inner_selections.clear()
-	tag_with_inner_selections = -1
+	semi_selected_tag = -1
 	selection_changed.emit()
 
 
@@ -81,8 +82,8 @@ func set_hovered(idx: int) -> void:
 		hover_changed.emit()
 
 func set_inner_hovered(idx: int, inner_idx: int) -> void:
-	if tag_with_inner_hovered != idx:
-		tag_with_inner_hovered = idx
+	if semi_hovered_tag != idx:
+		semi_hovered_tag = idx
 		inner_hovered = inner_idx
 		if idx != -1 and inner_idx != -1:
 			hovered_tag = -1
@@ -99,8 +100,8 @@ func remove_hovered(idx: int) -> void:
 		hover_changed.emit()
 
 func remove_inner_hovered(idx: int, inner_idx: int) -> void:
-	if tag_with_inner_hovered == idx and inner_hovered == inner_idx:
-		tag_with_inner_hovered = -1
+	if semi_hovered_tag == idx and inner_hovered == inner_idx:
+		semi_hovered_tag = -1
 		inner_hovered = -1
 		hover_changed.emit()
 
@@ -141,11 +142,11 @@ func _unhandled_input(event: InputEvent) -> void:
 			selected_tags.reverse()
 			for tag_idx in selected_tags:
 				SVG.root_tag.delete_tag(tag_idx)
-		elif !inner_selections.is_empty() and tag_with_inner_selections != -1:
+		elif !inner_selections.is_empty() and semi_selected_tag != -1:
 			inner_selections.sort()
 			inner_selections.reverse()
 			for cmd_idx in inner_selections:
-				var tag_ref := SVG.root_tag.child_tags[tag_with_inner_selections]
+				var tag_ref := SVG.root_tag.child_tags[semi_selected_tag]
 				match tag_ref.title:
 					"path": tag_ref.attributes.d.delete_command(cmd_idx)
 	elif event.is_action_pressed(&"move_up"):
@@ -175,7 +176,7 @@ func _unhandled_input(event: InputEvent) -> void:
 			for action_name in path_actions_dict.keys():
 				if event.is_action_pressed(action_name):
 					var last_inner_selection = inner_selections.max()
-					var real_tag := SVG.root_tag.child_tags[tag_with_inner_selections]
+					var real_tag := SVG.root_tag.child_tags[semi_selected_tag]
 					real_tag.attributes.d.insert_command(
 							last_inner_selection + 1, path_actions_dict[action_name])
 					break
