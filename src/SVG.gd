@@ -5,15 +5,16 @@ const display_path := "user://display.svg"
 var string := ""
 
 var root_tag := TagSVG.new()
+var root_tag_last_value:TagSVG
 
 signal parsing_finished(err_text: String)
 
 func _ready() -> void:
 	SVG.root_tag.changed_unknown.connect(sync_string)
 	SVG.root_tag.attribute_changed.connect(sync_string)
-	SVG.root_tag.child_tag_attribute_changed.connect(sync_string)
-	SVG.root_tag.tag_added.connect(sync_string)
-	SVG.root_tag.tag_deleted.connect(sync_string.unbind(1))
+	SVG.root_tag.child_tag_attribute_changed.connect(sync_string.unbind(1))
+	SVG.root_tag.tag_added.connect(sync_string.unbind(1))
+	SVG.root_tag.tag_deleted.connect(sync_string.unbind(2))
 	SVG.root_tag.tag_moved.connect(sync_string.unbind(2))
 	
 	if GlobalSettings.save_svg:
@@ -21,6 +22,13 @@ func _ready() -> void:
 		sync_data()
 	else:
 		sync_string()
+	
+	root_tag_last_value = root_tag.duplicate()
+	SVG.root_tag.attribute_changed.connect(add_undoredo_SVG_root)
+	SVG.root_tag.child_tag_attribute_changed.connect(add_undoredo_child_tag_attribute)
+	SVG.root_tag.tag_added.connect(add_undoredo_tag_added)
+	SVG.root_tag.tag_deleted.connect(add_undoredo_tag_delete)
+	SVG.root_tag.tag_moved.connect(add_undoredo_tag_moved)
 
 func sync_string() -> void:
 	tags_to_string()
@@ -102,7 +110,6 @@ func string_to_tags() -> void:
 				new_tags.append(tag)
 	root_tag.replace_tags(new_tags)
 
-
 # TODO Can definitely be improved.
 func get_svg_error() -> String:
 	# Easy cases.
@@ -138,3 +145,96 @@ func get_svg_error() -> String:
 				return tr(&"#err_improper_nesting")
 			nodes.pop_back()
 	return "" if nodes.is_empty() else tr(&"#err_improper_closing")
+
+func add_undoredo_SVG_root():
+	var new_width: float = root_tag.attributes.width.value
+	var new_length: float = root_tag.attributes.height.value
+	var new_viewbox: Rect2 = root_tag.attributes.viewBox.value
+	var last_width: float = root_tag_last_value.attributes.width.value
+	var last_length: float = root_tag_last_value.attributes.height.value
+	var last_viewbox: Rect2 = root_tag_last_value.attributes.viewBox.value
+	var changed = false
+	if new_viewbox != last_viewbox:
+		changed = true
+		root_tag_last_value.attributes.viewBox.value = new_viewbox
+	if new_width != last_width:
+		changed = true
+		root_tag_last_value.attributes.width.value = new_width
+		root_tag_last_value.attributes.viewBox.value.size.x = new_width
+	if new_length != last_length:
+		changed = true
+		root_tag_last_value.attributes.height.value = new_length
+		print(root_tag_last_value.attributes.viewBox.value.size.y)
+		root_tag_last_value.attributes.viewBox.value.size.y = new_length
+		print(root_tag_last_value.attributes.viewBox.value.size.y)
+	if not changed or UndoRedoManager.is_excuting:
+		return
+	UndoRedoManager.add_action_simple_methods(
+		"Change SVG root",
+		root_tag.set_canvas.bind(new_width,new_length,new_viewbox),
+		root_tag.set_canvas.bind(last_width,last_length,last_viewbox),
+		root_tag,
+		false
+		)
+
+func add_undoredo_child_tag_attribute(child_tag:Tag):
+	#get indexand use it to find its last values
+	var child_inx = root_tag.find_child_tag(child_tag)
+	var last_value_child_tag = root_tag_last_value.get_child_tag(child_inx)
+	var changed = false
+	var changed_attribute_key:String = ""
+	var new_value
+	var old_value
+	for key in child_tag.attributes:
+		if last_value_child_tag.attributes[key].value != child_tag.attributes[key].value:
+			changed = true
+			changed_attribute_key = key
+			new_value = child_tag.attributes[key].value
+			old_value = last_value_child_tag.attributes[key].value
+			last_value_child_tag.attributes[key].value = new_value	
+	if not changed or UndoRedoManager.is_excuting:
+		return
+	UndoRedoManager.add_action_simple_property(
+		"Change " + child_tag.title + " : " + changed_attribute_key,
+		child_tag.attributes[changed_attribute_key],
+		&"value",
+		new_value,
+		old_value,
+		false
+		)
+
+func  add_undoredo_tag_added(child_tag:Tag):
+	root_tag_last_value.add_tag(child_tag.duplicate())
+	if UndoRedoManager.is_excuting:
+		return
+	UndoRedoManager.add_action_simple_methods(
+		"Added or Removed "+ child_tag.title,
+		root_tag.add_tag.bind(child_tag),
+		root_tag.delete_tag_with_reference.bind(child_tag),
+		child_tag,
+		false
+		)
+		
+func  add_undoredo_tag_delete(idx:int,child_tag:Tag):
+	root_tag_last_value.delete_tag(idx)
+	if UndoRedoManager.is_excuting:
+		return
+	UndoRedoManager.add_action_simple_methods(
+		"Added or Removed "+ child_tag.title,
+		root_tag.delete_tag_with_reference.bind(child_tag),
+		root_tag.add_tag_and_move_to.bind(child_tag,idx),
+		child_tag,
+		false
+		)
+		
+func add_undoredo_tag_moved(old_idx:int , new_idx:int):
+	root_tag_last_value.move_tag(new_idx, old_idx)
+	if UndoRedoManager.is_excuting:
+		return
+	UndoRedoManager.add_action_simple_methods(
+		"Moved "+ root_tag.get_child_tag(new_idx).title,
+		root_tag.move_tag.bind(old_idx , new_idx),
+		root_tag.move_tag.bind(new_idx, old_idx),
+		root_tag,
+		false
+		)
