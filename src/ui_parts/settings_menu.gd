@@ -39,3 +39,7 @@ func _on_language_chosen(locale: String) -> void:
 
 func update_language_button() -> void:
 	lang_button.text = tr(&"#language") + ": " + TranslationServer.get_locale().to_upper()
+
+
+func _on_zoom_pressed():
+	GlobalSettings.invert_zoom = not GlobalSettings.invert_zoom
