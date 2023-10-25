@@ -1,6 +1,6 @@
 class_name TagB extends Tag  # B as in branch.
 
-signal child_tag_attribute_changed()
+signal child_tag_attribute_changed
 signal child_tag_attribute_change_details(old_value:Variant,new_value: Variant,\
 	child:Tag,attribute_name:String)
 signal tag_added(child:Tag)
