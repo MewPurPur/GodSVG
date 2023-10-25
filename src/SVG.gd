@@ -2,14 +2,14 @@ extends Node
 
 var string := ""
 var root_tag := TagSVG.new()
-var root_tag_last_value:TagSVG
+var root_tag_old_attributes:Dictionary
 
 signal parsing_finished(err_text: String)
 
 func _ready() -> void:
 	SVG.root_tag.changed_unknown.connect(tags_to_string)
 	SVG.root_tag.attribute_changed.connect(tags_to_string)
-	SVG.root_tag.child_tag_attribute_changed.connect(tags_to_string.unbind(1))
+	SVG.root_tag.child_tag_attribute_changed.connect(tags_to_string)
 	SVG.root_tag.tag_added.connect(tags_to_string.unbind(1))
 	SVG.root_tag.tag_deleted.connect(tags_to_string.unbind(2))
 	SVG.root_tag.tag_moved.connect(tags_to_string.unbind(2))
@@ -20,9 +20,10 @@ func _ready() -> void:
 	else:
 		tags_to_string()
 	
-	root_tag_last_value = root_tag.duplicate()
+	for key in root_tag.attributes:
+		root_tag_old_attributes[key] = root_tag.attributes[key].duplicate()
 	SVG.root_tag.attribute_changed.connect(add_undoredo_SVG_root)
-	SVG.root_tag.child_tag_attribute_changed.connect(add_undoredo_child_tag_attribute)
+	SVG.root_tag.child_tag_attribute_change_details.connect(add_undoredo_child_tag_attribute)
 	SVG.root_tag.tag_added.connect(add_undoredo_tag_added)
 	SVG.root_tag.tag_deleted.connect(add_undoredo_tag_delete)
 	SVG.root_tag.tag_moved.connect(add_undoredo_tag_moved)
@@ -145,58 +146,44 @@ func add_undoredo_SVG_root() -> void:
 	var new_width: float = root_tag.attributes.width.get_value()
 	var new_length: float = root_tag.attributes.height.get_value()
 	var new_viewbox: Rect2 = root_tag.attributes.viewBox.get_value()
-	var last_width: float = root_tag_last_value.attributes.width.get_value()
-	var last_length: float = root_tag_last_value.attributes.height.get_value()
-	var last_viewbox: Rect2 = root_tag_last_value.attributes.viewBox.get_value()
+	var old_width: float = root_tag_old_attributes.width.get_value()
+	var old_length: float = root_tag_old_attributes.height.get_value()
+	var old_viewbox: Rect2 = root_tag_old_attributes.viewBox.get_value()
 	var changed = false
-	if new_viewbox != last_viewbox:
+	if new_viewbox != old_viewbox:
 		changed = true
-		root_tag_last_value.attributes.viewBox._value = new_viewbox
-	if new_width != last_width:
+		root_tag_old_attributes.viewBox._value = new_viewbox
+	if new_width != old_width:
 		changed = true
-		root_tag_last_value.attributes.width.set_value(new_width)
-		root_tag_last_value.attributes.viewBox._value.size.x = new_width
-	if new_length != last_length:
+		root_tag_old_attributes.width.set_value(new_width)
+		root_tag_old_attributes.viewBox._value.size.x = new_width
+	if new_length != old_length:
 		changed = true
-		root_tag_last_value.attributes.height.set_value(new_length)
-		root_tag_last_value.attributes.viewBox._value.size.y = new_length
+		root_tag_old_attributes.height.set_value(new_length)
+		root_tag_old_attributes.viewBox._value.size.y = new_length
 	if not changed or UndoRedoManager.is_excuting:
 		return
 	UndoRedoManager.add_action_simple_methods(
 		"Change SVG root",
 		root_tag.set_canvas.bind(new_width,new_length,new_viewbox),
-		root_tag.set_canvas.bind(last_width,last_length,last_viewbox),
+		root_tag.set_canvas.bind(old_width,old_length,old_viewbox),
 		root_tag,
 		false
 		)
 
-func add_undoredo_child_tag_attribute(child_tag:Tag) -> void:
-	#get indexand use it to find its last values
-	var child_inx = root_tag.find_child_tag(child_tag)
-	var last_value_child_tag = root_tag_last_value.get_child_tag(child_inx)
-	var changed = false
-	var changed_attribute_key:String = ""
-	var new_value
-	var old_value
-	for key in child_tag.attributes:
-		if last_value_child_tag.attributes[key].get_value() != child_tag.attributes[key].get_value():
-			changed = true
-			changed_attribute_key = key
-			new_value = child_tag.attributes[key].get_value()
-			old_value = last_value_child_tag.attributes[key].get_value()
-			last_value_child_tag.attributes[key].set_value(new_value)
-	if not changed or UndoRedoManager.is_excuting:
+func add_undoredo_child_tag_attribute(old_value:Variant, new_value:Variant,\
+	child_tag:Tag ,attribute_name:String) -> void:
+	if UndoRedoManager.is_excuting:
 		return
 	UndoRedoManager.add_action_simple_methods(
-		"Change " + child_tag.title + " : " + changed_attribute_key,
-		child_tag.attributes[changed_attribute_key].set_value.bind(new_value),
-		child_tag.attributes[changed_attribute_key].set_value.bind(old_value),
-		child_tag.attributes[changed_attribute_key],
+		"Change " + child_tag.title + " : " + attribute_name,
+		child_tag.attributes[attribute_name].set_value.bind(new_value),
+		child_tag.attributes[attribute_name].set_value.bind(old_value),
+		child_tag.attributes[attribute_name],
 		false
 		)
 
 func  add_undoredo_tag_added(child_tag:Tag) -> void:
-	root_tag_last_value.add_tag(child_tag.duplicate())
 	if UndoRedoManager.is_excuting:
 		return
 	UndoRedoManager.add_action_simple_methods(
@@ -208,7 +195,6 @@ func  add_undoredo_tag_added(child_tag:Tag) -> void:
 		)
 		
 func  add_undoredo_tag_delete(idx:int,child_tag:Tag) -> void:
-	root_tag_last_value.delete_tag(idx)
 	if UndoRedoManager.is_excuting:
 		return
 	UndoRedoManager.add_action_simple_methods(
@@ -220,7 +206,6 @@ func  add_undoredo_tag_delete(idx:int,child_tag:Tag) -> void:
 		)
 		
 func add_undoredo_tag_moved(old_idx:int , new_idx:int) -> void:
-	root_tag_last_value.move_tag(new_idx, old_idx)
 	if UndoRedoManager.is_excuting:
 		return
 	UndoRedoManager.add_action_simple_methods(

@@ -30,7 +30,7 @@ var inner_hovered: int = -1
 func _ready() -> void:
 	SVG.root_tag.tag_deleted.connect(_on_tag_deleted.unbind(1))
 	SVG.root_tag.tag_moved.connect(_on_tag_moved)
-	SVG.root_tag.child_tag_attribute_changed.connect(_on_child_tag_attribute_changed.unbind(1))
+	SVG.root_tag.child_tag_attribute_changed.connect(_on_child_tag_attribute_changed)
 
 func toggle_selection(idx: int) -> void:
 	if idx >= 0:

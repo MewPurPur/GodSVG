@@ -1,6 +1,7 @@
 class_name Attribute extends RefCounted
 
 signal value_changed(new_value: Variant)
+signal change_details(old_value:Variant,new_value: Variant)
 signal propagate_value_changed()
 
 enum Type {INT, FLOAT, UFLOAT, NFLOAT, COLOR, PATHDATA, ENUM, RECT}
@@ -16,8 +17,10 @@ var _value: Variant
 # but we also want only the second change to update the whole SVG and the code.
 func set_value(new_value: Variant, propagate := true) -> void:
 	if new_value != _value:
+		var old_value = _value
 		_value = new_value
 		value_changed.emit(new_value)
+		change_details.emit(old_value,new_value)
 		if propagate:
 			propagate_value_changed.emit()
 
