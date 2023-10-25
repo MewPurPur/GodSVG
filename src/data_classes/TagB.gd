@@ -1,8 +1,10 @@
 class_name TagB extends Tag  # B as in branch.
 
-signal child_tag_attribute_changed(child:Tag)
+signal child_tag_attribute_changed()
+signal child_tag_attribute_change_details(old_value:Variant,new_value: Variant,\
+	child:Tag,attribute_name:String)
 signal tag_added(child:Tag)
-signal tag_deleted(tag_idx: int, child:Tag,)
+signal tag_deleted(tag_idx: int, child:Tag)
 signal tag_moved(old_idx: int, new_idx: int)
 signal changed_unknown
 
@@ -10,7 +12,7 @@ var child_tags: Array[Tag]
 
 func add_tag(new_tag: Tag) -> void:
 	child_tags.append(new_tag)
-	new_tag.attribute_changed.connect(emit_child_tag_attribute_changed.bind(new_tag))
+	setup_child_tag_signals(new_tag)
 	tag_added.emit(new_tag)
 
 func add_tag_and_move_to(new_tag:Tag,to_idx:int) -> void:
@@ -21,7 +23,7 @@ func replace_tags(new_tags: Array[Tag]) -> void:
 	child_tags.clear()
 	for tag in new_tags:
 		child_tags.append(tag)
-		tag.attribute_changed.connect(emit_child_tag_attribute_changed.bind(tag))
+		setup_child_tag_signals(tag)
 	changed_unknown.emit()
 
 func delete_tag(idx: int) -> void:
@@ -37,14 +39,14 @@ func move_tag(old_idx: int, new_idx: int) -> void:
 
 func duplicate_tag(idx: int) -> void:
 	var new_tag :Tag = get_child_tag(idx).duplicate()
-	new_tag.attribute_changed.connect(emit_child_tag_attribute_changed.bind(new_tag))
+	setup_child_tag_signals(new_tag)
 	add_tag_and_move_to(new_tag,idx + 1)
 
 func delete_tag_with_reference(tag:Tag) -> void:
 	delete_tag(find_child_tag(tag))
 
-func emit_child_tag_attribute_changed(changed_tag:Tag) -> void:
-	child_tag_attribute_changed.emit(changed_tag)
+func emit_child_tag_attribute_changed() -> void:
+	child_tag_attribute_changed.emit()
 
 func get_child_count() -> int:
 	return child_tags.size()
@@ -55,3 +57,10 @@ func find_child_tag(child:Tag) -> int:
 func get_child_tag(idx:int) -> Tag:
 	return child_tags[idx]
 
+func setup_child_tag_signals(new_tag:Tag):
+	new_tag.attribute_changed.connect(emit_child_tag_attribute_changed)
+	for key in new_tag.attributes:
+		new_tag.attributes[key].change_details.connect(emit_child_tag_attribute_change_details.bind(new_tag,key))
+
+func emit_child_tag_attribute_change_details(old_value:Variant,new_value: Variant,child:Tag,attribute_name:String):
+	child_tag_attribute_change_details.emit(old_value,new_value,child,attribute_name)

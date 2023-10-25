@@ -23,8 +23,8 @@ var handles: Array[Handle]
 
 func _ready() -> void:
 	SVG.root_tag.attribute_changed.connect(queue_full_update)
-	SVG.root_tag.child_tag_attribute_changed.connect(queue_update_texture.unbind(1))
-	SVG.root_tag.child_tag_attribute_changed.connect(sync_handles.unbind(1))
+	SVG.root_tag.child_tag_attribute_changed.connect(queue_update_texture)
+	SVG.root_tag.child_tag_attribute_changed.connect(sync_handles)
 	SVG.root_tag.tag_added.connect(queue_full_update.unbind(1))
 	SVG.root_tag.tag_deleted.connect(queue_full_update.unbind(2))
 	SVG.root_tag.tag_moved.connect(queue_full_update.unbind(2))

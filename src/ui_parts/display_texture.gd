@@ -18,7 +18,7 @@ var update_pending := false
 
 func _ready() -> void:
 	SVG.root_tag.attribute_changed.connect(queue_update)
-	SVG.root_tag.child_tag_attribute_changed.connect(queue_update.unbind(1))
+	SVG.root_tag.child_tag_attribute_changed.connect(queue_update)
 	SVG.root_tag.tag_added.connect(queue_update.unbind(1))
 	SVG.root_tag.tag_deleted.connect(queue_update.unbind(2))
 	SVG.root_tag.tag_moved.connect(queue_update.unbind(2))
