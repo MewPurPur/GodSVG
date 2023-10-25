@@ -190,12 +190,11 @@ func add_undoredo_child_tag_attribute(child_tag:Tag):
 			last_value_child_tag.attributes[key].set_value(new_value)
 	if not changed or UndoRedoManager.is_excuting:
 		return
-	UndoRedoManager.add_action_simple_property(
+	UndoRedoManager.add_action_simple_methods(
 		"Change " + child_tag.title + " : " + changed_attribute_key,
+		child_tag.attributes[changed_attribute_key].set_value.bind(new_value),
+		child_tag.attributes[changed_attribute_key].set_value.bind(old_value),
 		child_tag.attributes[changed_attribute_key],
-		&"value",
-		new_value,
-		old_value,
 		false
 		)
 
