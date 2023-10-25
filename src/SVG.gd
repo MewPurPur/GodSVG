@@ -145,26 +145,24 @@ func get_svg_error() -> String:
 	return "" if nodes.is_empty() else tr(&"#err_improper_closing")
 
 func add_undoredo_SVG_root():
-	var new_width: float = root_tag.attributes.width.value
-	var new_length: float = root_tag.attributes.height.value
-	var new_viewbox: Rect2 = root_tag.attributes.viewBox.value
-	var last_width: float = root_tag_last_value.attributes.width.value
-	var last_length: float = root_tag_last_value.attributes.height.value
-	var last_viewbox: Rect2 = root_tag_last_value.attributes.viewBox.value
+	var new_width: float = root_tag.attributes.width.get_value()
+	var new_length: float = root_tag.attributes.height.get_value()
+	var new_viewbox: Rect2 = root_tag.attributes.viewBox.get_value()
+	var last_width: float = root_tag_last_value.attributes.width.get_value()
+	var last_length: float = root_tag_last_value.attributes.height.get_value()
+	var last_viewbox: Rect2 = root_tag_last_value.attributes.viewBox.get_value()
 	var changed = false
 	if new_viewbox != last_viewbox:
 		changed = true
-		root_tag_last_value.attributes.viewBox.value = new_viewbox
+		root_tag_last_value.attributes.viewBox._value = new_viewbox
 	if new_width != last_width:
 		changed = true
-		root_tag_last_value.attributes.width.value = new_width
-		root_tag_last_value.attributes.viewBox.value.size.x = new_width
+		root_tag_last_value.attributes.width.set_value(new_width)
+		root_tag_last_value.attributes.viewBox._value.size.x = new_width
 	if new_length != last_length:
 		changed = true
-		root_tag_last_value.attributes.height.value = new_length
-		print(root_tag_last_value.attributes.viewBox.value.size.y)
-		root_tag_last_value.attributes.viewBox.value.size.y = new_length
-		print(root_tag_last_value.attributes.viewBox.value.size.y)
+		root_tag_last_value.attributes.height.set_value(new_length)
+		root_tag_last_value.attributes.viewBox._value.size.y = new_length
 	if not changed or UndoRedoManager.is_excuting:
 		return
 	UndoRedoManager.add_action_simple_methods(
@@ -184,12 +182,12 @@ func add_undoredo_child_tag_attribute(child_tag:Tag):
 	var new_value
 	var old_value
 	for key in child_tag.attributes:
-		if last_value_child_tag.attributes[key].value != child_tag.attributes[key].value:
+		if last_value_child_tag.attributes[key].get_value() != child_tag.attributes[key].get_value():
 			changed = true
 			changed_attribute_key = key
-			new_value = child_tag.attributes[key].value
-			old_value = last_value_child_tag.attributes[key].value
-			last_value_child_tag.attributes[key].value = new_value	
+			new_value = child_tag.attributes[key].get_value()
+			old_value = last_value_child_tag.attributes[key].get_value()
+			last_value_child_tag.attributes[key].set_value(new_value)
 	if not changed or UndoRedoManager.is_excuting:
 		return
 	UndoRedoManager.add_action_simple_property(
