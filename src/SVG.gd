@@ -18,7 +18,7 @@ func _ready() -> void:
 		string = GlobalSettings.save_data.svg
 		sync_data()
 	else:
-		sync_string()
+		tags_to_string()
 	
 	root_tag_last_value = root_tag.duplicate()
 	SVG.root_tag.attribute_changed.connect(add_undoredo_SVG_root)
@@ -26,9 +26,6 @@ func _ready() -> void:
 	SVG.root_tag.tag_added.connect(add_undoredo_tag_added)
 	SVG.root_tag.tag_deleted.connect(add_undoredo_tag_delete)
 	SVG.root_tag.tag_moved.connect(add_undoredo_tag_moved)
-
-func sync_string() -> void:
-	tags_to_string()
 
 func sync_data() -> void:
 	var error_text := get_svg_error()
