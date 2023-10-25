@@ -12,6 +12,9 @@ const default_config = {
 		"save_svg": true,
 		"save_window_mode": true,
 	},
+	"input": {
+		"invert_zoom": false,
+	},
 }
 
 var language: StringName:
@@ -29,7 +32,10 @@ var save_svg := false:
 	set(new_value):
 		save_svg = new_value
 		save_setting("session", "save_svg", save_svg)
-
+var invert_zoom := false:
+	set(new_value):
+		invert_zoom = new_value
+		save_setting("input", "invert_zoom", invert_zoom)
 
 func save_setting(section: String, setting: String, saved_value: Variant) -> void:
 	config.set_value(section, setting, saved_value)

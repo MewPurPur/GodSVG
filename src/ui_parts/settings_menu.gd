@@ -4,6 +4,7 @@ extends ColorRect
 @onready var svg_button: CheckBox = %SVG
 @onready var lang_button: Button = %Language
 @onready var lang_popup: Popup = $LangPopup
+@onready var invert_zoom: CheckBox = %InvertZoom
 
 func _ready() -> void:
 	update_language_button()
@@ -18,6 +19,7 @@ func _ready() -> void:
 	
 	window_mode_button.button_pressed = GlobalSettings.save_window_mode
 	svg_button.button_pressed = GlobalSettings.save_svg
+	invert_zoom.button_pressed = GlobalSettings.invert_zoom
 
 func _on_window_mode_pressed() -> void:
 	GlobalSettings.save_window_mode = not GlobalSettings.save_window_mode
@@ -39,3 +41,7 @@ func _on_language_chosen(locale: String) -> void:
 
 func update_language_button() -> void:
 	lang_button.text = tr(&"#language") + ": " + TranslationServer.get_locale().to_upper()
+
+
+func _on_invert_zoom_pressed() -> void:
+	GlobalSettings.invert_zoom = not GlobalSettings.invert_zoom

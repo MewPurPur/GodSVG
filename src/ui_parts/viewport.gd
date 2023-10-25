@@ -38,11 +38,17 @@ func clamp_view() -> void:
 
 # TODO implement the ability to zoom in a specific area.
 func zoom_in() -> void:
-	zoom_level *= sqrt(2)
+	if GlobalSettings.invert_zoom:
+		zoom_level /= sqrt(2)
+	else:
+		zoom_level *= sqrt(2)
 	center_frame()
 
 func zoom_out() -> void:
-	zoom_level /= sqrt(2)
+	if GlobalSettings.invert_zoom:
+		zoom_level *= sqrt(2)
+	else:
+		zoom_level /= sqrt(2)
 	center_frame()
 
 func zoom_reset() -> void:
