@@ -3,13 +3,12 @@ extends SubViewport
 const min_zoom = 0.125
 const max_zoom = 64.0
 const minimum_visible_proportion = 0.3
-
 @onready var display: TextureRect = $Checkerboard
 @onready var snap_lines: Control = $SnapLines
 @onready var main_node: VBoxContainer = %Display
 @onready var display_texture: TextureRect = $Checkerboard/DisplayTexture
 @onready var controls: Control = $Checkerboard/Controls
-
+@onready var IsReversedScroll = GlobalSettings.invert_zoom
 var zoom_level: float:
 	set(new_value):
 		zoom_level = clampf(new_value, min_zoom, max_zoom)
@@ -64,8 +63,7 @@ func center_frame() -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if not event is InputEventMouseMotion or event.button_mask != 0:
 		snap_lines.queue_redraw()
-	if event is InputEventMouseMotion and\
-	event.button_mask in [MOUSE_BUTTON_MASK_LEFT, MOUSE_BUTTON_MASK_MIDDLE]:
+	if event is InputEventMouseMotion and event.button_mask == MOUSE_BUTTON_MASK_LEFT:
 		display.position += event.relative
 		clamp_view()
 	
@@ -79,7 +77,7 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMagnifyGesture:
 		zoom_level *= event.factor
 	
-	if event is InputEventMouseButton and event.is_pressed():
+	if event is InputEventMouseButton and event.is_pressed() and GlobalSettings.invert_zoom:
 		# "event.position / zoom_level - display.position"
 		# Use this to get the position according to the texture.
 		match event.button_index:
@@ -87,6 +85,13 @@ func _unhandled_input(event: InputEvent) -> void:
 				zoom_in()
 			MOUSE_BUTTON_WHEEL_DOWN:
 				zoom_out()
+		clamp_view()
+	if event is InputEventMouseButton and event.is_pressed() and not GlobalSettings.invert_zoom:
+		match event.button_index:
+			MOUSE_BUTTON_WHEEL_UP:
+				zoom_out()
+			MOUSE_BUTTON_WHEEL_DOWN:
+				zoom_in()
 		clamp_view()
 	
 	if event is InputEventMouseButton:
