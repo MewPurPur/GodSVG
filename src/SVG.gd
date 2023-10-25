@@ -7,12 +7,12 @@ var root_tag_last_value:TagSVG
 signal parsing_finished(err_text: String)
 
 func _ready() -> void:
-	SVG.root_tag.changed_unknown.connect(sync_string)
-	SVG.root_tag.attribute_changed.connect(sync_string)
-	SVG.root_tag.child_tag_attribute_changed.connect(sync_string.unbind(1))
-	SVG.root_tag.tag_added.connect(sync_string.unbind(1))
-	SVG.root_tag.tag_deleted.connect(sync_string.unbind(2))
-	SVG.root_tag.tag_moved.connect(sync_string.unbind(2))
+	SVG.root_tag.changed_unknown.connect(tags_to_string)
+	SVG.root_tag.attribute_changed.connect(tags_to_string)
+	SVG.root_tag.child_tag_attribute_changed.connect(tags_to_string.unbind(1))
+	SVG.root_tag.tag_added.connect(tags_to_string.unbind(1))
+	SVG.root_tag.tag_deleted.connect(tags_to_string.unbind(2))
+	SVG.root_tag.tag_moved.connect(tags_to_string.unbind(2))
 	
 	if GlobalSettings.save_svg:
 		string = GlobalSettings.save_data.svg
@@ -141,7 +141,7 @@ func get_svg_error() -> String:
 			nodes.pop_back()
 	return "" if nodes.is_empty() else tr(&"#err_improper_closing")
 
-func add_undoredo_SVG_root():
+func add_undoredo_SVG_root() -> void:
 	var new_width: float = root_tag.attributes.width.get_value()
 	var new_length: float = root_tag.attributes.height.get_value()
 	var new_viewbox: Rect2 = root_tag.attributes.viewBox.get_value()
@@ -170,7 +170,7 @@ func add_undoredo_SVG_root():
 		false
 		)
 
-func add_undoredo_child_tag_attribute(child_tag:Tag):
+func add_undoredo_child_tag_attribute(child_tag:Tag) -> void:
 	#get indexand use it to find its last values
 	var child_inx = root_tag.find_child_tag(child_tag)
 	var last_value_child_tag = root_tag_last_value.get_child_tag(child_inx)
@@ -195,7 +195,7 @@ func add_undoredo_child_tag_attribute(child_tag:Tag):
 		false
 		)
 
-func  add_undoredo_tag_added(child_tag:Tag):
+func  add_undoredo_tag_added(child_tag:Tag) -> void:
 	root_tag_last_value.add_tag(child_tag.duplicate())
 	if UndoRedoManager.is_excuting:
 		return
@@ -207,7 +207,7 @@ func  add_undoredo_tag_added(child_tag:Tag):
 		false
 		)
 		
-func  add_undoredo_tag_delete(idx:int,child_tag:Tag):
+func  add_undoredo_tag_delete(idx:int,child_tag:Tag) -> void:
 	root_tag_last_value.delete_tag(idx)
 	if UndoRedoManager.is_excuting:
 		return
@@ -219,7 +219,7 @@ func  add_undoredo_tag_delete(idx:int,child_tag:Tag):
 		false
 		)
 		
-func add_undoredo_tag_moved(old_idx:int , new_idx:int):
+func add_undoredo_tag_moved(old_idx:int , new_idx:int) -> void:
 	root_tag_last_value.move_tag(new_idx, old_idx)
 	if UndoRedoManager.is_excuting:
 		return
