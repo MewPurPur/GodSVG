@@ -25,9 +25,11 @@ func _on_relative_toggle_toggled(toggled_on: bool) -> void:
 
 func disable_invalid(cmd_char: String) -> void:
 	var cmd_char_upper := cmd_char.to_upper()
-	if cmd_char_upper == "M" or cmd_char_upper == "Z":
+	if cmd_char_upper == "M":
+		command_container.get_node(^"Z").set_invalid()
 		command_container.get_node(^"M").set_invalid()
-		command_container.get_node(^"M").set_invalid()
+	if cmd_char_upper == "Z":
+		command_container.get_node(^"Z").set_invalid()
 	if cmd_char_upper != "C" and cmd_char_upper != "S":
 		command_container.get_node(^"S").set_invalid()
 	if cmd_char_upper != "Q" and cmd_char_upper != "T":
