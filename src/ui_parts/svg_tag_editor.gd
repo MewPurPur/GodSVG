@@ -21,6 +21,8 @@ var height_edit: AttributeEditor
 var viewbox_edit: AttributeEditor
 
 func _ready() -> void:
+	SVG.root_tag.changed_unknown.connect(determine_coupling)
+	
 	width_edit = NumberField.instantiate()
 	width_edit.allow_lower = false
 	width_edit.attribute = tag.attributes.width
@@ -40,9 +42,7 @@ func _ready() -> void:
 	viewbox_edit.attribute_name = "viewBox"
 	viewbox_container.add_child(viewbox_edit)
 	viewbox_edit.value_changed.connect(update_svg_attributes.unbind(1))
-	
-	determine_viewbox_edit()
-	update_svg_attributes()
+	determine_coupling()
 
 
 func update_svg_attributes() -> void:
@@ -64,4 +64,12 @@ func determine_viewbox_edit() -> void:
 	for number_edit in viewbox_edit.get_children():
 		number_edit.num_edit.editable = not coupled_viewbox
 	couple_button.icon = coupled_icon if coupled_viewbox else decoupled_icon
+	couple_button.button_pressed = coupled_viewbox
 	update_svg_attributes()
+
+func determine_coupling() -> void:
+	var svg_attrib := SVG.root_tag.attributes
+	if coupled_viewbox and (svg_attrib.viewBox.get_value() !=\
+	Rect2(0, 0, svg_attrib.width.get_value(), svg_attrib.height.get_value())):
+		coupled_viewbox = false
+	determine_viewbox_edit()

@@ -117,7 +117,9 @@ func clear_inner_hovered() -> void:
 
 
 func _on_tag_deleted(idx: int) -> void:
-	selected_tags.erase(idx)
+	if idx in selected_tags:
+		selected_tags.erase(idx)
+		selection_changed.emit()
 
 func _on_tag_moved(old_idx: int, new_idx: int) -> void:
 	for i in selected_tags.size():

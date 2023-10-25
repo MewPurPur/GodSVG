@@ -50,7 +50,6 @@ tooltip_text = "#couple_button_tooltip"
 mouse_default_cursor_shape = 2
 theme_type_variation = &"IconButton"
 toggle_mode = true
-button_pressed = true
 icon = ExtResource("3_i0px7")
 
 [node name="ViewBox" type="VBoxContainer" parent="Edits"]
