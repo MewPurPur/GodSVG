@@ -28,7 +28,7 @@ func get_value() -> Variant:
 func _init(new_type: Type, new_default: Variant = null, new_init: Variant = null) -> void:
 	type = new_type
 	default = new_default
-	_value = new_init if new_init != null else new_default
+	set_value(new_init if new_init != null else new_default, false)
 
 func duplicate() -> Attribute:
 	return Attribute.new(type,default,_value)
