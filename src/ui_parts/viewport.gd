@@ -64,7 +64,8 @@ func center_frame() -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if not event is InputEventMouseMotion or event.button_mask != 0:
 		snap_lines.queue_redraw()
-	if event is InputEventMouseMotion and event.button_mask == MOUSE_BUTTON_MASK_LEFT:
+	if event is InputEventMouseMotion and\
+	event.button_mask in [MOUSE_BUTTON_MASK_LEFT, MOUSE_BUTTON_MASK_MIDDLE]:
 		display.position += event.relative
 		clamp_view()
 	
