@@ -24,8 +24,8 @@ func auto_update_text() -> void:
 		code_edit.text = SVG.string
 		update_size_label()
 
-func update_error(err: String) -> void:
-	if err.is_empty():
+func update_error(err_id: StringName) -> void:
+	if err_id == &"":
 		error_bar.hide()
 		code_edit.remove_theme_stylebox_override(&"normal")
 		code_edit.remove_theme_stylebox_override(&"focus")
@@ -34,7 +34,7 @@ func update_error(err: String) -> void:
 	else:
 		# When the error is shown, the code editor's theme is changed to match up.
 		error_bar.show()
-		error_label.text = err
+		error_label.text = tr(err_id)
 		var stylebox := ThemeDB.get_project_theme().\
 				get_stylebox(&"normal", &"TextEdit").duplicate()
 		stylebox.corner_radius_bottom_right = 0
