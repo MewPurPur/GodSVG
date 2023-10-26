@@ -13,12 +13,16 @@ func add_tag(new_tag: Tag) -> void:
 	new_tag.attribute_changed.connect(emit_child_tag_attribute_changed)
 	tag_added.emit()
 
-func replace_tags(new_tags: Array[Tag]) -> void:
+func replace_self(new_tag: TagB) -> void:
+	for attrib in attributes:
+		attributes[attrib].set_value(new_tag.attributes[attrib].get_value(), false)
+	
 	child_tags.clear()
-	for tag in new_tags:
+	for tag in new_tag.child_tags:
 		child_tags.append(tag)
 		tag.attribute_changed.connect(emit_child_tag_attribute_changed)
 	changed_unknown.emit()
+
 
 func delete_tag(idx: int) -> void:
 	if idx >= 0:

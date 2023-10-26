@@ -260,7 +260,6 @@ highlight_all_occurrences = true
 auto_brace_completion_highlight_matching = true
 auto_brace_completion_pairs = {
 "\"": "\"",
-"(": ")",
 "<": ">"
 }
 
