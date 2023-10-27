@@ -72,7 +72,7 @@ func update_root_tag(new_tagSVG:TagSVG) -> void:
 		emit_updated_root_tag = true
 		#deleted without trigering tag_deleted signal
 		var deleted_tag:Tag = root_tag.child_tags.pop_back()
-		var idx:int = number_child_root_tag + 1 if not delete_at.is_empty() else delete_at.pop_front()
+		var idx:int = number_child_new_tagSVG if not delete_at.is_empty() else delete_at.pop_front()
 		root_tag.add_undoredo_tag_moved(idx,deleted_tag)
 		number_child_to_delete -= 1
 	if emit_updated_root_tag:
