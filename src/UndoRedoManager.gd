@@ -31,21 +31,21 @@ func _input(event) -> void:
 
 func add_action_simple_methods(action_name:String,redo:Callable,\
 	undo:Callable,add_reference:Object = null,execute:bool = true) -> void:
-	UndoRedoManager.create_action(action_name)
-	UndoRedoManager.add_do_reference(add_reference)
-	UndoRedoManager.add_undo_reference(add_reference)
-	UndoRedoManager.add_do_method(redo)
-	UndoRedoManager.add_undo_method(undo)
-	UndoRedoManager.commit_action(execute)
+	create_action(action_name)
+	add_do_reference(add_reference)
+	add_undo_reference(add_reference)
+	add_do_method(redo)
+	add_undo_method(undo)
+	commit_action(execute)
 	
 func add_action_simple_property(action_name:String,object: Object,\
 	 property: StringName, redo_value: Variant, undo_value: Variant,execute:bool = true) -> void:
-	UndoRedoManager.create_action(action_name)
-	UndoRedoManager.add_do_reference(object)
-	UndoRedoManager.add_undo_reference(object)
-	UndoRedoManager.add_do_property(object, property, redo_value)
-	UndoRedoManager.add_undo_property(object, property, undo_value)
-	UndoRedoManager.commit_action(execute)
+	create_action(action_name)
+	add_do_reference(object)
+	add_undo_reference(object)
+	add_do_property(object, property, redo_value)
+	add_undo_property(object, property, undo_value)
+	commit_action(execute)
 
 func add_do_method(callable: Callable) -> void:
 	_undo_redo.add_do_method(callable)
