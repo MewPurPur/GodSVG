@@ -15,7 +15,7 @@ func _ready() -> void:
 		string_to_replace_root_tag(string)
 	else:
 		update_string()
-		connect_root_tag_signals()
+	connect_root_tag_signals()
 	for key in root_tag.attributes:
 		root_tag_old_attributes[key] = root_tag.attributes[key].duplicate()
 
@@ -44,9 +44,7 @@ func sync_data() -> void:
 		update_root_tag(new_root_tag)
 
 func  string_to_replace_root_tag(stringSVG:String) -> void:
-	var new_root_tag:TagSVG = SVGParser.text_to_svg(string)
-	root_tag = new_root_tag
-	connect_root_tag_signals()
+	root_tag.replace_self(SVGParser.text_to_svg(string))
 	updated_root_tag.emit()
 
 func update_root_tag(new_tagSVG:TagSVG) -> void:
