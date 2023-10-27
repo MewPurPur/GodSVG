@@ -1,4 +1,4 @@
-extends ColorRect
+extends Dialog
 
 @onready var window_mode_button: CheckBox = %WindowMode
 @onready var svg_button: CheckBox = %SVG
