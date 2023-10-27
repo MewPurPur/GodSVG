@@ -36,3 +36,8 @@
 #shortcut_inspector_alt_down,Alt+Down: Moves the selected tags down,Alt+Down: Премества избраните тагове надолу
 #shortcut_inspector_alt_up,Alt+Up: Moves the selected tags up,Alt+Up: Премества избраните тагове нагоре
 #shortcut_inspector_ctrl_d,Ctrl+D: Duplicates the selected tags,Ctrl+D: Дублирай избраните тагове
+#unknown_tag,Unknown Tag,Непознат таг
+#unknown_attribute,Unknown Attribute,Непознат атрибут
+#import,Import,Импортирай
+#cancel,Cancel,Отказ
+#import_problems,Import Problems,Проблеми в импортирането

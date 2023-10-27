@@ -34,10 +34,7 @@ func _process(_delta: float) -> void:
 		update_pending = false
 
 func svg_update() -> void:
-	# Store the SVG string.
 	var img := Image.new()
 	img.load_svg_from_string(SVG.string, 1.0 if rasterized else zoom * 4.0)
-	# Update the display.
 	if not img.is_empty():
-		var image_texture := ImageTexture.create_from_image(img)
-		texture = image_texture
+		texture = ImageTexture.create_from_image(img)

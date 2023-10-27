@@ -1,6 +1,7 @@
 extends VBoxContainer
 
 const SVGFileDialog := preload("svg_file_dialog.tscn")
+const ImportWarningPanel := preload("import_warning_panel.tscn")
 
 @onready var code_edit: CodeEdit = $ScriptEditor/CodeEdit
 @onready var error_bar: PanelContainer = $ScriptEditor/ErrorBar
@@ -85,12 +86,19 @@ func _on_export_button_pressed() -> void:
 		svg_export_dialog.file_selected.connect(export_svg)
 
 func apply_svg_from_path(path: String) -> void:
-	code_edit.text = FileAccess.open(path, FileAccess.READ).get_as_text()
-	_on_code_edit_text_changed()  # Call it automatically yeah.
+	var svg_text := FileAccess.open(path, FileAccess.READ).get_as_text()
+	var warning_panel := ImportWarningPanel.instantiate()
+	warning_panel.imported.connect(set_new_text)
+	warning_panel.set_svg(svg_text)
+	get_tree().get_root().add_child(warning_panel)
 
 func export_svg(path: String) -> void:
 	var FA := FileAccess.open(path, FileAccess.WRITE)
 	FA.store_string(SVG.string)
+
+func set_new_text(svg_text: String) -> void:
+	code_edit.text = svg_text
+	_on_code_edit_text_changed()  # Call it automatically yeah.
 
 
 func _on_code_edit_text_changed() -> void:

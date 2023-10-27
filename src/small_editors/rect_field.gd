@@ -21,7 +21,6 @@ func get_value() -> Rect2:
 func _ready() -> void:
 	w_field.allow_lower = false
 	h_field.allow_lower = false
-	
 	x_field.min_value = -1024.0
 	y_field.min_value = -1024.0
 	value_changed.connect(_on_value_changed)

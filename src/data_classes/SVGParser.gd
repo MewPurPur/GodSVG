@@ -28,6 +28,8 @@ static func svg_to_text(svg_tag: TagSVG) -> String:
 				Attribute.Type.RECT:
 					text += AttributeRect.rect_to_string(value)
 			text += '"'
+		for attribute in inner_tag.unknown_attributes:
+			text += " " + attribute.name + '="' + attribute.get_value() + '"'
 		text += '/>'
 	# Closing
 	return text + '</svg>'
@@ -60,7 +62,9 @@ static func text_to_svg(text: String) -> TagSVG:
 					"rect": tag = TagRect.new()
 					"path": tag = TagPath.new()
 					"line": tag = TagLine.new()
-					_: tag = Tag.new()
+					_:
+						tag = TagUnknown.new(node_name)
+				
 				for element in attribute_dict:
 					if tag.attributes.has(element):
 						var attribute: Attribute = tag.attributes[element]
@@ -68,12 +72,15 @@ static func text_to_svg(text: String) -> TagSVG:
 							attribute.set_value(attribute_dict[element], false)
 						elif typeof(attribute.get_value()) == Variant.Type.TYPE_FLOAT:
 							attribute.set_value(attribute_dict[element].to_float())
+					else:
+						var attrib := AttributeUnknown.new(element, attribute_dict[element])
+						tag.unknown_attributes.append(attrib)
 				svg_tag.child_tags.append(tag)
 	return svg_tag
 
 
 # TODO Can definitely be improved.
-static func get_svg_error(text: String) -> StringName:
+static func get_svg_syntax_error(text: String) -> StringName:
 	# Easy cases.
 	if text.is_empty():
 		return &"#err_empty_svg"
