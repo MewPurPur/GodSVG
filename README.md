@@ -40,7 +40,7 @@ Currently, there are no pre-built binaries available for GodSVG. However, you ca
 
 ## Contributing
 
-Contributions to GodSVG are very welcome! For code contributions, read `CONTRIBUTING.md`.
+Contributions to GodSVG are very welcome! For code contributions, read the [Contributing Guidelines](CONTRIBUTING.md).
 
 To report bugs, use Github's issue form. Before implementing a feature, please make sure to first propose it in Issues and have it approved.
 
