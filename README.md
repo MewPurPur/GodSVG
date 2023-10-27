@@ -1,6 +1,6 @@
 # GodSVG
 
-![image](![image](https://github.com/MewPurPur/GodSVG/assets/85438892/dad79708-95f0-4914-a703-71738502d609))
+![image](https://github.com/MewPurPur/GodSVG/assets/85438892/dad79708-95f0-4914-a703-71738502d609)
 
 GodSVG is an application in early development built with Godot for creating optimized Scalable Vector Graphics (SVG) files. It is mainly designed for programmers, allowing them to easily edit individual SVG elements and view the corresponding code in real-time.
 GodSVG is inspired by the need for a SVG editor without abstractions that produces optimized SVG files.
