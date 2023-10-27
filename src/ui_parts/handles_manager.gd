@@ -36,7 +36,6 @@ func _ready() -> void:
 	Interactions.hover_changed.connect(update_texture)
 	queue_full_update()
 
-
 func queue_full_update() -> void:
 	queue_update_texture()
 	queue_update_handles()
@@ -110,7 +109,6 @@ func generate_path_handles(path_attribute: AttributePath) -> Array[Handle]:
 				new_path_handle.display_mode = Handle.DisplayMode.SMALL
 				path_handles.append(new_path_handle)
 	return path_handles
-
 
 func _draw() -> void:
 	var thickness := 2.0 / zoom
@@ -454,7 +452,6 @@ func draw_handle(handle: Handle, outer_circle_color: Color) -> void:
 			draw_circle(convert_in(handle.pos), 3 / zoom, outer_circle_color)
 			draw_circle(convert_in(handle.pos), 1.75 / zoom, Color.WHITE)
 
-
 func get_viewbox_zoom() -> float:
 	var width: float = SVG.root_tag.attributes.width.get_value()
 	var height: float = SVG.root_tag.attributes.height.get_value()
@@ -483,7 +480,6 @@ func convert_out(pos: Vector2) -> Vector2:
 		pos.x -= (width - height * viewbox.size.x / viewbox.size.y) / 2
 	return (pos / get_viewbox_zoom() + viewbox.position) * Vector2(width, height) / size
 
-
 var dragged_handle: Handle = null :set = dragged_handle_changed
 var hovered_handle: Handle = null
 var was_handle_moved := false
@@ -501,7 +497,7 @@ func dragged_handle_changed(new_dragged_handle):
 	elif dragged_handle is PathHandle:
 		SVG.reregester_to_undoredo(dragged_handle.path_attribute)
 	dragged_handle = new_dragged_handle
-	
+
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion:
 		should_deselect_all = false
@@ -575,7 +571,6 @@ func find_nearest_handle(event_pos: Vector2) -> Handle:
 			nearest_dist = dist_to_handle
 			nearest_handle = handle
 	return nearest_handle
-
 
 func _on_snapper_value_changed(new_value: float) -> void:
 	snap_size = Vector2(new_value, new_value)
