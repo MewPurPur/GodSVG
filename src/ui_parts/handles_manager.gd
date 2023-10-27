@@ -490,7 +490,7 @@ func dragged_handle_changed(new_dragged_handle):
 		SVG.deregester_from_undoredo(new_dragged_handle.x_attribute)
 		SVG.deregester_from_undoredo(new_dragged_handle.y_attribute)
 	elif new_dragged_handle is PathHandle:
-		SVG.deregester_from_undoredo(dragged_handle.path_attribute)
+		SVG.deregester_from_undoredo(new_dragged_handle.path_attribute)
 	if dragged_handle is XYHandle:
 		SVG.reregester_to_undoredo(dragged_handle.x_attribute)
 		SVG.reregester_to_undoredo(dragged_handle.y_attribute)
