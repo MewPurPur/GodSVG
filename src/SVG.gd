@@ -6,6 +6,7 @@ var string: String = ""
 var root_tag:TagSVG = TagSVG.new()
 
 var root_tag_old_attributes: Dictionary = {}
+var deregestered_attributes_from_undoredo:Dictionary = {} #Attribute:Old_value
 
 signal parsing_finished(err_text: String)
 
@@ -220,9 +221,29 @@ func add_undoredo_SVG_root() -> void:
 		false
 		)
 
+func deregester_from_undoredo(attribute:Attribute)-> void:
+	deregestered_attributes_from_undoredo[attribute] = attribute.get_value()
+
+func reregester_to_undoredo(attribute:Attribute)-> void:
+	if deregestered_attributes_from_undoredo.has(attribute):
+		var old_value = deregestered_attributes_from_undoredo[attribute]
+		var new_value = attribute.get_value()
+		deregestered_attributes_from_undoredo.erase(attribute)
+		var child_tag:Tag
+		var attribute_name:String
+		for child in root_tag.child_tags:
+			for key in child.attributes:
+				if attribute == child.attributes[key]:
+					child_tag = child
+					attribute_name = key
+		if child_tag == null or attribute_name == null:
+			add_undoredo_child_tag_attribute(
+				old_value,new_value,child_tag,attribute_name)
+
 func add_undoredo_child_tag_attribute(old_value:Variant, new_value:Variant,\
 	child_tag:Tag ,attribute_name:String) -> void:
-	if UndoRedoManager.is_excuting:
+	if UndoRedoManager.is_excuting or child_tag.attributes[attribute_name] in\
+		 deregestered_attributes_from_undoredo.keys():
 		return
 	UndoRedoManager.add_action_simple_methods(
 		"Change " + child_tag.title + " : " + attribute_name,
