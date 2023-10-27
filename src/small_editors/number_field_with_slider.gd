@@ -31,7 +31,6 @@ func set_value(new_value: float, emit_value_changed := true) -> void:
 func get_value() -> float:
 	return _value
 
-
 func _ready() -> void:
 	value_changed.connect(_on_value_changed)
 	if attribute != null:
@@ -58,15 +57,12 @@ func _on_value_changed(new_value: float) -> void:
 	if attribute != null:
 		attribute.set_value(new_value)
 
-
 # Hacks to make LineEdit bearable.
-
 func _on_focus_exited() -> void:
 	set_value(Utils.evaluate_numeric_expression(num_edit.text))
 
 func _on_text_submitted(submitted_text: String) -> void:
 	set_value(Utils.evaluate_numeric_expression(submitted_text))
-
 
 func add_tooltip(text: String) -> void:
 	if num_edit == null:
@@ -86,6 +82,10 @@ var slider_dragged := false:
 	set(new_value):
 		if slider_dragged != new_value:
 			slider_dragged = new_value
+			if new_value:
+				SVG.deregester_from_undoredo(attribute)
+			else:
+				SVG.reregester_to_undoredo(attribute)
 			queue_redraw()
 			if not slider_hovered:
 				get_viewport().update_mouse_cursor_state()
