@@ -222,7 +222,8 @@ func add_undoredo_SVG_root() -> void:
 		)
 
 func deregester_from_undoredo(attribute:Attribute)-> void:
-	deregestered_attributes_from_undoredo[attribute] = attribute.get_value()
+	if not deregestered_attributes_from_undoredo.has(attribute):
+		deregestered_attributes_from_undoredo[attribute] = attribute.get_value()
 
 func reregester_to_undoredo(attribute:Attribute)-> void:
 	if deregestered_attributes_from_undoredo.has(attribute):

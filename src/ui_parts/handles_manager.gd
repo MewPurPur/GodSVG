@@ -484,11 +484,24 @@ func convert_out(pos: Vector2) -> Vector2:
 	return (pos / get_viewbox_zoom() + viewbox.position) * Vector2(width, height) / size
 
 
-var dragged_handle: Handle = null
+var dragged_handle: Handle = null :set = dragged_handle_changed
 var hovered_handle: Handle = null
 var was_handle_moved := false
 var should_deselect_all = false
 
+func dragged_handle_changed(new_dragged_handle):
+	if new_dragged_handle is XYHandle:
+		SVG.deregester_from_undoredo(new_dragged_handle.x_attribute)
+		SVG.deregester_from_undoredo(new_dragged_handle.y_attribute)
+	elif new_dragged_handle is PathHandle:
+		SVG.deregester_from_undoredo(dragged_handle.path_attribute)
+	if dragged_handle is XYHandle:
+		SVG.reregester_to_undoredo(dragged_handle.x_attribute)
+		SVG.reregester_to_undoredo(dragged_handle.y_attribute)
+	elif dragged_handle is PathHandle:
+		SVG.reregester_to_undoredo(dragged_handle.path_attribute)
+	dragged_handle = new_dragged_handle
+	
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion:
 		should_deselect_all = false
