@@ -43,6 +43,41 @@ func update_string() -> void:
 
 func update_tags() -> void:
 	root_tag.replace_self(SVGParser.text_to_svg(string))
+<<<<<<< HEAD
+=======
+	updated_root_tag.emit()
+
+func update_root_tag(new_tagSVG:TagSVG) -> void:
+	root_tag.attributes.width.set_value(new_tagSVG.attributes.width.get_value())
+	root_tag.attributes.height.set_value(new_tagSVG.attributes.height.get_value())
+	root_tag.attributes.viewBox.set_value(new_tagSVG.attributes.viewBox.get_value())
+	var number_child_root_tag = root_tag.get_child_count()
+	var number_child_new_tagSVG = new_tagSVG.get_child_count()
+	var number_child_to_delete = 0
+	if number_child_root_tag < number_child_new_tagSVG:
+		number_child_to_delete = number_child_new_tagSVG - number_child_root_tag
+	var delete_at: Array[int] = []
+	for idx in range(0,number_child_new_tagSVG - 1):
+		var new_child =  new_tagSVG.get_child_tag(idx)
+		var old_child = root_tag.get_child_tag(idx)
+		if new_child.title == old_child.title:
+			for key in new_child.attributes:
+				if old_child.attributes.has(key):
+					old_child.attributes[key].set_value(new_child.attributes[key].get_value())
+		else:
+			root_tag.add_tag_and_move_to(new_child.duplicate(),idx)
+			delete_at.append(idx)
+	var emit_updated_root_tag = false
+	while number_child_to_delete > 0:
+		emit_updated_root_tag = true
+		#deleted without trigering tag_deleted signal
+		var deleted_tag:Tag = root_tag.child_tags.pop_back()
+		var idx:int = number_child_new_tagSVG if not delete_at.is_empty() else delete_at.pop_front()
+		root_tag.add_undoredo_tag_moved(idx,deleted_tag)
+		number_child_to_delete -= 1
+	if emit_updated_root_tag:
+		updated_root_tag.emit()
+>>>>>>> 003eeec90fc2a7ec0062d6e6d71aff9904f80a13
 
 func add_undoredo_SVG_root() -> void:
 	var new_width: float = root_tag.attributes.width.get_value()
