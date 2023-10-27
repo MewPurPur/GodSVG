@@ -1,6 +1,5 @@
 extends Node
 
-signal updated_root_tag
 signal parsing_finished(error_id: StringName)
 
 var string: String = ""
@@ -12,7 +11,7 @@ var deregestered_attributes_from_undoredo:Dictionary = {} #Attribute:Old_value
 func _ready() -> void:
 	if GlobalSettings.save_svg:
 		string = GlobalSettings.save_data.svg
-		string_to_replace_root_tag(string)
+		sync_data()
 	else:
 		update_string()
 	connect_root_tag_signals()
@@ -33,50 +32,17 @@ func connect_root_tag_signals() -> void:
 	root_tag.tag_deleted.connect(add_undoredo_tag_delete)
 	root_tag.tag_moved.connect(add_undoredo_tag_moved)
 
-func update_string() -> void:
-	string = SVGParser.svg_to_text(root_tag)
-	
 func sync_data() -> void:
 	var err_id := SVGParser.get_svg_error(string)
 	parsing_finished.emit(err_id)
 	if err_id == &"":
-		var new_root_tag:TagSVG = SVGParser.text_to_svg(string)
-		update_root_tag(new_root_tag)
+		update_tags()
 
-func  string_to_replace_root_tag(stringSVG:String) -> void:
+func update_string() -> void:
+	string = SVGParser.svg_to_text(root_tag)
+
+func update_tags() -> void:
 	root_tag.replace_self(SVGParser.text_to_svg(string))
-	updated_root_tag.emit()
-
-func update_root_tag(new_tagSVG:TagSVG) -> void:
-	root_tag.attributes.width.set_value(new_tagSVG.attributes.width.get_value())
-	root_tag.attributes.height.set_value(new_tagSVG.attributes.height.get_value())
-	root_tag.attributes.viewBox.set_value(new_tagSVG.attributes.viewBox.get_value())
-	var number_child_root_tag = root_tag.get_child_count()
-	var number_child_new_tagSVG = new_tagSVG.get_child_count()
-	var number_child_to_delete = 0
-	if number_child_root_tag < number_child_new_tagSVG:
-		number_child_to_delete = number_child_new_tagSVG - number_child_root_tag
-	var delete_at: Array[int] = []
-	for idx in range(0,number_child_new_tagSVG - 1):
-		var new_child =  new_tagSVG.get_child_tag(idx)
-		var old_child = root_tag.get_child_tag(idx)
-		if new_child.title == old_child.title:
-			for key in new_child.attributes:
-				if old_child.attributes.has(key):
-					old_child.attributes[key].set_value(new_child.attributes[key].get_value())
-		else:
-			root_tag.add_tag_and_move_to(new_child.duplicate(),idx)
-			delete_at.append(idx)
-	var emit_updated_root_tag = false
-	while number_child_to_delete > 0:
-		emit_updated_root_tag = true
-		#deleted without trigering tag_deleted signal
-		var deleted_tag:Tag = root_tag.child_tags.pop_back()
-		var idx:int = number_child_root_tag + 1 if not delete_at.is_empty() else delete_at.pop_front()
-		root_tag.add_undoredo_tag_moved(idx,deleted_tag)
-		number_child_to_delete -= 1
-	if emit_updated_root_tag:
-		updated_root_tag.emit()
 
 func add_undoredo_SVG_root() -> void:
 	var new_width: float = root_tag.attributes.width.get_value()

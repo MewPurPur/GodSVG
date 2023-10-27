@@ -11,7 +11,6 @@ func _ready() -> void:
 	SVG.root_tag.tag_moved.connect(full_rebuild.unbind(2))
 	SVG.root_tag.tag_deleted.connect(full_rebuild.unbind(2))
 	SVG.root_tag.changed_unknown.connect(full_rebuild)
-	SVG.updated_root_tag.connect(full_rebuild)
 	full_rebuild()
 
 

@@ -23,7 +23,6 @@ func _ready() -> void:
 	SVG.root_tag.tag_deleted.connect(queue_update.unbind(2))
 	SVG.root_tag.tag_moved.connect(queue_update.unbind(2))
 	SVG.root_tag.changed_unknown.connect(queue_update)
-	SVG.updated_root_tag.connect(queue_update)
 	queue_update()
 
 func queue_update() -> void:

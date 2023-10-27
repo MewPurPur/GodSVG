@@ -18,7 +18,6 @@ func _ready() -> void:
 	SVG.root_tag.tag_deleted.connect(auto_update_text.unbind(2))
 	SVG.root_tag.tag_moved.connect(auto_update_text.unbind(2))
 	SVG.root_tag.changed_unknown.connect(auto_update_text)
-	SVG.updated_root_tag.connect(auto_update_text)
 
 func auto_update_text() -> void:
 	if not code_edit.has_focus():
