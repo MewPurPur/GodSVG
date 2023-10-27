@@ -19,12 +19,16 @@ func add_tag_and_move_to(new_tag:Tag,to_idx:int) -> void:
 	child_tags.insert(to_idx, new_tag)
 	tag_added.emit(new_tag)
 
-func replace_tags(new_tags: Array[Tag]) -> void:
+func replace_self(new_tag: TagB) -> void:
+	for attrib in attributes:
+		attributes[attrib].set_value(new_tag.attributes[attrib].get_value(), false)
+	
 	child_tags.clear()
-	for tag in new_tags:
+	for tag in new_tag.child_tags:
 		child_tags.append(tag)
 		connect_child_tag_signals(tag)
 	changed_unknown.emit()
+
 
 func delete_tag(idx: int) -> void:
 	if idx >= 0:

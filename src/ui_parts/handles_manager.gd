@@ -111,21 +111,36 @@ func generate_path_handles(path_attribute: AttributePath) -> Array[Handle]:
 	return path_handles
 
 func _draw() -> void:
-	var thickness := 2.0 / zoom
+	var thickness := 0.8 / zoom
+	var tangent_thickness := 0.55 / zoom
+	var tangent_alpha := 0.8
+	
 	var viewbox_zoom := get_viewbox_zoom()
 	# Draw the contours of shapes, and also tangents of bezier curves in paths.
+	var normal_polylines: Array[PackedVector2Array] = []
+	var selected_polylines: Array[PackedVector2Array] = []
+	var hovered_polylines: Array[PackedVector2Array] = []
+	
 	for tag_idx in SVG.root_tag.get_child_count():
 		var tag := SVG.root_tag.child_tags[tag_idx]
 		var attribs := tag.attributes
-		var color := selection_color if tag_idx in Interactions.selected_tags else\
-				hover_color if tag_idx == Interactions.hovered_tag else default_color
+		
 		match tag.title:
 			"circle":
-				var cx: float = attribs.cx.get_value()
-				var cy: float = attribs.cy.get_value()
+				var c := Vector2(attribs.cx.get_value(), attribs.cy.get_value())
 				var r: float = attribs.r.get_value()
-				draw_arc(convert_in(Vector2(cx, cy)), r * viewbox_zoom, 0, TAU,
-						maxi(10, int(r * zoom * viewbox_zoom)), color, thickness)
+				var points := PackedVector2Array()
+				for i in range(0, 361, 2):
+					var d := deg_to_rad(i)
+					points.append(convert_in(c + Vector2(cos(d) * r, sin(d) * r)))
+				
+				if tag_idx == Interactions.hovered_tag:
+					hovered_polylines.append(points)
+				elif tag_idx in Interactions.selected_tags:
+					selected_polylines.append(points)
+				else:
+					normal_polylines.append(points)
+				
 			"ellipse":
 				var c := Vector2(attribs.cx.get_value(), attribs.cy.get_value())
 				var rx: float = attribs.rx.get_value()
@@ -135,7 +150,14 @@ func _draw() -> void:
 				for i in range(0, 361, 2):
 					var d := deg_to_rad(i)
 					points.append(convert_in(c + Vector2(cos(d) * rx, sin(d) * ry)))
-				draw_polyline(points, color, thickness)
+				
+				if tag_idx == Interactions.hovered_tag:
+					hovered_polylines.append(points)
+				elif tag_idx in Interactions.selected_tags:
+					selected_polylines.append(points)
+				else:
+					normal_polylines.append(points)
+				
 			"rect":
 				var x: float = attribs.x.get_value()
 				var y: float = attribs.y.get_value()
@@ -180,46 +202,64 @@ func _draw() -> void:
 						var d := deg_to_rad(i)
 						points.append(convert_in(Vector2(x + rx, y + ry) +\
 								Vector2(cos(d) * rx, sin(d) * ry)))
-				draw_polyline(points, color, thickness)
+				
+				if tag_idx == Interactions.hovered_tag:
+					hovered_polylines.append(points)
+				elif tag_idx in Interactions.selected_tags:
+					selected_polylines.append(points)
+				else:
+					normal_polylines.append(points)
+				
 			"line":
 				var x1: float = attribs.x1.get_value()
 				var y1: float = attribs.y1.get_value()
 				var x2: float = attribs.x2.get_value()
 				var y2: float = attribs.y2.get_value()
-				draw_line(convert_in(Vector2(x1, y1)),
-						convert_in(Vector2(x2, y2)), color, thickness)
+				
+				var points := PackedVector2Array()
+				points.append(convert_in(Vector2(x1, y1)))
+				points.append(convert_in(Vector2(x2, y2)))
+				
+				if tag_idx == Interactions.hovered_tag:
+					hovered_polylines.append(points)
+				elif tag_idx in Interactions.selected_tags:
+					selected_polylines.append(points)
+				else:
+					normal_polylines.append(points)
+				
 			"path":
 				var pathdata: AttributePath = attribs.d
+				var current_mode := -1  # Normal 0, hovered 1, selected 2.
 				for cmd_idx in pathdata.get_command_count():
-					# Decide on color for the command.
-					var temp_color := color
-					if Interactions.semi_hovered_tag == tag_idx and\
-					not tag_idx in Interactions.selected_tags:
-						if Interactions.inner_hovered == cmd_idx:
-							temp_color = hover_color
-					if Interactions.semi_selected_tag == tag_idx:
-						if cmd_idx in Interactions.inner_selections:
-							temp_color = selection_color
 					# Drawing logic.
+					var points := PackedVector2Array()
 					var cmd := pathdata.get_command(cmd_idx)
 					var relative := cmd.relative
 					
+					if tag_idx == Interactions.hovered_tag or\
+					(Interactions.semi_hovered_tag == tag_idx and\
+					Interactions.inner_hovered == cmd_idx):
+						current_mode = 1
+					elif tag_idx in Interactions.selected_tags or\
+					(Interactions.semi_selected_tag == tag_idx and\
+					cmd_idx in Interactions.inner_selections):
+						current_mode = 2
+					elif current_mode != 0:
+						current_mode = 0
+					
 					match cmd.command_char.to_upper():
 						"L":
-							var end := cmd.start + Vector2(cmd.x, cmd.y) if relative\
-									else Vector2(cmd.x, cmd.y)
-							draw_line(convert_in(cmd.start), convert_in(end),
-									temp_color, thickness)
+							var v := Vector2(cmd.x, cmd.y)
+							var end := cmd.start + v if relative else v
+							points = PackedVector2Array([convert_in(cmd.start), convert_in(end)])
 						"H":
-							var end := cmd.start + Vector2(cmd.x, 0) if relative\
-									else Vector2(cmd.x, cmd.start.y)
-							draw_line(convert_in(cmd.start), convert_in(end),
-									temp_color, thickness)
+							var v := Vector2(cmd.x, 0)
+							var end := cmd.start + v if relative else Vector2(v.x, cmd.start.y)
+							points = PackedVector2Array([convert_in(cmd.start), convert_in(end)])
 						"V":
-							var end := cmd.start + Vector2(0, cmd.y) if relative\
-									else Vector2(cmd.start.x, cmd.y)
-							draw_line(convert_in(cmd.start), convert_in(end),
-									temp_color, thickness)
+							var v := Vector2(0, cmd.y)
+							var end := cmd.start + v if relative else Vector2(cmd.start.x, v.y)
+							points = PackedVector2Array([convert_in(cmd.start), convert_in(end)])
 						"C":
 							var v := Vector2(cmd.x, cmd.y)
 							var v1 := Vector2(cmd.x1, cmd.y1)
@@ -229,13 +269,18 @@ func _draw() -> void:
 							var cp2 := v1 if relative else v1 - cp1
 							var cp3 := v2 - v
 							
-							draw_polyline(Utils.get_cubic_bezier_points(convert_in(cp1),
-									convert_in(cp2), convert_in(cp3), convert_in(cp4)),
-									temp_color, thickness)
+							var tangent_color: Color
+							match current_mode:
+								0: tangent_color = Color(default_color, tangent_alpha)
+								1: tangent_color = Color(hover_color, tangent_alpha)
+								2: tangent_color = Color(selection_color, tangent_alpha)
+							
+							points = Utils.get_cubic_bezier_points(convert_in(cp1),
+									convert_in(cp2), convert_in(cp3), convert_in(cp4))
 							draw_line(convert_in(cp1), convert_in(cp1 + v1 if relative else v1),
-									Color(temp_color, 0.7), thickness / 1.4)
+									tangent_color, tangent_thickness, true)
 							draw_line(convert_in(cp4), convert_in(cp1 + v2 if relative else v2),
-									Color(temp_color, 0.7), thickness / 1.4)
+									tangent_color, tangent_thickness, true)
 						"S":
 							if cmd_idx == 0:
 								break
@@ -258,13 +303,18 @@ func _draw() -> void:
 							var cp3 := v2 - v
 							var cp4 := cp1 + v if relative else v
 							
-							draw_polyline(Utils.get_cubic_bezier_points(convert_in(cp1),
-									convert_in(cp2), convert_in(cp3), convert_in(cp4)),
-									temp_color, thickness)
+							var tangent_color: Color
+							match current_mode:
+								0: tangent_color = Color(default_color, tangent_alpha)
+								1: tangent_color = Color(hover_color, tangent_alpha)
+								2: tangent_color = Color(selection_color, tangent_alpha)
+							
+							points = Utils.get_cubic_bezier_points(convert_in(cp1),
+									convert_in(cp2), convert_in(cp3), convert_in(cp4))
 							draw_line(convert_in(cp1), convert_in(cp1 + v1 if relative else v1),
-									Color(temp_color, 0.7), thickness / 1.4)
+									tangent_color, tangent_thickness, true)
 							draw_line(convert_in(cp4), convert_in(cp1 + v2 if relative else v2),
-									Color(temp_color, 0.7), thickness / 1.4)
+									tangent_color, tangent_thickness, true)
 						"Q":
 							var v := Vector2(cmd.x, cmd.y)
 							var v1 := Vector2(cmd.x1, cmd.y1)
@@ -272,12 +322,18 @@ func _draw() -> void:
 							var cp2 := cp1 + v1 if relative else v1
 							var cp3 := cp1 + v if relative else v
 							
-							draw_polyline(Utils.get_quadratic_bezier_points(convert_in(cp1),
-									convert_in(cp2), convert_in(cp3)), temp_color, thickness)
+							var tangent_color: Color
+							match current_mode:
+								0: tangent_color = Color(default_color, tangent_alpha)
+								1: tangent_color = Color(hover_color, tangent_alpha)
+								2: tangent_color = Color(selection_color, tangent_alpha)
+							
+							points = Utils.get_quadratic_bezier_points(
+									convert_in(cp1), convert_in(cp2), convert_in(cp3))
 							draw_line(convert_in(cp1), convert_in(cp1 + v1 if relative else v1),
-									Color(temp_color, 0.7), thickness / 1.4)
+									tangent_color, tangent_thickness, true)
 							draw_line(convert_in(cp3), convert_in(cp1 + v1 if relative else v1),
-									Color(temp_color, 0.7), thickness / 1.4)
+									tangent_color, tangent_thickness, true)
 						"T":
 							var prevQ_idx := cmd_idx - 1
 							var prevQ_cmd := pathdata.get_command(prevQ_idx)
@@ -288,8 +344,8 @@ func _draw() -> void:
 									# Invalid T is drawn as a line.
 									var end := cmd.start + Vector2(cmd.x, cmd.y) if relative\
 											else Vector2(cmd.x, cmd.y)
-									draw_line(convert_in(cmd.start), convert_in(end),
-											temp_color, thickness)
+									points.append(convert_in(cmd.start))
+									points.append(convert_in(end))
 									prevQ_idx = -1
 									break
 								else:
@@ -316,12 +372,18 @@ func _draw() -> void:
 							var cp2 := v1
 							var cp3 := cp1 + v if relative else v
 							
-							draw_polyline(Utils.get_quadratic_bezier_points(convert_in(cp1),
-									convert_in(cp2), convert_in(cp3)), temp_color, thickness)
+							var tangent_color: Color
+							match current_mode:
+								0: tangent_color = Color(default_color, tangent_alpha)
+								1: tangent_color = Color(hover_color, tangent_alpha)
+								2: tangent_color = Color(selection_color, tangent_alpha)
+							
+							points = Utils.get_quadratic_bezier_points(
+									convert_in(cp1), convert_in(cp2), convert_in(cp3))
 							draw_line(convert_in(cp1), convert_in(cp2),
-									Color(temp_color, 0.7), thickness / 1.4)
+									tangent_color, tangent_thickness, true)
 							draw_line(convert_in(cp3), convert_in(cp2),
-									Color(temp_color, 0.7), thickness / 1.4)
+									tangent_color, tangent_thickness, true)
 						"A":
 							var start := cmd.start
 							var v := Vector2(cmd.x, cmd.y)
@@ -330,7 +392,7 @@ func _draw() -> void:
 							if start == end:
 								continue
 							elif cmd.rx == 0 or cmd.ry == 0:
-								draw_line(start, end, color, thickness)
+								points = PackedVector2Array([convert_in(start), convert_in(end)])
 							
 							var r := Vector2(cmd.rx, cmd.ry).abs()
 							# Obtain center parametrization.
@@ -363,7 +425,7 @@ func _draw() -> void:
 							var delta_theta := fposmod(tv.angle_to(
 									Vector2(-x1 - ct.x, -y1 - ct.y) / r), TAU)
 							if cmd.sweep_flag == 0:
-								theta1 = theta1 + delta_theta
+								theta1 += delta_theta
 								delta_theta = TAU - delta_theta
 							
 							# Now we have a center parametrization (r, c, theta1, delta_theta).
@@ -395,12 +457,9 @@ func _draw() -> void:
 								var q2 := -alpha * e2
 								cp.append(PackedVector2Array([p1, q1, q2, p2]))
 							
-							var points := PackedVector2Array()
 							for p in cp:
 								points += Utils.get_cubic_bezier_points(convert_in(p[0]),
 										p[1] * viewbox_zoom, p[2] * viewbox_zoom, convert_in(p[3]))
-							
-							draw_polyline(points, temp_color, thickness)
 						"Z":
 							var prev_M_idx := cmd_idx - 1
 							var prev_M_cmd := pathdata.get_command(prev_M_idx)
@@ -415,9 +474,21 @@ func _draw() -> void:
 							var end := Vector2(prev_M_cmd.x, prev_M_cmd.y)
 							if prev_M_cmd.relative:
 								end += prev_M_cmd.start
-							draw_line(convert_in(cmd.start), convert_in(end),
-									temp_color, thickness)
+							
+							points = PackedVector2Array([convert_in(cmd.start), convert_in(end)])
 						_: continue
+					
+					match current_mode:
+						0: normal_polylines.append(points.duplicate())
+						1: hovered_polylines.append(points.duplicate())
+						2: selected_polylines.append(points.duplicate())
+		
+		for polyline in normal_polylines:
+			draw_polyline(polyline, default_color, thickness, true)
+		for polyline in selected_polylines:
+			draw_polyline(polyline, selection_color, thickness, true)
+		for polyline in hovered_polylines:
+			draw_polyline(polyline, hover_color, thickness, true)
 	
 	var normal_handles: Array[Handle] = []
 	var selected_handles: Array[Handle] = []

@@ -242,6 +242,7 @@ icon = ExtResource("5_qe6jq")
 [node name="ScriptEditor" type="VBoxContainer" parent="PanelContainer/MainContainer/CodeEditor"]
 layout_mode = 2
 size_flags_horizontal = 3
+size_flags_vertical = 3
 theme_override_constants/separation = -2
 
 [node name="CodeEdit" type="CodeEdit" parent="PanelContainer/MainContainer/CodeEditor/ScriptEditor"]
@@ -259,7 +260,6 @@ highlight_all_occurrences = true
 auto_brace_completion_highlight_matching = true
 auto_brace_completion_pairs = {
 "\"": "\"",
-"(": ")",
 "<": ">"
 }
 
