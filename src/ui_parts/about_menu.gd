@@ -1,4 +1,4 @@
-extends ColorRect
+extends Dialog
 
 @onready var authors_label: RichTextLabel = %AuthorsLabel
 @onready var version_label: Label = %VersionLabel

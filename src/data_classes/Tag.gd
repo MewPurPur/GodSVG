@@ -5,6 +5,9 @@ signal attribute_changed
 var title: String
 var attributes: Dictionary  # Dictionary{String: Attribute}
 
+# Attributes that aren't recognized (usually because GodSVG doesn't support them).
+var unknown_attributes: Array[AttributeUnknown]
+
 func _init():
 	for attribute in attributes.values():
 		attribute.propagate_value_changed.connect(emit_attribute_changed)

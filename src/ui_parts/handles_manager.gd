@@ -121,6 +121,9 @@ func _draw() -> void:
 	var normal_polylines: Array[PackedVector2Array] = []
 	var selected_polylines: Array[PackedVector2Array] = []
 	var hovered_polylines: Array[PackedVector2Array] = []
+	var normal_tangent_multiline := PackedVector2Array()
+	var selected_tangent_multiline := PackedVector2Array()
+	var hovered_tangent_multiline := PackedVector2Array()
 	
 	for tag_idx in SVG.root_tag.get_child_count():
 		var tag := SVG.root_tag.child_tags[tag_idx]
@@ -234,6 +237,7 @@ func _draw() -> void:
 				for cmd_idx in pathdata.get_command_count():
 					# Drawing logic.
 					var points := PackedVector2Array()
+					var tangent_points := PackedVector2Array()
 					var cmd := pathdata.get_command(cmd_idx)
 					var relative := cmd.relative
 					
@@ -270,18 +274,12 @@ func _draw() -> void:
 							var cp2 := v1 if relative else v1 - cp1
 							var cp3 := v2 - v
 							
-							var tangent_color: Color
-							match current_mode:
-								0: tangent_color = Color(default_color, tangent_alpha)
-								1: tangent_color = Color(hover_color, tangent_alpha)
-								2: tangent_color = Color(selection_color, tangent_alpha)
-							
 							points = Utils.get_cubic_bezier_points(convert_in(cp1),
 									convert_in(cp2), convert_in(cp3), convert_in(cp4))
-							draw_line(convert_in(cp1), convert_in(cp1 + v1 if relative else v1),
-									tangent_color, tangent_thickness, true)
-							draw_line(convert_in(cp4), convert_in(cp1 + v2 if relative else v2),
-									tangent_color, tangent_thickness, true)
+							tangent_points.append(convert_in(cp1))
+							tangent_points.append(convert_in(cp1 + v1 if relative else v1))
+							tangent_points.append(convert_in(cp4))
+							tangent_points.append(convert_in(cp1 + v2 if relative else v2))
 						"S":
 							if cmd_idx == 0:
 								break
@@ -304,18 +302,12 @@ func _draw() -> void:
 							var cp3 := v2 - v
 							var cp4 := cp1 + v if relative else v
 							
-							var tangent_color: Color
-							match current_mode:
-								0: tangent_color = Color(default_color, tangent_alpha)
-								1: tangent_color = Color(hover_color, tangent_alpha)
-								2: tangent_color = Color(selection_color, tangent_alpha)
-							
 							points = Utils.get_cubic_bezier_points(convert_in(cp1),
 									convert_in(cp2), convert_in(cp3), convert_in(cp4))
-							draw_line(convert_in(cp1), convert_in(cp1 + v1 if relative else v1),
-									tangent_color, tangent_thickness, true)
-							draw_line(convert_in(cp4), convert_in(cp1 + v2 if relative else v2),
-									tangent_color, tangent_thickness, true)
+							tangent_points.append(convert_in(cp1))
+							tangent_points.append(convert_in(cp1 + v1 if relative else v1))
+							tangent_points.append(convert_in(cp4))
+							tangent_points.append(convert_in(cp1 + v2 if relative else v2))
 						"Q":
 							var v := Vector2(cmd.x, cmd.y)
 							var v1 := Vector2(cmd.x1, cmd.y1)
@@ -323,18 +315,12 @@ func _draw() -> void:
 							var cp2 := cp1 + v1 if relative else v1
 							var cp3 := cp1 + v if relative else v
 							
-							var tangent_color: Color
-							match current_mode:
-								0: tangent_color = Color(default_color, tangent_alpha)
-								1: tangent_color = Color(hover_color, tangent_alpha)
-								2: tangent_color = Color(selection_color, tangent_alpha)
-							
 							points = Utils.get_quadratic_bezier_points(
 									convert_in(cp1), convert_in(cp2), convert_in(cp3))
-							draw_line(convert_in(cp1), convert_in(cp1 + v1 if relative else v1),
-									tangent_color, tangent_thickness, true)
-							draw_line(convert_in(cp3), convert_in(cp1 + v1 if relative else v1),
-									tangent_color, tangent_thickness, true)
+							tangent_points.append(convert_in(cp1))
+							tangent_points.append(convert_in(cp1 + v1 if relative else v1))
+							tangent_points.append(convert_in(cp3))
+							tangent_points.append(convert_in(cp1 + v1 if relative else v1))
 						"T":
 							var prevQ_idx := cmd_idx - 1
 							var prevQ_cmd := pathdata.get_command(prevQ_idx)
@@ -373,18 +359,12 @@ func _draw() -> void:
 							var cp2 := v1
 							var cp3 := cp1 + v if relative else v
 							
-							var tangent_color: Color
-							match current_mode:
-								0: tangent_color = Color(default_color, tangent_alpha)
-								1: tangent_color = Color(hover_color, tangent_alpha)
-								2: tangent_color = Color(selection_color, tangent_alpha)
-							
 							points = Utils.get_quadratic_bezier_points(
 									convert_in(cp1), convert_in(cp2), convert_in(cp3))
-							draw_line(convert_in(cp1), convert_in(cp2),
-									tangent_color, tangent_thickness, true)
-							draw_line(convert_in(cp3), convert_in(cp2),
-									tangent_color, tangent_thickness, true)
+							tangent_points.append(convert_in(cp1))
+							tangent_points.append(convert_in(cp1 + v1 if relative else v1))
+							tangent_points.append(convert_in(cp3))
+							tangent_points.append(convert_in(cp1 + v1 if relative else v1))
 						"A":
 							var start := cmd.start
 							var v := Vector2(cmd.x, cmd.y)
@@ -480,9 +460,15 @@ func _draw() -> void:
 						_: continue
 					
 					match current_mode:
-						0: normal_polylines.append(points.duplicate())
-						1: hovered_polylines.append(points.duplicate())
-						2: selected_polylines.append(points.duplicate())
+						0:
+							normal_polylines.append(points.duplicate())
+							normal_tangent_multiline += tangent_points.duplicate()
+						1:
+							hovered_polylines.append(points.duplicate())
+							hovered_tangent_multiline += tangent_points.duplicate()
+						2:
+							selected_polylines.append(points.duplicate())
+							selected_tangent_multiline += tangent_points.duplicate()
 		
 		for polyline in normal_polylines:
 			draw_polyline(polyline, default_color, thickness, true)
@@ -490,6 +476,19 @@ func _draw() -> void:
 			draw_polyline(polyline, selection_color, thickness, true)
 		for polyline in hovered_polylines:
 			draw_polyline(polyline, hover_color, thickness, true)
+		
+		for i in normal_tangent_multiline.size() / 2:
+			var i2 := i * 2
+			draw_line(normal_tangent_multiline[i2], normal_tangent_multiline[i2 + 1],
+					Color(default_color, tangent_alpha), tangent_thickness, true)
+		for i in selected_tangent_multiline.size() / 2:
+			var i2 := i * 2
+			draw_line(selected_tangent_multiline[i2], selected_tangent_multiline[i2 + 1],
+					Color(selection_color, tangent_alpha), tangent_thickness, true)
+		for i in hovered_tangent_multiline.size() / 2:
+			var i2 := i * 2
+			draw_line(hovered_tangent_multiline[i2], hovered_tangent_multiline[i2 + 1],
+					Color(hover_color, tangent_alpha), tangent_thickness, true)
 	
 	var normal_handles: Array[Handle] = []
 	var selected_handles: Array[Handle] = []

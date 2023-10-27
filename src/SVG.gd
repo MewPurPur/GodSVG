@@ -20,7 +20,7 @@ func _ready() -> void:
 		update_string()
 
 func sync_data() -> void:
-	var err_id := SVGParser.get_svg_error(string)
+	var err_id := SVGParser.get_svg_syntax_error(string)
 	parsing_finished.emit(err_id)
 	if err_id == &"":
 		update_tags()

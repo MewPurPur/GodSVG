@@ -76,6 +76,7 @@ keyword_colors = {
 "rect": Color(1, 0.54902, 0.8, 1),
 "rx": Color(0.737255, 0.878431, 1, 1),
 "ry": Color(0.737255, 0.878431, 1, 1),
+"stop": Color(1, 0.54902, 0.8, 1),
 "stroke": Color(0.737255, 0.878431, 1, 1),
 "stroke-linecap": Color(0.737255, 0.878431, 1, 1),
 "stroke-linejoin": Color(0.737255, 0.878431, 1, 1),
@@ -169,7 +170,6 @@ shader = ExtResource("12_wewnk")
 shader_parameter/uv_scale = 1.0
 
 [node name="MainScene" type="HBoxContainer"]
-process_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
