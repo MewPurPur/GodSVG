@@ -12,7 +12,7 @@ var child_tags: Array[Tag]
 
 func add_tag(new_tag: Tag) -> void:
 	child_tags.append(new_tag)
-	setup_child_tag_signals(new_tag)
+	connect_child_tag_signals(new_tag)
 	tag_added.emit(new_tag)
 
 func add_tag_and_move_to(new_tag:Tag,to_idx:int) -> void:
@@ -23,7 +23,7 @@ func replace_tags(new_tags: Array[Tag]) -> void:
 	child_tags.clear()
 	for tag in new_tags:
 		child_tags.append(tag)
-		setup_child_tag_signals(tag)
+		connect_child_tag_signals(tag)
 	changed_unknown.emit()
 
 func delete_tag(idx: int) -> void:
@@ -39,7 +39,7 @@ func move_tag(old_idx: int, new_idx: int) -> void:
 
 func duplicate_tag(idx: int) -> void:
 	var new_tag :Tag = get_child_tag(idx).duplicate()
-	setup_child_tag_signals(new_tag)
+	connect_child_tag_signals(new_tag)
 	add_tag_and_move_to(new_tag,idx + 1)
 
 func delete_tag_with_reference(tag:Tag) -> void:
@@ -57,7 +57,7 @@ func find_child_tag(child:Tag) -> int:
 func get_child_tag(idx:int) -> Tag:
 	return child_tags[idx]
 
-func setup_child_tag_signals(new_tag:Tag):
+func connect_child_tag_signals(new_tag:Tag):
 	new_tag.attribute_changed.connect(emit_child_tag_attribute_changed)
 	for key in new_tag.attributes:
 		new_tag.attributes[key].change_details.connect(emit_child_tag_attribute_change_details.bind(new_tag,key))

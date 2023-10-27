@@ -29,6 +29,7 @@ func _ready() -> void:
 	SVG.root_tag.tag_deleted.connect(queue_full_update.unbind(2))
 	SVG.root_tag.tag_moved.connect(queue_full_update.unbind(2))
 	SVG.root_tag.changed_unknown.connect(queue_full_update)
+	SVG.updated_root_tag.connect(queue_full_update)
 	Interactions.selection_changed.connect(queue_redraw)
 	Interactions.selection_changed.connect(update_texture)
 	Interactions.hover_changed.connect(queue_redraw)

@@ -1,76 +1,84 @@
 extends Node
 
-var string := ""
-var root_tag := TagSVG.new()
-var root_tag_old_attributes:Dictionary
+signal updated_root_tag
+
+var string: String = ""
+var root_tag:TagSVG = TagSVG.new()
+
+var root_tag_old_attributes: Dictionary = {}
 
 signal parsing_finished(err_text: String)
 
 func _ready() -> void:
-	SVG.root_tag.changed_unknown.connect(tags_to_string)
-	SVG.root_tag.attribute_changed.connect(tags_to_string)
-	SVG.root_tag.child_tag_attribute_changed.connect(tags_to_string)
-	SVG.root_tag.tag_added.connect(tags_to_string.unbind(1))
-	SVG.root_tag.tag_deleted.connect(tags_to_string.unbind(2))
-	SVG.root_tag.tag_moved.connect(tags_to_string.unbind(2))
-	
 	if GlobalSettings.save_svg:
 		string = GlobalSettings.save_data.svg
-		sync_data()
+		string_to_replace_root_tag(string)
 	else:
-		tags_to_string()
-	
+		update_string_from_root_tag()
+		connect_root_tag_signals()
 	for key in root_tag.attributes:
 		root_tag_old_attributes[key] = root_tag.attributes[key].duplicate()
-	SVG.root_tag.attribute_changed.connect(add_undoredo_SVG_root)
-	SVG.root_tag.child_tag_attribute_change_details.connect(add_undoredo_child_tag_attribute)
-	SVG.root_tag.tag_added.connect(add_undoredo_tag_added)
-	SVG.root_tag.tag_deleted.connect(add_undoredo_tag_delete)
-	SVG.root_tag.tag_moved.connect(add_undoredo_tag_moved)
+
+func connect_root_tag_signals() -> void:
+	root_tag.changed_unknown.connect(update_string_from_root_tag)
+	root_tag.attribute_changed.connect(update_string_from_root_tag)
+	root_tag.child_tag_attribute_changed.connect(update_string_from_root_tag)
+	root_tag.tag_added.connect(update_string_from_root_tag.unbind(1))
+	root_tag.tag_deleted.connect(update_string_from_root_tag.unbind(2))
+	root_tag.tag_moved.connect(update_string_from_root_tag.unbind(2))
+	
+	root_tag.attribute_changed.connect(add_undoredo_SVG_root)
+	root_tag.child_tag_attribute_change_details.connect(add_undoredo_child_tag_attribute)
+	root_tag.tag_added.connect(add_undoredo_tag_added)
+	root_tag.tag_deleted.connect(add_undoredo_tag_delete)
+	root_tag.tag_moved.connect(add_undoredo_tag_moved)
 
 func sync_data() -> void:
-	var error_text := get_svg_error()
+	var error_text: String= get_svg_error(string)
 	parsing_finished.emit(error_text)
 	if error_text.is_empty():
-		string_to_tags()
+		var new_root_tag:TagSVG = string_to_tags(string)
+		update_root_tag(new_root_tag)
 
-
-func tags_to_string() -> void:
-	var w: float = root_tag.attributes.width.get_value()
-	var h: float = root_tag.attributes.height.get_value()
-	var viewbox: Rect2 = root_tag.attributes.viewBox.get_value()
+func tags_to_string(tagSVG:TagSVG) -> String:
+	var w: float = tagSVG.attributes.width.get_value()
+	var h: float = tagSVG.attributes.height.get_value()
+	var viewbox: Rect2 = tagSVG.attributes.viewBox.get_value()
 	# Opening
-	string = '<svg width="%s" height="%s" viewBox="%s"' % [String.num(w, 4),
+	var new_stringSVG:String
+	new_stringSVG = '<svg width="%s" height="%s" viewBox="%s"' % [String.num(w, 4),
 			String.num(h, 4), AttributeRect.rect_to_string(viewbox)]
-	string += ' xmlns="http://www.w3.org/2000/svg">'
+	new_stringSVG += ' xmlns="http://www.w3.org/2000/svg">'
 	
-	for inner_tag in root_tag.child_tags:
-		string += '<' + inner_tag.title
+	for inner_tag in tagSVG.child_tags:
+		new_stringSVG += '<' + inner_tag.title
 		for attribute_key in inner_tag.attributes:
 			var attribute: Attribute = inner_tag.attributes[attribute_key]
 			var value: Variant = attribute.get_value()
 			if value == attribute.default:
 				continue
 			
-			string += " " + attribute_key + '="'
+			new_stringSVG += " " + attribute_key + '="'
 			match attribute.type:
 				Attribute.Type.INT:
-					string += value.to_int()
+					new_stringSVG += value.to_int()
 				Attribute.Type.FLOAT, Attribute.Type.UFLOAT, Attribute.Type.NFLOAT:
-					string += String.num(value, 4)
+					new_stringSVG += String.num(value, 4)
 				Attribute.Type.COLOR, Attribute.Type.PATHDATA, Attribute.Type.ENUM:
-					string += value
+					new_stringSVG += value
 				Attribute.Type.RECT:
-					string += AttributeRect.rect_to_string(value)
-			string += '"'
-		string += '/>'
+					new_stringSVG += AttributeRect.rect_to_string(value)
+			new_stringSVG += '"'
+		new_stringSVG += '/>'
 	# Closing
-	string += '</svg>'
+	new_stringSVG += '</svg>'
+	return new_stringSVG
 
-func string_to_tags() -> void:
+func string_to_tags(stringSVG:String) -> TagSVG:
+	var new_tagSVG:TagSVG = TagSVG.new()
 	var new_tags: Array[Tag] = []
 	var parser := XMLParser.new()
-	parser.open_buffer(string.to_ascii_buffer())
+	parser.open_buffer(stringSVG.to_ascii_buffer())
 	while parser.read() == OK:
 		if parser.get_node_type() == XMLParser.NODE_ELEMENT:
 			var node_name := parser.get_node_name()
@@ -86,7 +94,7 @@ func string_to_tags() -> void:
 						attribute_dict.has("height") else 0.0
 				var new_viewbox := AttributeRect.string_to_rect(attribute_dict["viewBox"])\
 						if attribute_dict.has("viewBox") else Rect2(0, 0, new_w, new_h)
-				root_tag.set_canvas(new_w, new_h, new_viewbox)
+				new_tagSVG.set_canvas(new_w, new_h, new_viewbox)
 			else:
 				var tag: Tag
 				match node_name:
@@ -104,20 +112,21 @@ func string_to_tags() -> void:
 						elif typeof(attribute.get_value()) == Variant.Type.TYPE_FLOAT:
 							attribute.set_value(attribute_dict[element].to_float())
 				new_tags.append(tag)
-	root_tag.replace_tags(new_tags)
+	new_tagSVG.replace_tags(new_tags)
+	return new_tagSVG
 
 # TODO Can definitely be improved.
-func get_svg_error() -> String:
+func get_svg_error(stringSVG:String) -> String:
 	# Easy cases.
-	if string.is_empty():
+	if stringSVG.is_empty():
 		return tr(&"#err_empty_svg")
 	
-	if string.count("<") != string.count(">"):
+	if stringSVG.count("<") != stringSVG.count(">"):
 		return tr(&"#err_improper_nesting")
 	
 	var parser := XMLParser.new()
-	parser.open_buffer(string.to_ascii_buffer())
-	if string.begins_with("<?"):
+	parser.open_buffer(stringSVG.to_ascii_buffer())
+	if stringSVG.begins_with("<?"):
 		parser.skip_section()
 	
 	var nodes: Array[String] = []  # Serves as a sort of stack.
@@ -131,8 +140,8 @@ func get_svg_error() -> String:
 			
 			var offset := parser.get_node_offset()
 			# Don't add tags that were closed right away to the stack.
-			var closure_pos := string.find("/>", offset)
-			if closure_pos == -1 or not closure_pos < string.find(">", offset):
+			var closure_pos := stringSVG.find("/>", offset)
+			if closure_pos == -1 or not closure_pos < stringSVG.find(">", offset):
 				nodes.append(node_name)
 		
 		elif parser.get_node_type() == XMLParser.NODE_ELEMENT_END:
@@ -142,6 +151,46 @@ func get_svg_error() -> String:
 			nodes.pop_back()
 	return "" if nodes.is_empty() else tr(&"#err_improper_closing")
 
+func update_string_from_root_tag() -> void:
+	string = tags_to_string(root_tag)
+
+func  string_to_replace_root_tag(stringSVG:String) -> void:
+	var new_root_tag:TagSVG = string_to_tags(stringSVG)
+	root_tag = new_root_tag
+	connect_root_tag_signals()
+	updated_root_tag.emit()
+
+func update_root_tag(new_tagSVG:TagSVG) -> void:
+	root_tag.attributes.width.set_value(new_tagSVG.attributes.width.get_value())
+	root_tag.attributes.height.set_value(new_tagSVG.attributes.height.get_value())
+	root_tag.attributes.viewBox.set_value(new_tagSVG.attributes.viewBox.get_value())
+	var number_child_root_tag = root_tag.get_child_count()
+	var number_child_new_tagSVG = new_tagSVG.get_child_count()
+	var number_child_to_delete = 0
+	if number_child_root_tag < number_child_new_tagSVG:
+		number_child_to_delete = number_child_new_tagSVG - number_child_root_tag
+	var delete_at: Array[int] = []
+	for idx in range(0,number_child_new_tagSVG - 1):
+		var new_child =  new_tagSVG.get_child_tag(idx)
+		var old_child = root_tag.get_child_tag(idx)
+		if new_child.title == old_child.title:
+			for key in new_child.attributes:
+				if old_child.attributes.has(key):
+					old_child.attributes[key].set_value(new_child.attributes[key].get_value())
+		else:
+			root_tag.add_tag_and_move_to(new_child.duplicate(),idx)
+			delete_at.append(idx)
+	var emit_updated_root_tag = false
+	while number_child_to_delete > 0:
+		emit_updated_root_tag = true
+		#deleted without trigering tag_deleted signal
+		var deleted_tag:Tag = root_tag.child_tags.pop_back()
+		var idx:int = number_child_root_tag + 1 if not delete_at.is_empty() else delete_at.pop_front()
+		root_tag.add_undoredo_tag_moved(idx,deleted_tag)
+		number_child_to_delete -= 1
+	if emit_updated_root_tag:
+		updated_root_tag.emit()
+	
 func add_undoredo_SVG_root() -> void:
 	var new_width: float = root_tag.attributes.width.get_value()
 	var new_length: float = root_tag.attributes.height.get_value()

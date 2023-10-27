@@ -31,6 +31,7 @@ func _ready() -> void:
 	SVG.root_tag.tag_deleted.connect(_on_tag_deleted.unbind(1))
 	SVG.root_tag.tag_moved.connect(_on_tag_moved)
 	SVG.root_tag.child_tag_attribute_changed.connect(_on_child_tag_attribute_changed)
+	SVG.root_tag.changed_unknown.connect(clear_inner_selection)
 
 func toggle_selection(idx: int) -> void:
 	if idx >= 0:
