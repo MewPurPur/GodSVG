@@ -13,7 +13,7 @@ For code contributions, use the following workflow:
 
 This is the preferred workflow, but tidiness is not as important as work being done, so feel free to do something else you're comfortable with.
 
-After submitting your pull request, I (MewPurPur) will review your changes and may provide feedback or request modifications. Be responsive to any comments or suggestions. Once your pull request is approved, it will be merged. Afterward, you can delete your branch both from your fork.
+After submitting your pull request, I (MewPurPur) will review your changes and may provide feedback or request modifications. Be responsive to any comments or suggestions. Once your pull request is approved, it will be merged. Afterward, you can delete your branch from your fork.
 
 ## Development guidelines
 
