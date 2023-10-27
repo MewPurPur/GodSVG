@@ -18,10 +18,12 @@ func _input(event: InputEvent) -> void:
 		release_focus()
 
 func _on_focus_entered() -> void:
+	process_mode = PROCESS_MODE_ALWAYS
 	get_tree().paused = true
 
 func _on_focus_exited() -> void:
 	get_tree().paused = false
+	process_mode = PROCESS_MODE_INHERIT
 
 func _on_mouse_entered() -> void:
 	hovered = true
