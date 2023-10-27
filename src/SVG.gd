@@ -237,7 +237,7 @@ func reregester_to_undoredo(attribute:Attribute)-> void:
 				if attribute == child.attributes[key]:
 					child_tag = child
 					attribute_name = key
-		if child_tag == null or attribute_name == null:
+		if not child_tag == null or not attribute_name == null:
 			add_undoredo_child_tag_attribute(
 				old_value,new_value,child_tag,attribute_name)
 
