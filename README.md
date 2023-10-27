@@ -1,6 +1,6 @@
 # GodSVG
 
-![image](https://github.com/MewPurPur/GodSVG/assets/85438892/0800ff2a-8677-41a9-8888-4cbbf8d698f6)
+![image](![image](https://github.com/MewPurPur/GodSVG/assets/85438892/dad79708-95f0-4914-a703-71738502d609))
 
 GodSVG is an application in early development built with Godot for creating optimized Scalable Vector Graphics (SVG) files. It is mainly designed for programmers, allowing them to easily edit individual SVG elements and view the corresponding code in real-time.
 GodSVG is inspired by the need for a SVG editor without abstractions that produces optimized SVG files.
@@ -8,7 +8,7 @@ GodSVG is inspired by the need for a SVG editor without abstractions that produc
 ## Features
 
 - **Interactive SVG editing:** Modify individual elements of a SVG file using a user-friendly interface.
-- **Real-time code:** As you manipulate elements in the UI, you can instantly view generated code and even edit it.
+- **Real-time code:** As you manipulate elements in the UI, code is instantly generated and can be edited.
 - **Optimized SVG output:** Generate clean and efficient SVG files. _(Planned: Ways to minify the output)_
 - **Accessible on mobile:** GodSVG aims to be usable on mobile devices.
 
@@ -40,17 +40,9 @@ Currently, there are no pre-built binaries available for GodSVG. However, you ca
 
 ## Contributing
 
-Contributions to GodSVG are very welcome! To do so, do the following:
+Contributions to GodSVG are very welcome! For code contributions, read `CONTRIBUTING.md`.
 
-1. Fork the repository.
-2. Create a new branch: `git checkout -b implement-gradients`
-3. Make your modifications, add them with `git add .`
-4. Commit your changes: `git commit -m "Implement linear gradients"`
-5. Push to the branch: `git push origin implement-gradients`
-6. Create a new pull request and describe your changes in detail.
-
-This is the preferred workflow, but tidiness is not as important as work being done, so feel free to do whatever you're comfortable with.
-To report bugs, use Github's issue form. Before contributing a feature, please make sure to first propose it in Issues and have it approved.
+To report bugs, use Github's issue form. Before implementing a feature, please make sure to first propose it in Issues and have it approved.
 
 ## License
 
