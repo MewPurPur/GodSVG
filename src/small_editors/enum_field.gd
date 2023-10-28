@@ -1,7 +1,7 @@
 extends AttributeEditor
 
 @onready var value_picker: Popup = $ContextPopup
-@onready var indicator: LineEdit = $MainLine/LineEdit
+@onready var indicator: LineEdit = $LineEdit
 
 signal value_changed(new_value: String)
 var _value: String  # Must not be updated directly.

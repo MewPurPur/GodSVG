@@ -1,6 +1,6 @@
 extends AttributeEditor
 
-@onready var line_edit: LineEdit = $LineEdit
+@onready var line_edit: BetterLineEdit = $LineEdit
 
 signal value_changed(new_value: String)
 var _value: String  # Must not be updated directly.
@@ -20,7 +20,7 @@ func _ready() -> void:
 	if attribute != null:
 		set_value(attribute.get_value())
 	line_edit.text = get_value()
-	line_edit.tooltip_text = attribute_name
+	line_edit.tooltip_text = attribute_name + "\n(" + tr(&"#unknown_tooltip") + ")"
 
 func _on_value_changed(new_value: String) -> void:
 	line_edit.text = new_value
