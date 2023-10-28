@@ -19,7 +19,6 @@ func _input(event) -> void:
 			_undo_redo.redo()
 			is_excuting = false
 			redo_excuted.emit(action_name)
-		get_viewport().set_input_as_handled()
 	elif event.is_action_pressed(&"undo"):
 		if _undo_redo.has_undo():
 			var action_name = _undo_redo.get_current_action_name()
@@ -27,7 +26,6 @@ func _input(event) -> void:
 			_undo_redo.undo()
 			is_excuting = false
 			undo_excuted.emit(action_name)
-		get_viewport().set_input_as_handled()
 
 func add_action_simple_methods(action_name:String,redo:Callable,\
 	undo:Callable,add_reference:Object = null,execute:bool = true) -> void:
