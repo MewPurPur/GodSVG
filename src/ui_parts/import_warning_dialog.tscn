@@ -1,12 +1,12 @@
 [gd_scene load_steps=6 format=3 uid="uid://bhskf8yrulqtj"]
 
-[ext_resource type="Script" path="res://src/ui_parts/import_warning_panel.gd" id="1_65dbg"]
-[ext_resource type="Shader" path="res://src/ui_parts/zoom_shader.gdshader" id="2_oosaw"]
-[ext_resource type="Texture2D" uid="uid://c68og6bsqt0lb" path="res://visual/Checkerboard.svg" id="3_pwm5l"]
-[ext_resource type="FontFile" uid="uid://c7ury252fql35" path="res://visual/CodeFont.ttf" id="4_e1maq"]
+[ext_resource type="Script" path="res://src/ui_parts/import_warning_dialog.gd" id="1_1rv5w"]
+[ext_resource type="Shader" path="res://src/ui_parts/zoom_shader.gdshader" id="2_o24gk"]
+[ext_resource type="Texture2D" uid="uid://c68og6bsqt0lb" path="res://visual/Checkerboard.svg" id="3_k3bec"]
+[ext_resource type="FontFile" uid="uid://c7ury252fql35" path="res://visual/CodeFont.ttf" id="4_d8ygu"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_774g4"]
-shader = ExtResource("2_oosaw")
+shader = ExtResource("2_o24gk")
 shader_parameter/uv_scale = 2.0
 
 [node name="ImportWarningPanel" type="ColorRect"]
@@ -16,7 +16,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 0.4)
-script = ExtResource("1_65dbg")
+script = ExtResource("1_1rv5w")
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
 layout_mode = 1
@@ -56,7 +56,7 @@ theme_override_constants/separation = 12
 material = SubResource("ShaderMaterial_774g4")
 custom_minimum_size = Vector2(128, 128)
 layout_mode = 2
-texture = ExtResource("3_pwm5l")
+texture = ExtResource("3_k3bec")
 stretch_mode = 1
 
 [node name="TexturePreview" type="TextureRect" parent="PanelContainer/MarginContainer/VBoxContainer/TextureContainer/Checkerboard"]
@@ -85,7 +85,7 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/default_color = Color(1, 0.4, 0.4, 1)
-theme_override_fonts/normal_font = ExtResource("4_e1maq")
+theme_override_fonts/normal_font = ExtResource("4_d8ygu")
 fit_content = true
 autowrap_mode = 0
 
@@ -94,16 +94,16 @@ layout_mode = 2
 theme_override_constants/separation = 12
 alignment = 1
 
-[node name="OKButton" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/ButtonContainer"]
-layout_mode = 2
-mouse_default_cursor_shape = 2
-text = "#import"
-
 [node name="CancelButton" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/ButtonContainer"]
 layout_mode = 2
 mouse_default_cursor_shape = 2
 text = "#cancel"
 
+[node name="OKButton" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/ButtonContainer"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+text = "#import"
+
 [connection signal="imported" from="." to="." method="_on_imported"]
-[connection signal="pressed" from="PanelContainer/MarginContainer/VBoxContainer/ButtonContainer/OKButton" to="." method="_on_ok_button_pressed"]
 [connection signal="pressed" from="PanelContainer/MarginContainer/VBoxContainer/ButtonContainer/CancelButton" to="." method="_on_cancel_button_pressed"]
+[connection signal="pressed" from="PanelContainer/MarginContainer/VBoxContainer/ButtonContainer/OKButton" to="." method="_on_ok_button_pressed"]

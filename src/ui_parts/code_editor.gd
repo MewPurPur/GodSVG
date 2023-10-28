@@ -1,7 +1,8 @@
 extends VBoxContainer
 
 const SVGFileDialog := preload("svg_file_dialog.tscn")
-const ImportWarningPanel := preload("import_warning_panel.tscn")
+const ImportWarningDialog := preload("import_warning_dialog.tscn")
+const ExportDialog := preload("export_dialog.tscn")
 
 @onready var code_edit: CodeEdit = $ScriptEditor/CodeEdit
 @onready var error_bar: PanelContainer = $ScriptEditor/ErrorBar
@@ -60,10 +61,6 @@ func native_file_import(has_selected: bool, files: PackedStringArray, _filter_id
 	if has_selected:
 		apply_svg_from_path(files[0])
 
-func native_file_export(has_selected: bool, files: PackedStringArray, _filter_idx: int):
-	if has_selected:
-		export_svg(files[0])
-
 func _on_import_button_pressed() -> void:
 	if DisplayServer.has_feature(DisplayServer.FEATURE_NATIVE_DIALOG):
 		DisplayServer.file_dialog_show(
@@ -75,26 +72,15 @@ func _on_import_button_pressed() -> void:
 		svg_import_dialog.file_selected.connect(apply_svg_from_path)
 
 func _on_export_button_pressed() -> void:
-	if DisplayServer.has_feature(DisplayServer.FEATURE_NATIVE_DIALOG):
-		DisplayServer.file_dialog_show(
-				"Export a .svg file", OS.get_system_dir(OS.SYSTEM_DIR_PICTURES), "", false,
-				DisplayServer.FILE_DIALOG_MODE_SAVE_FILE, ["*.svg"], native_file_export)
-	else:
-		var svg_export_dialog := SVGFileDialog.instantiate()
-		svg_export_dialog.file_mode = FileDialog.FILE_MODE_SAVE_FILE
-		get_tree().get_root().add_child(svg_export_dialog)
-		svg_export_dialog.file_selected.connect(export_svg)
+	var export_panel := ExportDialog.instantiate()
+	get_tree().get_root().add_child(export_panel)
 
 func apply_svg_from_path(path: String) -> void:
 	var svg_text := FileAccess.open(path, FileAccess.READ).get_as_text()
-	var warning_panel := ImportWarningPanel.instantiate()
+	var warning_panel := ImportWarningDialog.instantiate()
 	warning_panel.imported.connect(set_new_text)
 	warning_panel.set_svg(svg_text)
 	get_tree().get_root().add_child(warning_panel)
-
-func export_svg(path: String) -> void:
-	var FA := FileAccess.open(path, FileAccess.WRITE)
-	FA.store_string(SVG.string)
 
 func set_new_text(svg_text: String) -> void:
 	code_edit.text = svg_text

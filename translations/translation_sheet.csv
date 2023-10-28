@@ -4,6 +4,7 @@
 #remember_window_mode_settings,Remember window mode,Запомни режима на прозореца
 #remember_window_mode_desc,"When this box is checked, the window can remain restored between sessions.","Когато тази кутийка е отметната, прозорецът може да остане малък между сесиите."
 #language,Language,Език
+#open,Open,Отвори
 #close,Close,Затвори
 #repo_button_text,GodSVG Repository,Репозиторията на GodSVG
 #about_button_text,About…,Относно приложението…
@@ -42,3 +43,9 @@
 #cancel,Cancel,Отказ
 #import_problems,Import Problems,Проблеми в импортирането
 #unknown_tooltip,GodSVG doesn’t recognize this attribute,GodSVG не разпознава този атрибут
+#export,Export,Експортирай
+#format,Format,Формат
+#scale,Scale,Мащаб
+#size,Size,Размер
+#final_size,Final size,Краен размер
+#export_configuration,Export Configuration,Конфигурация на експорта
