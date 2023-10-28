@@ -1,12 +1,12 @@
 extends Node
 
-signal parsing_finished(error_id: StringName)
-
 var string: String = ""
 var root_tag:TagSVG = TagSVG.new()
 
 var root_tag_old_attributes: Dictionary = {}
 var deregestered_attributes_from_undoredo:Dictionary = {} #Attribute:Old_value
+
+signal parsing_finished(error_id: StringName)
 
 func _ready() -> void:
 	if GlobalSettings.save_svg:
