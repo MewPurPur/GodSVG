@@ -40,17 +40,14 @@ cp3: Vector2, cp4: Vector2) -> PackedVector2Array:
 	var curve := Curve2D.new()
 	curve.add_point(cp1, Vector2(), cp2)
 	curve.add_point(cp4, cp3)
-	return curve.tessellate(6, 1)
+	return curve.tessellate(5, 1)
 
 static func get_quadratic_bezier_points(cp1: Vector2, cp2: Vector2,
 cp3: Vector2) -> PackedVector2Array:
-	var fcpo := 2/3.0 * (cp2 - cp1)
-	var fcpi := 2/3.0 * (cp2 - cp3)
-	
 	var curve := Curve2D.new()
-	curve.add_point(cp1, Vector2(), fcpo)
-	curve.add_point(cp3, fcpi)
-	return curve.tessellate(6, 1)
+	curve.add_point(cp1, Vector2(), 2/3.0 * (cp2 - cp1))
+	curve.add_point(cp3, 2/3.0 * (cp2 - cp3))
+	return curve.tessellate(5, 1)
 
 # Ellipse parametric equation.
 static func E(c: Vector2, r: Vector2, cosine: float, sine: float, t: float) -> Vector2:

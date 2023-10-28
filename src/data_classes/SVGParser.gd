@@ -65,6 +65,7 @@ static func text_to_svg(text: String) -> TagSVG:
 					_:
 						tag = TagUnknown.new(node_name)
 				
+				var unknown: Array[AttributeUnknown] = []
 				for element in attribute_dict:
 					if tag.attributes.has(element):
 						var attribute: Attribute = tag.attributes[element]
@@ -73,8 +74,8 @@ static func text_to_svg(text: String) -> TagSVG:
 						elif typeof(attribute.get_value()) == Variant.Type.TYPE_FLOAT:
 							attribute.set_value(attribute_dict[element].to_float())
 					else:
-						var attrib := AttributeUnknown.new(element, attribute_dict[element])
-						tag.unknown_attributes.append(attrib)
+						unknown.append(AttributeUnknown.new(element, attribute_dict[element]))
+				tag.set_unknown_attributes(unknown)
 				svg_tag.child_tags.append(tag)
 	return svg_tag
 
