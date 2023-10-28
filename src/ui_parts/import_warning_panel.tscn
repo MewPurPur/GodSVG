@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://bojvstek4lbaf"]
+[gd_scene load_steps=6 format=3 uid="uid://bhskf8yrulqtj"]
 
 [ext_resource type="Script" path="res://src/ui_parts/import_warning_panel.gd" id="1_65dbg"]
 [ext_resource type="Shader" path="res://src/ui_parts/zoom_shader.gdshader" id="2_oosaw"]
@@ -96,10 +96,12 @@ alignment = 1
 
 [node name="OKButton" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/ButtonContainer"]
 layout_mode = 2
+mouse_default_cursor_shape = 2
 text = "#import"
 
 [node name="CancelButton" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/ButtonContainer"]
 layout_mode = 2
+mouse_default_cursor_shape = 2
 text = "#cancel"
 
 [connection signal="imported" from="." to="." method="_on_imported"]

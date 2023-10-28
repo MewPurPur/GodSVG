@@ -222,7 +222,7 @@ corner_radius_bottom_left = 5
 corner_detail = 16
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8vw7r"]
-content_margin_left = 4.0
+content_margin_left = 3.0
 content_margin_top = 4.0
 content_margin_right = 6.0
 content_margin_bottom = 4.0
@@ -237,7 +237,7 @@ corner_radius_bottom_right = 5
 corner_detail = 16
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rcthl"]
-content_margin_left = 4.0
+content_margin_left = 3.0
 content_margin_top = 4.0
 content_margin_right = 6.0
 content_margin_bottom = 4.0
@@ -252,7 +252,7 @@ corner_radius_bottom_right = 5
 corner_detail = 16
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2dyv3"]
-content_margin_left = 4.0
+content_margin_left = 2.0
 content_margin_top = 4.0
 content_margin_right = 6.0
 content_margin_bottom = 4.0
@@ -267,7 +267,7 @@ corner_radius_bottom_right = 5
 corner_detail = 16
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_m8uy4"]
-content_margin_left = 4.0
+content_margin_left = 3.0
 content_margin_top = 4.0
 content_margin_right = 6.0
 content_margin_bottom = 4.0
@@ -433,7 +433,7 @@ corner_detail = 16
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8bmk3"]
 content_margin_left = 6.0
 content_margin_top = 4.0
-content_margin_right = 4.0
+content_margin_right = 3.0
 content_margin_bottom = 4.0
 bg_color = Color(0.0352941, 0.0352941, 0.0509804, 1)
 border_width_left = 2
@@ -448,7 +448,7 @@ corner_detail = 16
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_v2cqs"]
 content_margin_left = 6.0
 content_margin_top = 4.0
-content_margin_right = 4.0
+content_margin_right = 3.0
 content_margin_bottom = 4.0
 bg_color = Color(0.0901961, 0.0901961, 0.2, 1)
 border_width_left = 2
@@ -463,7 +463,7 @@ corner_detail = 16
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_v3rbs"]
 content_margin_left = 6.0
 content_margin_top = 4.0
-content_margin_right = 4.0
+content_margin_right = 3.0
 content_margin_bottom = 4.0
 bg_color = Color(0.0705882, 0.0705882, 0.2, 1)
 border_width_left = 2
@@ -478,7 +478,7 @@ corner_detail = 16
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_s605b"]
 content_margin_left = 6.0
 content_margin_top = 4.0
-content_margin_right = 4.0
+content_margin_right = 3.0
 content_margin_bottom = 4.0
 bg_color = Color(0.243137, 0.356863, 0.701961, 1)
 border_width_left = 2
