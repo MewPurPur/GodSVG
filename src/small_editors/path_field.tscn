@@ -91,6 +91,7 @@ theme_override_constants/separation = 0
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
+focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_override_styles/normal = SubResource("StyleBoxEmpty_lcnxl")
 theme_override_styles/hover = SubResource("StyleBoxFlat_4yine")

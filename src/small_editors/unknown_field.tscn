@@ -1,0 +1,56 @@
+[gd_scene load_steps=6 format=3 uid="uid://mr2c1hti43k4"]
+
+[ext_resource type="Script" path="res://src/small_editors/unknown_field.gd" id="1_5ooio"]
+[ext_resource type="Script" path="res://src/small_editors/BetterLineEdit.gd" id="1_gtdpd"]
+[ext_resource type="Texture2D" uid="uid://bi38k4pq83omf" path="res://visual/icons/QuestionMark.svg" id="2_c8kyj"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_y4kmw"]
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 1
+border_width_bottom = 2
+border_color = Color(1, 1, 1, 0.0666667)
+corner_radius_top_left = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qhmpn"]
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 1
+border_width_bottom = 2
+border_color = Color(0.501961, 0.752941, 1, 0.2)
+corner_radius_top_left = 5
+corner_radius_bottom_left = 5
+
+[node name="UnknownField" type="HBoxContainer"]
+custom_minimum_size = Vector2(0, 22)
+offset_right = 74.0
+offset_bottom = 22.0
+theme_override_constants/separation = 0
+script = ExtResource("1_5ooio")
+
+[node name="LineEdit" type="LineEdit" parent="."]
+custom_minimum_size = Vector2(58, 0)
+layout_mode = 2
+focus_mode = 1
+theme_type_variation = &"RightConnectedLineEdit"
+context_menu_enabled = false
+select_all_on_focus = true
+caret_blink = true
+script = ExtResource("1_gtdpd")
+hover_stylebox = SubResource("StyleBoxFlat_y4kmw")
+focus_stylebox = SubResource("StyleBoxFlat_qhmpn")
+
+[node name="NotReallyButton" type="Button" parent="."]
+custom_minimum_size = Vector2(15, 0)
+layout_mode = 2
+tooltip_text = "#unknown_tooltip"
+focus_mode = 0
+theme_type_variation = &"LeftConnectedButton"
+disabled = true
+icon = ExtResource("2_c8kyj")
+expand_icon = true
+
+[connection signal="text_submitted" from="LineEdit" to="." method="_on_text_submitted"]

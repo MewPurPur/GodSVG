@@ -8,9 +8,11 @@ const NumberSlider = preload("res://src/small_editors/number_field_with_slider.t
 const ColorField = preload("res://src/small_editors/color_field.tscn")
 const PathField = preload("res://src/small_editors/path_field.tscn")
 const EnumField = preload("res://src/small_editors/enum_field.tscn")
+const UnknownField = preload("res://src/small_editors/unknown_field.tscn")
 
 @onready var paint_container: FlowContainer = %AttributeContainer/PaintAttributes
 @onready var shape_container: FlowContainer = %AttributeContainer/ShapeAttributes
+@onready var unknown_container: HFlowContainer = %AttributeContainer/UnknownAttributes
 @onready var title_button: Button = %TitleButton
 @onready var tag_context: Popup = $ContextPopup
 @onready var margin_container: MarginContainer = $MarginContainer
@@ -23,8 +25,18 @@ func _ready() -> void:
 	tag.attribute_changed.connect(select_conditionally)
 	Interactions.selection_changed.connect(determine_selection_highlight)
 	Interactions.hover_changed.connect(determine_selection_highlight)
-	# Fill up the containers.
+	# Fill up the containers. Start with unknown attributes, if there are any.
+	if not tag.unknown_attributes.is_empty():
+		unknown_container.show()
+	for attribute in tag.unknown_attributes:
+		var input_field: AttributeEditor = UnknownField.instantiate()
+		input_field.attribute = attribute
+		input_field.attribute_name = attribute.name
+		unknown_container.add_child(input_field)
+	# Continue with supported attributes.
 	title_button.text = tag.title
+	if title_button.text.length() > 7:
+		title_button.add_theme_font_size_override(&"font_size", 13)
 	for attribute_key in tag.attributes:
 		var attribute: Attribute = tag.attributes[attribute_key]
 		var input_field: AttributeEditor

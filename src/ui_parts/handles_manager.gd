@@ -1,11 +1,13 @@
 extends Control
 
-const selection_color_string = "#46f"
-const hover_color_string = "#999"
 const default_color_string = "#000"
-const selection_color = Color(selection_color_string)
-const hover_color = Color(hover_color_string)
+const hover_color_string = "#aaa"
+const selection_color_string = "#46f"
+const hover_selection_color_string = "#f44"
 const default_color = Color(default_color_string)
+const hover_color = Color(hover_color_string)
+const selection_color = Color(selection_color_string)
+const hover_selection_color = Color(hover_selection_color_string)
 
 var zoom := 1.0:
 	set(new_value):
@@ -121,9 +123,11 @@ func _draw() -> void:
 	var normal_polylines: Array[PackedVector2Array] = []
 	var selected_polylines: Array[PackedVector2Array] = []
 	var hovered_polylines: Array[PackedVector2Array] = []
+	var hovered_selected_polylines: Array[PackedVector2Array] = []
 	var normal_tangent_multiline := PackedVector2Array()
 	var selected_tangent_multiline := PackedVector2Array()
 	var hovered_tangent_multiline := PackedVector2Array()
+	var hovered_selected_tangent_multiline := PackedVector2Array()
 	
 	for tag_idx in SVG.root_tag.get_child_count():
 		var tag := SVG.root_tag.child_tags[tag_idx]
@@ -138,9 +142,14 @@ func _draw() -> void:
 					var d := deg_to_rad(i)
 					points.append(convert_in(c + Vector2(cos(d) * r, sin(d) * r)))
 				
-				if tag_idx == Interactions.hovered_tag:
+				var tag_hovered := tag_idx == Interactions.hovered_tag
+				var tag_selected := tag_idx in Interactions.selected_tags
+				
+				if tag_hovered and tag_selected:
+					hovered_selected_polylines.append(points)
+				elif tag_hovered:
 					hovered_polylines.append(points)
-				elif tag_idx in Interactions.selected_tags:
+				elif tag_selected:
 					selected_polylines.append(points)
 				else:
 					normal_polylines.append(points)
@@ -155,9 +164,14 @@ func _draw() -> void:
 					var d := deg_to_rad(i)
 					points.append(convert_in(c + Vector2(cos(d) * rx, sin(d) * ry)))
 				
-				if tag_idx == Interactions.hovered_tag:
+				var tag_hovered := tag_idx == Interactions.hovered_tag
+				var tag_selected := tag_idx in Interactions.selected_tags
+				
+				if tag_hovered and tag_selected:
+					hovered_selected_polylines.append(points)
+				elif tag_hovered:
 					hovered_polylines.append(points)
-				elif tag_idx in Interactions.selected_tags:
+				elif tag_selected:
 					selected_polylines.append(points)
 				else:
 					normal_polylines.append(points)
@@ -207,9 +221,14 @@ func _draw() -> void:
 						points.append(convert_in(Vector2(x + rx, y + ry) +\
 								Vector2(cos(d) * rx, sin(d) * ry)))
 				
-				if tag_idx == Interactions.hovered_tag:
+				var tag_hovered := tag_idx == Interactions.hovered_tag
+				var tag_selected := tag_idx in Interactions.selected_tags
+				
+				if tag_hovered and tag_selected:
+					hovered_selected_polylines.append(points)
+				elif tag_hovered:
 					hovered_polylines.append(points)
-				elif tag_idx in Interactions.selected_tags:
+				elif tag_selected:
 					selected_polylines.append(points)
 				else:
 					normal_polylines.append(points)
@@ -224,16 +243,21 @@ func _draw() -> void:
 				points.append(convert_in(Vector2(x1, y1)))
 				points.append(convert_in(Vector2(x2, y2)))
 				
-				if tag_idx == Interactions.hovered_tag:
+				var tag_hovered := tag_idx == Interactions.hovered_tag
+				var tag_selected := tag_idx in Interactions.selected_tags
+				
+				if tag_hovered and tag_selected:
+					hovered_selected_polylines.append(points)
+				elif tag_hovered:
 					hovered_polylines.append(points)
-				elif tag_idx in Interactions.selected_tags:
+				elif tag_selected:
 					selected_polylines.append(points)
 				else:
 					normal_polylines.append(points)
 				
 			"path":
 				var pathdata: AttributePath = attribs.d
-				var current_mode := -1  # Normal 0, hovered 1, selected 2.
+				var current_mode := -1  # Normal 0, hovered 1, selected 2, hovered selected 3.
 				for cmd_idx in pathdata.get_command_count():
 					# Drawing logic.
 					var points := PackedVector2Array()
@@ -241,31 +265,34 @@ func _draw() -> void:
 					var cmd := pathdata.get_command(cmd_idx)
 					var relative := cmd.relative
 					
+					current_mode = 0
 					if tag_idx == Interactions.hovered_tag or\
 					(Interactions.semi_hovered_tag == tag_idx and\
 					Interactions.inner_hovered == cmd_idx):
-						current_mode = 1
-					elif tag_idx in Interactions.selected_tags or\
+						current_mode += 1
+					if tag_idx in Interactions.selected_tags or\
 					(Interactions.semi_selected_tag == tag_idx and\
 					cmd_idx in Interactions.inner_selections):
-						current_mode = 2
-					elif current_mode != 0:
-						current_mode = 0
+						current_mode += 2
 					
 					match cmd.command_char.to_upper():
 						"L":
+							# Line contour.
 							var v := Vector2(cmd.x, cmd.y)
 							var end := cmd.start + v if relative else v
 							points = PackedVector2Array([convert_in(cmd.start), convert_in(end)])
 						"H":
+							# Horizontal line contour.
 							var v := Vector2(cmd.x, 0)
 							var end := cmd.start + v if relative else Vector2(v.x, cmd.start.y)
 							points = PackedVector2Array([convert_in(cmd.start), convert_in(end)])
 						"V":
+							# Vertical line contour.
 							var v := Vector2(0, cmd.y)
 							var end := cmd.start + v if relative else Vector2(cmd.start.x, v.y)
 							points = PackedVector2Array([convert_in(cmd.start), convert_in(end)])
 						"C":
+							# Cubic Bezier curve contour.
 							var v := Vector2(cmd.x, cmd.y)
 							var v1 := Vector2(cmd.x1, cmd.y1)
 							var v2 := Vector2(cmd.x2, cmd.y2)
@@ -281,6 +308,7 @@ func _draw() -> void:
 							tangent_points.append(convert_in(cp4))
 							tangent_points.append(convert_in(cp1 + v2 if relative else v2))
 						"S":
+							# Shorthand cubic Bezier curve contour.
 							if cmd_idx == 0:
 								break
 							var prev_cmd := pathdata.get_command(cmd_idx - 1)
@@ -309,6 +337,7 @@ func _draw() -> void:
 							tangent_points.append(convert_in(cp4))
 							tangent_points.append(convert_in(cp1 + v2 if relative else v2))
 						"Q":
+							# Quadratic Bezier curve contour.
 							var v := Vector2(cmd.x, cmd.y)
 							var v1 := Vector2(cmd.x1, cmd.y1)
 							var cp1 := cmd.start
@@ -322,6 +351,7 @@ func _draw() -> void:
 							tangent_points.append(convert_in(cp3))
 							tangent_points.append(convert_in(cp1 + v1 if relative else v1))
 						"T":
+							# Shorthand quadratic Bezier curve contour.
 							var prevQ_idx := cmd_idx - 1
 							var prevQ_cmd := pathdata.get_command(prevQ_idx)
 							while prevQ_idx >= 0:
@@ -366,6 +396,7 @@ func _draw() -> void:
 							tangent_points.append(convert_in(cp3))
 							tangent_points.append(convert_in(cp1 + v1 if relative else v1))
 						"A":
+							# Elliptical arc contour.
 							var start := cmd.start
 							var v := Vector2(cmd.x, cmd.y)
 							var end := start + v if relative else v
@@ -434,14 +465,17 @@ func _draw() -> void:
 								t = theta1 + delta_theta
 								var p2 := Utils.E(c, r, cosine, sine, t)
 								var e2 := Utils.Et(r, cosine, sine, t)
+								alpha *= fposmod(delta_theta, PI/4) / (PI/4)
 								var q1 := alpha * e1
 								var q2 := -alpha * e2
 								cp.append(PackedVector2Array([p1, q1, q2, p2]))
 							
 							for p in cp:
+								draw_circle(convert_in(p[0]), 0.2, hover_selection_color)
 								points += Utils.get_cubic_bezier_points(convert_in(p[0]),
 										p[1] * viewbox_zoom, p[2] * viewbox_zoom, convert_in(p[3]))
 						"Z":
+							# Path closure contour.
 							var prev_M_idx := cmd_idx - 1
 							var prev_M_cmd := pathdata.get_command(prev_M_idx)
 							while prev_M_idx >= 0:
@@ -469,6 +503,9 @@ func _draw() -> void:
 						2:
 							selected_polylines.append(points.duplicate())
 							selected_tangent_multiline += tangent_points.duplicate()
+						3:
+							hovered_selected_polylines.append(points.duplicate())
+							hovered_selected_tangent_multiline += tangent_points.duplicate()
 		
 		for polyline in normal_polylines:
 			draw_polyline(polyline, default_color, thickness, true)
@@ -476,6 +513,8 @@ func _draw() -> void:
 			draw_polyline(polyline, selection_color, thickness, true)
 		for polyline in hovered_polylines:
 			draw_polyline(polyline, hover_color, thickness, true)
+		for polyline in hovered_selected_polylines:
+			draw_polyline(polyline, hover_selection_color, thickness, true)
 		
 		for i in normal_tangent_multiline.size() / 2:
 			var i2 := i * 2
@@ -489,23 +528,38 @@ func _draw() -> void:
 			var i2 := i * 2
 			draw_line(hovered_tangent_multiline[i2], hovered_tangent_multiline[i2 + 1],
 					Color(hover_color, tangent_alpha), tangent_thickness, true)
+		for i in hovered_selected_tangent_multiline.size() / 2:
+			var i2 := i * 2
+			draw_line(hovered_selected_tangent_multiline[i2],
+					hovered_selected_tangent_multiline[i2 + 1],
+					Color(hover_selection_color, tangent_alpha), tangent_thickness, true)
 	
 	var normal_handles: Array[Handle] = []
 	var selected_handles: Array[Handle] = []
 	var hovered_handles: Array[Handle] = []
+	var hovered_selected_handles: Array[Handle] = []
 	for handle in handles:
-		if (handle is XYHandle and handle.tag_index == Interactions.hovered_tag) or\
-		(handle is PathHandle and ((handle.tag_index == Interactions.semi_hovered_tag and\
-		handle.command_index == Interactions.inner_hovered) or\
-		handle.tag_index == Interactions.hovered_tag)):
-			hovered_handles.append(handle)
-		elif (handle is XYHandle and handle.tag_index in Interactions.selected_tags) or\
-		(handle is PathHandle and ((handle.tag_index == Interactions.semi_selected_tag and\
-		handle.command_index in Interactions.inner_selections) or\
-		handle.tag_index in Interactions.selected_tags)):
-			selected_handles.append(handle)
-		else:
-			normal_handles.append(handle)
+		var is_hovered := false
+		var is_selected := false
+		if handle is XYHandle:
+			is_hovered = handle.tag_index == Interactions.hovered_tag
+			is_selected = handle.tag_index in Interactions.selected_tags
+		elif handle is PathHandle:
+			is_hovered = handle.tag_index == Interactions.hovered_tag or\
+					(handle.tag_index == Interactions.semi_hovered_tag and\
+					handle.command_index == Interactions.inner_hovered)
+			is_selected = (handle.tag_index == Interactions.semi_selected_tag and\
+					handle.command_index in Interactions.inner_selections) or\
+					handle.tag_index in Interactions.selected_tags
+			
+			if is_hovered and is_selected:
+				hovered_selected_handles.append(handle)
+			elif is_hovered:
+				hovered_handles.append(handle)
+			elif is_selected:
+				selected_handles.append(handle)
+			else:
+				normal_handles.append(handle)
 	
 	for handle in normal_handles:
 		draw_handle(handle, default_color)
@@ -513,6 +567,8 @@ func _draw() -> void:
 		draw_handle(handle, selection_color)
 	for handle in hovered_handles:
 		draw_handle(handle, hover_color)
+	for handle in hovered_selected_handles:
+		draw_handle(handle, hover_selection_color)
 
 func draw_handle(handle: Handle, outer_circle_color: Color) -> void:
 	match handle.display_mode:

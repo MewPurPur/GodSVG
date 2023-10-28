@@ -35,7 +35,7 @@ layout_mode = 2
 theme_override_constants/separation = 0
 
 [node name="LineEdit" type="LineEdit" parent="MainLine"]
-custom_minimum_size = Vector2(56, 0)
+custom_minimum_size = Vector2(58, 0)
 layout_mode = 2
 focus_mode = 1
 theme_type_variation = &"RightConnectedLineEdit"
@@ -49,10 +49,11 @@ focus_stylebox = SubResource("StyleBoxFlat_qhmpn")
 [node name="Button" type="Button" parent="MainLine"]
 custom_minimum_size = Vector2(15, 0)
 layout_mode = 2
-focus_mode = 1
+focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_type_variation = &"LeftConnectedButton"
 icon = ExtResource("2_owe3f")
+expand_icon = true
 
 [node name="ContextPopup" parent="." instance=ExtResource("3_qw0q5")]
 visible = false
