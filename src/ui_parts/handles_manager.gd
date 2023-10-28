@@ -471,7 +471,6 @@ func _draw() -> void:
 								cp.append(PackedVector2Array([p1, q1, q2, p2]))
 							
 							for p in cp:
-								draw_circle(convert_in(p[0]), 0.2, hover_selection_color)
 								points += Utils.get_cubic_bezier_points(convert_in(p[0]),
 										p[1] * viewbox_zoom, p[2] * viewbox_zoom, convert_in(p[3]))
 						"Z":
