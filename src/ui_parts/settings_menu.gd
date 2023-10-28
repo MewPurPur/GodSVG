@@ -12,6 +12,7 @@ func _ready() -> void:
 		var button := Button.new()
 		button.text = TranslationServer.get_locale_name(lang) + " (" + lang + ")"
 		button.pressed.connect(_on_language_chosen.bind(lang))
+		button.mouse_default_cursor_shape = CURSOR_POINTING_HAND
 		button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		buttons_arr.append(button)
 	lang_popup.set_btn_array(buttons_arr)

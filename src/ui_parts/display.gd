@@ -16,7 +16,7 @@ const NumberField = preload("res://src/small_editors/number_field.tscn")
 @onready var visuals_popup: Popup = %LeftMenu/VisualsPopup
 @onready var more_button: Button = %LeftMenu/MoreOptions
 @onready var more_popup: Popup = %LeftMenu/MorePopup
-@onready var snapper: AttributeEditor = %LeftMenu/Snapping/Snapper
+@onready var snapper: BetterLineEdit = %LeftMenu/Snapping/NumberEdit
 
 func update_zoom_widget(zoom_level: float) -> void:
 	await get_tree().process_frame
@@ -30,15 +30,12 @@ func update_zoom_widget(zoom_level: float) -> void:
 			if zoom_in_button.disabled else Control.CURSOR_POINTING_HAND
 
 
-func _ready() -> void:
-	snapper.set_value(0.5)
-
 func _on_settings_pressed() -> void:
 	more_popup.hide()
 	var settings_menu_instance := settings_menu.instantiate()
 	get_tree().get_root().add_child(settings_menu_instance)
 
-func _on_snap_button_pressed() -> void:
+func _on_visuals_button_pressed() -> void:
 	var show_visuals_btn := CheckBox.new()
 	show_visuals_btn.text = tr(&"#show_grid")
 	show_visuals_btn.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
@@ -129,4 +126,4 @@ func toggle_rasterization() -> void:
 
 
 func _on_snap_button_toggled(toggled_on: bool) -> void:
-	snapper.get_node(^"LineEdit").editable = toggled_on
+	snapper.editable = toggled_on
