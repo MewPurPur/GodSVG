@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://wdrpwa7gwmg"
-path="res://.godot/imported/GuiBoxChecked.svg-51360c26c8a38029149e047f1d43691e.ctex"
+uid="uid://d3a3xgsb8klyk"
+path="res://.godot/imported/GuiBoxUnchecked.svg-d53b47a39110bf333339d2803d03d549.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://visual/icons/GuiBoxChecked.svg"
-dest_files=["res://.godot/imported/GuiBoxChecked.svg-51360c26c8a38029149e047f1d43691e.ctex"]
+source_file="res://visual/icons/theme/GuiBoxUnchecked.svg"
+dest_files=["res://.godot/imported/GuiBoxUnchecked.svg-d53b47a39110bf333339d2803d03d549.ctex"]
 
 [params]
 
