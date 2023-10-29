@@ -316,7 +316,7 @@ var mouse_inside := false:
 				Interactions.remove_inner_hovered(tag_idx, cmd_idx)
 
 func _input(event: InputEvent) -> void:
-	if event is InputEventMouseMotion:
+	if event is InputEventMouseMotion and event.button_mask == 0:
 		mouse_inside = get_global_rect().has_point(get_global_mouse_position()) and\
 		get_node(^"../../../../../../../../..").get_global_rect().\
 				has_point(get_global_mouse_position())

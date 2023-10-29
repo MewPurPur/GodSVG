@@ -22,7 +22,7 @@ func _ready() -> void:
 	dimensions.y = SVG.root_tag.attributes.height.get_value()
 	update_dimensions_label()
 	update_final_scale()
-	var scaling_factor := 256.0 / maxf(dimensions.x, dimensions.y)
+	var scaling_factor := 512.0 / maxf(dimensions.x, dimensions.y)
 	var img := Image.new()
 	img.load_svg_from_string(SVG.string, scaling_factor)
 	if not img.is_empty():
