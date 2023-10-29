@@ -31,7 +31,7 @@ func _draw() -> void:
 	# The grid lines are always 1px wide, but the numbers need to be resized.
 	RenderingServer.canvas_item_clear(surface)
 	RenderingServer.canvas_item_set_transform(surface,
-		Transform2D(0, Vector2(1, 1) / viewport_scale, 0, Vector2.ZERO))
+			Transform2D(0, Vector2(1, 1) / viewport_scale, 0, Vector2.ZERO))
 	
 	var i := x_offset
 	while i <= size.x:
