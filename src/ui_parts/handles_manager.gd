@@ -88,16 +88,21 @@ func update_handles() -> void:
 		var new_handles: Array[Handle] = []
 		match tag.title:
 			"circle":
-				new_handles.append(XYHandle.new(tag.attributes.cx, tag.attributes.cy))
+				new_handles.append(XYHandle.new(tag_idx,
+						tag.attributes.cx, tag.attributes.cy))
 			"ellipse":
-				new_handles.append(XYHandle.new(tag.attributes.cx, tag.attributes.cy))
+				new_handles.append(XYHandle.new(tag_idx,
+						tag.attributes.cx, tag.attributes.cy))
 			"rect":
-				new_handles.append(XYHandle.new(tag.attributes.x, tag.attributes.y))
+				new_handles.append(XYHandle.new(tag_idx,
+						tag.attributes.x, tag.attributes.y))
 			"line":
-				new_handles.append(XYHandle.new(tag.attributes.x1, tag.attributes.y1))
-				new_handles.append(XYHandle.new(tag.attributes.x2, tag.attributes.y2))
+				new_handles.append(XYHandle.new(tag_idx,
+						tag.attributes.x1, tag.attributes.y1))
+				new_handles.append(XYHandle.new(tag_idx,
+						tag.attributes.x2, tag.attributes.y2))
 			"path":
-				new_handles += generate_path_handles(tag.attributes.d)
+				new_handles += generate_path_handles(tag_idx, tag.attributes.d)
 		for handle in new_handles:
 			handle.tag = tag
 			handle.tag_index = tag_idx
@@ -115,23 +120,23 @@ func sync_handles() -> void:
 	for tag_idx in SVG.root_tag.get_child_count():
 		var tag := SVG.root_tag.child_tags[tag_idx]
 		if tag.title == "path":
-			handles += generate_path_handles(tag.attributes.d)
+			handles += generate_path_handles(tag_idx, tag.attributes.d)
 	queue_redraw()
 
-func generate_path_handles(path_attribute: AttributePath) -> Array[Handle]:
+func generate_path_handles(tag_idx: int, path_attribute: AttributePath) -> Array[Handle]:
 	var path_handles: Array[Handle] = []
 	for idx in path_attribute.get_command_count():
 		var path_command := path_attribute.get_command(idx)
 		if path_command.command_char.to_upper() != "Z":
-			path_handles.append(PathHandle.new(path_attribute, idx))
+			path_handles.append(PathHandle.new(tag_idx, path_attribute, idx))
 			if path_command.command_char.to_upper() in ["C", "Q"]:
-				var new_path_handle := PathHandle.new(path_attribute, idx, &"x1", &"y1")
-				new_path_handle.display_mode = Handle.DisplayMode.SMALL
-				path_handles.append(new_path_handle)
+				var tangent := PathHandle.new(tag_idx, path_attribute, idx, &"x1", &"y1")
+				tangent.display_mode = Handle.DisplayMode.SMALL
+				path_handles.append(tangent)
 			if path_command.command_char.to_upper() in ["C", "S"]:
-				var new_path_handle := PathHandle.new(path_attribute, idx, &"x2", &"y2")
-				new_path_handle.display_mode = Handle.DisplayMode.SMALL
-				path_handles.append(new_path_handle)
+				var tangent := PathHandle.new(tag_idx, path_attribute, idx, &"x2", &"y2")
+				tangent.display_mode = Handle.DisplayMode.SMALL
+				path_handles.append(tangent)
 	return path_handles
 
 
@@ -574,7 +579,7 @@ func _draw() -> void:
 			is_selected = (handle.tag_index == Interactions.semi_selected_tag and\
 					handle.command_index in Interactions.inner_selections) or\
 					handle.tag_index in Interactions.selected_tags
-			
+		
 		if is_hovered and is_selected:
 			hovered_selected_handles.append(handle)
 		elif is_hovered:
