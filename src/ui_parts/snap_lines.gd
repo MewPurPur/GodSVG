@@ -26,7 +26,7 @@ func _draw() -> void:
 	var tick_distance := float(ticks_interval)
 	var viewport_scale: float = get_parent().zoom_level
 	var draw_pixel_lines := viewport_scale >= 3.0
-	var rate := nearest_po2(int(maxf(48.0 / (ticks_interval * viewport_scale), 1.0)))
+	var rate := nearest_po2(roundi(maxf(64.0 / (ticks_interval * viewport_scale), 1.0)))
 	
 	# The grid lines are always 1px wide, but the numbers need to be resized.
 	RenderingServer.canvas_item_clear(surface)

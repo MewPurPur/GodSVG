@@ -14,6 +14,8 @@ var zoom := 1.0:
 		if old_zoom < zoom:
 			queue_update()
 
+var image_zoom := 0.0
+
 var update_pending := false
 
 func _ready() -> void:
@@ -34,7 +36,16 @@ func _process(_delta: float) -> void:
 		update_pending = false
 
 func svg_update() -> void:
+	var bigger_side := maxf(SVG.root_tag.attributes.width.get_value(),
+			SVG.root_tag.attributes.height.get_value())
 	var img := Image.new()
-	img.load_svg_from_string(SVG.string, 1.0 if rasterized else zoom * 4.0)
+	# Don't waste time resizing if the new image won't be bigger.
+	var new_image_zoom := 1.0 if rasterized else minf(zoom * 4.0, 16384 / bigger_side)
+	if not rasterized and new_image_zoom <= image_zoom:
+		return
+	else:
+		image_zoom = new_image_zoom
+	
+	img.load_svg_from_string(SVG.string, image_zoom)
 	if not img.is_empty():
 		texture = ImageTexture.create_from_image(img)
