@@ -2,7 +2,7 @@ extends Dialog
 
 const SVGFileDialog := preload("svg_file_dialog.tscn")
 
-var upscale_amount := -1
+var upscale_amount := -1.0
 var extension := ""
 var dimensions := Vector2.ZERO
 
