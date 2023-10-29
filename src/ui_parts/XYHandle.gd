@@ -3,7 +3,8 @@ class_name XYHandle extends Handle
 var x_attribute: Attribute
 var y_attribute: Attribute
 
-func _init(x_ref: Attribute, y_ref: Attribute) -> void:
+func _init(tag_idx: int, x_ref: Attribute, y_ref: Attribute) -> void:
+	tag_index = tag_idx
 	x_attribute = x_ref
 	y_attribute = y_ref
 	sync()
