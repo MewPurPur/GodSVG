@@ -8,15 +8,13 @@ var rasterized := false:
 
 var zoom := 1.0:
 	set(new_value):
-		var old_zoom := zoom
 		zoom = new_value
-		# No need to recalibrate when zooming out, the concern is pixelation.
-		if old_zoom < zoom:
-			queue_update()
+		queue_update(false)
 
 var image_zoom := 0.0
 
 var update_pending := false
+var svg_change_pending := false
 
 func _ready() -> void:
 	SVG.root_tag.attribute_changed.connect(queue_update)
@@ -27,22 +25,24 @@ func _ready() -> void:
 	SVG.root_tag.changed_unknown.connect(queue_update)
 	queue_update()
 
-func queue_update() -> void:
+func queue_update(svg_changed := true) -> void:
 	update_pending = true
+	if svg_changed:
+		svg_change_pending = true
 
 func _process(_delta: float) -> void:
 	if update_pending:
-		svg_update()
+		svg_update(svg_change_pending)
 		update_pending = false
+		svg_change_pending = false
 
-func svg_update() -> void:
+func svg_update(svg_changed := true) -> void:
 	var bigger_side := maxf(SVG.root_tag.attributes.width.get_value(),
 			SVG.root_tag.attributes.height.get_value())
 	var img := Image.new()
-	# Don't waste time resizing if the new image won't be bigger.
 	var new_image_zoom := 1.0 if rasterized else minf(zoom * 4.0, 16384 / bigger_side)
-	if not rasterized and new_image_zoom <= image_zoom:
-		return
+	if not svg_changed and not rasterized and new_image_zoom <= image_zoom:
+		return  # Don't waste time resizing if the new image won't be bigger.
 	else:
 		image_zoom = new_image_zoom
 	
