@@ -322,15 +322,15 @@ func _draw() -> void:
 							var v2 := Vector2(cmd.x2, cmd.y2)
 							var cp1 := cmd.start
 							var cp4 := cp1 + v if relative else v
-							var cp2 := v1 if relative else v1 - cp1
+							var cp2 := v1
 							var cp3 := v2 - v
 							
 							points = Utils.get_cubic_bezier_points(convert_in(cp1),
 									convert_in(cp2), convert_in(cp3), convert_in(cp4))
 							tangent_points.append(convert_in(cp1))
 							tangent_points.append(convert_in(cp1 + v1 if relative else v1))
-							tangent_points.append(convert_in(cp4))
 							tangent_points.append(convert_in(cp1 + v2 if relative else v2))
+							tangent_points.append(convert_in(cp4))
 						"S":
 							# Shorthand cubic Bezier curve contour.
 							if cmd_idx == 0:
@@ -358,8 +358,8 @@ func _draw() -> void:
 									convert_in(cp2), convert_in(cp3), convert_in(cp4))
 							tangent_points.append(convert_in(cp1))
 							tangent_points.append(convert_in(cp1 + v1 if relative else v1))
-							tangent_points.append(convert_in(cp4))
 							tangent_points.append(convert_in(cp1 + v2 if relative else v2))
+							tangent_points.append(convert_in(cp4))
 						"Q":
 							# Quadratic Bezier curve contour.
 							var v := Vector2(cmd.x, cmd.y)
@@ -371,9 +371,9 @@ func _draw() -> void:
 							points = Utils.get_quadratic_bezier_points(
 									convert_in(cp1), convert_in(cp2), convert_in(cp3))
 							tangent_points.append(convert_in(cp1))
-							tangent_points.append(convert_in(cp1 + v1 if relative else v1))
+							tangent_points.append(convert_in(cp2))
+							tangent_points.append(convert_in(cp2))
 							tangent_points.append(convert_in(cp3))
-							tangent_points.append(convert_in(cp1 + v1 if relative else v1))
 						"T":
 							# Shorthand quadratic Bezier curve contour.
 							var prevQ_idx := cmd_idx - 1
@@ -416,9 +416,9 @@ func _draw() -> void:
 							points = Utils.get_quadratic_bezier_points(
 									convert_in(cp1), convert_in(cp2), convert_in(cp3))
 							tangent_points.append(convert_in(cp1))
-							tangent_points.append(convert_in(cp1 + v1 if relative else v1))
+							tangent_points.append(convert_in(cp2))
+							tangent_points.append(convert_in(cp2))
 							tangent_points.append(convert_in(cp3))
-							tangent_points.append(convert_in(cp1 + v1 if relative else v1))
 						"A":
 							# Elliptical arc contour.
 							var start := cmd.start
@@ -590,22 +590,22 @@ func _draw() -> void:
 	for handle in normal_handles:
 		handle_texture = normal_handle_textures[handle.display_mode]
 		handle_size = handle_sizes[handle.display_mode] / zoom
-		handle_pos = handle.pos - handle_size / 2
+		handle_pos = convert_in(handle.pos) - handle_size / 2
 		draw_texture_rect(handle_texture, Rect2(handle_pos, handle_size), false)
 	for handle in selected_handles:
 		handle_texture = selected_handle_textures[handle.display_mode]
 		handle_size = handle_sizes[handle.display_mode] / zoom
-		handle_pos = handle.pos - handle_size / 2
+		handle_pos = convert_in(handle.pos) - handle_size / 2
 		draw_texture_rect(handle_texture, Rect2(handle_pos, handle_size), false)
 	for handle in hovered_handles:
 		handle_texture = hovered_handle_textures[handle.display_mode]
 		handle_size = handle_sizes[handle.display_mode] / zoom
-		handle_pos = handle.pos - handle_size / 2
+		handle_pos = convert_in(handle.pos) - handle_size / 2
 		draw_texture_rect(handle_texture, Rect2(handle_pos, handle_size), false)
 	for handle in hovered_selected_handles:
 		handle_texture = hovered_selected_handle_textures[handle.display_mode]
 		handle_size = handle_sizes[handle.display_mode] / zoom
-		handle_pos = handle.pos - handle_size / 2
+		handle_pos = convert_in(handle.pos) - handle_size / 2
 		draw_texture_rect(handle_texture, Rect2(handle_pos, handle_size), false)
 
 
