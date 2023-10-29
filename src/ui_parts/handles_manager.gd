@@ -638,6 +638,9 @@ var was_handle_moved := false
 var should_deselect_all = false
 
 func _unhandled_input(event: InputEvent) -> void:
+	if not visible:
+		return
+	
 	if event is InputEventMouseMotion:
 		should_deselect_all = false
 		var event_pos: Vector2 = event.position - global_position
