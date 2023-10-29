@@ -12,53 +12,47 @@ const hover_selection_color = Color(hover_selection_color_string)
 var zoom := 1.0:
 	set(new_value):
 		zoom = new_value
-		queue_update_texture()
 		queue_redraw()
 
 var snap_enabled := false
 var snap_size := Vector2(0.5, 0.5)
 
-var texture_update_pending := false
-var handles_update_pending := false
+var width: float
+var height: float
+var viewbox: Rect2
+
+var update_pending := false
 
 var handles: Array[Handle]
 
 func _ready() -> void:
-	SVG.root_tag.attribute_changed.connect(queue_full_update)
-	SVG.root_tag.child_tag_attribute_changed.connect(queue_update_texture)
+	SVG.root_tag.attribute_changed.connect(update_dimensions)
+	SVG.root_tag.child_tag_attribute_changed.connect(queue_redraw)
 	SVG.root_tag.child_tag_attribute_changed.connect(sync_handles)
-	SVG.root_tag.tag_added.connect(queue_full_update)
-	SVG.root_tag.tag_deleted.connect(queue_full_update.unbind(1))
-	SVG.root_tag.tag_moved.connect(queue_full_update.unbind(2))
-	SVG.root_tag.changed_unknown.connect(queue_full_update)
+	SVG.root_tag.tag_added.connect(queue_update)
+	SVG.root_tag.tag_deleted.connect(queue_update.unbind(1))
+	SVG.root_tag.tag_moved.connect(queue_update.unbind(2))
+	SVG.root_tag.changed_unknown.connect(queue_update)
 	Interactions.selection_changed.connect(queue_redraw)
-	Interactions.selection_changed.connect(update_texture)
 	Interactions.hover_changed.connect(queue_redraw)
-	Interactions.hover_changed.connect(update_texture)
-	queue_full_update()
+	update_dimensions()
 
 
-func queue_full_update() -> void:
-	queue_update_texture()
-	queue_update_handles()
+func update_dimensions() -> void:
+	width = SVG.root_tag.attributes.width.get_value()
+	height = SVG.root_tag.attributes.height.get_value()
+	viewbox = SVG.root_tag.attributes.viewBox.get_value() 
+	queue_update()
 
-func queue_update_texture() -> void:
-	texture_update_pending = true
 
-func queue_update_handles() -> void:
-	handles_update_pending = true
+func queue_update() -> void:
+	update_pending = true
 
 func _process(_delta: float) -> void:
-	if texture_update_pending:
-		update_texture()
-		texture_update_pending = false
-	if handles_update_pending:
+	if update_pending:
 		update_handles()
-		handles_update_pending = false
+		update_pending = false
 
-
-func update_texture() -> void:
-	queue_redraw()
 
 func update_handles() -> void:
 	handles.clear()
@@ -81,6 +75,7 @@ func update_handles() -> void:
 			handle.tag = tag
 			handle.tag_index = tag_idx
 		handles += new_handles
+	queue_redraw()
 
 func sync_handles() -> void:
 	# For XYHandles, sync them. For path handles, sync all but the one being dragged.
@@ -179,41 +174,41 @@ func _draw() -> void:
 			"rect":
 				var x: float = attribs.x.get_value()
 				var y: float = attribs.y.get_value()
-				var height: float = attribs.height.get_value()
-				var width: float = attribs.width.get_value()
+				var rect_height: float = attribs.height.get_value()
+				var rect_width: float = attribs.width.get_value()
 				var rx: float = attribs.rx.get_value()
 				var ry: float = attribs.ry.get_value()
 				var points := PackedVector2Array()
 				if rx == 0 and ry == 0:
 					# Basic rectangle.
 					points.append(convert_in(Vector2(x, y)))
-					points.append(convert_in(Vector2(x + width, y)))
-					points.append(convert_in(Vector2(x + width, y + height)))
-					points.append(convert_in(Vector2(x, y + height)))
+					points.append(convert_in(Vector2(x + rect_width, y)))
+					points.append(convert_in(Vector2(x + rect_width, y + rect_height)))
+					points.append(convert_in(Vector2(x, y + rect_height)))
 					points.append(convert_in(Vector2(x, y)))
 				else:
 					if rx == 0:
 						rx = ry
 					elif ry == 0:
 						ry = rx
-					rx = minf(rx, width / 2)
-					ry = minf(ry, height / 2)
+					rx = minf(rx, rect_width / 2)
+					ry = minf(ry, rect_height / 2)
 					# Rounded rectangle.
 					points.append(convert_in(Vector2(x + rx, y)))
-					points.append(convert_in(Vector2(x + width - rx, y)))
+					points.append(convert_in(Vector2(x + rect_width - rx, y)))
 					for i in range(-88, 1, 2):
 						var d := deg_to_rad(i)
-						points.append(convert_in(Vector2(x + width - rx, y + ry) +\
+						points.append(convert_in(Vector2(x + rect_width - rx, y + ry) +\
 								Vector2(cos(d) * rx, sin(d) * ry)))
-					points.append(convert_in(Vector2(x + width, y + height - ry)))
+					points.append(convert_in(Vector2(x + rect_width, y + rect_height - ry)))
 					for i in range(2, 92, 2):
 						var d := deg_to_rad(i)
-						points.append(convert_in(Vector2(x + width - rx, y + height - ry) +\
-								Vector2(cos(d) * rx, sin(d) * ry)))
-					points.append(convert_in(Vector2(x + rx, y + height)))
+						points.append(convert_in(Vector2(x + rect_width - rx,
+								y + rect_height - ry) + Vector2(cos(d) * rx, sin(d) * ry)))
+					points.append(convert_in(Vector2(x + rx, y + rect_height)))
 					for i in range(92, 181, 2):
 						var d := deg_to_rad(i)
-						points.append(convert_in(Vector2(x + rx, y + height - ry) +\
+						points.append(convert_in(Vector2(x + rx, y + rect_height - ry) +\
 								Vector2(cos(d) * rx, sin(d) * ry)))
 					points.append(convert_in(Vector2(x, y + ry)))
 					for i in range(182, 272, 2):
@@ -551,14 +546,14 @@ func _draw() -> void:
 					handle.command_index in Interactions.inner_selections) or\
 					handle.tag_index in Interactions.selected_tags
 			
-			if is_hovered and is_selected:
-				hovered_selected_handles.append(handle)
-			elif is_hovered:
-				hovered_handles.append(handle)
-			elif is_selected:
-				selected_handles.append(handle)
-			else:
-				normal_handles.append(handle)
+		if is_hovered and is_selected:
+			hovered_selected_handles.append(handle)
+		elif is_hovered:
+			hovered_handles.append(handle)
+		elif is_selected:
+			selected_handles.append(handle)
+		else:
+			normal_handles.append(handle)
 	
 	for handle in normal_handles:
 		draw_handle(handle, default_color)
@@ -580,16 +575,9 @@ func draw_handle(handle: Handle, outer_circle_color: Color) -> void:
 
 
 func get_viewbox_zoom() -> float:
-	var width: float = SVG.root_tag.attributes.width.get_value()
-	var height: float = SVG.root_tag.attributes.height.get_value()
-	var viewbox_size: Vector2 = SVG.root_tag.attributes.viewBox.get_value().size
-	return minf(width / viewbox_size.x, height / viewbox_size.y)
+	return minf(width / viewbox.size.x, height / viewbox.size.y)
 
 func convert_in(pos: Vector2) -> Vector2:
-	var width: float = SVG.root_tag.attributes.width.get_value()
-	var height: float = SVG.root_tag.attributes.height.get_value()
-	var viewbox: Rect2 = SVG.root_tag.attributes.viewBox.get_value()
-	
 	pos = (size / Vector2(width, height) * pos - viewbox.position) * get_viewbox_zoom()
 	if viewbox.size.x / viewbox.size.y >= width / height:
 		return pos + Vector2(0, (height - width * viewbox.size.y / viewbox.size.x) / 2)
@@ -597,10 +585,6 @@ func convert_in(pos: Vector2) -> Vector2:
 		return pos + Vector2((width - height * viewbox.size.x / viewbox.size.y) / 2, 0)
 
 func convert_out(pos: Vector2) -> Vector2:
-	var width: float = SVG.root_tag.attributes.width.get_value()
-	var height: float = SVG.root_tag.attributes.height.get_value()
-	var viewbox: Rect2 = SVG.root_tag.attributes.viewBox.get_value()
-	
 	if viewbox.size.x / viewbox.size.y >= width / height:
 		pos.y -= (height - width * viewbox.size.y / viewbox.size.x) / 2
 	else:
@@ -626,7 +610,7 @@ func _unhandled_input(event: InputEvent) -> void:
 			dragged_handle.set_pos(new_pos)
 			was_handle_moved = true
 			accept_event()
-		else:
+		elif event.button_mask == 0:
 			var nearest_handle := find_nearest_handle(event_pos)
 			if nearest_handle != null:
 				hovered_handle = nearest_handle
