@@ -1,5 +1,30 @@
 extends Control
 
+const handle_sizes = {
+	Handle.DisplayMode.BIG: Vector2(8, 8),
+	Handle.DisplayMode.SMALL: Vector2(6, 6),
+}
+
+const normal_handle_textures = {
+	Handle.DisplayMode.BIG: preload("res://visual/icons/HandleBig.svg"),
+	Handle.DisplayMode.SMALL: preload("res://visual/icons/HandleSmall.svg"),
+}
+
+const hovered_handle_textures = {
+	Handle.DisplayMode.BIG: preload("res://visual/icons/HandleBigHovered.svg"),
+	Handle.DisplayMode.SMALL: preload("res://visual/icons/HandleSmallHovered.svg"),
+}
+
+const selected_handle_textures = {
+	Handle.DisplayMode.BIG: preload("res://visual/icons/HandleBigSelected.svg"),
+	Handle.DisplayMode.SMALL: preload("res://visual/icons/HandleSmallSelected.svg"),
+}
+
+const hovered_selected_handle_textures = {
+	Handle.DisplayMode.BIG: preload("res://visual/icons/HandleBigHoveredSelected.svg"),
+	Handle.DisplayMode.SMALL: preload("res://visual/icons/HandleSmallHoveredSelected.svg"),
+}
+
 const default_color_string = "#000"
 const hover_color_string = "#aaa"
 const selection_color_string = "#46f"
@@ -8,6 +33,8 @@ const default_color = Color(default_color_string)
 const hover_color = Color(hover_color_string)
 const selection_color = Color(selection_color_string)
 const hover_selection_color = Color(hover_selection_color_string)
+
+enum InteractionType {NONE = 0, HOVERED = 1, SELECTED = 2, HOVERED_SELECTED = 3}
 
 var zoom := 1.0:
 	set(new_value):
@@ -252,7 +279,7 @@ func _draw() -> void:
 				
 			"path":
 				var pathdata: AttributePath = attribs.d
-				var current_mode := -1  # Normal 0, hovered 1, selected 2, hovered selected 3.
+				var current_mode := InteractionType.NONE
 				for cmd_idx in pathdata.get_command_count():
 					# Drawing logic.
 					var points := PackedVector2Array()
@@ -260,14 +287,16 @@ func _draw() -> void:
 					var cmd := pathdata.get_command(cmd_idx)
 					var relative := cmd.relative
 					
-					current_mode = 0
+					current_mode = InteractionType.NONE
 					if tag_idx == Interactions.hovered_tag or\
 					(Interactions.semi_hovered_tag == tag_idx and\
 					Interactions.inner_hovered == cmd_idx):
+						@warning_ignore("int_as_enum_without_cast")
 						current_mode += 1
 					if tag_idx in Interactions.selected_tags or\
 					(Interactions.semi_selected_tag == tag_idx and\
 					cmd_idx in Interactions.inner_selections):
+						@warning_ignore("int_as_enum_without_cast")
 						current_mode += 2
 					
 					match cmd.command_char.to_upper():
@@ -488,16 +517,16 @@ func _draw() -> void:
 						_: continue
 					
 					match current_mode:
-						0:
+						InteractionType.NONE:
 							normal_polylines.append(points.duplicate())
 							normal_tangent_multiline += tangent_points.duplicate()
-						1:
+						InteractionType.HOVERED:
 							hovered_polylines.append(points.duplicate())
 							hovered_tangent_multiline += tangent_points.duplicate()
-						2:
+						InteractionType.SELECTED:
 							selected_polylines.append(points.duplicate())
 							selected_tangent_multiline += tangent_points.duplicate()
-						3:
+						InteractionType.HOVERED_SELECTED:
 							hovered_selected_polylines.append(points.duplicate())
 							hovered_selected_tangent_multiline += tangent_points.duplicate()
 		
@@ -555,23 +584,29 @@ func _draw() -> void:
 		else:
 			normal_handles.append(handle)
 	
+	var handle_texture: Texture2D
+	var handle_size: Vector2
+	var handle_pos: Vector2
 	for handle in normal_handles:
-		draw_handle(handle, default_color)
+		handle_texture = normal_handle_textures[handle.display_mode]
+		handle_size = handle_sizes[handle.display_mode] / zoom
+		handle_pos = handle.pos - handle_size / 2
+		draw_texture_rect(handle_texture, Rect2(handle_pos, handle_size), false)
 	for handle in selected_handles:
-		draw_handle(handle, selection_color)
+		handle_texture = selected_handle_textures[handle.display_mode]
+		handle_size = handle_sizes[handle.display_mode] / zoom
+		handle_pos = handle.pos - handle_size / 2
+		draw_texture_rect(handle_texture, Rect2(handle_pos, handle_size), false)
 	for handle in hovered_handles:
-		draw_handle(handle, hover_color)
+		handle_texture = hovered_handle_textures[handle.display_mode]
+		handle_size = handle_sizes[handle.display_mode] / zoom
+		handle_pos = handle.pos - handle_size / 2
+		draw_texture_rect(handle_texture, Rect2(handle_pos, handle_size), false)
 	for handle in hovered_selected_handles:
-		draw_handle(handle, hover_selection_color)
-
-func draw_handle(handle: Handle, outer_circle_color: Color) -> void:
-	match handle.display_mode:
-		handle.DisplayMode.BIG:
-			draw_circle(convert_in(handle.pos), 4 / zoom, outer_circle_color)
-			draw_circle(convert_in(handle.pos), 2.25 / zoom, Color.WHITE)
-		handle.DisplayMode.SMALL:
-			draw_circle(convert_in(handle.pos), 3 / zoom, outer_circle_color)
-			draw_circle(convert_in(handle.pos), 1.75 / zoom, Color.WHITE)
+		handle_texture = hovered_selected_handle_textures[handle.display_mode]
+		handle_size = handle_sizes[handle.display_mode] / zoom
+		handle_pos = handle.pos - handle_size / 2
+		draw_texture_rect(handle_texture, Rect2(handle_pos, handle_size), false)
 
 
 func get_viewbox_zoom() -> float:
