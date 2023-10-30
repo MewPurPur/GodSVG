@@ -1,5 +1,8 @@
-## A <ellipse> tag.
+## An <ellipse/> tag.
 class_name TagEllipse extends Tag
+
+const known_attributes = ["cx", "cy", "rx", "ry",
+		"opacity", "fill", "fill-opacity", "stroke", "stroke-opacity", "stroke-width"]
 
 func _init() -> void:
 	title = "ellipse"

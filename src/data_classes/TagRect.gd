@@ -1,5 +1,9 @@
-## A <rect> tag.
+## A <rect/> tag.
 class_name TagRect extends Tag
+
+const known_attributes = ["x", "y", "width", "height", "rx", "ry",
+		"opacity", "fill", "fill-opacity", "stroke", "stroke-opacity", "stroke-width",
+		"stroke-linejoin"]
 
 func _init() -> void:
 	title = "rect"

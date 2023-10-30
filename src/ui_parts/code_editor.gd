@@ -28,29 +28,33 @@ func auto_update_text() -> void:
 
 func update_error(err_id: StringName) -> void:
 	if err_id == &"":
-		error_bar.hide()
-		code_edit.remove_theme_stylebox_override(&"normal")
-		code_edit.remove_theme_stylebox_override(&"focus")
-		code_edit.custom_minimum_size.y = 96
-		code_edit.size.y = 0
+		if error_bar.visible:
+			error_bar.hide()
+			code_edit.remove_theme_stylebox_override(&"normal")
+			code_edit.remove_theme_stylebox_override(&"focus")
+			var error_bar_real_height := error_bar.size.y - 2
+			code_edit.custom_minimum_size.y += error_bar_real_height
+			code_edit.size.y += error_bar_real_height
 	else:
 		# When the error is shown, the code editor's theme is changed to match up.
-		error_bar.show()
-		error_label.text = tr(err_id)
-		var stylebox := ThemeDB.get_project_theme().\
-				get_stylebox(&"normal", &"TextEdit").duplicate()
-		stylebox.corner_radius_bottom_right = 0
-		stylebox.corner_radius_bottom_left = 0
-		stylebox.border_width_bottom = 1
-		code_edit.add_theme_stylebox_override(&"normal", stylebox)
-		var stylebox2 := ThemeDB.get_project_theme().\
-				get_stylebox(&"focus", &"CodeEdit").duplicate()
-		stylebox2.corner_radius_bottom_right = 0
-		stylebox2.corner_radius_bottom_left = 0
-		stylebox2.border_width_bottom = 1
-		code_edit.add_theme_stylebox_override(&"focus", stylebox2)
-		code_edit.custom_minimum_size.y = 75
-		code_edit.size.y = 0
+		if not error_bar.visible:
+			error_bar.show()
+			error_label.text = tr(err_id)
+			var stylebox := ThemeDB.get_project_theme().\
+					get_stylebox(&"normal", &"TextEdit").duplicate()
+			stylebox.corner_radius_bottom_right = 0
+			stylebox.corner_radius_bottom_left = 0
+			stylebox.border_width_bottom = 1
+			code_edit.add_theme_stylebox_override(&"normal", stylebox)
+			var stylebox2 := ThemeDB.get_project_theme().\
+					get_stylebox(&"focus", &"CodeEdit").duplicate()
+			stylebox2.corner_radius_bottom_right = 0
+			stylebox2.corner_radius_bottom_left = 0
+			stylebox2.border_width_bottom = 1
+			code_edit.add_theme_stylebox_override(&"focus", stylebox2)
+			var error_bar_real_height := error_bar.size.y - 2
+			code_edit.custom_minimum_size.y -= error_bar_real_height
+			code_edit.size.y -= error_bar_real_height
 
 
 func _on_copy_button_pressed() -> void:

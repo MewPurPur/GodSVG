@@ -1,5 +1,8 @@
-## A <line> tag.
+## A <line/> tag.
 class_name TagLine extends Tag
+
+const known_attributes = ["x1", "y1", "x2", "y2",
+		"opacity", "stroke", "stroke-opacity", "stroke-width", "stroke-linecap"]
 
 func _init() -> void:
 	title = "line"
