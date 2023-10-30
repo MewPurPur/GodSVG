@@ -1,5 +1,8 @@
-## A <circle> tag.
+## A <circle/> tag.
 class_name TagCircle extends Tag
+
+const known_attributes = ["cx", "cy", "r",
+		"opacity", "fill", "fill-opacity", "stroke", "stroke-opacity", "stroke-width"]
 
 func _init() -> void:
 	title = "circle"
