@@ -3,11 +3,12 @@ class_name SVGHighlighter extends SyntaxHighlighter
 
 @export var symbol_color := Color("abc9ff")
 @export var known_tag_color := Color("ff8ccc")
-@export var unknown_tag_color := Color("ff8ccc").darkened(0.3)
 @export var known_attribute_color := Color("bce0ff")
-@export var unknown_attribute_color := Color("bce0ff").darkened(0.3)
 @export var string_color := Color("a1ffe0")
 @export var comment_color := Color("cdcfd280")
+
+var unknown_tag_color := known_tag_color.darkened(0.3)
+var unknown_attribute_color := known_attribute_color.darkened(0.3)
 
 func is_attribute_symbol(c: String) -> bool:
 	return (c >= "a" and c <= "z") or (c >= "A" and c <= "Z") or c == "-"
