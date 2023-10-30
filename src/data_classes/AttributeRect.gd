@@ -1,3 +1,4 @@
+## An attribute representing a rectangle.
 class_name AttributeRect extends Attribute
 
 func _init(new_default: Variant = null, new_init: Variant = null) -> void:

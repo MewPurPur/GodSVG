@@ -1,3 +1,4 @@
+## A <svg> tag.
 class_name TagSVG extends TagB
 
 func _init() -> void:

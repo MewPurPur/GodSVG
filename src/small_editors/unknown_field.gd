@@ -1,3 +1,5 @@
+## An editor to be tied to an AttributeUnknown.
+## Allows attributes to be edited even if they aren't recognized by GodSVG.
 extends AttributeEditor
 
 @onready var line_edit: BetterLineEdit = $LineEdit

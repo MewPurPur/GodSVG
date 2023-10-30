@@ -1,3 +1,4 @@
+## Base class for handles.
 class_name Handle extends RefCounted
 
 signal moved(new_value: Vector2)
