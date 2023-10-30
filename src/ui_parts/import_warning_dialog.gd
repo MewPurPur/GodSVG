@@ -36,9 +36,12 @@ func get_svg_errors(text: String) -> Array[String]:
 		warnings.append(tr(&"#syntax_error") + ": " + tr(syntax_err_id))
 	else:
 		var svg_tag := SVGParser.text_to_svg(text)
-		for tag in svg_tag.child_tags:
+		var tids := svg_tag.get_all_tids()
+		
+		for tid in tids:
+			var tag := svg_tag.get_by_tid(tid)
 			if tag is TagUnknown:
-				warnings.append(tr(&"#unknown_tag") + ": " + tag.title)
+				warnings.append(tr(&"#unknown_tag") + ": " + tag.name)
 			else:
 				for unknown_attrib in tag.unknown_attributes:
 					warnings.append(tr(&"#unknown_attribute") + ": " + unknown_attrib.name)

@@ -6,10 +6,10 @@ var command_index: int
 var x_param: StringName
 var y_param: StringName
 
-func _init(tag_idx: int, path_ref: Attribute, command_idx: int,
+func _init(id: PackedInt32Array, path_ref: Attribute, command_idx: int,
 x_name := &"x", y_name := &"y") -> void:
 	path_attribute = path_ref
-	tag_index = tag_idx
+	tid = id
 	command_index = command_idx
 	x_param = x_name
 	y_param = y_name

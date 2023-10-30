@@ -6,7 +6,7 @@ const known_attributes = ["d",
 		"stroke-linecap", "stroke-linejoin"]
 
 func _init() -> void:
-	title = "path"
+	name = "path"
 	attributes = {
 		"d": AttributePath.new(),
 		"opacity": Attribute.new(Attribute.Type.NFLOAT, 1.0),
