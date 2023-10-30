@@ -58,9 +58,7 @@ corner_radius_bottom_left = 3
 script = ExtResource("6_0jtpx")
 symbol_color = Color(0.670588, 0.788235, 1, 1)
 known_tag_color = Color(1, 0.54902, 0.8, 1)
-unknown_tag_color = null
 known_attribute_color = Color(0.737255, 0.878431, 1, 1)
-unknown_attribute_color = null
 string_color = Color(0.631373, 1, 0.878431, 1)
 comment_color = Color(0.803922, 0.811765, 0.823529, 0.501961)
 

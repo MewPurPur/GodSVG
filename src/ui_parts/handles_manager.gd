@@ -297,12 +297,12 @@ func _draw() -> void:
 					(Interactions.semi_hovered_tag == tag_idx and\
 					Interactions.inner_hovered == cmd_idx):
 						@warning_ignore("int_as_enum_without_cast")
-						current_mode += 1
+						current_mode += InteractionType.HOVERED
 					if tag_idx in Interactions.selected_tags or\
 					(Interactions.semi_selected_tag == tag_idx and\
 					cmd_idx in Interactions.inner_selections):
 						@warning_ignore("int_as_enum_without_cast")
-						current_mode += 2
+						current_mode += InteractionType.SELECTED
 					
 					match cmd.command_char.to_upper():
 						"L":
@@ -327,11 +327,11 @@ func _draw() -> void:
 							var v2 := Vector2(cmd.x2, cmd.y2)
 							var cp1 := cmd.start
 							var cp4 := cp1 + v if relative else v
-							var cp2 := v1
+							var cp2 := v1 if relative else v1 - cp1
 							var cp3 := v2 - v
 							
 							points = Utils.get_cubic_bezier_points(convert_in(cp1),
-									convert_in(cp2), convert_in(cp3), convert_in(cp4))
+									cp2 * viewbox_zoom, cp3 * viewbox_zoom, convert_in(cp4))
 							tangent_points.append(convert_in(cp1))
 							tangent_points.append(convert_in(cp1 + v1 if relative else v1))
 							tangent_points.append(convert_in(cp1 + v2 if relative else v2))
@@ -355,12 +355,12 @@ func _draw() -> void:
 							var v2 := Vector2(cmd.x2, cmd.y2)
 							
 							var cp1 := cmd.start
+							var cp4 := cp1 + v if relative else v
 							var cp2 := v1 if relative else v1 - cp1
 							var cp3 := v2 - v
-							var cp4 := cp1 + v if relative else v
 							
 							points = Utils.get_cubic_bezier_points(convert_in(cp1),
-									convert_in(cp2), convert_in(cp3), convert_in(cp4))
+									cp2 * viewbox_zoom, cp3 * viewbox_zoom, convert_in(cp4))
 							tangent_points.append(convert_in(cp1))
 							tangent_points.append(convert_in(cp1 + v1 if relative else v1))
 							tangent_points.append(convert_in(cp1 + v2 if relative else v2))
