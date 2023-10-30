@@ -1,3 +1,4 @@
+## A <ellipse> tag.
 class_name TagEllipse extends Tag
 
 func _init() -> void:

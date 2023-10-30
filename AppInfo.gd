@@ -1,3 +1,4 @@
+## Stores basic information about GodSVG.
 class_name AppInfo extends RefCounted
 
 const version := "1.0.dev"
@@ -10,5 +11,5 @@ const authors: Array[String] = [
 	"Kiisu-Master",
 	"MewPurPur",
 	"Serem Titus (SeremTitus)",
-	"Swarkin"
+	"Swarkin",
 ]

@@ -1,8 +1,9 @@
-class_name TagB extends Tag  # B as in branch.
+## A tag that may hold other tags within it, i.e. [code]<tag></tag>[/code]
+class_name TagB extends Tag
 
 signal child_tag_attribute_changed
 signal tag_added
-signal tag_deleted(tag_idx: int)
+signal tags_deleted(tag_indices: Array[int])
 signal tag_moved(old_idx: int, new_idx: int)
 signal changed_unknown
 
@@ -24,10 +25,13 @@ func replace_self(new_tag: TagB) -> void:
 	changed_unknown.emit()
 
 
-func delete_tag(idx: int) -> void:
-	if idx >= 0:
-		child_tags.remove_at(idx)
-		tag_deleted.emit(idx)
+func delete_tags(idx_arr: Array[int]) -> void:
+	idx_arr.sort()
+	for idx_idx in range(idx_arr.size() - 1, -1, -1):
+		var idx = idx_arr[idx_idx]
+		if idx >= 0:
+			child_tags.remove_at(idx)
+	tags_deleted.emit(idx_arr)
 
 func move_tag(old_idx: int, new_idx: int) -> void:
 	var tag: Tag = child_tags.pop_at(old_idx)  # Should be inferrable, GDScript bug.

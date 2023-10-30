@@ -1,3 +1,4 @@
+## An editor to be tied to an AttributeEnum.
 extends AttributeEditor
 
 @onready var value_picker: Popup = $ContextPopup

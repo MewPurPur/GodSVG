@@ -1,3 +1,4 @@
+## An attribute not recognized by GodSVG.
 class_name AttributeUnknown extends Attribute
 
 var name := ""

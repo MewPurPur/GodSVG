@@ -1,3 +1,4 @@
+## A LineEdit with a few tweaks to make it nicer to use.
 class_name BetterLineEdit extends LineEdit
 
 var hovered := false

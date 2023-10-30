@@ -1,3 +1,4 @@
+## An editor to be tied to an AttributeRect.
 extends AttributeEditor
 
 @onready var x_field: Control = $XField

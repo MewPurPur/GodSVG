@@ -1,3 +1,4 @@
+## A <rect> tag.
 class_name TagRect extends Tag
 
 func _init() -> void:

@@ -1,3 +1,4 @@
+## An editor for a single path command.
 extends PanelContainer
 
 signal cmd_update_value(idx: int, new_value: float, property: StringName)

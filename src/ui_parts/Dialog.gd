@@ -1,3 +1,4 @@
+## Translucent black rectangle to be used for modals.
 class_name Dialog extends ColorRect
 
 func _enter_tree() -> void:

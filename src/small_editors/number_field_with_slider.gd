@@ -1,3 +1,4 @@
+## An editor to be tied to a numeric attribute, plus a slider widget.
 extends AttributeEditor
 
 @onready var num_edit: LineEdit = $LineEdit
