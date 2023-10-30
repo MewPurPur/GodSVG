@@ -124,7 +124,7 @@ func _on_move_down_button_pressed() -> void:
 
 func _on_delete_button_pressed() -> void:
 	tag_context.hide()
-	SVG.root_tag.delete_tag(tag_index)
+	SVG.root_tag.delete_tags([tag_index])
 
 func _on_duplicate_button_pressed() -> void:
 	tag_context.hide()
