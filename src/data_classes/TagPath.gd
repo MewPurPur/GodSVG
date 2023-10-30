@@ -1,4 +1,9 @@
+## A <path/> tag.
 class_name TagPath extends Tag
+
+const known_attributes = ["d",
+		"opacity", "fill", "fill-opacity", "stroke", "stroke-opacity", "stroke-width",
+		"stroke-linecap", "stroke-linejoin"]
 
 func _init() -> void:
 	title = "path"

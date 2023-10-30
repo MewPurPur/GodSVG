@@ -1,5 +1,7 @@
-## A <svg> tag.
+## A <svg></svg> tag.
 class_name TagSVG extends TagB
+
+const known_attributes = ["width", "height", "viewBox", "xmlns"]
 
 func _init() -> void:
 	title = "svg"

@@ -1,4 +1,4 @@
-[gd_scene load_steps=35 format=3 uid="uid://ce6j54x27pom"]
+[gd_scene load_steps=36 format=3 uid="uid://ce6j54x27pom"]
 
 [ext_resource type="PackedScene" uid="uid://ccynisiuyn5qn" path="res://src/ui_parts/inspector.tscn" id="1_afxvd"]
 [ext_resource type="Texture2D" uid="uid://ccvjkdd0s7rb4" path="res://visual/icons/Copy.svg" id="1_fm0ux"]
@@ -10,6 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://6ymbl3jqersp" path="res://visual/icons/Import.svg" id="4_ehrkr"]
 [ext_resource type="Script" path="res://src/ui_parts/handles_manager.gd" id="5_pltvx"]
 [ext_resource type="Texture2D" uid="uid://d0uvwj0t44n6v" path="res://visual/icons/Export.svg" id="5_qe6jq"]
+[ext_resource type="Script" path="res://src/data_classes/SVGHighlighter.gd" id="6_0jtpx"]
 [ext_resource type="Script" path="res://src/ui_parts/viewport.gd" id="6_7hypx"]
 [ext_resource type="Texture2D" uid="uid://ccbta5q43jobk" path="res://visual/icons/More.svg" id="7_7iuuq"]
 [ext_resource type="Script" path="res://src/ui_parts/display_texture.gd" id="7_cxx0h"]
@@ -53,47 +54,15 @@ corner_radius_top_right = 3
 corner_radius_bottom_right = 3
 corner_radius_bottom_left = 3
 
-[sub_resource type="CodeHighlighter" id="CodeHighlighter_jg7xq"]
-number_color = Color(0.631373, 1, 0.878431, 1)
+[sub_resource type="SyntaxHighlighter" id="SyntaxHighlighter_fhint"]
+script = ExtResource("6_0jtpx")
 symbol_color = Color(0.670588, 0.788235, 1, 1)
-function_color = Color(0.341176, 0.701961, 1, 1)
-keyword_colors = {
-"circle": Color(1, 0.54902, 0.8, 1),
-"cx": Color(0.737255, 0.878431, 1, 1),
-"cy": Color(0.737255, 0.878431, 1, 1),
-"d": Color(0.737255, 0.878431, 1, 1),
-"ellipse": Color(1, 0.54902, 0.8, 1),
-"fill": Color(0.737255, 0.878431, 1, 1),
-"g": Color(1, 0.54902, 0.8, 1),
-"height": Color(0.737255, 0.878431, 1, 1),
-"line": Color(1, 0.54902, 0.8, 1),
-"linearGradient": Color(1, 0.54902, 0.8, 1),
-"opacity": Color(0.737255, 0.878431, 1, 1),
-"path": Color(1, 0.54902, 0.8, 1),
-"r": Color(0.737255, 0.878431, 1, 1),
-"radialGradient": Color(1, 0.54902, 0.8, 1),
-"rect": Color(1, 0.54902, 0.8, 1),
-"rx": Color(0.737255, 0.878431, 1, 1),
-"ry": Color(0.737255, 0.878431, 1, 1),
-"stop": Color(1, 0.54902, 0.8, 1),
-"stroke": Color(0.737255, 0.878431, 1, 1),
-"stroke-linecap": Color(0.737255, 0.878431, 1, 1),
-"stroke-linejoin": Color(0.737255, 0.878431, 1, 1),
-"stroke-width": Color(0.737255, 0.878431, 1, 1),
-"svg": Color(1, 0.54902, 0.8, 1),
-"viewBox": Color(0.737255, 0.878431, 1, 1),
-"width": Color(0.737255, 0.878431, 1, 1),
-"x": Color(0.737255, 0.878431, 1, 1),
-"x1": Color(0.737255, 0.878431, 1, 1),
-"x2": Color(0.737255, 0.878431, 1, 1),
-"xmlns": Color(0.737255, 0.878431, 1, 1),
-"y": Color(0.737255, 0.878431, 1, 1),
-"y1": Color(0.737255, 0.878431, 1, 1),
-"y2": Color(0.737255, 0.878431, 1, 1)
-}
-color_regions = {
-"\" \"": Color(0.631373, 1, 0.878431, 1)
-}
+known_tag_color = Color(1, 0.54902, 0.8, 1)
+unknown_tag_color = null
+known_attribute_color = Color(0.737255, 0.878431, 1, 1)
+unknown_attribute_color = null
+string_color = Color(0.631373, 1, 0.878431, 1)
+comment_color = Color(0.803922, 0.811765, 0.823529, 0.501961)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_k0een"]
 content_margin_left = 2.0
@@ -234,7 +203,7 @@ scroll_smooth = true
 scroll_v_scroll_speed = 30.0
 caret_blink = true
 caret_multiple = false
-syntax_highlighter = SubResource("CodeHighlighter_jg7xq")
+syntax_highlighter = SubResource("SyntaxHighlighter_fhint")
 highlight_all_occurrences = true
 auto_brace_completion_highlight_matching = true
 auto_brace_completion_pairs = {
@@ -253,6 +222,7 @@ theme_override_constants/margin_left = 8
 theme_override_constants/margin_right = 8
 
 [node name="Label" type="RichTextLabel" parent="PanelContainer/MainContainer/CodeEditor/ScriptEditor/ErrorBar/Padding"]
+custom_minimum_size = Vector2(0, 20)
 layout_mode = 2
 theme_override_colors/default_color = Color(1, 0.4, 0.4, 1)
 theme_override_fonts/normal_font = ExtResource("2_w635r")
