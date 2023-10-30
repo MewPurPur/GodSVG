@@ -1,3 +1,4 @@
+## An attribute with only a set of meaningful values.
 class_name AttributeEnum extends Attribute
 
 var possible_values: Array[String]

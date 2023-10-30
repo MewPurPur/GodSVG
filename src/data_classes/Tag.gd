@@ -1,3 +1,4 @@
+## A tag that isn't holding other tags within it, i.e. [code]<tag/>[/code]
 class_name Tag extends RefCounted
 
 signal attribute_changed

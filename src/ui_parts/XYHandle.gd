@@ -1,3 +1,4 @@
+## A handle that binds to one or two numeric attributes.
 class_name XYHandle extends Handle
 
 var x_attribute: Attribute

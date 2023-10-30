@@ -1,3 +1,4 @@
+## A dropdown with multiple options, not tied to any attribute.
 extends HBoxContainer
 
 signal value_changed(new_value: String)

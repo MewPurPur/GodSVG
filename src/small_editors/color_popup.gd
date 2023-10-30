@@ -1,3 +1,4 @@
+## A popup for picking a color.
 extends Popup
 
 signal color_picked(new_color: String)

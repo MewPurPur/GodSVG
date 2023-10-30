@@ -1,3 +1,4 @@
+## An editor to be tied to an AttributePath.
 extends AttributeEditor
 
 const CommandEditor = preload("path_command_editor.tscn")

@@ -1,3 +1,4 @@
+## A number editor, not tied to any attribute.
 extends BetterLineEdit
 
 @export var initial_value: float

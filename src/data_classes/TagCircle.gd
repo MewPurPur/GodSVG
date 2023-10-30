@@ -1,3 +1,4 @@
+## A <circle> tag.
 class_name TagCircle extends Tag
 
 func _init() -> void:

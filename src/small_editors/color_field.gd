@@ -1,3 +1,4 @@
+## An editor to be tied to a color attribute.
 extends AttributeEditor
 
 const named_colors := {  # Dictionary{String: Color}

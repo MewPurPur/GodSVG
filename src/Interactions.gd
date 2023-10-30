@@ -1,3 +1,5 @@
+## This singleton handles hovering and selections.
+## The information is used to synchronize the inspector and handles.
 extends Node
 
 const path_actions_dict := {
@@ -28,7 +30,7 @@ var inner_hovered: int = -1
 
 
 func _ready() -> void:
-	SVG.root_tag.tag_deleted.connect(_on_tag_deleted)
+	SVG.root_tag.tags_deleted.connect(_on_tags_deleted)
 	SVG.root_tag.tag_moved.connect(_on_tag_moved)
 	SVG.root_tag.child_tag_attribute_changed.connect(_on_child_tag_attribute_changed)
 
@@ -115,11 +117,12 @@ func clear_inner_hovered() -> void:
 		inner_hovered = -1
 		hover_changed.emit()
 
-
-func _on_tag_deleted(idx: int) -> void:
-	if idx in selected_tags:
+# If selected tags were deleted, remove them from the list of selected tags.
+func _on_tags_deleted(indices_arr: Array[int]) -> void:
+	indices_arr = indices_arr.duplicate()  # For some reason, it breaks without this.
+	for idx in indices_arr:
 		selected_tags.erase(idx)
-		selection_changed.emit()
+	selection_changed.emit()
 
 func _on_tag_moved(old_idx: int, new_idx: int) -> void:
 	for i in selected_tags.size():
@@ -140,10 +143,7 @@ func _on_child_tag_attribute_changed() -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed(&"delete"):
 		if !selected_tags.is_empty():
-			selected_tags.sort()
-			selected_tags.reverse()
-			for tag_idx in selected_tags:
-				SVG.root_tag.delete_tag(tag_idx)
+			SVG.root_tag.delete_tags(selected_tags)
 		elif !inner_selections.is_empty() and semi_selected_tag != -1:
 			inner_selections.sort()
 			inner_selections.reverse()

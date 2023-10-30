@@ -1,3 +1,4 @@
+## An attribute inside a [Tag], i.e. <tag attribute="value"/>
 class_name Attribute extends RefCounted
 
 signal value_changed(new_value: Variant)

@@ -1,3 +1,4 @@
+## A <line> tag.
 class_name TagLine extends Tag
 
 func _init() -> void:

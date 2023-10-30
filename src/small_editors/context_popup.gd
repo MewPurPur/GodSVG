@@ -1,3 +1,4 @@
+## The standard context menu popup.
 extends Popup
 
 @onready var main_container: VBoxContainer = $PanelContainer/MainContainer
