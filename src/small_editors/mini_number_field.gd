@@ -1,3 +1,5 @@
+## A minimalistic editor for numbers, not tied to any attribute.
+## Used for path command parameters.
 extends BetterLineEdit
 
 enum Mode {DEFAULT, ONLY_POSITIVE, ANGLE}

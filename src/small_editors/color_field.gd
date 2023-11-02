@@ -1,3 +1,4 @@
+## An editor to be tied to a color attribute.
 extends AttributeEditor
 
 const named_colors := {  # Dictionary{String: Color}
@@ -164,7 +165,7 @@ func set_value(new_value: String, emit_value_changed := true):
 	_value = validate(new_value)
 	set_text_tint()
 	if _value != old_value and emit_value_changed:
-		value_changed.emit(_value if (is_color_named_or_none(_value)) else "#" + _value)
+		value_changed.emit(_value if (is_color_valid_non_hex(_value)) else "#" + _value)
 
 func get_value() -> String:
 	return _value
@@ -178,7 +179,7 @@ func _ready() -> void:
 	color_edit.tooltip_text = attribute_name
 
 func validate(new_value: String) -> String:
-	if is_color_named_or_none(new_value) or new_value.is_valid_html_color():
+	if is_color_valid_non_hex(new_value) or new_value.is_valid_html_color():
 		return new_value.trim_prefix("#")
 	return "000"
 
@@ -217,11 +218,12 @@ func _on_text_submitted(new_text: String) -> void:
 func _on_color_picked(new_color: String) -> void:
 	set_value(new_color)
 
-func is_color_named_or_none(color: String) -> bool:
-	return color == "none" or named_colors.has(color)
+func is_color_valid_non_hex(color: String) -> bool:
+	return color == "none" or named_colors.has(color) or\
+	(color.begins_with("url(#") and color.ends_with(")"))
 
 func is_color_valid(color: String) -> bool:
-	return color.is_valid_html_color() or is_color_named_or_none(color)
+	return color.is_valid_html_color() or is_color_valid_non_hex(color)
 
 
 func _on_button_resized() -> void:

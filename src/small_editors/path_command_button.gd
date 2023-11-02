@@ -1,3 +1,4 @@
+## A button for a path command picker.
 extends Button
 
 @onready var rtl: RichTextLabel = $RichTextLabel

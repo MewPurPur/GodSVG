@@ -1,3 +1,4 @@
+## A popup for picking a path command.
 extends Popup
 
 signal path_command_picked(new_command: String)

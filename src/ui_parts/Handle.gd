@@ -1,3 +1,4 @@
+## Base class for handles.
 class_name Handle extends RefCounted
 
 signal moved(new_value: Vector2)
@@ -6,7 +7,7 @@ enum DisplayMode {BIG, SMALL}
 var display_mode := DisplayMode.BIG
 
 var tag: Tag
-var tag_index := -1
+var tid := PackedInt32Array()
 var pos: Vector2
 
 func _init() -> void:

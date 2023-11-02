@@ -1,0 +1,69 @@
+[gd_scene load_steps=7 format=3 uid="uid://dbu1lvajypafb"]
+
+[ext_resource type="Script" path="res://src/small_editors/BetterLineEdit.gd" id="1_0ifbb"]
+[ext_resource type="Script" path="res://src/small_editors/dropdown.gd" id="1_133xu"]
+[ext_resource type="Texture2D" uid="uid://coda6chhcatal" path="res://visual/icons/Arrow.svg" id="2_4oygd"]
+[ext_resource type="PackedScene" uid="uid://wp77eqhikp6k" path="res://src/small_editors/context_popup.tscn" id="3_l1jr8"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_q1iin"]
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 1
+border_width_bottom = 2
+border_color = Color(1, 1, 1, 0.0666667)
+corner_radius_top_left = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_uaomi"]
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 1
+border_width_bottom = 2
+border_color = Color(0.501961, 0.752941, 1, 0.2)
+corner_radius_top_left = 5
+corner_radius_bottom_left = 5
+
+[node name="Dropdown" type="HBoxContainer"]
+custom_minimum_size = Vector2(0, 22)
+offset_right = 49.0
+offset_bottom = 22.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_constants/separation = 0
+script = ExtResource("1_133xu")
+
+[node name="LineEdit" type="LineEdit" parent="."]
+layout_mode = 2
+focus_mode = 1
+theme_type_variation = &"RightConnectedLineEdit"
+context_menu_enabled = false
+select_all_on_focus = true
+caret_blink = true
+script = ExtResource("1_0ifbb")
+hover_stylebox = SubResource("StyleBoxFlat_q1iin")
+focus_stylebox = SubResource("StyleBoxFlat_uaomi")
+
+[node name="Button" type="Button" parent="."]
+custom_minimum_size = Vector2(15, 0)
+layout_mode = 2
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_type_variation = &"LeftConnectedButton"
+icon = ExtResource("2_4oygd")
+expand_icon = true
+
+[node name="ContextPopup" parent="." instance=ExtResource("3_l1jr8")]
+size = Vector2i(60, 27)
+visible = false
+
+[node name="PanelContainer" parent="ContextPopup" index="0"]
+custom_minimum_size = Vector2(52, 0)
+offset_right = 52.0
+
+[connection signal="text_changed" from="LineEdit" to="." method="_on_text_changed"]
+[connection signal="text_submitted" from="LineEdit" to="." method="_on_text_submitted"]
+[connection signal="pressed" from="Button" to="." method="_on_button_pressed"]
+
+[editable path="ContextPopup"]

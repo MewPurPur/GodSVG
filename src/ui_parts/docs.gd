@@ -3,13 +3,10 @@ extends ColorRect
 @onready var desc: RichTextLabel = %Desc
 
 func _ready() -> void:
-	desc.add_text(tr(&"#shortcut_inspector_delete"))
-	desc.newline()
-	desc.add_text(tr(&"#shortcut_inspector_alt_down"))
-	desc.newline()
-	desc.add_text(tr(&"#shortcut_inspector_alt_up"))
-	desc.newline()
-	desc.add_text(tr(&"#shortcut_inspector_ctrl_d"))
+	for shortcut in [&"#shortcut_inspector_delete", &"#shortcut_inspector_ctrl_down",
+	&"#shortcut_inspector_ctrl_up", &"#shortcut_inspector_ctrl_d"]:
+		desc.add_text(shortcut)
+		desc.newline()
 
 
 func _on_close_pressed() -> void:

@@ -1,12 +1,10 @@
-[gd_scene load_steps=9 format=3 uid="uid://ccynisiuyn5qn"]
+[gd_scene load_steps=7 format=3 uid="uid://ccynisiuyn5qn"]
 
 [ext_resource type="Script" path="res://src/ui_parts/inspector.gd" id="1_16ggy"]
-[ext_resource type="PackedScene" uid="uid://bktmk76u7dsu0" path="res://src/ui_parts/svg_tag_editor.tscn" id="2_jnl50"]
-[ext_resource type="Texture2D" uid="uid://dmnaqiwq4de1j" path="res://visual/icons/Circle.svg" id="5_cwjdk"]
-[ext_resource type="Texture2D" uid="uid://c8t8eiojuwjje" path="res://visual/icons/Ellipse.svg" id="6_komru"]
-[ext_resource type="Texture2D" uid="uid://cso2l5nvm6gm" path="res://visual/icons/Rect.svg" id="7_hdyp6"]
-[ext_resource type="Texture2D" uid="uid://xpm1e34xuk06" path="res://visual/icons/Path.svg" id="8_6tgkl"]
-[ext_resource type="Texture2D" uid="uid://bspse53b7syd4" path="res://visual/icons/Line.svg" id="9_p3em5"]
+[ext_resource type="PackedScene" uid="uid://bktmk76u7dsu0" path="res://src/ui_parts/root_tag_editor.tscn" id="2_jnl50"]
+[ext_resource type="FontFile" uid="uid://6ildfppmv2j7" path="res://visual/fonts/FontBold.ttf" id="3_tupgu"]
+[ext_resource type="Texture2D" uid="uid://eif2ioi0mw17" path="res://visual/icons/Plus.svg" id="3_vo6hf"]
+[ext_resource type="PackedScene" uid="uid://wp77eqhikp6k" path="res://src/small_editors/context_popup.tscn" id="4_8yv7j"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4j4hv"]
 draw_center = false
@@ -34,49 +32,15 @@ layout_mode = 2
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+[node name="AddButton" type="Button" parent="VBoxContainer"]
 layout_mode = 2
-
-[node name="Circle" type="Button" parent="VBoxContainer/HBoxContainer"]
-layout_mode = 2
-tooltip_text = "<circle>"
+size_flags_horizontal = 0
 focus_mode = 0
 mouse_default_cursor_shape = 2
-theme_type_variation = &"IconButton"
-icon = ExtResource("5_cwjdk")
-icon_alignment = 1
-
-[node name="Ellipse" type="Button" parent="VBoxContainer/HBoxContainer"]
-layout_mode = 2
-tooltip_text = "<ellipse>"
-focus_mode = 0
-mouse_default_cursor_shape = 2
-theme_type_variation = &"IconButton"
-icon = ExtResource("6_komru")
-
-[node name="Rect" type="Button" parent="VBoxContainer/HBoxContainer"]
-layout_mode = 2
-tooltip_text = "<rect>"
-focus_mode = 0
-mouse_default_cursor_shape = 2
-theme_type_variation = &"IconButton"
-icon = ExtResource("7_hdyp6")
-
-[node name="Path" type="Button" parent="VBoxContainer/HBoxContainer"]
-layout_mode = 2
-tooltip_text = "<path>"
-focus_mode = 0
-mouse_default_cursor_shape = 2
-theme_type_variation = &"IconButton"
-icon = ExtResource("8_6tgkl")
-
-[node name="Line" type="Button" parent="VBoxContainer/HBoxContainer"]
-layout_mode = 2
-tooltip_text = "<line>"
-focus_mode = 0
-mouse_default_cursor_shape = 2
-theme_type_variation = &"IconButton"
-icon = ExtResource("9_p3em5")
+theme_override_constants/h_separation = 4
+theme_override_fonts/font = ExtResource("3_tupgu")
+text = "#add_tag"
+icon = ExtResource("3_vo6hf")
 
 [node name="TagContainer" type="PanelContainer" parent="VBoxContainer"]
 clip_contents = true
@@ -90,16 +54,15 @@ layout_mode = 2
 size_flags_vertical = 3
 horizontal_scroll_mode = 0
 
-[node name="Shapes" type="VBoxContainer" parent="VBoxContainer/TagContainer/ScrollContainer"]
+[node name="Tags" type="VBoxContainer" parent="VBoxContainer/TagContainer/ScrollContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/separation = 5
 
-[connection signal="pressed" from="VBoxContainer/HBoxContainer/Circle" to="." method="add_circle"]
-[connection signal="pressed" from="VBoxContainer/HBoxContainer/Ellipse" to="." method="add_ellipse"]
-[connection signal="pressed" from="VBoxContainer/HBoxContainer/Rect" to="." method="add_rect"]
-[connection signal="pressed" from="VBoxContainer/HBoxContainer/Path" to="." method="add_path"]
-[connection signal="pressed" from="VBoxContainer/HBoxContainer/Line" to="." method="add_line"]
+[node name="AddPopup" parent="." instance=ExtResource("4_8yv7j")]
+visible = false
+
+[connection signal="pressed" from="VBoxContainer/AddButton" to="." method="_on_add_button_pressed"]
 [connection signal="gui_input" from="VBoxContainer/TagContainer" to="." method="_on_tag_container_gui_input"]

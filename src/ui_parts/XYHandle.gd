@@ -1,9 +1,11 @@
+## A handle that binds to one or two numeric attributes.
 class_name XYHandle extends Handle
 
 var x_attribute: Attribute
 var y_attribute: Attribute
 
-func _init(x_ref: Attribute, y_ref: Attribute) -> void:
+func _init(id: PackedInt32Array, x_ref: Attribute, y_ref: Attribute) -> void:
+	tid = id
 	x_attribute = x_ref
 	y_attribute = y_ref
 	sync()

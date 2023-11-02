@@ -3,28 +3,59 @@ extends PanelContainer
 const shape_attributes = ["cx", "cy", "x", "y", "r", "rx", "ry", "width", "height", "d",
 		"x1", "y1", "x2", "y2"]
 
+const unknown_icon = preload("res://visual/icons/tag/unknown.svg")
+
+const TagEditor = preload("tag_editor.tscn")
 const NumberField = preload("res://src/small_editors/number_field.tscn")
 const NumberSlider = preload("res://src/small_editors/number_field_with_slider.tscn")
 const ColorField = preload("res://src/small_editors/color_field.tscn")
 const PathField = preload("res://src/small_editors/path_field.tscn")
 const EnumField = preload("res://src/small_editors/enum_field.tscn")
+const UnknownField = preload("res://src/small_editors/unknown_field.tscn")
+
+# This is needed for the hover detection hack.
+@onready var first_ancestor_scroll_container := find_first_ancestor_scroll_container()
+
+func find_first_ancestor_scroll_container() -> ScrollContainer:
+	var ancestor := get_parent()
+	while not ancestor is ScrollContainer:
+		if not ancestor is Control:
+			return null
+		ancestor = ancestor.get_parent()
+	return ancestor
 
 @onready var paint_container: FlowContainer = %AttributeContainer/PaintAttributes
 @onready var shape_container: FlowContainer = %AttributeContainer/ShapeAttributes
+@onready var unknown_container: HFlowContainer = %AttributeContainer/UnknownAttributes
 @onready var title_button: Button = %TitleButton
+@onready var title_button_icon: TextureRect = %TitleButtonIcon
+@onready var title_button_label: Label = %TitleButtonLabel
 @onready var tag_context: Popup = $ContextPopup
 @onready var margin_container: MarginContainer = $MarginContainer
+@onready var child_tags_container: VBoxContainer = %ChildTags
 
-var tag_index: int
+var tid: PackedInt32Array
 var tag: Tag
 
 func _ready() -> void:
 	determine_selection_highlight()
 	tag.attribute_changed.connect(select_conditionally)
-	Interactions.selection_changed.connect(determine_selection_highlight)
-	Interactions.hover_changed.connect(determine_selection_highlight)
-	# Fill up the containers.
-	title_button.text = tag.title
+	Indications.selection_changed.connect(determine_selection_highlight)
+	Indications.hover_changed.connect(determine_selection_highlight)
+	# Fill up the containers. Start with unknown attributes, if there are any.
+	if not tag.unknown_attributes.is_empty():
+		unknown_container.show()
+	for attribute in tag.unknown_attributes:
+		var input_field: AttributeEditor = UnknownField.instantiate()
+		input_field.attribute = attribute
+		input_field.attribute_name = attribute.name
+		unknown_container.add_child(input_field)
+	# Continue with supported attributes.
+	title_button_label.text = tag.name
+	if title_button_label.text.length() > 7:
+		title_button_label.add_theme_font_size_override(&"font_size", 11)
+	title_button_icon.texture = unknown_icon if tag is TagUnknown\
+			else load("res://visual/icons/tag/" + tag.name + ".svg")
 	for attribute_key in tag.attributes:
 		var attribute: Attribute = tag.attributes[attribute_key]
 		var input_field: AttributeEditor
@@ -55,10 +86,25 @@ func _ready() -> void:
 			shape_container.add_child(input_field)
 		else:
 			paint_container.add_child(input_field)
+	
+	determine_selection_highlight()
+	
+	if not tag.child_tags.is_empty():
+		child_tags_container.show()
+		
+		for tag_idx in tag.get_child_count():
+			var child_tag := tag.child_tags[tag_idx]
+			var tag_editor := TagEditor.instantiate()
+			tag_editor.tag = child_tag
+			var new_tid := tid.duplicate()
+			new_tid.append(tag_idx)
+			tag_editor.tid = new_tid
+			child_tags_container.add_child(tag_editor)
 
 
 func tag_context_populate() -> void:
-	var tag_count := SVG.root_tag.get_child_count()
+	var parent_tid := Utils.get_parent_tid(tid)
+	var tag_count := SVG.root_tag.get_by_tid(parent_tid).get_child_count()
 	var buttons_arr: Array[Button] = []
 	
 	var duplicate_button := Button.new()
@@ -69,7 +115,7 @@ func tag_context_populate() -> void:
 	duplicate_button.pressed.connect(_on_duplicate_button_pressed)
 	buttons_arr.append(duplicate_button)
 	
-	if tag_index > 0:
+	if tid[-1] > 0:
 		var move_up_button := Button.new()
 		move_up_button.text = tr(&"#move_up")
 		move_up_button.icon = load("res://visual/icons/MoveUp.svg")
@@ -77,7 +123,7 @@ func tag_context_populate() -> void:
 		move_up_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		move_up_button.pressed.connect(_on_move_up_button_pressed)
 		buttons_arr.append(move_up_button)
-	if tag_index < tag_count - 1:
+	if tid[-1] < tag_count - 1:
 		var move_down_button := Button.new()
 		move_down_button.text = tr(&"#move_down")
 		move_down_button.icon = load("res://visual/icons/MoveDown.svg")
@@ -97,37 +143,38 @@ func tag_context_populate() -> void:
 	tag_context.set_btn_array(buttons_arr)
 
 func _on_title_button_pressed() -> void:
-	Interactions.set_selection(tag_index)
+	Indications.set_selection(tid)
 	tag_context_populate()
 	tag_context.popup(Utils.calculate_popup_rect(title_button.global_position,
 			title_button.size, tag_context.size))
 
+# FIXME fix move commands
 func _on_move_up_button_pressed() -> void:
 	tag_context.hide()
-	SVG.root_tag.move_tag(tag_index, tag_index - 1)
+	SVG.root_tag.move_tags([tid], -1)
 
 func _on_move_down_button_pressed() -> void:
 	tag_context.hide()
-	SVG.root_tag.move_tag(tag_index, tag_index + 1)
+	SVG.root_tag.move_tags([tid], 1)
 
 func _on_delete_button_pressed() -> void:
 	tag_context.hide()
-	SVG.root_tag.delete_tag(tag_index)
+	SVG.root_tag.delete_tags([tid])
 
 func _on_duplicate_button_pressed() -> void:
 	tag_context.hide()
-	SVG.root_tag.duplicate_tag(tag_index)
+	SVG.root_tag.duplicate_tags([tid])
 
 
 func _on_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.is_pressed():
 		if event.button_index == MOUSE_BUTTON_LEFT:
 			if event.ctrl_pressed:
-				Interactions.toggle_selection(tag_index)
+				Indications.toggle_selection(tid)
 			else:
-				Interactions.set_selection(tag_index)
+				Indications.set_selection(tid)
 		elif event.button_index == MOUSE_BUTTON_RIGHT:
-			Interactions.set_selection(tag_index)
+			Indications.set_selection(tid)
 			tag_context_populate()
 			tag_context.popup(Utils.calculate_popup_rect(get_global_mouse_position(),
 					Vector2.ZERO, tag_context.size, true))
@@ -138,35 +185,51 @@ var mouse_inside := false:
 		if mouse_inside != new_value:
 			mouse_inside = new_value
 			if mouse_inside:
-				Interactions.set_hovered(tag_index)
+				Indications.set_hovered(tid)
 			else:
-				Interactions.remove_hovered(tag_index)
+				Indications.remove_hovered(tid)
 
 func _input(event: InputEvent) -> void:
-	if event is InputEventMouseMotion:
+	if event is InputEventMouseMotion and event.button_mask == 0:
 		mouse_inside = get_global_rect().has_point(get_global_mouse_position()) and\
-		get_node(^"../..").get_global_rect().has_point(get_global_mouse_position()) and\
-		Interactions.semi_hovered_tag != tag_index
+				first_ancestor_scroll_container.get_global_rect().has_point(
+				get_global_mouse_position()) and Indications.semi_hovered_tid != tid and\
+				not Utils.is_tid_parent(tid, Indications.hovered_tid)
 
 
 func determine_selection_highlight() -> void:
 	var stylebox := StyleBoxFlat.new()
 	stylebox.set_corner_radius_all(4)
 	stylebox.set_border_width_all(2)
-	if tag_index in Interactions.selected_tags:
-		if Interactions.hovered_tag == tag_index:
+	
+	var is_selected := tid in Indications.selected_tids
+	var is_hovered := Indications.hovered_tid == tid
+	
+	if is_selected:
+		if is_hovered:
 			stylebox.bg_color = Color(0.12, 0.15, 0.24).lightened(0.015)
 		else:
 			stylebox.bg_color = Color(0.12, 0.15, 0.24)
-		stylebox.border_color = Color(0.18, 0.28, 0.44)
-	elif Interactions.hovered_tag == tag_index:
+		stylebox.border_color = Color(0.2, 0.32, 0.5)
+	elif is_hovered:
 		stylebox.bg_color = Color(0.065, 0.085, 0.15).lightened(0.02)
-		stylebox.border_color = Color(0.065, 0.085, 0.15).lightened(0.08)
+		stylebox.border_color = Color(0.065, 0.085, 0.15).lightened(0.09)
 	else:
 		stylebox.bg_color = Color(0.065, 0.085, 0.15)
 		stylebox.border_color = Color(0.065, 0.085, 0.15).lightened(0.04)
+	
+	var depth := tid.size() - 1
+	if depth > 0:
+		stylebox.bg_color = Color.from_hsv(stylebox.bg_color.h + depth * 0.12,
+				stylebox.bg_color.s, stylebox.bg_color.v)
+		stylebox.border_color = Color.from_hsv(stylebox.border_color.h + depth * 0.12,
+				stylebox.border_color.s, stylebox.border_color.v)
 	add_theme_stylebox_override(&"panel", stylebox)
 
 func select_conditionally() -> void:
-	if Interactions.semi_selected_tag != tag_index:
-		Interactions.set_selection(tag_index)
+	if Indications.semi_selected_tid != tid:
+		Indications.set_selection(tid)
+
+
+func _on_title_button_container_draw() -> void:
+	title_button.custom_minimum_size = title_button.get_child(0).size

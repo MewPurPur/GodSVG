@@ -1,3 +1,4 @@
+## This singleton handles save data and settings.
 extends Node
 
 const save_path = "user://save.tres"

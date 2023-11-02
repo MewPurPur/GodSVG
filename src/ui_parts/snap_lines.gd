@@ -1,21 +1,20 @@
 extends Control
 
+const default_font = preload("res://visual/fonts/Font.ttf")
 const main_line_color = Color(0.5, 0.5, 0.5, 0.8)
 const primary_grid_color = Color(0.5, 0.5, 0.5, 0.4)
 const pixel_grid_color = Color(0.5, 0.5, 0.5, 0.16)
-
-var ticks_interval := 4
+const ticks_interval = 4
 
 @onready var display: TextureRect = %Checkerboard
+var surface := RenderingServer.canvas_item_create()  # Used for drawing the numbers.
 
 func _ready() -> void:
+	RenderingServer.canvas_item_set_parent(surface, get_canvas_item())
 	SVG.root_tag.attribute_changed.connect(queue_redraw)
 
 # Don't ask me to explain this.
 func _draw() -> void:
-	for child in get_children():
-		child.free()
-	
 	var display_pos := display.position
 	draw_line(Vector2(display_pos.x, 0), Vector2(display_pos.x, size.y), main_line_color)
 	draw_line(Vector2(0, display_pos.y), Vector2(size.x, display_pos.y), main_line_color)
@@ -27,7 +26,12 @@ func _draw() -> void:
 	var tick_distance := float(ticks_interval)
 	var viewport_scale: float = get_parent().zoom_level
 	var draw_pixel_lines := viewport_scale >= 3.0
-	var rate := nearest_po2(int(maxf(48.0 / (ticks_interval * viewport_scale), 1.0)))
+	var rate := nearest_po2(roundi(maxf(64.0 / (ticks_interval * viewport_scale), 1.0)))
+	
+	# The grid lines are always 1px wide, but the numbers need to be resized.
+	RenderingServer.canvas_item_clear(surface)
+	RenderingServer.canvas_item_set_transform(surface,
+			Transform2D(0, Vector2(1, 1) / viewport_scale, 0, Vector2.ZERO))
 	
 	var i := x_offset
 	while i <= size.x:
@@ -40,13 +44,8 @@ func _draw() -> void:
 			if (coord / ticks_interval) % rate == 0:
 				primary_points.append(Vector2(i, 0))
 				primary_points.append(Vector2(i, size.y))
-				var label := Label.new()
-				label.text = str(coord)
-				label.add_theme_color_override(&"font_color", main_line_color)
-				label.add_theme_font_size_override(&"font_size", 14)
-				label.scale = Vector2(1, 1) / viewport_scale
-				label.position = Vector2(i + 4 / viewport_scale, 0)
-				add_child(label)
+				default_font.draw_string(surface, Vector2(i * viewport_scale + 4, 14),
+						str(coord), HORIZONTAL_ALIGNMENT_LEFT, -1, 14, main_line_color)
 			elif coord % rate == 0:
 				pixel_points.append(Vector2(i, 0))
 				pixel_points.append(Vector2(i, size.y))
@@ -62,13 +61,8 @@ func _draw() -> void:
 			if int(coord / ticks_interval) % rate == 0:
 				primary_points.append(Vector2(0, i))
 				primary_points.append(Vector2(size.x, i))
-				var label := Label.new()
-				label.text = str(coord)
-				label.add_theme_color_override(&"font_color", main_line_color)
-				label.add_theme_font_size_override(&"font_size", 14)
-				label.scale = Vector2(1, 1) / viewport_scale
-				label.position = Vector2(4 / viewport_scale, i)
-				add_child(label)
+				default_font.draw_string(surface, Vector2(4, i * viewport_scale + 14),
+						str(coord), HORIZONTAL_ALIGNMENT_LEFT, -1, 14, main_line_color)
 			elif coord % rate == 0:
 				pixel_points.append(Vector2(0, i))
 				pixel_points.append(Vector2(size.x, i))

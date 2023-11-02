@@ -1,3 +1,4 @@
+## A handle that binds to one or two path parameters.
 class_name PathHandle extends Handle
 
 var path_attribute: AttributePath
@@ -5,9 +6,11 @@ var command_index: int
 var x_param: StringName
 var y_param: StringName
 
-func _init(path_ref: Attribute, idx: int, x_name := &"x", y_name := &"y") -> void:
+func _init(id: PackedInt32Array, path_ref: Attribute, command_idx: int,
+x_name := &"x", y_name := &"y") -> void:
 	path_attribute = path_ref
-	command_index = idx
+	tid = id
+	command_index = command_idx
 	x_param = x_name
 	y_param = y_name
 	sync()

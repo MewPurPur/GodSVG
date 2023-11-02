@@ -1,16 +1,13 @@
-extends ColorRect
-
-const project_founder_list: Array[String] = ["MewPurPur"]
-const project_manager_list: Array[String] = ["MewPurPur"]
-const developers_list: Array[String] = ["ajreckof", "Kiisu-Master", "MewPurPur",
-		"Serem Titus (SeremTitus)", "Swarkin"]
+extends Dialog
 
 @onready var authors_label: RichTextLabel = %AuthorsLabel
+@onready var version_label: Label = %VersionLabel
 
 func _ready() -> void:
-	add_section("Project Founder", project_founder_list)
-	add_section("Project Manager", project_manager_list)
-	add_section("Developers", developers_list)
+	version_label.text = "GodSVG " + AppInfo.version
+	add_section("Project Founder", AppInfo.project_founders)
+	add_section("Project Manager", AppInfo.project_managers)
+	add_section("Developers", AppInfo.authors)
 
 func add_section(section_title: String, authors: Array[String]):
 	authors_label.push_bold()

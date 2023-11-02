@@ -1,24 +1,24 @@
-[gd_scene load_steps=38 format=3 uid="uid://ce6j54x27pom"]
+[gd_scene load_steps=36 format=3 uid="uid://ce6j54x27pom"]
 
 [ext_resource type="PackedScene" uid="uid://ccynisiuyn5qn" path="res://src/ui_parts/inspector.tscn" id="1_afxvd"]
 [ext_resource type="Texture2D" uid="uid://ccvjkdd0s7rb4" path="res://visual/icons/Copy.svg" id="1_fm0ux"]
 [ext_resource type="Script" path="res://src/ui_parts/code_editor.gd" id="1_ry6k8"]
-[ext_resource type="FontFile" uid="uid://c7ury252fql35" path="res://visual/CodeFont.ttf" id="2_w635r"]
+[ext_resource type="FontFile" uid="uid://c7ury252fql35" path="res://visual/fonts/FontMono.ttf" id="2_w635r"]
 [ext_resource type="Script" path="res://src/ui_parts/display.gd" id="2_ylpv1"]
 [ext_resource type="Texture2D" uid="uid://c68og6bsqt0lb" path="res://visual/Checkerboard.svg" id="3_d58qh"]
 [ext_resource type="Texture2D" uid="uid://ckkkgof1hcbld" path="res://visual/icons/Gear.svg" id="4_3rshc"]
 [ext_resource type="Texture2D" uid="uid://6ymbl3jqersp" path="res://visual/icons/Import.svg" id="4_ehrkr"]
 [ext_resource type="Script" path="res://src/ui_parts/handles_manager.gd" id="5_pltvx"]
 [ext_resource type="Texture2D" uid="uid://d0uvwj0t44n6v" path="res://visual/icons/Export.svg" id="5_qe6jq"]
+[ext_resource type="Script" path="res://src/data_classes/SVGHighlighter.gd" id="6_0jtpx"]
 [ext_resource type="Script" path="res://src/ui_parts/viewport.gd" id="6_7hypx"]
 [ext_resource type="Texture2D" uid="uid://ccbta5q43jobk" path="res://visual/icons/More.svg" id="7_7iuuq"]
 [ext_resource type="Script" path="res://src/ui_parts/display_texture.gd" id="7_cxx0h"]
 [ext_resource type="Texture2D" uid="uid://kkxyv1gyrjgj" path="res://visual/icons/Visuals.svg" id="9_ojv7n"]
 [ext_resource type="PackedScene" uid="uid://wp77eqhikp6k" path="res://src/small_editors/context_popup.tscn" id="10_hraj8"]
-[ext_resource type="Script" path="res://src/small_editors/number_field.gd" id="11_sa433"]
 [ext_resource type="Texture2D" uid="uid://buire51l0mifg" path="res://visual/icons/Snap.svg" id="11_u7ddj"]
 [ext_resource type="Shader" path="res://src/ui_parts/zoom_shader.gdshader" id="12_wewnk"]
-[ext_resource type="Script" path="res://src/small_editors/BetterLineEdit.gd" id="13_agirq"]
+[ext_resource type="PackedScene" uid="uid://dad7fkhmsooc6" path="res://src/small_editors/number_edit.tscn" id="13_oxv3i"]
 [ext_resource type="Texture2D" uid="uid://c2h5snkvemm4p" path="res://visual/icons/Minus.svg" id="13_uqus2"]
 [ext_resource type="Texture2D" uid="uid://eif2ioi0mw17" path="res://visual/icons/Plus.svg" id="14_t8hbh"]
 [ext_resource type="Script" path="res://src/ui_parts/snap_lines.gd" id="15_v2yj8"]
@@ -54,46 +54,13 @@ corner_radius_top_right = 3
 corner_radius_bottom_right = 3
 corner_radius_bottom_left = 3
 
-[sub_resource type="CodeHighlighter" id="CodeHighlighter_jg7xq"]
-number_color = Color(0.631373, 1, 0.878431, 1)
+[sub_resource type="SyntaxHighlighter" id="SyntaxHighlighter_fhint"]
+script = ExtResource("6_0jtpx")
 symbol_color = Color(0.670588, 0.788235, 1, 1)
-function_color = Color(0.341176, 0.701961, 1, 1)
-keyword_colors = {
-"circle": Color(1, 0.54902, 0.8, 1),
-"cx": Color(0.737255, 0.878431, 1, 1),
-"cy": Color(0.737255, 0.878431, 1, 1),
-"d": Color(0.737255, 0.878431, 1, 1),
-"ellipse": Color(1, 0.54902, 0.8, 1),
-"fill": Color(0.737255, 0.878431, 1, 1),
-"g": Color(1, 0.54902, 0.8, 1),
-"height": Color(0.737255, 0.878431, 1, 1),
-"line": Color(1, 0.54902, 0.8, 1),
-"linearGradient": Color(1, 0.54902, 0.8, 1),
-"opacity": Color(0.737255, 0.878431, 1, 1),
-"path": Color(1, 0.54902, 0.8, 1),
-"r": Color(0.737255, 0.878431, 1, 1),
-"radialGradient": Color(1, 0.54902, 0.8, 1),
-"rect": Color(1, 0.54902, 0.8, 1),
-"rx": Color(0.737255, 0.878431, 1, 1),
-"ry": Color(0.737255, 0.878431, 1, 1),
-"stroke": Color(0.737255, 0.878431, 1, 1),
-"stroke-linecap": Color(0.737255, 0.878431, 1, 1),
-"stroke-linejoin": Color(0.737255, 0.878431, 1, 1),
-"stroke-width": Color(0.737255, 0.878431, 1, 1),
-"svg": Color(1, 0.54902, 0.8, 1),
-"viewBox": Color(0.737255, 0.878431, 1, 1),
-"width": Color(0.737255, 0.878431, 1, 1),
-"x": Color(0.737255, 0.878431, 1, 1),
-"x1": Color(0.737255, 0.878431, 1, 1),
-"x2": Color(0.737255, 0.878431, 1, 1),
-"xmlns": Color(0.737255, 0.878431, 1, 1),
-"y": Color(0.737255, 0.878431, 1, 1),
-"y1": Color(0.737255, 0.878431, 1, 1),
-"y2": Color(0.737255, 0.878431, 1, 1)
-}
-color_regions = {
-"\" \"": Color(0.631373, 1, 0.878431, 1)
-}
+known_tag_color = Color(1, 0.54902, 0.8, 1)
+known_attribute_color = Color(0.737255, 0.878431, 1, 1)
+string_color = Color(0.631373, 1, 0.878431, 1)
+comment_color = Color(0.803922, 0.811765, 0.823529, 0.501961)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_k0een"]
 content_margin_left = 2.0
@@ -116,26 +83,6 @@ content_margin_bottom = 7.0
 bg_color = Color(0.02, 0.02, 0.08, 1)
 border_width_bottom = 2
 border_color = Color(0.4, 0.7, 1, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nhyje"]
-draw_center = false
-border_width_left = 1
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(1, 1, 1, 0.0666667)
-corner_radius_top_right = 5
-corner_radius_bottom_right = 5
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gocfv"]
-draw_center = false
-border_width_left = 1
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.501961, 0.752941, 1, 0.133333)
-corner_radius_top_right = 5
-corner_radius_bottom_right = 5
 
 [sub_resource type="InputEventKey" id="InputEventKey_n13ij"]
 device = -1
@@ -169,7 +116,6 @@ shader = ExtResource("12_wewnk")
 shader_parameter/uv_scale = 1.0
 
 [node name="MainScene" type="HBoxContainer"]
-process_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -255,12 +201,11 @@ scroll_smooth = true
 scroll_v_scroll_speed = 30.0
 caret_blink = true
 caret_multiple = false
-syntax_highlighter = SubResource("CodeHighlighter_jg7xq")
+syntax_highlighter = SubResource("SyntaxHighlighter_fhint")
 highlight_all_occurrences = true
 auto_brace_completion_highlight_matching = true
 auto_brace_completion_pairs = {
 "\"": "\"",
-"(": ")",
 "<": ">"
 }
 
@@ -275,6 +220,7 @@ theme_override_constants/margin_left = 8
 theme_override_constants/margin_right = 8
 
 [node name="Label" type="RichTextLabel" parent="PanelContainer/MainContainer/CodeEditor/ScriptEditor/ErrorBar/Padding"]
+custom_minimum_size = Vector2(0, 20)
 layout_mode = 2
 theme_override_colors/default_color = Color(1, 0.4, 0.4, 1)
 theme_override_fonts/normal_font = ExtResource("2_w635r")
@@ -346,26 +292,16 @@ theme_type_variation = &"RightConnectedButton"
 toggle_mode = true
 icon = ExtResource("11_u7ddj")
 
-[node name="Snapper" type="HBoxContainer" parent="Display/PanelContainer/HBoxContainer/LeftMenu/Snapping"]
-custom_minimum_size = Vector2(0, 22)
+[node name="NumberEdit" parent="Display/PanelContainer/HBoxContainer/LeftMenu/Snapping" instance=ExtResource("13_oxv3i")]
+custom_minimum_size = Vector2(46, 22)
 layout_mode = 2
-theme_override_constants/separation = 0
-script = ExtResource("11_sa433")
-
-[node name="LineEdit" type="LineEdit" parent="Display/PanelContainer/HBoxContainer/LeftMenu/Snapping/Snapper"]
-custom_minimum_size = Vector2(46, 0)
-layout_mode = 2
-size_flags_horizontal = 3
 tooltip_text = "#snap_size"
 theme_type_variation = &"LeftConnectedLineEdit"
 max_length = 20
 editable = false
-context_menu_enabled = false
-select_all_on_focus = true
-caret_blink = true
-script = ExtResource("13_agirq")
-hover_stylebox = SubResource("StyleBoxFlat_nhyje")
-focus_stylebox = SubResource("StyleBoxFlat_gocfv")
+initial_value = 0.5
+min_value = 0.001
+allow_lower = false
 
 [node name="VisualsPopup" parent="Display/PanelContainer/HBoxContainer/LeftMenu" instance=ExtResource("10_hraj8")]
 visible = false
@@ -382,6 +318,7 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(28, 0)
 layout_mode = 2
 tooltip_text = "#zoom_out"
+focus_mode = 0
 mouse_default_cursor_shape = 2
 shortcut = SubResource("Shortcut_teo1i")
 icon = ExtResource("13_uqus2")
@@ -392,6 +329,7 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(60, 0)
 layout_mode = 2
 tooltip_text = "#zoom_reset"
+focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_override_font_sizes/font_size = 14
 shortcut = SubResource("Shortcut_le5f5")
@@ -402,6 +340,7 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(28, 0)
 layout_mode = 2
 tooltip_text = "#zoom_in"
+focus_mode = 0
 mouse_default_cursor_shape = 2
 shortcut = SubResource("Shortcut_ihtjd")
 icon = ExtResource("14_t8hbh")
@@ -412,6 +351,7 @@ layout_mode = 2
 size_flags_horizontal = 10
 
 [node name="Viewport" type="SubViewport" parent="Display/ViewportContainer"]
+disable_3d = true
 handle_input_locally = false
 gui_snap_controls_to_pixels = false
 size = Vector2i(600, 600)
@@ -439,6 +379,7 @@ expand_mode = 1
 stretch_mode = 1
 
 [node name="DisplayTexture" type="TextureRect" parent="Display/ViewportContainer/Viewport/Checkerboard"]
+process_mode = 3
 clip_contents = true
 layout_mode = 1
 anchors_preset = 15
@@ -456,6 +397,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 1
 script = ExtResource("5_pltvx")
 
 [node name="SnapLines" type="Control" parent="Display/ViewportContainer/Viewport"]
@@ -474,12 +416,10 @@ script = ExtResource("15_v2yj8")
 [connection signal="text_changed" from="PanelContainer/MainContainer/CodeEditor/ScriptEditor/CodeEdit" to="PanelContainer/MainContainer/CodeEditor" method="_on_code_edit_text_changed"]
 [connection signal="pressed" from="Display/PanelContainer/HBoxContainer/LeftMenu/MoreOptions" to="Display" method="_on_more_options_pressed"]
 [connection signal="pressed" from="Display/PanelContainer/HBoxContainer/LeftMenu/Settings" to="Display" method="_on_settings_pressed"]
-[connection signal="pressed" from="Display/PanelContainer/HBoxContainer/LeftMenu/Visuals" to="Display" method="_on_snap_button_pressed"]
+[connection signal="pressed" from="Display/PanelContainer/HBoxContainer/LeftMenu/Visuals" to="Display" method="_on_visuals_button_pressed"]
 [connection signal="toggled" from="Display/PanelContainer/HBoxContainer/LeftMenu/Snapping/SnapButton" to="Display" method="_on_snap_button_toggled"]
 [connection signal="toggled" from="Display/PanelContainer/HBoxContainer/LeftMenu/Snapping/SnapButton" to="Display/ViewportContainer/Viewport/Checkerboard/Controls" method="_on_snap_button_toggled"]
-[connection signal="value_changed" from="Display/PanelContainer/HBoxContainer/LeftMenu/Snapping/Snapper" to="Display/ViewportContainer/Viewport/Checkerboard/Controls" method="_on_snapper_value_changed"]
-[connection signal="focus_exited" from="Display/PanelContainer/HBoxContainer/LeftMenu/Snapping/Snapper/LineEdit" to="Display/PanelContainer/HBoxContainer/LeftMenu/Snapping/Snapper" method="_on_focus_exited"]
-[connection signal="text_submitted" from="Display/PanelContainer/HBoxContainer/LeftMenu/Snapping/Snapper/LineEdit" to="Display/PanelContainer/HBoxContainer/LeftMenu/Snapping/Snapper" method="_on_text_submitted"]
+[connection signal="value_changed" from="Display/PanelContainer/HBoxContainer/LeftMenu/Snapping/NumberEdit" to="Display/ViewportContainer/Viewport/Checkerboard/Controls" method="_on_snapper_value_changed"]
 [connection signal="pressed" from="Display/PanelContainer/HBoxContainer/ZoomMenu/ZoomOut" to="Display/ViewportContainer/Viewport" method="zoom_out"]
 [connection signal="pressed" from="Display/PanelContainer/HBoxContainer/ZoomMenu/ZoomReset" to="Display/ViewportContainer/Viewport" method="zoom_reset"]
 [connection signal="pressed" from="Display/PanelContainer/HBoxContainer/ZoomMenu/ZoomIn" to="Display/ViewportContainer/Viewport" method="zoom_in"]

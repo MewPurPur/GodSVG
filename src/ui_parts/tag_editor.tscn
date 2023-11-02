@@ -1,7 +1,7 @@
 [gd_scene load_steps=7 format=3 uid="uid://cksx526iftj5d"]
 
 [ext_resource type="Script" path="res://src/ui_parts/tag_editor.gd" id="1_7i0c4"]
-[ext_resource type="FontFile" uid="uid://c7ury252fql35" path="res://visual/CodeFont.ttf" id="2_0lxvf"]
+[ext_resource type="FontFile" uid="uid://c7ury252fql35" path="res://visual/fonts/FontMono.ttf" id="2_0lxvf"]
 [ext_resource type="PackedScene" uid="uid://wp77eqhikp6k" path="res://src/small_editors/context_popup.tscn" id="4_2mart"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xmwqw"]
@@ -65,11 +65,14 @@ theme_override_constants/margin_top = 3
 theme_override_constants/margin_right = 5
 theme_override_constants/margin_bottom = 3
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/HBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/HBoxContainer"]
 custom_minimum_size = Vector2(50, 0)
 layout_mode = 2
 theme_override_constants/margin_left = 0
@@ -77,35 +80,81 @@ theme_override_constants/margin_top = 4
 theme_override_constants/margin_right = 2
 theme_override_constants/margin_bottom = 4
 
-[node name="TitleButton" type="Button" parent="MarginContainer/HBoxContainer/MarginContainer"]
+[node name="TitleButton" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 focus_mode = 0
 mouse_default_cursor_shape = 2
-theme_override_fonts/font = ExtResource("2_0lxvf")
-theme_override_font_sizes/font_size = 14
 theme_override_styles/normal = SubResource("StyleBoxFlat_xmwqw")
 theme_override_styles/hover = SubResource("StyleBoxFlat_50r0v")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_dfilu")
 theme_override_styles/disabled = SubResource("StyleBoxFlat_xmwqw")
 
-[node name="AttributeContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/TitleButton"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+mouse_filter = 2
+theme_override_constants/margin_left = 6
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 6
+theme_override_constants/margin_bottom = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/TitleButton/MarginContainer"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 0
+
+[node name="TitleButtonIcon" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/TitleButton/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(18, 18)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+mouse_filter = 2
+
+[node name="TitleButtonLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/TitleButton/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(24, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_fonts/font = ExtResource("2_0lxvf")
+theme_override_font_sizes/font_size = 12
+horizontal_alignment = 1
+
+[node name="RightContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 12
+
+[node name="AttributeContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/RightContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="PaintAttributes" type="HFlowContainer" parent="MarginContainer/HBoxContainer/AttributeContainer"]
+[node name="UnknownAttributes" type="HFlowContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/RightContainer/AttributeContainer"]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="ShapeAttributes" type="HFlowContainer" parent="MarginContainer/HBoxContainer/AttributeContainer"]
+[node name="PaintAttributes" type="HFlowContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/RightContainer/AttributeContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
+
+[node name="ShapeAttributes" type="HFlowContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/RightContainer/AttributeContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ChildTags" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
 
 [node name="ContextPopup" parent="." instance=ExtResource("4_2mart")]
 visible = false
 
 [connection signal="gui_input" from="." to="." method="_on_gui_input"]
-[connection signal="pressed" from="MarginContainer/HBoxContainer/MarginContainer/TitleButton" to="." method="_on_title_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/TitleButton" to="." method="_on_title_button_pressed"]
+[connection signal="draw" from="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/TitleButton/MarginContainer/VBoxContainer" to="." method="_on_title_button_container_draw"]

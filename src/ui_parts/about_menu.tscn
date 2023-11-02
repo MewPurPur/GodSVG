@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://src/ui_parts/about_menu.gd" id="1_xxltt"]
 [ext_resource type="Texture2D" uid="uid://v7hej5yexkvl" path="res://visual/icon.png" id="2_rgruj"]
-[ext_resource type="FontFile" uid="uid://c7ury252fql35" path="res://visual/CodeFont.ttf" id="3_2ceci"]
+[ext_resource type="FontFile" uid="uid://c7ury252fql35" path="res://visual/fonts/FontMono.ttf" id="3_e8i1t"]
 [ext_resource type="Texture2D" uid="uid://cgxpm1e3v0i3v" path="res://visual/icons/Link.svg" id="4_s5gee"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_75xfp"]
@@ -60,18 +60,28 @@ layout_mode = 2
 texture = ExtResource("2_rgruj")
 expand_mode = 2
 
-[node name="Label" type="Label" parent="PanelContainer/VBoxContainer/HBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 14
-text = "GodSVG development build
-© 2023 MewPurPur
+
+[node name="VersionLabel" type="Label" parent="PanelContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+
+[node name="CopyLabel" type="Label" parent="PanelContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/line_spacing = 0
+theme_override_font_sizes/font_size = 12
+text = "© 2023 MewPurPur
 © 2023-present GodSVG contributors"
 
 [node name="TabContainer" type="TabContainer" parent="PanelContainer/VBoxContainer"]
 custom_minimum_size = Vector2(0, 280)
 layout_mode = 2
+current_tab = 1
 
 [node name="License" type="MarginContainer" parent="PanelContainer/VBoxContainer/TabContainer"]
+visible = false
 layout_mode = 2
 theme_override_constants/margin_left = 8
 theme_override_constants/margin_top = 8
@@ -85,7 +95,7 @@ size_flags_vertical = 3
 
 [node name="LicenseLabel" type="Label" parent="PanelContainer/VBoxContainer/TabContainer/License/ScrollContainer"]
 layout_mode = 2
-theme_override_fonts/font = ExtResource("3_2ceci")
+theme_override_fonts/font = ExtResource("3_e8i1t")
 theme_override_font_sizes/font_size = 10
 text = "MIT License
 
@@ -111,32 +121,76 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE."
 
 [node name="Third-party licenses" type="MarginContainer" parent="PanelContainer/VBoxContainer/TabContainer"]
-visible = false
 layout_mode = 2
 theme_override_constants/margin_left = 8
 theme_override_constants/margin_top = 8
 theme_override_constants/margin_right = 8
 theme_override_constants/margin_bottom = 8
 
-[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/VBoxContainer/TabContainer/Third-party licenses"]
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/VBoxContainer/TabContainer/Third-party licenses"]
 layout_mode = 2
+theme_override_constants/separation = 14
 alignment = 1
 
-[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/VBoxContainer/TabContainer/Third-party licenses/HBoxContainer"]
+[node name="Godot" type="VBoxContainer" parent="PanelContainer/VBoxContainer/TabContainer/Third-party licenses/VBoxContainer"]
 layout_mode = 2
-alignment = 1
 
-[node name="Label" type="Label" parent="PanelContainer/VBoxContainer/TabContainer/Third-party licenses/HBoxContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="PanelContainer/VBoxContainer/TabContainer/Third-party licenses/VBoxContainer/Godot"]
 layout_mode = 2
 text = "Godot Engine"
 horizontal_alignment = 1
 
-[node name="GodotLicense" type="Button" parent="PanelContainer/VBoxContainer/TabContainer/Third-party licenses/HBoxContainer/VBoxContainer"]
+[node name="GodotLicense" type="Button" parent="PanelContainer/VBoxContainer/TabContainer/Third-party licenses/VBoxContainer/Godot"]
 layout_mode = 2
 size_flags_horizontal = 4
 mouse_default_cursor_shape = 2
 text = "Open Godot's License"
 icon = ExtResource("4_s5gee")
+
+[node name="NotoSans" type="VBoxContainer" parent="PanelContainer/VBoxContainer/TabContainer/Third-party licenses/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 3
+
+[node name="Label" type="Label" parent="PanelContainer/VBoxContainer/TabContainer/Third-party licenses/VBoxContainer/NotoSans"]
+layout_mode = 2
+text = "Noto Sans font"
+horizontal_alignment = 1
+
+[node name="Copy" type="Label" parent="PanelContainer/VBoxContainer/TabContainer/Third-party licenses/VBoxContainer/NotoSans"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "© 2012, Google Inc."
+horizontal_alignment = 1
+
+[node name="Files" type="Label" parent="PanelContainer/VBoxContainer/TabContainer/Third-party licenses/VBoxContainer/NotoSans"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_e8i1t")
+theme_override_font_sizes/font_size = 12
+text = "res://visual/fonts/Font.ttf
+res://visual/fonts/FontBold.ttf"
+horizontal_alignment = 1
+
+[node name="JetbrainsMono" type="VBoxContainer" parent="PanelContainer/VBoxContainer/TabContainer/Third-party licenses/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 3
+
+[node name="Label" type="Label" parent="PanelContainer/VBoxContainer/TabContainer/Third-party licenses/VBoxContainer/JetbrainsMono"]
+layout_mode = 2
+text = "JetBrains Mono font"
+horizontal_alignment = 1
+
+[node name="Copy" type="Label" parent="PanelContainer/VBoxContainer/TabContainer/Third-party licenses/VBoxContainer/JetbrainsMono"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "© 2020, JetBrains s.r.o"
+horizontal_alignment = 1
+
+[node name="File" type="Label" parent="PanelContainer/VBoxContainer/TabContainer/Third-party licenses/VBoxContainer/JetbrainsMono"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_e8i1t")
+theme_override_font_sizes/font_size = 12
+text = "res://visual/fonts/FontMono.ttf"
+horizontal_alignment = 1
 
 [node name="Authors" type="MarginContainer" parent="PanelContainer/VBoxContainer/TabContainer"]
 visible = false
@@ -166,5 +220,5 @@ size_flags_vertical = 8
 mouse_default_cursor_shape = 2
 text = "Close"
 
-[connection signal="pressed" from="PanelContainer/VBoxContainer/TabContainer/Third-party licenses/HBoxContainer/VBoxContainer/GodotLicense" to="." method="_on_godot_license_pressed"]
+[connection signal="pressed" from="PanelContainer/VBoxContainer/TabContainer/Third-party licenses/VBoxContainer/Godot/GodotLicense" to="." method="_on_godot_license_pressed"]
 [connection signal="pressed" from="PanelContainer/Close" to="." method="_on_close_pressed"]

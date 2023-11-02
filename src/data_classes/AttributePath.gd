@@ -1,3 +1,4 @@
+## The "d" attribute of [TagPath].
 class_name AttributePath extends Attribute
 
 signal command_changed
