@@ -39,7 +39,7 @@ func _ready() -> void:
 	SVG.root_tag.tags_deleted.connect(_on_tags_deleted)
 	SVG.root_tag.tags_moved.connect(_on_tags_moved)
 	SVG.root_tag.changed_unknown.connect(clear_selection)
-	SVG.root_tag.child_tag_attribute_changed.connect(_on_child_tag_attribute_changed)
+	SVG.root_tag.child_attribute_changed.connect(clear_inner_selection)
 
 ## If the tag was selected, unselect it. If it was unselected, select it.
 func toggle_selection(tid: PackedInt32Array) -> void:
@@ -179,9 +179,6 @@ func _on_tags_moved(parent_tid: PackedInt32Array, old_idx: int, new_idx: int) ->
 				#selected_tids[j][-1] -= 1
 			#elif idx == old_idx:
 				#selected_tids[j][-1] = new_idx
-
-func _on_child_tag_attribute_changed() -> void:
-	clear_inner_selection()
 
 
 func _unhandled_input(event: InputEvent) -> void:
