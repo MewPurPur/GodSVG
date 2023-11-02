@@ -4,6 +4,8 @@
 #remember_window_mode_settings,Remember window mode,Запомни режима на прозореца
 #remember_window_mode_desc,"When this box is checked, the window can remain restored between sessions.","Когато тази кутийка е отметната, прозорецът може да остане малък между сесиите."
 #language,Language,Език
+#invert_zoom,Invert zoom direction,
+#invert_zoom_desc,Swaps zoom in and zoom out,
 #open,Open,Отвори
 #close,Close,Затвори
 #repo_button_text,GodSVG Repository,Репозиторията на GodSVG

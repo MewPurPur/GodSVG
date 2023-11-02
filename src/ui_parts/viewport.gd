@@ -84,9 +84,15 @@ func _unhandled_input(event: InputEvent) -> void:
 		# Use this to get the position according to the texture.
 		match event.button_index:
 			MOUSE_BUTTON_WHEEL_UP:
-				zoom_in()
+				if GlobalSettings.invert_zoom:
+					zoom_out()
+				else:
+					zoom_in()
 			MOUSE_BUTTON_WHEEL_DOWN:
-				zoom_out()
+				if GlobalSettings.invert_zoom:
+					zoom_in()
+				else:
+					zoom_out()
 		clamp_view()
 	
 	if event is InputEventMouseButton:
