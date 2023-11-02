@@ -1,8 +1,7 @@
-[gd_scene load_steps=7 format=3 uid="uid://ccynisiuyn5qn"]
+[gd_scene load_steps=6 format=3 uid="uid://ccynisiuyn5qn"]
 
 [ext_resource type="Script" path="res://src/ui_parts/inspector.gd" id="1_16ggy"]
 [ext_resource type="PackedScene" uid="uid://bktmk76u7dsu0" path="res://src/ui_parts/root_tag_editor.tscn" id="2_jnl50"]
-[ext_resource type="FontFile" uid="uid://6ildfppmv2j7" path="res://visual/fonts/FontBold.ttf" id="3_tupgu"]
 [ext_resource type="Texture2D" uid="uid://eif2ioi0mw17" path="res://visual/icons/Plus.svg" id="3_vo6hf"]
 [ext_resource type="PackedScene" uid="uid://wp77eqhikp6k" path="res://src/small_editors/context_popup.tscn" id="4_8yv7j"]
 
@@ -38,7 +37,6 @@ size_flags_horizontal = 0
 focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_override_constants/h_separation = 4
-theme_override_fonts/font = ExtResource("3_tupgu")
 text = "#add_tag"
 icon = ExtResource("3_vo6hf")
 

@@ -19,12 +19,12 @@ func _get_line_syntax_highlighting(line: int) -> Dictionary:
 	var svg_text := get_text_edit().get_line(line)
 	parser.open_buffer(svg_text.to_ascii_buffer())
 	while parser.read() == OK:
+		var offset := parser.get_node_offset()
 		match parser.get_node_type():
 			XMLParser.NODE_COMMENT, XMLParser.NODE_CDATA, XMLParser.NODE_TEXT:
-				var offset := parser.get_node_offset()
 				color_map[offset] = {"color": comment_color}
 			XMLParser.NODE_ELEMENT_END:
-				var offset := parser.get_node_offset()
+				offset = svg_text.find("<", offset)
 				var tag_name := parser.get_node_name()
 				color_map[offset] = {"color": symbol_color}
 				offset += 2
@@ -33,7 +33,7 @@ func _get_line_syntax_highlighting(line: int) -> Dictionary:
 				offset += tag_name.length()
 				color_map[offset] = {"color": symbol_color}
 			XMLParser.NODE_ELEMENT:
-				var offset := parser.get_node_offset()
+				offset = svg_text.find("<", offset)
 				var tag_name := parser.get_node_name()
 				color_map[offset] = {"color": symbol_color}
 				offset += 1
