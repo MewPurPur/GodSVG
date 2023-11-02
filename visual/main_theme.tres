@@ -1,8 +1,6 @@
-[gd_resource type="Theme" load_steps=65 format=3 uid="uid://der6fnkliqqto"]
+[gd_resource type="Theme" load_steps=66 format=3 uid="uid://der6fnkliqqto"]
 
 [ext_resource type="Texture2D" uid="uid://wdrpwa7gwmg" path="res://visual/icons/theme/GuiBoxChecked.svg" id="1_agkhv"]
-[ext_resource type="FontFile" uid="uid://c7ury252fql35" path="res://visual/CodeFont.ttf" id="1_ulxqy"]
-[ext_resource type="FontFile" uid="uid://bd8rlfqek8f8u" path="res://visual/Font.ttf" id="2_d11o4"]
 [ext_resource type="Texture2D" uid="uid://d3a3xgsb8klyk" path="res://visual/icons/theme/GuiBoxUnchecked.svg" id="2_xwib4"]
 [ext_resource type="Texture2D" uid="uid://dwlr4bgptgwho" path="res://visual/icons/theme/GuiToggleChecked.svg" id="3_ggukc"]
 [ext_resource type="Texture2D" uid="uid://rrhdja8l17cn" path="res://visual/icons/FolderUp.svg" id="4_1t13q"]
@@ -10,6 +8,9 @@
 [ext_resource type="Texture2D" uid="uid://kkxyv1gyrjgj" path="res://visual/icons/Visuals.svg" id="4_j0oku"]
 [ext_resource type="Texture2D" uid="uid://c12tg3dnydily" path="res://visual/icons/theme/GuiToggleUnchecked.svg" id="4_w667w"]
 [ext_resource type="Texture2D" uid="uid://cnig3sejwsrf3" path="res://visual/icons/theme/SplitGrabber.svg" id="5_7sidk"]
+[ext_resource type="FontFile" uid="uid://c7ury252fql35" path="res://visual/fonts/FontMono.ttf" id="5_nfqug"]
+[ext_resource type="FontFile" uid="uid://6ildfppmv2j7" path="res://visual/fonts/FontBold.ttf" id="9_ugiac"]
+[ext_resource type="FontFile" uid="uid://ckjcjh5cv4amx" path="res://visual/fonts/Font.ttf" id="11_ccloq"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_i4np8"]
 content_margin_left = 12.0
@@ -615,8 +616,8 @@ expand_margin_right = 8.0
 expand_margin_bottom = 8.0
 
 [resource]
-default_font = ExtResource("2_d11o4")
-default_font_size = 14
+default_font = ExtResource("11_ccloq")
+default_font_size = 13
 AcceptDialog/styles/panel = SubResource("StyleBoxFlat_i4np8")
 Button/constants/h_separation = 6
 Button/styles/disabled = SubResource("StyleBoxFlat_4tonr")
@@ -634,7 +635,7 @@ CheckButton/icons/checked = ExtResource("3_ggukc")
 CheckButton/icons/unchecked = ExtResource("4_w667w")
 CodeEdit/colors/selection_color = Color(0.4, 0.54902, 1, 0.4)
 CodeEdit/font_sizes/font_size = 12
-CodeEdit/fonts/font = ExtResource("1_ulxqy")
+CodeEdit/fonts/font = ExtResource("5_nfqug")
 CodeEdit/styles/focus = SubResource("StyleBoxFlat_uk6li")
 FileDialog/icons/parent_folder = ExtResource("4_1t13q")
 FileDialog/icons/reload = ExtResource("4_8qjet")
@@ -648,8 +649,7 @@ IconButton/styles/disabled = SubResource("StyleBoxFlat_qepg8")
 IconButton/styles/hover = SubResource("StyleBoxFlat_c4o10")
 IconButton/styles/normal = SubResource("StyleBoxFlat_ecs6u")
 IconButton/styles/pressed = SubResource("StyleBoxFlat_ye6kl")
-Label/colors/font_color = Color(0.866667, 0.933333, 1, 1)
-Label/font_sizes/font_size = 16
+Label/font_sizes/font_size = 15
 LeftConnectedButton/base_type = &"Button"
 LeftConnectedButton/styles/disabled = SubResource("StyleBoxFlat_8vw7r")
 LeftConnectedButton/styles/hover = SubResource("StyleBoxFlat_rcthl")
@@ -662,14 +662,14 @@ LeftConnectedButtonTransparent/styles/normal = SubResource("StyleBoxFlat_ms2eo")
 LeftConnectedButtonTransparent/styles/pressed = SubResource("StyleBoxFlat_o3p5c")
 LeftConnectedLineEdit/base_type = &"LineEdit"
 LeftConnectedLineEdit/font_sizes/font_size = 12
-LeftConnectedLineEdit/fonts/font = ExtResource("1_ulxqy")
+LeftConnectedLineEdit/fonts/font = ExtResource("5_nfqug")
 LeftConnectedLineEdit/styles/normal = SubResource("StyleBoxFlat_k1x4s")
 LeftConnectedLineEdit/styles/read_only = SubResource("StyleBoxFlat_ff1pj")
 LineEdit/colors/caret_color = Color(0.94902, 0.854902, 0.854902, 1)
 LineEdit/colors/font_color = Color(0.866667, 0.933333, 1, 1)
 LineEdit/colors/selection_color = Color(0.4, 0.54902, 1, 0.4)
 LineEdit/font_sizes/font_size = 12
-LineEdit/fonts/font = ExtResource("1_ulxqy")
+LineEdit/fonts/font = ExtResource("5_nfqug")
 LineEdit/styles/focus = SubResource("StyleBoxEmpty_ri0uc")
 LineEdit/styles/normal = SubResource("StyleBoxFlat_730xo")
 LineEdit/styles/read_only = SubResource("StyleBoxFlat_efvcd")
@@ -678,7 +678,7 @@ MiniLineEdit/colors/caret_color = Color(0.94902, 0.854902, 0.854902, 1)
 MiniLineEdit/colors/font_outline_color = Color(0.866667, 0.933333, 1, 1)
 MiniLineEdit/colors/selection_color = Color(0.4, 0.54902, 1, 0.4)
 MiniLineEdit/font_sizes/font_size = 10
-MiniLineEdit/fonts/font = ExtResource("1_ulxqy")
+MiniLineEdit/fonts/font = ExtResource("5_nfqug")
 MiniLineEdit/styles/focus = SubResource("StyleBoxEmpty_rmu68")
 MiniLineEdit/styles/normal = SubResource("StyleBoxFlat_iof82")
 MiniLineEdit/styles/read_only = SubResource("StyleBoxFlat_c4urh")
@@ -686,6 +686,7 @@ PanelContainer/styles/panel = SubResource("StyleBoxFlat_c2si1")
 ProgressBar/styles/background = null
 ProgressBar/styles/fill = null
 RichTextLabel/colors/selection_color = Color(0.4, 0.55, 1, 0.4)
+RichTextLabel/fonts/bold_font = ExtResource("9_ugiac")
 RightConnectedButton/base_type = &"Button"
 RightConnectedButton/styles/disabled = SubResource("StyleBoxFlat_8bmk3")
 RightConnectedButton/styles/hover = SubResource("StyleBoxFlat_v2cqs")
@@ -693,7 +694,7 @@ RightConnectedButton/styles/normal = SubResource("StyleBoxFlat_v3rbs")
 RightConnectedButton/styles/pressed = SubResource("StyleBoxFlat_s605b")
 RightConnectedLineEdit/base_type = &"LineEdit"
 RightConnectedLineEdit/font_sizes/font_size = 12
-RightConnectedLineEdit/fonts/font = ExtResource("1_ulxqy")
+RightConnectedLineEdit/fonts/font = ExtResource("5_nfqug")
 RightConnectedLineEdit/styles/normal = SubResource("StyleBoxFlat_i5hko")
 RightConnectedLineEdit/styles/read_only = SubResource("StyleBoxFlat_fuf3i")
 TabContainer/constants/side_margin = 0
@@ -704,8 +705,9 @@ TabContainer/styles/tab_hovered = SubResource("StyleBoxFlat_r2aev")
 TabContainer/styles/tab_selected = SubResource("StyleBoxFlat_nhytu")
 TabContainer/styles/tab_unselected = SubResource("StyleBoxFlat_c7arg")
 TextEdit/styles/normal = SubResource("StyleBoxFlat_ichfn")
+TooltipLabel/colors/font_color = Color(0.866667, 0.933333, 1, 1)
 TooltipLabel/font_sizes/font_size = 14
-TooltipLabel/fonts/font = ExtResource("1_ulxqy")
+TooltipLabel/fonts/font = ExtResource("11_ccloq")
 TooltipPanel/styles/panel = SubResource("StyleBoxFlat_ghiib")
 VScrollBar/styles/grabber = SubResource("StyleBoxFlat_dptuh")
 VScrollBar/styles/grabber_highlight = SubResource("StyleBoxFlat_jo7ks")

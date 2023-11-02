@@ -1,7 +1,7 @@
 [gd_scene load_steps=11 format=3 uid="uid://dcdrc3r60bgg3"]
 
 [ext_resource type="Script" path="res://src/small_editors/path_command_editor.gd" id="1_om2fk"]
-[ext_resource type="FontFile" uid="uid://c7ury252fql35" path="res://visual/CodeFont.ttf" id="2_dmgic"]
+[ext_resource type="FontFile" uid="uid://c7ury252fql35" path="res://visual/fonts/FontMono.ttf" id="2_o5eem"]
 [ext_resource type="Texture2D" uid="uid://cmepkbqde0jh0" path="res://visual/icons/SmallMore.svg" id="3_a76tm"]
 [ext_resource type="PackedScene" uid="uid://wp77eqhikp6k" path="res://src/small_editors/context_popup.tscn" id="4_xqjqs"]
 [ext_resource type="Script" path="res://src/small_editors/path_popup.gd" id="5_3dynt"]
@@ -49,7 +49,7 @@ size_flags_vertical = 4
 focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_override_colors/font_color = Color(0.866667, 0.933333, 1, 1)
-theme_override_fonts/font = ExtResource("2_dmgic")
+theme_override_fonts/font = ExtResource("2_o5eem")
 theme_override_font_sizes/font_size = 13
 
 [node name="Fields" type="HBoxContainer" parent="HBox"]

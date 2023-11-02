@@ -54,7 +54,7 @@ func populate_add_popup() -> void:
 	for tag_name in ["circle", "ellipse", "rect", "path", "line"]:
 		var add_btn := Button.new()
 		add_btn.text = tag_name
-		add_btn.add_theme_font_override(&"font", load("res://visual/CodeFont.ttf"))
+		add_btn.add_theme_font_override(&"font", load("res://visual/fonts/FontMono.ttf"))
 		add_btn.icon = load("res://visual/icons/tag/" + tag_name + ".svg")
 		add_btn.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 		add_btn.alignment = HORIZONTAL_ALIGNMENT_LEFT
