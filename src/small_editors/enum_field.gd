@@ -1,6 +1,8 @@
 ## An editor to be tied to an AttributeEnum.
 extends AttributeEditor
 
+const bold_font = preload("res://visual/fonts/FontBold.ttf")
+
 @onready var value_picker: Popup = $ContextPopup
 @onready var indicator: LineEdit = $LineEdit
 
@@ -21,18 +23,23 @@ func _ready() -> void:
 	value_changed.connect(_on_value_changed)
 	if attribute != null:
 		set_value(attribute.get_value())
-		var buttons_arr: Array[Button] = []
-		for enum_constant in attribute.possible_values:
-			var butt := Button.new()
-			butt.text = str(enum_constant)
-			butt.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-			butt.pressed.connect(_on_option_pressed.bind(enum_constant))
-			buttons_arr.append(butt)
-		value_picker.set_btn_array(buttons_arr)
 	indicator.text = str(get_value())
 	indicator.tooltip_text = attribute_name
 
 func _on_button_pressed() -> void:
+	var buttons_arr: Array[Button] = []
+	for enum_constant in attribute.possible_values:
+		var btn := Button.new()
+		btn.text = str(enum_constant)
+		btn.pressed.connect(_on_option_pressed.bind(enum_constant))
+		if enum_constant == get_value():
+			btn.disabled = true
+		else:
+			btn.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+		if attribute != null and enum_constant == attribute.default:
+			btn.add_theme_font_override(&"font", bold_font)
+		buttons_arr.append(btn)
+	value_picker.set_btn_array(buttons_arr)
 	value_picker.popup(Utils.calculate_popup_rect(
 			indicator.global_position, indicator.size, value_picker.size))
 

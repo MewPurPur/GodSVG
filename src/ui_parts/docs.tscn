@@ -59,10 +59,10 @@ theme_override_constants/margin_bottom = 6
 
 [node name="Desc" type="RichTextLabel" parent="MainPanel/VBoxContainer/TabContainer/Shortcuts"]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 96)
 layout_mode = 2
-fit_content = true
 
-[node name="Close" type="Button" parent="MainPanel"]
+[node name="Close" type="Button" parent="MainPanel/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 8
@@ -70,4 +70,4 @@ focus_mode = 0
 mouse_default_cursor_shape = 2
 text = "#close"
 
-[connection signal="pressed" from="MainPanel/Close" to="." method="_on_close_pressed"]
+[connection signal="pressed" from="MainPanel/VBoxContainer/Close" to="." method="_on_close_pressed"]

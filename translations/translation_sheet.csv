@@ -1,6 +1,6 @@
 ,en,bg
 #remember_svg_setting,Remember SVG,Запомни SVG
-#remember_svg_desc,"When this box is checked, the SVG will be persist between session.","Когато тази кутийка е отметната, SVG-то ще бъде запомнено между сесиите."
+#remember_svg_desc,"When this box is checked, the SVG will persist between session.","Когато тази кутийка е отметната, SVG-то ще бъде запомнено между сесиите."
 #remember_window_mode_settings,Remember window mode,Запомни режима на прозореца
 #remember_window_mode_desc,"When this box is checked, the window can remain restored between sessions.","Когато тази кутийка е отметната, прозорецът може да остане малък между сесиите."
 #language,Language,Език
