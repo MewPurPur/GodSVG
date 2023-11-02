@@ -13,7 +13,9 @@ should_reset_size := true) -> void:
 		hover_stylebox.bg_color = Color("#def1")
 		var pressed_stylebox := StyleBoxFlat.new()
 		pressed_stylebox.bg_color = Color("#def2")
-		for stylebox: StyleBoxFlat in [hover_stylebox, pressed_stylebox]:
+		var disabled_stylebox := StyleBoxFlat.new()
+		disabled_stylebox.bg_color = Color("#05060766")
+		for stylebox: StyleBoxFlat in [hover_stylebox, pressed_stylebox, disabled_stylebox]:
 			stylebox.set_content_margin_all(3)
 			if top_corners:
 				stylebox.corner_radius_top_left = 5
@@ -22,6 +24,7 @@ should_reset_size := true) -> void:
 				stylebox.corner_radius_bottom_left = 5
 				stylebox.corner_radius_bottom_right = 5
 		butt.add_theme_stylebox_override(&"hover", hover_stylebox)
+		butt.add_theme_stylebox_override(&"disabled", disabled_stylebox)
 		butt.add_theme_stylebox_override(&"pressed", pressed_stylebox)
 	main_container.add_child(butt)
 	if should_reset_size:
