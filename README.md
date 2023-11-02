@@ -28,7 +28,7 @@ GodSVG is inspired by the need for a SVG editor without abstractions that produc
 | rect | Supported | |
 | stop | Planned soon | |
 
-All other elements are currently not planned.
+Support for all other elements is currently not planned. GodSVG still aims to allow interfacing with other tags, but not natively.
 
 ## Installation
 
