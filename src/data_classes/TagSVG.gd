@@ -1,6 +1,7 @@
 ## A <svg></svg> tag.
 class_name TagSVG extends Tag
 
+signal child_attribute_changed
 signal tags_added(tids: Array[PackedInt32Array])
 signal tags_deleted(tids: Array[PackedInt32Array])
 signal tags_moved(parent_tid: PackedInt32Array, new_indices: Array[int])
@@ -46,7 +47,7 @@ func get_by_tid(tid: PackedInt32Array) -> Tag:
 func add_tag(new_tag: Tag, new_tid: PackedInt32Array) -> void:
 	var parent_tid := Utils.get_parent_tid(new_tid)
 	get_by_tid(parent_tid).child_tags.insert(new_tid[-1], new_tag)
-	new_tag.attribute_changed.connect(emit_child_tag_attribute_changed)
+	new_tag.attribute_changed.connect(emit_child_attribute_changed)
 	var new_tid_array: Array[PackedInt32Array] = [new_tid]
 	tags_added.emit(new_tid_array)
 
@@ -54,9 +55,12 @@ func replace_self(new_tag: Tag) -> void:
 	for attrib in attributes:
 		attributes[attrib].set_value(new_tag.attributes[attrib].get_value(), false)
 	child_tags.clear()
+	
 	for tag in new_tag.child_tags:
 		child_tags.append(tag)
-		tag.attribute_changed.connect(emit_child_tag_attribute_changed)
+	
+	for tid in get_all_tids():
+		get_by_tid(tid).attribute_changed.connect(emit_child_attribute_changed)
 	changed_unknown.emit()
 
 func delete_tags(tids: Array[PackedInt32Array]) -> void:
@@ -140,6 +144,8 @@ func move_tags(tids: Array[PackedInt32Array], down: bool) -> void:
 		parent_tag.child_tags.insert(new_tid[-1], new_tag)
 	tags_moved.emit(parent_tid, new_indices)
 
+func move_tags_to(tids: Array[PackedInt32Array], pos: PackedInt32Array) -> void:
+	pass  # TODO implement this.
 
 func duplicate_tags(tids: Array[PackedInt32Array]) -> void:
 	if tids.is_empty():
@@ -169,7 +175,7 @@ func duplicate_tags(tids: Array[PackedInt32Array]) -> void:
 		new_tid[-1] += 1
 		var parent_tid := Utils.get_parent_tid(new_tid)
 		get_by_tid(parent_tid).child_tags.insert(new_tid[-1], new_tag)
-		new_tag.attribute_changed.connect(emit_child_tag_attribute_changed)
+		new_tag.attribute_changed.connect(emit_child_attribute_changed)
 		# Add the TID and offset the other ones from the same parent.
 		var added_tid_idx := tids_added.size()
 		tids_added.append(new_tid)
@@ -181,3 +187,7 @@ func duplicate_tags(tids: Array[PackedInt32Array]) -> void:
 		for tid_idx in range(added_tid_idx - added_to_last_parent , added_tid_idx):
 			tids_added[tid_idx][-1] += 1
 	tags_added.emit(tids_added)
+
+
+func emit_child_attribute_changed() -> void:
+	child_attribute_changed.emit()
