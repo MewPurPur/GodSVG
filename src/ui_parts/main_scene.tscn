@@ -420,6 +420,6 @@ script = ExtResource("15_v2yj8")
 [connection signal="toggled" from="Display/PanelContainer/HBoxContainer/LeftMenu/Snapping/SnapButton" to="Display" method="_on_snap_button_toggled"]
 [connection signal="toggled" from="Display/PanelContainer/HBoxContainer/LeftMenu/Snapping/SnapButton" to="Display/ViewportContainer/Viewport/Checkerboard/Controls" method="_on_snap_button_toggled"]
 [connection signal="value_changed" from="Display/PanelContainer/HBoxContainer/LeftMenu/Snapping/NumberEdit" to="Display/ViewportContainer/Viewport/Checkerboard/Controls" method="_on_snapper_value_changed"]
-[connection signal="pressed" from="Display/PanelContainer/HBoxContainer/ZoomMenu/ZoomOut" to="Display/ViewportContainer/Viewport" method="zoom_out"]
+[connection signal="pressed" from="Display/PanelContainer/HBoxContainer/ZoomMenu/ZoomOut" to="Display/ViewportContainer/Viewport" method="zoom_out" binds= [true]]
 [connection signal="pressed" from="Display/PanelContainer/HBoxContainer/ZoomMenu/ZoomReset" to="Display/ViewportContainer/Viewport" method="zoom_reset"]
-[connection signal="pressed" from="Display/PanelContainer/HBoxContainer/ZoomMenu/ZoomIn" to="Display/ViewportContainer/Viewport" method="zoom_in"]
+[connection signal="pressed" from="Display/PanelContainer/HBoxContainer/ZoomMenu/ZoomIn" to="Display/ViewportContainer/Viewport" method="zoom_in" binds= [true]]

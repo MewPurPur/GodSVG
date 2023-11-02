@@ -37,15 +37,15 @@ func clamp_view() -> void:
 
 
 # TODO implement the ability to zoom in a specific area.
-func zoom_in() -> void:
-	if GlobalSettings.invert_zoom:
+func zoom_in(pressed_button: bool) -> void:
+	if GlobalSettings.invert_zoom and not pressed_button:
 		zoom_level /= sqrt(2)
 	else:
 		zoom_level *= sqrt(2)
 	center_frame()
 
-func zoom_out() -> void:
-	if GlobalSettings.invert_zoom:
+func zoom_out(pressed_button: bool) -> void:
+	if GlobalSettings.invert_zoom and not pressed_button:
 		zoom_level *= sqrt(2)
 	else:
 		zoom_level /= sqrt(2)
@@ -90,9 +90,9 @@ func _unhandled_input(event: InputEvent) -> void:
 		# Use this to get the position according to the texture.
 		match event.button_index:
 			MOUSE_BUTTON_WHEEL_UP:
-				zoom_in()
+				zoom_in(false)
 			MOUSE_BUTTON_WHEEL_DOWN:
-				zoom_out()
+				zoom_out(false)
 		clamp_view()
 	
 	if event is InputEventMouseButton:
