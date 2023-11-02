@@ -4,7 +4,6 @@ class_name Tag extends RefCounted
 var child_tags: Array[Tag]
 
 signal attribute_changed
-signal child_tag_attribute_changed
 
 var name: String
 var attributes: Dictionary  # Dictionary{String: Attribute}
@@ -26,10 +25,6 @@ func set_unknown_attributes(attribs: Array[AttributeUnknown]) -> void:
 
 func emit_attribute_changed():
 	attribute_changed.emit()
-
-
-func emit_child_tag_attribute_changed() -> void:
-	child_tag_attribute_changed.emit()
 
 func get_child_count() -> int:
 	return child_tags.size()
