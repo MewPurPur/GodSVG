@@ -22,7 +22,7 @@ func _init() -> void:
 func get_all_tids() -> Array[PackedInt32Array]:
 	var tids: Array[PackedInt32Array] = []
 	var unchecked_tids: Array[PackedInt32Array] = []
-	for idx in SVG.root_tag.get_child_count():
+	for idx in get_child_count():
 		unchecked_tids.append(PackedInt32Array([idx]))
 	
 	while not unchecked_tids.is_empty():
