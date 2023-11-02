@@ -1,13 +1,19 @@
-## A tag that isn't holding other tags within it, i.e. [code]<tag/>[/code]
+## A SVG tag, standalone ([code]<tag/>[/code]) or container ([code]<tag></tag>[/code]).
 class_name Tag extends RefCounted
 
-signal attribute_changed
+var child_tags: Array[Tag]
 
-var title: String
+signal attribute_changed
+signal child_tag_attribute_changed
+
+var name: String
 var attributes: Dictionary  # Dictionary{String: Attribute}
 
 # Attributes that aren't recognized (usually because GodSVG doesn't support them).
 var unknown_attributes: Array[AttributeUnknown]
+
+func is_standalone() -> bool:
+	return child_tags.is_empty()
 
 func _init():
 	for attribute in attributes.values():
@@ -20,3 +26,29 @@ func set_unknown_attributes(attribs: Array[AttributeUnknown]) -> void:
 
 func emit_attribute_changed():
 	attribute_changed.emit()
+
+
+func emit_child_tag_attribute_changed() -> void:
+	child_tag_attribute_changed.emit()
+
+func get_child_count() -> int:
+	return child_tags.size()
+
+
+# Why is there no way to duplicate RefCounteds, again?
+func create_duplicate() -> Tag:
+	var type: GDScript = get_script()
+	var new_tag: Variant
+	if type == TagUnknown:
+		new_tag = type.new(name)
+	else:
+		new_tag = type.new()
+	for attribute in new_tag.attributes:
+		new_tag.attributes[attribute].set_value(attributes[attribute].get_value())
+	new_tag.unknown_attributes = unknown_attributes.duplicate()
+	# Iterate this over all children.
+	var new_child_tags: Array[Tag] = []
+	for tag in child_tags:
+		new_child_tags.append(tag.create_duplicate())
+	new_tag.child_tags = new_child_tags
+	return new_tag

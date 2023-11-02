@@ -1,3 +1,4 @@
+## Contours drawing and [Handle]s are managed here. 
 extends Control
 
 const handle_sizes = {
@@ -47,6 +48,7 @@ var snap_size := Vector2(0.5, 0.5)
 var width: float
 var height: float
 var viewbox: Rect2
+var viewbox_zoom: float  # How zoomed the graphics are from the viewbox itself.
 
 var update_pending := false
 
@@ -56,19 +58,20 @@ func _ready() -> void:
 	SVG.root_tag.attribute_changed.connect(update_dimensions)
 	SVG.root_tag.child_tag_attribute_changed.connect(queue_redraw)
 	SVG.root_tag.child_tag_attribute_changed.connect(sync_handles)
-	SVG.root_tag.tag_added.connect(queue_update)
+	SVG.root_tag.tags_added.connect(queue_update.unbind(1))
 	SVG.root_tag.tags_deleted.connect(queue_update.unbind(1))
-	SVG.root_tag.tag_moved.connect(queue_update.unbind(2))
+	SVG.root_tag.tags_moved.connect(queue_update.unbind(2))
 	SVG.root_tag.changed_unknown.connect(queue_update)
-	Interactions.selection_changed.connect(queue_redraw)
-	Interactions.hover_changed.connect(queue_redraw)
+	Indications.selection_changed.connect(queue_redraw)
+	Indications.hover_changed.connect(queue_redraw)
 	update_dimensions()
 
 
 func update_dimensions() -> void:
 	width = SVG.root_tag.attributes.width.get_value()
 	height = SVG.root_tag.attributes.height.get_value()
-	viewbox = SVG.root_tag.attributes.viewBox.get_value() 
+	viewbox = SVG.root_tag.attributes.viewBox.get_value()
+	viewbox_zoom = minf(width / viewbox.size.x, height / viewbox.size.y)
 	queue_update()
 
 
@@ -84,30 +87,34 @@ func _process(_delta: float) -> void:
 func update_handles() -> void:
 	handles.clear()
 	for tag_idx in SVG.root_tag.get_child_count():
-		var tag := SVG.root_tag.child_tags[tag_idx]
-		var new_handles: Array[Handle] = []
-		match tag.title:
-			"circle":
-				new_handles.append(XYHandle.new(tag_idx,
-						tag.attributes.cx, tag.attributes.cy))
-			"ellipse":
-				new_handles.append(XYHandle.new(tag_idx,
-						tag.attributes.cx, tag.attributes.cy))
-			"rect":
-				new_handles.append(XYHandle.new(tag_idx,
-						tag.attributes.x, tag.attributes.y))
-			"line":
-				new_handles.append(XYHandle.new(tag_idx,
-						tag.attributes.x1, tag.attributes.y1))
-				new_handles.append(XYHandle.new(tag_idx,
-						tag.attributes.x2, tag.attributes.y2))
-			"path":
-				new_handles += generate_path_handles(tag_idx, tag.attributes.d)
-		for handle in new_handles:
-			handle.tag = tag
-			handle.tag_index = tag_idx
-		handles += new_handles
+		setup_handles_for_tag(PackedInt32Array([tag_idx]))
 	queue_redraw()
+
+func setup_handles_for_tag(tid: PackedInt32Array):
+	var tag := SVG.root_tag.get_by_tid(tid)
+	var new_handles: Array[Handle] = []
+	match tag.name:
+		"circle":
+			new_handles.append(XYHandle.new(tid, tag.attributes.cx, tag.attributes.cy))
+		"ellipse":
+			new_handles.append(XYHandle.new(tid, tag.attributes.cx, tag.attributes.cy))
+		"rect":
+			new_handles.append(XYHandle.new(tid, tag.attributes.x, tag.attributes.y))
+		"line":
+			new_handles.append(XYHandle.new(tid, tag.attributes.x1, tag.attributes.y1))
+			new_handles.append(XYHandle.new(tid, tag.attributes.x2, tag.attributes.y2))
+		"path":
+			new_handles += generate_path_handles(tid, tag.attributes.d)
+	for handle in new_handles:
+		handle.tag = tag
+		handle.tid = tid
+	handles += new_handles
+	
+	for tag_idx in tag.get_child_count():
+		var new_tid := tid.duplicate()
+		new_tid.append(tag_idx)
+		setup_handles_for_tag(new_tid)
+
 
 func sync_handles() -> void:
 	# For XYHandles, sync them. For path handles, sync all but the one being dragged.
@@ -117,35 +124,38 @@ func sync_handles() -> void:
 			handle.sync()
 		elif handle is PathHandle and dragged_handle != handle:
 			handles.remove_at(handle_idx)
-	for tag_idx in SVG.root_tag.get_child_count():
-		var tag := SVG.root_tag.child_tags[tag_idx]
-		if tag.title == "path":
-			handles += generate_path_handles(tag_idx, tag.attributes.d)
+	
+	var tids := SVG.root_tag.get_all_tids()
+	
+	for tid in tids:
+		var tag := SVG.root_tag.get_by_tid(tid)
+		if tag.name == "path":
+			handles += generate_path_handles(tid, tag.attributes.d)
 	queue_redraw()
 
-func generate_path_handles(tag_idx: int, path_attribute: AttributePath) -> Array[Handle]:
+func generate_path_handles(tid: PackedInt32Array,
+path_attribute: AttributePath) -> Array[Handle]:
 	var path_handles: Array[Handle] = []
 	for idx in path_attribute.get_command_count():
 		var path_command := path_attribute.get_command(idx)
 		if path_command.command_char.to_upper() != "Z":
-			path_handles.append(PathHandle.new(tag_idx, path_attribute, idx))
+			path_handles.append(PathHandle.new(tid, path_attribute, idx))
 			if path_command.command_char.to_upper() in ["C", "Q"]:
-				var tangent := PathHandle.new(tag_idx, path_attribute, idx, &"x1", &"y1")
+				var tangent := PathHandle.new(tid, path_attribute, idx, &"x1", &"y1")
 				tangent.display_mode = Handle.DisplayMode.SMALL
 				path_handles.append(tangent)
 			if path_command.command_char.to_upper() in ["C", "S"]:
-				var tangent := PathHandle.new(tag_idx, path_attribute, idx, &"x2", &"y2")
+				var tangent := PathHandle.new(tid, path_attribute, idx, &"x2", &"y2")
 				tangent.display_mode = Handle.DisplayMode.SMALL
 				path_handles.append(tangent)
 	return path_handles
 
 
 func _draw() -> void:
-	var thickness := 0.8 / zoom
+	var thickness := 0.85 / zoom
 	var tangent_thickness := 0.55 / zoom
 	var tangent_alpha := 0.8
 	
-	var viewbox_zoom := get_viewbox_zoom()
 	# Draw the contours of shapes, and also tangents of bezier curves in paths.
 	var normal_polylines: Array[PackedVector2Array] = []
 	var selected_polylines: Array[PackedVector2Array] = []
@@ -156,11 +166,13 @@ func _draw() -> void:
 	var hovered_tangent_multiline := PackedVector2Array()
 	var hovered_selected_tangent_multiline := PackedVector2Array()
 	
-	for tag_idx in SVG.root_tag.get_child_count():
-		var tag := SVG.root_tag.child_tags[tag_idx]
+	var tids := SVG.root_tag.get_all_tids()
+	
+	for tid in tids:
+		var tag := SVG.root_tag.get_by_tid(tid)
 		var attribs := tag.attributes
 		
-		match tag.title:
+		match tag.name:
 			"circle":
 				var c := Vector2(attribs.cx.get_value(), attribs.cy.get_value())
 				var r: float = attribs.r.get_value()
@@ -169,8 +181,8 @@ func _draw() -> void:
 					var d := deg_to_rad(i)
 					points.append(convert_in(c + Vector2(cos(d) * r, sin(d) * r)))
 				
-				var tag_hovered := tag_idx == Interactions.hovered_tag
-				var tag_selected := tag_idx in Interactions.selected_tags
+				var tag_hovered := tid == Indications.hovered_tid
+				var tag_selected := tid in Indications.selected_tids
 				
 				if tag_hovered and tag_selected:
 					hovered_selected_polylines.append(points)
@@ -191,8 +203,8 @@ func _draw() -> void:
 					var d := deg_to_rad(i)
 					points.append(convert_in(c + Vector2(cos(d) * rx, sin(d) * ry)))
 				
-				var tag_hovered := tag_idx == Interactions.hovered_tag
-				var tag_selected := tag_idx in Interactions.selected_tags
+				var tag_hovered := tid == Indications.hovered_tid
+				var tag_selected := tid in Indications.selected_tids
 				
 				if tag_hovered and tag_selected:
 					hovered_selected_polylines.append(points)
@@ -248,8 +260,8 @@ func _draw() -> void:
 						points.append(convert_in(Vector2(x + rx, y + ry) +\
 								Vector2(cos(d) * rx, sin(d) * ry)))
 				
-				var tag_hovered := tag_idx == Interactions.hovered_tag
-				var tag_selected := tag_idx in Interactions.selected_tags
+				var tag_hovered := tid == Indications.hovered_tid
+				var tag_selected := tid in Indications.selected_tids
 				
 				if tag_hovered and tag_selected:
 					hovered_selected_polylines.append(points)
@@ -270,8 +282,8 @@ func _draw() -> void:
 				points.append(convert_in(Vector2(x1, y1)))
 				points.append(convert_in(Vector2(x2, y2)))
 				
-				var tag_hovered := tag_idx == Interactions.hovered_tag
-				var tag_selected := tag_idx in Interactions.selected_tags
+				var tag_hovered := tid == Indications.hovered_tid
+				var tag_selected := tid in Indications.selected_tids
 				
 				if tag_hovered and tag_selected:
 					hovered_selected_polylines.append(points)
@@ -293,14 +305,14 @@ func _draw() -> void:
 					var relative := cmd.relative
 					
 					current_mode = InteractionType.NONE
-					if tag_idx == Interactions.hovered_tag or\
-					(Interactions.semi_hovered_tag == tag_idx and\
-					Interactions.inner_hovered == cmd_idx):
+					if Indications.hovered_tid == tid or\
+					(Indications.semi_hovered_tid == tid and\
+					Indications.inner_hovered == cmd_idx):
 						@warning_ignore("int_as_enum_without_cast")
 						current_mode += InteractionType.HOVERED
-					if tag_idx in Interactions.selected_tags or\
-					(Interactions.semi_selected_tag == tag_idx and\
-					cmd_idx in Interactions.inner_selections):
+					if tid in Indications.selected_tids or\
+					(Indications.semi_selected_tid == tid and\
+					cmd_idx in Indications.inner_selections):
 						@warning_ignore("int_as_enum_without_cast")
 						current_mode += InteractionType.SELECTED
 					
@@ -477,7 +489,7 @@ func _draw() -> void:
 							var n := floori(segments)
 							var p1 := Utils.E(c, r, cosine, sine, theta1)
 							var e1 := Utils.Et(r, cosine, sine, theta1)
-							var alpha := 0.265115
+							var alpha := 0.26511478
 							var t := theta1 + PI/4
 							var cp: Array[PackedVector2Array] = []
 							for _i in n:
@@ -535,32 +547,32 @@ func _draw() -> void:
 							hovered_selected_polylines.append(points.duplicate())
 							hovered_selected_tangent_multiline += tangent_points.duplicate()
 		
-		for polyline in normal_polylines:
-			draw_polyline(polyline, default_color, thickness, true)
-		for polyline in selected_polylines:
-			draw_polyline(polyline, selection_color, thickness, true)
-		for polyline in hovered_polylines:
-			draw_polyline(polyline, hover_color, thickness, true)
-		for polyline in hovered_selected_polylines:
-			draw_polyline(polyline, hover_selection_color, thickness, true)
-		
-		for i in normal_tangent_multiline.size() / 2:
-			var i2 := i * 2
-			draw_line(normal_tangent_multiline[i2], normal_tangent_multiline[i2 + 1],
-					Color(default_color, tangent_alpha), tangent_thickness, true)
-		for i in selected_tangent_multiline.size() / 2:
-			var i2 := i * 2
-			draw_line(selected_tangent_multiline[i2], selected_tangent_multiline[i2 + 1],
-					Color(selection_color, tangent_alpha), tangent_thickness, true)
-		for i in hovered_tangent_multiline.size() / 2:
-			var i2 := i * 2
-			draw_line(hovered_tangent_multiline[i2], hovered_tangent_multiline[i2 + 1],
-					Color(hover_color, tangent_alpha), tangent_thickness, true)
-		for i in hovered_selected_tangent_multiline.size() / 2:
-			var i2 := i * 2
-			draw_line(hovered_selected_tangent_multiline[i2],
-					hovered_selected_tangent_multiline[i2 + 1],
-					Color(hover_selection_color, tangent_alpha), tangent_thickness, true)
+	for polyline in normal_polylines:
+		draw_polyline(polyline, default_color, thickness, true)
+	for polyline in selected_polylines:
+		draw_polyline(polyline, selection_color, thickness, true)
+	for polyline in hovered_polylines:
+		draw_polyline(polyline, hover_color, thickness, true)
+	for polyline in hovered_selected_polylines:
+		draw_polyline(polyline, hover_selection_color, thickness, true)
+	
+	for i in normal_tangent_multiline.size() / 2:
+		var i2 := i * 2
+		draw_line(normal_tangent_multiline[i2], normal_tangent_multiline[i2 + 1],
+				Color(default_color, tangent_alpha), tangent_thickness, true)
+	for i in selected_tangent_multiline.size() / 2:
+		var i2 := i * 2
+		draw_line(selected_tangent_multiline[i2], selected_tangent_multiline[i2 + 1],
+				Color(selection_color, tangent_alpha), tangent_thickness, true)
+	for i in hovered_tangent_multiline.size() / 2:
+		var i2 := i * 2
+		draw_line(hovered_tangent_multiline[i2], hovered_tangent_multiline[i2 + 1],
+				Color(hover_color, tangent_alpha), tangent_thickness, true)
+	for i in hovered_selected_tangent_multiline.size() / 2:
+		var i2 := i * 2
+		draw_line(hovered_selected_tangent_multiline[i2],
+				hovered_selected_tangent_multiline[i2 + 1],
+				Color(hover_selection_color, tangent_alpha), tangent_thickness, true)
 	
 	var normal_handles: Array[Handle] = []
 	var selected_handles: Array[Handle] = []
@@ -570,15 +582,15 @@ func _draw() -> void:
 		var is_hovered := false
 		var is_selected := false
 		if handle is XYHandle:
-			is_hovered = handle.tag_index == Interactions.hovered_tag
-			is_selected = handle.tag_index in Interactions.selected_tags
+			is_hovered = handle.tid == Indications.hovered_tid
+			is_selected = handle.tid in Indications.selected_tids
 		elif handle is PathHandle:
-			is_hovered = handle.tag_index == Interactions.hovered_tag or\
-					(handle.tag_index == Interactions.semi_hovered_tag and\
-					handle.command_index == Interactions.inner_hovered)
-			is_selected = (handle.tag_index == Interactions.semi_selected_tag and\
-					handle.command_index in Interactions.inner_selections) or\
-					handle.tag_index in Interactions.selected_tags
+			is_hovered = handle.tid == Indications.hovered_tid or\
+					(handle.tid == Indications.semi_hovered_tid and\
+					handle.command_index == Indications.inner_hovered)
+			is_selected = (handle.tid == Indications.semi_selected_tid and\
+					handle.command_index in Indications.inner_selections) or\
+					handle.tid in Indications.selected_tids
 		
 		if is_hovered and is_selected:
 			hovered_selected_handles.append(handle)
@@ -614,11 +626,8 @@ func _draw() -> void:
 		draw_texture_rect(handle_texture, Rect2(handle_pos, handle_size), false)
 
 
-func get_viewbox_zoom() -> float:
-	return minf(width / viewbox.size.x, height / viewbox.size.y)
-
 func convert_in(pos: Vector2) -> Vector2:
-	pos = (size / Vector2(width, height) * pos - viewbox.position) * get_viewbox_zoom()
+	pos = (size / Vector2(width, height) * pos - viewbox.position) * viewbox_zoom
 	if viewbox.size.x / viewbox.size.y >= width / height:
 		return pos + Vector2(0, (height - width * viewbox.size.y / viewbox.size.x) / 2)
 	else:
@@ -629,7 +638,7 @@ func convert_out(pos: Vector2) -> Vector2:
 		pos.y -= (height - width * viewbox.size.y / viewbox.size.x) / 2
 	else:
 		pos.x -= (width - height * viewbox.size.x / viewbox.size.y) / 2
-	return (pos / get_viewbox_zoom() + viewbox.position) * Vector2(width, height) / size
+	return (pos / viewbox_zoom + viewbox.position) * Vector2(width, height) / size
 
 
 var dragged_handle: Handle = null
@@ -658,35 +667,35 @@ func _unhandled_input(event: InputEvent) -> void:
 			if nearest_handle != null:
 				hovered_handle = nearest_handle
 				if hovered_handle is XYHandle:
-					Interactions.set_hovered(hovered_handle.tag_index)
+					Indications.set_hovered(hovered_handle.tid)
 				elif hovered_handle is PathHandle:
-					Interactions.set_inner_hovered(hovered_handle.tag_index,
+					Indications.set_inner_hovered(hovered_handle.tid,
 							hovered_handle.command_index)
 			else:
 				hovered_handle = null
-				Interactions.clear_hovered()
-				Interactions.clear_inner_hovered()
+				Indications.clear_hovered()
+				Indications.clear_inner_hovered()
 	elif event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
 		var event_pos: Vector2 = event.position - global_position
 		var nearest_handle := find_nearest_handle(event_pos)
 		if nearest_handle != null:
 			hovered_handle = nearest_handle
 			if hovered_handle is XYHandle:
-				Interactions.set_hovered(hovered_handle.tag_index)
+				Indications.set_hovered(hovered_handle.tid)
 			elif hovered_handle is PathHandle:
-				Interactions.set_inner_hovered(hovered_handle.tag_index,
+				Indications.set_inner_hovered(hovered_handle.tid,
 						hovered_handle.command_index)
 		else:
 			hovered_handle = null
-			Interactions.clear_hovered()
-			Interactions.clear_inner_hovered()
+			Indications.clear_hovered()
+			Indications.clear_inner_hovered()
 		# React to LMB actions.
 		if hovered_handle != null and event.is_pressed():
 			dragged_handle = hovered_handle
 			if hovered_handle is XYHandle:
-				Interactions.set_selection(dragged_handle.tag_index)
+				Indications.set_selection(dragged_handle.tid)
 			elif hovered_handle is PathHandle:
-				Interactions.set_inner_selection(hovered_handle.tag_index,
+				Indications.set_inner_selection(hovered_handle.tid,
 						hovered_handle.command_index)
 		elif dragged_handle != null and event.is_released():
 			if was_handle_moved:
@@ -700,8 +709,8 @@ func _unhandled_input(event: InputEvent) -> void:
 			should_deselect_all = true
 		elif hovered_handle == null and event.is_released() and should_deselect_all:
 			dragged_handle = null
-			Interactions.clear_selection()
-			Interactions.clear_inner_selection()
+			Indications.clear_selection()
+			Indications.clear_inner_selection()
 
 func find_nearest_handle(event_pos: Vector2) -> Handle:
 	var max_grab_dist := 9 / zoom

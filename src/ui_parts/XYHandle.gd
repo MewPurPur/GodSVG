@@ -4,8 +4,8 @@ class_name XYHandle extends Handle
 var x_attribute: Attribute
 var y_attribute: Attribute
 
-func _init(tag_idx: int, x_ref: Attribute, y_ref: Attribute) -> void:
-	tag_index = tag_idx
+func _init(id: PackedInt32Array, x_ref: Attribute, y_ref: Attribute) -> void:
+	tid = id
 	x_attribute = x_ref
 	y_attribute = y_ref
 	sync()

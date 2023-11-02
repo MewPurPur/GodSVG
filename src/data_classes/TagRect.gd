@@ -6,7 +6,7 @@ const known_attributes = ["x", "y", "width", "height", "rx", "ry",
 		"stroke-linejoin"]
 
 func _init() -> void:
-	title = "rect"
+	name = "rect"
 	attributes = {
 		"x": Attribute.new(Attribute.Type.FLOAT, 0.0),
 		"y": Attribute.new(Attribute.Type.FLOAT, 0.0),

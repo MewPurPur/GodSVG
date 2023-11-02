@@ -34,8 +34,8 @@
 #err_improper_nesting,Improper nesting.,Несъвместими тагове.
 #err_improper_closing,Not all tags are closed.,Не всички тагове са затворени.
 #shortcut_inspector_delete,Delete: Deletes the selected tags,Delete: Изтрива избраните тагове
-#shortcut_inspector_alt_down,Alt+Down: Moves the selected tags down,Alt+Down: Премества избраните тагове надолу
-#shortcut_inspector_alt_up,Alt+Up: Moves the selected tags up,Alt+Up: Премества избраните тагове нагоре
+#shortcut_inspector_ctrl_down,Ctrl+Down: Moves the selected tags down,Ctrl+Down: Премества избраните тагове надолу
+#shortcut_inspector_ctrl_up,Ctrl+Up: Moves the selected tags up,Ctrl+Up: Премества избраните тагове нагоре
 #shortcut_inspector_ctrl_d,Ctrl+D: Duplicates the selected tags,Ctrl+D: Дублирай избраните тагове
 #unknown_tag,Unknown Tag,Непознат таг
 #unknown_attribute,Unknown Attribute,Непознат атрибут
@@ -49,3 +49,4 @@
 #size,Size,Размер
 #final_size,Final size,Краен размер
 #export_configuration,Export Configuration,Конфигурация на експорта
+#add_tag,Add new tag,Добави нов таг

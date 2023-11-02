@@ -86,7 +86,6 @@ layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/default_color = Color(1, 0.4, 0.4, 1)
 theme_override_fonts/normal_font = ExtResource("4_d8ygu")
-fit_content = true
 autowrap_mode = 0
 
 [node name="ButtonContainer" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer"]

@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://dcdrc3r60bgg3"]
+[gd_scene load_steps=11 format=3 uid="uid://dcdrc3r60bgg3"]
 
 [ext_resource type="Script" path="res://src/small_editors/path_command_editor.gd" id="1_om2fk"]
 [ext_resource type="FontFile" uid="uid://c7ury252fql35" path="res://visual/CodeFont.ttf" id="2_dmgic"]
@@ -6,6 +6,8 @@
 [ext_resource type="PackedScene" uid="uid://wp77eqhikp6k" path="res://src/small_editors/context_popup.tscn" id="4_xqjqs"]
 [ext_resource type="Script" path="res://src/small_editors/path_popup.gd" id="5_3dynt"]
 [ext_resource type="PackedScene" uid="uid://co2btefrqrm0e" path="res://src/small_editors/path_command_button.tscn" id="6_oj0oy"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_sewij"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_dsai0"]
 content_margin_left = 2.0
@@ -30,9 +32,9 @@ corner_radius_bottom_right = 3
 corner_radius_bottom_left = 3
 
 [node name="PathCommandEditor" type="PanelContainer"]
-offset_left = 42.0
-offset_right = 46.0
+offset_right = 38.0
 offset_bottom = 14.0
+theme_override_styles/panel = SubResource("StyleBoxEmpty_sewij")
 script = ExtResource("1_om2fk")
 
 [node name="HBox" type="HBoxContainer" parent="."]
