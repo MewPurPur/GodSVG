@@ -1,52 +1,52 @@
-,en,bg
-#remember_svg_setting,Remember SVG,Запомни SVG
-#remember_svg_desc,"When this box is checked, the SVG will persist between session.","Когато тази кутийка е отметната, SVG-то ще бъде запомнено между сесиите."
-#remember_window_mode_settings,Remember window mode,Запомни режима на прозореца
-#remember_window_mode_desc,"When this box is checked, the window can remain restored between sessions.","Когато тази кутийка е отметната, прозорецът може да остане малък между сесиите."
-#language,Language,Език
-#open,Open,Отвори
-#close,Close,Затвори
-#repo_button_text,GodSVG Repository,Репозиторията на GodSVG
-#about_button_text,About…,Относно приложението…
-#docs_button_text,Documentation…,Документация…
-#donate_button_text,Donate (Ko-fi),Дарение (Ko-fi)
-#zoom_in,Zoom In,Увеличи
-#zoom_reset,Zoom Reset,Рестартирай мащаба
-#zoom_out,Zoom Out,Намали
-#settings,Settings,Настройки
-#visuals,Visuals,Графики
-#show_grid,Show Grid,Покажи решетката
-#show_handles,Show Handles,Покажи дръжките
-#rasterize_svg,Rasterized SVG,Растеризирай SVG
-#enable_snap,Enable Snapping,Включи захващането
-#snap_size,Snap size,Размер на захващането
-#copy_button_tooltip,Copy All Text,Копирай всичкия текст
-#import_button_tooltip,Import SVG,Импорт на SVG
-#export_button_tooltip,Export SVG,Експорт на SVG
-#couple_button_tooltip,Couple/Decouple,Свържи/Отвържи
-#duplicate,Duplicate,Дублирай
-#move_up,Move Up,Премести нагоре
-#move_down,Move Down,Премести надолу
-#delete,Delete,Премахни
-#insert_after,Insert After,Вмъкни отпред
-#err_empty_svg,SVG is empty.,Текстът е празен.
-#err_not_svg,Doesn’t describe a SVG.,Текстът не описва SVG.
-#err_improper_nesting,Improper nesting.,Несъвместими тагове.
-#err_improper_closing,Not all tags are closed.,Не всички тагове са затворени.
-#shortcut_inspector_delete,Delete: Deletes the selected tags,Delete: Изтрива избраните тагове
-#shortcut_inspector_ctrl_down,Ctrl+Down: Moves the selected tags down,Ctrl+Down: Премества избраните тагове надолу
-#shortcut_inspector_ctrl_up,Ctrl+Up: Moves the selected tags up,Ctrl+Up: Премества избраните тагове нагоре
-#shortcut_inspector_ctrl_d,Ctrl+D: Duplicates the selected tags,Ctrl+D: Дублирай избраните тагове
-#unknown_tag,Unknown Tag,Непознат таг
-#unknown_attribute,Unknown Attribute,Непознат атрибут
-#import,Import,Импортирай
-#cancel,Cancel,Отказ
-#import_problems,Import Problems,Проблеми в импортирането
-#unknown_tooltip,GodSVG doesn’t recognize this attribute,GodSVG не разпознава този атрибут
-#export,Export,Експортирай
-#format,Format,Формат
-#scale,Scale,Мащаб
-#size,Size,Размер
-#final_size,Final size,Краен размер
-#export_configuration,Export Configuration,Конфигурация на експорта
-#add_tag,Add new tag,Добави нов таг
+﻿,en,bg,de
+#remember_svg_setting,Remember SVG,Запомни SVG,SVG merken
+#remember_svg_desc,"When this box is checked, the SVG will persist between session.","Когато тази кутийка е отметната, SVG-то ще бъде запомнено между сесиите.","Wenn diese Option aktiviert ist, wird das SVG zwischen Sitzungen wiederhergestellt."
+#remember_window_mode_settings,Remember window mode,Запомни режима на прозореца,Fenstermodus wiederherstellen
+#remember_window_mode_desc,"When this box is checked, the window can remain restored between sessions.","Когато тази кутийка е отметната, прозорецът може да остане малък между сесиите.","Wenn diese Option aktiviert ist, wird das Fenster zwischen Sitzungen wiederhergestellt."
+#language,Language,Език,Sprache
+#open,Open,Отвори,Öffnen
+#close,Close,Затвори,Schließen
+#repo_button_text,GodSVG Repository,Репозиторията на GodSVG,GodSVG Repository
+#about_button_text,About…,Относно приложението…,Über…
+#docs_button_text,Documentation…,Документация…,Dokumentation
+#donate_button_text,Donate (Ko-fi),Дарение (Ko-fi),Spenden (Ko-fi)
+#zoom_in,Zoom In,Увеличи,Hineinzoomen
+#zoom_reset,Zoom Reset,Рестартирай мащаба,Zoom zurücksetzen
+#zoom_out,Zoom Out,Намали,Herauszoomen
+#settings,Settings,Настройки,Einstellungen
+#visuals,Visuals,Графики,Visuelles
+#show_grid,Show Grid,Покажи решетката,Raster anzeigen
+#show_handles,Show Handles,Покажи дръжките,Handles anzeigen
+#rasterize_svg,Rasterized SVG,Растеризирай SVG,SVG rasterisieren
+#enable_snap,Enable Snapping,Включи захващането,Einrasten aktivieren
+#snap_size,Snap size,Размер на захващането,Einrastgröße
+#copy_button_tooltip,Copy All Text,Копирай всичкия текст,Text kopieren
+#import_button_tooltip,Import SVG,Импорт на SVG,SVG importieren
+#export_button_tooltip,Export SVG,Експорт на SVG,SVG exportieren
+#couple_button_tooltip,Couple/Decouple,Свържи/Отвържи,Koppeln/Entkoppeln
+#duplicate,Duplicate,Дублирай,Duplizieren
+#move_up,Move Up,Премести нагоре,Nach oben
+#move_down,Move Down,Премести надолу,Nach unten
+#delete,Delete,Премахни,Löschen
+#insert_after,Insert After,Вмъкни отпред,Danach einsetzen
+#err_empty_svg,SVG is empty.,Текстът е празен.,SVG ist leer.
+#err_not_svg,Doesn’t describe a SVG.,Текстът не описва SVG.,Beschreibt kein SVG.
+#err_improper_nesting,Improper nesting.,Несъвместими тагове.,Ungültige formattierung.
+#err_improper_closing,Not all tags are closed.,Не всички тагове са затворени.,Es wurden nicht alle Tags geschlossen.
+#shortcut_inspector_delete,Delete: Deletes the selected tags,Delete: Изтрива избраните тагове,Entf: Ausgewählte Tags löschen
+#shortcut_inspector_ctrl_down,Ctrl+Down: Moves the selected tags down,Ctrl+Down: Премества избраните тагове надолу,Strg+Unten: Ausgewählte Tags nach unten verschieben
+#shortcut_inspector_ctrl_up,Ctrl+Up: Moves the selected tags up,Ctrl+Up: Премества избраните тагове нагоре,Strg+Hoch: Ausgewählte Tags nach oben verschieben
+#shortcut_inspector_ctrl_d,Ctrl+D: Duplicates the selected tags,Ctrl+D: Дублирай избраните тагове,Strg+D: Ausgewählte Tags duplizieren
+#unknown_tag,Unknown Tag,Непознат таг,Unbekannter Tag
+#unknown_attribute,Unknown Attribute,Непознат атрибут,Unbekannte Attribute
+#import,Import,Импортирай,Importieren
+#cancel,Cancel,Отказ,Abbrechen
+#import_problems,Import Problems,Проблеми в импортирането,Probleme beim Importieren
+#unknown_tooltip,GodSVG doesn’t recognize this attribute,GodSVG не разпознава този атрибут,GodSVG kann diese Attribute nicht erkennen
+#export,Export,Експортирай,Exportieren
+#format,Format,Формат,Formatieren
+#scale,Scale,Мащаб,Skalieren
+#size,Size,Размер,Größe
+#final_size,Final size,Краен размер,Endgültige Größe
+#export_configuration,Export Configuration,Конфигурация на експорта,Exportierungskonfiguration
+#add_tag,Add new tag,Добави нов таг,Neuen Tag hinzufügen
