@@ -5,7 +5,7 @@ const known_attributes = ["x1", "y1", "x2", "y2",
 		"opacity", "stroke", "stroke-opacity", "stroke-width", "stroke-linecap"]
 
 func _init() -> void:
-	title = "line"
+	name = "line"
 	attributes = {
 		"x1": Attribute.new(Attribute.Type.FLOAT, 0.0),
 		"y1": Attribute.new(Attribute.Type.FLOAT, 0.0),

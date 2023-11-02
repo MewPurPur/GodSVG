@@ -11,9 +11,9 @@ func _ready() -> void:
 	SVG.root_tag.changed_unknown.connect(update_string)
 	SVG.root_tag.attribute_changed.connect(update_string)
 	SVG.root_tag.child_tag_attribute_changed.connect(update_string)
-	SVG.root_tag.tag_added.connect(update_string)
+	SVG.root_tag.tags_added.connect(update_string.unbind(1))
 	SVG.root_tag.tags_deleted.connect(update_string.unbind(1))
-	SVG.root_tag.tag_moved.connect(update_string.unbind(2))
+	SVG.root_tag.tags_moved.connect(update_string.unbind(2))
 	
 	if GlobalSettings.save_svg:
 		string = GlobalSettings.save_data.svg

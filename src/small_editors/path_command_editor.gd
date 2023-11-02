@@ -9,10 +9,21 @@ signal cmd_insert_after(idx: int, cmd_char: String)
 const MiniNumberField = preload("mini_number_field.tscn")
 const FlagField = preload("flag_field.tscn")
 
-var tag_idx := -1
+var tid := PackedInt32Array()
 var cmd_char := ""
 var cmd_idx := -1
 var path_command: PathCommand
+
+# This is needed for the hover detection hack.
+@onready var first_ancestor_scroll_container := find_first_ancestor_scroll_container()
+
+func find_first_ancestor_scroll_container() -> ScrollContainer:
+	var ancestor := get_parent()
+	while not ancestor is ScrollContainer:
+		if not ancestor is Control:
+			return null
+		ancestor = ancestor.get_parent()
+	return ancestor
 
 @onready var relative_button: Button = $HBox/RelativeButton
 @onready var more_button: Button = $HBox/MoreButton
@@ -150,7 +161,7 @@ func sync_values(cmd: PathCommand) -> void:
 
 
 func update_value(value: float, property: StringName) -> void:
-	Interactions.set_inner_selection(tag_idx, cmd_idx)
+	Indications.set_inner_selection(tid, cmd_idx)
 	cmd_update_value.emit(cmd_idx, value, property)
 
 func delete() -> void:
@@ -166,7 +177,7 @@ func insert_after() -> void:
 			more_button.global_position, more_button.size, command_picker.size))
 
 func open_actions() -> void:
-	Interactions.set_inner_selection(tag_idx, cmd_idx)
+	Indications.set_inner_selection(tid, cmd_idx)
 	var buttons_arr: Array[Button] = []
 	
 	var delete_btn := Button.new()
@@ -191,8 +202,8 @@ func open_actions() -> void:
 
 
 func _ready() -> void:
-	Interactions.selection_changed.connect(determine_selection_highlight)
-	Interactions.hover_changed.connect(determine_selection_highlight)
+	Indications.selection_changed.connect(determine_selection_highlight)
+	Indications.hover_changed.connect(determine_selection_highlight)
 	determine_selection_highlight()
 	setup_relative_button()
 	setup_command_picker()
@@ -275,26 +286,24 @@ func _on_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.is_pressed():
 		if event.button_index == MOUSE_BUTTON_LEFT:
 			if event.ctrl_pressed:
-				Interactions.toggle_inner_selection(tag_idx, cmd_idx)
+				Indications.toggle_inner_selection(tid, cmd_idx)
 			else:
-				Interactions.set_inner_selection(tag_idx, cmd_idx)
+				Indications.set_inner_selection(tid, cmd_idx)
 		elif event.button_index == MOUSE_BUTTON_RIGHT:
-			Interactions.set_inner_selection(tag_idx, cmd_idx)
+			Indications.set_inner_selection(tid, cmd_idx)
 			open_actions()
 
 func determine_selection_highlight() -> void:
 	var stylebox: StyleBox
-	if tag_idx == Interactions.semi_selected_tag and\
-	cmd_idx in Interactions.inner_selections:
+	if Indications.semi_selected_tid == tid and cmd_idx in Indications.inner_selections:
 		stylebox = StyleBoxFlat.new()
 		stylebox.set_corner_radius_all(3)
-		if Interactions.semi_hovered_tag == tag_idx and\
-		Interactions.inner_hovered == cmd_idx:
-			stylebox.bg_color = Color(0.7, 0.7, 1.0, 0.17)
+		if Indications.semi_hovered_tid == tid and\
+		Indications.inner_hovered == cmd_idx:
+			stylebox.bg_color = Color(0.7, 0.7, 1.0, 0.18)
 		else:
 			stylebox.bg_color = Color(0.6, 0.6, 1.0, 0.16)
-	elif Interactions.semi_hovered_tag == tag_idx and\
-	Interactions.inner_hovered == cmd_idx:
+	elif Indications.semi_hovered_tid == tid and Indications.inner_hovered == cmd_idx:
 		stylebox = StyleBoxFlat.new()
 		stylebox.set_corner_radius_all(3)
 		stylebox.bg_color = Color(0.8, 0.8, 1.0, 0.05)
@@ -312,12 +321,12 @@ var mouse_inside := false:
 		if mouse_inside != new_value:
 			mouse_inside = new_value
 			if mouse_inside:
-				Interactions.set_inner_hovered(tag_idx, cmd_idx)
+				Indications.set_inner_hovered(tid, cmd_idx)
 			else:
-				Interactions.remove_inner_hovered(tag_idx, cmd_idx)
+				Indications.remove_inner_hovered(tid, cmd_idx)
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion and event.button_mask == 0:
 		mouse_inside = get_global_rect().has_point(get_global_mouse_position()) and\
-		get_node(^"../../../../../../../../..").get_global_rect().\
-				has_point(get_global_mouse_position())
+				first_ancestor_scroll_container.get_global_rect().has_point(
+				get_global_mouse_position())

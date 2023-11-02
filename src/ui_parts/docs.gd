@@ -5,9 +5,9 @@ extends ColorRect
 func _ready() -> void:
 	desc.add_text(tr(&"#shortcut_inspector_delete"))
 	desc.newline()
-	desc.add_text(tr(&"#shortcut_inspector_alt_down"))
+	desc.add_text(tr(&"#shortcut_inspector_ctrl_down"))
 	desc.newline()
-	desc.add_text(tr(&"#shortcut_inspector_alt_up"))
+	desc.add_text(tr(&"#shortcut_inspector_ctrl_up"))
 	desc.newline()
 	desc.add_text(tr(&"#shortcut_inspector_ctrl_d"))
 
