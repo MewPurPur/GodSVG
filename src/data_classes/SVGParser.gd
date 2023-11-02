@@ -4,10 +4,13 @@ static func svg_to_text(svg_tag: TagSVG) -> String:
 	var w: float = svg_tag.attributes.width.get_value()
 	var h: float = svg_tag.attributes.height.get_value()
 	var viewbox: Rect2 = svg_tag.attributes.viewBox.get_value()
-	# Opening
+	
 	var text := '<svg width="%s" height="%s" viewBox="%s"' % [String.num(w, 4),
 			String.num(h, 4), AttributeRect.rect_to_string(viewbox)]
-	text += ' xmlns="http://www.w3.org/2000/svg">'
+	for attribute in svg_tag.unknown_attributes:
+		text += " " + attribute.name + '="' + attribute.get_value() + '"'
+	text += ">"
+	
 	for inner_tag in svg_tag.child_tags:
 		text += _tag_to_text(inner_tag)
 	return text + '</svg>'
@@ -74,6 +77,19 @@ static func text_to_svg(text: String) -> TagSVG:
 				svg_tag.attributes.width.set_value(new_w, false)
 				svg_tag.attributes.height.set_value(new_h, false)
 				svg_tag.attributes.viewBox.set_value(new_viewbox, false)
+				
+				var unknown: Array[AttributeUnknown] = []
+				for element in attribute_dict:
+					if svg_tag.attributes.has(element):
+						var attribute: Attribute = svg_tag.attributes[element]
+						if typeof(attribute.get_value()) == Variant.Type.TYPE_STRING:
+							attribute.set_value(attribute_dict[element], false)
+						elif typeof(attribute.get_value()) == Variant.Type.TYPE_FLOAT:
+							attribute.set_value(attribute_dict[element].to_float(), false)
+					else:
+						unknown.append(AttributeUnknown.new(element, attribute_dict[element]))
+				svg_tag.set_unknown_attributes(unknown)
+				
 			else:
 				var tag: Tag
 				match node_name:

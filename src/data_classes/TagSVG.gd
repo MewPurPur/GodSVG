@@ -16,6 +16,7 @@ func _init() -> void:
 		"width": Attribute.new(Attribute.Type.UFLOAT, null, 16.0),
 		"viewBox": AttributeRect.new(null, Rect2(0, 0, 16, 16)),
 	}
+	unknown_attributes.append(AttributeUnknown.new("xmlns", "http://www.w3.org/2000/svg"))
 	super()
 
 
@@ -54,6 +55,10 @@ func add_tag(new_tag: Tag, new_tid: PackedInt32Array) -> void:
 func replace_self(new_tag: Tag) -> void:
 	for attrib in attributes:
 		attributes[attrib].set_value(new_tag.attributes[attrib].get_value(), false)
+	
+	unknown_attributes.clear()
+	for attrib in new_tag.unknown_attributes:
+		unknown_attributes.append(attrib)
 	child_tags.clear()
 	
 	for tag in new_tag.child_tags:
