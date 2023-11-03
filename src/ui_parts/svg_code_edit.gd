@@ -11,6 +11,16 @@ func _ready() -> void:
 	RenderingServer.canvas_item_set_parent(surface, get_canvas_item())
 	add_child(timer)
 	timer.timeout.connect(blink)
+	get_v_scroll_bar().scrolling.connect(redraw_caret)
+	get_h_scroll_bar().scrolling.connect(redraw_caret)
+
+# There is no way to tell when the TextEdit is scrolled without scrollbars, sooooo...
+var last_frame_scroll := get_v_scroll_bar().value
+func _process(_delta: float) -> void:
+	if get_v_scroll_bar().value != last_frame_scroll:
+		last_frame_scroll = get_v_scroll_bar().value
+		redraw_caret()
+
 
 # I'd prefer to block non-ASCII inputs. SVG syntax is ASCII only, and while
 # text blocks and comments allow non-ASCII, they are still difficult to deal with
@@ -18,16 +28,12 @@ func _ready() -> void:
 # but for now they are not supported. Maybe in some future version I'll have them
 # be translated directly into paths or have an abstraction over them, I don't know.
 # Either way, not planning to support UTF-8, so I block it if the user tries to type it.
-func _input(event: InputEvent) -> void:
-	if event is InputEventKey:
-		# Stuff like Space and Esc have ASCII as their first char so it's fine
-		# (Probably? Dealing with is just the worst.)
-		if OS.get_keycode_string(event.key_label).unicode_at(0) >= 127 and not\
-		event.is_command_or_control_pressed():
-			accept_event()
+func _handle_unicode_input(unicode_char: int, caret_index: int) -> void:
+	if unicode_char <= 127:
+		insert_text_at_caret(char(unicode_char), caret_index)
 
 
-func _on_caret_changed() -> void:
+func redraw_caret() -> void:
 	await get_tree().process_frame  # Buggy with backspace otherwise, likely a Godot bug.
 	blonk = false
 	blink()
