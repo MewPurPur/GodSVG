@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://br8g7w38jguh4"]
 
-[ext_resource type="FontFile" uid="uid://c7ury252fql35" path="res://visual/fonts/FontMono.ttf" id="1_p8s8y"]
+[ext_resource type="FontFile" uid="uid://dtb4wkus51hxs" path="res://visual/fonts/FontMono.ttf" id="1_p8s8y"]
 [ext_resource type="Script" path="res://src/small_editors/flag_field.gd" id="2_0bhg4"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_oo47u"]
