@@ -56,73 +56,74 @@ static func text_to_svg(text: String) -> TagSVG:
 	parser.open_buffer(text.to_ascii_buffer())
 	var unclosed_tag_stack: Array[Tag] = [svg_tag]
 	while parser.read() == OK:
-		if parser.get_node_type() == XMLParser.NODE_ELEMENT:
-			var node_name := parser.get_node_name()
-			var attribute_dict := {}
-			for i in range(parser.get_attribute_count()):
-				attribute_dict[parser.get_attribute_name(i)] = parser.get_attribute_value(i)
-			
-			# SVG tag requires width and height without defaults, so do the logic early.
-			if node_name == "svg":
-				var new_w: float = attribute_dict["width"].to_float() if\
-						attribute_dict.has("width") else 0.0
-				var new_h: float = attribute_dict["height"].to_float() if\
-						attribute_dict.has("height") else 0.0
-				var new_viewbox := AttributeRect.string_to_rect(attribute_dict["viewBox"])\
-						if attribute_dict.has("viewBox") else Rect2(0, 0, new_w, new_h)
-				if new_w == 0.0 and new_h == 0.0 and new_viewbox != Rect2(0, 0, 0, 0):
-					new_w = new_viewbox.size.x
-					new_h = new_viewbox.size.y
+		match parser.get_node_type():
+			XMLParser.NODE_ELEMENT:
+				var node_name := parser.get_node_name()
+				var attrib_dict := {}
+				for i in range(parser.get_attribute_count()):
+					attrib_dict[parser.get_attribute_name(i)] = parser.get_attribute_value(i)
+				
+				# SVG tag requires width and height without defaults, so do the logic early.
+				if node_name == "svg":
+					var new_w: float = attrib_dict["width"].to_float() if\
+							attrib_dict.has("width") else 0.0
+					var new_h: float = attrib_dict["height"].to_float() if\
+							attrib_dict.has("height") else 0.0
+					var new_viewbox := AttributeRect.string_to_rect(attrib_dict["viewBox"])\
+							if attrib_dict.has("viewBox") else Rect2(0, 0, new_w, new_h)
+					if new_w == 0.0 and new_h == 0.0 and new_viewbox != Rect2(0, 0, 0, 0):
+						new_w = new_viewbox.size.x
+						new_h = new_viewbox.size.y
+						
+					svg_tag.attributes.width.set_value(new_w, false)
+					svg_tag.attributes.height.set_value(new_h, false)
+					svg_tag.attributes.viewBox.set_value(new_viewbox, false)
 					
-				svg_tag.attributes.width.set_value(new_w, false)
-				svg_tag.attributes.height.set_value(new_h, false)
-				svg_tag.attributes.viewBox.set_value(new_viewbox, false)
-				
-				var unknown: Array[AttributeUnknown] = []
-				for element in attribute_dict:
-					if svg_tag.attributes.has(element):
-						var attribute: Attribute = svg_tag.attributes[element]
-						if typeof(attribute.get_value()) == Variant.Type.TYPE_STRING:
-							attribute.set_value(attribute_dict[element], false)
-						elif typeof(attribute.get_value()) == Variant.Type.TYPE_FLOAT:
-							attribute.set_value(attribute_dict[element].to_float(), false)
-					else:
-						unknown.append(AttributeUnknown.new(element, attribute_dict[element]))
-				svg_tag.set_unknown_attributes(unknown)
-				
-			else:
-				var tag: Tag
-				match node_name:
-					"circle": tag = TagCircle.new()
-					"ellipse": tag = TagEllipse.new()
-					"rect": tag = TagRect.new()
-					"path": tag = TagPath.new()
-					"line": tag = TagLine.new()
-					_: tag = TagUnknown.new(node_name)
-				
-				var unknown: Array[AttributeUnknown] = []
-				for element in attribute_dict:
-					if tag.attributes.has(element):
-						var attribute: Attribute = tag.attributes[element]
-						if typeof(attribute.get_value()) == Variant.Type.TYPE_STRING:
-							attribute.set_value(attribute_dict[element], false)
-						elif typeof(attribute.get_value()) == Variant.Type.TYPE_FLOAT:
-							attribute.set_value(attribute_dict[element].to_float(), false)
-					else:
-						unknown.append(AttributeUnknown.new(element, attribute_dict[element]))
-				tag.set_unknown_attributes(unknown)
-				
-				# Check if we're entering or exiting the tag.
-				var node_offset := parser.get_node_offset()
-				var closure_pos := text.find("/>", node_offset)
-				if closure_pos == -1 or closure_pos >= text.find(">", node_offset):
-					unclosed_tag_stack.append(tag)
+					var unknown: Array[AttributeUnknown] = []
+					for element in attrib_dict:
+						if svg_tag.attributes.has(element):
+							var attribute: Attribute = svg_tag.attributes[element]
+							if typeof(attribute.get_value()) == Variant.Type.TYPE_STRING:
+								attribute.set_value(attrib_dict[element], false)
+							elif typeof(attribute.get_value()) == Variant.Type.TYPE_FLOAT:
+								attribute.set_value(attrib_dict[element].to_float(), false)
+						else:
+							unknown.append(AttributeUnknown.new(element, attrib_dict[element]))
+					svg_tag.set_unknown_attributes(unknown)
+					
 				else:
-					unclosed_tag_stack.back().child_tags.append(tag)
-		elif parser.get_node_type() == XMLParser.NODE_ELEMENT_END:
-			if unclosed_tag_stack.size() > 1:
-				var closed_tag: Tag = unclosed_tag_stack.pop_back()
-				unclosed_tag_stack.back().child_tags.append(closed_tag)
+					var tag: Tag
+					match node_name:
+						"circle": tag = TagCircle.new()
+						"ellipse": tag = TagEllipse.new()
+						"rect": tag = TagRect.new()
+						"path": tag = TagPath.new()
+						"line": tag = TagLine.new()
+						_: tag = TagUnknown.new(node_name)
+					
+					var unknown: Array[AttributeUnknown] = []
+					for element in attrib_dict:
+						if tag.attributes.has(element):
+							var attribute: Attribute = tag.attributes[element]
+							if typeof(attribute.get_value()) == Variant.Type.TYPE_STRING:
+								attribute.set_value(attrib_dict[element], false)
+							elif typeof(attribute.get_value()) == Variant.Type.TYPE_FLOAT:
+								attribute.set_value(attrib_dict[element].to_float(), false)
+						else:
+							unknown.append(AttributeUnknown.new(element, attrib_dict[element]))
+					tag.set_unknown_attributes(unknown)
+					
+					# Check if we're entering or exiting the tag.
+					var node_offset := parser.get_node_offset()
+					var closure_pos := text.find("/>", node_offset)
+					if closure_pos == -1 or closure_pos >= text.find(">", node_offset):
+						unclosed_tag_stack.append(tag)
+					else:
+						unclosed_tag_stack.back().child_tags.append(tag)
+			XMLParser.NODE_ELEMENT_END:
+				if unclosed_tag_stack.size() > 1:
+					var closed_tag: Tag = unclosed_tag_stack.pop_back()
+					unclosed_tag_stack.back().child_tags.append(closed_tag)
 	
 	return svg_tag
 

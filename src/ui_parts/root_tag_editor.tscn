@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://bktmk76u7dsu0"]
 
 [ext_resource type="Script" path="res://src/ui_parts/root_tag_editor.gd" id="1_xgyg0"]
-[ext_resource type="FontFile" uid="uid://c7ury252fql35" path="res://visual/fonts/FontMono.ttf" id="2_fm5sa"]
+[ext_resource type="FontFile" uid="uid://dtb4wkus51hxs" path="res://visual/fonts/FontMono.ttf" id="2_fm5sa"]
 [ext_resource type="Texture2D" uid="uid://bv4lcvienlyfa" path="res://visual/icons/Coupled.svg" id="3_yhfll"]
 
 [node name="SVGTagEditor" type="MarginContainer"]

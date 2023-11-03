@@ -1,9 +1,9 @@
-[gd_scene load_steps=36 format=3 uid="uid://ce6j54x27pom"]
+[gd_scene load_steps=37 format=3 uid="uid://ce6j54x27pom"]
 
 [ext_resource type="PackedScene" uid="uid://ccynisiuyn5qn" path="res://src/ui_parts/inspector.tscn" id="1_afxvd"]
 [ext_resource type="Texture2D" uid="uid://ccvjkdd0s7rb4" path="res://visual/icons/Copy.svg" id="1_fm0ux"]
 [ext_resource type="Script" path="res://src/ui_parts/code_editor.gd" id="1_ry6k8"]
-[ext_resource type="FontFile" uid="uid://c7ury252fql35" path="res://visual/fonts/FontMono.ttf" id="2_w635r"]
+[ext_resource type="FontFile" uid="uid://dtb4wkus51hxs" path="res://visual/fonts/FontMono.ttf" id="2_w635r"]
 [ext_resource type="Script" path="res://src/ui_parts/display.gd" id="2_ylpv1"]
 [ext_resource type="Texture2D" uid="uid://c68og6bsqt0lb" path="res://visual/Checkerboard.svg" id="3_d58qh"]
 [ext_resource type="Texture2D" uid="uid://ckkkgof1hcbld" path="res://visual/icons/Gear.svg" id="4_3rshc"]
@@ -14,6 +14,7 @@
 [ext_resource type="Script" path="res://src/ui_parts/viewport.gd" id="6_7hypx"]
 [ext_resource type="Texture2D" uid="uid://ccbta5q43jobk" path="res://visual/icons/More.svg" id="7_7iuuq"]
 [ext_resource type="Script" path="res://src/ui_parts/display_texture.gd" id="7_cxx0h"]
+[ext_resource type="Script" path="res://src/ui_parts/svg_code_edit.gd" id="7_q0ibc"]
 [ext_resource type="Texture2D" uid="uid://kkxyv1gyrjgj" path="res://visual/icons/Visuals.svg" id="9_ojv7n"]
 [ext_resource type="PackedScene" uid="uid://wp77eqhikp6k" path="res://src/small_editors/context_popup.tscn" id="10_hraj8"]
 [ext_resource type="Texture2D" uid="uid://buire51l0mifg" path="res://visual/icons/Snap.svg" id="11_u7ddj"]
@@ -191,7 +192,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/separation = -2
 
-[node name="CodeEdit" type="CodeEdit" parent="PanelContainer/MainContainer/CodeEditor/ScriptEditor"]
+[node name="SVGCodeEdit" type="TextEdit" parent="PanelContainer/MainContainer/CodeEditor/ScriptEditor"]
 custom_minimum_size = Vector2(0, 96)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -199,15 +200,10 @@ size_flags_vertical = 3
 wrap_mode = 1
 scroll_smooth = true
 scroll_v_scroll_speed = 30.0
-caret_blink = true
 caret_multiple = false
 syntax_highlighter = SubResource("SyntaxHighlighter_fhint")
 highlight_all_occurrences = true
-auto_brace_completion_highlight_matching = true
-auto_brace_completion_pairs = {
-"\"": "\"",
-"<": ">"
-}
+script = ExtResource("7_q0ibc")
 
 [node name="ErrorBar" type="PanelContainer" parent="PanelContainer/MainContainer/CodeEditor/ScriptEditor"]
 visible = false
@@ -413,7 +409,10 @@ script = ExtResource("15_v2yj8")
 [connection signal="pressed" from="PanelContainer/MainContainer/CodeEditor/PanelContainer/CodeButtons/MetaActions/CopyButton" to="PanelContainer/MainContainer/CodeEditor" method="_on_copy_button_pressed"]
 [connection signal="pressed" from="PanelContainer/MainContainer/CodeEditor/PanelContainer/CodeButtons/MetaActions/ImportButton" to="PanelContainer/MainContainer/CodeEditor" method="_on_import_button_pressed"]
 [connection signal="pressed" from="PanelContainer/MainContainer/CodeEditor/PanelContainer/CodeButtons/MetaActions/ExportButton" to="PanelContainer/MainContainer/CodeEditor" method="_on_export_button_pressed"]
-[connection signal="text_changed" from="PanelContainer/MainContainer/CodeEditor/ScriptEditor/CodeEdit" to="PanelContainer/MainContainer/CodeEditor" method="_on_code_edit_text_changed"]
+[connection signal="caret_changed" from="PanelContainer/MainContainer/CodeEditor/ScriptEditor/SVGCodeEdit" to="PanelContainer/MainContainer/CodeEditor/ScriptEditor/SVGCodeEdit" method="_on_caret_changed"]
+[connection signal="focus_entered" from="PanelContainer/MainContainer/CodeEditor/ScriptEditor/SVGCodeEdit" to="PanelContainer/MainContainer/CodeEditor/ScriptEditor/SVGCodeEdit" method="_on_focus_entered"]
+[connection signal="focus_exited" from="PanelContainer/MainContainer/CodeEditor/ScriptEditor/SVGCodeEdit" to="PanelContainer/MainContainer/CodeEditor/ScriptEditor/SVGCodeEdit" method="_on_focus_exited"]
+[connection signal="text_changed" from="PanelContainer/MainContainer/CodeEditor/ScriptEditor/SVGCodeEdit" to="PanelContainer/MainContainer/CodeEditor" method="_on_code_edit_text_changed"]
 [connection signal="pressed" from="Display/PanelContainer/HBoxContainer/LeftMenu/MoreOptions" to="Display" method="_on_more_options_pressed"]
 [connection signal="pressed" from="Display/PanelContainer/HBoxContainer/LeftMenu/Settings" to="Display" method="_on_settings_pressed"]
 [connection signal="pressed" from="Display/PanelContainer/HBoxContainer/LeftMenu/Visuals" to="Display" method="_on_visuals_button_pressed"]
