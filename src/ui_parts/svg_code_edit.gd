@@ -12,7 +12,6 @@ func _ready() -> void:
 	add_child(timer)
 	timer.timeout.connect(blink)
 	get_v_scroll_bar().scrolling.connect(redraw_caret)
-	get_h_scroll_bar().scrolling.connect(redraw_caret)
 
 # There is no way to tell when the TextEdit is scrolled without scrollbars, sooooo...
 var last_frame_scroll := get_v_scroll_bar().value

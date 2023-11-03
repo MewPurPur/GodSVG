@@ -412,7 +412,6 @@ script = ExtResource("15_v2yj8")
 [connection signal="caret_changed" from="PanelContainer/MainContainer/CodeEditor/ScriptEditor/SVGCodeEdit" to="PanelContainer/MainContainer/CodeEditor/ScriptEditor/SVGCodeEdit" method="redraw_caret"]
 [connection signal="focus_entered" from="PanelContainer/MainContainer/CodeEditor/ScriptEditor/SVGCodeEdit" to="PanelContainer/MainContainer/CodeEditor/ScriptEditor/SVGCodeEdit" method="_on_focus_entered"]
 [connection signal="focus_exited" from="PanelContainer/MainContainer/CodeEditor/ScriptEditor/SVGCodeEdit" to="PanelContainer/MainContainer/CodeEditor/ScriptEditor/SVGCodeEdit" method="_on_focus_exited"]
-[connection signal="gui_input" from="PanelContainer/MainContainer/CodeEditor/ScriptEditor/SVGCodeEdit" to="PanelContainer/MainContainer/CodeEditor/ScriptEditor/SVGCodeEdit" method="_on_gui_input"]
 [connection signal="text_changed" from="PanelContainer/MainContainer/CodeEditor/ScriptEditor/SVGCodeEdit" to="PanelContainer/MainContainer/CodeEditor" method="_on_code_edit_text_changed"]
 [connection signal="pressed" from="Display/PanelContainer/HBoxContainer/LeftMenu/MoreOptions" to="Display" method="_on_more_options_pressed"]
 [connection signal="pressed" from="Display/PanelContainer/HBoxContainer/LeftMenu/Settings" to="Display" method="_on_settings_pressed"]
