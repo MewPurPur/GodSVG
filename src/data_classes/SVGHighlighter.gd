@@ -11,7 +11,8 @@ var unknown_tag_color := known_tag_color.darkened(0.3)
 var unknown_attribute_color := known_attribute_color.darkened(0.3)
 
 func is_attribute_symbol(c: String) -> bool:
-	return (c >= "a" and c <= "z") or (c >= "A" and c <= "Z") or c == "-"
+	return (c >= "a" and c <= "z") or (c >= "A" and c <= "Z") or\
+	(c >= "0" and c <= "9") or c == "-"
 
 func _get_line_syntax_highlighting(line: int) -> Dictionary:
 	var color_map := {}  # Dictionary{int: Dictionary{String: Color}}
