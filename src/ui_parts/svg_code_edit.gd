@@ -11,14 +11,8 @@ func _ready() -> void:
 	RenderingServer.canvas_item_set_parent(surface, get_canvas_item())
 	add_child(timer)
 	timer.timeout.connect(blink)
-	get_v_scroll_bar().scrolling.connect(redraw_caret)
-
-# There is no way to tell when the TextEdit is scrolled without scrollbars, sooooo...
-var last_frame_scroll := get_v_scroll_bar().value
-func _process(_delta: float) -> void:
-	if get_v_scroll_bar().value != last_frame_scroll:
-		last_frame_scroll = get_v_scroll_bar().value
-		redraw_caret()
+	get_v_scroll_bar().value_changed.connect(redraw_caret.unbind(1))
+	get_h_scroll_bar().value_changed.connect(redraw_caret.unbind(1))
 
 
 # I'd prefer to block non-ASCII inputs. SVG syntax is ASCII only, and while
