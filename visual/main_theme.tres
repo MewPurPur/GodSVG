@@ -8,9 +8,9 @@
 [ext_resource type="Texture2D" uid="uid://kkxyv1gyrjgj" path="res://visual/icons/Visuals.svg" id="4_j0oku"]
 [ext_resource type="Texture2D" uid="uid://c12tg3dnydily" path="res://visual/icons/theme/GuiToggleUnchecked.svg" id="4_w667w"]
 [ext_resource type="Texture2D" uid="uid://cnig3sejwsrf3" path="res://visual/icons/theme/SplitGrabber.svg" id="5_7sidk"]
-[ext_resource type="FontFile" uid="uid://c7ury252fql35" path="res://visual/fonts/FontMono.ttf" id="5_nfqug"]
-[ext_resource type="FontFile" uid="uid://6ildfppmv2j7" path="res://visual/fonts/FontBold.ttf" id="9_ugiac"]
-[ext_resource type="FontFile" uid="uid://ckjcjh5cv4amx" path="res://visual/fonts/Font.ttf" id="11_ccloq"]
+[ext_resource type="FontFile" uid="uid://dtb4wkus51hxs" path="res://visual/fonts/FontMono.ttf" id="5_nfqug"]
+[ext_resource type="FontFile" uid="uid://dc0w4sx0h0fui" path="res://visual/fonts/FontBold.ttf" id="9_ugiac"]
+[ext_resource type="FontFile" uid="uid://clpf84p1lfwlp" path="res://visual/fonts/Font.ttf" id="11_ccloq"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_i4np8"]
 content_margin_left = 12.0
@@ -132,19 +132,6 @@ content_margin_left = 4.0
 content_margin_top = 2.0
 content_margin_right = 4.0
 content_margin_bottom = 2.0
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_uk6li"]
-draw_center = false
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.301961, 0.45098, 0.6, 1)
-corner_radius_top_left = 6
-corner_radius_top_right = 6
-corner_radius_bottom_right = 6
-corner_radius_bottom_left = 6
-corner_detail = 16
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ixekj"]
 
@@ -538,6 +525,19 @@ content_margin_left = 12.0
 content_margin_right = 12.0
 bg_color = Color(0.0705882, 0.0705882, 0.2, 1)
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1gwcd"]
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.301961, 0.45098, 0.6, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+corner_detail = 16
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ichfn"]
 content_margin_left = 5.0
 bg_color = Color(0.0627451, 0.0627451, 0.101961, 1)
@@ -633,10 +633,6 @@ CheckBox/styles/normal = SubResource("StyleBoxEmpty_kja1p")
 CheckBox/styles/pressed = SubResource("StyleBoxEmpty_qwstu")
 CheckButton/icons/checked = ExtResource("3_ggukc")
 CheckButton/icons/unchecked = ExtResource("4_w667w")
-CodeEdit/colors/selection_color = Color(0.4, 0.54902, 1, 0.4)
-CodeEdit/font_sizes/font_size = 12
-CodeEdit/fonts/font = ExtResource("5_nfqug")
-CodeEdit/styles/focus = SubResource("StyleBoxFlat_uk6li")
 FileDialog/icons/parent_folder = ExtResource("4_1t13q")
 FileDialog/icons/reload = ExtResource("4_8qjet")
 FileDialog/icons/toggle_hidden = ExtResource("4_j0oku")
@@ -704,6 +700,11 @@ TabContainer/styles/tab_focus = SubResource("StyleBoxEmpty_kohom")
 TabContainer/styles/tab_hovered = SubResource("StyleBoxFlat_r2aev")
 TabContainer/styles/tab_selected = SubResource("StyleBoxFlat_nhytu")
 TabContainer/styles/tab_unselected = SubResource("StyleBoxFlat_c7arg")
+TextEdit/colors/caret_color = Color(0, 0, 0, 0)
+TextEdit/colors/selection_color = Color(0.4, 0.54902, 1, 0.4)
+TextEdit/font_sizes/font_size = 12
+TextEdit/fonts/font = ExtResource("5_nfqug")
+TextEdit/styles/focus = SubResource("StyleBoxFlat_1gwcd")
 TextEdit/styles/normal = SubResource("StyleBoxFlat_ichfn")
 TooltipLabel/colors/font_color = Color(0.866667, 0.933333, 1, 1)
 TooltipLabel/font_sizes/font_size = 14

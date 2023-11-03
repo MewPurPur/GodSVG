@@ -4,7 +4,7 @@ const SVGFileDialog := preload("svg_file_dialog.tscn")
 const ImportWarningDialog := preload("import_warning_dialog.tscn")
 const ExportDialog := preload("export_dialog.tscn")
 
-@onready var code_edit: CodeEdit = $ScriptEditor/CodeEdit
+@onready var code_edit: TextEdit = $ScriptEditor/SVGCodeEdit
 @onready var error_bar: PanelContainer = $ScriptEditor/ErrorBar
 @onready var error_label: RichTextLabel = $ScriptEditor/ErrorBar/Padding/Label
 @onready var size_label: Label = %SizeLabel
