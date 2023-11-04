@@ -58,10 +58,12 @@ corner_radius_bottom_left = 3
 [sub_resource type="SyntaxHighlighter" id="SyntaxHighlighter_fhint"]
 script = ExtResource("6_0jtpx")
 symbol_color = Color(0.670588, 0.788235, 1, 1)
-known_tag_color = Color(1, 0.54902, 0.8, 1)
-known_attribute_color = Color(0.737255, 0.878431, 1, 1)
+tag_color = Color(1, 0.54902, 0.8, 1)
+attribute_color = Color(0.737255, 0.878431, 1, 1)
 string_color = Color(0.631373, 1, 0.878431, 1)
 comment_color = Color(0.803922, 0.811765, 0.823529, 0.501961)
+text_color = Color(0.803922, 0.811765, 0.823529, 0.666667)
+error_color = Color(1, 0.52549, 0.419608, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_k0een"]
 content_margin_left = 2.0

@@ -28,6 +28,7 @@ var zoom_level: float:
 func _ready() -> void:
 	zoom_reset()  # Do this first so zoom_level is not 0.
 	SVG.root_tag.attribute_changed.connect(resize)
+	SVG.root_tag.changed_unknown.connect(resize)
 	resize()
 	update_view_limits()
 
