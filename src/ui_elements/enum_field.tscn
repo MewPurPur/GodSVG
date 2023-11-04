@@ -1,9 +1,9 @@
 [gd_scene load_steps=7 format=3 uid="uid://d2da0thyq5rq8"]
 
-[ext_resource type="Script" path="res://src/ui_elements/enum_field.gd" id="1_vkd5r"]
-[ext_resource type="Script" path="res://src/ui_elements/BetterLineEdit.gd" id="2_hytgg"]
-[ext_resource type="Texture2D" uid="uid://coda6chhcatal" path="res://visual/icons/Arrow.svg" id="2_owe3f"]
-[ext_resource type="PackedScene" uid="uid://wp77eqhikp6k" path="res://src/ui_elements/context_popup.tscn" id="3_qw0q5"]
+[ext_resource type="Script" path="res://src/ui_elements/enum_field.gd" id="1_1jqoy"]
+[ext_resource type="Script" path="res://src/ui_elements/BetterLineEdit.gd" id="2_4bajq"]
+[ext_resource type="Texture2D" uid="uid://coda6chhcatal" path="res://visual/icons/Arrow.svg" id="3_vhd8v"]
+[ext_resource type="PackedScene" uid="uid://wp77eqhikp6k" path="res://src/ui_elements/context_popup.tscn" id="4_4cpb7"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_y4kmw"]
 draw_center = false
@@ -30,7 +30,7 @@ custom_minimum_size = Vector2(0, 22)
 offset_right = 73.0
 offset_bottom = 22.0
 theme_override_constants/separation = 0
-script = ExtResource("1_vkd5r")
+script = ExtResource("1_1jqoy")
 
 [node name="LineEdit" type="LineEdit" parent="."]
 custom_minimum_size = Vector2(58, 0)
@@ -40,9 +40,10 @@ theme_type_variation = &"RightConnectedLineEdit"
 context_menu_enabled = false
 select_all_on_focus = true
 caret_blink = true
-script = ExtResource("2_hytgg")
+script = ExtResource("2_4bajq")
 hover_stylebox = SubResource("StyleBoxFlat_y4kmw")
 focus_stylebox = SubResource("StyleBoxFlat_qhmpn")
+code_font_tooltip = true
 
 [node name="Button" type="Button" parent="."]
 custom_minimum_size = Vector2(15, 0)
@@ -50,10 +51,10 @@ layout_mode = 2
 focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_type_variation = &"LeftConnectedButton"
-icon = ExtResource("2_owe3f")
+icon = ExtResource("3_vhd8v")
 expand_icon = true
 
-[node name="ContextPopup" parent="." instance=ExtResource("3_qw0q5")]
+[node name="ContextPopup" parent="." instance=ExtResource("4_4cpb7")]
 visible = false
 
 [connection signal="pressed" from="Button" to="." method="_on_button_pressed"]

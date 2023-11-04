@@ -1,6 +1,6 @@
-﻿,en,bg,de
+,en,bg,de
 #remember_svg_setting,Remember SVG,Запомни SVG,SVG merken
-#remember_svg_desc,"When this box is checked, the SVG will persist between session.","Когато тази кутийка е отметната, SVG-то ще бъде запомнено между сесиите.","Wenn diese Option aktiviert ist, wird das SVG zwischen Sitzungen wiederhergestellt."
+#remember_svg_desc,"When this box is checked, the SVG will persist between sessions.","Когато тази кутийка е отметната, SVG-то ще бъде запомнено между сесиите.","Wenn diese Option aktiviert ist, wird das SVG zwischen Sitzungen wiederhergestellt."
 #remember_window_mode_settings,Remember window mode,Запомни режима на прозореца,Fenstermodus wiederherstellen
 #remember_window_mode_desc,"When this box is checked, the window can remain restored between sessions.","Когато тази кутийка е отметната, прозорецът може да остане малък между сесиите.","Wenn diese Option aktiviert ist, wird das Fenster zwischen Sitzungen wiederhergestellt."
 #language,Language,Език,Sprache
@@ -33,7 +33,7 @@
 #insert_after,Insert After,Вмъкни отпред,Danach einsetzen
 #err_empty_svg,SVG is empty.,Текстът е празен.,SVG ist leer.
 #err_not_svg,Doesn’t describe a SVG.,Текстът не описва SVG.,Beschreibt kein SVG.
-#err_improper_nesting,Improper nesting.,Несъвместими тагове.,Ungültige formatierung.
+#err_improper_nesting,Improper nesting.,Несъвместими тагове.,Ungültige Formatierung.
 #err_improper_closing,Not all tags are closed.,Не всички тагове са затворени.,Es wurden nicht alle Elemente geschlossen.
 #shortcut_inspector_delete,Delete: Deletes the selected tags,Delete: Изтрива избраните тагове,Entf: Ausgewählte Elemente löschen
 #shortcut_inspector_ctrl_down,Ctrl+Down: Moves the selected tags down,Ctrl+Down: Премества избраните тагове надолу,Strg+Unten: Ausgewählte Elemente nach unten verschieben

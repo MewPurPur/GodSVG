@@ -1,8 +1,8 @@
 [gd_scene load_steps=9 format=3 uid="uid://dqy5lv33sy5r7"]
 
-[ext_resource type="Script" path="res://src/ui_elements/path_field.gd" id="1_enb3p"]
-[ext_resource type="Script" path="res://src/ui_elements/BetterLineEdit.gd" id="2_iwuws"]
-[ext_resource type="Texture2D" uid="uid://eif2ioi0mw17" path="res://visual/icons/Plus.svg" id="3_cdafs"]
+[ext_resource type="Script" path="res://src/ui_elements/path_field.gd" id="1_22rk2"]
+[ext_resource type="Script" path="res://src/ui_elements/BetterLineEdit.gd" id="2_48xgh"]
+[ext_resource type="Texture2D" uid="uid://eif2ioi0mw17" path="res://visual/icons/Plus.svg" id="3_at2g1"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4rmxx"]
 draw_center = false
@@ -61,7 +61,7 @@ offset_right = 332.0
 offset_bottom = 26.0
 size_flags_horizontal = 3
 theme_override_constants/separation = 2
-script = ExtResource("1_enb3p")
+script = ExtResource("1_22rk2")
 
 [node name="MainLine" type="HBoxContainer" parent="."]
 custom_minimum_size = Vector2(0, 22)
@@ -76,9 +76,10 @@ focus_mode = 1
 context_menu_enabled = false
 select_all_on_focus = true
 caret_blink = true
-script = ExtResource("2_iwuws")
+script = ExtResource("2_48xgh")
 hover_stylebox = SubResource("StyleBoxFlat_4rmxx")
 focus_stylebox = SubResource("StyleBoxFlat_wqlhg")
+code_font_tooltip = true
 
 [node name="Commands" type="VBoxContainer" parent="."]
 custom_minimum_size = Vector2(336, 0)
@@ -96,7 +97,7 @@ mouse_default_cursor_shape = 2
 theme_override_styles/normal = SubResource("StyleBoxEmpty_lcnxl")
 theme_override_styles/hover = SubResource("StyleBoxFlat_4yine")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_kmpxk")
-icon = ExtResource("3_cdafs")
+icon = ExtResource("3_at2g1")
 
 [connection signal="text_submitted" from="MainLine/LineEdit" to="." method="_on_line_edit_text_submitted"]
 [connection signal="pressed" from="AddMove" to="." method="_on_add_move_pressed"]
