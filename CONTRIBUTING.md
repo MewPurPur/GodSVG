@@ -27,7 +27,7 @@ Do understand that PRs with a large maintenance cost may be under high scrutiny 
 
 Follow the [GDScript style guide](https://docs.godotengine.org/en/stable/tutorials/scripting/gdscript/gdscript_styleguide.html). Most of its rules are enforced here. Additionally:
 
-- Comments should be punctuated
+- Comments should be written like sentences and punctuated.
 - Class names should use `class_name X extends Y` syntax.
 
 Pull requests may get production tweaks to fix their style before being merged.
