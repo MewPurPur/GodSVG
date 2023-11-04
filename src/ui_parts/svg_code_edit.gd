@@ -36,6 +36,8 @@ func redraw_caret() -> void:
 		var char_size := code_font.get_char_size(69,
 				get_theme_font_size(&"TextEdit", &"font_size"))
 		for caret in get_caret_count():
+			# FIXME There's a bug(?) causing the draw pos to sometimes not update
+			# when outside of the screen.
 			var caret_draw_pos := get_caret_draw_pos(caret)
 			if is_overtype_mode_enabled():
 				RenderingServer.canvas_item_add_line(surface, caret_draw_pos - Vector2(1, 0),

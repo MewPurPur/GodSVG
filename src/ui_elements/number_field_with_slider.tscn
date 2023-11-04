@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://bp2vpf7g8w8aj"]
 
-[ext_resource type="Script" path="res://src/ui_elements/number_field_with_slider.gd" id="1_q10gl"]
-[ext_resource type="Script" path="res://src/ui_elements/BetterLineEdit.gd" id="2_hvn86"]
+[ext_resource type="Script" path="res://src/ui_elements/number_field_with_slider.gd" id="1_ymm02"]
+[ext_resource type="Script" path="res://src/ui_elements/BetterLineEdit.gd" id="2_ytia1"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_e034s"]
 draw_center = false
@@ -43,7 +43,7 @@ custom_minimum_size = Vector2(0, 22)
 offset_right = 46.0
 offset_bottom = 22.0
 theme_override_constants/separation = 0
-script = ExtResource("1_q10gl")
+script = ExtResource("1_ymm02")
 
 [node name="LineEdit" type="LineEdit" parent="."]
 custom_minimum_size = Vector2(46, 0)
@@ -54,9 +54,10 @@ theme_type_variation = &"RightConnectedLineEdit"
 context_menu_enabled = false
 select_all_on_focus = true
 caret_blink = true
-script = ExtResource("2_hvn86")
+script = ExtResource("2_ytia1")
 hover_stylebox = SubResource("StyleBoxFlat_e034s")
 focus_stylebox = SubResource("StyleBoxFlat_0nb8u")
+code_font_tooltip = true
 
 [node name="Slider" type="Button" parent="."]
 clip_contents = true
