@@ -4,8 +4,8 @@
 [ext_resource type="Shader" path="res://src/ui_parts/zoom_shader.gdshader" id="2_6bte3"]
 [ext_resource type="Texture2D" uid="uid://c68og6bsqt0lb" path="res://visual/Checkerboard.svg" id="3_q8p2p"]
 [ext_resource type="FontFile" uid="uid://dtb4wkus51hxs" path="res://visual/fonts/FontMono.ttf" id="4_4t2iq"]
-[ext_resource type="PackedScene" uid="uid://dbu1lvajypafb" path="res://src/small_editors/dropdown.tscn" id="5_mogyt"]
-[ext_resource type="PackedScene" uid="uid://dad7fkhmsooc6" path="res://src/small_editors/number_edit.tscn" id="6_mgpro"]
+[ext_resource type="PackedScene" uid="uid://dbu1lvajypafb" path="res://src/ui_elements/dropdown.tscn" id="5_y6ex0"]
+[ext_resource type="PackedScene" uid="uid://dad7fkhmsooc6" path="res://src/ui_elements/number_edit.tscn" id="6_w1sag"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_y7eee"]
 shader = ExtResource("2_6bte3")
@@ -99,7 +99,7 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 14
 text = "#format"
 
-[node name="Dropdown" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("5_mogyt")]
+[node name="Dropdown" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("5_y6ex0")]
 unique_name_in_owner = true
 layout_mode = 2
 values = Array[String](["svg", "png"])
@@ -117,7 +117,7 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 14
 text = "#scale"
 
-[node name="Scale" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/ScaleContainer/HBoxContainer" instance=ExtResource("6_mgpro")]
+[node name="Scale" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/ScaleContainer/HBoxContainer" instance=ExtResource("6_w1sag")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(46, 22)
 layout_mode = 2

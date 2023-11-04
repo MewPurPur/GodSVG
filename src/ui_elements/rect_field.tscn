@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://dh0dj6qdbfrb0"]
 
-[ext_resource type="Script" path="res://src/small_editors/rect_field.gd" id="1_euct7"]
-[ext_resource type="PackedScene" uid="uid://c6vgjud6wrdu4" path="res://src/small_editors/number_field.tscn" id="2_dkxh3"]
+[ext_resource type="Script" path="res://src/ui_elements/rect_field.gd" id="1_euct7"]
+[ext_resource type="PackedScene" uid="uid://c6vgjud6wrdu4" path="res://src/ui_elements/number_field.tscn" id="2_dkxh3"]
 
 [node name="RectField" type="HBoxContainer"]
 offset_right = 64.0

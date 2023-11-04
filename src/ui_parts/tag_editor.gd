@@ -6,12 +6,12 @@ const shape_attributes = ["cx", "cy", "x", "y", "r", "rx", "ry", "width", "heigh
 const unknown_icon = preload("res://visual/icons/tag/unknown.svg")
 
 const TagEditor = preload("tag_editor.tscn")
-const NumberField = preload("res://src/small_editors/number_field.tscn")
-const NumberSlider = preload("res://src/small_editors/number_field_with_slider.tscn")
-const ColorField = preload("res://src/small_editors/color_field.tscn")
-const PathField = preload("res://src/small_editors/path_field.tscn")
-const EnumField = preload("res://src/small_editors/enum_field.tscn")
-const UnknownField = preload("res://src/small_editors/unknown_field.tscn")
+const NumberField = preload("res://src/ui_elements/number_field.tscn")
+const NumberSlider = preload("res://src/ui_elements/number_field_with_slider.tscn")
+const ColorField = preload("res://src/ui_elements/color_field.tscn")
+const PathField = preload("res://src/ui_elements/path_field.tscn")
+const EnumField = preload("res://src/ui_elements/enum_field.tscn")
+const UnknownField = preload("res://src/ui_elements/unknown_field.tscn")
 
 # This is needed for the hover detection hack.
 @onready var first_ancestor_scroll_container := find_first_ancestor_scroll_container()

@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://dad7fkhmsooc6"]
 
-[ext_resource type="Script" path="res://src/small_editors/number_edit.gd" id="1_dywrg"]
+[ext_resource type="Script" path="res://src/ui_elements/number_edit.gd" id="1_dywrg"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_oa7o2"]
 draw_center = false

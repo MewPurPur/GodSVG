@@ -1,9 +1,9 @@
 [gd_scene load_steps=7 format=3 uid="uid://dbu1lvajypafb"]
 
-[ext_resource type="Script" path="res://src/small_editors/BetterLineEdit.gd" id="1_0ifbb"]
-[ext_resource type="Script" path="res://src/small_editors/dropdown.gd" id="1_133xu"]
+[ext_resource type="Script" path="res://src/ui_elements/BetterLineEdit.gd" id="1_0ifbb"]
+[ext_resource type="Script" path="res://src/ui_elements/dropdown.gd" id="1_133xu"]
 [ext_resource type="Texture2D" uid="uid://coda6chhcatal" path="res://visual/icons/Arrow.svg" id="2_4oygd"]
-[ext_resource type="PackedScene" uid="uid://wp77eqhikp6k" path="res://src/small_editors/context_popup.tscn" id="3_l1jr8"]
+[ext_resource type="PackedScene" uid="uid://wp77eqhikp6k" path="res://src/ui_elements/context_popup.tscn" id="3_l1jr8"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_q1iin"]
 draw_center = false

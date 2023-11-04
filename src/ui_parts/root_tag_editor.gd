@@ -2,8 +2,8 @@ extends MarginContainer
 
 var coupled_viewbox := true
 
-const NumberField = preload("res://src/small_editors/number_field.tscn")
-const RectField = preload("res://src/small_editors/rect_field.tscn")
+const NumberField = preload("res://src/ui_elements/number_field.tscn")
+const RectField = preload("res://src/ui_elements/rect_field.tscn")
 
 const coupled_icon = preload("res://visual/icons/Coupled.svg")
 const decoupled_icon = preload("res://visual/icons/Decoupled.svg")
