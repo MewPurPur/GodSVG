@@ -1,4 +1,4 @@
-﻿,en,bg,de
+,en,bg,de
 #remember_svg_setting,Remember SVG,Запомни SVG,SVG merken
 #remember_svg_desc,"When this box is checked, the SVG will persist between session.","Когато тази кутийка е отметната, SVG-то ще бъде запомнено между сесиите.","Wenn diese Option aktiviert ist, wird das SVG zwischen Sitzungen wiederhergestellt."
 #remember_window_mode_settings,Remember window mode,Запомни режима на прозореца,Fenstermodus wiederherstellen
@@ -6,8 +6,8 @@
 #language,Language,Език,Sprache
 #invert_zoom,Invert zoom direction,Обърни посоката на увеличение,Zoomrichtung umkehren
 #invert_zoom_desc,Swaps zoom in and zoom out with the mouse wheel,Разменя увеличението и намалянето с колелцето на мишката,Vertauscht Hinein- und Herauszoomen mit dem Mausrad
-#session_tab,Session,,Sitzung
-#input_tab,Input,,Eingabe
+#session_tab,Session,Сесия,Sitzung
+#input_tab,Input,Входни сигнали,Eingabe
 #open,Open,Отвори,Öffnen
 #close,Close,Затвори,Schließen
 #repo_button_text,GodSVG Repository,Репозиторията на GodSVG,GodSVG Repository

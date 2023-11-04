@@ -7,8 +7,6 @@ var save_data := SaveData.new()
 const config_path = "user://config.tres"
 var config := ConfigFile.new()
 
-signal language_changed
-
 # Don't have the language setting here, so it's not reset.
 const default_config = {
 	"session": {
@@ -24,7 +22,6 @@ var language: StringName:
 	set(new_value):
 		language = new_value
 		TranslationServer.set_locale(new_value)
-		language_changed.emit()
 		save_setting("text", "language", language)
 
 var save_window_mode := false:
