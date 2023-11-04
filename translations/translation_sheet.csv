@@ -6,6 +6,8 @@
 #language,Language,Език,Sprache
 #invert_zoom,Invert zoom direction,Обърни посоката на увеличение,Zoomrichtung umkehren
 #invert_zoom_desc,Swaps zoom in and zoom out with the mouse wheel,Разменя увеличението и намалянето с колелцето на мишката,Vertauscht Hinein- und Herauszoomen mit dem Mausrad
+#session_tab,Session,,Sitzung
+#input_tab,Input,,Eingabe
 #open,Open,Отвори,Öffnen
 #close,Close,Затвори,Schließen
 #repo_button_text,GodSVG Repository,Репозиторията на GodSVG,GodSVG Repository
