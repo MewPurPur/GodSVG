@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://cm3uphorskcix"]
 
-[ext_resource type="Script" path="res://src/ui_elements/mini_number_field.gd" id="1_uggel"]
+[ext_resource type="Script" path="res://src/ui_elements/mini_number_field.gd" id="1_ggi5v"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wk41m"]
 draw_center = false
@@ -20,6 +20,7 @@ theme_type_variation = &"MiniLineEdit"
 context_menu_enabled = false
 select_all_on_focus = true
 caret_blink = true
-script = ExtResource("1_uggel")
+script = ExtResource("1_ggi5v")
 hover_stylebox = SubResource("StyleBoxFlat_wk41m")
 focus_stylebox = SubResource("StyleBoxFlat_ul27o")
+code_font_tooltip = true

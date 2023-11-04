@@ -40,7 +40,7 @@ func svg_update(svg_changed := true) -> void:
 	var bigger_side := maxf(SVG.root_tag.attributes.width.get_value(),
 			SVG.root_tag.attributes.height.get_value())
 	var img := Image.new()
-	var new_image_zoom := 1.0 if rasterized else minf(zoom * 4.0, 16384 / bigger_side)
+	var new_image_zoom := 1.0 if rasterized else minf(zoom * 3.0, 16384 / bigger_side)
 	if not svg_changed and not rasterized and new_image_zoom <= image_zoom:
 		return  # Don't waste time resizing if the new image won't be bigger.
 	else:

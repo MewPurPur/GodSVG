@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://c6vgjud6wrdu4"]
 
-[ext_resource type="Script" path="res://src/ui_elements/number_field.gd" id="1_vy4cm"]
-[ext_resource type="Script" path="res://src/ui_elements/BetterLineEdit.gd" id="2_gfns5"]
+[ext_resource type="Script" path="res://src/ui_elements/number_field.gd" id="1_lyqve"]
+[ext_resource type="Script" path="res://src/ui_elements/BetterLineEdit.gd" id="2_m6us2"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kgadk"]
 draw_center = false
@@ -33,7 +33,7 @@ layout_mode = 3
 anchors_preset = 0
 offset_right = 48.0
 offset_bottom = 22.0
-script = ExtResource("1_vy4cm")
+script = ExtResource("1_lyqve")
 
 [node name="LineEdit" type="LineEdit" parent="."]
 layout_mode = 1
@@ -48,9 +48,10 @@ focus_mode = 1
 context_menu_enabled = false
 select_all_on_focus = true
 caret_blink = true
-script = ExtResource("2_gfns5")
+script = ExtResource("2_m6us2")
 hover_stylebox = SubResource("StyleBoxFlat_kgadk")
 focus_stylebox = SubResource("StyleBoxFlat_m2p2n")
+code_font_tooltip = true
 
 [connection signal="focus_exited" from="LineEdit" to="." method="_on_focus_exited"]
 [connection signal="text_submitted" from="LineEdit" to="." method="_on_text_submitted"]

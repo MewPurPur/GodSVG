@@ -1,8 +1,8 @@
 [gd_scene load_steps=6 format=3 uid="uid://mr2c1hti43k4"]
 
-[ext_resource type="Script" path="res://src/ui_elements/unknown_field.gd" id="1_5ooio"]
-[ext_resource type="Script" path="res://src/ui_elements/BetterLineEdit.gd" id="1_gtdpd"]
-[ext_resource type="Texture2D" uid="uid://bi38k4pq83omf" path="res://visual/icons/QuestionMark.svg" id="2_c8kyj"]
+[ext_resource type="Script" path="res://src/ui_elements/unknown_field.gd" id="1_decfb"]
+[ext_resource type="Texture2D" uid="uid://bi38k4pq83omf" path="res://visual/icons/QuestionMark.svg" id="2_hsdl6"]
+[ext_resource type="Script" path="res://src/ui_elements/BetterLineEdit.gd" id="3_poc0i"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ekjre"]
 draw_center = false
@@ -32,7 +32,7 @@ corner_radius_bottom_left = 5
 custom_minimum_size = Vector2(72, 22)
 layout_mode = 3
 anchors_preset = 0
-script = ExtResource("1_5ooio")
+script = ExtResource("1_decfb")
 
 [node name="LineEdit" type="LineEdit" parent="."]
 layout_mode = 1
@@ -43,11 +43,12 @@ grow_horizontal = 2
 grow_vertical = 2
 focus_mode = 1
 context_menu_enabled = false
-right_icon = ExtResource("2_c8kyj")
+right_icon = ExtResource("2_hsdl6")
 select_all_on_focus = true
 caret_blink = true
-script = ExtResource("1_gtdpd")
+script = ExtResource("3_poc0i")
 hover_stylebox = SubResource("StyleBoxFlat_ekjre")
 focus_stylebox = SubResource("StyleBoxFlat_0q8qv")
+code_font_tooltip = true
 
 [connection signal="text_submitted" from="LineEdit" to="." method="_on_text_submitted"]

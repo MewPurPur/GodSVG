@@ -1,10 +1,13 @@
 ## A LineEdit with a few tweaks to make it nicer to use.
 class_name BetterLineEdit extends LineEdit
 
+const code_font = preload("res://visual/fonts/FontMono.ttf")
+
 var hovered := false
 
 @export var hover_stylebox: StyleBox
 @export var focus_stylebox: StyleBox
+@export var code_font_tooltip := false
 
 func _ready() -> void:
 	focus_entered.connect(_on_focus_entered)
@@ -43,3 +46,13 @@ func _draw() -> void:
 			draw_style_box(focus_stylebox, Rect2(Vector2.ZERO, size))
 		elif hovered and hover_stylebox != null:
 			draw_style_box(hover_stylebox, Rect2(Vector2.ZERO, size))
+
+func _make_custom_tooltip(for_text: String) -> Object:
+	if code_font_tooltip:
+		var label := Label.new()
+		label.add_theme_font_override(&"font", code_font)
+		label.add_theme_font_size_override(&"font_size", 12)
+		label.text = for_text
+		return label
+	else:
+		return null

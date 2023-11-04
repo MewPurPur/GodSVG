@@ -32,10 +32,10 @@ func _ready() -> void:
 	update_view_limits()
 
 func update_view_limits() -> void:
-	view.limit_left = -size_2d_override.x * buffer_view_space
-	view.limit_right = size_2d_override.x * buffer_view_space + display.size.x
-	view.limit_top = -size_2d_override.y * buffer_view_space
-	view.limit_bottom = size_2d_override.y * buffer_view_space + display.size.y
+	view.limit_left = int(-size_2d_override.x * buffer_view_space)
+	view.limit_right = int(size_2d_override.x * buffer_view_space + display.size.x)
+	view.limit_top = int(-size_2d_override.y * buffer_view_space)
+	view.limit_bottom = int(size_2d_override.y * buffer_view_space + display.size.y)
 	set_view(view.position)  # Ensure the view is still clamped.
 
 # Top left corner.
@@ -50,6 +50,7 @@ func zoom_in() -> void:
 func zoom_out() -> void:
 	zoom_level /= sqrt(2)
 
+# Choose an appropriate zoom level and center the camera.
 func zoom_reset() -> void:
 	var svg_attribs := SVG.root_tag.attributes
 	zoom_level = float(nearest_po2(int(8192 / maxf(svg_attribs.width.get_value(),

@@ -707,7 +707,6 @@ TextEdit/fonts/font = ExtResource("5_nfqug")
 TextEdit/styles/focus = SubResource("StyleBoxFlat_1gwcd")
 TextEdit/styles/normal = SubResource("StyleBoxFlat_ichfn")
 TooltipLabel/colors/font_color = Color(0.866667, 0.933333, 1, 1)
-TooltipLabel/font_sizes/font_size = 14
 TooltipLabel/fonts/font = ExtResource("11_ccloq")
 TooltipPanel/styles/panel = SubResource("StyleBoxFlat_ghiib")
 VScrollBar/styles/grabber = SubResource("StyleBoxFlat_dptuh")
