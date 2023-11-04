@@ -173,7 +173,7 @@ shorthand_cubic_bezier_absolute={
 
 [internationalization]
 
-locale/translations=PackedStringArray("res://translations/translation_sheet.bg.translation", "res://translations/translation_sheet.en.translation")
+locale/translations=PackedStringArray("res://translations/translation_sheet.bg.translation", "res://translations/translation_sheet.en.translation", "res://translations/translation_sheet.de.translation")
 
 [rendering]
 
