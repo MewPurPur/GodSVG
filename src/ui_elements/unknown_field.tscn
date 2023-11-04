@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://c6vgjud6wrdu4"]
+[gd_scene load_steps=6 format=3 uid="uid://mr2c1hti43k4"]
 
-[ext_resource type="Script" path="res://src/small_editors/number_field.gd" id="1_vy4cm"]
-[ext_resource type="Script" path="res://src/small_editors/BetterLineEdit.gd" id="2_gfns5"]
+[ext_resource type="Script" path="res://src/ui_elements/unknown_field.gd" id="1_5ooio"]
+[ext_resource type="Script" path="res://src/ui_elements/BetterLineEdit.gd" id="1_gtdpd"]
+[ext_resource type="Texture2D" uid="uid://bi38k4pq83omf" path="res://visual/icons/QuestionMark.svg" id="2_c8kyj"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kgadk"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ekjre"]
 draw_center = false
 border_width_left = 2
 border_width_top = 2
@@ -15,7 +16,7 @@ corner_radius_top_right = 5
 corner_radius_bottom_right = 5
 corner_radius_bottom_left = 5
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_m2p2n"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0q8qv"]
 draw_center = false
 border_width_left = 2
 border_width_top = 2
@@ -27,13 +28,11 @@ corner_radius_top_right = 5
 corner_radius_bottom_right = 5
 corner_radius_bottom_left = 5
 
-[node name="NumberField" type="Control"]
-custom_minimum_size = Vector2(54, 22)
+[node name="UnknownField" type="Control"]
+custom_minimum_size = Vector2(72, 22)
 layout_mode = 3
 anchors_preset = 0
-offset_right = 48.0
-offset_bottom = 22.0
-script = ExtResource("1_vy4cm")
+script = ExtResource("1_5ooio")
 
 [node name="LineEdit" type="LineEdit" parent="."]
 layout_mode = 1
@@ -42,15 +41,13 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-size_flags_horizontal = 0
-size_flags_vertical = 0
 focus_mode = 1
 context_menu_enabled = false
+right_icon = ExtResource("2_c8kyj")
 select_all_on_focus = true
 caret_blink = true
-script = ExtResource("2_gfns5")
-hover_stylebox = SubResource("StyleBoxFlat_kgadk")
-focus_stylebox = SubResource("StyleBoxFlat_m2p2n")
+script = ExtResource("1_gtdpd")
+hover_stylebox = SubResource("StyleBoxFlat_ekjre")
+focus_stylebox = SubResource("StyleBoxFlat_0q8qv")
 
-[connection signal="focus_exited" from="LineEdit" to="." method="_on_focus_exited"]
 [connection signal="text_submitted" from="LineEdit" to="." method="_on_text_submitted"]

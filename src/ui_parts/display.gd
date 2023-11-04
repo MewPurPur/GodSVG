@@ -4,14 +4,14 @@ const settings_menu = preload("settings_menu.tscn")
 const about_menu = preload("about_menu.tscn")
 const docs = preload("docs.tscn")
 
-const NumberField = preload("res://src/small_editors/number_field.tscn")
+const NumberField = preload("res://src/ui_elements/number_field.tscn")
 
 @onready var zoom_reset_button: Button = %ZoomReset
 @onready var zoom_in_button: Button = %ZoomIn
 @onready var zoom_out_button: Button = %ZoomOut
 @onready var viewport: SubViewport = $ViewportContainer/Viewport
 @onready var controls: Control = %Checkerboard/Controls
-@onready var grid_visuals: Control = $ViewportContainer/Viewport/SnapLines
+@onready var grid_visuals: Camera2D = $ViewportContainer/Viewport/ViewCamera
 @onready var visuals_button: Button = %LeftMenu/Visuals
 @onready var visuals_popup: Popup = %LeftMenu/VisualsPopup
 @onready var more_button: Button = %LeftMenu/MoreOptions

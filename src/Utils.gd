@@ -29,12 +29,6 @@ button_size: Vector2, popup_size: Vector2, align_center := false) -> Rect2:
 		popup_pos.x = button_global_pos.x
 	return Rect2(popup_pos, popup_size)
 
-static func vec_min(vec1: Vector2, vec2: Vector2) -> Vector2:
-	return Vector2(minf(vec1.x, vec2.x), minf(vec1.y, vec2.y))
-
-static func vec_max(vec1: Vector2, vec2: Vector2) -> Vector2:
-	return Vector2(maxf(vec1.x, vec2.x), maxf(vec1.y, vec2.y))
-
 static func get_cubic_bezier_points(cp1: Vector2, cp2: Vector2,
 cp3: Vector2, cp4: Vector2) -> PackedVector2Array:
 	var curve := Curve2D.new()

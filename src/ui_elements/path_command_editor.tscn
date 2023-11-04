@@ -1,11 +1,11 @@
 [gd_scene load_steps=11 format=3 uid="uid://dcdrc3r60bgg3"]
 
-[ext_resource type="Script" path="res://src/small_editors/path_command_editor.gd" id="1_om2fk"]
+[ext_resource type="Script" path="res://src/ui_elements/path_command_editor.gd" id="1_om2fk"]
 [ext_resource type="FontFile" uid="uid://dtb4wkus51hxs" path="res://visual/fonts/FontMono.ttf" id="2_o5eem"]
 [ext_resource type="Texture2D" uid="uid://cmepkbqde0jh0" path="res://visual/icons/SmallMore.svg" id="3_a76tm"]
-[ext_resource type="PackedScene" uid="uid://wp77eqhikp6k" path="res://src/small_editors/context_popup.tscn" id="4_xqjqs"]
-[ext_resource type="Script" path="res://src/small_editors/path_popup.gd" id="5_3dynt"]
-[ext_resource type="PackedScene" uid="uid://co2btefrqrm0e" path="res://src/small_editors/path_command_button.tscn" id="6_oj0oy"]
+[ext_resource type="PackedScene" uid="uid://wp77eqhikp6k" path="res://src/ui_elements/context_popup.tscn" id="4_xqjqs"]
+[ext_resource type="Script" path="res://src/ui_elements/path_popup.gd" id="5_3dynt"]
+[ext_resource type="PackedScene" uid="uid://co2btefrqrm0e" path="res://src/ui_elements/path_command_button.tscn" id="6_oj0oy"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_sewij"]
 
