@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://wp77eqhikp6k"]
 
-[ext_resource type="Script" path="res://src/small_editors/context_popup.gd" id="1_d45ly"]
+[ext_resource type="Script" path="res://src/ui_elements/context_popup.gd" id="1_d45ly"]
 
 [node name="ContextPopup" type="Popup"]
 disable_3d = true

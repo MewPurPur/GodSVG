@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://src/ui_parts/tag_editor.gd" id="1_7i0c4"]
 [ext_resource type="FontFile" uid="uid://dtb4wkus51hxs" path="res://visual/fonts/FontMono.ttf" id="2_0lxvf"]
-[ext_resource type="PackedScene" uid="uid://wp77eqhikp6k" path="res://src/small_editors/context_popup.tscn" id="4_2mart"]
+[ext_resource type="PackedScene" uid="uid://wp77eqhikp6k" path="res://src/ui_elements/context_popup.tscn" id="3_qx6wd"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xmwqw"]
 content_margin_left = 4.0
@@ -152,7 +152,7 @@ unique_name_in_owner = true
 visible = false
 layout_mode = 2
 
-[node name="ContextPopup" parent="." instance=ExtResource("4_2mart")]
+[node name="ContextPopup" parent="." instance=ExtResource("3_qx6wd")]
 visible = false
 
 [connection signal="gui_input" from="." to="." method="_on_gui_input"]

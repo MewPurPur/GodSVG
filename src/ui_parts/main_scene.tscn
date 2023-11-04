@@ -16,13 +16,13 @@
 [ext_resource type="Script" path="res://src/ui_parts/display_texture.gd" id="7_cxx0h"]
 [ext_resource type="Script" path="res://src/ui_parts/svg_code_edit.gd" id="7_q0ibc"]
 [ext_resource type="Texture2D" uid="uid://kkxyv1gyrjgj" path="res://visual/icons/Visuals.svg" id="9_ojv7n"]
-[ext_resource type="PackedScene" uid="uid://wp77eqhikp6k" path="res://src/small_editors/context_popup.tscn" id="10_hraj8"]
+[ext_resource type="PackedScene" uid="uid://wp77eqhikp6k" path="res://src/ui_elements/context_popup.tscn" id="10_hraj8"]
 [ext_resource type="Texture2D" uid="uid://buire51l0mifg" path="res://visual/icons/Snap.svg" id="11_u7ddj"]
 [ext_resource type="Shader" path="res://src/ui_parts/zoom_shader.gdshader" id="12_wewnk"]
-[ext_resource type="PackedScene" uid="uid://dad7fkhmsooc6" path="res://src/small_editors/number_edit.tscn" id="13_oxv3i"]
+[ext_resource type="PackedScene" uid="uid://dad7fkhmsooc6" path="res://src/ui_elements/number_edit.tscn" id="13_oxv3i"]
 [ext_resource type="Texture2D" uid="uid://c2h5snkvemm4p" path="res://visual/icons/Minus.svg" id="13_uqus2"]
 [ext_resource type="Texture2D" uid="uid://eif2ioi0mw17" path="res://visual/icons/Plus.svg" id="14_t8hbh"]
-[ext_resource type="Script" path="res://src/ui_parts/snap_lines.gd" id="15_v2yj8"]
+[ext_resource type="Script" path="res://src/ui_parts/view_camera.gd" id="15_v2yj8"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_082e3"]
 content_margin_left = 6.0
@@ -343,6 +343,7 @@ icon = ExtResource("14_t8hbh")
 icon_alignment = 1
 
 [node name="ViewportContainer" type="SubViewportContainer" parent="Display"]
+process_mode = 3
 layout_mode = 2
 size_flags_horizontal = 10
 
@@ -355,27 +356,20 @@ size_2d_override_stretch = true
 render_target_update_mode = 4
 script = ExtResource("6_7hypx")
 
+[node name="ViewCamera" type="Camera2D" parent="Display/ViewportContainer/Viewport"]
+anchor_mode = 0
+editor_draw_screen = false
+script = ExtResource("15_v2yj8")
+
 [node name="Checkerboard" type="TextureRect" parent="Display/ViewportContainer/Viewport"]
 unique_name_in_owner = true
 texture_filter = 1
 material = SubResource("ShaderMaterial_kqplg")
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -300.0
-offset_top = -300.0
-offset_right = -300.0
-offset_bottom = -300.0
-grow_horizontal = 2
-grow_vertical = 2
 texture = ExtResource("3_d58qh")
 expand_mode = 1
 stretch_mode = 1
 
 [node name="DisplayTexture" type="TextureRect" parent="Display/ViewportContainer/Viewport/Checkerboard"]
-process_mode = 3
 clip_contents = true
 layout_mode = 1
 anchors_preset = 15
@@ -395,16 +389,6 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 1
 script = ExtResource("5_pltvx")
-
-[node name="SnapLines" type="Control" parent="Display/ViewportContainer/Viewport"]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 1
-script = ExtResource("15_v2yj8")
 
 [connection signal="pressed" from="PanelContainer/MainContainer/CodeEditor/PanelContainer/CodeButtons/MetaActions/CopyButton" to="PanelContainer/MainContainer/CodeEditor" method="_on_copy_button_pressed"]
 [connection signal="pressed" from="PanelContainer/MainContainer/CodeEditor/PanelContainer/CodeButtons/MetaActions/ImportButton" to="PanelContainer/MainContainer/CodeEditor" method="_on_import_button_pressed"]

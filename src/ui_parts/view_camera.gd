@@ -1,4 +1,4 @@
-extends Control
+extends Camera2D
 
 const default_font = preload("res://visual/fonts/Font.ttf")
 const main_line_color = Color(0.5, 0.5, 0.5, 0.8)
@@ -6,7 +6,6 @@ const primary_grid_color = Color(0.5, 0.5, 0.5, 0.4)
 const pixel_grid_color = Color(0.5, 0.5, 0.5, 0.16)
 const ticks_interval = 4
 
-@onready var display: TextureRect = %Checkerboard
 var surface := RenderingServer.canvas_item_create()  # Used for drawing the numbers.
 
 func _ready() -> void:
@@ -15,14 +14,14 @@ func _ready() -> void:
 
 # Don't ask me to explain this.
 func _draw() -> void:
-	var display_pos := display.position
-	draw_line(Vector2(display_pos.x, 0), Vector2(display_pos.x, size.y), main_line_color)
-	draw_line(Vector2(0, display_pos.y), Vector2(size.x, display_pos.y), main_line_color)
+	var size: Vector2 = get_parent().size / get_parent().zoom_level
+	draw_line(Vector2(-position.x, 0), Vector2(-position.x, size.y), main_line_color)
+	draw_line(Vector2(0, -position.y), Vector2(size.x, -position.y), main_line_color)
 	
 	var primary_points := PackedVector2Array()
 	var pixel_points := PackedVector2Array()
-	var x_offset := fmod(display_pos.x, 1.0)
-	var y_offset := fmod(display_pos.y, 1.0)
+	var x_offset := fmod(-position.x, 1.0)
+	var y_offset := fmod(-position.y, 1.0)
 	var tick_distance := float(ticks_interval)
 	var viewport_scale: float = get_parent().zoom_level
 	var draw_pixel_lines := viewport_scale >= 3.0
@@ -35,12 +34,12 @@ func _draw() -> void:
 	
 	var i := x_offset
 	while i <= size.x:
-		if fposmod(display_pos.x, tick_distance) != fposmod(i, tick_distance):
+		if fposmod(-position.x, tick_distance) != fposmod(i, tick_distance):
 			if draw_pixel_lines:
 				pixel_points.append(Vector2(i, 0))
 				pixel_points.append(Vector2(i, size.y))
 		else:
-			var coord := snappedi(i - display_pos.x, ticks_interval)
+			var coord := snappedi(i + position.x, ticks_interval)
 			if (coord / ticks_interval) % rate == 0:
 				primary_points.append(Vector2(i, 0))
 				primary_points.append(Vector2(i, size.y))
@@ -52,12 +51,12 @@ func _draw() -> void:
 		i += 1.0
 	i = y_offset
 	while i < size.y:
-		if fposmod(display_pos.y, tick_distance) != fposmod(i, tick_distance):
+		if fposmod(-position.y, tick_distance) != fposmod(i, tick_distance):
 			if draw_pixel_lines:
 				pixel_points.append(Vector2(0, i))
 				pixel_points.append(Vector2(size.x, i))
 		else:
-			var coord := snappedi(i - display_pos.y, ticks_interval)
+			var coord := snappedi(i + position.y, ticks_interval)
 			if int(coord / ticks_interval) % rate == 0:
 				primary_points.append(Vector2(0, i))
 				primary_points.append(Vector2(size.x, i))

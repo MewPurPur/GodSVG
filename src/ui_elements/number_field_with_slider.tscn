@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://bp2vpf7g8w8aj"]
 
-[ext_resource type="Script" path="res://src/small_editors/number_field_with_slider.gd" id="1_q10gl"]
-[ext_resource type="Script" path="res://src/small_editors/BetterLineEdit.gd" id="2_hvn86"]
+[ext_resource type="Script" path="res://src/ui_elements/number_field_with_slider.gd" id="1_q10gl"]
+[ext_resource type="Script" path="res://src/ui_elements/BetterLineEdit.gd" id="2_hvn86"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_e034s"]
 draw_center = false
