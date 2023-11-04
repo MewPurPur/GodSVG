@@ -6,6 +6,8 @@
 #language,Language,Език,Sprache
 #invert_zoom,Invert zoom direction,Обърни посоката на увеличение,Zoomrichtung umkehren
 #invert_zoom_desc,Swaps zoom in and zoom out with the mouse wheel,Разменя увеличението и намалянето с колелцето на мишката,Vertauscht Hinein- und Herauszoomen mit dem Mausrad
+#session_tab,Session,Сесия,Sitzung
+#input_tab,Input,Входни сигнали,Eingabe
 #open,Open,Отвори,Öffnen
 #close,Close,Затвори,Schließen
 #repo_button_text,GodSVG Repository,Репозиторията на GodSVG,GodSVG Repository
@@ -52,3 +54,7 @@
 #final_size,Final size,Краен размер,Endgültige Größe
 #export_configuration,Export Configuration,Конфигурация на експорта,Exportierungskonfiguration
 #add_tag,Add new tag,Добави нов таг,Neues Element hinzufügen
+#license_tab,License,,Lizenz
+#third-party-licenses_tab,Third-party-licenses,,Drittanbieter-Lizenzen
+#authors_tab,Authors,,Autoren
+#kbd_shortcuts_tab,Shortcuts,,Tastenkombinationen
