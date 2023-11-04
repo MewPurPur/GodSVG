@@ -9,7 +9,7 @@ extends Dialog
 func _ready() -> void:
 	update_language_button()
 	var buttons_arr: Array[Button] = []
-	for lang in ["en", "bg"]:
+	for lang in ["en", "bg", "de"]:
 		var button := Button.new()
 		button.text = TranslationServer.get_locale_name(lang) + " (" + lang + ")"
 		button.pressed.connect(_on_language_chosen.bind(lang))
@@ -17,7 +17,7 @@ func _ready() -> void:
 		button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		buttons_arr.append(button)
 	lang_popup.set_btn_array(buttons_arr)
-	
+
 	window_mode_button.button_pressed = GlobalSettings.save_window_mode
 	svg_button.button_pressed = GlobalSettings.save_svg
 	invert_zoom.button_pressed = GlobalSettings.invert_zoom
