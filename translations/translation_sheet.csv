@@ -4,8 +4,8 @@
 #remember_window_mode_settings,Remember window mode,Запомни режима на прозореца,Fenstermodus wiederherstellen
 #remember_window_mode_desc,"When this box is checked, the window can remain restored between sessions.","Когато тази кутийка е отметната, прозорецът може да остане малък между сесиите.","Wenn diese Option aktiviert ist, wird das Fenster zwischen Sitzungen wiederhergestellt."
 #language,Language,Език,Sprache
-#invert_zoom,Invert zoom direction,Zoomrichtung umkehren
-#invert_zoom_desc,Swaps zoom in and zoom out,Vertauscht Hinein- und Herauszoomen
+#invert_zoom,Invert zoom direction,Обърни посоката на увеличение,Zoomrichtung umkehren
+#invert_zoom_desc,Swaps zoom in and zoom out with the mouse wheel,Разменя увеличението и намалянето с колелцето на мишката,Vertauscht Hinein- und Herauszoomen mit dem Mausrad
 #open,Open,Отвори,Öffnen
 #close,Close,Затвори,Schließen
 #repo_button_text,GodSVG Repository,Репозиторията на GodSVG,GodSVG Repository
@@ -18,7 +18,7 @@
 #settings,Settings,Настройки,Einstellungen
 #visuals,Visuals,Графики,Visuelles
 #show_grid,Show Grid,Покажи решетката,Raster anzeigen
-#show_handles,Show Handles,Покажи дръжките,Handles anzeigen
+#show_handles,Show Handles,Покажи дръжките,Griffe anzeigen
 #rasterize_svg,Rasterized SVG,Растеризирай SVG,SVG rasterisieren
 #enable_snap,Enable Snapping,Включи захващането,Einrasten aktivieren
 #snap_size,Snap size,Размер на захващането,Einrastgröße
@@ -33,22 +33,22 @@
 #insert_after,Insert After,Вмъкни отпред,Danach einsetzen
 #err_empty_svg,SVG is empty.,Текстът е празен.,SVG ist leer.
 #err_not_svg,Doesn’t describe a SVG.,Текстът не описва SVG.,Beschreibt kein SVG.
-#err_improper_nesting,Improper nesting.,Несъвместими тагове.,Ungültige formattierung.
-#err_improper_closing,Not all tags are closed.,Не всички тагове са затворени.,Es wurden nicht alle Tags geschlossen.
-#shortcut_inspector_delete,Delete: Deletes the selected tags,Delete: Изтрива избраните тагове,Entf: Ausgewählte Tags löschen
-#shortcut_inspector_ctrl_down,Ctrl+Down: Moves the selected tags down,Ctrl+Down: Премества избраните тагове надолу,Strg+Unten: Ausgewählte Tags nach unten verschieben
-#shortcut_inspector_ctrl_up,Ctrl+Up: Moves the selected tags up,Ctrl+Up: Премества избраните тагове нагоре,Strg+Hoch: Ausgewählte Tags nach oben verschieben
-#shortcut_inspector_ctrl_d,Ctrl+D: Duplicates the selected tags,Ctrl+D: Дублирай избраните тагове,Strg+D: Ausgewählte Tags duplizieren
-#unknown_tag,Unknown Tag,Непознат таг,Unbekannter Tag
+#err_improper_nesting,Improper nesting.,Несъвместими тагове.,Ungültige formatierung.
+#err_improper_closing,Not all tags are closed.,Не всички тагове са затворени.,Es wurden nicht alle Elemente geschlossen.
+#shortcut_inspector_delete,Delete: Deletes the selected tags,Delete: Изтрива избраните тагове,Entf: Ausgewählte Elemente löschen
+#shortcut_inspector_ctrl_down,Ctrl+Down: Moves the selected tags down,Ctrl+Down: Премества избраните тагове надолу,Strg+Unten: Ausgewählte Elemente nach unten verschieben
+#shortcut_inspector_ctrl_up,Ctrl+Up: Moves the selected tags up,Ctrl+Up: Премества избраните тагове нагоре,Strg+Hoch: Ausgewählte Elemente nach oben verschieben
+#shortcut_inspector_ctrl_d,Ctrl+D: Duplicates the selected tags,Ctrl+D: Дублирай избраните тагове,Strg+D: Ausgewählte Elemente duplizieren
+#unknown_tag,Unknown Tag,Непознат таг,Unbekanntes Element
 #unknown_attribute,Unknown Attribute,Непознат атрибут,Unbekannte Attribute
 #import,Import,Импортирай,Importieren
 #cancel,Cancel,Отказ,Abbrechen
 #import_problems,Import Problems,Проблеми в импортирането,Probleme beim Importieren
-#unknown_tooltip,GodSVG doesn’t recognize this attribute,GodSVG не разпознава този атрибут,GodSVG kann diese Attribute nicht erkennen
+#unknown_tooltip,GodSVG doesn’t recognize this attribute,GodSVG не разпознава този атрибут,GodSVG erkennt diese Attribute nicht
 #export,Export,Експортирай,Exportieren
 #format,Format,Формат,Formatieren
 #scale,Scale,Мащаб,Skalieren
 #size,Size,Размер,Größe
 #final_size,Final size,Краен размер,Endgültige Größe
 #export_configuration,Export Configuration,Конфигурация на експорта,Exportierungskonfiguration
-#add_tag,Add new tag,Добави нов таг,Neuen Tag hinzufügen
+#add_tag,Add new tag,Добави нов таг,Neues Element hinzufügen
