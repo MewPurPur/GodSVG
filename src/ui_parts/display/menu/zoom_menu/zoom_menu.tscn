@@ -36,7 +36,6 @@ alignment = 1
 script = ExtResource("1_18ab8")
 
 [node name="ZoomOut" type="Button" parent="."]
-unique_name_in_owner = true
 custom_minimum_size = Vector2(28, 0)
 layout_mode = 2
 tooltip_text = "#zoom_out"
@@ -47,7 +46,6 @@ icon = ExtResource("1_8ggy2")
 icon_alignment = 1
 
 [node name="ZoomReset" type="Button" parent="."]
-unique_name_in_owner = true
 custom_minimum_size = Vector2(60, 0)
 layout_mode = 2
 tooltip_text = "#zoom_reset"
@@ -58,7 +56,6 @@ shortcut = SubResource("Shortcut_4v7wx")
 text = "100%"
 
 [node name="ZoomIn" type="Button" parent="."]
-unique_name_in_owner = true
 custom_minimum_size = Vector2(28, 0)
 layout_mode = 2
 tooltip_text = "#zoom_in"

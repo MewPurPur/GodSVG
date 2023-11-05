@@ -349,4 +349,4 @@ script = ExtResource("5_pltvx")
 [connection signal="toggled" from="Display/PanelContainer/HBoxContainer/LeftMenu/Snapping/SnapButton" to="Display/ViewportContainer/Viewport/Checkerboard/Controls" method="_on_snap_button_toggled"]
 [connection signal="value_changed" from="Display/PanelContainer/HBoxContainer/LeftMenu/Snapping/NumberEdit" to="Display/ViewportContainer/Viewport/Checkerboard/Controls" method="_on_snapper_value_changed"]
 [connection signal="zoom_changed" from="Display/PanelContainer/HBoxContainer/ZoomMenu" to="Display/ViewportContainer/Viewport" method="_on_zoom_changed"]
-[connection signal="zoom_reseted" from="Display/PanelContainer/HBoxContainer/ZoomMenu" to="Display/ViewportContainer/Viewport" method="center_frame"]
+[connection signal="zoom_reset_pressed" from="Display/PanelContainer/HBoxContainer/ZoomMenu" to="Display/ViewportContainer/Viewport" method="center_frame"]

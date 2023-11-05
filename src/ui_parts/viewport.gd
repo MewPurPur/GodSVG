@@ -7,6 +7,7 @@ const buffer_view_space = 0.8
 @export var controls: Control
 @export var display_texture: TextureRect
 
+@onready var zoom_menu: HBoxContainer = %ZoomMenu
 @onready var main_node: VBoxContainer = %Display
 
 
@@ -48,23 +49,23 @@ func _unhandled_input(event: InputEvent) -> void:
 	
 	if event is InputEventPanGesture:
 		if event.ctrl_pressed:
-			%ZoomMenu.zoom_level *= 1 + event.delta.y / 2
+			zoom_menu.zoom_level *= 1 + event.delta.y / 2
 		else:
 			set_view(view.position + event.delta * 32)
 	
 	if event is InputEventMagnifyGesture:
-		%ZoomMenu.zoom_level *= event.factor
+		zoom_menu.zoom_level *= event.factor
 	
 	if event is InputEventMouseButton and event.is_pressed():
 		match event.button_index:
 			MOUSE_BUTTON_WHEEL_UP when GlobalSettings.invert_zoom:
-				%ZoomMenu.zoom_out()
+				zoom_menu.zoom_out()
 			MOUSE_BUTTON_WHEEL_UP:
-				%ZoomMenu.zoom_in()
+				zoom_menu.zoom_in()
 			MOUSE_BUTTON_WHEEL_DOWN when GlobalSettings.invert_zoom:
-				%ZoomMenu.zoom_in()
+				zoom_menu.zoom_in()
 			MOUSE_BUTTON_WHEEL_DOWN:
-				%ZoomMenu.zoom_out()
+				zoom_menu.zoom_out()
 	
 	if event is InputEventMouseButton:
 		if event.ctrl_pressed:
