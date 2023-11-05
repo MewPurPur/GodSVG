@@ -177,5 +177,6 @@ locale/translations=PackedStringArray("res://translations/translation_sheet.bg.t
 
 [rendering]
 
+renderer/rendering_method="gl_compatibility"
 environment/defaults/default_clear_color=Color(0.12, 0.132, 0.2, 1)
 anti_aliasing/quality/screen_space_aa=1
