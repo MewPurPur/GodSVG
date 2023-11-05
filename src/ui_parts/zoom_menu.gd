@@ -14,11 +14,7 @@ var zoom_level: float:
 	set(value):
 		zoom_level = clampf(value, MIN_ZOOM, MAX_ZOOM)
 		zoom_changed.emit(zoom_level)
-		_update_buttons_appearance()
-
-
-func _ready() -> void:
-	zoom_reset()
+		update_buttons_appearance()
 
 
 func zoom_out() -> void:
@@ -35,7 +31,7 @@ func zoom_reset() -> void:
 	zoom_reset_pressed.emit()
 
 
-func _update_buttons_appearance() -> void:
+func update_buttons_appearance() -> void:
 	zoom_reset_button.text = String.num(zoom_level * 100,
 			2 if zoom_level < 0.1 else 1 if zoom_level < 10.0 else 0) + "%"
 	
