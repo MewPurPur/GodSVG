@@ -1,9 +1,9 @@
-[gd_scene load_steps=37 format=3 uid="uid://ce6j54x27pom"]
+[gd_scene load_steps=30 format=3 uid="uid://ce6j54x27pom"]
 
 [ext_resource type="PackedScene" uid="uid://ccynisiuyn5qn" path="res://src/ui_parts/inspector.tscn" id="1_afxvd"]
 [ext_resource type="Texture2D" uid="uid://ccvjkdd0s7rb4" path="res://visual/icons/Copy.svg" id="1_fm0ux"]
 [ext_resource type="Script" path="res://src/ui_parts/code_editor.gd" id="1_ry6k8"]
-[ext_resource type="FontFile" uid="uid://dtb4wkus51hxs" path="res://visual/fonts/FontMono.ttf" id="2_w635r"]
+[ext_resource type="FontFile" uid="uid://cfof4x3ewn6bl" path="res://visual/fonts/FontMono.ttf" id="2_w635r"]
 [ext_resource type="Script" path="res://src/ui_parts/display.gd" id="2_ylpv1"]
 [ext_resource type="Texture2D" uid="uid://c68og6bsqt0lb" path="res://visual/Checkerboard.svg" id="3_d58qh"]
 [ext_resource type="Texture2D" uid="uid://ckkkgof1hcbld" path="res://visual/icons/Gear.svg" id="4_3rshc"]
@@ -20,9 +20,8 @@
 [ext_resource type="Texture2D" uid="uid://buire51l0mifg" path="res://visual/icons/Snap.svg" id="11_u7ddj"]
 [ext_resource type="Shader" path="res://src/ui_parts/zoom_shader.gdshader" id="12_wewnk"]
 [ext_resource type="PackedScene" uid="uid://dad7fkhmsooc6" path="res://src/ui_elements/number_edit.tscn" id="13_oxv3i"]
-[ext_resource type="Texture2D" uid="uid://c2h5snkvemm4p" path="res://visual/icons/Minus.svg" id="13_uqus2"]
-[ext_resource type="Texture2D" uid="uid://eif2ioi0mw17" path="res://visual/icons/Plus.svg" id="14_t8hbh"]
 [ext_resource type="Script" path="res://src/ui_parts/view_camera.gd" id="15_v2yj8"]
+[ext_resource type="PackedScene" uid="uid://oltvrf01xrxl" path="res://src/ui_parts/display/menu/zoom_menu/zoom_menu.tscn" id="18_e3qve"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_082e3"]
 content_margin_left = 6.0
@@ -86,33 +85,6 @@ content_margin_bottom = 7.0
 bg_color = Color(0.02, 0.02, 0.08, 1)
 border_width_bottom = 2
 border_color = Color(0.4, 0.7, 1, 1)
-
-[sub_resource type="InputEventKey" id="InputEventKey_n13ij"]
-device = -1
-ctrl_pressed = true
-keycode = 45
-unicode = 45
-
-[sub_resource type="Shortcut" id="Shortcut_teo1i"]
-events = [SubResource("InputEventKey_n13ij")]
-
-[sub_resource type="InputEventKey" id="InputEventKey_g6r8v"]
-device = -1
-ctrl_pressed = true
-keycode = 48
-unicode = 48
-
-[sub_resource type="Shortcut" id="Shortcut_le5f5"]
-events = [SubResource("InputEventKey_g6r8v")]
-
-[sub_resource type="InputEventKey" id="InputEventKey_la6x6"]
-device = -1
-ctrl_pressed = true
-keycode = 61
-unicode = 61
-
-[sub_resource type="Shortcut" id="Shortcut_ihtjd"]
-events = [SubResource("InputEventKey_la6x6")]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_kqplg"]
 shader = ExtResource("12_wewnk")
@@ -307,49 +279,16 @@ visible = false
 [node name="MorePopup" parent="Display/PanelContainer/HBoxContainer/LeftMenu" instance=ExtResource("10_hraj8")]
 visible = false
 
-[node name="ZoomMenu" type="HBoxContainer" parent="Display/PanelContainer/HBoxContainer"]
-layout_mode = 2
-alignment = 1
-
-[node name="ZoomOut" type="Button" parent="Display/PanelContainer/HBoxContainer/ZoomMenu"]
+[node name="ZoomMenu" parent="Display/PanelContainer/HBoxContainer" instance=ExtResource("18_e3qve")]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(28, 0)
 layout_mode = 2
-tooltip_text = "#zoom_out"
-focus_mode = 0
-mouse_default_cursor_shape = 2
-shortcut = SubResource("Shortcut_teo1i")
-icon = ExtResource("13_uqus2")
-icon_alignment = 1
-
-[node name="ZoomReset" type="Button" parent="Display/PanelContainer/HBoxContainer/ZoomMenu"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(60, 0)
-layout_mode = 2
-tooltip_text = "#zoom_reset"
-focus_mode = 0
-mouse_default_cursor_shape = 2
-theme_override_font_sizes/font_size = 14
-shortcut = SubResource("Shortcut_le5f5")
-text = "100%"
-
-[node name="ZoomIn" type="Button" parent="Display/PanelContainer/HBoxContainer/ZoomMenu"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(28, 0)
-layout_mode = 2
-tooltip_text = "#zoom_in"
-focus_mode = 0
-mouse_default_cursor_shape = 2
-shortcut = SubResource("Shortcut_ihtjd")
-icon = ExtResource("14_t8hbh")
-icon_alignment = 1
 
 [node name="ViewportContainer" type="SubViewportContainer" parent="Display"]
 process_mode = 3
 layout_mode = 2
 size_flags_horizontal = 10
 
-[node name="Viewport" type="SubViewport" parent="Display/ViewportContainer"]
+[node name="Viewport" type="SubViewport" parent="Display/ViewportContainer" node_paths=PackedStringArray("display", "view", "controls", "display_texture")]
 disable_3d = true
 handle_input_locally = false
 gui_snap_controls_to_pixels = false
@@ -357,6 +296,10 @@ size = Vector2i(600, 600)
 size_2d_override_stretch = true
 render_target_update_mode = 4
 script = ExtResource("6_7hypx")
+display = NodePath("Checkerboard")
+view = NodePath("ViewCamera")
+controls = NodePath("Checkerboard/Controls")
+display_texture = NodePath("Checkerboard/DisplayTexture")
 
 [node name="ViewCamera" type="Camera2D" parent="Display/ViewportContainer/Viewport"]
 anchor_mode = 0
@@ -405,6 +348,5 @@ script = ExtResource("5_pltvx")
 [connection signal="toggled" from="Display/PanelContainer/HBoxContainer/LeftMenu/Snapping/SnapButton" to="Display" method="_on_snap_button_toggled"]
 [connection signal="toggled" from="Display/PanelContainer/HBoxContainer/LeftMenu/Snapping/SnapButton" to="Display/ViewportContainer/Viewport/Checkerboard/Controls" method="_on_snap_button_toggled"]
 [connection signal="value_changed" from="Display/PanelContainer/HBoxContainer/LeftMenu/Snapping/NumberEdit" to="Display/ViewportContainer/Viewport/Checkerboard/Controls" method="_on_snapper_value_changed"]
-[connection signal="pressed" from="Display/PanelContainer/HBoxContainer/ZoomMenu/ZoomOut" to="Display/ViewportContainer/Viewport" method="zoom_out"]
-[connection signal="pressed" from="Display/PanelContainer/HBoxContainer/ZoomMenu/ZoomReset" to="Display/ViewportContainer/Viewport" method="zoom_reset"]
-[connection signal="pressed" from="Display/PanelContainer/HBoxContainer/ZoomMenu/ZoomIn" to="Display/ViewportContainer/Viewport" method="zoom_in"]
+[connection signal="zoom_changed" from="Display/PanelContainer/HBoxContainer/ZoomMenu" to="Display/ViewportContainer/Viewport" method="_on_zoom_changed"]
+[connection signal="zoom_reset_pressed" from="Display/PanelContainer/HBoxContainer/ZoomMenu" to="Display/ViewportContainer/Viewport" method="center_frame"]

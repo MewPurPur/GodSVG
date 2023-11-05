@@ -1,0 +1,70 @@
+[gd_scene load_steps=10 format=3 uid="uid://oltvrf01xrxl"]
+
+[ext_resource type="Texture2D" uid="uid://c2h5snkvemm4p" path="res://visual/icons/Minus.svg" id="1_8ggy2"]
+[ext_resource type="Script" path="res://src/ui_parts/display/menu/zoom_menu/zoom_menu.gd" id="1_18ab8"]
+[ext_resource type="Texture2D" uid="uid://eif2ioi0mw17" path="res://visual/icons/Plus.svg" id="2_284x5"]
+
+[sub_resource type="InputEventKey" id="InputEventKey_y2lqj"]
+device = -1
+ctrl_pressed = true
+keycode = 45
+unicode = 45
+
+[sub_resource type="Shortcut" id="Shortcut_ntgv0"]
+events = [SubResource("InputEventKey_y2lqj")]
+
+[sub_resource type="InputEventKey" id="InputEventKey_q17wx"]
+device = -1
+ctrl_pressed = true
+keycode = 48
+unicode = 48
+
+[sub_resource type="Shortcut" id="Shortcut_4v7wx"]
+events = [SubResource("InputEventKey_q17wx")]
+
+[sub_resource type="InputEventKey" id="InputEventKey_gqh1f"]
+device = -1
+ctrl_pressed = true
+keycode = 61
+unicode = 61
+
+[sub_resource type="Shortcut" id="Shortcut_y6ouu"]
+events = [SubResource("InputEventKey_gqh1f")]
+
+[node name="ZoomMenu" type="HBoxContainer"]
+alignment = 1
+script = ExtResource("1_18ab8")
+
+[node name="ZoomOut" type="Button" parent="."]
+custom_minimum_size = Vector2(28, 0)
+layout_mode = 2
+tooltip_text = "#zoom_out"
+focus_mode = 0
+mouse_default_cursor_shape = 2
+shortcut = SubResource("Shortcut_ntgv0")
+icon = ExtResource("1_8ggy2")
+icon_alignment = 1
+
+[node name="ZoomReset" type="Button" parent="."]
+custom_minimum_size = Vector2(60, 0)
+layout_mode = 2
+tooltip_text = "#zoom_reset"
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_font_sizes/font_size = 14
+shortcut = SubResource("Shortcut_4v7wx")
+text = "100%"
+
+[node name="ZoomIn" type="Button" parent="."]
+custom_minimum_size = Vector2(28, 0)
+layout_mode = 2
+tooltip_text = "#zoom_in"
+focus_mode = 0
+mouse_default_cursor_shape = 2
+shortcut = SubResource("Shortcut_y6ouu")
+icon = ExtResource("2_284x5")
+icon_alignment = 1
+
+[connection signal="pressed" from="ZoomOut" to="." method="zoom_out"]
+[connection signal="pressed" from="ZoomReset" to="." method="zoom_reset"]
+[connection signal="pressed" from="ZoomIn" to="." method="zoom_in"]

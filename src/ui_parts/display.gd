@@ -6,9 +6,6 @@ const docs = preload("docs.tscn")
 
 const NumberField = preload("res://src/ui_elements/number_field.tscn")
 
-@onready var zoom_reset_button: Button = %ZoomReset
-@onready var zoom_in_button: Button = %ZoomIn
-@onready var zoom_out_button: Button = %ZoomOut
 @onready var viewport: SubViewport = $ViewportContainer/Viewport
 @onready var controls: Control = %Checkerboard/Controls
 @onready var grid_visuals: Camera2D = $ViewportContainer/Viewport/ViewCamera
@@ -17,17 +14,6 @@ const NumberField = preload("res://src/ui_elements/number_field.tscn")
 @onready var more_button: Button = %LeftMenu/MoreOptions
 @onready var more_popup: Popup = %LeftMenu/MorePopup
 @onready var snapper: BetterLineEdit = %LeftMenu/Snapping/NumberEdit
-
-func update_zoom_widget(zoom_level: float) -> void:
-	await get_tree().process_frame
-	zoom_reset_button.text = String.num(zoom_level * 100,
-			2 if zoom_level < 0.1 else 1 if zoom_level < 10.0 else 0) + "%"
-	zoom_out_button.disabled = (zoom_level <= viewport.min_zoom)
-	zoom_out_button.mouse_default_cursor_shape = Control.CURSOR_ARROW\
-			if zoom_out_button.disabled else Control.CURSOR_POINTING_HAND
-	zoom_in_button.disabled = (zoom_level >= viewport.max_zoom)
-	zoom_in_button.mouse_default_cursor_shape = Control.CURSOR_ARROW\
-			if zoom_in_button.disabled else Control.CURSOR_POINTING_HAND
 
 
 func _on_settings_pressed() -> void:
