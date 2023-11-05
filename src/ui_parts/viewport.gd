@@ -13,6 +13,7 @@ const buffer_view_space = 0.8
 func _ready() -> void:
 	SVG.root_tag.attribute_changed.connect(resize)
 	SVG.root_tag.changed_unknown.connect(resize)
+	zoom_menu.zoom_reset()
 	resize()
 	update_view_limits()
 
