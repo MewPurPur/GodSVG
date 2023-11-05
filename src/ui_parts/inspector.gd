@@ -64,5 +64,4 @@ func populate_add_popup() -> void:
 	add_popup.set_btn_array(btn_array)
 
 func _on_add_button_pressed() -> void:
-	add_popup.popup(Utils.calculate_popup_rect(add_button.global_position,
-			add_button.size, add_popup.size))
+	Utils.popup_under_control(add_popup, add_button)

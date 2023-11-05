@@ -1,8 +1,11 @@
 ## This singleton handles save data and settings.
 extends Node
 
-const save_path = "user://save.tres"
 var save_data := SaveData.new()
+const save_path = "user://save.tres"
+
+var _palettes := SavedColorPalettes.new()
+const palettes_save_path = "user://palettes.tres"
 
 const config_path = "user://config.tres"
 var config := ConfigFile.new()
@@ -33,6 +36,7 @@ var save_svg := false:
 	set(new_value):
 		save_svg = new_value
 		save_setting("session", "save_svg", save_svg)
+
 var invert_zoom := false:
 	set(new_value):
 		invert_zoom = new_value
@@ -44,10 +48,27 @@ func save_setting(section: String, setting: String, saved_value: Variant) -> voi
 
 func save_user_data() -> void:
 	ResourceSaver.save(save_data, save_path)
+	ResourceSaver.save(_palettes, palettes_save_path)
 
 func load_user_data() -> void:
 	if FileAccess.file_exists(save_path):
 		save_data = ResourceLoader.load(save_path)
+	
+	if FileAccess.file_exists(palettes_save_path):
+		_palettes = ResourceLoader.load(palettes_save_path)
+	else:
+		var default_palette_pure := ColorPalette.new("Pure", [
+				NamedColor.new("fff", "White"),
+				NamedColor.new("000", "Black"),
+				NamedColor.new("f00", "Red"),
+				NamedColor.new("0f0", "Green"),
+				NamedColor.new("00f", "Blue"),
+				NamedColor.new("ff0", "Yellow"),
+				NamedColor.new("f0f", "Magenta"),
+				NamedColor.new("0ff", "Cyan"),
+		])
+		get_palettes().append(default_palette_pure)
+		ResourceSaver.save(_palettes, palettes_save_path)
 
 func _exit_tree() -> void:
 	save_data.window_mode = DisplayServer.window_get_mode()
@@ -75,3 +96,6 @@ func reset_settings() -> void:
 	for section in default_config.keys():
 		for setting in default_config[section].keys():
 			set(setting, default_config[section][setting])
+
+func get_palettes() -> Array[ColorPalette]:
+	return _palettes.palettes

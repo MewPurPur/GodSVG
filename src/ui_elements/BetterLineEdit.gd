@@ -21,13 +21,17 @@ func _input(event: InputEvent) -> void:
 	not get_global_rect().has_point(event.position):
 		release_focus()
 
+var tree_was_paused_before := false
 func _on_focus_entered() -> void:
 	process_mode = PROCESS_MODE_ALWAYS
-	get_tree().paused = true
+	tree_was_paused_before = get_tree().paused
+	if not tree_was_paused_before:
+		get_tree().paused = true
 
 func _on_focus_exited() -> void:
-	get_tree().paused = false
 	process_mode = PROCESS_MODE_INHERIT
+	if not tree_was_paused_before:
+		get_tree().paused = false
 
 func _on_mouse_entered() -> void:
 	hovered = true

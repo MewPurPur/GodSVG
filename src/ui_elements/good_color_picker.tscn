@@ -1,0 +1,221 @@
+[gd_scene load_steps=15 format=3 uid="uid://b1eig44cov474"]
+
+[ext_resource type="Script" path="res://src/ui_elements/good_color_picker.gd" id="1_0pc78"]
+[ext_resource type="Shader" path="res://src/shaders/color_wheel.gdshader" id="2_nf1uk"]
+[ext_resource type="Shader" path="res://src/shaders/value_shader.gdshader" id="3_gw5u0"]
+[ext_resource type="Shader" path="res://src/shaders/slider_visuals.gdshader" id="5_acxpg"]
+[ext_resource type="Texture2D" uid="uid://d36qn2f7a0nok" path="res://visual/icons/NoneColor.svg" id="5_rnr60"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_wl372"]
+shader = ExtResource("2_nf1uk")
+shader_parameter/v = 1.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_gihhg"]
+shader = ExtResource("3_gw5u0")
+shader_parameter/base_color = Vector3(0, 0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mqx76"]
+content_margin_top = 1.0
+content_margin_bottom = 1.0
+bg_color = Color(0.866667, 0.933333, 1, 0.133333)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cle8x"]
+content_margin_top = 1.0
+content_margin_bottom = 1.0
+bg_color = Color(0.866667, 0.933333, 1, 0.2)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sndty"]
+content_margin_top = 1.0
+content_margin_bottom = 1.0
+bg_color = Color(0.866667, 0.933333, 1, 0.333333)
+
+[sub_resource type="ButtonGroup" id="ButtonGroup_w0iiw"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_fvg6q"]
+shader = ExtResource("5_acxpg")
+shader_parameter/base_color = Vector3(1, 1, 1)
+shader_parameter/interpolation = 0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_dlmj5"]
+shader = ExtResource("5_acxpg")
+shader_parameter/base_color = Vector3(1, 1, 1)
+shader_parameter/interpolation = 0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_p3pbp"]
+shader = ExtResource("5_acxpg")
+shader_parameter/base_color = Vector3(1, 1, 1)
+shader_parameter/interpolation = 0
+
+[node name="GoodColorPicker" type="VBoxContainer"]
+offset_right = 190.0
+offset_bottom = 266.0
+theme_override_constants/separation = 6
+script = ExtResource("1_0pc78")
+
+[node name="ShapeContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_constants/separation = 0
+alignment = 1
+
+[node name="ColorWheel" type="MarginContainer" parent="ShapeContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 6
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 6
+theme_override_constants/margin_bottom = 6
+
+[node name="ColorWheelDraw" type="ColorRect" parent="ShapeContainer/ColorWheel"]
+material = SubResource("ShaderMaterial_wl372")
+custom_minimum_size = Vector2(160, 160)
+layout_mode = 2
+mouse_filter = 1
+
+[node name="SideSlider" type="MarginContainer" parent="ShapeContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+
+[node name="SideSliderDraw" type="ColorRect" parent="ShapeContainer/SideSlider"]
+material = SubResource("ShaderMaterial_gihhg")
+custom_minimum_size = Vector2(18, 0)
+layout_mode = 2
+mouse_filter = 1
+
+[node name="ColorContainer" type="HBoxContainer" parent="."]
+custom_minimum_size = Vector2(0, 16)
+layout_mode = 2
+
+[node name="None" type="Button" parent="ColorContainer"]
+layout_mode = 2
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_type_variation = &"IconButton"
+theme_override_font_sizes/font_size = 10
+toggle_mode = true
+icon = ExtResource("5_rnr60")
+
+[node name="ColorsDisplay" type="HBoxContainer" parent="ColorContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 18)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_constants/separation = 0
+
+[node name="StartColorRect" type="ColorRect" parent="ColorContainer/ColorsDisplay"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ColorRect" type="ColorRect" parent="ColorContainer/ColorsDisplay"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ResetColorButton" type="Button" parent="ColorContainer/ColorsDisplay/ColorRect"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_type_variation = &"FlatButton"
+icon_alignment = 1
+
+[node name="SliderContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="ColorSpaceContainer" type="HBoxContainer" parent="SliderContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="RGB" type="Button" parent="SliderContainer/ColorSpaceContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_colors/font_disabled_color = Color(0.866667, 0.933333, 1, 1)
+theme_override_styles/normal = SubResource("StyleBoxFlat_mqx76")
+theme_override_styles/hover = SubResource("StyleBoxFlat_cle8x")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_sndty")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_sndty")
+toggle_mode = true
+button_group = SubResource("ButtonGroup_w0iiw")
+text = "RGB"
+
+[node name="HSV" type="Button" parent="SliderContainer/ColorSpaceContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_colors/font_disabled_color = Color(0.866667, 0.933333, 1, 1)
+theme_override_styles/normal = SubResource("StyleBoxFlat_mqx76")
+theme_override_styles/hover = SubResource("StyleBoxFlat_cle8x")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_sndty")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_sndty")
+toggle_mode = true
+button_group = SubResource("ButtonGroup_w0iiw")
+text = "HSV"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="SliderContainer"]
+layout_mode = 2
+
+[node name="Spacer" type="Control" parent="SliderContainer/HBoxContainer"]
+custom_minimum_size = Vector2(10, 0)
+layout_mode = 2
+
+[node name="TracksContainer" type="VBoxContainer" parent="SliderContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+alignment = 2
+
+[node name="Slider1" type="MarginContainer" parent="SliderContainer/HBoxContainer/TracksContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_bottom = 8
+
+[node name="ColorTrack" type="ColorRect" parent="SliderContainer/HBoxContainer/TracksContainer/Slider1"]
+material = SubResource("ShaderMaterial_fvg6q")
+custom_minimum_size = Vector2(0, 12)
+layout_mode = 2
+mouse_filter = 1
+
+[node name="Slider2" type="MarginContainer" parent="SliderContainer/HBoxContainer/TracksContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_bottom = 8
+
+[node name="ColorTrack" type="ColorRect" parent="SliderContainer/HBoxContainer/TracksContainer/Slider2"]
+material = SubResource("ShaderMaterial_dlmj5")
+custom_minimum_size = Vector2(0, 12)
+layout_mode = 2
+mouse_filter = 1
+
+[node name="Slider3" type="MarginContainer" parent="SliderContainer/HBoxContainer/TracksContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_bottom = 8
+
+[node name="ColorTrack" type="ColorRect" parent="SliderContainer/HBoxContainer/TracksContainer/Slider3"]
+material = SubResource("ShaderMaterial_p3pbp")
+custom_minimum_size = Vector2(0, 12)
+layout_mode = 2
+mouse_filter = 1
+
+[connection signal="gui_input" from="ShapeContainer/ColorWheel" to="." method="_on_color_wheel_gui_input"]
+[connection signal="draw" from="ShapeContainer/SideSlider" to="." method="_on_side_slider_draw"]
+[connection signal="gui_input" from="ShapeContainer/SideSlider" to="." method="_on_side_slider_gui_input"]
+[connection signal="pressed" from="ColorContainer/None" to="." method="toggle_none"]
+[connection signal="gui_input" from="ColorContainer/ColorsDisplay/ColorRect/ResetColorButton" to="." method="_on_reset_color_button_gui_input"]
+[connection signal="mouse_exited" from="ColorContainer/ColorsDisplay/ColorRect/ResetColorButton" to="." method="_on_reset_color_button_mouse_exited"]
+[connection signal="pressed" from="ColorContainer/ColorsDisplay/ColorRect/ResetColorButton" to="." method="_on_reset_color_button_pressed"]
+[connection signal="pressed" from="SliderContainer/ColorSpaceContainer/RGB" to="." method="_on_rgb_pressed"]
+[connection signal="pressed" from="SliderContainer/ColorSpaceContainer/HSV" to="." method="_on_hsv_pressed"]
+[connection signal="draw" from="SliderContainer/HBoxContainer/TracksContainer/Slider1" to="." method="_on_slider1_draw"]
+[connection signal="gui_input" from="SliderContainer/HBoxContainer/TracksContainer/Slider1" to="." method="_on_slider1_gui_input"]
+[connection signal="draw" from="SliderContainer/HBoxContainer/TracksContainer/Slider2" to="." method="_on_slider2_draw"]
+[connection signal="gui_input" from="SliderContainer/HBoxContainer/TracksContainer/Slider2" to="." method="_on_slider2_gui_input"]
+[connection signal="draw" from="SliderContainer/HBoxContainer/TracksContainer/Slider3" to="." method="_on_slider3_draw"]
+[connection signal="gui_input" from="SliderContainer/HBoxContainer/TracksContainer/Slider3" to="." method="_on_slider3_gui_input"]

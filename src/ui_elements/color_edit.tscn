@@ -1,0 +1,58 @@
+[gd_scene load_steps=5 format=3 uid="uid://5f8uxavn1or1"]
+
+[ext_resource type="Script" path="res://src/ui_elements/color_edit.gd" id="1_1uexr"]
+[ext_resource type="Script" path="res://src/ui_elements/BetterLineEdit.gd" id="1_efrfl"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_q6tej"]
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 1
+border_width_bottom = 2
+border_color = Color(1, 1, 1, 0.0666667)
+corner_radius_top_left = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_edu3w"]
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 1
+border_width_bottom = 2
+border_color = Color(0.501961, 0.74902, 1, 0.2)
+corner_radius_top_left = 5
+corner_radius_bottom_left = 5
+
+[node name="ColorEdit" type="HBoxContainer"]
+custom_minimum_size = Vector2(0, 22)
+offset_right = 50.0
+offset_bottom = 21.0
+theme_override_constants/separation = 0
+script = ExtResource("1_1uexr")
+
+[node name="LineEdit" type="LineEdit" parent="."]
+custom_minimum_size = Vector2(54, 0)
+layout_mode = 2
+focus_mode = 1
+theme_type_variation = &"RightConnectedLineEdit"
+max_length = 20
+context_menu_enabled = false
+select_all_on_focus = true
+caret_blink = true
+script = ExtResource("1_efrfl")
+hover_stylebox = SubResource("StyleBoxFlat_q6tej")
+focus_stylebox = SubResource("StyleBoxFlat_edu3w")
+code_font_tooltip = true
+
+[node name="Button" type="Button" parent="."]
+custom_minimum_size = Vector2(13, 0)
+layout_mode = 2
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_type_variation = &"LeftConnectedButtonTransparent"
+
+[connection signal="focus_exited" from="LineEdit" to="." method="_on_focus_exited"]
+[connection signal="text_changed" from="LineEdit" to="." method="_on_line_edit_text_changed"]
+[connection signal="text_submitted" from="LineEdit" to="." method="_on_text_submitted"]
+[connection signal="pressed" from="Button" to="." method="_on_button_pressed"]
+[connection signal="resized" from="Button" to="." method="_on_button_resized"]

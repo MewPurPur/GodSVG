@@ -41,8 +41,7 @@ func _ready() -> void:
 	line_edit.size.x = 0
 
 func _on_button_pressed() -> void:
-	value_picker.popup(Utils.calculate_popup_rect(
-			line_edit.global_position, line_edit.size, value_picker.size))
+	Utils.popup_under_control(value_picker, line_edit)
 
 func _on_value_chosen(new_value: String) -> void:
 	value_picker.hide()

@@ -145,8 +145,7 @@ func tag_context_populate() -> void:
 func _on_title_button_pressed() -> void:
 	Indications.set_selection(tid)
 	tag_context_populate()
-	tag_context.popup(Utils.calculate_popup_rect(title_button.global_position,
-			title_button.size, tag_context.size))
+	Utils.popup_under_control(tag_context, title_button)
 
 # FIXME fix move commands
 func _on_move_up_button_pressed() -> void:
@@ -176,8 +175,8 @@ func _on_gui_input(event: InputEvent) -> void:
 		elif event.button_index == MOUSE_BUTTON_RIGHT:
 			Indications.set_selection(tid)
 			tag_context_populate()
-			tag_context.popup(Utils.calculate_popup_rect(get_global_mouse_position(),
-					Vector2.ZERO, tag_context.size, true))
+			tag_context.popup(Rect2(get_global_mouse_position() +\
+					Vector2(-tag_context.size.x / 2, 0), tag_context.size))
 
 
 var mouse_inside := false:
@@ -207,16 +206,16 @@ func determine_selection_highlight() -> void:
 	
 	if is_selected:
 		if is_hovered:
-			stylebox.bg_color = Color(0.12, 0.15, 0.24).lightened(0.015)
+			stylebox.bg_color = Color.from_hsv(0.625, 0.48, 0.27)
 		else:
-			stylebox.bg_color = Color(0.12, 0.15, 0.24)
-		stylebox.border_color = Color(0.2, 0.32, 0.5)
+			stylebox.bg_color = Color.from_hsv(0.625, 0.5, 0.25)
+		stylebox.border_color = Color.from_hsv(0.6, 0.7, 0.54)
 	elif is_hovered:
-		stylebox.bg_color = Color(0.065, 0.085, 0.15).lightened(0.02)
-		stylebox.border_color = Color(0.065, 0.085, 0.15).lightened(0.09)
+		stylebox.bg_color = Color.from_hsv(0.625, 0.57, 0.19)
+		stylebox.border_color = Color.from_hsv(0.625, 0.5, 0.3)
 	else:
-		stylebox.bg_color = Color(0.065, 0.085, 0.15)
-		stylebox.border_color = Color(0.065, 0.085, 0.15).lightened(0.04)
+		stylebox.bg_color = Color.from_hsv(0.625, 0.6, 0.16)
+		stylebox.border_color = Color.from_hsv(0.625, 0.56, 0.25)
 	
 	var depth := tid.size() - 1
 	if depth > 0:

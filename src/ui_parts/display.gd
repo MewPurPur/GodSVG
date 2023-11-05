@@ -22,6 +22,7 @@ func _on_settings_pressed() -> void:
 	get_tree().get_root().add_child(settings_menu_instance)
 
 func _on_visuals_button_pressed() -> void:
+	var btn_arr: Array[Button] = []
 	var show_visuals_btn := CheckBox.new()
 	show_visuals_btn.text = tr(&"#show_grid")
 	show_visuals_btn.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
@@ -43,10 +44,9 @@ func _on_visuals_button_pressed() -> void:
 	rasterize_btn.alignment = HORIZONTAL_ALIGNMENT_LEFT
 	rasterize_btn.pressed.connect(toggle_rasterization)
 	
-	visuals_popup.set_btn_array([show_visuals_btn, show_handles_btn, rasterize_btn]\
-			as Array[Button])
-	visuals_popup.popup(Utils.calculate_popup_rect(
-			visuals_button.global_position, visuals_button.size, visuals_popup.size, true))
+	btn_arr = [show_visuals_btn, show_handles_btn, rasterize_btn]
+	visuals_popup.set_btn_array(btn_arr)
+	Utils.popup_under_control(visuals_popup, visuals_button, true)
 
 func _on_more_options_pressed() -> void:
 	var open_repo_btn := Button.new()
@@ -80,8 +80,7 @@ func _on_more_options_pressed() -> void:
 	
 	var buttons_arr: Array[Button] = [open_repo_btn, about_btn, docs_btn, donate_btn]
 	more_popup.set_btn_array(buttons_arr)
-	more_popup.popup(Utils.calculate_popup_rect(
-			more_button.global_position, more_button.size, more_popup.size, true))
+	Utils.popup_under_control(more_popup, more_button, true)
 
 func open_godsvg_repo() -> void:
 	more_popup.hide()
