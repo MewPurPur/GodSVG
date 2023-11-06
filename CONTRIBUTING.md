@@ -29,6 +29,7 @@ For scripts, only GDScript code is allowed. Follow the [GDScript style guide](ht
 
 - Static typing is predominantly used.
 - Comments should be written like sentences with punctuation.
+- Empty lines in the middle of indented blocks should keep their scope's indentation.
 - Class names must use `class_name X extends Y` syntax.
 - `@export` should only be used for nodes if the runtime structure is not known.
 
