@@ -8,13 +8,16 @@ const ticks_interval = 4
 
 var surface := RenderingServer.canvas_item_create()  # Used for drawing the numbers.
 
+@onready var zoom_menu: HBoxContainer = %ZoomMenu
+
+
 func _ready() -> void:
 	RenderingServer.canvas_item_set_parent(surface, get_canvas_item())
 	SVG.root_tag.attribute_changed.connect(queue_redraw)
 
 # Don't ask me to explain this.
 func _draw() -> void:
-	var size: Vector2 = get_parent().size / %ZoomMenu.zoom_level
+	var size: Vector2 = get_parent().size / zoom_menu.zoom_level
 	draw_line(Vector2(-position.x, 0), Vector2(-position.x, size.y), main_line_color)
 	draw_line(Vector2(0, -position.y), Vector2(size.x, -position.y), main_line_color)
 	
@@ -23,7 +26,7 @@ func _draw() -> void:
 	var x_offset := fmod(-position.x, 1.0)
 	var y_offset := fmod(-position.y, 1.0)
 	var tick_distance := float(ticks_interval)
-	var viewport_scale: float = %ZoomMenu.zoom_level
+	var viewport_scale: float = zoom_menu.zoom_level
 	var draw_pixel_lines := viewport_scale >= 3.0
 	var rate := nearest_po2(roundi(maxf(64.0 / (ticks_interval * viewport_scale), 1.0)))
 	
