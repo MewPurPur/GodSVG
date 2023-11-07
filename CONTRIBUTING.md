@@ -28,9 +28,9 @@ Do understand that PRs with a large maintenance cost may be under high scrutiny 
 For scripts, only GDScript code is allowed. Follow the [GDScript style guide](https://docs.godotengine.org/en/stable/tutorials/scripting/gdscript/gdscript_styleguide.html). Most of its rules are enforced here. Additionally:
 
 - Static typing is predominantly used.
-- Comments should be written like sentences with punctuation.
-- Empty lines in the middle of indented blocks should keep their scope's indentation.
-- Class names must use `class_name X extends Y` syntax.
-- `@export` should only be used for nodes if the runtime structure is not known.
+- Comments are usually written like sentences with punctuation.
+- For empty lines in the middle of indented blocks, the scope's indentation is kept.
+- Class names use `class_name X extends Y` syntax.
+- `@export` for nodes is only used if the runtime structure is not known.
 
-Pull requests may get production tweaks to fix their style before being merged.
+Don't make pull requests for code style changes without discussing them first (unless it's for corrections to abide by the ones described here). Pull requests may also get production tweaks to fix their style before being merged.
