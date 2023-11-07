@@ -15,7 +15,7 @@ This is the preferred workflow, but tidiness is not as important as work being d
 
 After submitting your pull request, I (MewPurPur) will review your changes and may provide feedback or request modifications. Be responsive to any comments or suggestions. Once your pull request is approved, it will be merged. Afterward, you can delete your branch from your fork.
 
-## Governance
+## Governance 
 
 Before starting to work on a PR, look through the list of issues to see if your PR will resolve any of them. If said issue is not assigned to anyone and you don't want anyone else to work on it,  ask to be assigned to the issue.
 
