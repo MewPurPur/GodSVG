@@ -32,6 +32,11 @@ window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
 mouse_cursor/tooltip_position_offset=Vector2(0, 10)
 
+[filesystem]
+
+import/blender/enabled=false
+import/fbx/enabled=false
+
 [gui]
 
 theme/custom="res://visual/main_theme.tres"
