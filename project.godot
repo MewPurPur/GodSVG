@@ -17,6 +17,10 @@ config/features=PackedStringArray("4.2", "Forward Plus")
 run/low_processor_mode=true
 config/icon="res://visual/icon.png"
 
+[audio]
+
+driver/driver="Dummy"
+
 [autoload]
 
 SVG="*res://src/SVG.gd"
@@ -28,9 +32,15 @@ Indications="*res://src/Indications.gd"
 window/size/viewport_width=1024
 window/size/viewport_height=640
 window/size/mode=2
+window/energy_saving/keep_screen_on=false
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
 mouse_cursor/tooltip_position_offset=Vector2(0, 10)
+
+[filesystem]
+
+import/blender/enabled=false
+import/fbx/enabled=false
 
 [gui]
 
