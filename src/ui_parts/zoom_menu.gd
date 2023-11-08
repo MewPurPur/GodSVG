@@ -34,11 +34,11 @@ func zoom_reset() -> void:
 func update_buttons_appearance() -> void:
 	zoom_reset_button.text = String.num(zoom_level * 100,
 			2 if zoom_level < 0.1 else 1 if zoom_level < 10.0 else 0) + "%"
-	
+
 	zoom_in_button.disabled = zoom_level >= MAX_ZOOM
 	zoom_in_button.mouse_default_cursor_shape = Control.CURSOR_ARROW if\
 			zoom_in_button.disabled else Control.CURSOR_POINTING_HAND
-	
+
 	zoom_out_button.disabled = zoom_level <= MIN_ZOOM
 	zoom_out_button.mouse_default_cursor_shape = Control.CURSOR_ARROW if\
 			zoom_out_button.disabled else Control.CURSOR_POINTING_HAND

@@ -60,7 +60,7 @@ func _get_line_syntax_highlighting(line: int) -> Dictionary:
 					next_end = mini(next_end_a, next_end_b)
 				else:
 					return color_map
-				
+
 				# Highlight the attribute name and equal sign.
 				while offset < next_end:
 					var next_equal_sign := svg_text.find("=", offset)
@@ -78,7 +78,7 @@ func _get_line_syntax_highlighting(line: int) -> Dictionary:
 							offset += 1
 						offset = next_equal_sign
 						color_map[offset] = {"color": symbol_color}
-					
+
 					# Highlight the attribute value.
 					offset += 1
 					color_map[offset] = {"color": error_color}
@@ -99,6 +99,6 @@ func _get_line_syntax_highlighting(line: int) -> Dictionary:
 							offset = next_quote_pos + 1
 				# Finish parsing.
 				color_map[offset] = {"color": symbol_color}
-	
+
 	return color_map
 

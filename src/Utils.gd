@@ -93,7 +93,7 @@ static func is_tid_parent(parent: PackedInt32Array, child: PackedInt32Array) -> 
 	var parent_size := parent.size()
 	if parent_size >= child.size():
 		return false
-	
+
 	for i in parent_size:
 		if parent[i] != child[i]:
 			return false

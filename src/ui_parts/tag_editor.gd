@@ -86,12 +86,12 @@ func _ready() -> void:
 			shape_container.add_child(input_field)
 		else:
 			paint_container.add_child(input_field)
-	
+
 	determine_selection_highlight()
-	
+
 	if not tag.child_tags.is_empty():
 		child_tags_container.show()
-		
+
 		for tag_idx in tag.get_child_count():
 			var child_tag := tag.child_tags[tag_idx]
 			var tag_editor := TagEditor.instantiate()
@@ -106,7 +106,7 @@ func tag_context_populate() -> void:
 	var parent_tid := Utils.get_parent_tid(tid)
 	var tag_count := SVG.root_tag.get_by_tid(parent_tid).get_child_count()
 	var buttons_arr: Array[Button] = []
-	
+
 	var duplicate_button := Button.new()
 	duplicate_button.text = tr(&"#duplicate")
 	duplicate_button.icon = load("res://visual/icons/Duplicate.svg")
@@ -114,7 +114,7 @@ func tag_context_populate() -> void:
 	duplicate_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 	duplicate_button.pressed.connect(_on_duplicate_button_pressed)
 	buttons_arr.append(duplicate_button)
-	
+
 	if tid[-1] > 0:
 		var move_up_button := Button.new()
 		move_up_button.text = tr(&"#move_up")
@@ -131,7 +131,7 @@ func tag_context_populate() -> void:
 		move_down_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		move_down_button.pressed.connect(_on_move_down_button_pressed)
 		buttons_arr.append(move_down_button)
-	
+
 	var delete_button := Button.new()
 	delete_button.text = tr(&"#delete")
 	delete_button.icon = load("res://visual/icons/Delete.svg")
@@ -139,7 +139,7 @@ func tag_context_populate() -> void:
 	delete_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 	delete_button.pressed.connect(_on_delete_button_pressed)
 	buttons_arr.append(delete_button)
-	
+
 	tag_context.set_btn_array(buttons_arr)
 
 func _on_title_button_pressed() -> void:
@@ -201,10 +201,10 @@ func determine_selection_highlight() -> void:
 	var stylebox := StyleBoxFlat.new()
 	stylebox.set_corner_radius_all(4)
 	stylebox.set_border_width_all(2)
-	
+
 	var is_selected := tid in Indications.selected_tids
 	var is_hovered := Indications.hovered_tid == tid
-	
+
 	if is_selected:
 		if is_hovered:
 			stylebox.bg_color = Color(0.12, 0.15, 0.24).lightened(0.015)
@@ -217,7 +217,7 @@ func determine_selection_highlight() -> void:
 	else:
 		stylebox.bg_color = Color(0.065, 0.085, 0.15)
 		stylebox.border_color = Color(0.065, 0.085, 0.15).lightened(0.04)
-	
+
 	var depth := tid.size() - 1
 	if depth > 0:
 		stylebox.bg_color = Color.from_hsv(stylebox.bg_color.h + depth * 0.12,

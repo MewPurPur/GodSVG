@@ -45,7 +45,7 @@ func _ready() -> void:
 func toggle_selection(tid: PackedInt32Array) -> void:
 	if tid.is_empty():
 		return
-	
+
 	var tid_idx := selected_tids.find(tid)
 	if tid_idx == -1:
 		selected_tids.append(tid.duplicate())
@@ -58,7 +58,7 @@ func toggle_selection(tid: PackedInt32Array) -> void:
 func toggle_inner_selection(tid: PackedInt32Array, inner_idx: int) -> void:
 	if tid.is_empty():
 		return
-	
+
 	var idx_idx := inner_selections.find(inner_idx)
 	if idx_idx == -1:
 		inner_selections.append(inner_idx)

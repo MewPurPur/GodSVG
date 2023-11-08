@@ -16,7 +16,7 @@ func set_value(new_value: float, emit_value_changed := true):
 	_value = validate(new_value)
 	if _value != old_value and emit_value_changed:
 		value_changed.emit(_value)
-	
+
 	text = String.num(_value, 4)
 
 func get_value() -> float:

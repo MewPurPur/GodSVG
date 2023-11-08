@@ -42,20 +42,20 @@ func center_frame() -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if not event is InputEventMouseMotion or event.button_mask != 0:
 		view.queue_redraw()
-	
+
 	if event is InputEventMouseMotion and\
 	event.button_mask in [MOUSE_BUTTON_MASK_LEFT, MOUSE_BUTTON_MASK_MIDDLE]:
 		set_view(view.position - event.relative)
-	
+
 	if event is InputEventPanGesture:
 		if event.ctrl_pressed:
 			zoom_menu.zoom_level *= 1 + event.delta.y / 2
 		else:
 			set_view(view.position + event.delta * 32)
-	
+
 	if event is InputEventMagnifyGesture:
 		zoom_menu.zoom_level *= event.factor
-	
+
 	if event is InputEventMouseButton and event.is_pressed():
 		match event.button_index:
 			MOUSE_BUTTON_WHEEL_UP when GlobalSettings.invert_zoom:
@@ -66,7 +66,7 @@ func _unhandled_input(event: InputEvent) -> void:
 				zoom_menu.zoom_in()
 			MOUSE_BUTTON_WHEEL_DOWN:
 				zoom_menu.zoom_out()
-	
+
 	if event is InputEventMouseButton:
 		if event.ctrl_pressed:
 			pass

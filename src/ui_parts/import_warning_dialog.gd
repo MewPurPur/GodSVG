@@ -20,7 +20,7 @@ func _ready() -> void:
 	var warnings := get_svg_errors(imported_text)
 	if warnings.is_empty():
 		imported.emit(imported_text)
-	
+
 	for warning in warnings:
 		warnings_label.text += warning + "\n"
 
@@ -37,7 +37,7 @@ func get_svg_errors(text: String) -> Array[String]:
 	else:
 		var svg_tag := SVGParser.text_to_svg(text)
 		var tids := svg_tag.get_all_tids()
-		
+
 		for tid in tids:
 			var tag := svg_tag.get_by_tid(tid)
 			if tag is TagUnknown:

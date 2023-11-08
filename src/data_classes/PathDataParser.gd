@@ -12,7 +12,7 @@ static func path_data_to_arrays(path_string: String) -> Array[Array]:
 	var curr_command_args: Array = []
 	var args_left := 0
 	var comma_exhausted := false
-	
+
 	var idx := -1
 	while idx < path_string.length() - 1:
 		idx += 1
@@ -106,7 +106,7 @@ static func path_data_to_arrays(path_string: String) -> Array[Array]:
 								break
 				curr_command_args.append(num_string.to_float())
 			args_left -= 1
-		
+
 		# Wrap up the array.
 		if args_left == 0:
 			prev_command = curr_command

@@ -20,7 +20,7 @@ func _draw() -> void:
 	var size: Vector2 = get_parent().size / zoom_menu.zoom_level
 	draw_line(Vector2(-position.x, 0), Vector2(-position.x, size.y), main_line_color)
 	draw_line(Vector2(0, -position.y), Vector2(size.x, -position.y), main_line_color)
-	
+
 	var primary_points := PackedVector2Array()
 	var pixel_points := PackedVector2Array()
 	var x_offset := fmod(-position.x, 1.0)
@@ -29,12 +29,12 @@ func _draw() -> void:
 	var viewport_scale: float = zoom_menu.zoom_level
 	var draw_pixel_lines := viewport_scale >= 3.0
 	var rate := nearest_po2(roundi(maxf(64.0 / (ticks_interval * viewport_scale), 1.0)))
-	
+
 	# The grid lines are always 1px wide, but the numbers need to be resized.
 	RenderingServer.canvas_item_clear(surface)
 	RenderingServer.canvas_item_set_transform(surface,
 			Transform2D(0, Vector2(1, 1) / viewport_scale, 0, Vector2.ZERO))
-	
+
 	var i := x_offset
 	while i <= size.x:
 		if fposmod(-position.x, tick_distance) != fposmod(i, tick_distance):

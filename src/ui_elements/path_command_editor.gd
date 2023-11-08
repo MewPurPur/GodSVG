@@ -38,7 +38,7 @@ func update_type() -> void:
 	cmd_char = path_command.command_char
 	var command_type := cmd_char.to_upper()
 	fields.clear()
-	
+
 	# Instantiate the input fields.
 	if command_type == "A":
 		var fields_rx_ry: Array[BetterLineEdit] = add_number_field_pair()
@@ -179,7 +179,7 @@ func insert_after() -> void:
 func open_actions() -> void:
 	Indications.set_inner_selection(tid, cmd_idx)
 	var buttons_arr: Array[Button] = []
-	
+
 	var delete_btn := Button.new()
 	delete_btn.text = tr(&"#delete")
 	delete_btn.icon = load("res://visual/icons/Delete.svg")
@@ -187,7 +187,7 @@ func open_actions() -> void:
 	delete_btn.alignment = HORIZONTAL_ALIGNMENT_LEFT
 	delete_btn.pressed.connect(delete)
 	buttons_arr.append(delete_btn)
-	
+
 	var insert_after_btn := Button.new()
 	insert_after_btn.text = tr(&"#insert_after")
 	insert_after_btn.icon = load("res://visual/icons/Plus.svg")
@@ -195,7 +195,7 @@ func open_actions() -> void:
 	insert_after_btn.alignment = HORIZONTAL_ALIGNMENT_LEFT
 	insert_after_btn.pressed.connect(insert_after)
 	buttons_arr.append(insert_after_btn)
-	
+
 	action_popup.set_btn_array(buttons_arr)
 	action_popup.popup(Utils.calculate_popup_rect(more_button.global_position,
 			more_button.size, action_popup.size, true))

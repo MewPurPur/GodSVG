@@ -22,21 +22,21 @@ var viewbox_edit: AttributeEditor
 
 func _ready() -> void:
 	SVG.root_tag.changed_unknown.connect(determine_coupling)
-	
+
 	width_edit = NumberField.instantiate()
 	width_edit.allow_lower = false
 	width_edit.attribute = tag.attributes.width
 	width_edit.attribute_name = "width"
 	width_container.add_child(width_edit)
 	width_edit.value_changed.connect(update_svg_attributes.unbind(1))
-	
+
 	height_edit = NumberField.instantiate()
 	height_edit.allow_lower = false
 	height_edit.attribute = tag.attributes.height
 	height_edit.attribute_name = "height"
 	height_container.add_child(height_edit)
 	height_edit.value_changed.connect(update_svg_attributes.unbind(1))
-	
+
 	viewbox_edit = RectField.instantiate()
 	viewbox_edit.attribute = tag.attributes.viewBox
 	viewbox_edit.attribute_name = "viewBox"

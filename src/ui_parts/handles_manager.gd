@@ -1,4 +1,4 @@
-## Contours drawing and [Handle]s are managed here. 
+## Contours drawing and [Handle]s are managed here.
 extends Control
 
 const handle_sizes = {
@@ -109,7 +109,7 @@ func setup_handles_for_tag(tid: PackedInt32Array):
 		handle.tag = tag
 		handle.tid = tid
 	handles += new_handles
-	
+
 	for tag_idx in tag.get_child_count():
 		var new_tid := tid.duplicate()
 		new_tid.append(tag_idx)
@@ -124,9 +124,9 @@ func sync_handles() -> void:
 			handle.sync()
 		elif handle is PathHandle and dragged_handle != handle:
 			handles.remove_at(handle_idx)
-	
+
 	var tids := SVG.root_tag.get_all_tids()
-	
+
 	for tid in tids:
 		var tag := SVG.root_tag.get_by_tid(tid)
 		if tag.name == "path":
@@ -155,7 +155,7 @@ func _draw() -> void:
 	var thickness := 0.85 / zoom
 	var tangent_thickness := 0.55 / zoom
 	var tangent_alpha := 0.8
-	
+
 	# Draw the contours of shapes, and also tangents of bezier curves in paths.
 	var normal_polylines: Array[PackedVector2Array] = []
 	var selected_polylines: Array[PackedVector2Array] = []
@@ -165,13 +165,13 @@ func _draw() -> void:
 	var selected_tangent_multiline := PackedVector2Array()
 	var hovered_tangent_multiline := PackedVector2Array()
 	var hovered_selected_tangent_multiline := PackedVector2Array()
-	
+
 	var tids := SVG.root_tag.get_all_tids()
-	
+
 	for tid in tids:
 		var tag := SVG.root_tag.get_by_tid(tid)
 		var attribs := tag.attributes
-		
+
 		match tag.name:
 			"circle":
 				var c := Vector2(attribs.cx.get_value(), attribs.cy.get_value())
@@ -180,10 +180,10 @@ func _draw() -> void:
 				for i in range(0, 361, 2):
 					var d := deg_to_rad(i)
 					points.append(convert_in(c + Vector2(cos(d) * r, sin(d) * r)))
-				
+
 				var tag_hovered := tid == Indications.hovered_tid
 				var tag_selected := tid in Indications.selected_tids
-				
+
 				if tag_hovered and tag_selected:
 					hovered_selected_polylines.append(points)
 				elif tag_hovered:
@@ -192,7 +192,7 @@ func _draw() -> void:
 					selected_polylines.append(points)
 				else:
 					normal_polylines.append(points)
-				
+
 			"ellipse":
 				var c := Vector2(attribs.cx.get_value(), attribs.cy.get_value())
 				var rx: float = attribs.rx.get_value()
@@ -202,10 +202,10 @@ func _draw() -> void:
 				for i in range(0, 361, 2):
 					var d := deg_to_rad(i)
 					points.append(convert_in(c + Vector2(cos(d) * rx, sin(d) * ry)))
-				
+
 				var tag_hovered := tid == Indications.hovered_tid
 				var tag_selected := tid in Indications.selected_tids
-				
+
 				if tag_hovered and tag_selected:
 					hovered_selected_polylines.append(points)
 				elif tag_hovered:
@@ -214,7 +214,7 @@ func _draw() -> void:
 					selected_polylines.append(points)
 				else:
 					normal_polylines.append(points)
-				
+
 			"rect":
 				var x: float = attribs.x.get_value()
 				var y: float = attribs.y.get_value()
@@ -259,10 +259,10 @@ func _draw() -> void:
 						var d := deg_to_rad(i)
 						points.append(convert_in(Vector2(x + rx, y + ry) +\
 								Vector2(cos(d) * rx, sin(d) * ry)))
-				
+
 				var tag_hovered := tid == Indications.hovered_tid
 				var tag_selected := tid in Indications.selected_tids
-				
+
 				if tag_hovered and tag_selected:
 					hovered_selected_polylines.append(points)
 				elif tag_hovered:
@@ -271,20 +271,20 @@ func _draw() -> void:
 					selected_polylines.append(points)
 				else:
 					normal_polylines.append(points)
-				
+
 			"line":
 				var x1: float = attribs.x1.get_value()
 				var y1: float = attribs.y1.get_value()
 				var x2: float = attribs.x2.get_value()
 				var y2: float = attribs.y2.get_value()
-				
+
 				var points := PackedVector2Array()
 				points.append(convert_in(Vector2(x1, y1)))
 				points.append(convert_in(Vector2(x2, y2)))
-				
+
 				var tag_hovered := tid == Indications.hovered_tid
 				var tag_selected := tid in Indications.selected_tids
-				
+
 				if tag_hovered and tag_selected:
 					hovered_selected_polylines.append(points)
 				elif tag_hovered:
@@ -293,7 +293,7 @@ func _draw() -> void:
 					selected_polylines.append(points)
 				else:
 					normal_polylines.append(points)
-				
+
 			"path":
 				var pathdata: AttributePath = attribs.d
 				var current_mode := InteractionType.NONE
@@ -303,7 +303,7 @@ func _draw() -> void:
 					var tangent_points := PackedVector2Array()
 					var cmd := pathdata.get_command(cmd_idx)
 					var relative := cmd.relative
-					
+
 					current_mode = InteractionType.NONE
 					if Indications.hovered_tid == tid or\
 					(Indications.semi_hovered_tid == tid and\
@@ -315,7 +315,7 @@ func _draw() -> void:
 					cmd_idx in Indications.inner_selections):
 						@warning_ignore("int_as_enum_without_cast")
 						current_mode += InteractionType.SELECTED
-					
+
 					match cmd.command_char.to_upper():
 						"L":
 							# Line contour.
@@ -341,7 +341,7 @@ func _draw() -> void:
 							var cp4 := cp1 + v if relative else v
 							var cp2 := v1 if relative else v1 - cp1
 							var cp3 := v2 - v
-							
+
 							points = Utils.get_cubic_bezier_points(convert_in(cp1),
 									cp2 * viewbox_zoom, cp3 * viewbox_zoom, convert_in(cp4))
 							tangent_points.append(convert_in(cp1))
@@ -353,7 +353,7 @@ func _draw() -> void:
 							if cmd_idx == 0:
 								break
 							var prev_cmd := pathdata.get_command(cmd_idx - 1)
-							
+
 							var v := Vector2(cmd.x, cmd.y)
 							var v1 := Vector2() if relative else cmd.start
 							if prev_cmd.command_char.to_upper() in ["C", "S"]:
@@ -365,12 +365,12 @@ func _draw() -> void:
 									v1 = cmd.start - prev_control_pt if relative\
 											else cmd.start * 2 - prev_control_pt
 							var v2 := Vector2(cmd.x2, cmd.y2)
-							
+
 							var cp1 := cmd.start
 							var cp4 := cp1 + v if relative else v
 							var cp2 := v1 if relative else v1 - cp1
 							var cp3 := v2 - v
-							
+
 							points = Utils.get_cubic_bezier_points(convert_in(cp1),
 									cp2 * viewbox_zoom, cp3 * viewbox_zoom, convert_in(cp4))
 							tangent_points.append(convert_in(cp1))
@@ -384,7 +384,7 @@ func _draw() -> void:
 							var cp1 := cmd.start
 							var cp2 := cp1 + v1 if relative else v1
 							var cp3 := cp1 + v if relative else v
-							
+
 							points = Utils.get_quadratic_bezier_points(
 									convert_in(cp1), convert_in(cp2), convert_in(cp3))
 							tangent_points.append(convert_in(cp1))
@@ -417,7 +417,7 @@ func _draw() -> void:
 									if prevQ_cmd.relative else prevQ_v
 							var prevQ_control_pt := prevQ_cmd.start + prevQ_v1\
 									if prevQ_cmd.relative else prevQ_v1
-							
+
 							var v := Vector2(cmd.x, cmd.y)
 							var v1 := prevQ_end * 2 - prevQ_control_pt
 							for T_idx in range(prevQ_idx + 1, cmd_idx):
@@ -425,11 +425,11 @@ func _draw() -> void:
 								var T_v := Vector2(T_cmd.x, T_cmd.y)
 								var T_end := T_cmd.start + T_v if T_cmd.relative else T_v
 								v1 = T_end * 2 - v1
-							
+
 							var cp1 := cmd.start
 							var cp2 := v1
 							var cp3 := cp1 + v if relative else v
-							
+
 							points = Utils.get_quadratic_bezier_points(
 									convert_in(cp1), convert_in(cp2), convert_in(cp3))
 							tangent_points.append(convert_in(cp1))
@@ -446,7 +446,7 @@ func _draw() -> void:
 								continue
 							elif cmd.rx == 0 or cmd.ry == 0:
 								points = PackedVector2Array([convert_in(start), convert_in(end)])
-							
+
 							var r := Vector2(cmd.rx, cmd.ry).abs()
 							# Obtain center parametrization.
 							var rot := deg_to_rad(cmd.rot)
@@ -463,13 +463,13 @@ func _draw() -> void:
 								cr = sqrt(cr)
 								r *= cr
 								r2 = Vector2(r.x * r.x, r.y * r.y)
-							
+
 							var dq := r2.x * y12 + r2.y * x12
 							var pq := (r2.x * r2.y - dq) / dq
 							var sc := sqrt(maxf(0, pq))
 							if cmd.large_arc_flag == cmd.sweep_flag:
 								sc = -sc
-							
+
 							var ct := Vector2(r.x * sc * y1 / r.y, -r.y * sc * x1 / r.x)
 							var c := Vector2(ct.x * cosine - ct.y * sine,
 									ct.x * sine + ct.y * cosine) + start.lerp(end, 0.5)
@@ -480,7 +480,7 @@ func _draw() -> void:
 							if cmd.sweep_flag == 0:
 								theta1 += delta_theta
 								delta_theta = TAU - delta_theta
-							
+
 							# Now we have a center parametrization (r, c, theta1, delta_theta).
 							# We will approximate the elliptical arc with Bezier curves.
 							# Use the method described in https://www.blog.akhil.cc/ellipse
@@ -501,7 +501,7 @@ func _draw() -> void:
 								p1 = p2
 								e1 = e2
 								t += PI/4
-							
+
 							if n != ceili(segments):
 								t = theta1 + delta_theta
 								var p2 := Utils.E(c, r, cosine, sine, t)
@@ -510,7 +510,7 @@ func _draw() -> void:
 								var q1 := alpha * e1
 								var q2 := -alpha * e2
 								cp.append(PackedVector2Array([p1, q1, q2, p2]))
-							
+
 							for p in cp:
 								points += Utils.get_cubic_bezier_points(convert_in(p[0]),
 										p[1] * viewbox_zoom, p[2] * viewbox_zoom, convert_in(p[3]))
@@ -525,14 +525,14 @@ func _draw() -> void:
 								prev_M_cmd = pathdata.get_command(prev_M_idx)
 							if prev_M_idx == -1:
 								break
-							
+
 							var end := Vector2(prev_M_cmd.x, prev_M_cmd.y)
 							if prev_M_cmd.relative:
 								end += prev_M_cmd.start
-							
+
 							points = PackedVector2Array([convert_in(cmd.start), convert_in(end)])
 						_: continue
-					
+
 					match current_mode:
 						InteractionType.NONE:
 							normal_polylines.append(points.duplicate())
@@ -546,7 +546,7 @@ func _draw() -> void:
 						InteractionType.HOVERED_SELECTED:
 							hovered_selected_polylines.append(points.duplicate())
 							hovered_selected_tangent_multiline += tangent_points.duplicate()
-		
+
 	for polyline in normal_polylines:
 		draw_polyline(polyline, default_color, thickness, true)
 	for polyline in selected_polylines:
@@ -555,7 +555,7 @@ func _draw() -> void:
 		draw_polyline(polyline, hover_color, thickness, true)
 	for polyline in hovered_selected_polylines:
 		draw_polyline(polyline, hover_selection_color, thickness, true)
-	
+
 	for i in normal_tangent_multiline.size() / 2:
 		var i2 := i * 2
 		draw_line(normal_tangent_multiline[i2], normal_tangent_multiline[i2 + 1],
@@ -573,7 +573,7 @@ func _draw() -> void:
 		draw_line(hovered_selected_tangent_multiline[i2],
 				hovered_selected_tangent_multiline[i2 + 1],
 				Color(hover_selection_color, tangent_alpha), tangent_thickness, true)
-	
+
 	var normal_handles: Array[Handle] = []
 	var selected_handles: Array[Handle] = []
 	var hovered_handles: Array[Handle] = []
@@ -591,7 +591,7 @@ func _draw() -> void:
 			is_selected = (handle.tid == Indications.semi_selected_tid and\
 					handle.command_index in Indications.inner_selections) or\
 					handle.tid in Indications.selected_tids
-		
+
 		if is_hovered and is_selected:
 			hovered_selected_handles.append(handle)
 		elif is_hovered:
@@ -600,7 +600,7 @@ func _draw() -> void:
 			selected_handles.append(handle)
 		else:
 			normal_handles.append(handle)
-	
+
 	var handle_texture: Texture2D
 	var handle_size: Vector2
 	var handle_pos: Vector2
@@ -649,7 +649,7 @@ var should_deselect_all = false
 func _unhandled_input(event: InputEvent) -> void:
 	if not visible:
 		return
-	
+
 	if event is InputEventMouseMotion:
 		should_deselect_all = false
 		var event_pos: Vector2 = event.position + get_parent().get_parent().view.position

@@ -20,7 +20,7 @@ var current_value := "":
 func _ready() -> void:
 	if not values.is_empty():
 		current_value = values[0]
-	
+
 	var btn_arr: Array[Button] = []
 	for value in values:
 		var button := Button.new()
@@ -30,11 +30,11 @@ func _ready() -> void:
 		button.alignment = HORIZONTAL_ALIGNMENT_CENTER
 		btn_arr.append(button)
 	value_picker.set_btn_array(btn_arr)
-	
+
 	var max_length := 0
 	for value in values:
 		max_length = maxi(value.length(), max_length)
-		
+
 	line_edit.custom_minimum_size.x = line_edit.get_theme_font(&"font").get_string_size(
 			"m".repeat(max_length + 1), HORIZONTAL_ALIGNMENT_LEFT, -1,
 			line_edit.get_theme_font_size(&"font_size")).x

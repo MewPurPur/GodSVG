@@ -38,7 +38,7 @@ static func string_to_rect(string: String) -> Rect2:
 		pos += 1
 	if not current_num_string.is_empty():
 		nums_parsed.append(current_num_string.to_float())
-	
+
 	if nums_parsed.size() < 4:
 		return Rect2(0, 0, 0, 0)
 	else:

@@ -50,7 +50,7 @@ func rebuild_commands() -> void:
 			command_idx += 1
 		else:
 			break
-	
+
 	for command_editor in commands_container.get_children():
 		if command_editor.cmd_idx >= command_idx:
 			command_editor.queue_free()

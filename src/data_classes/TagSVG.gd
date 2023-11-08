@@ -25,7 +25,7 @@ func get_all_tids() -> Array[PackedInt32Array]:
 	var unchecked_tids: Array[PackedInt32Array] = []
 	for idx in get_child_count():
 		unchecked_tids.append(PackedInt32Array([idx]))
-	
+
 	while not unchecked_tids.is_empty():
 		var checked_tid: PackedInt32Array = unchecked_tids.pop_back()
 		var checked_tag: Tag = get_by_tid(checked_tid)
@@ -55,15 +55,15 @@ func add_tag(new_tag: Tag, new_tid: PackedInt32Array) -> void:
 func replace_self(new_tag: Tag) -> void:
 	for attrib in attributes:
 		attributes[attrib].set_value(new_tag.attributes[attrib].get_value(), false)
-	
+
 	unknown_attributes.clear()
 	for attrib in new_tag.unknown_attributes:
 		unknown_attributes.append(attrib)
 	child_tags.clear()
-	
+
 	for tag in new_tag.child_tags:
 		child_tags.append(tag)
-	
+
 	for tid in get_all_tids():
 		get_by_tid(tid).attribute_changed.connect(emit_child_attribute_changed)
 	changed_unknown.emit()
@@ -71,7 +71,7 @@ func replace_self(new_tag: Tag) -> void:
 func delete_tags(tids: Array[PackedInt32Array]) -> void:
 	if tids.is_empty():
 		return
-	
+
 	tids.sort_custom(Utils.compare_tids_r)
 	# Linear scan to get the minimal set of TIDs to remove.
 	var last_accepted := tids[0]
@@ -83,7 +83,7 @@ func delete_tags(tids: Array[PackedInt32Array]) -> void:
 		else:
 			last_accepted = tids[i]
 			i += 1
-	
+
 	# Delete the remaining tags.
 	for tid in tids:
 		var parent_tid := Utils.get_parent_tid(tid)
@@ -99,7 +99,7 @@ func delete_tags(tids: Array[PackedInt32Array]) -> void:
 func move_tags(tids: Array[PackedInt32Array], down: bool) -> void:
 	if tids.is_empty():
 		return
-	
+
 	tids.sort_custom(Utils.compare_tids_r)
 	# Linear scan to get the minimal set of TIDs to move.
 	var last_accepted := tids[0]
@@ -111,14 +111,14 @@ func move_tags(tids: Array[PackedInt32Array], down: bool) -> void:
 		else:
 			last_accepted = tids[i]
 			i += 1
-	
+
 	# For moving, all these tags must be direct children of the same parent.
 	var depth := tids[0].size()
 	var parent_tid := Utils.get_parent_tid(tids[0])
 	for tid in tids:
 		if tid.size() != depth or Utils.get_parent_tid(tid) != parent_tid:
 			return
-	
+
 	# The set of tags on the bottom shouldn't be moved.
 	var parent_tag := get_by_tid(parent_tid)
 	var parent_child_count := parent_tag.get_child_count()
@@ -139,7 +139,7 @@ func move_tags(tids: Array[PackedInt32Array], down: bool) -> void:
 				tids.remove_at(tid_idx)
 			else:
 				break
-	
+
 	var new_indices := range(parent_tag.get_child_count())
 	# Do the moving.
 	for tid in tids:
@@ -155,7 +155,7 @@ func move_tags_to(tids: Array[PackedInt32Array], pos: PackedInt32Array) -> void:
 func duplicate_tags(tids: Array[PackedInt32Array]) -> void:
 	if tids.is_empty():
 		return
-	
+
 	tids.sort_custom(Utils.compare_tids_r)
 	# Linear scan to get the minimal set of TIDs to duplicate.
 	var last_accepted := tids[0]
@@ -167,12 +167,12 @@ func duplicate_tags(tids: Array[PackedInt32Array]) -> void:
 		else:
 			last_accepted = tids[i]
 			i += 1
-	
+
 	var tids_added: Array[PackedInt32Array] = []
 	# Used to offset previously added TIDs in tids_added after duplicating a tag before.
 	var last_parent := PackedInt32Array([-1])  # Start with a TID that can't be matched.
 	var added_to_last_parent := 0
-	
+
 	for tid in tids:
 		var new_tag := get_by_tid(tid).create_duplicate()
 		# Add the new tag.

@@ -45,7 +45,7 @@ func svg_update(svg_changed := true) -> void:
 		return  # Don't waste time resizing if the new image won't be bigger.
 	else:
 		image_zoom = new_image_zoom
-	
+
 	img.load_svg_from_string(SVG.string, image_zoom)
 	if not img.is_empty():
 		texture = ImageTexture.create_from_image(img)

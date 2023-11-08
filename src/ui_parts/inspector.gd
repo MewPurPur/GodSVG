@@ -60,7 +60,7 @@ func populate_add_popup() -> void:
 		add_btn.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		add_btn.pressed.connect(add_tag.bind(tag_name))
 		btn_array.append(add_btn)
-	
+
 	add_popup.set_btn_array(btn_array)
 
 func _on_add_button_pressed() -> void:

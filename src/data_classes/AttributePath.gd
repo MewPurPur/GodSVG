@@ -17,14 +17,14 @@ func locate_start_points() -> void:
 	var current_subpath_start := Vector2.ZERO
 	for command in commands:
 		command.start = last_end_point
-		
+
 		if command is PathCommand.MoveCommand:
 			current_subpath_start = command.start if command.relative else Vector2.ZERO
 			current_subpath_start += Vector2(command.x, command.y)
 		elif command is PathCommand.CloseCommand:
 			last_end_point = current_subpath_start
 			continue
-		
+
 		# Prepare for the next iteration.
 		if command.relative:
 			if &"x" in command:
