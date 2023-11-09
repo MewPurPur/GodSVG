@@ -1,9 +1,9 @@
 extends Camera2D
 
 const default_font = preload("res://visual/fonts/Font.ttf")
-const main_line_color = Color(0.5, 0.5, 0.5, 0.8)
-const primary_grid_color = Color(0.5, 0.5, 0.5, 0.4)
-const pixel_grid_color = Color(0.5, 0.5, 0.5, 0.16)
+const main_line_color = Color(0.5, 0.5, 0.5, 0.75)
+const primary_grid_color = Color(0.5, 0.5, 0.5, 0.35)
+const pixel_grid_color = Color(0.5, 0.5, 0.5, 0.15)
 const ticks_interval = 4
 
 var surface := RenderingServer.canvas_item_create()  # Used for drawing the numbers.

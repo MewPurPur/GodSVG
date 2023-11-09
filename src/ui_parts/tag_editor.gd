@@ -150,11 +150,11 @@ func _on_title_button_pressed() -> void:
 # FIXME fix move commands
 func _on_move_up_button_pressed() -> void:
 	tag_context.hide()
-	SVG.root_tag.move_tags([tid], -1)
+	SVG.root_tag.move_tags_in_parent([tid], false)
 
 func _on_move_down_button_pressed() -> void:
 	tag_context.hide()
-	SVG.root_tag.move_tags([tid], 1)
+	SVG.root_tag.move_tags_in_parent([tid], true)
 
 func _on_delete_button_pressed() -> void:
 	tag_context.hide()
