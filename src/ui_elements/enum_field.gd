@@ -40,8 +40,7 @@ func _on_button_pressed() -> void:
 			btn.add_theme_font_override(&"font", bold_font)
 		buttons_arr.append(btn)
 	value_picker.set_btn_array(buttons_arr)
-	value_picker.popup(Utils.calculate_popup_rect(
-			indicator.global_position, indicator.size, value_picker.size))
+	Utils.popup_under_control(value_picker, indicator)
 
 func _on_option_pressed(option: String) -> void:
 	value_picker.hide()

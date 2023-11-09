@@ -173,10 +173,9 @@ func toggle_relative() -> void:
 
 func insert_after() -> void:
 	action_popup.hide()
-	command_picker.popup(Utils.calculate_popup_rect(
-			more_button.global_position, more_button.size, command_picker.size))
+	Utils.popup_under_control(command_picker, more_button, true)
 
-func open_actions() -> void:
+func open_actions(popup_from_mouse := false) -> void:
 	Indications.set_inner_selection(tid, cmd_idx)
 	var buttons_arr: Array[Button] = []
 	
@@ -197,8 +196,11 @@ func open_actions() -> void:
 	buttons_arr.append(insert_after_btn)
 	
 	action_popup.set_btn_array(buttons_arr)
-	action_popup.popup(Utils.calculate_popup_rect(more_button.global_position,
-			more_button.size, action_popup.size, true))
+	if popup_from_mouse:
+		action_popup.popup(Rect2(get_global_mouse_position() +\
+				Vector2(-action_popup.size.x / 2, 0), action_popup.size))
+	else:
+		Utils.popup_under_control(action_popup, more_button, true)
 
 
 func _ready() -> void:
@@ -291,7 +293,7 @@ func _on_gui_input(event: InputEvent) -> void:
 				Indications.set_inner_selection(tid, cmd_idx)
 		elif event.button_index == MOUSE_BUTTON_RIGHT:
 			Indications.set_inner_selection(tid, cmd_idx)
-			open_actions()
+			open_actions(true)
 
 func determine_selection_highlight() -> void:
 	var stylebox: StyleBox

@@ -1,36 +1,37 @@
-[gd_scene load_steps=4 format=3 uid="uid://cpvtf3kaa2ltr"]
+[gd_scene load_steps=5 format=3 uid="uid://cpvtf3kaa2ltr"]
 
 [ext_resource type="Script" path="res://src/ui_elements/color_swatch.gd" id="1_2b2yq"]
-[ext_resource type="Texture2D" uid="uid://c68og6bsqt0lb" path="res://visual/Checkerboard.svg" id="2_f4i7i"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_i5pvy"]
-bg_color = Color(0, 0, 0, 0)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.866667, 0.933333, 1, 1)
-corner_radius_top_left = 1
-corner_radius_top_right = 1
-corner_radius_bottom_right = 1
-corner_radius_bottom_left = 1
-corner_detail = 2
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_m3oh3"]
+bg_color = Color(0.223529, 0.223529, 0.301961, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
 
-[node name="ColorSwatch" type="PanelContainer"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kojaf"]
+bg_color = Color(0.2738, 0.2738, 0.37, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ym6fi"]
+bg_color = Color(0.444, 0.444, 0.6, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[node name="ColorSwatch" type="Button"]
+custom_minimum_size = Vector2(22, 22)
+offset_right = 20.0
+offset_bottom = 20.0
+tooltip_text = "_"
+focus_mode = 0
 mouse_default_cursor_shape = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_i5pvy")
+theme_override_styles/normal = SubResource("StyleBoxFlat_m3oh3")
+theme_override_styles/hover = SubResource("StyleBoxFlat_kojaf")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_ym6fi")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_ym6fi")
 script = ExtResource("1_2b2yq")
-color_hex = null
-
-[node name="TextureRect" type="TextureRect" parent="."]
-custom_minimum_size = Vector2(16, 16)
-layout_mode = 2
-mouse_filter = 2
-texture = ExtResource("2_f4i7i")
-expand_mode = 1
-
-[node name="ColorRect" type="ColorRect" parent="."]
-custom_minimum_size = Vector2(16, 16)
-layout_mode = 2
-size_flags_horizontal = 0
-mouse_filter = 2

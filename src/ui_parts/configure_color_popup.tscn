@@ -1,0 +1,97 @@
+[gd_scene load_steps=7 format=3 uid="uid://b7wobq0ndm35"]
+
+[ext_resource type="Script" path="res://src/ui_elements/BetterLineEdit.gd" id="1_i4wi2"]
+[ext_resource type="Script" path="res://src/ui_parts/configure_color_popup.gd" id="1_x6cll"]
+[ext_resource type="Texture2D" uid="uid://dr2erka82g6j4" path="res://visual/icons/Edit.svg" id="2_0dind"]
+[ext_resource type="PackedScene" uid="uid://5f8uxavn1or1" path="res://src/ui_elements/color_edit.tscn" id="3_dq5ly"]
+[ext_resource type="Texture2D" uid="uid://cj5x2ti8150ja" path="res://visual/icons/Delete.svg" id="5_5n8tt"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jm6ej"]
+content_margin_left = 5.0
+bg_color = Color(0.062, 0.062, 0.1, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.211765, 0.258824, 0.345098, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+corner_detail = 16
+
+[node name="ConfigurePopup" type="Popup"]
+transparent_bg = true
+size = Vector2i(128, 70)
+visible = true
+script = ExtResource("1_x6cll")
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+custom_minimum_size = Vector2(128, 40)
+offset_right = 4.0
+offset_bottom = 4.0
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 6
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 6
+theme_override_constants/margin_bottom = 6
+
+[node name="ConfigureContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="TopContainer" type="HBoxContainer" parent="PanelContainer/MarginContainer/ConfigureContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/separation = 6
+
+[node name="ColorLabel" type="Label" parent="PanelContainer/MarginContainer/ConfigureContainer/TopContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 13
+text = "Yeet"
+horizontal_alignment = 1
+
+[node name="NameEdit" type="LineEdit" parent="PanelContainer/MarginContainer/ConfigureContainer/TopContainer"]
+visible = false
+custom_minimum_size = Vector2(80, 0)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_jm6ej")
+max_length = 30
+script = ExtResource("1_i4wi2")
+
+[node name="EditButton" type="Button" parent="PanelContainer/MarginContainer/ConfigureContainer/TopContainer"]
+layout_mode = 2
+tooltip_text = "#edit_color_name"
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_type_variation = &"FlatButton"
+theme_override_colors/icon_normal_color = Color(0.74902, 0.74902, 0.74902, 1)
+theme_override_colors/icon_hover_color = Color(0.901961, 0.901961, 0.901961, 1)
+icon = ExtResource("2_0dind")
+
+[node name="BottomContainer" type="HBoxContainer" parent="PanelContainer/MarginContainer/ConfigureContainer"]
+layout_mode = 2
+theme_override_constants/separation = 6
+alignment = 1
+
+[node name="ColorEdit" parent="PanelContainer/MarginContainer/ConfigureContainer/BottomContainer" instance=ExtResource("3_dq5ly")]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+enable_palettes = false
+
+[node name="DeleteButton" type="Button" parent="PanelContainer/MarginContainer/ConfigureContainer/BottomContainer"]
+layout_mode = 2
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_type_variation = &"IconButton"
+icon = ExtResource("5_5n8tt")
+
+[connection signal="focus_exited" from="PanelContainer/MarginContainer/ConfigureContainer/TopContainer/NameEdit" to="." method="_on_name_edit_focus_exited"]
+[connection signal="text_submitted" from="PanelContainer/MarginContainer/ConfigureContainer/TopContainer/NameEdit" to="." method="_on_name_edit_text_submitted"]
+[connection signal="pressed" from="PanelContainer/MarginContainer/ConfigureContainer/TopContainer/EditButton" to="." method="_on_edit_button_pressed"]
+[connection signal="pressed" from="PanelContainer/MarginContainer/ConfigureContainer/BottomContainer/DeleteButton" to="." method="_on_delete_button_pressed"]

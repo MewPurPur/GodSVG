@@ -2,8 +2,8 @@
 extends Control
 
 const handle_sizes = {
-	Handle.DisplayMode.BIG: Vector2(8, 8),
-	Handle.DisplayMode.SMALL: Vector2(6, 6),
+	Handle.DisplayMode.BIG: Vector2(10, 10),
+	Handle.DisplayMode.SMALL: Vector2(8, 8),
 }
 
 const normal_handle_textures = {
@@ -152,8 +152,8 @@ path_attribute: AttributePath) -> Array[Handle]:
 
 
 func _draw() -> void:
-	var thickness := 0.85 / zoom
-	var tangent_thickness := 0.55 / zoom
+	var thickness := 1.0 / zoom
+	var tangent_thickness := 0.6 / zoom
 	var tangent_alpha := 0.8
 	
 	# Draw the contours of shapes, and also tangents of bezier curves in paths.
@@ -172,17 +172,19 @@ func _draw() -> void:
 		var tag := SVG.root_tag.get_by_tid(tid)
 		var attribs := tag.attributes
 		
+		# Determine if the tag is hovered/selected or has a hovered/selected parent.
+		var tag_hovered := tid_is_hovered(tid, -1)
+		var tag_selected := tid_is_selected(tid, -1)
+		
 		match tag.name:
 			"circle":
 				var c := Vector2(attribs.cx.get_value(), attribs.cy.get_value())
 				var r: float = attribs.r.get_value()
 				var points := PackedVector2Array()
-				for i in range(0, 361, 2):
-					var d := deg_to_rad(i)
+				for i in 180:
+					var d := i * TAU/180
 					points.append(convert_in(c + Vector2(cos(d) * r, sin(d) * r)))
-				
-				var tag_hovered := tid == Indications.hovered_tid
-				var tag_selected := tid in Indications.selected_tids
+				points.append(points[0])
 				
 				if tag_hovered and tag_selected:
 					hovered_selected_polylines.append(points)
@@ -199,12 +201,10 @@ func _draw() -> void:
 				var ry: float = attribs.ry.get_value()
 				# Squished circle.
 				var points := PackedVector2Array()
-				for i in range(0, 361, 2):
-					var d := deg_to_rad(i)
+				for i in 180:
+					var d := i * TAU/180
 					points.append(convert_in(c + Vector2(cos(d) * rx, sin(d) * ry)))
-				
-				var tag_hovered := tid == Indications.hovered_tid
-				var tag_selected := tid in Indications.selected_tids
+				points.append(points[0])
 				
 				if tag_hovered and tag_selected:
 					hovered_selected_polylines.append(points)
@@ -240,28 +240,26 @@ func _draw() -> void:
 					# Rounded rectangle.
 					points.append(convert_in(Vector2(x + rx, y)))
 					points.append(convert_in(Vector2(x + rect_width - rx, y)))
-					for i in range(-88, 1, 2):
-						var d := deg_to_rad(i)
+					for i in range(135, 180):
+						var d := i * TAU/180
 						points.append(convert_in(Vector2(x + rect_width - rx, y + ry) +\
 								Vector2(cos(d) * rx, sin(d) * ry)))
 					points.append(convert_in(Vector2(x + rect_width, y + rect_height - ry)))
-					for i in range(2, 92, 2):
-						var d := deg_to_rad(i)
+					for i in range(0, 45):
+						var d := i * TAU/180
 						points.append(convert_in(Vector2(x + rect_width - rx,
 								y + rect_height - ry) + Vector2(cos(d) * rx, sin(d) * ry)))
 					points.append(convert_in(Vector2(x + rx, y + rect_height)))
-					for i in range(92, 181, 2):
-						var d := deg_to_rad(i)
+					for i in range(45, 90):
+						var d := i * TAU/180
 						points.append(convert_in(Vector2(x + rx, y + rect_height - ry) +\
 								Vector2(cos(d) * rx, sin(d) * ry)))
 					points.append(convert_in(Vector2(x, y + ry)))
-					for i in range(182, 272, 2):
-						var d := deg_to_rad(i)
+					for i in range(90, 135):
+						var d := i * TAU/180
 						points.append(convert_in(Vector2(x + rx, y + ry) +\
 								Vector2(cos(d) * rx, sin(d) * ry)))
-				
-				var tag_hovered := tid == Indications.hovered_tid
-				var tag_selected := tid in Indications.selected_tids
+					points.append(points[0])
 				
 				if tag_hovered and tag_selected:
 					hovered_selected_polylines.append(points)
@@ -281,9 +279,6 @@ func _draw() -> void:
 				var points := PackedVector2Array()
 				points.append(convert_in(Vector2(x1, y1)))
 				points.append(convert_in(Vector2(x2, y2)))
-				
-				var tag_hovered := tid == Indications.hovered_tid
-				var tag_selected := tid in Indications.selected_tids
 				
 				if tag_hovered and tag_selected:
 					hovered_selected_polylines.append(points)
@@ -305,14 +300,10 @@ func _draw() -> void:
 					var relative := cmd.relative
 					
 					current_mode = InteractionType.NONE
-					if Indications.hovered_tid == tid or\
-					(Indications.semi_hovered_tid == tid and\
-					Indications.inner_hovered == cmd_idx):
+					if tid_is_hovered(tid, cmd_idx):
 						@warning_ignore("int_as_enum_without_cast")
 						current_mode += InteractionType.HOVERED
-					if tid in Indications.selected_tids or\
-					(Indications.semi_selected_tid == tid and\
-					cmd_idx in Indications.inner_selections):
+					if tid_is_selected(tid, cmd_idx):
 						@warning_ignore("int_as_enum_without_cast")
 						current_mode += InteractionType.SELECTED
 					
@@ -583,18 +574,10 @@ func _draw() -> void:
 	var hovered_handles: Array[Handle] = []
 	var hovered_selected_handles: Array[Handle] = []
 	for handle in handles:
-		var is_hovered := false
-		var is_selected := false
-		if handle is XYHandle:
-			is_hovered = handle.tid == Indications.hovered_tid
-			is_selected = handle.tid in Indications.selected_tids
-		elif handle is PathHandle:
-			is_hovered = handle.tid == Indications.hovered_tid or\
-					(handle.tid == Indications.semi_hovered_tid and\
-					handle.command_index == Indications.inner_hovered)
-			is_selected = (handle.tid == Indications.semi_selected_tid and\
-					handle.command_index in Indications.inner_selections) or\
-					handle.tid in Indications.selected_tids
+		var is_hovered := tid_is_hovered(handle.tid,
+				handle.command_index if handle is PathHandle else -1)
+		var is_selected := tid_is_selected(handle.tid,
+				handle.command_index if handle is PathHandle else -1)
 		
 		if is_hovered and is_selected:
 			hovered_selected_handles.append(handle)
@@ -628,6 +611,29 @@ func _draw() -> void:
 		handle_size = handle_sizes[handle.display_mode] / zoom
 		handle_pos = convert_in(handle.pos) - handle_size / 2
 		draw_texture_rect(handle_texture, Rect2(handle_pos, handle_size), false)
+
+
+func tid_is_hovered(tid: PackedInt32Array, cmd_idx := -1) -> bool:
+	if cmd_idx == -1:
+		return Utils.is_tid_parent(Indications.hovered_tid, tid) or\
+				tid == Indications.hovered_tid
+	else:
+		return (Utils.is_tid_parent(Indications.hovered_tid, tid) or\
+				tid == Indications.hovered_tid) or (Indications.semi_hovered_tid == tid and\
+				Indications.inner_hovered == cmd_idx)
+
+func tid_is_selected(tid: PackedInt32Array, cmd_idx := -1) -> bool:
+	if cmd_idx == -1:
+		for selected_tid in Indications.selected_tids:
+			if Utils.is_tid_parent(selected_tid, tid) or tid == selected_tid:
+				return true
+		return false
+	else:
+		for selected_tid in Indications.selected_tids:
+			if Utils.is_tid_parent(selected_tid, tid) or selected_tid == tid:
+				return true
+		return Indications.semi_selected_tid == tid and\
+				cmd_idx in Indications.inner_selections
 
 
 func convert_in(pos: Vector2) -> Vector2:
