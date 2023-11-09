@@ -1,7 +1,7 @@
 [gd_scene load_steps=8 format=3 uid="uid://c13dadqbljqlu"]
 
 [ext_resource type="Script" path="res://src/ui_parts/export_dialog.gd" id="1_objnb"]
-[ext_resource type="Shader" path="res://src/ui_parts/zoom_shader.gdshader" id="2_6bte3"]
+[ext_resource type="Shader" path="res://src/shaders/zoom_shader.gdshader" id="2_6bte3"]
 [ext_resource type="Texture2D" uid="uid://c68og6bsqt0lb" path="res://visual/Checkerboard.svg" id="3_q8p2p"]
 [ext_resource type="FontFile" uid="uid://dtb4wkus51hxs" path="res://visual/fonts/FontMono.ttf" id="4_4t2iq"]
 [ext_resource type="PackedScene" uid="uid://dbu1lvajypafb" path="res://src/ui_elements/dropdown.tscn" id="5_y6ex0"]

@@ -18,7 +18,7 @@
 [ext_resource type="Texture2D" uid="uid://kkxyv1gyrjgj" path="res://visual/icons/Visuals.svg" id="9_ojv7n"]
 [ext_resource type="PackedScene" uid="uid://wp77eqhikp6k" path="res://src/ui_elements/context_popup.tscn" id="10_hraj8"]
 [ext_resource type="Texture2D" uid="uid://buire51l0mifg" path="res://visual/icons/Snap.svg" id="11_u7ddj"]
-[ext_resource type="Shader" path="res://src/ui_parts/zoom_shader.gdshader" id="12_wewnk"]
+[ext_resource type="Shader" path="res://src/shaders/zoom_shader.gdshader" id="12_wewnk"]
 [ext_resource type="PackedScene" uid="uid://dad7fkhmsooc6" path="res://src/ui_elements/number_edit.tscn" id="13_oxv3i"]
 [ext_resource type="Script" path="res://src/ui_parts/view_camera.gd" id="15_v2yj8"]
 [ext_resource type="PackedScene" uid="uid://oltvrf01xrxl" path="res://src/ui_parts/zoom_menu.tscn" id="18_e3qve"]

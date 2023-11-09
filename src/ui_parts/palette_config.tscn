@@ -1,0 +1,95 @@
+[gd_scene load_steps=6 format=3 uid="uid://c5cavwa2xdt0b"]
+
+[ext_resource type="Script" path="res://src/ui_parts/palette_config.gd" id="1_2fy8k"]
+[ext_resource type="Texture2D" uid="uid://dr2erka82g6j4" path="res://visual/icons/Edit.svg" id="2_35dgp"]
+[ext_resource type="Script" path="res://src/ui_elements/BetterLineEdit.gd" id="2_coqnx"]
+[ext_resource type="Texture2D" uid="uid://cj5x2ti8150ja" path="res://visual/icons/Delete.svg" id="4_ms41n"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jm6ej"]
+content_margin_left = 5.0
+bg_color = Color(0.062, 0.062, 0.1, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.211765, 0.258824, 0.345098, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+corner_detail = 16
+
+[node name="PaletteConfig" type="PanelContainer"]
+offset_right = 21.0
+offset_bottom = 46.0
+size_flags_horizontal = 3
+size_flags_vertical = 0
+script = ExtResource("1_2fy8k")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 6
+theme_override_constants/margin_bottom = 0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="MainContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/MainContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/separation = 6
+
+[node name="PaletteLabel" type="Label" parent="MarginContainer/HBoxContainer/MainContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="NameEdit" type="LineEdit" parent="MarginContainer/HBoxContainer/MainContainer/HBoxContainer"]
+visible = false
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_jm6ej")
+max_length = 30
+script = ExtResource("2_coqnx")
+
+[node name="EditButton" type="Button" parent="MarginContainer/HBoxContainer/MainContainer/HBoxContainer"]
+layout_mode = 2
+tooltip_text = "#edit_palette_name"
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_type_variation = &"FlatButton"
+theme_override_colors/icon_normal_color = Color(0.74902, 0.74902, 0.74902, 1)
+theme_override_colors/icon_hover_color = Color(0.901961, 0.901961, 0.901961, 1)
+icon = ExtResource("2_35dgp")
+
+[node name="ColorsContainer" type="HFlowContainer" parent="MarginContainer/HBoxContainer/MainContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_constants/h_separation = 3
+
+[node name="Control" type="Control" parent="MarginContainer/HBoxContainer/MainContainer"]
+custom_minimum_size = Vector2(0, 2)
+layout_mode = 2
+
+[node name="DeleteButton" type="Button" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 4
+tooltip_text = "#delete_palette"
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_type_variation = &"IconButton"
+icon = ExtResource("4_ms41n")
+
+[connection signal="focus_exited" from="MarginContainer/HBoxContainer/MainContainer/HBoxContainer/NameEdit" to="." method="_on_name_edit_focus_exited"]
+[connection signal="text_changed" from="MarginContainer/HBoxContainer/MainContainer/HBoxContainer/NameEdit" to="." method="_on_name_edit_text_changed"]
+[connection signal="text_submitted" from="MarginContainer/HBoxContainer/MainContainer/HBoxContainer/NameEdit" to="." method="change_name"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/MainContainer/HBoxContainer/EditButton" to="." method="popup_edit_name"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/DeleteButton" to="." method="_on_delete_button_pressed"]

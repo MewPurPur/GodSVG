@@ -1,0 +1,165 @@
+[gd_scene load_steps=11 format=3 uid="uid://f5cljfdpe85v"]
+
+[ext_resource type="Script" path="res://src/ui_elements/color_popup.gd" id="1_t1mgf"]
+[ext_resource type="PackedScene" uid="uid://b1eig44cov474" path="res://src/ui_elements/good_color_picker.tscn" id="2_jv3ea"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sep2m"]
+content_margin_left = 6.0
+content_margin_top = 1.0
+content_margin_right = 6.0
+content_margin_bottom = 4.0
+draw_center = false
+border_width_right = 1
+border_width_bottom = 2
+border_color = Color(0.184314, 0.184314, 0.25098, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_m2p14"]
+content_margin_left = 6.0
+content_margin_top = 1.0
+content_margin_right = 6.0
+content_margin_bottom = 4.0
+bg_color = Color(0.145098, 0.145098, 0.219608, 1)
+border_width_right = 1
+border_width_bottom = 2
+border_color = Color(0.184314, 0.184314, 0.25098, 1)
+corner_radius_top_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kiodn"]
+content_margin_left = 6.0
+content_margin_top = 1.0
+content_margin_right = 6.0
+content_margin_bottom = 4.0
+bg_color = Color(0.227451, 0.227451, 0.34902, 1)
+border_width_right = 1
+border_width_bottom = 2
+border_color = Color(0.184314, 0.184314, 0.25098, 1)
+corner_radius_top_left = 4
+
+[sub_resource type="ButtonGroup" id="ButtonGroup_fv8i3"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_q8xnk"]
+content_margin_left = 6.0
+content_margin_top = 1.0
+content_margin_right = 6.0
+content_margin_bottom = 4.0
+draw_center = false
+border_width_left = 1
+border_width_bottom = 2
+border_color = Color(0.184314, 0.184314, 0.25098, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_in81y"]
+content_margin_left = 6.0
+content_margin_top = 1.0
+content_margin_right = 6.0
+content_margin_bottom = 4.0
+bg_color = Color(0.145098, 0.145098, 0.219608, 1)
+border_width_left = 1
+border_width_bottom = 2
+border_color = Color(0.184314, 0.184314, 0.25098, 1)
+corner_radius_top_right = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eklio"]
+content_margin_left = 6.0
+content_margin_top = 1.0
+content_margin_right = 6.0
+content_margin_bottom = 4.0
+bg_color = Color(0.2275, 0.2275, 0.35, 1)
+border_width_left = 1
+border_width_bottom = 2
+border_color = Color(0.184314, 0.184314, 0.25098, 1)
+corner_radius_top_right = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vwtqs"]
+content_margin_left = 6.0
+content_margin_top = 1.0
+content_margin_right = 6.0
+content_margin_bottom = 4.0
+bg_color = Color(0.2275, 0.2275, 0.35, 1)
+border_width_left = 1
+border_width_bottom = 2
+border_color = Color(0.184314, 0.184314, 0.25098, 1)
+corner_radius_top_right = 4
+
+[node name="ColorPopup" type="Popup"]
+transparent_bg = true
+size = Vector2i(218, 345)
+visible = true
+script = ExtResource("1_t1mgf")
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+custom_minimum_size = Vector2(160, 0)
+offset_right = 218.0
+offset_bottom = 43.0
+
+[node name="MainContainer" type="VBoxContainer" parent="PanelContainer"]
+layout_mode = 2
+
+[node name="Tabs" type="HBoxContainer" parent="PanelContainer/MainContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_constants/separation = 0
+
+[node name="PaletteButton" type="Button" parent="PanelContainer/MainContainer/Tabs"]
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_colors/font_disabled_color = Color(0.866667, 0.933333, 1, 1)
+theme_override_styles/normal = SubResource("StyleBoxFlat_sep2m")
+theme_override_styles/hover = SubResource("StyleBoxFlat_m2p14")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_kiodn")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_kiodn")
+toggle_mode = true
+button_group = SubResource("ButtonGroup_fv8i3")
+text = "#palettes"
+
+[node name="ColorPickerButton" type="Button" parent="PanelContainer/MainContainer/Tabs"]
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_colors/font_disabled_color = Color(0.866667, 0.933333, 1, 1)
+theme_override_styles/normal = SubResource("StyleBoxFlat_q8xnk")
+theme_override_styles/hover = SubResource("StyleBoxFlat_in81y")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_eklio")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_vwtqs")
+toggle_mode = true
+button_group = SubResource("ButtonGroup_fv8i3")
+text = "#color_picker"
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer/MainContainer"]
+custom_minimum_size = Vector2(214, 0)
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="Palettes" type="ScrollContainer" parent="PanelContainer/MainContainer/MarginContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 302)
+layout_mode = 2
+horizontal_scroll_mode = 0
+
+[node name="VBox" type="VBoxContainer" parent="PanelContainer/MainContainer/MarginContainer/Palettes"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 7
+
+[node name="ColorPicker" type="VBoxContainer" parent="PanelContainer/MainContainer/MarginContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="ColorPicker" parent="PanelContainer/MainContainer/MarginContainer/ColorPicker" instance=ExtResource("2_jv3ea")]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="."]
+offset_right = 40.0
+offset_bottom = 22.0
+
+[connection signal="popup_hide" from="." to="." method="_on_popup_hide"]
+[connection signal="pressed" from="PanelContainer/MainContainer/Tabs/PaletteButton" to="." method="_on_palette_button_pressed"]
+[connection signal="pressed" from="PanelContainer/MainContainer/Tabs/ColorPickerButton" to="." method="_on_color_picker_button_pressed"]
+[connection signal="color_changed" from="PanelContainer/MainContainer/MarginContainer/ColorPicker/ColorPicker" to="." method="pick_color"]
