@@ -2,10 +2,13 @@
 class_name TagSVG extends Tag
 
 signal child_attribute_changed
+signal changed_unknown
+
 signal tags_added(tids: Array[PackedInt32Array])
 signal tags_deleted(tids: Array[PackedInt32Array])
-signal tags_moved(parent_tid: PackedInt32Array, new_indices: Array[int])
-signal changed_unknown
+signal tags_moved_in_parent(parent_tid: PackedInt32Array, old_indices: Array[int])
+signal tags_moved_to(tid: PackedInt32Array, old_tids: Array[PackedInt32Array])
+signal tag_layout_changed  # Emitted together with any of the above 4.
 
 const known_attributes = ["width", "height", "viewBox", "xmlns"]
 
@@ -51,6 +54,7 @@ func add_tag(new_tag: Tag, new_tid: PackedInt32Array) -> void:
 	new_tag.attribute_changed.connect(emit_child_attribute_changed)
 	var new_tid_array: Array[PackedInt32Array] = [new_tid]
 	tags_added.emit(new_tid_array)
+	tag_layout_changed.emit()
 
 func replace_self(new_tag: Tag) -> void:
 	for attrib in attributes:
@@ -93,13 +97,14 @@ func delete_tags(tids: Array[PackedInt32Array]) -> void:
 			if tag_idx < parent_tag.get_child_count():
 				parent_tag.child_tags.remove_at(tag_idx)
 	tags_deleted.emit(tids)
+	tag_layout_changed.emit()
 
-# TODO
 # Moves tags up or down, not to an arbitrary position.
-func move_tags(tids: Array[PackedInt32Array], down: bool) -> void:
+func move_tags_in_parent(tids: Array[PackedInt32Array], down: bool) -> void:
 	if tids.is_empty():
 		return
 	
+	tids = tids.duplicate()
 	tids.sort_custom(Utils.compare_tids_r)
 	# Linear scan to get the minimal set of TIDs to move.
 	var last_accepted := tids[0]
@@ -119,38 +124,45 @@ func move_tags(tids: Array[PackedInt32Array], down: bool) -> void:
 		if tid.size() != depth or Utils.get_parent_tid(tid) != parent_tid:
 			return
 	
-	# The set of tags on the bottom shouldn't be moved.
+	var tid_indices: Array[int] = []  # The last indices of the TIDs.
+	for tid in tids:
+		tid_indices.append(tid[-1])
+	
 	var parent_tag := get_by_tid(parent_tid)
 	var parent_child_count := parent_tag.get_child_count()
-	if down:
-		var unaffected := parent_child_count - 1
-		tids.reverse()
-		for tid_idx in tids.size():
-			if tids[tid_idx][-1] == unaffected:
-				unaffected -= 1
-				tids.remove_at(tid_idx)
-			else:
-				break
-	else:
-		var unaffected := 0
-		for tid_idx in tids.size():
-			if tids[tid_idx][-1] == unaffected:
-				unaffected += 1
-				tids.remove_at(tid_idx)
-			else:
-				break
-	
-	var new_indices := range(parent_tag.get_child_count())
+	var old_indices: Array[int] = []
+	for k in parent_child_count:
+		old_indices.append(k)
 	# Do the moving.
-	for tid in tids:
-		var new_tid := tid.duplicate()
-		new_tid[-1] += (1 if down else -1)
-		var new_tag: Tag = parent_tag.child_tags.pop_at(tid[-1])
-		parent_tag.child_tags.insert(new_tid[-1], new_tag)
-	tags_moved.emit(parent_tid, new_indices)
+	if down:
+		i = parent_child_count - 1
+		while i >= 0:
+			if not i in tid_indices and (i - 1) in tid_indices:
+				old_indices.remove_at(i)
+				var moved_i := i
+				var moved_tag: Tag = parent_tag.child_tags.pop_at(i)
+				while (i - 1) in tid_indices:
+					i -= 1
+				old_indices.insert(i, moved_i)
+				parent_tag.child_tags.insert(i, moved_tag)
+			i -= 1
+	else:
+		i = 0
+		while i < parent_child_count:
+			if not i in tid_indices and (i + 1) in tid_indices:
+				old_indices.remove_at(i)
+				var moved_i := i
+				var moved_tag: Tag = parent_tag.child_tags.pop_at(i)
+				while (i + 1) in tid_indices:
+					i += 1
+				old_indices.insert(i, moved_i)
+				parent_tag.child_tags.insert(i, moved_tag)
+			i += 1
+	tags_moved_in_parent.emit(parent_tid, old_indices)
+	tag_layout_changed.emit()
 
-func move_tags_to(tids: Array[PackedInt32Array], pos: PackedInt32Array) -> void:
-	pass  # TODO implement this.
+#func move_tags_to(tids: Array[PackedInt32Array], pos: PackedInt32Array) -> void:
+	#pass  # TODO implement this.
 
 func duplicate_tags(tids: Array[PackedInt32Array]) -> void:
 	if tids.is_empty():
@@ -192,6 +204,7 @@ func duplicate_tags(tids: Array[PackedInt32Array]) -> void:
 		for tid_idx in range(added_tid_idx - added_to_last_parent , added_tid_idx):
 			tids_added[tid_idx][-1] += 1
 	tags_added.emit(tids_added)
+	tag_layout_changed.emit()
 
 
 func emit_child_attribute_changed() -> void:

@@ -297,11 +297,6 @@ size_2d_override_stretch = true
 render_target_update_mode = 4
 script = ExtResource("6_7hypx")
 
-[node name="ViewCamera" type="Camera2D" parent="Display/ViewportContainer/Viewport"]
-anchor_mode = 0
-editor_draw_screen = false
-script = ExtResource("15_v2yj8")
-
 [node name="Checkerboard" type="TextureRect" parent="Display/ViewportContainer/Viewport"]
 unique_name_in_owner = true
 texture_filter = 1
@@ -330,6 +325,11 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 1
 script = ExtResource("5_pltvx")
+
+[node name="ViewCamera" type="Camera2D" parent="Display/ViewportContainer/Viewport"]
+anchor_mode = 0
+editor_draw_screen = false
+script = ExtResource("15_v2yj8")
 
 [connection signal="pressed" from="PanelContainer/MainContainer/CodeEditor/PanelContainer/CodeButtons/MetaActions/CopyButton" to="PanelContainer/MainContainer/CodeEditor" method="_on_copy_button_pressed"]
 [connection signal="pressed" from="PanelContainer/MainContainer/CodeEditor/PanelContainer/CodeButtons/MetaActions/ImportButton" to="PanelContainer/MainContainer/CodeEditor" method="_on_import_button_pressed"]

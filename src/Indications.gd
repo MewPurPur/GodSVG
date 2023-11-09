@@ -37,7 +37,8 @@ var inner_selections: Array[int] = []
 func _ready() -> void:
 	SVG.root_tag.tags_added.connect(_on_tags_added)
 	SVG.root_tag.tags_deleted.connect(_on_tags_deleted)
-	SVG.root_tag.tags_moved.connect(_on_tags_moved)
+	SVG.root_tag.tags_moved_in_parent.connect(_on_tags_moved_in_parent)
+	#SVG.root_tag.tags_moved_to.connect(_on_tags_moved_to)  # TODO
 	SVG.root_tag.changed_unknown.connect(clear_selection)
 	SVG.root_tag.child_attribute_changed.connect(clear_inner_selection)
 
@@ -165,27 +166,43 @@ func _on_tags_deleted(tids: Array[PackedInt32Array]) -> void:
 	if old_selected_tids != selected_tids:
 		selection_changed.emit()
 
-# TODO
-func _on_tags_moved(parent_tid: PackedInt32Array, old_idx: int, new_idx: int) -> void:
-	var parent_tag := SVG.root_tag.get_by_tid(parent_tid)
-	#for i in changed_tids_count:
-		#for j in selected_tids.size():
-			#var idx := selected_tids[i][-1]
-			#if (idx < old_idx and idx < new_idx) or (idx > old_idx and idx > new_idx):
-				#continue
-			#elif idx > old_idx and idx < new_idx:
-				#selected_tids[j][-1] += 1
-			#elif idx <= old_idx and idx > new_idx:
-				#selected_tids[j][-1] -= 1
-			#elif idx == old_idx:
-				#selected_tids[j][-1] = new_idx
+func _on_tags_moved_in_parent(parent_tid: PackedInt32Array, indices: Array[int]) -> void:
+	var old_selected_tids := selected_tids.duplicate()
+	var tids_to_select: Array[PackedInt32Array] = []
+	var tids_to_unselect: Array[PackedInt32Array] = []
+	
+	for index_idx in indices.size():
+		if index_idx == indices[index_idx]:
+			continue
+		
+		# For the tags that have moved, get their old.
+		var old_moved_tid := parent_tid.duplicate()
+		old_moved_tid.append(indices[index_idx])
+		
+		# If the TID or a child of it is found, append it.
+		for tid in selected_tids:
+			if Utils.is_tid_parent(old_moved_tid, tid) or old_moved_tid == tid:
+				var new_selected_tid := tid.duplicate()
+				new_selected_tid[parent_tid.size()] = index_idx
+				tids_to_unselect.append(tid)
+				tids_to_select.append(new_selected_tid)
+	for tid in tids_to_unselect:
+		selected_tids.erase(tid)
+	selected_tids += tids_to_select
+	
+	if old_selected_tids != selected_tids:
+		selection_changed.emit()
+
+# TODO implement this.
+#func _on_tags_moved_to(tid: PackedInt32Array, old_tids: Array[PackedInt32Array]) -> void:
+	#return
 
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed(&"delete"):
 		if not selected_tids.is_empty():
 			SVG.root_tag.delete_tags(selected_tids)
-		elif !inner_selections.is_empty() and not semi_selected_tid.is_empty():
+		elif not inner_selections.is_empty() and not semi_selected_tid.is_empty():
 			inner_selections.sort()
 			inner_selections.reverse()
 			var tag_ref := SVG.root_tag.get_by_tid(semi_selected_tid)
@@ -194,9 +211,9 @@ func _unhandled_input(event: InputEvent) -> void:
 					for cmd_idx in inner_selections:
 						tag_ref.attributes.d.delete_command(cmd_idx)
 	elif event.is_action_pressed(&"move_up"):
-		SVG.root_tag.move_tags(selected_tids, false)
+		SVG.root_tag.move_tags_in_parent(selected_tids, false)
 	elif event.is_action_pressed(&"move_down"):
-		SVG.root_tag.move_tags(selected_tids, true)
+		SVG.root_tag.move_tags_in_parent(selected_tids, true)
 	elif event.is_action_pressed(&"duplicate"):
 		SVG.root_tag.duplicate_tags(selected_tids)
 	else:
