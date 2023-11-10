@@ -53,3 +53,5 @@ GodSVG is licensed under the MIT License:
 - You are free to use GodSVG for any purpose. GodSVG's license terms and copyright do not apply to the content created with it.
 - You can study how GodSVG works and change it.
 - You may distribute modified versions of GodSVG. Derivative products may use a different license, but they must still document that they derive from the MIT-licensed GodSVG.
+
+The above explanation reflects my understanding of my own license terms and does not constitute legal advice.
