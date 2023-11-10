@@ -65,16 +65,16 @@ text_color = Color(0.803922, 0.811765, 0.823529, 0.666667)
 error_color = Color(1, 0.52549, 0.419608, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_k0een"]
-content_margin_left = 2.0
-content_margin_right = 2.0
+content_margin_left = 10.0
+content_margin_right = 8.0
 bg_color = Color(0.0975, 0.0975, 0.15, 1)
 border_width_left = 2
 border_width_top = 1
 border_width_right = 2
 border_width_bottom = 2
 border_color = Color(0.1875, 0.1875, 0.25, 1)
-corner_radius_bottom_right = 6
-corner_radius_bottom_left = 6
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
 corner_detail = 16
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nxvgo"]
@@ -184,12 +184,7 @@ visible = false
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_k0een")
 
-[node name="Padding" type="MarginContainer" parent="PanelContainer/MainContainer/CodeEditor/ScriptEditor/ErrorBar"]
-layout_mode = 2
-theme_override_constants/margin_left = 8
-theme_override_constants/margin_right = 8
-
-[node name="Label" type="RichTextLabel" parent="PanelContainer/MainContainer/CodeEditor/ScriptEditor/ErrorBar/Padding"]
+[node name="Label" type="RichTextLabel" parent="PanelContainer/MainContainer/CodeEditor/ScriptEditor/ErrorBar"]
 custom_minimum_size = Vector2(0, 20)
 layout_mode = 2
 theme_override_colors/default_color = Color(1, 0.4, 0.4, 1)
