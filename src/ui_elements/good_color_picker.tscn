@@ -1,8 +1,7 @@
-[gd_scene load_steps=15 format=3 uid="uid://b1eig44cov474"]
+[gd_scene load_steps=14 format=3 uid="uid://b1eig44cov474"]
 
 [ext_resource type="Script" path="res://src/ui_elements/good_color_picker.gd" id="1_0pc78"]
 [ext_resource type="Shader" path="res://src/shaders/color_wheel.gdshader" id="2_nf1uk"]
-[ext_resource type="Shader" path="res://src/shaders/value_shader.gdshader" id="3_gw5u0"]
 [ext_resource type="Shader" path="res://src/shaders/slider_visuals.gdshader" id="5_acxpg"]
 [ext_resource type="Texture2D" uid="uid://d36qn2f7a0nok" path="res://visual/icons/NoneColor.svg" id="5_rnr60"]
 
@@ -11,8 +10,11 @@ shader = ExtResource("2_nf1uk")
 shader_parameter/v = 1.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_gihhg"]
-shader = ExtResource("3_gw5u0")
+shader = ExtResource("5_acxpg")
 shader_parameter/base_color = Vector3(0, 0, 0)
+shader_parameter/interpolation = 5
+shader_parameter/horizontal = false
+shader_parameter/inverted = true
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mqx76"]
 content_margin_top = 1.0
@@ -25,9 +27,8 @@ content_margin_bottom = 1.0
 bg_color = Color(0.866667, 0.933333, 1, 0.2)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sndty"]
-content_margin_top = 1.0
-content_margin_bottom = 1.0
 bg_color = Color(0.866667, 0.933333, 1, 0.333333)
+border_width_top = 2
 
 [sub_resource type="ButtonGroup" id="ButtonGroup_w0iiw"]
 
@@ -35,16 +36,22 @@ bg_color = Color(0.866667, 0.933333, 1, 0.333333)
 shader = ExtResource("5_acxpg")
 shader_parameter/base_color = Vector3(1, 1, 1)
 shader_parameter/interpolation = 0
+shader_parameter/horizontal = true
+shader_parameter/inverted = false
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_dlmj5"]
 shader = ExtResource("5_acxpg")
 shader_parameter/base_color = Vector3(1, 1, 1)
 shader_parameter/interpolation = 0
+shader_parameter/horizontal = true
+shader_parameter/inverted = false
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_p3pbp"]
 shader = ExtResource("5_acxpg")
 shader_parameter/base_color = Vector3(1, 1, 1)
 shader_parameter/interpolation = 0
+shader_parameter/horizontal = true
+shader_parameter/inverted = false
 
 [node name="GoodColorPicker" type="VBoxContainer"]
 offset_right = 190.0
