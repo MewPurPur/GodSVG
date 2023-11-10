@@ -6,7 +6,7 @@ const ExportDialog := preload("export_dialog.tscn")
 
 @onready var code_edit: TextEdit = $ScriptEditor/SVGCodeEdit
 @onready var error_bar: PanelContainer = $ScriptEditor/ErrorBar
-@onready var error_label: RichTextLabel = $ScriptEditor/ErrorBar/Padding/Label
+@onready var error_label: RichTextLabel = $ScriptEditor/ErrorBar/Label
 @onready var size_label: Label = %SizeLabel
 
 func _ready() -> void:
@@ -38,18 +38,13 @@ func update_error(err_id: StringName) -> void:
 		if not error_bar.visible:
 			error_bar.show()
 			error_label.text = tr(err_id)
-			var stylebox := ThemeDB.get_project_theme().\
-					get_stylebox(&"normal", &"TextEdit").duplicate()
-			stylebox.corner_radius_bottom_right = 0
-			stylebox.corner_radius_bottom_left = 0
-			stylebox.border_width_bottom = 1
-			code_edit.add_theme_stylebox_override(&"normal", stylebox)
-			var stylebox2 := ThemeDB.get_project_theme().\
-					get_stylebox(&"focus", &"CodeEdit").duplicate()
-			stylebox2.corner_radius_bottom_right = 0
-			stylebox2.corner_radius_bottom_left = 0
-			stylebox2.border_width_bottom = 1
-			code_edit.add_theme_stylebox_override(&"focus", stylebox2)
+			for theming in [&"normal", &"TextEdit"]:
+				var stylebox := ThemeDB.get_project_theme().\
+						get_stylebox(theming, &"TextEdit").duplicate()
+				stylebox.corner_radius_bottom_right = 0
+				stylebox.corner_radius_bottom_left = 0
+				stylebox.border_width_bottom = 1
+				code_edit.add_theme_stylebox_override(theming, stylebox)
 			var error_bar_real_height := error_bar.size.y - 2
 			code_edit.custom_minimum_size.y -= error_bar_real_height
 			code_edit.size.y -= error_bar_real_height
