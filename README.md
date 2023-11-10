@@ -3,11 +3,11 @@
 ![image](https://github.com/MewPurPur/GodSVG/assets/85438892/2a8a674d-af79-4db8-a817-57342549e670)
 
 **GodSVG is an application for creating optimized Scalable Vector Graphics (SVG) files.** It is mainly designed for programmers, allowing them to easily edit individual SVG elements and view the corresponding code in real-time.
-GodSVG is inspired by the need for a SVG editor without abstractions that produces optimized SVG files.
+GodSVG is inspired by the need for an SVG editor without abstractions that produces optimized SVG files.
 
 ## Features
 
-- **Interactive SVG editing:** Modify individual elements of a SVG file using a user-friendly interface.
+- **Interactive SVG editing:** Modify individual elements of an SVG file using a user-friendly interface.
 - **Real-time code:** As you manipulate elements in the UI, code is instantly generated and can be edited.
 - **Optimized SVG output:** Generate clean and efficient SVG files. _(Planned: Ways to minify the output)_
 - **Accessible on mobile:** GodSVG aims to be usable on mobile devices.
