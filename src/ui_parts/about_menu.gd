@@ -24,8 +24,6 @@ func add_section(section_title: String, authors: Array[String]):
 	authors_label.pop()
 	authors_label.newline()
 
-func _on_godot_license_pressed() -> void:
-	OS.shell_open("https://godotengine.org/license/")
 
 func _on_close_pressed() -> void:
 	queue_free()
