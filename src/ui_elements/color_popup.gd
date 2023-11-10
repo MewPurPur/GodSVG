@@ -8,17 +8,16 @@ const ColorSwatch = preload("res://src/ui_elements/color_swatch.tscn")
 signal color_picked(new_color: String, final: bool)
 var current_value: String
 
-@onready var palettes_content: ScrollContainer = %Palettes
-@onready var palettes_content_container: VBoxContainer = %Palettes/VBox
-@onready var color_picker_content: VBoxContainer = %ColorPicker
-@onready var color_picker: GoodColorPickerType = %ColorPicker/ColorPicker
-@onready var palette_button: Button = %Tabs/PaletteButton
-@onready var color_picker_button: Button = %Tabs/ColorPickerButton
+var palette_mode := true
+
+@onready var palettes_content: ScrollContainer = %Content/Palettes
+@onready var palettes_content_container: VBoxContainer = %Content/Palettes/VBox
+@onready var color_picker_content: VBoxContainer = %Content/ColorPicker
+@onready var color_picker: GoodColorPickerType = %Content/ColorPicker
+@onready var switch_mode_button: Button = $PanelContainer/MainContainer/SwitchMode
 @onready var panel_container: PanelContainer = $PanelContainer
 
 func _ready() -> void:
-	palette_button.button_pressed = true
-	palette_button.mouse_default_cursor_shape = Control.CURSOR_ARROW
 	update_palettes()
 	update_color_picker()
 
@@ -64,21 +63,11 @@ func pick_color(color: String) -> void:
 
 
 # Switching between palette mode and color picker mode.
-func _on_palette_button_pressed() -> void:
-	palette_button.disabled = true
-	color_picker_button.disabled = false
-	palette_button.mouse_default_cursor_shape = Control.CURSOR_ARROW
-	color_picker_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-	color_picker_content.hide()
-	palettes_content.show()
-
-func _on_color_picker_button_pressed() -> void:
-	color_picker_button.disabled = true
-	palette_button.disabled = false
-	palette_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-	color_picker_button.mouse_default_cursor_shape = Control.CURSOR_ARROW
-	color_picker_content.show()
-	palettes_content.hide()
+func _switch_mode() -> void:
+	palette_mode = not palette_mode
+	switch_mode_button.text = tr(&"#palettes" if palette_mode else &"#color_picker")
+	color_picker_content.visible = not palette_mode
+	palettes_content.visible = palette_mode
 
 
 func _on_popup_hide() -> void:
