@@ -3,6 +3,8 @@ shader_type canvas_item;
 uniform vec3 base_color = vec3(1.0, 1.0, 1.0);
 // 0 = Red, 1 = Green, 2 = Blue, 3 = Hue, 4 = Saturation, 5 = Value
 uniform int interpolation = 0;
+uniform bool horizontal = true;
+uniform bool inverted = false;
 
 vec3 rgb2hsv(vec3 c) {
 	vec4 K = vec4(0.0, -1.0 / 3.0, 2.0 / 3.0, -1.0);
@@ -20,20 +22,23 @@ vec3 hsv2rgb(vec3 c) {
 }
 
 void fragment() {
+	float offset = (horizontal ? UV.x : UV.y);
+	offset = (inverted ? 1.0 - offset : offset);
+	
 	if (interpolation == 0) {
-		COLOR = vec4(UV.x, base_color.g, base_color.b, 1.0);
+		COLOR = vec4(offset, base_color.g, base_color.b, 1.0);
 	} else if (interpolation == 1) {
-		COLOR = vec4(base_color.r, UV.x, base_color.b, 1.0);
+		COLOR = vec4(base_color.r, offset, base_color.b, 1.0);
 	} else if (interpolation == 2) {
-		COLOR = vec4(base_color.r, base_color.g, UV.x, 1.0);
+		COLOR = vec4(base_color.r, base_color.g, offset, 1.0);
 	} else {
 		vec3 hsv = rgb2hsv(base_color.rgb);
 		if (interpolation == 3) {
-			hsv.x = UV.x;
+			hsv.x = offset;
 		} else if (interpolation == 4) {
-			hsv.y = UV.x;
+			hsv.y = offset;
 		} else if (interpolation == 5) {
-			hsv.z = UV.x;
+			hsv.z = offset;
 		}
 		COLOR = vec4(hsv2rgb(hsv), 1.0);
 	}
