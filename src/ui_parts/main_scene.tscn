@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=3 uid="uid://ce6j54x27pom"]
+[gd_scene load_steps=32 format=3 uid="uid://ce6j54x27pom"]
 
 [ext_resource type="PackedScene" uid="uid://ccynisiuyn5qn" path="res://src/ui_parts/inspector.tscn" id="1_afxvd"]
 [ext_resource type="Texture2D" uid="uid://ccvjkdd0s7rb4" path="res://visual/icons/Copy.svg" id="1_fm0ux"]
@@ -20,6 +20,7 @@
 [ext_resource type="Texture2D" uid="uid://buire51l0mifg" path="res://visual/icons/Snap.svg" id="11_u7ddj"]
 [ext_resource type="Shader" path="res://src/shaders/zoom_shader.gdshader" id="12_wewnk"]
 [ext_resource type="PackedScene" uid="uid://dad7fkhmsooc6" path="res://src/ui_elements/number_edit.tscn" id="13_oxv3i"]
+[ext_resource type="Script" path="res://src/ui_elements/BetterToggleButton.gd" id="14_cn5fu"]
 [ext_resource type="Script" path="res://src/ui_parts/view_camera.gd" id="15_v2yj8"]
 [ext_resource type="PackedScene" uid="uid://oltvrf01xrxl" path="res://src/ui_parts/zoom_menu.tscn" id="18_e3qve"]
 
@@ -85,6 +86,11 @@ content_margin_bottom = 7.0
 bg_color = Color(0.02, 0.02, 0.08, 1)
 border_width_bottom = 2
 border_color = Color(0.4, 0.7, 1, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eujxa"]
+bg_color = Color(0.866667, 0.933333, 1, 0.133333)
+corner_radius_top_left = 5
+corner_radius_bottom_left = 5
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_kqplg"]
 shader = ExtResource("12_wewnk")
@@ -256,6 +262,8 @@ mouse_default_cursor_shape = 2
 theme_type_variation = &"RightConnectedButton"
 toggle_mode = true
 icon = ExtResource("11_u7ddj")
+script = ExtResource("14_cn5fu")
+hover_pressed_stylebox = SubResource("StyleBoxFlat_eujxa")
 
 [node name="NumberEdit" parent="Display/PanelContainer/HBoxContainer/LeftMenu/Snapping" instance=ExtResource("13_oxv3i")]
 custom_minimum_size = Vector2(46, 22)

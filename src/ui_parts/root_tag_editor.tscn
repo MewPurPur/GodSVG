@@ -1,8 +1,16 @@
-[gd_scene load_steps=4 format=3 uid="uid://bktmk76u7dsu0"]
+[gd_scene load_steps=6 format=3 uid="uid://bktmk76u7dsu0"]
 
 [ext_resource type="Script" path="res://src/ui_parts/root_tag_editor.gd" id="1_xgyg0"]
 [ext_resource type="FontFile" uid="uid://dtb4wkus51hxs" path="res://visual/fonts/FontMono.ttf" id="2_fm5sa"]
 [ext_resource type="Texture2D" uid="uid://bv4lcvienlyfa" path="res://visual/icons/Coupled.svg" id="3_yhfll"]
+[ext_resource type="Script" path="res://src/ui_elements/BetterToggleButton.gd" id="4_7r848"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_u8h0i"]
+bg_color = Color(0.866667, 0.933333, 1, 0.133333)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
 
 [node name="SVGTagEditor" type="MarginContainer"]
 offset_right = 100.0
@@ -52,6 +60,8 @@ mouse_default_cursor_shape = 2
 theme_type_variation = &"IconButton"
 toggle_mode = true
 icon = ExtResource("3_yhfll")
+script = ExtResource("4_7r848")
+hover_pressed_stylebox = SubResource("StyleBoxFlat_u8h0i")
 
 [node name="ViewBox" type="VBoxContainer" parent="Edits"]
 layout_mode = 2

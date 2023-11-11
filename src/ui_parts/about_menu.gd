@@ -24,6 +24,9 @@ func add_section(section_title: String, authors: Array[String]):
 	authors_label.pop()
 	authors_label.newline()
 
+func _on_components_pressed() -> void:
+	OS.shell_open("https://github.com/godotengine/godot/blob/master/COPYRIGHT.txt")
+
 
 func _on_close_pressed() -> void:
 	queue_free()
