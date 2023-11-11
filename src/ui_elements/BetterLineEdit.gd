@@ -5,9 +5,9 @@ const code_font = preload("res://visual/fonts/FontMono.ttf")
 
 var hovered := false
 
-@export var hover_stylebox: StyleBox
-@export var focus_stylebox: StyleBox
-@export var code_font_tooltip := false
+@export var hover_stylebox: StyleBox  ## Overlayed on top when you hover the LineEdit.
+@export var focus_stylebox: StyleBox  ## Overlayed on top when the LineEdit is focused.
+@export var code_font_tooltip := false  ## Use the mono font for the tooltip.
 
 func _ready() -> void:
 	focus_entered.connect(_on_focus_entered)

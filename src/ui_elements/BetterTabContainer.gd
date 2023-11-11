@@ -1,4 +1,4 @@
-## A TabContainer with a few tweaks to make it nicer to use.
+## A TabContainer that automatically localizes tab titles.
 class_name BetterTabContainer extends TabContainer
 
 var tab_keys: Array[StringName]
