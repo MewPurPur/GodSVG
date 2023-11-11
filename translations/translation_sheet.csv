@@ -55,7 +55,7 @@
 #export_configuration,Export Configuration,Конфигурация на експорта,Exportierungskonfiguration
 #add_tag,Add new tag,Добави нов таг,Neues Element hinzufügen
 #license_tab,License,Лиценз,Lizenz
-#third-party-licenses_tab,Third-party-licenses,Лицензи от трети партии,Drittanbieter-Lizenzen
+#third-party-licenses_tab,Third-party licenses,Лицензи от трети партии,Drittanbieter-Lizenzen
 #authors_tab,Authors,Автори,Autoren
 #kbd_shortcuts_tab,Shortcuts,Бързи клавиши,Tastenkombinationen
 #palettes,Palettes,Палети,
@@ -67,3 +67,4 @@
 #edit_color_name,Edit color name,Промени името на цвета,
 #enable_color,Enable the color,Включи цвета,
 #disable_color,Disable the color,Изключи цвета,
+#godot_third_party,Godot third-party components,Компоненти в Godot от трети партии,
