@@ -178,11 +178,13 @@ func _draw() -> void:
 			"circle":
 				var c := Vector2(attribs.cx.get_value(), attribs.cy.get_value())
 				var r: float = attribs.r.get_value()
+				
 				var points := PackedVector2Array()
+				points.resize(181)
 				for i in 180:
 					var d := i * TAU/180
-					points.append(convert_in(c + Vector2(cos(d) * r, sin(d) * r)))
-				points.append(points[0])
+					points[i] = convert_in(c + Vector2(cos(d) * r, sin(d) * r))
+				points[180] = points[0]
 				
 				if tag_hovered and tag_selected:
 					hovered_selected_polylines.append(points)
@@ -192,17 +194,18 @@ func _draw() -> void:
 					selected_polylines.append(points)
 				else:
 					normal_polylines.append(points)
-				
+			
 			"ellipse":
 				var c := Vector2(attribs.cx.get_value(), attribs.cy.get_value())
 				var rx: float = attribs.rx.get_value()
 				var ry: float = attribs.ry.get_value()
 				# Squished circle.
 				var points := PackedVector2Array()
+				points.resize(181)
 				for i in 180:
 					var d := i * TAU/180
-					points.append(convert_in(c + Vector2(cos(d) * rx, sin(d) * ry)))
-				points.append(points[0])
+					points[i] = convert_in(c + Vector2(cos(d) * rx, sin(d) * ry))
+				points[180] = points[0]
 				
 				if tag_hovered and tag_selected:
 					hovered_selected_polylines.append(points)
@@ -212,7 +215,7 @@ func _draw() -> void:
 					selected_polylines.append(points)
 				else:
 					normal_polylines.append(points)
-				
+			
 			"rect":
 				var x: float = attribs.x.get_value()
 				var y: float = attribs.y.get_value()
@@ -223,11 +226,12 @@ func _draw() -> void:
 				var points := PackedVector2Array()
 				if rx == 0 and ry == 0:
 					# Basic rectangle.
-					points.append(convert_in(Vector2(x, y)))
-					points.append(convert_in(Vector2(x + rect_width, y)))
-					points.append(convert_in(Vector2(x + rect_width, y + rect_height)))
-					points.append(convert_in(Vector2(x, y + rect_height)))
-					points.append(convert_in(Vector2(x, y)))
+					points.resize(5)
+					points[0] = convert_in(Vector2(x, y))
+					points[1] = convert_in(Vector2(x + rect_width, y))
+					points[2] = convert_in(Vector2(x + rect_width, y + rect_height))
+					points[3] = convert_in(Vector2(x, y + rect_height))
+					points[4] = convert_in(Vector2(x, y))
 				else:
 					if rx == 0:
 						rx = ry
@@ -236,28 +240,29 @@ func _draw() -> void:
 					rx = minf(rx, rect_width / 2)
 					ry = minf(ry, rect_height / 2)
 					# Rounded rectangle.
-					points.append(convert_in(Vector2(x + rx, y)))
-					points.append(convert_in(Vector2(x + rect_width - rx, y)))
+					points.resize(186)
+					points[0] = convert_in(Vector2(x + rx, y))
+					points[1] = convert_in(Vector2(x + rect_width - rx, y))
 					for i in range(135, 180):
 						var d := i * TAU/180
-						points.append(convert_in(Vector2(x + rect_width - rx, y + ry) +\
-								Vector2(cos(d) * rx, sin(d) * ry)))
-					points.append(convert_in(Vector2(x + rect_width, y + rect_height - ry)))
+						points[i - 133] = convert_in(Vector2(x + rect_width - rx, y + ry) +\
+								Vector2(cos(d) * rx, sin(d) * ry))
+					points[47] = convert_in(Vector2(x + rect_width, y + rect_height - ry))
 					for i in range(0, 45):
 						var d := i * TAU/180
-						points.append(convert_in(Vector2(x + rect_width - rx,
-								y + rect_height - ry) + Vector2(cos(d) * rx, sin(d) * ry)))
-					points.append(convert_in(Vector2(x + rx, y + rect_height)))
+						points[i + 48] = convert_in(Vector2(x + rect_width - rx,
+								y + rect_height - ry) + Vector2(cos(d) * rx, sin(d) * ry))
+					points[93] = convert_in(Vector2(x + rx, y + rect_height))
 					for i in range(45, 90):
 						var d := i * TAU/180
-						points.append(convert_in(Vector2(x + rx, y + rect_height - ry) +\
-								Vector2(cos(d) * rx, sin(d) * ry)))
-					points.append(convert_in(Vector2(x, y + ry)))
+						points[i + 49] = convert_in(Vector2(x + rx, y + rect_height - ry) +\
+								Vector2(cos(d) * rx, sin(d) * ry))
+					points[139] = convert_in(Vector2(x, y + ry))
 					for i in range(90, 135):
 						var d := i * TAU/180
-						points.append(convert_in(Vector2(x + rx, y + ry) +\
-								Vector2(cos(d) * rx, sin(d) * ry)))
-					points.append(points[0])
+						points[i + 50] = convert_in(Vector2(x + rx, y + ry) +\
+								Vector2(cos(d) * rx, sin(d) * ry))
+					points[185] = points[0]
 				
 				if tag_hovered and tag_selected:
 					hovered_selected_polylines.append(points)
@@ -267,16 +272,14 @@ func _draw() -> void:
 					selected_polylines.append(points)
 				else:
 					normal_polylines.append(points)
-				
+			
 			"line":
 				var x1: float = attribs.x1.get_value()
 				var y1: float = attribs.y1.get_value()
 				var x2: float = attribs.x2.get_value()
 				var y2: float = attribs.y2.get_value()
 				
-				var points := PackedVector2Array()
-				points.append(convert_in(Vector2(x1, y1)))
-				points.append(convert_in(Vector2(x2, y2)))
+				var points := PackedVector2Array([Vector2(x1, y1), Vector2(x2, y2)])
 				
 				if tag_hovered and tag_selected:
 					hovered_selected_polylines.append(points)
@@ -286,7 +289,7 @@ func _draw() -> void:
 					selected_polylines.append(points)
 				else:
 					normal_polylines.append(points)
-				
+			
 			"path":
 				var pathdata: AttributePath = attribs.d
 				var current_mode := InteractionType.NONE
