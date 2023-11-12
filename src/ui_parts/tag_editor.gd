@@ -143,7 +143,7 @@ func tag_context_populate() -> void:
 	tag_context.set_btn_array(buttons_arr)
 
 func _on_title_button_pressed() -> void:
-	Indications.set_selection(tid)
+	Indications.normal_select(tid)
 	tag_context_populate()
 	Utils.popup_under_control(tag_context, title_button)
 
