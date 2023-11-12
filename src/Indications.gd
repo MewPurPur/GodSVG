@@ -102,7 +102,6 @@ func ctrl_select(tid: PackedInt32Array, inner_idx := -1) -> void:
 	
 	selection_changed.emit()
 
-# TODO this is pretty shaky.
 ## Select all tags with the same depth from the tag to the last selected tag.
 ## Similarly for inner selections if inner_idx is given, but without tree logic.
 func shift_select(tid: PackedInt32Array, inner_idx := -1) -> void:
