@@ -147,7 +147,6 @@ func _on_title_button_pressed() -> void:
 	tag_context_populate()
 	Utils.popup_under_control(tag_context, title_button)
 
-# FIXME fix move commands
 func _on_move_up_button_pressed() -> void:
 	tag_context.hide()
 	SVG.root_tag.move_tags_in_parent([tid], false)
