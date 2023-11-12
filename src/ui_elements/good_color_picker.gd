@@ -22,6 +22,14 @@ var slider_mode: SliderMode:
 			slider1_track.material.set_shader_parameter(&"interpolation", 3)
 			slider2_track.material.set_shader_parameter(&"interpolation", 4)
 			slider3_track.material.set_shader_parameter(&"interpolation", 5)
+			# Clamping like this doesn't change the hex representation, but
+			# it helps avoid locking certain sliders (e.g. hue slider when saturation is 0).
+			var new_color := color
+			new_color.h = clampf(new_color.h, 0.0, 0.9999)
+			new_color.s = clampf(new_color.s, 0.0001, 1.0)
+			new_color.v = clampf(new_color.v, 0.0001, 1.0)
+			set_color(new_color)
+			
 		slider1.queue_redraw()
 		slider2.queue_redraw()
 		slider3.queue_redraw()
@@ -103,7 +111,7 @@ func _on_side_slider_gui_input(event: InputEvent) -> void:
 	if (event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT) or\
 	(event is InputEventMouseMotion and event.button_mask == MOUSE_BUTTON_MASK_LEFT):
 		var new_color := color
-		new_color.v = clampf(1 - event.position.y / side_slider.size.y, 0.0001, 1)
+		new_color.v = clampf(1 - event.position.y / side_slider.size.y, 0.0001, 1.0)
 		if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
 			is_dragging_side_slider = event.is_pressed()
 			side_slider.queue_redraw()
@@ -125,9 +133,9 @@ func _on_slider1_gui_input(event: InputEvent) -> void:
 	(event is InputEventMouseMotion and event.button_mask == MOUSE_BUTTON_MASK_LEFT):
 		var new_color := color
 		if slider_mode == SliderMode.RGB:
-			new_color.r = clampf(event.position.x / slider1.size.x, 0, 1)
+			new_color.r = clampf(event.position.x / slider1.size.x, 0.0, 1.0)
 		elif slider_mode == SliderMode.HSV:
-			new_color.h = clampf(event.position.x / slider1.size.x, 0, 0.9999)
+			new_color.h = clampf(event.position.x / slider1.size.x, 0.0, 0.9999)
 		if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
 			is_dragging_slider1 = event.is_pressed()
 			slider1.queue_redraw()
@@ -138,9 +146,9 @@ func _on_slider2_gui_input(event: InputEvent) -> void:
 	(event is InputEventMouseMotion and event.button_mask == MOUSE_BUTTON_MASK_LEFT):
 		var new_color := color
 		if slider_mode == SliderMode.RGB:
-			new_color.g = clampf(event.position.x / slider2.size.x, 0, 1)
+			new_color.g = clampf(event.position.x / slider2.size.x, 0.0, 1.0)
 		elif slider_mode == SliderMode.HSV:
-			new_color.s = clampf(event.position.x / slider2.size.x, 0, 1)
+			new_color.s = clampf(event.position.x / slider2.size.x, 0.0001, 1.0)
 		if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
 			is_dragging_slider2 = event.is_pressed()
 			slider3.queue_redraw()
@@ -151,9 +159,9 @@ func _on_slider3_gui_input(event: InputEvent) -> void:
 	(event is InputEventMouseMotion and event.button_mask == MOUSE_BUTTON_MASK_LEFT):
 		var new_color := color
 		if slider_mode == SliderMode.RGB:
-			new_color.b = clampf(event.position.x / slider3.size.x, 0, 1)
+			new_color.b = clampf(event.position.x / slider3.size.x, 0.0, 1.0)
 		elif slider_mode == SliderMode.HSV:
-			new_color.v = clampf(event.position.x / slider3.size.x, 0.0001, 1)
+			new_color.v = clampf(event.position.x / slider3.size.x, 0.0001, 1.0)
 		if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
 			is_dragging_slider3 = event.is_pressed()
 			slider3.queue_redraw()
