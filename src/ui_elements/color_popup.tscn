@@ -32,7 +32,7 @@ corner_radius_bottom_left = 4
 
 [node name="ColorPopup" type="Popup"]
 transparent_bg = true
-size = Vector2i(218, 353)
+size = Vector2i(218, 344)
 visible = true
 script = ExtResource("1_t1mgf")
 
