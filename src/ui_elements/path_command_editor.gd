@@ -8,6 +8,7 @@ signal cmd_insert_after(idx: int, cmd_char: String)
 
 const MiniNumberField = preload("mini_number_field.tscn")
 const FlagField = preload("flag_field.tscn")
+const PathCommandPopup = preload("path_command_popup.tscn")
 
 var tid := PackedInt32Array()
 var cmd_char := ""
@@ -29,7 +30,6 @@ func find_first_ancestor_scroll_container() -> ScrollContainer:
 @onready var more_button: Button = $HBox/MoreButton
 @onready var fields_container: HBoxContainer = $HBox/Fields
 @onready var action_popup: Popup = $ActionsPopup
-@onready var command_picker: Popup = $PathPopup
 
 var fields_added_before_ready: Array[Control] = []
 var fields: Array[Control] = []
@@ -173,6 +173,11 @@ func toggle_relative() -> void:
 
 func insert_after() -> void:
 	action_popup.hide()
+	var command_picker := PathCommandPopup.instantiate()
+	add_child(command_picker)
+	command_picker.disable_invalid(cmd_char)
+	command_picker.path_command_picked.connect(_on_path_command_picked)
+	command_picker.popup_hide.connect(command_picker.queue_free)
 	Utils.popup_under_control(command_picker, more_button, true)
 
 func open_actions(popup_from_mouse := false) -> void:
@@ -208,7 +213,6 @@ func _ready() -> void:
 	Indications.hover_changed.connect(determine_selection_highlight)
 	determine_selection_highlight()
 	setup_relative_button()
-	setup_command_picker()
 	more_button.pressed.connect(open_actions)
 	while not fields_added_before_ready.is_empty():
 		fields_container.add_child(fields_added_before_ready.pop_front())
@@ -245,9 +249,6 @@ func setup_relative_button() -> void:
 				Color.from_hsv(0.78, 0.75, 0.9), Color.from_hsv(0.74, 0.55, 0.95)))
 		relative_button.add_theme_stylebox_override(&"pressed", create_stylebox(
 				Color.from_hsv(0.74, 0.6, 1.0), Color.from_hsv(0.7, 0.4, 1.0)))
-
-func setup_command_picker() -> void:
-	command_picker.disable_invalid(cmd_char)
 
 
 func add_number_field() -> BetterLineEdit:
