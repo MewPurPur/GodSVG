@@ -169,11 +169,13 @@ func _on_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.is_pressed():
 		if event.button_index == MOUSE_BUTTON_LEFT:
 			if event.ctrl_pressed:
-				Indications.toggle_selection(tid)
+				Indications.ctrl_select(tid)
+			elif event.shift_pressed:
+				Indications.shift_select(tid)
 			else:
-				Indications.set_selection(tid)
+				Indications.normal_select(tid)
 		elif event.button_index == MOUSE_BUTTON_RIGHT:
-			Indications.set_selection(tid)
+			Indications.normal_select(tid)
 			tag_context_populate()
 			tag_context.popup(Rect2(get_global_mouse_position() +\
 					Vector2(-tag_context.size.x / 2, 0), tag_context.size))
@@ -227,7 +229,7 @@ func determine_selection_highlight() -> void:
 
 func select_conditionally() -> void:
 	if Indications.semi_selected_tid != tid:
-		Indications.set_selection(tid)
+		Indications.normal_select(tid)
 
 
 func _on_title_button_container_draw() -> void:

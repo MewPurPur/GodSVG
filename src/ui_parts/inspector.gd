@@ -25,7 +25,7 @@ func full_rebuild() -> void:
 		var tag := SVG.root_tag.child_tags[tag_idx]
 		var tag_editor := TagEditor.instantiate()
 		tag_editor.tag = tag
-		tag_editor.tid = PackedInt32Array([tag_idx])
+		tag_editor.tid = PackedInt32Array([tag_idx]) 
 		tags_container.add_child(tag_editor)
 
 func add_tag(tag_name: String) -> void:

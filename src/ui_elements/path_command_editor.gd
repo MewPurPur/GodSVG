@@ -161,7 +161,7 @@ func sync_values(cmd: PathCommand) -> void:
 
 
 func update_value(value: float, property: StringName) -> void:
-	Indications.set_inner_selection(tid, cmd_idx)
+	Indications.normal_select(tid, cmd_idx)
 	cmd_update_value.emit(cmd_idx, value, property)
 
 func delete() -> void:
@@ -288,9 +288,11 @@ func _on_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.is_pressed():
 		if event.button_index == MOUSE_BUTTON_LEFT:
 			if event.ctrl_pressed:
-				Indications.toggle_inner_selection(tid, cmd_idx)
+				Indications.ctrl_select(tid, cmd_idx)
+			elif event.shift_pressed:
+				Indications.shift_select(tid, cmd_idx)
 			else:
-				Indications.set_inner_selection(tid, cmd_idx)
+				Indications.normal_select(tid, cmd_idx)
 		elif event.button_index == MOUSE_BUTTON_RIGHT:
 			Indications.set_inner_selection(tid, cmd_idx)
 			open_actions(true)
