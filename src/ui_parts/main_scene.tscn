@@ -27,11 +27,12 @@
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_082e3"]
 content_margin_left = 6.0
 content_margin_top = 8.0
-content_margin_right = 8.0
+content_margin_right = 0.0
 content_margin_bottom = 6.0
 bg_color = Color(0.02, 0.02, 0.08, 1)
 border_width_right = 2
 border_color = Color(0.4, 0.7, 1, 1)
+expand_margin_right = 8.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_q56qh"]
 content_margin_left = 8.0
@@ -104,45 +105,50 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 0
 
-[node name="PanelContainer" type="PanelContainer" parent="."]
+[node name="HSplitContainer" type="HSplitContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 0
+
+[node name="PanelContainer" type="PanelContainer" parent="HSplitContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_082e3")
 
-[node name="MainContainer" type="VSplitContainer" parent="PanelContainer"]
+[node name="MainContainer" type="VSplitContainer" parent="HSplitContainer/PanelContainer"]
 layout_mode = 2
 theme_override_constants/separation = 8
 split_offset = -400
 
-[node name="CodeEditor" type="VBoxContainer" parent="PanelContainer/MainContainer"]
+[node name="CodeEditor" type="VBoxContainer" parent="HSplitContainer/PanelContainer/MainContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/separation = 0
 script = ExtResource("1_ry6k8")
 
-[node name="PanelContainer" type="PanelContainer" parent="PanelContainer/MainContainer/CodeEditor"]
+[node name="PanelContainer" type="PanelContainer" parent="HSplitContainer/PanelContainer/MainContainer/CodeEditor"]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_q56qh")
 
-[node name="CodeButtons" type="HBoxContainer" parent="PanelContainer/MainContainer/CodeEditor/PanelContainer"]
+[node name="CodeButtons" type="HBoxContainer" parent="HSplitContainer/PanelContainer/MainContainer/CodeEditor/PanelContainer"]
 layout_mode = 2
 
-[node name="PanelContainer" type="PanelContainer" parent="PanelContainer/MainContainer/CodeEditor/PanelContainer/CodeButtons"]
+[node name="PanelContainer" type="PanelContainer" parent="HSplitContainer/PanelContainer/MainContainer/CodeEditor/PanelContainer/CodeButtons"]
 layout_mode = 2
 size_flags_vertical = 4
 theme_override_styles/panel = SubResource("StyleBoxFlat_rppt3")
 
-[node name="SizeLabel" type="Label" parent="PanelContainer/MainContainer/CodeEditor/PanelContainer/CodeButtons/PanelContainer"]
+[node name="SizeLabel" type="Label" parent="HSplitContainer/PanelContainer/MainContainer/CodeEditor/PanelContainer/CodeButtons/PanelContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_w635r")
 theme_override_font_sizes/font_size = 12
 
-[node name="MetaActions" type="HBoxContainer" parent="PanelContainer/MainContainer/CodeEditor/PanelContainer/CodeButtons"]
+[node name="MetaActions" type="HBoxContainer" parent="HSplitContainer/PanelContainer/MainContainer/CodeEditor/PanelContainer/CodeButtons"]
 layout_mode = 2
 size_flags_horizontal = 10
 
-[node name="CopyButton" type="Button" parent="PanelContainer/MainContainer/CodeEditor/PanelContainer/CodeButtons/MetaActions"]
+[node name="CopyButton" type="Button" parent="HSplitContainer/PanelContainer/MainContainer/CodeEditor/PanelContainer/CodeButtons/MetaActions"]
 layout_mode = 2
 tooltip_text = "#copy_button_tooltip"
 focus_mode = 0
@@ -150,7 +156,7 @@ mouse_default_cursor_shape = 2
 theme_type_variation = &"IconButton"
 icon = ExtResource("1_fm0ux")
 
-[node name="ImportButton" type="Button" parent="PanelContainer/MainContainer/CodeEditor/PanelContainer/CodeButtons/MetaActions"]
+[node name="ImportButton" type="Button" parent="HSplitContainer/PanelContainer/MainContainer/CodeEditor/PanelContainer/CodeButtons/MetaActions"]
 layout_mode = 2
 tooltip_text = "#import_button_tooltip"
 focus_mode = 0
@@ -158,7 +164,7 @@ mouse_default_cursor_shape = 2
 theme_type_variation = &"IconButton"
 icon = ExtResource("4_ehrkr")
 
-[node name="ExportButton" type="Button" parent="PanelContainer/MainContainer/CodeEditor/PanelContainer/CodeButtons/MetaActions"]
+[node name="ExportButton" type="Button" parent="HSplitContainer/PanelContainer/MainContainer/CodeEditor/PanelContainer/CodeButtons/MetaActions"]
 layout_mode = 2
 tooltip_text = "#export_button_tooltip"
 focus_mode = 0
@@ -166,13 +172,13 @@ mouse_default_cursor_shape = 2
 theme_type_variation = &"IconButton"
 icon = ExtResource("5_qe6jq")
 
-[node name="ScriptEditor" type="VBoxContainer" parent="PanelContainer/MainContainer/CodeEditor"]
+[node name="ScriptEditor" type="VBoxContainer" parent="HSplitContainer/PanelContainer/MainContainer/CodeEditor"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/separation = -2
 
-[node name="SVGCodeEdit" type="TextEdit" parent="PanelContainer/MainContainer/CodeEditor/ScriptEditor"]
+[node name="SVGCodeEdit" type="TextEdit" parent="HSplitContainer/PanelContainer/MainContainer/CodeEditor/ScriptEditor"]
 custom_minimum_size = Vector2(0, 96)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -185,12 +191,12 @@ syntax_highlighter = SubResource("SyntaxHighlighter_fhint")
 highlight_all_occurrences = true
 script = ExtResource("7_q0ibc")
 
-[node name="ErrorBar" type="PanelContainer" parent="PanelContainer/MainContainer/CodeEditor/ScriptEditor"]
+[node name="ErrorBar" type="PanelContainer" parent="HSplitContainer/PanelContainer/MainContainer/CodeEditor/ScriptEditor"]
 visible = false
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_k0een")
 
-[node name="Label" type="RichTextLabel" parent="PanelContainer/MainContainer/CodeEditor/ScriptEditor/ErrorBar"]
+[node name="Label" type="RichTextLabel" parent="HSplitContainer/PanelContainer/MainContainer/CodeEditor/ScriptEditor/ErrorBar"]
 custom_minimum_size = Vector2(0, 20)
 layout_mode = 2
 theme_override_colors/default_color = Color(1, 0.4, 0.4, 1)
@@ -198,30 +204,30 @@ theme_override_fonts/normal_font = ExtResource("2_w635r")
 theme_override_font_sizes/normal_font_size = 14
 fit_content = true
 
-[node name="Inspector" parent="PanelContainer/MainContainer" instance=ExtResource("1_afxvd")]
+[node name="Inspector" parent="HSplitContainer/PanelContainer/MainContainer" instance=ExtResource("1_afxvd")]
 layout_mode = 2
 
-[node name="Display" type="VBoxContainer" parent="."]
+[node name="Display" type="VBoxContainer" parent="HSplitContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 0
 script = ExtResource("2_ylpv1")
 
-[node name="PanelContainer" type="PanelContainer" parent="Display"]
+[node name="PanelContainer" type="PanelContainer" parent="HSplitContainer/Display"]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_nxvgo")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Display/PanelContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="HSplitContainer/Display/PanelContainer"]
 layout_mode = 2
 alignment = 2
 
-[node name="LeftMenu" type="HBoxContainer" parent="Display/PanelContainer/HBoxContainer"]
+[node name="LeftMenu" type="HBoxContainer" parent="HSplitContainer/Display/PanelContainer/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 2
 theme_override_constants/separation = 5
 
-[node name="MoreOptions" type="Button" parent="Display/PanelContainer/HBoxContainer/LeftMenu"]
+[node name="MoreOptions" type="Button" parent="HSplitContainer/Display/PanelContainer/HBoxContainer/LeftMenu"]
 custom_minimum_size = Vector2(28, 0)
 layout_mode = 2
 size_flags_horizontal = 2
@@ -230,7 +236,7 @@ mouse_default_cursor_shape = 2
 icon = ExtResource("7_7iuuq")
 icon_alignment = 1
 
-[node name="Settings" type="Button" parent="Display/PanelContainer/HBoxContainer/LeftMenu"]
+[node name="Settings" type="Button" parent="HSplitContainer/Display/PanelContainer/HBoxContainer/LeftMenu"]
 custom_minimum_size = Vector2(28, 0)
 layout_mode = 2
 size_flags_horizontal = 2
@@ -240,7 +246,7 @@ mouse_default_cursor_shape = 2
 icon = ExtResource("4_3rshc")
 icon_alignment = 1
 
-[node name="Visuals" type="Button" parent="Display/PanelContainer/HBoxContainer/LeftMenu"]
+[node name="Visuals" type="Button" parent="HSplitContainer/Display/PanelContainer/HBoxContainer/LeftMenu"]
 custom_minimum_size = Vector2(28, 0)
 layout_mode = 2
 size_flags_horizontal = 2
@@ -250,11 +256,11 @@ mouse_default_cursor_shape = 2
 icon = ExtResource("9_ojv7n")
 icon_alignment = 1
 
-[node name="Snapping" type="HBoxContainer" parent="Display/PanelContainer/HBoxContainer/LeftMenu"]
+[node name="Snapping" type="HBoxContainer" parent="HSplitContainer/Display/PanelContainer/HBoxContainer/LeftMenu"]
 layout_mode = 2
 theme_override_constants/separation = 0
 
-[node name="SnapButton" type="Button" parent="Display/PanelContainer/HBoxContainer/LeftMenu/Snapping"]
+[node name="SnapButton" type="Button" parent="HSplitContainer/Display/PanelContainer/HBoxContainer/LeftMenu/Snapping"]
 layout_mode = 2
 tooltip_text = "#enable_snap"
 focus_mode = 0
@@ -265,7 +271,7 @@ icon = ExtResource("11_u7ddj")
 script = ExtResource("14_cn5fu")
 hover_pressed_stylebox = SubResource("StyleBoxFlat_eujxa")
 
-[node name="NumberEdit" parent="Display/PanelContainer/HBoxContainer/LeftMenu/Snapping" instance=ExtResource("13_oxv3i")]
+[node name="NumberEdit" parent="HSplitContainer/Display/PanelContainer/HBoxContainer/LeftMenu/Snapping" instance=ExtResource("13_oxv3i")]
 custom_minimum_size = Vector2(46, 22)
 layout_mode = 2
 tooltip_text = "#snap_size"
@@ -276,22 +282,22 @@ initial_value = 0.5
 min_value = 0.001
 allow_lower = false
 
-[node name="VisualsPopup" parent="Display/PanelContainer/HBoxContainer/LeftMenu" instance=ExtResource("10_hraj8")]
+[node name="VisualsPopup" parent="HSplitContainer/Display/PanelContainer/HBoxContainer/LeftMenu" instance=ExtResource("10_hraj8")]
 visible = false
 
-[node name="MorePopup" parent="Display/PanelContainer/HBoxContainer/LeftMenu" instance=ExtResource("10_hraj8")]
+[node name="MorePopup" parent="HSplitContainer/Display/PanelContainer/HBoxContainer/LeftMenu" instance=ExtResource("10_hraj8")]
 visible = false
 
-[node name="ZoomMenu" parent="Display/PanelContainer/HBoxContainer" instance=ExtResource("18_e3qve")]
+[node name="ZoomMenu" parent="HSplitContainer/Display/PanelContainer/HBoxContainer" instance=ExtResource("18_e3qve")]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="ViewportContainer" type="SubViewportContainer" parent="Display"]
+[node name="ViewportContainer" type="SubViewportContainer" parent="HSplitContainer/Display"]
 process_mode = 3
 layout_mode = 2
 size_flags_horizontal = 10
 
-[node name="Viewport" type="SubViewport" parent="Display/ViewportContainer"]
+[node name="Viewport" type="SubViewport" parent="HSplitContainer/Display/ViewportContainer"]
 disable_3d = true
 handle_input_locally = false
 gui_snap_controls_to_pixels = false
@@ -300,7 +306,7 @@ size_2d_override_stretch = true
 render_target_update_mode = 4
 script = ExtResource("6_7hypx")
 
-[node name="Checkerboard" type="TextureRect" parent="Display/ViewportContainer/Viewport"]
+[node name="Checkerboard" type="TextureRect" parent="HSplitContainer/Display/ViewportContainer/Viewport"]
 unique_name_in_owner = true
 texture_filter = 1
 material = SubResource("ShaderMaterial_kqplg")
@@ -308,7 +314,7 @@ texture = ExtResource("3_d58qh")
 expand_mode = 1
 stretch_mode = 1
 
-[node name="DisplayTexture" type="TextureRect" parent="Display/ViewportContainer/Viewport/Checkerboard"]
+[node name="DisplayTexture" type="TextureRect" parent="HSplitContainer/Display/ViewportContainer/Viewport/Checkerboard"]
 clip_contents = true
 layout_mode = 1
 anchors_preset = 15
@@ -319,7 +325,7 @@ grow_vertical = 2
 expand_mode = 1
 script = ExtResource("7_cxx0h")
 
-[node name="Controls" type="Control" parent="Display/ViewportContainer/Viewport/Checkerboard"]
+[node name="Controls" type="Control" parent="HSplitContainer/Display/ViewportContainer/Viewport/Checkerboard"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -329,23 +335,23 @@ grow_vertical = 2
 mouse_filter = 1
 script = ExtResource("5_pltvx")
 
-[node name="ViewCamera" type="Camera2D" parent="Display/ViewportContainer/Viewport"]
+[node name="ViewCamera" type="Camera2D" parent="HSplitContainer/Display/ViewportContainer/Viewport"]
 anchor_mode = 0
 editor_draw_screen = false
 script = ExtResource("15_v2yj8")
 
-[connection signal="pressed" from="PanelContainer/MainContainer/CodeEditor/PanelContainer/CodeButtons/MetaActions/CopyButton" to="PanelContainer/MainContainer/CodeEditor" method="_on_copy_button_pressed"]
-[connection signal="pressed" from="PanelContainer/MainContainer/CodeEditor/PanelContainer/CodeButtons/MetaActions/ImportButton" to="PanelContainer/MainContainer/CodeEditor" method="_on_import_button_pressed"]
-[connection signal="pressed" from="PanelContainer/MainContainer/CodeEditor/PanelContainer/CodeButtons/MetaActions/ExportButton" to="PanelContainer/MainContainer/CodeEditor" method="_on_export_button_pressed"]
-[connection signal="caret_changed" from="PanelContainer/MainContainer/CodeEditor/ScriptEditor/SVGCodeEdit" to="PanelContainer/MainContainer/CodeEditor/ScriptEditor/SVGCodeEdit" method="redraw_caret"]
-[connection signal="focus_entered" from="PanelContainer/MainContainer/CodeEditor/ScriptEditor/SVGCodeEdit" to="PanelContainer/MainContainer/CodeEditor/ScriptEditor/SVGCodeEdit" method="_on_focus_entered"]
-[connection signal="focus_exited" from="PanelContainer/MainContainer/CodeEditor/ScriptEditor/SVGCodeEdit" to="PanelContainer/MainContainer/CodeEditor/ScriptEditor/SVGCodeEdit" method="_on_focus_exited"]
-[connection signal="text_changed" from="PanelContainer/MainContainer/CodeEditor/ScriptEditor/SVGCodeEdit" to="PanelContainer/MainContainer/CodeEditor" method="_on_code_edit_text_changed"]
-[connection signal="pressed" from="Display/PanelContainer/HBoxContainer/LeftMenu/MoreOptions" to="Display" method="_on_more_options_pressed"]
-[connection signal="pressed" from="Display/PanelContainer/HBoxContainer/LeftMenu/Settings" to="Display" method="_on_settings_pressed"]
-[connection signal="pressed" from="Display/PanelContainer/HBoxContainer/LeftMenu/Visuals" to="Display" method="_on_visuals_button_pressed"]
-[connection signal="toggled" from="Display/PanelContainer/HBoxContainer/LeftMenu/Snapping/SnapButton" to="Display" method="_on_snap_button_toggled"]
-[connection signal="toggled" from="Display/PanelContainer/HBoxContainer/LeftMenu/Snapping/SnapButton" to="Display/ViewportContainer/Viewport/Checkerboard/Controls" method="_on_snap_button_toggled"]
-[connection signal="value_changed" from="Display/PanelContainer/HBoxContainer/LeftMenu/Snapping/NumberEdit" to="Display/ViewportContainer/Viewport/Checkerboard/Controls" method="_on_snapper_value_changed"]
-[connection signal="zoom_changed" from="Display/PanelContainer/HBoxContainer/ZoomMenu" to="Display/ViewportContainer/Viewport" method="_on_zoom_changed"]
-[connection signal="zoom_reset_pressed" from="Display/PanelContainer/HBoxContainer/ZoomMenu" to="Display/ViewportContainer/Viewport" method="center_frame"]
+[connection signal="pressed" from="HSplitContainer/PanelContainer/MainContainer/CodeEditor/PanelContainer/CodeButtons/MetaActions/CopyButton" to="HSplitContainer/PanelContainer/MainContainer/CodeEditor" method="_on_copy_button_pressed"]
+[connection signal="pressed" from="HSplitContainer/PanelContainer/MainContainer/CodeEditor/PanelContainer/CodeButtons/MetaActions/ImportButton" to="HSplitContainer/PanelContainer/MainContainer/CodeEditor" method="_on_import_button_pressed"]
+[connection signal="pressed" from="HSplitContainer/PanelContainer/MainContainer/CodeEditor/PanelContainer/CodeButtons/MetaActions/ExportButton" to="HSplitContainer/PanelContainer/MainContainer/CodeEditor" method="_on_export_button_pressed"]
+[connection signal="caret_changed" from="HSplitContainer/PanelContainer/MainContainer/CodeEditor/ScriptEditor/SVGCodeEdit" to="HSplitContainer/PanelContainer/MainContainer/CodeEditor/ScriptEditor/SVGCodeEdit" method="redraw_caret"]
+[connection signal="focus_entered" from="HSplitContainer/PanelContainer/MainContainer/CodeEditor/ScriptEditor/SVGCodeEdit" to="HSplitContainer/PanelContainer/MainContainer/CodeEditor/ScriptEditor/SVGCodeEdit" method="_on_focus_entered"]
+[connection signal="focus_exited" from="HSplitContainer/PanelContainer/MainContainer/CodeEditor/ScriptEditor/SVGCodeEdit" to="HSplitContainer/PanelContainer/MainContainer/CodeEditor/ScriptEditor/SVGCodeEdit" method="_on_focus_exited"]
+[connection signal="text_changed" from="HSplitContainer/PanelContainer/MainContainer/CodeEditor/ScriptEditor/SVGCodeEdit" to="HSplitContainer/PanelContainer/MainContainer/CodeEditor" method="_on_code_edit_text_changed"]
+[connection signal="pressed" from="HSplitContainer/Display/PanelContainer/HBoxContainer/LeftMenu/MoreOptions" to="HSplitContainer/Display" method="_on_more_options_pressed"]
+[connection signal="pressed" from="HSplitContainer/Display/PanelContainer/HBoxContainer/LeftMenu/Settings" to="HSplitContainer/Display" method="_on_settings_pressed"]
+[connection signal="pressed" from="HSplitContainer/Display/PanelContainer/HBoxContainer/LeftMenu/Visuals" to="HSplitContainer/Display" method="_on_visuals_button_pressed"]
+[connection signal="toggled" from="HSplitContainer/Display/PanelContainer/HBoxContainer/LeftMenu/Snapping/SnapButton" to="HSplitContainer/Display" method="_on_snap_button_toggled"]
+[connection signal="toggled" from="HSplitContainer/Display/PanelContainer/HBoxContainer/LeftMenu/Snapping/SnapButton" to="HSplitContainer/Display/ViewportContainer/Viewport/Checkerboard/Controls" method="_on_snap_button_toggled"]
+[connection signal="value_changed" from="HSplitContainer/Display/PanelContainer/HBoxContainer/LeftMenu/Snapping/NumberEdit" to="HSplitContainer/Display/ViewportContainer/Viewport/Checkerboard/Controls" method="_on_snapper_value_changed"]
+[connection signal="zoom_changed" from="HSplitContainer/Display/PanelContainer/HBoxContainer/ZoomMenu" to="HSplitContainer/Display/ViewportContainer/Viewport" method="_on_zoom_changed"]
+[connection signal="zoom_reset_pressed" from="HSplitContainer/Display/PanelContainer/HBoxContainer/ZoomMenu" to="HSplitContainer/Display/ViewportContainer/Viewport" method="center_frame"]
