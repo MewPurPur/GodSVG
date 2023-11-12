@@ -334,12 +334,13 @@ func _draw() -> void:
 							var cp2 := v1 if relative else v1 - cp1
 							var cp3 := v2 - v
 							
-							points = Utils.get_cubic_bezier_points(convert_in(cp1),
-									cp2 * viewbox_zoom, cp3 * viewbox_zoom, convert_in(cp4))
-							tangent_points.append(convert_in(cp1))
-							tangent_points.append(convert_in(cp1 + v1 if relative else v1))
-							tangent_points.append(convert_in(cp1 + v2 if relative else v2))
-							tangent_points.append(convert_in(cp4))
+							var cp1_transformed := convert_in(cp1)
+							var cp4_transformed := convert_in(cp4)
+							points = Utils.get_cubic_bezier_points(cp1_transformed,
+									cp2 * viewbox_zoom, cp3 * viewbox_zoom, cp4_transformed)
+							tangent_points.append_array(PackedVector2Array([cp1_transformed,
+									convert_in(cp1 + v1 if relative else v1),
+									convert_in(cp1 + v2 if relative else v2), cp4_transformed]))
 						"S":
 							# Shorthand cubic Bezier curve contour.
 							if cmd_idx == 0:
@@ -363,12 +364,13 @@ func _draw() -> void:
 							var cp2 := v1 if relative else v1 - cp1
 							var cp3 := v2 - v
 							
-							points = Utils.get_cubic_bezier_points(convert_in(cp1),
-									cp2 * viewbox_zoom, cp3 * viewbox_zoom, convert_in(cp4))
-							tangent_points.append(convert_in(cp1))
-							tangent_points.append(convert_in(cp1 + v1 if relative else v1))
-							tangent_points.append(convert_in(cp1 + v2 if relative else v2))
-							tangent_points.append(convert_in(cp4))
+							var cp1_transformed := convert_in(cp1)
+							var cp4_transformed := convert_in(cp4)
+							points = Utils.get_cubic_bezier_points(cp1_transformed,
+									cp2 * viewbox_zoom, cp3 * viewbox_zoom, cp4_transformed)
+							tangent_points.append_array(PackedVector2Array([cp1_transformed,
+									convert_in(cp1 + v1 if relative else v1),
+									convert_in(cp1 + v2 if relative else v2), cp4_transformed]))
 						"Q":
 							# Quadratic Bezier curve contour.
 							var v := Vector2(cmd.x, cmd.y)
@@ -377,12 +379,13 @@ func _draw() -> void:
 							var cp2 := cp1 + v1 if relative else v1
 							var cp3 := cp1 + v if relative else v
 							
+							var cp1_transformed := convert_in(cp1)
+							var cp2_transformed := convert_in(cp2)
+							var cp3_transformed := convert_in(cp3)
 							points = Utils.get_quadratic_bezier_points(
-									convert_in(cp1), convert_in(cp2), convert_in(cp3))
-							tangent_points.append(convert_in(cp1))
-							tangent_points.append(convert_in(cp2))
-							tangent_points.append(convert_in(cp2))
-							tangent_points.append(convert_in(cp3))
+									cp1_transformed, cp2_transformed, cp3_transformed)
+							tangent_points.append_array(PackedVector2Array([cp1_transformed,
+									cp2_transformed, cp2_transformed, cp3_transformed]))
 						"T":
 							# Shorthand quadratic Bezier curve contour.
 							var prevQ_idx := cmd_idx - 1
@@ -422,12 +425,13 @@ func _draw() -> void:
 							var cp2 := v1
 							var cp3 := cp1 + v if relative else v
 							
+							var cp1_transformed := convert_in(cp1)
+							var cp2_transformed := convert_in(cp2)
+							var cp3_transformed := convert_in(cp3)
 							points = Utils.get_quadratic_bezier_points(
-									convert_in(cp1), convert_in(cp2), convert_in(cp3))
-							tangent_points.append(convert_in(cp1))
-							tangent_points.append(convert_in(cp2))
-							tangent_points.append(convert_in(cp2))
-							tangent_points.append(convert_in(cp3))
+									cp1_transformed, cp2_transformed, cp3_transformed)
+							tangent_points.append_array(PackedVector2Array([cp1_transformed,
+									cp2_transformed, cp2_transformed, cp3_transformed]))
 						"A":
 							# Elliptical arc contour.
 							var start := cmd.start
