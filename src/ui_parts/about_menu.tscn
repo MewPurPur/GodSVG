@@ -80,11 +80,9 @@ text = "© 2023 MewPurPur
 [node name="TabContainer" type="TabContainer" parent="PanelContainer/VBoxContainer"]
 custom_minimum_size = Vector2(0, 280)
 layout_mode = 2
-current_tab = 1
 script = ExtResource("3_1xgiv")
 
 [node name="#license_tab" type="MarginContainer" parent="PanelContainer/VBoxContainer/TabContainer"]
-visible = false
 layout_mode = 2
 theme_override_constants/margin_left = 8
 theme_override_constants/margin_top = 8
@@ -124,6 +122,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE."
 
 [node name="#third-party-licenses_tab" type="MarginContainer" parent="PanelContainer/VBoxContainer/TabContainer"]
+visible = false
 layout_mode = 2
 theme_override_constants/margin_left = 8
 theme_override_constants/margin_top = 8
@@ -159,7 +158,7 @@ theme_override_font_sizes/font_size = 12
 text = "License: Expat"
 horizontal_alignment = 1
 
-[node name="Button" type="Button" parent="PanelContainer/VBoxContainer/TabContainer/#third-party-licenses_tab/ScrollContainer/VBoxContainer/ThirdParties/Godot"]
+[node name="Components" type="Button" parent="PanelContainer/VBoxContainer/TabContainer/#third-party-licenses_tab/ScrollContainer/VBoxContainer/ThirdParties/Godot"]
 layout_mode = 2
 size_flags_horizontal = 4
 focus_mode = 0
@@ -344,4 +343,5 @@ size_flags_vertical = 8
 mouse_default_cursor_shape = 2
 text = "Close"
 
+[connection signal="pressed" from="PanelContainer/VBoxContainer/TabContainer/#third-party-licenses_tab/ScrollContainer/VBoxContainer/ThirdParties/Godot/Components" to="." method="_on_components_pressed"]
 [connection signal="pressed" from="PanelContainer/Close" to="." method="_on_close_pressed"]

@@ -702,11 +702,17 @@ func _unhandled_input(event: InputEvent) -> void:
 		# React to LMB actions.
 		if hovered_handle != null and event.is_pressed():
 			dragged_handle = hovered_handle
-			if hovered_handle is XYHandle:
-				Indications.set_selection(dragged_handle.tid)
-			elif hovered_handle is PathHandle:
-				Indications.set_inner_selection(hovered_handle.tid,
-						hovered_handle.command_index)
+			var inner_idx = -1
+			if hovered_handle is PathHandle:
+				inner_idx = hovered_handle.command_index
+			
+			if event.ctrl_pressed:
+				Indications.ctrl_select(dragged_handle.tid, inner_idx)
+			elif event.shift_pressed:
+				Indications.shift_select(dragged_handle.tid, inner_idx)
+			else:
+				Indications.normal_select(dragged_handle.tid, inner_idx)
+		
 		elif dragged_handle != null and event.is_released():
 			if was_handle_moved:
 				var new_pos := convert_out(event_pos)
