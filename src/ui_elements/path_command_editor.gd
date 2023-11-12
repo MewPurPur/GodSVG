@@ -176,7 +176,7 @@ func insert_after() -> void:
 	Utils.popup_under_control(command_picker, more_button, true)
 
 func open_actions(popup_from_mouse := false) -> void:
-	Indications.set_inner_selection(tid, cmd_idx)
+	Indications.normal_select(tid, cmd_idx)
 	var buttons_arr: Array[Button] = []
 	
 	var delete_btn := Button.new()
@@ -294,7 +294,7 @@ func _on_gui_input(event: InputEvent) -> void:
 			else:
 				Indications.normal_select(tid, cmd_idx)
 		elif event.button_index == MOUSE_BUTTON_RIGHT:
-			Indications.set_inner_selection(tid, cmd_idx)
+			Indications.normal_select(tid, cmd_idx)
 			open_actions(true)
 
 func determine_selection_highlight() -> void:
@@ -302,8 +302,7 @@ func determine_selection_highlight() -> void:
 	if Indications.semi_selected_tid == tid and cmd_idx in Indications.inner_selections:
 		stylebox = StyleBoxFlat.new()
 		stylebox.set_corner_radius_all(3)
-		if Indications.semi_hovered_tid == tid and\
-		Indications.inner_hovered == cmd_idx:
+		if Indications.semi_hovered_tid == tid and Indications.inner_hovered == cmd_idx:
 			stylebox.bg_color = Color(0.7, 0.7, 1.0, 0.18)
 		else:
 			stylebox.bg_color = Color(0.6, 0.6, 1.0, 0.16)
