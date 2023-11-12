@@ -17,9 +17,12 @@ func is_attribute_symbol(c: String) -> bool:
 	(c >= "0" and c <= "9") or c == "-" or c == ":"
 
 func _get_line_syntax_highlighting(line: int) -> Dictionary:
+	var svg_text := get_text_edit().get_line(line)
+	if svg_text.is_empty():
+		return {}
+	
 	var color_map := {}  # Dictionary{int: Dictionary{String: Color}}
 	var parser := XMLParser.new()
-	var svg_text := get_text_edit().get_line(line)
 	parser.open_buffer(svg_text.to_ascii_buffer())
 	while parser.read() == OK:
 		var offset := parser.get_node_offset()

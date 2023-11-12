@@ -15,6 +15,7 @@ config/tags=PackedStringArray("project")
 run/main_scene="res://src/ui_parts/main_scene.tscn"
 config/features=PackedStringArray("4.2", "Forward Plus")
 run/low_processor_mode=true
+boot_splash/bg_color=Color(0.123, 0.1275, 0.15, 1)
 config/icon="res://visual/icon.png"
 
 [audio]
@@ -78,6 +79,11 @@ redo={
 duplicate={
 "deadzone": 0.5,
 "events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"command_or_control_autoremap":true,"alt_pressed":false,"shift_pressed":false,"pressed":false,"keycode":0,"physical_keycode":68,"key_label":0,"unicode":100,"echo":false,"script":null)
+]
+}
+select_all={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"command_or_control_autoremap":true,"alt_pressed":false,"shift_pressed":false,"pressed":false,"keycode":0,"physical_keycode":65,"key_label":0,"unicode":97,"echo":false,"script":null)
 ]
 }
 move_relative={
@@ -189,4 +195,3 @@ locale/translations=PackedStringArray("res://translations/translation_sheet.bg.t
 
 renderer/rendering_method="gl_compatibility"
 environment/defaults/default_clear_color=Color(0.12, 0.132, 0.2, 1)
-anti_aliasing/quality/screen_space_aa=1
