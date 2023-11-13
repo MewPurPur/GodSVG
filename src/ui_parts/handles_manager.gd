@@ -1,11 +1,6 @@
 ## Contours drawing and [Handle]s are managed here. 
 extends Control
 
-const handle_sizes = {
-	Handle.DisplayMode.BIG: Vector2(10, 10),
-	Handle.DisplayMode.SMALL: Vector2(8, 8),
-}
-
 const normal_handle_textures = {
 	Handle.DisplayMode.BIG: preload("res://visual/icons/HandleBig.svg"),
 	Handle.DisplayMode.SMALL: preload("res://visual/icons/HandleSmall.svg"),
@@ -40,6 +35,8 @@ enum InteractionType {NONE = 0, HOVERED = 1, SELECTED = 2, HOVERED_SELECTED = 3}
 var zoom := 1.0:
 	set(new_value):
 		zoom = new_value
+		RenderingServer.canvas_item_set_transform(surface,
+				Transform2D(0.0, Vector2(1/zoom, 1/zoom), 0.0, Vector2(0, 0)))
 		queue_redraw()
 
 var snap_enabled := false
@@ -54,7 +51,10 @@ var update_pending := false
 
 var handles: Array[Handle]
 
+var surface := RenderingServer.canvas_item_create()
+
 func _ready() -> void:
+	RenderingServer.canvas_item_set_parent(surface, get_canvas_item())
 	SVG.root_tag.attribute_changed.connect(update_dimensions)
 	SVG.root_tag.child_attribute_changed.connect(queue_redraw)
 	SVG.root_tag.child_attribute_changed.connect(sync_handles)
@@ -542,7 +542,7 @@ func _draw() -> void:
 						InteractionType.HOVERED_SELECTED:
 							hovered_selected_polylines.append(points.duplicate())
 							hovered_selected_tangent_multiline += tangent_points.duplicate()
-		
+	
 	for polyline in normal_polylines:
 		draw_polyline(polyline, default_color, thickness, true)
 	for polyline in selected_polylines:
@@ -574,15 +574,15 @@ func _draw() -> void:
 				hovered_selected_tangent_multiline[i2 + 1],
 				Color(hover_selection_color, tangent_alpha), tangent_thickness, true)
 	
+	# First gather all handles in 4 categories, then draw them in the right order.
 	var normal_handles: Array[Handle] = []
 	var selected_handles: Array[Handle] = []
 	var hovered_handles: Array[Handle] = []
 	var hovered_selected_handles: Array[Handle] = []
 	for handle in handles:
-		var is_hovered := tid_is_hovered(handle.tid,
-				handle.command_index if handle is PathHandle else -1)
-		var is_selected := tid_is_selected(handle.tid,
-				handle.command_index if handle is PathHandle else -1)
+		var cmd_idx: int = handle.command_index if handle is PathHandle else -1
+		var is_hovered := tid_is_hovered(handle.tid, cmd_idx)
+		var is_selected := tid_is_selected(handle.tid, cmd_idx)
 		
 		if is_hovered and is_selected:
 			hovered_selected_handles.append(handle)
@@ -593,29 +593,19 @@ func _draw() -> void:
 		else:
 			normal_handles.append(handle)
 	
-	var handle_texture: Texture2D
-	var handle_size: Vector2
-	var handle_pos: Vector2
+	RenderingServer.canvas_item_clear(surface)
 	for handle in normal_handles:
-		handle_texture = normal_handle_textures[handle.display_mode]
-		handle_size = handle_sizes[handle.display_mode] / zoom
-		handle_pos = convert_in(handle.pos) - handle_size / 2
-		draw_texture_rect(handle_texture, Rect2(handle_pos, handle_size), false)
+		var texture: Texture2D = normal_handle_textures[handle.display_mode]
+		texture.draw(surface, convert_in(handle.pos) * zoom - texture.get_size() / 2)
 	for handle in selected_handles:
-		handle_texture = selected_handle_textures[handle.display_mode]
-		handle_size = handle_sizes[handle.display_mode] / zoom
-		handle_pos = convert_in(handle.pos) - handle_size / 2
-		draw_texture_rect(handle_texture, Rect2(handle_pos, handle_size), false)
+		var texture: Texture2D = selected_handle_textures[handle.display_mode]
+		texture.draw(surface, convert_in(handle.pos) * zoom - texture.get_size() / 2)
 	for handle in hovered_handles:
-		handle_texture = hovered_handle_textures[handle.display_mode]
-		handle_size = handle_sizes[handle.display_mode] / zoom
-		handle_pos = convert_in(handle.pos) - handle_size / 2
-		draw_texture_rect(handle_texture, Rect2(handle_pos, handle_size), false)
+		var texture: Texture2D = hovered_handle_textures[handle.display_mode]
+		texture.draw(surface, convert_in(handle.pos) * zoom - texture.get_size() / 2)
 	for handle in hovered_selected_handles:
-		handle_texture = hovered_selected_handle_textures[handle.display_mode]
-		handle_size = handle_sizes[handle.display_mode] / zoom
-		handle_pos = convert_in(handle.pos) - handle_size / 2
-		draw_texture_rect(handle_texture, Rect2(handle_pos, handle_size), false)
+		var texture: Texture2D = hovered_selected_handle_textures[handle.display_mode]
+		texture.draw(surface, convert_in(handle.pos) * zoom - texture.get_size() / 2)
 
 
 func tid_is_hovered(tid: PackedInt32Array, cmd_idx := -1) -> bool:
