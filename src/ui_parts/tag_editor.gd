@@ -13,17 +13,6 @@ const PathField = preload("res://src/ui_elements/path_field.tscn")
 const EnumField = preload("res://src/ui_elements/enum_field.tscn")
 const UnknownField = preload("res://src/ui_elements/unknown_field.tscn")
 
-# This is needed for the hover detection hack.
-@onready var first_ancestor_scroll_container := find_first_ancestor_scroll_container()
-
-func find_first_ancestor_scroll_container() -> ScrollContainer:
-	var ancestor := get_parent()
-	while not ancestor is ScrollContainer:
-		if not ancestor is Control:
-			return null
-		ancestor = ancestor.get_parent()
-	return ancestor
-
 @onready var paint_container: FlowContainer = %AttributeContainer/PaintAttributes
 @onready var shape_container: FlowContainer = %AttributeContainer/ShapeAttributes
 @onready var unknown_container: HFlowContainer = %AttributeContainer/UnknownAttributes
@@ -180,21 +169,14 @@ func _on_gui_input(event: InputEvent) -> void:
 					Vector2(-tag_context.size.x / 2, 0), tag_context.size))
 
 
-var mouse_inside := false:
-	set(new_value):
-		if mouse_inside != new_value:
-			mouse_inside = new_value
-			if mouse_inside:
-				Indications.set_hovered(tid)
-			else:
-				Indications.remove_hovered(tid)
+func _on_mouse_entered():
+	if Indications.semi_hovered_tid != tid and\
+		not Utils.is_tid_parent(tid, Indications.hovered_tid):
+		Indications.set_hovered(tid)
 
-func _input(event: InputEvent) -> void:
-	if event is InputEventMouseMotion and event.button_mask == 0:
-		mouse_inside = get_global_rect().has_point(get_global_mouse_position()) and\
-				first_ancestor_scroll_container.get_global_rect().has_point(
-				get_global_mouse_position()) and Indications.semi_hovered_tid != tid and\
-				not Utils.is_tid_parent(tid, Indications.hovered_tid)
+
+func _on_mouse_exited():
+	Indications.remove_hovered(tid)
 
 
 func determine_selection_highlight() -> void:

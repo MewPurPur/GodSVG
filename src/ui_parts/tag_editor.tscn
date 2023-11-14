@@ -156,5 +156,7 @@ layout_mode = 2
 visible = false
 
 [connection signal="gui_input" from="." to="." method="_on_gui_input"]
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/TitleButton" to="." method="_on_title_button_pressed"]
 [connection signal="draw" from="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/TitleButton/MarginContainer/VBoxContainer" to="." method="_on_title_button_container_draw"]

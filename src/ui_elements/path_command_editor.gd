@@ -15,17 +15,6 @@ var cmd_char := ""
 var cmd_idx := -1
 var path_command: PathCommand
 
-# This is needed for the hover detection hack.
-@onready var first_ancestor_scroll_container := find_first_ancestor_scroll_container()
-
-func find_first_ancestor_scroll_container() -> ScrollContainer:
-	var ancestor := get_parent()
-	while not ancestor is ScrollContainer:
-		if not ancestor is Control:
-			return null
-		ancestor = ancestor.get_parent()
-	return ancestor
-
 @onready var relative_button: Button = $HBox/RelativeButton
 @onready var more_button: Button = $HBox/MoreButton
 @onready var fields_container: HBoxContainer = $HBox/Fields
@@ -320,17 +309,9 @@ func determine_selection_highlight() -> void:
 	add_theme_stylebox_override(&"panel", stylebox)
 
 
-var mouse_inside := false:
-	set(new_value):
-		if mouse_inside != new_value:
-			mouse_inside = new_value
-			if mouse_inside:
-				Indications.set_inner_hovered(tid, cmd_idx)
-			else:
-				Indications.remove_inner_hovered(tid, cmd_idx)
+func _on_mouse_entered():
+	Indications.set_inner_hovered(tid, cmd_idx)
 
-func _input(event: InputEvent) -> void:
-	if event is InputEventMouseMotion and event.button_mask == 0:
-		mouse_inside = get_global_rect().has_point(get_global_mouse_position()) and\
-				first_ancestor_scroll_container.get_global_rect().has_point(
-				get_global_mouse_position())
+
+func _on_mouse_exited():
+	Indications.remove_inner_hovered(tid, cmd_idx)
