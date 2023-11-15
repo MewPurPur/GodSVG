@@ -312,6 +312,5 @@ func determine_selection_highlight() -> void:
 func _on_mouse_entered():
 	Indications.set_inner_hovered(tid, cmd_idx)
 
-
 func _on_mouse_exited():
 	Indications.remove_inner_hovered(tid, cmd_idx)
