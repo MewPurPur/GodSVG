@@ -54,7 +54,6 @@ func popup_configure_color(swatch: Button) -> void:
 	configure_popup.color_edit.value_changed.connect(swatch.change_color)
 	configure_popup.color_name_edit.text_submitted.connect(swatch.change_color_name)
 	configure_popup.color_deletion_requested.connect(delete_color.bind(swatch.named_color))
-	configure_popup.popup_hide.connect(configure_popup.queue_free)
 	Utils.popup_under_control(configure_popup, swatch, true)
 
 func popup_edit_name() -> void:

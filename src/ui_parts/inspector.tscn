@@ -1,9 +1,8 @@
-[gd_scene load_steps=6 format=3 uid="uid://ccynisiuyn5qn"]
+[gd_scene load_steps=5 format=3 uid="uid://ccynisiuyn5qn"]
 
 [ext_resource type="Script" path="res://src/ui_parts/inspector.gd" id="1_16ggy"]
 [ext_resource type="PackedScene" uid="uid://bktmk76u7dsu0" path="res://src/ui_parts/root_tag_editor.tscn" id="2_jnl50"]
 [ext_resource type="Texture2D" uid="uid://eif2ioi0mw17" path="res://visual/icons/Plus.svg" id="3_vo6hf"]
-[ext_resource type="PackedScene" uid="uid://wp77eqhikp6k" path="res://src/ui_elements/context_popup.tscn" id="4_8yv7j"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4j4hv"]
 draw_center = false
@@ -58,9 +57,6 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/separation = 5
-
-[node name="AddPopup" parent="." instance=ExtResource("4_8yv7j")]
-visible = false
 
 [connection signal="pressed" from="VBoxContainer/AddButton" to="." method="_on_add_button_pressed"]
 [connection signal="gui_input" from="VBoxContainer/TagContainer" to="." method="_on_tag_container_gui_input"]

@@ -1,4 +1,4 @@
-[gd_scene load_steps=32 format=3 uid="uid://ce6j54x27pom"]
+[gd_scene load_steps=31 format=3 uid="uid://ce6j54x27pom"]
 
 [ext_resource type="PackedScene" uid="uid://ccynisiuyn5qn" path="res://src/ui_parts/inspector.tscn" id="1_afxvd"]
 [ext_resource type="Texture2D" uid="uid://ccvjkdd0s7rb4" path="res://visual/icons/Copy.svg" id="1_fm0ux"]
@@ -16,7 +16,6 @@
 [ext_resource type="Script" path="res://src/ui_parts/display_texture.gd" id="7_cxx0h"]
 [ext_resource type="Script" path="res://src/ui_parts/svg_code_edit.gd" id="7_q0ibc"]
 [ext_resource type="Texture2D" uid="uid://kkxyv1gyrjgj" path="res://visual/icons/Visuals.svg" id="9_ojv7n"]
-[ext_resource type="PackedScene" uid="uid://wp77eqhikp6k" path="res://src/ui_elements/context_popup.tscn" id="10_hraj8"]
 [ext_resource type="Texture2D" uid="uid://buire51l0mifg" path="res://visual/icons/Snap.svg" id="11_u7ddj"]
 [ext_resource type="Shader" path="res://src/shaders/zoom_shader.gdshader" id="12_wewnk"]
 [ext_resource type="PackedScene" uid="uid://dad7fkhmsooc6" path="res://src/ui_elements/number_edit.tscn" id="13_oxv3i"]
@@ -275,12 +274,6 @@ editable = false
 initial_value = 0.5
 min_value = 0.001
 allow_lower = false
-
-[node name="VisualsPopup" parent="Display/PanelContainer/HBoxContainer/LeftMenu" instance=ExtResource("10_hraj8")]
-visible = false
-
-[node name="MorePopup" parent="Display/PanelContainer/HBoxContainer/LeftMenu" instance=ExtResource("10_hraj8")]
-visible = false
 
 [node name="ZoomMenu" parent="Display/PanelContainer/HBoxContainer" instance=ExtResource("18_e3qve")]
 unique_name_in_owner = true

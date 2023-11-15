@@ -1,28 +1,18 @@
 extends Dialog
 
+const ContextPopup = preload("res://src/ui_elements/context_popup.tscn")
 const PaletteConfigWidget = preload("res://src/ui_parts/palette_config.tscn")
 const plus_icon = preload("res://visual/icons/Plus.svg")
 
 @onready var window_mode_button: CheckBox = %WindowMode
 @onready var svg_button: CheckBox = %SVG
 @onready var lang_button: Button = %Language
-@onready var lang_popup: Popup = $LangPopup
 @onready var invert_zoom: CheckBox = %InvertZoom
 @onready var palette_container: VBoxContainer = %PaletteContainer
 
 
 func _ready() -> void:
 	update_language_button()
-	var buttons_arr: Array[Button] = []
-	for lang in ["en", "bg", "de"]:
-		var button := Button.new()
-		button.text = TranslationServer.get_locale_name(lang) + " (" + lang + ")"
-		button.pressed.connect(_on_language_chosen.bind(lang))
-		button.mouse_default_cursor_shape = CURSOR_POINTING_HAND
-		button.alignment = HORIZONTAL_ALIGNMENT_LEFT
-		buttons_arr.append(button)
-	lang_popup.set_btn_array(buttons_arr)
-	
 	window_mode_button.button_pressed = GlobalSettings.save_window_mode
 	svg_button.button_pressed = GlobalSettings.save_svg
 	invert_zoom.button_pressed = GlobalSettings.invert_zoom
@@ -41,10 +31,20 @@ func _on_close_pressed() -> void:
 	queue_free()
 
 func _on_language_pressed() -> void:
+	var buttons_arr: Array[Button] = []
+	for lang in ["en", "bg", "de"]:
+		var button := Button.new()
+		button.text = TranslationServer.get_locale_name(lang) + " (" + lang + ")"
+		button.pressed.connect(_on_language_chosen.bind(lang))
+		button.mouse_default_cursor_shape = CURSOR_POINTING_HAND
+		button.alignment = HORIZONTAL_ALIGNMENT_LEFT
+		buttons_arr.append(button)
+	var lang_popup := ContextPopup.instantiate()
+	add_child(lang_popup)
+	lang_popup.set_btn_array(buttons_arr)
 	Utils.popup_under_control(lang_popup, lang_button)
 
 func _on_language_chosen(locale: String) -> void:
-	lang_popup.hide()
 	GlobalSettings.language = locale
 	update_language_button()
 
