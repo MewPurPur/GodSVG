@@ -42,7 +42,6 @@ func _process(_delta: float) -> void:
 		svg_change_pending = false
 
 
-# Strips of the final image.
 
 func svg_update(svg_changed := true) -> void:
 	var bigger_side := maxf(SVG.root_tag.attributes.width.get_value(),
@@ -64,6 +63,7 @@ func svg_update(svg_changed := true) -> void:
 	#WorkerThreadPool.wait_for_group_task_completion(task_id)
 	#queue_redraw()
 
+# Strips of the final image.
 #var svg_strips: Array[Texture2D] = [null, null, null, null, null, null, null, null]
 
 # TODO this is locked by a bug in ThorVG.

@@ -41,7 +41,7 @@ func set_btn_array(buttons: Array[Button]) -> void:
 		add_button(buttons[last_button_idx])
 
 func set_min_width(w: float) -> void:
-	min_size.x = w
+	min_size.x = ceili(w)
 	panel.custom_minimum_size.x = w
 
 
