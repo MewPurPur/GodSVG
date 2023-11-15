@@ -1,9 +1,10 @@
 ## A dropdown with multiple options, not tied to any attribute.
 extends HBoxContainer
 
+const ContextPopup = preload("res://src/ui_elements/context_popup.tscn")
+
 signal value_changed(new_value: String)
 
-@onready var value_picker: Popup = $ContextPopup
 @onready var line_edit: BetterLineEdit = $LineEdit
 
 @export var values: Array[String]
@@ -21,16 +22,6 @@ func _ready() -> void:
 	if not values.is_empty():
 		current_value = values[0]
 	
-	var btn_arr: Array[Button] = []
-	for value in values:
-		var button := Button.new()
-		button.text = value
-		button.pressed.connect(_on_value_chosen.bind(value))
-		button.mouse_default_cursor_shape = CURSOR_POINTING_HAND
-		button.alignment = HORIZONTAL_ALIGNMENT_CENTER
-		btn_arr.append(button)
-	value_picker.set_btn_array(btn_arr)
-	
 	var max_length := 0
 	for value in values:
 		max_length = maxi(value.length(), max_length)
@@ -41,10 +32,22 @@ func _ready() -> void:
 	line_edit.size.x = 0
 
 func _on_button_pressed() -> void:
+	var btn_arr: Array[Button] = []
+	for value in values:
+		var button := Button.new()
+		button.text = value
+		button.pressed.connect(_on_value_chosen.bind(value))
+		button.mouse_default_cursor_shape = CURSOR_POINTING_HAND
+		button.alignment = HORIZONTAL_ALIGNMENT_CENTER
+		btn_arr.append(button)
+	
+	var value_picker := ContextPopup.instantiate()
+	add_child(value_picker)
+	value_picker.set_btn_array(btn_arr)
+	value_picker.set_min_width(50)
 	Utils.popup_under_control(value_picker, line_edit)
 
 func _on_value_chosen(new_value: String) -> void:
-	value_picker.hide()
 	current_value = new_value
 
 

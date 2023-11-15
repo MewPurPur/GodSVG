@@ -33,7 +33,6 @@ func _on_button_pressed() -> void:
 		var btn := Button.new()
 		btn.text = str(enum_constant)
 		btn.pressed.connect(_on_option_pressed.bind(enum_constant))
-		btn.pressed.connect(value_picker.hide)
 		if enum_constant == get_value():
 			btn.disabled = true
 		else:
@@ -42,8 +41,8 @@ func _on_button_pressed() -> void:
 			btn.add_theme_font_override(&"font", bold_font)
 		buttons_arr.append(btn)
 	add_child(value_picker)
-	value_picker.popup_hide.connect(value_picker.queue_free)
 	value_picker.set_btn_array(buttons_arr)
+	value_picker.set_min_width(74)
 	Utils.popup_under_control(value_picker, indicator)
 
 func _on_option_pressed(option: String) -> void:

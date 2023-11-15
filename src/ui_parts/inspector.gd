@@ -1,14 +1,13 @@
 extends VBoxContainer
 
+const ContextPopup = preload("res://src/ui_elements/context_popup.tscn")
 const TagEditor = preload("tag_editor.tscn")
 
 @onready var tags_container: VBoxContainer = %Tags
 @onready var svg_tag_editor: MarginContainer = $SVGTagEditor
-@onready var add_popup: Popup = $AddPopup
 @onready var add_button: Button = $VBoxContainer/AddButton
 
 func _ready() -> void:
-	populate_add_popup()
 	SVG.root_tag.attribute_changed.connect(svg_tag_editor.update_svg_attributes)
 	SVG.root_tag.tag_layout_changed.connect(full_rebuild)
 	SVG.root_tag.changed_unknown.connect(full_rebuild)
@@ -28,7 +27,6 @@ func full_rebuild() -> void:
 		tags_container.add_child(tag_editor)
 
 func add_tag(tag_name: String) -> void:
-	add_popup.hide()
 	var new_tid := PackedInt32Array([SVG.root_tag.get_child_count()])
 	var new_tag: Tag
 	match tag_name:
@@ -46,7 +44,7 @@ func _on_tag_container_gui_input(event: InputEvent) -> void:
 		Indications.clear_selection()
 		Indications.clear_inner_selection()
 
-func populate_add_popup() -> void:
+func _on_add_button_pressed() -> void:
 	var btn_array: Array[Button] = []
 	for tag_name in ["circle", "ellipse", "rect", "path", "line"]:
 		var add_btn := Button.new()
@@ -58,7 +56,8 @@ func populate_add_popup() -> void:
 		add_btn.pressed.connect(add_tag.bind(tag_name))
 		btn_array.append(add_btn)
 	
+	var add_popup := ContextPopup.instantiate()
+	add_child(add_popup)
 	add_popup.set_btn_array(btn_array)
-
-func _on_add_button_pressed() -> void:
+	add_popup.set_min_width(add_button.size.x)
 	Utils.popup_under_control(add_popup, add_button)
