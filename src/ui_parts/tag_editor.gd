@@ -5,6 +5,7 @@ const shape_attributes = ["cx", "cy", "x", "y", "r", "rx", "ry", "width", "heigh
 
 const unknown_icon = preload("res://visual/icons/tag/unknown.svg")
 
+const ContextPopup = preload("res://src/ui_elements/context_popup.tscn")
 const TagEditor = preload("tag_editor.tscn")
 const NumberField = preload("res://src/ui_elements/number_field.tscn")
 const NumberSlider = preload("res://src/ui_elements/number_field_with_slider.tscn")
@@ -19,8 +20,6 @@ const UnknownField = preload("res://src/ui_elements/unknown_field.tscn")
 @onready var title_button: Button = %TitleButton
 @onready var title_button_icon: TextureRect = %TitleButtonIcon
 @onready var title_button_label: Label = %TitleButtonLabel
-@onready var tag_context: Popup = $ContextPopup
-@onready var margin_container: MarginContainer = $MarginContainer
 @onready var child_tags_container: VBoxContainer = %ChildTags
 
 var tid: PackedInt32Array
@@ -91,7 +90,7 @@ func _ready() -> void:
 			child_tags_container.add_child(tag_editor)
 
 
-func tag_context_populate() -> void:
+func create_tag_context() -> Popup:
 	var parent_tid := Utils.get_parent_tid(tid)
 	var tag_count := SVG.root_tag.get_by_tid(parent_tid).get_child_count()
 	var buttons_arr: Array[Button] = []
@@ -129,27 +128,27 @@ func tag_context_populate() -> void:
 	delete_button.pressed.connect(_on_delete_button_pressed)
 	buttons_arr.append(delete_button)
 	
+	var tag_context := ContextPopup.instantiate()
+	add_child(tag_context)
 	tag_context.set_btn_array(buttons_arr)
+	tag_context.popup_hide.connect(tag_context.queue_free)
+	return tag_context
 
 func _on_title_button_pressed() -> void:
 	Indications.normal_select(tid)
-	tag_context_populate()
+	var tag_context := create_tag_context()
 	Utils.popup_under_control(tag_context, title_button)
 
 func _on_move_up_button_pressed() -> void:
-	tag_context.hide()
 	SVG.root_tag.move_tags_in_parent([tid], false)
 
 func _on_move_down_button_pressed() -> void:
-	tag_context.hide()
 	SVG.root_tag.move_tags_in_parent([tid], true)
 
 func _on_delete_button_pressed() -> void:
-	tag_context.hide()
 	SVG.root_tag.delete_tags([tid])
 
 func _on_duplicate_button_pressed() -> void:
-	tag_context.hide()
 	SVG.root_tag.duplicate_tags([tid])
 
 
@@ -164,7 +163,7 @@ func _on_gui_input(event: InputEvent) -> void:
 				Indications.normal_select(tid)
 		elif event.button_index == MOUSE_BUTTON_RIGHT:
 			Indications.normal_select(tid)
-			tag_context_populate()
+			var tag_context := create_tag_context()
 			tag_context.popup(Rect2(get_global_mouse_position() +\
 					Vector2(-tag_context.size.x / 2, 0), tag_context.size))
 
@@ -182,6 +181,7 @@ func determine_selection_highlight() -> void:
 	var stylebox := StyleBoxFlat.new()
 	stylebox.set_corner_radius_all(4)
 	stylebox.set_border_width_all(2)
+	stylebox.set_content_margin_all(5)
 	
 	var is_selected := tid in Indications.selected_tids
 	var is_hovered := Indications.hovered_tid == tid

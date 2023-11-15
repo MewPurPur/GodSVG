@@ -1,9 +1,8 @@
-[gd_scene load_steps=9 format=3 uid="uid://dcdrc3r60bgg3"]
+[gd_scene load_steps=8 format=3 uid="uid://dcdrc3r60bgg3"]
 
 [ext_resource type="Script" path="res://src/ui_elements/path_command_editor.gd" id="1_om2fk"]
 [ext_resource type="FontFile" uid="uid://dtb4wkus51hxs" path="res://visual/fonts/FontMono.ttf" id="2_o5eem"]
 [ext_resource type="Texture2D" uid="uid://cmepkbqde0jh0" path="res://visual/icons/SmallMore.svg" id="3_a76tm"]
-[ext_resource type="PackedScene" uid="uid://wp77eqhikp6k" path="res://src/ui_elements/context_popup.tscn" id="4_xqjqs"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_sewij"]
 
@@ -65,9 +64,6 @@ theme_override_styles/normal = SubResource("StyleBoxEmpty_dsai0")
 theme_override_styles/hover = SubResource("StyleBoxFlat_ky4q6")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_5jayv")
 icon = ExtResource("3_a76tm")
-
-[node name="ActionsPopup" parent="." instance=ExtResource("4_xqjqs")]
-visible = false
 
 [connection signal="gui_input" from="." to="." method="_on_gui_input"]
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]

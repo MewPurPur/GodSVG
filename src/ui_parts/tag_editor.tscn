@@ -1,8 +1,7 @@
-[gd_scene load_steps=7 format=3 uid="uid://cksx526iftj5d"]
+[gd_scene load_steps=6 format=3 uid="uid://cksx526iftj5d"]
 
 [ext_resource type="Script" path="res://src/ui_parts/tag_editor.gd" id="1_7i0c4"]
 [ext_resource type="FontFile" uid="uid://dtb4wkus51hxs" path="res://visual/fonts/FontMono.ttf" id="2_0lxvf"]
-[ext_resource type="PackedScene" uid="uid://wp77eqhikp6k" path="res://src/ui_elements/context_popup.tscn" id="3_qx6wd"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xmwqw"]
 content_margin_left = 4.0
@@ -58,21 +57,14 @@ offset_right = 1024.0
 offset_bottom = 30.0
 script = ExtResource("1_7i0c4")
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
-layout_mode = 2
-theme_override_constants/margin_left = 4
-theme_override_constants/margin_top = 3
-theme_override_constants/margin_right = 5
-theme_override_constants/margin_bottom = 3
-
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/HBoxContainer"]
 custom_minimum_size = Vector2(50, 0)
 layout_mode = 2
 theme_override_constants/margin_left = 0
@@ -80,7 +72,7 @@ theme_override_constants/margin_top = 4
 theme_override_constants/margin_right = 2
 theme_override_constants/margin_bottom = 4
 
-[node name="TitleButton" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer"]
+[node name="TitleButton" type="Button" parent="VBoxContainer/HBoxContainer/MarginContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
@@ -92,7 +84,7 @@ theme_override_styles/hover = SubResource("StyleBoxFlat_50r0v")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_dfilu")
 theme_override_styles/disabled = SubResource("StyleBoxFlat_xmwqw")
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/TitleButton"]
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/HBoxContainer/MarginContainer/TitleButton"]
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 40.0
@@ -102,12 +94,12 @@ theme_override_constants/margin_top = 4
 theme_override_constants/margin_right = 6
 theme_override_constants/margin_bottom = 3
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/TitleButton/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/MarginContainer/TitleButton/MarginContainer"]
 layout_mode = 2
 mouse_filter = 2
 theme_override_constants/separation = 0
 
-[node name="TitleButtonIcon" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/TitleButton/MarginContainer/VBoxContainer"]
+[node name="TitleButtonIcon" type="TextureRect" parent="VBoxContainer/HBoxContainer/MarginContainer/TitleButton/MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(18, 18)
 layout_mode = 2
@@ -115,7 +107,7 @@ size_flags_horizontal = 4
 size_flags_vertical = 0
 mouse_filter = 2
 
-[node name="TitleButtonLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/TitleButton/MarginContainer/VBoxContainer"]
+[node name="TitleButtonLabel" type="Label" parent="VBoxContainer/HBoxContainer/MarginContainer/TitleButton/MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(24, 0)
 layout_mode = 2
@@ -124,36 +116,32 @@ theme_override_fonts/font = ExtResource("2_0lxvf")
 theme_override_font_sizes/font_size = 12
 horizontal_alignment = 1
 
-[node name="RightContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="RightContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 12
 
-[node name="AttributeContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/RightContainer"]
+[node name="AttributeContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/RightContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="UnknownAttributes" type="HFlowContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/RightContainer/AttributeContainer"]
+[node name="UnknownAttributes" type="HFlowContainer" parent="VBoxContainer/HBoxContainer/RightContainer/AttributeContainer"]
 visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="PaintAttributes" type="HFlowContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/RightContainer/AttributeContainer"]
+[node name="PaintAttributes" type="HFlowContainer" parent="VBoxContainer/HBoxContainer/RightContainer/AttributeContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="ShapeAttributes" type="HFlowContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/RightContainer/AttributeContainer"]
+[node name="ShapeAttributes" type="HFlowContainer" parent="VBoxContainer/HBoxContainer/RightContainer/AttributeContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="ChildTags" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="ChildTags" type="VBoxContainer" parent="VBoxContainer"]
 unique_name_in_owner = true
-visible = false
 layout_mode = 2
-
-[node name="ContextPopup" parent="." instance=ExtResource("3_qx6wd")]
-visible = false
 
 [connection signal="gui_input" from="." to="." method="_on_gui_input"]
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
