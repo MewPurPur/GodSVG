@@ -36,7 +36,6 @@ border_width_bottom = 2
 border_color = Color(0.203922, 0.254902, 0.4, 1)
 corner_radius_top_right = 5
 corner_radius_bottom_right = 5
-corner_detail = 16
 
 [node name="NumberFieldWithSlider" type="HBoxContainer"]
 custom_minimum_size = Vector2(0, 22)
