@@ -1,8 +1,7 @@
-[gd_scene load_steps=6 format=3 uid="uid://1rylg17uwltw"]
+[gd_scene load_steps=5 format=3 uid="uid://1rylg17uwltw"]
 
 [ext_resource type="Script" path="res://src/ui_parts/settings_menu.gd" id="1_1gf4m"]
 [ext_resource type="Texture2D" uid="uid://c528knojuxbw6" path="res://visual/icons/Languages.svg" id="2_ndyp7"]
-[ext_resource type="PackedScene" uid="uid://wp77eqhikp6k" path="res://src/ui_elements/context_popup.tscn" id="3_fc4ea"]
 [ext_resource type="Script" path="res://src/ui_elements/BetterTabContainer.gd" id="3_vslgx"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hto7q"]
@@ -134,9 +133,6 @@ size_flags_vertical = 10
 focus_mode = 0
 mouse_default_cursor_shape = 2
 text = "#close"
-
-[node name="LangPopup" parent="." instance=ExtResource("3_fc4ea")]
-visible = false
 
 [connection signal="pressed" from="MainPanel/VBoxContainer/Language" to="." method="_on_language_pressed"]
 [connection signal="pressed" from="MainPanel/VBoxContainer/TabContainer/#session_tab/VBox/SVG" to="." method="_on_svg_pressed"]

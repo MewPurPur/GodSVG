@@ -131,7 +131,6 @@ func create_tag_context() -> Popup:
 	var tag_context := ContextPopup.instantiate()
 	add_child(tag_context)
 	tag_context.set_btn_array(buttons_arr)
-	tag_context.popup_hide.connect(tag_context.queue_free)
 	return tag_context
 
 func _on_title_button_pressed() -> void:

@@ -164,7 +164,6 @@ func insert_after() -> void:
 	add_child(command_picker)
 	command_picker.disable_invalid(cmd_char)
 	command_picker.path_command_picked.connect(_on_path_command_picked)
-	command_picker.popup_hide.connect(command_picker.queue_free)
 	Utils.popup_under_control(command_picker, more_button, true)
 
 func open_actions(popup_from_mouse := false) -> void:
@@ -178,7 +177,6 @@ func open_actions(popup_from_mouse := false) -> void:
 	delete_btn.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	delete_btn.alignment = HORIZONTAL_ALIGNMENT_LEFT
 	delete_btn.pressed.connect(delete)
-	delete_btn.pressed.connect(action_popup.hide)
 	buttons_arr.append(delete_btn)
 	
 	var insert_after_btn := Button.new()
@@ -187,12 +185,10 @@ func open_actions(popup_from_mouse := false) -> void:
 	insert_after_btn.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	insert_after_btn.alignment = HORIZONTAL_ALIGNMENT_LEFT
 	insert_after_btn.pressed.connect(insert_after)
-	insert_after_btn.pressed.connect(action_popup.hide)
 	buttons_arr.append(insert_after_btn)
 	
 	add_child(action_popup)
 	action_popup.set_btn_array(buttons_arr)
-	action_popup.popup_hide.connect(action_popup.queue_free)
 	if popup_from_mouse:
 		action_popup.popup(Rect2(get_global_mouse_position() +\
 				Vector2(-action_popup.size.x / 2, 0), action_popup.size))

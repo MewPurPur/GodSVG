@@ -1,9 +1,8 @@
-[gd_scene load_steps=7 format=3 uid="uid://dbu1lvajypafb"]
+[gd_scene load_steps=6 format=3 uid="uid://dbu1lvajypafb"]
 
 [ext_resource type="Script" path="res://src/ui_elements/BetterLineEdit.gd" id="1_0ifbb"]
 [ext_resource type="Script" path="res://src/ui_elements/dropdown.gd" id="1_133xu"]
 [ext_resource type="Texture2D" uid="uid://coda6chhcatal" path="res://visual/icons/Arrow.svg" id="2_4oygd"]
-[ext_resource type="PackedScene" uid="uid://wp77eqhikp6k" path="res://src/ui_elements/context_popup.tscn" id="3_l1jr8"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_q1iin"]
 draw_center = false
@@ -54,16 +53,6 @@ theme_type_variation = &"LeftConnectedButton"
 icon = ExtResource("2_4oygd")
 expand_icon = true
 
-[node name="ContextPopup" parent="." instance=ExtResource("3_l1jr8")]
-size = Vector2i(60, 27)
-visible = false
-
-[node name="PanelContainer" parent="ContextPopup" index="0"]
-custom_minimum_size = Vector2(52, 0)
-offset_right = 52.0
-
 [connection signal="text_changed" from="LineEdit" to="." method="_on_text_changed"]
 [connection signal="text_submitted" from="LineEdit" to="." method="_on_text_submitted"]
 [connection signal="pressed" from="Button" to="." method="_on_button_pressed"]
-
-[editable path="ContextPopup"]

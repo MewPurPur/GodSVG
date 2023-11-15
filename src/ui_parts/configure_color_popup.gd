@@ -49,3 +49,7 @@ func _on_name_edit_focus_exited() -> void:
 func _on_delete_button_pressed() -> void:
 	color_deletion_requested.emit()
 	queue_free()
+
+
+func _on_popup_hide() -> void:
+	queue_free()

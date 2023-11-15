@@ -4,20 +4,18 @@ const settings_menu = preload("settings_menu.tscn")
 const about_menu = preload("about_menu.tscn")
 const docs = preload("docs.tscn")
 
+const ContextPopup = preload("res://src/ui_elements/context_popup.tscn")
 const NumberField = preload("res://src/ui_elements/number_field.tscn")
 
 @onready var viewport: SubViewport = $ViewportContainer/Viewport
 @onready var controls: Control = %Checkerboard/Controls
 @onready var grid_visuals: Camera2D = $ViewportContainer/Viewport/ViewCamera
 @onready var visuals_button: Button = %LeftMenu/Visuals
-@onready var visuals_popup: Popup = %LeftMenu/VisualsPopup
 @onready var more_button: Button = %LeftMenu/MoreOptions
-@onready var more_popup: Popup = %LeftMenu/MorePopup
 @onready var snapper: BetterLineEdit = %LeftMenu/Snapping/NumberEdit
 
 
 func _on_settings_pressed() -> void:
-	more_popup.hide()
 	var settings_menu_instance := settings_menu.instantiate()
 	get_tree().get_root().add_child(settings_menu_instance)
 
@@ -45,6 +43,8 @@ func _on_visuals_button_pressed() -> void:
 	rasterize_btn.pressed.connect(toggle_rasterization)
 	
 	btn_arr = [show_visuals_btn, show_handles_btn, rasterize_btn]
+	var visuals_popup := ContextPopup.instantiate()
+	add_child(visuals_popup)
 	visuals_popup.set_btn_array(btn_arr)
 	Utils.popup_under_control(visuals_popup, visuals_button, true)
 
@@ -79,25 +79,23 @@ func _on_more_options_pressed() -> void:
 	donate_btn.pressed.connect(open_sponsor)
 	
 	var buttons_arr: Array[Button] = [open_repo_btn, about_btn, docs_btn, donate_btn]
+	var more_popup := ContextPopup.instantiate()
+	add_child(more_popup)
 	more_popup.set_btn_array(buttons_arr)
 	Utils.popup_under_control(more_popup, more_button, true)
 
 func open_godsvg_repo() -> void:
-	more_popup.hide()
 	OS.shell_open("https://github.com/MewPurPur/GodSVG")
 
 func open_about() -> void:
-	more_popup.hide()
 	var about_menu_instance := about_menu.instantiate()
 	get_tree().get_root().add_child(about_menu_instance)
 
 func open_docs() -> void:
-	more_popup.hide()
 	var docs_instance := docs.instantiate()
 	get_tree().get_root().add_child(docs_instance)
 
 func open_sponsor() -> void:
-	more_popup.hide()
 	OS.shell_open("https://ko-fi.com/mewpurpur")
 
 func toggle_grid_visuals() -> void:
