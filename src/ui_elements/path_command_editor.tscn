@@ -66,4 +66,6 @@ theme_override_styles/pressed = SubResource("StyleBoxFlat_5jayv")
 icon = ExtResource("3_a76tm")
 
 [connection signal="gui_input" from="." to="." method="_on_gui_input"]
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
 [connection signal="pressed" from="HBox/RelativeButton" to="HBox" method="_on_relative_button_pressed"]
