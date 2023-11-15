@@ -17,7 +17,6 @@ corner_radius_top_left = 5
 corner_radius_top_right = 5
 corner_radius_bottom_right = 5
 corner_radius_bottom_left = 5
-corner_detail = 16
 
 [node name="PaletteConfig" type="PanelContainer"]
 offset_right = 21.0

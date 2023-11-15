@@ -41,7 +41,6 @@ bg_color = Color(0.0975, 0.0975, 0.15, 1)
 border_color = Color(0.1875, 0.1875, 0.25, 1)
 corner_radius_top_left = 5
 corner_radius_top_right = 5
-corner_detail = 16
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rppt3"]
 content_margin_left = 5.0
@@ -75,7 +74,6 @@ border_width_bottom = 2
 border_color = Color(0.1875, 0.1875, 0.25, 1)
 corner_radius_bottom_right = 5
 corner_radius_bottom_left = 5
-corner_detail = 16
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nxvgo"]
 content_margin_left = 6.0
