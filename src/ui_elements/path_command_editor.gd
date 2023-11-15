@@ -6,6 +6,7 @@ signal cmd_delete(idx: int)
 signal cmd_toggle_relative(idx: int)
 signal cmd_insert_after(idx: int, cmd_char: String)
 
+const ContextPopup = preload("res://src/ui_elements/context_popup.tscn")
 const MiniNumberField = preload("mini_number_field.tscn")
 const FlagField = preload("flag_field.tscn")
 const PathCommandPopup = preload("path_command_popup.tscn")
@@ -29,7 +30,6 @@ func find_first_ancestor_scroll_container() -> ScrollContainer:
 @onready var relative_button: Button = $HBox/RelativeButton
 @onready var more_button: Button = $HBox/MoreButton
 @onready var fields_container: HBoxContainer = $HBox/Fields
-@onready var action_popup: Popup = $ActionsPopup
 
 var fields_added_before_ready: Array[Control] = []
 var fields: Array[Control] = []
@@ -165,14 +165,12 @@ func update_value(value: float, property: StringName) -> void:
 	cmd_update_value.emit(cmd_idx, value, property)
 
 func delete() -> void:
-	action_popup.hide()
 	cmd_delete.emit(cmd_idx)
 
 func toggle_relative() -> void:
 	cmd_toggle_relative.emit(cmd_idx)
 
 func insert_after() -> void:
-	action_popup.hide()
 	var command_picker := PathCommandPopup.instantiate()
 	add_child(command_picker)
 	command_picker.disable_invalid(cmd_char)
@@ -182,6 +180,7 @@ func insert_after() -> void:
 
 func open_actions(popup_from_mouse := false) -> void:
 	Indications.normal_select(tid, cmd_idx)
+	var action_popup := ContextPopup.instantiate()
 	var buttons_arr: Array[Button] = []
 	
 	var delete_btn := Button.new()
@@ -190,6 +189,7 @@ func open_actions(popup_from_mouse := false) -> void:
 	delete_btn.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	delete_btn.alignment = HORIZONTAL_ALIGNMENT_LEFT
 	delete_btn.pressed.connect(delete)
+	delete_btn.pressed.connect(action_popup.hide)
 	buttons_arr.append(delete_btn)
 	
 	var insert_after_btn := Button.new()
@@ -198,9 +198,12 @@ func open_actions(popup_from_mouse := false) -> void:
 	insert_after_btn.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	insert_after_btn.alignment = HORIZONTAL_ALIGNMENT_LEFT
 	insert_after_btn.pressed.connect(insert_after)
+	insert_after_btn.pressed.connect(action_popup.hide)
 	buttons_arr.append(insert_after_btn)
 	
+	add_child(action_popup)
 	action_popup.set_btn_array(buttons_arr)
+	action_popup.popup_hide.connect(action_popup.queue_free)
 	if popup_from_mouse:
 		action_popup.popup(Rect2(get_global_mouse_position() +\
 				Vector2(-action_popup.size.x / 2, 0), action_popup.size))
