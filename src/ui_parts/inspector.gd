@@ -16,7 +16,6 @@ func _ready() -> void:
 
 
 func full_rebuild() -> void:
-	svg_tag_editor.update_svg_attributes()
 	for node in tags_container.get_children():
 		node.queue_free()
 	svg_tag_editor.tag = SVG.root_tag
