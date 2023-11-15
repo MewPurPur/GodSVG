@@ -35,7 +35,7 @@ Support for all other elements is currently not planned. GodSVG still aims to al
 Currently, there are no pre-built binaries available for GodSVG. However, you can still run it by following these steps:
 
 1. Clone the repository: `git clone https://github.com/MewPurPur/GodSVG.git`
-2. Open the project in Godot Engine. (4.2.dev5 minimum needed)
+2. Open the project in Godot Engine. (4.2.beta6 minimum needed)
 3. Build and run the project within the Godot Engine editor.
 
 ## Community and contributing
