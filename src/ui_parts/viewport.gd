@@ -5,7 +5,7 @@ const buffer_view_space = 0.8
 @onready var display: TextureRect = %Checkerboard
 @onready var view: Camera2D = $ViewCamera
 @onready var controls: Control = %Checkerboard/Controls
-@onready var display_texture: TextureRect = %Checkerboard/DisplayTexture
+@onready var display_texture: Control = %Checkerboard/DisplayTexture
 @onready var zoom_menu: HBoxContainer = %ZoomMenu
 @onready var main_node: VBoxContainer = %Display
 
