@@ -174,7 +174,6 @@ func _on_mouse_entered():
 		not Utils.is_tid_parent(tid, Indications.hovered_tid):
 		Indications.set_hovered(tid)
 
-
 func _on_mouse_exited():
 	Indications.remove_hovered(tid)
 
