@@ -297,8 +297,8 @@ func _unhandled_input(event: InputEvent) -> void:
 			var tag_ref := SVG.root_tag.get_by_tid(semi_selected_tid)
 			match tag_ref.name:
 				"path":
-					for cmd_idx in inner_selections:
-						tag_ref.attributes.d.delete_command(cmd_idx)
+					tag_ref.attributes.d.delete_commands(inner_selections)
+					clear_inner_selection()
 	elif event.is_action_pressed(&"move_up"):
 		SVG.root_tag.move_tags_in_parent(selected_tids, false)
 	elif event.is_action_pressed(&"move_down"):
@@ -307,9 +307,9 @@ func _unhandled_input(event: InputEvent) -> void:
 		SVG.root_tag.duplicate_tags(selected_tids)
 	elif event.is_action_pressed(&"select_all"):
 		select_all()
-	else:
+	elif event is InputEventKey:
 		# Path commands using keys.
-		if inner_selections.is_empty():
+		if inner_selections.is_empty() or event.is_command_or_control_pressed():
 			return
 		var max_inner_selection = inner_selections.max()
 		for action_name in path_actions_dict.keys():
