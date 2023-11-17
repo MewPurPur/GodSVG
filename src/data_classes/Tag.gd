@@ -34,7 +34,7 @@ func get_child_count() -> int:
 func replace_self(new_tag: Tag) -> void:
 	name = new_tag.name
 	
-	attributes = {}
+	
 	for attrib in attributes:
 		attributes[attrib].set_value(new_tag.attributes[attrib].get_value(),
 				Attribute.UpdateType.SILENT)
