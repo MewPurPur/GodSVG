@@ -118,11 +118,7 @@ func create_tag_context() -> Popup:
 
 
 func _on_gui_input(event: InputEvent) -> void:
-	if event is InputEventMouseMotion and event.button_mask == 0:
-		if Indications.semi_hovered_tid != tid and\
-		not Utils.is_tid_parent(tid, Indications.hovered_tid):
-			Indications.set_hovered(tid)
-	elif event is InputEventMouseButton and event.is_pressed():
+	if event is InputEventMouseButton and event.is_released():
 		if event.button_index == MOUSE_BUTTON_LEFT:
 			if event.ctrl_pressed:
 				Indications.ctrl_select(tid)
@@ -210,3 +206,34 @@ func determine_selection_highlight() -> void:
 	
 	content.add_theme_stylebox_override(&"panel", content_sb)
 	title_bar.add_theme_stylebox_override(&"panel", title_sb)
+
+#region drag and drop
+func _get_drag_data(_position):
+	var data:Array[PackedInt32Array] = [tid]
+	if tid in Indications.selected_tids:
+		data = Indications.selected_tids
+	var tags_container:VBoxContainer = VBoxContainer.new()
+	for drag_tid in data:
+		var preview = TagEditor.instantiate()
+		preview.tag = SVG.root_tag.get_by_tid(drag_tid)
+		preview.tid = drag_tid
+		preview.custom_minimum_size.x = self.size.x
+		preview.custom_minimum_size.y = self.size.y
+		tags_container.add_child(preview)
+	tags_container.modulate = Color('#ffffffd3')
+	set_drag_preview(tags_container)
+	return data
+
+func _can_drop_data(_at_position: Vector2, current_tid: Variant):
+	if current_tid is Array and not  tid in current_tid:
+		var new_tid:PackedInt32Array = tid.duplicate()
+		new_tid.append(0)
+		if new_tid in current_tid: return false #is idx 0 child draged on parent
+		return true
+	return false
+
+func _drop_data(at_position: Vector2, current_tid: Variant):
+	var new_tid:PackedInt32Array = tid.duplicate()	
+	new_tid.append(0)
+	SVG.root_tag.move_tags_to(current_tid,new_tid)
+#endregion

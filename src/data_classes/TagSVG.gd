@@ -225,8 +225,19 @@ func move_tags_in_parent(tids: Array[PackedInt32Array], down: bool) -> void:
 	tags_moved_in_parent.emit(parent_tid, old_indices)
 	tag_layout_changed.emit()
 
-#func move_tags_to(tids: Array[PackedInt32Array], pos: PackedInt32Array) -> void:
-	#pass  # TODO implement this.
+func move_tags_to(tids: Array[PackedInt32Array], to: PackedInt32Array) -> void:
+	var new_parent_tids:PackedInt32Array = Utils.get_parent_tid(to)
+	var new_parent_tag:Tag = get_by_tid(new_parent_tids)
+	var count = 0
+	for pos in tids:
+		var parent_tids:PackedInt32Array = Utils.get_parent_tid(pos)
+		var parent_tag:Tag = get_by_tid(parent_tids)
+		var tag:Tag = parent_tag.child_tags[pos[-1]]
+		new_parent_tag.child_tags.insert(to[-1] + count,tag)
+		parent_tag.child_tags.pop_at(pos[-1])
+		count += 1
+	tags_moved_to.emit(to,tids)
+	tag_layout_changed.emit()
 
 func duplicate_tags(tids: Array[PackedInt32Array]) -> void:
 	if tids.is_empty():
