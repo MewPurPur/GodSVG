@@ -38,6 +38,5 @@ script = ExtResource("1_dywrg")
 hover_stylebox = SubResource("StyleBoxFlat_oa7o2")
 focus_stylebox = SubResource("StyleBoxFlat_ucydw")
 
-[connection signal="focus_exited" from="." to="." method="_on_focus_exited_2"]
 [connection signal="text_submitted" from="." to="." method="_on_text_submitted"]
 [connection signal="value_changed" from="." to="." method="_on_value_changed"]
