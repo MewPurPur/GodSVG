@@ -6,8 +6,6 @@ const RectField = preload("res://src/ui_elements/rect_field.tscn")
 const coupled_icon = preload("res://visual/icons/Coupled.svg")
 const decoupled_icon = preload("res://visual/icons/Decoupled.svg")
 
-signal viewbox_changed(w: float, h: float)
-
 @onready var tag := SVG.root_tag
 @onready var width_container: VBoxContainer = $Edits/Size/Width
 @onready var height_container: VBoxContainer = $Edits/Size/Height
