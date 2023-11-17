@@ -1,8 +1,8 @@
 [gd_scene load_steps=5 format=3 uid="uid://ce6j54x27pom"]
 
-[ext_resource type="PackedScene" uid="uid://djedidlj0k4sy" path="res://src/ui_parts/code_editor.tscn" id="1_0jgh3"]
+[ext_resource type="PackedScene" path="res://src/ui_parts/code_editor.tscn" id="1_0jgh3"]
 [ext_resource type="PackedScene" uid="uid://ccynisiuyn5qn" path="res://src/ui_parts/inspector.tscn" id="1_afxvd"]
-[ext_resource type="PackedScene" uid="uid://bdesorf1s1a7p" path="res://src/ui_parts/display.tscn" id="3_qbqbs"]
+[ext_resource type="PackedScene" path="res://src/ui_parts/display.tscn" id="3_qbqbs"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_082e3"]
 content_margin_left = 6.0
