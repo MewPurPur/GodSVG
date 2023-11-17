@@ -36,8 +36,7 @@ func _on_value_changed(new_value: float) -> void:
 	text = String.num(new_value, 4)
 
 
-# BetterLineEdit has a _on_focus_exited method.
-func _on_focus_exited_2() -> void:
+func _on_focus_exited() -> void:
 	force_value(Utils.evaluate_numeric_expression(text))
 
 func _on_text_submitted(submitted_text: String) -> void:
