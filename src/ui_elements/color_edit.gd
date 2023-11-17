@@ -19,7 +19,6 @@ var current_value: String:
 
 
 func _ready() -> void:
-	value_changed.connect(_on_value_changed)
 	color_edit.text = current_value
 	color_edit.tooltip_text = attribute_name
 

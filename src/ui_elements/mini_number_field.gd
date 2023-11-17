@@ -44,4 +44,3 @@ func _on_focus_exited() -> void:
 
 func _on_text_submitted(submitted_text: String) -> void:
 	set_value(Utils.evaluate_numeric_expression(submitted_text))
-	super(submitted_text)

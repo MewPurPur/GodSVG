@@ -71,10 +71,10 @@ static func text_to_svg(text: String) -> TagSVG:
 							attrib_dict.has("height") else 0.0
 					var new_viewbox := AttributeRect.string_to_rect(attrib_dict["viewBox"])\
 							if attrib_dict.has("viewBox") else Rect2(0, 0, new_w, new_h)
-					if new_w == 0.0 and new_h == 0.0 and new_viewbox != Rect2(0, 0, 0, 0):
+					if new_w == 0.0 and new_h == 0.0 and new_viewbox.size != Vector2(0, 0):
 						new_w = new_viewbox.size.x
 						new_h = new_viewbox.size.y
-						
+					
 					svg_tag.attributes.width.set_value(new_w, false)
 					svg_tag.attributes.height.set_value(new_h, false)
 					svg_tag.attributes.viewBox.set_value(new_viewbox, false)
@@ -84,9 +84,11 @@ static func text_to_svg(text: String) -> TagSVG:
 						if svg_tag.attributes.has(element):
 							var attribute: Attribute = svg_tag.attributes[element]
 							if typeof(attribute.get_value()) == Variant.Type.TYPE_STRING:
-								attribute.set_value(attrib_dict[element], false)
+								attribute.set_value(attrib_dict[element],
+										Attribute.UpdateType.SILENT)
 							elif typeof(attribute.get_value()) == Variant.Type.TYPE_FLOAT:
-								attribute.set_value(attrib_dict[element].to_float(), false)
+								attribute.set_value(attrib_dict[element].to_float(),
+										Attribute.UpdateType.SILENT)
 						else:
 							unknown.append(AttributeUnknown.new(element, attrib_dict[element]))
 					svg_tag.set_unknown_attributes(unknown)
@@ -106,9 +108,11 @@ static func text_to_svg(text: String) -> TagSVG:
 						if tag.attributes.has(element):
 							var attribute: Attribute = tag.attributes[element]
 							if typeof(attribute.get_value()) == Variant.Type.TYPE_STRING:
-								attribute.set_value(attrib_dict[element], false)
+								attribute.set_value(attrib_dict[element],
+										Attribute.UpdateType.SILENT)
 							elif typeof(attribute.get_value()) == Variant.Type.TYPE_FLOAT:
-								attribute.set_value(attrib_dict[element].to_float(), false)
+								attribute.set_value(attrib_dict[element].to_float(),
+										Attribute.UpdateType.SILENT)
 						else:
 							unknown.append(AttributeUnknown.new(element, attrib_dict[element]))
 					tag.set_unknown_attributes(unknown)

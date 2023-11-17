@@ -13,11 +13,12 @@ func _ready() -> void:
 	SVG.root_tag.child_attribute_changed.connect(update_string)
 	SVG.root_tag.tag_layout_changed.connect(update_string)
 	
-	if GlobalSettings.save_svg:
+	if GlobalSettings.save_data.svg.is_empty():
+		update_string()
+	else:
 		string = GlobalSettings.save_data.svg
 		sync_data()
-	else:
-		update_string()
+
 
 func sync_data() -> void:
 	var err_id := SVGParser.get_svg_syntax_error(string)

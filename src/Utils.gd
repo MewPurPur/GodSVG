@@ -255,3 +255,6 @@ static func get_parent_tid(tid: PackedInt32Array) -> PackedInt32Array:
 	var parent_tid := tid.duplicate()
 	parent_tid.resize(tid.size() - 1)
 	return parent_tid
+
+static func get_viewbox_zoom(viewbox: Rect2, width: float, height: float) -> float:
+	return minf(width / viewbox.size.x, height / viewbox.size.y)

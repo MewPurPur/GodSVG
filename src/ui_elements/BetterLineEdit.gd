@@ -14,7 +14,7 @@ func _ready() -> void:
 	focus_exited.connect(_on_focus_exited)
 	mouse_entered.connect(_on_mouse_entered)
 	mouse_exited.connect(_on_mouse_exited)
-	text_submitted.connect(_on_text_submitted)
+	text_submitted.connect(release_focus.unbind(1))
 
 func _input(event: InputEvent) -> void:
 	if has_focus() and event is InputEventMouseButton and\
@@ -41,9 +41,6 @@ func _on_mouse_exited() -> void:
 	hovered = false
 	queue_redraw()
 
-func _on_text_submitted(_new_text: String) -> void:
-	release_focus()
-
 func _draw() -> void:
 	if editable:
 		if has_focus() and focus_stylebox != null:
@@ -55,7 +52,7 @@ func _make_custom_tooltip(for_text: String) -> Object:
 	if code_font_tooltip:
 		var label := Label.new()
 		label.add_theme_font_override(&"font", code_font)
-		label.add_theme_font_size_override(&"font_size", 12)
+		label.add_theme_font_size_override(&"font_size", 13)
 		label.text = for_text
 		return label
 	else:
