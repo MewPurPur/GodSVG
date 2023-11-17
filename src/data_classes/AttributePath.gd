@@ -67,8 +67,12 @@ func insert_command(idx: int, command_char: String) -> void:
 	locate_start_points()
 	command_changed.emit()
 
-func delete_command(idx: int) -> void:
-	commands.remove_at(idx)
+func delete_commands(indices: Array[int]) -> void:
+	indices = indices.duplicate()
+	indices.sort()
+	indices.reverse()
+	for idx in indices:
+		commands.remove_at(idx)
 	locate_start_points()
 	command_changed.emit()
 

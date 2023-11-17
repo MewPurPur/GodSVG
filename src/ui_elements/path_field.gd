@@ -74,7 +74,8 @@ func _update_command_value(idx: int, new_value: float, property: StringName) -> 
 	attribute.set_command_property(idx, property, new_value)
 
 func _delete(idx: int) -> void:
-	attribute.delete_command(idx)
+	var arr: Array[int] = [idx]
+	attribute.delete_commands(arr)
 
 func _toggle_relative(idx: int) -> void:
 	attribute.toggle_relative_command(idx)
