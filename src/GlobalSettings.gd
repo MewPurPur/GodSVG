@@ -27,16 +27,6 @@ var language: StringName:
 		TranslationServer.set_locale(new_value)
 		save_setting("text", "language", language)
 
-var save_window_mode := false:
-	set(new_value):
-		save_window_mode = new_value
-		save_setting("session", "save_window_mode", save_window_mode)
-
-var save_svg := false:
-	set(new_value):
-		save_svg = new_value
-		save_setting("session", "save_svg", save_svg)
-
 var invert_zoom := false:
 	set(new_value):
 		invert_zoom = new_value
@@ -45,6 +35,10 @@ var invert_zoom := false:
 func save_setting(section: String, setting: String, saved_value: Variant) -> void:
 	config.set_value(section, setting, saved_value)
 	config.save(config_path)
+
+func modify_save_data(property: StringName, new_value: Variant) -> void:
+	save_data.set(property, new_value)
+	ResourceSaver.save(save_data, save_path)
 
 func save_user_data() -> void:
 	ResourceSaver.save(save_data, save_path)
@@ -78,8 +72,7 @@ func _exit_tree() -> void:
 func _enter_tree() -> void:
 	load_settings()
 	load_user_data()
-	if save_window_mode:
-		DisplayServer.window_set_mode(save_data.window_mode)
+	DisplayServer.window_set_mode(save_data.window_mode)
 
 
 func load_settings() -> void:

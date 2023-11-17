@@ -12,7 +12,8 @@ func _init(id: PackedInt32Array, x_ref: Attribute, y_ref: Attribute) -> void:
 
 func set_pos(new_pos: Vector2) -> void:
 	if new_pos.x != pos.x:
-		x_attribute.set_value(new_pos.x, new_pos.y == pos.y)
+		x_attribute.set_value(new_pos.x, Attribute.UpdateType.LOUD if\
+				new_pos.y == pos.y else Attribute.UpdateType.NO_PROPAGATION)
 	if new_pos.y != pos.y:
 		y_attribute.set_value(new_pos.y)
 	pos = new_pos

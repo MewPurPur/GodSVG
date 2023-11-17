@@ -63,12 +63,7 @@ size_flags_horizontal = 3
 theme_override_constants/separation = 2
 script = ExtResource("1_22rk2")
 
-[node name="MainLine" type="HBoxContainer" parent="."]
-custom_minimum_size = Vector2(0, 22)
-layout_mode = 2
-theme_override_constants/separation = 0
-
-[node name="LineEdit" type="LineEdit" parent="MainLine"]
+[node name="LineEdit" type="LineEdit" parent="."]
 custom_minimum_size = Vector2(300, 0)
 layout_mode = 2
 tooltip_text = "d"
@@ -99,5 +94,5 @@ theme_override_styles/hover = SubResource("StyleBoxFlat_4yine")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_kmpxk")
 icon = ExtResource("3_at2g1")
 
-[connection signal="text_submitted" from="MainLine/LineEdit" to="." method="_on_line_edit_text_submitted"]
+[connection signal="text_submitted" from="LineEdit" to="." method="_on_line_edit_text_submitted"]
 [connection signal="pressed" from="AddMove" to="." method="_on_add_move_pressed"]

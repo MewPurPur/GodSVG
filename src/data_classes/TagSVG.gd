@@ -10,6 +10,7 @@ signal tags_moved_in_parent(parent_tid: PackedInt32Array, old_indices: Array[int
 signal tags_moved_to(tid: PackedInt32Array, old_tids: Array[PackedInt32Array])
 signal tag_layout_changed  # Emitted together with any of the above 4.
 
+# This list is currently only used by the highlighter, so xmlns is here.
 const known_attributes = ["width", "height", "viewBox", "xmlns"]
 
 func _init() -> void:
@@ -58,7 +59,8 @@ func add_tag(new_tag: Tag, new_tid: PackedInt32Array) -> void:
 
 func replace_self(new_tag: Tag) -> void:
 	for attrib in attributes:
-		attributes[attrib].set_value(new_tag.attributes[attrib].get_value(), false)
+		attributes[attrib].set_value(new_tag.attributes[attrib].get_value(),
+				Attribute.UpdateType.SILENT)
 	
 	unknown_attributes.clear()
 	for attrib in new_tag.unknown_attributes:

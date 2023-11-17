@@ -29,7 +29,7 @@ var slider_mode: SliderMode:
 			new_color.s = clampf(new_color.s, 0.0001, 1.0)
 			new_color.v = clampf(new_color.v, 0.0001, 1.0)
 			set_color(new_color)
-			
+		
 		slider1.queue_redraw()
 		slider2.queue_redraw()
 		slider3.queue_redraw()
@@ -91,7 +91,7 @@ func update() -> void:
 	color_rect.color = color
 	if starting_color == "none":
 		start_color_rect.color = Color.TRANSPARENT
-	else:
+	elif !starting_color.is_empty():
 		start_color_rect.color = Color(starting_color)
 	queue_redraw()
 	side_slider.queue_redraw()
@@ -104,7 +104,7 @@ func update() -> void:
 func _ready() -> void:
 	RenderingServer.canvas_item_set_parent(color_wheel_surface,
 			color_wheel_drawn.get_canvas_item())
-	slider_mode = SliderMode.RGB
+	slider_mode = GlobalSettings.save_data.color_picker_slider_mode
 
 
 func _on_side_slider_gui_input(event: InputEvent) -> void:
@@ -170,9 +170,11 @@ func _on_slider3_gui_input(event: InputEvent) -> void:
 
 func _on_rgb_pressed() -> void:
 	slider_mode = SliderMode.RGB
+	GlobalSettings.modify_save_data(&"color_picker_slider_mode", SliderMode.RGB)
 
 func _on_hsv_pressed() -> void:
 	slider_mode = SliderMode.HSV
+	GlobalSettings.modify_save_data(&"color_picker_slider_mode", SliderMode.HSV)
 
 
 # Draw inside the side slider to give it a little arrow to the side.

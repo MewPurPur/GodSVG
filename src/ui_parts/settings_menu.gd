@@ -4,8 +4,6 @@ const ContextPopup = preload("res://src/ui_elements/context_popup.tscn")
 const PaletteConfigWidget = preload("res://src/ui_parts/palette_config.tscn")
 const plus_icon = preload("res://visual/icons/Plus.svg")
 
-@onready var window_mode_button: CheckBox = %WindowMode
-@onready var svg_button: CheckBox = %SVG
 @onready var lang_button: Button = %Language
 @onready var invert_zoom: CheckBox = %InvertZoom
 @onready var palette_container: VBoxContainer = %PaletteContainer
@@ -13,8 +11,6 @@ const plus_icon = preload("res://visual/icons/Plus.svg")
 
 func _ready() -> void:
 	update_language_button()
-	window_mode_button.button_pressed = GlobalSettings.save_window_mode
-	svg_button.button_pressed = GlobalSettings.save_svg
 	invert_zoom.button_pressed = GlobalSettings.invert_zoom
 	rebuild_color_palettes()
 

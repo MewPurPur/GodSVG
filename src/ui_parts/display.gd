@@ -4,6 +4,9 @@ const settings_menu = preload("settings_menu.tscn")
 const about_menu = preload("about_menu.tscn")
 const docs = preload("docs.tscn")
 
+const NumberEditType = preload("res://src/ui_elements/number_edit.gd")
+const BetterToggleButtonType = preload("res://src/ui_elements/BetterToggleButton.gd")
+
 const ContextPopup = preload("res://src/ui_elements/context_popup.tscn")
 const NumberField = preload("res://src/ui_elements/number_field.tscn")
 
@@ -12,8 +15,19 @@ const NumberField = preload("res://src/ui_elements/number_field.tscn")
 @onready var grid_visuals: Camera2D = $ViewportContainer/Viewport/ViewCamera
 @onready var visuals_button: Button = %LeftMenu/Visuals
 @onready var more_button: Button = %LeftMenu/MoreOptions
-@onready var snapper: BetterLineEdit = %LeftMenu/Snapping/NumberEdit
+@onready var snapper: NumberEditType = %LeftMenu/Snapping/NumberEdit
+@onready var snap_button: BetterToggleButtonType = %LeftMenu/Snapping/SnapButton
 
+
+func _ready() -> void:
+	update_snap_config()
+
+func update_snap_config() -> void:
+	var snap_config := GlobalSettings.save_data.snap
+	var snap_enabled := snap_config > 0.0
+	snap_button.button_pressed = snap_enabled
+	snapper.editable = snap_enabled
+	snapper.current_value = absf(snap_config)
 
 func _on_settings_pressed() -> void:
 	var settings_menu_instance := settings_menu.instantiate()
@@ -109,4 +123,11 @@ func toggle_rasterization() -> void:
 
 
 func _on_snap_button_toggled(toggled_on: bool) -> void:
-	snapper.editable = toggled_on
+	GlobalSettings.modify_save_data(&"snap",
+			absf(GlobalSettings.save_data.snap) * (1 if toggled_on else -1))
+	update_snap_config()
+
+func _on_number_edit_value_changed(new_value: float) -> void:
+	GlobalSettings.modify_save_data(&"snap",
+			new_value * signf(GlobalSettings.save_data.snap))
+	update_snap_config()
