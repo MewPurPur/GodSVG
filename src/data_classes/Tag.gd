@@ -4,6 +4,8 @@ class_name Tag extends RefCounted
 var child_tags: Array[Tag]
 
 signal attribute_changed
+signal child_attribute_changed
+signal changed_unknown
 
 var name: String
 var attributes: Dictionary  # Dictionary{String: Attribute}
@@ -29,6 +31,28 @@ func emit_attribute_changed():
 func get_child_count() -> int:
 	return child_tags.size()
 
+func replace_self(new_tag: Tag) -> void:
+	name = new_tag.name
+	
+	attributes = {}
+	for attrib in attributes:
+		attributes[attrib].set_value(new_tag.attributes[attrib].get_value(),
+				Attribute.UpdateType.SILENT)
+	
+	unknown_attributes.clear()
+	for attrib in new_tag.unknown_attributes:
+		unknown_attributes.append(attrib)
+	
+	child_tags.clear()
+	for tag in new_tag.child_tags:
+		child_tags.append(tag)
+		tag.attribute_changed.connect(emit_child_attribute_changed)
+	
+	attribute_changed.connect(emit_child_attribute_changed)
+	changed_unknown.emit()
+
+func emit_child_attribute_changed() -> void:
+	child_attribute_changed.emit()
 
 # Why is there no way to duplicate RefCounteds, again?
 func create_duplicate() -> Tag:
