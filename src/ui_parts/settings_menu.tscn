@@ -61,35 +61,7 @@ icon = ExtResource("2_ndyp7")
 layout_mode = 2
 script = ExtResource("3_vslgx")
 
-[node name="#session_tab" type="MarginContainer" parent="MainPanel/VBoxContainer/TabContainer"]
-layout_mode = 2
-theme_override_constants/margin_left = 4
-theme_override_constants/margin_top = 4
-theme_override_constants/margin_right = 4
-theme_override_constants/margin_bottom = 4
-
-[node name="VBox" type="VBoxContainer" parent="MainPanel/VBoxContainer/TabContainer/#session_tab"]
-layout_mode = 2
-theme_override_constants/separation = 0
-
-[node name="SVG" type="CheckBox" parent="MainPanel/VBoxContainer/TabContainer/#session_tab/VBox"]
-unique_name_in_owner = true
-layout_mode = 2
-tooltip_text = "#remember_svg_desc"
-focus_mode = 0
-mouse_default_cursor_shape = 2
-text = "#remember_svg_setting"
-
-[node name="WindowMode" type="CheckBox" parent="MainPanel/VBoxContainer/TabContainer/#session_tab/VBox"]
-unique_name_in_owner = true
-layout_mode = 2
-tooltip_text = "#remember_window_mode_desc"
-focus_mode = 0
-mouse_default_cursor_shape = 2
-text = "#remember_window_mode_settings"
-
 [node name="#input_tab" type="MarginContainer" parent="MainPanel/VBoxContainer/TabContainer"]
-visible = false
 layout_mode = 2
 theme_override_constants/margin_left = 4
 theme_override_constants/margin_top = 4
@@ -135,7 +107,5 @@ mouse_default_cursor_shape = 2
 text = "#close"
 
 [connection signal="pressed" from="MainPanel/VBoxContainer/Language" to="." method="_on_language_pressed"]
-[connection signal="pressed" from="MainPanel/VBoxContainer/TabContainer/#session_tab/VBox/SVG" to="." method="_on_svg_pressed"]
-[connection signal="pressed" from="MainPanel/VBoxContainer/TabContainer/#session_tab/VBox/WindowMode" to="." method="_on_window_mode_pressed"]
 [connection signal="pressed" from="MainPanel/VBoxContainer/TabContainer/#input_tab/VBox/InvertZoom" to="." method="_on_invert_zoom_pressed"]
 [connection signal="pressed" from="MainPanel/VBoxContainer/Close" to="." method="_on_close_pressed"]

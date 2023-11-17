@@ -3,7 +3,7 @@ extends AttributeEditor
 
 const CommandEditor = preload("path_command_editor.tscn")
 
-@onready var line_edit: LineEdit = $MainLine/LineEdit
+@onready var line_edit: LineEdit = $LineEdit
 @onready var commands_container: VBoxContainer = $Commands
 @onready var add_move: Button = $AddMove
 

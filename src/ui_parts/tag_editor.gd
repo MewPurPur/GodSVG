@@ -14,13 +14,13 @@ const PathField = preload("res://src/ui_elements/path_field.tscn")
 const EnumField = preload("res://src/ui_elements/enum_field.tscn")
 const UnknownField = preload("res://src/ui_elements/unknown_field.tscn")
 
+@onready var v_box_container: VBoxContainer = $VBoxContainer
 @onready var paint_container: FlowContainer = %AttributeContainer/PaintAttributes
 @onready var shape_container: FlowContainer = %AttributeContainer/ShapeAttributes
 @onready var unknown_container: HFlowContainer = %AttributeContainer/UnknownAttributes
 @onready var title_button: Button = %TitleButton
 @onready var title_button_icon: TextureRect = %TitleButtonIcon
 @onready var title_button_label: Label = %TitleButtonLabel
-@onready var child_tags_container: VBoxContainer = %ChildTags
 
 var tid: PackedInt32Array
 var tag: Tag
@@ -77,8 +77,9 @@ func _ready() -> void:
 	
 	determine_selection_highlight()
 	
-	if not tag.child_tags.is_empty():
-		child_tags_container.show()
+	if not tag.is_standalone():
+		var child_tags_container := VBoxContainer.new()
+		v_box_container.add_child(child_tags_container)
 		
 		for tag_idx in tag.get_child_count():
 			var child_tag := tag.child_tags[tag_idx]

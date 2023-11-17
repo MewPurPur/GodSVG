@@ -1,0 +1,166 @@
+[gd_scene load_steps=18 format=3 uid="uid://bdesorf1s1a7p"]
+
+[ext_resource type="Script" path="res://src/ui_parts/display.gd" id="1_oib5g"]
+[ext_resource type="Texture2D" uid="uid://ccbta5q43jobk" path="res://visual/icons/More.svg" id="2_3wliq"]
+[ext_resource type="Texture2D" uid="uid://ckkkgof1hcbld" path="res://visual/icons/Gear.svg" id="3_0w618"]
+[ext_resource type="Texture2D" uid="uid://kkxyv1gyrjgj" path="res://visual/icons/Visuals.svg" id="4_n3qjt"]
+[ext_resource type="Texture2D" uid="uid://buire51l0mifg" path="res://visual/icons/Snap.svg" id="5_1k2cq"]
+[ext_resource type="Script" path="res://src/ui_elements/BetterToggleButton.gd" id="6_3v3ve"]
+[ext_resource type="PackedScene" uid="uid://dad7fkhmsooc6" path="res://src/ui_elements/number_edit.tscn" id="7_wrrfr"]
+[ext_resource type="PackedScene" uid="uid://oltvrf01xrxl" path="res://src/ui_parts/zoom_menu.tscn" id="8_xtdmn"]
+[ext_resource type="Script" path="res://src/ui_parts/viewport.gd" id="9_4xrk7"]
+[ext_resource type="Shader" path="res://src/shaders/zoom_shader.gdshader" id="10_x7ybk"]
+[ext_resource type="Texture2D" uid="uid://c68og6bsqt0lb" path="res://visual/Checkerboard.svg" id="11_1bm1s"]
+[ext_resource type="Script" path="res://src/ui_parts/display_texture.gd" id="12_qi23s"]
+[ext_resource type="Script" path="res://src/ui_parts/handles_manager.gd" id="13_lwhwy"]
+[ext_resource type="Script" path="res://src/ui_parts/view_camera.gd" id="14_yjb74"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nxvgo"]
+content_margin_left = 6.0
+content_margin_top = 5.0
+content_margin_right = 6.0
+content_margin_bottom = 7.0
+bg_color = Color(0.02, 0.02, 0.08, 1)
+border_width_bottom = 2
+border_color = Color(0.4, 0.7, 1, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eujxa"]
+bg_color = Color(0.866667, 0.933333, 1, 0.133333)
+corner_radius_top_left = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_kqplg"]
+shader = ExtResource("10_x7ybk")
+shader_parameter/uv_scale = 1.0
+
+[node name="Display" type="VBoxContainer"]
+theme_override_constants/separation = 0
+script = ExtResource("1_oib5g")
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_nxvgo")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer"]
+layout_mode = 2
+alignment = 2
+
+[node name="LeftMenu" type="HBoxContainer" parent="PanelContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 2
+theme_override_constants/separation = 5
+
+[node name="MoreOptions" type="Button" parent="PanelContainer/HBoxContainer/LeftMenu"]
+custom_minimum_size = Vector2(28, 0)
+layout_mode = 2
+size_flags_horizontal = 2
+focus_mode = 0
+mouse_default_cursor_shape = 2
+icon = ExtResource("2_3wliq")
+icon_alignment = 1
+
+[node name="Settings" type="Button" parent="PanelContainer/HBoxContainer/LeftMenu"]
+custom_minimum_size = Vector2(28, 0)
+layout_mode = 2
+size_flags_horizontal = 2
+tooltip_text = "#settings"
+focus_mode = 0
+mouse_default_cursor_shape = 2
+icon = ExtResource("3_0w618")
+icon_alignment = 1
+
+[node name="Visuals" type="Button" parent="PanelContainer/HBoxContainer/LeftMenu"]
+custom_minimum_size = Vector2(28, 0)
+layout_mode = 2
+size_flags_horizontal = 2
+tooltip_text = "#visuals"
+focus_mode = 0
+mouse_default_cursor_shape = 2
+icon = ExtResource("4_n3qjt")
+icon_alignment = 1
+
+[node name="Snapping" type="HBoxContainer" parent="PanelContainer/HBoxContainer/LeftMenu"]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="SnapButton" type="Button" parent="PanelContainer/HBoxContainer/LeftMenu/Snapping"]
+layout_mode = 2
+tooltip_text = "#enable_snap"
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_type_variation = &"RightConnectedButton"
+toggle_mode = true
+icon = ExtResource("5_1k2cq")
+script = ExtResource("6_3v3ve")
+hover_pressed_stylebox = SubResource("StyleBoxFlat_eujxa")
+
+[node name="NumberEdit" parent="PanelContainer/HBoxContainer/LeftMenu/Snapping" instance=ExtResource("7_wrrfr")]
+custom_minimum_size = Vector2(46, 22)
+layout_mode = 2
+tooltip_text = "#snap_size"
+theme_type_variation = &"LeftConnectedLineEdit"
+max_length = 20
+editable = false
+min_value = 0.001
+allow_lower = false
+
+[node name="ZoomMenu" parent="PanelContainer/HBoxContainer" instance=ExtResource("8_xtdmn")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="ViewportContainer" type="SubViewportContainer" parent="."]
+process_mode = 3
+layout_mode = 2
+size_flags_horizontal = 10
+
+[node name="Viewport" type="SubViewport" parent="ViewportContainer"]
+disable_3d = true
+handle_input_locally = false
+gui_snap_controls_to_pixels = false
+size = Vector2i(600, 600)
+size_2d_override_stretch = true
+render_target_update_mode = 4
+script = ExtResource("9_4xrk7")
+
+[node name="Checkerboard" type="TextureRect" parent="ViewportContainer/Viewport"]
+unique_name_in_owner = true
+texture_filter = 1
+material = SubResource("ShaderMaterial_kqplg")
+texture = ExtResource("11_1bm1s")
+expand_mode = 1
+stretch_mode = 1
+
+[node name="DisplayTexture" type="TextureRect" parent="ViewportContainer/Viewport/Checkerboard"]
+clip_contents = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+expand_mode = 1
+script = ExtResource("12_qi23s")
+
+[node name="Controls" type="Control" parent="ViewportContainer/Viewport/Checkerboard"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+script = ExtResource("13_lwhwy")
+
+[node name="ViewCamera" type="Camera2D" parent="ViewportContainer/Viewport"]
+anchor_mode = 0
+editor_draw_screen = false
+script = ExtResource("14_yjb74")
+
+[connection signal="pressed" from="PanelContainer/HBoxContainer/LeftMenu/MoreOptions" to="." method="_on_more_options_pressed"]
+[connection signal="pressed" from="PanelContainer/HBoxContainer/LeftMenu/Settings" to="." method="_on_settings_pressed"]
+[connection signal="pressed" from="PanelContainer/HBoxContainer/LeftMenu/Visuals" to="." method="_on_visuals_button_pressed"]
+[connection signal="toggled" from="PanelContainer/HBoxContainer/LeftMenu/Snapping/SnapButton" to="." method="_on_snap_button_toggled"]
+[connection signal="value_changed" from="PanelContainer/HBoxContainer/LeftMenu/Snapping/NumberEdit" to="." method="_on_number_edit_value_changed"]
+[connection signal="zoom_changed" from="PanelContainer/HBoxContainer/ZoomMenu" to="ViewportContainer/Viewport" method="_on_zoom_changed"]
+[connection signal="zoom_reset_pressed" from="PanelContainer/HBoxContainer/ZoomMenu" to="ViewportContainer/Viewport" method="center_frame"]

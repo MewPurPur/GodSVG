@@ -7,7 +7,6 @@ const buffer_view_space = 0.8
 @onready var controls: Control = %Checkerboard/Controls
 @onready var display_texture: Control = %Checkerboard/DisplayTexture
 @onready var zoom_menu: HBoxContainer = %ZoomMenu
-@onready var main_node: VBoxContainer = %Display
 
 
 func _ready() -> void:

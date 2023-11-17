@@ -8,7 +8,6 @@ const TagEditor = preload("tag_editor.tscn")
 @onready var add_button: Button = $VBoxContainer/AddButton
 
 func _ready() -> void:
-	SVG.root_tag.attribute_changed.connect(svg_tag_editor.update_svg_attributes)
 	SVG.root_tag.tag_layout_changed.connect(full_rebuild)
 	SVG.root_tag.changed_unknown.connect(full_rebuild)
 	full_rebuild()

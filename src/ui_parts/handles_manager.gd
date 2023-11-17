@@ -39,9 +39,6 @@ var zoom := 1.0:
 				Transform2D(0.0, Vector2(1/zoom, 1/zoom), 0.0, Vector2(0, 0)))
 		queue_redraw()
 
-var snap_enabled := false
-var snap_size := Vector2(0.5, 0.5)
-
 var width: float
 var height: float
 var viewbox: Rect2
@@ -60,6 +57,7 @@ func _ready() -> void:
 	SVG.root_tag.child_attribute_changed.connect(sync_handles)
 	SVG.root_tag.tag_layout_changed.connect(queue_update)
 	SVG.root_tag.changed_unknown.connect(queue_update)
+	SVG.root_tag.changed_unknown.connect(update_dimensions)
 	Indications.selection_changed.connect(queue_redraw)
 	Indications.hover_changed.connect(queue_redraw)
 	update_dimensions()
@@ -69,7 +67,7 @@ func update_dimensions() -> void:
 	width = SVG.root_tag.attributes.width.get_value()
 	height = SVG.root_tag.attributes.height.get_value()
 	viewbox = SVG.root_tag.attributes.viewBox.get_value()
-	viewbox_zoom = minf(width / viewbox.size.x, height / viewbox.size.y)
+	viewbox_zoom = Utils.get_viewbox_zoom(viewbox, width, height)
 	queue_update()
 
 
@@ -652,6 +650,9 @@ var was_handle_moved := false
 var should_deselect_all = false
 
 func _unhandled_input(event: InputEvent) -> void:
+	var snap_enabled := GlobalSettings.save_data.snap > 0.0
+	var snap_size := absf(GlobalSettings.save_data.snap)
+	var snap_vector := Vector2(snap_size, snap_size)
 	if not visible:
 		return
 	
@@ -662,7 +663,7 @@ func _unhandled_input(event: InputEvent) -> void:
 			# Move the handle that's being dragged.
 			var new_pos := convert_out(event_pos)
 			if snap_enabled:
-				new_pos = new_pos.snapped(snap_size)
+				new_pos = new_pos.snapped(snap_vector)
 			dragged_handle.set_pos(new_pos)
 			was_handle_moved = true
 			accept_event()
@@ -711,7 +712,7 @@ func _unhandled_input(event: InputEvent) -> void:
 			if was_handle_moved:
 				var new_pos := convert_out(event_pos)
 				if snap_enabled:
-					new_pos = new_pos.snapped(snap_size)
+					new_pos = new_pos.snapped(snap_vector)
 				dragged_handle.set_pos(new_pos)
 				was_handle_moved = false
 			dragged_handle = null
@@ -732,10 +733,3 @@ func find_nearest_handle(event_pos: Vector2) -> Handle:
 			nearest_dist = dist_to_handle
 			nearest_handle = handle
 	return nearest_handle
-
-
-func _on_snapper_value_changed(new_value: float) -> void:
-	snap_size = Vector2(new_value, new_value)
-
-func _on_snap_button_toggled(toggled_on: bool) -> void:
-	snap_enabled = toggled_on
