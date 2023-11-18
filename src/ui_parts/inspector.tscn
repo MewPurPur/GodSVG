@@ -20,7 +20,7 @@ corner_radius_bottom_left = 5
 custom_minimum_size = Vector2(0, 360)
 size_flags_horizontal = 3
 size_flags_vertical = 3
-theme_override_constants/separation = 16
+theme_override_constants/separation = 6
 script = ExtResource("1_16ggy")
 
 [node name="SVGTagEditor" parent="." instance=ExtResource("2_jnl50")]
