@@ -104,7 +104,7 @@ func update_type() -> void:
 			field_x.set_value(path_command.x)
 			field_x.tooltip_text = "x"
 			field_y.set_value(path_command.y)
-			field_y.tooltip_text ="y"
+			field_y.tooltip_text = "y"
 			field_x.value_changed.connect(update_value.bind(&"x"))
 			field_y.value_changed.connect(update_value.bind(&"y"))
 			fields.append(field_x)
