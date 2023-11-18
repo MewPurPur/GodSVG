@@ -87,7 +87,7 @@ enable_palettes = false
 layout_mode = 2
 focus_mode = 0
 mouse_default_cursor_shape = 2
-theme_type_variation = &"IconButton"
+theme_type_variation = &"GreyButton"
 icon = ExtResource("5_5n8tt")
 
 [connection signal="popup_hide" from="." to="." method="_on_popup_hide"]

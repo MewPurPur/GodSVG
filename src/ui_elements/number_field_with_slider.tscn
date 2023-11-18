@@ -64,7 +64,7 @@ custom_minimum_size = Vector2(12, 0)
 layout_mode = 2
 focus_mode = 0
 mouse_default_cursor_shape = 2
-theme_type_variation = &"LeftConnectedButtonTransparent"
+theme_type_variation = &"LeftConnectedGreyButtonTransparent"
 theme_override_styles/pressed = SubResource("StyleBoxFlat_smesa")
 
 [connection signal="focus_exited" from="LineEdit" to="." method="_on_focus_exited"]
