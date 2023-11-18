@@ -1,5 +1,21 @@
 extends VBoxContainer
 
+@export var scroll_container:ScrollContainer
+var is_drag_begin:bool = false
+const safe_margin:float = 0.18 # 0 - 1
+
+func _process(_delta):
+	#does auto scroll with moving draged object
+	if  not scroll_container == null and is_drag_begin:		
+		var safe_area:Rect2 = scroll_container.get_global_rect()
+		var shrink_ratio:float = safe_margin * float(safe_area.size.y)
+		safe_area = safe_area.grow_individual(0,- shrink_ratio,0,- shrink_ratio)
+		var mouse_position:Vector2 = get_global_mouse_position()
+		if not safe_area.has_point(mouse_position):
+			if safe_area.position.y < mouse_position.y:
+				scroll_container.scroll_vertical += 5
+			else:
+				scroll_container.scroll_vertical -= 5
 
 func _can_drop_data(_at_position: Vector2, current_tid: Variant):
 	if current_tid is Array:
@@ -7,6 +23,11 @@ func _can_drop_data(_at_position: Vector2, current_tid: Variant):
 		return true
 	return false
 
+func _notification(what:int) -> void:
+	if what == NOTIFICATION_DRAG_BEGIN:
+		is_drag_begin = true
+	elif what == NOTIFICATION_DRAG_END:
+		is_drag_begin = false
 
 func _drop_data(at_position: Vector2, current_tid: Variant):
 	var new_tid := PackedInt32Array([SVG.root_tag.get_child_count()])
