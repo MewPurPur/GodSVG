@@ -208,7 +208,7 @@ func determine_selection_highlight() -> void:
 	title_bar.add_theme_stylebox_override(&"panel", title_sb)
 
 #region drag and drop
-func _get_drag_data(_position):
+func _get_drag_data(_at_position: Vector2) -> Variant:
 	var data:Array[PackedInt32Array] = [tid]
 	if tid in Indications.selected_tids:
 		data = Indications.selected_tids
@@ -224,16 +224,70 @@ func _get_drag_data(_position):
 	set_drag_preview(tags_container)
 	return data
 
-func _can_drop_data(_at_position: Vector2, current_tid: Variant):
+enum DropState{
+	Inside = 0,
+	Up,
+	Down,
+	Outside,
+}
+
+func _can_drop_data(_at_position: Vector2, current_tid: Variant) -> bool:
 	if current_tid is Array and not  tid in current_tid:
-		var new_tid:PackedInt32Array = tid.duplicate()
-		new_tid.append(0)
-		if new_tid in current_tid: return false #is idx 0 child draged on parent
+		var state:DropState = drop_location_calculator(get_global_mouse_position())
+		if state == DropState.Inside:
+			var new_tid:PackedInt32Array = tid.duplicate()
+			new_tid.append(0)
+			if new_tid in current_tid: return false #is idx 0 child draged on parent
+		drop_location_indicator(state)
 		return true
 	return false
 
-func _drop_data(at_position: Vector2, current_tid: Variant):
-	var new_tid:PackedInt32Array = tid.duplicate()	
-	new_tid.append(0)
+func drop_location_calculator(at_position: Vector2) -> DropState:# returns inside,up,down,outside
+	var top_bottom_margin:float = 0.18 # 0 - 1
+	var tag_editor_area:Rect2 = Rect2(get_global_rect())
+	if not tag_editor_area.has_point(at_position):
+		return DropState.Outside
+	var shrink_ratio:float = top_bottom_margin * float(tag_editor_area.size.y)
+	tag_editor_area = tag_editor_area.grow_individual(0,- shrink_ratio,0,- shrink_ratio)
+	if tag_editor_area.has_point(at_position):
+		return DropState.Inside
+	if tag_editor_area.position.y > at_position.y:
+		return DropState.Up
+	else:
+		return DropState.Down
+	return DropState.Outside
+
+func drop_location_indicator(state: DropState) -> void:
+	var stylebox := StyleBoxFlat.new()
+	stylebox.set_corner_radius_all(4)
+	stylebox.set_border_width_all(2)
+	stylebox.set_content_margin_all(5)
+	stylebox.bg_color = Color.from_hsv(0.625, 0.5, 0.25)
+	stylebox.border_color = Color("yellow")
+	match state:
+		DropState.Inside:# adds as a child
+			add_theme_stylebox_override(&"panel", stylebox)
+			pass
+		DropState.Up:# adds above its self
+			stylebox.set_border_width_all(0)
+			stylebox.border_width_top = 2
+			add_theme_stylebox_override(&"panel", stylebox)
+			pass
+		DropState.Down:# adds down its self
+			stylebox.set_border_width_all(0)
+			stylebox.border_width_bottom = 2
+			add_theme_stylebox_override(&"panel", stylebox)
+			pass
+
+func _drop_data(_at_position: Vector2, current_tid: Variant):
+	var state:DropState = drop_location_calculator(get_global_mouse_position())
+	var new_tid:PackedInt32Array = tid.duplicate()
+	match state:
+		DropState.Inside:
+			new_tid.append(0)
+		DropState.Up:
+			new_tid[-1] -= 1 
+		DropState.Down:
+			new_tid[-1] += 1
 	SVG.root_tag.move_tags_to(current_tid,new_tid)
 #endregion
