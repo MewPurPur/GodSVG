@@ -73,6 +73,7 @@ func _enter_tree() -> void:
 	load_settings()
 	load_user_data()
 	DisplayServer.window_set_mode(save_data.window_mode)
+	get_window().wrap_controls = true
 
 
 func load_settings() -> void:

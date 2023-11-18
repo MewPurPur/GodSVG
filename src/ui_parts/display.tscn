@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://bvrncl7e6yn5b"]
+[gd_scene load_steps=19 format=3 uid="uid://bvrncl7e6yn5b"]
 
 [ext_resource type="Script" path="res://src/ui_parts/display.gd" id="1_oib5g"]
 [ext_resource type="Texture2D" uid="uid://ccbta5q43jobk" path="res://visual/icons/More.svg" id="2_3wliq"]
@@ -16,28 +16,34 @@
 [ext_resource type="Script" path="res://src/ui_parts/view_camera.gd" id="14_yjb74"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nxvgo"]
-content_margin_left = 5.0
-content_margin_top = 4.0
-content_margin_right = 5.0
+content_margin_left = 6.0
+content_margin_top = 6.0
+content_margin_right = 6.0
 content_margin_bottom = 6.0
 bg_color = Color(0.02, 0.02, 0.08, 1)
-border_width_bottom = 2
-border_color = Color(0.4, 0.7, 1, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eujxa"]
 bg_color = Color(0.866667, 0.933333, 1, 0.133333)
 corner_radius_top_left = 5
 corner_radius_bottom_left = 5
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jk4ec"]
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.203922, 0.254902, 0.4, 1)
+
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_kqplg"]
 shader = ExtResource("10_x7ybk")
 shader_parameter/uv_scale = 1.0
 
 [node name="Display" type="VBoxContainer"]
-anchors_preset = 10
+anchors_preset = 15
 anchor_right = 1.0
-offset_bottom = 638.0
+anchor_bottom = 1.0
 grow_horizontal = 2
+grow_vertical = 2
 theme_override_constants/separation = 0
 script = ExtResource("1_oib5g")
 
@@ -110,23 +116,28 @@ allow_lower = false
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="ViewportContainer" type="SubViewportContainer" parent="."]
+[node name="ViewportPanel" type="PanelContainer" parent="."]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_jk4ec")
+
+[node name="ViewportContainer" type="SubViewportContainer" parent="ViewportPanel"]
 process_mode = 3
 custom_minimum_size = Vector2(450, 0)
 layout_mode = 2
 size_flags_vertical = 3
 stretch = true
 
-[node name="Viewport" type="SubViewport" parent="ViewportContainer"]
+[node name="Viewport" type="SubViewport" parent="ViewportPanel/ViewportContainer"]
 disable_3d = true
 handle_input_locally = false
 gui_snap_controls_to_pixels = false
-size = Vector2i(1024, 600)
+size = Vector2i(1020, 596)
 size_2d_override_stretch = true
 render_target_update_mode = 4
 script = ExtResource("9_4xrk7")
 
-[node name="Checkerboard" type="TextureRect" parent="ViewportContainer/Viewport"]
+[node name="Checkerboard" type="TextureRect" parent="ViewportPanel/ViewportContainer/Viewport"]
 unique_name_in_owner = true
 texture_filter = 1
 material = SubResource("ShaderMaterial_kqplg")
@@ -134,7 +145,7 @@ texture = ExtResource("11_1bm1s")
 expand_mode = 1
 stretch_mode = 1
 
-[node name="DisplayTexture" type="TextureRect" parent="ViewportContainer/Viewport/Checkerboard"]
+[node name="DisplayTexture" type="TextureRect" parent="ViewportPanel/ViewportContainer/Viewport/Checkerboard"]
 clip_contents = true
 layout_mode = 1
 anchors_preset = 15
@@ -145,7 +156,7 @@ grow_vertical = 2
 expand_mode = 1
 script = ExtResource("12_qi23s")
 
-[node name="Controls" type="Control" parent="ViewportContainer/Viewport/Checkerboard"]
+[node name="Controls" type="Control" parent="ViewportPanel/ViewportContainer/Viewport/Checkerboard"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -155,7 +166,7 @@ grow_vertical = 2
 mouse_filter = 1
 script = ExtResource("13_lwhwy")
 
-[node name="ViewCamera" type="Camera2D" parent="ViewportContainer/Viewport"]
+[node name="ViewCamera" type="Camera2D" parent="ViewportPanel/ViewportContainer/Viewport"]
 anchor_mode = 0
 editor_draw_screen = false
 script = ExtResource("14_yjb74")
@@ -165,7 +176,7 @@ script = ExtResource("14_yjb74")
 [connection signal="pressed" from="PanelContainer/HBoxContainer/LeftMenu/Visuals" to="." method="_on_visuals_button_pressed"]
 [connection signal="toggled" from="PanelContainer/HBoxContainer/LeftMenu/Snapping/SnapButton" to="." method="_on_snap_button_toggled"]
 [connection signal="value_changed" from="PanelContainer/HBoxContainer/LeftMenu/Snapping/NumberEdit" to="." method="_on_number_edit_value_changed"]
-[connection signal="zoom_changed" from="PanelContainer/HBoxContainer/ZoomMenu" to="ViewportContainer/Viewport" method="_on_zoom_changed"]
-[connection signal="zoom_reset_pressed" from="PanelContainer/HBoxContainer/ZoomMenu" to="ViewportContainer/Viewport" method="center_frame"]
-[connection signal="resized" from="ViewportContainer" to="ViewportContainer/Viewport" method="_on_viewport_container_resized"]
-[connection signal="size_changed" from="ViewportContainer/Viewport" to="ViewportContainer/Viewport" method="_on_size_changed"]
+[connection signal="zoom_changed" from="PanelContainer/HBoxContainer/ZoomMenu" to="ViewportPanel/ViewportContainer/Viewport" method="_on_zoom_changed"]
+[connection signal="zoom_reset_pressed" from="PanelContainer/HBoxContainer/ZoomMenu" to="ViewportPanel/ViewportContainer/Viewport" method="center_frame"]
+[connection signal="resized" from="ViewportPanel/ViewportContainer" to="ViewportPanel/ViewportContainer/Viewport" method="_on_viewport_container_resized"]
+[connection signal="size_changed" from="ViewportPanel/ViewportContainer/Viewport" to="ViewportPanel/ViewportContainer/Viewport" method="_on_size_changed"]

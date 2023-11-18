@@ -15,9 +15,10 @@ corner_radius_bottom_left = 5
 [node name="SVGTagEditor" type="MarginContainer"]
 offset_right = 100.0
 offset_bottom = 35.0
-theme_override_constants/margin_left = 8
-theme_override_constants/margin_top = 8
-theme_override_constants/margin_right = 8
+theme_override_constants/margin_left = 6
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 6
+theme_override_constants/margin_bottom = 6
 script = ExtResource("1_xgyg0")
 
 [node name="Edits" type="HBoxContainer" parent="."]

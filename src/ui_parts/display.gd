@@ -10,9 +10,9 @@ const BetterToggleButtonType = preload("res://src/ui_elements/BetterToggleButton
 const ContextPopup = preload("res://src/ui_elements/context_popup.tscn")
 const NumberField = preload("res://src/ui_elements/number_field.tscn")
 
-@onready var viewport: SubViewport = $ViewportContainer/Viewport
+@onready var viewport: SubViewport = $ViewportPanel/ViewportContainer/Viewport
 @onready var controls: Control = %Checkerboard/Controls
-@onready var grid_visuals: Camera2D = $ViewportContainer/Viewport/ViewCamera
+@onready var grid_visuals: Camera2D = $ViewportPanel/ViewportContainer/Viewport/ViewCamera
 @onready var visuals_button: Button = %LeftMenu/Visuals
 @onready var more_button: Button = %LeftMenu/MoreOptions
 @onready var snapper: NumberEditType = %LeftMenu/Snapping/NumberEdit
