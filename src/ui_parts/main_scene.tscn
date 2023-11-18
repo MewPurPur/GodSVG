@@ -10,7 +10,7 @@ content_margin_left = 6.0
 content_margin_top = 6.0
 content_margin_right = 0.0
 content_margin_bottom = 6.0
-bg_color = Color(0.0196078, 0.0196078, 0.0784314, 1)
+bg_color = Color(0.02, 0.02, 0.08, 1)
 border_color = Color(0.278431, 0.286275, 0.568627, 1)
 expand_margin_right = 6.0
 
@@ -50,8 +50,3 @@ layout_mode = 2
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-
-[node name="Viewport" parent="HSplitContainer/Display/ViewportPanel/ViewportContainer" index="0"]
-size = Vector2i(596, 596)
-
-[editable path="HSplitContainer/Display"]

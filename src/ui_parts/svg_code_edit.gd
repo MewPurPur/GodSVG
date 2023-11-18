@@ -58,3 +58,4 @@ func _on_focus_entered() -> void:
 
 func _on_focus_exited() -> void:
 	timer.stop()
+	RenderingServer.canvas_item_clear(surface)
