@@ -658,7 +658,7 @@ func _unhandled_input(event: InputEvent) -> void:
 	
 	if event is InputEventMouseMotion:
 		should_deselect_all = false
-		var event_pos: Vector2 = event.position + get_parent().get_parent().view.position
+		var event_pos: Vector2 = event.position / zoom + get_node(^"../..").view.position
 		if dragged_handle != null:
 			# Move the handle that's being dragged.
 			var new_pos := convert_out(event_pos)
@@ -681,7 +681,7 @@ func _unhandled_input(event: InputEvent) -> void:
 				Indications.clear_hovered()
 				Indications.clear_inner_hovered()
 	elif event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
-		var event_pos: Vector2 = event.position + get_parent().get_parent().view.position
+		var event_pos: Vector2 = event.position / zoom + get_node(^"../..").view.position
 		var nearest_handle := find_nearest_handle(event_pos)
 		if nearest_handle != null:
 			hovered_handle = nearest_handle
@@ -728,7 +728,7 @@ func find_nearest_handle(event_pos: Vector2) -> Handle:
 	var nearest_handle: Handle = null
 	var nearest_dist := max_grab_dist
 	for handle in handles:
-		var dist_to_handle := event_pos.distance_to(convert_in(handle.pos))
+		var dist_to_handle := event_pos.distance_to(handle.pos)
 		if dist_to_handle < nearest_dist:
 			nearest_dist = dist_to_handle
 			nearest_handle = handle
