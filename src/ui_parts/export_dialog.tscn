@@ -121,7 +121,6 @@ text = "#scale"
 unique_name_in_owner = true
 custom_minimum_size = Vector2(46, 22)
 layout_mode = 2
-initial_value = 8.0
 allow_lower = false
 
 [node name="FinalDimensions" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/ScaleContainer"]
@@ -139,11 +138,13 @@ alignment = 1
 [node name="CancelButton" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/ButtonContainer"]
 layout_mode = 2
 mouse_default_cursor_shape = 2
+theme_type_variation = &"GreyButton"
 text = "#cancel"
 
 [node name="OKButton" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/ButtonContainer"]
 layout_mode = 2
 mouse_default_cursor_shape = 2
+theme_type_variation = &"GreyButton"
 text = "#export"
 
 [connection signal="pressed" from="PanelContainer/MarginContainer/VBoxContainer/ButtonContainer/CancelButton" to="." method="_on_cancel_button_pressed"]

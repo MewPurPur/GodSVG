@@ -49,7 +49,7 @@ custom_minimum_size = Vector2(15, 0)
 layout_mode = 2
 focus_mode = 0
 mouse_default_cursor_shape = 2
-theme_type_variation = &"LeftConnectedButton"
+theme_type_variation = &"LeftConnectedGreyButton"
 icon = ExtResource("2_4oygd")
 expand_icon = true
 

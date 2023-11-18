@@ -83,7 +83,7 @@ layout_mode = 2
 tooltip_text = "#copy_button_tooltip"
 focus_mode = 0
 mouse_default_cursor_shape = 2
-theme_type_variation = &"IconButton"
+theme_type_variation = &"GreyButton"
 icon = ExtResource("3_6x47p")
 
 [node name="ImportButton" type="Button" parent="PanelContainer/CodeButtons/MetaActions"]
@@ -91,7 +91,7 @@ layout_mode = 2
 tooltip_text = "#import_button_tooltip"
 focus_mode = 0
 mouse_default_cursor_shape = 2
-theme_type_variation = &"IconButton"
+theme_type_variation = &"GreyButton"
 icon = ExtResource("4_cuhac")
 
 [node name="ExportButton" type="Button" parent="PanelContainer/CodeButtons/MetaActions"]
@@ -99,7 +99,7 @@ layout_mode = 2
 tooltip_text = "#export_button_tooltip"
 focus_mode = 0
 mouse_default_cursor_shape = 2
-theme_type_variation = &"IconButton"
+theme_type_variation = &"GreyButton"
 icon = ExtResource("5_pgurh")
 
 [node name="ScriptEditor" type="VBoxContainer" parent="."]
