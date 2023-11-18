@@ -6,7 +6,7 @@ class_name SVGHighlighter extends SyntaxHighlighter
 @export var attribute_color := Color("bce0ff")
 @export var string_color := Color("a1ffe0")
 @export var comment_color := Color("cdcfd280")
-@export var text_color := Color("cdcfd2aa")
+@export var text_color := Color("cdcfeaac")
 @export var error_color := Color("ff866b")
 
 var unknown_tag_color := tag_color.darkened(0.3)
@@ -49,7 +49,10 @@ func _get_line_syntax_highlighting(line: int) -> Dictionary:
 						tag_color if SVGDB.is_tag_known(tag_name) else unknown_tag_color}
 				offset += tag_name.length()
 				color_map[offset] = {"color": symbol_color}
+				
 				# Parsing stuff inside an element.
+				if offset >= svg_text.length() or svg_text[offset] == ">":
+					continue
 				offset += 1
 				# Find where the current tag ends to be safe.
 				var next_end: int

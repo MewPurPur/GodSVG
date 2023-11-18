@@ -29,8 +29,7 @@ corner_radius_bottom_right = 3
 corner_radius_bottom_left = 3
 
 [node name="PathCommandEditor" type="PanelContainer"]
-offset_left = 42.0
-offset_right = 42.0
+offset_right = 38.0
 offset_bottom = 14.0
 theme_override_styles/panel = SubResource("StyleBoxEmpty_sewij")
 script = ExtResource("1_om2fk")
