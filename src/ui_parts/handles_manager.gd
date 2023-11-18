@@ -728,7 +728,7 @@ func find_nearest_handle(event_pos: Vector2) -> Handle:
 	var nearest_handle: Handle = null
 	var nearest_dist := max_grab_dist
 	for handle in handles:
-		var dist_to_handle := event_pos.distance_to(handle.pos)
+		var dist_to_handle := event_pos.distance_to(convert_in(handle.pos))
 		if dist_to_handle < nearest_dist:
 			nearest_dist = dist_to_handle
 			nearest_handle = handle
