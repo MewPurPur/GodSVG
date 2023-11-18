@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://djedidlj0k4sy"]
+[gd_scene load_steps=12 format=3 uid="uid://cr1fdlmbknnko"]
 
 [ext_resource type="Script" path="res://src/ui_parts/code_editor.gd" id="1_nffk0"]
 [ext_resource type="FontFile" uid="uid://dtb4wkus51hxs" path="res://visual/fonts/FontMono.ttf" id="2_p4nol"]
@@ -36,7 +36,7 @@ tag_color = Color(1, 0.54902, 0.8, 1)
 attribute_color = Color(0.737255, 0.878431, 1, 1)
 string_color = Color(0.631373, 1, 0.878431, 1)
 comment_color = Color(0.803922, 0.811765, 0.823529, 0.501961)
-text_color = Color(0.803922, 0.811765, 0.823529, 0.666667)
+text_color = Color(0.803922, 0.811765, 0.917647, 0.67451)
 error_color = Color(1, 0.52549, 0.419608, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_k0een"]

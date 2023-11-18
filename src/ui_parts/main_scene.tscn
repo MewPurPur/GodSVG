@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=3 uid="uid://ce6j54x27pom"]
 
-[ext_resource type="PackedScene" path="res://src/ui_parts/code_editor.tscn" id="1_0jgh3"]
+[ext_resource type="PackedScene" uid="uid://cr1fdlmbknnko" path="res://src/ui_parts/code_editor.tscn" id="1_0jgh3"]
 [ext_resource type="Texture2D" uid="uid://co75w07yqmcro" path="res://visual/icons/theme/SplitGrabber2.svg" id="1_7y812"]
 [ext_resource type="PackedScene" uid="uid://ccynisiuyn5qn" path="res://src/ui_parts/inspector.tscn" id="1_afxvd"]
 [ext_resource type="PackedScene" uid="uid://bvrncl7e6yn5b" path="res://src/ui_parts/display.tscn" id="3_qbqbs"]
@@ -12,7 +12,7 @@ content_margin_right = 4.0
 content_margin_bottom = 6.0
 bg_color = Color(0.02, 0.02, 0.08, 1)
 border_width_right = 2
-border_color = Color(0.4, 0.7, 1, 1)
+border_color = Color(0.4, 0.6, 0.8, 1)
 expand_margin_right = 4.0
 
 [node name="MainScene" type="HBoxContainer"]
