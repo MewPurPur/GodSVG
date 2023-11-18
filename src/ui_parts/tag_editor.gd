@@ -363,17 +363,28 @@ func drop_location_indicator(state: DropState) -> void:
 	match state:
 		DropState.Inside:# adds as a child
 			add_theme_stylebox_override(&"panel", stylebox)
-			pass
 		DropState.Up:# adds above its self
 			stylebox.set_border_width_all(0)
 			stylebox.border_width_top = 2
 			add_theme_stylebox_override(&"panel", stylebox)
-			pass
 		DropState.Down:# adds down its self
 			stylebox.set_border_width_all(0)
 			stylebox.border_width_bottom = 2
 			add_theme_stylebox_override(&"panel", stylebox)
-			pass
+
+func _notification(what:int) -> void:
+	if what == NOTIFICATION_DRAG_BEGIN:
+		toggle_pause_children(true)
+	elif what == NOTIFICATION_DRAG_END:
+		toggle_pause_children(false)
+
+func toggle_pause_children(pause:bool) -> void:
+	var children:Array[Node] = get_children()
+	for child in children:
+		if pause:
+			child.process_mode = Node.PROCESS_MODE_DISABLED
+		else:
+			child.process_mode = Node.PROCESS_MODE_INHERIT
 
 func _drop_data(_at_position: Vector2, current_tid: Variant):
 	var state:DropState = drop_location_calculator(get_global_mouse_position())
