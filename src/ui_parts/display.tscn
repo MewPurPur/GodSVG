@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://bdesorf1s1a7p"]
+[gd_scene load_steps=18 format=3 uid="uid://bvrncl7e6yn5b"]
 
 [ext_resource type="Script" path="res://src/ui_parts/display.gd" id="1_oib5g"]
 [ext_resource type="Texture2D" uid="uid://ccbta5q43jobk" path="res://visual/icons/More.svg" id="2_3wliq"]
@@ -16,10 +16,10 @@
 [ext_resource type="Script" path="res://src/ui_parts/view_camera.gd" id="14_yjb74"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nxvgo"]
-content_margin_left = 6.0
-content_margin_top = 5.0
-content_margin_right = 6.0
-content_margin_bottom = 7.0
+content_margin_left = 5.0
+content_margin_top = 4.0
+content_margin_right = 5.0
+content_margin_bottom = 6.0
 bg_color = Color(0.02, 0.02, 0.08, 1)
 border_width_bottom = 2
 border_color = Color(0.4, 0.7, 1, 1)
@@ -34,6 +34,10 @@ shader = ExtResource("10_x7ybk")
 shader_parameter/uv_scale = 1.0
 
 [node name="Display" type="VBoxContainer"]
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 638.0
+grow_horizontal = 2
 theme_override_constants/separation = 0
 script = ExtResource("1_oib5g")
 
@@ -52,7 +56,6 @@ size_flags_horizontal = 2
 theme_override_constants/separation = 5
 
 [node name="MoreOptions" type="Button" parent="PanelContainer/HBoxContainer/LeftMenu"]
-custom_minimum_size = Vector2(28, 0)
 layout_mode = 2
 size_flags_horizontal = 2
 focus_mode = 0
@@ -61,7 +64,6 @@ icon = ExtResource("2_3wliq")
 icon_alignment = 1
 
 [node name="Settings" type="Button" parent="PanelContainer/HBoxContainer/LeftMenu"]
-custom_minimum_size = Vector2(28, 0)
 layout_mode = 2
 size_flags_horizontal = 2
 tooltip_text = "#settings"
@@ -71,7 +73,6 @@ icon = ExtResource("3_0w618")
 icon_alignment = 1
 
 [node name="Visuals" type="Button" parent="PanelContainer/HBoxContainer/LeftMenu"]
-custom_minimum_size = Vector2(28, 0)
 layout_mode = 2
 size_flags_horizontal = 2
 tooltip_text = "#visuals"
@@ -96,7 +97,7 @@ script = ExtResource("6_3v3ve")
 hover_pressed_stylebox = SubResource("StyleBoxFlat_eujxa")
 
 [node name="NumberEdit" parent="PanelContainer/HBoxContainer/LeftMenu/Snapping" instance=ExtResource("7_wrrfr")]
-custom_minimum_size = Vector2(46, 22)
+custom_minimum_size = Vector2(46, 18)
 layout_mode = 2
 tooltip_text = "#snap_size"
 theme_type_variation = &"LeftConnectedLineEdit"
@@ -111,14 +112,16 @@ layout_mode = 2
 
 [node name="ViewportContainer" type="SubViewportContainer" parent="."]
 process_mode = 3
+custom_minimum_size = Vector2(450, 0)
 layout_mode = 2
-size_flags_horizontal = 10
+size_flags_vertical = 3
+stretch = true
 
 [node name="Viewport" type="SubViewport" parent="ViewportContainer"]
 disable_3d = true
 handle_input_locally = false
 gui_snap_controls_to_pixels = false
-size = Vector2i(600, 600)
+size = Vector2i(1024, 600)
 size_2d_override_stretch = true
 render_target_update_mode = 4
 script = ExtResource("9_4xrk7")
@@ -164,3 +167,5 @@ script = ExtResource("14_yjb74")
 [connection signal="value_changed" from="PanelContainer/HBoxContainer/LeftMenu/Snapping/NumberEdit" to="." method="_on_number_edit_value_changed"]
 [connection signal="zoom_changed" from="PanelContainer/HBoxContainer/ZoomMenu" to="ViewportContainer/Viewport" method="_on_zoom_changed"]
 [connection signal="zoom_reset_pressed" from="PanelContainer/HBoxContainer/ZoomMenu" to="ViewportContainer/Viewport" method="center_frame"]
+[connection signal="resized" from="ViewportContainer" to="ViewportContainer/Viewport" method="_on_viewport_container_resized"]
+[connection signal="size_changed" from="ViewportContainer/Viewport" to="ViewportContainer/Viewport" method="_on_size_changed"]

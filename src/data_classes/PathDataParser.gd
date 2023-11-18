@@ -32,6 +32,9 @@ static func path_data_to_arrays(path_string: String) -> Array[Array]:
 					args_left = translation_dict[curr_command.to_upper()].new().arg_count
 				" ": continue
 				"-", "+", ".", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9":
+					if prev_command.is_empty():
+						continue
+					
 					match prev_command:
 						"Z", "z":
 							return new_commands
@@ -160,12 +163,13 @@ static func path_commands_to_value(commands_arr: Array[PathCommand]) -> String:
 
 # DEBUG
 
-#func _init() -> void:
+#static func _static_init() -> void:
 	#var tests := {
 	#"Jerky": [],
 	#"M 3s 6 h 6 v 3 z": [],
 	#"M 3 s6 h 6 v 3 z": [],
 	#"M 3 .s6 h 6 v 3 z": [],
+	#" 0 2": [],
 	#"M 0 0": [["M", 0.0, 0.0]],
 	#"M2 1 L3 4": [["M", 2.0, 1.0], ["L", 3.0, 4.0]],
 	#"m2 0 3 4": [["m", 2.0, 0.0], ["l", 3.0, 4.0]],

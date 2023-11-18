@@ -1,17 +1,19 @@
-[gd_scene load_steps=5 format=3 uid="uid://ce6j54x27pom"]
+[gd_scene load_steps=6 format=3 uid="uid://ce6j54x27pom"]
 
 [ext_resource type="PackedScene" path="res://src/ui_parts/code_editor.tscn" id="1_0jgh3"]
+[ext_resource type="Texture2D" uid="uid://co75w07yqmcro" path="res://visual/icons/theme/SplitGrabber2.svg" id="1_7y812"]
 [ext_resource type="PackedScene" uid="uid://ccynisiuyn5qn" path="res://src/ui_parts/inspector.tscn" id="1_afxvd"]
-[ext_resource type="PackedScene" path="res://src/ui_parts/display.tscn" id="3_qbqbs"]
+[ext_resource type="PackedScene" uid="uid://bvrncl7e6yn5b" path="res://src/ui_parts/display.tscn" id="3_qbqbs"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_082e3"]
 content_margin_left = 6.0
 content_margin_top = 8.0
-content_margin_right = 8.0
+content_margin_right = 4.0
 content_margin_bottom = 6.0
 bg_color = Color(0.02, 0.02, 0.08, 1)
 border_width_right = 2
 border_color = Color(0.4, 0.7, 1, 1)
+expand_margin_right = 4.0
 
 [node name="MainScene" type="HBoxContainer"]
 anchors_preset = 15
@@ -21,22 +23,31 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 0
 
-[node name="PanelContainer" type="PanelContainer" parent="."]
+[node name="HSplitContainer" type="HSplitContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 0
+theme_override_constants/autohide = 1
+theme_override_icons/grabber = ExtResource("1_7y812")
+split_offset = -600
+
+[node name="PanelContainer" type="PanelContainer" parent="HSplitContainer"]
+custom_minimum_size = Vector2(360, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_082e3")
 
-[node name="MainContainer" type="VSplitContainer" parent="PanelContainer"]
+[node name="MainContainer" type="VSplitContainer" parent="HSplitContainer/PanelContainer"]
 layout_mode = 2
 theme_override_constants/separation = 8
 split_offset = -400
 
-[node name="CodeEditor" parent="PanelContainer/MainContainer" instance=ExtResource("1_0jgh3")]
+[node name="CodeEditor" parent="HSplitContainer/PanelContainer/MainContainer" instance=ExtResource("1_0jgh3")]
 layout_mode = 2
 
-[node name="Inspector" parent="PanelContainer/MainContainer" instance=ExtResource("1_afxvd")]
+[node name="Inspector" parent="HSplitContainer/PanelContainer/MainContainer" instance=ExtResource("1_afxvd")]
 layout_mode = 2
 
-[node name="Display" parent="." instance=ExtResource("3_qbqbs")]
+[node name="Display" parent="HSplitContainer" instance=ExtResource("3_qbqbs")]
 unique_name_in_owner = true
 layout_mode = 2

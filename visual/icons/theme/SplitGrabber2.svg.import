@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cso2l5nvm6gm"
-path="res://.godot/imported/Rect.svg-6904e70903749c997c6b2c3ea969dbec.ctex"
+uid="uid://co75w07yqmcro"
+path="res://.godot/imported/SplitGrabber2.svg-18d40ab670e2b5a72dfeedf569d260c4.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://visual/icons/Rect.svg"
-dest_files=["res://.godot/imported/Rect.svg-6904e70903749c997c6b2c3ea969dbec.ctex"]
+source_file="res://visual/icons/theme/SplitGrabber2.svg"
+dest_files=["res://.godot/imported/SplitGrabber2.svg-18d40ab670e2b5a72dfeedf569d260c4.ctex"]
 
 [params]
 
