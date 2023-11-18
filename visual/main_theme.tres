@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=74 format=3 uid="uid://der6fnkliqqto"]
+[gd_resource type="Theme" load_steps=77 format=3 uid="uid://der6fnkliqqto"]
 
 [ext_resource type="Texture2D" uid="uid://wdrpwa7gwmg" path="res://visual/icons/theme/GuiBoxChecked.svg" id="1_agkhv"]
 [ext_resource type="Texture2D" uid="uid://d3a3xgsb8klyk" path="res://visual/icons/theme/GuiBoxUnchecked.svg" id="2_xwib4"]
@@ -400,6 +400,45 @@ border_color = Color(0.486275, 0.486275, 0.603922, 1)
 corner_radius_top_right = 4
 corner_radius_bottom_right = 4
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5ftxf"]
+content_margin_left = 3.0
+content_margin_top = 5.0
+content_margin_bottom = 5.0
+draw_center = false
+border_width_left = 1
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.396078, 0.396078, 0.513726, 1)
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_k42pb"]
+content_margin_left = 3.0
+content_margin_top = 5.0
+content_margin_bottom = 5.0
+draw_center = false
+border_width_left = 1
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.223529, 0.223529, 0.294118, 1)
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qtj1f"]
+content_margin_left = 3.0
+content_margin_top = 5.0
+content_margin_bottom = 5.0
+draw_center = false
+border_width_left = 1
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.486275, 0.486275, 0.603922, 1)
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_k1x4s"]
 content_margin_left = 5.0
 bg_color = Color(0.062, 0.062, 0.1, 1)
@@ -736,6 +775,10 @@ LeftConnectedGreyButton/base_type = &"GreyButton"
 LeftConnectedGreyButton/styles/hover = SubResource("StyleBoxFlat_kg26o")
 LeftConnectedGreyButton/styles/normal = SubResource("StyleBoxFlat_g34b7")
 LeftConnectedGreyButton/styles/pressed = SubResource("StyleBoxFlat_h0tpj")
+LeftConnectedGreyButtonTransparent/base_type = &"LeftConnectedGreyButton"
+LeftConnectedGreyButtonTransparent/styles/hover = SubResource("StyleBoxFlat_5ftxf")
+LeftConnectedGreyButtonTransparent/styles/normal = SubResource("StyleBoxFlat_k42pb")
+LeftConnectedGreyButtonTransparent/styles/pressed = SubResource("StyleBoxFlat_qtj1f")
 LeftConnectedLineEdit/base_type = &"LineEdit"
 LeftConnectedLineEdit/font_sizes/font_size = 12
 LeftConnectedLineEdit/fonts/font = ExtResource("5_nfqug")
