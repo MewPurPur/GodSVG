@@ -3,7 +3,7 @@
 [ext_resource type="Texture2D" uid="uid://wdrpwa7gwmg" path="res://visual/icons/theme/GuiBoxChecked.svg" id="1_agkhv"]
 [ext_resource type="Texture2D" uid="uid://d3a3xgsb8klyk" path="res://visual/icons/theme/GuiBoxUnchecked.svg" id="2_xwib4"]
 [ext_resource type="Texture2D" uid="uid://dwlr4bgptgwho" path="res://visual/icons/theme/GuiToggleChecked.svg" id="3_ggukc"]
-[ext_resource type="Texture2D" uid="uid://rrhdja8l17cn" path="res://visual/icons/FolderUp.svg" id="4_1t13q"]
+[ext_resource type="Texture2D" uid="uid://rrhdja8l17cn" path="res://visual/icons/theme/FolderUp.svg" id="4_1t13q"]
 [ext_resource type="Texture2D" uid="uid://cvh3kwbucf2n1" path="res://visual/icons/Reload.svg" id="4_8qjet"]
 [ext_resource type="Texture2D" uid="uid://kkxyv1gyrjgj" path="res://visual/icons/Visuals.svg" id="4_j0oku"]
 [ext_resource type="Texture2D" uid="uid://c12tg3dnydily" path="res://visual/icons/theme/GuiToggleUnchecked.svg" id="4_w667w"]
