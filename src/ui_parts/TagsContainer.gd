@@ -6,12 +6,13 @@ const safe_margin:float = 0.18 # 0 - 1
 
 func _process(_delta):
 	#does auto scroll with moving draged object
-	if  not scroll_container == null and is_drag_begin:		
-		var safe_area:Rect2 = scroll_container.get_global_rect()
-		var shrink_ratio:float = safe_margin * float(safe_area.size.y)
-		safe_area = safe_area.grow_individual(0,- shrink_ratio,0,- shrink_ratio)
+	if  not scroll_container == null and is_drag_begin:
+		var working_area:Rect2 = scroll_container.get_global_rect() 
+		var shrink_ratio:float = safe_margin * float(working_area.size.y)
+		var safe_area:Rect2 = working_area.grow_individual(0,- shrink_ratio,0,- shrink_ratio)
+		working_area = working_area.grow_individual(0,shrink_ratio/3,0,shrink_ratio/3)#slightly forgiving
 		var mouse_position:Vector2 = get_global_mouse_position()
-		if not safe_area.has_point(mouse_position):
+		if working_area.has_point(mouse_position) and not safe_area.has_point(mouse_position):
 			if safe_area.position.y < mouse_position.y:
 				scroll_container.scroll_vertical += 5
 			else:
