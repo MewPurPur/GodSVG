@@ -382,7 +382,7 @@ func _drop_data(_at_position: Vector2, current_tid: Variant):
 		DropState.Inside:
 			new_tid.append(0)
 		DropState.Up:
-			new_tid[-1] -= 1 
+			new_tid[-1] -= 1 if new_tid[-1] > 0 else 0
 		DropState.Down:
 			new_tid[-1] += 1
 	SVG.root_tag.move_tags_to(current_tid,new_tid)
