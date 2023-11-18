@@ -27,6 +27,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 6
 theme_override_icons/grabber = ExtResource("1_7y812")
+split_offset = -91
 
 [node name="PanelContainer" type="PanelContainer" parent="HSplitContainer"]
 custom_minimum_size = Vector2(360, 0)
@@ -49,4 +50,8 @@ layout_mode = 2
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-size_flags_stretch_ratio = 1.5
+
+[node name="Viewport" parent="HSplitContainer/Display/ViewportPanel/ViewportContainer" index="0"]
+size = Vector2i(596, 596)
+
+[editable path="HSplitContainer/Display"]
