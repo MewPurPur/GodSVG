@@ -84,7 +84,7 @@ size_flags_vertical = 4
 tooltip_text = "#delete_palette"
 focus_mode = 0
 mouse_default_cursor_shape = 2
-theme_type_variation = &"IconButton"
+theme_type_variation = &"GreyButton"
 icon = ExtResource("4_ms41n")
 
 [connection signal="focus_exited" from="MarginContainer/HBoxContainer/MainContainer/HBoxContainer/NameEdit" to="." method="_on_name_edit_focus_exited"]
