@@ -43,23 +43,23 @@
 #import_problems,Import Problems,Проблеми в импортирането,Probleme beim Importieren
 #unknown_tooltip,GodSVG doesn’t recognize this attribute,GodSVG не разпознава този атрибут,GodSVG erkennt diese Attribute nicht
 #export,Export,Експортирай,Exportieren
-#format,Format,Формат,Formatieren
+#format,Format,Формат,Format
 #scale,Scale,Мащаб,Skalieren
 #size,Size,Размер,Größe
 #final_size,Final size,Краен размер,Endgültige Größe
-#export_configuration,Export Configuration,Конфигурация на експорта,Exportierungskonfiguration
+#export_configuration,Export Configuration,Конфигурация на експорта,Export-Konfiguration
 #add_tag,Add new tag,Добави нов таг,Neues Element hinzufügen
 #license_tab,License,Лиценз,Lizenz
 #third-party-licenses_tab,Third-party licenses,Лицензи от трети партии,Drittanbieter-Lizenzen
 #authors_tab,Authors,Автори,Autoren
 #kbd_shortcuts_tab,Shortcuts,Бързи клавиши,Tastenkombinationen
-#palettes,Palettes,Палети,
-#color_picker,Color Picker,Цветно колело,
-#add_color,Add color,Добави цвят,
-#edit_palette_name,Edit palette name,Промени името на палетата,
-#delete_palette,Delete the palette,Изтрий палетата,
-#unnamed,Unnamed,Неименуван,
-#edit_color_name,Edit color name,Промени името на цвета,
-#enable_color,Enable the color,Включи цвета,
-#disable_color,Disable the color,Изключи цвета,
-#godot_third_party,Godot third-party components,Компоненти в Godot от трети партии,
+#palettes,Palettes,Палети,Paletten
+#color_picker,Color Picker,Цветно колело,Farbauswahl
+#add_color,Add color,Добави цвят,Farbe hinzufügen
+#edit_palette_name,Edit palette name,Промени името на палетата,Palettennamen ändern
+#delete_palette,Delete the palette,Изтрий палетата,Palette löschen
+#unnamed,Unnamed,Неименуван,Unbenannt
+#edit_color_name,Edit color name,Промени името на цвета,Farbnamen ändern
+#enable_color,Enable the color,Включи цвета,Farbe aktivieren
+#disable_color,Disable the color,Изключи цвета,Farbe deaktivieren
+#godot_third_party,Godot third-party components,Компоненти в Godot от трети партии,Godot Drittanbieter-Komponente
