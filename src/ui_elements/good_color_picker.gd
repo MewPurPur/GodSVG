@@ -222,7 +222,7 @@ func _on_slider3_draw() -> void:
 			HORIZONTAL_ALIGNMENT_LEFT, -1, 14)
 
 
-# This sets the color to "none".
+# This sets the color to "none", usually when the button is pressed.
 func toggle_none() -> void:
 	is_none = not is_none
 	if is_none:

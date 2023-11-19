@@ -11,19 +11,21 @@ extends BetterLineEdit
 signal value_changed(new_value: float)
 var _value := NAN
 
-func set_value(new_value: float) -> void:
+func set_value(new_value: float, emit_changed := true) -> void:
 	if is_nan(new_value):
 		return
 	elif _value != new_value:
 		_value = validate(new_value)
 		text = String.num(_value, 4)
-		value_changed.emit(_value)
+		if emit_changed:
+			value_changed.emit(_value)
 
 func get_value() -> float:
 	return _value
 
 
 func _ready() -> void:
+	super()
 	# Done like this so a signal isn't emitted.
 	_value = initial_value
 	text = String.num(_value, 4)
