@@ -211,6 +211,7 @@ custom_minimum_size = Vector2(0, 12)
 layout_mode = 2
 mouse_filter = 1
 
+[connection signal="gui_input" from="." to="." method="_on_gui_input"]
 [connection signal="gui_input" from="ShapeContainer/ColorWheel" to="." method="_on_color_wheel_gui_input"]
 [connection signal="draw" from="ShapeContainer/SideSlider" to="." method="_on_side_slider_draw"]
 [connection signal="gui_input" from="ShapeContainer/SideSlider" to="." method="_on_side_slider_gui_input"]
