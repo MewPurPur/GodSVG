@@ -11,24 +11,20 @@ script = ExtResource("1_fmk5c")
 [node name="XField" parent="." instance=ExtResource("2_6tsid")]
 custom_minimum_size = Vector2(54, 22)
 layout_mode = 2
-auto_emit_changed = false
 
 [node name="YField" parent="." instance=ExtResource("2_6tsid")]
 custom_minimum_size = Vector2(54, 22)
 layout_mode = 2
-auto_emit_changed = false
 
 [node name="WField" parent="." instance=ExtResource("2_6tsid")]
 custom_minimum_size = Vector2(54, 22)
 layout_mode = 2
 allow_lower = false
-auto_emit_changed = false
 
 [node name="HField" parent="." instance=ExtResource("2_6tsid")]
 custom_minimum_size = Vector2(54, 22)
 layout_mode = 2
 allow_lower = false
-auto_emit_changed = false
 
 [connection signal="value_changed" from="XField" to="." method="_on_x_field_value_changed"]
 [connection signal="value_changed" from="YField" to="." method="_on_y_field_value_changed"]
