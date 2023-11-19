@@ -63,3 +63,8 @@
 #enable_color,Enable the color,Включи цвета,Farbe aktivieren
 #disable_color,Disable the color,Изключи цвета,Farbe deaktivieren
 #godot_third_party,Godot third-party components,Компоненти в Godot от трети партии,Godot Drittanbieter-Komponente
+#undo,Undo,Върни назад,
+#redo,Redo,Върни напред,
+#copy,Copy,Копирай,
+#paste,Paste,Постави,
+#cut,Cut,Изрежи,

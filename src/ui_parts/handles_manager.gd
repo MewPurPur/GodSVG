@@ -82,34 +82,21 @@ func _process(_delta: float) -> void:
 
 func update_handles() -> void:
 	handles.clear()
-	for tag_idx in SVG.root_tag.get_child_count():
-		setup_handles_for_tag(PackedInt32Array([tag_idx]))
+	for tid in SVG.root_tag.get_all_tids():
+		var tag := SVG.root_tag.get_by_tid(tid)
+		match tag.name:
+			"circle":
+				handles.append(generate_xy_handle(tid, tag, "cx", "cy"))
+			"ellipse":
+				handles.append(generate_xy_handle(tid, tag, "cx", "cy"))
+			"rect":
+				handles.append(generate_xy_handle(tid, tag, "x", "y"))
+			"line":
+				handles.append(generate_xy_handle(tid, tag, "x1", "y1"))
+				handles.append(generate_xy_handle(tid, tag, "x2", "y2"))
+			"path":
+				handles += generate_path_handles(tid, tag.attributes.d)
 	queue_redraw()
-
-func setup_handles_for_tag(tid: PackedInt32Array):
-	var tag := SVG.root_tag.get_by_tid(tid)
-	var new_handles: Array[Handle] = []
-	match tag.name:
-		"circle":
-			new_handles.append(XYHandle.new(tid, tag.attributes.cx, tag.attributes.cy))
-		"ellipse":
-			new_handles.append(XYHandle.new(tid, tag.attributes.cx, tag.attributes.cy))
-		"rect":
-			new_handles.append(XYHandle.new(tid, tag.attributes.x, tag.attributes.y))
-		"line":
-			new_handles.append(XYHandle.new(tid, tag.attributes.x1, tag.attributes.y1))
-			new_handles.append(XYHandle.new(tid, tag.attributes.x2, tag.attributes.y2))
-		"path":
-			new_handles += generate_path_handles(tid, tag.attributes.d)
-	for handle in new_handles:
-		handle.tag = tag
-		handle.tid = tid
-	handles += new_handles
-	
-	for tag_idx in tag.get_child_count():
-		var new_tid := tid.duplicate()
-		new_tid.append(tag_idx)
-		setup_handles_for_tag(new_tid)
 
 
 func sync_handles() -> void:
@@ -145,6 +132,13 @@ path_attribute: AttributePath) -> Array[Handle]:
 				tangent.display_mode = Handle.DisplayMode.SMALL
 				path_handles.append(tangent)
 	return path_handles
+
+# The place where this is used, a tag is already at hand, so no need to find it.
+func generate_xy_handle(tid: PackedInt32Array, tag: Tag, x_attrib: String,
+y_attrib: String) -> XYHandle:
+	var new_handle := XYHandle.new(tid, tag.attributes[x_attrib], tag.attributes[y_attrib])
+	new_handle.tag = tag
+	return new_handle
 
 
 func _draw() -> void:

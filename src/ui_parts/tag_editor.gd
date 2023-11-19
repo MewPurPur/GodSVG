@@ -164,8 +164,7 @@ func _on_gui_input(event: InputEvent) -> void:
 		elif event.button_index == MOUSE_BUTTON_RIGHT:
 			Indications.normal_select(tid)
 			var tag_context := create_tag_context()
-			tag_context.popup(Rect2(get_global_mouse_position() +\
-					Vector2(-tag_context.size.x / 2, 0), tag_context.size))
+			Utils.popup_under_mouse(tag_context, get_global_mouse_position())
 
 
 func _on_mouse_entered():
