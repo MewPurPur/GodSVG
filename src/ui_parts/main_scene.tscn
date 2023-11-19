@@ -27,7 +27,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 6
 theme_override_icons/grabber = ExtResource("1_7y812")
-split_offset = -91
+split_offset = -122
 
 [node name="PanelContainer" type="PanelContainer" parent="HSplitContainer"]
 custom_minimum_size = Vector2(360, 0)
