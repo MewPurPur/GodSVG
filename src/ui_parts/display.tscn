@@ -49,6 +49,7 @@ script = ExtResource("1_oib5g")
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
 layout_mode = 2
+size_flags_vertical = 0
 theme_override_styles/panel = SubResource("StyleBoxFlat_nxvgo")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer"]
@@ -66,6 +67,7 @@ layout_mode = 2
 size_flags_horizontal = 2
 focus_mode = 0
 mouse_default_cursor_shape = 2
+theme_type_variation = &"IconButton"
 icon = ExtResource("2_3wliq")
 icon_alignment = 1
 
@@ -75,6 +77,7 @@ size_flags_horizontal = 2
 tooltip_text = "#settings"
 focus_mode = 0
 mouse_default_cursor_shape = 2
+theme_type_variation = &"IconButton"
 icon = ExtResource("3_0w618")
 icon_alignment = 1
 
@@ -84,6 +87,7 @@ size_flags_horizontal = 2
 tooltip_text = "#visuals"
 focus_mode = 0
 mouse_default_cursor_shape = 2
+theme_type_variation = &"IconButton"
 icon = ExtResource("4_n3qjt")
 icon_alignment = 1
 
@@ -103,7 +107,7 @@ script = ExtResource("6_3v3ve")
 hover_pressed_stylebox = SubResource("StyleBoxFlat_eujxa")
 
 [node name="NumberEdit" parent="PanelContainer/HBoxContainer/LeftMenu/Snapping" instance=ExtResource("7_wrrfr")]
-custom_minimum_size = Vector2(46, 18)
+custom_minimum_size = Vector2(46, 22)
 layout_mode = 2
 tooltip_text = "#snap_size"
 theme_type_variation = &"LeftConnectedLineEdit"

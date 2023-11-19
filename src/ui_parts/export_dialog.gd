@@ -1,6 +1,7 @@
 extends Dialog
 
-const SVGFileDialog := preload("svg_file_dialog.tscn")
+const NumberEditType = preload("res://src/ui_elements/number_edit.gd")
+const SVGFileDialog = preload("svg_file_dialog.tscn")
 
 var upscale_amount := -1.0
 var extension := ""
@@ -10,7 +11,7 @@ var dimensions := Vector2.ZERO
 @onready var texture_preview: TextureRect = %TexturePreview
 @onready var dropdown: HBoxContainer = %Dropdown
 @onready var final_dimensions_label: Label = %FinalDimensions
-@onready var scale_edit: BetterLineEdit = %Scale
+@onready var scale_edit: NumberEditType = %Scale
 @onready var scale_container: VBoxContainer = %ScaleContainer
 
 func _ready() -> void:
@@ -20,6 +21,7 @@ func _ready() -> void:
 	update_extension_configuration()
 	dimensions.x = SVG.root_tag.attributes.width.get_value()
 	dimensions.y = SVG.root_tag.attributes.height.get_value()
+	scale_edit.min_value = 1/minf(dimensions.x, dimensions.y)
 	update_dimensions_label()
 	update_final_scale()
 	var scaling_factor := 512.0 / maxf(dimensions.x, dimensions.y)
@@ -77,7 +79,7 @@ func _on_scale_value_changed(_new_value: float) -> void:
 	update_final_scale()
 
 func update_final_scale() -> void:
-	upscale_amount = scale_edit.current_value
+	upscale_amount = scale_edit.get_value()
 	var exported_size: Vector2i = dimensions * upscale_amount
 	final_dimensions_label.text = tr(&"#final_size") +\
 			": %d×%d" % [exported_size.x, exported_size.y]

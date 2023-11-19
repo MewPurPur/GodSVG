@@ -3,22 +3,30 @@ extends BetterLineEdit
 
 @export var min_value := 0.0
 @export var max_value := 1.0
+@export var initial_value := 0.5
 @export var allow_lower := true
 @export var allow_higher := true
 @export var is_float := true
-@export var auto_emit_changed := true
 
 signal value_changed(new_value: float)
-var current_value := NAN:
-	set(new_value):
-		if is_nan(new_value):
-			return
-		elif current_value != new_value:
-			current_value = validate(new_value)
-			text = String.num(current_value, 4)
-			if auto_emit_changed:
-				value_changed.emit(new_value)
+var _value := NAN
 
+func set_value(new_value: float) -> void:
+	if is_nan(new_value):
+		return
+	elif _value != new_value:
+		_value = validate(new_value)
+		text = String.num(_value, 4)
+		value_changed.emit(_value)
+
+func get_value() -> float:
+	return _value
+
+
+func _ready() -> void:
+	# Done like this so a signal isn't emitted.
+	_value = initial_value
+	text = String.num(_value, 4)
 
 func validate(new_value: float) -> float:
 	if allow_lower:
@@ -37,12 +45,8 @@ func _on_value_changed(new_value: float) -> void:
 
 
 func _on_focus_exited() -> void:
-	force_value(Utils.evaluate_numeric_expression(text))
+	set_value(Utils.evaluate_numeric_expression(text))
+	super()
 
 func _on_text_submitted(submitted_text: String) -> void:
-	force_value(Utils.evaluate_numeric_expression(submitted_text))
-
-func force_value(new_value: float) -> void:
-	current_value = new_value
-	if not auto_emit_changed:
-		value_changed.emit(new_value)
+	set_value(Utils.evaluate_numeric_expression(submitted_text))

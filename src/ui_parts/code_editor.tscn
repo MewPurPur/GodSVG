@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://cr1fdlmbknnko"]
+[gd_scene load_steps=14 format=3 uid="uid://cr1fdlmbknnko"]
 
 [ext_resource type="Script" path="res://src/ui_parts/code_editor.gd" id="1_nffk0"]
 [ext_resource type="FontFile" uid="uid://dtb4wkus51hxs" path="res://visual/fonts/FontMono.ttf" id="2_p4nol"]
@@ -10,11 +10,14 @@
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_q56qh"]
 content_margin_left = 8.0
-content_margin_top = 2.0
+content_margin_top = 3.0
 content_margin_right = 6.0
 content_margin_bottom = 2.0
 bg_color = Color(0.0975, 0.0975, 0.15, 1)
-border_color = Color(0.1875, 0.1875, 0.25, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_color = Color(0.152941, 0.152941, 0.2, 1)
 corner_radius_top_left = 5
 corner_radius_top_right = 5
 
@@ -28,6 +31,26 @@ corner_radius_top_left = 3
 corner_radius_top_right = 3
 corner_radius_bottom_right = 3
 corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bm3bl"]
+content_margin_left = 5.0
+bg_color = Color(0.0627451, 0.0627451, 0.101961, 1)
+border_width_left = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.152941, 0.152941, 0.2, 1)
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_k6btx"]
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.301961, 0.45098, 0.6, 1)
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
 
 [sub_resource type="SyntaxHighlighter" id="SyntaxHighlighter_njere"]
 script = ExtResource("6_hpsqx")
@@ -113,6 +136,8 @@ custom_minimum_size = Vector2(0, 96)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+theme_override_styles/normal = SubResource("StyleBoxFlat_bm3bl")
+theme_override_styles/focus = SubResource("StyleBoxFlat_k6btx")
 wrap_mode = 1
 scroll_smooth = true
 scroll_v_scroll_speed = 30.0

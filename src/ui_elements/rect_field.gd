@@ -30,25 +30,25 @@ func _ready() -> void:
 
 
 func _on_x_field_value_changed(new_value: float) -> void:
-	set_value(Rect2(
-			new_value, y_field.current_value, w_field.current_value, h_field.current_value))
+	set_value(Rect2(new_value,
+			y_field.get_value(), w_field.get_value(), h_field.get_value()))
 
 func _on_y_field_value_changed(new_value: float) -> void:
 	set_value(Rect2(
-			x_field.current_value, new_value, w_field.current_value, h_field.current_value))
+			x_field.get_value(), new_value, w_field.get_value(), h_field.get_value()))
 
 func _on_w_field_value_changed(new_value: float) -> void:
 	set_value(Rect2(
-			x_field.current_value, y_field.current_value, new_value, h_field.current_value))
+			x_field.get_value(), y_field.get_value(), new_value, h_field.get_value()))
 
 func _on_h_field_value_changed(new_value: float) -> void:
 	set_value(Rect2(
-			x_field.current_value, y_field.current_value, w_field.current_value, new_value))
+			x_field.get_value(), y_field.get_value(), w_field.get_value(), new_value))
 
 func _on_value_changed(new_value: Rect2) -> void:
-	x_field.current_value = new_value.position.x
-	y_field.current_value = new_value.position.y
-	w_field.current_value = new_value.size.x
-	h_field.current_value = new_value.size.y
+	x_field.set_value(new_value.position.x)
+	y_field.set_value(new_value.position.y)
+	w_field.set_value(new_value.size.x)
+	h_field.set_value(new_value.size.y)
 	if attribute != null:
 		attribute.set_value(new_value)
