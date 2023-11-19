@@ -108,7 +108,7 @@ func _draw() -> void:
 	var fill_height := (slider_size.y - 4) * (get_value() - min_value) / max_value
 	if slider_hovered or slider_dragged:
 		draw_rect(Rect2(0, 1 + slider_size.y - 4 - fill_height,
-				slider_size.x - 2, fill_height), Color("#def"))
+				slider_size.x - 2, fill_height), Color("#defd"))
 	else:
 		draw_rect(Rect2(0, 1 + slider_size.y - 4 - fill_height,
 				slider_size.x - 2, fill_height), Color("#defa"))

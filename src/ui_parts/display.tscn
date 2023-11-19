@@ -28,11 +28,13 @@ corner_radius_top_left = 5
 corner_radius_bottom_left = 5
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jk4ec"]
+content_margin_left = 2.0
+content_margin_top = 2.0
+draw_center = false
 border_width_left = 2
 border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.203922, 0.254902, 0.4, 1)
+border_color = Color(0.329412, 0.403922, 0.54902, 1)
+corner_detail = 1
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_kqplg"]
 shader = ExtResource("10_x7ybk")
@@ -101,6 +103,8 @@ tooltip_text = "#enable_snap"
 focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_type_variation = &"RightConnectedButton"
+theme_override_colors/icon_pressed_color = Color(1, 1, 1, 1)
+theme_override_colors/icon_hover_color = Color(0.85, 0.85, 0.85, 1)
 toggle_mode = true
 icon = ExtResource("5_1k2cq")
 script = ExtResource("6_3v3ve")
@@ -136,7 +140,7 @@ stretch = true
 disable_3d = true
 handle_input_locally = false
 gui_snap_controls_to_pixels = false
-size = Vector2i(1020, 596)
+size = Vector2i(1022, 602)
 size_2d_override_stretch = true
 render_target_update_mode = 4
 script = ExtResource("9_4xrk7")
