@@ -27,7 +27,7 @@ func update_snap_config() -> void:
 	var snap_enabled := snap_config > 0.0
 	snap_button.button_pressed = snap_enabled
 	snapper.editable = snap_enabled
-	snapper.current_value = absf(snap_config)
+	snapper.set_value(absf(snap_config))
 
 func _on_settings_pressed() -> void:
 	var settings_menu_instance := settings_menu.instantiate()
