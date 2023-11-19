@@ -190,8 +190,7 @@ func open_actions(popup_from_mouse := false) -> void:
 	add_child(action_popup)
 	action_popup.set_btn_array(buttons_arr)
 	if popup_from_mouse:
-		action_popup.popup(Rect2(get_global_mouse_position() +\
-				Vector2(-action_popup.size.x / 2, 0), action_popup.size))
+		Utils.popup_under_mouse(action_popup, get_global_mouse_position())
 	else:
 		Utils.popup_under_control(action_popup, more_button, true)
 
