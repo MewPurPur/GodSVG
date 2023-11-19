@@ -138,6 +138,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_styles/normal = SubResource("StyleBoxFlat_bm3bl")
 theme_override_styles/focus = SubResource("StyleBoxFlat_k6btx")
+context_menu_enabled = false
 wrap_mode = 1
 scroll_smooth = true
 scroll_v_scroll_speed = 30.0
