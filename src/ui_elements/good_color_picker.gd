@@ -5,6 +5,8 @@ const slider_arrow = preload("res://visual/icons/SliderArrow.svg")
 const side_slider_arrow = preload("res://visual/icons/SideSliderArrow.svg")
 const reload_texture = preload("res://visual/icons/ColorReset.svg")
 
+var UR := UndoRedo.new()
+
 enum SliderMode {RGB, HSV}
 var slider_mode: SliderMode:
 	set(new_mode):
@@ -250,3 +252,17 @@ func _on_reset_color_button_pressed() -> void:
 	reset_color_button.icon = null
 	if starting_color != "none":
 		set_color(starting_color)
+
+
+func _input(event: InputEvent) -> void:
+	if not visible:
+		return
+	
+	if event.is_action_pressed(&"undo"):
+		if UR.has_undo():
+			UR.undo()
+		accept_event()
+	elif event.is_action_pressed(&"redo"):
+		if UR.has_redo():
+			UR.redo()
+		accept_event()
