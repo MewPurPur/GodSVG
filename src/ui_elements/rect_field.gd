@@ -46,9 +46,9 @@ func _on_h_field_value_changed(new_value: float) -> void:
 			x_field.get_value(), y_field.get_value(), w_field.get_value(), new_value))
 
 func _on_value_changed(new_value: Rect2) -> void:
-	x_field.set_value(new_value.position.x)
-	y_field.set_value(new_value.position.y)
-	w_field.set_value(new_value.size.x)
-	h_field.set_value(new_value.size.y)
+	x_field.set_value(new_value.position.x, false)
+	y_field.set_value(new_value.position.y, false)
+	w_field.set_value(new_value.size.x, false)
+	h_field.set_value(new_value.size.y, false)
 	if attribute != null:
 		attribute.set_value(new_value)
