@@ -38,7 +38,7 @@ func update_error(err_id: StringName) -> void:
 		if not error_bar.visible:
 			error_bar.show()
 			error_label.text = tr(err_id)
-			for theming in [&"normal", &"TextEdit"]:
+			for theming in [&"normal", &"focus"]:
 				var stylebox := ThemeDB.get_project_theme().\
 						get_stylebox(theming, &"TextEdit").duplicate()
 				stylebox.corner_radius_bottom_right = 0
