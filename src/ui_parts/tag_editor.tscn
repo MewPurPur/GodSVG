@@ -19,7 +19,7 @@ size_flags_horizontal = 3
 [node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/HBoxContainer"]
 custom_minimum_size = Vector2(50, 0)
 layout_mode = 2
-theme_override_constants/margin_left = 0
+theme_override_constants/margin_left = 1
 theme_override_constants/margin_top = 4
 theme_override_constants/margin_right = 2
 theme_override_constants/margin_bottom = 4

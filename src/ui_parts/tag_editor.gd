@@ -177,7 +177,10 @@ func determine_selection_highlight() -> void:
 	var stylebox := StyleBoxFlat.new()
 	stylebox.set_corner_radius_all(4)
 	stylebox.set_border_width_all(2)
-	stylebox.set_content_margin_all(5)
+	stylebox.content_margin_right = 6
+	stylebox.content_margin_left = 5
+	stylebox.content_margin_top = 5
+	stylebox.content_margin_bottom = 5
 	
 	var is_selected := tid in Indications.selected_tids
 	var is_hovered := Indications.hovered_tid == tid

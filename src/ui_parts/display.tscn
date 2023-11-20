@@ -16,9 +16,9 @@
 [ext_resource type="Script" path="res://src/ui_parts/view_camera.gd" id="14_yjb74"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nxvgo"]
-content_margin_left = 6.0
+content_margin_left = 7.0
 content_margin_top = 6.0
-content_margin_right = 6.0
+content_margin_right = 7.0
 content_margin_bottom = 6.0
 bg_color = Color(0.02, 0.02, 0.08, 1)
 
@@ -186,5 +186,4 @@ script = ExtResource("14_yjb74")
 [connection signal="value_changed" from="PanelContainer/HBoxContainer/LeftMenu/Snapping/NumberEdit" to="." method="_on_number_edit_value_changed"]
 [connection signal="zoom_changed" from="PanelContainer/HBoxContainer/ZoomMenu" to="ViewportPanel/ViewportContainer/Viewport" method="_on_zoom_changed"]
 [connection signal="zoom_reset_pressed" from="PanelContainer/HBoxContainer/ZoomMenu" to="ViewportPanel/ViewportContainer/Viewport" method="center_frame"]
-[connection signal="resized" from="ViewportPanel/ViewportContainer" to="ViewportPanel/ViewportContainer/Viewport" method="_on_viewport_container_resized"]
 [connection signal="size_changed" from="ViewportPanel/ViewportContainer/Viewport" to="ViewportPanel/ViewportContainer/Viewport" method="_on_size_changed"]

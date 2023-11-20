@@ -17,6 +17,7 @@ func _ready() -> void:
 	SVG.root_tag.attribute_changed.connect(resize)
 	SVG.root_tag.changed_unknown.connect(resize)
 	resize()
+	await get_tree().process_frame
 	zoom_menu.zoom_reset()
 
 # Top left corner.
@@ -35,6 +36,11 @@ func resize() -> void:
 	zoom_menu.zoom_reset()
 
 func center_frame() -> void:
+	var min_zoom := zoom_menu.MIN_ZOOM
+	var available_size := size * buffer_view_space
+	var w_ratio: float = available_size.x / SVG.root_tag.attributes.width.get_value()
+	var h_ratio: float = available_size.y / SVG.root_tag.attributes.height.get_value()
+	zoom_menu.zoom_level = nearest_po2(ceili(minf(w_ratio, h_ratio) * 8)) / 16.0
 	set_view((get_svg_size() - size / zoom) / 2)
 
 
@@ -83,7 +89,6 @@ func _on_zoom_changed(zoom_level: float) -> void:
 	view.queue_redraw()
 
 var last_size_adjusted := size / zoom
-
 func adjust_view() -> void:
 	var old_size := last_size_adjusted
 	last_size_adjusted = size / zoom
