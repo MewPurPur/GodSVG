@@ -23,7 +23,7 @@ signal selection_changed
 # PackedInt32Array() means it's invalid.
 var hovered_tid := PackedInt32Array()
 var selected_tids: Array[PackedInt32Array] = []
-var last_selected_tid := PackedInt32Array()
+var selection_pivot_tid := PackedInt32Array()
 
 # Semi-hovered means the tag has inner selections, but it is not selected itself.
 # For example, individual path commands.
@@ -33,7 +33,7 @@ var semi_selected_tid := PackedInt32Array()
 # Inner stuff aren't in a tree, so they use an int. -1 means invalid.
 var inner_hovered := -1
 var inner_selections: Array[int] = []
-var last_inner_selection := -1
+var inner_selection_pivot := -1
 
 
 func _ready() -> void:
@@ -51,13 +51,14 @@ func normal_select(tid: PackedInt32Array, inner_idx := -1) -> void:
 	if tid.is_empty():
 		return
 	
+	var old_selected_tids := selected_tids.duplicate()
 	if inner_idx == -1:
 		if not semi_selected_tid.is_empty():
 			semi_selected_tid.clear()
 			inner_selections.clear()
 		if selected_tids.size() == 1 and selected_tids[0] == tid:
 			return
-		last_selected_tid = tid.duplicate()
+		selection_pivot_tid = tid.duplicate()
 		selected_tids = [tid.duplicate()]
 	else:
 		selected_tids.clear()
@@ -65,10 +66,11 @@ func normal_select(tid: PackedInt32Array, inner_idx := -1) -> void:
 		inner_selections.size() == 1 and inner_selections[0] == inner_idx:
 			return
 		semi_selected_tid = tid.duplicate()
-		last_inner_selection = inner_idx
+		inner_selection_pivot = inner_idx
 		inner_selections = [inner_idx]
 	
-	selection_changed.emit()
+	if old_selected_tids != selected_tids:
+		selection_changed.emit()
 
 ## If the tag was selected, unselect it. If it was unselected, select it.
 ## If inner_idx is given, this will be an inner selection.
@@ -80,12 +82,12 @@ func ctrl_select(tid: PackedInt32Array, inner_idx := -1) -> void:
 		inner_selections.clear()
 		var tid_idx := selected_tids.find(tid)
 		if tid_idx == -1:
-			last_selected_tid = tid.duplicate()
+			selection_pivot_tid = tid.duplicate()
 			selected_tids.append(tid.duplicate())
 		else:
 			selected_tids.remove_at(tid_idx)
 			if selected_tids.is_empty():
-				last_selected_tid = PackedInt32Array()
+				selection_pivot_tid = PackedInt32Array()
 	else:
 		if semi_selected_tid != tid:
 			normal_select(tid, inner_idx)
@@ -93,12 +95,12 @@ func ctrl_select(tid: PackedInt32Array, inner_idx := -1) -> void:
 			selected_tids.clear()
 			var idx_idx := inner_selections.find(inner_idx)
 			if idx_idx == -1:
-				last_inner_selection = inner_idx
+				inner_selection_pivot = inner_idx
 				inner_selections.append(inner_idx)
 			else:
 				inner_selections.remove_at(idx_idx)
 				if inner_selections.is_empty():
-					last_inner_selection = -1
+					inner_selection_pivot = -1
 	
 	selection_changed.emit()
 
@@ -109,17 +111,17 @@ func shift_select(tid: PackedInt32Array, inner_idx := -1) -> void:
 		return
 	
 	if inner_idx == -1:
-		if last_selected_tid.is_empty():
+		if selection_pivot_tid.is_empty():
 			if selected_tids.is_empty():
 				normal_select(tid, inner_idx)
 			return
 		
-		if tid == last_selected_tid:
+		if tid == selection_pivot_tid:
 			return
 		
 		var old_selected_tids := selected_tids.duplicate()
 		
-		if tid.size() != last_selected_tid.size():
+		if tid.size() != selection_pivot_tid.size():
 			if not tid in selected_tids:
 				selected_tids.append(tid)
 				selection_changed.emit()
@@ -128,10 +130,10 @@ func shift_select(tid: PackedInt32Array, inner_idx := -1) -> void:
 		var parent_tag := tid.duplicate()
 		parent_tag.resize(parent_tag.size() - 1)
 		var tid_idx := tid[-1]
-		var last_selected_tid_idx := last_selected_tid[-1]
+		var selection_pivot_tid_idx := selection_pivot_tid[-1]
 		
-		var first_idx := mini(tid_idx, last_selected_tid_idx)
-		var last_idx := maxi(tid_idx, last_selected_tid_idx)
+		var first_idx := mini(tid_idx, selection_pivot_tid_idx)
+		var last_idx := maxi(tid_idx, selection_pivot_tid_idx)
 		for i in range(first_idx, last_idx + 1):
 			var new_tid := parent_tag.duplicate()
 			new_tid.append(i)
@@ -142,14 +144,14 @@ func shift_select(tid: PackedInt32Array, inner_idx := -1) -> void:
 			return
 	
 	else:
-		if last_inner_selection == -1:
+		if inner_selection_pivot == -1:
 			if inner_selections.is_empty():
 				normal_select(tid, inner_idx)
 			return
 		
 		var old_inner_selections := inner_selections.duplicate()
-		var first_idx := mini(last_inner_selection, inner_idx)
-		var last_idx := maxi(last_inner_selection, inner_idx)
+		var first_idx := mini(inner_selection_pivot, inner_idx)
+		var last_idx := maxi(inner_selection_pivot, inner_idx)
 		for i in range(first_idx, last_idx + 1):
 			if not i in inner_selections:
 				inner_selections.append(i)
