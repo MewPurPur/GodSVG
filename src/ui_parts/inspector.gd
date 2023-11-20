@@ -3,7 +3,7 @@ extends VBoxContainer
 const ContextPopup = preload("res://src/ui_elements/context_popup.tscn")
 const TagEditor = preload("tag_editor.tscn")
 
-@onready var tags_container: VBoxContainer = %Tags
+@onready var tags_container: VBoxContainer = %ScrollContainer/Tags
 @onready var svg_tag_editor: MarginContainer = $SVGTagEditor
 @onready var add_button: Button = $VBoxContainer/AddButton
 

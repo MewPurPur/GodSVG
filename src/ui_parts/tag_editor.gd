@@ -18,7 +18,7 @@ const UnknownField = preload("res://src/ui_elements/unknown_field.tscn")
 @onready var paint_container: FlowContainer = %AttributeContainer/PaintAttributes
 @onready var shape_container: FlowContainer = %AttributeContainer/ShapeAttributes
 @onready var unknown_container: HFlowContainer = %AttributeContainer/UnknownAttributes
-@onready var title_button: Button = %TitleButton
+@onready var title_button: PanelContainer = %TitleButton
 @onready var title_button_icon: TextureRect = %TitleButtonIcon
 @onready var title_button_label: Label = %TitleButtonLabel
 
@@ -27,6 +27,7 @@ var tag: Tag
 
 func _ready() -> void:
 	determine_selection_highlight()
+	determine_title_button_highlight()
 	tag.attribute_changed.connect(select_conditionally)
 	Indications.selection_changed.connect(determine_selection_highlight)
 	Indications.hover_changed.connect(determine_selection_highlight)
@@ -134,10 +135,6 @@ func create_tag_context() -> Popup:
 	tag_context.set_btn_array(buttons_arr)
 	return tag_context
 
-func _on_title_button_pressed() -> void:
-	Indications.normal_select(tid)
-	var tag_context := create_tag_context()
-	Utils.popup_under_control(tag_context, title_button)
 
 func _on_move_up_button_pressed() -> void:
 	SVG.root_tag.move_tags_in_parent([tid], false)
@@ -206,10 +203,59 @@ func determine_selection_highlight() -> void:
 				stylebox.border_color.s, stylebox.border_color.v)
 	add_theme_stylebox_override(&"panel", stylebox)
 
+
 func select_conditionally() -> void:
 	if Indications.semi_selected_tid != tid:
 		Indications.normal_select(tid)
 
 
-func _on_title_button_container_draw() -> void:
-	title_button.custom_minimum_size = title_button.get_child(0).size
+var title_button_hovered := false
+var title_button_pressed := false
+
+func _on_title_button_mouse_entered() -> void:
+	title_button_hovered = true
+	determine_title_button_highlight()
+
+func _on_title_button_mouse_exited() -> void:
+	title_button_hovered = false
+	determine_title_button_highlight()
+
+func _on_title_button_gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton:
+		if event.button_index == MOUSE_BUTTON_LEFT:
+			title_button_pressed = event.is_pressed()
+			determine_title_button_highlight()
+			if not event.is_pressed() and title_button_hovered:
+				_on_title_button_pressed()
+
+func _on_title_button_pressed() -> void:
+	Indications.normal_select(tid)
+	var tag_context := create_tag_context()
+	Utils.popup_under_control(tag_context, title_button)
+
+func determine_title_button_highlight() -> void:
+	var stylebox := StyleBoxFlat.new()
+	stylebox.set_corner_radius_all(4)
+	stylebox.set_border_width_all(2)
+	stylebox.set_content_margin_all(5)
+	
+	if title_button_pressed:
+		if title_button_hovered:
+			stylebox.bg_color = Color.from_hsv(0.625, 0.5, 0.38)
+		else:
+			stylebox.bg_color = Color.from_hsv(0.625, 0.6, 0.35)
+		stylebox.border_color = Color.from_hsv(0.6, 0.75, 0.82)
+	elif title_button_hovered:
+		stylebox.bg_color = Color.from_hsv(0.625, 0.3, 0.2)
+		stylebox.border_color = Color.from_hsv(0.6, 0.55, 0.48)
+	else:
+		stylebox.bg_color = Color.from_hsv(0.626, 0.35, 0.17)
+		stylebox.border_color = Color.from_hsv(0.6, 0.5, 0.36)
+	
+	var depth := tid.size() - 1
+	if depth > 0:
+		stylebox.bg_color = Color.from_hsv(stylebox.bg_color.h + depth * 0.12,
+				stylebox.bg_color.s, stylebox.bg_color.v)
+		stylebox.border_color = Color.from_hsv(stylebox.border_color.h + depth * 0.12,
+				stylebox.border_color.s, stylebox.border_color.v)
+	title_button.add_theme_stylebox_override(&"panel", stylebox)
