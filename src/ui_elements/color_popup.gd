@@ -2,6 +2,7 @@
 extends Popup
 
 const GoodColorPickerType = preload("res://src/ui_elements/good_color_picker.gd")
+const ColorSwatchType = preload("res://src/ui_elements/color_swatch.gd")
 
 const ColorSwatch = preload("res://src/ui_elements/color_swatch.tscn")
 
@@ -16,6 +17,8 @@ var palette_mode := true
 @onready var color_picker: GoodColorPickerType = %Content/ColorPicker
 @onready var switch_mode_button: Button = $PanelContainer/MainContainer/SwitchMode
 @onready var panel_container: PanelContainer = $PanelContainer
+
+var swatches_list: Array[ColorSwatchType] = []  # Updated manually.
 
 func _ready() -> void:
 	update_palettes()
@@ -44,13 +47,21 @@ func update_palettes() -> void:
 		for named_color in palette.named_colors:
 			var swatch := ColorSwatch.instantiate()
 			swatch.named_color = named_color
-			if named_color.color == current_value:
-				swatch.disabled = true
-				swatch.mouse_default_cursor_shape = Control.CURSOR_ARROW
 			swatch.pressed.connect(pick_palette_color.bind(named_color.color))
 			swatch_container.add_child(swatch)
+			swatches_list.append(swatch)
 		palette_container.add_child(swatch_container)
 		palettes_content_container.add_child(palette_container)
+		disable_swatches()
+
+func disable_swatches() -> void:
+	for swatch in swatches_list:
+		if swatch.named_color.color == current_value:
+			swatch.disabled = true
+			swatch.mouse_default_cursor_shape = Control.CURSOR_ARROW
+		else:
+			swatch.disabled = false
+			swatch.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 
 func update_color_picker() -> void:
 	color_picker.setup_color(current_value)
@@ -59,6 +70,8 @@ func pick_palette_color(color: String) -> void:
 	color_picked.emit(color, true)
 
 func pick_color(color: String) -> void:
+	current_value = color
+	disable_swatches()
 	color_picked.emit(color, false)
 
 
