@@ -51,8 +51,8 @@ func normal_select(tid: PackedInt32Array, inner_idx := -1) -> void:
 	if tid.is_empty():
 		return
 	
-	var old_selected_tids := selected_tids.duplicate()
 	if inner_idx == -1:
+		var old_selected_tids := selected_tids.duplicate()
 		if not semi_selected_tid.is_empty():
 			semi_selected_tid.clear()
 			inner_selections.clear()
@@ -60,17 +60,19 @@ func normal_select(tid: PackedInt32Array, inner_idx := -1) -> void:
 			return
 		selection_pivot_tid = tid.duplicate()
 		selected_tids = [tid.duplicate()]
+		if old_selected_tids != selected_tids:
+			selection_changed.emit()
 	else:
 		selected_tids.clear()
+		var old_inner_selections := inner_selections.duplicate()
 		if semi_selected_tid == tid and\
 		inner_selections.size() == 1 and inner_selections[0] == inner_idx:
 			return
 		semi_selected_tid = tid.duplicate()
 		inner_selection_pivot = inner_idx
 		inner_selections = [inner_idx]
-	
-	if old_selected_tids != selected_tids:
-		selection_changed.emit()
+		if inner_selections != old_inner_selections:
+			selection_changed.emit()
 
 ## If the tag was selected, unselect it. If it was unselected, select it.
 ## If inner_idx is given, this will be an inner selection.
