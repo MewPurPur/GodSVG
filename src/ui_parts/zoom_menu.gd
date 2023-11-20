@@ -4,7 +4,7 @@ const MIN_ZOOM = 0.125
 const MAX_ZOOM = 64.0
 
 signal zoom_changed(zoom_level: float)
-signal zoom_reset_pressed()
+signal zoom_reset_pressed
 
 @onready var zoom_out_button: Button = $ZoomOut
 @onready var zoom_in_button: Button = $ZoomIn
@@ -23,11 +23,8 @@ func zoom_out() -> void:
 func zoom_in() -> void:
 	zoom_level *= sqrt(2)
 
-# Choose an appropriate zoom level and center the camera.
+# This needs a custom implementation to whatever is listening to the signal.
 func zoom_reset() -> void:
-	var svg_attribs := SVG.root_tag.attributes
-	zoom_level = float(nearest_po2(int(8192 / maxf(svg_attribs.width.get_value(),
-			svg_attribs.height.get_value()))) / 32.0)
 	zoom_reset_pressed.emit()
 
 
