@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://src/ui_parts/import_warning_dialog.gd" id="1_1rv5w"]
 [ext_resource type="Shader" path="res://src/shaders/zoom_shader.gdshader" id="2_o24gk"]
 [ext_resource type="Texture2D" uid="uid://c68og6bsqt0lb" path="res://visual/Checkerboard.svg" id="3_k3bec"]
-[ext_resource type="FontFile" uid="uid://dtb4wkus51hxs" path="res://visual/fonts/FontMono.ttf" id="4_rpfrk"]
+[ext_resource type="FontFile" uid="uid://dructsbk203e" path="res://visual/fonts/FontMono.ttf" id="4_rpfrk"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_774g4"]
 shader = ExtResource("2_o24gk")
@@ -25,10 +25,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -2.0
-offset_top = -2.0
-offset_right = 2.0
-offset_bottom = 2.0
+offset_left = -174.0
+offset_top = -111.0
+offset_right = 174.0
+offset_bottom = 111.0
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -56,6 +56,8 @@ theme_override_constants/separation = 12
 material = SubResource("ShaderMaterial_774g4")
 custom_minimum_size = Vector2(128, 128)
 layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
 texture = ExtResource("3_k3bec")
 stretch_mode = 1
 
@@ -72,7 +74,7 @@ expand_mode = 2
 stretch_mode = 5
 
 [node name="MarginContainer" type="MarginContainer" parent="PanelContainer/MarginContainer/VBoxContainer/TextureContainer"]
-custom_minimum_size = Vector2(192, 0)
+custom_minimum_size = Vector2(384, 192)
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/margin_left = 4
@@ -80,12 +82,18 @@ theme_override_constants/margin_top = 6
 theme_override_constants/margin_right = 4
 theme_override_constants/margin_bottom = 6
 
-[node name="WarningsLabel" type="RichTextLabel" parent="PanelContainer/MarginContainer/VBoxContainer/TextureContainer/MarginContainer"]
+[node name="ScrollContainer" type="ScrollContainer" parent="PanelContainer/MarginContainer/VBoxContainer/TextureContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="WarningsLabel" type="RichTextLabel" parent="PanelContainer/MarginContainer/VBoxContainer/TextureContainer/MarginContainer/ScrollContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
+size_flags_vertical = 3
 theme_override_colors/default_color = Color(1, 0.4, 0.4, 1)
 theme_override_fonts/normal_font = ExtResource("4_rpfrk")
+fit_content = true
+scroll_active = false
 autowrap_mode = 0
 
 [node name="ButtonContainer" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer"]
