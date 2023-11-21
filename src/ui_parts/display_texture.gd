@@ -44,9 +44,7 @@ func _process(_delta: float) -> void:
 
 
 func svg_update(svg_changed := true) -> void:
-	var bigger_side := maxf(SVG.root_tag.attributes.width.get_value(),
-			SVG.root_tag.attributes.height.get_value())
-	
+	var bigger_side := maxf(SVG.root_tag.get_width(), SVG.root_tag.get_height())
 	var new_image_zoom := 1.0 if rasterized else minf(zoom * 3.0, 16384 / bigger_side)
 	if not svg_changed and not rasterized and new_image_zoom <= image_zoom:
 		return  # Don't waste time resizing if the new image won't be bigger.
@@ -55,7 +53,7 @@ func svg_update(svg_changed := true) -> void:
 	
 	# TODO delete this when the ThorVG bug is fixed.
 	var img := Image.new()
-	img.load_svg_from_string(SVG.string, image_zoom)
+	img.load_svg_from_string(SVG.text, image_zoom)
 	texture = ImageTexture.create_from_image(img)
 	
 	# TODO this is locked by a bug in ThorVG.
@@ -70,8 +68,8 @@ func svg_update(svg_changed := true) -> void:
 # 4 strips to be handled by WorkerThreadPool for faster image loading.
 #func generate_strip(index: int) -> void:
 	#var svg_tag := SVG.root_tag.create_duplicate()
-	#svg_tag.attributes.width.set_value(svg_tag.attributes.width.get_value() / strip_count)
-	#var viewbox_attrib_value: Rect2 = svg_tag.attributes.viewBox.get_value()
+	#svg_tag.attributes.width.set_value(svg_tag.get_width() / strip_count)
+	#var viewbox_attrib_value: Rect2 = svg_tag.get_viewbox()
 	#var strip_width := viewbox_attrib_value.size.x / strip_count
 	#var offset := index * strip_width
 	#svg_tag.attributes.viewBox.set_value(Rect2(viewbox_attrib_value.position +\

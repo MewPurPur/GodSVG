@@ -64,9 +64,6 @@ tooltip_text = "#edit_palette_name"
 focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_type_variation = &"FlatButton"
-theme_override_colors/icon_normal_color = Color(0.74902, 0.74902, 0.74902, 1)
-theme_override_colors/icon_pressed_color = Color(0.74902, 0.87451, 1, 1)
-theme_override_colors/icon_hover_color = Color(1, 1, 1, 1)
 icon = ExtResource("2_35dgp")
 
 [node name="ColorsContainer" type="HFlowContainer" parent="MarginContainer/HBoxContainer/MainContainer"]

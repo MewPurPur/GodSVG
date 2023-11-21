@@ -1,11 +1,7 @@
-## An attribute representing a rectangle.
-class_name AttributeRect extends Attribute
+## A parser for the viewBox attribute of [TagSVG].
+class_name ViewboxParser extends RefCounted
 
-func _init(new_default: Variant = null, new_init: Variant = null) -> void:
-	type = Type.RECT
-	default = new_default
-	set_value(new_init if new_init != null else new_default, UpdateType.SILENT)
-
+# TODO Turn this into a ListParser (handling any amount of numbers)
 
 static func string_to_rect(string: String) -> Rect2:
 	var nums_parsed: Array[float] = []

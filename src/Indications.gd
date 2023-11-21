@@ -180,6 +180,7 @@ func select_all() -> void:
 func clear_selection() -> void:
 	if not selected_tids.is_empty():
 		selected_tids.clear()
+		selection_pivot_tid.clear()
 		selection_changed.emit()
 
 ## Clear the inner selection.
@@ -187,6 +188,7 @@ func clear_inner_selection() -> void:
 	if not inner_selections.is_empty() or not semi_selected_tid.is_empty():
 		inner_selections.clear()
 		semi_selected_tid.clear()
+		inner_selection_pivot = -1
 		selection_changed.emit()
 
 ## Clear the selected tags or the inner selection.
