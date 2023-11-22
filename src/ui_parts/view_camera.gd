@@ -27,11 +27,6 @@ func _draw() -> void:
 	var draw_minor_lines := zoom_level >= 3.0
 	var rate := nearest_po2(roundi(maxf(64.0 / (ticks_interval * zoom_level), 1.0)))
 	
-	var width := SVG.root_tag.get_width()
-	var height := SVG.root_tag.get_height()
-	var viewbox := SVG.root_tag.get_viewbox()
-	var viewbox_zoom := Utils.get_viewbox_zoom(viewbox, width, height)
-	
 	# The grid lines are always 1px wide, but the numbers need to be resized.
 	RenderingServer.canvas_item_clear(surface)
 	RenderingServer.canvas_item_set_transform(surface,
