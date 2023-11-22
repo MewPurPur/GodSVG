@@ -16,12 +16,34 @@ const known_attributes = ["width", "height", "viewBox", "xmlns"]
 func _init() -> void:
 	name = "svg"
 	attributes = {
-		"height": Attribute.new(Attribute.Type.UFLOAT, null, 16.0),
-		"width": Attribute.new(Attribute.Type.UFLOAT, null, 16.0),
-		"viewBox": AttributeRect.new(null, Rect2(0, 0, 16, 16)),
+		"height": Attribute.new(Attribute.Type.UFLOAT, NAN),
+		"width": Attribute.new(Attribute.Type.UFLOAT, NAN),
+		"viewBox": AttributeViewbox.new(),
 	}
 	unknown_attributes.append(AttributeUnknown.new("xmlns", "http://www.w3.org/2000/svg"))
 	super()
+
+# Functions for getting the dimensions.
+func get_width() -> float:
+	if !is_nan(attributes.width.get_value()):
+		return attributes.width.get_value()
+	else:
+		return attributes.viewBox.rect.size.x
+
+func get_height() -> float:
+	if !is_nan(attributes.height.get_value()):
+		return attributes.height.get_value()
+	else:
+		return attributes.viewBox.rect.size.y
+
+func get_size() -> Vector2:
+	return Vector2(get_width(), get_height())
+
+func get_viewbox() -> Rect2:
+	if attributes.viewBox.get_value() != null:
+		return attributes.viewBox.rect
+	else:
+		return Rect2(0, 0, attributes.width.get_value(), attributes.height.get_value())
 
 
 func get_all_tids() -> Array[PackedInt32Array]:
@@ -58,6 +80,7 @@ func add_tag(new_tag: Tag, new_tid: PackedInt32Array) -> void:
 	tag_layout_changed.emit()
 
 func replace_self(new_tag: Tag) -> void:
+	var old_size := get_size()
 	for attrib in attributes:
 		attributes[attrib].set_value(new_tag.attributes[attrib].get_value(),
 				Attribute.UpdateType.SILENT)
@@ -72,7 +95,10 @@ func replace_self(new_tag: Tag) -> void:
 	
 	for tid in get_all_tids():
 		get_by_tid(tid).attribute_changed.connect(emit_child_attribute_changed)
+	
 	changed_unknown.emit()
+	if old_size != get_size():
+		emit_attribute_changed()  # Needed for things listening to this for resizing.
 
 func delete_tags(tids: Array[PackedInt32Array]) -> void:
 	if tids.is_empty():

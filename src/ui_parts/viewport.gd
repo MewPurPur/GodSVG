@@ -15,7 +15,6 @@ var zoom := 1.0
 
 func _ready() -> void:
 	SVG.root_tag.attribute_changed.connect(resize)
-	SVG.root_tag.changed_unknown.connect(resize)
 	resize()
 	await get_tree().process_frame
 	zoom_menu.zoom_reset()
@@ -26,22 +25,17 @@ func set_view(new_position: Vector2) -> void:
 			Vector2(view.limit_right, view.limit_bottom) - size / zoom)
 
 
-func get_svg_size() -> Vector2:
-	return Vector2(SVG.root_tag.attributes.width.get_value(),
-			SVG.root_tag.attributes.height.get_value())
-
 # Adjust the SVG dimensions.
 func resize() -> void:
-	display.size = get_svg_size()
+	display.size = SVG.root_tag.get_size()
 	zoom_menu.zoom_reset()
 
 func center_frame() -> void:
-	var min_zoom := zoom_menu.MIN_ZOOM
 	var available_size := size * buffer_view_space
-	var w_ratio: float = available_size.x / SVG.root_tag.attributes.width.get_value()
-	var h_ratio: float = available_size.y / SVG.root_tag.attributes.height.get_value()
-	zoom_menu.zoom_level = nearest_po2(ceili(minf(w_ratio, h_ratio) * 8)) / 16.0
-	set_view((get_svg_size() - size / zoom) / 2)
+	var w_ratio: float = available_size.x / SVG.root_tag.get_width()
+	var h_ratio: float = available_size.y / SVG.root_tag.get_height()
+	zoom_menu.zoom_level = nearest_po2(ceili(minf(w_ratio, h_ratio) * 32)) / 64.0
+	set_view((SVG.root_tag.get_size() - size / zoom) / 2)
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -92,12 +86,14 @@ var last_size_adjusted := size / zoom
 func adjust_view() -> void:
 	var old_size := last_size_adjusted
 	last_size_adjusted = size / zoom
-	var svg_size := get_svg_size()
+	
+	var svg_size := SVG.root_tag.get_size()
+	var zoomed_size := buffer_view_space * size / zoom
 	view.zoom = Vector2(zoom, zoom)
-	view.limit_left = int(-size.x / zoom * buffer_view_space)
-	view.limit_right = int(size.x / zoom * buffer_view_space + svg_size.x)
-	view.limit_top = int(-size.y / zoom * buffer_view_space)
-	view.limit_bottom = int(size.y / zoom * buffer_view_space + svg_size.y)
+	view.limit_left = int(-zoomed_size.x)
+	view.limit_right = int(zoomed_size.x + svg_size.x)
+	view.limit_top = int(-zoomed_size.y)
+	view.limit_bottom = int(zoomed_size.y + svg_size.y)
 	set_view(view.position + (old_size - size / zoom) / 2.0)
 
 func _on_size_changed() -> void:

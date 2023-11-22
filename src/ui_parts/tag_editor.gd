@@ -190,7 +190,7 @@ func determine_selection_highlight() -> void:
 			stylebox.bg_color = Color.from_hsv(0.625, 0.48, 0.27)
 		else:
 			stylebox.bg_color = Color.from_hsv(0.625, 0.5, 0.25)
-		stylebox.border_color = Color.from_hsv(0.6, 0.7, 0.54)
+		stylebox.border_color = Color.from_hsv(0.6, 0.75, 0.6)
 	elif is_hovered:
 		stylebox.bg_color = Color.from_hsv(0.625, 0.57, 0.19)
 		stylebox.border_color = Color.from_hsv(0.625, 0.5, 0.3)

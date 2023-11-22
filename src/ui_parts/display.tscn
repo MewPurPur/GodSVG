@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://bvrncl7e6yn5b"]
+[gd_scene load_steps=21 format=3 uid="uid://bvrncl7e6yn5b"]
 
 [ext_resource type="Script" path="res://src/ui_parts/display.gd" id="1_oib5g"]
 [ext_resource type="Texture2D" uid="uid://ccbta5q43jobk" path="res://visual/icons/More.svg" id="2_3wliq"]
@@ -20,12 +20,32 @@ content_margin_left = 7.0
 content_margin_top = 6.0
 content_margin_right = 7.0
 content_margin_bottom = 6.0
-bg_color = Color(0.02, 0.02, 0.08, 1)
+bg_color = Color(0.0235294, 0.0235294, 0.0784314, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eujxa"]
 bg_color = Color(0.866667, 0.933333, 1, 0.133333)
 corner_radius_top_left = 5
 corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xe141"]
+draw_center = false
+border_width_left = 1
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 1, 1, 0.0666667)
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kqvye"]
+draw_center = false
+border_width_left = 1
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.501961, 0.752941, 1, 0.2)
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jk4ec"]
 content_margin_left = 2.0
@@ -119,6 +139,8 @@ max_length = 20
 editable = false
 min_value = 0.001
 allow_lower = false
+hover_stylebox = SubResource("StyleBoxFlat_xe141")
+focus_stylebox = SubResource("StyleBoxFlat_kqvye")
 
 [node name="ZoomMenu" parent="PanelContainer/HBoxContainer" instance=ExtResource("8_xtdmn")]
 unique_name_in_owner = true

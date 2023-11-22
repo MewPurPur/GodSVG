@@ -19,14 +19,13 @@ func _ready() -> void:
 	dropdown.value_changed.connect(_on_dropdown_value_changed)
 	extension = dropdown.current_value
 	update_extension_configuration()
-	dimensions.x = SVG.root_tag.attributes.width.get_value()
-	dimensions.y = SVG.root_tag.attributes.height.get_value()
+	dimensions = SVG.root_tag.get_size()
 	scale_edit.min_value = 1/minf(dimensions.x, dimensions.y)
 	update_dimensions_label()
 	update_final_scale()
 	var scaling_factor := 512.0 / maxf(dimensions.x, dimensions.y)
 	var img := Image.new()
-	img.load_svg_from_string(SVG.string, scaling_factor)
+	img.load_svg_from_string(SVG.text, scaling_factor)
 	if not img.is_empty():
 		texture_preview.texture = ImageTexture.create_from_image(img)
 
@@ -68,7 +67,7 @@ func export(path: String) -> void:
 			img.save_png(path)
 		_:
 			# SVG / fallback.
-			FA.store_string(SVG.string)
+			FA.store_string(SVG.text)
 	queue_free()
 
 func _on_cancel_button_pressed() -> void:

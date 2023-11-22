@@ -66,7 +66,7 @@ func load_user_data() -> void:
 
 func _exit_tree() -> void:
 	save_data.window_mode = DisplayServer.window_get_mode()
-	save_data.svg = SVG.string
+	save_data.svg_text = SVG.text
 	save_user_data()
 
 func _enter_tree() -> void:

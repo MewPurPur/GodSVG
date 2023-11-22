@@ -13,6 +13,7 @@ var _value := NAN
 
 func set_value(new_value: float, emit_changed := true) -> void:
 	if is_nan(new_value):
+		text = String.num(_value, 4)
 		return
 	elif _value != new_value:
 		_value = validate(new_value)

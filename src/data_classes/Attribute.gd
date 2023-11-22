@@ -4,7 +4,7 @@ class_name Attribute extends RefCounted
 signal value_changed(new_value: Variant)
 signal propagate_value_changed()
 
-enum Type {UNKNOWN, INT, FLOAT, UFLOAT, NFLOAT, COLOR, PATHDATA, ENUM, RECT}
+enum Type {UNKNOWN, INT, FLOAT, UFLOAT, NFLOAT, COLOR, PATHDATA, ENUM, VIEWBOX}
 var type: Type
 
 var default: Variant
