@@ -21,7 +21,7 @@ func _ready() -> void:
 
 func auto_update_text() -> void:
 	if not code_edit.has_focus():
-		code_edit.text = SVG.string
+		code_edit.text = SVG.text
 		update_size_label()
 
 func update_error(err_id: StringName) -> void:
@@ -85,7 +85,7 @@ func set_new_text(svg_text: String) -> void:
 
 
 func _on_code_edit_text_changed() -> void:
-	SVG.string = code_edit.text
+	SVG.text = code_edit.text
 	SVG.sync_data()
 	update_size_label()
 
@@ -98,3 +98,6 @@ func _input(event: InputEvent) -> void:
 
 func update_size_label() -> void:
 	size_label.text = String.humanize_size(code_edit.text.length())
+
+func _on_svg_code_edit_focus_exited() -> void:
+	code_edit.text = SVG.text

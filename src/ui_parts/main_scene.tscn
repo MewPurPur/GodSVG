@@ -10,7 +10,7 @@ content_margin_left = 6.0
 content_margin_top = 6.0
 content_margin_right = 0.0
 content_margin_bottom = 6.0
-bg_color = Color(0.02, 0.02, 0.08, 1)
+bg_color = Color(0.0235294, 0.0235294, 0.0784314, 1)
 border_color = Color(0.278431, 0.286275, 0.568627, 1)
 expand_margin_right = 6.0
 

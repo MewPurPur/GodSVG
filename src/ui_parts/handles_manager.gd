@@ -64,9 +64,9 @@ func _ready() -> void:
 
 
 func update_dimensions() -> void:
-	width = SVG.root_tag.attributes.width.get_value()
-	height = SVG.root_tag.attributes.height.get_value()
-	viewbox = SVG.root_tag.attributes.viewBox.get_value()
+	width = SVG.root_tag.get_width()
+	height = SVG.root_tag.get_height()
+	viewbox = SVG.root_tag.get_viewbox()
 	viewbox_zoom = Utils.get_viewbox_zoom(viewbox, width, height)
 	queue_update()
 

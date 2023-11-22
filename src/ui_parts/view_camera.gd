@@ -11,7 +11,6 @@ var surface := RenderingServer.canvas_item_create()  # Used for drawing the numb
 func _ready() -> void:
 	RenderingServer.canvas_item_set_parent(surface, get_canvas_item())
 	SVG.root_tag.attribute_changed.connect(queue_redraw)
-	SVG.root_tag.changed_unknown.connect(queue_redraw)
 
 # Don't ask me to explain this.
 func _draw() -> void:
@@ -28,9 +27,9 @@ func _draw() -> void:
 	var draw_minor_lines := zoom_level >= 3.0
 	var rate := nearest_po2(roundi(maxf(64.0 / (ticks_interval * zoom_level), 1.0)))
 	
-	var width: float = SVG.root_tag.attributes.width.get_value()
-	var height: float = SVG.root_tag.attributes.height.get_value()
-	var viewbox: Rect2 = SVG.root_tag.attributes.viewBox.get_value()
+	var width := SVG.root_tag.get_width()
+	var height := SVG.root_tag.get_height()
+	var viewbox := SVG.root_tag.get_viewbox()
 	var viewbox_zoom := Utils.get_viewbox_zoom(viewbox, width, height)
 	
 	# The grid lines are always 1px wide, but the numbers need to be resized.
