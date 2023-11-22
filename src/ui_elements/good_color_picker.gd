@@ -71,6 +71,7 @@ func setup_color(new_color: String) -> void:
 	is_none = (new_color == "none")
 	setup_none_button()
 	color = Color.from_string(new_color, Color(0, 0, 0))
+	slider_mode = GlobalSettings.save_data.color_picker_slider_mode
 	if not is_node_ready():
 		await ready
 	update()
@@ -106,7 +107,6 @@ func update() -> void:
 func _ready() -> void:
 	RenderingServer.canvas_item_set_parent(color_wheel_surface,
 			color_wheel_drawn.get_canvas_item())
-	slider_mode = GlobalSettings.save_data.color_picker_slider_mode
 
 
 func _on_side_slider_gui_input(event: InputEvent) -> void:
