@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://src/ui_parts/import_warning_dialog.gd" id="1_1rv5w"]
 [ext_resource type="Shader" path="res://src/shaders/zoom_shader.gdshader" id="2_o24gk"]
 [ext_resource type="Texture2D" uid="uid://c68og6bsqt0lb" path="res://visual/Checkerboard.svg" id="3_k3bec"]
-[ext_resource type="FontFile" uid="uid://dructsbk203e" path="res://visual/fonts/FontMono.ttf" id="4_rpfrk"]
+[ext_resource type="FontFile" uid="uid://dtb4wkus51hxs" path="res://visual/fonts/FontMono.ttf" id="4_rpfrk"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_774g4"]
 shader = ExtResource("2_o24gk")
@@ -74,7 +74,7 @@ expand_mode = 2
 stretch_mode = 5
 
 [node name="MarginContainer" type="MarginContainer" parent="PanelContainer/MarginContainer/VBoxContainer/TextureContainer"]
-custom_minimum_size = Vector2(384, 192)
+custom_minimum_size = Vector2(256, 128)
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/margin_left = 4
