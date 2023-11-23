@@ -10,7 +10,7 @@ var UR := UndoRedo.new()
 signal parsing_finished(error_id: StringName) 
 
 func _ready() -> void:
-	SVG.root_tag.changed_unknown.connect(update_text)
+	SVG.root_tag.changed_unknown.connect(update_text.bind(false))
 	SVG.root_tag.attribute_changed.connect(update_text)
 	SVG.root_tag.child_attribute_changed.connect(update_text)
 	SVG.root_tag.tag_layout_changed.connect(update_text)
@@ -18,10 +18,11 @@ func _ready() -> void:
 	if GlobalSettings.save_data.svg_text.is_empty():
 		root_tag.attributes.width.set_value(16.0)
 		root_tag.attributes.height.set_value(16.0)
-		update_text()
+		update_text(false)
 	else:
 		text = GlobalSettings.save_data.svg_text
 		sync_data()
+	UR.clear_history()
 
 
 func sync_data() -> void:
@@ -30,8 +31,8 @@ func sync_data() -> void:
 	if err_id == &"":
 		update_tags()
 
-func update_text() -> void:
-	text = SVGParser.svg_to_text(root_tag)
-
 func update_tags() -> void:
 	root_tag.replace_self(SVGParser.text_to_svg(text))
+
+func update_text(undo_redo := true) -> void:
+	text = SVGParser.svg_to_text(root_tag)

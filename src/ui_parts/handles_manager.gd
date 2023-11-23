@@ -52,7 +52,7 @@ var surface := RenderingServer.canvas_item_create()
 
 func _ready() -> void:
 	RenderingServer.canvas_item_set_parent(surface, get_canvas_item())
-	SVG.root_tag.attribute_changed.connect(update_dimensions)
+	SVG.root_tag.resized.connect(update_dimensions)
 	SVG.root_tag.child_attribute_changed.connect(queue_redraw)
 	SVG.root_tag.child_attribute_changed.connect(sync_handles)
 	SVG.root_tag.tag_layout_changed.connect(queue_update)

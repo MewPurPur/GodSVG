@@ -28,12 +28,12 @@ var true_viewbox: Rect2
 
 
 func _ready() -> void:
-	SVG.root_tag.attribute_changed.connect(_on_attribute_changed)
+	SVG.root_tag.resized.connect(_on_resized)
 	SVG.root_tag.changed_unknown.connect(_on_unknown_changed)
 	update_attributes(true)
 
 
-func _on_attribute_changed() -> void:
+func _on_resized() -> void:
 	update_attributes()
 
 func update_attributes(configure_coupling := false) -> void:

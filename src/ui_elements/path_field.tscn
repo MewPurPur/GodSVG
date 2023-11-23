@@ -77,6 +77,17 @@ hover_stylebox = SubResource("StyleBoxFlat_4rmxx")
 focus_stylebox = SubResource("StyleBoxFlat_wqlhg")
 code_font_tooltip = true
 
+[node name="AddMove" type="Button" parent="."]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_styles/normal = SubResource("StyleBoxEmpty_lcnxl")
+theme_override_styles/hover = SubResource("StyleBoxFlat_4yine")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_kmpxk")
+icon = ExtResource("3_at2g1")
+
 [node name="HBox" type="HBoxContainer" parent="."]
 layout_mode = 2
 
@@ -90,17 +101,6 @@ layout_mode = 2
 size_flags_horizontal = 0
 mouse_filter = 0
 theme_override_constants/separation = 0
-
-[node name="AddMove" type="Button" parent="."]
-layout_mode = 2
-size_flags_horizontal = 0
-size_flags_vertical = 0
-focus_mode = 0
-mouse_default_cursor_shape = 2
-theme_override_styles/normal = SubResource("StyleBoxEmpty_lcnxl")
-theme_override_styles/hover = SubResource("StyleBoxFlat_4yine")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_kmpxk")
-icon = ExtResource("3_at2g1")
 
 [connection signal="text_submitted" from="LineEdit" to="." method="_on_line_edit_text_submitted"]
 [connection signal="pressed" from="AddMove" to="." method="_on_add_move_pressed"]

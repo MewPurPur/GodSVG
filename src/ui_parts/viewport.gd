@@ -14,7 +14,7 @@ var zoom := 1.0
 
 
 func _ready() -> void:
-	SVG.root_tag.attribute_changed.connect(resize)
+	SVG.root_tag.resized.connect(resize)
 	resize()
 	await get_tree().process_frame
 	zoom_menu.zoom_reset()
