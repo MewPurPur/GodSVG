@@ -72,7 +72,7 @@ func _on_more_options_pressed() -> void:
 	
 	var about_btn := Button.new()
 	about_btn.text = tr(&"#about_button_text")
-	about_btn.icon = load("res://visual/icon.png")
+	about_btn.icon = load("res://visual/icon.svg")
 	about_btn.expand_icon = true
 	about_btn.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	about_btn.alignment = HORIZONTAL_ALIGNMENT_LEFT
