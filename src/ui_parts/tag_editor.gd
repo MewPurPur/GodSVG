@@ -20,8 +20,8 @@ const UnknownField = preload("res://src/ui_elements/unknown_field.tscn")
 @onready var unknown_container: HFlowContainer = %AttributeContainer/UnknownAttributes
 @onready var title_bar: PanelContainer = $Title
 @onready var content: PanelContainer = $Content
-@onready var title_icon: TextureRect = $Title/TitleBox/HBoxContainer/TitleIcon
-@onready var title_label: Label = $Title/TitleBox/HBoxContainer/TitleLabel
+@onready var title_icon: TextureRect = $Title/TitleBox/TitleIcon
+@onready var title_label: Label = $Title/TitleBox/TitleLabel
 @onready var title_button: Button = $Title/TitleBox/TitleButton
 
 var tid: PackedInt32Array
