@@ -130,12 +130,30 @@ content_margin_right = 4.0
 content_margin_bottom = 2.0
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ixekj"]
+content_margin_left = 2.0
+content_margin_right = 2.0
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_qrkud"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ky4q6"]
+content_margin_left = 2.0
+content_margin_right = 2.0
+bg_color = Color(1, 1, 1, 0.0666667)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_q84qj"]
+content_margin_left = 2.0
+content_margin_right = 2.0
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_6kdq7"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5jayv"]
+content_margin_left = 2.0
+content_margin_right = 2.0
+bg_color = Color(1, 1, 1, 0.2)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qepg8"]
 content_margin_left = 4.0
@@ -578,7 +596,7 @@ corner_radius_bottom_left = 3
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_k6fme"]
 content_margin_top = 2.0
 content_margin_bottom = 2.0
-bg_color = Color(0.423529, 0.639216, 0.85098, 1)
+bg_color = Color(0.376471, 0.560784, 0.74902, 1)
 corner_radius_top_left = 3
 corner_radius_top_right = 3
 corner_radius_bottom_right = 3
@@ -637,9 +655,9 @@ FlatButton/colors/icon_hover_color = Color(1, 1, 1, 1)
 FlatButton/colors/icon_normal_color = Color(0.74902, 0.74902, 0.74902, 1)
 FlatButton/colors/icon_pressed_color = Color(0.74902, 0.87451, 1, 1)
 FlatButton/styles/disabled = SubResource("StyleBoxEmpty_ixekj")
-FlatButton/styles/hover = SubResource("StyleBoxEmpty_qrkud")
+FlatButton/styles/hover = SubResource("StyleBoxFlat_ky4q6")
 FlatButton/styles/normal = SubResource("StyleBoxEmpty_q84qj")
-FlatButton/styles/pressed = SubResource("StyleBoxEmpty_6kdq7")
+FlatButton/styles/pressed = SubResource("StyleBoxFlat_5jayv")
 IconButton/base_type = &"Button"
 IconButton/styles/disabled = SubResource("StyleBoxFlat_qepg8")
 IconButton/styles/hover = SubResource("StyleBoxFlat_c4o10")
