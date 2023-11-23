@@ -64,7 +64,7 @@ theme_override_constants/separation = 2
 script = ExtResource("1_22rk2")
 
 [node name="LineEdit" type="LineEdit" parent="."]
-custom_minimum_size = Vector2(336, 0)
+custom_minimum_size = Vector2(344, 0)
 layout_mode = 2
 size_flags_horizontal = 0
 tooltip_text = "d"
@@ -77,7 +77,14 @@ hover_stylebox = SubResource("StyleBoxFlat_4rmxx")
 focus_stylebox = SubResource("StyleBoxFlat_wqlhg")
 code_font_tooltip = true
 
-[node name="Commands" type="VBoxContainer" parent="."]
+[node name="HBox" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Spacer" type="Control" parent="HBox"]
+custom_minimum_size = Vector2(8, 0)
+layout_mode = 2
+
+[node name="Commands" type="VBoxContainer" parent="HBox"]
 custom_minimum_size = Vector2(336, 0)
 layout_mode = 2
 size_flags_horizontal = 0
