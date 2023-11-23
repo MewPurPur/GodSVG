@@ -20,8 +20,8 @@ const UnknownField = preload("res://src/ui_elements/unknown_field.tscn")
 @onready var unknown_container: HFlowContainer = %AttributeContainer/UnknownAttributes
 @onready var title_bar: PanelContainer = $Title
 @onready var content: PanelContainer = $Content
-@onready var title_icon: TextureRect = $Title/TitleBox/HBoxContainer/TitleIcon
-@onready var title_label: Label = $Title/TitleBox/HBoxContainer/TitleLabel
+@onready var title_icon: TextureRect = $Title/TitleBox/TitleIcon
+@onready var title_label: Label = $Title/TitleBox/TitleLabel
 @onready var title_button: Button = $Title/TitleBox/TitleButton
 
 var tid: PackedInt32Array
@@ -209,12 +209,12 @@ func determine_selection_highlight() -> void:
 		title_sb.border_color = Color.from_hsv(0.6, 0.75, 0.75)
 	elif is_hovered:
 		content_sb.bg_color = Color.from_hsv(0.625, 0.57, 0.19)
-		title_sb.bg_color = Color.from_hsv(0.625, 0.3, 0.2)
+		title_sb.bg_color = Color.from_hsv(0.625, 0.4, 0.2)
 		content_sb.border_color = Color.from_hsv(0.6, 0.55, 0.45)
 		title_sb.border_color = Color.from_hsv(0.6, 0.55, 0.45)
 	else:
 		content_sb.bg_color = Color.from_hsv(0.625, 0.6, 0.16)
-		title_sb.bg_color = Color.from_hsv(0.625, 0.35, 0.17)
+		title_sb.bg_color = Color.from_hsv(0.625, 0.45, 0.17)
 		content_sb.border_color = Color.from_hsv(0.6, 0.5, 0.35)
 		title_sb.border_color = Color.from_hsv(0.6, 0.5, 0.35)
 	

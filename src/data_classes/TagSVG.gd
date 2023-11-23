@@ -1,6 +1,10 @@
 ## A <svg></svg> tag.
 class_name TagSVG extends Tag
 
+# The difference between attribute_changed() and resized() is that
+# resized will emit even after unknown changes.
+signal resized
+
 signal child_attribute_changed
 signal changed_unknown
 
@@ -98,7 +102,7 @@ func replace_self(new_tag: Tag) -> void:
 	
 	changed_unknown.emit()
 	if old_size != get_size():
-		emit_attribute_changed()  # Needed for things listening to this for resizing.
+		resized.emit()
 
 func delete_tags(tids: Array[PackedInt32Array]) -> void:
 	if tids.is_empty():
@@ -237,3 +241,7 @@ func duplicate_tags(tids: Array[PackedInt32Array]) -> void:
 
 func emit_child_attribute_changed() -> void:
 	child_attribute_changed.emit()
+
+func emit_attribute_changed() -> void:
+	super()
+	resized.emit()
