@@ -5,7 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://cmepkbqde0jh0" path="res://visual/icons/SmallMore.svg" id="2_2n846"]
 
 [node name="TagEditor" type="VBoxContainer"]
-offset_right = 72.0
+offset_right = 49.0
 offset_bottom = 30.0
 theme_override_constants/separation = 0
 script = ExtResource("1_7i0c4")
@@ -18,19 +18,14 @@ layout_mode = 2
 theme_override_constants/separation = 6
 alignment = 1
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Title/TitleBox"]
-layout_mode = 2
-theme_override_constants/separation = 2
-
-[node name="TitleIcon" type="TextureRect" parent="Title/TitleBox/HBoxContainer"]
+[node name="TitleIcon" type="TextureRect" parent="Title/TitleBox"]
 custom_minimum_size = Vector2(18, 18)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 0
 mouse_filter = 2
 
-[node name="TitleLabel" type="Label" parent="Title/TitleBox/HBoxContainer"]
-custom_minimum_size = Vector2(24, 0)
+[node name="TitleLabel" type="Label" parent="Title/TitleBox"]
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_fonts/font = ExtResource("2_0lxvf")

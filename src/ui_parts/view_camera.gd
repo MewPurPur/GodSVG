@@ -10,7 +10,7 @@ var surface := RenderingServer.canvas_item_create()  # Used for drawing the numb
 
 func _ready() -> void:
 	RenderingServer.canvas_item_set_parent(surface, get_canvas_item())
-	SVG.root_tag.attribute_changed.connect(queue_redraw)
+	SVG.root_tag.resized.connect(queue_redraw)
 
 # Don't ask me to explain this.
 func _draw() -> void:
