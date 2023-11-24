@@ -32,6 +32,7 @@ func _on_value_changed(new_value: String) -> void:
 	line_edit.text = new_value
 	if attribute != null:
 		attribute.set_value(new_value)
+		# Add a plus button for adding a move command if empty.
 		if attribute.commands.is_empty():
 			add_move.show()
 		else:

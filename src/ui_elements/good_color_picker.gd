@@ -253,11 +253,10 @@ func _input(event: InputEvent) -> void:
 	if not visible:
 		return
 	
-	if event.is_action_pressed(&"undo"):
-		if UR.has_undo():
-			UR.undo()
-		accept_event()
-	elif event.is_action_pressed(&"redo"):
+	if event.is_action_pressed(&"redo"):
 		if UR.has_redo():
 			UR.redo()
+		accept_event()
+	elif event.is_action_pressed(&"undo") and UR.has_undo():
+		UR.undo()
 		accept_event()

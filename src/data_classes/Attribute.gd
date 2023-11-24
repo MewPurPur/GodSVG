@@ -22,12 +22,12 @@ enum SyncMode {LOUD, NO_PROPAGATION, SILENT}
 # SILENT means the attribute update is ignored fully. It only makes sense
 # if there is logic for updating the corresponding attribute editor despite that.
 
-func set_value(new_value: Variant, propagation := SyncMode.LOUD) -> void:
+func set_value(new_value: Variant, sync_mode := SyncMode.LOUD) -> void:
 	if new_value != _value:
 		_value = new_value
-		if propagation != SyncMode.SILENT:
+		if sync_mode != SyncMode.SILENT:
 			value_changed.emit(new_value)
-			if propagation == SyncMode.LOUD:
+			if sync_mode == SyncMode.LOUD:
 				propagate_value_changed.emit()
 
 func get_value() -> Variant:
