@@ -86,7 +86,7 @@ func set_new_text(svg_text: String) -> void:
 
 func _on_code_edit_text_changed() -> void:
 	SVG.text = code_edit.text
-	SVG.sync_data()
+	SVG.update_tags()
 	update_size_label()
 
 

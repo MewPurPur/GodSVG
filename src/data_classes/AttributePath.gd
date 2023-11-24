@@ -80,8 +80,8 @@ func toggle_relative_command(idx: int) -> void:
 	commands[idx].toggle_relative()
 	command_changed.emit()
 
-func set_value(path_string: Variant, _emit_attribute_changed := SyncMode.LOUD) -> void:
+func set_value(path_string: Variant, sync_mode := SyncMode.LOUD) -> void:
 	# Don't emit changed, as this rebuilds the data.
 	commands = PathDataParser.parse_path_data(path_string)
 	locate_start_points()
-	super(path_string)
+	super(path_string, sync_mode)
