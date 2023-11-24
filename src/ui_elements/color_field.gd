@@ -17,6 +17,8 @@ func set_value(new_value: String, emit_value_changed := true):
 	set_text_tint()
 	if _value != old_value and emit_value_changed:
 		value_changed.emit(_value if (is_color_valid_non_hex(_value)) else "#" + _value)
+	elif color_edit != null:
+		update_after_change()
 
 func get_value() -> String:
 	return _value
@@ -35,8 +37,7 @@ func validate(new_value: String) -> String:
 	return "000"
 
 func _on_value_changed(new_value: String) -> void:
-	color_edit.text = new_value.trim_prefix("#")
-	queue_redraw()
+	update_after_change()
 	if attribute != null:
 		attribute.set_value(new_value)
 
@@ -100,3 +101,7 @@ func _on_line_edit_text_changed(new_text: String) -> void:
 		color_edit.add_theme_color_override(&"font_color", Color(0.6, 1.0, 0.6))
 	else:
 		color_edit.add_theme_color_override(&"font_color", Color(1.0, 0.6, 0.6))
+
+func update_after_change() -> void:
+	color_edit.text = get_value().trim_prefix("#")
+	queue_redraw()

@@ -15,7 +15,7 @@ signal value_changed(new_value: String)
 var current_value: String:
 	set(new_value):
 		current_value = validate(new_value)
-		value_changed.emit(new_value)
+		value_changed.emit(current_value)
 
 
 func _ready() -> void:
@@ -27,6 +27,7 @@ func validate(new_value: String) -> String:
 	return "000"
 
 func _on_value_changed(new_value: String) -> void:
+	color_edit.remove_theme_color_override(&"font_color")
 	color_edit.text = new_value.trim_prefix("#")
 	queue_redraw()
 
