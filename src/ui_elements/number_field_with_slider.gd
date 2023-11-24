@@ -126,8 +126,8 @@ func _on_slider_gui_input(event: InputEvent) -> void:
 		slider_dragged = true
 		set_value(snappedf(lerpf(max_value, min_value,
 				(event.position.y - 4) / slider_h), slider_step))
-		return
-	slider_dragged = false
+	elif Utils.is_event_drag_end(event):
+		slider_dragged = false
 
 func _on_slider_mouse_exited() -> void:
 	slider_hovered = false
