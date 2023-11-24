@@ -22,8 +22,7 @@ func set_value(new_value: float, emit_value_changed := true) -> void:
 	if _value != old_value and emit_value_changed:
 		value_changed.emit(_value)
 	elif num_edit != null:
-		num_edit.text = String.num(_value, 4)
-		set_text_tint()
+		update_after_change()
 
 func get_value() -> float:
 	return _value
@@ -34,7 +33,6 @@ func _ready() -> void:
 	if attribute != null:
 		set_value(attribute.get_value())
 		attribute.value_changed.connect(set_value)
-		set_text_tint()
 		num_edit.tooltip_text = attribute_name
 	num_edit.text = str(get_value())
 
@@ -51,7 +49,7 @@ func validate(new_value: float) -> float:
 			return clampf(new_value, min_value, max_value)
 
 func _on_value_changed(new_value: float) -> void:
-	num_edit.text = String.num(new_value, 4)
+	update_after_change()
 	if attribute != null:
 		attribute.set_value(new_value)
 
@@ -74,3 +72,8 @@ func set_text_tint() -> void:
 			num_edit.add_theme_color_override(&"font_color", Color(0.64, 0.64, 0.64))
 		else:
 			num_edit.remove_theme_color_override(&"font_color")
+
+func update_after_change() -> void:
+	if num_edit != null:
+		num_edit.text = String.num(get_value(), 4)
+		set_text_tint()
