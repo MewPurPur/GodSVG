@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=68 format=3 uid="uid://der6fnkliqqto"]
+[gd_resource type="Theme" load_steps=72 format=3 uid="uid://der6fnkliqqto"]
 
 [ext_resource type="Texture2D" uid="uid://wdrpwa7gwmg" path="res://visual/icons/theme/GuiBoxChecked.svg" id="1_agkhv"]
 [ext_resource type="Texture2D" uid="uid://d3a3xgsb8klyk" path="res://visual/icons/theme/GuiBoxUnchecked.svg" id="2_xwib4"]
@@ -534,6 +534,22 @@ bg_color = Color(0.0627451, 0.0627451, 0.101961, 1)
 corner_radius_top_left = 5
 corner_radius_top_right = 5
 
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_usmkl"]
+content_margin_left = 2.0
+content_margin_right = 2.0
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_p0ubs"]
+content_margin_left = 2.0
+content_margin_right = 2.0
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_rx78m"]
+content_margin_left = 2.0
+content_margin_right = 2.0
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_sjt13"]
+content_margin_left = 2.0
+content_margin_right = 2.0
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1gwcd"]
 draw_center = false
 border_width_left = 2
@@ -724,6 +740,14 @@ TabContainer/styles/tab_hovered = SubResource("StyleBoxFlat_r2aev")
 TabContainer/styles/tab_selected = SubResource("StyleBoxFlat_nhytu")
 TabContainer/styles/tab_unselected = SubResource("StyleBoxFlat_c7arg")
 TabContainer/styles/tabbar_background = SubResource("StyleBoxFlat_jd7jj")
+TextButton/base_type = &"Button"
+TextButton/colors/font_color = Color(0.501961, 0.501961, 0.501961, 1)
+TextButton/colors/font_hover_color = Color(0.501961, 0.501961, 0.501961, 1)
+TextButton/colors/font_pressed_color = Color(0.866667, 0.933333, 1, 1)
+TextButton/styles/disabled = SubResource("StyleBoxEmpty_usmkl")
+TextButton/styles/hover = SubResource("StyleBoxEmpty_p0ubs")
+TextButton/styles/normal = SubResource("StyleBoxEmpty_rx78m")
+TextButton/styles/pressed = SubResource("StyleBoxEmpty_sjt13")
 TextEdit/colors/caret_color = Color(0, 0, 0, 0)
 TextEdit/colors/selection_color = Color(0.4, 0.54902, 1, 0.4)
 TextEdit/font_sizes/font_size = 12
