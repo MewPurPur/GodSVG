@@ -7,14 +7,14 @@ const CommandEditor = preload("path_command_editor.tscn")
 @onready var commands_container: VBoxContainer = $HBox/Commands
 @onready var add_move: Button = $AddMove
 
-signal value_changed(new_value: String)
+signal value_changed(new_value: String, final: bool)
 var _value: String  # Must not be updated directly.
 
-func set_value(new_value: String, emit_value_changed := true):
-	if _value != new_value:
+func set_value(new_value: String, emit_value_changed := true, final := false) -> void:
+	if _value != new_value or final:
 		_value = new_value
 		if emit_value_changed:
-			value_changed.emit(new_value)
+			value_changed.emit(new_value, final)
 
 func get_value() -> String:
 	return _value
@@ -26,12 +26,13 @@ func _ready() -> void:
 	value_changed.connect(_on_value_changed)
 	if attribute != null:
 		attribute.command_changed.connect(sync_value)
-		set_value(attribute.get_value())
+		set_value(attribute.get_value(), true, false)
 
-func _on_value_changed(new_value: String) -> void:
+func _on_value_changed(new_value: Variant, update_mode: UpdateMode) -> void:
 	line_edit.text = new_value
+	super(new_value, update_mode)
 	if attribute != null:
-		attribute.set_value(new_value)
+		# Add a plus button for adding a move command if empty.
 		if attribute.commands.is_empty():
 			add_move.show()
 		else:

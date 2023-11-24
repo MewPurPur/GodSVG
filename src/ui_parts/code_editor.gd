@@ -14,8 +14,8 @@ func _ready() -> void:
 	auto_update_text()
 	update_size_label()
 	code_edit.clear_undo_history()
-	SVG.root_tag.attribute_changed.connect(auto_update_text)
-	SVG.root_tag.child_attribute_changed.connect(auto_update_text)
+	SVG.root_tag.attribute_changed.connect(auto_update_text.unbind(1))
+	SVG.root_tag.child_attribute_changed.connect(auto_update_text.unbind(1))
 	SVG.root_tag.tag_layout_changed.connect(auto_update_text)
 	SVG.root_tag.changed_unknown.connect(auto_update_text)
 
@@ -86,7 +86,7 @@ func set_new_text(svg_text: String) -> void:
 
 func _on_code_edit_text_changed() -> void:
 	SVG.text = code_edit.text
-	SVG.sync_data()
+	SVG.update_tags()
 	update_size_label()
 
 

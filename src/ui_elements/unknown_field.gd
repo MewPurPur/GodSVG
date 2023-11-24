@@ -24,10 +24,9 @@ func _ready() -> void:
 	line_edit.text = get_value()
 	line_edit.tooltip_text = attribute_name + "\n(" + tr(&"#unknown_tooltip") + ")"
 
-func _on_value_changed(new_value: String) -> void:
+func _on_value_changed(new_value: Variant, update_mode: UpdateMode) -> void:
 	line_edit.text = new_value
-	if attribute != null:
-		attribute.set_value(new_value)
+	super(new_value, update_mode)
 
 
 func _on_text_submitted(new_text: String) -> void:

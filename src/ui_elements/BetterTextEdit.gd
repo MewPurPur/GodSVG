@@ -104,3 +104,11 @@ func _on_gui_input(event: InputEvent) -> void:
 			context_popup.set_min_width(72.0)
 			context_popup.set_btn_array(btn_arr)
 			Utils.popup_under_mouse(context_popup, event.global_position)
+	else:
+		if event.is_action_pressed(&"redo"):
+			if has_redo():
+				redo()
+			accept_event()
+		elif event.is_action_pressed(&"undo") and has_undo():
+			undo()
+			accept_event()

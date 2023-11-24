@@ -6,14 +6,14 @@ const bold_font = preload("res://visual/fonts/FontBold.ttf")
 
 @onready var indicator: LineEdit = $LineEdit
 
-signal value_changed(new_value: String)
+signal value_changed(new_value: String, complete: bool)
 var _value: String  # Must not be updated directly.
 
-func set_value(new_value: String, emit_value_changed := true):
-	if _value != new_value:
+func set_value(new_value: String, emit_value_changed := true, complete := true) -> void:
+	if _value != new_value or complete:
 		_value = new_value
 		if emit_value_changed:
-			value_changed.emit(new_value)
+			value_changed.emit(new_value, complete)
 
 func get_value() -> String:
 	return _value
@@ -22,7 +22,7 @@ func get_value() -> String:
 func _ready() -> void:
 	value_changed.connect(_on_value_changed)
 	if attribute != null:
-		set_value(attribute.get_value())
+		set_value(attribute.get_value(), true, false)
 	indicator.text = str(get_value())
 	indicator.tooltip_text = attribute_name
 
@@ -48,10 +48,10 @@ func _on_button_pressed() -> void:
 func _on_option_pressed(option: String) -> void:
 	set_value(option)
 
-func _on_value_changed(new_value: String) -> void:
+func _on_value_changed(new_value: Variant, update_mode: UpdateMode) -> void:
 	indicator.text = new_value
+	super(new_value, update_mode)
 	if attribute != null:
-		attribute.set_value(new_value)
 		set_text_tint()
 
 

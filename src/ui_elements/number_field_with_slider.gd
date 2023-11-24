@@ -13,17 +13,18 @@ var allow_higher := true
 
 var is_float := true
 
-signal value_changed(new_value: float)
+signal value_changed(new_value: float, final: bool)
 var _value: float  # Must not be updated directly.
 
-func set_value(new_value: float, emit_value_changed := true) -> void:
+func set_value(new_value: float, update_mode := UpdateMode.NORMAL) -> void:
 	if is_nan(new_value):
 		num_edit.text = String.num(_value, 4)
 		return
 	var old_value := _value
 	_value = validate(new_value)
-	if _value != old_value and emit_value_changed:
-		value_changed.emit(_value)
+	if update_mode != UpdateMode.NO_SIGNAL and\
+	(update_mode == UpdateMode.FINAL or _value != old_value):
+		value_changed.emit(_value, update_mode)
 	elif num_edit != null:
 		num_edit.text = String.num(_value, 4)
 		set_text_tint()
@@ -36,8 +37,7 @@ func get_value() -> float:
 func _ready() -> void:
 	value_changed.connect(_on_value_changed)
 	if attribute != null:
-		set_value(attribute.get_value())
-		attribute.value_changed.connect(set_value)
+		set_value(attribute.get_value(), UpdateMode.INTERMEDIATE)
 		set_text_tint()
 		num_edit.tooltip_text = attribute_name
 	num_edit.text = str(get_value())
@@ -54,10 +54,9 @@ func validate(new_value: float) -> float:
 		else:
 			return clampf(new_value, min_value, max_value)
 
-func _on_value_changed(new_value: float) -> void:
+func _on_value_changed(new_value: Variant, update_mode: UpdateMode) -> void:
 	num_edit.text = String.num(new_value, 4)
-	if attribute != null:
-		attribute.set_value(new_value)
+	super(new_value, update_mode)
 
 
 # Hacks to make LineEdit bearable.
@@ -102,8 +101,8 @@ func _draw() -> void:
 	var line_edit_size := num_edit.get_size()
 	draw_set_transform(Vector2(line_edit_size.x, 1))
 	var stylebox := StyleBoxFlat.new()
-	stylebox.corner_radius_top_right = 5
-	stylebox.corner_radius_bottom_right = 5
+	stylebox.corner_radius_top_right = 4
+	stylebox.corner_radius_bottom_right = 4
 	stylebox.bg_color = Color("#121233")
 	draw_style_box(stylebox, Rect2(Vector2.ZERO, slider_size - Vector2(1, 2)))
 	var fill_height := (slider_size.y - 4) * (get_value() - min_value) / max_value
@@ -119,13 +118,14 @@ func _on_slider_resized() -> void:
 
 func _on_slider_gui_input(event: InputEvent) -> void:
 	var slider_h := slider.get_size().y - 4
-	if event is InputEventMouseButton or event is InputEventMouseMotion:
-		if event.button_mask == MOUSE_BUTTON_LEFT:
-			slider_dragged = true
-			set_value(snappedf(lerpf(max_value, min_value,
-					(event.position.y - 4) / slider_h), slider_step))
-			return
-	slider_dragged = false
+	if Utils.is_event_drag(event):
+		slider_dragged = true
+		set_value(snappedf(lerpf(max_value, min_value, (event.position.y - 4) / slider_h),
+				slider_step), UpdateMode.INTERMEDIATE)
+	elif Utils.is_event_drag_release(event):
+		slider_dragged = false
+		set_value(snappedf(lerpf(max_value, min_value, (event.position.y - 4) / slider_h),
+				slider_step), UpdateMode.FINAL)
 
 func _on_slider_mouse_exited() -> void:
 	slider_hovered = false

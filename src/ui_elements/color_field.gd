@@ -8,15 +8,16 @@ const checkerboard = preload("res://visual/ColorButtonBG.svg")
 @onready var color_edit: LineEdit = $LineEdit
 @onready var color_popup: Popup
 
-signal value_changed(new_value: String)
+signal value_changed(new_value: String, complete: bool)
 var _value: String  # Must not be updated directly.
 
-func set_value(new_value: String, emit_value_changed := true):
+func set_value(new_value: String, emit_value_changed := true, complete := true) -> void:
 	var old_value := _value
 	_value = validate(new_value)
 	set_text_tint()
-	if _value != old_value and emit_value_changed:
-		value_changed.emit(_value if (is_color_valid_non_hex(_value)) else "#" + _value)
+	if emit_value_changed and (complete or _value != old_value):
+		value_changed.emit(_value if (is_color_valid_non_hex(_value)) else "#" + _value,
+				complete)
 
 func get_value() -> String:
 	return _value
@@ -25,7 +26,7 @@ func get_value() -> String:
 func _ready() -> void:
 	value_changed.connect(_on_value_changed)
 	if attribute != null:
-		set_value(attribute.get_value())
+		set_value(attribute.get_value(), true, false)
 	color_edit.text = get_value()
 	color_edit.tooltip_text = attribute_name
 
@@ -34,11 +35,10 @@ func validate(new_value: String) -> String:
 		return new_value.trim_prefix("#")
 	return "000"
 
-func _on_value_changed(new_value: String) -> void:
+func _on_value_changed(new_value: Variant, update_mode: UpdateMode) -> void:
 	color_edit.text = new_value.trim_prefix("#")
+	super(new_value, update_mode)
 	queue_redraw()
-	if attribute != null:
-		attribute.set_value(new_value)
 
 func _on_button_pressed() -> void:
 	color_popup = ColorPopup.instantiate()

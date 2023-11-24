@@ -261,3 +261,12 @@ static func get_parent_tid(tid: PackedInt32Array) -> PackedInt32Array:
 
 static func get_viewbox_zoom(viewbox: Rect2, width: float, height: float) -> float:
 	return minf(width / viewbox.size.x, height / viewbox.size.y)
+
+static func is_event_drag(event: InputEvent) -> bool:
+	return (event is InputEventMouseMotion and event.button_mask == MOUSE_BUTTON_LEFT) or\
+			(event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and\
+			event.is_pressed())
+
+static func is_event_drag_release(event: InputEvent) -> bool:
+	return event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and\
+			event.is_released()

@@ -23,8 +23,8 @@ func set_unknown_attributes(attribs: Array[AttributeUnknown]) -> void:
 	for attribute in unknown_attributes:
 		attribute.propagate_value_changed.connect(emit_attribute_changed)
 
-func emit_attribute_changed():
-	attribute_changed.emit()
+func emit_attribute_changed(complete: bool):
+	attribute_changed.emit(complete)
 
 func get_child_count() -> int:
 	return child_tags.size()

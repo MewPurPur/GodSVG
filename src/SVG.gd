@@ -21,18 +21,33 @@ func _ready() -> void:
 		update_text(false)
 	else:
 		text = GlobalSettings.save_data.svg_text
-		sync_data()
+		update_tags()
 	UR.clear_history()
 
 
-func sync_data() -> void:
+func update_tags() -> void:
 	var err_id := SVGParser.get_svg_syntax_error(text)
 	parsing_finished.emit(err_id)
 	if err_id == &"":
-		update_tags()
-
-func update_tags() -> void:
-	root_tag.replace_self(SVGParser.text_to_svg(text))
+		root_tag.replace_self(SVGParser.text_to_svg(text))
 
 func update_text(undo_redo := true) -> void:
-	text = SVGParser.svg_to_text(root_tag)
+	if undo_redo:
+		UR.create_action("")
+		UR.add_do_property(self, &"text", SVGParser.svg_to_text(root_tag))
+		UR.add_undo_property(self, &"text", text)
+		UR.commit_action()
+		print_stack()
+	else:
+		text = SVGParser.svg_to_text(root_tag)
+
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed(&"redo"):
+		if UR.has_redo():
+			UR.redo()
+			update_tags()
+	elif event.is_action_pressed(&"undo"):
+		if UR.has_undo():
+			UR.undo()
+			update_tags()

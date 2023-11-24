@@ -10,17 +10,17 @@ var allow_higher := true
 
 var is_float := true
 
-signal value_changed(new_value: float)
+signal value_changed(new_value: float, complete: bool)
 var _value: float  # Must not be updated directly.
 
-func set_value(new_value: float, emit_value_changed := true) -> void:
+func set_value(new_value: float, emit_value_changed := true, complete := true) -> void:
 	if is_nan(new_value):
 		num_edit.text = String.num(_value, 4)
 		return
 	var old_value := _value
 	_value = validate(new_value)
-	if _value != old_value and emit_value_changed:
-		value_changed.emit(_value)
+	if emit_value_changed and (complete or _value != old_value):
+		value_changed.emit(_value, complete)
 	elif num_edit != null:
 		num_edit.text = String.num(_value, 4)
 		set_text_tint()
@@ -32,8 +32,8 @@ func get_value() -> float:
 func _ready() -> void:
 	value_changed.connect(_on_value_changed)
 	if attribute != null:
-		set_value(attribute.get_value())
-		attribute.value_changed.connect(set_value)
+		set_value(attribute.get_value(), true, false)
+		attribute.value_changed.connect(set_value.bind(false))
 		set_text_tint()
 		num_edit.tooltip_text = attribute_name
 	num_edit.text = str(get_value())
@@ -50,10 +50,9 @@ func validate(new_value: float) -> float:
 		else:
 			return clampf(new_value, min_value, max_value)
 
-func _on_value_changed(new_value: float) -> void:
+func _on_value_changed(new_value: Variant, update_mode: UpdateMode) -> void:
 	num_edit.text = String.num(new_value, 4)
-	if attribute != null:
-		attribute.set_value(new_value)
+	super(new_value, update_mode)
 
 
 func _on_focus_exited() -> void:

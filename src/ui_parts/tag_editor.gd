@@ -29,7 +29,7 @@ var tag: Tag
 
 func _ready() -> void:
 	determine_selection_highlight()
-	tag.attribute_changed.connect(select_conditionally)
+	tag.attribute_changed.connect(select_conditionally.unbind(1))
 	Indications.selection_changed.connect(determine_selection_highlight)
 	Indications.hover_changed.connect(determine_selection_highlight)
 	# Fill up the containers. Start with unknown attributes, if there are any.

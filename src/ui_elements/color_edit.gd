@@ -1,5 +1,5 @@
 ## A color editor, not tied to any attribute.
-extends AttributeEditor
+extends HBoxContainer
 
 const ColorPopup = preload("res://src/ui_elements/color_popup.tscn")
 const ColorPickerPopup = preload("res://src/ui_elements/color_picker_popup.tscn")
@@ -20,7 +20,6 @@ var current_value: String:
 
 func _ready() -> void:
 	color_edit.text = current_value
-	color_edit.tooltip_text = attribute_name
 
 func validate(new_value: String) -> String:
 	if is_color_valid_non_hex(new_value) or new_value.is_valid_html_color():
@@ -30,8 +29,6 @@ func validate(new_value: String) -> String:
 func _on_value_changed(new_value: String) -> void:
 	color_edit.text = new_value.trim_prefix("#")
 	queue_redraw()
-	if attribute != null:
-		attribute.set_value(new_value)
 
 func _on_button_pressed() -> void:
 	if enable_palettes:
