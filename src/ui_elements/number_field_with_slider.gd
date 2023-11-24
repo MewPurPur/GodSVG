@@ -107,9 +107,12 @@ func _draw() -> void:
 	stylebox.bg_color = Color("#121233")
 	draw_style_box(stylebox, Rect2(Vector2.ZERO, slider_size - Vector2(1, 2)))
 	var fill_height := (slider_size.y - 4) * (get_value() - min_value) / max_value
-	if slider_hovered or slider_dragged:
+	if slider_dragged:
 		draw_rect(Rect2(0, 1 + slider_size.y - 4 - fill_height,
-				slider_size.x - 2, fill_height), Color("#defd"))
+				slider_size.x - 2, fill_height), Color("#def"))
+	elif slider_hovered:
+		draw_rect(Rect2(0, 1 + slider_size.y - 4 - fill_height,
+				slider_size.x - 2, fill_height), Color("#defc"))
 	else:
 		draw_rect(Rect2(0, 1 + slider_size.y - 4 - fill_height,
 				slider_size.x - 2, fill_height), Color("#defa"))
@@ -119,12 +122,11 @@ func _on_slider_resized() -> void:
 
 func _on_slider_gui_input(event: InputEvent) -> void:
 	var slider_h := slider.get_size().y - 4
-	if event is InputEventMouseButton or event is InputEventMouseMotion:
-		if event.button_mask == MOUSE_BUTTON_LEFT:
-			slider_dragged = true
-			set_value(snappedf(lerpf(max_value, min_value,
-					(event.position.y - 4) / slider_h), slider_step))
-			return
+	if Utils.is_event_drag(event) or Utils.is_event_drag_start(event):
+		slider_dragged = true
+		set_value(snappedf(lerpf(max_value, min_value,
+				(event.position.y - 4) / slider_h), slider_step))
+		return
 	slider_dragged = false
 
 func _on_slider_mouse_exited() -> void:
