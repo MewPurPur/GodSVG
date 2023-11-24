@@ -73,13 +73,13 @@ static func text_to_svg(text: String) -> TagSVG:
 				if node_name == "svg":
 					if attrib_dict.has("width"):
 						svg_tag.attributes.width.set_value(attrib_dict["width"].to_float(),
-								Attribute.UpdateType.SILENT)
+								Attribute.SyncMode.SILENT)
 					if attrib_dict.has("height"):
 						svg_tag.attributes.height.set_value(attrib_dict["height"].to_float(),
-								Attribute.UpdateType.SILENT)
+								Attribute.SyncMode.SILENT)
 					if attrib_dict.has("viewBox"):
 						svg_tag.attributes.viewBox.set_value(attrib_dict["viewBox"],
-								Attribute.UpdateType.SILENT)
+								Attribute.SyncMode.SILENT)
 					
 					var unknown: Array[AttributeUnknown] = []
 					for element in attrib_dict:
@@ -87,10 +87,10 @@ static func text_to_svg(text: String) -> TagSVG:
 							var attribute: Attribute = svg_tag.attributes[element]
 							if typeof(attribute.get_value()) == Variant.Type.TYPE_STRING:
 								attribute.set_value(attrib_dict[element],
-										Attribute.UpdateType.SILENT)
+										Attribute.SyncMode.SILENT)
 							elif typeof(attribute.get_value()) == Variant.Type.TYPE_FLOAT:
 								attribute.set_value(attrib_dict[element].to_float(),
-										Attribute.UpdateType.SILENT)
+										Attribute.SyncMode.SILENT)
 						else:
 							unknown.append(AttributeUnknown.new(element, attrib_dict[element]))
 					svg_tag.set_unknown_attributes(unknown)
@@ -111,10 +111,10 @@ static func text_to_svg(text: String) -> TagSVG:
 							var attribute: Attribute = tag.attributes[element]
 							if typeof(attribute.get_value()) == Variant.Type.TYPE_STRING:
 								attribute.set_value(attrib_dict[element],
-										Attribute.UpdateType.SILENT)
+										Attribute.SyncMode.SILENT)
 							elif typeof(attribute.get_value()) == Variant.Type.TYPE_FLOAT:
 								attribute.set_value(attrib_dict[element].to_float(),
-										Attribute.UpdateType.SILENT)
+										Attribute.SyncMode.SILENT)
 						else:
 							unknown.append(AttributeUnknown.new(element, attrib_dict[element]))
 					tag.set_unknown_attributes(unknown)
