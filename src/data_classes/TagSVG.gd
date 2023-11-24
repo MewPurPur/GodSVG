@@ -87,7 +87,7 @@ func replace_self(new_tag: Tag) -> void:
 	var old_size := get_size()
 	for attrib in attributes:
 		attributes[attrib].set_value(new_tag.attributes[attrib].get_value(),
-				Attribute.UpdateType.SILENT)
+				Attribute.SyncMode.SILENT)
 	
 	unknown_attributes.clear()
 	for attrib in new_tag.unknown_attributes:

@@ -10,7 +10,7 @@ var type: Type
 var default: Variant
 var _value: Variant
 
-enum UpdateType {LOUD, NO_PROPAGATION, SILENT}
+enum SyncMode {LOUD, NO_PROPAGATION, SILENT}
 
 # LOUD means the attribute will emit value_changed and be noticed everywhere.
 
@@ -22,12 +22,12 @@ enum UpdateType {LOUD, NO_PROPAGATION, SILENT}
 # SILENT means the attribute update is ignored fully. It only makes sense
 # if there is logic for updating the corresponding attribute editor despite that.
 
-func set_value(new_value: Variant, propagation := UpdateType.LOUD) -> void:
+func set_value(new_value: Variant, propagation := SyncMode.LOUD) -> void:
 	if new_value != _value:
 		_value = new_value
-		if propagation != UpdateType.SILENT:
+		if propagation != SyncMode.SILENT:
 			value_changed.emit(new_value)
-			if propagation == UpdateType.LOUD:
+			if propagation == SyncMode.LOUD:
 				propagate_value_changed.emit()
 
 func get_value() -> Variant:
@@ -37,4 +37,4 @@ func get_value() -> Variant:
 func _init(new_type: Type, new_default: Variant = null, new_init: Variant = null) -> void:
 	type = new_type
 	default = new_default
-	set_value(new_init if new_init != null else new_default, UpdateType.SILENT)
+	set_value(new_init if new_init != null else new_default, SyncMode.SILENT)

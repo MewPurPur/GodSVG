@@ -6,9 +6,9 @@ var rect: Rect2
 func _init() -> void:
 	type = Type.VIEWBOX
 	default = null
-	set_value(null, UpdateType.SILENT)
+	set_value(null, SyncMode.SILENT)
 
-func set_value(rect_string: Variant, _emit_attribute_changed := UpdateType.LOUD) -> void:
+func set_value(rect_string: Variant, _emit_attribute_changed := SyncMode.LOUD) -> void:
 	if rect_string != null:
 		rect = ViewboxParser.string_to_rect(rect_string)
 	super(rect_string)
