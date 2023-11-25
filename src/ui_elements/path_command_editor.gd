@@ -26,6 +26,7 @@ func update_type() -> void:
 	cmd_char = path_command.command_char
 	var command_type := cmd_char.to_upper()
 	fields.clear()
+	setup_relative_button()
 	
 	# Instantiate the input fields.
 	if command_type == "A":
@@ -198,7 +199,6 @@ func _ready() -> void:
 	Indications.selection_changed.connect(determine_selection_highlight)
 	Indications.hover_changed.connect(determine_selection_highlight)
 	determine_selection_highlight()
-	setup_relative_button()
 	more_button.pressed.connect(open_actions)
 
 
