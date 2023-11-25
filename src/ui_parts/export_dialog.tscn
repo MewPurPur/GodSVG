@@ -138,11 +138,13 @@ alignment = 1
 
 [node name="CancelButton" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/ButtonContainer"]
 layout_mode = 2
+focus_mode = 0
 mouse_default_cursor_shape = 2
 text = "#cancel"
 
 [node name="OKButton" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/ButtonContainer"]
 layout_mode = 2
+focus_mode = 0
 mouse_default_cursor_shape = 2
 text = "#export"
 

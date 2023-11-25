@@ -45,7 +45,17 @@ corner_radius_top_right = 5
 corner_radius_bottom_right = 5
 corner_radius_bottom_left = 5
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_gu1eq"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ay4gh"]
+bg_color = Color(1, 1, 1, 0.0666667)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.4, 0.8, 1, 0.8)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_h5umu"]
 content_margin_left = 6.0
@@ -651,7 +661,7 @@ default_font_size = 13
 AcceptDialog/styles/panel = SubResource("StyleBoxFlat_i4np8")
 Button/constants/h_separation = 6
 Button/styles/disabled = SubResource("StyleBoxFlat_4tonr")
-Button/styles/focus = SubResource("StyleBoxEmpty_gu1eq")
+Button/styles/focus = SubResource("StyleBoxFlat_ay4gh")
 Button/styles/hover = SubResource("StyleBoxFlat_h5umu")
 Button/styles/normal = SubResource("StyleBoxFlat_yq2fk")
 Button/styles/pressed = SubResource("StyleBoxFlat_gnyjn")
