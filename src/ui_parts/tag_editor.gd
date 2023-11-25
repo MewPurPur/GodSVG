@@ -28,10 +28,13 @@ var tid: PackedInt32Array
 var tag: Tag
 
 func _ready() -> void:
-	determine_selection_highlight()
+	title_label.text = tag.name
+	title_icon.texture = unknown_icon if tag is TagUnknown\
+			else load("res://visual/icons/tag/" + tag.name + ".svg")
 	tag.attribute_changed.connect(select_conditionally)
 	Indications.selection_changed.connect(determine_selection_highlight)
 	Indications.hover_changed.connect(determine_selection_highlight)
+	determine_selection_highlight()
 	# Fill up the containers. Start with unknown attributes, if there are any.
 	if not tag.unknown_attributes.is_empty():
 		unknown_container.show()
@@ -41,9 +44,6 @@ func _ready() -> void:
 		input_field.attribute_name = attribute.name
 		unknown_container.add_child(input_field)
 	# Continue with supported attributes.
-	title_label.text = tag.name
-	title_icon.texture = unknown_icon if tag is TagUnknown\
-			else load("res://visual/icons/tag/" + tag.name + ".svg")
 	for attribute_key in tag.attributes:
 		var attribute: Attribute = tag.attributes[attribute_key]
 		var input_field: AttributeEditor
@@ -74,8 +74,6 @@ func _ready() -> void:
 			shape_container.add_child(input_field)
 		else:
 			paint_container.add_child(input_field)
-	
-	determine_selection_highlight()
 	
 	if not tag.is_standalone():
 		var child_tags_container := VBoxContainer.new()
