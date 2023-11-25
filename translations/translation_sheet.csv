@@ -68,3 +68,6 @@
 #copy,Copy,Копирай,
 #paste,Paste,Постави,
 #cut,Cut,Изрежи,
+#alert,Alert!,Предупреждение!,
+#file_open_fail_message,"The file couldn't be opened.\nTry checking the file path, ensure that the file is not deleted, or choose a different file.","Файлът не може да бъде отворен.\nОпитайте да проверите пътя към файла, уверете се, че файла не е изтрит, или изберете различен файл.",
+#ok,OK,Добре,

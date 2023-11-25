@@ -1,8 +1,9 @@
 extends VBoxContainer
 
-const SVGFileDialog := preload("svg_file_dialog.tscn")
-const ImportWarningDialog := preload("import_warning_dialog.tscn")
-const ExportDialog := preload("export_dialog.tscn")
+const SVGFileDialog = preload("svg_file_dialog.tscn")
+const ImportWarningDialog = preload("import_warning_dialog.tscn")
+const AlertDialog = preload("alert_dialog.tscn")
+const ExportDialog = preload("export_dialog.tscn")
 
 @onready var code_edit: TextEdit = $ScriptEditor/SVGCodeEdit
 @onready var error_bar: PanelContainer = $ScriptEditor/ErrorBar
@@ -73,7 +74,14 @@ func _on_export_button_pressed() -> void:
 	get_tree().get_root().add_child(export_panel)
 
 func apply_svg_from_path(path: String) -> void:
-	var svg_text := FileAccess.open(path, FileAccess.READ).get_as_text()
+	var svg_file := FileAccess.open(path, FileAccess.READ)
+	if svg_file == null:
+		var alert_dialog := AlertDialog.instantiate()
+		get_tree().get_root().add_child(alert_dialog)
+		alert_dialog.setup("#file_open_fail_message", "#alert", 280.0)
+		return
+	
+	var svg_text := svg_file.get_as_text()
 	var warning_panel := ImportWarningDialog.instantiate()
 	warning_panel.imported.connect(set_new_text)
 	warning_panel.set_svg(svg_text)
