@@ -20,7 +20,6 @@ var path_command: PathCommand
 @onready var more_button: Button = $HBox/MoreButton
 @onready var fields_container: HBoxContainer = $HBox/Fields
 
-var fields_added_before_ready: Array[Control] = []
 var fields: Array[Control] = []
 
 func update_type() -> void:
@@ -201,8 +200,6 @@ func _ready() -> void:
 	determine_selection_highlight()
 	setup_relative_button()
 	more_button.pressed.connect(open_actions)
-	while not fields_added_before_ready.is_empty():
-		fields_container.add_child(fields_added_before_ready.pop_front())
 
 
 # Helpers
@@ -240,12 +237,12 @@ func setup_relative_button() -> void:
 
 func add_number_field() -> BetterLineEdit:
 	var new_field := MiniNumberField.instantiate()
-	safely_add_field(new_field)
+	fields_container.add_child(new_field)
 	return new_field
 
 func add_flag_field() -> Button:
 	var new_field := FlagField.instantiate()
-	safely_add_field(new_field)
+	fields_container.add_child(new_field)
 	return new_field
 
 func add_number_field_pair() -> Array[BetterLineEdit]:
@@ -255,14 +252,9 @@ func add_number_field_pair() -> Array[BetterLineEdit]:
 			[MiniNumberField.instantiate(), MiniNumberField.instantiate()]
 	hbox.add_child(new_fields[0])
 	hbox.add_child(new_fields[1])
-	safely_add_field(hbox)
+	fields_container.add_child(hbox)
 	return new_fields
 
-func safely_add_field(field: Control) -> void:
-	if fields_container == null:
-		fields_added_before_ready.append(field)
-	else:
-		fields_container.add_child(field)
 
 func _on_relative_button_pressed() -> void:
 	cmd_char = cmd_char.to_upper() if Utils.is_string_lower(cmd_char)\

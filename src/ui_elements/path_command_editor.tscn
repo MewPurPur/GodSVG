@@ -29,7 +29,6 @@ theme_override_font_sizes/font_size = 13
 
 [node name="Fields" type="HBoxContainer" parent="HBox"]
 layout_mode = 2
-theme_override_constants/separation = 5
 
 [node name="MoreButton" type="Button" parent="HBox"]
 layout_mode = 2
