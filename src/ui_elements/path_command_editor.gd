@@ -113,7 +113,7 @@ func update_type() -> void:
 # Alternative to fully rebuilding the path command editor, if the layout is unchanged.
 func sync_values(cmd: PathCommand) -> void:
 	# Instantiate the input fields.
-	match cmd_char:
+	match cmd_char.to_upper():
 		"A":
 			fields[0].set_value(cmd.rx)
 			fields[1].set_value(cmd.ry)
