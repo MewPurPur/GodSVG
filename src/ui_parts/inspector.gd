@@ -45,7 +45,7 @@ func _on_tag_container_gui_input(event: InputEvent) -> void:
 
 func _on_add_button_pressed() -> void:
 	var btn_array: Array[Button] = []
-	for tag_name in ["circle", "ellipse", "rect", "path", "line"]:
+	for tag_name in ["path", "circle", "ellipse", "rect", "line"]:
 		var add_btn := Button.new()
 		add_btn.text = tag_name
 		add_btn.add_theme_font_override(&"font", load("res://visual/fonts/FontMono.ttf"))
