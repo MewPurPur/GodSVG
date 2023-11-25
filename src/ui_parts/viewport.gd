@@ -3,6 +3,7 @@ extends SubViewport
 const ZoomMenuType = preload("res://src/ui_parts/zoom_menu.gd")
 
 const buffer_view_space = 0.8
+const zoom_reset_buffer = 0.9
 
 var zoom := 1.0
 
@@ -31,7 +32,7 @@ func resize() -> void:
 	zoom_menu.zoom_reset()
 
 func center_frame() -> void:
-	var available_size := size * buffer_view_space
+	var available_size := size * zoom_reset_buffer
 	var w_ratio: float = available_size.x / SVG.root_tag.get_width()
 	var h_ratio: float = available_size.y / SVG.root_tag.get_height()
 	zoom_menu.zoom_level = nearest_po2(ceili(minf(w_ratio, h_ratio) * 32)) / 64.0
