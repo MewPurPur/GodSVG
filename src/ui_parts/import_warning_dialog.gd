@@ -4,10 +4,12 @@ signal imported(text: String)
 
 @onready var warnings_label: RichTextLabel = %WarningsLabel
 @onready var texture_preview: TextureRect = %TexturePreview
+@onready var ok_button: Button = %ButtonContainer/OKButton
 
 var imported_text := ""
 
 func _ready() -> void:
+	ok_button.grab_focus()
 	# Convert forward and backward to show any artifacts that might occur after parsing.
 	var preview_text := SVGParser.svg_to_text(SVGParser.text_to_svg(imported_text))
 	var preview_svg := SVGParser.text_to_svg(preview_text)
