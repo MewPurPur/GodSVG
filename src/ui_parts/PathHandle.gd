@@ -15,25 +15,35 @@ x_name := &"x", y_name := &"y") -> void:
 	y_param = y_name
 	sync()
 
-func set_pos(new_pos: Vector2) -> void:
+func set_pos(new_pos: Vector2, undo_redo := false) -> void:
 	var command := path_attribute.get_command(command_index)
-	if x_param in command:
-		# Don't emit command_changed for the X change if there'll be a Y change too.
-		path_attribute.set_command_property(command_index, x_param,
-				new_pos.x - command.start.x if command.relative else new_pos.x,
-				not y_param in command)
-		pos.x = new_pos.x
+	
+	var new_coords := new_pos - command.start if command.relative else new_pos
+	
+	if undo_redo:
+		if initial_pos != new_pos:
+			path_attribute.set_command_property(command_index, x_param, new_coords.x,
+					Attribute.SyncMode.NO_PROPAGATION)
+			path_attribute.set_command_property(command_index, y_param, new_coords.y,
+					Attribute.SyncMode.FINAL)
 	else:
-		pos.x = command.start.x
-	if y_param in command:
-		path_attribute.set_command_property(command_index, y_param,
-				new_pos.y - command.start.y if command.relative else new_pos.y)
-		pos.y = new_pos.y
-	else:
-		pos.y = command.start.y
-	path_attribute.set_value(
-			PathDataParser.path_commands_to_value(path_attribute.commands))
-	super(new_pos)
+		if x_param in command:
+			# Don't emit command_changed for the X change if there'll be a Y change too.
+			path_attribute.set_command_property(command_index, x_param, new_coords.x,
+					Attribute.SyncMode.NO_PROPAGATION if (y_param in command and\
+					command.get(y_param) != new_pos.y) else Attribute.SyncMode.INTERMEDIATE)
+			pos.x = new_pos.x
+		else:
+			pos.x = command.start.x
+		if y_param in command:
+			if command.get(y_param) != new_pos.y:
+				path_attribute.set_command_property(command_index, y_param, new_coords.y,
+						Attribute.SyncMode.INTERMEDIATE)
+				pos.y = new_pos.y
+		else:
+			pos.y = command.start.y
+		path_attribute.set_value(
+				PathDataParser.path_commands_to_value(path_attribute.commands))
 
 
 func sync() -> void:

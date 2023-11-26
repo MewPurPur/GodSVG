@@ -42,7 +42,7 @@ func _ready() -> void:
 	SVG.root_tag.tags_moved_in_parent.connect(_on_tags_moved_in_parent)
 	#SVG.root_tag.tags_moved_to.connect(_on_tags_moved_to)  # TODO
 	SVG.root_tag.changed_unknown.connect(clear_selection)
-	SVG.root_tag.child_attribute_changed.connect(clear_inner_selection)
+	SVG.root_tag.child_attribute_changed.connect(clear_inner_selection.unbind(1))
 
 
 ## Override the selected tags with a single new selected tag.

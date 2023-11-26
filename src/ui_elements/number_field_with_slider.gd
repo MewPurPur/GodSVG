@@ -13,17 +13,18 @@ var allow_higher := true
 
 var is_float := true
 
-signal value_changed(new_value: float)
+signal value_changed(new_value: float, update_type: UpdateType)
 var _value: float  # Must not be updated directly.
 
-func set_value(new_value: float, emit_value_changed := true) -> void:
+func set_value(new_value: float, update_type := UpdateType.REGULAR) -> void:
 	if is_nan(new_value):
-		num_edit.text = String.num(_value, 4)
+		update_after_change()
 		return
 	var old_value := _value
 	_value = validate(new_value)
-	if _value != old_value and emit_value_changed:
-		value_changed.emit(_value)
+	if update_type != UpdateType.NO_SIGNAL and\
+	(_value != old_value or update_type == UpdateType.FINAL):
+		value_changed.emit(_value, update_type)
 	elif num_edit != null:
 		update_after_change()
 
@@ -52,10 +53,16 @@ func validate(new_value: float) -> float:
 		else:
 			return clampf(new_value, min_value, max_value)
 
-func _on_value_changed(new_value: float) -> void:
+func _on_value_changed(new_value: float, update_type: UpdateType) -> void:
 	update_after_change()
 	if attribute != null:
-		attribute.set_value(new_value)
+		match update_type:
+			UpdateType.INTERMEDIATE:
+				attribute.set_value(new_value, Attribute.SyncMode.INTERMEDIATE)
+			UpdateType.FINAL:
+				attribute.set_value(new_value, Attribute.SyncMode.FINAL)
+			_:
+				attribute.set_value(new_value)
 
 
 # Hacks to make LineEdit bearable.
@@ -87,6 +94,7 @@ func update_after_change() -> void:
 
 # Slider
 
+var initial_slider_value: float
 var slider_dragged := false:
 	set(new_value):
 		if slider_dragged != new_value:
@@ -125,13 +133,23 @@ func _on_slider_resized() -> void:
 	queue_redraw()  # Whyyyyy are their sizes wrong at first...
 
 func _on_slider_gui_input(event: InputEvent) -> void:
-	var slider_h := slider.get_size().y - 4
-	if Utils.is_event_drag(event) or Utils.is_event_drag_start(event):
-		slider_dragged = true
-		set_value(snappedf(lerpf(max_value, min_value,
-				(event.position.y - 4) / slider_h), slider_step))
-	elif Utils.is_event_drag_end(event):
-		slider_dragged = false
+	if not slider_dragged:
+		if Utils.is_event_drag_start(event):
+			slider_dragged = true
+			initial_slider_value = get_value()
+			set_value(get_slider_value_at_y(event.position.y), UpdateType.INTERMEDIATE)
+	else:
+		if Utils.is_event_drag(event):
+			set_value(get_slider_value_at_y(event.position.y), UpdateType.INTERMEDIATE)
+		elif Utils.is_event_drag_end(event):
+			slider_dragged = false
+			var final_slider_value := get_slider_value_at_y(event.position.y)
+			if initial_slider_value != final_slider_value:
+				set_value(final_slider_value, UpdateType.FINAL)
+
+func get_slider_value_at_y(y_coord: float) -> float:
+	return snappedf(lerpf(max_value, min_value,
+			(y_coord - 4) / (slider.get_size().y - 4)), slider_step)
 
 func _on_slider_mouse_exited() -> void:
 	slider_hovered = false

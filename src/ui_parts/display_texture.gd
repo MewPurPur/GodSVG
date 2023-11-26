@@ -24,10 +24,10 @@ var svg_change_pending := false
 
 func _ready() -> void:
 	#RenderingServer.canvas_item_set_parent(surface, get_canvas_item())
-	SVG.root_tag.child_attribute_changed.connect(queue_update)
 	SVG.root_tag.tag_layout_changed.connect(queue_update)
 	SVG.root_tag.changed_unknown.connect(queue_update)
-	SVG.root_tag.attribute_changed.connect(queue_update)
+	SVG.root_tag.attribute_changed.connect(queue_update.unbind(1))
+	SVG.root_tag.child_attribute_changed.connect(queue_update.unbind(1))
 	queue_update()
 
 func queue_update(svg_changed := true) -> void:
