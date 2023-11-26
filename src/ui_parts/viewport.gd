@@ -3,7 +3,7 @@ extends SubViewport
 const ZoomMenuType = preload("res://src/ui_parts/zoom_menu.gd")
 
 const buffer_view_space = 0.8
-const zoom_reset_buffer = 0.9
+const zoom_reset_buffer = 0.875
 
 var zoom := 1.0
 
