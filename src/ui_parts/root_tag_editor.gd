@@ -48,7 +48,6 @@ func update_attributes(configure_coupling := false) -> void:
 	viewbox_edit_y.set_value(true_viewbox.position.y, false)
 	viewbox_edit_w.set_value(true_viewbox.size.x, false)
 	viewbox_edit_h.set_value(true_viewbox.size.y, false)
-	update_editable()
 
 func _on_unknown_changed() -> void:
 	if GlobalSettings.save_data.viewbox_coupling and (SVG.root_tag.get_viewbox() !=\
@@ -62,6 +61,7 @@ func _on_couple_button_toggled(toggled_on: bool) -> void:
 	update_coupling_config()
 
 func update_coupling_config() -> void:
+	update_editable()
 	if SVG.root_tag.attributes.width.get_value() == NAN or\
 	SVG.root_tag.attributes.height.get_value() == NAN or\
 	SVG.root_tag.attributes.viewBox.get_value() == null:
@@ -81,7 +81,6 @@ func update_coupling_config() -> void:
 		SVG.root_tag.attributes.viewBox.set_rect_y(0.0)
 		SVG.root_tag.attributes.viewBox.set_rect_w(SVG.root_tag.get_width())
 		SVG.root_tag.attributes.viewBox.set_rect_h(SVG.root_tag.get_height())
-	update_editable()
 
 
 func update_editable() -> void:
@@ -90,9 +89,9 @@ func update_editable() -> void:
 	var is_viewbox_valid := (SVG.root_tag.attributes.viewBox.get_value() != null)
 	var coupling_on := GlobalSettings.save_data.viewbox_coupling
 	
-	width_button.button_pressed = is_width_valid
-	height_button.button_pressed = is_height_valid
-	viewbox_button.button_pressed = is_viewbox_valid
+	width_button.set_pressed_no_signal(is_width_valid)
+	height_button.set_pressed_no_signal(is_height_valid)
+	viewbox_button.set_pressed_no_signal(is_viewbox_valid)
 	
 	width_edit.editable = is_width_valid
 	height_edit.editable = is_height_valid
