@@ -2,12 +2,12 @@
 class_name CustomSpacedHBoxContainer extends Container
 
 # Array for the spacing between elements.
-var _spacing_array: Array[int]
+var _spacing_array: Array  # Array[int]
 
 func _ready() -> void:
 	sort_children.connect(_sort_children)
 
-func set_spacing_array(new_arr: Array[int]) -> void:
+func set_spacing_array(new_arr: Array) -> void:
 	_spacing_array = new_arr
 	queue_sort()
 
