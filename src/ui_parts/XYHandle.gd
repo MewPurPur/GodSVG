@@ -10,14 +10,18 @@ func _init(id: PackedInt32Array, x_ref: Attribute, y_ref: Attribute) -> void:
 	y_attribute = y_ref
 	sync()
 
-func set_pos(new_pos: Vector2) -> void:
-	if new_pos.x != pos.x:
-		x_attribute.set_value(new_pos.x, Attribute.SyncMode.LOUD if\
-				new_pos.y == pos.y else Attribute.SyncMode.NO_PROPAGATION)
-	if new_pos.y != pos.y:
-		y_attribute.set_value(new_pos.y)
+func set_pos(new_pos: Vector2, undo_redo := false) -> void:
+	if undo_redo:
+		if initial_pos != new_pos:
+			x_attribute.set_value(new_pos.x, Attribute.SyncMode.NO_PROPAGATION)
+			y_attribute.set_value(new_pos.y, Attribute.SyncMode.FINAL)
+	else:
+		if new_pos.x != pos.x:
+			x_attribute.set_value(new_pos.x, Attribute.SyncMode.INTERMEDIATE if\
+					new_pos.y == pos.y else Attribute.SyncMode.NO_PROPAGATION)
+		if new_pos.y != pos.y:
+			y_attribute.set_value(new_pos.y, Attribute.SyncMode.INTERMEDIATE)
 	pos = new_pos
-	super(new_pos)
 
 func sync() -> void:
 	pos = Vector2(x_attribute.get_value() if x_attribute != null else 0.0,

@@ -6,14 +6,14 @@ const bold_font = preload("res://visual/fonts/FontBold.ttf")
 
 @onready var indicator: LineEdit = $LineEdit
 
-signal value_changed(new_value: String)
+signal value_changed(new_value: String, update_type: UpdateType)
 var _value: String  # Must not be updated directly.
 
-func set_value(new_value: String, emit_value_changed := true):
-	if _value != new_value:
+func set_value(new_value: String, update_type := UpdateType.REGULAR):
+	if _value != new_value or update_type == UpdateType.FINAL:
 		_value = new_value
-		if emit_value_changed:
-			value_changed.emit(new_value)
+		if update_type != UpdateType.NO_SIGNAL:
+			value_changed.emit(new_value, update_type)
 
 func get_value() -> String:
 	return _value
@@ -48,10 +48,16 @@ func _on_button_pressed() -> void:
 func _on_option_pressed(option: String) -> void:
 	set_value(option)
 
-func _on_value_changed(new_value: String) -> void:
+func _on_value_changed(new_value: String, update_type: UpdateType) -> void:
 	indicator.text = new_value
 	if attribute != null:
-		attribute.set_value(new_value)
+		match update_type:
+			UpdateType.INTERMEDIATE:
+				attribute.set_value(new_value, Attribute.SyncMode.INTERMEDIATE)
+			UpdateType.FINAL:
+				attribute.set_value(new_value, Attribute.SyncMode.FINAL)
+			_:
+				attribute.set_value(new_value)
 		set_text_tint()
 
 

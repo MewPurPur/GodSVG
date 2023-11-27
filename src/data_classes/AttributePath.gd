@@ -1,7 +1,7 @@
 ## The "d" attribute of [TagPath].
 class_name AttributePath extends Attribute
 
-signal command_changed
+signal command_changed(sync_mode: SyncMode)
 
 var commands: Array[PathCommand]
 
@@ -9,7 +9,10 @@ func _init() -> void:
 	type = Type.PATHDATA
 	default = ""
 	set_value(default, SyncMode.SILENT)
+	command_changed.connect(sync_value)
 
+func sync_value(sync_mode := SyncMode.LOUD) -> void:
+	set_value(PathDataParser.path_commands_to_value(commands), sync_mode)
 
 func locate_start_points() -> void:
 	# Start points are absolute.
@@ -46,19 +49,11 @@ func get_command(idx: int) -> PathCommand:
 
 
 func set_command_property(idx: int, property: StringName, new_value: float,
-emit_command_changed := true) -> void:
-	if commands[idx].get(property) != new_value:
+sync_mode := SyncMode.LOUD) -> void:
+	if commands[idx].get(property) != new_value or sync_mode == SyncMode.FINAL:
 		commands[idx].set(property, new_value)
 		locate_start_points()
-		if emit_command_changed:
-			command_changed.emit()
-
-func add_command(command_char: String) -> void:
-	commands.append(PathCommand.translation_dict[command_char.to_upper()].new())
-	if Utils.is_string_lower(command_char):
-		commands.back().toggle_relative()
-	locate_start_points()
-	command_changed.emit()
+		command_changed.emit(sync_mode)
 
 func insert_command(idx: int, command_char: String) -> void:
 	commands.insert(idx, PathCommand.translation_dict[command_char.to_upper()].new())
@@ -81,7 +76,7 @@ func toggle_relative_command(idx: int) -> void:
 	command_changed.emit()
 
 func set_value(path_string: Variant, sync_mode := SyncMode.LOUD) -> void:
-	# Don't emit changed, as this rebuilds the data.
 	commands = PathDataParser.parse_path_data(path_string)
 	locate_start_points()
+	# Don't emit changed, as this rebuilds the data.
 	super(path_string, sync_mode)

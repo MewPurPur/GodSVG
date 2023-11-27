@@ -15,15 +15,16 @@ func _ready() -> void:
 	auto_update_text()
 	update_size_label()
 	code_edit.clear_undo_history()
-	SVG.root_tag.attribute_changed.connect(auto_update_text)
-	SVG.root_tag.child_attribute_changed.connect(auto_update_text)
+	SVG.root_tag.attribute_changed.connect(auto_update_text.unbind(1))
+	SVG.root_tag.child_attribute_changed.connect(auto_update_text.unbind(1))
 	SVG.root_tag.tag_layout_changed.connect(auto_update_text)
 	SVG.root_tag.changed_unknown.connect(auto_update_text)
 
 func auto_update_text() -> void:
 	if not code_edit.has_focus():
 		code_edit.text = SVG.text
-		update_size_label()
+		code_edit.clear_undo_history()
+	update_size_label()
 
 func update_error(err_id: StringName) -> void:
 	if err_id == &"":
@@ -95,7 +96,6 @@ func set_new_text(svg_text: String) -> void:
 func _on_code_edit_text_changed() -> void:
 	SVG.text = code_edit.text
 	SVG.update_tags()
-	update_size_label()
 
 
 func _input(event: InputEvent) -> void:
@@ -109,3 +109,5 @@ func update_size_label() -> void:
 
 func _on_svg_code_edit_focus_exited() -> void:
 	code_edit.text = SVG.text
+	if SVG.saved_text != code_edit.text:
+		SVG.update_text(true)

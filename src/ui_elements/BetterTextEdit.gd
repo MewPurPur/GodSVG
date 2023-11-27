@@ -110,6 +110,7 @@ func _on_gui_input(event: InputEvent) -> void:
 			if has_redo():
 				redo()
 			accept_event()
-		elif event.is_action_pressed(&"undo") and has_undo():
-			undo()
+		elif event.is_action_pressed(&"undo"):
+			if has_undo():
+				undo()
 			accept_event()
