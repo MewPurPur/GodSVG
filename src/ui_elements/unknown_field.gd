@@ -4,14 +4,14 @@ extends AttributeEditor
 
 @onready var line_edit: BetterLineEdit = $LineEdit
 
-signal value_changed(new_value: String)
+signal value_changed(new_value: String, update_type: UpdateType)
 var _value: String  # Must not be updated directly.
 
-func set_value(new_value: String, emit_value_changed := true):
-	if _value != new_value:
+func set_value(new_value: String, update_type := UpdateType.REGULAR):
+	if _value != new_value or update_type == UpdateType.FINAL:
 		_value = new_value
-		if emit_value_changed:
-			value_changed.emit(new_value)
+		if update_type != UpdateType.NO_SIGNAL:
+			value_changed.emit(new_value, update_type)
 
 func get_value() -> String:
 	return _value
@@ -24,10 +24,16 @@ func _ready() -> void:
 	line_edit.text = get_value()
 	line_edit.tooltip_text = attribute_name + "\n(" + tr(&"#unknown_tooltip") + ")"
 
-func _on_value_changed(new_value: String) -> void:
+func _on_value_changed(new_value: String, update_type: UpdateType) -> void:
 	line_edit.text = new_value
 	if attribute != null:
-		attribute.set_value(new_value)
+		match update_type:
+			UpdateType.INTERMEDIATE:
+				attribute.set_value(new_value, Attribute.SyncMode.INTERMEDIATE)
+			UpdateType.FINAL:
+				attribute.set_value(new_value, Attribute.SyncMode.FINAL)
+			_:
+				attribute.set_value(new_value)
 
 
 func _on_text_submitted(new_text: String) -> void:
