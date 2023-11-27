@@ -1,6 +1,16 @@
 ## An editor for a single path command.
 extends PanelContainer
 
+const spacing_dict = {
+	"A": [3, 4, 4, 4, 4, 3],
+	"C": [3, 4, 3, 4, 3],
+	"Q": [3, 4, 3],
+	"S": [3, 4, 3],
+	"M": [3],
+	"L": [3],
+	"T": [3],
+}
+
 signal cmd_update_value(idx: int, new_value: float, property: StringName)
 signal cmd_delete(idx: int)
 signal cmd_toggle_relative(idx: int)
@@ -18,7 +28,7 @@ var path_command: PathCommand
 
 @onready var relative_button: Button = $HBox/RelativeButton
 @onready var more_button: Button = $HBox/MoreButton
-@onready var fields_container: HBoxContainer = $HBox/Fields
+@onready var fields_container: CustomSpacedHBoxContainer = $HBox/Fields
 
 var fields: Array[Control] = []
 
@@ -28,11 +38,12 @@ func update_type() -> void:
 	fields.clear()
 	setup_relative_button()
 	
+	fields_container.set_spacing_array(spacing_dict[command_type])
+	
 	# Instantiate the input fields.
 	if command_type == "A":
-		var fields_rx_ry: Array[BetterLineEdit] = add_number_field_pair()
-		var field_rx := fields_rx_ry[0]
-		var field_ry := fields_rx_ry[1]
+		var field_rx: BetterLineEdit = add_number_field()
+		var field_ry: BetterLineEdit = add_number_field()
 		var field_rot: BetterLineEdit = add_number_field()
 		var field_large_arc_flag: Button = add_flag_field()
 		var field_sweep_flag: Button = add_flag_field()
@@ -61,9 +72,8 @@ func update_type() -> void:
 		fields.append(field_large_arc_flag)
 		fields.append(field_sweep_flag)
 	if command_type == "Q" or command_type == "C":
-		var fields_x1_y1: Array[BetterLineEdit] = add_number_field_pair()
-		var field_x1 := fields_x1_y1[0]
-		var field_y1 := fields_x1_y1[1]
+		var field_x1: BetterLineEdit = add_number_field()
+		var field_y1: BetterLineEdit = add_number_field()
 		field_x1.set_value(path_command.x1)
 		field_y1.set_value(path_command.y1)
 		field_x1.tooltip_text = "x1"
@@ -73,9 +83,8 @@ func update_type() -> void:
 		fields.append(field_x1)
 		fields.append(field_y1)
 	if command_type == "C" or command_type == "S":
-		var fields_x2_y2: Array[BetterLineEdit] = add_number_field_pair()
-		var field_x2 := fields_x2_y2[0]
-		var field_y2 := fields_x2_y2[1]
+		var field_x2: BetterLineEdit = add_number_field()
+		var field_y2: BetterLineEdit = add_number_field()
 		field_x2.set_value(path_command.x2)
 		field_y2.set_value(path_command.y2)
 		field_x2.tooltip_text = "x2"
@@ -98,9 +107,8 @@ func update_type() -> void:
 			field_y.value_changed.connect(update_value.bind(&"y"))
 			fields.append(field_y)
 		else:
-			var fields_x_y: Array[BetterLineEdit] = add_number_field_pair()
-			var field_x := fields_x_y[0]
-			var field_y := fields_x_y[1]
+			var field_x: BetterLineEdit = add_number_field()
+			var field_y: BetterLineEdit = add_number_field()
 			field_x.set_value(path_command.x)
 			field_x.tooltip_text = "x"
 			field_y.set_value(path_command.y)
@@ -244,16 +252,6 @@ func add_flag_field() -> Button:
 	var new_field := FlagField.instantiate()
 	fields_container.add_child(new_field)
 	return new_field
-
-func add_number_field_pair() -> Array[BetterLineEdit]:
-	var hbox := HBoxContainer.new()
-	hbox.add_theme_constant_override(&"separation", 3)
-	var new_fields: Array[BetterLineEdit] =\
-			[MiniNumberField.instantiate(), MiniNumberField.instantiate()]
-	hbox.add_child(new_fields[0])
-	hbox.add_child(new_fields[1])
-	fields_container.add_child(hbox)
-	return new_fields
 
 
 func _on_relative_button_pressed() -> void:

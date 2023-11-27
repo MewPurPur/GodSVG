@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://dcdrc3r60bgg3"]
+[gd_scene load_steps=6 format=3 uid="uid://dcdrc3r60bgg3"]
 
 [ext_resource type="Script" path="res://src/ui_elements/path_command_editor.gd" id="1_om2fk"]
 [ext_resource type="FontFile" uid="uid://dtb4wkus51hxs" path="res://visual/fonts/FontMono.ttf" id="2_o5eem"]
 [ext_resource type="Texture2D" uid="uid://cmepkbqde0jh0" path="res://visual/icons/SmallMore.svg" id="3_a76tm"]
+[ext_resource type="Script" path="res://src/ui_elements/CustomSpacedHBoxContainer.gd" id="3_p38uu"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_sewij"]
 
@@ -27,8 +28,9 @@ theme_override_colors/font_color = Color(0.866667, 0.933333, 1, 1)
 theme_override_fonts/font = ExtResource("2_o5eem")
 theme_override_font_sizes/font_size = 13
 
-[node name="Fields" type="HBoxContainer" parent="HBox"]
+[node name="Fields" type="Container" parent="HBox"]
 layout_mode = 2
+script = ExtResource("3_p38uu")
 
 [node name="MoreButton" type="Button" parent="HBox"]
 layout_mode = 2
