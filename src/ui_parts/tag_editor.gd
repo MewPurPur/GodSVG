@@ -31,7 +31,7 @@ func _ready() -> void:
 	title_label.text = tag.name
 	title_icon.texture = unknown_icon if tag is TagUnknown\
 			else load("res://visual/icons/tag/" + tag.name + ".svg")
-	tag.attribute_changed.connect(select_conditionally)
+	tag.attribute_changed.connect(select_conditionally.unbind(1))
 	Indications.selection_changed.connect(determine_selection_highlight)
 	Indications.hover_changed.connect(determine_selection_highlight)
 	determine_selection_highlight()

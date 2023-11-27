@@ -8,15 +8,17 @@ const checkerboard = preload("res://visual/ColorButtonBG.svg")
 @onready var color_edit: LineEdit = $LineEdit
 @onready var color_popup: Popup
 
-signal value_changed(new_value: String)
+signal value_changed(new_value: String, update_type: UpdateType)
 var _value: String  # Must not be updated directly.
 
-func set_value(new_value: String, emit_value_changed := true):
+func set_value(new_value: String, update_type := UpdateType.REGULAR):
 	var old_value := _value
 	_value = validate(new_value)
 	set_text_tint()
-	if _value != old_value and emit_value_changed:
-		value_changed.emit(_value if (is_color_valid_non_hex(_value)) else "#" + _value)
+	if update_type != UpdateType.NO_SIGNAL and\
+	(_value != old_value or update_type == UpdateType.FINAL):
+		var emitted_value = _value if (is_color_valid_non_hex(_value)) else "#" + _value
+		value_changed.emit(emitted_value, update_type)
 	elif color_edit != null:
 		update_after_change()
 
@@ -36,10 +38,16 @@ func validate(new_value: String) -> String:
 		return new_value.trim_prefix("#")
 	return "000"
 
-func _on_value_changed(new_value: String) -> void:
+func _on_value_changed(new_value: String, update_type: UpdateType) -> void:
 	update_after_change()
 	if attribute != null:
-		attribute.set_value(new_value)
+		match update_type:
+			UpdateType.INTERMEDIATE:
+				attribute.set_value(new_value, Attribute.SyncMode.INTERMEDIATE)
+			UpdateType.FINAL:
+				attribute.set_value(new_value, Attribute.SyncMode.FINAL)
+			_:
+				attribute.set_value(new_value)
 
 func _on_button_pressed() -> void:
 	color_popup = ColorPopup.instantiate()
@@ -71,9 +79,11 @@ func _on_text_submitted(new_text: String) -> void:
 
 
 func _on_color_picked(new_color: String, close_picker: bool) -> void:
-	set_value(new_color)
 	if close_picker:
 		color_popup.queue_free()
+		set_value(new_color, UpdateType.FINAL)
+	else:
+		set_value(new_color, UpdateType.INTERMEDIATE)
 
 func is_color_valid_non_hex(color: String) -> bool:
 	return color == "none" or Utils.named_colors.has(color) or\

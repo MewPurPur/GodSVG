@@ -53,8 +53,8 @@ var surface := RenderingServer.canvas_item_create()
 func _ready() -> void:
 	RenderingServer.canvas_item_set_parent(surface, get_canvas_item())
 	SVG.root_tag.resized.connect(update_dimensions)
-	SVG.root_tag.child_attribute_changed.connect(queue_redraw)
-	SVG.root_tag.child_attribute_changed.connect(sync_handles)
+	SVG.root_tag.child_attribute_changed.connect(queue_redraw.unbind(1))
+	SVG.root_tag.child_attribute_changed.connect(sync_handles.unbind(1))
 	SVG.root_tag.tag_layout_changed.connect(queue_update)
 	SVG.root_tag.changed_unknown.connect(queue_update)
 	SVG.root_tag.changed_unknown.connect(update_dimensions)
@@ -691,6 +691,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		# React to LMB actions.
 		if hovered_handle != null and event.is_pressed():
 			dragged_handle = hovered_handle
+			dragged_handle.initial_pos = dragged_handle.pos
 			var inner_idx = -1
 			if hovered_handle is PathHandle:
 				inner_idx = hovered_handle.command_index
@@ -707,7 +708,7 @@ func _unhandled_input(event: InputEvent) -> void:
 				var new_pos := convert_out(event_pos)
 				if snap_enabled:
 					new_pos = new_pos.snapped(snap_vector)
-				dragged_handle.set_pos(new_pos)
+				dragged_handle.set_pos(new_pos, true)
 				was_handle_moved = false
 			dragged_handle = null
 		elif hovered_handle == null and event.is_pressed():

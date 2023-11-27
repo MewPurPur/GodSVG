@@ -2,7 +2,7 @@
 class_name Attribute extends RefCounted
 
 signal value_changed(new_value: Variant)
-signal propagate_value_changed()
+signal propagate_value_changed(undo_redo: bool)
 
 enum Type {UNKNOWN, INT, FLOAT, UFLOAT, NFLOAT, COLOR, PATHDATA, ENUM, VIEWBOX}
 var type: Type
@@ -10,9 +10,17 @@ var type: Type
 var default: Variant
 var _value: Variant
 
-enum SyncMode {LOUD, NO_PROPAGATION, SILENT}
+enum SyncMode {LOUD, INTERMEDIATE, FINAL, NO_PROPAGATION, SILENT}
 
 # LOUD means the attribute will emit value_changed and be noticed everywhere.
+
+# INTERMEDIATE is the same as LOUD, but doesn't create an UndoRedo action.
+# Can be used to update an attribute continuously (i.e. dragging a color).
+
+# FINAL is the same as LOUD, but it runs even if the new value is the same.
+# This can be used to force an UndoRedo action after some intermediate changes.
+# Note that the attribute is not responsible for making sure the new value is
+# different from the previous one in the UndoRedo, this must be handled in the widgets.
 
 # NO_PROPAGATION means the tag won't learn about it. This can allow the attribute change
 # to be noted by an attribute editor without the SVG text being updated.
@@ -23,12 +31,12 @@ enum SyncMode {LOUD, NO_PROPAGATION, SILENT}
 # if there is logic for updating the corresponding attribute editor despite that.
 
 func set_value(new_value: Variant, sync_mode := SyncMode.LOUD) -> void:
-	if new_value != _value:
+	if new_value != _value or sync_mode == SyncMode.FINAL:
 		_value = new_value
 		if sync_mode != SyncMode.SILENT:
 			value_changed.emit(new_value)
-			if sync_mode == SyncMode.LOUD:
-				propagate_value_changed.emit()
+			if sync_mode != SyncMode.NO_PROPAGATION:
+				propagate_value_changed.emit(sync_mode != SyncMode.INTERMEDIATE)
 
 func get_value() -> Variant:
 	return _value

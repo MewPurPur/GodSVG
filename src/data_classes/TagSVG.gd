@@ -5,7 +5,7 @@ class_name TagSVG extends Tag
 # resized will emit even after unknown changes.
 signal resized
 
-signal child_attribute_changed
+signal child_attribute_changed(undo_redo: bool)
 signal changed_unknown
 
 signal tags_added(tids: Array[PackedInt32Array])
@@ -239,9 +239,9 @@ func duplicate_tags(tids: Array[PackedInt32Array]) -> void:
 	tag_layout_changed.emit()
 
 
-func emit_child_attribute_changed() -> void:
-	child_attribute_changed.emit()
+func emit_child_attribute_changed(undo_redo: bool) -> void:
+	child_attribute_changed.emit(undo_redo)
 
-func emit_attribute_changed() -> void:
-	super()
+func emit_attribute_changed(undo_redo: bool) -> void:
+	super(undo_redo)
 	resized.emit()
