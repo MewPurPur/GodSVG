@@ -34,14 +34,15 @@ var fields: Array[Control] = []
 
 func update_type() -> void:
 	cmd_char = path_command.command_char
-	var command_type := cmd_char.to_upper()
+	var cmd_type := cmd_char.to_upper()
 	fields.clear()
 	setup_relative_button()
 	
-	fields_container.set_spacing_array(spacing_dict[command_type])
+	var spacing: Array = spacing_dict[cmd_type] if cmd_type in spacing_dict else []
+	fields_container.set_spacing_array(spacing)
 	
 	# Instantiate the input fields.
-	if command_type == "A":
+	if cmd_type == "A":
 		var field_rx: BetterLineEdit = add_number_field()
 		var field_ry: BetterLineEdit = add_number_field()
 		var field_rot: BetterLineEdit = add_number_field()
@@ -71,7 +72,7 @@ func update_type() -> void:
 		fields.append(field_rot)
 		fields.append(field_large_arc_flag)
 		fields.append(field_sweep_flag)
-	if command_type == "Q" or command_type == "C":
+	if cmd_type == "Q" or cmd_type == "C":
 		var field_x1: BetterLineEdit = add_number_field()
 		var field_y1: BetterLineEdit = add_number_field()
 		field_x1.set_value(path_command.x1)
@@ -82,7 +83,7 @@ func update_type() -> void:
 		field_y1.value_changed.connect(update_value.bind(&"y1"))
 		fields.append(field_x1)
 		fields.append(field_y1)
-	if command_type == "C" or command_type == "S":
+	if cmd_type == "C" or cmd_type == "S":
 		var field_x2: BetterLineEdit = add_number_field()
 		var field_y2: BetterLineEdit = add_number_field()
 		field_x2.set_value(path_command.x2)
@@ -93,14 +94,14 @@ func update_type() -> void:
 		field_y2.value_changed.connect(update_value.bind(&"y2"))
 		fields.append(field_x2)
 		fields.append(field_y2)
-	if command_type != "Z":
-		if command_type == "H":
+	if cmd_type != "Z":
+		if cmd_type == "H":
 			var field_x: BetterLineEdit = add_number_field()
 			field_x.set_value(path_command.x)
 			field_x.tooltip_text = "x"
 			field_x.value_changed.connect(update_value.bind(&"x"))
 			fields.append(field_x)
-		elif command_type == "V":
+		elif cmd_type == "V":
 			var field_y: BetterLineEdit = add_number_field()
 			field_y.set_value(path_command.y)
 			field_y.tooltip_text ="y"
@@ -207,7 +208,6 @@ func _ready() -> void:
 	Indications.selection_changed.connect(determine_selection_highlight)
 	Indications.hover_changed.connect(determine_selection_highlight)
 	determine_selection_highlight()
-	more_button.pressed.connect(open_actions)
 
 
 # Helpers
