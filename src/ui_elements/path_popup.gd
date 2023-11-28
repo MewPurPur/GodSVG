@@ -10,6 +10,7 @@ signal path_command_picked(new_command: String)
 
 func _ready() -> void:
 	relative_toggle.toggled.connect(_on_relative_toggle_toggled)
+	relative_toggle.button_pressed = GlobalSettings.save_data.path_command_relative
 	for command_button in command_container.get_children():
 		command_button.pressed_custom.connect(emit_picked)
 
@@ -18,6 +19,7 @@ func emit_picked(cmd_char: String) -> void:
 	hide()
 
 func _on_relative_toggle_toggled(toggled_on: bool) -> void:
+	GlobalSettings.modify_save_data("path_command_relative", toggled_on)
 	for command_button in command_container.get_children():
 		if toggled_on:
 			command_button.command_char = command_button.command_char.to_lower()
