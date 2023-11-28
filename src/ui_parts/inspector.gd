@@ -19,9 +19,8 @@ func full_rebuild() -> void:
 	svg_tag_editor.tag = SVG.root_tag
 	# Only add the first level of tags, they will automatically add their children.
 	for tag_idx in SVG.root_tag.get_child_count():
-		var tag := SVG.root_tag.child_tags[tag_idx]
 		var tag_editor := TagEditor.instantiate()
-		tag_editor.tag = tag
+		tag_editor.tag = SVG.root_tag.child_tags[tag_idx]
 		tag_editor.tid = PackedInt32Array([tag_idx])
 		tags_container.add_child(tag_editor)
 

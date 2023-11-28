@@ -63,7 +63,6 @@ stretch_mode = 1
 
 [node name="TexturePreview" type="TextureRect" parent="PanelContainer/MarginContainer/VBoxContainer/TextureContainer/Checkerboard"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(128, 128)
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0

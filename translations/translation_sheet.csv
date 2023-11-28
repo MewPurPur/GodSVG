@@ -28,6 +28,7 @@
 #move_down,Move Down,Премести надолу,Nach unten
 #delete,Delete,Премахни,Löschen
 #insert_after,Insert After,Вмъкни отпред,Danach einsetzen
+#convert_to,Convert To,Превърни в,
 #err_empty_svg,SVG is empty.,Текстът е празен.,SVG ist leer.
 #err_not_svg,Doesn’t describe a SVG.,Текстът не описва SVG.,Beschreibt kein SVG.
 #err_improper_nesting,Improper nesting.,Несъвместими тагове.,Ungültige Formatierung.

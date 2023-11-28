@@ -15,11 +15,12 @@ signal cmd_update_value(idx: int, new_value: float, property: StringName)
 signal cmd_delete(idx: int)
 signal cmd_toggle_relative(idx: int)
 signal cmd_insert_after(idx: int, cmd_char: String)
+signal cmd_convert_to(idx: int, cmd_char: String)
 
 const ContextPopup = preload("res://src/ui_elements/context_popup.tscn")
 const MiniNumberField = preload("mini_number_field.tscn")
 const FlagField = preload("flag_field.tscn")
-const PathCommandPopup = preload("path_command_popup.tscn")
+const PathCommandPopup = preload("path_popup.tscn")
 
 var tid := PackedInt32Array()
 var cmd_char := ""
@@ -171,9 +172,22 @@ func toggle_relative() -> void:
 func insert_after() -> void:
 	var command_picker := PathCommandPopup.instantiate()
 	add_child(command_picker)
-	command_picker.disable_invalid(cmd_char)
-	command_picker.path_command_picked.connect(_on_path_command_picked)
-	Utils.popup_under_control(command_picker, more_button, true)
+	match cmd_char.to_upper():
+		"M": command_picker.disable_invalid(["M", "Z", "T"])
+		"Z": command_picker.disable_invalid(["Z"])
+		"L", "H", "V", "A": command_picker.disable_invalid(["S", "T"])
+		"C", "S": command_picker.disable_invalid(["T"])
+		"Q", "T": command_picker.disable_invalid(["S"])
+	command_picker.path_command_picked.connect(_on_insert_path_command_picked)
+	Utils.popup_under_control_centered(command_picker, more_button)
+
+func convert_to() -> void:
+	var command_picker := PathCommandPopup.instantiate()
+	add_child(command_picker)
+	command_picker.force_relativity(Utils.is_string_lower(cmd_char))
+	command_picker.disable_invalid([cmd_char.to_upper()])
+	command_picker.path_command_picked.connect(_on_convert_path_command_picked)
+	Utils.popup_under_control_centered(command_picker, more_button)
 
 func open_actions(popup_from_mouse := false) -> void:
 	Indications.normal_select(tid, cmd_idx)
@@ -183,7 +197,6 @@ func open_actions(popup_from_mouse := false) -> void:
 	var delete_btn := Button.new()
 	delete_btn.text = tr(&"#delete")
 	delete_btn.icon = load("res://visual/icons/Delete.svg")
-	delete_btn.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	delete_btn.alignment = HORIZONTAL_ALIGNMENT_LEFT
 	delete_btn.pressed.connect(delete)
 	buttons_arr.append(delete_btn)
@@ -191,17 +204,24 @@ func open_actions(popup_from_mouse := false) -> void:
 	var insert_after_btn := Button.new()
 	insert_after_btn.text = tr(&"#insert_after")
 	insert_after_btn.icon = load("res://visual/icons/Plus.svg")
-	insert_after_btn.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	insert_after_btn.alignment = HORIZONTAL_ALIGNMENT_LEFT
 	insert_after_btn.pressed.connect(insert_after)
 	buttons_arr.append(insert_after_btn)
+	
+	if cmd_idx != 0:
+		var convert_btn := Button.new()
+		convert_btn.text = tr(&"#convert_to")
+		convert_btn.icon = load("res://visual/icons/Reload.svg")
+		convert_btn.alignment = HORIZONTAL_ALIGNMENT_LEFT
+		convert_btn.pressed.connect(convert_to)
+		buttons_arr.append(convert_btn)
 	
 	add_child(action_popup)
 	action_popup.set_btn_array(buttons_arr)
 	if popup_from_mouse:
 		Utils.popup_under_mouse(action_popup, get_global_mouse_position())
 	else:
-		Utils.popup_under_control(action_popup, more_button, true)
+		Utils.popup_under_control_centered(action_popup, more_button)
 
 
 func _ready() -> void:
@@ -259,8 +279,11 @@ func _on_relative_button_pressed() -> void:
 			else cmd_char.to_lower()
 	setup_relative_button()
 
-func _on_path_command_picked(new_command: String) -> void:
+func _on_insert_path_command_picked(new_command: String) -> void:
 	cmd_insert_after.emit(cmd_idx + 1, new_command)
+
+func _on_convert_path_command_picked(new_command: String) -> void:
+	cmd_convert_to.emit(cmd_idx, new_command)
 
 func _on_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.is_pressed():

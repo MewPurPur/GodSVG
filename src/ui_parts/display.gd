@@ -37,21 +37,18 @@ func _on_visuals_button_pressed() -> void:
 	var btn_arr: Array[Button] = []
 	var show_visuals_btn := CheckBox.new()
 	show_visuals_btn.text = tr(&"#show_grid")
-	show_visuals_btn.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	show_visuals_btn.button_pressed = grid_visuals.visible
 	show_visuals_btn.alignment = HORIZONTAL_ALIGNMENT_LEFT
 	show_visuals_btn.pressed.connect(toggle_grid_visuals)
 	
 	var show_handles_btn := CheckBox.new()
 	show_handles_btn.text = tr(&"#show_handles")
-	show_handles_btn.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	show_handles_btn.button_pressed = controls.visible
 	show_handles_btn.alignment = HORIZONTAL_ALIGNMENT_LEFT
 	show_handles_btn.pressed.connect(toggle_handles_visuals)
 	
 	var rasterize_btn := CheckBox.new()
 	rasterize_btn.text = tr(&"#rasterize_svg")
-	rasterize_btn.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	rasterize_btn.button_pressed = viewport.display_texture.rasterized
 	rasterize_btn.alignment = HORIZONTAL_ALIGNMENT_LEFT
 	rasterize_btn.pressed.connect(toggle_rasterization)
@@ -60,13 +57,12 @@ func _on_visuals_button_pressed() -> void:
 	var visuals_popup := ContextPopup.instantiate()
 	add_child(visuals_popup)
 	visuals_popup.set_btn_array(btn_arr)
-	Utils.popup_under_control(visuals_popup, visuals_button, true)
+	Utils.popup_under_control_centered(visuals_popup, visuals_button)
 
 func _on_more_options_pressed() -> void:
 	var open_repo_btn := Button.new()
 	open_repo_btn.text = tr(&"#repo_button_text")
 	open_repo_btn.icon = load("res://visual/icons/Link.svg")
-	open_repo_btn.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	open_repo_btn.alignment = HORIZONTAL_ALIGNMENT_LEFT
 	open_repo_btn.pressed.connect(open_godsvg_repo)
 	
@@ -74,21 +70,18 @@ func _on_more_options_pressed() -> void:
 	about_btn.text = tr(&"#about_button_text")
 	about_btn.icon = load("res://visual/icon.svg")
 	about_btn.expand_icon = true
-	about_btn.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	about_btn.alignment = HORIZONTAL_ALIGNMENT_LEFT
 	about_btn.pressed.connect(open_about)
 	
 	var docs_btn := Button.new()
 	docs_btn.text = tr(&"#docs_button_text")
 	docs_btn.icon = load("res://visual/icons/Docs.svg")
-	docs_btn.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	docs_btn.alignment = HORIZONTAL_ALIGNMENT_LEFT
 	docs_btn.pressed.connect(open_docs)
 	
 	var donate_btn := Button.new()
 	donate_btn.text = tr(&"#donate_button_text")
 	donate_btn.icon = load("res://visual/icons/Heart.svg")
-	donate_btn.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	donate_btn.alignment = HORIZONTAL_ALIGNMENT_LEFT
 	donate_btn.pressed.connect(open_sponsor)
 	
@@ -96,7 +89,7 @@ func _on_more_options_pressed() -> void:
 	var more_popup := ContextPopup.instantiate()
 	add_child(more_popup)
 	more_popup.set_btn_array(buttons_arr)
-	Utils.popup_under_control(more_popup, more_button, true)
+	Utils.popup_under_control_centered(more_popup, more_button)
 
 func open_godsvg_repo() -> void:
 	OS.shell_open("https://github.com/MewPurPur/GodSVG")
