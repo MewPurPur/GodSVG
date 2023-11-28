@@ -1,16 +1,16 @@
 [gd_scene load_steps=3 format=3 uid="uid://bvnheiqqay5ke"]
 
-[ext_resource type="Script" path="res://src/ui_elements/path_popup.gd" id="1_tu0li"]
-[ext_resource type="PackedScene" uid="uid://co2btefrqrm0e" path="res://src/ui_elements/path_command_button.tscn" id="2_dbt8s"]
+[ext_resource type="Script" path="res://src/ui_elements/path_popup.gd" id="1_j10aq"]
+[ext_resource type="PackedScene" uid="uid://co2btefrqrm0e" path="res://src/ui_elements/path_command_button.tscn" id="2_1jd8y"]
 
 [node name="PathCommandPopup" type="Popup"]
 transparent_bg = true
-size = Vector2i(240, 285)
+size = Vector2i(236, 282)
 visible = true
-script = ExtResource("1_tu0li")
+script = ExtResource("1_j10aq")
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
-custom_minimum_size = Vector2(240, 0)
+custom_minimum_size = Vector2(236, 0)
 offset_right = 106.0
 offset_bottom = 97.0
 
@@ -42,52 +42,62 @@ unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 0
 
-[node name="M" parent="PanelContainer/VBoxContainer/CommandContainer" instance=ExtResource("2_dbt8s")]
+[node name="M" parent="PanelContainer/VBoxContainer/CommandContainer" instance=ExtResource("2_1jd8y")]
 layout_mode = 2
+focus_mode = 0
 command_char = "M"
 command_text = "Move to"
 
-[node name="L" parent="PanelContainer/VBoxContainer/CommandContainer" instance=ExtResource("2_dbt8s")]
+[node name="L" parent="PanelContainer/VBoxContainer/CommandContainer" instance=ExtResource("2_1jd8y")]
 layout_mode = 2
+focus_mode = 0
 command_char = "L"
 command_text = "Line to"
 
-[node name="H" parent="PanelContainer/VBoxContainer/CommandContainer" instance=ExtResource("2_dbt8s")]
+[node name="H" parent="PanelContainer/VBoxContainer/CommandContainer" instance=ExtResource("2_1jd8y")]
 layout_mode = 2
+focus_mode = 0
 command_char = "H"
 command_text = "Horizontal Line to"
 
-[node name="V" parent="PanelContainer/VBoxContainer/CommandContainer" instance=ExtResource("2_dbt8s")]
+[node name="V" parent="PanelContainer/VBoxContainer/CommandContainer" instance=ExtResource("2_1jd8y")]
 layout_mode = 2
+focus_mode = 0
 command_char = "V"
 command_text = "Vertical Line to"
 
-[node name="Z" parent="PanelContainer/VBoxContainer/CommandContainer" instance=ExtResource("2_dbt8s")]
+[node name="Z" parent="PanelContainer/VBoxContainer/CommandContainer" instance=ExtResource("2_1jd8y")]
 layout_mode = 2
+focus_mode = 0
 command_char = "Z"
 command_text = "Close Path"
 
-[node name="A" parent="PanelContainer/VBoxContainer/CommandContainer" instance=ExtResource("2_dbt8s")]
+[node name="A" parent="PanelContainer/VBoxContainer/CommandContainer" instance=ExtResource("2_1jd8y")]
 layout_mode = 2
+focus_mode = 0
 command_char = "A"
 command_text = "Elliptical Arc to"
 
-[node name="Q" parent="PanelContainer/VBoxContainer/CommandContainer" instance=ExtResource("2_dbt8s")]
+[node name="Q" parent="PanelContainer/VBoxContainer/CommandContainer" instance=ExtResource("2_1jd8y")]
 layout_mode = 2
+focus_mode = 0
 command_char = "Q"
 command_text = "Quadratic Bezier to"
 
-[node name="T" parent="PanelContainer/VBoxContainer/CommandContainer" instance=ExtResource("2_dbt8s")]
+[node name="T" parent="PanelContainer/VBoxContainer/CommandContainer" instance=ExtResource("2_1jd8y")]
 layout_mode = 2
+focus_mode = 0
 command_char = "T"
 command_text = "Shorthand Quadratic Bezier to"
 
-[node name="C" parent="PanelContainer/VBoxContainer/CommandContainer" instance=ExtResource("2_dbt8s")]
+[node name="C" parent="PanelContainer/VBoxContainer/CommandContainer" instance=ExtResource("2_1jd8y")]
 layout_mode = 2
+focus_mode = 0
 command_char = "C"
 command_text = "Cubic Bezier to"
 
-[node name="S" parent="PanelContainer/VBoxContainer/CommandContainer" instance=ExtResource("2_dbt8s")]
+[node name="S" parent="PanelContainer/VBoxContainer/CommandContainer" instance=ExtResource("2_1jd8y")]
 layout_mode = 2
+focus_mode = 0
 command_char = "S"
 command_text = "Shorthand Cubic Bezier to"

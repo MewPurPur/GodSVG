@@ -23,10 +23,11 @@ func _ready() -> void:
 	scale_edit.min_value = 1/minf(dimensions.x, dimensions.y)
 	update_dimensions_label()
 	update_final_scale()
-	var scaling_factor := 512.0 / maxf(dimensions.x, dimensions.y)
+	var scaling_factor := texture_preview.size.x * 2.0 / maxf(dimensions.x, dimensions.y)
 	var img := Image.new()
 	img.load_svg_from_string(SVG.text, scaling_factor)
 	if not img.is_empty():
+		img.fix_alpha_edges()
 		texture_preview.texture = ImageTexture.create_from_image(img)
 
 
@@ -62,6 +63,7 @@ func export(path: String) -> void:
 		"png":
 			var img := texture_preview.texture.get_image()
 			var exported_size := dimensions * upscale_amount
+			img.fix_alpha_edges()  # See godot issue 82579.
 			# It's a single SVG, so just use the most expensive interpolation.
 			img.resize(int(exported_size.x), int(exported_size.y), Image.INTERPOLATE_LANCZOS)
 			img.save_png(path)

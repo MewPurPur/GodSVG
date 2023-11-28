@@ -17,7 +17,6 @@ x_name := &"x", y_name := &"y") -> void:
 
 func set_pos(new_pos: Vector2, undo_redo := false) -> void:
 	var command := path_attribute.get_command(command_index)
-	
 	var new_coords := new_pos - command.start if command.relative else new_pos
 	
 	if undo_redo:

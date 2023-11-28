@@ -15,7 +15,9 @@ config/tags=PackedStringArray("project")
 run/main_scene="res://src/ui_parts/main_scene.tscn"
 config/features=PackedStringArray("4.2", "Forward Plus")
 run/low_processor_mode=true
-boot_splash/bg_color=Color(0.123, 0.1275, 0.15, 1)
+boot_splash/bg_color=Color(0.1065, 0.1181, 0.15, 1)
+boot_splash/image="res://visual/splash.png"
+boot_splash/fullsize=false
 config/icon="res://visual/icon.png"
 
 [audio]

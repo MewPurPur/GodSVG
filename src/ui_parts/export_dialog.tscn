@@ -54,14 +54,14 @@ horizontal_alignment = 1
 layout_mode = 2
 theme_override_constants/separation = 12
 
-[node name="TextureRect" type="TextureRect" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="Checkerboard" type="TextureRect" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
 material = SubResource("ShaderMaterial_y7eee")
 custom_minimum_size = Vector2(128, 128)
 layout_mode = 2
 texture = ExtResource("3_q8p2p")
 stretch_mode = 1
 
-[node name="TexturePreview" type="TextureRect" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/TextureRect"]
+[node name="TexturePreview" type="TextureRect" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/Checkerboard"]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 15
@@ -69,7 +69,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-expand_mode = 3
+expand_mode = 2
 stretch_mode = 5
 
 [node name="MarginContainer" type="MarginContainer" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]

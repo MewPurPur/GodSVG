@@ -383,7 +383,7 @@ func _draw() -> void:
 							var prevQ_idx := cmd_idx - 1
 							var prevQ_cmd := pathdata.get_command(prevQ_idx)
 							while prevQ_idx >= 0:
-								if prevQ_cmd.command_char.to_upper() == "Q":
+								if prevQ_cmd.command_char.to_upper() != "T":
 									break
 								elif prevQ_cmd.command_char.to_upper() != "T":
 									# Invalid T is drawn as a line.
@@ -398,12 +398,19 @@ func _draw() -> void:
 									prevQ_cmd = pathdata.get_command(prevQ_idx)
 							if prevQ_idx == -1:
 								continue
-							var prevQ_v := Vector2(prevQ_cmd.x, prevQ_cmd.y)
-							var prevQ_v1 := Vector2(prevQ_cmd.x1, prevQ_cmd.y1)
+							
+							var prevQ_x: float = prevQ_cmd.x if &"x" in prevQ_cmd\
+									else prevQ_cmd.start.x
+							var prevQ_y: float = prevQ_cmd.y if &"y" in prevQ_cmd\
+									else prevQ_cmd.start.y
+							var prevQ_v := Vector2(prevQ_x, prevQ_y)
+							var prevQ_v1 := Vector2(prevQ_cmd.x1, prevQ_cmd.y1) if\
+									prevQ_cmd.command_char.to_upper() == "Q" else prevQ_v
 							var prevQ_end := prevQ_cmd.start + prevQ_v\
 									if prevQ_cmd.relative else prevQ_v
 							var prevQ_control_pt := prevQ_cmd.start + prevQ_v1\
 									if prevQ_cmd.relative else prevQ_v1
+							
 							
 							var v := Vector2(cmd.x, cmd.y)
 							var v1 := prevQ_end * 2 - prevQ_control_pt

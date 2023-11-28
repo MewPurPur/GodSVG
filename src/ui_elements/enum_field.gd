@@ -35,8 +35,6 @@ func _on_button_pressed() -> void:
 		btn.pressed.connect(_on_option_pressed.bind(enum_constant))
 		if enum_constant == get_value():
 			btn.disabled = true
-		else:
-			btn.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 		if attribute != null and enum_constant == attribute.default:
 			btn.add_theme_font_override(&"font", bold_font)
 		buttons_arr.append(btn)

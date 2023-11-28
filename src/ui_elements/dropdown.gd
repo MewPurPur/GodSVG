@@ -37,8 +37,9 @@ func _on_button_pressed() -> void:
 		var button := Button.new()
 		button.text = value
 		button.pressed.connect(_on_value_chosen.bind(value))
-		button.mouse_default_cursor_shape = CURSOR_POINTING_HAND
 		button.alignment = HORIZONTAL_ALIGNMENT_CENTER
+		if value == current_value:
+			button.disabled = true
 		btn_arr.append(button)
 	
 	var value_picker := ContextPopup.instantiate()

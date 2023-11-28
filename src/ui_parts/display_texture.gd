@@ -45,18 +45,22 @@ func _process(_delta: float) -> void:
 
 func svg_update(svg_changed := true) -> void:
 	var bigger_side := maxf(SVG.root_tag.get_width(), SVG.root_tag.get_height())
-	var new_image_zoom := 1.0 if rasterized else minf(zoom * 3.0, 16384 / bigger_side)
+	# TODO Change 4096 to 16384 when performance concerns are addressed.
+	# It might actually not be needed in the future, if only the visible part is drawn.
+	var new_image_zoom := 1.0 if rasterized else minf(zoom, 4096 / bigger_side)
 	if not svg_changed and not rasterized and new_image_zoom <= image_zoom:
 		return  # Don't waste time resizing if the new image won't be bigger.
 	else:
 		image_zoom = new_image_zoom
 	
-	# TODO delete this when the ThorVG bug is fixed.
+	# TODO delete this in favor of the multithreaded solution. See godot issue 85465.
+	# The multithreaded solution uses RenderingServer.
+	# If there are bugs with it, an HBoxContainer with 8 TextureRect strips will also do.
 	var img := Image.new()
 	img.load_svg_from_string(SVG.text, image_zoom)
+	img.fix_alpha_edges()  # See godot issue 82579.
 	texture = ImageTexture.create_from_image(img)
 	
-	# TODO this is locked by a bug in ThorVG.
 	#var task_id := WorkerThreadPool.add_group_task(generate_strip, strip_count)
 	#WorkerThreadPool.wait_for_group_task_completion(task_id)
 	#queue_redraw()
