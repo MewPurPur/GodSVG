@@ -43,12 +43,19 @@ func _on_dropdown_value_changed(new_value: String) -> void:
 func native_file_export(has_selected: bool, files: PackedStringArray, _filter_idx: int):
 	if has_selected:
 		export(files[0])
+		GlobalSettings.modify_save_data("last_used_dir", files[0].get_base_dir())
 
 func _on_ok_button_pressed() -> void:
+	var default_path: String
+	if GlobalSettings.save_data.last_used_dir.is_empty()\
+	or not DirAccess.dir_exists_absolute(GlobalSettings.save_data.last_used_dir):
+		default_path = OS.get_system_dir(OS.SYSTEM_DIR_PICTURES)
+	else:
+		default_path = GlobalSettings.save_data.last_used_dir
 	if DisplayServer.has_feature(DisplayServer.FEATURE_NATIVE_DIALOG):
 		DisplayServer.file_dialog_show(
 				"Export a ." + extension + " file",
-				OS.get_system_dir(OS.SYSTEM_DIR_PICTURES), "", false,
+				default_path, "", false,
 				DisplayServer.FILE_DIALOG_MODE_SAVE_FILE,
 				["*." + extension], native_file_export)
 	else:

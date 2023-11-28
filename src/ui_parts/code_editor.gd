@@ -59,11 +59,18 @@ func _on_copy_button_pressed() -> void:
 func native_file_import(has_selected: bool, files: PackedStringArray, _filter_idx: int):
 	if has_selected:
 		apply_svg_from_path(files[0])
+		GlobalSettings.modify_save_data("last_used_dir", files[0].get_base_dir())
 
 func _on_import_button_pressed() -> void:
+	var default_path: String
+	if GlobalSettings.save_data.last_used_dir.is_empty()\
+	or not DirAccess.dir_exists_absolute(GlobalSettings.save_data.last_used_dir):
+		default_path = OS.get_system_dir(OS.SYSTEM_DIR_PICTURES)
+	else:
+		default_path = GlobalSettings.save_data.last_used_dir
 	if DisplayServer.has_feature(DisplayServer.FEATURE_NATIVE_DIALOG):
 		DisplayServer.file_dialog_show(
-				"Import a .svg file", "", "", false,
+				"Import a .svg file", default_path, "", false,
 				DisplayServer.FILE_DIALOG_MODE_OPEN_FILE, ["*.svg"], native_file_import)
 	else:
 		var svg_import_dialog := SVGFileDialog.instantiate()
