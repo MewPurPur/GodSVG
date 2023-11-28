@@ -60,20 +60,48 @@ func insert_command(idx: int, command_char: String) -> void:
 	if Utils.is_string_lower(command_char):
 		commands[idx].toggle_relative()
 	locate_start_points()
-	command_changed.emit()
+	command_changed.emit(SyncMode.LOUD)
+
+func convert_command(idx: int, command_char: String) -> void:
+	var old_command: PathCommand = commands[idx]
+	if old_command.command_char == command_char:
+		return
+	
+	var new_command: PathCommand =\
+			PathCommand.translation_dict[command_char.to_upper()].new()
+	commands.remove_at(idx)
+	commands.insert(idx, new_command)
+	for property in [&"x", &"y", &"x1", &"y1", &"x2", &"y2"]:
+		if property in old_command and property in new_command:
+			new_command[property] = old_command[property]
+	
+	var is_relative := Utils.is_string_lower(command_char)
+	
+	if &"x" in new_command and not &"x" in old_command:
+		new_command.x = 0 if is_relative else old_command.start.x
+	if &"y" in new_command and not &"y" in old_command:
+		new_command.y = 0 if is_relative else old_command.start.y
+	
+	if is_relative:
+		commands[idx].toggle_relative()
+	locate_start_points()
+	command_changed.emit(SyncMode.LOUD)
 
 func delete_commands(indices: Array[int]) -> void:
+	if indices.is_empty():
+		return
+	
 	indices = indices.duplicate()
 	indices.sort()
 	indices.reverse()
 	for idx in indices:
 		commands.remove_at(idx)
 	locate_start_points()
-	command_changed.emit()
+	command_changed.emit(SyncMode.LOUD)
 
 func toggle_relative_command(idx: int) -> void:
 	commands[idx].toggle_relative()
-	command_changed.emit()
+	command_changed.emit(SyncMode.LOUD)
 
 func set_value(path_string: Variant, sync_mode := SyncMode.LOUD) -> void:
 	commands = PathDataParser.parse_path_data(path_string)

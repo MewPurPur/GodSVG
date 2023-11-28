@@ -161,7 +161,7 @@ static func defocus_control_on_outside_click(control: Control, event: InputEvent
 	not control.get_global_rect().has_point(event.position)):
 		control.release_focus()
 
-static func popup_under_control(popup: Popup, control: Control, center := false) -> void:
+static func popup_under_control(popup: Popup, control: Control) -> void:
 	var screen_h := control.get_viewport_rect().size.y
 	var popup_pos := Vector2.ZERO
 	var true_global_pos = control.global_position
@@ -171,16 +171,29 @@ static func popup_under_control(popup: Popup, control: Control, center := false)
 		popup_pos.y = true_global_pos.y + control.size.y
 	else:
 		popup_pos.y = true_global_pos.y - popup.size.y
-	# Align horizontally.
-	if center:
-		popup_pos.x = true_global_pos.x - popup.size.x / 2.0 + control.size.x / 2
+	# Horizontal alignment and other things.
+	popup_pos.x = true_global_pos.x
+	popup_pos += control.get_viewport().get_screen_transform().get_origin()
+	popup.popup(Rect2(popup_pos, popup.size))
+
+static func popup_under_control_centered(popup: Popup, control: Control) -> void:
+	var screen_h := control.get_viewport_rect().size.y
+	var popup_pos := Vector2.ZERO
+	var true_global_pos = control.global_position
+	# Popup below if there's enough space or we're in the bottom half of the screen.
+	if true_global_pos.y + control.size.y + popup.size.y < screen_h or\
+	true_global_pos.y + control.size.y / 2 <= screen_h / 2.0:
+		popup_pos.y = true_global_pos.y + control.size.y
 	else:
-		popup_pos.x = true_global_pos.x
+		popup_pos.y = true_global_pos.y - popup.size.y
+	# Align horizontally and other things.
+	popup_pos.x = true_global_pos.x - popup.size.x / 2.0 + control.size.x / 2
 	popup_pos += control.get_viewport().get_screen_transform().get_origin()
 	popup.popup(Rect2(popup_pos, popup.size))
 
 static func popup_under_mouse(popup: Popup, mouse_pos: Vector2) -> void:
 	popup.popup(Rect2(mouse_pos + Vector2(-popup.size.x / 2, 0), popup.size))
+
 
 static func get_cubic_bezier_points(cp1: Vector2, cp2: Vector2,
 cp3: Vector2, cp4: Vector2) -> PackedVector2Array:

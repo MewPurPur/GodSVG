@@ -97,7 +97,6 @@ func create_tag_context() -> Popup:
 	var duplicate_button := Button.new()
 	duplicate_button.text = tr(&"#duplicate")
 	duplicate_button.icon = load("res://visual/icons/Duplicate.svg")
-	duplicate_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	duplicate_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 	duplicate_button.pressed.connect(_on_duplicate_button_pressed)
 	buttons_arr.append(duplicate_button)
@@ -106,7 +105,6 @@ func create_tag_context() -> Popup:
 		var move_up_button := Button.new()
 		move_up_button.text = tr(&"#move_up")
 		move_up_button.icon = load("res://visual/icons/MoveUp.svg")
-		move_up_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 		move_up_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		move_up_button.pressed.connect(_on_move_up_button_pressed)
 		buttons_arr.append(move_up_button)
@@ -114,7 +112,6 @@ func create_tag_context() -> Popup:
 		var move_down_button := Button.new()
 		move_down_button.text = tr(&"#move_down")
 		move_down_button.icon = load("res://visual/icons/MoveDown.svg")
-		move_down_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 		move_down_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		move_down_button.pressed.connect(_on_move_down_button_pressed)
 		buttons_arr.append(move_down_button)
@@ -122,7 +119,6 @@ func create_tag_context() -> Popup:
 	var delete_button := Button.new()
 	delete_button.text = tr(&"#delete")
 	delete_button.icon = load("res://visual/icons/Delete.svg")
-	delete_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	delete_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 	delete_button.pressed.connect(_on_delete_button_pressed)
 	buttons_arr.append(delete_button)
@@ -136,7 +132,7 @@ func create_tag_context() -> Popup:
 func _on_title_button_pressed() -> void:
 	Indications.normal_select(tid)
 	var tag_context := create_tag_context()
-	Utils.popup_under_control(tag_context, title_button, true)
+	Utils.popup_under_control_centered(tag_context, title_button)
 
 func _on_move_up_button_pressed() -> void:
 	SVG.root_tag.move_tags_in_parent([tid], false)

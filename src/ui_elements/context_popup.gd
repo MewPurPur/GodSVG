@@ -25,6 +25,9 @@ func add_button(butt: Button, should_reset_size := true) -> void:
 		butt.add_theme_stylebox_override(&"disabled", disabled_stylebox)
 		butt.add_theme_stylebox_override(&"pressed", pressed_stylebox)
 		butt.pressed.connect(queue_free)
+	if not butt.disabled:
+		butt.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+	butt.focus_mode = Control.FOCUS_NONE
 	main_container.add_child(butt)
 	if should_reset_size:
 		reset_size()
