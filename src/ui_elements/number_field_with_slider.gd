@@ -34,11 +34,10 @@ func get_value() -> float:
 
 func _ready() -> void:
 	value_changed.connect(_on_value_changed)
-	if attribute != null:
-		set_value(attribute.get_value())
-		attribute.value_changed.connect(set_value)
-		set_text_tint()
-		num_edit.tooltip_text = attribute_name
+	set_value(attribute.get_value())
+	attribute.value_changed.connect(set_value)
+	set_text_tint()
+	num_edit.tooltip_text = attribute_name
 	num_edit.text = str(get_value())
 
 func validate(new_value: float) -> float:
@@ -55,14 +54,13 @@ func validate(new_value: float) -> float:
 
 func _on_value_changed(new_value: float, update_type: UpdateType) -> void:
 	update_after_change()
-	if attribute != null:
-		match update_type:
-			UpdateType.INTERMEDIATE:
-				attribute.set_value(new_value, Attribute.SyncMode.INTERMEDIATE)
-			UpdateType.FINAL:
-				attribute.set_value(new_value, Attribute.SyncMode.FINAL)
-			_:
-				attribute.set_value(new_value)
+	match update_type:
+		UpdateType.INTERMEDIATE:
+			attribute.set_value(new_value, Attribute.SyncMode.INTERMEDIATE)
+		UpdateType.FINAL:
+			attribute.set_value(new_value, Attribute.SyncMode.FINAL)
+		_:
+			attribute.set_value(new_value)
 
 
 # Hacks to make LineEdit bearable.

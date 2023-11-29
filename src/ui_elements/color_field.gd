@@ -28,8 +28,7 @@ func get_value() -> String:
 
 func _ready() -> void:
 	value_changed.connect(_on_value_changed)
-	if attribute != null:
-		set_value(attribute.get_value())
+	set_value(attribute.get_value())
 	color_edit.text = get_value()
 	color_edit.tooltip_text = attribute_name
 
@@ -40,14 +39,13 @@ func validate(new_value: String) -> String:
 
 func _on_value_changed(new_value: String, update_type: UpdateType) -> void:
 	update_after_change()
-	if attribute != null:
-		match update_type:
-			UpdateType.INTERMEDIATE:
-				attribute.set_value(new_value, Attribute.SyncMode.INTERMEDIATE)
-			UpdateType.FINAL:
-				attribute.set_value(new_value, Attribute.SyncMode.FINAL)
-			_:
-				attribute.set_value(new_value)
+	match update_type:
+		UpdateType.INTERMEDIATE:
+			attribute.set_value(new_value, Attribute.SyncMode.INTERMEDIATE)
+		UpdateType.FINAL:
+			attribute.set_value(new_value, Attribute.SyncMode.FINAL)
+		_:
+			attribute.set_value(new_value)
 
 func _on_button_pressed() -> void:
 	color_popup = ColorPopup.instantiate()

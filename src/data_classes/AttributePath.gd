@@ -78,9 +78,9 @@ func convert_command(idx: int, command_char: String) -> void:
 	var is_relative := Utils.is_string_lower(command_char)
 	
 	if &"x" in new_command and not &"x" in old_command:
-		new_command.x = 0 if is_relative else old_command.start.x
+		new_command.x = 0.0 if is_relative else old_command.start.x
 	if &"y" in new_command and not &"y" in old_command:
-		new_command.y = 0 if is_relative else old_command.start.y
+		new_command.y = 0.0 if is_relative else old_command.start.y
 	
 	if is_relative:
 		commands[idx].toggle_relative()

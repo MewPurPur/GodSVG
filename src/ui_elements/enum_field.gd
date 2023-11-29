@@ -21,10 +21,9 @@ func get_value() -> String:
 
 func _ready() -> void:
 	value_changed.connect(_on_value_changed)
-	if attribute != null:
-		set_value(attribute.get_value())
-	indicator.text = str(get_value())
+	set_value(attribute.get_value())
 	indicator.tooltip_text = attribute_name
+	indicator.text = str(get_value())
 
 func _on_button_pressed() -> void:
 	var value_picker := ContextPopup.instantiate()
@@ -48,15 +47,14 @@ func _on_option_pressed(option: String) -> void:
 
 func _on_value_changed(new_value: String, update_type: UpdateType) -> void:
 	indicator.text = new_value
-	if attribute != null:
-		match update_type:
-			UpdateType.INTERMEDIATE:
-				attribute.set_value(new_value, Attribute.SyncMode.INTERMEDIATE)
-			UpdateType.FINAL:
-				attribute.set_value(new_value, Attribute.SyncMode.FINAL)
-			_:
-				attribute.set_value(new_value)
-		set_text_tint()
+	match update_type:
+		UpdateType.INTERMEDIATE:
+			attribute.set_value(new_value, Attribute.SyncMode.INTERMEDIATE)
+		UpdateType.FINAL:
+			attribute.set_value(new_value, Attribute.SyncMode.FINAL)
+		_:
+			attribute.set_value(new_value)
+	set_text_tint()
 
 
 func _on_text_submitted(new_text: String) -> void:
