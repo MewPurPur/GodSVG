@@ -192,7 +192,7 @@ static func popup_under_control_centered(popup: Popup, control: Control) -> void
 	popup.popup(Rect2(popup_pos, popup.size))
 
 static func popup_under_mouse(popup: Popup, mouse_pos: Vector2) -> void:
-	popup.popup(Rect2(mouse_pos + Vector2(-popup.size.x / 2, 0), popup.size))
+	popup.popup(Rect2(mouse_pos, popup.size))
 
 
 static func get_cubic_bezier_points(cp1: Vector2, cp2: Vector2,
