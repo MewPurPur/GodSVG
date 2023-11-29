@@ -91,6 +91,7 @@ theme_override_constants/margin_bottom = 4
 [node name="ScrollContainer" type="ScrollContainer" parent="MainPanel/VBoxContainer/TabContainer/#palettes"]
 custom_minimum_size = Vector2(0, 120)
 layout_mode = 2
+horizontal_scroll_mode = 0
 
 [node name="PaletteContainer" type="VBoxContainer" parent="MainPanel/VBoxContainer/TabContainer/#palettes/ScrollContainer"]
 unique_name_in_owner = true

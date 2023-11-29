@@ -27,7 +27,7 @@ func get_value() -> float:
 func _ready() -> void:
 	super()
 	value_changed.connect(_on_value_changed)
-	text = str(get_value())
+	text = String.num(get_value(), 4)
 
 func validate(new_value: float) -> float:
 	match mode:
