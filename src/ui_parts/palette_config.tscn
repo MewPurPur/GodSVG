@@ -28,7 +28,7 @@ script = ExtResource("1_2fy8k")
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2
 theme_override_constants/margin_left = 8
-theme_override_constants/margin_top = 0
+theme_override_constants/margin_top = 1
 theme_override_constants/margin_right = 6
 theme_override_constants/margin_bottom = 0
 
@@ -49,6 +49,7 @@ theme_override_constants/separation = 6
 
 [node name="PaletteLabel" type="Label" parent="MarginContainer/HBoxContainer/MainContainer/HBoxContainer"]
 layout_mode = 2
+size_flags_horizontal = 6
 
 [node name="NameEdit" type="LineEdit" parent="MarginContainer/HBoxContainer/MainContainer/HBoxContainer"]
 visible = false
@@ -60,6 +61,8 @@ script = ExtResource("2_coqnx")
 
 [node name="EditButton" type="Button" parent="MarginContainer/HBoxContainer/MainContainer/HBoxContainer"]
 layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
 tooltip_text = "#edit_palette_name"
 focus_mode = 0
 mouse_default_cursor_shape = 2

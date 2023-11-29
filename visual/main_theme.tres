@@ -141,11 +141,15 @@ content_margin_bottom = 2.0
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ixekj"]
 content_margin_left = 2.0
+content_margin_top = 2.0
 content_margin_right = 2.0
+content_margin_bottom = 2.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ky4q6"]
 content_margin_left = 2.0
+content_margin_top = 2.0
 content_margin_right = 2.0
+content_margin_bottom = 2.0
 bg_color = Color(1, 1, 1, 0.0666667)
 corner_radius_top_left = 3
 corner_radius_top_right = 3
@@ -154,11 +158,15 @@ corner_radius_bottom_left = 3
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_q84qj"]
 content_margin_left = 2.0
+content_margin_top = 2.0
 content_margin_right = 2.0
+content_margin_bottom = 2.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5jayv"]
 content_margin_left = 2.0
+content_margin_top = 2.0
 content_margin_right = 2.0
+content_margin_bottom = 2.0
 bg_color = Color(1, 1, 1, 0.2)
 corner_radius_top_left = 3
 corner_radius_top_right = 3
