@@ -1,7 +1,7 @@
 extends VBoxContainer
 
-const shape_attributes = ["cx", "cy", "x", "y", "r", "rx", "ry", "width", "height", "d",
-		"x1", "y1", "x2", "y2"]
+const geometry_attributes = ["cx", "cy", "x", "y", "r", "rx", "ry", "width", "height",
+		"d", "x1", "y1", "x2", "y2"]
 
 const unknown_icon = preload("res://visual/icons/tag/unknown.svg")
 
@@ -70,7 +70,7 @@ func _ready() -> void:
 		input_field.attribute = attribute
 		input_field.attribute_name = attribute_key
 		# Add the attribute to its corresponding container.
-		if attribute_key in shape_attributes:
+		if attribute_key in geometry_attributes:
 			shape_container.add_child(input_field)
 		else:
 			paint_container.add_child(input_field)

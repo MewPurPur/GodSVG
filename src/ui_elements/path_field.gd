@@ -21,22 +21,20 @@ func get_value() -> String:
 
 func _ready() -> void:
 	value_changed.connect(_on_value_changed)
-	if attribute != null:
-		set_value(attribute.get_value())
-		attribute.value_changed.connect(set_value)
+	set_value(attribute.get_value())
+	attribute.value_changed.connect(set_value)
 
 func _on_value_changed(new_value: String, update_type: UpdateType) -> void:
 	line_edit.text = new_value
-	if attribute != null:
-		match update_type:
-			UpdateType.INTERMEDIATE:
-				attribute.set_value(new_value, Attribute.SyncMode.INTERMEDIATE)
-			UpdateType.FINAL:
-				attribute.set_value(new_value, Attribute.SyncMode.FINAL)
-			_:
-				attribute.set_value(new_value)
-		# A plus button for adding a move command if empty.
-		add_move.visible =  attribute.commands.is_empty()
+	match update_type:
+		UpdateType.INTERMEDIATE:
+			attribute.set_value(new_value, Attribute.SyncMode.INTERMEDIATE)
+		UpdateType.FINAL:
+			attribute.set_value(new_value, Attribute.SyncMode.FINAL)
+		_:
+			attribute.set_value(new_value)
+	# A plus button for adding a move command if empty.
+	add_move.visible =  attribute.commands.is_empty()
 	rebuild_commands()
 
 
