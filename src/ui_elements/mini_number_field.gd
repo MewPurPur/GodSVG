@@ -9,13 +9,13 @@ var mode := Mode.DEFAULT
 signal value_changed(new_value: float)
 var _value: float  # Must not be updated directly.
 
-func set_value(new_value: float, emit_value_changed := true):
+func set_value(new_value: float):
 	if is_nan(new_value):
 		text = String.num(_value, 4)
 		return
 	var old_value := _value
 	_value = validate(new_value)
-	if _value != old_value and emit_value_changed:
+	if _value != old_value:
 		value_changed.emit(_value)
 	
 	text = String.num(_value, 4)

@@ -3,7 +3,6 @@ extends VBoxContainer
 const handle_texture = preload("res://visual/icons/HandleBig.svg")
 const slider_arrow = preload("res://visual/icons/SliderArrow.svg")
 const side_slider_arrow = preload("res://visual/icons/SideSliderArrow.svg")
-const reload_texture = preload("res://visual/icons/ColorReset.svg")
 
 var UR := UndoRedo.new()
 
@@ -234,17 +233,20 @@ func setup_none_button() -> void:
 func _on_reset_color_button_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion and event.button_mask != MOUSE_BUTTON_MASK_LEFT:
 		if starting_color == "none" or color.to_html(false) == starting_color:
+			reset_color_button.disabled = true
 			return
-		reset_color_button.icon = reload_texture
-		var icon_color := Color.WHITE if color.get_luminance() < 0.455 else Color.BLACK
-		reset_color_button.add_theme_color_override(&"icon_hover_color", icon_color)
-		reset_color_button.add_theme_color_override(&"icon_pressed_color", icon_color)
-
-func _on_reset_color_button_mouse_exited() -> void:
-	reset_color_button.icon = null
+		reset_color_button.disabled = false
+		if color.get_luminance() < 0.455:
+			reset_color_button.add_theme_color_override(&"icon_hover_color", Color.WHITE)
+			reset_color_button.add_theme_color_override(&"icon_pressed_color",
+					Color(0.5, 1, 1))
+		else:
+			reset_color_button.add_theme_color_override(&"icon_hover_color", Color.BLACK)
+			reset_color_button.add_theme_color_override(&"icon_pressed_color",
+					Color(0, 0.5, 0.5))
 
 func _on_reset_color_button_pressed() -> void:
-	reset_color_button.icon = null
+	reset_color_button.disabled = true
 	if starting_color != "none":
 		set_color(starting_color)
 
