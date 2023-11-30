@@ -1,49 +1,51 @@
 ## An editor for a single path command.
 extends PanelContainer
 
+const spacing_dict = {
+	"A": [3, 4, 4, 4, 4, 3],
+	"C": [3, 4, 3, 4, 3],
+	"Q": [3, 4, 3],
+	"S": [3, 4, 3],
+	"M": [3],
+	"L": [3],
+	"T": [3],
+}
+
 signal cmd_update_value(idx: int, new_value: float, property: StringName)
 signal cmd_delete(idx: int)
 signal cmd_toggle_relative(idx: int)
 signal cmd_insert_after(idx: int, cmd_char: String)
+signal cmd_convert_to(idx: int, cmd_char: String)
 
+const ContextPopup = preload("res://src/ui_elements/context_popup.tscn")
 const MiniNumberField = preload("mini_number_field.tscn")
 const FlagField = preload("flag_field.tscn")
+const PathCommandPopup = preload("path_popup.tscn")
 
 var tid := PackedInt32Array()
 var cmd_char := ""
 var cmd_idx := -1
 var path_command: PathCommand
 
-# This is needed for the hover detection hack.
-@onready var first_ancestor_scroll_container := find_first_ancestor_scroll_container()
-
-func find_first_ancestor_scroll_container() -> ScrollContainer:
-	var ancestor := get_parent()
-	while not ancestor is ScrollContainer:
-		if not ancestor is Control:
-			return null
-		ancestor = ancestor.get_parent()
-	return ancestor
-
 @onready var relative_button: Button = $HBox/RelativeButton
 @onready var more_button: Button = $HBox/MoreButton
-@onready var fields_container: HBoxContainer = $HBox/Fields
-@onready var action_popup: Popup = $ActionsPopup
-@onready var command_picker: Popup = $PathPopup
+@onready var fields_container: CustomSpacedHBoxContainer = $HBox/Fields
 
-var fields_added_before_ready: Array[Control] = []
 var fields: Array[Control] = []
 
 func update_type() -> void:
 	cmd_char = path_command.command_char
-	var command_type := cmd_char.to_upper()
+	var cmd_type := cmd_char.to_upper()
 	fields.clear()
+	setup_relative_button()
+	
+	var spacing: Array = spacing_dict[cmd_type] if cmd_type in spacing_dict else []
+	fields_container.set_spacing_array(spacing)
 	
 	# Instantiate the input fields.
-	if command_type == "A":
-		var fields_rx_ry: Array[BetterLineEdit] = add_number_field_pair()
-		var field_rx := fields_rx_ry[0]
-		var field_ry := fields_rx_ry[1]
+	if cmd_type == "A":
+		var field_rx: BetterLineEdit = add_number_field()
+		var field_ry: BetterLineEdit = add_number_field()
 		var field_rot: BetterLineEdit = add_number_field()
 		var field_large_arc_flag: Button = add_flag_field()
 		var field_sweep_flag: Button = add_flag_field()
@@ -71,10 +73,9 @@ func update_type() -> void:
 		fields.append(field_rot)
 		fields.append(field_large_arc_flag)
 		fields.append(field_sweep_flag)
-	if command_type == "Q" or command_type == "C":
-		var fields_x1_y1: Array[BetterLineEdit] = add_number_field_pair()
-		var field_x1 := fields_x1_y1[0]
-		var field_y1 := fields_x1_y1[1]
+	if cmd_type == "Q" or cmd_type == "C":
+		var field_x1: BetterLineEdit = add_number_field()
+		var field_y1: BetterLineEdit = add_number_field()
 		field_x1.set_value(path_command.x1)
 		field_y1.set_value(path_command.y1)
 		field_x1.tooltip_text = "x1"
@@ -83,10 +84,9 @@ func update_type() -> void:
 		field_y1.value_changed.connect(update_value.bind(&"y1"))
 		fields.append(field_x1)
 		fields.append(field_y1)
-	if command_type == "C" or command_type == "S":
-		var fields_x2_y2: Array[BetterLineEdit] = add_number_field_pair()
-		var field_x2 := fields_x2_y2[0]
-		var field_y2 := fields_x2_y2[1]
+	if cmd_type == "C" or cmd_type == "S":
+		var field_x2: BetterLineEdit = add_number_field()
+		var field_y2: BetterLineEdit = add_number_field()
 		field_x2.set_value(path_command.x2)
 		field_y2.set_value(path_command.y2)
 		field_x2.tooltip_text = "x2"
@@ -95,27 +95,26 @@ func update_type() -> void:
 		field_y2.value_changed.connect(update_value.bind(&"y2"))
 		fields.append(field_x2)
 		fields.append(field_y2)
-	if command_type != "Z":
-		if command_type == "H":
+	if cmd_type != "Z":
+		if cmd_type == "H":
 			var field_x: BetterLineEdit = add_number_field()
 			field_x.set_value(path_command.x)
 			field_x.tooltip_text = "x"
 			field_x.value_changed.connect(update_value.bind(&"x"))
 			fields.append(field_x)
-		elif command_type == "V":
+		elif cmd_type == "V":
 			var field_y: BetterLineEdit = add_number_field()
 			field_y.set_value(path_command.y)
 			field_y.tooltip_text ="y"
 			field_y.value_changed.connect(update_value.bind(&"y"))
 			fields.append(field_y)
 		else:
-			var fields_x_y: Array[BetterLineEdit] = add_number_field_pair()
-			var field_x := fields_x_y[0]
-			var field_y := fields_x_y[1]
+			var field_x: BetterLineEdit = add_number_field()
+			var field_y: BetterLineEdit = add_number_field()
 			field_x.set_value(path_command.x)
 			field_x.tooltip_text = "x"
 			field_y.set_value(path_command.y)
-			field_y.tooltip_text ="y"
+			field_y.tooltip_text = "y"
 			field_x.value_changed.connect(update_value.bind(&"x"))
 			field_y.value_changed.connect(update_value.bind(&"y"))
 			fields.append(field_x)
@@ -124,7 +123,7 @@ func update_type() -> void:
 # Alternative to fully rebuilding the path command editor, if the layout is unchanged.
 func sync_values(cmd: PathCommand) -> void:
 	# Instantiate the input fields.
-	match cmd_char:
+	match cmd_char.to_upper():
 		"A":
 			fields[0].set_value(cmd.rx)
 			fields[1].set_value(cmd.ry)
@@ -161,29 +160,43 @@ func sync_values(cmd: PathCommand) -> void:
 
 
 func update_value(value: float, property: StringName) -> void:
-	Indications.set_inner_selection(tid, cmd_idx)
+	Indications.normal_select(tid, cmd_idx)
 	cmd_update_value.emit(cmd_idx, value, property)
 
 func delete() -> void:
-	action_popup.hide()
 	cmd_delete.emit(cmd_idx)
 
 func toggle_relative() -> void:
 	cmd_toggle_relative.emit(cmd_idx)
 
 func insert_after() -> void:
-	action_popup.hide()
-	command_picker.popup(Utils.calculate_popup_rect(
-			more_button.global_position, more_button.size, command_picker.size))
+	var command_picker := PathCommandPopup.instantiate()
+	add_child(command_picker)
+	match cmd_char.to_upper():
+		"M": command_picker.disable_invalid(["M", "Z", "T"])
+		"Z": command_picker.disable_invalid(["Z"])
+		"L", "H", "V", "A": command_picker.disable_invalid(["S", "T"])
+		"C", "S": command_picker.disable_invalid(["T"])
+		"Q", "T": command_picker.disable_invalid(["S"])
+	command_picker.path_command_picked.connect(_on_insert_path_command_picked)
+	Utils.popup_under_control_centered(command_picker, more_button)
 
-func open_actions() -> void:
-	Indications.set_inner_selection(tid, cmd_idx)
+func convert_to() -> void:
+	var command_picker := PathCommandPopup.instantiate()
+	add_child(command_picker)
+	command_picker.force_relativity(Utils.is_string_lower(cmd_char))
+	command_picker.disable_invalid([cmd_char.to_upper()])
+	command_picker.path_command_picked.connect(_on_convert_path_command_picked)
+	Utils.popup_under_control_centered(command_picker, more_button)
+
+func open_actions(popup_from_mouse := false) -> void:
+	Indications.normal_select(tid, cmd_idx)
+	var action_popup := ContextPopup.instantiate()
 	var buttons_arr: Array[Button] = []
 	
 	var delete_btn := Button.new()
 	delete_btn.text = tr(&"#delete")
 	delete_btn.icon = load("res://visual/icons/Delete.svg")
-	delete_btn.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	delete_btn.alignment = HORIZONTAL_ALIGNMENT_LEFT
 	delete_btn.pressed.connect(delete)
 	buttons_arr.append(delete_btn)
@@ -191,25 +204,30 @@ func open_actions() -> void:
 	var insert_after_btn := Button.new()
 	insert_after_btn.text = tr(&"#insert_after")
 	insert_after_btn.icon = load("res://visual/icons/Plus.svg")
-	insert_after_btn.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	insert_after_btn.alignment = HORIZONTAL_ALIGNMENT_LEFT
 	insert_after_btn.pressed.connect(insert_after)
 	buttons_arr.append(insert_after_btn)
 	
+	if cmd_idx != 0:
+		var convert_btn := Button.new()
+		convert_btn.text = tr(&"#convert_to")
+		convert_btn.icon = load("res://visual/icons/Reload.svg")
+		convert_btn.alignment = HORIZONTAL_ALIGNMENT_LEFT
+		convert_btn.pressed.connect(convert_to)
+		buttons_arr.append(convert_btn)
+	
+	add_child(action_popup)
 	action_popup.set_btn_array(buttons_arr)
-	action_popup.popup(Utils.calculate_popup_rect(more_button.global_position,
-			more_button.size, action_popup.size, true))
+	if popup_from_mouse:
+		Utils.popup_under_mouse(action_popup, get_global_mouse_position())
+	else:
+		Utils.popup_under_control_centered(action_popup, more_button)
 
 
 func _ready() -> void:
 	Indications.selection_changed.connect(determine_selection_highlight)
 	Indications.hover_changed.connect(determine_selection_highlight)
 	determine_selection_highlight()
-	setup_relative_button()
-	setup_command_picker()
-	more_button.pressed.connect(open_actions)
-	while not fields_added_before_ready.is_empty():
-		fields_container.add_child(fields_added_before_ready.pop_front())
 
 
 # Helpers
@@ -244,62 +262,48 @@ func setup_relative_button() -> void:
 		relative_button.add_theme_stylebox_override(&"pressed", create_stylebox(
 				Color.from_hsv(0.74, 0.6, 1.0), Color.from_hsv(0.7, 0.4, 1.0)))
 
-func setup_command_picker() -> void:
-	command_picker.disable_invalid(cmd_char)
-
 
 func add_number_field() -> BetterLineEdit:
 	var new_field := MiniNumberField.instantiate()
-	safely_add_field(new_field)
+	fields_container.add_child(new_field)
 	return new_field
 
 func add_flag_field() -> Button:
 	var new_field := FlagField.instantiate()
-	safely_add_field(new_field)
+	fields_container.add_child(new_field)
 	return new_field
 
-func add_number_field_pair() -> Array[BetterLineEdit]:
-	var hbox := HBoxContainer.new()
-	hbox.add_theme_constant_override(&"separation", 3)
-	var new_fields: Array[BetterLineEdit] =\
-			[MiniNumberField.instantiate(), MiniNumberField.instantiate()]
-	hbox.add_child(new_fields[0])
-	hbox.add_child(new_fields[1])
-	safely_add_field(hbox)
-	return new_fields
-
-func safely_add_field(field: Control) -> void:
-	if fields_container == null:
-		fields_added_before_ready.append(field)
-	else:
-		fields_container.add_child(field)
 
 func _on_relative_button_pressed() -> void:
 	cmd_char = cmd_char.to_upper() if Utils.is_string_lower(cmd_char)\
 			else cmd_char.to_lower()
 	setup_relative_button()
 
-func _on_path_command_picked(new_command: String) -> void:
+func _on_insert_path_command_picked(new_command: String) -> void:
 	cmd_insert_after.emit(cmd_idx + 1, new_command)
+
+func _on_convert_path_command_picked(new_command: String) -> void:
+	cmd_convert_to.emit(cmd_idx, new_command)
 
 func _on_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.is_pressed():
 		if event.button_index == MOUSE_BUTTON_LEFT:
 			if event.ctrl_pressed:
-				Indications.toggle_inner_selection(tid, cmd_idx)
+				Indications.ctrl_select(tid, cmd_idx)
+			elif event.shift_pressed:
+				Indications.shift_select(tid, cmd_idx)
 			else:
-				Indications.set_inner_selection(tid, cmd_idx)
+				Indications.normal_select(tid, cmd_idx)
 		elif event.button_index == MOUSE_BUTTON_RIGHT:
-			Indications.set_inner_selection(tid, cmd_idx)
-			open_actions()
+			Indications.normal_select(tid, cmd_idx)
+			open_actions(true)
 
 func determine_selection_highlight() -> void:
 	var stylebox: StyleBox
 	if Indications.semi_selected_tid == tid and cmd_idx in Indications.inner_selections:
 		stylebox = StyleBoxFlat.new()
 		stylebox.set_corner_radius_all(3)
-		if Indications.semi_hovered_tid == tid and\
-		Indications.inner_hovered == cmd_idx:
+		if Indications.semi_hovered_tid == tid and Indications.inner_hovered == cmd_idx:
 			stylebox.bg_color = Color(0.7, 0.7, 1.0, 0.18)
 		else:
 			stylebox.bg_color = Color(0.6, 0.6, 1.0, 0.16)
@@ -316,17 +320,8 @@ func determine_selection_highlight() -> void:
 	add_theme_stylebox_override(&"panel", stylebox)
 
 
-var mouse_inside := false:
-	set(new_value):
-		if mouse_inside != new_value:
-			mouse_inside = new_value
-			if mouse_inside:
-				Indications.set_inner_hovered(tid, cmd_idx)
-			else:
-				Indications.remove_inner_hovered(tid, cmd_idx)
+func _on_mouse_entered():
+	Indications.set_inner_hovered(tid, cmd_idx)
 
-func _input(event: InputEvent) -> void:
-	if event is InputEventMouseMotion and event.button_mask == 0:
-		mouse_inside = get_global_rect().has_point(get_global_mouse_position()) and\
-				first_ancestor_scroll_container.get_global_rect().has_point(
-				get_global_mouse_position())
+func _on_mouse_exited():
+	Indications.remove_inner_hovered(tid, cmd_idx)

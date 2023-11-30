@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://lpv1kxrwexmi"
-path="res://.godot/imported/SmallCross.svg-3847356f267a2d78d7635c4479088a0d.ctex"
+uid="uid://co75w07yqmcro"
+path="res://.godot/imported/SplitGrabber2.svg-18d40ab670e2b5a72dfeedf569d260c4.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://visual/icons/SmallCross.svg"
-dest_files=["res://.godot/imported/SmallCross.svg-3847356f267a2d78d7635c4479088a0d.ctex"]
+source_file="res://visual/icons/theme/SplitGrabber2.svg"
+dest_files=["res://.godot/imported/SplitGrabber2.svg-18d40ab670e2b5a72dfeedf569d260c4.ctex"]
 
 [params]
 

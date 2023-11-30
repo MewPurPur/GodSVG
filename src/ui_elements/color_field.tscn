@@ -1,10 +1,7 @@
-[gd_scene load_steps=8 format=3 uid="uid://carf2o1y7wvmc"]
+[gd_scene load_steps=5 format=3 uid="uid://carf2o1y7wvmc"]
 
 [ext_resource type="Script" path="res://src/ui_elements/color_field.gd" id="1_2pe1j"]
-[ext_resource type="Texture2D" uid="uid://y0l74x73w0co" path="res://visual/CheckerboardMini.svg" id="2_t1t6b"]
 [ext_resource type="Script" path="res://src/ui_elements/BetterLineEdit.gd" id="3_u777p"]
-[ext_resource type="Script" path="res://src/ui_elements/color_popup.gd" id="4_4syqq"]
-[ext_resource type="PackedScene" uid="uid://cpvtf3kaa2ltr" path="res://src/ui_elements/color_swatch.tscn" id="5_g5jha"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_q6tej"]
 draw_center = false
@@ -32,7 +29,6 @@ offset_right = 50.0
 offset_bottom = 21.0
 theme_override_constants/separation = 0
 script = ExtResource("1_2pe1j")
-checkerboard = ExtResource("2_t1t6b")
 
 [node name="LineEdit" type="LineEdit" parent="."]
 custom_minimum_size = Vector2(54, 0)
@@ -55,189 +51,8 @@ focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_type_variation = &"LeftConnectedButtonTransparent"
 
-[node name="ColorPopup" type="Popup" parent="."]
-transparent_bg = true
-size = Vector2i(150, 220)
-script = ExtResource("4_4syqq")
-
-[node name="PanelContainer" type="PanelContainer" parent="ColorPopup"]
-offset_right = 150.0
-offset_bottom = 142.0
-
-[node name="MarginContainer" type="MarginContainer" parent="ColorPopup/PanelContainer"]
-layout_mode = 2
-theme_override_constants/margin_left = 8
-theme_override_constants/margin_top = 0
-theme_override_constants/margin_right = 8
-theme_override_constants/margin_bottom = 8
-
-[node name="MainContainer" type="VBoxContainer" parent="ColorPopup/PanelContainer/MarginContainer"]
-layout_mode = 2
-theme_override_constants/separation = 8
-
-[node name="Pure" type="VBoxContainer" parent="ColorPopup/PanelContainer/MarginContainer/MainContainer"]
-layout_mode = 2
-theme_override_constants/separation = 0
-
-[node name="Label" type="Label" parent="ColorPopup/PanelContainer/MarginContainer/MainContainer/Pure"]
-layout_mode = 2
-text = "Pure"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="PureSwatches" type="HFlowContainer" parent="ColorPopup/PanelContainer/MarginContainer/MainContainer/Pure"]
-unique_name_in_owner = true
-layout_mode = 2
-theme_override_constants/h_separation = 2
-
-[node name="White" parent="ColorPopup/PanelContainer/MarginContainer/MainContainer/Pure/PureSwatches" instance=ExtResource("5_g5jha")]
-layout_mode = 2
-tooltip_text = "Pure white"
-color_hex = "ffffff"
-
-[node name="Black" parent="ColorPopup/PanelContainer/MarginContainer/MainContainer/Pure/PureSwatches" instance=ExtResource("5_g5jha")]
-layout_mode = 2
-tooltip_text = "Pure black"
-color_hex = "000000"
-
-[node name="Red" parent="ColorPopup/PanelContainer/MarginContainer/MainContainer/Pure/PureSwatches" instance=ExtResource("5_g5jha")]
-layout_mode = 2
-tooltip_text = "Pure red"
-color_hex = "ff0000"
-
-[node name="Green" parent="ColorPopup/PanelContainer/MarginContainer/MainContainer/Pure/PureSwatches" instance=ExtResource("5_g5jha")]
-layout_mode = 2
-tooltip_text = "Pure green"
-color_hex = "00ff00"
-
-[node name="Blue" parent="ColorPopup/PanelContainer/MarginContainer/MainContainer/Pure/PureSwatches" instance=ExtResource("5_g5jha")]
-layout_mode = 2
-tooltip_text = "Pure blue"
-color_hex = "0000ff"
-
-[node name="Blue2" parent="ColorPopup/PanelContainer/MarginContainer/MainContainer/Pure/PureSwatches" instance=ExtResource("5_g5jha")]
-layout_mode = 2
-tooltip_text = "Pure blue"
-color_hex = "none"
-
-[node name="Common" type="VBoxContainer" parent="ColorPopup/PanelContainer/MarginContainer/MainContainer"]
-layout_mode = 2
-theme_override_constants/separation = 0
-
-[node name="Label" type="Label" parent="ColorPopup/PanelContainer/MarginContainer/MainContainer/Common"]
-layout_mode = 2
-text = "Common"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="CommonSwatches" type="HFlowContainer" parent="ColorPopup/PanelContainer/MarginContainer/MainContainer/Common"]
-unique_name_in_owner = true
-layout_mode = 2
-theme_override_constants/h_separation = 2
-
-[node name="Icon" parent="ColorPopup/PanelContainer/MarginContainer/MainContainer/Common/CommonSwatches" instance=ExtResource("5_g5jha")]
-layout_mode = 2
-tooltip_text = "Icon color"
-color_hex = "e0e0e0"
-
-[node name="IconDisabled" parent="ColorPopup/PanelContainer/MarginContainer/MainContainer/Common/CommonSwatches" instance=ExtResource("5_g5jha")]
-layout_mode = 2
-tooltip_text = "Icon disabled color"
-color_hex = "919191"
-
-[node name="Node2D" parent="ColorPopup/PanelContainer/MarginContainer/MainContainer/Common/CommonSwatches" instance=ExtResource("5_g5jha")]
-layout_mode = 2
-tooltip_text = "Node2D color"
-color_hex = "8da5f3"
-
-[node name="Control" parent="ColorPopup/PanelContainer/MarginContainer/MainContainer/Common/CommonSwatches" instance=ExtResource("5_g5jha")]
-layout_mode = 2
-tooltip_text = "Control color"
-color_hex = "8eef97"
-
-[node name="Node3D" parent="ColorPopup/PanelContainer/MarginContainer/MainContainer/Common/CommonSwatches" instance=ExtResource("5_g5jha")]
-layout_mode = 2
-tooltip_text = "Node3D color"
-color_hex = "fc7f7f"
-
-[node name="Animation" parent="ColorPopup/PanelContainer/MarginContainer/MainContainer/Common/CommonSwatches" instance=ExtResource("5_g5jha")]
-layout_mode = 2
-tooltip_text = "Animation color"
-color_hex = "c38ef1"
-
-[node name="Mesh" parent="ColorPopup/PanelContainer/MarginContainer/MainContainer/Common/CommonSwatches" instance=ExtResource("5_g5jha")]
-layout_mode = 2
-tooltip_text = "Mesh color"
-color_hex = "ffca5f"
-
-[node name="Shape" parent="ColorPopup/PanelContainer/MarginContainer/MainContainer/Common/CommonSwatches" instance=ExtResource("5_g5jha")]
-layout_mode = 2
-tooltip_text = "Shape color"
-color_hex = "2998ff"
-
-[node name="ShapeLight" parent="ColorPopup/PanelContainer/MarginContainer/MainContainer/Common/CommonSwatches" instance=ExtResource("5_g5jha")]
-layout_mode = 2
-tooltip_text = "Shape light color"
-color_hex = "a2d2ff"
-
-[node name="Input" parent="ColorPopup/PanelContainer/MarginContainer/MainContainer/Common/CommonSwatches" instance=ExtResource("5_g5jha")]
-layout_mode = 2
-tooltip_text = "Input color"
-color_hex = "69c4d4"
-
-[node name="Rainbow" type="VBoxContainer" parent="ColorPopup/PanelContainer/MarginContainer/MainContainer"]
-layout_mode = 2
-theme_override_constants/separation = 0
-
-[node name="Label" type="Label" parent="ColorPopup/PanelContainer/MarginContainer/MainContainer/Rainbow"]
-layout_mode = 2
-text = "Rainbow"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="RainbowSwatches" type="HFlowContainer" parent="ColorPopup/PanelContainer/MarginContainer/MainContainer/Rainbow"]
-unique_name_in_owner = true
-layout_mode = 2
-theme_override_constants/h_separation = 2
-
-[node name="Red" parent="ColorPopup/PanelContainer/MarginContainer/MainContainer/Rainbow/RainbowSwatches" instance=ExtResource("5_g5jha")]
-layout_mode = 2
-tooltip_text = "Rainbow red"
-color_hex = "ff4545"
-
-[node name="Yellow" parent="ColorPopup/PanelContainer/MarginContainer/MainContainer/Rainbow/RainbowSwatches" instance=ExtResource("5_g5jha")]
-layout_mode = 2
-tooltip_text = "Rainbow yellow"
-color_hex = "ffe345"
-
-[node name="Green" parent="ColorPopup/PanelContainer/MarginContainer/MainContainer/Rainbow/RainbowSwatches" instance=ExtResource("5_g5jha")]
-layout_mode = 2
-tooltip_text = "Rainbow green"
-color_hex = "80ff45"
-
-[node name="Aqua" parent="ColorPopup/PanelContainer/MarginContainer/MainContainer/Rainbow/RainbowSwatches" instance=ExtResource("5_g5jha")]
-layout_mode = 2
-tooltip_text = "Rainbow aqua"
-color_hex = "45ffa2"
-
-[node name="Blue" parent="ColorPopup/PanelContainer/MarginContainer/MainContainer/Rainbow/RainbowSwatches" instance=ExtResource("5_g5jha")]
-layout_mode = 2
-tooltip_text = "Rainbow blue"
-color_hex = "45d7ff"
-
-[node name="Purple" parent="ColorPopup/PanelContainer/MarginContainer/MainContainer/Rainbow/RainbowSwatches" instance=ExtResource("5_g5jha")]
-layout_mode = 2
-tooltip_text = "Rainbow purple"
-color_hex = "8045ff"
-
-[node name="Pink" parent="ColorPopup/PanelContainer/MarginContainer/MainContainer/Rainbow/RainbowSwatches" instance=ExtResource("5_g5jha")]
-layout_mode = 2
-tooltip_text = "Rainbow pink"
-color_hex = "ff4596"
-
 [connection signal="focus_exited" from="LineEdit" to="." method="_on_focus_exited"]
 [connection signal="text_changed" from="LineEdit" to="." method="_on_line_edit_text_changed"]
 [connection signal="text_submitted" from="LineEdit" to="." method="_on_text_submitted"]
 [connection signal="pressed" from="Button" to="." method="_on_button_pressed"]
 [connection signal="resized" from="Button" to="." method="_on_button_resized"]
-[connection signal="color_picked" from="ColorPopup" to="." method="_on_color_picked"]

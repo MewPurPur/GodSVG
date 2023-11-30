@@ -4,18 +4,21 @@ signal imported(text: String)
 
 @onready var warnings_label: RichTextLabel = %WarningsLabel
 @onready var texture_preview: TextureRect = %TexturePreview
+@onready var ok_button: Button = %ButtonContainer/OKButton
 
 var imported_text := ""
 
 func _ready() -> void:
+	ok_button.grab_focus()
 	# Convert forward and backward to show any artifacts that might occur after parsing.
-	var import_preview_text := SVGParser.svg_to_text(SVGParser.text_to_svg(imported_text))
-	var import_preview_svg := SVGParser.text_to_svg(import_preview_text)
-	var scaling_factor := 256.0 / maxf(import_preview_svg.attributes.width.get_value(),
-			import_preview_svg.attributes.height.get_value())
+	var preview_text := SVGParser.svg_to_text(SVGParser.text_to_svg(imported_text))
+	var preview_svg := SVGParser.text_to_svg(preview_text)
+	var scaling_factor := texture_preview.size.x * 2.0 /\
+			maxf(preview_svg.get_width(), preview_svg.get_height())
 	var img := Image.new()
-	img.load_svg_from_string(import_preview_text, scaling_factor)
+	img.load_svg_from_string(preview_text, scaling_factor)
 	if not img.is_empty():
+		img.fix_alpha_edges()
 		texture_preview.texture = ImageTexture.create_from_image(img)
 	var warnings := get_svg_errors(imported_text)
 	if warnings.is_empty():

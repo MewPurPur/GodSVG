@@ -1,9 +1,8 @@
-[gd_scene load_steps=7 format=3 uid="uid://d2da0thyq5rq8"]
+[gd_scene load_steps=6 format=3 uid="uid://d2da0thyq5rq8"]
 
 [ext_resource type="Script" path="res://src/ui_elements/enum_field.gd" id="1_1jqoy"]
 [ext_resource type="Script" path="res://src/ui_elements/BetterLineEdit.gd" id="2_4bajq"]
 [ext_resource type="Texture2D" uid="uid://coda6chhcatal" path="res://visual/icons/Arrow.svg" id="3_vhd8v"]
-[ext_resource type="PackedScene" uid="uid://wp77eqhikp6k" path="res://src/ui_elements/context_popup.tscn" id="4_4cpb7"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_y4kmw"]
 draw_center = false
@@ -53,8 +52,5 @@ mouse_default_cursor_shape = 2
 theme_type_variation = &"LeftConnectedButton"
 icon = ExtResource("3_vhd8v")
 expand_icon = true
-
-[node name="ContextPopup" parent="." instance=ExtResource("4_4cpb7")]
-visible = false
 
 [connection signal="pressed" from="Button" to="." method="_on_button_pressed"]

@@ -1,0 +1,87 @@
+[gd_scene load_steps=6 format=3 uid="uid://f5cljfdpe85v"]
+
+[ext_resource type="Script" path="res://src/ui_elements/color_popup.gd" id="1_t1mgf"]
+[ext_resource type="PackedScene" uid="uid://b1eig44cov474" path="res://src/ui_elements/good_color_picker.tscn" id="2_jv3ea"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_prjsf"]
+content_margin_left = 6.0
+content_margin_top = 2.0
+content_margin_right = 6.0
+content_margin_bottom = 3.0
+bg_color = Color(0.866667, 0.933333, 1, 0.0470588)
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5ydiu"]
+content_margin_left = 6.0
+content_margin_top = 2.0
+content_margin_right = 6.0
+content_margin_bottom = 3.0
+bg_color = Color(0.866667, 0.933333, 1, 0.0705882)
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kiodn"]
+content_margin_left = 6.0
+content_margin_top = 3.0
+content_margin_right = 6.0
+content_margin_bottom = 4.0
+bg_color = Color(0.866667, 0.933333, 1, 0.145098)
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[node name="ColorPopup" type="Popup"]
+transparent_bg = true
+size = Vector2i(218, 344)
+visible = true
+script = ExtResource("1_t1mgf")
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+custom_minimum_size = Vector2(160, 0)
+offset_right = 218.0
+offset_bottom = 43.0
+
+[node name="MainContainer" type="VBoxContainer" parent="PanelContainer"]
+layout_mode = 2
+
+[node name="Content" type="MarginContainer" parent="PanelContainer/MainContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(214, 0)
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 2
+
+[node name="Palettes" type="ScrollContainer" parent="PanelContainer/MainContainer/Content"]
+custom_minimum_size = Vector2(0, 303)
+layout_mode = 2
+horizontal_scroll_mode = 0
+
+[node name="VBox" type="VBoxContainer" parent="PanelContainer/MainContainer/Content/Palettes"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 7
+
+[node name="ColorPicker" parent="PanelContainer/MainContainer/Content" instance=ExtResource("2_jv3ea")]
+visible = false
+layout_mode = 2
+
+[node name="SwitchMode" type="Button" parent="PanelContainer/MainContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_colors/font_disabled_color = Color(0.866667, 0.933333, 1, 1)
+theme_override_styles/normal = SubResource("StyleBoxFlat_prjsf")
+theme_override_styles/hover = SubResource("StyleBoxFlat_5ydiu")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_kiodn")
+text = "#palettes"
+
+[node name="Label" type="Label" parent="."]
+offset_right = 40.0
+offset_bottom = 22.0
+
+[connection signal="popup_hide" from="." to="." method="_on_popup_hide"]
+[connection signal="color_changed" from="PanelContainer/MainContainer/Content/ColorPicker" to="." method="pick_color"]
+[connection signal="pressed" from="PanelContainer/MainContainer/SwitchMode" to="." method="_switch_mode"]

@@ -1,12 +1,7 @@
 ,en,bg,de
-#remember_svg_setting,Remember SVG,Запомни SVG,SVG merken
-#remember_svg_desc,"When this box is checked, the SVG will persist between sessions.","Когато тази кутийка е отметната, SVG-то ще бъде запомнено между сесиите.","Wenn diese Option aktiviert ist, wird das SVG zwischen Sitzungen wiederhergestellt."
-#remember_window_mode_settings,Remember window mode,Запомни режима на прозореца,Fenstermodus wiederherstellen
-#remember_window_mode_desc,"When this box is checked, the window can remain restored between sessions.","Когато тази кутийка е отметната, прозорецът може да остане малък между сесиите.","Wenn diese Option aktiviert ist, wird das Fenster zwischen Sitzungen wiederhergestellt."
 #language,Language,Език,Sprache
 #invert_zoom,Invert zoom direction,Обърни посоката на увеличение,Zoomrichtung umkehren
 #invert_zoom_desc,Swaps zoom in and zoom out with the mouse wheel,Разменя увеличението и намалянето с колелцето на мишката,Vertauscht Hinein- und Herauszoomen mit dem Mausrad
-#session_tab,Session,Сесия,Sitzung
 #input_tab,Input,Входни сигнали,Eingabe
 #open,Open,Отвори,Öffnen
 #close,Close,Затвори,Schließen
@@ -33,6 +28,7 @@
 #move_down,Move Down,Премести надолу,Nach unten
 #delete,Delete,Премахни,Löschen
 #insert_after,Insert After,Вмъкни отпред,Danach einsetzen
+#convert_to,Convert To,Превърни в,
 #err_empty_svg,SVG is empty.,Текстът е празен.,SVG ist leer.
 #err_not_svg,Doesn’t describe a SVG.,Текстът не описва SVG.,Beschreibt kein SVG.
 #err_improper_nesting,Improper nesting.,Несъвместими тагове.,Ungültige Formatierung.
@@ -48,13 +44,31 @@
 #import_problems,Import Problems,Проблеми в импортирането,Probleme beim Importieren
 #unknown_tooltip,GodSVG doesn’t recognize this attribute,GodSVG не разпознава този атрибут,GodSVG erkennt diese Attribute nicht
 #export,Export,Експортирай,Exportieren
-#format,Format,Формат,Formatieren
+#format,Format,Формат,Format
 #scale,Scale,Мащаб,Skalieren
 #size,Size,Размер,Größe
 #final_size,Final size,Краен размер,Endgültige Größe
-#export_configuration,Export Configuration,Конфигурация на експорта,Exportierungskonfiguration
+#export_configuration,Export Configuration,Конфигурация на експорта,Export-Konfiguration
 #add_tag,Add new tag,Добави нов таг,Neues Element hinzufügen
-#license_tab,License,,Lizenz
-#third-party-licenses_tab,Third-party-licenses,,Drittanbieter-Lizenzen
-#authors_tab,Authors,,Autoren
-#kbd_shortcuts_tab,Shortcuts,,Tastenkombinationen
+#license_tab,License,Лиценз,Lizenz
+#third-party-licenses_tab,Third-party licenses,Лицензи от трети партии,Drittanbieter-Lizenzen
+#authors_tab,Authors,Автори,Autoren
+#kbd_shortcuts_tab,Shortcuts,Бързи клавиши,Tastenkombinationen
+#palettes,Palettes,Палети,Paletten
+#color_picker,Color Picker,Цветно колело,Farbauswahl
+#add_color,Add color,Добави цвят,Farbe hinzufügen
+#edit_palette_name,Edit palette name,Промени името на палетата,Palettennamen ändern
+#delete_palette,Delete the palette,Изтрий палетата,Palette löschen
+#unnamed,Unnamed,Неименуван,Unbenannt
+#edit_color_name,Edit color name,Промени името на цвета,Farbnamen ändern
+#enable_color,Enable the color,Включи цвета,Farbe aktivieren
+#disable_color,Disable the color,Изключи цвета,Farbe deaktivieren
+#godot_third_party,Godot third-party components,Компоненти в Godot от трети партии,Godot Drittanbieter-Komponente
+#undo,Undo,Върни назад,
+#redo,Redo,Върни напред,
+#copy,Copy,Копирай,
+#paste,Paste,Постави,
+#cut,Cut,Изрежи,
+#alert,Alert!,Предупреждение!,
+#file_open_fail_message,"The file couldn't be opened.\nTry checking the file path, ensure that the file is not deleted, or choose a different file.","Файлът не може да бъде отворен.\nОпитайте да проверите пътя към файла, уверете се, че файла не е изтрит, или изберете различен файл.",
+#ok,OK,Добре,

@@ -15,7 +15,14 @@ config/tags=PackedStringArray("project")
 run/main_scene="res://src/ui_parts/main_scene.tscn"
 config/features=PackedStringArray("4.2", "Forward Plus")
 run/low_processor_mode=true
+boot_splash/bg_color=Color(0.1065, 0.1181, 0.15, 1)
+boot_splash/image="res://visual/splash.png"
+boot_splash/fullsize=false
 config/icon="res://visual/icon.png"
+
+[audio]
+
+driver/driver="Dummy"
 
 [autoload]
 
@@ -28,7 +35,13 @@ Indications="*res://src/Indications.gd"
 window/size/viewport_width=1024
 window/size/viewport_height=640
 window/size/mode=2
+window/energy_saving/keep_screen_on=false
 mouse_cursor/tooltip_position_offset=Vector2(0, 10)
+
+[filesystem]
+
+import/blender/enabled=false
+import/fbx/enabled=false
 
 [gui]
 
@@ -66,6 +79,11 @@ redo={
 duplicate={
 "deadzone": 0.5,
 "events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"command_or_control_autoremap":true,"alt_pressed":false,"shift_pressed":false,"pressed":false,"keycode":0,"physical_keycode":68,"key_label":0,"unicode":100,"echo":false,"script":null)
+]
+}
+select_all={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"command_or_control_autoremap":true,"alt_pressed":false,"shift_pressed":false,"pressed":false,"keycode":0,"physical_keycode":65,"key_label":0,"unicode":97,"echo":false,"script":null)
 ]
 }
 move_relative={
@@ -165,7 +183,7 @@ shorthand_cubic_bezier_relative={
 }
 shorthand_cubic_bezier_absolute={
 "deadzone": 0.5,
-"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":true,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":67,"key_label":0,"unicode":67,"echo":false,"script":null)
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":true,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":83,"key_label":0,"unicode":83,"echo":false,"script":null)
 ]
 }
 
@@ -177,4 +195,3 @@ locale/translations=PackedStringArray("res://translations/translation_sheet.bg.t
 
 renderer/rendering_method="gl_compatibility"
 environment/defaults/default_clear_color=Color(0.12, 0.132, 0.2, 1)
-anti_aliasing/quality/screen_space_aa=1

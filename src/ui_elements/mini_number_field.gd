@@ -9,12 +9,13 @@ var mode := Mode.DEFAULT
 signal value_changed(new_value: float)
 var _value: float  # Must not be updated directly.
 
-func set_value(new_value: float, emit_value_changed := true):
+func set_value(new_value: float):
 	if is_nan(new_value):
+		text = String.num(_value, 4)
 		return
 	var old_value := _value
 	_value = validate(new_value)
-	if _value != old_value and emit_value_changed:
+	if _value != old_value:
 		value_changed.emit(_value)
 	
 	text = String.num(_value, 4)
@@ -26,7 +27,7 @@ func get_value() -> float:
 func _ready() -> void:
 	super()
 	value_changed.connect(_on_value_changed)
-	text = str(get_value())
+	text = String.num(get_value(), 4)
 
 func validate(new_value: float) -> float:
 	match mode:
@@ -44,4 +45,3 @@ func _on_focus_exited() -> void:
 
 func _on_text_submitted(submitted_text: String) -> void:
 	set_value(Utils.evaluate_numeric_expression(submitted_text))
-	super(submitted_text)

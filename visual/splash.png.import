@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://rrhdja8l17cn"
-path="res://.godot/imported/FolderUp.svg-ea80ed3af2557e3c1b26b83ba445e18e.ctex"
+uid="uid://bom8y28xu652f"
+path="res://.godot/imported/splash.png-2e737774984f5a274381090076e4098a.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://visual/icons/FolderUp.svg"
-dest_files=["res://.godot/imported/FolderUp.svg-ea80ed3af2557e3c1b26b83ba445e18e.ctex"]
+source_file="res://visual/splash.png"
+dest_files=["res://.godot/imported/splash.png-2e737774984f5a274381090076e4098a.ctex"]
 
 [params]
 
@@ -32,6 +32,3 @@ process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
 detect_3d/compress_to=1
-svg/scale=1.0
-editor/scale_with_editor_scale=false
-editor/convert_colors_with_editor_theme=false

@@ -13,20 +13,20 @@ var allow_higher := true
 
 var is_float := true
 
-signal value_changed(new_value: float)
+signal value_changed(new_value: float, update_type: UpdateType)
 var _value: float  # Must not be updated directly.
 
-func set_value(new_value: float, emit_value_changed := true) -> void:
+func set_value(new_value: float, update_type := UpdateType.REGULAR) -> void:
 	if is_nan(new_value):
+		update_after_change()
 		return
 	var old_value := _value
 	_value = validate(new_value)
-	if _value != old_value and emit_value_changed:
-		value_changed.emit(_value)
+	if update_type != UpdateType.NO_SIGNAL and\
+	(_value != old_value or update_type == UpdateType.FINAL):
+		value_changed.emit(_value, update_type)
 	elif num_edit != null:
-		num_edit.text = String.num(_value, 4)
-		set_text_tint()
-		queue_redraw()
+		update_after_change()
 
 func get_value() -> float:
 	return _value
@@ -34,12 +34,11 @@ func get_value() -> float:
 
 func _ready() -> void:
 	value_changed.connect(_on_value_changed)
-	if attribute != null:
-		set_value(attribute.get_value())
-		attribute.value_changed.connect(set_value)
-		set_text_tint()
-		num_edit.tooltip_text = attribute_name
-	num_edit.text = str(get_value())
+	set_value(attribute.get_value())
+	attribute.value_changed.connect(set_value)
+	set_text_tint()
+	num_edit.tooltip_text = attribute_name
+	num_edit.text = String.num(get_value(), 4)
 
 func validate(new_value: float) -> float:
 	if allow_lower:
@@ -53,10 +52,15 @@ func validate(new_value: float) -> float:
 		else:
 			return clampf(new_value, min_value, max_value)
 
-func _on_value_changed(new_value: float) -> void:
-	num_edit.text = String.num(new_value, 4)
-	if attribute != null:
-		attribute.set_value(new_value)
+func _on_value_changed(new_value: float, update_type: UpdateType) -> void:
+	update_after_change()
+	match update_type:
+		UpdateType.INTERMEDIATE:
+			attribute.set_value(new_value, Attribute.SyncMode.INTERMEDIATE)
+		UpdateType.FINAL:
+			attribute.set_value(new_value, Attribute.SyncMode.FINAL)
+		_:
+			attribute.set_value(new_value)
 
 
 # Hacks to make LineEdit bearable.
@@ -80,8 +84,15 @@ func set_text_tint() -> void:
 		else:
 			num_edit.remove_theme_color_override(&"font_color")
 
+func update_after_change() -> void:
+	if num_edit != null:
+		num_edit.text = String.num(get_value(), 4)
+		set_text_tint()
+		queue_redraw()
+
 # Slider
 
+var initial_slider_value: float
 var slider_dragged := false:
 	set(new_value):
 		if slider_dragged != new_value:
@@ -103,28 +114,40 @@ func _draw() -> void:
 	var stylebox := StyleBoxFlat.new()
 	stylebox.corner_radius_top_right = 5
 	stylebox.corner_radius_bottom_right = 5
-	stylebox.bg_color = Color("#121233")
+	stylebox.bg_color = num_edit.get_theme_stylebox(&"normal", &"LineEdit").bg_color
 	draw_style_box(stylebox, Rect2(Vector2.ZERO, slider_size - Vector2(1, 2)))
 	var fill_height := (slider_size.y - 4) * (get_value() - min_value) / max_value
-	if slider_hovered or slider_dragged:
+	if slider_dragged:
 		draw_rect(Rect2(0, 1 + slider_size.y - 4 - fill_height,
 				slider_size.x - 2, fill_height), Color("#def"))
+	elif slider_hovered:
+		draw_rect(Rect2(0, 1 + slider_size.y - 4 - fill_height,
+				slider_size.x - 2, fill_height), Color("#defb"))
 	else:
 		draw_rect(Rect2(0, 1 + slider_size.y - 4 - fill_height,
-				slider_size.x - 2, fill_height), Color("#defa"))
+				slider_size.x - 2, fill_height), Color("#def8"))
 
 func _on_slider_resized() -> void:
 	queue_redraw()  # Whyyyyy are their sizes wrong at first...
 
 func _on_slider_gui_input(event: InputEvent) -> void:
-	var slider_h := slider.get_size().y - 4
-	if event is InputEventMouseButton or event is InputEventMouseMotion:
-		if event.button_mask == MOUSE_BUTTON_LEFT:
+	if not slider_dragged:
+		if Utils.is_event_drag_start(event):
 			slider_dragged = true
-			set_value(snappedf(lerpf(max_value, min_value,
-					(event.position.y - 4) / slider_h), slider_step))
-			return
-	slider_dragged = false
+			initial_slider_value = get_value()
+			set_value(get_slider_value_at_y(event.position.y), UpdateType.INTERMEDIATE)
+	else:
+		if Utils.is_event_drag(event):
+			set_value(get_slider_value_at_y(event.position.y), UpdateType.INTERMEDIATE)
+		elif Utils.is_event_drag_end(event):
+			slider_dragged = false
+			var final_slider_value := get_slider_value_at_y(event.position.y)
+			if initial_slider_value != final_slider_value:
+				set_value(final_slider_value, UpdateType.FINAL)
+
+func get_slider_value_at_y(y_coord: float) -> float:
+	return snappedf(lerpf(max_value, min_value,
+			(y_coord - 4) / (slider.get_size().y - 4)), slider_step)
 
 func _on_slider_mouse_exited() -> void:
 	slider_hovered = false

@@ -23,6 +23,7 @@ signal selection_changed
 # PackedInt32Array() means it's invalid.
 var hovered_tid := PackedInt32Array()
 var selected_tids: Array[PackedInt32Array] = []
+var selection_pivot_tid := PackedInt32Array()
 
 # Semi-hovered means the tag has inner selections, but it is not selected itself.
 # For example, individual path commands.
@@ -32,61 +33,154 @@ var semi_selected_tid := PackedInt32Array()
 # Inner stuff aren't in a tree, so they use an int. -1 means invalid.
 var inner_hovered := -1
 var inner_selections: Array[int] = []
+var inner_selection_pivot := -1
 
 
 func _ready() -> void:
 	SVG.root_tag.tags_added.connect(_on_tags_added)
 	SVG.root_tag.tags_deleted.connect(_on_tags_deleted)
-	SVG.root_tag.tags_moved.connect(_on_tags_moved)
+	SVG.root_tag.tags_moved_in_parent.connect(_on_tags_moved_in_parent)
+	#SVG.root_tag.tags_moved_to.connect(_on_tags_moved_to)  # TODO
 	SVG.root_tag.changed_unknown.connect(clear_selection)
-	SVG.root_tag.child_attribute_changed.connect(clear_inner_selection)
+	SVG.root_tag.child_attribute_changed.connect(clear_inner_selection.unbind(1))
 
-## If the tag was selected, unselect it. If it was unselected, select it.
-func toggle_selection(tid: PackedInt32Array) -> void:
-	if tid.is_empty():
-		return
-	
-	var tid_idx := selected_tids.find(tid)
-	if tid_idx == -1:
-		selected_tids.append(tid.duplicate())
-	else:
-		selected_tids.remove_at(tid_idx)
-	inner_selections.clear()
-	selection_changed.emit()
-
-## If the inner tag was selected, unselect it. If it was unselected, select it.
-func toggle_inner_selection(tid: PackedInt32Array, inner_idx: int) -> void:
-	if tid.is_empty():
-		return
-	
-	var idx_idx := inner_selections.find(inner_idx)
-	if idx_idx == -1:
-		inner_selections.append(inner_idx)
-	else:
-		inner_selections.remove_at(idx_idx)
-	selected_tids.clear()
-	selection_changed.emit()
 
 ## Override the selected tags with a single new selected tag.
-func set_selection(tid: PackedInt32Array) -> void:
-	if selected_tids.size() != 1 or selected_tids[0] != tid:
+## If inner_idx is given, this will be an inner selection.
+func normal_select(tid: PackedInt32Array, inner_idx := -1) -> void:
+	if tid.is_empty():
+		return
+	
+	if inner_idx == -1:
+		var old_selected_tids := selected_tids.duplicate()
 		if not semi_selected_tid.is_empty():
 			semi_selected_tid.clear()
 			inner_selections.clear()
+		if selected_tids.size() == 1 and selected_tids[0] == tid:
+			return
+		selection_pivot_tid = tid.duplicate()
 		selected_tids = [tid.duplicate()]
-		selection_changed.emit()
+		if old_selected_tids != selected_tids:
+			selection_changed.emit()
+	else:
+		selected_tids.clear()
+		var old_inner_selections := inner_selections.duplicate()
+		if semi_selected_tid == tid and\
+		inner_selections.size() == 1 and inner_selections[0] == inner_idx:
+			return
+		semi_selected_tid = tid.duplicate()
+		inner_selection_pivot = inner_idx
+		inner_selections = [inner_idx]
+		if inner_selections != old_inner_selections:
+			selection_changed.emit()
 
-## Override the inner selections with a single new inner selection.
-func set_inner_selection(tid: PackedInt32Array, inner_idx: int) -> void:
-	semi_selected_tid = tid.duplicate()
-	inner_selections = [inner_idx]
-	selected_tids.clear()
+## If the tag was selected, unselect it. If it was unselected, select it.
+## If inner_idx is given, this will be an inner selection.
+func ctrl_select(tid: PackedInt32Array, inner_idx := -1) -> void:
+	if tid.is_empty():
+		return
+	
+	if inner_idx == -1:
+		inner_selections.clear()
+		var tid_idx := selected_tids.find(tid)
+		if tid_idx == -1:
+			selection_pivot_tid = tid.duplicate()
+			selected_tids.append(tid.duplicate())
+		else:
+			selected_tids.remove_at(tid_idx)
+			if selected_tids.is_empty():
+				selection_pivot_tid = PackedInt32Array()
+	else:
+		if semi_selected_tid != tid:
+			normal_select(tid, inner_idx)
+		else:
+			selected_tids.clear()
+			var idx_idx := inner_selections.find(inner_idx)
+			if idx_idx == -1:
+				inner_selection_pivot = inner_idx
+				inner_selections.append(inner_idx)
+			else:
+				inner_selections.remove_at(idx_idx)
+				if inner_selections.is_empty():
+					inner_selection_pivot = -1
+	
 	selection_changed.emit()
+
+## Select all tags with the same depth from the tag to the last selected tag.
+## Similarly for inner selections if inner_idx is given, but without tree logic.
+func shift_select(tid: PackedInt32Array, inner_idx := -1) -> void:
+	if tid.is_empty():
+		return
+	
+	if inner_idx == -1:
+		if selection_pivot_tid.is_empty():
+			if selected_tids.is_empty():
+				normal_select(tid, inner_idx)
+			return
+		
+		if tid == selection_pivot_tid:
+			return
+		
+		var old_selected_tids := selected_tids.duplicate()
+		
+		if tid.size() != selection_pivot_tid.size():
+			if not tid in selected_tids:
+				selected_tids.append(tid)
+				selection_changed.emit()
+				return
+		
+		var parent_tag := tid.duplicate()
+		parent_tag.resize(parent_tag.size() - 1)
+		var tid_idx := tid[-1]
+		var selection_pivot_tid_idx := selection_pivot_tid[-1]
+		
+		var first_idx := mini(tid_idx, selection_pivot_tid_idx)
+		var last_idx := maxi(tid_idx, selection_pivot_tid_idx)
+		for i in range(first_idx, last_idx + 1):
+			var new_tid := parent_tag.duplicate()
+			new_tid.append(i)
+			if not new_tid in selected_tids:
+				selected_tids.append(new_tid)
+		
+		if selected_tids == old_selected_tids:
+			return
+	
+	else:
+		if inner_selection_pivot == -1:
+			if inner_selections.is_empty():
+				normal_select(tid, inner_idx)
+			return
+		
+		var old_inner_selections := inner_selections.duplicate()
+		var first_idx := mini(inner_selection_pivot, inner_idx)
+		var last_idx := maxi(inner_selection_pivot, inner_idx)
+		for i in range(first_idx, last_idx + 1):
+			if not i in inner_selections:
+				inner_selections.append(i)
+		
+		if inner_selections == old_inner_selections:
+			return
+	
+	selection_changed.emit()
+
+## Select all tags.
+func select_all() -> void:
+	clear_inner_selection()
+	var tid_list := SVG.root_tag.get_all_tids()
+	if selected_tids == tid_list:
+		return
+	
+	for tid in SVG.root_tag.get_all_tids():
+		if not tid in selected_tids:
+			selected_tids.append(tid)
+	selection_changed.emit()
+
 
 ## Clear the selected tags.
 func clear_selection() -> void:
 	if not selected_tids.is_empty():
 		selected_tids.clear()
+		selection_pivot_tid.clear()
 		selection_changed.emit()
 
 ## Clear the inner selection.
@@ -94,6 +188,7 @@ func clear_inner_selection() -> void:
 	if not inner_selections.is_empty() or not semi_selected_tid.is_empty():
 		inner_selections.clear()
 		semi_selected_tid.clear()
+		inner_selection_pivot = -1
 		selection_changed.emit()
 
 ## Clear the selected tags or the inner selection.
@@ -165,48 +260,67 @@ func _on_tags_deleted(tids: Array[PackedInt32Array]) -> void:
 	if old_selected_tids != selected_tids:
 		selection_changed.emit()
 
-# TODO
-func _on_tags_moved(parent_tid: PackedInt32Array, old_idx: int, new_idx: int) -> void:
-	var parent_tag := SVG.root_tag.get_by_tid(parent_tid)
-	#for i in changed_tids_count:
-		#for j in selected_tids.size():
-			#var idx := selected_tids[i][-1]
-			#if (idx < old_idx and idx < new_idx) or (idx > old_idx and idx > new_idx):
-				#continue
-			#elif idx > old_idx and idx < new_idx:
-				#selected_tids[j][-1] += 1
-			#elif idx <= old_idx and idx > new_idx:
-				#selected_tids[j][-1] -= 1
-			#elif idx == old_idx:
-				#selected_tids[j][-1] = new_idx
+# If selected tags were moved, change the TIDs and their children.
+func _on_tags_moved_in_parent(parent_tid: PackedInt32Array, indices: Array[int]) -> void:
+	var old_selected_tids := selected_tids.duplicate()
+	var tids_to_select: Array[PackedInt32Array] = []
+	var tids_to_unselect: Array[PackedInt32Array] = []
+	
+	for index_idx in indices.size():
+		if index_idx == indices[index_idx]:
+			continue
+		
+		# For the tags that have moved, get their old.
+		var old_moved_tid := parent_tid.duplicate()
+		old_moved_tid.append(indices[index_idx])
+		
+		# If the TID or a child of it is found, append it.
+		for tid in selected_tids:
+			if Utils.is_tid_parent(old_moved_tid, tid) or old_moved_tid == tid:
+				var new_selected_tid := tid.duplicate()
+				new_selected_tid[parent_tid.size()] = index_idx
+				tids_to_unselect.append(tid)
+				tids_to_select.append(new_selected_tid)
+	for tid in tids_to_unselect:
+		selected_tids.erase(tid)
+	selected_tids += tids_to_select
+	
+	if old_selected_tids != selected_tids:
+		selection_changed.emit()
+
+# TODO implement this.
+#func _on_tags_moved_to(tid: PackedInt32Array, old_tids: Array[PackedInt32Array]) -> void:
+	#return
 
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed(&"delete"):
 		if not selected_tids.is_empty():
 			SVG.root_tag.delete_tags(selected_tids)
-		elif !inner_selections.is_empty() and not semi_selected_tid.is_empty():
+		elif not inner_selections.is_empty() and not semi_selected_tid.is_empty():
 			inner_selections.sort()
 			inner_selections.reverse()
 			var tag_ref := SVG.root_tag.get_by_tid(semi_selected_tid)
 			match tag_ref.name:
 				"path":
-					for cmd_idx in inner_selections:
-						tag_ref.attributes.d.delete_command(cmd_idx)
+					tag_ref.attributes.d.delete_commands(inner_selections)
+					clear_inner_selection()
 	elif event.is_action_pressed(&"move_up"):
-		SVG.root_tag.move_tags(selected_tids, false)
+		SVG.root_tag.move_tags_in_parent(selected_tids, false)
 	elif event.is_action_pressed(&"move_down"):
-		SVG.root_tag.move_tags(selected_tids, true)
+		SVG.root_tag.move_tags_in_parent(selected_tids, true)
 	elif event.is_action_pressed(&"duplicate"):
 		SVG.root_tag.duplicate_tags(selected_tids)
-	else:
+	elif event.is_action_pressed(&"select_all"):
+		select_all()
+	elif event is InputEventKey:
 		# Path commands using keys.
-		if inner_selections.is_empty():
+		if inner_selections.is_empty() or event.is_command_or_control_pressed():
 			return
+		var max_inner_selection = inner_selections.max()
 		for action_name in path_actions_dict.keys():
 			if event.is_action_pressed(action_name):
-				var last_inner_selection = inner_selections.max()
 				var real_tag := SVG.root_tag.get_by_tid(semi_selected_tid)
 				real_tag.attributes.d.insert_command(
-						last_inner_selection + 1, path_actions_dict[action_name])
+						max_inner_selection + 1, path_actions_dict[action_name])
 				break

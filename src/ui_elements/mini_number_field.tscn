@@ -6,11 +6,13 @@
 draw_center = false
 border_width_bottom = 2
 border_color = Color(1, 1, 1, 0.133333)
+corner_detail = 1
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ul27o"]
 draw_center = false
 border_width_bottom = 2
 border_color = Color(0.501961, 1, 1, 0.4)
+corner_detail = 1
 
 [node name="MiniNumberField" type="LineEdit"]
 custom_minimum_size = Vector2(44, 19)

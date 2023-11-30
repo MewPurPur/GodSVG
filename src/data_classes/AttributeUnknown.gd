@@ -7,4 +7,4 @@ func _init(new_name: String, new_init := "") -> void:
 	type = Type.UNKNOWN
 	default = null
 	name = new_name
-	set_value(new_init)
+	set_value(new_init, SyncMode.SILENT)

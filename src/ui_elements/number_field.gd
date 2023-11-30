@@ -10,19 +10,20 @@ var allow_higher := true
 
 var is_float := true
 
-signal value_changed(new_value: float)
+signal value_changed(new_value: float, update_type: UpdateType)
 var _value: float  # Must not be updated directly.
 
-func set_value(new_value: float, emit_value_changed := true) -> void:
+func set_value(new_value: float, update_type := UpdateType.REGULAR) -> void:
 	if is_nan(new_value):
+		num_edit.text = String.num(_value, 4)
 		return
 	var old_value := _value
 	_value = validate(new_value)
-	if _value != old_value and emit_value_changed:
-		value_changed.emit(_value)
+	if update_type != UpdateType.NO_SIGNAL and\
+	(_value != old_value or update_type == UpdateType.FINAL):
+		value_changed.emit(_value, update_type)
 	elif num_edit != null:
-		num_edit.text = String.num(_value, 4)
-		set_text_tint()
+		update_after_change()
 
 func get_value() -> float:
 	return _value
@@ -30,12 +31,10 @@ func get_value() -> float:
 
 func _ready() -> void:
 	value_changed.connect(_on_value_changed)
-	if attribute != null:
-		set_value(attribute.get_value())
-		attribute.value_changed.connect(set_value)
-		set_text_tint()
-		num_edit.tooltip_text = attribute_name
-	num_edit.text = str(get_value())
+	set_value(attribute.get_value())
+	attribute.value_changed.connect(set_value)
+	num_edit.tooltip_text = attribute_name
+	num_edit.text = String.num(get_value(), 4)
 
 func validate(new_value: float) -> float:
 	if allow_lower:
@@ -49,10 +48,15 @@ func validate(new_value: float) -> float:
 		else:
 			return clampf(new_value, min_value, max_value)
 
-func _on_value_changed(new_value: float) -> void:
-	num_edit.text = String.num(new_value, 4)
-	if attribute != null:
-		attribute.set_value(new_value)
+func _on_value_changed(new_value: float, update_type: UpdateType) -> void:
+	update_after_change()
+	match update_type:
+		UpdateType.INTERMEDIATE:
+			attribute.set_value(new_value, Attribute.SyncMode.INTERMEDIATE)
+		UpdateType.FINAL:
+			attribute.set_value(new_value, Attribute.SyncMode.FINAL)
+		_:
+			attribute.set_value(new_value)
 
 
 func _on_focus_exited() -> void:
@@ -73,3 +77,8 @@ func set_text_tint() -> void:
 			num_edit.add_theme_color_override(&"font_color", Color(0.64, 0.64, 0.64))
 		else:
 			num_edit.remove_theme_color_override(&"font_color")
+
+func update_after_change() -> void:
+	if num_edit != null:
+		num_edit.text = String.num(get_value(), 4)
+		set_text_tint()

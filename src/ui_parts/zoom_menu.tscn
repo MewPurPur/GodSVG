@@ -32,35 +32,37 @@ unicode = 61
 events = [SubResource("InputEventKey_gqh1f")]
 
 [node name="ZoomMenu" type="HBoxContainer"]
+offset_right = 114.0
+offset_bottom = 24.0
 alignment = 1
 script = ExtResource("1_18ab8")
 
 [node name="ZoomOut" type="Button" parent="."]
-custom_minimum_size = Vector2(28, 0)
 layout_mode = 2
 tooltip_text = "#zoom_out"
 focus_mode = 0
 mouse_default_cursor_shape = 2
+theme_type_variation = &"IconButton"
 shortcut = SubResource("Shortcut_ntgv0")
 icon = ExtResource("1_8ggy2")
 icon_alignment = 1
 
 [node name="ZoomReset" type="Button" parent="."]
-custom_minimum_size = Vector2(60, 0)
+custom_minimum_size = Vector2(58, 0)
 layout_mode = 2
 tooltip_text = "#zoom_reset"
 focus_mode = 0
 mouse_default_cursor_shape = 2
-theme_override_font_sizes/font_size = 14
+theme_override_font_sizes/font_size = 13
 shortcut = SubResource("Shortcut_4v7wx")
 text = "100%"
 
 [node name="ZoomIn" type="Button" parent="."]
-custom_minimum_size = Vector2(28, 0)
 layout_mode = 2
 tooltip_text = "#zoom_in"
 focus_mode = 0
 mouse_default_cursor_shape = 2
+theme_type_variation = &"IconButton"
 shortcut = SubResource("Shortcut_y6ouu")
 icon = ExtResource("2_284x5")
 icon_alignment = 1

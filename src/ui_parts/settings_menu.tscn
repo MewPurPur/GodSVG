@@ -1,15 +1,14 @@
-[gd_scene load_steps=6 format=3 uid="uid://1rylg17uwltw"]
+[gd_scene load_steps=5 format=3 uid="uid://1rylg17uwltw"]
 
 [ext_resource type="Script" path="res://src/ui_parts/settings_menu.gd" id="1_1gf4m"]
 [ext_resource type="Texture2D" uid="uid://c528knojuxbw6" path="res://visual/icons/Languages.svg" id="2_ndyp7"]
-[ext_resource type="PackedScene" uid="uid://wp77eqhikp6k" path="res://src/ui_elements/context_popup.tscn" id="3_fc4ea"]
 [ext_resource type="Script" path="res://src/ui_elements/BetterTabContainer.gd" id="3_vslgx"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hto7q"]
 content_margin_left = 8.0
-content_margin_top = 8.0
+content_margin_top = 10.0
 content_margin_right = 8.0
-content_margin_bottom = 8.0
+content_margin_bottom = 10.0
 bg_color = Color(0.005, 0.005, 0.05, 1)
 border_width_left = 2
 border_width_top = 2
@@ -31,7 +30,7 @@ color = Color(0, 0, 0, 0.4)
 script = ExtResource("1_1gf4m")
 
 [node name="MainPanel" type="PanelContainer" parent="."]
-custom_minimum_size = Vector2(240, 172)
+custom_minimum_size = Vector2(360, 256)
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -56,42 +55,13 @@ layout_mode = 2
 size_flags_horizontal = 4
 focus_mode = 0
 mouse_default_cursor_shape = 2
-theme_type_variation = &"IconButton"
 icon = ExtResource("2_ndyp7")
 
 [node name="TabContainer" type="TabContainer" parent="MainPanel/VBoxContainer"]
 layout_mode = 2
 script = ExtResource("3_vslgx")
 
-[node name="#session_tab" type="MarginContainer" parent="MainPanel/VBoxContainer/TabContainer"]
-layout_mode = 2
-theme_override_constants/margin_left = 4
-theme_override_constants/margin_top = 4
-theme_override_constants/margin_right = 4
-theme_override_constants/margin_bottom = 4
-
-[node name="VBox" type="VBoxContainer" parent="MainPanel/VBoxContainer/TabContainer/#session_tab"]
-layout_mode = 2
-theme_override_constants/separation = 0
-
-[node name="SVG" type="CheckBox" parent="MainPanel/VBoxContainer/TabContainer/#session_tab/VBox"]
-unique_name_in_owner = true
-layout_mode = 2
-tooltip_text = "#remember_svg_desc"
-focus_mode = 0
-mouse_default_cursor_shape = 2
-text = "#remember_svg_setting"
-
-[node name="WindowMode" type="CheckBox" parent="MainPanel/VBoxContainer/TabContainer/#session_tab/VBox"]
-unique_name_in_owner = true
-layout_mode = 2
-tooltip_text = "#remember_window_mode_desc"
-focus_mode = 0
-mouse_default_cursor_shape = 2
-text = "#remember_window_mode_settings"
-
 [node name="#input_tab" type="MarginContainer" parent="MainPanel/VBoxContainer/TabContainer"]
-visible = false
 layout_mode = 2
 theme_override_constants/margin_left = 4
 theme_override_constants/margin_top = 4
@@ -110,19 +80,33 @@ focus_mode = 0
 mouse_default_cursor_shape = 2
 text = "#invert_zoom"
 
-[node name="Close" type="Button" parent="MainPanel"]
+[node name="#palettes" type="MarginContainer" parent="MainPanel/VBoxContainer/TabContainer"]
+visible = false
+layout_mode = 2
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
+
+[node name="ScrollContainer" type="ScrollContainer" parent="MainPanel/VBoxContainer/TabContainer/#palettes"]
+custom_minimum_size = Vector2(0, 120)
+layout_mode = 2
+horizontal_scroll_mode = 0
+
+[node name="PaletteContainer" type="VBoxContainer" parent="MainPanel/VBoxContainer/TabContainer/#palettes/ScrollContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 4
+
+[node name="Close" type="Button" parent="MainPanel/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
-size_flags_vertical = 8
+size_flags_vertical = 10
 focus_mode = 0
 mouse_default_cursor_shape = 2
 text = "#close"
 
-[node name="LangPopup" parent="." instance=ExtResource("3_fc4ea")]
-visible = false
-
 [connection signal="pressed" from="MainPanel/VBoxContainer/Language" to="." method="_on_language_pressed"]
-[connection signal="pressed" from="MainPanel/VBoxContainer/TabContainer/#session_tab/VBox/SVG" to="." method="_on_svg_pressed"]
-[connection signal="pressed" from="MainPanel/VBoxContainer/TabContainer/#session_tab/VBox/WindowMode" to="." method="_on_window_mode_pressed"]
 [connection signal="pressed" from="MainPanel/VBoxContainer/TabContainer/#input_tab/VBox/InvertZoom" to="." method="_on_invert_zoom_pressed"]
-[connection signal="pressed" from="MainPanel/Close" to="." method="_on_close_pressed"]
+[connection signal="pressed" from="MainPanel/VBoxContainer/Close" to="." method="_on_close_pressed"]

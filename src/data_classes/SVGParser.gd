@@ -3,10 +3,17 @@ class_name SVGParser extends RefCounted
 static func svg_to_text(svg_tag: TagSVG) -> String:
 	var w: float = svg_tag.attributes.width.get_value()
 	var h: float = svg_tag.attributes.height.get_value()
-	var viewbox: Rect2 = svg_tag.attributes.viewBox.get_value()
+	var viewbox: Variant = svg_tag.attributes.viewBox.get_value()
 	
-	var text := '<svg width="%s" height="%s" viewBox="%s"' % [String.num(w, 4),
-			String.num(h, 4), AttributeRect.rect_to_string(viewbox)]
+	var text := '<svg'
+	if !is_nan(w):
+		text += ' width="' + String.num(w, 4) + '"'
+	if !is_nan(h):
+		text += ' height="' + String.num(h, 4) + '"'
+	if viewbox != null:
+		text += ' viewBox="' + viewbox + '"'
+	
+	
 	for attribute in svg_tag.unknown_attributes:
 		text += " " + attribute.name + '="' + attribute.get_value() + '"'
 	text += ">"
@@ -30,10 +37,9 @@ static func _tag_to_text(tag: Tag) -> String:
 				text += value.to_int()
 			Attribute.Type.FLOAT, Attribute.Type.UFLOAT, Attribute.Type.NFLOAT:
 				text += String.num(value, 4)
-			Attribute.Type.COLOR, Attribute.Type.PATHDATA, Attribute.Type.ENUM:
+			Attribute.Type.COLOR, Attribute.Type.PATHDATA, Attribute.Type.ENUM,\
+			Attribute.Type.VIEWBOX:
 				text += value
-			Attribute.Type.RECT:
-				text += AttributeRect.rect_to_string(value)
 		text += '"'
 	
 	for attribute in tag.unknown_attributes:
@@ -65,28 +71,26 @@ static func text_to_svg(text: String) -> TagSVG:
 				
 				# SVG tag requires width and height without defaults, so do the logic early.
 				if node_name == "svg":
-					var new_w: float = attrib_dict["width"].to_float() if\
-							attrib_dict.has("width") else 0.0
-					var new_h: float = attrib_dict["height"].to_float() if\
-							attrib_dict.has("height") else 0.0
-					var new_viewbox := AttributeRect.string_to_rect(attrib_dict["viewBox"])\
-							if attrib_dict.has("viewBox") else Rect2(0, 0, new_w, new_h)
-					if new_w == 0.0 and new_h == 0.0 and new_viewbox != Rect2(0, 0, 0, 0):
-						new_w = new_viewbox.size.x
-						new_h = new_viewbox.size.y
-						
-					svg_tag.attributes.width.set_value(new_w, false)
-					svg_tag.attributes.height.set_value(new_h, false)
-					svg_tag.attributes.viewBox.set_value(new_viewbox, false)
+					if attrib_dict.has("width"):
+						svg_tag.attributes.width.set_value(attrib_dict["width"].to_float(),
+								Attribute.SyncMode.SILENT)
+					if attrib_dict.has("height"):
+						svg_tag.attributes.height.set_value(attrib_dict["height"].to_float(),
+								Attribute.SyncMode.SILENT)
+					if attrib_dict.has("viewBox"):
+						svg_tag.attributes.viewBox.set_value(attrib_dict["viewBox"],
+								Attribute.SyncMode.SILENT)
 					
 					var unknown: Array[AttributeUnknown] = []
 					for element in attrib_dict:
 						if svg_tag.attributes.has(element):
 							var attribute: Attribute = svg_tag.attributes[element]
 							if typeof(attribute.get_value()) == Variant.Type.TYPE_STRING:
-								attribute.set_value(attrib_dict[element], false)
+								attribute.set_value(attrib_dict[element],
+										Attribute.SyncMode.SILENT)
 							elif typeof(attribute.get_value()) == Variant.Type.TYPE_FLOAT:
-								attribute.set_value(attrib_dict[element].to_float(), false)
+								attribute.set_value(attrib_dict[element].to_float(),
+										Attribute.SyncMode.SILENT)
 						else:
 							unknown.append(AttributeUnknown.new(element, attrib_dict[element]))
 					svg_tag.set_unknown_attributes(unknown)
@@ -106,9 +110,11 @@ static func text_to_svg(text: String) -> TagSVG:
 						if tag.attributes.has(element):
 							var attribute: Attribute = tag.attributes[element]
 							if typeof(attribute.get_value()) == Variant.Type.TYPE_STRING:
-								attribute.set_value(attrib_dict[element], false)
+								attribute.set_value(attrib_dict[element],
+										Attribute.SyncMode.SILENT)
 							elif typeof(attribute.get_value()) == Variant.Type.TYPE_FLOAT:
-								attribute.set_value(attrib_dict[element].to_float(), false)
+								attribute.set_value(attrib_dict[element].to_float(),
+										Attribute.SyncMode.SILENT)
 						else:
 							unknown.append(AttributeUnknown.new(element, attrib_dict[element]))
 					tag.set_unknown_attributes(unknown)
