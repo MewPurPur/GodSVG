@@ -68,11 +68,14 @@ func export(path: String) -> void:
 	var FA := FileAccess.open(path, FileAccess.WRITE)
 	match extension:
 		"png":
-			var img := texture_preview.texture.get_image()
-			var exported_size := dimensions * upscale_amount
+			var export_svg := SVG.root_tag.create_duplicate()
+			export_svg.attributes.width.set_value(
+					export_svg.attributes.width.get_value() * upscale_amount)
+			export_svg.attributes.height.set_value(
+					export_svg.attributes.height.get_value() * upscale_amount)
+			var img := Image.new()
+			img.load_svg_from_string(SVGParser.svg_to_text(export_svg))
 			img.fix_alpha_edges()  # See godot issue 82579.
-			# It's a single SVG, so just use the most expensive interpolation.
-			img.resize(int(exported_size.x), int(exported_size.y), Image.INTERPOLATE_LANCZOS)
 			img.save_png(path)
 		_:
 			# SVG / fallback.
