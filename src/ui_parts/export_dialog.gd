@@ -21,6 +21,7 @@ func _ready() -> void:
 	update_extension_configuration()
 	dimensions = SVG.root_tag.get_size()
 	scale_edit.min_value = 1/minf(dimensions.x, dimensions.y)
+	scale_edit.max_value = 16384/maxf(dimensions.x, dimensions.y)
 	update_dimensions_label()
 	update_final_scale()
 	var scaling_factor := texture_preview.size.x * 2.0 / maxf(dimensions.x, dimensions.y)

@@ -123,6 +123,7 @@ custom_minimum_size = Vector2(46, 22)
 layout_mode = 2
 initial_value = 8.0
 allow_lower = false
+allow_higher = false
 
 [node name="FinalDimensions" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/ScaleContainer"]
 unique_name_in_owner = true
