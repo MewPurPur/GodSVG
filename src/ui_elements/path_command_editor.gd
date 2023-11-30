@@ -194,13 +194,6 @@ func open_actions(popup_from_mouse := false) -> void:
 	var action_popup := ContextPopup.instantiate()
 	var buttons_arr: Array[Button] = []
 	
-	var delete_btn := Button.new()
-	delete_btn.text = tr(&"#delete")
-	delete_btn.icon = load("res://visual/icons/Delete.svg")
-	delete_btn.alignment = HORIZONTAL_ALIGNMENT_LEFT
-	delete_btn.pressed.connect(delete)
-	buttons_arr.append(delete_btn)
-	
 	var insert_after_btn := Button.new()
 	insert_after_btn.text = tr(&"#insert_after")
 	insert_after_btn.icon = load("res://visual/icons/Plus.svg")
@@ -215,6 +208,13 @@ func open_actions(popup_from_mouse := false) -> void:
 		convert_btn.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		convert_btn.pressed.connect(convert_to)
 		buttons_arr.append(convert_btn)
+	
+	var delete_btn := Button.new()
+	delete_btn.text = tr(&"#delete")
+	delete_btn.icon = load("res://visual/icons/Delete.svg")
+	delete_btn.alignment = HORIZONTAL_ALIGNMENT_LEFT
+	delete_btn.pressed.connect(delete)
+	buttons_arr.append(delete_btn)
 	
 	add_child(action_popup)
 	action_popup.set_btn_array(buttons_arr)
