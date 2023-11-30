@@ -31,7 +31,6 @@ func _ready() -> void:
 	title_label.text = tag.name
 	title_icon.texture = unknown_icon if tag is TagUnknown\
 			else load("res://visual/icons/tag/" + tag.name + ".svg")
-	tag.attribute_changed.connect(select_conditionally.unbind(1))
 	Indications.selection_changed.connect(determine_selection_highlight)
 	Indications.hover_changed.connect(determine_selection_highlight)
 	determine_selection_highlight()
@@ -226,8 +225,3 @@ func determine_selection_highlight() -> void:
 	
 	content.add_theme_stylebox_override(&"panel", content_sb)
 	title_bar.add_theme_stylebox_override(&"panel", title_sb)
-
-
-func select_conditionally() -> void:
-	if Indications.semi_selected_tid != tid:
-		Indications.normal_select(tid)

@@ -160,7 +160,6 @@ func sync_values(cmd: PathCommand) -> void:
 
 
 func update_value(value: float, property: StringName) -> void:
-	Indications.normal_select(tid, cmd_idx)
 	cmd_update_value.emit(cmd_idx, value, property)
 
 func delete() -> void:

@@ -41,5 +41,5 @@ static func string_to_rect(string: String) -> Rect2:
 		return Rect2(nums_parsed[0], nums_parsed[1], nums_parsed[2], nums_parsed[3])
 
 static func rect_to_string(rect: Rect2) -> String:
-	return "%s %s %s %s" % [String.num(rect.position.x), String.num(rect.position.y),
-	String.num(rect.size.x), String.num(rect.size.y)]
+	return "%s %s %s %s" % [String.num(rect.position.x, 4), String.num(rect.position.y, 4),
+	String.num(rect.size.x, 4), String.num(rect.size.y, 4)]
