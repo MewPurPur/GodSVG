@@ -147,7 +147,8 @@ static func path_commands_to_value(commands_arr: Array[PathCommand]) -> String:
 		if cmd_char == "A":
 			generated_value += String.num(command.rx, 4) + " " +\
 					String.num(command.ry, 4) + " " + String.num(command.rot, 2) + " " +\
-					str(command.large_arc_flag) + " " + str(command.sweep_flag) + " "
+					String.num_uint64(command.large_arc_flag) + " " +\
+					String.num_uint64(command.sweep_flag) + " "
 		if cmd_char == "Q" or cmd_char == "C":
 			generated_value += String.num(command.x1, 4) + " " +\
 					String.num(command.y1, 4) + " "
