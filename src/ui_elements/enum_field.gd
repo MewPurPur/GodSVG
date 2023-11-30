@@ -23,14 +23,14 @@ func _ready() -> void:
 	value_changed.connect(_on_value_changed)
 	set_value(attribute.get_value())
 	indicator.tooltip_text = attribute_name
-	indicator.text = str(get_value())
+	indicator.text = get_value()
 
 func _on_button_pressed() -> void:
 	var value_picker := ContextPopup.instantiate()
 	var buttons_arr: Array[Button] = []
 	for enum_constant in attribute.possible_values:
 		var btn := Button.new()
-		btn.text = str(enum_constant)
+		btn.text = enum_constant
 		btn.pressed.connect(_on_option_pressed.bind(enum_constant))
 		if enum_constant == get_value():
 			btn.disabled = true
