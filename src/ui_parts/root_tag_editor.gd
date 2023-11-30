@@ -62,8 +62,8 @@ func _on_couple_button_toggled(toggled_on: bool) -> void:
 
 func update_coupling_config() -> void:
 	update_editable()
-	if SVG.root_tag.attributes.width.get_value() == NAN or\
-	SVG.root_tag.attributes.height.get_value() == NAN or\
+	if is_nan(SVG.root_tag.attributes.width.get_value()) or\
+	is_nan(SVG.root_tag.attributes.height.get_value()) or\
 	SVG.root_tag.attributes.viewBox.get_value() == null:
 		couple_button.disabled = true
 		couple_button.mouse_default_cursor_shape = Control.CURSOR_ARROW
@@ -158,16 +158,16 @@ func _on_viewbox_edit_h_value_changed(new_value: float) -> void:
 			SVG.root_tag.attributes.viewBox.set_rect_h(new_value)
 
 func _on_width_button_toggled(toggled_on: bool) -> void:
-	update_coupling_config()
 	SVG.root_tag.attributes.width.set_value(true_width if toggled_on else NAN)
+	update_coupling_config()
 
 func _on_height_button_toggled(toggled_on: bool) -> void:
-	update_coupling_config()
 	SVG.root_tag.attributes.height.set_value(true_height if toggled_on else NAN)
+	update_coupling_config()
 
 func _on_viewbox_button_toggled(toggled_on: bool) -> void:
-	update_coupling_config()
 	if toggled_on:
 		SVG.root_tag.attributes.viewBox.set_rect(true_viewbox)
 	else:
 		SVG.root_tag.attributes.viewBox.set_value(null)
+	update_coupling_config()

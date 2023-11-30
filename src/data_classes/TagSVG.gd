@@ -47,7 +47,10 @@ func get_viewbox() -> Rect2:
 	if attributes.viewBox.get_value() != null:
 		return attributes.viewBox.rect
 	else:
-		return Rect2(0, 0, attributes.width.get_value(), attributes.height.get_value())
+		if is_nan(attributes.width.get_value()) or is_nan(attributes.height.get_value()):
+			return Rect2(0, 0, 0, 0)
+		else:
+			return Rect2(0, 0, attributes.width.get_value(), attributes.height.get_value())
 
 
 func get_all_tids() -> Array[PackedInt32Array]:
