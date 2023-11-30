@@ -38,7 +38,7 @@ func _ready() -> void:
 	attribute.value_changed.connect(set_value)
 	set_text_tint()
 	num_edit.tooltip_text = attribute_name
-	num_edit.text = str(get_value())
+	num_edit.text = String.num(get_value(), 4)
 
 func validate(new_value: float) -> float:
 	if allow_lower:
@@ -114,7 +114,7 @@ func _draw() -> void:
 	var stylebox := StyleBoxFlat.new()
 	stylebox.corner_radius_top_right = 5
 	stylebox.corner_radius_bottom_right = 5
-	stylebox.bg_color = Color("#121233")
+	stylebox.bg_color = num_edit.get_theme_stylebox(&"normal", &"LineEdit").bg_color
 	draw_style_box(stylebox, Rect2(Vector2.ZERO, slider_size - Vector2(1, 2)))
 	var fill_height := (slider_size.y - 4) * (get_value() - min_value) / max_value
 	if slider_dragged:
@@ -122,10 +122,10 @@ func _draw() -> void:
 				slider_size.x - 2, fill_height), Color("#def"))
 	elif slider_hovered:
 		draw_rect(Rect2(0, 1 + slider_size.y - 4 - fill_height,
-				slider_size.x - 2, fill_height), Color("#defc"))
+				slider_size.x - 2, fill_height), Color("#defb"))
 	else:
 		draw_rect(Rect2(0, 1 + slider_size.y - 4 - fill_height,
-				slider_size.x - 2, fill_height), Color("#defa"))
+				slider_size.x - 2, fill_height), Color("#def8"))
 
 func _on_slider_resized() -> void:
 	queue_redraw()  # Whyyyyy are their sizes wrong at first...

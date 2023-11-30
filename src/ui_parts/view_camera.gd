@@ -45,7 +45,8 @@ func _draw() -> void:
 				major_points.append(Vector2(i, 0))
 				major_points.append(Vector2(i, size.y))
 				default_font.draw_string(surface, Vector2(i * zoom_level + 4, 14),
-						str(coord), HORIZONTAL_ALIGNMENT_LEFT, -1, 14, axis_line_color)
+						String.num_int64(coord), HORIZONTAL_ALIGNMENT_LEFT, -1, 14,
+						axis_line_color)
 			elif coord % rate == 0:
 				minor_points.append(Vector2(i, 0))
 				minor_points.append(Vector2(i, size.y))
@@ -63,7 +64,8 @@ func _draw() -> void:
 				major_points.append(Vector2(0, i))
 				major_points.append(Vector2(size.x, i))
 				default_font.draw_string(surface, Vector2(4, i * zoom_level + 14),
-						str(coord), HORIZONTAL_ALIGNMENT_LEFT, -1, 14, axis_line_color)
+						String.num_int64(coord), HORIZONTAL_ALIGNMENT_LEFT, -1, 14,
+						axis_line_color)
 			elif coord % rate == 0:
 				minor_points.append(Vector2(0, i))
 				minor_points.append(Vector2(size.x, i))

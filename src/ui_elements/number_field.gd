@@ -34,7 +34,7 @@ func _ready() -> void:
 	set_value(attribute.get_value())
 	attribute.value_changed.connect(set_value)
 	num_edit.tooltip_text = attribute_name
-	num_edit.text = str(get_value())
+	num_edit.text = String.num(get_value(), 4)
 
 func validate(new_value: float) -> float:
 	if allow_lower:

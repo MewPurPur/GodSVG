@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://bp2vpf7g8w8aj"]
+[gd_scene load_steps=7 format=3 uid="uid://bp2vpf7g8w8aj"]
 
 [ext_resource type="Script" path="res://src/ui_elements/number_field_with_slider.gd" id="1_ymm02"]
 [ext_resource type="Script" path="res://src/ui_elements/BetterLineEdit.gd" id="2_ytia1"]
@@ -23,7 +23,7 @@ border_color = Color(0.501961, 0.752941, 1, 0.2)
 corner_radius_top_left = 5
 corner_radius_bottom_left = 5
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_smesa"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wwc4n"]
 content_margin_left = 4.0
 content_margin_top = 4.0
 content_margin_right = 4.0
@@ -33,7 +33,21 @@ border_width_left = 1
 border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
-border_color = Color(0.203922, 0.254902, 0.4, 1)
+border_color = Color(0.152941, 0.152941, 0.2, 1)
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fd68s"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+draw_center = false
+border_width_left = 1
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.152941, 0.152941, 0.2, 1)
 corner_radius_top_right = 5
 corner_radius_bottom_right = 5
 
@@ -65,7 +79,8 @@ layout_mode = 2
 focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_type_variation = &"LeftConnectedButtonTransparent"
-theme_override_styles/pressed = SubResource("StyleBoxFlat_smesa")
+theme_override_styles/hover = SubResource("StyleBoxFlat_wwc4n")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_fd68s")
 
 [connection signal="focus_exited" from="LineEdit" to="." method="_on_focus_exited"]
 [connection signal="text_submitted" from="LineEdit" to="." method="_on_text_submitted"]

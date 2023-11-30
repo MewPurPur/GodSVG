@@ -22,11 +22,11 @@ func _on_toggled(is_state_pressed: bool) -> void:
 func _ready() -> void:
 	value_changed.connect(_on_value_changed)
 	button_pressed = (get_value() == 1)
-	text = str(get_value())
+	text = String.num_uint64(get_value())
 
 func _on_value_changed(new_value: int) -> void:
-	button_pressed = new_value == 1
-	text = str(new_value)
+	button_pressed = (new_value == 1)
+	text = String.num_uint64(new_value)
 
 
 func _on_mouse_entered() -> void:
