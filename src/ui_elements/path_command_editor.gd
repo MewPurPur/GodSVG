@@ -227,12 +227,13 @@ func open_actions(popup_from_mouse := false) -> void:
 	var action_popup := ContextPopup.instantiate()
 	var buttons_arr: Array[Button] = []
 	
-	var insert_after_btn := Button.new()
-	insert_after_btn.text = tr(&"#insert_after")
-	insert_after_btn.icon = load("res://visual/icons/Plus.svg")
-	insert_after_btn.alignment = HORIZONTAL_ALIGNMENT_LEFT
-	insert_after_btn.pressed.connect(insert_after)
-	buttons_arr.append(insert_after_btn)
+	if Indications.inner_selections.size() == 1:
+		var insert_after_btn := Button.new()
+		insert_after_btn.text = tr(&"#insert_after")
+		insert_after_btn.icon = load("res://visual/icons/Plus.svg")
+		insert_after_btn.alignment = HORIZONTAL_ALIGNMENT_LEFT
+		insert_after_btn.pressed.connect(insert_after)
+		buttons_arr.append(insert_after_btn)
 	
 	if cmd_idx != 0 and Indications.inner_selections.size() == 1:
 		var convert_btn := Button.new()
@@ -328,8 +329,6 @@ func _on_gui_input(event: InputEvent) -> void:
 			else:
 				Indications.normal_select(tid, cmd_idx)
 		elif event.button_index == MOUSE_BUTTON_RIGHT:
-			prints(Indications.semi_selected_tid, Indications.inner_selections)
-			prints(tid, cmd_idx)
 			if Indications.semi_selected_tid != tid or\
 			not cmd_idx in Indications.inner_selections:
 				Indications.normal_select(tid, cmd_idx)
