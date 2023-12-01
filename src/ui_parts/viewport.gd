@@ -48,7 +48,7 @@ func _unhandled_input(event: InputEvent) -> void:
 	
 	if event is InputEventMouseMotion and\
 	event.button_mask in [MOUSE_BUTTON_MASK_LEFT, MOUSE_BUTTON_MASK_MIDDLE]:
-		set_view(view.position - wrap_mouse(moving) / zoom)
+		set_view(view.position - (wrap_mouse(moving) if GlobalSettings.wrap_mouse else event.relative) / zoom)
 		moving = true
 	else: 
 		moving = false

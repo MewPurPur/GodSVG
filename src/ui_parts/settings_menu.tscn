@@ -80,6 +80,14 @@ focus_mode = 0
 mouse_default_cursor_shape = 2
 text = "#invert_zoom"
 
+[node name="WrapMouse" type="CheckBox" parent="MainPanel/VBoxContainer/TabContainer/#input_tab/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "#wrap_mouse_desc"
+focus_mode = 0
+mouse_default_cursor_shape = 2
+text = "#wrap_mouse"
+
 [node name="#palettes" type="MarginContainer" parent="MainPanel/VBoxContainer/TabContainer"]
 visible = false
 layout_mode = 2
@@ -109,4 +117,5 @@ text = "#close"
 
 [connection signal="pressed" from="MainPanel/VBoxContainer/Language" to="." method="_on_language_pressed"]
 [connection signal="pressed" from="MainPanel/VBoxContainer/TabContainer/#input_tab/VBox/InvertZoom" to="." method="_on_invert_zoom_pressed"]
+[connection signal="pressed" from="MainPanel/VBoxContainer/TabContainer/#input_tab/VBox/WrapMouse" to="." method="_on_wrap_mouse_pressed"]
 [connection signal="pressed" from="MainPanel/VBoxContainer/Close" to="." method="_on_close_pressed"]
