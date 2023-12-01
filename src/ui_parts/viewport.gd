@@ -116,7 +116,6 @@ func wrap_mouse(already_moved: bool) -> Vector2:
 		mouse_pos.x = fposmod(mouse_pos.x, view_rect.size.x)
 		mouse_pos.y = fposmod(mouse_pos.y, view_rect.size.y)
 		wrapped = true
-	var win_pos: Vector2 = get_window().get_position()
 	warp_mouse(mouse_pos)
 	
 	var relative: Vector2 = mouse_pos - last_pos
