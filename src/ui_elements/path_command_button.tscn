@@ -1,16 +1,6 @@
-[gd_scene load_steps=6 format=3 uid="uid://co2btefrqrm0e"]
+[gd_scene load_steps=2 format=3 uid="uid://co2btefrqrm0e"]
 
 [ext_resource type="Script" path="res://src/ui_elements/path_command_button.gd" id="1_q6blt"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_wm3bc"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5j0j6"]
-bg_color = Color(0.866667, 0.933333, 1, 0.0666667)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kgyhv"]
-bg_color = Color(0.866667, 0.933333, 1, 0.133333)
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_eet85"]
 
 [node name="PathCommandButton" type="Button"]
 custom_minimum_size = Vector2(0, 25)
@@ -20,10 +10,7 @@ grow_horizontal = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 mouse_default_cursor_shape = 2
-theme_override_styles/normal = SubResource("StyleBoxEmpty_wm3bc")
-theme_override_styles/hover = SubResource("StyleBoxFlat_5j0j6")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_kgyhv")
-theme_override_styles/disabled = SubResource("StyleBoxEmpty_eet85")
+theme_type_variation = &"FlatButton"
 script = ExtResource("1_q6blt")
 
 [node name="RichTextLabel" type="RichTextLabel" parent="."]
