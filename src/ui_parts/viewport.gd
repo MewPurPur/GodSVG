@@ -6,6 +6,7 @@ const buffer_view_space = 0.8
 const zoom_reset_buffer = 0.875
 
 var zoom := 1.0
+var _moving: bool
 
 @onready var display: TextureRect = %Checkerboard
 @onready var view: Camera2D = $ViewCamera
@@ -45,7 +46,10 @@ func _unhandled_input(event: InputEvent) -> void:
 	
 	if event is InputEventMouseMotion and\
 	event.button_mask in [MOUSE_BUTTON_MASK_LEFT, MOUSE_BUTTON_MASK_MIDDLE]:
-		set_view(view.position - event.relative / zoom)
+		set_view(view.position - get_parent().wrap_mouse(_moving) / zoom)
+		_moving = true
+	else: 
+		_moving = false
 	
 	if event is InputEventPanGesture:
 		if event.ctrl_pressed:
