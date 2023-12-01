@@ -141,7 +141,7 @@ func sync_values(cmd: PathCommand) -> void:
 			fields[5].set_value(cmd.y)
 		"H":
 			fields[0].set_value(cmd.x)
-		"M", "T":
+		"L", "M", "T":
 			fields[0].set_value(cmd.x)
 			fields[1].set_value(cmd.y)
 		"Q":
