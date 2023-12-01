@@ -130,8 +130,7 @@ func create_tag_context() -> Popup:
 
 func _on_title_button_pressed() -> void:
 	Indications.normal_select(tid)
-	var tag_context := create_tag_context()
-	Utils.popup_under_control_centered(tag_context, title_button)
+	Utils.popup_under_control_centered(create_tag_context(), title_button)
 
 func _on_move_up_button_pressed() -> void:
 	SVG.root_tag.move_tags_in_parent([tid], false)
@@ -156,9 +155,9 @@ func _on_gui_input(event: InputEvent) -> void:
 			else:
 				Indications.normal_select(tid)
 		elif event.button_index == MOUSE_BUTTON_RIGHT:
-			Indications.normal_select(tid)
-			var tag_context := create_tag_context()
-			Utils.popup_under_mouse(tag_context, get_global_mouse_position())
+			if not tid in Indications.selected_tids:
+				Indications.normal_select(tid)
+			Utils.popup_under_mouse(create_tag_context(), get_global_mouse_position())
 
 
 func _on_mouse_entered():

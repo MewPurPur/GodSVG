@@ -224,7 +224,6 @@ func convert_to() -> void:
 	Utils.popup_under_control_centered(command_picker, more_button)
 
 func open_actions(popup_from_mouse := false) -> void:
-	Indications.normal_select(tid, cmd_idx)
 	var action_popup := ContextPopup.instantiate()
 	var buttons_arr: Array[Button] = []
 	
@@ -235,7 +234,7 @@ func open_actions(popup_from_mouse := false) -> void:
 	insert_after_btn.pressed.connect(insert_after)
 	buttons_arr.append(insert_after_btn)
 	
-	if cmd_idx != 0:
+	if cmd_idx != 0 and Indications.inner_selections.size() == 1:
 		var convert_btn := Button.new()
 		convert_btn.text = tr(&"#convert_to")
 		convert_btn.icon = load("res://visual/icons/Reload.svg")
@@ -329,7 +328,11 @@ func _on_gui_input(event: InputEvent) -> void:
 			else:
 				Indications.normal_select(tid, cmd_idx)
 		elif event.button_index == MOUSE_BUTTON_RIGHT:
-			Indications.normal_select(tid, cmd_idx)
+			prints(Indications.semi_selected_tid, Indications.inner_selections)
+			prints(tid, cmd_idx)
+			if Indications.semi_selected_tid != tid or\
+			not cmd_idx in Indications.inner_selections:
+				Indications.normal_select(tid, cmd_idx)
 			open_actions(true)
 
 func determine_selection_highlight() -> void:
@@ -359,3 +362,7 @@ func _on_mouse_entered():
 
 func _on_mouse_exited():
 	Indications.remove_inner_hovered(tid, cmd_idx)
+
+func _on_more_button_pressed() -> void:
+	Indications.normal_select(tid, cmd_idx)
+	open_actions()
