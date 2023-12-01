@@ -14,14 +14,10 @@ func add_section(section_title: String, authors: Array[String]):
 	authors_label.add_text(section_title + ":")
 	authors_label.pop()
 	authors_label.newline()
-	authors_label.push_table(1)
 	for author in authors:
-		authors_label.push_cell()
-		authors_label.push_bgcolor(Color(0.15, 0.2, 0.3))
+		authors_label.push_list(0,RichTextLabel.LIST_DOTS, false)
 		authors_label.add_text(author)
 		authors_label.pop()
-		authors_label.pop()
-	authors_label.pop()
 	authors_label.newline()
 
 func _on_components_pressed() -> void:
