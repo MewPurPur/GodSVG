@@ -139,18 +139,23 @@ content_margin_top = 2.0
 content_margin_right = 4.0
 content_margin_bottom = 2.0
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ixekj"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bi87s"]
 content_margin_left = 2.0
 content_margin_top = 2.0
 content_margin_right = 2.0
 content_margin_bottom = 2.0
+bg_color = Color(0.0196078, 0.0235294, 0.027451, 0.266667)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ky4q6"]
 content_margin_left = 2.0
 content_margin_top = 2.0
 content_margin_right = 2.0
 content_margin_bottom = 2.0
-bg_color = Color(1, 1, 1, 0.0666667)
+bg_color = Color(0.866667, 0.933333, 1, 0.0666667)
 corner_radius_top_left = 3
 corner_radius_top_right = 3
 corner_radius_bottom_right = 3
@@ -167,7 +172,7 @@ content_margin_left = 2.0
 content_margin_top = 2.0
 content_margin_right = 2.0
 content_margin_bottom = 2.0
-bg_color = Color(1, 1, 1, 0.2)
+bg_color = Color(0.866667, 0.933333, 1, 0.2)
 corner_radius_top_left = 3
 corner_radius_top_right = 3
 corner_radius_bottom_right = 3
@@ -238,7 +243,7 @@ corner_radius_bottom_right = 5
 corner_radius_bottom_left = 5
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8vw7r"]
-content_margin_left = 3.0
+content_margin_left = 4.0
 content_margin_top = 4.0
 content_margin_right = 5.0
 content_margin_bottom = 4.0
@@ -252,7 +257,7 @@ corner_radius_top_right = 5
 corner_radius_bottom_right = 5
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rcthl"]
-content_margin_left = 3.0
+content_margin_left = 4.0
 content_margin_top = 4.0
 content_margin_right = 5.0
 content_margin_bottom = 4.0
@@ -266,7 +271,7 @@ corner_radius_top_right = 5
 corner_radius_bottom_right = 5
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2dyv3"]
-content_margin_left = 3.0
+content_margin_left = 4.0
 content_margin_top = 4.0
 content_margin_right = 5.0
 content_margin_bottom = 4.0
@@ -280,7 +285,7 @@ corner_radius_top_right = 5
 corner_radius_bottom_right = 5
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_m8uy4"]
-content_margin_left = 3.0
+content_margin_left = 4.0
 content_margin_top = 4.0
 content_margin_right = 5.0
 content_margin_bottom = 4.0
@@ -450,7 +455,7 @@ corner_radius_bottom_left = 5
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_v2cqs"]
 content_margin_left = 5.0
 content_margin_top = 4.0
-content_margin_right = 3.0
+content_margin_right = 4.0
 content_margin_bottom = 4.0
 bg_color = Color(0.137255, 0.156863, 0.25098, 1)
 border_width_left = 2
@@ -464,7 +469,7 @@ corner_radius_bottom_left = 5
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_v3rbs"]
 content_margin_left = 5.0
 content_margin_top = 4.0
-content_margin_right = 3.0
+content_margin_right = 4.0
 content_margin_bottom = 4.0
 bg_color = Color(0.109804, 0.117647, 0.219608, 1)
 border_width_left = 2
@@ -478,7 +483,7 @@ corner_radius_bottom_left = 5
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_s605b"]
 content_margin_left = 5.0
 content_margin_top = 4.0
-content_margin_right = 3.0
+content_margin_right = 4.0
 content_margin_bottom = 4.0
 bg_color = Color(0.239216, 0.329412, 0.6, 1)
 border_width_left = 2
@@ -688,7 +693,7 @@ FlatButton/base_type = &"Button"
 FlatButton/colors/icon_hover_color = Color(1, 1, 1, 1)
 FlatButton/colors/icon_normal_color = Color(0.74902, 0.74902, 0.74902, 1)
 FlatButton/colors/icon_pressed_color = Color(0.74902, 0.87451, 1, 1)
-FlatButton/styles/disabled = SubResource("StyleBoxEmpty_ixekj")
+FlatButton/styles/disabled = SubResource("StyleBoxFlat_bi87s")
 FlatButton/styles/hover = SubResource("StyleBoxFlat_ky4q6")
 FlatButton/styles/normal = SubResource("StyleBoxEmpty_q84qj")
 FlatButton/styles/pressed = SubResource("StyleBoxFlat_5jayv")
@@ -737,9 +742,6 @@ PanelContainer/styles/panel = SubResource("StyleBoxFlat_c2si1")
 RichTextLabel/colors/selection_color = Color(0.4, 0.55, 1, 0.4)
 RichTextLabel/fonts/bold_font = ExtResource("9_ugiac")
 RightConnectedButton/base_type = &"Button"
-RightConnectedButton/colors/icon_hover_color = Color(1, 1, 1, 1)
-RightConnectedButton/colors/icon_normal_color = Color(0.74902, 0.74902, 0.74902, 1)
-RightConnectedButton/colors/icon_pressed_color = Color(0.74902, 0.87451, 1, 1)
 RightConnectedButton/styles/disabled = SubResource("StyleBoxFlat_8bmk3")
 RightConnectedButton/styles/hover = SubResource("StyleBoxFlat_v2cqs")
 RightConnectedButton/styles/normal = SubResource("StyleBoxFlat_v3rbs")
