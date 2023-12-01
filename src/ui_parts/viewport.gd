@@ -48,7 +48,7 @@ func _unhandled_input(event: InputEvent) -> void:
 	
 	if event is InputEventMouseMotion and\
 	event.button_mask in [MOUSE_BUTTON_MASK_LEFT, MOUSE_BUTTON_MASK_MIDDLE]:
-		set_view(view.position - (wrap_mouse(moving) if GlobalSettings.wrap_mouse else event.relative) / zoom)
+		set_view(view.position - (wrap_mouse() if GlobalSettings.wrap_mouse else event.relative) / zoom)
 		moving = true
 	else: 
 		moving = false
@@ -107,8 +107,8 @@ func _on_size_changed() -> void:
 	if is_node_ready():
 		adjust_view()
 
-func wrap_mouse(already_moved: bool) -> Vector2:
-	if not already_moved:
+func wrap_mouse() -> Vector2:
+	if not moving:
 		last_pos = get_mouse_position()
 	var view_rect:Rect2 = get_visible_rect()
 	var mouse_pos: Vector2 = get_mouse_position()
