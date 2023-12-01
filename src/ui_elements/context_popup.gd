@@ -6,24 +6,7 @@ extends Popup
 
 func add_button(butt: Button, should_reset_size := true) -> void:
 	if not butt is CheckBox:
-		var normal_stylebox := StyleBoxEmpty.new()
-		normal_stylebox.set_content_margin_all(3)
-		butt.add_theme_stylebox_override(&"normal", normal_stylebox)
-		var hover_stylebox := StyleBoxFlat.new()
-		hover_stylebox.bg_color = Color("#def1")
-		hover_stylebox.set_content_margin_all(3)
-		hover_stylebox.set_corner_radius_all(4)
-		var pressed_stylebox := StyleBoxFlat.new()
-		pressed_stylebox.bg_color = Color("#def2")
-		pressed_stylebox.set_content_margin_all(3)
-		pressed_stylebox.set_corner_radius_all(4)
-		var disabled_stylebox := StyleBoxFlat.new()
-		disabled_stylebox.bg_color = Color("#05060766")
-		disabled_stylebox.set_content_margin_all(3)
-		disabled_stylebox.set_corner_radius_all(4)
-		butt.add_theme_stylebox_override(&"hover", hover_stylebox)
-		butt.add_theme_stylebox_override(&"disabled", disabled_stylebox)
-		butt.add_theme_stylebox_override(&"pressed", pressed_stylebox)
+		butt.theme_type_variation = &"FlatButton"
 		butt.pressed.connect(queue_free)
 	if not butt.disabled:
 		butt.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND

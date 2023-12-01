@@ -80,6 +80,8 @@ func _on_gui_input(event: InputEvent) -> void:
 			
 			var paste_button := Button.new()
 			paste_button.text = tr(&"#paste")
+			if not DisplayServer.clipboard_has():
+				paste_button.disabled = true
 			paste_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 			paste_button.pressed.connect(paste)
 			btn_arr.append(paste_button)
