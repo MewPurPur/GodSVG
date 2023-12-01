@@ -110,7 +110,7 @@ func _on_size_changed() -> void:
 func wrap_mouse() -> Vector2:
 	if not moving:
 		last_pos = get_mouse_position()
-	var view_rect:Rect2 = get_visible_rect()
+	var view_rect:Rect2 = get_visible_rect().grow(-1.0)
 	var mouse_pos: Vector2 = get_mouse_position()
 	if not view_rect.has_point(mouse_pos):
 		mouse_pos.x = fposmod(mouse_pos.x, view_rect.size.x)
