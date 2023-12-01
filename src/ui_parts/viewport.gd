@@ -125,4 +125,4 @@ func wrap_mouse() -> Vector2:
 		return relative
 	else:
 		wrapped = false
-		return mouse_pos - last_pos
+		return Vector2.ZERO
