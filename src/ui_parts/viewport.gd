@@ -6,7 +6,9 @@ const buffer_view_space = 0.8
 const zoom_reset_buffer = 0.875
 
 var zoom := 1.0
-var _moving: bool
+var moving: bool
+var last_pos: Vector2
+var wrapped: bool
 
 @onready var display: TextureRect = %Checkerboard
 @onready var view: Camera2D = $ViewCamera
@@ -46,10 +48,10 @@ func _unhandled_input(event: InputEvent) -> void:
 	
 	if event is InputEventMouseMotion and\
 	event.button_mask in [MOUSE_BUTTON_MASK_LEFT, MOUSE_BUTTON_MASK_MIDDLE]:
-		set_view(view.position - get_parent().wrap_mouse(_moving) / zoom)
-		_moving = true
+		set_view(view.position - wrap_mouse(moving) / zoom)
+		moving = true
 	else: 
-		_moving = false
+		moving = false
 	
 	if event is InputEventPanGesture:
 		if event.ctrl_pressed:
@@ -104,3 +106,24 @@ func adjust_view() -> void:
 func _on_size_changed() -> void:
 	if is_node_ready():
 		adjust_view()
+
+func wrap_mouse(already_moved: bool) -> Vector2:
+	if not already_moved:
+		last_pos = get_mouse_position()
+	var view_rect:Rect2 = get_visible_rect()
+	var mouse_pos: Vector2 = get_mouse_position()
+	if not view_rect.has_point(mouse_pos):
+		mouse_pos.x = fposmod(mouse_pos.x, view_rect.size.x)
+		mouse_pos.y = fposmod(mouse_pos.y, view_rect.size.y)
+		wrapped = true
+	var win_pos: Vector2 = get_window().get_position()
+	warp_mouse(mouse_pos)
+	
+	var relative: Vector2 = mouse_pos - last_pos
+	last_pos = get_mouse_position()
+	
+	if not wrapped:
+		return relative
+	else:
+		wrapped = false
+		return mouse_pos - last_pos

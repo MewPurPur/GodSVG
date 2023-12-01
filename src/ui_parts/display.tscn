@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://bvrncl7e6yn5b"]
+[gd_scene load_steps=21 format=3 uid="uid://bvrncl7e6yn5b"]
 
 [ext_resource type="Script" path="res://src/ui_parts/display.gd" id="1_oib5g"]
 [ext_resource type="Texture2D" uid="uid://ccbta5q43jobk" path="res://visual/icons/More.svg" id="2_3wliq"]
@@ -9,7 +9,6 @@
 [ext_resource type="PackedScene" uid="uid://dad7fkhmsooc6" path="res://src/ui_elements/number_edit.tscn" id="7_wrrfr"]
 [ext_resource type="PackedScene" uid="uid://oltvrf01xrxl" path="res://src/ui_parts/zoom_menu.tscn" id="8_xtdmn"]
 [ext_resource type="Script" path="res://src/ui_parts/viewport.gd" id="9_4xrk7"]
-[ext_resource type="Script" path="res://src/ui_parts/viewport_container.gd" id="9_i6dwe"]
 [ext_resource type="Shader" path="res://src/shaders/zoom_shader.gdshader" id="10_x7ybk"]
 [ext_resource type="Texture2D" uid="uid://c68og6bsqt0lb" path="res://visual/Checkerboard.svg" id="11_1bm1s"]
 [ext_resource type="Script" path="res://src/ui_parts/display_texture.gd" id="12_qi23s"]
@@ -156,7 +155,6 @@ custom_minimum_size = Vector2(450, 0)
 layout_mode = 2
 size_flags_vertical = 3
 stretch = true
-script = ExtResource("9_i6dwe")
 
 [node name="Viewport" type="SubViewport" parent="ViewportPanel/ViewportContainer"]
 disable_3d = true
