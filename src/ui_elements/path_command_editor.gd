@@ -1,16 +1,6 @@
 ## An editor for a single path command.
 extends PanelContainer
 
-const spacing_dict = {
-	"A": [3, 4, 4, 4, 4, 3],
-	"C": [3, 4, 3, 4, 3],
-	"Q": [3, 4, 3],
-	"S": [3, 4, 3],
-	"M": [3],
-	"L": [3],
-	"T": [3],
-}
-
 signal cmd_update_value(idx: int, new_value: float, property: StringName)
 signal cmd_delete(idx: int)
 signal cmd_toggle_relative(idx: int)
@@ -35,90 +25,135 @@ var fields: Array[Control] = []
 
 func update_type() -> void:
 	cmd_char = path_command.command_char
-	var cmd_type := cmd_char.to_upper()
 	fields.clear()
 	setup_relative_button()
 	
-	var spacing: Array = spacing_dict[cmd_type] if cmd_type in spacing_dict else []
-	fields_container.set_spacing_array(spacing)
-	
 	# Instantiate the input fields.
-	if cmd_type == "A":
-		var field_rx: BetterLineEdit = add_number_field()
-		var field_ry: BetterLineEdit = add_number_field()
-		var field_rot: BetterLineEdit = add_number_field()
-		var field_large_arc_flag: Button = add_flag_field()
-		var field_sweep_flag: Button = add_flag_field()
-		field_large_arc_flag.set_value(path_command.large_arc_flag)
-		field_sweep_flag.set_value(path_command.sweep_flag)
-		field_rx.mode = field_rx.Mode.ONLY_POSITIVE
-		field_ry.mode = field_ry.Mode.ONLY_POSITIVE
-		field_rot.mode = field_rot.Mode.ANGLE
-		field_rot.custom_minimum_size.x -= 6
-		field_rx.set_value(path_command.rx)
-		field_ry.set_value(path_command.ry)
-		field_rot.set_value(path_command.rot)
-		field_rx.tooltip_text = "rx"
-		field_ry.tooltip_text = "ry"
-		field_rot.tooltip_text = "rot"
-		field_large_arc_flag.tooltip_text = "large_arc_flag"
-		field_sweep_flag.tooltip_text = "sweep_flag"
-		field_rx.value_changed.connect(update_value.bind(&"rx"))
-		field_ry.value_changed.connect(update_value.bind(&"ry"))
-		field_rot.value_changed.connect(update_value.bind(&"rot"))
-		field_large_arc_flag.value_changed.connect(update_value.bind(&"large_arc_flag"))
-		field_sweep_flag.value_changed.connect(update_value.bind(&"sweep_flag"))
-		fields.append(field_rx)
-		fields.append(field_ry)
-		fields.append(field_rot)
-		fields.append(field_large_arc_flag)
-		fields.append(field_sweep_flag)
-	if cmd_type == "Q" or cmd_type == "C":
-		var field_x1: BetterLineEdit = add_number_field()
-		var field_y1: BetterLineEdit = add_number_field()
-		field_x1.set_value(path_command.x1)
-		field_y1.set_value(path_command.y1)
-		field_x1.tooltip_text = "x1"
-		field_y1.tooltip_text = "y1"
-		field_x1.value_changed.connect(update_value.bind(&"x1"))
-		field_y1.value_changed.connect(update_value.bind(&"y1"))
-		fields.append(field_x1)
-		fields.append(field_y1)
-	if cmd_type == "C" or cmd_type == "S":
-		var field_x2: BetterLineEdit = add_number_field()
-		var field_y2: BetterLineEdit = add_number_field()
-		field_x2.set_value(path_command.x2)
-		field_y2.set_value(path_command.y2)
-		field_x2.tooltip_text = "x2"
-		field_y2.tooltip_text = "y2"
-		field_x2.value_changed.connect(update_value.bind(&"x2"))
-		field_y2.value_changed.connect(update_value.bind(&"y2"))
-		fields.append(field_x2)
-		fields.append(field_y2)
-	if cmd_type != "Z":
-		if cmd_type == "H":
+	match cmd_char.to_upper():
+		"A":
+			var field_rx: BetterLineEdit = add_number_field()
+			var field_ry: BetterLineEdit = add_number_field()
+			var field_rot: BetterLineEdit = add_number_field()
+			var field_large_arc_flag: Button = add_flag_field()
+			var field_sweep_flag: Button = add_flag_field()
 			var field_x: BetterLineEdit = add_number_field()
+			var field_y: BetterLineEdit = add_number_field()
+			field_rx.mode = field_rx.Mode.ONLY_POSITIVE
+			field_ry.mode = field_ry.Mode.ONLY_POSITIVE
+			field_rot.mode = field_rot.Mode.ANGLE
+			field_rot.custom_minimum_size.x -= 6
+			field_rx.set_value(path_command.rx)
+			field_ry.set_value(path_command.ry)
+			field_rot.set_value(path_command.rot)
+			field_large_arc_flag.set_value(path_command.large_arc_flag)
+			field_sweep_flag.set_value(path_command.sweep_flag)
 			field_x.set_value(path_command.x)
+			field_y.set_value(path_command.y)
+			field_rx.tooltip_text = "rx"
+			field_ry.tooltip_text = "ry"
+			field_rot.tooltip_text = "rot"
+			field_large_arc_flag.tooltip_text = "large_arc_flag"
+			field_sweep_flag.tooltip_text = "sweep_flag"
 			field_x.tooltip_text = "x"
+			field_y.tooltip_text = "y"
+			field_rx.value_changed.connect(update_value.bind(&"rx"))
+			field_ry.value_changed.connect(update_value.bind(&"ry"))
+			field_rot.value_changed.connect(update_value.bind(&"rot"))
+			field_large_arc_flag.value_changed.connect(update_value.bind(&"large_arc_flag"))
+			field_sweep_flag.value_changed.connect(update_value.bind(&"sweep_flag"))
 			field_x.value_changed.connect(update_value.bind(&"x"))
-			fields.append(field_x)
-		elif cmd_type == "V":
-			var field_y: BetterLineEdit = add_number_field()
-			field_y.set_value(path_command.y)
-			field_y.tooltip_text ="y"
 			field_y.value_changed.connect(update_value.bind(&"y"))
-			fields.append(field_y)
-		else:
+			fields = [field_rx, field_ry, field_rot, field_large_arc_flag,
+					field_sweep_flag, field_x, field_y]
+			fields_container.set_spacing_array([3, 4, 4, 4, 4, 3])
+		"C":
+			var field_x1: BetterLineEdit = add_number_field()
+			var field_y1: BetterLineEdit = add_number_field()
+			var field_x2: BetterLineEdit = add_number_field()
+			var field_y2: BetterLineEdit = add_number_field()
+			var field_x: BetterLineEdit = add_number_field()
+			var field_y: BetterLineEdit = add_number_field()
+			field_x1.set_value(path_command.x1)
+			field_y1.set_value(path_command.y1)
+			field_x2.set_value(path_command.x2)
+			field_y2.set_value(path_command.y2)
+			field_x.set_value(path_command.x)
+			field_y.set_value(path_command.y)
+			field_x1.tooltip_text = "x1"
+			field_y1.tooltip_text = "y1"
+			field_x2.tooltip_text = "x2"
+			field_y2.tooltip_text = "y2"
+			field_x.tooltip_text = "x"
+			field_y.tooltip_text = "y"
+			field_x1.value_changed.connect(update_value.bind(&"x1"))
+			field_y1.value_changed.connect(update_value.bind(&"y1"))
+			field_x2.value_changed.connect(update_value.bind(&"x2"))
+			field_y2.value_changed.connect(update_value.bind(&"y2"))
+			field_x.value_changed.connect(update_value.bind(&"x"))
+			field_y.value_changed.connect(update_value.bind(&"y"))
+			fields = [field_x1, field_y1, field_x2, field_y2, field_x, field_y]
+			fields_container.set_spacing_array([3, 4, 3, 4, 3])
+		"Q":
+			var field_x1: BetterLineEdit = add_number_field()
+			var field_y1: BetterLineEdit = add_number_field()
+			var field_x: BetterLineEdit = add_number_field()
+			var field_y: BetterLineEdit = add_number_field()
+			field_x1.set_value(path_command.x1)
+			field_y1.set_value(path_command.y1)
+			field_x.set_value(path_command.x)
+			field_y.set_value(path_command.y)
+			field_x1.tooltip_text = "x1"
+			field_y1.tooltip_text = "y1"
+			field_x.tooltip_text = "x"
+			field_y.tooltip_text = "y"
+			field_x1.value_changed.connect(update_value.bind(&"x1"))
+			field_y1.value_changed.connect(update_value.bind(&"y1"))
+			field_x.value_changed.connect(update_value.bind(&"x"))
+			field_y.value_changed.connect(update_value.bind(&"y"))
+			fields = [field_x1, field_y1, field_x, field_y]
+			fields_container.set_spacing_array([3, 4, 3])
+		"S":
+			var field_x2: BetterLineEdit = add_number_field()
+			var field_y2: BetterLineEdit = add_number_field()
+			var field_x: BetterLineEdit = add_number_field()
+			var field_y: BetterLineEdit = add_number_field()
+			field_x2.set_value(path_command.x2)
+			field_y2.set_value(path_command.y2)
+			field_x.set_value(path_command.x)
+			field_y.set_value(path_command.y)
+			field_x2.tooltip_text = "x2"
+			field_y2.tooltip_text = "y2"
+			field_x.tooltip_text = "x"
+			field_y.tooltip_text = "y"
+			field_x2.value_changed.connect(update_value.bind(&"x2"))
+			field_y2.value_changed.connect(update_value.bind(&"y2"))
+			field_x.value_changed.connect(update_value.bind(&"x"))
+			field_y.value_changed.connect(update_value.bind(&"y"))
+			fields = [field_x2, field_y2, field_x, field_y]
+			fields_container.set_spacing_array([3, 4, 3])
+		"M", "L", "T":
 			var field_x: BetterLineEdit = add_number_field()
 			var field_y: BetterLineEdit = add_number_field()
 			field_x.set_value(path_command.x)
-			field_x.tooltip_text = "x"
 			field_y.set_value(path_command.y)
+			field_x.tooltip_text = "x"
 			field_y.tooltip_text = "y"
 			field_x.value_changed.connect(update_value.bind(&"x"))
 			field_y.value_changed.connect(update_value.bind(&"y"))
-			fields.append(field_x)
-			fields.append(field_y)
+			fields = [field_x, field_y]
+			fields_container.set_spacing_array([3])
+		"H":
+			var field_x: BetterLineEdit = add_number_field()
+			field_x.set_value(path_command.x)
+			field_x.tooltip_text = "x"
+			field_x.value_changed.connect(update_value.bind(&"x"))
+			fields = [field_x]
+		"V":
+			var field_y: BetterLineEdit = add_number_field()
+			field_y.set_value(path_command.y)
+			field_y.tooltip_text = "y"
+			field_y.value_changed.connect(update_value.bind(&"y"))
+			fields = [field_y]
 
 # Alternative to fully rebuilding the path command editor, if the layout is unchanged.
 func sync_values(cmd: PathCommand) -> void:
@@ -139,11 +174,6 @@ func sync_values(cmd: PathCommand) -> void:
 			fields[3].set_value(cmd.y2)
 			fields[4].set_value(cmd.x)
 			fields[5].set_value(cmd.y)
-		"H":
-			fields[0].set_value(cmd.x)
-		"L", "M", "T":
-			fields[0].set_value(cmd.x)
-			fields[1].set_value(cmd.y)
 		"Q":
 			fields[0].set_value(cmd.x1)
 			fields[1].set_value(cmd.y1)
@@ -154,6 +184,11 @@ func sync_values(cmd: PathCommand) -> void:
 			fields[1].set_value(cmd.y2)
 			fields[2].set_value(cmd.x)
 			fields[3].set_value(cmd.y)
+		"L", "M", "T":
+			fields[0].set_value(cmd.x)
+			fields[1].set_value(cmd.y)
+		"H":
+			fields[0].set_value(cmd.x)
 		"V":
 			fields[0].set_value(cmd.y)
 		_: return
