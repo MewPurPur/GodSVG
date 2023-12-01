@@ -29,8 +29,8 @@ func set_pos(new_pos: Vector2, undo_redo := false) -> void:
 		if x_param in command:
 			# Don't emit command_changed for the X change if there'll be a Y change too.
 			path_attribute.set_command_property(command_index, x_param, new_coords.x,
-					Attribute.SyncMode.INTERMEDIATE if (y_param in command and\
-					command.get(y_param) != new_pos.y) else Attribute.SyncMode.NO_PROPAGATION)
+					Attribute.SyncMode.NO_PROPAGATION if (y_param in command and\
+					command.get(y_param) != new_pos.y) else Attribute.SyncMode.INTERMEDIATE)
 			pos.x = new_pos.x
 		else:
 			pos.x = command.start.x
