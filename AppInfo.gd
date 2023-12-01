@@ -1,7 +1,7 @@
 ## Stores basic information about GodSVG.
 class_name AppInfo extends RefCounted
 
-const version := "1.0.dev"
+const version := "1.0-alpha1"
 
 const project_founders: Array[String] = ["MewPurPur"]
 const project_managers: Array[String] = ["MewPurPur"]
