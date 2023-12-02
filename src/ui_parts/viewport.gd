@@ -8,7 +8,6 @@ const zoom_reset_buffer = 0.875
 var zoom := 1.0
 var moving: bool
 var last_mouse_pos: Vector2
-var wrapped: bool
 
 @onready var display: TextureRect = %Checkerboard
 @onready var view: Camera2D = $ViewCamera
