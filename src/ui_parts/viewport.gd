@@ -7,7 +7,7 @@ const zoom_reset_buffer = 0.875
 
 var zoom := 1.0
 var moving: bool
-var last_pos: Vector2
+var last_mouse_pos: Vector2
 var wrapped: bool
 
 @onready var display: TextureRect = %Checkerboard
@@ -109,20 +109,13 @@ func _on_size_changed() -> void:
 
 func wrap_mouse() -> Vector2:
 	if not moving:
-		last_pos = get_mouse_position()
+		last_mouse_pos = get_mouse_position()
 	var view_rect:Rect2 = get_visible_rect().grow(-1.0)
 	var mouse_pos: Vector2 = get_mouse_position()
+	var relative := mouse_pos - last_mouse_pos
 	if not view_rect.has_point(mouse_pos):
 		mouse_pos.x = fposmod(mouse_pos.x, view_rect.size.x)
 		mouse_pos.y = fposmod(mouse_pos.y, view_rect.size.y)
-		wrapped = true
-	warp_mouse(mouse_pos)
-	
-	var relative: Vector2 = mouse_pos - last_pos
-	last_pos = get_mouse_position()
-	
-	if not wrapped:
-		return relative
-	else:
-		wrapped = false
-		return Vector2.ZERO
+		warp_mouse(mouse_pos)
+	last_mouse_pos = get_mouse_position()
+	return relative
