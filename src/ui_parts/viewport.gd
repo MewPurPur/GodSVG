@@ -6,8 +6,6 @@ const buffer_view_space = 0.8
 const zoom_reset_buffer = 0.875
 
 var zoom := 1.0
-var moving: bool
-var last_mouse_pos: Vector2
 
 @onready var display: TextureRect = %Checkerboard
 @onready var view: Camera2D = $ViewCamera
@@ -47,10 +45,7 @@ func _unhandled_input(event: InputEvent) -> void:
 	
 	if event is InputEventMouseMotion and\
 	event.button_mask in [MOUSE_BUTTON_MASK_LEFT, MOUSE_BUTTON_MASK_MIDDLE]:
-		set_view(view.position - (wrap_mouse() if GlobalSettings.wrap_mouse else event.relative) / zoom)
-		moving = true
-	else: 
-		moving = false
+		set_view(view.position - (wrap_mouse(event.relative) if GlobalSettings.wrap_mouse else event.relative) / zoom)
 	
 	if event is InputEventPanGesture:
 		if event.ctrl_pressed:
@@ -106,15 +101,23 @@ func _on_size_changed() -> void:
 	if is_node_ready():
 		adjust_view()
 
-func wrap_mouse() -> Vector2:
+func wrap_mouse(relative: Vector2) -> Vector2:
 	var view_rect:Rect2 = get_visible_rect().grow(-1.0)
 	var mouse_pos: Vector2 = get_mouse_position()
-	if not moving:
-		last_mouse_pos = mouse_pos
-	var relative := mouse_pos - last_mouse_pos
+	
+	var warp_margin := Vector2(view_rect.size * 0.5)
+	
+	var relative_sign := Vector2i(
+		1 if relative.x >= 0.0 else -1, 
+		1 if relative.y >= 0.0 else -1)
+	
+	var relative_warped := Vector2(
+		fmod(relative.x + relative_sign.x * warp_margin.x, view_rect.size.x) - relative_sign.x * warp_margin.x, 
+		fmod(relative.y + relative_sign.y * warp_margin.y, view_rect.size.y) - relative_sign.y * warp_margin.y)
+	
 	if not view_rect.has_point(mouse_pos):
 		mouse_pos.x = fposmod(mouse_pos.x, view_rect.size.x)
 		mouse_pos.y = fposmod(mouse_pos.y, view_rect.size.y)
 		warp_mouse(mouse_pos)
-	last_mouse_pos = mouse_pos
-	return relative
+	
+	return relative_warped
