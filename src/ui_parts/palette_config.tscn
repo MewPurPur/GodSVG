@@ -57,6 +57,7 @@ custom_minimum_size = Vector2(120, 0)
 layout_mode = 2
 theme_override_styles/normal = SubResource("StyleBoxFlat_jm6ej")
 max_length = 30
+context_menu_enabled = false
 script = ExtResource("2_coqnx")
 
 [node name="EditButton" type="Button" parent="MarginContainer/HBoxContainer/MainContainer/HBoxContainer"]
