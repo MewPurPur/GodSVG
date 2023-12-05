@@ -32,15 +32,11 @@ Support for all other elements is currently not planned. GodSVG can still work w
 
 ## Installation
 
-Currently, there are no pre-built binaries available for GodSVG. However, you can still run it by following these steps:
-
-1. Clone the repository: `git clone https://github.com/MewPurPur/GodSVG.git`
-2. Open the project in Godot Engine. (4.2.beta6 minimum needed)
-3. Build and run the project within the Godot Engine editor.
+Check out godot-releases and download the version you want.
 
 ## Community and contributing
 
-Contributions are very welcome! GodSVG is built in Godot. For code contributions, read the [Contributing Guidelines](CONTRIBUTING.md). Before starting work on features, first propose them by using the issue form and wait for approval.
+Contributions are very welcome! GodSVG is built in Godot. For code contributions, read [Contributing Guidelines](CONTRIBUTING.md). Before starting work on features, first propose them by using the issue form and wait for approval.
 
 To report bugs or propose features, use Github's issue form. For more casual discussion around the tool or contributing to it, find me on [GodSVG's Discord](https://discord.gg/K4ThGckGGw).
 
