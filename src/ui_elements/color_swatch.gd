@@ -1,7 +1,7 @@
 extends Button
 
 const code_font = preload("res://visual/fonts/FontMono.ttf")
-const checkerboard = preload("res://visual/Checkerboard.svg")
+const checkerboard = preload("res://visual/icons/backgrounds/Checkerboard.svg")
 const plus_icon = preload("res://visual/icons/Plus.svg")
 const gear_icon = preload("res://visual/icons/GearOutlined.svg")
 

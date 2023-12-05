@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://y0l74x73w0co"
-path="res://.godot/imported/ColorButtonBG.svg-28ace1164dd31cbc3b8acf7004130ca8.ctex"
+uid="uid://c68og6bsqt0lb"
+path="res://.godot/imported/Checkerboard.svg-1ca7da602c821f83425dbd4b34ca6a4f.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://visual/ColorButtonBG.svg"
-dest_files=["res://.godot/imported/ColorButtonBG.svg-28ace1164dd31cbc3b8acf7004130ca8.ctex"]
+source_file="res://visual/icons/backgrounds/Checkerboard.svg"
+dest_files=["res://.godot/imported/Checkerboard.svg-1ca7da602c821f83425dbd4b34ca6a4f.ctex"]
 
 [params]
 
