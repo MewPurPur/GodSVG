@@ -11,6 +11,7 @@ config_version=5
 [application]
 
 config/name="GodSVG"
+config/version="v1.0-alpha1"
 config/tags=PackedStringArray("project")
 run/main_scene="res://src/ui_parts/main_scene.tscn"
 config/features=PackedStringArray("4.2", "Forward Plus")
@@ -19,6 +20,7 @@ boot_splash/bg_color=Color(0.1065, 0.1181, 0.15, 1)
 boot_splash/image="res://visual/splash.png"
 boot_splash/fullsize=false
 config/icon="res://visual/icon.png"
+config/windows_native_icon="res://visual/icon.ico"
 
 [audio]
 

@@ -2,7 +2,7 @@
 extends AttributeEditor
 
 const ColorPopup = preload("res://src/ui_elements/color_popup.tscn")
-const checkerboard = preload("res://visual/ColorButtonBG.svg")
+const checkerboard = preload("res://visual/icons/backgrounds/ColorButtonBG.svg")
 
 @onready var color_button: Button = $Button
 @onready var color_edit: LineEdit = $LineEdit
