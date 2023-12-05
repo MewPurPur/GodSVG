@@ -10,7 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://oltvrf01xrxl" path="res://src/ui_parts/zoom_menu.tscn" id="8_xtdmn"]
 [ext_resource type="Script" path="res://src/ui_parts/viewport.gd" id="9_4xrk7"]
 [ext_resource type="Shader" path="res://src/shaders/zoom_shader.gdshader" id="10_x7ybk"]
-[ext_resource type="Texture2D" uid="uid://c68og6bsqt0lb" path="res://visual/Checkerboard.svg" id="11_1bm1s"]
+[ext_resource type="Texture2D" uid="uid://c68og6bsqt0lb" path="res://visual/icons/backgrounds/Checkerboard.svg" id="11_1bm1s"]
 [ext_resource type="Script" path="res://src/ui_parts/display_texture.gd" id="12_qi23s"]
 [ext_resource type="Script" path="res://src/ui_parts/handles_manager.gd" id="13_lwhwy"]
 [ext_resource type="Script" path="res://src/ui_parts/view_camera.gd" id="14_yjb74"]
