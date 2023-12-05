@@ -20,9 +20,9 @@ const known_attributes = ["width", "height", "viewBox", "xmlns"]
 func _init() -> void:
 	name = "svg"
 	attributes = {
-		"height": Attribute.new(Attribute.Type.UFLOAT, NAN),
-		"width": Attribute.new(Attribute.Type.UFLOAT, NAN),
-		"viewBox": AttributeViewbox.new(),
+		"height": AttributeNumeric.new(AttributeNumeric.Mode.UFLOAT, NAN),
+		"width": AttributeNumeric.new(AttributeNumeric.Mode.UFLOAT, NAN),
+		"viewBox": AttributeList.new(),
 	}
 	unknown_attributes.append(AttributeUnknown.new("xmlns", "http://www.w3.org/2000/svg"))
 	super()
@@ -32,20 +32,21 @@ func get_width() -> float:
 	if !is_nan(attributes.width.get_value()):
 		return attributes.width.get_value()
 	else:
-		return attributes.viewBox.rect.size.x
+		return attributes.viewBox.get_list_element(2)
 
 func get_height() -> float:
 	if !is_nan(attributes.height.get_value()):
 		return attributes.height.get_value()
 	else:
-		return attributes.viewBox.rect.size.y
+		return attributes.viewBox.get_list_element(3)
 
 func get_size() -> Vector2:
 	return Vector2(get_width(), get_height())
 
 func get_viewbox() -> Rect2:
-	if attributes.viewBox.get_value() != null:
-		return attributes.viewBox.rect
+	if attributes.viewBox.get_value() != null and attributes.viewBox.list.size() >= 4:
+		return Rect2(attributes.viewBox.list[0], attributes.viewBox.list[1],
+				attributes.viewBox.list[2], attributes.viewBox.list[3])
 	else:
 		if is_nan(attributes.width.get_value()) or is_nan(attributes.height.get_value()):
 			return Rect2(0, 0, 0, 0)

@@ -7,14 +7,14 @@ const known_attributes = ["x1", "y1", "x2", "y2",
 func _init() -> void:
 	name = "line"
 	attributes = {
-		"x1": Attribute.new(Attribute.Type.FLOAT, 0.0),
-		"y1": Attribute.new(Attribute.Type.FLOAT, 0.0),
-		"x2": Attribute.new(Attribute.Type.FLOAT, 0.0),
-		"y2": Attribute.new(Attribute.Type.FLOAT, 0.0),
-		"opacity": Attribute.new(Attribute.Type.NFLOAT, 1.0),
-		"stroke": Attribute.new(Attribute.Type.COLOR, "none"),
-		"stroke-opacity": Attribute.new(Attribute.Type.NFLOAT, 1.0),
-		"stroke-width": Attribute.new(Attribute.Type.UFLOAT, 1.0),
+		"x1": AttributeNumeric.new(AttributeNumeric.Mode.FLOAT, 0.0),
+		"y1": AttributeNumeric.new(AttributeNumeric.Mode.FLOAT, 0.0),
+		"x2": AttributeNumeric.new(AttributeNumeric.Mode.FLOAT, 0.0),
+		"y2": AttributeNumeric.new(AttributeNumeric.Mode.FLOAT, 0.0),
+		"opacity": AttributeNumeric.new(AttributeNumeric.Mode.NFLOAT, 1.0),
+		"stroke": AttributeColor.new("none", "#000"),
+		"stroke-opacity": AttributeNumeric.new(AttributeNumeric.Mode.NFLOAT, 1.0),
+		"stroke-width": AttributeNumeric.new(AttributeNumeric.Mode.UFLOAT, 1.0),
 		"stroke-linecap": AttributeEnum.new(["butt", "round", "square"], 0),
 	}
 	super()

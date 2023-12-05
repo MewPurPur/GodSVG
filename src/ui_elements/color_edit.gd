@@ -22,7 +22,7 @@ func _ready() -> void:
 	color_edit.text = current_value
 
 func validate(new_value: String) -> String:
-	if is_color_valid_non_hex(new_value) or new_value.is_valid_html_color():
+	if AttributeColor.is_color_valid_non_hex(new_value) or new_value.is_valid_html_color():
 		return new_value.trim_prefix("#")
 	return "000"
 
@@ -48,8 +48,8 @@ func _draw() -> void:
 	var stylebox := StyleBoxFlat.new()
 	stylebox.corner_radius_top_right = 5
 	stylebox.corner_radius_bottom_right = 5
-	if Utils.named_colors.has(current_value):
-		stylebox.bg_color = Utils.named_colors[current_value]
+	if AttributeColor.named_colors.has(current_value):
+		stylebox.bg_color = AttributeColor.named_colors[current_value]
 	else:
 		stylebox.bg_color = Color.from_string(current_value, Color.TRANSPARENT)
 	draw_texture(checkerboard, Vector2.ZERO)
@@ -68,13 +68,6 @@ func _on_color_picked(new_color: String, close_picker: bool) -> void:
 	if close_picker:
 		color_picker.queue_free()
 
-func is_color_valid_non_hex(color: String) -> bool:
-	return color == "none" or Utils.named_colors.has(color) or\
-	(color.begins_with("url(#") and color.ends_with(")"))
-
-func is_color_valid(color: String) -> bool:
-	return color.is_valid_html_color() or is_color_valid_non_hex(color)
-
 
 func _on_button_resized() -> void:
 	# Not sure why this is needed, but the button doesn't have a correct size at first
@@ -82,7 +75,7 @@ func _on_button_resized() -> void:
 	queue_redraw()
 
 func _on_line_edit_text_changed(new_text: String) -> void:
-	if is_color_valid(new_text):
+	if AttributeColor.is_color_valid(new_text):
 		color_edit.add_theme_color_override(&"font_color", Color(0.6, 1.0, 0.6))
 	else:
 		color_edit.add_theme_color_override(&"font_color", Color(1.0, 0.6, 0.6))
