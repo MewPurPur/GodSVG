@@ -1,14 +1,12 @@
-## A parser for the viewBox attribute of [TagSVG].
-class_name ViewboxParser extends RefCounted
+## A parser for [AttributeList].
+class_name ListParser extends RefCounted
 
-# TODO Turn this into a ListParser (handling any amount of numbers)
-
-static func string_to_rect(string: String) -> Rect2:
-	var nums_parsed: Array[float] = []
+static func string_to_list(string: String) -> PackedFloat32Array:
+	var nums_parsed := PackedFloat32Array()
 	var current_num_string: String = ""
 	var comma_exhausted := false
 	var pos := 0
-	while pos < string.length() and nums_parsed.size() < 5:
+	while pos < string.length():
 		@warning_ignore("shadowed_global_identifier")
 		var char := string[pos]
 		match char:
@@ -22,8 +20,8 @@ static func string_to_rect(string: String) -> Rect2:
 					nums_parsed.append(current_num_string.to_float())
 					current_num_string = ""
 			",":
-				if comma_exhausted or nums_parsed.size() >= 4:
-					return Rect2(0, 0, 0, 0)
+				if comma_exhausted:
+					return nums_parsed
 				elif current_num_string.is_empty():
 					comma_exhausted = true
 					pos += 1
@@ -35,11 +33,10 @@ static func string_to_rect(string: String) -> Rect2:
 	if not current_num_string.is_empty():
 		nums_parsed.append(current_num_string.to_float())
 	
-	if nums_parsed.size() < 4:
-		return Rect2(0, 0, 0, 0)
-	else:
-		return Rect2(nums_parsed[0], nums_parsed[1], nums_parsed[2], nums_parsed[3])
+	return nums_parsed
 
-static func rect_to_string(rect: Rect2) -> String:
-	return "%s %s %s %s" % [String.num(rect.position.x, 4), String.num(rect.position.y, 4),
-	String.num(rect.size.x, 4), String.num(rect.size.y, 4)]
+static func list_to_string(list: PackedFloat32Array) -> String:
+	var params := PackedStringArray()
+	for element in list:
+		params.append(String.num(element, 4))
+	return " ".join(params)

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c05tk0wqo2fl1"
-path="res://.godot/imported/HandleBig.svg-3b3b5325478e2e3c4eda23b4723c804d.ctex"
+uid="uid://54hm4c330xay"
+path="res://.godot/imported/HandleBigHoveredSelected.svg-ae14d420d3fb59526717ea6469c16359.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://visual/icons/HandleBig.svg"
-dest_files=["res://.godot/imported/HandleBig.svg-3b3b5325478e2e3c4eda23b4723c804d.ctex"]
+source_file="res://visual/icons/handles/HandleBigHoveredSelected.svg"
+dest_files=["res://.godot/imported/HandleBigHoveredSelected.svg-ae14d420d3fb59526717ea6469c16359.ctex"]
 
 [params]
 

@@ -32,14 +32,11 @@ static func _tag_to_text(tag: Tag) -> String:
 			continue
 		
 		text += " " + attribute_key + '="'
-		match attribute.type:
-			Attribute.Type.INT:
-				text += value.to_int()
-			Attribute.Type.FLOAT, Attribute.Type.UFLOAT, Attribute.Type.NFLOAT:
-				text += String.num(value, 4)
-			Attribute.Type.COLOR, Attribute.Type.PATHDATA, Attribute.Type.ENUM,\
-			Attribute.Type.VIEWBOX:
-				text += value
+		if attribute is AttributeNumeric:
+			text += String.num(value, 4)
+		elif attribute is AttributeColor or attribute is AttributePath or\
+		attribute is AttributeEnum or attribute is AttributeList:
+			text += value
 		text += '"'
 	
 	for attribute in tag.unknown_attributes:

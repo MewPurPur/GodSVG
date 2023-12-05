@@ -1,8 +1,8 @@
 ## Base class for handles.
 class_name Handle extends RefCounted
 
-enum DisplayMode {BIG, SMALL}
-var display_mode := DisplayMode.BIG
+enum Display {BIG, SMALL}
+var display_mode := Display.BIG
 
 var tag: Tag
 var tid := PackedInt32Array()

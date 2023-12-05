@@ -6,7 +6,6 @@ signal command_changed(sync_mode: SyncMode)
 var commands: Array[PathCommand]
 
 func _init() -> void:
-	type = Type.PATHDATA
 	default = ""
 	set_value(default, SyncMode.SILENT)
 	command_changed.connect(sync_value)

@@ -1,24 +1,26 @@
 ## Contours drawing and [Handle]s are managed here. 
 extends Control
 
+const handle_texture_dir = "res://visual/icons/handles/%s.svg"
+
 const normal_handle_textures = {
-	Handle.DisplayMode.BIG: preload("res://visual/icons/HandleBig.svg"),
-	Handle.DisplayMode.SMALL: preload("res://visual/icons/HandleSmall.svg"),
+	Handle.Display.BIG: preload(handle_texture_dir % "HandleBig"),
+	Handle.Display.SMALL: preload(handle_texture_dir % "HandleSmall"),
 }
 
 const hovered_handle_textures = {
-	Handle.DisplayMode.BIG: preload("res://visual/icons/HandleBigHovered.svg"),
-	Handle.DisplayMode.SMALL: preload("res://visual/icons/HandleSmallHovered.svg"),
+	Handle.Display.BIG: preload(handle_texture_dir % "HandleBigHovered"),
+	Handle.Display.SMALL: preload(handle_texture_dir % "HandleSmallHovered"),
 }
 
 const selected_handle_textures = {
-	Handle.DisplayMode.BIG: preload("res://visual/icons/HandleBigSelected.svg"),
-	Handle.DisplayMode.SMALL: preload("res://visual/icons/HandleSmallSelected.svg"),
+	Handle.Display.BIG: preload(handle_texture_dir % "HandleBigSelected"),
+	Handle.Display.SMALL: preload(handle_texture_dir % "HandleSmallSelected"),
 }
 
 const hovered_selected_handle_textures = {
-	Handle.DisplayMode.BIG: preload("res://visual/icons/HandleBigHoveredSelected.svg"),
-	Handle.DisplayMode.SMALL: preload("res://visual/icons/HandleSmallHoveredSelected.svg"),
+	Handle.Display.BIG: preload(handle_texture_dir % "HandleBigHoveredSelected"),
+	Handle.Display.SMALL: preload(handle_texture_dir % "HandleSmallHoveredSelected"),
 }
 
 const default_color_string = "#000"
@@ -125,11 +127,11 @@ path_attribute: AttributePath) -> Array[Handle]:
 			path_handles.append(PathHandle.new(tid, path_attribute, idx))
 			if path_command.command_char.to_upper() in ["C", "Q"]:
 				var tangent := PathHandle.new(tid, path_attribute, idx, &"x1", &"y1")
-				tangent.display_mode = Handle.DisplayMode.SMALL
+				tangent.display_mode = Handle.Display.SMALL
 				path_handles.append(tangent)
 			if path_command.command_char.to_upper() in ["C", "S"]:
 				var tangent := PathHandle.new(tid, path_attribute, idx, &"x2", &"y2")
-				tangent.display_mode = Handle.DisplayMode.SMALL
+				tangent.display_mode = Handle.Display.SMALL
 				path_handles.append(tangent)
 	return path_handles
 
@@ -271,7 +273,8 @@ func _draw() -> void:
 				var x2: float = attribs.x2.get_value()
 				var y2: float = attribs.y2.get_value()
 				
-				var points := PackedVector2Array([Vector2(x1, y1), Vector2(x2, y2)])
+				var points := PackedVector2Array([convert_in(Vector2(x1, y1)),
+						convert_in(Vector2(x2, y2))])
 				
 				if tag_hovered and tag_selected:
 					hovered_selected_polylines.append(points)

@@ -46,26 +46,24 @@ func _ready() -> void:
 	for attribute_key in tag.attributes:
 		var attribute: Attribute = tag.attributes[attribute_key]
 		var input_field: AttributeEditor
-		match attribute.type:
-			Attribute.Type.INT:
-				input_field = NumberField.instantiate()
-				input_field.is_float = false
-			Attribute.Type.FLOAT:
-				input_field = NumberField.instantiate()
-			Attribute.Type.UFLOAT:
-				input_field = NumberField.instantiate()
-				input_field.allow_lower = false
-			Attribute.Type.NFLOAT:
-				input_field = NumberSlider.instantiate()
-				input_field.allow_lower = false
-				input_field.allow_higher = false
-				input_field.slider_step = 0.01
-			Attribute.Type.COLOR:
-				input_field = ColorField.instantiate()
-			Attribute.Type.PATHDATA:
-				input_field = PathField.instantiate()
-			Attribute.Type.ENUM:
-				input_field = EnumField.instantiate()
+		if attribute is AttributeNumeric:
+			match attribute.mode:
+				AttributeNumeric.Mode.FLOAT:
+					input_field = NumberField.instantiate()
+				AttributeNumeric.Mode.UFLOAT:
+					input_field = NumberField.instantiate()
+					input_field.allow_lower = false
+				AttributeNumeric.Mode.NFLOAT:
+					input_field = NumberSlider.instantiate()
+					input_field.allow_lower = false
+					input_field.allow_higher = false
+					input_field.slider_step = 0.01
+		elif attribute is AttributeColor:
+			input_field = ColorField.instantiate()
+		elif attribute is AttributePath:
+			input_field = PathField.instantiate()
+		elif attribute is AttributeEnum:
+			input_field = EnumField.instantiate()
 		input_field.attribute = attribute
 		input_field.attribute_name = attribute_key
 		# Add the attribute to its corresponding container.
