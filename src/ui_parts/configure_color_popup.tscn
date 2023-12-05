@@ -60,6 +60,7 @@ custom_minimum_size = Vector2(80, 0)
 layout_mode = 2
 theme_override_styles/normal = SubResource("StyleBoxFlat_jm6ej")
 max_length = 30
+context_menu_enabled = false
 script = ExtResource("1_i4wi2")
 
 [node name="EditButton" type="Button" parent="PanelContainer/MarginContainer/ConfigureContainer/TopContainer"]
