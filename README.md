@@ -1,6 +1,8 @@
 # GodSVG
 
-![image](https://github.com/MewPurPur/GodSVG/assets/85438892/c0c9ec57-a7ab-4c29-bd8c-9c6b70c00d99)
+<p align="center">
+  <img src="visual/splash.svg" width="480" alt="GodSVG logo">
+</p>
 
 **GodSVG is an application for creating optimized Scalable Vector Graphics (SVG) files.** It is mainly designed for programmers, allowing them to easily edit individual SVG elements and view the corresponding code in real-time.
 GodSVG is inspired by the need for an SVG editor without abstractions that produces optimized SVG files.
@@ -12,23 +14,7 @@ GodSVG is inspired by the need for an SVG editor without abstractions that produ
 - **Optimized SVG output:** Generate clean and efficient SVG files. _(Planned: Ways to minify the output)_
 - **Accessible on mobile:** GodSVG aims to be usable on mobile devices.
 
-| Name | Support level | Notes |
-| --- | --- | --- |
-| circle | Supported | |
-| clipPath | Not yet supported | Probably never, will evaluate later |
-| ellipse | Supported | |
-| g | Not yet supported | |
-| line | Supported |
-| linearGradient | Planned soon | |
-| mask | Not yet supported | |
-| path | Supported | |
-| polygon | Not yet supported | May not support directly |
-| polyline | Not yet supported | May not support directly |
-| radialGradient | Planned soon | |
-| rect | Supported | |
-| stop | Planned soon | |
-
-Support for all other elements is currently not planned. GodSVG can still work with them, though it won't recognize them.
+![image](https://github.com/MewPurPur/GodSVG/assets/85438892/e0fa4d0c-b962-4cc7-ac76-2cbc9cf77856)
 
 ## Installation
 
