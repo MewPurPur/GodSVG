@@ -1,6 +1,6 @@
 extends VBoxContainer
 
-const handle_texture = preload("res://visual/icons/HandleBig.svg")
+const handle_texture = preload("res://visual/icons/handles/HandleBig.svg")
 const slider_arrow = preload("res://visual/icons/SliderArrow.svg")
 const side_slider_arrow = preload("res://visual/icons/SideSliderArrow.svg")
 

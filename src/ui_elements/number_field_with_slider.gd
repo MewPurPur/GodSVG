@@ -17,7 +17,7 @@ signal value_changed(new_value: float, update_type: UpdateType)
 var _value: float  # Must not be updated directly.
 
 func set_value(new_value: float, update_type := UpdateType.REGULAR) -> void:
-	if is_nan(new_value):
+	if not is_finite(new_value):
 		update_after_change()
 		return
 	var old_value := _value
@@ -66,10 +66,10 @@ func _on_value_changed(new_value: float, update_type: UpdateType) -> void:
 # Hacks to make LineEdit bearable.
 
 func _on_focus_exited() -> void:
-	set_value(Utils.evaluate_numeric_expression(num_edit.text))
+	set_value(AttributeNumeric.evaluate_numeric_expression(num_edit.text))
 
 func _on_text_submitted(submitted_text: String) -> void:
-	set_value(Utils.evaluate_numeric_expression(submitted_text))
+	set_value(AttributeNumeric.evaluate_numeric_expression(submitted_text))
 
 
 func add_tooltip(text: String) -> void:

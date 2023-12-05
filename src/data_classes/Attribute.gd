@@ -4,9 +4,6 @@ class_name Attribute extends RefCounted
 signal value_changed(new_value: Variant)
 signal propagate_value_changed(undo_redo: bool)
 
-enum Type {UNKNOWN, INT, FLOAT, UFLOAT, NFLOAT, COLOR, PATHDATA, ENUM, VIEWBOX}
-var type: Type
-
 var default: Variant
 var _value: Variant
 
@@ -40,9 +37,3 @@ func set_value(new_value: Variant, sync_mode := SyncMode.LOUD) -> void:
 
 func get_value() -> Variant:
 	return _value
-
-# A new_default of null means it's a required attribute.
-func _init(new_type: Type, new_default: Variant = null, new_init: Variant = null) -> void:
-	type = new_type
-	default = new_default
-	set_value(new_init if new_init != null else new_default, SyncMode.SILENT)
