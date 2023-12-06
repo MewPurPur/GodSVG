@@ -18,6 +18,7 @@ const default_config = {
 	},
 	"input": {
 		"invert_zoom": false,
+		"wrap_mouse": false,
 	},
 }
 
@@ -31,6 +32,11 @@ var invert_zoom := false:
 	set(new_value):
 		invert_zoom = new_value
 		save_setting("input", "invert_zoom", invert_zoom)
+
+var wrap_mouse := false:
+	set(new_value):
+		wrap_mouse = new_value
+		save_setting("input", "wrap_mouse", wrap_mouse)
 
 func save_setting(section: String, setting: String, saved_value: Variant) -> void:
 	config.set_value(section, setting, saved_value)
