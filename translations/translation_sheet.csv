@@ -2,6 +2,8 @@
 #language,Language,Език,Sprache
 #invert_zoom,Invert zoom direction,Обърни посоката на увеличение,Zoomrichtung umkehren
 #invert_zoom_desc,Swaps zoom in and zoom out with the mouse wheel,Разменя увеличението и намалянето с колелцето на мишката,Vertauscht Hinein- und Herauszoomen mit dem Mausrad
+#wrap_mouse,Wrap mouse,Превъртане на курсора,Maus einschließen
+#wrap_mouse_desc,Wraps the mouse cursor around when panning the viewport,Превърта курсора когато той достигне краищата на екрана,Schließt die Maus beim bewegen innerhalb des Fensters ein
 #input_tab,Input,Входни сигнали,Eingabe
 #open,Open,Отвори,Öffnen
 #close,Close,Затвори,Schließen

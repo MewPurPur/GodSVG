@@ -45,7 +45,7 @@ func _unhandled_input(event: InputEvent) -> void:
 	
 	if event is InputEventMouseMotion and\
 	event.button_mask in [MOUSE_BUTTON_MASK_LEFT, MOUSE_BUTTON_MASK_MIDDLE]:
-		set_view(view.position - event.relative / zoom)
+		set_view(view.position - (wrap_mouse(event.relative) if GlobalSettings.wrap_mouse else event.relative) / zoom)
 	
 	if event is InputEventPanGesture:
 		if event.ctrl_pressed:
@@ -100,3 +100,20 @@ func adjust_view() -> void:
 func _on_size_changed() -> void:
 	if is_node_ready():
 		adjust_view()
+
+func wrap_mouse(relative: Vector2) -> Vector2:
+	var view_rect := get_visible_rect().grow(-1.0)
+	var mouse_pos := get_mouse_position()
+	var warp_margin := view_rect.size * 0.5
+	var relative_sign := relative.sign()
+	
+	var relative_warped := Vector2(
+		fmod(relative.x + relative_sign.x * warp_margin.x, view_rect.size.x) - relative_sign.x * warp_margin.x, 
+		fmod(relative.y + relative_sign.y * warp_margin.y, view_rect.size.y) - relative_sign.y * warp_margin.y)
+	
+	if not view_rect.has_point(mouse_pos):
+		mouse_pos.x = fposmod(mouse_pos.x, view_rect.size.x)
+		mouse_pos.y = fposmod(mouse_pos.y, view_rect.size.y)
+		warp_mouse(mouse_pos)
+	
+	return relative_warped

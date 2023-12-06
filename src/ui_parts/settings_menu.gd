@@ -6,12 +6,14 @@ const plus_icon = preload("res://visual/icons/Plus.svg")
 
 @onready var lang_button: Button = %Language
 @onready var invert_zoom: CheckBox = %InvertZoom
+@onready var wrap_mouse: CheckBox = %WrapMouse
 @onready var palette_container: VBoxContainer = %PaletteContainer
 
 
 func _ready() -> void:
 	update_language_button()
 	invert_zoom.button_pressed = GlobalSettings.invert_zoom
+	wrap_mouse.button_pressed = GlobalSettings.wrap_mouse
 	rebuild_color_palettes()
 
 func _on_window_mode_pressed() -> void:
@@ -22,6 +24,9 @@ func _on_svg_pressed() -> void:
 
 func _on_invert_zoom_pressed() -> void:
 	GlobalSettings.invert_zoom = not GlobalSettings.invert_zoom
+
+func _on_wrap_mouse_pressed() -> void:
+	GlobalSettings.wrap_mouse = not GlobalSettings.wrap_mouse
 
 func _on_close_pressed() -> void:
 	queue_free()
