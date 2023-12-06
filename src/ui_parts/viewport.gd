@@ -103,7 +103,7 @@ func _on_size_changed() -> void:
 
 func wrap_mouse(relative: Vector2) -> Vector2:
 	var view_rect := get_visible_rect().grow(-1.0)
-	var mouse_pos: Vector2 = get_mouse_position()
+	var mouse_pos := get_mouse_position()
 	
 	var warp_margin := view_rect.size * 0.5
 	
