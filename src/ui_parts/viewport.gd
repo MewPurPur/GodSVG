@@ -107,9 +107,7 @@ func wrap_mouse(relative: Vector2) -> Vector2:
 	
 	var warp_margin := view_rect.size * 0.5
 	
-	var relative_sign := Vector2i(
-		1 if relative.x >= 0.0 else -1, 
-		1 if relative.y >= 0.0 else -1)
+	var relative_sign := relative.sign()
 	
 	var relative_warped := Vector2(
 		fmod(relative.x + relative_sign.x * warp_margin.x, view_rect.size.x) - relative_sign.x * warp_margin.x, 
