@@ -94,6 +94,7 @@ layout_mode = 2
 [node name="Spacer" type="Control" parent="HBox"]
 custom_minimum_size = Vector2(8, 0)
 layout_mode = 2
+mouse_filter = 1
 
 [node name="Commands" type="VBoxContainer" parent="HBox"]
 custom_minimum_size = Vector2(336, 0)
