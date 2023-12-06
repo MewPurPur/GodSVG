@@ -18,7 +18,7 @@ GodSVG is inspired by the need for an SVG editor without abstractions that produ
 
 ## Installation
 
-Check out godot-releases and download the version you want.
+Simply check out [the list of GodSVG releases](https://github.com/MewPurPur/GodSVG/releases) and download the version you want.
 
 ## Community and contributing
 
