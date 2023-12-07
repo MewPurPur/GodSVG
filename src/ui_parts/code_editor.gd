@@ -97,7 +97,7 @@ func apply_svg_from_path(path: String) -> void:
 	warning_panel.set_svg(svg_text, path.get_file())
 	get_tree().get_root().add_child(warning_panel)
 
-func set_new_text(svg_text: String, project_name) -> void:
+func set_new_text(svg_text: String, project_name: String) -> void:
 	GlobalSettings.modify_save_data("project_name", project_name)
 	code_edit.text = svg_text
 	_on_code_edit_text_changed()  # Call it automatically yeah.
