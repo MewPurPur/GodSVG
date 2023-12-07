@@ -170,8 +170,8 @@ func _draw() -> void:
 		
 		match tag.name:
 			"circle":
-				var c := Vector2(attribs.cx.get_value(), attribs.cy.get_value())
-				var r: float = attribs.r.get_value()
+				var c := Vector2(attribs.cx.get_num(), attribs.cy.get_num())
+				var r: float = attribs.r.get_num()
 				
 				var points := PackedVector2Array()
 				points.resize(181)
@@ -190,9 +190,9 @@ func _draw() -> void:
 					normal_polylines.append(points)
 			
 			"ellipse":
-				var c := Vector2(attribs.cx.get_value(), attribs.cy.get_value())
-				var rx: float = attribs.rx.get_value()
-				var ry: float = attribs.ry.get_value()
+				var c := Vector2(attribs.cx.get_num(), attribs.cy.get_num())
+				var rx: float = attribs.rx.get_num()
+				var ry: float = attribs.ry.get_num()
 				# Squished circle.
 				var points := PackedVector2Array()
 				points.resize(181)
@@ -211,12 +211,12 @@ func _draw() -> void:
 					normal_polylines.append(points)
 			
 			"rect":
-				var x: float = attribs.x.get_value()
-				var y: float = attribs.y.get_value()
-				var rect_height: float = attribs.height.get_value()
-				var rect_width: float = attribs.width.get_value()
-				var rx: float = attribs.rx.get_value()
-				var ry: float = attribs.ry.get_value()
+				var x: float = attribs.x.get_num()
+				var y: float = attribs.y.get_num()
+				var rect_height: float = attribs.height.get_num()
+				var rect_width: float = attribs.width.get_num()
+				var rx: float = attribs.rx.get_num()
+				var ry: float = attribs.ry.get_num()
 				var points := PackedVector2Array()
 				if rx == 0 and ry == 0:
 					# Basic rectangle.
@@ -268,10 +268,10 @@ func _draw() -> void:
 					normal_polylines.append(points)
 			
 			"line":
-				var x1: float = attribs.x1.get_value()
-				var y1: float = attribs.y1.get_value()
-				var x2: float = attribs.x2.get_value()
-				var y2: float = attribs.y2.get_value()
+				var x1: float = attribs.x1.get_num()
+				var y1: float = attribs.y1.get_num()
+				var x2: float = attribs.x2.get_num()
+				var y2: float = attribs.y2.get_num()
 				
 				var points := PackedVector2Array([convert_in(Vector2(x1, y1)),
 						convert_in(Vector2(x2, y2))])

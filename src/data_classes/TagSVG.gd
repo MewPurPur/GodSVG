@@ -20,8 +20,8 @@ const known_attributes = ["width", "height", "viewBox", "xmlns"]
 func _init() -> void:
 	name = "svg"
 	attributes = {
-		"height": AttributeNumeric.new(AttributeNumeric.Mode.UFLOAT, NAN),
-		"width": AttributeNumeric.new(AttributeNumeric.Mode.UFLOAT, NAN),
+		"height": AttributeNumeric.new(AttributeNumeric.Mode.UFLOAT, ""),
+		"width": AttributeNumeric.new(AttributeNumeric.Mode.UFLOAT, ""),
 		"viewBox": AttributeList.new(),
 	}
 	unknown_attributes.append(AttributeUnknown.new("xmlns", "http://www.w3.org/2000/svg"))
@@ -29,14 +29,14 @@ func _init() -> void:
 
 # Functions for getting the dimensions.
 func get_width() -> float:
-	if !is_nan(attributes.width.get_value()):
-		return attributes.width.get_value()
+	if is_finite(attributes.width.get_num()):
+		return attributes.width.get_num()
 	else:
 		return attributes.viewBox.get_list_element(2)
 
 func get_height() -> float:
-	if !is_nan(attributes.height.get_value()):
-		return attributes.height.get_value()
+	if is_finite(attributes.height.get_num()):
+		return attributes.height.get_num()
 	else:
 		return attributes.viewBox.get_list_element(3)
 
@@ -44,14 +44,17 @@ func get_size() -> Vector2:
 	return Vector2(get_width(), get_height())
 
 func get_viewbox() -> Rect2:
-	if attributes.viewBox.get_value() != null and attributes.viewBox.list.size() >= 4:
-		return Rect2(attributes.viewBox.list[0], attributes.viewBox.list[1],
-				attributes.viewBox.list[2], attributes.viewBox.list[3])
+	if attributes.viewBox.get_list_size() >= 4:
+		return Rect2(attributes.viewBox.get_list_element(0),
+				attributes.viewBox.get_list_element(1),
+				attributes.viewBox.get_list_element(2),
+				attributes.viewBox.get_list_element(3))
 	else:
-		if is_nan(attributes.width.get_value()) or is_nan(attributes.height.get_value()):
+		if !is_finite(attributes.width.get_num()) or\
+		!is_finite(attributes.height.get_num()):
 			return Rect2(0, 0, 0, 0)
 		else:
-			return Rect2(0, 0, attributes.width.get_value(), attributes.height.get_value())
+			return Rect2(0, 0, attributes.width.get_num(), attributes.height.get_num())
 
 
 func get_all_tids() -> Array[PackedInt32Array]:

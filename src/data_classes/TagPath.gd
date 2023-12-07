@@ -9,12 +9,12 @@ func _init() -> void:
 	name = "path"
 	attributes = {
 		"d": AttributePath.new(),
-		"opacity": AttributeNumeric.new(AttributeNumeric.Mode.NFLOAT, 1.0),
+		"opacity": AttributeNumeric.new(AttributeNumeric.Mode.NFLOAT, "1"),
 		"fill": AttributeColor.new("#000"),
-		"fill-opacity": AttributeNumeric.new(AttributeNumeric.Mode.NFLOAT, 1.0),
+		"fill-opacity": AttributeNumeric.new(AttributeNumeric.Mode.NFLOAT, "1"),
 		"stroke": AttributeColor.new("none"),
-		"stroke-opacity": AttributeNumeric.new(AttributeNumeric.Mode.NFLOAT, 1.0),
-		"stroke-width": AttributeNumeric.new(AttributeNumeric.Mode.UFLOAT, 1.0),
+		"stroke-opacity": AttributeNumeric.new(AttributeNumeric.Mode.NFLOAT, "1"),
+		"stroke-width": AttributeNumeric.new(AttributeNumeric.Mode.UFLOAT, "1"),
 		"stroke-linecap": AttributeEnum.new(["butt", "round", "square"], 0),
 		"stroke-linejoin": AttributeEnum.new(["miter", "round", "bevel"], 0),
 	}

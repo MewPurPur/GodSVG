@@ -1,16 +1,16 @@
 class_name SVGParser extends RefCounted
 
 static func svg_to_text(svg_tag: TagSVG) -> String:
-	var w: float = svg_tag.attributes.width.get_value()
-	var h: float = svg_tag.attributes.height.get_value()
-	var viewbox: Variant = svg_tag.attributes.viewBox.get_value()
+	var w: String = svg_tag.attributes.width.get_value()
+	var h: String = svg_tag.attributes.height.get_value()
+	var viewbox: String = svg_tag.attributes.viewBox.get_value()
 	
 	var text := '<svg'
-	if !is_nan(w):
-		text += ' width="' + String.num(w, 4) + '"'
-	if !is_nan(h):
-		text += ' height="' + String.num(h, 4) + '"'
-	if viewbox != null:
+	if !w.is_empty():
+		text += ' width="' + w + '"'
+	if !h.is_empty():
+		text += ' height="' + h + '"'
+	if !viewbox.is_empty():
 		text += ' viewBox="' + viewbox + '"'
 	
 	
@@ -27,17 +27,11 @@ static func _tag_to_text(tag: Tag) -> String:
 	text += '<' + tag.name
 	for attribute_key in tag.attributes:
 		var attribute: Attribute = tag.attributes[attribute_key]
-		var value: Variant = attribute.get_value()
+		var value := attribute.get_value()
 		if value == attribute.default:
 			continue
 		
-		text += " " + attribute_key + '="'
-		if attribute is AttributeNumeric:
-			text += String.num(value, 4)
-		elif attribute is AttributeColor or attribute is AttributePath or\
-		attribute is AttributeEnum or attribute is AttributeList:
-			text += value
-		text += '"'
+		text += " " + attribute_key + '="' + value + '"'
 	
 	for attribute in tag.unknown_attributes:
 		text += " " + attribute.name + '="' + attribute.get_value() + '"'
@@ -69,10 +63,10 @@ static func text_to_svg(text: String) -> TagSVG:
 				# SVG tag requires width and height without defaults, so do the logic early.
 				if node_name == "svg":
 					if attrib_dict.has("width"):
-						svg_tag.attributes.width.set_value(attrib_dict["width"].to_float(),
+						svg_tag.attributes.width.set_value(attrib_dict["width"],
 								Attribute.SyncMode.SILENT)
 					if attrib_dict.has("height"):
-						svg_tag.attributes.height.set_value(attrib_dict["height"].to_float(),
+						svg_tag.attributes.height.set_value(attrib_dict["height"],
 								Attribute.SyncMode.SILENT)
 					if attrib_dict.has("viewBox"):
 						svg_tag.attributes.viewBox.set_value(attrib_dict["viewBox"],

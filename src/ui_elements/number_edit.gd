@@ -16,7 +16,16 @@ func set_value(new_value: float, emit_changed := true) -> void:
 		text = String.num(_value, 4)
 		return
 	elif _value != new_value:
-		_value = validate(new_value)
+		if allow_lower:
+			if allow_higher:
+				_value = new_value
+			else:
+				_value = minf(new_value, max_value)
+		else:
+			if allow_higher:
+				_value = maxf(new_value, min_value)
+			else:
+				_value = clampf(new_value, min_value, max_value)
 		text = String.num(_value, 4)
 		if emit_changed:
 			value_changed.emit(_value)
@@ -30,18 +39,6 @@ func _ready() -> void:
 	# Done like this so a signal isn't emitted.
 	_value = initial_value
 	text = String.num(_value, 4)
-
-func validate(new_value: float) -> float:
-	if allow_lower:
-		if allow_higher:
-			return new_value
-		else:
-			return minf(new_value, max_value)
-	else:
-		if allow_higher:
-			return maxf(new_value, min_value)
-		else:
-			return clampf(new_value, min_value, max_value)
 
 func _on_value_changed(new_value: float) -> void:
 	text = String.num(new_value, 4)
