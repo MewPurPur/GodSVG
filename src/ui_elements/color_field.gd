@@ -1,5 +1,8 @@
 ## An editor to be tied to a color attribute.
-extends AttributeEditor
+extends HBoxContainer
+
+var attribute: AttributeColor
+var attribute_name: String
 
 const ColorPopup = preload("res://src/ui_elements/color_popup.tscn")
 const checkerboard = preload("res://visual/icons/backgrounds/ColorButtonBG.svg")
@@ -8,49 +11,35 @@ const checkerboard = preload("res://visual/icons/backgrounds/ColorButtonBG.svg")
 @onready var color_edit: LineEdit = $LineEdit
 @onready var color_popup: Popup
 
-signal value_changed(new_value: String, update_type: UpdateType)
-var _value: String  # Must not be updated directly.
-
-func set_value(new_value: String, update_type := UpdateType.REGULAR):
-	var old_value := _value
-	_value = validate(new_value)
-	set_text_tint()
-	if update_type != UpdateType.NO_SIGNAL and\
-	(_value != old_value or update_type == UpdateType.FINAL):
-		var emitted_value = _value if (AttributeColor.is_color_valid_non_hex(_value))\
-				else "#" + _value
-		value_changed.emit(emitted_value, update_type)
-	elif color_edit != null:
-		update_after_change()
-
-func get_value() -> String:
-	return _value
+func set_value(new_value: String, update_type := Utils.UpdateType.REGULAR):
+	# Validate the value.
+	if AttributeColor.is_color_valid_non_hex(new_value) or new_value.is_valid_html_color():
+		new_value = new_value.trim_prefix("#")
+	else:
+		new_value = attribute.get_value()
+	sync(new_value)
+	# Update the attribute.
+	if attribute.get_value() != new_value or update_type == Utils.UpdateType.FINAL:
+		new_value = new_value if (AttributeColor.is_color_valid_non_hex(new_value))\
+				else "#" + new_value
+		match update_type:
+			Utils.UpdateType.INTERMEDIATE:
+				attribute.set_value(new_value, Attribute.SyncMode.INTERMEDIATE)
+			Utils.UpdateType.FINAL:
+				attribute.set_value(new_value, Attribute.SyncMode.FINAL)
+			_:
+				attribute.set_value(new_value)
 
 
 func _ready() -> void:
-	value_changed.connect(_on_value_changed)
 	set_value(attribute.get_value())
-	color_edit.text = get_value()
+	attribute.value_changed.connect(set_value)
 	color_edit.tooltip_text = attribute_name
 
-func validate(new_value: String) -> String:
-	if AttributeColor.is_color_valid_non_hex(new_value) or new_value.is_valid_html_color():
-		return new_value.trim_prefix("#")
-	return "000"
-
-func _on_value_changed(new_value: String, update_type: UpdateType) -> void:
-	update_after_change()
-	match update_type:
-		UpdateType.INTERMEDIATE:
-			attribute.set_value(new_value, Attribute.SyncMode.INTERMEDIATE)
-		UpdateType.FINAL:
-			attribute.set_value(new_value, Attribute.SyncMode.FINAL)
-		_:
-			attribute.set_value(new_value)
 
 func _on_button_pressed() -> void:
 	color_popup = ColorPopup.instantiate()
-	color_popup.current_value = get_value()
+	color_popup.current_value = attribute.get_value()
 	add_child(color_popup)
 	color_popup.color_picked.connect(_on_color_picked)
 	Utils.popup_under_control(color_popup, color_edit)
@@ -62,10 +51,10 @@ func _draw() -> void:
 	var stylebox := StyleBoxFlat.new()
 	stylebox.corner_radius_top_right = 5
 	stylebox.corner_radius_bottom_right = 5
-	if AttributeColor.named_colors.has(get_value()):
-		stylebox.bg_color = AttributeColor.named_colors[get_value()]
+	if AttributeColor.named_colors.has(color_edit.text):
+		stylebox.bg_color = AttributeColor.named_colors[color_edit.text]
 	else:
-		stylebox.bg_color = Color.from_string(get_value(), Color(0, 0, 0, 0))
+		stylebox.bg_color = Color.from_string(color_edit.text, Color(0, 0, 0, 0))
 	draw_texture(checkerboard, Vector2.ZERO)
 	draw_style_box(stylebox, Rect2(Vector2.ZERO, button_size - Vector2(1, 2)))
 
@@ -80,9 +69,9 @@ func _on_text_submitted(new_text: String) -> void:
 func _on_color_picked(new_color: String, close_picker: bool) -> void:
 	if close_picker:
 		color_popup.queue_free()
-		set_value(new_color, UpdateType.FINAL)
+		set_value(new_color, Utils.UpdateType.FINAL)
 	else:
-		set_value(new_color, UpdateType.INTERMEDIATE)
+		set_value(new_color, Utils.UpdateType.INTERMEDIATE)
 
 
 func _on_button_resized() -> void:
@@ -90,20 +79,17 @@ func _on_button_resized() -> void:
 	# which screws with the drawing logic.
 	queue_redraw()
 
-
-func set_text_tint() -> void:
-	if color_edit != null:
-		if attribute != null and get_value() == attribute.default.trim_prefix("#"):
-			color_edit.add_theme_color_override(&"font_color", Color(0.64, 0.64, 0.64))
-		else:
-			color_edit.remove_theme_color_override(&"font_color")
-
 func _on_line_edit_text_changed(new_text: String) -> void:
 	if AttributeColor.is_color_valid(new_text):
 		color_edit.add_theme_color_override(&"font_color", Color(0.6, 1.0, 0.6))
 	else:
 		color_edit.add_theme_color_override(&"font_color", Color(1.0, 0.6, 0.6))
 
-func update_after_change() -> void:
-	color_edit.text = get_value().trim_prefix("#")
+func sync(new_value: String) -> void:
+	if color_edit != null:
+		if attribute.get_value() == attribute.default:
+			color_edit.add_theme_color_override(&"font_color", Color(0.64, 0.64, 0.64))
+		else:
+			color_edit.remove_theme_color_override(&"font_color")
+		color_edit.text = attribute.get_value().trim_prefix("#")
 	queue_redraw()

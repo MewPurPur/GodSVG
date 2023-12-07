@@ -1,5 +1,12 @@
 class_name Utils extends RefCounted
 
+# Enum with values to be used for set_value() of attribute editors.
+# REGULAR means that the attribute will update if the new value is different.
+# INTERMEDIATE and FINAL cause the attribute update to have the corresponding sync mode.
+# FINAL also causes the equivalence check to be skipped.
+enum UpdateType {REGULAR, INTERMEDIATE, FINAL}
+
+
 static func is_string_upper(string: String) -> bool:
 	return string.to_upper() == string
 

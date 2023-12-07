@@ -3,7 +3,6 @@
 extends BetterLineEdit
 
 enum Mode {DEFAULT, ONLY_POSITIVE, ANGLE}
-
 var mode := Mode.DEFAULT
 
 signal value_changed(new_value: float)
@@ -15,10 +14,9 @@ func set_value(new_value: float):
 		return
 	var old_value := _value
 	_value = validate(new_value)
+	text = String.num(_value, 4)
 	if _value != old_value:
 		value_changed.emit(_value)
-	
-	text = String.num(_value, 4)
 
 func get_value() -> float:
 	return _value
@@ -27,7 +25,6 @@ func get_value() -> float:
 func _ready() -> void:
 	super()
 	value_changed.connect(_on_value_changed)
-	text = String.num(get_value(), 4)
 
 func validate(new_value: float) -> float:
 	match mode:

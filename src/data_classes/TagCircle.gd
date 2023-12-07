@@ -7,14 +7,14 @@ const known_attributes = ["cx", "cy", "r",
 func _init() -> void:
 	name = "circle"
 	attributes = {
-		"cx": AttributeNumeric.new(AttributeNumeric.Mode.FLOAT, 0.0),
-		"cy": AttributeNumeric.new(AttributeNumeric.Mode.FLOAT, 0.0),
-		"r": AttributeNumeric.new(AttributeNumeric.Mode.UFLOAT, 0.0, 1.0),
-		"opacity": AttributeNumeric.new(AttributeNumeric.Mode.NFLOAT, 1.0),
+		"cx": AttributeNumeric.new(AttributeNumeric.Mode.FLOAT, "0"),
+		"cy": AttributeNumeric.new(AttributeNumeric.Mode.FLOAT, "0"),
+		"r": AttributeNumeric.new(AttributeNumeric.Mode.UFLOAT, "0", "1"),
+		"opacity": AttributeNumeric.new(AttributeNumeric.Mode.NFLOAT, "1"),
 		"fill": AttributeColor.new("#000"),
-		"fill-opacity": AttributeNumeric.new(AttributeNumeric.Mode.NFLOAT, 1.0),
+		"fill-opacity": AttributeNumeric.new(AttributeNumeric.Mode.NFLOAT, "1"),
 		"stroke": AttributeColor.new("none"),
-		"stroke-opacity": AttributeNumeric.new(AttributeNumeric.Mode.NFLOAT, 1.0),
-		"stroke-width": AttributeNumeric.new(AttributeNumeric.Mode.UFLOAT, 1.0),
+		"stroke-opacity": AttributeNumeric.new(AttributeNumeric.Mode.NFLOAT, "1"),
+		"stroke-width": AttributeNumeric.new(AttributeNumeric.Mode.UFLOAT, "1"),
 	}
 	super()

@@ -1,5 +1,8 @@
 ## An editor to be tied to an AttributePath.
-extends AttributeEditor
+extends VBoxContainer
+
+var attribute: AttributePath
+var attribute_name: String
 
 const CommandEditor = preload("path_command_editor.tscn")
 
@@ -7,35 +10,20 @@ const CommandEditor = preload("path_command_editor.tscn")
 @onready var commands_container: VBoxContainer = $HBox/Commands
 @onready var add_move: Button = $AddMove
 
-signal value_changed(new_value: String, update_type: UpdateType)
-var _value: String  # Must not be updated directly.
-
-func set_value(new_value: String, update_type := UpdateType.REGULAR):
-	if _value != new_value or update_type == UpdateType.FINAL:
-		_value = new_value
-		if update_type != UpdateType.NO_SIGNAL:
-			value_changed.emit(new_value, update_type)
-
-func get_value() -> String:
-	return _value
+func set_value(new_value: String, update_type := Utils.UpdateType.REGULAR):
+	sync(new_value)
+	if attribute.get_value() != new_value or update_type == Utils.UpdateType.FINAL:
+		match update_type:
+			Utils.UpdateType.INTERMEDIATE:
+				attribute.set_value(new_value, Attribute.SyncMode.INTERMEDIATE)
+			Utils.UpdateType.FINAL:
+				attribute.set_value(new_value, Attribute.SyncMode.FINAL)
+			_:
+				attribute.set_value(new_value)
 
 func _ready() -> void:
-	value_changed.connect(_on_value_changed)
-	set_value(attribute.get_value())
 	attribute.value_changed.connect(set_value)
-
-func _on_value_changed(new_value: String, update_type: UpdateType) -> void:
-	line_edit.text = new_value
-	match update_type:
-		UpdateType.INTERMEDIATE:
-			attribute.set_value(new_value, Attribute.SyncMode.INTERMEDIATE)
-		UpdateType.FINAL:
-			attribute.set_value(new_value, Attribute.SyncMode.FINAL)
-		_:
-			attribute.set_value(new_value)
-	# A plus button for adding a move command if empty.
-	add_move.visible =  attribute.commands.is_empty()
-	rebuild_commands()
+	tooltip_text = attribute_name
 
 
 func rebuild_commands() -> void:
@@ -92,3 +80,9 @@ func _on_line_edit_text_submitted(new_text: String) -> void:
 
 func _on_add_move_pressed() -> void:
 	attribute.insert_command(0, "M")
+
+func sync(new_value: String) -> void:
+	line_edit.text = new_value
+	# A plus button for adding a move command if empty.
+	add_move.visible = (attribute.get_command_count() == 0)
+	rebuild_commands()
