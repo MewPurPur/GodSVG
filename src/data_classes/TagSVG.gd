@@ -245,6 +245,10 @@ func duplicate_tags(tids: Array[PackedInt32Array]) -> void:
 	tags_added.emit(tids_added)
 	tag_layout_changed.emit()
 
+func replace_tag(tid: PackedInt32Array, new_tag: Tag) -> void:
+	if tid.is_empty():
+		replace_self(new_tag)
+	get_by_tid(Utils.get_parent_tid(tid)).child_tags[tid[-1]] = new_tag
 
 func emit_child_attribute_changed(undo_redo: bool) -> void:
 	child_attribute_changed.emit(undo_redo)
