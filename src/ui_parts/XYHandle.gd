@@ -3,6 +3,8 @@ class_name XYHandle extends Handle
 
 var x_attribute: AttributeNumeric
 var y_attribute: AttributeNumeric
+var delta_x_attribute: AttributeNumeric
+var delta_y_attribute: AttributeNumeric
 
 func _init(id: PackedInt32Array, x_ref: Attribute, y_ref: Attribute) -> void:
 	tid = id

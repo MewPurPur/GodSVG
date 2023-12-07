@@ -46,6 +46,7 @@ func _ready() -> void:
 
 func _on_focus_exited() -> void:
 	set_value(text)
+	super()
 
 func _on_text_submitted(submitted_text: String) -> void:
 	set_value(submitted_text)

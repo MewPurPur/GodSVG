@@ -103,5 +103,5 @@ func _on_gui_input(event: InputEvent) -> void:
 			context_popup.set_min_width(72.0)
 			context_popup.set_btn_array(btn_arr)
 			Utils.popup_under_mouse(
-				context_popup, 
-				get_viewport().get_screen_transform().get_origin() / get_tree().get_root().content_scale_factor + get_global_mouse_position())
+					context_popup, get_viewport().get_screen_transform().get_origin() /\
+					get_tree().get_root().content_scale_factor + get_global_mouse_position())
