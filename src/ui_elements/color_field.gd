@@ -87,9 +87,9 @@ func _on_line_edit_text_changed(new_text: String) -> void:
 
 func sync(new_value: String) -> void:
 	if color_edit != null:
-		if attribute.get_value() == attribute.default:
+		if new_value == attribute.default:
 			color_edit.add_theme_color_override(&"font_color", Color(0.64, 0.64, 0.64))
 		else:
 			color_edit.remove_theme_color_override(&"font_color")
-		color_edit.text = attribute.get_value().trim_prefix("#")
+		color_edit.text = new_value.trim_prefix("#")
 	queue_redraw()

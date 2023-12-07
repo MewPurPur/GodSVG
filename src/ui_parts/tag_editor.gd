@@ -95,7 +95,7 @@ func create_tag_context() -> Popup:
 	duplicate_button.text = tr(&"#duplicate")
 	duplicate_button.icon = load("res://visual/icons/Duplicate.svg")
 	duplicate_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
-	duplicate_button.pressed.connect(_on_duplicate_button_pressed)
+	duplicate_button.pressed.connect(Indications.duplicate_selected)
 	buttons_arr.append(duplicate_button)
 	
 	if tid[-1] > 0:
@@ -103,21 +103,21 @@ func create_tag_context() -> Popup:
 		move_up_button.text = tr(&"#move_up")
 		move_up_button.icon = load("res://visual/icons/MoveUp.svg")
 		move_up_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
-		move_up_button.pressed.connect(_on_move_up_button_pressed)
+		move_up_button.pressed.connect(Indications.move_up_selected)
 		buttons_arr.append(move_up_button)
 	if tid[-1] < tag_count - 1:
 		var move_down_button := Button.new()
 		move_down_button.text = tr(&"#move_down")
 		move_down_button.icon = load("res://visual/icons/MoveDown.svg")
 		move_down_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
-		move_down_button.pressed.connect(_on_move_down_button_pressed)
+		move_down_button.pressed.connect(Indications.move_down_selected)
 		buttons_arr.append(move_down_button)
 	
 	var delete_button := Button.new()
 	delete_button.text = tr(&"#delete")
 	delete_button.icon = load("res://visual/icons/Delete.svg")
 	delete_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
-	delete_button.pressed.connect(_on_delete_button_pressed)
+	delete_button.pressed.connect(Indications.delete_selected)
 	buttons_arr.append(delete_button)
 	
 	var tag_context := ContextPopup.instantiate()
@@ -129,18 +129,6 @@ func create_tag_context() -> Popup:
 func _on_title_button_pressed() -> void:
 	Indications.normal_select(tid)
 	Utils.popup_under_control_centered(create_tag_context(), title_button)
-
-func _on_move_up_button_pressed() -> void:
-	SVG.root_tag.move_tags_in_parent([tid], false)
-
-func _on_move_down_button_pressed() -> void:
-	SVG.root_tag.move_tags_in_parent([tid], true)
-
-func _on_delete_button_pressed() -> void:
-	SVG.root_tag.delete_tags([tid])
-
-func _on_duplicate_button_pressed() -> void:
-	SVG.root_tag.duplicate_tags([tid])
 
 
 func _on_gui_input(event: InputEvent) -> void:

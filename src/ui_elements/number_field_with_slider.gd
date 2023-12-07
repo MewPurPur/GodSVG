@@ -31,8 +31,8 @@ func set_value(new_value: String, update_type := Utils.UpdateType.REGULAR) -> vo
 	var old_value := attribute.get_value()
 	new_value = AttributeNumeric.num_to_text(numeric_value)
 	# Update the attribute.
+	sync(new_value)
 	if new_value != old_value or update_type == Utils.UpdateType.FINAL:
-		sync(new_value)
 		match update_type:
 			Utils.UpdateType.INTERMEDIATE:
 				attribute.set_value(new_value, Attribute.SyncMode.INTERMEDIATE)
