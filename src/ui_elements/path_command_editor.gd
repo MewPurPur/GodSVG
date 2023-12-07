@@ -197,9 +197,6 @@ func sync_values(cmd: PathCommand) -> void:
 func update_value(value: float, property: StringName) -> void:
 	cmd_update_value.emit(cmd_idx, value, property)
 
-func delete() -> void:
-	cmd_delete.emit(cmd_idx)
-
 func toggle_relative() -> void:
 	cmd_toggle_relative.emit(cmd_idx)
 
@@ -247,7 +244,7 @@ func open_actions(popup_from_mouse := false) -> void:
 	delete_btn.text = tr(&"#delete")
 	delete_btn.icon = load("res://visual/icons/Delete.svg")
 	delete_btn.alignment = HORIZONTAL_ALIGNMENT_LEFT
-	delete_btn.pressed.connect(delete)
+	delete_btn.pressed.connect(Indications.delete_selected)
 	buttons_arr.append(delete_btn)
 	
 	add_child(action_popup)
