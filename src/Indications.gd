@@ -295,22 +295,13 @@ func _on_tags_moved_in_parent(parent_tid: PackedInt32Array, indices: Array[int])
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed(&"delete"):
-		if not selected_tids.is_empty():
-			SVG.root_tag.delete_tags(selected_tids)
-		elif not inner_selections.is_empty() and not semi_selected_tid.is_empty():
-			inner_selections.sort()
-			inner_selections.reverse()
-			var tag_ref := SVG.root_tag.get_by_tid(semi_selected_tid)
-			match tag_ref.name:
-				"path":
-					tag_ref.attributes.d.delete_commands(inner_selections)
-					clear_inner_selection()
+		delete_selected()
 	elif event.is_action_pressed(&"move_up"):
-		SVG.root_tag.move_tags_in_parent(selected_tids, false)
+		move_up_selected()
 	elif event.is_action_pressed(&"move_down"):
-		SVG.root_tag.move_tags_in_parent(selected_tids, true)
+		move_down_selected()
 	elif event.is_action_pressed(&"duplicate"):
-		SVG.root_tag.duplicate_tags(selected_tids)
+		duplicate_selected()
 	elif event.is_action_pressed(&"select_all"):
 		select_all()
 	elif event is InputEventKey:
@@ -324,3 +315,25 @@ func _unhandled_input(event: InputEvent) -> void:
 				real_tag.attributes.d.insert_command(
 						max_inner_selection + 1, path_actions_dict[action_name])
 				break
+
+
+# Operations on selected tags.
+
+func delete_selected() -> void:
+	if not selected_tids.is_empty():
+		SVG.root_tag.delete_tags(selected_tids)
+	elif not inner_selections.is_empty() and not semi_selected_tid.is_empty():
+		inner_selections.sort()
+		inner_selections.reverse()
+		var tag_ref := SVG.root_tag.get_by_tid(semi_selected_tid)
+		match tag_ref.name:
+			"path": tag_ref.attributes.d.delete_commands(inner_selections)
+
+func move_up_selected() -> void:
+	SVG.root_tag.move_tags_in_parent(selected_tids, false)
+
+func move_down_selected() -> void:
+	SVG.root_tag.move_tags_in_parent(selected_tids, true)
+
+func duplicate_selected() -> void:
+	SVG.root_tag.duplicate_tags(selected_tids)
