@@ -10,6 +10,8 @@ const palettes_save_path = "user://palettes.tres"
 const config_path = "user://config.tres"
 var config := ConfigFile.new()
 
+signal save_data_changed
+
 # Don't have the language setting here, so it's not reset.
 const default_config = {
 	"session": {
@@ -44,6 +46,7 @@ func save_setting(section: String, setting: String, saved_value: Variant) -> voi
 
 func modify_save_data(property: StringName, new_value: Variant) -> void:
 	save_data.set(property, new_value)
+	save_data_changed.emit()
 	ResourceSaver.save(save_data, save_path)
 
 func save_user_data() -> void:

@@ -56,7 +56,7 @@ func _on_ok_button_pressed() -> void:
 	if DisplayServer.has_feature(DisplayServer.FEATURE_NATIVE_DIALOG):
 		DisplayServer.file_dialog_show(
 				"Export a ." + extension + " file",
-				default_path, "", false,
+				default_path, GlobalSettings.save_data.project_name, false,
 				DisplayServer.FILE_DIALOG_MODE_SAVE_FILE,
 				["*." + extension], native_file_export)
 	else:
@@ -66,6 +66,7 @@ func _on_ok_button_pressed() -> void:
 		svg_export_dialog.file_selected.connect(export)
 
 func export(path: String) -> void:
+	GlobalSettings.modify_save_data("project_name", path.get_file())
 	var FA := FileAccess.open(path, FileAccess.WRITE)
 	match extension:
 		"png":

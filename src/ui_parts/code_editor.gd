@@ -13,12 +13,14 @@ const ExportDialog = preload("export_dialog.tscn")
 func _ready() -> void:
 	SVG.parsing_finished.connect(update_error)
 	auto_update_text()
+	update_project_name_label()
 	update_size_label()
 	code_edit.clear_undo_history()
 	SVG.root_tag.attribute_changed.connect(auto_update_text.unbind(1))
 	SVG.root_tag.child_attribute_changed.connect(auto_update_text.unbind(1))
 	SVG.root_tag.tag_layout_changed.connect(auto_update_text)
 	SVG.root_tag.changed_unknown.connect(auto_update_text)
+	GlobalSettings.save_data_changed.connect(update_project_name_label)
 
 func auto_update_text() -> void:
 	if not code_edit.has_focus():
@@ -92,10 +94,11 @@ func apply_svg_from_path(path: String) -> void:
 	var svg_text := svg_file.get_as_text()
 	var warning_panel := ImportWarningDialog.instantiate()
 	warning_panel.imported.connect(set_new_text)
-	warning_panel.set_svg(svg_text)
+	warning_panel.set_svg(svg_text, path.get_file())
 	get_tree().get_root().add_child(warning_panel)
 
-func set_new_text(svg_text: String) -> void:
+func set_new_text(svg_text: String, project_name) -> void:
+	GlobalSettings.modify_save_data("project_name", project_name)
 	code_edit.text = svg_text
 	_on_code_edit_text_changed()  # Call it automatically yeah.
 
@@ -109,6 +112,11 @@ func _input(event: InputEvent) -> void:
 	if (code_edit.has_focus() and event is InputEventMouseButton and\
 	not code_edit.get_global_rect().has_point(event.position)):
 		code_edit.release_focus()
+		
+	if Input.is_action_just_pressed("save"):
+		_on_export_button_pressed()
+	if Input.is_action_just_pressed("open"):
+		_on_import_button_pressed()
 
 
 func update_size_label() -> void:
@@ -118,3 +126,10 @@ func _on_svg_code_edit_focus_exited() -> void:
 	code_edit.text = SVG.text
 	if SVG.saved_text != code_edit.text:
 		SVG.update_text(true)
+
+func update_project_name_label():
+	if not GlobalSettings.save_data.project_name.is_empty():
+		%ProjectName.text = GlobalSettings.save_data.project_name
+		get_window().title =GlobalSettings.save_data.project_name +  " - GodSVG"
+	else:
+		get_window().title = "GodSVG"
