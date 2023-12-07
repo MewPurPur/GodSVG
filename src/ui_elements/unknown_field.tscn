@@ -1,14 +1,13 @@
-[gd_scene load_steps=6 format=3 uid="uid://mr2c1hti43k4"]
+[gd_scene load_steps=5 format=3 uid="uid://mr2c1hti43k4"]
 
 [ext_resource type="Script" path="res://src/ui_elements/unknown_field.gd" id="1_decfb"]
 [ext_resource type="Texture2D" uid="uid://bi38k4pq83omf" path="res://visual/icons/QuestionMark.svg" id="2_hsdl6"]
-[ext_resource type="Script" path="res://src/ui_elements/BetterLineEdit.gd" id="3_poc0i"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ekjre"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_y4uj6"]
 draw_center = false
 border_width_left = 2
 border_width_top = 2
-border_width_right = 2
+border_width_right = 1
 border_width_bottom = 2
 border_color = Color(1, 1, 1, 0.0666667)
 corner_radius_top_left = 5
@@ -16,39 +15,27 @@ corner_radius_top_right = 5
 corner_radius_bottom_right = 5
 corner_radius_bottom_left = 5
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0q8qv"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_atgwj"]
 draw_center = false
 border_width_left = 2
 border_width_top = 2
-border_width_right = 2
+border_width_right = 1
 border_width_bottom = 2
 border_color = Color(0.501961, 0.752941, 1, 0.2)
 corner_radius_top_left = 5
-corner_radius_top_right = 5
-corner_radius_bottom_right = 5
 corner_radius_bottom_left = 5
 
-[node name="UnknownField" type="Control"]
+[node name="UnknownField" type="LineEdit"]
 custom_minimum_size = Vector2(72, 22)
-layout_mode = 3
-anchors_preset = 0
-script = ExtResource("1_decfb")
-
-[node name="LineEdit" type="LineEdit" parent="."]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+offset_right = 48.8125
+offset_bottom = 21.0
 focus_mode = 1
 context_menu_enabled = false
 right_icon = ExtResource("2_hsdl6")
 select_all_on_focus = true
 caret_blink = true
-script = ExtResource("3_poc0i")
-hover_stylebox = SubResource("StyleBoxFlat_ekjre")
-focus_stylebox = SubResource("StyleBoxFlat_0q8qv")
-code_font_tooltip = true
+script = ExtResource("1_decfb")
+hover_stylebox = SubResource("StyleBoxFlat_y4uj6")
+focus_stylebox = SubResource("StyleBoxFlat_atgwj")
 
-[connection signal="text_submitted" from="LineEdit" to="." method="_on_text_submitted"]
+[connection signal="text_submitted" from="." to="." method="_on_text_submitted"]

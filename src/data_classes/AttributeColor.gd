@@ -1,5 +1,7 @@
-## An attribute representing a hex or named color string, or an url to an ID.
+## An attribute representing a color string, or an url to an ID.
 class_name AttributeColor extends Attribute
+
+# No color representation for this attribute type. There are too many quirks.
 
 func _init(new_default: String, new_init := "") -> void:
 	default = new_default

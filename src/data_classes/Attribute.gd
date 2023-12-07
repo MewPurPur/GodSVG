@@ -1,11 +1,11 @@
-## An attribute inside a [Tag], i.e. <tag attribute="value"/>
+## Abstract class for an attribute inside a [Tag], i.e. <tag attribute="value"/>
 class_name Attribute extends RefCounted
 
-signal value_changed(new_value: Variant)
+signal value_changed(new_value: String)
 signal propagate_value_changed(undo_redo: bool)
 
-var default: Variant
-var _value: Variant
+var default: String
+var _value: String
 
 enum SyncMode {LOUD, INTERMEDIATE, FINAL, NO_PROPAGATION, SILENT}
 
@@ -27,13 +27,20 @@ enum SyncMode {LOUD, INTERMEDIATE, FINAL, NO_PROPAGATION, SILENT}
 # SILENT means the attribute update is ignored fully. It only makes sense
 # if there is logic for updating the corresponding attribute editor despite that.
 
-func set_value(new_value: Variant, sync_mode := SyncMode.LOUD) -> void:
-	if new_value != _value or sync_mode == SyncMode.FINAL:
+func set_value(new_value: String, sync_mode := SyncMode.LOUD) -> void:
+	var actually_changed := (new_value != _value)
+	if actually_changed or sync_mode == SyncMode.FINAL:
 		_value = new_value
+		if actually_changed:
+			_sync()
 		if sync_mode != SyncMode.SILENT:
 			value_changed.emit(new_value)
 			if sync_mode != SyncMode.NO_PROPAGATION:
 				propagate_value_changed.emit(sync_mode != SyncMode.INTERMEDIATE)
 
-func get_value() -> Variant:
+func get_value() -> String:
 	return _value
+
+# Override this function in extending classes to update the non-string representation.
+func _sync() -> void:
+	return

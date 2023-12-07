@@ -38,14 +38,14 @@ func _ready() -> void:
 	if not tag.unknown_attributes.is_empty():
 		unknown_container.show()
 	for attribute in tag.unknown_attributes:
-		var input_field: AttributeEditor = UnknownField.instantiate()
+		var input_field := UnknownField.instantiate()
 		input_field.attribute = attribute
 		input_field.attribute_name = attribute.name
 		unknown_container.add_child(input_field)
 	# Continue with supported attributes.
 	for attribute_key in tag.attributes:
 		var attribute: Attribute = tag.attributes[attribute_key]
-		var input_field: AttributeEditor
+		var input_field: Control
 		if attribute is AttributeNumeric:
 			match attribute.mode:
 				AttributeNumeric.Mode.FLOAT:
