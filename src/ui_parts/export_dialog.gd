@@ -48,6 +48,9 @@ func native_file_export(has_selected: bool, files: PackedStringArray, _filter_id
 
 func _on_ok_button_pressed() -> void:
 	var default_path: String
+	var default_filename := GlobalSettings.save_data.project_name
+	default_filename = default_filename.rstrip(default_filename.get_extension())
+	default_filename += extension
 	if GlobalSettings.save_data.last_used_dir.is_empty()\
 	or not DirAccess.dir_exists_absolute(GlobalSettings.save_data.last_used_dir):
 		default_path = OS.get_system_dir(OS.SYSTEM_DIR_PICTURES)
@@ -56,7 +59,7 @@ func _on_ok_button_pressed() -> void:
 	if DisplayServer.has_feature(DisplayServer.FEATURE_NATIVE_DIALOG):
 		DisplayServer.file_dialog_show(
 				"Export a ." + extension + " file",
-				default_path, GlobalSettings.save_data.project_name, false,
+				default_path, default_filename, false,
 				DisplayServer.FILE_DIALOG_MODE_SAVE_FILE,
 				["*." + extension], native_file_export)
 	else:
