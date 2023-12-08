@@ -20,6 +20,15 @@ func _ready() -> void:
 	SVG.root_tag.tag_layout_changed.connect(auto_update_text)
 	SVG.root_tag.changed_unknown.connect(auto_update_text)
 
+	try_open_with()
+
+func try_open_with() -> void:
+	await get_tree().process_frame
+
+	var cmdline_args = OS.get_cmdline_args()
+	if(cmdline_args.size() > 0):
+		apply_svg_from_path(cmdline_args[0])
+
 func auto_update_text() -> void:
 	if not code_edit.has_focus():
 		code_edit.text = SVG.text
