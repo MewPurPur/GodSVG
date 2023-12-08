@@ -49,7 +49,6 @@ func _on_add_button_pressed() -> void:
 		add_btn.text = tag_name
 		add_btn.add_theme_font_override(&"font", load("res://visual/fonts/FontMono.ttf"))
 		add_btn.icon = load("res://visual/icons/tag/" + tag_name + ".svg")
-		add_btn.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 		add_btn.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		add_btn.pressed.connect(add_tag.bind(tag_name))
 		btn_array.append(add_btn)

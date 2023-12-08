@@ -1,15 +1,13 @@
-## A handle that binds to one or two numeric attributes.
+## A handle that binds to two numeric attributes.
 class_name XYHandle extends Handle
 
 var x_attribute: AttributeNumeric
 var y_attribute: AttributeNumeric
-var delta_x_attribute: AttributeNumeric
-var delta_y_attribute: AttributeNumeric
 
-func _init(id: PackedInt32Array, x_ref: Attribute, y_ref: Attribute) -> void:
+func _init(id: PackedInt32Array, xref: AttributeNumeric, yref: AttributeNumeric) -> void:
 	tid = id
-	x_attribute = x_ref
-	y_attribute = y_ref
+	x_attribute = xref
+	y_attribute = yref
 	sync()
 
 func set_pos(new_pos: Vector2, undo_redo := false) -> void:
@@ -26,5 +24,4 @@ func set_pos(new_pos: Vector2, undo_redo := false) -> void:
 	pos = new_pos
 
 func sync() -> void:
-	pos = Vector2(x_attribute.get_num() if x_attribute != null else 0.0,
-			y_attribute.get_num() if y_attribute != null else 0.0)
+	pos = Vector2(x_attribute.get_num(), y_attribute.get_num())
