@@ -83,25 +83,19 @@ func _on_export_button_pressed() -> void:
 	get_tree().get_root().add_child(export_panel)
 
 func apply_svg_from_path(path: String) -> void:
-	if path.get_extension().is_empty():
-		var alert_dialog := AlertDialog.instantiate()
-		get_tree().get_root().add_child(alert_dialog)
-		alert_dialog.setup("#file_open_empty_extension", "#alert", 280.0)
-		return
-	elif not path.get_extension() == "svg":
-		var alert_dialog := AlertDialog.instantiate()
-		get_tree().get_root().add_child(alert_dialog)
-		alert_dialog.setup(
-			tr("#file_open_unsupported_extension").format(
-				{"passed_extension": path.get_extension()}
-			), 
-			"#alert", 280.0)
-		return
 	var svg_file := FileAccess.open(path, FileAccess.READ)
+	var error := ""
+	if path.get_extension().is_empty():
+		error = "#file_open_empty_extension"
+	elif not path.get_extension() == "svg":
+		error = tr(
+			"#file_open_unsupported_extension").format({"passed_extension": path.get_extension()})
 	if svg_file == null:
+		error = "#file_open_fail_message"
+	if not error.is_empty():
 		var alert_dialog := AlertDialog.instantiate()
 		get_tree().get_root().add_child(alert_dialog)
-		alert_dialog.setup("#file_open_fail_message", "#alert", 280.0)
+		alert_dialog.setup(error, "#alert", 280.0)
 		return
 	
 	var svg_text := svg_file.get_as_text()
