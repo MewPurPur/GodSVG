@@ -19,6 +19,7 @@ func _ready() -> void:
 	SVG.root_tag.child_attribute_changed.connect(auto_update_text.unbind(1))
 	SVG.root_tag.tag_layout_changed.connect(auto_update_text)
 	SVG.root_tag.changed_unknown.connect(auto_update_text)
+	get_window().files_dropped.connect(_on_files_dropped)
 
 func auto_update_text() -> void:
 	if not code_edit.has_focus():
@@ -118,3 +119,6 @@ func _on_svg_code_edit_focus_exited() -> void:
 	code_edit.text = SVG.text
 	if SVG.saved_text != code_edit.text:
 		SVG.update_text(true)
+
+func _on_files_dropped(files: PackedStringArray): 
+	apply_svg_from_path(files[0])
