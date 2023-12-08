@@ -85,13 +85,14 @@ func _on_export_button_pressed() -> void:
 func apply_svg_from_path(path: String) -> void:
 	var svg_file := FileAccess.open(path, FileAccess.READ)
 	var error := ""
-	if path.get_extension().is_empty():
-		error = "#file_open_empty_extension"
-	elif not path.get_extension() == "svg":
+	var extension := path.get_extension()
+	if extension.is_empty():
+		error = &"#file_open_empty_extension"
+	elif not extension == "svg":
 		error = tr(
-			"#file_open_unsupported_extension").format({"passed_extension": path.get_extension()})
-	if svg_file == null:
-		error = "#file_open_fail_message"
+			"#file_open_unsupported_extension").format({"passed_extension": extension})
+	elif svg_file == null:
+		error = &"#file_open_fail_message"
 	if not error.is_empty():
 		var alert_dialog := AlertDialog.instantiate()
 		get_tree().get_root().add_child(alert_dialog)
