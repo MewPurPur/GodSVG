@@ -83,6 +83,11 @@ func _on_export_button_pressed() -> void:
 	get_tree().get_root().add_child(export_panel)
 
 func apply_svg_from_path(path: String) -> void:
+	if not path.get_extension() == "svg":
+		var alert_dialog := AlertDialog.instantiate()
+		get_tree().get_root().add_child(alert_dialog)
+		alert_dialog.setup("#file_open_unsupported_extension", "#alert", 280.0)
+		return
 	var svg_file := FileAccess.open(path, FileAccess.READ)
 	if svg_file == null:
 		var alert_dialog := AlertDialog.instantiate()
@@ -120,5 +125,5 @@ func _on_svg_code_edit_focus_exited() -> void:
 	if SVG.saved_text != code_edit.text:
 		SVG.update_text(true)
 
-func _on_files_dropped(files: PackedStringArray): 
+func _on_files_dropped(files: PackedStringArray):
 	apply_svg_from_path(files[0])

@@ -73,4 +73,5 @@
 #cut,Cut,Изрежи,
 #alert,Alert!,Предупреждение!,
 #file_open_fail_message,"The file couldn't be opened.\nTry checking the file path, ensure that the file is not deleted, or choose a different file.","Файлът не може да бъде отворен.\nОпитайте да проверите пътя към файла, уверете се, че файла не е изтрит, или изберете различен файл.",
+#file_open_unsupported_extension,The file has an unsupported file extension and can't be opened.\nGodSVG can only open SVG files.,,
 #ok,OK,Добре,
