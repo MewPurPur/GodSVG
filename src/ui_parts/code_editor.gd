@@ -25,7 +25,7 @@ func _ready() -> void:
 func try_open_with() -> void:
 	await get_tree().process_frame
 
-	var cmdline_args = OS.get_cmdline_args()
+	var cmdline_args := OS.get_cmdline_args()
 	if(cmdline_args.size() > 0):
 		apply_svg_from_path(cmdline_args[0])
 
