@@ -24,8 +24,7 @@ func _ready() -> void:
 			opening_file = true
 	
 	if opening_file:
-		var svg_file := FileAccess.open(cmdline_args[0], FileAccess.READ)
-		var svg_text := svg_file.get_as_text()
+		var svg_text := FileAccess.open(cmdline_args[0], FileAccess.READ).get_as_text()
 		text = svg_text
 		saved_text = svg_text
 		update_tags();
