@@ -16,7 +16,20 @@ func _ready() -> void:
 	SVG.root_tag.child_attribute_changed.connect(update_text)
 	SVG.root_tag.tag_layout_changed.connect(update_text)
 	
-	if GlobalSettings.save_data.svg_text.is_empty():
+	var open_file := false
+	var cmdline_args := OS.get_cmdline_args()
+	if cmdline_args.size() > 0:
+		var svg_file := FileAccess.open(cmdline_args[0], FileAccess.READ)
+		if svg_file != null:
+			open_file = true
+	
+	if open_file:
+		var svg_file := FileAccess.open(cmdline_args[0], FileAccess.READ)
+		var svg_text := svg_file.get_as_text()
+		text = svg_text
+		saved_text = svg_text
+		update_tags();
+	elif GlobalSettings.save_data.svg_text.is_empty():
 		root_tag.attributes.width.set_value(16.0, Attribute.SyncMode.SILENT)
 		root_tag.attributes.height.set_value(16.0, Attribute.SyncMode.SILENT)
 		update_text(false)
@@ -24,14 +37,6 @@ func _ready() -> void:
 		text = GlobalSettings.save_data.svg_text
 		saved_text = GlobalSettings.save_data.svg_text
 		update_tags()
-	var cmdline_args := OS.get_cmdline_args()
-	if cmdline_args.size() > 0:
-		var svg_file := FileAccess.open(cmdline_args[0], FileAccess.READ)
-		if svg_file != null:
-			var svg_text := svg_file.get_as_text()
-			text = svg_text
-			saved_text = svg_text
-			update_tags();
 	UR.clear_history()
 
 
