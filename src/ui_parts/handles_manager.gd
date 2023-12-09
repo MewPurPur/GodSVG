@@ -89,10 +89,16 @@ func update_handles() -> void:
 		match tag.name:
 			"circle":
 				handles.append(generate_xy_handle(tid, tag, "cx", "cy"))
+				handles.append(generate_delta_handle(tid, tag, "cx", "cy", "r", true))
 			"ellipse":
 				handles.append(generate_xy_handle(tid, tag, "cx", "cy"))
+				handles.append(generate_delta_handle(tid, tag, "cx", "cy", "rx", true))
+				handles.append(generate_delta_handle(tid, tag, "cx", "cy", "ry", false))
 			"rect":
 				handles.append(generate_xy_handle(tid, tag, "x", "y"))
+				handles.append(generate_xy_handle(tid, tag, "x", "y"))
+				handles.append(generate_delta_handle(tid, tag, "x", "y", "width", true))
+				handles.append(generate_delta_handle(tid, tag, "x", "y", "height", false))
 			"line":
 				handles.append(generate_xy_handle(tid, tag, "x1", "y1"))
 				handles.append(generate_xy_handle(tid, tag, "x2", "y2"))
@@ -102,13 +108,14 @@ func update_handles() -> void:
 
 
 func sync_handles() -> void:
-	# For XYHandles, sync them. For path handles, sync all but the one being dragged.
+	# For XYHandles, sync them. For PathHandles, sync all but the one being dragged.
 	for handle_idx in range(handles.size() - 1, -1, -1):
 		var handle := handles[handle_idx]
-		if handle is XYHandle:
+		if handle is PathHandle:
+			if dragged_handle != handle:
+				handles.remove_at(handle_idx)
+		else:
 			handle.sync()
-		elif handle is PathHandle and dragged_handle != handle:
-			handles.remove_at(handle_idx)
 	
 	var tids := SVG.root_tag.get_all_tids()
 	
@@ -135,10 +142,18 @@ path_attribute: AttributePath) -> Array[Handle]:
 				path_handles.append(tangent)
 	return path_handles
 
-# The place where this is used, a tag is already at hand, so no need to find it.
-func generate_xy_handle(tid: PackedInt32Array, tag: Tag, x_attrib: String,
-y_attrib: String) -> XYHandle:
-	var new_handle := XYHandle.new(tid, tag.attributes[x_attrib], tag.attributes[y_attrib])
+# The place where these are used, a tag is already at hand, so no need to find it.
+func generate_xy_handle(tid: PackedInt32Array, tag: Tag, x_attrib_name: String,\
+y_attrib_name: String) -> XYHandle:
+	var new_handle := XYHandle.new(tid, tag.attributes[x_attrib_name],
+			tag.attributes[y_attrib_name])
+	new_handle.tag = tag
+	return new_handle
+
+func generate_delta_handle(tid: PackedInt32Array, tag: Tag, x_attrib_name: String,\
+y_attrib_name: String, delta_attrib_name: String, horizontal: bool) -> DeltaHandle:
+	var new_handle := DeltaHandle.new(tid, tag.attributes[x_attrib_name],
+			tag.attributes[y_attrib_name], tag.attributes[delta_attrib_name], horizontal)
 	new_handle.tag = tag
 	return new_handle
 
@@ -148,15 +163,16 @@ func _draw() -> void:
 	var tangent_thickness := 0.6 / zoom
 	var tangent_alpha := 0.8
 	
-	# Draw the contours of shapes, and also tangents of bezier curves in paths.
+	# Store contours of shapes.
 	var normal_polylines: Array[PackedVector2Array] = []
 	var selected_polylines: Array[PackedVector2Array] = []
 	var hovered_polylines: Array[PackedVector2Array] = []
 	var hovered_selected_polylines: Array[PackedVector2Array] = []
-	var normal_tangent_multiline := PackedVector2Array()
-	var selected_tangent_multiline := PackedVector2Array()
-	var hovered_tangent_multiline := PackedVector2Array()
-	var hovered_selected_tangent_multiline := PackedVector2Array()
+	# Store abstract contours, e.g. tangents.
+	var normal_multiline := PackedVector2Array()
+	var selected_multiline := PackedVector2Array()
+	var hovered_multiline := PackedVector2Array()
+	var hovered_selected_multiline := PackedVector2Array()
 	
 	var tids := SVG.root_tag.get_all_tids()
 	
@@ -179,15 +195,21 @@ func _draw() -> void:
 					var d := i * TAU/180
 					points[i] = convert_in(c + Vector2(cos(d) * r, sin(d) * r))
 				points[180] = points[0]
+				var extras := PackedVector2Array([
+						convert_in(c), convert_in(c + Vector2(r, 0))])
 				
 				if tag_hovered and tag_selected:
 					hovered_selected_polylines.append(points)
+					hovered_selected_multiline += extras
 				elif tag_hovered:
 					hovered_polylines.append(points)
+					hovered_multiline += extras
 				elif tag_selected:
 					selected_polylines.append(points)
+					selected_multiline += extras
 				else:
 					normal_polylines.append(points)
+					normal_multiline += extras
 			
 			"ellipse":
 				var c := Vector2(attribs.cx.get_num(), attribs.cy.get_num())
@@ -200,15 +222,22 @@ func _draw() -> void:
 					var d := i * TAU/180
 					points[i] = convert_in(c + Vector2(cos(d) * rx, sin(d) * ry))
 				points[180] = points[0]
+				var extras := PackedVector2Array([
+						convert_in(c), convert_in(c + Vector2(rx, 0)),
+						convert_in(c), convert_in(c + Vector2(0, ry))])
 				
 				if tag_hovered and tag_selected:
 					hovered_selected_polylines.append(points)
+					hovered_selected_multiline += extras
 				elif tag_hovered:
 					hovered_polylines.append(points)
+					hovered_multiline += extras
 				elif tag_selected:
 					selected_polylines.append(points)
+					selected_multiline += extras
 				else:
 					normal_polylines.append(points)
+					normal_multiline += extras
 			
 			"rect":
 				var x: float = attribs.x.get_num()
@@ -257,15 +286,22 @@ func _draw() -> void:
 						points[i + 50] = convert_in(Vector2(x + rx, y + ry) +\
 								Vector2(cos(d) * rx, sin(d) * ry))
 					points[185] = points[0]
+				var extras := PackedVector2Array([
+						convert_in(Vector2(x, y)), convert_in(Vector2(x + rect_width, y)),
+						Vector2(x, y), convert_in(Vector2(x, y + rect_height))])
 				
 				if tag_hovered and tag_selected:
 					hovered_selected_polylines.append(points)
+					hovered_selected_multiline += extras
 				elif tag_hovered:
 					hovered_polylines.append(points)
+					hovered_multiline += extras
 				elif tag_selected:
 					selected_polylines.append(points)
+					selected_multiline += extras
 				else:
 					normal_polylines.append(points)
+					normal_multiline += extras
 			
 			"line":
 				var x1: float = attribs.x1.get_num()
@@ -534,16 +570,16 @@ func _draw() -> void:
 					match current_mode:
 						InteractionType.NONE:
 							normal_polylines.append(points.duplicate())
-							normal_tangent_multiline += tangent_points.duplicate()
+							normal_multiline += tangent_points.duplicate()
 						InteractionType.HOVERED:
 							hovered_polylines.append(points.duplicate())
-							hovered_tangent_multiline += tangent_points.duplicate()
+							hovered_multiline += tangent_points.duplicate()
 						InteractionType.SELECTED:
 							selected_polylines.append(points.duplicate())
-							selected_tangent_multiline += tangent_points.duplicate()
+							selected_multiline += tangent_points.duplicate()
 						InteractionType.HOVERED_SELECTED:
 							hovered_selected_polylines.append(points.duplicate())
-							hovered_selected_tangent_multiline += tangent_points.duplicate()
+							hovered_selected_multiline += tangent_points.duplicate()
 	
 	for polyline in normal_polylines:
 		draw_polyline(polyline, default_color, thickness, true)
@@ -555,25 +591,24 @@ func _draw() -> void:
 		draw_polyline(polyline, hover_selection_color, thickness, true)
 	
 	@warning_ignore('integer_division')
-	for i in normal_tangent_multiline.size() / 2:
+	for i in normal_multiline.size() / 2:
 		var i2 := i * 2
-		draw_line(normal_tangent_multiline[i2], normal_tangent_multiline[i2 + 1],
+		draw_line(normal_multiline[i2], normal_multiline[i2 + 1],
 				Color(default_color, tangent_alpha), tangent_thickness, true)
 	@warning_ignore('integer_division')
-	for i in selected_tangent_multiline.size() / 2:
+	for i in selected_multiline.size() / 2:
 		var i2 := i * 2
-		draw_line(selected_tangent_multiline[i2], selected_tangent_multiline[i2 + 1],
+		draw_line(selected_multiline[i2], selected_multiline[i2 + 1],
 				Color(selection_color, tangent_alpha), tangent_thickness, true)
 	@warning_ignore('integer_division')
-	for i in hovered_tangent_multiline.size() / 2:
+	for i in hovered_multiline.size() / 2:
 		var i2 := i * 2
-		draw_line(hovered_tangent_multiline[i2], hovered_tangent_multiline[i2 + 1],
+		draw_line(hovered_multiline[i2], hovered_multiline[i2 + 1],
 				Color(hover_color, tangent_alpha), tangent_thickness, true)
 	@warning_ignore('integer_division')
-	for i in hovered_selected_tangent_multiline.size() / 2:
+	for i in hovered_selected_multiline.size() / 2:
 		var i2 := i * 2
-		draw_line(hovered_selected_tangent_multiline[i2],
-				hovered_selected_tangent_multiline[i2 + 1],
+		draw_line(hovered_selected_multiline[i2], hovered_selected_multiline[i2 + 1],
 				Color(hover_selection_color, tangent_alpha), tangent_thickness, true)
 	
 	# First gather all handles in 4 categories, then draw them in the right order.
@@ -675,11 +710,11 @@ func _unhandled_input(event: InputEvent) -> void:
 			var nearest_handle := find_nearest_handle(event_pos)
 			if nearest_handle != null:
 				hovered_handle = nearest_handle
-				if hovered_handle is XYHandle:
-					Indications.set_hovered(hovered_handle.tid)
-				elif hovered_handle is PathHandle:
+				if hovered_handle is PathHandle:
 					Indications.set_inner_hovered(hovered_handle.tid,
 							hovered_handle.command_index)
+				else:
+					Indications.set_hovered(hovered_handle.tid)
 			else:
 				hovered_handle = null
 				Indications.clear_hovered()
@@ -689,11 +724,11 @@ func _unhandled_input(event: InputEvent) -> void:
 		var nearest_handle := find_nearest_handle(event_pos)
 		if nearest_handle != null:
 			hovered_handle = nearest_handle
-			if hovered_handle is XYHandle:
-				Indications.set_hovered(hovered_handle.tid)
-			elif hovered_handle is PathHandle:
+			if hovered_handle is PathHandle:
 				Indications.set_inner_hovered(hovered_handle.tid,
 						hovered_handle.command_index)
+			else:
+				Indications.set_hovered(hovered_handle.tid)
 		else:
 			hovered_handle = null
 			Indications.clear_hovered()

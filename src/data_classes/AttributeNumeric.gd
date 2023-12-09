@@ -27,6 +27,10 @@ func get_num() -> float:
 static func num_to_text(number: float) -> String:
 	return String.num(number, 4)
 
+static func text_to_num(text: String) -> float:
+	return text.to_float()
+
+
 # This function evaluates expressions even if "," or ";" is used as a decimal separator.
 static func evaluate_numeric_expression(text: String) -> float:
 	var expr := Expression.new()
