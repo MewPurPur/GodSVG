@@ -11,6 +11,7 @@ const project_managers: Array[String] = ["MewPurPur"]
 
 const authors: Array[String] = [
 	"ajreckof",
+	"ilikefrogs101"
 	"Kiisu-Master",
 	"MewPurPur",
 	"Serem Titus (SeremTitus)",
