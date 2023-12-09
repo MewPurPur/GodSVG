@@ -76,12 +76,7 @@ static func text_to_svg(text: String) -> TagSVG:
 					for element in attrib_dict:
 						if svg_tag.attributes.has(element):
 							var attribute: Attribute = svg_tag.attributes[element]
-							if typeof(attribute.get_value()) == Variant.Type.TYPE_STRING:
-								attribute.set_value(attrib_dict[element],
-										Attribute.SyncMode.SILENT)
-							elif typeof(attribute.get_value()) == Variant.Type.TYPE_FLOAT:
-								attribute.set_value(attrib_dict[element].to_float(),
-										Attribute.SyncMode.SILENT)
+							attribute.set_value(attrib_dict[element], Attribute.SyncMode.SILENT)
 						else:
 							unknown.append(AttributeUnknown.new(element, attrib_dict[element]))
 					svg_tag.set_unknown_attributes(unknown)
@@ -100,12 +95,7 @@ static func text_to_svg(text: String) -> TagSVG:
 					for element in attrib_dict:
 						if tag.attributes.has(element):
 							var attribute: Attribute = tag.attributes[element]
-							if typeof(attribute.get_value()) == Variant.Type.TYPE_STRING:
-								attribute.set_value(attrib_dict[element],
-										Attribute.SyncMode.SILENT)
-							elif typeof(attribute.get_value()) == Variant.Type.TYPE_FLOAT:
-								attribute.set_value(attrib_dict[element].to_float(),
-										Attribute.SyncMode.SILENT)
+							attribute.set_value(attrib_dict[element], Attribute.SyncMode.SILENT)
 						else:
 							unknown.append(AttributeUnknown.new(element, attrib_dict[element]))
 					tag.set_unknown_attributes(unknown)
