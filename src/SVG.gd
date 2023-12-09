@@ -16,14 +16,14 @@ func _ready() -> void:
 	SVG.root_tag.child_attribute_changed.connect(update_text)
 	SVG.root_tag.tag_layout_changed.connect(update_text)
 	
-	var open_file := false
+	var opening_file := false
 	var cmdline_args := OS.get_cmdline_args()
 	if cmdline_args.size() > 0:
 		var svg_file := FileAccess.open(cmdline_args[0], FileAccess.READ)
 		if svg_file != null:
-			open_file = true
+			opening_file = true
 	
-	if open_file:
+	if opening_file:
 		var svg_file := FileAccess.open(cmdline_args[0], FileAccess.READ)
 		var svg_text := svg_file.get_as_text()
 		text = svg_text
