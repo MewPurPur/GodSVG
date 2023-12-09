@@ -122,24 +122,23 @@ static func path_data_to_arrays(path_string: String) -> Array[Array]:
 
 static func path_commands_from_parsed_data(data: Array[Array]) -> Array[PathCommand]:
 	var cmds: Array[PathCommand] = []
-	for arr in data:
+	for a in data:
 		var new_cmd: PathCommand
-		var cmd_type = translation_dict[arr[0].to_upper()]
-		match arr.size():
-			1: new_cmd = cmd_type.new()
-			2: new_cmd = cmd_type.new(arr[1])
-			3: new_cmd = cmd_type.new(arr[1], arr[2])
-			5: new_cmd = cmd_type.new(arr[1], arr[2], arr[3], arr[4])
-			7: new_cmd = cmd_type.new(arr[1], arr[2], arr[3], arr[4], arr[5], arr[6])
-			8: new_cmd = cmd_type.new(arr[1], arr[2], arr[3], arr[4], arr[5], arr[6], arr[7])
-		if Utils.is_string_lower(arr[0]):
-			new_cmd.relative = true
-			new_cmd.command_char = arr[0]
+		# The idx 0 element is the command char, the rest are the arguments.
+		var cmd_type = translation_dict[a[0].to_upper()]
+		var relative := Utils.is_string_lower(a[0])
+		match a.size():
+			1: new_cmd = cmd_type.new(relative)
+			2: new_cmd = cmd_type.new(a[1], relative)
+			3: new_cmd = cmd_type.new(a[1], a[2], relative)
+			5: new_cmd = cmd_type.new(a[1], a[2], a[3], a[4], relative)
+			7: new_cmd = cmd_type.new(a[1], a[2], a[3], a[4], a[5], a[6], relative)
+			8: new_cmd = cmd_type.new(a[1], a[2], a[3], a[4], a[5], a[6], a[7], relative)
 		cmds.append(new_cmd)
 	return cmds
 
 
-static func path_commands_to_value(commands_arr: Array[PathCommand]) -> String:
+static func path_commands_to_text(commands_arr: Array[PathCommand]) -> String:
 	var generated_value := ""
 	for command in commands_arr:
 		var cmd_char := command.command_char.to_upper()

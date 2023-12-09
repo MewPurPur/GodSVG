@@ -89,14 +89,22 @@ func _ready() -> void:
 func create_tag_context() -> Popup:
 	var parent_tid := Utils.get_parent_tid(tid)
 	var tag_count := SVG.root_tag.get_by_tid(parent_tid).get_child_count()
-	var buttons_arr: Array[Button] = []
+	var btn_array: Array[Button] = []
 	
 	var duplicate_button := Button.new()
 	duplicate_button.text = tr(&"#duplicate")
 	duplicate_button.icon = load("res://visual/icons/Duplicate.svg")
 	duplicate_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 	duplicate_button.pressed.connect(Indications.duplicate_selected)
-	buttons_arr.append(duplicate_button)
+	btn_array.append(duplicate_button)
+	
+	if !tag.possible_conversions.is_empty():
+		var convert_btn := Button.new()
+		convert_btn.text = tr(&"#convert_to")
+		convert_btn.icon = load("res://visual/icons/Reload.svg")
+		convert_btn.alignment = HORIZONTAL_ALIGNMENT_LEFT
+		convert_btn.pressed.connect(popup_convert_to_context)
+		btn_array.append(convert_btn)
 	
 	if tid[-1] > 0:
 		var move_up_button := Button.new()
@@ -104,25 +112,25 @@ func create_tag_context() -> Popup:
 		move_up_button.icon = load("res://visual/icons/MoveUp.svg")
 		move_up_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		move_up_button.pressed.connect(Indications.move_up_selected)
-		buttons_arr.append(move_up_button)
+		btn_array.append(move_up_button)
 	if tid[-1] < tag_count - 1:
 		var move_down_button := Button.new()
 		move_down_button.text = tr(&"#move_down")
 		move_down_button.icon = load("res://visual/icons/MoveDown.svg")
 		move_down_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		move_down_button.pressed.connect(Indications.move_down_selected)
-		buttons_arr.append(move_down_button)
+		btn_array.append(move_down_button)
 	
 	var delete_button := Button.new()
 	delete_button.text = tr(&"#delete")
 	delete_button.icon = load("res://visual/icons/Delete.svg")
 	delete_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 	delete_button.pressed.connect(Indications.delete_selected)
-	buttons_arr.append(delete_button)
+	btn_array.append(delete_button)
 	
 	var tag_context := ContextPopup.instantiate()
 	add_child(tag_context)
-	tag_context.set_btn_array(buttons_arr)
+	tag_context.set_btn_array(btn_array)
 	return tag_context
 
 
@@ -146,13 +154,33 @@ func _on_gui_input(event: InputEvent) -> void:
 			Utils.popup_under_mouse(create_tag_context(), get_global_mouse_position())
 
 
-func _on_mouse_entered():
+func _on_mouse_entered() -> void:
 	if Indications.semi_hovered_tid != tid and\
 		not Utils.is_tid_parent(tid, Indications.hovered_tid):
 		Indications.set_hovered(tid)
 
-func _on_mouse_exited():
+func _on_mouse_exited() -> void:
 	Indications.remove_hovered(tid)
+
+func popup_convert_to_context() -> void:
+	var btn_array: Array[Button] = []
+	for tag_name in tag.possible_conversions:
+		var btn := Button.new()
+		btn.text = tag_name
+		btn.add_theme_font_override(&"font", load("res://visual/fonts/FontMono.ttf"))
+		btn.icon = load("res://visual/icons/tag/" + tag_name + ".svg")
+		btn.alignment = HORIZONTAL_ALIGNMENT_LEFT
+		btn.pressed.connect(_convert_to.bind(tag_name))
+		if !tag.can_replace(tag_name):
+			btn.disabled = true
+		btn_array.append(btn)
+	var context_popup := ContextPopup.instantiate()
+	add_child(context_popup)
+	context_popup.set_btn_array(btn_array)
+	Utils.popup_under_control_centered(context_popup, title_button)
+
+func _convert_to(tag_name: String) -> void:
+	SVG.root_tag.replace_tag(tid, tag.get_replacement(tag_name))
 
 
 func determine_selection_highlight() -> void:

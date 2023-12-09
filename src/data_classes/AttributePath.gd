@@ -1,17 +1,23 @@
 ## The "d" attribute of [TagPath].
 class_name AttributePath extends Attribute
 
-signal command_changed(sync_mode: SyncMode)
-
 var _commands: Array[PathCommand]
 
 func _init() -> void:
 	default = ""
 	set_value(default, SyncMode.SILENT)
-	command_changed.connect(sync_value)
 
-func sync_value(sync_mode := SyncMode.LOUD) -> void:
-	set_value(PathDataParser.path_commands_to_value(_commands), sync_mode)
+func _sync() -> void:
+	_commands = PathDataParser.parse_path_data(get_value())
+	locate_start_points()
+
+func set_commands(new_commands: Array[PathCommand], sync_mode := SyncMode.LOUD) -> void:
+	_commands = new_commands
+	sync_after_commands_change(sync_mode)
+
+func sync_after_commands_change(sync_mode := SyncMode.LOUD) -> void:
+	super.set_value(PathDataParser.path_commands_to_text(_commands), sync_mode)
+
 
 func locate_start_points() -> void:
 	# Start points are absolute.
@@ -51,15 +57,14 @@ func set_command_property(idx: int, property: StringName, new_value: float,
 sync_mode := SyncMode.LOUD) -> void:
 	if _commands[idx].get(property) != new_value or sync_mode == SyncMode.FINAL:
 		_commands[idx].set(property, new_value)
-		locate_start_points()
-		command_changed.emit(sync_mode)
+		sync_after_commands_change(sync_mode)
 
 func insert_command(idx: int, command_char: String) -> void:
 	_commands.insert(idx, PathCommand.translation_dict[command_char.to_upper()].new())
 	if Utils.is_string_lower(command_char):
 		_commands[idx].toggle_relative()
-	locate_start_points()
-	command_changed.emit(SyncMode.LOUD)
+	sync_after_commands_change()
+
 
 func convert_command(idx: int, command_char: String) -> void:
 	var old_command: PathCommand = _commands[idx]
@@ -83,8 +88,7 @@ func convert_command(idx: int, command_char: String) -> void:
 	
 	if is_relative:
 		_commands[idx].toggle_relative()
-	locate_start_points()
-	command_changed.emit(SyncMode.LOUD)
+	sync_after_commands_change()
 
 func delete_commands(indices: Array[int]) -> void:
 	if indices.is_empty():
@@ -95,13 +99,8 @@ func delete_commands(indices: Array[int]) -> void:
 	indices.reverse()
 	for idx in indices:
 		_commands.remove_at(idx)
-	locate_start_points()
-	command_changed.emit(SyncMode.LOUD)
+	sync_after_commands_change()
 
 func toggle_relative_command(idx: int) -> void:
 	_commands[idx].toggle_relative()
-	command_changed.emit(SyncMode.LOUD)
-
-func _sync() -> void:
-	_commands = PathDataParser.parse_path_data(get_value())
-	locate_start_points()
+	sync_after_commands_change()

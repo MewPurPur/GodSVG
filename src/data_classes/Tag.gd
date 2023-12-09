@@ -5,7 +5,6 @@ var child_tags: Array[Tag]
 
 signal attribute_changed(undo_redo: bool)
 
-var name: String
 var attributes: Dictionary  # Dictionary{String: Attribute}
 
 # Attributes that aren't recognized (usually because GodSVG doesn't support them).
@@ -35,7 +34,7 @@ func create_duplicate() -> Tag:
 	var type: GDScript = get_script()
 	var new_tag: Variant
 	if type == TagUnknown:
-		new_tag = type.new(name)
+		new_tag = type.new(type.name)
 	else:
 		new_tag = type.new()
 	for attribute in new_tag.attributes:
@@ -47,3 +46,10 @@ func create_duplicate() -> Tag:
 		new_child_tags.append(tag.create_duplicate())
 	new_tag.child_tags = new_child_tags
 	return new_tag
+
+# To be overridden in extending classes.
+func can_replace(_new_tag: String) -> bool:
+	return false
+
+func get_replacement(_new_tag: String) -> Tag:
+	return null

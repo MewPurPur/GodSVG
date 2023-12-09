@@ -60,9 +60,9 @@ func sync(new_value: String) -> void:
 	if num_edit != null:
 		num_edit.text = new_value
 		if new_value == attribute.default:
-			add_theme_color_override(&"font_color", Color(0.64, 0.64, 0.64))
+			num_edit.add_theme_color_override(&"font_color", Color(0.64, 0.64, 0.64))
 		else:
-			remove_theme_color_override(&"font_color")
+			num_edit.remove_theme_color_override(&"font_color")
 	queue_redraw()
 
 
