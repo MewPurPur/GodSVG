@@ -24,6 +24,14 @@ func _ready() -> void:
 		text = GlobalSettings.save_data.svg_text
 		saved_text = GlobalSettings.save_data.svg_text
 		update_tags()
+	var cmdline_args := OS.get_cmdline_args()
+	if cmdline_args.size() > 0:
+		var svg_file := FileAccess.open(cmdline_args[0], FileAccess.READ)
+		if svg_file != null:
+			var svg_text := svg_file.get_as_text()
+			text = svg_text
+			saved_text = svg_text
+			update_tags();
 	UR.clear_history()
 
 
