@@ -1,12 +1,12 @@
 ## A <path/> tag.
 class_name TagPath extends Tag
 
-const known_attributes = ["d",
-		"opacity", "fill", "fill-opacity", "stroke", "stroke-opacity", "stroke-width",
-		"stroke-linecap", "stroke-linejoin"]
+const name = "path"
+const possible_conversions = []
+const known_attributes = ["d", "opacity", "fill", "fill-opacity", "stroke",
+		"stroke-opacity", "stroke-width", "stroke-linecap", "stroke-linejoin"]
 
 func _init() -> void:
-	name = "path"
 	attributes = {
 		"d": AttributePath.new(),
 		"opacity": AttributeNumeric.new(AttributeNumeric.Mode.NFLOAT, "1"),
@@ -19,3 +19,12 @@ func _init() -> void:
 		"stroke-linejoin": AttributeEnum.new(["miter", "round", "bevel"], 0),
 	}
 	super()
+
+func can_replace(_new_tag: String) -> bool:
+	return false
+
+func get_replacement(new_tag: String) -> Tag:
+	if not can_replace(new_tag):
+		return null
+	
+	return null

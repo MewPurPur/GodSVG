@@ -11,10 +11,11 @@ const project_managers: Array[String] = ["MewPurPur"]
 
 const authors: Array[String] = [
 	"ajreckof",
+	"ilikefrogs101",
 	"Kiisu-Master",
 	"MewPurPur",
 	"Serem Titus (SeremTitus)",
 	"Swarkin",
 	"thiagola92",
-	"Tom Blackwell (Volts-s)"
+	"Tom Blackwell (Volts-s)",
 ]

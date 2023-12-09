@@ -22,6 +22,7 @@ func set_value(new_value: String, update_type := Utils.UpdateType.REGULAR):
 				attribute.set_value(new_value)
 
 func _ready() -> void:
+	set_value(attribute.get_value())
 	attribute.value_changed.connect(set_value)
 	tooltip_text = attribute_name
 
