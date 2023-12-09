@@ -27,7 +27,7 @@ func _ready() -> void:
 		var svg_text := FileAccess.open(cmdline_args[0], FileAccess.READ).get_as_text()
 		text = svg_text
 		saved_text = svg_text
-		update_tags();
+		update_tags()
 	elif GlobalSettings.save_data.svg_text.is_empty():
 		root_tag.attributes.width.set_value(16.0, Attribute.SyncMode.SILENT)
 		root_tag.attributes.height.set_value(16.0, Attribute.SyncMode.SILENT)
