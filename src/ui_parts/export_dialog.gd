@@ -70,10 +70,10 @@ func export(path: String) -> void:
 	match extension:
 		"png":
 			var export_svg := SVG.root_tag.create_duplicate()
-			export_svg.attributes.width.set_value(
-					export_svg.attributes.width.get_value() * upscale_amount)
-			export_svg.attributes.height.set_value(
-					export_svg.attributes.height.get_value() * upscale_amount)
+			export_svg.attributes.width.set_num(
+					export_svg.attributes.width.get_num() * upscale_amount)
+			export_svg.attributes.height.set_num(
+					export_svg.attributes.height.get_num() * upscale_amount)
 			var img := Image.new()
 			img.load_svg_from_string(SVGParser.svg_to_text(export_svg))
 			img.fix_alpha_edges()  # See godot issue 82579.
