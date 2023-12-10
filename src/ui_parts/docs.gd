@@ -1,4 +1,4 @@
-extends ColorRect
+extends Dialog
 
 @onready var desc: RichTextLabel = %Desc
 

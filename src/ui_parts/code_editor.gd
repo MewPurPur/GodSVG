@@ -105,4 +105,5 @@ func _on_svg_code_edit_focus_exited() -> void:
 		SVG.update_text(true)
 
 func _on_files_dropped(files: PackedStringArray):
-	SVG.apply_svg_from_path(files[0])
+	if not Dialog.is_open:
+		SVG.apply_svg_from_path(files[0])

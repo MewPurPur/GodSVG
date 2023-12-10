@@ -1,4 +1,4 @@
-extends ColorRect
+extends Dialog
 
 signal file_selected(path: String)
 
