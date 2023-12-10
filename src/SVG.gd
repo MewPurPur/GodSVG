@@ -34,8 +34,8 @@ func _ready() -> void:
 		saved_text = GlobalSettings.save_data.svg_text
 		update_tags()
 	else:
-		root_tag.attributes.width.set_value("16.0", Attribute.SyncMode.SILENT)
-		root_tag.attributes.height.set_value("16.0", Attribute.SyncMode.SILENT)
+		root_tag.attributes.width.set_num(16.0, Attribute.SyncMode.SILENT)
+		root_tag.attributes.height.set_num(16.0, Attribute.SyncMode.SILENT)
 		update_text(false)
 	UR.clear_history()
 
