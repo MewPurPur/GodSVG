@@ -13,15 +13,18 @@ const checkerboard = preload("res://visual/icons/backgrounds/ColorButtonBG.svg")
 
 func set_value(new_value: String, update_type := Utils.UpdateType.REGULAR):
 	# Validate the value.
-	if AttributeColor.is_color_valid_non_hex(new_value) or new_value.is_valid_html_color():
-		new_value = new_value.trim_prefix("#")
-	else:
-		new_value = attribute.get_value()
-	sync(new_value)
+	if not AttributeColor.is_valid(new_value):
+		sync(attribute.get_value())
+		return
+	
+	if AttributeColor.color_equals_hex(new_value, attribute.default):
+		new_value = attribute.default
+	
+	if AttributeColor.is_valid_hex(new_value) and new_value[0] != "#":
+		new_value = "#" + new_value
+	sync(attribute.autoformat(new_value))
 	# Update the attribute.
 	if attribute.get_value() != new_value or update_type == Utils.UpdateType.FINAL:
-		new_value = new_value if (AttributeColor.is_color_valid_non_hex(new_value))\
-				else "#" + new_value
 		match update_type:
 			Utils.UpdateType.INTERMEDIATE:
 				attribute.set_value(new_value, Attribute.SyncMode.INTERMEDIATE)
@@ -51,10 +54,7 @@ func _draw() -> void:
 	var stylebox := StyleBoxFlat.new()
 	stylebox.corner_radius_top_right = 5
 	stylebox.corner_radius_bottom_right = 5
-	if AttributeColor.named_colors.has(color_edit.text):
-		stylebox.bg_color = AttributeColor.named_colors[color_edit.text]
-	else:
-		stylebox.bg_color = Color.from_string(color_edit.text, Color(0, 0, 0, 0))
+	stylebox.bg_color = AttributeColor.get_color_from_non_url(attribute.get_value())
 	draw_texture(checkerboard, Vector2.ZERO)
 	draw_style_box(stylebox, Rect2(Vector2.ZERO, button_size - Vector2(1, 2)))
 
@@ -80,7 +80,7 @@ func _on_button_resized() -> void:
 	queue_redraw()
 
 func _on_line_edit_text_changed(new_text: String) -> void:
-	if AttributeColor.is_color_valid(new_text):
+	if AttributeColor.is_valid(new_text):
 		color_edit.add_theme_color_override(&"font_color", Color(0.6, 1.0, 0.6))
 	else:
 		color_edit.add_theme_color_override(&"font_color", Color(1.0, 0.6, 0.6))

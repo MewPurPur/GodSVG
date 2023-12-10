@@ -12,7 +12,7 @@ var named_color: NamedColor
 
 func _ready() -> void:
 	set_label_text(named_color.name)
-	color_edit.current_value = named_color.color
+	color_edit.value = named_color.color
 
 
 func _on_edit_button_pressed() -> void:

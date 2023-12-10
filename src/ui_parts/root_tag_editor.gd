@@ -26,7 +26,6 @@ var true_viewbox: Rect2
 @onready var viewbox_edit_w: NumberEditType = $Edits/Viewbox/Rect/ViewboxEditW
 @onready var viewbox_edit_h: NumberEditType = $Edits/Viewbox/Rect/ViewboxEditH
 
-
 func _ready() -> void:
 	SVG.root_tag.resized.connect(_on_resized)
 	SVG.root_tag.changed_unknown.connect(_on_unknown_changed)
