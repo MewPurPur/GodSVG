@@ -24,7 +24,7 @@ func set_value(new_value: String, update_type := Utils.UpdateType.REGULAR):
 func _ready() -> void:
 	set_value(attribute.get_value())
 	attribute.value_changed.connect(set_value)
-	tooltip_text = attribute_name
+	line_edit.tooltip_text = attribute_name
 
 
 func rebuild_commands() -> void:
