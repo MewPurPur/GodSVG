@@ -48,7 +48,7 @@ func set_num(new_number: float, update_type := Utils.UpdateType.REGULAR) -> void
 func _ready() -> void:
 	set_value(attribute.get_value())
 	attribute.value_changed.connect(set_value)
-	tooltip_text = attribute_name
+	num_edit.tooltip_text = attribute_name
 
 func _on_focus_exited() -> void:
 	set_value(num_edit.text)

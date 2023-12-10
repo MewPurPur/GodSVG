@@ -7,7 +7,7 @@
 draw_center = false
 border_width_left = 2
 border_width_top = 2
-border_width_right = 1
+border_width_right = 2
 border_width_bottom = 2
 border_color = Color(1, 1, 1, 0.0666667)
 corner_radius_top_left = 5
@@ -19,10 +19,12 @@ corner_radius_bottom_left = 5
 draw_center = false
 border_width_left = 2
 border_width_top = 2
-border_width_right = 1
+border_width_right = 2
 border_width_bottom = 2
-border_color = Color(0.501961, 0.752941, 1, 0.2)
+border_color = Color(0.2, 0.34902, 0.501961, 1)
 corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
 corner_radius_bottom_left = 5
 
 [node name="UnknownField" type="LineEdit"]
@@ -37,5 +39,6 @@ caret_blink = true
 script = ExtResource("1_decfb")
 hover_stylebox = SubResource("StyleBoxFlat_y4uj6")
 focus_stylebox = SubResource("StyleBoxFlat_atgwj")
+code_font_tooltip = true
 
 [connection signal="text_submitted" from="." to="." method="_on_text_submitted"]
