@@ -6,14 +6,13 @@
 [ext_resource type="PackedScene" uid="uid://5f8uxavn1or1" path="res://src/ui_elements/color_edit.tscn" id="3_dq5ly"]
 [ext_resource type="Texture2D" uid="uid://cj5x2ti8150ja" path="res://visual/icons/Delete.svg" id="5_5n8tt"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jm6ej"]
-content_margin_left = 5.0
-bg_color = Color(0.062, 0.062, 0.1, 1)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bicmw"]
+draw_center = false
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
-border_color = Color(0.211765, 0.258824, 0.345098, 1)
+border_color = Color(0.2, 0.34902, 0.501961, 1)
 corner_radius_top_left = 5
 corner_radius_top_right = 5
 corner_radius_bottom_right = 5
@@ -58,9 +57,9 @@ horizontal_alignment = 1
 visible = false
 custom_minimum_size = Vector2(80, 0)
 layout_mode = 2
-theme_override_styles/normal = SubResource("StyleBoxFlat_jm6ej")
+focus_mode = 1
+theme_override_styles/normal = SubResource("StyleBoxFlat_bicmw")
 max_length = 30
-context_menu_enabled = false
 script = ExtResource("1_i4wi2")
 
 [node name="EditButton" type="Button" parent="PanelContainer/MarginContainer/ConfigureContainer/TopContainer"]
@@ -84,6 +83,7 @@ enable_palettes = false
 
 [node name="DeleteButton" type="Button" parent="PanelContainer/MarginContainer/ConfigureContainer/BottomContainer"]
 layout_mode = 2
+tooltip_text = "#delete_color"
 focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_type_variation = &"IconButton"

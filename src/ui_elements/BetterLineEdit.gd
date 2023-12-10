@@ -10,6 +10,11 @@ var hovered := false
 @export var focus_stylebox: StyleBox  ## Overlayed on top when the LineEdit is focused.
 @export var code_font_tooltip := false  ## Use the mono font for the tooltip.
 
+func _init() -> void:
+	context_menu_enabled = false
+	caret_blink = true
+	caret_blink_interval = 0.6
+
 func _ready() -> void:
 	focus_entered.connect(_on_focus_entered)
 	focus_exited.connect(_on_focus_exited)
@@ -64,6 +69,7 @@ func _make_custom_tooltip(for_text: String) -> Object:
 func _on_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_RIGHT:
+			grab_focus()
 			var context_popup := ContextPopup.instantiate()
 			var btn_arr: Array[Button] = []
 			
