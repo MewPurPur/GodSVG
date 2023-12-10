@@ -1,4 +1,4 @@
-extends ColorRect
+extends Dialog
 
 @onready var title: Label = %MainContainer/TextContainer/Title
 @onready var label: RichTextLabel = %MainContainer/TextContainer/Label
