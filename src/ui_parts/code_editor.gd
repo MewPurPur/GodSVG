@@ -1,8 +1,6 @@
 extends VBoxContainer
 
 const SVGFileDialog = preload("svg_file_dialog.tscn")
-const ImportWarningDialog = preload("import_warning_dialog.tscn")
-const AlertDialog = preload("alert_dialog.tscn")
 const ExportDialog = preload("export_dialog.tscn")
 
 @onready var code_edit: TextEdit = $ScriptEditor/SVGCodeEdit
@@ -19,6 +17,7 @@ func _ready() -> void:
 	SVG.root_tag.child_attribute_changed.connect(auto_update_text.unbind(1))
 	SVG.root_tag.tag_layout_changed.connect(auto_update_text)
 	SVG.root_tag.changed_unknown.connect(auto_update_text)
+	get_window().files_dropped.connect(_on_files_dropped)
 
 func auto_update_text() -> void:
 	if not code_edit.has_focus():
@@ -58,7 +57,7 @@ func _on_copy_button_pressed() -> void:
 
 func native_file_import(has_selected: bool, files: PackedStringArray, _filter_idx: int):
 	if has_selected:
-		apply_svg_from_path(files[0])
+		SVG.apply_svg_from_path(files[0])
 		GlobalSettings.modify_save_data("last_used_dir", files[0].get_base_dir())
 
 func _on_import_button_pressed() -> void:
@@ -75,25 +74,11 @@ func _on_import_button_pressed() -> void:
 	else:
 		var svg_import_dialog := SVGFileDialog.instantiate()
 		get_tree().get_root().add_child(svg_import_dialog)
-		svg_import_dialog.file_selected.connect(apply_svg_from_path)
+		svg_import_dialog.file_selected.connect(SVG.apply_svg_from_path)
 
 func _on_export_button_pressed() -> void:
 	var export_panel := ExportDialog.instantiate()
 	get_tree().get_root().add_child(export_panel)
-
-func apply_svg_from_path(path: String) -> void:
-	var svg_file := FileAccess.open(path, FileAccess.READ)
-	if svg_file == null:
-		var alert_dialog := AlertDialog.instantiate()
-		get_tree().get_root().add_child(alert_dialog)
-		alert_dialog.setup("#file_open_fail_message", "#alert", 280.0)
-		return
-	
-	var svg_text := svg_file.get_as_text()
-	var warning_panel := ImportWarningDialog.instantiate()
-	warning_panel.imported.connect(set_new_text)
-	warning_panel.set_svg(svg_text)
-	get_tree().get_root().add_child(warning_panel)
 
 func set_new_text(svg_text: String) -> void:
 	code_edit.text = svg_text
@@ -118,3 +103,7 @@ func _on_svg_code_edit_focus_exited() -> void:
 	code_edit.text = SVG.text
 	if SVG.saved_text != code_edit.text:
 		SVG.update_text(true)
+
+func _on_files_dropped(files: PackedStringArray):
+	if not Dialog.is_open:
+		SVG.apply_svg_from_path(files[0])
