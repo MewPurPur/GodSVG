@@ -77,7 +77,7 @@ class EllipticalArcCommand extends PathCommand:
 	var sweep_flag: int
 	var x: float
 	var y: float
-	func _init(new_rx := 0.0, new_ry := 0.0, new_rot := 0.0, new_large_arc_flag := 0,
+	func _init(new_rx := 1.0, new_ry := 1.0, new_rot := 0.0, new_large_arc_flag := 0,
 	new_sweep_flag := 0, new_x := 0.0, new_y := 0.0, p_rel := false) -> void:
 		relative = p_rel
 		command_char = "a" if p_rel else "A"
