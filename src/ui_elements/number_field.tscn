@@ -1,6 +1,30 @@
-[gd_scene load_steps=2 format=3 uid="uid://c6vgjud6wrdu4"]
+[gd_scene load_steps=4 format=3 uid="uid://c6vgjud6wrdu4"]
 
 [ext_resource type="Script" path="res://src/ui_elements/number_field.gd" id="1_saak1"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nuwbn"]
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 1, 1, 0.0666667)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_veyl6"]
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.2, 0.34902, 0.501961, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
 
 [node name="NumberField" type="LineEdit"]
 custom_minimum_size = Vector2(54, 22)
@@ -13,5 +37,8 @@ context_menu_enabled = false
 select_all_on_focus = true
 caret_blink = true
 script = ExtResource("1_saak1")
+hover_stylebox = SubResource("StyleBoxFlat_nuwbn")
+focus_stylebox = SubResource("StyleBoxFlat_veyl6")
+code_font_tooltip = true
 
 [connection signal="text_submitted" from="." to="." method="_on_text_submitted"]
