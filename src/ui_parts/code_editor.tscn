@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://cr1fdlmbknnko"]
+[gd_scene load_steps=15 format=3 uid="uid://cr1fdlmbknnko"]
 
 [ext_resource type="Script" path="res://src/ui_parts/code_editor.gd" id="1_nffk0"]
 [ext_resource type="FontFile" uid="uid://dtb4wkus51hxs" path="res://visual/fonts/FontMono.ttf" id="2_p4nol"]
@@ -6,7 +6,6 @@
 [ext_resource type="Texture2D" uid="uid://6ymbl3jqersp" path="res://visual/icons/Import.svg" id="4_cuhac"]
 [ext_resource type="Texture2D" uid="uid://d0uvwj0t44n6v" path="res://visual/icons/Export.svg" id="5_pgurh"]
 [ext_resource type="Script" path="res://src/data_classes/SVGHighlighter.gd" id="6_hpsqx"]
-[ext_resource type="Script" path="res://src/ui_parts/svg_code_edit.gd" id="7_hafdu"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_q56qh"]
 content_margin_left = 8.0
@@ -61,6 +60,20 @@ string_color = Color(0.631373, 1, 0.878431, 1)
 comment_color = Color(0.803922, 0.811765, 0.823529, 0.501961)
 text_color = Color(0.803922, 0.811765, 0.917647, 0.67451)
 error_color = Color(1, 0.52549, 0.419608, 1)
+
+[sub_resource type="GDScript" id="GDScript_u6kck"]
+script/source = "extends BetterTextEdit
+"
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_s4mg3"]
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 1, 1, 0.0666667)
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_k0een"]
 content_margin_left = 10.0
@@ -138,14 +151,14 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_styles/normal = SubResource("StyleBoxFlat_bm3bl")
 theme_override_styles/focus = SubResource("StyleBoxFlat_k6btx")
-context_menu_enabled = false
-wrap_mode = 1
 scroll_smooth = true
 scroll_v_scroll_speed = 30.0
 caret_multiple = false
 syntax_highlighter = SubResource("SyntaxHighlighter_njere")
 highlight_all_occurrences = true
-script = ExtResource("7_hafdu")
+script = SubResource("GDScript_u6kck")
+hover_stylebox = SubResource("StyleBoxFlat_s4mg3")
+block_non_ascii = true
 
 [node name="ErrorBar" type="PanelContainer" parent="ScriptEditor"]
 visible = false
