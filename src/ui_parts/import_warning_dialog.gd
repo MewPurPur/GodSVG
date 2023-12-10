@@ -1,14 +1,16 @@
 extends Dialog
 
-signal imported(text: String)
+signal imported(text: String, proj_name: String)
 
 @onready var warnings_label: RichTextLabel = %WarningsLabel
 @onready var texture_preview: TextureRect = %TexturePreview
 @onready var ok_button: Button = %ButtonContainer/OKButton
 
 var imported_text := ""
+var project_name := ""
 
 func _ready() -> void:
+	%ProjectName.text = project_name
 	ok_button.grab_focus()
 	# Convert forward and backward to show any artifacts that might occur after parsing.
 	var preview_text := SVGParser.svg_to_text(SVGParser.text_to_svg(imported_text))
@@ -22,14 +24,15 @@ func _ready() -> void:
 		texture_preview.texture = ImageTexture.create_from_image(img)
 	var warnings := get_svg_errors(imported_text)
 	if warnings.is_empty():
-		imported.emit(imported_text)
+		imported.emit(imported_text, project_name)
 	
 	for warning in warnings:
 		warnings_label.text += warning + "\n"
 
 
-func set_svg(text: String) -> void:
+func set_svg(text: String, proj_name: String) -> void:
 	imported_text = text
+	project_name = proj_name
 
 
 func get_svg_errors(text: String) -> Array[String]:
@@ -55,7 +58,7 @@ func _on_cancel_button_pressed() -> void:
 	queue_free()
 
 func _on_ok_button_pressed() -> void:
-	imported.emit(imported_text)
+	imported.emit(imported_text, project_name)
 
-func _on_imported(_text: String) -> void:
+func _on_imported(_text: String, _proj_name: String) -> void:
 	queue_free()
