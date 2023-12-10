@@ -63,6 +63,7 @@
 #delete_palette,Delete the palette,Изтрий палетата,Palette löschen
 #unnamed,Unnamed,Неименуван,Unbenannt
 #edit_color_name,Edit color name,Промени името на цвета,Farbnamen ändern
+#delete_color,Delete color,Изтрий цвета,
 #enable_color,Enable the color,Включи цвета,Farbe aktivieren
 #disable_color,Disable the color,Изключи цвета,Farbe deaktivieren
 #godot_third_party,Godot third-party components,Компоненти в Godot от трети партии,Godot Drittanbieter-Komponente
