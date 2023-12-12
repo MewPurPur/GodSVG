@@ -152,7 +152,7 @@ static func filter_tids_remove_children(tids: Array[PackedInt32Array]) -> Array[
 		)
 	return new_tids
 
-# [0] > [1] > [1, 2] > [1, 0]
+# [0] > [1] > [1, 2] > [2]
 static func sort_tids(tids: Array[PackedInt32Array]) -> Array[PackedInt32Array]:
 	var new_tids:Array[PackedInt32Array] = tids.duplicate()
 	new_tids.sort_custom(Utils.compare_tids)
