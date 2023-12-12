@@ -17,7 +17,7 @@ After submitting your pull request, I (MewPurPur) will review your changes and m
 
 ## Governance 
 
-Before starting to work on a PR, look through the list of issues to see if your PR will resolve any of them. If said issue is not assigned to anyone and you don't want anyone else to work on it,  ask to be assigned to the issue.
+Before working on a PR, look through the list of issues to see if your PR will resolve any of them. If said issue is not assigned to anyone and you don't want anyone else to work on it,  ask to be assigned to the issue.
 
 If an issue doesn't exist and you want to fix a bug, then it's a good practice, but not required, to make an issue for it. If you want to implement a more complex feature or overhaul a system, a proposal is required first.
 
