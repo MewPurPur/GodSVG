@@ -11,7 +11,7 @@ GodSVG is inspired by the need for an SVG editor without abstractions that produ
 
 - **Interactive SVG editing:** Modify individual elements of an SVG file using a user-friendly interface.
 - **Real-time code:** As you manipulate elements in the UI, code is instantly generated and can be edited.
-- **Optimized SVG output:** Generate clean and efficient SVG files. _(Planned: Ways to minify the output)_
+- **Optimized SVG output:** Generate clean and efficient SVG files.
 - **Accessible on mobile:** GodSVG aims to be usable on mobile devices.
 
 ![image](https://github.com/MewPurPur/GodSVG/assets/85438892/e0fa4d0c-b962-4cc7-ac76-2cbc9cf77856)
