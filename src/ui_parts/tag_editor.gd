@@ -212,6 +212,7 @@ func _get_drag_data(_at_position: Vector2) -> Variant:
 	var data:Array[PackedInt32Array] = [tid]
 	if tid in Indications.selected_tids:
 		data = Indications.selected_tids
+	data = Utils.filter_tids_remove_children(data)
 	var tags_container:VBoxContainer = VBoxContainer.new()
 	for drag_tid in data:
 		var preview = TagEditor.instantiate()

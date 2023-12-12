@@ -128,7 +128,7 @@ static func is_tid_parent(parent: PackedInt32Array, child: PackedInt32Array) -> 
 	var parent_size := parent.size()
 	if parent_size >= child.size():
 		return false
-	
+
 	for i in parent_size:
 		if parent[i] != child[i]:
 			return false
@@ -138,6 +138,28 @@ static func get_parent_tid(tid: PackedInt32Array) -> PackedInt32Array:
 	var parent_tid := tid.duplicate()
 	parent_tid.resize(tid.size() - 1)
 	return parent_tid
+
+# If parent is moving children are also moving
+static func filter_tids_remove_children(tids: Array[PackedInt32Array]) -> Array[PackedInt32Array]:
+	var new_tids:Array[PackedInt32Array] = tids.duplicate()
+	new_tids = new_tids.filter(func(tid:PackedInt32Array):
+		var check_tid:PackedInt32Array = []
+		for part in tid:
+			check_tid.append(part)
+			if check_tid in new_tids and not check_tid == tid and is_tid_parent(check_tid,tid):
+				return false
+		return true
+		)
+	return new_tids
+
+# [0] > [1] > [1, 2] > [1, 0]
+static func sort_tids(tids: Array[PackedInt32Array]) -> Array[PackedInt32Array]:
+	var new_tids:Array[PackedInt32Array] = tids.duplicate()
+	new_tids.sort_custom(Utils.compare_tids)
+	return new_tids
+
+static func get_viewbox_zoom(viewbox: Rect2, width: float, height: float) -> float:
+	return minf(width / viewbox.size.x, height / viewbox.size.y)
 
 
 static func is_event_drag(event: InputEvent) -> bool:
