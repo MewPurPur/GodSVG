@@ -72,11 +72,11 @@ func _ready() -> void:
 			shape_container.add_child(input_field)
 		else:
 			paint_container.add_child(input_field)
-	
+
 	if not tag.is_standalone():
 		var child_tags_container := VBoxContainer.new()
 		v_box_container.add_child(child_tags_container)
-		
+
 		for tag_idx in tag.get_child_count():
 			var child_tag := tag.child_tags[tag_idx]
 			var tag_editor := TagEditor.instantiate()
@@ -157,7 +157,7 @@ func determine_selection_highlight() -> void:
 	title_sb.corner_radius_top_right = 4
 	title_sb.set_border_width_all(2)
 	title_sb.set_content_margin_all(4)
-	
+
 	var content_sb := StyleBoxFlat.new()
 	content_sb.corner_radius_bottom_left = 4
 	content_sb.corner_radius_bottom_right = 4
@@ -168,10 +168,10 @@ func determine_selection_highlight() -> void:
 	content_sb.content_margin_left = 7
 	content_sb.content_margin_bottom = 7
 	content_sb.content_margin_right = 7
-	
+
 	var is_selected := tid in Indications.selected_tids
 	var is_hovered := Indications.hovered_tid == tid
-	
+
 	if is_selected:
 		if is_hovered:
 			content_sb.bg_color = Color.from_hsv(0.625, 0.48, 0.27)
@@ -191,7 +191,7 @@ func determine_selection_highlight() -> void:
 		title_sb.bg_color = Color.from_hsv(0.625, 0.45, 0.17)
 		content_sb.border_color = Color.from_hsv(0.6, 0.5, 0.35)
 		title_sb.border_color = Color.from_hsv(0.6, 0.5, 0.35)
-	
+
 	var depth := tid.size() - 1
 	var depth_tint := depth * 0.12
 	if depth > 0:
@@ -203,7 +203,7 @@ func determine_selection_highlight() -> void:
 				title_sb.bg_color.s, title_sb.bg_color.v)
 		title_sb.border_color = Color.from_hsv(title_sb.border_color.h + depth_tint,
 				title_sb.border_color.s, title_sb.border_color.v)
-	
+
 	content.add_theme_stylebox_override(&"panel", content_sb)
 	title_bar.add_theme_stylebox_override(&"panel", title_sb)
 
@@ -255,122 +255,40 @@ func drop_location_calculator(at_position: Vector2) -> DropState:# returns insid
 		return DropState.Up
 	else:
 		return DropState.Down
-	return DropState.Outside
 
 func drop_location_indicator(state: DropState) -> void:
-	var stylebox := StyleBoxFlat.new()
-	stylebox.set_corner_radius_all(4)
-	stylebox.set_border_width_all(2)
-	stylebox.set_content_margin_all(5)
-	stylebox.bg_color = Color.from_hsv(0.625, 0.5, 0.25)
-	stylebox.border_color = Color("yellow")
+	var title_sb :StyleBoxFlat = StyleBoxFlat.new()
+	title_sb.corner_radius_top_left = 4
+	title_sb.corner_radius_top_right = 4
+	title_sb.set_border_width_all(2)
+	title_sb.border_width_bottom = 0
+	title_sb.set_content_margin_all(4)
+	title_sb.border_color = Color("yellow")
+	title_sb.bg_color = Color.from_hsv(0.625, 0.6, 0.35)
+
+	var content_sb :StyleBoxFlat = StyleBoxFlat.new()
+	content_sb.corner_radius_bottom_left = 4
+	content_sb.corner_radius_bottom_right = 4
+	content_sb.border_width_left = 2
+	content_sb.border_width_right = 2
+	content_sb.border_width_bottom = 2
+	content_sb.content_margin_top = 5
+	content_sb.content_margin_left = 7
+	content_sb.content_margin_bottom = 7
+	content_sb.content_margin_right = 7
+	content_sb.border_color = Color("yellow")
+	content_sb.bg_color = Color.from_hsv(0.625, 0.5, 0.25)
 	match state:
-		DropState.Inside:# adds as a child
-			add_theme_stylebox_override(&"panel", stylebox)
 		DropState.Up:# adds above its self
-			stylebox.set_border_width_all(0)
-			stylebox.border_width_top = 2
-			add_theme_stylebox_override(&"panel", stylebox)
+			title_sb.set_border_width_all(0)
+			content_sb.set_border_width_all(0)
+			title_sb.border_width_top = 2
 		DropState.Down:# adds down its self
-			stylebox.set_border_width_all(0)
-			stylebox.border_width_bottom = 2
-			add_theme_stylebox_override(&"panel", stylebox)
-
-func _notification(what:int) -> void:
-	if what == NOTIFICATION_DRAG_BEGIN:
-		toggle_pause_children(true)
-	elif what == NOTIFICATION_DRAG_END:
-		toggle_pause_children(false)
-
-func toggle_pause_children(pause:bool) -> void:
-	var children:Array[Node] = get_children()
-	for child in children:
-		if pause:
-			child.process_mode = Node.PROCESS_MODE_DISABLED
-		else:
-			child.process_mode = Node.PROCESS_MODE_INHERIT
-
-func _drop_data(_at_position: Vector2, current_tid: Variant):
-	var state:DropState = drop_location_calculator(get_global_mouse_position())
-	var new_tid:PackedInt32Array = tid.duplicate()
-	match state:
-		DropState.Inside:
-			new_tid.append(0)
-		DropState.Up:
-			new_tid[-1] -= 1 if new_tid[-1] > 0 else 0
-		DropState.Down:
-			new_tid[-1] += 1
-	SVG.root_tag.move_tags_to(current_tid,new_tid)
-#endregion
-
-#region drag and drop
-func _get_drag_data(_at_position: Vector2) -> Variant:
-	var data:Array[PackedInt32Array] = [tid]
-	if tid in Indications.selected_tids:
-		data = Indications.selected_tids
-	var tags_container:VBoxContainer = VBoxContainer.new()
-	for drag_tid in data:
-		var preview = TagEditor.instantiate()
-		preview.tag = SVG.root_tag.get_by_tid(drag_tid)
-		preview.tid = drag_tid
-		preview.custom_minimum_size.x = self.size.x
-		preview.custom_minimum_size.y = self.size.y
-		tags_container.add_child(preview)
-	tags_container.modulate = Color('#ffffffd3')
-	set_drag_preview(tags_container)
-	return data
-
-enum DropState{
-	Inside = 0,
-	Up,
-	Down,
-	Outside,
-}
-
-func _can_drop_data(_at_position: Vector2, current_tid: Variant) -> bool:
-	if current_tid is Array and not  tid in current_tid:
-		var state:DropState = drop_location_calculator(get_global_mouse_position())
-		if state == DropState.Inside:
-			var new_tid:PackedInt32Array = tid.duplicate()
-			new_tid.append(0)
-			if new_tid in current_tid: return false #is idx 0 child draged on parent
-		drop_location_indicator(state)
-		return true
-	return false
-
-func drop_location_calculator(at_position: Vector2) -> DropState:# returns inside,up,down,outside
-	var top_bottom_margin:float = 0.18 # 0 - 1
-	var tag_editor_area:Rect2 = Rect2(get_global_rect())
-	if not tag_editor_area.has_point(at_position):
-		return DropState.Outside
-	var shrink_ratio:float = top_bottom_margin * float(tag_editor_area.size.y)
-	tag_editor_area = tag_editor_area.grow_individual(0,- shrink_ratio,0,- shrink_ratio)
-	if tag_editor_area.has_point(at_position):
-		return DropState.Inside
-	if tag_editor_area.position.y > at_position.y:
-		return DropState.Up
-	else:
-		return DropState.Down
-	return DropState.Outside
-
-func drop_location_indicator(state: DropState) -> void:
-	var stylebox := StyleBoxFlat.new()
-	stylebox.set_corner_radius_all(4)
-	stylebox.set_border_width_all(2)
-	stylebox.set_content_margin_all(5)
-	stylebox.bg_color = Color.from_hsv(0.625, 0.5, 0.25)
-	stylebox.border_color = Color("yellow")
-	match state:
-		DropState.Inside:# adds as a child
-			add_theme_stylebox_override(&"panel", stylebox)
-		DropState.Up:# adds above its self
-			stylebox.set_border_width_all(0)
-			stylebox.border_width_top = 2
-			add_theme_stylebox_override(&"panel", stylebox)
-		DropState.Down:# adds down its self
-			stylebox.set_border_width_all(0)
-			stylebox.border_width_bottom = 2
-			add_theme_stylebox_override(&"panel", stylebox)
+			title_sb.set_border_width_all(0)
+			content_sb.set_border_width_all(0)
+			content_sb.border_width_bottom = 2
+	content.add_theme_stylebox_override(&"panel", content_sb)
+	title_bar.add_theme_stylebox_override(&"panel", title_sb)
 
 func _notification(what:int) -> void:
 	if what == NOTIFICATION_DRAG_BEGIN:
