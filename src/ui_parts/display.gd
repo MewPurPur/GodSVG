@@ -31,7 +31,7 @@ func update_snap_config() -> void:
 
 func _on_settings_pressed() -> void:
 	var settings_menu_instance := settings_menu.instantiate()
-	get_tree().get_root().add_child(settings_menu_instance)
+	HandlerGUI.add_overlay(settings_menu_instance)
 
 func _on_visuals_button_pressed() -> void:
 	var btn_arr: Array[Button] = []
@@ -96,11 +96,11 @@ func open_godsvg_repo() -> void:
 
 func open_about() -> void:
 	var about_menu_instance := about_menu.instantiate()
-	get_tree().get_root().add_child(about_menu_instance)
+	HandlerGUI.add_overlay(about_menu_instance)
 
 func open_docs() -> void:
 	var docs_instance := docs.instantiate()
-	get_tree().get_root().add_child(docs_instance)
+	HandlerGUI.add_overlay(docs_instance)
 
 func open_sponsor() -> void:
 	OS.shell_open("https://ko-fi.com/mewpurpur")

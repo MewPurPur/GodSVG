@@ -28,19 +28,21 @@ enum SyncMode {LOUD, INTERMEDIATE, FINAL, NO_PROPAGATION, SILENT}
 # if there is logic for updating the corresponding attribute editor despite that.
 
 func set_value(new_value: String, sync_mode := SyncMode.LOUD) -> void:
-	var actually_changed := (new_value != _value)
-	if actually_changed or sync_mode == SyncMode.FINAL:
-		_value = new_value
-		if actually_changed:
-			_sync()
+	var proposed_new_value := autoformat(new_value)
+	if proposed_new_value != _value or sync_mode == SyncMode.FINAL:
+		_value = proposed_new_value
+		_sync()
 		if sync_mode != SyncMode.SILENT:
-			value_changed.emit(new_value)
+			value_changed.emit(proposed_new_value)
 			if sync_mode != SyncMode.NO_PROPAGATION:
 				propagate_value_changed.emit(sync_mode != SyncMode.INTERMEDIATE)
 
 func get_value() -> String:
 	return _value
 
-# Override this function in extending classes to update the non-string representation.
+# Override these functions in extending classes to update the non-string representation.
 func _sync() -> void:
 	return
+
+func autoformat(text: String) -> String:
+	return text

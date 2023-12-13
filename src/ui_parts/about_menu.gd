@@ -1,4 +1,4 @@
-extends Dialog
+extends PanelContainer
 
 @onready var authors_label: RichTextLabel = %AuthorsLabel
 @onready var version_label: Label = %VersionLabel
