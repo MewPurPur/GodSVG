@@ -227,6 +227,7 @@ func move_tags_in_parent(tids: Array[PackedInt32Array], down: bool) -> void:
 
 func move_tags_to(tids: Array[PackedInt32Array], to: PackedInt32Array) -> void:
 	tids = Utils.filter_tids_remove_children(tids)
+	var tids_resort_reference = tids.duplicate()
 	tids = Utils.sort_tids(tids)
 	tids.reverse()# remove bottom first
 	var to_parent_tids:PackedInt32Array = Utils.get_parent_tid(to)
@@ -235,13 +236,18 @@ func move_tags_to(tids: Array[PackedInt32Array], to: PackedInt32Array) -> void:
 	var reference_pos:int
 	if reference_pos_tag:
 		reference_pos = to_parent_tag.child_tags.find(reference_pos_tag)
-	var tags_to_move:Array[Tag] = []
+	var tags_to_sort:Dictionary = {} #tid:Tag
 	#remove tags
 	for tid in tids:
 		var parent_tid:PackedInt32Array = Utils.get_parent_tid(tid)
 		var parent_tag:Tag = get_by_tid(parent_tid)
 		var tag:Tag = parent_tag.child_tags.pop_at(tid[-1])
-		tags_to_move.append(tag)
+		tags_to_sort[tid] = tag
+	#sort to original selection order
+	var tags_to_move:Array[Tag] = []
+	for tid in tids_resort_reference:
+		if tid in tags_to_sort:
+			tags_to_move.append(tags_to_sort[tid])
 	#add back removed tags
 	var shift_pos = 0
 	for tag in tags_to_move:
