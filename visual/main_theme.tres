@@ -1,11 +1,13 @@
-[gd_resource type="Theme" load_steps=72 format=3 uid="uid://der6fnkliqqto"]
+[gd_resource type="Theme" load_steps=75 format=3 uid="uid://der6fnkliqqto"]
 
 [ext_resource type="Texture2D" uid="uid://wdrpwa7gwmg" path="res://visual/icons/theme/GuiBoxChecked.svg" id="1_agkhv"]
+[ext_resource type="Texture2D" uid="uid://d07xfjdtgtvop" path="res://visual/icons/theme/GuiBoxCheckedDisabled.svg" id="2_kfk3n"]
 [ext_resource type="Texture2D" uid="uid://d3a3xgsb8klyk" path="res://visual/icons/theme/GuiBoxUnchecked.svg" id="2_xwib4"]
 [ext_resource type="Texture2D" uid="uid://dwlr4bgptgwho" path="res://visual/icons/theme/GuiToggleChecked.svg" id="3_ggukc"]
 [ext_resource type="Texture2D" uid="uid://rrhdja8l17cn" path="res://visual/icons/theme/FolderUp.svg" id="4_1t13q"]
 [ext_resource type="Texture2D" uid="uid://cvh3kwbucf2n1" path="res://visual/icons/Reload.svg" id="4_8qjet"]
 [ext_resource type="Texture2D" uid="uid://kkxyv1gyrjgj" path="res://visual/icons/Visuals.svg" id="4_j0oku"]
+[ext_resource type="Texture2D" uid="uid://xbycstdv7g3m" path="res://visual/icons/theme/GuiBoxUncheckedDisabled.svg" id="4_t3o2j"]
 [ext_resource type="Texture2D" uid="uid://c12tg3dnydily" path="res://visual/icons/theme/GuiToggleUnchecked.svg" id="4_w667w"]
 [ext_resource type="Texture2D" uid="uid://cnig3sejwsrf3" path="res://visual/icons/theme/SplitGrabber.svg" id="5_7sidk"]
 [ext_resource type="FontFile" uid="uid://dtb4wkus51hxs" path="res://visual/fonts/FontMono.ttf" id="5_nfqug"]
@@ -105,6 +107,17 @@ corner_radius_top_right = 5
 corner_radius_bottom_right = 5
 corner_radius_bottom_left = 5
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cnkik"]
+content_margin_left = 4.0
+content_margin_top = 2.0
+content_margin_right = 4.0
+content_margin_bottom = 2.0
+bg_color = Color(0.0196078, 0.0235294, 0.027451, 0.333333)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ehixj"]
 content_margin_left = 4.0
 content_margin_top = 2.0
@@ -144,7 +157,7 @@ content_margin_left = 2.0
 content_margin_top = 2.0
 content_margin_right = 2.0
 content_margin_bottom = 2.0
-bg_color = Color(0.0196078, 0.0235294, 0.027451, 0.266667)
+bg_color = Color(0.0196078, 0.0235294, 0.027451, 0.333333)
 corner_radius_top_left = 3
 corner_radius_top_right = 3
 corner_radius_bottom_right = 3
@@ -517,6 +530,10 @@ corner_radius_top_left = 5
 corner_radius_bottom_left = 5
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7qkcb"]
+content_margin_left = 6.0
+content_margin_top = 6.0
+content_margin_right = 6.0
+content_margin_bottom = 6.0
 bg_color = Color(0.078, 0.0828, 0.15, 1)
 border_width_left = 2
 border_width_right = 2
@@ -526,6 +543,10 @@ corner_radius_bottom_right = 5
 corner_radius_bottom_left = 5
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_auw38"]
+content_margin_left = 12.0
+content_margin_top = 3.0
+content_margin_right = 12.0
+content_margin_bottom = 3.0
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_kohom"]
 
@@ -535,6 +556,8 @@ content_margin_top = 3.0
 content_margin_right = 12.0
 content_margin_bottom = 3.0
 bg_color = Color(0.121569, 0.129412, 0.219608, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nhytu"]
 content_margin_left = 12.0
@@ -551,8 +574,14 @@ content_margin_top = 3.0
 content_margin_right = 12.0
 content_margin_bottom = 3.0
 bg_color = Color(0.09, 0.0975, 0.18, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jd7jj"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
 bg_color = Color(0.0627451, 0.0627451, 0.101961, 1)
 corner_radius_top_left = 5
 corner_radius_top_right = 5
@@ -679,7 +708,10 @@ Button/styles/hover = SubResource("StyleBoxFlat_h5umu")
 Button/styles/normal = SubResource("StyleBoxFlat_yq2fk")
 Button/styles/pressed = SubResource("StyleBoxFlat_gnyjn")
 CheckBox/icons/checked = ExtResource("1_agkhv")
+CheckBox/icons/checked_disabled = ExtResource("2_kfk3n")
 CheckBox/icons/unchecked = ExtResource("2_xwib4")
+CheckBox/icons/unchecked_disabled = ExtResource("4_t3o2j")
+CheckBox/styles/disabled = SubResource("StyleBoxFlat_cnkik")
 CheckBox/styles/hover = SubResource("StyleBoxFlat_ehixj")
 CheckBox/styles/hover_pressed = SubResource("StyleBoxFlat_xs6y6")
 CheckBox/styles/normal = SubResource("StyleBoxEmpty_kja1p")

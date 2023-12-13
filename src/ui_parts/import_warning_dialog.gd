@@ -1,4 +1,4 @@
-extends Dialog
+extends PanelContainer
 
 signal imported(text: String)
 

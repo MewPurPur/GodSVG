@@ -12,14 +12,26 @@ var config := ConfigFile.new()
 
 # Don't have the language setting here, so it's not reset.
 const default_config = {
-	"session": {
-		"save_svg": true,
-		"save_window_mode": true,
-	},
 	"input": {
 		"invert_zoom": false,
 		"wrap_mouse": false,
 		"use_ctrl_for_zoom": false,
+	},
+	"autoformat": {
+		"number_enable_autoformatting": false,
+		"number_remove_zero_padding": false,
+		"number_remove_leading_zero": true,
+		"number_remove_plus_sign": false,
+		"color_enable_autoformatting": false,
+		"color_convert_rgb_to_hex": false,
+		"color_convert_named_to_hex": true,
+		"color_use_shorthand_hex_code": true,
+		"color_use_short_named_colors": false,
+		"path_enable_autoformatting": false,
+		"path_compress_numbers": true,
+		"path_minimize_spacing": true,
+		"path_remove_spacing_after_flags": false,
+		"path_remove_consecutive_commands": true,
 	},
 }
 
@@ -27,20 +39,35 @@ var language: StringName:
 	set(new_value):
 		language = new_value
 		TranslationServer.set_locale(new_value)
-		save_setting("text", "language", language)
+		save_setting("text", "language")
 
-var invert_zoom := false:
-	set(new_value):
-		invert_zoom = new_value
-		save_setting("input", "invert_zoom", invert_zoom)
+# Input
+var invert_zoom := false
+var wrap_mouse := false
 
-var wrap_mouse := false:
-	set(new_value):
-		wrap_mouse = new_value
-		save_setting("input", "wrap_mouse", wrap_mouse)
+# Autoformat
+var number_enable_autoformatting := false
+var number_remove_zero_padding := true
+var number_remove_leading_zero := false
+var number_remove_plus_sign := true
+var color_enable_autoformatting := false
+var color_convert_rgb_to_hex := false
+var color_convert_named_to_hex := true
+var color_use_shorthand_hex_code := true
+var color_use_short_named_colors := false
+var path_enable_autoformatting := false
+var path_compress_numbers := true
+var path_minimize_spacing := true
+var path_remove_spacing_after_flags := false
+var path_remove_consecutive_commands := true
 
-func save_setting(section: String, setting: String, saved_value: Variant) -> void:
-	config.set_value(section, setting, saved_value)
+
+func toggle_bool_setting(section: String, setting: String) -> void:
+	set(setting, !get(setting))
+	save_setting(section, setting)
+
+func save_setting(section: String, setting: String) -> void:
+	config.set_value(section, setting, get(setting))
 	config.save(config_path)
 
 func modify_save_data(property: StringName, new_value: Variant) -> void:
@@ -92,11 +119,13 @@ func load_settings() -> void:
 		for section in config.get_sections():
 			for setting in config.get_section_keys(section):
 				set(setting, config.get_value(section, setting))
+				save_setting(section, setting)
 
 func reset_settings() -> void:
 	for section in default_config.keys():
 		for setting in default_config[section].keys():
 			set(setting, default_config[section][setting])
+			save_setting(section, setting)
 
 func get_palettes() -> Array[ColorPalette]:
 	return _palettes.palettes

@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://1rylg17uwltw"]
+[gd_scene load_steps=6 format=3 uid="uid://1rylg17uwltw"]
 
 [ext_resource type="Script" path="res://src/ui_parts/settings_menu.gd" id="1_1gf4m"]
 [ext_resource type="Texture2D" uid="uid://c528knojuxbw6" path="res://visual/icons/Languages.svg" id="2_ndyp7"]
 [ext_resource type="Script" path="res://src/ui_elements/BetterTabContainer.gd" id="3_vslgx"]
+[ext_resource type="PackedScene" uid="uid://chgcy63ldo7x5" path="res://src/ui_elements/setting_check_box.tscn" id="4_2qeh2"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hto7q"]
 content_margin_left = 8.0
@@ -20,36 +21,27 @@ corner_radius_top_right = 2
 corner_radius_bottom_right = 2
 corner_radius_bottom_left = 2
 
-[node name="SettingsMenu" type="ColorRect"]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(0, 0, 0, 0.4)
-script = ExtResource("1_1gf4m")
-
-[node name="MainPanel" type="PanelContainer" parent="."]
-custom_minimum_size = Vector2(360, 256)
-layout_mode = 1
+[node name="SettingsMenu" type="PanelContainer"]
+custom_minimum_size = Vector2(362, 256)
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -117.0
-offset_top = -46.0
-offset_right = 117.0
-offset_bottom = 46.0
+offset_left = -180.0
+offset_top = -128.0
+offset_right = 180.0
+offset_bottom = 128.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_hto7q")
+script = ExtResource("1_1gf4m")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MainPanel"]
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 2
-theme_override_constants/separation = 12
+theme_override_constants/separation = 8
 
-[node name="Language" type="Button" parent="MainPanel/VBoxContainer"]
+[node name="Language" type="Button" parent="VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
@@ -57,65 +49,54 @@ focus_mode = 0
 mouse_default_cursor_shape = 2
 icon = ExtResource("2_ndyp7")
 
-[node name="TabContainer" type="TabContainer" parent="MainPanel/VBoxContainer"]
+[node name="TabContainer" type="TabContainer" parent="VBoxContainer"]
 layout_mode = 2
+size_flags_vertical = 3
 script = ExtResource("3_vslgx")
 
-[node name="#input_tab" type="MarginContainer" parent="MainPanel/VBoxContainer/TabContainer"]
+[node name="#input_tab" type="ScrollContainer" parent="VBoxContainer/TabContainer"]
 layout_mode = 2
-theme_override_constants/margin_left = 4
-theme_override_constants/margin_top = 4
-theme_override_constants/margin_right = 4
-theme_override_constants/margin_bottom = 4
+horizontal_scroll_mode = 0
 
-[node name="VBox" type="VBoxContainer" parent="MainPanel/VBoxContainer/TabContainer/#input_tab"]
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/TabContainer/#input_tab"]
 layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 theme_override_constants/separation = 0
 
-[node name="InvertZoom" type="CheckBox" parent="MainPanel/VBoxContainer/TabContainer/#input_tab/VBox"]
-unique_name_in_owner = true
+[node name="InvertZoom" parent="VBoxContainer/TabContainer/#input_tab/VBoxContainer" instance=ExtResource("4_2qeh2")]
 layout_mode = 2
 tooltip_text = "#invert_zoom_desc"
-focus_mode = 0
-mouse_default_cursor_shape = 2
 text = "#invert_zoom"
+section_name = "input"
+setting_name = "invert_zoom"
 
-[node name="WrapMouse" type="CheckBox" parent="MainPanel/VBoxContainer/TabContainer/#input_tab/VBox"]
-unique_name_in_owner = true
+[node name="WrapMouse" parent="VBoxContainer/TabContainer/#input_tab/VBoxContainer" instance=ExtResource("4_2qeh2")]
 layout_mode = 2
 tooltip_text = "#wrap_mouse_desc"
-focus_mode = 0
-mouse_default_cursor_shape = 2
 text = "#wrap_mouse"
+section_name = "input"
+setting_name = "wrap_mouse"
 
-[node name="#palettes" type="MarginContainer" parent="MainPanel/VBoxContainer/TabContainer"]
+[node name="#palettes" type="ScrollContainer" parent="VBoxContainer/TabContainer"]
 visible = false
-layout_mode = 2
-theme_override_constants/margin_left = 4
-theme_override_constants/margin_top = 4
-theme_override_constants/margin_right = 4
-theme_override_constants/margin_bottom = 4
-
-[node name="ScrollContainer" type="ScrollContainer" parent="MainPanel/VBoxContainer/TabContainer/#palettes"]
 custom_minimum_size = Vector2(0, 120)
 layout_mode = 2
 horizontal_scroll_mode = 0
 
-[node name="PaletteContainer" type="VBoxContainer" parent="MainPanel/VBoxContainer/TabContainer/#palettes/ScrollContainer"]
+[node name="PaletteContainer" type="VBoxContainer" parent="VBoxContainer/TabContainer/#palettes"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 4
 
-[node name="Close" type="Button" parent="MainPanel/VBoxContainer"]
+[node name="Close" type="Button" parent="VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
-size_flags_vertical = 10
+size_flags_vertical = 8
 focus_mode = 0
 mouse_default_cursor_shape = 2
 text = "#close"
 
-[connection signal="pressed" from="MainPanel/VBoxContainer/Language" to="." method="_on_language_pressed"]
-[connection signal="pressed" from="MainPanel/VBoxContainer/TabContainer/#input_tab/VBox/InvertZoom" to="." method="_on_invert_zoom_pressed"]
-[connection signal="pressed" from="MainPanel/VBoxContainer/TabContainer/#input_tab/VBox/WrapMouse" to="." method="_on_wrap_mouse_pressed"]
-[connection signal="pressed" from="MainPanel/VBoxContainer/Close" to="." method="_on_close_pressed"]
+[connection signal="pressed" from="VBoxContainer/Language" to="." method="_on_language_pressed"]
+[connection signal="pressed" from="VBoxContainer/Close" to="." method="_on_close_pressed"]

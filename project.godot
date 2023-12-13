@@ -28,9 +28,10 @@ driver/driver="Dummy"
 
 [autoload]
 
-SVG="*res://src/SVG.gd"
 GlobalSettings="*res://src/GlobalSettings.gd"
+SVG="*res://src/SVG.gd"
 Indications="*res://src/Indications.gd"
+HandlerGUI="*res://src/HandlerGUI.gd"
 
 [display]
 

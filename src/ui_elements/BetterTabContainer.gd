@@ -17,4 +17,3 @@ func _notification(what: int) -> void:
 func translate_titles() -> void:
 	for i in tab_keys.size():
 		set_tab_title(i, tr(tab_keys[i]))
-

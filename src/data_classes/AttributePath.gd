@@ -11,6 +11,13 @@ func _sync() -> void:
 	_commands = PathDataParser.parse_path_data(get_value())
 	locate_start_points()
 
+func autoformat(text: String) -> String:
+	if GlobalSettings.path_enable_autoformatting:
+		return PathDataParser.path_commands_to_text(PathDataParser.parse_path_data(text))
+	else:
+		return text
+
+
 func set_commands(new_commands: Array[PathCommand], sync_mode := SyncMode.LOUD) -> void:
 	_commands = new_commands
 	sync_after_commands_change(sync_mode)

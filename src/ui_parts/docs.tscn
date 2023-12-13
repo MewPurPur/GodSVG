@@ -19,18 +19,8 @@ corner_radius_top_right = 2
 corner_radius_bottom_right = 2
 corner_radius_bottom_left = 2
 
-[node name="Docs" type="ColorRect"]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(0, 0, 0, 0.4)
-script = ExtResource("1_v0u3p")
-
-[node name="MainPanel" type="PanelContainer" parent="."]
+[node name="Docs" type="PanelContainer"]
 custom_minimum_size = Vector2(320, 160)
-layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -43,28 +33,29 @@ offset_bottom = 46.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_cr53y")
+script = ExtResource("1_v0u3p")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MainPanel"]
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 2
 theme_override_constants/separation = 12
 
-[node name="TabContainer" type="TabContainer" parent="MainPanel/VBoxContainer"]
+[node name="TabContainer" type="TabContainer" parent="VBoxContainer"]
 layout_mode = 2
 script = ExtResource("2_h5w1r")
 
-[node name="#kbd_shortcuts_tab" type="MarginContainer" parent="MainPanel/VBoxContainer/TabContainer"]
+[node name="#kbd_shortcuts_tab" type="MarginContainer" parent="VBoxContainer/TabContainer"]
 layout_mode = 2
 theme_override_constants/margin_left = 6
 theme_override_constants/margin_top = 6
 theme_override_constants/margin_right = 6
 theme_override_constants/margin_bottom = 6
 
-[node name="Desc" type="RichTextLabel" parent="MainPanel/VBoxContainer/TabContainer/#kbd_shortcuts_tab"]
+[node name="Desc" type="RichTextLabel" parent="VBoxContainer/TabContainer/#kbd_shortcuts_tab"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 96)
 layout_mode = 2
 
-[node name="Close" type="Button" parent="MainPanel/VBoxContainer"]
+[node name="Close" type="Button" parent="VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 8
@@ -72,4 +63,4 @@ focus_mode = 0
 mouse_default_cursor_shape = 2
 text = "#close"
 
-[connection signal="pressed" from="MainPanel/VBoxContainer/Close" to="." method="_on_close_pressed"]
+[connection signal="pressed" from="VBoxContainer/Close" to="." method="_on_close_pressed"]

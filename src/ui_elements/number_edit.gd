@@ -13,22 +13,18 @@ var _value := NAN
 
 func set_value(new_value: float, emit_changed := true) -> void:
 	if not is_finite(new_value):
-		text = String.num(_value, 4)
+		sync_text()
 		return
 	elif _value != new_value:
-		if allow_lower:
-			if allow_higher:
-				_value = new_value
-			else:
-				_value = minf(new_value, max_value)
-		else:
-			if allow_higher:
-				_value = maxf(new_value, min_value)
-			else:
-				_value = clampf(new_value, min_value, max_value)
-		text = String.num(_value, 4)
-		if emit_changed:
-			value_changed.emit(_value)
+		if not allow_higher and new_value > max_value:
+			new_value = max_value
+		elif not allow_lower and new_value < min_value:
+			new_value = min_value
+		if _value != new_value:
+			_value = new_value
+			if emit_changed:
+				value_changed.emit(_value)
+	sync_text()
 
 func get_value() -> float:
 	return _value
@@ -40,13 +36,13 @@ func _ready() -> void:
 	_value = initial_value
 	text = String.num(_value, 4)
 
-func _on_value_changed(new_value: float) -> void:
-	text = String.num(new_value, 4)
-
 
 func _on_focus_exited() -> void:
-	set_value(AttributeNumeric.evaluate_numeric_expression(text))
+	set_value(AttributeNumeric.evaluate_expr(text))
 	super()
 
 func _on_text_submitted(submitted_text: String) -> void:
-	set_value(AttributeNumeric.evaluate_numeric_expression(submitted_text))
+	set_value(AttributeNumeric.evaluate_expr(submitted_text))
+
+func sync_text() -> void:
+	text = String.num(_value, 4)

@@ -38,5 +38,6 @@ static func string_to_list(string: String) -> PackedFloat32Array:
 static func list_to_string(list: PackedFloat32Array) -> String:
 	var params := PackedStringArray()
 	for element in list:
-		params.append(String.num(element, 4))
+		# It's fine to use this parser, AttributeList is just a list of numbers.
+		params.append(NumberParser.num_to_text(element))
 	return " ".join(params)
