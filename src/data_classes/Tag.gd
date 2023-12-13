@@ -32,9 +32,9 @@ func get_child_count() -> int:
 # Why is there no way to duplicate RefCounteds, again?
 func create_duplicate() -> Tag:
 	var type: GDScript = get_script()
-	var new_tag: Variant
+	var new_tag: Tag
 	if type == TagUnknown:
-		new_tag = type.new(type.name)
+		new_tag = TagUnknown.new(self.name)
 	else:
 		new_tag = type.new()
 	for attribute in new_tag.attributes:
