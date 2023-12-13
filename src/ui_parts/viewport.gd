@@ -57,21 +57,35 @@ func _unhandled_input(event: InputEvent) -> void:
 		zoom_menu.zoom_level *= event.factor
 	
 	if event is InputEventMouseButton and event.is_pressed():
-		match event.button_index:
-			MOUSE_BUTTON_WHEEL_UP when GlobalSettings.invert_zoom:
-				zoom_menu.zoom_out()
-			MOUSE_BUTTON_WHEEL_UP:
-				zoom_menu.zoom_in()
-			MOUSE_BUTTON_WHEEL_DOWN when GlobalSettings.invert_zoom:
-				zoom_menu.zoom_in()
-			MOUSE_BUTTON_WHEEL_DOWN:
-				zoom_menu.zoom_out()
-	
-	if event is InputEventMouseButton:
-		if event.ctrl_pressed:
-			pass
-
-
+		var move_vec := Vector2.ZERO
+		var zoom_dir := 0
+		if ( not event.ctrl_pressed and not event.shift_pressed and not GlobalSettings.use_ctrl_for_zoom)\
+		or ( event.ctrl_pressed and GlobalSettings.use_ctrl_for_zoom ):
+			match event.button_index:
+				MOUSE_BUTTON_WHEEL_UP when GlobalSettings.invert_zoom: zoom_dir -= 1
+				MOUSE_BUTTON_WHEEL_DOWN when GlobalSettings.invert_zoom: zoom_dir += 1
+				MOUSE_BUTTON_WHEEL_UP: zoom_dir += 1
+				MOUSE_BUTTON_WHEEL_DOWN: zoom_dir -= 1
+		elif event.shift_pressed:
+			match event.button_index:
+				MOUSE_BUTTON_WHEEL_UP: move_vec = Vector2.LEFT
+				MOUSE_BUTTON_WHEEL_DOWN: move_vec = Vector2.RIGHT
+				MOUSE_BUTTON_WHEEL_LEFT: move_vec = Vector2.UP
+				MOUSE_BUTTON_WHEEL_RIGHT: move_vec = Vector2.DOWN
+		else:
+			match event.button_index:
+				MOUSE_BUTTON_WHEEL_UP: move_vec = Vector2.UP
+				MOUSE_BUTTON_WHEEL_DOWN: move_vec = Vector2.DOWN
+				MOUSE_BUTTON_WHEEL_LEFT: move_vec = Vector2.LEFT
+				MOUSE_BUTTON_WHEEL_RIGHT: move_vec = Vector2.RIGHT
+		var fac: float = event.factor
+		if fac == roundf(fac):  # Detects unsupported device.
+			fac = 1.0
+		set_view(view.position + move_vec * fac / zoom * 32)
+		if zoom_dir == 1:
+			zoom_menu.zoom_in(fac)
+		elif zoom_dir == -1:
+			zoom_menu.zoom_out(fac)
 
 func _on_zoom_changed(zoom_level: float) -> void:
 	zoom = zoom_level
