@@ -1,5 +1,6 @@
 extends VBoxContainer
 
+const autoformat_menu = preload("autoformat_menu.tscn")
 const SVGFileDialog = preload("svg_file_dialog.tscn")
 const ExportDialog = preload("export_dialog.tscn")
 
@@ -73,12 +74,12 @@ func _on_import_button_pressed() -> void:
 				DisplayServer.FILE_DIALOG_MODE_OPEN_FILE, ["*.svg"], native_file_import)
 	else:
 		var svg_import_dialog := SVGFileDialog.instantiate()
-		get_tree().get_root().add_child(svg_import_dialog)
+		HandlerGUI.add_overlay(svg_import_dialog)
 		svg_import_dialog.file_selected.connect(SVG.apply_svg_from_path)
 
 func _on_export_button_pressed() -> void:
 	var export_panel := ExportDialog.instantiate()
-	get_tree().get_root().add_child(export_panel)
+	HandlerGUI.add_overlay(export_panel)
 
 func set_new_text(svg_text: String) -> void:
 	code_edit.text = svg_text
@@ -105,5 +106,10 @@ func _on_svg_code_edit_focus_exited() -> void:
 		SVG.update_text(true)
 
 func _on_files_dropped(files: PackedStringArray):
-	if not Dialog.is_open:
+	if not HandlerGUI.has_overlay:
 		SVG.apply_svg_from_path(files[0])
+
+
+func _on_autoformat_button_pressed() -> void:
+	var autoformat_menu_instance := autoformat_menu.instantiate()
+	HandlerGUI.add_overlay(autoformat_menu_instance)

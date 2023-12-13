@@ -14,25 +14,29 @@ var allow_lower := true
 var allow_higher := true
 
 func set_value(new_value: String, update_type := Utils.UpdateType.REGULAR) -> void:
-	var numeric_value := AttributeNumeric.evaluate_numeric_expression(new_value)
+	var numeric_value := AttributeNumeric.evaluate_expr(new_value)
 	# Validate the value.
 	if !is_finite(numeric_value):
 		sync(attribute.get_value())
 		return
-	if allow_lower:
-		if not allow_higher:
-			numeric_value = minf(numeric_value, max_value)
-	else:
-		if allow_higher:
-			numeric_value = maxf(numeric_value, min_value)
-		else:
-			numeric_value = clampf(numeric_value, min_value, max_value)
 	
-	var old_value := attribute.get_value()
-	new_value = AttributeNumeric.num_to_text(numeric_value)
+	if not allow_higher and numeric_value > max_value:
+		numeric_value = max_value
+		new_value = NumberParser.num_to_text(numeric_value)
+	elif not allow_lower and numeric_value < min_value:
+		numeric_value = min_value
+		new_value = NumberParser.num_to_text(numeric_value)
+	
+	# Just because the value passed was +1 or 1.0 instead of the default 1,
+	# shouldn't cause the attribute to be added to the SVG text.
+	if attribute.default == NumberParser.num_to_text(numeric_value):
+		new_value = attribute.default
+	elif NumberParser.text_to_num(new_value) != AttributeNumeric.evaluate_expr(new_value):
+		new_value = NumberParser.num_to_text(numeric_value)
+	
+	sync(attribute.autoformat(new_value))
 	# Update the attribute.
-	sync(new_value)
-	if new_value != old_value or update_type == Utils.UpdateType.FINAL:
+	if new_value != attribute.get_value() or update_type == Utils.UpdateType.FINAL:
 		match update_type:
 			Utils.UpdateType.INTERMEDIATE:
 				attribute.set_value(new_value, Attribute.SyncMode.INTERMEDIATE)
@@ -42,7 +46,7 @@ func set_value(new_value: String, update_type := Utils.UpdateType.REGULAR) -> vo
 				attribute.set_value(new_value)
 
 func set_num(new_number: float, update_type := Utils.UpdateType.REGULAR) -> void:
-	set_value(AttributeNumeric.num_to_text(new_number), update_type)
+	set_value(NumberParser.num_to_text(new_number), update_type)
 
 
 func _ready() -> void:

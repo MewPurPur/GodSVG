@@ -9,17 +9,7 @@
 shader = ExtResource("2_o24gk")
 shader_parameter/uv_scale = 2.0
 
-[node name="ImportWarningPanel" type="ColorRect"]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(0, 0, 0, 0.4)
-script = ExtResource("1_1rv5w")
-
-[node name="PanelContainer" type="PanelContainer" parent="."]
-layout_mode = 1
+[node name="ImportWarningPanel" type="PanelContainer"]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -31,28 +21,29 @@ offset_right = 174.0
 offset_bottom = 111.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_1rv5w")
 
-[node name="MarginContainer" type="MarginContainer" parent="PanelContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2
 theme_override_constants/margin_left = 8
 theme_override_constants/margin_top = 8
 theme_override_constants/margin_right = 8
 theme_override_constants/margin_bottom = 8
 
-[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
 layout_mode = 2
 theme_override_constants/separation = 12
 
-[node name="Title" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer"]
+[node name="Title" type="Label" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
 text = "#import_problems"
 horizontal_alignment = 1
 
-[node name="TextureContainer" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer"]
+[node name="TextureContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/separation = 12
 
-[node name="Checkerboard" type="TextureRect" parent="PanelContainer/MarginContainer/VBoxContainer/TextureContainer"]
+[node name="Checkerboard" type="TextureRect" parent="MarginContainer/VBoxContainer/TextureContainer"]
 material = SubResource("ShaderMaterial_774g4")
 custom_minimum_size = Vector2(128, 128)
 layout_mode = 2
@@ -61,7 +52,7 @@ size_flags_vertical = 4
 texture = ExtResource("3_k3bec")
 stretch_mode = 1
 
-[node name="TexturePreview" type="TextureRect" parent="PanelContainer/MarginContainer/VBoxContainer/TextureContainer/Checkerboard"]
+[node name="TexturePreview" type="TextureRect" parent="MarginContainer/VBoxContainer/TextureContainer/Checkerboard"]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 15
@@ -72,7 +63,7 @@ grow_vertical = 2
 expand_mode = 2
 stretch_mode = 5
 
-[node name="MarginContainer" type="MarginContainer" parent="PanelContainer/MarginContainer/VBoxContainer/TextureContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/TextureContainer"]
 custom_minimum_size = Vector2(256, 128)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -81,10 +72,10 @@ theme_override_constants/margin_top = 6
 theme_override_constants/margin_right = 4
 theme_override_constants/margin_bottom = 6
 
-[node name="ScrollContainer" type="ScrollContainer" parent="PanelContainer/MarginContainer/VBoxContainer/TextureContainer/MarginContainer"]
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/VBoxContainer/TextureContainer/MarginContainer"]
 layout_mode = 2
 
-[node name="WarningsLabel" type="RichTextLabel" parent="PanelContainer/MarginContainer/VBoxContainer/TextureContainer/MarginContainer/ScrollContainer"]
+[node name="WarningsLabel" type="RichTextLabel" parent="MarginContainer/VBoxContainer/TextureContainer/MarginContainer/ScrollContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -95,22 +86,22 @@ fit_content = true
 scroll_active = false
 autowrap_mode = 0
 
-[node name="ButtonContainer" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer"]
+[node name="ButtonContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 12
 alignment = 1
 
-[node name="CancelButton" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/ButtonContainer"]
+[node name="CancelButton" type="Button" parent="MarginContainer/VBoxContainer/ButtonContainer"]
 layout_mode = 2
 mouse_default_cursor_shape = 2
 text = "#cancel"
 
-[node name="OKButton" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/ButtonContainer"]
+[node name="OKButton" type="Button" parent="MarginContainer/VBoxContainer/ButtonContainer"]
 layout_mode = 2
 mouse_default_cursor_shape = 2
 text = "#import"
 
 [connection signal="imported" from="." to="." method="_on_imported"]
-[connection signal="pressed" from="PanelContainer/MarginContainer/VBoxContainer/ButtonContainer/CancelButton" to="." method="_on_cancel_button_pressed"]
-[connection signal="pressed" from="PanelContainer/MarginContainer/VBoxContainer/ButtonContainer/OKButton" to="." method="_on_ok_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/ButtonContainer/CancelButton" to="." method="_on_cancel_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/ButtonContainer/OKButton" to="." method="_on_ok_button_pressed"]

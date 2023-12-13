@@ -11,7 +11,7 @@ const CommandEditor = preload("path_command_editor.tscn")
 @onready var add_move: Button = $AddMove
 
 func set_value(new_value: String, update_type := Utils.UpdateType.REGULAR):
-	sync(new_value)
+	sync(attribute.autoformat(new_value))
 	if attribute.get_value() != new_value or update_type == Utils.UpdateType.FINAL:
 		match update_type:
 			Utils.UpdateType.INTERMEDIATE:

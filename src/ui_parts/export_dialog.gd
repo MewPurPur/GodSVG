@@ -1,4 +1,4 @@
-extends Dialog
+extends PanelContainer
 
 const NumberEditType = preload("res://src/ui_elements/number_edit.gd")
 const SVGFileDialog = preload("svg_file_dialog.tscn")
@@ -17,7 +17,7 @@ var dimensions := Vector2.ZERO
 func _ready() -> void:
 	scale_edit.value_changed.connect(_on_scale_value_changed)
 	dropdown.value_changed.connect(_on_dropdown_value_changed)
-	extension = dropdown.current_value
+	extension = dropdown.value
 	update_extension_configuration()
 	dimensions = SVG.root_tag.get_size()
 	scale_edit.min_value = 1/minf(dimensions.x, dimensions.y)
@@ -33,8 +33,8 @@ func _ready() -> void:
 
 
 func update_dimensions_label() -> void:
-	dimensions_label.text = tr(&"#size") +\
-			": %s×%s" % [String.num(dimensions.x, 4), String.num(dimensions.y, 4)]
+	dimensions_label.text = tr(&"#size") + ": " + NumberParser.num_to_text(dimensions.x) +\
+			"×" + NumberParser.num_to_text(dimensions.y)
 
 func _on_dropdown_value_changed(new_value: String) -> void:
 	extension = new_value

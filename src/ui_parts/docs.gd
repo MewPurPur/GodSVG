@@ -1,4 +1,4 @@
-extends Dialog
+extends PanelContainer
 
 @onready var desc: RichTextLabel = %Desc
 

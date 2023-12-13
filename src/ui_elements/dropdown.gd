@@ -10,21 +10,21 @@ signal value_changed(new_value: String)
 @export var values: Array[String]
 @export var restricted := true
 
-var current_value := "":
+var value := "":
 	set(new_value):
-		if current_value != new_value:
-			current_value = new_value
-			value_changed.emit(current_value)
+		if value != new_value:
+			value = new_value
+			value_changed.emit(value)
 			if line_edit != null:
-				line_edit.text = current_value
+				line_edit.text = value
 
 func _ready() -> void:
 	if not values.is_empty():
-		current_value = values[0]
+		value = values[0]
 	
 	var max_length := 0
-	for value in values:
-		max_length = maxi(value.length(), max_length)
+	for val in values:
+		max_length = maxi(val.length(), max_length)
 		
 	line_edit.custom_minimum_size.x = line_edit.get_theme_font(&"font").get_string_size(
 			"m".repeat(max_length + 1), HORIZONTAL_ALIGNMENT_LEFT, -1,
@@ -33,12 +33,12 @@ func _ready() -> void:
 
 func _on_button_pressed() -> void:
 	var btn_arr: Array[Button] = []
-	for value in values:
+	for val in values:
 		var button := Button.new()
-		button.text = value
-		button.pressed.connect(_on_value_chosen.bind(value))
+		button.text = val
+		button.pressed.connect(_on_value_chosen.bind(val))
 		button.alignment = HORIZONTAL_ALIGNMENT_CENTER
-		if value == current_value:
+		if val == value:
 			button.disabled = true
 		btn_arr.append(button)
 	
@@ -49,14 +49,14 @@ func _on_button_pressed() -> void:
 	Utils.popup_under_control(value_picker, line_edit)
 
 func _on_value_chosen(new_value: String) -> void:
-	current_value = new_value
+	value = new_value
 
 
 func _on_text_submitted(new_text: String) -> void:
 	if (restricted and new_text in values) or not restricted:
-		current_value = new_text
+		value = new_text
 	else:
-		line_edit.text = current_value
+		line_edit.text = value
 	line_edit.remove_theme_color_override(&"font_color")
 
 

@@ -11,42 +11,39 @@ func _init(new_mode: Mode, new_default: String, new_init := "") -> void:
 	set_value(new_init if !new_init.is_empty() else new_default, SyncMode.SILENT)
 
 func _sync() -> void:
-	if get_value().is_empty():
-		_number = NAN
+	_number = NumberParser.text_to_num(get_value())
+
+func autoformat(text: String) -> String:
+	if GlobalSettings.number_enable_autoformatting:
+		return NumberParser.format_text(text)
 	else:
-		_number = get_value().to_float()
+		return text
 
 func set_num(new_number: float, sync_mode := SyncMode.LOUD) -> void:
 	_number = new_number
-	super.set_value(String.num(new_number, 4) if is_finite(_number) else "", sync_mode)
+	super.set_value(NumberParser.num_to_text(new_number)\
+			if is_finite(_number) else "", sync_mode)
 
 func get_num() -> float:
 	return _number
 
 
-static func num_to_text(number: float) -> String:
-	return String.num(number, 4)
-
-static func text_to_num(text: String) -> float:
-	return text.to_float()
-
-
 # This function evaluates expressions even if "," or ";" is used as a decimal separator.
-static func evaluate_numeric_expression(text: String) -> float:
+static func evaluate_expr(text: String) -> float:
 	var expr := Expression.new()
 	var err := expr.parse(text.replace(",", "."))
 	if err == OK:
-		var result: Variant = expr.execute()
+		var result: float = expr.execute()
 		if not expr.has_execute_failed():
 			return result
 	err = expr.parse(text.replace(";", "."))
 	if err == OK:
-		var result: Variant = expr.execute()
+		var result: float = expr.execute()
 		if not expr.has_execute_failed():
 			return result
 	err = expr.parse(text)
 	if err == OK:
-		var result: Variant = expr.execute()
+		var result: float = expr.execute()
 		if not expr.has_execute_failed():
 			return result
 	return NAN
