@@ -17,13 +17,13 @@ var zoom_level: float:
 		update_buttons_appearance()
 
 
-func zoom_out(factor: float = 1.0) -> void:
+func zoom_out(factor := 1.0) -> void:
 	if factor == 1.0:
 		zoom_level /= sqrt(2)
 	else:
 		zoom_level *= 1 - _normalize_zoom_factor(factor)
 
-func zoom_in(factor: float = 1.0) -> void:
+func zoom_in(factor := 1.0) -> void:
 	if factor == 1.0:
 		zoom_level *= sqrt(2)
 	else:
