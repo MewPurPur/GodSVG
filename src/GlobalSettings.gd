@@ -19,6 +19,7 @@ const default_config = {
 	"input": {
 		"invert_zoom": false,
 		"wrap_mouse": false,
+		"use_ctrl_for_zoom": false,
 	},
 }
 
