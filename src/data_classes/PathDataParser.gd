@@ -179,7 +179,7 @@ static func path_commands_to_text(commands_arr: Array[PathCommand]) -> String:
 			var prev_numstr := ""
 			match cmd_char_capitalized:
 				"A":
-					current_char = num_to_text(cmd.x)[0]
+					current_char = num_to_text(cmd.rx)[0]
 					prev_numstr = num_to_text(commands_arr[i - 1].y)
 				"C", "Q":
 					current_char = num_to_text(cmd.x1)[0]
