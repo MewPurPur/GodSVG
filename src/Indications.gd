@@ -307,13 +307,23 @@ func _unhandled_input(event: InputEvent) -> void:
 	elif event is InputEventKey:
 		# Path commands using keys.
 		if inner_selections.is_empty() or event.is_command_or_control_pressed():
+			# If a single path tag is selected, add the new command at the end.
+			if selected_tids.size() == 1:
+				var tag_ref := SVG.root_tag.get_by_tid(selected_tids[0])
+				if tag_ref.name == "path":
+					var path_attrib: AttributePath = tag_ref.attributes.d
+					for action_name in path_actions_dict.keys():
+						if event.is_action_pressed(action_name):
+							path_attrib.insert_command(path_attrib.get_command_count(),
+									path_actions_dict[action_name])
+							break
 			return
-		var max_inner_selection = inner_selections.max()
+		
 		for action_name in path_actions_dict.keys():
 			if event.is_action_pressed(action_name):
 				var real_tag := SVG.root_tag.get_by_tid(semi_selected_tid)
-				real_tag.attributes.d.insert_command(
-						max_inner_selection + 1, path_actions_dict[action_name])
+				real_tag.attributes.d.insert_command(inner_selections.max() + 1,
+						path_actions_dict[action_name])
 				break
 
 
