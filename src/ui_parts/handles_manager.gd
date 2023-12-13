@@ -242,8 +242,8 @@ func _draw() -> void:
 			"rect":
 				var x: float = attribs.x.get_num()
 				var y: float = attribs.y.get_num()
-				var rect_height: float = attribs.height.get_num()
 				var rect_width: float = attribs.width.get_num()
+				var rect_height: float = attribs.height.get_num()
 				var rx: float = attribs.rx.get_num()
 				var ry: float = attribs.ry.get_num()
 				var points := PackedVector2Array()
@@ -288,7 +288,7 @@ func _draw() -> void:
 					points[185] = points[0]
 				var extras := PackedVector2Array([
 						convert_in(Vector2(x, y)), convert_in(Vector2(x + rect_width, y)),
-						Vector2(x, y), convert_in(Vector2(x, y + rect_height))])
+						convert_in(Vector2(x, y)), convert_in(Vector2(x, y + rect_height))])
 				
 				if tag_hovered and tag_selected:
 					hovered_selected_polylines.append(points)
