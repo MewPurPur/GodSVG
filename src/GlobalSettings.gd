@@ -44,6 +44,7 @@ var language: StringName:
 # Input
 var invert_zoom := false
 var wrap_mouse := false
+var use_ctrl_for_zoom := false
 
 # Autoformat
 var number_enable_autoformatting := false

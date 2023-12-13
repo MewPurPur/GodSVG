@@ -78,6 +78,13 @@ text = "#wrap_mouse"
 section_name = "input"
 setting_name = "wrap_mouse"
 
+[node name="UseCtrlForZoom" parent="VBoxContainer/TabContainer/#input_tab/VBoxContainer" instance=ExtResource("4_2qeh2")]
+layout_mode = 2
+tooltip_text = "#use_ctrl_for_zoom_desc"
+text = "#use_ctrl_for_zoom"
+section_name = "input"
+setting_name = "use_ctrl_for_zoom"
+
 [node name="#palettes" type="ScrollContainer" parent="VBoxContainer/TabContainer"]
 visible = false
 custom_minimum_size = Vector2(0, 120)
