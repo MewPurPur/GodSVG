@@ -42,7 +42,6 @@ func _ready() -> void:
 	SVG.root_tag.tags_moved_in_parent.connect(_on_tags_moved_in_parent)
 	#SVG.root_tag.tags_moved_to.connect(_on_tags_moved_to)  # TODO
 	SVG.root_tag.changed_unknown.connect(clear_selection)
-	SVG.root_tag.child_attribute_changed.connect(clear_inner_selection.unbind(1))
 
 
 ## Override the selected tags with a single new selected tag.
@@ -316,6 +315,7 @@ func _unhandled_input(event: InputEvent) -> void:
 						if event.is_action_pressed(action_name):
 							path_attrib.insert_command(path_attrib.get_command_count(),
 									path_actions_dict[action_name])
+							normal_select(selected_tids[0], path_attrib.get_command_count())
 							break
 			return
 		
@@ -324,6 +324,7 @@ func _unhandled_input(event: InputEvent) -> void:
 				var real_tag := SVG.root_tag.get_by_tid(semi_selected_tid)
 				real_tag.attributes.d.insert_command(inner_selections.max() + 1,
 						path_actions_dict[action_name])
+				normal_select(semi_selected_tid, inner_selections.max() + 1)
 				break
 
 
@@ -338,6 +339,7 @@ func delete_selected() -> void:
 		var tag_ref := SVG.root_tag.get_by_tid(semi_selected_tid)
 		match tag_ref.name:
 			"path": tag_ref.attributes.d.delete_commands(inner_selections)
+		clear_inner_selection()
 
 func move_up_selected() -> void:
 	SVG.root_tag.move_tags_in_parent(selected_tids, false)

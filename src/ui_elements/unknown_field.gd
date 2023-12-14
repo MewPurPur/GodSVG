@@ -2,6 +2,7 @@
 ## Allows attributes to be edited even if they aren't recognized by GodSVG.
 extends BetterLineEdit
 
+signal focused
 var attribute: AttributeUnknown
 var attribute_name: String
 
@@ -22,6 +23,10 @@ func _ready() -> void:
 	set_value(attribute.get_value())
 	tooltip_text = attribute_name + "\n(" + tr(&"#unknown_tooltip") + ")"
 
+
+func _on_focus_entered() -> void:
+	focused.emit()
+	super()
 
 func _on_focus_exited() -> void:
 	set_value(text)

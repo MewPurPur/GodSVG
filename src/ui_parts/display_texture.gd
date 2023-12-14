@@ -11,12 +11,10 @@ var rasterized := false:
 var zoom := 1.0:
 	set(new_value):
 		zoom = new_value
-		queue_update(false)
+		queue_update()
 
 var image_zoom := 0.0
-
 var update_pending := false
-var svg_change_pending := false
 
 # TODO a bug in ThorVG locks this. The TextureRect should be a Control.
 # I had to draw the SVG with the rendering server, I got some white textures otherwise.
@@ -30,28 +28,20 @@ func _ready() -> void:
 	SVG.root_tag.child_attribute_changed.connect(queue_update.unbind(1))
 	queue_update()
 
-func queue_update(svg_changed := true) -> void:
+func queue_update() -> void:
 	update_pending = true
-	if svg_changed:
-		svg_change_pending = true
 
 func _process(_delta: float) -> void:
 	if update_pending:
-		svg_update(svg_change_pending)
+		svg_update()
 		update_pending = false
-		svg_change_pending = false
 
 
-
-func svg_update(svg_changed := true) -> void:
+func svg_update() -> void:
 	var bigger_side := maxf(SVG.root_tag.get_width(), SVG.root_tag.get_height())
 	# TODO Change 4096 to 16384 when performance concerns are addressed.
 	# It might actually not be needed in the future, if only the visible part is drawn.
-	var new_image_zoom := 1.0 if rasterized else minf(zoom, 4096 / bigger_side)
-	if not svg_changed and not rasterized and new_image_zoom <= image_zoom:
-		return  # Don't waste time resizing if the new image won't be bigger.
-	else:
-		image_zoom = new_image_zoom
+	image_zoom = 1.0 if rasterized else minf(zoom, 4096 / bigger_side)
 	
 	# TODO delete this in favor of the multithreaded solution. See godot issue 85465.
 	# The multithreaded solution uses RenderingServer.

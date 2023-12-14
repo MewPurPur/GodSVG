@@ -1,6 +1,7 @@
 ## An editor to be tied to an AttributeEnum.
 extends HBoxContainer
 
+signal focused
 var attribute: AttributeEnum
 var attribute_name: String
 
@@ -45,6 +46,9 @@ func _on_button_pressed() -> void:
 func _on_option_pressed(option: String) -> void:
 	set_value(option)
 
+
+func _on_focus_entered() -> void:
+	focused.emit()
 
 func _on_text_submitted(new_text: String) -> void:
 	indicator.release_focus()
