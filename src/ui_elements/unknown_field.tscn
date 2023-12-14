@@ -32,6 +32,7 @@ custom_minimum_size = Vector2(72, 22)
 offset_right = 48.8125
 offset_bottom = 21.0
 focus_mode = 1
+mouse_filter = 1
 right_icon = ExtResource("2_hsdl6")
 script = ExtResource("1_decfb")
 hover_stylebox = SubResource("StyleBoxFlat_y4uj6")

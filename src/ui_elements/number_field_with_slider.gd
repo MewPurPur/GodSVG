@@ -1,6 +1,7 @@
 ## An editor to be tied to a numeric attribute, plus a slider widget.
 extends HBoxContainer
 
+signal focused
 var attribute: AttributeNumeric
 var attribute_name: String
 
@@ -56,6 +57,9 @@ func _ready() -> void:
 
 func _on_focus_exited() -> void:
 	set_value(num_edit.text)
+
+func _on_focus_entered() -> void:
+	focused.emit()
 
 func _on_text_submitted(submitted_text: String) -> void:
 	set_value(submitted_text)

@@ -1,6 +1,7 @@
 ## An editor to be tied to a numeric attribute.
 extends BetterLineEdit
 
+signal focused
 var attribute: AttributeNumeric
 var attribute_name: String
 
@@ -47,6 +48,10 @@ func _ready() -> void:
 	set_value(attribute.get_value())
 	attribute.value_changed.connect(set_value)
 	tooltip_text = attribute_name
+
+func _on_focus_entered() -> void:
+	focused.emit()
+	super()
 
 func _on_focus_exited() -> void:
 	set_value(text)

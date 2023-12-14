@@ -1,6 +1,7 @@
 ## An editor to be tied to an AttributePath.
 extends VBoxContainer
 
+signal focused
 var attribute: AttributePath
 var attribute_name: String
 
@@ -78,6 +79,9 @@ func _convert_to(idx: int, new_type: String) -> void:
 
 func _on_line_edit_text_submitted(new_text: String) -> void:
 	set_value(new_text)
+
+func _on_line_edit_focus_entered() -> void:
+	focused.emit()
 
 func _on_add_move_pressed() -> void:
 	attribute.insert_command(0, "M")

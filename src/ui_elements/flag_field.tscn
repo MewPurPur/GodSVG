@@ -29,6 +29,7 @@ corner_radius_top_right = 3
 offset_right = 13.0
 offset_bottom = 20.0
 focus_mode = 0
+mouse_filter = 1
 mouse_default_cursor_shape = 2
 theme_override_colors/font_color = Color(1, 0.75, 0.75, 1)
 theme_override_colors/font_pressed_color = Color(0.74902, 1, 0.74902, 1)

@@ -68,6 +68,7 @@ custom_minimum_size = Vector2(344, 0)
 layout_mode = 2
 size_flags_horizontal = 0
 focus_mode = 1
+mouse_filter = 1
 script = ExtResource("2_48xgh")
 hover_stylebox = SubResource("StyleBoxFlat_4rmxx")
 focus_stylebox = SubResource("StyleBoxFlat_wqlhg")
@@ -99,5 +100,6 @@ size_flags_horizontal = 0
 mouse_filter = 0
 theme_override_constants/separation = 0
 
+[connection signal="focus_entered" from="LineEdit" to="." method="_on_line_edit_focus_entered"]
 [connection signal="text_submitted" from="LineEdit" to="." method="_on_line_edit_text_submitted"]
 [connection signal="pressed" from="AddMove" to="." method="_on_add_move_pressed"]
