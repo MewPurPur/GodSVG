@@ -79,11 +79,11 @@ func _ready() -> void:
 			shape_container.add_child(input_field)
 		else:
 			paint_container.add_child(input_field)
-
+	
 	if not tag.is_standalone():
 		var child_tags_container := VBoxContainer.new()
 		v_box_container.add_child(child_tags_container)
-
+		
 		for tag_idx in tag.get_child_count():
 			var child_tag := tag.child_tags[tag_idx]
 			var tag_editor := TagEditor.instantiate()
@@ -98,7 +98,7 @@ func _get_drag_data(_at_position: Vector2) -> Variant:
 	var data: Array[PackedInt32Array] = [tid]
 	if tid in Indications.selected_tids:
 		data = Indications.selected_tids
-	data = Utils.filter_tids_remove_children(data)
+	data = Utils.filter_tids_descendant(data)
 	var tags_container: VBoxContainer = VBoxContainer.new()
 	for drag_tid in data:
 		var preview = TagEditor.instantiate()
@@ -222,7 +222,7 @@ func determine_selection_highlight(state: DropState = DropState.Outside) -> void
 	title_sb.corner_radius_top_right = 4
 	title_sb.set_border_width_all(2)
 	title_sb.set_content_margin_all(4)
-
+	
 	var content_sb := StyleBoxFlat.new()
 	content_sb.corner_radius_bottom_left = 4
 	content_sb.corner_radius_bottom_right = 4
@@ -233,10 +233,10 @@ func determine_selection_highlight(state: DropState = DropState.Outside) -> void
 	content_sb.content_margin_left = 7
 	content_sb.content_margin_bottom = 7
 	content_sb.content_margin_right = 7
-
+	
 	var is_selected := tid in Indications.selected_tids
 	var is_hovered := Indications.hovered_tid == tid
-
+	
 	if is_selected:
 		if is_hovered:
 			content_sb.bg_color = Color.from_hsv(0.625, 0.48, 0.27)
@@ -256,7 +256,7 @@ func determine_selection_highlight(state: DropState = DropState.Outside) -> void
 		title_sb.bg_color = Color.from_hsv(0.625, 0.45, 0.17)
 		content_sb.border_color = Color.from_hsv(0.6, 0.5, 0.35)
 		title_sb.border_color = Color.from_hsv(0.6, 0.5, 0.35)
-
+	
 	var depth := tid.size() - 1
 	var depth_tint := depth * 0.12
 	if depth > 0:

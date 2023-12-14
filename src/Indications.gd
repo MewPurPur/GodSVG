@@ -52,7 +52,7 @@ func _ready() -> void:
 func normal_select(tid: PackedInt32Array, inner_idx := -1) -> void:
 	if tid.is_empty():
 		return
-
+	
 	if inner_idx == -1:
 		var old_selected_tids := selected_tids.duplicate()
 		if not semi_selected_tid.is_empty():
@@ -81,7 +81,7 @@ func normal_select(tid: PackedInt32Array, inner_idx := -1) -> void:
 func ctrl_select(tid: PackedInt32Array, inner_idx := -1) -> void:
 	if tid.is_empty():
 		return
-
+	
 	if inner_idx == -1:
 		inner_selections.clear()
 		var tid_idx := selected_tids.find(tid)
@@ -105,7 +105,7 @@ func ctrl_select(tid: PackedInt32Array, inner_idx := -1) -> void:
 				inner_selections.remove_at(idx_idx)
 				if inner_selections.is_empty():
 					inner_selection_pivot = -1
-
+	
 	selection_changed.emit()
 
 ## Select all tags with the same depth from the tag to the last selected tag.
@@ -113,29 +113,29 @@ func ctrl_select(tid: PackedInt32Array, inner_idx := -1) -> void:
 func shift_select(tid: PackedInt32Array, inner_idx := -1) -> void:
 	if tid.is_empty():
 		return
-
+	
 	if inner_idx == -1:
 		if selection_pivot_tid.is_empty():
 			if selected_tids.is_empty():
 				normal_select(tid, inner_idx)
 			return
-
+		
 		if tid == selection_pivot_tid:
 			return
-
+		
 		var old_selected_tids := selected_tids.duplicate()
-
+		
 		if tid.size() != selection_pivot_tid.size():
 			if not tid in selected_tids:
 				selected_tids.append(tid)
 				selection_changed.emit()
 				return
-
+		
 		var parent_tag := tid.duplicate()
 		parent_tag.resize(parent_tag.size() - 1)
 		var tid_idx := tid[-1]
 		var selection_pivot_tid_idx := selection_pivot_tid[-1]
-
+		
 		var first_idx := mini(tid_idx, selection_pivot_tid_idx)
 		var last_idx := maxi(tid_idx, selection_pivot_tid_idx)
 		for i in range(first_idx, last_idx + 1):
@@ -143,26 +143,26 @@ func shift_select(tid: PackedInt32Array, inner_idx := -1) -> void:
 			new_tid.append(i)
 			if not new_tid in selected_tids:
 				selected_tids.append(new_tid)
-
+		
 		if selected_tids == old_selected_tids:
 			return
-
+	
 	else:
 		if inner_selection_pivot == -1:
 			if inner_selections.is_empty():
 				normal_select(tid, inner_idx)
 			return
-
+		
 		var old_inner_selections := inner_selections.duplicate()
 		var first_idx := mini(inner_selection_pivot, inner_idx)
 		var last_idx := maxi(inner_selection_pivot, inner_idx)
 		for i in range(first_idx, last_idx + 1):
 			if not i in inner_selections:
 				inner_selections.append(i)
-
+		
 		if inner_selections == old_inner_selections:
 			return
-
+	
 	selection_changed.emit()
 
 ## Select all tags.
@@ -171,7 +171,7 @@ func select_all() -> void:
 	var tid_list := SVG.root_tag.get_all_tids()
 	if selected_tids == tid_list:
 		return
-
+	
 	for tid in SVG.root_tag.get_all_tids():
 		if not tid in selected_tids:
 			selected_tids.append(tid)
@@ -267,15 +267,15 @@ func _on_tags_moved_in_parent(parent_tid: PackedInt32Array, indices: Array[int])
 	var old_selected_tids := selected_tids.duplicate()
 	var tids_to_select: Array[PackedInt32Array] = []
 	var tids_to_unselect: Array[PackedInt32Array] = []
-
+	
 	for index_idx in indices.size():
 		if index_idx == indices[index_idx]:
 			continue
-
+		
 		# For the tags that have moved, get their old.
 		var old_moved_tid := parent_tid.duplicate()
 		old_moved_tid.append(indices[index_idx])
-
+		
 		# If the TID or a child of it is found, append it.
 		for tid in selected_tids:
 			if Utils.is_tid_parent(old_moved_tid, tid) or old_moved_tid == tid:
@@ -286,7 +286,7 @@ func _on_tags_moved_in_parent(parent_tid: PackedInt32Array, indices: Array[int])
 	for tid in tids_to_unselect:
 		selected_tids.erase(tid)
 	selected_tids += tids_to_select
-
+	
 	if old_selected_tids != selected_tids:
 		selection_changed.emit()
 
@@ -325,7 +325,7 @@ func _unhandled_input(event: InputEvent) -> void:
 							added_path_handle.emit()
 							break
 			return
-
+		
 		for action_name in path_actions_dict.keys():
 			if event.is_action_pressed(action_name):
 				var real_tag := SVG.root_tag.get_by_tid(semi_selected_tid)

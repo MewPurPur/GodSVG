@@ -128,7 +128,7 @@ static func is_tid_parent(parent: PackedInt32Array, child: PackedInt32Array) -> 
 	var parent_size := parent.size()
 	if parent_size >= child.size():
 		return false
-
+	
 	for i in parent_size:
 		if parent[i] != child[i]:
 			return false
@@ -139,8 +139,8 @@ static func get_parent_tid(tid: PackedInt32Array) -> PackedInt32Array:
 	parent_tid.resize(tid.size() - 1)
 	return parent_tid
 
-# If parent is moving children are also moving
-static func filter_tids_remove_children(tids: Array[PackedInt32Array]) -> Array[PackedInt32Array]:
+# Filter out all descendants.
+static func filter_tids_descendant(tids: Array[PackedInt32Array]) -> Array[PackedInt32Array]:
 	var new_tids: Array[PackedInt32Array] = tids.duplicate()
 	new_tids = new_tids.filter(func(tid:PackedInt32Array):
 		var check_tid: PackedInt32Array = []
