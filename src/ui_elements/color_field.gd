@@ -1,6 +1,7 @@
 ## An editor to be tied to a color attribute.
 extends HBoxContainer
 
+signal focused
 var attribute: AttributeColor
 var attribute_name: String
 
@@ -59,6 +60,9 @@ func _draw() -> void:
 	draw_style_box(stylebox, Rect2(Vector2.ZERO, button_size - Vector2(1, 2)))
 
 
+func _on_focus_entered() -> void:
+	focused.emit()
+
 func _on_focus_exited() -> void:
 	set_value(color_edit.text)
 
@@ -79,7 +83,7 @@ func _on_button_resized() -> void:
 	# which screws with the drawing logic.
 	queue_redraw()
 
-func _on_line_edit_text_changed(new_text: String) -> void:
+func _on_text_changed(new_text: String) -> void:
 	if AttributeColor.is_valid(new_text):
 		color_edit.add_theme_color_override(&"font_color", Color(0.6, 1.0, 0.6))
 	else:

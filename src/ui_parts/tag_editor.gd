@@ -66,6 +66,7 @@ func _ready() -> void:
 			input_field = EnumField.instantiate()
 		input_field.attribute = attribute
 		input_field.attribute_name = attribute_key
+		input_field.focused.connect(Indications.normal_select.bind(tid))
 		# Add the attribute to its corresponding container.
 		if attribute_key in geometry_attributes:
 			shape_container.add_child(input_field)
@@ -85,6 +86,9 @@ func _ready() -> void:
 			tag_editor.tid = new_tid
 			child_tags_container.add_child(tag_editor)
 
+
+func _on_title_button_pressed() -> void:
+	Utils.popup_under_control_centered(create_tag_context(), title_button)
 
 func create_tag_context() -> Popup:
 	var parent_tid := Utils.get_parent_tid(tid)
@@ -132,11 +136,6 @@ func create_tag_context() -> Popup:
 	add_child(tag_context)
 	tag_context.set_btn_array(btn_array)
 	return tag_context
-
-
-func _on_title_button_pressed() -> void:
-	Indications.normal_select(tid)
-	Utils.popup_under_control_centered(create_tag_context(), title_button)
 
 
 func _on_gui_input(event: InputEvent) -> void:

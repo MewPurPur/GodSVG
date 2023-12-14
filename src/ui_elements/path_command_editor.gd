@@ -296,6 +296,7 @@ func setup_relative_button() -> void:
 
 func add_number_field() -> BetterLineEdit:
 	var new_field := MiniNumberField.instantiate()
+	new_field.focus_entered.connect(Indications.normal_select.bind(tid, cmd_idx))
 	fields_container.add_child(new_field)
 	return new_field
 
@@ -312,6 +313,7 @@ func _on_relative_button_pressed() -> void:
 
 func _on_insert_path_command_picked(new_command: String) -> void:
 	cmd_insert_after.emit(cmd_idx + 1, new_command)
+	Indications.normal_select(tid, cmd_idx + 1)
 
 func _on_convert_path_command_picked(new_command: String) -> void:
 	cmd_convert_to.emit(cmd_idx, new_command)
@@ -360,5 +362,4 @@ func _on_mouse_exited():
 	Indications.remove_inner_hovered(tid, cmd_idx)
 
 func _on_more_button_pressed() -> void:
-	Indications.normal_select(tid, cmd_idx)
 	open_actions()
