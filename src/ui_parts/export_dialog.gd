@@ -1,7 +1,7 @@
 extends PanelContainer
 
 const NumberEditType = preload("res://src/ui_elements/number_edit.gd")
-const SVGFileDialog = preload("svg_file_dialog.tscn")
+const SVGFileDialog = preload("res://src/ui_parts/svg_file_dialog.tscn")
 
 var upscale_amount := -1.0
 var extension := ""
@@ -41,39 +41,37 @@ func _on_dropdown_value_changed(new_value: String) -> void:
 	update_extension_configuration()
 
 
-func native_file_export(has_selected: bool, files: PackedStringArray, _filter_idx: int):
+func native_file_export(has_selected: bool, files: PackedStringArray,
+_filter_idx: int) -> void:
 	if has_selected:
 		export(files[0])
-		GlobalSettings.modify_save_data("last_used_dir", files[0].get_base_dir())
+		GlobalSettings.modify_save_data(&"last_used_dir", files[0].get_base_dir())
+
+func non_native_file_import(file_path: String) -> void:
+	export(file_path)
+	GlobalSettings.modify_save_data(&"last_used_dir", file_path.get_base_dir())
+
 
 func _on_ok_button_pressed() -> void:
-	var default_path: String
-	if GlobalSettings.save_data.last_used_dir.is_empty()\
-	or not DirAccess.dir_exists_absolute(GlobalSettings.save_data.last_used_dir):
-		default_path = OS.get_system_dir(OS.SYSTEM_DIR_PICTURES)
-	else:
-		default_path = GlobalSettings.save_data.last_used_dir
+	# Open it inside a native file dialog, or our custom one if it's not available.
 	if DisplayServer.has_feature(DisplayServer.FEATURE_NATIVE_DIALOG):
-		DisplayServer.file_dialog_show(
-				"Export a ." + extension + " file",
-				default_path, "", false,
-				DisplayServer.FILE_DIALOG_MODE_SAVE_FILE,
+		DisplayServer.file_dialog_show("Export a ." + extension + " file",
+				Utils.get_last_dir(), "", false, DisplayServer.FILE_DIALOG_MODE_SAVE_FILE,
 				["*." + extension], native_file_export)
 	else:
 		var svg_export_dialog := SVGFileDialog.instantiate()
+		svg_export_dialog.current_dir = Utils.get_last_dir()
 		svg_export_dialog.file_mode = FileDialog.FILE_MODE_SAVE_FILE
-		get_tree().get_root().add_child(svg_export_dialog)
-		svg_export_dialog.file_selected.connect(export)
+		HandlerGUI.add_overlay(svg_export_dialog)
+		svg_export_dialog.file_selected.connect(non_native_file_import)
 
 func export(path: String) -> void:
 	var FA := FileAccess.open(path, FileAccess.WRITE)
 	match extension:
 		"png":
 			var export_svg := SVG.root_tag.create_duplicate()
-			export_svg.attributes.width.set_num(
-					export_svg.attributes.width.get_num() * upscale_amount)
-			export_svg.attributes.height.set_num(
-					export_svg.attributes.height.get_num() * upscale_amount)
+			export_svg.attributes.width.set_num(export_svg.get_width() * upscale_amount)
+			export_svg.attributes.height.set_num(export_svg.get_height() * upscale_amount)
 			var img := Image.new()
 			img.load_svg_from_string(SVGParser.svg_to_text(export_svg))
 			img.fix_alpha_edges()  # See godot issue 82579.

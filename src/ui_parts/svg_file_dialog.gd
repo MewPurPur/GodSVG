@@ -1,9 +1,6 @@
-extends PanelContainer
+extends FileDialog
 
-signal file_selected(path: String)
-
-func _on_file_selected(path: String) -> void:
-	file_selected.emit(path)
+func _on_file_selected(_path: String) -> void:
 	queue_free()
 
 func _on_canceled() -> void:

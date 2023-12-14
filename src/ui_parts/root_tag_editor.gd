@@ -14,7 +14,6 @@ var true_width: float
 var true_height: float
 var true_viewbox: Rect2
 
-@onready var tag := SVG.root_tag
 @onready var couple_button: Button = $Edits/CoupleButton
 @onready var width_button: Button = $Edits/Size/Width/WidthButton
 @onready var height_button: Button = $Edits/Size/Height/HeightButton
