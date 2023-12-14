@@ -124,3 +124,11 @@ static func is_event_drag_start(event: InputEvent) -> bool:
 static func is_event_drag_end(event: InputEvent) -> bool:
 	return event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and\
 			event.is_released()
+
+
+static func get_last_dir() -> String:
+	if GlobalSettings.save_data.last_used_dir.is_empty()\
+	or not DirAccess.dir_exists_absolute(GlobalSettings.save_data.last_used_dir):
+		return OS.get_system_dir(OS.SYSTEM_DIR_PICTURES)
+	else:
+		return GlobalSettings.save_data.last_used_dir
