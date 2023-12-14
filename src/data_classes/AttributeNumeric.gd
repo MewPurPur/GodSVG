@@ -1,7 +1,7 @@
 ## An attribute representing a number.
 class_name AttributeNumeric extends Attribute
 
-var _number: float
+var _number := NAN
 enum Mode {FLOAT, UFLOAT, NFLOAT}  # UFLOAT is positive-only, NFLOAT is in [0, 1].
 var mode := Mode.FLOAT
 

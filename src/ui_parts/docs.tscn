@@ -43,14 +43,7 @@ theme_override_constants/separation = 12
 layout_mode = 2
 script = ExtResource("2_h5w1r")
 
-[node name="#kbd_shortcuts_tab" type="MarginContainer" parent="VBoxContainer/TabContainer"]
-layout_mode = 2
-theme_override_constants/margin_left = 6
-theme_override_constants/margin_top = 6
-theme_override_constants/margin_right = 6
-theme_override_constants/margin_bottom = 6
-
-[node name="Desc" type="RichTextLabel" parent="VBoxContainer/TabContainer/#kbd_shortcuts_tab"]
+[node name="#kbd_shortcuts_tab" type="RichTextLabel" parent="VBoxContainer/TabContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 96)
 layout_mode = 2
