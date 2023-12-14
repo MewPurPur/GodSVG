@@ -58,14 +58,13 @@ layout_mode = 2
 size_flags_vertical = 3
 horizontal_scroll_mode = 0
 
-[node name="Tags" type="VBoxContainer" parent="VBoxContainer/TagContainer/ScrollContainer" node_paths=PackedStringArray("scroll_container")]
+[node name="Tags" type="VBoxContainer" parent="VBoxContainer/TagContainer/ScrollContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/separation = 5
 script = ExtResource("4_i4hc2")
-scroll_container = NodePath("..")
 
 [connection signal="pressed" from="VBoxContainer/AddButton" to="." method="_on_add_button_pressed"]
 [connection signal="gui_input" from="VBoxContainer/TagContainer" to="." method="_on_tag_container_gui_input"]

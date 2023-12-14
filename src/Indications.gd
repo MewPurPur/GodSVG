@@ -290,17 +290,15 @@ func _on_tags_moved_in_parent(parent_tid: PackedInt32Array, indices: Array[int])
 	if old_selected_tids != selected_tids:
 		selection_changed.emit()
 
-func _on_tags_moved_to(tid: PackedInt32Array, old_tids: Array[PackedInt32Array]) -> void:
-	var to_tid:PackedInt32Array = tid.duplicate()
+func _on_tags_moved_to(new_tids: Array[PackedInt32Array]) -> void:
 	selected_tids.clear()
-	for old_tid in old_tids:
-		selected_tids.append(to_tid.duplicate())
-		to_tid[-1] += 1
-	var shift_pos:int = old_tids.size()
+	selected_tids.append_array(new_tids.duplicate())
 	selection_changed.emit()
 
 
 func _unhandled_input(event: InputEvent) -> void:
+	if get_viewport().gui_is_dragging():
+		return
 	if event.is_action_pressed(&"delete"):
 		delete_selected()
 	elif event.is_action_pressed(&"move_up"):
@@ -327,7 +325,7 @@ func _unhandled_input(event: InputEvent) -> void:
 							added_path_handle.emit()
 							break
 			return
-		
+
 		for action_name in path_actions_dict.keys():
 			if event.is_action_pressed(action_name):
 				var real_tag := SVG.root_tag.get_by_tid(semi_selected_tid)

@@ -48,23 +48,24 @@ func center_frame() -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
+	if Indications.get_viewport().gui_is_dragging():
+		return
 	if not event is InputEventMouseMotion or event.button_mask != 0:
 		view.queue_redraw()
-	
+
 	if event is InputEventMouseMotion and\
 	event.button_mask in [MOUSE_BUTTON_MASK_LEFT, MOUSE_BUTTON_MASK_MIDDLE]:
-		set_view(view.position - (wrap_mouse(event.relative)\
-				if GlobalSettings.wrap_mouse else event.relative) / zoom)
-	
+		set_view(view.position - (wrap_mouse(event.relative) if GlobalSettings.wrap_mouse else event.relative) / zoom)
+
 	if event is InputEventPanGesture:
 		if event.ctrl_pressed:
 			zoom_menu.zoom_level *= 1 + event.delta.y / 2
 		else:
 			set_view(view.position + event.delta * 32 / zoom)
-	
+
 	if event is InputEventMagnifyGesture:
 		zoom_menu.zoom_level *= event.factor
-	
+
 	if event is InputEventMouseButton and event.is_pressed():
 		var move_vec := Vector2.ZERO
 		var zoom_dir := 0
@@ -100,7 +101,7 @@ func _unhandled_input(event: InputEvent) -> void:
 func _on_zoom_changed(zoom_level: float) -> void:
 	zoom = zoom_level
 	adjust_view()
-	
+
 	display.material.set_shader_parameter(&"uv_scale",
 			nearest_po2(int(zoom * 32)) / 32.0)
 	controls.zoom = zoom
@@ -111,7 +112,7 @@ var last_size_adjusted := size / zoom
 func adjust_view() -> void:
 	var old_size := last_size_adjusted
 	last_size_adjusted = size / zoom
-	
+
 	var svg_size := SVG.root_tag.get_size()
 	var zoomed_size := buffer_view_space * size / zoom
 	view.zoom = Vector2(zoom, zoom)
@@ -130,7 +131,7 @@ func wrap_mouse(relative: Vector2) -> Vector2:
 	var mouse_pos := get_mouse_position()
 	var warp_margin := view_rect.size * 0.5
 	var relative_sign := relative.sign()
-	
+
 	var relative_warped := Vector2(
 			fmod(relative.x + relative_sign.x * warp_margin.x, view_rect.size.x),
 			fmod(relative.y + relative_sign.y * warp_margin.y, view_rect.size.y)) -\
@@ -140,5 +141,5 @@ func wrap_mouse(relative: Vector2) -> Vector2:
 		mouse_pos.x = fposmod(mouse_pos.x, view_rect.size.x)
 		mouse_pos.y = fposmod(mouse_pos.y, view_rect.size.y)
 		warp_mouse(mouse_pos)
-	
+
 	return relative_warped

@@ -1,4 +1,4 @@
-extends VBoxContainer
+extends PanelContainer
 
 const geometry_attributes = ["cx", "cy", "x", "y", "r", "rx", "ry", "width", "height",
 		"d", "x1", "y1", "x2", "y2"]
@@ -14,18 +14,25 @@ const PathField = preload("res://src/ui_elements/path_field.tscn")
 const EnumField = preload("res://src/ui_elements/enum_field.tscn")
 const UnknownField = preload("res://src/ui_elements/unknown_field.tscn")
 
-@onready var v_box_container: VBoxContainer = $Content/MainContainer
+@onready var v_box_container: VBoxContainer = $Layout/Content/MainContainer
 @onready var paint_container: FlowContainer = %AttributeContainer/PaintAttributes
 @onready var shape_container: FlowContainer = %AttributeContainer/ShapeAttributes
 @onready var unknown_container: HFlowContainer = %AttributeContainer/UnknownAttributes
-@onready var title_bar: PanelContainer = $Title
-@onready var content: PanelContainer = $Content
-@onready var title_icon: TextureRect = $Title/TitleBox/TitleIcon
-@onready var title_label: Label = $Title/TitleBox/TitleLabel
-@onready var title_button: Button = $Title/TitleBox/TitleButton
+@onready var title_bar: PanelContainer = $Layout/Title
+@onready var content: PanelContainer = $Layout/Content
+@onready var title_icon: TextureRect = $Layout/Title/TitleBox/TitleIcon
+@onready var title_label: Label = $Layout/Title/TitleBox/TitleLabel
+@onready var title_button: Button = $Layout/Title/TitleBox/TitleButton
 
 var tid: PackedInt32Array
 var tag: Tag
+
+enum DropState{
+	Inside = 0,
+	Up,
+	Down,
+	Outside,
+}
 
 func _ready() -> void:
 	title_label.text = tag.name
@@ -87,8 +94,59 @@ func _ready() -> void:
 			child_tags_container.add_child(tag_editor)
 
 
+func _get_drag_data(_at_position: Vector2) -> Variant:
+	var data: Array[PackedInt32Array] = [tid]
+	if tid in Indications.selected_tids:
+		data = Indications.selected_tids
+	data = Utils.filter_tids_remove_children(data)
+	var tags_container: VBoxContainer = VBoxContainer.new()
+	for drag_tid in data:
+		var preview = TagEditor.instantiate()
+		preview.tag = SVG.root_tag.get_by_tid(drag_tid)
+		preview.tid = drag_tid
+		preview.custom_minimum_size.x = self.size.x
+		preview.custom_minimum_size.y = self.size.y
+		tags_container.add_child(preview)
+	tags_container.modulate = Color('#ffffffd3')
+	set_drag_preview(tags_container)
+	return data
+
+
+func _can_drop_data(_at_position: Vector2, current_tid: Variant) -> bool:
+	if current_tid is Array[PackedInt32Array] and not  tid in current_tid:
+		var state := drop_location_calculator(get_global_mouse_position())
+		if state == DropState.Inside:
+			var new_tid := tid.duplicate()
+			new_tid.append(0)
+			if new_tid in current_tid: return false
+		determine_selection_highlight(state)
+		return true
+	return false
+
+
+func _drop_data(_at_position: Vector2, current_tid: Variant):
+	var state := drop_location_calculator(get_global_mouse_position())
+	var new_tid := tid.duplicate()
+	match state:
+		DropState.Inside:
+			new_tid.append(0)
+		DropState.Up:
+			new_tid[-1] -= 1 if new_tid[-1] > 0 else 0
+		DropState.Down:
+			new_tid[-1] += 1
+	SVG.root_tag.move_tags_to(current_tid,new_tid)
+
+
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_DRAG_BEGIN:
+		toggle_pause_children(true)
+	elif what == NOTIFICATION_DRAG_END:
+		toggle_pause_children(false)
+
+
 func _on_title_button_pressed() -> void:
 	Utils.popup_under_control_centered(create_tag_context(), title_button)
+
 
 func create_tag_context() -> Popup:
 	var parent_tid := Utils.get_parent_tid(tid)
@@ -132,8 +190,14 @@ func _on_gui_input(event: InputEvent) -> void:
 			Utils.popup_under_mouse(create_tag_context(), get_global_mouse_position())
 
 
+func _on_mouse_entered() -> void:
+	if Indications.semi_hovered_tid != tid and\
+		not Utils.is_tid_parent(tid, Indications.hovered_tid):
+		Indications.set_hovered(tid)
+
 func _on_mouse_exited() -> void:
 	Indications.remove_hovered(tid)
+
 
 func popup_convert_to_context() -> void:
 	var btn_arr: Array[Button] = []
@@ -147,11 +211,12 @@ func popup_convert_to_context() -> void:
 	context_popup.set_button_array(btn_arr, true)
 	Utils.popup_under_control_centered(context_popup, title_button)
 
+
 func _convert_to(tag_name: String) -> void:
 	SVG.root_tag.replace_tag(tid, tag.get_replacement(tag_name))
 
 
-func determine_selection_highlight() -> void:
+func determine_selection_highlight(state: DropState = DropState.Outside) -> void:
 	var title_sb := StyleBoxFlat.new()
 	title_sb.corner_radius_top_left = 4
 	title_sb.corner_radius_top_right = 4
@@ -203,52 +268,28 @@ func determine_selection_highlight() -> void:
 				title_sb.bg_color.s, title_sb.bg_color.v)
 		title_sb.border_color = Color.from_hsv(title_sb.border_color.h + depth_tint,
 				title_sb.border_color.s, title_sb.border_color.v)
-
+	var root_sb := StyleBoxFlat.new()
+	root_sb.border_color = Color.YELLOW
+	root_sb.bg_color = Color.TRANSPARENT
+	root_sb.set_corner_radius_all(4)
+	match state:
+		DropState.Inside:
+			root_sb.set_border_width_all(2)
+		DropState.Up:
+			root_sb.border_width_top = 2
+		DropState.Down:
+			root_sb.border_width_bottom = 2
+	add_theme_stylebox_override(&"panel", root_sb)
 	content.add_theme_stylebox_override(&"panel", content_sb)
 	title_bar.add_theme_stylebox_override(&"panel", title_sb)
 
-#region drag and drop
-func _get_drag_data(_at_position: Vector2) -> Variant:
-	var data:Array[PackedInt32Array] = [tid]
-	if tid in Indications.selected_tids:
-		data = Indications.selected_tids
-	data = Utils.filter_tids_remove_children(data)
-	var tags_container:VBoxContainer = VBoxContainer.new()
-	for drag_tid in data:
-		var preview = TagEditor.instantiate()
-		preview.tag = SVG.root_tag.get_by_tid(drag_tid)
-		preview.tid = drag_tid
-		preview.custom_minimum_size.x = self.size.x
-		preview.custom_minimum_size.y = self.size.y
-		tags_container.add_child(preview)
-	tags_container.modulate = Color('#ffffffd3')
-	set_drag_preview(tags_container)
-	return data
 
-enum DropState{
-	Inside = 0,
-	Up,
-	Down,
-	Outside,
-}
-
-func _can_drop_data(_at_position: Vector2, current_tid: Variant) -> bool:
-	if current_tid is Array and not  tid in current_tid:
-		var state:DropState = drop_location_calculator(get_global_mouse_position())
-		if state == DropState.Inside:
-			var new_tid:PackedInt32Array = tid.duplicate()
-			new_tid.append(0)
-			if new_tid in current_tid: return false #is idx 0 child draged on parent
-		drop_location_indicator(state)
-		return true
-	return false
-
-func drop_location_calculator(at_position: Vector2) -> DropState:# returns inside,up,down,outside
-	var top_bottom_margin:float = 0.18 # 0 - 1
-	var tag_editor_area:Rect2 = Rect2(get_global_rect())
+func drop_location_calculator(at_position: Vector2) -> DropState:
+	var top_bottom_margin: float = 0.10 # 0 - 1
+	var tag_editor_area := Rect2(get_global_rect())
 	if not tag_editor_area.has_point(at_position):
 		return DropState.Outside
-	var shrink_ratio:float = top_bottom_margin * float(tag_editor_area.size.y)
+	var shrink_ratio := top_bottom_margin * float(tag_editor_area.size.y)
 	tag_editor_area = tag_editor_area.grow_individual(0,- shrink_ratio,0,- shrink_ratio)
 	if tag_editor_area.has_point(at_position):
 		return DropState.Inside
@@ -257,63 +298,11 @@ func drop_location_calculator(at_position: Vector2) -> DropState:# returns insid
 	else:
 		return DropState.Down
 
-func drop_location_indicator(state: DropState) -> void:
-	var title_sb :StyleBoxFlat = StyleBoxFlat.new()
-	title_sb.corner_radius_top_left = 4
-	title_sb.corner_radius_top_right = 4
-	title_sb.set_border_width_all(2)
-	title_sb.border_width_bottom = 0
-	title_sb.set_content_margin_all(4)
-	title_sb.border_color = Color("yellow")
-	title_sb.bg_color = Color.from_hsv(0.625, 0.6, 0.35)
 
-	var content_sb :StyleBoxFlat = StyleBoxFlat.new()
-	content_sb.corner_radius_bottom_left = 4
-	content_sb.corner_radius_bottom_right = 4
-	content_sb.border_width_left = 2
-	content_sb.border_width_right = 2
-	content_sb.border_width_bottom = 2
-	content_sb.content_margin_top = 5
-	content_sb.content_margin_left = 7
-	content_sb.content_margin_bottom = 7
-	content_sb.content_margin_right = 7
-	content_sb.border_color = Color("yellow")
-	content_sb.bg_color = Color.from_hsv(0.625, 0.5, 0.25)
-	match state:
-		DropState.Up:# adds above its self
-			title_sb.set_border_width_all(0)
-			content_sb.set_border_width_all(0)
-			title_sb.border_width_top = 2
-		DropState.Down:# adds down its self
-			title_sb.set_border_width_all(0)
-			content_sb.set_border_width_all(0)
-			content_sb.border_width_bottom = 2
-	content.add_theme_stylebox_override(&"panel", content_sb)
-	title_bar.add_theme_stylebox_override(&"panel", title_sb)
-
-func _notification(what:int) -> void:
-	if what == NOTIFICATION_DRAG_BEGIN:
-		toggle_pause_children(true)
-	elif what == NOTIFICATION_DRAG_END:
-		toggle_pause_children(false)
-
-func toggle_pause_children(pause:bool) -> void:
-	var children:Array[Node] = get_children()
+func toggle_pause_children(pause: bool) -> void:
+	var children := get_children()
 	for child in children:
 		if pause:
 			child.process_mode = Node.PROCESS_MODE_DISABLED
 		else:
 			child.process_mode = Node.PROCESS_MODE_INHERIT
-
-func _drop_data(_at_position: Vector2, current_tid: Variant):
-	var state:DropState = drop_location_calculator(get_global_mouse_position())
-	var new_tid:PackedInt32Array = tid.duplicate()
-	match state:
-		DropState.Inside:
-			new_tid.append(0)
-		DropState.Up:
-			new_tid[-1] -= 1 if new_tid[-1] > 0 else 0
-		DropState.Down:
-			new_tid[-1] += 1
-	SVG.root_tag.move_tags_to(current_tid,new_tid)
-#endregion

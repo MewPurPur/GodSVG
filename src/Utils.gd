@@ -141,12 +141,14 @@ static func get_parent_tid(tid: PackedInt32Array) -> PackedInt32Array:
 
 # If parent is moving children are also moving
 static func filter_tids_remove_children(tids: Array[PackedInt32Array]) -> Array[PackedInt32Array]:
-	var new_tids:Array[PackedInt32Array] = tids.duplicate()
+	var new_tids: Array[PackedInt32Array] = tids.duplicate()
 	new_tids = new_tids.filter(func(tid:PackedInt32Array):
-		var check_tid:PackedInt32Array = []
+		var check_tid: PackedInt32Array = []
 		for part in tid:
 			check_tid.append(part)
-			if check_tid in new_tids and not check_tid == tid and is_tid_parent(check_tid,tid):
+			if ( check_tid in new_tids and not check_tid == tid
+				and is_tid_parent(check_tid,tid)
+			):
 				return false
 		return true
 		)
@@ -154,7 +156,7 @@ static func filter_tids_remove_children(tids: Array[PackedInt32Array]) -> Array[
 
 # [0] > [1] > [1, 2] > [2]
 static func sort_tids(tids: Array[PackedInt32Array]) -> Array[PackedInt32Array]:
-	var new_tids:Array[PackedInt32Array] = tids.duplicate()
+	var new_tids: Array[PackedInt32Array] = tids.duplicate()
 	new_tids.sort_custom(Utils.compare_tids)
 	return new_tids
 
