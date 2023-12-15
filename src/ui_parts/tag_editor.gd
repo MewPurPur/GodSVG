@@ -273,6 +273,7 @@ func determine_selection_highlight(state: DropState = DropState.Outside) -> void
 	root_sb.border_color = Color.YELLOW
 	root_sb.bg_color = Color.TRANSPARENT
 	root_sb.set_corner_radius_all(4)
+	root_sb.set_content_margin_all(2)
 	match state:
 		DropState.Inside:
 			root_sb.set_border_width_all(2)
