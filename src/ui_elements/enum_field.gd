@@ -28,19 +28,15 @@ func _ready() -> void:
 
 func _on_button_pressed() -> void:
 	var value_picker := ContextPopup.instantiate()
-	var buttons_arr: Array[Button] = []
+	var btn_arr: Array[Button] = []
 	for enum_constant in attribute.possible_values:
-		var btn := Button.new()
-		btn.text = enum_constant
-		btn.pressed.connect(_on_option_pressed.bind(enum_constant))
-		if enum_constant == attribute.get_value():
-			btn.disabled = true
-		if attribute != null and enum_constant == attribute.default:
+		var btn := Utils.create_btn(enum_constant, _on_option_pressed.bind(enum_constant),
+				enum_constant == attribute.get_value())
+		if enum_constant == attribute.default:
 			btn.add_theme_font_override(&"font", bold_font)
-		buttons_arr.append(btn)
+		btn_arr.append(btn)
 	add_child(value_picker)
-	value_picker.set_btn_array(buttons_arr)
-	value_picker.set_min_width(74)
+	value_picker.set_button_array(btn_arr, false, size.x)
 	Utils.popup_under_control(value_picker, indicator)
 
 func _on_option_pressed(option: String) -> void:

@@ -22,17 +22,14 @@ func _on_close_pressed() -> void:
 	queue_free()
 
 func _on_language_pressed() -> void:
-	var buttons_arr: Array[Button] = []
+	var btn_arr: Array[Button] = []
 	for lang in ["en", "bg", "de"]:
-		var button := Button.new()
-		button.text = TranslationServer.get_locale_name(lang) + " (" + lang + ")"
-		button.pressed.connect(_on_language_chosen.bind(lang))
-		button.mouse_default_cursor_shape = CURSOR_POINTING_HAND
-		button.alignment = HORIZONTAL_ALIGNMENT_LEFT
-		buttons_arr.append(button)
+		btn_arr.append(Utils.create_btn(
+				TranslationServer.get_locale_name(lang) + " (" + lang + ")",
+				_on_language_chosen.bind(lang)))
 	var lang_popup := ContextPopup.instantiate()
 	add_child(lang_popup)
-	lang_popup.set_btn_array(buttons_arr)
+	lang_popup.set_button_array(btn_arr, true, lang_button.size.x)
 	Utils.popup_under_control(lang_popup, lang_button)
 
 func _on_language_chosen(locale: String) -> void:

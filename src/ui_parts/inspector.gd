@@ -44,16 +44,12 @@ func _on_tag_container_gui_input(event: InputEvent) -> void:
 func _on_add_button_pressed() -> void:
 	var btn_array: Array[Button] = []
 	for tag_name in ["path", "circle", "ellipse", "rect", "line"]:
-		var add_btn := Button.new()
-		add_btn.text = tag_name
-		add_btn.add_theme_font_override(&"font", load("res://visual/fonts/FontMono.ttf"))
-		add_btn.icon = load("res://visual/icons/tag/" + tag_name + ".svg")
-		add_btn.alignment = HORIZONTAL_ALIGNMENT_LEFT
-		add_btn.pressed.connect(add_tag.bind(tag_name))
-		btn_array.append(add_btn)
+		var btn := Utils.create_btn(tag_name, add_tag.bind(tag_name), false,
+				load("res://visual/icons/tag/" + tag_name + ".svg"))
+		btn.add_theme_font_override(&"font", load("res://visual/fonts/FontMono.ttf"))
+		btn_array.append(btn)
 	
 	var add_popup := ContextPopup.instantiate()
 	add_child(add_popup)
-	add_popup.set_btn_array(btn_array)
-	add_popup.set_min_width(add_button.size.x)
+	add_popup.set_button_array(btn_array, true, add_button.size.x)
 	Utils.popup_under_control(add_popup, add_button)

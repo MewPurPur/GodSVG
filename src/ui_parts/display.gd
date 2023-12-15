@@ -34,61 +34,36 @@ func _on_settings_pressed() -> void:
 	HandlerGUI.add_overlay(settings_menu_instance)
 
 func _on_visuals_button_pressed() -> void:
-	var btn_arr: Array[Button] = []
-	var show_visuals_btn := CheckBox.new()
-	show_visuals_btn.text = tr(&"#show_grid")
-	show_visuals_btn.button_pressed = grid_visuals.visible
-	show_visuals_btn.alignment = HORIZONTAL_ALIGNMENT_LEFT
-	show_visuals_btn.pressed.connect(toggle_grid_visuals)
+	var btn_arr: Array[Button] = [
+		Utils.create_checkbox(tr(&"#show_grid"), toggle_grid_visuals, grid_visuals.visible),
+		Utils.create_checkbox(tr(&"#show_handles"), toggle_handles_visuals,
+				controls.visible),
+		Utils.create_checkbox(tr(&"#rasterize_svg"), toggle_rasterization,
+				viewport.display_texture.rasterized),
+	]
 	
-	var show_handles_btn := CheckBox.new()
-	show_handles_btn.text = tr(&"#show_handles")
-	show_handles_btn.button_pressed = controls.visible
-	show_handles_btn.alignment = HORIZONTAL_ALIGNMENT_LEFT
-	show_handles_btn.pressed.connect(toggle_handles_visuals)
-	
-	var rasterize_btn := CheckBox.new()
-	rasterize_btn.text = tr(&"#rasterize_svg")
-	rasterize_btn.button_pressed = viewport.display_texture.rasterized
-	rasterize_btn.alignment = HORIZONTAL_ALIGNMENT_LEFT
-	rasterize_btn.pressed.connect(toggle_rasterization)
-	
-	btn_arr = [show_visuals_btn, show_handles_btn, rasterize_btn]
 	var visuals_popup := ContextPopup.instantiate()
 	add_child(visuals_popup)
-	visuals_popup.set_btn_array(btn_arr)
+	visuals_popup.set_button_array(btn_arr, true)
 	Utils.popup_under_control_centered(visuals_popup, visuals_button)
 
 func _on_more_options_pressed() -> void:
-	var open_repo_btn := Button.new()
-	open_repo_btn.text = tr(&"#repo_button_text")
-	open_repo_btn.icon = load("res://visual/icons/Link.svg")
-	open_repo_btn.alignment = HORIZONTAL_ALIGNMENT_LEFT
-	open_repo_btn.pressed.connect(open_godsvg_repo)
-	
-	var about_btn := Button.new()
-	about_btn.text = tr(&"#about_button_text")
-	about_btn.icon = load("res://visual/icon.svg")
+	var about_btn := Utils.create_btn(tr(&"#about_button_text"), open_about, false,
+			load("res://visual/icon.svg"))
 	about_btn.expand_icon = true
-	about_btn.alignment = HORIZONTAL_ALIGNMENT_LEFT
-	about_btn.pressed.connect(open_about)
+	var buttons_arr: Array[Button] = [
+		Utils.create_btn(tr(&"#repo_button_text"), open_godsvg_repo, false,
+				load("res://visual/icons/Link.svg")),
+		about_btn,
+		Utils.create_btn(tr(&"#docs_button_text"), open_docs, false,
+				load("res://visual/icons/Docs.svg")),
+		Utils.create_btn(tr(&"#donate_button_text"), open_sponsor, false,
+				load("res://visual/icons/Heart.svg")),
+	]
 	
-	var docs_btn := Button.new()
-	docs_btn.text = tr(&"#docs_button_text")
-	docs_btn.icon = load("res://visual/icons/Docs.svg")
-	docs_btn.alignment = HORIZONTAL_ALIGNMENT_LEFT
-	docs_btn.pressed.connect(open_docs)
-	
-	var donate_btn := Button.new()
-	donate_btn.text = tr(&"#donate_button_text")
-	donate_btn.icon = load("res://visual/icons/Heart.svg")
-	donate_btn.alignment = HORIZONTAL_ALIGNMENT_LEFT
-	donate_btn.pressed.connect(open_sponsor)
-	
-	var buttons_arr: Array[Button] = [open_repo_btn, about_btn, docs_btn, donate_btn]
 	var more_popup := ContextPopup.instantiate()
 	add_child(more_popup)
-	more_popup.set_btn_array(buttons_arr)
+	more_popup.set_button_array(buttons_arr, true)
 	Utils.popup_under_control_centered(more_popup, more_button)
 
 func open_godsvg_repo() -> void:
