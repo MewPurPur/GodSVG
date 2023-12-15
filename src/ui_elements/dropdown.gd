@@ -34,18 +34,11 @@ func _ready() -> void:
 func _on_button_pressed() -> void:
 	var btn_arr: Array[Button] = []
 	for val in values:
-		var button := Button.new()
-		button.text = val
-		button.pressed.connect(_on_value_chosen.bind(val))
-		button.alignment = HORIZONTAL_ALIGNMENT_CENTER
-		if val == value:
-			button.disabled = true
-		btn_arr.append(button)
+		btn_arr.append(Utils.create_btn(val, _on_value_chosen.bind(val), val == value))
 	
 	var value_picker := ContextPopup.instantiate()
 	add_child(value_picker)
-	value_picker.set_btn_array(btn_arr)
-	value_picker.set_min_width(50)
+	value_picker.set_button_array(btn_arr, false, size.x)
 	Utils.popup_under_control(value_picker, line_edit)
 
 func _on_value_chosen(new_value: String) -> void:

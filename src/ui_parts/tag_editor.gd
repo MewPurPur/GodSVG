@@ -95,46 +95,25 @@ func create_tag_context() -> Popup:
 	var tag_count := SVG.root_tag.get_by_tid(parent_tid).get_child_count()
 	var btn_array: Array[Button] = []
 	
-	var duplicate_button := Button.new()
-	duplicate_button.text = tr(&"#duplicate")
-	duplicate_button.icon = load("res://visual/icons/Duplicate.svg")
-	duplicate_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
-	duplicate_button.pressed.connect(Indications.duplicate_selected)
-	btn_array.append(duplicate_button)
+	btn_array.append(Utils.create_btn(tr(&"#duplicate"), Indications.duplicate_selected,
+			false, load("res://visual/icons/Duplicate.svg")))
 	
 	if !tag.possible_conversions.is_empty():
-		var convert_btn := Button.new()
-		convert_btn.text = tr(&"#convert_to")
-		convert_btn.icon = load("res://visual/icons/Reload.svg")
-		convert_btn.alignment = HORIZONTAL_ALIGNMENT_LEFT
-		convert_btn.pressed.connect(popup_convert_to_context)
-		btn_array.append(convert_btn)
-	
+		btn_array.append(Utils.create_btn(tr(&"#convert_to"), popup_convert_to_context,
+				false, load("res://visual/icons/Reload.svg")))
 	if tid[-1] > 0:
-		var move_up_button := Button.new()
-		move_up_button.text = tr(&"#move_up")
-		move_up_button.icon = load("res://visual/icons/MoveUp.svg")
-		move_up_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
-		move_up_button.pressed.connect(Indications.move_up_selected)
-		btn_array.append(move_up_button)
+		btn_array.append(Utils.create_btn(tr(&"#move_up"), Indications.move_up_selected,
+				false, load("res://visual/icons/MoveUp.svg")))
 	if tid[-1] < tag_count - 1:
-		var move_down_button := Button.new()
-		move_down_button.text = tr(&"#move_down")
-		move_down_button.icon = load("res://visual/icons/MoveDown.svg")
-		move_down_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
-		move_down_button.pressed.connect(Indications.move_down_selected)
-		btn_array.append(move_down_button)
+		btn_array.append(Utils.create_btn(tr(&"#move_down"), Indications.move_down_selected,
+				false, load("res://visual/icons/MoveDown.svg")))
 	
-	var delete_button := Button.new()
-	delete_button.text = tr(&"#delete")
-	delete_button.icon = load("res://visual/icons/Delete.svg")
-	delete_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
-	delete_button.pressed.connect(Indications.delete_selected)
-	btn_array.append(delete_button)
+	btn_array.append(Utils.create_btn(tr(&"#delete"), Indications.delete_selected,
+				false, load("res://visual/icons/Delete.svg")))
 	
 	var tag_context := ContextPopup.instantiate()
 	add_child(tag_context)
-	tag_context.set_btn_array(btn_array)
+	tag_context.set_button_array(btn_array, true)
 	return tag_context
 
 
@@ -162,20 +141,15 @@ func _on_mouse_exited() -> void:
 	Indications.remove_hovered(tid)
 
 func popup_convert_to_context() -> void:
-	var btn_array: Array[Button] = []
+	var btn_arr: Array[Button] = []
 	for tag_name in tag.possible_conversions:
-		var btn := Button.new()
-		btn.text = tag_name
+		var btn := Utils.create_btn(tag_name, _convert_to.bind(tag_name),
+				!tag.can_replace(tag_name), load("res://visual/icons/tag/%s.svg" % tag_name))
 		btn.add_theme_font_override(&"font", load("res://visual/fonts/FontMono.ttf"))
-		btn.icon = load("res://visual/icons/tag/" + tag_name + ".svg")
-		btn.alignment = HORIZONTAL_ALIGNMENT_LEFT
-		btn.pressed.connect(_convert_to.bind(tag_name))
-		if !tag.can_replace(tag_name):
-			btn.disabled = true
-		btn_array.append(btn)
+		btn_arr.append(btn)
 	var context_popup := ContextPopup.instantiate()
 	add_child(context_popup)
-	context_popup.set_btn_array(btn_array)
+	context_popup.set_button_array(btn_arr, true)
 	Utils.popup_under_control_centered(context_popup, title_button)
 
 func _convert_to(tag_name: String) -> void:

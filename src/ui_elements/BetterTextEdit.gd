@@ -78,47 +78,16 @@ func _on_gui_input(event: InputEvent) -> void:
 		if event.button_index == MOUSE_BUTTON_RIGHT:
 			grab_focus()
 			var context_popup := ContextPopup.instantiate()
-			var btn_arr: Array[Button] = []
-			
-			var undo_button := Button.new()
-			undo_button.text = tr(&"#undo")
-			if not has_undo():
-				undo_button.disabled = true
-			undo_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
-			undo_button.pressed.connect(undo)
-			btn_arr.append(undo_button)
-			
-			var redo_button := Button.new()
-			redo_button.text = tr(&"#redo")
-			if not has_redo():
-				redo_button.disabled = true
-			redo_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
-			redo_button.pressed.connect(redo)
-			btn_arr.append(redo_button)
-			
-			var copy_button := Button.new()
-			copy_button.text = tr(&"#copy")
-			copy_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
-			copy_button.pressed.connect(copy)
-			btn_arr.append(copy_button)
-			
-			var paste_button := Button.new()
-			paste_button.text = tr(&"#paste")
-			if not DisplayServer.clipboard_has():
-				paste_button.disabled = true
-			paste_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
-			paste_button.pressed.connect(paste)
-			btn_arr.append(paste_button)
-			
-			var cut_button := Button.new()
-			cut_button.text = tr(&"#cut")
-			cut_button.alignment = HORIZONTAL_ALIGNMENT_LEFT
-			cut_button.pressed.connect(cut)
-			btn_arr.append(cut_button)
+			var btn_arr: Array[Button] = [
+				Utils.create_btn(tr(&"#undo"), undo, !has_undo()),
+				Utils.create_btn(tr(&"#redo"), redo, !has_redo()),
+				Utils.create_btn(tr(&"#copy"), copy, text.is_empty()),
+				Utils.create_btn(tr(&"#paste"), paste, !DisplayServer.clipboard_has()),
+				Utils.create_btn(tr(&"#cut"), cut, text.is_empty()),
+			]
 			
 			add_child(context_popup)
-			context_popup.set_min_width(72.0)
-			context_popup.set_btn_array(btn_arr)
+			context_popup.set_button_array(btn_arr, true, 72)
 			Utils.popup_under_mouse(context_popup, get_global_mouse_position())
 	else:
 		# Set these inputs as handled, so the default UndoRedo doesn't eat them.
