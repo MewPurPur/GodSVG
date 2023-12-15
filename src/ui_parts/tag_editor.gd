@@ -302,13 +302,17 @@ func drop_location_calculator(at_position: Vector2) -> DropState:
 
 
 func toggle_pause_children(pause: bool) -> void:
+	var children = ( paint_container.get_children()
+				 + shape_container.get_children()
+				 + unknown_container.get_children()
+				)
 	if pause:
-		for child in content.get_children():
+		for child in children:
 			child.mouse_filter = Control.MOUSE_FILTER_PASS
 		content.process_mode = Node.PROCESS_MODE_DISABLED
 		title_bar.process_mode = Node.PROCESS_MODE_DISABLED
 	else:
-		for child in content.get_children():
+		for child in children:
 			child.mouse_filter = Control.MOUSE_FILTER_STOP
 		content.process_mode = Node.PROCESS_MODE_INHERIT
 		title_bar.process_mode = Node.PROCESS_MODE_INHERIT
