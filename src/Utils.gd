@@ -51,6 +51,28 @@ static func popup_under_control_centered(popup: Popup, control: Control) -> void
 static func popup_under_mouse(popup: Popup, mouse_pos: Vector2) -> void:
 	popup.popup(Rect2(mouse_pos, popup.size))
 
+static func create_btn(text: String, press_action: Callable, disabled := false,
+icon: Texture2D = null) -> Button:
+	var btn := Button.new()
+	btn.text = text
+	if icon != null:
+		btn.icon = icon
+	if disabled:
+		btn.disabled = true
+	else:
+		btn.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+	btn.pressed.connect(press_action)
+	return btn
+
+static func create_checkbox(text: String, toggle_action: Callable,
+start_pressed: bool) -> CheckBox:
+	var checkbox := CheckBox.new()
+	checkbox.text = text
+	checkbox.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+	checkbox.button_pressed = start_pressed
+	checkbox.pressed.connect(toggle_action)
+	return checkbox
+
 
 static func get_cubic_bezier_points(cp1: Vector2, cp2: Vector2,
 cp3: Vector2, cp4: Vector2) -> PackedVector2Array:

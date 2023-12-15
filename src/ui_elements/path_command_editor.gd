@@ -222,33 +222,21 @@ func convert_to() -> void:
 
 func open_actions(popup_from_mouse := false) -> void:
 	var action_popup := ContextPopup.instantiate()
-	var buttons_arr: Array[Button] = []
+	var btn_arr: Array[Button] = []
 	
 	if Indications.inner_selections.size() == 1:
-		var insert_after_btn := Button.new()
-		insert_after_btn.text = tr(&"#insert_after")
-		insert_after_btn.icon = load("res://visual/icons/Plus.svg")
-		insert_after_btn.alignment = HORIZONTAL_ALIGNMENT_LEFT
-		insert_after_btn.pressed.connect(insert_after)
-		buttons_arr.append(insert_after_btn)
+		btn_arr.append(Utils.create_btn(tr(&"#insert_after"), insert_after, false,
+				load("res://visual/icons/Plus.svg")))
 	
 	if cmd_idx != 0 and Indications.inner_selections.size() == 1:
-		var convert_btn := Button.new()
-		convert_btn.text = tr(&"#convert_to")
-		convert_btn.icon = load("res://visual/icons/Reload.svg")
-		convert_btn.alignment = HORIZONTAL_ALIGNMENT_LEFT
-		convert_btn.pressed.connect(convert_to)
-		buttons_arr.append(convert_btn)
+		btn_arr.append(Utils.create_btn(tr(&"#convert_to"), convert_to, false,
+				load("res://visual/icons/Reload.svg")))
 	
-	var delete_btn := Button.new()
-	delete_btn.text = tr(&"#delete")
-	delete_btn.icon = load("res://visual/icons/Delete.svg")
-	delete_btn.alignment = HORIZONTAL_ALIGNMENT_LEFT
-	delete_btn.pressed.connect(Indications.delete_selected)
-	buttons_arr.append(delete_btn)
+	btn_arr.append(Utils.create_btn(tr(&"#delete"), Indications.delete_selected, false,
+				load("res://visual/icons/Reload.svg")))
 	
 	add_child(action_popup)
-	action_popup.set_btn_array(buttons_arr)
+	action_popup.set_button_array(btn_arr, true)
 	if popup_from_mouse:
 		Utils.popup_under_mouse(action_popup, get_global_mouse_position())
 	else:
