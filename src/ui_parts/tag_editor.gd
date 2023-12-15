@@ -139,7 +139,8 @@ func _drop_data(_at_position: Vector2, current_tid: Variant):
 
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_DRAG_BEGIN:
-		toggle_pause_children(true)
+		if get_viewport().gui_get_drag_data() is Array[PackedInt32Array]:
+			toggle_pause_children(true)
 	elif what == NOTIFICATION_DRAG_END:
 		toggle_pause_children(false)
 
@@ -300,9 +301,13 @@ func drop_location_calculator(at_position: Vector2) -> DropState:
 
 
 func toggle_pause_children(pause: bool) -> void:
-	var children := get_children()
-	for child in children:
-		if pause:
-			child.process_mode = Node.PROCESS_MODE_DISABLED
-		else:
-			child.process_mode = Node.PROCESS_MODE_INHERIT
+	if pause:
+		for child in content.get_children():
+			child.mouse_filter = Control.MOUSE_FILTER_PASS
+		content.process_mode = Node.PROCESS_MODE_DISABLED
+		title_bar.process_mode = Node.PROCESS_MODE_DISABLED
+	else:
+		for child in content.get_children():
+			child.mouse_filter = Control.MOUSE_FILTER_STOP
+		content.process_mode = Node.PROCESS_MODE_INHERIT
+		title_bar.process_mode = Node.PROCESS_MODE_INHERIT
