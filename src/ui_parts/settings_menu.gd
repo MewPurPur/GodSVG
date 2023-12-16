@@ -58,7 +58,7 @@ func rebuild_color_palettes() -> void:
 		var palette_config := PaletteConfigWidget.instantiate()
 		palette_container.add_child(palette_config)
 		palette_config.assign_palette(palette)
-		palette_config.deleted.connect(rebuild_color_palettes)
+		palette_config.layout_changed.connect(rebuild_color_palettes)
 	# The button for adding a new palette looks quite unusual and should be on the bottom.
 	# So I'm setting up its own theming here.
 	var normal_sb := StyleBoxFlat.new()
@@ -76,6 +76,7 @@ func rebuild_color_palettes() -> void:
 	add_palette_button.add_theme_stylebox_override(&"pressed", pressed_sb)
 	add_palette_button.icon = plus_icon
 	add_palette_button.icon_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	add_palette_button.focus_mode = Control.FOCUS_NONE
 	add_palette_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	palette_container.add_child(add_palette_button)
 	add_palette_button.pressed.connect(add_palette)

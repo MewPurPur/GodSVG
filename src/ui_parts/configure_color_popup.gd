@@ -23,7 +23,11 @@ func _on_edit_button_pressed() -> void:
 	color_label.hide()
 	color_name_edit_button.hide()
 
-func _on_name_edit_text_submitted(new_text: String) -> void:
+
+func _on_name_edit_focus_exited() -> void:
+	change_color_name(color_name_edit.text)
+
+func change_color_name(new_text: String) -> void:
 	var new_name := new_text.strip_edges()
 	set_label_text(new_name)
 	hide_name_edit()
@@ -42,9 +46,6 @@ func set_label_text(new_text: String) -> void:
 		color_label.text = new_text
 		color_label.remove_theme_color_override(&"font_color")
 
-
-func _on_name_edit_focus_exited() -> void:
-	hide_name_edit()
 
 func _on_delete_button_pressed() -> void:
 	color_deletion_requested.emit()
