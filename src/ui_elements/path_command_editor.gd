@@ -233,7 +233,7 @@ func open_actions(popup_from_mouse := false) -> void:
 				load("res://visual/icons/Reload.svg")))
 	
 	btn_arr.append(Utils.create_btn(tr(&"#delete"), Indications.delete_selected, false,
-				load("res://visual/icons/Reload.svg")))
+				load("res://visual/icons/Delete.svg")))
 	
 	add_child(action_popup)
 	action_popup.set_button_array(btn_arr, true)
