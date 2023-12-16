@@ -232,7 +232,8 @@ func setup_none_button() -> void:
 
 func _on_reset_color_button_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion and event.button_mask != MOUSE_BUTTON_MASK_LEFT:
-		if starting_color == "none" or color.to_html(false) == starting_color:
+		if (starting_color == "none" and not is_none) or\
+		AttributeColor.get_color_from_non_url(starting_color) == color:
 			reset_color_button.disabled = true
 			return
 		reset_color_button.disabled = false
