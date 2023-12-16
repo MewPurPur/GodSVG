@@ -265,8 +265,10 @@ func create_stylebox(inside_color: Color, border_color: Color) -> StyleBoxFlat:
 
 func setup_relative_button() -> void:
 	relative_button.text = cmd_char
+	relative_button.tooltip_text = Utils.path_command_char_dict[cmd_char.to_upper()]
 	relative_button.pressed.connect(toggle_relative)
 	if Utils.is_string_upper(cmd_char):
+		relative_button.tooltip_text += " (" + tr(&"absolute") + ")"
 		relative_button.add_theme_stylebox_override(&"normal", create_stylebox(
 				Color.from_hsv(0.08, 0.8, 0.8), Color.from_hsv(0.1, 0.6, 0.9)))
 		relative_button.add_theme_stylebox_override(&"hover", create_stylebox(
@@ -274,6 +276,7 @@ func setup_relative_button() -> void:
 		relative_button.add_theme_stylebox_override(&"pressed", create_stylebox(
 				Color.from_hsv(0.11, 0.6, 1.0), Color.from_hsv(0.13, 0.4, 1.0)))
 	else:
+		relative_button.tooltip_text = " (" + tr(&"relative") + ")"
 		relative_button.add_theme_stylebox_override(&"normal", create_stylebox(
 				Color.from_hsv(0.8, 0.8, 0.8), Color.from_hsv(0.76, 0.6, 0.9)))
 		relative_button.add_theme_stylebox_override(&"hover", create_stylebox(
