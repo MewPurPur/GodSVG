@@ -91,6 +91,6 @@ icon = ExtResource("5_5n8tt")
 
 [connection signal="popup_hide" from="." to="." method="_on_popup_hide"]
 [connection signal="focus_exited" from="PanelContainer/MarginContainer/ConfigureContainer/TopContainer/NameEdit" to="." method="_on_name_edit_focus_exited"]
-[connection signal="text_submitted" from="PanelContainer/MarginContainer/ConfigureContainer/TopContainer/NameEdit" to="." method="_on_name_edit_text_submitted"]
+[connection signal="text_submitted" from="PanelContainer/MarginContainer/ConfigureContainer/TopContainer/NameEdit" to="." method="change_color_name"]
 [connection signal="pressed" from="PanelContainer/MarginContainer/ConfigureContainer/TopContainer/EditButton" to="." method="_on_edit_button_pressed"]
 [connection signal="pressed" from="PanelContainer/MarginContainer/ConfigureContainer/BottomContainer/DeleteButton" to="." method="_on_delete_button_pressed"]
