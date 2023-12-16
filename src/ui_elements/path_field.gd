@@ -80,6 +80,9 @@ func _convert_to(idx: int, new_type: String) -> void:
 func _on_line_edit_text_submitted(new_text: String) -> void:
 	set_value(new_text)
 
+func _on_line_edit_focus_exited() -> void:
+	set_value(line_edit.text)
+
 func _on_line_edit_focus_entered() -> void:
 	focused.emit()
 
