@@ -2,9 +2,10 @@ extends PanelContainer
 
 const ColorSwatch = preload("res://src/ui_elements/color_swatch.tscn")
 const ConfigurePopup = preload("res://src/ui_parts/configure_color_popup.tscn")
+const ContextPopup = preload("res://src/ui_elements/context_popup.tscn")
 
 signal color_picked(color: String)
-signal deleted
+signal layout_changed
 
 var current_palette: ColorPalette
 var currently_edited_color: NamedColor
@@ -14,6 +15,7 @@ var currently_edited_color: NamedColor
 @onready var name_edit: BetterLineEdit = %MainContainer/HBoxContainer/NameEdit
 @onready var name_edit_button: Button = %MainContainer/HBoxContainer/EditButton
 @onready var colors_container: HFlowContainer = %MainContainer/ColorsContainer
+@onready var more_button: Button = $MarginContainer/HBoxContainer/MoreButton
 
 # Used to setup a palette for this element.
 func assign_palette(palette: ColorPalette) -> void:
@@ -59,7 +61,6 @@ func popup_configure_color(swatch: Button) -> void:
 func popup_edit_name() -> void:
 	palette_label.hide()
 	name_edit_button.hide()
-	margin_container.add_theme_constant_override(&"margin_top", 1)
 	name_edit.show()
 	name_edit.text = current_palette.name
 	name_edit.grab_focus()
@@ -69,7 +70,6 @@ func hide_name_edit() -> void:
 	palette_label.show()
 	name_edit_button.show()
 	name_edit.hide()
-	margin_container.remove_theme_constant_override(&"margin_top")
 
 # Update text color to red if the name won't work (because it's a duplicate).
 func _on_name_edit_text_changed(new_text: String) -> void:
@@ -80,6 +80,9 @@ func _on_name_edit_text_changed(new_text: String) -> void:
 		name_edit.add_theme_color_override(&"font_color", Color(1.0, 0.6, 0.6))
 	else:
 		name_edit.add_theme_color_override(&"font_color", Color(0.6, 1.0, 0.6))
+
+func _on_name_edit_focus_exited() -> void:
+	change_name(name_edit.text)
 
 func change_name(new_name: String) -> void:
 	new_name = new_name.strip_edges()
@@ -101,17 +104,6 @@ func popup_add_color() -> void:
 	currently_edited_color = new_color
 	rebuild_colors()
 
-func _on_delete_button_pressed() -> void:
-	for palette_idx in GlobalSettings.get_palettes().size():
-		if GlobalSettings.get_palettes()[palette_idx].name == current_palette.name:
-			GlobalSettings.get_palettes().remove_at(palette_idx)
-			GlobalSettings.save_user_data()
-			break
-	deleted.emit()
-
-func _on_name_edit_focus_exited() -> void:
-	hide_name_edit()
-
 func set_label_text(new_text: String) -> void:
 	if new_text.is_empty():
 		palette_label.text = tr(&"#unnamed")
@@ -123,3 +115,42 @@ func set_label_text(new_text: String) -> void:
 func delete_color(named_color: NamedColor) -> void:
 	current_palette.named_colors.erase(named_color)  # I hope this works.
 	rebuild_colors()
+
+func delete(idx: int) -> void:
+	GlobalSettings.get_palettes().remove_at(idx)
+	GlobalSettings.save_user_data()
+	layout_changed.emit()
+
+func move_up(idx: int) -> void:
+	var palette: ColorPalette = GlobalSettings.get_palettes().pop_at(idx)
+	GlobalSettings.get_palettes().insert(idx - 1, palette)
+	GlobalSettings.save_user_data()
+	layout_changed.emit()
+
+func move_down(idx: int) -> void:
+	var palette: ColorPalette = GlobalSettings.get_palettes().pop_at(idx)
+	GlobalSettings.get_palettes().insert(idx + 1, palette)
+	GlobalSettings.save_user_data()
+	layout_changed.emit()
+
+
+func _on_more_button_pressed() -> void:
+	var palette_idx := -1
+	for idx in GlobalSettings.get_palettes().size():
+		if GlobalSettings.get_palettes()[idx].name == current_palette.name:
+			palette_idx = idx
+	
+	var btn_arr: Array[Button] = [Utils.create_btn(tr(&"#delete"),
+			delete.bind(palette_idx), false, load("res://visual/icons/Delete.svg"))]
+	
+	if palette_idx >= 1:
+		btn_arr.append(Utils.create_btn(tr(&"#move_up"), move_up.bind(palette_idx),
+				false, load("res://visual/icons/MoveUp.svg")))
+	if palette_idx < GlobalSettings.get_palettes().size() - 1:
+		btn_arr.append(Utils.create_btn(tr(&"#move_down"), move_down.bind(palette_idx),
+				false, load("res://visual/icons/MoveDown.svg")))
+	
+	var context_popup := ContextPopup.instantiate()
+	add_child(context_popup)
+	context_popup.set_button_array(btn_arr, false)
+	Utils.popup_under_control_centered(context_popup, more_button)

@@ -16,6 +16,10 @@ var hovered := false
 func _init() -> void:
 	context_menu_enabled = false
 	wrap_mode = TextEdit.LINE_WRAPPING_BOUNDARY
+	scroll_smooth = true
+	scroll_v_scroll_speed = 30.0
+	caret_multiple = false
+	highlight_all_occurrences = true
 
 func _ready() -> void:
 	RenderingServer.canvas_item_set_parent(surface, get_canvas_item())

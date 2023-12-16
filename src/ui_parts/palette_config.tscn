@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://src/ui_parts/palette_config.gd" id="1_2fy8k"]
 [ext_resource type="Texture2D" uid="uid://dr2erka82g6j4" path="res://visual/icons/Edit.svg" id="2_35dgp"]
 [ext_resource type="Script" path="res://src/ui_elements/BetterLineEdit.gd" id="2_coqnx"]
-[ext_resource type="Texture2D" uid="uid://cj5x2ti8150ja" path="res://visual/icons/Delete.svg" id="4_ms41n"]
+[ext_resource type="Texture2D" uid="uid://ccbta5q43jobk" path="res://visual/icons/More.svg" id="5_vjxeq"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lq3bn"]
 draw_center = false
@@ -27,9 +27,9 @@ script = ExtResource("1_2fy8k")
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2
 theme_override_constants/margin_left = 8
-theme_override_constants/margin_top = 1
+theme_override_constants/margin_top = 6
 theme_override_constants/margin_right = 6
-theme_override_constants/margin_bottom = 0
+theme_override_constants/margin_bottom = 6
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
 layout_mode = 2
@@ -39,12 +39,16 @@ theme_override_constants/separation = 12
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-size_flags_vertical = 4
+theme_override_constants/separation = 8
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/MainContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_constants/separation = 6
+
+[node name="Control" type="Control" parent="MarginContainer/HBoxContainer/MainContainer/HBoxContainer"]
+custom_minimum_size = Vector2(0, 24)
+layout_mode = 2
 
 [node name="PaletteLabel" type="Label" parent="MarginContainer/HBoxContainer/MainContainer/HBoxContainer"]
 layout_mode = 2
@@ -74,22 +78,17 @@ layout_mode = 2
 size_flags_vertical = 4
 theme_override_constants/h_separation = 3
 
-[node name="Control" type="Control" parent="MarginContainer/HBoxContainer/MainContainer"]
-custom_minimum_size = Vector2(0, 2)
-layout_mode = 2
-
-[node name="DeleteButton" type="Button" parent="MarginContainer/HBoxContainer"]
+[node name="MoreButton" type="Button" parent="MarginContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 4
-tooltip_text = "#delete_palette"
 focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_type_variation = &"IconButton"
-icon = ExtResource("4_ms41n")
+icon = ExtResource("5_vjxeq")
 
 [connection signal="focus_exited" from="MarginContainer/HBoxContainer/MainContainer/HBoxContainer/NameEdit" to="." method="_on_name_edit_focus_exited"]
 [connection signal="text_changed" from="MarginContainer/HBoxContainer/MainContainer/HBoxContainer/NameEdit" to="." method="_on_name_edit_text_changed"]
 [connection signal="text_submitted" from="MarginContainer/HBoxContainer/MainContainer/HBoxContainer/NameEdit" to="." method="change_name"]
 [connection signal="pressed" from="MarginContainer/HBoxContainer/MainContainer/HBoxContainer/EditButton" to="." method="popup_edit_name"]
-[connection signal="pressed" from="MarginContainer/HBoxContainer/DeleteButton" to="." method="_on_delete_button_pressed"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/MoreButton" to="." method="_on_more_button_pressed"]
