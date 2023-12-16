@@ -33,7 +33,7 @@ layout_mode = 2
 size_flags_horizontal = 8
 focus_mode = 0
 mouse_default_cursor_shape = 2
-text = "Relative"
+text = "#relative"
 flat = true
 alignment = 2
 
@@ -46,58 +46,48 @@ theme_override_constants/separation = 0
 layout_mode = 2
 focus_mode = 0
 command_char = "M"
-command_text = "Move to"
 
 [node name="L" parent="PanelContainer/VBoxContainer/CommandContainer" instance=ExtResource("2_1jd8y")]
 layout_mode = 2
 focus_mode = 0
 command_char = "L"
-command_text = "Line to"
 
 [node name="H" parent="PanelContainer/VBoxContainer/CommandContainer" instance=ExtResource("2_1jd8y")]
 layout_mode = 2
 focus_mode = 0
 command_char = "H"
-command_text = "Horizontal Line to"
 
 [node name="V" parent="PanelContainer/VBoxContainer/CommandContainer" instance=ExtResource("2_1jd8y")]
 layout_mode = 2
 focus_mode = 0
 command_char = "V"
-command_text = "Vertical Line to"
 
 [node name="Z" parent="PanelContainer/VBoxContainer/CommandContainer" instance=ExtResource("2_1jd8y")]
 layout_mode = 2
 focus_mode = 0
 command_char = "Z"
-command_text = "Close Path"
 
 [node name="A" parent="PanelContainer/VBoxContainer/CommandContainer" instance=ExtResource("2_1jd8y")]
 layout_mode = 2
 focus_mode = 0
 command_char = "A"
-command_text = "Elliptical Arc to"
 
 [node name="Q" parent="PanelContainer/VBoxContainer/CommandContainer" instance=ExtResource("2_1jd8y")]
 layout_mode = 2
 focus_mode = 0
 command_char = "Q"
-command_text = "Quadratic Bezier to"
 
 [node name="T" parent="PanelContainer/VBoxContainer/CommandContainer" instance=ExtResource("2_1jd8y")]
 layout_mode = 2
 focus_mode = 0
 command_char = "T"
-command_text = "Shorthand Quadratic Bezier to"
 
 [node name="C" parent="PanelContainer/VBoxContainer/CommandContainer" instance=ExtResource("2_1jd8y")]
 layout_mode = 2
 focus_mode = 0
 command_char = "C"
-command_text = "Cubic Bezier to"
 
 [node name="S" parent="PanelContainer/VBoxContainer/CommandContainer" instance=ExtResource("2_1jd8y")]
 layout_mode = 2
 focus_mode = 0
 command_char = "S"
-command_text = "Shorthand Cubic Bezier to"

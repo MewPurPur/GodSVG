@@ -1,5 +1,12 @@
 class_name Utils extends RefCounted
 
+const path_command_char_dict = {
+	"M": "Move to", "L": "Line to", "H": "Horizontal Line to", "V": "Vertical Line to",
+	"Z": "Close Path", "A": "Elliptical Arc to", "Q": "Quadratic Bezier to",
+	"T": "Shorthand Quadratic Bezier to", "C": "Cubic Bezier to",
+	"S": "Shorthand Cubic Bezier to"
+}
+
 # Enum with values to be used for set_value() of attribute editors.
 # REGULAR means that the attribute will update if the new value is different.
 # INTERMEDIATE and FINAL cause the attribute update to have the corresponding sync mode.
