@@ -62,6 +62,7 @@ func _ready() -> void:
 	SVG.root_tag.changed_unknown.connect(update_dimensions)
 	Indications.selection_changed.connect(queue_redraw)
 	Indications.hover_changed.connect(queue_redraw)
+	Indications.added_path_handle.connect(move_selected_to_mouse)
 	update_dimensions()
 
 
@@ -762,6 +763,22 @@ func _unhandled_input(event: InputEvent) -> void:
 			dragged_handle = null
 			Indications.clear_selection()
 			Indications.clear_inner_selection()
+
+func move_selected_to_mouse() -> void:
+	for handle in handles:
+		if handle.tid == Indications.semi_selected_tid and handle is PathHandle and\
+		handle.command_index == Indications.inner_selections[0]:
+			if not get_viewport_rect().has_point(get_viewport().get_mouse_position()):
+				return
+			dragged_handle = handle
+			# Move the handle that's being dragged.
+			var new_pos := convert_out(get_global_mouse_position())
+			var snap_size := absf(GlobalSettings.save_data.snap)
+			if GlobalSettings.save_data.snap > 0.0:
+				new_pos = new_pos.snapped(Vector2(snap_size, snap_size))
+			dragged_handle.set_pos(new_pos)
+			was_handle_moved = true
+			return
 
 func find_nearest_handle(event_pos: Vector2) -> Handle:
 	var max_grab_dist := 9 / zoom
