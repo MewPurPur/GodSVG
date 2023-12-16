@@ -18,6 +18,9 @@ const path_actions_dict := {
 signal hover_changed
 signal selection_changed
 
+# The viewport listens for this signal to put you in handle-placing mode.
+signal added_path_handle
+
 # The PackedInt32Array holds the hierarchical orders. TID means Tag ID.
 # For example, the 5th child of the 2nd child of the root tag would be (1, 4).
 # PackedInt32Array() means it's invalid.
@@ -315,7 +318,8 @@ func _unhandled_input(event: InputEvent) -> void:
 						if event.is_action_pressed(action_name):
 							path_attrib.insert_command(path_attrib.get_command_count(),
 									path_actions_dict[action_name])
-							normal_select(selected_tids[0], path_attrib.get_command_count())
+							normal_select(selected_tids[0], path_attrib.get_command_count() - 1)
+							added_path_handle.emit()
 							break
 			return
 		
@@ -325,6 +329,7 @@ func _unhandled_input(event: InputEvent) -> void:
 				real_tag.attributes.d.insert_command(inner_selections.max() + 1,
 						path_actions_dict[action_name])
 				normal_select(semi_selected_tid, inner_selections.max() + 1)
+				added_path_handle.emit()
 				break
 
 
