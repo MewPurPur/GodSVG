@@ -4,8 +4,8 @@
 #invert_zoom_desc,Swaps zoom in and zoom out with the mouse wheel.,Разменя увеличението и намалянето с колелцето на мишката.,Vertauscht Hinein- und Herauszoomen mit dem Mausrad.
 #wrap_mouse,Wrap mouse,Превъртане на курсора,Maus einschließen
 #wrap_mouse_desc,Wraps the mouse cursor around when panning the viewport.,Превърта курсора когато той достигне краищата на екрана.,Schließt die Maus beim bewegen innerhalb des Fensters ein.
-#use_ctrl_for_zoom,Use CTRL for zooming,Използвай CTRL за увеличение,
-#use_ctrl_for_zoom_desc,"If turned on, scrolling will pan the view. To zoom, hold CTRL while scrolling.","Когато е включено, влаченето ще премести гледката. За увеличение, натисни CTRL докато влачиш",
+#use_ctrl_for_zoom,Use CTRL for zooming,Използвай CTRL за увеличение,Strg-Taste zum Zoomen benutzen
+#use_ctrl_for_zoom_desc,"If turned on, scrolling will pan the view. To zoom, hold CTRL while scrolling.","Когато е включено, влаченето ще премести гледката. За увеличение, натисни CTRL докато влачиш","Wenn diese Option aktiviert ist, wird durch Scrollen die Ansicht geschwenkt. Halten Sie zum Zoomen beim Scrollen die Strg-Taste gedrückt."
 #input_tab,Input,Входни сигнали,Eingabe
 #open,Open,Отвори,Öffnen
 #close,Close,Затвори,Schließen
@@ -32,7 +32,7 @@
 #move_down,Move Down,Премести надолу,Nach unten
 #delete,Delete,Премахни,Löschen
 #insert_after,Insert After,Вмъкни отпред,Danach einsetzen
-#convert_to,Convert To,Превърни в,
+#convert_to,Convert To,Превърни в,Konvertieren zu
 #err_empty_svg,SVG is empty.,Текстът е празен.,SVG ist leer.
 #err_not_svg,Doesn’t describe a SVG.,Текстът не описва SVG.,Beschreibt kein SVG.
 #err_improper_nesting,Improper nesting.,Несъвместими тагове.,Ungültige Formatierung.
@@ -64,35 +64,35 @@
 #edit_palette_name,Edit palette name,Промени името на палетата,Palettennamen ändern
 #unnamed,Unnamed,Неименуван,Unbenannt
 #edit_color_name,Edit color name,Промени името на цвета,Farbnamen ändern
-#delete_color,Delete color,Изтрий цвета,
+#delete_color,Delete color,Изтрий цвета,Farbe löschen
 #enable_color,Enable the color,Включи цвета,Farbe aktivieren
 #disable_color,Disable the color,Изключи цвета,Farbe deaktivieren
 #godot_third_party,Godot third-party components,Компоненти в Godot от трети партии,Godot Drittanbieter-Komponente
-#undo,Undo,Върни назад,
-#redo,Redo,Върни напред,
-#copy,Copy,Копирай,
-#paste,Paste,Постави,
-#cut,Cut,Изрежи,
-#alert,Alert!,Предупреждение!,
-#file_open_fail_message,"The file couldn't be opened.\nTry checking the file path, ensure that the file is not deleted, or choose a different file.","Файлът не може да бъде отворен.\nОпитайте да проверите пътя към файла, уверете се, че файла не е изтрит, или изберете различен файл.",
-#file_open_unsupported_extension,"""{passed_extension}"" is a unsupported file extension. Only ""svg"" files are supported.","""{passed_extension}"" не е поддържан формат. Единствено ""svg"" файловете са подържани.",
-#file_open_empty_extension,"The file extension is empty. Only ""svg"" files are supported.","Форматът е празен. Единствено ""svg"" файловете са подържани.",
-#ok,OK,Добре,
-#autoformatting_options,Autoformatting options,Опции за автоматично форматиране,
-#numbers,Numbers,Числа,
-#colors,Colors,Цветове,
-#paths,Paths,Пътеки,
-#enable_autoformatting,Enable autoformatting,Enable autoformatting,
-#remove_zero_padding,Remove zero padding,Премахни нулите накрая,
-#remove_leading_zero,Remove leading zero,Премахни водещата нула,
-#remove_plus_sign,Remove plus sign,Премахни знака плюс,
-#convert_rgb_to_hex,Convert rgb format to hex,Преобразувай форматът rgb в hex,
-#convert_named_to_hex,Convert named colors to hex,Преобразувай именуваните цветове в hex,
-#use_shorthand_hex_code,Use shorthand hex code,Използвай кратък hex код,
-#use_short_named_colors,Use short named colors,Използвай кратки именувани цветове,
-#compress_numbers,Compress numbers,Смали числата,
-#minimize_spacing,Minimize spacing,Намали паузите,
+#undo,Undo,Върни назад,Rückgängig
+#redo,Redo,Върни напред,Wiederholen
+#copy,Copy,Копирай,Kopieren
+#paste,Paste,Постави,Einfügen
+#cut,Cut,Изрежи,Ausschneiden
+#alert,Alert!,Предупреждение!,Warnung!
+#file_open_fail_message,"The file couldn't be opened.\nTry checking the file path, ensure that the file is not deleted, or choose a different file.","Файлът не може да бъде отворен.\nОпитайте да проверите пътя към файла, уверете се, че файла не е изтрит, или изберете различен файл.","Die Datei konnte nicht geöffnet werden.\nÜberprüfe den Dateipfad, ob die Datei existiert, oder wähle eine andere Datei."
+#file_open_unsupported_extension,""{passed_extension}" is a unsupported file extension. Only "svg" files are supported.",""{passed_extension}" не е поддържан формат. Единствено "svg" файловете са подържани.",""{passed_extension}" ist eine nicht unterstützte Dateierweiterung. Nur "svg" Dateien werden unterstützt."
+#file_open_empty_extension,"The file extension is empty. Only "svg" files are supported.","Форматът е празен. Единствено "svg" файловете са подържани.","Die Dateierweiterung ist leer. Nur "svg"-Dateien werden unterstützt."
+#ok,OK,Добре,OK
+#autoformatting_options,Autoformatting options,Опции за автоматично форматиране,Autoformatierungsoptionen
+#numbers,Numbers,Числа,Nummern
+#colors,Colors,Цветове,Farben
+#paths,Paths,Пътеки,Pfade
+#enable_autoformatting,Enable autoformatting,Enable autoformatting,Autoformatierung einschalten
+#remove_zero_padding,Remove zero padding,Премахни нулите накрая,Nullenversatz entfernen
+#remove_leading_zero,Remove leading zero,Премахни водещата нула,Führende Null entfernen
+#remove_plus_sign,Remove plus sign,Премахни знака плюс,Pluszeichen entfernen
+#convert_rgb_to_hex,Convert rgb format to hex,Преобразувай форматът rgb в hex,RGB zu HEX konvertieren
+#convert_named_to_hex,Convert named colors to hex,Преобразувай именуваните цветове в hex,Benannte Farben zu HEX konvertieren
+#use_shorthand_hex_code,Use shorthand hex code,Използвай кратък hex код,Verkürzten HEX-Code verwenden
+#use_short_named_colors,Use short named colors,Използвай кратки именувани цветове,Verkürzte Farbnamen verwenden
+#compress_numbers,Compress numbers,Смали числата,Nummern komprimieren
+#minimize_spacing,Minimize spacing,Намали паузите,Leerplatz minimieren
 #remove_spacing_after_flags,Remove spacing after flags,Премахни паузите след флаговете,
-#remove_consecutive_commands,Remove consecutive commands,Премахни последователните команди,
-#relative,Relative,Относително,
-#absolute,Absolute,Абсолютно,
+#remove_consecutive_commands,Remove consecutive commands,Премахни последователните команди,Aufeinanderfolgende Befehle entfernen
+#relative,Relative,Относително,Relativ
+#absolute,Absolute,Абсолютно,Absolut
