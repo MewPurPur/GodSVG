@@ -93,3 +93,4 @@ func _on_gui_input(event: InputEvent) -> void:
 			Utils.popup_under_mouse(
 					context_popup, get_viewport().get_screen_transform().get_origin() /\
 					get_tree().get_root().content_scale_factor + get_global_mouse_position())
+			accept_event()

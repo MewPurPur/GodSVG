@@ -93,6 +93,7 @@ func _on_gui_input(event: InputEvent) -> void:
 			add_child(context_popup)
 			context_popup.set_button_array(btn_arr, true, 72)
 			Utils.popup_under_mouse(context_popup, get_global_mouse_position())
+			accept_event()
 	else:
 		# Set these inputs as handled, so the default UndoRedo doesn't eat them.
 		if event.is_action_pressed(&"redo"):
