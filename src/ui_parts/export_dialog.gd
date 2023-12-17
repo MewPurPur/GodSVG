@@ -56,7 +56,7 @@ func _on_ok_button_pressed() -> void:
 	# Open it inside a native file dialog, or our custom one if it's not available.
 	if DisplayServer.has_feature(DisplayServer.FEATURE_NATIVE_DIALOG):
 		DisplayServer.file_dialog_show("Export a ." + extension + " file",
-				Utils.get_last_dir(), "", false, DisplayServer.FILE_DIALOG_MODE_SAVE_FILE,
+				Utils.get_last_dir(), "."+ extension, false, DisplayServer.FILE_DIALOG_MODE_SAVE_FILE,
 				["*." + extension], native_file_export)
 	else:
 		var svg_export_dialog := SVGFileDialog.instantiate()
@@ -66,6 +66,8 @@ func _on_ok_button_pressed() -> void:
 		svg_export_dialog.file_selected.connect(non_native_file_import)
 
 func export(path: String) -> void:
+	if path.get_extension().is_empty():
+		path += "." + extension
 	var FA := FileAccess.open(path, FileAccess.WRITE)
 	match extension:
 		"png":
