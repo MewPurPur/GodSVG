@@ -1,5 +1,4 @@
 target="template_release"
-arch="x86_64"
 lto="full"
 production="yes"
 dev_build="no"
