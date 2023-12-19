@@ -18,6 +18,7 @@ This will be needed the first time.
 - Wait for the compilation to finish. The template will be in the bin directory, but avoid moving it inside the GodSVG project.
 - While exporting, find the relevant template in your file system to fill in the Custom Template field for each platform.
 
+For web exports, replace web-build/GodSVG.pck with the latest .pck web export. If a new engine version is used, the web-build/GodSVG.wasm must be updated too.
 
 ## Commands
 
@@ -28,7 +29,6 @@ Profile path should be adjusted
 - `scons p=windows arch=x86_64 profile=../GodSVG/xport/custom.py`
 
 - `scons p=web arch=wasm32 javascript_eval=no profile=../GodSVG/xport/custom.py`
-
 
 ## Misc:
 
