@@ -17,9 +17,9 @@ This will be needed the first time.
 - Run the scons command; see below.
 - Wait for the compilation to finish. The template will be in the bin directory, but avoid moving it inside the GodSVG project.
 
-For most platforms, to export, you'd need to find the relevant template in your file system to fill in the Custom Template field.
+For most platforms, to export, you'd need to find the relevant template in your file system to fill in the Custom Template field, then use "Export Project".
 
-For official web exports, web-build/GodSVG.pck should be replaced with the latest .pck web export. If a new engine version is used, the web-build/GodSVG.wasm must be updated too.
+For official web exports, web-build/GodSVG.pck should be replaced with the latest .pck using web export and "Export PCK/ZIP". If a new engine version is used, the web-build/GodSVG.wasm file must be updated too.
 
 ## Commands
 
