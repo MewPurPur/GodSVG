@@ -10,6 +10,7 @@ const project_managers: Array[String] = ["MewPurPur"]
 # The format is either "Real Name (GitHub username)" or "GitHub username".
 
 const authors: Array[String] = [
+	"aladvs",
 	"ajreckof",
 	"ilikefrogs101",
 	"Kiisu-Master",
