@@ -83,7 +83,7 @@ func open_import_dialog() -> void:
 		var svg_import_dialog := SVGFileDialog.instantiate()
 		svg_import_dialog.current_dir = Utils.get_last_dir()
 		HandlerGUI.add_overlay(svg_import_dialog)
-		svg_import_dialog.file_selected.connect()
+		svg_import_dialog.file_selected.connect(apply_svg_from_path)
 
 func native_file_import(has_selected: bool, files: PackedStringArray,
 _filter_idx: int) -> void:
