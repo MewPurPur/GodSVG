@@ -16,9 +16,10 @@ This will be needed the first time.
 - `git checkout <commit hash>`
 - Run the scons command; see below.
 - Wait for the compilation to finish. The template will be in the bin directory, but avoid moving it inside the GodSVG project.
-- While exporting, find the relevant template in your file system to fill in the Custom Template field for each platform.
 
-For web exports, replace web-build/GodSVG.pck with the latest .pck web export. If a new engine version is used, the web-build/GodSVG.wasm must be updated too.
+For most platforms, to export, you'd need to find the relevant template in your file system to fill in the Custom Template field.
+
+For official web exports, web-build/GodSVG.pck should be replaced with the latest .pck web export. If a new engine version is used, the web-build/GodSVG.wasm must be updated too.
 
 ## Commands
 
