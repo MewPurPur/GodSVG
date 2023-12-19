@@ -16,9 +16,13 @@ GodSVG is inspired by the need for an SVG editor without abstractions that produ
 
 ![image](https://github.com/MewPurPur/GodSVG/assets/85438892/e0fa4d0c-b962-4cc7-ac76-2cbc9cf77856)
 
-## Installation
+## How to get it
 
 Simply check out [the list of GodSVG releases](https://github.com/MewPurPur/GodSVG/releases) and download the version you want.
+
+Note that if you're on MacOS, you need to [disable Gatekeeper].(https://disable-gatekeeper.github.io/) I don't have the time or money to deal with Apple's gatekeeping.
+
+Link to the web build: https://mewpurpur.github.io/GodSVG/web-build
 
 ## Community and contributing
 
