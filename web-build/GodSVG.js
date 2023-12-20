@@ -1,4 +1,4 @@
-
+const VERSION_SUPPORT = false
 var Godot = (() => {
   var _scriptDir = typeof document !== 'undefined' && document.currentScript ? document.currentScript.src : undefined;
   
@@ -14404,7 +14404,9 @@ const Engine = (function () {
 				this.config.update(override);
 				// Add main-pack argument.
 				const exe = this.config.executable;
-
+        
+        var packHolder
+        if (VERSION_SUPPORT) {
         const queryString = window.location.search;
         const urlParams = new URLSearchParams(queryString);
         const version = urlParams.get('Version')
@@ -14421,7 +14423,13 @@ const Engine = (function () {
         //Gets version from URL and parses it to get proper pck
 
         console.log(version)
-				const pack = this.config.mainPack || `${version}/${exe}.pck`;
+        
+				packHolder = this.config.mainPack || `${version}/${exe}.pck`;
+       }
+       else {
+        packHolder = this.config.mainPack || `${exe}.pck`;
+       }
+        const pack = packHolder
 				this.config.args = ['--main-pack', pack].concat(this.config.args);
 				// Start and init with execName as loadPath if not inited.
 				const me = this;
