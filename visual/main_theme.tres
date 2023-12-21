@@ -10,7 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://xbycstdv7g3m" path="res://visual/icons/theme/GuiBoxUncheckedDisabled.svg" id="4_t3o2j"]
 [ext_resource type="Texture2D" uid="uid://c12tg3dnydily" path="res://visual/icons/theme/GuiToggleUnchecked.svg" id="4_w667w"]
 [ext_resource type="Texture2D" uid="uid://cnig3sejwsrf3" path="res://visual/icons/theme/SplitGrabber.svg" id="5_7sidk"]
-[ext_resource type="FontFile" uid="uid://dtb4wkus51hxs" path="res://visual/fonts/FontMono.ttf" id="5_nfqug"]
+[ext_resource type="FontFile" uid="uid://ca6fva2rlty7p" path="res://visual/fonts/FontMono.ttf" id="5_nfqug"]
 [ext_resource type="FontFile" uid="uid://dc0w4sx0h0fui" path="res://visual/fonts/FontBold.ttf" id="9_ugiac"]
 [ext_resource type="FontFile" uid="uid://clpf84p1lfwlp" path="res://visual/fonts/Font.ttf" id="11_ccloq"]
 
