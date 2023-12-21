@@ -22,7 +22,7 @@ Simply check out [the list of GodSVG releases](https://github.com/MewPurPur/GodS
 
 Note that if you're on MacOS, you need to [disable Gatekeeper](https://disable-gatekeeper.github.io/) if you haven't yet. I don't have the time or money to deal with Apple's gatekeeping.
 
-Link to the web build: https://mewpurpur.github.io/GodSVG/web-build
+Link to the web build: https://mewpurpur.github.io/GodSVG/web-build (Currently experimental)
 
 ## Community and contributing
 
