@@ -19,4 +19,5 @@ const authors: Array[String] = [
 	"Swarkin",
 	"thiagola92",
 	"Tom Blackwell (Volts-s)",
+	"volkov"
 ]
