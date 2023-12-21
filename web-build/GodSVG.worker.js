@@ -12,8 +12,7 @@
 
 var Module = {};
 
-// Thread-local guard variable for one-time init of the JS state
-var initializedJS = false;
+// Thread-local:
 
 function assert(condition, text) {
   if (!condition) abort('Assertion failed: ' + text);
@@ -37,59 +36,26 @@ self.alert = threadAlert;
 Module['instantiateWasm'] = (info, receiveInstance) => {
   // Instantiate from the module posted from the main thread.
   // We can just use sync instantiation in the worker.
-  var module = Module['wasmModule'];
-  // We don't need the module anymore; new threads will be spawned from the main thread.
-  Module['wasmModule'] = null;
-  var instance = new WebAssembly.Instance(module, info);
+  var instance = new WebAssembly.Instance(Module['wasmModule'], info);
   // TODO: Due to Closure regression https://github.com/google/closure-compiler/issues/3193,
   // the above line no longer optimizes out down to the following line.
   // When the regression is fixed, we can remove this if/else.
-  return receiveInstance(instance);
+  receiveInstance(instance);
+  // We don't need the module anymore; new threads will be spawned from the main thread.
+  Module['wasmModule'] = null;
+  return instance.exports;
 }
 
-// Turn unhandled rejected promises into errors so that the main thread will be
-// notified about them.
-self.onunhandledrejection = (e) => {
-  throw e.reason ?? e;
-};
-
-function handleMessage(e) {
+self.onmessage = (e) => {
   try {
     if (e.data.cmd === 'load') { // Preload command that is called once per worker to parse and load the Emscripten code.
-
-    // Until we initialize the runtime, queue up any further incoming messages.
-    let messageQueue = [];
-    self.onmessage = (e) => messageQueue.push(e);
-
-    // And add a callback for when the runtime is initialized.
-    self.startWorker = (instance) => {
-      Module = instance;
-      // Notify the main thread that this thread has loaded.
-      postMessage({ 'cmd': 'loaded' });
-      // Process any messages that were queued before the thread was ready.
-      for (let msg of messageQueue) {
-        handleMessage(msg);
-      }
-      // Restore the real message handler.
-      self.onmessage = handleMessage;
-    };
 
       // Module and memory were sent from main thread
       Module['wasmModule'] = e.data.wasmModule;
 
-      // Use `const` here to ensure that the variable is scoped only to
-      // that iteration, allowing safe reference from a closure.
-      for (const handler of e.data.handlers) {
-        Module[handler] = function() {
-          postMessage({ cmd: 'callHandler', handler, args: [...arguments] });
-        }
-      }
-
       Module['wasmMemory'] = e.data.wasmMemory;
 
       Module['buffer'] = Module['wasmMemory'].buffer;
-
-      Module['workerID'] = e.data.workerID;
 
       Module['ENVIRONMENT_IS_PTHREAD'] = true;
 
@@ -100,49 +66,85 @@ function handleMessage(e) {
         importScripts(objectUrl);
         URL.revokeObjectURL(objectUrl);
       }
-      Godot(Module);
+      Godot(Module).then(function (instance) {
+        Module = instance;
+      });
     } else if (e.data.cmd === 'run') {
-      // Pass the thread address to wasm to store it for fast access.
-      Module['__emscripten_thread_init'](e.data.pthread_ptr, /*isMainBrowserThread=*/0, /*isMainRuntimeThread=*/0, /*canBlock=*/1);
+      // This worker was idle, and now should start executing its pthread entry
+      // point.
+      // performance.now() is specced to return a wallclock time in msecs since
+      // that Web Worker/main thread launched. However for pthreads this can
+      // cause subtle problems in emscripten_get_now() as this essentially
+      // would measure time from pthread_create(), meaning that the clocks
+      // between each threads would be wildly out of sync. Therefore sync all
+      // pthreads to the clock on the main browser thread, so that different
+      // threads see a somewhat coherent clock across each of them
+      // (+/- 0.1msecs in testing).
+      Module['__performance_now_clock_drift'] = performance.now() - e.data.time;
 
-      // Await mailbox notifications with `Atomics.waitAsync` so we can start
-      // using the fast `Atomics.notify` notification path.
-      Module['__emscripten_thread_mailbox_await'](e.data.pthread_ptr);
+      // Pass the thread address inside the asm.js scope to store it for fast access that avoids the need for a FFI out.
+      Module['__emscripten_thread_init'](e.data.threadInfoStruct, /*isMainBrowserThread=*/0, /*isMainRuntimeThread=*/0, /*canBlock=*/1);
 
-      assert(e.data.pthread_ptr);
+      assert(e.data.threadInfoStruct);
       // Also call inside JS module to set up the stack frame for this pthread in JS module scope
       Module['establishStackSpace']();
       Module['PThread'].receiveObjectTransfer(e.data);
-      Module['PThread'].threadInitTLS();
-
-      if (!initializedJS) {
-        initializedJS = true;
-      }
+      Module['PThread'].threadInit();
 
       try {
-        Module['invokeEntryPoint'](e.data.start_routine, e.data.arg);
+        // pthread entry points are always of signature 'void *ThreadMain(void *arg)'
+        // Native codebases sometimes spawn threads with other thread entry point signatures,
+        // such as void ThreadMain(void *arg), void *ThreadMain(), or void ThreadMain().
+        // That is not acceptable per C/C++ specification, but x86 compiler ABI extensions
+        // enable that to work. If you find the following line to crash, either change the signature
+        // to "proper" void *ThreadMain(void *arg) form, or try linking with the Emscripten linker
+        // flag -s EMULATE_FUNCTION_POINTER_CASTS=1 to add in emulation for this x86 ABI extension.
+        var result = Module['invokeEntryPoint'](e.data.start_routine, e.data.arg);
+
+        Module['checkStackCookie']();
+        if (Module['keepRuntimeAlive']()) {
+          Module['PThread'].setExitStatus(result);
+        } else {
+          Module['__emscripten_thread_exit'](result);
+        }
       } catch(ex) {
         if (ex != 'unwind') {
-          // The pthread "crashed".  Do not call `_emscripten_thread_exit` (which
-          // would make this thread joinable).  Instead, re-throw the exception
-          // and let the top level handler propagate it back to the main thread.
-          throw ex;
+          // ExitStatus not present in MINIMAL_RUNTIME
+          if (ex instanceof Module['ExitStatus']) {
+            if (Module['keepRuntimeAlive']()) {
+              err('Pthread 0x' + Module['_pthread_self']().toString(16) + ' called exit(), staying alive due to noExitRuntime.');
+            } else {
+              err('Pthread 0x' + Module['_pthread_self']().toString(16) + ' called exit(), calling _emscripten_thread_exit.');
+              Module['__emscripten_thread_exit'](ex.status);
+            }
+          }
+          else
+          {
+            // The pthread "crashed".  Do not call `_emscripten_thread_exit` (which
+            // would make this thread joinable.  Instead, re-throw the exception
+            // and let the top level handler propagate it back to the main thread.
+            throw ex;
+          }
+        } else {
+          // else e == 'unwind', and we should fall through here and keep the pthread alive for asynchronous events.
+          err('Pthread 0x' + Module['_pthread_self']().toString(16) + ' completed its main entry point with an `unwind`, keeping the worker alive for asynchronous operation.');
         }
       }
     } else if (e.data.cmd === 'cancel') { // Main thread is asking for a pthread_cancel() on this thread.
       if (Module['_pthread_self']()) {
-        Module['__emscripten_thread_exit'](-1);
+        Module['__emscripten_thread_exit'](-1/*PTHREAD_CANCELED*/);
       }
     } else if (e.data.target === 'setimmediate') {
       // no-op
-    } else if (e.data.cmd === 'checkMailbox') {
-      if (initializedJS) {
-        Module['checkMailbox']();
+    } else if (e.data.cmd === 'processThreadQueue') {
+      if (Module['_pthread_self']()) { // If this thread is actually running?
+        Module['_emscripten_current_thread_process_queued_calls']();
       }
-    } else if (e.data.cmd) {
-      // The received message looks like something that should be handled by this message
-      // handler, (since there is a e.data.cmd field present), but is not one of the
-      // recognized commands:
+    } else if (e.data.cmd === 'processProxyingQueue') {
+      if (Module['_pthread_self']()) { // If this thread is actually running?
+        Module['_emscripten_proxy_execute_queue'](e.data.queue);
+      }
+    } else {
       err('worker.js received unknown command ' + e.data.cmd);
       err(e.data);
     }
@@ -155,7 +157,5 @@ function handleMessage(e) {
     throw ex;
   }
 };
-
-self.onmessage = handleMessage;
 
 
