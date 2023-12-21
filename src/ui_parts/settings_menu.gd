@@ -23,7 +23,7 @@ func _on_close_pressed() -> void:
 
 func _on_language_pressed() -> void:
 	var btn_arr: Array[Button] = []
-	for lang in ["en", "bg", "de"]:
+	for lang in TranslationServer.get_loaded_locales():
 		btn_arr.append(Utils.create_btn(
 				TranslationServer.get_locale_name(lang) + " (" + lang + ")",
 				_on_language_chosen.bind(lang)))
