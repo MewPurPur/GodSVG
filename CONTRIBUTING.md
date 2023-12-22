@@ -1,5 +1,12 @@
 Thank you for your interest in contributing to GodSVG!
 
+## Translations
+You can help by contributing translation(s)! Don't worry, even if you totally new to software translations, this guide got you covered!
+
+#### Adding new translation
+
+#### Updating existing translation
+
 ## PR workflow
 
 For code contributions, use the following workflow:
