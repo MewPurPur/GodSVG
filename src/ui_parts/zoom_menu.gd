@@ -1,7 +1,7 @@
 extends HBoxContainer
 
 const MIN_ZOOM = 0.125
-const MAX_ZOOM = 64.0
+const MAX_ZOOM = 256.0
 
 signal zoom_changed(zoom_level: float)
 signal zoom_reset_pressed
@@ -38,8 +38,14 @@ func zoom_reset() -> void:
 
 
 func update_buttons_appearance() -> void:
-	zoom_reset_button.text = String.num(zoom_level * 100,
-			2 if zoom_level < 0.1 else 1 if zoom_level < 10.0 else 0) + "%"
+	if zoom_level < 0.1:
+		zoom_reset_button.text = String.num(zoom_level * 100, 2) + "%"
+	elif zoom_level < 10.0:
+		zoom_reset_button.text = String.num(zoom_level * 100, 1) + "%"
+	elif zoom_level < 100.0:
+		zoom_reset_button.text = String.num_uint64(roundi(zoom_level * 100)) + "%"
+	else:
+		zoom_reset_button.text = String.num(zoom_level, 1) + "x"
 	
 	var is_max_zoom := zoom_level > MAX_ZOOM or is_equal_approx(zoom_level, MAX_ZOOM)
 	var is_min_zoom := zoom_level < MIN_ZOOM or is_equal_approx(zoom_level, MIN_ZOOM)
