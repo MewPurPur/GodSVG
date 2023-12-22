@@ -8,7 +8,7 @@ Whatever you are new or experienced, you need to do some preparations:
 * Download [Godot](https://godotengine.org/). It available for many platforms, including Windows and Linux. You will need it to open project and test your translation.
 * (Optionally) download program to work with `pot` and `po` files. Best one out here is [Poedit](https://poedit.net/download/)
 
-	_po files allow you to work with them using nothing but text editor. Detailed explained [here](#workingon-translation-without-additional-tools)_
+	_po files allow you to work with them using nothing but text editor. Detailed explained [here](#working-on-translation-without-additional-tools)_
 
 * Clone or download repo to your device.
 	
