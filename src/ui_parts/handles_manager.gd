@@ -324,7 +324,12 @@ func _draw() -> void:
 			
 			"path":
 				var pathdata: AttributePath = attribs.d
+				if pathdata.get_command_count() == 0 or\
+				pathdata.get_command(0).command_char.to_upper() != "M":
+					continue  # Nothing to draw.
+				
 				var current_mode := InteractionType.NONE
+				
 				for cmd_idx in pathdata.get_command_count():
 					# Drawing logic.
 					var points := PackedVector2Array()

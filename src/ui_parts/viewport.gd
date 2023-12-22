@@ -10,7 +10,7 @@ var zoom := 1.0
 @onready var display: TextureRect = %Checkerboard
 @onready var view: Camera2D = $ViewCamera
 @onready var controls: Control = %Checkerboard/Controls
-@onready var display_texture: Control = %Checkerboard/DisplayTexture
+@onready var display_texture: TextureRect = %Checkerboard/DisplayTexture
 @onready var zoom_menu: ZoomMenuType = %ZoomMenu
 
 
@@ -22,8 +22,16 @@ func _ready() -> void:
 
 # Top left corner.
 func set_view(new_position: Vector2) -> void:
+	var scaled_size := size / zoom
 	view.position = new_position.clamp(Vector2(view.limit_left, view.limit_top),
-			Vector2(view.limit_right, view.limit_bottom) - size / zoom)
+			Vector2(view.limit_right, view.limit_bottom) - scaled_size)
+	
+	var stripped_left := maxf(view.position.x, 0)
+	var stripped_top := maxf(view.position.y, 0)
+	var stripped_right := minf(view.position.x + scaled_size.x, SVG.root_tag.get_width())
+	var stripped_bottom := minf(view.position.y + scaled_size.y, SVG.root_tag.get_height())
+	display_texture.view_rect = Rect2(stripped_left, stripped_top,
+			stripped_right - stripped_left, stripped_bottom - stripped_top)
 
 
 # Adjust the SVG dimensions.
@@ -122,8 +130,9 @@ func wrap_mouse(relative: Vector2) -> Vector2:
 	var relative_sign := relative.sign()
 	
 	var relative_warped := Vector2(
-		fmod(relative.x + relative_sign.x * warp_margin.x, view_rect.size.x) - relative_sign.x * warp_margin.x, 
-		fmod(relative.y + relative_sign.y * warp_margin.y, view_rect.size.y) - relative_sign.y * warp_margin.y)
+			fmod(relative.x + relative_sign.x * warp_margin.x, view_rect.size.x),
+			fmod(relative.y + relative_sign.y * warp_margin.y, view_rect.size.y)) -\
+			relative_sign * warp_margin
 	
 	if not view_rect.has_point(mouse_pos):
 		mouse_pos.x = fposmod(mouse_pos.x, view_rect.size.x)
