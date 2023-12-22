@@ -27,12 +27,7 @@ const UnknownField = preload("res://src/ui_elements/unknown_field.tscn")
 var tid: PackedInt32Array
 var tag: Tag
 
-enum DropState{
-	Inside = 0,
-	Up,
-	Down,
-	Outside,
-}
+enum DropState {INSIDE, UP, DOWN, OUTSIDE}
 
 func _ready() -> void:
 	title_label.text = tag.name
@@ -101,7 +96,7 @@ func _get_drag_data(_at_position: Vector2) -> Variant:
 	data = Utils.filter_tids_descendant(data)
 	var tags_container: VBoxContainer = VBoxContainer.new()
 	for drag_tid in data:
-		var preview = TagEditor.instantiate()
+		var preview := TagEditor.instantiate()
 		preview.tag = SVG.root_tag.get_by_tid(drag_tid)
 		preview.tid = drag_tid
 		preview.custom_minimum_size.x = self.size.x
@@ -114,8 +109,8 @@ func _get_drag_data(_at_position: Vector2) -> Variant:
 
 func _can_drop_data(_at_position: Vector2, current_tid: Variant) -> bool:
 	if current_tid is Array[PackedInt32Array] and not  tid in current_tid:
-		var state := drop_location_calculator(get_global_mouse_position())
-		if state == DropState.Inside:
+		var state := calculate_drop_location(get_global_mouse_position())
+		if state == DropState.INSIDE:
 			var new_tid := tid.duplicate()
 			new_tid.append(0)
 			if new_tid in current_tid: return false
@@ -125,16 +120,16 @@ func _can_drop_data(_at_position: Vector2, current_tid: Variant) -> bool:
 
 
 func _drop_data(_at_position: Vector2, current_tid: Variant):
-	var state := drop_location_calculator(get_global_mouse_position())
+	var state := calculate_drop_location(get_global_mouse_position())
 	var new_tid := tid.duplicate()
 	match state:
-		DropState.Inside:
+		DropState.INSIDE:
 			new_tid.append(0)
-		DropState.Up:
+		DropState.UP:
 			new_tid[-1] -= 1 if new_tid[-1] > 0 else 0
-		DropState.Down:
+		DropState.DOWN:
 			new_tid[-1] += 1
-	SVG.root_tag.move_tags_to(current_tid,new_tid)
+	SVG.root_tag.move_tags_to(current_tid, new_tid)
 
 
 func _notification(what: int) -> void:
@@ -177,7 +172,11 @@ func create_tag_context() -> Popup:
 
 
 func _on_gui_input(event: InputEvent) -> void:
-	if event is InputEventMouseButton and event.is_released():
+	if event is InputEventMouseMotion and event.button_mask == 0:
+		if Indications.semi_hovered_tid != tid and\
+		not Utils.is_tid_parent(tid, Indications.hovered_tid):
+			Indications.set_hovered(tid)
+	elif event is InputEventMouseButton and event.is_pressed():
 		if event.button_index == MOUSE_BUTTON_LEFT:
 			if event.ctrl_pressed:
 				Indications.ctrl_select(tid)
@@ -190,11 +189,6 @@ func _on_gui_input(event: InputEvent) -> void:
 				Indications.normal_select(tid)
 			Utils.popup_under_mouse(create_tag_context(), get_global_mouse_position())
 
-
-func _on_mouse_entered() -> void:
-	if Indications.semi_hovered_tid != tid and\
-		not Utils.is_tid_parent(tid, Indications.hovered_tid):
-		Indications.set_hovered(tid)
 
 func _on_mouse_exited() -> void:
 	Indications.remove_hovered(tid)
@@ -217,7 +211,7 @@ func _convert_to(tag_name: String) -> void:
 	SVG.root_tag.replace_tag(tid, tag.get_replacement(tag_name))
 
 
-func determine_selection_highlight(state: DropState = DropState.Outside) -> void:
+func determine_selection_highlight(state: DropState = DropState.OUTSIDE) -> void:
 	var title_sb := StyleBoxFlat.new()
 	title_sb.corner_radius_top_left = 4
 	title_sb.corner_radius_top_right = 4
@@ -275,30 +269,30 @@ func determine_selection_highlight(state: DropState = DropState.Outside) -> void
 	root_sb.set_corner_radius_all(4)
 	root_sb.set_content_margin_all(2)
 	match state:
-		DropState.Inside:
+		DropState.INSIDE:
 			root_sb.set_border_width_all(2)
-		DropState.Up:
+		DropState.UP:
 			root_sb.border_width_top = 2
-		DropState.Down:
+		DropState.DOWN:
 			root_sb.border_width_bottom = 2
 	add_theme_stylebox_override(&"panel", root_sb)
 	content.add_theme_stylebox_override(&"panel", content_sb)
 	title_bar.add_theme_stylebox_override(&"panel", title_sb)
 
 
-func drop_location_calculator(at_position: Vector2) -> DropState:
+func calculate_drop_location(at_position: Vector2) -> DropState:
 	var top_bottom_margin: float = 0.10 # 0 - 1
 	var tag_editor_area := Rect2(get_global_rect())
 	if not tag_editor_area.has_point(at_position):
-		return DropState.Outside
+		return DropState.OUTSIDE
 	var shrink_ratio := top_bottom_margin * float(tag_editor_area.size.y)
 	tag_editor_area = tag_editor_area.grow_individual(0,- shrink_ratio,0,- shrink_ratio)
 	if tag_editor_area.has_point(at_position):
-		return DropState.Inside
+		return DropState.INSIDE
 	if tag_editor_area.position.y > at_position.y:
-		return DropState.Up
+		return DropState.UP
 	else:
-		return DropState.Down
+		return DropState.DOWN
 
 
 func toggle_pause_children(pause: bool) -> void:
