@@ -38,13 +38,8 @@ var zoom := 1.0:
 	set(new_value):
 		zoom = new_value
 		RenderingServer.canvas_item_set_transform(surface,
-				Transform2D(0.0, Vector2(1/zoom, 1/zoom), 0.0, Vector2(0, 0)))
+				Transform2D(0.0, Vector2(1/zoom, 1/zoom), 0.0, Vector2.ZERO))
 		queue_redraw()
-
-var width: float
-var height: float
-var viewbox: Rect2
-var viewbox_zoom: float  # How zoomed the graphics are from the viewbox itself.
 
 var update_pending := false
 
@@ -54,23 +49,14 @@ var surface := RenderingServer.canvas_item_create()
 
 func _ready() -> void:
 	RenderingServer.canvas_item_set_parent(surface, get_canvas_item())
-	SVG.root_tag.resized.connect(update_dimensions)
+	SVG.root_tag.attribute_changed.connect(queue_update.unbind(1))
 	SVG.root_tag.child_attribute_changed.connect(queue_redraw.unbind(1))
 	SVG.root_tag.child_attribute_changed.connect(sync_handles.unbind(1))
 	SVG.root_tag.tag_layout_changed.connect(queue_update)
 	SVG.root_tag.changed_unknown.connect(queue_update)
-	SVG.root_tag.changed_unknown.connect(update_dimensions)
 	Indications.selection_changed.connect(queue_redraw)
 	Indications.hover_changed.connect(queue_redraw)
 	Indications.added_path_handle.connect(move_selected_to_mouse)
-	update_dimensions()
-
-
-func update_dimensions() -> void:
-	width = SVG.root_tag.get_width()
-	height = SVG.root_tag.get_height()
-	viewbox = SVG.root_tag.get_viewbox()
-	viewbox_zoom = Utils.get_viewbox_zoom(viewbox, width, height)
 	queue_update()
 
 
@@ -160,10 +146,6 @@ y_attrib_name: String, delta_attrib_name: String, horizontal: bool) -> DeltaHand
 
 
 func _draw() -> void:
-	var thickness := 1.0 / zoom
-	var tangent_thickness := 0.6 / zoom
-	var tangent_alpha := 0.8
-	
 	# Store contours of shapes.
 	var normal_polylines: Array[PackedVector2Array] = []
 	var selected_polylines: Array[PackedVector2Array] = []
@@ -194,10 +176,9 @@ func _draw() -> void:
 				points.resize(181)
 				for i in 180:
 					var d := i * TAU/180
-					points[i] = convert_in(c + Vector2(cos(d) * r, sin(d) * r))
+					points[i] = c + Vector2(cos(d), sin(d)) * r
 				points[180] = points[0]
-				var extras := PackedVector2Array([
-						convert_in(c), convert_in(c + Vector2(r, 0))])
+				var extras := PackedVector2Array([c, c + Vector2(r, 0)])
 				
 				if tag_hovered and tag_selected:
 					hovered_selected_polylines.append(points)
@@ -221,11 +202,10 @@ func _draw() -> void:
 				points.resize(181)
 				for i in 180:
 					var d := i * TAU/180
-					points[i] = convert_in(c + Vector2(cos(d) * rx, sin(d) * ry))
+					points[i] = c + Vector2(cos(d) * rx, sin(d) * ry)
 				points[180] = points[0]
 				var extras := PackedVector2Array([
-						convert_in(c), convert_in(c + Vector2(rx, 0)),
-						convert_in(c), convert_in(c + Vector2(0, ry))])
+						c, c + Vector2(rx, 0), c, c + Vector2(0, ry)])
 				
 				if tag_hovered and tag_selected:
 					hovered_selected_polylines.append(points)
@@ -250,12 +230,9 @@ func _draw() -> void:
 				var points := PackedVector2Array()
 				if rx == 0 and ry == 0:
 					# Basic rectangle.
-					points.resize(5)
-					points[0] = convert_in(Vector2(x, y))
-					points[1] = convert_in(Vector2(x + rect_width, y))
-					points[2] = convert_in(Vector2(x + rect_width, y + rect_height))
-					points[3] = convert_in(Vector2(x, y + rect_height))
-					points[4] = convert_in(Vector2(x, y))
+					points = [Vector2(x, y), Vector2(x + rect_width, y),
+							Vector2(x + rect_width, y + rect_height),
+							Vector2(x, y + rect_height), Vector2(x, y)]
 				else:
 					if rx == 0:
 						rx = ry
@@ -265,31 +242,30 @@ func _draw() -> void:
 					ry = minf(ry, rect_height / 2)
 					# Rounded rectangle.
 					points.resize(186)
-					points[0] = convert_in(Vector2(x + rx, y))
-					points[1] = convert_in(Vector2(x + rect_width - rx, y))
+					points[0] = Vector2(x + rx, y)
+					points[1] = Vector2(x + rect_width - rx, y)
 					for i in range(135, 180):
 						var d := i * TAU/180
-						points[i - 133] = convert_in(Vector2(x + rect_width - rx, y + ry) +\
-								Vector2(cos(d) * rx, sin(d) * ry))
-					points[47] = convert_in(Vector2(x + rect_width, y + rect_height - ry))
+						points[i - 133] = Vector2(x + rect_width - rx, y + ry) +\
+								Vector2(cos(d) * rx, sin(d) * ry)
+					points[47] =  Vector2(x + rect_width, y + rect_height - ry)
 					for i in range(0, 45):
 						var d := i * TAU/180
-						points[i + 48] = convert_in(Vector2(x + rect_width - rx,
-								y + rect_height - ry) + Vector2(cos(d) * rx, sin(d) * ry))
-					points[93] = convert_in(Vector2(x + rx, y + rect_height))
+						points[i + 48] = Vector2(x + rect_width - rx, y + rect_height - ry) +\
+								Vector2(cos(d) * rx, sin(d) * ry)
+					points[93] = Vector2(x + rx, y + rect_height)
 					for i in range(45, 90):
 						var d := i * TAU/180
-						points[i + 49] = convert_in(Vector2(x + rx, y + rect_height - ry) +\
-								Vector2(cos(d) * rx, sin(d) * ry))
-					points[139] = convert_in(Vector2(x, y + ry))
+						points[i + 49] = Vector2(x + rx, y + rect_height - ry) +\
+								Vector2(cos(d) * rx, sin(d) * ry)
+					points[139] = Vector2(x, y + ry)
 					for i in range(90, 135):
 						var d := i * TAU/180
-						points[i + 50] = convert_in(Vector2(x + rx, y + ry) +\
-								Vector2(cos(d) * rx, sin(d) * ry))
+						points[i + 50] = Vector2(x + rx, y + ry) +\
+								Vector2(cos(d) * rx, sin(d) * ry)
 					points[185] = points[0]
-				var extras := PackedVector2Array([
-						convert_in(Vector2(x, y)), convert_in(Vector2(x + rect_width, y)),
-						convert_in(Vector2(x, y)), convert_in(Vector2(x, y + rect_height))])
+				var extras := PackedVector2Array([Vector2(x, y), Vector2(x + rect_width, y),
+						Vector2(x, y), Vector2(x, y + rect_height)])
 				
 				if tag_hovered and tag_selected:
 					hovered_selected_polylines.append(points)
@@ -310,8 +286,7 @@ func _draw() -> void:
 				var x2: float = attribs.x2.get_num()
 				var y2: float = attribs.y2.get_num()
 				
-				var points := PackedVector2Array([convert_in(Vector2(x1, y1)),
-						convert_in(Vector2(x2, y2))])
+				var points := PackedVector2Array([Vector2(x1, y1), Vector2(x2, y2)])
 				
 				if tag_hovered and tag_selected:
 					hovered_selected_polylines.append(points)
@@ -350,17 +325,17 @@ func _draw() -> void:
 							# Line contour.
 							var v := Vector2(cmd.x, cmd.y)
 							var end := cmd.start + v if relative else v
-							points = PackedVector2Array([convert_in(cmd.start), convert_in(end)])
+							points = PackedVector2Array([cmd.start, end])
 						"H":
 							# Horizontal line contour.
 							var v := Vector2(cmd.x, 0)
 							var end := cmd.start + v if relative else Vector2(v.x, cmd.start.y)
-							points = PackedVector2Array([convert_in(cmd.start), convert_in(end)])
+							points = PackedVector2Array([cmd.start, end])
 						"V":
 							# Vertical line contour.
 							var v := Vector2(0, cmd.y)
 							var end := cmd.start + v if relative else Vector2(cmd.start.x, v.y)
-							points = PackedVector2Array([convert_in(cmd.start), convert_in(end)])
+							points = PackedVector2Array([cmd.start, end])
 						"C":
 							# Cubic Bezier curve contour.
 							var v := Vector2(cmd.x, cmd.y)
@@ -371,13 +346,9 @@ func _draw() -> void:
 							var cp2 := v1 if relative else v1 - cp1
 							var cp3 := v2 - v
 							
-							var cp1_transformed := convert_in(cp1)
-							var cp4_transformed := convert_in(cp4)
-							points = Utils.get_cubic_bezier_points(cp1_transformed,
-									cp2 * viewbox_zoom, cp3 * viewbox_zoom, cp4_transformed)
-							tangent_points.append_array(PackedVector2Array([cp1_transformed,
-									convert_in(cp1 + v1 if relative else v1),
-									convert_in(cp1 + v2 if relative else v2), cp4_transformed]))
+							points = Utils.get_cubic_bezier_points(cp1, cp2, cp3, cp4)
+							tangent_points.append_array(PackedVector2Array([cp1,
+									cp1 + cp2, cp1 + v2 if relative else v2, cp4]))
 						"S":
 							# Shorthand cubic Bezier curve contour.
 							if cmd_idx == 0:
@@ -401,13 +372,9 @@ func _draw() -> void:
 							var cp2 := v1 if relative else v1 - cp1
 							var cp3 := v2 - v
 							
-							var cp1_transformed := convert_in(cp1)
-							var cp4_transformed := convert_in(cp4)
-							points = Utils.get_cubic_bezier_points(cp1_transformed,
-									cp2 * viewbox_zoom, cp3 * viewbox_zoom, cp4_transformed)
-							tangent_points.append_array(PackedVector2Array([cp1_transformed,
-									convert_in(cp1 + v1 if relative else v1),
-									convert_in(cp1 + v2 if relative else v2), cp4_transformed]))
+							points = Utils.get_cubic_bezier_points(cp1, cp2, cp3, cp4)
+							tangent_points.append_array(PackedVector2Array([cp1,
+									cp1 + cp2, cp1 + v2 if relative else v2, cp4]))
 						"Q":
 							# Quadratic Bezier curve contour.
 							var v := Vector2(cmd.x, cmd.y)
@@ -416,13 +383,8 @@ func _draw() -> void:
 							var cp2 := cp1 + v1 if relative else v1
 							var cp3 := cp1 + v if relative else v
 							
-							var cp1_transformed := convert_in(cp1)
-							var cp2_transformed := convert_in(cp2)
-							var cp3_transformed := convert_in(cp3)
-							points = Utils.get_quadratic_bezier_points(
-									cp1_transformed, cp2_transformed, cp3_transformed)
-							tangent_points.append_array(PackedVector2Array([cp1_transformed,
-									cp2_transformed, cp2_transformed, cp3_transformed]))
+							points = Utils.get_quadratic_bezier_points(cp1, cp2, cp3)
+							tangent_points.append_array(PackedVector2Array([cp1, cp2, cp2, cp3]))
 						"T":
 							# Shorthand quadratic Bezier curve contour.
 							var prevQ_idx := cmd_idx - 1
@@ -434,8 +396,8 @@ func _draw() -> void:
 									# Invalid T is drawn as a line.
 									var end := cmd.start + Vector2(cmd.x, cmd.y) if relative\
 											else Vector2(cmd.x, cmd.y)
-									points.append(convert_in(cmd.start))
-									points.append(convert_in(end))
+									points.append(cmd.start)
+									points.append(end)
 									prevQ_idx = -1
 									break
 								else:
@@ -469,13 +431,8 @@ func _draw() -> void:
 							var cp2 := v1
 							var cp3 := cp1 + v if relative else v
 							
-							var cp1_transformed := convert_in(cp1)
-							var cp2_transformed := convert_in(cp2)
-							var cp3_transformed := convert_in(cp3)
-							points = Utils.get_quadratic_bezier_points(
-									cp1_transformed, cp2_transformed, cp3_transformed)
-							tangent_points.append_array(PackedVector2Array([cp1_transformed,
-									cp2_transformed, cp2_transformed, cp3_transformed]))
+							points = Utils.get_quadratic_bezier_points(cp1, cp2, cp3)
+							tangent_points.append_array(PackedVector2Array([cp1, cp2, cp2, cp3]))
 						"A":
 							# Elliptical arc contour.
 							var start := cmd.start
@@ -485,7 +442,7 @@ func _draw() -> void:
 							if start == end:
 								continue
 							elif cmd.rx == 0 or cmd.ry == 0:
-								points = PackedVector2Array([convert_in(start), convert_in(end)])
+								points = PackedVector2Array([start, end])
 							
 							var r := Vector2(cmd.rx, cmd.ry).abs()
 							# Obtain center parametrization.
@@ -552,8 +509,7 @@ func _draw() -> void:
 								cp.append(PackedVector2Array([p1, q1, q2, p2]))
 							
 							for p in cp:
-								points += Utils.get_cubic_bezier_points(convert_in(p[0]),
-										p[1] * viewbox_zoom, p[2] * viewbox_zoom, convert_in(p[3]))
+								points += Utils.get_cubic_bezier_points(p[0], p[1], p[2], p[3])
 						"Z":
 							# Path closure contour.
 							var prev_M_idx := cmd_idx - 1
@@ -570,7 +526,7 @@ func _draw() -> void:
 							if prev_M_cmd.relative:
 								end += prev_M_cmd.start
 							
-							points = PackedVector2Array([convert_in(cmd.start), convert_in(end)])
+							points = PackedVector2Array([cmd.start, end])
 						_: continue
 					
 					match current_mode:
@@ -586,6 +542,12 @@ func _draw() -> void:
 						InteractionType.HOVERED_SELECTED:
 							hovered_selected_polylines.append(points.duplicate())
 							hovered_selected_multiline += tangent_points.duplicate()
+	
+	var draw_zoom := zoom * SVG.root_tag.canvas_transform.get_scale().x
+	var thickness := 1.0 / draw_zoom
+	var tangent_thickness := 0.6 / draw_zoom
+	var tangent_alpha := 0.8
+	draw_set_transform_matrix(SVG.root_tag.canvas_transform)
 	
 	for polyline in normal_polylines:
 		draw_polyline(polyline, default_color, thickness, true)
@@ -639,16 +601,20 @@ func _draw() -> void:
 	RenderingServer.canvas_item_clear(surface)
 	for handle in normal_handles:
 		var texture: Texture2D = normal_handle_textures[handle.display_mode]
-		texture.draw(surface, convert_in(handle.pos) * zoom - texture.get_size() / 2)
+		texture.draw(surface,
+				SVG.root_tag.canvas_to_world(handle.pos) * zoom - texture.get_size() / 2)
 	for handle in selected_handles:
 		var texture: Texture2D = selected_handle_textures[handle.display_mode]
-		texture.draw(surface, convert_in(handle.pos) * zoom - texture.get_size() / 2)
+		texture.draw(surface,
+				SVG.root_tag.canvas_to_world(handle.pos) * zoom - texture.get_size() / 2)
 	for handle in hovered_handles:
 		var texture: Texture2D = hovered_handle_textures[handle.display_mode]
-		texture.draw(surface, convert_in(handle.pos) * zoom - texture.get_size() / 2)
+		texture.draw(surface,
+				SVG.root_tag.canvas_to_world(handle.pos) * zoom - texture.get_size() / 2)
 	for handle in hovered_selected_handles:
 		var texture: Texture2D = hovered_selected_handle_textures[handle.display_mode]
-		texture.draw(surface, convert_in(handle.pos) * zoom - texture.get_size() / 2)
+		texture.draw(surface,
+				SVG.root_tag.canvas_to_world(handle.pos) * zoom - texture.get_size() / 2)
 
 
 func tid_is_hovered(tid: PackedInt32Array, cmd_idx := -1) -> bool:
@@ -674,21 +640,6 @@ func tid_is_selected(tid: PackedInt32Array, cmd_idx := -1) -> bool:
 				cmd_idx in Indications.inner_selections
 
 
-func convert_in(pos: Vector2) -> Vector2:
-	pos = (size / Vector2(width, height) * pos - viewbox.position) * viewbox_zoom
-	if viewbox.size.x / viewbox.size.y >= width / height:
-		return pos + Vector2(0, (height - width * viewbox.size.y / viewbox.size.x) / 2)
-	else:
-		return pos + Vector2((width - height * viewbox.size.x / viewbox.size.y) / 2, 0)
-
-func convert_out(pos: Vector2) -> Vector2:
-	if viewbox.size.x / viewbox.size.y >= width / height:
-		pos.y -= (height - width * viewbox.size.y / viewbox.size.x) / 2
-	else:
-		pos.x -= (width - height * viewbox.size.x / viewbox.size.y) / 2
-	return (pos / viewbox_zoom + viewbox.position) * Vector2(width, height) / size
-
-
 var dragged_handle: Handle = null
 var hovered_handle: Handle = null
 var was_handle_moved := false
@@ -706,7 +657,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		var event_pos: Vector2 = event.position / zoom + get_node(^"../..").view.position
 		if dragged_handle != null:
 			# Move the handle that's being dragged.
-			var new_pos := convert_out(event_pos)
+			var new_pos := SVG.root_tag.world_to_canvas(event_pos)
 			if snap_enabled:
 				new_pos = new_pos.snapped(snap_vector)
 			dragged_handle.set_pos(new_pos)
@@ -756,7 +707,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		
 		elif dragged_handle != null and event.is_released():
 			if was_handle_moved:
-				var new_pos := convert_out(event_pos)
+				var new_pos := SVG.root_tag.world_to_canvas(event_pos)
 				if snap_enabled:
 					new_pos = new_pos.snapped(snap_vector)
 				dragged_handle.set_pos(new_pos, true)
@@ -777,7 +728,7 @@ func move_selected_to_mouse() -> void:
 				return
 			dragged_handle = handle
 			# Move the handle that's being dragged.
-			var new_pos := convert_out(get_global_mouse_position())
+			var new_pos := SVG.root_tag.world_to_canvas(get_global_mouse_position())
 			var snap_size := absf(GlobalSettings.save_data.snap)
 			if GlobalSettings.save_data.snap > 0.0:
 				new_pos = new_pos.snapped(Vector2(snap_size, snap_size))
@@ -790,7 +741,7 @@ func find_nearest_handle(event_pos: Vector2) -> Handle:
 	var nearest_handle: Handle = null
 	var nearest_dist := max_grab_dist
 	for handle in handles:
-		var dist_to_handle := event_pos.distance_to(convert_in(handle.pos))
+		var dist_to_handle := event_pos.distance_to(SVG.root_tag.canvas_to_world(handle.pos))
 		if dist_to_handle < nearest_dist:
 			nearest_dist = dist_to_handle
 			nearest_handle = handle

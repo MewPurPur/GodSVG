@@ -14,7 +14,7 @@ func _ready() -> void:
 	var preview_text := SVGParser.svg_to_text(SVGParser.text_to_svg(imported_text))
 	var preview_svg := SVGParser.text_to_svg(preview_text)
 	var scaling_factor := texture_preview.size.x * 2.0 /\
-			maxf(preview_svg.get_width(), preview_svg.get_height())
+			maxf(preview_svg.width, preview_svg.height)
 	var img := Image.new()
 	img.load_svg_from_string(preview_text, scaling_factor)
 	if not img.is_empty():

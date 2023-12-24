@@ -118,7 +118,11 @@ func create_tag_context() -> Popup:
 
 
 func _on_gui_input(event: InputEvent) -> void:
-	if event is InputEventMouseButton and event.is_pressed():
+	if event is InputEventMouseMotion and event.button_mask == 0:
+		if Indications.semi_hovered_tid != tid and\
+		not Utils.is_tid_parent(tid, Indications.hovered_tid):
+			Indications.set_hovered(tid)
+	elif event is InputEventMouseButton and event.is_pressed():
 		if event.button_index == MOUSE_BUTTON_LEFT:
 			if event.ctrl_pressed:
 				Indications.ctrl_select(tid)
@@ -131,11 +135,6 @@ func _on_gui_input(event: InputEvent) -> void:
 				Indications.normal_select(tid)
 			Utils.popup_under_mouse(create_tag_context(), get_global_mouse_position())
 
-
-func _on_mouse_entered() -> void:
-	if Indications.semi_hovered_tid != tid and\
-		not Utils.is_tid_parent(tid, Indications.hovered_tid):
-		Indications.set_hovered(tid)
 
 func _on_mouse_exited() -> void:
 	Indications.remove_hovered(tid)

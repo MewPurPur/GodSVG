@@ -28,8 +28,8 @@ func set_view(new_position: Vector2) -> void:
 	
 	var stripped_left := maxf(view.position.x, 0)
 	var stripped_top := maxf(view.position.y, 0)
-	var stripped_right := minf(view.position.x + scaled_size.x, SVG.root_tag.get_width())
-	var stripped_bottom := minf(view.position.y + scaled_size.y, SVG.root_tag.get_height())
+	var stripped_right := minf(view.position.x + scaled_size.x, SVG.root_tag.width)
+	var stripped_bottom := minf(view.position.y + scaled_size.y, SVG.root_tag.height)
 	display_texture.view_rect = Rect2(stripped_left, stripped_top,
 			stripped_right - stripped_left, stripped_bottom - stripped_top)
 
@@ -41,8 +41,8 @@ func resize() -> void:
 
 func center_frame() -> void:
 	var available_size := size * zoom_reset_buffer
-	var w_ratio: float = available_size.x / SVG.root_tag.get_width()
-	var h_ratio: float = available_size.y / SVG.root_tag.get_height()
+	var w_ratio := available_size.x / SVG.root_tag.width
+	var h_ratio := available_size.y / SVG.root_tag.height
 	zoom_menu.zoom_level = nearest_po2(ceili(minf(w_ratio, h_ratio) * 32)) / 64.0
 	set_view((SVG.root_tag.get_size() - size / zoom) / 2)
 
@@ -53,7 +53,8 @@ func _unhandled_input(event: InputEvent) -> void:
 	
 	if event is InputEventMouseMotion and\
 	event.button_mask in [MOUSE_BUTTON_MASK_LEFT, MOUSE_BUTTON_MASK_MIDDLE]:
-		set_view(view.position - (wrap_mouse(event.relative) if GlobalSettings.wrap_mouse else event.relative) / zoom)
+		set_view(view.position - (wrap_mouse(event.relative)\
+				if GlobalSettings.wrap_mouse else event.relative) / zoom)
 	
 	if event is InputEventPanGesture:
 		if event.ctrl_pressed:
@@ -67,8 +68,9 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.is_pressed():
 		var move_vec := Vector2.ZERO
 		var zoom_dir := 0
-		if ( not event.ctrl_pressed and not event.shift_pressed and not GlobalSettings.use_ctrl_for_zoom)\
-		or ( event.ctrl_pressed and GlobalSettings.use_ctrl_for_zoom ):
+		if (not event.ctrl_pressed and not event.shift_pressed and\
+		not GlobalSettings.use_ctrl_for_zoom) or\
+		(event.ctrl_pressed and GlobalSettings.use_ctrl_for_zoom):
 			match event.button_index:
 				MOUSE_BUTTON_WHEEL_UP when GlobalSettings.invert_zoom: zoom_dir -= 1
 				MOUSE_BUTTON_WHEEL_DOWN when GlobalSettings.invert_zoom: zoom_dir += 1
