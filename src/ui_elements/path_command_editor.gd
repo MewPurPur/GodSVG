@@ -310,7 +310,9 @@ func _on_convert_path_command_picked(new_command: String) -> void:
 	cmd_convert_to.emit(cmd_idx, new_command)
 
 func _on_gui_input(event: InputEvent) -> void:
-	if event is InputEventMouseButton and event.is_pressed():
+	if event is InputEventMouseMotion and event.button_mask == 0:
+		Indications.set_inner_hovered(tid, cmd_idx)
+	elif event is InputEventMouseButton and event.is_pressed():
 		if event.button_index == MOUSE_BUTTON_LEFT:
 			if event.ctrl_pressed:
 				Indications.ctrl_select(tid, cmd_idx)
@@ -345,9 +347,6 @@ func determine_selection_highlight() -> void:
 	stylebox.content_margin_bottom = 2
 	add_theme_stylebox_override(&"panel", stylebox)
 
-
-func _on_mouse_entered():
-	Indications.set_inner_hovered(tid, cmd_idx)
 
 func _on_mouse_exited():
 	Indications.remove_inner_hovered(tid, cmd_idx)

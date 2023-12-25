@@ -28,7 +28,6 @@ func _ready() -> void:
 	get_v_scroll_bar().value_changed.connect(redraw_caret.unbind(1))
 	get_h_scroll_bar().value_changed.connect(redraw_caret.unbind(1))
 	gui_input.connect(_on_gui_input)
-	mouse_entered.connect(_on_mouse_entered)
 	mouse_exited.connect(_on_mouse_exited)
 
 
@@ -64,10 +63,6 @@ func _on_focus_exited() -> void:
 	timer.stop()
 	RenderingServer.canvas_item_clear(surface)
 
-func _on_mouse_entered() -> void:
-	hovered = true
-	queue_redraw()
-
 func _on_mouse_exited() -> void:
 	hovered = false
 	queue_redraw()
@@ -76,8 +71,10 @@ func _draw() -> void:
 	if editable and hovered and hover_stylebox != null:
 		draw_style_box(hover_stylebox, Rect2(Vector2.ZERO, size))
 
-
 func _on_gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseMotion and event.button_mask == 0:
+		hovered = true
+		queue_redraw()
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_RIGHT:
 			grab_focus()
