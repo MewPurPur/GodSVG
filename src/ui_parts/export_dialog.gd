@@ -22,6 +22,8 @@ func _ready() -> void:
 	dimensions = SVG.root_tag.get_size()
 	scale_edit.min_value = 1/minf(dimensions.x, dimensions.y)
 	scale_edit.max_value = 16384/maxf(dimensions.x, dimensions.y)
+	scale_edit.set_value(minf(scale_edit.get_value(),
+			2048/maxf(dimensions.x, dimensions.y)))
 	update_dimensions_label()
 	update_final_scale()
 	var scaling_factor := texture_preview.size.x * 2.0 / maxf(dimensions.x, dimensions.y)
@@ -72,8 +74,8 @@ func export(path: String) -> void:
 	match extension:
 		"png":
 			var export_svg := SVG.root_tag.create_duplicate()
-			export_svg.attributes.width.set_num(export_svg.get_width() * upscale_amount)
-			export_svg.attributes.height.set_num(export_svg.get_height() * upscale_amount)
+			export_svg.attributes.width.set_num(export_svg.width * upscale_amount)
+			export_svg.attributes.height.set_num(export_svg.height * upscale_amount)
 			var img := Image.new()
 			img.load_svg_from_string(SVGParser.svg_to_text(export_svg))
 			img.fix_alpha_edges()  # See godot issue 82579.

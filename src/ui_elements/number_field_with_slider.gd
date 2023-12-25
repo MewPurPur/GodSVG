@@ -116,6 +116,8 @@ func _on_slider_resized() -> void:
 
 func _on_slider_gui_input(event: InputEvent) -> void:
 	if not slider_dragged:
+		if event is InputEventMouseMotion and event.button_mask == 0:
+			slider_hovered = true
 		if Utils.is_event_drag_start(event):
 			slider_dragged = true
 			initial_slider_value = attribute.get_num()
@@ -135,6 +137,3 @@ func get_slider_value_at_y(y_coord: float) -> float:
 
 func _on_slider_mouse_exited() -> void:
 	slider_hovered = false
-
-func _on_slider_mouse_entered() -> void:
-	slider_hovered = true
