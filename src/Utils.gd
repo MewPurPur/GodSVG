@@ -86,14 +86,14 @@ cp3: Vector2, cp4: Vector2) -> PackedVector2Array:
 	var curve := Curve2D.new()
 	curve.add_point(cp1, Vector2(), cp2)
 	curve.add_point(cp4, cp3)
-	return curve.tessellate(5, 2)
+	return curve.tessellate(6, 1)
 
 static func get_quadratic_bezier_points(cp1: Vector2, cp2: Vector2,
 cp3: Vector2) -> PackedVector2Array:
 	var curve := Curve2D.new()
 	curve.add_point(cp1, Vector2(), 2/3.0 * (cp2 - cp1))
 	curve.add_point(cp3, 2/3.0 * (cp2 - cp3))
-	return curve.tessellate(5, 2)
+	return curve.tessellate(6, 1)
 
 # Ellipse parametric equation.
 static func E(c: Vector2, r: Vector2, cosine: float, sine: float, t: float) -> Vector2:
@@ -138,9 +138,6 @@ static func get_parent_tid(tid: PackedInt32Array) -> PackedInt32Array:
 	var parent_tid := tid.duplicate()
 	parent_tid.resize(tid.size() - 1)
 	return parent_tid
-
-static func get_viewbox_zoom(viewbox: Rect2, width: float, height: float) -> float:
-	return minf(width / viewbox.size.x, height / viewbox.size.y)
 
 
 static func is_event_drag(event: InputEvent) -> bool:

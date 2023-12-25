@@ -38,21 +38,22 @@ func _process(_delta: float) -> void:
 
 
 func svg_update() -> void:
-	#width = SVG.root_tag.get_width()
-	#height = SVG.root_tag.get_height()
-	#viewbox = SVG.root_tag.get_viewbox()
-	#viewbox_zoom = Utils.get_viewbox_zoom(viewbox, width, height)
-	
 	var image_zoom := 1.0 if rasterized else zoom
 	var pixel_size := 1 / image_zoom
-	# TODO optimize this?
-	var svg_tag := SVG.root_tag.create_duplicate()
+	
+	var svg_tag: TagSVG = SVG.root_tag.create_duplicate()
 	# Translate to canvas coords.
 	var display_rect := view_rect.grow(pixel_size)
 	display_rect.position = display_rect.position.snapped(Vector2(pixel_size, pixel_size))
+	display_rect.position.x = maxf(display_rect.position.x, 0.0)
+	display_rect.position.y = maxf(display_rect.position.y, 0.0)
 	display_rect.size = display_rect.size.snapped(Vector2(pixel_size, pixel_size))
+	display_rect.end.x = minf(display_rect.end.x, svg_tag.width)
+	display_rect.end.y = minf(display_rect.end.y, svg_tag.height)
 	
-	svg_tag.attributes.viewBox.set_rect(display_rect)
+	svg_tag.attributes.viewBox.set_rect(Rect2(
+			svg_tag.world_to_canvas(display_rect.position),
+			display_rect.size / svg_tag.canvas_transform.get_scale()))
 	svg_tag.attributes.width.set_num(display_rect.size.x)
 	svg_tag.attributes.height.set_num(display_rect.size.y)
 	

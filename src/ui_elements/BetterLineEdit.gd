@@ -18,7 +18,6 @@ func _init() -> void:
 func _ready() -> void:
 	focus_entered.connect(_on_focus_entered)
 	focus_exited.connect(_on_focus_exited)
-	mouse_entered.connect(_on_mouse_entered)
 	mouse_exited.connect(_on_mouse_exited)
 	text_submitted.connect(release_focus.unbind(1))
 	gui_input.connect(_on_gui_input)
@@ -46,9 +45,6 @@ func _on_focus_exited() -> void:
 	if not tree_was_paused_before:
 		get_tree().paused = false
 
-func _on_mouse_entered() -> void:
-	hovered = true
-	queue_redraw()
 
 func _on_mouse_exited() -> void:
 	hovered = false
@@ -73,6 +69,9 @@ func _make_custom_tooltip(for_text: String) -> Object:
 
 
 func _on_gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseMotion and event.button_mask == 0:
+		hovered = true
+		queue_redraw()
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_RIGHT:
 			grab_focus()

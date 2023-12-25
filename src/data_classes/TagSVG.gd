@@ -1,8 +1,13 @@
 ## A <svg></svg> tag.
 class_name TagSVG extends Tag
 
+var width: float
+var height: float
+var viewbox: Rect2
+var canvas_transform: Transform2D
+
 # The difference between attribute_changed() and resized() is that
-# resized will emit even after unknown changes.
+# resized() will emit even after unknown changes.
 signal resized
 
 signal child_attribute_changed(undo_redo: bool)
@@ -26,36 +31,55 @@ func _init() -> void:
 		"viewBox": AttributeList.new(),
 	}
 	unknown_attributes.append(AttributeUnknown.new("xmlns", "http://www.w3.org/2000/svg"))
+	attribute_changed.connect(update_cache.unbind(1))
+	changed_unknown.connect(update_cache)
+	update_cache()
 	super()
 
-# Functions for getting the dimensions.
-func get_width() -> float:
+func update_cache() -> void:
+	# Cache width.
 	if is_finite(attributes.width.get_num()):
-		return attributes.width.get_num()
+		width = attributes.width.get_num()
 	else:
-		return attributes.viewBox.get_list_element(2)
-
-func get_height() -> float:
+		width = attributes.viewBox.get_list_element(2)
+	# Cache height.
 	if is_finite(attributes.height.get_num()):
-		return attributes.height.get_num()
+		height = attributes.height.get_num()
 	else:
-		return attributes.viewBox.get_list_element(3)
-
-func get_size() -> Vector2:
-	return Vector2(get_width(), get_height())
-
-func get_viewbox() -> Rect2:
+		height = attributes.viewBox.get_list_element(3)
+	# Cache viewbox.
 	if attributes.viewBox.get_list_size() >= 4:
-		return Rect2(attributes.viewBox.get_list_element(0),
+		viewbox = Rect2(attributes.viewBox.get_list_element(0),
 				attributes.viewBox.get_list_element(1),
 				attributes.viewBox.get_list_element(2),
 				attributes.viewBox.get_list_element(3))
 	else:
-		if !is_finite(attributes.width.get_num()) or\
-		!is_finite(attributes.height.get_num()):
-			return Rect2(0, 0, 0, 0)
+		if is_finite(attributes.width.get_num()) and is_finite(attributes.height.get_num()):
+			viewbox = Rect2(0, 0, attributes.width.get_num(), attributes.height.get_num())
 		else:
-			return Rect2(0, 0, attributes.width.get_num(), attributes.height.get_num())
+			viewbox = Rect2(0, 0, 0, 0)
+	# Cache canvas transform.
+	var width_ratio := width / viewbox.size.x
+	var height_ratio := height / viewbox.size.y
+	if width_ratio < height_ratio:
+		canvas_transform = Transform2D(0.0, Vector2(width_ratio, width_ratio), 0.0,
+				-viewbox.position * width_ratio +\
+				Vector2(0, (height - width_ratio * viewbox.size.y) / 2))
+	else:
+		canvas_transform = Transform2D(0.0, Vector2(height_ratio, height_ratio), 0.0,
+				-viewbox.position * height_ratio +\
+				Vector2((width - height_ratio * viewbox.size.x) / 2, 0))
+
+
+func canvas_to_world(pos: Vector2) -> Vector2:
+	return canvas_transform * pos
+
+func world_to_canvas(pos: Vector2) -> Vector2:
+	return canvas_transform.affine_inverse() * pos
+
+
+func get_size() -> Vector2:
+	return Vector2(width, height)
 
 
 func get_all_tids() -> Array[PackedInt32Array]:

@@ -37,9 +37,9 @@ func _on_resized() -> void:
 func update_attributes(configure_coupling := false) -> void:
 	if configure_coupling:
 		update_coupling_config()
-	true_width = SVG.root_tag.get_width()
-	true_height = SVG.root_tag.get_height()
-	true_viewbox = SVG.root_tag.get_viewbox()
+	true_width = SVG.root_tag.width
+	true_height = SVG.root_tag.height
+	true_viewbox = SVG.root_tag.viewbox
 	width_edit.set_value(true_width, false)
 	height_edit.set_value(true_height, false)
 	viewbox_edit_x.set_value(true_viewbox.position.x, false)
@@ -48,7 +48,7 @@ func update_attributes(configure_coupling := false) -> void:
 	viewbox_edit_h.set_value(true_viewbox.size.y, false)
 
 func _on_unknown_changed() -> void:
-	if GlobalSettings.save_data.viewbox_coupling and (SVG.root_tag.get_viewbox() !=\
+	if GlobalSettings.save_data.viewbox_coupling and (SVG.root_tag.viewbox !=\
 	Rect2(Vector2.ZERO, SVG.root_tag.get_size())):
 		GlobalSettings.modify_save_data(&"viewbox_coupling", false)
 	update_attributes(true)
@@ -73,7 +73,7 @@ func update_coupling_config() -> void:
 		couple_button.icon = coupled_icon if coupling_on else decoupled_icon
 		if coupling_on:
 			SVG.root_tag.attributes.viewBox.set_list(PackedFloat32Array([
-					0.0, 0.0, SVG.root_tag.get_width(), SVG.root_tag.get_height()]))
+					0.0, 0.0, SVG.root_tag.width, SVG.root_tag.height]))
 	update_editable()
 
 
@@ -106,7 +106,7 @@ func _on_width_edit_value_changed(new_value: float) -> void:
 		else:
 			SVG.root_tag.attributes.width.set_num(new_value)
 	else:
-		SVG.root_tag.attributes.width.set_num(SVG.root_tag.get_width(), false)
+		SVG.root_tag.attributes.width.set_num(SVG.root_tag.width, false)
 
 func _on_height_edit_value_changed(new_value: float) -> void:
 	if is_finite(new_value) and SVG.root_tag.attributes.height.get_num() != new_value:
@@ -118,7 +118,7 @@ func _on_height_edit_value_changed(new_value: float) -> void:
 		else:
 			SVG.root_tag.attributes.height.set_num(new_value)
 	else:
-		SVG.root_tag.attributes.height.set_num(SVG.root_tag.get_height(), false)
+		SVG.root_tag.attributes.height.set_num(SVG.root_tag.height, false)
 
 func _on_viewbox_edit_x_value_changed(new_value: float) -> void:
 	if SVG.root_tag.attributes.viewBox.get_value() != null:
