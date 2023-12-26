@@ -34,13 +34,6 @@ const hover_selection_color = Color(hover_selection_color_string)
 
 enum InteractionType {NONE = 0, HOVERED = 1, SELECTED = 2, HOVERED_SELECTED = 3}
 
-var zoom := 1.0:
-	set(new_value):
-		zoom = new_value
-		RenderingServer.canvas_item_set_transform(surface,
-				Transform2D(0.0, Vector2(1/zoom, 1/zoom), 0.0, Vector2.ZERO))
-		queue_redraw()
-
 var update_pending := false
 
 var handles: Array[Handle]
@@ -56,6 +49,7 @@ func _ready() -> void:
 	SVG.root_tag.changed_unknown.connect(queue_update)
 	Indications.selection_changed.connect(queue_redraw)
 	Indications.hover_changed.connect(queue_redraw)
+	Indications.zoom_changed.connect(queue_redraw)
 	Indications.added_path_handle.connect(move_selected_to_mouse)
 	queue_update()
 
@@ -543,11 +537,13 @@ func _draw() -> void:
 							hovered_selected_polylines.append(points.duplicate())
 							hovered_selected_multiline += tangent_points.duplicate()
 	
-	var draw_zoom := zoom * SVG.root_tag.canvas_transform.get_scale().x
+	var draw_zoom := Indications.zoom * SVG.root_tag.canvas_transform.get_scale().x
 	var thickness := 1.0 / draw_zoom
 	var tangent_thickness := 0.6 / draw_zoom
 	var tangent_alpha := 0.8
 	draw_set_transform_matrix(SVG.root_tag.canvas_transform)
+	RenderingServer.canvas_item_set_transform(surface, Transform2D(0.0,
+			Vector2(1 / Indications.zoom, 1 / Indications.zoom), 0.0, Vector2.ZERO))
 	
 	for polyline in normal_polylines:
 		draw_polyline(polyline, default_color, thickness, true)
@@ -601,20 +597,20 @@ func _draw() -> void:
 	RenderingServer.canvas_item_clear(surface)
 	for handle in normal_handles:
 		var texture: Texture2D = normal_handle_textures[handle.display_mode]
-		texture.draw(surface,
-				SVG.root_tag.canvas_to_world(handle.pos) * zoom - texture.get_size() / 2)
+		texture.draw(surface, SVG.root_tag.canvas_to_world(handle.pos) *\
+				Indications.zoom - texture.get_size() / 2)
 	for handle in selected_handles:
 		var texture: Texture2D = selected_handle_textures[handle.display_mode]
-		texture.draw(surface,
-				SVG.root_tag.canvas_to_world(handle.pos) * zoom - texture.get_size() / 2)
+		texture.draw(surface, SVG.root_tag.canvas_to_world(handle.pos) *\
+				Indications.zoom - texture.get_size() / 2)
 	for handle in hovered_handles:
 		var texture: Texture2D = hovered_handle_textures[handle.display_mode]
-		texture.draw(surface,
-				SVG.root_tag.canvas_to_world(handle.pos) * zoom - texture.get_size() / 2)
+		texture.draw(surface, SVG.root_tag.canvas_to_world(handle.pos) *\
+				Indications.zoom - texture.get_size() / 2)
 	for handle in hovered_selected_handles:
 		var texture: Texture2D = hovered_selected_handle_textures[handle.display_mode]
-		texture.draw(surface,
-				SVG.root_tag.canvas_to_world(handle.pos) * zoom - texture.get_size() / 2)
+		texture.draw(surface, SVG.root_tag.canvas_to_world(handle.pos) *\
+				Indications.zoom - texture.get_size() / 2)
 
 
 func tid_is_hovered(tid: PackedInt32Array, cmd_idx := -1) -> bool:
@@ -654,7 +650,8 @@ func _unhandled_input(event: InputEvent) -> void:
 	
 	if event is InputEventMouseMotion:
 		should_deselect_all = false
-		var event_pos: Vector2 = event.position / zoom + get_node(^"../..").view.position
+		var event_pos: Vector2 = event.position / Indications.zoom +\
+				get_node(^"../..").view.position
 		if dragged_handle != null:
 			# Move the handle that's being dragged.
 			var new_pos := SVG.root_tag.world_to_canvas(event_pos)
@@ -677,7 +674,8 @@ func _unhandled_input(event: InputEvent) -> void:
 				Indications.clear_hovered()
 				Indications.clear_inner_hovered()
 	elif event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
-		var event_pos: Vector2 = event.position / zoom + get_node(^"../..").view.position
+		var event_pos: Vector2 = event.position / Indications.zoom +\
+				get_node(^"../..").view.position
 		var nearest_handle := find_nearest_handle(event_pos)
 		if nearest_handle != null:
 			hovered_handle = nearest_handle
@@ -737,7 +735,7 @@ func move_selected_to_mouse() -> void:
 			return
 
 func find_nearest_handle(event_pos: Vector2) -> Handle:
-	var max_grab_dist := 9 / zoom
+	var max_grab_dist := 9 / Indications.zoom
 	var nearest_handle: Handle = null
 	var nearest_dist := max_grab_dist
 	for handle in handles:

@@ -71,6 +71,7 @@ static func text_to_svg(text: String) -> TagSVG:
 					if attrib_dict.has("viewBox"):
 						svg_tag.attributes.viewBox.set_value(attrib_dict["viewBox"],
 								Attribute.SyncMode.SILENT)
+					svg_tag.update_cache()
 					
 					var unknown: Array[AttributeUnknown] = []
 					for element in attrib_dict:

@@ -1,36 +1,36 @@
 extends HBoxContainer
 
 const MIN_ZOOM = 0.125
-const MAX_ZOOM = 256.0
+const MAX_ZOOM = 512.0
 
-signal zoom_changed(zoom_level: float)
+signal zoom_changed(zoom_level: float, offset: Vector2)
 signal zoom_reset_pressed
 
 @onready var zoom_out_button: Button = $ZoomOut
 @onready var zoom_in_button: Button = $ZoomIn
 @onready var zoom_reset_button: Button = $ZoomReset
 
-var zoom_level: float:
-	set(value):
-		zoom_level = clampf(value, MIN_ZOOM, MAX_ZOOM)
-		zoom_changed.emit(zoom_level)
+var _zoom_level: float
+
+
+func set_zoom(new_value: float, offset := Vector2(0.5, 0.5)) -> void:
+	new_value = clampf(new_value, MIN_ZOOM, MAX_ZOOM)
+	if _zoom_level != new_value:
+		_zoom_level = new_value
+		zoom_changed.emit(_zoom_level, offset)
 		update_buttons_appearance()
 
-
-func zoom_out(factor := 1.0) -> void:
+func zoom_out(factor := 1.0, offset := Vector2(0.5, 0.5)) -> void:
 	if factor == 1.0:
-		zoom_level /= sqrt(2)
+		set_zoom(_zoom_level / sqrt(2), offset)
 	else:
-		zoom_level *= 1 - _normalize_zoom_factor(factor)
+		set_zoom(_zoom_level / (factor + 1), offset)
 
-func zoom_in(factor := 1.0) -> void:
+func zoom_in(factor := 1.0, offset := Vector2(0.5, 0.5)) -> void:
 	if factor == 1.0:
-		zoom_level *= sqrt(2)
+		set_zoom(_zoom_level * sqrt(2), offset)
 	else:
-		zoom_level *= 1 + _normalize_zoom_factor(factor)
-
-func _normalize_zoom_factor(factor: float) -> float:
-	return 1 - 1 / (factor + 1)
+		set_zoom(_zoom_level * 2 - _zoom_level / (factor + 1), offset)
 
 # This needs a custom implementation to whatever is listening to the signal.
 func zoom_reset() -> void:
@@ -38,17 +38,17 @@ func zoom_reset() -> void:
 
 
 func update_buttons_appearance() -> void:
-	if zoom_level < 0.1:
-		zoom_reset_button.text = String.num(zoom_level * 100, 2) + "%"
-	elif zoom_level < 10.0:
-		zoom_reset_button.text = String.num(zoom_level * 100, 1) + "%"
-	elif zoom_level < 100.0:
-		zoom_reset_button.text = String.num_uint64(roundi(zoom_level * 100)) + "%"
+	if _zoom_level < 0.1:
+		zoom_reset_button.text = String.num(_zoom_level * 100, 2) + "%"
+	elif _zoom_level < 10.0:
+		zoom_reset_button.text = String.num(_zoom_level * 100, 1) + "%"
+	elif _zoom_level < 100.0:
+		zoom_reset_button.text = String.num_uint64(roundi(_zoom_level * 100)) + "%"
 	else:
-		zoom_reset_button.text = String.num(zoom_level, 1) + "x"
+		zoom_reset_button.text = String.num(_zoom_level, 1) + "x"
 	
-	var is_max_zoom := zoom_level > MAX_ZOOM or is_equal_approx(zoom_level, MAX_ZOOM)
-	var is_min_zoom := zoom_level < MIN_ZOOM or is_equal_approx(zoom_level, MIN_ZOOM)
+	var is_max_zoom := _zoom_level > MAX_ZOOM or is_equal_approx(_zoom_level, MAX_ZOOM)
+	var is_min_zoom := _zoom_level < MIN_ZOOM or is_equal_approx(_zoom_level, MIN_ZOOM)
 	
 	zoom_in_button.disabled = is_max_zoom
 	zoom_in_button.mouse_default_cursor_shape = Control.CURSOR_ARROW if\

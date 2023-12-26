@@ -11,10 +11,15 @@ var surface := RenderingServer.canvas_item_create()  # Used for drawing the numb
 func _ready() -> void:
 	RenderingServer.canvas_item_set_parent(surface, get_canvas_item())
 	SVG.root_tag.resized.connect(queue_redraw)
+	Indications.zoom_changed.connect(change_zoom)
+	Indications.zoom_changed.connect(queue_redraw)
+
+func change_zoom() -> void:
+	zoom = Vector2(Indications.zoom, Indications.zoom)
 
 # Don't ask me to explain this.
 func _draw() -> void:
-	var size: Vector2 = get_parent().size * 1.0 / zoom
+	var size: Vector2 = Indications.viewport_size * 1.0 / zoom
 	draw_line(Vector2(-position.x, 0), Vector2(-position.x, size.y), axis_line_color)
 	draw_line(Vector2(0, -position.y), Vector2(size.x, -position.y), axis_line_color)
 	
@@ -70,5 +75,6 @@ func _draw() -> void:
 				minor_points.append(Vector2(0, i))
 				minor_points.append(Vector2(size.x, i))
 		i += 1.0
-	draw_multiline(major_points, major_grid_color)
+	if not major_points.is_empty():
+		draw_multiline(major_points, major_grid_color)
 	draw_multiline(minor_points, minor_grid_color)
