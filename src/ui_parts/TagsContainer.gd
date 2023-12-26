@@ -5,6 +5,7 @@ const safe_margin = 0.18
 @onready var scroll_container: ScrollContainer = %ScrollContainer
 
 var is_drag_begin := false
+var to_refresh_mouse_exit: Control
 
 
 func _process(_delta: float) -> void:
@@ -29,6 +30,7 @@ func _can_drop_data(_at_position: Vector2, current_tid: Variant) -> bool:
 			if child.tid in current_tid:
 				return false
 			child.determine_selection_highlight(child.DropState.DOWN)
+			to_refresh_mouse_exit = child
 		return true
 	return false
 
@@ -59,3 +61,12 @@ func calculate_drop_location() -> Control:
 			child = child_i
 	return child
 
+
+func _on_mouse_exited() -> void:
+	if to_refresh_mouse_exit != null:
+		if is_drag_begin:
+			var state = to_refresh_mouse_exit.calculate_drop_location(get_global_mouse_position())
+			to_refresh_mouse_exit.determine_selection_highlight(state)
+		else:
+			to_refresh_mouse_exit.determine_selection_highlight()
+		to_refresh_mouse_exit = null

@@ -90,9 +90,9 @@ func _ready() -> void:
 
 
 func _get_drag_data(_at_position: Vector2) -> Variant:
-	var data: Array[PackedInt32Array] = [tid]
+	var data: Array[PackedInt32Array] = [tid.duplicate()]
 	if tid in Indications.selected_tids:
-		data = Indications.selected_tids
+		data = Indications.selected_tids.duplicate(true)
 	data = Utils.filter_tids_descendant(data)
 	var tags_container: VBoxContainer = VBoxContainer.new()
 	for drag_tid in data:
@@ -100,7 +100,6 @@ func _get_drag_data(_at_position: Vector2) -> Variant:
 		preview.tag = SVG.root_tag.get_by_tid(drag_tid)
 		preview.tid = drag_tid
 		preview.custom_minimum_size.x = self.size.x
-		preview.custom_minimum_size.y = self.size.y
 		tags_container.add_child(preview)
 	tags_container.modulate = Color('#ffffffd3')
 	set_drag_preview(tags_container)
@@ -125,8 +124,6 @@ func _drop_data(_at_position: Vector2, current_tid: Variant):
 	match state:
 		DropState.INSIDE:
 			new_tid.append(0)
-		DropState.UP:
-			new_tid[-1] -= 1 if new_tid[-1] > 0 else 0
 		DropState.DOWN:
 			new_tid[-1] += 1
 	SVG.root_tag.move_tags_to(current_tid, new_tid)
@@ -183,15 +180,22 @@ func _on_gui_input(event: InputEvent) -> void:
 			elif event.shift_pressed:
 				Indications.shift_select(tid)
 			else:
-				Indications.normal_select(tid)
+				if Indications.selected_tids.size() > 1:
+					Indications.temporary_normal_select(tid)
+				else:
+					Indications.normal_select(tid)
 		elif event.button_index == MOUSE_BUTTON_RIGHT:
 			if not tid in Indications.selected_tids:
 				Indications.normal_select(tid)
 			Utils.popup_under_mouse(create_tag_context(), get_global_mouse_position())
-
+	elif event is InputEventMouseButton and event.is_released() and\
+	not event.ctrl_pressed and not event.ctrl_pressed:
+		if tid in Indications.selected_tids:
+			Indications.normal_select(tid)
 
 func _on_mouse_exited() -> void:
 	Indications.remove_hovered(tid)
+	determine_selection_highlight()
 
 
 func popup_convert_to_context() -> void:

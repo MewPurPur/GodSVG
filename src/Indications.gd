@@ -46,6 +46,11 @@ func _ready() -> void:
 	SVG.root_tag.tags_moved_to.connect(_on_tags_moved_to)
 	SVG.root_tag.changed_unknown.connect(clear_selection)
 
+## A temporary normal_select for on click.
+func temporary_normal_select(tid: PackedInt32Array) -> void:
+	if not tid in selected_tids:
+		selected_tids.append(tid.duplicate())
+		selection_changed.emit()
 
 ## Override the selected tags with a single new selected tag.
 ## If inner_idx is given, this will be an inner selection.

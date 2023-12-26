@@ -68,3 +68,4 @@ script = ExtResource("4_i4hc2")
 
 [connection signal="pressed" from="VBoxContainer/AddButton" to="." method="_on_add_button_pressed"]
 [connection signal="gui_input" from="VBoxContainer/TagContainer" to="." method="_on_tag_container_gui_input"]
+[connection signal="mouse_exited" from="VBoxContainer/TagContainer/ScrollContainer/Tags" to="VBoxContainer/TagContainer/ScrollContainer/Tags" method="_on_mouse_exited"]
