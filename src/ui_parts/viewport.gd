@@ -48,6 +48,8 @@ func center_frame() -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
+	if Indications.get_viewport().gui_is_dragging():
+		return
 	if not event is InputEventMouseMotion or event.button_mask != 0:
 		view.queue_redraw()
 	
