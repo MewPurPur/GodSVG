@@ -15,7 +15,7 @@ const default_config = {
 	"input": {
 		"invert_zoom": false,
 		"wrap_mouse": false,
-		"use_ctrl_for_zoom": false,
+		"use_ctrl_for_zoom": true,
 	},
 	"autoformat": {
 		"number_enable_autoformatting": false,
@@ -44,7 +44,7 @@ var language: StringName:
 # Input
 var invert_zoom := false
 var wrap_mouse := false
-var use_ctrl_for_zoom := false
+var use_ctrl_for_zoom := true
 
 # Autoformat
 var number_enable_autoformatting := false

@@ -152,5 +152,5 @@ func _on_more_button_pressed() -> void:
 	
 	var context_popup := ContextPopup.instantiate()
 	add_child(context_popup)
-	context_popup.set_button_array(btn_arr, false)
+	context_popup.set_button_array(btn_arr, true)
 	Utils.popup_under_control_centered(context_popup, more_button)
