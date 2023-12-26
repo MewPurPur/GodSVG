@@ -1,10 +1,5 @@
 extends TextureRect
 
-var zoom := 1.0:
-	set(new_value):
-		zoom = new_value
-		queue_update()
-
 var view_rect := Rect2():
 	set(new_value):
 		view_rect = new_value
@@ -14,7 +9,7 @@ var rasterized := false:
 	set(new_value):
 		if new_value != rasterized:
 			rasterized = new_value
-			if zoom != 1.0:
+			if Indications.zoom != 1.0:
 				queue_update()
 
 var update_pending := false
@@ -25,6 +20,7 @@ func _ready() -> void:
 	SVG.root_tag.changed_unknown.connect(queue_update)
 	SVG.root_tag.attribute_changed.connect(queue_update.unbind(1))
 	SVG.root_tag.child_attribute_changed.connect(queue_update.unbind(1))
+	Indications.zoom_changed.connect(queue_update)
 	queue_update()
 
 
@@ -38,7 +34,7 @@ func _process(_delta: float) -> void:
 
 
 func svg_update() -> void:
-	var image_zoom := 1.0 if rasterized else zoom
+	var image_zoom := 1.0 if rasterized else Indications.zoom
 	var pixel_size := 1 / image_zoom
 	
 	var svg_tag: TagSVG = SVG.root_tag.create_duplicate()
