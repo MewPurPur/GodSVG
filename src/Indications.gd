@@ -1,5 +1,4 @@
-## This singleton handles hovering and selections.
-## The information is used to synchronize the inspector and handles.
+## This singleton handles editor information like zoom level and selections.
 extends Node
 
 const path_actions_dict := {
@@ -37,6 +36,23 @@ var semi_selected_tid := PackedInt32Array()
 var inner_hovered := -1
 var inner_selections: Array[int] = []
 var inner_selection_pivot := -1
+
+
+signal zoom_changed
+signal viewport_size_changed
+
+var zoom := 0.0
+var viewport_size := Vector2i.ZERO
+
+func set_zoom(new_value):
+	if zoom != new_value:
+		zoom = new_value
+		zoom_changed.emit()
+
+func set_viewport_size(new_value):
+	if viewport_size != new_value:
+		viewport_size = new_value
+		viewport_size_changed.emit()
 
 
 func _ready() -> void:
