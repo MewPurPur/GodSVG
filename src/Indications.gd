@@ -43,9 +43,14 @@ func _ready() -> void:
 	SVG.root_tag.tags_added.connect(_on_tags_added)
 	SVG.root_tag.tags_deleted.connect(_on_tags_deleted)
 	SVG.root_tag.tags_moved_in_parent.connect(_on_tags_moved_in_parent)
-	#SVG.root_tag.tags_moved_to.connect(_on_tags_moved_to)  # TODO
+	SVG.root_tag.tags_moved_to.connect(_on_tags_moved_to)
 	SVG.root_tag.changed_unknown.connect(clear_selection)
 
+## A temporary normal_select for on click.
+func temporary_normal_select(tid: PackedInt32Array) -> void:
+	if not tid in selected_tids:
+		selected_tids.append(tid.duplicate())
+		selection_changed.emit()
 
 ## Override the selected tags with a single new selected tag.
 ## If inner_idx is given, this will be an inner selection.
@@ -290,12 +295,15 @@ func _on_tags_moved_in_parent(parent_tid: PackedInt32Array, indices: Array[int])
 	if old_selected_tids != selected_tids:
 		selection_changed.emit()
 
-# TODO implement this.
-#func _on_tags_moved_to(tid: PackedInt32Array, old_tids: Array[PackedInt32Array]) -> void:
-	#return
+func _on_tags_moved_to(new_tids: Array[PackedInt32Array]) -> void:
+	selected_tids.clear()
+	selected_tids.append_array(new_tids.duplicate())
+	selection_changed.emit()
 
 
 func _unhandled_input(event: InputEvent) -> void:
+	if get_viewport().gui_is_dragging():
+		return
 	if event.is_action_pressed(&"delete"):
 		delete_selected()
 	elif event.is_action_pressed(&"move_up"):
