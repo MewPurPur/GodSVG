@@ -1,4 +1,4 @@
-extends VBoxContainer
+extends PanelContainer
 
 const geometry_attributes = ["cx", "cy", "x", "y", "r", "rx", "ry", "width", "height",
 		"d", "x1", "y1", "x2", "y2"]
@@ -14,18 +14,20 @@ const PathField = preload("res://src/ui_elements/path_field.tscn")
 const EnumField = preload("res://src/ui_elements/enum_field.tscn")
 const UnknownField = preload("res://src/ui_elements/unknown_field.tscn")
 
-@onready var v_box_container: VBoxContainer = $Content/MainContainer
+@onready var v_box_container: VBoxContainer = $Layout/Content/MainContainer
 @onready var paint_container: FlowContainer = %AttributeContainer/PaintAttributes
 @onready var shape_container: FlowContainer = %AttributeContainer/ShapeAttributes
 @onready var unknown_container: HFlowContainer = %AttributeContainer/UnknownAttributes
-@onready var title_bar: PanelContainer = $Title
-@onready var content: PanelContainer = $Content
-@onready var title_icon: TextureRect = $Title/TitleBox/TitleIcon
-@onready var title_label: Label = $Title/TitleBox/TitleLabel
-@onready var title_button: Button = $Title/TitleBox/TitleButton
+@onready var title_bar: PanelContainer = $Layout/Title
+@onready var content: PanelContainer = $Layout/Content
+@onready var title_icon: TextureRect = $Layout/Title/TitleBox/TitleIcon
+@onready var title_label: Label = $Layout/Title/TitleBox/TitleLabel
+@onready var title_button: Button = $Layout/Title/TitleBox/TitleButton
 
 var tid: PackedInt32Array
 var tag: Tag
+
+enum DropState {INSIDE, UP, DOWN, OUTSIDE}
 
 func _ready() -> void:
 	title_label.text = tag.name
@@ -87,8 +89,57 @@ func _ready() -> void:
 			child_tags_container.add_child(tag_editor)
 
 
+func _get_drag_data(_at_position: Vector2) -> Variant:
+	var data: Array[PackedInt32Array] = [tid.duplicate()]
+	if tid in Indications.selected_tids:
+		data = Indications.selected_tids.duplicate(true)
+	data = Utils.filter_tids_descendant(data)
+	var tags_container: VBoxContainer = VBoxContainer.new()
+	for drag_tid in data:
+		var preview := TagEditor.instantiate()
+		preview.tag = SVG.root_tag.get_by_tid(drag_tid)
+		preview.tid = drag_tid
+		preview.custom_minimum_size.x = self.size.x
+		tags_container.add_child(preview)
+	tags_container.modulate = Color('#ffffffd3')
+	set_drag_preview(tags_container)
+	return data
+
+
+func _can_drop_data(_at_position: Vector2, current_tid: Variant) -> bool:
+	if current_tid is Array[PackedInt32Array] and not  tid in current_tid:
+		var state := calculate_drop_location(get_global_mouse_position())
+		if state == DropState.INSIDE:
+			var new_tid := tid.duplicate()
+			new_tid.append(0)
+			if new_tid in current_tid: return false
+		determine_selection_highlight(state)
+		return true
+	return false
+
+
+func _drop_data(_at_position: Vector2, current_tid: Variant):
+	var state := calculate_drop_location(get_global_mouse_position())
+	var new_tid := tid.duplicate()
+	match state:
+		DropState.INSIDE:
+			new_tid.append(0)
+		DropState.DOWN:
+			new_tid[-1] += 1
+	SVG.root_tag.move_tags_to(current_tid, new_tid)
+
+
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_DRAG_BEGIN:
+		if get_viewport().gui_get_drag_data() is Array[PackedInt32Array]:
+			toggle_pause_children(true)
+	elif what == NOTIFICATION_DRAG_END:
+		toggle_pause_children(false)
+
+
 func _on_title_button_pressed() -> void:
 	Utils.popup_under_control_centered(create_tag_context(), title_button)
+
 
 func create_tag_context() -> Popup:
 	var parent_tid := Utils.get_parent_tid(tid)
@@ -129,15 +180,23 @@ func _on_gui_input(event: InputEvent) -> void:
 			elif event.shift_pressed:
 				Indications.shift_select(tid)
 			else:
-				Indications.normal_select(tid)
+				if Indications.selected_tids.size() > 1:
+					Indications.temporary_normal_select(tid)
+				else:
+					Indications.normal_select(tid)
 		elif event.button_index == MOUSE_BUTTON_RIGHT:
 			if not tid in Indications.selected_tids:
 				Indications.normal_select(tid)
 			Utils.popup_under_mouse(create_tag_context(), get_global_mouse_position())
-
+	elif event is InputEventMouseButton and event.is_released() and\
+	not event.ctrl_pressed and not event.ctrl_pressed:
+		if tid in Indications.selected_tids:
+			Indications.normal_select(tid)
 
 func _on_mouse_exited() -> void:
 	Indications.remove_hovered(tid)
+	determine_selection_highlight()
+
 
 func popup_convert_to_context() -> void:
 	var btn_arr: Array[Button] = []
@@ -151,11 +210,12 @@ func popup_convert_to_context() -> void:
 	context_popup.set_button_array(btn_arr, true)
 	Utils.popup_under_control_centered(context_popup, title_button)
 
+
 func _convert_to(tag_name: String) -> void:
 	SVG.root_tag.replace_tag(tid, tag.get_replacement(tag_name))
 
 
-func determine_selection_highlight() -> void:
+func determine_selection_highlight(state: DropState = DropState.OUTSIDE) -> void:
 	var title_sb := StyleBoxFlat.new()
 	title_sb.corner_radius_top_left = 4
 	title_sb.corner_radius_top_right = 4
@@ -207,6 +267,50 @@ func determine_selection_highlight() -> void:
 				title_sb.bg_color.s, title_sb.bg_color.v)
 		title_sb.border_color = Color.from_hsv(title_sb.border_color.h + depth_tint,
 				title_sb.border_color.s, title_sb.border_color.v)
-	
+	var root_sb := StyleBoxFlat.new()
+	root_sb.border_color = Color.YELLOW
+	root_sb.bg_color = Color.TRANSPARENT
+	root_sb.set_corner_radius_all(4)
+	root_sb.set_content_margin_all(2)
+	match state:
+		DropState.INSIDE:
+			root_sb.set_border_width_all(2)
+		DropState.UP:
+			root_sb.border_width_top = 2
+		DropState.DOWN:
+			root_sb.border_width_bottom = 2
+	add_theme_stylebox_override(&"panel", root_sb)
 	content.add_theme_stylebox_override(&"panel", content_sb)
 	title_bar.add_theme_stylebox_override(&"panel", title_sb)
+
+
+func calculate_drop_location(at_position: Vector2) -> DropState:
+	var top_bottom_margin: float = 0.10 # 0 - 1
+	var tag_editor_area := Rect2(get_global_rect())
+	if not tag_editor_area.has_point(at_position):
+		return DropState.OUTSIDE
+	var shrink_ratio := top_bottom_margin * float(tag_editor_area.size.y)
+	tag_editor_area = tag_editor_area.grow_individual(0,- shrink_ratio,0,- shrink_ratio)
+	if tag_editor_area.has_point(at_position):
+		return DropState.INSIDE
+	if tag_editor_area.position.y > at_position.y:
+		return DropState.UP
+	else:
+		return DropState.DOWN
+
+
+func toggle_pause_children(pause: bool) -> void:
+	var children = ( paint_container.get_children()
+				 + shape_container.get_children()
+				 + unknown_container.get_children()
+				)
+	if pause:
+		for child in children:
+			child.mouse_filter = Control.MOUSE_FILTER_PASS
+		content.process_mode = Node.PROCESS_MODE_DISABLED
+		title_bar.process_mode = Node.PROCESS_MODE_DISABLED
+	else:
+		for child in children:
+			child.mouse_filter = Control.MOUSE_FILTER_STOP
+		content.process_mode = Node.PROCESS_MODE_INHERIT
+		title_bar.process_mode = Node.PROCESS_MODE_INHERIT

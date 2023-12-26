@@ -139,6 +139,30 @@ static func get_parent_tid(tid: PackedInt32Array) -> PackedInt32Array:
 	parent_tid.resize(tid.size() - 1)
 	return parent_tid
 
+# Filter out all descendants.
+static func filter_tids_descendant(tids: Array[PackedInt32Array]) -> Array[PackedInt32Array]:
+	var new_tids: Array[PackedInt32Array] = tids.duplicate()
+	new_tids = new_tids.filter(func(tid:PackedInt32Array):
+		var check_tid: PackedInt32Array = []
+		for part in tid:
+			check_tid.append(part)
+			if ( check_tid in new_tids and not check_tid == tid
+				and is_tid_parent(check_tid,tid)
+			):
+				return false
+		return true
+		)
+	return new_tids
+
+# [0] > [1] > [1, 2] > [2]
+static func sort_tids(tids: Array[PackedInt32Array]) -> Array[PackedInt32Array]:
+	var new_tids: Array[PackedInt32Array] = tids.duplicate()
+	new_tids.sort_custom(Utils.compare_tids)
+	return new_tids
+
+static func get_viewbox_zoom(viewbox: Rect2, width: float, height: float) -> float:
+	return minf(width / viewbox.size.x, height / viewbox.size.y)
+
 
 static func is_event_drag(event: InputEvent) -> bool:
 	return event is InputEventMouseMotion and event.button_mask == MOUSE_BUTTON_LEFT
