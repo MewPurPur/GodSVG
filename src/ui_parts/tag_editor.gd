@@ -1,4 +1,4 @@
-extends PanelContainer
+extends VBoxContainer
 
 const geometry_attributes = ["cx", "cy", "x", "y", "r", "rx", "ry", "width", "height",
 		"d", "x1", "y1", "x2", "y2"]
@@ -14,22 +14,31 @@ const PathField = preload("res://src/ui_elements/path_field.tscn")
 const EnumField = preload("res://src/ui_elements/enum_field.tscn")
 const UnknownField = preload("res://src/ui_elements/unknown_field.tscn")
 
-@onready var v_box_container: VBoxContainer = $Layout/Content/MainContainer
+@onready var v_box_container: VBoxContainer = $Content/MainContainer
 @onready var paint_container: FlowContainer = %AttributeContainer/PaintAttributes
 @onready var shape_container: FlowContainer = %AttributeContainer/ShapeAttributes
 @onready var unknown_container: HFlowContainer = %AttributeContainer/UnknownAttributes
-@onready var title_bar: PanelContainer = $Layout/Title
-@onready var content: PanelContainer = $Layout/Content
-@onready var title_icon: TextureRect = $Layout/Title/TitleBox/TitleIcon
-@onready var title_label: Label = $Layout/Title/TitleBox/TitleLabel
-@onready var title_button: Button = $Layout/Title/TitleBox/TitleButton
+@onready var title_bar: PanelContainer = $Title
+@onready var content: PanelContainer = $Content
+@onready var title_icon: TextureRect = $Title/TitleBox/TitleIcon
+@onready var title_label: Label = $Title/TitleBox/TitleLabel
+@onready var title_button: Button = $Title/TitleBox/TitleButton
 
 var tid: PackedInt32Array
 var tag: Tag
 
 enum DropState {INSIDE, UP, DOWN, OUTSIDE}
+var drop_state := DropState.OUTSIDE:
+	set(new_value):
+		if drop_state != new_value:
+			drop_state = new_value
+			queue_redraw()
+
+var surface := RenderingServer.canvas_item_create()  # Used for the drop indicator.
 
 func _ready() -> void:
+	RenderingServer.canvas_item_set_parent(surface, get_canvas_item())
+	RenderingServer.canvas_item_set_z_index(surface, 1)
 	title_label.text = tag.name
 	title_icon.texture = unknown_icon if tag is TagUnknown\
 			else load("res://visual/icons/tag/" + tag.name + ".svg")
@@ -94,7 +103,7 @@ func _get_drag_data(_at_position: Vector2) -> Variant:
 	if tid in Indications.selected_tids:
 		data = Indications.selected_tids.duplicate(true)
 	data = Utils.filter_tids_descendant(data)
-	var tags_container: VBoxContainer = VBoxContainer.new()
+	var tags_container := VBoxContainer.new()
 	for drag_tid in data:
 		var preview := TagEditor.instantiate()
 		preview.tag = SVG.root_tag.get_by_tid(drag_tid)
@@ -106,16 +115,22 @@ func _get_drag_data(_at_position: Vector2) -> Variant:
 	return data
 
 
-func _can_drop_data(_at_position: Vector2, current_tid: Variant) -> bool:
-	if current_tid is Array[PackedInt32Array] and not  tid in current_tid:
-		var state := calculate_drop_location(get_global_mouse_position())
-		if state == DropState.INSIDE:
-			var new_tid := tid.duplicate()
-			new_tid.append(0)
-			if new_tid in current_tid: return false
-		determine_selection_highlight(state)
-		return true
-	return false
+func _can_drop_data(_at_position: Vector2, data: Variant) -> bool:
+	# The data parameter is the TIDs.
+	if not data is Array[PackedInt32Array]:
+		return false
+	for data_tid in data:
+		if Utils.is_tid_parent(data_tid, tid) or data_tid == tid:
+			return false
+	
+	var state := calculate_drop_location(get_global_mouse_position())
+	if state == DropState.INSIDE:
+		var new_tid := tid.duplicate()
+		new_tid.append(0)
+		if new_tid in data:
+			return false
+	drop_state = state
+	return true
 
 
 func _drop_data(_at_position: Vector2, current_tid: Variant):
@@ -175,30 +190,29 @@ func _on_gui_input(event: InputEvent) -> void:
 			Indications.set_hovered(tid)
 	elif event is InputEventMouseButton and event.is_pressed():
 		if event.button_index == MOUSE_BUTTON_LEFT:
-			if event.ctrl_pressed:
-				Indications.ctrl_select(tid)
-			elif event.shift_pressed:
+			if event.shift_pressed:
 				Indications.shift_select(tid)
-			else:
-				if Indications.selected_tids.size() > 1:
-					Indications.temporary_normal_select(tid)
-				else:
-					Indications.normal_select(tid)
+			elif event.ctrl_pressed:
+				Indications.ctrl_select(tid)
+			elif not tid in Indications.selected_tids:
+				Indications.normal_select(tid)
 		elif event.button_index == MOUSE_BUTTON_RIGHT:
 			if not tid in Indications.selected_tids:
 				Indications.normal_select(tid)
 			Utils.popup_under_mouse(create_tag_context(), get_global_mouse_position())
 	elif event is InputEventMouseButton and event.is_released() and\
-	not event.ctrl_pressed and not event.ctrl_pressed:
+	not event.ctrl_pressed and not event.shift_pressed:
 		if tid in Indications.selected_tids:
 			Indications.normal_select(tid)
 
 func _on_mouse_exited() -> void:
 	Indications.remove_hovered(tid)
+	drop_state = DropState.OUTSIDE
 	determine_selection_highlight()
 
 
 func popup_convert_to_context() -> void:
+	# The "Convert To" context popup.
 	var btn_arr: Array[Button] = []
 	for tag_name in tag.possible_conversions:
 		var btn := Utils.create_btn(tag_name, _convert_to.bind(tag_name),
@@ -215,7 +229,7 @@ func _convert_to(tag_name: String) -> void:
 	SVG.root_tag.replace_tag(tid, tag.get_replacement(tag_name))
 
 
-func determine_selection_highlight(state: DropState = DropState.OUTSIDE) -> void:
+func determine_selection_highlight() -> void:
 	var title_sb := StyleBoxFlat.new()
 	title_sb.corner_radius_top_left = 4
 	title_sb.corner_radius_top_right = 4
@@ -267,30 +281,37 @@ func determine_selection_highlight(state: DropState = DropState.OUTSIDE) -> void
 				title_sb.bg_color.s, title_sb.bg_color.v)
 		title_sb.border_color = Color.from_hsv(title_sb.border_color.h + depth_tint,
 				title_sb.border_color.s, title_sb.border_color.v)
-	var root_sb := StyleBoxFlat.new()
-	root_sb.border_color = Color.YELLOW
-	root_sb.bg_color = Color.TRANSPARENT
-	root_sb.set_corner_radius_all(4)
-	root_sb.set_content_margin_all(2)
-	match state:
-		DropState.INSIDE:
-			root_sb.set_border_width_all(2)
-		DropState.UP:
-			root_sb.border_width_top = 2
-		DropState.DOWN:
-			root_sb.border_width_bottom = 2
-	add_theme_stylebox_override(&"panel", root_sb)
 	content.add_theme_stylebox_override(&"panel", content_sb)
 	title_bar.add_theme_stylebox_override(&"panel", title_sb)
 
+func _draw() -> void:
+	RenderingServer.canvas_item_clear(surface)
+	if drop_state == DropState.OUTSIDE:
+		return
+	
+	var drop_sb := StyleBoxFlat.new()
+	drop_sb.border_color = Color.YELLOW
+	drop_sb.draw_center = false
+	drop_sb.set_corner_radius_all(4)
+	drop_sb.set_content_margin_all(2)
+	match drop_state:
+		DropState.INSIDE:
+			drop_sb.set_border_width_all(2)
+		DropState.UP:
+			drop_sb.border_width_top = 2
+		DropState.DOWN:
+			drop_sb.border_width_bottom = 2
+	
+	drop_sb.draw(surface, Rect2(Vector2.ZERO, get_size()))
+
 
 func calculate_drop_location(at_position: Vector2) -> DropState:
-	var top_bottom_margin: float = 0.10 # 0 - 1
-	var tag_editor_area := Rect2(get_global_rect())
+	var tag_editor_area := get_global_rect()
 	if not tag_editor_area.has_point(at_position):
 		return DropState.OUTSIDE
-	var shrink_ratio := top_bottom_margin * float(tag_editor_area.size.y)
-	tag_editor_area = tag_editor_area.grow_individual(0,- shrink_ratio,0,- shrink_ratio)
+	
+	var drop_border := minf(get_size().y / 3, 24)
+	tag_editor_area = tag_editor_area.grow_individual(0, -drop_border, 0, -drop_border)
 	if tag_editor_area.has_point(at_position):
 		return DropState.INSIDE
 	if tag_editor_area.position.y > at_position.y:
@@ -300,10 +321,8 @@ func calculate_drop_location(at_position: Vector2) -> DropState:
 
 
 func toggle_pause_children(pause: bool) -> void:
-	var children = ( paint_container.get_children()
-				 + shape_container.get_children()
-				 + unknown_container.get_children()
-				)
+	var children = paint_container.get_children() + shape_container.get_children() +\
+			unknown_container.get_children()
 	if pause:
 		for child in children:
 			child.mouse_filter = Control.MOUSE_FILTER_PASS

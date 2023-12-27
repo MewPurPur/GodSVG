@@ -35,12 +35,6 @@ func add_tag(tag_name: String) -> void:
 	SVG.root_tag.add_tag(new_tag, new_tid)
 
 
-func _on_tag_container_gui_input(event: InputEvent) -> void:
-	if event is InputEventMouseButton and event.is_pressed() and\
-	event.button_index == MOUSE_BUTTON_LEFT and not event.ctrl_pressed:
-		Indications.clear_selection()
-		Indications.clear_inner_selection()
-
 func _on_add_button_pressed() -> void:
 	var btn_array: Array[Button] = []
 	for tag_name in ["path", "circle", "ellipse", "rect", "line"]:

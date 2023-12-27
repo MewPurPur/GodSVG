@@ -34,12 +34,12 @@ func _process(_delta: float) -> void:
 
 
 func svg_update() -> void:
-	var image_zoom := 1.0 if rasterized else Indications.zoom
+	var image_zoom := 1.0 if rasterized and Indications.zoom > 1.0 else Indications.zoom
 	var pixel_size := 1 / image_zoom
 	
 	var svg_tag: TagSVG = SVG.root_tag.create_duplicate()
 	# Translate to canvas coords.
-	var display_rect := view_rect.grow(pixel_size)
+	var display_rect := view_rect.grow(pixel_size * 2)
 	display_rect.position = display_rect.position.snapped(Vector2(pixel_size, pixel_size))
 	display_rect.position.x = maxf(display_rect.position.x, 0.0)
 	display_rect.position.y = maxf(display_rect.position.y, 0.0)

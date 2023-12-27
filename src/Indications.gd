@@ -62,11 +62,6 @@ func _ready() -> void:
 	SVG.root_tag.tags_moved_to.connect(_on_tags_moved_to)
 	SVG.root_tag.changed_unknown.connect(clear_selection)
 
-## A temporary normal_select for on click.
-func temporary_normal_select(tid: PackedInt32Array) -> void:
-	if not tid in selected_tids:
-		selected_tids.append(tid.duplicate())
-		selection_changed.emit()
 
 ## Override the selected tags with a single new selected tag.
 ## If inner_idx is given, this will be an inner selection.
@@ -312,8 +307,9 @@ func _on_tags_moved_in_parent(parent_tid: PackedInt32Array, indices: Array[int])
 		selection_changed.emit()
 
 func _on_tags_moved_to(new_tids: Array[PackedInt32Array]) -> void:
-	selected_tids.clear()
-	selected_tids.append_array(new_tids.duplicate())
+	# FIXME The contributor that implemented tag drag & drop couldn't implement this.
+	# For now I'm clearing all selections to avoid crashes.
+	clear_all_selections()
 	selection_changed.emit()
 
 
