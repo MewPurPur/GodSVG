@@ -253,7 +253,7 @@ func move_tags_to(tids: Array[PackedInt32Array], to: PackedInt32Array) -> void:
 		reference_pos = to_parent_tag.child_tags.find(reference_pos_tag)
 	# Add back removed tags.
 	var shift_pos = 0
-	var new_tids: Array[PackedInt32Array]
+	var new_tids: Array[PackedInt32Array] = []
 	for tag in tags_to_move:
 		if reference_pos_tag and reference_pos > -1:
 			to_parent_tag.child_tags.insert(reference_pos + shift_pos, tag)
