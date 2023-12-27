@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://src/ui_parts/inspector.gd" id="1_16ggy"]
 [ext_resource type="PackedScene" uid="uid://bktmk76u7dsu0" path="res://src/ui_parts/root_tag_editor.tscn" id="2_jnl50"]
 [ext_resource type="Texture2D" uid="uid://eif2ioi0mw17" path="res://visual/icons/Plus.svg" id="3_vo6hf"]
-[ext_resource type="Script" path="res://src/ui_parts/TagsContainer.gd" id="4_i4hc2"]
+[ext_resource type="Script" path="res://src/ui_parts/tag_container.gd" id="4_i4hc2"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4j4hv"]
 draw_center = false
@@ -51,6 +51,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_4j4hv")
+script = ExtResource("4_i4hc2")
 
 [node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer/TagContainer"]
 unique_name_in_owner = true
@@ -64,8 +65,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/separation = 5
-script = ExtResource("4_i4hc2")
 
 [connection signal="pressed" from="VBoxContainer/AddButton" to="." method="_on_add_button_pressed"]
-[connection signal="gui_input" from="VBoxContainer/TagContainer" to="." method="_on_tag_container_gui_input"]
-[connection signal="mouse_exited" from="VBoxContainer/TagContainer/ScrollContainer/Tags" to="VBoxContainer/TagContainer/ScrollContainer/Tags" method="_on_mouse_exited"]
+[connection signal="gui_input" from="VBoxContainer/TagContainer" to="VBoxContainer/TagContainer" method="_on_gui_input"]
+[connection signal="mouse_exited" from="VBoxContainer/TagContainer" to="VBoxContainer/TagContainer" method="_on_mouse_exited"]

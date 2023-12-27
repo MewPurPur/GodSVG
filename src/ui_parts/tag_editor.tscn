@@ -4,72 +4,73 @@
 [ext_resource type="FontFile" uid="uid://dtb4wkus51hxs" path="res://visual/fonts/FontMono.ttf" id="2_0lxvf"]
 [ext_resource type="Texture2D" uid="uid://cmepkbqde0jh0" path="res://visual/icons/SmallMore.svg" id="2_2n846"]
 
-[node name="TagEditor" type="PanelContainer"]
-offset_right = 49.0
-offset_bottom = 30.0
+[node name="TagEditor" type="VBoxContainer"]
+offset_left = 2.0
+offset_top = 2.0
+offset_right = 55.0
+offset_bottom = 32.0
+mouse_filter = 0
+theme_override_constants/separation = 0
 script = ExtResource("1_7i0c4")
 
-[node name="Layout" type="VBoxContainer" parent="."]
-layout_mode = 2
-theme_override_constants/separation = 0
-
-[node name="Title" type="PanelContainer" parent="Layout"]
+[node name="Title" type="PanelContainer" parent="."]
 layout_mode = 2
 mouse_filter = 2
 
-[node name="TitleBox" type="HBoxContainer" parent="Layout/Title"]
+[node name="TitleBox" type="HBoxContainer" parent="Title"]
 layout_mode = 2
 theme_override_constants/separation = 6
 alignment = 1
 
-[node name="TitleIcon" type="TextureRect" parent="Layout/Title/TitleBox"]
+[node name="TitleIcon" type="TextureRect" parent="Title/TitleBox"]
 custom_minimum_size = Vector2(18, 18)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 0
 mouse_filter = 2
 
-[node name="TitleLabel" type="Label" parent="Layout/Title/TitleBox"]
+[node name="TitleLabel" type="Label" parent="Title/TitleBox"]
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_fonts/font = ExtResource("2_0lxvf")
 theme_override_font_sizes/font_size = 12
 horizontal_alignment = 1
 
-[node name="TitleButton" type="Button" parent="Layout/Title/TitleBox"]
+[node name="TitleButton" type="Button" parent="Title/TitleBox"]
 layout_mode = 2
 focus_mode = 0
+mouse_filter = 1
 mouse_default_cursor_shape = 2
 theme_type_variation = &"FlatButton"
 icon = ExtResource("2_2n846")
 
-[node name="Content" type="PanelContainer" parent="Layout"]
+[node name="Content" type="PanelContainer" parent="."]
 layout_mode = 2
 mouse_filter = 2
 
-[node name="MainContainer" type="VBoxContainer" parent="Layout/Content"]
+[node name="MainContainer" type="VBoxContainer" parent="Content"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 12
 
-[node name="AttributeContainer" type="VBoxContainer" parent="Layout/Content/MainContainer"]
+[node name="AttributeContainer" type="VBoxContainer" parent="Content/MainContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="UnknownAttributes" type="HFlowContainer" parent="Layout/Content/MainContainer/AttributeContainer"]
+[node name="UnknownAttributes" type="HFlowContainer" parent="Content/MainContainer/AttributeContainer"]
 visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="PaintAttributes" type="HFlowContainer" parent="Layout/Content/MainContainer/AttributeContainer"]
+[node name="PaintAttributes" type="HFlowContainer" parent="Content/MainContainer/AttributeContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="ShapeAttributes" type="HFlowContainer" parent="Layout/Content/MainContainer/AttributeContainer"]
+[node name="ShapeAttributes" type="HFlowContainer" parent="Content/MainContainer/AttributeContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 
 [connection signal="gui_input" from="." to="." method="_on_gui_input"]
 [connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
-[connection signal="pressed" from="Layout/Title/TitleBox/TitleButton" to="." method="_on_title_button_pressed"]
+[connection signal="pressed" from="Title/TitleBox/TitleButton" to="." method="_on_title_button_pressed"]
