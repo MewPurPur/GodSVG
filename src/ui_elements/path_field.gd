@@ -48,7 +48,7 @@ func rebuild_commands() -> void:
 		var command_editor := CommandEditor.instantiate()
 		command_editor.path_command = attribute.get_command(command_idx)
 		# TODO Fix this mess, it's needed for individual path commands selection.
-		command_editor.tid = get_node(^"../../../../../..").tid
+		command_editor.tid = get_node(^"../../../../..").tid
 		command_editor.cmd_idx = command_idx
 		command_editor.cmd_update_value.connect(_update_command_value)
 		command_editor.cmd_delete.connect(_delete)

@@ -43,6 +43,7 @@ func center_frame() -> void:
 	var w_ratio := available_size.x / SVG.root_tag.width
 	var h_ratio := available_size.y / SVG.root_tag.height
 	zoom_menu.set_zoom(nearest_po2(ceili(minf(w_ratio, h_ratio) * 32)) / 64.0)
+	adjust_view()
 	set_view((SVG.root_tag.get_size() - size / Indications.zoom) / 2)
 
 

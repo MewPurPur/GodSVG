@@ -146,12 +146,9 @@ static func filter_tids_descendant(tids: Array[PackedInt32Array]) -> Array[Packe
 		var check_tid: PackedInt32Array = []
 		for part in tid:
 			check_tid.append(part)
-			if ( check_tid in new_tids and not check_tid == tid
-				and is_tid_parent(check_tid,tid)
-			):
+			if check_tid in new_tids and check_tid != tid and is_tid_parent(check_tid, tid):
 				return false
-		return true
-		)
+		return true)
 	return new_tids
 
 # [0] > [1] > [1, 2] > [2]
