@@ -124,7 +124,7 @@ func apply_svg_from_path(path: String) -> int:
 	var warning_panel := ImportWarningDialog.instantiate()
 	warning_panel.imported.connect(apply_svg_text)
 	warning_panel.set_svg(svg_text)
-	get_tree().get_root().add_child(warning_panel)
+	HandlerGUI.add_overlay(warning_panel)
 	return OK
 
 func apply_svg_text(svg_text: String) -> void:
