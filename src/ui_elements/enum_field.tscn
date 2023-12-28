@@ -56,4 +56,5 @@ expand_icon = true
 [connection signal="focus_exited" from="LineEdit" to="." method="_on_focus_exited"]
 [connection signal="text_changed" from="LineEdit" to="." method="_on_text_changed"]
 [connection signal="text_submitted" from="LineEdit" to="." method="_on_text_submitted"]
+[connection signal="gui_input" from="Button" to="." method="_on_button_gui_input"]
 [connection signal="pressed" from="Button" to="." method="_on_button_pressed"]

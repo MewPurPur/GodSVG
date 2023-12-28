@@ -33,7 +33,6 @@ offset_bottom = 21.0
 size_flags_horizontal = 0
 size_flags_vertical = 0
 focus_mode = 1
-mouse_filter = 1
 script = ExtResource("1_saak1")
 hover_stylebox = SubResource("StyleBoxFlat_nuwbn")
 focus_stylebox = SubResource("StyleBoxFlat_veyl6")
