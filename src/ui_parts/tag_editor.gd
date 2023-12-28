@@ -110,10 +110,9 @@ func _get_drag_data(_at_position: Vector2) -> Variant:
 		preview.tid = drag_tid
 		preview.custom_minimum_size.x = self.size.x
 		tags_container.add_child(preview)
-	tags_container.modulate = Color('#ffffffd3')
+	tags_container.modulate = Color(1, 1, 1, 0.85)
 	set_drag_preview(tags_container)
 	return data
-
 
 func _can_drop_data(_at_position: Vector2, data: Variant) -> bool:
 	# The data parameter is the TIDs.
@@ -132,7 +131,6 @@ func _can_drop_data(_at_position: Vector2, data: Variant) -> bool:
 	drop_state = state
 	return true
 
-
 func _drop_data(_at_position: Vector2, current_tid: Variant):
 	var state := calculate_drop_location(get_global_mouse_position())
 	var new_tid := tid.duplicate()
@@ -142,14 +140,6 @@ func _drop_data(_at_position: Vector2, current_tid: Variant):
 		DropState.DOWN:
 			new_tid[-1] += 1
 	SVG.root_tag.move_tags_to(current_tid, new_tid)
-
-
-func _notification(what: int) -> void:
-	if what == NOTIFICATION_DRAG_BEGIN:
-		if get_viewport().gui_get_drag_data() is Array[PackedInt32Array]:
-			toggle_pause_children(true)
-	elif what == NOTIFICATION_DRAG_END:
-		toggle_pause_children(false)
 
 
 func _on_title_button_pressed() -> void:
@@ -164,9 +154,10 @@ func create_tag_context() -> Popup:
 	btn_array.append(Utils.create_btn(tr(&"#duplicate"), Indications.duplicate_selected,
 			false, load("res://visual/icons/Duplicate.svg")))
 	
-	if !tag.possible_conversions.is_empty():
+	if Indications.selected_tids.size() == 1 and not tag.possible_conversions.is_empty():
 		btn_array.append(Utils.create_btn(tr(&"#convert_to"), popup_convert_to_context,
 				false, load("res://visual/icons/Reload.svg")))
+	
 	if tid[-1] > 0:
 		btn_array.append(Utils.create_btn(tr(&"#move_up"), Indications.move_up_selected,
 				false, load("res://visual/icons/MoveUp.svg")))
@@ -285,6 +276,7 @@ func determine_selection_highlight() -> void:
 	title_bar.add_theme_stylebox_override(&"panel", title_sb)
 
 func _draw() -> void:
+	# Draw the yellow indicator of drag and drop actions.
 	RenderingServer.canvas_item_clear(surface)
 	if drop_state == DropState.OUTSIDE:
 		return
@@ -293,7 +285,6 @@ func _draw() -> void:
 	drop_sb.border_color = Color.YELLOW
 	drop_sb.draw_center = false
 	drop_sb.set_corner_radius_all(4)
-	drop_sb.set_content_margin_all(2)
 	match drop_state:
 		DropState.INSIDE:
 			drop_sb.set_border_width_all(2)
@@ -318,18 +309,3 @@ func calculate_drop_location(at_position: Vector2) -> DropState:
 		return DropState.UP
 	else:
 		return DropState.DOWN
-
-
-func toggle_pause_children(pause: bool) -> void:
-	var children = paint_container.get_children() + shape_container.get_children() +\
-			unknown_container.get_children()
-	if pause:
-		for child in children:
-			child.mouse_filter = Control.MOUSE_FILTER_PASS
-		content.process_mode = Node.PROCESS_MODE_DISABLED
-		title_bar.process_mode = Node.PROCESS_MODE_DISABLED
-	else:
-		for child in children:
-			child.mouse_filter = Control.MOUSE_FILTER_STOP
-		content.process_mode = Node.PROCESS_MODE_INHERIT
-		title_bar.process_mode = Node.PROCESS_MODE_INHERIT

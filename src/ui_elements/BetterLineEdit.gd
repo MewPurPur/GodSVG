@@ -69,10 +69,12 @@ func _make_custom_tooltip(for_text: String) -> Object:
 
 
 func _on_gui_input(event: InputEvent) -> void:
+	mouse_filter = Utils.mouse_filter_pass_non_drag_events(event)
+	
 	if event is InputEventMouseMotion and event.button_mask == 0:
 		hovered = true
 		queue_redraw()
-	if event is InputEventMouseButton:
+	elif event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_RIGHT:
 			grab_focus()
 			var context_popup := ContextPopup.instantiate()
