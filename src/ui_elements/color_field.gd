@@ -97,3 +97,7 @@ func sync(new_value: String) -> void:
 			color_edit.remove_theme_color_override(&"font_color")
 		color_edit.text = new_value.trim_prefix("#")
 	queue_redraw()
+
+
+func _on_button_gui_input(event: InputEvent) -> void:
+	color_button.mouse_filter = Utils.mouse_filter_pass_non_drag_events(event)

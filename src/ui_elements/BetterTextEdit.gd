@@ -72,6 +72,8 @@ func _draw() -> void:
 		draw_style_box(hover_stylebox, Rect2(Vector2.ZERO, size))
 
 func _on_gui_input(event: InputEvent) -> void:
+	mouse_filter = Utils.mouse_filter_pass_non_drag_events(event)
+	
 	if event is InputEventMouseMotion and event.button_mask == 0:
 		hovered = true
 		queue_redraw()

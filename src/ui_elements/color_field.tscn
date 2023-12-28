@@ -34,7 +34,6 @@ script = ExtResource("1_2pe1j")
 custom_minimum_size = Vector2(54, 0)
 layout_mode = 2
 focus_mode = 1
-mouse_filter = 1
 theme_type_variation = &"RightConnectedLineEdit"
 script = ExtResource("3_u777p")
 hover_stylebox = SubResource("StyleBoxFlat_q6tej")
@@ -53,5 +52,6 @@ theme_type_variation = &"LeftConnectedButtonTransparent"
 [connection signal="focus_exited" from="LineEdit" to="." method="_on_focus_exited"]
 [connection signal="text_changed" from="LineEdit" to="." method="_on_text_changed"]
 [connection signal="text_submitted" from="LineEdit" to="." method="_on_text_submitted"]
+[connection signal="gui_input" from="Button" to="." method="_on_button_gui_input"]
 [connection signal="pressed" from="Button" to="." method="_on_button_pressed"]
 [connection signal="resized" from="Button" to="." method="_on_button_resized"]

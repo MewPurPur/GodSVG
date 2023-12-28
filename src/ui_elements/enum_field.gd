@@ -9,6 +9,7 @@ const ContextPopup = preload("res://src/ui_elements/context_popup.tscn")
 const bold_font = preload("res://visual/fonts/FontBold.ttf")
 
 @onready var indicator: LineEdit = $LineEdit
+@onready var button: Button = $Button
 
 func set_value(new_value: String, update_type := Utils.UpdateType.REGULAR):
 	sync(attribute.autoformat(new_value))
@@ -74,3 +75,7 @@ func sync(new_value: String) -> void:
 			indicator.add_theme_color_override(&"font_color", Color(0.64, 0.64, 0.64))
 		else:
 			indicator.remove_theme_color_override(&"font_color")
+
+
+func _on_button_gui_input(event: InputEvent) -> void:
+	button.mouse_filter = Utils.mouse_filter_pass_non_drag_events(event)

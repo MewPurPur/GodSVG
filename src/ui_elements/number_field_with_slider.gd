@@ -115,6 +115,8 @@ func _on_slider_resized() -> void:
 	queue_redraw()  # Whyyyyy are their sizes wrong at first...
 
 func _on_slider_gui_input(event: InputEvent) -> void:
+	slider.mouse_filter = Utils.mouse_filter_pass_non_drag_events(event)
+	
 	if not slider_dragged:
 		if event is InputEventMouseMotion and event.button_mask == 0:
 			slider_hovered = true
