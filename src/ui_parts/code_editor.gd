@@ -37,6 +37,7 @@ func update_error(err_id: StringName) -> void:
 		if not error_bar.visible:
 			error_bar.show()
 			error_label.text = tr(err_id)
+			code_edit.begin_bulk_theme_override()
 			for theming in [&"normal", &"focus"]:
 				var stylebox := ThemeDB.get_project_theme().\
 						get_stylebox(theming, &"TextEdit").duplicate()
@@ -44,6 +45,7 @@ func update_error(err_id: StringName) -> void:
 				stylebox.corner_radius_bottom_left = 0
 				stylebox.border_width_bottom = 1
 				code_edit.add_theme_stylebox_override(theming, stylebox)
+			code_edit.end_bulk_theme_override()
 			var error_bar_real_height := error_bar.size.y - 2
 			code_edit.custom_minimum_size.y -= error_bar_real_height
 			code_edit.size.y -= error_bar_real_height
