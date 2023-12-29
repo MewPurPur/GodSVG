@@ -71,9 +71,11 @@ func rebuild_color_palettes() -> void:
 		sb.set_corner_radius_all(5)
 		sb.set_content_margin_all(4)
 	var add_palette_button := Button.new()
+	add_palette_button.begin_bulk_theme_override()
 	add_palette_button.add_theme_stylebox_override(&"normal", normal_sb)
 	add_palette_button.add_theme_stylebox_override(&"hover", hover_sb)
 	add_palette_button.add_theme_stylebox_override(&"pressed", pressed_sb)
+	add_palette_button.end_bulk_theme_override()
 	add_palette_button.icon = plus_icon
 	add_palette_button.icon_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	add_palette_button.focus_mode = Control.FOCUS_NONE

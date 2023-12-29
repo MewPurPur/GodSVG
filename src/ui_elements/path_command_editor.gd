@@ -267,6 +267,7 @@ func setup_relative_button() -> void:
 	relative_button.text = cmd_char
 	relative_button.tooltip_text = Utils.path_command_char_dict[cmd_char.to_upper()]
 	relative_button.pressed.connect(toggle_relative)
+	relative_button.begin_bulk_theme_override()
 	if Utils.is_string_upper(cmd_char):
 		relative_button.tooltip_text += " (" + tr(&"absolute") + ")"
 		relative_button.add_theme_stylebox_override(&"normal", create_stylebox(
@@ -283,6 +284,7 @@ func setup_relative_button() -> void:
 				Color.from_hsv(0.78, 0.75, 0.9), Color.from_hsv(0.74, 0.55, 0.95)))
 		relative_button.add_theme_stylebox_override(&"pressed", create_stylebox(
 				Color.from_hsv(0.74, 0.6, 1.0), Color.from_hsv(0.7, 0.4, 1.0)))
+	relative_button.end_bulk_theme_override()
 
 
 func add_number_field() -> BetterLineEdit:
