@@ -2,11 +2,12 @@ class_name NumberParser extends RefCounted
 
 static func num_to_text(number: float) -> String:
 	var output := String.num(number, 4)
-	if GlobalSettings.number_remove_leading_zero:
-		if number <= 0.9999 and number >= 0.0001:
+	if GlobalSettings.number_remove_leading_zero and output.find(".") != -1:
+		if output.begins_with("0"):
 			output = output.right(-1)
-		elif number >= -0.9999 and number <= -0.0001:
-			output = output.left(1) + output.right(-2)
+		elif output.begins_with("-0") or output.begins_with("+0"):
+			output = output.erase(1)
+	
 	return output
 
 static func text_to_num(text: String) -> float:
