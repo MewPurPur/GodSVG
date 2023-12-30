@@ -31,6 +31,7 @@ func set_view(new_position: Vector2) -> void:
 	var stripped_bottom := minf(view.position.y + scaled_size.y, SVG.root_tag.height)
 	display_texture.view_rect = Rect2(stripped_left, stripped_top,
 			stripped_right - stripped_left, stripped_bottom - stripped_top)
+	view.queue_redraw()
 
 
 # Adjust the SVG dimensions.
@@ -50,8 +51,6 @@ func center_frame() -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if Indications.get_viewport().gui_is_dragging():
 		return
-	if not event is InputEventMouseMotion or event.button_mask != 0:
-		view.queue_redraw()
 	
 	if event is InputEventMouseMotion and\
 	event.button_mask in [MOUSE_BUTTON_MASK_LEFT, MOUSE_BUTTON_MASK_MIDDLE]:
