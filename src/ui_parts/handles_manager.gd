@@ -113,11 +113,11 @@ path_attribute: AttributePath) -> Array[Handle]:
 		var path_command := path_attribute.get_command(idx)
 		if path_command.command_char.to_upper() != "Z":
 			path_handles.append(PathHandle.new(tid, path_attribute, idx))
-			if path_command.command_char.to_upper() in ["C", "Q"]:
+			if path_command.command_char.to_upper() in "CQ":
 				var tangent := PathHandle.new(tid, path_attribute, idx, &"x1", &"y1")
 				tangent.display_mode = Handle.Display.SMALL
 				path_handles.append(tangent)
-			if path_command.command_char.to_upper() in ["C", "S"]:
+			if path_command.command_char.to_upper() in "CS":
 				var tangent := PathHandle.new(tid, path_attribute, idx, &"x2", &"y2")
 				tangent.display_mode = Handle.Display.SMALL
 				path_handles.append(tangent)
@@ -351,7 +351,7 @@ func _draw() -> void:
 							
 							var v := Vector2(cmd.x, cmd.y)
 							var v1 := Vector2() if relative else cmd.start
-							if prev_cmd.command_char.to_upper() in ["C", "S"]:
+							if prev_cmd.command_char.to_upper() in "CS":
 								var prev_control_pt := Vector2(prev_cmd.x2, prev_cmd.y2)
 								if prev_cmd.relative:
 									v1 = cmd.start - prev_control_pt - prev_cmd.start if relative\
