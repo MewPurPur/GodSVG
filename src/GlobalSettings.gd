@@ -50,7 +50,6 @@ var use_ctrl_for_zoom := true
 var number_enable_autoformatting := false
 var number_remove_zero_padding := true
 var number_remove_leading_zero := false
-var number_remove_plus_sign := true
 var color_enable_autoformatting := false
 var color_convert_rgb_to_hex := false
 var color_convert_named_to_hex := true

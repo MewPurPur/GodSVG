@@ -17,13 +17,13 @@ static func format_text(text: String) -> String:
 	if text.is_empty():
 		return ""  # Equivalent to NAN in the app's logic.
 	
-	var unary_plus := GlobalSettings.number_remove_plus_sign and text.begins_with("+")
 	var leading_decimal_point := text.begins_with(".") or text.begins_with("+.") or\
 			text.begins_with("-.")
 	var padded_zeros := 0
-	while text.ends_with("0"):
-		text = text.left(-1)
-		padded_zeros += 1
+	if "." in text and not GlobalSettings.number_remove_zero_padding:
+		while text.ends_with("0"):
+			text = text.left(-1)
+			padded_zeros += 1
 	
 	text = String.num(text.to_float(), 4)
 	
@@ -34,9 +34,10 @@ static func format_text(text: String) -> String:
 		if text.begins_with("-0") or text.begins_with("+0"):
 			text = text.erase(1)
 	
-	text += "0".repeat(padded_zeros)
+	if padded_zeros > 0:
+		if not "." in text:
+			text += "."
+		text += "0".repeat(padded_zeros)
 	text = text.left(text.find(".") + 5)
-	if unary_plus:
-		text = "+" + text
 	
 	return text
