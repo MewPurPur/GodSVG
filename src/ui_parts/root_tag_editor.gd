@@ -1,9 +1,8 @@
 extends MarginContainer
 
-# So, about this editor. Width and height don't have real default values, so they use NAN
-# and are NumberEdits, rather than NumberFields. Viewbox is its own thing and since
-# it's made of four numbers, and also since I want a coupling functionality with width
-# and height, I didn't make an AttributeEditor for it. It's just 4 NumberEdits.
+# So, about this editor. Width and height don't have default values, so they use NAN and
+# use NumberEdit, rather than NumberField. Viewbox is a list and it also doesn't have a
+# default value, and it also needs a coupling functionality, so it uses 4 NumberEdits.
 
 const NumberEditType = preload("res://src/ui_elements/number_edit.gd")
 
