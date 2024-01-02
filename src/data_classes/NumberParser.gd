@@ -14,6 +14,9 @@ static func text_to_num(text: String) -> float:
 
 # The passed text should already be a valid number.
 static func format_text(text: String) -> String:
+	if text.is_empty():
+		return ""  # Equivalent to NAN in the app's logic.
+	
 	var unary_plus := GlobalSettings.number_remove_plus_sign and text.begins_with("+")
 	var leading_decimal_point := text.begins_with(".") or text.begins_with("+.") or\
 			text.begins_with("-.")
