@@ -4,8 +4,7 @@
   <img src="visual/splash.svg" width="480" alt="GodSVG logo">
 </p>
 
-**GodSVG is an application for creating optimized Scalable Vector Graphics (SVG) files.** It is mainly designed for programmers, allowing them to easily edit individual SVG elements and view the corresponding code in real-time.
-GodSVG is inspired by the need for an SVG editor without abstractions that produces optimized SVG files.
+**GodSVG is an editor for Scalable Vector Graphics (SVG) files.** Unlike other editors, it represents the SVG code directly and doesn't add any metadata. GodSVG also lets you to edit the SVG code in real time. GodSVG is inspired by the need for an SVG editor without abstractions that produces clean and optimized SVG files.
 
 ## Features
 
