@@ -1,8 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://cundqwh450ymm"]
+[gd_scene load_steps=5 format=3 uid="uid://4ve0pwcpch2e"]
 
 [ext_resource type="Script" path="res://src/ui_parts/autoformat_menu.gd" id="1_1463h"]
 [ext_resource type="Script" path="res://src/ui_elements/BetterTabContainer.gd" id="2_p41oe"]
-[ext_resource type="PackedScene" uid="uid://chgcy63ldo7x5" path="res://src/ui_elements/setting_check_box.tscn" id="4_ic3rj"]
+[ext_resource type="PackedScene" path="res://src/ui_elements/setting_check_box.tscn" id="4_ic3rj"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_p36ah"]
 content_margin_left = 8.0
@@ -73,12 +73,6 @@ layout_mode = 2
 text = "#remove_leading_zero"
 section_name = "autoformat"
 setting_name = "number_remove_leading_zero"
-
-[node name="RemovePlusSign" parent="VBoxContainer/BetterTabContainer/#numbers/NumberVBox" instance=ExtResource("4_ic3rj")]
-layout_mode = 2
-text = "#remove_plus_sign"
-section_name = "autoformat"
-setting_name = "number_remove_plus_sign"
 
 [node name="#colors" type="ScrollContainer" parent="VBoxContainer/BetterTabContainer"]
 visible = false
@@ -173,7 +167,6 @@ text = "#close"
 [connection signal="pressed" from="VBoxContainer/BetterTabContainer/#numbers/NumberVBox/NumberEnable" to="." method="_on_autoformat_settings_changed"]
 [connection signal="pressed" from="VBoxContainer/BetterTabContainer/#numbers/NumberVBox/RemoveZeroPadding" to="." method="_on_autoformat_settings_changed"]
 [connection signal="pressed" from="VBoxContainer/BetterTabContainer/#numbers/NumberVBox/RemoveLeadingZero" to="." method="_on_autoformat_settings_changed"]
-[connection signal="pressed" from="VBoxContainer/BetterTabContainer/#numbers/NumberVBox/RemovePlusSign" to="." method="_on_autoformat_settings_changed"]
 [connection signal="pressed" from="VBoxContainer/BetterTabContainer/#colors/ColorVBox/ColorEnable" to="." method="_on_autoformat_settings_changed"]
 [connection signal="pressed" from="VBoxContainer/BetterTabContainer/#colors/ColorVBox/ConvertToHex" to="." method="_on_autoformat_settings_changed"]
 [connection signal="pressed" from="VBoxContainer/BetterTabContainer/#colors/ColorVBox/ConvertToHex2" to="." method="_on_autoformat_settings_changed"]
