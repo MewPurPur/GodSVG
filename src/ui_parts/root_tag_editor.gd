@@ -152,16 +152,36 @@ func _on_viewbox_edit_h_value_changed(new_value: float) -> void:
 			SVG.root_tag.attributes.viewBox.set_list_element(3, new_value)
 
 func _on_width_button_toggled(toggled_on: bool) -> void:
-	SVG.root_tag.attributes.width.set_num(true_width if toggled_on else NAN)
-	update_coupling_config()
+	if toggled_on:
+		print("test")
+		SVG.root_tag.attributes.width.set_num(true_width)
+		update_coupling_config()
+	else:
+		if SVG.root_tag.attributes.viewBox.get_list_size() == 4:
+			SVG.root_tag.attributes.width.set_num(NAN)
+			update_coupling_config()
+		else:
+			width_button.set_pressed_no_signal(true)
 
 func _on_height_button_toggled(toggled_on: bool) -> void:
-	SVG.root_tag.attributes.height.set_num(true_height if toggled_on else NAN)
-	update_coupling_config()
+	if toggled_on:
+		SVG.root_tag.attributes.height.set_num(true_height)
+		update_coupling_config()
+	else:
+		if SVG.root_tag.attributes.viewBox.get_list_size() == 4:
+			SVG.root_tag.attributes.height.set_num(NAN)
+			update_coupling_config()
+		else:
+			height_button.set_pressed_no_signal(true)
 
 func _on_viewbox_button_toggled(toggled_on: bool) -> void:
 	if toggled_on:
 		SVG.root_tag.attributes.viewBox.set_rect(true_viewbox)
+		update_coupling_config()
 	else:
-		SVG.root_tag.attributes.viewBox.set_value("")
-	update_coupling_config()
+		if is_finite(SVG.root_tag.attributes.width.get_num()) and\
+		is_finite(SVG.root_tag.attributes.height.get_num()):
+			SVG.root_tag.attributes.viewBox.set_value("")
+			update_coupling_config()
+		else:
+			viewbox_button.set_pressed_no_signal(true)
