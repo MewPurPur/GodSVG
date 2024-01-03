@@ -24,10 +24,10 @@ static func numstr_arr_to_text(numstr_arr: Array[String]) -> String:
 	return output + numstr_arr.back()
 
 
-static func parse_path_data(path_string: String) -> Array[PathCommand]:
-	return path_commands_from_parsed_data(path_data_to_arrays(path_string))
+static func parse_path_data(path_text: String) -> Array[PathCommand]:
+	return path_commands_from_parsed_data(path_data_to_arrays(path_text))
 
-static func path_data_to_arrays(path_string: String) -> Array[Array]:
+static func path_data_to_arrays(path_text: String) -> Array[Array]:
 	var new_commands: Array[Array] = []
 	var curr_command := ""
 	var prev_command := ""
@@ -36,10 +36,10 @@ static func path_data_to_arrays(path_string: String) -> Array[Array]:
 	var comma_exhausted := false
 	
 	var idx := -1
-	while idx < path_string.length() - 1:
+	while idx < path_text.length() - 1:
 		idx += 1
 		@warning_ignore("shadowed_global_identifier")
-		var char := path_string[idx]
+		var char := path_text[idx]
 		# Stop parsing if we've hit a character that's not allowed.
 		if not char in "MmLlHhVvAaQqTtCcSsZz0123456789-+. ,":
 			return new_commands
@@ -85,19 +85,21 @@ static func path_data_to_arrays(path_string: String) -> Array[Array]:
 							continue
 					_: return new_commands
 			else:
+				var time := Time.get_ticks_usec()
 				# Parse the number.
-				var num_string := ""
+				var start_idx := idx
+				var end_idx := idx
 				var number_proceed := true
 				var passed_decimal_point := false
-				while number_proceed and idx < path_string.length():
-					char = path_string[idx]
+				while number_proceed and idx < path_text.length():
+					char = path_text[idx]
 					match char:
 						"0", "1", "2", "3", "4", "5", "6", "7", "8", "9":
 							idx += 1
-							num_string += char
+							end_idx += 1
 						"-", "+":
-							if num_string.is_empty():
-								num_string += char
+							if end_idx == start_idx:
+								end_idx += 1
 								idx += 1
 							else:
 								number_proceed = false
@@ -105,14 +107,16 @@ static func path_data_to_arrays(path_string: String) -> Array[Array]:
 						".":
 							if not passed_decimal_point:
 								passed_decimal_point = true
-								num_string += char
+								end_idx += 1
 								idx += 1
 							else:
 								idx -= 1
 								number_proceed = false
 						" ":
-							if num_string.is_empty():
+							if end_idx == start_idx:
 								idx += 1
+								start_idx += 1
+								end_idx += 1
 								continue
 							number_proceed = false
 						",":
@@ -122,12 +126,14 @@ static func path_data_to_arrays(path_string: String) -> Array[Array]:
 								comma_exhausted = true
 								number_proceed = false
 						_:
-							if args_left >= 1 and not num_string.is_valid_float():
+							if args_left >= 1 and\
+							not path_text.substr(start_idx, end_idx - start_idx).is_valid_float():
 								return new_commands
 							else:
 								idx -= 1
 								break
-				curr_command_args.append(num_string.to_float())
+				curr_command_args.append(
+						path_text.substr(start_idx, end_idx - start_idx).to_float())
 			args_left -= 1
 		
 		# Wrap up the array.
