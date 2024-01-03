@@ -85,7 +85,6 @@ static func path_data_to_arrays(path_text: String) -> Array[Array]:
 							continue
 					_: return new_commands
 			else:
-				var time := Time.get_ticks_usec()
 				# Parse the number.
 				var start_idx := idx
 				var end_idx := idx
