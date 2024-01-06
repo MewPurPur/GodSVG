@@ -39,7 +39,13 @@ func create_duplicate() -> Tag:
 		new_tag = type.new()
 	for attribute in new_tag.attributes:
 		new_tag.attributes[attribute].set_value(attributes[attribute].get_value())
-	new_tag.unknown_attributes = unknown_attributes.duplicate()
+	var unknown_attributes_array: Array[AttributeUnknown] = []
+	for attribute in unknown_attributes:
+		var new_attrib := AttributeUnknown.new(attribute.name)
+		new_attrib.set_value(attribute.get_value())
+		unknown_attributes_array.append(new_attrib)
+	new_tag.set_unknown_attributes(unknown_attributes_array)
+		
 	# Iterate this over all children.
 	var new_child_tags: Array[Tag] = []
 	for tag in child_tags:
