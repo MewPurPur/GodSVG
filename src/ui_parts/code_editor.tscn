@@ -157,6 +157,7 @@ size_flags_vertical = 3
 theme_override_styles/normal = SubResource("StyleBoxFlat_bm3bl")
 theme_override_styles/focus = SubResource("StyleBoxFlat_k6btx")
 syntax_highlighter = SubResource("SyntaxHighlighter_njere")
+highlight_all_occurrences = true
 script = ExtResource("8_ser4i")
 hover_stylebox = SubResource("StyleBoxFlat_1i105")
 block_non_ascii = true
