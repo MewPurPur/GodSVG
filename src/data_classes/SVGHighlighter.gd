@@ -88,17 +88,25 @@ func _get_line_syntax_highlighting(line: int) -> Dictionary:
 					# Highlight the attribute value.
 					offset += 1
 					color_map[offset] = {"color": error_color}
-					var next_quote_pos := svg_text.find('"', offset)
+					var next_double_quote_pos := svg_text.find('"', offset)
+					var next_single_quote_pos := svg_text.find("'", offset)
+					var in_double_quote := true
+					var next_quote_pos := next_double_quote_pos
+					if next_single_quote_pos != -1 and (next_double_quote_pos == -1 or\
+					next_single_quote_pos < next_double_quote_pos):
+						in_double_quote = false
+						next_quote_pos = next_single_quote_pos
 					offset = next_quote_pos
 					color_map[offset] = {"color": string_color}
 					if next_quote_pos == -1 or next_quote_pos >\
-					minf(svg_text.find("/", offset), svg_text.find(">", offset)):
+					mini(svg_text.find("/", offset), svg_text.find(">", offset)):
 						offset = mini(svg_text.find("/", offset), svg_text.find(">", offset))
 						break
 					else:
-						offset = next_quote_pos
-						color_map[offset] = {"color": string_color}
-						next_quote_pos = svg_text.find('"', offset + 1)
+						next_quote_pos = svg_text.find(
+								'"' if in_double_quote else "'", offset + 1)
+						offset = next_quote_pos + 1
+						color_map[offset] = {"color": symbol_color}
 						if next_quote_pos == -1:
 							return color_map
 						else:
