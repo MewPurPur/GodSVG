@@ -12,6 +12,10 @@ Git must be configured, then you can clone the repository to your local machine:
 
 The documentation won't go into detail about how to use Git. Refer to outside resources if you are unfamiliar with it.
 
+## Translation contribution
+
+[Documentation here](translations/readme.md).
+
 ## PR workflow
 
 Look through the list of issues to see if your contribution would resolve any of them. If said issue is not assigned to anyone and you don't want anyone else to work on it, ask to be assigned to the issue. If an issue doesn't exist and you want to fix a bug, then it's a good practice, but not required, to make an issue for it. 
