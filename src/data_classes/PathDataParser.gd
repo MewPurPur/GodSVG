@@ -41,7 +41,7 @@ static func path_data_to_arrays(path_text: String) -> Array[Array]:
 		@warning_ignore("shadowed_global_identifier")
 		var char := path_text[idx]
 		# Stop parsing if we've hit a character that's not allowed.
-		if not char in "MmLlHhVvAaQqTtCcSsZz0123456789-+. ,":
+		if not char in "MmLlHhVvAaQqTtCcSsZz0123456789-+e. ,":
 			return new_commands
 		# Logic for finding out what the next command is going to be.
 		if args_left == 0:
@@ -90,16 +90,21 @@ static func path_data_to_arrays(path_text: String) -> Array[Array]:
 				var end_idx := idx
 				var number_proceed := true
 				var passed_decimal_point := false
+				var exponent_just_passed := true
 				while number_proceed and idx < path_text.length():
 					char = path_text[idx]
 					match char:
 						"0", "1", "2", "3", "4", "5", "6", "7", "8", "9":
 							idx += 1
 							end_idx += 1
+							if exponent_just_passed:
+								exponent_just_passed = false
 						"-", "+":
-							if end_idx == start_idx:
+							if end_idx == start_idx or exponent_just_passed:
 								end_idx += 1
 								idx += 1
+								if exponent_just_passed:
+									exponent_just_passed = false
 							else:
 								number_proceed = false
 								idx -= 1
@@ -124,6 +129,13 @@ static func path_data_to_arrays(path_text: String) -> Array[Array]:
 							else:
 								comma_exhausted = true
 								number_proceed = false
+						"e":
+							if passed_decimal_point:
+								return new_commands
+							else:
+								end_idx += 1
+								idx += 1
+								exponent_just_passed = true
 						_:
 							if args_left >= 1 and\
 							not path_text.substr(start_idx, end_idx - start_idx).is_valid_float():
@@ -256,6 +268,7 @@ static func path_commands_to_text(commands_arr: Array[PathCommand]) -> String:
 	#"M 2 0  c3 2-.6.8 11.0 3Jh3": [["M", 2.0, 0.0], ["c", 3.0, 2.0, -0.6, 0.8, 11.0, 3.0]],
 	#"z": [["z"]],
 	#"M 0 0 z 2 3": [["M", 0.0, 0.0], ["z"]],
+	#"M3e1 4e-2": [["M", 3e1, 4e-2]],
 	#}
 	#
 	#var tests_passed := true
