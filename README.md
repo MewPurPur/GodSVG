@@ -4,8 +4,7 @@
   <img src="visual/splash.svg" width="480" alt="GodSVG logo">
 </p>
 
-**GodSVG is an application for creating optimized Scalable Vector Graphics (SVG) files.** It is mainly designed for programmers, allowing them to easily edit individual SVG elements and view the corresponding code in real-time.
-GodSVG is inspired by the need for an SVG editor without abstractions that produces optimized SVG files.
+**GodSVG is an editor for Scalable Vector Graphics (SVG) files.** Unlike other editors, it represents the SVG code directly, doesn't add any metadata, and even lets you edit the SVG code in real time. GodSVG is inspired by the need for an SVG editor without abstractions that produces clean and optimized SVG files.
 
 ## Features
 
@@ -18,7 +17,7 @@ GodSVG is inspired by the need for an SVG editor without abstractions that produ
 
 ## How to get it
 
-Simply check out [the list of GodSVG releases](https://github.com/MewPurPur/GodSVG/releases) and download the version you want.
+Download the version you want from [the list of GodSVG releases](https://github.com/MewPurPur/GodSVG/releases).
 
 Note that if you're on MacOS, you need to [disable Gatekeeper](https://disable-gatekeeper.github.io/) if you haven't yet. I don't have the time or money to deal with Apple's gatekeeping.
 

@@ -115,10 +115,12 @@ layout_mode = 2
 [node name="ViewboxEditW" parent="Edits/Viewbox/Rect" instance=ExtResource("3_1gu7n")]
 custom_minimum_size = Vector2(48, 22)
 layout_mode = 2
+allow_lower = false
 
 [node name="ViewboxEditH" parent="Edits/Viewbox/Rect" instance=ExtResource("3_1gu7n")]
 custom_minimum_size = Vector2(48, 22)
 layout_mode = 2
+allow_lower = false
 
 [connection signal="toggled" from="Edits/Size/Width/WidthButton" to="." method="_on_width_button_toggled"]
 [connection signal="value_changed" from="Edits/Size/Width/WidthEdit" to="." method="_on_width_edit_value_changed"]

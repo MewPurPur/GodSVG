@@ -6,8 +6,7 @@ extends PanelContainer
 func _ready() -> void:
 	version_label.text = "GodSVG " + ProjectSettings.get_setting(
 			&"application/config/version", "Version information unavailable")
-	add_section("Project Founder", AppInfo.project_founders)
-	add_section("Project Manager", AppInfo.project_managers)
+	add_section("Project Founder and Manager", AppInfo.project_founder_and_manager)
 	add_section("Developers", AppInfo.authors)
 
 func add_section(section_title: String, authors: Array[String]):

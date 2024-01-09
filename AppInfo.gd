@@ -1,8 +1,7 @@
 ## Stores basic information about GodSVG.
 class_name AppInfo extends RefCounted
 
-const project_founders: Array[String] = ["MewPurPur"]
-const project_managers: Array[String] = ["MewPurPur"]
+const project_founder_and_manager: Array[String] = ["MewPurPur"]
 
 
 # The developers who contributed significant patches to the MIT-licensed source code
@@ -10,8 +9,9 @@ const project_managers: Array[String] = ["MewPurPur"]
 # The format is either "Real Name (GitHub username)" or "GitHub username".
 
 const authors: Array[String] = [
-	"aladvs",
 	"ajreckof",
+	"aladvs",
+	"Alex2782",
 	"ilikefrogs101",
 	"Kiisu-Master",
 	"MewPurPur",

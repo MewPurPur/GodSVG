@@ -18,7 +18,6 @@ corner_detail = 1
 custom_minimum_size = Vector2(44, 19)
 offset_right = 44.0
 offset_bottom = 19.0
-mouse_filter = 1
 theme_type_variation = &"MiniLineEdit"
 script = ExtResource("1_ggi5v")
 hover_stylebox = SubResource("StyleBoxFlat_wk41m")

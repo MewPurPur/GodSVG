@@ -60,8 +60,10 @@ func _draw() -> void:
 func _make_custom_tooltip(for_text: String) -> Object:
 	if code_font_tooltip:
 		var label := Label.new()
+		label.begin_bulk_theme_override()
 		label.add_theme_font_override(&"font", code_font)
 		label.add_theme_font_size_override(&"font_size", 13)
+		label.end_bulk_theme_override()
 		label.text = for_text
 		return label
 	else:
@@ -69,10 +71,12 @@ func _make_custom_tooltip(for_text: String) -> Object:
 
 
 func _on_gui_input(event: InputEvent) -> void:
+	mouse_filter = Utils.mouse_filter_pass_non_drag_events(event)
+	
 	if event is InputEventMouseMotion and event.button_mask == 0:
 		hovered = true
 		queue_redraw()
-	if event is InputEventMouseButton:
+	elif event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_RIGHT:
 			grab_focus()
 			var context_popup := ContextPopup.instantiate()
