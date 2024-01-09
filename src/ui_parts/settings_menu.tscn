@@ -77,7 +77,6 @@ tooltip_text = "#wrap_mouse_desc"
 text = "#wrap_mouse"
 section_name = "input"
 setting_name = "wrap_mouse"
-condition_expression = "DisplayServer.has_feature(DisplayServer.FEATURE_MOUSE_WARP)"
 
 [node name="UseCtrlForZoom" parent="VBoxContainer/TabContainer/#input_tab/VBoxContainer" instance=ExtResource("4_2qeh2")]
 layout_mode = 2
