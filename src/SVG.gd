@@ -13,7 +13,7 @@ var root_tag := TagSVG.new()
 var saved_text := ""
 var UR := UndoRedo.new()
 
-signal parsing_finished(error_id: StringName) 
+signal parsing_finished(error_id: StringName)
 
 func _ready() -> void:
 	root_tag.changed_unknown.connect(update_text.bind(false))
@@ -27,6 +27,8 @@ func _ready() -> void:
 	if not (OS.is_debug_build() and not OS.has_feature("template")) and\
 	cmdline_args.size() >= 1:
 		load_cmdl = true
+	
+	await get_tree().get_root().ready # Await tree ready to be able to add error dialogs.
 	
 	if (apply_svg_from_path(cmdline_args[0]) if load_cmdl else -1) == OK:
 		pass
