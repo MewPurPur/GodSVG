@@ -58,7 +58,9 @@ static func open_save_dialog(file_extension: String, native_save_callback: Calla
 	# Open it inside a native file dialog, or our custom one if it's not available.
 	if DisplayServer.has_feature(DisplayServer.FEATURE_NATIVE_DIALOG):
 		DisplayServer.file_dialog_show("Export a ." + file_extension + " file",
-				Utils.get_last_dir(),GlobalSettings.current_file_name + "." + file_extension, false, DisplayServer.FILE_DIALOG_MODE_SAVE_FILE,
+				Utils.get_last_dir(),
+				GlobalSettings.current_file_name + "." + file_extension,
+				false, DisplayServer.FILE_DIALOG_MODE_SAVE_FILE,
 				["*." + file_extension], native_save_callback)
 	else:
 		var svg_export_dialog := SVGFileDialog.instantiate()
@@ -69,7 +71,7 @@ static func open_save_dialog(file_extension: String, native_save_callback: Calla
 
 func export(path: String) -> void:
 	
-	GlobalSettings.current_file_name = path.get_file().rstrip("." + path.get_extension())
+	GlobalSettings.current_file_name = path.get_file().trim_suffix("." + path.get_extension())
 	GlobalSettings.modify_save_data(&"last_used_dir", path.get_base_dir())
 	
 	if path.get_extension().is_empty():

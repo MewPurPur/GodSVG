@@ -112,7 +112,7 @@ func apply_svg_from_path(path: String) -> int:
 	var error := ""
 	var extension := path.get_extension()
 	
-	GlobalSettings.current_file_name = path.get_file().rstrip("." + path.get_extension())
+	GlobalSettings.current_file_name = path.get_file().trim_suffix("." + path.get_extension())
 	GlobalSettings.modify_save_data("last_used_dir", path.get_base_dir())
 	
 	if extension.is_empty():
