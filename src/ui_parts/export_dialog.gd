@@ -47,11 +47,9 @@ func native_file_export(has_selected: bool, files: PackedStringArray,
 _filter_idx: int) -> void:
 	if has_selected:
 		export(files[0])
-		GlobalSettings.modify_save_data(&"last_used_dir", files[0].get_base_dir())
 
 func non_native_file_import(file_path: String) -> void:
 	export(file_path)
-	GlobalSettings.modify_save_data(&"last_used_dir", file_path.get_base_dir())
 
 
 func _on_ok_button_pressed() -> void:
@@ -68,6 +66,9 @@ func _on_ok_button_pressed() -> void:
 		svg_export_dialog.file_selected.connect(non_native_file_import)
 
 func export(path: String) -> void:
+	
+	GlobalSettings.modify_save_data(&"last_used_dir", path.get_base_dir())
+	
 	if path.get_extension().is_empty():
 		path += "." + extension
 	var FA := FileAccess.open(path, FileAccess.WRITE)

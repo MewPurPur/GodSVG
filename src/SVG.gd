@@ -93,11 +93,9 @@ func native_file_import(has_selected: bool, files: PackedStringArray,
 _filter_idx: int) -> void:
 	if has_selected:
 		apply_svg_from_path(files[0])
-		GlobalSettings.modify_save_data(&"last_used_dir", files[0].get_base_dir())
 
 func non_native_file_import(file_path: String) -> void:
 	apply_svg_from_path(file_path)
-	GlobalSettings.modify_save_data(&"last_used_dir", file_path.get_base_dir())
 
 
 func _on_files_dropped(files: PackedStringArray):
@@ -108,6 +106,8 @@ func apply_svg_from_path(path: String) -> int:
 	var svg_file := FileAccess.open(path, FileAccess.READ)
 	var error := ""
 	var extension := path.get_extension()
+	
+	GlobalSettings.modify_save_data("last_used_dir", path.get_base_dir())
 	
 	if extension.is_empty():
 		error = "#file_open_empty_extension"
