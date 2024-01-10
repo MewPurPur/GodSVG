@@ -80,6 +80,8 @@
 #numbers,Numbers,Числа,Nummern,Цифры,Цифри
 #colors,Colors,Цветове,Farben,Цвета,Кольори
 #paths,Paths,Пътеки,Pfade,Пути,Шляхи
+#add_trailing_newline,Add trailing newline,Добави нов ред накрая,,,
+#use_shorthand_tag_syntax,Use shorthand tag syntax,Използвай кратък синтаксис за тагове,,,
 #enable_autoformatting,Enable autoformatting,Enable autoformatting,Autoformatierung einschalten,Включить автоформатирование,Активувати автоформатування
 #remove_zero_padding,Remove zero padding,Премахни нулите накрая,Nullenversatz entfernen,Удалить заполняющие нули,Видалити заповнюючи нулі
 #remove_leading_zero,Remove leading zero,Премахни водещата нула,Führende Null entfernen,Удалить начальный ноль,Видалити початковий нуль

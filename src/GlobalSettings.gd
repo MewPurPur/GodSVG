@@ -18,6 +18,8 @@ const default_config = {
 		"use_ctrl_for_zoom": true,
 	},
 	"autoformat": {
+		"xml_add_trailing_newline": false,
+		"xml_shorthand_tags": true,
 		"number_enable_autoformatting": false,
 		"number_remove_zero_padding": false,
 		"number_remove_leading_zero": true,
@@ -47,6 +49,8 @@ var wrap_mouse := false
 var use_ctrl_for_zoom := true
 
 # Autoformat
+var xml_add_trailing_newline := false
+var xml_shorthand_tags := true
 var number_enable_autoformatting := false
 var number_remove_zero_padding := true
 var number_remove_leading_zero := false
