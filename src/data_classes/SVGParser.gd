@@ -13,14 +13,21 @@ static func svg_to_text(svg_tag: TagSVG) -> String:
 	if !viewbox.is_empty():
 		text += ' viewBox="' + viewbox + '"'
 	
-	
 	for attribute in svg_tag.unknown_attributes:
 		text += " " + attribute.name + '="' + attribute.get_value() + '"'
-	text += ">"
 	
-	for inner_tag in svg_tag.child_tags:
-		text += _tag_to_text(inner_tag)
-	return text + '</svg>'
+	if svg_tag.is_standalone() and GlobalSettings.xml_shorthand_tags:
+		text += '/>'
+	else:
+		text += '>'
+		for inner_tag in svg_tag.child_tags:
+			text += _tag_to_text(inner_tag)
+		text += '</svg>'
+	
+	if GlobalSettings.xml_add_trailing_newline:
+		text += '\n'
+	
+	return text
 
 static func _tag_to_text(tag: Tag) -> String:
 	var text := ""
@@ -36,7 +43,7 @@ static func _tag_to_text(tag: Tag) -> String:
 	for attribute in tag.unknown_attributes:
 		text += " " + attribute.name + '="' + attribute.get_value() + '"'
 	
-	if tag.is_standalone():
+	if tag.is_standalone() and GlobalSettings.xml_shorthand_tags:
 		text += '/>'
 	else:
 		text += '>'

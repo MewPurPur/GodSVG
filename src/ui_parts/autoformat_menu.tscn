@@ -46,7 +46,29 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource("2_p41oe")
 
+[node name="XML" type="ScrollContainer" parent="VBoxContainer/BetterTabContainer"]
+layout_mode = 2
+horizontal_scroll_mode = 0
+
+[node name="XmlVBox" type="VBoxContainer" parent="VBoxContainer/BetterTabContainer/XML"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 0
+
+[node name="AddTrailingNewline" parent="VBoxContainer/BetterTabContainer/XML/XmlVBox" instance=ExtResource("4_ic3rj")]
+layout_mode = 2
+text = "#add_trailing_newline"
+section_name = "autoformat"
+setting_name = "xml_add_trailing_newline"
+
+[node name="UseShorthandTagSyntax" parent="VBoxContainer/BetterTabContainer/XML/XmlVBox" instance=ExtResource("4_ic3rj")]
+layout_mode = 2
+text = "#use_shorthand_tag_syntax"
+section_name = "autoformat"
+setting_name = "xml_shorthand_tags"
+
 [node name="#numbers" type="ScrollContainer" parent="VBoxContainer/BetterTabContainer"]
+visible = false
 layout_mode = 2
 horizontal_scroll_mode = 0
 
@@ -164,6 +186,8 @@ focus_mode = 0
 mouse_default_cursor_shape = 2
 text = "#close"
 
+[connection signal="pressed" from="VBoxContainer/BetterTabContainer/XML/XmlVBox/AddTrailingNewline" to="." method="_on_autoformat_settings_changed"]
+[connection signal="pressed" from="VBoxContainer/BetterTabContainer/XML/XmlVBox/UseShorthandTagSyntax" to="." method="_on_autoformat_settings_changed"]
 [connection signal="pressed" from="VBoxContainer/BetterTabContainer/#numbers/NumberVBox/NumberEnable" to="." method="_on_autoformat_settings_changed"]
 [connection signal="pressed" from="VBoxContainer/BetterTabContainer/#numbers/NumberVBox/RemoveZeroPadding" to="." method="_on_autoformat_settings_changed"]
 [connection signal="pressed" from="VBoxContainer/BetterTabContainer/#numbers/NumberVBox/RemoveLeadingZero" to="." method="_on_autoformat_settings_changed"]
