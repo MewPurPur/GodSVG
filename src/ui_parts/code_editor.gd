@@ -11,6 +11,7 @@ func _ready() -> void:
 	SVG.parsing_finished.connect(update_error)
 	auto_update_text()
 	update_size_label()
+	setup_theme(false)
 	code_edit.clear_undo_history()
 	SVG.root_tag.attribute_changed.connect(auto_update_text.unbind(1))
 	SVG.root_tag.child_attribute_changed.connect(auto_update_text.unbind(1))
@@ -27,28 +28,34 @@ func update_error(err_id: StringName) -> void:
 	if err_id == &"":
 		if error_bar.visible:
 			error_bar.hide()
-			code_edit.remove_theme_stylebox_override(&"normal")
-			code_edit.remove_theme_stylebox_override(&"focus")
 			var error_bar_real_height := error_bar.size.y - 2
 			code_edit.custom_minimum_size.y += error_bar_real_height
 			code_edit.size.y += error_bar_real_height
+			setup_theme(false)
 	else:
 		# When the error is shown, the code editor's theme is changed to match up.
 		if not error_bar.visible:
 			error_bar.show()
 			error_label.text = tr(err_id)
-			code_edit.begin_bulk_theme_override()
-			for theming in [&"normal", &"focus"]:
-				var stylebox := ThemeDB.get_project_theme().\
-						get_stylebox(theming, &"TextEdit").duplicate()
-				stylebox.corner_radius_bottom_right = 0
-				stylebox.corner_radius_bottom_left = 0
-				stylebox.border_width_bottom = 1
-				code_edit.add_theme_stylebox_override(theming, stylebox)
-			code_edit.end_bulk_theme_override()
 			var error_bar_real_height := error_bar.size.y - 2
 			code_edit.custom_minimum_size.y -= error_bar_real_height
 			code_edit.size.y -= error_bar_real_height
+			setup_theme(true)
+
+func setup_theme(match_below: bool) -> void:
+	code_edit.begin_bulk_theme_override()
+	for theming in [&"normal", &"focus"]:
+		var stylebox := ThemeDB.get_project_theme().\
+				get_stylebox(theming, &"TextEdit").duplicate()
+		stylebox.corner_radius_top_right = 0
+		stylebox.corner_radius_top_left = 0
+		stylebox.border_width_top = 1
+		if match_below:
+			stylebox.corner_radius_bottom_right = 0
+			stylebox.corner_radius_bottom_left = 0
+			stylebox.border_width_bottom = 1
+		code_edit.add_theme_stylebox_override(theming, stylebox)
+	code_edit.end_bulk_theme_override()
 
 
 func _on_copy_button_pressed() -> void:

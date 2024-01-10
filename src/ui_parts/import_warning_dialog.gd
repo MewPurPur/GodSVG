@@ -12,7 +12,10 @@ func _ready() -> void:
 	ok_button.grab_focus()
 	# Convert forward and backward to show any artifacts that might occur after parsing.
 	var preview_text := SVGParser.svg_to_text(SVGParser.text_to_svg(imported_text))
-	var preview_svg := SVGParser.text_to_svg(preview_text)
+	var preview_svg: Variant = SVGParser.text_to_svg(preview_text)
+	if typeof(preview_svg) == TYPE_STRING_NAME:
+		return  # Error in parsing.
+	
 	var scaling_factor := texture_preview.size.x * 2.0 /\
 			maxf(preview_svg.width, preview_svg.height)
 	var img := Image.new()
@@ -34,13 +37,12 @@ func set_svg(text: String) -> void:
 
 func get_svg_errors(text: String) -> Array[String]:
 	var warnings: Array[String] = []
-	var syntax_err_id := SVGParser.get_svg_syntax_error(text)
-	if syntax_err_id != &"":
-		warnings.append(tr(&"#syntax_error") + ": " + tr(syntax_err_id))
+	var svg_parse_result: Variant = SVGParser.text_to_svg(text)
+	if typeof(svg_parse_result) == TYPE_STRING_NAME:
+		warnings.append(tr(&"#syntax_error") + ": " + tr(svg_parse_result))
 	else:
-		var svg_tag := SVGParser.text_to_svg(text)
+		var svg_tag: TagSVG = svg_parse_result
 		var tids := svg_tag.get_all_tids()
-		
 		for tid in tids:
 			var tag := svg_tag.get_by_tid(tid)
 			if tag is TagUnknown:

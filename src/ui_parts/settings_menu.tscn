@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://src/ui_parts/settings_menu.gd" id="1_1gf4m"]
 [ext_resource type="Texture2D" uid="uid://c528knojuxbw6" path="res://visual/icons/Languages.svg" id="2_ndyp7"]
 [ext_resource type="Script" path="res://src/ui_elements/BetterTabContainer.gd" id="3_vslgx"]
-[ext_resource type="PackedScene" uid="uid://chgcy63ldo7x5" path="res://src/ui_elements/setting_check_box.tscn" id="4_2qeh2"]
+[ext_resource type="PackedScene" path="res://src/ui_elements/setting_check_box.tscn" id="4_2qeh2"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hto7q"]
 content_margin_left = 8.0
@@ -72,6 +72,7 @@ section_name = "input"
 setting_name = "invert_zoom"
 
 [node name="WrapMouse" parent="VBoxContainer/TabContainer/#input_tab/VBoxContainer" instance=ExtResource("4_2qeh2")]
+unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "#wrap_mouse_desc"
 text = "#wrap_mouse"
