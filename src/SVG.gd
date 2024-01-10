@@ -28,7 +28,7 @@ func _ready() -> void:
 	cmdline_args.size() >= 1:
 		load_cmdl = true
 	
-	await get_tree().get_root().ready # Await tree ready to be able to add error dialogs.
+	await get_tree().get_root().ready  # Await tree ready to be able to add error dialogs.
 	
 	if (apply_svg_from_path(cmdline_args[0]) if load_cmdl else -1) == OK:
 		pass
@@ -42,9 +42,11 @@ func _ready() -> void:
 
 
 func update_tags() -> void:
-	var err_id := SVGParser.get_svg_syntax_error(text)
-	parsing_finished.emit(err_id)
-	if err_id == &"":
+	var svg_parse_result: Variant = SVGParser.text_to_svg(text)
+	if typeof(svg_parse_result) == TYPE_STRING_NAME:
+		parsing_finished.emit(svg_parse_result)
+	else:
+		parsing_finished.emit(&"")
 		root_tag.replace_self(SVGParser.text_to_svg(text))
 
 func update_text(undo_redo := true) -> void:
