@@ -6,11 +6,9 @@ const plus_icon = preload("res://visual/icons/Plus.svg")
 
 @onready var lang_button: Button = %Language
 @onready var palette_container: VBoxContainer = %PaletteContainer
-@onready var wrap_mouse: CheckBox = $"VBoxContainer/TabContainer/#input_tab/VBoxContainer/WrapMouse"
+@onready var wrap_mouse: CheckBox = %WrapMouse
 
 func _ready() -> void:
-	
-	# Disable wrap mouse setting if unsupported.
 	if not DisplayServer.has_feature(DisplayServer.FEATURE_MOUSE_WARP):
 		wrap_mouse.set_pressed_no_signal(false)
 		wrap_mouse.disabled = true

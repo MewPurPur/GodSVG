@@ -153,7 +153,6 @@ func _on_viewbox_edit_h_value_changed(new_value: float) -> void:
 
 func _on_width_button_toggled(toggled_on: bool) -> void:
 	if toggled_on:
-		print("test")
 		SVG.root_tag.attributes.width.set_num(true_width)
 		update_coupling_config()
 	else:
