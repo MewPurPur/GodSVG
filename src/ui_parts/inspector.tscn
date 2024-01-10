@@ -18,7 +18,7 @@ corner_radius_bottom_right = 5
 corner_radius_bottom_left = 5
 
 [node name="Inspector" type="VBoxContainer"]
-custom_minimum_size = Vector2(392, 0)
+custom_minimum_size = Vector2(396, 0)
 anchors_preset = 9
 anchor_bottom = 1.0
 offset_right = 392.0
