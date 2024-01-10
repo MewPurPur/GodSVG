@@ -10,6 +10,8 @@ const palettes_save_path = "user://palettes.tres"
 const config_path = "user://config.tres"
 var config := ConfigFile.new()
 
+var current_file_name := ""
+
 # Don't have the language setting here, so it's not reset.
 const default_config = {
 	"input": {
