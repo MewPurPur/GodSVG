@@ -7,7 +7,6 @@ const ImportWarningDialog = preload("res://src/ui_parts/import_warning_dialog.ts
 const SVGFileDialog = preload("res://src/ui_parts/svg_file_dialog.tscn")
 const ExportDialogUI = preload("res://src/ui_parts/export_dialog.tscn")
 
-var file_name := ""
 var text := ""
 var root_tag := TagSVG.new()
 
