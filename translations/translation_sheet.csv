@@ -33,10 +33,8 @@
 #delete,Delete,Премахни,Löschen,Удалить,Видалити
 #insert_after,Insert After,Вмъкни отпред,Danach einsetzen,Вставить после,Вставити після
 #convert_to,Convert To,Превърни в,Konvertieren zu,Конвертировать в,Конвертувати в
-#err_empty_svg,SVG is empty.,Текстът е празен.,SVG ist leer.,SVG пустой.,SVG порожній.
 #err_not_svg,Doesn’t describe a SVG.,Текстът не описва SVG.,Beschreibt kein SVG.,Не есть описанием SVG,Не є описом SVG.
 #err_improper_nesting,Improper nesting.,Несъвместими тагове.,Ungültige Formatierung.,Не правильное вкладывание.,Неправильне вкладення.
-#err_improper_closing,Not all tags are closed.,Не всички тагове са затворени.,Es wurden nicht alle Elemente geschlossen.,Не все тэги закрыты.,Не усі теги закриті.
 #shortcut_inspector_delete,Delete: Deletes the selected tags,Delete: Изтрива избраните тагове,Entf: Ausgewählte Elemente löschen,Delete: Удалить все выбранные тэги,Delete: Видалити усі обрані теги
 #shortcut_inspector_ctrl_down,Ctrl+Down: Moves the selected tags down,Ctrl+Down: Премества избраните тагове надолу,Strg+Unten: Ausgewählte Elemente nach unten verschieben,Ctrl+Down: Подвинуть вниз все выбранные тэги,Ctrl+Down: Пересунути усі обрані теги вниз
 #shortcut_inspector_ctrl_up,Ctrl+Up: Moves the selected tags up,Ctrl+Up: Премества избраните тагове нагоре,Strg+Hoch: Ausgewählte Elemente nach oben verschieben,Ctrl+Up: Подвинуть вверх все выбранные тэги,Ctrl+Up: Пересунути усі обрані теги вгору
@@ -67,7 +65,7 @@
 #delete_color,Delete color,Изтрий цвета,Farbe löschen,Удалить цвет,Видалити колір
 #enable_color,Enable the color,Включи цвета,Farbe aktivieren,Активировать цвет,Активувати колір
 #disable_color,Disable the color,Изключи цвета,Farbe deaktivieren,Деактивировать цвет,Деактивувати колір
-#godot_third_party,Godot third-party components,Компоненти в Godot от трети партии,Godot Drittanbieter-Komponente,Компоненты Godot от третьих лиц,Компоненти Godot від третіх осіб 
+#godot_third_party,Godot third-party components,Компоненти в Godot от трети лица,Godot Drittanbieter-Komponente,Компоненты Godot от третьих лиц,Компоненти Godot від третіх осіб 
 #undo,Undo,Върни назад,Rückgängig,Отменить,Скасувати
 #redo,Redo,Върни напред,Wiederholen,Вернуть,Повернути
 #copy,Copy,Копирай,Kopieren,Скопировать,Скопіювати
