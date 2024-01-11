@@ -20,6 +20,10 @@ static func is_string_upper(string: String) -> bool:
 static func is_string_lower(string: String) -> bool:
 	return string.to_lower() == string
 
+static func get_file_name(string: String) -> String:
+	return string.get_file().trim_suffix("." + string.get_extension())
+
+
 static func defocus_control_on_outside_click(control: Control, event: InputEvent) -> void:
 	if (control.has_focus() and event is InputEventMouseButton and\
 	not control.get_global_rect().has_point(event.position)):

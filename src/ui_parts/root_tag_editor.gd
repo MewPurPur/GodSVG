@@ -45,6 +45,7 @@ func update_attributes(configure_coupling := false) -> void:
 	viewbox_edit_y.set_value(true_viewbox.position.y, false)
 	viewbox_edit_w.set_value(true_viewbox.size.x, false)
 	viewbox_edit_h.set_value(true_viewbox.size.y, false)
+	update_editable()
 
 func _on_unknown_changed() -> void:
 	if GlobalSettings.save_data.viewbox_coupling and (SVG.root_tag.viewbox !=\

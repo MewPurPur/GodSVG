@@ -99,6 +99,16 @@ theme_override_font_sizes/font_size = 12
 layout_mode = 2
 size_flags_horizontal = 10
 
+[node name="FileButton" type="Button" parent="PanelContainer/CodeButtons/MetaActions"]
+unique_name_in_owner = true
+layout_mode = 2
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_type_variation = &"FlatButton"
+
+[node name="Control" type="Control" parent="PanelContainer/CodeButtons/MetaActions"]
+layout_mode = 2
+
 [node name="CopyButton" type="Button" parent="PanelContainer/CodeButtons/MetaActions"]
 layout_mode = 2
 tooltip_text = "#copy_button_tooltip"
@@ -154,6 +164,7 @@ theme_override_font_sizes/normal_font_size = 14
 fit_content = true
 
 [connection signal="pressed" from="PanelContainer/CodeButtons/AutoformatButton" to="." method="_on_autoformat_button_pressed"]
+[connection signal="pressed" from="PanelContainer/CodeButtons/MetaActions/FileButton" to="." method="_on_file_button_pressed"]
 [connection signal="pressed" from="PanelContainer/CodeButtons/MetaActions/CopyButton" to="." method="_on_copy_button_pressed"]
 [connection signal="pressed" from="PanelContainer/CodeButtons/MetaActions/ImportButton" to="." method="_on_import_button_pressed"]
 [connection signal="pressed" from="PanelContainer/CodeButtons/MetaActions/ExportButton" to="." method="_on_export_button_pressed"]
