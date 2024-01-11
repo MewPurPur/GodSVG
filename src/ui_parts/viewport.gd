@@ -5,6 +5,9 @@ const ZoomMenuType = preload("res://src/ui_parts/zoom_menu.gd")
 const buffer_view_space = 0.8
 const zoom_reset_buffer = 0.875
 
+# Holds zoom position for ctrl + middle mouse zooming.
+var _zoom_to: Vector2
+
 @onready var display: TextureRect = %Checkerboard
 @onready var view: Camera2D = $ViewCamera
 @onready var controls: Control = %Checkerboard/Controls
@@ -55,22 +58,44 @@ func _unhandled_input(event: InputEvent) -> void:
 	
 	if event is InputEventMouseMotion and\
 	event.button_mask in [MOUSE_BUTTON_MASK_LEFT, MOUSE_BUTTON_MASK_MIDDLE]:
-		set_view(view.position - (wrap_mouse(event.relative)\
-				if GlobalSettings.wrap_mouse else event.relative) / Indications.zoom)
+		
+		# Zooming with ctrl + middle mouse button.
+		if event.ctrl_pressed and event.button_mask == MOUSE_BUTTON_MASK_MIDDLE:
+			if _zoom_to == Vector2.ZERO:  # Set zoom posiion if starting action. 
+				_zoom_to = get_mouse_position() / (size * 1.0)
+			zoom_menu.set_zoom(
+				Indications.zoom * (1.0 + \
+				(1 if GlobalSettings.invert_zoom else -1) \
+				 * (wrap_mouse(event.relative).y \
+				if GlobalSettings.wrap_mouse else event.relative.y) / 128.0),
+				_zoom_to)
+				
+		# Panning with left or middle mouse button.
+		else:
+			set_view(view.position - (wrap_mouse(event.relative)\
+					if GlobalSettings.wrap_mouse else event.relative) / Indications.zoom)
 	
-	if event is InputEventPanGesture:
+	elif event is InputEventPanGesture:
+		
+		# Zooming with ctrl + touch?
 		if event.ctrl_pressed:
 			zoom_menu.set_zoom(Indications.zoom * (1 + event.delta.y / 2))
+		
+		# Panning with touch.
 		else:
 			set_view(view.position + event.delta * 32 / Indications.zoom)
 	
-	if event is InputEventMagnifyGesture:
+	# Zooming with touch.
+	elif event is InputEventMagnifyGesture:
 		zoom_menu.set_zoom(Indications.zoom * event.factor)
 	
-	if event is InputEventMouseButton and event.is_pressed():
+	# Actions with scrolling.
+	elif event is InputEventMouseButton and event.is_pressed():
 		var move_vec := Vector2.ZERO
 		var zoom_dir := 0
 		var mouse_offset := get_mouse_position() / (size * 1.0)
+		
+		# Zooming with scrolling.
 		if (not event.ctrl_pressed and not event.shift_pressed and\
 		not GlobalSettings.use_ctrl_for_zoom) or\
 		(event.ctrl_pressed and GlobalSettings.use_ctrl_for_zoom):
@@ -79,26 +104,36 @@ func _unhandled_input(event: InputEvent) -> void:
 				MOUSE_BUTTON_WHEEL_DOWN when GlobalSettings.invert_zoom: zoom_dir = 1
 				MOUSE_BUTTON_WHEEL_UP: zoom_dir = 1
 				MOUSE_BUTTON_WHEEL_DOWN: zoom_dir = -1
+		
+		# Inverted panning with shift + scrolling.
 		elif event.shift_pressed:
 			match event.button_index:
 				MOUSE_BUTTON_WHEEL_UP: move_vec = Vector2.LEFT
 				MOUSE_BUTTON_WHEEL_DOWN: move_vec = Vector2.RIGHT
 				MOUSE_BUTTON_WHEEL_LEFT: move_vec = Vector2.UP
 				MOUSE_BUTTON_WHEEL_RIGHT: move_vec = Vector2.DOWN
+		
+		# Panning with scrolling.
 		else:
 			match event.button_index:
 				MOUSE_BUTTON_WHEEL_UP: move_vec = Vector2.UP
 				MOUSE_BUTTON_WHEEL_DOWN: move_vec = Vector2.DOWN
 				MOUSE_BUTTON_WHEEL_LEFT: move_vec = Vector2.LEFT
 				MOUSE_BUTTON_WHEEL_RIGHT: move_vec = Vector2.RIGHT
+		
+		# Apply scroll data from above.
 		var factor: float = event.factor
-		if factor == roundf(factor):  # Detects unsupported device.
+		if factor == roundf(factor):  # Detects if precise factor is unsuported.
 			factor = 1.0
 		if zoom_dir == 1:
 			zoom_menu.zoom_in(factor, mouse_offset)
 		elif zoom_dir == -1:
 			zoom_menu.zoom_out(factor, mouse_offset)
 		set_view(view.position + move_vec * factor / Indications.zoom * 32)
+	
+	else:
+		_zoom_to = Vector2.ZERO  # Reset ctrl + middle mouse zoom position if released.
+
 
 func _on_zoom_changed(new_zoom_level: float, offset: Vector2) -> void:
 	Indications.set_zoom(new_zoom_level)
