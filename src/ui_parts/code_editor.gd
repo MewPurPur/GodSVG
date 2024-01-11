@@ -95,6 +95,9 @@ func update_file_button() -> void:
 	var file_path := GlobalSettings.save_data.current_file_path
 	file_button.visible = !file_path.is_empty()
 	file_button.text = file_path.get_file()
+	file_button.custom_minimum_size = Vector2(
+			minf(file_button.get_theme_default_font().get_string_size(file_button.text).x,
+			120.0), 0)
 
 func _on_svg_code_edit_focus_exited() -> void:
 	code_edit.text = SVG.text
@@ -107,7 +110,8 @@ func _on_autoformat_button_pressed() -> void:
 	HandlerGUI.add_overlay(autoformat_menu_instance)
 
 func _on_file_button_pressed() -> void:
-	var btn_array: Array[Button] = [Utils.create_btn(tr(&"#clear"), clear_file_path)]
+	var btn_array: Array[Button] = [Utils.create_btn(tr(&"#remove_association"),
+			clear_file_path)]
 	var context_popup := ContextPopup.instantiate()
 	add_child(context_popup)
 	context_popup.set_button_array(btn_array, false, file_button.size.x)
