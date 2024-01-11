@@ -76,8 +76,8 @@ func _unhandled_input(event: InputEvent) -> void:
 	elif event.is_action_pressed("save"):
 		ExportDialog.open_save_dialog(
 			"svg",
-			func (has_selected: bool, files: PackedStringArray, _filter_idx: int) -> void: if has_selected: save_svg_to_file(files[0]),
-			func non_native_file_export(file_path: String) -> void: save_svg_to_file(file_path))
+			func on_native_file_export(has_selected: bool, files: PackedStringArray, _filter_idx: int) -> void: if has_selected: save_svg_to_file(files[0]),
+			func on_non_native_file_export(file_path: String) -> void: save_svg_to_file(file_path))
 
 
 func open_export_dialog() -> void:
@@ -112,7 +112,6 @@ func apply_svg_from_path(path: String) -> int:
 	var error := ""
 	var extension := path.get_extension()
 	
-	GlobalSettings.current_file_name = path.get_file().trim_suffix("." + path.get_extension())
 	GlobalSettings.modify_save_data("last_used_dir", path.get_base_dir())
 	
 	if extension.is_empty():
@@ -132,7 +131,10 @@ func apply_svg_from_path(path: String) -> int:
 	
 	var svg_text := svg_file.get_as_text()
 	var warning_panel := ImportWarningDialog.instantiate()
-	warning_panel.imported.connect(apply_svg_text)
+	warning_panel.imported.connect(func():
+			apply_svg_text(svg_text)
+			GlobalSettings.current_file_name = path.get_file().trim_suffix("." + path.get_extension())
+			)
 	warning_panel.set_svg(svg_text)
 	HandlerGUI.add_overlay(warning_panel)
 	return OK

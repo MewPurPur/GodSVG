@@ -43,16 +43,16 @@ func _on_dropdown_value_changed(new_value: String) -> void:
 	update_extension_configuration()
 
 
-func native_file_export(has_selected: bool, files: PackedStringArray,
+func _on_native_file_export(has_selected: bool, files: PackedStringArray,
 _filter_idx: int) -> void:
 	if has_selected:
 		export(files[0])
 
-func non_native_file_export(file_path: String) -> void:
+func _on_non_native_file_export(file_path: String) -> void:
 	export(file_path)
 
 func _on_ok_button_pressed() -> void:
-	ExportDialog.open_save_dialog(extension, native_file_export, non_native_file_export)
+	ExportDialog.open_save_dialog(extension, _on_native_file_export, _on_non_native_file_export)
 
 static func open_save_dialog(file_extension: String, native_save_callback: Callable, non_native_save_callback: Callable):
 	# Open it inside a native file dialog, or our custom one if it's not available.

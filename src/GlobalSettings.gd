@@ -10,7 +10,13 @@ const palettes_save_path = "user://palettes.tres"
 const config_path = "user://config.tres"
 var config := ConfigFile.new()
 
-var current_file_name := ""
+var current_file_name := "":
+	set(new_value):
+		current_file_name = new_value
+		if not current_file_name.is_empty():
+			get_window().title = current_file_name + " - GodSVG"
+		else:
+			get_window().title = "GodSVG"
 
 # Don't have the language setting here, so it's not reset.
 const default_config = {
