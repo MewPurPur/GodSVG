@@ -105,6 +105,7 @@ layout_mode = 2
 focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_type_variation = &"FlatButton"
+text_overrun_behavior = 3
 
 [node name="Control" type="Control" parent="PanelContainer/CodeButtons/MetaActions"]
 layout_mode = 2

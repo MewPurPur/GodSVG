@@ -96,4 +96,4 @@
 #remove_consecutive_commands,Remove consecutive commands,Премахни последователните команди,Aufeinanderfolgende Befehle entfernen,Удалить последовательные команды,Видалити послідовні команди
 #relative,Relative,Относително,Relativ,Относительная,Відносна
 #absolute,Absolute,Абсолютно,Absolut,Абсолютная,Абсолютна
-#clear,Clear,Изчисти,,,
+#remove_association,Remove the association,Премахни асоциацията,,,
