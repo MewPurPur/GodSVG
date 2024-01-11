@@ -1,4 +1,4 @@
-extends PanelContainer
+class_name ExportDialog extends PanelContainer
 
 const NumberEditType = preload("res://src/ui_elements/number_edit.gd")
 const SVGFileDialog = preload("res://src/ui_parts/svg_file_dialog.tscn")
@@ -47,30 +47,35 @@ func native_file_export(has_selected: bool, files: PackedStringArray,
 _filter_idx: int) -> void:
 	if has_selected:
 		export(files[0])
-		GlobalSettings.modify_save_data(&"last_used_dir", files[0].get_base_dir())
 
-func non_native_file_import(file_path: String) -> void:
+func non_native_file_export(file_path: String) -> void:
 	export(file_path)
-	GlobalSettings.modify_save_data(&"last_used_dir", file_path.get_base_dir())
-
 
 func _on_ok_button_pressed() -> void:
+	ExportDialog.open_save_dialog(extension, native_file_export, non_native_file_export)
+
+static func open_save_dialog(file_extension: String, native_save_callback: Callable, non_native_save_callback: Callable):
 	# Open it inside a native file dialog, or our custom one if it's not available.
 	if DisplayServer.has_feature(DisplayServer.FEATURE_NATIVE_DIALOG):
-		DisplayServer.file_dialog_show("Export a ." + extension + " file",
-				Utils.get_last_dir(), "." + extension, false, DisplayServer.FILE_DIALOG_MODE_SAVE_FILE,
-				["*." + extension], native_file_export)
+		DisplayServer.file_dialog_show("Export a ." + file_extension + " file",
+				Utils.get_last_dir(),
+				GlobalSettings.current_file_name + "." + file_extension,
+				false, DisplayServer.FILE_DIALOG_MODE_SAVE_FILE,
+				["*." + file_extension], native_save_callback)
 	else:
 		var svg_export_dialog := SVGFileDialog.instantiate()
 		svg_export_dialog.current_dir = Utils.get_last_dir()
 		svg_export_dialog.file_mode = FileDialog.FILE_MODE_SAVE_FILE
 		HandlerGUI.add_overlay(svg_export_dialog)
-		svg_export_dialog.file_selected.connect(non_native_file_import)
+		svg_export_dialog.file_selected.connect(non_native_save_callback)
 
 func export(path: String) -> void:
+	
+	GlobalSettings.current_file_name = path.get_file().trim_suffix("." + path.get_extension())
+	GlobalSettings.modify_save_data(&"last_used_dir", path.get_base_dir())
+	
 	if path.get_extension().is_empty():
 		path += "." + extension
-	var FA := FileAccess.open(path, FileAccess.WRITE)
 	match extension:
 		"png":
 			var export_svg := SVG.root_tag.create_duplicate()
@@ -82,7 +87,7 @@ func export(path: String) -> void:
 			img.save_png(path)
 		_:
 			# SVG / fallback.
-			FA.store_string(SVG.text)
+			SVG.save_svg_to_file(path)
 	queue_free()
 
 func _on_cancel_button_pressed() -> void:
