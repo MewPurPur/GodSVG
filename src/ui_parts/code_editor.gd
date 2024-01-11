@@ -1,22 +1,26 @@
 extends VBoxContainer
 
+const ContextPopup = preload("res://src/ui_elements/context_popup.tscn")
 const autoformat_menu = preload("res://src/ui_parts/autoformat_menu.tscn")
 
 @onready var code_edit: TextEdit = $ScriptEditor/SVGCodeEdit
 @onready var error_bar: PanelContainer = $ScriptEditor/ErrorBar
 @onready var error_label: RichTextLabel = $ScriptEditor/ErrorBar/Label
 @onready var size_label: Label = %SizeLabel
+@onready var file_button: Button = %FileButton
 
 func _ready() -> void:
 	SVG.parsing_finished.connect(update_error)
 	auto_update_text()
 	update_size_label()
+	update_file_button()
 	setup_theme(false)
 	code_edit.clear_undo_history()
 	SVG.root_tag.attribute_changed.connect(auto_update_text.unbind(1))
 	SVG.root_tag.child_attribute_changed.connect(auto_update_text.unbind(1))
 	SVG.root_tag.tag_layout_changed.connect(auto_update_text)
 	SVG.root_tag.changed_unknown.connect(auto_update_text)
+	GlobalSettings.save_data.current_file_path_changed.connect(update_file_button)
 
 func auto_update_text() -> void:
 	if not code_edit.has_focus():
@@ -87,12 +91,27 @@ func _input(event: InputEvent) -> void:
 func update_size_label() -> void:
 	size_label.text = String.humanize_size(code_edit.text.length())
 
+func update_file_button() -> void:
+	var file_path := GlobalSettings.save_data.current_file_path
+	file_button.visible = !file_path.is_empty()
+	file_button.text = file_path.get_file()
+
 func _on_svg_code_edit_focus_exited() -> void:
 	code_edit.text = SVG.text
-	if SVG.saved_text != code_edit.text:
+	if GlobalSettings.save_data.svg_text != code_edit.text:
 		SVG.update_text(true)
 
 
 func _on_autoformat_button_pressed() -> void:
 	var autoformat_menu_instance := autoformat_menu.instantiate()
 	HandlerGUI.add_overlay(autoformat_menu_instance)
+
+func _on_file_button_pressed() -> void:
+	var btn_array: Array[Button] = [Utils.create_btn(tr(&"#clear"), clear_file_path)]
+	var context_popup := ContextPopup.instantiate()
+	add_child(context_popup)
+	context_popup.set_button_array(btn_array, false, file_button.size.x)
+	Utils.popup_under_control_centered(context_popup, file_button)
+
+func clear_file_path() -> void:
+	GlobalSettings.modify_save_data(&"current_file_path", "")

@@ -10,8 +10,6 @@ const palettes_save_path = "user://palettes.tres"
 const config_path = "user://config.tres"
 var config := ConfigFile.new()
 
-var current_file_name := ""
-
 # Don't have the language setting here, so it's not reset.
 const default_config = {
 	"input": {
@@ -106,7 +104,6 @@ func load_user_data() -> void:
 
 func _exit_tree() -> void:
 	save_data.window_mode = DisplayServer.window_get_mode()
-	save_data.svg_text = SVG.text
 	save_user_data()
 
 func _enter_tree() -> void:

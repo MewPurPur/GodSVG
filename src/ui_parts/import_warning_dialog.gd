@@ -1,6 +1,6 @@
 extends PanelContainer
 
-signal imported(text: String)
+signal imported
 
 @onready var warnings_label: RichTextLabel = %WarningsLabel
 @onready var texture_preview: TextureRect = %TexturePreview
@@ -25,7 +25,7 @@ func _ready() -> void:
 		texture_preview.texture = ImageTexture.create_from_image(img)
 	var warnings := get_svg_errors(imported_text)
 	if warnings.is_empty():
-		imported.emit(imported_text)
+		imported.emit()
 	
 	for warning in warnings:
 		warnings_label.text += warning + "\n"
@@ -57,7 +57,7 @@ func _on_cancel_button_pressed() -> void:
 	queue_free()
 
 func _on_ok_button_pressed() -> void:
-	imported.emit(imported_text)
+	imported.emit()
 
-func _on_imported(_text: String) -> void:
+func _on_imported() -> void:
 	queue_free()
