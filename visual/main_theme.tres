@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=75 format=3 uid="uid://der6fnkliqqto"]
+[gd_resource type="Theme" load_steps=79 format=3 uid="uid://der6fnkliqqto"]
 
 [ext_resource type="Texture2D" uid="uid://wdrpwa7gwmg" path="res://visual/icons/theme/GuiBoxChecked.svg" id="1_agkhv"]
 [ext_resource type="Texture2D" uid="uid://d07xfjdtgtvop" path="res://visual/icons/theme/GuiBoxCheckedDisabled.svg" id="2_kfk3n"]
@@ -186,6 +186,42 @@ content_margin_top = 2.0
 content_margin_right = 2.0
 content_margin_bottom = 2.0
 bg_color = Color(0.866667, 0.933333, 1, 0.2)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_v7lev"]
+content_margin_top = 2.0
+content_margin_bottom = 2.0
+bg_color = Color(0.203922, 0.254902, 0.4, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_n2br6"]
+content_margin_top = 2.0
+content_margin_bottom = 2.0
+bg_color = Color(0.275, 0.335, 0.5, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nhrif"]
+content_margin_top = 2.0
+content_margin_bottom = 2.0
+bg_color = Color(0.376471, 0.560784, 0.74902, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_k0vk4"]
+content_margin_top = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.06, 0.06, 0.1, 0.6)
 corner_radius_top_left = 3
 corner_radius_top_right = 3
 corner_radius_bottom_right = 3
@@ -729,6 +765,10 @@ FlatButton/styles/disabled = SubResource("StyleBoxFlat_bi87s")
 FlatButton/styles/hover = SubResource("StyleBoxFlat_ky4q6")
 FlatButton/styles/normal = SubResource("StyleBoxEmpty_q84qj")
 FlatButton/styles/pressed = SubResource("StyleBoxFlat_5jayv")
+HScrollBar/styles/grabber = SubResource("StyleBoxFlat_v7lev")
+HScrollBar/styles/grabber_highlight = SubResource("StyleBoxFlat_n2br6")
+HScrollBar/styles/grabber_pressed = SubResource("StyleBoxFlat_nhrif")
+HScrollBar/styles/scroll = SubResource("StyleBoxFlat_k0vk4")
 IconButton/base_type = &"Button"
 IconButton/styles/disabled = SubResource("StyleBoxFlat_qepg8")
 IconButton/styles/hover = SubResource("StyleBoxFlat_c4o10")
@@ -814,6 +854,5 @@ VScrollBar/styles/grabber = SubResource("StyleBoxFlat_dptuh")
 VScrollBar/styles/grabber_highlight = SubResource("StyleBoxFlat_jo7ks")
 VScrollBar/styles/grabber_pressed = SubResource("StyleBoxFlat_k6fme")
 VScrollBar/styles/scroll = SubResource("StyleBoxFlat_wn4u7")
-VScrollBar/styles/scroll_focus = null
 VSplitContainer/icons/grabber = ExtResource("5_7sidk")
 Window/styles/embedded_border = SubResource("StyleBoxFlat_k5a4y")
