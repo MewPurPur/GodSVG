@@ -5,7 +5,7 @@ extends Node
 const AlertDialog := preload("res://src/ui_parts/alert_dialog.tscn")
 const ImportWarningDialog = preload("res://src/ui_parts/import_warning_dialog.tscn")
 const SVGFileDialog = preload("res://src/ui_parts/svg_file_dialog.tscn")
-const ExportDialog = preload("res://src/ui_parts/export_dialog.tscn")
+const ExportDialogUI = preload("res://src/ui_parts/export_dialog.tscn")
 
 var text := ""
 var root_tag := TagSVG.new()
@@ -73,10 +73,15 @@ func _unhandled_input(event: InputEvent) -> void:
 		open_import_dialog()
 	elif event.is_action_pressed(&"export"):
 		open_export_dialog()
+	elif event.is_action_pressed("save"):
+		ExportDialog.open_save_dialog(
+			"svg",
+			func (has_selected: bool, files: PackedStringArray, _filter_idx: int) -> void: if has_selected: save_svg_to_file(files[0]),
+			func non_native_file_export(file_path: String) -> void: save_svg_to_file(file_path))
 
 
 func open_export_dialog() -> void:
-	HandlerGUI.add_overlay(ExportDialog.instantiate())
+	HandlerGUI.add_overlay(ExportDialogUI.instantiate())
 
 func open_import_dialog() -> void:
 	# Open it inside a native file dialog, or our custom one if it's not available.
@@ -93,11 +98,9 @@ func native_file_import(has_selected: bool, files: PackedStringArray,
 _filter_idx: int) -> void:
 	if has_selected:
 		apply_svg_from_path(files[0])
-		GlobalSettings.modify_save_data(&"last_used_dir", files[0].get_base_dir())
 
 func non_native_file_import(file_path: String) -> void:
 	apply_svg_from_path(file_path)
-	GlobalSettings.modify_save_data(&"last_used_dir", file_path.get_base_dir())
 
 
 func _on_files_dropped(files: PackedStringArray):
@@ -108,6 +111,9 @@ func apply_svg_from_path(path: String) -> int:
 	var svg_file := FileAccess.open(path, FileAccess.READ)
 	var error := ""
 	var extension := path.get_extension()
+	
+	GlobalSettings.current_file_name = path.get_file().trim_suffix("." + path.get_extension())
+	GlobalSettings.modify_save_data("last_used_dir", path.get_base_dir())
 	
 	if extension.is_empty():
 		error = "#file_open_empty_extension"
@@ -130,6 +136,10 @@ func apply_svg_from_path(path: String) -> int:
 	warning_panel.set_svg(svg_text)
 	HandlerGUI.add_overlay(warning_panel)
 	return OK
+
+func save_svg_to_file(path: String):
+	var FA := FileAccess.open(path, FileAccess.WRITE)
+	FA.store_string(text)
 
 func apply_svg_text(svg_text: String) -> void:
 	text = svg_text
