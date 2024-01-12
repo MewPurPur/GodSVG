@@ -40,6 +40,7 @@ func _ready() -> void:
 	RenderingServer.canvas_item_set_parent(surface, get_canvas_item())
 	RenderingServer.canvas_item_set_z_index(surface, 1)
 	title_label.text = tag.name
+	Utils.set_max_text_width(title_label, 180.0, 0.0)  # Handle TagUnknown gracefully.
 	title_icon.texture = unknown_icon if tag is TagUnknown\
 			else load("res://visual/icons/tag/" + tag.name + ".svg")
 	Indications.selection_changed.connect(determine_selection_highlight)

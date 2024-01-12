@@ -29,6 +29,16 @@ static func defocus_control_on_outside_click(control: Control, event: InputEvent
 	not control.get_global_rect().has_point(event.position)):
 		control.release_focus()
 
+# Resize the control to be resized automatically to its text width, up to a maximum.
+# The property name defaults account for most controls that may need to use this.
+static func set_max_text_width(control: Control, max_width: float, buffer: float,
+text_property := &"text", font_property := &"font",
+font_size_property := &"font_size") -> void:
+	control.custom_minimum_size.x = minf(control.get_theme_font(
+			font_property).get_string_size(control.get(text_property),
+			HORIZONTAL_ALIGNMENT_FILL, -1,
+			control.get_theme_font_size(font_size_property)).x + buffer, max_width)
+
 static func popup_under_control(popup: Popup, control: Control) -> void:
 	var screen_h := control.get_viewport_rect().size.y
 	var popup_pos := Vector2.ZERO
