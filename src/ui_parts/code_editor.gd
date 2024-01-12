@@ -98,6 +98,10 @@ func update_file_button() -> void:
 	file_button.custom_minimum_size = Vector2(
 			minf(file_button.get_theme_default_font().get_string_size(file_button.text).x,
 			120.0), 0)
+	if not file_path.is_empty():
+		get_window().title = file_path + " - GodSVG"
+	else:
+		get_window().title = "GodSVG"
 
 func _on_svg_code_edit_focus_exited() -> void:
 	code_edit.text = SVG.text
