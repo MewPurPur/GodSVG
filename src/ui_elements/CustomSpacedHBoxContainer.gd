@@ -12,7 +12,7 @@ func set_spacing_array(new_arr: Array) -> void:
 	queue_sort()
 
 func _sort_children():
-	var current_x: float = 0
+	var current_x := 0.0
 	var spacing_arr_size := _spacing_array.size()
 	
 	for i in get_child_count():
