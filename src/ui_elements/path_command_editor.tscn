@@ -1,16 +1,17 @@
-[gd_scene load_steps=6 format=3 uid="uid://dcdrc3r60bgg3"]
+[gd_scene load_steps=5 format=3 uid="uid://dcdrc3r60bgg3"]
 
 [ext_resource type="Script" path="res://src/ui_elements/path_command_editor.gd" id="1_om2fk"]
 [ext_resource type="FontFile" uid="uid://dtb4wkus51hxs" path="res://visual/fonts/FontMono.ttf" id="2_o5eem"]
 [ext_resource type="Texture2D" uid="uid://cmepkbqde0jh0" path="res://visual/icons/SmallMore.svg" id="3_a76tm"]
 [ext_resource type="Script" path="res://src/ui_elements/CustomSpacedHBoxContainer.gd" id="3_p38uu"]
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_sewij"]
-
-[node name="PathCommandEditor" type="PanelContainer"]
+[node name="PathCommandEditor" type="MarginContainer"]
 offset_right = 38.0
 offset_bottom = 14.0
-theme_override_styles/panel = SubResource("StyleBoxEmpty_sewij")
+theme_override_constants/margin_left = 3
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_right = 2
+theme_override_constants/margin_bottom = 2
 script = ExtResource("1_om2fk")
 
 [node name="HBox" type="HBoxContainer" parent="."]
