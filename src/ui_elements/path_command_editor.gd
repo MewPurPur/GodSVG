@@ -311,7 +311,7 @@ func _on_insert_path_command_picked(new_command: String) -> void:
 func _on_convert_path_command_picked(new_command: String) -> void:
 	cmd_convert_to.emit(cmd_idx, new_command)
 
-func _on_gui_input(event: InputEvent) -> void:
+func _gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion and event.button_mask == 0:
 		Indications.set_inner_hovered(tid, cmd_idx)
 	elif event is InputEventMouseButton and event.is_pressed():

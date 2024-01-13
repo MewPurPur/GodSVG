@@ -27,7 +27,6 @@ func _ready() -> void:
 	timer.timeout.connect(blink)
 	get_v_scroll_bar().value_changed.connect(redraw_caret.unbind(1))
 	get_h_scroll_bar().value_changed.connect(redraw_caret.unbind(1))
-	gui_input.connect(_on_gui_input)
 	mouse_exited.connect(_on_mouse_exited)
 
 
@@ -71,7 +70,12 @@ func _draw() -> void:
 	if editable and hovered and hover_stylebox != null:
 		draw_style_box(hover_stylebox, Rect2(Vector2.ZERO, size))
 
-func _on_gui_input(event: InputEvent) -> void:
+func _input(event: InputEvent) -> void:
+	if (has_focus() and event is InputEventMouseButton and\
+	not get_global_rect().has_point(event.position)):
+		release_focus()
+
+func _gui_input(event: InputEvent) -> void:
 	mouse_filter = Utils.mouse_filter_pass_non_drag_events(event)
 	
 	if event is InputEventMouseMotion and event.button_mask == 0:
