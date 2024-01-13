@@ -67,5 +67,4 @@ size_flags_vertical = 3
 theme_override_constants/separation = 5
 
 [connection signal="pressed" from="VBoxContainer/AddButton" to="." method="_on_add_button_pressed"]
-[connection signal="gui_input" from="VBoxContainer/TagContainer" to="VBoxContainer/TagContainer" method="_on_gui_input"]
 [connection signal="mouse_exited" from="VBoxContainer/TagContainer" to="VBoxContainer/TagContainer" method="_on_mouse_exited"]

@@ -24,11 +24,6 @@ static func get_file_name(string: String) -> String:
 	return string.get_file().trim_suffix("." + string.get_extension())
 
 
-static func defocus_control_on_outside_click(control: Control, event: InputEvent) -> void:
-	if (control.has_focus() and event is InputEventMouseButton and\
-	not control.get_global_rect().has_point(event.position)):
-		control.release_focus()
-
 # Resize the control to be resized automatically to its text width, up to a maximum.
 # The property name defaults account for most controls that may need to use this.
 static func set_max_text_width(control: Control, max_width: float, buffer: float,
