@@ -72,6 +72,5 @@ size_flags_horizontal = 3
 layout_mode = 2
 size_flags_horizontal = 3
 
-[connection signal="gui_input" from="." to="." method="_on_gui_input"]
 [connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
 [connection signal="pressed" from="Title/TitleBox/TitleButton" to="." method="_on_title_button_pressed"]

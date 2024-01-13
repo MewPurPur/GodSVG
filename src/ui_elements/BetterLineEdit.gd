@@ -20,7 +20,6 @@ func _ready() -> void:
 	focus_exited.connect(_on_focus_exited)
 	mouse_exited.connect(_on_mouse_exited)
 	text_submitted.connect(release_focus.unbind(1))
-	gui_input.connect(_on_gui_input)
 
 func _input(event: InputEvent) -> void:
 	if has_focus() and event is InputEventMouseButton:
@@ -70,7 +69,7 @@ func _make_custom_tooltip(for_text: String) -> Object:
 		return null
 
 
-func _on_gui_input(event: InputEvent) -> void:
+func _gui_input(event: InputEvent) -> void:
 	mouse_filter = Utils.mouse_filter_pass_non_drag_events(event)
 	
 	if event is InputEventMouseMotion and event.button_mask == 0:
