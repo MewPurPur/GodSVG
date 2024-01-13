@@ -32,8 +32,6 @@ const hover_color = Color(hover_color_string)
 const selection_color = Color(selection_color_string)
 const hover_selection_color = Color(hover_selection_color_string)
 
-enum InteractionType {NONE = 0, HOVERED = 1, SELECTED = 2, HOVERED_SELECTED = 3}
-
 var update_pending := false
 
 var handles: Array[Handle]
@@ -297,7 +295,7 @@ func _draw() -> void:
 				pathdata.get_command(0).command_char.to_upper() != "M":
 					continue  # Nothing to draw.
 				
-				var current_mode := InteractionType.NONE
+				var current_mode := Utils.InteractionType.NONE
 				
 				for cmd_idx in pathdata.get_command_count():
 					# Drawing logic.
@@ -306,13 +304,13 @@ func _draw() -> void:
 					var cmd := pathdata.get_command(cmd_idx)
 					var relative := cmd.relative
 					
-					current_mode = InteractionType.NONE
+					current_mode = Utils.InteractionType.NONE
 					if tid_is_hovered(tid, cmd_idx):
 						@warning_ignore("int_as_enum_without_cast")
-						current_mode += InteractionType.HOVERED
+						current_mode += Utils.InteractionType.HOVERED
 					if tid_is_selected(tid, cmd_idx):
 						@warning_ignore("int_as_enum_without_cast")
-						current_mode += InteractionType.SELECTED
+						current_mode += Utils.InteractionType.SELECTED
 					
 					match cmd.command_char.to_upper():
 						"L":
@@ -524,16 +522,16 @@ func _draw() -> void:
 						_: continue
 					
 					match current_mode:
-						InteractionType.NONE:
+						Utils.InteractionType.NONE:
 							normal_polylines.append(points.duplicate())
 							normal_multiline += tangent_points.duplicate()
-						InteractionType.HOVERED:
+						Utils.InteractionType.HOVERED:
 							hovered_polylines.append(points.duplicate())
 							hovered_multiline += tangent_points.duplicate()
-						InteractionType.SELECTED:
+						Utils.InteractionType.SELECTED:
 							selected_polylines.append(points.duplicate())
 							selected_multiline += tangent_points.duplicate()
-						InteractionType.HOVERED_SELECTED:
+						Utils.InteractionType.HOVERED_SELECTED:
 							hovered_selected_polylines.append(points.duplicate())
 							hovered_selected_multiline += tangent_points.duplicate()
 	
