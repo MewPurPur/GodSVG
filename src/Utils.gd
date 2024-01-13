@@ -13,6 +13,8 @@ const path_command_char_dict = {
 # FINAL also causes the equivalence check to be skipped.
 enum UpdateType {REGULAR, INTERMEDIATE, FINAL}
 
+enum InteractionType {NONE = 0, HOVERED = 1, SELECTED = 2, HOVERED_SELECTED = 3}
+
 
 static func is_string_upper(string: String) -> bool:
 	return string.to_upper() == string

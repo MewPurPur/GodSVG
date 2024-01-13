@@ -244,9 +244,9 @@ func open_actions(popup_from_mouse := false) -> void:
 
 
 func _ready() -> void:
-	Indications.selection_changed.connect(determine_selection_highlight)
-	Indications.hover_changed.connect(determine_selection_highlight)
-	determine_selection_highlight()
+	Indications.selection_changed.connect(determine_selection_state)
+	Indications.hover_changed.connect(determine_selection_state)
+	determine_selection_state()
 
 
 # Helpers
@@ -265,11 +265,11 @@ func create_stylebox(inside_color: Color, border_color: Color) -> StyleBoxFlat:
 
 func setup_relative_button() -> void:
 	relative_button.text = cmd_char
-	relative_button.tooltip_text = Utils.path_command_char_dict[cmd_char.to_upper()]
 	relative_button.pressed.connect(toggle_relative)
 	relative_button.begin_bulk_theme_override()
 	if Utils.is_string_upper(cmd_char):
-		relative_button.tooltip_text += " (" + tr(&"absolute") + ")"
+		relative_button.tooltip_text = "%s (%s)" %\
+				[Utils.path_command_char_dict[cmd_char.to_upper()], tr(&"absolute")]
 		relative_button.add_theme_stylebox_override(&"normal", create_stylebox(
 				Color.from_hsv(0.08, 0.8, 0.8), Color.from_hsv(0.1, 0.6, 0.9)))
 		relative_button.add_theme_stylebox_override(&"hover", create_stylebox(
@@ -277,13 +277,14 @@ func setup_relative_button() -> void:
 		relative_button.add_theme_stylebox_override(&"pressed", create_stylebox(
 				Color.from_hsv(0.11, 0.6, 1.0), Color.from_hsv(0.13, 0.4, 1.0)))
 	else:
-		relative_button.tooltip_text = " (" + tr(&"relative") + ")"
+		relative_button.tooltip_text = "%s (%s)" %\
+				[Utils.path_command_char_dict[cmd_char.to_upper()], tr(&"relative")]
 		relative_button.add_theme_stylebox_override(&"normal", create_stylebox(
-				Color.from_hsv(0.8, 0.8, 0.8), Color.from_hsv(0.76, 0.6, 0.9)))
+				Color.from_hsv(0.8, 0.8, 0.8), Color.from_hsv(0.78, 0.6, 0.9)))
 		relative_button.add_theme_stylebox_override(&"hover", create_stylebox(
-				Color.from_hsv(0.78, 0.75, 0.9), Color.from_hsv(0.74, 0.55, 0.95)))
+				Color.from_hsv(0.79, 0.75, 0.9), Color.from_hsv(0.77, 0.55, 0.95)))
 		relative_button.add_theme_stylebox_override(&"pressed", create_stylebox(
-				Color.from_hsv(0.74, 0.6, 1.0), Color.from_hsv(0.7, 0.4, 1.0)))
+				Color.from_hsv(0.77, 0.6, 1.0), Color.from_hsv(0.75, 0.4, 1.0)))
 	relative_button.end_bulk_theme_override()
 
 
@@ -328,20 +329,33 @@ func _gui_input(event: InputEvent) -> void:
 				Indications.normal_select(tid, cmd_idx)
 			open_actions(true)
 
-func determine_selection_highlight() -> void:
-	RenderingServer.canvas_item_clear(get_canvas_item())
+
+var current_interaction_state := Utils.InteractionType.NONE
+
+func determine_selection_state() -> void:
+	var new_interaction_state := Utils.InteractionType.NONE
 	if Indications.semi_selected_tid == tid and cmd_idx in Indications.inner_selections:
-		var stylebox := StyleBoxFlat.new()
-		stylebox.set_corner_radius_all(3)
 		if Indications.semi_hovered_tid == tid and Indications.inner_hovered == cmd_idx:
-			stylebox.bg_color = Color(0.7, 0.7, 1.0, 0.18)
+			new_interaction_state = Utils.InteractionType.HOVERED_SELECTED
 		else:
-			stylebox.bg_color = Color(0.6, 0.6, 1.0, 0.16)
-		stylebox.draw(get_canvas_item(), Rect2(Vector2.ZERO, size))
+			new_interaction_state = Utils.InteractionType.SELECTED
 	elif Indications.semi_hovered_tid == tid and Indications.inner_hovered == cmd_idx:
+		new_interaction_state = Utils.InteractionType.HOVERED
+	
+	if current_interaction_state != new_interaction_state:
+		current_interaction_state = new_interaction_state
+		queue_redraw()
+
+func _draw() -> void:
+	if current_interaction_state != Utils.InteractionType.NONE:
 		var stylebox := StyleBoxFlat.new()
 		stylebox.set_corner_radius_all(3)
-		stylebox.bg_color = Color(0.8, 0.8, 1.0, 0.05)
+		if current_interaction_state == Utils.InteractionType.HOVERED:
+			stylebox.bg_color = Color(0.8, 0.8, 1.0, 0.05)
+		elif current_interaction_state == Utils.InteractionType.SELECTED:
+			stylebox.bg_color = Color(0.6, 0.6, 1.0, 0.16)
+		elif current_interaction_state == Utils.InteractionType.HOVERED_SELECTED:
+			stylebox.bg_color = Color(0.7, 0.7, 1.0, 0.18)
 		stylebox.draw(get_canvas_item(), Rect2(Vector2.ZERO, size))
 
 
