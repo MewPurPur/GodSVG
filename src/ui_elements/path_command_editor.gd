@@ -1,5 +1,5 @@
 ## An editor for a single path command.
-extends PanelContainer
+extends MarginContainer
 
 signal cmd_update_value(idx: int, new_value: float, property: StringName)
 signal cmd_delete(idx: int)
@@ -329,25 +329,20 @@ func _gui_input(event: InputEvent) -> void:
 			open_actions(true)
 
 func determine_selection_highlight() -> void:
-	var stylebox: StyleBox
+	RenderingServer.canvas_item_clear(get_canvas_item())
 	if Indications.semi_selected_tid == tid and cmd_idx in Indications.inner_selections:
-		stylebox = StyleBoxFlat.new()
+		var stylebox := StyleBoxFlat.new()
 		stylebox.set_corner_radius_all(3)
 		if Indications.semi_hovered_tid == tid and Indications.inner_hovered == cmd_idx:
 			stylebox.bg_color = Color(0.7, 0.7, 1.0, 0.18)
 		else:
 			stylebox.bg_color = Color(0.6, 0.6, 1.0, 0.16)
+		stylebox.draw(get_canvas_item(), Rect2(Vector2.ZERO, size))
 	elif Indications.semi_hovered_tid == tid and Indications.inner_hovered == cmd_idx:
-		stylebox = StyleBoxFlat.new()
+		var stylebox := StyleBoxFlat.new()
 		stylebox.set_corner_radius_all(3)
 		stylebox.bg_color = Color(0.8, 0.8, 1.0, 0.05)
-	else:
-		stylebox = StyleBoxEmpty.new()
-	stylebox.content_margin_left = 3
-	stylebox.content_margin_right = 2
-	stylebox.content_margin_top = 2
-	stylebox.content_margin_bottom = 2
-	add_theme_stylebox_override(&"panel", stylebox)
+		stylebox.draw(get_canvas_item(), Rect2(Vector2.ZERO, size))
 
 
 func _on_mouse_exited():
