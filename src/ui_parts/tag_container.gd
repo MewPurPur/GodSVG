@@ -73,7 +73,7 @@ func _on_mouse_exited() -> void:
 		to_refresh_mouse_exit = null
 
 
-func _on_gui_input(event: InputEvent) -> void:
+func _gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.is_pressed() and\
 	event.button_index == MOUSE_BUTTON_LEFT and not event.ctrl_pressed:
 		Indications.clear_selection()

@@ -175,7 +175,7 @@ func create_tag_context() -> Popup:
 	return tag_context
 
 
-func _on_gui_input(event: InputEvent) -> void:
+func _gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion and event.button_mask == 0:
 		if Indications.semi_hovered_tid != tid and\
 		not Utils.is_tid_parent(tid, Indications.hovered_tid):
