@@ -45,8 +45,7 @@ func _draw() -> void:
 				minor_points.append(Vector2(i, size.y))
 		else:
 			var coord := snappedi(i + position.x, ticks_interval)
-			@warning_ignore('integer_division')
-			if (coord / ticks_interval) % rate == 0:
+			if int(float(coord) / ticks_interval) % rate == 0:
 				major_points.append(Vector2(i, 0))
 				major_points.append(Vector2(i, size.y))
 				default_font.draw_string(surface, Vector2(i * zoom_level + 4, 14),
@@ -64,8 +63,7 @@ func _draw() -> void:
 				minor_points.append(Vector2(size.x, i))
 		else:
 			var coord := snappedi(i + position.y, ticks_interval)
-			@warning_ignore('integer_division')
-			if int(coord / ticks_interval) % rate == 0:
+			if int(coord / float(ticks_interval)) % rate == 0:
 				major_points.append(Vector2(0, i))
 				major_points.append(Vector2(size.x, i))
 				default_font.draw_string(surface, Vector2(4, i * zoom_level + 14),

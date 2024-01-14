@@ -552,23 +552,19 @@ func _draw() -> void:
 	for polyline in hovered_selected_polylines:
 		draw_polyline(polyline, hover_selection_color, thickness, true)
 	
-	@warning_ignore('integer_division')
-	for i in normal_multiline.size() / 2:
+	for i in int(normal_multiline.size() / 2.0):
 		var i2 := i * 2
 		draw_line(normal_multiline[i2], normal_multiline[i2 + 1],
 				Color(default_color, tangent_alpha), tangent_thickness, true)
-	@warning_ignore('integer_division')
-	for i in selected_multiline.size() / 2:
+	for i in int(selected_multiline.size() / 2.0):
 		var i2 := i * 2
 		draw_line(selected_multiline[i2], selected_multiline[i2 + 1],
 				Color(selection_color, tangent_alpha), tangent_thickness, true)
-	@warning_ignore('integer_division')
-	for i in hovered_multiline.size() / 2:
+	for i in int(hovered_multiline.size() / 2.0):
 		var i2 := i * 2
 		draw_line(hovered_multiline[i2], hovered_multiline[i2 + 1],
 				Color(hover_color, tangent_alpha), tangent_thickness, true)
-	@warning_ignore('integer_division')
-	for i in hovered_selected_multiline.size() / 2:
+	for i in int(hovered_selected_multiline.size() / 2.0):
 		var i2 := i * 2
 		draw_line(hovered_selected_multiline[i2], hovered_selected_multiline[i2 + 1],
 				Color(hover_selection_color, tangent_alpha), tangent_thickness, true)
