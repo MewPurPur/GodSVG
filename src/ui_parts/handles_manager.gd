@@ -687,15 +687,22 @@ func _unhandled_input(event: InputEvent) -> void:
 			dragged_handle = hovered_handle
 			dragged_handle.initial_pos = dragged_handle.pos
 			var inner_idx = -1
+			var dragged_tid := dragged_handle.tid
 			if hovered_handle is PathHandle:
 				inner_idx = hovered_handle.command_index
 			
-			if event.ctrl_pressed:
-				Indications.ctrl_select(dragged_handle.tid, inner_idx)
+			if event.double_click:
+				Indications.clear_inner_selection()
+				var subpath_range: Vector2i =\
+						SVG.root_tag.get_by_tid(dragged_tid).attributes.d.get_subpath(inner_idx)
+				for idx in range(subpath_range.x, subpath_range.y + 1):
+					Indications.ctrl_select(dragged_tid, idx)
+			elif event.ctrl_pressed:
+				Indications.ctrl_select(dragged_tid, inner_idx)
 			elif event.shift_pressed:
-				Indications.shift_select(dragged_handle.tid, inner_idx)
+				Indications.shift_select(dragged_tid, inner_idx)
 			else:
-				Indications.normal_select(dragged_handle.tid, inner_idx)
+				Indications.normal_select(dragged_tid, inner_idx)
 		
 		elif dragged_handle != null and event.is_released():
 			if was_handle_moved:
