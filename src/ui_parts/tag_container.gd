@@ -1,6 +1,6 @@
 extends PanelContainer
-
-const safe_margin = 1.0 / 6.0
+# Distance % between scroll container center and edge to leave free from autoscroll.
+const safe_margin = 1.0 / 2.0
 
 @onready var scroll_container: ScrollContainer = $ScrollContainer
 @onready var tags: VBoxContainer = %Tags
@@ -15,10 +15,12 @@ func _process(_delta: float) -> void:
 		var full_area := scroll_container.get_global_rect()
 		var mouse_y := get_global_mouse_position().y
 		var center_y := full_area.get_center().y
-		var diff := mouse_y - center_y
-		var direction: float = sign(diff)
-		var scroll_amount: float = direction * max(abs(diff) - full_area.size.y * safe_margin, 0.0)
-		scroll_container.scroll_vertical += int(scroll_amount / 4.0)
+		var distance_to_center := (mouse_y - center_y) / (full_area.size.y / 2)
+		var direction: float = sign(distance_to_center)
+		var abs_distance: float = abs(distance_to_center)
+		var inv_margin = 1.0 / safe_margin
+		var scroll_amount: float = direction * max( (inv_margin / (inv_margin - 1)) * (abs_distance - (1.0 - safe_margin)), 0)
+		scroll_container.scroll_vertical += int(scroll_amount * 32)
 
 
 func _can_drop_data(_at_position: Vector2, current_tid: Variant) -> bool:
