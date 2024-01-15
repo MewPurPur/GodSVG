@@ -1,6 +1,6 @@
 extends PanelContainer
 
-const safe_margin = 1 / 6.0
+const safe_margin = 1.0 / 6.0
 
 @onready var scroll_container: ScrollContainer = $ScrollContainer
 @onready var tags: VBoxContainer = %Tags
@@ -13,14 +13,12 @@ func _process(_delta: float) -> void:
 	# Scroll with moving dragged object.
 	if scroll_container != null and is_drag_begin:
 		var full_area := scroll_container.get_global_rect()
-		var no_scroll_area := full_area.grow_individual(
-				0, -safe_margin * full_area.size.y, 0, -safe_margin * full_area.size.y)
-		var mouse_pos := get_global_mouse_position()
-		if full_area.has_point(mouse_pos) and not no_scroll_area.has_point(mouse_pos):
-			if no_scroll_area.position.y < mouse_pos.y:
-				scroll_container.scroll_vertical += 6
-			else:
-				scroll_container.scroll_vertical -= 6
+		var mouse_y := get_global_mouse_position().y
+		var center_y := full_area.get_center().y
+		var diff := mouse_y - center_y
+		var direction: float = sign(diff)
+		var scroll_amount: float = direction * max(abs(diff) - full_area.size.y * safe_margin, 0.0)
+		scroll_container.scroll_vertical += int(scroll_amount / 4.0)
 
 
 func _can_drop_data(_at_position: Vector2, current_tid: Variant) -> bool:
