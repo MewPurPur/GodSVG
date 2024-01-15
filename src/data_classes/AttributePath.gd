@@ -59,6 +59,22 @@ func get_command_count() -> int:
 func get_command(idx: int) -> PathCommand:
 	return _commands[idx]
 
+# Return the start and end indices of the subpath.
+func get_subpath(idx: int) -> Vector2i:
+	var output := Vector2i(idx, idx)
+	# Subpaths start from the last M command, or the commmand after the last Z command.
+	while output.x > 0:
+		if get_command(output.x) is PathCommand.MoveCommand or\
+		get_command(output.x - 1) is PathCommand.CloseCommand:
+			break
+		output.x -= 1
+	while output.y < get_command_count() - 1:
+		if get_command(output.y + 1) is PathCommand.MoveCommand or\
+		get_command(output.y) is PathCommand.CloseCommand:
+			break
+		output.y += 1
+	return output
+
 
 func set_command_property(idx: int, property: StringName, new_value: float,
 sync_mode := SyncMode.LOUD) -> void:
