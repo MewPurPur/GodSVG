@@ -365,6 +365,7 @@ func delete_selected() -> void:
 		match tag_ref.name:
 			"path": tag_ref.attributes.d.delete_commands(inner_selections)
 		clear_inner_selection()
+		clear_inner_hovered()
 
 func move_up_selected() -> void:
 	SVG.root_tag.move_tags_in_parent(selected_tids, false)
