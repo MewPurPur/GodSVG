@@ -3,11 +3,13 @@ class_name XYHandle extends Handle
 
 var x_attribute: AttributeNumeric
 var y_attribute: AttributeNumeric
+var t_attribute: AttributeTransform
 
-func _init(id: PackedInt32Array, xref: AttributeNumeric, yref: AttributeNumeric) -> void:
+func _init(id: PackedInt32Array, xref: AttributeNumeric, yref: AttributeNumeric, tref: AttributeTransform) -> void:
 	tid = id
 	x_attribute = xref
 	y_attribute = yref
+	t_attribute = tref
 	sync()
 
 func set_pos(new_pos: Vector2, undo_redo := false) -> void:
@@ -25,3 +27,4 @@ func set_pos(new_pos: Vector2, undo_redo := false) -> void:
 
 func sync() -> void:
 	pos = Vector2(x_attribute.get_num(), y_attribute.get_num())
+	transform = t_attribute.get_transform()
