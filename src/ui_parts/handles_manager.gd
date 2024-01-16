@@ -536,38 +536,30 @@ func _draw() -> void:
 							hovered_selected_multiline += tangent_points.duplicate()
 	
 	var draw_zoom := Indications.zoom * SVG.root_tag.canvas_transform.get_scale().x
-	var thickness := 1.0 / draw_zoom
-	var tangent_thickness := 0.6 / draw_zoom
+	var contour_width := 1.0 / draw_zoom
+	var tangent_width := 0.6 / draw_zoom
 	var tangent_alpha := 0.8
 	draw_set_transform_matrix(SVG.root_tag.canvas_transform)
 	RenderingServer.canvas_item_set_transform(surface, Transform2D(0.0,
 			Vector2(1 / Indications.zoom, 1 / Indications.zoom), 0.0, Vector2.ZERO))
 	
 	for polyline in normal_polylines:
-		draw_polyline(polyline, default_color, thickness, true)
+		draw_polyline(polyline, default_color, contour_width, true)
 	for polyline in selected_polylines:
-		draw_polyline(polyline, selection_color, thickness, true)
+		draw_polyline(polyline, selection_color, contour_width, true)
 	for polyline in hovered_polylines:
-		draw_polyline(polyline, hover_color, thickness, true)
+		draw_polyline(polyline, hover_color, contour_width, true)
 	for polyline in hovered_selected_polylines:
-		draw_polyline(polyline, hover_selection_color, thickness, true)
+		draw_polyline(polyline, hover_selection_color, contour_width, true)
 	
-	for i in int(normal_multiline.size() / 2.0):
-		var i2 := i * 2
-		draw_line(normal_multiline[i2], normal_multiline[i2 + 1],
-				Color(default_color, tangent_alpha), tangent_thickness, true)
-	for i in int(selected_multiline.size() / 2.0):
-		var i2 := i * 2
-		draw_line(selected_multiline[i2], selected_multiline[i2 + 1],
-				Color(selection_color, tangent_alpha), tangent_thickness, true)
-	for i in int(hovered_multiline.size() / 2.0):
-		var i2 := i * 2
-		draw_line(hovered_multiline[i2], hovered_multiline[i2 + 1],
-				Color(hover_color, tangent_alpha), tangent_thickness, true)
-	for i in int(hovered_selected_multiline.size() / 2.0):
-		var i2 := i * 2
-		draw_line(hovered_selected_multiline[i2], hovered_selected_multiline[i2 + 1],
-				Color(hover_selection_color, tangent_alpha), tangent_thickness, true)
+	draw_multiline_antaliased(normal_multiline,
+			Color(default_color, tangent_alpha), tangent_width)
+	draw_multiline_antaliased(selected_multiline,
+			Color(selection_color, tangent_alpha), tangent_width)
+	draw_multiline_antaliased(hovered_multiline,
+			Color(hover_color, tangent_alpha), tangent_width)
+	draw_multiline_antaliased(hovered_selected_multiline,
+			Color(hover_selection_color, tangent_alpha), tangent_width)
 	
 	# First gather all handles in 4 categories, then draw them in the right order.
 	var normal_handles: Array[Handle] = []
@@ -606,6 +598,13 @@ func _draw() -> void:
 		texture.draw(surface, SVG.root_tag.canvas_to_world(handle.pos) *\
 				Indications.zoom - texture.get_size() / 2)
 
+# TODO remove this when it's implemented in Godot.
+func draw_multiline_antaliased(points: PackedVector2Array, color: Color,
+width: float) -> void:
+	for i in int(points.size() / 2.0):
+		var i2 := i * 2
+		draw_line(points[i2], points[i2 + 1], color, width, true)
+
 
 func tid_is_hovered(tid: PackedInt32Array, cmd_idx := -1) -> bool:
 	if cmd_idx == -1:
@@ -636,11 +635,12 @@ var was_handle_moved := false
 var should_deselect_all = false
 
 func _unhandled_input(event: InputEvent) -> void:
+	if not visible:
+		return
+	
 	var snap_enabled := GlobalSettings.save_data.snap > 0.0
 	var snap_size := absf(GlobalSettings.save_data.snap)
 	var snap_vector := Vector2(snap_size, snap_size)
-	if not visible:
-		return
 	
 	if event is InputEventMouseMotion:
 		should_deselect_all = false
@@ -716,8 +716,19 @@ func _unhandled_input(event: InputEvent) -> void:
 			should_deselect_all = true
 		elif hovered_handle == null and event.is_released() and should_deselect_all:
 			dragged_handle = null
-			Indications.clear_selection()
-			Indications.clear_inner_selection()
+			Indications.clear_all_selections()
+
+func find_nearest_handle(event_pos: Vector2) -> Handle:
+	var nearest_handle: Handle = null
+	# Maximum grab distance is (9 / zoom).
+	var nearest_dist_squared := 81 / (Indications.zoom * Indications.zoom)
+	for handle in handles:
+		var dist_to_handle_squared := event_pos.distance_squared_to(
+					SVG.root_tag.canvas_to_world(handle.pos))
+		if dist_to_handle_squared < nearest_dist_squared:
+			nearest_dist_squared = dist_to_handle_squared
+			nearest_handle = handle
+	return nearest_handle
 
 func move_selected_to_mouse() -> void:
 	for handle in handles:
@@ -734,14 +745,3 @@ func move_selected_to_mouse() -> void:
 			dragged_handle.set_pos(new_pos)
 			was_handle_moved = true
 			return
-
-func find_nearest_handle(event_pos: Vector2) -> Handle:
-	var max_grab_dist := 9 / Indications.zoom
-	var nearest_handle: Handle = null
-	var nearest_dist := max_grab_dist
-	for handle in handles:
-		var dist_to_handle := event_pos.distance_to(SVG.root_tag.canvas_to_world(handle.pos))
-		if dist_to_handle < nearest_dist:
-			nearest_dist = dist_to_handle
-			nearest_handle = handle
-	return nearest_handle
