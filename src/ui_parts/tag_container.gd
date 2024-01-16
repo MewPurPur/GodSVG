@@ -1,7 +1,7 @@
 extends PanelContainer
 
 # Autoscroll area on drag and drop. As a factor from edge to center.
-const safe_margin := 1.0 / 2.0
+const scroll_area := 1.0 / 2.0
 const autoscroll_speed := 32.0
 
 @onready var scroll_container: ScrollContainer = $ScrollContainer
@@ -11,12 +11,13 @@ var is_drag_begin := false
 var to_refresh_mouse_exit: Control
 
 
-func _process(_delta: float) -> void:
+func _process(delta: float) -> void:
 	# Scroll with moving dragged object.
 	if scroll_container != null and is_drag_begin:
 		var full_area := scroll_container.get_global_rect()
 		var mouse_y := get_global_mouse_position().y
 		var center_y := full_area.get_center().y
+		delta *= 60
 		
 		# -1 -> 1 factor of how far the mouse is from center.
 		var factor := (mouse_y - center_y) / (full_area.size.y / 2)
@@ -25,12 +26,12 @@ func _process(_delta: float) -> void:
 		var direction: float = sign(factor)
 		var abs_factor: float = abs(factor)
 		
-		# Remap 0 -> 1 values to (1 - safe_margin) -> 1.
-		var inv_margin = 1.0 / safe_margin
-		var scroll_amount: float = max(inv_margin * (abs_factor - (1.0 - safe_margin)), 0)
+		# Remap 0 -> 1 values to (1 - scroll_area) -> 1.
+		var inv_margin = 1.0 / scroll_area
+		var scroll_amount: float = max(inv_margin * (abs_factor - (1.0 - scroll_area)), 0)
 		
 		# Combine factor and sign again, exponentially increase speed depending on distance.
-		scroll_container.scroll_vertical += int(direction * pow(scroll_amount, 2) * autoscroll_speed)
+		scroll_container.scroll_vertical += int(delta * direction * pow(scroll_amount, 2) * autoscroll_speed)
 
 
 func _can_drop_data(_at_position: Vector2, current_tid: Variant) -> bool:
