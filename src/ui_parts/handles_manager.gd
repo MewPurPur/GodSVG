@@ -656,10 +656,7 @@ func _unhandled_input(event: InputEvent) -> void:
 				get_node(^"../..").view.position
 		if dragged_handle != null:
 			# Move the handle that's being dragged.
-			var new_pos := dragged_handle.transform.affine_inverse() * event_pos
-			
-			if snap_enabled:
-				new_pos = new_pos.snapped(snap_vector / dragged_handle.transform.get_scale())
+			var new_pos := dragged_handle.transform.affine_inverse() * (event_pos if !snap_enabled else event_pos.snapped(snap_vector))
 			dragged_handle.set_pos(new_pos)
 			was_handle_moved = true
 			accept_event()
@@ -715,9 +712,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		
 		elif dragged_handle != null and event.is_released():
 			if was_handle_moved:
-				var new_pos := dragged_handle.transform.affine_inverse() * event_pos
-				if snap_enabled:
-					new_pos = new_pos.snapped(snap_vector / dragged_handle.transform.get_scale())
+				var new_pos := dragged_handle.transform.affine_inverse() * (event_pos if !snap_enabled else event_pos.snapped(snap_vector))
 				dragged_handle.set_pos(new_pos, true)
 				was_handle_moved = false
 			dragged_handle = null
@@ -733,7 +728,7 @@ func find_nearest_handle(event_pos: Vector2) -> Handle:
 	var nearest_dist_squared := 81 / (Indications.zoom * Indications.zoom)
 	for handle in handles:
 		var dist_to_handle_squared := event_pos.distance_squared_to(
-					SVG.root_tag.canvas_to_world(handle.pos))
+					SVG.root_tag.canvas_to_world(handle.transform * handle.pos))
 		if dist_to_handle_squared < nearest_dist_squared:
 			nearest_dist_squared = dist_to_handle_squared
 			nearest_handle = handle
@@ -754,17 +749,3 @@ func move_selected_to_mouse() -> void:
 			dragged_handle.set_pos(new_pos)
 			was_handle_moved = true
 			return
-<<<<<<< HEAD
-=======
-
-func find_nearest_handle(event_pos: Vector2) -> Handle:
-	var max_grab_dist := 9 / Indications.zoom
-	var nearest_handle: Handle = null
-	var nearest_dist := max_grab_dist
-	for handle in handles:
-		var dist_to_handle := event_pos.distance_to(SVG.root_tag.canvas_to_world(handle.transform * handle.pos))
-		if dist_to_handle < nearest_dist:
-			nearest_dist = dist_to_handle
-			nearest_handle = handle
-	return nearest_handle
->>>>>>> 072c499 (Transform handles along with tags)
