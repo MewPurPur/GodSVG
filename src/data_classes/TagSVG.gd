@@ -229,7 +229,6 @@ func move_tags_in_parent(tids: Array[PackedInt32Array], down: bool) -> void:
 
 # Moves tags to an arbitrary position. The first moved tag will move to the "to" TID.
 func move_tags_to(tids: Array[PackedInt32Array], to: PackedInt32Array) -> void:
-	prints(tids, to)
 	tids = Utils.filter_tids_descendant(tids)
 	for tid in tids:
 		if Utils.is_tid_parent(tid,to):
