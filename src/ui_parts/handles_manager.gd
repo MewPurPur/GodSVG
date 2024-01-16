@@ -82,7 +82,7 @@ func update_handles() -> void:
 				handles.append(generate_xy_handle(tid, tag, "x1", "y1", "transform"))
 				handles.append(generate_xy_handle(tid, tag, "x2", "y2", "transform"))
 			"path":
-				handles += generate_path_handles(tid, tag.attributes.d)
+				handles += generate_path_handles(tid, tag.attributes.d, tag.attributes.transform)
 	queue_redraw()
 
 
@@ -101,22 +101,22 @@ func sync_handles() -> void:
 	for tid in tids:
 		var tag := SVG.root_tag.get_by_tid(tid)
 		if tag.name == "path":
-			handles += generate_path_handles(tid, tag.attributes.d)
+			handles += generate_path_handles(tid, tag.attributes.d, tag.attributes.transform)
 	queue_redraw()
 
 func generate_path_handles(tid: PackedInt32Array,
-path_attribute: AttributePath) -> Array[Handle]:
+path_attribute: AttributePath, transform_attribute: AttributeTransform) -> Array[Handle]:
 	var path_handles: Array[Handle] = []
 	for idx in path_attribute.get_command_count():
 		var path_command := path_attribute.get_command(idx)
 		if path_command.command_char.to_upper() != "Z":
-			path_handles.append(PathHandle.new(tid, path_attribute, idx))
+			path_handles.append(PathHandle.new(tid, path_attribute, transform_attribute, idx))
 			if path_command.command_char.to_upper() in "CQ":
-				var tangent := PathHandle.new(tid, path_attribute, idx, &"x1", &"y1")
+				var tangent := PathHandle.new(tid, path_attribute, transform_attribute, idx, &"x1", &"y1")
 				tangent.display_mode = Handle.Display.SMALL
 				path_handles.append(tangent)
 			if path_command.command_char.to_upper() in "CS":
-				var tangent := PathHandle.new(tid, path_attribute, idx, &"x2", &"y2")
+				var tangent := PathHandle.new(tid, path_attribute, transform_attribute, idx, &"x2", &"y2")
 				tangent.display_mode = Handle.Display.SMALL
 				path_handles.append(tangent)
 	return path_handles
