@@ -222,10 +222,14 @@ func move_tags_in_parent(tids: Array[PackedInt32Array], down: bool) -> void:
 				old_indices.insert(i, moved_i)
 				parent_tag.child_tags.insert(i, moved_tag)
 			i += 1
-	tags_moved_in_parent.emit(parent_tid, old_indices)
-	tag_layout_changed.emit()
+	# Check if indices were really changed after the operation.
+	if old_indices != range(old_indices.size()):
+		tags_moved_in_parent.emit(parent_tid, old_indices)
+		tag_layout_changed.emit()
 
+# Moves tags to an arbitrary position. The first moved tag will move to the "to" TID.
 func move_tags_to(tids: Array[PackedInt32Array], to: PackedInt32Array) -> void:
+	prints(tids, to)
 	tids = Utils.filter_tids_descendant(tids)
 	for tid in tids:
 		if Utils.is_tid_parent(tid,to):
