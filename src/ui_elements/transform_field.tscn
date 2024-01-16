@@ -86,9 +86,15 @@ hover_stylebox = SubResource("StyleBoxFlat_fnyvh")
 focus_stylebox = SubResource("StyleBoxFlat_xcqgp")
 code_font_tooltip = true
 
+[connection signal="focus_exited" from="FirstRow/X1" to="." method="_on_focus_exited"]
 [connection signal="text_submitted" from="FirstRow/X1" to="." method="_on_text_submitted"]
+[connection signal="focus_exited" from="FirstRow/Y1" to="." method="_on_focus_exited"]
 [connection signal="text_submitted" from="FirstRow/Y1" to="." method="_on_text_submitted"]
+[connection signal="focus_exited" from="FirstRow/Z1" to="." method="_on_focus_exited"]
 [connection signal="text_submitted" from="FirstRow/Z1" to="." method="_on_text_submitted"]
+[connection signal="focus_exited" from="SecondRow/X2" to="." method="_on_focus_exited"]
 [connection signal="text_submitted" from="SecondRow/X2" to="." method="_on_text_submitted"]
+[connection signal="focus_exited" from="SecondRow/Y2" to="." method="_on_focus_exited"]
 [connection signal="text_submitted" from="SecondRow/Y2" to="." method="_on_text_submitted"]
+[connection signal="focus_exited" from="SecondRow/Z2" to="." method="_on_focus_exited"]
 [connection signal="text_submitted" from="SecondRow/Z2" to="." method="_on_text_submitted"]
