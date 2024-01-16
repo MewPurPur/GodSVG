@@ -1,17 +1,17 @@
 ## An editor to be tied to a transform attribute.
-extends VBoxContainer
+extends PanelContainer
 
 signal focused
 var attribute: AttributeTransform
 var attribute_name: String
 
-@onready var x1_edit: LineEdit = $FirstRow/X1
-@onready var y1_edit: LineEdit = $FirstRow/Y1
-@onready var z1_edit: LineEdit = $FirstRow/Z1
+@onready var x1_edit: LineEdit = $VBox/FirstRow/X1
+@onready var y1_edit: LineEdit = $VBox/FirstRow/Y1
+@onready var z1_edit: LineEdit = $VBox/FirstRow/Z1
 
-@onready var x2_edit: LineEdit = $SecondRow/X2
-@onready var y2_edit: LineEdit = $SecondRow/Y2
-@onready var z2_edit: LineEdit = $SecondRow/Z2
+@onready var x2_edit: LineEdit = $VBox/SecondRow/X2
+@onready var y2_edit: LineEdit = $VBox/SecondRow/Y2
+@onready var z2_edit: LineEdit = $VBox/SecondRow/Z2
 
 func set_value(new_value: String, update_type := Utils.UpdateType.REGULAR) -> void:
 	var transform := TransformParser.text_to_transform(new_value)
@@ -42,10 +42,10 @@ func _ready() -> void:
 
 	x1_edit.tooltip_text = attribute_name + " X1"
 	y1_edit.tooltip_text = attribute_name + " Y1"
-	z1_edit.tooltip_text = attribute_name + " Z1"
+	z1_edit.tooltip_text = attribute_name + " O1"
 	x2_edit.tooltip_text = attribute_name + " X2"
 	y2_edit.tooltip_text = attribute_name + " Y2"
-	z2_edit.tooltip_text = attribute_name + " Z2"
+	z2_edit.tooltip_text = attribute_name + " O2"
 
 func _on_focus_exited() -> void:
 	set_value("matrix(%s, %s, %s, %s, %s, %s)"%[x1_edit.text, x2_edit.text, y1_edit.text, y2_edit.text, z1_edit.text, z2_edit.text])

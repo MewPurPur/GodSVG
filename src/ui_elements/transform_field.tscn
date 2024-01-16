@@ -23,14 +23,19 @@ border_color = Color(0.2, 0.34902, 0.501961, 1)
 corner_radius_top_left = 5
 corner_radius_bottom_left = 5
 
-[node name="TransformField" type="VBoxContainer"]
+[node name="TransformField" type="PanelContainer"]
+size_flags_horizontal = 3
 script = ExtResource("1_5gokr")
 
-[node name="FirstRow" type="HBoxContainer" parent="."]
+[node name="VBox" type="VBoxContainer" parent="."]
 layout_mode = 2
 
-[node name="X1" type="LineEdit" parent="FirstRow"]
+[node name="FirstRow" type="HBoxContainer" parent="VBox"]
 layout_mode = 2
+
+[node name="X1" type="LineEdit" parent="VBox/FirstRow"]
+layout_mode = 2
+size_flags_horizontal = 3
 focus_mode = 1
 mouse_filter = 1
 script = ExtResource("2_aucxm")
@@ -38,8 +43,9 @@ hover_stylebox = SubResource("StyleBoxFlat_fnyvh")
 focus_stylebox = SubResource("StyleBoxFlat_xcqgp")
 code_font_tooltip = true
 
-[node name="Y1" type="LineEdit" parent="FirstRow"]
+[node name="Y1" type="LineEdit" parent="VBox/FirstRow"]
 layout_mode = 2
+size_flags_horizontal = 3
 focus_mode = 1
 mouse_filter = 1
 script = ExtResource("2_aucxm")
@@ -47,8 +53,9 @@ hover_stylebox = SubResource("StyleBoxFlat_fnyvh")
 focus_stylebox = SubResource("StyleBoxFlat_xcqgp")
 code_font_tooltip = true
 
-[node name="Z1" type="LineEdit" parent="FirstRow"]
+[node name="Z1" type="LineEdit" parent="VBox/FirstRow"]
 layout_mode = 2
+size_flags_horizontal = 3
 focus_mode = 1
 mouse_filter = 1
 script = ExtResource("2_aucxm")
@@ -56,11 +63,12 @@ hover_stylebox = SubResource("StyleBoxFlat_fnyvh")
 focus_stylebox = SubResource("StyleBoxFlat_xcqgp")
 code_font_tooltip = true
 
-[node name="SecondRow" type="HBoxContainer" parent="."]
+[node name="SecondRow" type="HBoxContainer" parent="VBox"]
 layout_mode = 2
 
-[node name="X2" type="LineEdit" parent="SecondRow"]
+[node name="X2" type="LineEdit" parent="VBox/SecondRow"]
 layout_mode = 2
+size_flags_horizontal = 3
 focus_mode = 1
 mouse_filter = 1
 script = ExtResource("2_aucxm")
@@ -68,8 +76,9 @@ hover_stylebox = SubResource("StyleBoxFlat_fnyvh")
 focus_stylebox = SubResource("StyleBoxFlat_xcqgp")
 code_font_tooltip = true
 
-[node name="Y2" type="LineEdit" parent="SecondRow"]
+[node name="Y2" type="LineEdit" parent="VBox/SecondRow"]
 layout_mode = 2
+size_flags_horizontal = 3
 focus_mode = 1
 mouse_filter = 1
 script = ExtResource("2_aucxm")
@@ -77,8 +86,9 @@ hover_stylebox = SubResource("StyleBoxFlat_fnyvh")
 focus_stylebox = SubResource("StyleBoxFlat_xcqgp")
 code_font_tooltip = true
 
-[node name="Z2" type="LineEdit" parent="SecondRow"]
+[node name="Z2" type="LineEdit" parent="VBox/SecondRow"]
 layout_mode = 2
+size_flags_horizontal = 3
 focus_mode = 1
 mouse_filter = 1
 script = ExtResource("2_aucxm")
@@ -86,15 +96,15 @@ hover_stylebox = SubResource("StyleBoxFlat_fnyvh")
 focus_stylebox = SubResource("StyleBoxFlat_xcqgp")
 code_font_tooltip = true
 
-[connection signal="focus_exited" from="FirstRow/X1" to="." method="_on_focus_exited"]
-[connection signal="text_submitted" from="FirstRow/X1" to="." method="_on_text_submitted"]
-[connection signal="focus_exited" from="FirstRow/Y1" to="." method="_on_focus_exited"]
-[connection signal="text_submitted" from="FirstRow/Y1" to="." method="_on_text_submitted"]
-[connection signal="focus_exited" from="FirstRow/Z1" to="." method="_on_focus_exited"]
-[connection signal="text_submitted" from="FirstRow/Z1" to="." method="_on_text_submitted"]
-[connection signal="focus_exited" from="SecondRow/X2" to="." method="_on_focus_exited"]
-[connection signal="text_submitted" from="SecondRow/X2" to="." method="_on_text_submitted"]
-[connection signal="focus_exited" from="SecondRow/Y2" to="." method="_on_focus_exited"]
-[connection signal="text_submitted" from="SecondRow/Y2" to="." method="_on_text_submitted"]
-[connection signal="focus_exited" from="SecondRow/Z2" to="." method="_on_focus_exited"]
-[connection signal="text_submitted" from="SecondRow/Z2" to="." method="_on_text_submitted"]
+[connection signal="focus_exited" from="VBox/FirstRow/X1" to="." method="_on_focus_exited"]
+[connection signal="text_submitted" from="VBox/FirstRow/X1" to="." method="_on_text_submitted"]
+[connection signal="focus_exited" from="VBox/FirstRow/Y1" to="." method="_on_focus_exited"]
+[connection signal="text_submitted" from="VBox/FirstRow/Y1" to="." method="_on_text_submitted"]
+[connection signal="focus_exited" from="VBox/FirstRow/Z1" to="." method="_on_focus_exited"]
+[connection signal="text_submitted" from="VBox/FirstRow/Z1" to="." method="_on_text_submitted"]
+[connection signal="focus_exited" from="VBox/SecondRow/X2" to="." method="_on_focus_exited"]
+[connection signal="text_submitted" from="VBox/SecondRow/X2" to="." method="_on_text_submitted"]
+[connection signal="focus_exited" from="VBox/SecondRow/Y2" to="." method="_on_focus_exited"]
+[connection signal="text_submitted" from="VBox/SecondRow/Y2" to="." method="_on_text_submitted"]
+[connection signal="focus_exited" from="VBox/SecondRow/Z2" to="." method="_on_focus_exited"]
+[connection signal="text_submitted" from="VBox/SecondRow/Z2" to="." method="_on_text_submitted"]
