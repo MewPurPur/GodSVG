@@ -164,17 +164,7 @@ static func filter_descendant_tids(tids: Array[PackedInt32Array]) -> Array[Packe
 		else:
 			last_accepted = new_tids[i]
 			i += 1
-	
 	return new_tids
-
-# [0] > [1] > [1, 2] > [2]
-static func sort_tids(tids: Array[PackedInt32Array]) -> Array[PackedInt32Array]:
-	var new_tids: Array[PackedInt32Array] = tids.duplicate()
-	new_tids.sort_custom(Utils.compare_tids)
-	return new_tids
-
-static func get_viewbox_zoom(viewbox: Rect2, width: float, height: float) -> float:
-	return minf(width / viewbox.size.x, height / viewbox.size.y)
 
 
 static func is_event_drag(event: InputEvent) -> bool:

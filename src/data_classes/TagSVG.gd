@@ -210,8 +210,8 @@ func move_tags_to(tids: Array[PackedInt32Array], to: PackedInt32Array) -> void:
 		if Utils.is_tid_parent(tid, to):
 			tids.erase(tid)
 	var tids_presort_reference := tids.duplicate()
-	tids = Utils.sort_tids(tids)
-	tids.reverse()
+	tids.sort_custom(Utils.compare_tids_r)
+	
 	var to_parent_tids: PackedInt32Array = Utils.get_parent_tid(to)
 	var to_parent_tag: Tag = get_by_tid(to_parent_tids)
 	var reference_pos_tag: Tag = get_by_tid(to)
