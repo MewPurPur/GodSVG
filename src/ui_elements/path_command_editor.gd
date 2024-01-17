@@ -1,6 +1,13 @@
 ## An editor for a single path command.
 extends MarginContainer
 
+@export var absolute_button_normal: StyleBoxFlat
+@export var absolute_button_hovered: StyleBoxFlat
+@export var absolute_button_pressed: StyleBoxFlat
+@export var relative_button_normal: StyleBoxFlat
+@export var relative_button_hovered: StyleBoxFlat
+@export var relative_button_pressed: StyleBoxFlat
+
 signal cmd_update_value(idx: int, new_value: float, property: StringName)
 signal cmd_delete(idx: int)
 signal cmd_toggle_relative(idx: int)
@@ -251,18 +258,6 @@ func _ready() -> void:
 
 # Helpers
 
-func create_stylebox(inside_color: Color, border_color: Color) -> StyleBoxFlat:
-	var new_stylebox := StyleBoxFlat.new()
-	new_stylebox.bg_color = inside_color
-	new_stylebox.border_color = border_color
-	new_stylebox.set_border_width_all(2)
-	new_stylebox.set_corner_radius_all(4)
-	new_stylebox.content_margin_bottom = 0.5
-	new_stylebox.content_margin_top = 0.5
-	new_stylebox.content_margin_left = 5
-	new_stylebox.content_margin_right = 5
-	return new_stylebox
-
 func setup_relative_button() -> void:
 	relative_button.text = cmd_char
 	relative_button.pressed.connect(toggle_relative)
@@ -270,21 +265,15 @@ func setup_relative_button() -> void:
 	if Utils.is_string_upper(cmd_char):
 		relative_button.tooltip_text = "%s (%s)" %\
 				[Utils.path_command_char_dict[cmd_char.to_upper()], tr(&"absolute")]
-		relative_button.add_theme_stylebox_override(&"normal", create_stylebox(
-				Color.from_hsv(0.08, 0.8, 0.8), Color.from_hsv(0.1, 0.6, 0.9)))
-		relative_button.add_theme_stylebox_override(&"hover", create_stylebox(
-				Color.from_hsv(0.09, 0.75, 0.9), Color.from_hsv(0.11, 0.55, 0.95)))
-		relative_button.add_theme_stylebox_override(&"pressed", create_stylebox(
-				Color.from_hsv(0.11, 0.6, 1.0), Color.from_hsv(0.13, 0.4, 1.0)))
+		relative_button.add_theme_stylebox_override(&"normal", absolute_button_normal)
+		relative_button.add_theme_stylebox_override(&"hover", absolute_button_hovered)
+		relative_button.add_theme_stylebox_override(&"pressed", absolute_button_pressed)
 	else:
 		relative_button.tooltip_text = "%s (%s)" %\
 				[Utils.path_command_char_dict[cmd_char.to_upper()], tr(&"relative")]
-		relative_button.add_theme_stylebox_override(&"normal", create_stylebox(
-				Color.from_hsv(0.8, 0.8, 0.8), Color.from_hsv(0.78, 0.6, 0.9)))
-		relative_button.add_theme_stylebox_override(&"hover", create_stylebox(
-				Color.from_hsv(0.79, 0.75, 0.9), Color.from_hsv(0.77, 0.55, 0.95)))
-		relative_button.add_theme_stylebox_override(&"pressed", create_stylebox(
-				Color.from_hsv(0.77, 0.6, 1.0), Color.from_hsv(0.75, 0.4, 1.0)))
+		relative_button.add_theme_stylebox_override(&"normal", relative_button_normal)
+		relative_button.add_theme_stylebox_override(&"hover", relative_button_hovered)
+		relative_button.add_theme_stylebox_override(&"pressed", relative_button_pressed)
 	relative_button.end_bulk_theme_override()
 
 
