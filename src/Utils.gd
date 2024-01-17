@@ -151,15 +151,20 @@ static func get_parent_tid(tid: PackedInt32Array) -> PackedInt32Array:
 	return parent_tid
 
 # Filter out all descendants.
-static func filter_tids_descendant(tids: Array[PackedInt32Array]) -> Array[PackedInt32Array]:
+static func filter_descendant_tids(tids: Array[PackedInt32Array]) -> Array[PackedInt32Array]:
 	var new_tids: Array[PackedInt32Array] = tids.duplicate()
-	new_tids = new_tids.filter(func(tid:PackedInt32Array):
-		var check_tid: PackedInt32Array = []
-		for part in tid:
-			check_tid.append(part)
-			if check_tid in new_tids and check_tid != tid and is_tid_parent(check_tid, tid):
-				return false
-		return true)
+	new_tids.sort_custom(Utils.compare_tids_r)
+	# Linear scan to filter out the descendants.
+	var last_accepted := new_tids[0]
+	var i := 1
+	while i < new_tids.size():
+		var tid := new_tids[i]
+		if Utils.is_tid_parent(last_accepted, tid) or last_accepted == tid:
+			new_tids.remove_at(i)
+		else:
+			last_accepted = new_tids[i]
+			i += 1
+	
 	return new_tids
 
 # [0] > [1] > [1, 2] > [2]

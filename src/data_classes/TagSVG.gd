@@ -140,19 +140,7 @@ func delete_tags(tids: Array[PackedInt32Array]) -> void:
 	if tids.is_empty():
 		return
 	
-	tids.sort_custom(Utils.compare_tids_r)
-	# Linear scan to get the minimal set of TIDs to remove.
-	var last_accepted := tids[0]
-	var i := 1
-	while i < tids.size():
-		var tid := tids[i]
-		if Utils.is_tid_parent(last_accepted, tid) or last_accepted == tid:
-			tids.remove_at(i)
-		else:
-			last_accepted = tids[i]
-			i += 1
-	
-	# Delete the remaining tags.
+	tids = Utils.filter_descendant_tids(tids)
 	for tid in tids:
 		var parent_tid := Utils.get_parent_tid(tid)
 		var parent_tag := get_by_tid(parent_tid)
@@ -168,20 +156,8 @@ func move_tags_in_parent(tids: Array[PackedInt32Array], down: bool) -> void:
 	if tids.is_empty():
 		return
 	
-	tids = tids.duplicate()
-	tids.sort_custom(Utils.compare_tids_r)
-	# Linear scan to get the minimal set of TIDs to move.
-	var last_accepted := tids[0]
-	var i := 1
-	while i < tids.size():
-		var tid := tids[i]
-		if Utils.is_tid_parent(last_accepted, tid) or last_accepted == tid:
-			tids.remove_at(i)
-		else:
-			last_accepted = tids[i]
-			i += 1
-	
 	# For moving, all these tags must be direct children of the same parent.
+	tids = Utils.filter_descendant_tids(tids)
 	var depth := tids[0].size()
 	var parent_tid := Utils.get_parent_tid(tids[0])
 	for tid in tids:
@@ -199,7 +175,7 @@ func move_tags_in_parent(tids: Array[PackedInt32Array], down: bool) -> void:
 		old_indices.append(k)
 	# Do the moving.
 	if down:
-		i = parent_child_count - 1
+		var i := parent_child_count - 1
 		while i >= 0:
 			if not i in tid_indices and (i - 1) in tid_indices:
 				old_indices.remove_at(i)
@@ -211,7 +187,7 @@ func move_tags_in_parent(tids: Array[PackedInt32Array], down: bool) -> void:
 				parent_tag.child_tags.insert(i, moved_tag)
 			i -= 1
 	else:
-		i = 0
+		var i := 0
 		while i < parent_child_count:
 			if not i in tid_indices and (i + 1) in tid_indices:
 				old_indices.remove_at(i)
@@ -229,11 +205,11 @@ func move_tags_in_parent(tids: Array[PackedInt32Array], down: bool) -> void:
 
 # Moves tags to an arbitrary position. The first moved tag will move to the "to" TID.
 func move_tags_to(tids: Array[PackedInt32Array], to: PackedInt32Array) -> void:
-	tids = Utils.filter_tids_descendant(tids)
+	tids = Utils.filter_descendant_tids(tids)
 	for tid in tids:
-		if Utils.is_tid_parent(tid,to):
+		if Utils.is_tid_parent(tid, to):
 			tids.erase(tid)
-	var tids_resort_reference := tids.duplicate()
+	var tids_presort_reference := tids.duplicate()
 	tids = Utils.sort_tids(tids)
 	tids.reverse()
 	var to_parent_tids: PackedInt32Array = Utils.get_parent_tid(to)
@@ -248,7 +224,7 @@ func move_tags_to(tids: Array[PackedInt32Array], to: PackedInt32Array) -> void:
 		tags_to_sort[tid] = tag
 	# Sort to original order.
 	var tags_to_move: Array[Tag] = []
-	for tid in tids_resort_reference:
+	for tid in tids_presort_reference:
 		if tid in tags_to_sort:
 			tags_to_move.append(tags_to_sort[tid])
 	var reference_pos: int = -1
@@ -273,18 +249,7 @@ func duplicate_tags(tids: Array[PackedInt32Array]) -> void:
 	if tids.is_empty():
 		return
 	
-	tids.sort_custom(Utils.compare_tids_r)
-	# Linear scan to get the minimal set of TIDs to duplicate.
-	var last_accepted := tids[0]
-	var i := 1
-	while i < tids.size():
-		var tid := tids[i]
-		if Utils.is_tid_parent(last_accepted, tid) or last_accepted == tid:
-			tids.remove_at(i)
-		else:
-			last_accepted = tids[i]
-			i += 1
-	
+	tids = Utils.filter_descendant_tids(tids)
 	var tids_added: Array[PackedInt32Array] = []
 	# Used to offset previously added TIDs in tids_added after duplicating a tag before.
 	var last_parent := PackedInt32Array([-1])  # Start with a TID that can't be matched.
