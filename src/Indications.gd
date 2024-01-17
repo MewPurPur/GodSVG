@@ -272,9 +272,10 @@ func _on_tags_deleted(tids: Array[PackedInt32Array]) -> void:
 	tids = tids.duplicate()  # For some reason, it breaks without this.
 	var old_selected_tids := selected_tids.duplicate()
 	for deleted_tid in tids:
-		for tid in selected_tids:
+		for i in range(selected_tids.size() - 1, -1, -1):
+			var tid := selected_tids[i]
 			if Utils.is_tid_parent(deleted_tid, tid) or deleted_tid == tid:
-				selected_tids.erase(tid)
+				selected_tids.remove_at(i)
 	if old_selected_tids != selected_tids:
 		selection_changed.emit()
 
