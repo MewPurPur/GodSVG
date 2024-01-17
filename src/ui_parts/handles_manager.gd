@@ -691,10 +691,10 @@ func _unhandled_input(event: InputEvent) -> void:
 			if hovered_handle is PathHandle:
 				inner_idx = hovered_handle.command_index
 			
-			if event.double_click:
+			if event.double_click and hovered_handle is PathHandle:
 				Indications.clear_inner_selection()
 				var subpath_range: Vector2i =\
-						SVG.root_tag.get_by_tid(dragged_tid).attributes.d.get_subpath(inner_idx)
+						hovered_handle.path_attribute.get_subpath(inner_idx)
 				for idx in range(subpath_range.x, subpath_range.y + 1):
 					Indications.ctrl_select(dragged_tid, idx)
 			elif event.ctrl_pressed:
