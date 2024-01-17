@@ -103,7 +103,7 @@ func _get_drag_data(_at_position: Vector2) -> Variant:
 	var data: Array[PackedInt32Array] = [tid.duplicate()]
 	if tid in Indications.selected_tids:
 		data = Indications.selected_tids.duplicate(true)
-	data = Utils.filter_tids_descendant(data)
+	data = Utils.filter_descendant_tids(data)
 	var tags_container := VBoxContainer.new()
 	for drag_tid in data:
 		var preview := TagEditor.instantiate()
