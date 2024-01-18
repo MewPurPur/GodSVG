@@ -19,15 +19,29 @@ static func is_valid(color: String) -> bool:
 			is_valid_url(color)
 
 static func is_valid_hex(color: String) -> bool:
+	color = color.strip_edges()
 	return color.is_valid_html_color()
 
 static func is_valid_rgb(color: String) -> bool:
-	return color.begins_with("rgb(") and color.ends_with(")")
+	color = color.strip_edges()
+	if not color.begins_with("rgb(") or not color.ends_with(")"):
+		return false
+	
+	var channels_str := color.substr(4, color.length() - 5)
+	var channels := channels_str.split(",")
+	if channels.size() == 3 or channels.size() == 4:
+		for channel in channels:
+			if not channel.strip_edges().is_valid_float():
+				return false
+		return true
+	return false
 
 static func is_valid_named(color: String) -> bool:
+	color = color.strip_edges()
 	return color == "none" or AttributeColor.named_colors.has(color)
 
 static func is_valid_url(color: String) -> bool:
+	color = color.strip_edges()
 	return color.begins_with("url(#") and color.ends_with(")")
 
 static func get_color_from_non_url(color: String) -> Color:
