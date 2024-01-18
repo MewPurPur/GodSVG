@@ -279,7 +279,7 @@ func _on_tags_deleted(tids: Array[PackedInt32Array]) -> void:
 	if old_selected_tids != selected_tids:
 		selection_changed.emit()
 
-# If selected tags were moved, change the TIDs and their children.
+# If selected tags were moved up or down, change the TIDs and their children.
 func _on_tags_moved_in_parent(parent_tid: PackedInt32Array, indices: Array[int]) -> void:
 	var old_selected_tids := selected_tids.duplicate()
 	var tids_to_select: Array[PackedInt32Array] = []
@@ -307,11 +307,22 @@ func _on_tags_moved_in_parent(parent_tid: PackedInt32Array, indices: Array[int])
 	if old_selected_tids != selected_tids:
 		selection_changed.emit()
 
-func _on_tags_moved_to(new_tids: Array[PackedInt32Array]) -> void:
-	# FIXME The contributor that implemented tag drag & drop couldn't implement this.
-	# For now I'm clearing all selections to avoid crashes.
-	clear_all_selections()
-	selection_changed.emit()
+# If selected tags were moved to a location, change the TIDs and their children.
+func _on_tags_moved_to(tids: Array[PackedInt32Array], location: PackedInt32Array) -> void:
+	tids = tids.duplicate()
+	var old_selected_tids := selected_tids.duplicate()
+	for moved_idx in tids.size():
+		var moved_tid := tids[moved_idx]
+		for i in range(selected_tids.size() - 1, -1, -1):
+			var tid := selected_tids[i]
+			if Utils.is_tid_parent(moved_tid, tid) or moved_tid == tid:
+				var new_location := Utils.get_parent_tid(location)
+				new_location.append(moved_idx + location[-1])
+				for ii in range(moved_tid.size(), tid.size()):
+					new_location.append(tid[i])
+				selected_tids[i] = new_location
+	if old_selected_tids != selected_tids:
+		selection_changed.emit()
 
 
 func _unhandled_input(event: InputEvent) -> void:
