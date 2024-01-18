@@ -1,7 +1,15 @@
 class_name TransformParser extends RefCounted
 
 static func transform_to_text(transform: Transform2D) -> String:
-	var output := "matrix(%s, %s, %s, %s, %s, %s)"%[transform[0].x, transform[0].y, transform[1].x, transform[1].y, transform[2].x, transform[2].y]
+	var output := "matrix(%s, %s, %s, %s, %s, %s)"%[
+		String.num(transform[0].x, 4),
+		String.num(transform[0].y, 4),
+		String.num(transform[1].x, 4),
+		String.num(transform[1].y, 4),
+		String.num(transform[2].x, 4),
+		String.num(transform[2].y, 4),
+	]
+	
 	return output
 
 static func text_to_transform(text: String) -> Transform2D:
