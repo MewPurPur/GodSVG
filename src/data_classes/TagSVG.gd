@@ -16,7 +16,7 @@ signal changed_unknown
 signal tags_added(tids: Array[PackedInt32Array])
 signal tags_deleted(tids: Array[PackedInt32Array])
 signal tags_moved_in_parent(parent_tid: PackedInt32Array, old_indices: Array[int])
-signal tags_moved_to(new_tids: Array[PackedInt32Array])
+signal tags_moved_to(tids: Array[PackedInt32Array], location: PackedInt32Array)
 signal tag_changed(tid: PackedInt32Array)
 signal tag_layout_changed  # Emitted together with any of the above 5.
 
@@ -203,46 +203,29 @@ func move_tags_in_parent(tids: Array[PackedInt32Array], down: bool) -> void:
 		tags_moved_in_parent.emit(parent_tid, old_indices)
 		tag_layout_changed.emit()
 
-# Moves tags to an arbitrary position. The first moved tag will move to the "to" TID.
-func move_tags_to(tids: Array[PackedInt32Array], to: PackedInt32Array) -> void:
+# Moves tags to an arbitrary position. The first moved tag will move to the location TID.
+func move_tags_to(tids: Array[PackedInt32Array], location: PackedInt32Array) -> void:
 	tids = Utils.filter_descendant_tids(tids)
-	for tid in tids:
-		if Utils.is_tid_parent(tid, to):
-			tids.erase(tid)
-	var tids_presort_reference := tids.duplicate()
-	tids.sort_custom(Utils.compare_tids_r)
+	# A tag can't move deeper inside itself. Remove the descendants of the location.
+	for i in range(tids.size() - 1, -1, -1):
+		if Utils.is_tid_parent(tids[i], location):
+			tids.remove_at(i)
 	
-	var to_parent_tids: PackedInt32Array = Utils.get_parent_tid(to)
-	var to_parent_tag: Tag = get_by_tid(to_parent_tids)
-	var reference_pos_tag: Tag = get_by_tid(to)
-	var tags_to_sort := {}
-	# Remove tags.
+	# Remove tags from their old locations.
+	var tags_stored: Array[Tag] = []
 	for tid in tids:
-		var parent_tid := Utils.get_parent_tid(tid)
-		var parent_tag: Tag = get_by_tid(parent_tid)
-		var tag: Tag = parent_tag.child_tags.pop_at(tid[-1])
-		tags_to_sort[tid] = tag
-	# Sort to original order.
-	var tags_to_move: Array[Tag] = []
-	for tid in tids_presort_reference:
-		if tid in tags_to_sort:
-			tags_to_move.append(tags_to_sort[tid])
-	var reference_pos: int = -1
-	if reference_pos_tag:
-		reference_pos = to_parent_tag.child_tags.find(reference_pos_tag)
-	# Add back removed tags.
-	var shift_pos = 0
-	var new_tids: Array[PackedInt32Array] = []
-	for tag in tags_to_move:
-		if reference_pos_tag and reference_pos > -1:
-			to_parent_tag.child_tags.insert(reference_pos + shift_pos, tag)
-		else:
-			to_parent_tag.child_tags.append(tag)
-		var new_tid: PackedInt32Array = to_parent_tids.duplicate()
-		new_tid.append(to_parent_tag.child_tags.find(tag))
-		new_tids.append(new_tid)
-		shift_pos += 1
-	tags_moved_to.emit(new_tids)
+		# Shift the new location if tags before it were removed.
+		if tid.size() < location.size():
+			for i in tid.size():
+				if tid[i] != location[i]:
+					if tid[i] < location[i]:
+						location[i] -= 1
+					break
+		tags_stored.append(get_by_tid(Utils.get_parent_tid(tid)).child_tags.pop_at(tid[-1]))
+	# Add them back in the new location.
+	for tag in tags_stored:
+		get_by_tid(Utils.get_parent_tid(location)).child_tags.insert(location[-1], tag)
+	tags_moved_to.emit(tids, location)
 	tag_layout_changed.emit()
 
 func duplicate_tags(tids: Array[PackedInt32Array]) -> void:
