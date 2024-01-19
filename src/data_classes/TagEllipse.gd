@@ -3,11 +3,12 @@ class_name TagEllipse extends Tag
 
 const name = "ellipse"
 const possible_conversions = ["circle", "rect", "path"]
-const known_attributes = ["cx", "cy", "rx", "ry",
+const known_attributes = ["transform", "cx", "cy", "rx", "ry",
 		"opacity", "fill", "fill-opacity", "stroke", "stroke-opacity", "stroke-width"]
 
 func _init() -> void:
 	attributes = {
+		"transform": AttributeTransform.new("matrix(1.0, 0.0, 0.0, 1.0, 0.0, 0.0)"),
 		"cx": AttributeNumeric.new(AttributeNumeric.Mode.FLOAT, "0"),
 		"cy": AttributeNumeric.new(AttributeNumeric.Mode.FLOAT, "0"),
 		"rx": AttributeNumeric.new(AttributeNumeric.Mode.UFLOAT, "0", "1"),

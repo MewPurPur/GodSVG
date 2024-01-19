@@ -2,13 +2,15 @@
 class_name PathHandle extends Handle
 
 var path_attribute: AttributePath
+var t_attribute: AttributeTransform
 var command_index: int
 var x_param: StringName
 var y_param: StringName
 
-func _init(id: PackedInt32Array, path_ref: Attribute, command_idx: int,
+func _init(id: PackedInt32Array, path_ref: Attribute, t_ref: AttributeTransform, command_idx: int,
 x_name := &"x", y_name := &"y") -> void:
 	path_attribute = path_ref
+	t_attribute = t_ref
 	tid = id
 	command_index = command_idx
 	x_param = x_name
@@ -54,3 +56,4 @@ func sync() -> void:
 		pos.y = command.start.y + command_y if command.relative else command_y
 	else:
 		pos.y = command.start.y
+	transform = t_attribute.get_transform()
