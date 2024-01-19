@@ -7,6 +7,7 @@ const unknown_icon = preload("res://visual/icons/tag/unknown.svg")
 
 const ContextPopup = preload("res://src/ui_elements/context_popup.tscn")
 const TagEditor = preload("tag_editor.tscn")
+const TransformField = preload("res://src/ui_elements/transform_field.tscn")
 const NumberField = preload("res://src/ui_elements/number_field.tscn")
 const NumberSlider = preload("res://src/ui_elements/number_field_with_slider.tscn")
 const ColorField = preload("res://src/ui_elements/color_field.tscn")
@@ -58,7 +59,9 @@ func _ready() -> void:
 	for attribute_key in tag.attributes:
 		var attribute: Attribute = tag.attributes[attribute_key]
 		var input_field: Control
-		if attribute is AttributeNumeric:
+		if attribute is AttributeTransform:
+			input_field = TransformField.instantiate()
+		elif attribute is AttributeNumeric:
 			match attribute.mode:
 				AttributeNumeric.Mode.FLOAT:
 					input_field = NumberField.instantiate()

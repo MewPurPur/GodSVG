@@ -67,22 +67,22 @@ func update_handles() -> void:
 		var tag := SVG.root_tag.get_by_tid(tid)
 		match tag.name:
 			"circle":
-				handles.append(generate_xy_handle(tid, tag, "cx", "cy"))
-				handles.append(generate_delta_handle(tid, tag, "cx", "cy", "r", true))
+				handles.append(generate_xy_handle(tid, tag, "cx", "cy", "transform"))
+				handles.append(generate_delta_handle(tid, tag, "cx", "cy", "transform", "r", true))
 			"ellipse":
-				handles.append(generate_xy_handle(tid, tag, "cx", "cy"))
-				handles.append(generate_delta_handle(tid, tag, "cx", "cy", "rx", true))
-				handles.append(generate_delta_handle(tid, tag, "cx", "cy", "ry", false))
+				handles.append(generate_xy_handle(tid, tag, "cx", "cy", "transform"))
+				handles.append(generate_delta_handle(tid, tag, "cx", "cy", "transform", "rx", true))
+				handles.append(generate_delta_handle(tid, tag, "cx", "cy", "transform", "ry", false))
 			"rect":
-				handles.append(generate_xy_handle(tid, tag, "x", "y"))
-				handles.append(generate_xy_handle(tid, tag, "x", "y"))
-				handles.append(generate_delta_handle(tid, tag, "x", "y", "width", true))
-				handles.append(generate_delta_handle(tid, tag, "x", "y", "height", false))
+				handles.append(generate_xy_handle(tid, tag, "x", "y", "transform"))
+				handles.append(generate_xy_handle(tid, tag, "x", "y", "transform"))
+				handles.append(generate_delta_handle(tid, tag, "x", "y", "transform", "width", true))
+				handles.append(generate_delta_handle(tid, tag, "x", "y", "transform", "height", false))
 			"line":
-				handles.append(generate_xy_handle(tid, tag, "x1", "y1"))
-				handles.append(generate_xy_handle(tid, tag, "x2", "y2"))
+				handles.append(generate_xy_handle(tid, tag, "x1", "y1", "transform"))
+				handles.append(generate_xy_handle(tid, tag, "x2", "y2", "transform"))
 			"path":
-				handles += generate_path_handles(tid, tag.attributes.d)
+				handles += generate_path_handles(tid, tag.attributes.d, tag.attributes.transform)
 	queue_redraw()
 
 
@@ -101,38 +101,38 @@ func sync_handles() -> void:
 	for tid in tids:
 		var tag := SVG.root_tag.get_by_tid(tid)
 		if tag.name == "path":
-			handles += generate_path_handles(tid, tag.attributes.d)
+			handles += generate_path_handles(tid, tag.attributes.d, tag.attributes.transform)
 	queue_redraw()
 
 func generate_path_handles(tid: PackedInt32Array,
-path_attribute: AttributePath) -> Array[Handle]:
+path_attribute: AttributePath, transform_attribute: AttributeTransform) -> Array[Handle]:
 	var path_handles: Array[Handle] = []
 	for idx in path_attribute.get_command_count():
 		var path_command := path_attribute.get_command(idx)
 		if path_command.command_char.to_upper() != "Z":
-			path_handles.append(PathHandle.new(tid, path_attribute, idx))
+			path_handles.append(PathHandle.new(tid, path_attribute, transform_attribute, idx))
 			if path_command.command_char.to_upper() in "CQ":
-				var tangent := PathHandle.new(tid, path_attribute, idx, &"x1", &"y1")
+				var tangent := PathHandle.new(tid, path_attribute, transform_attribute, idx, &"x1", &"y1")
 				tangent.display_mode = Handle.Display.SMALL
 				path_handles.append(tangent)
 			if path_command.command_char.to_upper() in "CS":
-				var tangent := PathHandle.new(tid, path_attribute, idx, &"x2", &"y2")
+				var tangent := PathHandle.new(tid, path_attribute, transform_attribute, idx, &"x2", &"y2")
 				tangent.display_mode = Handle.Display.SMALL
 				path_handles.append(tangent)
 	return path_handles
 
 # The place where these are used, a tag is already at hand, so no need to find it.
 func generate_xy_handle(tid: PackedInt32Array, tag: Tag, x_attrib_name: String,\
-y_attrib_name: String) -> XYHandle:
+y_attrib_name: String, t_attrib_name: String) -> XYHandle:
 	var new_handle := XYHandle.new(tid, tag.attributes[x_attrib_name],
-			tag.attributes[y_attrib_name])
+			tag.attributes[y_attrib_name], tag.attributes[t_attrib_name])
 	new_handle.tag = tag
 	return new_handle
 
 func generate_delta_handle(tid: PackedInt32Array, tag: Tag, x_attrib_name: String,\
-y_attrib_name: String, delta_attrib_name: String, horizontal: bool) -> DeltaHandle:
+y_attrib_name: String, t_attrib_name: String, delta_attrib_name: String, horizontal: bool) -> DeltaHandle:
 	var new_handle := DeltaHandle.new(tid, tag.attributes[x_attrib_name],
-			tag.attributes[y_attrib_name], tag.attributes[delta_attrib_name], horizontal)
+			tag.attributes[y_attrib_name], tag.attributes[t_attrib_name], tag.attributes[delta_attrib_name], horizontal)
 	new_handle.tag = tag
 	return new_handle
 
@@ -171,6 +171,8 @@ func _draw() -> void:
 					points[i] = c + Vector2(cos(d), sin(d)) * r
 				points[180] = points[0]
 				var extras := PackedVector2Array([c, c + Vector2(r, 0)])
+				points = attribs.transform.get_transform() * points
+				extras = attribs.transform.get_transform() * extras
 				
 				if tag_hovered and tag_selected:
 					hovered_selected_polylines.append(points)
@@ -198,6 +200,8 @@ func _draw() -> void:
 				points[180] = points[0]
 				var extras := PackedVector2Array([
 						c, c + Vector2(rx, 0), c, c + Vector2(0, ry)])
+				points = attribs.transform.get_transform() * points
+				extras = attribs.transform.get_transform() * extras
 				
 				if tag_hovered and tag_selected:
 					hovered_selected_polylines.append(points)
@@ -258,6 +262,8 @@ func _draw() -> void:
 					points[185] = points[0]
 				var extras := PackedVector2Array([Vector2(x, y), Vector2(x + rect_width, y),
 						Vector2(x, y), Vector2(x, y + rect_height)])
+				points = attribs.transform.get_transform() * points
+				extras = attribs.transform.get_transform() * extras
 				
 				if tag_hovered and tag_selected:
 					hovered_selected_polylines.append(points)
@@ -279,6 +285,7 @@ func _draw() -> void:
 				var y2: float = attribs.y2.get_num()
 				
 				var points := PackedVector2Array([Vector2(x1, y1), Vector2(x2, y2)])
+				points = attribs.transform.get_transform() * points
 				
 				if tag_hovered and tag_selected:
 					hovered_selected_polylines.append(points)
@@ -520,7 +527,8 @@ func _draw() -> void:
 							
 							points = PackedVector2Array([cmd.start, end])
 						_: continue
-					
+					points = attribs.transform.get_transform() * points
+					tangent_points = attribs.transform.get_transform() * tangent_points
 					match current_mode:
 						Utils.InteractionType.NONE:
 							normal_polylines.append(points.duplicate())
@@ -583,19 +591,19 @@ func _draw() -> void:
 	RenderingServer.canvas_item_clear(surface)
 	for handle in normal_handles:
 		var texture: Texture2D = normal_handle_textures[handle.display_mode]
-		texture.draw(surface, SVG.root_tag.canvas_to_world(handle.pos) *\
+		texture.draw(surface, SVG.root_tag.canvas_to_world(handle.transform * handle.pos) *\
 				Indications.zoom - texture.get_size() / 2)
 	for handle in selected_handles:
 		var texture: Texture2D = selected_handle_textures[handle.display_mode]
-		texture.draw(surface, SVG.root_tag.canvas_to_world(handle.pos) *\
+		texture.draw(surface, SVG.root_tag.canvas_to_world(handle.transform * handle.pos) *\
 				Indications.zoom - texture.get_size() / 2)
 	for handle in hovered_handles:
 		var texture: Texture2D = hovered_handle_textures[handle.display_mode]
-		texture.draw(surface, SVG.root_tag.canvas_to_world(handle.pos) *\
+		texture.draw(surface, SVG.root_tag.canvas_to_world(handle.transform * handle.pos) *\
 				Indications.zoom - texture.get_size() / 2)
 	for handle in hovered_selected_handles:
 		var texture: Texture2D = hovered_selected_handle_textures[handle.display_mode]
-		texture.draw(surface, SVG.root_tag.canvas_to_world(handle.pos) *\
+		texture.draw(surface, SVG.root_tag.canvas_to_world(handle.transform * handle.pos) *\
 				Indications.zoom - texture.get_size() / 2)
 
 # TODO remove this when it's implemented in Godot.
@@ -648,9 +656,10 @@ func _unhandled_input(event: InputEvent) -> void:
 				get_node(^"../..").view.position
 		if dragged_handle != null:
 			# Move the handle that's being dragged.
-			var new_pos := SVG.root_tag.world_to_canvas(event_pos)
 			if snap_enabled:
-				new_pos = new_pos.snapped(snap_vector)
+				event_pos = event_pos.snapped(snap_vector)
+			
+			var new_pos := dragged_handle.transform.affine_inverse() * SVG.root_tag.world_to_canvas(event_pos)
 			dragged_handle.set_pos(new_pos)
 			was_handle_moved = true
 			accept_event()
@@ -706,9 +715,10 @@ func _unhandled_input(event: InputEvent) -> void:
 		
 		elif dragged_handle != null and event.is_released():
 			if was_handle_moved:
-				var new_pos := SVG.root_tag.world_to_canvas(event_pos)
 				if snap_enabled:
-					new_pos = new_pos.snapped(snap_vector)
+					event_pos = event_pos.snapped(snap_vector)
+			
+				var new_pos := dragged_handle.transform.affine_inverse() * SVG.root_tag.world_to_canvas(event_pos)
 				dragged_handle.set_pos(new_pos, true)
 				was_handle_moved = false
 			dragged_handle = null
@@ -724,7 +734,7 @@ func find_nearest_handle(event_pos: Vector2) -> Handle:
 	var nearest_dist_squared := 81 / (Indications.zoom * Indications.zoom)
 	for handle in handles:
 		var dist_to_handle_squared := event_pos.distance_squared_to(
-					SVG.root_tag.canvas_to_world(handle.pos))
+					SVG.root_tag.canvas_to_world(handle.transform * handle.pos))
 		if dist_to_handle_squared < nearest_dist_squared:
 			nearest_dist_squared = dist_to_handle_squared
 			nearest_handle = handle
@@ -738,10 +748,13 @@ func move_selected_to_mouse() -> void:
 				return
 			dragged_handle = handle
 			# Move the handle that's being dragged.
-			var new_pos := SVG.root_tag.world_to_canvas(get_global_mouse_position())
+			var mouse_position := get_global_mouse_position()
+			
 			var snap_size := absf(GlobalSettings.save_data.snap)
 			if GlobalSettings.save_data.snap > 0.0:
-				new_pos = new_pos.snapped(Vector2(snap_size, snap_size))
+				mouse_position = mouse_position.snapped(Vector2(snap_size, snap_size))
+			
+			var new_pos := dragged_handle.transform.affine_inverse() * SVG.root_tag.canvas_to_world(mouse_position)
 			dragged_handle.set_pos(new_pos)
 			was_handle_moved = true
 			return
