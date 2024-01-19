@@ -748,10 +748,13 @@ func move_selected_to_mouse() -> void:
 				return
 			dragged_handle = handle
 			# Move the handle that's being dragged.
-			var new_pos := dragged_handle.transform.affine_inverse() * get_global_mouse_position()
+			var mouse_position := get_global_mouse_position()
+			
 			var snap_size := absf(GlobalSettings.save_data.snap)
 			if GlobalSettings.save_data.snap > 0.0:
-				new_pos = new_pos.snapped(Vector2(snap_size, snap_size) / dragged_handle.transform.get_scale())
+				mouse_position = mouse_position.snapped(Vector2(snap_size, snap_size))
+			
+			var new_pos := dragged_handle.transform.affine_inverse() * SVG.root_tag.canvas_to_world(mouse_position)
 			dragged_handle.set_pos(new_pos)
 			was_handle_moved = true
 			return
