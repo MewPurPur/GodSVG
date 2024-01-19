@@ -3,11 +3,12 @@ class_name TagLine extends Tag
 
 const name = "line"
 const possible_conversions = ["path"]
-const known_attributes = ["x1", "y1", "x2", "y2",
+const known_attributes = ["transform", "x1", "y1", "x2", "y2",
 		"opacity", "stroke", "stroke-opacity", "stroke-width", "stroke-linecap"]
 
 func _init() -> void:
 	attributes = {
+		"transform": AttributeTransform.new("matrix(1.0, 0.0, 0.0, 1.0, 0.0, 0.0)"),
 		"x1": AttributeNumeric.new(AttributeNumeric.Mode.FLOAT, "0"),
 		"y1": AttributeNumeric.new(AttributeNumeric.Mode.FLOAT, "0"),
 		"x2": AttributeNumeric.new(AttributeNumeric.Mode.FLOAT, "0"),
