@@ -12,6 +12,7 @@ const authors: Array[String] = [
 	"ajreckof",
 	"aladvs",
 	"Alex2782",
+	"DevPoodle",
 	"ilikefrogs101",
 	"Kiisu-Master",
 	"MewPurPur",
