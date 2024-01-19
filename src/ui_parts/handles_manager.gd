@@ -656,7 +656,10 @@ func _unhandled_input(event: InputEvent) -> void:
 				get_node(^"../..").view.position
 		if dragged_handle != null:
 			# Move the handle that's being dragged.
-			var new_pos := dragged_handle.transform.affine_inverse() * (event_pos if !snap_enabled else event_pos.snapped(snap_vector))
+			if snap_enabled:
+				event_pos = event_pos.snapped(snap_vector)
+			
+			var new_pos := dragged_handle.transform.affine_inverse() * SVG.root_tag.world_to_canvas(event_pos)
 			dragged_handle.set_pos(new_pos)
 			was_handle_moved = true
 			accept_event()
@@ -712,7 +715,10 @@ func _unhandled_input(event: InputEvent) -> void:
 		
 		elif dragged_handle != null and event.is_released():
 			if was_handle_moved:
-				var new_pos := dragged_handle.transform.affine_inverse() * (event_pos if !snap_enabled else event_pos.snapped(snap_vector))
+				if snap_enabled:
+					event_pos = event_pos.snapped(snap_vector)
+			
+				var new_pos := dragged_handle.transform.affine_inverse() * SVG.root_tag.world_to_canvas(event_pos)
 				dragged_handle.set_pos(new_pos, true)
 				was_handle_moved = false
 			dragged_handle = null

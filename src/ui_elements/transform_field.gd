@@ -7,12 +7,12 @@ var attribute_name: String
 
 const MatrixPopup = preload("res://src/ui_elements/matrix_popup.tscn")
 
-@onready var line_edit := $LineEdit
+@onready var line_edit : BetterLineEdit = $LineEdit
 
 func set_value(new_value: String, update_type := Utils.UpdateType.REGULAR) -> void:
 	var transform := TransformParser.text_to_transform(new_value)
 	
-	if attribute.default == TransformParser.transform_to_text(transform):
+	if TransformParser.text_to_transform(attribute.default) == transform:
 		new_value = attribute.default
 	else:
 		new_value = TransformParser.transform_to_text(transform)
