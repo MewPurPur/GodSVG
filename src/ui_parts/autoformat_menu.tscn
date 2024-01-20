@@ -21,7 +21,7 @@ corner_radius_bottom_right = 2
 corner_radius_bottom_left = 2
 
 [node name="AutoformatMenu" type="PanelContainer"]
-custom_minimum_size = Vector2(360, 206)
+custom_minimum_size = Vector2(440, 260)
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -178,6 +178,35 @@ text = "#remove_consecutive_commands"
 section_name = "autoformat"
 setting_name = "path_remove_consecutive_commands"
 
+[node name="#transforms" type="ScrollContainer" parent="VBoxContainer/BetterTabContainer"]
+visible = false
+layout_mode = 2
+horizontal_scroll_mode = 0
+
+[node name="TransformVBox" type="VBoxContainer" parent="VBoxContainer/BetterTabContainer/#transforms"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 0
+
+[node name="TransformEnable" parent="VBoxContainer/BetterTabContainer/#transforms/TransformVBox" instance=ExtResource("4_ic3rj")]
+layout_mode = 2
+text = "#enable_autoformatting"
+section_name = "autoformat"
+setting_name = "transform_enable_autoformatting"
+
+[node name="CompressNumbers" parent="VBoxContainer/BetterTabContainer/#transforms/TransformVBox" instance=ExtResource("4_ic3rj")]
+layout_mode = 2
+text = "#compress_numbers"
+section_name = "autoformat"
+setting_name = "transform_compress_numbers"
+
+[node name="MinimizeSpacing" parent="VBoxContainer/BetterTabContainer/#transforms/TransformVBox" instance=ExtResource("4_ic3rj")]
+layout_mode = 2
+text = "#minimize_spacing"
+section_name = "autoformat"
+setting_name = "transform_minimize_spacing"
+
 [node name="CancelButton" type="Button" parent="VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
@@ -201,4 +230,7 @@ text = "#close"
 [connection signal="pressed" from="VBoxContainer/BetterTabContainer/#paths/PathVBox/MinimizeSpacing" to="." method="_on_autoformat_settings_changed"]
 [connection signal="pressed" from="VBoxContainer/BetterTabContainer/#paths/PathVBox/RemoveSpacingAfterFlags" to="." method="_on_autoformat_settings_changed"]
 [connection signal="pressed" from="VBoxContainer/BetterTabContainer/#paths/PathVBox/RemoveConsecutiveCommands" to="." method="_on_autoformat_settings_changed"]
+[connection signal="pressed" from="VBoxContainer/BetterTabContainer/#transforms/TransformVBox/TransformEnable" to="." method="_on_autoformat_settings_changed"]
+[connection signal="pressed" from="VBoxContainer/BetterTabContainer/#transforms/TransformVBox/CompressNumbers" to="." method="_on_autoformat_settings_changed"]
+[connection signal="pressed" from="VBoxContainer/BetterTabContainer/#transforms/TransformVBox/MinimizeSpacing" to="." method="_on_autoformat_settings_changed"]
 [connection signal="pressed" from="VBoxContainer/CancelButton" to="." method="_on_cancel_button_pressed"]

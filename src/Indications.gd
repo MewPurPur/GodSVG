@@ -348,6 +348,10 @@ func _unhandled_input(event: InputEvent) -> void:
 					var path_attrib: AttributePath = tag_ref.attributes.d
 					for action_name in path_actions_dict.keys():
 						if event.is_action_pressed(action_name):
+							# Z after a Z is syntactically invalid.
+							if path_attrib.get_command(path_attrib.get_command_count() - 1) is\
+							PathCommand.CloseCommand and path_actions_dict[action_name] in "Zz":
+								return
 							path_attrib.insert_command(path_attrib.get_command_count(),
 									path_actions_dict[action_name])
 							normal_select(selected_tids[0], path_attrib.get_command_count() - 1)
@@ -357,8 +361,13 @@ func _unhandled_input(event: InputEvent) -> void:
 		
 		for action_name in path_actions_dict.keys():
 			if event.is_action_pressed(action_name):
-				var real_tag := SVG.root_tag.get_by_tid(semi_selected_tid)
-				real_tag.attributes.d.insert_command(inner_selections.max() + 1,
+				var path_attrib: AttributePath =\
+						SVG.root_tag.get_by_tid(semi_selected_tid).attributes.d
+				# Z after a Z is syntactically invalid.
+				if path_attrib.get_command(inner_selections.max()) is\
+				PathCommand.CloseCommand and path_actions_dict[action_name] in "Zz":
+					return
+				path_attrib.insert_command(inner_selections.max() + 1,
 						path_actions_dict[action_name])
 				normal_select(semi_selected_tid, inner_selections.max() + 1)
 				added_path_handle.emit()

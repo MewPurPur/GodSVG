@@ -95,6 +95,7 @@ func update_file_button() -> void:
 	var file_path := GlobalSettings.save_data.current_file_path
 	file_button.visible = !file_path.is_empty()
 	file_button.text = file_path.get_file()
+	file_button.tooltip_text = file_path.get_file()
 	Utils.set_max_text_width(file_button, 120.0, 12.0)
 	if not file_path.is_empty():
 		get_window().title = file_path.get_file() + " - GodSVG"
