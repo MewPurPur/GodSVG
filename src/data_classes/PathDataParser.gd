@@ -13,7 +13,6 @@ static func num_to_text(num: float, precision := 4) -> String:
 
 static func numstr_arr_to_text(numstr_arr: Array[String]) -> String:
 	var output := ""
-	
 	for i in numstr_arr.size() - 1:
 		var current_numstr := numstr_arr[i]
 		var next_char := numstr_arr[i + 1][0]
@@ -41,7 +40,7 @@ static func path_data_to_arrays(path_text: String) -> Array[Array]:
 		@warning_ignore("shadowed_global_identifier")
 		var char := path_text[idx]
 		# Stop parsing if we've hit a character that's not allowed.
-		if not char in "MmLlHhVvAaQqTtCcSsZz0123456789-+e. ,":
+		if not char in "MmLlHhVvAaQqTtCcSsZz0123456789-+e., \n\t\r":
 			return new_commands
 		# Logic for finding out what the next command is going to be.
 		if args_left == 0:
@@ -69,12 +68,12 @@ static func path_data_to_arrays(path_text: String) -> Array[Array]:
 				_: return new_commands
 		# Logic for parsing new numbers until args_left == 0.
 		else:
-			if comma_exhausted and char != " ":
+			if comma_exhausted and not char in " \n\t\r":
 				comma_exhausted = false
 			# Arc flags are represented by a single character.
 			if curr_command in "Aa" and (args_left == 4 or args_left == 3):
 				match char:
-					" ": continue
+					" ", "\n", "\t", "\r": continue
 					"0": curr_command_args.append(0)
 					"1": curr_command_args.append(1)
 					",":
@@ -116,7 +115,7 @@ static func path_data_to_arrays(path_text: String) -> Array[Array]:
 							else:
 								idx -= 1
 								number_proceed = false
-						" ":
+						" ", "\n", "\t", "\r":
 							if end_idx == start_idx:
 								idx += 1
 								start_idx += 1
