@@ -3,12 +3,14 @@ class_name TagCircle extends Tag
 
 const name = "circle"
 const possible_conversions = ["ellipse", "rect", "path"]
-const known_attributes = ["transform", "cx", "cy", "r",
-		"opacity", "fill", "fill-opacity", "stroke", "stroke-opacity", "stroke-width"]
+
+const known_geometry_attributes = ["transform", "cx", "cy", "r"]
+const known_paint_attributes = ["opacity", "fill", "fill-opacity", "stroke",
+		"stroke-opacity", "stroke-width"]
 
 func _init() -> void:
 	attributes = {
-		"transform": AttributeTransform.new("matrix(1.0, 0.0, 0.0, 1.0, 0.0, 0.0)"),
+		"transform": AttributeTransform.new("matrix(1 0 0 1 0 0)"),
 		"cx": AttributeNumeric.new(AttributeNumeric.Mode.FLOAT, "0"),
 		"cy": AttributeNumeric.new(AttributeNumeric.Mode.FLOAT, "0"),
 		"r": AttributeNumeric.new(AttributeNumeric.Mode.UFLOAT, "0", "1"),

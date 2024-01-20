@@ -5,6 +5,7 @@ const SettingCheckBox = preload("res://src/ui_elements/setting_check_box.gd")
 @onready var number_vbox: VBoxContainer = %NumberVBox
 @onready var color_vbox: VBoxContainer = %ColorVBox
 @onready var path_vbox: VBoxContainer = %PathVBox
+@onready var transform_vbox: VBoxContainer = %TransformVBox
 
 func _ready() -> void:
 	disable_checkboxes()
@@ -29,6 +30,10 @@ func disable_checkboxes() -> void:
 		if checkbox is SettingCheckBox:
 			if checkbox.setting_name != "path_enable_autoformatting":
 				set_checkbox_enabled(checkbox, GlobalSettings.path_enable_autoformatting)
+	for checkbox in transform_vbox.get_children():
+		if checkbox is SettingCheckBox:
+			if checkbox.setting_name != "transform_enable_autoformatting":
+				set_checkbox_enabled(checkbox, GlobalSettings.transform_enable_autoformatting)
 
 func set_checkbox_enabled(checkbox: SettingCheckBox, enabled: bool) -> void:
 	checkbox.disabled = not enabled

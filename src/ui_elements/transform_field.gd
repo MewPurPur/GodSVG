@@ -7,19 +7,22 @@ var attribute_name: String
 
 const MatrixPopup = preload("res://src/ui_elements/matrix_popup.tscn")
 
-@onready var line_edit : BetterLineEdit = $LineEdit
+@onready var line_edit: BetterLineEdit = $LineEdit
 
-func set_value(new_value: String, update_type := Utils.UpdateType.REGULAR) -> void:
-	var transform := TransformParser.text_to_transform(new_value)
+# TODO needs more work, can't handle every scenario.
+func set_value(new_value: String, update_type := Utils.UpdateType.REGULAR):
+	# Validate the value.
+	if not TransformParser.text_to_transform(new_value).is_finite():
+		sync(attribute.get_value())
+		return
 	
-	if TransformParser.text_to_transform(attribute.default) == transform:
+	if TransformParser.text_to_transform(new_value) ==\
+	TransformParser.text_to_transform(attribute.default):
 		new_value = attribute.default
-	else:
-		new_value = TransformParser.transform_to_text(transform)
 	
 	sync(attribute.autoformat(new_value))
 	# Update the attribute.
-	if new_value != attribute.get_value() or update_type == Utils.UpdateType.FINAL:
+	if attribute.get_value() != new_value or update_type == Utils.UpdateType.FINAL:
 		match update_type:
 			Utils.UpdateType.INTERMEDIATE:
 				attribute.set_value(new_value, Attribute.SyncMode.INTERMEDIATE)
@@ -34,10 +37,10 @@ func set_num(new_number: float, update_type := Utils.UpdateType.REGULAR) -> void
 func _ready() -> void:
 	set_value(attribute.get_value())
 	attribute.value_changed.connect(set_value)
-	$LineEdit.tooltip_text = attribute_name
+	line_edit.tooltip_text = attribute_name
 
 func _on_focus_exited() -> void:
-	set_value($LineEdit.text)
+	set_value(line_edit.text)
 
 func _on_focus_entered() -> void:
 	focused.emit()
@@ -64,5 +67,4 @@ func _on_button_pressed() -> void:
 	matrix_popup.matrix_edited.connect(matrix_popup_edited)
 	add_child(matrix_popup)
 	matrix_popup.initialize()
-	
-	Utils.popup_under_control(matrix_popup, $LineEdit)
+	Utils.popup_under_control(matrix_popup, line_edit)
