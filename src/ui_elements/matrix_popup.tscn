@@ -7,42 +7,46 @@
 draw_center = false
 border_width_left = 2
 border_width_top = 2
-border_width_right = 1
+border_width_right = 2
 border_width_bottom = 2
 border_color = Color(1, 1, 1, 0.0666667)
 corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
 corner_radius_bottom_left = 5
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xcqgp"]
 draw_center = false
 border_width_left = 2
 border_width_top = 2
-border_width_right = 1
+border_width_right = 2
 border_width_bottom = 2
 border_color = Color(0.2, 0.34902, 0.501961, 1)
 corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
 corner_radius_bottom_left = 5
 
 [node name="MatrixPopup" type="Popup"]
 disable_3d = true
 transparent_bg = true
-size = Vector2i(117, 50)
+size = Vector2i(128, 150)
 visible = true
 script = ExtResource("1_8jhhm")
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
+custom_minimum_size = Vector2(128, 0)
 offset_right = 4.0
 offset_bottom = 4.0
 
-[node name="VBox" type="VBoxContainer" parent="PanelContainer"]
+[node name="GridContainer" type="GridContainer" parent="PanelContainer"]
 layout_mode = 2
+columns = 3
 
-[node name="FirstRow" type="HBoxContainer" parent="PanelContainer/VBox"]
-layout_mode = 2
-
-[node name="X1" type="LineEdit" parent="PanelContainer/VBox/FirstRow"]
+[node name="X1" type="LineEdit" parent="PanelContainer/GridContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
+tooltip_text = "x1"
 focus_mode = 1
 mouse_filter = 1
 script = ExtResource("1_1yplx")
@@ -50,9 +54,10 @@ hover_stylebox = SubResource("StyleBoxFlat_fnyvh")
 focus_stylebox = SubResource("StyleBoxFlat_xcqgp")
 code_font_tooltip = true
 
-[node name="Y1" type="LineEdit" parent="PanelContainer/VBox/FirstRow"]
+[node name="Y1" type="LineEdit" parent="PanelContainer/GridContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
+tooltip_text = "y1"
 focus_mode = 1
 mouse_filter = 1
 script = ExtResource("1_1yplx")
@@ -60,9 +65,10 @@ hover_stylebox = SubResource("StyleBoxFlat_fnyvh")
 focus_stylebox = SubResource("StyleBoxFlat_xcqgp")
 code_font_tooltip = true
 
-[node name="Z1" type="LineEdit" parent="PanelContainer/VBox/FirstRow"]
+[node name="O1" type="LineEdit" parent="PanelContainer/GridContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
+tooltip_text = "o1"
 focus_mode = 1
 mouse_filter = 1
 script = ExtResource("1_1yplx")
@@ -70,12 +76,10 @@ hover_stylebox = SubResource("StyleBoxFlat_fnyvh")
 focus_stylebox = SubResource("StyleBoxFlat_xcqgp")
 code_font_tooltip = true
 
-[node name="SecondRow" type="HBoxContainer" parent="PanelContainer/VBox"]
-layout_mode = 2
-
-[node name="X2" type="LineEdit" parent="PanelContainer/VBox/SecondRow"]
+[node name="X2" type="LineEdit" parent="PanelContainer/GridContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
+tooltip_text = "x2"
 focus_mode = 1
 mouse_filter = 1
 script = ExtResource("1_1yplx")
@@ -83,9 +87,10 @@ hover_stylebox = SubResource("StyleBoxFlat_fnyvh")
 focus_stylebox = SubResource("StyleBoxFlat_xcqgp")
 code_font_tooltip = true
 
-[node name="Y2" type="LineEdit" parent="PanelContainer/VBox/SecondRow"]
+[node name="Y2" type="LineEdit" parent="PanelContainer/GridContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
+tooltip_text = "y2"
 focus_mode = 1
 mouse_filter = 1
 script = ExtResource("1_1yplx")
@@ -93,9 +98,10 @@ hover_stylebox = SubResource("StyleBoxFlat_fnyvh")
 focus_stylebox = SubResource("StyleBoxFlat_xcqgp")
 code_font_tooltip = true
 
-[node name="Z2" type="LineEdit" parent="PanelContainer/VBox/SecondRow"]
+[node name="O2" type="LineEdit" parent="PanelContainer/GridContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
+tooltip_text = "o2"
 focus_mode = 1
 mouse_filter = 1
 script = ExtResource("1_1yplx")
@@ -103,15 +109,15 @@ hover_stylebox = SubResource("StyleBoxFlat_fnyvh")
 focus_stylebox = SubResource("StyleBoxFlat_xcqgp")
 code_font_tooltip = true
 
-[connection signal="focus_exited" from="PanelContainer/VBox/FirstRow/X1" to="." method="focus_exited"]
-[connection signal="text_submitted" from="PanelContainer/VBox/FirstRow/X1" to="." method="text_submitted"]
-[connection signal="focus_exited" from="PanelContainer/VBox/FirstRow/Y1" to="." method="focus_exited"]
-[connection signal="text_submitted" from="PanelContainer/VBox/FirstRow/Y1" to="." method="text_submitted"]
-[connection signal="focus_exited" from="PanelContainer/VBox/FirstRow/Z1" to="." method="focus_exited"]
-[connection signal="text_submitted" from="PanelContainer/VBox/FirstRow/Z1" to="." method="text_submitted"]
-[connection signal="focus_exited" from="PanelContainer/VBox/SecondRow/X2" to="." method="focus_exited"]
-[connection signal="text_submitted" from="PanelContainer/VBox/SecondRow/X2" to="." method="text_submitted"]
-[connection signal="focus_exited" from="PanelContainer/VBox/SecondRow/Y2" to="." method="focus_exited"]
-[connection signal="text_submitted" from="PanelContainer/VBox/SecondRow/Y2" to="." method="text_submitted"]
-[connection signal="focus_exited" from="PanelContainer/VBox/SecondRow/Z2" to="." method="focus_exited"]
-[connection signal="text_submitted" from="PanelContainer/VBox/SecondRow/Z2" to="." method="text_submitted"]
+[connection signal="focus_exited" from="PanelContainer/GridContainer/X1" to="." method="focus_exited"]
+[connection signal="text_submitted" from="PanelContainer/GridContainer/X1" to="." method="text_submitted"]
+[connection signal="focus_exited" from="PanelContainer/GridContainer/Y1" to="." method="focus_exited"]
+[connection signal="text_submitted" from="PanelContainer/GridContainer/Y1" to="." method="text_submitted"]
+[connection signal="focus_exited" from="PanelContainer/GridContainer/O1" to="." method="focus_exited"]
+[connection signal="text_submitted" from="PanelContainer/GridContainer/O1" to="." method="text_submitted"]
+[connection signal="focus_exited" from="PanelContainer/GridContainer/X2" to="." method="focus_exited"]
+[connection signal="text_submitted" from="PanelContainer/GridContainer/X2" to="." method="text_submitted"]
+[connection signal="focus_exited" from="PanelContainer/GridContainer/Y2" to="." method="focus_exited"]
+[connection signal="text_submitted" from="PanelContainer/GridContainer/Y2" to="." method="text_submitted"]
+[connection signal="focus_exited" from="PanelContainer/GridContainer/O2" to="." method="focus_exited"]
+[connection signal="text_submitted" from="PanelContainer/GridContainer/O2" to="." method="text_submitted"]

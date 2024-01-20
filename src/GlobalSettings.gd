@@ -34,6 +34,9 @@ const default_config = {
 		"path_minimize_spacing": true,
 		"path_remove_spacing_after_flags": false,
 		"path_remove_consecutive_commands": true,
+		"transform_enable_autoformatting": false,
+		"transform_compress_numbers": true,
+		"transform_minimize_spacing": true,
 	},
 }
 
@@ -64,6 +67,9 @@ var path_compress_numbers := true
 var path_minimize_spacing := true
 var path_remove_spacing_after_flags := false
 var path_remove_consecutive_commands := true
+var transform_enable_autoformatting := false
+var transform_compress_numbers := true
+var transform_minimize_spacing := true
 
 
 func toggle_bool_setting(section: String, setting: String) -> void:

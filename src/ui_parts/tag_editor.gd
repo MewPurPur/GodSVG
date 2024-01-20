@@ -1,8 +1,5 @@
 extends VBoxContainer
 
-const geometry_attributes = ["cx", "cy", "x", "y", "r", "rx", "ry", "width", "height",
-		"d", "x1", "y1", "x2", "y2"]
-
 const unknown_icon = preload("res://visual/icons/tag/unknown.svg")
 
 const ContextPopup = preload("res://src/ui_elements/context_popup.tscn")
@@ -83,9 +80,9 @@ func _ready() -> void:
 		input_field.attribute_name = attribute_key
 		input_field.focused.connect(Indications.normal_select.bind(tid))
 		# Add the attribute to its corresponding container.
-		if attribute_key in geometry_attributes:
+		if attribute_key in tag.known_geometry_attributes:
 			shape_container.add_child(input_field)
-		else:
+		elif attribute_key in tag.known_paint_attributes:
 			paint_container.add_child(input_field)
 	
 	if not tag.is_standalone():

@@ -3,12 +3,14 @@ class_name TagRect extends Tag
 
 const name = "rect"
 const possible_conversions = ["circle", "ellipse", "path"]
-const known_attributes = ["transform", "x", "y", "width", "height", "rx", "ry", "opacity", "fill",
-		"fill-opacity", "stroke", "stroke-opacity", "stroke-width", "stroke-linejoin"]
+
+const known_geometry_attributes = ["transform", "x", "y", "width", "height", "rx", "ry"]
+const known_paint_attributes = ["opacity", "fill", "fill-opacity", "stroke",
+		"stroke-opacity", "stroke-width", "stroke-linejoin"]
 
 func _init() -> void:
 	attributes = {
-		"transform": AttributeTransform.new("matrix(1.0, 0.0, 0.0, 1.0, 0.0, 0.0)"),
+		"transform": AttributeTransform.new("matrix(1 0 0 1 0 0)"),
 		"x": AttributeNumeric.new(AttributeNumeric.Mode.FLOAT, "0"),
 		"y": AttributeNumeric.new(AttributeNumeric.Mode.FLOAT, "0"),
 		"width": AttributeNumeric.new(AttributeNumeric.Mode.UFLOAT, "0", "1"),

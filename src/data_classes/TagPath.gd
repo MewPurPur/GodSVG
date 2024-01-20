@@ -3,12 +3,14 @@ class_name TagPath extends Tag
 
 const name = "path"
 const possible_conversions = []
-const known_attributes = ["transform", "d", "opacity", "fill", "fill-opacity", "stroke",
+
+const known_geometry_attributes = ["transform", "d"]
+const known_paint_attributes = ["opacity", "fill", "fill-opacity", "stroke",
 		"stroke-opacity", "stroke-width", "stroke-linecap", "stroke-linejoin"]
 
 func _init() -> void:
 	attributes = {
-		"transform": AttributeTransform.new("matrix(1.0, 0.0, 0.0, 1.0, 0.0, 0.0)"),
+		"transform": AttributeTransform.new("matrix(1 0 0 1 0 0)"),
 		"d": AttributePath.new(),
 		"opacity": AttributeNumeric.new(AttributeNumeric.Mode.NFLOAT, "1"),
 		"fill": AttributeColor.new("#000"),
