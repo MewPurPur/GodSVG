@@ -4,9 +4,9 @@ class_name TagLine extends Tag
 const name = "line"
 const possible_conversions = ["path"]
 
-const known_geometry_attributes = ["transform", "x1", "y1", "x2", "y2"]
-const known_paint_attributes = ["opacity", "stroke", "stroke-opacity", "stroke-width",
-		"stroke-linecap"]
+const known_shape_attributes = ["x1", "y1", "x2", "y2"]
+const known_inheritable_attributes = ["transform", "opacity", "stroke", "stroke-opacity",
+		"stroke-width", "stroke-linecap"]
 
 func _init() -> void:
 	attributes = {
@@ -36,7 +36,7 @@ func get_replacement(new_tag: String) -> Tag:
 	match new_tag:
 		"path":
 			tag = TagPath.new()
-			retained_attributes = ["opacity", "stroke", "stroke-opacity",
+			retained_attributes = ["transform", "opacity", "stroke", "stroke-opacity",
 					"stroke-width", "stroke-linecap"]
 			var commands: Array[PathCommand] = []
 			commands.append(PathCommand.MoveCommand.new(attributes.x1.get_num(),

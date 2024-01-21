@@ -4,9 +4,9 @@ class_name TagPath extends Tag
 const name = "path"
 const possible_conversions = []
 
-const known_geometry_attributes = ["transform", "d"]
-const known_paint_attributes = ["opacity", "fill", "fill-opacity", "stroke",
-		"stroke-opacity", "stroke-width", "stroke-linecap", "stroke-linejoin"]
+const known_shape_attributes = ["d"]
+const known_inheritable_attributes = ["transform", "opacity", "fill", "fill-opacity",
+		"stroke", "stroke-opacity", "stroke-width", "stroke-linecap", "stroke-linejoin"]
 
 func _init() -> void:
 	attributes = {
