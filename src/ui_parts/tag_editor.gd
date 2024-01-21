@@ -80,9 +80,9 @@ func _ready() -> void:
 		input_field.attribute_name = attribute_key
 		input_field.focused.connect(Indications.normal_select.bind(tid))
 		# Add the attribute to its corresponding container.
-		if attribute_key in tag.known_geometry_attributes:
+		if attribute_key in tag.known_shape_attributes:
 			shape_container.add_child(input_field)
-		elif attribute_key in tag.known_paint_attributes:
+		elif attribute_key in tag.known_inheritable_attributes:
 			paint_container.add_child(input_field)
 	
 	if not tag.is_standalone():
