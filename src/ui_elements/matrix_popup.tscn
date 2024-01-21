@@ -1,31 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://dyc4so8qdkmmc"]
+[gd_scene load_steps=3 format=3 uid="uid://dyc4so8qdkmmc"]
 
-[ext_resource type="Script" path="res://src/ui_elements/BetterLineEdit.gd" id="1_1yplx"]
 [ext_resource type="Script" path="res://src/ui_elements/matrix_popup.gd" id="1_8jhhm"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fnyvh"]
-draw_center = false
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(1, 1, 1, 0.0666667)
-corner_radius_top_left = 5
-corner_radius_top_right = 5
-corner_radius_bottom_right = 5
-corner_radius_bottom_left = 5
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xcqgp"]
-draw_center = false
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.2, 0.34902, 0.501961, 1)
-corner_radius_top_left = 5
-corner_radius_top_right = 5
-corner_radius_bottom_right = 5
-corner_radius_bottom_left = 5
+[ext_resource type="PackedScene" uid="uid://dad7fkhmsooc6" path="res://src/ui_elements/number_edit.tscn" id="2_o5qpg"]
 
 [node name="MatrixPopup" type="Popup"]
 disable_3d = true
@@ -43,81 +19,51 @@ offset_bottom = 4.0
 layout_mode = 2
 columns = 3
 
-[node name="X1" type="LineEdit" parent="PanelContainer/GridContainer"]
+[node name="X1" parent="PanelContainer/GridContainer" instance=ExtResource("2_o5qpg")]
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "x1"
-focus_mode = 1
-mouse_filter = 1
-script = ExtResource("1_1yplx")
-hover_stylebox = SubResource("StyleBoxFlat_fnyvh")
-focus_stylebox = SubResource("StyleBoxFlat_xcqgp")
 code_font_tooltip = true
 
-[node name="Y1" type="LineEdit" parent="PanelContainer/GridContainer"]
+[node name="Y1" parent="PanelContainer/GridContainer" instance=ExtResource("2_o5qpg")]
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "y1"
-focus_mode = 1
-mouse_filter = 1
-script = ExtResource("1_1yplx")
-hover_stylebox = SubResource("StyleBoxFlat_fnyvh")
-focus_stylebox = SubResource("StyleBoxFlat_xcqgp")
 code_font_tooltip = true
 
-[node name="O1" type="LineEdit" parent="PanelContainer/GridContainer"]
+[node name="O1" parent="PanelContainer/GridContainer" instance=ExtResource("2_o5qpg")]
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "o1"
-focus_mode = 1
-mouse_filter = 1
-script = ExtResource("1_1yplx")
-hover_stylebox = SubResource("StyleBoxFlat_fnyvh")
-focus_stylebox = SubResource("StyleBoxFlat_xcqgp")
 code_font_tooltip = true
 
-[node name="X2" type="LineEdit" parent="PanelContainer/GridContainer"]
+[node name="X2" parent="PanelContainer/GridContainer" instance=ExtResource("2_o5qpg")]
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "x2"
-focus_mode = 1
-mouse_filter = 1
-script = ExtResource("1_1yplx")
-hover_stylebox = SubResource("StyleBoxFlat_fnyvh")
-focus_stylebox = SubResource("StyleBoxFlat_xcqgp")
 code_font_tooltip = true
 
-[node name="Y2" type="LineEdit" parent="PanelContainer/GridContainer"]
+[node name="Y2" parent="PanelContainer/GridContainer" instance=ExtResource("2_o5qpg")]
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "y2"
-focus_mode = 1
-mouse_filter = 1
-script = ExtResource("1_1yplx")
-hover_stylebox = SubResource("StyleBoxFlat_fnyvh")
-focus_stylebox = SubResource("StyleBoxFlat_xcqgp")
 code_font_tooltip = true
 
-[node name="O2" type="LineEdit" parent="PanelContainer/GridContainer"]
+[node name="O2" parent="PanelContainer/GridContainer" instance=ExtResource("2_o5qpg")]
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "o2"
-focus_mode = 1
-mouse_filter = 1
-script = ExtResource("1_1yplx")
-hover_stylebox = SubResource("StyleBoxFlat_fnyvh")
-focus_stylebox = SubResource("StyleBoxFlat_xcqgp")
 code_font_tooltip = true
 
-[connection signal="focus_exited" from="PanelContainer/GridContainer/X1" to="." method="focus_exited"]
-[connection signal="text_submitted" from="PanelContainer/GridContainer/X1" to="." method="text_submitted"]
-[connection signal="focus_exited" from="PanelContainer/GridContainer/Y1" to="." method="focus_exited"]
-[connection signal="text_submitted" from="PanelContainer/GridContainer/Y1" to="." method="text_submitted"]
-[connection signal="focus_exited" from="PanelContainer/GridContainer/O1" to="." method="focus_exited"]
-[connection signal="text_submitted" from="PanelContainer/GridContainer/O1" to="." method="text_submitted"]
-[connection signal="focus_exited" from="PanelContainer/GridContainer/X2" to="." method="focus_exited"]
-[connection signal="text_submitted" from="PanelContainer/GridContainer/X2" to="." method="text_submitted"]
-[connection signal="focus_exited" from="PanelContainer/GridContainer/Y2" to="." method="focus_exited"]
-[connection signal="text_submitted" from="PanelContainer/GridContainer/Y2" to="." method="text_submitted"]
-[connection signal="focus_exited" from="PanelContainer/GridContainer/O2" to="." method="focus_exited"]
-[connection signal="text_submitted" from="PanelContainer/GridContainer/O2" to="." method="text_submitted"]
+[connection signal="focus_exited" from="PanelContainer/GridContainer/X1" to="." method="_on_focus_exited"]
+[connection signal="text_submitted" from="PanelContainer/GridContainer/X1" to="." method="_on_text_submitted"]
+[connection signal="focus_exited" from="PanelContainer/GridContainer/Y1" to="." method="_on_focus_exited"]
+[connection signal="text_submitted" from="PanelContainer/GridContainer/Y1" to="." method="_on_text_submitted"]
+[connection signal="focus_exited" from="PanelContainer/GridContainer/O1" to="." method="_on_focus_exited"]
+[connection signal="text_submitted" from="PanelContainer/GridContainer/O1" to="." method="_on_text_submitted"]
+[connection signal="focus_exited" from="PanelContainer/GridContainer/X2" to="." method="_on_focus_exited"]
+[connection signal="text_submitted" from="PanelContainer/GridContainer/X2" to="." method="_on_text_submitted"]
+[connection signal="focus_exited" from="PanelContainer/GridContainer/Y2" to="." method="_on_focus_exited"]
+[connection signal="text_submitted" from="PanelContainer/GridContainer/Y2" to="." method="_on_text_submitted"]
+[connection signal="focus_exited" from="PanelContainer/GridContainer/O2" to="." method="_on_focus_exited"]
+[connection signal="text_submitted" from="PanelContainer/GridContainer/O2" to="." method="_on_text_submitted"]
