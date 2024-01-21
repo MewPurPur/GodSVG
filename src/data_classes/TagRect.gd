@@ -4,9 +4,9 @@ class_name TagRect extends Tag
 const name = "rect"
 const possible_conversions = ["circle", "ellipse", "path"]
 
-const known_geometry_attributes = ["transform", "x", "y", "width", "height", "rx", "ry"]
-const known_paint_attributes = ["opacity", "fill", "fill-opacity", "stroke",
-		"stroke-opacity", "stroke-width", "stroke-linejoin"]
+const known_shape_attributes = ["x", "y", "width", "height", "rx", "ry"]
+const known_inheritable_attributes = ["transform", "opacity", "fill", "fill-opacity",
+		"stroke", "stroke-opacity", "stroke-width", "stroke-linejoin"]
 
 func _init() -> void:
 	attributes = {
@@ -48,24 +48,29 @@ func get_replacement(new_tag: String) -> Tag:
 	match new_tag:
 		"ellipse":
 			tag = TagEllipse.new()
-			retained_attributes = ["rx", "ry", "opacity", "fill",
-					"fill-opacity", "stroke", "stroke-opacity", "stroke-width"]
+			retained_attributes = ["transform", "opacity", "fill", "fill-opacity", "stroke",
+					"stroke-opacity", "stroke-width"]
+			tag.attributes.rx.set_num(attributes.width.get_num() / 2,
+					Attribute.SyncMode.SILENT)
+			tag.attributes.ry.set_num(attributes.height.get_num() / 2,
+					Attribute.SyncMode.SILENT)
 			tag.attributes.cx.set_num(attributes.x.get_num() +\
 					attributes.width.get_num() / 2, Attribute.SyncMode.SILENT)
 			tag.attributes.cy.set_num(attributes.y.get_num() +\
 					attributes.height.get_num() / 2, Attribute.SyncMode.SILENT)
 		"circle":
 			tag = TagCircle.new()
-			retained_attributes = ["opacity", "fill", "fill-opacity",
+			retained_attributes = ["transform", "opacity", "fill", "fill-opacity",
 					"stroke", "stroke-opacity", "stroke-width"]
-			tag.attributes.r.set_num(attributes.rx.get_num(), Attribute.SyncMode.SILENT)
+			tag.attributes.r.set_num(attributes.width.get_num() / 2,
+					Attribute.SyncMode.SILENT)
 			tag.attributes.cx.set_num(attributes.x.get_num() +\
 					attributes.width.get_num() / 2, Attribute.SyncMode.SILENT)
 			tag.attributes.cy.set_num(attributes.y.get_num() +\
 					attributes.height.get_num() / 2, Attribute.SyncMode.SILENT)
 		"path":
 			tag = TagPath.new()
-			retained_attributes = ["opacity", "fill", "fill-opacity", "stroke",
+			retained_attributes = ["transform", "opacity", "fill", "fill-opacity", "stroke",
 					"stroke-opacity", "stroke-width", "stroke-linejoin"]
 			var rx := minf(attributes.rx.get_num(), attributes.width.get_num() / 2)
 			var ry := minf(attributes.ry.get_num(), attributes.height.get_num() / 2)
