@@ -48,13 +48,12 @@ func _on_focus_entered() -> void:
 func _on_text_submitted(submitted_text: String) -> void:
 	set_value(submitted_text)
 
-func matrix_popup_edited(new_matrix: String) -> void:
+func _on_matrix_popup_edited(new_matrix: String) -> void:
 	set_value(new_matrix)
 
 func sync(new_value: String) -> void:
 	if line_edit != null:
 		line_edit.text = new_value
-		
 		if new_value == attribute.default:
 			line_edit.add_theme_color_override(&"font_color", Color(0.64, 0.64, 0.64))
 		else:
@@ -64,7 +63,7 @@ func sync(new_value: String) -> void:
 func _on_button_pressed() -> void:
 	var matrix_popup := MatrixPopup.instantiate()
 	matrix_popup.transform = attribute.get_transform()
-	matrix_popup.matrix_edited.connect(matrix_popup_edited)
+	matrix_popup.matrix_edited.connect(_on_matrix_popup_edited)
 	add_child(matrix_popup)
 	matrix_popup.initialize()
 	Utils.popup_under_control(matrix_popup, line_edit)

@@ -84,6 +84,11 @@ var slider_dragged := false:
 			queue_redraw()
 			if not slider_hovered:
 				get_viewport().update_mouse_cursor_state()
+				# FIXME workaround because "button_pressed" remains true
+				# if you unclick while outside of the area, for some reason.
+				# Couldn't replicate this in a minimal project.
+				remove_child(slider)
+				add_child(slider)
 
 var slider_hovered := false:
 	set(new_value):
