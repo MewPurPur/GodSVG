@@ -3,6 +3,7 @@ class_name TagLine extends Tag
 
 const name = "line"
 const possible_conversions = ["path"]
+const icon = preload("res://visual/icons/tag/line.svg")
 
 const known_shape_attributes = ["x1", "y1", "x2", "y2"]
 const known_inheritable_attributes = ["transform", "opacity", "stroke", "stroke-opacity",
