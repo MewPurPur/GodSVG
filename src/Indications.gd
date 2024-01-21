@@ -348,13 +348,16 @@ func _unhandled_input(event: InputEvent) -> void:
 					var path_attrib: AttributePath = tag_ref.attributes.d
 					for action_name in path_actions_dict.keys():
 						if event.is_action_pressed(action_name):
+							var path_cmd_count := path_attrib.get_command_count()
+							var path_cmd_char: String = path_actions_dict[action_name]
 							# Z after a Z is syntactically invalid.
-							if path_attrib.get_command(path_attrib.get_command_count() - 1) is\
-							PathCommand.CloseCommand and path_actions_dict[action_name] in "Zz":
+							if (path_cmd_count == 0 and not path_cmd_char in "Mm") or\
+							(path_cmd_char in "Zz" and path_cmd_count > 0 and\
+							path_attrib.get_command(path_cmd_count - 1) is\
+							PathCommand.CloseCommand):
 								return
-							path_attrib.insert_command(path_attrib.get_command_count(),
-									path_actions_dict[action_name])
-							normal_select(selected_tids[0], path_attrib.get_command_count() - 1)
+							path_attrib.insert_command(path_cmd_count, path_cmd_char)
+							normal_select(selected_tids[0], path_cmd_count)
 							added_path_handle.emit()
 							break
 			return
