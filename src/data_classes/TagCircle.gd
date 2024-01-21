@@ -4,9 +4,9 @@ class_name TagCircle extends Tag
 const name = "circle"
 const possible_conversions = ["ellipse", "rect", "path"]
 
-const known_geometry_attributes = ["transform", "cx", "cy", "r"]
-const known_paint_attributes = ["opacity", "fill", "fill-opacity", "stroke",
-		"stroke-opacity", "stroke-width"]
+const known_shape_attributes = ["cx", "cy", "r"]
+const known_inheritable_attributes = ["transform", "opacity", "fill", "fill-opacity",
+		"stroke", "stroke-opacity", "stroke-width"]
 
 func _init() -> void:
 	attributes = {
@@ -36,13 +36,14 @@ func get_replacement(new_tag: String) -> Tag:
 	match new_tag:
 		"ellipse":
 			tag = TagEllipse.new()
-			retained_attributes = ["cx", "cy", "opacity", "fill", "fill-opacity", "stroke",
-					"stroke-opacity", "stroke-width"]
+			retained_attributes = known_inheritable_attributes + ["cx", "cy", "transform",
+					"opacity", "fill", "fill-opacity", "stroke", "stroke-opacity",
+					"stroke-width"]
 			tag.attributes.rx.set_num(attributes.r.get_num(), Attribute.SyncMode.SILENT)
 			tag.attributes.ry.set_num(attributes.r.get_num(), Attribute.SyncMode.SILENT)
 		"rect":
 			tag = TagRect.new()
-			retained_attributes = ["opacity", "fill", "fill-opacity", "stroke",
+			retained_attributes = ["transform", "opacity", "fill", "fill-opacity", "stroke",
 					"stroke-opacity", "stroke-width"]
 			tag.attributes.x.set_num(attributes.cx.get_num() - attributes.r.get_num(),
 					Attribute.SyncMode.SILENT)
@@ -56,7 +57,7 @@ func get_replacement(new_tag: String) -> Tag:
 			tag.attributes.ry.set_num(attributes.r.get_num(), Attribute.SyncMode.SILENT)
 		"path":
 			tag = TagPath.new()
-			retained_attributes = ["opacity", "fill", "fill-opacity", "stroke",
+			retained_attributes = ["transform", "opacity", "fill", "fill-opacity", "stroke",
 					"stroke-opacity", "stroke-width"]
 			var commands: Array[PathCommand] = []
 			commands.append(PathCommand.MoveCommand.new(attributes.cx.get_num(),

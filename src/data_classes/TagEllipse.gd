@@ -4,9 +4,9 @@ class_name TagEllipse extends Tag
 const name = "ellipse"
 const possible_conversions = ["circle", "rect", "path"]
 
-const known_geometry_attributes = ["transform", "cx", "cy", "rx", "ry"]
-const known_paint_attributes = ["opacity", "fill", "fill-opacity", "stroke",
-		"stroke-opacity", "stroke-width"]
+const known_shape_attributes = ["cx", "cy", "rx", "ry"]
+const known_inheritable_attributes = ["transform", "opacity", "fill", "fill-opacity",
+		"stroke", "stroke-opacity", "stroke-width"]
 
 func _init() -> void:
 	attributes = {
@@ -40,13 +40,13 @@ func get_replacement(new_tag: String) -> Tag:
 	match new_tag:
 		"circle":
 			tag = TagCircle.new()
-			retained_attributes = ["cx", "cy", "opacity", "fill", "fill-opacity", "stroke",
-					"stroke-opacity", "stroke-width"]
+			retained_attributes = ["cx", "cy", "transform", "opacity", "fill",
+					"fill-opacity", "stroke", "stroke-opacity", "stroke-width"]
 			tag.attributes.r.set_num(attributes.rx.get_num(), Attribute.SyncMode.SILENT)
 		"rect":
 			tag = TagRect.new()
-			retained_attributes = ["rx", "ry", "opacity", "fill", "fill-opacity", "stroke",
-					"stroke-opacity", "stroke-width"]
+			retained_attributes = ["rx", "ry", "transform", "opacity", "fill",
+					"fill-opacity", "stroke", "stroke-opacity", "stroke-width"]
 			tag.attributes.x.set_num(attributes.cx.get_num() - attributes.rx.get_num(),
 					Attribute.SyncMode.SILENT)
 			tag.attributes.y.set_num(attributes.cy.get_num() - attributes.ry.get_num(),
@@ -57,8 +57,8 @@ func get_replacement(new_tag: String) -> Tag:
 					Attribute.SyncMode.SILENT)
 		"path":
 			tag = TagPath.new()
-			retained_attributes = ["opacity", "fill", "fill-opacity", "stroke",
-					"stroke-opacity", "stroke-width"]
+			retained_attributes = ["transform", "opacity", "fill",
+					"fill-opacity", "stroke", "stroke-opacity", "stroke-width"]
 			var commands: Array[PathCommand] = []
 			commands.append(PathCommand.MoveCommand.new(attributes.cx.get_num(),
 					attributes.cy.get_num() - attributes.ry.get_num(), true))
