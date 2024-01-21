@@ -26,6 +26,7 @@ func _input(event: InputEvent) -> void:
 		if event.is_pressed() and not get_global_rect().has_point(event.position):
 			release_focus()
 		elif event.is_released() and first_click and not has_selection():
+			first_click = false
 			select_all()
 
 var tree_was_paused_before := false
