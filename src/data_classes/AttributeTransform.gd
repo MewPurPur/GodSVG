@@ -11,7 +11,7 @@ func _sync() -> void:
 	_transform = TransformParser.text_to_transform(get_value())
 
 func autoformat(text: String) -> String:
-	if GlobalSettings.number_enable_autoformatting:
+	if GlobalSettings.transform_enable_autoformatting:
 		return TransformParser.transform_to_text(TransformParser.text_to_transform(text))
 	else:
 		return text
