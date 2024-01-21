@@ -754,7 +754,7 @@ func move_selected_to_mouse() -> void:
 			if GlobalSettings.save_data.snap > 0.0:
 				mouse_position = mouse_position.snapped(Vector2(snap_size, snap_size))
 			
-			var new_pos := dragged_handle.transform.affine_inverse() * SVG.root_tag.canvas_to_world(mouse_position)
+			var new_pos := dragged_handle.transform.affine_inverse() * SVG.root_tag.world_to_canvas(mouse_position)
 			dragged_handle.set_pos(new_pos)
 			was_handle_moved = true
 			return
