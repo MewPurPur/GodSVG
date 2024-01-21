@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://bp2vpf7g8w8aj"]
+[gd_scene load_steps=5 format=3 uid="uid://bp2vpf7g8w8aj"]
 
 [ext_resource type="Script" path="res://src/ui_elements/number_field_with_slider.gd" id="1_ymm02"]
 [ext_resource type="Script" path="res://src/ui_elements/BetterLineEdit.gd" id="2_ytia1"]
@@ -22,34 +22,6 @@ border_width_bottom = 2
 border_color = Color(0.2, 0.34902, 0.501961, 1)
 corner_radius_top_left = 5
 corner_radius_bottom_left = 5
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wwc4n"]
-content_margin_left = 4.0
-content_margin_top = 4.0
-content_margin_right = 4.0
-content_margin_bottom = 4.0
-draw_center = false
-border_width_left = 1
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.152941, 0.152941, 0.2, 1)
-corner_radius_top_right = 5
-corner_radius_bottom_right = 5
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fd68s"]
-content_margin_left = 4.0
-content_margin_top = 4.0
-content_margin_right = 4.0
-content_margin_bottom = 4.0
-draw_center = false
-border_width_left = 1
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.152941, 0.152941, 0.2, 1)
-corner_radius_top_right = 5
-corner_radius_bottom_right = 5
 
 [node name="NumberFieldWithSlider" type="HBoxContainer"]
 custom_minimum_size = Vector2(0, 22)
@@ -77,12 +49,10 @@ layout_mode = 2
 focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_type_variation = &"LeftConnectedButtonTransparent"
-theme_override_styles/hover = SubResource("StyleBoxFlat_wwc4n")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_fd68s")
+keep_pressed_outside = true
 
 [connection signal="focus_exited" from="LineEdit" to="." method="_on_focus_exited"]
 [connection signal="text_submitted" from="LineEdit" to="." method="_on_text_submitted"]
 [connection signal="gui_input" from="Slider" to="." method="_on_slider_gui_input"]
-[connection signal="mouse_entered" from="Slider" to="." method="_on_slider_mouse_entered"]
 [connection signal="mouse_exited" from="Slider" to="." method="_on_slider_mouse_exited"]
 [connection signal="resized" from="Slider" to="." method="_on_slider_resized"]

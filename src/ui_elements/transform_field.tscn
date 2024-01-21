@@ -8,24 +8,20 @@
 draw_center = false
 border_width_left = 2
 border_width_top = 2
-border_width_right = 2
+border_width_right = 1
 border_width_bottom = 2
 border_color = Color(1, 1, 1, 0.0666667)
 corner_radius_top_left = 5
-corner_radius_top_right = 5
-corner_radius_bottom_right = 5
 corner_radius_bottom_left = 5
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_h7r5w"]
 draw_center = false
 border_width_left = 2
 border_width_top = 2
-border_width_right = 2
+border_width_right = 1
 border_width_bottom = 2
 border_color = Color(0.2, 0.34902, 0.501961, 1)
 corner_radius_top_left = 5
-corner_radius_top_right = 5
-corner_radius_bottom_right = 5
 corner_radius_bottom_left = 5
 
 [node name="TransformField" type="HBoxContainer"]
@@ -42,6 +38,7 @@ theme_type_variation = &"RightConnectedLineEdit"
 script = ExtResource("2_aucxm")
 hover_stylebox = SubResource("StyleBoxFlat_ynuh7")
 focus_stylebox = SubResource("StyleBoxFlat_h7r5w")
+code_font_tooltip = true
 
 [node name="Button" type="Button" parent="."]
 custom_minimum_size = Vector2(15, 0)

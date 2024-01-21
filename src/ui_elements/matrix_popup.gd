@@ -21,12 +21,13 @@ func initialize() -> void:
 	y2_edit.text = String.num(transform[1].y, 4)
 	o2_edit.text = String.num(transform[2].y, 4)
 
-func text_submitted(_new_text: String) -> void:
-	var new_transform := "matrix(%s %s %s %s %s %s)" % [x1_edit.text, x2_edit.text,
-			y1_edit.text, y2_edit.text, o1_edit.text, o2_edit.text]
-	matrix_edited.emit(new_transform)
+func _on_text_submitted(_new_text: String) -> void:
+	update_matrix()
 
-func focus_exited() -> void:
+func _on_focus_exited() -> void:
+	update_matrix()
+
+func update_matrix() -> void:
 	var new_transform := "matrix(%s %s %s %s %s %s)" % [x1_edit.text, x2_edit.text,
 			y1_edit.text, y2_edit.text, o1_edit.text, o2_edit.text]
 	matrix_edited.emit(new_transform)
