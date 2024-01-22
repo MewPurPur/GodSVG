@@ -795,6 +795,7 @@ LeftConnectedLineEdit/styles/normal = SubResource("StyleBoxFlat_k1x4s")
 LeftConnectedLineEdit/styles/read_only = SubResource("StyleBoxFlat_ff1pj")
 LineEdit/colors/caret_color = Color(0.866667, 0.933333, 1, 0.866667)
 LineEdit/colors/font_color = Color(0.866667, 0.933333, 1, 1)
+LineEdit/colors/font_placeholder_color = Color(1, 1, 1, 0.333333)
 LineEdit/colors/selection_color = Color(0.4, 0.54902, 1, 0.4)
 LineEdit/font_sizes/font_size = 12
 LineEdit/fonts/font = ExtResource("5_nfqug")

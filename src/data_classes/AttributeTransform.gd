@@ -3,9 +3,9 @@ class_name AttributeTransform extends Attribute
 
 var _transform := Transform2D.IDENTITY
 
-func _init(new_default: String, new_init := "") -> void:
-	default = new_default
-	set_value(new_init if !new_init.is_empty() else new_default, SyncMode.SILENT)
+func _init() -> void:
+	default = ""
+	set_value(default, SyncMode.SILENT)
 
 func _sync() -> void:
 	_transform = TransformParser.text_to_transform(get_value())
