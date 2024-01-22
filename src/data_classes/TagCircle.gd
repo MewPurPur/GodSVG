@@ -10,7 +10,7 @@ const known_inheritable_attributes = ["transform", "opacity", "fill", "fill-opac
 
 func _init() -> void:
 	attributes = {
-		"transform": AttributeTransform.new("matrix(1 0 0 1 0 0)"),
+		"transform": AttributeTransform.new(),
 		"cx": AttributeNumeric.new(AttributeNumeric.Mode.FLOAT, "0"),
 		"cy": AttributeNumeric.new(AttributeNumeric.Mode.FLOAT, "0"),
 		"r": AttributeNumeric.new(AttributeNumeric.Mode.UFLOAT, "0", "1"),
