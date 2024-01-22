@@ -56,4 +56,4 @@ func sync() -> void:
 		pos.y = command.start.y + command_y if command.relative else command_y
 	else:
 		pos.y = command.start.y
-	transform = t_attribute.get_transform()
+	transform = t_attribute.get_final_transform()

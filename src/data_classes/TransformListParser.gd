@@ -1,4 +1,4 @@
-class_name TransformParser extends RefCounted
+class_name TransformListParser extends RefCounted
 
 static func num_to_text(num: float, precision := 4) -> String:
 	var text := String.num(num, precision)
@@ -24,21 +24,46 @@ static func num_arr_to_text(num_arr: Array[float]) -> String:
 	return output + numstr_arr.back()
 
 # TODO needs a lot more work.
-static func transform_to_text(transform: Transform2D) -> String:
-	return "matrix(" + num_arr_to_text([transform[0].x, transform[0].y,
-			transform[1].x, transform[1].y, transform[2].x, transform[2].y]) + ")"
-
-static func text_to_transform(text: String) -> Transform2D:
-	if text.is_empty():
-		return Transform2D.IDENTITY
+static func transform_list_to_text(
+transform_list: Array[AttributeTransform.Transform]) -> String:
+	var output := ""
 	
-	var output := Transform2D.IDENTITY
+	for t in transform_list:
+		if t is AttributeTransform.TransformMatrix:
+			output += "matrix(%s) " % num_arr_to_text([t.x1, t.x2, t.y1, t.y2, t.o1, t.o2])
+		elif t is AttributeTransform.TransformTranslate:
+			if t.y == 0 and GlobalSettings.transform_remove_unnecessary_params:
+				output += "translate(%s) " % num_to_text(t.x)
+			else:
+				output += "translate(%s) " % num_arr_to_text([t.x, t.y])
+		elif t is AttributeTransform.TransformRotate:
+			if t.x == 0 and t.y == 0 and GlobalSettings.transform_remove_unnecessary_params:
+				output += "rotate(%s) " % num_to_text(t.deg)
+			else:
+				output += "rotate(%s) " % num_arr_to_text([t.deg, t.x, t.y])
+		elif t is AttributeTransform.TransformScale:
+			if t.x == t.y and GlobalSettings.transform_remove_unnecessary_params:
+				output += "scale(%s) " % num_to_text(t.x)
+			else:
+				output += "scale(%s) " % num_arr_to_text([t.x, t.y])
+		elif t is AttributeTransform.TransformSkewX:
+			output += "skewX(%s) " % num_to_text(t.x)
+		elif t is AttributeTransform.TransformSkewY:
+			output += "skewY(%s) " % num_to_text(t.y)
+	
+	return output.trim_suffix(" ")
+
+static func text_to_transform_list(text: String) -> Array[AttributeTransform.Transform]:
+	if text.is_empty():
+		return []
+	
+	var output: Array[AttributeTransform.Transform] = []
 	text = text.strip_edges()
 	var transforms := text.split(")", false)
 	for transform in transforms:
 		var transform_info := transform.split("(")
 		if transform_info.size() != 2:
-			return Transform2D.IDENTITY
+			return []
 		
 		var transform_params := transform_info[1].strip_edges()
 		var nums: Array[float] = []
@@ -94,13 +119,13 @@ static func text_to_transform(text: String) -> Transform2D:
 						number_proceed = false
 					",":
 						if comma_exhausted:
-							return Transform2D.IDENTITY
+							return []
 						else:
 							comma_exhausted = true
 							number_proceed = false
 					"e":
 						if passed_decimal_point:
-							return Transform2D.IDENTITY
+							return []
 						else:
 							end_idx += 1
 							idx += 1
@@ -108,7 +133,7 @@ static func text_to_transform(text: String) -> Transform2D:
 					_:
 						if not transform_params.substr(start_idx,
 						end_idx - start_idx).is_valid_float():
-							return Transform2D.IDENTITY
+							return []
 						else:
 							idx -= 1
 							break
@@ -117,51 +142,43 @@ static func text_to_transform(text: String) -> Transform2D:
 		match transform_info[0].strip_edges():
 			"matrix":
 				if nums.size() == 6:
-					output = Transform2D(Vector2(nums[0], nums[1]), Vector2(nums[2], nums[3]),
-							Vector2(nums[4], nums[5])) * output
+					output.append(AttributeTransform.TransformMatrix.new(nums[0], nums[1],
+							nums[2], nums[3], nums[4], nums[5]))
 				else:
-					return Transform2D.IDENTITY
+					return []
 			"translate":
 				if nums.size() == 1:
-					output = output.translated(Vector2(nums[0], 0.0))
+					output.append(AttributeTransform.TransformTranslate.new(nums[0], 0.0))
 				elif nums.size() == 2:
-					output = output.translated(Vector2(nums[0], nums[1]))
+					output.append(AttributeTransform.TransformTranslate.new(nums[0], nums[1]))
 				else:
-					return Transform2D.IDENTITY
-			"scale":
-				if nums.size() == 1:
-					output = output.scaled(Vector2(nums[0], nums[0]))
-				elif nums.size() == 2:
-					output = output.scaled(Vector2(nums[0], nums[1]))
-				else:
-					return Transform2D.IDENTITY
+					return []
 			"rotate":
 				if nums.size() == 1:
-					output = output.rotated(deg_to_rad(nums[0]))
+					output.append(AttributeTransform.TransformRotate.new(nums[0], 0.0, 0.0))
 				elif nums.size() == 3:
-					var point := Vector2(nums[1], nums[2])
-					var rotation := Transform2D.IDENTITY
-					rotation = rotation.translated(-point)
-					rotation = rotation.rotated(deg_to_rad(nums[0]))
-					rotation = rotation.translated(point)
-					output = rotation * output
+					output.append(AttributeTransform.TransformRotate.new(
+							nums[0], nums[1], nums[2]))
 				else:
-					return Transform2D.IDENTITY
+					return []
+			"scale":
+				if nums.size() == 1:
+					output.append(AttributeTransform.TransformScale.new(nums[0], nums[0]))
+				elif nums.size() == 2:
+					output.append(AttributeTransform.TransformScale.new(nums[0], nums[1]))
+				else:
+					return []
 			"skewX":
 				if nums.size() == 1:
-					var skew := Transform2D.IDENTITY
-					skew[1].x = tan(deg_to_rad(transform_params.to_float()))
-					output = skew * output
+					output.append(AttributeTransform.TransformSkewX.new(nums[0]))
 				else:
-					return Transform2D.IDENTITY
+					return []
 			"skewY":
 				if nums.size() == 1:
-					var skew := Transform2D.IDENTITY
-					skew[0].y = tan(deg_to_rad(transform_params.to_float()))
-					output = skew * output
+					output.append(AttributeTransform.TransformSkewY.new(nums[0]))
 				else:
-					return Transform2D.IDENTITY
+					return []
 			_:
-				return Transform2D.IDENTITY
+				return []
 	
 	return output

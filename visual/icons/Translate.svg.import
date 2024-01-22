@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dxxx6pip4p26u"
-path="res://.godot/imported/PickColor.svg-99a0f61ca2e2f40c88b3338078e9a8a9.ctex"
+uid="uid://b7r171i82g3xl"
+path="res://.godot/imported/Translate.svg-cacb854b6c1e693d938f9f1ee2332d07.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://visual/icons/PickColor.svg"
-dest_files=["res://.godot/imported/PickColor.svg-99a0f61ca2e2f40c88b3338078e9a8a9.ctex"]
+source_file="res://visual/icons/Translate.svg"
+dest_files=["res://.godot/imported/Translate.svg-cacb854b6c1e693d938f9f1ee2332d07.ctex"]
 
 [params]
 

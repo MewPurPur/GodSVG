@@ -171,8 +171,8 @@ func _draw() -> void:
 					points[i] = c + Vector2(cos(d), sin(d)) * r
 				points[180] = points[0]
 				var extras := PackedVector2Array([c, c + Vector2(r, 0)])
-				points = attribs.transform.get_transform() * points
-				extras = attribs.transform.get_transform() * extras
+				points = attribs.transform.get_final_transform() * points
+				extras = attribs.transform.get_final_transform() * extras
 				
 				if tag_hovered and tag_selected:
 					hovered_selected_polylines.append(points)
@@ -200,8 +200,8 @@ func _draw() -> void:
 				points[180] = points[0]
 				var extras := PackedVector2Array([
 						c, c + Vector2(rx, 0), c, c + Vector2(0, ry)])
-				points = attribs.transform.get_transform() * points
-				extras = attribs.transform.get_transform() * extras
+				points = attribs.transform.get_final_transform() * points
+				extras = attribs.transform.get_final_transform() * extras
 				
 				if tag_hovered and tag_selected:
 					hovered_selected_polylines.append(points)
@@ -262,8 +262,8 @@ func _draw() -> void:
 					points[185] = points[0]
 				var extras := PackedVector2Array([Vector2(x, y), Vector2(x + rect_width, y),
 						Vector2(x, y), Vector2(x, y + rect_height)])
-				points = attribs.transform.get_transform() * points
-				extras = attribs.transform.get_transform() * extras
+				points = attribs.transform.get_final_transform() * points
+				extras = attribs.transform.get_final_transform() * extras
 				
 				if tag_hovered and tag_selected:
 					hovered_selected_polylines.append(points)
@@ -285,7 +285,7 @@ func _draw() -> void:
 				var y2: float = attribs.y2.get_num()
 				
 				var points := PackedVector2Array([Vector2(x1, y1), Vector2(x2, y2)])
-				points = attribs.transform.get_transform() * points
+				points = attribs.transform.get_final_transform() * points
 				
 				if tag_hovered and tag_selected:
 					hovered_selected_polylines.append(points)
@@ -527,8 +527,8 @@ func _draw() -> void:
 							
 							points = PackedVector2Array([cmd.start, end])
 						_: continue
-					points = attribs.transform.get_transform() * points
-					tangent_points = attribs.transform.get_transform() * tangent_points
+					points = attribs.transform.get_final_transform() * points
+					tangent_points = attribs.transform.get_final_transform() * tangent_points
 					match current_mode:
 						Utils.InteractionType.NONE:
 							normal_polylines.append(points.duplicate())

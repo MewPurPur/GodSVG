@@ -31,6 +31,7 @@
 #move_up,Move Up,Премести нагоре,Nach oben,Подвинуть вверх,Пересунути вгору
 #move_down,Move Down,Премести надолу,Nach unten,Подвинуть вниз,Пересунути вниз
 #delete,Delete,Премахни,Löschen,Удалить,Видалити
+#insert_before,Insert Before,Вмъкни отзад,,,
 #insert_after,Insert After,Вмъкни отпред,Danach einsetzen,Вставить после,Вставити після
 #convert_to,Convert To,Превърни в,Konvertieren zu,Конвертировать в,Конвертувати в
 #err_not_svg,Doesn’t describe a SVG.,Текстът не описва SVG.,Beschreibt kein SVG.,Не есть описанием SVG,Не є описом SVG.
@@ -95,6 +96,8 @@
 #minimize_spacing,Minimize spacing,Намали паузите,Leerplatz minimieren,Минимизировать размеры,Мінімізувати відстань
 #remove_spacing_after_flags,Remove spacing after flags,Премахни паузите след флаговете,,Удалить расстояние после флагов,Видалити відстань після прапорців
 #remove_consecutive_commands,Remove consecutive commands,Премахни последователните команди,Aufeinanderfolgende Befehle entfernen,Удалить последовательные команды,Видалити послідовні команди
+#remove_unnecessary_parameters,Remove unnecessary parameters,Премахни ненужните параметри,,,
 #relative,Relative,Относително,Relativ,Относительная,Відносна
 #absolute,Absolute,Абсолютно,Absolut,Абсолютная,Абсолютна
 #remove_association,Remove the association,Премахни асоциацията,,,
+#apply_matrix,Apply the matrix,Приложи матрицата,,,
