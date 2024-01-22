@@ -68,6 +68,7 @@ custom_minimum_size = Vector2(344, 0)
 layout_mode = 2
 size_flags_horizontal = 0
 focus_mode = 1
+placeholder_text = "No path data"
 script = ExtResource("2_48xgh")
 hover_stylebox = SubResource("StyleBoxFlat_4rmxx")
 focus_stylebox = SubResource("StyleBoxFlat_wqlhg")
