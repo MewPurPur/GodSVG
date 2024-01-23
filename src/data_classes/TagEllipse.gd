@@ -3,6 +3,7 @@ class_name TagEllipse extends Tag
 
 const name = "ellipse"
 const possible_conversions = ["circle", "rect", "path"]
+const icon = preload("res://visual/icons/tag/ellipse.svg")
 
 const known_shape_attributes = ["cx", "cy", "rx", "ry"]
 const known_inheritable_attributes = ["transform", "opacity", "fill", "fill-opacity",

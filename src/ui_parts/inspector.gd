@@ -39,7 +39,7 @@ func _on_add_button_pressed() -> void:
 	var btn_array: Array[Button] = []
 	for tag_name in ["path", "circle", "ellipse", "rect", "line"]:
 		var btn := Utils.create_btn(tag_name, add_tag.bind(tag_name), false,
-				load("res://visual/icons/tag/" + tag_name + ".svg"))
+				load("res://visual/icons/tag/%s.svg" % tag_name))
 		btn.add_theme_font_override(&"font", load("res://visual/fonts/FontMono.ttf"))
 		btn_array.append(btn)
 	

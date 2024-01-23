@@ -3,6 +3,7 @@ class_name TagCircle extends Tag
 
 const name = "circle"
 const possible_conversions = ["ellipse", "rect", "path"]
+const icon = preload("res://visual/icons/tag/circle.svg")
 
 const known_shape_attributes = ["cx", "cy", "r"]
 const known_inheritable_attributes = ["transform", "opacity", "fill", "fill-opacity",

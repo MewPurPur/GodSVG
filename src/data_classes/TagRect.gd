@@ -3,6 +3,7 @@ class_name TagRect extends Tag
 
 const name = "rect"
 const possible_conversions = ["circle", "ellipse", "path"]
+const icon = preload("res://visual/icons/tag/rect.svg")
 
 const known_shape_attributes = ["x", "y", "width", "height", "rx", "ry"]
 const known_inheritable_attributes = ["transform", "opacity", "fill", "fill-opacity",
