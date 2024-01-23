@@ -1,6 +1,7 @@
 extends SubViewport
 
 const ZoomMenuType = preload("res://src/ui_parts/zoom_menu.gd")
+const ContextPopup = preload("res://src/ui_elements/context_popup.tscn")
 
 const buffer_view_space = 0.8
 const zoom_reset_buffer = 0.875
@@ -51,6 +52,22 @@ func center_frame() -> void:
 	adjust_view()
 	set_view((SVG.root_tag.get_size() - size / Indications.zoom) / 2)
 
+func create_object_context() -> Popup:
+	var btn_array: Array[Button] = []
+	var new_tid := PackedInt32Array([SVG.root_tag.get_child_count()])
+	var mouse_position := (get_mouse_position() / Indications.zoom + view.position).snapped(Vector2.ONE * GlobalSettings.save_data.snap)
+	
+	for tag in [TagPath.new(), TagCircle.new(), TagEllipse.new(), TagRect.new(), TagLine.new()]:
+		if tag is TagPath:
+			tag.attributes["d"]._commands.append(PathCommand.MoveCommand.new(0.0, 0.0, false))
+		
+		tag.attributes["transform"].set_transform_list([AttributeTransform.TransformTranslate.new(mouse_position.x, mouse_position.y)] as Array[AttributeTransform.Transform])
+		btn_array.append(Utils.create_btn(tr(tag.name), SVG.root_tag.add_tag.bind(tag, new_tid), false, tag.icon))
+
+	var object_context := ContextPopup.instantiate()
+	add_child(object_context)
+	object_context.set_button_array(btn_array, true)
+	return object_context
 
 func _unhandled_input(event: InputEvent) -> void:
 	if Indications.get_viewport().gui_is_dragging():
@@ -94,6 +111,9 @@ func _unhandled_input(event: InputEvent) -> void:
 		var move_vec := Vector2.ZERO
 		var zoom_dir := 0
 		var mouse_offset := get_mouse_position() / (size * 1.0)
+		
+		if event.button_index == MOUSE_BUTTON_RIGHT:
+			Utils.popup_under_mouse(create_object_context(), get_parent().get_viewport().get_mouse_position())
 		
 		# Zooming with scrolling.
 		if (not event.ctrl_pressed and not event.shift_pressed and\
