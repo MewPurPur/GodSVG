@@ -3,6 +3,7 @@ class_name TagPath extends Tag
 
 const name = "path"
 const possible_conversions = []
+const icon = preload("res://visual/icons/tag/path.svg")
 
 const known_shape_attributes = ["d"]
 const known_inheritable_attributes = ["transform", "opacity", "fill", "fill-opacity",
