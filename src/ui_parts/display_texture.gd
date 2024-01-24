@@ -2,8 +2,9 @@ extends TextureRect
 
 var view_rect := Rect2():
 	set(new_value):
-		view_rect = new_value
-		queue_update()
+		if view_rect != new_value:
+			view_rect = new_value
+			queue_update()
 
 var rasterized := false:
 	set(new_value):
