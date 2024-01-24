@@ -47,7 +47,7 @@ func update_type() -> void:
 			var field_y: BetterLineEdit = add_number_field()
 			field_rx.mode = field_rx.Mode.ONLY_POSITIVE
 			field_ry.mode = field_ry.Mode.ONLY_POSITIVE
-			field_rot.mode = field_rot.Mode.ANGLE
+			field_rot.mode = field_rot.Mode.HALF_ANGLE
 			field_rot.custom_minimum_size.x -= 6
 			field_rx.set_value(path_command.rx)
 			field_ry.set_value(path_command.ry)
