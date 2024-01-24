@@ -37,6 +37,7 @@ const default_config = {
 		"transform_enable_autoformatting": false,
 		"transform_compress_numbers": true,
 		"transform_minimize_spacing": true,
+		"transform_remove_unnecessary_params": true,
 	},
 }
 
@@ -70,6 +71,7 @@ var path_remove_consecutive_commands := true
 var transform_enable_autoformatting := false
 var transform_compress_numbers := true
 var transform_minimize_spacing := true
+var transform_remove_unnecessary_params := true
 
 
 func toggle_bool_setting(section: String, setting: String) -> void:
