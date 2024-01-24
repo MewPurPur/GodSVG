@@ -560,6 +560,7 @@ func _draw() -> void:
 	for polyline in hovered_selected_polylines:
 		draw_polyline(polyline, hover_selection_color, contour_width, true)
 	
+	# TODO Change this when it's implemented in Godot.
 	draw_multiline_antaliased(normal_multiline,
 			Color(default_color, tangent_alpha), tangent_width)
 	draw_multiline_antaliased(selected_multiline,
