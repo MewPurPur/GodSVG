@@ -2,7 +2,7 @@
 ## Used for path command parameters.
 extends BetterLineEdit
 
-enum Mode {DEFAULT, ONLY_POSITIVE, ANGLE}
+enum Mode {DEFAULT, ONLY_POSITIVE, ANGLE, HALF_ANGLE}
 var mode := Mode.DEFAULT
 
 signal value_changed(new_value: float)
@@ -25,7 +25,8 @@ func get_value() -> float:
 func validate(new_value: float) -> float:
 	match mode:
 		Mode.ONLY_POSITIVE: return maxf(new_value, 0.0001)
-		Mode.ANGLE: return fmod(new_value, 180.0)
+		Mode.HALF_ANGLE: return fmod(new_value, 180.0)
+		Mode.ANGLE: return fmod(new_value, 360.0)
 		_: return new_value
 
 

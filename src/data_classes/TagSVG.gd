@@ -215,7 +215,7 @@ func move_tags_to(tids: Array[PackedInt32Array], location: PackedInt32Array) -> 
 	var tags_stored: Array[Tag] = []
 	for tid in tids:
 		# Shift the new location if tags before it were removed.
-		if tid.size() < location.size():
+		if tid.size() <= location.size():
 			for i in tid.size():
 				if tid[i] != location[i]:
 					if tid[i] < location[i]:
