@@ -5,23 +5,12 @@ signal focused
 var attribute: AttributeTransform
 var attribute_name: String
 
-const MatrixPopup = preload("res://src/ui_elements/matrix_popup.tscn")
+const TransformPopup = preload("res://src/ui_elements/transform_popup.tscn")
 
 @onready var line_edit: BetterLineEdit = $LineEdit
 
-# TODO needs more work, can't handle every scenario.
 func set_value(new_value: String, update_type := Utils.UpdateType.REGULAR):
-	# Validate the value.
-	if not TransformParser.text_to_transform(new_value).is_finite():
-		sync(attribute.get_value())
-		return
-	
-	if TransformParser.text_to_transform(new_value) ==\
-	TransformParser.text_to_transform(attribute.default):
-		new_value = attribute.default
-	
 	sync(attribute.autoformat(new_value))
-	# Update the attribute.
 	if attribute.get_value() != new_value or update_type == Utils.UpdateType.FINAL:
 		match update_type:
 			Utils.UpdateType.INTERMEDIATE:
@@ -52,18 +41,10 @@ func _on_matrix_popup_edited(new_matrix: String) -> void:
 	set_value(new_matrix)
 
 func sync(new_value: String) -> void:
-	if line_edit != null:
-		line_edit.text = new_value
-		if new_value == attribute.default:
-			line_edit.add_theme_color_override(&"font_color", Color(0.64, 0.64, 0.64))
-		else:
-			line_edit.remove_theme_color_override(&"font_color")
-	queue_redraw()
+	line_edit.text = new_value
 
 func _on_button_pressed() -> void:
-	var matrix_popup := MatrixPopup.instantiate()
-	matrix_popup.transform = attribute.get_transform()
-	matrix_popup.matrix_edited.connect(_on_matrix_popup_edited)
-	add_child(matrix_popup)
-	matrix_popup.initialize()
-	Utils.popup_under_control(matrix_popup, line_edit)
+	var transform_popup := TransformPopup.instantiate()
+	transform_popup.attribute_ref = attribute
+	add_child(transform_popup)
+	Utils.popup_under_control(transform_popup, line_edit)

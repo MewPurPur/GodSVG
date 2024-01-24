@@ -27,4 +27,4 @@ func set_pos(new_pos: Vector2, undo_redo := false) -> void:
 
 func sync() -> void:
 	pos = Vector2(x_attribute.get_num(), y_attribute.get_num())
-	transform = t_attribute.get_transform()
+	transform = t_attribute.get_final_transform()

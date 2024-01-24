@@ -207,6 +207,12 @@ text = "#minimize_spacing"
 section_name = "autoformat"
 setting_name = "transform_minimize_spacing"
 
+[node name="RemoveUnnecessaryParameters" parent="VBoxContainer/BetterTabContainer/#transforms/TransformVBox" instance=ExtResource("4_ic3rj")]
+layout_mode = 2
+text = "#remove_unnecessary_parameters"
+section_name = "autoformat"
+setting_name = "transform_remove_unnecessary_params"
+
 [node name="CancelButton" type="Button" parent="VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
@@ -233,4 +239,5 @@ text = "#close"
 [connection signal="pressed" from="VBoxContainer/BetterTabContainer/#transforms/TransformVBox/TransformEnable" to="." method="_on_autoformat_settings_changed"]
 [connection signal="pressed" from="VBoxContainer/BetterTabContainer/#transforms/TransformVBox/CompressNumbers" to="." method="_on_autoformat_settings_changed"]
 [connection signal="pressed" from="VBoxContainer/BetterTabContainer/#transforms/TransformVBox/MinimizeSpacing" to="." method="_on_autoformat_settings_changed"]
+[connection signal="pressed" from="VBoxContainer/BetterTabContainer/#transforms/TransformVBox/RemoveUnnecessaryParameters" to="." method="_on_autoformat_settings_changed"]
 [connection signal="pressed" from="VBoxContainer/CancelButton" to="." method="_on_cancel_button_pressed"]
