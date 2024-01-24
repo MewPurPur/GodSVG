@@ -39,4 +39,4 @@ func sync() -> void:
 		pos = Vector2(x_attribute.get_num() + d_attribute.get_num(), y_attribute.get_num())
 	else:
 		pos = Vector2(x_attribute.get_num(), y_attribute.get_num() + d_attribute.get_num())
-	transform = t_attribute.get_transform()
+	transform = t_attribute.get_final_transform()

@@ -63,23 +63,9 @@ func rebuild_color_palettes() -> void:
 		palette_container.add_child(palette_config)
 		palette_config.assign_palette(palette)
 		palette_config.layout_changed.connect(rebuild_color_palettes)
-	# The button for adding a new palette looks quite unusual and should be on the bottom.
-	# So I'm setting up its own theming here.
-	var normal_sb := StyleBoxFlat.new()
-	var hover_sb := StyleBoxFlat.new()
-	var pressed_sb := StyleBoxFlat.new()
-	normal_sb.bg_color = Color("#def1")
-	hover_sb.bg_color = Color("#def2")
-	pressed_sb.bg_color = Color("#def4")
-	for sb: StyleBoxFlat in [normal_sb, hover_sb, pressed_sb]:
-		sb.set_corner_radius_all(5)
-		sb.set_content_margin_all(4)
+	# Add the button for adding a new palette.
 	var add_palette_button := Button.new()
-	add_palette_button.begin_bulk_theme_override()
-	add_palette_button.add_theme_stylebox_override(&"normal", normal_sb)
-	add_palette_button.add_theme_stylebox_override(&"hover", hover_sb)
-	add_palette_button.add_theme_stylebox_override(&"pressed", pressed_sb)
-	add_palette_button.end_bulk_theme_override()
+	add_palette_button.theme_type_variation = &"TranslucentButton"
 	add_palette_button.icon = plus_icon
 	add_palette_button.icon_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	add_palette_button.focus_mode = Control.FOCUS_NONE
