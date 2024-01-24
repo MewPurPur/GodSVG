@@ -129,6 +129,7 @@ func _unhandled_input(event: InputEvent) -> void:
 			zoom_menu.zoom_in(factor, mouse_offset)
 		elif zoom_dir == -1:
 			zoom_menu.zoom_out(factor, mouse_offset)
+		
 		set_view(view.position + move_vec * factor / Indications.zoom * 32)
 	
 	else:
