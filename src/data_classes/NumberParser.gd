@@ -26,6 +26,8 @@ static func format_text(text: String) -> String:
 			padded_zeros += 1
 	
 	text = String.num(text.to_float(), 4)
+	if text == "-0":
+		text = "0"
 	
 	if leading_decimal_point or\
 	(GlobalSettings.number_remove_leading_zero and "." in text):
