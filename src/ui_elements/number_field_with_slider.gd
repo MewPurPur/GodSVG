@@ -55,14 +55,20 @@ func _ready() -> void:
 	attribute.value_changed.connect(set_value)
 	num_edit.tooltip_text = attribute_name
 
-func _on_focus_exited() -> void:
-	set_value(num_edit.text)
-
 func _on_focus_entered() -> void:
 	focused.emit()
 
+func _on_focus_exited() -> void:
+	set_number_value(num_edit.text)
+
 func _on_text_submitted(submitted_text: String) -> void:
-	set_value(submitted_text)
+	set_number_value(submitted_text)
+
+func set_number_value(num_text: String) -> void:
+	if num_text.strip_edges().is_empty():
+		set_value(attribute.default)
+	else:
+		set_value(num_text)
 
 func sync(new_value: String) -> void:
 	if num_edit != null:
