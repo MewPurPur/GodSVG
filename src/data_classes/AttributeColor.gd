@@ -45,6 +45,7 @@ static func is_valid_url(color: String) -> bool:
 	return color.begins_with("url(#") and color.ends_with(")")
 
 static func get_color_from_non_url(color: String) -> Color:
+	color = color.strip_edges()
 	if is_valid_named(color):
 		if color == "none":
 			return Color.TRANSPARENT
@@ -63,6 +64,7 @@ static func get_color_from_non_url(color: String) -> Color:
 		return Color()
 
 static func color_equals_hex(color: String, hex: String) -> bool:
+	color = color.strip_edges()
 	if color == "none" or is_valid_url(color):
 		return false
 	
