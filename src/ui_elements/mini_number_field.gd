@@ -13,21 +13,12 @@ func set_value(new_value: float):
 		text = PathDataParser.num_to_text(_value)
 		return
 	var old_value := _value
-	_value = validate(new_value)
 	text = PathDataParser.num_to_text(_value)
 	if _value != old_value:
 		value_changed.emit(_value)
 
 func get_value() -> float:
 	return _value
-
-
-func validate(new_value: float) -> float:
-	#
-	match mode:
-		Mode.HALF_ANGLE: return fmod(new_value, 180.0)
-		Mode.ANGLE: return fmod(new_value, 360.0)
-		_: return new_value
 
 
 func _on_focus_exited() -> void:
@@ -39,6 +30,8 @@ func _on_text_submitted(submitted_text: String) -> void:
 
 func evaluate_after_input(eval_text: String) -> float:
 	var num := AttributeNumeric.evaluate_expr(eval_text)
-	if mode == Mode.ONLY_POSITIVE:
-		num = maxf(num, 0.0001)
-	return num
+	match mode:
+		Mode.ONLY_POSITIVE: return maxf(num, 0.0001)
+		Mode.HALF_ANGLE: return fmod(num, 180.0)
+		Mode.ANGLE: return fmod(num, 360.0)
+		_: return num
