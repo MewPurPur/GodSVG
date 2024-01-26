@@ -16,6 +16,8 @@ func set_value(new_value: float):
 		_value = new_value
 		text = PathDataParser.num_to_text(new_value)
 		value_changed.emit(new_value)
+	elif new_value == 0 and text == "-0":
+		text = "0"
 
 func get_value() -> float:
 	return _value
