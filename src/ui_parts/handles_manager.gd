@@ -395,8 +395,7 @@ func _draw() -> void:
 									# Invalid T is drawn as a line.
 									var end := cmd.start + Vector2(cmd.x, cmd.y) if relative\
 											else Vector2(cmd.x, cmd.y)
-									points.append(cmd.start)
-									points.append(end)
+									points = PackedVector2Array([cmd.start, end])
 									prevQ_idx = -1
 									break
 								else:
@@ -632,7 +631,7 @@ func tid_is_selected(tid: PackedInt32Array, cmd_idx := -1) -> bool:
 		return false
 	else:
 		for selected_tid in Indications.selected_tids:
-			if Utils.is_tid_parent(selected_tid, tid) or selected_tid == tid:
+			if Utils.is_tid_parent(selected_tid, tid) or tid == selected_tid:
 				return true
 		return Indications.semi_selected_tid == tid and\
 				cmd_idx in Indications.inner_selections
@@ -755,7 +754,8 @@ func move_selected_to_mouse() -> void:
 			if GlobalSettings.save_data.snap > 0.0:
 				mouse_position = mouse_position.snapped(Vector2(snap_size, snap_size))
 			
-			var new_pos := dragged_handle.transform.affine_inverse() * SVG.root_tag.world_to_canvas(mouse_position)
+			var new_pos := dragged_handle.transform.affine_inverse() *\
+					SVG.root_tag.world_to_canvas(mouse_position)
 			dragged_handle.set_pos(new_pos)
 			was_handle_moved = true
 			return

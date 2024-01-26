@@ -5,7 +5,8 @@ var x_attribute: AttributeNumeric
 var y_attribute: AttributeNumeric
 var t_attribute: AttributeTransform
 
-func _init(id: PackedInt32Array, xref: AttributeNumeric, yref: AttributeNumeric, tref: AttributeTransform) -> void:
+func _init(id: PackedInt32Array, xref: AttributeNumeric, yref: AttributeNumeric,
+tref: AttributeTransform) -> void:
 	tid = id
 	x_attribute = xref
 	y_attribute = yref

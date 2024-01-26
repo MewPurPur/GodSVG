@@ -9,10 +9,7 @@ static func num_to_text(num: float, precision := 4) -> String:
 			text = text.erase(1)
 	return text
 
-static func num_arr_to_text(num_arr: Array[float]) -> String:
-	var numstr_arr: Array[String] = []
-	for i in num_arr.size():
-		numstr_arr.append(num_to_text(num_arr[i]))
+static func numstr_arr_to_text(numstr_arr: Array[String]) -> String:
 	var output := ""
 	for i in numstr_arr.size() - 1:
 		var current_numstr := numstr_arr[i]
@@ -23,29 +20,33 @@ static func num_arr_to_text(num_arr: Array[float]) -> String:
 			output += " "
 	return output + numstr_arr.back()
 
-# TODO needs a lot more work.
 static func transform_list_to_text(
 transform_list: Array[AttributeTransform.Transform]) -> String:
 	var output := ""
 	
 	for t in transform_list:
 		if t is AttributeTransform.TransformMatrix:
-			output += "matrix(%s) " % num_arr_to_text([t.x1, t.x2, t.y1, t.y2, t.o1, t.o2])
+			output += "matrix(%s) " % numstr_arr_to_text([num_to_text(t.x1),
+					num_to_text(t.x2), num_to_text(t.y1), num_to_text(t.y2),
+					num_to_text(t.o1), num_to_text(t.o2)])
 		elif t is AttributeTransform.TransformTranslate:
 			if t.y == 0 and GlobalSettings.transform_remove_unnecessary_params:
 				output += "translate(%s) " % num_to_text(t.x)
 			else:
-				output += "translate(%s) " % num_arr_to_text([t.x, t.y])
+				output += "translate(%s) " % numstr_arr_to_text([num_to_text(t.x),
+						num_to_text(t.y)])
 		elif t is AttributeTransform.TransformRotate:
 			if t.x == 0 and t.y == 0 and GlobalSettings.transform_remove_unnecessary_params:
 				output += "rotate(%s) " % num_to_text(t.deg)
 			else:
-				output += "rotate(%s) " % num_arr_to_text([t.deg, t.x, t.y])
+				output += "rotate(%s) " % numstr_arr_to_text([num_to_text(t.deg),
+						num_to_text(t.x), num_to_text(t.y)])
 		elif t is AttributeTransform.TransformScale:
 			if t.x == t.y and GlobalSettings.transform_remove_unnecessary_params:
 				output += "scale(%s) " % num_to_text(t.x)
 			else:
-				output += "scale(%s) " % num_arr_to_text([t.x, t.y])
+				output += "scale(%s) " % numstr_arr_to_text([num_to_text(t.x),
+						num_to_text(t.y)])
 		elif t is AttributeTransform.TransformSkewX:
 			output += "skewX(%s) " % num_to_text(t.x)
 		elif t is AttributeTransform.TransformSkewY:
