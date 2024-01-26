@@ -17,8 +17,8 @@ static func format_text(text: String) -> String:
 	if text.is_empty():
 		return ""  # Equivalent to NAN in the app's logic.
 	
-	var leading_decimal_point := text.begins_with(".") or text.begins_with("+.") or\
-			text.begins_with("-.")
+	var leading_decimal_point := text.begins_with(".") or text.begins_with("-.") or\
+			text.begins_with("+.")
 	var padded_zeros := 0
 	if "." in text and not GlobalSettings.number_remove_zero_padding:
 		while text.ends_with("0"):
