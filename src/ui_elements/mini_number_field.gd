@@ -6,16 +6,16 @@ enum Mode {DEFAULT, ONLY_POSITIVE, ANGLE, HALF_ANGLE}
 var mode := Mode.DEFAULT
 
 signal value_changed(new_value: float)
-var _value: float  # Must not be updated directly.
+var _value := NAN  # Must not be updated directly.
 
 func set_value(new_value: float):
 	if not is_finite(new_value):
 		text = PathDataParser.num_to_text(_value)
 		return
-	var old_value := _value
-	text = PathDataParser.num_to_text(_value)
-	if _value != old_value:
-		value_changed.emit(_value)
+	if new_value != _value:
+		_value = new_value
+		text = PathDataParser.num_to_text(new_value)
+		value_changed.emit(new_value)
 
 func get_value() -> float:
 	return _value
