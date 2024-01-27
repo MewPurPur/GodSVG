@@ -20,7 +20,6 @@ func _ready() -> void:
 	root_tag.attribute_changed.connect(update_text)
 	root_tag.child_attribute_changed.connect(update_text)
 	root_tag.tag_layout_changed.connect(update_text)
-	get_window().files_dropped.connect(_on_files_dropped)
 	
 	var cmdline_args := OS.get_cmdline_args()
 	var load_cmdl := false
@@ -120,11 +119,6 @@ func native_file_save(has_selected: bool, files: PackedStringArray,
 _filter_idx: int) -> void:
 	if has_selected:
 		save_svg_to_file(files[0])
-
-
-func _on_files_dropped(files: PackedStringArray):
-	if not HandlerGUI.has_overlay:
-		apply_svg_from_path(files[0])
 
 
 func apply_svg_from_path(path: String) -> int:
