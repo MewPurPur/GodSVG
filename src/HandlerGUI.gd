@@ -3,6 +3,15 @@ extends Node
 var has_overlay := false
 var overlay_ref: ColorRect
 
+
+func _ready() -> void:
+	get_window().files_dropped.connect(_on_files_dropped)
+
+func _on_files_dropped(files: PackedStringArray):
+	if not has_overlay:
+		SVG.apply_svg_from_path(files[0])
+
+
 func add_overlay(overlay_menu: Node) -> void:
 	# A bit hacky, but I couldn't find out a better way at the time.
 	# I'm sure there is a better way of doing things though.
