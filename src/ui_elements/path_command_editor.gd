@@ -307,7 +307,8 @@ func _gui_input(event: InputEvent) -> void:
 	elif event is InputEventMouseButton and event.is_pressed():
 		if event.button_index == MOUSE_BUTTON_LEFT:
 			if event.double_click:
-				Indications.clear_inner_selection()
+				# Unselect the tag, so then it's selected again.
+				Indications.ctrl_select(tid, cmd_idx)
 				var subpath_range: Vector2i =\
 						SVG.root_tag.get_by_tid(tid).attributes.d.get_subpath(cmd_idx)
 				for idx in range(subpath_range.x, subpath_range.y + 1):
