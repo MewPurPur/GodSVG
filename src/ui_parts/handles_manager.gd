@@ -700,8 +700,9 @@ func _unhandled_input(event: InputEvent) -> void:
 			if hovered_handle is PathHandle:
 				inner_idx = hovered_handle.command_index
 			
-			if event.double_click and hovered_handle is PathHandle:
-				Indications.clear_inner_selection()
+			if event.double_click and inner_idx != -1:
+				# Unselect the tag, so then it's selected again.
+				Indications.ctrl_select(dragged_tid, inner_idx)
 				var subpath_range: Vector2i =\
 						hovered_handle.path_attribute.get_subpath(inner_idx)
 				for idx in range(subpath_range.x, subpath_range.y + 1):
