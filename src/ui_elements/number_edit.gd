@@ -37,10 +37,6 @@ func _ready() -> void:
 	text = String.num(_value, 4)
 
 
-func _on_focus_exited() -> void:
-	set_value(AttributeNumeric.evaluate_expr(text))
-	super()
-
 func _on_text_submitted(submitted_text: String) -> void:
 	set_value(AttributeNumeric.evaluate_expr(submitted_text))
 

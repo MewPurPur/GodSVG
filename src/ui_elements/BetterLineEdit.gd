@@ -42,6 +42,7 @@ func _on_focus_entered() -> void:
 func _on_focus_exited() -> void:
 	process_mode = PROCESS_MODE_INHERIT
 	first_click = false
+	text_submitted.emit(text)
 	if not tree_was_paused_before:
 		get_tree().paused = false
 
