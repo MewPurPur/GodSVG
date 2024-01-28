@@ -24,10 +24,7 @@ func _on_edit_button_pressed() -> void:
 	color_name_edit_button.hide()
 
 
-func _on_name_edit_focus_exited() -> void:
-	change_color_name(color_name_edit.text)
-
-func change_color_name(new_text: String) -> void:
+func _on_name_edit_text_submitted(new_text: String) -> void:
 	var new_name := new_text.strip_edges()
 	set_label_text(new_name)
 	hide_name_edit()
