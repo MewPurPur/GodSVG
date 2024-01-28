@@ -76,7 +76,6 @@ func rebuild() -> void:
 		var t_editor := TransformEditor.instantiate()
 		transform_list.add_child(t_editor)
 		# Setup top panel
-		var transform_type: String
 		if t is AttributeTransform.TransformMatrix:
 			t_editor.type = "matrix"
 		elif t is AttributeTransform.TransformTranslate:
@@ -304,7 +303,7 @@ func _input(event: InputEvent) -> void:
 
 # So I have to rebuild this in its entirety to keep the references safe or something...
 func get_transform_list() -> Array[AttributeTransform.Transform]:
-	var t_list: Array[AttributeTransform.Transform]
+	var t_list: Array[AttributeTransform.Transform] = []
 	for t in attribute_ref.get_transform_list():
 		if t is AttributeTransform.TransformMatrix:
 			t_list.append(AttributeTransform.TransformMatrix.new(

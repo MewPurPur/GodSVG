@@ -1,8 +1,9 @@
-[gd_scene load_steps=6 format=3 uid="uid://c5cavwa2xdt0b"]
+[gd_scene load_steps=7 format=3 uid="uid://c5cavwa2xdt0b"]
 
 [ext_resource type="Script" path="res://src/ui_parts/palette_config.gd" id="1_2fy8k"]
 [ext_resource type="Texture2D" uid="uid://dr2erka82g6j4" path="res://visual/icons/Edit.svg" id="2_35dgp"]
 [ext_resource type="Script" path="res://src/ui_elements/BetterLineEdit.gd" id="2_coqnx"]
+[ext_resource type="FontFile" uid="uid://clpf84p1lfwlp" path="res://visual/fonts/Font.ttf" id="2_cttpy"]
 [ext_resource type="Texture2D" uid="uid://ccbta5q43jobk" path="res://visual/icons/More.svg" id="5_vjxeq"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lq3bn"]
@@ -59,6 +60,7 @@ visible = false
 custom_minimum_size = Vector2(120, 0)
 layout_mode = 2
 focus_mode = 1
+theme_override_fonts/font = ExtResource("2_cttpy")
 theme_override_styles/normal = SubResource("StyleBoxFlat_lq3bn")
 max_length = 30
 script = ExtResource("2_coqnx")
@@ -87,8 +89,7 @@ mouse_default_cursor_shape = 2
 theme_type_variation = &"IconButton"
 icon = ExtResource("5_vjxeq")
 
-[connection signal="focus_exited" from="MarginContainer/HBoxContainer/MainContainer/HBoxContainer/NameEdit" to="." method="_on_name_edit_focus_exited"]
 [connection signal="text_changed" from="MarginContainer/HBoxContainer/MainContainer/HBoxContainer/NameEdit" to="." method="_on_name_edit_text_changed"]
-[connection signal="text_submitted" from="MarginContainer/HBoxContainer/MainContainer/HBoxContainer/NameEdit" to="." method="change_name"]
+[connection signal="text_submitted" from="MarginContainer/HBoxContainer/MainContainer/HBoxContainer/NameEdit" to="." method="_on_name_edit_text_submitted"]
 [connection signal="pressed" from="MarginContainer/HBoxContainer/MainContainer/HBoxContainer/EditButton" to="." method="popup_edit_name"]
 [connection signal="pressed" from="MarginContainer/HBoxContainer/MoreButton" to="." method="_on_more_button_pressed"]

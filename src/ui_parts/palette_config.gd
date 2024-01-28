@@ -81,10 +81,7 @@ func _on_name_edit_text_changed(new_text: String) -> void:
 	else:
 		name_edit.add_theme_color_override(&"font_color", Color(0.6, 1.0, 0.6))
 
-func _on_name_edit_focus_exited() -> void:
-	change_name(name_edit.text)
-
-func change_name(new_name: String) -> void:
+func _on_name_edit_text_submitted(new_name: String) -> void:
 	new_name = new_name.strip_edges()
 	var names: Array[String] = []
 	for palette in GlobalSettings.get_palettes():
