@@ -171,6 +171,7 @@ text = "HSV"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="SliderContainer"]
 layout_mode = 2
+theme_override_constants/separation = 0
 
 [node name="Spacer" type="Control" parent="SliderContainer/HBoxContainer"]
 custom_minimum_size = Vector2(10, 0)
@@ -190,6 +191,8 @@ theme_override_constants/separation = 6
 [node name="MarginContainer" type="MarginContainer" parent="SliderContainer/HBoxContainer/TracksContainer/Slider1"]
 layout_mode = 2
 size_flags_horizontal = 3
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_right = 4
 theme_override_constants/margin_bottom = 6
 
 [node name="ColorTrack" type="ColorRect" parent="SliderContainer/HBoxContainer/TracksContainer/Slider1/MarginContainer"]
@@ -215,6 +218,8 @@ theme_override_constants/separation = 6
 [node name="MarginContainer" type="MarginContainer" parent="SliderContainer/HBoxContainer/TracksContainer/Slider2"]
 layout_mode = 2
 size_flags_horizontal = 3
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_right = 4
 theme_override_constants/margin_bottom = 6
 
 [node name="ColorTrack" type="ColorRect" parent="SliderContainer/HBoxContainer/TracksContainer/Slider2/MarginContainer"]
@@ -241,6 +246,8 @@ theme_override_constants/separation = 6
 [node name="MarginContainer" type="MarginContainer" parent="SliderContainer/HBoxContainer/TracksContainer/Slider3"]
 layout_mode = 2
 size_flags_horizontal = 3
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_right = 4
 theme_override_constants/margin_bottom = 6
 
 [node name="ColorTrack" type="ColorRect" parent="SliderContainer/HBoxContainer/TracksContainer/Slider3/MarginContainer"]
