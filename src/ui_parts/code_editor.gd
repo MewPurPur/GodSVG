@@ -53,7 +53,7 @@ func setup_theme(match_below: bool) -> void:
 				get_stylebox(theming, &"TextEdit").duplicate()
 		stylebox.corner_radius_top_right = 0
 		stylebox.corner_radius_top_left = 0
-		stylebox.border_width_top = 1
+		stylebox.border_width_top = 2
 		if match_below:
 			stylebox.corner_radius_bottom_right = 0
 			stylebox.corner_radius_bottom_left = 0
