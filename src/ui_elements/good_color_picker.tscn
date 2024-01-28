@@ -188,7 +188,7 @@ alignment = 2
 [node name="Slider1" type="HBoxContainer" parent="SliderContainer/HBoxContainer/TracksContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_constants/separation = 6
+theme_override_constants/separation = 4
 
 [node name="MarginContainer" type="MarginContainer" parent="SliderContainer/HBoxContainer/TracksContainer/Slider1"]
 layout_mode = 2
@@ -215,7 +215,7 @@ script = ExtResource("6_aqyoh")
 [node name="Slider2" type="HBoxContainer" parent="SliderContainer/HBoxContainer/TracksContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_constants/separation = 6
+theme_override_constants/separation = 4
 
 [node name="MarginContainer" type="MarginContainer" parent="SliderContainer/HBoxContainer/TracksContainer/Slider2"]
 layout_mode = 2
@@ -243,7 +243,7 @@ script = ExtResource("6_aqyoh")
 [node name="Slider3" type="HBoxContainer" parent="SliderContainer/HBoxContainer/TracksContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_constants/separation = 6
+theme_override_constants/separation = 4
 
 [node name="MarginContainer" type="MarginContainer" parent="SliderContainer/HBoxContainer/TracksContainer/Slider3"]
 layout_mode = 2
