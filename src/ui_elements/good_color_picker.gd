@@ -33,7 +33,7 @@ var slider_mode: SliderMode:
 		update()
 
 @onready var side_slider: MarginContainer = $ShapeContainer/SideSlider
-@onready var side_slider_drawn: ColorRect = $ShapeContainer/SideSlider/SideSliderDraw
+@onready var side_slider_track: ColorRect = $ShapeContainer/SideSlider/SideSliderTrack
 @onready var color_wheel: MarginContainer = $ShapeContainer/ColorWheel
 @onready var color_wheel_drawn: ColorRect = $ShapeContainer/ColorWheel/ColorWheelDraw
 @onready var rgb_button: Button = $SliderContainer/ColorSpaceContainer/RGB
@@ -84,8 +84,8 @@ func set_color(new_color: Color) -> void:
 		color_changed.emit(new_color.to_html(false))
 
 func update() -> void:
-	color_wheel_drawn.material.set_shader_parameter(&"v", color.v)
-	side_slider_drawn.material.set_shader_parameter(&"base_color",
+	side_slider_track.material.set_shader_parameter(&"v", color.v)
+	side_slider_track.material.set_shader_parameter(&"base_color",
 			Color.from_hsv(color.h, color.s, 1.0))
 	slider1_track.material.set_shader_parameter(&"base_color", color)
 	slider2_track.material.set_shader_parameter(&"base_color", color)
@@ -119,8 +119,10 @@ func _ready() -> void:
 
 func _on_side_slider_gui_input(event: InputEvent) -> void:
 	if Utils.is_event_drag(event) or Utils.is_event_drag_start(event):
+		var n: float = (event.position.y - side_slider_track.position.y) /\
+				side_slider_track.size.y
 		var new_color := color
-		new_color.v = clampf(1 - event.position.y / side_slider.size.y, 0.0001, 1.0)
+		new_color.v = clampf(1 - n, 0.0001, 1.0)
 		set_color(new_color)
 	if Utils.is_event_drag_start(event) or Utils.is_event_drag_end(event):
 		is_dragging_side_slider = event.is_pressed()
@@ -185,9 +187,10 @@ func _on_hsv_pressed() -> void:
 # Draw inside the side slider to give it a little arrow to the side.
 func _on_side_slider_draw() -> void:
 	var arrow_modulate := Color(1, 1, 1) if is_dragging_side_slider\
-			else Color(0.8, 0.8, 0.8)
-	side_slider.draw_texture(side_slider_arrow, Vector2(0, side_slider.size.y *\
-			(1 - color.v) - side_slider_arrow.get_height() / 2.0), arrow_modulate)
+			else Color(1, 1, 1, 0.7)
+	side_slider.draw_texture(side_slider_arrow, Vector2(0, side_slider_track.position.y +\
+			side_slider_track.size.y * (1 - color.v) - side_slider_arrow.get_height() / 2.0),
+			arrow_modulate)
 
 func _draw() -> void:
 	RenderingServer.canvas_item_clear(color_wheel_surface)
