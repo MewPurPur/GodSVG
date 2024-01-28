@@ -27,9 +27,10 @@ var slider_mode: SliderMode:
 			# Clamping like this doesn't change the hex representation, but
 			# it helps avoid locking certain sliders (e.g. hue slider when saturation is 0).
 			var new_color := color
+			# HVS order helps to keep new_color.s at 0.0001 for some reason.
 			new_color.h = clampf(new_color.h, 0.0, 0.9999)
-			new_color.s = clampf(new_color.s, 0.0001, 1.0)
 			new_color.v = clampf(new_color.v, 0.0001, 1.0)
+			new_color.s = clampf(new_color.s, 0.0001, 1.0)
 			set_color(new_color)
 		update()
 
@@ -80,6 +81,7 @@ func set_color(new_color: Color) -> void:
 	if is_none:
 		toggle_none()
 	if color != new_color:
+		print_stack()
 		color = new_color
 		update()
 		color_changed.emit(new_color.to_html(false))
@@ -339,7 +341,10 @@ func _on_reset_color_button_gui_input(event: InputEvent) -> void:
 func _on_reset_color_button_pressed() -> void:
 	reset_color_button.disabled = true
 	if starting_color != "none":
-		set_color(starting_color)
+		UR.create_action("")
+		UR.add_do_method(set_color.bind(starting_color))
+		UR.add_undo_method(set_color.bind(color))
+		UR.commit_action()
 
 
 func _input(event: InputEvent) -> void:
