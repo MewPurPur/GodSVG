@@ -25,6 +25,7 @@ func _input(event: InputEvent) -> void:
 	if has_focus() and event is InputEventMouseButton:
 		if event.is_pressed() and not get_global_rect().has_point(event.position):
 			release_focus()
+			text_submitted.emit(text)
 		elif event.is_released() and first_click and not has_selection():
 			first_click = false
 			select_all()
@@ -42,7 +43,6 @@ func _on_focus_entered() -> void:
 func _on_focus_exited() -> void:
 	process_mode = PROCESS_MODE_INHERIT
 	first_click = false
-	text_submitted.emit(text)
 	if not tree_was_paused_before:
 		get_tree().paused = false
 
