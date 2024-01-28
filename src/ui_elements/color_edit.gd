@@ -59,12 +59,8 @@ func _draw() -> void:
 	draw_style_box(stylebox, Rect2(Vector2.ZERO, button_size - Vector2(1, 2)))
 
 
-func _on_focus_exited() -> void:
-	value = color_edit.text
-
 func _on_text_submitted(new_text: String) -> void:
 	value = new_text
-
 
 func _on_color_picked(new_color: String, close_picker: bool) -> void:
 	value = new_color

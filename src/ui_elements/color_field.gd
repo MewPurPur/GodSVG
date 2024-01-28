@@ -63,17 +63,11 @@ func _draw() -> void:
 func _on_focus_entered() -> void:
 	focused.emit()
 
-func _on_focus_exited() -> void:
-	set_color_value(color_edit.text)
-
 func _on_text_submitted(new_text: String) -> void:
-	set_color_value(new_text)
-
-func set_color_value(color_text: String) -> void:
-	if color_text.strip_edges().is_empty():
+	if new_text.strip_edges().is_empty():
 		set_value(attribute.default)
 	else:
-		set_value(color_text)
+		set_value(new_text)
 
 
 func _on_color_picked(new_color: String, close_picker: bool) -> void:

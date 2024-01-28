@@ -28,10 +28,6 @@ func _on_focus_entered() -> void:
 	focused.emit()
 	super()
 
-func _on_focus_exited() -> void:
-	set_value(text)
-	super()
-
 func _on_text_submitted(new_text: String) -> void:
 	set_value(new_text)
 

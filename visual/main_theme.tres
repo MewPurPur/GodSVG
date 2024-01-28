@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=83 format=3 uid="uid://der6fnkliqqto"]
+[gd_resource type="Theme" load_steps=85 format=3 uid="uid://der6fnkliqqto"]
 
 [ext_resource type="Texture2D" uid="uid://wdrpwa7gwmg" path="res://visual/icons/theme/GuiBoxChecked.svg" id="1_agkhv"]
 [ext_resource type="Texture2D" uid="uid://d07xfjdtgtvop" path="res://visual/icons/theme/GuiBoxCheckedDisabled.svg" id="2_kfk3n"]
@@ -190,6 +190,16 @@ corner_radius_top_left = 3
 corner_radius_top_right = 3
 corner_radius_bottom_right = 3
 corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_p5ses"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_idfeh"]
+bg_color = Color(0.0627451, 0.0627451, 0.101961, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+expand_margin_top = 2.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_v7lev"]
 content_margin_top = 2.0
@@ -802,6 +812,11 @@ FlatButton/styles/disabled = SubResource("StyleBoxFlat_bi87s")
 FlatButton/styles/hover = SubResource("StyleBoxFlat_ky4q6")
 FlatButton/styles/normal = SubResource("StyleBoxEmpty_q84qj")
 FlatButton/styles/pressed = SubResource("StyleBoxFlat_5jayv")
+GoodColorPickerLineEdit/base_type = &"LineEdit"
+GoodColorPickerLineEdit/font_sizes/font_size = 10
+GoodColorPickerLineEdit/fonts/font = ExtResource("5_nfqug")
+GoodColorPickerLineEdit/styles/focus = SubResource("StyleBoxEmpty_p5ses")
+GoodColorPickerLineEdit/styles/normal = SubResource("StyleBoxFlat_idfeh")
 HScrollBar/styles/grabber = SubResource("StyleBoxFlat_v7lev")
 HScrollBar/styles/grabber_highlight = SubResource("StyleBoxFlat_n2br6")
 HScrollBar/styles/grabber_pressed = SubResource("StyleBoxFlat_nhrif")
