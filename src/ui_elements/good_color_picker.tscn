@@ -83,8 +83,10 @@ mouse_filter = 1
 [node name="SideSlider" type="MarginContainer" parent="ShapeContainer"]
 layout_mode = 2
 theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_bottom = 4
 
-[node name="SideSliderDraw" type="ColorRect" parent="ShapeContainer/SideSlider"]
+[node name="SideSliderTrack" type="ColorRect" parent="ShapeContainer/SideSlider"]
 material = SubResource("ShaderMaterial_gihhg")
 custom_minimum_size = Vector2(18, 0)
 layout_mode = 2

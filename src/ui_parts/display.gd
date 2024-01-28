@@ -78,7 +78,7 @@ func open_docs() -> void:
 	HandlerGUI.add_overlay(docs_instance)
 
 func open_sponsor() -> void:
-	OS.shell_open("https://ko-fi.com/mewpurpur")
+	OS.shell_open("https://github.com/sponsors/MewPurPur")
 
 func toggle_grid_visuals() -> void:
 	grid_visuals.visible = not grid_visuals.visible
