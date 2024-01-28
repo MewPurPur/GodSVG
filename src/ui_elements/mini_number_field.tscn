@@ -23,3 +23,5 @@ script = ExtResource("1_ggi5v")
 hover_stylebox = SubResource("StyleBoxFlat_wk41m")
 focus_stylebox = SubResource("StyleBoxFlat_ul27o")
 code_font_tooltip = true
+
+[connection signal="text_submitted" from="." to="." method="_on_text_submitted"]

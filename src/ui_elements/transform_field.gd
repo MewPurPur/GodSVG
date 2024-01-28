@@ -28,9 +28,6 @@ func _ready() -> void:
 	attribute.value_changed.connect(set_value)
 	line_edit.tooltip_text = attribute_name
 
-func _on_focus_exited() -> void:
-	set_value(line_edit.text)
-
 func _on_focus_entered() -> void:
 	focused.emit()
 

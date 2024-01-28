@@ -23,10 +23,6 @@ func get_value() -> float:
 	return _value
 
 
-func _on_focus_exited() -> void:
-	set_value(evaluate_after_input(text))
-	super()
-
 func _on_text_submitted(submitted_text: String) -> void:
 	set_value(evaluate_after_input(submitted_text))
 

@@ -1,10 +1,11 @@
-[gd_scene load_steps=15 format=3 uid="uid://b1eig44cov474"]
+[gd_scene load_steps=16 format=3 uid="uid://b1eig44cov474"]
 
 [ext_resource type="Script" path="res://src/ui_elements/good_color_picker.gd" id="1_0pc78"]
 [ext_resource type="Shader" path="res://src/shaders/color_wheel.gdshader" id="2_nf1uk"]
 [ext_resource type="Shader" path="res://src/shaders/slider_visuals.gdshader" id="5_acxpg"]
 [ext_resource type="Texture2D" uid="uid://cvh3kwbucf2n1" path="res://visual/icons/Reload.svg" id="5_rh0xc"]
 [ext_resource type="Texture2D" uid="uid://d36qn2f7a0nok" path="res://visual/icons/NoneColor.svg" id="5_rnr60"]
+[ext_resource type="Script" path="res://src/ui_elements/BetterLineEdit.gd" id="6_aqyoh"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_wl372"]
 shader = ExtResource("2_nf1uk")
@@ -180,43 +181,83 @@ layout_mode = 2
 size_flags_horizontal = 3
 alignment = 2
 
-[node name="Slider1" type="MarginContainer" parent="SliderContainer/HBoxContainer/TracksContainer"]
+[node name="Slider1" type="HBoxContainer" parent="SliderContainer/HBoxContainer/TracksContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_horizontal = 3
-theme_override_constants/margin_bottom = 8
+theme_override_constants/separation = 6
 
-[node name="ColorTrack" type="ColorRect" parent="SliderContainer/HBoxContainer/TracksContainer/Slider1"]
+[node name="MarginContainer" type="MarginContainer" parent="SliderContainer/HBoxContainer/TracksContainer/Slider1"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_bottom = 6
+
+[node name="ColorTrack" type="ColorRect" parent="SliderContainer/HBoxContainer/TracksContainer/Slider1/MarginContainer"]
 material = SubResource("ShaderMaterial_fvg6q")
 custom_minimum_size = Vector2(0, 12)
 layout_mode = 2
+size_flags_horizontal = 3
 mouse_filter = 1
 
-[node name="Slider2" type="MarginContainer" parent="SliderContainer/HBoxContainer/TracksContainer"]
+[node name="IntField" type="LineEdit" parent="SliderContainer/HBoxContainer/TracksContainer/Slider1"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_type_variation = &"GoodColorPickerLineEdit"
+alignment = 1
+max_length = 3
+script = ExtResource("6_aqyoh")
+
+[node name="Slider2" type="HBoxContainer" parent="SliderContainer/HBoxContainer/TracksContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_horizontal = 3
-theme_override_constants/margin_bottom = 8
+theme_override_constants/separation = 6
 
-[node name="ColorTrack" type="ColorRect" parent="SliderContainer/HBoxContainer/TracksContainer/Slider2"]
+[node name="MarginContainer" type="MarginContainer" parent="SliderContainer/HBoxContainer/TracksContainer/Slider2"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_bottom = 6
+
+[node name="ColorTrack" type="ColorRect" parent="SliderContainer/HBoxContainer/TracksContainer/Slider2/MarginContainer"]
 material = SubResource("ShaderMaterial_dlmj5")
 custom_minimum_size = Vector2(0, 12)
 layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
 mouse_filter = 1
 
-[node name="Slider3" type="MarginContainer" parent="SliderContainer/HBoxContainer/TracksContainer"]
+[node name="IntField" type="LineEdit" parent="SliderContainer/HBoxContainer/TracksContainer/Slider2"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_type_variation = &"GoodColorPickerLineEdit"
+alignment = 1
+max_length = 3
+script = ExtResource("6_aqyoh")
+
+[node name="Slider3" type="HBoxContainer" parent="SliderContainer/HBoxContainer/TracksContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_horizontal = 3
-theme_override_constants/margin_bottom = 8
+theme_override_constants/separation = 6
 
-[node name="ColorTrack" type="ColorRect" parent="SliderContainer/HBoxContainer/TracksContainer/Slider3"]
+[node name="MarginContainer" type="MarginContainer" parent="SliderContainer/HBoxContainer/TracksContainer/Slider3"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_bottom = 6
+
+[node name="ColorTrack" type="ColorRect" parent="SliderContainer/HBoxContainer/TracksContainer/Slider3/MarginContainer"]
 material = SubResource("ShaderMaterial_p3pbp")
 custom_minimum_size = Vector2(0, 12)
 layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
 mouse_filter = 1
 
-[connection signal="gui_input" from="." to="." method="_on_gui_input"]
+[node name="IntField" type="LineEdit" parent="SliderContainer/HBoxContainer/TracksContainer/Slider3"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_type_variation = &"GoodColorPickerLineEdit"
+alignment = 1
+max_length = 3
+script = ExtResource("6_aqyoh")
+
 [connection signal="gui_input" from="ShapeContainer/ColorWheel" to="." method="_on_color_wheel_gui_input"]
 [connection signal="draw" from="ShapeContainer/SideSlider" to="." method="_on_side_slider_draw"]
 [connection signal="gui_input" from="ShapeContainer/SideSlider" to="." method="_on_side_slider_gui_input"]
@@ -225,9 +266,12 @@ mouse_filter = 1
 [connection signal="pressed" from="ColorContainer/ColorsDisplay/ColorRect/ResetColorButton" to="." method="_on_reset_color_button_pressed"]
 [connection signal="pressed" from="SliderContainer/ColorSpaceContainer/RGB" to="." method="_on_rgb_pressed"]
 [connection signal="pressed" from="SliderContainer/ColorSpaceContainer/HSV" to="." method="_on_hsv_pressed"]
-[connection signal="draw" from="SliderContainer/HBoxContainer/TracksContainer/Slider1" to="." method="_on_slider1_draw"]
-[connection signal="gui_input" from="SliderContainer/HBoxContainer/TracksContainer/Slider1" to="." method="_on_slider1_gui_input"]
-[connection signal="draw" from="SliderContainer/HBoxContainer/TracksContainer/Slider2" to="." method="_on_slider2_draw"]
-[connection signal="gui_input" from="SliderContainer/HBoxContainer/TracksContainer/Slider2" to="." method="_on_slider2_gui_input"]
-[connection signal="draw" from="SliderContainer/HBoxContainer/TracksContainer/Slider3" to="." method="_on_slider3_draw"]
-[connection signal="gui_input" from="SliderContainer/HBoxContainer/TracksContainer/Slider3" to="." method="_on_slider3_gui_input"]
+[connection signal="draw" from="SliderContainer/HBoxContainer/TracksContainer/Slider1/MarginContainer" to="." method="_on_slider1_draw"]
+[connection signal="gui_input" from="SliderContainer/HBoxContainer/TracksContainer/Slider1/MarginContainer" to="." method="_on_slider1_gui_input"]
+[connection signal="text_submitted" from="SliderContainer/HBoxContainer/TracksContainer/Slider1/IntField" to="." method="_on_slider1_text_submitted"]
+[connection signal="draw" from="SliderContainer/HBoxContainer/TracksContainer/Slider2/MarginContainer" to="." method="_on_slider2_draw"]
+[connection signal="gui_input" from="SliderContainer/HBoxContainer/TracksContainer/Slider2/MarginContainer" to="." method="_on_slider2_gui_input"]
+[connection signal="text_submitted" from="SliderContainer/HBoxContainer/TracksContainer/Slider2/IntField" to="." method="_on_slider2_text_submitted"]
+[connection signal="draw" from="SliderContainer/HBoxContainer/TracksContainer/Slider3/MarginContainer" to="." method="_on_slider3_draw"]
+[connection signal="gui_input" from="SliderContainer/HBoxContainer/TracksContainer/Slider3/MarginContainer" to="." method="_on_slider3_gui_input"]
+[connection signal="text_submitted" from="SliderContainer/HBoxContainer/TracksContainer/Slider3/IntField" to="." method="_on_slider3_text_submitted"]

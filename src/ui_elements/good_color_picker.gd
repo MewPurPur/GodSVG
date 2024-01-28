@@ -31,9 +31,9 @@ var slider_mode: SliderMode:
 			new_color.v = clampf(new_color.v, 0.0001, 1.0)
 			set_color(new_color)
 		
-		slider1.queue_redraw()
-		slider2.queue_redraw()
-		slider3.queue_redraw()
+		slider1_widget.queue_redraw()
+		slider2_widget.queue_redraw()
+		slider3_widget.queue_redraw()
 
 @onready var side_slider: MarginContainer = $ShapeContainer/SideSlider
 @onready var side_slider_drawn: ColorRect = $ShapeContainer/SideSlider/SideSliderDraw
@@ -43,12 +43,15 @@ var slider_mode: SliderMode:
 @onready var hsv_button: Button = $SliderContainer/ColorSpaceContainer/HSV
 @onready var start_color_rect: ColorRect = %ColorsDisplay/StartColorRect
 @onready var color_rect: ColorRect = %ColorsDisplay/ColorRect
-@onready var slider1: MarginContainer = %Slider1
-@onready var slider2: MarginContainer = %Slider2
-@onready var slider3: MarginContainer = %Slider3
-@onready var slider1_track: ColorRect = %Slider1/ColorTrack
-@onready var slider2_track: ColorRect = %Slider2/ColorTrack
-@onready var slider3_track: ColorRect = %Slider3/ColorTrack
+@onready var slider1_widget: MarginContainer = %Slider1/MarginContainer
+@onready var slider2_widget: MarginContainer = %Slider2/MarginContainer
+@onready var slider3_widget: MarginContainer = %Slider3/MarginContainer
+@onready var slider1_track: ColorRect = %Slider1/MarginContainer/ColorTrack
+@onready var slider2_track: ColorRect = %Slider2/MarginContainer/ColorTrack
+@onready var slider3_track: ColorRect = %Slider3/MarginContainer/ColorTrack
+@onready var slider1_field: BetterLineEdit = %Slider1/IntField
+@onready var slider2_field: BetterLineEdit = %Slider2/IntField
+@onready var slider3_field: BetterLineEdit = %Slider3/IntField
 @onready var none_button: Button = $ColorContainer/None
 @onready var reset_color_button: Button = %ColorsDisplay/ColorRect/ResetColorButton
 @onready var center: Vector2 = color_wheel_drawn.get_rect().get_center()
@@ -98,9 +101,18 @@ func update() -> void:
 	queue_redraw()
 	side_slider.queue_redraw()
 	color_wheel_drawn.queue_redraw()
-	slider1.queue_redraw()
-	slider2.queue_redraw()
-	slider3.queue_redraw()
+	slider1_widget.queue_redraw()
+	slider2_widget.queue_redraw()
+	slider3_widget.queue_redraw()
+	match slider_mode:
+		SliderMode.RGB: 
+			slider1_field.text = String.num_uint64(roundi(color.r * 255))
+			slider2_field.text = String.num_uint64(roundi(color.g * 255))
+			slider3_field.text = String.num_uint64(roundi(color.b * 255))
+		SliderMode.HSV: 
+			slider1_field.text = String.num_uint64(roundi(color.h * 360))
+			slider2_field.text = String.num_uint64(roundi(color.s * 100))
+			slider3_field.text = String.num_uint64(roundi(color.v * 100))
 
 
 func _ready() -> void:
@@ -131,37 +143,37 @@ func _on_slider1_gui_input(event: InputEvent) -> void:
 	if Utils.is_event_drag(event) or Utils.is_event_drag_start(event):
 		var new_color := color
 		if slider_mode == SliderMode.RGB:
-			new_color.r = clampf(event.position.x / slider1.size.x, 0.0, 1.0)
+			new_color.r = clampf(event.position.x / slider1_widget.size.x, 0.0, 1.0)
 		elif slider_mode == SliderMode.HSV:
-			new_color.h = clampf(event.position.x / slider1.size.x, 0.0, 0.9999)
+			new_color.h = clampf(event.position.x / slider1_widget.size.x, 0.0, 0.9999)
 		set_color(new_color)
 	if Utils.is_event_drag_start(event) or Utils.is_event_drag_end(event):
 		is_dragging_slider1 = event.is_pressed()
-		slider1.queue_redraw()
+		slider1_widget.queue_redraw()
 
 func _on_slider2_gui_input(event: InputEvent) -> void:
 	if Utils.is_event_drag(event) or Utils.is_event_drag_start(event):
 		var new_color := color
 		if slider_mode == SliderMode.RGB:
-			new_color.g = clampf(event.position.x / slider2.size.x, 0.0, 1.0)
+			new_color.g = clampf(event.position.x / slider2_widget.size.x, 0.0, 1.0)
 		elif slider_mode == SliderMode.HSV:
-			new_color.s = clampf(event.position.x / slider2.size.x, 0.0001, 1.0)
+			new_color.s = clampf(event.position.x / slider2_widget.size.x, 0.0001, 1.0)
 		set_color(new_color)
 	if Utils.is_event_drag_start(event) or Utils.is_event_drag_end(event):
 		is_dragging_slider2 = event.is_pressed()
-		slider2.queue_redraw()
+		slider2_widget.queue_redraw()
 
 func _on_slider3_gui_input(event: InputEvent) -> void:
 	if Utils.is_event_drag(event) or Utils.is_event_drag_start(event):
 		var new_color := color
 		if slider_mode == SliderMode.RGB:
-			new_color.b = clampf(event.position.x / slider3.size.x, 0.0, 1.0)
+			new_color.b = clampf(event.position.x / slider3_widget.size.x, 0.0, 1.0)
 		elif slider_mode == SliderMode.HSV:
-			new_color.v = clampf(event.position.x / slider3.size.x, 0.0001, 1.0)
+			new_color.v = clampf(event.position.x / slider3_widget.size.x, 0.0001, 1.0)
 		set_color(new_color)
 	if Utils.is_event_drag_start(event) or Utils.is_event_drag_end(event):
 		is_dragging_slider3 = event.is_pressed()
-		slider3.queue_redraw()
+		slider3_widget.queue_redraw()
 
 
 func _on_rgb_pressed() -> void:
@@ -188,32 +200,58 @@ func _draw() -> void:
 	RenderingServer.canvas_item_add_texture_rect(color_wheel_surface, Rect2(point_pos -\
 			handle_texture.get_size() / 2, handle_texture.get_size()), handle_texture)
 
+
 func _on_slider1_draw() -> void:
 	var offset := color.r if slider_mode == SliderMode.RGB else color.h
-	var arrow_modulate := Color(1, 1, 1) if is_dragging_slider1 else Color(0.8, 0.8, 0.8)
-	slider1.draw_texture(slider_arrow, Vector2(slider1.size.x * offset -\
+	var arrow_modulate := Color(1, 1, 1) if is_dragging_slider1 else Color(1, 1, 1, 0.7)
+	slider1_widget.draw_texture(slider_arrow, Vector2(slider1_widget.size.x * offset -\
 			slider_arrow.get_width() / 2.0, slider1_track.size.y), arrow_modulate)
 	var chr := "R" if slider_mode == SliderMode.RGB else "H"
-	slider1.draw_string(ThemeDB.get_project_theme().default_font, Vector2(-14, 11), chr,
-			HORIZONTAL_ALIGNMENT_LEFT, -1, 14)
+	slider1_widget.draw_string(ThemeDB.get_project_theme().default_font, Vector2(-14, 11),
+			chr, HORIZONTAL_ALIGNMENT_LEFT, -1, 14)
 
 func _on_slider2_draw() -> void:
 	var offset := color.g if slider_mode == SliderMode.RGB else color.s
-	var arrow_modulate := Color(1, 1, 1) if is_dragging_slider2 else Color(0.8, 0.8, 0.8)
-	slider2.draw_texture(slider_arrow, Vector2(slider2.size.x * offset -\
+	var arrow_modulate := Color(1, 1, 1) if is_dragging_slider2 else Color(1, 1, 1, 0.7)
+	slider2_widget.draw_texture(slider_arrow, Vector2(slider2_widget.size.x * offset -\
 			slider_arrow.get_width() / 2.0, slider2_track.size.y), arrow_modulate)
 	var chr := "G" if slider_mode == SliderMode.RGB else "S"
-	slider2.draw_string(ThemeDB.get_project_theme().default_font, Vector2(-14, 11), chr,
-			HORIZONTAL_ALIGNMENT_LEFT, -1, 14)
+	slider2_widget.draw_string(ThemeDB.get_project_theme().default_font, Vector2(-14, 11),
+			chr, HORIZONTAL_ALIGNMENT_LEFT, -1, 14)
 
 func _on_slider3_draw() -> void:
 	var offset := color.b if slider_mode == SliderMode.RGB else color.v
-	var arrow_modulate := Color(1, 1, 1) if is_dragging_slider3 else Color(0.8, 0.8, 0.8)
-	slider3.draw_texture(slider_arrow, Vector2(slider3.size.x * offset -\
+	var arrow_modulate := Color(1, 1, 1) if is_dragging_slider3 else Color(1, 1, 1, 0.7)
+	slider3_widget.draw_texture(slider_arrow, Vector2(slider3_widget.size.x * offset -\
 			slider_arrow.get_width() / 2.0, slider3_track.size.y), arrow_modulate)
 	var chr := "B" if slider_mode == SliderMode.RGB else "V"
-	slider3.draw_string(ThemeDB.get_project_theme().default_font, Vector2(-14, 11), chr,
-			HORIZONTAL_ALIGNMENT_LEFT, -1, 14)
+	slider3_widget.draw_string(ThemeDB.get_project_theme().default_font, Vector2(-14, 11),
+			chr, HORIZONTAL_ALIGNMENT_LEFT, -1, 14)
+
+
+func _on_slider1_text_submitted(new_text: String) -> void:
+	var new_color := color
+	if slider_mode == SliderMode.RGB:
+		new_color.r = clampf(new_text.to_int() / 255.0, 0.0, 1.0)
+	elif slider_mode == SliderMode.HSV:
+		new_color.h = clampf(new_text.to_int() / 360.0, 0.0, 0.9999)
+	set_color(new_color)
+
+func _on_slider2_text_submitted(new_text: String) -> void:
+	var new_color := color
+	if slider_mode == SliderMode.RGB:
+		new_color.g = clampf(new_text.to_int() / 255.0, 0.0, 1.0)
+	elif slider_mode == SliderMode.HSV:
+		new_color.s = clampf(new_text.to_int() / 100.0, 0.0001, 1.0)
+	set_color(new_color)
+
+func _on_slider3_text_submitted(new_text: String) -> void:
+	var new_color := color
+	if slider_mode == SliderMode.RGB:
+		new_color.b = clampf(new_text.to_int() / 255.0, 0.0, 1.0)
+	elif slider_mode == SliderMode.HSV:
+		new_color.v = clampf(new_text.to_int() / 100.0, 0.0001, 1.0)
+	set_color(new_color)
 
 
 # This sets the color to "none", usually when the button is pressed.
