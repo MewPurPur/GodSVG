@@ -167,37 +167,37 @@ func sync_values(cmd: PathCommand) -> void:
 	# Instantiate the input fields.
 	match cmd_char.to_upper():
 		"A":
-			fields[0].set_value(cmd.rx)
-			fields[1].set_value(cmd.ry)
-			fields[2].set_value(cmd.rot)
-			fields[3].set_value(cmd.large_arc_flag)
-			fields[4].set_value(cmd.sweep_flag)
-			fields[5].set_value(cmd.x)
-			fields[6].set_value(cmd.y)
+			fields[0].set_value(cmd.rx, true)
+			fields[1].set_value(cmd.ry, true)
+			fields[2].set_value(cmd.rot, true)
+			fields[3].set_value(cmd.large_arc_flag, true)
+			fields[4].set_value(cmd.sweep_flag, true)
+			fields[5].set_value(cmd.x, true)
+			fields[6].set_value(cmd.y, true)
 		"C":
-			fields[0].set_value(cmd.x1)
-			fields[1].set_value(cmd.y1)
-			fields[2].set_value(cmd.x2)
-			fields[3].set_value(cmd.y2)
-			fields[4].set_value(cmd.x)
-			fields[5].set_value(cmd.y)
+			fields[0].set_value(cmd.x1, true)
+			fields[1].set_value(cmd.y1, true)
+			fields[2].set_value(cmd.x2, true)
+			fields[3].set_value(cmd.y2, true)
+			fields[4].set_value(cmd.x, true)
+			fields[5].set_value(cmd.y, true)
 		"Q":
-			fields[0].set_value(cmd.x1)
-			fields[1].set_value(cmd.y1)
-			fields[2].set_value(cmd.x)
-			fields[3].set_value(cmd.y)
+			fields[0].set_value(cmd.x1, true)
+			fields[1].set_value(cmd.y1, true)
+			fields[2].set_value(cmd.x, true)
+			fields[3].set_value(cmd.y, true)
 		"S":
-			fields[0].set_value(cmd.x2)
-			fields[1].set_value(cmd.y2)
-			fields[2].set_value(cmd.x)
-			fields[3].set_value(cmd.y)
+			fields[0].set_value(cmd.x2, true)
+			fields[1].set_value(cmd.y2, true)
+			fields[2].set_value(cmd.x, true)
+			fields[3].set_value(cmd.y, true)
 		"L", "M", "T":
-			fields[0].set_value(cmd.x)
-			fields[1].set_value(cmd.y)
+			fields[0].set_value(cmd.x, true)
+			fields[1].set_value(cmd.y, true)
 		"H":
-			fields[0].set_value(cmd.x)
+			fields[0].set_value(cmd.x, true)
 		"V":
-			fields[0].set_value(cmd.y)
+			fields[0].set_value(cmd.y, true)
 		_: return
 
 

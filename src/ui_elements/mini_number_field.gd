@@ -8,16 +8,15 @@ var mode := Mode.DEFAULT
 signal value_changed(new_value: float)
 var _value := NAN  # Must not be updated directly.
 
-func set_value(new_value: float):
+func set_value(new_value: float, no_signal := false):
 	if not is_finite(new_value):
 		text = PathDataParser.num_to_text(_value)
 		return
+	text = PathDataParser.num_to_text(new_value)
 	if new_value != _value:
 		_value = new_value
-		text = PathDataParser.num_to_text(new_value)
-		value_changed.emit(new_value)
-	elif new_value == 0 and text == "-0":
-		text = "0"
+		if not no_signal:
+			value_changed.emit(new_value)
 
 func get_value() -> float:
 	return _value
