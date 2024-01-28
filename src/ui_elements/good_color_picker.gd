@@ -5,6 +5,7 @@ const slider_arrow = preload("res://visual/icons/SliderArrow.svg")
 const side_slider_arrow = preload("res://visual/icons/SideSliderArrow.svg")
 
 var UR := UndoRedo.new()
+var drag_start_color: Color
 
 enum SliderMode {RGB, HSV}
 var slider_mode: SliderMode:
@@ -118,61 +119,96 @@ func _ready() -> void:
 
 
 func _on_side_slider_gui_input(event: InputEvent) -> void:
-	if Utils.is_event_drag(event) or Utils.is_event_drag_start(event):
+	var is_event_drag_start := Utils.is_event_drag_start(event)
+	var new_color := color
+	if is_event_drag_start:
+		drag_start_color = color
+	if Utils.is_event_drag(event) or is_event_drag_start:
 		var n: float = (event.position.y - side_slider_track.position.y) /\
 				side_slider_track.size.y
-		var new_color := color
 		new_color.v = clampf(1 - n, 0.0001, 1.0)
 		set_color(new_color)
-	if Utils.is_event_drag_start(event) or Utils.is_event_drag_end(event):
-		is_dragging_side_slider = event.is_pressed()
-		side_slider.queue_redraw()
+	slider3_widget.queue_redraw()
+	if Utils.is_event_drag_end(event):
+		UR.create_action("")
+		UR.add_do_method(set_color.bind(new_color))
+		UR.add_undo_method(set_color.bind(drag_start_color))
+		UR.commit_action()
 
 func _on_color_wheel_gui_input(event: InputEvent) -> void:
-	if Utils.is_event_drag(event) or Utils.is_event_drag_start(event):
-		var new_color := color
+	var is_event_drag_start := Utils.is_event_drag_start(event)
+	if is_event_drag_start:
+		drag_start_color = color
+	var new_color := color
+	if Utils.is_event_drag(event) or is_event_drag_start:
 		var event_pos_on_wheel: Vector2 = event.position + color_wheel.position -\
 				color_wheel_drawn.position
 		new_color.h = fposmod(center.angle_to_point(event_pos_on_wheel), TAU) / TAU
 		new_color.s = minf(event_pos_on_wheel.distance_to(center) * 2 /\
 				color_wheel_drawn.size.x, 1.0)
 		set_color(new_color)
+	if Utils.is_event_drag_end(event):
+		UR.create_action("")
+		UR.add_do_method(set_color.bind(new_color))
+		UR.add_undo_method(set_color.bind(drag_start_color))
+		UR.commit_action()
 
 func _on_slider1_gui_input(event: InputEvent) -> void:
-	if Utils.is_event_drag(event) or Utils.is_event_drag_start(event):
-		var n: float = (event.position.x - slider1_track.position.x) / slider1_track.size.x
-		var new_color := color
+	var is_event_drag_start := Utils.is_event_drag_start(event)
+	if is_event_drag_start:
+		is_dragging_slider3 = true
+		drag_start_color = color
+	var new_color := color
+	if Utils.is_event_drag(event) or is_event_drag_start:
+		var n: float = (event.position.x - slider3_track.position.x) / slider3_track.size.x
 		match slider_mode:
 			SliderMode.RGB: new_color.r = clampf(n, 0.0, 1.0)
 			SliderMode.HSV: new_color.h = clampf(n, 0.0, 0.9999)
 		set_color(new_color)
-	if Utils.is_event_drag_start(event) or Utils.is_event_drag_end(event):
-		is_dragging_slider1 = event.is_pressed()
-		slider1_widget.queue_redraw()
+	slider3_widget.queue_redraw()
+	if Utils.is_event_drag_end(event):
+		UR.create_action("")
+		UR.add_do_method(set_color.bind(new_color))
+		UR.add_undo_method(set_color.bind(drag_start_color))
+		UR.commit_action()
 
 func _on_slider2_gui_input(event: InputEvent) -> void:
-	if Utils.is_event_drag(event) or Utils.is_event_drag_start(event):
-		var n: float = (event.position.x - slider2_track.position.x) / slider2_track.size.x
-		var new_color := color
+	var is_event_drag_start := Utils.is_event_drag_start(event)
+	if is_event_drag_start:
+		is_dragging_slider3 = true
+		drag_start_color = color
+	var new_color := color
+	if Utils.is_event_drag(event) or is_event_drag_start:
+		var n: float = (event.position.x - slider3_track.position.x) / slider3_track.size.x
 		match slider_mode:
 			SliderMode.RGB: new_color.g = clampf(n, 0.0, 1.0)
 			SliderMode.HSV: new_color.s = clampf(n, 0.0001, 1.0)
 		set_color(new_color)
-	if Utils.is_event_drag_start(event) or Utils.is_event_drag_end(event):
-		is_dragging_slider2 = event.is_pressed()
-		slider2_widget.queue_redraw()
+	slider3_widget.queue_redraw()
+	if Utils.is_event_drag_end(event):
+		UR.create_action("")
+		UR.add_do_method(set_color.bind(new_color))
+		UR.add_undo_method(set_color.bind(drag_start_color))
+		UR.commit_action()
 
 func _on_slider3_gui_input(event: InputEvent) -> void:
-	if Utils.is_event_drag(event) or Utils.is_event_drag_start(event):
+	var is_event_drag_start := Utils.is_event_drag_start(event)
+	if is_event_drag_start:
+		is_dragging_slider3 = true
+		drag_start_color = color
+	var new_color := color
+	if Utils.is_event_drag(event) or is_event_drag_start:
 		var n: float = (event.position.x - slider3_track.position.x) / slider3_track.size.x
-		var new_color := color
 		match slider_mode:
 			SliderMode.RGB: new_color.b = clampf(n, 0.0, 1.0)
 			SliderMode.HSV: new_color.v = clampf(n, 0.0001, 1.0)
 		set_color(new_color)
-	if Utils.is_event_drag_start(event) or Utils.is_event_drag_end(event):
-		is_dragging_slider3 = event.is_pressed()
-		slider3_widget.queue_redraw()
+	slider3_widget.queue_redraw()
+	if Utils.is_event_drag_end(event):
+		UR.create_action("")
+		UR.add_do_method(set_color.bind(new_color))
+		UR.add_undo_method(set_color.bind(drag_start_color))
+		UR.commit_action()
 
 
 func _on_rgb_pressed() -> void:
@@ -238,7 +274,10 @@ func _on_slider1_text_submitted(new_text: String) -> void:
 		new_color.r = clampf(new_text.to_int() / 255.0, 0.0, 1.0)
 	elif slider_mode == SliderMode.HSV:
 		new_color.h = clampf(new_text.to_int() / 360.0, 0.0, 0.9999)
-	set_color(new_color)
+	UR.create_action("")
+	UR.add_do_method(set_color.bind(new_color))
+	UR.add_undo_method(set_color.bind(color))
+	UR.commit_action()
 
 func _on_slider2_text_submitted(new_text: String) -> void:
 	var new_color := color
@@ -246,7 +285,10 @@ func _on_slider2_text_submitted(new_text: String) -> void:
 		new_color.g = clampf(new_text.to_int() / 255.0, 0.0, 1.0)
 	elif slider_mode == SliderMode.HSV:
 		new_color.s = clampf(new_text.to_int() / 100.0, 0.0001, 1.0)
-	set_color(new_color)
+	UR.create_action("")
+	UR.add_do_method(set_color.bind(new_color))
+	UR.add_undo_method(set_color.bind(color))
+	UR.commit_action()
 
 func _on_slider3_text_submitted(new_text: String) -> void:
 	var new_color := color
@@ -254,7 +296,10 @@ func _on_slider3_text_submitted(new_text: String) -> void:
 		new_color.b = clampf(new_text.to_int() / 255.0, 0.0, 1.0)
 	elif slider_mode == SliderMode.HSV:
 		new_color.v = clampf(new_text.to_int() / 100.0, 0.0001, 1.0)
-	set_color(new_color)
+	UR.create_action("")
+	UR.add_do_method(set_color.bind(new_color))
+	UR.add_undo_method(set_color.bind(color))
+	UR.commit_action()
 
 
 # This sets the color to "none", usually when the button is pressed.
@@ -305,6 +350,7 @@ func _input(event: InputEvent) -> void:
 		if UR.has_redo():
 			UR.redo()
 		accept_event()
-	elif event.is_action_pressed(&"undo") and UR.has_undo():
-		UR.undo()
+	elif event.is_action_pressed(&"undo"):
+		if UR.has_undo():
+			UR.undo()
 		accept_event()
