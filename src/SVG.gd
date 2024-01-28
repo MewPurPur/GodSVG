@@ -67,10 +67,12 @@ func _unhandled_input(event: InputEvent) -> void:
 		if UR.has_redo():
 			UR.redo()
 			update_tags()
+		get_viewport().set_input_as_handled()
 	elif event.is_action_pressed(&"undo"):
 		if UR.has_undo():
 			UR.undo()
 			update_tags()
+		get_viewport().set_input_as_handled()
 	elif event.is_action_pressed(&"import"):
 		open_import_dialog()
 	elif event.is_action_pressed(&"export"):
