@@ -30,10 +30,7 @@ var slider_mode: SliderMode:
 			new_color.s = clampf(new_color.s, 0.0001, 1.0)
 			new_color.v = clampf(new_color.v, 0.0001, 1.0)
 			set_color(new_color)
-		
-		slider1_widget.queue_redraw()
-		slider2_widget.queue_redraw()
-		slider3_widget.queue_redraw()
+		update()
 
 @onready var side_slider: MarginContainer = $ShapeContainer/SideSlider
 @onready var side_slider_drawn: ColorRect = $ShapeContainer/SideSlider/SideSliderDraw
@@ -207,8 +204,8 @@ func _on_slider1_draw() -> void:
 	slider1_widget.draw_texture(slider_arrow, Vector2(slider1_widget.size.x * offset -\
 			slider_arrow.get_width() / 2.0, slider1_track.size.y), arrow_modulate)
 	var chr := "R" if slider_mode == SliderMode.RGB else "H"
-	slider1_widget.draw_string(ThemeDB.get_project_theme().default_font, Vector2(-14, 11),
-			chr, HORIZONTAL_ALIGNMENT_LEFT, -1, 14)
+	slider1_widget.draw_string(ThemeDB.get_project_theme().default_font,
+			Vector2(-16, 11), chr, HORIZONTAL_ALIGNMENT_CENTER, 12, 14)
 
 func _on_slider2_draw() -> void:
 	var offset := color.g if slider_mode == SliderMode.RGB else color.s
@@ -216,8 +213,8 @@ func _on_slider2_draw() -> void:
 	slider2_widget.draw_texture(slider_arrow, Vector2(slider2_widget.size.x * offset -\
 			slider_arrow.get_width() / 2.0, slider2_track.size.y), arrow_modulate)
 	var chr := "G" if slider_mode == SliderMode.RGB else "S"
-	slider2_widget.draw_string(ThemeDB.get_project_theme().default_font, Vector2(-14, 11),
-			chr, HORIZONTAL_ALIGNMENT_LEFT, -1, 14)
+	slider2_widget.draw_string(ThemeDB.get_project_theme().default_font,
+			Vector2(-16, 11), chr, HORIZONTAL_ALIGNMENT_CENTER, 12, 14)
 
 func _on_slider3_draw() -> void:
 	var offset := color.b if slider_mode == SliderMode.RGB else color.v
@@ -225,8 +222,8 @@ func _on_slider3_draw() -> void:
 	slider3_widget.draw_texture(slider_arrow, Vector2(slider3_widget.size.x * offset -\
 			slider_arrow.get_width() / 2.0, slider3_track.size.y), arrow_modulate)
 	var chr := "B" if slider_mode == SliderMode.RGB else "V"
-	slider3_widget.draw_string(ThemeDB.get_project_theme().default_font, Vector2(-14, 11),
-			chr, HORIZONTAL_ALIGNMENT_LEFT, -1, 14)
+	slider3_widget.draw_string(ThemeDB.get_project_theme().default_font,
+			Vector2(-16, 11), chr, HORIZONTAL_ALIGNMENT_CENTER, 12, 14)
 
 
 func _on_slider1_text_submitted(new_text: String) -> void:
@@ -271,7 +268,7 @@ func setup_none_button() -> void:
 func _on_reset_color_button_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion and event.button_mask != MOUSE_BUTTON_MASK_LEFT:
 		if (starting_color == "none" and not is_none) or\
-		AttributeColor.get_color_from_non_url(starting_color) == color:
+		AttributeColor.get_color_from_non_url(starting_color).is_equal_approx(color):
 			reset_color_button.disabled = true
 			return
 		reset_color_button.disabled = false
