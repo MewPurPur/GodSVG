@@ -179,6 +179,7 @@ layout_mode = 2
 [node name="TracksContainer" type="VBoxContainer" parent="SliderContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
+theme_override_constants/separation = 6
 alignment = 2
 
 [node name="Slider1" type="HBoxContainer" parent="SliderContainer/HBoxContainer/TracksContainer"]
@@ -193,7 +194,7 @@ theme_override_constants/margin_bottom = 6
 
 [node name="ColorTrack" type="ColorRect" parent="SliderContainer/HBoxContainer/TracksContainer/Slider1/MarginContainer"]
 material = SubResource("ShaderMaterial_fvg6q")
-custom_minimum_size = Vector2(0, 12)
+custom_minimum_size = Vector2(0, 13)
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 1
@@ -218,7 +219,7 @@ theme_override_constants/margin_bottom = 6
 
 [node name="ColorTrack" type="ColorRect" parent="SliderContainer/HBoxContainer/TracksContainer/Slider2/MarginContainer"]
 material = SubResource("ShaderMaterial_dlmj5")
-custom_minimum_size = Vector2(0, 12)
+custom_minimum_size = Vector2(0, 13)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 0
@@ -244,7 +245,7 @@ theme_override_constants/margin_bottom = 6
 
 [node name="ColorTrack" type="ColorRect" parent="SliderContainer/HBoxContainer/TracksContainer/Slider3/MarginContainer"]
 material = SubResource("ShaderMaterial_p3pbp")
-custom_minimum_size = Vector2(0, 12)
+custom_minimum_size = Vector2(0, 13)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 0
