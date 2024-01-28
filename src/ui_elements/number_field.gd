@@ -53,18 +53,11 @@ func _on_focus_entered() -> void:
 	focused.emit()
 	super()
 
-func _on_focus_exited() -> void:
-	set_number_value(text)
-	super()
-
 func _on_text_submitted(submitted_text: String) -> void:
-	set_number_value(submitted_text)
-
-func set_number_value(num_text: String) -> void:
-	if num_text.strip_edges().is_empty():
+	if submitted_text.strip_edges().is_empty():
 		set_value(attribute.default)
 	else:
-		set_value(num_text)
+		set_value(submitted_text)
 
 func sync(new_value: String) -> void:
 	text = new_value

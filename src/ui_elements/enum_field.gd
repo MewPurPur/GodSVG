@@ -47,13 +47,7 @@ func _on_option_pressed(option: String) -> void:
 func _on_focus_entered() -> void:
 	focused.emit()
 
-func _on_focus_exited() -> void:
-	set_enum_value(indicator.text)
-
 func _on_text_submitted(new_text: String) -> void:
-	set_enum_value(new_text)
-
-func set_enum_value(new_text: String) -> void:
 	indicator.release_focus()
 	if new_text in attribute.possible_values:
 		set_value(new_text)
