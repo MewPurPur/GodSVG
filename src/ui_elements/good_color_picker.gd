@@ -81,7 +81,6 @@ func set_color(new_color: Color) -> void:
 	if is_none:
 		toggle_none()
 	if color != new_color:
-		print_stack()
 		color = new_color
 		update()
 		color_changed.emit(new_color.to_html(false))
