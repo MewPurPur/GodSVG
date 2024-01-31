@@ -8,16 +8,10 @@ extends MarginContainer
 @export var relative_button_hovered: StyleBoxFlat
 @export var relative_button_pressed: StyleBoxFlat
 
-signal cmd_update_value(idx: int, new_value: float, property: StringName)
-signal cmd_delete(idx: int)
-signal cmd_toggle_relative(idx: int)
-signal cmd_insert_after(idx: int, cmd_char: String)
-signal cmd_convert_to(idx: int, cmd_char: String)
-
 const ContextPopup = preload("res://src/ui_elements/context_popup.tscn")
 const MiniNumberField = preload("mini_number_field.tscn")
 const FlagField = preload("flag_field.tscn")
-const PathCommandPopup = preload("path_popup.tscn")
+const PathCommandPopup = preload("res://src/ui_elements/path_popup.tscn")
 
 var tid := PackedInt32Array()
 var cmd_char := ""
@@ -34,7 +28,6 @@ func update_type() -> void:
 	cmd_char = path_command.command_char
 	fields.clear()
 	setup_relative_button()
-	
 	# Instantiate the input fields.
 	match cmd_char.to_upper():
 		"A":
@@ -201,53 +194,18 @@ func sync_values(cmd: PathCommand) -> void:
 		_: return
 
 
-func update_value(value: float, property: StringName) -> void:
-	cmd_update_value.emit(cmd_idx, value, property)
+func update_value(new_value: float, property: StringName) -> void:
+	get_path_attribute().set_command_property(cmd_idx, property, new_value)
 
 func toggle_relative() -> void:
-	cmd_toggle_relative.emit(cmd_idx)
-
-func insert_after() -> void:
-	var command_picker := PathCommandPopup.instantiate()
-	add_child(command_picker)
-	match cmd_char.to_upper():
-		"M": command_picker.disable_invalid(["M", "Z", "T"])
-		"Z": command_picker.disable_invalid(["Z"])
-		"L", "H", "V", "A": command_picker.disable_invalid(["S", "T"])
-		"C", "S": command_picker.disable_invalid(["T"])
-		"Q", "T": command_picker.disable_invalid(["S"])
-	command_picker.path_command_picked.connect(_on_insert_path_command_picked)
-	Utils.popup_under_control_centered(command_picker, more_button)
-
-func convert_to() -> void:
-	var command_picker := PathCommandPopup.instantiate()
-	add_child(command_picker)
-	command_picker.force_relativity(Utils.is_string_lower(cmd_char))
-	command_picker.disable_invalid([cmd_char.to_upper()])
-	command_picker.path_command_picked.connect(_on_convert_path_command_picked)
-	Utils.popup_under_control_centered(command_picker, more_button)
+	get_path_attribute().toggle_relative_command(cmd_idx)
 
 func open_actions(popup_from_mouse := false) -> void:
-	var action_popup := ContextPopup.instantiate()
-	var btn_arr: Array[Button] = []
-	
-	if Indications.inner_selections.size() == 1:
-		btn_arr.append(Utils.create_btn(tr(&"#insert_after"), insert_after, false,
-				load("res://visual/icons/Plus.svg")))
-	
-	if cmd_idx != 0 and Indications.inner_selections.size() == 1:
-		btn_arr.append(Utils.create_btn(tr(&"#convert_to"), convert_to, false,
-				load("res://visual/icons/Reload.svg")))
-	
-	btn_arr.append(Utils.create_btn(tr(&"#delete"), Indications.delete_selected, false,
-				load("res://visual/icons/Delete.svg")))
-	
-	add_child(action_popup)
-	action_popup.set_button_array(btn_arr, true)
 	if popup_from_mouse:
-		Utils.popup_under_mouse(action_popup, get_global_mouse_position())
+		Utils.popup_under_mouse(Indications.get_selection_context(),
+				get_global_mouse_position())
 	else:
-		Utils.popup_under_control_centered(action_popup, more_button)
+		Utils.popup_under_control_centered(Indications.get_selection_context(), more_button)
 
 
 func _ready() -> void:
@@ -294,13 +252,6 @@ func _on_relative_button_pressed() -> void:
 			else cmd_char.to_lower()
 	setup_relative_button()
 
-func _on_insert_path_command_picked(new_command: String) -> void:
-	cmd_insert_after.emit(cmd_idx + 1, new_command)
-	Indications.normal_select(tid, cmd_idx + 1)
-
-func _on_convert_path_command_picked(new_command: String) -> void:
-	cmd_convert_to.emit(cmd_idx, new_command)
-
 func _gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion and event.button_mask == 0:
 		Indications.set_inner_hovered(tid, cmd_idx)
@@ -310,7 +261,7 @@ func _gui_input(event: InputEvent) -> void:
 				# Unselect the tag, so then it's selected again.
 				Indications.ctrl_select(tid, cmd_idx)
 				var subpath_range: Vector2i =\
-						SVG.root_tag.get_by_tid(tid).attributes.d.get_subpath(cmd_idx)
+						SVG.root_tag.get_tag(tid).attributes.d.get_subpath(cmd_idx)
 				for idx in range(subpath_range.x, subpath_range.y + 1):
 					Indications.ctrl_select(tid, idx)
 			elif event.ctrl_pressed:
@@ -360,3 +311,6 @@ func _on_mouse_exited():
 
 func _on_more_button_pressed() -> void:
 	open_actions()
+
+func get_path_attribute() -> AttributePath:
+	return SVG.root_tag.get_tag(tid).attributes.d

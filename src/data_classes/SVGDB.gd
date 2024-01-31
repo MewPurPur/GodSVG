@@ -18,3 +18,12 @@ static func is_attribute_known(tag_name: String, attribute_name: String) -> bool
 	if not known_tag_attributes.has(tag_name):
 		return false
 	return attribute_name in known_tag_attributes[tag_name]
+
+static func get_tag_icon(tag_name: String) -> Texture2D:
+	match tag_name:
+		"circle": return TagCircle.icon
+		"ellipse": return TagEllipse.icon
+		"rect": return TagRect.icon
+		"path": return TagPath.icon
+		"line": return TagLine.icon
+		_: return TagUnknown.icon
