@@ -54,7 +54,7 @@ func _draw() -> void:
 	var stylebox := StyleBoxFlat.new()
 	stylebox.corner_radius_top_right = 5
 	stylebox.corner_radius_bottom_right = 5
-	stylebox.bg_color = AttributeColor.get_color_from_non_url(value)
+	stylebox.bg_color = AttributeColor.string_to_color(value)
 	draw_texture(checkerboard, Vector2.ZERO)
 	draw_style_box(stylebox, Rect2(Vector2.ZERO, button_size - Vector2(1, 2)))
 
