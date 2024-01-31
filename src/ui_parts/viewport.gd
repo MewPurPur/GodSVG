@@ -112,7 +112,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		var zoom_dir := 0
 		var mouse_offset := get_mouse_position() / (size * 1.0)
 		
-		if event.button_index == MOUSE_BUTTON_RIGHT:
+		if event.button_index == MOUSE_BUTTON_RIGHT and $Checkerboard/Controls.hovered_handle == null:
 			Utils.popup_under_mouse(create_object_context(), get_parent().get_viewport().get_mouse_position())
 		
 		# Zooming with scrolling.
