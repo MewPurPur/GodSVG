@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://f5cljfdpe85v"]
+[gd_scene load_steps=7 format=3 uid="uid://f5cljfdpe85v"]
 
 [ext_resource type="Script" path="res://src/ui_elements/color_popup.gd" id="1_t1mgf"]
 [ext_resource type="FontFile" uid="uid://clpf84p1lfwlp" path="res://visual/fonts/Font.ttf" id="2_5tod5"]
@@ -29,36 +29,9 @@ corner_radius_top_right = 5
 corner_radius_bottom_right = 5
 corner_radius_bottom_left = 5
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_prjsf"]
-content_margin_left = 6.0
-content_margin_top = 2.0
-content_margin_right = 6.0
-content_margin_bottom = 3.0
-bg_color = Color(0.866667, 0.933333, 1, 0.0470588)
-corner_radius_bottom_right = 4
-corner_radius_bottom_left = 4
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5ydiu"]
-content_margin_left = 6.0
-content_margin_top = 2.0
-content_margin_right = 6.0
-content_margin_bottom = 3.0
-bg_color = Color(0.866667, 0.933333, 1, 0.0705882)
-corner_radius_bottom_right = 4
-corner_radius_bottom_left = 4
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kiodn"]
-content_margin_left = 6.0
-content_margin_top = 3.0
-content_margin_right = 6.0
-content_margin_bottom = 4.0
-bg_color = Color(0.866667, 0.933333, 1, 0.145098)
-corner_radius_bottom_right = 4
-corner_radius_bottom_left = 4
-
 [node name="ColorPopup" type="Popup"]
 transparent_bg = true
-size = Vector2i(218, 344)
+size = Vector2i(218, 347)
 visible = true
 script = ExtResource("1_t1mgf")
 
@@ -118,10 +91,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 focus_mode = 0
 mouse_default_cursor_shape = 2
-theme_override_colors/font_disabled_color = Color(0.866667, 0.933333, 1, 1)
-theme_override_styles/normal = SubResource("StyleBoxFlat_prjsf")
-theme_override_styles/hover = SubResource("StyleBoxFlat_5ydiu")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_kiodn")
+theme_override_font_sizes/font_size = 13
 text = "#palettes"
 
 [node name="Label" type="Label" parent="."]

@@ -42,13 +42,24 @@ static func is_valid_named(color: String) -> bool:
 
 static func is_valid_url(color: String) -> bool:
 	color = color.strip_edges()
-	return color.begins_with("url(#") and color.ends_with(")")
+	if not color.begins_with("url(#") or not color.ends_with(")"):
+		return false
+	
+	var id := get_url(color)
+	if id.is_empty():
+		return false
+	
+	return true
 
-static func get_color_from_non_url(color: String) -> Color:
+static func get_url(color: String) -> String:
+	return color.substr(5, color.length() - 6)
+
+# URL doesn't have a color interpretation, so it'll give the backup.
+static func string_to_color(color: String, backup := Color.BLACK) -> Color:
 	color = color.strip_edges()
 	if is_valid_named(color):
 		if color == "none":
-			return Color.TRANSPARENT
+			return Color(0, 0, 0, 0)
 		else:
 			return Color(AttributeColor.named_colors[color])
 	elif is_valid_rgb(color):
@@ -57,11 +68,11 @@ static func get_color_from_non_url(color: String) -> Color:
 		if args.size() == 3:
 			return Color8(args[0].to_int(), args[1].to_int(), args[2].to_int())
 		else:
-			return Color()
+			return backup
 	elif is_valid_hex(color):
 		return Color.from_string(color, Color())
 	else:
-		return Color()
+		return backup
 
 static func color_equals_hex(color: String, hex: String) -> bool:
 	color = color.strip_edges()
