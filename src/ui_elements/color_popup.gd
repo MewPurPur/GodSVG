@@ -22,6 +22,18 @@ var palette_mode := true
 var swatches_list: Array[ColorSwatchType] = []  # Updated manually.
 
 func _ready() -> void:
+	# Setup the switch mode button.
+	for theme_type in [&"normal", &"hover", &"pressed"]:
+		var sb: StyleBoxFlat = switch_mode_button.get_theme_stylebox(theme_type,
+				&"TranslucentButton").duplicate()
+		sb.corner_radius_top_left = 0
+		sb.corner_radius_top_right = 0
+		sb.corner_radius_bottom_left = 4
+		sb.corner_radius_bottom_right = 4
+		sb.content_margin_bottom = 3
+		sb.content_margin_top = 3
+		switch_mode_button.add_theme_stylebox_override(theme_type, sb)
+	# Setup the rest.
 	update_palettes()
 	update_color_picker()
 
