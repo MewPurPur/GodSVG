@@ -200,13 +200,6 @@ func update_value(new_value: float, property: StringName) -> void:
 func toggle_relative() -> void:
 	get_path_attribute().toggle_relative_command(cmd_idx)
 
-func open_actions(popup_from_mouse := false) -> void:
-	if popup_from_mouse:
-		Utils.popup_under_mouse(Indications.get_selection_context(),
-				get_global_mouse_position())
-	else:
-		Utils.popup_under_control_centered(Indications.get_selection_context(), more_button)
-
 
 func _ready() -> void:
 	Indications.selection_changed.connect(determine_selection_state)
@@ -274,7 +267,8 @@ func _gui_input(event: InputEvent) -> void:
 			if Indications.semi_selected_tid != tid or\
 			not cmd_idx in Indications.inner_selections:
 				Indications.normal_select(tid, cmd_idx)
-			open_actions(true)
+			Utils.popup_under_mouse(Indications.get_selection_context(),
+					get_global_mouse_position())
 
 
 var current_interaction_state := Utils.InteractionType.NONE
@@ -310,7 +304,7 @@ func _on_mouse_exited():
 	Indications.remove_inner_hovered(tid, cmd_idx)
 
 func _on_more_button_pressed() -> void:
-	open_actions()
+	Utils.popup_under_control_centered(Indications.get_selection_context(), more_button)
 
 func get_path_attribute() -> AttributePath:
 	return SVG.root_tag.get_tag(tid).attributes.d
