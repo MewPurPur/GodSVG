@@ -1,6 +1,9 @@
 ## This singleton handles editor information like zoom level and selections.
 extends Node
 
+const ContextPopup = preload("res://src/ui_elements/context_popup.tscn")
+const PathCommandPopup = preload("res://src/ui_elements/path_popup.tscn")
+
 const path_actions_dict := {
 	&"move_absolute": "M", &"move_relative": "m",
 	&"line_absolute": "L", &"line_relative": "l",
@@ -343,7 +346,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		if inner_selections.is_empty() or event.is_command_or_control_pressed():
 			# If a single path tag is selected, add the new command at the end.
 			if selected_tids.size() == 1:
-				var tag_ref := SVG.root_tag.get_by_tid(selected_tids[0])
+				var tag_ref := SVG.root_tag.get_tag(selected_tids[0])
 				if tag_ref.name == "path":
 					var path_attrib: AttributePath = tag_ref.attributes.d
 					for action_name in path_actions_dict.keys():
@@ -364,15 +367,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		
 		for action_name in path_actions_dict.keys():
 			if event.is_action_pressed(action_name):
-				var path_attrib: AttributePath =\
-						SVG.root_tag.get_by_tid(semi_selected_tid).attributes.d
-				# Z after a Z is syntactically invalid.
-				if path_attrib.get_command(inner_selections.max()) is\
-				PathCommand.CloseCommand and path_actions_dict[action_name] in "Zz":
-					return
-				path_attrib.insert_command(inner_selections.max() + 1,
-						path_actions_dict[action_name])
-				normal_select(semi_selected_tid, inner_selections.max() + 1)
+				insert_inner_after_selection(path_actions_dict[action_name])
 				added_path_handle.emit()
 				break
 
@@ -385,7 +380,7 @@ func delete_selected() -> void:
 	elif not inner_selections.is_empty() and not semi_selected_tid.is_empty():
 		inner_selections.sort()
 		inner_selections.reverse()
-		var tag_ref := SVG.root_tag.get_by_tid(semi_selected_tid)
+		var tag_ref := SVG.root_tag.get_tag(semi_selected_tid)
 		match tag_ref.name:
 			"path": tag_ref.attributes.d.delete_commands(inner_selections)
 		clear_inner_selection()
@@ -399,3 +394,126 @@ func move_down_selected() -> void:
 
 func duplicate_selected() -> void:
 	SVG.root_tag.duplicate_tags(selected_tids)
+
+func insert_inner_after_selection(new_command: String) -> void:
+	var tag_ref := SVG.root_tag.get_tag(semi_selected_tid)
+	match tag_ref.name:
+		"path":
+			var path_attrib: AttributePath = tag_ref.attributes.d
+			var last_selection: int = inner_selections.max()
+			# Z after a Z is syntactically invalid.
+			if path_attrib.get_command(last_selection) is PathCommand.CloseCommand and\
+			new_command in "Zz":
+				return
+			path_attrib.insert_command(last_selection + 1, new_command)
+			normal_select(semi_selected_tid, last_selection + 1)
+
+
+func get_selection_context() -> Popup:
+	var btn_arr: Array[Button] = []
+	
+	if not selected_tids.is_empty():
+		var filtered_tids := Utils.filter_descendant_tids(selected_tids)
+		var can_move_down := true
+		var can_move_up := true
+		for base_tid in filtered_tids:
+			if Utils.get_parent_tid(base_tid) != Utils.get_parent_tid(filtered_tids[0]):
+				can_move_down = false
+				can_move_up = false
+				break
+		
+		if can_move_up or can_move_down:
+			can_move_down = false
+			can_move_up = false
+			var parent_tid := Utils.get_parent_tid(filtered_tids[0])
+			var filtered_count := filtered_tids.size()
+			var parent_child_count := SVG.root_tag.get_tag(parent_tid).get_child_count()
+			for base_tid in filtered_tids:
+				if not can_move_up and base_tid[-1] >= filtered_count:
+					can_move_up = true
+				if not can_move_down and base_tid[-1] < parent_child_count - filtered_count:
+					can_move_down = true
+		
+		btn_arr.append(Utils.create_btn(tr(&"#duplicate"), duplicate_selected,
+				false, load("res://visual/icons/Duplicate.svg")))
+		
+		if selected_tids.size() == 1 and not SVG.root_tag.get_tag(
+		selected_tids[0]).possible_conversions.is_empty():
+			btn_arr.append(Utils.create_btn(tr(&"#convert_to"), get_convert_to_context,
+					false, load("res://visual/icons/Reload.svg")))
+		
+		if can_move_up:
+			btn_arr.append(Utils.create_btn(tr(&"#move_up"), move_up_selected,
+					false, load("res://visual/icons/MoveUp.svg")))
+		if can_move_down:
+			btn_arr.append(Utils.create_btn(tr(&"#move_down"), move_down_selected,
+					false, load("res://visual/icons/MoveDown.svg")))
+		
+		btn_arr.append(Utils.create_btn(tr(&"#delete"), delete_selected,
+				false, load("res://visual/icons/Delete.svg")))
+	elif not inner_selections.is_empty() and not semi_selected_tid.is_empty():
+		if inner_selections.size() == 1:
+			btn_arr.append(Utils.create_btn(tr(&"#insert_after"),
+					get_insert_command_after_context,
+					false, load("res://visual/icons/Plus.svg")))
+			btn_arr.append(Utils.create_btn(tr(&"#convert_to"),
+					get_convert_to_context, false, load("res://visual/icons/Reload.svg")))
+		
+		btn_arr.append(Utils.create_btn(tr(&"#delete"), delete_selected, false,
+				load("res://visual/icons/Delete.svg")))
+	
+	var tag_context := ContextPopup.instantiate()
+	add_child(tag_context)
+	tag_context.set_button_array(btn_arr, true)
+	return tag_context
+
+func get_convert_to_context() -> Popup:
+	# The "Convert To" context popup.
+	if not selected_tids.is_empty():
+		var btn_arr: Array[Button] = []
+		var tag := SVG.root_tag.get_tag(selected_tids[0])
+		for tag_name in tag.possible_conversions:
+			var btn := Utils.create_btn(tag_name, convert_selected_tag_to.bind(tag_name),
+					!tag.can_replace(tag_name), load("res://visual/icons/tag/%s.svg" % tag_name))
+			btn.add_theme_font_override(&"font", load("res://visual/fonts/FontMono.ttf"))
+			btn_arr.append(btn)
+		var context_popup := ContextPopup.instantiate()
+		add_child(context_popup)
+		context_popup.set_button_array(btn_arr, true)
+		return context_popup
+	elif not inner_selections.is_empty() and not semi_selected_tid.is_empty():
+		var cmd_char: String = SVG.root_tag.get_tag(semi_selected_tid).\
+				attributes.d.get_command(inner_selections[0]).command_char
+		var command_picker := PathCommandPopup.instantiate()
+		add_child(command_picker)
+		command_picker.force_relativity(Utils.is_string_lower(cmd_char))
+		command_picker.disable_invalid([cmd_char.to_upper()])
+		command_picker.path_command_picked.connect(convert_selected_command_to)
+		return command_picker
+	else:
+		return null
+
+func get_insert_command_after_context() -> Popup:
+	var cmd_char: String = SVG.root_tag.get_tag(semi_selected_tid).attributes.d.\
+			get_command(inner_selections.max()).command_char
+	
+	var command_picker := PathCommandPopup.instantiate()
+	add_child(command_picker)
+	match cmd_char.to_upper():
+		"M": command_picker.disable_invalid(["M", "Z", "T"])
+		"Z": command_picker.disable_invalid(["Z"])
+		"L", "H", "V", "A": command_picker.disable_invalid(["S", "T"])
+		"C", "S": command_picker.disable_invalid(["T"])
+		"Q", "T": command_picker.disable_invalid(["S"])
+	command_picker.path_command_picked.connect(insert_inner_after_selection)
+	add_child(command_picker)
+	return command_picker
+
+func convert_selected_tag_to(tag_name: String) -> void:
+	var tid := selected_tids[0]
+	SVG.root_tag.replace_tag(tid, SVG.root_tag.get_tag(tid).get_replacement(tag_name))
+
+func convert_selected_command_to(cmd_type: String) -> void:
+	var tag_ref := SVG.root_tag.get_tag(semi_selected_tid)
+	match tag_ref.name:
+		"path": tag_ref.attributes.d.convert_command(inner_selections[0], cmd_type)

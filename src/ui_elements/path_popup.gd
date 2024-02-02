@@ -23,10 +23,9 @@ func _on_relative_toggle_toggled(toggled_on: bool) -> void:
 	for command_button in command_container.get_children():
 		if toggled_on:
 			command_button.command_char = command_button.command_char.to_lower()
-			command_button.update_text()
 		else:
 			command_button.command_char = command_button.command_char.to_upper()
-			command_button.update_text()
+		command_button.update_text()
 
 func disable_invalid(cmd_chars: Array) -> void:
 	for cmd_char in cmd_chars:
