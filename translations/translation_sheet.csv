@@ -25,7 +25,7 @@
 #snap_size,Snap size,Размер на захващането,Einrastgröße,Размер привязки,Розмір прилипання
 #copy_button_tooltip,Copy All Text,Копирай всичкия текст,Text kopieren,Скопировать весь текст,Скопіювати весь текст
 #import_button_tooltip,Import SVG,Импорт на SVG,SVG importieren,Импортировать SVG,Імпортувати SVG
-#export_button_tooltip,Export SVG,Експорт на SVG,SVG exportieren,Экспортировать SVG,Експортувати SVG
+#export_button_tooltip,Export,Експорт,Exportieren,Экспортировать,Експортувати
 #couple_button_tooltip,Couple/Decouple,Свържи/Отвържи,Koppeln/Entkoppeln,Объединить/Разъединить,З’єднати/Роз’єднати
 #duplicate,Duplicate,Дублирай,Duplizieren,Дублировать,Дублювати
 #move_up,Move Up,Премести нагоре,Nach oben,Подвинуть вверх,Пересунути вгору
