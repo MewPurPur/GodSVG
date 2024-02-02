@@ -90,7 +90,7 @@ func get_all_tids() -> Array[PackedInt32Array]:
 	
 	while not unchecked_tids.is_empty():
 		var checked_tid: PackedInt32Array = unchecked_tids.pop_back()
-		var checked_tag: Tag = get_by_tid(checked_tid)
+		var checked_tag: Tag = get_tag(checked_tid)
 		for idx in checked_tag.get_child_count():
 			var new_tid := checked_tid.duplicate()
 			new_tid.append(idx)
@@ -98,7 +98,7 @@ func get_all_tids() -> Array[PackedInt32Array]:
 		tids.append(checked_tid)
 	return tids
 
-func get_by_tid(tid: PackedInt32Array) -> Tag:
+func get_tag(tid: PackedInt32Array) -> Tag:
 	var current_tag: Tag = self
 	for idx in tid:
 		if idx >= current_tag.child_tags.size():
@@ -109,7 +109,7 @@ func get_by_tid(tid: PackedInt32Array) -> Tag:
 
 func add_tag(new_tag: Tag, new_tid: PackedInt32Array) -> void:
 	var parent_tid := Utils.get_parent_tid(new_tid)
-	get_by_tid(parent_tid).child_tags.insert(new_tid[-1], new_tag)
+	get_tag(parent_tid).child_tags.insert(new_tid[-1], new_tag)
 	new_tag.attribute_changed.connect(emit_child_attribute_changed)
 	var new_tid_array: Array[PackedInt32Array] = [new_tid]
 	tags_added.emit(new_tid_array)
@@ -130,7 +130,7 @@ func replace_self(new_tag: Tag) -> void:
 		child_tags.append(tag)
 	
 	for tid in get_all_tids():
-		get_by_tid(tid).attribute_changed.connect(emit_child_attribute_changed)
+		get_tag(tid).attribute_changed.connect(emit_child_attribute_changed)
 	
 	changed_unknown.emit()
 	if old_size != get_size():
@@ -143,7 +143,7 @@ func delete_tags(tids: Array[PackedInt32Array]) -> void:
 	tids = Utils.filter_descendant_tids(tids)
 	for tid in tids:
 		var parent_tid := Utils.get_parent_tid(tid)
-		var parent_tag := get_by_tid(parent_tid)
+		var parent_tag := get_tag(parent_tid)
 		if parent_tag != null:
 			var tag_idx := tid[-1]
 			if tag_idx < parent_tag.get_child_count():
@@ -168,7 +168,7 @@ func move_tags_in_parent(tids: Array[PackedInt32Array], down: bool) -> void:
 	for tid in tids:
 		tid_indices.append(tid[-1])
 	
-	var parent_tag := get_by_tid(parent_tid)
+	var parent_tag := get_tag(parent_tid)
 	var parent_child_count := parent_tag.get_child_count()
 	var old_indices: Array[int] = []
 	for k in parent_child_count:
@@ -221,10 +221,10 @@ func move_tags_to(tids: Array[PackedInt32Array], location: PackedInt32Array) -> 
 					if tid[i] < location[i]:
 						location[i] -= 1
 					break
-		tags_stored.append(get_by_tid(Utils.get_parent_tid(tid)).child_tags.pop_at(tid[-1]))
+		tags_stored.append(get_tag(Utils.get_parent_tid(tid)).child_tags.pop_at(tid[-1]))
 	# Add them back in the new location.
 	for tag in tags_stored:
-		get_by_tid(Utils.get_parent_tid(location)).child_tags.insert(location[-1], tag)
+		get_tag(Utils.get_parent_tid(location)).child_tags.insert(location[-1], tag)
 	tags_moved_to.emit(tids, location)
 	tag_layout_changed.emit()
 
@@ -239,12 +239,12 @@ func duplicate_tags(tids: Array[PackedInt32Array]) -> void:
 	var added_to_last_parent := 0
 	
 	for tid in tids:
-		var new_tag := get_by_tid(tid).create_duplicate()
+		var new_tag := get_tag(tid).create_duplicate()
 		# Add the new tag.
 		var new_tid := tid.duplicate()
 		new_tid[-1] += 1
 		var parent_tid := Utils.get_parent_tid(new_tid)
-		get_by_tid(parent_tid).child_tags.insert(new_tid[-1], new_tag)
+		get_tag(parent_tid).child_tags.insert(new_tid[-1], new_tag)
 		new_tag.attribute_changed.connect(emit_child_attribute_changed)
 		# Add the TID and offset the other ones from the same parent.
 		var added_tid_idx := tids_added.size()
@@ -262,7 +262,7 @@ func duplicate_tags(tids: Array[PackedInt32Array]) -> void:
 func replace_tag(tid: PackedInt32Array, new_tag: Tag) -> void:
 	if tid.is_empty():
 		replace_self(new_tag)
-	get_by_tid(Utils.get_parent_tid(tid)).child_tags[tid[-1]] = new_tag
+	get_tag(Utils.get_parent_tid(tid)).child_tags[tid[-1]] = new_tag
 	new_tag.attribute_changed.connect(emit_child_attribute_changed)
 	tag_changed.emit(tid)
 	tag_layout_changed.emit()

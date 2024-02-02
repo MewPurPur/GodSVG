@@ -50,31 +50,9 @@ func rebuild_commands() -> void:
 		# TODO Fix this mess, it's needed for individual path commands selection.
 		command_editor.tid = get_node(^"../../../../..").tid
 		command_editor.cmd_idx = command_idx
-		command_editor.cmd_update_value.connect(_update_command_value)
-		command_editor.cmd_delete.connect(_delete)
-		command_editor.cmd_toggle_relative.connect(_toggle_relative)
-		command_editor.cmd_insert_after.connect(_insert_after)
-		command_editor.cmd_convert_to.connect(_convert_to)
 		commands_container.add_child(command_editor)
 		command_editor.update_type()
 		command_idx += 1
-
-
-func _update_command_value(idx: int, new_value: float, property: StringName) -> void:
-	attribute.set_command_property(idx, property, new_value)
-
-func _delete(idx: int) -> void:
-	var arr: Array[int] = [idx]
-	attribute.delete_commands(arr)
-
-func _toggle_relative(idx: int) -> void:
-	attribute.toggle_relative_command(idx)
-
-func _insert_after(idx: int, cmd_type: String) -> void:
-	attribute.insert_command(idx, cmd_type)
-
-func _convert_to(idx: int, new_type: String) -> void:
-	attribute.convert_command(idx, new_type)
 
 
 func _on_line_edit_text_submitted(new_text: String) -> void:

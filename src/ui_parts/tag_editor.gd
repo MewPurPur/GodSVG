@@ -104,7 +104,7 @@ func _get_drag_data(_at_position: Vector2) -> Variant:
 	var tags_container := VBoxContainer.new()
 	for drag_tid in data:
 		var preview := TagEditor.instantiate()
-		preview.tag = SVG.root_tag.get_by_tid(drag_tid)
+		preview.tag = SVG.root_tag.get_tag(drag_tid)
 		preview.tid = drag_tid
 		preview.custom_minimum_size.x = self.size.x
 		tags_container.add_child(preview)
@@ -141,35 +141,7 @@ func _drop_data(_at_position: Vector2, current_tid: Variant):
 
 
 func _on_title_button_pressed() -> void:
-	Utils.popup_under_control_centered(create_tag_context(), title_button)
-
-
-func create_tag_context() -> Popup:
-	var parent_tid := Utils.get_parent_tid(tid)
-	var tag_count := SVG.root_tag.get_by_tid(parent_tid).get_child_count()
-	var btn_array: Array[Button] = []
-	
-	btn_array.append(Utils.create_btn(tr(&"#duplicate"), Indications.duplicate_selected,
-			false, load("res://visual/icons/Duplicate.svg")))
-	
-	if Indications.selected_tids.size() == 1 and not tag.possible_conversions.is_empty():
-		btn_array.append(Utils.create_btn(tr(&"#convert_to"), popup_convert_to_context,
-				false, load("res://visual/icons/Reload.svg")))
-	
-	if tid[-1] > 0:
-		btn_array.append(Utils.create_btn(tr(&"#move_up"), Indications.move_up_selected,
-				false, load("res://visual/icons/MoveUp.svg")))
-	if tid[-1] < tag_count - 1:
-		btn_array.append(Utils.create_btn(tr(&"#move_down"), Indications.move_down_selected,
-				false, load("res://visual/icons/MoveDown.svg")))
-	
-	btn_array.append(Utils.create_btn(tr(&"#delete"), Indications.delete_selected,
-				false, load("res://visual/icons/Delete.svg")))
-	
-	var tag_context := ContextPopup.instantiate()
-	add_child(tag_context)
-	tag_context.set_button_array(btn_array, true)
-	return tag_context
+	Utils.popup_under_control_centered(Indications.get_selection_context(), title_button)
 
 
 func _gui_input(event: InputEvent) -> void:
@@ -188,7 +160,8 @@ func _gui_input(event: InputEvent) -> void:
 		elif event.button_index == MOUSE_BUTTON_RIGHT:
 			if not tid in Indications.selected_tids:
 				Indications.normal_select(tid)
-			Utils.popup_under_mouse(create_tag_context(), get_global_mouse_position())
+			Utils.popup_under_mouse(Indications.get_selection_context(),
+					get_global_mouse_position())
 	elif event is InputEventMouseButton and event.is_released() and\
 	not event.ctrl_pressed and not event.shift_pressed:
 		if tid in Indications.selected_tids:
@@ -198,24 +171,6 @@ func _on_mouse_exited() -> void:
 	Indications.remove_hovered(tid)
 	drop_state = DropState.OUTSIDE
 	determine_selection_highlight()
-
-
-func popup_convert_to_context() -> void:
-	# The "Convert To" context popup.
-	var btn_arr: Array[Button] = []
-	for tag_name in tag.possible_conversions:
-		var btn := Utils.create_btn(tag_name, _convert_to.bind(tag_name),
-				!tag.can_replace(tag_name), load("res://visual/icons/tag/%s.svg" % tag_name))
-		btn.add_theme_font_override(&"font", load("res://visual/fonts/FontMono.ttf"))
-		btn_arr.append(btn)
-	var context_popup := ContextPopup.instantiate()
-	add_child(context_popup)
-	context_popup.set_button_array(btn_arr, true)
-	Utils.popup_under_control_centered(context_popup, title_button)
-
-
-func _convert_to(tag_name: String) -> void:
-	SVG.root_tag.replace_tag(tid, tag.get_replacement(tag_name))
 
 
 func determine_selection_highlight() -> void:
