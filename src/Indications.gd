@@ -506,7 +506,6 @@ func get_insert_command_after_context() -> Popup:
 		"C", "S": command_picker.disable_invalid(["T"])
 		"Q", "T": command_picker.disable_invalid(["S"])
 	command_picker.path_command_picked.connect(insert_inner_after_selection)
-	add_child(command_picker)
 	return command_picker
 
 func convert_selected_tag_to(tag_name: String) -> void:
