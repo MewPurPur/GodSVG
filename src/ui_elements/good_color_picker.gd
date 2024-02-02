@@ -116,7 +116,6 @@ func set_color(new_color: String, new_display_color: Color) -> void:
 	if color == new_color:
 		return
 	
-	var old_color := color
 	color = new_color
 	update()
 	color_changed.emit(new_color)

@@ -44,7 +44,7 @@ func get_svg_errors(text: String) -> Array[String]:
 		var svg_tag: TagSVG = svg_parse_result
 		var tids := svg_tag.get_all_tids()
 		for tid in tids:
-			var tag := svg_tag.get_by_tid(tid)
+			var tag := svg_tag.get_tag(tid)
 			if tag is TagUnknown:
 				warnings.append(tr(&"#unknown_tag") + ": " + tag.name)
 			else:

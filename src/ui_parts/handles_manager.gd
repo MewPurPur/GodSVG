@@ -1,6 +1,10 @@
 ## Contours drawing and [Handle]s are managed here. 
 extends Control
 
+const PathCommandPopup = preload("res://src/ui_elements/path_popup.tscn")
+const ContextPopup = preload("res://src/ui_elements/context_popup.tscn")
+const ContextPopupType = preload("res://src/ui_elements/context_popup.gd")
+
 const handle_texture_dir = "res://visual/icons/handles/%s.svg"
 
 const normal_handle_textures = {
@@ -64,25 +68,31 @@ func _process(_delta: float) -> void:
 func update_handles() -> void:
 	handles.clear()
 	for tid in SVG.root_tag.get_all_tids():
-		var tag := SVG.root_tag.get_by_tid(tid)
+		var tag := SVG.root_tag.get_tag(tid)
 		match tag.name:
 			"circle":
 				handles.append(generate_xy_handle(tid, tag, "cx", "cy", "transform"))
-				handles.append(generate_delta_handle(tid, tag, "cx", "cy", "transform", "r", true))
+				handles.append(generate_delta_handle(tid, tag, "cx", "cy", "transform",
+						"r", true))
 			"ellipse":
 				handles.append(generate_xy_handle(tid, tag, "cx", "cy", "transform"))
-				handles.append(generate_delta_handle(tid, tag, "cx", "cy", "transform", "rx", true))
-				handles.append(generate_delta_handle(tid, tag, "cx", "cy", "transform", "ry", false))
+				handles.append(generate_delta_handle(tid, tag, "cx", "cy", "transform",
+						"rx", true))
+				handles.append(generate_delta_handle(tid, tag, "cx", "cy", "transform",
+						"ry", false))
 			"rect":
 				handles.append(generate_xy_handle(tid, tag, "x", "y", "transform"))
 				handles.append(generate_xy_handle(tid, tag, "x", "y", "transform"))
-				handles.append(generate_delta_handle(tid, tag, "x", "y", "transform", "width", true))
-				handles.append(generate_delta_handle(tid, tag, "x", "y", "transform", "height", false))
+				handles.append(generate_delta_handle(tid, tag, "x", "y", "transform",
+						"width", true))
+				handles.append(generate_delta_handle(tid, tag, "x", "y", "transform",
+						"height", false))
 			"line":
 				handles.append(generate_xy_handle(tid, tag, "x1", "y1", "transform"))
 				handles.append(generate_xy_handle(tid, tag, "x2", "y2", "transform"))
 			"path":
-				handles += generate_path_handles(tid, tag.attributes.d, tag.attributes.transform)
+				handles += generate_path_handles(tid, tag.attributes.d,
+						tag.attributes.transform)
 	queue_redraw()
 
 
@@ -99,7 +109,7 @@ func sync_handles() -> void:
 	var tids := SVG.root_tag.get_all_tids()
 	
 	for tid in tids:
-		var tag := SVG.root_tag.get_by_tid(tid)
+		var tag := SVG.root_tag.get_tag(tid)
 		if tag.name == "path":
 			handles += generate_path_handles(tid, tag.attributes.d, tag.attributes.transform)
 	queue_redraw()
@@ -152,7 +162,7 @@ func _draw() -> void:
 	var tids := SVG.root_tag.get_all_tids()
 	
 	for tid in tids:
-		var tag := SVG.root_tag.get_by_tid(tid)
+		var tag := SVG.root_tag.get_tag(tid)
 		var attribs := tag.attributes
 		
 		# Determine if the tag is hovered/selected or has a hovered/selected parent.
@@ -650,36 +660,12 @@ func _unhandled_input(event: InputEvent) -> void:
 	var snap_size := absf(GlobalSettings.save_data.snap)
 	var snap_vector := Vector2(snap_size, snap_size)
 	
-	if event is InputEventMouseMotion:
-		should_deselect_all = false
-		var event_pos: Vector2 = event.position / Indications.zoom +\
-				get_node(^"../..").view.position
-		if dragged_handle != null:
-			# Move the handle that's being dragged.
-			if snap_enabled:
-				event_pos = event_pos.snapped(snap_vector)
-			
-			var new_pos := dragged_handle.transform.affine_inverse() * SVG.root_tag.world_to_canvas(event_pos)
-			dragged_handle.set_pos(new_pos)
-			was_handle_moved = true
-			accept_event()
-		elif event.button_mask == 0:
-			var nearest_handle := find_nearest_handle(event_pos)
-			if nearest_handle != null:
-				hovered_handle = nearest_handle
-				if hovered_handle is PathHandle:
-					Indications.set_inner_hovered(hovered_handle.tid,
-							hovered_handle.command_index)
-				else:
-					Indications.set_hovered(hovered_handle.tid)
-			else:
-				hovered_handle = null
-				Indications.clear_hovered()
-				Indications.clear_inner_hovered()
-	elif event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
-		var event_pos: Vector2 = event.position / Indications.zoom +\
-				get_node(^"../..").view.position
-		var nearest_handle := find_nearest_handle(event_pos)
+	# Set the nearest handle as hovered, if any handles are within range.
+	if (event is InputEventMouseMotion and event.button_mask == 0) or\
+	(event is InputEventMouseButton and (event.button_index == MOUSE_BUTTON_LEFT or\
+	event.button_index == MOUSE_BUTTON_RIGHT)):
+		var nearest_handle := find_nearest_handle(event.position / Indications.zoom +\
+				get_node(^"../..").view.position)
 		if nearest_handle != null:
 			hovered_handle = nearest_handle
 			if hovered_handle is PathHandle:
@@ -691,43 +677,78 @@ func _unhandled_input(event: InputEvent) -> void:
 			hovered_handle = null
 			Indications.clear_hovered()
 			Indications.clear_inner_hovered()
-		# React to LMB actions.
-		if hovered_handle != null and event.is_pressed():
-			dragged_handle = hovered_handle
-			dragged_handle.initial_pos = dragged_handle.pos
-			var inner_idx = -1
-			var dragged_tid := dragged_handle.tid
-			if hovered_handle is PathHandle:
-				inner_idx = hovered_handle.command_index
-			
-			if event.double_click and inner_idx != -1:
-				# Unselect the tag, so then it's selected again.
-				Indications.ctrl_select(dragged_tid, inner_idx)
-				var subpath_range: Vector2i =\
-						hovered_handle.path_attribute.get_subpath(inner_idx)
-				for idx in range(subpath_range.x, subpath_range.y + 1):
-					Indications.ctrl_select(dragged_tid, idx)
-			elif event.ctrl_pressed:
-				Indications.ctrl_select(dragged_tid, inner_idx)
-			elif event.shift_pressed:
-				Indications.shift_select(dragged_tid, inner_idx)
-			else:
-				Indications.normal_select(dragged_tid, inner_idx)
+	
+	
+	if event is InputEventMouseMotion:
+		should_deselect_all = false
+		var event_pos: Vector2 = event.position / Indications.zoom +\
+				get_node(^"../..").view.position
+		if dragged_handle != null:
+			# Move the handle that's being dragged.
+			if snap_enabled:
+				event_pos = event_pos.snapped(snap_vector)
+			var new_pos := dragged_handle.transform.affine_inverse() *\
+					SVG.root_tag.world_to_canvas(event_pos)
+			dragged_handle.set_pos(new_pos)
+			was_handle_moved = true
+			accept_event()
+	elif event is InputEventMouseButton:
+		var event_pos: Vector2 = event.position / Indications.zoom +\
+				get_node(^"../..").view.position
+		if snap_enabled:
+			event_pos = event_pos.snapped(snap_vector)
 		
-		elif dragged_handle != null and event.is_released():
-			if was_handle_moved:
-				if snap_enabled:
-					event_pos = event_pos.snapped(snap_vector)
-			
-				var new_pos := dragged_handle.transform.affine_inverse() * SVG.root_tag.world_to_canvas(event_pos)
-				dragged_handle.set_pos(new_pos, true)
-				was_handle_moved = false
-			dragged_handle = null
-		elif hovered_handle == null and event.is_pressed():
-			should_deselect_all = true
-		elif hovered_handle == null and event.is_released() and should_deselect_all:
-			dragged_handle = null
-			Indications.clear_all_selections()
+		if event.button_index == MOUSE_BUTTON_LEFT:
+			# React to LMB actions.
+			if hovered_handle != null and event.is_pressed():
+				dragged_handle = hovered_handle
+				dragged_handle.initial_pos = dragged_handle.pos
+				var inner_idx = -1
+				var dragged_tid := dragged_handle.tid
+				if hovered_handle is PathHandle:
+					inner_idx = hovered_handle.command_index
+				
+				if event.double_click and inner_idx != -1:
+					# Unselect the tag, so then it's selected again in the subpath.
+					Indications.ctrl_select(dragged_tid, inner_idx)
+					var subpath_range: Vector2i =\
+							hovered_handle.path_attribute.get_subpath(inner_idx)
+					for idx in range(subpath_range.x, subpath_range.y + 1):
+						Indications.ctrl_select(dragged_tid, idx)
+				elif event.ctrl_pressed:
+					Indications.ctrl_select(dragged_tid, inner_idx)
+				elif event.shift_pressed:
+					Indications.shift_select(dragged_tid, inner_idx)
+				else:
+					Indications.normal_select(dragged_tid, inner_idx)
+			elif dragged_handle != null and event.is_released():
+				if was_handle_moved:
+					var new_pos := dragged_handle.transform.affine_inverse() *\
+							SVG.root_tag.world_to_canvas(event_pos)
+					dragged_handle.set_pos(new_pos, true)
+					was_handle_moved = false
+				dragged_handle = null
+			elif hovered_handle == null and event.is_pressed():
+				should_deselect_all = true
+			elif hovered_handle == null and event.is_released() and should_deselect_all:
+				dragged_handle = null
+				Indications.clear_all_selections()
+		elif event.button_index == MOUSE_BUTTON_RIGHT:
+			var popup_pos := get_window().get_mouse_position()
+			if hovered_handle == null:
+				Indications.clear_all_selections()
+				Utils.popup_under_mouse(create_tag_context(event_pos), popup_pos)
+			else:
+				var hovered_tid := hovered_handle.tid
+				var inner_idx = -1
+				if hovered_handle is PathHandle:
+					inner_idx = hovered_handle.command_index
+				
+				if (Indications.semi_selected_tid != hovered_tid or\
+				not inner_idx in Indications.inner_selections) and\
+				not hovered_tid in Indications.selected_tids:
+					Indications.normal_select(hovered_tid, inner_idx)
+				Utils.popup_under_mouse(Indications.get_selection_context(), popup_pos)
 
 func find_nearest_handle(event_pos: Vector2) -> Handle:
 	var nearest_handle: Handle = null
@@ -760,3 +781,44 @@ func move_selected_to_mouse() -> void:
 			dragged_handle.set_pos(new_pos)
 			was_handle_moved = true
 			return
+
+# Creates a popup for adding a shape at a position.
+func create_tag_context(pos: Vector2) -> ContextPopupType:
+	var btn_array: Array[Button] = []
+	for shape in ["path", "circle", "ellipse", "rect", "line"]:
+		var btn := Utils.create_btn(shape, add_tag_at_pos.bind(shape, pos),
+				false, SVGDB.get_tag_icon(shape))
+		btn.add_theme_font_override(&"font", load("res://visual/fonts/FontMono.ttf"))
+		btn_array.append(btn)
+	var tag_context := ContextPopup.instantiate()
+	add_child(tag_context)
+	tag_context.set_button_array(btn_array, true)
+	return tag_context
+
+func add_tag_at_pos(tag_name: String, pos: Vector2) -> void:
+	var tag: Tag
+	match tag_name:
+		"path":
+			tag = TagPath.new()
+			tag.attributes.d.insert_command(0, "M")
+			tag.attributes.d.set_command_property(0, &"x", pos.x)
+			tag.attributes.d.set_command_property(0, &"y", pos.y)
+		"circle":
+			tag = TagCircle.new()
+			tag.attributes.cx.set_num(pos.x)
+			tag.attributes.cy.set_num(pos.y)
+		"ellipse":
+			tag = TagEllipse.new()
+			tag.attributes.cx.set_num(pos.x)
+			tag.attributes.cy.set_num(pos.y)
+		"rect":
+			tag = TagRect.new()
+			tag.attributes.x.set_num(pos.x)
+			tag.attributes.y.set_num(pos.y)
+		"line":
+			tag = TagLine.new()
+			tag.attributes.x1.set_num(pos.x)
+			tag.attributes.y1.set_num(pos.y)
+			tag.attributes.x2.set_num(pos.x + 1)
+			tag.attributes.y2.set_num(pos.y)
+	SVG.root_tag.add_tag(tag, PackedInt32Array([SVG.root_tag.get_child_count()]))
