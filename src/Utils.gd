@@ -145,6 +145,10 @@ static func is_tid_parent(parent: PackedInt32Array, child: PackedInt32Array) -> 
 			return false
 	return true
 
+static func is_tid_parent_or_self(parent: PackedInt32Array,
+child: PackedInt32Array) -> bool:
+	return is_tid_parent(parent, child) or parent == child
+
 static func get_parent_tid(tid: PackedInt32Array) -> PackedInt32Array:
 	var parent_tid := tid.duplicate()
 	parent_tid.resize(tid.size() - 1)
@@ -159,7 +163,7 @@ static func filter_descendant_tids(tids: Array[PackedInt32Array]) -> Array[Packe
 	var i := 1
 	while i < new_tids.size():
 		var tid := new_tids[i]
-		if Utils.is_tid_parent(last_accepted, tid) or last_accepted == tid:
+		if Utils.is_tid_parent_or_self(last_accepted, tid):
 			new_tids.remove_at(i)
 		else:
 			last_accepted = new_tids[i]

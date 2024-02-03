@@ -277,7 +277,7 @@ func _on_tags_deleted(tids: Array[PackedInt32Array]) -> void:
 	for deleted_tid in tids:
 		for i in range(selected_tids.size() - 1, -1, -1):
 			var tid := selected_tids[i]
-			if Utils.is_tid_parent(deleted_tid, tid) or deleted_tid == tid:
+			if Utils.is_tid_parent_or_self(deleted_tid, tid):
 				selected_tids.remove_at(i)
 	if old_selected_tids != selected_tids:
 		selection_changed.emit()
@@ -298,7 +298,7 @@ func _on_tags_moved_in_parent(parent_tid: PackedInt32Array, indices: Array[int])
 		
 		# If the TID or a child of it is found, append it.
 		for tid in selected_tids:
-			if Utils.is_tid_parent(old_moved_tid, tid) or old_moved_tid == tid:
+			if Utils.is_tid_parent_or_self(old_moved_tid, tid):
 				var new_selected_tid := tid.duplicate()
 				new_selected_tid[parent_tid.size()] = index_idx
 				tids_to_unselect.append(tid)
@@ -318,7 +318,7 @@ func _on_tags_moved_to(tids: Array[PackedInt32Array], location: PackedInt32Array
 		var moved_tid := tids[moved_idx]
 		for i in range(selected_tids.size() - 1, -1, -1):
 			var tid := selected_tids[i]
-			if Utils.is_tid_parent(moved_tid, tid) or moved_tid == tid:
+			if Utils.is_tid_parent_or_self(moved_tid, tid):
 				var new_location := Utils.get_parent_tid(location)
 				new_location.append(moved_idx + location[-1])
 				for ii in range(moved_tid.size(), tid.size()):
