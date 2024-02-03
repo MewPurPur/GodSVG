@@ -93,6 +93,10 @@ func update_handles() -> void:
 			"path":
 				handles += generate_path_handles(tid, tag.attributes.d,
 						tag.attributes.transform)
+	# Pretend the mouse was moved to update the hovering.
+	var mouse_motion_event := InputEventMouseMotion.new()
+	mouse_motion_event.position = get_viewport().get_mouse_position()
+	respond_to_input_event(mouse_motion_event)
 	queue_redraw()
 
 
@@ -114,19 +118,19 @@ func sync_handles() -> void:
 			handles += generate_path_handles(tid, tag.attributes.d, tag.attributes.transform)
 	queue_redraw()
 
-func generate_path_handles(tid: PackedInt32Array,
-path_attribute: AttributePath, transform_attribute: AttributeTransform) -> Array[Handle]:
+func generate_path_handles(tid: PackedInt32Array, data_attrib: AttributePath,
+t_attrib: AttributeTransform) -> Array[Handle]:
 	var path_handles: Array[Handle] = []
-	for idx in path_attribute.get_command_count():
-		var path_command := path_attribute.get_command(idx)
+	for idx in data_attrib.get_command_count():
+		var path_command := data_attrib.get_command(idx)
 		if path_command.command_char.to_upper() != "Z":
-			path_handles.append(PathHandle.new(tid, path_attribute, transform_attribute, idx))
+			path_handles.append(PathHandle.new(tid, data_attrib, t_attrib, idx))
 			if path_command.command_char.to_upper() in "CQ":
-				var tangent := PathHandle.new(tid, path_attribute, transform_attribute, idx, &"x1", &"y1")
+				var tangent := PathHandle.new(tid, data_attrib, t_attrib, idx, &"x1", &"y1")
 				tangent.display_mode = Handle.Display.SMALL
 				path_handles.append(tangent)
 			if path_command.command_char.to_upper() in "CS":
-				var tangent := PathHandle.new(tid, path_attribute, transform_attribute, idx, &"x2", &"y2")
+				var tangent := PathHandle.new(tid, data_attrib, t_attrib, idx, &"x2", &"y2")
 				tangent.display_mode = Handle.Display.SMALL
 				path_handles.append(tangent)
 	return path_handles
@@ -140,9 +144,11 @@ y_attrib_name: String, t_attrib_name: String) -> XYHandle:
 	return new_handle
 
 func generate_delta_handle(tid: PackedInt32Array, tag: Tag, x_attrib_name: String,\
-y_attrib_name: String, t_attrib_name: String, delta_attrib_name: String, horizontal: bool) -> DeltaHandle:
+y_attrib_name: String, t_attrib_name: String, delta_attrib_name: String,\
+horizontal: bool) -> DeltaHandle:
 	var new_handle := DeltaHandle.new(tid, tag.attributes[x_attrib_name],
-			tag.attributes[y_attrib_name], tag.attributes[t_attrib_name], tag.attributes[delta_attrib_name], horizontal)
+			tag.attributes[y_attrib_name], tag.attributes[t_attrib_name],
+			tag.attributes[delta_attrib_name], horizontal)
 	new_handle.tag = tag
 	return new_handle
 
@@ -622,26 +628,24 @@ width: float) -> void:
 	for i in int(points.size() / 2.0):
 		var i2 := i * 2
 		draw_line(points[i2], points[i2 + 1], color, width, true)
-
+	
 
 func tid_is_hovered(tid: PackedInt32Array, cmd_idx := -1) -> bool:
 	if cmd_idx == -1:
-		return Utils.is_tid_parent(Indications.hovered_tid, tid) or\
-				tid == Indications.hovered_tid
+		return Utils.is_tid_parent_or_self(Indications.hovered_tid, tid)
 	else:
-		return (Utils.is_tid_parent(Indications.hovered_tid, tid) or\
-				tid == Indications.hovered_tid) or (Indications.semi_hovered_tid == tid and\
-				Indications.inner_hovered == cmd_idx)
+		return Utils.is_tid_parent_or_self(Indications.hovered_tid, tid) or\
+				(Indications.semi_hovered_tid == tid and Indications.inner_hovered == cmd_idx)
 
 func tid_is_selected(tid: PackedInt32Array, cmd_idx := -1) -> bool:
 	if cmd_idx == -1:
 		for selected_tid in Indications.selected_tids:
-			if Utils.is_tid_parent(selected_tid, tid) or tid == selected_tid:
+			if Utils.is_tid_parent_or_self(selected_tid, tid):
 				return true
 		return false
 	else:
 		for selected_tid in Indications.selected_tids:
-			if Utils.is_tid_parent(selected_tid, tid) or tid == selected_tid:
+			if Utils.is_tid_parent_or_self(selected_tid, tid):
 				return true
 		return Indications.semi_selected_tid == tid and\
 				cmd_idx in Indications.inner_selections
@@ -653,6 +657,9 @@ var was_handle_moved := false
 var should_deselect_all = false
 
 func _unhandled_input(event: InputEvent) -> void:
+	respond_to_input_event(event)
+
+func respond_to_input_event(event: InputEvent) -> void:
 	if not visible:
 		return
 	
@@ -661,9 +668,10 @@ func _unhandled_input(event: InputEvent) -> void:
 	var snap_vector := Vector2(snap_size, snap_size)
 	
 	# Set the nearest handle as hovered, if any handles are within range.
-	if (event is InputEventMouseMotion and event.button_mask == 0) or\
-	(event is InputEventMouseButton and (event.button_index == MOUSE_BUTTON_LEFT or\
-	event.button_index == MOUSE_BUTTON_RIGHT)):
+	if (event is InputEventMouseMotion and dragged_handle == null) or\
+	(event is InputEventMouseButton and (event.button_index in [MOUSE_BUTTON_LEFT,
+	MOUSE_BUTTON_RIGHT, MOUSE_BUTTON_WHEEL_DOWN, MOUSE_BUTTON_WHEEL_UP,
+	MOUSE_BUTTON_WHEEL_LEFT, MOUSE_BUTTON_WHEEL_RIGHT])):
 		var nearest_handle := find_nearest_handle(event.position / Indications.zoom +\
 				get_node(^"../..").view.position)
 		if nearest_handle != null:
@@ -677,7 +685,6 @@ func _unhandled_input(event: InputEvent) -> void:
 			hovered_handle = null
 			Indications.clear_hovered()
 			Indications.clear_inner_hovered()
-	
 	
 	if event is InputEventMouseMotion:
 		should_deselect_all = false
@@ -705,14 +712,14 @@ func _unhandled_input(event: InputEvent) -> void:
 				dragged_handle.initial_pos = dragged_handle.pos
 				var inner_idx = -1
 				var dragged_tid := dragged_handle.tid
-				if hovered_handle is PathHandle:
-					inner_idx = hovered_handle.command_index
+				if dragged_handle is PathHandle:
+					inner_idx = dragged_handle.command_index
 				
 				if event.double_click and inner_idx != -1:
 					# Unselect the tag, so then it's selected again in the subpath.
 					Indications.ctrl_select(dragged_tid, inner_idx)
 					var subpath_range: Vector2i =\
-							hovered_handle.path_attribute.get_subpath(inner_idx)
+							dragged_handle.path_attribute.get_subpath(inner_idx)
 					for idx in range(subpath_range.x, subpath_range.y + 1):
 						Indications.ctrl_select(dragged_tid, idx)
 				elif event.ctrl_pressed:
@@ -768,16 +775,18 @@ func move_selected_to_mouse() -> void:
 		handle.command_index == Indications.inner_selections[0]:
 			if not get_viewport_rect().has_point(get_viewport().get_mouse_position()):
 				return
+			
+			Indications.set_inner_hovered(handle.tid, handle.command_index)
 			dragged_handle = handle
 			# Move the handle that's being dragged.
-			var mouse_position := get_global_mouse_position()
+			var mouse_pos := get_global_mouse_position()
 			
 			var snap_size := absf(GlobalSettings.save_data.snap)
 			if GlobalSettings.save_data.snap > 0.0:
-				mouse_position = mouse_position.snapped(Vector2(snap_size, snap_size))
+				mouse_pos = mouse_pos.snapped(Vector2(snap_size, snap_size))
 			
 			var new_pos := dragged_handle.transform.affine_inverse() *\
-					SVG.root_tag.world_to_canvas(mouse_position)
+					SVG.root_tag.world_to_canvas(mouse_pos)
 			dragged_handle.set_pos(new_pos)
 			was_handle_moved = true
 			return
