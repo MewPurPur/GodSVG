@@ -117,7 +117,7 @@ func _can_drop_data(_at_position: Vector2, data: Variant) -> bool:
 	if not data is Array[PackedInt32Array]:
 		return false
 	for data_tid in data:
-		if Utils.is_tid_parent(data_tid, tid) or data_tid == tid:
+		if Utils.is_tid_parent_or_self(data_tid, tid):
 			return false
 	
 	var state := calculate_drop_location(get_global_mouse_position())
@@ -162,10 +162,6 @@ func _gui_input(event: InputEvent) -> void:
 				Indications.normal_select(tid)
 			Utils.popup_under_mouse(Indications.get_selection_context(),
 					get_global_mouse_position())
-	elif event is InputEventMouseButton and event.is_released() and\
-	not event.ctrl_pressed and not event.shift_pressed:
-		if tid in Indications.selected_tids:
-			Indications.normal_select(tid)
 
 func _on_mouse_exited() -> void:
 	Indications.remove_hovered(tid)
