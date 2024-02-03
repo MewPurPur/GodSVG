@@ -628,7 +628,7 @@ width: float) -> void:
 	for i in int(points.size() / 2.0):
 		var i2 := i * 2
 		draw_line(points[i2], points[i2 + 1], color, width, true)
-	
+
 
 func tid_is_hovered(tid: PackedInt32Array, cmd_idx := -1) -> bool:
 	if cmd_idx == -1:
