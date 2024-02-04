@@ -37,9 +37,8 @@ func get_replacement(new_tag: String) -> Tag:
 	match new_tag:
 		"ellipse":
 			tag = TagEllipse.new()
-			retained_attributes = known_inheritable_attributes + ["cx", "cy", "transform",
-					"opacity", "fill", "fill-opacity", "stroke", "stroke-opacity",
-					"stroke-width"]
+			retained_attributes = ["cx", "cy", "transform", "opacity", "fill",
+					"fill-opacity", "stroke", "stroke-opacity", "stroke-width"]
 			tag.attributes.rx.set_num(attributes.r.get_num(), Attribute.SyncMode.SILENT)
 			tag.attributes.ry.set_num(attributes.r.get_num(), Attribute.SyncMode.SILENT)
 		"rect":
