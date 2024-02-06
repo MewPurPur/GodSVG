@@ -19,6 +19,7 @@ const path_actions_dict := {
 
 signal hover_changed
 signal selection_changed
+signal proposed_drop_changed
 
 # The viewport listens for this signal to put you in handle-placing mode.
 signal added_path_handle
@@ -39,6 +40,9 @@ var semi_selected_tid := PackedInt32Array()
 var inner_hovered := -1
 var inner_selections: Array[int] = []
 var inner_selection_pivot := -1
+
+# When dragging tags in the inspector.
+var proposed_drop_tid := PackedInt32Array()
 
 
 signal zoom_changed
@@ -266,6 +270,17 @@ func clear_inner_hovered() -> void:
 	if inner_hovered != -1:
 		inner_hovered = -1
 		hover_changed.emit()
+
+func set_proposed_drop_tid(tid: PackedInt32Array) -> void:
+	if proposed_drop_tid != tid:
+		proposed_drop_tid = tid.duplicate()
+		proposed_drop_changed.emit()
+
+func clear_proposed_drop_tid() -> void:
+	if not proposed_drop_tid.is_empty():
+		proposed_drop_tid.clear()
+		proposed_drop_changed.emit()
+
 
 func _on_tags_added(tids: Array[PackedInt32Array]) -> void:
 	selected_tids = tids.duplicate()

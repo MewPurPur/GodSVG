@@ -11,9 +11,11 @@ const EnumField = preload("res://src/ui_elements/enum_field.tscn")
 const UnknownField = preload("res://src/ui_elements/unknown_field.tscn")
 
 @onready var v_box_container: VBoxContainer = $Content/MainContainer
+@onready var attribute_container: VBoxContainer = %AttributeContainer
+var unknown_container: HFlowContainer  # Only created if there are unknown attributes.
 @onready var paint_container: FlowContainer = %AttributeContainer/PaintAttributes
 @onready var shape_container: FlowContainer = %AttributeContainer/ShapeAttributes
-@onready var unknown_container: HFlowContainer = %AttributeContainer/UnknownAttributes
+var child_tags_container: VBoxContainer  # Only created if there are child tags.
 @onready var title_bar: PanelContainer = $Title
 @onready var content: PanelContainer = $Content
 @onready var title_icon: TextureRect = $Title/TitleBox/TitleIcon
@@ -22,13 +24,6 @@ const UnknownField = preload("res://src/ui_elements/unknown_field.tscn")
 
 var tid: PackedInt32Array
 var tag: Tag
-
-enum DropState {INSIDE, UP, DOWN, OUTSIDE}
-var drop_state := DropState.OUTSIDE:
-	set(new_value):
-		if drop_state != new_value:
-			drop_state = new_value
-			queue_redraw()
 
 var surface := RenderingServer.canvas_item_create()  # Used for the drop indicator.
 
@@ -40,15 +35,18 @@ func _ready() -> void:
 	title_icon.texture = tag.icon
 	Indications.selection_changed.connect(determine_selection_highlight)
 	Indications.hover_changed.connect(determine_selection_highlight)
+	Indications.proposed_drop_changed.connect(queue_redraw)
 	determine_selection_highlight()
 	# Fill up the containers. Start with unknown attributes, if there are any.
 	if not tag.unknown_attributes.is_empty():
-		unknown_container.show()
-	for attribute in tag.unknown_attributes:
-		var input_field := UnknownField.instantiate()
-		input_field.attribute = attribute
-		input_field.attribute_name = attribute.name
-		unknown_container.add_child(input_field)
+		unknown_container = HFlowContainer.new()
+		attribute_container.add_child(unknown_container)
+		attribute_container.move_child(unknown_container, 0)
+		for attribute in tag.unknown_attributes:
+			var input_field := UnknownField.instantiate()
+			input_field.attribute = attribute
+			input_field.attribute_name = attribute.name
+			unknown_container.add_child(input_field)
 	# Continue with supported attributes.
 	for attribute_key in tag.attributes:
 		var attribute: Attribute = tag.attributes[attribute_key]
@@ -83,7 +81,7 @@ func _ready() -> void:
 			paint_container.add_child(input_field)
 	
 	if not tag.is_standalone():
-		var child_tags_container := VBoxContainer.new()
+		child_tags_container = VBoxContainer.new()
 		v_box_container.add_child(child_tags_container)
 		
 		for tag_idx in tag.get_child_count():
@@ -95,49 +93,22 @@ func _ready() -> void:
 			tag_editor.tid = new_tid
 			child_tags_container.add_child(tag_editor)
 
-
+# Logic for dragging.
 func _get_drag_data(_at_position: Vector2) -> Variant:
-	var data: Array[PackedInt32Array] = [tid.duplicate()]
-	if tid in Indications.selected_tids:
-		data = Indications.selected_tids.duplicate(true)
-	data = Utils.filter_descendant_tids(data)
+	var data: Array[PackedInt32Array] = Utils.filter_descendant_tids(
+			Indications.selected_tids.duplicate(true))
+	# Set up a preview.
 	var tags_container := VBoxContainer.new()
 	for drag_tid in data:
 		var preview := TagEditor.instantiate()
 		preview.tag = SVG.root_tag.get_tag(drag_tid)
 		preview.tid = drag_tid
-		preview.custom_minimum_size.x = self.size.x
+		preview.custom_minimum_size.x = size.x
+		preview.z_index = 2
 		tags_container.add_child(preview)
 	tags_container.modulate = Color(1, 1, 1, 0.85)
 	set_drag_preview(tags_container)
 	return data
-
-func _can_drop_data(_at_position: Vector2, data: Variant) -> bool:
-	# The data parameter is the TIDs.
-	if not data is Array[PackedInt32Array]:
-		return false
-	for data_tid in data:
-		if Utils.is_tid_parent_or_self(data_tid, tid):
-			return false
-	
-	var state := calculate_drop_location(get_global_mouse_position())
-	if state == DropState.INSIDE:
-		var new_tid := tid.duplicate()
-		new_tid.append(0)
-		if new_tid in data:
-			return false
-	drop_state = state
-	return true
-
-func _drop_data(_at_position: Vector2, current_tid: Variant):
-	var state := calculate_drop_location(get_global_mouse_position())
-	var new_tid := tid.duplicate()
-	match state:
-		DropState.INSIDE:
-			new_tid.append(0)
-		DropState.DOWN:
-			new_tid[-1] += 1
-	SVG.root_tag.move_tags_to(current_tid, new_tid)
 
 
 func _on_title_button_pressed() -> void:
@@ -157,15 +128,16 @@ func _gui_input(event: InputEvent) -> void:
 				Indications.ctrl_select(tid)
 			elif not tid in Indications.selected_tids:
 				Indications.normal_select(tid)
+			accept_event()
 		elif event.button_index == MOUSE_BUTTON_RIGHT:
 			if not tid in Indications.selected_tids:
 				Indications.normal_select(tid)
 			Utils.popup_under_mouse(Indications.get_selection_context(),
 					get_global_mouse_position())
+			accept_event()
 
 func _on_mouse_exited() -> void:
 	Indications.remove_hovered(tid)
-	drop_state = DropState.OUTSIDE
 	determine_selection_highlight()
 
 
@@ -224,37 +196,33 @@ func determine_selection_highlight() -> void:
 	content.add_theme_stylebox_override(&"panel", content_sb)
 	title_bar.add_theme_stylebox_override(&"panel", title_sb)
 
+# Draws the yellow indicator when drag-and-dropping tags.
 func _draw() -> void:
-	# Draw the yellow indicator of drag and drop actions.
 	RenderingServer.canvas_item_clear(surface)
-	if drop_state == DropState.OUTSIDE:
+	
+	if Indications.proposed_drop_tid.is_empty():
 		return
 	
+	for selected_tid in Indications.selected_tids:
+		if Utils.is_tid_parent_or_self(selected_tid, tid):
+			return
+	
+	var parent_tid := Utils.get_parent_tid(tid)
+	# Draw the yellow indicator of drag and drop actions.
 	var drop_sb := StyleBoxFlat.new()
+	var proposed_drop_tid := Indications.proposed_drop_tid
 	drop_sb.border_color = Color.YELLOW
+	if proposed_drop_tid == parent_tid + PackedInt32Array([tid[-1]]):
+		drop_sb.border_width_top = 2
+	elif proposed_drop_tid == parent_tid + PackedInt32Array([tid[-1] + 1]):
+		drop_sb.border_width_bottom = 2
+	elif proposed_drop_tid == tid + PackedInt32Array([0]):
+		drop_sb.set_border_width_all(2)
+		if child_tags_container != null:
+			drop_sb.border_color = Color(Color.YELLOW, 0.4)
+	else:
+		return
+	
 	drop_sb.draw_center = false
 	drop_sb.set_corner_radius_all(4)
-	match drop_state:
-		DropState.INSIDE:
-			drop_sb.set_border_width_all(2)
-		DropState.UP:
-			drop_sb.border_width_top = 2
-		DropState.DOWN:
-			drop_sb.border_width_bottom = 2
-	
 	drop_sb.draw(surface, Rect2(Vector2.ZERO, get_size()))
-
-
-func calculate_drop_location(at_position: Vector2) -> DropState:
-	var tag_editor_area := get_global_rect()
-	if not tag_editor_area.has_point(at_position):
-		return DropState.OUTSIDE
-	
-	var drop_border := minf(get_size().y / 3, 24)
-	tag_editor_area = tag_editor_area.grow_individual(0, -drop_border, 0, -drop_border)
-	if tag_editor_area.has_point(at_position):
-		return DropState.INSIDE
-	if tag_editor_area.position.y > at_position.y:
-		return DropState.UP
-	else:
-		return DropState.DOWN
