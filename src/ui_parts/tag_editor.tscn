@@ -9,7 +9,6 @@ offset_left = 2.0
 offset_top = 2.0
 offset_right = 55.0
 offset_bottom = 32.0
-mouse_filter = 0
 theme_override_constants/separation = 0
 script = ExtResource("1_7i0c4")
 
@@ -56,11 +55,6 @@ theme_override_constants/separation = 12
 
 [node name="AttributeContainer" type="VBoxContainer" parent="Content/MainContainer"]
 unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="UnknownAttributes" type="HFlowContainer" parent="Content/MainContainer/AttributeContainer"]
-visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 
