@@ -110,9 +110,7 @@ func sync_handles() -> void:
 		else:
 			handle.sync()
 	
-	var tids := SVG.root_tag.get_all_tids()
-	
-	for tid in tids:
+	for tid in SVG.root_tag.get_all_tids():
 		var tag := SVG.root_tag.get_tag(tid)
 		if tag.name == "path":
 			handles += generate_path_handles(tid, tag.attributes.d, tag.attributes.transform)
@@ -165,9 +163,7 @@ func _draw() -> void:
 	var hovered_multiline := PackedVector2Array()
 	var hovered_selected_multiline := PackedVector2Array()
 	
-	var tids := SVG.root_tag.get_all_tids()
-	
-	for tid in tids:
+	for tid in SVG.root_tag.get_all_tids():
 		var tag := SVG.root_tag.get_tag(tid)
 		var attribs := tag.attributes
 		

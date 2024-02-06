@@ -1,83 +1,106 @@
 extends PanelContainer
 
 # Autoscroll area on drag and drop. As a factor from edge to center.
-const autoscroll_area := 1 / 3.0
-const autoscroll_speed := 32.0
+const autoscroll_frac = 0.35  # 35% of the screen will be taken by the autoscroll areas.
+const autoscroll_speed = 1500.0
 
 @onready var scroll_container: ScrollContainer = $ScrollContainer
 @onready var tags: VBoxContainer = %Tags
 
-var is_drag_begin := false
-var to_refresh_mouse_exit: Control
-
+var is_dragging := false
 
 func _process(delta: float) -> void:
-	# Scroll with moving dragged object.
-	if scroll_container != null and is_drag_begin:
-		var full_area := scroll_container.get_global_rect()
-		var mouse_y := get_global_mouse_position().y
-		var center_y := full_area.get_center().y
-		
-		# A factor in the range [-1, 1] for how far away the mouse is from the center.
-		var factor := (mouse_y - center_y) / (full_area.size.y / 2)
-		# Remap values from [0, 1] to [1 - autoscroll_area, 1].
-		var scroll_amount := maxf((abs(factor) - (1.0 - autoscroll_area)) / autoscroll_area, 0)
-		# Exponentially increase autoscroll speed depending on the distance.
-		scroll_container.scroll_vertical += int(delta * 60 * sign(factor) * pow(scroll_amount, 2) * autoscroll_speed)
+	if not is_dragging:
+		return
+	
+	# Autoscroll when the dragged object is near the edge of the screen.
+	var full_area := scroll_container.get_global_rect()
+	var mouse_y := get_global_mouse_position().y
+	var center_y := full_area.get_center().y
+	# A factor in the range [-1, 1] for how far away the mouse is from the center.
+	var factor := (mouse_y - center_y) / (full_area.size.y / 2)
+	# Remap values from [0, 1] to [1 - autoscroll_area, 1].
+	var scroll_amount := maxf((absf(factor) - 1 + autoscroll_frac) / autoscroll_frac, 0)
+	# Increase autoscroll speed the closer to the edge of the container.
+	var scroll_value := int(delta * signf(factor) * scroll_amount * autoscroll_speed)
+	# Check if autoscrolling happened; if it did, the drop location may need updating.
+	var old_scroll_vertical := scroll_container.scroll_vertical
+	scroll_container.scroll_vertical += scroll_value
+	if scroll_container.scroll_vertical != old_scroll_vertical:
+		update_proposed_tid()
 
+func update_proposed_tid() -> void:
+	var y_pos := get_local_mouse_position().y + scroll_container.scroll_vertical
+	var in_top_buffer := false
+	var in_bottom_buffer := false
+	# Keep track of the last tag editor whose position is before y_pos.
+	var prev_tid := PackedInt32Array([-1])
+	var prev_y := -INF
+	# Keep track of the first tag editor whose end is after y_pos.
+	var next_tid := PackedInt32Array([SVG.root_tag.get_child_count()])
+	var next_y := INF
+	
+	for tid in SVG.root_tag.get_all_tids():
+		var tag_rect := get_tag_editor_rect(tid)
+		var buffer := minf(tag_rect.size.y / 3, 26)
+		var tag_end := tag_rect.end.y
+		var tag_start := tag_rect.position.y
+		if y_pos < tag_end and tag_end < next_y:
+			next_y = tag_end
+			next_tid = tid
+			if y_pos > tag_end - buffer:
+				in_bottom_buffer = true
+		if y_pos > tag_start and tag_start > prev_y:
+			prev_y = tag_start
+			prev_tid = tid
+			if y_pos < tag_start + buffer:
+				in_top_buffer = true
+	# Set the proposed drop TID based on what the previous and next tag editors are.
+	if in_top_buffer:
+		Indications.set_proposed_drop_tid(prev_tid)
+	elif in_bottom_buffer:
+		Indications.set_proposed_drop_tid(Utils.get_parent_tid(next_tid) +\
+				PackedInt32Array([next_tid[-1] + 1]))
+	elif next_tid == prev_tid or next_tid == prev_tid + PackedInt32Array([0]):
+		Indications.set_proposed_drop_tid(prev_tid + PackedInt32Array([0]))
 
-func _can_drop_data(_at_position: Vector2, current_tid: Variant) -> bool:
-	if current_tid is Array[PackedInt32Array]:
-		var child := calculate_drop_location()
-		if child != null:
-			if child.tid in current_tid:
-				return false
-			child.drop_state = child.DropState.DOWN
-			to_refresh_mouse_exit = child
-		return true
-	return false
+# Runs every time the mouse moves. Returning true means you can drop the TIDs.
+func _can_drop_data(_at_position: Vector2, data: Variant) -> bool:
+	if not data is Array[PackedInt32Array]:
+		return false
+	
+	update_proposed_tid()
+	for tid in data:
+		if Utils.is_tid_parent_or_self(tid, Indications.proposed_drop_tid):
+			return false
+	return true
 
-
-func _drop_data(_at_position: Vector2, current_tid: Variant):
-	var child := calculate_drop_location()
-	var new_tid: PackedInt32Array
-	if child:
-		new_tid = child.tid.duplicate()
-		new_tid[-1] += 1
-	else:
-		new_tid = PackedInt32Array([SVG.root_tag.get_child_count()])
-	SVG.root_tag.move_tags_to(current_tid,new_tid)
+# Runs when you drop the TIDs.
+func _drop_data(_at_position: Vector2, data: Variant) -> void:
+	if data is Array[PackedInt32Array]:
+		SVG.root_tag.move_tags_to(data, Indications.proposed_drop_tid)
 
 
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_DRAG_BEGIN:
-		is_drag_begin = true
+		is_dragging = true
 	elif what == NOTIFICATION_DRAG_END:
-		is_drag_begin = false
-
-
-func calculate_drop_location() -> Control:
-	var at_position := get_global_mouse_position()
-	var child: Control
-	for child_i in tags.get_children():
-		if at_position.y > child_i.global_position.y:
-			child = child_i
-	return child
-
-
-func _on_mouse_exited() -> void:
-	if to_refresh_mouse_exit != null:
-		if is_drag_begin:
-			var state = to_refresh_mouse_exit.calculate_drop_location(get_global_mouse_position())
-			to_refresh_mouse_exit.drop_state = state
-		else:
-			to_refresh_mouse_exit.drop_state = to_refresh_mouse_exit.DropState.OUTSIDE
-			
-		to_refresh_mouse_exit = null
-
+		is_dragging = false
+		Indications.clear_proposed_drop_tid()
 
 func _gui_input(event: InputEvent) -> void:
-	if event is InputEventMouseButton and event.is_pressed() and\
-	event.button_index == MOUSE_BUTTON_LEFT and not event.ctrl_pressed:
-		Indications.clear_selection()
-		Indications.clear_inner_selection()
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and\
+	event.is_pressed() and not (event.ctrl_pressed or event.shift_pressed):
+		Indications.clear_all_selections()
+
+# This function assumes there exists a tag editor for the corresponding TID.
+func get_tag_editor_rect(tid: PackedInt32Array) -> Rect2:
+	if tid.is_empty():
+		return Rect2()
+	
+	var tag_editor: Control = tags.get_child(tid[0])
+	for i in range(1, tid.size()):
+		tag_editor = tag_editor.child_tags_container.get_child(tid[i])
+	# Position relative to the tag container.
+	return Rect2(tag_editor.global_position - scroll_container.global_position +\
+			Vector2(0, scroll_container.scroll_vertical), tag_editor.size)

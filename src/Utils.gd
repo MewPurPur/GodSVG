@@ -130,7 +130,7 @@ static func compare_tids(tid1: PackedInt32Array, tid2: PackedInt32Array) -> bool
 	return tid1.size() > smaller_tid_size
 
 static func compare_tids_r(tid1: PackedInt32Array, tid2: PackedInt32Array) -> bool:
-	return not compare_tids(tid1, tid2)
+	return compare_tids(tid2, tid1)
 
 # Indirect parent, i.e. ancestor. Passing the root tag as parent will return false.
 static func is_tid_parent(parent: PackedInt32Array, child: PackedInt32Array) -> bool:
