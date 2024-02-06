@@ -7,10 +7,8 @@ const autoscroll_speed = 1500.0
 @onready var scroll_container: ScrollContainer = $ScrollContainer
 @onready var tags: VBoxContainer = %Tags
 
-var is_dragging := false
-
 func _process(delta: float) -> void:
-	if not is_dragging:
+	if Indications.proposed_drop_tid.is_empty():
 		return
 	
 	# Autoscroll when the dragged object is near the edge of the screen.
@@ -83,9 +81,8 @@ func _drop_data(_at_position: Vector2, data: Variant) -> void:
 
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_DRAG_BEGIN:
-		is_dragging = true
+		update_proposed_tid()
 	elif what == NOTIFICATION_DRAG_END:
-		is_dragging = false
 		Indications.clear_proposed_drop_tid()
 
 func _gui_input(event: InputEvent) -> void:
