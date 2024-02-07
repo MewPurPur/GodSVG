@@ -1,0 +1,332 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: GodSVG\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: English\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.4.2\n"
+
+msgid "Language"
+msgstr "Language"
+
+msgid "Invert zoom direction"
+msgstr "Invert zoom direction"
+
+msgid "Swaps zoom in and zoom out with the mouse wheel."
+msgstr "Swaps zoom in and zoom out with the mouse wheel."
+
+msgid "Wrap mouse"
+msgstr "Wrap mouse"
+
+msgid "Wraps the mouse cursor around when panning the viewport."
+msgstr "Wraps the mouse cursor around when panning the viewport."
+
+msgid "Use CTRL for zooming"
+msgstr "Use CTRL for zooming"
+
+msgid ""
+"If turned on, scrolling will pan the view. To zoom, hold CTRL while "
+"scrolling."
+msgstr ""
+"If turned on, scrolling will pan the view. To zoom, hold CTRL while "
+"scrolling."
+
+msgid "Input"
+msgstr "Input"
+
+msgid "Open"
+msgstr "Open"
+
+msgid "Close"
+msgstr "Close"
+
+msgid "GodSVG Repository"
+msgstr "GodSVG Repository"
+
+msgid "About…"
+msgstr "About…"
+
+msgid "Documentation…"
+msgstr "Documentation…"
+
+msgid "Donate (Github)"
+msgstr "Donate (Github)"
+
+msgid "Zoom In"
+msgstr "Zoom In"
+
+msgid "Zoom Reset"
+msgstr "Zoom Reset"
+
+msgid "Zoom Out"
+msgstr "Zoom Out"
+
+msgid "Settings"
+msgstr "Settings"
+
+msgid "Visuals"
+msgstr "Visuals"
+
+msgid "Show Grid"
+msgstr "Show Grid"
+
+msgid "Show Handles"
+msgstr "Show Handles"
+
+msgid "Rasterized SVG"
+msgstr "Rasterized SVG"
+
+msgid "Enable Snapping"
+msgstr "Enable Snapping"
+
+msgid "Snap size"
+msgstr "Snap size"
+
+msgid "Copy All Text"
+msgstr "Copy All Text"
+
+msgid "Import SVG"
+msgstr "Import SVG"
+
+msgid "Export"
+msgstr "Export"
+
+msgid "Couple/Decouple"
+msgstr "Couple/Decouple"
+
+msgid "Duplicate"
+msgstr "Duplicate"
+
+msgid "Move Up"
+msgstr "Move Up"
+
+msgid "Move Down"
+msgstr "Move Down"
+
+msgid "Delete"
+msgstr "Delete"
+
+msgid "Insert Before"
+msgstr "Insert Before"
+
+msgid "Insert After"
+msgstr "Insert After"
+
+msgid "Convert To"
+msgstr "Convert To"
+
+msgid "Doesn’t describe a SVG."
+msgstr "Doesn’t describe a SVG."
+
+msgid "Improper nesting."
+msgstr "Improper nesting."
+
+msgid "Delete: Deletes the selected tags"
+msgstr "Delete: Deletes the selected tags"
+
+msgid "Ctrl+Down: Moves the selected tags down"
+msgstr "Ctrl+Down: Moves the selected tags down"
+
+msgid "Ctrl+Up: Moves the selected tags up"
+msgstr "Ctrl+Up: Moves the selected tags up"
+
+msgid "Ctrl+D: Duplicates the selected tags"
+msgstr "Ctrl+D: Duplicates the selected tags"
+
+msgid "Unknown Tag"
+msgstr "Unknown Tag"
+
+msgid "Unknown Attribute"
+msgstr "Unknown Attribute"
+
+msgid "Import"
+msgstr "Import"
+
+msgid "Cancel"
+msgstr "Cancel"
+
+msgid "Import Problems"
+msgstr "Import Problems"
+
+msgid "GodSVG doesn’t recognize this attribute"
+msgstr "GodSVG doesn’t recognize this attribute"
+
+msgid "Format"
+msgstr "Format"
+
+msgid "Scale"
+msgstr "Scale"
+
+msgid "Size"
+msgstr "Size"
+
+msgid "Final size"
+msgstr "Final size"
+
+msgid "Export Configuration"
+msgstr "Export Configuration"
+
+msgid "Add new tag"
+msgstr "Add new tag"
+
+msgid "License"
+msgstr "License"
+
+msgid "Third-party licenses"
+msgstr "Third-party licenses"
+
+msgid "Authors"
+msgstr "Authors"
+
+msgid "Shortcuts"
+msgstr "Shortcuts"
+
+msgid "Palettes"
+msgstr "Palettes"
+
+msgid "Color Picker"
+msgstr "Color Picker"
+
+msgid "Add color"
+msgstr "Add color"
+
+msgid "Edit palette name"
+msgstr "Edit palette name"
+
+msgid "Unnamed"
+msgstr "Unnamed"
+
+msgid "Edit color name"
+msgstr "Edit color name"
+
+msgid "Delete color"
+msgstr "Delete color"
+
+msgid "Enable the color"
+msgstr "Enable the color"
+
+msgid "Disable the color"
+msgstr "Disable the color"
+
+msgid "Godot third-party components"
+msgstr "Godot third-party components"
+
+msgid "Undo"
+msgstr "Undo"
+
+msgid "Redo"
+msgstr "Redo"
+
+msgid "Copy"
+msgstr "Copy"
+
+msgid "Paste"
+msgstr "Paste"
+
+msgid "Cut"
+msgstr "Cut"
+
+msgid "Alert!"
+msgstr "Alert!"
+
+msgid ""
+"The file couldn't be opened.\n"
+"Try checking the file path, ensure that the file is not deleted, or choose a "
+"different file."
+msgstr ""
+"The file couldn't be opened.\n"
+"Try checking the file path, ensure that the file is not deleted, or choose a "
+"different file."
+
+msgid ""
+"\"{passed_extension}\" is a unsupported file extension. Only \"svg\" files "
+"are supported."
+msgstr ""
+"\"{passed_extension}\" is a unsupported file extension. Only \"svg\" files "
+"are supported."
+
+msgid "The file extension is empty. Only \"svg\" files are supported."
+msgstr "The file extension is empty. Only \"svg\" files are supported."
+
+msgid "OK"
+msgstr "OK"
+
+msgid "Autoformatting options"
+msgstr "Autoformatting options"
+
+msgid "Numbers"
+msgstr "Numbers"
+
+msgid "Colors"
+msgstr "Colors"
+
+msgid "Paths"
+msgstr "Paths"
+
+msgid "Transforms"
+msgstr "Transforms"
+
+msgid "Add trailing newline"
+msgstr "Add trailing newline"
+
+msgid "Use shorthand tag syntax"
+msgstr "Use shorthand tag syntax"
+
+msgid "Enable autoformatting"
+msgstr "Enable autoformatting"
+
+msgid "Remove zero padding"
+msgstr "Remove zero padding"
+
+msgid "Remove leading zero"
+msgstr "Remove leading zero"
+
+msgid "Remove plus sign"
+msgstr "Remove plus sign"
+
+msgid "Convert rgb format to hex"
+msgstr "Convert rgb format to hex"
+
+msgid "Convert named colors to hex"
+msgstr "Convert named colors to hex"
+
+msgid "Use shorthand hex code"
+msgstr "Use shorthand hex code"
+
+msgid "Use short named colors"
+msgstr "Use short named colors"
+
+msgid "Compress numbers"
+msgstr "Compress numbers"
+
+msgid "Minimize spacing"
+msgstr "Minimize spacing"
+
+msgid "Remove spacing after flags"
+msgstr "Remove spacing after flags"
+
+msgid "Remove consecutive commands"
+msgstr "Remove consecutive commands"
+
+msgid "Remove unnecessary parameters"
+msgstr "Remove unnecessary parameters"
+
+msgid "Relative"
+msgstr "Relative"
+
+msgid "Absolute"
+msgstr "Absolute"
+
+msgid "Remove the association"
+msgstr "Remove the association"
+
+msgid "Apply the matrix"
+msgstr "Apply the matrix"
+
+msgid "Search color"
+msgstr "Search color"

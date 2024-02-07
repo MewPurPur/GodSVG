@@ -1,0 +1,332 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: GodSVG\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: bg\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.4.2\n"
+
+msgid "Language"
+msgstr "Език"
+
+msgid "Invert zoom direction"
+msgstr "Обърни посоката на увеличение"
+
+msgid "Swaps zoom in and zoom out with the mouse wheel."
+msgstr "Разменя увеличението и намалянето с колелцето на мишката."
+
+msgid "Wrap mouse"
+msgstr "Превъртане на курсора"
+
+msgid "Wraps the mouse cursor around when panning the viewport."
+msgstr "Превърта курсора когато той достигне краищата на екрана."
+
+msgid "Use CTRL for zooming"
+msgstr "Използвай CTRL за увеличение"
+
+msgid ""
+"If turned on, scrolling will pan the view. To zoom, hold CTRL while "
+"scrolling."
+msgstr ""
+"Когато е включено, влаченето ще премести гледката. За увеличение, натисни "
+"CTRL докато влачиш"
+
+msgid "Input"
+msgstr "Входни сигнали"
+
+msgid "Open"
+msgstr "Отвори"
+
+msgid "Close"
+msgstr "Затвори"
+
+msgid "GodSVG Repository"
+msgstr "Репозиторията на GodSVG"
+
+msgid "About…"
+msgstr "Относно приложението…"
+
+msgid "Documentation…"
+msgstr "Документация…"
+
+msgid "Donate (Github)"
+msgstr "Дарение (Github)"
+
+msgid "Zoom In"
+msgstr "Увеличи"
+
+msgid "Zoom Reset"
+msgstr "Рестартирай мащаба"
+
+msgid "Zoom Out"
+msgstr "Намали"
+
+msgid "Settings"
+msgstr "Настройки"
+
+msgid "Visuals"
+msgstr "Графики"
+
+msgid "Show Grid"
+msgstr "Покажи решетката"
+
+msgid "Show Handles"
+msgstr "Покажи дръжките"
+
+msgid "Rasterized SVG"
+msgstr "Растеризирай SVG"
+
+msgid "Enable Snapping"
+msgstr "Включи захващането"
+
+msgid "Snap size"
+msgstr "Размер на захващането"
+
+msgid "Copy All Text"
+msgstr "Копирай всичкия текст"
+
+msgid "Import SVG"
+msgstr "Импорт на SVG"
+
+msgid "Export"
+msgstr "Експортирай"
+
+msgid "Couple/Decouple"
+msgstr "Свържи/Отвържи"
+
+msgid "Duplicate"
+msgstr "Дублирай"
+
+msgid "Move Up"
+msgstr "Премести нагоре"
+
+msgid "Move Down"
+msgstr "Премести надолу"
+
+msgid "Delete"
+msgstr "Премахни"
+
+msgid "Insert Before"
+msgstr "Вмъкни отзад"
+
+msgid "Insert After"
+msgstr "Вмъкни отпред"
+
+msgid "Convert To"
+msgstr "Превърни в"
+
+msgid "Doesn’t describe a SVG."
+msgstr "Текстът не описва SVG."
+
+msgid "Improper nesting."
+msgstr "Несъвместими тагове."
+
+msgid "Delete: Deletes the selected tags"
+msgstr "Delete: Изтрива избраните тагове"
+
+msgid "Ctrl+Down: Moves the selected tags down"
+msgstr "Ctrl+Down: Премества избраните тагове надолу"
+
+msgid "Ctrl+Up: Moves the selected tags up"
+msgstr "Ctrl+Up: Премества избраните тагове нагоре"
+
+msgid "Ctrl+D: Duplicates the selected tags"
+msgstr "Ctrl+D: Дублирай избраните тагове"
+
+msgid "Unknown Tag"
+msgstr "Непознат таг"
+
+msgid "Unknown Attribute"
+msgstr "Непознат атрибут"
+
+msgid "Import"
+msgstr "Импортирай"
+
+msgid "Cancel"
+msgstr "Отказ"
+
+msgid "Import Problems"
+msgstr "Проблеми в импортирането"
+
+msgid "GodSVG doesn’t recognize this attribute"
+msgstr "GodSVG не разпознава този атрибут"
+
+msgid "Format"
+msgstr "Формат"
+
+msgid "Scale"
+msgstr "Мащаб"
+
+msgid "Size"
+msgstr "Размер"
+
+msgid "Final size"
+msgstr "Краен размер"
+
+msgid "Export Configuration"
+msgstr "Конфигурация на експорта"
+
+msgid "Add new tag"
+msgstr "Добави нов таг"
+
+msgid "License"
+msgstr "Лиценз"
+
+msgid "Third-party licenses"
+msgstr "Лицензи от трети партии"
+
+msgid "Authors"
+msgstr "Автори"
+
+msgid "Shortcuts"
+msgstr "Бързи клавиши"
+
+msgid "Palettes"
+msgstr "Палети"
+
+msgid "Color Picker"
+msgstr "Цветно колело"
+
+msgid "Add color"
+msgstr "Добави цвят"
+
+msgid "Edit palette name"
+msgstr "Промени името на палетата"
+
+msgid "Unnamed"
+msgstr "Неименуван"
+
+msgid "Edit color name"
+msgstr "Промени името на цвета"
+
+msgid "Delete color"
+msgstr "Изтрий цвета"
+
+msgid "Enable the color"
+msgstr "Включи цвета"
+
+msgid "Disable the color"
+msgstr "Изключи цвета"
+
+msgid "Godot third-party components"
+msgstr "Компоненти в Godot от трети лица"
+
+msgid "Undo"
+msgstr "Върни назад"
+
+msgid "Redo"
+msgstr "Върни напред"
+
+msgid "Copy"
+msgstr "Копирай"
+
+msgid "Paste"
+msgstr "Постави"
+
+msgid "Cut"
+msgstr "Изрежи"
+
+msgid "Alert!"
+msgstr "Предупреждение!"
+
+msgid ""
+"The file couldn't be opened.\n"
+"Try checking the file path, ensure that the file is not deleted, or choose a "
+"different file."
+msgstr ""
+"Файлът не може да бъде отворен.\n"
+"Опитайте да проверите пътя към файла, уверете се, че файла не е изтрит, или "
+"изберете различен файл."
+
+msgid ""
+"\"{passed_extension}\" is a unsupported file extension. Only \"svg\" files "
+"are supported."
+msgstr ""
+"\"{passed_extension}\" не е поддържан формат. Единствено \"svg\" файловете "
+"са подържани."
+
+msgid "The file extension is empty. Only \"svg\" files are supported."
+msgstr "Форматът е празен. Единствено \"svg\" файловете са подържани."
+
+msgid "OK"
+msgstr "Добре"
+
+msgid "Autoformatting options"
+msgstr "Опции за автоматично форматиране"
+
+msgid "Numbers"
+msgstr "Числа"
+
+msgid "Colors"
+msgstr "Цветове"
+
+msgid "Paths"
+msgstr "Пътеки"
+
+msgid "Transforms"
+msgstr "Трансформации"
+
+msgid "Add trailing newline"
+msgstr "Добави нов ред накрая"
+
+msgid "Use shorthand tag syntax"
+msgstr "Използвай кратък синтаксис за тагове"
+
+msgid "Enable autoformatting"
+msgstr "Enable autoformatting"
+
+msgid "Remove zero padding"
+msgstr "Премахни нулите накрая"
+
+msgid "Remove leading zero"
+msgstr "Премахни водещата нула"
+
+msgid "Remove plus sign"
+msgstr "Премахни знака плюс"
+
+msgid "Convert rgb format to hex"
+msgstr "Преобразувай форматът rgb в hex"
+
+msgid "Convert named colors to hex"
+msgstr "Преобразувай именуваните цветове в hex"
+
+msgid "Use shorthand hex code"
+msgstr "Използвай кратък hex код"
+
+msgid "Use short named colors"
+msgstr "Използвай кратки именувани цветове"
+
+msgid "Compress numbers"
+msgstr "Смали числата"
+
+msgid "Minimize spacing"
+msgstr "Намали паузите"
+
+msgid "Remove spacing after flags"
+msgstr "Премахни паузите след флаговете"
+
+msgid "Remove consecutive commands"
+msgstr "Премахни последователните команди"
+
+msgid "Remove unnecessary parameters"
+msgstr "Премахни ненужните параметри"
+
+msgid "Relative"
+msgstr "Относително"
+
+msgid "Absolute"
+msgstr "Абсолютно"
+
+msgid "Remove the association"
+msgstr "Премахни асоциацията"
+
+msgid "Apply the matrix"
+msgstr "Приложи матрицата"
+
+msgid "Search color"
+msgstr "Търсене на цвят"
