@@ -1,8 +1,6 @@
-[gd_scene load_steps=11 format=3 uid="uid://dcdrc3r60bgg3"]
+[gd_scene load_steps=9 format=3 uid="uid://dcdrc3r60bgg3"]
 
 [ext_resource type="Script" path="res://src/ui_elements/path_command_editor.gd" id="1_om2fk"]
-[ext_resource type="FontFile" uid="uid://dtb4wkus51hxs" path="res://visual/fonts/FontMono.ttf" id="2_o5eem"]
-[ext_resource type="Texture2D" uid="uid://cmepkbqde0jh0" path="res://visual/icons/SmallMore.svg" id="3_a76tm"]
 [ext_resource type="Script" path="res://src/ui_elements/CustomSpacedHBoxContainer.gd" id="3_p38uu"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_g5128"]
@@ -101,13 +99,12 @@ corner_radius_top_right = 4
 corner_radius_bottom_right = 4
 corner_radius_bottom_left = 4
 
-[node name="PathCommandEditor" type="MarginContainer"]
+[node name="PathCommandEditor" type="Control"]
+custom_minimum_size = Vector2(0, 22)
+layout_mode = 3
+anchors_preset = 0
 offset_right = 38.0
 offset_bottom = 14.0
-theme_override_constants/margin_left = 3
-theme_override_constants/margin_top = 2
-theme_override_constants/margin_right = 2
-theme_override_constants/margin_bottom = 2
 script = ExtResource("1_om2fk")
 absolute_button_normal = SubResource("StyleBoxFlat_g5128")
 absolute_button_hovered = SubResource("StyleBoxFlat_xysdk")
@@ -116,35 +113,11 @@ relative_button_normal = SubResource("StyleBoxFlat_gs8ph")
 relative_button_hovered = SubResource("StyleBoxFlat_tyaol")
 relative_button_pressed = SubResource("StyleBoxFlat_cbymw")
 
-[node name="HBox" type="HBoxContainer" parent="."]
+[node name="Fields" type="Container" parent="."]
 layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 0
-mouse_filter = 2
-
-[node name="RelativeButton" type="Button" parent="HBox"]
-layout_mode = 2
-size_flags_vertical = 4
-focus_mode = 0
-mouse_filter = 1
-mouse_default_cursor_shape = 2
-theme_override_colors/font_color = Color(0.866667, 0.933333, 1, 1)
-theme_override_fonts/font = ExtResource("2_o5eem")
-theme_override_font_sizes/font_size = 13
-
-[node name="Fields" type="Container" parent="HBox"]
-layout_mode = 2
+offset_right = 38.0
+offset_bottom = 18.0
 script = ExtResource("3_p38uu")
 
-[node name="MoreButton" type="Button" parent="HBox"]
-layout_mode = 2
-size_flags_horizontal = 10
-focus_mode = 0
-mouse_filter = 1
-mouse_default_cursor_shape = 2
-theme_type_variation = &"FlatButton"
-icon = ExtResource("3_a76tm")
-
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
-[connection signal="pressed" from="HBox/RelativeButton" to="HBox" method="_on_relative_button_pressed"]
-[connection signal="pressed" from="HBox/MoreButton" to="." method="_on_more_button_pressed"]
