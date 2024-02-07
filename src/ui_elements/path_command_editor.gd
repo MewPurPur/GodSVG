@@ -1,5 +1,5 @@
 ## An editor for a single path command.
-extends MarginContainer
+extends Control
 
 @export var absolute_button_normal: StyleBoxFlat
 @export var absolute_button_hovered: StyleBoxFlat
@@ -13,21 +13,24 @@ const MiniNumberField = preload("mini_number_field.tscn")
 const FlagField = preload("flag_field.tscn")
 const PathCommandPopup = preload("res://src/ui_elements/path_popup.tscn")
 
+const code_font = preload("res://visual/fonts/FontMono.ttf")
+const more_icon = preload("res://visual/icons/SmallMore.svg")
+
 var tid := PackedInt32Array()
 var cmd_char := ""
 var cmd_idx := -1
 var path_command: PathCommand
 
-@onready var relative_button: Button = $HBox/RelativeButton
-@onready var more_button: Button = $HBox/MoreButton
-@onready var fields_container: CustomSpacedHBoxContainer = $HBox/Fields
+@onready var relative_button: Button
+@onready var more_button: Button
+@onready var fields_container: CustomSpacedHBoxContainer = $Fields
 
 var fields: Array[Control] = []
+
 
 func update_type() -> void:
 	cmd_char = path_command.command_char
 	fields.clear()
-	setup_relative_button()
 	# Instantiate the input fields.
 	match cmd_char.to_upper():
 		"A":
@@ -197,7 +200,7 @@ func sync_values(cmd: PathCommand) -> void:
 func update_value(new_value: float, property: StringName) -> void:
 	get_path_attribute().set_command_property(cmd_idx, property, new_value)
 
-func toggle_relative() -> void:
+func _on_relative_button_pressed() -> void:
 	get_path_attribute().toggle_relative_command(cmd_idx)
 
 
@@ -205,27 +208,6 @@ func _ready() -> void:
 	Indications.selection_changed.connect(determine_selection_state)
 	Indications.hover_changed.connect(determine_selection_state)
 	determine_selection_state()
-
-
-# Helpers
-
-func setup_relative_button() -> void:
-	relative_button.text = cmd_char
-	relative_button.pressed.connect(toggle_relative)
-	relative_button.begin_bulk_theme_override()
-	if Utils.is_string_upper(cmd_char):
-		relative_button.tooltip_text = "%s (%s)" %\
-				[Utils.path_command_char_dict[cmd_char.to_upper()], tr(&"Absolute")]
-		relative_button.add_theme_stylebox_override(&"normal", absolute_button_normal)
-		relative_button.add_theme_stylebox_override(&"hover", absolute_button_hovered)
-		relative_button.add_theme_stylebox_override(&"pressed", absolute_button_pressed)
-	else:
-		relative_button.tooltip_text = "%s (%s)" %\
-				[Utils.path_command_char_dict[cmd_char.to_upper()], tr(&"Relative")]
-		relative_button.add_theme_stylebox_override(&"normal", relative_button_normal)
-		relative_button.add_theme_stylebox_override(&"hover", relative_button_hovered)
-		relative_button.add_theme_stylebox_override(&"pressed", relative_button_pressed)
-	relative_button.end_bulk_theme_override()
 
 
 func add_number_field() -> BetterLineEdit:
@@ -239,11 +221,6 @@ func add_flag_field() -> Button:
 	fields_container.add_child(new_field)
 	return new_field
 
-
-func _on_relative_button_pressed() -> void:
-	cmd_char = cmd_char.to_upper() if Utils.is_string_lower(cmd_char)\
-			else cmd_char.to_lower()
-	setup_relative_button()
 
 func _gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion and event.button_mask == 0:
@@ -288,6 +265,7 @@ func determine_selection_state() -> void:
 		queue_redraw()
 
 func _draw() -> void:
+	# First draw interaction-based stuff, as the highlight is behind everything.
 	if current_interaction_state != Utils.InteractionType.NONE:
 		var stylebox := StyleBoxFlat.new()
 		stylebox.set_corner_radius_all(3)
@@ -298,10 +276,70 @@ func _draw() -> void:
 		elif current_interaction_state == Utils.InteractionType.HOVERED_SELECTED:
 			stylebox.bg_color = Color(0.7, 0.7, 1.0, 0.18)
 		stylebox.draw(get_canvas_item(), Rect2(Vector2.ZERO, size))
+	# Draw the relative button. It's going to be only drawn, not added as a node, until
+	# the mouse enters. This is a hack to significantly improve performance.
+	if relative_button == null:
+		var relative_button_rect := Rect2(Vector2(3, 2), Vector2(18, size.y - 4))
+		if Utils.is_string_upper(cmd_char):
+			draw_style_box(absolute_button_normal, relative_button_rect)
+		else:
+			draw_style_box(relative_button_normal, relative_button_rect)
+		draw_string(code_font, Vector2(6, size.y - 6), cmd_char,
+				HORIZONTAL_ALIGNMENT_CENTER, 12, 13)
+		fields_container.position = Vector2(25, 2)
+	# Draw the action button.
+	if more_button == null:
+		draw_texture_rect(more_icon, Rect2(Vector2(size.x - 19, 4),
+				Vector2(14, 14)), false, Color("bfbfbf"))
 
+# When the mouse enters the path command editor, wake it up by adding the real nodes.
+# Otherwise, the nodes should only be drawn. This is important for performance.
+func _on_mouse_entered() -> void:
+	# Setup the relative button.
+	relative_button = Button.new()
+	relative_button.focus_mode = Control.FOCUS_NONE
+	relative_button.mouse_filter = Control.MOUSE_FILTER_PASS
+	relative_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+	relative_button.add_theme_font_override(&"font", code_font)
+	relative_button.add_theme_font_size_override(&"font_size", 13)
+	relative_button.text = cmd_char
+	relative_button.begin_bulk_theme_override()
+	if Utils.is_string_upper(cmd_char):
+		relative_button.tooltip_text = "%s (%s)" %\
+				[Utils.path_command_char_dict[cmd_char.to_upper()], tr(&"absolute")]
+		relative_button.add_theme_stylebox_override(&"normal", absolute_button_normal)
+		relative_button.add_theme_stylebox_override(&"hover", absolute_button_hovered)
+		relative_button.add_theme_stylebox_override(&"pressed", absolute_button_pressed)
+	else:
+		relative_button.tooltip_text = "%s (%s)" %\
+				[Utils.path_command_char_dict[cmd_char.to_upper()], tr(&"relative")]
+		relative_button.add_theme_stylebox_override(&"normal", relative_button_normal)
+		relative_button.add_theme_stylebox_override(&"hover", relative_button_hovered)
+		relative_button.add_theme_stylebox_override(&"pressed", relative_button_pressed)
+	relative_button.end_bulk_theme_override()
+	add_child(relative_button)
+	relative_button.pressed.connect(_on_relative_button_pressed)
+	relative_button.position = Vector2(3, 2)
+	relative_button.size = Vector2(18, size.y - 4)
+	# Setup the action button.
+	more_button = Button.new()
+	more_button.icon = more_icon
+	more_button.theme_type_variation = &"FlatButton"
+	more_button.focus_mode = Control.FOCUS_NONE
+	more_button.mouse_filter = Control.MOUSE_FILTER_PASS
+	more_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+	add_child(more_button)
+	more_button.pressed.connect(_on_more_button_pressed)
+	more_button.position = Vector2(size.x - 21, 2)
+	more_button.size = Vector2(18, 18)
+	# Update the graphics.
+	queue_redraw()
 
-func _on_mouse_exited():
+func _on_mouse_exited() -> void:
+	relative_button.queue_free()
+	more_button.queue_free()
 	Indications.remove_inner_hovered(tid, cmd_idx)
+	queue_redraw()
 
 func _on_more_button_pressed() -> void:
 	Utils.popup_under_control_centered(Indications.get_selection_context(), more_button)
