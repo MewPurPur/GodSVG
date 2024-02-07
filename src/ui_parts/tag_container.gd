@@ -60,7 +60,6 @@ func update_proposed_tid() -> void:
 		Indications.set_proposed_drop_tid(Utils.get_parent_tid(next_tid) +\
 				PackedInt32Array([next_tid[-1] + 1]))
 	elif Utils.is_tid_parent_or_self(prev_tid, next_tid):
-		var zeros_at_tid_end := 0
 		for i in range(prev_tid.size(), next_tid.size()):
 			if next_tid[i] != 0:
 				return
