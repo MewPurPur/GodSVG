@@ -101,7 +101,7 @@ static func text_to_svg(text: String) -> Variant:
 				break
 	
 	if not describes_svg:
-		return &"#err_not_svg"
+		return &"Doesn’t describe a SVG."
 	# Parse everything until the SVG closing tag.
 	while parser.read() == OK:
 		match parser.get_node_type():
@@ -138,11 +138,11 @@ static func text_to_svg(text: String) -> Variant:
 					unclosed_tag_stack.back().child_tags.append(tag)
 			XMLParser.NODE_ELEMENT_END:
 				if unclosed_tag_stack.is_empty():
-					return &"#err_improper_nesting"
+					return &"Improper nesting."
 				else:
 					var closed_tag: Tag = unclosed_tag_stack.pop_back()
 					if closed_tag.name != parser.get_node_name():
-						return &"#err_improper_nesting"
+						return &"Improper nesting."
 					if unclosed_tag_stack.size() > 1:
 						unclosed_tag_stack.back().child_tags.append(closed_tag)
 					else:

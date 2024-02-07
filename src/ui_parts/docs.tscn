@@ -43,7 +43,7 @@ theme_override_constants/separation = 12
 layout_mode = 2
 script = ExtResource("2_h5w1r")
 
-[node name="#kbd_shortcuts_tab" type="RichTextLabel" parent="VBoxContainer/TabContainer"]
+[node name="Shortcuts" type="RichTextLabel" parent="VBoxContainer/TabContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 96)
 layout_mode = 2
@@ -54,6 +54,6 @@ size_flags_horizontal = 4
 size_flags_vertical = 8
 focus_mode = 0
 mouse_default_cursor_shape = 2
-text = "#close"
+text = "Close"
 
 [connection signal="pressed" from="VBoxContainer/Close" to="." method="_on_close_pressed"]

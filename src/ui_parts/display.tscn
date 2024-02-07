@@ -96,7 +96,7 @@ icon_alignment = 1
 [node name="Settings" type="Button" parent="PanelContainer/HBoxContainer/LeftMenu"]
 layout_mode = 2
 size_flags_horizontal = 2
-tooltip_text = "#settings"
+tooltip_text = "Settings"
 focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_type_variation = &"IconButton"
@@ -106,7 +106,7 @@ icon_alignment = 1
 [node name="Visuals" type="Button" parent="PanelContainer/HBoxContainer/LeftMenu"]
 layout_mode = 2
 size_flags_horizontal = 2
-tooltip_text = "#visuals"
+tooltip_text = "Visuals"
 focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_type_variation = &"IconButton"
@@ -119,7 +119,7 @@ theme_override_constants/separation = 0
 
 [node name="SnapButton" type="Button" parent="PanelContainer/HBoxContainer/LeftMenu/Snapping"]
 layout_mode = 2
-tooltip_text = "#enable_snap"
+tooltip_text = "Enable Snapping"
 focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_type_variation = &"RightConnectedButton"
@@ -131,7 +131,7 @@ hover_pressed_stylebox = SubResource("StyleBoxFlat_eujxa")
 [node name="NumberEdit" parent="PanelContainer/HBoxContainer/LeftMenu/Snapping" instance=ExtResource("7_wrrfr")]
 custom_minimum_size = Vector2(46, 22)
 layout_mode = 2
-tooltip_text = "#snap_size"
+tooltip_text = "Snap size"
 theme_type_variation = &"LeftConnectedLineEdit"
 max_length = 20
 editable = false

@@ -49,6 +49,6 @@ fit_content = true
 layout_mode = 2
 size_flags_horizontal = 4
 mouse_default_cursor_shape = 2
-text = "#ok"
+text = "OK"
 
 [connection signal="pressed" from="MarginContainer/MainContainer/OKButton" to="." method="_on_ok_button_pressed"]

@@ -54,45 +54,45 @@ layout_mode = 2
 size_flags_vertical = 3
 script = ExtResource("3_vslgx")
 
-[node name="#input_tab" type="ScrollContainer" parent="VBoxContainer/TabContainer"]
+[node name="Input" type="ScrollContainer" parent="VBoxContainer/TabContainer"]
 layout_mode = 2
 horizontal_scroll_mode = 0
 
-[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/TabContainer/#input_tab"]
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/TabContainer/Input"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/separation = 0
 
-[node name="InvertZoom" parent="VBoxContainer/TabContainer/#input_tab/VBoxContainer" instance=ExtResource("4_2qeh2")]
+[node name="InvertZoom" parent="VBoxContainer/TabContainer/Input/VBoxContainer" instance=ExtResource("4_2qeh2")]
 layout_mode = 2
-tooltip_text = "#invert_zoom_desc"
-text = "#invert_zoom"
+tooltip_text = "Swaps zoom in and zoom out with the mouse wheel."
+text = "Invert zoom direction"
 section_name = "input"
 setting_name = "invert_zoom"
 
-[node name="WrapMouse" parent="VBoxContainer/TabContainer/#input_tab/VBoxContainer" instance=ExtResource("4_2qeh2")]
+[node name="WrapMouse" parent="VBoxContainer/TabContainer/Input/VBoxContainer" instance=ExtResource("4_2qeh2")]
 unique_name_in_owner = true
 layout_mode = 2
-tooltip_text = "#wrap_mouse_desc"
-text = "#wrap_mouse"
+tooltip_text = "Wraps the mouse cursor around when panning the viewport."
+text = "Wrap mouse"
 section_name = "input"
 setting_name = "wrap_mouse"
 
-[node name="UseCtrlForZoom" parent="VBoxContainer/TabContainer/#input_tab/VBoxContainer" instance=ExtResource("4_2qeh2")]
+[node name="UseCtrlForZoom" parent="VBoxContainer/TabContainer/Input/VBoxContainer" instance=ExtResource("4_2qeh2")]
 layout_mode = 2
-tooltip_text = "#use_ctrl_for_zoom_desc"
-text = "#use_ctrl_for_zoom"
+tooltip_text = "If turned on, scrolling will pan the view. To zoom, hold CTRL while scrolling."
+text = "Use CTRL for zooming"
 section_name = "input"
 setting_name = "use_ctrl_for_zoom"
 
-[node name="#palettes" type="ScrollContainer" parent="VBoxContainer/TabContainer"]
+[node name="Palettes" type="ScrollContainer" parent="VBoxContainer/TabContainer"]
 visible = false
 custom_minimum_size = Vector2(0, 120)
 layout_mode = 2
 horizontal_scroll_mode = 0
 
-[node name="PaletteContainer" type="VBoxContainer" parent="VBoxContainer/TabContainer/#palettes"]
+[node name="PaletteContainer" type="VBoxContainer" parent="VBoxContainer/TabContainer/Palettes"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -104,7 +104,7 @@ size_flags_horizontal = 4
 size_flags_vertical = 8
 focus_mode = 0
 mouse_default_cursor_shape = 2
-text = "#close"
+text = "Close"
 
 [connection signal="pressed" from="VBoxContainer/Language" to="." method="_on_language_pressed"]
 [connection signal="pressed" from="VBoxContainer/Close" to="." method="_on_close_pressed"]

@@ -449,32 +449,32 @@ func get_selection_context() -> Popup:
 				if not can_move_down and base_tid[-1] < parent_child_count - filtered_count:
 					can_move_down = true
 		
-		btn_arr.append(Utils.create_btn(tr(&"#duplicate"), duplicate_selected,
+		btn_arr.append(Utils.create_btn(tr(&"Duplicate"), duplicate_selected,
 				false, load("res://visual/icons/Duplicate.svg")))
 		
 		if selected_tids.size() == 1 and not SVG.root_tag.get_tag(
 		selected_tids[0]).possible_conversions.is_empty():
-			btn_arr.append(Utils.create_btn(tr(&"#convert_to"), get_convert_to_context,
+			btn_arr.append(Utils.create_btn(tr(&"Convert To"), get_convert_to_context,
 					false, load("res://visual/icons/Reload.svg")))
 		
 		if can_move_up:
-			btn_arr.append(Utils.create_btn(tr(&"#move_up"), move_up_selected,
+			btn_arr.append(Utils.create_btn(tr(&"Move Up"), move_up_selected,
 					false, load("res://visual/icons/MoveUp.svg")))
 		if can_move_down:
-			btn_arr.append(Utils.create_btn(tr(&"#move_down"), move_down_selected,
+			btn_arr.append(Utils.create_btn(tr(&"Move Down"), move_down_selected,
 					false, load("res://visual/icons/MoveDown.svg")))
 		
-		btn_arr.append(Utils.create_btn(tr(&"#delete"), delete_selected,
+		btn_arr.append(Utils.create_btn(tr(&"Delete"), delete_selected,
 				false, load("res://visual/icons/Delete.svg")))
 	elif not inner_selections.is_empty() and not semi_selected_tid.is_empty():
 		if inner_selections.size() == 1:
-			btn_arr.append(Utils.create_btn(tr(&"#insert_after"),
+			btn_arr.append(Utils.create_btn(tr(&"Insert After"),
 					get_insert_command_after_context,
 					false, load("res://visual/icons/Plus.svg")))
-			btn_arr.append(Utils.create_btn(tr(&"#convert_to"),
+			btn_arr.append(Utils.create_btn(tr(&"Convert To"),
 					get_convert_to_context, false, load("res://visual/icons/Reload.svg")))
 		
-		btn_arr.append(Utils.create_btn(tr(&"#delete"), delete_selected, false,
+		btn_arr.append(Utils.create_btn(tr(&"Delete"), delete_selected, false,
 				load("res://visual/icons/Delete.svg")))
 	
 	var tag_context := ContextPopup.instantiate()

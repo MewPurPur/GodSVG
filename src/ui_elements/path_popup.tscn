@@ -33,7 +33,7 @@ layout_mode = 2
 size_flags_horizontal = 8
 focus_mode = 0
 mouse_default_cursor_shape = 2
-text = "#relative"
+text = "Relative"
 flat = true
 alignment = 2
 

@@ -40,7 +40,7 @@ func _ready() -> void:
 func update_palettes(search_text := "") -> void:
 	for child in palettes_content_container.get_children():
 		child.queue_free()
-	search_field.placeholder_text = tr(&"#search_color")
+	search_field.placeholder_text = tr(&"Search color")
 	var reserved_color_palette := ColorPalette.new("", [NamedColor.new("none")])
 	# TODO Gradients should be added here.
 	var displayed_palettes: Array[ColorPalette] = [reserved_color_palette]
@@ -92,7 +92,7 @@ func pick_color(color: String) -> void:
 # Switching between palette mode and color picker mode.
 func _switch_mode() -> void:
 	palette_mode = not palette_mode
-	switch_mode_button.text = tr(&"#palettes" if palette_mode else &"#color_picker")
+	switch_mode_button.text = tr(&"Palettes" if palette_mode else &"Color Picker")
 	color_picker_content.visible = not palette_mode
 	palettes_content.visible = palette_mode
 

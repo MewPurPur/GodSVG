@@ -30,7 +30,7 @@ func zoom_in(factor := 1.0, offset := Vector2(0.5, 0.5)) -> void:
 	if factor == 1.0:
 		set_zoom(_zoom_level * sqrt(2), offset)
 	else:
-		set_zoom(_zoom_level * 2 - _zoom_level / (factor + 1), offset)
+		set_zoom(_zoom_level * (factor + 1), offset)
 
 # This needs a custom implementation to whatever is listening to the signal.
 func zoom_reset() -> void:

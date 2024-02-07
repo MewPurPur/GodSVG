@@ -12,7 +12,7 @@ var named_color: NamedColor
 
 func _ready() -> void:
 	if type == Type.ADD_COLOR:
-		tooltip_text = tr(&"#add_color")
+		tooltip_text = tr(&"Add color")
 
 func _draw() -> void:
 	if type == Type.ADD_COLOR:

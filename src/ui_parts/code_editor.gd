@@ -113,7 +113,7 @@ func _on_autoformat_button_pressed() -> void:
 	HandlerGUI.add_overlay(autoformat_menu_instance)
 
 func _on_file_button_pressed() -> void:
-	var btn_array: Array[Button] = [Utils.create_btn(tr(&"#remove_association"),
+	var btn_array: Array[Button] = [Utils.create_btn(tr(&"Remove the association"),
 			clear_file_path)]
 	var context_popup := ContextPopup.instantiate()
 	add_child(context_popup)

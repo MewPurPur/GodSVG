@@ -39,7 +39,7 @@ script = ExtResource("1_18ab8")
 
 [node name="ZoomOut" type="Button" parent="."]
 layout_mode = 2
-tooltip_text = "#zoom_out"
+tooltip_text = "Zoom Out"
 focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_type_variation = &"IconButton"
@@ -50,7 +50,7 @@ icon_alignment = 1
 [node name="ZoomReset" type="Button" parent="."]
 custom_minimum_size = Vector2(58, 0)
 layout_mode = 2
-tooltip_text = "#zoom_reset"
+tooltip_text = "Zoom Reset"
 focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_override_font_sizes/font_size = 13
@@ -59,7 +59,7 @@ text = "100%"
 
 [node name="ZoomIn" type="Button" parent="."]
 layout_mode = 2
-tooltip_text = "#zoom_in"
+tooltip_text = "Zoom in"
 focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_type_variation = &"IconButton"

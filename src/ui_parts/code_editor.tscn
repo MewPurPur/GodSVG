@@ -79,6 +79,7 @@ layout_mode = 2
 
 [node name="AutoformatButton" type="Button" parent="PanelContainer/CodeButtons"]
 layout_mode = 2
+tooltip_text = "Autoformatting options"
 focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_type_variation = &"IconButton"
@@ -112,7 +113,7 @@ layout_mode = 2
 
 [node name="CopyButton" type="Button" parent="PanelContainer/CodeButtons/MetaActions"]
 layout_mode = 2
-tooltip_text = "#copy_button_tooltip"
+tooltip_text = "Copy All Text"
 focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_type_variation = &"IconButton"
@@ -120,7 +121,7 @@ icon = ExtResource("3_6x47p")
 
 [node name="ImportButton" type="Button" parent="PanelContainer/CodeButtons/MetaActions"]
 layout_mode = 2
-tooltip_text = "#import_button_tooltip"
+tooltip_text = "Import SVG"
 focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_type_variation = &"IconButton"
@@ -128,7 +129,7 @@ icon = ExtResource("4_cuhac")
 
 [node name="ExportButton" type="Button" parent="PanelContainer/CodeButtons/MetaActions"]
 layout_mode = 2
-tooltip_text = "#export_button_tooltip"
+tooltip_text = "Export"
 focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_type_variation = &"IconButton"

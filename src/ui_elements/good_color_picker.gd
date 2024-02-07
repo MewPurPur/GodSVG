@@ -136,7 +136,7 @@ func update() -> void:
 	# Setup the "none" button.
 	var is_none := (color == "none")
 	none_button.button_pressed = is_none
-	none_button.tooltip_text = tr(&"#enable_color") if is_none else tr(&"#disable_color")
+	none_button.tooltip_text = tr(&"Enable the color") if is_none else tr(&"Disable the color")
 	# Redraw widgets, color indicators, color wheel.
 	color_rect.queue_redraw()
 	start_color_rect.queue_redraw()

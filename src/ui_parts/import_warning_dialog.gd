@@ -46,10 +46,10 @@ func get_svg_errors(text: String) -> Array[String]:
 		for tid in tids:
 			var tag := svg_tag.get_tag(tid)
 			if tag is TagUnknown:
-				warnings.append(tr(&"#unknown_tag") + ": " + tag.name)
+				warnings.append(tr(&"Unknown Tag") + ": " + tag.name)
 			else:
 				for unknown_attrib in tag.unknown_attributes:
-					warnings.append(tr(&"#unknown_attribute") + ": " + unknown_attrib.name)
+					warnings.append(tr(&"Unknown Attribute") + ": " + unknown_attrib.name)
 	return warnings
 
 

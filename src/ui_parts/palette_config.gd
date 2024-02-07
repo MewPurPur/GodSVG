@@ -103,7 +103,7 @@ func popup_add_color() -> void:
 
 func set_label_text(new_text: String) -> void:
 	if new_text.is_empty():
-		palette_label.text = tr(&"#unnamed")
+		palette_label.text = tr(&"Unnamed")
 		palette_label.add_theme_color_override(&"font_color", Color(1.0, 0.5, 0.5))
 	else:
 		palette_label.text = new_text
@@ -137,14 +137,14 @@ func _on_more_button_pressed() -> void:
 		if GlobalSettings.get_palettes()[idx].name == current_palette.name:
 			palette_idx = idx
 	
-	var btn_arr: Array[Button] = [Utils.create_btn(tr(&"#delete"),
+	var btn_arr: Array[Button] = [Utils.create_btn(tr(&"Delete"),
 			delete.bind(palette_idx), false, load("res://visual/icons/Delete.svg"))]
 	
 	if palette_idx >= 1:
-		btn_arr.append(Utils.create_btn(tr(&"#move_up"), move_up.bind(palette_idx),
+		btn_arr.append(Utils.create_btn(tr(&"Move Up"), move_up.bind(palette_idx),
 				false, load("res://visual/icons/MoveUp.svg")))
 	if palette_idx < GlobalSettings.get_palettes().size() - 1:
-		btn_arr.append(Utils.create_btn(tr(&"#move_down"), move_down.bind(palette_idx),
+		btn_arr.append(Utils.create_btn(tr(&"Move Down"), move_down.bind(palette_idx),
 				false, load("res://visual/icons/MoveDown.svg")))
 	
 	var context_popup := ContextPopup.instantiate()

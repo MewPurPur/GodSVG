@@ -73,12 +73,12 @@ custom_minimum_size = Vector2(0, 280)
 layout_mode = 2
 script = ExtResource("3_1xgiv")
 
-[node name="#license_tab" type="ScrollContainer" parent="VBoxContainer/TabContainer"]
+[node name="License" type="ScrollContainer" parent="VBoxContainer/TabContainer"]
 custom_minimum_size = Vector2(480, 240)
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="LicenseLabel" type="Label" parent="VBoxContainer/TabContainer/#license_tab"]
+[node name="LicenseLabel" type="Label" parent="VBoxContainer/TabContainer/License"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("3_e8i1t")
 theme_override_font_sizes/font_size = 10
@@ -105,62 +105,62 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE."
 
-[node name="#third-party-licenses_tab" type="ScrollContainer" parent="VBoxContainer/TabContainer"]
+[node name="Third-party licenses" type="ScrollContainer" parent="VBoxContainer/TabContainer"]
 visible = false
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/TabContainer/#third-party-licenses_tab"]
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/TabContainer/Third-party licenses"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 20
 alignment = 1
 
-[node name="ThirdParties" type="VBoxContainer" parent="VBoxContainer/TabContainer/#third-party-licenses_tab/VBoxContainer"]
+[node name="ThirdParties" type="VBoxContainer" parent="VBoxContainer/TabContainer/Third-party licenses/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/separation = 12
 
-[node name="Godot" type="VBoxContainer" parent="VBoxContainer/TabContainer/#third-party-licenses_tab/VBoxContainer/ThirdParties"]
+[node name="Godot" type="VBoxContainer" parent="VBoxContainer/TabContainer/Third-party licenses/VBoxContainer/ThirdParties"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="VBoxContainer/TabContainer/#third-party-licenses_tab/VBoxContainer/ThirdParties/Godot"]
+[node name="Label" type="Label" parent="VBoxContainer/TabContainer/Third-party licenses/VBoxContainer/ThirdParties/Godot"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("4_n6gp0")
 text = "Godot Engine"
 horizontal_alignment = 1
 
-[node name="License" type="Label" parent="VBoxContainer/TabContainer/#third-party-licenses_tab/VBoxContainer/ThirdParties/Godot"]
+[node name="License" type="Label" parent="VBoxContainer/TabContainer/Third-party licenses/VBoxContainer/ThirdParties/Godot"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("3_e8i1t")
 theme_override_font_sizes/font_size = 12
 text = "License: Expat"
 horizontal_alignment = 1
 
-[node name="Components" type="Button" parent="VBoxContainer/TabContainer/#third-party-licenses_tab/VBoxContainer/ThirdParties/Godot"]
+[node name="Components" type="Button" parent="VBoxContainer/TabContainer/Third-party licenses/VBoxContainer/ThirdParties/Godot"]
 layout_mode = 2
 size_flags_horizontal = 4
 focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_override_font_sizes/font_size = 12
-text = "#godot_third_party"
+text = "Godot third-party components"
 icon = ExtResource("6_hbk78")
 
-[node name="NotoSans" type="VBoxContainer" parent="VBoxContainer/TabContainer/#third-party-licenses_tab/VBoxContainer/ThirdParties"]
+[node name="NotoSans" type="VBoxContainer" parent="VBoxContainer/TabContainer/Third-party licenses/VBoxContainer/ThirdParties"]
 layout_mode = 2
 theme_override_constants/separation = 3
 
-[node name="Label" type="Label" parent="VBoxContainer/TabContainer/#third-party-licenses_tab/VBoxContainer/ThirdParties/NotoSans"]
+[node name="Label" type="Label" parent="VBoxContainer/TabContainer/Third-party licenses/VBoxContainer/ThirdParties/NotoSans"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("4_n6gp0")
 text = "Noto Sans font"
 horizontal_alignment = 1
 
-[node name="Copy" type="Label" parent="VBoxContainer/TabContainer/#third-party-licenses_tab/VBoxContainer/ThirdParties/NotoSans"]
+[node name="Copy" type="Label" parent="VBoxContainer/TabContainer/Third-party licenses/VBoxContainer/ThirdParties/NotoSans"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
 text = "© 2012, Google Inc."
 horizontal_alignment = 1
 
-[node name="Files" type="Label" parent="VBoxContainer/TabContainer/#third-party-licenses_tab/VBoxContainer/ThirdParties/NotoSans"]
+[node name="Files" type="Label" parent="VBoxContainer/TabContainer/Third-party licenses/VBoxContainer/ThirdParties/NotoSans"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("3_e8i1t")
 theme_override_font_sizes/font_size = 12
@@ -168,58 +168,58 @@ text = "res://visual/fonts/Font.ttf
 res://visual/fonts/FontBold.ttf"
 horizontal_alignment = 1
 
-[node name="License" type="Label" parent="VBoxContainer/TabContainer/#third-party-licenses_tab/VBoxContainer/ThirdParties/NotoSans"]
+[node name="License" type="Label" parent="VBoxContainer/TabContainer/Third-party licenses/VBoxContainer/ThirdParties/NotoSans"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("3_e8i1t")
 theme_override_font_sizes/font_size = 12
 text = "License: OFL-1.1"
 horizontal_alignment = 1
 
-[node name="JetbrainsMono" type="VBoxContainer" parent="VBoxContainer/TabContainer/#third-party-licenses_tab/VBoxContainer/ThirdParties"]
+[node name="JetbrainsMono" type="VBoxContainer" parent="VBoxContainer/TabContainer/Third-party licenses/VBoxContainer/ThirdParties"]
 layout_mode = 2
 theme_override_constants/separation = 3
 
-[node name="Label" type="Label" parent="VBoxContainer/TabContainer/#third-party-licenses_tab/VBoxContainer/ThirdParties/JetbrainsMono"]
+[node name="Label" type="Label" parent="VBoxContainer/TabContainer/Third-party licenses/VBoxContainer/ThirdParties/JetbrainsMono"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("4_n6gp0")
 text = "JetBrains Mono font"
 horizontal_alignment = 1
 
-[node name="Copy" type="Label" parent="VBoxContainer/TabContainer/#third-party-licenses_tab/VBoxContainer/ThirdParties/JetbrainsMono"]
+[node name="Copy" type="Label" parent="VBoxContainer/TabContainer/Third-party licenses/VBoxContainer/ThirdParties/JetbrainsMono"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
 text = "© 2020, JetBrains s.r.o"
 horizontal_alignment = 1
 
-[node name="File" type="Label" parent="VBoxContainer/TabContainer/#third-party-licenses_tab/VBoxContainer/ThirdParties/JetbrainsMono"]
+[node name="File" type="Label" parent="VBoxContainer/TabContainer/Third-party licenses/VBoxContainer/ThirdParties/JetbrainsMono"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("3_e8i1t")
 theme_override_font_sizes/font_size = 12
 text = "res://visual/fonts/FontMono.ttf"
 horizontal_alignment = 1
 
-[node name="License" type="Label" parent="VBoxContainer/TabContainer/#third-party-licenses_tab/VBoxContainer/ThirdParties/JetbrainsMono"]
+[node name="License" type="Label" parent="VBoxContainer/TabContainer/Third-party licenses/VBoxContainer/ThirdParties/JetbrainsMono"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("3_e8i1t")
 theme_override_font_sizes/font_size = 12
 text = "License: OFL-1.1"
 horizontal_alignment = 1
 
-[node name="LicenseTexts" type="VBoxContainer" parent="VBoxContainer/TabContainer/#third-party-licenses_tab/VBoxContainer"]
+[node name="LicenseTexts" type="VBoxContainer" parent="VBoxContainer/TabContainer/Third-party licenses/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/separation = 12
 
-[node name="Expat" type="VBoxContainer" parent="VBoxContainer/TabContainer/#third-party-licenses_tab/VBoxContainer/LicenseTexts"]
+[node name="Expat" type="VBoxContainer" parent="VBoxContainer/TabContainer/Third-party licenses/VBoxContainer/LicenseTexts"]
 layout_mode = 2
 theme_override_constants/separation = 5
 
-[node name="Title" type="Label" parent="VBoxContainer/TabContainer/#third-party-licenses_tab/VBoxContainer/LicenseTexts/Expat"]
+[node name="Title" type="Label" parent="VBoxContainer/TabContainer/Third-party licenses/VBoxContainer/LicenseTexts/Expat"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("4_n6gp0")
 text = "Expat license text"
 horizontal_alignment = 1
 
-[node name="Text" type="Label" parent="VBoxContainer/TabContainer/#third-party-licenses_tab/VBoxContainer/LicenseTexts/Expat"]
+[node name="Text" type="Label" parent="VBoxContainer/TabContainer/Third-party licenses/VBoxContainer/LicenseTexts/Expat"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("3_e8i1t")
 theme_override_font_sizes/font_size = 10
@@ -241,17 +241,17 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE."
 
-[node name="OFL" type="VBoxContainer" parent="VBoxContainer/TabContainer/#third-party-licenses_tab/VBoxContainer/LicenseTexts"]
+[node name="OFL" type="VBoxContainer" parent="VBoxContainer/TabContainer/Third-party licenses/VBoxContainer/LicenseTexts"]
 layout_mode = 2
 theme_override_constants/separation = 5
 
-[node name="Title" type="Label" parent="VBoxContainer/TabContainer/#third-party-licenses_tab/VBoxContainer/LicenseTexts/OFL"]
+[node name="Title" type="Label" parent="VBoxContainer/TabContainer/Third-party licenses/VBoxContainer/LicenseTexts/OFL"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("4_n6gp0")
 text = "OFL-1.1 license text"
 horizontal_alignment = 1
 
-[node name="Text" type="Label" parent="VBoxContainer/TabContainer/#third-party-licenses_tab/VBoxContainer/LicenseTexts/OFL"]
+[node name="Text" type="Label" parent="VBoxContainer/TabContainer/Third-party licenses/VBoxContainer/LicenseTexts/OFL"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("3_e8i1t")
 theme_override_font_sizes/font_size = 10
@@ -292,11 +292,11 @@ DISCLAIMER
 THE FONT SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO ANY WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF COPYRIGHT, PATENT, TRADEMARK, OR OTHER RIGHT. IN NO EVENT SHALL THE COPYRIGHT HOLDER BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, INCLUDING ANY GENERAL, SPECIAL, INDIRECT, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF THE USE OR INABILITY TO USE THE FONT SOFTWARE OR FROM OTHER DEALINGS IN THE FONT SOFTWARE."
 autowrap_mode = 3
 
-[node name="#authors_tab" type="ScrollContainer" parent="VBoxContainer/TabContainer"]
+[node name="Authors" type="ScrollContainer" parent="VBoxContainer/TabContainer"]
 visible = false
 layout_mode = 2
 
-[node name="AuthorsLabel" type="RichTextLabel" parent="VBoxContainer/TabContainer/#authors_tab"]
+[node name="AuthorsLabel" type="RichTextLabel" parent="VBoxContainer/TabContainer/Authors"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -314,5 +314,5 @@ focus_mode = 0
 mouse_default_cursor_shape = 2
 text = "Close"
 
-[connection signal="pressed" from="VBoxContainer/TabContainer/#third-party-licenses_tab/VBoxContainer/ThirdParties/Godot/Components" to="." method="_on_components_pressed"]
+[connection signal="pressed" from="VBoxContainer/TabContainer/Third-party licenses/VBoxContainer/ThirdParties/Godot/Components" to="." method="_on_components_pressed"]
 [connection signal="pressed" from="VBoxContainer/Close" to="." method="_on_close_pressed"]

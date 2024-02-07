@@ -41,7 +41,7 @@ size_flags_horizontal = 0
 focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_override_constants/h_separation = 4
-text = "#add_tag"
+text = "Add new tag"
 icon = ExtResource("3_vo6hf")
 
 [node name="TagContainer" type="PanelContainer" parent="VBoxContainer"]
