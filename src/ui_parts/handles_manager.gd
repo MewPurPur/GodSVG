@@ -659,10 +659,6 @@ func respond_to_input_event(event: InputEvent) -> void:
 	if not visible:
 		return
 	
-	var snap_enabled := GlobalSettings.save_data.snap > 0.0
-	var snap_size := absf(GlobalSettings.save_data.snap)
-	var snap_vector := Vector2(snap_size, snap_size)
-	
 	# Set the nearest handle as hovered, if any handles are within range.
 	if (event is InputEventMouseMotion and dragged_handle == null) or\
 	(event is InputEventMouseButton and (event.button_index in [MOUSE_BUTTON_LEFT,
@@ -681,6 +677,10 @@ func respond_to_input_event(event: InputEvent) -> void:
 			hovered_handle = null
 			Indications.clear_hovered()
 			Indications.clear_inner_hovered()
+	
+	var snap_enabled := GlobalSettings.save_data.snap > 0.0
+	var snap_size := absf(GlobalSettings.save_data.snap)
+	var snap_vector := Vector2(snap_size, snap_size)
 	
 	if event is InputEventMouseMotion:
 		should_deselect_all = false
