@@ -48,7 +48,7 @@ func _on_visuals_button_pressed() -> void:
 	Utils.popup_under_control_centered(visuals_popup, visuals_button)
 
 func _on_more_options_pressed() -> void:
-	var about_btn := Utils.create_btn(tr(&"About..."), open_about, false,
+	var about_btn := Utils.create_btn(tr(&"About…"), open_about, false,
 			load("res://visual/icon.svg"))
 	about_btn.expand_icon = true
 	var buttons_arr: Array[Button] = [
