@@ -45,7 +45,8 @@ func _on_visuals_button_pressed() -> void:
 	var visuals_popup := ContextPopup.instantiate()
 	add_child(visuals_popup)
 	visuals_popup.set_button_array(btn_arr, true)
-	Utils.popup_under_control_centered(visuals_popup, visuals_button)
+	Utils.popup_under_rect_center(visuals_popup, visuals_button.get_global_rect(),
+			get_viewport())
 
 func _on_more_options_pressed() -> void:
 	var about_btn := Utils.create_btn(tr(&"#about_button_text"), open_about, false,
@@ -64,7 +65,8 @@ func _on_more_options_pressed() -> void:
 	var more_popup := ContextPopup.instantiate()
 	add_child(more_popup)
 	more_popup.set_button_array(buttons_arr, true)
-	Utils.popup_under_control_centered(more_popup, more_button)
+	Utils.popup_under_rect_center(more_popup, more_button.get_global_rect(),
+			get_viewport())
 
 func open_godsvg_repo() -> void:
 	OS.shell_open("https://github.com/MewPurPur/GodSVG")
