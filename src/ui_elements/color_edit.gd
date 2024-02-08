@@ -45,7 +45,7 @@ func _on_button_pressed() -> void:
 	color_picker.current_value = value
 	add_child(color_picker)
 	color_picker.color_picked.connect(_on_color_picked)
-	Utils.popup_under_control(color_picker, color_edit)
+	Utils.popup_under_rect(color_picker, color_edit.get_global_rect(), get_viewport())
 
 func _draw() -> void:
 	var button_size := color_button.get_size()

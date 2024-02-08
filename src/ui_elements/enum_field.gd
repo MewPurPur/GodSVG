@@ -38,7 +38,7 @@ func _on_button_pressed() -> void:
 		btn_arr.append(btn)
 	add_child(value_picker)
 	value_picker.set_button_array(btn_arr, false, size.x)
-	Utils.popup_under_control(value_picker, indicator)
+	Utils.popup_under_rect(value_picker, indicator.get_global_rect(), get_viewport())
 
 func _on_option_pressed(option: String) -> void:
 	set_value(option)

@@ -15,7 +15,7 @@ var currently_edited_color: NamedColor
 @onready var name_edit: BetterLineEdit = %MainContainer/HBoxContainer/NameEdit
 @onready var name_edit_button: Button = %MainContainer/HBoxContainer/EditButton
 @onready var colors_container: HFlowContainer = %MainContainer/ColorsContainer
-@onready var more_button: Button = $MarginContainer/HBoxContainer/MoreButton
+@onready var action_button: Button = $MarginContainer/HBoxContainer/ActionButton
 
 # Used to setup a palette for this element.
 func assign_palette(palette: ColorPalette) -> void:
@@ -56,7 +56,8 @@ func popup_configure_color(swatch: Button) -> void:
 	configure_popup.color_edit.value_changed.connect(swatch.change_color)
 	configure_popup.color_name_edit.text_submitted.connect(swatch.change_color_name)
 	configure_popup.color_deletion_requested.connect(delete_color.bind(swatch.named_color))
-	Utils.popup_under_control_centered(configure_popup, swatch)
+	Utils.popup_under_rect_center(configure_popup, swatch.get_global_rect(),
+			get_viewport())
 
 func popup_edit_name() -> void:
 	palette_label.hide()
@@ -131,7 +132,7 @@ func move_down(idx: int) -> void:
 	layout_changed.emit()
 
 
-func _on_more_button_pressed() -> void:
+func _on_action_button_pressed() -> void:
 	var palette_idx := -1
 	for idx in GlobalSettings.get_palettes().size():
 		if GlobalSettings.get_palettes()[idx].name == current_palette.name:
@@ -150,4 +151,5 @@ func _on_more_button_pressed() -> void:
 	var context_popup := ContextPopup.instantiate()
 	add_child(context_popup)
 	context_popup.set_button_array(btn_arr, true)
-	Utils.popup_under_control_centered(context_popup, more_button)
+	Utils.popup_under_rect_center(context_popup, action_button.get_global_rect(),
+			get_viewport())
