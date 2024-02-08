@@ -21,6 +21,7 @@ var cmd_char := ""
 var cmd_idx := -1
 var path_command: PathCommand
 
+var awake := false
 @onready var relative_button: Button
 @onready var action_button: Button
 @onready var fields_container: CustomSpacedHBoxContainer = $Fields
@@ -244,6 +245,7 @@ func _gui_input(event: InputEvent) -> void:
 			if Indications.semi_selected_tid != tid or\
 			not cmd_idx in Indications.inner_selections:
 				Indications.normal_select(tid, cmd_idx)
+			# Popup the actions.
 			var viewport := get_viewport()
 			var popup_pos := viewport.get_mouse_position()
 			Utils.popup_under_pos(Indications.get_selection_context(
@@ -280,7 +282,7 @@ func _draw() -> void:
 		stylebox.draw(get_canvas_item(), Rect2(Vector2.ZERO, size))
 	# Draw the relative button. It's going to be only drawn, not added as a node, until
 	# the mouse enters. This is a hack to significantly improve performance.
-	if relative_button == null:
+	if awake:
 		var relative_button_rect := Rect2(Vector2(3, 2), Vector2(18, size.y - 4))
 		if Utils.is_string_upper(cmd_char):
 			draw_style_box(absolute_button_normal, relative_button_rect)
@@ -289,14 +291,14 @@ func _draw() -> void:
 		draw_string(code_font, Vector2(6, size.y - 6), cmd_char,
 				HORIZONTAL_ALIGNMENT_CENTER, 12, 13)
 		fields_container.position = Vector2(25, 2)
-	# Draw the action button.
-	if action_button == null:
+		# Draw the action button.
 		draw_texture_rect(more_icon, Rect2(Vector2(size.x - 19, 4),
 				Vector2(14, 14)), false, Color("bfbfbf"))
 
 # When the mouse enters the path command editor, wake it up by adding the real nodes.
 # Otherwise, the nodes should only be drawn. This is important for performance.
 func _on_mouse_entered() -> void:
+	awake = true
 	# Setup the relative button.
 	relative_button = Button.new()
 	relative_button.focus_mode = Control.FOCUS_NONE
