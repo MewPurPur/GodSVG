@@ -737,10 +737,11 @@ func respond_to_input_event(event: InputEvent) -> void:
 				dragged_handle = null
 				Indications.clear_all_selections()
 		elif event.button_index == MOUSE_BUTTON_RIGHT:
-			var popup_pos := get_window().get_mouse_position()
+			var viewport := get_viewport()
+			var popup_pos := viewport.get_mouse_position()
 			if hovered_handle == null:
 				Indications.clear_all_selections()
-				Utils.popup_under_mouse(create_tag_context(event_pos), popup_pos)
+				Utils.popup_under_pos(create_tag_context(event_pos), popup_pos, viewport)
 			else:
 				var hovered_tid := hovered_handle.tid
 				var inner_idx = -1
@@ -751,7 +752,8 @@ func respond_to_input_event(event: InputEvent) -> void:
 				not inner_idx in Indications.inner_selections) and\
 				not hovered_tid in Indications.selected_tids:
 					Indications.normal_select(hovered_tid, inner_idx)
-				Utils.popup_under_mouse(Indications.get_selection_context(), popup_pos)
+				Utils.popup_under_pos(Indications.get_selection_context(
+						Utils.popup_under_pos.bind(popup_pos, viewport)), popup_pos, viewport)
 
 func find_nearest_handle(event_pos: Vector2) -> Handle:
 	var nearest_handle: Handle = null

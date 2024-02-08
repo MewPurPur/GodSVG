@@ -22,7 +22,7 @@ var cmd_idx := -1
 var path_command: PathCommand
 
 @onready var relative_button: Button
-@onready var more_button: Button
+@onready var action_button: Button
 @onready var fields_container: CustomSpacedHBoxContainer = $Fields
 
 var fields: Array[Control] = []
@@ -244,8 +244,10 @@ func _gui_input(event: InputEvent) -> void:
 			if Indications.semi_selected_tid != tid or\
 			not cmd_idx in Indications.inner_selections:
 				Indications.normal_select(tid, cmd_idx)
-			Utils.popup_under_mouse(Indications.get_selection_context(),
-					get_global_mouse_position())
+			var viewport := get_viewport()
+			var popup_pos := viewport.get_mouse_position()
+			Utils.popup_under_pos(Indications.get_selection_context(
+					Utils.popup_under_pos.bind(popup_pos, viewport)), popup_pos, viewport)
 
 
 var current_interaction_state := Utils.InteractionType.NONE
@@ -288,7 +290,7 @@ func _draw() -> void:
 				HORIZONTAL_ALIGNMENT_CENTER, 12, 13)
 		fields_container.position = Vector2(25, 2)
 	# Draw the action button.
-	if more_button == null:
+	if action_button == null:
 		draw_texture_rect(more_icon, Rect2(Vector2(size.x - 19, 4),
 				Vector2(14, 14)), false, Color("bfbfbf"))
 
@@ -322,27 +324,31 @@ func _on_mouse_entered() -> void:
 	relative_button.position = Vector2(3, 2)
 	relative_button.size = Vector2(18, size.y - 4)
 	# Setup the action button.
-	more_button = Button.new()
-	more_button.icon = more_icon
-	more_button.theme_type_variation = &"FlatButton"
-	more_button.focus_mode = Control.FOCUS_NONE
-	more_button.mouse_filter = Control.MOUSE_FILTER_PASS
-	more_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-	add_child(more_button)
-	more_button.pressed.connect(_on_more_button_pressed)
-	more_button.position = Vector2(size.x - 21, 2)
-	more_button.size = Vector2(18, 18)
+	action_button = Button.new()
+	action_button.icon = more_icon
+	action_button.theme_type_variation = &"FlatButton"
+	action_button.focus_mode = Control.FOCUS_NONE
+	action_button.mouse_filter = Control.MOUSE_FILTER_PASS
+	action_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+	add_child(action_button)
+	action_button.pressed.connect(_on_action_button_pressed)
+	action_button.position = Vector2(size.x - 21, 2)
+	action_button.size = Vector2(18, 18)
 	# Update the graphics.
 	queue_redraw()
 
 func _on_mouse_exited() -> void:
 	relative_button.queue_free()
-	more_button.queue_free()
+	action_button.queue_free()
 	Indications.remove_inner_hovered(tid, cmd_idx)
 	queue_redraw()
 
-func _on_more_button_pressed() -> void:
-	Utils.popup_under_control_centered(Indications.get_selection_context(), more_button)
+func _on_action_button_pressed() -> void:
+	var viewport := get_viewport()
+	var action_button_rect := action_button.get_global_rect()
+	Utils.popup_under_rect_center(Indications.get_selection_context(
+			Utils.popup_under_rect_center.bind(action_button_rect, viewport)),
+			action_button_rect, viewport)
 
 func get_path_attribute() -> AttributePath:
 	return SVG.root_tag.get_tag(tid).attributes.d

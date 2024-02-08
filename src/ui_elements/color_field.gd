@@ -46,7 +46,7 @@ func _on_button_pressed() -> void:
 	color_popup.current_value = attribute.get_value()
 	add_child(color_popup)
 	color_popup.color_picked.connect(_on_color_picked)
-	Utils.popup_under_control(color_popup, color_edit)
+	Utils.popup_under_rect(color_popup, color_edit.get_global_rect(), get_viewport())
 
 func _draw() -> void:
 	var button_size := color_button.get_size()

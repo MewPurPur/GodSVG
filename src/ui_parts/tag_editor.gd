@@ -112,7 +112,11 @@ func _get_drag_data(_at_position: Vector2) -> Variant:
 
 
 func _on_title_button_pressed() -> void:
-	Utils.popup_under_control_centered(Indications.get_selection_context(), title_button)
+	var viewport := get_viewport()
+	var title_button_rect := title_button.get_global_rect()
+	Utils.popup_under_rect_center(Indications.get_selection_context(
+			Utils.popup_under_rect_center.bind(title_button_rect, viewport)),
+			title_button_rect, viewport)
 
 
 func _gui_input(event: InputEvent) -> void:
@@ -132,8 +136,10 @@ func _gui_input(event: InputEvent) -> void:
 		elif event.button_index == MOUSE_BUTTON_RIGHT:
 			if not tid in Indications.selected_tids:
 				Indications.normal_select(tid)
-			Utils.popup_under_mouse(Indications.get_selection_context(),
-					get_global_mouse_position())
+			var viewport := get_viewport()
+			var popup_pos := viewport.get_mouse_position()
+			Utils.popup_under_pos(Indications.get_selection_context(
+					Utils.popup_under_pos.bind(popup_pos, viewport)), popup_pos, viewport)
 			accept_event()
 
 func _on_mouse_exited() -> void:

@@ -46,4 +46,4 @@ func _on_add_button_pressed() -> void:
 	var add_popup := ContextPopup.instantiate()
 	add_child(add_popup)
 	add_popup.set_button_array(btn_array, true, add_button.size.x)
-	Utils.popup_under_control(add_popup, add_button)
+	Utils.popup_under_rect(add_popup, add_button.get_global_rect(), get_viewport())

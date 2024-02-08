@@ -80,7 +80,7 @@ layout_mode = 2
 size_flags_vertical = 4
 theme_override_constants/h_separation = 3
 
-[node name="MoreButton" type="Button" parent="MarginContainer/HBoxContainer"]
+[node name="ActionButton" type="Button" parent="MarginContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 4
@@ -92,4 +92,4 @@ icon = ExtResource("5_vjxeq")
 [connection signal="text_changed" from="MarginContainer/HBoxContainer/MainContainer/HBoxContainer/NameEdit" to="." method="_on_name_edit_text_changed"]
 [connection signal="text_submitted" from="MarginContainer/HBoxContainer/MainContainer/HBoxContainer/NameEdit" to="." method="_on_name_edit_text_submitted"]
 [connection signal="pressed" from="MarginContainer/HBoxContainer/MainContainer/HBoxContainer/EditButton" to="." method="popup_edit_name"]
-[connection signal="pressed" from="MarginContainer/HBoxContainer/MoreButton" to="." method="_on_more_button_pressed"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/ActionButton" to="." method="_on_action_button_pressed"]

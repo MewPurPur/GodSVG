@@ -118,7 +118,8 @@ func _on_file_button_pressed() -> void:
 	var context_popup := ContextPopup.instantiate()
 	add_child(context_popup)
 	context_popup.set_button_array(btn_array, false, file_button.size.x)
-	Utils.popup_under_control_centered(context_popup, file_button)
+	Utils.popup_under_rect_center(context_popup, file_button.get_global_rect(),
+			get_viewport())
 
 func clear_file_path() -> void:
 	GlobalSettings.modify_save_data(&"current_file_path", "")

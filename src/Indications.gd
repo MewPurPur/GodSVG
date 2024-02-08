@@ -424,7 +424,7 @@ func insert_inner_after_selection(new_command: String) -> void:
 			normal_select(semi_selected_tid, last_selection + 1)
 
 
-func get_selection_context() -> Popup:
+func get_selection_context(popup_method: Callable) -> Popup:
 	var btn_arr: Array[Button] = []
 	
 	if not selected_tids.is_empty():
@@ -454,8 +454,9 @@ func get_selection_context() -> Popup:
 		
 		if selected_tids.size() == 1 and not SVG.root_tag.get_tag(
 		selected_tids[0]).possible_conversions.is_empty():
-			btn_arr.append(Utils.create_btn(tr(&"Convert To"), get_convert_to_context,
-					false, load("res://visual/icons/Reload.svg")))
+			btn_arr.append(Utils.create_btn(tr(&"Convert To"),
+					popup_convert_to_context.bind(popup_method), false,
+					load("res://visual/icons/Reload.svg")))
 		
 		if can_move_up:
 			btn_arr.append(Utils.create_btn(tr(&"Move Up"), move_up_selected,
@@ -469,10 +470,11 @@ func get_selection_context() -> Popup:
 	elif not inner_selections.is_empty() and not semi_selected_tid.is_empty():
 		if inner_selections.size() == 1:
 			btn_arr.append(Utils.create_btn(tr(&"Insert After"),
-					get_insert_command_after_context,
+					popup_insert_command_after_context.bind(popup_method),
 					false, load("res://visual/icons/Plus.svg")))
 			btn_arr.append(Utils.create_btn(tr(&"Convert To"),
-					get_convert_to_context, false, load("res://visual/icons/Reload.svg")))
+					popup_convert_to_context.bind(popup_method), false,
+					load("res://visual/icons/Reload.svg")))
 		
 		btn_arr.append(Utils.create_btn(tr(&"Delete"), delete_selected, false,
 				load("res://visual/icons/Delete.svg")))
@@ -482,7 +484,7 @@ func get_selection_context() -> Popup:
 	tag_context.set_button_array(btn_arr, true)
 	return tag_context
 
-func get_convert_to_context() -> Popup:
+func popup_convert_to_context(popup_method: Callable) -> void:
 	# The "Convert To" context popup.
 	if not selected_tids.is_empty():
 		var btn_arr: Array[Button] = []
@@ -495,7 +497,7 @@ func get_convert_to_context() -> Popup:
 		var context_popup := ContextPopup.instantiate()
 		add_child(context_popup)
 		context_popup.set_button_array(btn_arr, true)
-		return context_popup
+		popup_method.call(context_popup)
 	elif not inner_selections.is_empty() and not semi_selected_tid.is_empty():
 		var cmd_char: String = SVG.root_tag.get_tag(semi_selected_tid).\
 				attributes.d.get_command(inner_selections[0]).command_char
@@ -504,11 +506,9 @@ func get_convert_to_context() -> Popup:
 		command_picker.force_relativity(Utils.is_string_lower(cmd_char))
 		command_picker.disable_invalid([cmd_char.to_upper()])
 		command_picker.path_command_picked.connect(convert_selected_command_to)
-		return command_picker
-	else:
-		return null
+		popup_method.call(command_picker)
 
-func get_insert_command_after_context() -> Popup:
+func popup_insert_command_after_context(popup_method: Callable) -> void:
 	var cmd_char: String = SVG.root_tag.get_tag(semi_selected_tid).attributes.d.\
 			get_command(inner_selections.max()).command_char
 	
@@ -521,7 +521,7 @@ func get_insert_command_after_context() -> Popup:
 		"C", "S": command_picker.disable_invalid(["T"])
 		"Q", "T": command_picker.disable_invalid(["S"])
 	command_picker.path_command_picked.connect(insert_inner_after_selection)
-	return command_picker
+	popup_method.call(command_picker)
 
 func convert_selected_tag_to(tag_name: String) -> void:
 	var tid := selected_tids[0]
