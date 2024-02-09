@@ -21,7 +21,7 @@ var cmd_char := ""
 var cmd_idx := -1
 var path_command: PathCommand
 
-var awake := false
+var active := false
 @onready var relative_button: Button
 @onready var action_button: Button
 @onready var fields_container: CustomSpacedHBoxContainer = $Fields
@@ -280,9 +280,9 @@ func _draw() -> void:
 		elif current_interaction_state == Utils.InteractionType.HOVERED_SELECTED:
 			stylebox.bg_color = Color(0.7, 0.7, 1.0, 0.18)
 		stylebox.draw(get_canvas_item(), Rect2(Vector2.ZERO, size))
-	# Draw the relative button. It's going to be only drawn, not added as a node, until
-	# the mouse enters. This is a hack to significantly improve performance.
-	if awake:
+	# Draw the child controls. They are going to be drawn, not added as a node unless
+	# the mouse hovers them. This is a hack to significantly improve performance.
+	if not active:
 		var relative_button_rect := Rect2(Vector2(3, 2), Vector2(18, size.y - 4))
 		if Utils.is_string_upper(cmd_char):
 			draw_style_box(absolute_button_normal, relative_button_rect)
@@ -295,10 +295,10 @@ func _draw() -> void:
 		draw_texture_rect(more_icon, Rect2(Vector2(size.x - 19, 4),
 				Vector2(14, 14)), false, Color("bfbfbf"))
 
-# When the mouse enters the path command editor, wake it up by adding the real nodes.
+# When the mouse enters the path command editor, activate it by adding the real nodes.
 # Otherwise, the nodes should only be drawn. This is important for performance.
 func _on_mouse_entered() -> void:
-	awake = true
+	active = true
 	# Setup the relative button.
 	relative_button = Button.new()
 	relative_button.focus_mode = Control.FOCUS_NONE
@@ -343,6 +343,7 @@ func _on_mouse_exited() -> void:
 	relative_button.queue_free()
 	action_button.queue_free()
 	Indications.remove_inner_hovered(tid, cmd_idx)
+	active = false
 	queue_redraw()
 
 func _on_action_button_pressed() -> void:
