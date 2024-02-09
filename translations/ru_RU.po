@@ -11,6 +11,9 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 3.4.2\n"
 
+msgid "translation-credits"
+msgstr ""
+
 msgid "Language"
 msgstr " Язык"
 
