@@ -13,7 +13,7 @@
 content_margin_left = 8.0
 content_margin_top = 3.0
 content_margin_right = 6.0
-content_margin_bottom = 2.0
+content_margin_bottom = 1.0
 bg_color = Color(0.0975, 0.0975, 0.15, 1)
 border_width_left = 2
 border_width_top = 2
@@ -84,13 +84,13 @@ mouse_default_cursor_shape = 2
 theme_type_variation = &"IconButton"
 icon = ExtResource("2_k8onw")
 
-[node name="PanelContainer" type="PanelContainer" parent="PanelContainer/CodeButtons"]
+[node name="SizeLabelContainer" type="PanelContainer" parent="PanelContainer/CodeButtons"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 4
 theme_override_styles/panel = SubResource("StyleBoxFlat_rppt3")
 
-[node name="SizeLabel" type="Label" parent="PanelContainer/CodeButtons/PanelContainer"]
-unique_name_in_owner = true
+[node name="SizeLabel" type="Label" parent="PanelContainer/CodeButtons/SizeLabelContainer"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_p4nol")
 theme_override_font_sizes/font_size = 12
