@@ -35,7 +35,8 @@ func rebuild_commands() -> void:
 			break
 		var command: PathCommand = attribute.get_command(command_idx)
 		if command_editor.cmd_char == command.command_char:
-			command_editor.sync_values(command)
+			command_editor.path_command = attribute.get_command(command_idx)
+			command_editor.queue_redraw()
 			command_idx += 1
 		else:
 			break
@@ -51,7 +52,6 @@ func rebuild_commands() -> void:
 		command_editor.tid = get_node(^"../../../../..").tid
 		command_editor.cmd_idx = command_idx
 		commands_container.add_child(command_editor)
-		command_editor.update_type()
 		command_idx += 1
 
 
