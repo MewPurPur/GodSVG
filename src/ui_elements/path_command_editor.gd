@@ -112,10 +112,8 @@ func _draw() -> void:
 	if not active:
 		# Draw the relative/absolute button.
 		var relative_button_rect := Rect2(Vector2(3, 2), Vector2(18, size.y - 4))
-		if Utils.is_string_upper(cmd_char):
-			draw_style_box(absolute_button_normal, relative_button_rect)
-		else:
-			draw_style_box(relative_button_normal, relative_button_rect)
+		draw_style_box(absolute_button_normal if Utils.is_string_upper(cmd_char) else\
+				relative_button_normal, relative_button_rect)
 		draw_string(code_font, Vector2(6, size.y - 6), cmd_char,
 				HORIZONTAL_ALIGNMENT_CENTER, 12, 13)
 		# Draw the action button.
@@ -128,18 +126,18 @@ func _draw() -> void:
 				var stylebox := get_theme_stylebox(&"normal", &"MiniLineEdit")
 				var font_size := get_theme_font_size(&"font_size", &"MiniLineEdit")
 				var font_color := get_theme_color(&"font_outline_color", &"MiniLineEdit")
-				var rect := Rect2(Vector2(25, 2), Vector2(44, 19))
+				var rect := Rect2(Vector2(25, 2), Vector2(44, 18))
 				draw_numfield(rect, stylebox, &"rx", font_size, font_color)
 				rect.position.x = rect.end.x + 3
 				draw_numfield(rect, stylebox, &"ry", font_size, font_color)
 				rect.position.x = rect.end.x + 4
 				draw_numfield(rect, stylebox, &"rot", font_size, font_color)
 				rect.position.x = rect.end.x + 4
-				rect.size = Vector2(19, 20)
+				rect.size.x = 19
 				var flag_field := FlagField.instantiate()
 				draw_style_box(flag_field.get_theme_stylebox(&"normal" if\
 						path_command.large_arc_flag == 0 else &"pressed"), rect)
-				draw_string(code_font, rect.position + Vector2(5, 15),
+				draw_string(code_font, rect.position + Vector2(5, 14),
 						NumberArrayParser.num_to_text(path_command.large_arc_flag),
 						HORIZONTAL_ALIGNMENT_LEFT, rect.size.x, 14,
 						flag_field.get_theme_color(&"font_color" if\
@@ -147,14 +145,14 @@ func _draw() -> void:
 				rect.position.x = rect.end.x + 4
 				draw_style_box(flag_field.get_theme_stylebox(&"normal" if\
 						path_command.sweep_flag == 0 else &"pressed"), rect)
-				draw_string(code_font, rect.position + Vector2(5, 15),
+				draw_string(code_font, rect.position + Vector2(5, 14),
 						NumberArrayParser.num_to_text(path_command.sweep_flag),
 						HORIZONTAL_ALIGNMENT_LEFT, rect.size.x, 14,
 						flag_field.get_theme_color(&"font_color" if\
 						path_command.sweep_flag == 0 else &"font_pressed_color"))
 				flag_field.free()
 				rect.position.x = rect.end.x + 4
-				rect.size = Vector2(44, 19)
+				rect.size.x = 44
 				draw_numfield(rect, stylebox, &"x", font_size, font_color)
 				rect.position.x = rect.end.x + 3
 				draw_numfield(rect, stylebox, &"y", font_size, font_color)
@@ -166,13 +164,13 @@ func _draw() -> void:
 				var stylebox := get_theme_stylebox(&"normal", &"MiniLineEdit")
 				var font_size := get_theme_font_size(&"font_size", &"MiniLineEdit")
 				var font_color := get_theme_color(&"font_outline_color", &"MiniLineEdit")
-				var rect := Rect2(Vector2(25, 2), Vector2(44, 19))
+				var rect := Rect2(Vector2(25, 2), Vector2(44, 18))
 				draw_numfield(rect, stylebox, &"x", font_size, font_color)
 			"V":
 				var stylebox := get_theme_stylebox(&"normal", &"MiniLineEdit")
 				var font_size := get_theme_font_size(&"font_size", &"MiniLineEdit")
 				var font_color := get_theme_color(&"font_outline_color", &"MiniLineEdit")
-				var rect := Rect2(Vector2(25, 2), Vector2(44, 19))
+				var rect := Rect2(Vector2(25, 2), Vector2(44, 18))
 				draw_numfield(rect, stylebox, &"y", font_size, font_color)
 
 func draw_numfield(rect: Rect2, stylebox: StyleBoxFlat, property: StringName,\
@@ -186,7 +184,7 @@ func draw_numfield_arr(spacings: Array, names: Array[StringName]) -> void:
 	var stylebox := get_theme_stylebox(&"normal", &"MiniLineEdit")
 	var font_size := get_theme_font_size(&"font_size", &"MiniLineEdit")
 	var font_color := get_theme_color(&"font_outline_color", &"MiniLineEdit")
-	var rect := Rect2(Vector2(25, 2), Vector2(44, 19))
+	var rect := Rect2(Vector2(25, 2), Vector2(44, 18))
 	draw_numfield(rect, stylebox, names[0], font_size, font_color)
 	for i in spacings.size():
 		rect.position.x = rect.end.x + spacings[i]
@@ -218,10 +216,11 @@ func _on_mouse_entered() -> void:
 	relative_button.focus_mode = Control.FOCUS_NONE
 	relative_button.mouse_filter = Control.MOUSE_FILTER_PASS
 	relative_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-	relative_button.add_theme_font_override(&"font", code_font)
-	relative_button.add_theme_font_size_override(&"font_size", 13)
 	relative_button.text = cmd_char
 	relative_button.begin_bulk_theme_override()
+	relative_button.add_theme_font_override(&"font", code_font)
+	relative_button.add_theme_font_size_override(&"font_size", 13)
+	relative_button.add_theme_color_override(&"font_color", Color(1, 1, 1))
 	if Utils.is_string_upper(cmd_char):
 		relative_button.tooltip_text = "%s (%s)" %\
 				[Utils.path_command_char_dict[cmd_char.to_upper()], tr(&"absolute")]
