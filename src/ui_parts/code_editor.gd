@@ -6,7 +6,8 @@ const autoformat_menu = preload("res://src/ui_parts/autoformat_menu.tscn")
 @onready var code_edit: TextEdit = $ScriptEditor/SVGCodeEdit
 @onready var error_bar: PanelContainer = $ScriptEditor/ErrorBar
 @onready var error_label: RichTextLabel = $ScriptEditor/ErrorBar/Label
-@onready var size_label: Label = %SizeLabel
+@onready var size_label: Label = %SizeLabelContainer/SizeLabel
+@onready var size_label_container: PanelContainer = %SizeLabelContainer
 @onready var file_button: Button = %FileButton
 
 func _ready() -> void:
@@ -89,7 +90,9 @@ func _input(event: InputEvent) -> void:
 
 
 func update_size_label() -> void:
-	size_label.text = String.humanize_size(code_edit.text.length())
+	var svg_text_size := SVG.text.length()
+	size_label.text = String.humanize_size(svg_text_size)
+	size_label_container.tooltip_text = String.num_uint64(svg_text_size) + " B"
 
 func update_file_button() -> void:
 	var file_path := GlobalSettings.save_data.current_file_path
