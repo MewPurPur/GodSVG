@@ -59,12 +59,11 @@ corner_radius_bottom_left = 3
 [node name="PathField" type="VBoxContainer"]
 offset_right = 336.0
 offset_bottom = 45.0
-size_flags_horizontal = 3
 theme_override_constants/separation = 2
 script = ExtResource("1_22rk2")
 
 [node name="LineEdit" type="LineEdit" parent="."]
-custom_minimum_size = Vector2(344, 0)
+custom_minimum_size = Vector2(352, 0)
 layout_mode = 2
 size_flags_horizontal = 0
 focus_mode = 1
@@ -94,9 +93,8 @@ layout_mode = 2
 mouse_filter = 1
 
 [node name="Commands" type="VBoxContainer" parent="HBox"]
-custom_minimum_size = Vector2(336, 0)
 layout_mode = 2
-size_flags_horizontal = 0
+size_flags_horizontal = 3
 mouse_filter = 0
 theme_override_constants/separation = 0
 
