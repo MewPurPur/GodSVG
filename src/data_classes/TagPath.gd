@@ -24,6 +24,15 @@ func _init() -> void:
 	}
 	super()
 
+
+func move_to(pos: Vector2) -> void:
+	# Since this function is currently only used when adding a tag,
+	# there's no logic for anything more than just a single MoveCommand.
+	if attributes.d.get_command_count() == 1 and\
+	attributes.d.get_command(0) is PathCommand.MoveCommand:
+		attributes.d.set_command_property(0, &"x", pos.x, Attribute.SyncMode.NO_PROPAGATION)
+		attributes.d.set_command_property(0, &"y", pos.y, Attribute.SyncMode.INTERMEDIATE)
+
 func can_replace(_new_tag: String) -> bool:
 	return false
 

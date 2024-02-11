@@ -25,6 +25,14 @@ func _init() -> void:
 	super()
 
 
+func move_to(pos: Vector2) -> void:
+	attributes.x1.set_num(pos.x, Attribute.SyncMode.INTERMEDIATE if\
+			attributes.y1.get_num() == pos.y else Attribute.SyncMode.NO_PROPAGATION)
+	attributes.y1.set_num(pos.y, Attribute.SyncMode.INTERMEDIATE)
+	attributes.x2.set_num(pos.x + 1, Attribute.SyncMode.INTERMEDIATE if\
+			attributes.y2.get_num() == pos.y else Attribute.SyncMode.NO_PROPAGATION)
+	attributes.y2.set_num(pos.y, Attribute.SyncMode.INTERMEDIATE)
+
 func can_replace(new_tag: String) -> bool:
 	return new_tag == "path"
 

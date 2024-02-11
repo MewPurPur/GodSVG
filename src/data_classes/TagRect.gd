@@ -29,6 +29,10 @@ func _init() -> void:
 	super()
 
 
+func move_to(pos: Vector2) -> void:
+	attributes.x.set_num(pos.x, Attribute.SyncMode.NO_PROPAGATION)
+	attributes.y.set_num(pos.y, Attribute.SyncMode.INTERMEDIATE)
+
 func can_replace(new_tag: String) -> bool:
 	if new_tag == "ellipse":
 		return attributes.rx.get_num() >= attributes.width.get_num() / 2 and\

@@ -52,7 +52,7 @@ func _ready() -> void:
 	Indications.selection_changed.connect(queue_redraw)
 	Indications.hover_changed.connect(queue_redraw)
 	Indications.zoom_changed.connect(queue_redraw)
-	Indications.added_path_handle.connect(move_selected_to_mouse)
+	Indications.added_object.connect(move_selected_to_mouse)
 	queue_update()
 
 
@@ -136,19 +136,15 @@ t_attrib: AttributeTransform) -> Array[Handle]:
 # The place where these are used, a tag is already at hand, so no need to find it.
 func generate_xy_handle(tid: PackedInt32Array, tag: Tag, x_attrib_name: String,\
 y_attrib_name: String, t_attrib_name: String) -> XYHandle:
-	var new_handle := XYHandle.new(tid, tag.attributes[x_attrib_name],
-			tag.attributes[y_attrib_name], tag.attributes[t_attrib_name])
-	new_handle.tag = tag
-	return new_handle
+	return XYHandle.new(tid, tag.attributes[x_attrib_name], tag.attributes[y_attrib_name],
+			tag.attributes[t_attrib_name])
 
 func generate_delta_handle(tid: PackedInt32Array, tag: Tag, x_attrib_name: String,\
 y_attrib_name: String, t_attrib_name: String, delta_attrib_name: String,\
 horizontal: bool) -> DeltaHandle:
-	var new_handle := DeltaHandle.new(tid, tag.attributes[x_attrib_name],
+	return DeltaHandle.new(tid, tag.attributes[x_attrib_name],
 			tag.attributes[y_attrib_name], tag.attributes[t_attrib_name],
 			tag.attributes[delta_attrib_name], horizontal)
-	new_handle.tag = tag
-	return new_handle
 
 
 func _draw() -> void:
@@ -650,7 +646,8 @@ func tid_is_selected(tid: PackedInt32Array, cmd_idx := -1) -> bool:
 var dragged_handle: Handle = null
 var hovered_handle: Handle = null
 var was_handle_moved := false
-var should_deselect_all = false
+var should_deselect_all := false
+var adding_new_handle := false
 
 func _unhandled_input(event: InputEvent) -> void:
 	respond_to_input_event(event)
@@ -692,7 +689,11 @@ func respond_to_input_event(event: InputEvent) -> void:
 				event_pos = event_pos.snapped(snap_vector)
 			var new_pos := dragged_handle.transform.affine_inverse() *\
 					SVG.root_tag.world_to_canvas(event_pos)
-			dragged_handle.set_pos(new_pos)
+			if adding_new_handle:
+				SVG.root_tag.get_tag(dragged_handle.tid).move_to(new_pos)
+				dragged_handle.pos = new_pos
+			else:
+				dragged_handle.set_pos(new_pos)
 			was_handle_moved = true
 			accept_event()
 	elif event is InputEventMouseButton:
@@ -768,25 +769,33 @@ func find_nearest_handle(event_pos: Vector2) -> Handle:
 	return nearest_handle
 
 func move_selected_to_mouse() -> void:
+	if not get_viewport_rect().has_point(get_viewport().get_mouse_position()):
+		return
+	
+	# Move the single newly added handle to the mouse until you click.
+	update_handles()
 	for handle in handles:
-		if handle.tid == Indications.semi_selected_tid and handle is PathHandle and\
-		handle.command_index == Indications.inner_selections[0]:
-			if not get_viewport_rect().has_point(get_viewport().get_mouse_position()):
-				return
-			
-			Indications.set_inner_hovered(handle.tid, handle.command_index)
+		if (handle is PathHandle and handle.tid == Indications.semi_selected_tid and\
+		handle.command_index == Indications.inner_selections[0]) or\
+		(handle is XYHandle and Indications.selected_tids.size() == 1 and\
+		handle.tid == Indications.selected_tids[0]):
+			if handle is PathHandle:
+				Indications.set_inner_hovered(handle.tid, handle.command_index)
+			elif handle is XYHandle:
+				Indications.set_hovered(handle.tid)
 			dragged_handle = handle
 			# Move the handle that's being dragged.
 			var mouse_pos := get_global_mouse_position()
-			
-			var snap_size := absf(GlobalSettings.save_data.snap)
 			if GlobalSettings.save_data.snap > 0.0:
+				var snap_size := GlobalSettings.save_data.snap
 				mouse_pos = mouse_pos.snapped(Vector2(snap_size, snap_size))
 			
 			var new_pos := dragged_handle.transform.affine_inverse() *\
 					SVG.root_tag.world_to_canvas(mouse_pos)
+			SVG.root_tag.get_tag(dragged_handle.tid).move_to(new_pos)
 			dragged_handle.set_pos(new_pos)
 			was_handle_moved = true
+			adding_new_handle = true
 			return
 
 # Creates a popup for adding a shape at a position.
@@ -805,27 +814,14 @@ func create_tag_context(pos: Vector2) -> ContextPopupType:
 func add_tag_at_pos(tag_name: String, pos: Vector2) -> void:
 	var tag: Tag
 	match tag_name:
-		"path":
-			tag = TagPath.new()
-			tag.attributes.d.insert_command(0, "M")
-			tag.attributes.d.set_command_property(0, &"x", pos.x)
-			tag.attributes.d.set_command_property(0, &"y", pos.y)
-		"circle":
-			tag = TagCircle.new()
-			tag.attributes.cx.set_num(pos.x)
-			tag.attributes.cy.set_num(pos.y)
-		"ellipse":
-			tag = TagEllipse.new()
-			tag.attributes.cx.set_num(pos.x)
-			tag.attributes.cy.set_num(pos.y)
-		"rect":
-			tag = TagRect.new()
-			tag.attributes.x.set_num(pos.x)
-			tag.attributes.y.set_num(pos.y)
-		"line":
-			tag = TagLine.new()
-			tag.attributes.x1.set_num(pos.x)
-			tag.attributes.y1.set_num(pos.y)
-			tag.attributes.x2.set_num(pos.x + 1)
-			tag.attributes.y2.set_num(pos.y)
-	SVG.root_tag.add_tag(tag, PackedInt32Array([SVG.root_tag.get_child_count()]))
+		"path": tag = TagPath.new()
+		"circle": tag = TagCircle.new()
+		"ellipse": tag = TagEllipse.new()
+		"rect": tag = TagRect.new()
+		"line": tag = TagLine.new()
+	var new_tid := PackedInt32Array([SVG.root_tag.get_child_count()])
+	SVG.root_tag.add_tag(tag, new_tid)
+	if tag_name == "path":
+		tag.attributes.d.insert_command_at_pos(0, "M", pos)
+		Indications.normal_select(new_tid, 0)
+	Indications.added_object.emit()

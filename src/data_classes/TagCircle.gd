@@ -25,6 +25,10 @@ func _init() -> void:
 	super()
 
 
+func move_to(pos: Vector2) -> void:
+	attributes.cx.set_num(pos.x, Attribute.SyncMode.NO_PROPAGATION)
+	attributes.cy.set_num(pos.y, Attribute.SyncMode.INTERMEDIATE)
+
 func can_replace(new_tag: String) -> bool:
 	return new_tag in ["ellipse", "rect", "path"]
 
