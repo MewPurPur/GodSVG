@@ -15,9 +15,10 @@ border_color = Color(0.501961, 1, 1, 0.4)
 corner_detail = 1
 
 [node name="MiniNumberField" type="LineEdit"]
-custom_minimum_size = Vector2(44, 19)
+custom_minimum_size = Vector2(0, 18)
 offset_right = 44.0
-offset_bottom = 19.0
+offset_bottom = 14.0
+mouse_filter = 1
 theme_type_variation = &"MiniLineEdit"
 script = ExtResource("1_ggi5v")
 hover_stylebox = SubResource("StyleBoxFlat_wk41m")

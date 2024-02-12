@@ -21,180 +21,10 @@ var cmd_char := ""
 var cmd_idx := -1
 var path_command: PathCommand
 
+var active := false
 @onready var relative_button: Button
 @onready var action_button: Button
-@onready var fields_container: CustomSpacedHBoxContainer = $Fields
-
 var fields: Array[Control] = []
-
-
-func update_type() -> void:
-	cmd_char = path_command.command_char
-	fields.clear()
-	# Instantiate the input fields.
-	match cmd_char.to_upper():
-		"A":
-			var field_rx: BetterLineEdit = add_number_field()
-			var field_ry: BetterLineEdit = add_number_field()
-			var field_rot: BetterLineEdit = add_number_field()
-			var field_large_arc_flag: Button = add_flag_field()
-			var field_sweep_flag: Button = add_flag_field()
-			var field_x: BetterLineEdit = add_number_field()
-			var field_y: BetterLineEdit = add_number_field()
-			field_rx.mode = field_rx.Mode.ONLY_POSITIVE
-			field_ry.mode = field_ry.Mode.ONLY_POSITIVE
-			field_rot.mode = field_rot.Mode.HALF_ANGLE
-			field_rot.custom_minimum_size.x -= 6
-			field_rx.set_value(path_command.rx)
-			field_ry.set_value(path_command.ry)
-			field_rot.set_value(path_command.rot)
-			field_large_arc_flag.set_value(path_command.large_arc_flag)
-			field_sweep_flag.set_value(path_command.sweep_flag)
-			field_x.set_value(path_command.x)
-			field_y.set_value(path_command.y)
-			field_rx.tooltip_text = "rx"
-			field_ry.tooltip_text = "ry"
-			field_rot.tooltip_text = "rot"
-			field_large_arc_flag.tooltip_text = "large_arc_flag"
-			field_sweep_flag.tooltip_text = "sweep_flag"
-			field_x.tooltip_text = "x"
-			field_y.tooltip_text = "y"
-			field_rx.value_changed.connect(update_value.bind(&"rx"))
-			field_ry.value_changed.connect(update_value.bind(&"ry"))
-			field_rot.value_changed.connect(update_value.bind(&"rot"))
-			field_large_arc_flag.value_changed.connect(update_value.bind(&"large_arc_flag"))
-			field_sweep_flag.value_changed.connect(update_value.bind(&"sweep_flag"))
-			field_x.value_changed.connect(update_value.bind(&"x"))
-			field_y.value_changed.connect(update_value.bind(&"y"))
-			fields = [field_rx, field_ry, field_rot, field_large_arc_flag,
-					field_sweep_flag, field_x, field_y]
-			fields_container.set_spacing_array([3, 4, 4, 4, 4, 3])
-		"C":
-			var field_x1: BetterLineEdit = add_number_field()
-			var field_y1: BetterLineEdit = add_number_field()
-			var field_x2: BetterLineEdit = add_number_field()
-			var field_y2: BetterLineEdit = add_number_field()
-			var field_x: BetterLineEdit = add_number_field()
-			var field_y: BetterLineEdit = add_number_field()
-			field_x1.set_value(path_command.x1)
-			field_y1.set_value(path_command.y1)
-			field_x2.set_value(path_command.x2)
-			field_y2.set_value(path_command.y2)
-			field_x.set_value(path_command.x)
-			field_y.set_value(path_command.y)
-			field_x1.tooltip_text = "x1"
-			field_y1.tooltip_text = "y1"
-			field_x2.tooltip_text = "x2"
-			field_y2.tooltip_text = "y2"
-			field_x.tooltip_text = "x"
-			field_y.tooltip_text = "y"
-			field_x1.value_changed.connect(update_value.bind(&"x1"))
-			field_y1.value_changed.connect(update_value.bind(&"y1"))
-			field_x2.value_changed.connect(update_value.bind(&"x2"))
-			field_y2.value_changed.connect(update_value.bind(&"y2"))
-			field_x.value_changed.connect(update_value.bind(&"x"))
-			field_y.value_changed.connect(update_value.bind(&"y"))
-			fields = [field_x1, field_y1, field_x2, field_y2, field_x, field_y]
-			fields_container.set_spacing_array([3, 4, 3, 4, 3])
-		"Q":
-			var field_x1: BetterLineEdit = add_number_field()
-			var field_y1: BetterLineEdit = add_number_field()
-			var field_x: BetterLineEdit = add_number_field()
-			var field_y: BetterLineEdit = add_number_field()
-			field_x1.set_value(path_command.x1)
-			field_y1.set_value(path_command.y1)
-			field_x.set_value(path_command.x)
-			field_y.set_value(path_command.y)
-			field_x1.tooltip_text = "x1"
-			field_y1.tooltip_text = "y1"
-			field_x.tooltip_text = "x"
-			field_y.tooltip_text = "y"
-			field_x1.value_changed.connect(update_value.bind(&"x1"))
-			field_y1.value_changed.connect(update_value.bind(&"y1"))
-			field_x.value_changed.connect(update_value.bind(&"x"))
-			field_y.value_changed.connect(update_value.bind(&"y"))
-			fields = [field_x1, field_y1, field_x, field_y]
-			fields_container.set_spacing_array([3, 4, 3])
-		"S":
-			var field_x2: BetterLineEdit = add_number_field()
-			var field_y2: BetterLineEdit = add_number_field()
-			var field_x: BetterLineEdit = add_number_field()
-			var field_y: BetterLineEdit = add_number_field()
-			field_x2.set_value(path_command.x2)
-			field_y2.set_value(path_command.y2)
-			field_x.set_value(path_command.x)
-			field_y.set_value(path_command.y)
-			field_x2.tooltip_text = "x2"
-			field_y2.tooltip_text = "y2"
-			field_x.tooltip_text = "x"
-			field_y.tooltip_text = "y"
-			field_x2.value_changed.connect(update_value.bind(&"x2"))
-			field_y2.value_changed.connect(update_value.bind(&"y2"))
-			field_x.value_changed.connect(update_value.bind(&"x"))
-			field_y.value_changed.connect(update_value.bind(&"y"))
-			fields = [field_x2, field_y2, field_x, field_y]
-			fields_container.set_spacing_array([3, 4, 3])
-		"M", "L", "T":
-			var field_x: BetterLineEdit = add_number_field()
-			var field_y: BetterLineEdit = add_number_field()
-			field_x.set_value(path_command.x)
-			field_y.set_value(path_command.y)
-			field_x.tooltip_text = "x"
-			field_y.tooltip_text = "y"
-			field_x.value_changed.connect(update_value.bind(&"x"))
-			field_y.value_changed.connect(update_value.bind(&"y"))
-			fields = [field_x, field_y]
-			fields_container.set_spacing_array([3])
-		"H":
-			var field_x: BetterLineEdit = add_number_field()
-			field_x.set_value(path_command.x)
-			field_x.tooltip_text = "x"
-			field_x.value_changed.connect(update_value.bind(&"x"))
-			fields = [field_x]
-		"V":
-			var field_y: BetterLineEdit = add_number_field()
-			field_y.set_value(path_command.y)
-			field_y.tooltip_text = "y"
-			field_y.value_changed.connect(update_value.bind(&"y"))
-			fields = [field_y]
-
-# Alternative to fully rebuilding the path command editor, if the layout is unchanged.
-func sync_values(cmd: PathCommand) -> void:
-	# Instantiate the input fields.
-	match cmd_char.to_upper():
-		"A":
-			fields[0].set_value(cmd.rx, true)
-			fields[1].set_value(cmd.ry, true)
-			fields[2].set_value(cmd.rot, true)
-			fields[3].set_value(cmd.large_arc_flag, true)
-			fields[4].set_value(cmd.sweep_flag, true)
-			fields[5].set_value(cmd.x, true)
-			fields[6].set_value(cmd.y, true)
-		"C":
-			fields[0].set_value(cmd.x1, true)
-			fields[1].set_value(cmd.y1, true)
-			fields[2].set_value(cmd.x2, true)
-			fields[3].set_value(cmd.y2, true)
-			fields[4].set_value(cmd.x, true)
-			fields[5].set_value(cmd.y, true)
-		"Q":
-			fields[0].set_value(cmd.x1, true)
-			fields[1].set_value(cmd.y1, true)
-			fields[2].set_value(cmd.x, true)
-			fields[3].set_value(cmd.y, true)
-		"S":
-			fields[0].set_value(cmd.x2, true)
-			fields[1].set_value(cmd.y2, true)
-			fields[2].set_value(cmd.x, true)
-			fields[3].set_value(cmd.y, true)
-		"L", "M", "T":
-			fields[0].set_value(cmd.x, true)
-			fields[1].set_value(cmd.y, true)
-		"H":
-			fields[0].set_value(cmd.x, true)
-		"V":
-			fields[0].set_value(cmd.y, true)
-		_: return
 
 
 func update_value(new_value: float, property: StringName) -> void:
@@ -205,20 +35,15 @@ func _on_relative_button_pressed() -> void:
 
 
 func _ready() -> void:
+	cmd_char = path_command.command_char
 	Indications.selection_changed.connect(determine_selection_state)
 	Indications.hover_changed.connect(determine_selection_state)
 	determine_selection_state()
 
 
-func add_number_field() -> BetterLineEdit:
+func add_numfield() -> BetterLineEdit:
 	var new_field := MiniNumberField.instantiate()
 	new_field.focus_entered.connect(Indications.normal_select.bind(tid, cmd_idx))
-	fields_container.add_child(new_field)
-	return new_field
-
-func add_flag_field() -> Button:
-	var new_field := FlagField.instantiate()
-	fields_container.add_child(new_field)
 	return new_field
 
 
@@ -244,6 +69,7 @@ func _gui_input(event: InputEvent) -> void:
 			if Indications.semi_selected_tid != tid or\
 			not cmd_idx in Indications.inner_selections:
 				Indications.normal_select(tid, cmd_idx)
+			# Popup the actions.
 			var viewport := get_viewport()
 			var popup_pos := viewport.get_mouse_position()
 			Utils.popup_under_pos(Indications.get_selection_context(
@@ -278,34 +104,120 @@ func _draw() -> void:
 		elif current_interaction_state == Utils.InteractionType.HOVERED_SELECTED:
 			stylebox.bg_color = Color(0.7, 0.7, 1.0, 0.18)
 		stylebox.draw(get_canvas_item(), Rect2(Vector2.ZERO, size))
-	# Draw the relative button. It's going to be only drawn, not added as a node, until
-	# the mouse enters. This is a hack to significantly improve performance.
-	if relative_button == null:
+	# Draw the child controls. They are going to be drawn, not added as a node unless
+	# the mouse hovers them. This is a hack to significantly improve performance.
+	if not active:
+		# Draw the relative/absolute button.
 		var relative_button_rect := Rect2(Vector2(3, 2), Vector2(18, size.y - 4))
-		if Utils.is_string_upper(cmd_char):
-			draw_style_box(absolute_button_normal, relative_button_rect)
-		else:
-			draw_style_box(relative_button_normal, relative_button_rect)
+		draw_style_box(absolute_button_normal if Utils.is_string_upper(cmd_char) else\
+				relative_button_normal, relative_button_rect)
 		draw_string(code_font, Vector2(6, size.y - 6), cmd_char,
 				HORIZONTAL_ALIGNMENT_CENTER, 12, 13)
-		fields_container.position = Vector2(25, 2)
-	# Draw the action button.
-	if action_button == null:
+		# Draw the action button.
 		draw_texture_rect(more_icon, Rect2(Vector2(size.x - 19, 4),
 				Vector2(14, 14)), false, Color("bfbfbf"))
+		# Draw the fields.
+		match cmd_char.to_upper():
+			"A":
+				# Because of the flag editors, the procedure is as simple as for the rest.
+				var stylebox := get_theme_stylebox(&"normal", &"MiniLineEdit")
+				var font_size := get_theme_font_size(&"font_size", &"MiniLineEdit")
+				var font_color := get_theme_color(&"font_outline_color", &"MiniLineEdit")
+				var rect := Rect2(Vector2(25, 2), Vector2(44, 18))
+				draw_numfield(rect, stylebox, &"rx", font_size, font_color)
+				rect.position.x = rect.end.x + 3
+				draw_numfield(rect, stylebox, &"ry", font_size, font_color)
+				rect.position.x = rect.end.x + 4
+				draw_numfield(rect, stylebox, &"rot", font_size, font_color)
+				rect.position.x = rect.end.x + 4
+				rect.size.x = 19
+				var flag_field := FlagField.instantiate()
+				draw_style_box(flag_field.get_theme_stylebox(&"normal" if\
+						path_command.large_arc_flag == 0 else &"pressed"), rect)
+				draw_string(code_font, rect.position + Vector2(5, 14),
+						NumberArrayParser.num_to_text(path_command.large_arc_flag),
+						HORIZONTAL_ALIGNMENT_LEFT, rect.size.x, 14,
+						flag_field.get_theme_color(&"font_color" if\
+						path_command.large_arc_flag == 0 else &"font_pressed_color"))
+				rect.position.x = rect.end.x + 4
+				draw_style_box(flag_field.get_theme_stylebox(&"normal" if\
+						path_command.sweep_flag == 0 else &"pressed"), rect)
+				draw_string(code_font, rect.position + Vector2(5, 14),
+						NumberArrayParser.num_to_text(path_command.sweep_flag),
+						HORIZONTAL_ALIGNMENT_LEFT, rect.size.x, 14,
+						flag_field.get_theme_color(&"font_color" if\
+						path_command.sweep_flag == 0 else &"font_pressed_color"))
+				flag_field.free()
+				rect.position.x = rect.end.x + 4
+				rect.size.x = 44
+				draw_numfield(rect, stylebox, &"x", font_size, font_color)
+				rect.position.x = rect.end.x + 3
+				draw_numfield(rect, stylebox, &"y", font_size, font_color)
+			"C": draw_numfield_arr([3, 4, 3, 4, 3], [&"x1", &"y1", &"x2", &"y2", &"x", &"y"])
+			"Q": draw_numfield_arr([3, 4, 3], [&"x1", &"y1", &"x", &"y"])
+			"S": draw_numfield_arr([3, 4, 3], [&"x2", &"y2", &"x", &"y"])
+			"M", "L", "T": draw_numfield_arr([3], [&"x", &"y"])
+			"H":
+				var stylebox := get_theme_stylebox(&"normal", &"MiniLineEdit")
+				var font_size := get_theme_font_size(&"font_size", &"MiniLineEdit")
+				var font_color := get_theme_color(&"font_outline_color", &"MiniLineEdit")
+				var rect := Rect2(Vector2(25, 2), Vector2(44, 18))
+				draw_numfield(rect, stylebox, &"x", font_size, font_color)
+			"V":
+				var stylebox := get_theme_stylebox(&"normal", &"MiniLineEdit")
+				var font_size := get_theme_font_size(&"font_size", &"MiniLineEdit")
+				var font_color := get_theme_color(&"font_outline_color", &"MiniLineEdit")
+				var rect := Rect2(Vector2(25, 2), Vector2(44, 18))
+				draw_numfield(rect, stylebox, &"y", font_size, font_color)
 
-# When the mouse enters the path command editor, wake it up by adding the real nodes.
+func draw_numfield(rect: Rect2, stylebox: StyleBoxFlat, property: StringName,\
+font_size: int, font_color: Color) -> void:
+	draw_style_box(stylebox, rect)
+	draw_string(code_font, rect.position + Vector2(4, 13), NumberArrayParser.num_to_text(
+			path_command.get(property)), HORIZONTAL_ALIGNMENT_LEFT, rect.size.x - 4,
+			font_size, font_color)
+
+func draw_numfield_arr(spacings: Array, names: Array[StringName]) -> void:
+	var stylebox := get_theme_stylebox(&"normal", &"MiniLineEdit")
+	var font_size := get_theme_font_size(&"font_size", &"MiniLineEdit")
+	var font_color := get_theme_color(&"font_outline_color", &"MiniLineEdit")
+	var rect := Rect2(Vector2(25, 2), Vector2(44, 18))
+	draw_numfield(rect, stylebox, names[0], font_size, font_color)
+	for i in spacings.size():
+		rect.position.x = rect.end.x + spacings[i]
+		draw_numfield(rect, stylebox, names[i + 1], font_size, font_color)
+
+# Prevents the relative button from selecting a whole subpath when double-clicked.
+func _on_relative_button_gui_input(event: InputEvent) -> void:
+	if active:
+		if event is InputEventMouseButton and event.double_click:
+			relative_button.accept_event()
+			relative_button.pressed.emit()
+
+# Prevents the action button from selecting a whole subpath when double-clicked.
+func _on_action_button_gui_input(event: InputEvent) -> void:
+	if active:
+		if event is InputEventMouseButton and event.double_click:
+			action_button.accept_event()
+			action_button.pressed.emit()
+
+# When the mouse enters the path command editor, activate it by adding the real nodes.
 # Otherwise, the nodes should only be drawn. This is important for performance.
 func _on_mouse_entered() -> void:
+	if active:
+		return
+	
+	active = true
 	# Setup the relative button.
 	relative_button = Button.new()
 	relative_button.focus_mode = Control.FOCUS_NONE
 	relative_button.mouse_filter = Control.MOUSE_FILTER_PASS
 	relative_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-	relative_button.add_theme_font_override(&"font", code_font)
-	relative_button.add_theme_font_size_override(&"font_size", 13)
 	relative_button.text = cmd_char
 	relative_button.begin_bulk_theme_override()
+	relative_button.add_theme_font_override(&"font", code_font)
+	relative_button.add_theme_font_size_override(&"font_size", 13)
+	relative_button.add_theme_color_override(&"font_color", Color(1, 1, 1))
 	if Utils.is_string_upper(cmd_char):
 		relative_button.tooltip_text = "%s (%s)" %\
 				[Utils.path_command_char_dict[cmd_char.to_upper()], tr(&"Absolute")]
@@ -321,6 +233,7 @@ func _on_mouse_entered() -> void:
 	relative_button.end_bulk_theme_override()
 	add_child(relative_button)
 	relative_button.pressed.connect(_on_relative_button_pressed)
+	relative_button.gui_input.connect(_on_relative_button_gui_input)
 	relative_button.position = Vector2(3, 2)
 	relative_button.size = Vector2(18, size.y - 4)
 	# Setup the action button.
@@ -332,16 +245,75 @@ func _on_mouse_entered() -> void:
 	action_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	add_child(action_button)
 	action_button.pressed.connect(_on_action_button_pressed)
+	action_button.gui_input.connect(_on_action_button_gui_input)
 	action_button.position = Vector2(size.x - 21, 2)
-	action_button.size = Vector2(18, 18)
-	# Update the graphics.
+	action_button.size = Vector2(size.y - 4, size.y - 4)
+	# Setup the fields.
+	match cmd_char.to_upper():
+		"A":
+			var field_rx: BetterLineEdit = add_numfield()
+			var field_ry: BetterLineEdit = add_numfield()
+			var field_rot: BetterLineEdit = add_numfield()
+			field_rx.mode = field_rx.Mode.ONLY_POSITIVE
+			field_ry.mode = field_ry.Mode.ONLY_POSITIVE
+			field_rot.mode = field_rot.Mode.HALF_ANGLE
+			fields = [field_rx, field_ry, field_rot, FlagField.instantiate(),
+					FlagField.instantiate(), add_numfield(), add_numfield()]
+			setup_fields([3, 4, 4, 4, 4, 3],
+					["rx", "ry", "rot", "large_arc_flag", "sweep_flag", "x", "y"])
+		"C":
+			fields = [add_numfield(), add_numfield(), add_numfield(), add_numfield(),
+					add_numfield(), add_numfield()]
+			setup_fields([3, 4, 3, 4, 3], ["x1", "y1", "x2", "y2", "x", "y"])
+		"Q":
+			fields = [add_numfield(), add_numfield(), add_numfield(), add_numfield()]
+			setup_fields([3, 4, 3], ["x1", "y1", "x", "y"])
+		"S":
+			fields = [add_numfield(), add_numfield(), add_numfield(), add_numfield()]
+			setup_fields([3, 4, 3], ["x2", "y2", "x", "y"])
+		"M", "L", "T":
+			fields = [add_numfield(), add_numfield()]
+			setup_fields([3], ["x", "y"])
+		"H":
+			fields = [add_numfield()]
+			setup_fields([], ["x"])
+		"V":
+			fields = [add_numfield()]
+			setup_fields([], ["y"])
+		"Z": fields.clear()
+	# Remove the graphics, as now there are real nodes.
 	queue_redraw()
 
+func setup_fields(spacings: Array, names: Array) -> void:
+	for i in fields.size():
+		var property_string: String = names[i]
+		var property_stringname := StringName(property_string)
+		fields[i].set_value(path_command.get(property_stringname))
+		fields[i].tooltip_text = property_string
+		fields[i].value_changed.connect(update_value.bind(property_stringname))
+		add_child(fields[i])
+		fields[i].position.y = 2
+	
+	fields[0].position.x = 25
+	for i in fields.size() - 1:
+		fields[i + 1].position.x = fields[i].get_end().x + spacings[i]
+
 func _on_mouse_exited() -> void:
-	relative_button.queue_free()
-	action_button.queue_free()
 	Indications.remove_inner_hovered(tid, cmd_idx)
-	queue_redraw()
+	
+	if active:
+		active = false
+		for field in fields:
+			if field.has_focus():
+				active = true
+		# Should switch out the controls for fake outs. This is safe even when
+		# you've focused a BetterLineEdit, because it pauses the tree.
+		if not active:
+			for field in fields:
+				field.queue_free()
+			relative_button.queue_free()
+			action_button.queue_free()
+			queue_redraw()
 
 func _on_action_button_pressed() -> void:
 	var viewport := get_viewport()

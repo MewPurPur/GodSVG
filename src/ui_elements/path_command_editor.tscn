@@ -1,7 +1,6 @@
-[gd_scene load_steps=9 format=3 uid="uid://dcdrc3r60bgg3"]
+[gd_scene load_steps=8 format=3 uid="uid://dcdrc3r60bgg3"]
 
 [ext_resource type="Script" path="res://src/ui_elements/path_command_editor.gd" id="1_om2fk"]
-[ext_resource type="Script" path="res://src/ui_elements/CustomSpacedHBoxContainer.gd" id="3_p38uu"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_g5128"]
 content_margin_left = 5.0
@@ -112,12 +111,6 @@ absolute_button_pressed = SubResource("StyleBoxFlat_sbcff")
 relative_button_normal = SubResource("StyleBoxFlat_gs8ph")
 relative_button_hovered = SubResource("StyleBoxFlat_tyaol")
 relative_button_pressed = SubResource("StyleBoxFlat_cbymw")
-
-[node name="Fields" type="Container" parent="."]
-layout_mode = 2
-offset_right = 38.0
-offset_bottom = 18.0
-script = ExtResource("3_p38uu")
 
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
