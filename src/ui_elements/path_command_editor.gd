@@ -46,9 +46,6 @@ func add_numfield() -> BetterLineEdit:
 	new_field.focus_entered.connect(Indications.normal_select.bind(tid, cmd_idx))
 	return new_field
 
-func add_flagfield() -> Button:
-	return FlagField.instantiate()
-
 
 func _gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion and event.button_mask == 0:
@@ -260,8 +257,8 @@ func _on_mouse_entered() -> void:
 			field_rx.mode = field_rx.Mode.ONLY_POSITIVE
 			field_ry.mode = field_ry.Mode.ONLY_POSITIVE
 			field_rot.mode = field_rot.Mode.HALF_ANGLE
-			fields = [field_rx, field_ry, field_rot, add_flagfield(), add_flagfield(),
-					add_numfield(), add_numfield()]
+			fields = [field_rx, field_ry, field_rot, FlagField.instantiate(),
+					FlagField.instantiate(), add_numfield(), add_numfield()]
 			setup_fields([3, 4, 4, 4, 4, 3],
 					["rx", "ry", "rot", "large_arc_flag", "sweep_flag", "x", "y"])
 		"C":
