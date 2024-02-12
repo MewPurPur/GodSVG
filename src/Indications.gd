@@ -22,7 +22,7 @@ signal selection_changed
 signal proposed_drop_changed
 
 # The viewport listens for this signal to put you in handle-placing mode.
-signal added_path_handle
+signal added_handle
 
 # The PackedInt32Array holds the hierarchical orders. TID means Tag ID.
 # For example, the 5th child of the 2nd child of the root tag would be (1, 4).
@@ -376,14 +376,14 @@ func _unhandled_input(event: InputEvent) -> void:
 								return
 							path_attrib.insert_command(path_cmd_count, path_cmd_char)
 							normal_select(selected_tids[0], path_cmd_count)
-							added_path_handle.emit()
+							added_handle.emit()
 							break
 			return
 		
 		for action_name in path_actions_dict.keys():
 			if event.is_action_pressed(action_name):
 				insert_inner_after_selection(path_actions_dict[action_name])
-				added_path_handle.emit()
+				added_handle.emit()
 				break
 
 
