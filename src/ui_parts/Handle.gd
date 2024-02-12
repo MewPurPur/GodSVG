@@ -4,7 +4,6 @@ class_name Handle extends RefCounted
 enum Display {BIG, SMALL}
 var display_mode := Display.BIG
 
-var tag: Tag
 var tid := PackedInt32Array()
 var pos: Vector2
 var transform : Transform2D
