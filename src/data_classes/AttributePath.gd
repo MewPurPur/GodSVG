@@ -90,28 +90,42 @@ func insert_command(idx: int, command_char: String) -> void:
 
 
 func convert_command(idx: int, command_char: String) -> void:
-	var old_command: PathCommand = _commands[idx]
-	if old_command.command_char == command_char:
+	var old_cmd: PathCommand = _commands[idx]
+	if old_cmd.command_char == command_char:
 		return
 	
-	var new_command: PathCommand =\
-			PathCommand.translation_dict[command_char.to_upper()].new()
+	var cmd_absolute_char := command_char.to_upper()
+	var new_cmd: PathCommand = PathCommand.translation_dict[cmd_absolute_char].new()
 	_commands.remove_at(idx)
-	_commands.insert(idx, new_command)
+	_commands.insert(idx, new_cmd)
 	for property in [&"x", &"y", &"x1", &"y1", &"x2", &"y2"]:
-		if property in old_command and property in new_command:
-			new_command[property] = old_command[property]
+		if property in old_cmd and property in new_cmd:
+			new_cmd[property] = old_cmd[property]
 	
 	var is_relative := Utils.is_string_lower(command_char)
 	
-	if &"x" in new_command and not &"x" in old_command:
-		new_command.x = 0.0 if is_relative else old_command.start.x
-	if &"y" in new_command and not &"y" in old_command:
-		new_command.y = 0.0 if is_relative else old_command.start.y
+	if &"x" in new_cmd and not &"x" in old_cmd:
+		new_cmd.x = 0.0 if is_relative else old_cmd.start.x
+	if &"y" in new_cmd and not &"y" in old_cmd:
+		new_cmd.y = 0.0 if is_relative else old_cmd.start.y
+	
+	match cmd_absolute_char:
+		"C":
+			new_cmd.x1 = lerpf(0.0 if is_relative else old_cmd.start.x, new_cmd.x, 1/3.0)
+			new_cmd.y1 = lerpf(0.0 if is_relative else old_cmd.start.y, new_cmd.y, 1/3.0)
+			new_cmd.x2 = lerpf(0.0 if is_relative else old_cmd.start.x, new_cmd.x, 2/3.0)
+			new_cmd.y2 = lerpf(0.0 if is_relative else old_cmd.start.y, new_cmd.y, 2/3.0)
+		"S":
+			new_cmd.x2 = lerpf(0.0 if is_relative else old_cmd.start.x, new_cmd.x, 2/3.0)
+			new_cmd.y2 = lerpf(0.0 if is_relative else old_cmd.start.y, new_cmd.y, 2/3.0)
+		"Q":
+			new_cmd.x1 = lerpf(0.0 if is_relative else old_cmd.start.x, new_cmd.x, 0.5)
+			new_cmd.y1 = lerpf(0.0 if is_relative else old_cmd.start.y, new_cmd.y, 0.5)
 	
 	if is_relative:
 		_commands[idx].toggle_relative()
 	sync_after_commands_change()
+
 
 func delete_commands(indices: Array[int]) -> void:
 	if indices.is_empty():
