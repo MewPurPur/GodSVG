@@ -121,13 +121,13 @@ t_attrib: AttributeTransform) -> Array[Handle]:
 	var path_handles: Array[Handle] = []
 	for idx in data_attrib.get_command_count():
 		var path_command := data_attrib.get_command(idx)
-		if path_command.command_char.to_upper() != "Z":
+		if not path_command.command_char in "Zz":
 			path_handles.append(PathHandle.new(tid, data_attrib, t_attrib, idx))
-			if path_command.command_char.to_upper() in "CQ":
+			if path_command.command_char in "CcQq":
 				var tangent := PathHandle.new(tid, data_attrib, t_attrib, idx, &"x1", &"y1")
 				tangent.display_mode = Handle.Display.SMALL
 				path_handles.append(tangent)
-			if path_command.command_char.to_upper() in "CS":
+			if path_command.command_char in "CcSs":
 				var tangent := PathHandle.new(tid, data_attrib, t_attrib, idx, &"x2", &"y2")
 				tangent.display_mode = Handle.Display.SMALL
 				path_handles.append(tangent)
@@ -307,7 +307,7 @@ func _draw() -> void:
 			"path":
 				var pathdata: AttributePath = attribs.d
 				if pathdata.get_command_count() == 0 or\
-				pathdata.get_command(0).command_char.to_upper() != "M":
+				not pathdata.get_command(0).command_char in "Mm":
 					continue  # Nothing to draw.
 				
 				var current_mode := Utils.InteractionType.NONE
@@ -360,18 +360,9 @@ func _draw() -> void:
 							# Shorthand cubic Bezier curve contour.
 							if cmd_idx == 0:
 								break
-							var prev_cmd := pathdata.get_command(cmd_idx - 1)
 							
 							var v := Vector2(cmd.x, cmd.y)
-							var v1 := Vector2() if relative else cmd.start
-							if prev_cmd.command_char.to_upper() in "CS":
-								var prev_control_pt := Vector2(prev_cmd.x2, prev_cmd.y2)
-								if prev_cmd.relative:
-									v1 = cmd.start - prev_control_pt - prev_cmd.start if relative\
-											else cmd.start * 2 - prev_control_pt - prev_cmd.start
-								else:
-									v1 = cmd.start - prev_control_pt if relative\
-											else cmd.start * 2 - prev_control_pt
+							var v1 := pathdata.get_implied_S_control(cmd_idx)
 							var v2 := Vector2(cmd.x2, cmd.y2)
 							
 							var cp1 := cmd.start
@@ -394,51 +385,19 @@ func _draw() -> void:
 							tangent_points.append_array(PackedVector2Array([cp1, cp2, cp2, cp3]))
 						"T":
 							# Shorthand quadratic Bezier curve contour.
-							var prevQ_idx := cmd_idx - 1
-							var prevQ_cmd := pathdata.get_command(prevQ_idx)
-							while prevQ_idx >= 0:
-								if prevQ_cmd.command_char.to_upper() != "T":
-									break
-								elif prevQ_cmd.command_char.to_upper() != "T":
-									# Invalid T is drawn as a line.
-									var end := cmd.start + Vector2(cmd.x, cmd.y) if relative\
-											else Vector2(cmd.x, cmd.y)
-									points = PackedVector2Array([cmd.start, end])
-									prevQ_idx = -1
-									break
-								else:
-									prevQ_idx -= 1
-									prevQ_cmd = pathdata.get_command(prevQ_idx)
-							if prevQ_idx == -1:
-								continue
-							
-							var prevQ_x: float = prevQ_cmd.x if &"x" in prevQ_cmd\
-									else prevQ_cmd.start.x
-							var prevQ_y: float = prevQ_cmd.y if &"y" in prevQ_cmd\
-									else prevQ_cmd.start.y
-							var prevQ_v := Vector2(prevQ_x, prevQ_y)
-							var prevQ_v1 := Vector2(prevQ_cmd.x1, prevQ_cmd.y1) if\
-									prevQ_cmd.command_char.to_upper() == "Q" else prevQ_v
-							var prevQ_end := prevQ_cmd.start + prevQ_v\
-									if prevQ_cmd.relative else prevQ_v
-							var prevQ_control_pt := prevQ_cmd.start + prevQ_v1\
-									if prevQ_cmd.relative else prevQ_v1
-							
-							
 							var v := Vector2(cmd.x, cmd.y)
-							var v1 := prevQ_end * 2 - prevQ_control_pt
-							for T_idx in range(prevQ_idx + 1, cmd_idx):
-								var T_cmd := pathdata.get_command(T_idx)
-								var T_v := Vector2(T_cmd.x, T_cmd.y)
-								var T_end := T_cmd.start + T_v if T_cmd.relative else T_v
-								v1 = T_end * 2 - v1
+							var v1 := pathdata.get_implied_T_control(cmd_idx)
 							
 							var cp1 := cmd.start
-							var cp2 := v1
+							var cp2 := v1 + cp1 if relative else v1
 							var cp3 := cp1 + v if relative else v
 							
-							points = Utils.get_quadratic_bezier_points(cp1, cp2, cp3)
-							tangent_points.append_array(PackedVector2Array([cp1, cp2, cp2, cp3]))
+							if is_nan(cp2.x) and is_nan(cp2.y):
+								points = PackedVector2Array([cp1, cp3])
+							else:
+								points = Utils.get_quadratic_bezier_points(cp1, cp2, cp3)
+								tangent_points.append_array(
+										PackedVector2Array([cp1, cp2, cp2, cp3]))
 						"A":
 							# Elliptical arc contour.
 							var start := cmd.start
@@ -521,7 +480,7 @@ func _draw() -> void:
 							var prev_M_idx := cmd_idx - 1
 							var prev_M_cmd := pathdata.get_command(prev_M_idx)
 							while prev_M_idx >= 0:
-								if prev_M_cmd.command_char.to_upper() == "M":
+								if prev_M_cmd.command_char in "Mm":
 									break
 								prev_M_idx -= 1
 								prev_M_cmd = pathdata.get_command(prev_M_idx)
