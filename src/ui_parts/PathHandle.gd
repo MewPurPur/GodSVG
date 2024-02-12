@@ -7,7 +7,7 @@ var command_index: int
 var x_param: StringName
 var y_param: StringName
 
-func _init(id: PackedInt32Array, path_ref: Attribute,t_ref: AttributeTransform,
+func _init(id: PackedInt32Array, path_ref: Attribute, t_ref: AttributeTransform,
 command_idx: int, x_name := &"x", y_name := &"y") -> void:
 	path_attribute = path_ref
 	t_attribute = t_ref

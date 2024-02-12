@@ -52,7 +52,7 @@ func _ready() -> void:
 	Indications.selection_changed.connect(queue_redraw)
 	Indications.hover_changed.connect(queue_redraw)
 	Indications.zoom_changed.connect(queue_redraw)
-	Indications.added_path_handle.connect(move_selected_to_mouse)
+	Indications.added_handle.connect(move_selected_to_mouse)
 	queue_update()
 
 
@@ -133,22 +133,18 @@ t_attrib: AttributeTransform) -> Array[Handle]:
 				path_handles.append(tangent)
 	return path_handles
 
-# The place where these are used, a tag is already at hand, so no need to find it.
+# Helpers for generating the handles when the tag is at hand.
 func generate_xy_handle(tid: PackedInt32Array, tag: Tag, x_attrib_name: String,\
 y_attrib_name: String, t_attrib_name: String) -> XYHandle:
-	var new_handle := XYHandle.new(tid, tag.attributes[x_attrib_name],
+	return XYHandle.new(tid, tag.attributes[x_attrib_name],
 			tag.attributes[y_attrib_name], tag.attributes[t_attrib_name])
-	new_handle.tag = tag
-	return new_handle
 
 func generate_delta_handle(tid: PackedInt32Array, tag: Tag, x_attrib_name: String,\
 y_attrib_name: String, t_attrib_name: String, delta_attrib_name: String,\
 horizontal: bool) -> DeltaHandle:
-	var new_handle := DeltaHandle.new(tid, tag.attributes[x_attrib_name],
+	return DeltaHandle.new(tid, tag.attributes[x_attrib_name],
 			tag.attributes[y_attrib_name], tag.attributes[t_attrib_name],
 			tag.attributes[delta_attrib_name], horizontal)
-	new_handle.tag = tag
-	return new_handle
 
 
 func _draw() -> void:
@@ -650,7 +646,7 @@ func tid_is_selected(tid: PackedInt32Array, cmd_idx := -1) -> bool:
 var dragged_handle: Handle = null
 var hovered_handle: Handle = null
 var was_handle_moved := false
-var should_deselect_all = false
+var should_deselect_all := false
 
 func _unhandled_input(event: InputEvent) -> void:
 	respond_to_input_event(event)
@@ -768,19 +764,18 @@ func find_nearest_handle(event_pos: Vector2) -> Handle:
 	return nearest_handle
 
 func move_selected_to_mouse() -> void:
+	if not get_viewport_rect().has_point(get_viewport().get_mouse_position()):
+		return
+	
 	for handle in handles:
 		if handle.tid == Indications.semi_selected_tid and handle is PathHandle and\
 		handle.command_index == Indications.inner_selections[0]:
-			if not get_viewport_rect().has_point(get_viewport().get_mouse_position()):
-				return
-			
 			Indications.set_inner_hovered(handle.tid, handle.command_index)
 			dragged_handle = handle
 			# Move the handle that's being dragged.
 			var mouse_pos := get_global_mouse_position()
-			
-			var snap_size := absf(GlobalSettings.save_data.snap)
-			if GlobalSettings.save_data.snap > 0.0:
+			var snap_size := GlobalSettings.save_data.snap
+			if snap_size > 0.0:
 				mouse_pos = mouse_pos.snapped(Vector2(snap_size, snap_size))
 			
 			var new_pos := dragged_handle.transform.affine_inverse() *\
