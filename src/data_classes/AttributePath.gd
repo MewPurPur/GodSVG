@@ -83,7 +83,7 @@ func get_implied_S_control(cmd_idx: int) -> Vector2:
 	if prev_cmd.command_char in "CcSs":
 		var prev_control_pt := Vector2(prev_cmd.x2, prev_cmd.y2)
 		v = (cmd.start if cmd.relative else cmd.start * 2) - prev_control_pt
-		if not prev_cmd.relative:
+		if prev_cmd.relative:
 			v -= prev_cmd.start
 	return v
 
