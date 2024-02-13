@@ -11,7 +11,7 @@ static func path_data_to_arrays(path_text: String) -> Array[Array]:
 	var prev_command := ""
 	var curr_command_args: Array = []
 	var args_left := 0
-	var comma_exhausted := false
+	var comma_exhausted := false  # Can ignore many whitespaces, but only one comma.
 	
 	var idx := -1
 	while idx < path_text.length() - 1:

@@ -52,8 +52,8 @@ static func text_to_transform_list(text: String) -> Array[AttributeTransform.Tra
 		var nums: Array[float] = []
 		
 		# Parse the numbers.
-		# TODO maybe we can do something about this being shared with PathDataParser.
-		var comma_exhausted := false
+		# TODO maybe this can be moved to NumberArrayParser.
+		var comma_exhausted := false    # Can ignore many whitespaces, but only one comma.
 		var idx := -1
 		while idx < transform_params.length() - 1:
 			idx += 1
