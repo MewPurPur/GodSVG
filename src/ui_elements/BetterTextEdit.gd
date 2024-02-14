@@ -110,9 +110,9 @@ func _gui_input(event: InputEvent) -> void:
 			accept_event()
 
 
-# I'd prefer to block non-ASCII inputs. SVG syntax is ASCII only, and while
+# I'd prefer to block non-ASCII inputs in SVG code. SVG syntax is ASCII-only, and while
 # text blocks and comments allow non-ASCII, they are still difficult to deal with
-# because they are two bytes long. <text> tags make the situation a whole lot harder,
+# because they are 2-4 bytes long. <text> tags make the situation a whole lot harder,
 # but for now they are not supported. Maybe in some future version I'll have them
 # be translated directly into paths or have an abstraction over them, I don't know.
 # Either way, not planning to support UTF-8, so I block it if the user tries to type it.
