@@ -13,7 +13,6 @@ func autoformat(text: String) -> String:
 	else:
 		return text
 
-
 static func is_valid(color: String) -> bool:
 	return is_valid_hex(color) or is_valid_rgb(color) or is_valid_named(color) or\
 			is_valid_url(color)
@@ -38,8 +37,9 @@ static func is_valid_rgb(color: String) -> bool:
 
 static func is_valid_named(color: String) -> bool:
 	color = color.strip_edges()
-	return color == "none" or AttributeColor.named_colors.has(color)
+	return color in ["none", "currentcolor"] or AttributeColor.named_colors.has(color)
 
+# TODO Apply https://svgwg.org/svg2-draft/struct.html#Core.attrib
 static func is_valid_url(color: String) -> bool:
 	color = color.strip_edges()
 	if not color.begins_with("url(") or not color.ends_with(")"):
