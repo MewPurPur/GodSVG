@@ -42,17 +42,10 @@ static func is_valid_named(color: String) -> bool:
 
 static func is_valid_url(color: String) -> bool:
 	color = color.strip_edges()
-	if not color.begins_with("url(#") or not color.ends_with(")"):
+	if not color.begins_with("url(") or not color.ends_with(")"):
 		return false
-	
-	var id := get_url(color)
-	if id.is_empty():
-		return false
-	
-	return true
-
-static func get_url(color: String) -> String:
-	return color.substr(5, color.length() - 6)
+	var id_part := color.substr(4, color.length() - 5).strip_edges()
+	return IDParser.is_valid_id(id_part.trim_prefix("#"))
 
 # URL doesn't have a color interpretation, so it'll give the backup.
 static func string_to_color(color: String, backup := Color.BLACK) -> Color:
