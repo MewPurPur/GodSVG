@@ -35,6 +35,8 @@ In the inspector, you can hover each tag's fields to see which attribute they re
 
 Pathdata attributes have a very complex editor that allows for selecting individual path commands with a lot of similarities to tags. You can right-click the path command and click "Insert After", then pick the one you want. If you're used to SVG paths, you can also use the M, L, H, V, Z, A, Q, T, C, S keys to insert a new path command after a selected one; pressing Shift will also make the new command absolute instead of relative.
 
+Multiple tags or path commands can be selected as usual with Ctrl+Click and Shift+Click. Additionally, double-clicking a path command will select the whole subpath it's in.
+
 To export the graphic, use the Export button on top of the code editor.
 
 ## Community and contributing
