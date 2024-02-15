@@ -9,8 +9,8 @@ func _init(new_default: String, new_init := "") -> void:
 
 func autoformat(text: String) -> String:
 	if GlobalSettings.color_enable_autoformatting:
-		var formatted_text := ColorParser.format_text(text)
-		return default if are_colors_same(formatted_text, default) else formatted_text
+		var new_text := ColorParser.format_text(text)
+		return default if AttributeColor.are_colors_same(new_text, default) else new_text
 	else:
 		return text
 
