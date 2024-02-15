@@ -14,7 +14,7 @@ func _init() -> void:
 		"transform": AttributeTransform.new(),
 		"d": AttributePath.new(),
 		"opacity": AttributeNumeric.new(AttributeNumeric.Mode.NFLOAT, "1"),
-		"fill": AttributeColor.new("#000"),
+		"fill": AttributeColor.new("black"),
 		"fill-opacity": AttributeNumeric.new(AttributeNumeric.Mode.NFLOAT, "1"),
 		"stroke": AttributeColor.new("none"),
 		"stroke-opacity": AttributeNumeric.new(AttributeNumeric.Mode.NFLOAT, "1"),
