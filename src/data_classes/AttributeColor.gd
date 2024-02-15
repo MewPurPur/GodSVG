@@ -1,11 +1,14 @@
 ## An attribute representing a color string, or an url to an ID.
 class_name AttributeColor extends Attribute
 
-# No color representation for this attribute type. There are too many quirks.
+# No direct color representation for this attribute type. There are too many quirks.
 
 func _init(new_default: String, new_init := "") -> void:
 	default = new_default
 	set_value(new_init if !new_init.is_empty() else new_default, SyncMode.SILENT)
+
+func set_value(new_value: String, sync_mode := SyncMode.LOUD) -> void:
+	super(new_value if AttributeColor.is_valid(new_value) else default, sync_mode)
 
 func autoformat(text: String) -> String:
 	if GlobalSettings.color_enable_autoformatting:
@@ -14,13 +17,21 @@ func autoformat(text: String) -> String:
 	else:
 		return text
 
+
+static func add_hash_if_hex(color: String) -> String:
+	color = color.strip_edges()
+	if color.is_valid_html_color() and not color.begins_with("#"):
+		color = "#" + color
+	return color
+
 static func is_valid(color: String) -> bool:
 	return is_valid_hex(color) or is_valid_rgb(color) or is_valid_named(color) or\
 			is_valid_url(color)
 
 static func is_valid_hex(color: String) -> bool:
 	color = color.strip_edges()
-	return color.is_valid_html_color()
+	return color.begins_with("#") and color.is_valid_html_color() and\
+			(color.length() == 4 or color.length() == 7)
 
 static func is_valid_rgb(color: String) -> bool:
 	color = color.strip_edges()
@@ -40,13 +51,12 @@ static func is_valid_named(color: String) -> bool:
 	color = color.strip_edges()
 	return color in other_named_colors or AttributeColor.named_colors.has(color)
 
-# TODO Apply https://svgwg.org/svg2-draft/struct.html#Core.attrib
 static func is_valid_url(color: String) -> bool:
 	color = color.strip_edges()
 	if not color.begins_with("url(") or not color.ends_with(")"):
 		return false
-	var id_part := color.substr(4, color.length() - 5).strip_edges()
-	return IDParser.is_valid_id(id_part.trim_prefix("#"))
+	var id := color.substr(4, color.length() - 5).strip_edges().trim_prefix("#")
+	return IDParser.get_id_validity(id) != IDParser.ValidityLevel.INVALID
 
 # URL doesn't have a color interpretation, so it'll give the backup.
 static func string_to_color(color: String, backup := Color.BLACK) -> Color:
