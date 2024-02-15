@@ -56,7 +56,6 @@ func export(path: String) -> void:
 		path += "." + extension
 	
 	GlobalSettings.modify_save_data(&"last_used_dir", path.get_base_dir())
-	GlobalSettings.modify_save_data(&"current_file_path", path)
 	
 	match extension:
 		"png":
@@ -69,6 +68,7 @@ func export(path: String) -> void:
 			img.save_png(path)
 		_:
 			# SVG / fallback.
+			GlobalSettings.modify_save_data(&"current_file_path", path)
 			SVG.save_svg_to_file(path)
 	queue_free()
 
