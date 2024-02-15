@@ -18,11 +18,11 @@ func set_value(new_value: String, update_type := Utils.UpdateType.REGULAR):
 		sync(attribute.get_value())
 		return
 	
-	if AttributeColor.color_equals_hex(new_value, attribute.default):
-		new_value = attribute.default
-	
 	if AttributeColor.is_valid_hex(new_value) and new_value[0] != "#":
 		new_value = "#" + new_value
+	if AttributeColor.are_colors_same(new_value, attribute.default):
+		new_value = attribute.default
+	
 	sync(attribute.autoformat(new_value))
 	# Update the attribute.
 	if attribute.get_value() != new_value or update_type == Utils.UpdateType.FINAL:
