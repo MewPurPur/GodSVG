@@ -71,7 +71,7 @@ func update_palettes(search_text := "") -> void:
 			swatch.pressed.connect(pick_palette_color.bind(named_color.color))
 			swatch_container.add_child(swatch)
 			swatches_list.append(swatch)
-			if swatch.named_color.color == current_value:
+			if AttributeColor.are_colors_same("#" + swatch.named_color.color, current_value):
 				swatch.disabled = true
 				swatch.mouse_default_cursor_shape = Control.CURSOR_ARROW
 		palette_container.add_child(swatch_container)
