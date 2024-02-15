@@ -1,10 +1,15 @@
 class_name IDParser extends RefCounted
 
-# XML's NameToken specification.
-static func is_valid_id(id: String) -> bool:
-	if id.is_empty():
-		return false
+# Invalid XML nametokens are discouraged but still valid.
+# TODO Have logic for displaying them as some kind of warning, say with yellow text.
+enum ValidityLevel {VALID, INVALID_XML_NAMETOKEN, INVALID}
+
+
+static func get_id_validity(id: String) -> ValidityLevel:
+	if id.is_empty() or id[0] == "#":
+		return ValidityLevel.INVALID
 	
+	var validity_level := ValidityLevel.VALID
 	for id_char in id:
 		if id_char in ":_-.":
 			continue
@@ -17,5 +22,9 @@ static func is_valid_id(id: String) -> bool:
 		(u >= 0x3001 and u <= 0xD7FF) or (u >= 0xF900 and u <= 0xFDCF) or\
 		(u >= 0xFDF0 and u <= 0xFFFD) or (u >= 0x10000 and u <= 0xEFFFF):
 			continue
-		return false
-	return true
+		
+		if id_char in " \n\r\t\r":
+			return ValidityLevel.INVALID
+		else:
+			validity_level = ValidityLevel.INVALID_XML_NAMETOKEN
+	return validity_level
