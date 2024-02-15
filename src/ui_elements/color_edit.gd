@@ -14,6 +14,7 @@ const checkerboard = preload("res://visual/icons/backgrounds/ColorButtonBG.svg")
 signal value_changed(new_value: String)
 var value: String:
 	set(new_value):
+		new_value = AttributeColor.add_hash_if_hex(new_value)
 		if AttributeColor.is_valid_hex(new_value) or\
 		AttributeColor.is_valid_named(new_value) or AttributeColor.is_valid_rgb(new_value):
 			new_value = new_value.trim_prefix("#")
@@ -29,8 +30,9 @@ func _ready() -> void:
 	sync(value)
 
 func is_color_valid_non_url(new_value: String) -> bool:
+	new_value = AttributeColor.add_hash_if_hex(new_value)
 	return AttributeColor.is_valid_named(new_value) or\
-		AttributeColor.is_valid_rgb(new_value) or AttributeColor.is_valid_hex(new_value)
+			AttributeColor.is_valid_hex(new_value) or AttributeColor.is_valid_rgb(new_value)
 
 func sync(new_value: String) -> void:
 	color_edit.remove_theme_color_override(&"font_color")

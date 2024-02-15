@@ -18,8 +18,7 @@ func set_value(new_value: String, update_type := Utils.UpdateType.REGULAR):
 		sync(attribute.get_value())
 		return
 	
-	if AttributeColor.is_valid_hex(new_value) and new_value[0] != "#":
-		new_value = "#" + new_value
+	new_value = AttributeColor.add_hash_if_hex(new_value)
 	if AttributeColor.are_colors_same(new_value, attribute.default):
 		new_value = attribute.default
 	
@@ -76,6 +75,9 @@ func _on_color_picked(new_color: String, close_picker: bool) -> void:
 		set_value(new_color, Utils.UpdateType.FINAL)
 	else:
 		set_value(new_color, Utils.UpdateType.INTERMEDIATE)
+
+func is_valid(text: String) -> bool:
+	return AttributeColor.is_valid(AttributeColor.add_hash_if_hex(text))
 
 
 func _on_button_resized() -> void:
