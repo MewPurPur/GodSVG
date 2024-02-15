@@ -9,7 +9,8 @@ func _init(new_default: String, new_init := "") -> void:
 
 func autoformat(text: String) -> String:
 	if GlobalSettings.color_enable_autoformatting:
-		return ColorParser.format_text(text)
+		var formatted_text := ColorParser.format_text(text)
+		return default if are_colors_same(formatted_text, default) else formatted_text
 	else:
 		return text
 
@@ -37,7 +38,7 @@ static func is_valid_rgb(color: String) -> bool:
 
 static func is_valid_named(color: String) -> bool:
 	color = color.strip_edges()
-	return color in ["none", "currentcolor"] or AttributeColor.named_colors.has(color)
+	return color in other_named_colors or AttributeColor.named_colors.has(color)
 
 # TODO Apply https://svgwg.org/svg2-draft/struct.html#Core.attrib
 static func is_valid_url(color: String) -> bool:
@@ -67,29 +68,46 @@ static func string_to_color(color: String, backup := Color.BLACK) -> Color:
 	else:
 		return backup
 
-static func color_equals_hex(color: String, hex: String) -> bool:
-	color = color.strip_edges()
-	if color == "none" or is_valid_url(color):
+static func are_colors_same(color1: String, color2: String) -> bool:
+	color1 = color1.strip_edges()
+	color2 = color2.strip_edges()
+	# Ensure that the two colors aren't the same,
+	# but of a type that can't be represented as hex.
+	if color1 == color2:
+		return true
+	elif color1 in other_named_colors or color2 in other_named_colors:
 		return false
+	elif is_valid_url(color1) != is_valid_url(color2):
+		return false
+	elif is_valid_url(color1) and is_valid_url(color2) and\
+	color1.substr(4, color1.length() - 5).strip_edges() ==\
+	color2.substr(4, color2.length() - 5).strip_edges():
+		return true
 	
-	# Ensure hex is 7-character for a baseline.
-	if hex.length() == 4:
-		if hex == color:
-			return true
-		hex = "#" + hex[1] + hex[1] + hex[2] + hex[2] + hex[3] + hex[3]
-	
-	if AttributeColor.is_valid_rgb(color):
-		var inside_brackets := color.substr(4, color.length() - 5)
-		var args := inside_brackets.split(",", false)
-		color = "#" +\
-				Color8(args[0].to_int(), args[1].to_int(), args[2].to_int()).to_html(false)
-	elif AttributeColor.is_valid_named(color):
-		color = AttributeColor.named_colors[color]
-	
-	return color == hex
+	# Represent both colors as 6-digit hex codes to serve as basis for comparison.
+	for i in 2:
+		var col: String = [color1, color2][i]
+		# Start of conversion logic.
+		if is_valid_rgb(col):
+			var inside_brackets := col.substr(4, col.length() - 5)
+			var args := inside_brackets.split(",", false)
+			col = Color8(args[0].to_int(), args[1].to_int(), args[2].to_int()).to_html(false)
+		elif is_valid_hex(col) and col.length() == 4:
+			col = col[1] + col[1] + col[2] + col[2] + col[3] + col[3]
+		elif is_valid_named(col):
+			col = named_colors[col]
+		col = col.trim_prefix("#")
+		# End of conversion logic.
+		if i == 0:
+			color1 = col
+		elif i == 1:
+			color2 = col
+	return color1 == color2
 
 
-const named_colors := {  # Dictionary{String: String}
+const other_named_colors = ["none", "currentColor"]
+
+const named_colors = {  # Dictionary{String: String}
 	"aliceblue": "#f0f8ff",
 	"antiquewhite": "#faebd7",
 	"aqua": "#00ffff",
