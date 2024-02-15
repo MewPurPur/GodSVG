@@ -14,7 +14,7 @@ const checkerboard = preload("res://visual/icons/backgrounds/ColorButtonBG.svg")
 
 func set_value(new_value: String, update_type := Utils.UpdateType.REGULAR):
 	# Validate the value.
-	if not AttributeColor.is_valid(new_value):
+	if not is_valid(new_value):
 		sync(attribute.get_value())
 		return
 	
@@ -86,7 +86,7 @@ func _on_button_resized() -> void:
 	queue_redraw()
 
 func _on_text_changed(new_text: String) -> void:
-	if AttributeColor.is_valid(new_text):
+	if is_valid(new_text):
 		color_edit.add_theme_color_override(&"font_color", Color(0.6, 1.0, 0.6))
 	else:
 		color_edit.add_theme_color_override(&"font_color", Color(1.0, 0.6, 0.6))
