@@ -13,7 +13,7 @@
 - **Optimized SVG output:** Generate clean and efficient SVG files.
 - **Accessible on mobile:** GodSVG aims to be usable on mobile devices.
 
-![image](https://github.com/MewPurPur/GodSVG/assets/85438892/e0fa4d0c-b962-4cc7-ac76-2cbc9cf77856)
+![image](https://github.com/MewPurPur/GodSVG/assets/85438892/a1a6a624-5c9f-47c4-bfc9-a9a2f44e1d9b)
 
 ## How to get it
 
