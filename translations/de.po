@@ -56,7 +56,7 @@ msgid "About…"
 msgstr "Über…"
 
 msgid "Documentation…"
-msgstr "Dokumentation"
+msgstr "Dokumentation…"
 
 msgid "Donate (Github)"
 msgstr "Spenden (Github)"
@@ -116,7 +116,7 @@ msgid "Delete"
 msgstr "Löschen"
 
 msgid "Insert Before"
-msgstr ""
+msgstr "Davor einsetzen"
 
 msgid "Insert After"
 msgstr "Danach einsetzen"
@@ -273,13 +273,13 @@ msgid "Paths"
 msgstr "Pfade"
 
 msgid "Transforms"
-msgstr ""
+msgstr "Transformationen"
 
 msgid "Add trailing newline"
-msgstr ""
+msgstr "Nachfolgenden Zeilenumbruch hinzufügen"
 
 msgid "Use shorthand tag syntax"
-msgstr ""
+msgstr "Kurzbezeichnung für Tags verwenden"
 
 msgid "Enable autoformatting"
 msgstr "Autoformatierung einschalten"
@@ -312,13 +312,13 @@ msgid "Minimize spacing"
 msgstr "Leerplatz minimieren"
 
 msgid "Remove spacing after flags"
-msgstr ""
+msgstr "Leerplätze nach Eigenschaften (flag) entfernen"
 
 msgid "Remove consecutive commands"
 msgstr "Aufeinanderfolgende Befehle entfernen"
 
 msgid "Remove unnecessary parameters"
-msgstr ""
+msgstr "Unnötige Parameter entfernen"
 
 msgid "Relative"
 msgstr "Relativ"
@@ -327,10 +327,10 @@ msgid "Absolute"
 msgstr "Absolut"
 
 msgid "Remove the association"
-msgstr ""
+msgstr "Dateizuordnung entfernen"
 
 msgid "Apply the matrix"
-msgstr ""
+msgstr "Die Matrix anwenden"
 
 msgid "Search color"
-msgstr ""
+msgstr "Farbe suchen"
