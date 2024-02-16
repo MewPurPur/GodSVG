@@ -3,6 +3,10 @@ class_name ColorParser extends RefCounted
 # The passed text should already be a valid color string.
 static func format_text(text: String) -> String:
 	text = text.strip_edges()
+	
+	if AttributeColor.is_valid_url(text):
+		return "url(" + text.substr(4, text.length() - 5).strip_edges() + ")"
+	
 	if GlobalSettings.color_convert_rgb_to_hex and AttributeColor.is_valid_rgb(text):
 		var inside_brackets := text.substr(4, text.length() - 5)
 		var args := inside_brackets.split(",", false)
@@ -10,7 +14,7 @@ static func format_text(text: String) -> String:
 				Color8(args[0].to_int(), args[1].to_int(), args[2].to_int()).to_html(false)
 	
 	if GlobalSettings.color_convert_named_to_hex and\
-	AttributeColor.is_valid_named(text) and text != "none":
+	AttributeColor.is_valid_named(text) and not text in AttributeColor.other_named_colors:
 		text = AttributeColor.named_colors[text]
 	
 	if GlobalSettings.color_use_shorthand_hex_code and text.length() == 7 and\

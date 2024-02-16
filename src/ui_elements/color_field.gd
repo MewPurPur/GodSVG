@@ -14,15 +14,14 @@ const checkerboard = preload("res://visual/icons/backgrounds/ColorButtonBG.svg")
 
 func set_value(new_value: String, update_type := Utils.UpdateType.REGULAR):
 	# Validate the value.
-	if not AttributeColor.is_valid(new_value):
+	if not is_valid(new_value):
 		sync(attribute.get_value())
 		return
 	
-	if AttributeColor.color_equals_hex(new_value, attribute.default):
+	new_value = AttributeColor.add_hash_if_hex(new_value)
+	if AttributeColor.are_colors_same(new_value, attribute.default):
 		new_value = attribute.default
 	
-	if AttributeColor.is_valid_hex(new_value) and new_value[0] != "#":
-		new_value = "#" + new_value
 	sync(attribute.autoformat(new_value))
 	# Update the attribute.
 	if attribute.get_value() != new_value or update_type == Utils.UpdateType.FINAL:
@@ -77,6 +76,9 @@ func _on_color_picked(new_color: String, close_picker: bool) -> void:
 	else:
 		set_value(new_color, Utils.UpdateType.INTERMEDIATE)
 
+func is_valid(text: String) -> bool:
+	return AttributeColor.is_valid(AttributeColor.add_hash_if_hex(text))
+
 
 func _on_button_resized() -> void:
 	# Not sure why this is needed, but the button doesn't have a correct size at first
@@ -84,7 +86,7 @@ func _on_button_resized() -> void:
 	queue_redraw()
 
 func _on_text_changed(new_text: String) -> void:
-	if AttributeColor.is_valid(new_text):
+	if is_valid(new_text):
 		color_edit.add_theme_color_override(&"font_color", Color(0.6, 1.0, 0.6))
 	else:
 		color_edit.add_theme_color_override(&"font_color", Color(1.0, 0.6, 0.6))

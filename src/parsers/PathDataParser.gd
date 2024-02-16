@@ -2,22 +2,22 @@ class_name PathDataParser extends RefCounted
 
 const translation_dict = PathCommand.translation_dict
 
-static func parse_path_data(path_text: String) -> Array[PathCommand]:
-	return path_commands_from_parsed_data(path_data_to_arrays(path_text))
+static func parse_path_data(text: String) -> Array[PathCommand]:
+	return path_commands_from_parsed_data(path_data_to_arrays(text))
 
-static func path_data_to_arrays(path_text: String) -> Array[Array]:
+static func path_data_to_arrays(text: String) -> Array[Array]:
 	var new_commands: Array[Array] = []
 	var curr_command := ""
 	var prev_command := ""
 	var curr_command_args: Array = []
 	var args_left := 0
-	var comma_exhausted := false
+	var comma_exhausted := false  # Can ignore many whitespaces, but only one comma.
 	
 	var idx := -1
-	while idx < path_text.length() - 1:
+	while idx < text.length() - 1:
 		idx += 1
 		@warning_ignore("shadowed_global_identifier")
-		var char := path_text[idx]
+		var char := text[idx]
 		# Stop parsing if we've hit a character that's not allowed.
 		if not char in "MmLlHhVvAaQqTtCcSsZz0123456789-+e., \n\t\r":
 			return new_commands
@@ -28,7 +28,7 @@ static func path_data_to_arrays(path_text: String) -> Array[Array]:
 				"C", "c", "S", "s", "Z", "z":
 					curr_command = char
 					args_left = translation_dict[curr_command.to_upper()].new().arg_count
-				" ": continue
+				" ", "\t", "\n", "\r": continue
 				"-", "+", ".", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9":
 					if prev_command.is_empty():
 						continue
@@ -52,9 +52,9 @@ static func path_data_to_arrays(path_text: String) -> Array[Array]:
 			# Arc flags are represented by a single character.
 			if curr_command in "Aa" and (args_left == 4 or args_left == 3):
 				match char:
-					" ", "\n", "\t", "\r": continue
 					"0": curr_command_args.append(0)
 					"1": curr_command_args.append(1)
+					" ", "\n", "\t", "\r": continue
 					",":
 						if comma_exhausted:
 							return new_commands
@@ -62,6 +62,22 @@ static func path_data_to_arrays(path_text: String) -> Array[Array]:
 							comma_exhausted = true
 							continue
 					_: return new_commands
+				if args_left == 3 and curr_command_args.size() == 5:
+					# The number parsing part doesn't account for whitespace at the start,
+					# so jump over the whitespace here.
+					while idx < text.length() - 1:
+						idx += 1
+						match text[idx]:
+							" ", "\n", "\t", "\r": continue
+							",":
+								if comma_exhausted:
+									return new_commands
+								else:
+									comma_exhausted = true
+									continue
+							_:
+								idx -= 1
+								break
 			else:
 				# Parse the number.
 				var start_idx := idx
@@ -69,8 +85,8 @@ static func path_data_to_arrays(path_text: String) -> Array[Array]:
 				var number_proceed := true
 				var passed_decimal_point := false
 				var exponent_just_passed := true
-				while number_proceed and idx < path_text.length():
-					char = path_text[idx]
+				while number_proceed and idx < text.length():
+					char = text[idx]
 					match char:
 						"0", "1", "2", "3", "4", "5", "6", "7", "8", "9":
 							idx += 1
@@ -116,13 +132,13 @@ static func path_data_to_arrays(path_text: String) -> Array[Array]:
 								exponent_just_passed = true
 						_:
 							if args_left >= 1 and\
-							not path_text.substr(start_idx, end_idx - start_idx).is_valid_float():
+							not text.substr(start_idx, end_idx - start_idx).is_valid_float():
 								return new_commands
 							else:
 								idx -= 1
 								break
 				curr_command_args.append(
-						path_text.substr(start_idx, end_idx - start_idx).to_float())
+						text.substr(start_idx, end_idx - start_idx).to_float())
 			args_left -= 1
 		
 		# Wrap up the array.
@@ -263,6 +279,7 @@ static func path_commands_to_text(commands_arr: Array[PathCommand]) -> String:
 	#"z": [["z"]],
 	#"M 0 0 z 2 3": [["M", 0.0, 0.0], ["z"]],
 	#"M3e1 4e-2": [["M", 3e1, 4e-2]],
+	#"M5,1 A4,4,0,1,1,5,9": [["M", 5.0, 1.0], ["A", 4.0, 4.0, 0.0, 1, 1, 5.0, 9.0]],
 	#}
 	#
 	#var tests_passed := true

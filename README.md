@@ -23,6 +23,22 @@ Note that if you're on MacOS, you need to [disable Gatekeeper](https://disable-g
 
 Link to the web build: https://mewpurpur.github.io/GodSVG/web-build (Currently experimental)
 
+## How to use it
+
+Documentation for GodSVG is likely eventually going to be built-in. In the meantime, the basics of using it will be outlined here. This documentation is for the current master, which is a little ahead of the alpha 2 release.
+
+If you want to import an existing graphic from scratch, use the Import button on top of the code editor or drag-and-drop an SVG file into the app.
+
+To add new shapes, press the "+ Add new tag" button or right-click inside the viewport, then select your shape from the dropdown. After your shape is added, you can drag its handles in the viewport to change its shape, or modify the attributes in the inspector to change its other attributes, like fill and stroke. You can also always modify the SVG code directly.
+
+In the inspector, you can hover each tag's fields to see which attribute they represent. You may select tags in the viewport on the right or the inspector on the left, and right-click to do operations on them, like deleting them (can be done with the Delete key) moving them up or down (can also be done with Ctrl+Up and Ctrl+Down), duplicating them (can also be done with Ctrl+D), or moving them within the inspector by drag-and-dropping.
+
+Pathdata attributes have a very complex editor that allows for selecting individual path commands with a lot of similarities to tags. You can right-click the path command and click "Insert After", then pick the one you want. If you're used to SVG paths, you can also use the M, L, H, V, Z, A, Q, T, C, S keys to insert a new path command after a selected one; pressing Shift will also make the new command absolute instead of relative.
+
+Multiple tags or path commands can be selected as usual with Ctrl+Click and Shift+Click. Additionally, double-clicking a path command will select the whole subpath it's in.
+
+To export the graphic, use the Export button on top of the code editor.
+
 ## Community and contributing
 
 Contributions are very welcome! GodSVG is built in Godot. For code contributions, read [Contributing Guidelines](CONTRIBUTING.md). Before starting work on features, first propose them by using the issue form and wait for approval.

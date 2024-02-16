@@ -64,20 +64,25 @@ func _on_undo_redo() -> void:
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed(&"redo"):
+		get_viewport().set_input_as_handled()
 		if UR.has_redo():
 			UR.redo()
 			update_tags()
-		get_viewport().set_input_as_handled()
 	elif event.is_action_pressed(&"undo"):
+		get_viewport().set_input_as_handled()
 		if UR.has_undo():
 			UR.undo()
 			update_tags()
+
+func _input(event: InputEvent) -> void:
+	if event.is_action_pressed(&"import"):
 		get_viewport().set_input_as_handled()
-	elif event.is_action_pressed(&"import"):
 		open_import_dialog()
 	elif event.is_action_pressed(&"export"):
+		get_viewport().set_input_as_handled()
 		open_export_dialog()
 	elif event.is_action_pressed(&"save"):
+		get_viewport().set_input_as_handled()
 		open_save_dialog("svg", native_file_save, save_svg_to_file)
 
 

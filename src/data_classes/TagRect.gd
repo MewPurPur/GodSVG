@@ -19,7 +19,7 @@ func _init() -> void:
 		"rx": AttributeNumeric.new(AttributeNumeric.Mode.UFLOAT, "0"),
 		"ry": AttributeNumeric.new(AttributeNumeric.Mode.UFLOAT, "0"),
 		"opacity": AttributeNumeric.new(AttributeNumeric.Mode.NFLOAT, "1"),
-		"fill": AttributeColor.new("#000"),
+		"fill": AttributeColor.new("black"),
 		"fill-opacity": AttributeNumeric.new(AttributeNumeric.Mode.NFLOAT, "1"),
 		"stroke": AttributeColor.new("none"),
 		"stroke-opacity": AttributeNumeric.new(AttributeNumeric.Mode.NFLOAT, "1"),
