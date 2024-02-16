@@ -10,7 +10,7 @@ msgid "Your translatable string"
 msgstr ""
 ```
 >[!IMPORTANT]  
->The `msgstr` should be left empty in the template. The `msgid` should be in plain english and exactly the same as whats used in the source code.
+>The `msgstr` should be left empty in the template. The `msgid` should be in plain english and exactly the same as what's used in the source code.
 
 All translation files have to be updated to include the new string.
 This is best done with [gettext tools](https://www.gnu.org/software/gettext/manual/html_node/Updating.html). These are preinstalled in most Linux distros and Git Bash on Windows.
