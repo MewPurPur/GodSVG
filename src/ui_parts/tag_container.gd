@@ -6,6 +6,7 @@ const autoscroll_speed = 1500.0
 
 @onready var scroll_container: ScrollContainer = $ScrollContainer
 @onready var tags: VBoxContainer = %Tags
+@onready var covering_rect: Control = $MoveToOverlay
 
 func _process(delta: float) -> void:
 	if Indications.proposed_drop_tid.is_empty():
@@ -65,27 +66,13 @@ func update_proposed_tid() -> void:
 				return
 		Indications.set_proposed_drop_tid(prev_tid + PackedInt32Array([0]))
 
-# Runs every time the mouse moves. Returning true means you can drop the TIDs.
-func _can_drop_data(_at_position: Vector2, data: Variant) -> bool:
-	if not data is Array[PackedInt32Array]:
-		return false
-	
-	update_proposed_tid()
-	for tid in data:
-		if Utils.is_tid_parent_or_self(tid, Indications.proposed_drop_tid):
-			return false
-	return true
-
-# Runs when you drop the TIDs.
-func _drop_data(_at_position: Vector2, data: Variant) -> void:
-	if data is Array[PackedInt32Array]:
-		SVG.root_tag.move_tags_to(data, Indications.proposed_drop_tid)
-
 
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_DRAG_BEGIN:
+		covering_rect.show()
 		update_proposed_tid()
 	elif what == NOTIFICATION_DRAG_END:
+		covering_rect.hide()
 		Indications.clear_proposed_drop_tid()
 
 func _gui_input(event: InputEvent) -> void:
