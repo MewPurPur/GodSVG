@@ -57,7 +57,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		return
 	
 	if event is InputEventMouseMotion and\
-	event.button_mask in [MOUSE_BUTTON_MASK_LEFT, MOUSE_BUTTON_MASK_MIDDLE]:
+	event.button_mask & (MOUSE_BUTTON_MASK_LEFT | MOUSE_BUTTON_MASK_MIDDLE):
 		
 		# Zooming with ctrl + middle mouse button.
 		if event.ctrl_pressed and event.button_mask == MOUSE_BUTTON_MASK_MIDDLE:
