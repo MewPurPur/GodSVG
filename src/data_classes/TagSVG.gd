@@ -214,13 +214,16 @@ func move_tags_to(tids: Array[PackedInt32Array], location: PackedInt32Array) -> 
 	# Remove tags from their old locations.
 	var tags_stored: Array[Tag] = []
 	for tid in tids:
-		# Shift the new location if tags before it were removed.
-		if tid.size() < location.size():
-			for i in tid.size():
+		# Shift the new location if tags before it were removed. A tag is "before"
+		# if it has the same parent as the new location, but is before that location.
+		if tid.size() <= location.size():
+			var before := true
+			for i in tid.size() - 1:
 				if tid[i] != location[i]:
-					if tid[i] < location[i]:
-						location[i] -= 1
+					before = false
 					break
+			if before and tid[-1] < location[tid.size() - 1]:
+				location[tid.size() - 1] -= 1
 		tags_stored.append(get_tag(Utils.get_parent_tid(tid)).child_tags.pop_at(tid[-1]))
 	# Add them back in the new location.
 	for tag in tags_stored:
