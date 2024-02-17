@@ -49,4 +49,11 @@ func _on_button_pressed() -> void:
 
 
 func _on_button_gui_input(event: InputEvent) -> void:
-	popup_button.mouse_filter = Utils.mouse_filter_pass_non_drag_events(event)
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and\
+	event.is_pressed():
+		accept_event()
+		var mouse_motion_event := InputEventMouseMotion.new()
+		mouse_motion_event.position = get_viewport().get_mouse_position()
+		Input.parse_input_event(mouse_motion_event)
+	else:
+		popup_button.mouse_filter = Utils.mouse_filter_pass_non_drag_events(event)
