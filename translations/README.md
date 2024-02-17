@@ -12,11 +12,11 @@ msgstr ""
 >[!IMPORTANT]  
 >The `msgstr` should be left empty in the template. The `msgid` should be in plain english and exactly the same as what's used in the source code.
 
-All translation files have to be updated to include the new string.
-This is best done with [gettext tools](https://www.gnu.org/software/gettext/manual/html_node/Updating.html). These are preinstalled in most Linux distros and Git Bash on Windows.
+All translation files have to be updated to include the new strings.
+This is best done with [gettext tools](https://www.gnu.org/software/gettext/manual/html_node/Updating.html). These are preinstalled in most Linux distros and Git Bash on Windows. A bash script to automate the process (`update_po_files.sh`) is included in this directory.
 ```sh
 cd translations
-for file in ./*.po; do msgmerge --update ${file} Translations.pot; done
+./update_po_files.sh
 ```
 # Contributing translations
 ## [Adding a new language](https://www.gnu.org/software/gettext/manual/html_node/Creating.html)
