@@ -81,7 +81,7 @@ func setup_color(new_color: String) -> void:
 	starting_color = new_color
 	color = new_color
 	# Setup the display color.
-	starting_display_color = AttributeColor.string_to_color(starting_color)
+	starting_display_color = ColorParser.string_to_color(starting_color)
 	if slider_mode == SliderMode.HSV:
 		# Clamping like this doesn't change the hex representation, but
 		# it helps avoid locking certain sliders (e.g. hue slider when saturation is 0).
@@ -288,7 +288,7 @@ func _on_hsv_pressed() -> void:
 func _on_start_color_rect_draw() -> void:
 	var rect_size := start_color_rect.size
 	var rect := Rect2(Vector2.ZERO, rect_size)
-	if AttributeColor.is_valid_url(starting_color):
+	if ColorParser.is_valid_url(starting_color):
 		var cross_color := Color(0.8, 0.8, 0.8)
 		start_color_rect.draw_rect(rect, Color(0.6, 0.6, 0.6))
 		start_color_rect.draw_line(Vector2.ZERO, rect_size, cross_color, 0.5, true)

@@ -14,9 +14,9 @@ const checkerboard = preload("res://visual/icons/backgrounds/ColorButtonBG.svg")
 signal value_changed(new_value: String)
 var value: String:
 	set(new_value):
-		new_value = AttributeColor.add_hash_if_hex(new_value)
-		if AttributeColor.is_valid_hex(new_value) or\
-		AttributeColor.is_valid_named(new_value) or AttributeColor.is_valid_rgb(new_value):
+		new_value = ColorParser.add_hash_if_hex(new_value)
+		if ColorParser.is_valid_hex(new_value) or ColorParser.is_valid_named(new_value) or\
+		ColorParser.is_valid_rgb(new_value):
 			new_value = new_value.trim_prefix("#")
 			if new_value != value:
 				value = new_value
@@ -30,9 +30,9 @@ func _ready() -> void:
 	sync(value)
 
 func is_color_valid_non_url(new_value: String) -> bool:
-	new_value = AttributeColor.add_hash_if_hex(new_value)
-	return AttributeColor.is_valid_named(new_value) or\
-			AttributeColor.is_valid_hex(new_value) or AttributeColor.is_valid_rgb(new_value)
+	new_value = ColorParser.add_hash_if_hex(new_value)
+	return ColorParser.is_valid_named(new_value) or\
+			ColorParser.is_valid_hex(new_value) or ColorParser.is_valid_rgb(new_value)
 
 func sync(new_value: String) -> void:
 	color_edit.remove_theme_color_override(&"font_color")
@@ -56,7 +56,7 @@ func _draw() -> void:
 	var stylebox := StyleBoxFlat.new()
 	stylebox.corner_radius_top_right = 5
 	stylebox.corner_radius_bottom_right = 5
-	stylebox.bg_color = AttributeColor.string_to_color(value)
+	stylebox.bg_color = ColorParser.string_to_color(value)
 	draw_texture(checkerboard, Vector2.ZERO)
 	draw_style_box(stylebox, Rect2(Vector2.ZERO, button_size - Vector2(1, 2)))
 

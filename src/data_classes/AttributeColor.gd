@@ -8,114 +8,17 @@ func _init(new_default: String, new_init := "") -> void:
 	set_value(new_init if !new_init.is_empty() else new_default, SyncMode.SILENT)
 
 func set_value(new_value: String, sync_mode := SyncMode.LOUD) -> void:
-	super(new_value if AttributeColor.is_valid(new_value) else default, sync_mode)
+	super(new_value if ColorParser.is_valid(new_value) else default, sync_mode)
 
 func autoformat(text: String) -> String:
 	if GlobalSettings.color_enable_autoformatting:
 		var new_text := ColorParser.format_text(text)
-		return default if AttributeColor.are_colors_same(new_text, default) else new_text
+		return default if ColorParser.are_colors_same(new_text, default) else new_text
 	else:
 		return text
 
 
-static func add_hash_if_hex(color: String) -> String:
-	color = color.strip_edges()
-	if color.is_valid_html_color() and not color.begins_with("#"):
-		color = "#" + color
-	return color
-
-static func is_valid(color: String) -> bool:
-	return is_valid_hex(color) or is_valid_rgb(color) or is_valid_named(color) or\
-			is_valid_url(color)
-
-static func is_valid_hex(color: String) -> bool:
-	color = color.strip_edges()
-	return color.begins_with("#") and color.is_valid_html_color() and\
-			(color.length() == 4 or color.length() == 7)
-
-static func is_valid_rgb(color: String) -> bool:
-	color = color.strip_edges()
-	if not color.begins_with("rgb(") or not color.ends_with(")"):
-		return false
-	
-	var channels_str := color.substr(4, color.length() - 5)
-	var channels := channels_str.split(",")
-	if channels.size() == 3 or channels.size() == 4:
-		for channel in channels:
-			if not channel.strip_edges().is_valid_float():
-				return false
-		return true
-	return false
-
-static func is_valid_named(color: String) -> bool:
-	color = color.strip_edges()
-	return color in other_named_colors or AttributeColor.named_colors.has(color)
-
-static func is_valid_url(color: String) -> bool:
-	color = color.strip_edges()
-	if not color.begins_with("url(") or not color.ends_with(")"):
-		return false
-	var id := color.substr(4, color.length() - 5).strip_edges().trim_prefix("#")
-	return IDParser.get_id_validity(id) != IDParser.ValidityLevel.INVALID
-
-# URL doesn't have a color interpretation, so it'll give the backup.
-static func string_to_color(color: String, backup := Color.BLACK) -> Color:
-	color = color.strip_edges()
-	if is_valid_named(color):
-		if color == "none":
-			return Color(0, 0, 0, 0)
-		else:
-			return Color(AttributeColor.named_colors[color])
-	elif is_valid_rgb(color):
-		var inside_brackets := color.substr(4, color.length() - 5)
-		var args := inside_brackets.split(",", false)
-		if args.size() == 3:
-			return Color8(args[0].to_int(), args[1].to_int(), args[2].to_int())
-		else:
-			return backup
-	elif is_valid_hex(color):
-		return Color.from_string(color, Color())
-	else:
-		return backup
-
-static func are_colors_same(color1: String, color2: String) -> bool:
-	color1 = color1.strip_edges()
-	color2 = color2.strip_edges()
-	# Ensure that the two colors aren't the same,
-	# but of a type that can't be represented as hex.
-	if color1 == color2:
-		return true
-	elif color1 in other_named_colors or color2 in other_named_colors:
-		return false
-	elif is_valid_url(color1) != is_valid_url(color2):
-		return false
-	elif is_valid_url(color1) and is_valid_url(color2) and\
-	color1.substr(4, color1.length() - 5).strip_edges() ==\
-	color2.substr(4, color2.length() - 5).strip_edges():
-		return true
-	
-	# Represent both colors as 6-digit hex codes to serve as basis for comparison.
-	for i in 2:
-		var col: String = [color1, color2][i]
-		# Start of conversion logic.
-		if is_valid_rgb(col):
-			var inside_brackets := col.substr(4, col.length() - 5)
-			var args := inside_brackets.split(",", false)
-			col = Color8(args[0].to_int(), args[1].to_int(), args[2].to_int()).to_html(false)
-		elif is_valid_hex(col) and col.length() == 4:
-			col = col[1] + col[1] + col[2] + col[2] + col[3] + col[3]
-		elif is_valid_named(col):
-			col = named_colors[col]
-		col = col.trim_prefix("#")
-		# End of conversion logic.
-		if i == 0:
-			color1 = col
-		elif i == 1:
-			color2 = col
-	return color1 == color2
-
-
-const other_named_colors = ["none", "currentColor"]
+const special_colors = ["none", "currentColor"]
 
 const named_colors = {  # Dictionary{String: String}
 	"aliceblue": "#f0f8ff",
