@@ -18,8 +18,8 @@ func set_value(new_value: String, update_type := Utils.UpdateType.REGULAR):
 		sync(attribute.get_value())
 		return
 	
-	new_value = AttributeColor.add_hash_if_hex(new_value)
-	if AttributeColor.are_colors_same(new_value, attribute.default):
+	new_value = ColorParser.add_hash_if_hex(new_value)
+	if ColorParser.are_colors_same(new_value, attribute.default):
 		new_value = attribute.default
 	
 	sync(attribute.autoformat(new_value))
@@ -54,7 +54,7 @@ func _draw() -> void:
 	var stylebox := StyleBoxFlat.new()
 	stylebox.corner_radius_top_right = 5
 	stylebox.corner_radius_bottom_right = 5
-	stylebox.bg_color = AttributeColor.string_to_color(attribute.get_value())
+	stylebox.bg_color = ColorParser.string_to_color(attribute.get_value())
 	draw_texture(checkerboard, Vector2.ZERO)
 	draw_style_box(stylebox, Rect2(Vector2.ZERO, button_size - Vector2(1, 2)))
 
@@ -77,7 +77,7 @@ func _on_color_picked(new_color: String, close_picker: bool) -> void:
 		set_value(new_color, Utils.UpdateType.INTERMEDIATE)
 
 func is_valid(text: String) -> bool:
-	return AttributeColor.is_valid(AttributeColor.add_hash_if_hex(text))
+	return ColorParser.is_valid(ColorParser.add_hash_if_hex(text))
 
 
 func _on_button_resized() -> void:
