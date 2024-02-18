@@ -101,7 +101,8 @@ func update_handles() -> void:
 
 
 func sync_handles() -> void:
-	# For XYHandles, sync them. For PathHandles, sync all but the one being dragged.
+	# For XYHandles, sync them. For PathHandles, they can be added and removed as an
+	# attribute changes, so remove them and re-add them except for the dragged one.
 	for handle_idx in range(handles.size() - 1, -1, -1):
 		var handle := handles[handle_idx]
 		if handle is PathHandle:
@@ -457,9 +458,7 @@ func _draw() -> void:
 							for _i in n:
 								var p2 := Utils.E(c, r, cosine, sine, t)
 								var e2 := Utils.Et(r, cosine, sine, t)
-								var q1 := alpha * e1
-								var q2 := -alpha * e2
-								cp.append(PackedVector2Array([p1, q1, q2, p2]))
+								cp.append(PackedVector2Array([p1, alpha * e1, -alpha * e2, p2]))
 								p1 = p2
 								e1 = e2
 								t += PI/4
@@ -469,9 +468,7 @@ func _draw() -> void:
 								var p2 := Utils.E(c, r, cosine, sine, t)
 								var e2 := Utils.Et(r, cosine, sine, t)
 								alpha *= fposmod(delta_theta, PI/4) / (PI/4)
-								var q1 := alpha * e1
-								var q2 := -alpha * e2
-								cp.append(PackedVector2Array([p1, q1, q2, p2]))
+								cp.append(PackedVector2Array([p1, alpha * e1, -alpha * e2, p2]))
 							
 							for p in cp:
 								points += Utils.get_cubic_bezier_points(p[0], p[1], p[2], p[3])
