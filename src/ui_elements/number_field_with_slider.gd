@@ -120,7 +120,14 @@ func _on_slider_resized() -> void:
 	queue_redraw()  # Whyyyyy are their sizes wrong at first...
 
 func _on_slider_gui_input(event: InputEvent) -> void:
-	slider.mouse_filter = Utils.mouse_filter_pass_non_drag_events(event)
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and\
+	event.is_pressed():
+		accept_event()
+		var mouse_motion_event := InputEventMouseMotion.new()
+		mouse_motion_event.position = get_viewport().get_mouse_position()
+		Input.parse_input_event(mouse_motion_event)
+	else:
+		slider.mouse_filter = Utils.mouse_filter_pass_non_drag_events(event)
 	
 	if not slider_dragged:
 		if event is InputEventMouseMotion and event.button_mask == 0:

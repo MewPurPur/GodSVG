@@ -3,36 +3,39 @@ class_name TransformListParser extends RefCounted
 static func transform_list_to_text(
 transform_list: Array[AttributeTransform.Transform]) -> String:
 	var output := ""
+	var num_parser := NumberArrayParser.new()
+	num_parser.compress_numbers = GlobalSettings.transform_compress_numbers
+	num_parser.minimize_spacing = GlobalSettings.transform_minimize_spacing
 	
 	for t in transform_list:
 		if t is AttributeTransform.TransformMatrix:
-			output += "matrix(%s) " % NumberArrayParser.numstr_arr_to_text([
-					NumberArrayParser.num_to_text(t.x1), NumberArrayParser.num_to_text(t.x2),
-					NumberArrayParser.num_to_text(t.y1), NumberArrayParser.num_to_text(t.y2),
-					NumberArrayParser.num_to_text(t.o1), NumberArrayParser.num_to_text(t.o2)])
+			output += "matrix(%s) " % num_parser.numstr_arr_to_text([
+					num_parser.num_to_text(t.x1), num_parser.num_to_text(t.x2),
+					num_parser.num_to_text(t.y1), num_parser.num_to_text(t.y2),
+					num_parser.num_to_text(t.o1), num_parser.num_to_text(t.o2)])
 		elif t is AttributeTransform.TransformTranslate:
 			if t.y == 0 and GlobalSettings.transform_remove_unnecessary_params:
-				output += "translate(%s) " % NumberArrayParser.num_to_text(t.x)
+				output += "translate(%s) " % num_parser.num_to_text(t.x)
 			else:
-				output += "translate(%s) " % NumberArrayParser.numstr_arr_to_text([
-						NumberArrayParser.num_to_text(t.x), NumberArrayParser.num_to_text(t.y)])
+				output += "translate(%s) " % num_parser.numstr_arr_to_text([
+						num_parser.num_to_text(t.x), num_parser.num_to_text(t.y)])
 		elif t is AttributeTransform.TransformRotate:
 			if t.x == 0 and t.y == 0 and GlobalSettings.transform_remove_unnecessary_params:
-				output += "rotate(%s) " % NumberArrayParser.num_to_text(t.deg)
+				output += "rotate(%s) " % num_parser.num_to_text(t.deg)
 			else:
-				output += "rotate(%s) " % NumberArrayParser.numstr_arr_to_text([
-						NumberArrayParser.num_to_text(t.deg),
-						NumberArrayParser.num_to_text(t.x), NumberArrayParser.num_to_text(t.y)])
+				output += "rotate(%s) " % num_parser.numstr_arr_to_text([
+						num_parser.num_to_text(t.deg),
+						num_parser.num_to_text(t.x), num_parser.num_to_text(t.y)])
 		elif t is AttributeTransform.TransformScale:
 			if t.x == t.y and GlobalSettings.transform_remove_unnecessary_params:
-				output += "scale(%s) " % NumberArrayParser.num_to_text(t.x)
+				output += "scale(%s) " % num_parser.num_to_text(t.x)
 			else:
-				output += "scale(%s) " % NumberArrayParser.numstr_arr_to_text([
-						NumberArrayParser.num_to_text(t.x), NumberArrayParser.num_to_text(t.y)])
+				output += "scale(%s) " % num_parser.numstr_arr_to_text([
+						num_parser.num_to_text(t.x), num_parser.num_to_text(t.y)])
 		elif t is AttributeTransform.TransformSkewX:
-			output += "skewX(%s) " % NumberArrayParser.num_to_text(t.x)
+			output += "skewX(%s) " % num_parser.num_to_text(t.x)
 		elif t is AttributeTransform.TransformSkewY:
-			output += "skewY(%s) " % NumberArrayParser.num_to_text(t.y)
+			output += "skewY(%s) " % num_parser.num_to_text(t.y)
 	
 	return output.trim_suffix(" ")
 
