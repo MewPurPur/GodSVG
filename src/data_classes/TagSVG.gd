@@ -212,6 +212,7 @@ func move_tags_to(tids: Array[PackedInt32Array], location: PackedInt32Array) -> 
 			tids.remove_at(i)
 	
 	# Remove tags from their old locations.
+	var tids_stored: Array[PackedInt32Array] = []
 	var tags_stored: Array[Tag] = []
 	for tid in tids:
 		# Shift the new location if tags before it were removed. A tag is "before"
@@ -224,12 +225,21 @@ func move_tags_to(tids: Array[PackedInt32Array], location: PackedInt32Array) -> 
 					break
 			if before and tid[-1] < location[tid.size() - 1]:
 				location[tid.size() - 1] -= 1
+		tids_stored.append(tid)
 		tags_stored.append(get_tag(Utils.get_parent_tid(tid)).child_tags.pop_at(tid[-1]))
-	# Add them back in the new location.
+	# Add the tags back in the new location.
 	for tag in tags_stored:
 		get_tag(Utils.get_parent_tid(location)).child_tags.insert(location[-1], tag)
-	tags_moved_to.emit(tids, location)
-	tag_layout_changed.emit()
+	# Check if this actually chagned the layout.
+	var changed := false
+	for tid in tids_stored:
+		if Utils.get_parent_tid(tid) != Utils.get_parent_tid(location) or\
+		tid[-1] >= location[-1] + tids_stored.size():
+			changed = true
+			break
+	if changed:
+		tags_moved_to.emit(tids, location)
+		tag_layout_changed.emit()
 
 func duplicate_tags(tids: Array[PackedInt32Array]) -> void:
 	if tids.is_empty():
