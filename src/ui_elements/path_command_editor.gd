@@ -135,7 +135,7 @@ func _draw() -> void:
 				draw_style_box(flag_field.get_theme_stylebox(&"normal" if\
 						path_command.large_arc_flag == 0 else &"pressed"), rect)
 				draw_string(code_font, rect.position + Vector2(5, 14),
-						NumberArrayParser.num_to_text(path_command.large_arc_flag),
+						String.num_uint64(path_command.large_arc_flag),
 						HORIZONTAL_ALIGNMENT_LEFT, rect.size.x, 14,
 						flag_field.get_theme_color(&"font_color" if\
 						path_command.large_arc_flag == 0 else &"font_pressed_color"))
@@ -143,7 +143,7 @@ func _draw() -> void:
 				draw_style_box(flag_field.get_theme_stylebox(&"normal" if\
 						path_command.sweep_flag == 0 else &"pressed"), rect)
 				draw_string(code_font, rect.position + Vector2(5, 14),
-						NumberArrayParser.num_to_text(path_command.sweep_flag),
+						String.num_uint64(path_command.sweep_flag),
 						HORIZONTAL_ALIGNMENT_LEFT, rect.size.x, 14,
 						flag_field.get_theme_color(&"font_color" if\
 						path_command.sweep_flag == 0 else &"font_pressed_color"))
@@ -173,9 +173,9 @@ func _draw() -> void:
 func draw_numfield(rect: Rect2, stylebox: StyleBoxFlat, property: StringName,\
 font_size: int, font_color: Color) -> void:
 	draw_style_box(stylebox, rect)
-	draw_string(code_font, rect.position + Vector2(4, 13), NumberArrayParser.num_to_text(
-			path_command.get(property)), HORIZONTAL_ALIGNMENT_LEFT, rect.size.x - 4,
-			font_size, font_color)
+	draw_string(code_font, rect.position + Vector2(4, 13),
+			NumberArrayParser.basic_num_to_text(path_command.get(property)),
+			HORIZONTAL_ALIGNMENT_LEFT, rect.size.x - 4, font_size, font_color)
 
 func draw_numfield_arr(spacings: Array, names: Array[StringName]) -> void:
 	var stylebox := get_theme_stylebox(&"normal", &"MiniLineEdit")
