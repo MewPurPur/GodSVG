@@ -145,6 +145,12 @@ func _on_slider_gui_input(event: InputEvent) -> void:
 			if initial_slider_value != final_slider_value:
 				set_num(final_slider_value, Utils.UpdateType.FINAL)
 
+func _unhandled_input(event: InputEvent) -> void:
+	if slider_dragged and Utils.is_event_cancel(event):
+		slider_dragged = false
+		set_num(initial_slider_value, Utils.UpdateType.INTERMEDIATE)
+		accept_event()
+
 func get_slider_value_at_y(y_coord: float) -> float:
 	return snappedf(lerpf(max_value, min_value,
 			(y_coord - 4) / (slider.get_size().y - 4)), slider_step)
