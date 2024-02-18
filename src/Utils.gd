@@ -187,6 +187,10 @@ static func is_event_drag_end(event: InputEvent) -> bool:
 	return event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and\
 			event.is_released()
 
+static func is_event_cancel(event: InputEvent) -> bool:
+	return event.is_action_pressed(&"ui_cancel") or\
+			event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT
+
 # Used to somewhat prevent unwanted inputs from triggering tag drag & drop.
 static func mouse_filter_pass_non_drag_events(event: InputEvent) -> Control.MouseFilter:
 	return Control.MOUSE_FILTER_STOP if event is InputEventMouseMotion and\
