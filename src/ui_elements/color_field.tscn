@@ -49,6 +49,7 @@ mouse_default_cursor_shape = 2
 theme_type_variation = &"LeftConnectedButtonTransparent"
 
 [connection signal="focus_entered" from="LineEdit" to="." method="_on_focus_entered"]
+[connection signal="text_change_canceled" from="LineEdit" to="." method="_on_text_change_canceled"]
 [connection signal="text_changed" from="LineEdit" to="." method="_on_text_changed"]
 [connection signal="text_submitted" from="LineEdit" to="." method="_on_text_submitted"]
 [connection signal="gui_input" from="Button" to="." method="_on_button_gui_input"]
