@@ -49,7 +49,14 @@ _filter_idx: int) -> void:
 		export(files[0])
 
 func _on_ok_button_pressed() -> void:
-	SVG.open_save_dialog(extension, native_file_export, export)
+	if OS.has_feature("web"):
+		match extension:
+			"png":
+				HTML5FileExchange.save_png(_create_img())
+			_:
+				HTML5FileExchange.save_svg()
+	else:
+		SVG.open_save_dialog(extension, native_file_export, export)
 
 func export(path: String) -> void:
 	if path.get_extension().is_empty():
@@ -59,13 +66,7 @@ func export(path: String) -> void:
 	
 	match extension:
 		"png":
-			var export_svg := SVG.root_tag.create_duplicate()
-			export_svg.attributes.width.set_num(export_svg.width * upscale_amount)
-			export_svg.attributes.height.set_num(export_svg.height * upscale_amount)
-			var img := Image.new()
-			img.load_svg_from_string(SVGParser.svg_to_text(export_svg))
-			img.fix_alpha_edges()  # See godot issue 82579.
-			img.save_png(path)
+			_create_img().save_png(path)
 		_:
 			# SVG / fallback.
 			GlobalSettings.modify_save_data(&"current_file_path", path)
@@ -87,3 +88,12 @@ func update_final_scale() -> void:
 
 func update_extension_configuration() -> void:
 	scale_container.visible = (extension == "png")
+
+func _create_img() -> Image:
+	var export_svg := SVG.root_tag.create_duplicate()
+	export_svg.attributes.width.set_num(export_svg.width * upscale_amount)
+	export_svg.attributes.height.set_num(export_svg.height * upscale_amount)
+	var img := Image.new()
+	img.load_svg_from_string(SVGParser.svg_to_text(export_svg))
+	img.fix_alpha_edges()  # See godot issue 82579.
+	return img
