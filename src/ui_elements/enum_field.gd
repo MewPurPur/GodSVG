@@ -56,6 +56,10 @@ func _on_text_submitted(new_text: String) -> void:
 	else:
 		sync(attribute.get_value())
 
+func _on_text_change_canceled() -> void:
+	sync(attribute.get_value())
+
+
 func _on_text_changed(new_text: String) -> void:
 	if new_text in attribute.possible_values:
 		indicator.add_theme_color_override(&"font_color", Color(0.6, 1.0, 0.6))
