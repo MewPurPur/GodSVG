@@ -38,4 +38,5 @@ hover_stylebox = SubResource("StyleBoxFlat_nuwbn")
 focus_stylebox = SubResource("StyleBoxFlat_veyl6")
 code_font_tooltip = true
 
+[connection signal="text_change_canceled" from="." to="." method="_on_text_change_canceled"]
 [connection signal="text_submitted" from="." to="." method="_on_text_submitted"]

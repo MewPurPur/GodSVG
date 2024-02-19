@@ -56,6 +56,7 @@ func _ready() -> void:
 	num_edit.tooltip_text = attribute_name
 
 func _on_focus_entered() -> void:
+	num_edit.remove_theme_color_override(&"font_color")
 	focused.emit()
 
 func _on_text_submitted(submitted_text: String) -> void:
@@ -63,6 +64,9 @@ func _on_text_submitted(submitted_text: String) -> void:
 		set_value(attribute.default)
 	else:
 		set_value(submitted_text)
+
+func _on_text_change_canceled() -> void:
+	sync(attribute.get_value())
 
 func sync(new_value: String) -> void:
 	if num_edit != null:
