@@ -68,6 +68,9 @@ func _on_text_submitted(new_text: String) -> void:
 	else:
 		set_value(new_text)
 
+func _on_text_change_canceled() -> void:
+	sync(attribute.get_value())
+
 
 func _on_color_picked(new_color: String, close_picker: bool) -> void:
 	if close_picker:

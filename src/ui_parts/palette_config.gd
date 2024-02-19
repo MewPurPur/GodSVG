@@ -96,6 +96,9 @@ func _on_name_edit_text_submitted(new_name: String) -> void:
 	set_label_text(current_palette.name)
 	hide_name_edit()
 
+func _on_name_edit_text_change_canceled() -> void:
+	hide_name_edit()
+
 func popup_add_color() -> void:
 	var new_color := NamedColor.new("none", "")
 	current_palette.named_colors.append(new_color)
