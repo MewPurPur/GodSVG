@@ -621,7 +621,7 @@ func respond_to_input_event(event: InputEvent) -> void:
 		if nearest_handle != null:
 			hovered_handle = nearest_handle
 			if hovered_handle is PathHandle:
-				Indications.set_inner_hovered(hovered_handle.tid,
+				Indications.set_hovered(hovered_handle.tid,
 						hovered_handle.command_index)
 			else:
 				Indications.set_hovered(hovered_handle.tid)
@@ -726,7 +726,7 @@ func move_selected_to_mouse() -> void:
 	for handle in handles:
 		if handle.tid == Indications.semi_selected_tid and handle is PathHandle and\
 		handle.command_index == Indications.inner_selections[0]:
-			Indications.set_inner_hovered(handle.tid, handle.command_index)
+			Indications.set_hovered(handle.tid, handle.command_index)
 			dragged_handle = handle
 			# Move the handle that's being dragged.
 			var mouse_pos := get_global_mouse_position()
