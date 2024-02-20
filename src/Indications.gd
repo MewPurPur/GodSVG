@@ -227,37 +227,38 @@ func clear_all_selections() -> void:
 
 
 ## Set the hovered tag.
-func set_hovered(tid: PackedInt32Array) -> void:
-	if hovered_tid != tid:
-		hovered_tid = tid.duplicate()
-		hover_changed.emit()
-
-## Set the inner hover.
-func set_inner_hovered(tid: PackedInt32Array, inner_idx: int) -> void:
-	if semi_hovered_tid != tid:
-		semi_hovered_tid = tid.duplicate()
-		inner_hovered = inner_idx
-		if not tid.is_empty() and inner_idx != -1:
-			hovered_tid.clear()
-		hover_changed.emit()
-	elif inner_hovered != inner_idx:
-		inner_hovered = inner_idx
-		if not tid.is_empty() and inner_idx != -1:
-			hovered_tid.clear()
-		hover_changed.emit()
+func set_hovered(tid: PackedInt32Array, inner_idx := -1) -> void:
+	if inner_idx == -1:
+		if hovered_tid != tid:
+			hovered_tid = tid.duplicate()
+			if not tid.is_empty():
+				inner_hovered = -1
+				semi_hovered_tid = PackedInt32Array()
+			hover_changed.emit()
+	else:
+		if semi_hovered_tid != tid:
+			semi_hovered_tid = tid.duplicate()
+			inner_hovered = inner_idx
+			if not tid.is_empty():
+				hovered_tid.clear()
+			hover_changed.emit()
+		elif inner_hovered != inner_idx:
+			inner_hovered = inner_idx
+			if not tid.is_empty():
+				hovered_tid.clear()
+			hover_changed.emit()
 
 ## If the tag is hovered, make it not hovered.
-func remove_hovered(tid: PackedInt32Array) -> void:
-	if hovered_tid == tid:
-		hovered_tid.clear()
-		hover_changed.emit()
-
-## If it's an inner hover, make it not hovered.
-func remove_inner_hovered(tid: PackedInt32Array, inner_idx: int) -> void:
-	if semi_hovered_tid == tid and inner_hovered == inner_idx:
-		semi_hovered_tid.clear()
-		inner_hovered = -1
-		hover_changed.emit()
+func remove_hovered(tid: PackedInt32Array, inner_idx := -1) -> void:
+	if inner_idx == -1:
+		if hovered_tid == tid:
+			hovered_tid.clear()
+			hover_changed.emit()
+	else:
+		if semi_hovered_tid == tid and inner_hovered == inner_idx:
+			semi_hovered_tid.clear()
+			inner_hovered = -1
+			hover_changed.emit()
 
 ## Clear the hovered tag.
 func clear_hovered() -> void:
@@ -270,6 +271,7 @@ func clear_inner_hovered() -> void:
 	if inner_hovered != -1:
 		inner_hovered = -1
 		hover_changed.emit()
+
 
 func set_proposed_drop_tid(tid: PackedInt32Array) -> void:
 	if proposed_drop_tid != tid:
@@ -346,7 +348,9 @@ func _on_tags_moved_to(tids: Array[PackedInt32Array], location: PackedInt32Array
 func _unhandled_input(event: InputEvent) -> void:
 	if get_viewport().gui_is_dragging():
 		return
-	if event.is_action_pressed(&"delete"):
+	if event.is_action_pressed(&"ui_cancel"):
+		clear_all_selections()
+	elif event.is_action_pressed(&"delete"):
 		delete_selected()
 	elif event.is_action_pressed(&"move_up"):
 		move_up_selected()
