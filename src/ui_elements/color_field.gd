@@ -60,6 +60,7 @@ func _draw() -> void:
 
 
 func _on_focus_entered() -> void:
+	color_edit.remove_theme_color_override(&"font_color")
 	focused.emit()
 
 func _on_text_submitted(new_text: String) -> void:
