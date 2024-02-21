@@ -151,7 +151,7 @@ func apply_svg_from_path(path: String) -> int:
 	
 	if not error.is_empty():
 		var alert_dialog := AlertDialog.instantiate()
-		HandlerGUI.add_child(alert_dialog)
+		HandlerGUI.add_overlay(alert_dialog)
 		alert_dialog.setup(error, "#alert", 280.0)
 		return ERR_FILE_CANT_OPEN
 	

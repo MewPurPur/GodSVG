@@ -5,7 +5,8 @@ signal _in_focus
 var has_overlay := false
 var overlay_ref: ColorRect
 
-const ImportWarningDialog = preload("res://src/ui_parts/import_warning_dialog.tscn")
+const ImportWarningDialog := preload("res://src/ui_parts/import_warning_dialog.tscn")
+const AlertDialog := preload("res://src/ui_parts/alert_dialog.tscn")
 
 
 func _ready() -> void:
@@ -69,11 +70,23 @@ func web_load_svg() -> void:
 		await get_tree().create_timer(0.5).timeout
 	
 	var file_name: String = JavaScriptBridge.eval("fileName;", true)
-	if file_name.get_extension() == "svg":
+	var extension := file_name.get_extension()
+	if extension == "svg":
 		var warning_panel := ImportWarningDialog.instantiate()
 		warning_panel.imported.connect(_import.bind(file_data, file_name))
 		warning_panel.set_svg(file_data)
 		HandlerGUI.add_overlay(warning_panel)
+	else:
+		var error := ""
+		if extension.is_empty():
+			error = "#file_open_empty_extension"
+		else:
+			error = tr(
+					&"#file_open_unsupported_extension").format({"passed_extension": extension})
+		var alert_dialog := AlertDialog.instantiate()
+		HandlerGUI.add_overlay(alert_dialog)
+		alert_dialog.setup(error, "#alert", 280.0)
+
 
 func _import(svg_text: String, file_name: String):
 	SVG.apply_svg_text(svg_text)
@@ -100,25 +113,28 @@ func _define_web_js() -> void:
 var fileData;
 var fileName;
 var canceled;
+var input = document.createElement('INPUT');
+input.setAttribute("type", "file");
+input.setAttribute("accept", ".svg");
+input.addEventListener('change', event => {
+	if (event.target.files.length == 0) {
+		return;
+	}
+	canceled = false;
+	var file = event.target.files[0];
+	var reader = new FileReader();
+	fileName = file.name;
+	reader.readAsText(file);
+	reader.onloadend = function(evt) {
+		if (evt.target.readyState == FileReader.DONE) {
+			fileData = evt.target.result;
+		}
+	}
+});
+
 function upload_svg() {
 	canceled = true;
-	var input = document.createElement('INPUT');
-	input.setAttribute("type", "file");
-	input.setAttribute("accept", ".svg");
 	input.click();
-	input.addEventListener('change', event => {
-		if (event.target.files.length > 0){
-			canceled = false;}
-		var file = event.target.files[0];
-		var reader = new FileReader();
-		fileName = file.name;
-		reader.readAsText(file);
-		reader.onloadend = function (evt) {
-			if (evt.target.readyState == FileReader.DONE) {
-				fileData = evt.target.result;
-			}
-		}
-	});
-}
+};
 	""", true
 	)
