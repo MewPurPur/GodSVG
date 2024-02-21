@@ -621,8 +621,7 @@ func respond_to_input_event(event: InputEvent) -> void:
 		if nearest_handle != null:
 			hovered_handle = nearest_handle
 			if hovered_handle is PathHandle:
-				Indications.set_hovered(hovered_handle.tid,
-						hovered_handle.command_index)
+				Indications.set_hovered(hovered_handle.tid, hovered_handle.command_index)
 			else:
 				Indications.set_hovered(hovered_handle.tid)
 		else:
