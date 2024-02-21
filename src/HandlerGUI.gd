@@ -58,7 +58,7 @@ func remove_overlay() -> void:
 
 func web_load_svg() -> void:
 	JavaScriptBridge.eval("upload_svg();", true)  # Open file dialog.
-	await _in_focus  # Wait until dialog closed
+	await _in_focus  # Wait until dialog closed.
 	await get_tree().create_timer(1.5).timeout  # Give some time for async JS data load.
 	if JavaScriptBridge.eval("canceled;", true):
 		return
