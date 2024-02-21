@@ -92,7 +92,7 @@ func open_import_dialog() -> void:
 		DisplayServer.file_dialog_show("Import a .svg file", Utils.get_last_dir(), "", false,
 				DisplayServer.FILE_DIALOG_MODE_OPEN_FILE, ["*.svg"], native_file_import)
 	elif OS.has_feature("web"):
-		HTML5FileExchange.load_svg()
+		HandlerGUI.web_load_svg()
 	else:
 		var svg_import_dialog := SVGFileDialog.instantiate()
 		svg_import_dialog.current_dir = Utils.get_last_dir()
@@ -118,7 +118,7 @@ non_native_callable: Callable) -> void:
 				false, DisplayServer.FILE_DIALOG_MODE_SAVE_FILE,
 				["*." + extension], native_callable)
 	elif OS.has_feature("web"):
-		HTML5FileExchange.save_svg()
+		HandlerGUI.web_save_svg()
 	else:
 		var svg_export_dialog := SVGFileDialog.instantiate()
 		svg_export_dialog.current_dir = Utils.get_last_dir()

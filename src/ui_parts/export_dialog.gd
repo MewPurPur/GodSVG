@@ -52,9 +52,9 @@ func _on_ok_button_pressed() -> void:
 	if OS.has_feature("web"):
 		match extension:
 			"png":
-				HTML5FileExchange.save_png(_create_img())
+				HandlerGUI.web_save_png(_create_img())
 			_:
-				HTML5FileExchange.save_svg()
+				HandlerGUI.web_save_svg()
 	else:
 		SVG.open_save_dialog(extension, native_file_export, export)
 
