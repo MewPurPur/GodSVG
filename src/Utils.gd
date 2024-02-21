@@ -97,8 +97,8 @@ start_pressed: bool) -> CheckBox:
 	return checkbox
 
 
-static func get_cubic_bezier_points(cp1: Vector2, cp2: Vector2,
-cp3: Vector2, cp4: Vector2) -> PackedVector2Array:
+static func get_cubic_bezier_points(cp1: Vector2, cp2: Vector2, cp3: Vector2,
+cp4: Vector2) -> PackedVector2Array:
 	var curve := Curve2D.new()
 	curve.add_point(cp1, Vector2(), cp2)
 	curve.add_point(cp4, cp3)
@@ -106,10 +106,8 @@ cp3: Vector2, cp4: Vector2) -> PackedVector2Array:
 
 static func get_quadratic_bezier_points(cp1: Vector2, cp2: Vector2,
 cp3: Vector2) -> PackedVector2Array:
-	var curve := Curve2D.new()
-	curve.add_point(cp1, Vector2(), 2/3.0 * (cp2 - cp1))
-	curve.add_point(cp3, 2/3.0 * (cp2 - cp3))
-	return curve.tessellate(6, 1)
+	return Utils.get_cubic_bezier_points(
+			cp1, 2/3.0 * (cp2 - cp1), 2/3.0 * (cp2 - cp3), cp3)
 
 # Ellipse parametric equation.
 static func E(c: Vector2, r: Vector2, cosine: float, sine: float, t: float) -> Vector2:
