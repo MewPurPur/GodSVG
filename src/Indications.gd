@@ -436,7 +436,7 @@ func get_selection_context(popup_method: Callable) -> Popup:
 		var can_move_down := true
 		var can_move_up := true
 		for base_tid in filtered_tids:
-			if Utils.get_parent_tid(base_tid) != Utils.get_parent_tid(filtered_tids[0]):
+			if not Utils.are_tid_parents_same(base_tid, filtered_tids[0]):
 				can_move_down = false
 				can_move_up = false
 				break
