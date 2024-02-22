@@ -60,7 +60,7 @@ static func _tag_to_text(tag: Tag) -> String:
 static func text_to_svg(text: String) -> Variant:
 	var svg_tag := TagSVG.new()
 	var parser := XMLParser.new()
-	parser.open_buffer(text.to_ascii_buffer())
+	parser.open_buffer(text.to_utf8_buffer())
 	var unclosed_tag_stack: Array[Tag] = [svg_tag]
 	
 	# Remove everything before the first SVG tag.
