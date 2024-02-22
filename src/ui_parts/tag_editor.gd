@@ -124,13 +124,16 @@ func _gui_input(event: InputEvent) -> void:
 		if Indications.semi_hovered_tid != tid and\
 		not Utils.is_tid_parent(tid, Indications.hovered_tid):
 			Indications.set_hovered(tid)
-	elif event is InputEventMouseButton and event.is_pressed():
+	elif event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_LEFT:
-			if event.shift_pressed:
-				Indications.shift_select(tid)
-			elif event.ctrl_pressed:
-				Indications.ctrl_select(tid)
-			elif not tid in Indications.selected_tids:
+			if event.is_pressed():
+				if event.shift_pressed:
+					Indications.shift_select(tid)
+				elif event.ctrl_pressed:
+					Indications.ctrl_select(tid)
+				elif not tid in Indications.selected_tids:
+					Indications.normal_select(tid)
+			elif event.is_released() and not event.shift_pressed and not event.ctrl_pressed:
 				Indications.normal_select(tid)
 			accept_event()
 		elif event.button_index == MOUSE_BUTTON_RIGHT:
