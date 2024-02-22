@@ -235,3 +235,7 @@ func _draw() -> void:
 	drop_sb.draw_center = false
 	drop_sb.set_corner_radius_all(4)
 	drop_sb.draw(surface, Rect2(Vector2.ZERO, get_size()))
+
+# Block dragging from starting when pressing the title button.
+func _on_title_button_gui_input(event):
+	title_button.mouse_filter = Utils.mouse_filter_pass_non_drag_events(event)
