@@ -6,7 +6,7 @@ func _can_drop_data(_at_position: Vector2, data: Variant) -> bool:
 		return false
 	get_parent().update_proposed_tid()
 	for tid in data:
-		if Utils.is_tid_parent_or_self(tid, Indications.proposed_drop_tid):
+		if Utils.is_tid_parent(tid, Indications.proposed_drop_tid):
 			return false
 	return true
 
