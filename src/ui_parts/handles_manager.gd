@@ -612,10 +612,10 @@ func respond_to_input_event(event: InputEvent) -> void:
 		return
 	
 	# Set the nearest handle as hovered, if any handles are within range.
-	if (event is InputEventMouseMotion and dragged_handle == null) or\
-	(event is InputEventMouseButton and (event.button_index in [MOUSE_BUTTON_LEFT,
-	MOUSE_BUTTON_RIGHT, MOUSE_BUTTON_WHEEL_DOWN, MOUSE_BUTTON_WHEEL_UP,
-	MOUSE_BUTTON_WHEEL_LEFT, MOUSE_BUTTON_WHEEL_RIGHT])):
+	if (event is InputEventMouseMotion and dragged_handle == null and\
+	event.button_mask == 0) or (event is InputEventMouseButton and\
+	(event.button_index in [MOUSE_BUTTON_LEFT, MOUSE_BUTTON_RIGHT, MOUSE_BUTTON_WHEEL_DOWN,
+	MOUSE_BUTTON_WHEEL_UP, MOUSE_BUTTON_WHEEL_LEFT, MOUSE_BUTTON_WHEEL_RIGHT])):
 		var nearest_handle := find_nearest_handle(event.position / Indications.zoom +\
 				get_node(^"../..").view.position)
 		if nearest_handle != null:
