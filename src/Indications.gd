@@ -330,18 +330,18 @@ func _on_tags_moved_in_parent(parent_tid: PackedInt32Array, indices: Array[int])
 # If selected tags were moved to a location, change the TIDs and their children.
 func _on_tags_moved_to(tids: Array[PackedInt32Array], location: PackedInt32Array) -> void:
 	tids = tids.duplicate()
-	var old_selected_tids := selected_tids.duplicate()
+	var new_selected_tids: Array[PackedInt32Array] = []
 	for moved_idx in tids.size():
 		var moved_tid := tids[moved_idx]
-		for i in range(selected_tids.size() - 1, -1, -1):
-			var tid := selected_tids[i]
+		for tid in selected_tids:
 			if Utils.is_tid_parent_or_self(moved_tid, tid):
 				var new_location := Utils.get_parent_tid(location)
 				new_location.append(moved_idx + location[-1])
 				for ii in range(moved_tid.size(), tid.size()):
-					new_location.append(tid[i])
-				selected_tids[i] = new_location
-	if old_selected_tids != selected_tids:
+					new_location.append(tid[ii])
+				new_selected_tids.append(new_location)
+	if selected_tids != new_selected_tids:
+		selected_tids = new_selected_tids
 		selection_changed.emit()
 
 

@@ -231,14 +231,13 @@ func move_tags_to(tids: Array[PackedInt32Array], location: PackedInt32Array) -> 
 	for tag in tags_stored:
 		get_tag(Utils.get_parent_tid(location)).child_tags.insert(location[-1], tag)
 	# Check if this actually chagned the layout.
-	var changed := false
 	for tid in tids_stored:
-		if not Utils.are_tid_parents_same(tid, location) or tid[-1] < location[-1]:
-			changed = true
-			break
-	if changed:
-		tags_moved_to.emit(tids, location)
-		tag_layout_changed.emit()
+		if not Utils.are_tid_parents_same(tid, location) or tid[-1] < location[-1] or\
+		tid[-1] >= location[-1] + tids_stored.size():
+			# If this condition is passed, then there was a layout change.
+			tags_moved_to.emit(tids, location)
+			tag_layout_changed.emit()
+			return
 
 # Duplicates tags and puts them below.
 func duplicate_tags(tids: Array[PackedInt32Array]) -> void:
