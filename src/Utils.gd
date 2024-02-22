@@ -157,6 +157,14 @@ static func get_parent_tid(tid: PackedInt32Array) -> PackedInt32Array:
 	parent_tid.resize(tid.size() - 1)
 	return parent_tid
 
+static func are_tid_parents_same(tid1: PackedInt32Array, tid2: PackedInt32Array) -> bool:
+	if tid1.size() != tid2.size():
+		return false
+	for i in tid1.size() - 1:
+		if tid1[i] != tid2[i]:
+			return false
+	return true
+
 # Filter out all descendants.
 static func filter_descendant_tids(tids: Array[PackedInt32Array]) -> Array[PackedInt32Array]:
 	var new_tids: Array[PackedInt32Array] = tids.duplicate()
