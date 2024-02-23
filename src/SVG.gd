@@ -27,16 +27,17 @@ func _ready() -> void:
 	cmdline_args.size() >= 1:
 		load_cmdl = true
 	
-	# Basic safe setup, in case for example you cancel your first import.
-	root_tag.attributes.width.set_num(16.0)
-	root_tag.attributes.height.set_num(16.0)
 	await get_tree().get_root().ready  # Await tree ready to be able to add error dialogs.
 	
 	if (apply_svg_from_path(cmdline_args[0]) if load_cmdl else -1) == OK:
+		root_tag.attributes.width.set_num(16.0)
+		root_tag.attributes.height.set_num(16.0)
 		pass
 	elif not GlobalSettings.save_data.svg_text.is_empty():
 		apply_svg_text(GlobalSettings.save_data.svg_text)
 	else:
+		root_tag.attributes.width.set_num(16.0)
+		root_tag.attributes.height.set_num(16.0)
 		update_text(false)
 	UR.clear_history()
 
