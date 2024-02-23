@@ -127,7 +127,8 @@ func _on_viewbox_edit_w_value_changed(new_value: float) -> void:
 	if SVG.root_tag.attributes.viewBox.get_value() != null and\
 	SVG.root_tag.attributes.viewBox.get_list_element(2) != new_value:
 		SVG.root_tag.viewbox.size.x = new_value
-		if GlobalSettings.save_data.viewbox_coupling:
+		if GlobalSettings.save_data.viewbox_coupling and\
+		not SVG.root_tag.attributes.width.get_value().is_empty():
 			SVG.root_tag.attributes.viewBox.set_list_element(2, new_value,
 					Attribute.SyncMode.NO_PROPAGATION)
 			SVG.root_tag.attributes.width.set_num(new_value)
@@ -138,7 +139,8 @@ func _on_viewbox_edit_h_value_changed(new_value: float) -> void:
 	if SVG.root_tag.attributes.viewBox.get_value() != null and\
 	SVG.root_tag.attributes.viewBox.get_list_element(3) != new_value:
 		SVG.root_tag.viewbox.size.y = new_value
-		if GlobalSettings.save_data.viewbox_coupling:
+		if GlobalSettings.save_data.viewbox_coupling and\
+		not SVG.root_tag.attributes.height.get_value().is_empty():
 			SVG.root_tag.attributes.viewBox.set_list_element(3, new_value,
 					Attribute.SyncMode.NO_PROPAGATION)
 			SVG.root_tag.attributes.height.set_num(new_value)
