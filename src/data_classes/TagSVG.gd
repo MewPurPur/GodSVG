@@ -171,8 +171,8 @@ func move_tags_in_parent(tids: Array[PackedInt32Array], down: bool) -> void:
 	var parent_tag := get_tag(parent_tid)
 	var parent_child_count := parent_tag.get_child_count()
 	var old_indices: Array[int] = []
-	for k in parent_child_count:
-		old_indices.append(k)
+	for i in parent_child_count:
+		old_indices.append(i)
 	# Do the moving.
 	if down:
 		var i := parent_child_count - 1
