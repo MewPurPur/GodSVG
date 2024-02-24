@@ -11,7 +11,7 @@ const bold_font = preload("res://visual/fonts/FontBold.ttf")
 @onready var indicator: LineEdit = $LineEdit
 @onready var button: Button = $Button
 
-func set_value(new_value: String, update_type := Utils.UpdateType.REGULAR):
+func set_value(new_value: String, update_type := Utils.UpdateType.REGULAR) -> void:
 	sync(attribute.autoformat(new_value))
 	if attribute.get_value() != new_value or update_type == Utils.UpdateType.FINAL:
 		match update_type:

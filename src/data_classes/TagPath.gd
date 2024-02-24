@@ -9,7 +9,7 @@ const known_shape_attributes = ["d"]
 const known_inheritable_attributes = ["transform", "opacity", "fill", "fill-opacity",
 		"stroke", "stroke-opacity", "stroke-width", "stroke-linecap", "stroke-linejoin"]
 
-func _init() -> void:
+func _init(pos := Vector2.ZERO) -> void:
 	attributes = {
 		"transform": AttributeTransform.new(),
 		"d": AttributePath.new(),
@@ -22,6 +22,9 @@ func _init() -> void:
 		"stroke-linecap": AttributeEnum.new(["butt", "round", "square"], 0),
 		"stroke-linejoin": AttributeEnum.new(["miter", "round", "bevel"], 0),
 	}
+	attributes.d.insert_command(0, "M")
+	attributes.d.set_command_property(0, &"x", pos.x)
+	attributes.d.set_command_property(0, &"y", pos.y)
 	super()
 
 func can_replace(_new_tag: String) -> bool:

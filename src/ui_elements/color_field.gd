@@ -12,7 +12,7 @@ const checkerboard = preload("res://visual/icons/backgrounds/ColorButtonBG.svg")
 @onready var color_edit: LineEdit = $LineEdit
 @onready var color_popup: Popup
 
-func set_value(new_value: String, update_type := Utils.UpdateType.REGULAR):
+func set_value(new_value: String, update_type := Utils.UpdateType.REGULAR) -> void:
 	# Validate the value.
 	if not is_valid(new_value):
 		sync(attribute.get_value())

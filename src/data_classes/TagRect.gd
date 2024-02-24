@@ -9,7 +9,7 @@ const known_shape_attributes = ["x", "y", "width", "height", "rx", "ry"]
 const known_inheritable_attributes = ["transform", "opacity", "fill", "fill-opacity",
 		"stroke", "stroke-opacity", "stroke-width", "stroke-linejoin"]
 
-func _init() -> void:
+func _init(pos := Vector2.ZERO) -> void:
 	attributes = {
 		"transform": AttributeTransform.new(),
 		"x": AttributeNumeric.new(AttributeNumeric.Mode.FLOAT, "0"),
@@ -26,6 +26,8 @@ func _init() -> void:
 		"stroke-width": AttributeNumeric.new(AttributeNumeric.Mode.UFLOAT, "1"),
 		"stroke-linejoin": AttributeEnum.new(["miter", "round", "bevel"], 0),
 	}
+	attributes.x.set_num(pos.x)
+	attributes.y.set_num(pos.y)
 	super()
 
 

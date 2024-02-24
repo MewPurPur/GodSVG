@@ -669,7 +669,7 @@ func respond_to_input_event(event: InputEvent) -> void:
 							dragged_handle.path_attribute.get_subpath(inner_idx)
 					for idx in range(subpath_range.x, subpath_range.y + 1):
 						Indications.ctrl_select(dragged_tid, idx)
-				elif event.ctrl_pressed:
+				elif event.is_command_or_control_pressed():
 					Indications.ctrl_select(dragged_tid, inner_idx)
 				elif event.shift_pressed:
 					Indications.shift_select(dragged_tid, inner_idx)
@@ -755,27 +755,9 @@ func create_tag_context(pos: Vector2) -> ContextPopupType:
 func add_tag_at_pos(tag_name: String, pos: Vector2) -> void:
 	var tag: Tag
 	match tag_name:
-		"path":
-			tag = TagPath.new()
-			tag.attributes.d.insert_command(0, "M")
-			tag.attributes.d.set_command_property(0, &"x", pos.x)
-			tag.attributes.d.set_command_property(0, &"y", pos.y)
-		"circle":
-			tag = TagCircle.new()
-			tag.attributes.cx.set_num(pos.x)
-			tag.attributes.cy.set_num(pos.y)
-		"ellipse":
-			tag = TagEllipse.new()
-			tag.attributes.cx.set_num(pos.x)
-			tag.attributes.cy.set_num(pos.y)
-		"rect":
-			tag = TagRect.new()
-			tag.attributes.x.set_num(pos.x)
-			tag.attributes.y.set_num(pos.y)
-		"line":
-			tag = TagLine.new()
-			tag.attributes.x1.set_num(pos.x)
-			tag.attributes.y1.set_num(pos.y)
-			tag.attributes.x2.set_num(pos.x + 1)
-			tag.attributes.y2.set_num(pos.y)
+		"path": tag = TagPath.new(pos)
+		"circle": tag = TagCircle.new(pos)
+		"ellipse": tag = TagEllipse.new(pos)
+		"rect": tag = TagRect.new(pos)
+		"line": tag = TagLine.new(pos)
 	SVG.root_tag.add_tag(tag, PackedInt32Array([SVG.root_tag.get_child_count()]))

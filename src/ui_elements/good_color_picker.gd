@@ -193,7 +193,7 @@ func move_slider(idx: int, offset: float) -> void:
 	set_display_color(new_color)
 	widgets_arr[idx].queue_redraw()
 
-func set_color_channel(col: Color, channel: String, offset: float):
+func set_color_channel(col: Color, channel: String, offset: float) -> Color:
 	match channel:
 		"r": col.r = clampf(offset, 0.0, 1.0)
 		"g": col.g = clampf(offset, 0.0, 1.0)

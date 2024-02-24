@@ -51,12 +51,12 @@ signal viewport_size_changed
 var zoom := 0.0
 var viewport_size := Vector2i.ZERO
 
-func set_zoom(new_value):
+func set_zoom(new_value) -> void:
 	if zoom != new_value:
 		zoom = new_value
 		zoom_changed.emit()
 
-func set_viewport_size(new_value):
+func set_viewport_size(new_value) -> void:
 	if viewport_size != new_value:
 		viewport_size = new_value
 		viewport_size_changed.emit()
@@ -345,50 +345,35 @@ func _on_tags_moved_to(tids: Array[PackedInt32Array], location: PackedInt32Array
 		selection_changed.emit()
 
 
-func _unhandled_input(event: InputEvent) -> void:
-	if get_viewport().gui_is_dragging():
+func respond_to_key_input(event: InputEventKey) -> void:
+	# Path commands using keys.
+	if inner_selections.is_empty() or event.is_command_or_control_pressed():
+		# If a single path tag is selected, add the new command at the end.
+		if selected_tids.size() == 1:
+			var tag_ref := SVG.root_tag.get_tag(selected_tids[0])
+			if tag_ref.name == "path":
+				var path_attrib: AttributePath = tag_ref.attributes.d
+				for action_name in path_actions_dict.keys():
+					if event.is_action_pressed(action_name):
+						var path_cmd_count := path_attrib.get_command_count()
+						var path_cmd_char: String = path_actions_dict[action_name]
+						# Z after a Z is syntactically invalid.
+						if (path_cmd_count == 0 and not path_cmd_char in "Mm") or\
+						(path_cmd_char in "Zz" and path_cmd_count > 0 and\
+						path_attrib.get_command(path_cmd_count - 1) is\
+						PathCommand.CloseCommand):
+							return
+						path_attrib.insert_command(path_cmd_count, path_cmd_char)
+						normal_select(selected_tids[0], path_cmd_count)
+						added_handle.emit()
+						break
 		return
-	if event.is_action_pressed(&"ui_cancel"):
-		clear_all_selections()
-	elif event.is_action_pressed(&"delete"):
-		delete_selected()
-	elif event.is_action_pressed(&"move_up"):
-		move_up_selected()
-	elif event.is_action_pressed(&"move_down"):
-		move_down_selected()
-	elif event.is_action_pressed(&"duplicate"):
-		duplicate_selected()
-	elif event.is_action_pressed(&"select_all"):
-		select_all()
-	elif event is InputEventKey:
-		# Path commands using keys.
-		if inner_selections.is_empty() or event.is_command_or_control_pressed():
-			# If a single path tag is selected, add the new command at the end.
-			if selected_tids.size() == 1:
-				var tag_ref := SVG.root_tag.get_tag(selected_tids[0])
-				if tag_ref.name == "path":
-					var path_attrib: AttributePath = tag_ref.attributes.d
-					for action_name in path_actions_dict.keys():
-						if event.is_action_pressed(action_name):
-							var path_cmd_count := path_attrib.get_command_count()
-							var path_cmd_char: String = path_actions_dict[action_name]
-							# Z after a Z is syntactically invalid.
-							if (path_cmd_count == 0 and not path_cmd_char in "Mm") or\
-							(path_cmd_char in "Zz" and path_cmd_count > 0 and\
-							path_attrib.get_command(path_cmd_count - 1) is\
-							PathCommand.CloseCommand):
-								return
-							path_attrib.insert_command(path_cmd_count, path_cmd_char)
-							normal_select(selected_tids[0], path_cmd_count)
-							added_handle.emit()
-							break
-			return
-		
-		for action_name in path_actions_dict.keys():
-			if event.is_action_pressed(action_name):
-				insert_inner_after_selection(path_actions_dict[action_name])
-				added_handle.emit()
-				break
+	
+	for action_name in path_actions_dict.keys():
+		if event.is_action_pressed(action_name):
+			insert_inner_after_selection(path_actions_dict[action_name])
+			added_handle.emit()
+			break
 
 
 # Operations on selected tags.
