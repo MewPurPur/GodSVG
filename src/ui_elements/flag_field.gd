@@ -6,7 +6,7 @@ var hovered := false
 signal value_changed(new_value: int)
 var _value: int
 
-func set_value(new_value: int, emit_value_changed := true):
+func set_value(new_value: int, emit_value_changed := true) -> void:
 	if _value != new_value:
 		_value = new_value
 		if emit_value_changed:

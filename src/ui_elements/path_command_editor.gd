@@ -59,7 +59,7 @@ func _gui_input(event: InputEvent) -> void:
 						SVG.root_tag.get_tag(tid).attributes.d.get_subpath(cmd_idx)
 				for idx in range(subpath_range.x, subpath_range.y + 1):
 					Indications.ctrl_select(tid, idx)
-			elif event.ctrl_pressed:
+			elif event.is_command_or_control_pressed():
 				Indications.ctrl_select(tid, cmd_idx)
 			elif event.shift_pressed:
 				Indications.shift_select(tid, cmd_idx)

@@ -129,7 +129,7 @@ func _gui_input(event: InputEvent) -> void:
 			if event.is_pressed():
 				if event.shift_pressed:
 					Indications.shift_select(tid)
-				elif event.ctrl_pressed:
+				elif event.is_command_or_control_pressed():
 					Indications.ctrl_select(tid)
 				elif not tid in Indications.selected_tids:
 					Indications.normal_select(tid)
@@ -237,5 +237,5 @@ func _draw() -> void:
 	drop_sb.draw(surface, Rect2(Vector2.ZERO, get_size()))
 
 # Block dragging from starting when pressing the title button.
-func _on_title_button_gui_input(event):
+func _on_title_button_gui_input(event) -> void:
 	title_button.mouse_filter = Utils.mouse_filter_pass_non_drag_events(event)
