@@ -1,160 +1,71 @@
-[gd_scene load_steps=7 format=3 uid="uid://cksx526iftj5d"]
+[gd_scene load_steps=4 format=3 uid="uid://cksx526iftj5d"]
 
 [ext_resource type="Script" path="res://src/ui_parts/tag_editor.gd" id="1_7i0c4"]
 [ext_resource type="FontFile" uid="uid://dtb4wkus51hxs" path="res://visual/fonts/FontMono.ttf" id="2_0lxvf"]
-[ext_resource type="PackedScene" uid="uid://wp77eqhikp6k" path="res://src/ui_elements/context_popup.tscn" id="3_qx6wd"]
+[ext_resource type="Texture2D" uid="uid://cmepkbqde0jh0" path="res://visual/icons/SmallMore.svg" id="2_2n846"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xmwqw"]
-content_margin_left = 4.0
-content_margin_top = 5.0
-content_margin_right = 4.0
-content_margin_bottom = 5.0
-bg_color = Color(0.129412, 0.129412, 0.2, 1)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.1785, 0.26425, 0.35, 1)
-corner_radius_top_left = 3
-corner_radius_top_right = 3
-corner_radius_bottom_right = 3
-corner_radius_bottom_left = 3
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_50r0v"]
-content_margin_left = 4.0
-content_margin_top = 5.0
-content_margin_right = 4.0
-content_margin_bottom = 5.0
-bg_color = Color(0.1625, 0.1625, 0.25, 1)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.208, 0.3008, 0.4, 1)
-corner_radius_top_left = 3
-corner_radius_top_right = 3
-corner_radius_bottom_right = 3
-corner_radius_bottom_left = 3
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dfilu"]
-content_margin_left = 4.0
-content_margin_top = 4.0
-content_margin_right = 4.0
-content_margin_bottom = 4.0
-bg_color = Color(0.321569, 0.439216, 0.8, 1)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.541176, 0.721569, 0.901961, 1)
-corner_radius_top_left = 3
-corner_radius_top_right = 3
-corner_radius_bottom_right = 3
-corner_radius_bottom_left = 3
-
-[node name="TagEditor" type="PanelContainer"]
-offset_left = 1020.0
-offset_right = 1024.0
-offset_bottom = 30.0
+[node name="TagEditor" type="VBoxContainer"]
+offset_left = 2.0
+offset_top = 2.0
+offset_right = 55.0
+offset_bottom = 32.0
+theme_override_constants/separation = 0
 script = ExtResource("1_7i0c4")
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
-layout_mode = 2
-theme_override_constants/margin_left = 4
-theme_override_constants/margin_top = 3
-theme_override_constants/margin_right = 5
-theme_override_constants/margin_bottom = 3
-
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
-layout_mode = 2
-
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/HBoxContainer"]
-custom_minimum_size = Vector2(50, 0)
-layout_mode = 2
-theme_override_constants/margin_left = 0
-theme_override_constants/margin_top = 4
-theme_override_constants/margin_right = 2
-theme_override_constants/margin_bottom = 4
-
-[node name="TitleButton" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-focus_mode = 0
-mouse_default_cursor_shape = 2
-theme_override_styles/normal = SubResource("StyleBoxFlat_xmwqw")
-theme_override_styles/hover = SubResource("StyleBoxFlat_50r0v")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_dfilu")
-theme_override_styles/disabled = SubResource("StyleBoxFlat_xmwqw")
-
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/TitleButton"]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
-mouse_filter = 2
-theme_override_constants/margin_left = 6
-theme_override_constants/margin_top = 4
-theme_override_constants/margin_right = 6
-theme_override_constants/margin_bottom = 3
-
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/TitleButton/MarginContainer"]
+[node name="Title" type="PanelContainer" parent="."]
 layout_mode = 2
 mouse_filter = 2
-theme_override_constants/separation = 0
 
-[node name="TitleButtonIcon" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/TitleButton/MarginContainer/VBoxContainer"]
-unique_name_in_owner = true
+[node name="TitleBox" type="HBoxContainer" parent="Title"]
+layout_mode = 2
+theme_override_constants/separation = 6
+alignment = 1
+
+[node name="TitleIcon" type="TextureRect" parent="Title/TitleBox"]
 custom_minimum_size = Vector2(18, 18)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 0
 mouse_filter = 2
 
-[node name="TitleButtonLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/TitleButton/MarginContainer/VBoxContainer"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(24, 0)
+[node name="TitleLabel" type="Label" parent="Title/TitleBox"]
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_fonts/font = ExtResource("2_0lxvf")
 theme_override_font_sizes/font_size = 12
 horizontal_alignment = 1
+text_overrun_behavior = 3
 
-[node name="RightContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="TitleButton" type="Button" parent="Title/TitleBox"]
+layout_mode = 2
+focus_mode = 0
+mouse_filter = 1
+mouse_default_cursor_shape = 2
+theme_type_variation = &"FlatButton"
+icon = ExtResource("2_2n846")
+
+[node name="Content" type="PanelContainer" parent="."]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="MainContainer" type="VBoxContainer" parent="Content"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 12
 
-[node name="AttributeContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/RightContainer"]
+[node name="AttributeContainer" type="VBoxContainer" parent="Content/MainContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="UnknownAttributes" type="HFlowContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/RightContainer/AttributeContainer"]
-visible = false
+[node name="PaintAttributes" type="HFlowContainer" parent="Content/MainContainer/AttributeContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="PaintAttributes" type="HFlowContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/RightContainer/AttributeContainer"]
+[node name="ShapeAttributes" type="HFlowContainer" parent="Content/MainContainer/AttributeContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="ShapeAttributes" type="HFlowContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/RightContainer/AttributeContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="ChildTags" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
-unique_name_in_owner = true
-visible = false
-layout_mode = 2
-
-[node name="ContextPopup" parent="." instance=ExtResource("3_qx6wd")]
-visible = false
-
-[connection signal="gui_input" from="." to="." method="_on_gui_input"]
-[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/TitleButton" to="." method="_on_title_button_pressed"]
-[connection signal="draw" from="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/TitleButton/MarginContainer/VBoxContainer" to="." method="_on_title_button_container_draw"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
+[connection signal="gui_input" from="Title/TitleBox/TitleButton" to="." method="_on_title_button_gui_input"]
+[connection signal="pressed" from="Title/TitleBox/TitleButton" to="." method="_on_title_button_pressed"]

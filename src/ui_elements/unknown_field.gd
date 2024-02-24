@@ -1,35 +1,36 @@
 ## An editor to be tied to an AttributeUnknown.
 ## Allows attributes to be edited even if they aren't recognized by GodSVG.
-extends AttributeEditor
+extends BetterLineEdit
 
-@onready var line_edit: BetterLineEdit = $LineEdit
+signal focused
+var attribute: AttributeUnknown
+var attribute_name: String
 
-signal value_changed(new_value: String)
-var _value: String  # Must not be updated directly.
-
-func set_value(new_value: String, emit_value_changed := true):
-	if _value != new_value:
-		_value = new_value
-		if emit_value_changed:
-			value_changed.emit(new_value)
-
-func get_value() -> String:
-	return _value
+func set_value(new_value: String, update_type := Utils.UpdateType.REGULAR) -> void:
+	sync(new_value)
+	if attribute.get_value() != new_value or update_type == Utils.UpdateType.FINAL:
+		match update_type:
+			Utils.UpdateType.INTERMEDIATE:
+				attribute.set_value(new_value, Attribute.SyncMode.INTERMEDIATE)
+			Utils.UpdateType.FINAL:
+				attribute.set_value(new_value, Attribute.SyncMode.FINAL)
+			_:
+				attribute.set_value(new_value)
 
 
 func _ready() -> void:
-	value_changed.connect(_on_value_changed)
-	if attribute != null:
-		set_value(attribute.get_value())
-	line_edit.text = get_value()
-	line_edit.tooltip_text = attribute_name + "\n(" + tr(&"#unknown_tooltip") + ")"
+	super()
+	set_value(attribute.get_value())
+	tooltip_text = attribute_name + "\n(" + tr(&"#unknown_tooltip") + ")"
 
-func _on_value_changed(new_value: String) -> void:
-	line_edit.text = new_value
-	if attribute != null:
-		attribute.set_value(new_value)
 
+func _on_focus_entered() -> void:
+	focused.emit()
+	super()
 
 func _on_text_submitted(new_text: String) -> void:
-	line_edit.release_focus()
 	set_value(new_text)
+
+
+func sync(new_value: String) -> void:
+	text = new_value

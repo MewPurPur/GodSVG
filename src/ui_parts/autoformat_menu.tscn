@@ -1,0 +1,243 @@
+[gd_scene load_steps=5 format=3 uid="uid://4ve0pwcpch2e"]
+
+[ext_resource type="Script" path="res://src/ui_parts/autoformat_menu.gd" id="1_1463h"]
+[ext_resource type="Script" path="res://src/ui_elements/BetterTabContainer.gd" id="2_p41oe"]
+[ext_resource type="PackedScene" path="res://src/ui_elements/setting_check_box.tscn" id="4_ic3rj"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_p36ah"]
+content_margin_left = 8.0
+content_margin_top = 10.0
+content_margin_right = 8.0
+content_margin_bottom = 10.0
+bg_color = Color(0.005, 0.005, 0.05, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.203922, 0.254902, 0.4, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+
+[node name="AutoformatMenu" type="PanelContainer"]
+custom_minimum_size = Vector2(440, 260)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -2.0
+offset_top = -2.0
+offset_right = 2.0
+offset_bottom = 2.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_p36ah")
+script = ExtResource("1_1463h")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="BetterTabContainer" type="TabContainer" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("2_p41oe")
+
+[node name="XML" type="ScrollContainer" parent="VBoxContainer/BetterTabContainer"]
+layout_mode = 2
+horizontal_scroll_mode = 0
+
+[node name="XmlVBox" type="VBoxContainer" parent="VBoxContainer/BetterTabContainer/XML"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 0
+
+[node name="AddTrailingNewline" parent="VBoxContainer/BetterTabContainer/XML/XmlVBox" instance=ExtResource("4_ic3rj")]
+layout_mode = 2
+text = "#add_trailing_newline"
+section_name = "autoformat"
+setting_name = "xml_add_trailing_newline"
+
+[node name="UseShorthandTagSyntax" parent="VBoxContainer/BetterTabContainer/XML/XmlVBox" instance=ExtResource("4_ic3rj")]
+layout_mode = 2
+text = "#use_shorthand_tag_syntax"
+section_name = "autoformat"
+setting_name = "xml_shorthand_tags"
+
+[node name="#numbers" type="ScrollContainer" parent="VBoxContainer/BetterTabContainer"]
+visible = false
+layout_mode = 2
+horizontal_scroll_mode = 0
+
+[node name="NumberVBox" type="VBoxContainer" parent="VBoxContainer/BetterTabContainer/#numbers"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 0
+
+[node name="NumberEnable" parent="VBoxContainer/BetterTabContainer/#numbers/NumberVBox" instance=ExtResource("4_ic3rj")]
+layout_mode = 2
+text = "#enable_autoformatting"
+section_name = "autoformat"
+setting_name = "number_enable_autoformatting"
+
+[node name="RemoveZeroPadding" parent="VBoxContainer/BetterTabContainer/#numbers/NumberVBox" instance=ExtResource("4_ic3rj")]
+layout_mode = 2
+text = "#remove_zero_padding"
+section_name = "autoformat"
+setting_name = "number_remove_zero_padding"
+
+[node name="RemoveLeadingZero" parent="VBoxContainer/BetterTabContainer/#numbers/NumberVBox" instance=ExtResource("4_ic3rj")]
+layout_mode = 2
+text = "#remove_leading_zero"
+section_name = "autoformat"
+setting_name = "number_remove_leading_zero"
+
+[node name="#colors" type="ScrollContainer" parent="VBoxContainer/BetterTabContainer"]
+visible = false
+layout_mode = 2
+horizontal_scroll_mode = 0
+
+[node name="ColorVBox" type="VBoxContainer" parent="VBoxContainer/BetterTabContainer/#colors"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 0
+
+[node name="ColorEnable" parent="VBoxContainer/BetterTabContainer/#colors/ColorVBox" instance=ExtResource("4_ic3rj")]
+layout_mode = 2
+text = "#enable_autoformatting"
+section_name = "autoformat"
+setting_name = "color_enable_autoformatting"
+
+[node name="ConvertToHex" parent="VBoxContainer/BetterTabContainer/#colors/ColorVBox" instance=ExtResource("4_ic3rj")]
+layout_mode = 2
+text = "#convert_rgb_to_hex"
+section_name = "autoformat"
+setting_name = "color_convert_rgb_to_hex"
+
+[node name="ConvertToHex2" parent="VBoxContainer/BetterTabContainer/#colors/ColorVBox" instance=ExtResource("4_ic3rj")]
+layout_mode = 2
+text = "#convert_named_to_hex"
+section_name = "autoformat"
+setting_name = "color_convert_named_to_hex"
+
+[node name="UseShorthandHex" parent="VBoxContainer/BetterTabContainer/#colors/ColorVBox" instance=ExtResource("4_ic3rj")]
+layout_mode = 2
+text = "#use_shorthand_hex_code"
+section_name = "autoformat"
+setting_name = "color_use_shorthand_hex_code"
+
+[node name="UseNamedColors" parent="VBoxContainer/BetterTabContainer/#colors/ColorVBox" instance=ExtResource("4_ic3rj")]
+layout_mode = 2
+text = "#use_short_named_colors"
+section_name = "autoformat"
+setting_name = "color_use_short_named_colors"
+
+[node name="#paths" type="ScrollContainer" parent="VBoxContainer/BetterTabContainer"]
+visible = false
+layout_mode = 2
+horizontal_scroll_mode = 0
+
+[node name="PathVBox" type="VBoxContainer" parent="VBoxContainer/BetterTabContainer/#paths"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 0
+
+[node name="PathEnable" parent="VBoxContainer/BetterTabContainer/#paths/PathVBox" instance=ExtResource("4_ic3rj")]
+layout_mode = 2
+text = "#enable_autoformatting"
+section_name = "autoformat"
+setting_name = "path_enable_autoformatting"
+
+[node name="CompressNumbers" parent="VBoxContainer/BetterTabContainer/#paths/PathVBox" instance=ExtResource("4_ic3rj")]
+layout_mode = 2
+text = "#compress_numbers"
+section_name = "autoformat"
+setting_name = "path_compress_numbers"
+
+[node name="MinimizeSpacing" parent="VBoxContainer/BetterTabContainer/#paths/PathVBox" instance=ExtResource("4_ic3rj")]
+layout_mode = 2
+text = "#minimize_spacing"
+section_name = "autoformat"
+setting_name = "path_minimize_spacing"
+
+[node name="RemoveSpacingAfterFlags" parent="VBoxContainer/BetterTabContainer/#paths/PathVBox" instance=ExtResource("4_ic3rj")]
+layout_mode = 2
+text = "#remove_spacing_after_flags"
+section_name = "autoformat"
+setting_name = "path_remove_spacing_after_flags"
+
+[node name="RemoveConsecutiveCommands" parent="VBoxContainer/BetterTabContainer/#paths/PathVBox" instance=ExtResource("4_ic3rj")]
+layout_mode = 2
+text = "#remove_consecutive_commands"
+section_name = "autoformat"
+setting_name = "path_remove_consecutive_commands"
+
+[node name="#transforms" type="ScrollContainer" parent="VBoxContainer/BetterTabContainer"]
+visible = false
+layout_mode = 2
+horizontal_scroll_mode = 0
+
+[node name="TransformVBox" type="VBoxContainer" parent="VBoxContainer/BetterTabContainer/#transforms"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 0
+
+[node name="TransformEnable" parent="VBoxContainer/BetterTabContainer/#transforms/TransformVBox" instance=ExtResource("4_ic3rj")]
+layout_mode = 2
+text = "#enable_autoformatting"
+section_name = "autoformat"
+setting_name = "transform_enable_autoformatting"
+
+[node name="CompressNumbers" parent="VBoxContainer/BetterTabContainer/#transforms/TransformVBox" instance=ExtResource("4_ic3rj")]
+layout_mode = 2
+text = "#compress_numbers"
+section_name = "autoformat"
+setting_name = "transform_compress_numbers"
+
+[node name="MinimizeSpacing" parent="VBoxContainer/BetterTabContainer/#transforms/TransformVBox" instance=ExtResource("4_ic3rj")]
+layout_mode = 2
+text = "#minimize_spacing"
+section_name = "autoformat"
+setting_name = "transform_minimize_spacing"
+
+[node name="RemoveUnnecessaryParameters" parent="VBoxContainer/BetterTabContainer/#transforms/TransformVBox" instance=ExtResource("4_ic3rj")]
+layout_mode = 2
+text = "#remove_unnecessary_parameters"
+section_name = "autoformat"
+setting_name = "transform_remove_unnecessary_params"
+
+[node name="CancelButton" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
+focus_mode = 0
+mouse_default_cursor_shape = 2
+text = "#close"
+
+[connection signal="pressed" from="VBoxContainer/BetterTabContainer/XML/XmlVBox/AddTrailingNewline" to="." method="_on_autoformat_settings_changed"]
+[connection signal="pressed" from="VBoxContainer/BetterTabContainer/XML/XmlVBox/UseShorthandTagSyntax" to="." method="_on_autoformat_settings_changed"]
+[connection signal="pressed" from="VBoxContainer/BetterTabContainer/#numbers/NumberVBox/NumberEnable" to="." method="_on_autoformat_settings_changed"]
+[connection signal="pressed" from="VBoxContainer/BetterTabContainer/#numbers/NumberVBox/RemoveZeroPadding" to="." method="_on_autoformat_settings_changed"]
+[connection signal="pressed" from="VBoxContainer/BetterTabContainer/#numbers/NumberVBox/RemoveLeadingZero" to="." method="_on_autoformat_settings_changed"]
+[connection signal="pressed" from="VBoxContainer/BetterTabContainer/#colors/ColorVBox/ColorEnable" to="." method="_on_autoformat_settings_changed"]
+[connection signal="pressed" from="VBoxContainer/BetterTabContainer/#colors/ColorVBox/ConvertToHex" to="." method="_on_autoformat_settings_changed"]
+[connection signal="pressed" from="VBoxContainer/BetterTabContainer/#colors/ColorVBox/ConvertToHex2" to="." method="_on_autoformat_settings_changed"]
+[connection signal="pressed" from="VBoxContainer/BetterTabContainer/#colors/ColorVBox/UseShorthandHex" to="." method="_on_autoformat_settings_changed"]
+[connection signal="pressed" from="VBoxContainer/BetterTabContainer/#colors/ColorVBox/UseNamedColors" to="." method="_on_autoformat_settings_changed"]
+[connection signal="pressed" from="VBoxContainer/BetterTabContainer/#paths/PathVBox/PathEnable" to="." method="_on_autoformat_settings_changed"]
+[connection signal="pressed" from="VBoxContainer/BetterTabContainer/#paths/PathVBox/CompressNumbers" to="." method="_on_autoformat_settings_changed"]
+[connection signal="pressed" from="VBoxContainer/BetterTabContainer/#paths/PathVBox/MinimizeSpacing" to="." method="_on_autoformat_settings_changed"]
+[connection signal="pressed" from="VBoxContainer/BetterTabContainer/#paths/PathVBox/RemoveSpacingAfterFlags" to="." method="_on_autoformat_settings_changed"]
+[connection signal="pressed" from="VBoxContainer/BetterTabContainer/#paths/PathVBox/RemoveConsecutiveCommands" to="." method="_on_autoformat_settings_changed"]
+[connection signal="pressed" from="VBoxContainer/BetterTabContainer/#transforms/TransformVBox/TransformEnable" to="." method="_on_autoformat_settings_changed"]
+[connection signal="pressed" from="VBoxContainer/BetterTabContainer/#transforms/TransformVBox/CompressNumbers" to="." method="_on_autoformat_settings_changed"]
+[connection signal="pressed" from="VBoxContainer/BetterTabContainer/#transforms/TransformVBox/MinimizeSpacing" to="." method="_on_autoformat_settings_changed"]
+[connection signal="pressed" from="VBoxContainer/BetterTabContainer/#transforms/TransformVBox/RemoveUnnecessaryParameters" to="." method="_on_autoformat_settings_changed"]
+[connection signal="pressed" from="VBoxContainer/CancelButton" to="." method="_on_cancel_button_pressed"]

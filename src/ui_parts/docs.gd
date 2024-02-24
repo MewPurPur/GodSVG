@@ -1,6 +1,6 @@
-extends ColorRect
+extends PanelContainer
 
-@onready var desc: RichTextLabel = %Desc
+@onready var desc: RichTextLabel = %"#kbd_shortcuts_tab"
 
 func _ready() -> void:
 	for shortcut in [&"#shortcut_inspector_delete", &"#shortcut_inspector_ctrl_down",

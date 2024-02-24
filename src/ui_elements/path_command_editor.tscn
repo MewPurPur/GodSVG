@@ -1,164 +1,116 @@
-[gd_scene load_steps=11 format=3 uid="uid://dcdrc3r60bgg3"]
+[gd_scene load_steps=8 format=3 uid="uid://dcdrc3r60bgg3"]
 
 [ext_resource type="Script" path="res://src/ui_elements/path_command_editor.gd" id="1_om2fk"]
-[ext_resource type="FontFile" uid="uid://dtb4wkus51hxs" path="res://visual/fonts/FontMono.ttf" id="2_o5eem"]
-[ext_resource type="Texture2D" uid="uid://cmepkbqde0jh0" path="res://visual/icons/SmallMore.svg" id="3_a76tm"]
-[ext_resource type="PackedScene" uid="uid://wp77eqhikp6k" path="res://src/ui_elements/context_popup.tscn" id="4_xqjqs"]
-[ext_resource type="Script" path="res://src/ui_elements/path_popup.gd" id="5_3dynt"]
-[ext_resource type="PackedScene" uid="uid://co2btefrqrm0e" path="res://src/ui_elements/path_command_button.tscn" id="6_oj0oy"]
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_sewij"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_g5128"]
+content_margin_left = 5.0
+content_margin_top = 0.0
+content_margin_right = 5.0
+content_margin_bottom = 0.0
+bg_color = Color(0.8, 0.48, 0.16, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.9, 0.684, 0.36, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_dsai0"]
-content_margin_left = 2.0
-content_margin_right = 2.0
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xysdk"]
+content_margin_left = 5.0
+content_margin_top = 0.0
+content_margin_right = 5.0
+content_margin_bottom = 0.0
+bg_color = Color(0.85, 0.51, 0.17, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.95, 0.798, 0.57, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ky4q6"]
-content_margin_left = 2.0
-content_margin_right = 2.0
-bg_color = Color(1, 1, 1, 0.0666667)
-corner_radius_top_left = 3
-corner_radius_top_right = 3
-corner_radius_bottom_right = 3
-corner_radius_bottom_left = 3
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sbcff"]
+content_margin_left = 5.0
+content_margin_top = 0.0
+content_margin_right = 5.0
+content_margin_bottom = 0.0
+bg_color = Color(1, 0.75, 0.25, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 0.925, 0.7, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5jayv"]
-content_margin_left = 2.0
-content_margin_right = 2.0
-bg_color = Color(1, 1, 1, 0.2)
-corner_radius_top_left = 3
-corner_radius_top_right = 3
-corner_radius_bottom_right = 3
-corner_radius_bottom_left = 3
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gs8ph"]
+content_margin_left = 5.0
+content_margin_top = 0.0
+content_margin_right = 5.0
+content_margin_bottom = 0.0
+bg_color = Color(0.64, 0.16, 0.8, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.7425, 0.45, 0.9, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
 
-[node name="PathCommandEditor" type="PanelContainer"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tyaol"]
+content_margin_left = 5.0
+content_margin_top = 0.0
+content_margin_right = 5.0
+content_margin_bottom = 0.0
+bg_color = Color(0.678431, 0.168627, 0.85098, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.823333, 0.57, 0.95, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cbymw"]
+content_margin_left = 5.0
+content_margin_top = 0.0
+content_margin_right = 5.0
+content_margin_bottom = 0.0
+bg_color = Color(0.75, 0.25, 1, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.875, 0.7, 1, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[node name="PathCommandEditor" type="Control"]
+custom_minimum_size = Vector2(0, 22)
+layout_mode = 3
+anchors_preset = 0
 offset_right = 38.0
 offset_bottom = 14.0
-theme_override_styles/panel = SubResource("StyleBoxEmpty_sewij")
 script = ExtResource("1_om2fk")
+absolute_button_normal = SubResource("StyleBoxFlat_g5128")
+absolute_button_hovered = SubResource("StyleBoxFlat_xysdk")
+absolute_button_pressed = SubResource("StyleBoxFlat_sbcff")
+relative_button_normal = SubResource("StyleBoxFlat_gs8ph")
+relative_button_hovered = SubResource("StyleBoxFlat_tyaol")
+relative_button_pressed = SubResource("StyleBoxFlat_cbymw")
 
-[node name="HBox" type="HBoxContainer" parent="."]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 0
-mouse_filter = 2
-
-[node name="RelativeButton" type="Button" parent="HBox"]
-layout_mode = 2
-size_flags_vertical = 4
-focus_mode = 0
-mouse_default_cursor_shape = 2
-theme_override_colors/font_color = Color(0.866667, 0.933333, 1, 1)
-theme_override_fonts/font = ExtResource("2_o5eem")
-theme_override_font_sizes/font_size = 13
-
-[node name="Fields" type="HBoxContainer" parent="HBox"]
-layout_mode = 2
-theme_override_constants/separation = 5
-
-[node name="MoreButton" type="Button" parent="HBox"]
-layout_mode = 2
-size_flags_horizontal = 10
-focus_mode = 0
-mouse_default_cursor_shape = 2
-theme_override_colors/icon_normal_color = Color(0.666667, 0.666667, 0.666667, 1)
-theme_override_colors/icon_hover_color = Color(0.866667, 0.866667, 0.866667, 1)
-theme_override_styles/normal = SubResource("StyleBoxEmpty_dsai0")
-theme_override_styles/hover = SubResource("StyleBoxFlat_ky4q6")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_5jayv")
-icon = ExtResource("3_a76tm")
-
-[node name="ActionsPopup" parent="." instance=ExtResource("4_xqjqs")]
-visible = false
-
-[node name="PathPopup" type="Popup" parent="."]
-transparent_bg = true
-size = Vector2i(240, 285)
-script = ExtResource("5_3dynt")
-
-[node name="PanelContainer" type="PanelContainer" parent="PathPopup"]
-custom_minimum_size = Vector2(240, 0)
-offset_right = 106.0
-offset_bottom = 97.0
-
-[node name="VBoxContainer" type="VBoxContainer" parent="PathPopup/PanelContainer"]
-layout_mode = 2
-theme_override_constants/separation = 2
-
-[node name="MarginContainer" type="MarginContainer" parent="PathPopup/PanelContainer/VBoxContainer"]
-layout_mode = 2
-theme_override_constants/margin_top = 2
-theme_override_constants/margin_right = 4
-
-[node name="MainContainer" type="VBoxContainer" parent="PathPopup/PanelContainer/VBoxContainer/MarginContainer"]
-layout_mode = 2
-theme_override_constants/separation = 2
-
-[node name="RelativeToggle" type="CheckButton" parent="PathPopup/PanelContainer/VBoxContainer/MarginContainer/MainContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 8
-focus_mode = 0
-mouse_default_cursor_shape = 2
-text = "Relative"
-flat = true
-alignment = 2
-
-[node name="CommandContainer" type="VBoxContainer" parent="PathPopup/PanelContainer/VBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-theme_override_constants/separation = 0
-
-[node name="M" parent="PathPopup/PanelContainer/VBoxContainer/CommandContainer" instance=ExtResource("6_oj0oy")]
-layout_mode = 2
-command_char = "M"
-command_text = "Move to"
-
-[node name="L" parent="PathPopup/PanelContainer/VBoxContainer/CommandContainer" instance=ExtResource("6_oj0oy")]
-layout_mode = 2
-command_char = "L"
-command_text = "Line to"
-
-[node name="H" parent="PathPopup/PanelContainer/VBoxContainer/CommandContainer" instance=ExtResource("6_oj0oy")]
-layout_mode = 2
-command_char = "H"
-command_text = "Horizontal Line to"
-
-[node name="V" parent="PathPopup/PanelContainer/VBoxContainer/CommandContainer" instance=ExtResource("6_oj0oy")]
-layout_mode = 2
-command_char = "V"
-command_text = "Vertical Line to"
-
-[node name="Z" parent="PathPopup/PanelContainer/VBoxContainer/CommandContainer" instance=ExtResource("6_oj0oy")]
-layout_mode = 2
-command_char = "Z"
-command_text = "Close Path"
-
-[node name="A" parent="PathPopup/PanelContainer/VBoxContainer/CommandContainer" instance=ExtResource("6_oj0oy")]
-layout_mode = 2
-command_char = "A"
-command_text = "Elliptical Arc to"
-
-[node name="Q" parent="PathPopup/PanelContainer/VBoxContainer/CommandContainer" instance=ExtResource("6_oj0oy")]
-layout_mode = 2
-command_char = "Q"
-command_text = "Quadratic Bezier to"
-
-[node name="T" parent="PathPopup/PanelContainer/VBoxContainer/CommandContainer" instance=ExtResource("6_oj0oy")]
-layout_mode = 2
-command_char = "T"
-command_text = "Shorthand Quadratic Bezier to"
-
-[node name="C" parent="PathPopup/PanelContainer/VBoxContainer/CommandContainer" instance=ExtResource("6_oj0oy")]
-layout_mode = 2
-command_char = "C"
-command_text = "Cubic Bezier to"
-
-[node name="S" parent="PathPopup/PanelContainer/VBoxContainer/CommandContainer" instance=ExtResource("6_oj0oy")]
-layout_mode = 2
-command_char = "S"
-command_text = "Shorthand Cubic Bezier to"
-
-[connection signal="gui_input" from="." to="." method="_on_gui_input"]
-[connection signal="pressed" from="HBox/RelativeButton" to="HBox" method="_on_relative_button_pressed"]
-[connection signal="path_command_picked" from="PathPopup" to="." method="_on_path_command_picked"]
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]

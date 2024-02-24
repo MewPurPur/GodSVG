@@ -11,24 +11,41 @@ config_version=5
 [application]
 
 config/name="GodSVG"
+config/version="v1.0-alpha2"
 config/tags=PackedStringArray("project")
 run/main_scene="res://src/ui_parts/main_scene.tscn"
+config/use_custom_user_dir=true
 config/features=PackedStringArray("4.2", "Forward Plus")
 run/low_processor_mode=true
+boot_splash/bg_color=Color(0.1065, 0.1181, 0.15, 1)
+boot_splash/image="res://visual/splash.png"
+boot_splash/fullsize=false
 config/icon="res://visual/icon.png"
+config/windows_native_icon="res://visual/icon.ico"
+
+[audio]
+
+driver/driver="Dummy"
 
 [autoload]
 
-SVG="*res://src/SVG.gd"
 GlobalSettings="*res://src/GlobalSettings.gd"
+SVG="*res://src/SVG.gd"
 Indications="*res://src/Indications.gd"
+HandlerGUI="*res://src/HandlerGUI.gd"
 
 [display]
 
 window/size/viewport_width=1024
 window/size/viewport_height=640
 window/size/mode=2
+window/energy_saving/keep_screen_on=false
 mouse_cursor/tooltip_position_offset=Vector2(0, 10)
+
+[filesystem]
+
+import/blender/enabled=false
+import/fbx/enabled=false
 
 [gui]
 
@@ -37,6 +54,17 @@ timers/tooltip_delay_sec=0.4
 
 [input]
 
+import={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"command_or_control_autoremap":true,"alt_pressed":false,"shift_pressed":false,"pressed":false,"keycode":0,"physical_keycode":79,"key_label":0,"unicode":111,"echo":false,"script":null)
+, Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"command_or_control_autoremap":true,"alt_pressed":false,"shift_pressed":false,"pressed":false,"keycode":0,"physical_keycode":73,"key_label":0,"unicode":105,"echo":false,"script":null)
+]
+}
+export={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"command_or_control_autoremap":true,"alt_pressed":false,"shift_pressed":false,"pressed":false,"keycode":0,"physical_keycode":69,"key_label":0,"unicode":101,"echo":false,"script":null)
+]
+}
 delete={
 "deadzone": 0.5,
 "events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":4194312,"key_label":0,"unicode":0,"echo":false,"script":null)
@@ -66,6 +94,11 @@ redo={
 duplicate={
 "deadzone": 0.5,
 "events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"command_or_control_autoremap":true,"alt_pressed":false,"shift_pressed":false,"pressed":false,"keycode":0,"physical_keycode":68,"key_label":0,"unicode":100,"echo":false,"script":null)
+]
+}
+select_all={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"command_or_control_autoremap":true,"alt_pressed":false,"shift_pressed":false,"pressed":false,"keycode":0,"physical_keycode":65,"key_label":0,"unicode":97,"echo":false,"script":null)
 ]
 }
 move_relative={
@@ -165,16 +198,25 @@ shorthand_cubic_bezier_relative={
 }
 shorthand_cubic_bezier_absolute={
 "deadzone": 0.5,
-"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":true,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":67,"key_label":0,"unicode":67,"echo":false,"script":null)
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":true,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":83,"key_label":0,"unicode":83,"echo":false,"script":null)
+]
+}
+save={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"command_or_control_autoremap":true,"alt_pressed":false,"shift_pressed":false,"pressed":false,"keycode":0,"physical_keycode":83,"key_label":0,"unicode":0,"echo":false,"script":null)
 ]
 }
 
+[input_devices]
+
+pointing/android/enable_pan_and_scale_gestures=true
+
 [internationalization]
 
-locale/translations=PackedStringArray("res://translations/translation_sheet.bg.translation", "res://translations/translation_sheet.en.translation", "res://translations/translation_sheet.de.translation")
+locale/translations=PackedStringArray("res://translations/translation_sheet.bg.translation", "res://translations/translation_sheet.en.translation", "res://translations/translation_sheet.de.translation", "res://translations/translation_sheet.ru_RU.translation", "res://translations/translation_sheet.uk_UA.translation")
 
 [rendering]
 
 renderer/rendering_method="gl_compatibility"
+textures/vram_compression/import_etc2_astc=true
 environment/defaults/default_clear_color=Color(0.12, 0.132, 0.2, 1)
-anti_aliasing/quality/screen_space_aa=1

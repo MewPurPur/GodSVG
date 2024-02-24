@@ -1,9 +1,8 @@
-[gd_scene load_steps=7 format=3 uid="uid://d2da0thyq5rq8"]
+[gd_scene load_steps=6 format=3 uid="uid://d2da0thyq5rq8"]
 
 [ext_resource type="Script" path="res://src/ui_elements/enum_field.gd" id="1_1jqoy"]
 [ext_resource type="Script" path="res://src/ui_elements/BetterLineEdit.gd" id="2_4bajq"]
 [ext_resource type="Texture2D" uid="uid://coda6chhcatal" path="res://visual/icons/Arrow.svg" id="3_vhd8v"]
-[ext_resource type="PackedScene" uid="uid://wp77eqhikp6k" path="res://src/ui_elements/context_popup.tscn" id="4_4cpb7"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_y4kmw"]
 draw_center = false
@@ -21,7 +20,7 @@ border_width_left = 2
 border_width_top = 2
 border_width_right = 1
 border_width_bottom = 2
-border_color = Color(0.501961, 0.752941, 1, 0.2)
+border_color = Color(0.2, 0.34902, 0.501961, 1)
 corner_radius_top_left = 5
 corner_radius_bottom_left = 5
 
@@ -36,10 +35,8 @@ script = ExtResource("1_1jqoy")
 custom_minimum_size = Vector2(58, 0)
 layout_mode = 2
 focus_mode = 1
+mouse_filter = 1
 theme_type_variation = &"RightConnectedLineEdit"
-context_menu_enabled = false
-select_all_on_focus = true
-caret_blink = true
 script = ExtResource("2_4bajq")
 hover_stylebox = SubResource("StyleBoxFlat_y4kmw")
 focus_stylebox = SubResource("StyleBoxFlat_qhmpn")
@@ -49,12 +46,15 @@ code_font_tooltip = true
 custom_minimum_size = Vector2(15, 0)
 layout_mode = 2
 focus_mode = 0
+mouse_filter = 1
 mouse_default_cursor_shape = 2
 theme_type_variation = &"LeftConnectedButton"
 icon = ExtResource("3_vhd8v")
 expand_icon = true
 
-[node name="ContextPopup" parent="." instance=ExtResource("4_4cpb7")]
-visible = false
-
+[connection signal="focus_entered" from="LineEdit" to="." method="_on_focus_entered"]
+[connection signal="text_change_canceled" from="LineEdit" to="." method="_on_text_change_canceled"]
+[connection signal="text_changed" from="LineEdit" to="." method="_on_text_changed"]
+[connection signal="text_submitted" from="LineEdit" to="." method="_on_text_submitted"]
+[connection signal="gui_input" from="Button" to="." method="_on_button_gui_input"]
 [connection signal="pressed" from="Button" to="." method="_on_button_pressed"]

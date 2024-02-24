@@ -1,67 +1,65 @@
 ## An editor to be tied to an AttributeEnum.
-extends AttributeEditor
+extends HBoxContainer
 
+signal focused
+var attribute: AttributeEnum
+var attribute_name: String
+
+const ContextPopup = preload("res://src/ui_elements/context_popup.tscn")
 const bold_font = preload("res://visual/fonts/FontBold.ttf")
 
-@onready var value_picker: Popup = $ContextPopup
 @onready var indicator: LineEdit = $LineEdit
+@onready var button: Button = $Button
 
-signal value_changed(new_value: String)
-var _value: String  # Must not be updated directly.
-
-func set_value(new_value: String, emit_value_changed := true):
-	if _value != new_value:
-		_value = new_value
-		if emit_value_changed:
-			value_changed.emit(new_value)
-
-func get_value() -> String:
-	return _value
+func set_value(new_value: String, update_type := Utils.UpdateType.REGULAR) -> void:
+	sync(attribute.autoformat(new_value))
+	if attribute.get_value() != new_value or update_type == Utils.UpdateType.FINAL:
+		match update_type:
+			Utils.UpdateType.INTERMEDIATE:
+				attribute.set_value(new_value, Attribute.SyncMode.INTERMEDIATE)
+			Utils.UpdateType.FINAL:
+				attribute.set_value(new_value, Attribute.SyncMode.FINAL)
+			_:
+				attribute.set_value(new_value)
 
 
 func _ready() -> void:
-	value_changed.connect(_on_value_changed)
-	if attribute != null:
-		set_value(attribute.get_value())
-	indicator.text = str(get_value())
+	set_value(attribute.get_value())
 	indicator.tooltip_text = attribute_name
 
 func _on_button_pressed() -> void:
-	var buttons_arr: Array[Button] = []
+	var value_picker := ContextPopup.instantiate()
+	var btn_arr: Array[Button] = []
 	for enum_constant in attribute.possible_values:
-		var btn := Button.new()
-		btn.text = str(enum_constant)
-		btn.pressed.connect(_on_option_pressed.bind(enum_constant))
-		if enum_constant == get_value():
-			btn.disabled = true
-		else:
-			btn.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-		if attribute != null and enum_constant == attribute.default:
+		var btn := Utils.create_btn(enum_constant, _on_option_pressed.bind(enum_constant),
+				enum_constant == attribute.get_value())
+		if enum_constant == attribute.default:
 			btn.add_theme_font_override(&"font", bold_font)
-		buttons_arr.append(btn)
-	value_picker.set_btn_array(buttons_arr)
-	value_picker.popup(Utils.calculate_popup_rect(
-			indicator.global_position, indicator.size, value_picker.size))
+		btn_arr.append(btn)
+	add_child(value_picker)
+	value_picker.set_button_array(btn_arr, false, size.x)
+	Utils.popup_under_rect(value_picker, indicator.get_global_rect(), get_viewport())
 
 func _on_option_pressed(option: String) -> void:
-	value_picker.hide()
 	set_value(option)
 
-func _on_value_changed(new_value: String) -> void:
-	indicator.text = new_value
-	if attribute != null:
-		attribute.set_value(new_value)
-		set_text_tint()
 
+func _on_focus_entered() -> void:
+	indicator.remove_theme_color_override(&"font_color")
+	focused.emit()
 
 func _on_text_submitted(new_text: String) -> void:
 	indicator.release_focus()
 	if new_text in attribute.possible_values:
 		set_value(new_text)
 	elif new_text.is_empty():
-		indicator.text = attribute.default
+		set_value(attribute.default)
 	else:
-		indicator.text = get_value()
+		sync(attribute.get_value())
+
+func _on_text_change_canceled() -> void:
+	sync(attribute.get_value())
+
 
 func _on_text_changed(new_text: String) -> void:
 	if new_text in attribute.possible_values:
@@ -69,9 +67,21 @@ func _on_text_changed(new_text: String) -> void:
 	else:
 		indicator.add_theme_color_override(&"font_color", Color(1.0, 0.6, 0.6))
 
-func set_text_tint() -> void:
+func sync(new_value: String) -> void:
 	if indicator != null:
-		if attribute != null and get_value() == attribute.default:
+		indicator.text = new_value
+		if new_value == attribute.default:
 			indicator.add_theme_color_override(&"font_color", Color(0.64, 0.64, 0.64))
 		else:
 			indicator.remove_theme_color_override(&"font_color")
+
+
+func _on_button_gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and\
+	event.is_pressed():
+		accept_event()
+		var mouse_motion_event := InputEventMouseMotion.new()
+		mouse_motion_event.position = get_viewport().get_mouse_position()
+		Input.parse_input_event(mouse_motion_event)
+	else:
+		button.mouse_filter = Utils.mouse_filter_pass_non_drag_events(event)

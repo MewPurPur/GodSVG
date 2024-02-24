@@ -5,17 +5,18 @@
 [node name="ContextPopup" type="Popup"]
 disable_3d = true
 transparent_bg = true
-size = Vector2i(100, 27)
+size = Vector2i(4, 4)
 visible = true
 script = ExtResource("1_d45ly")
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
-custom_minimum_size = Vector2(96, 0)
-offset_right = 96.0
-offset_bottom = 27.0
+offset_right = 4.0
+offset_bottom = 4.0
 
 [node name="MainContainer" type="VBoxContainer" parent="PanelContainer"]
 unique_name_in_owner = true
 clip_contents = true
 layout_mode = 2
 theme_override_constants/separation = 0
+
+[connection signal="popup_hide" from="." to="." method="_on_popup_hide"]

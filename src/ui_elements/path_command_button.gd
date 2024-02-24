@@ -1,14 +1,19 @@
 ## A button for a path command picker.
 extends Button
 
+signal pressed_custom(cmd_char: String)
+
 @onready var rtl: RichTextLabel = $RichTextLabel
 
 @export var command_char := ""
-@export var command_text := ""
 
 func _ready() -> void:
 	text = ""
 	update_text()
+	pressed.connect(emit_pressed_custom)
+
+func emit_pressed_custom() -> void:
+	pressed_custom.emit(command_char)
 
 func update_text() -> void:
 	rtl.text = ""
@@ -18,7 +23,7 @@ func update_text() -> void:
 	rtl.add_text(":")
 	rtl.pop()
 	rtl.add_text(" ")
-	rtl.add_text(command_text)
+	rtl.add_text(Utils.path_command_char_dict[command_char.to_upper()])
 
 func set_invalid(new_state := true) -> void:
 	if new_state:

@@ -1,2 +1,5 @@
 # Normalize EOL for all files that Git considers text files.
 * text=auto eol=lf
+
+# Remove JS from the language graph: It's not a language the repository truly uses.
+*.js linguist-vendored

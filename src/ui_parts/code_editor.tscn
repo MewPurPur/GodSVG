@@ -1,0 +1,176 @@
+[gd_scene load_steps=14 format=3 uid="uid://cr1fdlmbknnko"]
+
+[ext_resource type="Script" path="res://src/ui_parts/code_editor.gd" id="1_nffk0"]
+[ext_resource type="Texture2D" uid="uid://ckkkgof1hcbld" path="res://visual/icons/Gear.svg" id="2_k8onw"]
+[ext_resource type="FontFile" uid="uid://dtb4wkus51hxs" path="res://visual/fonts/FontMono.ttf" id="2_p4nol"]
+[ext_resource type="Texture2D" uid="uid://ccvjkdd0s7rb4" path="res://visual/icons/Copy.svg" id="3_6x47p"]
+[ext_resource type="Texture2D" uid="uid://6ymbl3jqersp" path="res://visual/icons/Import.svg" id="4_cuhac"]
+[ext_resource type="Texture2D" uid="uid://d0uvwj0t44n6v" path="res://visual/icons/Export.svg" id="5_pgurh"]
+[ext_resource type="Script" path="res://src/parsers/SVGHighlighter.gd" id="6_hpsqx"]
+[ext_resource type="Script" path="res://src/ui_elements/BetterTextEdit.gd" id="8_ser4i"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_q56qh"]
+content_margin_left = 8.0
+content_margin_top = 3.0
+content_margin_right = 6.0
+content_margin_bottom = 1.0
+bg_color = Color(0.0975, 0.0975, 0.15, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_color = Color(0.152941, 0.152941, 0.2, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rppt3"]
+content_margin_left = 5.0
+content_margin_top = 2.0
+content_margin_right = 5.0
+content_margin_bottom = 2.0
+bg_color = Color(1, 1, 1, 0.0666667)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="SyntaxHighlighter" id="SyntaxHighlighter_njere"]
+script = ExtResource("6_hpsqx")
+symbol_color = Color(0.670588, 0.788235, 1, 1)
+tag_color = Color(1, 0.54902, 0.8, 1)
+attribute_color = Color(0.737255, 0.878431, 1, 1)
+string_color = Color(0.631373, 1, 0.878431, 1)
+comment_color = Color(0.803922, 0.811765, 0.823529, 0.501961)
+text_color = Color(0.803922, 0.811765, 0.917647, 0.67451)
+error_color = Color(1, 0.52549, 0.419608, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1i105"]
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 1, 1, 0.0666667)
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_k0een"]
+content_margin_left = 10.0
+content_margin_right = 8.0
+bg_color = Color(0.0975, 0.0975, 0.15, 1)
+border_width_left = 2
+border_width_top = 1
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.1875, 0.1875, 0.25, 1)
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[node name="CodeEditor" type="VBoxContainer"]
+size_flags_vertical = 3
+theme_override_constants/separation = 0
+script = ExtResource("1_nffk0")
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_q56qh")
+
+[node name="CodeButtons" type="HBoxContainer" parent="PanelContainer"]
+layout_mode = 2
+
+[node name="AutoformatButton" type="Button" parent="PanelContainer/CodeButtons"]
+layout_mode = 2
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_type_variation = &"IconButton"
+icon = ExtResource("2_k8onw")
+
+[node name="SizeLabelContainer" type="PanelContainer" parent="PanelContainer/CodeButtons"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_styles/panel = SubResource("StyleBoxFlat_rppt3")
+
+[node name="SizeLabel" type="Label" parent="PanelContainer/CodeButtons/SizeLabelContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_p4nol")
+theme_override_font_sizes/font_size = 12
+
+[node name="MetaActions" type="HBoxContainer" parent="PanelContainer/CodeButtons"]
+layout_mode = 2
+size_flags_horizontal = 10
+
+[node name="FileButton" type="Button" parent="PanelContainer/CodeButtons/MetaActions"]
+unique_name_in_owner = true
+layout_mode = 2
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_type_variation = &"FlatButton"
+text_overrun_behavior = 3
+
+[node name="Control" type="Control" parent="PanelContainer/CodeButtons/MetaActions"]
+layout_mode = 2
+
+[node name="CopyButton" type="Button" parent="PanelContainer/CodeButtons/MetaActions"]
+layout_mode = 2
+tooltip_text = "#copy_button_tooltip"
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_type_variation = &"IconButton"
+icon = ExtResource("3_6x47p")
+
+[node name="ImportButton" type="Button" parent="PanelContainer/CodeButtons/MetaActions"]
+layout_mode = 2
+tooltip_text = "#import_button_tooltip"
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_type_variation = &"IconButton"
+icon = ExtResource("4_cuhac")
+
+[node name="ExportButton" type="Button" parent="PanelContainer/CodeButtons/MetaActions"]
+layout_mode = 2
+tooltip_text = "#export_button_tooltip"
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_type_variation = &"IconButton"
+icon = ExtResource("5_pgurh")
+
+[node name="ScriptEditor" type="VBoxContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = -2
+
+[node name="SVGCodeEdit" type="TextEdit" parent="ScriptEditor"]
+custom_minimum_size = Vector2(0, 96)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+syntax_highlighter = SubResource("SyntaxHighlighter_njere")
+highlight_all_occurrences = true
+script = ExtResource("8_ser4i")
+hover_stylebox = SubResource("StyleBoxFlat_1i105")
+block_non_ascii = true
+
+[node name="ErrorBar" type="PanelContainer" parent="ScriptEditor"]
+visible = false
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_k0een")
+
+[node name="Label" type="RichTextLabel" parent="ScriptEditor/ErrorBar"]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+theme_override_colors/default_color = Color(1, 0.4, 0.4, 1)
+theme_override_fonts/normal_font = ExtResource("2_p4nol")
+theme_override_font_sizes/normal_font_size = 14
+fit_content = true
+
+[connection signal="pressed" from="PanelContainer/CodeButtons/AutoformatButton" to="." method="_on_autoformat_button_pressed"]
+[connection signal="pressed" from="PanelContainer/CodeButtons/MetaActions/FileButton" to="." method="_on_file_button_pressed"]
+[connection signal="pressed" from="PanelContainer/CodeButtons/MetaActions/CopyButton" to="." method="_on_copy_button_pressed"]
+[connection signal="pressed" from="PanelContainer/CodeButtons/MetaActions/ImportButton" to="." method="_on_import_button_pressed"]
+[connection signal="pressed" from="PanelContainer/CodeButtons/MetaActions/ExportButton" to="." method="_on_export_button_pressed"]
+[connection signal="caret_changed" from="ScriptEditor/SVGCodeEdit" to="ScriptEditor/SVGCodeEdit" method="redraw_caret"]
+[connection signal="focus_entered" from="ScriptEditor/SVGCodeEdit" to="ScriptEditor/SVGCodeEdit" method="_on_focus_entered"]
+[connection signal="focus_exited" from="ScriptEditor/SVGCodeEdit" to="." method="_on_svg_code_edit_focus_exited"]
+[connection signal="focus_exited" from="ScriptEditor/SVGCodeEdit" to="ScriptEditor/SVGCodeEdit" method="_on_focus_exited"]
+[connection signal="text_changed" from="ScriptEditor/SVGCodeEdit" to="." method="_on_code_edit_text_changed"]

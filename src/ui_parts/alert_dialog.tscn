@@ -1,0 +1,54 @@
+[gd_scene load_steps=3 format=3 uid="uid://c0x44loihhyyo"]
+
+[ext_resource type="FontFile" uid="uid://dc0w4sx0h0fui" path="res://visual/fonts/FontBold.ttf" id="1_3yrpq"]
+[ext_resource type="Script" path="res://src/ui_parts/alert_dialog.gd" id="1_qntyo"]
+
+[node name="AlertDialog" type="PanelContainer"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -2.0
+offset_top = -2.0
+offset_right = 2.0
+offset_bottom = 2.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_qntyo")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="MainContainer" type="VBoxContainer" parent="MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="TextContainer" type="VBoxContainer" parent="MarginContainer/MainContainer"]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="MarginContainer/MainContainer/TextContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_3yrpq")
+theme_override_font_sizes/font_size = 16
+text = "Alert!"
+horizontal_alignment = 1
+
+[node name="Label" type="RichTextLabel" parent="MarginContainer/MainContainer/TextContainer"]
+custom_minimum_size = Vector2(180, 0)
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 12
+fit_content = true
+
+[node name="OKButton" type="Button" parent="MarginContainer/MainContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+mouse_default_cursor_shape = 2
+text = "#ok"
+
+[connection signal="pressed" from="MarginContainer/MainContainer/OKButton" to="." method="_on_ok_button_pressed"]

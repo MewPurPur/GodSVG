@@ -1,49 +1,39 @@
 ## The standard context menu popup.
 extends Popup
 
+@onready var panel: PanelContainer = $PanelContainer
 @onready var main_container: VBoxContainer = $PanelContainer/MainContainer
 
-func add_button(butt: Button, top_corners := false, bottom_corners := false,\
-should_reset_size := true) -> void:
-	if not butt is CheckBox:
-		var normal_stylebox := StyleBoxEmpty.new()
-		normal_stylebox.set_content_margin_all(3)
-		butt.add_theme_stylebox_override(&"normal", normal_stylebox)
-		var hover_stylebox := StyleBoxFlat.new()
-		hover_stylebox.bg_color = Color("#def1")
-		var pressed_stylebox := StyleBoxFlat.new()
-		pressed_stylebox.bg_color = Color("#def2")
-		var disabled_stylebox := StyleBoxFlat.new()
-		disabled_stylebox.bg_color = Color("#05060766")
-		for stylebox: StyleBoxFlat in [hover_stylebox, pressed_stylebox, disabled_stylebox]:
-			stylebox.set_content_margin_all(3)
-			if top_corners:
-				stylebox.corner_radius_top_left = 5
-				stylebox.corner_radius_top_right = 5
-			if bottom_corners:
-				stylebox.corner_radius_bottom_left = 5
-				stylebox.corner_radius_bottom_right = 5
-		butt.add_theme_stylebox_override(&"hover", hover_stylebox)
-		butt.add_theme_stylebox_override(&"disabled", disabled_stylebox)
-		butt.add_theme_stylebox_override(&"pressed", pressed_stylebox)
-	main_container.add_child(butt)
+func add_button(btn: Button, align_left: bool, should_reset_size := true) -> void:
+	if not btn is CheckBox:
+		btn.theme_type_variation = &"FlatButton"
+		btn.pressed.connect(queue_free)
+	btn.focus_mode = Control.FOCUS_NONE
+	main_container.add_child(btn)
+	if align_left:
+		btn.alignment = HORIZONTAL_ALIGNMENT_LEFT
 	if should_reset_size:
 		reset_size()
 
-func set_btn_array(buttons: Array[Button]) -> void:
+func set_button_array(buttons: Array[Button], align_left := false,
+min_width := -1) -> void:
 	for button in main_container.get_children():
 		button.free()
 	if buttons.is_empty():
 		return
-	elif buttons.size() == 1:
-		add_button(buttons[0], true, true)
-		return
 	else:
-		add_button(buttons.pop_front(), true, false, false)
-		for i in buttons.size() - 1:
-			add_button(buttons.pop_front(), false, false, false)
-		add_button(buttons[0], false, true)
+		var last_button_idx := buttons.size() - 1
+		for i in last_button_idx:
+			add_button(buttons[i], align_left, false)
+		add_button(buttons[last_button_idx], align_left)
+		if min_width > 0:
+			min_size.x = ceili(min_width)
+			panel.custom_minimum_size.x = min_width
 
 
 func get_button_count() -> int:
 	return main_container.get_child_count()
+
+
+func _on_popup_hide() -> void:
+	queue_free()

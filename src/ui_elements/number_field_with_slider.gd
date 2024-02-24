@@ -1,87 +1,86 @@
 ## An editor to be tied to a numeric attribute, plus a slider widget.
-extends AttributeEditor
+extends HBoxContainer
+
+signal focused
+var attribute: AttributeNumeric
+var attribute_name: String
 
 @onready var num_edit: LineEdit = $LineEdit
 @onready var slider: Button = $Slider
 
 var slider_step := 0.01
-
 var min_value := 0.0
 var max_value := 1.0
 var allow_lower := true
 var allow_higher := true
 
-var is_float := true
-
-signal value_changed(new_value: float)
-var _value: float  # Must not be updated directly.
-
-func set_value(new_value: float, emit_value_changed := true) -> void:
-	if is_nan(new_value):
+func set_value(new_value: String, update_type := Utils.UpdateType.REGULAR) -> void:
+	var numeric_value := AttributeNumeric.evaluate_expr(new_value)
+	# Validate the value.
+	if !is_finite(numeric_value):
+		sync(attribute.get_value())
 		return
-	var old_value := _value
-	_value = validate(new_value)
-	if _value != old_value and emit_value_changed:
-		value_changed.emit(_value)
-	elif num_edit != null:
-		num_edit.text = String.num(_value, 4)
-		set_text_tint()
-		queue_redraw()
+	
+	if not allow_higher and numeric_value > max_value:
+		numeric_value = max_value
+		new_value = NumberParser.num_to_text(numeric_value)
+	elif not allow_lower and numeric_value < min_value:
+		numeric_value = min_value
+		new_value = NumberParser.num_to_text(numeric_value)
+	
+	# Just because the value passed was +1 or 1.0 instead of the default 1,
+	# shouldn't cause the attribute to be added to the SVG text.
+	if attribute.default == NumberParser.num_to_text(numeric_value):
+		new_value = attribute.default
+	elif NumberParser.text_to_num(new_value) != AttributeNumeric.evaluate_expr(new_value):
+		new_value = NumberParser.num_to_text(numeric_value)
+	
+	sync(attribute.autoformat(new_value))
+	# Update the attribute.
+	if new_value != attribute.get_value() or update_type == Utils.UpdateType.FINAL:
+		match update_type:
+			Utils.UpdateType.INTERMEDIATE:
+				attribute.set_value(new_value, Attribute.SyncMode.INTERMEDIATE)
+			Utils.UpdateType.FINAL:
+				attribute.set_value(new_value, Attribute.SyncMode.FINAL)
+			_:
+				attribute.set_value(new_value)
 
-func get_value() -> float:
-	return _value
+func set_num(new_number: float, update_type := Utils.UpdateType.REGULAR) -> void:
+	set_value(NumberParser.num_to_text(new_number), update_type)
 
 
 func _ready() -> void:
-	value_changed.connect(_on_value_changed)
-	if attribute != null:
-		set_value(attribute.get_value())
-		attribute.value_changed.connect(set_value)
-		set_text_tint()
-		num_edit.tooltip_text = attribute_name
-	num_edit.text = str(get_value())
+	set_value(attribute.get_value())
+	attribute.value_changed.connect(set_value)
+	num_edit.tooltip_text = attribute_name
 
-func validate(new_value: float) -> float:
-	if allow_lower:
-		if allow_higher:
-			return new_value
-		else:
-			return minf(new_value, max_value)
-	else:
-		if allow_higher:
-			return maxf(new_value, min_value)
-		else:
-			return clampf(new_value, min_value, max_value)
-
-func _on_value_changed(new_value: float) -> void:
-	num_edit.text = String.num(new_value, 4)
-	if attribute != null:
-		attribute.set_value(new_value)
-
-
-# Hacks to make LineEdit bearable.
-
-func _on_focus_exited() -> void:
-	set_value(Utils.evaluate_numeric_expression(num_edit.text))
+func _on_focus_entered() -> void:
+	num_edit.remove_theme_color_override(&"font_color")
+	focused.emit()
 
 func _on_text_submitted(submitted_text: String) -> void:
-	set_value(Utils.evaluate_numeric_expression(submitted_text))
+	if submitted_text.strip_edges().is_empty():
+		set_value(attribute.default)
+	else:
+		set_value(submitted_text)
 
+func _on_text_change_canceled() -> void:
+	sync(attribute.get_value())
 
-func add_tooltip(text: String) -> void:
-	if num_edit == null:
-		await ready
-	num_edit.tooltip_text = text
-
-func set_text_tint() -> void:
+func sync(new_value: String) -> void:
 	if num_edit != null:
-		if attribute != null and get_value() == attribute.default:
+		num_edit.text = new_value
+		if new_value == attribute.default:
 			num_edit.add_theme_color_override(&"font_color", Color(0.64, 0.64, 0.64))
 		else:
 			num_edit.remove_theme_color_override(&"font_color")
+	queue_redraw()
+
 
 # Slider
 
+var initial_slider_value: float
 var slider_dragged := false:
 	set(new_value):
 		if slider_dragged != new_value:
@@ -89,6 +88,11 @@ var slider_dragged := false:
 			queue_redraw()
 			if not slider_hovered:
 				get_viewport().update_mouse_cursor_state()
+				# FIXME workaround because "button_pressed" remains true
+				# if you unclick while outside of the area, for some reason.
+				# Couldn't replicate this in a minimal project.
+				remove_child(slider)
+				add_child(slider)
 
 var slider_hovered := false:
 	set(new_value):
@@ -103,31 +107,57 @@ func _draw() -> void:
 	var stylebox := StyleBoxFlat.new()
 	stylebox.corner_radius_top_right = 5
 	stylebox.corner_radius_bottom_right = 5
-	stylebox.bg_color = Color("#121233")
+	stylebox.bg_color = num_edit.get_theme_stylebox(&"normal", &"LineEdit").bg_color
 	draw_style_box(stylebox, Rect2(Vector2.ZERO, slider_size - Vector2(1, 2)))
-	var fill_height := (slider_size.y - 4) * (get_value() - min_value) / max_value
-	if slider_hovered or slider_dragged:
+	var fill_height := (slider_size.y - 4) * (attribute.get_num() - min_value) / max_value
+	if slider_dragged:
 		draw_rect(Rect2(0, 1 + slider_size.y - 4 - fill_height,
 				slider_size.x - 2, fill_height), Color("#def"))
+	elif slider_hovered:
+		draw_rect(Rect2(0, 1 + slider_size.y - 4 - fill_height,
+				slider_size.x - 2, fill_height), Color("#defb"))
 	else:
 		draw_rect(Rect2(0, 1 + slider_size.y - 4 - fill_height,
-				slider_size.x - 2, fill_height), Color("#defa"))
+				slider_size.x - 2, fill_height), Color("#def8"))
 
 func _on_slider_resized() -> void:
 	queue_redraw()  # Whyyyyy are their sizes wrong at first...
 
 func _on_slider_gui_input(event: InputEvent) -> void:
-	var slider_h := slider.get_size().y - 4
-	if event is InputEventMouseButton or event is InputEventMouseMotion:
-		if event.button_mask == MOUSE_BUTTON_LEFT:
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and\
+	event.is_pressed():
+		accept_event()
+		var mouse_motion_event := InputEventMouseMotion.new()
+		mouse_motion_event.position = get_viewport().get_mouse_position()
+		Input.parse_input_event(mouse_motion_event)
+	else:
+		slider.mouse_filter = Utils.mouse_filter_pass_non_drag_events(event)
+	
+	if not slider_dragged:
+		if event is InputEventMouseMotion and event.button_mask == 0:
+			slider_hovered = true
+		if Utils.is_event_drag_start(event):
 			slider_dragged = true
-			set_value(snappedf(lerpf(max_value, min_value,
-					(event.position.y - 4) / slider_h), slider_step))
-			return
-	slider_dragged = false
+			initial_slider_value = attribute.get_num()
+			set_num(get_slider_value_at_y(event.position.y), Utils.UpdateType.INTERMEDIATE)
+	else:
+		if Utils.is_event_drag(event):
+			set_num(get_slider_value_at_y(event.position.y), Utils.UpdateType.INTERMEDIATE)
+		elif Utils.is_event_drag_end(event):
+			slider_dragged = false
+			var final_slider_value := get_slider_value_at_y(event.position.y)
+			if initial_slider_value != final_slider_value:
+				set_num(final_slider_value, Utils.UpdateType.FINAL)
+
+func _unhandled_input(event: InputEvent) -> void:
+	if slider_dragged and Utils.is_event_cancel(event):
+		slider_dragged = false
+		set_num(initial_slider_value, Utils.UpdateType.INTERMEDIATE)
+		accept_event()
+
+func get_slider_value_at_y(y_coord: float) -> float:
+	return snappedf(lerpf(max_value, min_value,
+			(y_coord - 4) / (slider.get_size().y - 4)), slider_step)
 
 func _on_slider_mouse_exited() -> void:
 	slider_hovered = false
-
-func _on_slider_mouse_entered() -> void:
-	slider_hovered = true

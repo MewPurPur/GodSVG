@@ -1,6 +1,7 @@
-extends Dialog
+extends PanelContainer
 
-const SVGFileDialog := preload("svg_file_dialog.tscn")
+const NumberEditType = preload("res://src/ui_elements/number_edit.gd")
+const SVGFileDialog = preload("res://src/ui_parts/svg_file_dialog.tscn")
 
 var upscale_amount := -1.0
 var extension := ""
@@ -10,63 +11,65 @@ var dimensions := Vector2.ZERO
 @onready var texture_preview: TextureRect = %TexturePreview
 @onready var dropdown: HBoxContainer = %Dropdown
 @onready var final_dimensions_label: Label = %FinalDimensions
-@onready var scale_edit: BetterLineEdit = %Scale
+@onready var scale_edit: NumberEditType = %Scale
 @onready var scale_container: VBoxContainer = %ScaleContainer
 
 func _ready() -> void:
 	scale_edit.value_changed.connect(_on_scale_value_changed)
 	dropdown.value_changed.connect(_on_dropdown_value_changed)
-	extension = dropdown.current_value
+	extension = dropdown.value
 	update_extension_configuration()
-	dimensions.x = SVG.root_tag.attributes.width.get_value()
-	dimensions.y = SVG.root_tag.attributes.height.get_value()
+	dimensions = SVG.root_tag.get_size()
+	scale_edit.min_value = 1/minf(dimensions.x, dimensions.y)
+	scale_edit.max_value = 16384/maxf(dimensions.x, dimensions.y)
+	scale_edit.set_value(minf(scale_edit.get_value(),
+			2048/maxf(dimensions.x, dimensions.y)))
 	update_dimensions_label()
 	update_final_scale()
-	var scaling_factor := 512.0 / maxf(dimensions.x, dimensions.y)
+	var scaling_factor := texture_preview.size.x * 2.0 / maxf(dimensions.x, dimensions.y)
 	var img := Image.new()
-	img.load_svg_from_string(SVG.string, scaling_factor)
+	img.load_svg_from_string(SVG.text, scaling_factor)
 	if not img.is_empty():
+		img.fix_alpha_edges()
 		texture_preview.texture = ImageTexture.create_from_image(img)
 
 
 func update_dimensions_label() -> void:
-	dimensions_label.text = tr(&"#size") +\
-			": %s×%s" % [String.num(dimensions.x, 4), String.num(dimensions.y, 4)]
+	dimensions_label.text = tr(&"#size") + ": " + NumberParser.num_to_text(dimensions.x) +\
+			"×" + NumberParser.num_to_text(dimensions.y)
 
 func _on_dropdown_value_changed(new_value: String) -> void:
 	extension = new_value
 	update_extension_configuration()
 
 
-func native_file_export(has_selected: bool, files: PackedStringArray, _filter_idx: int):
+func native_file_export(has_selected: bool, files: PackedStringArray,
+_filter_idx: int) -> void:
 	if has_selected:
 		export(files[0])
 
 func _on_ok_button_pressed() -> void:
-	if DisplayServer.has_feature(DisplayServer.FEATURE_NATIVE_DIALOG):
-		DisplayServer.file_dialog_show(
-				"Export a ." + extension + " file",
-				OS.get_system_dir(OS.SYSTEM_DIR_PICTURES), "", false,
-				DisplayServer.FILE_DIALOG_MODE_SAVE_FILE,
-				["*." + extension], native_file_export)
-	else:
-		var svg_export_dialog := SVGFileDialog.instantiate()
-		svg_export_dialog.file_mode = FileDialog.FILE_MODE_SAVE_FILE
-		get_tree().get_root().add_child(svg_export_dialog)
-		svg_export_dialog.file_selected.connect(export)
+	SVG.open_save_dialog(extension, native_file_export, export)
 
 func export(path: String) -> void:
-	var FA := FileAccess.open(path, FileAccess.WRITE)
+	if path.get_extension().is_empty():
+		path += "." + extension
+	
+	GlobalSettings.modify_save_data(&"last_used_dir", path.get_base_dir())
+	
 	match extension:
 		"png":
-			var img := texture_preview.texture.get_image()
-			var exported_size := dimensions * upscale_amount
-			# It's a single SVG, so just use the most expensive interpolation.
-			img.resize(int(exported_size.x), int(exported_size.y), Image.INTERPOLATE_LANCZOS)
+			var export_svg := SVG.root_tag.create_duplicate()
+			export_svg.attributes.width.set_num(export_svg.width * upscale_amount)
+			export_svg.attributes.height.set_num(export_svg.height * upscale_amount)
+			var img := Image.new()
+			img.load_svg_from_string(SVGParser.svg_to_text(export_svg))
+			img.fix_alpha_edges()  # See godot issue 82579.
 			img.save_png(path)
 		_:
 			# SVG / fallback.
-			FA.store_string(SVG.string)
+			GlobalSettings.modify_save_data(&"current_file_path", path)
+			SVG.save_svg_to_file(path)
 	queue_free()
 
 func _on_cancel_button_pressed() -> void:
@@ -77,7 +80,7 @@ func _on_scale_value_changed(_new_value: float) -> void:
 	update_final_scale()
 
 func update_final_scale() -> void:
-	upscale_amount = scale_edit.current_value
+	upscale_amount = scale_edit.get_value()
 	var exported_size: Vector2i = dimensions * upscale_amount
 	final_dimensions_label.text = tr(&"#final_size") +\
 			": %d×%d" % [exported_size.x, exported_size.y]
