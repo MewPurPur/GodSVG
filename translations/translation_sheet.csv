@@ -34,6 +34,7 @@
 #insert_before,Insert Before,Вмъкни отзад,Davor einsetzen,,
 #insert_after,Insert After,Вмъкни отпред,Danach einsetzen,Вставить после,Вставити після
 #convert_to,Convert To,Превърни в,Konvertieren zu,Конвертировать в,Конвертувати в
+#syntax_error,Syntax error,,Syntaxfehler,,
 #err_not_svg,Doesn’t describe a SVG.,Текстът не описва SVG.,Beschreibt kein SVG.,Не есть описанием SVG,Не є описом SVG.
 #err_improper_nesting,Improper nesting.,Несъвместими тагове.,Ungültige Formatierung.,Не правильное вкладывание.,Неправильне вкладення.
 #shortcut_inspector_delete,Delete: Deletes the selected tags,Delete: Изтрива избраните тагове,Entf: Ausgewählte Elemente löschen,Delete: Удалить все выбранные тэги,Delete: Видалити усі обрані теги
