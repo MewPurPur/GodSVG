@@ -142,6 +142,9 @@ msgstr "Strg+Hoch: Ausgewählte Elemente nach oben verschieben"
 msgid "Ctrl+D: Duplicates the selected tags"
 msgstr "Strg+D: Ausgewählte Elemente duplizieren"
 
+msgid "Syntax error"
+msgstr "Syntaxfehler"
+
 msgid "Unknown Tag"
 msgstr "Unbekanntes Element"
 

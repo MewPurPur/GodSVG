@@ -39,7 +39,7 @@ func get_svg_errors(text: String) -> Array[String]:
 	var warnings: Array[String] = []
 	var svg_parse_result: Variant = SVGParser.text_to_svg(text)
 	if typeof(svg_parse_result) == TYPE_STRING_NAME:
-		warnings.append(tr(&"#syntax_error") + ": " + tr(svg_parse_result))
+		warnings.append(tr(&"Syntax error") + ": " + tr(svg_parse_result))
 	else:
 		var svg_tag: TagSVG = svg_parse_result
 		var tids := svg_tag.get_all_tids()

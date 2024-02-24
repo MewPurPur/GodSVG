@@ -145,6 +145,9 @@ msgstr "Ctrl+Up: Пересунути усі обрані теги вгору"
 msgid "Ctrl+D: Duplicates the selected tags"
 msgstr "Ctrl+D: Дублювати обрані теги"
 
+msgid "Syntax error"
+msgstr ""
+
 msgid "Unknown Tag"
 msgstr "Невідомий тег"
 
