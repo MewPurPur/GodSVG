@@ -130,6 +130,9 @@ msgstr "Текстът не описва SVG."
 msgid "Improper nesting."
 msgstr "Несъвместими тагове."
 
+msgid "Syntax error"
+msgstr ""
+
 msgid "Delete: Deletes the selected tags"
 msgstr "Delete: Изтрива избраните тагове"
 
@@ -141,9 +144,6 @@ msgstr "Ctrl+Up: Премества избраните тагове нагоре
 
 msgid "Ctrl+D: Duplicates the selected tags"
 msgstr "Ctrl+D: Дублирай избраните тагове"
-
-msgid "Syntax error"
-msgstr ""
 
 msgid "Unknown Tag"
 msgstr "Непознат таг"

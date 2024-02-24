@@ -133,6 +133,9 @@ msgstr "Не є описом SVG."
 msgid "Improper nesting."
 msgstr "Неправильне вкладення."
 
+msgid "Syntax error"
+msgstr ""
+
 msgid "Delete: Deletes the selected tags"
 msgstr "Delete: Видалити усі обрані теги"
 
@@ -144,9 +147,6 @@ msgstr "Ctrl+Up: Пересунути усі обрані теги вгору"
 
 msgid "Ctrl+D: Duplicates the selected tags"
 msgstr "Ctrl+D: Дублювати обрані теги"
-
-msgid "Syntax error"
-msgstr ""
 
 msgid "Unknown Tag"
 msgstr "Невідомий тег"

@@ -130,6 +130,9 @@ msgstr "Beschreibt kein SVG."
 msgid "Improper nesting."
 msgstr "Ungültige Formatierung."
 
+msgid "Syntax error"
+msgstr "Syntaxfehler"
+
 msgid "Delete: Deletes the selected tags"
 msgstr "Entf: Ausgewählte Elemente löschen"
 
@@ -141,9 +144,6 @@ msgstr "Strg+Hoch: Ausgewählte Elemente nach oben verschieben"
 
 msgid "Ctrl+D: Duplicates the selected tags"
 msgstr "Strg+D: Ausgewählte Elemente duplizieren"
-
-msgid "Syntax error"
-msgstr "Syntaxfehler"
 
 msgid "Unknown Tag"
 msgstr "Unbekanntes Element"
