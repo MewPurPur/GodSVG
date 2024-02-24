@@ -14,7 +14,7 @@ func is_standalone() -> bool:
 	return child_tags.is_empty()
 
 func _init():
-	for attribute in attributes.values():
+	for attribute: Attribute in attributes.values():
 		attribute.propagate_value_changed.connect(emit_attribute_changed)
 
 func set_unknown_attributes(attribs: Array[AttributeUnknown]) -> void:
@@ -22,7 +22,7 @@ func set_unknown_attributes(attribs: Array[AttributeUnknown]) -> void:
 	for attribute in unknown_attributes:
 		attribute.propagate_value_changed.connect(emit_attribute_changed)
 
-func emit_attribute_changed(undo_redo: bool):
+func emit_attribute_changed(undo_redo: bool) -> void:
 	attribute_changed.emit(undo_redo)
 
 func get_child_count() -> int:

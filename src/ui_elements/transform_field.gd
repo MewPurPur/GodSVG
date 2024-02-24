@@ -8,8 +8,9 @@ var attribute_name: String
 const TransformPopup = preload("res://src/ui_elements/transform_popup.tscn")
 
 @onready var line_edit: BetterLineEdit = $LineEdit
+@onready var popup_button: Button = $Button
 
-func set_value(new_value: String, update_type := Utils.UpdateType.REGULAR):
+func set_value(new_value: String, update_type := Utils.UpdateType.REGULAR) -> void:
 	sync(attribute.autoformat(new_value))
 	if attribute.get_value() != new_value or update_type == Utils.UpdateType.FINAL:
 		match update_type:
@@ -45,3 +46,14 @@ func _on_button_pressed() -> void:
 	transform_popup.attribute_ref = attribute
 	add_child(transform_popup)
 	Utils.popup_under_rect(transform_popup, line_edit.get_global_rect(), get_viewport())
+
+
+func _on_button_gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and\
+	event.is_pressed():
+		accept_event()
+		var mouse_motion_event := InputEventMouseMotion.new()
+		mouse_motion_event.position = get_viewport().get_mouse_position()
+		Input.parse_input_event(mouse_motion_event)
+	else:
+		popup_button.mouse_filter = Utils.mouse_filter_pass_non_drag_events(event)

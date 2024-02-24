@@ -13,7 +13,7 @@
 - **Optimized SVG output:** Generate clean and efficient SVG files.
 - **Accessible on mobile:** GodSVG aims to be usable on mobile devices.
 
-![image](https://github.com/MewPurPur/GodSVG/assets/85438892/e0fa4d0c-b962-4cc7-ac76-2cbc9cf77856)
+![image](https://github.com/MewPurPur/GodSVG/assets/85438892/799084d5-4ec6-4c9e-98a1-e358c34927c0)
 
 ## How to get it
 
@@ -22,6 +22,8 @@ Download the version you want from [the list of GodSVG releases](https://github.
 Note that if you're on MacOS, you need to [disable Gatekeeper](https://disable-gatekeeper.github.io/) if you haven't yet. I don't have the time or money to deal with Apple's gatekeeping.
 
 Link to the web build: https://mewpurpur.github.io/GodSVG/web-build (Currently experimental)
+
+To run the latest unreleased version, you can download Godot from https://godotengine.org (v4.2 minimum). After getting the repository files on your machine, you must open Godot, click the "Import" button, and import the `project.godot` folder. If there are a lot of errors which some people have reported, it's a Godot bug. Try closing and opening the project a few times, changing small things on the code that errors out, etc. until the errors hopefully clear.
 
 ## How to use it
 

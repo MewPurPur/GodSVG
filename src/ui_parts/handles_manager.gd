@@ -101,7 +101,8 @@ func update_handles() -> void:
 
 
 func sync_handles() -> void:
-	# For XYHandles, sync them. For PathHandles, sync all but the one being dragged.
+	# For XYHandles, sync them. For PathHandles, they can be added and removed as an
+	# attribute changes, so remove them and re-add them except for the dragged one.
 	for handle_idx in range(handles.size() - 1, -1, -1):
 		var handle := handles[handle_idx]
 		if handle is PathHandle:
@@ -457,9 +458,7 @@ func _draw() -> void:
 							for _i in n:
 								var p2 := Utils.E(c, r, cosine, sine, t)
 								var e2 := Utils.Et(r, cosine, sine, t)
-								var q1 := alpha * e1
-								var q2 := -alpha * e2
-								cp.append(PackedVector2Array([p1, q1, q2, p2]))
+								cp.append(PackedVector2Array([p1, alpha * e1, -alpha * e2, p2]))
 								p1 = p2
 								e1 = e2
 								t += PI/4
@@ -469,9 +468,7 @@ func _draw() -> void:
 								var p2 := Utils.E(c, r, cosine, sine, t)
 								var e2 := Utils.Et(r, cosine, sine, t)
 								alpha *= fposmod(delta_theta, PI/4) / (PI/4)
-								var q1 := alpha * e1
-								var q2 := -alpha * e2
-								cp.append(PackedVector2Array([p1, q1, q2, p2]))
+								cp.append(PackedVector2Array([p1, alpha * e1, -alpha * e2, p2]))
 							
 							for p in cp:
 								points += Utils.get_cubic_bezier_points(p[0], p[1], p[2], p[3])
@@ -615,17 +612,16 @@ func respond_to_input_event(event: InputEvent) -> void:
 		return
 	
 	# Set the nearest handle as hovered, if any handles are within range.
-	if (event is InputEventMouseMotion and dragged_handle == null) or\
-	(event is InputEventMouseButton and (event.button_index in [MOUSE_BUTTON_LEFT,
-	MOUSE_BUTTON_RIGHT, MOUSE_BUTTON_WHEEL_DOWN, MOUSE_BUTTON_WHEEL_UP,
-	MOUSE_BUTTON_WHEEL_LEFT, MOUSE_BUTTON_WHEEL_RIGHT])):
+	if (event is InputEventMouseMotion and dragged_handle == null and\
+	event.button_mask == 0) or (event is InputEventMouseButton and\
+	(event.button_index in [MOUSE_BUTTON_LEFT, MOUSE_BUTTON_RIGHT, MOUSE_BUTTON_WHEEL_DOWN,
+	MOUSE_BUTTON_WHEEL_UP, MOUSE_BUTTON_WHEEL_LEFT, MOUSE_BUTTON_WHEEL_RIGHT])):
 		var nearest_handle := find_nearest_handle(event.position / Indications.zoom +\
 				get_node(^"../..").view.position)
 		if nearest_handle != null:
 			hovered_handle = nearest_handle
 			if hovered_handle is PathHandle:
-				Indications.set_inner_hovered(hovered_handle.tid,
-						hovered_handle.command_index)
+				Indications.set_hovered(hovered_handle.tid, hovered_handle.command_index)
 			else:
 				Indications.set_hovered(hovered_handle.tid)
 		else:
@@ -673,7 +669,7 @@ func respond_to_input_event(event: InputEvent) -> void:
 							dragged_handle.path_attribute.get_subpath(inner_idx)
 					for idx in range(subpath_range.x, subpath_range.y + 1):
 						Indications.ctrl_select(dragged_tid, idx)
-				elif event.ctrl_pressed:
+				elif event.is_command_or_control_pressed():
 					Indications.ctrl_select(dragged_tid, inner_idx)
 				elif event.shift_pressed:
 					Indications.shift_select(dragged_tid, inner_idx)
@@ -729,7 +725,7 @@ func move_selected_to_mouse() -> void:
 	for handle in handles:
 		if handle.tid == Indications.semi_selected_tid and handle is PathHandle and\
 		handle.command_index == Indications.inner_selections[0]:
-			Indications.set_inner_hovered(handle.tid, handle.command_index)
+			Indications.set_hovered(handle.tid, handle.command_index)
 			dragged_handle = handle
 			# Move the handle that's being dragged.
 			var mouse_pos := get_global_mouse_position()
@@ -759,27 +755,9 @@ func create_tag_context(pos: Vector2) -> ContextPopupType:
 func add_tag_at_pos(tag_name: String, pos: Vector2) -> void:
 	var tag: Tag
 	match tag_name:
-		"path":
-			tag = TagPath.new()
-			tag.attributes.d.insert_command(0, "M")
-			tag.attributes.d.set_command_property(0, &"x", pos.x)
-			tag.attributes.d.set_command_property(0, &"y", pos.y)
-		"circle":
-			tag = TagCircle.new()
-			tag.attributes.cx.set_num(pos.x)
-			tag.attributes.cy.set_num(pos.y)
-		"ellipse":
-			tag = TagEllipse.new()
-			tag.attributes.cx.set_num(pos.x)
-			tag.attributes.cy.set_num(pos.y)
-		"rect":
-			tag = TagRect.new()
-			tag.attributes.x.set_num(pos.x)
-			tag.attributes.y.set_num(pos.y)
-		"line":
-			tag = TagLine.new()
-			tag.attributes.x1.set_num(pos.x)
-			tag.attributes.y1.set_num(pos.y)
-			tag.attributes.x2.set_num(pos.x + 1)
-			tag.attributes.y2.set_num(pos.y)
+		"path": tag = TagPath.new(pos)
+		"circle": tag = TagCircle.new(pos)
+		"ellipse": tag = TagEllipse.new(pos)
+		"rect": tag = TagRect.new(pos)
+		"line": tag = TagLine.new(pos)
 	SVG.root_tag.add_tag(tag, PackedInt32Array([SVG.root_tag.get_child_count()]))

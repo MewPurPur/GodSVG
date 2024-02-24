@@ -1,5 +1,8 @@
 class_name SVGParser extends RefCounted
 
+# Tags that don't make sense without other tags inside them.
+const shorthand_tag_exceptions = ["g", "linearGradient, radialGradient"]
+
 static func svg_to_text(svg_tag: TagSVG) -> String:
 	var w: String = svg_tag.attributes.width.get_value()
 	var h: String = svg_tag.attributes.height.get_value()
@@ -16,13 +19,11 @@ static func svg_to_text(svg_tag: TagSVG) -> String:
 	for attribute in svg_tag.unknown_attributes:
 		text += " " + attribute.name + '="' + attribute.get_value() + '"'
 	
-	if svg_tag.is_standalone() and GlobalSettings.xml_shorthand_tags:
-		text += '/>'
-	else:
-		text += '>'
-		for inner_tag in svg_tag.child_tags:
-			text += _tag_to_text(inner_tag)
-		text += '</svg>'
+	# SVG tags should never be shorthand.
+	text += '>'
+	for inner_tag in svg_tag.child_tags:
+		text += _tag_to_text(inner_tag)
+	text += '</svg>'
 	
 	if GlobalSettings.xml_add_trailing_newline:
 		text += '\n'
@@ -43,7 +44,8 @@ static func _tag_to_text(tag: Tag) -> String:
 	for attribute in tag.unknown_attributes:
 		text += " " + attribute.name + '="' + attribute.get_value() + '"'
 	
-	if tag.is_standalone() and GlobalSettings.xml_shorthand_tags:
+	if tag.is_standalone() and GlobalSettings.xml_shorthand_tags and\
+	not tag.name in shorthand_tag_exceptions:
 		text += '/>'
 	else:
 		text += '>'
@@ -58,7 +60,7 @@ static func _tag_to_text(tag: Tag) -> String:
 static func text_to_svg(text: String) -> Variant:
 	var svg_tag := TagSVG.new()
 	var parser := XMLParser.new()
-	parser.open_buffer(text.to_ascii_buffer())
+	parser.open_buffer(text.to_utf8_buffer())
 	var unclosed_tag_stack: Array[Tag] = [svg_tag]
 	
 	# Remove everything before the first SVG tag.

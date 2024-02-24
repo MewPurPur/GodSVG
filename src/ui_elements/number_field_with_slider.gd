@@ -56,6 +56,7 @@ func _ready() -> void:
 	num_edit.tooltip_text = attribute_name
 
 func _on_focus_entered() -> void:
+	num_edit.remove_theme_color_override(&"font_color")
 	focused.emit()
 
 func _on_text_submitted(submitted_text: String) -> void:
@@ -63,6 +64,9 @@ func _on_text_submitted(submitted_text: String) -> void:
 		set_value(attribute.default)
 	else:
 		set_value(submitted_text)
+
+func _on_text_change_canceled() -> void:
+	sync(attribute.get_value())
 
 func sync(new_value: String) -> void:
 	if num_edit != null:
@@ -120,7 +124,14 @@ func _on_slider_resized() -> void:
 	queue_redraw()  # Whyyyyy are their sizes wrong at first...
 
 func _on_slider_gui_input(event: InputEvent) -> void:
-	slider.mouse_filter = Utils.mouse_filter_pass_non_drag_events(event)
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and\
+	event.is_pressed():
+		accept_event()
+		var mouse_motion_event := InputEventMouseMotion.new()
+		mouse_motion_event.position = get_viewport().get_mouse_position()
+		Input.parse_input_event(mouse_motion_event)
+	else:
+		slider.mouse_filter = Utils.mouse_filter_pass_non_drag_events(event)
 	
 	if not slider_dragged:
 		if event is InputEventMouseMotion and event.button_mask == 0:
@@ -137,6 +148,12 @@ func _on_slider_gui_input(event: InputEvent) -> void:
 			var final_slider_value := get_slider_value_at_y(event.position.y)
 			if initial_slider_value != final_slider_value:
 				set_num(final_slider_value, Utils.UpdateType.FINAL)
+
+func _unhandled_input(event: InputEvent) -> void:
+	if slider_dragged and Utils.is_event_cancel(event):
+		slider_dragged = false
+		set_num(initial_slider_value, Utils.UpdateType.INTERMEDIATE)
+		accept_event()
 
 func get_slider_value_at_y(y_coord: float) -> float:
 	return snappedf(lerpf(max_value, min_value,

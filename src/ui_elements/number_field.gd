@@ -50,6 +50,7 @@ func _ready() -> void:
 	tooltip_text = attribute_name
 
 func _on_focus_entered() -> void:
+	remove_theme_color_override(&"font_color")
 	focused.emit()
 	super()
 
@@ -58,6 +59,9 @@ func _on_text_submitted(submitted_text: String) -> void:
 		set_value(attribute.default)
 	else:
 		set_value(submitted_text)
+
+func _on_text_change_canceled() -> void:
+	sync(attribute.get_value())
 
 func sync(new_value: String) -> void:
 	text = new_value

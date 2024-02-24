@@ -97,8 +97,8 @@ start_pressed: bool) -> CheckBox:
 	return checkbox
 
 
-static func get_cubic_bezier_points(cp1: Vector2, cp2: Vector2,
-cp3: Vector2, cp4: Vector2) -> PackedVector2Array:
+static func get_cubic_bezier_points(cp1: Vector2, cp2: Vector2, cp3: Vector2,
+cp4: Vector2) -> PackedVector2Array:
 	var curve := Curve2D.new()
 	curve.add_point(cp1, Vector2(), cp2)
 	curve.add_point(cp4, cp3)
@@ -106,10 +106,8 @@ cp3: Vector2, cp4: Vector2) -> PackedVector2Array:
 
 static func get_quadratic_bezier_points(cp1: Vector2, cp2: Vector2,
 cp3: Vector2) -> PackedVector2Array:
-	var curve := Curve2D.new()
-	curve.add_point(cp1, Vector2(), 2/3.0 * (cp2 - cp1))
-	curve.add_point(cp3, 2/3.0 * (cp2 - cp3))
-	return curve.tessellate(6, 1)
+	return Utils.get_cubic_bezier_points(
+			cp1, 2/3.0 * (cp2 - cp1), 2/3.0 * (cp2 - cp3), cp3)
 
 # Ellipse parametric equation.
 static func E(c: Vector2, r: Vector2, cosine: float, sine: float, t: float) -> Vector2:
@@ -159,6 +157,14 @@ static func get_parent_tid(tid: PackedInt32Array) -> PackedInt32Array:
 	parent_tid.resize(tid.size() - 1)
 	return parent_tid
 
+static func are_tid_parents_same(tid1: PackedInt32Array, tid2: PackedInt32Array) -> bool:
+	if tid1.size() != tid2.size():
+		return false
+	for i in tid1.size() - 1:
+		if tid1[i] != tid2[i]:
+			return false
+	return true
+
 # Filter out all descendants.
 static func filter_descendant_tids(tids: Array[PackedInt32Array]) -> Array[PackedInt32Array]:
 	var new_tids: Array[PackedInt32Array] = tids.duplicate()
@@ -186,6 +192,10 @@ static func is_event_drag_start(event: InputEvent) -> bool:
 static func is_event_drag_end(event: InputEvent) -> bool:
 	return event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and\
 			event.is_released()
+
+static func is_event_cancel(event: InputEvent) -> bool:
+	return event.is_action_pressed(&"ui_cancel") or\
+			event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT
 
 # Used to somewhat prevent unwanted inputs from triggering tag drag & drop.
 static func mouse_filter_pass_non_drag_events(event: InputEvent) -> Control.MouseFilter:

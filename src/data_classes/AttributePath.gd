@@ -75,7 +75,6 @@ func get_subpath(idx: int) -> Vector2i:
 		output.y += 1
 	return output
 
-
 func get_implied_S_control(cmd_idx: int) -> Vector2:
 	var cmd := get_command(cmd_idx)
 	var prev_cmd := get_command(cmd_idx - 1)
@@ -127,15 +126,15 @@ sync_mode := SyncMode.LOUD) -> void:
 		cmd.set(property, new_value)
 		sync_after_commands_change(sync_mode)
 
-func insert_command(idx: int, command_char: String) -> void:
+func insert_command(idx: int, command_char: String, sync_mode := SyncMode.LOUD) -> void:
 	var new_cmd: PathCommand = PathCommand.translation_dict[command_char.to_upper()].new()
 	if Utils.is_string_lower(command_char):
 		new_cmd.toggle_relative()
 	_commands.insert(idx, new_cmd)
-	sync_after_commands_change()
+	sync_after_commands_change(sync_mode)
 
 
-func convert_command(idx: int, command_char: String) -> void:
+func convert_command(idx: int, command_char: String, sync_mode := SyncMode.LOUD) -> void:
 	var old_cmd := get_command(idx)
 	if old_cmd.command_char == command_char:
 		return
@@ -181,10 +180,10 @@ func convert_command(idx: int, command_char: String) -> void:
 	_commands.insert(idx, new_cmd)
 	if relative:
 		_commands[idx].toggle_relative()
-	sync_after_commands_change()
+	sync_after_commands_change(sync_mode)
 
 
-func delete_commands(indices: Array[int]) -> void:
+func delete_commands(indices: Array[int], sync_mode := SyncMode.LOUD) -> void:
 	if indices.is_empty():
 		return
 	
@@ -193,8 +192,8 @@ func delete_commands(indices: Array[int]) -> void:
 	indices.reverse()
 	for idx in indices:
 		_commands.remove_at(idx)
-	sync_after_commands_change()
+	sync_after_commands_change(sync_mode)
 
-func toggle_relative_command(idx: int) -> void:
+func toggle_relative_command(idx: int, sync_mode := SyncMode.LOUD) -> void:
 	_commands[idx].toggle_relative()
-	sync_after_commands_change()
+	sync_after_commands_change(sync_mode)

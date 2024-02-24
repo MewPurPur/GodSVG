@@ -81,7 +81,7 @@ func setup_color(new_color: String) -> void:
 	starting_color = new_color
 	color = new_color
 	# Setup the display color.
-	starting_display_color = AttributeColor.string_to_color(starting_color)
+	starting_display_color = ColorParser.string_to_color(starting_color)
 	if slider_mode == SliderMode.HSV:
 		# Clamping like this doesn't change the hex representation, but
 		# it helps avoid locking certain sliders (e.g. hue slider when saturation is 0).
@@ -193,7 +193,7 @@ func move_slider(idx: int, offset: float) -> void:
 	set_display_color(new_color)
 	widgets_arr[idx].queue_redraw()
 
-func set_color_channel(col: Color, channel: String, offset: float):
+func set_color_channel(col: Color, channel: String, offset: float) -> Color:
 	match channel:
 		"r": col.r = clampf(offset, 0.0, 1.0)
 		"g": col.g = clampf(offset, 0.0, 1.0)
@@ -288,7 +288,7 @@ func _on_hsv_pressed() -> void:
 func _on_start_color_rect_draw() -> void:
 	var rect_size := start_color_rect.size
 	var rect := Rect2(Vector2.ZERO, rect_size)
-	if AttributeColor.is_valid_url(starting_color):
+	if ColorParser.is_valid_url(starting_color):
 		var cross_color := Color(0.8, 0.8, 0.8)
 		start_color_rect.draw_rect(rect, Color(0.6, 0.6, 0.6))
 		start_color_rect.draw_line(Vector2.ZERO, rect_size, cross_color, 0.5, true)
@@ -348,7 +348,7 @@ func _on_slider3_draw() -> void:
 
 func _on_reset_color_button_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion and event.button_mask != MOUSE_BUTTON_MASK_LEFT:
-		if starting_color == color:
+		if ColorParser.are_colors_same(starting_color, color):
 			reset_color_button.disabled = true
 			return
 		reset_color_button.disabled = false

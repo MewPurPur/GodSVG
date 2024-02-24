@@ -171,8 +171,8 @@ func move_tags_in_parent(tids: Array[PackedInt32Array], down: bool) -> void:
 	var parent_tag := get_tag(parent_tid)
 	var parent_child_count := parent_tag.get_child_count()
 	var old_indices: Array[int] = []
-	for k in parent_child_count:
-		old_indices.append(k)
+	for i in parent_child_count:
+		old_indices.append(i)
 	# Do the moving.
 	if down:
 		var i := parent_child_count - 1
@@ -212,22 +212,34 @@ func move_tags_to(tids: Array[PackedInt32Array], location: PackedInt32Array) -> 
 			tids.remove_at(i)
 	
 	# Remove tags from their old locations.
+	var tids_stored: Array[PackedInt32Array] = []
 	var tags_stored: Array[Tag] = []
 	for tid in tids:
-		# Shift the new location if tags before it were removed.
+		# Shift the new location if tags before it were removed. A tag is "before"
+		# if it has the same parent as the new location, but is before that location.
 		if tid.size() <= location.size():
-			for i in tid.size():
+			var before := true
+			for i in tid.size() - 1:
 				if tid[i] != location[i]:
-					if tid[i] < location[i]:
-						location[i] -= 1
+					before = false
 					break
+			if before and tid[-1] < location[tid.size() - 1]:
+				location[tid.size() - 1] -= 1
+		tids_stored.append(tid)
 		tags_stored.append(get_tag(Utils.get_parent_tid(tid)).child_tags.pop_at(tid[-1]))
-	# Add them back in the new location.
+	# Add the tags back in the new location.
 	for tag in tags_stored:
 		get_tag(Utils.get_parent_tid(location)).child_tags.insert(location[-1], tag)
-	tags_moved_to.emit(tids, location)
-	tag_layout_changed.emit()
+	# Check if this actually chagned the layout.
+	for tid in tids_stored:
+		if not Utils.are_tid_parents_same(tid, location) or tid[-1] < location[-1] or\
+		tid[-1] >= location[-1] + tids_stored.size():
+			# If this condition is passed, then there was a layout change.
+			tags_moved_to.emit(tids, location)
+			tag_layout_changed.emit()
+			return
 
+# Duplicates tags and puts them below.
 func duplicate_tags(tids: Array[PackedInt32Array]) -> void:
 	if tids.is_empty():
 		return

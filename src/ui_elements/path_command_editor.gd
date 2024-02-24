@@ -49,7 +49,7 @@ func add_numfield() -> BetterLineEdit:
 
 func _gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion and event.button_mask == 0:
-		Indications.set_inner_hovered(tid, cmd_idx)
+		Indications.set_hovered(tid, cmd_idx)
 	elif event is InputEventMouseButton and event.is_pressed():
 		if event.button_index == MOUSE_BUTTON_LEFT:
 			if event.double_click:
@@ -59,7 +59,7 @@ func _gui_input(event: InputEvent) -> void:
 						SVG.root_tag.get_tag(tid).attributes.d.get_subpath(cmd_idx)
 				for idx in range(subpath_range.x, subpath_range.y + 1):
 					Indications.ctrl_select(tid, idx)
-			elif event.ctrl_pressed:
+			elif event.is_command_or_control_pressed():
 				Indications.ctrl_select(tid, cmd_idx)
 			elif event.shift_pressed:
 				Indications.shift_select(tid, cmd_idx)
@@ -135,7 +135,7 @@ func _draw() -> void:
 				draw_style_box(flag_field.get_theme_stylebox(&"normal" if\
 						path_command.large_arc_flag == 0 else &"pressed"), rect)
 				draw_string(code_font, rect.position + Vector2(5, 14),
-						NumberArrayParser.num_to_text(path_command.large_arc_flag),
+						String.num_uint64(path_command.large_arc_flag),
 						HORIZONTAL_ALIGNMENT_LEFT, rect.size.x, 14,
 						flag_field.get_theme_color(&"font_color" if\
 						path_command.large_arc_flag == 0 else &"font_pressed_color"))
@@ -143,7 +143,7 @@ func _draw() -> void:
 				draw_style_box(flag_field.get_theme_stylebox(&"normal" if\
 						path_command.sweep_flag == 0 else &"pressed"), rect)
 				draw_string(code_font, rect.position + Vector2(5, 14),
-						NumberArrayParser.num_to_text(path_command.sweep_flag),
+						String.num_uint64(path_command.sweep_flag),
 						HORIZONTAL_ALIGNMENT_LEFT, rect.size.x, 14,
 						flag_field.get_theme_color(&"font_color" if\
 						path_command.sweep_flag == 0 else &"font_pressed_color"))
@@ -173,9 +173,9 @@ func _draw() -> void:
 func draw_numfield(rect: Rect2, stylebox: StyleBoxFlat, property: StringName,\
 font_size: int, font_color: Color) -> void:
 	draw_style_box(stylebox, rect)
-	draw_string(code_font, rect.position + Vector2(4, 13), NumberArrayParser.num_to_text(
-			path_command.get(property)), HORIZONTAL_ALIGNMENT_LEFT, rect.size.x - 4,
-			font_size, font_color)
+	draw_string(code_font, rect.position + Vector2(4, 13),
+			NumberArrayParser.basic_num_to_text(path_command.get(property)),
+			HORIZONTAL_ALIGNMENT_LEFT, rect.size.x - 4, font_size, font_color)
 
 func draw_numfield_arr(spacings: Array, names: Array[StringName]) -> void:
 	var stylebox := get_theme_stylebox(&"normal", &"MiniLineEdit")
@@ -299,7 +299,7 @@ func setup_fields(spacings: Array, names: Array) -> void:
 		fields[i + 1].position.x = fields[i].get_end().x + spacings[i]
 
 func _on_mouse_exited() -> void:
-	Indications.remove_inner_hovered(tid, cmd_idx)
+	Indications.remove_hovered(tid, cmd_idx)
 	
 	if active:
 		active = false

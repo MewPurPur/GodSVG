@@ -1,6 +1,8 @@
 ## A LineEdit with a few tweaks to make it nicer to use.
 class_name BetterLineEdit extends LineEdit
 
+signal text_change_canceled
+
 const code_font = preload("res://visual/fonts/FontMono.ttf")
 const ContextPopup = preload("res://src/ui_elements/context_popup.tscn")
 
@@ -32,11 +34,13 @@ func _input(event: InputEvent) -> void:
 
 var tree_was_paused_before := false
 var first_click := false
+var text_before_focus := ""
 
 func _on_focus_entered() -> void:
 	process_mode = PROCESS_MODE_ALWAYS
 	tree_was_paused_before = get_tree().paused
 	first_click = true
+	text_before_focus = text
 	if not tree_was_paused_before:
 		get_tree().paused = true
 
@@ -45,6 +49,9 @@ func _on_focus_exited() -> void:
 	first_click = false
 	if not tree_was_paused_before:
 		get_tree().paused = false
+	if Input.is_action_pressed(&"ui_cancel"):
+		text = text_before_focus
+		text_change_canceled.emit()
 
 
 func _on_mouse_exited() -> void:

@@ -7,11 +7,11 @@ var mode := Mode.DEFAULT
 signal value_changed(new_value: float)
 var _value := NAN  # Must not be updated directly.
 
-func set_value(new_value: float, no_signal := false):
+func set_value(new_value: float, no_signal := false) -> void:
 	if not is_finite(new_value):
-		text = NumberArrayParser.num_to_text(_value)
+		text = NumberArrayParser.basic_num_to_text(_value)
 		return
-	text = NumberArrayParser.num_to_text(new_value)
+	text = NumberArrayParser.basic_num_to_text(new_value)
 	if new_value != _value:
 		_value = new_value
 		if not no_signal:

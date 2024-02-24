@@ -1,9 +1,10 @@
-[gd_scene load_steps=6 format=3 uid="uid://ccynisiuyn5qn"]
+[gd_scene load_steps=7 format=3 uid="uid://ccynisiuyn5qn"]
 
 [ext_resource type="Script" path="res://src/ui_parts/inspector.gd" id="1_16ggy"]
 [ext_resource type="PackedScene" uid="uid://bktmk76u7dsu0" path="res://src/ui_parts/root_tag_editor.tscn" id="2_jnl50"]
 [ext_resource type="Texture2D" uid="uid://eif2ioi0mw17" path="res://visual/icons/Plus.svg" id="3_vo6hf"]
 [ext_resource type="Script" path="res://src/ui_parts/tag_container.gd" id="4_i4hc2"]
+[ext_resource type="Script" path="res://src/ui_parts/move_to_overlay.gd" id="5_otlmf"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4j4hv"]
 draw_center = false
@@ -65,5 +66,10 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/separation = 5
+
+[node name="MoveToOverlay" type="Control" parent="VBoxContainer/TagContainer"]
+visible = false
+layout_mode = 2
+script = ExtResource("5_otlmf")
 
 [connection signal="pressed" from="VBoxContainer/AddButton" to="." method="_on_add_button_pressed"]

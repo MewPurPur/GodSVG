@@ -171,6 +171,9 @@ static func path_commands_from_parsed_data(data: Array[Array]) -> Array[PathComm
 
 static func path_commands_to_text(commands_arr: Array[PathCommand]) -> String:
 	var output := ""
+	var num_parser := NumberArrayParser.new()
+	num_parser.compress_numbers = GlobalSettings.path_compress_numbers
+	num_parser.minimize_spacing = GlobalSettings.path_minimize_spacing
 	
 	var last_command := ""
 	for i in commands_arr.size():
@@ -188,23 +191,23 @@ static func path_commands_to_text(commands_arr: Array[PathCommand]) -> String:
 			var prev_numstr := ""
 			match cmd_char_capitalized:
 				"A":
-					current_char = NumberArrayParser.num_to_text(cmd.rx)[0]
-					prev_numstr = NumberArrayParser.num_to_text(commands_arr[i - 1].y)
+					current_char = num_parser.num_to_text(cmd.rx)[0]
+					prev_numstr = num_parser.num_to_text(commands_arr[i - 1].y)
 				"C", "Q":
-					current_char = NumberArrayParser.num_to_text(cmd.x1)[0]
-					prev_numstr = NumberArrayParser.num_to_text(commands_arr[i - 1].y)
+					current_char = num_parser.num_to_text(cmd.x1)[0]
+					prev_numstr = num_parser.num_to_text(commands_arr[i - 1].y)
 				"S":
-					current_char = NumberArrayParser.num_to_text(cmd.x2)[0]
-					prev_numstr = NumberArrayParser.num_to_text(commands_arr[i - 1].y)
+					current_char = num_parser.num_to_text(cmd.x2)[0]
+					prev_numstr = num_parser.num_to_text(commands_arr[i - 1].y)
 				"L", "M", "T":
-					current_char = NumberArrayParser.num_to_text(cmd.x)[0]
-					prev_numstr = NumberArrayParser.num_to_text(commands_arr[i - 1].y)
+					current_char = num_parser.num_to_text(cmd.x)[0]
+					prev_numstr = num_parser.num_to_text(commands_arr[i - 1].y)
 				"H":
-					current_char = NumberArrayParser.num_to_text(cmd.x)[0]
-					prev_numstr = NumberArrayParser.num_to_text(commands_arr[i - 1].x)
+					current_char = num_parser.num_to_text(cmd.x)[0]
+					prev_numstr = num_parser.num_to_text(commands_arr[i - 1].x)
 				"V":
-					current_char = NumberArrayParser.num_to_text(cmd.y)[0]
-					prev_numstr = NumberArrayParser.num_to_text(commands_arr[i - 1].y)
+					current_char = num_parser.num_to_text(cmd.y)[0]
+					prev_numstr = num_parser.num_to_text(+commands_arr[i - 1].y)
 			if not GlobalSettings.path_minimize_spacing or not\
 			(("." in prev_numstr and current_char == ".") or current_char in "-+"):
 				output += " "
@@ -212,47 +215,36 @@ static func path_commands_to_text(commands_arr: Array[PathCommand]) -> String:
 		last_command = cmd.command_char
 		match cmd_char_capitalized:
 			"A":
-				output += NumberArrayParser.numstr_arr_to_text([
-						NumberArrayParser.num_to_text(cmd.rx),
-						NumberArrayParser.num_to_text(cmd.ry),
-						NumberArrayParser.num_to_text(cmd.rot, 2)]) + " "
+				output += num_parser.numstr_arr_to_text([num_parser.num_to_text(cmd.rx),
+						num_parser.num_to_text(cmd.ry), num_parser.num_to_text(cmd.rot, 2)])
 				if GlobalSettings.path_remove_spacing_after_flags:
-					output += ("0" if cmd.large_arc_flag == 0 else "1") +\
+					output += (" 0" if cmd.large_arc_flag == 0 else " 1") +\
 							("0" if cmd.sweep_flag == 0 else "1")
 				else:
-					output += ("0 " if cmd.large_arc_flag == 0 else "1 ") +\
+					output += (" 0 " if cmd.large_arc_flag == 0 else " 1 ") +\
 							("0 " if cmd.sweep_flag == 0 else "1 ")
-				output += NumberArrayParser.numstr_arr_to_text([
-						NumberArrayParser.num_to_text(cmd.x),
-						NumberArrayParser.num_to_text(cmd.y)])
+				output += num_parser.numstr_arr_to_text([num_parser.num_to_text(cmd.x),
+						num_parser.num_to_text(cmd.y)])
 			"C":
-				output += NumberArrayParser.numstr_arr_to_text([
-						NumberArrayParser.num_to_text(cmd.x1),
-						NumberArrayParser.num_to_text(cmd.y1),
-						NumberArrayParser.num_to_text(cmd.x2),
-						NumberArrayParser.num_to_text(cmd.y2),
-						NumberArrayParser.num_to_text(cmd.x),
-						NumberArrayParser.num_to_text(cmd.y)])
+				output += num_parser.numstr_arr_to_text([num_parser.num_to_text(cmd.x1),
+						num_parser.num_to_text(cmd.y1), num_parser.num_to_text(cmd.x2),
+						num_parser.num_to_text(cmd.y2), num_parser.num_to_text(cmd.x),
+						num_parser.num_to_text(cmd.y)])
 			"Q":
-				output += NumberArrayParser.numstr_arr_to_text([
-						NumberArrayParser.num_to_text(cmd.x1),
-						NumberArrayParser.num_to_text(cmd.y1),
-						NumberArrayParser.num_to_text(cmd.x),
-						NumberArrayParser.num_to_text(cmd.y)])
+				output += num_parser.numstr_arr_to_text([num_parser.num_to_text(cmd.x1),
+						num_parser.num_to_text(cmd.y1), num_parser.num_to_text(cmd.x),
+						num_parser.num_to_text(cmd.y)])
 			"S":
-				output += NumberArrayParser.numstr_arr_to_text([
-						NumberArrayParser.num_to_text(cmd.x2),
-						NumberArrayParser.num_to_text(cmd.y2),
-						NumberArrayParser.num_to_text(cmd.x),
-						NumberArrayParser.num_to_text(cmd.y)])
+				output += num_parser.numstr_arr_to_text([num_parser.num_to_text(cmd.x2),
+						num_parser.num_to_text(cmd.y2), num_parser.num_to_text(cmd.x),
+						num_parser.num_to_text(cmd.y)])
 			"L", "M", "T":
-				output += NumberArrayParser.numstr_arr_to_text([
-						NumberArrayParser.num_to_text(cmd.x),
-						NumberArrayParser.num_to_text(cmd.y)])
+				output += num_parser.numstr_arr_to_text([num_parser.num_to_text(cmd.x),
+						num_parser.num_to_text(cmd.y)])
 			"H":
-				output += NumberArrayParser.num_to_text(cmd.x)
+				output += num_parser.num_to_text(cmd.x)
 			"V":
-				output += NumberArrayParser.num_to_text(cmd.y)
+				output += num_parser.num_to_text(cmd.y)
 			_: continue
 		if not GlobalSettings.path_minimize_spacing:
 			output += " "

@@ -51,12 +51,12 @@ signal viewport_size_changed
 var zoom := 0.0
 var viewport_size := Vector2i.ZERO
 
-func set_zoom(new_value):
+func set_zoom(new_value) -> void:
 	if zoom != new_value:
 		zoom = new_value
 		zoom_changed.emit()
 
-func set_viewport_size(new_value):
+func set_viewport_size(new_value) -> void:
 	if viewport_size != new_value:
 		viewport_size = new_value
 		viewport_size_changed.emit()
@@ -227,37 +227,38 @@ func clear_all_selections() -> void:
 
 
 ## Set the hovered tag.
-func set_hovered(tid: PackedInt32Array) -> void:
-	if hovered_tid != tid:
-		hovered_tid = tid.duplicate()
-		hover_changed.emit()
-
-## Set the inner hover.
-func set_inner_hovered(tid: PackedInt32Array, inner_idx: int) -> void:
-	if semi_hovered_tid != tid:
-		semi_hovered_tid = tid.duplicate()
-		inner_hovered = inner_idx
-		if not tid.is_empty() and inner_idx != -1:
-			hovered_tid.clear()
-		hover_changed.emit()
-	elif inner_hovered != inner_idx:
-		inner_hovered = inner_idx
-		if not tid.is_empty() and inner_idx != -1:
-			hovered_tid.clear()
-		hover_changed.emit()
+func set_hovered(tid: PackedInt32Array, inner_idx := -1) -> void:
+	if inner_idx == -1:
+		if hovered_tid != tid:
+			hovered_tid = tid.duplicate()
+			if not tid.is_empty():
+				inner_hovered = -1
+				semi_hovered_tid = PackedInt32Array()
+			hover_changed.emit()
+	else:
+		if semi_hovered_tid != tid:
+			semi_hovered_tid = tid.duplicate()
+			inner_hovered = inner_idx
+			if not tid.is_empty():
+				hovered_tid.clear()
+			hover_changed.emit()
+		elif inner_hovered != inner_idx:
+			inner_hovered = inner_idx
+			if not tid.is_empty():
+				hovered_tid.clear()
+			hover_changed.emit()
 
 ## If the tag is hovered, make it not hovered.
-func remove_hovered(tid: PackedInt32Array) -> void:
-	if hovered_tid == tid:
-		hovered_tid.clear()
-		hover_changed.emit()
-
-## If it's an inner hover, make it not hovered.
-func remove_inner_hovered(tid: PackedInt32Array, inner_idx: int) -> void:
-	if semi_hovered_tid == tid and inner_hovered == inner_idx:
-		semi_hovered_tid.clear()
-		inner_hovered = -1
-		hover_changed.emit()
+func remove_hovered(tid: PackedInt32Array, inner_idx := -1) -> void:
+	if inner_idx == -1:
+		if hovered_tid == tid:
+			hovered_tid.clear()
+			hover_changed.emit()
+	else:
+		if semi_hovered_tid == tid and inner_hovered == inner_idx:
+			semi_hovered_tid.clear()
+			inner_hovered = -1
+			hover_changed.emit()
 
 ## Clear the hovered tag.
 func clear_hovered() -> void:
@@ -270,6 +271,7 @@ func clear_inner_hovered() -> void:
 	if inner_hovered != -1:
 		inner_hovered = -1
 		hover_changed.emit()
+
 
 func set_proposed_drop_tid(tid: PackedInt32Array) -> void:
 	if proposed_drop_tid != tid:
@@ -328,63 +330,50 @@ func _on_tags_moved_in_parent(parent_tid: PackedInt32Array, indices: Array[int])
 # If selected tags were moved to a location, change the TIDs and their children.
 func _on_tags_moved_to(tids: Array[PackedInt32Array], location: PackedInt32Array) -> void:
 	tids = tids.duplicate()
-	var old_selected_tids := selected_tids.duplicate()
+	var new_selected_tids: Array[PackedInt32Array] = []
 	for moved_idx in tids.size():
 		var moved_tid := tids[moved_idx]
-		for i in range(selected_tids.size() - 1, -1, -1):
-			var tid := selected_tids[i]
+		for tid in selected_tids:
 			if Utils.is_tid_parent_or_self(moved_tid, tid):
 				var new_location := Utils.get_parent_tid(location)
 				new_location.append(moved_idx + location[-1])
 				for ii in range(moved_tid.size(), tid.size()):
-					new_location.append(tid[i])
-				selected_tids[i] = new_location
-	if old_selected_tids != selected_tids:
+					new_location.append(tid[ii])
+				new_selected_tids.append(new_location)
+	if selected_tids != new_selected_tids:
+		selected_tids = new_selected_tids
 		selection_changed.emit()
 
 
-func _unhandled_input(event: InputEvent) -> void:
-	if get_viewport().gui_is_dragging():
+func respond_to_key_input(event: InputEventKey) -> void:
+	# Path commands using keys.
+	if inner_selections.is_empty() or event.is_command_or_control_pressed():
+		# If a single path tag is selected, add the new command at the end.
+		if selected_tids.size() == 1:
+			var tag_ref := SVG.root_tag.get_tag(selected_tids[0])
+			if tag_ref.name == "path":
+				var path_attrib: AttributePath = tag_ref.attributes.d
+				for action_name in path_actions_dict.keys():
+					if event.is_action_pressed(action_name):
+						var path_cmd_count := path_attrib.get_command_count()
+						var path_cmd_char: String = path_actions_dict[action_name]
+						# Z after a Z is syntactically invalid.
+						if (path_cmd_count == 0 and not path_cmd_char in "Mm") or\
+						(path_cmd_char in "Zz" and path_cmd_count > 0 and\
+						path_attrib.get_command(path_cmd_count - 1) is\
+						PathCommand.CloseCommand):
+							return
+						path_attrib.insert_command(path_cmd_count, path_cmd_char)
+						normal_select(selected_tids[0], path_cmd_count)
+						added_handle.emit()
+						break
 		return
-	if event.is_action_pressed(&"delete"):
-		delete_selected()
-	elif event.is_action_pressed(&"move_up"):
-		move_up_selected()
-	elif event.is_action_pressed(&"move_down"):
-		move_down_selected()
-	elif event.is_action_pressed(&"duplicate"):
-		duplicate_selected()
-	elif event.is_action_pressed(&"select_all"):
-		select_all()
-	elif event is InputEventKey:
-		# Path commands using keys.
-		if inner_selections.is_empty() or event.is_command_or_control_pressed():
-			# If a single path tag is selected, add the new command at the end.
-			if selected_tids.size() == 1:
-				var tag_ref := SVG.root_tag.get_tag(selected_tids[0])
-				if tag_ref.name == "path":
-					var path_attrib: AttributePath = tag_ref.attributes.d
-					for action_name in path_actions_dict.keys():
-						if event.is_action_pressed(action_name):
-							var path_cmd_count := path_attrib.get_command_count()
-							var path_cmd_char: String = path_actions_dict[action_name]
-							# Z after a Z is syntactically invalid.
-							if (path_cmd_count == 0 and not path_cmd_char in "Mm") or\
-							(path_cmd_char in "Zz" and path_cmd_count > 0 and\
-							path_attrib.get_command(path_cmd_count - 1) is\
-							PathCommand.CloseCommand):
-								return
-							path_attrib.insert_command(path_cmd_count, path_cmd_char)
-							normal_select(selected_tids[0], path_cmd_count)
-							added_handle.emit()
-							break
-			return
-		
-		for action_name in path_actions_dict.keys():
-			if event.is_action_pressed(action_name):
-				insert_inner_after_selection(path_actions_dict[action_name])
-				added_handle.emit()
-				break
+	
+	for action_name in path_actions_dict.keys():
+		if event.is_action_pressed(action_name):
+			insert_inner_after_selection(path_actions_dict[action_name])
+			added_handle.emit()
+			break
 
 
 # Operations on selected tags.
@@ -432,7 +421,7 @@ func get_selection_context(popup_method: Callable) -> Popup:
 		var can_move_down := true
 		var can_move_up := true
 		for base_tid in filtered_tids:
-			if Utils.get_parent_tid(base_tid) != Utils.get_parent_tid(filtered_tids[0]):
+			if not Utils.are_tid_parents_same(base_tid, filtered_tids[0]):
 				can_move_down = false
 				can_move_up = false
 				break
