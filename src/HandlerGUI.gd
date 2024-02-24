@@ -2,11 +2,11 @@ extends Node
 
 signal _in_focus
 
-var has_overlay := false
-var overlay_ref: ColorRect
-
 const ImportWarningDialog := preload("res://src/ui_parts/import_warning_dialog.tscn")
 const AlertDialog := preload("res://src/ui_parts/alert_dialog.tscn")
+
+var has_overlay := false
+var overlay_ref: ColorRect
 
 
 func _ready() -> void:
@@ -67,6 +67,7 @@ func _input(event: InputEvent) -> void:
 		get_viewport().set_input_as_handled()
 		SVG.open_save_dialog("svg", SVG.native_file_save, SVG.save_svg_to_file)
 
+
 func _unhandled_input(event) -> void:
 	if event.is_action_pressed(&"redo"):
 		get_viewport().set_input_as_handled()
@@ -93,6 +94,10 @@ func _unhandled_input(event) -> void:
 	elif event is InputEventKey:
 		Indications.respond_to_key_input(event)
 
+
+# Web file access code credit (Modified):
+# https://github.com/Pukkah/HTML5-File-Exchange-for-Godot
+# https://github.com/Orama-Interactive/Pixelorama/blob/master/src/Autoload/HTML5FileExchange.gd
 
 func web_load_svg() -> void:
 	JavaScriptBridge.eval("upload_svg();", true)  # Open file dialog.
