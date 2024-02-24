@@ -94,30 +94,12 @@ func rebuild() -> void:
 				popup_transform_actions.bind(i, t_editor.more_button))
 		# Setup fields.
 		if t is AttributeTransform.TransformMatrix:
-			var field_x1 := MiniNumberField.instantiate()
-			var field_x2 := MiniNumberField.instantiate()
-			var field_y1 := MiniNumberField.instantiate()
-			var field_y2 := MiniNumberField.instantiate()
-			var field_o1 := MiniNumberField.instantiate()
-			var field_o2 := MiniNumberField.instantiate()
-			field_x1.set_value(t.x1)
-			field_x2.set_value(t.x2)
-			field_y1.set_value(t.y1)
-			field_y2.set_value(t.y2)
-			field_o1.set_value(t.o1)
-			field_o2.set_value(t.o2)
-			field_x1.tooltip_text = "x1"
-			field_x2.tooltip_text = "x2"
-			field_y1.tooltip_text = "y1"
-			field_y2.tooltip_text = "y2"
-			field_o1.tooltip_text = "o1"
-			field_o2.tooltip_text = "o2"
-			field_x1.value_changed.connect(update_value.bind(i, &"x1"))
-			field_x2.value_changed.connect(update_value.bind(i, &"x2"))
-			field_y1.value_changed.connect(update_value.bind(i, &"y1"))
-			field_y2.value_changed.connect(update_value.bind(i, &"y2"))
-			field_o1.value_changed.connect(update_value.bind(i, &"o1"))
-			field_o2.value_changed.connect(update_value.bind(i, &"o2"))
+			var field_x1 := create_mini_number_field(t, i, &"x1")
+			var field_x2 := create_mini_number_field(t, i, &"x2")
+			var field_y1 := create_mini_number_field(t, i, &"y1")
+			var field_y2 := create_mini_number_field(t, i, &"y2")
+			var field_o1 := create_mini_number_field(t, i, &"o1")
+			var field_o2 := create_mini_number_field(t, i, &"o2")
 			t_editor.fields = [field_x1, field_x2, field_y1, field_y2, field_o1, field_o1]\
 					as Array[BetterLineEdit]
 			var transform_fields := HBoxContainer.new()
@@ -133,14 +115,8 @@ func rebuild() -> void:
 			t_editor.transform_list.add_child(transform_fields)
 			t_editor.transform_list.add_child(transform_fields_additional)
 		elif t is AttributeTransform.TransformTranslate:
-			var field_x := MiniNumberField.instantiate()
-			var field_y := MiniNumberField.instantiate()
-			field_x.set_value(t.x)
-			field_y.set_value(t.y)
-			field_x.tooltip_text = "x"
-			field_y.tooltip_text = "y"
-			field_x.value_changed.connect(update_value.bind(i, &"x"))
-			field_y.value_changed.connect(update_value.bind(i, &"y"))
+			var field_x := create_mini_number_field(t, i, &"x")
+			var field_y := create_mini_number_field(t, i, &"y")
 			t_editor.fields = [field_x, field_y] as Array[BetterLineEdit]
 			var transform_fields := HBoxContainer.new()
 			transform_fields.alignment = BoxContainer.ALIGNMENT_CENTER
@@ -148,19 +124,10 @@ func rebuild() -> void:
 			transform_fields.add_child(field_y)
 			t_editor.transform_list.add_child(transform_fields)
 		elif t is AttributeTransform.TransformRotate:
-			var field_deg := MiniNumberField.instantiate()
-			var field_x := MiniNumberField.instantiate()
-			var field_y := MiniNumberField.instantiate()
-			field_deg.set_value(t.deg)
+			var field_deg := create_mini_number_field(t, i, &"deg")
 			field_deg.mode = field_deg.Mode.ANGLE
-			field_x.set_value(t.x)
-			field_y.set_value(t.y)
-			field_deg.tooltip_text = "deg"
-			field_x.tooltip_text = "x"
-			field_y.tooltip_text = "y"
-			field_deg.value_changed.connect(update_value.bind(i, &"deg"))
-			field_x.value_changed.connect(update_value.bind(i, &"x"))
-			field_y.value_changed.connect(update_value.bind(i, &"y"))
+			var field_x := create_mini_number_field(t, i, &"x")
+			var field_y := create_mini_number_field(t, i, &"y")
 			t_editor.fields = [field_deg, field_x, field_y] as Array[BetterLineEdit]
 			var transform_fields := HBoxContainer.new()
 			transform_fields.alignment = BoxContainer.ALIGNMENT_CENTER
@@ -169,14 +136,8 @@ func rebuild() -> void:
 			transform_fields.add_child(field_y)
 			t_editor.transform_list.add_child(transform_fields)
 		elif t is AttributeTransform.TransformScale:
-			var field_x := MiniNumberField.instantiate()
-			var field_y := MiniNumberField.instantiate()
-			field_x.set_value(t.x)
-			field_y.set_value(t.y)
-			field_x.tooltip_text = "x"
-			field_y.tooltip_text = "y"
-			field_x.value_changed.connect(update_value.bind(i, &"x"))
-			field_y.value_changed.connect(update_value.bind(i, &"y"))
+			var field_x := create_mini_number_field(t, i, &"x")
+			var field_y := create_mini_number_field(t, i, &"y")
 			t_editor.fields = [field_x, field_y] as Array[BetterLineEdit]
 			var transform_fields := HBoxContainer.new()
 			transform_fields.alignment = BoxContainer.ALIGNMENT_CENTER
@@ -184,20 +145,14 @@ func rebuild() -> void:
 			transform_fields.add_child(field_y)
 			t_editor.transform_list.add_child(transform_fields)
 		elif t is AttributeTransform.TransformSkewX:
-			var field_x := MiniNumberField.instantiate()
-			field_x.set_value(t.x)
-			field_x.tooltip_text = "x"
-			field_x.value_changed.connect(update_value.bind(i, &"x"))
+			var field_x := create_mini_number_field(t, i, &"x")
 			t_editor.fields = [field_x] as Array[BetterLineEdit]
 			var transform_fields := HBoxContainer.new()
 			transform_fields.alignment = BoxContainer.ALIGNMENT_CENTER
 			transform_fields.add_child(field_x)
 			t_editor.transform_list.add_child(transform_fields)
 		elif t is AttributeTransform.TransformSkewY:
-			var field_y := MiniNumberField.instantiate()
-			field_y.set_value(t.y)
-			field_y.tooltip_text = "y"
-			field_y.value_changed.connect(update_value.bind(i, &"y"))
+			var field_y := create_mini_number_field(t, i, &"y")
 			t_editor.fields = [field_y] as Array[BetterLineEdit]
 			var transform_fields := HBoxContainer.new()
 			transform_fields.alignment = BoxContainer.ALIGNMENT_CENTER
@@ -208,6 +163,15 @@ func rebuild() -> void:
 	transform_list.visible = (transform_count != 0)
 	add_button.visible = (transform_count == 0)
 	update_final_transform()
+
+func create_mini_number_field(transform: AttributeTransform.Transform, idx: int,
+property: StringName) -> BetterLineEdit:
+	var field := MiniNumberField.instantiate()
+	field.custom_minimum_size.x = 44
+	field.set_value(transform.get(property))
+	field.tooltip_text = property
+	field.value_changed.connect(update_value.bind(idx, property))
+	return field
 
 
 func update_value(new_value: float, idx: int, property: StringName) -> void:

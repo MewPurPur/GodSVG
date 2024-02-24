@@ -20,10 +20,8 @@ var value: String:
 			new_value = new_value.trim_prefix("#")
 			if new_value != value:
 				value = new_value
-				sync(value)
 				value_changed.emit(value)
-		else:
-			sync(new_value)
+		sync(value)
 
 
 func _ready() -> void:
@@ -56,13 +54,16 @@ func _draw() -> void:
 	var stylebox := StyleBoxFlat.new()
 	stylebox.corner_radius_top_right = 5
 	stylebox.corner_radius_bottom_right = 5
-	stylebox.bg_color = ColorParser.string_to_color(value)
+	stylebox.bg_color = ColorParser.string_to_color(ColorParser.add_hash_if_hex(value))
 	draw_texture(checkerboard, Vector2.ZERO)
 	draw_style_box(stylebox, Rect2(Vector2.ZERO, button_size - Vector2(1, 2)))
 
 
 func _on_text_submitted(new_text: String) -> void:
 	value = new_text
+
+func _on_text_change_canceled() -> void:
+	sync(value)
 
 func _on_color_picked(new_color: String, close_picker: bool) -> void:
 	value = new_color
