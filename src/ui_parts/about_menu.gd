@@ -9,7 +9,7 @@ func _ready() -> void:
 	add_section("Project Founder and Manager", AppInfo.project_founder_and_manager)
 	add_section("Developers", AppInfo.authors)
 
-func add_section(section_title: String, authors: Array[String]):
+func add_section(section_title: String, authors: Array[String]) -> void:
 	authors_label.push_bold()
 	authors_label.add_text(section_title + ":")
 	authors_label.pop()
