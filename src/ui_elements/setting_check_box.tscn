@@ -1,4 +1,4 @@
-[gd_scene load_steps=2 format=3 uid="uid://chgcy63ldo7x5"]
+[gd_scene load_steps=2 format=3 uid="uid://ctsee23lxlrib"]
 
 [ext_resource type="Script" path="res://src/ui_elements/setting_check_box.gd" id="1_xy5x4"]
 
