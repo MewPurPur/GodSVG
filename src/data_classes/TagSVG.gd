@@ -171,8 +171,8 @@ func move_tags_in_parent(tids: Array[PackedInt32Array], down: bool) -> void:
 	var parent_tag := get_tag(parent_tid)
 	var parent_child_count := parent_tag.get_child_count()
 	var old_indices: Array[int] = []
-	for k in parent_child_count:
-		old_indices.append(k)
+	for i in parent_child_count:
+		old_indices.append(i)
 	# Do the moving.
 	if down:
 		var i := parent_child_count - 1
@@ -231,16 +231,15 @@ func move_tags_to(tids: Array[PackedInt32Array], location: PackedInt32Array) -> 
 	for tag in tags_stored:
 		get_tag(Utils.get_parent_tid(location)).child_tags.insert(location[-1], tag)
 	# Check if this actually chagned the layout.
-	var changed := false
 	for tid in tids_stored:
-		if Utils.get_parent_tid(tid) != Utils.get_parent_tid(location) or\
+		if not Utils.are_tid_parents_same(tid, location) or tid[-1] < location[-1] or\
 		tid[-1] >= location[-1] + tids_stored.size():
-			changed = true
-			break
-	if changed:
-		tags_moved_to.emit(tids, location)
-		tag_layout_changed.emit()
+			# If this condition is passed, then there was a layout change.
+			tags_moved_to.emit(tids, location)
+			tag_layout_changed.emit()
+			return
 
+# Duplicates tags and puts them below.
 func duplicate_tags(tids: Array[PackedInt32Array]) -> void:
 	if tids.is_empty():
 		return

@@ -20,7 +20,7 @@ func _notification(what: int) -> void:
 		_in_focus.emit()
 
 
-func _on_files_dropped(files: PackedStringArray):
+func _on_files_dropped(files: PackedStringArray) -> void:
 	if not has_overlay:
 		SVG.apply_svg_from_path(files[0])
 
@@ -54,6 +54,44 @@ func remove_overlay() -> void:
 	overlay_ref.queue_free()
 	has_overlay = false
 	get_tree().paused = false
+
+
+func _input(event: InputEvent) -> void:
+	if event.is_action_pressed(&"import"):
+		get_viewport().set_input_as_handled()
+		SVG.open_import_dialog()
+	elif event.is_action_pressed(&"export"):
+		get_viewport().set_input_as_handled()
+		SVG.open_export_dialog()
+	elif event.is_action_pressed(&"save"):
+		get_viewport().set_input_as_handled()
+		SVG.open_save_dialog("svg", SVG.native_file_save, SVG.save_svg_to_file)
+
+func _unhandled_input(event) -> void:
+	if event.is_action_pressed(&"redo"):
+		get_viewport().set_input_as_handled()
+		SVG.redo()
+	elif event.is_action_pressed(&"undo"):
+		get_viewport().set_input_as_handled()
+		SVG.undo()
+	
+	if get_viewport().gui_is_dragging():
+		return
+	
+	if event.is_action_pressed(&"ui_cancel"):
+		Indications.clear_all_selections()
+	elif event.is_action_pressed(&"delete"):
+		Indications.delete_selected()
+	elif event.is_action_pressed(&"move_up"):
+		Indications.move_up_selected()
+	elif event.is_action_pressed(&"move_down"):
+		Indications.move_down_selected()
+	elif event.is_action_pressed(&"duplicate"):
+		Indications.duplicate_selected()
+	elif event.is_action_pressed(&"select_all"):
+		Indications.select_all()
+	elif event is InputEventKey:
+		Indications.respond_to_key_input(event)
 
 
 func web_load_svg() -> void:

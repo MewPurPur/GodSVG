@@ -12,7 +12,7 @@ const checkerboard = preload("res://visual/icons/backgrounds/ColorButtonBG.svg")
 @onready var color_edit: LineEdit = $LineEdit
 @onready var color_popup: Popup
 
-func set_value(new_value: String, update_type := Utils.UpdateType.REGULAR):
+func set_value(new_value: String, update_type := Utils.UpdateType.REGULAR) -> void:
 	# Validate the value.
 	if not is_valid(new_value):
 		sync(attribute.get_value())
@@ -60,6 +60,7 @@ func _draw() -> void:
 
 
 func _on_focus_entered() -> void:
+	color_edit.remove_theme_color_override(&"font_color")
 	focused.emit()
 
 func _on_text_submitted(new_text: String) -> void:
@@ -67,6 +68,9 @@ func _on_text_submitted(new_text: String) -> void:
 		set_value(attribute.default)
 	else:
 		set_value(new_text)
+
+func _on_text_change_canceled() -> void:
+	sync(attribute.get_value())
 
 
 func _on_color_picked(new_color: String, close_picker: bool) -> void:

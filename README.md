@@ -23,6 +23,8 @@ Note that if you're on MacOS, you need to [disable Gatekeeper](https://disable-g
 
 Link to the web build: https://mewpurpur.github.io/GodSVG/web-build (Currently experimental)
 
+To run the latest unreleased version, you can download Godot from https://godotengine.org (v4.2 minimum). After getting the repository files on your machine, you must open Godot, click the "Import" button, and import the `project.godot` folder. If there are a lot of errors which some people have reported, it's a Godot bug. Try closing and opening the project a few times, changing small things on the code that errors out, etc. until the errors hopefully clear.
+
 ## How to use it
 
 Documentation for GodSVG is likely eventually going to be built-in. In the meantime, the basics of using it will be outlined here. This documentation is for the current master, which is a little ahead of the alpha 2 release.

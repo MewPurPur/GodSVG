@@ -193,7 +193,7 @@ func move_slider(idx: int, offset: float) -> void:
 	set_display_color(new_color)
 	widgets_arr[idx].queue_redraw()
 
-func set_color_channel(col: Color, channel: String, offset: float):
+func set_color_channel(col: Color, channel: String, offset: float) -> Color:
 	match channel:
 		"r": col.r = clampf(offset, 0.0, 1.0)
 		"g": col.g = clampf(offset, 0.0, 1.0)
@@ -348,7 +348,7 @@ func _on_slider3_draw() -> void:
 
 func _on_reset_color_button_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion and event.button_mask != MOUSE_BUTTON_MASK_LEFT:
-		if starting_color == color:
+		if ColorParser.are_colors_same(starting_color, color):
 			reset_color_button.disabled = true
 			return
 		reset_color_button.disabled = false

@@ -11,7 +11,7 @@ const bold_font = preload("res://visual/fonts/FontBold.ttf")
 @onready var indicator: LineEdit = $LineEdit
 @onready var button: Button = $Button
 
-func set_value(new_value: String, update_type := Utils.UpdateType.REGULAR):
+func set_value(new_value: String, update_type := Utils.UpdateType.REGULAR) -> void:
 	sync(attribute.autoformat(new_value))
 	if attribute.get_value() != new_value or update_type == Utils.UpdateType.FINAL:
 		match update_type:
@@ -45,6 +45,7 @@ func _on_option_pressed(option: String) -> void:
 
 
 func _on_focus_entered() -> void:
+	indicator.remove_theme_color_override(&"font_color")
 	focused.emit()
 
 func _on_text_submitted(new_text: String) -> void:
@@ -55,6 +56,10 @@ func _on_text_submitted(new_text: String) -> void:
 		set_value(attribute.default)
 	else:
 		sync(attribute.get_value())
+
+func _on_text_change_canceled() -> void:
+	sync(attribute.get_value())
+
 
 func _on_text_changed(new_text: String) -> void:
 	if new_text in attribute.possible_values:

@@ -29,14 +29,18 @@ func _ready() -> void:
 	
 	await get_tree().get_root().ready  # Await tree ready to be able to add error dialogs.
 	
-	if (apply_svg_from_path(cmdline_args[0]) if load_cmdl else -1) == OK:
-		pass
-	elif not GlobalSettings.save_data.svg_text.is_empty():
+	# Guarantee a proper SVG text first, as the import warnings dialog
+	# that might pop up from command line file opening is cancellable.
+	if not GlobalSettings.save_data.svg_text.is_empty():
 		apply_svg_text(GlobalSettings.save_data.svg_text)
 	else:
 		root_tag.attributes.width.set_num(16.0)
 		root_tag.attributes.height.set_num(16.0)
 		update_text(false)
+	
+	if load_cmdl:
+		apply_svg_from_path(cmdline_args[0])
+	
 	UR.clear_history()
 
 
@@ -48,6 +52,7 @@ func update_tags() -> void:
 		parsing_finished.emit(&"")
 		root_tag.replace_self(SVGParser.text_to_svg(text))
 
+
 func update_text(undo_redo := true) -> void:
 	if undo_redo:
 		UR.create_action("")
@@ -58,32 +63,18 @@ func update_text(undo_redo := true) -> void:
 	else:
 		text = SVGParser.svg_to_text(root_tag)
 
+func undo() -> void:
+	if UR.has_undo():
+		UR.undo()
+		update_tags()
+
+func redo() -> void:
+	if UR.has_redo():
+		UR.redo()
+		update_tags()
+
 func _on_undo_redo() -> void:
 	GlobalSettings.modify_save_data(&"svg_text", text)
-
-
-func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_pressed(&"redo"):
-		get_viewport().set_input_as_handled()
-		if UR.has_redo():
-			UR.redo()
-			update_tags()
-	elif event.is_action_pressed(&"undo"):
-		get_viewport().set_input_as_handled()
-		if UR.has_undo():
-			UR.undo()
-			update_tags()
-
-func _input(event: InputEvent) -> void:
-	if event.is_action_pressed(&"import"):
-		get_viewport().set_input_as_handled()
-		open_import_dialog()
-	elif event.is_action_pressed(&"export"):
-		get_viewport().set_input_as_handled()
-		open_export_dialog()
-	elif event.is_action_pressed(&"save"):
-		get_viewport().set_input_as_handled()
-		open_save_dialog("svg", native_file_save, save_svg_to_file)
 
 
 func open_import_dialog() -> void:
@@ -167,7 +158,7 @@ func finish_import(svg_text: String, file_path: String) -> void:
 	apply_svg_text(svg_text)
 
 
-func save_svg_to_file(path: String):
+func save_svg_to_file(path: String) -> void:
 	var FA := FileAccess.open(path, FileAccess.WRITE)
 	FA.store_string(text)
 

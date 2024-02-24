@@ -49,7 +49,7 @@ func add_numfield() -> BetterLineEdit:
 
 func _gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion and event.button_mask == 0:
-		Indications.set_inner_hovered(tid, cmd_idx)
+		Indications.set_hovered(tid, cmd_idx)
 	elif event is InputEventMouseButton and event.is_pressed():
 		if event.button_index == MOUSE_BUTTON_LEFT:
 			if event.double_click:
@@ -59,7 +59,7 @@ func _gui_input(event: InputEvent) -> void:
 						SVG.root_tag.get_tag(tid).attributes.d.get_subpath(cmd_idx)
 				for idx in range(subpath_range.x, subpath_range.y + 1):
 					Indications.ctrl_select(tid, idx)
-			elif event.ctrl_pressed:
+			elif event.is_command_or_control_pressed():
 				Indications.ctrl_select(tid, cmd_idx)
 			elif event.shift_pressed:
 				Indications.shift_select(tid, cmd_idx)
@@ -299,7 +299,7 @@ func setup_fields(spacings: Array, names: Array) -> void:
 		fields[i + 1].position.x = fields[i].get_end().x + spacings[i]
 
 func _on_mouse_exited() -> void:
-	Indications.remove_inner_hovered(tid, cmd_idx)
+	Indications.remove_hovered(tid, cmd_idx)
 	
 	if active:
 		active = false

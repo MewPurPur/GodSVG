@@ -10,7 +10,7 @@ const TransformPopup = preload("res://src/ui_elements/transform_popup.tscn")
 @onready var line_edit: BetterLineEdit = $LineEdit
 @onready var popup_button: Button = $Button
 
-func set_value(new_value: String, update_type := Utils.UpdateType.REGULAR):
+func set_value(new_value: String, update_type := Utils.UpdateType.REGULAR) -> void:
 	sync(attribute.autoformat(new_value))
 	if attribute.get_value() != new_value or update_type == Utils.UpdateType.FINAL:
 		match update_type:
