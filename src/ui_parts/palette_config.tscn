@@ -76,6 +76,7 @@ theme_type_variation = &"FlatButton"
 icon = ExtResource("2_35dgp")
 
 [node name="ColorsContainer" type="HFlowContainer" parent="MarginContainer/HBoxContainer/MainContainer"]
+custom_minimum_size = Vector2(0, 22)
 layout_mode = 2
 size_flags_vertical = 4
 theme_override_constants/h_separation = 3
