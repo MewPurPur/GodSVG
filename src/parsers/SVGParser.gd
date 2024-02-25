@@ -4,6 +4,9 @@ class_name SVGParser extends RefCounted
 const shorthand_tag_exceptions = ["g", "linearGradient, radialGradient"]
 
 static func svg_to_text(svg_tag: TagSVG) -> String:
+	if svg_tag == null:
+		return ""
+	
 	var w: String = svg_tag.attributes.width.get_value()
 	var h: String = svg_tag.attributes.height.get_value()
 	var viewbox: String = svg_tag.attributes.viewBox.get_value()
@@ -56,8 +59,27 @@ static func _tag_to_text(tag: Tag) -> String:
 	return text
 
 
+enum ParseError {OK, ERR_NOT_SVG, ERR_IMPROPER_NESTING}
+
+class ParseResult extends RefCounted:
+	var error: SVGParser.ParseError
+	var svg: TagSVG
+	
+	func _init(err_id: SVGParser.ParseError, result: TagSVG = null) -> void:
+		error = err_id
+		svg = result
+
+static func get_error_stringname(parse_error: ParseError) -> StringName:
+	match parse_error:
+		ParseError.ERR_NOT_SVG: return &"Doesn’t describe a SVG"
+		ParseError.ERR_IMPROPER_NESTING: return &"Improper nesting"
+		_: return &""
+
 # Returns a StringName if there's an error.
-static func text_to_svg(text: String) -> Variant:
+static func text_to_svg(text: String) -> ParseResult:
+	if text.is_empty():
+		return ParseResult.new(ParseError.ERR_NOT_SVG)
+	
 	var svg_tag := TagSVG.new()
 	var parser := XMLParser.new()
 	parser.open_buffer(text.to_utf8_buffer())
@@ -103,7 +125,7 @@ static func text_to_svg(text: String) -> Variant:
 				break
 	
 	if not describes_svg:
-		return &"Doesn’t describe a SVG."
+		return ParseResult.new(ParseError.ERR_NOT_SVG)
 	# Parse everything until the SVG closing tag.
 	while parser.read() == OK:
 		match parser.get_node_type():
@@ -140,14 +162,14 @@ static func text_to_svg(text: String) -> Variant:
 					unclosed_tag_stack.back().child_tags.append(tag)
 			XMLParser.NODE_ELEMENT_END:
 				if unclosed_tag_stack.is_empty():
-					return &"Improper nesting."
+					return ParseResult.new(ParseError.ERR_IMPROPER_NESTING)
 				else:
 					var closed_tag: Tag = unclosed_tag_stack.pop_back()
 					if closed_tag.name != parser.get_node_name():
-						return &"Improper nesting."
+						return ParseResult.new(ParseError.ERR_IMPROPER_NESTING)
 					if unclosed_tag_stack.size() > 1:
 						unclosed_tag_stack.back().child_tags.append(closed_tag)
 					else:
 						break
 	
-	return svg_tag
+	return ParseResult.new(ParseError.OK, svg_tag)

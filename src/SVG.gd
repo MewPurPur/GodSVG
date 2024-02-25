@@ -12,7 +12,7 @@ var root_tag := TagSVG.new()
 
 var UR := UndoRedo.new()
 
-signal parsing_finished(error_id: StringName)
+signal parsing_finished(error_id: SVGParser.ParseError)
 
 func _ready() -> void:
 	UR.version_changed.connect(_on_undo_redo)
@@ -45,12 +45,10 @@ func _ready() -> void:
 
 
 func update_tags() -> void:
-	var svg_parse_result: Variant = SVGParser.text_to_svg(text)
-	if typeof(svg_parse_result) == TYPE_STRING_NAME:
-		parsing_finished.emit(svg_parse_result)
-	else:
-		parsing_finished.emit(&"")
-		root_tag.replace_self(SVGParser.text_to_svg(text))
+	var svg_parse_result := SVGParser.text_to_svg(text)
+	parsing_finished.emit(svg_parse_result.error)
+	if svg_parse_result.error == SVGParser.ParseError.OK:
+		root_tag.replace_self(SVGParser.text_to_svg(text).svg)
 
 
 func update_text(undo_redo := true) -> void:

@@ -5,6 +5,8 @@ const checkerboard = preload("res://visual/icons/backgrounds/Checkerboard.svg")
 const plus_icon = preload("res://visual/icons/Plus.svg")
 const gear_icon = preload("res://visual/icons/GearOutlined.svg")
 
+const ColorSwatch = preload("res://src/ui_elements/color_swatch.tscn")
+
 enum Type {CHOOSE_COLOR, CONFIGURE_COLOR, ADD_COLOR}
 var type := Type.CHOOSE_COLOR
 
@@ -47,7 +49,16 @@ func _make_custom_tooltip(_for_text: String) -> Object:
 		else:
 			rtl.add_text("#" + named_color.color)
 		return rtl
-	
+	return null
+
+func _get_drag_data(_at_position: Vector2) -> Variant:
+	if type == Type.CONFIGURE_COLOR:
+		var data: NamedColor = named_color
+		# Set up a preview.
+		var preview := ColorSwatch.instantiate()
+		preview.named_color = named_color
+		set_drag_preview(preview)
+		return data
 	return null
 
 
