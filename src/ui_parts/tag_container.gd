@@ -68,12 +68,13 @@ func update_proposed_tid() -> void:
 
 
 func _notification(what: int) -> void:
-	if what == NOTIFICATION_DRAG_BEGIN:
-		covering_rect.show()
-		update_proposed_tid()
-	elif what == NOTIFICATION_DRAG_END:
-		covering_rect.hide()
-		Indications.clear_proposed_drop_tid()
+	if is_inside_tree() and not get_tree().paused:
+		if what == NOTIFICATION_DRAG_BEGIN:
+			covering_rect.show()
+			update_proposed_tid()
+		elif what == NOTIFICATION_DRAG_END:
+			covering_rect.hide()
+			Indications.clear_proposed_drop_tid()
 
 func _gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and\
