@@ -1,4 +1,4 @@
-## A TextEdit that doesn't fully redraw on caret blink and has a custom context menu.
+## A TextEdit with some improvements.
 class_name BetterTextEdit extends TextEdit
 
 const code_font = preload("res://visual/fonts/FontMono.ttf")
@@ -30,6 +30,13 @@ func _ready() -> void:
 	mouse_exited.connect(_on_mouse_exited)
 
 
+# Workaround for there not being a built-in overtype_mode_changed signal.
+var overtype_mode := false
+func _process(_delta: float) -> void:
+	if is_overtype_mode_enabled() != overtype_mode:
+		overtype_mode = not overtype_mode
+		redraw_caret()
+
 func redraw_caret() -> void:
 	await get_tree().process_frame  # Buggy with backspace otherwise, likely a Godot bug.
 	blonk = false
@@ -40,15 +47,14 @@ func redraw_caret() -> void:
 		var char_size := code_font.get_char_size(69,
 				get_theme_font_size(&"TextEdit", &"font_size"))
 		for caret in get_caret_count():
-			# FIXME There's a bug(?) causing the draw pos to sometimes not update
-			# when outside of the screen.
-			var caret_draw_pos := get_caret_draw_pos(caret)
+			var caret_draw_pos := Vector2(get_rect_at_line_column(
+					get_caret_line(caret), get_caret_column(caret)).end)
 			if is_overtype_mode_enabled():
-				RenderingServer.canvas_item_add_line(surface, caret_draw_pos - Vector2(1, 0),
-						caret_draw_pos + Vector2(char_size.x - 2, 0), caret_color, 1)
+				RenderingServer.canvas_item_add_line(surface, caret_draw_pos + Vector2(1, -2),
+						caret_draw_pos + Vector2(char_size.x, -2), caret_color, 1)
 			else:
-				RenderingServer.canvas_item_add_line(surface, caret_draw_pos - Vector2(0, 1),
-						caret_draw_pos - Vector2(0, char_size.y - 2), caret_color, 1)
+				RenderingServer.canvas_item_add_line(surface, caret_draw_pos + Vector2(1, -2),
+						caret_draw_pos + Vector2(1, -char_size.y - 1), caret_color, 1)
 
 var blonk := true
 func blink() -> void:
