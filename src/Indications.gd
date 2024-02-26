@@ -363,17 +363,29 @@ func respond_to_key_input(event: InputEventKey) -> void:
 						path_attrib.get_command(path_cmd_count - 1) is\
 						PathCommand.CloseCommand):
 							return
-						path_attrib.insert_command(path_cmd_count, path_cmd_char)
+						path_attrib.insert_command(path_cmd_count, path_cmd_char,
+								Vector2.ZERO, Attribute.SyncMode.INTERMEDIATE)
 						normal_select(selected_tids[0], path_cmd_count)
 						added_handle.emit()
 						break
 		return
-	
+	# If path commands are selected, insert after the last one.
 	for action_name in path_actions_dict.keys():
-		if event.is_action_pressed(action_name):
-			insert_inner_after_selection(path_actions_dict[action_name])
-			added_handle.emit()
-			break
+		var tag_ref := SVG.root_tag.get_tag(semi_selected_tid)
+		if tag_ref.name == "path":
+			if event.is_action_pressed(action_name):
+				var path_attrib: AttributePath = tag_ref.attributes.d
+				var path_cmd_char: String = path_actions_dict[action_name]
+				var last_selection: int = inner_selections.max()
+				# Z after a Z is syntactically invalid.
+				if path_attrib.get_command(last_selection) is PathCommand.CloseCommand and\
+				path_cmd_char in "Zz":
+					return
+				path_attrib.insert_command(last_selection + 1, path_cmd_char, Vector2.ZERO,
+						Attribute.SyncMode.INTERMEDIATE)
+				normal_select(semi_selected_tid, last_selection + 1)
+				added_handle.emit()
+				break
 
 
 # Operations on selected tags.
@@ -439,34 +451,34 @@ func get_selection_context(popup_method: Callable) -> Popup:
 					can_move_down = true
 		
 		btn_arr.append(Utils.create_btn(tr(&"#duplicate"), duplicate_selected,
-				false, load("res://visual/icons/Duplicate.svg")))
+			false, load("res://visual/icons/Duplicate.svg")))
 		
 		if selected_tids.size() == 1 and not SVG.root_tag.get_tag(
 		selected_tids[0]).possible_conversions.is_empty():
 			btn_arr.append(Utils.create_btn(tr(&"#convert_to"),
-					popup_convert_to_context.bind(popup_method), false,
-					load("res://visual/icons/Reload.svg")))
+				popup_convert_to_context.bind(popup_method), false,
+				load("res://visual/icons/Reload.svg")))
 		
 		if can_move_up:
 			btn_arr.append(Utils.create_btn(tr(&"#move_up"), move_up_selected,
-					false, load("res://visual/icons/MoveUp.svg")))
+				false, load("res://visual/icons/MoveUp.svg")))
 		if can_move_down:
 			btn_arr.append(Utils.create_btn(tr(&"#move_down"), move_down_selected,
-					false, load("res://visual/icons/MoveDown.svg")))
+				false, load("res://visual/icons/MoveDown.svg")))
 		
 		btn_arr.append(Utils.create_btn(tr(&"#delete"), delete_selected,
-				false, load("res://visual/icons/Delete.svg")))
+			false, load("res://visual/icons/Delete.svg")))
 	elif not inner_selections.is_empty() and not semi_selected_tid.is_empty():
 		if inner_selections.size() == 1:
 			btn_arr.append(Utils.create_btn(tr(&"#insert_after"),
-					popup_insert_command_after_context.bind(popup_method),
-					false, load("res://visual/icons/Plus.svg")))
+				popup_insert_command_after_context.bind(popup_method),
+				false, load("res://visual/icons/Plus.svg")))
 			btn_arr.append(Utils.create_btn(tr(&"#convert_to"),
-					popup_convert_to_context.bind(popup_method), false,
-					load("res://visual/icons/Reload.svg")))
+				popup_convert_to_context.bind(popup_method), false,
+				load("res://visual/icons/Reload.svg")))
 		
 		btn_arr.append(Utils.create_btn(tr(&"#delete"), delete_selected, false,
-				load("res://visual/icons/Delete.svg")))
+			load("res://visual/icons/Delete.svg")))
 	
 	var tag_context := ContextPopup.instantiate()
 	add_child(tag_context)
@@ -480,7 +492,7 @@ func popup_convert_to_context(popup_method: Callable) -> void:
 		var tag := SVG.root_tag.get_tag(selected_tids[0])
 		for tag_name in tag.possible_conversions:
 			var btn := Utils.create_btn(tag_name, convert_selected_tag_to.bind(tag_name),
-					!tag.can_replace(tag_name), load("res://visual/icons/tag/%s.svg" % tag_name))
+				!tag.can_replace(tag_name), load("res://visual/icons/tag/%s.svg" % tag_name))
 			btn.add_theme_font_override(&"font", load("res://visual/fonts/FontMono.ttf"))
 			btn_arr.append(btn)
 		var context_popup := ContextPopup.instantiate()
@@ -489,7 +501,7 @@ func popup_convert_to_context(popup_method: Callable) -> void:
 		popup_method.call(context_popup)
 	elif not inner_selections.is_empty() and not semi_selected_tid.is_empty():
 		var cmd_char: String = SVG.root_tag.get_tag(semi_selected_tid).\
-				attributes.d.get_command(inner_selections[0]).command_char
+			attributes.d.get_command(inner_selections[0]).command_char
 		var command_picker := PathCommandPopup.instantiate()
 		add_child(command_picker)
 		command_picker.force_relativity(Utils.is_string_lower(cmd_char))
@@ -499,7 +511,7 @@ func popup_convert_to_context(popup_method: Callable) -> void:
 
 func popup_insert_command_after_context(popup_method: Callable) -> void:
 	var cmd_char: String = SVG.root_tag.get_tag(semi_selected_tid).attributes.d.\
-			get_command(inner_selections.max()).command_char
+		get_command(inner_selections.max()).command_char
 	
 	var command_picker := PathCommandPopup.instantiate()
 	add_child(command_picker)

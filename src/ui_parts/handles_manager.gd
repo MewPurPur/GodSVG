@@ -720,6 +720,9 @@ func find_nearest_handle(event_pos: Vector2) -> Handle:
 
 func move_selected_to_mouse() -> void:
 	if not get_viewport_rect().has_point(get_viewport().get_mouse_position()):
+		var path_attribute: AttributePath =\
+				SVG.root_tag.get_tag(Indications.semi_selected_tid).attributes.d
+		path_attribute.set_value(path_attribute.get_value(), Attribute.SyncMode.FINAL)
 		return
 	
 	for handle in handles:
