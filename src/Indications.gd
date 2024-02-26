@@ -368,12 +368,22 @@ func respond_to_key_input(event: InputEventKey) -> void:
 						added_handle.emit()
 						break
 		return
-	
+	# If path commands are selected, insert after the last one.
 	for action_name in path_actions_dict.keys():
-		if event.is_action_pressed(action_name):
-			insert_inner_after_selection(path_actions_dict[action_name])
-			added_handle.emit()
-			break
+		var tag_ref := SVG.root_tag.get_tag(semi_selected_tid)
+		if tag_ref.name == "path":
+			if event.is_action_pressed(action_name):
+				var path_attrib: AttributePath = tag_ref.attributes.d
+				var path_cmd_char: String = path_actions_dict[action_name]
+				var last_selection: int = inner_selections.max()
+				# Z after a Z is syntactically invalid.
+				if path_attrib.get_command(last_selection) is PathCommand.CloseCommand and\
+				path_cmd_char in "Zz":
+					return
+				path_attrib.insert_command(last_selection + 1, path_cmd_char)
+				normal_select(semi_selected_tid, last_selection + 1)
+				added_handle.emit()
+				break
 
 
 # Operations on selected tags.
