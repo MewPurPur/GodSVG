@@ -39,15 +39,14 @@ func rebuild_commands() -> void:
 				command_editor.path_command = command
 				command_editor.queue_redraw()
 			else:
-				command_editor.queue_free()
 				var new_command_editor := CommandEditor.instantiate()
 				new_command_editor.path_command = command
 				# TODO Fix this mess, it's needed for individual path commands selection.
 				new_command_editor.tid = get_node(^"../../../../..").tid
 				new_command_editor.cmd_idx = command_idx
-				commands_container.add_child(new_command_editor)
-				commands_container.move_child(new_command_editor, command_idx)
-		command_idx += 1
+				command_editor.replace_by(new_command_editor)
+				command_editor.free()
+			command_idx += 1
 	
 	while command_idx < attribute.get_command_count():
 		var command_editor := CommandEditor.instantiate()
