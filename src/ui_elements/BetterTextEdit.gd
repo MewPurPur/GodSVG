@@ -48,13 +48,13 @@ func redraw_caret() -> void:
 				get_theme_font_size(&"TextEdit", &"font_size"))
 		for caret in get_caret_count():
 			var caret_draw_pos := Vector2(get_rect_at_line_column(
-					get_caret_line(caret), get_caret_column(caret)).end)
+					get_caret_line(caret), get_caret_column(caret)).end) + Vector2(1, -2)
 			if is_overtype_mode_enabled():
-				RenderingServer.canvas_item_add_line(surface, caret_draw_pos + Vector2(1, -2),
-						caret_draw_pos + Vector2(char_size.x, -2), caret_color, 1)
+				RenderingServer.canvas_item_add_line(surface, caret_draw_pos,
+						caret_draw_pos + Vector2(char_size.x, 0), caret_color, 1)
 			else:
-				RenderingServer.canvas_item_add_line(surface, caret_draw_pos + Vector2(1, -2),
-						caret_draw_pos + Vector2(1, -char_size.y - 1), caret_color, 1)
+				RenderingServer.canvas_item_add_line(surface, caret_draw_pos,
+						caret_draw_pos + Vector2(0, -char_size.y - 1), caret_color, 1)
 
 var blonk := true
 func blink() -> void:
