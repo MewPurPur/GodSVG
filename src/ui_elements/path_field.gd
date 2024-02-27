@@ -44,6 +44,7 @@ func rebuild_commands() -> void:
 				# TODO Fix this mess, it's needed for individual path commands selection.
 				new_command_editor.tid = get_node(^"../../../../..").tid
 				new_command_editor.cmd_idx = command_idx
+				command_editor.clear_children()
 				command_editor.replace_by(new_command_editor)
 				command_editor.free()
 			command_idx += 1
