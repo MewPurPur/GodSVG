@@ -1,24 +1,16 @@
 extends PanelContainer
 
-@onready var authors_label: RichTextLabel = %AuthorsLabel
+@onready var project_founder_list: PanelGrid = %ProjectFounder/List
+@onready var authors_list: PanelGrid = %Developers/List
 @onready var version_label: Label = %VersionLabel
 
 func _ready() -> void:
 	version_label.text = "GodSVG " + ProjectSettings.get_setting(
 			&"application/config/version", "Version information unavailable")
-	add_section("Project Founder and Manager", AppInfo.project_founder_and_manager)
-	add_section("Developers", AppInfo.authors)
-
-func add_section(section_title: String, authors: Array[String]) -> void:
-	authors_label.push_bold()
-	authors_label.add_text(section_title + ":")
-	authors_label.pop()
-	authors_label.newline()
-	authors_label.push_list(0, RichTextLabel.LIST_DOTS, false)
-	for author in authors:
-		authors_label.add_text(author)
-		authors_label.newline()
-	authors_label.pop()
+	project_founder_list.items = AppInfo.project_founder_and_manager
+	project_founder_list.setup()
+	authors_list.items = AppInfo.authors
+	authors_list.setup()
 
 func _on_components_pressed() -> void:
 	OS.shell_open("https://github.com/godotengine/godot/blob/master/COPYRIGHT.txt")
