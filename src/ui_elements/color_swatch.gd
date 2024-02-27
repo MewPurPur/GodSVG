@@ -57,6 +57,7 @@ func _get_drag_data(_at_position: Vector2) -> Variant:
 		# Set up a preview.
 		var preview := ColorSwatch.instantiate()
 		preview.named_color = named_color
+		preview.modulate = Color(1, 1, 1, 0.85)
 		set_drag_preview(preview)
 		return data
 	return null

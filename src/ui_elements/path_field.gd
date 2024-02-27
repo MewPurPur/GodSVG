@@ -45,7 +45,7 @@ func rebuild_commands() -> void:
 				new_command_editor.tid = get_node(^"../../../../..").tid
 				new_command_editor.cmd_idx = command_idx
 				command_editor.replace_by(new_command_editor)
-				command_editor.free()
+				command_editor.queue_free()
 			command_idx += 1
 	
 	while command_idx < attribute.get_command_count():
