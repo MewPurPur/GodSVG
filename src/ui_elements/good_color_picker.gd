@@ -92,8 +92,6 @@ func setup_color(new_color: String) -> void:
 	starting_display_color.a = 1
 	display_color = starting_display_color
 	slider_mode = GlobalSettings.save_data.color_picker_slider_mode
-	if not is_node_ready():
-		await ready
 	update()
 
 func _ready() -> void:
