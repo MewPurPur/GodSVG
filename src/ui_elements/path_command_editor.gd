@@ -309,11 +309,12 @@ func _on_mouse_exited() -> void:
 		# Should switch out the controls for fake outs. This is safe even when
 		# you've focused a BetterLineEdit, because it pauses the tree.
 		if not active:
-			for field in fields:
-				field.queue_free()
-			relative_button.queue_free()
-			action_button.queue_free()
+			clear_children()
 			queue_redraw()
+
+func clear_children() -> void:
+	for child in get_children():
+		child.queue_free()
 
 func _on_action_button_pressed() -> void:
 	var viewport := get_viewport()
