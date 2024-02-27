@@ -42,7 +42,7 @@ func _on_button_pressed() -> void:
 		color_picker = ColorPopup.instantiate()
 	else:
 		color_picker = ColorPickerPopup.instantiate()
-	color_picker.current_value = value
+	color_picker.current_value = ColorParser.add_hash_if_hex(value)
 	add_child(color_picker)
 	color_picker.color_picked.connect(_on_color_picked)
 	Utils.popup_under_rect(color_picker, color_edit.get_global_rect(), get_viewport())
