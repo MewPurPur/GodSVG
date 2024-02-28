@@ -52,7 +52,7 @@ func _ready() -> void:
 	Indications.selection_changed.connect(queue_redraw)
 	Indications.hover_changed.connect(queue_redraw)
 	Indications.zoom_changed.connect(queue_redraw)
-	Indications.added_handle.connect(move_selected_to_mouse)
+	Indications.handle_added.connect(_on_handle_added)
 	queue_update()
 
 
@@ -718,12 +718,16 @@ func find_nearest_handle(event_pos: Vector2) -> Handle:
 			nearest_handle = handle
 	return nearest_handle
 
-func move_selected_to_mouse() -> void:
+func _on_handle_added() -> void:
 	if not get_viewport_rect().has_point(get_viewport().get_mouse_position()):
+		if not Indications.semi_selected_tid.is_empty():
+			SVG.root_tag.get_tag(Indications.semi_selected_tid).attributes.d.\
+					sync_after_commands_change(Attribute.SyncMode.FINAL)
 		return
 	
+	update_handles()
 	for handle in handles:
-		if handle.tid == Indications.semi_selected_tid and handle is PathHandle and\
+		if handle is PathHandle and handle.tid == Indications.semi_selected_tid and\
 		handle.command_index == Indications.inner_selections[0]:
 			Indications.set_hovered(handle.tid, handle.command_index)
 			dragged_handle = handle
