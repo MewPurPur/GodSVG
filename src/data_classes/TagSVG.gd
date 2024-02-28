@@ -17,7 +17,6 @@ signal tags_added(tids: Array[PackedInt32Array])
 signal tags_deleted(tids: Array[PackedInt32Array])
 signal tags_moved_in_parent(parent_tid: PackedInt32Array, old_indices: Array[int])
 signal tags_moved_to(tids: Array[PackedInt32Array], location: PackedInt32Array)
-signal tag_changed(tid: PackedInt32Array)
 signal tag_layout_changed  # Emitted together with any of the above 5.
 
 # This list is currently only used by the highlighter, so xmlns is here.
@@ -271,12 +270,12 @@ func duplicate_tags(tids: Array[PackedInt32Array]) -> void:
 	tags_added.emit(tids_added)
 	tag_layout_changed.emit()
 
+
 func replace_tag(tid: PackedInt32Array, new_tag: Tag) -> void:
 	if tid.is_empty():
 		replace_self(new_tag)
 	get_tag(Utils.get_parent_tid(tid)).child_tags[tid[-1]] = new_tag
 	new_tag.attribute_changed.connect(emit_child_attribute_changed)
-	tag_changed.emit(tid)
 	tag_layout_changed.emit()
 
 func emit_child_attribute_changed(undo_redo: bool) -> void:
