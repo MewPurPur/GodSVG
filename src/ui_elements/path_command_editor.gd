@@ -35,9 +35,12 @@ func _on_relative_button_pressed() -> void:
 
 
 func _ready() -> void:
-	cmd_char = path_command.command_char
 	Indications.selection_changed.connect(determine_selection_state)
 	Indications.hover_changed.connect(determine_selection_state)
+	setup()
+
+func setup() -> void:
+	cmd_char = path_command.command_char
 	determine_selection_state()
 
 
@@ -204,9 +207,10 @@ func _on_action_button_gui_input(event: InputEvent) -> void:
 # When the mouse enters the path command editor, activate it by adding the real nodes.
 # Otherwise, the nodes should only be drawn. This is important for performance.
 func _on_mouse_entered() -> void:
-	if active:
-		return
-	
+	if not active:
+		activate()
+
+func activate() -> void:
 	active = true
 	# Setup the relative button.
 	relative_button = Button.new()
@@ -313,6 +317,9 @@ func _on_mouse_exited() -> void:
 			queue_redraw()
 
 func clear_children() -> void:
+	fields = []
+	relative_button = null
+	action_button = null
 	for child in get_children():
 		child.queue_free()
 
