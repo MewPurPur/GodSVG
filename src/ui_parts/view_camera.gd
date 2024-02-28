@@ -29,7 +29,8 @@ func _draw() -> void:
 	var y_offset := fmod(-position.y, 1.0)
 	var tick_distance := float(ticks_interval)
 	var zoom_level := zoom.x
-	var draw_minor_lines := zoom_level >= 3.0
+	var draw_minor_lines := zoom_level >= 8.0
+	var mark_pixel_lines := zoom_level >= 128.0
 	var rate := nearest_po2(roundi(maxf(64.0 / (ticks_interval * zoom_level), 1.0)))
 	
 	# The grid lines are always 1px wide, but the numbers need to be resized.
@@ -38,11 +39,16 @@ func _draw() -> void:
 			Transform2D(0, Vector2(1, 1) / zoom, 0, Vector2.ZERO))
 	
 	var i := x_offset
+	# Horizontal offset.
 	while i <= size.x:
 		if fposmod(-position.x, tick_distance) != fposmod(i, tick_distance):
 			if draw_minor_lines:
 				minor_points.append(Vector2(i, 0))
 				minor_points.append(Vector2(i, size.y))
+				if mark_pixel_lines:
+					default_font.draw_string(surface, Vector2(i * zoom_level + 4, 14),
+							String.num_int64(floori(i + position.x)),
+							HORIZONTAL_ALIGNMENT_LEFT, -1, 14, axis_line_color)
 		else:
 			var coord := snappedi(i + position.x, ticks_interval)
 			if int(float(coord) / ticks_interval) % rate == 0:
@@ -56,11 +62,16 @@ func _draw() -> void:
 				minor_points.append(Vector2(i, size.y))
 		i += 1.0
 	i = y_offset
+	# Vertical offset.
 	while i < size.y:
 		if fposmod(-position.y, tick_distance) != fposmod(i, tick_distance):
 			if draw_minor_lines:
 				minor_points.append(Vector2(0, i))
 				minor_points.append(Vector2(size.x, i))
+				if mark_pixel_lines:
+					default_font.draw_string(surface, Vector2(4, i * zoom_level + 14),
+							String.num_int64(floori(i + position.y)),
+							HORIZONTAL_ALIGNMENT_LEFT, -1, 14, axis_line_color)
 		else:
 			var coord := snappedi(i + position.y, ticks_interval)
 			if int(coord / float(ticks_interval)) % rate == 0:
