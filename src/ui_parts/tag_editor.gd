@@ -136,7 +136,7 @@ func _gui_input(event: InputEvent) -> void:
 			elif event.is_released() and not event.shift_pressed and not event.ctrl_pressed:
 				Indications.normal_select(tid)
 			accept_event()
-		elif event.button_index == MOUSE_BUTTON_RIGHT:
+		elif event.button_index == MOUSE_BUTTON_RIGHT and event.is_pressed():
 			if not tid in Indications.selected_tids:
 				Indications.normal_select(tid)
 			var viewport := get_viewport()
