@@ -48,7 +48,7 @@ func update_tags() -> void:
 	var svg_parse_result := SVGParser.text_to_svg(text)
 	parsing_finished.emit(svg_parse_result.error)
 	if svg_parse_result.error == SVGParser.ParseError.OK:
-		root_tag.replace_self(SVGParser.text_to_svg(text).svg)
+		root_tag.replace_self(svg_parse_result.svg)
 
 
 func update_text(undo_redo := true) -> void:
