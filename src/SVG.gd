@@ -119,6 +119,7 @@ func native_file_save(has_selected: bool, files: PackedStringArray,
 _filter_idx: int) -> void:
 	if has_selected:
 		GlobalSettings.modify_save_data(&"current_file_path", files[0])
+		GlobalSettings.modify_save_data(&"last_used_dir", files[0].get_base_dir())
 		save_svg_to_file(files[0])
 
 
