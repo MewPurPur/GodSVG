@@ -8,6 +8,7 @@ signal color_picked(new_color: String, final: bool)
 var current_value: String
 
 func _ready() -> void:
+	await get_tree().process_frame
 	picker.setup_color(current_value)
 
 func pick_color(color: String) -> void:
