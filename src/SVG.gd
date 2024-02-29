@@ -118,6 +118,7 @@ non_native_callable: Callable) -> void:
 func native_file_save(has_selected: bool, files: PackedStringArray,
 _filter_idx: int) -> void:
 	if has_selected:
+		GlobalSettings.modify_save_data(&"current_file_path", files[0])
 		save_svg_to_file(files[0])
 
 

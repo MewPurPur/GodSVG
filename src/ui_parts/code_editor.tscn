@@ -79,6 +79,7 @@ layout_mode = 2
 
 [node name="AutoformatButton" type="Button" parent="PanelContainer/CodeButtons"]
 layout_mode = 2
+tooltip_text = "#autoformatting_options"
 focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_type_variation = &"IconButton"
