@@ -43,18 +43,26 @@ func redraw_caret() -> void:
 	blink()
 	timer.start(0.6)
 	RenderingServer.canvas_item_clear(surface)
-	if has_focus():
-		var char_size := code_font.get_char_size(69,
-				get_theme_font_size(&"TextEdit", &"font_size"))
-		for caret in get_caret_count():
-			var caret_draw_pos := Vector2(get_rect_at_line_column(
-					get_caret_line(caret), get_caret_column(caret)).end) + Vector2(1, -2)
-			if is_overtype_mode_enabled():
-				RenderingServer.canvas_item_add_line(surface, caret_draw_pos,
-						caret_draw_pos + Vector2(char_size.x, 0), caret_color, 1)
-			else:
-				RenderingServer.canvas_item_add_line(surface, caret_draw_pos,
-						caret_draw_pos + Vector2(0, -char_size.y - 1), caret_color, 1)
+	if not has_focus():
+		return
+	
+	var char_size := code_font.get_char_size(69,
+			get_theme_font_size(&"TextEdit", &"font_size"))
+	for caret in get_caret_count():
+		var caret_line := get_caret_line(caret)
+		var caret_column := get_caret_column(caret)
+		var rect: Rect2 = get_rect_at_line_column(caret_line, caret_column)
+		var caret_pos := rect.end + Vector2(1, -1)
+		# Workaround for ligatures.
+		if rect == Rect2(get_rect_at_line_column(caret_line, caret_column + 1)):
+			caret_pos.x -= char_size.x
+		
+		var caret_end := caret_pos
+		if is_overtype_mode_enabled():
+			caret_end.x += char_size.x - 1
+		else:
+			caret_end.y -= char_size.y + 1
+		RenderingServer.canvas_item_add_line(surface, caret_pos, caret_end, caret_color, 1)
 
 var blonk := true
 func blink() -> void:
