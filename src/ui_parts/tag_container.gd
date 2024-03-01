@@ -1,5 +1,7 @@
 extends PanelContainer
 
+const ContextPopup = preload("res://src/ui_elements/context_popup.tscn")
+
 # Autoscroll area on drag and drop. As a factor from edge to center.
 const autoscroll_frac = 0.35  # 35% of the screen will be taken by the autoscroll areas.
 const autoscroll_speed = 1500.0
@@ -77,9 +79,38 @@ func _notification(what: int) -> void:
 			Indications.clear_proposed_drop_tid()
 
 func _gui_input(event: InputEvent) -> void:
-	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and\
-	event.is_pressed() and not (event.ctrl_pressed or event.shift_pressed):
-		Indications.clear_all_selections()
+	if event is InputEventMouseButton:
+		if event.button_index == MOUSE_BUTTON_LEFT and event.is_pressed() and\
+		not (event.ctrl_pressed or event.shift_pressed):
+			Indications.clear_all_selections()
+		elif event.button_index == MOUSE_BUTTON_RIGHT and event.is_pressed():
+			# Find where the new tag should be added.
+			var location := 0
+			var y_pos := get_local_mouse_position().y + scroll_container.scroll_vertical
+			while location < SVG.root_tag.get_child_count() and\
+			get_tag_editor_rect(PackedInt32Array([location])).end.y < y_pos:
+				location += 1
+			# Create the context popup.
+			var btn_array: Array[Button] = []
+			for tag_name in ["path", "circle", "ellipse", "rect", "line"]:
+				var btn := Utils.create_btn(tag_name, add_tag.bind(tag_name, location),
+						false, SVGDB.get_tag_icon(tag_name))
+				btn.add_theme_font_override(&"font", load("res://visual/fonts/FontMono.ttf"))
+				btn_array.append(btn)
+			
+			var add_popup := ContextPopup.instantiate()
+			add_child(add_popup)
+			add_popup.set_button_array(btn_array, true)
+			var viewport := get_viewport()
+			Utils.popup_under_pos(add_popup, viewport.get_mouse_position(), viewport)
+
+func add_tag(tag_name: String, tag_location: int) -> void:
+	match tag_name:
+		"path": SVG.root_tag.add_tag(TagPath.new(), PackedInt32Array([tag_location]))
+		"circle": SVG.root_tag.add_tag(TagCircle.new(), PackedInt32Array([tag_location]))
+		"ellipse": SVG.root_tag.add_tag(TagEllipse.new(), PackedInt32Array([tag_location]))
+		"rect": SVG.root_tag.add_tag(TagRect.new(), PackedInt32Array([tag_location]))
+		"line": SVG.root_tag.add_tag(TagLine.new(), PackedInt32Array([tag_location]))
 
 # This function assumes there exists a tag editor for the corresponding TID.
 func get_tag_editor_rect(tid: PackedInt32Array) -> Rect2:
