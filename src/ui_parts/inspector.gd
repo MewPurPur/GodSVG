@@ -22,7 +22,6 @@ func full_rebuild() -> void:
 		tag_editor.tag = SVG.root_tag.child_tags[tag_idx]
 		tag_editor.tid = PackedInt32Array([tag_idx])
 		tags_container.add_child(tag_editor)
-	tags_container.add_spacer(false)
 
 func add_tag(tag_name: String) -> void:
 	var new_tid := PackedInt32Array([SVG.root_tag.get_child_count()])
