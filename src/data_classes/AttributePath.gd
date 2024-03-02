@@ -23,7 +23,7 @@ func set_commands(new_commands: Array[PathCommand], sync_mode := SyncMode.LOUD) 
 	sync_after_commands_change(sync_mode)
 
 func sync_after_commands_change(sync_mode := SyncMode.LOUD) -> void:
-	super.set_value(PathDataParser.path_commands_to_text(_commands), sync_mode)
+	set_value(PathDataParser.path_commands_to_text(_commands), sync_mode)
 
 
 func locate_start_points() -> void:
@@ -126,11 +126,30 @@ sync_mode := SyncMode.LOUD) -> void:
 		cmd.set(property, new_value)
 		sync_after_commands_change(sync_mode)
 
-func insert_command(idx: int, command_char: String, sync_mode := SyncMode.LOUD) -> void:
+func insert_command(idx: int, command_char: String, vec := Vector2.ZERO,
+sync_mode := SyncMode.LOUD) -> void:
 	var new_cmd: PathCommand = PathCommand.translation_dict[command_char.to_upper()].new()
-	if Utils.is_string_lower(command_char):
+	var relative := Utils.is_string_lower(command_char)
+	if relative:
 		new_cmd.toggle_relative()
 	_commands.insert(idx, new_cmd)
+	locate_start_points()
+	if not command_char in "Zz":
+		if not command_char in "Vv":
+			new_cmd.x = vec.x
+		if not command_char in "Hh":
+			new_cmd.y = vec.y
+		if command_char in "Qq":
+			new_cmd.x1 = lerpf(0.0 if relative else new_cmd.start.x, vec.x, 0.5)
+			new_cmd.y1 = lerpf(0.0 if relative else new_cmd.start.y, vec.y, 0.5)
+		elif command_char in "Ss":
+			new_cmd.x2 = lerpf(0.0 if relative else new_cmd.start.x, vec.x, 2/3.0)
+			new_cmd.y2 = lerpf(0.0 if relative else new_cmd.start.y, vec.y, 2/3.0)
+		elif command_char in "Cc":
+			new_cmd.x1 = lerpf(0.0 if relative else new_cmd.start.x, vec.x, 1/3.0)
+			new_cmd.y1 = lerpf(0.0 if relative else new_cmd.start.y, vec.y, 1/3.0)
+			new_cmd.x2 = lerpf(0.0 if relative else new_cmd.start.x, vec.x, 2/3.0)
+			new_cmd.y2 = lerpf(0.0 if relative else new_cmd.start.y, vec.y, 2/3.0)
 	sync_after_commands_change(sync_mode)
 
 

@@ -48,7 +48,7 @@ func update_tags() -> void:
 	var svg_parse_result := SVGParser.text_to_svg(text)
 	parsing_finished.emit(svg_parse_result.error)
 	if svg_parse_result.error == SVGParser.ParseError.OK:
-		root_tag.replace_self(SVGParser.text_to_svg(text).svg)
+		root_tag.replace_self(svg_parse_result.svg)
 
 
 func update_text(undo_redo := true) -> void:
@@ -118,6 +118,8 @@ non_native_callable: Callable) -> void:
 func native_file_save(has_selected: bool, files: PackedStringArray,
 _filter_idx: int) -> void:
 	if has_selected:
+		GlobalSettings.modify_save_data(&"current_file_path", files[0])
+		GlobalSettings.modify_save_data(&"last_used_dir", files[0].get_base_dir())
 		save_svg_to_file(files[0])
 
 

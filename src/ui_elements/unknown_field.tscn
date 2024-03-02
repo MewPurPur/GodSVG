@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://mr2c1hti43k4"]
 
 [ext_resource type="Script" path="res://src/ui_elements/unknown_field.gd" id="1_decfb"]
-[ext_resource type="Texture2D" uid="uid://bi38k4pq83omf" path="res://visual/icons/QuestionMark.svg" id="2_hsdl6"]
+[ext_resource type="Texture2D" uid="uid://crx4kcj4o01bs" path="res://visual/icons/SmallQuestionMark.svg" id="1_sd7sr"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_y4uj6"]
 draw_center = false
@@ -28,11 +28,11 @@ corner_radius_bottom_right = 5
 corner_radius_bottom_left = 5
 
 [node name="UnknownField" type="LineEdit"]
-custom_minimum_size = Vector2(72, 22)
+custom_minimum_size = Vector2(78, 22)
 offset_right = 48.8125
 offset_bottom = 21.0
 focus_mode = 1
-right_icon = ExtResource("2_hsdl6")
+right_icon = ExtResource("1_sd7sr")
 script = ExtResource("1_decfb")
 hover_stylebox = SubResource("StyleBoxFlat_y4uj6")
 focus_stylebox = SubResource("StyleBoxFlat_atgwj")
