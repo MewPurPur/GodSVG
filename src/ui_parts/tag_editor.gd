@@ -1,6 +1,6 @@
 extends VBoxContainer
 
-var TagEditor: PackedScene:
+static var TagEditor: PackedScene:
 	get:
 		if TagEditor == null:
 			TagEditor = load("res://src/ui_parts/tag_editor.tscn")
