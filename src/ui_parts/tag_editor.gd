@@ -1,7 +1,12 @@
 extends VBoxContainer
 
+var TagEditor: PackedScene:
+	get:
+		if TagEditor == null:
+			TagEditor = load("res://src/ui_parts/tag_editor.tscn")
+		return TagEditor
+
 const ContextPopup = preload("res://src/ui_elements/context_popup.tscn")
-const TagEditor = preload("tag_editor.tscn")
 const TransformField = preload("res://src/ui_elements/transform_field.tscn")
 const NumberField = preload("res://src/ui_elements/number_field.tscn")
 const NumberSlider = preload("res://src/ui_elements/number_field_with_slider.tscn")
