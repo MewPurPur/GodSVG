@@ -122,13 +122,14 @@ func web_load_svg() -> void:
 	else:
 		var error := ""
 		if extension.is_empty():
-			error = "#file_open_empty_extension"
+			error = "The file extension is empty. Only \"svg\" files are supported."
 		else:
+			
 			error = tr(
-					&"#file_open_unsupported_extension").format({"passed_extension": extension})
+				&"\"{passed_extension}\" is a unsupported file extension. Only \"svg\" files are supported.").format({"passed_extension": extension})
 		var alert_dialog := AlertDialog.instantiate()
 		HandlerGUI.add_overlay(alert_dialog)
-		alert_dialog.setup(error, "#alert", 280.0)
+		alert_dialog.setup(error, "Alert!", 280.0)
 
 
 func _import(svg_text: String, file_name: String):

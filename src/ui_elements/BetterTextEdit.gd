@@ -100,11 +100,11 @@ func _gui_input(event: InputEvent) -> void:
 			grab_focus()
 			var context_popup := ContextPopup.instantiate()
 			var btn_arr: Array[Button] = [
-				Utils.create_btn(tr(&"#undo"), undo, !has_undo()),
-				Utils.create_btn(tr(&"#redo"), redo, !has_redo()),
-				Utils.create_btn(tr(&"#copy"), copy, text.is_empty()),
-				Utils.create_btn(tr(&"#paste"), paste, !DisplayServer.clipboard_has()),
-				Utils.create_btn(tr(&"#cut"), cut, text.is_empty()),
+				Utils.create_btn(tr(&"Undo"), undo, !has_undo()),
+				Utils.create_btn(tr(&"Redo"), redo, !has_redo()),
+				Utils.create_btn(tr(&"Copy"), copy, text.is_empty()),
+				Utils.create_btn(tr(&"Paste"), paste, !DisplayServer.clipboard_has()),
+				Utils.create_btn(tr(&"Cut"), cut, text.is_empty()),
 			]
 			
 			add_child(context_popup)

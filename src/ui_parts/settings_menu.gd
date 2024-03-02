@@ -41,7 +41,7 @@ func _on_language_chosen(locale: String) -> void:
 	update_language_button()
 
 func update_language_button() -> void:
-	lang_button.text = tr(&"#language") + ": " + TranslationServer.get_locale().to_upper()
+	lang_button.text = tr(&"Language") + ": " + TranslationServer.get_locale().to_upper()
 
 
 func add_palette() -> void:
