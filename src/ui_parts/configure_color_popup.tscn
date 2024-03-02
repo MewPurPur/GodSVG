@@ -66,7 +66,7 @@ script = ExtResource("1_i4wi2")
 
 [node name="EditButton" type="Button" parent="PanelContainer/MarginContainer/ConfigureContainer/TopContainer"]
 layout_mode = 2
-tooltip_text = "#edit_color_name"
+tooltip_text = "Edit color name"
 focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_type_variation = &"FlatButton"
@@ -85,7 +85,7 @@ enable_palettes = false
 
 [node name="DeleteButton" type="Button" parent="PanelContainer/MarginContainer/ConfigureContainer/BottomContainer"]
 layout_mode = 2
-tooltip_text = "#delete_color"
+tooltip_text = "Delete color"
 focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_type_variation = &"IconButton"

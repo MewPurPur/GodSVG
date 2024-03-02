@@ -57,159 +57,159 @@ theme_override_constants/separation = 0
 
 [node name="AddTrailingNewline" parent="VBoxContainer/BetterTabContainer/XML/XmlVBox" instance=ExtResource("4_ic3rj")]
 layout_mode = 2
-text = "#add_trailing_newline"
+text = "Add trailing newline"
 section_name = "autoformat"
 setting_name = "xml_add_trailing_newline"
 
 [node name="UseShorthandTagSyntax" parent="VBoxContainer/BetterTabContainer/XML/XmlVBox" instance=ExtResource("4_ic3rj")]
 layout_mode = 2
-text = "#use_shorthand_tag_syntax"
+text = "Use shorthand tag syntax"
 section_name = "autoformat"
 setting_name = "xml_shorthand_tags"
 
-[node name="#numbers" type="ScrollContainer" parent="VBoxContainer/BetterTabContainer"]
+[node name="Numbers" type="ScrollContainer" parent="VBoxContainer/BetterTabContainer"]
 visible = false
 layout_mode = 2
 horizontal_scroll_mode = 0
 
-[node name="NumberVBox" type="VBoxContainer" parent="VBoxContainer/BetterTabContainer/#numbers"]
+[node name="NumberVBox" type="VBoxContainer" parent="VBoxContainer/BetterTabContainer/Numbers"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 0
 
-[node name="NumberEnable" parent="VBoxContainer/BetterTabContainer/#numbers/NumberVBox" instance=ExtResource("4_ic3rj")]
+[node name="NumberEnable" parent="VBoxContainer/BetterTabContainer/Numbers/NumberVBox" instance=ExtResource("4_ic3rj")]
 layout_mode = 2
-text = "#enable_autoformatting"
+text = "Enable autoformatting"
 section_name = "autoformat"
 setting_name = "number_enable_autoformatting"
 
-[node name="RemoveZeroPadding" parent="VBoxContainer/BetterTabContainer/#numbers/NumberVBox" instance=ExtResource("4_ic3rj")]
+[node name="RemoveZeroPadding" parent="VBoxContainer/BetterTabContainer/Numbers/NumberVBox" instance=ExtResource("4_ic3rj")]
 layout_mode = 2
-text = "#remove_zero_padding"
+text = "Remove zero padding"
 section_name = "autoformat"
 setting_name = "number_remove_zero_padding"
 
-[node name="RemoveLeadingZero" parent="VBoxContainer/BetterTabContainer/#numbers/NumberVBox" instance=ExtResource("4_ic3rj")]
+[node name="RemoveLeadingZero" parent="VBoxContainer/BetterTabContainer/Numbers/NumberVBox" instance=ExtResource("4_ic3rj")]
 layout_mode = 2
-text = "#remove_leading_zero"
+text = "Remove leading zero"
 section_name = "autoformat"
 setting_name = "number_remove_leading_zero"
 
-[node name="#colors" type="ScrollContainer" parent="VBoxContainer/BetterTabContainer"]
+[node name="Colors" type="ScrollContainer" parent="VBoxContainer/BetterTabContainer"]
 visible = false
 layout_mode = 2
 horizontal_scroll_mode = 0
 
-[node name="ColorVBox" type="VBoxContainer" parent="VBoxContainer/BetterTabContainer/#colors"]
+[node name="ColorVBox" type="VBoxContainer" parent="VBoxContainer/BetterTabContainer/Colors"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 0
 
-[node name="ColorEnable" parent="VBoxContainer/BetterTabContainer/#colors/ColorVBox" instance=ExtResource("4_ic3rj")]
+[node name="ColorEnable" parent="VBoxContainer/BetterTabContainer/Colors/ColorVBox" instance=ExtResource("4_ic3rj")]
 layout_mode = 2
-text = "#enable_autoformatting"
+text = "Enable autoformatting"
 section_name = "autoformat"
 setting_name = "color_enable_autoformatting"
 
-[node name="ConvertToHex" parent="VBoxContainer/BetterTabContainer/#colors/ColorVBox" instance=ExtResource("4_ic3rj")]
+[node name="ConvertToHex" parent="VBoxContainer/BetterTabContainer/Colors/ColorVBox" instance=ExtResource("4_ic3rj")]
 layout_mode = 2
-text = "#convert_rgb_to_hex"
+text = "Convert rgb format to hex"
 section_name = "autoformat"
 setting_name = "color_convert_rgb_to_hex"
 
-[node name="ConvertToHex2" parent="VBoxContainer/BetterTabContainer/#colors/ColorVBox" instance=ExtResource("4_ic3rj")]
+[node name="ConvertToHex2" parent="VBoxContainer/BetterTabContainer/Colors/ColorVBox" instance=ExtResource("4_ic3rj")]
 layout_mode = 2
-text = "#convert_named_to_hex"
+text = "Convert named colors to hex"
 section_name = "autoformat"
 setting_name = "color_convert_named_to_hex"
 
-[node name="UseShorthandHex" parent="VBoxContainer/BetterTabContainer/#colors/ColorVBox" instance=ExtResource("4_ic3rj")]
+[node name="UseShorthandHex" parent="VBoxContainer/BetterTabContainer/Colors/ColorVBox" instance=ExtResource("4_ic3rj")]
 layout_mode = 2
-text = "#use_shorthand_hex_code"
+text = "Use shorthand hex code"
 section_name = "autoformat"
 setting_name = "color_use_shorthand_hex_code"
 
-[node name="UseNamedColors" parent="VBoxContainer/BetterTabContainer/#colors/ColorVBox" instance=ExtResource("4_ic3rj")]
+[node name="UseNamedColors" parent="VBoxContainer/BetterTabContainer/Colors/ColorVBox" instance=ExtResource("4_ic3rj")]
 layout_mode = 2
-text = "#use_short_named_colors"
+text = "Use short named colors"
 section_name = "autoformat"
 setting_name = "color_use_short_named_colors"
 
-[node name="#paths" type="ScrollContainer" parent="VBoxContainer/BetterTabContainer"]
+[node name="Paths" type="ScrollContainer" parent="VBoxContainer/BetterTabContainer"]
 visible = false
 layout_mode = 2
 horizontal_scroll_mode = 0
 
-[node name="PathVBox" type="VBoxContainer" parent="VBoxContainer/BetterTabContainer/#paths"]
+[node name="PathVBox" type="VBoxContainer" parent="VBoxContainer/BetterTabContainer/Paths"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 0
 
-[node name="PathEnable" parent="VBoxContainer/BetterTabContainer/#paths/PathVBox" instance=ExtResource("4_ic3rj")]
+[node name="PathEnable" parent="VBoxContainer/BetterTabContainer/Paths/PathVBox" instance=ExtResource("4_ic3rj")]
 layout_mode = 2
-text = "#enable_autoformatting"
+text = "Enable autoformatting"
 section_name = "autoformat"
 setting_name = "path_enable_autoformatting"
 
-[node name="CompressNumbers" parent="VBoxContainer/BetterTabContainer/#paths/PathVBox" instance=ExtResource("4_ic3rj")]
+[node name="CompressNumbers" parent="VBoxContainer/BetterTabContainer/Paths/PathVBox" instance=ExtResource("4_ic3rj")]
 layout_mode = 2
-text = "#compress_numbers"
+text = "Compress numbers"
 section_name = "autoformat"
 setting_name = "path_compress_numbers"
 
-[node name="MinimizeSpacing" parent="VBoxContainer/BetterTabContainer/#paths/PathVBox" instance=ExtResource("4_ic3rj")]
+[node name="MinimizeSpacing" parent="VBoxContainer/BetterTabContainer/Paths/PathVBox" instance=ExtResource("4_ic3rj")]
 layout_mode = 2
-text = "#minimize_spacing"
+text = "Minimize spacing"
 section_name = "autoformat"
 setting_name = "path_minimize_spacing"
 
-[node name="RemoveSpacingAfterFlags" parent="VBoxContainer/BetterTabContainer/#paths/PathVBox" instance=ExtResource("4_ic3rj")]
+[node name="RemoveSpacingAfterFlags" parent="VBoxContainer/BetterTabContainer/Paths/PathVBox" instance=ExtResource("4_ic3rj")]
 layout_mode = 2
-text = "#remove_spacing_after_flags"
+text = "Remove spacing after flags"
 section_name = "autoformat"
 setting_name = "path_remove_spacing_after_flags"
 
-[node name="RemoveConsecutiveCommands" parent="VBoxContainer/BetterTabContainer/#paths/PathVBox" instance=ExtResource("4_ic3rj")]
+[node name="RemoveConsecutiveCommands" parent="VBoxContainer/BetterTabContainer/Paths/PathVBox" instance=ExtResource("4_ic3rj")]
 layout_mode = 2
-text = "#remove_consecutive_commands"
+text = "Remove consecutive commands"
 section_name = "autoformat"
 setting_name = "path_remove_consecutive_commands"
 
-[node name="#transforms" type="ScrollContainer" parent="VBoxContainer/BetterTabContainer"]
+[node name="Transforms" type="ScrollContainer" parent="VBoxContainer/BetterTabContainer"]
 visible = false
 layout_mode = 2
 horizontal_scroll_mode = 0
 
-[node name="TransformVBox" type="VBoxContainer" parent="VBoxContainer/BetterTabContainer/#transforms"]
+[node name="TransformVBox" type="VBoxContainer" parent="VBoxContainer/BetterTabContainer/Transforms"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 0
 
-[node name="TransformEnable" parent="VBoxContainer/BetterTabContainer/#transforms/TransformVBox" instance=ExtResource("4_ic3rj")]
+[node name="TransformEnable" parent="VBoxContainer/BetterTabContainer/Transforms/TransformVBox" instance=ExtResource("4_ic3rj")]
 layout_mode = 2
-text = "#enable_autoformatting"
+text = "Enable autoformatting"
 section_name = "autoformat"
 setting_name = "transform_enable_autoformatting"
 
-[node name="CompressNumbers" parent="VBoxContainer/BetterTabContainer/#transforms/TransformVBox" instance=ExtResource("4_ic3rj")]
+[node name="CompressNumbers" parent="VBoxContainer/BetterTabContainer/Transforms/TransformVBox" instance=ExtResource("4_ic3rj")]
 layout_mode = 2
-text = "#compress_numbers"
+text = "Compress numbers"
 section_name = "autoformat"
 setting_name = "transform_compress_numbers"
 
-[node name="MinimizeSpacing" parent="VBoxContainer/BetterTabContainer/#transforms/TransformVBox" instance=ExtResource("4_ic3rj")]
+[node name="MinimizeSpacing" parent="VBoxContainer/BetterTabContainer/Transforms/TransformVBox" instance=ExtResource("4_ic3rj")]
 layout_mode = 2
-text = "#minimize_spacing"
+text = "Minimize spacing"
 section_name = "autoformat"
 setting_name = "transform_minimize_spacing"
 
-[node name="RemoveUnnecessaryParameters" parent="VBoxContainer/BetterTabContainer/#transforms/TransformVBox" instance=ExtResource("4_ic3rj")]
+[node name="RemoveUnnecessaryParameters" parent="VBoxContainer/BetterTabContainer/Transforms/TransformVBox" instance=ExtResource("4_ic3rj")]
 layout_mode = 2
-text = "#remove_unnecessary_parameters"
+text = "Remove unnecessary parameters"
 section_name = "autoformat"
 setting_name = "transform_remove_unnecessary_params"
 
@@ -219,25 +219,25 @@ size_flags_horizontal = 4
 size_flags_vertical = 8
 focus_mode = 0
 mouse_default_cursor_shape = 2
-text = "#close"
+text = "Close"
 
 [connection signal="pressed" from="VBoxContainer/BetterTabContainer/XML/XmlVBox/AddTrailingNewline" to="." method="_on_autoformat_settings_changed"]
 [connection signal="pressed" from="VBoxContainer/BetterTabContainer/XML/XmlVBox/UseShorthandTagSyntax" to="." method="_on_autoformat_settings_changed"]
-[connection signal="pressed" from="VBoxContainer/BetterTabContainer/#numbers/NumberVBox/NumberEnable" to="." method="_on_autoformat_settings_changed"]
-[connection signal="pressed" from="VBoxContainer/BetterTabContainer/#numbers/NumberVBox/RemoveZeroPadding" to="." method="_on_autoformat_settings_changed"]
-[connection signal="pressed" from="VBoxContainer/BetterTabContainer/#numbers/NumberVBox/RemoveLeadingZero" to="." method="_on_autoformat_settings_changed"]
-[connection signal="pressed" from="VBoxContainer/BetterTabContainer/#colors/ColorVBox/ColorEnable" to="." method="_on_autoformat_settings_changed"]
-[connection signal="pressed" from="VBoxContainer/BetterTabContainer/#colors/ColorVBox/ConvertToHex" to="." method="_on_autoformat_settings_changed"]
-[connection signal="pressed" from="VBoxContainer/BetterTabContainer/#colors/ColorVBox/ConvertToHex2" to="." method="_on_autoformat_settings_changed"]
-[connection signal="pressed" from="VBoxContainer/BetterTabContainer/#colors/ColorVBox/UseShorthandHex" to="." method="_on_autoformat_settings_changed"]
-[connection signal="pressed" from="VBoxContainer/BetterTabContainer/#colors/ColorVBox/UseNamedColors" to="." method="_on_autoformat_settings_changed"]
-[connection signal="pressed" from="VBoxContainer/BetterTabContainer/#paths/PathVBox/PathEnable" to="." method="_on_autoformat_settings_changed"]
-[connection signal="pressed" from="VBoxContainer/BetterTabContainer/#paths/PathVBox/CompressNumbers" to="." method="_on_autoformat_settings_changed"]
-[connection signal="pressed" from="VBoxContainer/BetterTabContainer/#paths/PathVBox/MinimizeSpacing" to="." method="_on_autoformat_settings_changed"]
-[connection signal="pressed" from="VBoxContainer/BetterTabContainer/#paths/PathVBox/RemoveSpacingAfterFlags" to="." method="_on_autoformat_settings_changed"]
-[connection signal="pressed" from="VBoxContainer/BetterTabContainer/#paths/PathVBox/RemoveConsecutiveCommands" to="." method="_on_autoformat_settings_changed"]
-[connection signal="pressed" from="VBoxContainer/BetterTabContainer/#transforms/TransformVBox/TransformEnable" to="." method="_on_autoformat_settings_changed"]
-[connection signal="pressed" from="VBoxContainer/BetterTabContainer/#transforms/TransformVBox/CompressNumbers" to="." method="_on_autoformat_settings_changed"]
-[connection signal="pressed" from="VBoxContainer/BetterTabContainer/#transforms/TransformVBox/MinimizeSpacing" to="." method="_on_autoformat_settings_changed"]
-[connection signal="pressed" from="VBoxContainer/BetterTabContainer/#transforms/TransformVBox/RemoveUnnecessaryParameters" to="." method="_on_autoformat_settings_changed"]
+[connection signal="pressed" from="VBoxContainer/BetterTabContainer/Numbers/NumberVBox/NumberEnable" to="." method="_on_autoformat_settings_changed"]
+[connection signal="pressed" from="VBoxContainer/BetterTabContainer/Numbers/NumberVBox/RemoveZeroPadding" to="." method="_on_autoformat_settings_changed"]
+[connection signal="pressed" from="VBoxContainer/BetterTabContainer/Numbers/NumberVBox/RemoveLeadingZero" to="." method="_on_autoformat_settings_changed"]
+[connection signal="pressed" from="VBoxContainer/BetterTabContainer/Colors/ColorVBox/ColorEnable" to="." method="_on_autoformat_settings_changed"]
+[connection signal="pressed" from="VBoxContainer/BetterTabContainer/Colors/ColorVBox/ConvertToHex" to="." method="_on_autoformat_settings_changed"]
+[connection signal="pressed" from="VBoxContainer/BetterTabContainer/Colors/ColorVBox/ConvertToHex2" to="." method="_on_autoformat_settings_changed"]
+[connection signal="pressed" from="VBoxContainer/BetterTabContainer/Colors/ColorVBox/UseShorthandHex" to="." method="_on_autoformat_settings_changed"]
+[connection signal="pressed" from="VBoxContainer/BetterTabContainer/Colors/ColorVBox/UseNamedColors" to="." method="_on_autoformat_settings_changed"]
+[connection signal="pressed" from="VBoxContainer/BetterTabContainer/Paths/PathVBox/PathEnable" to="." method="_on_autoformat_settings_changed"]
+[connection signal="pressed" from="VBoxContainer/BetterTabContainer/Paths/PathVBox/CompressNumbers" to="." method="_on_autoformat_settings_changed"]
+[connection signal="pressed" from="VBoxContainer/BetterTabContainer/Paths/PathVBox/MinimizeSpacing" to="." method="_on_autoformat_settings_changed"]
+[connection signal="pressed" from="VBoxContainer/BetterTabContainer/Paths/PathVBox/RemoveSpacingAfterFlags" to="." method="_on_autoformat_settings_changed"]
+[connection signal="pressed" from="VBoxContainer/BetterTabContainer/Paths/PathVBox/RemoveConsecutiveCommands" to="." method="_on_autoformat_settings_changed"]
+[connection signal="pressed" from="VBoxContainer/BetterTabContainer/Transforms/TransformVBox/TransformEnable" to="." method="_on_autoformat_settings_changed"]
+[connection signal="pressed" from="VBoxContainer/BetterTabContainer/Transforms/TransformVBox/CompressNumbers" to="." method="_on_autoformat_settings_changed"]
+[connection signal="pressed" from="VBoxContainer/BetterTabContainer/Transforms/TransformVBox/MinimizeSpacing" to="." method="_on_autoformat_settings_changed"]
+[connection signal="pressed" from="VBoxContainer/BetterTabContainer/Transforms/TransformVBox/RemoveUnnecessaryParameters" to="." method="_on_autoformat_settings_changed"]
 [connection signal="pressed" from="VBoxContainer/CancelButton" to="." method="_on_cancel_button_pressed"]
