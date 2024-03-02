@@ -92,7 +92,7 @@ size_flags_horizontal = 3
 focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_override_font_sizes/font_size = 13
-text = "#palettes"
+text = "Palettes"
 
 [node name="Label" type="Label" parent="."]
 offset_right = 40.0

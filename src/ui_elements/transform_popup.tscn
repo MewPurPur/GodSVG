@@ -108,7 +108,7 @@ code_font_tooltip = true
 [node name="ApplyMatrix" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 4
-tooltip_text = "#apply_matrix"
+tooltip_text = "Apply the matrix"
 focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_type_variation = &"TranslucentButton"

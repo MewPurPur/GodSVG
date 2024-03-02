@@ -222,13 +222,13 @@ func update_final_transform() -> void:
 
 func popup_transform_actions(idx: int, control: Control) -> void:
 	var btn_array: Array[Button] = []
-	btn_array.append(Utils.create_btn(tr(&"#insert_after"),
+	btn_array.append(Utils.create_btn(tr(&"Insert After"),
 			popup_new_transform_context.bind(idx + 1, control), false,
 			load("res://visual/icons/InsertAfter.svg")))
-	btn_array.append(Utils.create_btn(tr(&"#insert_before"),
+	btn_array.append(Utils.create_btn(tr(&"Insert Before"),
 			popup_new_transform_context.bind(idx, control), false,
 			load("res://visual/icons/InsertBefore.svg")))
-	btn_array.append(Utils.create_btn(tr(&"#delete"), delete_transform.bind(idx), false,
+	btn_array.append(Utils.create_btn(tr(&"Delete"), delete_transform.bind(idx), false,
 			load("res://visual/icons/Delete.svg")))
 	
 	var context_popup := ContextPopup.instantiate()

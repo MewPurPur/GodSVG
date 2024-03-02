@@ -1,0 +1,341 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: GodSVG\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: ru_RU\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.4.2\n"
+
+msgid "translation-credits"
+msgstr ""
+
+msgid "Language"
+msgstr " Язык"
+
+msgid "Invert zoom direction"
+msgstr "Инвертировать направление масштабирования"
+
+msgid "Swaps zoom in and zoom out with the mouse wheel."
+msgstr "Поменяет местами увеличение и уменьшение масштаба через колесико мыши."
+
+msgid "Wrap mouse"
+msgstr "Захватить мышу"
+
+msgid "Wraps the mouse cursor around when panning the viewport."
+msgstr ""
+"Миша будет телепортироваться от одного края до противположного при "
+"передвижении окна просмотра."
+
+msgid "Use CTRL for zooming"
+msgstr "Использовать CTRL для маштабирования"
+
+msgid ""
+"If turned on, scrolling will pan the view. To zoom, hold CTRL while "
+"scrolling."
+msgstr ""
+"Если включено, прокрутка будет перемещать окно просмотра. Чтобы "
+"маштабировать Зажмите CTRL когда прокручиваете."
+
+msgid "Input"
+msgstr "Устройства ввода"
+
+msgid "Open"
+msgstr "Открыть"
+
+msgid "Close"
+msgstr "Закрыть"
+
+msgid "GodSVG Repository"
+msgstr "Репозиторий GodSVG"
+
+msgid "About…"
+msgstr "Про программу…"
+
+msgid "Documentation…"
+msgstr "Документация…"
+
+msgid "Donate (Github)"
+msgstr "Сделать пожертвование (Github)"
+
+msgid "Zoom In"
+msgstr "Приблизить маштаб"
+
+msgid "Zoom Reset"
+msgstr "Скинуть маштаб"
+
+msgid "Zoom Out"
+msgstr "Отдалить маштаб"
+
+msgid "Settings"
+msgstr "Настройки"
+
+msgid "Visuals"
+msgstr "Внешний вид"
+
+msgid "Show Grid"
+msgstr "Показать сетку"
+
+msgid "Show Handles"
+msgstr "Показать ручки редактирования"
+
+msgid "Rasterized SVG"
+msgstr "Растеризовать SVG"
+
+msgid "Enable Snapping"
+msgstr "Включить привязку"
+
+msgid "Snap size"
+msgstr "Размер привязки"
+
+msgid "Copy All Text"
+msgstr "Скопировать весь текст"
+
+msgid "Import SVG"
+msgstr "Импортировать SVG"
+
+msgid "Export"
+msgstr "Экспорт"
+
+msgid "Couple/Decouple"
+msgstr "Объединить/Разъединить"
+
+msgid "Duplicate"
+msgstr "Дублировать"
+
+msgid "Move Up"
+msgstr "Подвинуть вверх"
+
+msgid "Move Down"
+msgstr "Подвинуть вниз"
+
+msgid "Delete"
+msgstr "Удалить"
+
+msgid "Insert Before"
+msgstr ""
+
+msgid "Insert After"
+msgstr "Вставить после"
+
+msgid "Convert To"
+msgstr "Конвертировать в"
+
+msgid "Doesn’t describe a SVG."
+msgstr "Не есть описанием SVG"
+
+msgid "Improper nesting."
+msgstr "Не правильное вкладывание."
+
+msgid "Syntax error"
+msgstr ""
+
+msgid "Delete: Deletes the selected tags"
+msgstr "Delete: Удалить все выбранные тэги"
+
+msgid "Ctrl+Down: Moves the selected tags down"
+msgstr "Ctrl+Down: Подвинуть вниз все выбранные тэги"
+
+msgid "Ctrl+Up: Moves the selected tags up"
+msgstr "Ctrl+Up: Подвинуть вверх все выбранные тэги"
+
+msgid "Ctrl+D: Duplicates the selected tags"
+msgstr "Ctrl+D: Дублировать выбранные тэги"
+
+msgid "Unknown Tag"
+msgstr "Неизвестный тэг"
+
+msgid "Unknown Attribute"
+msgstr "Неизвестный атрибут"
+
+msgid "Import"
+msgstr "Импортировать"
+
+msgid "Cancel"
+msgstr "Отменить"
+
+msgid "Import Problems"
+msgstr "Проблемы с импортированием"
+
+msgid "GodSVG doesn’t recognize this attribute"
+msgstr "GodSVG не может распознать этот атрибут"
+
+msgid "Format"
+msgstr "Формат"
+
+msgid "Scale"
+msgstr "Маштаб"
+
+msgid "Size"
+msgstr "Размер"
+
+msgid "Final size"
+msgstr "Финальный размер"
+
+msgid "Export Configuration"
+msgstr "Настройки экспорта"
+
+msgid "Add new tag"
+msgstr "Добавить новый тэг"
+
+msgid "License"
+msgstr "Лицензия"
+
+msgid "Third-party licenses"
+msgstr "Лицензии третьих лиц"
+
+msgid "Authors"
+msgstr "Автори"
+
+msgid "Shortcuts"
+msgstr "Сочетания клавиш"
+
+msgid "Palettes"
+msgstr "Палитры"
+
+msgid "Color Picker"
+msgstr "Цветовая пипетка"
+
+msgid "Add color"
+msgstr "Добавить цвет"
+
+msgid "Edit palette name"
+msgstr "Редактировать название палитры"
+
+msgid "Unnamed"
+msgstr "Без названия"
+
+msgid "Edit color name"
+msgstr "Редактировать название цвета"
+
+msgid "Delete color"
+msgstr "Удалить цвет"
+
+msgid "Enable the color"
+msgstr "Активировать цвет"
+
+msgid "Disable the color"
+msgstr "Деактивировать цвет"
+
+msgid "Godot third-party components"
+msgstr "Компоненты Godot от третьих лиц"
+
+msgid "Undo"
+msgstr "Отменить"
+
+msgid "Redo"
+msgstr "Вернуть"
+
+msgid "Copy"
+msgstr "Скопировать"
+
+msgid "Paste"
+msgstr "Вставить"
+
+msgid "Cut"
+msgstr "Вырезать"
+
+msgid "Alert!"
+msgstr "Внимание!"
+
+msgid ""
+"The file couldn't be opened.\n"
+"Try checking the file path, ensure that the file is not deleted, or choose a "
+"different file."
+msgstr ""
+"Невозможно открыть этот файл.\n"
+"Попробуйте проверить путь до файла, убедитесь что файл не удален або "
+"выберите другой файл."
+
+msgid ""
+"\"{passed_extension}\" is a unsupported file extension. Only \"svg\" files "
+"are supported."
+msgstr ""
+"\"{passed_extension}\" это расширение файла которое не поддерживается. "
+"Поддерживается только «svg»."
+
+msgid "The file extension is empty. Only \"svg\" files are supported."
+msgstr "Расширение файла пустрое. Поддерживается только «svg» файлы."
+
+msgid "OK"
+msgstr "Хорошо"
+
+msgid "Autoformatting options"
+msgstr "Настройки автоформатирования"
+
+msgid "Numbers"
+msgstr "Цифры"
+
+msgid "Colors"
+msgstr "Цвета"
+
+msgid "Paths"
+msgstr "Пути"
+
+msgid "Transforms"
+msgstr ""
+
+msgid "Add trailing newline"
+msgstr ""
+
+msgid "Use shorthand tag syntax"
+msgstr ""
+
+msgid "Enable autoformatting"
+msgstr "Включить автоформатирование"
+
+msgid "Remove zero padding"
+msgstr "Удалить заполняющие нули"
+
+msgid "Remove leading zero"
+msgstr "Удалить начальный ноль"
+
+msgid "Remove plus sign"
+msgstr "Удалить знак плюса"
+
+msgid "Convert rgb format to hex"
+msgstr "Конвертировать rgb формат в hex"
+
+msgid "Convert named colors to hex"
+msgstr "Конвертировать цвета с названиями в hex"
+
+msgid "Use shorthand hex code"
+msgstr "Использовать короткие hex коды"
+
+msgid "Use short named colors"
+msgstr "Использовать короткие названия цветов"
+
+msgid "Compress numbers"
+msgstr "Сжать цифры"
+
+msgid "Minimize spacing"
+msgstr "Минимизировать размеры"
+
+msgid "Remove spacing after flags"
+msgstr "Удалить расстояние после флагов"
+
+msgid "Remove consecutive commands"
+msgstr "Удалить последовательные команды"
+
+msgid "Remove unnecessary parameters"
+msgstr ""
+
+msgid "Relative"
+msgstr "Относительная"
+
+msgid "Absolute"
+msgstr "Абсолютная"
+
+msgid "Remove the association"
+msgstr ""
+
+msgid "Apply the matrix"
+msgstr ""
+
+msgid "Search color"
+msgstr ""
