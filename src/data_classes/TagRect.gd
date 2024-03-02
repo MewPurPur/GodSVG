@@ -33,12 +33,22 @@ func _init(pos := Vector2.ZERO) -> void:
 
 func can_replace(new_tag: String) -> bool:
 	if new_tag == "ellipse":
-		return attributes.rx.get_num() >= attributes.width.get_num() / 2 and\
-				attributes.ry.get_num() >= attributes.height.get_num() / 2
+		var rx: float = attributes.rx.get_num()
+		var ry: float = attributes.ry.get_num()
+		if rx == 0:
+			rx = ry
+		elif ry == 0:
+			ry = rx
+		return rx >= attributes.width.get_num() / 2 and ry >= attributes.height.get_num() / 2
 	elif new_tag == "circle":
+		var rx: float = attributes.rx.get_num()
+		var ry: float = attributes.ry.get_num()
+		if rx == 0:
+			rx = ry
+		elif ry == 0:
+			ry = rx
 		var side: float = attributes.width.get_num()
-		return attributes.height.get_num() == side and\
-				attributes.rx.get_num() >= side / 2 and attributes.ry.get_num() >= side / 2
+		return attributes.height.get_num() == side and rx >= side / 2 and ry >= side / 2
 	else:
 		return new_tag == "path"
 

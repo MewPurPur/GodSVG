@@ -265,7 +265,8 @@ msgstr "Расширение файла пустрое. Поддерживает
 msgid "OK"
 msgstr "Хорошо"
 
-msgid "Autoformatting options"
+#, fuzzy
+msgid "Autoformatting"
 msgstr "Настройки автоформатирования"
 
 msgid "Numbers"
@@ -335,6 +336,15 @@ msgid "Remove the association"
 msgstr ""
 
 msgid "Apply the matrix"
+msgstr ""
+
+msgid "Other"
+msgstr ""
+
+msgid "Optimize"
+msgstr ""
+
+msgid "Any changes will apply immediately."
 msgstr ""
 
 msgid "Search color"

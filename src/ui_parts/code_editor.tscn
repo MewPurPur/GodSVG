@@ -1,7 +1,7 @@
 [gd_scene load_steps=14 format=3 uid="uid://cr1fdlmbknnko"]
 
 [ext_resource type="Script" path="res://src/ui_parts/code_editor.gd" id="1_nffk0"]
-[ext_resource type="Texture2D" uid="uid://ckkkgof1hcbld" path="res://visual/icons/Gear.svg" id="2_k8onw"]
+[ext_resource type="Texture2D" uid="uid://c5kgvxffw35gi" path="res://visual/icons/Compress.svg" id="2_33tgq"]
 [ext_resource type="FontFile" uid="uid://dtb4wkus51hxs" path="res://visual/fonts/FontMono.ttf" id="2_p4nol"]
 [ext_resource type="Texture2D" uid="uid://ccvjkdd0s7rb4" path="res://visual/icons/Copy.svg" id="3_6x47p"]
 [ext_resource type="Texture2D" uid="uid://6ymbl3jqersp" path="res://visual/icons/Import.svg" id="4_cuhac"]
@@ -77,13 +77,13 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_q56qh")
 [node name="CodeButtons" type="HBoxContainer" parent="PanelContainer"]
 layout_mode = 2
 
-[node name="AutoformatButton" type="Button" parent="PanelContainer/CodeButtons"]
+[node name="OptimizeButton" type="Button" parent="PanelContainer/CodeButtons"]
 layout_mode = 2
-tooltip_text = "Autoformatting options"
+tooltip_text = "Optimize"
 focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_type_variation = &"IconButton"
-icon = ExtResource("2_k8onw")
+icon = ExtResource("2_33tgq")
 
 [node name="SizeLabelContainer" type="PanelContainer" parent="PanelContainer/CodeButtons"]
 unique_name_in_owner = true
@@ -96,20 +96,22 @@ layout_mode = 2
 theme_override_fonts/font = ExtResource("2_p4nol")
 theme_override_font_sizes/font_size = 12
 
-[node name="MetaActions" type="HBoxContainer" parent="PanelContainer/CodeButtons"]
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer/CodeButtons"]
 layout_mode = 2
-size_flags_horizontal = 10
+theme_override_constants/margin_left = 8
 
-[node name="FileButton" type="Button" parent="PanelContainer/CodeButtons/MetaActions"]
+[node name="FileButton" type="Button" parent="PanelContainer/CodeButtons/MarginContainer"]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_horizontal = 6
 focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_type_variation = &"FlatButton"
 text_overrun_behavior = 3
 
-[node name="Control" type="Control" parent="PanelContainer/CodeButtons/MetaActions"]
+[node name="MetaActions" type="HBoxContainer" parent="PanelContainer/CodeButtons"]
 layout_mode = 2
+size_flags_horizontal = 10
 
 [node name="CopyButton" type="Button" parent="PanelContainer/CodeButtons/MetaActions"]
 layout_mode = 2
@@ -121,7 +123,7 @@ icon = ExtResource("3_6x47p")
 
 [node name="ImportButton" type="Button" parent="PanelContainer/CodeButtons/MetaActions"]
 layout_mode = 2
-tooltip_text = "Import SVG"
+tooltip_text = "Import"
 focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_type_variation = &"IconButton"
@@ -165,8 +167,8 @@ theme_override_fonts/normal_font = ExtResource("2_p4nol")
 theme_override_font_sizes/normal_font_size = 14
 fit_content = true
 
-[connection signal="pressed" from="PanelContainer/CodeButtons/AutoformatButton" to="." method="_on_autoformat_button_pressed"]
-[connection signal="pressed" from="PanelContainer/CodeButtons/MetaActions/FileButton" to="." method="_on_file_button_pressed"]
+[connection signal="pressed" from="PanelContainer/CodeButtons/OptimizeButton" to="." method="_on_optimize_button_pressed"]
+[connection signal="pressed" from="PanelContainer/CodeButtons/MarginContainer/FileButton" to="." method="_on_file_button_pressed"]
 [connection signal="pressed" from="PanelContainer/CodeButtons/MetaActions/CopyButton" to="." method="_on_copy_button_pressed"]
 [connection signal="pressed" from="PanelContainer/CodeButtons/MetaActions/ImportButton" to="." method="_on_import_button_pressed"]
 [connection signal="pressed" from="PanelContainer/CodeButtons/MetaActions/ExportButton" to="." method="_on_export_button_pressed"]

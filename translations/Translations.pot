@@ -255,7 +255,7 @@ msgstr ""
 msgid "OK"
 msgstr ""
 
-msgid "Autoformatting options"
+msgid "Autoformatting"
 msgstr ""
 
 msgid "Numbers"
@@ -325,6 +325,15 @@ msgid "Remove the association"
 msgstr ""
 
 msgid "Apply the matrix"
+msgstr ""
+
+msgid "Other"
+msgstr ""
+
+msgid "Optimize"
+msgstr ""
+
+msgid "Any changes will apply immediately."
 msgstr ""
 
 msgid "Search color"

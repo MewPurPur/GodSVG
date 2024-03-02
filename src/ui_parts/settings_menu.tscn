@@ -22,7 +22,7 @@ corner_radius_bottom_right = 2
 corner_radius_bottom_left = 2
 
 [node name="SettingsMenu" type="PanelContainer"]
-custom_minimum_size = Vector2(388, 264)
+custom_minimum_size = Vector2(440, 300)
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -54,37 +54,179 @@ layout_mode = 2
 size_flags_vertical = 3
 script = ExtResource("3_vslgx")
 
-[node name="Input" type="ScrollContainer" parent="VBoxContainer/TabContainer"]
+[node name="Autoformatting" type="ScrollContainer" parent="VBoxContainer/TabContainer"]
+custom_minimum_size = Vector2(0, 120)
 layout_mode = 2
 horizontal_scroll_mode = 0
 
-[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/TabContainer/Input"]
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/TabContainer/Autoformatting"]
 layout_mode = 2
 size_flags_horizontal = 3
-size_flags_vertical = 3
-theme_override_constants/separation = 0
 
-[node name="InvertZoom" parent="VBoxContainer/TabContainer/Input/VBoxContainer" instance=ExtResource("4_2qeh2")]
+[node name="Warning" type="Label" parent="VBoxContainer/TabContainer/Autoformatting/VBoxContainer"]
 layout_mode = 2
-tooltip_text = "Swaps zoom in and zoom out with the mouse wheel."
-text = "Invert zoom direction"
-section_name = "input"
-setting_name = "invert_zoom"
+theme_override_colors/font_color = Color(0.501961, 0.501961, 0.501961, 1)
+theme_override_font_sizes/font_size = 12
+text = "Any changes will apply immediately."
 
-[node name="WrapMouse" parent="VBoxContainer/TabContainer/Input/VBoxContainer" instance=ExtResource("4_2qeh2")]
+[node name="XMLVBox" type="VBoxContainer" parent="VBoxContainer/TabContainer/Autoformatting/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-tooltip_text = "Wraps the mouse cursor around when panning the viewport."
-text = "Wrap mouse"
-section_name = "input"
-setting_name = "wrap_mouse"
+theme_override_constants/separation = 0
 
-[node name="UseCtrlForZoom" parent="VBoxContainer/TabContainer/Input/VBoxContainer" instance=ExtResource("4_2qeh2")]
+[node name="SectionLabel" type="Label" parent="VBoxContainer/TabContainer/Autoformatting/VBoxContainer/XMLVBox"]
 layout_mode = 2
-tooltip_text = "If turned on, scrolling will pan the view. To zoom, hold CTRL while scrolling."
-text = "Use CTRL for zooming"
-section_name = "input"
-setting_name = "use_ctrl_for_zoom"
+text = "XML"
+
+[node name="AddTrailingNewline" parent="VBoxContainer/TabContainer/Autoformatting/VBoxContainer/XMLVBox" instance=ExtResource("4_2qeh2")]
+layout_mode = 2
+text = "Add trailing newline"
+section_name = "autoformat"
+setting_name = "xml_add_trailing_newline"
+
+[node name="UseShorthandTagSyntax" parent="VBoxContainer/TabContainer/Autoformatting/VBoxContainer/XMLVBox" instance=ExtResource("4_2qeh2")]
+layout_mode = 2
+text = "Use shorthand tag syntax"
+section_name = "autoformat"
+setting_name = "xml_shorthand_tags"
+
+[node name="NumberVBox" type="VBoxContainer" parent="VBoxContainer/TabContainer/Autoformatting/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="SectionLabel" type="Label" parent="VBoxContainer/TabContainer/Autoformatting/VBoxContainer/NumberVBox"]
+layout_mode = 2
+text = "Numbers"
+
+[node name="NumberEnable" parent="VBoxContainer/TabContainer/Autoformatting/VBoxContainer/NumberVBox" instance=ExtResource("4_2qeh2")]
+layout_mode = 2
+text = "Enable autoformatting"
+section_name = "autoformat"
+setting_name = "number_enable_autoformatting"
+
+[node name="RemoveZeroPadding" parent="VBoxContainer/TabContainer/Autoformatting/VBoxContainer/NumberVBox" instance=ExtResource("4_2qeh2")]
+layout_mode = 2
+text = "Remove zero padding"
+section_name = "autoformat"
+setting_name = "number_remove_zero_padding"
+
+[node name="RemoveLeadingZero" parent="VBoxContainer/TabContainer/Autoformatting/VBoxContainer/NumberVBox" instance=ExtResource("4_2qeh2")]
+layout_mode = 2
+text = "Remove leading zero"
+section_name = "autoformat"
+setting_name = "number_remove_leading_zero"
+
+[node name="ColorVBox" type="VBoxContainer" parent="VBoxContainer/TabContainer/Autoformatting/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="SectionLabel" type="Label" parent="VBoxContainer/TabContainer/Autoformatting/VBoxContainer/ColorVBox"]
+layout_mode = 2
+text = "Colors"
+
+[node name="ColorEnable" parent="VBoxContainer/TabContainer/Autoformatting/VBoxContainer/ColorVBox" instance=ExtResource("4_2qeh2")]
+layout_mode = 2
+text = "Enable autoformatting"
+section_name = "autoformat"
+setting_name = "color_enable_autoformatting"
+
+[node name="ConvertToHex" parent="VBoxContainer/TabContainer/Autoformatting/VBoxContainer/ColorVBox" instance=ExtResource("4_2qeh2")]
+layout_mode = 2
+text = "Convert rgb format to hex"
+section_name = "autoformat"
+setting_name = "color_convert_rgb_to_hex"
+
+[node name="ConvertToHex2" parent="VBoxContainer/TabContainer/Autoformatting/VBoxContainer/ColorVBox" instance=ExtResource("4_2qeh2")]
+layout_mode = 2
+text = "Convert named colors to hex"
+section_name = "autoformat"
+setting_name = "color_convert_named_to_hex"
+
+[node name="UseShorthandHex" parent="VBoxContainer/TabContainer/Autoformatting/VBoxContainer/ColorVBox" instance=ExtResource("4_2qeh2")]
+layout_mode = 2
+text = "Use shorthand hex code"
+section_name = "autoformat"
+setting_name = "color_use_shorthand_hex_code"
+
+[node name="UseNamedColors" parent="VBoxContainer/TabContainer/Autoformatting/VBoxContainer/ColorVBox" instance=ExtResource("4_2qeh2")]
+layout_mode = 2
+text = "Use short named colors"
+section_name = "autoformat"
+setting_name = "color_use_short_named_colors"
+
+[node name="PathVBox" type="VBoxContainer" parent="VBoxContainer/TabContainer/Autoformatting/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="SectionLabel" type="Label" parent="VBoxContainer/TabContainer/Autoformatting/VBoxContainer/PathVBox"]
+layout_mode = 2
+text = "Paths"
+
+[node name="PathEnable" parent="VBoxContainer/TabContainer/Autoformatting/VBoxContainer/PathVBox" instance=ExtResource("4_2qeh2")]
+layout_mode = 2
+text = "Enable autoformatting"
+section_name = "autoformat"
+setting_name = "path_enable_autoformatting"
+
+[node name="CompressNumbers" parent="VBoxContainer/TabContainer/Autoformatting/VBoxContainer/PathVBox" instance=ExtResource("4_2qeh2")]
+layout_mode = 2
+text = "Compress numbers"
+section_name = "autoformat"
+setting_name = "path_compress_numbers"
+
+[node name="MinimizeSpacing" parent="VBoxContainer/TabContainer/Autoformatting/VBoxContainer/PathVBox" instance=ExtResource("4_2qeh2")]
+layout_mode = 2
+text = "Minimize spacing"
+section_name = "autoformat"
+setting_name = "path_minimize_spacing"
+
+[node name="RemoveSpacingAfterFlags" parent="VBoxContainer/TabContainer/Autoformatting/VBoxContainer/PathVBox" instance=ExtResource("4_2qeh2")]
+layout_mode = 2
+text = "Remove spacing after flags"
+section_name = "autoformat"
+setting_name = "path_remove_spacing_after_flags"
+
+[node name="RemoveConsecutiveCommands" parent="VBoxContainer/TabContainer/Autoformatting/VBoxContainer/PathVBox" instance=ExtResource("4_2qeh2")]
+layout_mode = 2
+text = "Remove consecutive commands"
+section_name = "autoformat"
+setting_name = "path_remove_consecutive_commands"
+
+[node name="TransformVBox" type="VBoxContainer" parent="VBoxContainer/TabContainer/Autoformatting/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="SectionLabel" type="Label" parent="VBoxContainer/TabContainer/Autoformatting/VBoxContainer/TransformVBox"]
+layout_mode = 2
+text = "Transforms"
+
+[node name="TransformEnable" parent="VBoxContainer/TabContainer/Autoformatting/VBoxContainer/TransformVBox" instance=ExtResource("4_2qeh2")]
+layout_mode = 2
+text = "Enable autoformatting"
+section_name = "autoformat"
+setting_name = "transform_enable_autoformatting"
+
+[node name="CompressNumbers" parent="VBoxContainer/TabContainer/Autoformatting/VBoxContainer/TransformVBox" instance=ExtResource("4_2qeh2")]
+layout_mode = 2
+text = "Compress numbers"
+section_name = "autoformat"
+setting_name = "transform_compress_numbers"
+
+[node name="MinimizeSpacing" parent="VBoxContainer/TabContainer/Autoformatting/VBoxContainer/TransformVBox" instance=ExtResource("4_2qeh2")]
+layout_mode = 2
+text = "Minimize spacing"
+section_name = "autoformat"
+setting_name = "transform_minimize_spacing"
+
+[node name="RemoveUnnecessaryParameters" parent="VBoxContainer/TabContainer/Autoformatting/VBoxContainer/TransformVBox" instance=ExtResource("4_2qeh2")]
+layout_mode = 2
+text = "Remove unnecessary parameters"
+section_name = "autoformat"
+setting_name = "transform_remove_unnecessary_params"
 
 [node name="Palettes" type="ScrollContainer" parent="VBoxContainer/TabContainer"]
 visible = false
@@ -97,6 +239,43 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 4
+
+[node name="Other" type="ScrollContainer" parent="VBoxContainer/TabContainer"]
+visible = false
+layout_mode = 2
+horizontal_scroll_mode = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/TabContainer/Other"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 0
+
+[node name="Label" type="Label" parent="VBoxContainer/TabContainer/Other/VBoxContainer"]
+layout_mode = 2
+text = "Input"
+
+[node name="InvertZoom" parent="VBoxContainer/TabContainer/Other/VBoxContainer" instance=ExtResource("4_2qeh2")]
+layout_mode = 2
+tooltip_text = "Swaps zoom in and zoom out with the mouse wheel."
+text = "Invert zoom direction"
+section_name = "input"
+setting_name = "invert_zoom"
+
+[node name="WrapMouse" parent="VBoxContainer/TabContainer/Other/VBoxContainer" instance=ExtResource("4_2qeh2")]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Wraps the mouse cursor around when panning the viewport."
+text = "Wrap mouse"
+section_name = "input"
+setting_name = "wrap_mouse"
+
+[node name="UseCtrlForZoom" parent="VBoxContainer/TabContainer/Other/VBoxContainer" instance=ExtResource("4_2qeh2")]
+layout_mode = 2
+tooltip_text = "If turned on, scrolling will pan the view. To zoom, hold CTRL while scrolling."
+text = "Use CTRL for zooming."
+section_name = "input"
+setting_name = "use_ctrl_for_zoom"
 
 [node name="Close" type="Button" parent="VBoxContainer"]
 layout_mode = 2
