@@ -1,7 +1,6 @@
 extends VBoxContainer
 
 const ContextPopup = preload("res://src/ui_elements/context_popup.tscn")
-const autoformat_menu = preload("res://src/ui_parts/autoformat_menu.tscn")
 
 @onready var code_edit: TextEdit = $ScriptEditor/SVGCodeEdit
 @onready var error_bar: PanelContainer = $ScriptEditor/ErrorBar
@@ -9,6 +8,7 @@ const autoformat_menu = preload("res://src/ui_parts/autoformat_menu.tscn")
 @onready var size_label: Label = %SizeLabelContainer/SizeLabel
 @onready var size_label_container: PanelContainer = %SizeLabelContainer
 @onready var file_button: Button = %FileButton
+@onready var optimize_button: Button = $PanelContainer/CodeButtons/OptimizeButton
 
 func _ready() -> void:
 	SVG.parsing_finished.connect(update_error)
@@ -28,6 +28,7 @@ func auto_update_text() -> void:
 		code_edit.text = SVG.text
 		code_edit.clear_undo_history()
 	update_size_label()
+	update_optimize_button()
 
 func update_error(err_id: SVGParser.ParseError) -> void:
 	if err_id == SVGParser.ParseError.OK:
@@ -99,11 +100,16 @@ func update_file_button() -> void:
 	file_button.visible = !file_path.is_empty()
 	file_button.text = file_path.get_file()
 	file_button.tooltip_text = file_path.get_file()
-	Utils.set_max_text_width(file_button, 120.0, 12.0)
+	Utils.set_max_text_width(file_button, 140.0, 12.0)
 	if not file_path.is_empty():
 		get_window().title = file_path.get_file() + " - GodSVG"
 	else:
 		get_window().title = "GodSVG"
+
+func update_optimize_button() -> void:
+	optimize_button.disabled = not SVG.root_tag.optimize(false)
+	optimize_button.mouse_default_cursor_shape = Control.CURSOR_ARROW if\
+			optimize_button.disabled else Control.CURSOR_POINTING_HAND
 
 func _on_svg_code_edit_focus_exited() -> void:
 	code_edit.text = SVG.text
@@ -111,9 +117,8 @@ func _on_svg_code_edit_focus_exited() -> void:
 		SVG.update_text(true)
 
 
-func _on_autoformat_button_pressed() -> void:
-	var autoformat_menu_instance := autoformat_menu.instantiate()
-	HandlerGUI.add_overlay(autoformat_menu_instance)
+func _on_optimize_button_pressed() -> void:
+	SVG.root_tag.optimize()
 
 func _on_file_button_pressed() -> void:
 	var btn_array: Array[Button] = [Utils.create_btn(tr(&"Remove the association"),
