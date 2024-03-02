@@ -5,8 +5,8 @@ for file in ./*.po; do
     let count--
     msgmerge --update --quiet --verbose --backup=off $file Translations.pot
     if [ "$?" != "0" ]; then # Exit loop on error.
-        printf "\nUpdating failed, exiting."
+        printf "\nUpdating failed, exiting.\n"
         exit
     fi
 done
-printf "\nUpdating completed!"
+printf "\nUpdating completed!\n"

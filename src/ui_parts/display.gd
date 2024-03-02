@@ -2,7 +2,6 @@ extends VBoxContainer
 
 const settings_menu = preload("settings_menu.tscn")
 const about_menu = preload("about_menu.tscn")
-const docs = preload("docs.tscn")
 
 const NumberEditType = preload("res://src/ui_elements/number_edit.gd")
 const BetterToggleButtonType = preload("res://src/ui_elements/BetterToggleButton.gd")
@@ -56,8 +55,6 @@ func _on_more_options_pressed() -> void:
 		Utils.create_btn(tr(&"GodSVG Repository"), open_godsvg_repo, false,
 				load("res://visual/icons/Link.svg")),
 		about_btn,
-		Utils.create_btn(tr(&"Documentation…"), open_docs, false,
-				load("res://visual/icons/Docs.svg")),
 		Utils.create_btn(tr(&"Donate (Github)"), open_sponsor, false,
 				load("res://visual/icons/Heart.svg")),
 	]
@@ -74,10 +71,6 @@ func open_godsvg_repo() -> void:
 func open_about() -> void:
 	var about_menu_instance := about_menu.instantiate()
 	HandlerGUI.add_overlay(about_menu_instance)
-
-func open_docs() -> void:
-	var docs_instance := docs.instantiate()
-	HandlerGUI.add_overlay(docs_instance)
 
 func open_sponsor() -> void:
 	OS.shell_open("https://github.com/sponsors/MewPurPur")

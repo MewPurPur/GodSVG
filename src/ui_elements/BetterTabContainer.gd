@@ -7,6 +7,8 @@ var tab_keys: Array[StringName]
 func _ready() -> void:
 	for i in get_tab_count():
 		tab_keys.append(StringName(get_tab_title(i)))
+	# Awaiting fixes a bug that causes spacing between the tabbar and the content. 
+	await get_tree().process_frame
 	translate_titles()
 
 func _notification(what: int) -> void:

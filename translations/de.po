@@ -263,7 +263,8 @@ msgstr "Die Dateierweiterung ist leer. Nur \"svg\"-Dateien werden unterstützt."
 msgid "OK"
 msgstr "OK"
 
-msgid "Autoformatting options"
+#, fuzzy
+msgid "Autoformatting"
 msgstr "Autoformatierungsoptionen"
 
 msgid "Numbers"
@@ -334,6 +335,15 @@ msgstr "Dateizuordnung entfernen"
 
 msgid "Apply the matrix"
 msgstr "Die Matrix anwenden"
+
+msgid "Other"
+msgstr ""
+
+msgid "Optimize"
+msgstr ""
+
+msgid "Any changes will apply immediately."
+msgstr ""
 
 msgid "Search color"
 msgstr "Farbe suchen"
