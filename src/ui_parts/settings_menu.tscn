@@ -273,7 +273,7 @@ setting_name = "wrap_mouse"
 [node name="UseCtrlForZoom" parent="VBoxContainer/TabContainer/Other/VBoxContainer" instance=ExtResource("4_2qeh2")]
 layout_mode = 2
 tooltip_text = "If turned on, scrolling will pan the view. To zoom, hold CTRL while scrolling."
-text = "Use CTRL for zooming."
+text = "Use CTRL for zooming"
 section_name = "input"
 setting_name = "use_ctrl_for_zoom"
 

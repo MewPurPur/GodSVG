@@ -15,6 +15,12 @@ msgstr ""
 msgid "translation-credits"
 msgstr ""
 
+msgid "Project Founder and Manager"
+msgstr "Projektgründer und Manager"
+
+msgid "Developers"
+msgstr "Entwickler"
+
 msgid "Language"
 msgstr "Sprache"
 
@@ -151,6 +157,12 @@ msgstr "Unbekanntes Element"
 msgid "Unknown Attribute"
 msgstr "Unbekannte Attribute"
 
+msgid "No path data"
+msgstr "Keine Pfaddaten"
+
+msgid "No transforms"
+msgstr "Keine Transformationen"
+
 msgid "Import"
 msgstr "Importieren"
 
@@ -184,7 +196,7 @@ msgstr "Neues Element hinzufügen"
 msgid "License"
 msgstr "Lizenz"
 
-msgid "Third-party licenses"
+msgid "Third-party Licenses"
 msgstr "Drittanbieter-Lizenzen"
 
 msgid "Authors"
@@ -263,9 +275,8 @@ msgstr "Die Dateierweiterung ist leer. Nur \"svg\"-Dateien werden unterstützt."
 msgid "OK"
 msgstr "OK"
 
-#, fuzzy
 msgid "Autoformatting"
-msgstr "Autoformatierungsoptionen"
+msgstr "Autoformatierung"
 
 msgid "Numbers"
 msgstr "Nummern"
@@ -337,13 +348,13 @@ msgid "Apply the matrix"
 msgstr "Die Matrix anwenden"
 
 msgid "Other"
-msgstr ""
+msgstr "Anderes"
 
 msgid "Optimize"
-msgstr ""
+msgstr "Optimieren"
 
 msgid "Any changes will apply immediately."
-msgstr ""
+msgstr "Änderungen werden gleich eingesetzt."
 
 msgid "Search color"
 msgstr "Farbe suchen"

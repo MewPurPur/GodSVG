@@ -14,6 +14,12 @@ msgstr ""
 msgid "translation-credits"
 msgstr ""
 
+msgid "Project Founder and Manager"
+msgstr ""
+
+msgid "Developers"
+msgstr ""
+
 msgid "Language"
 msgstr ""
 
@@ -148,6 +154,12 @@ msgstr ""
 msgid "Unknown Attribute"
 msgstr ""
 
+msgid "No path data"
+msgstr ""
+
+msgid "No transforms"
+msgstr ""
+
 msgid "Import"
 msgstr ""
 
@@ -181,7 +193,7 @@ msgstr ""
 msgid "License"
 msgstr ""
 
-msgid "Third-party licenses"
+msgid "Third-party Licenses"
 msgstr ""
 
 msgid "Authors"
