@@ -27,6 +27,10 @@ This is the preferred workflow, but tidiness is not as important as work being d
 
 After submitting your pull request, I (MewPurPur) will review your changes and may provide feedback or request modifications. Be responsive to any comments or suggestions. Once your pull request is approved, it will be merged. Afterward, you can delete your branch from your fork.
 
+## Translation
+
+Editing tranlations is explained [here](translations\README.md)
+
 ## Code style
 
 For scripts, only GDScript code is allowed. Follow the [GDScript style guide](https://docs.godotengine.org/en/stable/tutorials/scripting/gdscript/gdscript_styleguide.html). Most of its rules are enforced here. Additionally:
