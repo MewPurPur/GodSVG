@@ -23,8 +23,8 @@ func _init(pos := Vector2.ZERO) -> void:
 		"stroke-linejoin": AttributeEnum.new(["miter", "round", "bevel"], 0),
 	}
 	attributes.d.insert_command(0, "M")
-	attributes.d.set_command_property(0, &"x", pos.x)
-	attributes.d.set_command_property(0, &"y", pos.y)
+	attributes.d.set_command_property(0, "x", pos.x)
+	attributes.d.set_command_property(0, "y", pos.y)
 	super()
 
 func can_replace(_new_tag: String) -> bool:

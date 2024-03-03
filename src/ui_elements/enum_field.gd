@@ -34,7 +34,7 @@ func _on_button_pressed() -> void:
 		var btn := Utils.create_btn(enum_constant, _on_option_pressed.bind(enum_constant),
 				enum_constant == attribute.get_value())
 		if enum_constant == attribute.default:
-			btn.add_theme_font_override(&"font", bold_font)
+			btn.add_theme_font_override("font", bold_font)
 		btn_arr.append(btn)
 	add_child(value_picker)
 	value_picker.set_button_array(btn_arr, false, size.x)
@@ -45,7 +45,7 @@ func _on_option_pressed(option: String) -> void:
 
 
 func _on_focus_entered() -> void:
-	indicator.remove_theme_color_override(&"font_color")
+	indicator.remove_theme_color_override("font_color")
 	focused.emit()
 
 func _on_text_submitted(new_text: String) -> void:
@@ -63,17 +63,17 @@ func _on_text_change_canceled() -> void:
 
 func _on_text_changed(new_text: String) -> void:
 	if new_text in attribute.possible_values:
-		indicator.add_theme_color_override(&"font_color", Color(0.6, 1.0, 0.6))
+		indicator.add_theme_color_override("font_color", Color(0.6, 1.0, 0.6))
 	else:
-		indicator.add_theme_color_override(&"font_color", Color(1.0, 0.6, 0.6))
+		indicator.add_theme_color_override("font_color", Color(1.0, 0.6, 0.6))
 
 func sync(new_value: String) -> void:
 	if indicator != null:
 		indicator.text = new_value
 		if new_value == attribute.default:
-			indicator.add_theme_color_override(&"font_color", Color(0.64, 0.64, 0.64))
+			indicator.add_theme_color_override("font_color", Color(0.64, 0.64, 0.64))
 		else:
-			indicator.remove_theme_color_override(&"font_color")
+			indicator.remove_theme_color_override("font_color")
 
 
 func _on_button_gui_input(event: InputEvent) -> void:

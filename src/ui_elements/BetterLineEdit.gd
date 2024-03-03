@@ -49,7 +49,7 @@ func _on_focus_exited() -> void:
 	first_click = false
 	if not tree_was_paused_before:
 		get_tree().paused = false
-	if Input.is_action_pressed(&"ui_cancel"):
+	if Input.is_action_pressed("ui_cancel"):
 		text = text_before_focus
 		text_change_canceled.emit()
 
@@ -69,8 +69,8 @@ func _make_custom_tooltip(for_text: String) -> Object:
 	if code_font_tooltip:
 		var label := Label.new()
 		label.begin_bulk_theme_override()
-		label.add_theme_font_override(&"font", code_font)
-		label.add_theme_font_size_override(&"font_size", 13)
+		label.add_theme_font_override("font", code_font)
+		label.add_theme_font_size_override("font_size", 13)
 		label.end_bulk_theme_override()
 		label.text = for_text
 		return label
@@ -89,13 +89,13 @@ func _gui_input(event: InputEvent) -> void:
 			grab_focus()
 			var context_popup := ContextPopup.instantiate()
 			var btn_arr: Array[Button] = [
-				Utils.create_btn(tr(&"Undo"), menu_option.bind(LineEdit.MENU_UNDO)),
-				Utils.create_btn(tr(&"Redo"), menu_option.bind(LineEdit.MENU_REDO)),
-				Utils.create_btn(tr(&"Copy"), menu_option.bind(LineEdit.MENU_COPY),
+				Utils.create_btn(tr("Undo"), menu_option.bind(LineEdit.MENU_UNDO)),
+				Utils.create_btn(tr("Redo"), menu_option.bind(LineEdit.MENU_REDO)),
+				Utils.create_btn(tr("Copy"), menu_option.bind(LineEdit.MENU_COPY),
 						text.is_empty()),
-				Utils.create_btn(tr(&"Paste"), menu_option.bind(LineEdit.MENU_PASTE),
+				Utils.create_btn(tr("Paste"), menu_option.bind(LineEdit.MENU_PASTE),
 						!DisplayServer.clipboard_has()),
-				Utils.create_btn(tr(&"Cut"), menu_option.bind(LineEdit.MENU_CUT),
+				Utils.create_btn(tr("Cut"), menu_option.bind(LineEdit.MENU_CUT),
 						text.is_empty()),
 			]
 			

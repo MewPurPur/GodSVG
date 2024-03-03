@@ -5,16 +5,16 @@ const ContextPopup = preload("res://src/ui_elements/context_popup.tscn")
 const PathCommandPopup = preload("res://src/ui_elements/path_popup.tscn")
 
 const path_actions_dict := {
-	&"move_absolute": "M", &"move_relative": "m",
-	&"line_absolute": "L", &"line_relative": "l",
-	&"horizontal_line_absolute": "H", &"horizontal_line_relative": "h",
-	&"vertical_line_absolute": "V", &"vertical_line_relative": "v",
-	&"close_path_absolute": "Z", &"close_path_relative": "z",
-	&"elliptical_arc_absolute": "A", &"elliptical_arc_relative": "a",
-	&"cubic_bezier_absolute": "C", &"cubic_bezier_relative": "c",
-	&"shorthand_cubic_bezier_absolute": "S", &"shorthand_cubic_bezier_relative": "s",
-	&"quadratic_bezier_absolute": "Q", &"quadratic_bezier_relative": "q",
-	&"shorthand_quadratic_bezier_absolute": "T", &"shorthand_quadratic_bezier_relative": "t"
+	"move_absolute": "M", "move_relative": "m",
+	"line_absolute": "L", "line_relative": "l",
+	"horizontal_line_absolute": "H", "horizontal_line_relative": "h",
+	"vertical_line_absolute": "V", "vertical_line_relative": "v",
+	"close_path_absolute": "Z", "close_path_relative": "z",
+	"elliptical_arc_absolute": "A", "elliptical_arc_relative": "a",
+	"cubic_bezier_absolute": "C", "cubic_bezier_relative": "c",
+	"shorthand_cubic_bezier_absolute": "S", "shorthand_cubic_bezier_relative": "s",
+	"quadratic_bezier_absolute": "Q", "quadratic_bezier_relative": "q",
+	"shorthand_quadratic_bezier_absolute": "T", "shorthand_quadratic_bezier_relative": "t"
 }
 
 signal hover_changed
@@ -450,34 +450,34 @@ func get_selection_context(popup_method: Callable) -> Popup:
 				if not can_move_down and base_tid[-1] < parent_child_count - filtered_count:
 					can_move_down = true
 		
-		btn_arr.append(Utils.create_btn(tr(&"Duplicate"), duplicate_selected,
+		btn_arr.append(Utils.create_btn(tr("Duplicate"), duplicate_selected,
 				false, load("res://visual/icons/Duplicate.svg")))
 		
 		if selected_tids.size() == 1 and not SVG.root_tag.get_tag(
 		selected_tids[0]).possible_conversions.is_empty():
-			btn_arr.append(Utils.create_btn(tr(&"Convert To"),
+			btn_arr.append(Utils.create_btn(tr("Convert To"),
 					popup_convert_to_context.bind(popup_method), false,
 					load("res://visual/icons/Reload.svg")))
 		
 		if can_move_up:
-			btn_arr.append(Utils.create_btn(tr(&"Move Up"), move_up_selected,
+			btn_arr.append(Utils.create_btn(tr("Move Up"), move_up_selected,
 					false, load("res://visual/icons/MoveUp.svg")))
 		if can_move_down:
-			btn_arr.append(Utils.create_btn(tr(&"Move Down"), move_down_selected,
+			btn_arr.append(Utils.create_btn(tr("Move Down"), move_down_selected,
 					false, load("res://visual/icons/MoveDown.svg")))
 		
-		btn_arr.append(Utils.create_btn(tr(&"Delete"), delete_selected,
+		btn_arr.append(Utils.create_btn(tr("Delete"), delete_selected,
 				false, load("res://visual/icons/Delete.svg")))
 	elif not inner_selections.is_empty() and not semi_selected_tid.is_empty():
 		if inner_selections.size() == 1:
-			btn_arr.append(Utils.create_btn(tr(&"Insert After"),
+			btn_arr.append(Utils.create_btn(tr("Insert After"),
 					popup_insert_command_after_context.bind(popup_method),
 					false, load("res://visual/icons/Plus.svg")))
-			btn_arr.append(Utils.create_btn(tr(&"Convert To"),
+			btn_arr.append(Utils.create_btn(tr("Convert To"),
 					popup_convert_to_context.bind(popup_method), false,
 					load("res://visual/icons/Reload.svg")))
 		
-		btn_arr.append(Utils.create_btn(tr(&"Delete"), delete_selected, false,
+		btn_arr.append(Utils.create_btn(tr("Delete"), delete_selected, false,
 				load("res://visual/icons/Delete.svg")))
 	
 	var tag_context := ContextPopup.instantiate()
@@ -493,7 +493,7 @@ func popup_convert_to_context(popup_method: Callable) -> void:
 		for tag_name in tag.possible_conversions:
 			var btn := Utils.create_btn(tag_name, convert_selected_tag_to.bind(tag_name),
 					!tag.can_replace(tag_name), load("res://visual/icons/tag/%s.svg" % tag_name))
-			btn.add_theme_font_override(&"font", load("res://visual/fonts/FontMono.ttf"))
+			btn.add_theme_font_override("font", load("res://visual/fonts/FontMono.ttf"))
 			btn_arr.append(btn)
 		var context_popup := ContextPopup.instantiate()
 		add_child(context_popup)

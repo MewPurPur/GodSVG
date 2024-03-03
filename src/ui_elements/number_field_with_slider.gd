@@ -56,7 +56,7 @@ func _ready() -> void:
 	num_edit.tooltip_text = attribute_name
 
 func _on_focus_entered() -> void:
-	num_edit.remove_theme_color_override(&"font_color")
+	num_edit.remove_theme_color_override("font_color")
 	focused.emit()
 
 func _on_text_submitted(submitted_text: String) -> void:
@@ -72,9 +72,9 @@ func sync(new_value: String) -> void:
 	if num_edit != null:
 		num_edit.text = new_value
 		if new_value == attribute.default:
-			num_edit.add_theme_color_override(&"font_color", Color(0.64, 0.64, 0.64))
+			num_edit.add_theme_color_override("font_color", Color(0.64, 0.64, 0.64))
 		else:
-			num_edit.remove_theme_color_override(&"font_color")
+			num_edit.remove_theme_color_override("font_color")
 	queue_redraw()
 
 
@@ -107,7 +107,7 @@ func _draw() -> void:
 	var stylebox := StyleBoxFlat.new()
 	stylebox.corner_radius_top_right = 5
 	stylebox.corner_radius_bottom_right = 5
-	stylebox.bg_color = num_edit.get_theme_stylebox(&"normal", &"LineEdit").bg_color
+	stylebox.bg_color = num_edit.get_theme_stylebox("normal", "LineEdit").bg_color
 	draw_style_box(stylebox, Rect2(Vector2.ZERO, slider_size - Vector2(1, 2)))
 	var fill_height := (slider_size.y - 4) * (attribute.get_num() - min_value) / max_value
 	if slider_dragged:

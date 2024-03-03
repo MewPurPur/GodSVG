@@ -37,11 +37,11 @@ func hide_name_edit() -> void:
 
 func set_label_text(new_text: String) -> void:
 	if new_text.is_empty():
-		color_label.text = tr(&"Unnamed")
-		color_label.add_theme_color_override(&"font_color", Color(0.5, 0.5, 0.5))
+		color_label.text = tr("Unnamed")
+		color_label.add_theme_color_override("font_color", Color(0.5, 0.5, 0.5))
 	else:
 		color_label.text = new_text
-		color_label.remove_theme_color_override(&"font_color")
+		color_label.remove_theme_color_override("font_color")
 
 
 func _on_delete_button_pressed() -> void:

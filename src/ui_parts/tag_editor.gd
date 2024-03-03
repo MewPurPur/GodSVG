@@ -207,8 +207,8 @@ func determine_selection_highlight() -> void:
 				title_sb.bg_color.s, title_sb.bg_color.v)
 		title_sb.border_color = Color.from_hsv(title_sb.border_color.h + depth_tint,
 				title_sb.border_color.s, title_sb.border_color.v)
-	content.add_theme_stylebox_override(&"panel", content_sb)
-	title_bar.add_theme_stylebox_override(&"panel", title_sb)
+	content.add_theme_stylebox_override("panel", content_sb)
+	title_bar.add_theme_stylebox_override("panel", title_sb)
 
 # Draws the yellow indicator when drag-and-dropping tags.
 func _draw() -> void:

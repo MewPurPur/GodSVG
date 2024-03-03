@@ -27,8 +27,8 @@ func update_text() -> void:
 
 func set_invalid(new_state := true) -> void:
 	if new_state:
-		rtl.add_theme_color_override(&"default_color", Color(0.5, 0.5, 0.5))
+		rtl.add_theme_color_override("default_color", Color(0.5, 0.5, 0.5))
 	else:
-		rtl.remove_theme_color_override(&"default_color")
+		rtl.remove_theme_color_override("default_color")
 	disabled = new_state
 	mouse_default_cursor_shape = CURSOR_ARROW if new_state else CURSOR_POINTING_HAND

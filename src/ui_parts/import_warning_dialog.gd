@@ -37,18 +37,18 @@ func set_svg(text: String) -> void:
 func get_svg_errors(parse_result: SVGParser.ParseResult) -> Array[String]:
 	var warnings: Array[String] = []
 	if parse_result.error != SVGParser.ParseError.OK:
-		warnings = [tr(&"Syntax error") + ": " +\
-				tr(SVGParser.get_error_stringname(parse_result.error))]
+		warnings = [tr("Syntax error") + ": " +\
+				tr(SVGParser.get_error_string(parse_result.error))]
 	else:
 		var svg_tag := parse_result.svg
 		var tids := svg_tag.get_all_tids()
 		for tid in tids:
 			var tag := svg_tag.get_tag(tid)
 			if tag is TagUnknown:
-				warnings.append(tr(&"Unknown Tag") + ": " + tag.name)
+				warnings.append(tr("Unknown Tag") + ": " + tag.name)
 			else:
 				for unknown_attrib in tag.unknown_attributes:
-					warnings.append(tr(&"Unknown Attribute") + ": " + unknown_attrib.name)
+					warnings.append(tr("Unknown Attribute") + ": " + unknown_attrib.name)
 	return warnings
 
 

@@ -39,9 +39,18 @@ const default_config = {
 		"transform_minimize_spacing": true,
 		"transform_remove_unnecessary_params": true,
 	},
+	"theming": {
+		"highlighting_symbol_color": Color("abc9ff"),
+		"highlighting_tag_color": Color("ff8ccc"),
+		"highlighting_attribute_color": Color("bce0ff"),
+		"highlighting_string_color": Color("a1ffe0"),
+		"highlighting_comment_color": Color("cdcfd280"),
+		"highlighting_text_color": Color("cdcfeaac"),
+		"highlighting_error_color": Color("ff866b"),
+	}
 }
 
-var language: StringName:
+var language: String:
 	set(new_value):
 		language = new_value
 		TranslationServer.set_locale(new_value)
@@ -73,16 +82,30 @@ var transform_compress_numbers := true
 var transform_minimize_spacing := true
 var transform_remove_unnecessary_params := true
 
+# Theming
+var highlighting_symbol_color := Color("abc9ff")
+var highlighting_tag_color := Color("ff8ccc")
+var highlighting_attribute_color := Color("bce0ff")
+var highlighting_string_color := Color("a1ffe0")
+var highlighting_comment_color := Color("cdcfd280")
+var highlighting_text_color := Color("cdcfeaac")
+var highlighting_error_color := Color("ff866b")
+
 
 func toggle_bool_setting(section: String, setting: String) -> void:
 	set(setting, !get(setting))
+	save_setting(section, setting)
+
+func modify_setting(section: String, setting: String, new_value: Variant) -> void:
+	set(setting, new_value)
 	save_setting(section, setting)
 
 func save_setting(section: String, setting: String) -> void:
 	config.set_value(section, setting, get(setting))
 	config.save(config_path)
 
-func modify_save_data(property: StringName, new_value: Variant) -> void:
+
+func modify_save_data(property: String, new_value: Variant) -> void:
 	save_data.set(property, new_value)
 	ResourceSaver.save(save_data, save_path)
 
@@ -125,7 +148,7 @@ func load_settings() -> void:
 	var error := config.load(config_path)
 	if error:
 		reset_settings()
-		language = &"en"
+		language = "en"
 	else:
 		for section in config.get_sections():
 			for setting in config.get_section_keys(section):
@@ -137,6 +160,10 @@ func reset_settings() -> void:
 		for setting in default_config[section].keys():
 			set(setting, default_config[section][setting])
 			save_setting(section, setting)
+
+func reset_setting(section: String, setting: String) -> void:
+	set(setting, default_config[section][setting])
+	save_setting(section, setting)
 
 func get_palettes() -> Array[ColorPalette]:
 	return _palettes.palettes

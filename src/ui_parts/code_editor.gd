@@ -16,6 +16,7 @@ func _ready() -> void:
 	update_size_label()
 	update_file_button()
 	setup_theme(false)
+	setup_highlighter()
 	code_edit.clear_undo_history()
 	SVG.root_tag.attribute_changed.connect(auto_update_text.unbind(1))
 	SVG.root_tag.child_attribute_changed.connect(auto_update_text.unbind(1))
@@ -42,7 +43,7 @@ func update_error(err_id: SVGParser.ParseError) -> void:
 		# When the error is shown, the code editor's theme is changed to match up.
 		if not error_bar.visible:
 			error_bar.show()
-			error_label.text = tr(SVGParser.get_error_stringname(err_id))
+			error_label.text = tr(SVGParser.get_error_string(err_id))
 			var error_bar_real_height := error_bar.size.y - 2
 			code_edit.custom_minimum_size.y -= error_bar_real_height
 			code_edit.size.y -= error_bar_real_height
@@ -50,9 +51,9 @@ func update_error(err_id: SVGParser.ParseError) -> void:
 
 func setup_theme(match_below: bool) -> void:
 	code_edit.begin_bulk_theme_override()
-	for theming in [&"normal", &"focus"]:
+	for theming in ["normal", "focus"]:
 		var stylebox := ThemeDB.get_project_theme().\
-				get_stylebox(theming, &"TextEdit").duplicate()
+				get_stylebox(theming, "TextEdit").duplicate()
 		stylebox.corner_radius_top_right = 0
 		stylebox.corner_radius_top_left = 0
 		stylebox.border_width_top = 2
@@ -121,7 +122,7 @@ func _on_optimize_button_pressed() -> void:
 	SVG.root_tag.optimize()
 
 func _on_file_button_pressed() -> void:
-	var btn_array: Array[Button] = [Utils.create_btn(tr(&"Remove the association"),
+	var btn_array: Array[Button] = [Utils.create_btn(tr("Remove the association"),
 			clear_file_path)]
 	var context_popup := ContextPopup.instantiate()
 	add_child(context_popup)
@@ -130,4 +131,21 @@ func _on_file_button_pressed() -> void:
 			get_viewport())
 
 func clear_file_path() -> void:
-	GlobalSettings.modify_save_data(&"current_file_path", "")
+	GlobalSettings.modify_save_data("current_file_path", "")
+
+
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_THEME_CHANGED:
+		setup_highlighter()
+
+func setup_highlighter() -> void:
+	if code_edit != null:
+		var new_highlighter := SVGHighlighter.new()
+		new_highlighter.symbol_color = GlobalSettings.highlighting_symbol_color
+		new_highlighter.tag_color = GlobalSettings.highlighting_tag_color
+		new_highlighter.attribute_color = GlobalSettings.highlighting_attribute_color
+		new_highlighter.string_color = GlobalSettings.highlighting_string_color
+		new_highlighter.comment_color = GlobalSettings.highlighting_comment_color
+		new_highlighter.text_color = GlobalSettings.highlighting_text_color
+		new_highlighter.error_color = GlobalSettings.highlighting_error_color
+		code_edit.syntax_highlighter = new_highlighter

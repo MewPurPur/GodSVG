@@ -47,14 +47,15 @@ func redraw_caret() -> void:
 		return
 	
 	var char_size := code_font.get_char_size(69,
-			get_theme_font_size(&"TextEdit", &"font_size"))
+			get_theme_font_size("TextEdit", "font_size"))
 	for caret in get_caret_count():
 		var caret_line := get_caret_line(caret)
 		var caret_column := get_caret_column(caret)
 		var rect: Rect2 = get_rect_at_line_column(caret_line, caret_column)
 		var caret_pos := rect.end + Vector2(1, -1)
 		# Workaround for ligatures.
-		if rect == Rect2(get_rect_at_line_column(caret_line, caret_column + 1)):
+		if get_line(caret_line).length() < caret_column and\
+		rect == Rect2(get_rect_at_line_column(caret_line, caret_column + 1)):
 			caret_pos.x -= char_size.x
 		
 		var caret_end := caret_pos
@@ -100,11 +101,11 @@ func _gui_input(event: InputEvent) -> void:
 			grab_focus()
 			var context_popup := ContextPopup.instantiate()
 			var btn_arr: Array[Button] = [
-				Utils.create_btn(tr(&"Undo"), undo, !has_undo()),
-				Utils.create_btn(tr(&"Redo"), redo, !has_redo()),
-				Utils.create_btn(tr(&"Copy"), copy, text.is_empty()),
-				Utils.create_btn(tr(&"Paste"), paste, !DisplayServer.clipboard_has()),
-				Utils.create_btn(tr(&"Cut"), cut, text.is_empty()),
+				Utils.create_btn(tr("Undo"), undo, !has_undo()),
+				Utils.create_btn(tr("Redo"), redo, !has_redo()),
+				Utils.create_btn(tr("Copy"), copy, text.is_empty()),
+				Utils.create_btn(tr("Paste"), paste, !DisplayServer.clipboard_has()),
+				Utils.create_btn(tr("Cut"), cut, text.is_empty()),
 			]
 			
 			add_child(context_popup)
@@ -114,11 +115,11 @@ func _gui_input(event: InputEvent) -> void:
 			accept_event()
 	else:
 		# Set these inputs as handled, so the default UndoRedo doesn't eat them.
-		if event.is_action_pressed(&"redo"):
+		if event.is_action_pressed("redo"):
 			if has_redo():
 				redo()
 			accept_event()
-		elif event.is_action_pressed(&"undo"):
+		elif event.is_action_pressed("undo"):
 			if has_undo():
 				undo()
 			accept_event()

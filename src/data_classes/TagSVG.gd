@@ -328,7 +328,7 @@ func optimize(apply_changes := true) -> bool:
 					if cmd_char in "Aa" and command.rx == command.ry and command.rot != 0:
 						can_optimize = true
 						if apply_changes:
-							pathdata.set_command_property(cmd_idx, &"rot", 0)
+							pathdata.set_command_property(cmd_idx, "rot", 0)
 				# Replace L with H or V when possible.
 				for cmd_idx in pathdata.get_command_count():
 					var command := pathdata.get_command(cmd_idx)
