@@ -131,7 +131,7 @@ msgid "Improper nesting."
 msgstr "Несъвместими тагове."
 
 msgid "Syntax error"
-msgstr ""
+msgstr "Синтактична грешка"
 
 msgid "Delete: Deletes the selected tags"
 msgstr "Delete: Изтрива избраните тагове"
@@ -263,8 +263,8 @@ msgstr "Форматът е празен. Единствено \"svg\" файл�
 msgid "OK"
 msgstr "Добре"
 
-msgid "Autoformatting options"
-msgstr "Опции за автоматично форматиране"
+msgid "Autoformatting"
+msgstr "Автоматично форматиране"
 
 msgid "Numbers"
 msgstr "Числа"
@@ -334,6 +334,15 @@ msgstr "Премахни асоциацията"
 
 msgid "Apply the matrix"
 msgstr "Приложи матрицата"
+
+msgid "Other"
+msgstr "Други"
+
+msgid "Optimize"
+msgstr "Оптимизирай"
+
+msgid "Any changes will apply immediately."
+msgstr "Промените ще бъдат нанесени веднага."
 
 msgid "Search color"
 msgstr "Търсене на цвят"
