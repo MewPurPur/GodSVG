@@ -15,6 +15,12 @@ msgstr ""
 msgid "translation-credits"
 msgstr ""
 
+msgid "Project Founder and Manager"
+msgstr ""
+
+msgid "Developers"
+msgstr ""
+
 msgid "Language"
 msgstr "Мова"
 
@@ -154,6 +160,12 @@ msgstr "Невідомий тег"
 msgid "Unknown Attribute"
 msgstr "Невідомий атрибут"
 
+msgid "No path data"
+msgstr ""
+
+msgid "No transforms"
+msgstr ""
+
 msgid "Import"
 msgstr "Імпорт"
 
@@ -187,7 +199,7 @@ msgstr "Додати новий тег"
 msgid "License"
 msgstr "Ліцензія"
 
-msgid "Third-party licenses"
+msgid "Third-party Licenses"
 msgstr "Ліцензії третіх осіб"
 
 msgid "Authors"
