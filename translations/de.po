@@ -354,7 +354,7 @@ msgid "Optimize"
 msgstr "Optimieren"
 
 msgid "Any changes will apply immediately."
-msgstr "Änderungen werden gleich eingesetzt."
+msgstr "Änderungen werden sofort wirksam."
 
 msgid "Search color"
 msgstr "Farbe suchen"
