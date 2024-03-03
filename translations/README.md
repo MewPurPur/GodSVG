@@ -2,7 +2,7 @@
 # The po format
 You can familiarize yourself with the po format [here](https://www.gnu.org/software/gettext/manual/html_node/PO-Files.html).
 # For programmers
-New translatable strings have to be added manually. This is done in the `Translations.pot` template file.
+New translatable strings have to be added manually. This is done in the `GodSVG.pot` template file.
 
 A single translatable string to add in the POT looks like this:
 ```po
@@ -21,13 +21,13 @@ sh update_po_files.sh
 # Contributing translations
 ## [Adding a new language](https://www.gnu.org/software/gettext/manual/html_node/Creating.html)
 ### With editor ([Poedit](https://poedit.net)):
-1. Open `Translations.pot` in Poedit
+1. Open `GodSVG.pot` in Poedit
 2. Click "Create new translation", choose the language and start adding your translation.
 3. Save the file and delete the `.mo`.
 4. Update project settings to include the new translation.
 5. Create a pull request with your changes.
 ### Without editor:
-1. Duplicate `Translations.pot` file and rename it to the locale code of the new language `<locale code>.po`.
+1. Duplicate `GodSVG.pot` file and rename it to the locale code of the new language `<locale code>.po`.
 2. Open it in a text editor, add the locale code in the info at the top (`"Language: <locale code>`) and insert translated strings in the `msgstr "<your translation>"` spots.
 3. Update project settings to include the new translation.
 4. Create a pull request with your changes.
