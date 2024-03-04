@@ -97,6 +97,9 @@ msgstr "Einrasten aktivieren"
 msgid "Snap size"
 msgstr "Einrastgröße"
 
+msgid "Reset to default"
+msgstr ""
+
 msgid "Copy All Text"
 msgstr "Text kopieren"
 
@@ -139,16 +142,20 @@ msgstr "Ungültige Formatierung."
 msgid "Syntax error"
 msgstr "Syntaxfehler"
 
-msgid "Delete: Deletes the selected tags"
+#, fuzzy
+msgid "Delete the selected tags"
 msgstr "Entf: Ausgewählte Elemente löschen"
 
-msgid "Ctrl+Down: Moves the selected tags down"
+#, fuzzy
+msgid "Move the selected tags down"
 msgstr "Strg+Unten: Ausgewählte Elemente nach unten verschieben"
 
-msgid "Ctrl+Up: Moves the selected tags up"
+#, fuzzy
+msgid "Move the selected tags up"
 msgstr "Strg+Hoch: Ausgewählte Elemente nach oben verschieben"
 
-msgid "Ctrl+D: Duplicates the selected tags"
+#, fuzzy
+msgid "Duplicate the selected tags"
 msgstr "Strg+D: Ausgewählte Elemente duplizieren"
 
 msgid "Unknown Tag"
@@ -204,6 +211,39 @@ msgstr "Autoren"
 
 msgid "Shortcuts"
 msgstr "Tastenkombinationen"
+
+msgid "Theme"
+msgstr ""
+
+msgid "SVG Text Colors"
+msgstr ""
+
+msgid "Symbol color"
+msgstr ""
+
+#, fuzzy
+msgid "Tag color"
+msgstr "Farbe hinzufügen"
+
+#, fuzzy
+msgid "Attribute color"
+msgstr "Farbe deaktivieren"
+
+#, fuzzy
+msgid "String color"
+msgstr "Farbe suchen"
+
+#, fuzzy
+msgid "Comment color"
+msgstr "Farbe löschen"
+
+#, fuzzy
+msgid "Text color"
+msgstr "Farbe löschen"
+
+#, fuzzy
+msgid "Error color"
+msgstr "Farbe suchen"
 
 msgid "Palettes"
 msgstr "Paletten"

@@ -57,13 +57,7 @@ func remove_overlay() -> void:
 
 
 func _input(event: InputEvent) -> void:
-	if event.is_action_pressed("import"):
-		get_viewport().set_input_as_handled()
-		SVG.open_import_dialog()
-	elif event.is_action_pressed("export"):
-		get_viewport().set_input_as_handled()
-		SVG.open_export_dialog()
-	elif event.is_action_pressed("save"):
+	if event.is_action_pressed("save"):
 		get_viewport().set_input_as_handled()
 		SVG.open_save_dialog("svg", SVG.native_file_save, SVG.save_svg_to_file)
 
