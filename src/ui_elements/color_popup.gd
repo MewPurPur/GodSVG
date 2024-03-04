@@ -23,9 +23,9 @@ var swatches_list: Array[ColorSwatchType] = []  # Updated manually.
 
 func _ready() -> void:
 	# Setup the switch mode button.
-	for theme_type in [&"normal", &"hover", &"pressed"]:
+	for theme_type in ["normal", "hover", "pressed"]:
 		var sb: StyleBoxFlat = switch_mode_button.get_theme_stylebox(theme_type,
-				&"TranslucentButton").duplicate()
+				"TranslucentButton").duplicate()
 		sb.corner_radius_top_left = 0
 		sb.corner_radius_top_right = 0
 		sb.corner_radius_bottom_left = 4
@@ -40,7 +40,7 @@ func _ready() -> void:
 func update_palettes(search_text := "") -> void:
 	for child in palettes_content_container.get_children():
 		child.queue_free()
-	search_field.placeholder_text = tr(&"Search color")
+	search_field.placeholder_text = tr("Search color")
 	var reserved_color_palette := ColorPalette.new("", [NamedColor.new("none")])
 	# TODO Gradients should be added here.
 	var displayed_palettes: Array[ColorPalette] = [reserved_color_palette]
@@ -59,12 +59,12 @@ func update_palettes(search_text := "") -> void:
 		if not palette.name.is_empty():
 			var palette_label := Label.new()
 			palette_label.text = palette.name
-			palette_label.add_theme_font_size_override(&"font_size", 15)
+			palette_label.add_theme_font_size_override("font_size", 15)
 			palette_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 			palette_container.add_child(palette_label)
 		
 		var swatch_container := HFlowContainer.new()
-		swatch_container.add_theme_constant_override(&"h_separation", 3)
+		swatch_container.add_theme_constant_override("h_separation", 3)
 		for named_color in colors_to_show:
 			var swatch := ColorSwatch.instantiate()
 			swatch.named_color = named_color
@@ -92,7 +92,7 @@ func pick_color(color: String) -> void:
 # Switching between palette mode and color picker mode.
 func _switch_mode() -> void:
 	palette_mode = not palette_mode
-	switch_mode_button.text = tr(&"Palettes" if palette_mode else &"Color Picker")
+	switch_mode_button.text = tr("Palettes" if palette_mode else "Color Picker")
 	color_picker_content.visible = not palette_mode
 	palettes_content.visible = palette_mode
 

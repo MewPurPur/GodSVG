@@ -57,39 +57,39 @@ func remove_overlay() -> void:
 
 
 func _input(event: InputEvent) -> void:
-	if event.is_action_pressed(&"import"):
+	if event.is_action_pressed("import"):
 		get_viewport().set_input_as_handled()
 		SVG.open_import_dialog()
-	elif event.is_action_pressed(&"export"):
+	elif event.is_action_pressed("export"):
 		get_viewport().set_input_as_handled()
 		SVG.open_export_dialog()
-	elif event.is_action_pressed(&"save"):
+	elif event.is_action_pressed("save"):
 		get_viewport().set_input_as_handled()
 		SVG.open_save_dialog("svg", SVG.native_file_save, SVG.save_svg_to_file)
 
 
 func _unhandled_input(event) -> void:
-	if event.is_action_pressed(&"redo"):
+	if event.is_action_pressed("redo"):
 		get_viewport().set_input_as_handled()
 		SVG.redo()
-	elif event.is_action_pressed(&"undo"):
+	elif event.is_action_pressed("undo"):
 		get_viewport().set_input_as_handled()
 		SVG.undo()
 	
 	if get_viewport().gui_is_dragging():
 		return
 	
-	if event.is_action_pressed(&"ui_cancel"):
+	if event.is_action_pressed("ui_cancel"):
 		Indications.clear_all_selections()
-	elif event.is_action_pressed(&"delete"):
+	elif event.is_action_pressed("delete"):
 		Indications.delete_selected()
-	elif event.is_action_pressed(&"move_up"):
+	elif event.is_action_pressed("move_up"):
 		Indications.move_up_selected()
-	elif event.is_action_pressed(&"move_down"):
+	elif event.is_action_pressed("move_down"):
 		Indications.move_down_selected()
-	elif event.is_action_pressed(&"duplicate"):
+	elif event.is_action_pressed("duplicate"):
 		Indications.duplicate_selected()
-	elif event.is_action_pressed(&"select_all"):
+	elif event.is_action_pressed("select_all"):
 		Indications.select_all()
 	elif event is InputEventKey:
 		Indications.respond_to_key_input(event)
@@ -124,9 +124,8 @@ func web_load_svg() -> void:
 		if extension.is_empty():
 			error = "The file extension is empty. Only \"svg\" files are supported."
 		else:
-			
 			error = tr(
-				&"\"{passed_extension}\" is a unsupported file extension. Only \"svg\" files are supported.").format({"passed_extension": extension})
+				"\"{passed_extension}\" is a unsupported file extension. Only \"svg\" files are supported.").format({"passed_extension": extension})
 		var alert_dialog := AlertDialog.instantiate()
 		HandlerGUI.add_overlay(alert_dialog)
 		alert_dialog.setup(error, "Alert!", 280.0)
@@ -134,7 +133,7 @@ func web_load_svg() -> void:
 
 func _import(svg_text: String, file_name: String):
 	SVG.apply_svg_text(svg_text)
-	GlobalSettings.modify_save_data(&"current_file_path", file_name)
+	GlobalSettings.modify_save_data("current_file_path", file_name)
 	JavaScriptBridge.eval("fileData = undefined;", true)
 
 

@@ -4,11 +4,11 @@ class_name PathHandle extends Handle
 var path_attribute: AttributePath
 var t_attribute: AttributeTransform
 var command_index: int
-var x_param: StringName
-var y_param: StringName
+var x_param: String
+var y_param: String
 
 func _init(id: PackedInt32Array, path_ref: Attribute, t_ref: AttributeTransform,
-command_idx: int, x_name := &"x", y_name := &"y") -> void:
+command_idx: int, x_name := "x", y_name := "y") -> void:
 	path_attribute = path_ref
 	t_attribute = t_ref
 	tid = id

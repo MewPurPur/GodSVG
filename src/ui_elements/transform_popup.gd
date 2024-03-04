@@ -94,12 +94,12 @@ func rebuild() -> void:
 				popup_transform_actions.bind(i, t_editor.more_button))
 		# Setup fields.
 		if t is AttributeTransform.TransformMatrix:
-			var field_x1 := create_mini_number_field(t, i, &"x1")
-			var field_x2 := create_mini_number_field(t, i, &"x2")
-			var field_y1 := create_mini_number_field(t, i, &"y1")
-			var field_y2 := create_mini_number_field(t, i, &"y2")
-			var field_o1 := create_mini_number_field(t, i, &"o1")
-			var field_o2 := create_mini_number_field(t, i, &"o2")
+			var field_x1 := create_mini_number_field(t, i, "x1")
+			var field_x2 := create_mini_number_field(t, i, "x2")
+			var field_y1 := create_mini_number_field(t, i, "y1")
+			var field_y2 := create_mini_number_field(t, i, "y2")
+			var field_o1 := create_mini_number_field(t, i, "o1")
+			var field_o2 := create_mini_number_field(t, i, "o2")
 			t_editor.fields = [field_x1, field_x2, field_y1, field_y2, field_o1, field_o1]\
 					as Array[BetterLineEdit]
 			var transform_fields := HBoxContainer.new()
@@ -115,8 +115,8 @@ func rebuild() -> void:
 			t_editor.transform_list.add_child(transform_fields)
 			t_editor.transform_list.add_child(transform_fields_additional)
 		elif t is AttributeTransform.TransformTranslate:
-			var field_x := create_mini_number_field(t, i, &"x")
-			var field_y := create_mini_number_field(t, i, &"y")
+			var field_x := create_mini_number_field(t, i, "x")
+			var field_y := create_mini_number_field(t, i, "y")
 			t_editor.fields = [field_x, field_y] as Array[BetterLineEdit]
 			var transform_fields := HBoxContainer.new()
 			transform_fields.alignment = BoxContainer.ALIGNMENT_CENTER
@@ -124,10 +124,10 @@ func rebuild() -> void:
 			transform_fields.add_child(field_y)
 			t_editor.transform_list.add_child(transform_fields)
 		elif t is AttributeTransform.TransformRotate:
-			var field_deg := create_mini_number_field(t, i, &"deg")
+			var field_deg := create_mini_number_field(t, i, "deg")
 			field_deg.mode = field_deg.Mode.ANGLE
-			var field_x := create_mini_number_field(t, i, &"x")
-			var field_y := create_mini_number_field(t, i, &"y")
+			var field_x := create_mini_number_field(t, i, "x")
+			var field_y := create_mini_number_field(t, i, "y")
 			t_editor.fields = [field_deg, field_x, field_y] as Array[BetterLineEdit]
 			var transform_fields := HBoxContainer.new()
 			transform_fields.alignment = BoxContainer.ALIGNMENT_CENTER
@@ -136,8 +136,8 @@ func rebuild() -> void:
 			transform_fields.add_child(field_y)
 			t_editor.transform_list.add_child(transform_fields)
 		elif t is AttributeTransform.TransformScale:
-			var field_x := create_mini_number_field(t, i, &"x")
-			var field_y := create_mini_number_field(t, i, &"y")
+			var field_x := create_mini_number_field(t, i, "x")
+			var field_y := create_mini_number_field(t, i, "y")
 			t_editor.fields = [field_x, field_y] as Array[BetterLineEdit]
 			var transform_fields := HBoxContainer.new()
 			transform_fields.alignment = BoxContainer.ALIGNMENT_CENTER
@@ -145,14 +145,14 @@ func rebuild() -> void:
 			transform_fields.add_child(field_y)
 			t_editor.transform_list.add_child(transform_fields)
 		elif t is AttributeTransform.TransformSkewX:
-			var field_x := create_mini_number_field(t, i, &"x")
+			var field_x := create_mini_number_field(t, i, "x")
 			t_editor.fields = [field_x] as Array[BetterLineEdit]
 			var transform_fields := HBoxContainer.new()
 			transform_fields.alignment = BoxContainer.ALIGNMENT_CENTER
 			transform_fields.add_child(field_x)
 			t_editor.transform_list.add_child(transform_fields)
 		elif t is AttributeTransform.TransformSkewY:
-			var field_y := create_mini_number_field(t, i, &"y")
+			var field_y := create_mini_number_field(t, i, "y")
 			t_editor.fields = [field_y] as Array[BetterLineEdit]
 			var transform_fields := HBoxContainer.new()
 			transform_fields.alignment = BoxContainer.ALIGNMENT_CENTER
@@ -165,7 +165,7 @@ func rebuild() -> void:
 	update_final_transform()
 
 func create_mini_number_field(transform: AttributeTransform.Transform, idx: int,
-property: StringName) -> BetterLineEdit:
+property: String) -> BetterLineEdit:
 	var field := MiniNumberField.instantiate()
 	field.custom_minimum_size.x = 44
 	field.set_value(transform.get(property))
@@ -174,7 +174,7 @@ property: StringName) -> BetterLineEdit:
 	return field
 
 
-func update_value(new_value: float, idx: int, property: StringName) -> void:
+func update_value(new_value: float, idx: int, property: String) -> void:
 	UR.create_action("")
 	UR.add_do_method(attribute_ref.set_transform_property.bind(idx, property, new_value))
 	UR.add_do_method(rebuild)
@@ -222,13 +222,13 @@ func update_final_transform() -> void:
 
 func popup_transform_actions(idx: int, control: Control) -> void:
 	var btn_array: Array[Button] = []
-	btn_array.append(Utils.create_btn(tr(&"Insert After"),
+	btn_array.append(Utils.create_btn(tr("Insert After"),
 			popup_new_transform_context.bind(idx + 1, control), false,
 			load("res://visual/icons/InsertAfter.svg")))
-	btn_array.append(Utils.create_btn(tr(&"Insert Before"),
+	btn_array.append(Utils.create_btn(tr("Insert Before"),
 			popup_new_transform_context.bind(idx, control), false,
 			load("res://visual/icons/InsertBefore.svg")))
-	btn_array.append(Utils.create_btn(tr(&"Delete"), delete_transform.bind(idx), false,
+	btn_array.append(Utils.create_btn(tr("Delete"), delete_transform.bind(idx), false,
 			load("res://visual/icons/Delete.svg")))
 	
 	var context_popup := ContextPopup.instantiate()
@@ -245,7 +245,7 @@ func add_new_transform_context(idx: int) -> ContextPopupType:
 	for transform in ["matrix", "translate", "rotate", "scale", "skewX", "skewY"]:
 		var btn := Utils.create_btn(transform, insert_transform.bind(idx, transform),
 				false, icons_dict[transform])
-		btn.add_theme_font_override(&"font", code_font)
+		btn.add_theme_font_override("font", code_font)
 		btn_array.append(btn)
 	
 	var transform_context := ContextPopup.instantiate()
@@ -258,10 +258,10 @@ func _on_popup_hide() -> void:
 
 
 func _input(event: InputEvent) -> void:
-	if event.is_action_pressed(&"redo"):
+	if event.is_action_pressed("redo"):
 		if UR.has_redo():
 			UR.redo()
-	elif event.is_action_pressed(&"undo"):
+	elif event.is_action_pressed("undo"):
 		if UR.has_undo():
 			UR.undo()
 

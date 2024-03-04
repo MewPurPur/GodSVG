@@ -43,12 +43,12 @@ func update_attributes(configure_coupling := false) -> void:
 func _on_unknown_changed() -> void:
 	if GlobalSettings.save_data.viewbox_coupling and (SVG.root_tag.viewbox !=\
 	Rect2(Vector2.ZERO, SVG.root_tag.get_size())):
-		GlobalSettings.modify_save_data(&"viewbox_coupling", false)
+		GlobalSettings.modify_save_data("viewbox_coupling", false)
 	update_attributes(true)
 
 
 func _on_couple_button_toggled(toggled_on: bool) -> void:
-	GlobalSettings.modify_save_data(&"viewbox_coupling", toggled_on)
+	GlobalSettings.modify_save_data("viewbox_coupling", toggled_on)
 	update_coupling_config()
 
 func update_coupling_config() -> void:

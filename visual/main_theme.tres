@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=85 format=3 uid="uid://der6fnkliqqto"]
+[gd_resource type="Theme" load_steps=86 format=3 uid="uid://der6fnkliqqto"]
 
 [ext_resource type="Texture2D" uid="uid://wdrpwa7gwmg" path="res://visual/icons/theme/GuiBoxChecked.svg" id="1_agkhv"]
 [ext_resource type="Texture2D" uid="uid://d07xfjdtgtvop" path="res://visual/icons/theme/GuiBoxCheckedDisabled.svg" id="2_kfk3n"]
@@ -151,6 +151,17 @@ content_margin_left = 4.0
 content_margin_top = 2.0
 content_margin_right = 4.0
 content_margin_bottom = 2.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pq84v"]
+content_margin_left = 4.0
+content_margin_top = 2.0
+content_margin_right = 4.0
+content_margin_bottom = 2.0
+bg_color = Color(0.066, 0.066, 0.1, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bi87s"]
 content_margin_left = 2.0
@@ -801,6 +812,8 @@ CheckBox/styles/normal = SubResource("StyleBoxEmpty_kja1p")
 CheckBox/styles/pressed = SubResource("StyleBoxEmpty_qwstu")
 CheckButton/icons/checked = ExtResource("3_ggukc")
 CheckButton/icons/unchecked = ExtResource("4_w667w")
+DarkPanel/base_type = &"PanelContainer"
+DarkPanel/styles/panel = SubResource("StyleBoxFlat_pq84v")
 FileDialog/icons/parent_folder = ExtResource("4_1t13q")
 FileDialog/icons/reload = ExtResource("4_8qjet")
 FileDialog/icons/toggle_hidden = ExtResource("4_j0oku")

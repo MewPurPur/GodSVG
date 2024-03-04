@@ -26,9 +26,9 @@ func _ready() -> void:
 	for val in values:
 		max_length = maxi(val.length(), max_length)
 		
-	line_edit.custom_minimum_size.x = line_edit.get_theme_font(&"font").get_string_size(
+	line_edit.custom_minimum_size.x = line_edit.get_theme_font("font").get_string_size(
 			"m".repeat(max_length + 1), HORIZONTAL_ALIGNMENT_LEFT, -1,
-			line_edit.get_theme_font_size(&"font_size")).x
+			line_edit.get_theme_font_size("font_size")).x
 	line_edit.size.x = 0
 
 func _on_button_pressed() -> void:
@@ -50,12 +50,12 @@ func _on_text_submitted(new_text: String) -> void:
 		value = new_text
 	else:
 		line_edit.text = value
-	line_edit.remove_theme_color_override(&"font_color")
+	line_edit.remove_theme_color_override("font_color")
 
 
 func _on_text_changed(new_text: String) -> void:
 	if restricted:
 		if new_text in values:
-			line_edit.add_theme_color_override(&"font_color", Color(0.6, 1.0, 0.6))
+			line_edit.add_theme_color_override("font_color", Color(0.6, 1.0, 0.6))
 		else:
-			line_edit.add_theme_color_override(&"font_color", Color(1.0, 0.6, 0.6))
+			line_edit.add_theme_color_override("font_color", Color(1.0, 0.6, 0.6))

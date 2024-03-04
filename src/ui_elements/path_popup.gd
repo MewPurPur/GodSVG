@@ -34,8 +34,8 @@ func disable_invalid(cmd_chars: Array) -> void:
 
 func force_relativity(relative: bool) -> void:
 	relative_toggle.hide()
-	vbox.add_theme_constant_override(&"separation", 0)
-	top_margin.add_theme_constant_override(&"margin_top", 0)
+	vbox.add_theme_constant_override("separation", 0)
+	top_margin.add_theme_constant_override("margin_top", 0)
 	for command_button in command_container.get_children():
 		if relative:
 			command_button.command_char = command_button.command_char.to_lower()
