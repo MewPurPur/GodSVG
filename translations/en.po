@@ -95,6 +95,9 @@ msgstr ""
 msgid "Snap size"
 msgstr ""
 
+msgid "Reset to default"
+msgstr ""
+
 msgid "Copy All Text"
 msgstr ""
 
@@ -137,16 +140,16 @@ msgstr ""
 msgid "Syntax error"
 msgstr ""
 
-msgid "Delete: Deletes the selected tags"
+msgid "Delete the selected tags"
 msgstr ""
 
-msgid "Ctrl+Down: Moves the selected tags down"
+msgid "Move the selected tags down"
 msgstr ""
 
-msgid "Ctrl+Up: Moves the selected tags up"
+msgid "Move the selected tags up"
 msgstr ""
 
-msgid "Ctrl+D: Duplicates the selected tags"
+msgid "Duplicate the selected tags"
 msgstr ""
 
 msgid "Unknown Tag"
@@ -201,6 +204,33 @@ msgid "Authors"
 msgstr ""
 
 msgid "Shortcuts"
+msgstr ""
+
+msgid "Theme"
+msgstr ""
+
+msgid "SVG Text Colors"
+msgstr ""
+
+msgid "Symbol color"
+msgstr ""
+
+msgid "Tag color"
+msgstr ""
+
+msgid "Attribute color"
+msgstr ""
+
+msgid "String color"
+msgstr ""
+
+msgid "Comment color"
+msgstr ""
+
+msgid "Text color"
+msgstr ""
+
+msgid "Error color"
 msgstr ""
 
 msgid "Palettes"
