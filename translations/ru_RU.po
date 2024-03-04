@@ -99,6 +99,9 @@ msgstr "Включить привязку"
 msgid "Snap size"
 msgstr "Размер привязки"
 
+msgid "Reset to default"
+msgstr ""
+
 msgid "Copy All Text"
 msgstr "Скопировать весь текст"
 
@@ -141,16 +144,20 @@ msgstr "Не правильное вкладывание."
 msgid "Syntax error"
 msgstr ""
 
-msgid "Delete: Deletes the selected tags"
+#, fuzzy
+msgid "Delete the selected tags"
 msgstr "Delete: Удалить все выбранные тэги"
 
-msgid "Ctrl+Down: Moves the selected tags down"
+#, fuzzy
+msgid "Move the selected tags down"
 msgstr "Ctrl+Down: Подвинуть вниз все выбранные тэги"
 
-msgid "Ctrl+Up: Moves the selected tags up"
+#, fuzzy
+msgid "Move the selected tags up"
 msgstr "Ctrl+Up: Подвинуть вверх все выбранные тэги"
 
-msgid "Ctrl+D: Duplicates the selected tags"
+#, fuzzy
+msgid "Duplicate the selected tags"
 msgstr "Ctrl+D: Дублировать выбранные тэги"
 
 msgid "Unknown Tag"
@@ -206,6 +213,38 @@ msgstr "Автори"
 
 msgid "Shortcuts"
 msgstr "Сочетания клавиш"
+
+msgid "Theme"
+msgstr ""
+
+msgid "SVG Text Colors"
+msgstr ""
+
+msgid "Symbol color"
+msgstr ""
+
+#, fuzzy
+msgid "Tag color"
+msgstr "Добавить цвет"
+
+#, fuzzy
+msgid "Attribute color"
+msgstr "Деактивировать цвет"
+
+msgid "String color"
+msgstr ""
+
+#, fuzzy
+msgid "Comment color"
+msgstr "Удалить цвет"
+
+#, fuzzy
+msgid "Text color"
+msgstr "Удалить цвет"
+
+#, fuzzy
+msgid "Error color"
+msgstr "Добавить цвет"
 
 msgid "Palettes"
 msgstr "Палитры"

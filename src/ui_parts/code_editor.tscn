@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://cr1fdlmbknnko"]
+[gd_scene load_steps=17 format=3 uid="uid://cr1fdlmbknnko"]
 
 [ext_resource type="Script" path="res://src/ui_parts/code_editor.gd" id="1_nffk0"]
 [ext_resource type="Texture2D" uid="uid://c5kgvxffw35gi" path="res://visual/icons/Compress.svg" id="2_33tgq"]
@@ -31,6 +31,30 @@ corner_radius_top_left = 3
 corner_radius_top_right = 3
 corner_radius_bottom_right = 3
 corner_radius_bottom_left = 3
+
+[sub_resource type="InputEventKey" id="InputEventKey_821kh"]
+device = -1
+command_or_control_autoremap = true
+keycode = 73
+unicode = 105
+
+[sub_resource type="InputEventKey" id="InputEventKey_k5x08"]
+device = -1
+command_or_control_autoremap = true
+keycode = 79
+unicode = 111
+
+[sub_resource type="Shortcut" id="Shortcut_2nqbo"]
+events = [SubResource("InputEventKey_821kh"), SubResource("InputEventKey_k5x08")]
+
+[sub_resource type="InputEventKey" id="InputEventKey_cbc8d"]
+device = -1
+command_or_control_autoremap = true
+keycode = 69
+unicode = 101
+
+[sub_resource type="Shortcut" id="Shortcut_6w18e"]
+events = [SubResource("InputEventKey_cbc8d")]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1i105"]
 draw_center = false
@@ -116,6 +140,7 @@ tooltip_text = "Import"
 focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_type_variation = &"IconButton"
+shortcut = SubResource("Shortcut_2nqbo")
 icon = ExtResource("4_cuhac")
 
 [node name="ExportButton" type="Button" parent="PanelContainer/CodeButtons/MetaActions"]
@@ -124,6 +149,7 @@ tooltip_text = "Export"
 focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_type_variation = &"IconButton"
+shortcut = SubResource("Shortcut_6w18e")
 icon = ExtResource("5_pgurh")
 
 [node name="ScriptEditor" type="VBoxContainer" parent="."]

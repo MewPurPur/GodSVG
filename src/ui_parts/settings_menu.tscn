@@ -75,7 +75,6 @@ focus_mode = 0
 theme_type_variation = &"FlatButton"
 toggle_mode = true
 button_group = SubResource("ButtonGroup_f7wyd")
-text = "Autoformatting"
 alignment = 0
 text_overrun_behavior = 3
 
@@ -85,17 +84,24 @@ focus_mode = 0
 theme_type_variation = &"FlatButton"
 toggle_mode = true
 button_group = SubResource("ButtonGroup_f7wyd")
-text = "Palettes"
 alignment = 0
 text_overrun_behavior = 3
 
-[node name="Тheme" type="Button" parent="VBoxContainer/HBoxContainer/ContentPicker/ScrollContainer/Tabs"]
+[node name="Shortcuts" type="Button" parent="VBoxContainer/HBoxContainer/ContentPicker/ScrollContainer/Tabs"]
 layout_mode = 2
 focus_mode = 0
 theme_type_variation = &"FlatButton"
 toggle_mode = true
 button_group = SubResource("ButtonGroup_f7wyd")
-text = "Theme"
+alignment = 0
+text_overrun_behavior = 3
+
+[node name="Theme" type="Button" parent="VBoxContainer/HBoxContainer/ContentPicker/ScrollContainer/Tabs"]
+layout_mode = 2
+focus_mode = 0
+theme_type_variation = &"FlatButton"
+toggle_mode = true
+button_group = SubResource("ButtonGroup_f7wyd")
 alignment = 0
 text_overrun_behavior = 3
 
@@ -105,7 +111,6 @@ focus_mode = 0
 theme_type_variation = &"FlatButton"
 toggle_mode = true
 button_group = SubResource("ButtonGroup_f7wyd")
-text = "Other"
 alignment = 0
 text_overrun_behavior = 3
 
@@ -289,6 +294,17 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 4
+
+[node name="Shortcuts" type="ScrollContainer" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer"]
+visible = false
+layout_mode = 2
+horizontal_scroll_mode = 0
+
+[node name="Configurable" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Shortcuts"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 3
 
 [node name="Theme" type="ScrollContainer" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer"]
 custom_minimum_size = Vector2(0, 120)
