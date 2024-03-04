@@ -34,10 +34,10 @@ func _on_settings_pressed() -> void:
 
 func _on_visuals_button_pressed() -> void:
 	var btn_arr: Array[Button] = [
-		Utils.create_checkbox(tr(&"Show Grid"), toggle_grid_visuals, grid_visuals.visible),
-		Utils.create_checkbox(tr(&"Show Handles"), toggle_handles_visuals,
+		Utils.create_checkbox(tr("Show Grid"), toggle_grid_visuals, grid_visuals.visible),
+		Utils.create_checkbox(tr("Show Handles"), toggle_handles_visuals,
 				controls.visible),
-		Utils.create_checkbox(tr(&"Rasterized SVG"), toggle_rasterization,
+		Utils.create_checkbox(tr("Rasterized SVG"), toggle_rasterization,
 				viewport.display_texture.rasterized),
 	]
 	
@@ -48,14 +48,14 @@ func _on_visuals_button_pressed() -> void:
 			get_viewport())
 
 func _on_more_options_pressed() -> void:
-	var about_btn := Utils.create_btn(tr(&"About…"), open_about, false,
+	var about_btn := Utils.create_btn(tr("About…"), open_about, false,
 			load("res://visual/icon.svg"))
 	about_btn.expand_icon = true
 	var buttons_arr: Array[Button] = [
-		Utils.create_btn(tr(&"GodSVG Repository"), open_godsvg_repo, false,
+		Utils.create_btn(tr("GodSVG Repository"), open_godsvg_repo, false,
 				load("res://visual/icons/Link.svg")),
 		about_btn,
-		Utils.create_btn(tr(&"Donate (Github)"), open_sponsor, false,
+		Utils.create_btn(tr("Donate (Github)"), open_sponsor, false,
 				load("res://visual/icons/Heart.svg")),
 	]
 	
@@ -86,11 +86,11 @@ func toggle_rasterization() -> void:
 
 
 func _on_snap_button_toggled(toggled_on: bool) -> void:
-	GlobalSettings.modify_save_data(&"snap",
+	GlobalSettings.modify_save_data("snap",
 			absf(GlobalSettings.save_data.snap) * (1 if toggled_on else -1))
 	update_snap_config()
 
 func _on_number_edit_value_changed(new_value: float) -> void:
-	GlobalSettings.modify_save_data(&"snap",
+	GlobalSettings.modify_save_data("snap",
 			new_value * signf(GlobalSettings.save_data.snap))
 	update_snap_config()

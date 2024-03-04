@@ -16,19 +16,19 @@ func toggle_relative() -> void:
 	if relative:
 		relative = false
 		command_char = command_char.to_upper()
-		for property in [&"x", &"x1", &"x2"]:
+		for property in ["x", "x1", "x2"]:
 			if property in self:
 				set(property, start.x + get(property))
-		for property in [&"y", &"y1", &"y2"]:
+		for property in ["y", "y1", "y2"]:
 			if property in self:
 				set(property, start.y + get(property))
 	else:
 		relative = true
 		command_char = command_char.to_lower()
-		for property in [&"x", &"x1", &"x2"]:
+		for property in ["x", "x1", "x2"]:
 			if property in self:
 				set(property, get(property) - start.x)
-		for property in [&"y", &"y1", &"y2"]:
+		for property in ["y", "y1", "y2"]:
 			if property in self:
 				set(property, get(property) - start.y)
 

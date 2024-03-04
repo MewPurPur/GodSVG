@@ -14,7 +14,7 @@ var named_color: NamedColor
 
 func _ready() -> void:
 	if type == Type.ADD_COLOR:
-		tooltip_text = tr(&"Add color")
+		tooltip_text = tr("Add color")
 
 func _draw() -> void:
 	if type == Type.ADD_COLOR:
@@ -38,7 +38,7 @@ func _make_custom_tooltip(_for_text: String) -> Object:
 		rtl.autowrap_mode = TextServer.AUTOWRAP_OFF
 		rtl.fit_content = true
 		rtl.bbcode_enabled = true
-		rtl.add_theme_font_override(&"mono_font", code_font)
+		rtl.add_theme_font_override("mono_font", code_font)
 		# Set up the text.
 		if not named_color.name.is_empty():
 			rtl.add_text(named_color.name)

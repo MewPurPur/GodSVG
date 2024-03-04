@@ -29,8 +29,8 @@ static func get_file_name(string: String) -> String:
 # Resize the control to be resized automatically to its text width, up to a maximum.
 # The property name defaults account for most controls that may need to use this.
 static func set_max_text_width(control: Control, max_width: float, buffer: float,
-text_property := &"text", font_property := &"font",
-font_size_property := &"font_size") -> void:
+text_property := "text", font_property := "font",
+font_size_property := "font_size") -> void:
 	control.custom_minimum_size.x = minf(control.get_theme_font(
 			font_property).get_string_size(control.get(text_property),
 			HORIZONTAL_ALIGNMENT_FILL, -1,
@@ -194,7 +194,7 @@ static func is_event_drag_end(event: InputEvent) -> bool:
 			event.is_released()
 
 static func is_event_cancel(event: InputEvent) -> bool:
-	return event.is_action_pressed(&"ui_cancel") or\
+	return event.is_action_pressed("ui_cancel") or\
 			event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT
 
 

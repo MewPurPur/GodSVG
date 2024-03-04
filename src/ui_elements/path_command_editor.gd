@@ -27,7 +27,7 @@ var active := false
 var fields: Array[Control] = []
 
 
-func update_value(new_value: float, property: StringName) -> void:
+func update_value(new_value: float, property: String) -> void:
 	get_path_attribute().set_command_property(cmd_idx, property, new_value)
 
 func _on_relative_button_pressed() -> void:
@@ -123,67 +123,67 @@ func _draw() -> void:
 		match cmd_char.to_upper():
 			"A":
 				# Because of the flag editors, the procedure is as simple as for the rest.
-				var stylebox := get_theme_stylebox(&"normal", &"MiniLineEdit")
-				var font_size := get_theme_font_size(&"font_size", &"MiniLineEdit")
-				var font_color := get_theme_color(&"font_outline_color", &"MiniLineEdit")
+				var stylebox := get_theme_stylebox("normal", "MiniLineEdit")
+				var font_size := get_theme_font_size("font_size", "MiniLineEdit")
+				var font_color := get_theme_color("font_outline_color", "MiniLineEdit")
 				var rect := Rect2(Vector2(25, 2), Vector2(44, 18))
-				draw_numfield(rect, stylebox, &"rx", font_size, font_color)
+				draw_numfield(rect, stylebox, "rx", font_size, font_color)
 				rect.position.x = rect.end.x + 3
-				draw_numfield(rect, stylebox, &"ry", font_size, font_color)
+				draw_numfield(rect, stylebox, "ry", font_size, font_color)
 				rect.position.x = rect.end.x + 4
-				draw_numfield(rect, stylebox, &"rot", font_size, font_color)
+				draw_numfield(rect, stylebox, "rot", font_size, font_color)
 				rect.position.x = rect.end.x + 4
 				rect.size.x = 19
 				var flag_field := FlagField.instantiate()
-				draw_style_box(flag_field.get_theme_stylebox(&"normal" if\
-						path_command.large_arc_flag == 0 else &"pressed"), rect)
+				draw_style_box(flag_field.get_theme_stylebox("normal" if\
+						path_command.large_arc_flag == 0 else "pressed"), rect)
 				draw_string(code_font, rect.position + Vector2(5, 14),
 						String.num_uint64(path_command.large_arc_flag),
 						HORIZONTAL_ALIGNMENT_LEFT, rect.size.x, 14,
-						flag_field.get_theme_color(&"font_color" if\
-						path_command.large_arc_flag == 0 else &"font_pressed_color"))
+						flag_field.get_theme_color("font_color" if\
+						path_command.large_arc_flag == 0 else "font_pressed_color"))
 				rect.position.x = rect.end.x + 4
-				draw_style_box(flag_field.get_theme_stylebox(&"normal" if\
-						path_command.sweep_flag == 0 else &"pressed"), rect)
+				draw_style_box(flag_field.get_theme_stylebox("normal" if\
+						path_command.sweep_flag == 0 else "pressed"), rect)
 				draw_string(code_font, rect.position + Vector2(5, 14),
 						String.num_uint64(path_command.sweep_flag),
 						HORIZONTAL_ALIGNMENT_LEFT, rect.size.x, 14,
-						flag_field.get_theme_color(&"font_color" if\
-						path_command.sweep_flag == 0 else &"font_pressed_color"))
+						flag_field.get_theme_color("font_color" if\
+						path_command.sweep_flag == 0 else "font_pressed_color"))
 				flag_field.free()
 				rect.position.x = rect.end.x + 4
 				rect.size.x = 44
-				draw_numfield(rect, stylebox, &"x", font_size, font_color)
+				draw_numfield(rect, stylebox, "x", font_size, font_color)
 				rect.position.x = rect.end.x + 3
-				draw_numfield(rect, stylebox, &"y", font_size, font_color)
-			"C": draw_numfield_arr([3, 4, 3, 4, 3], [&"x1", &"y1", &"x2", &"y2", &"x", &"y"])
-			"Q": draw_numfield_arr([3, 4, 3], [&"x1", &"y1", &"x", &"y"])
-			"S": draw_numfield_arr([3, 4, 3], [&"x2", &"y2", &"x", &"y"])
-			"M", "L", "T": draw_numfield_arr([3], [&"x", &"y"])
+				draw_numfield(rect, stylebox, "y", font_size, font_color)
+			"C": draw_numfield_arr([3, 4, 3, 4, 3], ["x1", "y1", "x2", "y2", "x", "y"])
+			"Q": draw_numfield_arr([3, 4, 3], ["x1", "y1", "x", "y"])
+			"S": draw_numfield_arr([3, 4, 3], ["x2", "y2", "x", "y"])
+			"M", "L", "T": draw_numfield_arr([3], ["x", "y"])
 			"H":
-				var stylebox := get_theme_stylebox(&"normal", &"MiniLineEdit")
-				var font_size := get_theme_font_size(&"font_size", &"MiniLineEdit")
-				var font_color := get_theme_color(&"font_outline_color", &"MiniLineEdit")
+				var stylebox := get_theme_stylebox("normal", "MiniLineEdit")
+				var font_size := get_theme_font_size("font_size", "MiniLineEdit")
+				var font_color := get_theme_color("font_outline_color", "MiniLineEdit")
 				var rect := Rect2(Vector2(25, 2), Vector2(44, 18))
-				draw_numfield(rect, stylebox, &"x", font_size, font_color)
+				draw_numfield(rect, stylebox, "x", font_size, font_color)
 			"V":
-				var stylebox := get_theme_stylebox(&"normal", &"MiniLineEdit")
-				var font_size := get_theme_font_size(&"font_size", &"MiniLineEdit")
-				var font_color := get_theme_color(&"font_outline_color", &"MiniLineEdit")
+				var stylebox := get_theme_stylebox("normal", "MiniLineEdit")
+				var font_size := get_theme_font_size("font_size", "MiniLineEdit")
+				var font_color := get_theme_color("font_outline_color", "MiniLineEdit")
 				var rect := Rect2(Vector2(25, 2), Vector2(44, 18))
-				draw_numfield(rect, stylebox, &"y", font_size, font_color)
+				draw_numfield(rect, stylebox, "y", font_size, font_color)
 
-func draw_numfield(rect: Rect2, stylebox: StyleBoxFlat, property: StringName,\
+func draw_numfield(rect: Rect2, stylebox: StyleBoxFlat, property: String,\
 font_size: int, font_color: Color) -> void:
 	draw_style_box(stylebox, rect)
 	draw_string(code_font, rect.position + Vector2(4, 13),
 			NumberArrayParser.basic_num_to_text(path_command.get(property)),
 			HORIZONTAL_ALIGNMENT_LEFT, rect.size.x - 4, font_size, font_color)
 
-func draw_numfield_arr(spacings: Array, names: Array[StringName]) -> void:
-	var stylebox := get_theme_stylebox(&"normal", &"MiniLineEdit")
-	var font_size := get_theme_font_size(&"font_size", &"MiniLineEdit")
-	var font_color := get_theme_color(&"font_outline_color", &"MiniLineEdit")
+func draw_numfield_arr(spacings: Array, names: Array[String]) -> void:
+	var stylebox := get_theme_stylebox("normal", "MiniLineEdit")
+	var font_size := get_theme_font_size("font_size", "MiniLineEdit")
+	var font_color := get_theme_color("font_outline_color", "MiniLineEdit")
 	var rect := Rect2(Vector2(25, 2), Vector2(44, 18))
 	draw_numfield(rect, stylebox, names[0], font_size, font_color)
 	for i in spacings.size():
@@ -219,21 +219,21 @@ func activate() -> void:
 	relative_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	relative_button.text = cmd_char
 	relative_button.begin_bulk_theme_override()
-	relative_button.add_theme_font_override(&"font", code_font)
-	relative_button.add_theme_font_size_override(&"font_size", 13)
-	relative_button.add_theme_color_override(&"font_color", Color(1, 1, 1))
+	relative_button.add_theme_font_override("font", code_font)
+	relative_button.add_theme_font_size_override("font_size", 13)
+	relative_button.add_theme_color_override("font_color", Color(1, 1, 1))
 	if Utils.is_string_upper(cmd_char):
 		relative_button.tooltip_text = "%s (%s)" %\
-				[Utils.path_command_char_dict[cmd_char.to_upper()], tr(&"Absolute")]
-		relative_button.add_theme_stylebox_override(&"normal", absolute_button_normal)
-		relative_button.add_theme_stylebox_override(&"hover", absolute_button_hovered)
-		relative_button.add_theme_stylebox_override(&"pressed", absolute_button_pressed)
+				[Utils.path_command_char_dict[cmd_char.to_upper()], tr("Absolute")]
+		relative_button.add_theme_stylebox_override("normal", absolute_button_normal)
+		relative_button.add_theme_stylebox_override("hover", absolute_button_hovered)
+		relative_button.add_theme_stylebox_override("pressed", absolute_button_pressed)
 	else:
 		relative_button.tooltip_text = "%s (%s)" %\
-				[Utils.path_command_char_dict[cmd_char.to_upper()], tr(&"Relative")]
-		relative_button.add_theme_stylebox_override(&"normal", relative_button_normal)
-		relative_button.add_theme_stylebox_override(&"hover", relative_button_hovered)
-		relative_button.add_theme_stylebox_override(&"pressed", relative_button_pressed)
+				[Utils.path_command_char_dict[cmd_char.to_upper()], tr("Relative")]
+		relative_button.add_theme_stylebox_override("normal", relative_button_normal)
+		relative_button.add_theme_stylebox_override("hover", relative_button_hovered)
+		relative_button.add_theme_stylebox_override("pressed", relative_button_pressed)
 	relative_button.end_bulk_theme_override()
 	add_child(relative_button)
 	relative_button.pressed.connect(_on_relative_button_pressed)
@@ -243,7 +243,7 @@ func activate() -> void:
 	# Setup the action button.
 	action_button = Button.new()
 	action_button.icon = more_icon
-	action_button.theme_type_variation = &"FlatButton"
+	action_button.theme_type_variation = "FlatButton"
 	action_button.focus_mode = Control.FOCUS_NONE
 	action_button.mouse_filter = Control.MOUSE_FILTER_PASS
 	action_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
@@ -290,11 +290,10 @@ func activate() -> void:
 
 func setup_fields(spacings: Array, names: Array) -> void:
 	for i in fields.size():
-		var property_string: String = names[i]
-		var property_stringname := StringName(property_string)
-		fields[i].set_value(path_command.get(property_stringname))
-		fields[i].tooltip_text = property_string
-		fields[i].value_changed.connect(update_value.bind(property_stringname))
+		var property_str: String = names[i]
+		fields[i].set_value(path_command.get(property_str))
+		fields[i].tooltip_text = property_str
+		fields[i].value_changed.connect(update_value.bind(property_str))
 		add_child(fields[i])
 		fields[i].position.y = 2
 	

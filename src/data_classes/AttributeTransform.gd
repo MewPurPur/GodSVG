@@ -108,7 +108,7 @@ sync_mode := SyncMode.LOUD) -> void:
 	super.set_value(TransformListParser.transform_list_to_text(new_transform_list),
 			sync_mode)
 
-func set_transform_property(idx: int, property: StringName, new_value: float,
+func set_transform_property(idx: int, property: String, new_value: float,
 sync_mode := SyncMode.LOUD) -> void:
 	if _transform_list[idx].get(property) != new_value or sync_mode == SyncMode.FINAL:
 		_transform_list[idx].set(property, new_value)

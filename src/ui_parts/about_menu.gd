@@ -6,7 +6,7 @@ extends PanelContainer
 
 func _ready() -> void:
 	version_label.text = "GodSVG " + ProjectSettings.get_setting(
-			&"application/config/version", "Version information unavailable")
+			"application/config/version", "Version information unavailable")
 	project_founder_list.items = AppInfo.project_founder_and_manager
 	project_founder_list.setup()
 	authors_list.items = AppInfo.authors

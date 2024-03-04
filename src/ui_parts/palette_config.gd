@@ -78,9 +78,9 @@ func _on_name_edit_text_changed(new_text: String) -> void:
 	for palette in GlobalSettings.get_palettes():
 		names.append(palette.name)
 	if new_text in names and new_text != current_palette.name:
-		name_edit.add_theme_color_override(&"font_color", Color(1.0, 0.6, 0.6))
+		name_edit.add_theme_color_override("font_color", Color(1.0, 0.6, 0.6))
 	else:
-		name_edit.add_theme_color_override(&"font_color", Color(0.6, 1.0, 0.6))
+		name_edit.add_theme_color_override("font_color", Color(0.6, 1.0, 0.6))
 
 func _on_name_edit_text_submitted(new_name: String) -> void:
 	new_name = new_name.strip_edges()
@@ -107,11 +107,11 @@ func popup_add_color() -> void:
 
 func set_label_text(new_text: String) -> void:
 	if new_text.is_empty():
-		palette_label.text = tr(&"Unnamed")
-		palette_label.add_theme_color_override(&"font_color", Color(1.0, 0.5, 0.5))
+		palette_label.text = tr("Unnamed")
+		palette_label.add_theme_color_override("font_color", Color(1.0, 0.5, 0.5))
 	else:
 		palette_label.text = new_text
-		palette_label.remove_theme_color_override(&"font_color")
+		palette_label.remove_theme_color_override("font_color")
 
 func delete_color(named_color: NamedColor) -> void:
 	current_palette.named_colors.erase(named_color)  # I hope this works.
@@ -141,14 +141,14 @@ func _on_action_button_pressed() -> void:
 		if GlobalSettings.get_palettes()[idx].name == current_palette.name:
 			palette_idx = idx
 	
-	var btn_arr: Array[Button] = [Utils.create_btn(tr(&"Delete"),
+	var btn_arr: Array[Button] = [Utils.create_btn(tr("Delete"),
 			delete.bind(palette_idx), false, load("res://visual/icons/Delete.svg"))]
 	
 	if palette_idx >= 1:
-		btn_arr.append(Utils.create_btn(tr(&"Move Up"), move_up.bind(palette_idx),
+		btn_arr.append(Utils.create_btn(tr("Move Up"), move_up.bind(palette_idx),
 				false, load("res://visual/icons/MoveUp.svg")))
 	if palette_idx < GlobalSettings.get_palettes().size() - 1:
-		btn_arr.append(Utils.create_btn(tr(&"Move Down"), move_down.bind(palette_idx),
+		btn_arr.append(Utils.create_btn(tr("Move Down"), move_down.bind(palette_idx),
 				false, load("res://visual/icons/MoveDown.svg")))
 	
 	var context_popup := ContextPopup.instantiate()

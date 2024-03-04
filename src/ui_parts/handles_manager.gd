@@ -125,11 +125,11 @@ t_attrib: AttributeTransform) -> Array[Handle]:
 		if not path_command.command_char in "Zz":
 			path_handles.append(PathHandle.new(tid, data_attrib, t_attrib, idx))
 			if path_command.command_char in "CcQq":
-				var tangent := PathHandle.new(tid, data_attrib, t_attrib, idx, &"x1", &"y1")
+				var tangent := PathHandle.new(tid, data_attrib, t_attrib, idx, "x1", "y1")
 				tangent.display_mode = Handle.Display.SMALL
 				path_handles.append(tangent)
 			if path_command.command_char in "CcSs":
-				var tangent := PathHandle.new(tid, data_attrib, t_attrib, idx, &"x2", &"y2")
+				var tangent := PathHandle.new(tid, data_attrib, t_attrib, idx, "x2", "y2")
 				tangent.display_mode = Handle.Display.SMALL
 				path_handles.append(tangent)
 	return path_handles
@@ -749,7 +749,7 @@ func create_tag_context(pos: Vector2) -> ContextPopupType:
 	for shape in ["path", "circle", "ellipse", "rect", "line"]:
 		var btn := Utils.create_btn(shape, add_tag_at_pos.bind(shape, pos),
 				false, SVGDB.get_tag_icon(shape))
-		btn.add_theme_font_override(&"font", load("res://visual/fonts/FontMono.ttf"))
+		btn.add_theme_font_override("font", load("res://visual/fonts/FontMono.ttf"))
 		btn_array.append(btn)
 	var tag_context := ContextPopup.instantiate()
 	add_child(tag_context)
