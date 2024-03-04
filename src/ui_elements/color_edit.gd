@@ -10,6 +10,7 @@ const checkerboard = preload("res://visual/icons/backgrounds/ColorButtonBG.svg")
 @onready var color_picker: Popup
 
 @export var enable_palettes := true
+@export var enable_alpha := false
 
 signal value_changed(new_value: String)
 var value: String:
@@ -33,15 +34,15 @@ func is_color_valid_non_url(new_value: String) -> bool:
 			ColorParser.is_valid_hex(new_value) or ColorParser.is_valid_rgb(new_value)
 
 func sync(new_value: String) -> void:
-	color_edit.remove_theme_color_override(&"font_color")
+	color_edit.remove_theme_color_override("font_color")
 	color_edit.text = new_value.trim_prefix("#")
 	queue_redraw()
 
 func _on_button_pressed() -> void:
-	if enable_palettes:
-		color_picker = ColorPopup.instantiate()
-	else:
-		color_picker = ColorPickerPopup.instantiate()
+	color_picker = ColorPopup.instantiate() if enable_palettes\
+			else ColorPickerPopup.instantiate()
+	if enable_alpha:
+		color_picker.enable_alpha = true
 	color_picker.current_value = ColorParser.add_hash_if_hex(value)
 	add_child(color_picker)
 	color_picker.color_picked.connect(_on_color_picked)
@@ -78,6 +79,6 @@ func _on_button_resized() -> void:
 
 func _on_line_edit_text_changed(new_text: String) -> void:
 	if is_color_valid_non_url(new_text):
-		color_edit.add_theme_color_override(&"font_color", Color(0.6, 1.0, 0.6))
+		color_edit.add_theme_color_override("font_color", Color(0.6, 1.0, 0.6))
 	else:
-		color_edit.add_theme_color_override(&"font_color", Color(1.0, 0.6, 0.6))
+		color_edit.add_theme_color_override("font_color", Color(1.0, 0.6, 0.6))

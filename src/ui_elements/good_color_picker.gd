@@ -5,6 +5,8 @@ const slider_arrow = preload("res://visual/icons/SliderArrow.svg")
 const side_slider_arrow = preload("res://visual/icons/SideSliderArrow.svg")
 const bg_pattern = preload("res://visual/icons/backgrounds/CheckerboardMini.svg")
 
+@export var enable_alpha := false
+
 var UR := UndoRedo.new()
 
 enum SliderMode {RGB, HSV}
@@ -18,13 +20,13 @@ var slider_mode: SliderMode:
 					btn == disabled_button else Control.CURSOR_POINTING_HAND
 		match slider_mode:
 			SliderMode.RGB:
-				tracks_arr[1].material.set_shader_parameter(&"interpolation", 0)
-				tracks_arr[2].material.set_shader_parameter(&"interpolation", 1)
-				tracks_arr[3].material.set_shader_parameter(&"interpolation", 2)
+				tracks_arr[1].material.set_shader_parameter("interpolation", 0)
+				tracks_arr[2].material.set_shader_parameter("interpolation", 1)
+				tracks_arr[3].material.set_shader_parameter("interpolation", 2)
 			SliderMode.HSV:
-				tracks_arr[1].material.set_shader_parameter(&"interpolation", 3)
-				tracks_arr[2].material.set_shader_parameter(&"interpolation", 4)
-				tracks_arr[3].material.set_shader_parameter(&"interpolation", 5)
+				tracks_arr[1].material.set_shader_parameter("interpolation", 3)
+				tracks_arr[2].material.set_shader_parameter("interpolation", 4)
+				tracks_arr[3].material.set_shader_parameter("interpolation", 5)
 				backup_display_color.h = clampf(backup_display_color.h, 0.0, 0.9999)
 				backup_display_color.v = clampf(backup_display_color.v, 0.0001, 1.0)
 				backup_display_color.s = clampf(backup_display_color.s, 0.0001, 1.0)
@@ -126,15 +128,15 @@ func set_display_color(new_display_color: Color) -> void:
 
 func update() -> void:
 	# Adjust the shaders.
-	tracks_arr[0].material.set_shader_parameter(&"v", display_color.v)
-	tracks_arr[0].material.set_shader_parameter(&"base_color",
+	tracks_arr[0].material.set_shader_parameter("v", display_color.v)
+	tracks_arr[0].material.set_shader_parameter("base_color",
 			Color.from_hsv(display_color.h, display_color.s, 1.0))
 	for i in [1, 2, 3]:
-		tracks_arr[i].material.set_shader_parameter(&"base_color", display_color)
+		tracks_arr[i].material.set_shader_parameter("base_color", display_color)
 	# Setup the "none" button.
 	var is_none := (color == "none")
 	none_button.button_pressed = is_none
-	none_button.tooltip_text = tr(&"Enable the color") if is_none else tr(&"Disable the color")
+	none_button.tooltip_text = tr("Enable the color") if is_none else tr("Disable the color")
 	# Redraw widgets, color indicators, color wheel.
 	color_rect.queue_redraw()
 	start_color_rect.queue_redraw()
@@ -275,11 +277,11 @@ func _on_reset_color_button_pressed() -> void:
 
 func _on_rgb_pressed() -> void:
 	slider_mode = SliderMode.RGB
-	GlobalSettings.modify_save_data(&"color_picker_slider_mode", SliderMode.RGB)
+	GlobalSettings.modify_save_data("color_picker_slider_mode", SliderMode.RGB)
 
 func _on_hsv_pressed() -> void:
 	slider_mode = SliderMode.HSV
-	GlobalSettings.modify_save_data(&"color_picker_slider_mode", SliderMode.HSV)
+	GlobalSettings.modify_save_data("color_picker_slider_mode", SliderMode.HSV)
 
 
 # Gray out the start color rect if it's not actually a color.
@@ -352,14 +354,14 @@ func _on_reset_color_button_gui_input(event: InputEvent) -> void:
 		reset_color_button.disabled = false
 		if display_color.get_luminance() < 0.455:
 			reset_color_button.begin_bulk_theme_override()
-			reset_color_button.add_theme_color_override(&"icon_hover_color", Color.WHITE)
-			reset_color_button.add_theme_color_override(&"icon_pressed_color",
+			reset_color_button.add_theme_color_override("icon_hover_color", Color.WHITE)
+			reset_color_button.add_theme_color_override("icon_pressed_color",
 					Color(0.5, 1, 1))
 			reset_color_button.end_bulk_theme_override()
 		else:
 			reset_color_button.begin_bulk_theme_override()
-			reset_color_button.add_theme_color_override(&"icon_hover_color", Color.BLACK)
-			reset_color_button.add_theme_color_override(&"icon_pressed_color",
+			reset_color_button.add_theme_color_override("icon_hover_color", Color.BLACK)
+			reset_color_button.add_theme_color_override("icon_pressed_color",
 					Color(0, 0.5, 0.5))
 			reset_color_button.end_bulk_theme_override()
 
@@ -371,11 +373,11 @@ func _input(event: InputEvent) -> void:
 	if not visible:
 		return
 	
-	if event.is_action_pressed(&"redo"):
+	if event.is_action_pressed("redo"):
 		if UR.has_redo():
 			UR.redo()
 		accept_event()
-	elif event.is_action_pressed(&"undo"):
+	elif event.is_action_pressed("undo"):
 		if UR.has_undo():
 			UR.undo()
 		accept_event()

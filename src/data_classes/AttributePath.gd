@@ -42,14 +42,14 @@ func locate_start_points() -> void:
 		
 		# Prepare for the next iteration.
 		if command.relative:
-			if &"x" in command:
+			if "x" in command:
 				last_end_point.x += command.x
-			if &"y" in command:
+			if "y" in command:
 				last_end_point.y += command.y
 		else:
-			if &"x" in command:
+			if "x" in command:
 				last_end_point.x = command.x
-			if &"y" in command:
+			if "y" in command:
 				last_end_point.y = command.y
 
 
@@ -98,8 +98,8 @@ func get_implied_T_control(idx: int) -> Vector2:
 	if prevQ_idx == -1:
 		return Vector2(NAN, NAN)
 	
-	var prevQ_x: float = prevQ_cmd.x if &"x" in prevQ_cmd else prevQ_cmd.start.x
-	var prevQ_y: float = prevQ_cmd.y if &"y" in prevQ_cmd else prevQ_cmd.start.y
+	var prevQ_x: float = prevQ_cmd.x if "x" in prevQ_cmd else prevQ_cmd.start.x
+	var prevQ_y: float = prevQ_cmd.y if "y" in prevQ_cmd else prevQ_cmd.start.y
 	var prevQ_v := Vector2(prevQ_x, prevQ_y)
 	var prevQ_v1 := Vector2(prevQ_cmd.x1, prevQ_cmd.y1) if\
 			prevQ_cmd.command_char in "Qq" else prevQ_v
@@ -119,7 +119,7 @@ func get_implied_T_control(idx: int) -> Vector2:
 	return v
 
 
-func set_command_property(idx: int, property: StringName, new_value: float,
+func set_command_property(idx: int, property: String, new_value: float,
 sync_mode := SyncMode.LOUD) -> void:
 	var cmd := get_command(idx)
 	if cmd.get(property) != new_value or sync_mode == SyncMode.FINAL:
@@ -160,15 +160,15 @@ func convert_command(idx: int, command_char: String, sync_mode := SyncMode.LOUD)
 	
 	var cmd_absolute_char := command_char.to_upper()
 	var new_cmd: PathCommand = PathCommand.translation_dict[cmd_absolute_char].new()
-	for property in [&"x", &"y", &"x1", &"y1", &"x2", &"y2"]:
+	for property in ["x", "y", "x1", "y1", "x2", "y2"]:
 		if property in old_cmd and property in new_cmd:
 			new_cmd[property] = old_cmd[property]
 	
 	var relative := Utils.is_string_lower(command_char)
 	
-	if &"x" in new_cmd and not &"x" in old_cmd:
+	if "x" in new_cmd and not "x" in old_cmd:
 		new_cmd.x = 0.0 if relative else old_cmd.start.x
-	if &"y" in new_cmd and not &"y" in old_cmd:
+	if "y" in new_cmd and not "y" in old_cmd:
 		new_cmd.y = 0.0 if relative else old_cmd.start.y
 	
 	match cmd_absolute_char:

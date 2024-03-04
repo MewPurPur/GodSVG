@@ -40,7 +40,7 @@ func _on_add_button_pressed() -> void:
 	for tag_name in ["path", "circle", "ellipse", "rect", "line"]:
 		var btn := Utils.create_btn(tag_name, add_tag.bind(tag_name), false,
 				SVGDB.get_tag_icon(tag_name))
-		btn.add_theme_font_override(&"font", load("res://visual/fonts/FontMono.ttf"))
+		btn.add_theme_font_override("font", load("res://visual/fonts/FontMono.ttf"))
 		btn_array.append(btn)
 	
 	var add_popup := ContextPopup.instantiate()

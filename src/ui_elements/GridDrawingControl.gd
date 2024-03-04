@@ -9,7 +9,7 @@ func setup() -> void:
 	for item in items:
 		var panel_container := PanelContainer.new()
 		panel_container.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		panel_container.add_theme_stylebox_override(&"panel", stylebox)
+		panel_container.add_theme_stylebox_override("panel", stylebox)
 		var label := Label.new()
 		label.text = item
 		panel_container.add_child(label)

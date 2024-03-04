@@ -5,7 +5,7 @@
 
 [node name="ColorPickerPopup" type="Popup"]
 transparent_bg = true
-size = Vector2i(218, 322)
+size = Vector2i(218, 323)
 visible = true
 script = ExtResource("1_wmbff")
 

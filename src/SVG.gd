@@ -54,10 +54,10 @@ func update_tags() -> void:
 func update_text(undo_redo := true) -> void:
 	if undo_redo:
 		UR.create_action("")
-		UR.add_do_property(self, &"text", SVGParser.svg_to_text(root_tag))
-		UR.add_undo_property(self, &"text", GlobalSettings.save_data.svg_text)
+		UR.add_do_property(self, "text", SVGParser.svg_to_text(root_tag))
+		UR.add_undo_property(self, "text", GlobalSettings.save_data.svg_text)
 		UR.commit_action()
-		GlobalSettings.modify_save_data(&"svg_text", text)
+		GlobalSettings.modify_save_data("svg_text", text)
 	else:
 		text = SVGParser.svg_to_text(root_tag)
 
@@ -72,7 +72,7 @@ func redo() -> void:
 		update_tags()
 
 func _on_undo_redo() -> void:
-	GlobalSettings.modify_save_data(&"svg_text", text)
+	GlobalSettings.modify_save_data("svg_text", text)
 
 
 func open_import_dialog() -> void:
@@ -118,8 +118,8 @@ non_native_callable: Callable) -> void:
 func native_file_save(has_selected: bool, files: PackedStringArray,
 _filter_idx: int) -> void:
 	if has_selected:
-		GlobalSettings.modify_save_data(&"current_file_path", files[0])
-		GlobalSettings.modify_save_data(&"last_used_dir", files[0].get_base_dir())
+		GlobalSettings.modify_save_data("current_file_path", files[0])
+		GlobalSettings.modify_save_data("last_used_dir", files[0].get_base_dir())
 		save_svg_to_file(files[0])
 
 
@@ -128,15 +128,14 @@ func apply_svg_from_path(path: String) -> int:
 	var error := ""
 	var extension := path.get_extension()
 	
-	GlobalSettings.modify_save_data(&"last_used_dir", path.get_base_dir())
+	GlobalSettings.modify_save_data("last_used_dir", path.get_base_dir())
 	
 	if extension.is_empty():
 		error = "The file extension is empty. Only \"svg\" files are supported."
 	elif extension == "tscn":
 		return ERR_FILE_CANT_OPEN
 	elif extension != "svg":
-		error = tr(
-				&"\"{passed_extension}\" is a unsupported file extension. Only \"svg\" files are supported.").format({"passed_extension": extension})
+		error = tr("\"{passed_extension}\" is a unsupported file extension. Only \"svg\" files are supported.").format({"passed_extension": extension})
 	elif svg_file == null:
 		error = "The file couldn't be opened.\nTry checking the file path, ensure that the file is not deleted, or choose a different file."
 	
@@ -156,7 +155,7 @@ func apply_svg_from_path(path: String) -> int:
 	return OK
 
 func finish_import(svg_text: String, file_path: String) -> void:
-	GlobalSettings.modify_save_data(&"current_file_path", file_path)
+	GlobalSettings.modify_save_data("current_file_path", file_path)
 	apply_svg_text(svg_text)
 
 
@@ -166,5 +165,5 @@ func save_svg_to_file(path: String) -> void:
 
 func apply_svg_text(svg_text: String,) -> void:
 	text = svg_text
-	GlobalSettings.modify_save_data(&"svg_text", text)
+	GlobalSettings.modify_save_data("svg_text", text)
 	update_tags()

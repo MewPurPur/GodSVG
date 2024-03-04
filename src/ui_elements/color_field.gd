@@ -60,7 +60,7 @@ func _draw() -> void:
 
 
 func _on_focus_entered() -> void:
-	color_edit.remove_theme_color_override(&"font_color")
+	color_edit.remove_theme_color_override("font_color")
 	focused.emit()
 
 func _on_text_submitted(new_text: String) -> void:
@@ -91,16 +91,16 @@ func _on_button_resized() -> void:
 
 func _on_text_changed(new_text: String) -> void:
 	if is_valid(new_text):
-		color_edit.add_theme_color_override(&"font_color", Color(0.6, 1.0, 0.6))
+		color_edit.add_theme_color_override("font_color", Color(0.6, 1.0, 0.6))
 	else:
-		color_edit.add_theme_color_override(&"font_color", Color(1.0, 0.6, 0.6))
+		color_edit.add_theme_color_override("font_color", Color(1.0, 0.6, 0.6))
 
 func sync(new_value: String) -> void:
 	if color_edit != null:
 		if new_value == attribute.default:
-			color_edit.add_theme_color_override(&"font_color", Color(0.64, 0.64, 0.64))
+			color_edit.add_theme_color_override("font_color", Color(0.64, 0.64, 0.64))
 		else:
-			color_edit.remove_theme_color_override(&"font_color")
+			color_edit.remove_theme_color_override("font_color")
 		color_edit.text = new_value.trim_prefix("#")
 	queue_redraw()
 

@@ -35,7 +35,7 @@ func _ready() -> void:
 
 
 func update_dimensions_label() -> void:
-	dimensions_label.text = tr(&"Size") + ": " + NumberParser.num_to_text(dimensions.x) +\
+	dimensions_label.text = tr("Size") + ": " + NumberParser.num_to_text(dimensions.x) +\
 			"×" + NumberParser.num_to_text(dimensions.y)
 
 func _on_dropdown_value_changed(new_value: String) -> void:
@@ -62,14 +62,14 @@ func export(path: String) -> void:
 	if path.get_extension().is_empty():
 		path += "." + extension
 	
-	GlobalSettings.modify_save_data(&"last_used_dir", path.get_base_dir())
+	GlobalSettings.modify_save_data("last_used_dir", path.get_base_dir())
 	
 	match extension:
 		"png":
 			_create_img().save_png(path)
 		_:
 			# SVG / fallback.
-			GlobalSettings.modify_save_data(&"current_file_path", path)
+			GlobalSettings.modify_save_data("current_file_path", path)
 			SVG.save_svg_to_file(path)
 	queue_free()
 
@@ -83,7 +83,7 @@ func _on_scale_value_changed(_new_value: float) -> void:
 func update_final_scale() -> void:
 	upscale_amount = scale_edit.get_value()
 	var exported_size: Vector2i = dimensions * upscale_amount
-	final_dimensions_label.text = tr(&"Final size") +\
+	final_dimensions_label.text = tr("Final size") +\
 			": %d×%d" % [exported_size.x, exported_size.y]
 
 func update_extension_configuration() -> void:
