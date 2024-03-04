@@ -100,6 +100,9 @@ msgstr "Активувати прилипання"
 msgid "Snap size"
 msgstr "Розмір прилипання"
 
+msgid "Reset to default"
+msgstr ""
+
 msgid "Copy All Text"
 msgstr "Скопіювати весь текст"
 
@@ -142,16 +145,20 @@ msgstr "Неправильне вкладення."
 msgid "Syntax error"
 msgstr ""
 
-msgid "Delete: Deletes the selected tags"
+#, fuzzy
+msgid "Delete the selected tags"
 msgstr "Delete: Видалити усі обрані теги"
 
-msgid "Ctrl+Down: Moves the selected tags down"
+#, fuzzy
+msgid "Move the selected tags down"
 msgstr "Ctrl+Down: Пересунути усі обрані теги вниз"
 
-msgid "Ctrl+Up: Moves the selected tags up"
+#, fuzzy
+msgid "Move the selected tags up"
 msgstr "Ctrl+Up: Пересунути усі обрані теги вгору"
 
-msgid "Ctrl+D: Duplicates the selected tags"
+#, fuzzy
+msgid "Duplicate the selected tags"
 msgstr "Ctrl+D: Дублювати обрані теги"
 
 msgid "Unknown Tag"
@@ -207,6 +214,38 @@ msgstr "Автори"
 
 msgid "Shortcuts"
 msgstr "Клавіатурні скорочення"
+
+msgid "Theme"
+msgstr ""
+
+msgid "SVG Text Colors"
+msgstr ""
+
+msgid "Symbol color"
+msgstr ""
+
+#, fuzzy
+msgid "Tag color"
+msgstr "Додати колір"
+
+#, fuzzy
+msgid "Attribute color"
+msgstr "Деактивувати колір"
+
+msgid "String color"
+msgstr ""
+
+#, fuzzy
+msgid "Comment color"
+msgstr "Видалити колір"
+
+#, fuzzy
+msgid "Text color"
+msgstr "Видалити колір"
+
+#, fuzzy
+msgid "Error color"
+msgstr "Додати колір"
 
 msgid "Palettes"
 msgstr "Палітри"

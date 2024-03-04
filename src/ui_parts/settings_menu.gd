@@ -40,6 +40,12 @@ func _notification(what: int) -> void:
 
 # Sets the text for all the labels.
 func setup_setting_labels() -> void:
+	tabs.get_node(^"Autoformatting").text = tr("Autoformatting")
+	tabs.get_node(^"Palettes").text = tr("Palettes")
+	tabs.get_node(^"Shortcuts").text = tr("Shortcuts")
+	tabs.get_node(^"Theme").text = tr("Theme")
+	tabs.get_node(^"Other").text = tr("Other")
+	
 	var invert_zoom := %ContentContainer/Other/Input/InvertZoom
 	invert_zoom.label.text = tr("Invert zoom direction")
 	invert_zoom.label.tooltip_text = tr("Swaps zoom in and zoom out with the mouse wheel.")

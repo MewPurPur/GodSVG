@@ -16,10 +16,10 @@ msgid "translation-credits"
 msgstr ""
 
 msgid "Project Founder and Manager"
-msgstr ""
+msgstr "Основател и мениджър на проекта"
 
 msgid "Developers"
-msgstr ""
+msgstr "Програмисти"
 
 msgid "Language"
 msgstr "Език"
@@ -97,6 +97,9 @@ msgstr "Включи захващането"
 msgid "Snap size"
 msgstr "Размер на захващането"
 
+msgid "Reset to default"
+msgstr "Възстанови началната стойност"
+
 msgid "Copy All Text"
 msgstr "Копирай всичкия текст"
 
@@ -139,17 +142,17 @@ msgstr "Несъвместими тагове."
 msgid "Syntax error"
 msgstr "Синтактична грешка"
 
-msgid "Delete: Deletes the selected tags"
-msgstr "Delete: Изтрива избраните тагове"
+msgid "Delete the selected tags"
+msgstr "Изтрий избраните тагове"
 
-msgid "Ctrl+Down: Moves the selected tags down"
-msgstr "Ctrl+Down: Премества избраните тагове надолу"
+msgid "Move the selected tags down"
+msgstr "Премести избраните тагове надолу"
 
-msgid "Ctrl+Up: Moves the selected tags up"
-msgstr "Ctrl+Up: Премества избраните тагове нагоре"
+msgid "Move the selected tags up"
+msgstr "Премести избраните тагове нагоре"
 
-msgid "Ctrl+D: Duplicates the selected tags"
-msgstr "Ctrl+D: Дублирай избраните тагове"
+msgid "Duplicate the selected tags"
+msgstr "Дублирай избраните тагове"
 
 msgid "Unknown Tag"
 msgstr "Непознат таг"
@@ -158,11 +161,10 @@ msgid "Unknown Attribute"
 msgstr "Непознат атрибут"
 
 msgid "No path data"
-msgstr ""
+msgstr "Няма пътека"
 
-#, fuzzy
 msgid "No transforms"
-msgstr "Трансформации"
+msgstr "Няма трансформации"
 
 msgid "Import"
 msgstr "Импортирай"
@@ -205,6 +207,33 @@ msgstr "Автори"
 
 msgid "Shortcuts"
 msgstr "Бързи клавиши"
+
+msgid "Theme"
+msgstr "Гама"
+
+msgid "SVG Text Colors"
+msgstr "Цветове на SVG текста"
+
+msgid "Symbol color"
+msgstr "Цвят на символите"
+
+msgid "Tag color"
+msgstr "Цвят на таговете"
+
+msgid "Attribute color"
+msgstr "Цвят на атрибутите"
+
+msgid "String color"
+msgstr "Цвят на низовете"
+
+msgid "Comment color"
+msgstr "Цвят на коментарите"
+
+msgid "Text color"
+msgstr "Цвят на текста"
+
+msgid "Error color"
+msgstr "Цвят на грешките"
 
 msgid "Palettes"
 msgstr "Палети"
@@ -298,7 +327,7 @@ msgid "Use shorthand tag syntax"
 msgstr "Използвай кратък синтаксис за тагове"
 
 msgid "Enable autoformatting"
-msgstr "Enable autoformatting"
+msgstr "Включи автоматичното форматиране"
 
 msgid "Remove zero padding"
 msgstr "Премахни нулите накрая"
