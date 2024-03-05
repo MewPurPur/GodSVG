@@ -1,8 +1,9 @@
-count=$(find *.po -maxdepth 1 -type f | wc -l) # Get po file count.
-printf "\nFound $count po files. Starting update..."
+script_dir=$(dirname "$(readlink -f "$0")")
+cd "$script_dir" || exit
+count=$(find *.po -maxdepth 1 -type f | wc -l)
+printf "Found $count po files.\n\n"
 for file in ./*.po; do
-    printf "\n\n$count files left.\nUpdating $file: "
-    let count--
+    printf "Updating $file: "
     msgmerge --update --quiet --verbose --backup=off $file GodSVG.pot
     if [ "$?" != "0" ]; then # Exit loop on error.
         printf "\nUpdating failed, exiting.\n"

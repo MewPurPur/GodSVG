@@ -64,13 +64,13 @@ msgstr ""
 msgid "Donate (Github)"
 msgstr ""
 
-msgid "Zoom In"
+msgid "Zoom in"
 msgstr ""
 
-msgid "Zoom Reset"
+msgid "Zoom reset"
 msgstr ""
 
-msgid "Zoom Out"
+msgid "Zoom out"
 msgstr ""
 
 msgid "Settings"
@@ -100,10 +100,13 @@ msgstr ""
 msgid "Copy All Text"
 msgstr ""
 
-msgid "Import SVG"
+msgid "Save"
 msgstr ""
 
 msgid "Export"
+msgstr ""
+
+msgid "Select all tags"
 msgstr ""
 
 msgid "Couple/Decouple"
@@ -139,7 +142,7 @@ msgstr ""
 msgid "Syntax error"
 msgstr ""
 
-msgid "Delete the selected tags"
+msgid "Delete the selection"
 msgstr ""
 
 msgid "Move the selected tags down"
@@ -253,6 +256,15 @@ msgstr ""
 msgid "Delete color"
 msgstr ""
 
+msgid "Edit"
+msgstr ""
+
+msgid "Remove"
+msgstr ""
+
+msgid "Press keys..."
+msgstr ""
+
 msgid "Enable the color"
 msgstr ""
 
@@ -272,6 +284,12 @@ msgid "Copy"
 msgstr ""
 
 msgid "Paste"
+msgstr ""
+
+msgid "Copy as XML"
+msgstr ""
+
+msgid "Paste XML"
 msgstr ""
 
 msgid "Cut"

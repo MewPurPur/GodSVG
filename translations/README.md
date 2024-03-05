@@ -15,8 +15,7 @@ msgstr ""
 All translation files have to be updated to include the new strings.
 This is best done with [gettext tools](https://www.gnu.org/software/gettext/manual/html_node/Updating.html). These are preinstalled in most Linux distros and Git Bash on Windows. A bash script to automate the process (`update_po_files.sh`) is included in this directory.
 ```sh
-cd translations
-sh update_po_files.sh
+sh translations/update_po_files.sh
 ```
 # Contributing translations
 ## [Adding a new language](https://www.gnu.org/software/gettext/manual/html_node/Creating.html)

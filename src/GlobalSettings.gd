@@ -1,22 +1,16 @@
 ## This singleton handles save data and settings.
 extends Node
 
+# Session data
 var save_data := SaveData.new()
 const save_path = "user://save.tres"
 
-var _palettes := SavedColorPalettes.new()
-const palettes_save_path = "user://palettes.tres"
-
-const config_path = "user://config.tres"
+# Settings
 var config := ConfigFile.new()
+const config_path = "user://config.tres"
 
 # Don't have the language setting here, so it's not reset.
 const default_config = {
-	"input": {
-		"invert_zoom": false,
-		"wrap_mouse": false,
-		"use_ctrl_for_zoom": true,
-	},
 	"autoformat": {
 		"xml_add_trailing_newline": false,
 		"xml_shorthand_tags": true,
@@ -47,14 +41,27 @@ const default_config = {
 		"highlighting_comment_color": Color("cdcfd280"),
 		"highlighting_text_color": Color("cdcfeaac"),
 		"highlighting_error_color": Color("ff866b"),
-	}
+	},
+	"other": {
+		"invert_zoom": false,
+		"wrap_mouse": false,
+		"use_ctrl_for_zoom": true,
+	},
 }
+
+# No way to fetch defaults otherwise.
+var default_input_events := {}  # Dictionary{String: Array[InputEvent]}
+const configurable_keybinds = ["import", "export", "save", "move_up", "move_down",
+		"undo", "redo", "duplicate", "select_all", "delete", "zoom_in", "zoom_out",
+		"zoom_reset"]
 
 var language: String:
 	set(new_value):
 		language = new_value
 		TranslationServer.set_locale(new_value)
-		save_setting("text", "language")
+		save_setting("localization", "language")
+
+var palettes: Array[ColorPalette] = []
 
 # Input
 var invert_zoom := false
@@ -100,8 +107,22 @@ func modify_setting(section: String, setting: String, new_value: Variant) -> voi
 	set(setting, new_value)
 	save_setting(section, setting)
 
+func modify_keybind(action: String, new_events: Array[InputEvent]) -> void:
+	InputMap.action_erase_events(action)
+	for event in new_events:
+		InputMap.action_add_event(action, event)
+	save_keybind(action)
+
 func save_setting(section: String, setting: String) -> void:
 	config.set_value(section, setting, get(setting))
+	config.save(config_path)
+
+func save_palettes() -> void:
+	config.set_value("palettes", "palettes", palettes)
+	config.save(config_path)
+
+func save_keybind(action: String) -> void:
+	config.set_value("keybinds", action, InputMap.action_get_events(action))
 	config.save(config_path)
 
 
@@ -109,35 +130,17 @@ func modify_save_data(property: String, new_value: Variant) -> void:
 	save_data.set(property, new_value)
 	ResourceSaver.save(save_data, save_path)
 
-func save_user_data() -> void:
-	ResourceSaver.save(save_data, save_path)
-	ResourceSaver.save(_palettes, palettes_save_path)
-
 func load_user_data() -> void:
 	if FileAccess.file_exists(save_path):
 		save_data = ResourceLoader.load(save_path)
-	
-	if FileAccess.file_exists(palettes_save_path):
-		_palettes = ResourceLoader.load(palettes_save_path)
-	else:
-		var default_palette_pure := ColorPalette.new("Pure", [
-				NamedColor.new("fff", "White"),
-				NamedColor.new("000", "Black"),
-				NamedColor.new("f00", "Red"),
-				NamedColor.new("0f0", "Green"),
-				NamedColor.new("00f", "Blue"),
-				NamedColor.new("ff0", "Yellow"),
-				NamedColor.new("f0f", "Magenta"),
-				NamedColor.new("0ff", "Cyan"),
-		])
-		get_palettes().append(default_palette_pure)
-		ResourceSaver.save(_palettes, palettes_save_path)
 
 func _exit_tree() -> void:
 	save_data.window_mode = DisplayServer.window_get_mode()
-	save_user_data()
+	ResourceSaver.save(save_data, save_path)
 
 func _enter_tree() -> void:
+	for action in InputMap.get_actions():
+		default_input_events[action] = InputMap.action_get_events(action)
 	load_settings()
 	load_user_data()
 	DisplayServer.window_set_mode(save_data.window_mode)
@@ -147,13 +150,21 @@ func _enter_tree() -> void:
 func load_settings() -> void:
 	var error := config.load(config_path)
 	if error:
+		# File wasn't found or maybe something broke, setup defaults again.
 		reset_settings()
+		reset_palettes()
+		reset_keybinds()
 		language = "en"
 	else:
 		for section in config.get_sections():
-			for setting in config.get_section_keys(section):
-				set(setting, config.get_value(section, setting))
-				save_setting(section, setting)
+			if section == "keybinds":
+				for action in configurable_keybinds:
+					if config.has_section_key("keybinds", action):
+						modify_keybind(action, config.get_value("keybinds", action))
+			else:
+				for setting in config.get_section_keys(section):
+					set(setting, config.get_value(section, setting))
+					save_setting(section, setting)
 
 func reset_settings() -> void:
 	for section in default_config.keys():
@@ -165,5 +176,13 @@ func reset_setting(section: String, setting: String) -> void:
 	set(setting, default_config[section][setting])
 	save_setting(section, setting)
 
-func get_palettes() -> Array[ColorPalette]:
-	return _palettes.palettes
+func reset_keybinds() -> void:
+	InputMap.load_from_project_settings()
+	for action in configurable_keybinds:
+		save_keybind(action)
+
+func reset_palettes() -> void:
+	palettes = [ColorPalette.new("Pure",
+			["#fff", "#000", "#f00", "#0f0", "#00f", "#ff0", "#f0f", "#0ff"],
+			["White", "Black", "Red", "Green", "Blue", "Yellow", "Magenta", "Cyan"])]
+	save_palettes()
