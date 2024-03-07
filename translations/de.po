@@ -67,13 +67,16 @@ msgstr "Dokumentation…"
 msgid "Donate (Github)"
 msgstr "Spenden (Github)"
 
-msgid "Zoom In"
+#, fuzzy
+msgid "Zoom in"
 msgstr "Hineinzoomen"
 
-msgid "Zoom Reset"
+#, fuzzy
+msgid "Zoom reset"
 msgstr "Zoom zurücksetzen"
 
-msgid "Zoom Out"
+#, fuzzy
+msgid "Zoom out"
 msgstr "Herauszoomen"
 
 msgid "Settings"
@@ -103,11 +106,14 @@ msgstr ""
 msgid "Copy All Text"
 msgstr "Text kopieren"
 
-msgid "Import SVG"
-msgstr "SVG importieren"
+msgid "Save"
+msgstr ""
 
 msgid "Export"
 msgstr "Exportieren"
+
+msgid "Select all tags"
+msgstr ""
 
 msgid "Couple/Decouple"
 msgstr "Koppeln/Entkoppeln"
@@ -143,7 +149,7 @@ msgid "Syntax error"
 msgstr "Syntaxfehler"
 
 #, fuzzy
-msgid "Delete the selected tags"
+msgid "Delete the selection"
 msgstr "Entf: Ausgewählte Elemente löschen"
 
 #, fuzzy
@@ -266,6 +272,15 @@ msgstr "Farbnamen ändern"
 msgid "Delete color"
 msgstr "Farbe löschen"
 
+msgid "Edit"
+msgstr ""
+
+msgid "Remove"
+msgstr ""
+
+msgid "Press keys..."
+msgstr ""
+
 msgid "Enable the color"
 msgstr "Farbe aktivieren"
 
@@ -285,6 +300,13 @@ msgid "Copy"
 msgstr "Kopieren"
 
 msgid "Paste"
+msgstr "Einfügen"
+
+msgid "Copy as XML"
+msgstr ""
+
+#, fuzzy
+msgid "Paste XML"
 msgstr "Einfügen"
 
 msgid "Cut"
@@ -398,3 +420,6 @@ msgstr "Änderungen werden sofort wirksam."
 
 msgid "Search color"
 msgstr "Farbe suchen"
+
+#~ msgid "Import SVG"
+#~ msgstr "SVG importieren"

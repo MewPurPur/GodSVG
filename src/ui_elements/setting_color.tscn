@@ -33,6 +33,7 @@ enable_alpha = true
 [node name="ResetButton" type="Button" parent="PanelContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 10
+size_flags_vertical = 4
 focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_type_variation = &"FlatButton"
