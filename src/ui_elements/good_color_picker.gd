@@ -27,12 +27,6 @@ var slider_mode: SliderMode:
 				tracks_arr[1].material.set_shader_parameter("interpolation", 3)
 				tracks_arr[2].material.set_shader_parameter("interpolation", 4)
 				tracks_arr[3].material.set_shader_parameter("interpolation", 5)
-				backup_display_color.h = clampf(backup_display_color.h, 0.0, 0.9999)
-				backup_display_color.v = clampf(backup_display_color.v, 0.0001, 1.0)
-				backup_display_color.s = clampf(backup_display_color.s, 0.0001, 1.0)
-				display_color.h = clampf(display_color.h, 0.0, 0.9999)
-				display_color.v = clampf(display_color.v, 0.0001, 1.0)
-				display_color.s = clampf(display_color.s, 0.0001, 1.0)
 		update()
 
 @onready var color_wheel: MarginContainer = $ShapeContainer/ColorWheel
@@ -154,6 +148,13 @@ func update() -> void:
 			fields_arr[1].text = String.num_uint64(roundi(display_color.h * 360))
 			fields_arr[2].text = String.num_uint64(roundi(display_color.s * 100))
 			fields_arr[3].text = String.num_uint64(roundi(display_color.v * 100))
+	# Ensure that the HSV values are never exactly 0 or 1 to make everything draggable.
+	backup_display_color.h = clampf(backup_display_color.h, 0.0, 0.9999)
+	backup_display_color.v = clampf(backup_display_color.v, 0.0001, 1.0)
+	backup_display_color.s = clampf(backup_display_color.s, 0.0001, 1.0)
+	display_color.h = clampf(display_color.h, 0.0, 0.9999)
+	display_color.v = clampf(display_color.v, 0.0001, 1.0)
+	display_color.s = clampf(display_color.s, 0.0001, 1.0)
 
 
 func _on_color_wheel_gui_input(event: InputEvent) -> void:

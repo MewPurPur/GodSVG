@@ -72,7 +72,7 @@ theme_override_constants/separation = 0
 [node name="Autoformatting" type="Button" parent="VBoxContainer/HBoxContainer/ContentPicker/ScrollContainer/Tabs"]
 layout_mode = 2
 focus_mode = 0
-theme_type_variation = &"FlatButton"
+theme_type_variation = &"TranslucentButton"
 toggle_mode = true
 button_group = SubResource("ButtonGroup_f7wyd")
 alignment = 0
@@ -81,7 +81,7 @@ text_overrun_behavior = 3
 [node name="Palettes" type="Button" parent="VBoxContainer/HBoxContainer/ContentPicker/ScrollContainer/Tabs"]
 layout_mode = 2
 focus_mode = 0
-theme_type_variation = &"FlatButton"
+theme_type_variation = &"TranslucentButton"
 toggle_mode = true
 button_group = SubResource("ButtonGroup_f7wyd")
 alignment = 0
@@ -90,7 +90,7 @@ text_overrun_behavior = 3
 [node name="Shortcuts" type="Button" parent="VBoxContainer/HBoxContainer/ContentPicker/ScrollContainer/Tabs"]
 layout_mode = 2
 focus_mode = 0
-theme_type_variation = &"FlatButton"
+theme_type_variation = &"TranslucentButton"
 toggle_mode = true
 button_group = SubResource("ButtonGroup_f7wyd")
 alignment = 0
@@ -99,7 +99,7 @@ text_overrun_behavior = 3
 [node name="Theme" type="Button" parent="VBoxContainer/HBoxContainer/ContentPicker/ScrollContainer/Tabs"]
 layout_mode = 2
 focus_mode = 0
-theme_type_variation = &"FlatButton"
+theme_type_variation = &"TranslucentButton"
 toggle_mode = true
 button_group = SubResource("ButtonGroup_f7wyd")
 alignment = 0
@@ -108,7 +108,7 @@ text_overrun_behavior = 3
 [node name="Other" type="Button" parent="VBoxContainer/HBoxContainer/ContentPicker/ScrollContainer/Tabs"]
 layout_mode = 2
 focus_mode = 0
-theme_type_variation = &"FlatButton"
+theme_type_variation = &"TranslucentButton"
 toggle_mode = true
 button_group = SubResource("ButtonGroup_f7wyd")
 alignment = 0
@@ -300,7 +300,20 @@ visible = false
 layout_mode = 2
 horizontal_scroll_mode = 0
 
-[node name="Configurable" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Shortcuts"]
+[node name="ShortcutContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Shortcuts"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ConfigurableShortcuts" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Shortcuts/ShortcutContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 3
+
+[node name="NonConfigurableShortcuts" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Shortcuts/ShortcutContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -384,20 +397,20 @@ text = "Input"
 [node name="InvertZoom" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Other/Input" instance=ExtResource("4_2qeh2")]
 layout_mode = 2
 tooltip_text = "Swaps zoom in and zoom out with the mouse wheel."
-section_name = "input"
+section_name = "other"
 setting_name = "invert_zoom"
 
 [node name="WrapMouse" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Other/Input" instance=ExtResource("4_2qeh2")]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "Wraps the mouse cursor around when panning the viewport."
-section_name = "input"
+section_name = "other"
 setting_name = "wrap_mouse"
 
 [node name="UseCtrlForZoom" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Other/Input" instance=ExtResource("4_2qeh2")]
 layout_mode = 2
 tooltip_text = "If turned on, scrolling will pan the view. To zoom, hold CTRL while scrolling."
-section_name = "input"
+section_name = "other"
 setting_name = "use_ctrl_for_zoom"
 
 [node name="Close" type="Button" parent="VBoxContainer"]

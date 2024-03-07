@@ -1,7 +1,7 @@
 [gd_scene load_steps=8 format=3 uid="uid://b7wobq0ndm35"]
 
 [ext_resource type="Script" path="res://src/ui_elements/BetterLineEdit.gd" id="1_i4wi2"]
-[ext_resource type="Script" path="res://src/ui_parts/configure_color_popup.gd" id="1_x6cll"]
+[ext_resource type="Script" path="res://src/ui_elements/configure_color_popup.gd" id="1_x6cll"]
 [ext_resource type="Texture2D" uid="uid://dr2erka82g6j4" path="res://visual/icons/Edit.svg" id="2_0dind"]
 [ext_resource type="FontFile" uid="uid://clpf84p1lfwlp" path="res://visual/fonts/Font.ttf" id="2_j4qfn"]
 [ext_resource type="PackedScene" uid="uid://5f8uxavn1or1" path="res://src/ui_elements/color_edit.tscn" id="3_dq5ly"]

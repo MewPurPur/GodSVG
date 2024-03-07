@@ -67,13 +67,13 @@ msgstr "Документация…"
 msgid "Donate (Github)"
 msgstr "Дарение (Github)"
 
-msgid "Zoom In"
+msgid "Zoom in"
 msgstr "Увеличи"
 
-msgid "Zoom Reset"
+msgid "Zoom reset"
 msgstr "Рестартирай мащаба"
 
-msgid "Zoom Out"
+msgid "Zoom out"
 msgstr "Намали"
 
 msgid "Settings"
@@ -103,11 +103,14 @@ msgstr "Възстанови началната стойност"
 msgid "Copy All Text"
 msgstr "Копирай всичкия текст"
 
-msgid "Import SVG"
-msgstr "Импорт на SVG"
+msgid "Save"
+msgstr "Запиши"
 
 msgid "Export"
 msgstr "Експортирай"
+
+msgid "Select all tags"
+msgstr "Избери всички тагове"
 
 msgid "Couple/Decouple"
 msgstr "Свържи/Отвържи"
@@ -142,8 +145,8 @@ msgstr "Несъвместими тагове."
 msgid "Syntax error"
 msgstr "Синтактична грешка"
 
-msgid "Delete the selected tags"
-msgstr "Изтрий избраните тагове"
+msgid "Delete the selection"
+msgstr "Изтрий селекцията"
 
 msgid "Move the selected tags down"
 msgstr "Премести избраните тагове надолу"
@@ -256,6 +259,16 @@ msgstr "Промени името на цвета"
 msgid "Delete color"
 msgstr "Изтрий цвета"
 
+msgid "Edit"
+msgstr "Промени"
+
+msgid "Remove"
+msgstr "Премахни"
+
+#, fuzzy
+msgid "Press keys..."
+msgstr "Натисни клавиши…"
+
 msgid "Enable the color"
 msgstr "Включи цвета"
 
@@ -276,6 +289,12 @@ msgstr "Копирай"
 
 msgid "Paste"
 msgstr "Постави"
+
+msgid "Copy as XML"
+msgstr "Копирай като XML"
+
+msgid "Paste XML"
+msgstr "Постави XML"
 
 msgid "Cut"
 msgstr "Изрежи"
@@ -388,3 +407,6 @@ msgstr "Промените ще бъдат нанесени веднага."
 
 msgid "Search color"
 msgstr "Търсене на цвят"
+
+#~ msgid "Import SVG"
+#~ msgstr "Импорт на SVG"
