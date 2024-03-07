@@ -1,7 +1,8 @@
 extends PanelContainer
 
 const ContextPopup = preload("res://src/ui_elements/context_popup.tscn")
-const PaletteConfigWidget = preload("res://src/ui_parts/palette_config.tscn")
+const PaletteConfigWidget = preload("res://src/ui_elements/palette_config.tscn")
+const ShortcutConfigWidget = preload("res://src/ui_elements/setting_shortcut.tscn")
 const plus_icon = preload("res://visual/icons/Plus.svg")
 
 const SettingCheckBox = preload("res://src/ui_elements/setting_check_box.gd")
@@ -9,20 +10,40 @@ const SettingColor = preload("res://src/ui_elements/setting_color.gd")
 
 @onready var lang_button: Button = %Language
 @onready var palette_container: VBoxContainer = %PaletteContainer
+@onready var shortcut_container: VBoxContainer = %ShortcutContainer
 @onready var content_container: MarginContainer = %ContentContainer
 @onready var tabs: VBoxContainer = %Tabs
 @onready var wrap_mouse: HBoxContainer = %WrapMouse
+@onready var configurable_shortcuts: VBoxContainer = %ConfigurableShortcuts
+@onready var non_configurable_shortcuts: VBoxContainer = %NonConfigurableShortcuts
 
 var focused_content := 0
+
+var shortcut_descriptions := {  # Dictionary{String: String}
+	"export": tr("Export"),
+	"import": tr("Import"),
+	"save": tr("Save"),
+	"undo": tr("Undo"),
+	"redo": tr("Redo"),
+	"select_all": tr("Select all tags"),
+	"duplicate": tr("Duplicate the selected tags"),
+	"delete": tr("Delete the selection"),
+	"move_up": tr("Move the selected tags up"),
+	"move_down": tr("Move the selected tags down"),
+	"zoom_in": tr("Zoom in"),
+	"zoom_out": tr("Zoom out"),
+	"zoom_reset": tr("Zoom reset"),
+}
 
 func _ready() -> void:
 	if not DisplayServer.has_feature(DisplayServer.FEATURE_MOUSE_WARP):
 		wrap_mouse.set_pressed_no_signal(false)
 		wrap_mouse.disabled = true
 	update_language_button()
-	rebuild_color_palettes()
 	setup_setting_labels()
 	setup_autoformat_tab()
+	rebuild_color_palettes()
+	setup_shortcuts_tab()
 	setup_theming_tab()
 	for i in tabs.get_child_count():
 		tabs.get_child(i).pressed.connect(update_focused_content.bind(i))
@@ -112,20 +133,20 @@ func update_language_button() -> void:
 # Palette tab helpers.
 
 func add_palette() -> void:
-	for palette in GlobalSettings.get_palettes():
+	for palette in GlobalSettings.palettes:
 		# If there's an unnamed pallete, don't add a new one (there'll be a name clash).
-		if palette.name.is_empty():
+		if palette.title.is_empty():
 			return
 	
-	GlobalSettings.get_palettes().append(ColorPalette.new())
-	GlobalSettings.save_user_data()
+	GlobalSettings.palettes.append(ColorPalette.new())
+	GlobalSettings.save_palettes()
 	rebuild_color_palettes()
 
 func rebuild_color_palettes() -> void:
 	for palette_config in palette_container.get_children():
 		palette_config.queue_free()
 	
-	for palette in GlobalSettings.get_palettes():
+	for palette in GlobalSettings.palettes:
 		var palette_config := PaletteConfigWidget.instantiate()
 		palette_container.add_child(palette_config)
 		palette_config.assign_palette(palette)
@@ -177,6 +198,32 @@ func disable_autoformat_checkboxes() -> void:
 		if checkbox is SettingCheckBox:
 			if checkbox.setting_name != "transform_enable_autoformatting":
 				checkbox.set_checkbox_enabled(GlobalSettings.transform_enable_autoformatting)
+
+
+func setup_shortcuts_tab() -> void:
+	for action in GlobalSettings.configurable_keybinds:
+		var keybind_config := ShortcutConfigWidget.instantiate()
+		shortcut_container.add_child(keybind_config)
+		if action in shortcut_descriptions:
+			keybind_config.label.text = shortcut_descriptions[action]
+		else:
+			keybind_config.label.text = action
+		keybind_config.setup(action)
+	for action in ["move_relative", "move_absolute", "line_relative", "line_absolute",
+	"horizontal_line_relative", "horizontal_line_absolute", "vertical_line_relative",
+	"vertical_line_absolute", "close_path_relative", "close_path_absolute",
+	"elliptical_arc_relative", "elliptical_arc_absolute", "quadratic_bezier_relative",
+	"quadratic_bezier_absolute", "shorthand_quadratic_bezier_relative",
+	"shorthand_quadratic_bezier_absolute", "cubic_bezier_relative",
+	"cubic_bezier_absolute", "shorthand_cubic_bezier_relative",
+	"shorthand_cubic_bezier_absolute"]:
+		var keybind_config := ShortcutConfigWidget.instantiate()
+		shortcut_container.add_child(keybind_config)
+		if action in shortcut_descriptions:
+			keybind_config.label.text = shortcut_descriptions[action]
+		else:
+			keybind_config.label.text = action
+		keybind_config.setup(action, true)
 
 
 func setup_theming_tab() -> void:

@@ -1,0 +1,45 @@
+[gd_scene load_steps=3 format=3 uid="uid://b7fw7bodu5fbb"]
+
+[ext_resource type="Script" path="res://src/ui_elements/setting_shortcut.gd" id="1_4c8oc"]
+[ext_resource type="Texture2D" uid="uid://cvh3kwbucf2n1" path="res://visual/icons/Reload.svg" id="2_n8e0s"]
+
+[node name="SettingShortcut" type="PanelContainer"]
+offset_right = 172.0
+offset_bottom = 62.0
+script = ExtResource("1_4c8oc")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 6
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_right = 6
+theme_override_constants/margin_bottom = 6
+
+[node name="MainContainer" type="VBoxContainer" parent="MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="Label" type="Label" parent="MarginContainer/MainContainer"]
+layout_mode = 2
+horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/MainContainer"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="ShortcutContainer" type="HBoxContainer" parent="MarginContainer/MainContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ResetButton" type="Button" parent="MarginContainer/MainContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 4
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_type_variation = &"FlatButton"
+icon = ExtResource("2_n8e0s")
+
+[connection signal="pressed" from="MarginContainer/MainContainer/HBoxContainer/ResetButton" to="." method="_on_reset_button_pressed"]

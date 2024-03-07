@@ -41,37 +41,42 @@ func update_palettes(search_text := "") -> void:
 	for child in palettes_content_container.get_children():
 		child.queue_free()
 	search_field.placeholder_text = tr("Search color")
-	var reserved_color_palette := ColorPalette.new("", [NamedColor.new("none")])
+	var reserved_color_palette := ColorPalette.new("")
+	reserved_color_palette.add_color()  # Add the "none" color.
 	# TODO Gradients should be added here.
 	var displayed_palettes: Array[ColorPalette] = [reserved_color_palette]
-	displayed_palettes += GlobalSettings.get_palettes()
+	displayed_palettes += GlobalSettings.palettes
 	for palette in displayed_palettes:
-		var colors_to_show: Array[NamedColor] = []
-		for named_color in palette.named_colors:
-			if search_text.is_empty() or search_text.is_subsequence_ofn(named_color.name):
-				colors_to_show.append(named_color)
+		var colors_to_show: Array[String] = []
+		var color_names_to_show: Array[String] = []
+		for i in palette.colors.size():
+			if search_text.is_empty() or\
+			search_text.is_subsequence_ofn(palette.color_names[i]):
+				colors_to_show.append(palette.colors[i])
+				color_names_to_show.append(palette.color_names[i])
 		
 		if colors_to_show.is_empty():
 			continue
 		
 		var palette_container := VBoxContainer.new()
 		# Only the reserved palette should have an empty name.
-		if not palette.name.is_empty():
+		if not palette.title.is_empty():
 			var palette_label := Label.new()
-			palette_label.text = palette.name
+			palette_label.text = palette.title
 			palette_label.add_theme_font_size_override("font_size", 15)
 			palette_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 			palette_container.add_child(palette_label)
 		
 		var swatch_container := HFlowContainer.new()
 		swatch_container.add_theme_constant_override("h_separation", 3)
-		for named_color in colors_to_show:
+		for i in colors_to_show.size():
 			var swatch := ColorSwatch.instantiate()
-			swatch.named_color = named_color
-			swatch.pressed.connect(pick_palette_color.bind(named_color.color))
+			swatch.color_palette = palette
+			swatch.idx = i
+			swatch.pressed.connect(pick_palette_color.bind(colors_to_show[i]))
 			swatch_container.add_child(swatch)
 			swatches_list.append(swatch)
-			if ColorParser.are_colors_same("#" + swatch.named_color.color, current_value):
+			if ColorParser.are_colors_same("#" + colors_to_show[i], current_value):
 				swatch.disabled = true
 				swatch.mouse_default_cursor_shape = Control.CURSOR_ARROW
 		palette_container.add_child(swatch_container)

@@ -70,13 +70,16 @@ msgstr "Документація…"
 msgid "Donate (Github)"
 msgstr "Зробити пожертвування (Github)"
 
-msgid "Zoom In"
+#, fuzzy
+msgid "Zoom in"
 msgstr "Збільшити масштаб"
 
-msgid "Zoom Reset"
+#, fuzzy
+msgid "Zoom reset"
 msgstr "Скинути масштаб"
 
-msgid "Zoom Out"
+#, fuzzy
+msgid "Zoom out"
 msgstr "Зменшити масштаб"
 
 msgid "Settings"
@@ -106,11 +109,14 @@ msgstr ""
 msgid "Copy All Text"
 msgstr "Скопіювати весь текст"
 
-msgid "Import SVG"
-msgstr "Імпортувати SVG"
+msgid "Save"
+msgstr ""
 
 msgid "Export"
 msgstr "Експорт"
+
+msgid "Select all tags"
+msgstr ""
 
 msgid "Couple/Decouple"
 msgstr "З’єднати/Роз’єднати"
@@ -146,7 +152,7 @@ msgid "Syntax error"
 msgstr ""
 
 #, fuzzy
-msgid "Delete the selected tags"
+msgid "Delete the selection"
 msgstr "Delete: Видалити усі обрані теги"
 
 #, fuzzy
@@ -268,6 +274,15 @@ msgstr "Редагувати назву кольору"
 msgid "Delete color"
 msgstr "Видалити колір"
 
+msgid "Edit"
+msgstr ""
+
+msgid "Remove"
+msgstr ""
+
+msgid "Press keys..."
+msgstr ""
+
 msgid "Enable the color"
 msgstr "Активувати колір"
 
@@ -287,6 +302,13 @@ msgid "Copy"
 msgstr "Скопіювати"
 
 msgid "Paste"
+msgstr "Вставити"
+
+msgid "Copy as XML"
+msgstr ""
+
+#, fuzzy
+msgid "Paste XML"
 msgstr "Вставити"
 
 msgid "Cut"
@@ -401,3 +423,6 @@ msgstr ""
 
 msgid "Search color"
 msgstr ""
+
+#~ msgid "Import SVG"
+#~ msgstr "Імпортувати SVG"

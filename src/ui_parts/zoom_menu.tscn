@@ -4,32 +4,23 @@
 [ext_resource type="Script" path="res://src/ui_parts/zoom_menu.gd" id="1_18ab8"]
 [ext_resource type="Texture2D" uid="uid://eif2ioi0mw17" path="res://visual/icons/Plus.svg" id="2_284x5"]
 
-[sub_resource type="InputEventKey" id="InputEventKey_y2lqj"]
-device = -1
-ctrl_pressed = true
-keycode = 45
-unicode = 45
+[sub_resource type="InputEventAction" id="InputEventAction_mnex0"]
+action = &"zoom_out"
 
 [sub_resource type="Shortcut" id="Shortcut_ntgv0"]
-events = [SubResource("InputEventKey_y2lqj")]
+events = [SubResource("InputEventAction_mnex0")]
 
-[sub_resource type="InputEventKey" id="InputEventKey_q17wx"]
-device = -1
-ctrl_pressed = true
-keycode = 48
-unicode = 48
+[sub_resource type="InputEventAction" id="InputEventAction_20462"]
+action = &"zoom_reset"
 
 [sub_resource type="Shortcut" id="Shortcut_4v7wx"]
-events = [SubResource("InputEventKey_q17wx")]
+events = [SubResource("InputEventAction_20462")]
 
-[sub_resource type="InputEventKey" id="InputEventKey_gqh1f"]
-device = -1
-ctrl_pressed = true
-keycode = 61
-unicode = 61
+[sub_resource type="InputEventAction" id="InputEventAction_kt076"]
+action = &"zoom_in"
 
 [sub_resource type="Shortcut" id="Shortcut_y6ouu"]
-events = [SubResource("InputEventKey_gqh1f")]
+events = [SubResource("InputEventAction_kt076")]
 
 [node name="ZoomMenu" type="HBoxContainer"]
 offset_right = 114.0
@@ -44,6 +35,7 @@ focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_type_variation = &"IconButton"
 shortcut = SubResource("Shortcut_ntgv0")
+shortcut_in_tooltip = false
 icon = ExtResource("1_8ggy2")
 icon_alignment = 1
 
@@ -55,6 +47,7 @@ focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_override_font_sizes/font_size = 13
 shortcut = SubResource("Shortcut_4v7wx")
+shortcut_in_tooltip = false
 text = "100%"
 
 [node name="ZoomIn" type="Button" parent="."]
@@ -64,6 +57,7 @@ focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_type_variation = &"IconButton"
 shortcut = SubResource("Shortcut_y6ouu")
+shortcut_in_tooltip = false
 icon = ExtResource("2_284x5")
 icon_alignment = 1
 

@@ -8,7 +8,6 @@ extends Control
 @export var relative_button_hovered: StyleBoxFlat
 @export var relative_button_pressed: StyleBoxFlat
 
-const ContextPopup = preload("res://src/ui_elements/context_popup.tscn")
 const MiniNumberField = preload("mini_number_field.tscn")
 const FlagField = preload("flag_field.tscn")
 const PathCommandPopup = preload("res://src/ui_elements/path_popup.tscn")

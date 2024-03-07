@@ -8,15 +8,16 @@ signal color_deletion_requested
 @onready var color_edit: HBoxContainer = %ConfigureContainer/BottomContainer/ColorEdit
 @onready var delete_button: Button = %ConfigureContainer/BottomContainer/DeleteButton
 
-var named_color: NamedColor
+var color_palette: ColorPalette
+var idx: int
 
 func _ready() -> void:
-	set_label_text(named_color.name)
-	color_edit.value = named_color.color
+	set_label_text(color_palette.color_names[idx])
+	color_edit.value = color_palette.colors[idx]
 
 
 func _on_edit_button_pressed() -> void:
-	color_name_edit.text = named_color.name
+	color_name_edit.text = color_palette.color_names[idx]
 	color_name_edit.show()
 	color_name_edit.grab_focus()
 	color_name_edit.caret_column = color_name_edit.text.length()
