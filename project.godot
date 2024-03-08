@@ -51,7 +51,6 @@ import/fbx/enabled=false
 
 [gui]
 
-theme/custom="res://visual/main_theme.tres"
 timers/tooltip_delay_sec=0.4
 
 [input]

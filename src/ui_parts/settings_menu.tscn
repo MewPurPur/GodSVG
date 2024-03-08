@@ -1,25 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://1rylg17uwltw"]
+[gd_scene load_steps=6 format=3 uid="uid://1rylg17uwltw"]
 
 [ext_resource type="Script" path="res://src/ui_parts/settings_menu.gd" id="1_1gf4m"]
 [ext_resource type="Texture2D" uid="uid://c528knojuxbw6" path="res://visual/icons/Languages.svg" id="2_ndyp7"]
 [ext_resource type="PackedScene" uid="uid://ctsee23lxlrib" path="res://src/ui_elements/setting_check_box.tscn" id="4_2qeh2"]
 [ext_resource type="PackedScene" uid="uid://d032j54llwkca" path="res://src/ui_elements/setting_color.tscn" id="4_dacsc"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hto7q"]
-content_margin_left = 8.0
-content_margin_top = 10.0
-content_margin_right = 8.0
-content_margin_bottom = 10.0
-bg_color = Color(0.005, 0.005, 0.05, 1)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.203922, 0.254902, 0.4, 1)
-corner_radius_top_left = 2
-corner_radius_top_right = 2
-corner_radius_bottom_right = 2
-corner_radius_bottom_left = 2
 
 [sub_resource type="ButtonGroup" id="ButtonGroup_f7wyd"]
 
@@ -36,7 +20,7 @@ offset_right = 180.0
 offset_bottom = 128.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_hto7q")
+theme_type_variation = &"OverlayPanel"
 script = ExtResource("1_1gf4m")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
