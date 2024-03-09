@@ -416,7 +416,7 @@ static func setup_panelcontainer(theme: Theme) -> void:
 	overlay_stylebox.content_margin_top = 8.0
 	overlay_stylebox.content_margin_bottom = 10.0
 	overlay_stylebox.bg_color = overlay_panel_inner_color
-	overlay_stylebox.border_color = GlobalSettings.highlighting_string_color
+	overlay_stylebox.border_color = overlay_panel_border_color
 	theme.set_stylebox("panel", "OverlayPanel", overlay_stylebox)
 
 static func setup_filedialog(theme: Theme) -> void:
@@ -655,8 +655,8 @@ static func setup_tabcontainer(theme: Theme) -> void:
 	panel_stylebox.border_width_bottom = 2
 	panel_stylebox.corner_radius_bottom_right = 5
 	panel_stylebox.corner_radius_bottom_left = 5
-	panel_stylebox.content_margin_left = 6
-	panel_stylebox.content_margin_right = 6
+	panel_stylebox.content_margin_left = 8
+	panel_stylebox.content_margin_right = 8
 	panel_stylebox.content_margin_bottom = 6
 	panel_stylebox.content_margin_top = 5
 	theme.set_stylebox("panel", "TabContainer", panel_stylebox)
@@ -682,9 +682,7 @@ static func setup_tabcontainer(theme: Theme) -> void:
 	var tab_selected_stylebox := StyleBoxFlat.new()
 	tab_selected_stylebox.bg_color = selected_tab_color
 	tab_selected_stylebox.border_color = selected_tab_border_color
-	tab_selected_stylebox.border_width_bottom = 2
-	tab_selected_stylebox.corner_radius_top_left = 4
-	tab_selected_stylebox.corner_radius_top_right = 4
+	tab_selected_stylebox.border_width_top = 2
 	tab_selected_stylebox.content_margin_left = 12
 	tab_selected_stylebox.content_margin_right = 12
 	tab_selected_stylebox.content_margin_bottom = 3
