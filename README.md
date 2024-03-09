@@ -6,6 +6,11 @@
 
 **GodSVG is an editor for Scalable Vector Graphics (SVG) files.** Unlike other editors, it represents the SVG code directly, doesn't add any metadata, and even lets you edit the SVG code in real time. GodSVG is inspired by the need for an SVG editor without abstractions that produces clean and optimized SVG files.
 
+>[!IMPORTANT]
+>GodSVG is in late alpha, it's for early adopters. It may have occasional breaking changes and workflows may change significantly.
+>
+>GodSVG is almost entirely made by work I do in my free time. The development may continue for years or stop tomorrow. If you like this project, can use GitHub Sponsorship to support it and make it a less financially stupid endeavor.
+
 ## Features
 
 - **Interactive SVG editing:** Modify individual elements of an SVG file using a user-friendly interface.
