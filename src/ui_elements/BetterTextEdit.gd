@@ -10,7 +10,6 @@ var timer := Timer.new()
 
 var hovered := false
 
-@export var hover_stylebox: StyleBox  ## Overlayed on top when you hover the TextEdit.
 @export var block_non_ascii: bool  ## Blocks non-ASCII characters.
 
 func _init() -> void:
@@ -82,8 +81,8 @@ func _on_mouse_exited() -> void:
 	queue_redraw()
 
 func _draw() -> void:
-	if editable and hovered and hover_stylebox != null:
-		draw_style_box(hover_stylebox, Rect2(Vector2.ZERO, size))
+	if editable and hovered and has_theme_stylebox("hover"):
+		draw_style_box(get_theme_stylebox("hover"), Rect2(Vector2.ZERO, size))
 
 func _input(event: InputEvent) -> void:
 	if (has_focus() and event is InputEventMouseButton and\

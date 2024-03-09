@@ -124,7 +124,7 @@ func _draw() -> void:
 				# Because of the flag editors, the procedure is as simple as for the rest.
 				var stylebox := get_theme_stylebox("normal", "MiniLineEdit")
 				var font_size := get_theme_font_size("font_size", "MiniLineEdit")
-				var font_color := get_theme_color("font_outline_color", "MiniLineEdit")
+				var font_color := get_theme_color("font_color", "MiniLineEdit")
 				var rect := Rect2(Vector2(25, 2), Vector2(44, 18))
 				draw_numfield(rect, stylebox, "rx", font_size, font_color)
 				rect.position.x = rect.end.x + 3
@@ -162,13 +162,13 @@ func _draw() -> void:
 			"H":
 				var stylebox := get_theme_stylebox("normal", "MiniLineEdit")
 				var font_size := get_theme_font_size("font_size", "MiniLineEdit")
-				var font_color := get_theme_color("font_outline_color", "MiniLineEdit")
+				var font_color := get_theme_color("font_color", "MiniLineEdit")
 				var rect := Rect2(Vector2(25, 2), Vector2(44, 18))
 				draw_numfield(rect, stylebox, "x", font_size, font_color)
 			"V":
 				var stylebox := get_theme_stylebox("normal", "MiniLineEdit")
 				var font_size := get_theme_font_size("font_size", "MiniLineEdit")
-				var font_color := get_theme_color("font_outline_color", "MiniLineEdit")
+				var font_color := get_theme_color("font_color", "MiniLineEdit")
 				var rect := Rect2(Vector2(25, 2), Vector2(44, 18))
 				draw_numfield(rect, stylebox, "y", font_size, font_color)
 
@@ -182,7 +182,7 @@ font_size: int, font_color: Color) -> void:
 func draw_numfield_arr(spacings: Array, names: Array[String]) -> void:
 	var stylebox := get_theme_stylebox("normal", "MiniLineEdit")
 	var font_size := get_theme_font_size("font_size", "MiniLineEdit")
-	var font_color := get_theme_color("font_outline_color", "MiniLineEdit")
+	var font_color := get_theme_color("font_color", "MiniLineEdit")
 	var rect := Rect2(Vector2(25, 2), Vector2(44, 18))
 	draw_numfield(rect, stylebox, names[0], font_size, font_color)
 	for i in spacings.size():

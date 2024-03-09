@@ -21,10 +21,8 @@ func emit_picked(cmd_char: String) -> void:
 func _on_relative_toggle_toggled(toggled_on: bool) -> void:
 	GlobalSettings.modify_save_data("path_command_relative", toggled_on)
 	for command_button in command_container.get_children():
-		if toggled_on:
-			command_button.command_char = command_button.command_char.to_lower()
-		else:
-			command_button.command_char = command_button.command_char.to_upper()
+		command_button.command_char = command_button.command_char.to_lower() if toggled_on\
+				else command_button.command_char.to_upper()
 		command_button.update_text()
 
 func disable_invalid(cmd_chars: Array) -> void:

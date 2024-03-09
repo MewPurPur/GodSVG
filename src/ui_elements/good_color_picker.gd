@@ -328,7 +328,7 @@ func draw_hslider(idx: int, offset: float, chr: String) -> void:
 	widgets_arr[idx].draw_texture(slider_arrow, Vector2(tracks_arr[idx].position.x +\
 			tracks_arr[idx].size.x * offset - slider_arrow.get_width() / 2.0,
 			tracks_arr[idx].size.y), arrow_modulate)
-	widgets_arr[idx].draw_string(ThemeDB.get_project_theme().default_font,
+	widgets_arr[idx].draw_string(get_theme_default_font(),
 			Vector2(-12, 11), chr, HORIZONTAL_ALIGNMENT_CENTER, 12, 14)
 
 func _on_slider1_draw() -> void:
