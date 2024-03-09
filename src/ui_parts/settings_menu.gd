@@ -229,7 +229,7 @@ func setup_shortcuts_tab() -> void:
 func setup_theming_tab() -> void:
 	for child in %HighlighterVBox.get_children():
 		if child is SettingColor:
-			child.value_changed.connect(_on_theme_settings_changed)
+			child.value_changed.connect(notify_theme_changed)
 
 func _on_theme_settings_changed() -> void:
 	ThemeGenerator.generate_theme()
