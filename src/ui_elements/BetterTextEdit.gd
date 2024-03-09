@@ -53,7 +53,7 @@ func redraw_caret() -> void:
 		var rect: Rect2 = get_rect_at_line_column(caret_line, caret_column)
 		var caret_pos := rect.end + Vector2(1, -1)
 		# Workaround for ligatures.
-		if get_line(caret_line).length() < caret_column and\
+		if get_line(caret_line).length() > caret_column + 1 and\
 		rect == Rect2(get_rect_at_line_column(caret_line, caret_column + 1)):
 			caret_pos.x -= char_size.x
 		
