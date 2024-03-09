@@ -145,6 +145,7 @@ func _enter_tree() -> void:
 	load_user_data()
 	DisplayServer.window_set_mode(save_data.window_mode)
 	get_window().wrap_controls = true  # Prevents the main window from getting too small.
+	ThemeGenerator.generate_theme()
 
 
 func load_settings() -> void:

@@ -8,8 +8,6 @@ const ContextPopup = preload("res://src/ui_elements/context_popup.tscn")
 
 var hovered := false
 
-@export var hover_stylebox: StyleBox  ## Overlayed on top when you hover the LineEdit.
-@export var focus_stylebox: StyleBox  ## Overlayed on top when the LineEdit is focused.
 @export var code_font_tooltip := false  ## Use the mono font for the tooltip.
 
 func _init() -> void:
@@ -59,11 +57,8 @@ func _on_mouse_exited() -> void:
 	queue_redraw()
 
 func _draw() -> void:
-	if editable:
-		if has_focus() and focus_stylebox != null:
-			draw_style_box(focus_stylebox, Rect2(Vector2.ZERO, size))
-		elif hovered and hover_stylebox != null:
-			draw_style_box(hover_stylebox, Rect2(Vector2.ZERO, size))
+	if editable and hovered and has_theme_stylebox("hover"):
+		draw_style_box(get_theme_stylebox("hover"), Rect2(Vector2.ZERO, size))
 
 func _make_custom_tooltip(for_text: String) -> Object:
 	if code_font_tooltip:

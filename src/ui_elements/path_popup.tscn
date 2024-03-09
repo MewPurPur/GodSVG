@@ -5,7 +5,7 @@
 
 [node name="PathCommandPopup" type="Popup"]
 transparent_bg = true
-size = Vector2i(236, 282)
+size = Vector2i(236, 285)
 visible = true
 script = ExtResource("1_j10aq")
 

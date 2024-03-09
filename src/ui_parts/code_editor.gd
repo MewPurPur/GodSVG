@@ -51,9 +51,8 @@ func update_error(err_id: SVGParser.ParseError) -> void:
 
 func setup_theme(match_below: bool) -> void:
 	code_edit.begin_bulk_theme_override()
-	for theming in ["normal", "focus"]:
-		var stylebox := ThemeDB.get_project_theme().\
-				get_stylebox(theming, "TextEdit").duplicate()
+	for theming in ["normal", "focus", "hover"]:
+		var stylebox := get_theme_stylebox(theming, "TextEdit").duplicate()
 		stylebox.corner_radius_top_right = 0
 		stylebox.corner_radius_top_left = 0
 		stylebox.border_width_top = 2

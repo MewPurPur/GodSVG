@@ -35,10 +35,11 @@ func sync() -> void:
 	if events.size() != action_defaults.size():
 		reset_button.show()
 	else:
-		reset_button.hide()
+		var is_value_changed := false
 		for i in events.size():
 			if not events[i].is_match(action_defaults[i]):
-				reset_button.show()
+				is_value_changed = true
+		reset_button.visible = is_value_changed
 	# Clear the existing buttons.
 	shortcut_buttons.clear()
 	for button in shortcut_container.get_children():
@@ -77,8 +78,8 @@ func sync() -> void:
 				new_btn.mouse_default_cursor_shape = Control.CURSOR_ARROW
 
 
-func event_to_text(event: InputEvent) -> String:
-	return event.as_text().trim_suffix(" (Physical)")
+func event_to_text(event: InputEventKey) -> String:
+	return event.as_text_physical_keycode()
 
 func popup_options(idx: int) -> void:
 	var context_popup := ContextPopup.instantiate()

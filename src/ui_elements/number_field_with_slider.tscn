@@ -1,27 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://bp2vpf7g8w8aj"]
+[gd_scene load_steps=3 format=3 uid="uid://bp2vpf7g8w8aj"]
 
 [ext_resource type="Script" path="res://src/ui_elements/number_field_with_slider.gd" id="1_ymm02"]
 [ext_resource type="Script" path="res://src/ui_elements/BetterLineEdit.gd" id="2_ytia1"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_e034s"]
-draw_center = false
-border_width_left = 2
-border_width_top = 2
-border_width_right = 1
-border_width_bottom = 2
-border_color = Color(1, 1, 1, 0.0666667)
-corner_radius_top_left = 5
-corner_radius_bottom_left = 5
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0nb8u"]
-draw_center = false
-border_width_left = 2
-border_width_top = 2
-border_width_right = 1
-border_width_bottom = 2
-border_color = Color(0.2, 0.34902, 0.501961, 1)
-corner_radius_top_left = 5
-corner_radius_bottom_left = 5
 
 [node name="NumberFieldWithSlider" type="HBoxContainer"]
 custom_minimum_size = Vector2(0, 22)
@@ -38,8 +18,6 @@ focus_mode = 1
 mouse_filter = 1
 theme_type_variation = &"RightConnectedLineEdit"
 script = ExtResource("2_ytia1")
-hover_stylebox = SubResource("StyleBoxFlat_e034s")
-focus_stylebox = SubResource("StyleBoxFlat_0nb8u")
 code_font_tooltip = true
 
 [node name="Slider" type="Button" parent="."]

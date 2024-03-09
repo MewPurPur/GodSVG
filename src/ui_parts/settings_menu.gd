@@ -232,4 +232,7 @@ func setup_theming_tab() -> void:
 			child.value_changed.connect(_on_theme_settings_changed)
 
 func _on_theme_settings_changed() -> void:
+	ThemeGenerator.generate_theme()
+
+func notify_theme_changed() -> void:
 	get_tree().get_root().propagate_notification(NOTIFICATION_THEME_CHANGED)
