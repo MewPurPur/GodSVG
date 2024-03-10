@@ -72,10 +72,10 @@ static func generate_theme() -> void:
 	default_theme.default_font = regular_font
 	default_theme.default_font_size = 13
 	var theme := Theme.new()
+	setup_panelcontainer(theme)
 	setup_button(theme)
 	setup_checkbox(theme)
 	setup_checkbutton(theme)
-	setup_panelcontainer(theme)
 	setup_filedialog(theme)
 	setup_lineedit(theme)
 	setup_scrollbar(theme)
@@ -87,6 +87,75 @@ static func generate_theme() -> void:
 	setup_splitcontainer(theme)
 	default_theme.merge_with(theme)
 
+
+static func setup_panelcontainer(theme: Theme) -> void:
+	theme.add_type("PanelContainer")
+	var stylebox := StyleBoxFlat.new()
+	stylebox.set_corner_radius_all(4)
+	stylebox.set_border_width_all(2)
+	stylebox.content_margin_left = 2.0
+	stylebox.content_margin_right = 2.0
+	stylebox.bg_color = common_panel_inner_color
+	stylebox.border_color = common_panel_border_color
+	theme.set_stylebox("panel", "PanelContainer", stylebox)
+	
+	theme.add_type("Window")
+	theme.set_stylebox("embedded_border", "Window", stylebox)
+	
+	theme.add_type("AcceptDialog")
+	var accept_dialog_stylebox := stylebox.duplicate()
+	accept_dialog_stylebox.content_margin_left = 12.0
+	accept_dialog_stylebox.content_margin_right = 12.0
+	accept_dialog_stylebox.content_margin_top = 8.0
+	accept_dialog_stylebox.content_margin_bottom = 8.0
+	theme.set_stylebox("panel", "AcceptDialog", accept_dialog_stylebox)
+	
+	theme.add_type("DarkPanel")
+	theme.set_type_variation("DarkPanel", "PanelContainer")
+	var dark_stylebox := StyleBoxFlat.new()
+	dark_stylebox.set_corner_radius_all(3)
+	dark_stylebox.content_margin_left = 4.0
+	dark_stylebox.content_margin_right = 4.0
+	dark_stylebox.content_margin_top = 2.0
+	dark_stylebox.content_margin_bottom = 2.0
+	dark_stylebox.bg_color = dark_panel_color
+	theme.set_stylebox("panel", "DarkPanel", dark_stylebox)
+	
+	theme.add_type("OverlayPanel")
+	theme.set_type_variation("OverlayPanel", "PanelContainer")
+	var overlay_stylebox := StyleBoxFlat.new()
+	overlay_stylebox.set_corner_radius_all(2)
+	overlay_stylebox.set_border_width_all(2)
+	overlay_stylebox.content_margin_left = 8.0
+	overlay_stylebox.content_margin_right = 10.0
+	overlay_stylebox.content_margin_top = 8.0
+	overlay_stylebox.content_margin_bottom = 10.0
+	overlay_stylebox.bg_color = overlay_panel_inner_color
+	overlay_stylebox.border_color = overlay_panel_border_color
+	theme.set_stylebox("panel", "OverlayPanel", overlay_stylebox)
+	
+	theme.add_type("SideTabBar")
+	theme.set_type_variation("SideTabBar", "PanelContainer")
+	var side_tabbar_stylebox := StyleBoxFlat.new()
+	side_tabbar_stylebox.bg_color = tabbar_background_color
+	side_tabbar_stylebox.set_content_margin_all(0)
+	side_tabbar_stylebox.corner_radius_top_left = 5
+	side_tabbar_stylebox.corner_radius_bottom_left = 5
+	theme.set_stylebox("panel", "SideTabBar", side_tabbar_stylebox)
+	
+	theme.add_type("SideBarContent")
+	theme.set_type_variation("SideBarContent", "PanelContainer")
+	var panel_stylebox := StyleBoxFlat.new()
+	panel_stylebox.bg_color = tab_container_panel_inner_color
+	panel_stylebox.border_color = tab_container_panel_border_color
+	panel_stylebox.set_border_width_all(2)
+	panel_stylebox.corner_radius_top_right = 5
+	panel_stylebox.corner_radius_bottom_right = 5
+	panel_stylebox.content_margin_left = 8
+	panel_stylebox.content_margin_right = 8
+	panel_stylebox.content_margin_bottom = 6
+	panel_stylebox.content_margin_top = 5
+	theme.set_stylebox("panel", "SideBarContent", panel_stylebox)
 
 static func setup_button(theme: Theme) -> void:
 	theme.add_type("Button")
@@ -357,7 +426,7 @@ static func setup_button(theme: Theme) -> void:
 	pressed_sidetab_stylebox.border_color = selected_tab_border_color
 	pressed_sidetab_stylebox.border_width_left = 2
 	pressed_sidetab_stylebox.content_margin_left = 12
-	pressed_sidetab_stylebox.content_margin_right = 12
+	pressed_sidetab_stylebox.content_margin_right = 6
 	pressed_sidetab_stylebox.content_margin_bottom = 3
 	pressed_sidetab_stylebox.content_margin_top = 3
 	theme.set_stylebox("pressed", "SideTab", pressed_sidetab_stylebox)
@@ -406,75 +475,6 @@ static func setup_checkbutton(theme: Theme) -> void:
 	theme.add_type("CheckButton")
 	theme.set_icon("checked", "CheckButton", icon("GuiToggleChecked"))
 	theme.set_icon("unchecked", "CheckButton", icon("GuiToggleUnchecked"))
-
-static func setup_panelcontainer(theme: Theme) -> void:
-	theme.add_type("PanelContainer")
-	var stylebox := StyleBoxFlat.new()
-	stylebox.set_corner_radius_all(4)
-	stylebox.set_border_width_all(2)
-	stylebox.content_margin_left = 2.0
-	stylebox.content_margin_right = 2.0
-	stylebox.bg_color = common_panel_inner_color
-	stylebox.border_color = common_panel_border_color
-	theme.set_stylebox("panel", "PanelContainer", stylebox)
-	
-	theme.add_type("Window")
-	theme.set_stylebox("embedded_border", "Window", stylebox)
-	
-	theme.add_type("AcceptDialog")
-	var accept_dialog_stylebox := stylebox.duplicate()
-	accept_dialog_stylebox.content_margin_left = 12.0
-	accept_dialog_stylebox.content_margin_right = 12.0
-	accept_dialog_stylebox.content_margin_top = 8.0
-	accept_dialog_stylebox.content_margin_bottom = 8.0
-	theme.set_stylebox("panel", "AcceptDialog", accept_dialog_stylebox)
-	
-	theme.add_type("DarkPanel")
-	theme.set_type_variation("DarkPanel", "PanelContainer")
-	var dark_stylebox := StyleBoxFlat.new()
-	dark_stylebox.set_corner_radius_all(3)
-	dark_stylebox.content_margin_left = 4.0
-	dark_stylebox.content_margin_right = 4.0
-	dark_stylebox.content_margin_top = 2.0
-	dark_stylebox.content_margin_bottom = 2.0
-	dark_stylebox.bg_color = dark_panel_color
-	theme.set_stylebox("panel", "DarkPanel", dark_stylebox)
-	
-	theme.add_type("OverlayPanel")
-	theme.set_type_variation("OverlayPanel", "PanelContainer")
-	var overlay_stylebox := StyleBoxFlat.new()
-	overlay_stylebox.set_corner_radius_all(2)
-	overlay_stylebox.set_border_width_all(2)
-	overlay_stylebox.content_margin_left = 8.0
-	overlay_stylebox.content_margin_right = 10.0
-	overlay_stylebox.content_margin_top = 8.0
-	overlay_stylebox.content_margin_bottom = 10.0
-	overlay_stylebox.bg_color = overlay_panel_inner_color
-	overlay_stylebox.border_color = overlay_panel_border_color
-	theme.set_stylebox("panel", "OverlayPanel", overlay_stylebox)
-	
-	theme.add_type("SideTabBar")
-	theme.set_type_variation("SideTabBar", "PanelContainer")
-	var side_tabbar_stylebox := StyleBoxFlat.new()
-	side_tabbar_stylebox.bg_color = tabbar_background_color
-	side_tabbar_stylebox.set_content_margin_all(0)
-	side_tabbar_stylebox.corner_radius_top_left = 5
-	side_tabbar_stylebox.corner_radius_bottom_left = 5
-	theme.set_stylebox("panel", "SideTabBar", side_tabbar_stylebox)
-	
-	theme.add_type("SideBarContent")
-	theme.set_type_variation("SideBarContent", "PanelContainer")
-	var panel_stylebox := StyleBoxFlat.new()
-	panel_stylebox.bg_color = tab_container_panel_inner_color
-	panel_stylebox.border_color = tab_container_panel_border_color
-	panel_stylebox.set_border_width_all(2)
-	panel_stylebox.corner_radius_top_right = 5
-	panel_stylebox.corner_radius_bottom_right = 5
-	panel_stylebox.content_margin_left = 8
-	panel_stylebox.content_margin_right = 8
-	panel_stylebox.content_margin_bottom = 6
-	panel_stylebox.content_margin_top = 5
-	theme.set_stylebox("panel", "SideBarContent", panel_stylebox)
 
 static func setup_filedialog(theme: Theme) -> void:
 	theme.add_type("FileDialog")
@@ -632,6 +632,9 @@ static func setup_lineedit(theme: Theme) -> void:
 	color_picker_line_edit_stylebox.set_corner_radius_all(2)
 	color_picker_line_edit_stylebox.bg_color = line_edit_background_color
 	theme.set_stylebox("normal", "GoodColorPickerLineEdit", color_picker_line_edit_stylebox)
+	var empty_stylebox := StyleBoxEmpty.new()
+	theme.set_stylebox("hover", "GoodColorPickerLineEdit", empty_stylebox)
+	theme.set_stylebox("focus", "GoodColorPickerLineEdit", empty_stylebox)
 
 static func setup_scrollbar(theme: Theme) -> void:
 	theme.add_type("HScrollBar")
