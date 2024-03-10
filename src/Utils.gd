@@ -1,5 +1,8 @@
 class_name Utils extends RefCounted
 
+# In my opinion, this is nicer than groups.
+enum CustomNotification {HIGHLIGHT_COLORS_CHANGED = 300}
+
 const path_command_char_dict = {
 	"M": "Move to", "L": "Line to", "H": "Horizontal Line to", "V": "Vertical Line to",
 	"Z": "Close Path", "A": "Elliptical Arc to", "Q": "Quadratic Bezier to",

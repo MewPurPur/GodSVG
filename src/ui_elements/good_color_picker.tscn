@@ -203,6 +203,7 @@ theme_override_constants/margin_bottom = 6
 [node name="TextureRect" type="TextureRect" parent="SliderContainer/HBoxContainer/TracksContainer/Slider1/MarginContainer"]
 layout_mode = 2
 texture = ExtResource("6_qq1j3")
+expand_mode = 1
 stretch_mode = 1
 
 [node name="ColorTrack" type="ColorRect" parent="SliderContainer/HBoxContainer/TracksContainer/Slider1/MarginContainer"]
@@ -235,6 +236,7 @@ theme_override_constants/margin_bottom = 6
 [node name="TextureRect" type="TextureRect" parent="SliderContainer/HBoxContainer/TracksContainer/Slider2/MarginContainer"]
 layout_mode = 2
 texture = ExtResource("6_qq1j3")
+expand_mode = 1
 stretch_mode = 1
 
 [node name="ColorTrack" type="ColorRect" parent="SliderContainer/HBoxContainer/TracksContainer/Slider2/MarginContainer"]
@@ -267,6 +269,7 @@ theme_override_constants/margin_bottom = 6
 [node name="TextureRect" type="TextureRect" parent="SliderContainer/HBoxContainer/TracksContainer/Slider3/MarginContainer"]
 layout_mode = 2
 texture = ExtResource("6_qq1j3")
+expand_mode = 1
 stretch_mode = 1
 
 [node name="ColorTrack" type="ColorRect" parent="SliderContainer/HBoxContainer/TracksContainer/Slider3/MarginContainer"]
