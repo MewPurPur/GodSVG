@@ -117,7 +117,6 @@ stylebox = SubResource("StyleBoxFlat_jtvwe")
 
 [node name="License" type="ScrollContainer" parent="VBoxContainer/TabContainer"]
 visible = false
-custom_minimum_size = Vector2(480, 240)
 layout_mode = 2
 size_flags_vertical = 3
 

@@ -265,8 +265,7 @@ msgstr "Промени"
 msgid "Remove"
 msgstr "Премахни"
 
-#, fuzzy
-msgid "Press keys..."
+msgid "Press keys…"
 msgstr "Натисни клавиши…"
 
 msgid "Enable the color"
@@ -295,6 +294,9 @@ msgstr "Копирай като XML"
 
 msgid "Paste XML"
 msgstr "Постави XML"
+
+msgid "Unused"
+msgstr "Неизползван"
 
 msgid "Cut"
 msgstr "Изрежи"
@@ -407,6 +409,3 @@ msgstr "Промените ще бъдат нанесени веднага."
 
 msgid "Search color"
 msgstr "Търсене на цвят"
-
-#~ msgid "Import SVG"
-#~ msgstr "Импорт на SVG"

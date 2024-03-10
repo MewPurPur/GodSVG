@@ -278,7 +278,7 @@ msgstr ""
 msgid "Remove"
 msgstr ""
 
-msgid "Press keys..."
+msgid "Press keys…"
 msgstr ""
 
 msgid "Enable the color"
@@ -308,6 +308,9 @@ msgstr ""
 #, fuzzy
 msgid "Paste XML"
 msgstr "Einfügen"
+
+msgid "Unused"
+msgstr ""
 
 msgid "Cut"
 msgstr "Ausschneiden"
