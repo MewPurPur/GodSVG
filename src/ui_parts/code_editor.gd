@@ -132,9 +132,8 @@ func _on_file_button_pressed() -> void:
 func clear_file_path() -> void:
 	GlobalSettings.modify_save_data("current_file_path", "")
 
-
 func _notification(what: int) -> void:
-	if what == NOTIFICATION_THEME_CHANGED:
+	if what == Utils.CustomNotification.HIGHLIGHT_COLORS_CHANGED:
 		setup_highlighter()
 
 func setup_highlighter() -> void:
