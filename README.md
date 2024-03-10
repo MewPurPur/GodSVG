@@ -7,15 +7,15 @@
 **GodSVG is an editor for Scalable Vector Graphics (SVG) files.** Unlike other editors, it represents the SVG code directly, doesn't add any metadata, and even lets you edit the SVG code in real time. GodSVG is inspired by the need for an SVG editor without abstractions that produces clean and optimized SVG files.
 
 >[!IMPORTANT]
->GodSVG is in late alpha, it's for early adopters. It may have occasional breaking changes and workflows may change significantly.
+>GodSVG is not officially released, it's currently in late alpha.
 >
->GodSVG is almost entirely made by work I do in my free time. The development may continue for years or stop tomorrow. If you like this project, can use GitHub Sponsorship to support it and make it a less financially stupid endeavor.
+>GodSVG is almost entirely made by my work in my free time. If you like this project and want to help secure it through its development, you can use GitHub Sponsorship and make it a less financially stupid endeavor for me.
 
 ## Features
 
 - **Interactive SVG editing:** Modify individual elements of an SVG file using a user-friendly interface.
 - **Real-time code:** As you manipulate elements in the UI, code is instantly generated and can be edited.
-- **Optimized SVG output:** Generate clean and efficient SVG files.
+- **Optimized SVGs:** The generated SVG files are small and efficient, and there are many options to assist with optimization.
 - **Accessible on mobile:** GodSVG aims to be usable on mobile devices.
 
 ![image](https://github.com/MewPurPur/GodSVG/assets/85438892/799084d5-4ec6-4c9e-98a1-e358c34927c0)
@@ -36,9 +36,9 @@ Documentation for GodSVG is likely eventually going to be built-in. In the meant
 
 If you want to import an existing graphic from scratch, use the Import button on top of the code editor or drag-and-drop an SVG file into the app.
 
-To add new shapes, press the "+ Add new tag" button or right-click inside the viewport, then select your shape from the dropdown. After your shape is added, you can drag its handles in the viewport to change its shape, or modify the attributes in the inspector to change its other attributes, like fill and stroke. You can also always modify the SVG code directly.
+To add new shapes, press the "+ Add new tag" button, right-click inside the viewport, or right-click inside the tags container. You can then select your shape from the dropdown. After your shape is added, you can drag its handles in the viewport to change its geometry, or modify the attributes in the inspector to change its other properties, like fill and stroke. You can also always modify the SVG code directly.
 
-In the inspector, you can hover each tag's fields to see which attribute they represent. You may select tags in the viewport on the right or the inspector on the left, and right-click to do operations on them, like deleting them (can be done with the Delete key) moving them up or down (can also be done with Ctrl+Up and Ctrl+Down), duplicating them (can also be done with Ctrl+D), or moving them within the inspector by drag-and-dropping.
+In the inspector, you can hover each tag's fields to see which attribute they represent. You may select tags in the viewport on the right or the inspector on the left, and right-click to do operations on them such as deleting or moving them. Some of these actions shortcuts, you can find them in the settings menu.
 
 Pathdata attributes have a very complex editor that allows for selecting individual path commands with a lot of similarities to tags. You can right-click the path command and click "Insert After", then pick the one you want. If you're used to SVG paths, you can also use the M, L, H, V, Z, A, Q, T, C, S keys to insert a new path command after a selected one; pressing Shift will also make the new command absolute instead of relative.
 
