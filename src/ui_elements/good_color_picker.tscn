@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://b1eig44cov474"]
+[gd_scene load_steps=17 format=3 uid="uid://b1eig44cov474"]
 
 [ext_resource type="Script" path="res://src/ui_elements/good_color_picker.gd" id="1_0pc78"]
 [ext_resource type="Shader" path="res://src/shaders/color_wheel.gdshader" id="2_nf1uk"]
@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://cvh3kwbucf2n1" path="res://visual/icons/Reload.svg" id="5_rh0xc"]
 [ext_resource type="Texture2D" uid="uid://d36qn2f7a0nok" path="res://visual/icons/NoneColor.svg" id="5_rnr60"]
 [ext_resource type="Script" path="res://src/ui_elements/BetterLineEdit.gd" id="6_aqyoh"]
+[ext_resource type="Texture2D" uid="uid://stpallv5q0rb" path="res://visual/icons/backgrounds/CheckerboardMini.svg" id="6_qq1j3"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_wl372"]
 shader = ExtResource("2_nf1uk")
@@ -199,6 +200,11 @@ theme_override_constants/margin_left = 4
 theme_override_constants/margin_right = 4
 theme_override_constants/margin_bottom = 6
 
+[node name="TextureRect" type="TextureRect" parent="SliderContainer/HBoxContainer/TracksContainer/Slider1/MarginContainer"]
+layout_mode = 2
+texture = ExtResource("6_qq1j3")
+stretch_mode = 1
+
 [node name="ColorTrack" type="ColorRect" parent="SliderContainer/HBoxContainer/TracksContainer/Slider1/MarginContainer"]
 material = SubResource("ShaderMaterial_fvg6q")
 custom_minimum_size = Vector2(0, 13)
@@ -226,12 +232,16 @@ theme_override_constants/margin_left = 4
 theme_override_constants/margin_right = 4
 theme_override_constants/margin_bottom = 6
 
+[node name="TextureRect" type="TextureRect" parent="SliderContainer/HBoxContainer/TracksContainer/Slider2/MarginContainer"]
+layout_mode = 2
+texture = ExtResource("6_qq1j3")
+stretch_mode = 1
+
 [node name="ColorTrack" type="ColorRect" parent="SliderContainer/HBoxContainer/TracksContainer/Slider2/MarginContainer"]
 material = SubResource("ShaderMaterial_dlmj5")
 custom_minimum_size = Vector2(0, 13)
 layout_mode = 2
 size_flags_horizontal = 3
-size_flags_vertical = 0
 mouse_filter = 1
 
 [node name="IntField" type="LineEdit" parent="SliderContainer/HBoxContainer/TracksContainer/Slider2"]
@@ -254,12 +264,16 @@ theme_override_constants/margin_left = 4
 theme_override_constants/margin_right = 4
 theme_override_constants/margin_bottom = 6
 
+[node name="TextureRect" type="TextureRect" parent="SliderContainer/HBoxContainer/TracksContainer/Slider3/MarginContainer"]
+layout_mode = 2
+texture = ExtResource("6_qq1j3")
+stretch_mode = 1
+
 [node name="ColorTrack" type="ColorRect" parent="SliderContainer/HBoxContainer/TracksContainer/Slider3/MarginContainer"]
 material = SubResource("ShaderMaterial_p3pbp")
 custom_minimum_size = Vector2(0, 13)
 layout_mode = 2
 size_flags_horizontal = 3
-size_flags_vertical = 0
 mouse_filter = 1
 
 [node name="IntField" type="LineEdit" parent="SliderContainer/HBoxContainer/TracksContainer/Slider3"]
