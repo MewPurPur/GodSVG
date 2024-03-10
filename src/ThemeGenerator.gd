@@ -59,8 +59,9 @@ const line_edit_disabled_background_color = Color("09090d")
 const line_edit_disabled_border_color = Color("17171a")
 const mini_line_edit_normal_border_color = Color("4d4e66")
 
-const tab_container_panel_inner_color = Color("141526")
-const tab_container_panel_border_color = Color("262a4d")
+const tab_container_panel_inner_color = Color("171726")
+const tab_container_panel_border_color = Color("2a2e4d")
+const tabbar_background_color = Color("13131f80")
 const hovered_tab_color = Color("1f2138")
 const normal_tab_color = Color("17192e")
 const selected_tab_color = Color("293052")
@@ -337,6 +338,39 @@ static func setup_button(theme: Theme) -> void:
 	theme.set_stylebox("hover", "TextButton", text_button_empty_stylebox)
 	theme.set_stylebox("pressed", "TextButton", text_button_empty_stylebox)
 	theme.set_stylebox("disabled", "TextButton", text_button_empty_stylebox)
+	
+	theme.add_type("SideTab")
+	theme.set_type_variation("SideTab", "Button")
+	
+	var normal_sidetab_stylebox := StyleBoxFlat.new()
+	normal_sidetab_stylebox.bg_color = normal_tab_color
+	normal_sidetab_stylebox.corner_radius_top_left = 4
+	normal_sidetab_stylebox.corner_radius_bottom_left = 4
+	normal_sidetab_stylebox.content_margin_left = 6
+	normal_sidetab_stylebox.content_margin_right = 6
+	normal_sidetab_stylebox.content_margin_bottom = 3
+	normal_sidetab_stylebox.content_margin_top = 3
+	theme.set_stylebox("normal", "SideTab", normal_sidetab_stylebox)
+	
+	var pressed_sidetab_stylebox := StyleBoxFlat.new()
+	pressed_sidetab_stylebox.bg_color = selected_tab_color
+	pressed_sidetab_stylebox.border_color = selected_tab_border_color
+	pressed_sidetab_stylebox.border_width_left = 2
+	pressed_sidetab_stylebox.content_margin_left = 12
+	pressed_sidetab_stylebox.content_margin_right = 12
+	pressed_sidetab_stylebox.content_margin_bottom = 3
+	pressed_sidetab_stylebox.content_margin_top = 3
+	theme.set_stylebox("pressed", "SideTab", pressed_sidetab_stylebox)
+	
+	var hovered_sidetab_stylebox := StyleBoxFlat.new()
+	hovered_sidetab_stylebox.bg_color = hovered_tab_color
+	hovered_sidetab_stylebox.corner_radius_top_left = 4
+	hovered_sidetab_stylebox.corner_radius_bottom_left = 4
+	hovered_sidetab_stylebox.content_margin_left = 6
+	hovered_sidetab_stylebox.content_margin_right = 6
+	hovered_sidetab_stylebox.content_margin_bottom = 3
+	hovered_sidetab_stylebox.content_margin_top = 3
+	theme.set_stylebox("hover", "SideTab", hovered_sidetab_stylebox)
 
 static func setup_checkbox(theme: Theme) -> void:
 	theme.add_type("CheckBox")
@@ -418,6 +452,29 @@ static func setup_panelcontainer(theme: Theme) -> void:
 	overlay_stylebox.bg_color = overlay_panel_inner_color
 	overlay_stylebox.border_color = overlay_panel_border_color
 	theme.set_stylebox("panel", "OverlayPanel", overlay_stylebox)
+	
+	theme.add_type("SideTabBar")
+	theme.set_type_variation("SideTabBar", "PanelContainer")
+	var side_tabbar_stylebox := StyleBoxFlat.new()
+	side_tabbar_stylebox.bg_color = tabbar_background_color
+	side_tabbar_stylebox.set_content_margin_all(0)
+	side_tabbar_stylebox.corner_radius_top_left = 5
+	side_tabbar_stylebox.corner_radius_bottom_left = 5
+	theme.set_stylebox("panel", "SideTabBar", side_tabbar_stylebox)
+	
+	theme.add_type("SideBarContent")
+	theme.set_type_variation("SideBarContent", "PanelContainer")
+	var panel_stylebox := StyleBoxFlat.new()
+	panel_stylebox.bg_color = tab_container_panel_inner_color
+	panel_stylebox.border_color = tab_container_panel_border_color
+	panel_stylebox.set_border_width_all(2)
+	panel_stylebox.corner_radius_top_right = 5
+	panel_stylebox.corner_radius_bottom_right = 5
+	panel_stylebox.content_margin_left = 8
+	panel_stylebox.content_margin_right = 8
+	panel_stylebox.content_margin_bottom = 6
+	panel_stylebox.content_margin_top = 5
+	theme.set_stylebox("panel", "SideBarContent", panel_stylebox)
 
 static func setup_filedialog(theme: Theme) -> void:
 	theme.add_type("FileDialog")
@@ -698,6 +755,13 @@ static func setup_tabcontainer(theme: Theme) -> void:
 	tab_unselected_stylebox.content_margin_bottom = 3
 	tab_unselected_stylebox.content_margin_top = 3
 	theme.set_stylebox("tab_unselected", "TabContainer", tab_unselected_stylebox)
+	
+	var tabbar_background_stylebox := StyleBoxFlat.new()
+	tabbar_background_stylebox.bg_color = tabbar_background_color
+	tabbar_background_stylebox.set_content_margin_all(0)
+	tabbar_background_stylebox.corner_radius_top_left = 5
+	tabbar_background_stylebox.corner_radius_top_right = 5
+	theme.set_stylebox("tabbar_background", "TabContainer", tabbar_background_stylebox)
 
 static func setup_textedit(theme: Theme) -> void:
 	theme.add_type("TextEdit")

@@ -204,7 +204,7 @@ func disable_autoformat_checkboxes() -> void:
 func setup_shortcuts_tab() -> void:
 	for action in GlobalSettings.configurable_keybinds:
 		var keybind_config := ShortcutConfigWidget.instantiate()
-		shortcut_container.add_child(keybind_config)
+		configurable_shortcuts.add_child(keybind_config)
 		if action in shortcut_descriptions:
 			keybind_config.label.text = shortcut_descriptions[action]
 		else:
@@ -219,7 +219,7 @@ func setup_shortcuts_tab() -> void:
 	"cubic_bezier_absolute", "shorthand_cubic_bezier_relative",
 	"shorthand_cubic_bezier_absolute"]:
 		var keybind_config := ShortcutShowcaseWidget.instantiate()
-		shortcut_container.add_child(keybind_config)
+		non_configurable_shortcuts.add_child(keybind_config)
 		if action in shortcut_descriptions:
 			keybind_config.label.text = shortcut_descriptions[action]
 		else:
