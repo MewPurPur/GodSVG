@@ -3,6 +3,7 @@ extends PanelContainer
 const ContextPopup = preload("res://src/ui_elements/context_popup.tscn")
 const PaletteConfigWidget = preload("res://src/ui_elements/palette_config.tscn")
 const ShortcutConfigWidget = preload("res://src/ui_elements/setting_shortcut.tscn")
+const ShortcutShowcaseWidget = preload("res://src/ui_elements/presented_shortcut.tscn")
 const plus_icon = preload("res://visual/icons/Plus.svg")
 
 const SettingCheckBox = preload("res://src/ui_elements/setting_check_box.gd")
@@ -217,13 +218,13 @@ func setup_shortcuts_tab() -> void:
 	"shorthand_quadratic_bezier_absolute", "cubic_bezier_relative",
 	"cubic_bezier_absolute", "shorthand_cubic_bezier_relative",
 	"shorthand_cubic_bezier_absolute"]:
-		var keybind_config := ShortcutConfigWidget.instantiate()
+		var keybind_config := ShortcutShowcaseWidget.instantiate()
 		shortcut_container.add_child(keybind_config)
 		if action in shortcut_descriptions:
 			keybind_config.label.text = shortcut_descriptions[action]
 		else:
 			keybind_config.label.text = action
-		keybind_config.setup(action, true)
+		keybind_config.setup(action)
 
 
 func setup_theming_tab() -> void:

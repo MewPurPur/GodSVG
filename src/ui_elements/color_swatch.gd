@@ -62,8 +62,13 @@ func _get_drag_data(_at_position: Vector2) -> Variant:
 		preview.idx = idx
 		preview.modulate = Color(1, 1, 1, 0.85)
 		set_drag_preview(preview)
+		modulate = Color(1, 1, 1, 0.55)
 		return data
 	return null
+
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_DRAG_END:
+		modulate = Color(1, 1, 1)
 
 
 # For configuration swatches.

@@ -1,9 +1,6 @@
 extends PanelContainer
 
-const plus_icon = preload("res://visual/icons/Plus.svg")
 const ContextPopup = preload("res://src/ui_elements/context_popup.tscn")
-
-@export var shortcut_name: String
 
 @onready var label: Label = %MainContainer/Label
 @onready var reset_button: Button = %MainContainer/HBoxContainer/ResetButton
@@ -13,19 +10,14 @@ const ContextPopup = preload("res://src/ui_elements/context_popup.tscn")
 var action: String
 var events: Array[InputEvent] = []
 
-var is_state_disabled := false
 var listening_idx := -1
 
 func _ready() -> void:
 	reset_button.tooltip_text = tr("Reset to default")
 
-func make_disabled() -> void:
-	label.add_theme_color_override("font_color", Color("#def8"))
-
-func setup(new_action: String, state_disabled := false) -> void:
+func setup(new_action: String) -> void:
 	action = new_action
 	events = InputMap.action_get_events(action)
-	is_state_disabled = state_disabled
 	sync()
 
 # Syncs based on current events.
@@ -54,12 +46,8 @@ func sync() -> void:
 		new_btn.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 		new_btn.focus_mode = Control.FOCUS_NONE
 		if i < events.size():
-			new_btn.remove_theme_color_override("font_color")
-			new_btn.text = event_to_text(events[i])
+			new_btn.text = events[i].as_text_physical_keycode()
 			new_btn.pressed.connect(popup_options.bind(i))
-			if is_state_disabled:
-				new_btn.disabled = true
-				new_btn.mouse_default_cursor_shape = Control.CURSOR_ARROW
 		else:
 			new_btn.begin_bulk_theme_override()
 			new_btn.add_theme_color_override("font_color", Color("#def6"))
@@ -70,16 +58,10 @@ func sync() -> void:
 			if i == events.size():
 				new_btn.tooltip_text = tr("Add shortcut")
 				new_btn.pressed.connect(enter_listening_mode.bind(i))
-				if is_state_disabled:
-					new_btn.disabled = true
-					new_btn.mouse_default_cursor_shape = Control.CURSOR_ARROW
 			else:
 				new_btn.disabled = true
 				new_btn.mouse_default_cursor_shape = Control.CURSOR_ARROW
 
-
-func event_to_text(event: InputEventKey) -> String:
-	return event.as_text_physical_keycode()
 
 func popup_options(idx: int) -> void:
 	var context_popup := ContextPopup.instantiate()
@@ -134,7 +116,7 @@ func _unhandled_key_input(event: InputEvent) -> void:
 		if event.is_action_pressed("ui_cancel"):
 			cancel_listening()
 		elif event.is_pressed():
-			shortcut_buttons[listening_idx].text = event_to_text(event)
+			shortcut_buttons[listening_idx].text = event.as_text_physical_keycode()
 			accept_event()
 		elif event.is_released():
 			if listening_idx < events.size():
