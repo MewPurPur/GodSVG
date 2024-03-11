@@ -8,7 +8,7 @@
 [sub_resource type="ButtonGroup" id="ButtonGroup_f7wyd"]
 
 [node name="SettingsMenu" type="PanelContainer"]
-custom_minimum_size = Vector2(560, 360)
+custom_minimum_size = Vector2(568, 360)
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5

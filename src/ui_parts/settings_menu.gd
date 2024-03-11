@@ -179,7 +179,7 @@ func setup_autoformat_tab() -> void:
 				child.pressed.connect(_on_autoformat_settings_changed)
 
 func _on_autoformat_settings_changed() -> void:
-	SVG.root_tag.replace_self(SVG.root_tag.create_duplicate())
+	SVG.refresh()
 	disable_autoformat_checkboxes()
 
 func disable_autoformat_checkboxes() -> void:
