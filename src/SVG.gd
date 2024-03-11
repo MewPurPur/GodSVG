@@ -75,6 +75,9 @@ func _on_undo_redo() -> void:
 	GlobalSettings.modify_save_data("svg_text", text)
 
 
+func refresh() -> void:
+	SVG.root_tag.replace_self(SVG.root_tag.create_duplicate())
+
 func open_import_dialog() -> void:
 	# Open it inside a native file dialog, or our custom one if it's not available.
 	if DisplayServer.has_feature(DisplayServer.FEATURE_NATIVE_DIALOG):
