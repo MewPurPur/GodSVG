@@ -99,7 +99,16 @@ func enter_listening_mode(idx: int) -> void:
 		btn.pressed.disconnect(enter_listening_mode)
 	btn.pressed.connect(cancel_listening)
 	btn.focus_exited.connect(cancel_listening)
-	btn.text = tr("Press keys…")
+	# Workaround to show the keys pressed at the time of clicking.
+	var activation_event := InputEventKey.new()
+	activation_event.pressed = true
+	activation_event.ctrl_pressed = Input.is_key_pressed(KEY_CTRL)
+	activation_event.shift_pressed = Input.is_key_pressed(KEY_SHIFT)
+	activation_event.alt_pressed = Input.is_key_pressed(KEY_ALT)
+	btn.text = activation_event.as_text_physical_keycode().\
+			trim_suffix("(Unset)").trim_suffix("+")
+	if btn.text.is_empty():
+		btn.text = tr("Press keys…")
 
 func cancel_listening() -> void:
 	listening_idx = -1
@@ -113,7 +122,7 @@ func delete_shortcut(idx: int) -> void:
 
 func _unhandled_key_input(event: InputEvent) -> void:
 	if listening_idx >= 0 and event is InputEventKey:
-		if event.is_action_pressed("ui_cancel"):
+		if event.is_action("ui_cancel"):
 			cancel_listening()
 		elif event.is_pressed():
 			shortcut_buttons[listening_idx].text = event.as_text_physical_keycode()
