@@ -425,7 +425,7 @@ static func setup_button(theme: Theme) -> void:
 	pressed_sidetab_stylebox.bg_color = selected_tab_color
 	pressed_sidetab_stylebox.border_color = selected_tab_border_color
 	pressed_sidetab_stylebox.border_width_left = 2
-	pressed_sidetab_stylebox.content_margin_left = 12
+	pressed_sidetab_stylebox.content_margin_left = 10
 	pressed_sidetab_stylebox.content_margin_right = 6
 	pressed_sidetab_stylebox.content_margin_bottom = 3
 	pressed_sidetab_stylebox.content_margin_top = 3
