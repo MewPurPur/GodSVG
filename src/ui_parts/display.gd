@@ -21,6 +21,10 @@ const NumberField = preload("res://src/ui_elements/number_field.tscn")
 func _ready() -> void:
 	update_snap_config()
 
+func _notification(what: int) -> void:
+	if what == Utils.CustomNotification.NUMBER_PRECISION_CHANGED:
+		update_snap_config()
+
 func update_snap_config() -> void:
 	var snap_config := GlobalSettings.save_data.snap
 	var snap_enabled := snap_config > 0.0
@@ -35,8 +39,7 @@ func _on_settings_pressed() -> void:
 func _on_visuals_button_pressed() -> void:
 	var btn_arr: Array[Button] = [
 		Utils.create_checkbox(tr("Show Grid"), toggle_grid_visuals, grid_visuals.visible),
-		Utils.create_checkbox(tr("Show Handles"), toggle_handles_visuals,
-				controls.visible),
+		Utils.create_checkbox(tr("Show Handles"), toggle_handles_visuals, controls.visible),
 		Utils.create_checkbox(tr("Rasterized SVG"), toggle_rasterization,
 				viewport.display_texture.rasterized),
 	]

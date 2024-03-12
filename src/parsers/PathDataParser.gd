@@ -216,7 +216,7 @@ static func path_commands_to_text(commands_arr: Array[PathCommand]) -> String:
 		match cmd_char_capitalized:
 			"A":
 				output += num_parser.numstr_arr_to_text([num_parser.num_to_text(cmd.rx),
-						num_parser.num_to_text(cmd.ry), num_parser.num_to_text(cmd.rot, 2)])
+						num_parser.num_to_text(cmd.ry), num_parser.num_to_text(cmd.rot, true)])
 				if GlobalSettings.path_remove_spacing_after_flags:
 					output += (" 0" if cmd.large_arc_flag == 0 else " 1") +\
 							("0" if cmd.sweep_flag == 0 else "1")

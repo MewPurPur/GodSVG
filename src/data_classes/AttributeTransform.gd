@@ -95,11 +95,8 @@ func sync_after_transforms_change(sync_mode := SyncMode.LOUD) -> void:
 	super.set_value(TransformListParser.transform_list_to_text(_transform_list), sync_mode)
 
 func autoformat(text: String) -> String:
-	if GlobalSettings.transform_enable_autoformatting:
-		return TransformListParser.transform_list_to_text(
-				TransformListParser.text_to_transform_list(text))
-	else:
-		return text
+	return TransformListParser.transform_list_to_text(
+			TransformListParser.text_to_transform_list(text))
 
 func set_transform_list(new_transform_list: Array[Transform],
 sync_mode := SyncMode.LOUD) -> void:

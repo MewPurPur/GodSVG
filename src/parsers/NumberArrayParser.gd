@@ -4,14 +4,16 @@ class_name NumberArrayParser extends RefCounted
 var compress_numbers: bool
 var minimize_spacing: bool
 
-static func basic_num_to_text(num: float, precision := 4) -> String:
-	var text := String.num(num, precision)
+static func basic_num_to_text(num: float, is_angle := false) -> String:
+	var text := String.num(num, GlobalSettings.general_angle_precision if is_angle\
+			else GlobalSettings.general_number_precision)
 	if text == "-0":
 		text = "0"
 	return text
 
-func num_to_text(num: float, precision := 4) -> String:
-	var text := String.num(num, precision)
+func num_to_text(num: float, is_angle := false) -> String:
+	var text := String.num(num, GlobalSettings.general_angle_precision if is_angle\
+			else GlobalSettings.general_number_precision)
 	if compress_numbers:
 		if text.begins_with("0."):
 			text = text.right(-1)
