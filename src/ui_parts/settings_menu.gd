@@ -76,6 +76,8 @@ func setup_setting_labels() -> void:
 	var ctrl_for_zoom := %ContentContainer/Other/Input/UseCtrlForZoom
 	ctrl_for_zoom.label.text = tr("Use CTRL for zooming")
 	ctrl_for_zoom.label.tooltip_text = tr("If turned on, scrolling will pan the view. To zoom, hold CTRL while scrolling.")
+	%GeneralVBox/NumberPrecision.label.text = tr("Number precision digits")
+	%GeneralVBox/AnglePrecision.label.text = tr("Angle precision digits")
 	%XMLVBox/AddTrailingNewline.label.text = tr("Add trailing newline")
 	%XMLVBox/UseShorthandTagSyntax.label.text = tr("Use shorthand tag syntax")
 	%NumberVBox/NumberEnable.label.text = tr("Enable autoformatting")
@@ -86,12 +88,10 @@ func setup_setting_labels() -> void:
 	%ColorVBox/ConvertNamedToHex.label.text = tr("Convert named colors to hex")
 	%ColorVBox/UseShorthandHex.label.text = tr("Use shorthand hex code")
 	%ColorVBox/UseNamedColors.label.text = tr("Use short named colors")
-	%PathVBox/PathEnable.label.text = tr("Enable autoformatting")
 	%PathVBox/CompressNumbers.label.text = tr("Compress numbers")
 	%PathVBox/MinimizeSpacing.label.text = tr("Minimize spacing")
 	%PathVBox/RemoveSpacingAfterFlags.label.text = tr("Remove spacing after flags")
 	%PathVBox/RemoveConsecutiveCommands.label.text = tr("Remove consecutive commands")
-	%TransformVBox/TransformEnable.label.text = tr("Enable autoformatting")
 	%TransformVBox/CompressNumbers.label.text = tr("Compress numbers")
 	%TransformVBox/MinimizeSpacing.label.text = tr("Minimize spacing")
 	%TransformVBox/RemoveUnnecessaryParams.label.text = tr("Remove unnecessary parameters")
@@ -181,28 +181,35 @@ func setup_autoformat_tab() -> void:
 		for child in vbox.get_children():
 			if child is SettingCheckBox:
 				child.pressed.connect(_on_autoformat_settings_changed)
+	%GeneralVBox/NumberPrecision.value_changed.connect(_on_number_precision_changed)
+	%GeneralVBox/AnglePrecision.value_changed.connect(SVG.refresh)
 
 func _on_autoformat_settings_changed() -> void:
 	SVG.refresh()
 	disable_autoformat_checkboxes()
 
+func _on_number_precision_changed() -> void:
+	SVG.refresh()
+	# Update snap to fit the new precision.
+	var snapping_on := GlobalSettings.save_data.snap > 0
+	var quanta := 0.1 ** GlobalSettings.general_number_precision
+	GlobalSettings.save_data.snap = snappedf(GlobalSettings.save_data.snap, quanta)
+	if absf(GlobalSettings.save_data.snap) < quanta:
+		GlobalSettings.save_data.snap = quanta
+		if not snapping_on:
+			GlobalSettings.save_data.snap *= -1
+	get_tree().get_root().propagate_notification(
+			Utils.CustomNotification.NUMBER_PRECISION_CHANGED)
+
 func disable_autoformat_checkboxes() -> void:
-	for checkbox in number_vbox.get_children():
-		if checkbox is SettingCheckBox:
-			if checkbox.setting_name != "number_enable_autoformatting":
-				checkbox.set_checkbox_enabled(GlobalSettings.number_enable_autoformatting)
-	for checkbox in color_vbox.get_children():
-		if checkbox is SettingCheckBox:
-			if checkbox.setting_name != "color_enable_autoformatting":
-				checkbox.set_checkbox_enabled(GlobalSettings.color_enable_autoformatting)
-	for checkbox in path_vbox.get_children():
-		if checkbox is SettingCheckBox:
-			if checkbox.setting_name != "path_enable_autoformatting":
-				checkbox.set_checkbox_enabled(GlobalSettings.path_enable_autoformatting)
-	for checkbox in transform_vbox.get_children():
-		if checkbox is SettingCheckBox:
-			if checkbox.setting_name != "transform_enable_autoformatting":
-				checkbox.set_checkbox_enabled(GlobalSettings.transform_enable_autoformatting)
+	var is_autoformatting_numbers := GlobalSettings.number_enable_autoformatting
+	var is_autoformatting_colors := GlobalSettings.color_enable_autoformatting
+	%NumberVBox/RemoveZeroPadding.set_checkbox_enabled(is_autoformatting_numbers)
+	%NumberVBox/RemoveLeadingZero.set_checkbox_enabled(is_autoformatting_numbers)
+	%ColorVBox/ConvertRGBToHex.set_checkbox_enabled(is_autoformatting_colors)
+	%ColorVBox/ConvertNamedToHex.set_checkbox_enabled(is_autoformatting_colors)
+	%ColorVBox/UseShorthandHex.set_checkbox_enabled(is_autoformatting_colors)
+	%ColorVBox/UseNamedColors.set_checkbox_enabled(is_autoformatting_colors)
 
 
 func setup_shortcuts_tab() -> void:

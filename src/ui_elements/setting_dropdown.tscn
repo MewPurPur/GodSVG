@@ -37,5 +37,4 @@ mouse_default_cursor_shape = 2
 theme_type_variation = &"FlatButton"
 icon = ExtResource("2_1iot8")
 
-[connection signal="value_changed" from="PanelContainer/HBoxContainer/Dropdown" to="." method="_on_dropdown_value_changed"]
 [connection signal="pressed" from="PanelContainer/HBoxContainer/ResetButton" to="." method="_on_reset_button_pressed"]
