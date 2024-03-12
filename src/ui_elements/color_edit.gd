@@ -78,7 +78,5 @@ func _on_button_resized() -> void:
 	queue_redraw()
 
 func _on_line_edit_text_changed(new_text: String) -> void:
-	if is_color_valid_non_url(new_text):
-		color_edit.add_theme_color_override("font_color", Color(0.6, 1.0, 0.6))
-	else:
-		color_edit.add_theme_color_override("font_color", Color(1.0, 0.6, 0.6))
+	add_theme_color_override("font_color",
+			GlobalSettings.get_validity_color(!is_color_valid_non_url(new_text)))

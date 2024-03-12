@@ -62,6 +62,7 @@ func setup_theme(match_below: bool) -> void:
 			stylebox.border_width_bottom = 1
 		code_edit.add_theme_stylebox_override(theming, stylebox)
 	code_edit.end_bulk_theme_override()
+	error_label.add_theme_color_override("default_color", GlobalSettings.basic_color_error)
 
 
 func _on_copy_button_pressed() -> void:

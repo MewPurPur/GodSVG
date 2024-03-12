@@ -251,6 +251,18 @@ msgstr "Farbe löschen"
 msgid "Error color"
 msgstr "Farbe suchen"
 
+#, fuzzy
+msgid "Default value opacity"
+msgstr "Farbe löschen"
+
+#, fuzzy
+msgid "Warning color"
+msgstr "Farbe suchen"
+
+#, fuzzy
+msgid "Valid color"
+msgstr "Farbe hinzufügen"
+
 msgid "Palettes"
 msgstr "Paletten"
 

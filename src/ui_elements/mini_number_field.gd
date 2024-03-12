@@ -25,7 +25,7 @@ func _on_text_submitted(submitted_text: String) -> void:
 	set_value(evaluate_after_input(submitted_text))
 
 func evaluate_after_input(eval_text: String) -> float:
-	var num := AttributeNumeric.evaluate_expr(eval_text)
+	var num := NumberParser.evaluate(eval_text)
 	match mode:
 		Mode.ONLY_POSITIVE: return maxf(num, 0.0001)
 		Mode.HALF_ANGLE: return fmod(num, 180.0)

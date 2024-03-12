@@ -62,18 +62,21 @@ func _on_text_change_canceled() -> void:
 
 
 func _on_text_changed(new_text: String) -> void:
-	if new_text in attribute.possible_values:
-		indicator.add_theme_color_override("font_color", Color(0.6, 1.0, 0.6))
-	else:
-		indicator.add_theme_color_override("font_color", Color(1.0, 0.6, 0.6))
+	indicator.add_theme_color_override("font_color",
+			GlobalSettings.get_validity_color(not new_text in attribute.possible_values))
 
 func sync(new_value: String) -> void:
 	if indicator != null:
 		indicator.text = new_value
 		if new_value == attribute.default:
-			indicator.add_theme_color_override("font_color", Color(0.64, 0.64, 0.64))
+			indicator.add_theme_color_override("font_color", Color(indicator.get_theme_color(
+					"font_color"), GlobalSettings.default_value_opacity))
 		else:
 			indicator.remove_theme_color_override("font_color")
+
+func _notification(what: int) -> void:
+	if what == Utils.CustomNotification.DEFAULT_VALUE_OPACITY_CHANGED:
+		sync(indicator.text)
 
 
 func _on_button_gui_input(event: InputEvent) -> void:

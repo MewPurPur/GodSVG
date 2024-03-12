@@ -238,6 +238,15 @@ msgstr "Цвят на текста"
 msgid "Error color"
 msgstr "Цвят на грешките"
 
+msgid "Default value opacity"
+msgstr "Прозрачност на стандартните стойности"
+
+msgid "Warning color"
+msgstr "Цвят на предупрежденията"
+
+msgid "Valid color"
+msgstr "Цвят на валидният текст"
+
 msgid "Palettes"
 msgstr "Палети"
 

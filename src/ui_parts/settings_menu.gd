@@ -102,6 +102,10 @@ func setup_setting_labels() -> void:
 	%HighlighterVBox/CommentColor.label.text = tr("Comment color")
 	%HighlighterVBox/TextColor.label.text = tr("Text color")
 	%HighlighterVBox/ErrorColor.label.text = tr("Error color")
+	%BasicColorsVBox/DefaultValueOpacity.label.text = tr("Default value opacity")
+	%BasicColorsVBox/ValidColor.label.text = tr("Valid color")
+	%BasicColorsVBox/ErrorColor.label.text = tr("Error color")
+	%BasicColorsVBox/WarningColor.label.text = tr("Warning color")
 
 func _on_window_mode_pressed() -> void:
 	GlobalSettings.save_window_mode = not GlobalSettings.save_window_mode
@@ -172,8 +176,8 @@ func rebuild_color_palettes() -> void:
 @onready var transform_vbox: VBoxContainer = %TransformVBox
 
 func setup_autoformat_tab() -> void:
-	for vbox in [number_vbox, color_vbox, path_vbox, transform_vbox]:
-		disable_autoformat_checkboxes()
+	disable_autoformat_checkboxes()
+	for vbox in [xml_vbox, number_vbox, color_vbox, path_vbox, transform_vbox]:
 		for child in vbox.get_children():
 			if child is SettingCheckBox:
 				child.pressed.connect(_on_autoformat_settings_changed)
@@ -231,6 +235,7 @@ func setup_theming_tab() -> void:
 	for child in %HighlighterVBox.get_children():
 		if child is SettingColor:
 			child.value_changed.connect(_notify_highlight_colors_changed)
+	%DefaultValueOpacity.value_changed.connect(_notify_default_value_opacity_changed)
 
 func _on_theme_settings_changed() -> void:
 	ThemeGenerator.generate_theme()
@@ -238,3 +243,7 @@ func _on_theme_settings_changed() -> void:
 func _notify_highlight_colors_changed() -> void:
 	get_tree().get_root().propagate_notification(
 			Utils.CustomNotification.HIGHLIGHT_COLORS_CHANGED)
+
+func _notify_default_value_opacity_changed() -> void:
+	get_tree().get_root().propagate_notification(
+			Utils.CustomNotification.DEFAULT_VALUE_OPACITY_CHANGED)

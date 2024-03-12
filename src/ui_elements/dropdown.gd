@@ -55,7 +55,5 @@ func _on_text_submitted(new_text: String) -> void:
 
 func _on_text_changed(new_text: String) -> void:
 	if restricted:
-		if new_text in values:
-			line_edit.add_theme_color_override("font_color", Color(0.6, 1.0, 0.6))
-		else:
-			line_edit.add_theme_color_override("font_color", Color(1.0, 0.6, 0.6))
+		line_edit.add_theme_color_override("font_color",
+				GlobalSettings.get_validity_color(not new_text in values))

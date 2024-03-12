@@ -13,13 +13,9 @@ corner_radius_top_right = 5
 corner_radius_bottom_right = 5
 corner_radius_bottom_left = 5
 
-[node name="SVGTagEditor" type="MarginContainer"]
+[node name="SVGTagEditor" type="CenterContainer"]
 offset_right = 100.0
 offset_bottom = 35.0
-theme_override_constants/margin_left = 6
-theme_override_constants/margin_top = 6
-theme_override_constants/margin_right = 6
-theme_override_constants/margin_bottom = 6
 script = ExtResource("1_xgyg0")
 
 [node name="Edits" type="HBoxContainer" parent="."]
@@ -44,6 +40,7 @@ theme_override_font_sizes/font_size = 12
 toggle_mode = true
 text = "width"
 script = ExtResource("4_7r848")
+hover_pressed_font_color = Color(1, 1, 1, 0.4)
 
 [node name="WidthEdit" parent="Edits/Size/Width" instance=ExtResource("3_1gu7n")]
 custom_minimum_size = Vector2(48, 22)
@@ -64,6 +61,7 @@ theme_override_font_sizes/font_size = 12
 toggle_mode = true
 text = "height"
 script = ExtResource("4_7r848")
+hover_pressed_font_color = Color(1, 1, 1, 0.4)
 
 [node name="HeightEdit" parent="Edits/Size/Height" instance=ExtResource("3_1gu7n")]
 custom_minimum_size = Vector2(48, 22)
@@ -97,6 +95,7 @@ theme_override_font_sizes/font_size = 12
 toggle_mode = true
 text = "viewBox"
 script = ExtResource("4_7r848")
+hover_pressed_font_color = Color(1, 1, 1, 0.4)
 
 [node name="Rect" type="HBoxContainer" parent="Edits/Viewbox"]
 layout_mode = 2

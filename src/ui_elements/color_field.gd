@@ -90,19 +90,22 @@ func _on_button_resized() -> void:
 	queue_redraw()
 
 func _on_text_changed(new_text: String) -> void:
-	if is_valid(new_text):
-		color_edit.add_theme_color_override("font_color", Color(0.6, 1.0, 0.6))
-	else:
-		color_edit.add_theme_color_override("font_color", Color(1.0, 0.6, 0.6))
+	color_edit.add_theme_color_override("font_color",
+			GlobalSettings.get_validity_color(!is_valid(new_text)))
 
 func sync(new_value: String) -> void:
 	if color_edit != null:
 		if new_value == attribute.default:
-			color_edit.add_theme_color_override("font_color", Color(0.64, 0.64, 0.64))
+			color_edit.add_theme_color_override("font_color", Color(color_edit.get_theme_color(
+					"font_color"), GlobalSettings.default_value_opacity))
 		else:
 			color_edit.remove_theme_color_override("font_color")
 		color_edit.text = new_value.trim_prefix("#")
 	queue_redraw()
+
+func _notification(what: int) -> void:
+	if what == Utils.CustomNotification.DEFAULT_VALUE_OPACITY_CHANGED:
+		sync(color_edit.text)
 
 
 func _on_button_gui_input(event: InputEvent) -> void:

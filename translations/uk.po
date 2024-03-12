@@ -253,6 +253,18 @@ msgstr "Видалити колір"
 msgid "Error color"
 msgstr "Додати колір"
 
+#, fuzzy
+msgid "Default value opacity"
+msgstr "Видалити колір"
+
+#, fuzzy
+msgid "Warning color"
+msgstr "Додати колір"
+
+#, fuzzy
+msgid "Valid color"
+msgstr "Додати колір"
+
 msgid "Palettes"
 msgstr "Палітри"
 

@@ -11,6 +11,8 @@ const common_caret_color = Color("ddeeffdd")
 const common_selection_color = Color("668cff66")
 const common_text_color = Color("ddeeff")
 const common_subtle_text_color = Color("ffffff55")
+const common_inner_color_disabled = Color("0e0e12")
+const common_border_color_disabled = Color("1e1f24")
 
 const common_button_inner_color_normal = Color("1c1e38")
 const common_button_border_color_normal = Color("313859")
@@ -18,8 +20,6 @@ const common_button_inner_color_hover = Color("232840")
 const common_button_border_color_hover = Color("43567a")
 const common_button_inner_color_pressed = Color("3d5499")
 const common_button_border_color_pressed = Color("608fbf")
-const common_button_inner_color_disabled = Color("09090d")
-const common_button_border_color_disabled = Color("17171a")
 
 const connected_button_inner_color_normal = Color("10101a")
 const connected_button_border_color_normal = Color("272733")
@@ -55,8 +55,6 @@ const line_edit_focus_color = Color("3d6b99")
 const line_edit_background_color = Color("10101a")
 const line_edit_normal_border_color = Color("272733")
 const line_edit_hover_border_overlay_color = Color("ddeeff1b")
-const line_edit_disabled_background_color = Color("09090d")
-const line_edit_disabled_border_color = Color("17171a")
 const mini_line_edit_normal_border_color = Color("4d4e66")
 
 const tab_container_panel_inner_color = Color("171726")
@@ -184,8 +182,8 @@ static func setup_button(theme: Theme) -> void:
 	theme.set_stylebox("pressed", "Button", pressed_button_stylebox)
 	
 	var disabled_button_stylebox := button_stylebox.duplicate()
-	pressed_button_stylebox.bg_color = common_button_inner_color_disabled
-	pressed_button_stylebox.border_color = common_button_border_color_disabled
+	pressed_button_stylebox.bg_color = common_inner_color_disabled
+	pressed_button_stylebox.border_color = common_border_color_disabled
 	theme.set_stylebox("disabled", "Button", disabled_button_stylebox)
 	
 	var focus_button_stylebox := button_stylebox.duplicate()
@@ -216,8 +214,8 @@ static func setup_button(theme: Theme) -> void:
 	theme.set_stylebox("pressed", "IconButton", pressed_icon_button_stylebox)
 	
 	var disabled_icon_button_stylebox := icon_button_stylebox.duplicate()
-	disabled_icon_button_stylebox.bg_color = common_button_inner_color_disabled
-	disabled_icon_button_stylebox.border_color = common_button_border_color_disabled
+	disabled_icon_button_stylebox.bg_color = common_inner_color_disabled
+	disabled_icon_button_stylebox.border_color = common_border_color_disabled
 	theme.set_stylebox("disabled", "IconButton", disabled_icon_button_stylebox)
 	
 	theme.add_type("LeftConnectedButton")
@@ -497,8 +495,8 @@ static func setup_lineedit(theme: Theme) -> void:
 	stylebox.content_margin_left = 5.0
 	
 	var disabled_stylebox := stylebox.duplicate()
-	disabled_stylebox.bg_color = line_edit_disabled_background_color
-	disabled_stylebox.border_color = line_edit_disabled_border_color
+	disabled_stylebox.bg_color = common_inner_color_disabled
+	disabled_stylebox.border_color = common_border_color_disabled
 	theme.set_stylebox("read_only", "LineEdit", disabled_stylebox)
 	
 	var normal_stylebox := stylebox.duplicate()
@@ -535,8 +533,8 @@ static func setup_lineedit(theme: Theme) -> void:
 	left_connected_stylebox.content_margin_bottom = 0.0
 	
 	var left_connected_disabled_stylebox := left_connected_stylebox.duplicate()
-	left_connected_disabled_stylebox.bg_color = line_edit_disabled_background_color
-	left_connected_disabled_stylebox.border_color = line_edit_disabled_border_color
+	left_connected_disabled_stylebox.bg_color = common_inner_color_disabled
+	left_connected_disabled_stylebox.border_color = common_border_color_disabled
 	theme.set_stylebox("read_only", "LeftConnectedLineEdit", left_connected_disabled_stylebox)
 	
 	var left_connected_normal_stylebox := left_connected_stylebox.duplicate()
@@ -573,8 +571,8 @@ static func setup_lineedit(theme: Theme) -> void:
 	right_connected_stylebox.content_margin_bottom = 0.0
 	
 	var right_connected_disabled_stylebox := right_connected_stylebox.duplicate()
-	right_connected_disabled_stylebox.bg_color = line_edit_disabled_background_color
-	right_connected_disabled_stylebox.border_color = line_edit_disabled_border_color
+	right_connected_disabled_stylebox.bg_color = common_inner_color_disabled
+	right_connected_disabled_stylebox.border_color = common_border_color_disabled
 	theme.set_stylebox("read_only", "RightConnectedLineEdit", right_connected_disabled_stylebox)
 	
 	var right_connected_normal_stylebox := right_connected_stylebox.duplicate()
