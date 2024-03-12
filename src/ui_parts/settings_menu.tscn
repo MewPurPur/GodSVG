@@ -135,6 +135,29 @@ theme_override_colors/font_color = Color(0.501961, 0.501961, 0.501961, 1)
 theme_override_font_sizes/font_size = 12
 text = "Any changes will apply immediately."
 
+[node name="GeneralVBox" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Autoformatting/AutoformattingVBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 3
+
+[node name="SectionLabel" type="Label" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Autoformatting/AutoformattingVBox/GeneralVBox"]
+layout_mode = 2
+text = "General"
+
+[node name="NumberPrecision" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Autoformatting/AutoformattingVBox/GeneralVBox" instance=ExtResource("5_dx7vp")]
+layout_mode = 2
+section_name = "autoformat"
+setting_name = "general_number_precision"
+values = Array[String](["2", "3", "4"])
+type = 2
+
+[node name="AnglePrecision" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Autoformatting/AutoformattingVBox/GeneralVBox" instance=ExtResource("5_dx7vp")]
+layout_mode = 2
+section_name = "autoformat"
+setting_name = "general_angle_precision"
+values = Array[String](["1", "2"])
+type = 2
+
 [node name="XMLVBox" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Autoformatting/AutoformattingVBox"]
 unique_name_in_owner = true
 layout_mode = 2
@@ -221,10 +244,11 @@ theme_override_constants/separation = 3
 layout_mode = 2
 text = "Paths"
 
-[node name="PathEnable" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Autoformatting/AutoformattingVBox/PathVBox" instance=ExtResource("4_2qeh2")]
+[node name="Note" type="Label" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Autoformatting/AutoformattingVBox/PathVBox"]
 layout_mode = 2
-section_name = "autoformat"
-setting_name = "path_enable_autoformatting"
+theme_override_colors/font_color = Color(0.501961, 0.501961, 0.501961, 1)
+theme_override_font_sizes/font_size = 12
+text = "Always active."
 
 [node name="CompressNumbers" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Autoformatting/AutoformattingVBox/PathVBox" instance=ExtResource("4_2qeh2")]
 layout_mode = 2
@@ -255,10 +279,11 @@ theme_override_constants/separation = 3
 layout_mode = 2
 text = "Transforms"
 
-[node name="TransformEnable" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Autoformatting/AutoformattingVBox/TransformVBox" instance=ExtResource("4_2qeh2")]
+[node name="Note" type="Label" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Autoformatting/AutoformattingVBox/TransformVBox"]
 layout_mode = 2
-section_name = "autoformat"
-setting_name = "transform_enable_autoformatting"
+theme_override_colors/font_color = Color(0.501961, 0.501961, 0.501961, 1)
+theme_override_font_sizes/font_size = 12
+text = "Always active."
 
 [node name="CompressNumbers" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Autoformatting/AutoformattingVBox/TransformVBox" instance=ExtResource("4_2qeh2")]
 layout_mode = 2
@@ -388,6 +413,8 @@ setting_name = "default_value_opacity"
 values = Array[String](["0.55", "0.7", "0.85"])
 type = 3
 restricted = false
+number_min = 0.1
+number_max = 1.0
 
 [node name="ValidColor" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Theme/ThemeSettings/BasicColorsVBox" instance=ExtResource("4_dacsc")]
 layout_mode = 2

@@ -34,11 +34,11 @@ func _ready() -> void:
 	super()
 	# Done like this so a signal isn't emitted.
 	_value = initial_value
-	text = String.num(_value, 4)
+	text = String.num(_value, GlobalSettings.general_number_precision)
 
 
 func _on_text_submitted(submitted_text: String) -> void:
 	set_value(NumberParser.evaluate(submitted_text))
 
 func sync_text() -> void:
-	text = String.num(_value, 4)
+	text = String.num(_value, GlobalSettings.general_number_precision)

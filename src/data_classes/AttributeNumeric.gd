@@ -21,8 +21,8 @@ func autoformat(text: String) -> String:
 
 func set_num(new_number: float, sync_mode := SyncMode.LOUD) -> void:
 	_number = new_number
-	super.set_value(NumberParser.num_to_text(new_number)\
-			if is_finite(_number) else "", sync_mode)
+	super.set_value(NumberParser.num_to_text(new_number) if is_finite(_number) else "",
+			sync_mode)
 
 func get_num() -> float:
 	return _number

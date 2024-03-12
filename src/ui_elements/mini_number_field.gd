@@ -27,7 +27,7 @@ func _on_text_submitted(submitted_text: String) -> void:
 func evaluate_after_input(eval_text: String) -> float:
 	var num := NumberParser.evaluate(eval_text)
 	match mode:
-		Mode.ONLY_POSITIVE: return maxf(num, 0.0001)
+		Mode.ONLY_POSITIVE: return maxf(num, 0.1 ** GlobalSettings.general_number_precision)
 		Mode.HALF_ANGLE: return fmod(num, 180.0)
 		Mode.ANGLE: return fmod(num, 360.0)
 		_: return num

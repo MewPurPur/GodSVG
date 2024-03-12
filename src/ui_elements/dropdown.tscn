@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://dbu1lvajypafb"]
+[gd_scene load_steps=5 format=3 uid="uid://dbu1lvajypafb"]
 
 [ext_resource type="Script" path="res://src/ui_elements/BetterLineEdit.gd" id="1_0ifbb"]
 [ext_resource type="Script" path="res://src/ui_elements/dropdown.gd" id="1_133xu"]
 [ext_resource type="Texture2D" uid="uid://coda6chhcatal" path="res://visual/icons/Arrow.svg" id="2_4oygd"]
+[ext_resource type="FontFile" uid="uid://clpf84p1lfwlp" path="res://visual/fonts/Font.ttf" id="2_s4ro5"]
 
 [node name="Dropdown" type="HBoxContainer"]
 custom_minimum_size = Vector2(0, 22)
@@ -17,6 +18,7 @@ script = ExtResource("1_133xu")
 layout_mode = 2
 focus_mode = 1
 theme_type_variation = &"RightConnectedLineEdit"
+theme_override_fonts/font = ExtResource("2_s4ro5")
 script = ExtResource("1_0ifbb")
 
 [node name="Button" type="Button" parent="."]

@@ -686,11 +686,11 @@ static func setup_scrollbar(theme: Theme) -> void:
 	theme.set_stylebox("scroll", "VScrollBar", v_scroll_stylebox)
 
 static func setup_separator(theme: Theme) -> void:
-	theme.add_type("HScrollBar")
+	theme.add_type("HSeparator")
 	var stylebox := StyleBoxLine.new()
 	stylebox.color = common_panel_border_color
 	stylebox.thickness = 2
-	theme.set_stylebox("separator", "HScrollBar", stylebox)
+	theme.set_stylebox("separator", "HSeparator", stylebox)
 
 static func setup_label(theme: Theme) -> void:
 	theme.add_type("Label")
