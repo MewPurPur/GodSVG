@@ -26,26 +26,3 @@ func set_num(new_number: float, sync_mode := SyncMode.LOUD) -> void:
 
 func get_num() -> float:
 	return _number
-
-
-# This function evaluates expressions even if "," or ";" is used as a decimal separator.
-static func evaluate_expr(text: String) -> float:
-	text = text.trim_prefix("+")  # Expression can't handle unary plus.
-	
-	var expr := Expression.new()
-	var err := expr.parse(text.replace(",", "."))
-	if err == OK:
-		var result: float = expr.execute()
-		if not expr.has_execute_failed():
-			return result
-	err = expr.parse(text.replace(";", "."))
-	if err == OK:
-		var result: float = expr.execute()
-		if not expr.has_execute_failed():
-			return result
-	err = expr.parse(text)
-	if err == OK:
-		var result: float = expr.execute()
-		if not expr.has_execute_failed():
-			return result
-	return NAN

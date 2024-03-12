@@ -11,7 +11,7 @@ var allow_lower := true
 var allow_higher := true
 
 func set_value(new_value: String, update_type := Utils.UpdateType.REGULAR) -> void:
-	var numeric_value := AttributeNumeric.evaluate_expr(new_value)
+	var numeric_value := NumberParser.evaluate(new_value)
 	# Validate the value.
 	if !is_finite(numeric_value):
 		sync(attribute.get_value())
@@ -28,7 +28,7 @@ func set_value(new_value: String, update_type := Utils.UpdateType.REGULAR) -> vo
 	# shouldn't cause the attribute to be added to the SVG text.
 	if NumberParser.text_to_num(attribute.default) == numeric_value:
 		new_value = attribute.default
-	elif NumberParser.text_to_num(new_value) != AttributeNumeric.evaluate_expr(new_value):
+	elif NumberParser.text_to_num(new_value) != NumberParser.evaluate(new_value):
 		new_value = NumberParser.num_to_text(numeric_value)
 	
 	sync(attribute.autoformat(new_value))
@@ -66,6 +66,11 @@ func _on_text_change_canceled() -> void:
 func sync(new_value: String) -> void:
 	text = new_value
 	if new_value == attribute.default:
-		add_theme_color_override("font_color", Color(0.64, 0.64, 0.64))
+		add_theme_color_override("font_color", Color(get_theme_color(
+					"font_color"), GlobalSettings.default_value_opacity))
 	else:
 		remove_theme_color_override("font_color")
+
+func _notification(what: int) -> void:
+	if what == Utils.CustomNotification.DEFAULT_VALUE_OPACITY_CHANGED:
+		sync(text)

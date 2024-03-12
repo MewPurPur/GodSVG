@@ -1,33 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://f5cljfdpe85v"]
+[gd_scene load_steps=5 format=3 uid="uid://f5cljfdpe85v"]
 
 [ext_resource type="Script" path="res://src/ui_elements/color_popup.gd" id="1_t1mgf"]
 [ext_resource type="FontFile" uid="uid://clpf84p1lfwlp" path="res://visual/fonts/Font.ttf" id="2_5tod5"]
 [ext_resource type="PackedScene" uid="uid://b1eig44cov474" path="res://src/ui_elements/good_color_picker.tscn" id="2_jv3ea"]
 [ext_resource type="Script" path="res://src/ui_elements/BetterLineEdit.gd" id="2_lkukd"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jo0is"]
-draw_center = false
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(1, 1, 1, 0.0666667)
-corner_radius_top_left = 5
-corner_radius_top_right = 5
-corner_radius_bottom_right = 5
-corner_radius_bottom_left = 5
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ea0ux"]
-draw_center = false
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.2, 0.34902, 0.501961, 1)
-corner_radius_top_left = 5
-corner_radius_top_right = 5
-corner_radius_bottom_right = 5
-corner_radius_bottom_left = 5
 
 [node name="ColorPopup" type="Popup"]
 transparent_bg = true
@@ -73,8 +49,6 @@ layout_mode = 2
 size_flags_horizontal = 3
 theme_override_fonts/font = ExtResource("2_5tod5")
 script = ExtResource("2_lkukd")
-hover_stylebox = SubResource("StyleBoxFlat_jo0is")
-focus_stylebox = SubResource("StyleBoxFlat_ea0ux")
 
 [node name="PalettesContent" type="VBoxContainer" parent="PanelContainer/MainContainer/Content/Palettes/VBoxContainer"]
 unique_name_in_owner = true

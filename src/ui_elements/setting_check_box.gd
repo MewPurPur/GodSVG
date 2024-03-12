@@ -22,7 +22,7 @@ func _on_pressed() -> void:
 func update_widgets() -> void:
 	var setting_value: bool = GlobalSettings.get(setting_name)
 	checkbox.text = "On" if setting_value else "Off"
-	reset_button.visible = (setting_value !=\
+	reset_button.visible = not checkbox.disabled and (setting_value !=\
 			GlobalSettings.default_config[section_name][setting_name])
 
 func _on_reset_button_pressed() -> void:
@@ -33,3 +33,4 @@ func set_checkbox_enabled(enabled: bool) -> void:
 	checkbox.disabled = not enabled
 	checkbox.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND if enabled else\
 			Control.CURSOR_ARROW
+	update_widgets()

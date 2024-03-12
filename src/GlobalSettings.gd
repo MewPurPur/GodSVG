@@ -41,6 +41,10 @@ const default_config = {
 		"highlighting_comment_color": Color("cdcfd280"),
 		"highlighting_text_color": Color("cdcfeaac"),
 		"highlighting_error_color": Color("ff866b"),
+		"default_value_opacity": 0.7,
+		"basic_color_valid": Color("9f9"),
+		"basic_color_error": Color("f99"),
+		"basic_color_warning": Color("ff9"),
 	},
 	"other": {
 		"invert_zoom": false,
@@ -97,6 +101,10 @@ var highlighting_string_color := Color("a1ffe0")
 var highlighting_comment_color := Color("cdcfd280")
 var highlighting_text_color := Color("cdcfeaac")
 var highlighting_error_color := Color("ff866b")
+var default_value_opacity := 0.7
+var basic_color_valid := Color("9f9")
+var basic_color_error := Color("f99")
+var basic_color_warning := Color("ff9")
 
 
 func toggle_bool_setting(section: String, setting: String) -> void:
@@ -187,3 +195,9 @@ func reset_palettes() -> void:
 			["#fff", "#000", "#f00", "#0f0", "#00f", "#ff0", "#f0f", "#0ff"],
 			["White", "Black", "Red", "Green", "Blue", "Yellow", "Magenta", "Cyan"])]
 	save_palettes()
+
+# Just a helper.
+func get_validity_color(error_condition: bool, warning_condition := false) -> Color:
+	return GlobalSettings.basic_color_error if error_condition else\
+			GlobalSettings.basic_color_warning if warning_condition else\
+			GlobalSettings.basic_color_valid
