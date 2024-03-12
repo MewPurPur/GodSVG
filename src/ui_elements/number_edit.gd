@@ -38,7 +38,7 @@ func _ready() -> void:
 
 
 func _on_text_submitted(submitted_text: String) -> void:
-	set_value(AttributeNumeric.evaluate_expr(submitted_text))
+	set_value(NumberParser.evaluate(submitted_text))
 
 func sync_text() -> void:
 	text = String.num(_value, 4)

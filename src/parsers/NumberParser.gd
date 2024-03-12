@@ -43,3 +43,24 @@ static func format_text(text: String) -> String:
 	text = text.left(text.find(".") + 5)
 	
 	return text
+
+# This function evaluates expressions even if "," or ";" is used as a decimal separator.
+static func evaluate(text: String) -> float:
+	text = text.trim_prefix("+")  # Expression can't handle unary plus.
+	var expr := Expression.new()
+	var err := expr.parse(text.replace(",", "."))
+	if err == OK:
+		var result: float = expr.execute()
+		if not expr.has_execute_failed():
+			return result
+	err = expr.parse(text.replace(";", "."))
+	if err == OK:
+		var result: float = expr.execute()
+		if not expr.has_execute_failed():
+			return result
+	err = expr.parse(text)
+	if err == OK:
+		var result: float = expr.execute()
+		if not expr.has_execute_failed():
+			return result
+	return NAN

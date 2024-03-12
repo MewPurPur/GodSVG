@@ -1,4 +1,4 @@
-extends MarginContainer
+extends CenterContainer
 
 # So, about this editor. Width and height don't have default values, so they use NAN and
 # use NumberEdit, rather than NumberField. Viewbox is a list and it also doesn't have a

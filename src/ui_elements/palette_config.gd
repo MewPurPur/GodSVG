@@ -78,10 +78,8 @@ func _on_name_edit_text_changed(new_text: String) -> void:
 	var names: Array[String] = []
 	for palette in GlobalSettings.palettes:
 		names.append(palette.title)
-	if new_text in names and new_text != current_palette.title:
-		name_edit.add_theme_color_override("font_color", Color(1.0, 0.6, 0.6))
-	else:
-		name_edit.add_theme_color_override("font_color", Color(0.6, 1.0, 0.6))
+	name_edit.add_theme_color_override("font_color", GlobalSettings.get_validity_color(
+			new_text in names and new_text != current_palette.title))
 
 func _on_name_edit_text_submitted(new_title: String) -> void:
 	new_title = new_title.strip_edges()
@@ -109,7 +107,8 @@ func popup_add_color() -> void:
 func set_label_text(new_text: String) -> void:
 	if new_text.is_empty():
 		palette_label.text = tr("Unnamed")
-		palette_label.add_theme_color_override("font_color", Color(1.0, 0.5, 0.5))
+		palette_label.add_theme_color_override("font_color",
+				GlobalSettings.basic_color_error)
 	else:
 		palette_label.text = new_text
 		palette_label.remove_theme_color_override("font_color")

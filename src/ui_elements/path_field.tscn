@@ -1,32 +1,8 @@
-[gd_scene load_steps=9 format=3 uid="uid://dqy5lv33sy5r7"]
+[gd_scene load_steps=7 format=3 uid="uid://dqy5lv33sy5r7"]
 
 [ext_resource type="Script" path="res://src/ui_elements/path_field.gd" id="1_22rk2"]
 [ext_resource type="Script" path="res://src/ui_elements/BetterLineEdit.gd" id="2_48xgh"]
 [ext_resource type="Texture2D" uid="uid://eif2ioi0mw17" path="res://visual/icons/Plus.svg" id="3_at2g1"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4rmxx"]
-draw_center = false
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(1, 1, 1, 0.0666667)
-corner_radius_top_left = 5
-corner_radius_top_right = 5
-corner_radius_bottom_right = 5
-corner_radius_bottom_left = 5
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wqlhg"]
-draw_center = false
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.2, 0.34902, 0.501961, 1)
-corner_radius_top_left = 5
-corner_radius_top_right = 5
-corner_radius_bottom_right = 5
-corner_radius_bottom_left = 5
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_lcnxl"]
 content_margin_left = 2.0
@@ -69,8 +45,6 @@ size_flags_horizontal = 0
 focus_mode = 1
 placeholder_text = "No path data"
 script = ExtResource("2_48xgh")
-hover_stylebox = SubResource("StyleBoxFlat_4rmxx")
-focus_stylebox = SubResource("StyleBoxFlat_wqlhg")
 code_font_tooltip = true
 
 [node name="AddMove" type="Button" parent="."]

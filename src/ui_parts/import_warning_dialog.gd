@@ -4,7 +4,9 @@ signal imported
 
 @onready var warnings_label: RichTextLabel = %WarningsLabel
 @onready var texture_preview: TextureRect = %TexturePreview
+@onready var checkerboard = $MarginContainer/VBoxContainer/TextureContainer/Checkerboard
 @onready var ok_button: Button = %ButtonContainer/OKButton
+@onready var margin_container = %MarginContainer
 
 var imported_text := ""
 
@@ -23,32 +25,39 @@ func _ready() -> void:
 			img.fix_alpha_edges()
 			texture_preview.texture = ImageTexture.create_from_image(img)
 	
-	var warnings := get_svg_errors(imported_text_parse_result)
-	if warnings.is_empty():
-		imported.emit()
-	for warning in warnings:
-		warnings_label.text += warning + "\n"
+	if imported_text_parse_result.error != SVGParser.ParseError.OK:
+		checkerboard.hide()
+		margin_container.custom_minimum_size.y = 48
+		size.y = 0
+		warnings_label.add_theme_color_override("default_color",
+				GlobalSettings.basic_color_error)
+		warnings_label.text = "[center]" + tr("Syntax error") + ": " +\
+				tr(SVGParser.get_error_string(imported_text_parse_result.error))
+	else:
+		var svg_warnings := get_svg_warnings(imported_text_parse_result.svg)
+		if svg_warnings.is_empty():
+			imported.emit()
+		else:
+			warnings_label.add_theme_color_override("default_color",
+					GlobalSettings.basic_color_warning)
+			for warning in svg_warnings:
+				warnings_label.text += warning + "\n"
 
 
 func set_svg(text: String) -> void:
 	imported_text = text
 
 
-func get_svg_errors(parse_result: SVGParser.ParseResult) -> Array[String]:
+func get_svg_warnings(svg_tag: TagSVG) -> Array[String]:
 	var warnings: Array[String] = []
-	if parse_result.error != SVGParser.ParseError.OK:
-		warnings = [tr("Syntax error") + ": " +\
-				tr(SVGParser.get_error_string(parse_result.error))]
-	else:
-		var svg_tag := parse_result.svg
-		var tids := svg_tag.get_all_tids()
-		for tid in tids:
-			var tag := svg_tag.get_tag(tid)
-			if tag is TagUnknown:
-				warnings.append(tr("Unknown Tag") + ": " + tag.name)
-			else:
-				for unknown_attrib in tag.unknown_attributes:
-					warnings.append(tr("Unknown Attribute") + ": " + unknown_attrib.name)
+	var tids := svg_tag.get_all_tids()
+	for tid in tids:
+		var tag := svg_tag.get_tag(tid)
+		if tag is TagUnknown:
+			warnings.append(tr("Unknown Tag") + ": " + tag.name)
+		else:
+			for unknown_attrib in tag.unknown_attributes:
+				warnings.append(tr("Unknown Attribute") + ": " + unknown_attrib.name)
 	return warnings
 
 

@@ -236,6 +236,15 @@ msgstr ""
 msgid "Error color"
 msgstr ""
 
+msgid "Default value opacity"
+msgstr ""
+
+msgid "Warning color"
+msgstr ""
+
+msgid "Valid color"
+msgstr ""
+
 msgid "Palettes"
 msgstr ""
 
