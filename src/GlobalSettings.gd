@@ -12,6 +12,8 @@ const config_path = "user://config.tres"
 # Don't have the language setting here, so it's not reset.
 const default_config = {
 	"autoformat": {
+		"general_number_precision": 3,
+		"general_angle_precision": 1,
 		"xml_add_trailing_newline": false,
 		"xml_shorthand_tags": true,
 		"number_enable_autoformatting": false,
@@ -23,12 +25,10 @@ const default_config = {
 		"color_convert_named_to_hex": true,
 		"color_use_shorthand_hex_code": true,
 		"color_use_short_named_colors": false,
-		"path_enable_autoformatting": false,
 		"path_compress_numbers": true,
 		"path_minimize_spacing": true,
 		"path_remove_spacing_after_flags": false,
 		"path_remove_consecutive_commands": true,
-		"transform_enable_autoformatting": false,
 		"transform_compress_numbers": true,
 		"transform_minimize_spacing": true,
 		"transform_remove_unnecessary_params": true,
@@ -73,6 +73,8 @@ var wrap_mouse := false
 var use_ctrl_for_zoom := true
 
 # Autoformat
+var general_number_precision := 3
+var general_angle_precision := 1
 var xml_add_trailing_newline := false
 var xml_shorthand_tags := true
 var number_enable_autoformatting := false
@@ -83,12 +85,10 @@ var color_convert_rgb_to_hex := false
 var color_convert_named_to_hex := true
 var color_use_shorthand_hex_code := true
 var color_use_short_named_colors := false
-var path_enable_autoformatting := false
 var path_compress_numbers := true
 var path_minimize_spacing := true
 var path_remove_spacing_after_flags := false
 var path_remove_consecutive_commands := true
-var transform_enable_autoformatting := false
 var transform_compress_numbers := true
 var transform_minimize_spacing := true
 var transform_remove_unnecessary_params := true

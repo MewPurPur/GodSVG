@@ -1,7 +1,7 @@
 class_name NumberParser extends RefCounted
 
 static func num_to_text(number: float) -> String:
-	var output := String.num(number, 4)
+	var output := String.num(number, GlobalSettings.general_number_precision)
 	if GlobalSettings.number_remove_leading_zero and "." in output:
 		if output.begins_with("0"):
 			output = output.right(-1)
@@ -25,7 +25,7 @@ static func format_text(text: String) -> String:
 			text = text.left(-1)
 			padded_zeros += 1
 	
-	text = String.num(text.to_float(), 4)
+	text = String.num(text.to_float(), GlobalSettings.general_number_precision)
 	if text == "-0":
 		text = "0"
 	

@@ -21,10 +21,10 @@ transform_list: Array[AttributeTransform.Transform]) -> String:
 						num_parser.num_to_text(t.x), num_parser.num_to_text(t.y)])
 		elif t is AttributeTransform.TransformRotate:
 			if t.x == 0 and t.y == 0 and GlobalSettings.transform_remove_unnecessary_params:
-				output += "rotate(%s) " % num_parser.num_to_text(t.deg)
+				output += "rotate(%s) " % num_parser.num_to_text(t.deg, true)
 			else:
 				output += "rotate(%s) " % num_parser.numstr_arr_to_text([
-						num_parser.num_to_text(t.deg),
+						num_parser.num_to_text(t.deg, true),
 						num_parser.num_to_text(t.x), num_parser.num_to_text(t.y)])
 		elif t is AttributeTransform.TransformScale:
 			if t.x == t.y and GlobalSettings.transform_remove_unnecessary_params:
@@ -33,10 +33,9 @@ transform_list: Array[AttributeTransform.Transform]) -> String:
 				output += "scale(%s) " % num_parser.numstr_arr_to_text([
 						num_parser.num_to_text(t.x), num_parser.num_to_text(t.y)])
 		elif t is AttributeTransform.TransformSkewX:
-			output += "skewX(%s) " % num_parser.num_to_text(t.x)
+			output += "skewX(%s) " % num_parser.num_to_text(t.x, true)
 		elif t is AttributeTransform.TransformSkewY:
-			output += "skewY(%s) " % num_parser.num_to_text(t.y)
-	
+			output += "skewY(%s) " % num_parser.num_to_text(t.y, true)
 	return output.trim_suffix(" ")
 
 static func text_to_transform_list(text: String) -> Array[AttributeTransform.Transform]:
