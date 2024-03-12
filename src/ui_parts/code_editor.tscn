@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://cr1fdlmbknnko"]
+[gd_scene load_steps=15 format=3 uid="uid://cr1fdlmbknnko"]
 
 [ext_resource type="Script" path="res://src/ui_parts/code_editor.gd" id="1_nffk0"]
 [ext_resource type="Texture2D" uid="uid://c5kgvxffw35gi" path="res://visual/icons/Compress.svg" id="2_33tgq"]
@@ -43,16 +43,6 @@ action = &"export"
 
 [sub_resource type="Shortcut" id="Shortcut_6w18e"]
 events = [SubResource("InputEventAction_oqold")]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1i105"]
-draw_center = false
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(1, 1, 1, 0.0666667)
-corner_radius_bottom_right = 5
-corner_radius_bottom_left = 5
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_k0een"]
 content_margin_left = 10.0
@@ -155,7 +145,6 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 highlight_all_occurrences = true
 script = ExtResource("8_ser4i")
-hover_stylebox = SubResource("StyleBoxFlat_1i105")
 block_non_ascii = true
 
 [node name="ErrorBar" type="PanelContainer" parent="ScriptEditor"]
@@ -166,7 +155,6 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_k0een")
 [node name="Label" type="RichTextLabel" parent="ScriptEditor/ErrorBar"]
 custom_minimum_size = Vector2(0, 20)
 layout_mode = 2
-theme_override_colors/default_color = Color(1, 0.4, 0.4, 1)
 theme_override_fonts/normal_font = ExtResource("2_p4nol")
 theme_override_font_sizes/normal_font_size = 14
 fit_content = true

@@ -1,28 +1,8 @@
-[gd_scene load_steps=6 format=3 uid="uid://bc45fp38kar6a"]
+[gd_scene load_steps=4 format=3 uid="uid://bc45fp38kar6a"]
 
 [ext_resource type="Script" path="res://src/ui_elements/transform_field.gd" id="1_5gokr"]
 [ext_resource type="Script" path="res://src/ui_elements/BetterLineEdit.gd" id="2_aucxm"]
 [ext_resource type="Texture2D" uid="uid://coda6chhcatal" path="res://visual/icons/Arrow.svg" id="3_gqs5i"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ynuh7"]
-draw_center = false
-border_width_left = 2
-border_width_top = 2
-border_width_right = 1
-border_width_bottom = 2
-border_color = Color(1, 1, 1, 0.0666667)
-corner_radius_top_left = 5
-corner_radius_bottom_left = 5
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_h7r5w"]
-draw_center = false
-border_width_left = 2
-border_width_top = 2
-border_width_right = 1
-border_width_bottom = 2
-border_color = Color(0.2, 0.34902, 0.501961, 1)
-corner_radius_top_left = 5
-corner_radius_bottom_left = 5
 
 [node name="TransformField" type="HBoxContainer"]
 custom_minimum_size = Vector2(128, 0)
@@ -37,8 +17,6 @@ mouse_filter = 1
 theme_type_variation = &"RightConnectedLineEdit"
 placeholder_text = "No transforms"
 script = ExtResource("2_aucxm")
-hover_stylebox = SubResource("StyleBoxFlat_ynuh7")
-focus_stylebox = SubResource("StyleBoxFlat_h7r5w")
 code_font_tooltip = true
 
 [node name="Button" type="Button" parent="."]

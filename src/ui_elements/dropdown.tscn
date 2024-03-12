@@ -1,28 +1,8 @@
-[gd_scene load_steps=6 format=3 uid="uid://dbu1lvajypafb"]
+[gd_scene load_steps=4 format=3 uid="uid://dbu1lvajypafb"]
 
 [ext_resource type="Script" path="res://src/ui_elements/BetterLineEdit.gd" id="1_0ifbb"]
 [ext_resource type="Script" path="res://src/ui_elements/dropdown.gd" id="1_133xu"]
 [ext_resource type="Texture2D" uid="uid://coda6chhcatal" path="res://visual/icons/Arrow.svg" id="2_4oygd"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_q1iin"]
-draw_center = false
-border_width_left = 2
-border_width_top = 2
-border_width_right = 1
-border_width_bottom = 2
-border_color = Color(1, 1, 1, 0.0666667)
-corner_radius_top_left = 5
-corner_radius_bottom_left = 5
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_uaomi"]
-draw_center = false
-border_width_left = 2
-border_width_top = 2
-border_width_right = 1
-border_width_bottom = 2
-border_color = Color(0.2, 0.34902, 0.501961, 1)
-corner_radius_top_left = 5
-corner_radius_bottom_left = 5
 
 [node name="Dropdown" type="HBoxContainer"]
 custom_minimum_size = Vector2(0, 22)
@@ -38,8 +18,6 @@ layout_mode = 2
 focus_mode = 1
 theme_type_variation = &"RightConnectedLineEdit"
 script = ExtResource("1_0ifbb")
-hover_stylebox = SubResource("StyleBoxFlat_q1iin")
-focus_stylebox = SubResource("StyleBoxFlat_uaomi")
 
 [node name="Button" type="Button" parent="."]
 custom_minimum_size = Vector2(15, 0)

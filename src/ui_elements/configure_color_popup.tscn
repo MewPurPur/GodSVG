@@ -21,7 +21,7 @@ corner_radius_bottom_left = 5
 
 [node name="ConfigurePopup" type="Popup"]
 transparent_bg = true
-size = Vector2i(128, 70)
+size = Vector2i(128, 73)
 visible = true
 script = ExtResource("1_x6cll")
 

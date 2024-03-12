@@ -53,13 +53,35 @@ func rebuild() -> void:
 		transform_editor.type == "translate":
 			transform_editor.fields[0].set_value(t.x, true)
 			transform_editor.fields[1].set_value(t.y, true)
+			if t.y == 0:
+				transform_editor.fields[1].add_theme_color_override("font_color", Color(
+						transform_editor.fields[1].get_theme_color("font_color"),
+						GlobalSettings.default_value_opacity))
+			else:
+				transform_editor.fields[1].remove_theme_color_override("font_color")
 		elif t is AttributeTransform.TransformRotate and transform_editor.type == "rotate":
 			transform_editor.fields[0].set_value(t.deg, true)
 			transform_editor.fields[1].set_value(t.x, true)
 			transform_editor.fields[2].set_value(t.y, true)
+			if t.x == 0 and t.y == 0:
+				transform_editor.fields[1].add_theme_color_override("font_color", Color(
+						transform_editor.fields[1].get_theme_color("font_color"),
+						GlobalSettings.default_value_opacity))
+				transform_editor.fields[2].add_theme_color_override("font_color", Color(
+						transform_editor.fields[2].get_theme_color("font_color"),
+						GlobalSettings.default_value_opacity))
+			else:
+				transform_editor.fields[1].remove_theme_color_override("font_color")
+				transform_editor.fields[2].remove_theme_color_override("font_color")
 		elif t is AttributeTransform.TransformScale and transform_editor.type == "scale":
 			transform_editor.fields[0].set_value(t.x, true)
 			transform_editor.fields[1].set_value(t.y, true)
+			if t.x == t.y:
+				transform_editor.fields[1].add_theme_color_override("font_color", Color(
+						transform_editor.fields[1].get_theme_color("font_color"),
+						GlobalSettings.default_value_opacity))
+			else:
+				transform_editor.fields[1].remove_theme_color_override("font_color")
 		elif t is AttributeTransform.TransformSkewX and transform_editor.type == "skewX":
 			transform_editor.fields[0].set_value(t.x, true)
 		elif t is AttributeTransform.TransformSkewY and transform_editor.type == "skewY":
@@ -169,6 +191,13 @@ property: String) -> BetterLineEdit:
 	var field := MiniNumberField.instantiate()
 	field.custom_minimum_size.x = 44
 	field.set_value(transform.get(property))
+	if (transform is AttributeTransform.TransformTranslate and transform.y == 0 and\
+	property == "y") or (transform is AttributeTransform.TransformRotate and\
+	transform.x == 0 and transform.y == 0 and (property == "x" or property == "y")) or\
+	(transform is AttributeTransform.TransformScale and transform.x == transform.y and\
+	property == "y"):
+		field.add_theme_color_override("font_color", Color(
+				field.get_theme_color("font_color"), GlobalSettings.default_value_opacity))
 	field.tooltip_text = property
 	field.value_changed.connect(update_value.bind(idx, property))
 	return field

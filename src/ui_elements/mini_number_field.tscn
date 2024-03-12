@@ -1,18 +1,6 @@
-[gd_scene load_steps=4 format=3 uid="uid://cm3uphorskcix"]
+[gd_scene load_steps=2 format=3 uid="uid://cm3uphorskcix"]
 
 [ext_resource type="Script" path="res://src/ui_elements/mini_number_field.gd" id="1_ggi5v"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wk41m"]
-draw_center = false
-border_width_bottom = 2
-border_color = Color(1, 1, 1, 0.133333)
-corner_detail = 1
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ul27o"]
-draw_center = false
-border_width_bottom = 2
-border_color = Color(0.501961, 1, 1, 0.4)
-corner_detail = 1
 
 [node name="MiniNumberField" type="LineEdit"]
 custom_minimum_size = Vector2(0, 18)
@@ -21,8 +9,6 @@ offset_bottom = 14.0
 mouse_filter = 1
 theme_type_variation = &"MiniLineEdit"
 script = ExtResource("1_ggi5v")
-hover_stylebox = SubResource("StyleBoxFlat_wk41m")
-focus_stylebox = SubResource("StyleBoxFlat_ul27o")
 code_font_tooltip = true
 
 [connection signal="text_submitted" from="." to="." method="_on_text_submitted"]
