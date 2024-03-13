@@ -15,6 +15,5 @@ func _ready() -> void:
 func _on_components_pressed() -> void:
 	OS.shell_open("https://github.com/godotengine/godot/blob/master/COPYRIGHT.txt")
 
-
 func _on_close_pressed() -> void:
-	queue_free()
+	HandlerGUI.remove_overlay()
