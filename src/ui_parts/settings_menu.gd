@@ -37,15 +37,8 @@ var shortcut_descriptions := {  # Dictionary{String: String}
 }
 
 func _ready() -> void:
-	if not DisplayServer.has_feature(DisplayServer.FEATURE_MOUSE_WARP):
-		wrap_mouse.set_pressed_no_signal(false)
-		wrap_mouse.disabled = true
 	update_language_button()
 	setup_setting_labels()
-	setup_autoformat_tab()
-	rebuild_color_palettes()
-	setup_shortcuts_tab()
-	setup_theming_tab()
 	for i in tabs.get_child_count():
 		tabs.get_child(i).pressed.connect(update_focused_content.bind(i))
 	update_focused_content(0)
@@ -62,11 +55,11 @@ func _notification(what: int) -> void:
 
 # Sets the text for all the labels.
 func setup_setting_labels() -> void:
-	tabs.get_node(^"Autoformatting").text = tr("Autoformatting")
-	tabs.get_node(^"Palettes").text = tr("Palettes")
-	tabs.get_node(^"Shortcuts").text = tr("Shortcuts")
-	tabs.get_node(^"Theme").text = tr("Theme")
-	tabs.get_node(^"Other").text = tr("Other")
+	tabs.get_node(^"AutoformattingTab").text = tr("Autoformatting")
+	tabs.get_node(^"PalettesTab").text = tr("Palettes")
+	tabs.get_node(^"ShortcutsTab").text = tr("Shortcuts")
+	tabs.get_node(^"ThemeTab").text = tr("Theme")
+	tabs.get_node(^"OtherTab").text = tr("Other")
 	
 	var invert_zoom := %ContentContainer/Other/Input/InvertZoom
 	invert_zoom.label.text = tr("Invert zoom direction")
@@ -114,7 +107,7 @@ func _on_svg_pressed() -> void:
 	GlobalSettings.save_svg = not GlobalSettings.save_svg
 
 func _on_close_pressed() -> void:
-	queue_free()
+	HandlerGUI.remove_overlay()
 
 func _on_language_pressed() -> void:
 	var btn_arr: Array[Button] = []
@@ -150,7 +143,6 @@ func add_palette() -> void:
 func rebuild_color_palettes() -> void:
 	for palette_config in palette_container.get_children():
 		palette_config.queue_free()
-	
 	for palette in GlobalSettings.palettes:
 		var palette_config := PaletteConfigWidget.instantiate()
 		palette_container.add_child(palette_config)
@@ -216,10 +208,8 @@ func setup_shortcuts_tab() -> void:
 	for action in GlobalSettings.configurable_keybinds:
 		var keybind_config := ShortcutConfigWidget.instantiate()
 		configurable_shortcuts.add_child(keybind_config)
-		if action in shortcut_descriptions:
-			keybind_config.label.text = shortcut_descriptions[action]
-		else:
-			keybind_config.label.text = action
+		keybind_config.label.text = shortcut_descriptions[action] if\
+				action in shortcut_descriptions else action
 		keybind_config.setup(action)
 	for action in ["move_relative", "move_absolute", "line_relative", "line_absolute",
 	"horizontal_line_relative", "horizontal_line_absolute", "vertical_line_relative",
@@ -231,10 +221,8 @@ func setup_shortcuts_tab() -> void:
 	"shorthand_cubic_bezier_absolute"]:
 		var keybind_config := ShortcutShowcaseWidget.instantiate()
 		non_configurable_shortcuts.add_child(keybind_config)
-		if action in shortcut_descriptions:
-			keybind_config.label.text = shortcut_descriptions[action]
-		else:
-			keybind_config.label.text = action
+		keybind_config.label.text = shortcut_descriptions[action] if\
+				action in shortcut_descriptions else action
 		keybind_config.setup(action)
 
 
@@ -254,3 +242,23 @@ func _notify_highlight_colors_changed() -> void:
 func _notify_default_value_opacity_changed() -> void:
 	get_tree().get_root().propagate_notification(
 			Utils.CustomNotification.DEFAULT_VALUE_OPACITY_CHANGED)
+
+
+# Optimize by only generating content when you click them.
+
+func _on_autoformatting_tab_pressed() -> void:
+	setup_autoformat_tab()
+
+func _on_palettes_tab_pressed() -> void:
+	rebuild_color_palettes()
+
+func _on_shortcuts_tab_pressed() -> void:
+	setup_shortcuts_tab()
+
+func _on_theme_tab_pressed() -> void:
+	setup_theming_tab()
+
+func _on_other_tab_pressed() -> void:
+	if not DisplayServer.has_feature(DisplayServer.FEATURE_MOUSE_WARP):
+		wrap_mouse.set_pressed_no_signal(false)
+		wrap_mouse.disabled = true

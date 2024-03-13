@@ -71,10 +71,10 @@ func export(path: String) -> void:
 			# SVG / fallback.
 			GlobalSettings.modify_save_data("current_file_path", path)
 			SVG.save_svg_to_file(path)
-	queue_free()
+	HandlerGUI.remove_overlay()
 
 func _on_cancel_button_pressed() -> void:
-	queue_free()
+	HandlerGUI.remove_overlay()
 
 
 func _on_scale_value_changed(_new_value: float) -> void:

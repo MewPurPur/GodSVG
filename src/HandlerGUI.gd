@@ -2,11 +2,11 @@ extends Node
 
 signal _in_focus
 
-const ImportWarningDialog := preload("res://src/ui_parts/import_warning_dialog.tscn")
-const AlertDialog := preload("res://src/ui_parts/alert_dialog.tscn")
+const ImportWarningDialog = preload("res://src/ui_parts/import_warning_dialog.tscn")
+const AlertDialog = preload("res://src/ui_parts/alert_dialog.tscn")
 
 var has_overlay := false
-var overlay_ref: ColorRect
+var overlay_ref: OverlayRect
 
 
 func _ready() -> void:
@@ -37,8 +37,7 @@ func add_overlay(overlay_menu: Node) -> void:
 		overlay_ref.add_child(overlay_menu)
 		overlay_menu.tree_exiting.connect(remove_overlay)
 	else:
-		overlay_ref = ColorRect.new()
-		overlay_ref.color = Color(0, 0, 0, 0.4)
+		overlay_ref = OverlayRect.new()
 		get_tree().get_root().add_child(overlay_ref)
 		overlay_ref.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 		if overlay_menu is Control:
@@ -46,7 +45,6 @@ func add_overlay(overlay_menu: Node) -> void:
 		overlay_ref.add_child(overlay_menu)
 		overlay_menu.tree_exiting.connect(remove_overlay)
 		has_overlay = true
-		overlay_ref.process_mode = PROCESS_MODE_ALWAYS
 		get_tree().paused = true
 
 
@@ -62,7 +60,7 @@ func _input(event: InputEvent) -> void:
 		SVG.open_save_dialog("svg", SVG.native_file_save, SVG.save_svg_to_file)
 
 
-func _unhandled_input(event) -> void:
+func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("redo"):
 		get_viewport().set_input_as_handled()
 		SVG.redo()
