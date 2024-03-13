@@ -182,8 +182,8 @@ static func setup_button(theme: Theme) -> void:
 	theme.set_stylebox("pressed", "Button", pressed_button_stylebox)
 	
 	var disabled_button_stylebox := button_stylebox.duplicate()
-	pressed_button_stylebox.bg_color = common_inner_color_disabled
-	pressed_button_stylebox.border_color = common_border_color_disabled
+	disabled_button_stylebox.bg_color = common_inner_color_disabled
+	disabled_button_stylebox.border_color = common_border_color_disabled
 	theme.set_stylebox("disabled", "Button", disabled_button_stylebox)
 	
 	var focus_button_stylebox := button_stylebox.duplicate()
