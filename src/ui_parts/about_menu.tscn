@@ -68,6 +68,7 @@ text = "© 2023 MewPurPur
 [node name="TabContainer" type="TabContainer" parent="VBoxContainer"]
 custom_minimum_size = Vector2(0, 280)
 layout_mode = 2
+size_flags_vertical = 3
 script = ExtResource("3_1xgiv")
 
 [node name="Authors" type="ScrollContainer" parent="VBoxContainer/TabContainer"]
