@@ -43,7 +43,7 @@ const flat_button_color_pressed = Color("ddeeff33")
 const flat_button_color_disabled = Color("05060744")
 
 const dark_panel_color = Color("11111a")
-const overlay_panel_inner_color = Color("02020d")
+const overlay_panel_inner_color = Color("030312")
 const overlay_panel_border_color = Color("344166")
 
 const scrollbar_normal_color = Color("344166")
@@ -97,16 +97,20 @@ static func setup_panelcontainer(theme: Theme) -> void:
 	stylebox.border_color = common_panel_border_color
 	theme.set_stylebox("panel", "PanelContainer", stylebox)
 	
+	theme.add_type("SpaciousPanel")
+	theme.set_type_variation("SpaciousPanel", "PanelContainer")
+	var spacious_stylebox := stylebox.duplicate()
+	spacious_stylebox.content_margin_left = 10.0
+	spacious_stylebox.content_margin_right = 10.0
+	spacious_stylebox.content_margin_top = 4.0
+	spacious_stylebox.content_margin_bottom = 8.0
+	theme.set_stylebox("panel", "SpaciousPanel", spacious_stylebox)
+	
 	theme.add_type("Window")
 	theme.set_stylebox("embedded_border", "Window", stylebox)
 	
 	theme.add_type("AcceptDialog")
-	var accept_dialog_stylebox := stylebox.duplicate()
-	accept_dialog_stylebox.content_margin_left = 12.0
-	accept_dialog_stylebox.content_margin_right = 12.0
-	accept_dialog_stylebox.content_margin_top = 8.0
-	accept_dialog_stylebox.content_margin_bottom = 8.0
-	theme.set_stylebox("panel", "AcceptDialog", accept_dialog_stylebox)
+	theme.set_stylebox("panel", "AcceptDialog", spacious_stylebox)
 	
 	theme.add_type("DarkPanel")
 	theme.set_type_variation("DarkPanel", "PanelContainer")
