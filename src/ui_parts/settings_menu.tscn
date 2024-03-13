@@ -55,7 +55,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 0
 
-[node name="Autoformatting" type="Button" parent="VBoxContainer/HBoxContainer/ContentPicker/ScrollContainer/Tabs"]
+[node name="AutoformattingTab" type="Button" parent="VBoxContainer/HBoxContainer/ContentPicker/ScrollContainer/Tabs"]
 layout_mode = 2
 focus_mode = 0
 theme_type_variation = &"SideTab"
@@ -65,7 +65,7 @@ button_group = SubResource("ButtonGroup_f7wyd")
 alignment = 0
 text_overrun_behavior = 3
 
-[node name="Palettes" type="Button" parent="VBoxContainer/HBoxContainer/ContentPicker/ScrollContainer/Tabs"]
+[node name="PalettesTab" type="Button" parent="VBoxContainer/HBoxContainer/ContentPicker/ScrollContainer/Tabs"]
 layout_mode = 2
 focus_mode = 0
 theme_type_variation = &"SideTab"
@@ -75,7 +75,7 @@ button_group = SubResource("ButtonGroup_f7wyd")
 alignment = 0
 text_overrun_behavior = 3
 
-[node name="Shortcuts" type="Button" parent="VBoxContainer/HBoxContainer/ContentPicker/ScrollContainer/Tabs"]
+[node name="ShortcutsTab" type="Button" parent="VBoxContainer/HBoxContainer/ContentPicker/ScrollContainer/Tabs"]
 layout_mode = 2
 focus_mode = 0
 theme_type_variation = &"SideTab"
@@ -85,7 +85,7 @@ button_group = SubResource("ButtonGroup_f7wyd")
 alignment = 0
 text_overrun_behavior = 3
 
-[node name="Theme" type="Button" parent="VBoxContainer/HBoxContainer/ContentPicker/ScrollContainer/Tabs"]
+[node name="ThemeTab" type="Button" parent="VBoxContainer/HBoxContainer/ContentPicker/ScrollContainer/Tabs"]
 layout_mode = 2
 focus_mode = 0
 theme_type_variation = &"SideTab"
@@ -95,7 +95,7 @@ button_group = SubResource("ButtonGroup_f7wyd")
 alignment = 0
 text_overrun_behavior = 3
 
-[node name="Other" type="Button" parent="VBoxContainer/HBoxContainer/ContentPicker/ScrollContainer/Tabs"]
+[node name="OtherTab" type="Button" parent="VBoxContainer/HBoxContainer/ContentPicker/ScrollContainer/Tabs"]
 layout_mode = 2
 focus_mode = 0
 theme_type_variation = &"SideTab"
@@ -474,4 +474,9 @@ mouse_default_cursor_shape = 2
 text = "Close"
 
 [connection signal="pressed" from="VBoxContainer/Language" to="." method="_on_language_pressed"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/ContentPicker/ScrollContainer/Tabs/AutoformattingTab" to="." method="_on_autoformatting_tab_pressed"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/ContentPicker/ScrollContainer/Tabs/PalettesTab" to="." method="_on_palettes_tab_pressed"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/ContentPicker/ScrollContainer/Tabs/ShortcutsTab" to="." method="_on_shortcuts_tab_pressed"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/ContentPicker/ScrollContainer/Tabs/ThemeTab" to="." method="_on_theme_tab_pressed"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/ContentPicker/ScrollContainer/Tabs/OtherTab" to="." method="_on_other_tab_pressed"]
 [connection signal="pressed" from="VBoxContainer/Close" to="." method="_on_close_pressed"]

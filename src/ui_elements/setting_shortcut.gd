@@ -31,6 +31,7 @@ func sync() -> void:
 		for i in events.size():
 			if not events[i].is_match(action_defaults[i]):
 				is_value_changed = true
+				break
 		reset_button.visible = is_value_changed
 	# Clear the existing buttons.
 	shortcut_buttons.clear()
@@ -124,6 +125,7 @@ func _unhandled_key_input(event: InputEvent) -> void:
 	if listening_idx >= 0 and event is InputEventKey:
 		if event.is_action("ui_cancel"):
 			cancel_listening()
+			accept_event()
 		elif event.is_pressed():
 			shortcut_buttons[listening_idx].text = event.as_text_physical_keycode()
 			accept_event()

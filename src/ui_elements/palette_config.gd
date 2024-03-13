@@ -10,12 +10,11 @@ signal layout_changed
 var current_palette: ColorPalette
 var currently_edited_idx := -1
 
-@onready var margin_container: MarginContainer = $MarginContainer
 @onready var palette_label: Label = %MainContainer/HBoxContainer/PaletteLabel
 @onready var name_edit: BetterLineEdit = %MainContainer/HBoxContainer/NameEdit
 @onready var name_edit_button: Button = %MainContainer/HBoxContainer/EditButton
 @onready var colors_container: HFlowContainer = %MainContainer/ColorsContainer
-@onready var action_button: Button = $MarginContainer/HBoxContainer/ActionButton
+@onready var action_button: Button = $HBoxContainer/ActionButton
 
 # Used to setup a palette for this element.
 func assign_palette(palette: ColorPalette) -> void:
@@ -30,8 +29,7 @@ func rebuild_colors() -> void:
 	set_label_text(current_palette.title)
 	if current_palette.title.is_empty():
 		popup_edit_name()
-	else:
-		set_label_text(current_palette.title)
+	
 	for i in current_palette.colors.size():
 		var swatch := ColorSwatch.instantiate()
 		swatch.color_palette = current_palette

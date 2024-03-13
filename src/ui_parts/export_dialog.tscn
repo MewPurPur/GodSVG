@@ -23,36 +23,30 @@ offset_right = 2.0
 offset_bottom = 2.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_type_variation = &"OverlayPanel"
 script = ExtResource("1_objnb")
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
-layout_mode = 2
-theme_override_constants/margin_left = 8
-theme_override_constants/margin_top = 8
-theme_override_constants/margin_right = 8
-theme_override_constants/margin_bottom = 8
-
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 2
 theme_override_constants/separation = 12
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="VBoxContainer"]
 layout_mode = 2
 text = "Export Configuration"
 horizontal_alignment = 1
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
 layout_mode = 2
 theme_override_constants/separation = 12
 
-[node name="Checkerboard" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="Checkerboard" type="TextureRect" parent="VBoxContainer/HBoxContainer"]
 material = SubResource("ShaderMaterial_y7eee")
 custom_minimum_size = Vector2(128, 128)
 layout_mode = 2
 texture = ExtResource("3_q8p2p")
 stretch_mode = 1
 
-[node name="TexturePreview" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer/Checkerboard"]
+[node name="TexturePreview" type="TextureRect" parent="VBoxContainer/HBoxContainer/Checkerboard"]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 15
@@ -63,7 +57,7 @@ grow_vertical = 2
 expand_mode = 2
 stretch_mode = 5
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/HBoxContainer"]
 custom_minimum_size = Vector2(160, 0)
 layout_mode = 2
 theme_override_constants/margin_left = 4
@@ -71,44 +65,44 @@ theme_override_constants/margin_top = 6
 theme_override_constants/margin_right = 4
 theme_override_constants/margin_bottom = 6
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/MarginContainer"]
 layout_mode = 2
 theme_override_constants/separation = 12
 
-[node name="DimensionsLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer"]
+[node name="DimensionsLabel" type="Label" parent="VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_fonts/font = ExtResource("4_4t2iq")
 horizontal_alignment = 1
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 14
 text = "Format"
 
-[node name="Dropdown" parent="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("5_y6ex0")]
+[node name="Dropdown" parent="VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("5_y6ex0")]
 unique_name_in_owner = true
 layout_mode = 2
 values = Array[String](["svg", "png"])
 
-[node name="ScaleContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer"]
+[node name="ScaleContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/ScaleContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/ScaleContainer"]
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/ScaleContainer/HBoxContainer"]
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/ScaleContainer/HBoxContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 14
 text = "Scale"
 
-[node name="Scale" parent="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/ScaleContainer/HBoxContainer" instance=ExtResource("6_w1sag")]
+[node name="Scale" parent="VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/ScaleContainer/HBoxContainer" instance=ExtResource("6_w1sag")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(46, 22)
 layout_mode = 2
@@ -116,29 +110,29 @@ initial_value = 8.0
 allow_lower = false
 allow_higher = false
 
-[node name="FinalDimensions" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/ScaleContainer"]
+[node name="FinalDimensions" type="Label" parent="VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/ScaleContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0.666667, 0.666667, 0.666667, 1)
 theme_override_fonts/font = ExtResource("4_4t2iq")
 theme_override_font_sizes/font_size = 10
 
-[node name="ButtonContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="ButtonContainer" type="HBoxContainer" parent="VBoxContainer"]
 layout_mode = 2
 theme_override_constants/separation = 12
 alignment = 1
 
-[node name="CancelButton" type="Button" parent="MarginContainer/VBoxContainer/ButtonContainer"]
+[node name="CancelButton" type="Button" parent="VBoxContainer/ButtonContainer"]
 layout_mode = 2
 focus_mode = 0
 mouse_default_cursor_shape = 2
 text = "Cancel"
 
-[node name="OKButton" type="Button" parent="MarginContainer/VBoxContainer/ButtonContainer"]
+[node name="OKButton" type="Button" parent="VBoxContainer/ButtonContainer"]
 layout_mode = 2
 focus_mode = 0
 mouse_default_cursor_shape = 2
 text = "Export"
 
-[connection signal="pressed" from="MarginContainer/VBoxContainer/ButtonContainer/CancelButton" to="." method="_on_cancel_button_pressed"]
-[connection signal="pressed" from="MarginContainer/VBoxContainer/ButtonContainer/OKButton" to="." method="_on_ok_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/ButtonContainer/CancelButton" to="." method="_on_cancel_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/ButtonContainer/OKButton" to="." method="_on_ok_button_pressed"]
