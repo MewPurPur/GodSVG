@@ -174,6 +174,7 @@ script = ExtResource("13_lwhwy")
 
 [node name="ViewCamera" type="Camera2D" parent="ViewportPanel/ViewportContainer/Viewport"]
 anchor_mode = 0
+enabled = false
 editor_draw_screen = false
 script = ExtResource("14_yjb74")
 
