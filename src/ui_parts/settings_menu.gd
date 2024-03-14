@@ -246,19 +246,37 @@ func _notify_default_value_opacity_changed() -> void:
 
 # Optimize by only generating content when you click them.
 
+var generated_content := {  # String: bool
+	"autoformat": false,
+	"palettes": false,
+	"shortcuts": false,
+	"theming": false,
+	"other": false,
+}
+
 func _on_autoformatting_tab_pressed() -> void:
-	setup_autoformat_tab()
+	if not generated_content.autoformat:
+		setup_autoformat_tab()
+		generated_content.autoformat = true
 
 func _on_palettes_tab_pressed() -> void:
-	rebuild_color_palettes()
+	if not generated_content.palettes:
+		rebuild_color_palettes()
+		generated_content.palettes = true
 
 func _on_shortcuts_tab_pressed() -> void:
-	setup_shortcuts_tab()
+	if not generated_content.shortcuts:
+		setup_shortcuts_tab()
+		generated_content.shortcuts = true
 
 func _on_theme_tab_pressed() -> void:
-	setup_theming_tab()
+	if not generated_content.theming:
+		setup_theming_tab()
+		generated_content.theming = true
 
 func _on_other_tab_pressed() -> void:
-	if not DisplayServer.has_feature(DisplayServer.FEATURE_MOUSE_WARP):
-		wrap_mouse.set_pressed_no_signal(false)
-		wrap_mouse.disabled = true
+	if not generated_content.other:
+		if not DisplayServer.has_feature(DisplayServer.FEATURE_MOUSE_WARP):
+			wrap_mouse.set_pressed_no_signal(false)
+			wrap_mouse.disabled = true
+		generated_content.other = true
