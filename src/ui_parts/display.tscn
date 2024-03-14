@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://bvrncl7e6yn5b"]
+[gd_scene load_steps=20 format=3 uid="uid://bvrncl7e6yn5b"]
 
 [ext_resource type="Script" path="res://src/ui_parts/display.gd" id="1_oib5g"]
 [ext_resource type="Texture2D" uid="uid://ccbta5q43jobk" path="res://visual/icons/More.svg" id="2_3wliq"]
@@ -13,7 +13,8 @@
 [ext_resource type="Texture2D" uid="uid://c68og6bsqt0lb" path="res://visual/icons/backgrounds/Checkerboard.svg" id="11_1bm1s"]
 [ext_resource type="Script" path="res://src/ui_parts/display_texture.gd" id="12_qi23s"]
 [ext_resource type="Script" path="res://src/ui_parts/handles_manager.gd" id="13_lwhwy"]
-[ext_resource type="Script" path="res://src/ui_parts/view_camera.gd" id="14_yjb74"]
+[ext_resource type="Script" path="res://src/ui_parts/grid.gd" id="15_0txn3"]
+[ext_resource type="Script" path="res://src/ui_parts/camera.gd" id="15_hevpa"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nxvgo"]
 content_margin_left = 7.0
@@ -172,11 +173,19 @@ grow_vertical = 2
 mouse_filter = 1
 script = ExtResource("13_lwhwy")
 
-[node name="ViewCamera" type="Camera2D" parent="ViewportPanel/ViewportContainer/Viewport"]
-anchor_mode = 0
-enabled = false
-editor_draw_screen = false
-script = ExtResource("14_yjb74")
+[node name="Camera" type="Control" parent="ViewportPanel/ViewportContainer/Viewport"]
+unique_name_in_owner = true
+layout_mode = 3
+anchors_preset = 0
+mouse_filter = 2
+script = ExtResource("15_hevpa")
+
+[node name="Grid" type="Control" parent="ViewportPanel/ViewportContainer/Viewport"]
+unique_name_in_owner = true
+layout_mode = 3
+anchors_preset = 0
+mouse_filter = 2
+script = ExtResource("15_0txn3")
 
 [connection signal="pressed" from="PanelContainer/HBoxContainer/LeftMenu/MoreOptions" to="." method="_on_more_options_pressed"]
 [connection signal="pressed" from="PanelContainer/HBoxContainer/LeftMenu/Settings" to="." method="_on_settings_pressed"]
