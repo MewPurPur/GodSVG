@@ -277,6 +277,6 @@ func _on_theme_tab_pressed() -> void:
 func _on_other_tab_pressed() -> void:
 	if not generated_content.other:
 		if not DisplayServer.has_feature(DisplayServer.FEATURE_MOUSE_WARP):
-			wrap_mouse.set_pressed_no_signal(false)
-			wrap_mouse.disabled = true
+			wrap_mouse.checkbox.set_pressed_no_signal(false)
+			wrap_mouse.set_checkbox_enabled(false)
 		generated_content.other = true

@@ -127,5 +127,6 @@ func get_replacement(new_tag: String) -> Tag:
 			
 	for k in retained_attributes:
 		tag.attributes[k].set_value(attributes[k].get_value(), Attribute.SyncMode.SILENT)
+	tag.child_tags = child_tags
 	
 	return tag

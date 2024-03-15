@@ -5,7 +5,11 @@ const checkerboard = preload("res://visual/icons/backgrounds/Checkerboard.svg")
 const plus_icon = preload("res://visual/icons/Plus.svg")
 const gear_icon = preload("res://visual/icons/GearOutlined.svg")
 
-const ColorSwatch = preload("res://src/ui_elements/color_swatch.tscn")
+static var ColorSwatch: PackedScene:
+	get:
+		if ColorSwatch == null:
+			ColorSwatch = load("res://src/ui_elements/color_swatch.tscn")
+		return ColorSwatch
 
 enum Type {CHOOSE_COLOR, CONFIGURE_COLOR, ADD_COLOR}
 var type := Type.CHOOSE_COLOR

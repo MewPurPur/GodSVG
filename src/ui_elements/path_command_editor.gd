@@ -52,22 +52,25 @@ func add_numfield() -> BetterLineEdit:
 func _gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion and event.button_mask == 0:
 		Indications.set_hovered(tid, cmd_idx)
-	elif event is InputEventMouseButton and event.is_pressed():
+	elif event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_LEFT:
-			if event.double_click:
-				# Unselect the tag, so then it's selected again.
-				Indications.ctrl_select(tid, cmd_idx)
-				var subpath_range: Vector2i =\
-						SVG.root_tag.get_tag(tid).attributes.d.get_subpath(cmd_idx)
-				for idx in range(subpath_range.x, subpath_range.y + 1):
-					Indications.ctrl_select(tid, idx)
-			elif event.is_command_or_control_pressed():
-				Indications.ctrl_select(tid, cmd_idx)
-			elif event.shift_pressed:
-				Indications.shift_select(tid, cmd_idx)
-			else:
+			if event.is_pressed():
+				if event.double_click:
+					# Unselect the tag, so then it's selected again.
+					Indications.ctrl_select(tid, cmd_idx)
+					var subpath_range: Vector2i =\
+							SVG.root_tag.get_tag(tid).attributes.d.get_subpath(cmd_idx)
+					for idx in range(subpath_range.x, subpath_range.y + 1):
+						Indications.ctrl_select(tid, idx)
+				elif event.is_command_or_control_pressed():
+					Indications.ctrl_select(tid, cmd_idx)
+				elif event.shift_pressed:
+					Indications.shift_select(tid, cmd_idx)
+				else:
+					Indications.normal_select(tid, cmd_idx)
+			elif event.is_released() and not event.shift_pressed and not event.ctrl_pressed:
 				Indications.normal_select(tid, cmd_idx)
-		elif event.button_index == MOUSE_BUTTON_RIGHT:
+		elif event.button_index == MOUSE_BUTTON_RIGHT and event.is_pressed():
 			if Indications.semi_selected_tid != tid or\
 			not cmd_idx in Indications.inner_selections:
 				Indications.normal_select(tid, cmd_idx)
@@ -322,6 +325,9 @@ func clear_children() -> void:
 		child.queue_free()
 
 func _on_action_button_pressed() -> void:
+	# Update the selection immediately, since if this path command is
+	# in a multi-selection, only the mouse button release would change the selection.
+	Indications.normal_select(tid, cmd_idx)
 	var viewport := get_viewport()
 	var action_button_rect := action_button.get_global_rect()
 	Utils.popup_under_rect_center(Indications.get_selection_context(
