@@ -67,15 +67,12 @@ msgstr "Dokumentation…"
 msgid "Donate (Github)"
 msgstr "Spenden (Github)"
 
-#, fuzzy
 msgid "Zoom in"
 msgstr "Hineinzoomen"
 
-#, fuzzy
 msgid "Zoom reset"
 msgstr "Zoom zurücksetzen"
 
-#, fuzzy
 msgid "Zoom out"
 msgstr "Herauszoomen"
 
@@ -101,19 +98,19 @@ msgid "Snap size"
 msgstr "Einrastgröße"
 
 msgid "Reset to default"
-msgstr ""
+msgstr "Zurücksetzen"
 
 msgid "Copy All Text"
 msgstr "Text kopieren"
 
 msgid "Save"
-msgstr ""
+msgstr "Speichern"
 
 msgid "Export"
 msgstr "Exportieren"
 
 msgid "Select all tags"
-msgstr ""
+msgstr "Alle Tags auswählen"
 
 msgid "Couple/Decouple"
 msgstr "Koppeln/Entkoppeln"
@@ -148,21 +145,17 @@ msgstr "Ungültige Formatierung."
 msgid "Syntax error"
 msgstr "Syntaxfehler"
 
-#, fuzzy
 msgid "Delete the selection"
-msgstr "Entf: Ausgewählte Elemente löschen"
+msgstr "Auswahl löschen"
 
-#, fuzzy
 msgid "Move the selected tags down"
-msgstr "Strg+Unten: Ausgewählte Elemente nach unten verschieben"
+msgstr "Ausgewählte Tags nach unten verschieben"
 
-#, fuzzy
 msgid "Move the selected tags up"
-msgstr "Strg+Hoch: Ausgewählte Elemente nach oben verschieben"
+msgstr "Ausgewählte Tags nach oben verschieben"
 
-#, fuzzy
 msgid "Duplicate the selected tags"
-msgstr "Strg+D: Ausgewählte Elemente duplizieren"
+msgstr "Ausgewählte Tags duplizieren"
 
 msgid "Unknown Tag"
 msgstr "Unbekanntes Element"
@@ -218,50 +211,47 @@ msgstr "Autoren"
 msgid "Shortcuts"
 msgstr "Tastenkombinationen"
 
+msgid "Add shortcut"
+msgstr "Tastenkombination hinzufügen"
+
 msgid "Theme"
-msgstr ""
+msgstr "Thema"
+
+msgid "Basic colors"
+msgstr "Allgemeine Farben"
 
 msgid "SVG Text Colors"
-msgstr ""
+msgstr "SVG Textfarben"
 
 msgid "Symbol color"
-msgstr ""
+msgstr "Symbolfarbe"
 
-#, fuzzy
 msgid "Tag color"
-msgstr "Farbe hinzufügen"
+msgstr "Tagfarbe"
 
-#, fuzzy
 msgid "Attribute color"
-msgstr "Farbe deaktivieren"
+msgstr "Attributfarbe"
 
-#, fuzzy
 msgid "String color"
-msgstr "Farbe suchen"
+msgstr "Stringfarbe"
 
-#, fuzzy
 msgid "Comment color"
-msgstr "Farbe löschen"
+msgstr "Kommentarfarbe"
 
-#, fuzzy
 msgid "Text color"
-msgstr "Farbe löschen"
+msgstr "Textfarbe"
 
-#, fuzzy
 msgid "Error color"
-msgstr "Farbe suchen"
+msgstr "Fehlerfarbe"
 
-#, fuzzy
 msgid "Default value opacity"
-msgstr "Farbe löschen"
+msgstr "Standardwertopazität"
 
-#, fuzzy
 msgid "Warning color"
-msgstr "Farbe suchen"
+msgstr "Warnfarbe"
 
-#, fuzzy
 msgid "Valid color"
-msgstr "Farbe hinzufügen"
+msgstr "Gültige Farbe"
 
 msgid "Palettes"
 msgstr "Paletten"
@@ -285,13 +275,13 @@ msgid "Delete color"
 msgstr "Farbe löschen"
 
 msgid "Edit"
-msgstr ""
+msgstr "Bearbeiten"
 
 msgid "Remove"
-msgstr ""
+msgstr "Entfernen"
 
 msgid "Press keys…"
-msgstr ""
+msgstr "Drücke Tasten…"
 
 msgid "Enable the color"
 msgstr "Farbe aktivieren"
@@ -315,14 +305,13 @@ msgid "Paste"
 msgstr "Einfügen"
 
 msgid "Copy as XML"
-msgstr ""
+msgstr "Kopiere als XML"
 
-#, fuzzy
 msgid "Paste XML"
-msgstr "Einfügen"
+msgstr "XML Einfügen"
 
 msgid "Unused"
-msgstr ""
+msgstr "Unbenutzt"
 
 msgid "Cut"
 msgstr "Ausschneiden"
@@ -355,6 +344,9 @@ msgstr "OK"
 msgid "Autoformatting"
 msgstr "Autoformatierung"
 
+msgid "General"
+msgstr "Allgemein"
+
 msgid "Numbers"
 msgstr "Nummern"
 
@@ -366,6 +358,12 @@ msgstr "Pfade"
 
 msgid "Transforms"
 msgstr "Transformationen"
+
+msgid "Number precision digits"
+msgstr "Zahlengenauigkeit"
+
+msgid "Angle precision digits"
+msgstr "Winkelgenauigkeit"
 
 msgid "Add trailing newline"
 msgstr "Nachfolgenden Zeilenumbruch hinzufügen"
@@ -432,6 +430,9 @@ msgstr "Optimieren"
 
 msgid "Any changes will apply immediately."
 msgstr "Änderungen werden sofort wirksam."
+
+msgid "Always active."
+msgstr "Immer aktiv."
 
 msgid "Search color"
 msgstr "Farbe suchen"
