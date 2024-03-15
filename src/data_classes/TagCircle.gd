@@ -70,7 +70,9 @@ func get_replacement(new_tag: String) -> Tag:
 					attributes.r.get_num(), 0, 0, 0, 0, -attributes.r.get_num() * 2, true))
 			commands.append(PathCommand.CloseCommand.new(true))
 			tag.attributes.d.set_commands(commands, Attribute.SyncMode.SILENT)
+	
 	for k in retained_attributes:
 		tag.attributes[k].set_value(attributes[k].get_value(), Attribute.SyncMode.SILENT)
+	tag.child_tags = child_tags
 	
 	return tag

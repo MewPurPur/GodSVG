@@ -122,6 +122,9 @@ func _notification(what: int) -> void:
 
 
 func _on_title_button_pressed() -> void:
+	# Update the selection immediately, since if this tag editor is
+	# in a multi-selection, only the mouse button release would change the selection.
+	Indications.normal_select(tid)
 	var viewport := get_viewport()
 	var title_button_rect := title_button.get_global_rect()
 	Utils.popup_under_rect_center(Indications.get_selection_context(

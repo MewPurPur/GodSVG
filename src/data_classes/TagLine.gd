@@ -50,7 +50,9 @@ func get_replacement(new_tag: String) -> Tag:
 					attributes.x2.get_num() - attributes.x1.get_num(),
 					attributes.y2.get_num() - attributes.y1.get_num(), true))
 			tag.attributes.d.set_commands(commands, Attribute.SyncMode.SILENT)
+	
 	for k in retained_attributes:
 		tag.attributes[k].set_value(attributes[k].get_value(), Attribute.SyncMode.SILENT)
+	tag.child_tags = child_tags
 	
 	return tag

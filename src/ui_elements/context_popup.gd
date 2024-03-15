@@ -6,7 +6,7 @@ extends Popup
 
 func add_button(btn: Button, align_left: bool, should_reset_size := true) -> void:
 	if not btn is CheckBox:
-		btn.theme_type_variation = "FlatButton"
+		btn.theme_type_variation = "ContextButton"
 		btn.pressed.connect(queue_free)
 	btn.focus_mode = Control.FOCUS_NONE
 	main_container.add_child(btn)
