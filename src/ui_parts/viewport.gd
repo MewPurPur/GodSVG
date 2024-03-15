@@ -9,13 +9,14 @@ const zoom_reset_buffer = 0.875
 var _zoom_to: Vector2
 
 @onready var display: TextureRect = %Checkerboard
-@onready var view: Camera2D = $ViewCamera
+@onready var view: Control = %Camera
 @onready var controls: Control = %Checkerboard/Controls
 @onready var display_texture: TextureRect = %Checkerboard/DisplayTexture
 @onready var zoom_menu: ZoomMenuType = %ZoomMenu
 
 
 func _ready() -> void:
+	zoom_menu.zoom_changed.connect(view.queue_redraw.unbind(2))
 	SVG.root_tag.resized.connect(resize)
 	Indications.viewport_size_changed.connect(adjust_view)
 	resize()
