@@ -1,5 +1,5 @@
 ## A popup for editing a transform matrix.
-extends Popup
+extends BetterPopup
 
 const NumberEditType = preload("res://src/ui_elements/number_edit.gd")
 const ContextPopupType = preload("res://src/ui_elements/context_popup.gd")

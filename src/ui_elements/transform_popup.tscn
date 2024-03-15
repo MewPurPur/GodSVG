@@ -6,8 +6,6 @@
 [ext_resource type="Texture2D" uid="uid://cqg7ga6y3m0v1" path="res://visual/icons/ApplyMatrix.svg" id="3_eegha"]
 
 [node name="TransformPopup" type="Popup"]
-disable_3d = true
-transparent_bg = true
 size = Vector2i(242, 246)
 visible = true
 script = ExtResource("1_ye80i")

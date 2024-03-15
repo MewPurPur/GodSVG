@@ -29,6 +29,7 @@ const connected_button_inner_color_pressed = Color("313559")
 const connected_button_border_color_pressed = Color("54678c")
 
 const icon_normal_color = Color("bfbfbf")
+const context_icon_normal_color = Color("d9d9d9")
 const icon_hover_color = Color("ffffff")
 const icon_pressed_color = Color("bfdfff")
 const icon_toggled_off_color = Color("808080")
@@ -396,6 +397,37 @@ static func setup_button(theme: Theme) -> void:
 	var disabled_flat_button_stylebox := flat_button_stylebox.duplicate()
 	disabled_flat_button_stylebox.bg_color = flat_button_color_disabled
 	theme.set_stylebox("disabled", "FlatButton", disabled_flat_button_stylebox)
+	
+	theme.add_type("ContextButton")
+	theme.set_type_variation("ContextButton", "Button")
+	theme.set_color("icon_normal_color", "ContextButton", context_icon_normal_color)
+	theme.set_color("icon_hover_color", "ContextButton", icon_hover_color)
+	theme.set_color("icon_pressed_color", "ContextButton", icon_hover_color)
+	var context_button_stylebox := StyleBoxFlat.new()
+	context_button_stylebox.set_corner_radius_all(3)
+	context_button_stylebox.content_margin_bottom = 2
+	context_button_stylebox.content_margin_top = 2
+	context_button_stylebox.content_margin_left = 3
+	context_button_stylebox.content_margin_right = 4
+	
+	var normal_context_button_stylebox := StyleBoxEmpty.new()
+	normal_context_button_stylebox.content_margin_bottom = 2
+	normal_context_button_stylebox.content_margin_top = 2
+	normal_context_button_stylebox.content_margin_left = 3
+	normal_context_button_stylebox.content_margin_right = 4
+	theme.set_stylebox("normal", "ContextButton", normal_context_button_stylebox)
+	
+	var hover_context_button_stylebox := context_button_stylebox.duplicate()
+	hover_context_button_stylebox.bg_color = flat_button_color_hover
+	theme.set_stylebox("hover", "ContextButton", hover_context_button_stylebox)
+	
+	var pressed_context_button_stylebox := context_button_stylebox.duplicate()
+	pressed_context_button_stylebox.bg_color = flat_button_color_pressed
+	theme.set_stylebox("pressed", "ContextButton", pressed_context_button_stylebox)
+	
+	var disabled_context_button_stylebox := context_button_stylebox.duplicate()
+	disabled_context_button_stylebox.bg_color = flat_button_color_disabled
+	theme.set_stylebox("disabled", "ContextButton", disabled_context_button_stylebox)
 	
 	theme.add_type("TextButton")
 	theme.set_type_variation("TextButton", "Button")

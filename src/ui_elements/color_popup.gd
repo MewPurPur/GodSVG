@@ -1,5 +1,5 @@
 ## A popup for picking a color.
-extends Popup
+extends BetterPopup
 
 const GoodColorPickerType = preload("res://src/ui_elements/good_color_picker.gd")
 const ColorSwatchType = preload("res://src/ui_elements/color_swatch.gd")
