@@ -208,7 +208,13 @@ msgstr ""
 msgid "Shortcuts"
 msgstr ""
 
+msgid "Add shortcut"
+msgstr ""
+
 msgid "Theme"
+msgstr ""
+
+msgid "Basic colors"
 msgstr ""
 
 msgid "SVG Text Colors"
@@ -330,6 +336,9 @@ msgstr ""
 msgid "Autoformatting"
 msgstr ""
 
+msgid "General"
+msgstr ""
+
 msgid "Numbers"
 msgstr ""
 
@@ -340,6 +349,12 @@ msgid "Paths"
 msgstr ""
 
 msgid "Transforms"
+msgstr ""
+
+msgid "Number precision digits"
+msgstr ""
+
+msgid "Angle precision digits"
 msgstr ""
 
 msgid "Add trailing newline"
@@ -406,6 +421,9 @@ msgid "Optimize"
 msgstr ""
 
 msgid "Any changes will apply immediately."
+msgstr ""
+
+msgid "Always active."
 msgstr ""
 
 msgid "Search color"
