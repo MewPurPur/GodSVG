@@ -11,7 +11,7 @@ const NumberField = preload("res://src/ui_elements/number_field.tscn")
 
 @onready var viewport: SubViewport = $ViewportPanel/ViewportContainer/Viewport
 @onready var controls: Control = %Checkerboard/Controls
-@onready var grid_visuals: Control = %Grid
+@onready var grid_visuals: Control = %Camera
 @onready var visuals_button: Button = %LeftMenu/Visuals
 @onready var more_button: Button = %LeftMenu/MoreOptions
 @onready var snapper: NumberEditType = %LeftMenu/Snapping/NumberEdit

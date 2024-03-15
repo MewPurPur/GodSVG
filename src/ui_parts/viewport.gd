@@ -16,7 +16,7 @@ var _zoom_to: Vector2
 
 
 func _ready() -> void:
-	zoom_menu.zoom_changed.connect(view.queue_redraw.unbind(2))
+	zoom_menu.zoom_changed.connect(view.update.unbind(2))
 	SVG.root_tag.resized.connect(resize)
 	Indications.viewport_size_changed.connect(adjust_view)
 	resize()
@@ -35,7 +35,7 @@ func set_view(new_position: Vector2) -> void:
 	var stripped_bottom := minf(view.position.y + scaled_size.y, SVG.root_tag.height)
 	display_texture.view_rect = Rect2(stripped_left, stripped_top,
 			stripped_right - stripped_left, stripped_bottom - stripped_top)
-	view.queue_redraw()
+	view.update()
 
 
 # Adjust the SVG dimensions.
