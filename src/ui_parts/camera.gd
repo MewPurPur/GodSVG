@@ -21,13 +21,19 @@ func _ready() -> void:
 	Indications.zoom_changed.connect(change_zoom)
 	Indications.zoom_changed.connect(queue_redraw)
 
+
 func change_zoom() -> void:
 	zoom = Indications.zoom
 
+
+func update() -> void:
+	get_viewport().canvas_transform = Transform2D(0.0,
+		Vector2(zoom, zoom), 0.0, -position * zoom)
+	queue_redraw()
+
+
 # Don't ask me to explain this.
 func _draw() -> void:
-	get_viewport().canvas_transform = Transform2D(0.0,
-			Vector2(zoom, zoom), 0.0, -position * zoom)
 	var grid_size: Vector2 = Indications.viewport_size * 1.0 / zoom
 	draw_line(Vector2(-position.x, 0), Vector2(-position.x, grid_size.y), axis_line_color)
 	draw_line(Vector2(0, -position.y), Vector2(grid_size.x, -position.y), axis_line_color)
