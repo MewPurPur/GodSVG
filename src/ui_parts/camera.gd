@@ -27,8 +27,9 @@ func change_zoom() -> void:
 
 
 func update() -> void:
-	get_viewport().canvas_transform = Transform2D(0.0,
-		Vector2(zoom, zoom), 0.0, -position * zoom)
+	position = position.snapped(Vector2(1, 1) / zoom)
+	get_viewport().canvas_transform = Transform2D(0.0, Vector2(zoom, zoom),
+			0.0, -position * zoom)
 	queue_redraw()
 
 
