@@ -5,7 +5,7 @@ const slider_arrow = preload("res://visual/icons/SliderArrow.svg")
 const side_slider_arrow = preload("res://visual/icons/SideSliderArrow.svg")
 const bg_pattern = preload("res://visual/icons/backgrounds/CheckerboardMini.svg")
 
-@export var enable_alpha := false
+var alpha_enabled := false
 
 var UR := UndoRedo.new()
 
@@ -20,13 +20,15 @@ var slider_mode: SliderMode:
 					btn == disabled_button else Control.CURSOR_POINTING_HAND
 		match slider_mode:
 			SliderMode.RGB:
-				tracks_arr[1].material.set_shader_parameter("interpolation", 0)
-				tracks_arr[2].material.set_shader_parameter("interpolation", 1)
-				tracks_arr[3].material.set_shader_parameter("interpolation", 2)
+				tracks_arr[1].material.set_shader_parameter("interpolation", 1)
+				tracks_arr[2].material.set_shader_parameter("interpolation", 2)
+				tracks_arr[3].material.set_shader_parameter("interpolation", 3)
 			SliderMode.HSV:
-				tracks_arr[1].material.set_shader_parameter("interpolation", 3)
-				tracks_arr[2].material.set_shader_parameter("interpolation", 4)
-				tracks_arr[3].material.set_shader_parameter("interpolation", 5)
+				tracks_arr[1].material.set_shader_parameter("interpolation", 4)
+				tracks_arr[2].material.set_shader_parameter("interpolation", 5)
+				tracks_arr[3].material.set_shader_parameter("interpolation", 6)
+		if alpha_enabled:
+			tracks_arr[4].material.set_shader_parameter("interpolation", 0)
 		update()
 
 @onready var color_wheel: MarginContainer = $ShapeContainer/ColorWheel
@@ -42,18 +44,20 @@ var slider_mode: SliderMode:
 var color_wheel_surface := RenderingServer.canvas_item_create()
 
 # 0 is the side slider, 1-3 are the remaining sliders.
-var sliders_dragged: Array[bool] = [false, false, false, false]
+var sliders_dragged: Array[bool] = [false, false, false, false, false]
 # Tracks are the color rects of the sliders.
 @onready var tracks_arr: Array[ColorRect] = [
 		$ShapeContainer/SideSlider/SideSliderTrack, %Slider1/MarginContainer/ColorTrack,
-		%Slider2/MarginContainer/ColorTrack, %Slider3/MarginContainer/ColorTrack]
+		%Slider2/MarginContainer/ColorTrack, %Slider3/MarginContainer/ColorTrack,
+		%Slider4/MarginContainer/ColorTrack]
 # Widgets are the margin containers that acts as click areas and draw the arrow.
 @onready var widgets_arr: Array[MarginContainer] = [
 		$ShapeContainer/SideSlider, %Slider1/MarginContainer, %Slider2/MarginContainer,
-		%Slider3/MarginContainer]
+		%Slider3/MarginContainer, %Slider4/MarginContainer]
 # Fields are the number fields beside the color tracks.
 @onready var fields_arr: Array[BetterLineEdit] = [
-	null, %Slider1/IntField, %Slider2/IntField, %Slider3/IntField]
+	null, %Slider1/IntField, %Slider2/IntField, %Slider3/IntField, %Slider4/IntField]
+@onready var alpha_slider: HBoxContainer = %Slider4
 
 # This variable stores what the color string was at the start, for the reset button.
 var starting_color: String
@@ -77,7 +81,8 @@ func setup_color(new_color: String) -> void:
 	starting_color = new_color
 	color = new_color
 	# Setup the display color.
-	starting_display_color = ColorParser.string_to_color(starting_color)
+	starting_display_color = ColorParser.string_to_color(starting_color, Color(),
+			alpha_enabled)
 	if slider_mode == SliderMode.HSV:
 		# Clamping like this doesn't change the hex representation, but
 		# it helps avoid locking certain sliders (e.g. hue slider when saturation is 0).
@@ -85,12 +90,14 @@ func setup_color(new_color: String) -> void:
 		starting_display_color.h = clampf(starting_display_color.h, 0.0, 0.9999)
 		starting_display_color.v = clampf(starting_display_color.v, 0.0001, 1.0)
 		starting_display_color.s = clampf(starting_display_color.s, 0.0001, 1.0)
-	starting_display_color.a = 1
+	if not alpha_enabled:
+		starting_display_color.a = 1
 	display_color = starting_display_color
 	slider_mode = GlobalSettings.save_data.color_picker_slider_mode
 	update()
 
 func _ready() -> void:
+	alpha_slider.visible = alpha_enabled
 	RenderingServer.canvas_item_set_parent(color_wheel_surface,
 			color_wheel_drawn.get_canvas_item())
 
@@ -127,6 +134,8 @@ func update() -> void:
 			Color.from_hsv(display_color.h, display_color.s, 1.0))
 	for i in [1, 2, 3]:
 		tracks_arr[i].material.set_shader_parameter("base_color", display_color)
+	if alpha_enabled:
+		tracks_arr[4].material.set_shader_parameter("base_color", display_color)
 	# Setup the "none" button.
 	var is_none := (color == "none")
 	none_button.button_pressed = is_none
@@ -138,6 +147,8 @@ func update() -> void:
 	color_wheel_drawn.queue_redraw()
 	for i in [0, 1, 2, 3]:
 		widgets_arr[i].queue_redraw()
+	if alpha_enabled:
+		widgets_arr[4].queue_redraw()
 	# Set the text of the color fields.
 	match slider_mode:
 		SliderMode.RGB: 
@@ -148,6 +159,7 @@ func update() -> void:
 			fields_arr[1].text = String.num_uint64(roundi(display_color.h * 360))
 			fields_arr[2].text = String.num_uint64(roundi(display_color.s * 100))
 			fields_arr[3].text = String.num_uint64(roundi(display_color.v * 100))
+	fields_arr[4].text = String.num_uint64(roundi(display_color.a * 100))
 	# Ensure that the HSV values are never exactly 0 or 1 to make everything draggable.
 	backup_display_color.h = clampf(backup_display_color.h, 0.0, 0.9999)
 	backup_display_color.v = clampf(backup_display_color.v, 0.0001, 1.0)
@@ -155,6 +167,9 @@ func update() -> void:
 	display_color.h = clampf(display_color.h, 0.0, 0.9999)
 	display_color.v = clampf(display_color.v, 0.0001, 1.0)
 	display_color.s = clampf(display_color.s, 0.0001, 1.0)
+	if alpha_enabled:
+		backup_display_color.a = clampf(backup_display_color.a, 0.0, 1.0)
+		display_color.a = clampf(display_color.a, 0.0, 1.0)
 
 
 func _on_color_wheel_gui_input(event: InputEvent) -> void:
@@ -180,6 +195,7 @@ func move_slider(idx: int, offset: float) -> void:
 	var new_color := display_color
 	var channel: String
 	match idx:
+		4: channel = "a"
 		0: channel = "v"
 		1: match slider_mode:
 			SliderMode.RGB: channel = "r"
@@ -196,6 +212,7 @@ func move_slider(idx: int, offset: float) -> void:
 
 func set_color_channel(col: Color, channel: String, offset: float) -> Color:
 	match channel:
+		"a": col.a = clampf(offset, 0.0, 1.0)
 		"r": col.r = clampf(offset, 0.0, 1.0)
 		"g": col.g = clampf(offset, 0.0, 1.0)
 		"b": col.b = clampf(offset, 0.0, 1.0)
@@ -236,6 +253,9 @@ func _on_slider2_gui_input(event: InputEvent) -> void:
 func _on_slider3_gui_input(event: InputEvent) -> void:
 	parse_slider_input(event, 3)
 
+func _on_slider4_gui_input(event: InputEvent) -> void:
+	parse_slider_input(event, 4)
+
 func _on_slider1_text_submitted(new_text: String) -> void:
 	var new_color := display_color
 	match slider_mode:
@@ -255,6 +275,11 @@ func _on_slider3_text_submitted(new_text: String) -> void:
 	match slider_mode:
 		SliderMode.RGB: new_color.b = clampf(new_text.to_int() / 255.0, 0.0, 1.0)
 		SliderMode.HSV: new_color.v = clampf(new_text.to_int() / 100.0, 0.0001, 1.0)
+	register_visual_change(new_color, false)
+
+func _on_slider4_text_submitted(new_text: String) -> void:
+	var new_color := display_color
+	new_color.a = clampf(new_text.to_int() / 100.0, 0.0, 1.0)
 	register_visual_change(new_color, false)
 
 func _on_none_button_pressed() -> void:
@@ -295,17 +320,14 @@ func _on_start_color_rect_draw() -> void:
 		start_color_rect.draw_line(Vector2.ZERO, rect_size, cross_color, 0.5, true)
 		start_color_rect.draw_line(Vector2(rect_size.x, 0), Vector2(0, rect_size.y),
 				cross_color, 0.5, true)
-	elif starting_color == "none":
-		start_color_rect.draw_texture_rect(bg_pattern, rect, true)
 	else:
+		start_color_rect.draw_texture_rect(bg_pattern, rect, true)
 		start_color_rect.draw_rect(rect, starting_display_color)
 
 func _on_color_rect_draw() -> void:
 	var rect := Rect2(Vector2.ZERO, color_rect.size)
-	if color == "none":
-		color_rect.draw_texture_rect(bg_pattern, rect, true)
-	else:
-		color_rect.draw_rect(rect, display_color)
+	color_rect.draw_texture_rect(bg_pattern, rect, true)
+	color_rect.draw_rect(rect, display_color)
 
 # Draw inside the side slider to give it a little arrow to the side.
 func _on_side_slider_draw() -> void:
@@ -346,6 +368,9 @@ func _on_slider3_draw() -> void:
 		SliderMode.RGB: draw_hslider(3, display_color.b, "B")
 		SliderMode.HSV: draw_hslider(3, display_color.v, "V")
 
+func _on_slider4_draw() -> void:
+	draw_hslider(4, display_color.a, "A")
+
 
 func _on_reset_color_button_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion and event.button_mask != MOUSE_BUTTON_MASK_LEFT:
@@ -367,7 +392,7 @@ func _on_reset_color_button_gui_input(event: InputEvent) -> void:
 			reset_color_button.end_bulk_theme_override()
 
 func hex(col: Color) -> String:
-	return col.to_html(false)
+	return col.to_html(alpha_enabled and col.a != 1.0)
 
 
 func _input(event: InputEvent) -> void:

@@ -48,6 +48,12 @@ static func is_valid_hex(color: String) -> bool:
 	return color.begins_with("#") and color.is_valid_html_color() and\
 			(color.length() == 4 or color.length() == 7)
 
+# Not applicable to attributes, but for now I guess it'll live here.
+static func is_valid_hex_with_alpha(color: String) -> bool:
+	color = color.strip_edges()
+	return color.begins_with("#") and color.is_valid_html_color() and\
+			(color.length() == 5 or color.length() == 9)
+
 static func is_valid_rgb(color: String) -> bool:
 	color = color.strip_edges()
 	if not color.begins_with("rgb(") or not color.ends_with(")"):
@@ -74,7 +80,8 @@ static func is_valid_url(color: String) -> bool:
 	return IDParser.get_id_validity(id) != IDParser.ValidityLevel.INVALID
 
 # URL doesn't have a color interpretation, so it'll give the backup.
-static func string_to_color(color: String, backup := Color.BLACK) -> Color:
+static func string_to_color(color: String, backup := Color.BLACK,
+allow_alpha := false) -> Color:
 	color = color.strip_edges()
 	if is_valid_named(color):
 		if color == "none":
@@ -88,7 +95,7 @@ static func string_to_color(color: String, backup := Color.BLACK) -> Color:
 			return Color8(args[0].to_int(), args[1].to_int(), args[2].to_int())
 		else:
 			return backup
-	elif is_valid_hex(color):
+	elif is_valid_hex(color) or (allow_alpha and is_valid_hex_with_alpha(color)):
 		return Color.from_string(color, Color())
 	else:
 		return backup
