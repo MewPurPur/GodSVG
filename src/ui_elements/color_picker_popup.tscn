@@ -1,11 +1,9 @@
-[gd_scene load_steps=3 format=3 uid="uid://bs68u5annwepo"]
+[gd_scene load_steps=2 format=3 uid="uid://bs68u5annwepo"]
 
 [ext_resource type="Script" path="res://src/ui_elements/color_picker_popup.gd" id="1_wmbff"]
-[ext_resource type="PackedScene" uid="uid://b1eig44cov474" path="res://src/ui_elements/good_color_picker.tscn" id="2_jafm6"]
 
 [node name="ColorPickerPopup" type="Popup"]
 transparent_bg = true
-size = Vector2i(218, 360)
 visible = true
 script = ExtResource("1_wmbff")
 
@@ -20,8 +18,4 @@ theme_override_constants/margin_top = 8
 theme_override_constants/margin_right = 8
 theme_override_constants/margin_bottom = 8
 
-[node name="ColorPicker" parent="PanelContainer/MarginContainer" instance=ExtResource("2_jafm6")]
-layout_mode = 2
-
 [connection signal="popup_hide" from="." to="." method="_on_popup_hide"]
-[connection signal="color_changed" from="PanelContainer/MarginContainer/ColorPicker" to="." method="pick_color"]
