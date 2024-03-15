@@ -221,8 +221,16 @@ msgstr "Автори"
 msgid "Shortcuts"
 msgstr "Клавіатурні скорочення"
 
+#, fuzzy
+msgid "Add shortcut"
+msgstr "Клавіатурні скорочення"
+
 msgid "Theme"
 msgstr ""
+
+#, fuzzy
+msgid "Basic colors"
+msgstr "Додати колір"
 
 msgid "SVG Text Colors"
 msgstr ""
@@ -358,6 +366,9 @@ msgstr "Добре"
 msgid "Autoformatting"
 msgstr "Налаштування автоформатування"
 
+msgid "General"
+msgstr ""
+
 msgid "Numbers"
 msgstr "Цифри"
 
@@ -368,6 +379,12 @@ msgid "Paths"
 msgstr "Шляхи"
 
 msgid "Transforms"
+msgstr ""
+
+msgid "Number precision digits"
+msgstr ""
+
+msgid "Angle precision digits"
 msgstr ""
 
 msgid "Add trailing newline"
@@ -434,6 +451,9 @@ msgid "Optimize"
 msgstr ""
 
 msgid "Any changes will apply immediately."
+msgstr ""
+
+msgid "Always active."
 msgstr ""
 
 msgid "Search color"

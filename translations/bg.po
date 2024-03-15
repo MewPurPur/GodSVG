@@ -211,8 +211,16 @@ msgstr "Автори"
 msgid "Shortcuts"
 msgstr "Бързи клавиши"
 
+#, fuzzy
+msgid "Add shortcut"
+msgstr "Бързи клавиши"
+
 msgid "Theme"
 msgstr "Гама"
+
+#, fuzzy
+msgid "Basic colors"
+msgstr "Цвят на валидният текст"
 
 msgid "SVG Text Colors"
 msgstr "Цветове на SVG текста"
@@ -338,6 +346,9 @@ msgstr "Добре"
 msgid "Autoformatting"
 msgstr "Автоматично форматиране"
 
+msgid "General"
+msgstr ""
+
 msgid "Numbers"
 msgstr "Числа"
 
@@ -349,6 +360,12 @@ msgstr "Пътеки"
 
 msgid "Transforms"
 msgstr "Трансформации"
+
+msgid "Number precision digits"
+msgstr ""
+
+msgid "Angle precision digits"
+msgstr ""
 
 msgid "Add trailing newline"
 msgstr "Добави нов ред накрая"
@@ -415,6 +432,9 @@ msgstr "Оптимизирай"
 
 msgid "Any changes will apply immediately."
 msgstr "Промените ще бъдат нанесени веднага."
+
+msgid "Always active."
+msgstr ""
 
 msgid "Search color"
 msgstr "Търсене на цвят"
