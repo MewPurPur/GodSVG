@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://b1eig44cov474"]
+[gd_scene load_steps=18 format=3 uid="uid://b1eig44cov474"]
 
 [ext_resource type="Script" path="res://src/ui_elements/good_color_picker.gd" id="1_0pc78"]
 [ext_resource type="Shader" path="res://src/shaders/color_wheel.gdshader" id="2_nf1uk"]
@@ -14,8 +14,8 @@ shader_parameter/v = 1.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_gihhg"]
 shader = ExtResource("5_acxpg")
-shader_parameter/base_color = Vector3(0, 0, 0)
-shader_parameter/interpolation = 5
+shader_parameter/base_color = Vector4(1, 1, 1, 1)
+shader_parameter/interpolation = 6
 shader_parameter/horizontal = false
 shader_parameter/inverted = true
 
@@ -37,28 +37,35 @@ border_width_top = 2
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_fvg6q"]
 shader = ExtResource("5_acxpg")
-shader_parameter/base_color = Vector3(1, 1, 1)
+shader_parameter/base_color = Vector4(1, 1, 1, 1)
 shader_parameter/interpolation = 0
 shader_parameter/horizontal = true
 shader_parameter/inverted = false
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_dlmj5"]
 shader = ExtResource("5_acxpg")
-shader_parameter/base_color = Vector3(1, 1, 1)
+shader_parameter/base_color = Vector4(1, 1, 1, 1)
 shader_parameter/interpolation = 0
 shader_parameter/horizontal = true
 shader_parameter/inverted = false
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_p3pbp"]
 shader = ExtResource("5_acxpg")
-shader_parameter/base_color = Vector3(1, 1, 1)
+shader_parameter/base_color = Vector4(1, 1, 1, 1)
+shader_parameter/interpolation = 0
+shader_parameter/horizontal = true
+shader_parameter/inverted = false
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_exp51"]
+shader = ExtResource("5_acxpg")
+shader_parameter/base_color = Vector4(1, 1, 1, 1)
 shader_parameter/interpolation = 0
 shader_parameter/horizontal = true
 shader_parameter/inverted = false
 
 [node name="GoodColorPicker" type="VBoxContainer"]
-offset_right = 190.0
-offset_bottom = 266.0
+offset_right = 198.0
+offset_bottom = 344.0
 theme_override_constants/separation = 6
 script = ExtResource("1_0pc78")
 
@@ -200,12 +207,6 @@ theme_override_constants/margin_left = 4
 theme_override_constants/margin_right = 4
 theme_override_constants/margin_bottom = 6
 
-[node name="TextureRect" type="TextureRect" parent="SliderContainer/HBoxContainer/TracksContainer/Slider1/MarginContainer"]
-layout_mode = 2
-texture = ExtResource("6_qq1j3")
-expand_mode = 1
-stretch_mode = 1
-
 [node name="ColorTrack" type="ColorRect" parent="SliderContainer/HBoxContainer/TracksContainer/Slider1/MarginContainer"]
 material = SubResource("ShaderMaterial_fvg6q")
 custom_minimum_size = Vector2(0, 13)
@@ -232,12 +233,6 @@ size_flags_horizontal = 3
 theme_override_constants/margin_left = 4
 theme_override_constants/margin_right = 4
 theme_override_constants/margin_bottom = 6
-
-[node name="TextureRect" type="TextureRect" parent="SliderContainer/HBoxContainer/TracksContainer/Slider2/MarginContainer"]
-layout_mode = 2
-texture = ExtResource("6_qq1j3")
-expand_mode = 1
-stretch_mode = 1
 
 [node name="ColorTrack" type="ColorRect" parent="SliderContainer/HBoxContainer/TracksContainer/Slider2/MarginContainer"]
 material = SubResource("ShaderMaterial_dlmj5")
@@ -266,12 +261,6 @@ theme_override_constants/margin_left = 4
 theme_override_constants/margin_right = 4
 theme_override_constants/margin_bottom = 6
 
-[node name="TextureRect" type="TextureRect" parent="SliderContainer/HBoxContainer/TracksContainer/Slider3/MarginContainer"]
-layout_mode = 2
-texture = ExtResource("6_qq1j3")
-expand_mode = 1
-stretch_mode = 1
-
 [node name="ColorTrack" type="ColorRect" parent="SliderContainer/HBoxContainer/TracksContainer/Slider3/MarginContainer"]
 material = SubResource("ShaderMaterial_p3pbp")
 custom_minimum_size = Vector2(0, 13)
@@ -280,6 +269,40 @@ size_flags_horizontal = 3
 mouse_filter = 1
 
 [node name="IntField" type="LineEdit" parent="SliderContainer/HBoxContainer/TracksContainer/Slider3"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_type_variation = &"GoodColorPickerLineEdit"
+alignment = 1
+max_length = 3
+script = ExtResource("6_aqyoh")
+
+[node name="Slider4" type="HBoxContainer" parent="SliderContainer/HBoxContainer/TracksContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="MarginContainer" type="MarginContainer" parent="SliderContainer/HBoxContainer/TracksContainer/Slider4"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 6
+
+[node name="TextureRect" type="TextureRect" parent="SliderContainer/HBoxContainer/TracksContainer/Slider4/MarginContainer"]
+layout_mode = 2
+texture = ExtResource("6_qq1j3")
+expand_mode = 1
+stretch_mode = 1
+
+[node name="ColorTrack" type="ColorRect" parent="SliderContainer/HBoxContainer/TracksContainer/Slider4/MarginContainer"]
+material = SubResource("ShaderMaterial_exp51")
+custom_minimum_size = Vector2(0, 13)
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 1
+
+[node name="IntField" type="LineEdit" parent="SliderContainer/HBoxContainer/TracksContainer/Slider4"]
 layout_mode = 2
 size_flags_vertical = 0
 theme_type_variation = &"GoodColorPickerLineEdit"
@@ -306,3 +329,6 @@ script = ExtResource("6_aqyoh")
 [connection signal="draw" from="SliderContainer/HBoxContainer/TracksContainer/Slider3/MarginContainer" to="." method="_on_slider3_draw"]
 [connection signal="gui_input" from="SliderContainer/HBoxContainer/TracksContainer/Slider3/MarginContainer" to="." method="_on_slider3_gui_input"]
 [connection signal="text_submitted" from="SliderContainer/HBoxContainer/TracksContainer/Slider3/IntField" to="." method="_on_slider3_text_submitted"]
+[connection signal="draw" from="SliderContainer/HBoxContainer/TracksContainer/Slider4/MarginContainer" to="." method="_on_slider4_draw"]
+[connection signal="gui_input" from="SliderContainer/HBoxContainer/TracksContainer/Slider4/MarginContainer" to="." method="_on_slider4_gui_input"]
+[connection signal="text_submitted" from="SliderContainer/HBoxContainer/TracksContainer/Slider4/IntField" to="." method="_on_slider4_text_submitted"]
