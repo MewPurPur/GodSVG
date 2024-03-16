@@ -1,4 +1,5 @@
 ## A TextEdit with some improvements.
+@icon("res://visual/godot_only/BetterTextEdit.svg")
 class_name BetterTextEdit extends TextEdit
 
 const code_font = preload("res://visual/fonts/FontMono.ttf")

@@ -1,11 +1,10 @@
-[gd_scene load_steps=8 format=3 uid="uid://1rylg17uwltw"]
+[gd_scene load_steps=7 format=3 uid="uid://1rylg17uwltw"]
 
 [ext_resource type="Script" path="res://src/ui_parts/settings_menu.gd" id="1_1gf4m"]
 [ext_resource type="Texture2D" uid="uid://c528knojuxbw6" path="res://visual/icons/Languages.svg" id="2_ndyp7"]
 [ext_resource type="PackedScene" uid="uid://ctsee23lxlrib" path="res://src/ui_elements/setting_check_box.tscn" id="4_2qeh2"]
 [ext_resource type="PackedScene" uid="uid://d032j54llwkca" path="res://src/ui_elements/setting_color.tscn" id="4_dacsc"]
 [ext_resource type="PackedScene" uid="uid://dwjkq21fei35f" path="res://src/ui_elements/setting_dropdown.tscn" id="5_dx7vp"]
-[ext_resource type="Script" path="res://src/ui_parts/palette_container.gd" id="5_qkh4l"]
 
 [sub_resource type="ButtonGroup" id="ButtonGroup_f7wyd"]
 
@@ -312,7 +311,6 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 4
-script = ExtResource("5_qkh4l")
 
 [node name="Shortcuts" type="ScrollContainer" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer"]
 visible = false
