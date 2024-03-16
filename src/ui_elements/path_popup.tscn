@@ -4,7 +4,6 @@
 [ext_resource type="PackedScene" uid="uid://co2btefrqrm0e" path="res://src/ui_elements/path_command_button.tscn" id="2_1jd8y"]
 
 [node name="PathCommandPopup" type="Popup"]
-transparent_bg = true
 size = Vector2i(236, 285)
 visible = true
 script = ExtResource("1_j10aq")
