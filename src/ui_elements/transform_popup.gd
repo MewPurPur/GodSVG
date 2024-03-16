@@ -282,9 +282,6 @@ func add_new_transform_context(idx: int) -> ContextPopupType:
 	transform_context.set_button_array(btn_array, true)
 	return transform_context
 
-func _on_popup_hide() -> void:
-	queue_free()
-
 
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("redo"):

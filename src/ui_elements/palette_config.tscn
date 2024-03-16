@@ -1,10 +1,15 @@
-[gd_scene load_steps=7 format=3 uid="uid://c5cavwa2xdt0b"]
+[gd_scene load_steps=12 format=3 uid="uid://c5cavwa2xdt0b"]
 
 [ext_resource type="Script" path="res://src/ui_elements/palette_config.gd" id="1_2fy8k"]
 [ext_resource type="Texture2D" uid="uid://dr2erka82g6j4" path="res://visual/icons/Edit.svg" id="2_35dgp"]
 [ext_resource type="Script" path="res://src/ui_elements/BetterLineEdit.gd" id="2_coqnx"]
 [ext_resource type="FontFile" uid="uid://clpf84p1lfwlp" path="res://visual/fonts/Font.ttf" id="2_cttpy"]
 [ext_resource type="Texture2D" uid="uid://ccbta5q43jobk" path="res://visual/icons/More.svg" id="5_vjxeq"]
+[ext_resource type="Texture2D" uid="uid://bae3saje43vi5" path="res://visual/icons/ArrowLeft.svg" id="6_jhdm4"]
+[ext_resource type="PackedScene" uid="uid://dad7fkhmsooc6" path="res://src/ui_elements/number_edit.tscn" id="7_anmrv"]
+[ext_resource type="Texture2D" uid="uid://bu8co3s8djywt" path="res://visual/icons/ArrowRight.svg" id="8_iiusw"]
+[ext_resource type="PackedScene" uid="uid://5f8uxavn1or1" path="res://src/ui_elements/color_edit.tscn" id="8_mx43g"]
+[ext_resource type="Texture2D" uid="uid://cj5x2ti8150ja" path="res://visual/icons/Delete.svg" id="9_hi6e0"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lq3bn"]
 draw_center = false
@@ -18,38 +23,42 @@ corner_radius_top_right = 5
 corner_radius_bottom_right = 5
 corner_radius_bottom_left = 5
 
-[node name="PaletteConfig" type="PanelContainer"]
-offset_right = 21.0
-offset_bottom = 46.0
+[node name="PaletteConfig" type="VBoxContainer"]
+offset_right = 73.0
+offset_bottom = 54.0
+theme_override_constants/separation = 0
+script = ExtResource("1_2fy8k")
+
+[node name="PaletteConfig" type="PanelContainer" parent="."]
+layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 0
 theme_type_variation = &"SpaciousPanel"
-script = ExtResource("1_2fy8k")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="."]
+[node name="HBoxContainer" type="HBoxContainer" parent="PaletteConfig"]
 layout_mode = 2
 theme_override_constants/separation = 12
 
-[node name="MainContainer" type="VBoxContainer" parent="HBoxContainer"]
+[node name="MainContainer" type="VBoxContainer" parent="PaletteConfig/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 8
 
-[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/MainContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="PaletteConfig/HBoxContainer/MainContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_constants/separation = 6
 
-[node name="Control" type="Control" parent="HBoxContainer/MainContainer/HBoxContainer"]
+[node name="Control" type="Control" parent="PaletteConfig/HBoxContainer/MainContainer/HBoxContainer"]
 custom_minimum_size = Vector2(0, 24)
 layout_mode = 2
 
-[node name="PaletteLabel" type="Label" parent="HBoxContainer/MainContainer/HBoxContainer"]
+[node name="PaletteLabel" type="Label" parent="PaletteConfig/HBoxContainer/MainContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 6
 
-[node name="NameEdit" type="LineEdit" parent="HBoxContainer/MainContainer/HBoxContainer"]
+[node name="NameEdit" type="LineEdit" parent="PaletteConfig/HBoxContainer/MainContainer/HBoxContainer"]
 visible = false
 custom_minimum_size = Vector2(120, 0)
 layout_mode = 2
@@ -59,7 +68,7 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_lq3bn")
 max_length = 30
 script = ExtResource("2_coqnx")
 
-[node name="EditButton" type="Button" parent="HBoxContainer/MainContainer/HBoxContainer"]
+[node name="EditButton" type="Button" parent="PaletteConfig/HBoxContainer/MainContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
@@ -69,13 +78,13 @@ mouse_default_cursor_shape = 2
 theme_type_variation = &"FlatButton"
 icon = ExtResource("2_35dgp")
 
-[node name="ColorsContainer" type="HFlowContainer" parent="HBoxContainer/MainContainer"]
+[node name="ColorsContainer" type="HFlowContainer" parent="PaletteConfig/HBoxContainer/MainContainer"]
 custom_minimum_size = Vector2(0, 22)
 layout_mode = 2
 size_flags_vertical = 4
 theme_override_constants/h_separation = 3
 
-[node name="ActionButton" type="Button" parent="HBoxContainer"]
+[node name="ActionButton" type="Button" parent="PaletteConfig/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 4
@@ -84,8 +93,122 @@ mouse_default_cursor_shape = 2
 theme_type_variation = &"IconButton"
 icon = ExtResource("5_vjxeq")
 
-[connection signal="text_change_canceled" from="HBoxContainer/MainContainer/HBoxContainer/NameEdit" to="." method="_on_name_edit_text_change_canceled"]
-[connection signal="text_changed" from="HBoxContainer/MainContainer/HBoxContainer/NameEdit" to="." method="_on_name_edit_text_changed"]
-[connection signal="text_submitted" from="HBoxContainer/MainContainer/HBoxContainer/NameEdit" to="." method="_on_name_edit_text_submitted"]
-[connection signal="pressed" from="HBoxContainer/MainContainer/HBoxContainer/EditButton" to="." method="popup_edit_name"]
-[connection signal="pressed" from="HBoxContainer/ActionButton" to="." method="_on_action_button_pressed"]
+[node name="ColorConfig" type="PanelContainer" parent="."]
+visible = false
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="ColorConfig"]
+layout_mode = 2
+theme_override_constants/margin_left = 6
+theme_override_constants/margin_right = 6
+
+[node name="ColorInspector" type="HBoxContainer" parent="ColorConfig/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="IndexContainer" type="VBoxContainer" parent="ColorConfig/MarginContainer/ColorInspector"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="ColorConfig/MarginContainer/ColorInspector/IndexContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 0.666667)
+theme_override_font_sizes/font_size = 13
+text = "Index"
+horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="ColorConfig/MarginContainer/ColorInspector/IndexContainer"]
+layout_mode = 2
+theme_override_constants/separation = 2
+
+[node name="LeftArrow" type="Button" parent="ColorConfig/MarginContainer/ColorInspector/IndexContainer/HBoxContainer"]
+layout_mode = 2
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_type_variation = &"FlatButton"
+icon = ExtResource("6_jhdm4")
+
+[node name="NumberEdit" parent="ColorConfig/MarginContainer/ColorInspector/IndexContainer/HBoxContainer" instance=ExtResource("7_anmrv")]
+layout_mode = 2
+max_value = 0.0
+initial_value = 0.0
+allow_lower = false
+allow_higher = false
+is_float = false
+
+[node name="RightArrow" type="Button" parent="ColorConfig/MarginContainer/ColorInspector/IndexContainer/HBoxContainer"]
+layout_mode = 2
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_type_variation = &"FlatButton"
+icon = ExtResource("8_iiusw")
+
+[node name="NameContainer" type="VBoxContainer" parent="ColorConfig/MarginContainer/ColorInspector"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="ColorConfig/MarginContainer/ColorInspector/NameContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 0.666667)
+theme_override_font_sizes/font_size = 13
+text = "Name"
+horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="ColorConfig/MarginContainer/ColorInspector/NameContainer"]
+custom_minimum_size = Vector2(0, 24)
+layout_mode = 2
+theme_override_constants/separation = 6
+alignment = 1
+
+[node name="NameLabel" type="Label" parent="ColorConfig/MarginContainer/ColorInspector/NameContainer/HBoxContainer"]
+layout_mode = 2
+mouse_filter = 1
+theme_override_font_sizes/font_size = 13
+horizontal_alignment = 1
+
+[node name="NameEdit" type="LineEdit" parent="ColorConfig/MarginContainer/ColorInspector/NameContainer/HBoxContainer"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+focus_mode = 1
+theme_override_fonts/font = ExtResource("2_cttpy")
+max_length = 30
+script = ExtResource("2_coqnx")
+
+[node name="EditButton" type="Button" parent="ColorConfig/MarginContainer/ColorInspector/NameContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+tooltip_text = "Edit color name"
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_type_variation = &"FlatButton"
+icon = ExtResource("2_35dgp")
+
+[node name="ValueContainer" type="VBoxContainer" parent="ColorConfig/MarginContainer/ColorInspector"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="ColorConfig/MarginContainer/ColorInspector/ValueContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 0.666667)
+theme_override_font_sizes/font_size = 13
+text = "Value"
+horizontal_alignment = 1
+
+[node name="ColorEdit" parent="ColorConfig/MarginContainer/ColorInspector/ValueContainer" instance=ExtResource("8_mx43g")]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+enable_palettes = false
+
+[node name="DeleteButton" type="Button" parent="ColorConfig/MarginContainer/ColorInspector"]
+layout_mode = 2
+size_flags_horizontal = 10
+size_flags_vertical = 4
+theme_type_variation = &"IconButton"
+icon = ExtResource("9_hi6e0")
+
+[connection signal="text_change_canceled" from="PaletteConfig/HBoxContainer/MainContainer/HBoxContainer/NameEdit" to="PaletteConfig" method="_on_name_edit_text_change_canceled"]
+[connection signal="text_changed" from="PaletteConfig/HBoxContainer/MainContainer/HBoxContainer/NameEdit" to="PaletteConfig" method="_on_name_edit_text_changed"]
+[connection signal="text_submitted" from="PaletteConfig/HBoxContainer/MainContainer/HBoxContainer/NameEdit" to="PaletteConfig" method="_on_name_edit_text_submitted"]
+[connection signal="pressed" from="PaletteConfig/HBoxContainer/MainContainer/HBoxContainer/EditButton" to="PaletteConfig" method="popup_edit_name"]
+[connection signal="pressed" from="PaletteConfig/HBoxContainer/ActionButton" to="PaletteConfig" method="_on_action_button_pressed"]

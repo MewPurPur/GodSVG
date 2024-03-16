@@ -529,6 +529,7 @@ static func setup_lineedit(theme: Theme) -> void:
 	stylebox.set_corner_radius_all(5)
 	stylebox.set_border_width_all(2)
 	stylebox.content_margin_left = 5.0
+	stylebox.content_margin_right = 5.0
 	
 	var disabled_stylebox := stylebox.duplicate()
 	disabled_stylebox.bg_color = common_inner_color_disabled
@@ -564,7 +565,7 @@ static func setup_lineedit(theme: Theme) -> void:
 	left_connected_stylebox.border_width_top = 2
 	left_connected_stylebox.border_width_bottom = 2
 	left_connected_stylebox.content_margin_left = 5.0
-	left_connected_stylebox.content_margin_right = 0.0
+	left_connected_stylebox.content_margin_right = 5.0
 	left_connected_stylebox.content_margin_top = 0.0
 	left_connected_stylebox.content_margin_bottom = 0.0
 	
@@ -602,7 +603,7 @@ static func setup_lineedit(theme: Theme) -> void:
 	right_connected_stylebox.border_width_top = 2
 	right_connected_stylebox.border_width_bottom = 2
 	right_connected_stylebox.content_margin_left = 5.0
-	right_connected_stylebox.content_margin_right = 0.0
+	right_connected_stylebox.content_margin_right = 5.0
 	right_connected_stylebox.content_margin_top = 0.0
 	right_connected_stylebox.content_margin_bottom = 0.0
 	
@@ -640,7 +641,8 @@ static func setup_lineedit(theme: Theme) -> void:
 	mini_stylebox.border_width_right = 0
 	mini_stylebox.border_width_top = 0
 	mini_stylebox.border_width_bottom = 2
-	mini_stylebox.content_margin_left = 4.0
+	mini_stylebox.content_margin_left = 3.0
+	mini_stylebox.content_margin_right = 3.0
 	mini_stylebox.content_margin_bottom = 0.0
 	
 	var mini_stylebox_normal := mini_stylebox.duplicate()

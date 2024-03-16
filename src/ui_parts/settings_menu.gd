@@ -1,10 +1,8 @@
 extends PanelContainer
 
 const ContextPopup = preload("res://src/ui_elements/context_popup.tscn")
-const PaletteConfigWidget = preload("res://src/ui_elements/palette_config.tscn")
 const ShortcutConfigWidget = preload("res://src/ui_elements/setting_shortcut.tscn")
 const ShortcutShowcaseWidget = preload("res://src/ui_elements/presented_shortcut.tscn")
-const plus_icon = preload("res://visual/icons/Plus.svg")
 
 const SettingCheckBox = preload("res://src/ui_elements/setting_check_box.gd")
 const SettingColor = preload("res://src/ui_elements/setting_color.gd")
@@ -128,37 +126,6 @@ func update_language_button() -> void:
 	lang_button.text = tr("Language") + ": " + TranslationServer.get_locale().to_upper()
 
 
-# Palette tab helpers.
-
-func add_palette() -> void:
-	for palette in GlobalSettings.palettes:
-		# If there's an unnamed pallete, don't add a new one (there'll be a name clash).
-		if palette.title.is_empty():
-			return
-	
-	GlobalSettings.palettes.append(ColorPalette.new())
-	GlobalSettings.save_palettes()
-	rebuild_color_palettes()
-
-func rebuild_color_palettes() -> void:
-	for palette_config in palette_container.get_children():
-		palette_config.queue_free()
-	for palette in GlobalSettings.palettes:
-		var palette_config := PaletteConfigWidget.instantiate()
-		palette_container.add_child(palette_config)
-		palette_config.assign_palette(palette)
-		palette_config.layout_changed.connect(rebuild_color_palettes)
-	# Add the button for adding a new palette.
-	var add_palette_button := Button.new()
-	add_palette_button.theme_type_variation = "TranslucentButton"
-	add_palette_button.icon = plus_icon
-	add_palette_button.icon_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	add_palette_button.focus_mode = Control.FOCUS_NONE
-	add_palette_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-	palette_container.add_child(add_palette_button)
-	add_palette_button.pressed.connect(add_palette)
-
-
 # Autoformatting tab helpers.
 
 @onready var xml_vbox: VBoxContainer = %XMLVBox
@@ -261,7 +228,7 @@ func _on_autoformatting_tab_pressed() -> void:
 
 func _on_palettes_tab_pressed() -> void:
 	if not generated_content.palettes:
-		rebuild_color_palettes()
+		palette_container.rebuild_color_palettes()
 		generated_content.palettes = true
 
 func _on_shortcuts_tab_pressed() -> void:

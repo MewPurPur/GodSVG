@@ -18,5 +18,3 @@ unique_name_in_owner = true
 clip_contents = true
 layout_mode = 2
 theme_override_constants/separation = 0
-
-[connection signal="popup_hide" from="." to="." method="_on_popup_hide"]

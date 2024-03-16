@@ -70,8 +70,3 @@ text = "Palettes"
 [node name="Label" type="Label" parent="."]
 offset_right = 40.0
 offset_bottom = 22.0
-
-[connection signal="popup_hide" from="." to="." method="_on_popup_hide"]
-[connection signal="text_changed" from="PanelContainer/MainContainer/Content/Palettes/VBoxContainer/SearchBox/SearchField" to="." method="_on_search_field_text_changed"]
-[connection signal="color_changed" from="PanelContainer/MainContainer/Content/ColorPicker" to="." method="pick_color"]
-[connection signal="pressed" from="PanelContainer/MainContainer/SwitchMode" to="." method="_switch_mode"]

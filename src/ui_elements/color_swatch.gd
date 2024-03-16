@@ -17,7 +17,11 @@ var type := Type.CHOOSE_COLOR
 var color_palette: ColorPalette
 var idx := -1  # Index inside the palette.
 
+var surface := RenderingServer.canvas_item_create()  # Used for the drop indicator.
+
 func _ready() -> void:
+	RenderingServer.canvas_item_set_parent(surface, get_canvas_item())
+	RenderingServer.canvas_item_set_z_index(surface, 1)
 	if type == Type.ADD_COLOR:
 		tooltip_text = tr("Add color")
 	else:
@@ -35,8 +39,9 @@ func _draw() -> void:
 		draw_texture_rect(checkerboard, Rect2(bounds, size - bounds * 2), false)
 	if color != "none":
 		draw_rect(Rect2(bounds, size - bounds * 2), color)
-	if type == Type.CONFIGURE_COLOR and is_hovered():
+	if type == Type.CONFIGURE_COLOR and is_hovered() and not is_dragging:
 		gear_icon.draw(get_canvas_item(), (size - gear_icon.get_size()) / 2)
+
 
 func _make_custom_tooltip(_for_text: String) -> Object:
 	if type == Type.ADD_COLOR:
@@ -70,8 +75,17 @@ func _get_drag_data(_at_position: Vector2) -> Variant:
 		return data
 	return null
 
+var is_dragging := false:
+	set(new_value):
+		if is_dragging != new_value:
+			is_dragging = new_value
+			queue_redraw()
+
 func _notification(what: int) -> void:
+	if what == NOTIFICATION_DRAG_BEGIN:
+		is_dragging = true
 	if what == NOTIFICATION_DRAG_END:
+		is_dragging = false
 		modulate = Color(1, 1, 1)
 
 
