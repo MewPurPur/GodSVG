@@ -1,4 +1,5 @@
 ## A LineEdit with a few tweaks to make it nicer to use.
+@icon("res://visual/godot_only/BetterLineEdit.svg")
 class_name BetterLineEdit extends LineEdit
 
 signal text_change_canceled

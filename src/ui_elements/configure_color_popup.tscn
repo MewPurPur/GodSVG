@@ -20,7 +20,6 @@ corner_radius_bottom_right = 5
 corner_radius_bottom_left = 5
 
 [node name="ConfigurePopup" type="Popup"]
-transparent_bg = true
 size = Vector2i(128, 73)
 visible = true
 script = ExtResource("1_x6cll")
@@ -91,7 +90,6 @@ mouse_default_cursor_shape = 2
 theme_type_variation = &"IconButton"
 icon = ExtResource("5_5n8tt")
 
-[connection signal="popup_hide" from="." to="." method="_on_popup_hide"]
 [connection signal="text_submitted" from="PanelContainer/MarginContainer/ConfigureContainer/TopContainer/NameEdit" to="." method="_on_name_edit_text_submitted"]
 [connection signal="pressed" from="PanelContainer/MarginContainer/ConfigureContainer/TopContainer/EditButton" to="." method="_on_edit_button_pressed"]
 [connection signal="pressed" from="PanelContainer/MarginContainer/ConfigureContainer/BottomContainer/DeleteButton" to="." method="_on_delete_button_pressed"]

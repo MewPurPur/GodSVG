@@ -1,5 +1,5 @@
 ## A popup for picking a path command.
-extends Popup
+extends BetterPopup
 
 signal path_command_picked(new_command: String)
 
