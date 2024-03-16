@@ -1,4 +1,4 @@
-extends Popup
+extends BetterPopup
 
 signal color_deletion_requested
 
@@ -48,8 +48,4 @@ func set_label_text(new_text: String) -> void:
 
 func _on_delete_button_pressed() -> void:
 	color_deletion_requested.emit()
-	queue_free()
-
-
-func _on_popup_hide() -> void:
 	queue_free()

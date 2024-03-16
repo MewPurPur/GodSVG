@@ -1,4 +1,4 @@
-extends Popup
+extends BetterPopup
 
 const GoodColorPicker = preload("res://src/ui_elements/good_color_picker.tscn")
 
@@ -18,7 +18,3 @@ func _ready() -> void:
 
 func pick_color(color: String) -> void:
 	color_picked.emit(color, false)
-
-
-func _on_popup_hide() -> void:
-	queue_free()
