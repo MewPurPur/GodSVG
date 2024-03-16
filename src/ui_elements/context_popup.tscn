@@ -3,8 +3,6 @@
 [ext_resource type="Script" path="res://src/ui_elements/context_popup.gd" id="1_d45ly"]
 
 [node name="ContextPopup" type="Popup"]
-disable_3d = true
-transparent_bg = true
 size = Vector2i(4, 4)
 visible = true
 script = ExtResource("1_d45ly")
@@ -18,5 +16,3 @@ unique_name_in_owner = true
 clip_contents = true
 layout_mode = 2
 theme_override_constants/separation = 0
-
-[connection signal="popup_hide" from="." to="." method="_on_popup_hide"]

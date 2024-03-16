@@ -9,8 +9,8 @@ const ColorPopup = preload("res://src/ui_elements/color_popup.tscn")
 const checkerboard = preload("res://visual/icons/backgrounds/ColorButtonBG.svg")
 
 @onready var color_button: Button = $Button
-@onready var color_edit: LineEdit = $LineEdit
-@onready var color_popup: Popup
+@onready var color_edit: BetterLineEdit = $LineEdit
+@onready var color_popup: BetterPopup
 
 func set_value(new_value: String, update_type := Utils.UpdateType.REGULAR) -> void:
 	# Validate the value.
