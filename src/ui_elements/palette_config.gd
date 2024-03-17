@@ -21,7 +21,7 @@ func assign_palette(palette: ColorPalette) -> void:
 	current_palette = palette
 	rebuild_colors()
 
-# Rebuilds the content of a container.
+# Rebuilds the content of the colors container.
 func rebuild_colors() -> void:
 	for child in colors_container.get_children():
 		child.queue_free()
@@ -87,8 +87,7 @@ func _on_name_edit_text_submitted(new_title: String) -> void:
 	
 	if not new_title.is_empty() and new_title != current_palette.title and\
 	not new_title in titles:
-		current_palette.title = new_title
-		GlobalSettings.save_palettes()
+		current_palette.modify_title(new_title)
 	
 	set_label_text(current_palette.title)
 	hide_name_edit()
@@ -97,8 +96,7 @@ func _on_name_edit_text_change_canceled() -> void:
 	hide_name_edit()
 
 func popup_add_color() -> void:
-	current_palette.colors.append("none")
-	current_palette.color_names.append("")
+	current_palette.add_color()
 	currently_edited_idx = current_palette.colors.size() - 1
 	rebuild_colors()
 
@@ -112,8 +110,7 @@ func set_label_text(new_text: String) -> void:
 		palette_label.remove_theme_color_override("font_color")
 
 func delete_color(color_idx: int) -> void:
-	current_palette.colors.remove_at(color_idx)
-	current_palette.color_names.remove_at(color_idx)
+	current_palette.remove_color(color_idx)
 	rebuild_colors()
 
 func delete(idx: int) -> void:
