@@ -8,8 +8,6 @@ visible = true
 script = ExtResource("1_d45ly")
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
-offset_right = 4.0
-offset_bottom = 4.0
 
 [node name="MainContainer" type="VBoxContainer" parent="PanelContainer"]
 unique_name_in_owner = true
