@@ -16,7 +16,7 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 13
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
-custom_minimum_size = Vector2(120, 0)
+custom_minimum_size = Vector2(112, 0)
 layout_mode = 2
 size_flags_horizontal = 10
 theme_type_variation = &"DarkPanel"
