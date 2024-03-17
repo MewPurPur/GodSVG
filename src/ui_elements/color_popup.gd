@@ -104,7 +104,6 @@ func _switch_mode() -> void:
 
 func _on_popup_hide() -> void:
 	color_picked.emit(current_value, true)
-	super()
 
 
 func _on_search_field_text_changed(new_text: String) -> void:
