@@ -7,11 +7,9 @@ func _init() -> void:
 	transparent_bg = true
 
 func _enter_tree() -> void:
-	popup_hide.connect(_on_popup_hide)
+	popup_hide.connect(queue_free)
+	child_entered_tree.connect(_on_child_entered_tree)
 
 func _on_child_entered_tree(node: Node) -> void:
 	if get_child_count() == 1 and node is Control:
 		node.resized.connect(reset_size)
-
-func _on_popup_hide() -> void:
-	queue_free()

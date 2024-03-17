@@ -16,6 +16,25 @@ func add_color() -> void:
 	color_names.append("")
 	GlobalSettings.save_palettes()
 
+func remove_color(idx: int) -> void:
+	colors.remove_at(idx)
+	color_names.remove_at(idx)
+	GlobalSettings.save_palettes()
+
+func move_color(old_idx: int, new_idx: int) -> void:
+	if old_idx < new_idx:
+		var old_color = colors.pop_at(old_idx)
+		var old_color_name = color_names.pop_at(old_idx)
+		colors.insert(new_idx - 1, old_color)
+		color_names.insert(new_idx - 1, old_color_name)
+		GlobalSettings.save_palettes()
+	elif old_idx > new_idx + 1:
+		var old_color = colors.pop_at(old_idx)
+		var old_color_name = color_names.pop_at(old_idx)
+		colors.insert(new_idx, old_color)
+		color_names.insert(new_idx, old_color_name)
+		GlobalSettings.save_palettes()
+
 func modify_title(new_title: String) -> void:
 	title = new_title
 	GlobalSettings.save_palettes()
@@ -27,6 +46,7 @@ func modify_color(idx: int, new_color: String) -> void:
 func modify_color_name(idx: int, new_color_name: String) -> void:
 	color_names[idx] = new_color_name
 	GlobalSettings.save_palettes()
+
 
 func to_text() -> String:
 	var text := '<palette title="%s">\n' % title
