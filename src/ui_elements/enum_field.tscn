@@ -12,7 +12,7 @@ theme_override_constants/separation = 0
 script = ExtResource("1_1jqoy")
 
 [node name="LineEdit" type="LineEdit" parent="."]
-custom_minimum_size = Vector2(58, 0)
+custom_minimum_size = Vector2(60, 0)
 layout_mode = 2
 focus_mode = 1
 mouse_filter = 1

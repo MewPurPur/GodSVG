@@ -10,16 +10,17 @@ new_color_names: Array[String] = []) -> void:
 	colors = new_colors
 	color_names = new_color_names
 	color_names.resize(colors.size())
+	changed.connect(GlobalSettings.save_palettes)
 
 func add_color() -> void:
 	colors.append("none")
 	color_names.append("")
-	GlobalSettings.save_palettes()
+	emit_changed()
 
 func remove_color(idx: int) -> void:
 	colors.remove_at(idx)
 	color_names.remove_at(idx)
-	GlobalSettings.save_palettes()
+	emit_changed()
 
 func move_color(old_idx: int, new_idx: int) -> void:
 	if old_idx < new_idx:
@@ -27,25 +28,25 @@ func move_color(old_idx: int, new_idx: int) -> void:
 		var old_color_name = color_names.pop_at(old_idx)
 		colors.insert(new_idx - 1, old_color)
 		color_names.insert(new_idx - 1, old_color_name)
-		GlobalSettings.save_palettes()
-	elif old_idx > new_idx + 1:
+		emit_changed()
+	elif old_idx > new_idx:
 		var old_color = colors.pop_at(old_idx)
 		var old_color_name = color_names.pop_at(old_idx)
 		colors.insert(new_idx, old_color)
 		color_names.insert(new_idx, old_color_name)
-		GlobalSettings.save_palettes()
+		emit_changed()
 
 func modify_title(new_title: String) -> void:
 	title = new_title
-	GlobalSettings.save_palettes()
+	emit_changed()
 
 func modify_color(idx: int, new_color: String) -> void:
 	colors[idx] = new_color
-	GlobalSettings.save_palettes()
+	emit_changed()
 
 func modify_color_name(idx: int, new_color_name: String) -> void:
 	color_names[idx] = new_color_name
-	GlobalSettings.save_palettes()
+	emit_changed()
 
 
 func to_text() -> String:

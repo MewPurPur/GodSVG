@@ -1,8 +1,9 @@
 extends PanelContainer
 
-const ColorSwatch = preload("res://src/ui_elements/color_swatch.tscn")
+const ColorSwatch = preload("res://src/ui_elements/color_swatch_config.tscn")
 const ConfigurePopup = preload("res://src/ui_elements/configure_color_popup.tscn")
 const ContextPopup = preload("res://src/ui_elements/context_popup.tscn")
+const plus_icon = preload("res://visual/icons/Plus.svg")
 
 signal color_picked(color: String)
 signal layout_changed
@@ -19,6 +20,7 @@ var currently_edited_idx := -1
 # Used to setup a palette for this element.
 func assign_palette(palette: ColorPalette) -> void:
 	current_palette = palette
+	current_palette.changed.connect(rebuild_colors)
 	rebuild_colors()
 
 # Rebuilds the content of the colors container.
@@ -34,7 +36,6 @@ func rebuild_colors() -> void:
 		var swatch := ColorSwatch.instantiate()
 		swatch.color_palette = current_palette
 		swatch.idx = i
-		swatch.type = swatch.Type.CONFIGURE_COLOR
 		swatch.pressed.connect(popup_configure_color.bind(swatch))
 		colors_container.add_child(swatch)
 		if i == currently_edited_idx:
@@ -42,8 +43,17 @@ func rebuild_colors() -> void:
 			await get_tree().process_frame
 			popup_configure_color(swatch)
 	# Add the add button.
-	var fake_swatch := ColorSwatch.instantiate()
-	fake_swatch.type = fake_swatch.Type.ADD_COLOR
+	var color_swatch_ref := ColorSwatch.instantiate()
+	var fake_swatch := Button.new()
+	for stylebox_type in ["normal", "hover", "pressed"]:
+		fake_swatch.add_theme_stylebox_override(stylebox_type,
+				color_swatch_ref.get_theme_stylebox(stylebox_type))
+	fake_swatch.icon = plus_icon
+	fake_swatch.icon_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	fake_swatch.focus_mode = Control.FOCUS_NONE
+	fake_swatch.mouse_filter = Control.MOUSE_FILTER_PASS
+	fake_swatch.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+	fake_swatch.custom_minimum_size = color_swatch_ref.custom_minimum_size
 	fake_swatch.pressed.connect(popup_add_color)
 	colors_container.add_child(fake_swatch)
 
@@ -54,7 +64,8 @@ func popup_configure_color(swatch: Button) -> void:
 	add_child(configure_popup)
 	configure_popup.color_edit.value_changed.connect(swatch.change_color)
 	configure_popup.color_name_edit.text_submitted.connect(swatch.change_color_name)
-	configure_popup.color_deletion_requested.connect(delete_color.bind(swatch.idx))
+	configure_popup.color_deletion_requested.connect(
+			current_palette.remove_color.bind(swatch.idx))
 	Utils.popup_under_rect_center(configure_popup, swatch.get_global_rect(),
 			get_viewport())
 
@@ -96,9 +107,8 @@ func _on_name_edit_text_change_canceled() -> void:
 	hide_name_edit()
 
 func popup_add_color() -> void:
-	current_palette.add_color()
 	currently_edited_idx = current_palette.colors.size() - 1
-	rebuild_colors()
+	current_palette.add_color()
 
 func set_label_text(new_text: String) -> void:
 	if new_text.is_empty():
@@ -108,10 +118,6 @@ func set_label_text(new_text: String) -> void:
 	else:
 		palette_label.text = new_text
 		palette_label.remove_theme_color_override("font_color")
-
-func delete_color(color_idx: int) -> void:
-	current_palette.remove_color(color_idx)
-	rebuild_colors()
 
 func delete(idx: int) -> void:
 	GlobalSettings.palettes.remove_at(idx)
@@ -172,3 +178,66 @@ func _on_action_button_pressed() -> void:
 	context_popup.set_button_array(btn_arr, true)
 	Utils.popup_under_rect_center(context_popup, action_button.get_global_rect(),
 			get_viewport())
+
+
+# Drag and drop logic.
+
+var proposed_drop_idx := -1
+
+func get_swatches() -> Array[Node]:
+	var swatches := colors_container.get_children()
+	swatches.resize(swatches.size() - 1)  # The last child is the add button.
+	return swatches
+
+func _can_drop_data(_at_position: Vector2, data: Variant) -> bool:
+	# A buffer around the colors container to make inputs forgiving.
+	var buffer := 6
+	var pos := colors_container.get_local_mouse_position()
+	
+	if not (typeof(data) == TYPE_ARRAY and data.size() == 2 and\
+	typeof(data[0]) == TYPE_OBJECT and data[0] is ColorPalette and\
+	typeof(data[1]) == TYPE_INT) or\
+	not Rect2(Vector2.ZERO, colors_container.size).grow(buffer).has_point(pos):
+		clear_proposed_drop()
+		return false
+	else:
+		pos = pos.clamp(Vector2.ZERO, colors_container.size)
+	
+	var new_idx := 0
+	for swatch in get_swatches():
+		var v_separation: int = colors_container.get_theme_constant("v_separation")
+		var start_y: float = swatch.get_rect().position.y - v_separation / 2.0
+		var end_y: float = swatch.get_rect().end.y + v_separation / 2.0
+		var center_x: float = swatch.get_rect().get_center().x
+		if end_y < pos.y or (center_x < pos.x and end_y > pos.y and start_y < pos.y):
+			new_idx += 1
+		else:
+			break
+
+	proposed_drop_idx = new_idx
+	for swatch in get_swatches():
+		swatch.proposed_drop_data = [current_palette, new_idx]
+		swatch.queue_redraw()
+	return data[0] != current_palette or (data[0] == current_palette and\
+			data[1] != new_idx and data[1] != new_idx - 1)
+
+func _drop_data(_at_position: Vector2, data: Variant) -> void:
+	if proposed_drop_idx == -1:
+		return
+	
+	if data[0] == current_palette:
+		current_palette.move_color(data[1], proposed_drop_idx)
+	else:
+		current_palette.colors.insert(proposed_drop_idx, data[0].colors[data[1]])
+		current_palette.color_names.insert(proposed_drop_idx, data[0].color_names[data[1]])
+		current_palette.emit_changed()
+		data[0].remove_color(data[1])
+
+func _on_mouse_exited() -> void:
+	clear_proposed_drop()
+
+func clear_proposed_drop() -> void:
+	proposed_drop_idx = -1
+	for swatch in get_swatches():
+		swatch.proposed_drop_data.clear()
+		swatch.queue_redraw()
