@@ -95,11 +95,10 @@ func _on_text_changed(new_text: String) -> void:
 
 func sync(new_value: String) -> void:
 	if color_edit != null:
+		color_edit.remove_theme_color_override("font_color")
 		if new_value == attribute.default:
 			color_edit.add_theme_color_override("font_color", Color(color_edit.get_theme_color(
 					"font_color"), GlobalSettings.default_value_opacity))
-		else:
-			color_edit.remove_theme_color_override("font_color")
 		color_edit.text = new_value.trim_prefix("#")
 	queue_redraw()
 

@@ -97,7 +97,7 @@ func pick_color(color: String) -> void:
 # Switching between palette mode and color picker mode.
 func _switch_mode() -> void:
 	palette_mode = not palette_mode
-	switch_mode_button.text = tr("Palettes" if palette_mode else "Color Picker")
+	switch_mode_button.text = tr("Palettes") if palette_mode else tr("Color Picker")
 	color_picker_content.visible = not palette_mode
 	palettes_content.visible = palette_mode
 
