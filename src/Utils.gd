@@ -45,6 +45,9 @@ font_size_property := "font_size") -> void:
 
 # Should usually be the global rect of a control.
 static func popup_under_rect(popup: Popup, rect: Rect2, viewport: Viewport) -> void:
+	Utils._popup_under_rect.call_deferred(popup, rect, viewport)
+
+static func _popup_under_rect(popup: Popup, rect: Rect2, viewport: Viewport) -> void:
 	var screen_transform := viewport.get_screen_transform()
 	var screen_h := viewport.get_visible_rect().size.y
 	var popup_pos := Vector2.ZERO
@@ -61,6 +64,9 @@ static func popup_under_rect(popup: Popup, rect: Rect2, viewport: Viewport) -> v
 
 # Should usually be the global rect of a control.
 static func popup_under_rect_center(popup: Popup, rect: Rect2, viewport: Viewport) -> void:
+	Utils._popup_under_rect_center.call_deferred(popup, rect, viewport)
+
+static func _popup_under_rect_center(popup: Popup, rect: Rect2, viewport: Viewport) -> void:
 	var screen_transform := viewport.get_screen_transform()
 	var screen_h := viewport.get_visible_rect().size.y
 	var popup_pos := Vector2.ZERO
@@ -80,6 +86,7 @@ static func popup_under_pos(popup: Popup, pos: Vector2, viewport: Viewport) -> v
 	var screen_transform := viewport.get_screen_transform()
 	pos += screen_transform.get_origin() / screen_transform.get_scale()
 	popup.popup(Rect2(pos, popup.size))
+
 
 static func create_btn(text: String, press_action: Callable, disabled := false,
 icon: Texture2D = null) -> Button:
