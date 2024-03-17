@@ -642,7 +642,8 @@ static func setup_lineedit(theme: Theme) -> void:
 	mini_stylebox.border_width_top = 0
 	mini_stylebox.border_width_bottom = 2
 	mini_stylebox.content_margin_left = 3.0
-	mini_stylebox.content_margin_bottom = 3.0
+	mini_stylebox.content_margin_right = 3.0
+	mini_stylebox.content_margin_bottom = 0.0
 	
 	var mini_stylebox_normal := mini_stylebox.duplicate()
 	mini_stylebox_normal.bg_color = line_edit_background_color

@@ -68,11 +68,10 @@ func _on_text_changed(new_text: String) -> void:
 func sync(new_value: String) -> void:
 	if indicator != null:
 		indicator.text = new_value
+		indicator.remove_theme_color_override("font_color")
 		if new_value == attribute.default:
 			indicator.add_theme_color_override("font_color", Color(indicator.get_theme_color(
 					"font_color"), GlobalSettings.default_value_opacity))
-		else:
-			indicator.remove_theme_color_override("font_color")
 
 func _notification(what: int) -> void:
 	if what == Utils.CustomNotification.DEFAULT_VALUE_OPACITY_CHANGED:

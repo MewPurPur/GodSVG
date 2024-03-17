@@ -71,11 +71,10 @@ func _on_text_change_canceled() -> void:
 func sync(new_value: String) -> void:
 	if num_edit != null:
 		num_edit.text = new_value
+		num_edit.remove_theme_color_override("font_color")
 		if new_value == attribute.default:
 			num_edit.add_theme_color_override("font_color", Color(num_edit.get_theme_color(
 					"font_color"), GlobalSettings.default_value_opacity))
-		else:
-			num_edit.remove_theme_color_override("font_color")
 	queue_redraw()
 
 func _notification(what: int) -> void:
