@@ -51,8 +51,8 @@ size_flags_horizontal = 6
 
 [node name="NameEdit" type="LineEdit" parent="HBoxContainer/MainContainer/HBoxContainer"]
 visible = false
-custom_minimum_size = Vector2(120, 0)
 layout_mode = 2
+size_flags_horizontal = 3
 focus_mode = 1
 theme_override_fonts/font = ExtResource("2_cttpy")
 theme_override_styles/normal = SubResource("StyleBoxFlat_lq3bn")
@@ -84,6 +84,7 @@ mouse_default_cursor_shape = 2
 theme_type_variation = &"IconButton"
 icon = ExtResource("5_vjxeq")
 
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
 [connection signal="text_change_canceled" from="HBoxContainer/MainContainer/HBoxContainer/NameEdit" to="." method="_on_name_edit_text_change_canceled"]
 [connection signal="text_changed" from="HBoxContainer/MainContainer/HBoxContainer/NameEdit" to="." method="_on_name_edit_text_changed"]
 [connection signal="text_submitted" from="HBoxContainer/MainContainer/HBoxContainer/NameEdit" to="." method="_on_name_edit_text_submitted"]

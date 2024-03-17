@@ -65,11 +65,10 @@ func _on_text_change_canceled() -> void:
 
 func sync(new_value: String) -> void:
 	text = new_value
+	remove_theme_color_override("font_color")
 	if new_value == attribute.default:
 		add_theme_color_override("font_color", Color(get_theme_color(
-					"font_color"), GlobalSettings.default_value_opacity))
-	else:
-		remove_theme_color_override("font_color")
+				"font_color"), GlobalSettings.default_value_opacity))
 
 func _notification(what: int) -> void:
 	if what == Utils.CustomNotification.DEFAULT_VALUE_OPACITY_CHANGED:
