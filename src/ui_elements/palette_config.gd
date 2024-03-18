@@ -64,8 +64,7 @@ func popup_configure_color(swatch: Button) -> void:
 	add_child(configure_popup)
 	configure_popup.color_edit.value_changed.connect(swatch.change_color)
 	configure_popup.color_name_edit.text_submitted.connect(swatch.change_color_name)
-	configure_popup.color_deletion_requested.connect(
-			current_palette.remove_color.bind(swatch.idx))
+	configure_popup.color_deletion_requested.connect(remove_color.bind(swatch.idx))
 	Utils.popup_under_rect_center(configure_popup, swatch.get_global_rect(),
 			get_viewport())
 
@@ -107,8 +106,12 @@ func _on_name_edit_text_change_canceled() -> void:
 	hide_name_edit()
 
 func popup_add_color() -> void:
-	currently_edited_idx = current_palette.colors.size() - 1
+	currently_edited_idx = current_palette.colors.size()
 	current_palette.add_color()
+
+func remove_color(idx: int) -> void:
+	currently_edited_idx = -1
+	current_palette.remove_color(idx)
 
 func set_label_text(new_text: String) -> void:
 	if new_text.is_empty():

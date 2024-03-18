@@ -2,11 +2,11 @@ extends BetterPopup
 
 signal color_deletion_requested
 
-@onready var color_label: Label = %ConfigureContainer/TopContainer/ColorLabel
+@onready var color_label: Label = %LabelContainer/ColorLabel
 @onready var color_name_edit: BetterLineEdit = %ConfigureContainer/TopContainer/NameEdit
-@onready var color_name_edit_button: Button = %ConfigureContainer/TopContainer/EditButton
 @onready var color_edit: HBoxContainer = %ConfigureContainer/BottomContainer/ColorEdit
 @onready var delete_button: Button = %ConfigureContainer/BottomContainer/DeleteButton
+@onready var label_container: HBoxContainer = %LabelContainer
 
 var color_palette: ColorPalette
 var idx: int
@@ -21,8 +21,7 @@ func _on_edit_button_pressed() -> void:
 	color_name_edit.show()
 	color_name_edit.grab_focus()
 	color_name_edit.caret_column = color_name_edit.text.length()
-	color_label.hide()
-	color_name_edit_button.hide()
+	label_container.hide()
 
 
 func _on_name_edit_text_submitted(new_text: String) -> void:
@@ -33,8 +32,7 @@ func _on_name_edit_text_submitted(new_text: String) -> void:
 
 func hide_name_edit() -> void:
 	color_name_edit.hide()
-	color_name_edit_button.show()
-	color_label.show()
+	label_container.show()
 
 func set_label_text(new_text: String) -> void:
 	if new_text.is_empty():
