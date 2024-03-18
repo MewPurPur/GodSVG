@@ -54,7 +54,18 @@ func remove_overlay() -> void:
 	get_tree().paused = false
 
 
+var last_mouse_click_double := false
+
 func _input(event: InputEvent) -> void:
+	# So, it turns out that when you double click, only the press will count as such.
+	# I don't like that, and it causes problems! So mark the release as double_click too.
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
+		if event.double_click:
+			last_mouse_click_double = true
+		elif last_mouse_click_double and event.is_released():
+			event.double_click = true
+			last_mouse_click_double = false
+	
 	if event.is_action_pressed("save"):
 		get_viewport().set_input_as_handled()
 		SVG.open_save_dialog("svg", SVG.native_file_save, SVG.save_svg_to_file)
