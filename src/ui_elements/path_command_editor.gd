@@ -66,9 +66,12 @@ func _gui_input(event: InputEvent) -> void:
 					Indications.ctrl_select(tid, cmd_idx)
 				elif event.shift_pressed:
 					Indications.shift_select(tid, cmd_idx)
-				else:
+				elif not cmd_idx in Indications.inner_selections:
 					Indications.normal_select(tid, cmd_idx)
-			elif event.is_released() and not event.shift_pressed and not event.ctrl_pressed:
+			elif event.is_released() and not event.shift_pressed and\
+			not event.is_command_or_control_pressed() and not event.double_click and\
+			Indications.inner_selections.size() > 1 and\
+			cmd_idx in Indications.inner_selections:
 				Indications.normal_select(tid, cmd_idx)
 		elif event.button_index == MOUSE_BUTTON_RIGHT and event.is_pressed():
 			if Indications.semi_selected_tid != tid or\
