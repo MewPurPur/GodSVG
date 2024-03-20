@@ -51,20 +51,7 @@ mouse_filter = 2
 [node name="MainContainer" type="VBoxContainer" parent="Content"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_constants/separation = 12
-
-[node name="AttributeContainer" type="VBoxContainer" parent="Content/MainContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="PaintAttributes" type="HFlowContainer" parent="Content/MainContainer/AttributeContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="ShapeAttributes" type="HFlowContainer" parent="Content/MainContainer/AttributeContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
+theme_override_constants/separation = 8
 
 [connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
 [connection signal="gui_input" from="Title/TitleBox/TitleButton" to="." method="_on_title_button_gui_input"]
