@@ -5,44 +5,57 @@ const PathCommandPopup = preload("res://src/ui_elements/path_popup.tscn")
 const ContextPopup = preload("res://src/ui_elements/context_popup.tscn")
 const ContextPopupType = preload("res://src/ui_elements/context_popup.gd")
 
-const handle_texture_dir = "res://visual/icons/handles/%s.svg"
+var normal_handle_textures: Dictionary
+var hovered_handle_textures: Dictionary
+var selected_handle_textures: Dictionary
+var hovered_selected_handle_textures: Dictionary
 
-const normal_handle_textures = {
-	Handle.Display.BIG: preload(handle_texture_dir % "HandleBig"),
-	Handle.Display.SMALL: preload(handle_texture_dir % "HandleSmall"),
+const handles_svg_dict = {
+	Handle.Display.BIG: """<svg width="10" height="10"
+			xmlns="http://www.w3.org/2000/svg"><circle cx="5" cy="5" r="3.25"
+			fill="%s" stroke="%s" stroke-width="1.5"/></svg>""",
+	Handle.Display.SMALL: """<svg width="8" height="8"
+		xmlns="http://www.w3.org/2000/svg"><circle cx="4" cy="4" r="2.4"
+		fill="%s" stroke="%s" stroke-width="1.2"/></svg>""",
 }
-
-const hovered_handle_textures = {
-	Handle.Display.BIG: preload(handle_texture_dir % "HandleBigHovered"),
-	Handle.Display.SMALL: preload(handle_texture_dir % "HandleSmallHovered"),
-}
-
-const selected_handle_textures = {
-	Handle.Display.BIG: preload(handle_texture_dir % "HandleBigSelected"),
-	Handle.Display.SMALL: preload(handle_texture_dir % "HandleSmallSelected"),
-}
-
-const hovered_selected_handle_textures = {
-	Handle.Display.BIG: preload(handle_texture_dir % "HandleBigHoveredSelected"),
-	Handle.Display.SMALL: preload(handle_texture_dir % "HandleSmallHoveredSelected"),
-}
-
-const default_color_string = "#000"
-const hover_color_string = "#aaa"
-const selection_color_string = "#46f"
-const hover_selection_color_string = "#f44"
-const default_color = Color(default_color_string)
-const hover_color = Color(hover_color_string)
-const selection_color = Color(selection_color_string)
-const hover_selection_color = Color(hover_selection_color_string)
 
 var update_pending := false
-
 var handles: Array[Handle]
-
 var surface := RenderingServer.canvas_item_create()
 
+var normal_color: Color
+var hovered_color: Color
+var selected_color: Color
+var hovered_selected_color: Color
+
+func render_handle_textures() -> void:
+	normal_color = GlobalSettings.handle_color
+	hovered_color = GlobalSettings.handle_hovered_color
+	selected_color = GlobalSettings.handle_selected_color
+	hovered_selected_color = GlobalSettings.handle_hovered_selected_color
+	var inside_str := "#" + GlobalSettings.handle_inside_color.to_html(false)
+	var normal_str := "#" + GlobalSettings.handle_color.to_html(false)
+	var hovered_str := "#" + GlobalSettings.handle_hovered_color.to_html(false)
+	var selected_str := "#" + GlobalSettings.handle_selected_color.to_html(false)
+	var hovered_selected_str := "#" +\
+			GlobalSettings.handle_hovered_selected_color.to_html(false)
+	var img := Image.new()
+	
+	for handle_type in [Handle.Display.BIG, Handle.Display.SMALL]:
+		var handle_type_svg: String = handles_svg_dict[handle_type]
+		img.load_svg_from_string(handle_type_svg % [inside_str, normal_str])
+		normal_handle_textures[handle_type] = ImageTexture.create_from_image(img)
+		img.load_svg_from_string(handle_type_svg % [inside_str, hovered_str])
+		hovered_handle_textures[handle_type] = ImageTexture.create_from_image(img)
+		img.load_svg_from_string(handle_type_svg % [inside_str, selected_str])
+		selected_handle_textures[handle_type] = ImageTexture.create_from_image(img)
+		img.load_svg_from_string(handle_type_svg % [inside_str, hovered_selected_str])
+		hovered_selected_handle_textures[handle_type] = ImageTexture.create_from_image(img)
+	
+	queue_redraw()
+
 func _ready() -> void:
+	render_handle_textures()
 	RenderingServer.canvas_item_set_parent(surface, get_canvas_item())
 	SVG.root_tag.attribute_changed.connect(queue_update.unbind(1))
 	SVG.root_tag.child_attribute_changed.connect(queue_redraw.unbind(1))
@@ -54,6 +67,10 @@ func _ready() -> void:
 	Indications.zoom_changed.connect(queue_redraw)
 	Indications.handle_added.connect(_on_handle_added)
 	queue_update()
+
+func _notification(what: int) -> void:
+	if what == Utils.CustomNotification.HANDLE_COLORS_CHANGED:
+		render_handle_textures()
 
 
 func queue_update() -> void:
@@ -515,23 +532,23 @@ func _draw() -> void:
 			Vector2(1 / Indications.zoom, 1 / Indications.zoom), 0.0, Vector2.ZERO))
 	
 	for polyline in normal_polylines:
-		draw_polyline(polyline, default_color, contour_width, true)
+		draw_polyline(polyline, normal_color, contour_width, true)
 	for polyline in selected_polylines:
-		draw_polyline(polyline, selection_color, contour_width, true)
+		draw_polyline(polyline, selected_color, contour_width, true)
 	for polyline in hovered_polylines:
-		draw_polyline(polyline, hover_color, contour_width, true)
+		draw_polyline(polyline, hovered_color, contour_width, true)
 	for polyline in hovered_selected_polylines:
-		draw_polyline(polyline, hover_selection_color, contour_width, true)
+		draw_polyline(polyline, hovered_selected_color, contour_width, true)
 	
 	# TODO Change this when it's implemented in Godot.
 	draw_multiline_antaliased(normal_multiline,
-			Color(default_color, tangent_alpha), tangent_width)
+			Color(normal_color, tangent_alpha), tangent_width)
 	draw_multiline_antaliased(selected_multiline,
-			Color(selection_color, tangent_alpha), tangent_width)
+			Color(selected_color, tangent_alpha), tangent_width)
 	draw_multiline_antaliased(hovered_multiline,
-			Color(hover_color, tangent_alpha), tangent_width)
+			Color(hovered_color, tangent_alpha), tangent_width)
 	draw_multiline_antaliased(hovered_selected_multiline,
-			Color(hover_selection_color, tangent_alpha), tangent_width)
+			Color(hovered_selected_color, tangent_alpha), tangent_width)
 	
 	# First gather all handles in 4 categories, then draw them in the right order.
 	var normal_handles: Array[Handle] = []

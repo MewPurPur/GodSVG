@@ -4,7 +4,8 @@ class_name Utils extends RefCounted
 enum CustomNotification {
 	HIGHLIGHT_COLORS_CHANGED = 300,
 	DEFAULT_VALUE_OPACITY_CHANGED = 301,
-	NUMBER_PRECISION_CHANGED = 302,
+	HANDLE_COLORS_CHANGED = 302,
+	NUMBER_PRECISION_CHANGED = 303,
 }
 
 const path_command_char_dict = {
