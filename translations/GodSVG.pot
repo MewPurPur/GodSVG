@@ -250,6 +250,24 @@ msgstr ""
 msgid "Valid color"
 msgstr ""
 
+msgid "Handle colors"
+msgstr ""
+
+msgid "Inside color"
+msgstr ""
+
+msgid "Normal color"
+msgstr ""
+
+msgid "Hovered color"
+msgstr ""
+
+msgid "Selected color"
+msgstr ""
+
+msgid "Hovered selected color"
+msgstr ""
+
 msgid "Palettes"
 msgstr ""
 

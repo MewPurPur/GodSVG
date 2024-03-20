@@ -273,6 +273,30 @@ msgstr "Додати колір"
 msgid "Valid color"
 msgstr "Додати колір"
 
+#, fuzzy
+msgid "Handle colors"
+msgstr "Додати колір"
+
+#, fuzzy
+msgid "Inside color"
+msgstr "Додати колір"
+
+#, fuzzy
+msgid "Normal color"
+msgstr "Додати колір"
+
+#, fuzzy
+msgid "Hovered color"
+msgstr "Додати колір"
+
+#, fuzzy
+msgid "Selected color"
+msgstr "Видалити колір"
+
+#, fuzzy
+msgid "Hovered selected color"
+msgstr "Видалити колір"
+
 msgid "Palettes"
 msgstr "Палітри"
 
