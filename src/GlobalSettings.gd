@@ -41,6 +41,11 @@ const default_config = {
 		"highlighting_comment_color": Color("cdcfd280"),
 		"highlighting_text_color": Color("cdcfeaac"),
 		"highlighting_error_color": Color("ff866b"),
+		"handle_inside_color": Color("fff"),
+		"handle_color": Color("#111"),
+		"handle_hovered_color": Color("#aaa"),
+		"handle_selected_color": Color("#46f"),
+		"handle_hovered_selected_color": Color("#f44"),
 		"default_value_opacity": 0.7,
 		"basic_color_valid": Color("9f9"),
 		"basic_color_error": Color("f99"),
@@ -101,6 +106,11 @@ var highlighting_string_color := Color("a1ffe0")
 var highlighting_comment_color := Color("cdcfd280")
 var highlighting_text_color := Color("cdcfeaac")
 var highlighting_error_color := Color("ff866b")
+var handle_inside_color := Color("fff")
+var handle_color := Color("#111")
+var handle_hovered_color := Color("#aaa")
+var handle_selected_color := Color("#46f")
+var handle_hovered_selected_color := Color("#f44")
 var default_value_opacity := 0.7
 var basic_color_valid := Color("9f9")
 var basic_color_error := Color("f99")

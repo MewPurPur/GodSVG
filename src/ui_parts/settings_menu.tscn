@@ -396,6 +396,45 @@ layout_mode = 2
 section_name = "theming"
 setting_name = "highlighting_error_color"
 
+[node name="HandleColors" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Theme/ThemeSettings"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 3
+
+[node name="SectionLabel" type="Label" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Theme/ThemeSettings/HandleColors"]
+layout_mode = 2
+text = "Handle colors"
+
+[node name="InsideColor" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Theme/ThemeSettings/HandleColors" instance=ExtResource("4_dacsc")]
+layout_mode = 2
+section_name = "theming"
+setting_name = "handle_inside_color"
+enable_alpha = false
+
+[node name="NormalColor" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Theme/ThemeSettings/HandleColors" instance=ExtResource("4_dacsc")]
+layout_mode = 2
+section_name = "theming"
+setting_name = "handle_color"
+enable_alpha = false
+
+[node name="HoveredColor" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Theme/ThemeSettings/HandleColors" instance=ExtResource("4_dacsc")]
+layout_mode = 2
+section_name = "theming"
+setting_name = "handle_hovered_color"
+enable_alpha = false
+
+[node name="SelectedColor" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Theme/ThemeSettings/HandleColors" instance=ExtResource("4_dacsc")]
+layout_mode = 2
+section_name = "theming"
+setting_name = "handle_selected_color"
+enable_alpha = false
+
+[node name="HoveredSelectedColor" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Theme/ThemeSettings/HandleColors" instance=ExtResource("4_dacsc")]
+layout_mode = 2
+section_name = "theming"
+setting_name = "handle_hovered_selected_color"
+enable_alpha = false
+
 [node name="BasicColorsVBox" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Theme/ThemeSettings"]
 unique_name_in_owner = true
 layout_mode = 2
