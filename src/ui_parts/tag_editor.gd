@@ -7,19 +7,9 @@ static var TagEditor: PackedScene:
 		return TagEditor
 
 const ContextPopup = preload("res://src/ui_elements/context_popup.tscn")
-const TransformField = preload("res://src/ui_elements/transform_field.tscn")
-const NumberField = preload("res://src/ui_elements/number_field.tscn")
-const NumberSlider = preload("res://src/ui_elements/number_field_with_slider.tscn")
-const ColorField = preload("res://src/ui_elements/color_field.tscn")
-const PathField = preload("res://src/ui_elements/path_field.tscn")
-const EnumField = preload("res://src/ui_elements/enum_field.tscn")
-const UnknownField = preload("res://src/ui_elements/unknown_field.tscn")
+const TagContentUnknown = preload("res://src/ui_elements/tag_content_unknown.tscn")
 
-@onready var v_box_container: VBoxContainer = $Content/MainContainer
-@onready var attribute_container: VBoxContainer = %AttributeContainer
-var unknown_container: HFlowContainer  # Only created if there are unknown attributes.
-@onready var paint_container: FlowContainer = %AttributeContainer/PaintAttributes
-@onready var shape_container: FlowContainer = %AttributeContainer/ShapeAttributes
+@onready var main_container: VBoxContainer = $Content/MainContainer
 var child_tags_container: VBoxContainer  # Only created if there are child tags.
 @onready var title_bar: PanelContainer = $Title
 @onready var content: PanelContainer = $Content
@@ -42,53 +32,16 @@ func _ready() -> void:
 	Indications.hover_changed.connect(determine_selection_highlight)
 	Indications.proposed_drop_changed.connect(queue_redraw)
 	determine_selection_highlight()
-	# Fill up the containers. Start with unknown attributes, if there are any.
-	if not tag.unknown_attributes.is_empty():
-		unknown_container = HFlowContainer.new()
-		attribute_container.add_child(unknown_container)
-		attribute_container.move_child(unknown_container, 0)
-		for attribute in tag.unknown_attributes:
-			var input_field := UnknownField.instantiate()
-			input_field.attribute = attribute
-			input_field.attribute_name = attribute.name
-			unknown_container.add_child(input_field)
-	# Continue with supported attributes.
-	for attribute_key in tag.attributes:
-		var attribute: Attribute = tag.attributes[attribute_key]
-		var input_field: Control
-		if attribute is AttributeTransform:
-			input_field = TransformField.instantiate()
-		elif attribute is AttributeNumeric:
-			match attribute.mode:
-				AttributeNumeric.Mode.FLOAT:
-					input_field = NumberField.instantiate()
-				AttributeNumeric.Mode.UFLOAT:
-					input_field = NumberField.instantiate()
-					input_field.allow_lower = false
-				AttributeNumeric.Mode.NFLOAT:
-					input_field = NumberSlider.instantiate()
-					input_field.allow_lower = false
-					input_field.allow_higher = false
-					input_field.slider_step = 0.01
-		elif attribute is AttributeColor:
-			input_field = ColorField.instantiate()
-		elif attribute is AttributePath:
-			input_field = PathField.instantiate()
-		elif attribute is AttributeEnum:
-			input_field = EnumField.instantiate()
-		input_field.attribute = attribute
-		input_field.attribute_name = attribute_key
-		input_field.focused.connect(Indications.normal_select.bind(tid))
-		# Add the attribute to its corresponding container.
-		if attribute_key in tag.known_shape_attributes:
-			shape_container.add_child(input_field)
-		elif attribute_key in tag.known_inheritable_attributes:
-			paint_container.add_child(input_field)
+	
+	var tag_content := TagContentUnknown.instantiate()
+	tag_content.tag = tag
+	tag_content.tid = tid
+	main_container.add_child(tag_content)
 	
 	if not tag.is_standalone():
 		child_tags_container = VBoxContainer.new()
-		v_box_container.add_child(child_tags_container)
-		
+		child_tags_container.mouse_filter = Control.MOUSE_FILTER_STOP
+		main_container.add_child(child_tags_container)
 		for tag_idx in tag.get_child_count():
 			var child_tag := tag.child_tags[tag_idx]
 			var tag_editor := TagEditor.instantiate()
@@ -98,13 +51,15 @@ func _ready() -> void:
 			tag_editor.tid = new_tid
 			child_tags_container.add_child(tag_editor)
 
+
 # Logic for dragging.
 func _get_drag_data(_at_position: Vector2) -> Variant:
 	var data: Array[PackedInt32Array] = Utils.filter_descendant_tids(
 			Indications.selected_tids.duplicate(true))
 	# Set up a preview.
 	var tags_container := VBoxContainer.new()
-	for drag_tid in data:
+	for data_idx in range(data.size() - 1, -1, -1):
+		var drag_tid := data[data_idx]
 		var preview := TagEditor.instantiate()
 		preview.tag = SVG.root_tag.get_tag(drag_tid)
 		preview.tid = drag_tid
