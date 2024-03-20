@@ -4,7 +4,7 @@ msgstr ""
 "Project-Id-Version: GodSVG\n"
 "POT-Creation-Date: \n"
 "PO-Revision-Date: \n"
-"Last-Translator: \n"
+"Last-Translator: volkov <volkovissocool@gmail.com>\n"
 "Language-Team: \n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
@@ -13,16 +13,16 @@ msgstr ""
 "X-Generator: Poedit 3.4.2\n"
 
 msgid "translation-credits"
-msgstr ""
+msgstr "volkov <volkovissocool@gmail.com>"
 
 msgid "Project Founder and Manager"
-msgstr ""
+msgstr "Основатель и руководитель проекта"
 
 msgid "Developers"
-msgstr ""
+msgstr "Разработчики"
 
 msgid "Language"
-msgstr " Язык"
+msgstr "Язык"
 
 msgid "Invert zoom direction"
 msgstr "Инвертировать направление масштабирования"
@@ -39,14 +39,14 @@ msgstr ""
 "передвижении окна просмотра."
 
 msgid "Use CTRL for zooming"
-msgstr "Использовать CTRL для маштабирования"
+msgstr "Использовать CTRL для масштабирования"
 
 msgid ""
 "If turned on, scrolling will pan the view. To zoom, hold CTRL while "
 "scrolling."
 msgstr ""
 "Если включено, прокрутка будет перемещать окно просмотра. Чтобы "
-"маштабировать Зажмите CTRL когда прокручиваете."
+"масштабировать Зажмите CTRL когда прокручиваете."
 
 msgid "Input"
 msgstr "Устройства ввода"
@@ -69,17 +69,14 @@ msgstr "Документация…"
 msgid "Donate (Github)"
 msgstr "Сделать пожертвование (Github)"
 
-#, fuzzy
 msgid "Zoom in"
-msgstr "Приблизить маштаб"
+msgstr "Приблизить масштаб"
 
-#, fuzzy
 msgid "Zoom reset"
-msgstr "Скинуть маштаб"
+msgstr "Скинуть масштаб"
 
-#, fuzzy
 msgid "Zoom out"
-msgstr "Отдалить маштаб"
+msgstr "Отдалить масштаб"
 
 msgid "Settings"
 msgstr "Настройки"
@@ -103,19 +100,19 @@ msgid "Snap size"
 msgstr "Размер привязки"
 
 msgid "Reset to default"
-msgstr ""
+msgstr "Восстановить значение по умолчанию"
 
 msgid "Copy All Text"
 msgstr "Скопировать весь текст"
 
 msgid "Save"
-msgstr ""
+msgstr "Сохранить"
 
 msgid "Export"
-msgstr "Экспорт"
+msgstr "Экспортовать"
 
 msgid "Select all tags"
-msgstr ""
+msgstr "Выбрать все теги"
 
 msgid "Couple/Decouple"
 msgstr "Объединить/Разъединить"
@@ -133,7 +130,7 @@ msgid "Delete"
 msgstr "Удалить"
 
 msgid "Insert Before"
-msgstr ""
+msgstr "Вставить после"
 
 msgid "Insert After"
 msgstr "Вставить после"
@@ -142,41 +139,37 @@ msgid "Convert To"
 msgstr "Конвертировать в"
 
 msgid "Doesn’t describe a SVG."
-msgstr "Не есть описанием SVG"
+msgstr "Не есть описанием SVG."
 
 msgid "Improper nesting."
 msgstr "Не правильное вкладывание."
 
 msgid "Syntax error"
-msgstr ""
+msgstr "Синтаксическая ошибка"
 
-#, fuzzy
 msgid "Delete the selection"
-msgstr "Delete: Удалить все выбранные тэги"
+msgstr "Удалить все выбранные теги"
 
-#, fuzzy
 msgid "Move the selected tags down"
-msgstr "Ctrl+Down: Подвинуть вниз все выбранные тэги"
+msgstr "Подвинуть вниз все выбранные теги"
 
-#, fuzzy
 msgid "Move the selected tags up"
-msgstr "Ctrl+Up: Подвинуть вверх все выбранные тэги"
+msgstr "Подвинуть вверх все выбранные теги"
 
-#, fuzzy
 msgid "Duplicate the selected tags"
-msgstr "Ctrl+D: Дублировать выбранные тэги"
+msgstr "Дублировать выбранные теги"
 
 msgid "Unknown Tag"
-msgstr "Неизвестный тэг"
+msgstr "Неизвестный тег"
 
 msgid "Unknown Attribute"
 msgstr "Неизвестный атрибут"
 
 msgid "No path data"
-msgstr ""
+msgstr "Нет данных пути"
 
 msgid "No transforms"
-msgstr ""
+msgstr "Нет трансформаций"
 
 msgid "Import"
 msgstr "Импортировать"
@@ -194,7 +187,7 @@ msgid "Format"
 msgstr "Формат"
 
 msgid "Scale"
-msgstr "Маштаб"
+msgstr "Масштаб"
 
 msgid "Size"
 msgstr "Размер"
@@ -206,7 +199,7 @@ msgid "Export Configuration"
 msgstr "Настройки экспорта"
 
 msgid "Add new tag"
-msgstr "Добавить новый тэг"
+msgstr "Добавить новый тег"
 
 msgid "License"
 msgstr "Лицензия"
@@ -220,81 +213,65 @@ msgstr "Автори"
 msgid "Shortcuts"
 msgstr "Сочетания клавиш"
 
-#, fuzzy
 msgid "Add shortcut"
-msgstr "Сочетания клавиш"
+msgstr "Добавить сочетание клавиш"
 
 msgid "Theme"
-msgstr ""
+msgstr "Тема"
 
-#, fuzzy
 msgid "Basic colors"
-msgstr "Добавить цвет"
+msgstr "Базовый цвет"
 
 msgid "SVG Text Colors"
-msgstr ""
+msgstr "Цвет SVG текста"
 
 msgid "Symbol color"
-msgstr ""
+msgstr "Цвет символа"
 
-#, fuzzy
 msgid "Tag color"
-msgstr "Добавить цвет"
+msgstr "Цвет тега"
 
-#, fuzzy
 msgid "Attribute color"
-msgstr "Деактивировать цвет"
+msgstr "Цвет атрибута"
 
 msgid "String color"
-msgstr ""
+msgstr "Цвет строки"
 
-#, fuzzy
 msgid "Comment color"
-msgstr "Удалить цвет"
+msgstr "Цвет комментария"
 
-#, fuzzy
 msgid "Text color"
-msgstr "Удалить цвет"
+msgstr "Цвет текста"
 
-#, fuzzy
 msgid "Error color"
-msgstr "Добавить цвет"
+msgstr "Цвет ошибки"
 
-#, fuzzy
 msgid "Default value opacity"
-msgstr "Удалить цвет"
+msgstr "Стандартное значение непрозрачности"
 
-#, fuzzy
 msgid "Warning color"
-msgstr "Добавить цвет"
+msgstr "Цвет предупреждения"
 
-#, fuzzy
 msgid "Valid color"
-msgstr "Добавить цвет"
+msgstr "Цвет валидности"
 
-#, fuzzy
 msgid "Handle colors"
-msgstr "Добавить цвет"
+msgstr "Цвет ручки"
 
-#, fuzzy
 msgid "Inside color"
-msgstr "Добавить цвет"
+msgstr "Внутренний цвет"
 
-#, fuzzy
 msgid "Normal color"
-msgstr "Добавить цвет"
+msgstr "Обычный цвет"
 
-#, fuzzy
 msgid "Hovered color"
-msgstr "Добавить цвет"
+msgstr "Цвет наведенного"
 
-#, fuzzy
 msgid "Selected color"
-msgstr "Удалить цвет"
+msgstr "Цвет выбранного"
 
-#, fuzzy
 msgid "Hovered selected color"
-msgstr "Удалить цвет"
+msgstr "Цвет выделенного-наведенного"
 
 msgid "Palettes"
 msgstr "Палитры"
@@ -318,13 +295,13 @@ msgid "Delete color"
 msgstr "Удалить цвет"
 
 msgid "Edit"
-msgstr ""
+msgstr "Редактировать"
 
 msgid "Remove"
-msgstr ""
+msgstr "Удалить"
 
 msgid "Press keys…"
-msgstr ""
+msgstr "Нажмите копки…"
 
 msgid "Enable the color"
 msgstr "Активировать цвет"
@@ -348,14 +325,13 @@ msgid "Paste"
 msgstr "Вставить"
 
 msgid "Copy as XML"
-msgstr ""
+msgstr "Скопировать как XML"
 
-#, fuzzy
 msgid "Paste XML"
-msgstr "Вставить"
+msgstr "Вставить XML"
 
 msgid "Unused"
-msgstr ""
+msgstr "Не используется"
 
 msgid "Cut"
 msgstr "Вырезать"
@@ -385,12 +361,11 @@ msgstr "Расширение файла пустрое. Поддерживает
 msgid "OK"
 msgstr "Хорошо"
 
-#, fuzzy
 msgid "Autoformatting"
-msgstr "Настройки автоформатирования"
+msgstr "Автоматическое форматирование"
 
 msgid "General"
-msgstr ""
+msgstr "Общие"
 
 msgid "Numbers"
 msgstr "Цифры"
@@ -402,19 +377,19 @@ msgid "Paths"
 msgstr "Пути"
 
 msgid "Transforms"
-msgstr ""
+msgstr "Трансформации"
 
 msgid "Number precision digits"
-msgstr ""
+msgstr "Количество цифр точности углов"
 
 msgid "Angle precision digits"
-msgstr ""
+msgstr "Количество цифр точности чисел"
 
 msgid "Add trailing newline"
-msgstr ""
+msgstr "Добавлять новую строку в конце"
 
 msgid "Use shorthand tag syntax"
-msgstr ""
+msgstr "Использовать теги с сокращенным синтаксисом"
 
 msgid "Enable autoformatting"
 msgstr "Включить автоформатирование"
@@ -453,7 +428,7 @@ msgid "Remove consecutive commands"
 msgstr "Удалить последовательные команды"
 
 msgid "Remove unnecessary parameters"
-msgstr ""
+msgstr "Удалить не нужные параметры"
 
 msgid "Relative"
 msgstr "Относительная"
@@ -462,25 +437,25 @@ msgid "Absolute"
 msgstr "Абсолютная"
 
 msgid "Remove the association"
-msgstr ""
+msgstr "Удалить"
 
 msgid "Apply the matrix"
-msgstr ""
+msgstr "Применить матрицу"
 
 msgid "Other"
-msgstr ""
+msgstr "Другие"
 
 msgid "Optimize"
-msgstr ""
+msgstr "Оптимизировать"
 
 msgid "Any changes will apply immediately."
-msgstr ""
+msgstr "Любые изменения будут применены моментально."
 
 msgid "Always active."
-msgstr ""
+msgstr "Всегда активно."
 
 msgid "Search color"
-msgstr ""
+msgstr "Искать цвет"
 
 #~ msgid "Import SVG"
 #~ msgstr "Импортировать SVG"

@@ -4,7 +4,7 @@ msgstr ""
 "Project-Id-Version: GodSVG\n"
 "POT-Creation-Date: \n"
 "PO-Revision-Date: \n"
-"Last-Translator: \n"
+"Last-Translator: volkov <volkovissocool@gmail.com>\n"
 "Language-Team: \n"
 "Language: uk\n"
 "MIME-Version: 1.0\n"
@@ -13,13 +13,13 @@ msgstr ""
 "X-Generator: Poedit 3.4.2\n"
 
 msgid "translation-credits"
-msgstr ""
+msgstr "volkov <volkovissocool@gmail.com>"
 
 msgid "Project Founder and Manager"
-msgstr ""
+msgstr "Засновник і керівник проекту"
 
 msgid "Developers"
-msgstr ""
+msgstr "Розробники"
 
 msgid "Language"
 msgstr "Мова"
@@ -36,11 +36,11 @@ msgstr "Захопити мишу"
 
 msgid "Wraps the mouse cursor around when panning the viewport."
 msgstr ""
-"Миша буде телепортуватися від одного краю до протилежного при пересуванні "
+"Курсор буде телепортуватися від одного краю до протилежного при пересуванні "
 "вікна перегляду."
 
 msgid "Use CTRL for zooming"
-msgstr "Використовувати CTRL для масштабування."
+msgstr "Використовувати CTRL для масштабування"
 
 msgid ""
 "If turned on, scrolling will pan the view. To zoom, hold CTRL while "
@@ -70,15 +70,12 @@ msgstr "Документація…"
 msgid "Donate (Github)"
 msgstr "Зробити пожертвування (Github)"
 
-#, fuzzy
 msgid "Zoom in"
 msgstr "Збільшити масштаб"
 
-#, fuzzy
 msgid "Zoom reset"
 msgstr "Скинути масштаб"
 
-#, fuzzy
 msgid "Zoom out"
 msgstr "Зменшити масштаб"
 
@@ -104,19 +101,19 @@ msgid "Snap size"
 msgstr "Розмір прилипання"
 
 msgid "Reset to default"
-msgstr ""
+msgstr "Скинути значення до замовчування"
 
 msgid "Copy All Text"
 msgstr "Скопіювати весь текст"
 
 msgid "Save"
-msgstr ""
+msgstr "Зберегти"
 
 msgid "Export"
-msgstr "Експорт"
+msgstr "Експортувати"
 
 msgid "Select all tags"
-msgstr ""
+msgstr "Обрати усі теги"
 
 msgid "Couple/Decouple"
 msgstr "З’єднати/Роз’єднати"
@@ -134,7 +131,7 @@ msgid "Delete"
 msgstr "Видалити"
 
 msgid "Insert Before"
-msgstr ""
+msgstr "Вставити до"
 
 msgid "Insert After"
 msgstr "Вставити після"
@@ -149,23 +146,19 @@ msgid "Improper nesting."
 msgstr "Неправильне вкладення."
 
 msgid "Syntax error"
-msgstr ""
+msgstr "Синтаксична помилка"
 
-#, fuzzy
 msgid "Delete the selection"
-msgstr "Delete: Видалити усі обрані теги"
+msgstr "Видалити усі обрані теги"
 
-#, fuzzy
 msgid "Move the selected tags down"
-msgstr "Ctrl+Down: Пересунути усі обрані теги вниз"
+msgstr "Пересунути усі обрані теги вниз"
 
-#, fuzzy
 msgid "Move the selected tags up"
-msgstr "Ctrl+Up: Пересунути усі обрані теги вгору"
+msgstr "Пересунути усі обрані теги вгору"
 
-#, fuzzy
 msgid "Duplicate the selected tags"
-msgstr "Ctrl+D: Дублювати обрані теги"
+msgstr "Дублювати обрані теги"
 
 msgid "Unknown Tag"
 msgstr "Невідомий тег"
@@ -174,13 +167,13 @@ msgid "Unknown Attribute"
 msgstr "Невідомий атрибут"
 
 msgid "No path data"
-msgstr ""
+msgstr "Немає даних шляху"
 
 msgid "No transforms"
-msgstr ""
+msgstr "Без трансформацій"
 
 msgid "Import"
-msgstr "Імпорт"
+msgstr "Імпортувати"
 
 msgid "Cancel"
 msgstr "Скасувати"
@@ -221,81 +214,65 @@ msgstr "Автори"
 msgid "Shortcuts"
 msgstr "Клавіатурні скорочення"
 
-#, fuzzy
 msgid "Add shortcut"
-msgstr "Клавіатурні скорочення"
+msgstr "Додати клавіатурне скорочення"
 
 msgid "Theme"
-msgstr ""
+msgstr "Тема"
 
-#, fuzzy
 msgid "Basic colors"
-msgstr "Додати колір"
+msgstr "Базовий колір"
 
 msgid "SVG Text Colors"
-msgstr ""
+msgstr "Колір SVG тексту"
 
 msgid "Symbol color"
-msgstr ""
+msgstr "Колір символу"
 
-#, fuzzy
 msgid "Tag color"
-msgstr "Додати колір"
+msgstr "Колір тегу"
 
-#, fuzzy
 msgid "Attribute color"
-msgstr "Деактивувати колір"
+msgstr "Колір атрибуту"
 
 msgid "String color"
-msgstr ""
+msgstr "Колір строки"
 
-#, fuzzy
 msgid "Comment color"
-msgstr "Видалити колір"
+msgstr "Колір коментаря"
 
-#, fuzzy
 msgid "Text color"
-msgstr "Видалити колір"
+msgstr "Колір тексту"
 
-#, fuzzy
 msgid "Error color"
-msgstr "Додати колір"
+msgstr "Колір помилки"
 
-#, fuzzy
 msgid "Default value opacity"
-msgstr "Видалити колір"
+msgstr "Стандартне значення непрозорості"
 
-#, fuzzy
 msgid "Warning color"
-msgstr "Додати колір"
+msgstr "Колір попередження"
 
-#, fuzzy
 msgid "Valid color"
-msgstr "Додати колір"
+msgstr "Колір валідності"
 
-#, fuzzy
 msgid "Handle colors"
-msgstr "Додати колір"
+msgstr "Колір ручки редагування"
 
-#, fuzzy
 msgid "Inside color"
-msgstr "Додати колір"
+msgstr "Внутрішній колір"
 
-#, fuzzy
 msgid "Normal color"
-msgstr "Додати колір"
+msgstr "Звичайний колір"
 
-#, fuzzy
 msgid "Hovered color"
-msgstr "Додати колір"
+msgstr "Колір наведеного"
 
-#, fuzzy
 msgid "Selected color"
-msgstr "Видалити колір"
+msgstr "Колір обраного"
 
-#, fuzzy
 msgid "Hovered selected color"
-msgstr "Видалити колір"
+msgstr "Колір наведено-виділеного"
 
 msgid "Palettes"
 msgstr "Палітри"
@@ -319,13 +296,13 @@ msgid "Delete color"
 msgstr "Видалити колір"
 
 msgid "Edit"
-msgstr ""
+msgstr "Редагувати"
 
 msgid "Remove"
-msgstr ""
+msgstr "Видалити"
 
 msgid "Press keys…"
-msgstr ""
+msgstr "Натисніть кнопки…"
 
 msgid "Enable the color"
 msgstr "Активувати колір"
@@ -334,7 +311,7 @@ msgid "Disable the color"
 msgstr "Деактивувати колір"
 
 msgid "Godot third-party components"
-msgstr "Компоненти Godot від третіх осіб "
+msgstr "Компоненти Godot від третіх сторін"
 
 msgid "Undo"
 msgstr "Скасувати"
@@ -349,14 +326,13 @@ msgid "Paste"
 msgstr "Вставити"
 
 msgid "Copy as XML"
-msgstr ""
+msgstr "Скопіювати як XML"
 
-#, fuzzy
 msgid "Paste XML"
-msgstr "Вставити"
+msgstr "Вставити XML"
 
 msgid "Unused"
-msgstr ""
+msgstr "Не використовується"
 
 msgid "Cut"
 msgstr "Вирізати"
@@ -386,12 +362,11 @@ msgstr "Розширення файлу порожнє. Підтримуєтьс
 msgid "OK"
 msgstr "Добре"
 
-#, fuzzy
 msgid "Autoformatting"
-msgstr "Налаштування автоформатування"
+msgstr "Автоформатування"
 
 msgid "General"
-msgstr ""
+msgstr "Загальні"
 
 msgid "Numbers"
 msgstr "Цифри"
@@ -403,19 +378,19 @@ msgid "Paths"
 msgstr "Шляхи"
 
 msgid "Transforms"
-msgstr ""
+msgstr "Трансформації"
 
 msgid "Number precision digits"
-msgstr ""
+msgstr "Кількість цифр точності чисел"
 
 msgid "Angle precision digits"
-msgstr ""
+msgstr "Кількість цифр точності кутів"
 
 msgid "Add trailing newline"
-msgstr ""
+msgstr "Додавати нову строку в кінці"
 
 msgid "Use shorthand tag syntax"
-msgstr ""
+msgstr "Використовувати теги зі скороченим синтаксисом"
 
 msgid "Enable autoformatting"
 msgstr "Активувати автоформатування"
@@ -454,7 +429,7 @@ msgid "Remove consecutive commands"
 msgstr "Видалити послідовні команди"
 
 msgid "Remove unnecessary parameters"
-msgstr ""
+msgstr "Видалити необов'язкові параметри"
 
 msgid "Relative"
 msgstr "Відносна"
@@ -463,25 +438,25 @@ msgid "Absolute"
 msgstr "Абсолютна"
 
 msgid "Remove the association"
-msgstr ""
+msgstr "Видалити асоціацію"
 
 msgid "Apply the matrix"
-msgstr ""
+msgstr "Застосувати матрицю"
 
 msgid "Other"
-msgstr ""
+msgstr "Інше"
 
 msgid "Optimize"
-msgstr ""
+msgstr "Оптимізувати"
 
 msgid "Any changes will apply immediately."
-msgstr ""
+msgstr "Будь-які зміни будуть застосовані одразу."
 
 msgid "Always active."
-msgstr ""
+msgstr "Завжди активно."
 
 msgid "Search color"
-msgstr ""
+msgstr "Шукати колір"
 
 #~ msgid "Import SVG"
 #~ msgstr "Імпортувати SVG"
