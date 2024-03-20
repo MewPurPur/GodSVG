@@ -95,6 +95,11 @@ func setup_setting_labels() -> void:
 	%HighlighterVBox/CommentColor.label.text = tr("Comment color")
 	%HighlighterVBox/TextColor.label.text = tr("Text color")
 	%HighlighterVBox/ErrorColor.label.text = tr("Error color")
+	%HandleColors/InsideColor.label.text = tr("Inside color")
+	%HandleColors/NormalColor.label.text = tr("Normal color")
+	%HandleColors/HoveredColor.label.text = tr("Hovered color")
+	%HandleColors/SelectedColor.label.text = tr("Selected color")
+	%HandleColors/HoveredSelectedColor.label.text = tr("Hovered selected color")
 	%BasicColorsVBox/DefaultValueOpacity.label.text = tr("Default value opacity")
 	%BasicColorsVBox/ValidColor.label.text = tr("Valid color")
 	%BasicColorsVBox/ErrorColor.label.text = tr("Error color")
@@ -229,19 +234,20 @@ func setup_shortcuts_tab() -> void:
 func setup_theming_tab() -> void:
 	for child in %HighlighterVBox.get_children():
 		if child is SettingColor:
-			child.value_changed.connect(_notify_highlight_colors_changed)
-	%DefaultValueOpacity.value_changed.connect(_notify_default_value_opacity_changed)
+			child.value_changed.connect(custom_notify.bind(
+					Utils.CustomNotification.HIGHLIGHT_COLORS_CHANGED))
+	for child in %HandleColors.get_children():
+		if child is SettingColor:
+			child.value_changed.connect(custom_notify.bind(
+					Utils.CustomNotification.HANDLE_COLORS_CHANGED))
+	%DefaultValueOpacity.value_changed.connect(custom_notify.bind(
+					Utils.CustomNotification.DEFAULT_VALUE_OPACITY_CHANGED))
 
 func _on_theme_settings_changed() -> void:
 	ThemeGenerator.generate_theme()
 
-func _notify_highlight_colors_changed() -> void:
-	get_tree().get_root().propagate_notification(
-			Utils.CustomNotification.HIGHLIGHT_COLORS_CHANGED)
-
-func _notify_default_value_opacity_changed() -> void:
-	get_tree().get_root().propagate_notification(
-			Utils.CustomNotification.DEFAULT_VALUE_OPACITY_CHANGED)
+func custom_notify(notif: Utils.CustomNotification) -> void:
+	get_tree().get_root().propagate_notification(notif)
 
 
 # Optimize by only generating content when you click them.

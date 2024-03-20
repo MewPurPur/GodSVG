@@ -253,6 +253,30 @@ msgstr "Warnfarbe"
 msgid "Valid color"
 msgstr "Gültige Farbe"
 
+#, fuzzy
+msgid "Handle colors"
+msgstr "Gültige Farbe"
+
+#, fuzzy
+msgid "Inside color"
+msgstr "Gültige Farbe"
+
+#, fuzzy
+msgid "Normal color"
+msgstr "Fehlerfarbe"
+
+#, fuzzy
+msgid "Hovered color"
+msgstr "Fehlerfarbe"
+
+#, fuzzy
+msgid "Selected color"
+msgstr "Farbe löschen"
+
+#, fuzzy
+msgid "Hovered selected color"
+msgstr "Farbe löschen"
+
 msgid "Palettes"
 msgstr "Paletten"
 

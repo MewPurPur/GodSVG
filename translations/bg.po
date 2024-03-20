@@ -211,16 +211,14 @@ msgstr "Автори"
 msgid "Shortcuts"
 msgstr "Бързи клавиши"
 
-#, fuzzy
 msgid "Add shortcut"
-msgstr "Бързи клавиши"
+msgstr "Добави бърз клавиш"
 
 msgid "Theme"
 msgstr "Гама"
 
-#, fuzzy
 msgid "Basic colors"
-msgstr "Цвят на валидният текст"
+msgstr "Основни цветове"
 
 msgid "SVG Text Colors"
 msgstr "Цветове на SVG текста"
@@ -254,6 +252,24 @@ msgstr "Цвят на предупрежденията"
 
 msgid "Valid color"
 msgstr "Цвят на валидният текст"
+
+msgid "Handle colors"
+msgstr "Цвят на дръжките"
+
+msgid "Inside color"
+msgstr "Вътрешен цвят"
+
+msgid "Normal color"
+msgstr "Обикновен цвят"
+
+msgid "Hovered color"
+msgstr "Цвят под курсора"
+
+msgid "Selected color"
+msgstr "Избран цвят"
+
+msgid "Hovered selected color"
+msgstr "Избран цвят под курсора"
 
 msgid "Palettes"
 msgstr "Палети"
