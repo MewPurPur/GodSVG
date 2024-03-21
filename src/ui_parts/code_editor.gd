@@ -85,12 +85,6 @@ func _on_code_edit_text_changed() -> void:
 	SVG.update_tags()
 
 
-func _input(event: InputEvent) -> void:
-	if (code_edit.has_focus() and event is InputEventMouseButton and\
-	not code_edit.get_global_rect().has_point(event.position)):
-		code_edit.release_focus()
-
-
 func update_size_label() -> void:
 	var svg_text_size := SVG.text.length()
 	size_label.text = String.humanize_size(svg_text_size)
