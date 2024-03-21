@@ -64,8 +64,8 @@ msgstr "Относно приложението…"
 msgid "Documentation…"
 msgstr "Документация…"
 
-msgid "Donate (Github)"
-msgstr "Дарение (Github)"
+msgid "Donate…"
+msgstr "Направи дарение…"
 
 msgid "Zoom in"
 msgstr "Увеличи"
