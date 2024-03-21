@@ -5,8 +5,8 @@ const project_founder_and_manager: Array[String] = ["MewPurPur"]
 
 
 # The developers who have contributed significant patches to the MIT-licensed source code
-# of GodSVG, as well as people who have contributed other things like translations and art
-# to the repository, are listed here. What counts as significant is arbitrarily decided.
+# of GodSVG, and people who have contributed other things to the repository such as art,
+# are listed here. What counts as significant is arbitrarily decided.
 # Entries are formatted as follows:
 # Option 1: Real Name (GitHub username)
 # Option 2: GitHub username
@@ -23,5 +23,18 @@ const authors: Array[String] = [
 	"Swarkin",
 	"thiagola92",
 	"Tom Blackwell (Volts-s)",
-	"volkov"
+]
+
+const translations: Dictionary = {
+	"bg": ["MewPurPur (mew.pur.pur@gmail.com)"],
+	"de": ["Kiisu-Master", "Swarkin"],
+	"ru": ["vovkiv (volkovissocool@gmail.com)"],
+	"uk": ["vovkiv (volkovissocool@gmail.com)"],
+}
+
+# GodSVG is a non-profit project developed by voluntary contributors.
+# Everyone who has generously sponsored the project is listed here.
+
+const donors: Array[String] = [
+	"Aaron Franke (aaronfranke)",
 ]
