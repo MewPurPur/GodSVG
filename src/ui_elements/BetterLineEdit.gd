@@ -102,3 +102,5 @@ func _gui_input(event: InputEvent) -> void:
 			var viewport := get_viewport()
 			Utils.popup_under_pos(context_popup, viewport.get_mouse_position(), viewport)
 			accept_event()
+			# Wow, no way to find out the column of a given click? Okay...
+			# TODO Make it so LineEdit caret automatically moves to the clicked position.

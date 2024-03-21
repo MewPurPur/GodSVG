@@ -119,6 +119,9 @@ func _gui_input(event: InputEvent) -> void:
 			var viewport := get_viewport()
 			Utils.popup_under_pos(context_popup, viewport.get_mouse_position(), viewport)
 			accept_event()
+			var click_pos := get_line_column_at_pos(event.position)
+			set_caret_line(click_pos.y, false)
+			set_caret_column(click_pos.x, false)
 	else:
 		# Set these inputs as handled, so the default UndoRedo doesn't eat them.
 		if event.is_action_pressed("redo"):
