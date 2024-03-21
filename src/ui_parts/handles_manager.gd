@@ -44,12 +44,16 @@ func render_handle_textures() -> void:
 	for handle_type in [Handle.Display.BIG, Handle.Display.SMALL]:
 		var handle_type_svg: String = handles_svg_dict[handle_type]
 		img.load_svg_from_string(handle_type_svg % [inside_str, normal_str])
+		img.fix_alpha_edges()
 		normal_handle_textures[handle_type] = ImageTexture.create_from_image(img)
 		img.load_svg_from_string(handle_type_svg % [inside_str, hovered_str])
+		img.fix_alpha_edges()
 		hovered_handle_textures[handle_type] = ImageTexture.create_from_image(img)
 		img.load_svg_from_string(handle_type_svg % [inside_str, selected_str])
+		img.fix_alpha_edges()
 		selected_handle_textures[handle_type] = ImageTexture.create_from_image(img)
 		img.load_svg_from_string(handle_type_svg % [inside_str, hovered_selected_str])
+		img.fix_alpha_edges()
 		hovered_selected_handle_textures[handle_type] = ImageTexture.create_from_image(img)
 	
 	queue_redraw()
