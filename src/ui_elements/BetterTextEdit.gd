@@ -86,7 +86,7 @@ func _draw() -> void:
 		draw_style_box(get_theme_stylebox("hover"), Rect2(Vector2.ZERO, size))
 
 func _input(event: InputEvent) -> void:
-	if (has_focus() and event is InputEventMouseButton and\
+	if (has_focus() and event is InputEventMouseButton and event.is_pressed() and\
 	not get_global_rect().has_point(event.position)):
 		release_focus()
 
@@ -101,11 +101,16 @@ func _gui_input(event: InputEvent) -> void:
 			grab_focus()
 			var context_popup := ContextPopup.instantiate()
 			var btn_arr: Array[Button] = [
-				Utils.create_btn(tr("Undo"), undo, !has_undo()),
-				Utils.create_btn(tr("Redo"), redo, !has_redo()),
-				Utils.create_btn(tr("Copy"), copy, text.is_empty()),
-				Utils.create_btn(tr("Paste"), paste, !DisplayServer.clipboard_has()),
-				Utils.create_btn(tr("Cut"), cut, text.is_empty()),
+				Utils.create_btn(tr("Undo"), undo, !has_undo(),
+						load("res://visual/icons/Undo.svg")),
+				Utils.create_btn(tr("Redo"), redo, !has_redo(),
+						load("res://visual/icons/Redo.svg")),
+				Utils.create_btn(tr("Copy"), copy, text.is_empty(),
+						load("res://visual/icons/Copy.svg")),
+				Utils.create_btn(tr("Paste"), paste, !DisplayServer.clipboard_has(),
+						load("res://visual/icons/Paste.svg")),
+				Utils.create_btn(tr("Cut"), cut, text.is_empty(),
+						load("res://visual/icons/Cut.svg")),
 			]
 			
 			add_child(context_popup)
