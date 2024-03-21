@@ -2,6 +2,7 @@ extends VBoxContainer
 
 const settings_menu = preload("settings_menu.tscn")
 const about_menu = preload("about_menu.tscn")
+const donate_menu = preload("res://src/ui_parts/donate_menu.tscn")
 
 const NumberEditType = preload("res://src/ui_elements/number_edit.gd")
 const BetterToggleButtonType = preload("res://src/ui_elements/BetterToggleButton.gd")
@@ -58,7 +59,7 @@ func _on_more_options_pressed() -> void:
 		Utils.create_btn(tr("GodSVG Repository"), open_godsvg_repo, false,
 				load("res://visual/icons/Link.svg")),
 		about_btn,
-		Utils.create_btn(tr("Donate (Github)"), open_sponsor, false,
+		Utils.create_btn(tr("Donate…"), open_sponsor, false,
 				load("res://visual/icons/Heart.svg")),
 	]
 	
@@ -76,7 +77,8 @@ func open_about() -> void:
 	HandlerGUI.add_overlay(about_menu_instance)
 
 func open_sponsor() -> void:
-	OS.shell_open("https://github.com/sponsors/MewPurPur")
+	var donate_menu_instance := donate_menu.instantiate()
+	HandlerGUI.add_overlay(donate_menu_instance)
 
 func toggle_grid_visuals() -> void:
 	grid_visuals.visible = not grid_visuals.visible

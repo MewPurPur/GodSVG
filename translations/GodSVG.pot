@@ -61,7 +61,7 @@ msgstr ""
 msgid "Documentation…"
 msgstr ""
 
-msgid "Donate (Github)"
+msgid "Donate…"
 msgstr ""
 
 msgid "Zoom in"
