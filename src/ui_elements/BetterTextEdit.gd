@@ -46,16 +46,17 @@ func redraw_caret() -> void:
 	if not has_focus():
 		return
 	
-	var char_size := code_font.get_char_size(69,
-			get_theme_font_size("TextEdit", "font_size"))
+	var char_size := code_font.get_char_size(69, get_theme_font_size("font_size"))
 	for caret in get_caret_count():
 		var caret_line := get_caret_line(caret)
 		var caret_column := get_caret_column(caret)
 		var rect: Rect2 = get_rect_at_line_column(caret_line, caret_column)
-		var caret_pos := rect.end + Vector2(1, -1)
+		var caret_pos := rect.end + Vector2(1, -2)
 		# Workaround for ligatures.
-		if get_line(caret_line).length() > caret_column + 1 and\
-		rect == Rect2(get_rect_at_line_column(caret_line, caret_column + 1)):
+		var chars_back := 0
+		while get_line(caret_line).length() > caret_column + chars_back and\
+		rect == Rect2(get_rect_at_line_column(caret_line, caret_column + chars_back + 1)):
+			chars_back += 1
 			caret_pos.x -= char_size.x
 		
 		var caret_end := caret_pos
