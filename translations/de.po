@@ -64,8 +64,8 @@ msgstr "Über…"
 msgid "Documentation…"
 msgstr "Dokumentation…"
 
-msgid "Donate (Github)"
-msgstr "Spenden (Github)"
+msgid "Donate…"
+msgstr "Spenden…"
 
 msgid "Zoom in"
 msgstr "Hineinzoomen"
@@ -460,6 +460,3 @@ msgstr "Immer aktiv."
 
 msgid "Search color"
 msgstr "Farbe suchen"
-
-#~ msgid "Import SVG"
-#~ msgstr "SVG importieren"

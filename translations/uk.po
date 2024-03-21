@@ -67,8 +67,8 @@ msgstr "Про додаток…"
 msgid "Documentation…"
 msgstr "Документація…"
 
-msgid "Donate (Github)"
-msgstr "Зробити пожертвування (Github)"
+msgid "Donate…"
+msgstr "Зробити пожертвування…"
 
 msgid "Zoom in"
 msgstr "Збільшити масштаб"
