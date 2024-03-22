@@ -124,6 +124,12 @@ func _on_file_button_pressed() -> void:
 	Utils.popup_under_rect_center(context_popup, file_button.get_global_rect(),
 			get_viewport())
 
+
+func _on_clear_button_pressed() -> void:
+	SVG.text = '<svg width="16" height="16" xmlns="http://www.w3.org/2000/svg"></svg>'
+	SVG.update_tags()
+
+
 func clear_file_path() -> void:
 	GlobalSettings.modify_save_data("current_file_path", "")
 
@@ -142,3 +148,4 @@ func setup_highlighter() -> void:
 		new_highlighter.text_color = GlobalSettings.highlighting_text_color
 		new_highlighter.error_color = GlobalSettings.highlighting_error_color
 		code_edit.syntax_highlighter = new_highlighter
+
