@@ -20,6 +20,7 @@ var cmd_char := ""
 var cmd_idx := -1
 var path_command: PathCommand
 
+var ci := get_canvas_item()
 var active := false
 @onready var relative_button: Button
 @onready var action_button: Button
@@ -111,18 +112,18 @@ func _draw() -> void:
 			stylebox.bg_color = Color(0.6, 0.6, 1.0, 0.16)
 		elif current_interaction_state == Utils.InteractionType.HOVERED_SELECTED:
 			stylebox.bg_color = Color(0.7, 0.7, 1.0, 0.18)
-		stylebox.draw(get_canvas_item(), Rect2(Vector2.ZERO, size))
+		stylebox.draw(ci, Rect2(Vector2.ZERO, size))
 	# Draw the child controls. They are going to be drawn, not added as a node unless
 	# the mouse hovers them. This is a hack to significantly improve performance.
 	if not active:
 		# Draw the relative/absolute button.
-		var relative_button_rect := Rect2(Vector2(3, 2), Vector2(18, size.y - 4))
-		draw_style_box(absolute_button_normal if Utils.is_string_upper(cmd_char) else\
-				relative_button_normal, relative_button_rect)
-		draw_string(code_font, Vector2(6, size.y - 6), cmd_char,
+		var relative_stylebox := absolute_button_normal if Utils.is_string_upper(cmd_char)\
+				else relative_button_normal
+		relative_stylebox.draw(ci, Rect2(Vector2(3, 2), Vector2(18, size.y - 4)))
+		code_font.draw_string(ci, Vector2(6, size.y - 6), cmd_char,
 				HORIZONTAL_ALIGNMENT_CENTER, 12, 13)
 		# Draw the action button.
-		draw_texture_rect(more_icon, Rect2(Vector2(size.x - 19, 4),
+		more_icon.draw_rect(ci, Rect2(Vector2(size.x - 19, 4),
 				Vector2(14, 14)), false, Color("bfbfbf"))
 		# Draw the fields.
 		match cmd_char.to_upper():
@@ -140,21 +141,22 @@ func _draw() -> void:
 				rect.position.x = rect.end.x + 4
 				rect.size.x = 19
 				var flag_field := FlagField.instantiate()
-				draw_style_box(flag_field.get_theme_stylebox("normal" if\
-						path_command.large_arc_flag == 0 else "pressed"), rect)
-				draw_string(code_font, rect.position + Vector2(5, 14),
+				var is_large_arc: bool = (path_command.large_arc_flag == 0)
+				var is_sweep: bool = (path_command.sweep_flag == 0)
+				flag_field.get_theme_stylebox("normal" if is_large_arc\
+						else "pressed").draw(ci, rect)
+				code_font.draw_string(ci, rect.position + Vector2(5, 14),
 						String.num_uint64(path_command.large_arc_flag),
 						HORIZONTAL_ALIGNMENT_LEFT, rect.size.x, 14,
-						flag_field.get_theme_color("font_color" if\
-						path_command.large_arc_flag == 0 else "font_pressed_color"))
+						flag_field.get_theme_color("font_color" if is_large_arc\
+								else "font_pressed_color"))
 				rect.position.x = rect.end.x + 4
-				draw_style_box(flag_field.get_theme_stylebox("normal" if\
-						path_command.sweep_flag == 0 else "pressed"), rect)
-				draw_string(code_font, rect.position + Vector2(5, 14),
-						String.num_uint64(path_command.sweep_flag),
-						HORIZONTAL_ALIGNMENT_LEFT, rect.size.x, 14,
-						flag_field.get_theme_color("font_color" if\
-						path_command.sweep_flag == 0 else "font_pressed_color"))
+				flag_field.get_theme_stylebox("normal" if is_sweep
+						else "pressed").draw(ci, rect)
+				code_font.draw_string(ci, rect.position + Vector2(5, 14),
+						String.num_uint64( path_command.sweep_flag), HORIZONTAL_ALIGNMENT_LEFT,
+						rect.size.x, 14, flag_field.get_theme_color("font_color" if is_sweep\
+						else "font_pressed_color"))
 				flag_field.free()
 				rect.position.x = rect.end.x + 4
 				rect.size.x = 44
@@ -180,8 +182,8 @@ func _draw() -> void:
 
 func draw_numfield(rect: Rect2, stylebox: StyleBoxFlat, property: String,\
 font_size: int, font_color: Color) -> void:
-	draw_style_box(stylebox, rect)
-	draw_string(code_font, rect.position + Vector2(3, 13),
+	stylebox.draw(ci, rect)
+	code_font.draw_string(ci, rect.position + Vector2(3, 13),
 			NumberArrayParser.basic_num_to_text(path_command.get(property)),
 			HORIZONTAL_ALIGNMENT_LEFT, rect.size.x - 6, font_size, font_color)
 

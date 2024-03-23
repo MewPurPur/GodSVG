@@ -12,11 +12,12 @@ var limit_top := 0
 var limit_bottom := 0
 
 var zoom: float
+var ci := get_canvas_item()
 var surface := RenderingServer.canvas_item_create()  # Used for drawing the numbers.
 
 
 func _ready() -> void:
-	RenderingServer.canvas_item_set_parent(surface, get_canvas_item())
+	RenderingServer.canvas_item_set_parent(surface, ci)
 	SVG.root_tag.resized.connect(queue_redraw)
 	Indications.zoom_changed.connect(change_zoom)
 	Indications.zoom_changed.connect(queue_redraw)
@@ -36,8 +37,10 @@ func update() -> void:
 # Don't ask me to explain this.
 func _draw() -> void:
 	var grid_size: Vector2 = Indications.viewport_size * 1.0 / zoom
-	draw_line(Vector2(-position.x, 0), Vector2(-position.x, grid_size.y), axis_line_color)
-	draw_line(Vector2(0, -position.y), Vector2(grid_size.x, -position.y), axis_line_color)
+	RenderingServer.canvas_item_add_line(ci,
+			Vector2(-position.x, 0), Vector2(-position.x, grid_size.y), axis_line_color)
+	RenderingServer.canvas_item_add_line(ci,
+			Vector2(0, -position.y), Vector2(grid_size.x, -position.y), axis_line_color)
 	
 	var major_points := PackedVector2Array()
 	var minor_points := PackedVector2Array()
