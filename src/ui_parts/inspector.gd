@@ -1,7 +1,7 @@
 extends VBoxContainer
 
 const ContextPopup = preload("res://src/ui_elements/context_popup.tscn")
-const TagEditor = preload("tag_editor.tscn")
+const TagFrame = preload("tag_frame.tscn")
 
 @onready var tags_container: VBoxContainer = %ScrollContainer/Tags
 @onready var svg_tag_editor: CenterContainer = $MarginContainer/SVGTagEditor
@@ -18,7 +18,7 @@ func full_rebuild() -> void:
 		node.queue_free()
 	# Only add the first level of tags, they will automatically add their children.
 	for tag_idx in SVG.root_tag.get_child_count():
-		var tag_editor := TagEditor.instantiate()
+		var tag_editor := TagFrame.instantiate()
 		tag_editor.tag = SVG.root_tag.child_tags[tag_idx]
 		tag_editor.tid = PackedInt32Array([tag_idx])
 		tags_container.add_child(tag_editor)
