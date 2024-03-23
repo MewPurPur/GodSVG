@@ -3,8 +3,8 @@
 [ext_resource type="Script" path="res://src/ui_parts/code_editor.gd" id="1_nffk0"]
 [ext_resource type="Texture2D" uid="uid://c5kgvxffw35gi" path="res://visual/icons/Compress.svg" id="2_33tgq"]
 [ext_resource type="FontFile" uid="uid://dtb4wkus51hxs" path="res://visual/fonts/FontMono.ttf" id="2_p4nol"]
-[ext_resource type="Texture2D" uid="uid://ccvjkdd0s7rb4" path="res://visual/icons/Copy.svg" id="3_6x47p"]
 [ext_resource type="Texture2D" uid="uid://6ymbl3jqersp" path="res://visual/icons/Import.svg" id="4_cuhac"]
+[ext_resource type="Texture2D" uid="uid://dthdjf4v2vlvg" path="res://visual/icons/CodeOptions.svg" id="4_sos04"]
 [ext_resource type="Texture2D" uid="uid://d0uvwj0t44n6v" path="res://visual/icons/Export.svg" id="5_pgurh"]
 [ext_resource type="Script" path="res://src/ui_elements/BetterTextEdit.gd" id="8_ser4i"]
 
@@ -104,13 +104,13 @@ text_overrun_behavior = 3
 layout_mode = 2
 size_flags_horizontal = 10
 
-[node name="CopyButton" type="Button" parent="PanelContainer/CodeButtons/MetaActions"]
+[node name="OptionsButton" type="Button" parent="PanelContainer/CodeButtons/MetaActions"]
 layout_mode = 2
-tooltip_text = "Copy All Text"
-focus_mode = 0
+tooltip_text = "More"
 mouse_default_cursor_shape = 2
 theme_type_variation = &"IconButton"
-icon = ExtResource("3_6x47p")
+icon = ExtResource("4_sos04")
+icon_alignment = 1
 
 [node name="ImportButton" type="Button" parent="PanelContainer/CodeButtons/MetaActions"]
 layout_mode = 2
@@ -160,7 +160,7 @@ fit_content = true
 
 [connection signal="pressed" from="PanelContainer/CodeButtons/OptimizeButton" to="." method="_on_optimize_button_pressed"]
 [connection signal="pressed" from="PanelContainer/CodeButtons/MarginContainer/FileButton" to="." method="_on_file_button_pressed"]
-[connection signal="pressed" from="PanelContainer/CodeButtons/MetaActions/CopyButton" to="." method="_on_copy_button_pressed"]
+[connection signal="pressed" from="PanelContainer/CodeButtons/MetaActions/OptionsButton" to="." method="_on_options_button_pressed"]
 [connection signal="pressed" from="PanelContainer/CodeButtons/MetaActions/ImportButton" to="." method="_on_import_button_pressed"]
 [connection signal="pressed" from="PanelContainer/CodeButtons/MetaActions/ExportButton" to="." method="_on_export_button_pressed"]
 [connection signal="caret_changed" from="ScriptEditor/SVGCodeEdit" to="ScriptEditor/SVGCodeEdit" method="redraw_caret"]
