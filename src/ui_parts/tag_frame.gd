@@ -1,37 +1,40 @@
 extends VBoxContainer
 
-static var TagEditor: PackedScene:
+const code_font = preload("res://visual/fonts/FontMono.ttf")
+
+static var TagFrame: PackedScene:
 	get:
-		if TagEditor == null:
-			TagEditor = load("res://src/ui_parts/tag_editor.tscn")
-		return TagEditor
+		if TagFrame == null:
+			TagFrame = load("res://src/ui_parts/tag_frame.tscn")
+		return TagFrame
 
 const ContextPopup = preload("res://src/ui_elements/context_popup.tscn")
 const TagContentUnknown = preload("res://src/ui_elements/tag_content_unknown.tscn")
 
 @onready var main_container: VBoxContainer = $Content/MainContainer
+@onready var title_bar: Panel = $TitleBar
+@onready var title_button: Button = $TitleBar/TitleButton
 var child_tags_container: VBoxContainer  # Only created if there are child tags.
-@onready var title_bar: PanelContainer = $Title
 @onready var content: PanelContainer = $Content
-@onready var title_icon: TextureRect = $Title/TitleBox/TitleIcon
-@onready var title_label: Label = $Title/TitleBox/TitleLabel
-@onready var title_button: Button = $Title/TitleBox/TitleButton
 
 var tid: PackedInt32Array
 var tag: Tag
 
 var surface := RenderingServer.canvas_item_create()  # Used for the drop indicator.
+@onready var title_bar_ci := title_bar.get_canvas_item()
 
 func _ready() -> void:
+	title_bar.custom_minimum_size.y = title_button.size.y + 4
 	RenderingServer.canvas_item_set_parent(surface, get_canvas_item())
 	RenderingServer.canvas_item_set_z_index(surface, 1)
-	title_label.text = tag.name
-	Utils.set_max_text_width(title_label, 180.0, 0.0)  # Handle TagUnknown gracefully.
-	title_icon.texture = tag.icon
+	#title_label.text = tag.name
+	#Utils.set_max_text_width(title_label, 180.0, 0.0)  # Handle TagUnknown gracefully.
+	#title_icon.texture = tag.icon
 	Indications.selection_changed.connect(determine_selection_highlight)
 	Indications.hover_changed.connect(determine_selection_highlight)
 	Indications.proposed_drop_changed.connect(queue_redraw)
 	determine_selection_highlight()
+	title_bar.queue_redraw()
 	
 	var tag_content := TagContentUnknown.instantiate()
 	tag_content.tag = tag
@@ -44,7 +47,7 @@ func _ready() -> void:
 		main_container.add_child(child_tags_container)
 		for tag_idx in tag.get_child_count():
 			var child_tag := tag.child_tags[tag_idx]
-			var tag_editor := TagEditor.instantiate()
+			var tag_editor := TagFrame.instantiate()
 			tag_editor.tag = child_tag
 			var new_tid := tid.duplicate()
 			new_tid.append(tag_idx)
@@ -60,7 +63,7 @@ func _get_drag_data(_at_position: Vector2) -> Variant:
 	var tags_container := VBoxContainer.new()
 	for data_idx in range(data.size() - 1, -1, -1):
 		var drag_tid := data[data_idx]
-		var preview := TagEditor.instantiate()
+		var preview := TagFrame.instantiate()
 		preview.tag = SVG.root_tag.get_tag(drag_tid)
 		preview.tid = drag_tid
 		preview.custom_minimum_size.x = size.x
@@ -175,10 +178,10 @@ func determine_selection_highlight() -> void:
 	content.add_theme_stylebox_override("panel", content_sb)
 	title_bar.add_theme_stylebox_override("panel", title_sb)
 
-# Draws the yellow indicator when drag-and-dropping tags.
 func _draw() -> void:
 	RenderingServer.canvas_item_clear(surface)
 	
+	# Check for drag and drop actions.
 	if Indications.proposed_drop_tid.is_empty():
 		return
 	
@@ -205,6 +208,20 @@ func _draw() -> void:
 	drop_sb.draw_center = false
 	drop_sb.set_corner_radius_all(4)
 	drop_sb.draw(surface, Rect2(Vector2.ZERO, get_size()))
+
+func _on_title_bar_draw() -> void:
+	# Decorate the title bar.
+	var tag_icon_size: Vector2 = tag.icon.get_size()
+	var half_bar_width := title_bar.size.x / 2
+	var title_width := code_font.get_string_size(tag.name,
+			HORIZONTAL_ALIGNMENT_LEFT, 180, 12).x
+	code_font.draw_string(title_bar_ci, Vector2(half_bar_width - title_width / 2, 18),
+			tag.name, HORIZONTAL_ALIGNMENT_LEFT, 180, 12)
+	title_button.position = title_bar.position +\
+			Vector2(half_bar_width + title_width / 2 + 3, 4)
+	title_button.reset_size()
+	tag.icon.draw_rect(title_bar_ci, Rect2(Vector2(half_bar_width - title_width / 2 -\
+			tag_icon_size.x - 4, 4), tag_icon_size), false)
 
 # Block dragging from starting when pressing the title button.
 func _on_title_button_gui_input(event) -> void:
