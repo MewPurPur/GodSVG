@@ -7,6 +7,8 @@ const ImportWarningDialog = preload("res://src/ui_parts/import_warning_dialog.ts
 const SVGFileDialog = preload("res://src/ui_parts/svg_file_dialog.tscn")
 const ExportDialog = preload("res://src/ui_parts/export_dialog.tscn")
 
+const default = '<svg width="16" height="16" xmlns="http://www.w3.org/2000/svg"></svg>'
+
 var text := ""
 var root_tag := TagSVG.new()
 
@@ -34,9 +36,7 @@ func _ready() -> void:
 	if not GlobalSettings.save_data.svg_text.is_empty():
 		apply_svg_text(GlobalSettings.save_data.svg_text)
 	else:
-		root_tag.attributes.width.set_num(16.0)
-		root_tag.attributes.height.set_num(16.0)
-		update_text(false)
+		apply_svg_text(default)
 	
 	if load_cmdl:
 		apply_svg_from_path(cmdline_args[0])
