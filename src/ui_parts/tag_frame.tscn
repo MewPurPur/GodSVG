@@ -1,0 +1,41 @@
+[gd_scene load_steps=3 format=3 uid="uid://dfvfsput41mnw"]
+
+[ext_resource type="Script" path="res://src/ui_parts/tag_frame.gd" id="1_5mc4m"]
+[ext_resource type="Texture2D" uid="uid://cmepkbqde0jh0" path="res://visual/icons/SmallMore.svg" id="2_5jajt"]
+
+[node name="TagFrame" type="VBoxContainer"]
+offset_left = 2.0
+offset_top = 2.0
+offset_right = 55.0
+offset_bottom = 32.0
+theme_override_constants/separation = 0
+script = ExtResource("1_5mc4m")
+
+[node name="TitleBar" type="Panel" parent="."]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="TitleButton" type="Button" parent="TitleBar"]
+layout_mode = 2
+offset_right = 22.0
+offset_bottom = 22.0
+size_flags_horizontal = 0
+focus_mode = 0
+mouse_filter = 1
+mouse_default_cursor_shape = 2
+theme_type_variation = &"FlatButton"
+icon = ExtResource("2_5jajt")
+icon_alignment = 1
+
+[node name="Content" type="PanelContainer" parent="."]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="MainContainer" type="VBoxContainer" parent="Content"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 8
+
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
+[connection signal="draw" from="TitleBar" to="." method="_on_title_bar_draw"]
+[connection signal="pressed" from="TitleBar/TitleButton" to="." method="_on_title_button_pressed"]
