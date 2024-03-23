@@ -118,7 +118,7 @@ func _on_optimize_button_pressed() -> void:
 
 func _on_file_button_pressed() -> void:
 	var btn_array: Array[Button] = [Utils.create_btn(tr("Remove the association"),
-			clear_file_path)]
+			clear_file_path, false, load("res://visual/icons/Clear.svg"))]
 	var context_popup := ContextPopup.instantiate()
 	add_child(context_popup)
 	context_popup.set_button_array(btn_array, false, file_button.size.x)
@@ -129,7 +129,7 @@ func _on_file_button_pressed() -> void:
 func _on_options_button_pressed():
 	var btn_array: Array[Button] = [Utils.create_btn(tr("Copy All Text"),
 			_on_copy_button_pressed, false, load("res://visual/icons/Copy.svg")),
-			Utils.create_btn(tr("Reset SVG"), reset_svg, is_svg_default(),
+			Utils.create_btn(tr("Reset SVG"), reset_svg, SVG.text == SVG.default,
 			load("res://visual/icons/Clear.svg"))]
 	var context_popup := ContextPopup.instantiate()
 	add_child(context_popup)
@@ -140,13 +140,9 @@ func _on_options_button_pressed():
 func clear_file_path() -> void:
 	GlobalSettings.modify_save_data("current_file_path", "")
 
-func is_svg_default() -> bool:
-	return SVG.text == '<svg width="16" height="16" xmlns="http://www.w3.org/2000/svg"></svg>'
-
 func reset_svg() -> void:
-	if not is_svg_default():
-		SVG.text = '<svg width="16" height="16" xmlns="http://www.w3.org/2000/svg"></svg>'
-		SVG.update_tags()
+	if SVG.text != SVG.default:
+		SVG.apply_svg_text(SVG.default)
 
 func _notification(what: int) -> void:
 	if what == Utils.CustomNotification.HIGHLIGHT_COLORS_CHANGED:
