@@ -129,7 +129,7 @@ func _on_file_button_pressed() -> void:
 
 
 func _on_options_button_pressed():
-	var btn_array: Array[Button] = [Utils.create_btn("Copy All Text", _on_copy_button_pressed, false, CopyIcon), Utils.create_btn("Reset SVG", reset_svg, false, ClearIcon)]
+	var btn_array: Array[Button] = [Utils.create_btn(tr("Copy All Text"), _on_copy_button_pressed, false, CopyIcon), Utils.create_btn(tr("Reset SVG"), reset_svg, false, ClearIcon)]
 	var context_popup := ContextPopup.instantiate()
 	add_child(context_popup)
 	context_popup.set_button_array(btn_array, false, options_button.size.x)
