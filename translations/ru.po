@@ -105,6 +105,10 @@ msgstr "Восстановить значение по умолчанию"
 msgid "Copy All Text"
 msgstr "Скопировать весь текст"
 
+#, fuzzy
+msgid "Reset SVG"
+msgstr "Растеризовать SVG"
+
 msgid "Save"
 msgstr "Сохранить"
 

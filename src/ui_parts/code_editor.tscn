@@ -107,6 +107,7 @@ size_flags_horizontal = 10
 [node name="OptionsButton" type="Button" parent="PanelContainer/CodeButtons/MetaActions"]
 layout_mode = 2
 tooltip_text = "More"
+focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_type_variation = &"IconButton"
 icon = ExtResource("4_sos04")
