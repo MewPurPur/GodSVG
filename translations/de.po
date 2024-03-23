@@ -103,6 +103,10 @@ msgstr "Zurücksetzen"
 msgid "Copy All Text"
 msgstr "Text kopieren"
 
+#, fuzzy
+msgid "Reset SVG"
+msgstr "SVG rasterisieren"
+
 msgid "Save"
 msgstr "Speichern"
 

@@ -103,6 +103,9 @@ msgstr "Възстанови началната стойност"
 msgid "Copy All Text"
 msgstr "Копирай всичкия текст"
 
+msgid "Reset SVG"
+msgstr "Рестартирай SVG-то"
+
 msgid "Save"
 msgstr "Запиши"
 

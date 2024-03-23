@@ -101,6 +101,9 @@ msgstr ""
 msgid "Copy All Text"
 msgstr ""
 
+msgid "Reset SVG"
+msgstr ""
+
 msgid "Save"
 msgstr ""
 
