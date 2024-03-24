@@ -11,8 +11,6 @@ var timer := Timer.new()
 
 var hovered := false
 
-@export var block_non_ascii: bool  ## Blocks non-ASCII characters.
-
 func _init() -> void:
 	context_menu_enabled = false
 	wrap_mode = TextEdit.LINE_WRAPPING_BOUNDARY
@@ -50,15 +48,20 @@ func redraw_caret() -> void:
 	for caret in get_caret_count():
 		var caret_line := get_caret_line(caret)
 		var caret_column := get_caret_column(caret)
-		var rect: Rect2 = get_rect_at_line_column(caret_line, caret_column)
-		var caret_pos := rect.end + Vector2(1, -2)
+		var glyph_end := Vector2(get_rect_at_line_column(caret_line, caret_column).end)
+		# Workaround for empty text.
+		if glyph_end == Vector2.ZERO:
+			glyph_end = Vector2(get_theme_stylebox("normal").content_margin_left,
+					get_line_height() + 2)
+		
+		var caret_pos := glyph_end + Vector2(1, -2)
 		# Workaround for ligatures.
 		var chars_back := 0
-		while get_line(caret_line).length() > caret_column + chars_back and\
-		rect == Rect2(get_rect_at_line_column(caret_line, caret_column + chars_back + 1)):
+		while get_line(caret_line).length() > caret_column + chars_back and glyph_end ==\
+		Vector2(get_rect_at_line_column(caret_line, caret_column + chars_back + 1).end):
 			chars_back += 1
 			caret_pos.x -= char_size.x
-		
+		# Determine the end of the caret and draw it.
 		var caret_end := caret_pos
 		if is_overtype_mode_enabled():
 			caret_end.x += char_size.x - 1
@@ -132,14 +135,3 @@ func _gui_input(event: InputEvent) -> void:
 			if has_undo():
 				undo()
 			accept_event()
-
-
-# I'd prefer to block non-ASCII inputs in SVG code. SVG syntax is ASCII-only, and while
-# text blocks and comments allow non-ASCII, they are still difficult to deal with
-# because they are 2-4 bytes long. <text> tags make the situation a whole lot harder,
-# but for now they are not supported. Maybe in some future version I'll have them
-# be translated directly into paths or have an abstraction over them, I don't know.
-# Either way, not planning to support UTF-8, so I block it if the user tries to type it.
-func _handle_unicode_input(unicode_char: int, caret_index: int) -> void:
-	if (block_non_ascii and unicode_char <= 127) or not block_non_ascii:
-		insert_text_at_caret(char(unicode_char), caret_index)
