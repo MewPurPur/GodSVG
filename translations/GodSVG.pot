@@ -136,7 +136,7 @@ msgstr ""
 msgid "Convert To"
 msgstr ""
 
-msgid "Doesn’t describe a SVG."
+msgid "Doesn’t describe an SVG."
 msgstr ""
 
 msgid "Improper nesting."
