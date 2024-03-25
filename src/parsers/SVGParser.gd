@@ -71,7 +71,7 @@ class ParseResult extends RefCounted:
 
 static func get_error_string(parse_error: ParseError) -> String:
 	match parse_error:
-		ParseError.ERR_NOT_SVG: return "Doesn’t describe a SVG."
+		ParseError.ERR_NOT_SVG: return "Doesn’t describe an SVG."
 		ParseError.ERR_IMPROPER_NESTING: return "Improper nesting."
 		_: return ""
 
