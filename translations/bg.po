@@ -139,7 +139,7 @@ msgstr "Вмъкни отпред"
 msgid "Convert To"
 msgstr "Превърни в"
 
-msgid "Doesn’t describe a SVG."
+msgid "Doesn’t describe an SVG."
 msgstr "Текстът не описва SVG."
 
 msgid "Improper nesting."

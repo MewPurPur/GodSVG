@@ -140,7 +140,7 @@ msgstr "Danach einsetzen"
 msgid "Convert To"
 msgstr "Konvertieren zu"
 
-msgid "Doesn’t describe a SVG."
+msgid "Doesn’t describe an SVG."
 msgstr "Beschreibt kein SVG."
 
 msgid "Improper nesting."
