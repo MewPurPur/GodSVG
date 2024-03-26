@@ -103,6 +103,9 @@ msgstr "Възстанови началната стойност"
 msgid "Copy All Text"
 msgstr "Копирай всичкия текст"
 
+msgid "Clear SVG"
+msgstr "Изчисти SVG-то"
+
 msgid "Reset SVG"
 msgstr "Рестартирай SVG-то"
 
@@ -366,7 +369,7 @@ msgid "Autoformatting"
 msgstr "Автоматично форматиране"
 
 msgid "General"
-msgstr ""
+msgstr "Основни"
 
 msgid "Numbers"
 msgstr "Числа"
@@ -381,10 +384,10 @@ msgid "Transforms"
 msgstr "Трансформации"
 
 msgid "Number precision digits"
-msgstr ""
+msgstr "Прецизност на числата"
 
 msgid "Angle precision digits"
-msgstr ""
+msgstr "Прецизност на ъглите"
 
 msgid "Add trailing newline"
 msgstr "Добави нов ред накрая"
@@ -437,7 +440,7 @@ msgstr "Относително"
 msgid "Absolute"
 msgstr "Абсолютно"
 
-msgid "Remove the association"
+msgid "Clear association"
 msgstr "Премахни асоциацията"
 
 msgid "Apply the matrix"
@@ -453,7 +456,7 @@ msgid "Any changes will apply immediately."
 msgstr "Промените ще бъдат нанесени веднага."
 
 msgid "Always active."
-msgstr ""
+msgstr "Винаги активно."
 
 msgid "Search color"
 msgstr "Търсене на цвят"
