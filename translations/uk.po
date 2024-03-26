@@ -106,6 +106,9 @@ msgstr "Скинути значення до замовчування"
 msgid "Copy All Text"
 msgstr "Скопіювати весь текст"
 
+msgid "Clear SVG"
+msgstr ""
+
 #, fuzzy
 msgid "Reset SVG"
 msgstr "Растеризувати SVG"
@@ -441,7 +444,8 @@ msgstr "Відносна"
 msgid "Absolute"
 msgstr "Абсолютна"
 
-msgid "Remove the association"
+#, fuzzy
+msgid "Clear association"
 msgstr "Видалити асоціацію"
 
 msgid "Apply the matrix"
