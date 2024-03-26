@@ -100,6 +100,9 @@ msgstr ""
 msgid "Copy All Text"
 msgstr ""
 
+msgid "Clear SVG"
+msgstr ""
+
 msgid "Reset SVG"
 msgstr ""
 
@@ -429,7 +432,7 @@ msgstr ""
 msgid "Absolute"
 msgstr ""
 
-msgid "Remove the association"
+msgid "Clear association"
 msgstr ""
 
 msgid "Apply the matrix"
