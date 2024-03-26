@@ -103,6 +103,9 @@ msgstr "Zurücksetzen"
 msgid "Copy All Text"
 msgstr "Text kopieren"
 
+msgid "Clear SVG"
+msgstr ""
+
 #, fuzzy
 msgid "Reset SVG"
 msgstr "SVG rasterisieren"
@@ -444,7 +447,8 @@ msgstr "Relativ"
 msgid "Absolute"
 msgstr "Absolut"
 
-msgid "Remove the association"
+#, fuzzy
+msgid "Clear association"
 msgstr "Dateizuordnung entfernen"
 
 msgid "Apply the matrix"

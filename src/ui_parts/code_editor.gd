@@ -117,11 +117,15 @@ func _on_optimize_button_pressed() -> void:
 	SVG.root_tag.optimize()
 
 func _on_file_button_pressed() -> void:
-	var btn_array: Array[Button] = [Utils.create_btn(tr("Remove the association"),
-			clear_file_path, false, load("res://visual/icons/Clear.svg"))]
+	var btn_array: Array[Button] = []
+	btn_array.append(Utils.create_btn(tr("Clear association"), clear_file_path,
+			false, load("res://visual/icons/Clear.svg")))
+	btn_array.append(Utils.create_btn(tr("Reset SVG"), reset_svg,
+			SVG.text == FileAccess.get_file_as_string(GlobalSettings.save_data.current_file_path),
+			load("res://visual/icons/Reload.svg")))
 	var context_popup := ContextPopup.instantiate()
 	add_child(context_popup)
-	context_popup.set_button_array(btn_array, false, file_button.size.x)
+	context_popup.set_button_array(btn_array, true, file_button.size.x)
 	Utils.popup_under_rect_center(context_popup, file_button.get_global_rect(),
 			get_viewport())
 
@@ -130,7 +134,7 @@ func _on_options_button_pressed():
 	var btn_array: Array[Button] = []
 	btn_array.append(Utils.create_btn(tr("Copy All Text"), _on_copy_button_pressed,
 			false, load("res://visual/icons/Copy.svg")))
-	btn_array.append(Utils.create_btn(tr("Reset SVG"), reset_svg,
+	btn_array.append(Utils.create_btn(tr("Clear SVG"), clear_svg,
 			SVG.text == SVG.default, load("res://visual/icons/Clear.svg")))
 	var context_popup := ContextPopup.instantiate()
 	add_child(context_popup)
@@ -142,8 +146,10 @@ func clear_file_path() -> void:
 	GlobalSettings.modify_save_data("current_file_path", "")
 
 func reset_svg() -> void:
-	if SVG.text != SVG.default:
-		SVG.apply_svg_text(SVG.default)
+	SVG.apply_svg_from_path(GlobalSettings.save_data.current_file_path)
+
+func clear_svg() -> void:
+	SVG.apply_svg_text(SVG.default)
 
 func _notification(what: int) -> void:
 	if what == Utils.CustomNotification.HIGHLIGHT_COLORS_CHANGED:
