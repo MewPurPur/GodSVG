@@ -177,6 +177,11 @@ layout_mode = 2
 section_name = "autoformat"
 setting_name = "xml_shorthand_tags"
 
+[node name="RemoveComments" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Autoformatting/AutoformattingVBox/XMLVBox" instance=ExtResource("4_2qeh2")]
+layout_mode = 2
+section_name = "autoformat"
+setting_name = "xml_remove_comments"
+
 [node name="NumberVBox" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Autoformatting/AutoformattingVBox"]
 unique_name_in_owner = true
 layout_mode = 2
@@ -391,6 +396,11 @@ layout_mode = 2
 section_name = "theming"
 setting_name = "highlighting_text_color"
 
+[node name="CDATAColor" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Theme/ThemeSettings/HighlighterVBox" instance=ExtResource("4_dacsc")]
+layout_mode = 2
+section_name = "theming"
+setting_name = "highlighting_cdata_color"
+
 [node name="ErrorColor" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Theme/ThemeSettings/HighlighterVBox" instance=ExtResource("4_dacsc")]
 layout_mode = 2
 section_name = "theming"
@@ -513,9 +523,13 @@ mouse_default_cursor_shape = 2
 text = "Close"
 
 [connection signal="pressed" from="VBoxContainer/Language" to="." method="_on_language_pressed"]
-[connection signal="pressed" from="VBoxContainer/HBoxContainer/ContentPicker/ScrollContainer/Tabs/AutoformattingTab" to="." method="_on_autoformatting_tab_pressed"]
+[connection signal="toggled" from="VBoxContainer/HBoxContainer/ContentPicker/ScrollContainer/Tabs/AutoformattingTab" to="." method="_on_autoformatting_tab_toggled"]
 [connection signal="pressed" from="VBoxContainer/HBoxContainer/ContentPicker/ScrollContainer/Tabs/PalettesTab" to="." method="_on_palettes_tab_pressed"]
+[connection signal="toggled" from="VBoxContainer/HBoxContainer/ContentPicker/ScrollContainer/Tabs/PalettesTab" to="." method="_on_palettes_tab_toggled"]
 [connection signal="pressed" from="VBoxContainer/HBoxContainer/ContentPicker/ScrollContainer/Tabs/ShortcutsTab" to="." method="_on_shortcuts_tab_pressed"]
+[connection signal="toggled" from="VBoxContainer/HBoxContainer/ContentPicker/ScrollContainer/Tabs/ShortcutsTab" to="." method="_on_shortcuts_tab_toggled"]
 [connection signal="pressed" from="VBoxContainer/HBoxContainer/ContentPicker/ScrollContainer/Tabs/ThemeTab" to="." method="_on_theme_tab_pressed"]
+[connection signal="toggled" from="VBoxContainer/HBoxContainer/ContentPicker/ScrollContainer/Tabs/ThemeTab" to="." method="_on_theme_tab_toggled"]
 [connection signal="pressed" from="VBoxContainer/HBoxContainer/ContentPicker/ScrollContainer/Tabs/OtherTab" to="." method="_on_other_tab_pressed"]
+[connection signal="toggled" from="VBoxContainer/HBoxContainer/ContentPicker/ScrollContainer/Tabs/OtherTab" to="." method="_on_other_tab_toggled"]
 [connection signal="pressed" from="VBoxContainer/Close" to="." method="_on_close_pressed"]

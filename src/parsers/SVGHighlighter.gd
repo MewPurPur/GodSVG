@@ -7,6 +7,7 @@ class_name SVGHighlighter extends SyntaxHighlighter
 @export var string_color := Color("a1ffe0")
 @export var comment_color := Color("cdcfd280")
 @export var text_color := Color("cdcfeaac")
+@export var cdata_color := Color("ffeda1")
 @export var error_color := Color("ff866b")
 
 var unknown_tag_color := tag_color.darkened(0.3)
@@ -29,8 +30,10 @@ func _get_line_syntax_highlighting(line: int) -> Dictionary:
 		match parser.get_node_type():
 			XMLParser.NODE_COMMENT:
 				color_map[offset] = {"color": comment_color}
-			XMLParser.NODE_CDATA, XMLParser.NODE_TEXT:
+			XMLParser.NODE_TEXT:
 				color_map[offset] = {"color": text_color}
+			XMLParser.NODE_CDATA:
+				color_map[offset] = {"color": cdata_color}
 			XMLParser.NODE_ELEMENT_END:
 				offset = svg_text.find("<", offset)
 				var tag_name := parser.get_node_name()
