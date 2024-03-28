@@ -47,15 +47,13 @@ func update_palettes(search_text := "") -> void:
 	var displayed_palettes: Array[ColorPalette] = [reserved_color_palette]
 	displayed_palettes += GlobalSettings.palettes
 	for palette in displayed_palettes:
-		var colors_to_show: Array[String] = []
-		var color_names_to_show: Array[String] = []
+		var indices_to_show: Array[int] = []
 		for i in palette.colors.size():
 			if search_text.is_empty() or\
 			search_text.is_subsequence_ofn(palette.color_names[i]):
-				colors_to_show.append(palette.colors[i])
-				color_names_to_show.append(palette.color_names[i])
+				indices_to_show.append(i)
 		
-		if colors_to_show.is_empty():
+		if indices_to_show.is_empty():
 			continue
 		
 		var palette_container := VBoxContainer.new()
@@ -69,14 +67,15 @@ func update_palettes(search_text := "") -> void:
 		
 		var swatch_container := HFlowContainer.new()
 		swatch_container.add_theme_constant_override("h_separation", 3)
-		for i in colors_to_show.size():
+		for i in indices_to_show:
 			var swatch := ColorSwatch.instantiate()
+			var color_to_show := palette.colors[i]
 			swatch.color_palette = palette
 			swatch.idx = i
-			swatch.pressed.connect(pick_palette_color.bind(colors_to_show[i]))
+			swatch.pressed.connect(pick_palette_color.bind(color_to_show))
 			swatch_container.add_child(swatch)
 			swatches_list.append(swatch)
-			if ColorParser.are_colors_same("#" + colors_to_show[i], current_value):
+			if ColorParser.are_colors_same("#" + color_to_show, current_value):
 				swatch.disabled = true
 				swatch.mouse_default_cursor_shape = Control.CURSOR_ARROW
 		palette_container.add_child(swatch_container)
