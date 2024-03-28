@@ -247,6 +247,9 @@ msgstr "Цвят на коментарите"
 msgid "Text color"
 msgstr "Цвят на текста"
 
+msgid "CDATA color"
+msgstr "Цвят на CDATA"
+
 msgid "Error color"
 msgstr "Цвят на грешките"
 
