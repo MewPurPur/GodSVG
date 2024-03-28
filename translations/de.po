@@ -248,6 +248,10 @@ msgstr "Kommentarfarbe"
 msgid "Text color"
 msgstr "Textfarbe"
 
+#, fuzzy
+msgid "CDATA color"
+msgstr "Tagfarbe"
+
 msgid "Error color"
 msgstr "Fehlerfarbe"
 

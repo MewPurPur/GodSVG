@@ -244,6 +244,9 @@ msgstr ""
 msgid "Text color"
 msgstr ""
 
+msgid "CDATA color"
+msgstr ""
+
 msgid "Error color"
 msgstr ""
 
