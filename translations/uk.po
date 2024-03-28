@@ -251,6 +251,10 @@ msgstr "Колір коментаря"
 msgid "Text color"
 msgstr "Колір тексту"
 
+#, fuzzy
+msgid "CDATA color"
+msgstr "Колір тегу"
+
 msgid "Error color"
 msgstr "Колір помилки"
 

@@ -250,6 +250,10 @@ msgstr "Цвет комментария"
 msgid "Text color"
 msgstr "Цвет текста"
 
+#, fuzzy
+msgid "CDATA color"
+msgstr "Цвет тега"
+
 msgid "Error color"
 msgstr "Цвет ошибки"
 

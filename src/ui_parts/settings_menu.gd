@@ -94,6 +94,7 @@ func setup_setting_labels() -> void:
 	%HighlighterVBox/StringColor.label.text = tr("String color")
 	%HighlighterVBox/CommentColor.label.text = tr("Comment color")
 	%HighlighterVBox/TextColor.label.text = tr("Text color")
+	%HighlighterVBox/CDATAColor.label.text = tr("CDATA color")
 	%HighlighterVBox/ErrorColor.label.text = tr("Error color")
 	%HandleColors/InsideColor.label.text = tr("Inside color")
 	%HandleColors/NormalColor.label.text = tr("Normal color")
@@ -241,7 +242,7 @@ func setup_theming_tab() -> void:
 			child.value_changed.connect(custom_notify.bind(
 					Utils.CustomNotification.HANDLE_COLORS_CHANGED))
 	%DefaultValueOpacity.value_changed.connect(custom_notify.bind(
-					Utils.CustomNotification.DEFAULT_VALUE_OPACITY_CHANGED))
+			Utils.CustomNotification.DEFAULT_VALUE_OPACITY_CHANGED))
 
 func _on_theme_settings_changed() -> void:
 	ThemeGenerator.generate_theme()
@@ -250,7 +251,7 @@ func custom_notify(notif: Utils.CustomNotification) -> void:
 	get_tree().get_root().propagate_notification(notif)
 
 
-# Optimize by only generating content when you click them.
+# Optimize by only generating content on demand.
 
 var generated_content := {  # String: bool
 	"autoformat": false,
@@ -260,28 +261,28 @@ var generated_content := {  # String: bool
 	"other": false,
 }
 
-func _on_autoformatting_tab_pressed() -> void:
-	if not generated_content.autoformat:
+func _on_autoformatting_tab_toggled(toggled_on: bool) -> void:
+	if toggled_on and not generated_content.autoformat:
 		setup_autoformat_tab()
 		generated_content.autoformat = true
 
-func _on_palettes_tab_pressed() -> void:
-	if not generated_content.palettes:
+func _on_palettes_tab_toggled(toggled_on: bool) -> void:
+	if toggled_on and not generated_content.palettes:
 		rebuild_color_palettes()
 		generated_content.palettes = true
 
-func _on_shortcuts_tab_pressed() -> void:
-	if not generated_content.shortcuts:
+func _on_shortcuts_tab_toggled(toggled_on: bool) -> void:
+	if toggled_on and not generated_content.shortcuts:
 		setup_shortcuts_tab()
 		generated_content.shortcuts = true
 
-func _on_theme_tab_pressed() -> void:
-	if not generated_content.theming:
+func _on_theme_tab_toggled(toggled_on: bool) -> void:
+	if toggled_on and not generated_content.theming:
 		setup_theming_tab()
 		generated_content.theming = true
 
-func _on_other_tab_pressed() -> void:
-	if not generated_content.other:
+func _on_other_tab_toggled(toggled_on: bool) -> void:
+	if toggled_on and not generated_content.other:
 		if not DisplayServer.has_feature(DisplayServer.FEATURE_MOUSE_WARP):
 			wrap_mouse.checkbox.set_pressed_no_signal(false)
 			wrap_mouse.set_checkbox_enabled(false)
