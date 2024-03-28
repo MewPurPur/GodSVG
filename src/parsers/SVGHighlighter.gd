@@ -7,15 +7,11 @@ class_name SVGHighlighter extends SyntaxHighlighter
 @export var string_color := Color("a1ffe0")
 @export var comment_color := Color("cdcfd280")
 @export var text_color := Color("cdcfeaac")
-@export var cdata_color := Color("ffeda1")
+@export var cdata_color := Color("ffeda1ac")
 @export var error_color := Color("ff866b")
 
-var unknown_tag_color := tag_color.darkened(0.3)
-var unknown_attribute_color := attribute_color.darkened(0.3)
-
-func is_attribute_symbol(c: String) -> bool:
-	return (c >= "a" and c <= "z") or (c >= "A" and c <= "Z") or\
-	(c >= "0" and c <= "9") or c == "-" or c == ":"
+var unknown_tag_color := Color(tag_color, tag_color.a * 0.7)
+var unknown_attribute_color := Color(attribute_color, attribute_color.a * 0.7)
 
 func _get_line_syntax_highlighting(line: int) -> Dictionary:
 	var svg_text := get_text_edit().get_line(line)
@@ -28,12 +24,97 @@ func _get_line_syntax_highlighting(line: int) -> Dictionary:
 	while parser.read() == OK:
 		var offset := parser.get_node_offset()
 		match parser.get_node_type():
-			XMLParser.NODE_COMMENT:
-				color_map[offset] = {"color": comment_color}
-			XMLParser.NODE_TEXT:
-				color_map[offset] = {"color": text_color}
-			XMLParser.NODE_CDATA:
-				color_map[offset] = {"color": cdata_color}
+			XMLParser.NODE_ELEMENT:
+				offset = svg_text.find("<", offset)
+				var tag_name := parser.get_node_name()
+				color_map[offset] = {"color": symbol_color}
+				offset += 1
+				if tag_name.is_empty():
+					color_map[offset] = {"color": error_color}
+					return color_map
+				else:
+					color_map[offset] = {"color":
+							tag_color if SVGDB.is_tag_known(tag_name) else unknown_tag_color}
+				offset += tag_name.length()
+				
+				# Attribute names can't be directly after a quotation or after the tag name.
+				var expecting_attribute_name := false
+				var expecting_end := true
+				
+				var current_attribute_name := ""
+				var expecting_equal_sign := false
+				var expecting_attribute_value := false
+				# Loop through the attribute section.
+				while offset < svg_text.length():
+					var c := svg_text[offset]
+					if expecting_end:
+						if c in " \t\n\r":
+							expecting_attribute_name = true
+						elif c == ">" or c == "/" and svg_text[offset + 1] == ">":
+							color_map[offset] = {"color": symbol_color}
+							break
+						else:
+							if not expecting_attribute_name:
+								color_map[offset] = {"color": error_color}
+								return color_map
+							else:
+								expecting_end = false
+								expecting_attribute_name = false
+								current_attribute_name += c
+					elif not current_attribute_name.is_empty():
+						if c in " \t\n\r":
+							color_map[offset - current_attribute_name.length()] = {"color":
+									attribute_color if SVGDB.is_attribute_known(tag_name,
+									current_attribute_name) else unknown_attribute_color}
+							current_attribute_name = ""
+							expecting_equal_sign = true
+						elif c in "/>":
+							color_map[offset - current_attribute_name.length()] = {"color":
+									attribute_color if SVGDB.is_attribute_known(tag_name,
+									current_attribute_name) else unknown_attribute_color}
+							color_map[offset] = {"color": error_color}
+							return color_map
+						elif c == "=":
+							color_map[offset - current_attribute_name.length()] = {"color":
+									attribute_color if SVGDB.is_attribute_known(tag_name,
+									current_attribute_name) else unknown_attribute_color}
+							color_map[offset] = {"color": symbol_color}
+							current_attribute_name = ""
+							expecting_attribute_value = true
+						else:
+							current_attribute_name += c
+					elif expecting_equal_sign:
+						if c == "=":
+							color_map[offset] = {"color": symbol_color}
+							expecting_equal_sign = false
+							expecting_attribute_value = true
+						else:
+							if not c in " \t\n\r":
+								color_map[offset] = {"color": error_color}
+								return color_map
+					elif expecting_attribute_value:
+						if c == "'":
+							color_map[offset] = {"color": string_color}
+							expecting_attribute_value = false
+							var end_pos := svg_text.find("'", offset + 1)
+							if end_pos == -1:
+								break
+							else:
+								offset = end_pos
+								expecting_end = true
+						elif c == '"':
+							color_map[offset] = {"color": string_color}
+							expecting_attribute_value = false
+							var end_pos := svg_text.find('"', offset + 1)
+							if end_pos == -1:
+								break
+							else:
+								offset = end_pos
+								expecting_end = true
+						elif not c in " \t\n\r":
+							color_map[offset] = {"color": error_color}
+							return color_map
+					offset += 1
 			XMLParser.NODE_ELEMENT_END:
 				offset = svg_text.find("<", offset)
 				var tag_name := parser.get_node_name()
@@ -43,79 +124,12 @@ func _get_line_syntax_highlighting(line: int) -> Dictionary:
 						tag_color if SVGDB.is_tag_known(tag_name) else unknown_tag_color}
 				offset += tag_name.length()
 				color_map[offset] = {"color": symbol_color}
-			XMLParser.NODE_ELEMENT:
-				offset = svg_text.find("<", offset)
-				var tag_name := parser.get_node_name()
-				color_map[offset] = {"color": symbol_color}
-				offset += 1
-				color_map[offset] = {"color":
-						tag_color if SVGDB.is_tag_known(tag_name) else unknown_tag_color}
-				offset += tag_name.length()
-				color_map[offset] = {"color": symbol_color}
-				
-				# Parsing stuff inside an element.
-				if offset >= svg_text.length() or svg_text[offset] == ">":
-					continue
-				offset += 1
-				# Find where the current tag ends to be safe.
-				var next_end: int
-				var next_end_a := svg_text.find("/>", offset)
-				var next_end_b := svg_text.find(">", offset)
-				if next_end_a == -1 and next_end_b != -1:
-					next_end = next_end_b
-				elif next_end_b == -1 and next_end_a != -1:
-					next_end = next_end_a
-				elif next_end_b != -1 and next_end_a != -1:
-					next_end = mini(next_end_a, next_end_b)
-				else:
-					return color_map
-				
-				# Highlight the attribute name and equal sign.
-				while offset < next_end:
-					var next_equal_sign := svg_text.find("=", offset)
-					if next_equal_sign != -1 and next_equal_sign < next_end:
-						var is_known := SVGDB.is_attribute_known(tag_name,
-								svg_text.substr(offset, next_equal_sign - offset).strip_edges())
-						while not is_attribute_symbol(svg_text[offset]):
-							offset += 1
-						color_map[offset] = {"color": attribute_color if is_known\
-								else unknown_attribute_color}
-						while offset < next_equal_sign:
-							if not is_attribute_symbol(svg_text[offset]):
-								color_map[offset] = {"color": error_color}
-								break
-							offset += 1
-						offset = next_equal_sign
-						color_map[offset] = {"color": symbol_color}
-					
-					# Highlight the attribute value.
-					offset += 1
-					color_map[offset] = {"color": error_color}
-					var next_double_quote_pos := svg_text.find('"', offset)
-					var next_single_quote_pos := svg_text.find("'", offset)
-					var in_double_quote := true
-					var next_quote_pos := next_double_quote_pos
-					if next_single_quote_pos != -1 and (next_double_quote_pos == -1 or\
-					next_single_quote_pos < next_double_quote_pos):
-						in_double_quote = false
-						next_quote_pos = next_single_quote_pos
-					offset = next_quote_pos
-					color_map[offset] = {"color": string_color}
-					if next_quote_pos == -1 or next_quote_pos >\
-					mini(svg_text.find("/", offset), svg_text.find(">", offset)):
-						offset = mini(svg_text.find("/", offset), svg_text.find(">", offset))
-						break
-					else:
-						next_quote_pos = svg_text.find(
-								'"' if in_double_quote else "'", offset + 1)
-						offset = next_quote_pos + 1
-						color_map[offset] = {"color": symbol_color}
-						if next_quote_pos == -1:
-							return color_map
-						else:
-							offset = next_quote_pos + 1
-				# Finish parsing.
-				color_map[offset] = {"color": symbol_color}
+			XMLParser.NODE_TEXT:
+				color_map[offset] = {"color": text_color}
+			XMLParser.NODE_CDATA:
+				color_map[offset] = {"color": cdata_color}
+			_:
+				color_map[offset] = {"color": comment_color}
 	
 	return color_map
 

@@ -177,11 +177,6 @@ layout_mode = 2
 section_name = "autoformat"
 setting_name = "xml_shorthand_tags"
 
-[node name="RemoveComments" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Autoformatting/AutoformattingVBox/XMLVBox" instance=ExtResource("4_2qeh2")]
-layout_mode = 2
-section_name = "autoformat"
-setting_name = "xml_remove_comments"
-
 [node name="NumberVBox" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Autoformatting/AutoformattingVBox"]
 unique_name_in_owner = true
 layout_mode = 2

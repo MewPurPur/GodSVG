@@ -40,7 +40,7 @@ const default_config = {
 		"highlighting_string_color": Color("a1ffe0"),
 		"highlighting_comment_color": Color("cdcfd280"),
 		"highlighting_text_color": Color("cdcfeaac"),
-		"highlighting_cdata_color": Color("ffeda1"),
+		"highlighting_cdata_color": Color("ffeda1ac"),
 		"highlighting_error_color": Color("ff866b"),
 		"handle_inside_color": Color("fff"),
 		"handle_color": Color("#111"),
@@ -106,7 +106,7 @@ var highlighting_attribute_color := Color("bce0ff")
 var highlighting_string_color := Color("a1ffe0")
 var highlighting_comment_color := Color("cdcfd280")
 var highlighting_text_color := Color("cdcfeaac")
-var highlighting_cdata_color := Color("ffeda1")
+var highlighting_cdata_color := Color("ffeda1ac")
 var highlighting_error_color := Color("ff866b")
 var handle_inside_color := Color("fff")
 var handle_color := Color("#111")

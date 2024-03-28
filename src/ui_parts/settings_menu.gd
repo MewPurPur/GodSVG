@@ -94,6 +94,7 @@ func setup_setting_labels() -> void:
 	%HighlighterVBox/StringColor.label.text = tr("String color")
 	%HighlighterVBox/CommentColor.label.text = tr("Comment color")
 	%HighlighterVBox/TextColor.label.text = tr("Text color")
+	%HighlighterVBox/CDATAColor.label.text = tr("CDATA color")
 	%HighlighterVBox/ErrorColor.label.text = tr("Error color")
 	%HandleColors/InsideColor.label.text = tr("Inside color")
 	%HandleColors/NormalColor.label.text = tr("Normal color")
