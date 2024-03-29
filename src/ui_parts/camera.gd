@@ -104,4 +104,5 @@ func _draw() -> void:
 		i += 1.0
 	if not major_points.is_empty():
 		draw_multiline(major_points, major_grid_color)
-	draw_multiline(minor_points, minor_grid_color)
+	if not minor_points.is_empty():
+		draw_multiline(minor_points, minor_grid_color)
