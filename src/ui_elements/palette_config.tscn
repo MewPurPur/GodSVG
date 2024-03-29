@@ -51,11 +51,13 @@ size_flags_horizontal = 6
 
 [node name="NameEdit" type="LineEdit" parent="HBoxContainer/MainContainer/HBoxContainer"]
 visible = false
+custom_minimum_size = Vector2(120, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 focus_mode = 1
 theme_override_fonts/font = ExtResource("2_cttpy")
 theme_override_styles/normal = SubResource("StyleBoxFlat_lq3bn")
+alignment = 1
 max_length = 30
 script = ExtResource("2_coqnx")
 

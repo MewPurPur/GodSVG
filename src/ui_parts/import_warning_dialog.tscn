@@ -44,6 +44,7 @@ layout_mode = 2
 theme_override_constants/separation = 12
 
 [node name="Checkerboard" type="TextureRect" parent="MarginContainer/VBoxContainer/TextureContainer"]
+unique_name_in_owner = true
 material = SubResource("ShaderMaterial_774g4")
 custom_minimum_size = Vector2(128, 128)
 layout_mode = 2

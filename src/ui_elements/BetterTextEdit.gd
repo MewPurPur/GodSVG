@@ -23,19 +23,27 @@ func _ready() -> void:
 	RenderingServer.canvas_item_set_parent(surface, get_canvas_item())
 	add_child(timer)
 	timer.timeout.connect(blink)
-	get_v_scroll_bar().value_changed.connect(redraw_caret.unbind(1))
-	get_h_scroll_bar().value_changed.connect(redraw_caret.unbind(1))
+	get_v_scroll_bar().value_changed.connect(queue_redraw_caret.unbind(1))
+	get_h_scroll_bar().value_changed.connect(queue_redraw_caret.unbind(1))
 	mouse_exited.connect(_on_mouse_exited)
 
 
 # Workaround for there not being a built-in overtype_mode_changed signal.
 var overtype_mode := false
+var is_caret_queued_for_redraw := false
 func _process(_delta: float) -> void:
 	if is_overtype_mode_enabled() != overtype_mode:
 		overtype_mode = not overtype_mode
 		redraw_caret()
+	if is_caret_queued_for_redraw:
+		redraw_caret()
+
+
+func queue_redraw_caret() -> void:
+	is_caret_queued_for_redraw = true
 
 func redraw_caret() -> void:
+	is_caret_queued_for_redraw = false
 	blonk = false
 	blink()
 	timer.start(0.6)
@@ -55,11 +63,12 @@ func redraw_caret() -> void:
 		
 		var caret_pos := glyph_end + Vector2(1, -2)
 		# Workaround for ligatures.
-		var chars_back := 0
-		while get_line(caret_line).length() > caret_column + chars_back and glyph_end ==\
-		Vector2(get_rect_at_line_column(caret_line, caret_column + chars_back + 1).end):
-			chars_back += 1
-			caret_pos.x -= char_size.x
+		if glyph_end.x > 0 and glyph_end.y > 0:
+			var chars_back := 0
+			while get_line(caret_line).length() > caret_column + chars_back and glyph_end ==\
+			Vector2(get_rect_at_line_column(caret_line, caret_column + chars_back + 1).end):
+				chars_back += 1
+				caret_pos.x -= char_size.x
 		# Determine the end of the caret and draw it.
 		var caret_end := caret_pos
 		if is_overtype_mode_enabled():

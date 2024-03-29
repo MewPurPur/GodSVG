@@ -156,7 +156,7 @@ static func path_commands_from_parsed_data(data: Array[Array]) -> Array[PathComm
 	for a in data:
 		var new_cmd: PathCommand
 		# The idx 0 element is the command char, the rest are the arguments.
-		var cmd_type = translation_dict[a[0].to_upper()]
+		var cmd_type: Script = translation_dict[a[0].to_upper()]
 		var relative := Utils.is_string_lower(a[0])
 		match a.size():
 			1: new_cmd = cmd_type.new(relative)
