@@ -36,7 +36,6 @@ func _process(_delta: float) -> void:
 		redraw_caret()
 
 func redraw_caret() -> void:
-	await get_tree().process_frame  # Buggy with scrolling otherwise, likely a Godot bug.
 	blonk = false
 	blink()
 	timer.start(0.6)
