@@ -42,7 +42,7 @@ func set_view(new_position: Vector2) -> void:
 func resize() -> void:
 	if SVG.root_tag.get_size().is_finite():
 		display.size = SVG.root_tag.get_size()
-		zoom_menu.zoom_reset()
+	zoom_menu.zoom_reset()
 
 func center_frame() -> void:
 	var available_size := size * zoom_reset_buffer
