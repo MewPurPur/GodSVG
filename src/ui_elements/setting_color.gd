@@ -11,7 +11,7 @@ signal value_changed
 @onready var reset_button: Button = $PanelContainer/HBoxContainer/ResetButton
 
 func _ready() -> void:
-	color_edit.enable_alpha = true
+	color_edit.enable_alpha = enable_alpha
 	color_edit.value = GlobalSettings.get(setting_name).to_html(enable_alpha)
 	reset_button.tooltip_text = tr("Reset to default")
 
