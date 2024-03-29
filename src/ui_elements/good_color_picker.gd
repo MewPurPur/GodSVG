@@ -145,13 +145,10 @@ func update() -> void:
 	start_color_rect.queue_redraw()
 	queue_redraw()
 	color_wheel_drawn.queue_redraw()
-	for i in [0, 1, 2, 3]:
-		widgets_arr[i].queue_redraw()
-	if alpha_enabled:
-		widgets_arr[4].queue_redraw()
+	queue_redraw_widgets()
 	# Set the text of the color fields.
 	match slider_mode:
-		SliderMode.RGB: 
+		SliderMode.RGB:
 			fields_arr[1].text = String.num_uint64(roundi(display_color.r * 255))
 			fields_arr[2].text = String.num_uint64(roundi(display_color.g * 255))
 			fields_arr[3].text = String.num_uint64(roundi(display_color.b * 255))
@@ -346,12 +343,24 @@ func _draw() -> void:
 
 # Helper for drawing the horizontal sliders.
 func draw_hslider(idx: int, offset: float, chr: String) -> void:
+	
 	var arrow_modulate := Color(1, 1, 1) if sliders_dragged[idx] else Color(1, 1, 1, 0.7)
 	widgets_arr[idx].draw_texture(slider_arrow, Vector2(tracks_arr[idx].position.x +\
 			tracks_arr[idx].size.x * offset - slider_arrow.get_width() / 2.0,
 			tracks_arr[idx].size.y), arrow_modulate)
 	widgets_arr[idx].draw_string(get_theme_default_font(),
 			Vector2(-12, 11), chr, HORIZONTAL_ALIGNMENT_CENTER, 12, 14)
+
+# Make sure the arrows are redrawn when the tracks finish resizing.
+func _on_track_resized() -> void:
+	if !widgets_arr.is_empty():
+		queue_redraw_widgets()
+
+func queue_redraw_widgets() -> void:
+	for i in [0, 1, 2, 3]:
+		widgets_arr[i].queue_redraw()
+	if alpha_enabled:
+		widgets_arr[4].queue_redraw()
 
 func _on_slider1_draw() -> void:
 	match slider_mode:
