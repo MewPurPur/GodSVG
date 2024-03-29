@@ -166,4 +166,5 @@ func setup_highlighter() -> void:
 		new_highlighter.text_color = GlobalSettings.highlighting_text_color
 		new_highlighter.cdata_color = GlobalSettings.highlighting_cdata_color
 		new_highlighter.error_color = GlobalSettings.highlighting_error_color
+		new_highlighter.setup_extra_colors()
 		code_edit.syntax_highlighter = new_highlighter
