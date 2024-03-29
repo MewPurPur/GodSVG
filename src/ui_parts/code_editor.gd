@@ -8,7 +8,7 @@ const ContextPopup = preload("res://src/ui_elements/context_popup.tscn")
 @onready var size_label: Label = %SizeLabelContainer/SizeLabel
 @onready var size_label_container: PanelContainer = %SizeLabelContainer
 @onready var file_button: Button = %FileButton
-@onready var options_button = $PanelContainer/CodeButtons/MetaActions/OptionsButton
+@onready var options_button: Button = $PanelContainer/CodeButtons/MetaActions/OptionsButton
 @onready var optimize_button: Button = $PanelContainer/CodeButtons/OptimizeButton
 
 func _ready() -> void:
@@ -130,7 +130,7 @@ func _on_file_button_pressed() -> void:
 			get_viewport())
 
 
-func _on_options_button_pressed():
+func _on_options_button_pressed() -> void:
 	var btn_array: Array[Button] = []
 	btn_array.append(Utils.create_btn(tr("Copy All Text"), _on_copy_button_pressed,
 			false, load("res://visual/icons/Copy.svg")))
