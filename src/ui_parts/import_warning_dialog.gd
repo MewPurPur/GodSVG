@@ -4,9 +4,9 @@ signal imported
 
 @onready var warnings_label: RichTextLabel = %WarningsLabel
 @onready var texture_preview: TextureRect = %TexturePreview
-@onready var checkerboard = $MarginContainer/VBoxContainer/TextureContainer/Checkerboard
+@onready var checkerboard: TextureRect = %Checkerboard
 @onready var ok_button: Button = %ButtonContainer/OKButton
-@onready var margin_container = %MarginContainer
+@onready var margin_container: MarginContainer = %MarginContainer
 
 var imported_text := ""
 

@@ -224,5 +224,5 @@ func _on_title_bar_draw() -> void:
 			tag_icon_size.x - 4, 4), tag_icon_size), false)
 
 # Block dragging from starting when pressing the title button.
-func _on_title_button_gui_input(event) -> void:
+func _on_title_button_gui_input(event: InputEvent) -> void:
 	title_button.mouse_filter = Utils.mouse_filter_pass_non_drag_events(event)

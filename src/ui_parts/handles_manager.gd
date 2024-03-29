@@ -678,7 +678,7 @@ func respond_to_input_event(event: InputEvent) -> void:
 			if hovered_handle != null and event.is_pressed():
 				dragged_handle = hovered_handle
 				dragged_handle.initial_pos = dragged_handle.pos
-				var inner_idx = -1
+				var inner_idx := -1
 				var dragged_tid := dragged_handle.tid
 				if dragged_handle is PathHandle:
 					inner_idx = dragged_handle.command_index
@@ -716,7 +716,7 @@ func respond_to_input_event(event: InputEvent) -> void:
 				Utils.popup_under_pos(create_tag_context(event_pos), popup_pos, viewport)
 			else:
 				var hovered_tid := hovered_handle.tid
-				var inner_idx = -1
+				var inner_idx := -1
 				if hovered_handle is PathHandle:
 					inner_idx = hovered_handle.command_index
 				

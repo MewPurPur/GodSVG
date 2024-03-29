@@ -40,8 +40,9 @@ func rebuild_colors() -> void:
 		colors_container.add_child(swatch)
 		if i == currently_edited_idx:
 			# If you add a color, after the rebuild you should instantly edit the new color.
+			await colors_container.sort_children
 			await get_tree().process_frame
-			popup_configure_color(swatch)
+			swatch.pressed.emit()
 	# Add the add button.
 	var color_swatch_ref := ColorSwatch.instantiate()
 	var fake_swatch := Button.new()
