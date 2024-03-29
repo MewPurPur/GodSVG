@@ -51,12 +51,12 @@ signal viewport_size_changed
 var zoom := 0.0
 var viewport_size := Vector2i.ZERO
 
-func set_zoom(new_value) -> void:
+func set_zoom(new_value: float) -> void:
 	if zoom != new_value:
 		zoom = new_value
 		zoom_changed.emit()
 
-func set_viewport_size(new_value) -> void:
+func set_viewport_size(new_value: Vector2i) -> void:
 	if viewport_size != new_value:
 		viewport_size = new_value
 		viewport_size_changed.emit()

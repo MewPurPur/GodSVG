@@ -108,7 +108,7 @@ func web_load_svg() -> void:
 	await get_tree().create_timer(1.5).timeout  # Give some time for async JS data load.
 	if JavaScriptBridge.eval("canceled;", true):
 		return
-	var file_data
+	var file_data: Variant
 	while true:
 		file_data = JavaScriptBridge.eval("fileData;", true)
 		if file_data != null:
@@ -127,36 +127,28 @@ func web_load_svg() -> void:
 		if extension.is_empty():
 			error = "The file extension is empty. Only \"svg\" files are supported."
 		else:
-			error = tr(
-				"\"{passed_extension}\" is a unsupported file extension. Only \"svg\" files are supported.").format({"passed_extension": extension})
+			error = tr("\"{passed_extension}\" is a unsupported file extension. Only \"svg\" files are supported.").format({"passed_extension": extension})
 		var alert_dialog := AlertDialog.instantiate()
 		HandlerGUI.add_overlay(alert_dialog)
-		alert_dialog.setup(error, "Alert!", 280.0)
+		alert_dialog.setup(error, tr("Alert!"), 280.0)
 
 
-func _import(svg_text: String, file_name: String):
+func _import(svg_text: String, file_name: String) -> void:
 	SVG.apply_svg_text(svg_text)
 	GlobalSettings.modify_save_data("current_file_path", file_name)
 	JavaScriptBridge.eval("fileData = undefined;", true)
 
 
 func web_save_svg() -> void:
-	JavaScriptBridge.download_buffer(
-		SVG.text.to_utf8_buffer(),
-		GlobalSettings.save_data.current_file_path.get_file()
-	)
-
+	JavaScriptBridge.download_buffer(SVG.text.to_utf8_buffer(),
+			GlobalSettings.save_data.current_file_path.get_file())
 
 func web_save_png(img: Image) -> void:
-	JavaScriptBridge.download_buffer(
-		img.save_png_to_buffer(),
-		Utils.get_file_name(GlobalSettings.save_data.current_file_path) + ".png"
-	)
+	JavaScriptBridge.download_buffer(img.save_png_to_buffer(),
+			Utils.get_file_name(GlobalSettings.save_data.current_file_path) + ".png")
 
 
-func _define_web_js() -> void:
-	JavaScriptBridge.eval("""
-var fileData;
+const web_glue = """var fileData;
 var fileName;
 var canceled;
 var input = document.createElement('INPUT');
@@ -182,5 +174,7 @@ function upload_svg() {
 	canceled = true;
 	input.click();
 };
-	""", true
-	)
+"""
+
+func _define_web_js() -> void:
+	JavaScriptBridge.eval(web_glue, true)

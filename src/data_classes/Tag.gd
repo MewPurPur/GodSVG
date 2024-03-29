@@ -13,7 +13,7 @@ var unknown_attributes: Array[AttributeUnknown]
 func is_standalone() -> bool:
 	return child_tags.is_empty()
 
-func _init():
+func _init() -> void:
 	for attribute: Attribute in attributes.values():
 		attribute.propagate_value_changed.connect(emit_attribute_changed)
 

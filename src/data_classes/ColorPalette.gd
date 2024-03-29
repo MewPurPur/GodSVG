@@ -23,18 +23,15 @@ func remove_color(idx: int) -> void:
 	emit_changed()
 
 func move_color(old_idx: int, new_idx: int) -> void:
+	if old_idx == new_idx:
+		return
+	
 	if old_idx < new_idx:
-		var old_color = colors.pop_at(old_idx)
-		var old_color_name = color_names.pop_at(old_idx)
-		colors.insert(new_idx - 1, old_color)
-		color_names.insert(new_idx - 1, old_color_name)
-		emit_changed()
-	elif old_idx > new_idx:
-		var old_color = colors.pop_at(old_idx)
-		var old_color_name = color_names.pop_at(old_idx)
-		colors.insert(new_idx, old_color)
-		color_names.insert(new_idx, old_color_name)
-		emit_changed()
+		new_idx -= 1
+	
+	colors.insert(new_idx, colors.pop_at(old_idx))
+	color_names.insert(new_idx, color_names.pop_at(old_idx))
+	emit_changed()
 
 func modify_title(new_title: String) -> void:
 	title = new_title
