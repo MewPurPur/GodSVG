@@ -62,8 +62,9 @@ func svg_update() -> void:
 	for tag in SVG.root_tag.child_tags:
 		svg_text += SVGParser._tag_to_text(tag)
 	
-	position = display_rect.position
-	size = display_rect.size
 	var img := Image.new()
-	img.load_svg_from_string(svg_text, image_zoom)
-	texture = ImageTexture.create_from_image(img)
+	if !img.is_empty():
+		position = display_rect.position
+		size = display_rect.size
+		img.load_svg_from_string(svg_text, image_zoom)
+		texture = ImageTexture.create_from_image(img)
