@@ -63,8 +63,8 @@ func svg_update() -> void:
 		svg_text += SVGParser._tag_to_text(tag)
 	
 	var img := Image.new()
-	if !img.is_empty():
+	var err := img.load_svg_from_string(svg_text, image_zoom)
+	if err == OK:
 		position = display_rect.position
 		size = display_rect.size
-		img.load_svg_from_string(svg_text, image_zoom)
 		texture = ImageTexture.create_from_image(img)
