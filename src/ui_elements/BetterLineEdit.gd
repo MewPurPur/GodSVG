@@ -89,12 +89,12 @@ func _gui_input(event: InputEvent) -> void:
 						load("res://visual/icons/Undo.svg")),
 				Utils.create_btn(tr("Redo"), menu_option.bind(LineEdit.MENU_REDO), false,
 						load("res://visual/icons/Redo.svg")),
+				Utils.create_btn(tr("Cut"), menu_option.bind(LineEdit.MENU_CUT),
+						text.is_empty(), load("res://visual/icons/Cut.svg")),
 				Utils.create_btn(tr("Copy"), menu_option.bind(LineEdit.MENU_COPY),
 						text.is_empty(), load("res://visual/icons/Copy.svg")),
 				Utils.create_btn(tr("Paste"), menu_option.bind(LineEdit.MENU_PASTE),
 						!DisplayServer.clipboard_has(), load("res://visual/icons/Paste.svg")),
-				Utils.create_btn(tr("Cut"), menu_option.bind(LineEdit.MENU_CUT),
-						text.is_empty(), load("res://visual/icons/Cut.svg")),
 			]
 			
 			add_child(context_popup)
