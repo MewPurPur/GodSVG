@@ -1,6 +1,6 @@
 class_name SVGDB extends RefCounted
 
-const known_tags = ["svg", "circle", "ellipse", "rect", "path", "line"]
+const known_tags = ["svg", "circle", "ellipse", "rect", "path", "line", "stop"]
 
 const known_tag_attributes = {  # Dictionary{String: Array[String]}
 	"svg": TagSVG.known_attributes,
@@ -9,6 +9,7 @@ const known_tag_attributes = {  # Dictionary{String: Array[String]}
 	"rect": TagRect.known_shape_attributes + TagRect.known_inheritable_attributes,
 	"path": TagPath.known_shape_attributes + TagPath.known_inheritable_attributes,
 	"line": TagLine.known_shape_attributes + TagLine.known_inheritable_attributes,
+	"stop": TagStop.known_shape_attributes + TagStop.known_inheritable_attributes,
 }
 
 static func is_tag_known(tag_name: String) -> bool:
@@ -26,4 +27,5 @@ static func get_tag_icon(tag_name: String) -> Texture2D:
 		"rect": return TagRect.icon
 		"path": return TagPath.icon
 		"line": return TagLine.icon
+		"stop": return TagStop.icon
 		_: return TagUnknown.icon

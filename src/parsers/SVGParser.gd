@@ -146,6 +146,7 @@ static func text_to_svg(text: String) -> ParseResult:
 					"rect": tag = TagRect.new()
 					"path": tag = TagPath.new()
 					"line": tag = TagLine.new()
+					"stop": tag = TagStop.new()
 					_: tag = TagUnknown.new(node_name)
 				
 				var unknown: Array[AttributeUnknown] = []
