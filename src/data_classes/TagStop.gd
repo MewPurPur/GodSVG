@@ -10,7 +10,7 @@ const icon = preload("res://visual/icons/tag/stop.svg")
 func _init() -> void:
 	attributes = {
 		"offset": AttributeNumeric.new(AttributeNumeric.Mode.NFLOAT, "0"),
-		"stop-color": AttributeColor.new("none"),
+		"stop-color": AttributeColor.new("black"),
 		"stop-opacity": AttributeNumeric.new(AttributeNumeric.Mode.NFLOAT, "1"),
 	}
 	super()
