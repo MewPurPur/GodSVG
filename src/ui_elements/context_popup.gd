@@ -25,7 +25,7 @@ func setup(buttons: Array[Button], align_left := false, min_width := -1) -> void
 			min_size.x = ceili(min_width)
 			panel.custom_minimum_size.x = min_width
 
-func setup_with_title(buttons: Array[Button], title: String, align_left := false,
+func setup_with_title(buttons: Array[Button], top_title: String, align_left := false,
 min_width := -1) -> void:
 	for control in main_container.get_children():
 		control.free()
@@ -43,7 +43,7 @@ min_width := -1) -> void:
 		stylebox.border_color = ThemeGenerator.common_panel_border_color
 		title_container.add_theme_stylebox_override("panel", stylebox)
 		var title_label := Label.new()
-		title_label.text = title
+		title_label.text = top_title
 		title_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		title_label.add_theme_color_override("font_color", Color("def"))
 		title_container.add_child(title_label)
