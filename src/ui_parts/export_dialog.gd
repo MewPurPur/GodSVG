@@ -8,35 +8,41 @@ var extension := ""
 var dimensions := Vector2.ZERO
 
 @onready var dimensions_label: Label = %DimensionsLabel
-@onready var texture_preview: TextureRect = %TexturePreview
-@onready var dropdown: HBoxContainer = %Dropdown
+@onready var texture_preview: CenterContainer = %TexturePreview
+@onready var format_hbox: HBoxContainer = %FormatHBox
+@onready var format_dropdown: HBoxContainer = %FormatHBox/Dropdown
 @onready var final_dimensions_label: Label = %FinalDimensions
 @onready var scale_edit: NumberEditType = %Scale
 @onready var scale_container: VBoxContainer = %ScaleContainer
+@onready var fallback_format_label: Label = %FallbackFormatLabel
 
 func _ready() -> void:
 	scale_edit.value_changed.connect(_on_scale_value_changed)
-	dropdown.value_changed.connect(_on_dropdown_value_changed)
-	extension = dropdown.value
+	format_dropdown.value_changed.connect(_on_dropdown_value_changed)
+	extension = format_dropdown.value
 	update_extension_configuration()
 	dimensions = SVG.root_tag.get_size()
 	scale_edit.min_value = 1/minf(dimensions.x, dimensions.y)
 	scale_edit.max_value = 16384/maxf(dimensions.x, dimensions.y)
 	scale_edit.set_value(minf(scale_edit.get_value(),
 			2048/maxf(dimensions.x, dimensions.y)))
+	fallback_format_label.text = tr("Format") + ": svg"
 	update_dimensions_label()
 	update_final_scale()
-	var scaling_factor := texture_preview.size.x * 2.0 / maxf(dimensions.x, dimensions.y)
-	var img := Image.new()
-	img.load_svg_from_string(SVG.text, scaling_factor)
-	if not img.is_empty():
-		img.fix_alpha_edges()
-		texture_preview.texture = ImageTexture.create_from_image(img)
+	texture_preview.setup(SVG.text, dimensions)
 
 
 func update_dimensions_label() -> void:
-	dimensions_label.text = tr("Size") + ": " + NumberParser.num_to_text(dimensions.x) +\
-			"×" + NumberParser.num_to_text(dimensions.y)
+	var is_finite := is_finite(dimensions.x) and is_finite(dimensions.y)
+	dimensions_label.text = tr("Size") + ": "
+	if is_finite:
+		dimensions_label.text += NumberParser.num_to_text(dimensions.x) +\
+				"×" + NumberParser.num_to_text(dimensions.y)
+	else:
+		dimensions_label.text += tr("Invalid")
+	# If the size is invalid, only SVG exports are relevant. So hide the dropdown.
+	fallback_format_label.visible = !is_finite
+	format_hbox.visible = is_finite
 
 func _on_dropdown_value_changed(new_value: String) -> void:
 	extension = new_value

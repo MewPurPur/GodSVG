@@ -3,8 +3,7 @@ extends PanelContainer
 signal imported
 
 @onready var warnings_label: RichTextLabel = %WarningsLabel
-@onready var texture_preview: TextureRect = %TexturePreview
-@onready var checkerboard: TextureRect = %Checkerboard
+@onready var texture_preview: CenterContainer = %TexturePreview
 @onready var ok_button: Button = %ButtonContainer/OKButton
 @onready var margin_container: MarginContainer = %MarginContainer
 
@@ -18,15 +17,10 @@ func _ready() -> void:
 	var preview_parse_result := SVGParser.text_to_svg(preview_text)
 	var preview := preview_parse_result.svg
 	if preview != null:
-		var scaling_factor := texture_preview.size.x * 2 / maxf(preview.width, preview.height)
-		var img := Image.new()
-		img.load_svg_from_string(SVGParser.svg_to_text(preview), scaling_factor)
-		if not img.is_empty():
-			img.fix_alpha_edges()
-			texture_preview.texture = ImageTexture.create_from_image(img)
+		texture_preview.setup(SVGParser.svg_to_text(preview), preview.get_size())
 	
 	if imported_text_parse_result.error != SVGParser.ParseError.OK:
-		checkerboard.hide()
+		texture_preview.hide()
 		margin_container.custom_minimum_size.y = 48
 		size.y = 0
 		warnings_label.add_theme_color_override("default_color",
