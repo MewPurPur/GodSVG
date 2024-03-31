@@ -84,22 +84,32 @@ func _gui_input(event: InputEvent) -> void:
 		if event.button_index == MOUSE_BUTTON_RIGHT:
 			grab_focus()
 			var context_popup := ContextPopup.instantiate()
-			var btn_arr: Array[Button] = [
-				Utils.create_btn(tr("Undo"), menu_option.bind(LineEdit.MENU_UNDO),
-						not editable, load("res://visual/icons/Undo.svg")),
-				Utils.create_btn(tr("Redo"), menu_option.bind(LineEdit.MENU_REDO),
-						not editable, load("res://visual/icons/Redo.svg")),
-				Utils.create_btn(tr("Cut"), menu_option.bind(LineEdit.MENU_CUT),
-						not editable or text.is_empty(), load("res://visual/icons/Cut.svg")),
-				Utils.create_btn(tr("Copy"), menu_option.bind(LineEdit.MENU_COPY),
-						text.is_empty(), load("res://visual/icons/Copy.svg")),
-				Utils.create_btn(tr("Paste"), menu_option.bind(LineEdit.MENU_PASTE),
-						not editable or !DisplayServer.clipboard_has(),
-						load("res://visual/icons/Paste.svg")),
-			]
+			var btn_arr: Array[Button] = []
+			var separator_arr: Array[int] = []
+			if editable:
+				separator_arr = [2]
+				btn_arr.append(Utils.create_btn(tr("Undo"),
+						menu_option.bind(LineEdit.MENU_UNDO),
+						false, load("res://visual/icons/Undo.svg")))
+				btn_arr.append(Utils.create_btn(tr("Redo"),
+						menu_option.bind(LineEdit.MENU_REDO),
+						false, load("res://visual/icons/Redo.svg")))
+				btn_arr.append(Utils.create_btn(tr("Cut"),
+						menu_option.bind(LineEdit.MENU_CUT),
+						text.is_empty(), load("res://visual/icons/Cut.svg")))
+				btn_arr.append(Utils.create_btn(tr("Copy"),
+						menu_option.bind(LineEdit.MENU_COPY),
+						text.is_empty(), load("res://visual/icons/Copy.svg")))
+				btn_arr.append(Utils.create_btn(tr("Paste"),
+						menu_option.bind(LineEdit.MENU_PASTE),
+						!DisplayServer.clipboard_has(), load("res://visual/icons/Paste.svg")))
+			else:
+				btn_arr.append(Utils.create_btn(tr("Copy"),
+						menu_option.bind(LineEdit.MENU_COPY),
+						text.is_empty(), load("res://visual/icons/Copy.svg")))
 			
 			add_child(context_popup)
-			context_popup.setup(btn_arr, true, 72)
+			context_popup.setup(btn_arr, true, -1, separator_arr)
 			var viewport := get_viewport()
 			Utils.popup_under_pos(context_popup, viewport.get_mouse_position(), viewport)
 			accept_event()

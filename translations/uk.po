@@ -212,6 +212,14 @@ msgstr "Налаштування експорту"
 msgid "Add new tag"
 msgstr "Додати новий тег"
 
+#, fuzzy
+msgid "New tag"
+msgstr "Додати новий тег"
+
+#, fuzzy
+msgid "New transform"
+msgstr "Без трансформацій"
+
 msgid "License"
 msgstr "Ліцензія"
 
