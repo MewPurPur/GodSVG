@@ -774,7 +774,7 @@ func create_tag_context(pos: Vector2) -> ContextPopupType:
 		btn_array.append(btn)
 	var tag_context := ContextPopup.instantiate()
 	add_child(tag_context)
-	tag_context.set_button_array(btn_array, true)
+	tag_context.setup_with_title(btn_array, tr("Add new tag"), true)
 	return tag_context
 
 func add_tag_at_pos(tag_name: String, pos: Vector2) -> void:
