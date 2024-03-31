@@ -72,7 +72,7 @@ func popup_options(idx: int) -> void:
 		Utils.create_btn(tr("Remove"), delete_shortcut.bind(idx), false,
 				load("res://visual/icons/Delete.svg"))]
 	add_child(context_popup)
-	context_popup.set_button_array(btn_arr, true, shortcut_buttons[idx].size.x)
+	context_popup.setup(btn_arr, true, shortcut_buttons[idx].size.x)
 	Utils.popup_under_rect(context_popup, shortcut_buttons[idx].get_global_rect(),
 			get_viewport())
 

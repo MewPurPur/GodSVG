@@ -33,16 +33,16 @@ func _ready() -> void:
 
 
 func update_dimensions_label() -> void:
-	var is_finite := is_finite(dimensions.x) and is_finite(dimensions.y)
+	var valid_dimensions := is_finite(dimensions.x) and is_finite(dimensions.y)
 	dimensions_label.text = tr("Size") + ": "
-	if is_finite:
+	if valid_dimensions:
 		dimensions_label.text += NumberParser.num_to_text(dimensions.x) +\
 				"×" + NumberParser.num_to_text(dimensions.y)
 	else:
 		dimensions_label.text += tr("Invalid")
 	# If the size is invalid, only SVG exports are relevant. So hide the dropdown.
-	fallback_format_label.visible = !is_finite
-	format_hbox.visible = is_finite
+	fallback_format_label.visible = !valid_dimensions
+	format_hbox.visible = valid_dimensions
 
 func _on_dropdown_value_changed(new_value: String) -> void:
 	extension = new_value

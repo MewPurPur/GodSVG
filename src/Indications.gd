@@ -482,7 +482,7 @@ func get_selection_context(popup_method: Callable) -> Popup:
 	
 	var tag_context := ContextPopup.instantiate()
 	add_child(tag_context)
-	tag_context.set_button_array(btn_arr, true)
+	tag_context.setup(btn_arr, true)
 	return tag_context
 
 func popup_convert_to_context(popup_method: Callable) -> void:
@@ -497,7 +497,7 @@ func popup_convert_to_context(popup_method: Callable) -> void:
 			btn_arr.append(btn)
 		var context_popup := ContextPopup.instantiate()
 		add_child(context_popup)
-		context_popup.set_button_array(btn_arr, true)
+		context_popup.setup(btn_arr, true)
 		popup_method.call(context_popup)
 	elif not inner_selections.is_empty() and not semi_selected_tid.is_empty():
 		var cmd_char: String = SVG.root_tag.get_tag(semi_selected_tid).\

@@ -126,7 +126,7 @@ func _gui_input(event: InputEvent) -> void:
 			]
 			
 			add_child(context_popup)
-			context_popup.set_button_array(btn_arr, true, 72)
+			context_popup.setup(btn_arr, true, 72)
 			var viewport := get_viewport()
 			Utils.popup_under_pos(context_popup, viewport.get_mouse_position(), viewport)
 			accept_event()
