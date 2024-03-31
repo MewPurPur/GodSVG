@@ -48,7 +48,7 @@ To export the graphic, use the Export button on top of the code editor.
 
 ## Community and contributing
 
-Contributions are very welcome! GodSVG is built in Godot. For code contributions, read [Contributing Guidelines](CONTRIBUTING.md). Before starting work on features, first propose them by using the issue form and wait for approval.
+Contributions are very welcome! GodSVG is built in [Godot](https://github.com/godotengine/godot). For code contributions, read [Contributing Guidelines](CONTRIBUTING.md). Before starting work on features, first propose them by using the issue form and wait for approval.
 
 To report bugs or propose features, use Github's issue form. For more casual discussion around the tool or contributing to it, find me on [GodSVG's Discord](https://discord.gg/R8pM6vXWTY).
 
