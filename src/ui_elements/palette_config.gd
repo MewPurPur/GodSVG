@@ -181,7 +181,7 @@ func _on_action_button_pressed() -> void:
 	
 	var context_popup := ContextPopup.instantiate()
 	add_child(context_popup)
-	context_popup.set_button_array(btn_arr, true)
+	context_popup.setup(btn_arr, true)
 	Utils.popup_under_rect_center(context_popup, action_button.get_global_rect(),
 			get_viewport())
 

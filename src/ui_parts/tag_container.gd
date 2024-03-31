@@ -100,7 +100,7 @@ func _gui_input(event: InputEvent) -> void:
 			
 			var add_popup := ContextPopup.instantiate()
 			add_child(add_popup)
-			add_popup.set_button_array(btn_array, true)
+			add_popup.setup_with_title(btn_array, tr("Add new tag"), true)
 			var viewport := get_viewport()
 			Utils.popup_under_pos(add_popup, viewport.get_mouse_position(), viewport)
 

@@ -38,7 +38,7 @@ func _on_button_pressed() -> void:
 	
 	var value_picker := ContextPopup.instantiate()
 	add_child(value_picker)
-	value_picker.set_button_array(btn_arr, false, size.x)
+	value_picker.setup(btn_arr, false, size.x)
 	Utils.popup_under_rect(value_picker, line_edit.get_global_rect(), get_viewport())
 
 func _on_value_chosen(new_value: String) -> void:
