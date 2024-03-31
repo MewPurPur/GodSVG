@@ -200,6 +200,9 @@ msgstr "Größe"
 msgid "Final size"
 msgstr "Endgültige Größe"
 
+msgid "Invalid"
+msgstr ""
+
 msgid "Export Configuration"
 msgstr "Export-Konfiguration"
 
