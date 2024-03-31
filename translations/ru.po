@@ -202,6 +202,9 @@ msgstr "Размер"
 msgid "Final size"
 msgstr "Финальный размер"
 
+msgid "Invalid"
+msgstr ""
+
 msgid "Export Configuration"
 msgstr "Настройки экспорта"
 
