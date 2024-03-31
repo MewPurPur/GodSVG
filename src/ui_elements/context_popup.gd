@@ -13,20 +13,25 @@ func add_button(btn: Button, align_left: bool) -> void:
 	if align_left:
 		btn.alignment = HORIZONTAL_ALIGNMENT_LEFT
 
-func setup(buttons: Array[Button], align_left := false, min_width := -1) -> void:
+func setup(buttons: Array[Button], align_left := false, min_width := -1,
+separator_indices: Array[int] = []) -> void:
 	for control in main_container.get_children():
 		control.free()
 	if buttons.is_empty():
 		return
 	else:
-		for button in buttons:
-			add_button(button, align_left)
+		for idx in buttons.size():
+			if idx in separator_indices:
+				var separator := HSeparator.new()
+				separator.theme_type_variation = "SmallHSeparator"
+				main_container.add_child(separator)
+			add_button(buttons[idx], align_left)
 		if min_width > 0:
 			min_size.x = ceili(min_width)
 			panel.custom_minimum_size.x = min_width
 
 func setup_with_title(buttons: Array[Button], top_title: String, align_left := false,
-min_width := -1) -> void:
+min_width := -1, separator_indices: Array[int] = []) -> void:
 	for control in main_container.get_children():
 		control.free()
 	if buttons.is_empty():
@@ -40,17 +45,24 @@ min_width := -1) -> void:
 		stylebox.content_margin_left = 8
 		stylebox.content_margin_right = 8
 		stylebox.border_width_bottom = 2
-		stylebox.border_color = ThemeGenerator.common_panel_border_color
+		stylebox.border_color = ThemeGenerator.common_separator_color
 		title_container.add_theme_stylebox_override("panel", stylebox)
 		var title_label := Label.new()
 		title_label.text = top_title
 		title_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		title_label.begin_bulk_theme_override()
 		title_label.add_theme_color_override("font_color", Color("def"))
+		title_label.add_theme_font_size_override("font_size", 14)
+		title_label.end_bulk_theme_override()
 		title_container.add_child(title_label)
 		main_container.add_child(title_container)
 		# Continueu with regular setup logic.
-		for button in buttons:
-			add_button(button, align_left)
+		for idx in buttons.size():
+			if idx in separator_indices:
+				var separator := HSeparator.new()
+				separator.theme_type_variation = "SmallHSeparator"
+				main_container.add_child(separator)
+			add_button(buttons[idx], align_left)
 		if min_width > 0:
 			min_size.x = ceili(min_width)
 			panel.custom_minimum_size.x = min_width

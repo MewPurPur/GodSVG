@@ -13,6 +13,7 @@ const common_text_color = Color("ddeeff")
 const common_subtle_text_color = Color("ffffff55")
 const common_inner_color_disabled = Color("0e0e12")
 const common_border_color_disabled = Color("1e1f24")
+const common_separator_color = Color("414159", 0.6)
 
 const common_button_inner_color_normal = Color("1c1e38")
 const common_button_border_color_normal = Color("313859")
@@ -726,9 +727,16 @@ static func setup_scrollbar(theme: Theme) -> void:
 static func setup_separator(theme: Theme) -> void:
 	theme.add_type("HSeparator")
 	var stylebox := StyleBoxLine.new()
-	stylebox.color = common_panel_border_color
+	stylebox.color = common_separator_color
 	stylebox.thickness = 2
 	theme.set_stylebox("separator", "HSeparator", stylebox)
+	
+	theme.add_type("SmallHSeparator")
+	theme.set_type_variation("SmallHSeparator", "HSeparator")
+	var small_stylebox := stylebox.duplicate()
+	small_stylebox.grow_begin = -3
+	small_stylebox.grow_end = -3
+	theme.set_stylebox("separator", "SmallHSeparator", small_stylebox)
 
 static func setup_label(theme: Theme) -> void:
 	theme.add_type("Label")

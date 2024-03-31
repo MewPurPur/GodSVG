@@ -208,6 +208,12 @@ msgstr "Конфигурация на експорта"
 msgid "Add new tag"
 msgstr "Добави нов таг"
 
+msgid "New tag"
+msgstr "Нов таг"
+
+msgid "New transform"
+msgstr "Нова трансформация"
+
 msgid "License"
 msgstr "Лиценз"
 

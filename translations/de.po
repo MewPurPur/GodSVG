@@ -209,6 +209,14 @@ msgstr "Export-Konfiguration"
 msgid "Add new tag"
 msgstr "Neues Element hinzufügen"
 
+#, fuzzy
+msgid "New tag"
+msgstr "Neues Element hinzufügen"
+
+#, fuzzy
+msgid "New transform"
+msgstr "Keine Transformationen"
+
 msgid "License"
 msgstr "Lizenz"
 
