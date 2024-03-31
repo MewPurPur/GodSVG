@@ -125,7 +125,7 @@ func _on_file_button_pressed() -> void:
 			load("res://visual/icons/Reload.svg")))
 	var context_popup := ContextPopup.instantiate()
 	add_child(context_popup)
-	context_popup.set_button_array(btn_array, true, file_button.size.x)
+	context_popup.setup(btn_array, true, file_button.size.x)
 	Utils.popup_under_rect_center(context_popup, file_button.get_global_rect(),
 			get_viewport())
 
@@ -138,8 +138,9 @@ func _on_options_button_pressed() -> void:
 			SVG.text == SVG.default, load("res://visual/icons/Clear.svg")))
 	var context_popup := ContextPopup.instantiate()
 	add_child(context_popup)
-	context_popup.set_button_array(btn_array, false, options_button.size.x)
-	Utils.popup_under_rect_center(context_popup, options_button.get_global_rect(), get_viewport())
+	context_popup.setup(btn_array, true, options_button.size.x)
+	Utils.popup_under_rect_center(context_popup, options_button.get_global_rect(),
+			get_viewport())
 
 
 func clear_file_path() -> void:

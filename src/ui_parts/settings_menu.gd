@@ -123,7 +123,7 @@ func _on_language_pressed() -> void:
 				_on_language_chosen.bind(lang)))
 	var lang_popup := ContextPopup.instantiate()
 	add_child(lang_popup)
-	lang_popup.set_button_array(btn_arr, true, lang_button.size.x)
+	lang_popup.setup(btn_arr, true, lang_button.size.x)
 	Utils.popup_under_rect(lang_popup, lang_button.get_global_rect(), get_viewport())
 
 func _on_language_chosen(locale: String) -> void:

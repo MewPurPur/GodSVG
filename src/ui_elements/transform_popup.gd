@@ -262,7 +262,7 @@ func popup_transform_actions(idx: int, control: Control) -> void:
 	
 	var context_popup := ContextPopup.instantiate()
 	add_child(context_popup)
-	context_popup.set_button_array(btn_array, true)
+	context_popup.setup(btn_array, true)
 	Utils.popup_under_rect_center(context_popup, control.get_global_rect(), get_viewport())
 
 func popup_new_transform_context(idx: int, control: Control) -> void:
@@ -279,7 +279,7 @@ func add_new_transform_context(idx: int) -> ContextPopupType:
 	
 	var transform_context := ContextPopup.instantiate()
 	add_child(transform_context)
-	transform_context.set_button_array(btn_array, true)
+	transform_context.setup(btn_array, true)
 	return transform_context
 
 
