@@ -1,15 +1,10 @@
-[gd_scene load_steps=8 format=3 uid="uid://c13dadqbljqlu"]
+[gd_scene load_steps=6 format=3 uid="uid://c13dadqbljqlu"]
 
 [ext_resource type="Script" path="res://src/ui_parts/export_dialog.gd" id="1_objnb"]
-[ext_resource type="Shader" path="res://src/shaders/zoom_shader.gdshader" id="2_6bte3"]
-[ext_resource type="Texture2D" uid="uid://c68og6bsqt0lb" path="res://visual/icons/backgrounds/Checkerboard.svg" id="3_q8p2p"]
+[ext_resource type="PackedScene" uid="uid://xh26qa68xed4" path="res://src/ui_elements/svg_preview.tscn" id="2_ewk0a"]
 [ext_resource type="FontFile" uid="uid://dtb4wkus51hxs" path="res://visual/fonts/FontMono.ttf" id="4_4t2iq"]
 [ext_resource type="PackedScene" uid="uid://dbu1lvajypafb" path="res://src/ui_elements/dropdown.tscn" id="5_y6ex0"]
 [ext_resource type="PackedScene" uid="uid://dad7fkhmsooc6" path="res://src/ui_elements/number_edit.tscn" id="6_w1sag"]
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_y7eee"]
-shader = ExtResource("2_6bte3")
-shader_parameter/uv_scale = 2.0
 
 [node name="ExportDialog" type="PanelContainer"]
 anchors_preset = 8
@@ -39,23 +34,9 @@ horizontal_alignment = 1
 layout_mode = 2
 theme_override_constants/separation = 12
 
-[node name="Checkerboard" type="TextureRect" parent="VBoxContainer/HBoxContainer"]
-material = SubResource("ShaderMaterial_y7eee")
-custom_minimum_size = Vector2(128, 128)
-layout_mode = 2
-texture = ExtResource("3_q8p2p")
-stretch_mode = 1
-
-[node name="TexturePreview" type="TextureRect" parent="VBoxContainer/HBoxContainer/Checkerboard"]
+[node name="TexturePreview" parent="VBoxContainer/HBoxContainer" instance=ExtResource("2_ewk0a")]
 unique_name_in_owner = true
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-expand_mode = 2
-stretch_mode = 5
+layout_mode = 2
 
 [node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/HBoxContainer"]
 custom_minimum_size = Vector2(160, 0)
@@ -72,20 +53,28 @@ theme_override_constants/separation = 12
 [node name="DimensionsLabel" type="Label" parent="VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_fonts/font = ExtResource("4_4t2iq")
+theme_override_colors/font_color = Color(0.866667, 0.866667, 0.866667, 1)
+theme_override_font_sizes/font_size = 16
 horizontal_alignment = 1
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer"]
+[node name="FallbackFormatLabel" type="Label" parent="VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+horizontal_alignment = 1
+
+[node name="FormatHBox" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/FormatHBox"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 14
 text = "Format"
 
-[node name="Dropdown" parent="VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("5_y6ex0")]
-unique_name_in_owner = true
+[node name="Dropdown" parent="VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/FormatHBox" instance=ExtResource("5_y6ex0")]
 layout_mode = 2
 values = Array[String](["svg", "png"])
 

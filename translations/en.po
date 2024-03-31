@@ -197,6 +197,9 @@ msgstr ""
 msgid "Final size"
 msgstr ""
 
+msgid "Invalid"
+msgstr ""
+
 msgid "Export Configuration"
 msgstr ""
 
