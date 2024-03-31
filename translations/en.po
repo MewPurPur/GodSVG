@@ -206,6 +206,12 @@ msgstr ""
 msgid "Add new tag"
 msgstr ""
 
+msgid "New tag"
+msgstr ""
+
+msgid "New transform"
+msgstr ""
+
 msgid "License"
 msgstr ""
 

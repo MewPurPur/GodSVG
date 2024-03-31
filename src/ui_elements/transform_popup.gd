@@ -279,7 +279,7 @@ func add_new_transform_context(idx: int) -> ContextPopupType:
 	
 	var transform_context := ContextPopup.instantiate()
 	add_child(transform_context)
-	transform_context.setup(btn_array, true)
+	transform_context.setup_with_title(btn_array, tr("New transform"), true)
 	return transform_context
 
 
