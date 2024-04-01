@@ -12,6 +12,8 @@ const checkerboard = preload("res://visual/icons/backgrounds/ColorButtonBG.svg")
 @onready var color_edit: BetterLineEdit = $LineEdit
 @onready var color_popup: BetterPopup
 
+var ci := get_canvas_item()
+
 func set_value(new_value: String, update_type := Utils.UpdateType.REGULAR) -> void:
 	# Validate the value.
 	if not is_valid(new_value):
@@ -55,8 +57,8 @@ func _draw() -> void:
 	stylebox.corner_radius_top_right = 5
 	stylebox.corner_radius_bottom_right = 5
 	stylebox.bg_color = ColorParser.string_to_color(attribute.get_value())
-	draw_texture(checkerboard, Vector2.ZERO)
-	draw_style_box(stylebox, Rect2(Vector2.ZERO, button_size - Vector2(1, 2)))
+	checkerboard.draw(ci, Vector2.ZERO)
+	stylebox.draw(ci, Rect2(Vector2.ZERO, button_size - Vector2(1, 2)))
 
 
 func _on_focus_entered() -> void:
