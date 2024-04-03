@@ -2,10 +2,11 @@ class_name Utils extends RefCounted
 
 # In my opinion, this is nicer than groups.
 enum CustomNotification {
-	HIGHLIGHT_COLORS_CHANGED = 300,
-	DEFAULT_VALUE_OPACITY_CHANGED = 301,
-	HANDLE_COLORS_CHANGED = 302,
-	NUMBER_PRECISION_CHANGED = 303,
+	LANGUAGE_CHANGED = 300,
+	NUMBER_PRECISION_CHANGED = 301,
+	HIGHLIGHT_COLORS_CHANGED = 302,
+	DEFAULT_VALUE_OPACITY_CHANGED = 303,
+	HANDLE_COLORS_CHANGED = 304,
 }
 
 const path_command_char_dict = {
