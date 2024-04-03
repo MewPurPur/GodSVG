@@ -11,7 +11,7 @@ func _ready() -> void:
 	translate_titles()
 
 func _notification(what: int) -> void:
-	if what == NOTIFICATION_TRANSLATION_CHANGED:
+	if what == Utils.CustomNotification.LANGUAGE_CHANGED:
 		translate_titles()
 
 

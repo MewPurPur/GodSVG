@@ -50,7 +50,7 @@ func update_focused_content(idx: int) -> void:
 	tabs.get_child(focused_content).button_pressed = true
 
 func _notification(what: int) -> void:
-	if what == NOTIFICATION_TRANSLATION_CHANGED:
+	if what == Utils.CustomNotification.LANGUAGE_CHANGED:
 		setup_setting_labels()
 
 # Sets the text for all the labels.
@@ -128,6 +128,7 @@ func _on_language_pressed() -> void:
 
 func _on_language_chosen(locale: String) -> void:
 	GlobalSettings.language = locale
+	custom_notify(Utils.CustomNotification.LANGUAGE_CHANGED)
 	update_language_button()
 
 func update_language_button() -> void:
