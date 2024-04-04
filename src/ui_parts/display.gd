@@ -43,6 +43,8 @@ func _unhandled_input(input_event: InputEvent) -> void:
 		toggle_snap()
 	elif input_event.is_action_pressed("about_repo"):
 		open_godsvg_repo()
+	elif input_event.is_action_pressed("about_website"):
+		open_godsvg_website()
 	elif input_event.is_action_pressed("about_info"):
 		open_about()
 	elif input_event.is_action_pressed("about_donate"):
@@ -101,19 +103,25 @@ func _on_more_options_pressed() -> void:
 			load("res://visual/icon.svg"))
 	about_btn.expand_icon = true
 	var buttons_arr: Array[Button] = [
-		Utils.create_btn(tr("GodSVG Repository"), open_godsvg_repo, false,
-				load("res://visual/icons/Link.svg")),
 		about_btn,
 		Utils.create_btn(tr("Donate…"), open_sponsor, false,
 				load("res://visual/icons/Heart.svg")),
+		Utils.create_btn(tr("GodSVG Repository"), open_godsvg_repo, false,
+				load("res://visual/icons/Link.svg")),
+		Utils.create_btn(tr("GodSVG Website"), open_godsvg_website, false,
+				load("res://visual/icons/Link.svg"))
 	]
+	var separator_indices: Array[int] = [2]
 	
 	var more_popup := ContextPopup.new()
-	more_popup.setup(buttons_arr, true)
+	more_popup.setup(buttons_arr, true, -1, separator_indices)
 	HandlerGUI.popup_under_rect_center(more_popup, more_button.get_global_rect(),
 			get_viewport())
 
 func open_godsvg_repo() -> void:
+	OS.shell_open("https://github.com/MewPurPur/GodSVG")
+
+func open_godsvg_website() -> void:
 	OS.shell_open("https://github.com/MewPurPur/GodSVG")
 
 func open_about() -> void:
