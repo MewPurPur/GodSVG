@@ -16,8 +16,11 @@ func _ready() -> void:
 	donors_list.items = AppInfo.donors
 	donors_list.setup()
 	var translation_items: Array[String] = []
-	for lang in AppInfo.translations.keys():
-		translation_items.append(lang + ": " + ", ".join(AppInfo.translations[lang]))
+	for lang in TranslationServer.get_loaded_locales():
+		var credits := TranslationServer.get_translation_object(lang).get_message(
+				"translation-credits")
+		if not credits.is_empty():
+			translation_items.append(lang + ": " + credits)
 	translations_list.items = translation_items
 	translations_list.setup()
 
