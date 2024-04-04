@@ -13,7 +13,7 @@ msgstr ""
 "X-Generator: Poedit 3.4.2\n"
 
 msgid "translation-credits"
-msgstr ""
+msgstr "MewPurPur <mew.pur.pur@gmail.com>"
 
 msgid "Project Founder and Manager"
 msgstr "Основател и мениджър на проекта"

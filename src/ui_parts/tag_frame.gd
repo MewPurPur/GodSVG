@@ -221,7 +221,7 @@ func _on_title_bar_draw() -> void:
 			Vector2(half_bar_width + title_width / 2 + 3, 4)
 	title_button.reset_size()
 	tag.icon.draw_rect(title_bar_ci, Rect2(Vector2(half_bar_width - title_width / 2 -\
-			tag_icon_size.x - 4, 4), tag_icon_size), false)
+			tag_icon_size.x - 4, 4).round(), tag_icon_size), false)
 
 # Block dragging from starting when pressing the title button.
 func _on_title_button_gui_input(event: InputEvent) -> void:

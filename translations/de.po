@@ -13,7 +13,7 @@ msgstr ""
 "X-Generator: Poedit 3.4.2\n"
 
 msgid "translation-credits"
-msgstr ""
+msgstr "Kiisu-Master, Swarkin"
 
 msgid "Project Founder and Manager"
 msgstr "Projektgründer und Manager"
