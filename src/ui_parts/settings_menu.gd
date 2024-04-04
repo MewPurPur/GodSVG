@@ -120,7 +120,7 @@ func _on_language_pressed() -> void:
 	for lang in TranslationServer.get_loaded_locales():
 		btn_arr.append(Utils.create_btn(
 				TranslationServer.get_locale_name(lang) + " (" + lang + ")",
-				_on_language_chosen.bind(lang)))
+				_on_language_chosen.bind(lang), lang == TranslationServer.get_locale()))
 	var lang_popup := ContextPopup.instantiate()
 	add_child(lang_popup)
 	lang_popup.setup(btn_arr, true, lang_button.size.x)

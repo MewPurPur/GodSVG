@@ -21,6 +21,10 @@ msgstr "Projektgründer und Manager"
 msgid "Developers"
 msgstr "Entwickler"
 
+#, fuzzy
+msgid "Translators"
+msgstr "Transformationen"
+
 msgid "Language"
 msgstr "Sprache"
 

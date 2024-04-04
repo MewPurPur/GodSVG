@@ -21,6 +21,9 @@ msgstr ""
 msgid "Developers"
 msgstr ""
 
+msgid "Translators"
+msgstr ""
+
 msgid "Language"
 msgstr ""
 

@@ -21,6 +21,9 @@ msgstr "Основател и мениджър на проекта"
 msgid "Developers"
 msgstr "Програмисти"
 
+msgid "Translators"
+msgstr "Преводачи"
+
 msgid "Language"
 msgstr "Език"
 
