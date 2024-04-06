@@ -12,7 +12,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  GODOT_VERSION: 4.2.1
+  GODOT_VERSION: 4.2.2.rc2
   EXPORT_NAME: GodSVG
 
 jobs:
@@ -37,9 +37,14 @@ jobs:
       - name: Setup
         run: |
           mkdir -v -p build/windows-64bit  ~/.local/share/godot/export_templates
-          mv /root/.local/share/godot/export_templates/${GODOT_VERSION}.stable ~/.local/share/godot/export_templates/${GODOT_VERSION}.stable
+          wget -q https://github.com/godotengine/godot-builds/releases/download/4.2.2-rc2/Godot_v4.2.2-rc2_export_templates.tpz
+          wget -q https://github.com/godotengine/godot-builds/releases/download/4.2.2-rc2/Godot_v4.2.2-rc2_linux.x86_64.zip
+          unzip Godot_v4.2.2-rc2_linux.x86_64.zip -d .
+          unzip Godot_v4.2.2-rc2_export_templates.tpz -d .
+          mv ./templates/  ~/.local/share/godot/export_templates/${GODOT_VERSION}
       - name: Windows Build
-        run: godot --headless -v --export-release "Windows Desktop" ./build/windows-64bit/$EXPORT_NAME.exe
+        run: |
+          ./Godot_v4.2.2-rc2_linux.x86_64 --headless -v --export-release "Windows Desktop" ./build/windows-64bit/$EXPORT_NAME.exe
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
@@ -50,18 +55,23 @@ jobs:
   export-linux:
     name: Linux Export
     runs-on: ubuntu-latest
-    container:
-      image: docker://barichello/godot-ci:4.2.1
+    # container:
+    #   image: docker://barichello/godot-ci:4.2.1
     steps:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Setup
         run: |
           mkdir -v -p build/linux-64bit ~/.local/share/godot/export_templates
-          mv /root/.local/share/godot/export_templates/${GODOT_VERSION}.stable ~/.local/share/godot/export_templates/${GODOT_VERSION}.stable
+          wget -q https://github.com/godotengine/godot-builds/releases/download/4.2.2-rc2/Godot_v4.2.2-rc2_export_templates.tpz
+          wget -q https://github.com/godotengine/godot-builds/releases/download/4.2.2-rc2/Godot_v4.2.2-rc2_linux.x86_64.zip
+          unzip Godot_v4.2.2-rc2_linux.x86_64.zip -d .
+          unzip Godot_v4.2.2-rc2_export_templates.tpz -d .
+          mv ./templates/  ~/.local/share/godot/export_templates/${GODOT_VERSION}
+        # mv /root/.local/share/godot/export_templates/${GODOT_VERSION} ~/.local/share/godot/export_templates/${GODOT_VERSION}
       - name: Linux Build
         run: |
-          godot --headless -v --export-release "Linux/X11" ./build/linux-64bit/$EXPORT_NAME.x86_64
+          ./Godot_v4.2.2-rc2_linux.x86_64 --headless -v --export-release "Linux/X11" ./build/linux-64bit/$EXPORT_NAME.x86_64
       - name: Give execute permission
         run: |
           chmod +x ./build/linux-64bit/$EXPORT_NAME.x86_64
