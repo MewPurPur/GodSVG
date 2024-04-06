@@ -7,81 +7,53 @@ on:
   pull_request:
     branches: [ main ]
 
-concurrency:
-  group: ci-${{github.actor}}-${{github.head_ref || github.run_number}}-${{github.ref}}-devdesktop
-  cancel-in-progress: true
-
 env:
-  GODOT_VERSION: 4.2.2.rc2
+  GODOT_VERSION: 4.2.2-rc2
+  GODOT_VERSION_DOT: 4.2.2.rc2
   EXPORT_NAME: GodSVG
 
 jobs:
-  export-windows:
-    name: Windows Export
+  export:
+    name: Export GodSVG
     runs-on: ubuntu-latest
-    container:
-      image: docker://barichello/godot-ci:4.2.1
     steps:
-      - name: Setup WINE and rcedit
+      - name: Setup Godot and folders
+        run: |
+          mkdir -v -p ~/build/windows-64bit ~/build/linux-64bit ~/.local/share/godot/export_templates
+          wget -q https://github.com/godotengine/godot-builds/releases/download/${GODOT_VERSION}/Godot_v${GODOT_VERSION}_export_templates.tpz
+          wget -q https://github.com/godotengine/godot-builds/releases/download/${GODOT_VERSION}/Godot_v${GODOT_VERSION}_linux.x86_64.zip
+          unzip Godot_v${GODOT_VERSION}_linux.x86_64.zip -d ~
+          unzip Godot_v${GODOT_VERSION}_export_templates.tpz -d ~
+          mv ~/templates/  ~/.local/share/godot/export_templates/${GODOT_VERSION_DOT}
+          ~/Godot_v${GODOT_VERSION}_linux.x86_64 --headless --quit
+      - name: Setup WINE and rcedit for Windows export
         run: |
           dpkg --add-architecture i386 && apt-get update && apt-get install -y wine-stable && apt-get install -y wine32
-          chown root:root -R ~
-          wget https://github.com/electron/rcedit/releases/download/v1.1.1/rcedit-x64.exe
+          wget -q https://github.com/electron/rcedit/releases/download/v1.1.1/rcedit-x64.exe
           mkdir -v -p ~/.local/share/rcedit
           mv rcedit-x64.exe ~/.local/share/rcedit
-          godot --headless --quit
           echo 'export/windows/wine = "/usr/bin/wine"' >> ~/.config/godot/editor_settings-4.tres
           echo 'export/windows/rcedit = "/github/home/.local/share/rcedit/rcedit-x64.exe"' >> ~/.config/godot/editor_settings-4.tres
-      - name: Checkout
+      - name: Checkout repo
         uses: actions/checkout@v4
-      - name: Setup
+      - name: Build Windows executable
         run: |
-          mkdir -v -p build/windows-64bit  ~/.local/share/godot/export_templates
-          wget -q https://github.com/godotengine/godot-builds/releases/download/4.2.2-rc2/Godot_v4.2.2-rc2_export_templates.tpz
-          wget -q https://github.com/godotengine/godot-builds/releases/download/4.2.2-rc2/Godot_v4.2.2-rc2_linux.x86_64.zip
-          unzip Godot_v4.2.2-rc2_linux.x86_64.zip -d .
-          unzip Godot_v4.2.2-rc2_export_templates.tpz -d .
-          mv ./templates/  ~/.local/share/godot/export_templates/${GODOT_VERSION}
-      - name: Windows Build
+          ~/Godot_v${GODOT_VERSION}_linux.x86_64 --headless -v --export-release "Windows Desktop" ~/build/windows-64bit/$EXPORT_NAME.exe
+      - name: Build Linux executable
         run: |
-          ./Godot_v4.2.2-rc2_linux.x86_64 --headless -v --export-release "Windows Desktop" ./build/windows-64bit/$EXPORT_NAME.exe
-      - name: Upload Artifact
+          ~/Godot_v${GODOT_VERSION}_linux.x86_64 --headless -v --export-release "Linux/X11" ~/build/linux-64bit/$EXPORT_NAME.x86_64
+          chmod +x ~/build/linux-64bit/$EXPORT_NAME.x86_64
+          cd ~/build
+          tar zcvf linux-64bit.tar.gz linux-64bit
+      - name: Upload Windows Artifact
         uses: actions/upload-artifact@v4
         with:
           name: Windows-64bit
-          path: ./build/windows-64bit/
+          path: ~/build/windows-64bit/
           retention-days: 14
-
-  export-linux:
-    name: Linux Export
-    runs-on: ubuntu-latest
-    # container:
-    #   image: docker://barichello/godot-ci:4.2.1
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Setup
-        run: |
-          mkdir -v -p build/linux-64bit ~/.local/share/godot/export_templates
-          wget -q https://github.com/godotengine/godot-builds/releases/download/4.2.2-rc2/Godot_v4.2.2-rc2_export_templates.tpz
-          wget -q https://github.com/godotengine/godot-builds/releases/download/4.2.2-rc2/Godot_v4.2.2-rc2_linux.x86_64.zip
-          unzip Godot_v4.2.2-rc2_linux.x86_64.zip -d .
-          unzip Godot_v4.2.2-rc2_export_templates.tpz -d .
-          mv ./templates/  ~/.local/share/godot/export_templates/${GODOT_VERSION}
-        # mv /root/.local/share/godot/export_templates/${GODOT_VERSION} ~/.local/share/godot/export_templates/${GODOT_VERSION}
-      - name: Linux Build
-        run: |
-          ./Godot_v4.2.2-rc2_linux.x86_64 --headless -v --export-release "Linux/X11" ./build/linux-64bit/$EXPORT_NAME.x86_64
-      - name: Give execute permission
-        run: |
-          chmod +x ./build/linux-64bit/$EXPORT_NAME.x86_64
-      - name: Create tar.gz archive
-        run: |
-          cd build
-          tar zcvf linux-64bit.tar.gz linux-64bit
-      - name: Upload Artifact
+      - name: Upload Linux Artifact
         uses: actions/upload-artifact@v4
         with:
           name: Linux-64bit
-          path: ./build/linux-64bit.tar.gz
+          path: ~/build/linux-64bit.tar.gz
           retention-days: 14
