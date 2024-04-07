@@ -76,7 +76,7 @@ static func generate_theme() -> void:
 	setup_button(theme)
 	setup_checkbox(theme)
 	setup_checkbutton(theme)
-	setup_filedialog(theme)
+	setup_itemlist(theme)
 	setup_lineedit(theme)
 	setup_scrollbar(theme)
 	setup_separator(theme)
@@ -132,7 +132,7 @@ static func setup_panelcontainer(theme: Theme) -> void:
 	overlay_stylebox.set_border_width_all(2)
 	overlay_stylebox.content_margin_left = 8.0
 	overlay_stylebox.content_margin_right = 10.0
-	overlay_stylebox.content_margin_top = 8.0
+	overlay_stylebox.content_margin_top = 6.0
 	overlay_stylebox.content_margin_bottom = 10.0
 	overlay_stylebox.bg_color = overlay_panel_inner_color
 	overlay_stylebox.border_color = overlay_panel_border_color
@@ -511,11 +511,34 @@ static func setup_checkbutton(theme: Theme) -> void:
 	theme.set_icon("checked", "CheckButton", icon("GuiToggleChecked"))
 	theme.set_icon("unchecked", "CheckButton", icon("GuiToggleUnchecked"))
 
-static func setup_filedialog(theme: Theme) -> void:
-	theme.add_type("FileDialog")
-	theme.set_icon("parent_folder", "CheckButton", icon("FolderUp"))
-	theme.set_icon("reload", "CheckButton", icon("../Reload"))
-	theme.set_icon("toggle_hidden", "CheckButton", icon("../Visuals"))
+static func setup_itemlist(theme: Theme) -> void:
+	theme.add_type("ItemList")
+	theme.set_color("font_color", "ItemList", Color(0.9, 0.9, 0.9))
+	theme.set_color("font_hovered", "ItemList", Color.WHITE)
+	theme.set_color("font_selected", "ItemList", Color.WHITE)
+	theme.set_color("guide_color", "ItemList", Color.TRANSPARENT)
+	#theme.set_constant("v_separation", "ItemList", 0)
+	theme.set_constant("icon_margin", "ItemList", 4)
+	
+	var empty_stylebox := StyleBoxEmpty.new()
+	empty_stylebox.set_content_margin_all(1)
+	theme.set_stylebox("panel", "ItemList", empty_stylebox)
+	theme.set_stylebox("focus", "ItemList", empty_stylebox)
+	theme.set_stylebox("cursor", "ItemList", empty_stylebox)
+	theme.set_stylebox("cursor_unfocused", "ItemList", empty_stylebox)
+	
+	var item_stylebox := StyleBoxFlat.new()
+	item_stylebox.set_corner_radius_all(3)
+	item_stylebox.set_content_margin_all(2)
+	
+	var hover_item_stylebox := item_stylebox.duplicate()
+	hover_item_stylebox.bg_color = flat_button_color_hover
+	theme.set_stylebox("hovered", "ItemList", hover_item_stylebox)
+	
+	var selected_item_stylebox := item_stylebox.duplicate()
+	selected_item_stylebox.bg_color = flat_button_color_pressed
+	theme.set_stylebox("selected", "ItemList", selected_item_stylebox)
+	theme.set_stylebox("selected_focus", "ItemList", selected_item_stylebox)
 
 static func setup_lineedit(theme: Theme) -> void:
 	theme.add_type("LineEdit")

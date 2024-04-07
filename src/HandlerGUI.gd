@@ -40,9 +40,9 @@ func add_overlay(overlay_menu: Node) -> void:
 		overlay_ref = OverlayRect.new()
 		get_tree().get_root().add_child(overlay_ref)
 		overlay_ref.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+		overlay_ref.add_child(overlay_menu)
 		if overlay_menu is Control:
 			overlay_menu.set_anchors_and_offsets_preset(Control.PRESET_CENTER)
-		overlay_ref.add_child(overlay_menu)
 		overlay_menu.tree_exiting.connect(remove_overlay)
 		has_overlay = true
 		get_tree().paused = true

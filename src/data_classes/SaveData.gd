@@ -10,6 +10,7 @@ const GoodColorPicker = preload("res://src/ui_elements/good_color_picker.gd")
 @export var color_picker_slider_mode := GoodColorPicker.SliderMode.RGB
 @export var path_command_relative := false
 @export var last_used_dir := ""
+@export var file_dialog_show_hidden := false
 
 signal current_file_path_changed
 @export var current_file_path := "":
