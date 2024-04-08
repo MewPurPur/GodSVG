@@ -108,17 +108,18 @@ theme_override_font_sizes/font_size = 10
 
 [node name="ButtonContainer" type="HBoxContainer" parent="VBoxContainer"]
 layout_mode = 2
-theme_override_constants/separation = 12
 alignment = 1
 
 [node name="CancelButton" type="Button" parent="VBoxContainer/ButtonContainer"]
 layout_mode = 2
+size_flags_horizontal = 6
 focus_mode = 0
 mouse_default_cursor_shape = 2
 text = "Cancel"
 
 [node name="OKButton" type="Button" parent="VBoxContainer/ButtonContainer"]
 layout_mode = 2
+size_flags_horizontal = 6
 focus_mode = 0
 mouse_default_cursor_shape = 2
 text = "Export"

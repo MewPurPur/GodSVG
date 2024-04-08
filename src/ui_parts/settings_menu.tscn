@@ -480,34 +480,56 @@ visible = false
 layout_mode = 2
 horizontal_scroll_mode = 0
 
-[node name="Input" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Other"]
+[node name="OtherSettings" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Other"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 8
+
+[node name="Input" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Other/OtherSettings"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/separation = 3
 
-[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Other/Input"]
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Other/OtherSettings/Input"]
 layout_mode = 2
 text = "Input"
 
-[node name="InvertZoom" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Other/Input" instance=ExtResource("4_2qeh2")]
+[node name="InvertZoom" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Other/OtherSettings/Input" instance=ExtResource("4_2qeh2")]
 layout_mode = 2
 tooltip_text = "Swaps zoom in and zoom out with the mouse wheel."
 section_name = "other"
 setting_name = "invert_zoom"
 
-[node name="WrapMouse" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Other/Input" instance=ExtResource("4_2qeh2")]
+[node name="WrapMouse" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Other/OtherSettings/Input" instance=ExtResource("4_2qeh2")]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "Wraps the mouse cursor around when panning the viewport."
 section_name = "other"
 setting_name = "wrap_mouse"
 
-[node name="UseCtrlForZoom" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Other/Input" instance=ExtResource("4_2qeh2")]
+[node name="UseCtrlForZoom" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Other/OtherSettings/Input" instance=ExtResource("4_2qeh2")]
 layout_mode = 2
 tooltip_text = "If turned on, scrolling will pan the view. To zoom, hold CTRL while scrolling."
 section_name = "other"
 setting_name = "use_ctrl_for_zoom"
+
+[node name="FileDialog" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Other/OtherSettings"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 3
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Other/OtherSettings/FileDialog"]
+layout_mode = 2
+text = "Miscellaneous"
+
+[node name="UseNativeFileDialog" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Other/OtherSettings/FileDialog" instance=ExtResource("4_2qeh2")]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Swaps zoom in and zoom out with the mouse wheel."
+section_name = "other"
+setting_name = "use_native_file_dialog"
 
 [node name="Close" type="Button" parent="VBoxContainer"]
 layout_mode = 2

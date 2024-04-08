@@ -328,6 +328,38 @@ msgstr "Включи цвета"
 msgid "Disable the color"
 msgstr "Изключи цвета"
 
+msgid "Path"
+msgstr "Пътека"
+
+msgid "Replace"
+msgstr "Замени"
+
+msgid "Go to parent folder"
+msgstr "Отиди в родителската папка"
+
+msgid "Refresh files"
+msgstr "Обнови файловете"
+
+msgid "Toggle the visibility of hidden files"
+msgstr "Превключи видимостта на скритите файлове"
+
+msgid "Search files"
+msgstr "Търсене из файловете"
+
+msgid "Select an SVG"
+msgstr "Избери SVG"
+
+msgid "Save SVG"
+msgstr "Запиши SVG"
+
+msgid "Select"
+msgstr "Избери"
+
+msgid ""
+"A file named \"{file_name}\" already exists. Replacing will overwrite its "
+"contents!"
+msgstr "Файл кръстен \"{file_name}\" вече съществува. Заместването ще пренапише неговото съдържание!"
+
 msgid "Godot third-party components"
 msgstr "Компоненти в Godot от трети лица"
 
