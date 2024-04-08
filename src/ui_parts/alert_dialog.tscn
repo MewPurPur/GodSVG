@@ -15,40 +15,34 @@ offset_right = 2.0
 offset_bottom = 2.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_type_variation = &"OverlayPanel"
 script = ExtResource("1_qntyo")
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
-layout_mode = 2
-theme_override_constants/margin_left = 8
-theme_override_constants/margin_top = 6
-theme_override_constants/margin_right = 8
-theme_override_constants/margin_bottom = 8
-
-[node name="MainContainer" type="VBoxContainer" parent="MarginContainer"]
+[node name="MainContainer" type="VBoxContainer" parent="."]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="TextContainer" type="VBoxContainer" parent="MarginContainer/MainContainer"]
+[node name="TextContainer" type="VBoxContainer" parent="MainContainer"]
 layout_mode = 2
 
-[node name="Title" type="Label" parent="MarginContainer/MainContainer/TextContainer"]
+[node name="Title" type="Label" parent="MainContainer/TextContainer"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("1_3yrpq")
 theme_override_font_sizes/font_size = 16
 text = "Alert!"
 horizontal_alignment = 1
 
-[node name="Label" type="RichTextLabel" parent="MarginContainer/MainContainer/TextContainer"]
+[node name="Label" type="RichTextLabel" parent="MainContainer/TextContainer"]
 custom_minimum_size = Vector2(180, 0)
 layout_mode = 2
 theme_override_font_sizes/normal_font_size = 12
 fit_content = true
 
-[node name="OKButton" type="Button" parent="MarginContainer/MainContainer"]
+[node name="OKButton" type="Button" parent="MainContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
 mouse_default_cursor_shape = 2
 text = "OK"
 
-[connection signal="pressed" from="MarginContainer/MainContainer/OKButton" to="." method="_on_ok_button_pressed"]
+[connection signal="pressed" from="MainContainer/OKButton" to="." method="_on_ok_button_pressed"]

@@ -336,6 +336,43 @@ msgstr "Активувати колір"
 msgid "Disable the color"
 msgstr "Деактивувати колір"
 
+#, fuzzy
+msgid "Path"
+msgstr "Шляхи"
+
+msgid "Replace"
+msgstr ""
+
+msgid "Go to parent folder"
+msgstr ""
+
+msgid "Refresh files"
+msgstr ""
+
+msgid "Toggle the visibility of hidden files"
+msgstr ""
+
+#, fuzzy
+msgid "Search files"
+msgstr "Шукати колір"
+
+#, fuzzy
+msgid "Select an SVG"
+msgstr "Обрати усі теги"
+
+#, fuzzy
+msgid "Save SVG"
+msgstr "Зберегти"
+
+#, fuzzy
+msgid "Select"
+msgstr "Колір обраного"
+
+msgid ""
+"A file named \"{file_name}\" already exists. Replacing will overwrite its "
+"contents!"
+msgstr ""
+
 msgid "Godot third-party components"
 msgstr "Компоненти Godot від третіх сторін"
 

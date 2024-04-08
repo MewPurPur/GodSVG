@@ -14,7 +14,10 @@ const SettingColor = preload("res://src/ui_elements/setting_color.gd")
 @onready var shortcut_container: VBoxContainer = %ShortcutContainer
 @onready var content_container: MarginContainer = %ContentContainer
 @onready var tabs: VBoxContainer = %Tabs
+
 @onready var wrap_mouse: HBoxContainer = %WrapMouse
+@onready var use_native_file_dialog: HBoxContainer = %UseNativeFileDialog
+
 @onready var configurable_shortcuts: VBoxContainer = %ConfigurableShortcuts
 @onready var non_configurable_shortcuts: VBoxContainer = %NonConfigurableShortcuts
 
@@ -61,14 +64,17 @@ func setup_setting_labels() -> void:
 	tabs.get_node(^"ThemeTab").text = tr("Theme")
 	tabs.get_node(^"OtherTab").text = tr("Other")
 	
-	var invert_zoom := %ContentContainer/Other/Input/InvertZoom
+	var invert_zoom := %ContentContainer/Other/OtherSettings/Input/InvertZoom
 	invert_zoom.label.text = tr("Invert zoom direction")
 	invert_zoom.label.tooltip_text = tr("Swaps zoom in and zoom out with the mouse wheel.")
 	wrap_mouse.label.text = tr("Wrap mouse")
 	wrap_mouse.label.tooltip_text = tr("Wraps the mouse cursor around when panning the viewport.")
-	var ctrl_for_zoom := %ContentContainer/Other/Input/UseCtrlForZoom
+	var ctrl_for_zoom := %ContentContainer/Other/OtherSettings/Input/UseCtrlForZoom
 	ctrl_for_zoom.label.text = tr("Use CTRL for zooming")
 	ctrl_for_zoom.label.tooltip_text = tr("If turned on, scrolling will pan the view. To zoom, hold CTRL while scrolling.")
+	use_native_file_dialog.label.text = tr("Use native file dialog")
+	use_native_file_dialog.label.tooltip_text = tr("If turned on, uses your operating system's native file dialog. If turned off, uses GodSVG's built-in file dialog.")
+	
 	%GeneralVBox/NumberPrecision.label.text = tr("Number precision digits")
 	%GeneralVBox/AnglePrecision.label.text = tr("Angle precision digits")
 	%XMLVBox/AddTrailingNewline.label.text = tr("Add trailing newline")
@@ -284,7 +290,15 @@ func _on_theme_tab_toggled(toggled_on: bool) -> void:
 
 func _on_other_tab_toggled(toggled_on: bool) -> void:
 	if toggled_on and not generated_content.other:
+		# Disable mouse wrap if not available.
 		if not DisplayServer.has_feature(DisplayServer.FEATURE_MOUSE_WARP):
 			wrap_mouse.checkbox.set_pressed_no_signal(false)
 			wrap_mouse.set_checkbox_enabled(false)
+		# Disable fallback file dialog on web, and native file dialog if not available.
+		if OS.has_feature("web"):
+			use_native_file_dialog.checkbox.set_pressed_no_signal(true)
+			use_native_file_dialog.set_checkbox_enabled(false)
+		if not DisplayServer.has_feature(DisplayServer.FEATURE_NATIVE_DIALOG):
+			use_native_file_dialog.checkbox.set_pressed_no_signal(false)
+			use_native_file_dialog.set_checkbox_enabled(false)
 		generated_content.other = true
