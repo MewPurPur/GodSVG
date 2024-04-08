@@ -339,6 +339,43 @@ msgstr "Farbe aktivieren"
 msgid "Disable the color"
 msgstr "Farbe deaktivieren"
 
+#, fuzzy
+msgid "Path"
+msgstr "Pfade"
+
+msgid "Replace"
+msgstr ""
+
+msgid "Go to parent folder"
+msgstr ""
+
+msgid "Refresh files"
+msgstr ""
+
+msgid "Toggle the visibility of hidden files"
+msgstr ""
+
+#, fuzzy
+msgid "Search files"
+msgstr "Farbe suchen"
+
+#, fuzzy
+msgid "Select an SVG"
+msgstr "Alle Tags auswählen"
+
+#, fuzzy
+msgid "Save SVG"
+msgstr "Speichern"
+
+#, fuzzy
+msgid "Select"
+msgstr "Farbe löschen"
+
+msgid ""
+"A file named \"{file_name}\" already exists. Replacing will overwrite its "
+"contents!"
+msgstr ""
+
 msgid "Godot third-party components"
 msgstr "Godot Drittanbieter-Komponente"
 

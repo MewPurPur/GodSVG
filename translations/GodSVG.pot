@@ -325,6 +325,36 @@ msgstr ""
 msgid "Disable the color"
 msgstr ""
 
+msgid "Path"
+msgstr ""
+
+msgid "Replace"
+msgstr ""
+
+msgid "Go to parent folder"
+msgstr ""
+
+msgid "Refresh files"
+msgstr ""
+
+msgid "Toggle the visibility of hidden files"
+msgstr ""
+
+msgid "Search files"
+msgstr ""
+
+msgid "Select an SVG"
+msgstr ""
+
+msgid "Save SVG"
+msgstr ""
+
+msgid "Select"
+msgstr ""
+
+msgid "A file named \"{file_name}\" already exists. Replacing will overwrite its contents!"
+msgstr ""
+
 msgid "Godot third-party components"
 msgstr ""
 

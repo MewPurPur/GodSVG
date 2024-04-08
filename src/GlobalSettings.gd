@@ -56,6 +56,7 @@ const default_config = {
 		"invert_zoom": false,
 		"wrap_mouse": false,
 		"use_ctrl_for_zoom": true,
+		"use_native_file_dialog": true,
 	},
 }
 
@@ -73,10 +74,6 @@ var language: String:
 
 var palettes: Array[ColorPalette] = []
 
-# Input
-var invert_zoom := false
-var wrap_mouse := false
-var use_ctrl_for_zoom := true
 
 # Autoformat
 var general_number_precision := 3
@@ -117,6 +114,12 @@ var default_value_opacity := 0.7
 var basic_color_valid := Color("9f9")
 var basic_color_error := Color("f99")
 var basic_color_warning := Color("ff9")
+
+# Other
+var invert_zoom := false
+var wrap_mouse := false
+var use_ctrl_for_zoom := true
+var use_native_file_dialog := true
 
 
 func toggle_bool_setting(section: String, setting: String) -> void:

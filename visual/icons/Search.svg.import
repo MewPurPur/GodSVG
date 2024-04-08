@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://rrhdja8l17cn"
-path="res://.godot/imported/FolderUp.svg-b4eb7c260434a037353caaa49dc2e4f8.ctex"
+uid="uid://d4c7haflm8evm"
+path="res://.godot/imported/Search.svg-2dd99ab889ce67e689ca0f3320130c17.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://visual/icons/theme/FolderUp.svg"
-dest_files=["res://.godot/imported/FolderUp.svg-b4eb7c260434a037353caaa49dc2e4f8.ctex"]
+source_file="res://visual/icons/Search.svg"
+dest_files=["res://.godot/imported/Search.svg-2dd99ab889ce67e689ca0f3320130c17.ctex"]
 
 [params]
 

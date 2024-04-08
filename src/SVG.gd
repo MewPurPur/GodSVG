@@ -2,9 +2,11 @@
 ## The SVG text, and the native [TagSVG] representation.
 extends Node
 
+const GoodFileDialogType = preload("res://src/ui_parts/good_file_dialog.gd")
+
 const AlertDialog := preload("res://src/ui_parts/alert_dialog.tscn")
 const ImportWarningDialog = preload("res://src/ui_parts/import_warning_dialog.tscn")
-const SVGFileDialog = preload("res://src/ui_parts/svg_file_dialog.tscn")
+const GoodFileDialog = preload("res://src/ui_parts/good_file_dialog.tscn")
 const ExportDialog = preload("res://src/ui_parts/export_dialog.tscn")
 
 const default = '<svg width="16" height="16" xmlns="http://www.w3.org/2000/svg"></svg>'
@@ -78,16 +80,22 @@ func _on_undo_redo() -> void:
 func refresh() -> void:
 	SVG.root_tag.replace_self(SVG.root_tag.create_duplicate())
 
+
+func is_native_preferred() -> bool:
+	return DisplayServer.has_feature(DisplayServer.FEATURE_NATIVE_DIALOG) and\
+			GlobalSettings.use_native_file_dialog
+
 func open_import_dialog() -> void:
 	# Open it inside a native file dialog, or our custom one if it's not available.
-	if DisplayServer.has_feature(DisplayServer.FEATURE_NATIVE_DIALOG):
+	if is_native_preferred():
 		DisplayServer.file_dialog_show("Import a .svg file", Utils.get_last_dir(), "", false,
 				DisplayServer.FILE_DIALOG_MODE_OPEN_FILE, ["*.svg"], native_file_import)
 	elif OS.has_feature("web"):
 		HandlerGUI.web_load_svg()
 	else:
-		var svg_import_dialog := SVGFileDialog.instantiate()
-		svg_import_dialog.current_dir = Utils.get_last_dir()
+		var svg_import_dialog := GoodFileDialog.instantiate()
+		svg_import_dialog.setup(Utils.get_last_dir(), "",
+				GoodFileDialogType.FileMode.SELECT, "svg")
 		HandlerGUI.add_overlay(svg_import_dialog)
 		svg_import_dialog.file_selected.connect(apply_svg_from_path)
 
@@ -103,7 +111,7 @@ func open_export_dialog() -> void:
 func open_save_dialog(extension: String, native_callable: Callable,
 non_native_callable: Callable) -> void:
 	# Open it inside a native file dialog, or our custom one if it's not available.
-	if DisplayServer.has_feature(DisplayServer.FEATURE_NATIVE_DIALOG):
+	if is_native_preferred():
 		DisplayServer.file_dialog_show("Save the .%s file" % extension,
 				Utils.get_last_dir(),
 				Utils.get_file_name(GlobalSettings.save_data.current_file_path) + "." + extension,
@@ -112,9 +120,10 @@ non_native_callable: Callable) -> void:
 	elif OS.has_feature("web"):
 		HandlerGUI.web_save_svg()
 	else:
-		var svg_export_dialog := SVGFileDialog.instantiate()
-		svg_export_dialog.current_dir = Utils.get_last_dir()
-		svg_export_dialog.file_mode = FileDialog.FILE_MODE_SAVE_FILE
+		var svg_export_dialog := GoodFileDialog.instantiate()
+		svg_export_dialog.setup(Utils.get_last_dir(),
+				Utils.get_file_name(GlobalSettings.save_data.current_file_path),
+				GoodFileDialogType.FileMode.SAVE, extension)
 		HandlerGUI.add_overlay(svg_export_dialog)
 		svg_export_dialog.file_selected.connect(non_native_callable)
 
@@ -155,9 +164,36 @@ func apply_svg_from_path(path: String) -> int:
 	HandlerGUI.add_overlay(warning_panel)
 	return OK
 
+func generate_image_from_tags(upscale_amount := 1.0) -> Image:
+	var export_svg := SVG.root_tag.create_duplicate()
+	if export_svg.attributes.viewBox.get_list().is_empty():
+		export_svg.attributes.viewBox.set_list([0, 0, export_svg.width, export_svg.height])
+	export_svg.attributes.width.set_num(export_svg.width * upscale_amount)
+	export_svg.attributes.height.set_num(export_svg.height * upscale_amount)
+	var img := Image.new()
+	img.load_svg_from_string(SVGParser.svg_to_text(export_svg))
+	img.fix_alpha_edges()  # See godot issue 82579.
+	return img
+
+
 func finish_import(svg_text: String, file_path: String) -> void:
 	GlobalSettings.modify_save_data("current_file_path", file_path)
 	apply_svg_text(svg_text)
+
+func finish_export(file_path: String, extension: String, upscale_amount := 1.0) -> void:
+	if file_path.get_extension().is_empty():
+		file_path += "." + extension
+	
+	GlobalSettings.modify_save_data("last_used_dir", file_path.get_base_dir())
+	
+	match extension:
+		"png":
+			generate_image_from_tags(upscale_amount).save_png(file_path)
+		_:
+			# SVG / fallback.
+			GlobalSettings.modify_save_data("current_file_path", file_path)
+			save_svg_to_file(file_path)
+	HandlerGUI.remove_overlay()
 
 
 func save_svg_to_file(path: String) -> void:
