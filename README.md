@@ -18,7 +18,7 @@
 - **Optimized SVGs:** The generated SVG files are small and efficient, and there are many options to assist with optimization.
 - **Accessible on mobile:** GodSVG aims to be usable on mobile devices.
 
-![image](https://github.com/MewPurPur/GodSVG/assets/85438892/799084d5-4ec6-4c9e-98a1-e358c34927c0)
+![image](https://github.com/MewPurPur/GodSVG/assets/85438892/4c2de628-4284-4d4a-b9de-a8521c2b74a5)
 
 ## How to get it
 
