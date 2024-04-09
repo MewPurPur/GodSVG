@@ -40,6 +40,7 @@ For scripts, only GDScript code is allowed. Follow the [GDScript style guide](ht
 - Two spaces are used to separate code and inline comments.
 - For empty lines in the middle of indented blocks, the scope's indentation is kept.
 - Class names use `class_name X extends Y` syntax.
+- StringNames are only used if something is performance-critical.
 - `@export` for nodes is only used if the runtime structure is not known.
 
 Don't make pull requests for code style changes without discussing them first (unless it's for corrections to abide by the ones described here). Pull requests may also get production tweaks to fix their style before being merged.
