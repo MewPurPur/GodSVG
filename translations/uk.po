@@ -500,9 +500,8 @@ msgstr "Відносна"
 msgid "Absolute"
 msgstr "Абсолютна"
 
-#, fuzzy
-msgid "Clear association"
-msgstr "Видалити асоціацію"
+msgid "Clear saving path"
+msgstr ""
 
 msgid "Apply the matrix"
 msgstr "Застосувати матрицю"
@@ -521,6 +520,10 @@ msgstr "Завжди активно."
 
 msgid "Search color"
 msgstr "Шукати колір"
+
+#, fuzzy
+#~ msgid "Clear association"
+#~ msgstr "Видалити асоціацію"
 
 #~ msgid "Import SVG"
 #~ msgstr "Імпортувати SVG"

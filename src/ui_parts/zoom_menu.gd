@@ -14,11 +14,11 @@ var _zoom_level: float
 
 
 func _unhandled_input(input_event: InputEvent) -> void:
-	if input_event.is_action_pressed(&"zoom_in"):
+	if input_event.is_action_pressed("zoom_in"):
 		zoom_in()
-	elif input_event.is_action_pressed(&"zoom_out"):
+	elif input_event.is_action_pressed("zoom_out"):
 		zoom_out()
-	elif input_event.is_action_pressed(&"zoom_reset"):
+	elif input_event.is_action_pressed("zoom_reset"):
 		zoom_reset()
 
 
