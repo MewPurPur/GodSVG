@@ -1,6 +1,9 @@
 # This singleton handles session data and settings.
 extends Node
 
+
+signal keybinds_changed
+
 # Session data
 var save_data := SaveData.new()
 const save_path = "user://save.tres"
@@ -228,6 +231,7 @@ func save_palettes() -> void:
 func save_keybind(action: String) -> void:
 	config.set_value("keybinds", action, InputMap.action_get_events(action))
 	config.save(config_path)
+	keybinds_changed.emit()
 
 
 func modify_save_data(property: String, new_value: Variant) -> void:

@@ -225,7 +225,6 @@ msgid "OK"
 msgstr "OK"
 
 #: src/ui_parts/code_editor.gd src/ui_parts/good_file_dialog.gd
-#: src/TranslationUtils.gd
 #, fuzzy
 msgid "Save SVG"
 msgstr "Speichern"
@@ -353,13 +352,34 @@ msgstr ""
 msgid "Scale"
 msgstr "Skalieren"
 
-#: src/ui_parts/export_dialog.gd src/TranslationUtils.gd
+#: src/ui_parts/export_dialog.gd
 msgid "Export"
 msgstr "Exportieren"
 
 #: src/ui_parts/export_dialog.gd
 msgid "Final size"
 msgstr "Endgültige Größe"
+
+#: src/ui_parts/global_menu.gd src/ui_parts/settings_menu.gd
+msgid "File"
+msgstr ""
+
+#: src/ui_parts/global_menu.gd src/ui_parts/settings_menu.gd
+msgid "Edit"
+msgstr "Bearbeiten"
+
+#: src/ui_parts/global_menu.gd src/ui_parts/settings_menu.gd
+msgid "Tool"
+msgstr ""
+
+#: src/ui_parts/global_menu.gd src/ui_parts/settings_menu.gd
+msgid "View"
+msgstr ""
+
+#: src/ui_parts/global_menu.gd
+#, fuzzy
+msgid "Snap"
+msgstr "Einrastgröße"
 
 #: src/ui_parts/good_file_dialog.gd
 msgid "Create new folder"
@@ -624,22 +644,6 @@ msgid "Language"
 msgstr "Sprache"
 
 #: src/ui_parts/settings_menu.gd
-msgid "File"
-msgstr ""
-
-#: src/ui_parts/settings_menu.gd
-msgid "Edit"
-msgstr "Bearbeiten"
-
-#: src/ui_parts/settings_menu.gd
-msgid "View"
-msgstr ""
-
-#: src/ui_parts/settings_menu.gd
-msgid "Tool"
-msgstr ""
-
-#: src/ui_parts/settings_menu.gd
 msgid "Help"
 msgstr ""
 
@@ -856,8 +860,19 @@ msgid "Convert To"
 msgstr "Konvertieren zu"
 
 #: src/TranslationUtils.gd
-msgid "Import"
+#, fuzzy
+msgid "Export Image"
+msgstr "Exportieren"
+
+#: src/TranslationUtils.gd
+#, fuzzy
+msgid "Import SVG"
 msgstr "Importieren"
+
+#: src/TranslationUtils.gd
+#, fuzzy
+msgid "Export SVG"
+msgstr "Exportieren"
 
 #: src/TranslationUtils.gd
 #, fuzzy
@@ -882,6 +897,10 @@ msgstr "Ausgewählte Tags nach oben verschieben"
 #, fuzzy
 msgid "Move the selected elements down"
 msgstr "Ausgewählte Tags nach unten verschieben"
+
+#: src/TranslationUtils.gd
+msgid "Find"
+msgstr ""
 
 #: src/TranslationUtils.gd
 msgid "Zoom in"
@@ -909,6 +928,11 @@ msgstr "Griffe anzeigen"
 #, fuzzy
 msgid "Show rasterized SVG"
 msgstr "SVG rasterisieren"
+
+#: src/TranslationUtils.gd
+#, fuzzy
+msgid "Enable snap"
+msgstr "Einrasten aktivieren"
 
 #: src/TranslationUtils.gd
 msgid "Show reference image"

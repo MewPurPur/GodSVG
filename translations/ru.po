@@ -224,7 +224,6 @@ msgid "OK"
 msgstr "Хорошо"
 
 #: src/ui_parts/code_editor.gd src/ui_parts/good_file_dialog.gd
-#: src/TranslationUtils.gd
 msgid "Save SVG"
 msgstr "Сохранить SVG"
 
@@ -345,13 +344,34 @@ msgstr "Качество"
 msgid "Scale"
 msgstr "Масштаб"
 
-#: src/ui_parts/export_dialog.gd src/TranslationUtils.gd
+#: src/ui_parts/export_dialog.gd
 msgid "Export"
 msgstr "Экспортовать"
 
 #: src/ui_parts/export_dialog.gd
 msgid "Final size"
 msgstr "Финальный размер"
+
+#: src/ui_parts/global_menu.gd src/ui_parts/settings_menu.gd
+msgid "File"
+msgstr "Файл"
+
+#: src/ui_parts/global_menu.gd src/ui_parts/settings_menu.gd
+msgid "Edit"
+msgstr "Редактировать"
+
+#: src/ui_parts/global_menu.gd src/ui_parts/settings_menu.gd
+msgid "Tool"
+msgstr "Инструмент"
+
+#: src/ui_parts/global_menu.gd src/ui_parts/settings_menu.gd
+msgid "View"
+msgstr "Просмотр"
+
+#: src/ui_parts/global_menu.gd
+#, fuzzy
+msgid "Snap"
+msgstr "Размер привязки"
 
 #: src/ui_parts/good_file_dialog.gd
 msgid "Create new folder"
@@ -600,22 +620,6 @@ msgid "Language"
 msgstr "Язык"
 
 #: src/ui_parts/settings_menu.gd
-msgid "File"
-msgstr "Файл"
-
-#: src/ui_parts/settings_menu.gd
-msgid "Edit"
-msgstr "Редактировать"
-
-#: src/ui_parts/settings_menu.gd
-msgid "View"
-msgstr "Просмотр"
-
-#: src/ui_parts/settings_menu.gd
-msgid "Tool"
-msgstr "Инструмент"
-
-#: src/ui_parts/settings_menu.gd
 msgid "Help"
 msgstr "Помощь"
 
@@ -835,8 +839,18 @@ msgid "Convert To"
 msgstr "Конвертировать в"
 
 #: src/TranslationUtils.gd
-msgid "Import"
-msgstr "Импортировать"
+#, fuzzy
+msgid "Export Image"
+msgstr "Экспортовать"
+
+#: src/TranslationUtils.gd
+msgid "Import SVG"
+msgstr "Импортировать SVG"
+
+#: src/TranslationUtils.gd
+#, fuzzy
+msgid "Export SVG"
+msgstr "Импортировать SVG"
 
 #: src/TranslationUtils.gd
 #, fuzzy
@@ -863,6 +877,10 @@ msgid "Move the selected elements down"
 msgstr "Подвинуть вниз все выбранные теги"
 
 #: src/TranslationUtils.gd
+msgid "Find"
+msgstr ""
+
+#: src/TranslationUtils.gd
 msgid "Zoom in"
 msgstr "Приблизить масштаб"
 
@@ -885,6 +903,11 @@ msgstr "Показать ручки редактирования"
 #: src/TranslationUtils.gd
 msgid "Show rasterized SVG"
 msgstr "Показать растеризованый SVG"
+
+#: src/TranslationUtils.gd
+#, fuzzy
+msgid "Enable snap"
+msgstr "Включить привязку"
 
 #: src/TranslationUtils.gd
 msgid "Show reference image"
@@ -962,6 +985,9 @@ msgstr "Кубическая Безье до"
 msgid "Shorthand Cubic Bezier to"
 msgstr "Сокращенная кубическая Безье до"
 
+#~ msgid "Import"
+#~ msgstr "Импортировать"
+
 #~ msgid "Tag color"
 #~ msgstr "Цвет тега"
 
@@ -1013,6 +1039,3 @@ msgstr "Сокращенная кубическая Безье до"
 #, fuzzy
 #~ msgid "Clear association"
 #~ msgstr "Удалить"
-
-#~ msgid "Import SVG"
-#~ msgstr "Импортировать SVG"

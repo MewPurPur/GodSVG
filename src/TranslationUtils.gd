@@ -2,9 +2,9 @@ class_name TranslationUtils extends RefCounted
 
 static func get_shortcut_description(action_name: String) -> String:
 	match action_name:
-		"export": return TranslationServer.translate("Export")
-		"import": return TranslationServer.translate("Import")
-		"save": return TranslationServer.translate("Save SVG")
+		"export": return TranslationServer.translate("Export Image")
+		"import": return TranslationServer.translate("Import SVG")
+		"save": return TranslationServer.translate("Export SVG")
 		"optimize": return TranslationServer.translate("Optimize")
 		"copy_svg_text": return TranslationServer.translate("Copy all text")
 		"reset_svg": return TranslationServer.translate("Reset SVG")
@@ -17,12 +17,14 @@ static func get_shortcut_description(action_name: String) -> String:
 		"delete": return TranslationServer.translate("Delete the selection")
 		"move_up": return TranslationServer.translate("Move the selected elements up")
 		"move_down": return TranslationServer.translate("Move the selected elements down")
+		"find": return TranslationServer.translate("Find")
 		"zoom_in": return TranslationServer.translate("Zoom in")
 		"zoom_out": return TranslationServer.translate("Zoom out")
 		"zoom_reset": return TranslationServer.translate("Zoom reset")
 		"view_show_grid": return TranslationServer.translate("Show grid")
 		"view_show_handles": return TranslationServer.translate("Show handles")
 		"view_rasterized_svg": return TranslationServer.translate("Show rasterized SVG")
+		"snap_toggle": return TranslationServer.translate("Enable snap")
 		"load_reference": return TranslationServer.translate("Load reference image")
 		"view_show_reference": return TranslationServer.translate("Show reference image")
 		"view_overlay_reference": return TranslationServer.translate("Overlay reference image")

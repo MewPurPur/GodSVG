@@ -222,7 +222,6 @@ msgid "OK"
 msgstr "Добре"
 
 #: src/ui_parts/code_editor.gd src/ui_parts/good_file_dialog.gd
-#: src/TranslationUtils.gd
 msgid "Save SVG"
 msgstr "Запиши SVG-то"
 
@@ -343,13 +342,34 @@ msgstr "Качество"
 msgid "Scale"
 msgstr "Мащаб"
 
-#: src/ui_parts/export_dialog.gd src/TranslationUtils.gd
+#: src/ui_parts/export_dialog.gd
 msgid "Export"
 msgstr "Експортирай"
 
 #: src/ui_parts/export_dialog.gd
 msgid "Final size"
 msgstr "Краен размер"
+
+#: src/ui_parts/global_menu.gd src/ui_parts/settings_menu.gd
+msgid "File"
+msgstr "Файл"
+
+#: src/ui_parts/global_menu.gd src/ui_parts/settings_menu.gd
+msgid "Edit"
+msgstr "Промени"
+
+#: src/ui_parts/global_menu.gd src/ui_parts/settings_menu.gd
+msgid "Tool"
+msgstr "Инструмент"
+
+#: src/ui_parts/global_menu.gd src/ui_parts/settings_menu.gd
+msgid "View"
+msgstr "Гледка"
+
+#: src/ui_parts/global_menu.gd
+#, fuzzy
+msgid "Snap"
+msgstr "Размер на захващането"
 
 #: src/ui_parts/good_file_dialog.gd
 msgid "Create new folder"
@@ -592,22 +612,6 @@ msgid "Language"
 msgstr "Език"
 
 #: src/ui_parts/settings_menu.gd
-msgid "File"
-msgstr "Файл"
-
-#: src/ui_parts/settings_menu.gd
-msgid "Edit"
-msgstr "Промени"
-
-#: src/ui_parts/settings_menu.gd
-msgid "View"
-msgstr "Гледка"
-
-#: src/ui_parts/settings_menu.gd
-msgid "Tool"
-msgstr "Инструмент"
-
-#: src/ui_parts/settings_menu.gd
 msgid "Help"
 msgstr "Помощ"
 
@@ -823,8 +827,19 @@ msgid "Convert To"
 msgstr "Превърни в"
 
 #: src/TranslationUtils.gd
-msgid "Import"
+#, fuzzy
+msgid "Export Image"
+msgstr "Експортирай"
+
+#: src/TranslationUtils.gd
+#, fuzzy
+msgid "Import SVG"
 msgstr "Импортирай"
+
+#: src/TranslationUtils.gd
+#, fuzzy
+msgid "Export SVG"
+msgstr "Експортирай"
 
 #: src/TranslationUtils.gd
 msgid "Select all elements"
@@ -845,6 +860,10 @@ msgstr "Премести избраните елементи нагоре"
 #: src/TranslationUtils.gd
 msgid "Move the selected elements down"
 msgstr "Премести избраните елементи надолу"
+
+#: src/TranslationUtils.gd
+msgid "Find"
+msgstr ""
 
 #: src/TranslationUtils.gd
 msgid "Zoom in"
@@ -869,6 +888,11 @@ msgstr "Покажи дръжките"
 #: src/TranslationUtils.gd
 msgid "Show rasterized SVG"
 msgstr "Покажи растеризиран SVG"
+
+#: src/TranslationUtils.gd
+#, fuzzy
+msgid "Enable snap"
+msgstr "Включи захващането"
 
 #: src/TranslationUtils.gd
 msgid "Show reference image"
