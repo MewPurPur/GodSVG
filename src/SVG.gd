@@ -2,6 +2,10 @@
 ## The SVG text, and the native [TagSVG] representation.
 extends Node
 
+
+signal parsing_finished(error_id: SVGParser.ParseError)
+signal svg_text_changed()
+
 const GoodFileDialogType = preload("res://src/ui_parts/good_file_dialog.gd")
 
 const AlertDialog := preload("res://src/ui_parts/alert_dialog.tscn")
@@ -9,14 +13,16 @@ const ImportWarningDialog = preload("res://src/ui_parts/import_warning_dialog.ts
 const GoodFileDialog = preload("res://src/ui_parts/good_file_dialog.tscn")
 const ExportDialog = preload("res://src/ui_parts/export_dialog.tscn")
 
-const default = '<svg width="16" height="16" xmlns="http://www.w3.org/2000/svg"></svg>'
+const DEFAULT = '<svg width="16" height="16" xmlns="http://www.w3.org/2000/svg"></svg>'
 
-var text := ""
+var text := "":
+	set(value):
+		text = value
+		svg_text_changed.emit()
+
 var root_tag := TagSVG.new()
 
 var UR := UndoRedo.new()
-
-signal parsing_finished(error_id: SVGParser.ParseError)
 
 func _ready() -> void:
 	UR.version_changed.connect(_on_undo_redo)
@@ -38,7 +44,7 @@ func _ready() -> void:
 	if not GlobalSettings.save_data.svg_text.is_empty():
 		apply_svg_text(GlobalSettings.save_data.svg_text)
 	else:
-		apply_svg_text(default)
+		apply_svg_text(DEFAULT)
 	
 	if load_cmdl:
 		apply_svg_from_path(cmdline_args[0])
@@ -194,6 +200,10 @@ func finish_export(file_path: String, extension: String, upscale_amount := 1.0) 
 			GlobalSettings.modify_save_data("current_file_path", file_path)
 			save_svg_to_file(file_path)
 	HandlerGUI.remove_overlay()
+
+
+func does_svg_data_match_disk_contents() -> bool:
+	return text == FileAccess.get_file_as_string(GlobalSettings.save_data.current_file_path)
 
 
 func save_svg_to_file(path: String) -> void:

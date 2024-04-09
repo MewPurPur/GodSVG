@@ -13,6 +13,15 @@ signal zoom_reset_pressed
 var _zoom_level: float
 
 
+func _unhandled_input(input_event: InputEvent) -> void:
+	if input_event.is_action_pressed(&"zoom_in"):
+		zoom_in()
+	elif input_event.is_action_pressed(&"zoom_out"):
+		zoom_out()
+	elif input_event.is_action_pressed(&"zoom_reset"):
+		zoom_reset()
+
+
 func set_zoom(new_value: float, offset := Vector2(0.5, 0.5)) -> void:
 	new_value = clampf(new_value, MIN_ZOOM, MAX_ZOOM)
 	if _zoom_level != new_value:

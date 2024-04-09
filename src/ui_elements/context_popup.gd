@@ -1,8 +1,10 @@
 ## The standard context menu popup.
 extends BetterPopup
 
+
 @onready var panel: PanelContainer = $PanelContainer
 @onready var main_container: VBoxContainer = $PanelContainer/MainContainer
+
 
 func add_button(btn: Button, align_left: bool) -> void:
 	if not btn is CheckBox:
@@ -66,6 +68,7 @@ min_width := -1, separator_indices: Array[int] = []) -> void:
 		if min_width > 0:
 			min_size.x = ceili(min_width)
 			panel.custom_minimum_size.x = min_width
+
 
 func get_button_count() -> int:
 	return main_container.get_child_count()
