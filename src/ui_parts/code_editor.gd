@@ -1,5 +1,8 @@
 extends VBoxContainer
 
+
+signal optimize_button_enable_updated(is_optimize_enabled: bool)
+
 const ContextPopup = preload("res://src/ui_elements/context_popup.tscn")
 
 @onready var code_edit: TextEdit = $ScriptEditor/SVGCodeEdit
@@ -10,6 +13,7 @@ const ContextPopup = preload("res://src/ui_elements/context_popup.tscn")
 @onready var file_button: Button = %FileButton
 @onready var options_button: Button = $PanelContainer/CodeButtons/MetaActions/OptionsButton
 @onready var optimize_button: Button = $PanelContainer/CodeButtons/OptimizeButton
+
 
 func _ready() -> void:
 	SVG.parsing_finished.connect(update_error)
@@ -24,6 +28,29 @@ func _ready() -> void:
 	SVG.root_tag.tag_layout_changed.connect(auto_update_text)
 	SVG.root_tag.changed_unknown.connect(auto_update_text)
 	GlobalSettings.save_data.current_file_path_changed.connect(update_file_button)
+
+
+func _notification(what: int) -> void:
+	if what == Utils.CustomNotification.HIGHLIGHT_COLORS_CHANGED:
+		setup_highlighter()
+
+
+func _unhandled_input(input_event: InputEvent) -> void:
+	if input_event.is_action_pressed(&"import"):
+		_on_import_button_pressed()
+	elif input_event.is_action_pressed(&"export"):
+		_on_export_button_pressed()
+	elif input_event.is_action_pressed(&"copy_svg_text"):
+		_on_copy_button_pressed()
+	elif input_event.is_action_pressed(&"clear_svg"):
+		clear_svg()
+	elif input_event.is_action_pressed(&"optimize_svg"):
+		_on_optimize_button_pressed()
+	elif input_event.is_action_pressed(&"clear_file_path"):
+		clear_file_path()
+	elif input_event.is_action_pressed(&"reset_svg"):
+		reset_svg()
+
 
 func auto_update_text() -> void:
 	if not code_edit.has_focus():
@@ -102,10 +129,14 @@ func update_file_button() -> void:
 	else:
 		get_window().title = "GodSVG"
 
+
 func update_optimize_button() -> void:
-	optimize_button.disabled = not SVG.root_tag.optimize(false)
+	var enabled: bool = SVG.root_tag.optimize(false)
+	optimize_button.disabled = not enabled
 	optimize_button.mouse_default_cursor_shape = Control.CURSOR_ARROW if\
 			optimize_button.disabled else Control.CURSOR_POINTING_HAND
+	optimize_button_enable_updated.emit(enabled)
+
 
 func _on_svg_code_edit_focus_exited() -> void:
 	code_edit.text = SVG.text
@@ -116,12 +147,13 @@ func _on_svg_code_edit_focus_exited() -> void:
 func _on_optimize_button_pressed() -> void:
 	SVG.root_tag.optimize()
 
+
 func _on_file_button_pressed() -> void:
 	var btn_array: Array[Button] = []
 	btn_array.append(Utils.create_btn(tr("Clear association"), clear_file_path,
 			false, load("res://visual/icons/Clear.svg")))
 	btn_array.append(Utils.create_btn(tr("Reset SVG"), reset_svg,
-			SVG.text == FileAccess.get_file_as_string(GlobalSettings.save_data.current_file_path),
+			SVG.does_svg_data_match_disk_contents(),
 			load("res://visual/icons/Reload.svg")))
 	var context_popup := ContextPopup.instantiate()
 	add_child(context_popup)
@@ -135,7 +167,7 @@ func _on_options_button_pressed() -> void:
 	btn_array.append(Utils.create_btn(tr("Copy All Text"), _on_copy_button_pressed,
 			false, load("res://visual/icons/Copy.svg")))
 	btn_array.append(Utils.create_btn(tr("Clear SVG"), clear_svg,
-			SVG.text == SVG.default, load("res://visual/icons/Clear.svg")))
+			SVG.text == SVG.DEFAULT, load("res://visual/icons/Clear.svg")))
 	var context_popup := ContextPopup.instantiate()
 	add_child(context_popup)
 	context_popup.setup(btn_array, true, options_button.size.x)
@@ -150,11 +182,7 @@ func reset_svg() -> void:
 	SVG.apply_svg_from_path(GlobalSettings.save_data.current_file_path)
 
 func clear_svg() -> void:
-	SVG.apply_svg_text(SVG.default)
-
-func _notification(what: int) -> void:
-	if what == Utils.CustomNotification.HIGHLIGHT_COLORS_CHANGED:
-		setup_highlighter()
+	SVG.apply_svg_text(SVG.DEFAULT)
 
 func setup_highlighter() -> void:
 	if code_edit != null:
