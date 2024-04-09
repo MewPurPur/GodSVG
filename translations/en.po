@@ -480,7 +480,7 @@ msgstr ""
 msgid "Absolute"
 msgstr ""
 
-msgid "Clear association"
+msgid "Clear saving path"
 msgstr ""
 
 msgid "Apply the matrix"

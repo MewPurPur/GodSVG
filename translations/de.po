@@ -503,9 +503,8 @@ msgstr "Relativ"
 msgid "Absolute"
 msgstr "Absolut"
 
-#, fuzzy
-msgid "Clear association"
-msgstr "Dateizuordnung entfernen"
+msgid "Clear saving path"
+msgstr ""
 
 msgid "Apply the matrix"
 msgstr "Die Matrix anwenden"
@@ -524,3 +523,7 @@ msgstr "Immer aktiv."
 
 msgid "Search color"
 msgstr "Farbe suchen"
+
+#, fuzzy
+#~ msgid "Clear association"
+#~ msgstr "Dateizuordnung entfernen"
