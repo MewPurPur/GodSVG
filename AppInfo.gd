@@ -13,6 +13,7 @@ const project_founder_and_manager: Array[String] = ["MewPurPur"]
 # Translator credentials for each language are taken from their corresponding POT file.
 
 const authors: Array[String] = [
+	"Aaron Franke (aaronfranke)",
 	"ajreckof",
 	"aladvs",
 	"Alex2782",
