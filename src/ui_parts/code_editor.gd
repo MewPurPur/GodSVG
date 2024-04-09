@@ -36,19 +36,19 @@ func _notification(what: int) -> void:
 
 
 func _unhandled_input(input_event: InputEvent) -> void:
-	if input_event.is_action_pressed(&"import"):
+	if input_event.is_action_pressed("import"):
 		_on_import_button_pressed()
-	elif input_event.is_action_pressed(&"export"):
+	elif input_event.is_action_pressed("export"):
 		_on_export_button_pressed()
-	elif input_event.is_action_pressed(&"copy_svg_text"):
+	elif input_event.is_action_pressed("copy_svg_text"):
 		_on_copy_button_pressed()
-	elif input_event.is_action_pressed(&"clear_svg"):
+	elif input_event.is_action_pressed("clear_svg"):
 		clear_svg()
-	elif input_event.is_action_pressed(&"optimize_svg"):
+	elif input_event.is_action_pressed("optimize_svg"):
 		_on_optimize_button_pressed()
-	elif input_event.is_action_pressed(&"clear_file_path"):
+	elif input_event.is_action_pressed("clear_file_path"):
 		clear_file_path()
-	elif input_event.is_action_pressed(&"reset_svg"):
+	elif input_event.is_action_pressed("reset_svg"):
 		reset_svg()
 
 
@@ -150,11 +150,14 @@ func _on_optimize_button_pressed() -> void:
 
 func _on_file_button_pressed() -> void:
 	var btn_array: Array[Button] = []
-	btn_array.append(Utils.create_btn(tr("Clear association"), clear_file_path,
-			false, load("res://visual/icons/Clear.svg")))
+	btn_array.append(Utils.create_btn(tr("Save SVG"), SVG.open_save_dialog.bind("svg",
+			SVG.native_file_save, SVG.save_svg_to_file),
+			false, load("res://visual/icons/Save.svg")))
 	btn_array.append(Utils.create_btn(tr("Reset SVG"), reset_svg,
 			SVG.does_svg_data_match_disk_contents(),
 			load("res://visual/icons/Reload.svg")))
+	btn_array.append(Utils.create_btn(tr("Clear saving path"), clear_file_path,
+			false, load("res://visual/icons/Clear.svg")))
 	var context_popup := ContextPopup.instantiate()
 	add_child(context_popup)
 	context_popup.setup(btn_array, true, file_button.size.x)

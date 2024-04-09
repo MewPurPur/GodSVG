@@ -29,21 +29,21 @@ func _ready() -> void:
 
 
 func _unhandled_input(input_event: InputEvent) -> void:
-	if input_event.is_action_pressed(&"open_settings"):
+	if input_event.is_action_pressed("open_settings"):
 		_on_settings_pressed()
-	elif input_event.is_action_pressed(&"view_show_grid"):
+	elif input_event.is_action_pressed("view_show_grid"):
 		toggle_grid_visuals()
-	elif input_event.is_action_pressed(&"view_show_handles"):
+	elif input_event.is_action_pressed("view_show_handles"):
 		toggle_handles_visuals()
-	elif input_event.is_action_pressed(&"view_rasterized_svg"):
+	elif input_event.is_action_pressed("view_rasterized_svg"):
 		toggle_rasterization()
-	elif input_event.is_action_pressed(&"snap_toggle"):
+	elif input_event.is_action_pressed("snap_toggle"):
 		toggle_snap()
-	elif input_event.is_action_pressed(&"about_repo"):
+	elif input_event.is_action_pressed("about_repo"):
 		open_godsvg_repo()
-	elif input_event.is_action_pressed(&"about_info"):
+	elif input_event.is_action_pressed("about_info"):
 		open_about()
-	elif input_event.is_action_pressed(&"about_donate"):
+	elif input_event.is_action_pressed("about_donate"):
 		open_sponsor()
 
 
