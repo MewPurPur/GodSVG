@@ -99,19 +99,6 @@ func _ready() -> void:
 	special_button.text = tr("Select") if mode == FileMode.SELECT else tr("Save")
 	path_label.text = tr("Path") + ":"
 	extension_label.text = "." + extension
-	for dir in [OS.SYSTEM_DIR_DESKTOP, OS.SYSTEM_DIR_DOCUMENTS, OS.SYSTEM_DIR_DOWNLOADS,
-	OS.SYSTEM_DIR_MOVIES, OS.SYSTEM_DIR_MUSIC, OS.SYSTEM_DIR_PICTURES]:
-		var dir_string := OS.get_system_dir(dir)
-		if dir_string.is_empty():
-			continue
-		
-		var item_idx := system_dir_list.add_item(dir_string.get_file(),
-				system_dir_icons[dir] if dir in system_dir_icons else folder_icon)
-		system_dir_list.set_item_metadata(item_idx,
-				Actions.new(Callable(), enter_dir.bind(dir_string)))
-		# If you start off in a system dir, highlight it in the list to make it clear.
-		if current_dir == dir_string:
-			system_dir_list.select(item_idx)
 	
 	# Should always be safe.
 	set_dir(current_dir)
@@ -137,6 +124,20 @@ func set_dir(dir: String) -> void:
 	# Basic setup.
 	current_dir = dir
 	path_field.text = current_dir
+	# Rebuild the system dirs to see if we now need to highlight the relevant one.
+	system_dir_list.clear()
+	for sysdir in [OS.SYSTEM_DIR_DESKTOP, OS.SYSTEM_DIR_DOCUMENTS, OS.SYSTEM_DIR_DOWNLOADS,
+	OS.SYSTEM_DIR_MOVIES, OS.SYSTEM_DIR_MUSIC, OS.SYSTEM_DIR_PICTURES]:
+		var dir_string := OS.get_system_dir(sysdir)
+		if dir_string.is_empty():
+			continue
+		
+		var item_idx := system_dir_list.add_item(dir_string.get_file(),
+				system_dir_icons[sysdir] if sysdir in system_dir_icons else folder_icon)
+		system_dir_list.set_item_metadata(item_idx,
+				Actions.new(Callable(), enter_dir.bind(dir_string)))
+		if current_dir == dir_string:
+			system_dir_list.select(item_idx)
 	# Create the DirAccess object.
 	var DA := DirAccess.open(dir)
 	DA.include_hidden = GlobalSettings.save_data.file_dialog_show_hidden
