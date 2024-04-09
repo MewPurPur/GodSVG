@@ -108,7 +108,7 @@ icon = ExtResource("5_1k2cq")
 script = ExtResource("6_3v3ve")
 hover_pressed_stylebox = SubResource("StyleBoxFlat_eujxa")
 
-[node name="NumberEdit" parent="PanelContainer/HBoxContainer/LeftMenu/Snapping" instance=ExtResource("7_wrrfr")]
+[node name="SnapNumberEdit" parent="PanelContainer/HBoxContainer/LeftMenu/Snapping" instance=ExtResource("7_wrrfr")]
 custom_minimum_size = Vector2(46, 22)
 layout_mode = 2
 tooltip_text = "Snap size"
@@ -183,7 +183,7 @@ script = ExtResource("15_hevpa")
 [connection signal="pressed" from="PanelContainer/HBoxContainer/LeftMenu/Settings" to="." method="_on_settings_pressed"]
 [connection signal="pressed" from="PanelContainer/HBoxContainer/LeftMenu/Visuals" to="." method="_on_visuals_button_pressed"]
 [connection signal="toggled" from="PanelContainer/HBoxContainer/LeftMenu/Snapping/SnapButton" to="." method="_on_snap_button_toggled"]
-[connection signal="value_changed" from="PanelContainer/HBoxContainer/LeftMenu/Snapping/NumberEdit" to="." method="_on_number_edit_value_changed"]
+[connection signal="value_changed" from="PanelContainer/HBoxContainer/LeftMenu/Snapping/SnapNumberEdit" to="." method="_on_snap_number_edit_value_changed"]
 [connection signal="zoom_changed" from="PanelContainer/HBoxContainer/ZoomMenu" to="ViewportPanel/ViewportContainer/Viewport" method="_on_zoom_changed"]
 [connection signal="zoom_reset_pressed" from="PanelContainer/HBoxContainer/ZoomMenu" to="ViewportPanel/ViewportContainer/Viewport" method="center_frame"]
 [connection signal="size_changed" from="ViewportPanel/ViewportContainer/Viewport" to="ViewportPanel/ViewportContainer/Viewport" method="_on_size_changed"]
