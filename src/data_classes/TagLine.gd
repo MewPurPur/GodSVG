@@ -1,5 +1,5 @@
-## A <line/> tag.
 class_name TagLine extends Tag
+## A <line/> tag.
 
 const name = "line"
 const possible_conversions = ["path"]

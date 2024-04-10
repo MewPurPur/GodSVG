@@ -1,5 +1,5 @@
-## An <ellipse/> tag.
 class_name TagEllipse extends Tag
+## An <ellipse/> tag.
 
 const name = "ellipse"
 const possible_conversions = ["circle", "rect", "path"]

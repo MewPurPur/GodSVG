@@ -1,4 +1,7 @@
 class_name ColorPalette extends Resource
+## A resource for the color palettes that are listed in the color picker.
+
+signal layout_changed
 
 @export var title: String  # Color palettes must be uniquely named.
 @export var colors: Array[String]  # Colors must be unique within a palette.
@@ -16,11 +19,13 @@ func add_color() -> void:
 	colors.append("none")
 	color_names.append("")
 	emit_changed()
+	layout_changed.emit()
 
 func remove_color(idx: int) -> void:
 	colors.remove_at(idx)
 	color_names.remove_at(idx)
 	emit_changed()
+	layout_changed.emit()
 
 func move_color(old_idx: int, new_idx: int) -> void:
 	if old_idx == new_idx:
@@ -32,6 +37,7 @@ func move_color(old_idx: int, new_idx: int) -> void:
 	colors.insert(new_idx, colors.pop_at(old_idx))
 	color_names.insert(new_idx, color_names.pop_at(old_idx))
 	emit_changed()
+	layout_changed.emit()
 
 func modify_title(new_title: String) -> void:
 	title = new_title

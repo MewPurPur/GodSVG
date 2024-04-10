@@ -1,5 +1,5 @@
-## A <stop/> tag.
 class_name TagStop extends Tag
+## A <stop/> tag.
 
 const name = "stop"
 const possible_conversions = []
