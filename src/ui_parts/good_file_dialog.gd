@@ -226,13 +226,10 @@ func unfocus_file() -> void:
 func _on_folder_up_button_pressed() -> void:
 	set_dir(current_dir.get_base_dir())
 
-func _on_file_list_empty_clicked(_at_position: Vector2, _mouse_button_index: int) -> void:
-	file_list.deselect_all()
-	unfocus_file()
-
-func _on_system_dir_list_empty_clicked(_at_position: Vector2,
-_mouse_button_index: int) -> void:
-	system_dir_list.deselect_all()
+func _on_file_list_empty_clicked(_at_position: Vector2, mouse_button_index: int) -> void:
+	if mouse_button_index in [MOUSE_BUTTON_LEFT, MOUSE_BUTTON_MIDDLE, MOUSE_BUTTON_RIGHT]:
+		file_list.deselect_all()
+		unfocus_file()
 
 func _on_file_list_item_activated(index: int) -> void:
 	call_activation_action(file_list.get_item_metadata(index))
@@ -256,7 +253,7 @@ func _on_search_button_toggled(toggled_on: bool) -> void:
 		search_field.grab_focus()
 	else:
 		search_field.hide()
-		search_text = ""
+		search_field.clear()
 		set_dir(current_dir)
 
 
@@ -291,8 +288,16 @@ func _on_search_field_text_change_canceled() -> void:
 	search_field.text = search_text
 
 func _on_file_field_text_changed(new_text: String) -> void:
+	var is_invalid_filename := not new_text.is_valid_filename()
+	if new_text.is_empty() or is_invalid_filename:
+		special_button.disabled = true
+		special_button.mouse_default_cursor_shape = Control.CURSOR_ARROW
+	else:
+		special_button.disabled = false
+		special_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+	
 	file_field.add_theme_color_override("font_color",
-			GlobalSettings.get_validity_color(!new_text.is_valid_filename()))
+			GlobalSettings.get_validity_color(is_invalid_filename))
 
 
 func _on_alert_cancel_button_pressed() -> void:
