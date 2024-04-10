@@ -1,5 +1,5 @@
-## An attribute representing a number.
 class_name AttributeNumeric extends Attribute
+## An attribute representing a number.
 
 var _number := NAN
 enum Mode {FLOAT, UFLOAT, NFLOAT}  # UFLOAT is positive-only, NFLOAT is in [0, 1].

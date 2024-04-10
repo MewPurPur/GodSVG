@@ -1,5 +1,5 @@
-## A tag not recognized by GodSVG.
 class_name TagUnknown extends Tag
+## A tag not recognized by GodSVG.
 
 var name: String
 const possible_conversions = []
