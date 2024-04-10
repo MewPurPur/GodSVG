@@ -1,5 +1,5 @@
-## An attribute representing a list of transforms.
 class_name AttributeTransform extends Attribute
+## An attribute representing a list of transforms.
 
 class Transform extends RefCounted:
 	func compute_transform() -> Transform2D:

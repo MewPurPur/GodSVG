@@ -1,5 +1,5 @@
-## An attribute not recognized by GodSVG.
 class_name AttributeUnknown extends Attribute
+## An attribute not recognized by GodSVG.
 
 var name := ""
 

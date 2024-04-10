@@ -1,5 +1,5 @@
-## The "d" attribute of [TagPath].
 class_name AttributePath extends Attribute
+## The "d" attribute of [TagPath].
 
 var _commands: Array[PathCommand]
 

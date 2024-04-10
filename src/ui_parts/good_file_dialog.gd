@@ -78,6 +78,7 @@ new_extension: String) -> void:
 	extension = new_extension
 
 func _ready() -> void:
+	file_list.get_v_scroll_bar().value_changed.connect(_setup_file_images.unbind(1))
 	if mode == FileMode.SELECT:
 		file_container.hide()
 	if mode == FileMode.SAVE:
@@ -163,24 +164,11 @@ func set_dir(dir: String) -> void:
 		(not search_text.is_empty() and not search_text.is_subsequence_ofn(file)):
 			continue
 		
-		match extension:
-			"svg":
-				# Setup a clean SVG graphic by using the scaling parameter.
-				var svg_text := FileAccess.open(current_dir.path_join(file),
-						FileAccess.READ).get_as_text()
-				var img := Image.new()
-				img.load_svg_from_string(svg_text)
-				img.load_svg_from_string(svg_text,
-						item_height / maxf(img.get_width(), img.get_height()))
-				var item_idx := file_list.add_item(file, ImageTexture.create_from_image(img))
-				file_list.set_item_metadata(item_idx,
-						Actions.new(select_file, focus_file.bind(file)))
-			"png":
-				var item_idx := file_list.add_item(file, ImageTexture.create_from_image(
-						Image.load_from_file(current_dir.path_join(file))))
-				file_list.set_item_metadata(item_idx,
-						Actions.new(select_file, focus_file.bind(file)))
-		file = DA.get_next()
+		var item_idx := file_list.add_item(file, null)
+		file_list.set_item_metadata(item_idx,
+				Actions.new(select_file, focus_file.bind(file)))
+	await get_tree().process_frame
+	_setup_file_images()
 
 func set_file(file: String) -> void:
 	if mode == FileMode.SELECT:
@@ -193,8 +181,32 @@ func set_file(file: String) -> void:
 	if not file.is_empty():
 		if file.get_extension() != extension:
 			file += "." + extension
+	file_list.ensure_current_is_visible()
 	current_file = file
 	file_field.text = current_file
+
+# For optimization, only generate the visible files' images.
+func _setup_file_images() -> void:
+	var visible_start := file_list.position.y + file_list.get_v_scroll_bar().value
+	var visible_end := visible_start + file_list.size.y
+	for item_idx in file_list.item_count:
+		var file_rect := file_list.get_item_rect(item_idx)
+		if file_list.get_item_icon(item_idx) == null and\
+		file_rect.end.y > visible_start and file_rect.position.y < visible_end:
+			var file := file_list.get_item_text(item_idx)
+			match file.get_extension():
+				"png":
+					file_list.set_item_icon(item_idx, ImageTexture.create_from_image(
+							Image.load_from_file(current_dir.path_join(file))))
+				"svg":
+					# Setup a clean SVG graphic by using the scaling parameter.
+					var svg_text := FileAccess.open(current_dir.path_join(file),
+							FileAccess.READ).get_as_text()
+					var img := Image.new()
+					img.load_svg_from_string(svg_text)
+					img.load_svg_from_string(svg_text,
+							item_height / maxf(img.get_width(), img.get_height()))
+					file_list.set_item_icon(item_idx, ImageTexture.create_from_image(img))
 
 
 func select_file() -> void:

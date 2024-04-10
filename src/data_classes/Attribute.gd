@@ -1,5 +1,5 @@
-## Abstract class for an attribute inside a [Tag], i.e. <tag attribute="value"/>
 class_name Attribute extends RefCounted
+## Abstract class for an attribute inside a [Tag], i.e. <tag attribute="value"/>
 
 signal value_changed(new_value: String)
 signal propagate_value_changed(undo_redo: bool)
