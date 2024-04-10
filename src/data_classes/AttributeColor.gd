@@ -1,5 +1,5 @@
-## An attribute representing a color string, or an url to an ID.
 class_name AttributeColor extends Attribute
+## An attribute representing a color string, or an url to an ID.
 
 # No direct color representation for this attribute type. There are too many quirks.
 

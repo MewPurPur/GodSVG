@@ -1,5 +1,5 @@
-## This singleton handles editor information like zoom level and selections.
 extends Node
+## This singleton handles editor information like zoom level and selections.
 
 const ContextPopup = preload("res://src/ui_elements/context_popup.tscn")
 const PathCommandPopup = preload("res://src/ui_elements/path_popup.tscn")

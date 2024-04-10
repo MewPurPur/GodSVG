@@ -1,5 +1,5 @@
-## An attribute representing a list of numbers.
 class_name AttributeList extends Attribute
+## An attribute representing a list of numbers.
 
 var _list: PackedFloat32Array
 

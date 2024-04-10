@@ -20,7 +20,7 @@ var currently_edited_idx := -1
 # Used to setup a palette for this element.
 func assign_palette(palette: ColorPalette) -> void:
 	current_palette = palette
-	current_palette.changed.connect(rebuild_colors)
+	current_palette.layout_changed.connect(rebuild_colors)
 	rebuild_colors()
 
 # Rebuilds the content of the colors container.
@@ -232,8 +232,10 @@ func _drop_data(_at_position: Vector2, data: Variant) -> void:
 		return
 	
 	if data[0] == current_palette:
+		currently_edited_idx = -1
 		current_palette.move_color(data[1], proposed_drop_idx)
 	else:
+		currently_edited_idx = -1
 		current_palette.colors.insert(proposed_drop_idx, data[0].colors[data[1]])
 		current_palette.color_names.insert(proposed_drop_idx, data[0].color_names[data[1]])
 		current_palette.emit_changed()

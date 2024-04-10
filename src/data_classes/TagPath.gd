@@ -1,5 +1,5 @@
-## A <path/> tag.
 class_name TagPath extends Tag
+## A <path/> tag.
 
 const name = "path"
 const possible_conversions = []

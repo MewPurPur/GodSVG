@@ -1,5 +1,5 @@
-## A <svg></svg> tag.
 class_name TagSVG extends Tag
+## A <svg></svg> tag.
 
 var width: float
 var height: float

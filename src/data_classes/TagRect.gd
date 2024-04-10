@@ -1,5 +1,5 @@
-## A <rect/> tag.
 class_name TagRect extends Tag
+## A <rect/> tag.
 
 const name = "rect"
 const possible_conversions = ["circle", "ellipse", "path"]
