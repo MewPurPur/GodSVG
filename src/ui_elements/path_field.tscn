@@ -71,7 +71,3 @@ layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 0
 theme_override_constants/separation = 0
-
-[connection signal="focus_entered" from="LineEdit" to="." method="_on_line_edit_focus_entered"]
-[connection signal="text_submitted" from="LineEdit" to="." method="_on_line_edit_text_submitted"]
-[connection signal="pressed" from="AddMove" to="." method="_on_add_move_pressed"]

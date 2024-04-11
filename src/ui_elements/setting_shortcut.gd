@@ -77,15 +77,6 @@ func popup_options(idx: int) -> void:
 			get_viewport())
 
 
-func _on_edit_button_1_pressed() -> void:
-	enter_listening_mode(0)
-
-func _on_edit_button_2_pressed() -> void:
-	enter_listening_mode(1)
-
-func _on_edit_button_3_pressed() -> void:
-	enter_listening_mode(2)
-
 func enter_listening_mode(idx: int) -> void:
 	listening_idx = idx
 	var btn := shortcut_buttons[idx]

@@ -40,6 +40,7 @@ func _ready() -> void:
 	set_value(attribute.get_value())
 	attribute.value_changed.connect(set_value)
 	color_edit.tooltip_text = attribute_name
+	color_button.resized.connect(queue_redraw)
 
 
 func _on_button_pressed() -> void:
@@ -85,11 +86,6 @@ func _on_color_picked(new_color: String, close_picker: bool) -> void:
 func is_valid(text: String) -> bool:
 	return ColorParser.is_valid(ColorParser.add_hash_if_hex(text))
 
-
-func _on_button_resized() -> void:
-	# Not sure why this is needed, but the button doesn't have a correct size at first
-	# which screws with the drawing logic.
-	queue_redraw()
 
 func _on_text_changed(new_text: String) -> void:
 	color_edit.add_theme_color_override("font_color",
