@@ -111,6 +111,3 @@ absolute_button_pressed = SubResource("StyleBoxFlat_sbcff")
 relative_button_normal = SubResource("StyleBoxFlat_gs8ph")
 relative_button_hovered = SubResource("StyleBoxFlat_tyaol")
 relative_button_pressed = SubResource("StyleBoxFlat_cbymw")
-
-[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
-[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]

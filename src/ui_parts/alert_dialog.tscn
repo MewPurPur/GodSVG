@@ -44,5 +44,3 @@ layout_mode = 2
 size_flags_horizontal = 4
 mouse_default_cursor_shape = 2
 text = "OK"
-
-[connection signal="pressed" from="MainContainer/OKButton" to="." method="_on_ok_button_pressed"]

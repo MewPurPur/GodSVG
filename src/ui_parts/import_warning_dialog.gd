@@ -6,6 +6,7 @@ signal imported
 @onready var texture_preview: CenterContainer = %TexturePreview
 @onready var ok_button: Button = %ButtonContainer/OKButton
 @onready var margin_container: MarginContainer = %MarginContainer
+@onready var cancel_button: Button = $VBoxContainer/ButtonContainer/CancelButton
 
 var imported_text := ""
 
@@ -36,6 +37,8 @@ func _ready() -> void:
 					GlobalSettings.basic_color_warning)
 			for warning in svg_warnings:
 				warnings_label.text += warning + "\n"
+	imported.connect(queue_free)
+	cancel_button.pressed.connect(queue_free)
 
 
 func set_svg(text: String) -> void:
@@ -55,11 +58,5 @@ func get_svg_warnings(svg_tag: TagSVG) -> Array[String]:
 	return warnings
 
 
-func _on_cancel_button_pressed() -> void:
-	queue_free()
-
 func _on_ok_button_pressed() -> void:
 	imported.emit()
-
-func _on_imported() -> void:
-	queue_free()

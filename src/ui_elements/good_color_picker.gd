@@ -97,7 +97,14 @@ func setup_color(new_color: String) -> void:
 	update()
 
 func _ready() -> void:
-	alpha_slider.visible = alpha_enabled
+	# Set up signals.
+	widgets_arr[0].gui_input.connect(parse_slider_input.bind(0, true))
+	for i in [1, 2, 3]:
+		widgets_arr[i].gui_input.connect(parse_slider_input.bind(i))
+	if alpha_enabled:
+		alpha_slider.visible = alpha_enabled
+		widgets_arr[4].gui_input.connect(parse_slider_input.bind(4))
+	# Set up the rest.
 	RenderingServer.canvas_item_set_parent(color_wheel_surface,
 			color_wheel_drawn.get_canvas_item())
 
@@ -237,21 +244,6 @@ func parse_slider_input(event: InputEvent, idx: int, is_slider_vertical := false
 		move_slider(idx, calculate_offset(idx, event.position, is_slider_vertical))
 	elif Utils.is_event_drag_end(event):
 		end_slider_drag(idx)
-
-func _on_side_slider_gui_input(event: InputEvent) -> void:
-	parse_slider_input(event, 0, true)
-
-func _on_slider1_gui_input(event: InputEvent) -> void:
-	parse_slider_input(event, 1)
-
-func _on_slider2_gui_input(event: InputEvent) -> void:
-	parse_slider_input(event, 2)
-
-func _on_slider3_gui_input(event: InputEvent) -> void:
-	parse_slider_input(event, 3)
-
-func _on_slider4_gui_input(event: InputEvent) -> void:
-	parse_slider_input(event, 4)
 
 func _on_slider1_text_submitted(new_text: String) -> void:
 	var new_color := display_color

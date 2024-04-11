@@ -9,7 +9,8 @@ const ContextPopup = preload("res://src/ui_elements/context_popup.tscn")
 
 var hovered := false
 
-@export var code_font_tooltip := false  ## Use the mono font for the tooltip.
+## When turned on, uses the mono font for the tooltip.
+@export var code_font_tooltip := false
 
 func _init() -> void:
 	context_menu_enabled = false
@@ -23,11 +24,15 @@ func _ready() -> void:
 	text_submitted.connect(release_focus.unbind(1))
 
 func _input(event: InputEvent) -> void:
-	if has_focus() and event is InputEventMouseButton:
-		if event.is_pressed() and not get_global_rect().has_point(event.position):
-			release_focus()
-			text_submitted.emit(text)
-		elif event.is_released() and first_click and not has_selection():
+	if has_focus():
+		if event is InputEventMouseButton:
+			if event.is_pressed() and not get_global_rect().has_point(event.position):
+				release_focus()
+				text_submitted.emit(text)
+			elif event.is_released() and first_click and not has_selection():
+				first_click = false
+				select_all()
+		elif first_click:
 			first_click = false
 			select_all()
 

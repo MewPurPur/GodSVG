@@ -54,6 +54,7 @@ func _ready() -> void:
 	set_value(attribute.get_value())
 	attribute.value_changed.connect(set_value)
 	num_edit.tooltip_text = attribute_name
+	slider.resized.connect(queue_redraw)  # Whyyyyy are their sizes wrong at first...
 
 func _on_focus_entered() -> void:
 	num_edit.remove_theme_color_override("font_color")
@@ -123,9 +124,6 @@ func _draw() -> void:
 	else:
 		draw_rect(Rect2(0, 1 + slider_size.y - 4 - fill_height,
 				slider_size.x - 2, fill_height), Color("#def8"))
-
-func _on_slider_resized() -> void:
-	queue_redraw()  # Whyyyyy are their sizes wrong at first...
 
 func _on_slider_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and\
