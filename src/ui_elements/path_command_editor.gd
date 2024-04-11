@@ -37,6 +37,8 @@ func _on_relative_button_pressed() -> void:
 func _ready() -> void:
 	Indications.selection_changed.connect(determine_selection_state)
 	Indications.hover_changed.connect(determine_selection_state)
+	mouse_entered.connect(_on_mouse_entered)
+	mouse_exited.connect(_on_mouse_exited)
 	setup()
 
 func setup() -> void:
@@ -217,6 +219,21 @@ func _on_mouse_entered() -> void:
 	if not active:
 		activate()
 
+func _on_mouse_exited() -> void:
+	Indications.remove_hovered(tid, cmd_idx)
+	
+	if active:
+		active = false
+		for field in fields:
+			if field.has_focus():
+				active = true
+		# Should switch out the controls for fake outs. This is safe even when
+		# you've focused a BetterLineEdit, because it pauses the tree.
+		if not active:
+			clear_children()
+			queue_redraw()
+
+
 func activate() -> void:
 	active = true
 	# Setup the relative button.
@@ -307,20 +324,6 @@ func setup_fields(spacings: Array, names: Array) -> void:
 	fields[0].position.x = 25
 	for i in fields.size() - 1:
 		fields[i + 1].position.x = fields[i].get_end().x + spacings[i]
-
-func _on_mouse_exited() -> void:
-	Indications.remove_hovered(tid, cmd_idx)
-	
-	if active:
-		active = false
-		for field in fields:
-			if field.has_focus():
-				active = true
-		# Should switch out the controls for fake outs. This is safe even when
-		# you've focused a BetterLineEdit, because it pauses the tree.
-		if not active:
-			clear_children()
-			queue_redraw()
 
 func clear_children() -> void:
 	fields = []

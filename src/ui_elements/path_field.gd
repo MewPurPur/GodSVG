@@ -26,16 +26,12 @@ func _ready() -> void:
 	set_value(attribute.get_value())
 	attribute.value_changed.connect(set_value)
 	line_edit.tooltip_text = attribute_name
-
-
-func _on_line_edit_text_submitted(new_text: String) -> void:
-	set_value(new_text)
+	add_move.pressed.connect(attribute.insert_command.bind(0, "M"))
+	line_edit.text_submitted.connect(set_value)
+	line_edit.focus_entered.connect(_on_line_edit_focus_entered)
 
 func _on_line_edit_focus_entered() -> void:
 	focused.emit()
-
-func _on_add_move_pressed() -> void:
-	attribute.insert_command(0, "M")
 
 func sync(new_value: String) -> void:
 	line_edit.text = new_value
