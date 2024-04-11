@@ -32,4 +32,3 @@ theme_type_variation = &"LeftConnectedButtonTransparent"
 [connection signal="text_submitted" from="LineEdit" to="." method="_on_text_submitted"]
 [connection signal="gui_input" from="Button" to="." method="_on_button_gui_input"]
 [connection signal="pressed" from="Button" to="." method="_on_button_pressed"]
-[connection signal="resized" from="Button" to="." method="_on_button_resized"]

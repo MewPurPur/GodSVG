@@ -79,6 +79,4 @@ size_flags_horizontal = 6
 mouse_default_cursor_shape = 2
 text = "Import"
 
-[connection signal="imported" from="." to="." method="_on_imported"]
-[connection signal="pressed" from="VBoxContainer/ButtonContainer/CancelButton" to="." method="_on_cancel_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/ButtonContainer/OKButton" to="." method="_on_ok_button_pressed"]

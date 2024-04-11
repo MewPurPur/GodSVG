@@ -77,8 +77,15 @@ new_extension: String) -> void:
 	mode = new_mode
 	extension = new_extension
 
+
 func _ready() -> void:
+	# Signal connections.
+	close_button.pressed.connect(queue_free)
+	file_selected.connect(queue_free.unbind(1))
+	special_button.pressed.connect(select_file)
+	alert_cancel_button.pressed.connect(center_container.hide)
 	file_list.get_v_scroll_bar().value_changed.connect(_setup_file_images.unbind(1))
+	# Rest of setup.
 	if mode == FileMode.SELECT:
 		file_container.hide()
 	if mode == FileMode.SAVE:
@@ -257,15 +264,6 @@ func _on_search_button_toggled(toggled_on: bool) -> void:
 		set_dir(current_dir)
 
 
-func _on_close_button_pressed() -> void:
-	queue_free()
-
-func _on_file_selected(_path: String) -> void:
-	queue_free()
-
-func _on_special_button_pressed() -> void:
-	select_file()
-
 func _on_file_field_text_submitted(new_text: String) -> void:
 	file_field.remove_theme_color_override("font_color")
 	if new_text.is_valid_filename():
@@ -299,9 +297,6 @@ func _on_file_field_text_changed(new_text: String) -> void:
 	file_field.add_theme_color_override("font_color",
 			GlobalSettings.get_validity_color(is_invalid_filename))
 
-
-func _on_alert_cancel_button_pressed() -> void:
-	center_container.hide()
 
 func _on_alert_replace_button_pressed() -> void:
 	file_selected.emit(current_dir.path_join(current_file))
