@@ -109,7 +109,7 @@ script = ExtResource("6_3v3ve")
 hover_pressed_stylebox = SubResource("StyleBoxFlat_eujxa")
 
 [node name="SnapNumberEdit" parent="PanelContainer/HBoxContainer/LeftMenu/Snapping" instance=ExtResource("7_wrrfr")]
-custom_minimum_size = Vector2(46, 22)
+custom_minimum_size = Vector2(48, 22)
 layout_mode = 2
 tooltip_text = "Snap size"
 theme_type_variation = &"LeftConnectedLineEdit"

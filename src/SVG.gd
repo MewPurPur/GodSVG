@@ -133,6 +133,11 @@ non_native_callable: Callable) -> void:
 		HandlerGUI.add_overlay(svg_export_dialog)
 		svg_export_dialog.file_selected.connect(non_native_callable)
 
+func native_file_export(has_selected: bool, files: PackedStringArray,
+_filter_idx: int, extension: String, upscale_amount := 1.0) -> void:
+	if has_selected:
+		SVG.finish_export(files[0], extension, upscale_amount)
+
 func native_file_save(has_selected: bool, files: PackedStringArray,
 _filter_idx: int) -> void:
 	if has_selected:

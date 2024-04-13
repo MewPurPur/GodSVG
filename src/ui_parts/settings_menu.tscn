@@ -322,14 +322,11 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="ConfigurableShortcuts" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Shortcuts/ShortcutContainer"]
+[node name="Categories" type="HFlowContainer" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Shortcuts/ShortcutContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-theme_override_constants/separation = 3
 
-[node name="NonConfigurableShortcuts" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Shortcuts/ShortcutContainer"]
+[node name="Shortcuts" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Shortcuts/ShortcutContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -541,12 +538,8 @@ text = "Close"
 
 [connection signal="pressed" from="VBoxContainer/Language" to="." method="_on_language_pressed"]
 [connection signal="toggled" from="VBoxContainer/HBoxContainer/ContentPicker/ScrollContainer/Tabs/AutoformattingTab" to="." method="_on_autoformatting_tab_toggled"]
-[connection signal="pressed" from="VBoxContainer/HBoxContainer/ContentPicker/ScrollContainer/Tabs/PalettesTab" to="." method="_on_palettes_tab_pressed"]
 [connection signal="toggled" from="VBoxContainer/HBoxContainer/ContentPicker/ScrollContainer/Tabs/PalettesTab" to="." method="_on_palettes_tab_toggled"]
-[connection signal="pressed" from="VBoxContainer/HBoxContainer/ContentPicker/ScrollContainer/Tabs/ShortcutsTab" to="." method="_on_shortcuts_tab_pressed"]
 [connection signal="toggled" from="VBoxContainer/HBoxContainer/ContentPicker/ScrollContainer/Tabs/ShortcutsTab" to="." method="_on_shortcuts_tab_toggled"]
-[connection signal="pressed" from="VBoxContainer/HBoxContainer/ContentPicker/ScrollContainer/Tabs/ThemeTab" to="." method="_on_theme_tab_pressed"]
 [connection signal="toggled" from="VBoxContainer/HBoxContainer/ContentPicker/ScrollContainer/Tabs/ThemeTab" to="." method="_on_theme_tab_toggled"]
-[connection signal="pressed" from="VBoxContainer/HBoxContainer/ContentPicker/ScrollContainer/Tabs/OtherTab" to="." method="_on_other_tab_pressed"]
 [connection signal="toggled" from="VBoxContainer/HBoxContainer/ContentPicker/ScrollContainer/Tabs/OtherTab" to="." method="_on_other_tab_toggled"]
 [connection signal="pressed" from="VBoxContainer/Close" to="." method="_on_close_pressed"]

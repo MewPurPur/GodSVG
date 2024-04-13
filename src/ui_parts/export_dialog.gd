@@ -48,20 +48,17 @@ func _on_dropdown_value_changed(new_value: String) -> void:
 	update_extension_configuration()
 
 
-func native_file_export(has_selected: bool, files: PackedStringArray,
-_filter_idx: int) -> void:
-	if has_selected:
-		SVG.finish_export(files[0], extension, upscale_amount)
-
 func _on_ok_button_pressed() -> void:
 	if OS.has_feature("web"):
 		match extension:
 			"png":
-				HandlerGUI.web_save_png(SVG.generate_image_from_tags())
+				HandlerGUI.web_save_png(SVG.generate_image_from_tags(upscale_amount))
 			_:
 				HandlerGUI.web_save_svg()
 	else:
-		SVG.open_save_dialog(extension, native_file_export, SVG.finish_export.bind(extension))
+		SVG.open_save_dialog(extension,
+				SVG.native_file_export.bind(extension, upscale_amount),
+				SVG.finish_export.bind(extension, upscale_amount))
 
 func _on_cancel_button_pressed() -> void:
 	HandlerGUI.remove_overlay()

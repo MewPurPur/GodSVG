@@ -62,9 +62,24 @@ const default_config = {
 
 # No way to fetch defaults otherwise.
 var default_input_events := {}  # Dictionary{String: Array[InputEvent]}
-const configurable_keybinds = ["import", "export", "save", "move_up", "move_down",
-		"undo", "redo", "duplicate", "select_all", "delete", "zoom_in", "zoom_out",
-		"zoom_reset"]
+
+const configurable_keybinds = {
+	"file": ["import", "export", "save", "optimize_svg", "copy_svg_text", "clear_svg",
+			"clear_file_path", "reset_svg"],
+	"edit": ["undo", "redo", "select_all", "duplicate", "move_up", "move_down", "delete"],
+	"view": ["zoom_in", "zoom_out", "zoom_reset", "view_show_grid", "view_show_handles",
+			"view_rasterized_svg"]}
+
+const unconfigurable_keybinds = [
+	"move_relative", "move_absolute", "line_relative", "line_absolute",
+	"horizontal_line_relative", "horizontal_line_absolute", "vertical_line_relative",
+	"vertical_line_absolute", "close_path_relative", "close_path_absolute",
+	"elliptical_arc_relative", "elliptical_arc_absolute", "quadratic_bezier_relative",
+	"quadratic_bezier_absolute", "shorthand_quadratic_bezier_relative",
+	"shorthand_quadratic_bezier_absolute", "cubic_bezier_relative",
+	"cubic_bezier_absolute", "shorthand_cubic_bezier_relative",
+	"shorthand_cubic_bezier_absolute"]
+
 
 var language: String:
 	set(new_value):
@@ -182,9 +197,10 @@ func load_settings() -> void:
 	else:
 		for section in config.get_sections():
 			if section == "keybinds":
-				for action in configurable_keybinds:
-					if config.has_section_key("keybinds", action):
-						modify_keybind(action, config.get_value("keybinds", action))
+				for category in configurable_keybinds:
+					for action in GlobalSettings.configurable_keybinds[category]:
+						if config.has_section_key("keybinds", action):
+							modify_keybind(action, config.get_value("keybinds", action))
 			else:
 				for setting in config.get_section_keys(section):
 					set(setting, config.get_value(section, setting))
@@ -202,8 +218,9 @@ func reset_setting(section: String, setting: String) -> void:
 
 func reset_keybinds() -> void:
 	InputMap.load_from_project_settings()
-	for action in configurable_keybinds:
-		save_keybind(action)
+	for category in configurable_keybinds:
+		for action in GlobalSettings.configurable_keybinds[category]:
+			save_keybind(action)
 
 func reset_palettes() -> void:
 	palettes = [ColorPalette.new("Pure",

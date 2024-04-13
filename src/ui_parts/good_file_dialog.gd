@@ -6,6 +6,8 @@ const AlertDialog = preload("res://src/ui_parts/alert_dialog.tscn")
 signal file_selected(path: String)
 
 const folder_icon = preload("res://visual/icons/Folder.svg")
+const broken_file_icon = preload("res://visual/icons/FileBroken.svg")
+
 const system_dir_icons = {
 	OS.SYSTEM_DIR_DESKTOP: preload("res://visual/icons/DirDesktop.svg"),
 	OS.SYSTEM_DIR_DOCUMENTS: preload("res://visual/icons/DirDocuments.svg"),
@@ -203,8 +205,11 @@ func _setup_file_images() -> void:
 			var file := file_list.get_item_text(item_idx)
 			match file.get_extension():
 				"png":
-					file_list.set_item_icon(item_idx, ImageTexture.create_from_image(
-							Image.load_from_file(current_dir.path_join(file))))
+					var img := Image.load_from_file(current_dir.path_join(file))
+					if img == null:
+						file_list.set_item_icon(item_idx, broken_file_icon)
+					else:
+						file_list.set_item_icon(item_idx, ImageTexture.create_from_image(img))
 				"svg":
 					# Setup a clean SVG graphic by using the scaling parameter.
 					var svg_text := FileAccess.open(current_dir.path_join(file),
