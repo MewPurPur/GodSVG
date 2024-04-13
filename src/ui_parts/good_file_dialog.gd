@@ -132,6 +132,7 @@ func file_sort(file1: String, file2: String) -> bool:
 func set_dir(dir: String) -> void:
 	file_list.clear()
 	# Basic setup.
+	unfocus_file()
 	current_dir = dir
 	path_field.text = current_dir
 	# Rebuild the system dirs to see if we now need to highlight the relevant one.
@@ -176,6 +177,8 @@ func set_dir(dir: String) -> void:
 		var item_idx := file_list.add_item(file, null)
 		file_list.set_item_metadata(item_idx,
 				Actions.new(select_file, focus_file.bind(file)))
+	# If we don't await this stuff, sometimes the item_rect we get is all wrong.
+	await file_list.draw
 	await get_tree().process_frame
 	_setup_file_images()
 
