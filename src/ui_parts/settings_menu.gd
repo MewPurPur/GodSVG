@@ -11,15 +11,14 @@ const SettingColor = preload("res://src/ui_elements/setting_color.gd")
 
 @onready var lang_button: Button = %Language
 @onready var palette_container: VBoxContainer = %PaletteContainer
-@onready var shortcut_container: VBoxContainer = %ShortcutContainer
 @onready var content_container: MarginContainer = %ContentContainer
 @onready var tabs: VBoxContainer = %Tabs
 
 @onready var wrap_mouse: HBoxContainer = %WrapMouse
 @onready var use_native_file_dialog: HBoxContainer = %UseNativeFileDialog
 
-@onready var configurable_shortcuts: VBoxContainer = %ConfigurableShortcuts
-@onready var non_configurable_shortcuts: VBoxContainer = %NonConfigurableShortcuts
+@onready var shortcut_categories: HFlowContainer = %Categories
+@onready var shortcut_container: VBoxContainer = %Shortcuts
 
 var focused_content := 0
 
@@ -218,25 +217,38 @@ func disable_autoformat_checkboxes() -> void:
 
 
 func setup_shortcuts_tab() -> void:
-	for action in GlobalSettings.configurable_keybinds:
+	shortcut_categories.add_child(Utils.create_btn(tr("File"), show_keybinds.bind("file")))
+	shortcut_categories.add_child(Utils.create_btn(tr("Edit"), show_keybinds.bind("edit")))
+	shortcut_categories.add_child(Utils.create_btn(tr("View"), show_keybinds.bind("view")))
+	shortcut_categories.add_child(Utils.create_btn(tr("Tool"), show_tool_keybinds))
+	# Add them all to a button group.
+	var button_group := ButtonGroup.new()
+	for btn: Button in shortcut_categories.get_children():
+		btn.toggle_mode = true
+		btn.button_group = button_group
+	shortcut_categories.get_child(0).button_pressed = true
+	show_keybinds("file")
+
+func show_keybinds(category: String):
+	for child in shortcut_container.get_children():
+		child.queue_free()
+	for action in GlobalSettings.configurable_keybinds[category]:
 		var keybind_config := ShortcutConfigWidget.instantiate()
-		configurable_shortcuts.add_child(keybind_config)
+		shortcut_container.add_child(keybind_config)
 		keybind_config.label.text = shortcut_descriptions[action] if\
 				action in shortcut_descriptions else action
 		keybind_config.setup(action)
-	for action in ["move_relative", "move_absolute", "line_relative", "line_absolute",
-	"horizontal_line_relative", "horizontal_line_absolute", "vertical_line_relative",
-	"vertical_line_absolute", "close_path_relative", "close_path_absolute",
-	"elliptical_arc_relative", "elliptical_arc_absolute", "quadratic_bezier_relative",
-	"quadratic_bezier_absolute", "shorthand_quadratic_bezier_relative",
-	"shorthand_quadratic_bezier_absolute", "cubic_bezier_relative",
-	"cubic_bezier_absolute", "shorthand_cubic_bezier_relative",
-	"shorthand_cubic_bezier_absolute"]:
+
+func show_tool_keybinds() -> void:
+	for child in shortcut_container.get_children():
+		child.queue_free()
+	for action in GlobalSettings.unconfigurable_keybinds:
 		var keybind_config := ShortcutShowcaseWidget.instantiate()
-		non_configurable_shortcuts.add_child(keybind_config)
+		shortcut_container.add_child(keybind_config)
 		keybind_config.label.text = shortcut_descriptions[action] if\
 				action in shortcut_descriptions else action
 		keybind_config.setup(action)
+
 
 
 func setup_theming_tab() -> void:
