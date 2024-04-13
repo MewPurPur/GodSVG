@@ -5,6 +5,7 @@ signal optimize_button_enable_updated(is_optimize_enabled: bool)
 
 const ContextPopup = preload("res://src/ui_elements/context_popup.tscn")
 
+@onready var panel_container: PanelContainer = $PanelContainer
 @onready var code_edit: TextEdit = $ScriptEditor/SVGCodeEdit
 @onready var error_bar: PanelContainer = $ScriptEditor/ErrorBar
 @onready var error_label: RichTextLabel = $ScriptEditor/ErrorBar/Label
@@ -20,7 +21,7 @@ func _ready() -> void:
 	auto_update_text()
 	update_size_label()
 	update_file_button()
-	setup_theme(false)
+	setup_theme()
 	setup_highlighter()
 	code_edit.clear_undo_history()
 	SVG.root_tag.attribute_changed.connect(auto_update_text.unbind(1))
@@ -33,6 +34,8 @@ func _ready() -> void:
 func _notification(what: int) -> void:
 	if what == Utils.CustomNotification.HIGHLIGHT_COLORS_CHANGED:
 		setup_highlighter()
+	if what == Utils.CustomNotification.THEME_CHANGED:
+		setup_theme()
 
 
 func _unhandled_input(input_event: InputEvent) -> void:
@@ -66,7 +69,7 @@ func update_error(err_id: SVGParser.ParseError) -> void:
 			var error_bar_real_height := error_bar.size.y - 2
 			code_edit.custom_minimum_size.y += error_bar_real_height
 			code_edit.size.y += error_bar_real_height
-			setup_theme(false)
+			setup_theme()
 	else:
 		# When the error is shown, the code editor's theme is changed to match up.
 		if not error_bar.visible:
@@ -75,22 +78,46 @@ func update_error(err_id: SVGParser.ParseError) -> void:
 			var error_bar_real_height := error_bar.size.y - 2
 			code_edit.custom_minimum_size.y -= error_bar_real_height
 			code_edit.size.y -= error_bar_real_height
-			setup_theme(true)
+			setup_theme()
 
-func setup_theme(match_below: bool) -> void:
+func setup_theme() -> void:
+	# Set up the code edit.
 	code_edit.begin_bulk_theme_override()
 	for theming in ["normal", "focus", "hover"]:
 		var stylebox := get_theme_stylebox(theming, "TextEdit").duplicate()
 		stylebox.corner_radius_top_right = 0
 		stylebox.corner_radius_top_left = 0
 		stylebox.border_width_top = 2
-		if match_below:
+		if error_bar.visible:
 			stylebox.corner_radius_bottom_right = 0
 			stylebox.corner_radius_bottom_left = 0
 			stylebox.border_width_bottom = 1
 		code_edit.add_theme_stylebox_override(theming, stylebox)
 	code_edit.end_bulk_theme_override()
+	
 	error_label.add_theme_color_override("default_color", GlobalSettings.basic_color_error)
+	var panel_stylebox := get_theme_stylebox("panel", "PanelContainer")
+	# Set up the top panel.
+	var top_stylebox := panel_stylebox.duplicate()
+	top_stylebox.border_color = code_edit.get_theme_stylebox("normal").border_color
+	top_stylebox.border_width_bottom = 0
+	top_stylebox.corner_radius_bottom_right = 0
+	top_stylebox.corner_radius_bottom_left = 0
+	top_stylebox.content_margin_left = 8
+	top_stylebox.content_margin_right = 6
+	top_stylebox.content_margin_top = 3
+	top_stylebox.content_margin_bottom = 1
+	panel_container.add_theme_stylebox_override("panel", top_stylebox)
+	# Set up the bottom panel.
+	var bottom_stylebox := panel_stylebox.duplicate()
+	bottom_stylebox.border_color = code_edit.get_theme_stylebox("normal").border_color
+	bottom_stylebox.corner_radius_top_right = 0
+	bottom_stylebox.corner_radius_top_left = 0
+	bottom_stylebox.content_margin_left = 10
+	bottom_stylebox.content_margin_right = 8
+	bottom_stylebox.content_margin_top = -1
+	bottom_stylebox.content_margin_bottom = -1
+	error_bar.add_theme_stylebox_override("panel", bottom_stylebox)
 
 
 func _on_copy_button_pressed() -> void:

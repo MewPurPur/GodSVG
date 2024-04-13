@@ -11,7 +11,7 @@ signal imported
 var imported_text := ""
 
 func _ready() -> void:
-	ok_button.grab_focus()
+	imported.connect(queue_free)
 	# Convert forward and backward to show how GodSVG would display the given SVG.
 	var imported_text_parse_result := SVGParser.text_to_svg(imported_text)
 	var preview_text := SVGParser.svg_to_text(imported_text_parse_result.svg)
@@ -37,7 +37,7 @@ func _ready() -> void:
 					GlobalSettings.basic_color_warning)
 			for warning in svg_warnings:
 				warnings_label.text += warning + "\n"
-	imported.connect(queue_free)
+	ok_button.grab_focus()
 	cancel_button.pressed.connect(queue_free)
 
 
