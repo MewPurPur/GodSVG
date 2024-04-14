@@ -91,6 +91,9 @@ msgstr ""
 msgid "Rasterized SVG"
 msgstr ""
 
+msgid "Show rasterized SVG"
+msgstr ""
+
 msgid "Enable Snapping"
 msgstr ""
 
@@ -100,7 +103,7 @@ msgstr ""
 msgid "Reset to default"
 msgstr ""
 
-msgid "Copy All Text"
+msgid "Copy all text"
 msgstr ""
 
 msgid "Clear SVG"
@@ -496,4 +499,43 @@ msgid "Always active."
 msgstr ""
 
 msgid "Search color"
+msgstr ""
+
+msgid "File"
+msgstr ""
+
+msgid "View"
+msgstr ""
+
+msgid "Tool"
+msgstr ""
+
+msgid "Move to"
+msgstr ""
+
+msgid "Line to"
+msgstr ""
+
+msgid "Horizontal Line to"
+msgstr ""
+
+msgid "Vertical Line to"
+msgstr ""
+
+msgid "Close Path"
+msgstr ""
+
+msgid "Elliptical Arc to"
+msgstr ""
+
+msgid "Quadratic Bezier to"
+msgstr ""
+
+msgid "Shorthand Quadratic Bezier to"
+msgstr ""
+
+msgid "Cubic Bezier to"
+msgstr ""
+
+msgid "Shorthand Cubic Bezier to"
 msgstr ""

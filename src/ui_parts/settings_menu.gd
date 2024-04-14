@@ -22,22 +22,6 @@ const SettingColor = preload("res://src/ui_elements/setting_color.gd")
 
 var focused_content := 0
 
-var shortcut_descriptions := {  # Dictionary{String: String}
-	"export": tr("Export"),
-	"import": tr("Import"),
-	"save": tr("Save"),
-	"undo": tr("Undo"),
-	"redo": tr("Redo"),
-	"select_all": tr("Select all tags"),
-	"duplicate": tr("Duplicate the selected tags"),
-	"delete": tr("Delete the selection"),
-	"move_up": tr("Move the selected tags up"),
-	"move_down": tr("Move the selected tags down"),
-	"zoom_in": tr("Zoom in"),
-	"zoom_out": tr("Zoom out"),
-	"zoom_reset": tr("Zoom reset"),
-}
-
 func _ready() -> void:
 	update_language_button()
 	setup_setting_labels()
@@ -232,21 +216,23 @@ func setup_shortcuts_tab() -> void:
 func show_keybinds(category: String):
 	for child in shortcut_container.get_children():
 		child.queue_free()
+	
+	var translation_utils := TranslationUtils.new()
 	for action in GlobalSettings.configurable_keybinds[category]:
 		var keybind_config := ShortcutConfigWidget.instantiate()
 		shortcut_container.add_child(keybind_config)
-		keybind_config.label.text = shortcut_descriptions[action] if\
-				action in shortcut_descriptions else action
+		keybind_config.label.text = translation_utils.get_shortcut_description(action)
 		keybind_config.setup(action)
 
 func show_tool_keybinds() -> void:
 	for child in shortcut_container.get_children():
 		child.queue_free()
+	
+	var translation_utils := TranslationUtils.new()
 	for action in GlobalSettings.unconfigurable_keybinds:
 		var keybind_config := ShortcutShowcaseWidget.instantiate()
 		shortcut_container.add_child(keybind_config)
-		keybind_config.label.text = shortcut_descriptions[action] if\
-				action in shortcut_descriptions else action
+		keybind_config.label.text = translation_utils.get_shortcut_description(action)
 		keybind_config.setup(action)
 
 

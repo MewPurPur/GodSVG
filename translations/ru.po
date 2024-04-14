@@ -97,6 +97,10 @@ msgstr "Показать ручки редактирования"
 msgid "Rasterized SVG"
 msgstr "Растеризовать SVG"
 
+#, fuzzy
+msgid "Show rasterized SVG"
+msgstr "Растеризовать SVG"
+
 msgid "Enable Snapping"
 msgstr "Включить привязку"
 
@@ -106,7 +110,8 @@ msgstr "Размер привязки"
 msgid "Reset to default"
 msgstr "Восстановить значение по умолчанию"
 
-msgid "Copy All Text"
+#, fuzzy
+msgid "Copy all text"
 msgstr "Скопировать весь текст"
 
 msgid "Clear SVG"
@@ -519,6 +524,47 @@ msgstr "Всегда активно."
 
 msgid "Search color"
 msgstr "Искать цвет"
+
+msgid "File"
+msgstr ""
+
+msgid "View"
+msgstr ""
+
+msgid "Tool"
+msgstr ""
+
+#, fuzzy
+msgid "Move to"
+msgstr "Подвинуть вниз"
+
+msgid "Line to"
+msgstr ""
+
+msgid "Horizontal Line to"
+msgstr ""
+
+msgid "Vertical Line to"
+msgstr ""
+
+#, fuzzy
+msgid "Close Path"
+msgstr "Закрыть"
+
+msgid "Elliptical Arc to"
+msgstr ""
+
+msgid "Quadratic Bezier to"
+msgstr ""
+
+msgid "Shorthand Quadratic Bezier to"
+msgstr ""
+
+msgid "Cubic Bezier to"
+msgstr ""
+
+msgid "Shorthand Cubic Bezier to"
+msgstr ""
 
 #, fuzzy
 #~ msgid "Clear association"

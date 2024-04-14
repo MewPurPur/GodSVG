@@ -98,6 +98,10 @@ msgstr "Показати ручки редагування"
 msgid "Rasterized SVG"
 msgstr "Растеризувати SVG"
 
+#, fuzzy
+msgid "Show rasterized SVG"
+msgstr "Растеризувати SVG"
+
 msgid "Enable Snapping"
 msgstr "Активувати прилипання"
 
@@ -107,7 +111,8 @@ msgstr "Розмір прилипання"
 msgid "Reset to default"
 msgstr "Скинути значення до замовчування"
 
-msgid "Copy All Text"
+#, fuzzy
+msgid "Copy all text"
 msgstr "Скопіювати весь текст"
 
 msgid "Clear SVG"
@@ -520,6 +525,47 @@ msgstr "Завжди активно."
 
 msgid "Search color"
 msgstr "Шукати колір"
+
+msgid "File"
+msgstr ""
+
+msgid "View"
+msgstr ""
+
+msgid "Tool"
+msgstr ""
+
+#, fuzzy
+msgid "Move to"
+msgstr "Пересунути вниз"
+
+msgid "Line to"
+msgstr ""
+
+msgid "Horizontal Line to"
+msgstr ""
+
+msgid "Vertical Line to"
+msgstr ""
+
+#, fuzzy
+msgid "Close Path"
+msgstr "Закрити"
+
+msgid "Elliptical Arc to"
+msgstr ""
+
+msgid "Quadratic Bezier to"
+msgstr ""
+
+msgid "Shorthand Quadratic Bezier to"
+msgstr ""
+
+msgid "Cubic Bezier to"
+msgstr ""
+
+msgid "Shorthand Cubic Bezier to"
+msgstr ""
 
 #, fuzzy
 #~ msgid "Clear association"
