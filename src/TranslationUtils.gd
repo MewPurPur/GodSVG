@@ -22,7 +22,7 @@ func get_shortcut_description(action_name: String) -> String:
 		"zoom_reset": return tr("Zoom reset")
 		"view_show_grid": return tr("Show grid")
 		"view_show_handles": return tr("Show handles")
-		"view_rasterize_svg": return tr("Show rasterized SVG")
+		"view_rasterized_svg": return tr("Show rasterized SVG")
 		_: return action_name
 
 
