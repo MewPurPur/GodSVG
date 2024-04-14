@@ -57,6 +57,7 @@ const default_config = {
 		"wrap_mouse": false,
 		"use_ctrl_for_zoom": true,
 		"use_native_file_dialog": true,
+		"handle_size": 1.0,
 	},
 }
 
@@ -135,6 +136,7 @@ var invert_zoom := false
 var wrap_mouse := false
 var use_ctrl_for_zoom := true
 var use_native_file_dialog := true
+var handle_size := 1.0
 
 
 func toggle_bool_setting(section: String, setting: String) -> void:

@@ -11,13 +11,15 @@ var selected_handle_textures: Dictionary
 var hovered_selected_handle_textures: Dictionary
 
 const handles_svg_dict = {
-	Handle.Display.BIG: """<svg width="10" height="10"
-			xmlns="http://www.w3.org/2000/svg"><circle cx="5" cy="5" r="3.25"
-			fill="%s" stroke="%s" stroke-width="1.5"/></svg>""",
-	Handle.Display.SMALL: """<svg width="8" height="8"
-		xmlns="http://www.w3.org/2000/svg"><circle cx="4" cy="4" r="2.4"
-		fill="%s" stroke="%s" stroke-width="1.2"/></svg>""",
+	Handle.Display.BIG: """<svg width="%s" height="%s"
+			xmlns="http://www.w3.org/2000/svg"><circle cx="%s" cy="%s" r="%s"
+			fill="%s" stroke="%s" stroke-width="%s"/></svg>""",
+	Handle.Display.SMALL: """<svg width="%s" height="%s"
+		xmlns="http://www.w3.org/2000/svg"><circle cx="%s" cy="%s" r="%s"
+		fill="%s" stroke="%s" stroke-width="%s"/></svg>""",
 }
+
+const DEFAULT_GRAB_DISTANCE_SQUARED := 81.0
 
 var update_pending := false
 var handles: Array[Handle]
@@ -39,10 +41,22 @@ func render_handle_textures() -> void:
 	var selected_str := "#" + GlobalSettings.handle_selected_color.to_html(false)
 	var hovered_selected_str := "#" +\
 			GlobalSettings.handle_hovered_selected_color.to_html(false)
+	var s := GlobalSettings.handle_size  # Shorthand
 	var img := Image.new()
 	
+	var handles_dict := {
+		Handle.Display.BIG: """<svg width="%s" height="%s"
+				xmlns="http://www.w3.org/2000/svg"><circle cx="%s" cy="%s" r="%s"
+				fill="%s" stroke="%s" stroke-width="%s"/></svg>""" % [s * 10, s * 10,
+				s * 5, s * 5, s * 3.25, "%s", "%s", s * 1.5],
+		Handle.Display.SMALL: """<svg width="%s" height="%s"
+			xmlns="http://www.w3.org/2000/svg"><circle cx="%s" cy="%s" r="%s"
+			fill="%s" stroke="%s" stroke-width="%s"/></svg>""" % [s * 8, s * 8,
+			s * 4, s * 4, s * 2.4, "%s", "%s", s * 1.2],
+	}
+	
 	for handle_type in [Handle.Display.BIG, Handle.Display.SMALL]:
-		var handle_type_svg: String = handles_svg_dict[handle_type]
+		var handle_type_svg: String = handles_dict[handle_type]
 		img.load_svg_from_string(handle_type_svg % [inside_str, normal_str])
 		img.fix_alpha_edges()
 		normal_handle_textures[handle_type] = ImageTexture.create_from_image(img)
@@ -73,7 +87,7 @@ func _ready() -> void:
 	queue_update()
 
 func _notification(what: int) -> void:
-	if what == Utils.CustomNotification.HANDLE_COLORS_CHANGED:
+	if what == Utils.CustomNotification.HANDLE_VISUALS_CHANGED:
 		render_handle_textures()
 
 
@@ -729,8 +743,9 @@ func respond_to_input_event(event: InputEvent) -> void:
 
 func find_nearest_handle(event_pos: Vector2) -> Handle:
 	var nearest_handle: Handle = null
-	# Maximum grab distance is (9 / zoom).
-	var nearest_dist_squared := 81 / (Indications.zoom * Indications.zoom)
+	var nearest_dist_squared := DEFAULT_GRAB_DISTANCE_SQUARED *\
+			(GlobalSettings.handle_size * GlobalSettings.handle_size) /\
+			(Indications.zoom * Indications.zoom)
 	for handle in handles:
 		var dist_to_handle_squared := event_pos.distance_squared_to(
 					SVG.root_tag.canvas_to_world(handle.transform * handle.pos))

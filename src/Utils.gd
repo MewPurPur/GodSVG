@@ -7,7 +7,7 @@ enum CustomNotification {
 	NUMBER_PRECISION_CHANGED = 302,
 	HIGHLIGHT_COLORS_CHANGED = 303,
 	DEFAULT_VALUE_OPACITY_CHANGED = 304,
-	HANDLE_COLORS_CHANGED = 305,
+	HANDLE_VISUALS_CHANGED = 305,
 }
 
 # Enum with values to be used for set_value() of attribute editors.
