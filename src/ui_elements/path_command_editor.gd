@@ -248,13 +248,13 @@ func activate() -> void:
 	relative_button.add_theme_color_override("font_color", Color(1, 1, 1))
 	if Utils.is_string_upper(cmd_char):
 		relative_button.tooltip_text = "%s (%s)" %\
-				[Utils.path_command_char_dict[cmd_char.to_upper()], tr("Absolute")]
+				[TranslationUtils.new().get_command_char_description(cmd_char), tr("Absolute")]
 		relative_button.add_theme_stylebox_override("normal", absolute_button_normal)
 		relative_button.add_theme_stylebox_override("hover", absolute_button_hovered)
 		relative_button.add_theme_stylebox_override("pressed", absolute_button_pressed)
 	else:
 		relative_button.tooltip_text = "%s (%s)" %\
-				[Utils.path_command_char_dict[cmd_char.to_upper()], tr("Relative")]
+				[TranslationUtils.new().get_command_char_description(cmd_char), tr("Relative")]
 		relative_button.add_theme_stylebox_override("normal", relative_button_normal)
 		relative_button.add_theme_stylebox_override("hover", relative_button_hovered)
 		relative_button.add_theme_stylebox_override("pressed", relative_button_pressed)

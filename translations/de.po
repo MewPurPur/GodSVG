@@ -95,6 +95,10 @@ msgstr "Griffe anzeigen"
 msgid "Rasterized SVG"
 msgstr "SVG rasterisieren"
 
+#, fuzzy
+msgid "Show rasterized SVG"
+msgstr "SVG rasterisieren"
+
 msgid "Enable Snapping"
 msgstr "Einrasten aktivieren"
 
@@ -104,7 +108,8 @@ msgstr "Einrastgröße"
 msgid "Reset to default"
 msgstr "Zurücksetzen"
 
-msgid "Copy All Text"
+#, fuzzy
+msgid "Copy all text"
 msgstr "Text kopieren"
 
 msgid "Clear SVG"
@@ -523,6 +528,47 @@ msgstr "Immer aktiv."
 
 msgid "Search color"
 msgstr "Farbe suchen"
+
+msgid "File"
+msgstr ""
+
+msgid "View"
+msgstr ""
+
+msgid "Tool"
+msgstr ""
+
+#, fuzzy
+msgid "Move to"
+msgstr "Nach unten"
+
+msgid "Line to"
+msgstr ""
+
+msgid "Horizontal Line to"
+msgstr ""
+
+msgid "Vertical Line to"
+msgstr ""
+
+#, fuzzy
+msgid "Close Path"
+msgstr "Schließen"
+
+msgid "Elliptical Arc to"
+msgstr ""
+
+msgid "Quadratic Bezier to"
+msgstr ""
+
+msgid "Shorthand Quadratic Bezier to"
+msgstr ""
+
+msgid "Cubic Bezier to"
+msgstr ""
+
+msgid "Shorthand Cubic Bezier to"
+msgstr ""
 
 #, fuzzy
 #~ msgid "Clear association"

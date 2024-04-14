@@ -55,7 +55,7 @@ timers/tooltip_delay_sec=0.4
 
 [input]
 
-optimize_svg={
+optimize={
 "deadzone": 0.5,
 "events": []
 }
