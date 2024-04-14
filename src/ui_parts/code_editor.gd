@@ -47,7 +47,7 @@ func _unhandled_input(input_event: InputEvent) -> void:
 		_on_copy_button_pressed()
 	elif input_event.is_action_pressed("clear_svg"):
 		clear_svg()
-	elif input_event.is_action_pressed("optimize_svg"):
+	elif input_event.is_action_pressed("optimize"):
 		_on_optimize_button_pressed()
 	elif input_event.is_action_pressed("clear_file_path"):
 		clear_file_path()
@@ -194,7 +194,7 @@ func _on_file_button_pressed() -> void:
 
 func _on_options_button_pressed() -> void:
 	var btn_array: Array[Button] = []
-	btn_array.append(Utils.create_btn(tr("Copy All Text"), _on_copy_button_pressed,
+	btn_array.append(Utils.create_btn(tr("Copy all text"), _on_copy_button_pressed,
 			false, load("res://visual/icons/Copy.svg")))
 	btn_array.append(Utils.create_btn(tr("Clear SVG"), clear_svg,
 			SVG.text == SVG.DEFAULT, load("res://visual/icons/Clear.svg")))

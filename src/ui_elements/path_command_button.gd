@@ -23,7 +23,7 @@ func update_text() -> void:
 	rtl.add_text(":")
 	rtl.pop()
 	rtl.add_text(" ")
-	rtl.add_text(Utils.path_command_char_dict[command_char.to_upper()])
+	rtl.add_text(TranslationUtils.new().get_command_char_description(command_char))
 
 func set_invalid(new_state := true) -> void:
 	if new_state:
