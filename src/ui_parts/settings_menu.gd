@@ -28,6 +28,7 @@ func _ready() -> void:
 	for i in tabs.get_child_count():
 		tabs.get_child(i).pressed.connect(update_focused_content.bind(i))
 	update_focused_content(0)
+	setup_theming()
 
 func update_focused_content(idx: int) -> void:
 	focused_content = idx
@@ -38,6 +39,13 @@ func update_focused_content(idx: int) -> void:
 func _notification(what: int) -> void:
 	if what == Utils.CustomNotification.LANGUAGE_CHANGED:
 		setup_setting_labels()
+	elif what == Utils.CustomNotification.THEME_CHANGED:
+		setup_theming()
+
+func setup_theming() -> void:
+	var stylebox := get_theme_stylebox("panel").duplicate()
+	stylebox.content_margin_top += 4.0
+	add_theme_stylebox_override("panel", stylebox)
 
 # Sets the text for all the labels.
 func setup_setting_labels() -> void:
@@ -57,6 +65,9 @@ func setup_setting_labels() -> void:
 	ctrl_for_zoom.label.tooltip_text = tr("If turned on, scrolling will pan the view. To zoom, hold CTRL while scrolling.")
 	use_native_file_dialog.label.text = tr("Use native file dialog")
 	use_native_file_dialog.label.tooltip_text = tr("If turned on, uses your operating system's native file dialog. If turned off, uses GodSVG's built-in file dialog.")
+	var handles_size := %ContentContainer/Other/OtherSettings/Misc/HandleSize
+	handles_size.label.text = tr("Handles size")
+	handles_size.label.tooltip_text = tr("Increases the visual size and grabbing area of handles.")
 	
 	%GeneralVBox/NumberPrecision.label.text = tr("Number precision digits")
 	%GeneralVBox/AnglePrecision.label.text = tr("Angle precision digits")
@@ -236,7 +247,6 @@ func show_tool_keybinds() -> void:
 		keybind_config.setup(action)
 
 
-
 func setup_theming_tab() -> void:
 	for child in %HighlighterVBox.get_children():
 		if child is SettingColor:
@@ -245,7 +255,7 @@ func setup_theming_tab() -> void:
 	for child in %HandleColors.get_children():
 		if child is SettingColor:
 			child.value_changed.connect(custom_notify.bind(
-					Utils.CustomNotification.HANDLE_COLORS_CHANGED))
+					Utils.CustomNotification.HANDLE_VISUALS_CHANGED))
 	%DefaultValueOpacity.value_changed.connect(custom_notify.bind(
 			Utils.CustomNotification.DEFAULT_VALUE_OPACITY_CHANGED))
 
@@ -288,6 +298,8 @@ func _on_theme_tab_toggled(toggled_on: bool) -> void:
 
 func _on_other_tab_toggled(toggled_on: bool) -> void:
 	if toggled_on and not generated_content.other:
+		%ContentContainer/Other/OtherSettings/Misc/HandleSize.value_changed.connect(
+				custom_notify.bind(Utils.CustomNotification.HANDLE_VISUALS_CHANGED))
 		# Disable mouse wrap if not available.
 		if not DisplayServer.has_feature(DisplayServer.FEATURE_MOUSE_WARP):
 			wrap_mouse.checkbox.set_pressed_no_signal(false)

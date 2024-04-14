@@ -9,7 +9,7 @@
 [sub_resource type="ButtonGroup" id="ButtonGroup_f7wyd"]
 
 [node name="SettingsMenu" type="PanelContainer"]
-custom_minimum_size = Vector2(580, 360)
+custom_minimum_size = Vector2(600, 372)
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -511,22 +511,32 @@ tooltip_text = "If turned on, scrolling will pan the view. To zoom, hold CTRL wh
 section_name = "other"
 setting_name = "use_ctrl_for_zoom"
 
-[node name="FileDialog" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Other/OtherSettings"]
+[node name="Misc" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Other/OtherSettings"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/separation = 3
 
-[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Other/OtherSettings/FileDialog"]
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Other/OtherSettings/Misc"]
 layout_mode = 2
 text = "Miscellaneous"
 
-[node name="UseNativeFileDialog" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Other/OtherSettings/FileDialog" instance=ExtResource("4_2qeh2")]
+[node name="UseNativeFileDialog" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Other/OtherSettings/Misc" instance=ExtResource("4_2qeh2")]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "Swaps zoom in and zoom out with the mouse wheel."
 section_name = "other"
 setting_name = "use_native_file_dialog"
+
+[node name="HandleSize" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Other/OtherSettings/Misc" instance=ExtResource("5_dx7vp")]
+layout_mode = 2
+section_name = "other"
+setting_name = "handle_size"
+values = Array[String](["0.75", "1.0", "1.25", "1.5", "1.75", "2.0"])
+type = 3
+restricted = false
+number_min = 0.5
+number_max = 2.5
 
 [node name="Close" type="Button" parent="VBoxContainer"]
 layout_mode = 2
