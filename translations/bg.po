@@ -94,6 +94,9 @@ msgstr "Покажи дръжките"
 msgid "Rasterized SVG"
 msgstr "Растеризирай SVG"
 
+msgid "Show rasterized SVG"
+msgstr "Покажи растеризиран SVG"
+
 msgid "Enable Snapping"
 msgstr "Включи захващането"
 
@@ -103,7 +106,7 @@ msgstr "Размер на захващането"
 msgid "Reset to default"
 msgstr "Възстанови началната стойност"
 
-msgid "Copy All Text"
+msgid "Copy all text"
 msgstr "Копирай всичкия текст"
 
 msgid "Clear SVG"
@@ -509,3 +512,42 @@ msgstr "Винаги активно."
 
 msgid "Search color"
 msgstr "Търсене на цвят"
+
+msgid "File"
+msgstr "Файл"
+
+msgid "View"
+msgstr "Гледка"
+
+msgid "Tool"
+msgstr "Инструмент"
+
+msgid "Move to"
+msgstr "Премести до"
+
+msgid "Line to"
+msgstr "Отсечка до"
+
+msgid "Horizontal Line to"
+msgstr "Хоризонтална отсечка до"
+
+msgid "Vertical Line to"
+msgstr "Вертикална отсечка до"
+
+msgid "Close Path"
+msgstr "Затвори пътеката"
+
+msgid "Elliptical Arc to"
+msgstr "Елиптична дъга до"
+
+msgid "Quadratic Bezier to"
+msgstr "Квадратна крива на Безие до"
+
+msgid "Shorthand Quadratic Bezier to"
+msgstr "Кратка квадратна крива на Безие до"
+
+msgid "Cubic Bezier to"
+msgstr "Кубична крива на Безие до"
+
+msgid "Shorthand Cubic Bezier to"
+msgstr "Кратка кубична крива на Безие до"

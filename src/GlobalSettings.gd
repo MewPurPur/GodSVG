@@ -64,7 +64,7 @@ const default_config = {
 var default_input_events := {}  # Dictionary{String: Array[InputEvent]}
 
 const configurable_keybinds = {
-	"file": ["import", "export", "save", "optimize_svg", "copy_svg_text", "clear_svg",
+	"file": ["import", "export", "save", "optimize", "copy_svg_text", "clear_svg",
 			"clear_file_path", "reset_svg"],
 	"edit": ["undo", "redo", "select_all", "duplicate", "move_up", "move_down", "delete"],
 	"view": ["zoom_in", "zoom_out", "zoom_reset", "view_show_grid", "view_show_handles",
