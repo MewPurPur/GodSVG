@@ -1,0 +1,39 @@
+name: Set up Godot
+runs:
+  using: composite
+  steps:
+    - name: Make folders
+      shell: bash
+      run: |
+        # Set up folders for Godot editor and export templates.
+        # This is done before the download step because this uses caching and doesn't always need to download.
+        # The ~/godot directory is for the editor, so it can be added to PATH.
+        mkdir -v -p ~/.local/share/godot/export_templates/${GODOT_VERSION}.${GODOT_RELEASE}
+        mkdir -v -p ~/godot
+    - name: Use cache
+      id: godot-cache
+      uses:
+        actions/cache@v4
+      with:
+        key: ${{ env.GODOT_VERSION }}-${{ env.GODOT_RELEASE }}
+        path: |
+          ~/.local/share/godot/export_templates/${{ env.GODOT_VERSION }}.${{ env.GODOT_RELEASE }}
+          ~/godot
+    - name: Download Godot
+      if: ${{ steps.godot-cache.outputs.cache-hit != 'true' }}
+      shell: bash
+      run: |
+        # Download Godot editor and export templates from godot-builds repo.
+        wget -q https://github.com/godotengine/godot-builds/releases/download/${GODOT_VERSION}-${GODOT_RELEASE}/Godot_v${GODOT_VERSION}-${GODOT_RELEASE}_export_templates.tpz &
+        wget -q https://github.com/godotengine/godot-builds/releases/download/${GODOT_VERSION}-${GODOT_RELEASE}/Godot_v${GODOT_VERSION}-${GODOT_RELEASE}_linux.x86_64.zip &
+        wait
+        # Unpack the files.
+        unzip Godot_v${GODOT_VERSION}-${GODOT_RELEASE}_linux.x86_64.zip -d ~ &
+        unzip Godot_v${GODOT_VERSION}-${GODOT_RELEASE}_export_templates.tpz -d ~ &
+        wait
+        # Move to correct places.
+        mv ~/templates/* ~/.local/share/godot/export_templates/${GODOT_VERSION}.${GODOT_RELEASE}
+        mv ~/Godot_v${GODOT_VERSION}-${GODOT_RELEASE}_linux.x86_64 ~/godot/godot
+    - name: Add Godot to path
+      shell: bash
+      run: echo "~/godot" >> $GITHUB_PATH
