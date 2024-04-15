@@ -1,0 +1,9 @@
+name: Export Godot project
+runs:
+  using: composite
+  steps:
+    - name: Export
+      shell: bash
+      run: |
+        mkdir -v -p ~/build/${BUILD_NAME}
+        godot --headless --export-release "${PLATFORM}" ~/build/${BUILD_NAME}/${PROJECT_NAME}.${EXTENSION}
