@@ -5,53 +5,126 @@ signal _in_focus
 const ImportWarningDialog = preload("res://src/ui_parts/import_warning_dialog.tscn")
 const AlertDialog = preload("res://src/ui_parts/alert_dialog.tscn")
 
-var has_overlay := false
-var overlay_ref: OverlayRect
+var overlay_stack: Array[ColorRect]
+var popup_overlay_stack: Array[Control]
 
+
+func _enter_tree() -> void:
+	process_mode = Node.PROCESS_MODE_ALWAYS
 
 func _ready() -> void:
 	get_window().files_dropped.connect(_on_files_dropped)
 	if OS.has_feature("web"):
 		_define_web_js()
 
-
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_WM_WINDOW_FOCUS_IN:
 		_in_focus.emit()
 
-
+# Drag-and-drop of files.
 func _on_files_dropped(files: PackedStringArray) -> void:
-	if not has_overlay:
+	if overlay_stack.is_empty():
 		SVG.apply_svg_from_path(files[0])
 
 
-func add_overlay(overlay_menu: Node) -> void:
-	# A bit hacky, but I couldn't find out a better way at the time.
-	# I'm sure there is a better way of doing things though.
-	if has_overlay:
-		for child in overlay_ref.get_children():
-			child.tree_exiting.disconnect(remove_overlay)
-			child.queue_free()
-		if overlay_menu is Control:
-			overlay_menu.set_anchors_and_offsets_preset(Control.PRESET_CENTER)
-		overlay_ref.add_child(overlay_menu)
-		overlay_menu.tree_exiting.connect(remove_overlay)
+func add_overlay(overlay_menu: Control) -> void:
+	while not popup_overlay_stack.is_empty():
+		remove_popup_overlay()
+	
+	if not overlay_stack.is_empty():
+		overlay_stack.back().hide()
+	
+	var overlay_ref = ColorRect.new()
+	overlay_ref.color = Color(0, 0, 0, 0.4)
+	overlay_ref.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	overlay_ref.process_mode = PROCESS_MODE_ALWAYS
+	overlay_stack.append(overlay_ref)
+	get_tree().get_root().add_child(overlay_ref)
+	overlay_ref.add_child(overlay_menu)
+	overlay_menu.set_anchors_and_offsets_preset(Control.PRESET_CENTER)
+	overlay_menu.tree_exiting.connect(remove_overlay.bind(overlay_ref))
+	get_tree().paused = true
+
+func remove_overlay(overlay_ref: ColorRect = null) -> void:
+	if overlay_stack.is_empty():
+		return
+	# If an overlay_ref is passed but doesn't match, do nothing.
+	# This is a hack against exiting overlay menus closing other menus than their own.
+	if overlay_ref != null and overlay_ref != overlay_stack.back():
+		return
+	
+	overlay_ref = overlay_stack.pop_back()
+	if is_instance_valid(overlay_ref):
+		overlay_ref.queue_free()
+	if overlay_stack.is_empty():
+		get_tree().paused = false
 	else:
-		overlay_ref = OverlayRect.new()
-		get_tree().get_root().add_child(overlay_ref)
-		overlay_ref.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-		overlay_ref.add_child(overlay_menu)
-		if overlay_menu is Control:
-			overlay_menu.set_anchors_and_offsets_preset(Control.PRESET_CENTER)
-		overlay_menu.tree_exiting.connect(remove_overlay)
-		has_overlay = true
-		get_tree().paused = true
+		overlay_stack.back().show()
+
+func remove_all_overlays() -> void:
+	while not overlay_stack.is_empty():
+		remove_overlay()
 
 
-func remove_overlay() -> void:
-	overlay_ref.queue_free()
-	has_overlay = false
-	get_tree().paused = false
+func add_popup_overlay(popup: Control) -> void:
+	var overlay_ref := Control.new()
+	overlay_ref.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	overlay_ref.gui_input.connect(_parse_popup_overlay_event)
+	overlay_ref.process_mode = PROCESS_MODE_ALWAYS
+	popup_overlay_stack.append(overlay_ref)
+	get_tree().get_root().add_child(overlay_ref)
+	overlay_ref.add_child(popup)
+	popup.tree_exiting.connect(remove_popup_overlay.bind(overlay_ref))
+
+func remove_popup_overlay(overlay_ref: Control = null) -> void:
+	if popup_overlay_stack.is_empty():
+		return
+	# Refer to remove_overlay() for why the logic is like this.
+	if overlay_ref != null and overlay_ref != popup_overlay_stack.back():
+		return
+	
+	overlay_ref = popup_overlay_stack.pop_back()
+	if is_instance_valid(overlay_ref):
+		overlay_ref.queue_free()
+
+
+# Should usually be the global rect of a control.
+func popup_under_rect(popup: Control, rect: Rect2, vp: Viewport) -> void:
+	add_popup_overlay(popup)
+	var screen_transform := vp.get_screen_transform()
+	var screen_h := vp.get_visible_rect().size.y
+	var popup_pos := Vector2(rect.position.x, 0)
+	# Popup below if there's enough space or we're in the bottom half of the screen.
+	if rect.position.y + rect.size.y + popup.size.y < screen_h or\
+	rect.position.y + rect.size.y / 2 <= screen_h / 2.0:
+		popup_pos.y = rect.position.y + rect.size.y
+	else:
+		popup_pos.y = rect.position.y - popup.size.y
+	popup_pos += screen_transform.get_origin() / screen_transform.get_scale()
+	popup.position = popup_pos
+
+# Should usually be the global rect of a control.
+func popup_under_rect_center(popup: Control, rect: Rect2, vp: Viewport) -> void:
+	add_popup_overlay(popup)
+	var screen_transform := vp.get_screen_transform()
+	var screen_h := vp.get_visible_rect().size.y
+	var popup_pos := Vector2(rect.position.x - popup.size.x / 2.0 + rect.size.x / 2, 0)
+	# Popup below if there's enough space or we're in the bottom half of the screen.
+	if rect.position.y + rect.size.y + popup.size.y < screen_h or\
+	rect.position.y + rect.size.y / 2 <= screen_h / 2.0:
+		popup_pos.y = rect.position.y + rect.size.y
+	else:
+		popup_pos.y = rect.position.y - popup.size.y
+	# Align horizontally and other things.
+	popup_pos += screen_transform.get_origin() / screen_transform.get_scale()
+	popup.position = popup_pos
+
+# Should usually be the global position of the mouse.
+func popup_under_pos(popup: Control, pos: Vector2, vp: Viewport) -> void:
+	add_popup_overlay(popup)
+	var screen_transform := vp.get_screen_transform()
+	pos += screen_transform.get_origin() / screen_transform.get_scale()
+	popup.position = pos
 
 
 var last_mouse_click_double := false
@@ -70,8 +143,23 @@ func _input(event: InputEvent) -> void:
 		get_viewport().set_input_as_handled()
 		SVG.open_save_dialog("svg", SVG.native_file_save, SVG.save_svg_to_file)
 
+func _parse_popup_overlay_event(event: InputEvent) -> void:
+	if not popup_overlay_stack.is_empty():
+		if event is InputEventMouseButton and event.button_index in [MOUSE_BUTTON_LEFT,
+		MOUSE_BUTTON_MIDDLE, MOUSE_BUTTON_RIGHT]:
+			remove_popup_overlay()
+	get_viewport().set_input_as_handled()
 
 func _unhandled_input(event: InputEvent) -> void:
+	# Clear popups or overlays.
+	if event.is_action_pressed("ui_cancel"):
+		if not popup_overlay_stack.is_empty():
+			get_viewport().set_input_as_handled()
+			remove_popup_overlay()
+		elif not overlay_stack.is_empty():
+			get_viewport().set_input_as_handled()
+			remove_overlay()
+	
 	if event.is_action_pressed("redo"):
 		get_viewport().set_input_as_handled()
 		SVG.redo()

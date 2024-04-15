@@ -7,7 +7,7 @@ const checkerboard = preload("res://visual/icons/backgrounds/ColorButtonBG.svg")
 
 @onready var color_button: Button = $Button
 @onready var color_edit: LineEdit = $LineEdit
-@onready var color_picker: Popup
+@onready var color_picker: Control
 
 @export var enable_palettes := true
 @export var enable_alpha := false
@@ -48,9 +48,8 @@ func _on_button_pressed() -> void:
 	if enable_alpha:
 		color_picker.enable_alpha = true
 	color_picker.current_value = ColorParser.add_hash_if_hex(value)
-	add_child(color_picker)
+	HandlerGUI.popup_under_rect(color_picker, color_edit.get_global_rect(), get_viewport())
 	color_picker.color_picked.connect(_on_color_picked)
-	Utils.popup_under_rect(color_picker, color_edit.get_global_rect(), get_viewport())
 
 func _draw() -> void:
 	var button_size := color_button.get_size()

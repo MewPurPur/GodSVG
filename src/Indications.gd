@@ -1,7 +1,6 @@
 extends Node
 ## This singleton handles editor information like zoom level and selections.
 
-const ContextPopup = preload("res://src/ui_elements/context_popup.tscn")
 const PathCommandPopup = preload("res://src/ui_elements/path_popup.tscn")
 
 const path_actions_dict := {
@@ -425,7 +424,7 @@ func insert_inner_after_selection(new_command: String) -> void:
 			normal_select(semi_selected_tid, last_selection + 1)
 
 
-func get_selection_context(popup_method: Callable) -> Popup:
+func get_selection_context(popup_method: Callable) -> ContextPopup:
 	var btn_arr: Array[Button] = []
 	
 	if not selected_tids.is_empty():
@@ -480,8 +479,7 @@ func get_selection_context(popup_method: Callable) -> Popup:
 		btn_arr.append(Utils.create_btn(tr("Delete"), delete_selected, false,
 				load("res://visual/icons/Delete.svg")))
 	
-	var tag_context := ContextPopup.instantiate()
-	add_child(tag_context)
+	var tag_context := ContextPopup.new()
 	tag_context.setup(btn_arr, true)
 	return tag_context
 
@@ -495,34 +493,31 @@ func popup_convert_to_context(popup_method: Callable) -> void:
 					!tag.can_replace(tag_name), load("res://visual/icons/tag/%s.svg" % tag_name))
 			btn.add_theme_font_override("font", load("res://visual/fonts/FontMono.ttf"))
 			btn_arr.append(btn)
-		var context_popup := ContextPopup.instantiate()
-		add_child(context_popup)
+		var context_popup := ContextPopup.new()
 		context_popup.setup(btn_arr, true)
 		popup_method.call(context_popup)
 	elif not inner_selections.is_empty() and not semi_selected_tid.is_empty():
 		var cmd_char: String = SVG.root_tag.get_tag(semi_selected_tid).\
 				attributes.d.get_command(inner_selections[0]).command_char
 		var command_picker := PathCommandPopup.instantiate()
-		add_child(command_picker)
+		popup_method.call(command_picker)
 		command_picker.force_relativity(Utils.is_string_lower(cmd_char))
 		command_picker.disable_invalid([cmd_char.to_upper()])
 		command_picker.path_command_picked.connect(convert_selected_command_to)
-		popup_method.call(command_picker)
 
 func popup_insert_command_after_context(popup_method: Callable) -> void:
 	var cmd_char: String = SVG.root_tag.get_tag(semi_selected_tid).attributes.d.\
 			get_command(inner_selections.max()).command_char
 	
 	var command_picker := PathCommandPopup.instantiate()
-	add_child(command_picker)
+	popup_method.call(command_picker)
+	command_picker.path_command_picked.connect(insert_inner_after_selection)
 	match cmd_char.to_upper():
 		"M": command_picker.disable_invalid(["M", "Z", "T"])
 		"Z": command_picker.disable_invalid(["Z"])
 		"L", "H", "V", "A": command_picker.disable_invalid(["S", "T"])
 		"C", "S": command_picker.disable_invalid(["T"])
 		"Q", "T": command_picker.disable_invalid(["S"])
-	command_picker.path_command_picked.connect(insert_inner_after_selection)
-	popup_method.call(command_picker)
 
 func convert_selected_tag_to(tag_name: String) -> void:
 	var tid := selected_tids[0]

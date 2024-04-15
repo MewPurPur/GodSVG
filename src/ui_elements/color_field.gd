@@ -10,7 +10,7 @@ const checkerboard = preload("res://visual/icons/backgrounds/ColorButtonBG.svg")
 
 @onready var color_button: Button = $Button
 @onready var color_edit: BetterLineEdit = $LineEdit
-@onready var color_popup: BetterPopup
+@onready var color_popup: Control
 
 var ci := get_canvas_item()
 
@@ -46,9 +46,8 @@ func _ready() -> void:
 func _on_button_pressed() -> void:
 	color_popup = ColorPopup.instantiate()
 	color_popup.current_value = attribute.get_value()
-	add_child(color_popup)
 	color_popup.color_picked.connect(_on_color_picked)
-	Utils.popup_under_rect(color_popup, color_edit.get_global_rect(), get_viewport())
+	HandlerGUI.popup_under_rect(color_popup, color_edit.get_global_rect(), get_viewport())
 
 func _draw() -> void:
 	var button_size := color_button.get_size()

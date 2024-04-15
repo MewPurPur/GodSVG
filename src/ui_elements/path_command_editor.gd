@@ -10,7 +10,6 @@ extends Control
 
 const MiniNumberField = preload("mini_number_field.tscn")
 const FlagField = preload("flag_field.tscn")
-const PathCommandPopup = preload("res://src/ui_elements/path_popup.tscn")
 
 const code_font = preload("res://visual/fonts/FontMono.ttf")
 const more_icon = preload("res://visual/icons/SmallMore.svg")
@@ -83,8 +82,8 @@ func _gui_input(event: InputEvent) -> void:
 			# Popup the actions.
 			var viewport := get_viewport()
 			var popup_pos := viewport.get_mouse_position()
-			Utils.popup_under_pos(Indications.get_selection_context(
-					Utils.popup_under_pos.bind(popup_pos, viewport)), popup_pos, viewport)
+			HandlerGUI.popup_under_pos(Indications.get_selection_context(
+					HandlerGUI.popup_under_pos.bind(popup_pos, viewport)), popup_pos, viewport)
 
 
 var current_interaction_state := Utils.InteractionType.NONE
@@ -338,8 +337,8 @@ func _on_action_button_pressed() -> void:
 	Indications.normal_select(tid, cmd_idx)
 	var viewport := get_viewport()
 	var action_button_rect := action_button.get_global_rect()
-	Utils.popup_under_rect_center(Indications.get_selection_context(
-			Utils.popup_under_rect_center.bind(action_button_rect, viewport)),
+	HandlerGUI.popup_under_rect_center(Indications.get_selection_context(
+			HandlerGUI.popup_under_rect_center.bind(action_button_rect, viewport)),
 			action_button_rect, viewport)
 
 func get_path_attribute() -> AttributePath:

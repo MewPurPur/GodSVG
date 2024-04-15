@@ -1,6 +1,5 @@
 extends VBoxContainer
 
-const ContextPopup = preload("res://src/ui_elements/context_popup.tscn")
 const TagFrame = preload("tag_frame.tscn")
 
 @onready var tags_container: VBoxContainer = %ScrollContainer/Tags
@@ -43,7 +42,6 @@ func _on_add_button_pressed() -> void:
 		btn.add_theme_font_override("font", load("res://visual/fonts/FontMono.ttf"))
 		btn_array.append(btn)
 	
-	var add_popup := ContextPopup.instantiate()
-	add_child(add_popup)
+	var add_popup := ContextPopup.new()
 	add_popup.setup(btn_array, true, add_button.size.x)
-	Utils.popup_under_rect(add_popup, add_button.get_global_rect(), get_viewport())
+	HandlerGUI.popup_under_rect(add_popup, add_button.get_global_rect(), get_viewport())

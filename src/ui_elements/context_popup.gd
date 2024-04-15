@@ -1,24 +1,30 @@
-## The standard context menu popup.
-extends BetterPopup
+class_name ContextPopup extends PanelContainer
 
-
-@onready var panel: PanelContainer = $PanelContainer
-@onready var main_container: VBoxContainer = $PanelContainer/MainContainer
-
-
-func add_button(btn: Button, align_left: bool) -> void:
+func setup_button(btn: Button, align_left: bool) -> Button:
 	if not btn is CheckBox:
 		btn.theme_type_variation = "ContextButton"
-		btn.pressed.connect(queue_free)
+		btn.pressed.connect(HandlerGUI.remove_popup_overlay)
+		btn.ready.connect(_order_signals.bind(btn))
 	btn.focus_mode = Control.FOCUS_NONE
-	main_container.add_child(btn)
 	if align_left:
 		btn.alignment = HORIZONTAL_ALIGNMENT_LEFT
+	return btn
 
-func setup(buttons: Array[Button], align_left := false, min_width := -1,
+func _order_signals(btn: Button) -> void:
+	for connection in btn.pressed.get_connections():
+		if connection.callable != HandlerGUI.remove_popup_overlay:
+			btn.pressed.disconnect(connection.callable)
+			btn.pressed.connect(connection.callable, CONNECT_DEFERRED)
+	set_block_signals(true)
+
+
+func setup(buttons: Array[Button], align_left := false, min_width := -1.0,
 separator_indices: Array[int] = []) -> void:
-	for control in main_container.get_children():
-		control.free()
+	var main_container := VBoxContainer.new()
+	main_container.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	main_container.add_theme_constant_override("separation", 0)
+	add_child(main_container)
+	# Add the buttons.
 	if buttons.is_empty():
 		return
 	else:
@@ -27,15 +33,17 @@ separator_indices: Array[int] = []) -> void:
 				var separator := HSeparator.new()
 				separator.theme_type_variation = "SmallHSeparator"
 				main_container.add_child(separator)
-			add_button(buttons[idx], align_left)
+			main_container.add_child(setup_button(buttons[idx], align_left))
 		if min_width > 0:
-			min_size.x = ceili(min_width)
-			panel.custom_minimum_size.x = min_width
+			custom_minimum_size.x = ceili(min_width)
+
 
 func setup_with_title(buttons: Array[Button], top_title: String, align_left := false,
-min_width := -1, separator_indices: Array[int] = []) -> void:
-	for control in main_container.get_children():
-		control.free()
+min_width := -1.0, separator_indices: Array[int] = []) -> void:
+	var main_container := VBoxContainer.new()
+	main_container.add_theme_constant_override("separation", 0)
+	add_child(main_container)
+	# Add the buttons.
 	if buttons.is_empty():
 		return
 	else:
@@ -58,17 +66,12 @@ min_width := -1, separator_indices: Array[int] = []) -> void:
 		title_label.end_bulk_theme_override()
 		title_container.add_child(title_label)
 		main_container.add_child(title_container)
-		# Continueu with regular setup logic.
+		# Continue with regular setup logic.
 		for idx in buttons.size():
 			if idx in separator_indices:
 				var separator := HSeparator.new()
 				separator.theme_type_variation = "SmallHSeparator"
 				main_container.add_child(separator)
-			add_button(buttons[idx], align_left)
+			main_container.add_child(setup_button(buttons[idx], align_left))
 		if min_width > 0:
-			min_size.x = ceili(min_width)
-			panel.custom_minimum_size.x = min_width
-
-
-func get_button_count() -> int:
-	return main_container.get_child_count()
+			custom_minimum_size.x = min_width
