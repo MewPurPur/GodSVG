@@ -1,0 +1,81 @@
+name: dev-desktop
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+
+env:
+  GODOT_VERSION: 4.2.2
+  GODOT_RELEASE: rc3
+  PROJECT_NAME: GodSVG
+
+
+jobs:
+  export-windows:
+    name: Export GodSVG for Windows
+    runs-on: ubuntu-latest
+    env:
+      PLATFORM: "Windows Desktop"
+      EXTENSION: "exe"
+      BUILD_NAME: "windows-64bit"
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+      - name: Set up Godot
+        uses: ./.github/actions/set-up-godot
+      - name: Set up WINE and rcedit for Windows export
+        run: |
+          # Download rcedit and intall wine.
+          wget -q https://github.com/electron/rcedit/releases/download/v1.1.1/rcedit-x64.exe
+          sudo apt install wine64
+          # Move rcedit to different place.
+          mkdir -v -p ~/.local/share/rcedit
+          mv rcedit-x64.exe ~/.local/share/rcedit
+          # CD out of project directory so Godot doesn't load it.
+          cd ~
+          # Run Godot to generate editor config file.
+          godot --headless --quit
+          # Add wine and rcedit paths to Godot config.
+          echo 'export/windows/wine = "/usr/bin/wine64"' >> ~/.config/godot/editor_settings-4.tres
+          echo 'export/windows/rcedit = "/home/runner/.local/share/rcedit/rcedit-x64.exe"' >> ~/.config/godot/editor_settings-4.tres
+      - name: Export project
+        uses: ./.github/actions/godot-export
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.BUILD_NAME }}
+          path: ~/build/${{ env.BUILD_NAME }}/
+          if-no-files-found: error
+          retention-days: 14
+
+  export-linux:
+    name: Export GodSVG for Linux
+    runs-on: ubuntu-latest
+    env:
+        PLATFORM: "Linux/X11"
+        EXTENSION: "x86_64"
+        BUILD_NAME: "linux-64bit"
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+      - name: Set up Godot
+        uses: ./.github/actions/set-up-godot
+      - name: Export project
+        uses: ./.github/actions/godot-export
+      - name: Make Linux export runnable
+        run: |
+          # Set run permission.
+          chmod +x ~/build/${BUILD_NAME}/${PROJECT_NAME}.x86_64
+          cd ~/build
+          tar zcvf ${BUILD_NAME}.tar.gz ${BUILD_NAME}
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.BUILD_NAME }}
+          path: ~/build/${{ env.BUILD_NAME }}.tar.gz
+          if-no-files-found: error
+          retention-days: 14
