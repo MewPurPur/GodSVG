@@ -1,8 +1,8 @@
-extends BetterPopup
+extends PanelContainer
 
 const GoodColorPicker = preload("res://src/ui_elements/good_color_picker.tscn")
 
-@onready var margin_container: MarginContainer = $PanelContainer/MarginContainer
+@onready var margin_container: MarginContainer = $MarginContainer
 
 signal color_picked(new_color: String, final: bool)
 var enable_alpha := false

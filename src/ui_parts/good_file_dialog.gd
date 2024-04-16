@@ -56,10 +56,13 @@ var search_text := ""
 class Actions:
 	var activation_action: Callable
 	var selection_action: Callable
+	var right_click_action: Callable
 	
-	func _init(on_activation := Callable(), on_selection := Callable()) -> void:
+	func _init(on_activation := Callable(), on_selection := Callable(),
+	on_right_click := Callable()) -> void:
 		activation_action = on_activation
 		selection_action = on_selection
+		right_click_action = on_right_click
 
 func call_activation_action(actions: Actions) -> void:
 	if actions != null and not actions.activation_action.is_null():
@@ -83,7 +86,7 @@ new_extension: String) -> void:
 func _ready() -> void:
 	# Signal connections.
 	close_button.pressed.connect(queue_free)
-	file_selected.connect(queue_free.unbind(1))
+	file_selected.connect(HandlerGUI.remove_all_overlays.unbind(1))
 	special_button.pressed.connect(select_file)
 	alert_cancel_button.pressed.connect(center_container.hide)
 	file_list.get_v_scroll_bar().value_changed.connect(_setup_file_images.unbind(1))
@@ -209,7 +212,7 @@ func _setup_file_images() -> void:
 			match file.get_extension():
 				"png":
 					var img := Image.load_from_file(current_dir.path_join(file))
-					if img == null:
+					if img == null or img.is_empty():
 						file_list.set_item_icon(item_idx, broken_file_icon)
 					else:
 						file_list.set_item_icon(item_idx, ImageTexture.create_from_image(img))
@@ -219,9 +222,12 @@ func _setup_file_images() -> void:
 							FileAccess.READ).get_as_text()
 					var img := Image.new()
 					img.load_svg_from_string(svg_text)
-					img.load_svg_from_string(svg_text,
-							item_height / maxf(img.get_width(), img.get_height()))
-					file_list.set_item_icon(item_idx, ImageTexture.create_from_image(img))
+					if img == null or img.is_empty():
+						file_list.set_item_icon(item_idx, broken_file_icon)
+					else:
+						img.load_svg_from_string(svg_text,
+								item_height / maxf(img.get_width(), img.get_height()))
+						file_list.set_item_icon(item_idx, ImageTexture.create_from_image(img))
 
 
 func select_file() -> void:

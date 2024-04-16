@@ -1,6 +1,5 @@
 extends PanelContainer
 
-const ContextPopup = preload("res://src/ui_elements/context_popup.tscn")
 const PaletteConfigWidget = preload("res://src/ui_elements/palette_config.tscn")
 const ShortcutConfigWidget = preload("res://src/ui_elements/setting_shortcut.tscn")
 const ShortcutShowcaseWidget = preload("res://src/ui_elements/presented_shortcut.tscn")
@@ -13,6 +12,7 @@ const SettingColor = preload("res://src/ui_elements/setting_color.gd")
 @onready var palette_container: VBoxContainer = %PaletteContainer
 @onready var content_container: MarginContainer = %ContentContainer
 @onready var tabs: VBoxContainer = %Tabs
+@onready var close_button: Button = $VBoxContainer/CloseButton
 
 @onready var wrap_mouse: HBoxContainer = %WrapMouse
 @onready var use_native_file_dialog: HBoxContainer = %UseNativeFileDialog
@@ -29,6 +29,7 @@ func _ready() -> void:
 		tabs.get_child(i).pressed.connect(update_focused_content.bind(i))
 	update_focused_content(0)
 	setup_theming()
+	close_button.pressed.connect(queue_free)
 
 func update_focused_content(idx: int) -> void:
 	focused_content = idx
@@ -112,19 +113,15 @@ func _on_window_mode_pressed() -> void:
 func _on_svg_pressed() -> void:
 	GlobalSettings.save_svg = not GlobalSettings.save_svg
 
-func _on_close_pressed() -> void:
-	HandlerGUI.remove_overlay()
-
 func _on_language_pressed() -> void:
 	var btn_arr: Array[Button] = []
 	for lang in TranslationServer.get_loaded_locales():
 		btn_arr.append(Utils.create_btn(
 				TranslationServer.get_locale_name(lang) + " (" + lang + ")",
 				_on_language_chosen.bind(lang), lang == TranslationServer.get_locale()))
-	var lang_popup := ContextPopup.instantiate()
-	add_child(lang_popup)
+	var lang_popup := ContextPopup.new()
 	lang_popup.setup(btn_arr, true, lang_button.size.x)
-	Utils.popup_under_rect(lang_popup, lang_button.get_global_rect(), get_viewport())
+	HandlerGUI.popup_under_rect(lang_popup, lang_button.get_global_rect(), get_viewport())
 
 func _on_language_chosen(locale: String) -> void:
 	GlobalSettings.language = locale

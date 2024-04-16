@@ -9,7 +9,7 @@
 [sub_resource type="ButtonGroup" id="ButtonGroup_f7wyd"]
 
 [node name="SettingsMenu" type="PanelContainer"]
-custom_minimum_size = Vector2(600, 372)
+custom_minimum_size = Vector2(600, 380)
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -538,7 +538,7 @@ restricted = false
 number_min = 0.5
 number_max = 2.5
 
-[node name="Close" type="Button" parent="VBoxContainer"]
+[node name="CloseButton" type="Button" parent="VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 8
@@ -552,4 +552,3 @@ text = "Close"
 [connection signal="toggled" from="VBoxContainer/HBoxContainer/ContentPicker/ScrollContainer/Tabs/ShortcutsTab" to="." method="_on_shortcuts_tab_toggled"]
 [connection signal="toggled" from="VBoxContainer/HBoxContainer/ContentPicker/ScrollContainer/Tabs/ThemeTab" to="." method="_on_theme_tab_toggled"]
 [connection signal="toggled" from="VBoxContainer/HBoxContainer/ContentPicker/ScrollContainer/Tabs/OtherTab" to="." method="_on_other_tab_toggled"]
-[connection signal="pressed" from="VBoxContainer/Close" to="." method="_on_close_pressed"]

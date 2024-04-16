@@ -1,11 +1,9 @@
 ## A popup for editing a transform matrix.
-extends BetterPopup
+extends PanelContainer
 
 const NumberEditType = preload("res://src/ui_elements/number_edit.gd")
-const ContextPopupType = preload("res://src/ui_elements/context_popup.gd")
 
 const MiniNumberField = preload("res://src/ui_elements/mini_number_field.tscn")
-const ContextPopup = preload("res://src/ui_elements/context_popup.tscn")
 const TransformEditor = preload("res://src/ui_elements/transform_editor.tscn")
 const code_font = preload("res://visual/fonts/FontMono.ttf")
 
@@ -29,9 +27,11 @@ var UR := UndoRedo.new()
 @onready var o2_edit: NumberEditType = %FinalMatrix/O2
 @onready var transform_list: VBoxContainer = %TransformList
 @onready var add_button: Button = %AddButton
+@onready var apply_matrix: Button = %ApplyMatrix
 
 func _ready() -> void:
 	add_button.pressed.connect(popup_new_transform_context.bind(0, add_button))
+	apply_matrix.pressed.connect(_on_apply_matrix_pressed)
 	rebuild()
 
 func rebuild() -> void:
@@ -260,16 +260,12 @@ func popup_transform_actions(idx: int, control: Control) -> void:
 	btn_array.append(Utils.create_btn(tr("Delete"), delete_transform.bind(idx), false,
 			load("res://visual/icons/Delete.svg")))
 	
-	var context_popup := ContextPopup.instantiate()
-	add_child(context_popup)
+	var context_popup := ContextPopup.new()
 	context_popup.setup(btn_array, true)
-	Utils.popup_under_rect_center(context_popup, control.get_global_rect(), get_viewport())
+	HandlerGUI.popup_under_rect_center(context_popup, control.get_global_rect(),
+			get_viewport())
 
 func popup_new_transform_context(idx: int, control: Control) -> void:
-	Utils.popup_under_rect_center(add_new_transform_context(idx),
-			control.get_global_rect(), get_viewport())
-
-func add_new_transform_context(idx: int) -> ContextPopupType:
 	var btn_array: Array[Button] = []
 	for transform in ["matrix", "translate", "rotate", "scale", "skewX", "skewY"]:
 		var btn := Utils.create_btn(transform, insert_transform.bind(idx, transform),
@@ -277,10 +273,10 @@ func add_new_transform_context(idx: int) -> ContextPopupType:
 		btn.add_theme_font_override("font", code_font)
 		btn_array.append(btn)
 	
-	var transform_context := ContextPopup.instantiate()
-	add_child(transform_context)
+	var transform_context := ContextPopup.new()
 	transform_context.setup_with_title(btn_array, tr("New transform"), true)
-	return transform_context
+	HandlerGUI.popup_under_rect_center(transform_context, control.get_global_rect(),
+			get_viewport())
 
 
 func _input(event: InputEvent) -> void:

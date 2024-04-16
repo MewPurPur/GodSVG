@@ -2,7 +2,6 @@ extends PanelContainer
 
 const ColorSwatch = preload("res://src/ui_elements/color_swatch_config.tscn")
 const ConfigurePopup = preload("res://src/ui_elements/configure_color_popup.tscn")
-const ContextPopup = preload("res://src/ui_elements/context_popup.tscn")
 const plus_icon = preload("res://visual/icons/Plus.svg")
 
 signal color_picked(color: String)
@@ -64,12 +63,11 @@ func popup_configure_color(swatch: Button) -> void:
 	var configure_popup := ConfigurePopup.instantiate()
 	configure_popup.color_palette = swatch.color_palette
 	configure_popup.idx = swatch.idx
-	add_child(configure_popup)
+	configure_popup.color_deletion_requested.connect(remove_color.bind(swatch.idx))
+	HandlerGUI.popup_under_rect_center(configure_popup, swatch.get_global_rect(),
+			get_viewport())
 	configure_popup.color_edit.value_changed.connect(swatch.change_color)
 	configure_popup.color_name_edit.text_submitted.connect(swatch.change_color_name)
-	configure_popup.color_deletion_requested.connect(remove_color.bind(swatch.idx))
-	Utils.popup_under_rect_center(configure_popup, swatch.get_global_rect(),
-			get_viewport())
 
 func popup_edit_name() -> void:
 	palette_label.hide()
@@ -178,11 +176,9 @@ func _on_action_button_pressed() -> void:
 	btn_arr.append(Utils.create_btn(tr("Delete"), delete.bind(palette_idx),
 			false, load("res://visual/icons/Delete.svg")))
 	
-	
-	var context_popup := ContextPopup.instantiate()
-	add_child(context_popup)
+	var context_popup := ContextPopup.new()
 	context_popup.setup(btn_arr, true)
-	Utils.popup_under_rect_center(context_popup, action_button.get_global_rect(),
+	HandlerGUI.popup_under_rect_center(context_popup, action_button.get_global_rect(),
 			get_viewport())
 
 

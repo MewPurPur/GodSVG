@@ -1,9 +1,6 @@
 extends VBoxContainer
 
-
 signal optimize_button_enable_updated(is_optimize_enabled: bool)
-
-const ContextPopup = preload("res://src/ui_elements/context_popup.tscn")
 
 @onready var panel_container: PanelContainer = $PanelContainer
 @onready var code_edit: TextEdit = $ScriptEditor/SVGCodeEdit
@@ -185,10 +182,9 @@ func _on_file_button_pressed() -> void:
 			load("res://visual/icons/Reload.svg")))
 	btn_array.append(Utils.create_btn(tr("Clear saving path"), clear_file_path,
 			false, load("res://visual/icons/Clear.svg")))
-	var context_popup := ContextPopup.instantiate()
-	add_child(context_popup)
+	var context_popup := ContextPopup.new()
 	context_popup.setup(btn_array, true, file_button.size.x)
-	Utils.popup_under_rect_center(context_popup, file_button.get_global_rect(),
+	HandlerGUI.popup_under_rect_center(context_popup, file_button.get_global_rect(),
 			get_viewport())
 
 
@@ -198,10 +194,9 @@ func _on_options_button_pressed() -> void:
 			false, load("res://visual/icons/Copy.svg")))
 	btn_array.append(Utils.create_btn(tr("Clear SVG"), clear_svg,
 			SVG.text == SVG.DEFAULT, load("res://visual/icons/Clear.svg")))
-	var context_popup := ContextPopup.instantiate()
-	add_child(context_popup)
-	context_popup.setup(btn_array, true, options_button.size.x)
-	Utils.popup_under_rect_center(context_popup, options_button.get_global_rect(),
+	var context_popup := ContextPopup.new()
+	context_popup.setup(btn_array, true)
+	HandlerGUI.popup_under_rect_center(context_popup, options_button.get_global_rect(),
 			get_viewport())
 
 

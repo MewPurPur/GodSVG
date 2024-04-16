@@ -44,8 +44,7 @@ func sync(new_value: String) -> void:
 func _on_button_pressed() -> void:
 	var transform_popup := TransformPopup.instantiate()
 	transform_popup.attribute_ref = attribute
-	add_child(transform_popup)
-	Utils.popup_under_rect(transform_popup, line_edit.get_global_rect(), get_viewport())
+	HandlerGUI.popup_under_rect(transform_popup, line_edit.get_global_rect(), get_viewport())
 
 
 func _on_button_gui_input(event: InputEvent) -> void:

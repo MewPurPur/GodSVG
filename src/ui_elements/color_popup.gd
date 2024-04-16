@@ -1,5 +1,5 @@
+extends PanelContainer
 ## A popup for picking a color.
-extends BetterPopup
 
 const GoodColorPickerType = preload("res://src/ui_elements/good_color_picker.gd")
 const ColorSwatchType = preload("res://src/ui_elements/color_swatch.gd")
@@ -16,8 +16,7 @@ var palette_mode := true
 @onready var search_field: BetterLineEdit = %SearchBox/SearchField
 @onready var color_picker_content: VBoxContainer = %Content/ColorPicker
 @onready var color_picker: GoodColorPickerType = %Content/ColorPicker
-@onready var switch_mode_button: Button = $PanelContainer/MainContainer/SwitchMode
-@onready var panel_container: PanelContainer = $PanelContainer
+@onready var switch_mode_button: Button = $MainContainer/SwitchMode
 
 var swatches_list: Array[ColorSwatchType] = []  # Updated manually.
 
@@ -85,7 +84,8 @@ func update_color_picker() -> void:
 	color_picker.setup_color(current_value)
 
 func pick_palette_color(color: String) -> void:
-	color_picked.emit(color, true)
+	current_value = color
+	queue_free()
 
 func pick_color(color: String) -> void:
 	current_value = color
@@ -94,16 +94,14 @@ func pick_color(color: String) -> void:
 
 
 # Switching between palette mode and color picker mode.
-func _switch_mode() -> void:
+func _on_switch_mode_pressed() -> void:
 	palette_mode = not palette_mode
 	switch_mode_button.text = tr("Palettes") if palette_mode else tr("Color Picker")
 	color_picker_content.visible = not palette_mode
 	palettes_content.visible = palette_mode
 
-
-func _on_popup_hide() -> void:
+func _on_tree_exited() -> void:
 	color_picked.emit(current_value, true)
-
 
 func _on_search_field_text_changed(new_text: String) -> void:
 	update_palettes(new_text)

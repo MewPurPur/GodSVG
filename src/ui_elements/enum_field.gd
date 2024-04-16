@@ -5,7 +5,6 @@ signal focused
 var attribute: AttributeEnum
 var attribute_name: String
 
-const ContextPopup = preload("res://src/ui_elements/context_popup.tscn")
 const bold_font = preload("res://visual/fonts/FontBold.ttf")
 
 @onready var indicator: LineEdit = $LineEdit
@@ -28,7 +27,6 @@ func _ready() -> void:
 	indicator.tooltip_text = attribute_name
 
 func _on_button_pressed() -> void:
-	var value_picker := ContextPopup.instantiate()
 	var btn_arr: Array[Button] = []
 	for enum_constant in attribute.possible_values:
 		var btn := Utils.create_btn(enum_constant, set_value.bind(enum_constant),
@@ -36,9 +34,9 @@ func _on_button_pressed() -> void:
 		if enum_constant == attribute.default:
 			btn.add_theme_font_override("font", bold_font)
 		btn_arr.append(btn)
-	add_child(value_picker)
+	var value_picker := ContextPopup.new()
 	value_picker.setup(btn_arr, false, size.x)
-	Utils.popup_under_rect(value_picker, indicator.get_global_rect(), get_viewport())
+	HandlerGUI.popup_under_rect(value_picker, indicator.get_global_rect(), get_viewport())
 
 
 func _on_focus_entered() -> void:
