@@ -1,12 +1,12 @@
+extends PanelContainer
 ## A popup for picking a path command.
-extends BetterPopup
 
 signal path_command_picked(new_command: String)
 
 @onready var command_container: VBoxContainer = %CommandContainer
 @onready var relative_toggle: CheckButton = %RelativeToggle
-@onready var vbox: VBoxContainer = $PanelContainer/VBoxContainer
-@onready var top_margin: MarginContainer = $PanelContainer/VBoxContainer/MarginContainer
+@onready var vbox: VBoxContainer = $VBoxContainer
+@onready var top_margin: MarginContainer = $VBoxContainer/MarginContainer
 
 func _ready() -> void:
 	relative_toggle.toggled.connect(_on_relative_toggle_toggled)
@@ -16,7 +16,7 @@ func _ready() -> void:
 
 func emit_picked(cmd_char: String) -> void:
 	path_command_picked.emit(cmd_char)
-	hide()
+	queue_free()
 
 func _on_relative_toggle_toggled(toggled_on: bool) -> void:
 	GlobalSettings.modify_save_data("path_command_relative", toggled_on)

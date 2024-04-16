@@ -1,4 +1,4 @@
-extends BetterPopup
+extends PanelContainer
 
 signal color_deletion_requested
 

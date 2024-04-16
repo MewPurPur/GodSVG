@@ -5,20 +5,16 @@
 [ext_resource type="PackedScene" uid="uid://b1eig44cov474" path="res://src/ui_elements/good_color_picker.tscn" id="2_jv3ea"]
 [ext_resource type="Script" path="res://src/ui_elements/BetterLineEdit.gd" id="2_lkukd"]
 
-[node name="ColorPopup" type="Popup"]
-size = Vector2i(218, 347)
-visible = true
-script = ExtResource("1_t1mgf")
-
-[node name="PanelContainer" type="PanelContainer" parent="."]
+[node name="ColorPopup" type="PanelContainer"]
 custom_minimum_size = Vector2(160, 0)
 offset_right = 218.0
 offset_bottom = 43.0
+script = ExtResource("1_t1mgf")
 
-[node name="MainContainer" type="VBoxContainer" parent="PanelContainer"]
+[node name="MainContainer" type="VBoxContainer" parent="."]
 layout_mode = 2
 
-[node name="Content" type="MarginContainer" parent="PanelContainer/MainContainer"]
+[node name="Content" type="MarginContainer" parent="MainContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(214, 0)
 layout_mode = 2
@@ -27,39 +23,39 @@ theme_override_constants/margin_top = 8
 theme_override_constants/margin_right = 8
 theme_override_constants/margin_bottom = 2
 
-[node name="Palettes" type="ScrollContainer" parent="PanelContainer/MainContainer/Content"]
+[node name="Palettes" type="ScrollContainer" parent="MainContainer/Content"]
 custom_minimum_size = Vector2(0, 303)
 layout_mode = 2
 horizontal_scroll_mode = 0
 
-[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/MainContainer/Content/Palettes"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MainContainer/Content/Palettes"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 12
 
-[node name="SearchBox" type="MarginContainer" parent="PanelContainer/MainContainer/Content/Palettes/VBoxContainer"]
+[node name="SearchBox" type="MarginContainer" parent="MainContainer/Content/Palettes/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/margin_left = 12
 theme_override_constants/margin_right = 12
 
-[node name="SearchField" type="LineEdit" parent="PanelContainer/MainContainer/Content/Palettes/VBoxContainer/SearchBox"]
+[node name="SearchField" type="LineEdit" parent="MainContainer/Content/Palettes/VBoxContainer/SearchBox"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_fonts/font = ExtResource("2_5tod5")
 script = ExtResource("2_lkukd")
 
-[node name="PalettesContent" type="VBoxContainer" parent="PanelContainer/MainContainer/Content/Palettes/VBoxContainer"]
+[node name="PalettesContent" type="VBoxContainer" parent="MainContainer/Content/Palettes/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 7
 
-[node name="ColorPicker" parent="PanelContainer/MainContainer/Content" instance=ExtResource("2_jv3ea")]
+[node name="ColorPicker" parent="MainContainer/Content" instance=ExtResource("2_jv3ea")]
 visible = false
 layout_mode = 2
 
-[node name="SwitchMode" type="Button" parent="PanelContainer/MainContainer"]
+[node name="SwitchMode" type="Button" parent="MainContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 focus_mode = 0
@@ -67,10 +63,7 @@ mouse_default_cursor_shape = 2
 theme_override_font_sizes/font_size = 13
 text = "Palettes"
 
-[node name="Label" type="Label" parent="."]
-offset_right = 40.0
-offset_bottom = 22.0
-
-[connection signal="text_changed" from="PanelContainer/MainContainer/Content/Palettes/VBoxContainer/SearchBox/SearchField" to="." method="_on_search_field_text_changed"]
-[connection signal="color_changed" from="PanelContainer/MainContainer/Content/ColorPicker" to="." method="pick_color"]
-[connection signal="pressed" from="PanelContainer/MainContainer/SwitchMode" to="." method="_switch_mode"]
+[connection signal="tree_exited" from="." to="." method="_on_tree_exited"]
+[connection signal="text_changed" from="MainContainer/Content/Palettes/VBoxContainer/SearchBox/SearchField" to="." method="_on_search_field_text_changed"]
+[connection signal="color_changed" from="MainContainer/Content/ColorPicker" to="." method="pick_color"]
+[connection signal="pressed" from="MainContainer/SwitchMode" to="." method="_on_switch_mode_pressed"]

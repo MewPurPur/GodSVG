@@ -2,15 +2,12 @@
 
 [ext_resource type="Script" path="res://src/ui_elements/color_picker_popup.gd" id="1_wmbff"]
 
-[node name="ColorPickerPopup" type="Popup"]
-visible = true
-script = ExtResource("1_wmbff")
-
-[node name="PanelContainer" type="PanelContainer" parent="."]
+[node name="ColorPickerPopup" type="PanelContainer"]
 offset_right = 4.0
 offset_bottom = 4.0
+script = ExtResource("1_wmbff")
 
-[node name="MarginContainer" type="MarginContainer" parent="PanelContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2
 theme_override_constants/margin_left = 8
 theme_override_constants/margin_top = 8

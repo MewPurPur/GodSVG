@@ -5,7 +5,6 @@ class_name BetterLineEdit extends LineEdit
 signal text_change_canceled
 
 const code_font = preload("res://visual/fonts/FontMono.ttf")
-const ContextPopup = preload("res://src/ui_elements/context_popup.tscn")
 
 var hovered := false
 
@@ -86,9 +85,8 @@ func _gui_input(event: InputEvent) -> void:
 		hovered = true
 		queue_redraw()
 	elif event is InputEventMouseButton:
-		if event.button_index == MOUSE_BUTTON_RIGHT:
+		if event.button_index == MOUSE_BUTTON_RIGHT and event.is_pressed():
 			grab_focus()
-			var context_popup := ContextPopup.instantiate()
 			var btn_arr: Array[Button] = []
 			var separator_arr: Array[int] = []
 			if editable:
@@ -113,10 +111,10 @@ func _gui_input(event: InputEvent) -> void:
 						menu_option.bind(LineEdit.MENU_COPY),
 						text.is_empty(), load("res://visual/icons/Copy.svg")))
 			
-			add_child(context_popup)
+			var vp := get_viewport()
+			var context_popup := ContextPopup.new()
 			context_popup.setup(btn_arr, true, -1, separator_arr)
-			var viewport := get_viewport()
-			Utils.popup_under_pos(context_popup, viewport.get_mouse_position(), viewport)
+			HandlerGUI.popup_under_pos(context_popup, vp.get_mouse_position(), vp)
 			accept_event()
 			# Wow, no way to find out the column of a given click? Okay...
 			# TODO Make it so LineEdit caret automatically moves to the clicked position.
