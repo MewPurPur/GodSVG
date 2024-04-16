@@ -7,38 +7,34 @@
 [ext_resource type="PackedScene" uid="uid://5f8uxavn1or1" path="res://src/ui_elements/color_edit.tscn" id="3_dq5ly"]
 [ext_resource type="Texture2D" uid="uid://cj5x2ti8150ja" path="res://visual/icons/Delete.svg" id="5_5n8tt"]
 
-[node name="ConfigurePopup" type="Popup"]
-size = Vector2i(128, 73)
-visible = true
-script = ExtResource("1_x6cll")
-
-[node name="PanelContainer" type="PanelContainer" parent="."]
+[node name="ConfigurePopup" type="PanelContainer"]
 custom_minimum_size = Vector2(128, 40)
 offset_right = 4.0
 offset_bottom = 4.0
 theme_type_variation = &"SpaciousPanel"
+script = ExtResource("1_x6cll")
 
-[node name="ConfigureContainer" type="VBoxContainer" parent="PanelContainer"]
+[node name="ConfigureContainer" type="VBoxContainer" parent="."]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="TopContainer" type="HBoxContainer" parent="PanelContainer/ConfigureContainer"]
+[node name="TopContainer" type="HBoxContainer" parent="ConfigureContainer"]
 layout_mode = 2
 theme_override_constants/separation = 6
 alignment = 1
 
-[node name="LabelContainer" type="HBoxContainer" parent="PanelContainer/ConfigureContainer/TopContainer"]
+[node name="LabelContainer" type="HBoxContainer" parent="ConfigureContainer/TopContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="ColorLabel" type="Label" parent="PanelContainer/ConfigureContainer/TopContainer/LabelContainer"]
+[node name="ColorLabel" type="Label" parent="ConfigureContainer/TopContainer/LabelContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 13
 horizontal_alignment = 1
 
-[node name="EditButton" type="Button" parent="PanelContainer/ConfigureContainer/TopContainer/LabelContainer"]
+[node name="EditButton" type="Button" parent="ConfigureContainer/TopContainer/LabelContainer"]
 layout_mode = 2
 tooltip_text = "Edit color name"
 focus_mode = 0
@@ -46,7 +42,7 @@ mouse_default_cursor_shape = 2
 theme_type_variation = &"FlatButton"
 icon = ExtResource("2_0dind")
 
-[node name="NameEdit" type="LineEdit" parent="PanelContainer/ConfigureContainer/TopContainer"]
+[node name="NameEdit" type="LineEdit" parent="ConfigureContainer/TopContainer"]
 visible = false
 layout_mode = 2
 size_flags_horizontal = 3
@@ -56,18 +52,18 @@ theme_override_fonts/font = ExtResource("2_j4qfn")
 max_length = 30
 script = ExtResource("1_i4wi2")
 
-[node name="BottomContainer" type="HBoxContainer" parent="PanelContainer/ConfigureContainer"]
+[node name="BottomContainer" type="HBoxContainer" parent="ConfigureContainer"]
 layout_mode = 2
 theme_override_constants/separation = 6
 alignment = 1
 
-[node name="ColorEdit" parent="PanelContainer/ConfigureContainer/BottomContainer" instance=ExtResource("3_dq5ly")]
+[node name="ColorEdit" parent="ConfigureContainer/BottomContainer" instance=ExtResource("3_dq5ly")]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 enable_palettes = false
 
-[node name="DeleteButton" type="Button" parent="PanelContainer/ConfigureContainer/BottomContainer"]
+[node name="DeleteButton" type="Button" parent="ConfigureContainer/BottomContainer"]
 layout_mode = 2
 tooltip_text = "Delete color"
 focus_mode = 0
@@ -75,6 +71,6 @@ mouse_default_cursor_shape = 2
 theme_type_variation = &"IconButton"
 icon = ExtResource("5_5n8tt")
 
-[connection signal="pressed" from="PanelContainer/ConfigureContainer/TopContainer/LabelContainer/EditButton" to="." method="_on_edit_button_pressed"]
-[connection signal="text_submitted" from="PanelContainer/ConfigureContainer/TopContainer/NameEdit" to="." method="_on_name_edit_text_submitted"]
-[connection signal="pressed" from="PanelContainer/ConfigureContainer/BottomContainer/DeleteButton" to="." method="_on_delete_button_pressed"]
+[connection signal="pressed" from="ConfigureContainer/TopContainer/LabelContainer/EditButton" to="." method="_on_edit_button_pressed"]
+[connection signal="text_submitted" from="ConfigureContainer/TopContainer/NameEdit" to="." method="_on_name_edit_text_submitted"]
+[connection signal="pressed" from="ConfigureContainer/BottomContainer/DeleteButton" to="." method="_on_delete_button_pressed"]

@@ -1,7 +1,5 @@
 extends PanelContainer
 
-const ContextPopup = preload("res://src/ui_elements/context_popup.tscn")
-
 @onready var label: Label = %MainContainer/Label
 @onready var reset_button: Button = %MainContainer/HBoxContainer/ResetButton
 @onready var shortcut_container: HBoxContainer = %ShortcutContainer
@@ -65,15 +63,14 @@ func sync() -> void:
 
 
 func popup_options(idx: int) -> void:
-	var context_popup := ContextPopup.instantiate()
 	var btn_arr: Array[Button] = [
 		Utils.create_btn(tr("Edit"), enter_listening_mode.bind(idx), false,
 				load("res://visual/icons/Edit.svg")),
 		Utils.create_btn(tr("Remove"), delete_shortcut.bind(idx), false,
 				load("res://visual/icons/Delete.svg"))]
-	add_child(context_popup)
+	var context_popup := ContextPopup.new()
 	context_popup.setup(btn_arr, true, shortcut_buttons[idx].size.x)
-	Utils.popup_under_rect(context_popup, shortcut_buttons[idx].get_global_rect(),
+	HandlerGUI.popup_under_rect(context_popup, shortcut_buttons[idx].get_global_rect(),
 			get_viewport())
 
 

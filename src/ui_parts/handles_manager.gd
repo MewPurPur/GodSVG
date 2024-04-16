@@ -1,10 +1,6 @@
 ## Contours drawing and [Handle]s are managed here. 
 extends Control
 
-const PathCommandPopup = preload("res://src/ui_elements/path_popup.tscn")
-const ContextPopup = preload("res://src/ui_elements/context_popup.tscn")
-const ContextPopupType = preload("res://src/ui_elements/context_popup.gd")
-
 var normal_handle_textures: Dictionary
 var hovered_handle_textures: Dictionary
 var selected_handle_textures: Dictionary
@@ -722,12 +718,12 @@ func respond_to_input_event(event: InputEvent) -> void:
 			elif hovered_handle == null and event.is_released() and should_deselect_all:
 				dragged_handle = null
 				Indications.clear_all_selections()
-		elif event.button_index == MOUSE_BUTTON_RIGHT:
-			var viewport := get_viewport()
-			var popup_pos := viewport.get_mouse_position()
+		elif event.button_index == MOUSE_BUTTON_RIGHT and event.is_pressed():
+			var vp := get_viewport()
+			var popup_pos := vp.get_mouse_position()
 			if hovered_handle == null:
 				Indications.clear_all_selections()
-				Utils.popup_under_pos(create_tag_context(event_pos), popup_pos, viewport)
+				HandlerGUI.popup_under_pos(create_tag_context(event_pos), popup_pos, vp)
 			else:
 				var hovered_tid := hovered_handle.tid
 				var inner_idx := -1
@@ -738,8 +734,8 @@ func respond_to_input_event(event: InputEvent) -> void:
 				not inner_idx in Indications.inner_selections) and\
 				not hovered_tid in Indications.selected_tids:
 					Indications.normal_select(hovered_tid, inner_idx)
-				Utils.popup_under_pos(Indications.get_selection_context(
-						Utils.popup_under_pos.bind(popup_pos, viewport)), popup_pos, viewport)
+				HandlerGUI.popup_under_pos(Indications.get_selection_context(
+						HandlerGUI.popup_under_pos.bind(popup_pos, vp)), popup_pos, vp)
 
 func find_nearest_handle(event_pos: Vector2) -> Handle:
 	var nearest_handle: Handle = null
@@ -780,15 +776,14 @@ func _on_handle_added() -> void:
 			return
 
 # Creates a popup for adding a shape at a position.
-func create_tag_context(pos: Vector2) -> ContextPopupType:
+func create_tag_context(pos: Vector2) -> ContextPopup:
 	var btn_array: Array[Button] = []
 	for shape in ["path", "circle", "ellipse", "rect", "line"]:
 		var btn := Utils.create_btn(shape, add_tag_at_pos.bind(shape, pos),
 				false, SVGDB.get_tag_icon(shape))
 		btn.add_theme_font_override("font", load("res://visual/fonts/FontMono.ttf"))
 		btn_array.append(btn)
-	var tag_context := ContextPopup.instantiate()
-	add_child(tag_context)
+	var tag_context := ContextPopup.new()
 	tag_context.setup_with_title(btn_array, tr("New tag"), true)
 	return tag_context
 

@@ -3,7 +3,6 @@
 class_name BetterTextEdit extends TextEdit
 
 const code_font = preload("res://visual/fonts/FontMono.ttf")
-const ContextPopup = preload("res://src/ui_elements/context_popup.tscn")
 const caret_color = Color("defd")
 
 var surface := RenderingServer.canvas_item_create()
@@ -109,9 +108,8 @@ func _gui_input(event: InputEvent) -> void:
 		hovered = true
 		queue_redraw()
 	if event is InputEventMouseButton:
-		if event.button_index == MOUSE_BUTTON_RIGHT:
+		if event.button_index == MOUSE_BUTTON_RIGHT and event.is_pressed():
 			grab_focus()
-			var context_popup := ContextPopup.instantiate()
 			var btn_arr: Array[Button] = []
 			var separator_arr: Array[int] = []
 			if editable:
@@ -130,10 +128,10 @@ func _gui_input(event: InputEvent) -> void:
 				btn_arr.append(Utils.create_btn(tr("Copy"), copy, text.is_empty(),
 						load("res://visual/icons/Copy.svg")))
 			
-			add_child(context_popup)
+			var context_popup := ContextPopup.new()
 			context_popup.setup(btn_arr, true, -1, separator_arr)
-			var viewport := get_viewport()
-			Utils.popup_under_pos(context_popup, viewport.get_mouse_position(), viewport)
+			var vp := get_viewport()
+			HandlerGUI.popup_under_pos(context_popup, vp.get_mouse_position(), vp)
 			accept_event()
 			var click_pos := get_line_column_at_pos(event.position)
 			set_caret_line(click_pos.y, false)

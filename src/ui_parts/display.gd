@@ -11,7 +11,6 @@ const donate_menu = preload("res://src/ui_parts/donate_menu.tscn")
 const NumberEditType = preload("res://src/ui_elements/number_edit.gd")
 const BetterToggleButtonType = preload("res://src/ui_elements/BetterToggleButton.gd")
 
-const ContextPopup = preload("res://src/ui_elements/context_popup.tscn")
 const NumberField = preload("res://src/ui_elements/number_field.tscn")
 
 @onready var viewport: SubViewport = $ViewportPanel/ViewportContainer/Viewport
@@ -76,10 +75,9 @@ func _on_visuals_button_pressed() -> void:
 				viewport.display_texture.rasterized),
 	]
 	
-	var visuals_popup := ContextPopup.instantiate()
-	add_child(visuals_popup)
+	var visuals_popup := ContextPopup.new()
 	visuals_popup.setup(btn_arr, true)
-	Utils.popup_under_rect_center(visuals_popup, visuals_button.get_global_rect(),
+	HandlerGUI.popup_under_rect_center(visuals_popup, visuals_button.get_global_rect(),
 			get_viewport())
 
 func _on_more_options_pressed() -> void:
@@ -94,10 +92,9 @@ func _on_more_options_pressed() -> void:
 				load("res://visual/icons/Heart.svg")),
 	]
 	
-	var more_popup := ContextPopup.instantiate()
-	add_child(more_popup)
+	var more_popup := ContextPopup.new()
 	more_popup.setup(buttons_arr, true)
-	Utils.popup_under_rect_center(more_popup, more_button.get_global_rect(),
+	HandlerGUI.popup_under_rect_center(more_popup, more_button.get_global_rect(),
 			get_viewport())
 
 func open_godsvg_repo() -> void:

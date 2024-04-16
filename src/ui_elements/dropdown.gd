@@ -1,8 +1,6 @@
 ## A dropdown with multiple options, not tied to any attribute.
 extends HBoxContainer
 
-const ContextPopup = preload("res://src/ui_elements/context_popup.tscn")
-
 signal value_changed(new_value: String)
 
 @onready var line_edit: BetterLineEdit = $LineEdit
@@ -36,10 +34,9 @@ func _on_button_pressed() -> void:
 	for val in values:
 		btn_arr.append(Utils.create_btn(val, _on_value_chosen.bind(val), val == value))
 	
-	var value_picker := ContextPopup.instantiate()
-	add_child(value_picker)
+	var value_picker := ContextPopup.new()
 	value_picker.setup(btn_arr, false, size.x)
-	Utils.popup_under_rect(value_picker, line_edit.get_global_rect(), get_viewport())
+	HandlerGUI.popup_under_rect(value_picker, line_edit.get_global_rect(), get_viewport())
 
 func _on_value_chosen(new_value: String) -> void:
 	value = new_value
