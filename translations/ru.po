@@ -52,6 +52,13 @@ msgstr ""
 "Если включено, прокрутка будет перемещать окно просмотра. Чтобы "
 "масштабировать Зажмите CTRL когда прокручиваете."
 
+#, fuzzy
+msgid "UI scale"
+msgstr "Масштаб"
+
+msgid "Changes the scale of the visual user interface."
+msgstr ""
+
 msgid "Input"
 msgstr "Устройства ввода"
 

@@ -50,6 +50,13 @@ msgstr ""
 "Wenn diese Option aktiviert ist, wird durch Scrollen die Ansicht geschwenkt. "
 "Halten Sie zum Zoomen beim Scrollen die Strg-Taste gedrückt."
 
+#, fuzzy
+msgid "UI scale"
+msgstr "Skalieren"
+
+msgid "Changes the scale of the visual user interface."
+msgstr ""
+
 msgid "Input"
 msgstr "Eingabe"
 

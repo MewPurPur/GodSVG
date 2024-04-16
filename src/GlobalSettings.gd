@@ -58,6 +58,7 @@ const default_config = {
 		"use_ctrl_for_zoom": true,
 		"use_native_file_dialog": true,
 		"handle_size": 1.0,
+		"ui_scale": 1.0,
 	},
 }
 
@@ -137,7 +138,10 @@ var wrap_mouse := false
 var use_ctrl_for_zoom := true
 var use_native_file_dialog := true
 var handle_size := 1.0
-
+var ui_scale := 1.0:
+	set(new_value):
+		ui_scale = new_value
+		update_ui_scale()
 
 func toggle_bool_setting(section: String, setting: String) -> void:
 	set(setting, !get(setting))
@@ -185,6 +189,7 @@ func _enter_tree() -> void:
 	load_user_data()
 	DisplayServer.window_set_mode(save_data.window_mode)
 	get_window().wrap_controls = true  # Prevents the main window from getting too small.
+	update_ui_scale()
 	ThemeGenerator.generate_theme()
 
 
@@ -235,3 +240,10 @@ func get_validity_color(error_condition: bool, warning_condition := false) -> Co
 	return GlobalSettings.basic_color_error if error_condition else\
 			GlobalSettings.basic_color_warning if warning_condition else\
 			GlobalSettings.basic_color_valid
+
+func update_ui_scale() -> void:
+	await get_tree().process_frame
+	var window := get_window()
+	var new_min_size := window.get_contents_minimum_size() * ui_scale
+	window.min_size = new_min_size
+	window.content_scale_factor = ui_scale
