@@ -74,6 +74,7 @@ func add_popup_overlay(popup: Control) -> void:
 	popup_overlay_stack.append(overlay_ref)
 	get_tree().get_root().add_child(overlay_ref)
 	overlay_ref.add_child(popup)
+	popup.reset_size()
 	popup.tree_exiting.connect(remove_popup_overlay.bind(overlay_ref))
 
 func remove_popup_overlay(overlay_ref: Control = null) -> void:
@@ -92,7 +93,7 @@ func remove_popup_overlay(overlay_ref: Control = null) -> void:
 func popup_under_rect(popup: Control, rect: Rect2, vp: Viewport) -> void:
 	add_popup_overlay(popup)
 	var screen_transform := vp.get_screen_transform()
-	var screen_h := vp.get_visible_rect().size.y
+	var screen_h := vp.get_visible_rect().size.y / screen_transform.get_scale().y
 	var popup_pos := Vector2(rect.position.x, 0)
 	# Popup below if there's enough space or we're in the bottom half of the screen.
 	if rect.position.y + rect.size.y + popup.size.y < screen_h or\
@@ -101,7 +102,7 @@ func popup_under_rect(popup: Control, rect: Rect2, vp: Viewport) -> void:
 	else:
 		popup_pos.y = rect.position.y - popup.size.y
 	popup_pos += screen_transform.get_origin() / screen_transform.get_scale()
-	popup.position = popup_pos
+	popup.position = popup_clamp_pos(popup, popup_pos, vp)
 
 # Should usually be the global rect of a control.
 func popup_under_rect_center(popup: Control, rect: Rect2, vp: Viewport) -> void:
@@ -117,15 +118,31 @@ func popup_under_rect_center(popup: Control, rect: Rect2, vp: Viewport) -> void:
 		popup_pos.y = rect.position.y - popup.size.y
 	# Align horizontally and other things.
 	popup_pos += screen_transform.get_origin() / screen_transform.get_scale()
-	popup.position = popup_pos
+	popup.position = popup_clamp_pos(popup, popup_pos, vp)
 
 # Should usually be the global position of the mouse.
 func popup_under_pos(popup: Control, pos: Vector2, vp: Viewport) -> void:
 	add_popup_overlay(popup)
 	var screen_transform := vp.get_screen_transform()
 	pos += screen_transform.get_origin() / screen_transform.get_scale()
-	popup.position = pos
+	popup.position = popup_clamp_pos(popup, pos, vp)
 
+# Helper.
+func popup_clamp_pos(popup: Control, attempt_pos: Vector2, vp: Viewport) -> Vector2:
+	var screen_transform := vp.get_screen_transform()
+	var vp_pos := screen_transform.get_origin() / screen_transform.get_scale()
+	for axis in 2:
+		attempt_pos[axis] = clampf(attempt_pos[axis], vp_pos[axis],
+				vp_pos[axis] + vp.get_visible_rect().size[axis] - popup.size[axis])
+	return attempt_pos
+
+
+func _parse_popup_overlay_event(event: InputEvent) -> void:
+	if not popup_overlay_stack.is_empty():
+		if event is InputEventMouseButton and event.button_index in [MOUSE_BUTTON_LEFT,
+		MOUSE_BUTTON_MIDDLE, MOUSE_BUTTON_RIGHT]:
+			remove_popup_overlay()
+	get_viewport().set_input_as_handled()
 
 var last_mouse_click_double := false
 
@@ -139,16 +156,12 @@ func _input(event: InputEvent) -> void:
 			event.double_click = true
 			last_mouse_click_double = false
 	
+	if not overlay_stack.is_empty():
+		return
+	
 	if event.is_action_pressed("save"):
 		get_viewport().set_input_as_handled()
 		SVG.open_save_dialog("svg", SVG.native_file_save, SVG.save_svg_to_file)
-
-func _parse_popup_overlay_event(event: InputEvent) -> void:
-	if not popup_overlay_stack.is_empty():
-		if event is InputEventMouseButton and event.button_index in [MOUSE_BUTTON_LEFT,
-		MOUSE_BUTTON_MIDDLE, MOUSE_BUTTON_RIGHT]:
-			remove_popup_overlay()
-	get_viewport().set_input_as_handled()
 
 func _unhandled_input(event: InputEvent) -> void:
 	# Clear popups or overlays.

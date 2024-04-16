@@ -6,6 +6,7 @@ const side_slider_arrow = preload("res://visual/icons/SideSliderArrow.svg")
 const bg_pattern = preload("res://visual/icons/backgrounds/CheckerboardMini.svg")
 
 var alpha_enabled := false
+var show_disable_color := true
 
 var UR := UndoRedo.new()
 
@@ -104,6 +105,8 @@ func _ready() -> void:
 	if alpha_enabled:
 		alpha_slider.visible = alpha_enabled
 		widgets_arr[4].gui_input.connect(parse_slider_input.bind(4))
+	if show_disable_color:
+		none_button.show()
 	# Set up the rest.
 	RenderingServer.canvas_item_set_parent(color_wheel_surface,
 			color_wheel_drawn.get_canvas_item())

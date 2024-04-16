@@ -107,6 +107,7 @@ theme_override_constants/separation = 6
 alignment = 1
 
 [node name="NoneButton" type="Button" parent="ColorContainer"]
+visible = false
 layout_mode = 2
 focus_mode = 0
 mouse_default_cursor_shape = 2
