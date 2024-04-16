@@ -45,7 +45,7 @@ func sync() -> void:
 		new_btn.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 		new_btn.focus_mode = Control.FOCUS_NONE
 		if i < events.size():
-			new_btn.text = events[i].as_text_physical_keycode()
+			new_btn.text = events[i].as_text_keycode()
 			new_btn.pressed.connect(popup_options.bind(i))
 		else:
 			new_btn.begin_bulk_theme_override()
@@ -94,7 +94,7 @@ func enter_listening_mode(idx: int) -> void:
 	activation_event.ctrl_pressed = Input.is_key_pressed(KEY_CTRL)
 	activation_event.shift_pressed = Input.is_key_pressed(KEY_SHIFT)
 	activation_event.alt_pressed = Input.is_key_pressed(KEY_ALT)
-	btn.text = activation_event.as_text_physical_keycode().\
+	btn.text = activation_event.as_text_keycode().\
 			trim_suffix("(Unset)").trim_suffix("+")
 	if btn.text.is_empty():
 		btn.text = tr("Press keys…")
@@ -115,7 +115,7 @@ func _unhandled_key_input(event: InputEvent) -> void:
 			cancel_listening()
 			accept_event()
 		elif event.is_pressed():
-			shortcut_buttons[listening_idx].text = event.as_text_physical_keycode()
+			shortcut_buttons[listening_idx].text = event.as_text_keycode()
 			accept_event()
 		elif event.is_released():
 			if listening_idx < events.size():

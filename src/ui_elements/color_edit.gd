@@ -45,6 +45,7 @@ func sync(new_value: String) -> void:
 func _on_button_pressed() -> void:
 	color_picker = ColorPopup.instantiate() if enable_palettes\
 			else ColorPickerPopup.instantiate()
+	color_picker.show_disable_color = false
 	if enable_alpha:
 		color_picker.enable_alpha = true
 	color_picker.current_value = ColorParser.add_hash_if_hex(value)
