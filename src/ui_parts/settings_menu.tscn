@@ -494,20 +494,17 @@ text = "Input"
 
 [node name="InvertZoom" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Other/OtherSettings/Input" instance=ExtResource("4_2qeh2")]
 layout_mode = 2
-tooltip_text = "Swaps zoom in and zoom out with the mouse wheel."
 section_name = "other"
 setting_name = "invert_zoom"
 
 [node name="WrapMouse" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Other/OtherSettings/Input" instance=ExtResource("4_2qeh2")]
 unique_name_in_owner = true
 layout_mode = 2
-tooltip_text = "Wraps the mouse cursor around when panning the viewport."
 section_name = "other"
 setting_name = "wrap_mouse"
 
 [node name="UseCtrlForZoom" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Other/OtherSettings/Input" instance=ExtResource("4_2qeh2")]
 layout_mode = 2
-tooltip_text = "If turned on, scrolling will pan the view. To zoom, hold CTRL while scrolling."
 section_name = "other"
 setting_name = "use_ctrl_for_zoom"
 
@@ -524,7 +521,6 @@ text = "Miscellaneous"
 [node name="UseNativeFileDialog" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Other/OtherSettings/Misc" instance=ExtResource("4_2qeh2")]
 unique_name_in_owner = true
 layout_mode = 2
-tooltip_text = "Swaps zoom in and zoom out with the mouse wheel."
 section_name = "other"
 setting_name = "use_native_file_dialog"
 
@@ -532,6 +528,16 @@ setting_name = "use_native_file_dialog"
 layout_mode = 2
 section_name = "other"
 setting_name = "handle_size"
+values = Array[String](["0.75", "1.0", "1.25", "1.5", "1.75", "2.0"])
+type = 3
+restricted = false
+number_min = 0.5
+number_max = 2.5
+
+[node name="UIScale" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Other/OtherSettings/Misc" instance=ExtResource("5_dx7vp")]
+layout_mode = 2
+section_name = "other"
+setting_name = "ui_scale"
 values = Array[String](["0.75", "1.0", "1.25", "1.5", "1.75", "2.0"])
 type = 3
 restricted = false
