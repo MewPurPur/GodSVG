@@ -17,4 +17,4 @@ func setup(new_action: String) -> void:
 		new_btn.theme_type_variation = "TranslucentButton"
 		new_btn.focus_mode = Control.FOCUS_NONE
 		new_btn.disabled = true
-		new_btn.text = events[i].as_text_physical_keycode()
+		new_btn.text = events[i].as_text_keycode()
