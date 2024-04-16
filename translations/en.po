@@ -47,6 +47,12 @@ msgid ""
 "scrolling."
 msgstr ""
 
+msgid "UI scale"
+msgstr ""
+
+msgid "Changes the scale of the visual user interface."
+msgstr ""
+
 msgid "Input"
 msgstr ""
 
