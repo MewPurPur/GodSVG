@@ -49,6 +49,13 @@ msgstr ""
 "Когато е включено, влаченето ще премести гледката. За увеличение, натисни "
 "CTRL докато влачиш"
 
+#, fuzzy
+msgid "UI scale"
+msgstr "Мащаб"
+
+msgid "Changes the scale of the visual user interface."
+msgstr ""
+
 msgid "Input"
 msgstr "Входни сигнали"
 

@@ -58,17 +58,25 @@ func setup_setting_labels() -> void:
 	
 	var invert_zoom := %ContentContainer/Other/OtherSettings/Input/InvertZoom
 	invert_zoom.label.text = tr("Invert zoom direction")
-	invert_zoom.label.tooltip_text = tr("Swaps zoom in and zoom out with the mouse wheel.")
+	invert_zoom.tooltip_text = tr("Swaps zoom in and zoom out with the mouse wheel.")
+	
 	wrap_mouse.label.text = tr("Wrap mouse")
-	wrap_mouse.label.tooltip_text = tr("Wraps the mouse cursor around when panning the viewport.")
+	wrap_mouse.tooltip_text = tr("Wraps the mouse cursor around when panning the viewport.")
+	
 	var ctrl_for_zoom := %ContentContainer/Other/OtherSettings/Input/UseCtrlForZoom
 	ctrl_for_zoom.label.text = tr("Use CTRL for zooming")
-	ctrl_for_zoom.label.tooltip_text = tr("If turned on, scrolling will pan the view. To zoom, hold CTRL while scrolling.")
+	ctrl_for_zoom.tooltip_text = tr("If turned on, scrolling will pan the view. To zoom, hold CTRL while scrolling.")
+	
 	use_native_file_dialog.label.text = tr("Use native file dialog")
-	use_native_file_dialog.label.tooltip_text = tr("If turned on, uses your operating system's native file dialog. If turned off, uses GodSVG's built-in file dialog.")
+	use_native_file_dialog.tooltip_text = tr("If turned on, uses your operating system's native file dialog. If turned off, uses GodSVG's built-in file dialog.")
+	
 	var handles_size := %ContentContainer/Other/OtherSettings/Misc/HandleSize
 	handles_size.label.text = tr("Handles size")
-	handles_size.label.tooltip_text = tr("Increases the visual size and grabbing area of handles.")
+	handles_size.tooltip_text = tr("Increases the visual size and grabbing area of handles.")
+	
+	var ui_scale := %ContentContainer/Other/OtherSettings/Misc/UIScale
+	ui_scale.label.text = tr("UI scale")
+	ui_scale.tooltip_text = tr("Changes the scale of the visual user interface.")
 	
 	%GeneralVBox/NumberPrecision.label.text = tr("Number precision digits")
 	%GeneralVBox/AnglePrecision.label.text = tr("Angle precision digits")
