@@ -3,16 +3,8 @@
 [ext_resource type="PackedScene" uid="uid://cr1fdlmbknnko" path="res://src/ui_parts/code_editor.tscn" id="1_0jgh3"]
 [ext_resource type="Texture2D" uid="uid://co75w07yqmcro" path="res://visual/icons/theme/SplitGrabber2.svg" id="1_7y812"]
 [ext_resource type="PackedScene" uid="uid://ccynisiuyn5qn" path="res://src/ui_parts/inspector.tscn" id="1_afxvd"]
+[ext_resource type="Script" path="res://src/ui_parts/main_scene.gd" id="1_c0fkj"]
 [ext_resource type="PackedScene" uid="uid://bvrncl7e6yn5b" path="res://src/ui_parts/display.tscn" id="3_qbqbs"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_082e3"]
-content_margin_left = 6.0
-content_margin_top = 6.0
-content_margin_right = 0.0
-content_margin_bottom = 6.0
-bg_color = Color(0.0235294, 0.0235294, 0.0784314, 1)
-border_color = Color(0.278431, 0.286275, 0.568627, 1)
-expand_margin_right = 6.0
 
 [node name="MainScene" type="HBoxContainer"]
 anchors_preset = 15
@@ -21,6 +13,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 0
+script = ExtResource("1_c0fkj")
 
 [node name="HSplitContainer" type="HSplitContainer" parent="."]
 layout_mode = 2
@@ -33,7 +26,6 @@ split_offset = -122
 custom_minimum_size = Vector2(360, 0)
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_styles/panel = SubResource("StyleBoxFlat_082e3")
 
 [node name="MainContainer" type="VSplitContainer" parent="HSplitContainer/PanelContainer"]
 layout_mode = 2

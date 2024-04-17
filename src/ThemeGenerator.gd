@@ -45,7 +45,7 @@ const flat_button_color_pressed = Color("ddeeff33")
 const flat_button_color_disabled = Color("05060744")
 
 const dark_panel_color = Color("11111a")
-const overlay_panel_inner_color = Color("030312")
+const overlay_panel_inner_color = Color("060614")
 const overlay_panel_border_color = Color("344166")
 
 const scrollbar_normal_color = Color("344166")
