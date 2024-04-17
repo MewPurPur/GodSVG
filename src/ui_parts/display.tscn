@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://bvrncl7e6yn5b"]
+[gd_scene load_steps=17 format=3 uid="uid://bvrncl7e6yn5b"]
 
 [ext_resource type="Script" path="res://src/ui_parts/display.gd" id="1_oib5g"]
 [ext_resource type="Texture2D" uid="uid://ccbta5q43jobk" path="res://visual/icons/More.svg" id="2_3wliq"]
@@ -15,26 +15,10 @@
 [ext_resource type="Script" path="res://src/ui_parts/handles_manager.gd" id="13_lwhwy"]
 [ext_resource type="Script" path="res://src/ui_parts/camera.gd" id="15_hevpa"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nxvgo"]
-content_margin_left = 7.0
-content_margin_top = 6.0
-content_margin_right = 7.0
-content_margin_bottom = 6.0
-bg_color = Color(0.0235294, 0.0235294, 0.0784314, 1)
-
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eujxa"]
 bg_color = Color(0.866667, 0.933333, 1, 0.133333)
 corner_radius_top_left = 5
 corner_radius_bottom_left = 5
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jk4ec"]
-content_margin_left = 2.0
-content_margin_top = 2.0
-draw_center = false
-border_width_left = 2
-border_width_top = 2
-border_color = Color(0.329412, 0.403922, 0.54902, 1)
-corner_detail = 1
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_kqplg"]
 shader = ExtResource("10_x7ybk")
@@ -52,7 +36,6 @@ script = ExtResource("1_oib5g")
 [node name="PanelContainer" type="PanelContainer" parent="."]
 layout_mode = 2
 size_flags_vertical = 0
-theme_override_styles/panel = SubResource("StyleBoxFlat_nxvgo")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer"]
 layout_mode = 2
@@ -125,7 +108,6 @@ layout_mode = 2
 [node name="ViewportPanel" type="PanelContainer" parent="."]
 layout_mode = 2
 size_flags_vertical = 3
-theme_override_styles/panel = SubResource("StyleBoxFlat_jk4ec")
 
 [node name="ViewportContainer" type="SubViewportContainer" parent="ViewportPanel"]
 process_mode = 3
@@ -138,7 +120,7 @@ stretch = true
 disable_3d = true
 handle_input_locally = false
 gui_snap_controls_to_pixels = false
-size = Vector2i(1022, 595)
+size = Vector2i(1024, 609)
 size_2d_override_stretch = true
 render_target_update_mode = 4
 script = ExtResource("9_4xrk7")
