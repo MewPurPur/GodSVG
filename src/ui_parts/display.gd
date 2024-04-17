@@ -20,11 +20,14 @@ const NumberField = preload("res://src/ui_elements/number_field.tscn")
 @onready var more_button: Button = %LeftMenu/MoreOptions
 @onready var snapper: NumberEditType = %LeftMenu/Snapping/SnapNumberEdit
 @onready var snap_button: BetterToggleButtonType = %LeftMenu/Snapping/SnapButton
+@onready var panel_container: PanelContainer = $PanelContainer
+@onready var viewport_panel: PanelContainer = $ViewportPanel
 
 
 func _ready() -> void:
 	update_snap_config()
-	view_settings_updated.emit(grid_visuals.visible, controls.visible, viewport.display_texture.rasterized)
+	view_settings_updated.emit(grid_visuals.visible, controls.visible,
+			viewport.display_texture.rasterized)
 
 
 func _unhandled_input(input_event: InputEvent) -> void:
@@ -49,8 +52,21 @@ func _unhandled_input(input_event: InputEvent) -> void:
 func _notification(what: int) -> void:
 	if what == Utils.CustomNotification.NUMBER_PRECISION_CHANGED:
 		update_snap_config()
-	if what == NOTIFICATION_WM_ABOUT:
+	elif what == NOTIFICATION_WM_ABOUT:
 		open_about.call_deferred()
+	elif what in [NOTIFICATION_READY, Utils.CustomNotification.THEME_CHANGED]:
+		var stylebox := StyleBoxFlat.new()
+		stylebox.bg_color = ThemeGenerator.overlay_panel_inner_color
+		stylebox.set_content_margin_all(6)
+		panel_container.add_theme_stylebox_override("panel", stylebox)
+		var frame := StyleBoxFlat.new()
+		frame.draw_center = false
+		frame.border_width_left = 2
+		frame.border_width_top = 2
+		frame.border_color = ThemeGenerator.connected_button_border_color_pressed
+		frame.content_margin_left = 2
+		frame.content_margin_top = 2
+		viewport_panel.add_theme_stylebox_override("panel", frame)
 
 
 func update_snap_config() -> void:
