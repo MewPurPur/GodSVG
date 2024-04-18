@@ -70,13 +70,17 @@ func setup_setting_labels() -> void:
 	use_native_file_dialog.label.text = tr("Use native file dialog")
 	use_native_file_dialog.tooltip_text = tr("If turned on, uses your operating system's native file dialog. If turned off, uses GodSVG's built-in file dialog.")
 	
-	var handles_size := %ContentContainer/Other/OtherSettings/Misc/HandleSize
+	var handles_size := %Misc/HandleSize
 	handles_size.label.text = tr("Handles size")
 	handles_size.tooltip_text = tr("Increases the visual size and grabbing area of handles.")
 	
-	var ui_scale := %ContentContainer/Other/OtherSettings/Misc/UIScale
+	var ui_scale := %Misc/UIScale
 	ui_scale.label.text = tr("UI scale")
 	ui_scale.tooltip_text = tr("Changes the scale of the visual user interface.")
+	
+	var auto_ui_scale := %Misc/AutoUIScale
+	auto_ui_scale.label.text = tr("Auto UI scale")
+	auto_ui_scale.tooltip_text = tr("Scale the user interface based on the window size.")
 	
 	%GeneralVBox/NumberPrecision.label.text = tr("Number precision digits")
 	%GeneralVBox/AnglePrecision.label.text = tr("Angle precision digits")

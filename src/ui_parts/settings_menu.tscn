@@ -509,6 +509,7 @@ section_name = "other"
 setting_name = "use_ctrl_for_zoom"
 
 [node name="Misc" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Other/OtherSettings"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -543,6 +544,11 @@ type = 3
 restricted = false
 number_min = 0.5
 number_max = 2.5
+
+[node name="AutoUIScale" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Other/OtherSettings/Misc" instance=ExtResource("4_2qeh2")]
+layout_mode = 2
+section_name = "other"
+setting_name = "auto_ui_scale"
 
 [node name="CloseButton" type="Button" parent="VBoxContainer"]
 layout_mode = 2
