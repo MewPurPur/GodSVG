@@ -59,6 +59,7 @@ const default_config = {
 		"use_native_file_dialog": true,
 		"handle_size": 1.0,
 		"ui_scale": 1.0,
+		"auto_ui_scale": true,
 	},
 }
 
@@ -142,6 +143,10 @@ var ui_scale := 1.0:
 	set(new_value):
 		ui_scale = new_value
 		update_ui_scale()
+var auto_ui_scale := true:
+	set(new_value):
+		auto_ui_scale = new_value
+		update_ui_scale()
 
 func toggle_bool_setting(section: String, setting: String) -> void:
 	set(setting, !get(setting))
@@ -190,6 +195,7 @@ func _enter_tree() -> void:
 	DisplayServer.window_set_mode(save_data.window_mode)
 	get_window().wrap_controls = true  # Prevents the main window from getting too small.
 	update_ui_scale()
+	get_window().size_changed.connect(update_ui_scale)
 	ThemeGenerator.generate_theme()
 
 
@@ -241,9 +247,28 @@ func get_validity_color(error_condition: bool, warning_condition := false) -> Co
 			GlobalSettings.basic_color_warning if warning_condition else\
 			GlobalSettings.basic_color_valid
 
+
 func update_ui_scale() -> void:
 	await get_tree().process_frame
 	var window := get_window()
-	var new_min_size := window.get_contents_minimum_size() * ui_scale
-	window.min_size = new_min_size
-	window.content_scale_factor = ui_scale
+	var min_size: Vector2 = window.get_contents_minimum_size()
+	var actual_ui_scale: float = ui_scale
+	if auto_ui_scale:
+		actual_ui_scale = _calculate_auto_scale(min_size, window.size)
+	min_size *= actual_ui_scale
+	window.min_size = min_size
+	window.content_scale_factor = actual_ui_scale
+
+
+func _calculate_auto_scale(min_size: Vector2, size: Vector2i) -> float:
+	var div: Vector2 = (Vector2(size - Vector2i(10, 10)) / min_size)
+	var desired: float = div[div.min_axis_index()] * 0.5 * ui_scale
+	if desired > 4.0: return 4.0
+	if desired > 3.0: return 3.0
+	if desired > 2.5: return 2.5
+	if desired > 2.0: return 2.0
+	if desired > 1.75: return 1.75
+	if desired > 1.5: return 1.5
+	if desired > 1.25: return 1.25
+	if desired > 1.0: return 1.0
+	return 0.75
