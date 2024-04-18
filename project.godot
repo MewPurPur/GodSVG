@@ -160,15 +160,19 @@ snap_toggle={
 "deadzone": 0.5,
 "events": []
 }
-about_repo={
-"deadzone": 0.5,
-"events": []
-}
 about_info={
 "deadzone": 0.5,
 "events": []
 }
 about_donate={
+"deadzone": 0.5,
+"events": []
+}
+about_repo={
+"deadzone": 0.5,
+"events": []
+}
+about_website={
 "deadzone": 0.5,
 "events": []
 }
