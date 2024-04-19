@@ -191,6 +191,7 @@ func _enter_tree() -> void:
 		default_input_events[action] = InputMap.action_get_events(action)
 	load_settings()
 	load_user_data()
+	get_window().dpi_changed.connect(update_ui_scale)
 	update_ui_scale()
 	ThemeGenerator.generate_theme()
 
@@ -290,14 +291,20 @@ func _calculate_auto_scale() -> float:
 			return 0.75
 		elif dpi <= 96:
 			return 1.0
-		elif dpi <=160:
+		elif dpi <= 120:
 			return 1.25
-		elif dpi <= 240:
+		elif dpi <=160:
 			return 1.5
-		elif dpi <= 480:
-			return 1.75
-		elif dpi > 480:
+		elif dpi <= 200:
 			return 2.0
+		elif dpi <= 240:
+			return 2.5
+		elif dpi <= 320:
+			return 3.0
+		elif dpi <= 480:
+			return 4.0
+		else:  # dpi > 480
+			return 5.0
 	elif smallest_dimension >= 1700:
 		# Likely a hiDPI display, but we aren't certain due to the returned DPI.
 		# Use an intermediate scale to handle this situation.
