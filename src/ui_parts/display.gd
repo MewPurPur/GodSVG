@@ -7,6 +7,7 @@ signal snap_settings_updated(snap_enabled: bool, snap_amount: float)
 const settings_menu = preload("settings_menu.tscn")
 const about_menu = preload("about_menu.tscn")
 const donate_menu = preload("res://src/ui_parts/donate_menu.tscn")
+const update_menu = preload("res://src/ui_parts/update_menu.tscn")
 
 const NumberEditType = preload("res://src/ui_elements/number_edit.gd")
 const BetterToggleButtonType = preload("res://src/ui_elements/BetterToggleButton.gd")
@@ -109,10 +110,12 @@ func _on_more_options_pressed() -> void:
 		Utils.create_btn(tr("GodSVG Repository"), open_godsvg_repo, false,
 				load("res://visual/icons/Link.svg")),
 		Utils.create_btn(tr("GodSVG Website"), open_godsvg_website, false,
-				load("res://visual/icons/Link.svg"))
+				load("res://visual/icons/Link.svg")),
+		Utils.create_btn(tr("Check for Updates"), open_update_checker, false,
+				load("res://visual/icons/Reload.svg"))
 	]
-	var separator_indices: Array[int] = [2]
-	
+	var separator_indices: Array[int] = [2,4]
+
 	var more_popup := ContextPopup.new()
 	more_popup.setup(buttons_arr, true, -1, separator_indices)
 	HandlerGUI.popup_under_rect_center(more_popup, more_button.get_global_rect(),
@@ -131,6 +134,10 @@ func open_about() -> void:
 func open_sponsor() -> void:
 	var donate_menu_instance := donate_menu.instantiate()
 	HandlerGUI.add_overlay(donate_menu_instance)
+
+func open_update_checker() -> void:
+	var update_menu_instance := update_menu.instantiate()
+	HandlerGUI.add_overlay(update_menu_instance)
 
 
 func toggle_grid_visuals() -> void:
