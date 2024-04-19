@@ -246,8 +246,9 @@ func get_validity_color(error_condition: bool, warning_condition := false) -> Co
 
 
 func update_ui_scale() -> void:
-	await get_tree().process_frame
 	var window := get_window()
+	if not window.is_node_ready():
+		await window.ready
 	
 	var usable_screen_size := Vector2(
 		DisplayServer.screen_get_usable_rect(DisplayServer.window_get_current_screen()).size
