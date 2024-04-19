@@ -33,6 +33,11 @@ const default_config = {
 		"transform_minimize_spacing": true,
 		"transform_remove_unnecessary_params": true,
 	},
+	"display": {
+		"handle_size": 1.0,
+		"display_scale": 1.0,
+		"auto_display_scale": true,
+	},
 	"theming": {
 		"highlighting_symbol_color": Color("abc9ff"),
 		"highlighting_tag_color": Color("ff8ccc"),
@@ -57,9 +62,6 @@ const default_config = {
 		"wrap_mouse": false,
 		"use_ctrl_for_zoom": true,
 		"use_native_file_dialog": true,
-		"handle_size": 1.0,
-		"ui_scale": 1.0,
-		"auto_ui_scale": true,
 	},
 }
 
@@ -114,6 +116,11 @@ var transform_compress_numbers := true
 var transform_minimize_spacing := true
 var transform_remove_unnecessary_params := true
 
+# UI scale
+var handle_size := 1.0
+var display_scale := 1.0
+var auto_display_scale := true
+
 # Theming
 var highlighting_symbol_color := Color("abc9ff")
 var highlighting_tag_color := Color("ff8ccc")
@@ -138,15 +145,6 @@ var invert_zoom := false
 var wrap_mouse := false
 var use_ctrl_for_zoom := true
 var use_native_file_dialog := true
-var handle_size := 1.0
-var ui_scale := 1.0:
-	set(new_value):
-		ui_scale = new_value
-		update_ui_scale()
-var auto_ui_scale := true:
-	set(new_value):
-		auto_ui_scale = new_value
-		update_ui_scale()
 
 func toggle_bool_setting(section: String, setting: String) -> void:
 	set(setting, !get(setting))
@@ -184,7 +182,6 @@ func load_user_data() -> void:
 		save_data = ResourceLoader.load(save_path)
 
 func _exit_tree() -> void:
-	save_data.window_mode = DisplayServer.window_get_mode()
 	ResourceSaver.save(save_data, save_path)
 
 func _enter_tree() -> void:
@@ -192,11 +189,9 @@ func _enter_tree() -> void:
 		default_input_events[action] = InputMap.action_get_events(action)
 	load_settings()
 	load_user_data()
-	DisplayServer.window_set_mode(save_data.window_mode)
-	get_window().wrap_controls = true  # Prevents the main window from getting too small.
-	update_ui_scale()
-	get_window().size_changed.connect(update_ui_scale)
+	# Things that depend on user settings should be set up now.
 	ThemeGenerator.generate_theme()
+	setup_display_scale()
 
 
 func load_settings() -> void:
@@ -241,34 +236,24 @@ func reset_palettes() -> void:
 			["White", "Black", "Red", "Green", "Blue", "Yellow", "Magenta", "Cyan"])]
 	save_palettes()
 
-# Just a helper.
+# Helpers.
 func get_validity_color(error_condition: bool, warning_condition := false) -> Color:
 	return GlobalSettings.basic_color_error if error_condition else\
 			GlobalSettings.basic_color_warning if warning_condition else\
 			GlobalSettings.basic_color_valid
 
-
-func update_ui_scale() -> void:
-	await get_tree().process_frame
+func setup_display_scale() -> void:
 	var window := get_window()
-	var min_size: Vector2 = window.get_contents_minimum_size()
-	var actual_ui_scale: float = ui_scale
-	if auto_ui_scale:
-		actual_ui_scale = _calculate_auto_scale(min_size, window.size)
-	min_size *= actual_ui_scale
-	window.min_size = min_size
-	window.content_scale_factor = actual_ui_scale
-
-
-func _calculate_auto_scale(min_size: Vector2, size: Vector2i) -> float:
-	var div: Vector2 = (Vector2(size - Vector2i(10, 10)) / min_size)
-	var desired: float = div[div.min_axis_index()] * 0.5 * ui_scale
-	if desired > 4.0: return 4.0
-	if desired > 3.0: return 3.0
-	if desired > 2.5: return 2.5
-	if desired > 2.0: return 2.0
-	if desired > 1.75: return 1.75
-	if desired > 1.5: return 1.5
-	if desired > 1.25: return 1.25
-	if desired > 1.0: return 1.0
-	return 0.75
+	
+	if GlobalSettings.auto_display_scale:
+		window.content_scale_mode = Window.CONTENT_SCALE_MODE_CANVAS_ITEMS
+		window.content_scale_aspect = Window.CONTENT_SCALE_ASPECT_EXPAND
+		# For this mode, the display scale gives just too big results.
+		window.content_scale_size = (1.5 / GlobalSettings.display_scale) * Vector2i(
+				ProjectSettings.get_setting("display/window/size/viewport_width"),
+				ProjectSettings.get_setting("display/window/size/viewport_height"))
+	else:
+		window.content_scale_mode = Window.CONTENT_SCALE_MODE_DISABLED
+		window.content_scale_aspect = Window.CONTENT_SCALE_ASPECT_KEEP
+		window.content_scale_factor = GlobalSettings.display_scale
+	window.min_size = window.get_contents_minimum_size() * GlobalSettings.display_scale

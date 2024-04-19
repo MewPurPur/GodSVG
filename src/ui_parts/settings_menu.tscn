@@ -65,6 +65,16 @@ button_group = SubResource("ButtonGroup_f7wyd")
 alignment = 0
 text_overrun_behavior = 3
 
+[node name="DisplayTab" type="Button" parent="VBoxContainer/HBoxContainer/ContentPicker/ScrollContainer/Tabs"]
+layout_mode = 2
+focus_mode = 0
+theme_type_variation = &"SideTab"
+toggle_mode = true
+action_mode = 0
+button_group = SubResource("ButtonGroup_f7wyd")
+alignment = 0
+text_overrun_behavior = 3
+
 [node name="PalettesTab" type="Button" parent="VBoxContainer/HBoxContainer/ContentPicker/ScrollContainer/Tabs"]
 layout_mode = 2
 focus_mode = 0
@@ -300,6 +310,42 @@ layout_mode = 2
 section_name = "autoformat"
 setting_name = "transform_remove_unnecessary_params"
 
+[node name="Display" type="ScrollContainer" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer"]
+visible = false
+custom_minimum_size = Vector2(0, 120)
+layout_mode = 2
+horizontal_scroll_mode = 0
+
+[node name="DisplayVBox" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Display"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 3
+
+[node name="HandleSize" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Display/DisplayVBox" instance=ExtResource("5_dx7vp")]
+layout_mode = 2
+section_name = "display"
+setting_name = "handle_size"
+values = Array[String](["0.75", "1.0", "1.25", "1.5", "1.75", "2.0"])
+type = 3
+restricted = false
+number_min = 0.5
+number_max = 2.5
+
+[node name="DisplayScale" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Display/DisplayVBox" instance=ExtResource("5_dx7vp")]
+layout_mode = 2
+section_name = "display"
+setting_name = "display_scale"
+values = Array[String](["0.75", "1.0", "1.25", "1.5", "1.75", "2.0"])
+type = 3
+restricted = false
+number_min = 0.5
+number_max = 2.5
+
+[node name="AutoDisplayScale" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Display/DisplayVBox" instance=ExtResource("4_2qeh2")]
+layout_mode = 2
+section_name = "display"
+setting_name = "auto_display_scale"
+
 [node name="Palettes" type="ScrollContainer" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer"]
 visible = false
 custom_minimum_size = Vector2(0, 120)
@@ -525,31 +571,6 @@ layout_mode = 2
 section_name = "other"
 setting_name = "use_native_file_dialog"
 
-[node name="HandleSize" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Other/OtherSettings/Misc" instance=ExtResource("5_dx7vp")]
-layout_mode = 2
-section_name = "other"
-setting_name = "handle_size"
-values = Array[String](["0.75", "1.0", "1.25", "1.5", "1.75", "2.0"])
-type = 3
-restricted = false
-number_min = 0.5
-number_max = 2.5
-
-[node name="UIScale" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Other/OtherSettings/Misc" instance=ExtResource("5_dx7vp")]
-layout_mode = 2
-section_name = "other"
-setting_name = "ui_scale"
-values = Array[String](["0.75", "1.0", "1.25", "1.5", "1.75", "2.0"])
-type = 3
-restricted = false
-number_min = 0.5
-number_max = 2.5
-
-[node name="AutoUIScale" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Other/OtherSettings/Misc" instance=ExtResource("4_2qeh2")]
-layout_mode = 2
-section_name = "other"
-setting_name = "auto_ui_scale"
-
 [node name="CloseButton" type="Button" parent="VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
@@ -560,6 +581,7 @@ text = "Close"
 
 [connection signal="pressed" from="VBoxContainer/Language" to="." method="_on_language_pressed"]
 [connection signal="toggled" from="VBoxContainer/HBoxContainer/ContentPicker/ScrollContainer/Tabs/AutoformattingTab" to="." method="_on_autoformatting_tab_toggled"]
+[connection signal="toggled" from="VBoxContainer/HBoxContainer/ContentPicker/ScrollContainer/Tabs/DisplayTab" to="." method="_on_display_tab_toggled"]
 [connection signal="toggled" from="VBoxContainer/HBoxContainer/ContentPicker/ScrollContainer/Tabs/PalettesTab" to="." method="_on_palettes_tab_toggled"]
 [connection signal="toggled" from="VBoxContainer/HBoxContainer/ContentPicker/ScrollContainer/Tabs/ShortcutsTab" to="." method="_on_shortcuts_tab_toggled"]
 [connection signal="toggled" from="VBoxContainer/HBoxContainer/ContentPicker/ScrollContainer/Tabs/ThemeTab" to="." method="_on_theme_tab_toggled"]

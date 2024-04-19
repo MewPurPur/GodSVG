@@ -11,15 +11,19 @@ var popup_overlay_stack: Array[Control]
 
 func _enter_tree() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
+	get_window().wrap_controls = true  # Prevents the main window from getting too small.
+	get_window().files_dropped.connect(_on_files_dropped)
 
 func _ready() -> void:
-	get_window().files_dropped.connect(_on_files_dropped)
 	if OS.has_feature("web"):
 		_define_web_js()
 
 func _notification(what: int) -> void:
-	if what == NOTIFICATION_WM_WINDOW_FOCUS_IN:
-		_in_focus.emit()
+	match what:
+		NOTIFICATION_WM_WINDOW_FOCUS_IN:
+			_in_focus.emit()
+		Utils.CustomNotification.DISPLAY_SCALE_CHANGED:
+			GlobalSettings.setup_display_scale()
 
 # Drag-and-drop of files.
 func _on_files_dropped(files: PackedStringArray) -> void:

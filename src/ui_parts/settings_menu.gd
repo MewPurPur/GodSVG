@@ -51,6 +51,7 @@ func setup_theming() -> void:
 # Sets the text for all the labels.
 func setup_setting_labels() -> void:
 	tabs.get_node(^"AutoformattingTab").text = tr("Autoformatting")
+	tabs.get_node(^"DisplayTab").text = tr("Display")
 	tabs.get_node(^"PalettesTab").text = tr("Palettes")
 	tabs.get_node(^"ShortcutsTab").text = tr("Shortcuts")
 	tabs.get_node(^"ThemeTab").text = tr("Theme")
@@ -70,17 +71,17 @@ func setup_setting_labels() -> void:
 	use_native_file_dialog.label.text = tr("Use native file dialog")
 	use_native_file_dialog.tooltip_text = tr("If turned on, uses your operating system's native file dialog. If turned off, uses GodSVG's built-in file dialog.")
 	
-	var handles_size := %Misc/HandleSize
+	var handles_size := %ContentContainer/Display/DisplayVBox/HandleSize
 	handles_size.label.text = tr("Handles size")
 	handles_size.tooltip_text = tr("Increases the visual size and grabbing area of handles.")
 	
-	var ui_scale := %Misc/UIScale
-	ui_scale.label.text = tr("UI scale")
-	ui_scale.tooltip_text = tr("Changes the scale of the visual user interface.")
+	var display_scale := %ContentContainer/Display/DisplayVBox/DisplayScale
+	display_scale.label.text = tr("Display scale")
+	display_scale.tooltip_text = tr("Changes the scale of the visual user interface.")
 	
-	var auto_ui_scale := %Misc/AutoUIScale
-	auto_ui_scale.label.text = tr("Auto UI scale")
-	auto_ui_scale.tooltip_text = tr("Scale the user interface based on the window size.")
+	var auto_display_scale := %ContentContainer/Display/DisplayVBox/AutoDisplayScale
+	auto_display_scale.label.text = tr("Auto display scale")
+	auto_display_scale.tooltip_text = tr("Scales the user interface based on the window size.")
 	
 	%GeneralVBox/NumberPrecision.label.text = tr("Number precision digits")
 	%GeneralVBox/AnglePrecision.label.text = tr("Angle precision digits")
@@ -119,11 +120,6 @@ func setup_setting_labels() -> void:
 	%BasicColorsVBox/ErrorColor.label.text = tr("Error color")
 	%BasicColorsVBox/WarningColor.label.text = tr("Warning color")
 
-func _on_window_mode_pressed() -> void:
-	GlobalSettings.save_window_mode = not GlobalSettings.save_window_mode
-
-func _on_svg_pressed() -> void:
-	GlobalSettings.save_svg = not GlobalSettings.save_svg
 
 func _on_language_pressed() -> void:
 	var btn_arr: Array[Button] = []
@@ -206,8 +202,7 @@ func _on_number_precision_changed() -> void:
 		GlobalSettings.save_data.snap = quanta
 		if not snapping_on:
 			GlobalSettings.save_data.snap *= -1
-	get_tree().get_root().propagate_notification(
-			Utils.CustomNotification.NUMBER_PRECISION_CHANGED)
+	custom_notify(Utils.CustomNotification.NUMBER_PRECISION_CHANGED)
 
 func disable_autoformat_checkboxes() -> void:
 	var is_autoformatting_numbers := GlobalSettings.number_enable_autoformatting
@@ -218,6 +213,15 @@ func disable_autoformat_checkboxes() -> void:
 	%ColorVBox/ConvertNamedToHex.set_checkbox_enabled(is_autoformatting_colors)
 	%ColorVBox/UseShorthandHex.set_checkbox_enabled(is_autoformatting_colors)
 	%ColorVBox/UseNamedColors.set_checkbox_enabled(is_autoformatting_colors)
+
+
+func setup_display_tab() -> void:
+	%ContentContainer/Display/DisplayVBox/HandleSize.value_changed.connect(
+			custom_notify.bind(Utils.CustomNotification.HANDLE_VISUALS_CHANGED))
+	%ContentContainer/Display/DisplayVBox/DisplayScale.value_changed.connect(
+			custom_notify.bind(Utils.CustomNotification.DISPLAY_SCALE_CHANGED))
+	%ContentContainer/Display/DisplayVBox/AutoDisplayScale.pressed.connect(
+			custom_notify.bind(Utils.CustomNotification.DISPLAY_SCALE_CHANGED))
 
 
 func setup_shortcuts_tab() -> void:
@@ -279,6 +283,7 @@ func custom_notify(notif: Utils.CustomNotification) -> void:
 
 var generated_content := {  # String: bool
 	"autoformat": false,
+	"display": false,
 	"palettes": false,
 	"shortcuts": false,
 	"theming": false,
@@ -289,6 +294,11 @@ func _on_autoformatting_tab_toggled(toggled_on: bool) -> void:
 	if toggled_on and not generated_content.autoformat:
 		setup_autoformat_tab()
 		generated_content.autoformat = true
+
+func _on_display_tab_toggled(toggled_on: bool) -> void:
+	if toggled_on and not generated_content.display:
+		setup_display_tab()
+		generated_content.display = true
 
 func _on_palettes_tab_toggled(toggled_on: bool) -> void:
 	if toggled_on and not generated_content.palettes:
@@ -307,8 +317,6 @@ func _on_theme_tab_toggled(toggled_on: bool) -> void:
 
 func _on_other_tab_toggled(toggled_on: bool) -> void:
 	if toggled_on and not generated_content.other:
-		%ContentContainer/Other/OtherSettings/Misc/HandleSize.value_changed.connect(
-				custom_notify.bind(Utils.CustomNotification.HANDLE_VISUALS_CHANGED))
 		# Disable mouse wrap if not available.
 		if not DisplayServer.has_feature(DisplayServer.FEATURE_MOUSE_WARP):
 			wrap_mouse.checkbox.set_pressed_no_signal(false)
