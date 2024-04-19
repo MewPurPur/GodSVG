@@ -193,9 +193,7 @@ func _enter_tree() -> void:
 	load_settings()
 	load_user_data()
 	DisplayServer.window_set_mode(save_data.window_mode)
-	get_window().wrap_controls = true  # Prevents the main window from getting too small.
 	update_ui_scale()
-	get_window().size_changed.connect(update_ui_scale)
 	ThemeGenerator.generate_theme()
 
 
@@ -251,24 +249,59 @@ func get_validity_color(error_condition: bool, warning_condition := false) -> Co
 func update_ui_scale() -> void:
 	await get_tree().process_frame
 	var window := get_window()
-	var min_size: Vector2 = window.get_contents_minimum_size()
-	var actual_ui_scale: float = ui_scale
-	if auto_ui_scale:
-		actual_ui_scale = _calculate_auto_scale(min_size, window.size)
-	min_size *= actual_ui_scale
-	window.min_size = min_size
-	window.content_scale_factor = actual_ui_scale
+	
+	var usable_screen_size := Vector2(
+		DisplayServer.screen_get_usable_rect(DisplayServer.window_get_current_screen()).size
+		# Subtract window decoration size.
+		 - (window.get_size_with_decorations() - window.size)
+		)
+	
+	# How much can window content size be multiplied by before it extends over the usable screen size.
+	var diff :=  usable_screen_size / window.get_contents_minimum_size()
+	var max_scale := floorf(minf(diff.x, diff.y)*4.0)/4.0
+	
+	var desired_scale: float = ui_scale * _calculate_auto_scale()
+	
+	if not desired_scale > max_scale:
+		window.min_size = window.get_contents_minimum_size() * desired_scale
+		window.content_scale_factor = desired_scale
+	else:
+		window.min_size = usable_screen_size
+		window.content_scale_factor = max_scale
 
 
-func _calculate_auto_scale(min_size: Vector2, size: Vector2i) -> float:
-	var div: Vector2 = (Vector2(size - Vector2i(10, 10)) / min_size)
-	var desired: float = div[div.min_axis_index()] * 0.5 * ui_scale
-	if desired > 4.0: return 4.0
-	if desired > 3.0: return 3.0
-	if desired > 2.5: return 2.5
-	if desired > 2.0: return 2.0
-	if desired > 1.75: return 1.75
-	if desired > 1.5: return 1.5
-	if desired > 1.25: return 1.25
-	if desired > 1.0: return 1.0
-	return 0.75
+func _calculate_auto_scale() -> float:
+	if not auto_ui_scale:
+		return 1.0
+	
+	# Credit: Godots (MIT, by MakovWait and contributors)
+	
+	var screen := DisplayServer.window_get_current_screen()
+	if DisplayServer.screen_get_size(screen) == Vector2i():
+		return 1.0
+	
+	# Use the smallest dimension to use a correct display scale on portrait displays.
+	var smallest_dimension := mini(
+		DisplayServer.screen_get_size(screen).x,
+		DisplayServer.screen_get_size(screen).y
+	)
+	
+	var dpi :=  DisplayServer.screen_get_dpi(screen)
+	if dpi != 72:
+		if dpi < 72:
+			return 0.75
+		elif dpi <= 96:
+			return 1.0
+		elif dpi <=160:
+			return 1.25
+		elif dpi <= 240:
+			return 1.5
+		elif dpi <= 480:
+			return 1.75
+		elif dpi > 480:
+			return 2.0
+	elif smallest_dimension >= 1700:
+		# Likely a hiDPI display, but we aren't certain due to the returned DPI.
+		# Use an intermediate scale to handle this situation.
+		return 1.5
+	return 1.0
