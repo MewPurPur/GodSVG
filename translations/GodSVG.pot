@@ -44,11 +44,18 @@ msgstr ""
 msgid ""
 "If turned on, scrolling will pan the view. To zoom, hold CTRL while "
 "scrolling."
+msgstr ""
 
 msgid "UI scale"
 msgstr ""
 
 msgid "Changes the scale of the visual user interface."
+msgstr ""
+
+msgid "Auto UI scale"
+msgstr ""
+
+msgid "Scales the user interface based on the screen size."
 msgstr ""
 
 msgid "Input"

@@ -80,7 +80,7 @@ func setup_setting_labels() -> void:
 	
 	var auto_ui_scale := %Misc/AutoUIScale
 	auto_ui_scale.label.text = tr("Auto UI scale")
-	auto_ui_scale.tooltip_text = tr("Scale the user interface based on the screen size.")
+	auto_ui_scale.tooltip_text = tr("Scales the user interface based on the screen size.")
 	
 	%GeneralVBox/NumberPrecision.label.text = tr("Number precision digits")
 	%GeneralVBox/AnglePrecision.label.text = tr("Angle precision digits")
