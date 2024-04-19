@@ -1,9 +1,9 @@
 extends PanelContainer
 
-@onready var status_label := %Status as RichTextLabel
-@onready var check_button := %Check as Button
-#@onready var prereleases_checkbox := %IncludePrereleases as CheckBox
-@onready var http := %HTTPRequest as HTTPRequest
+@onready var status_label: RichTextLabel = %Status
+@onready var check_button: Button = %Check
+#@onready var prereleases_checkbox: CheckBox = %IncludePrereleases
+@onready var http: HTTPRequest = %HTTPRequest
 
 
 func _ready() -> void:
@@ -54,7 +54,7 @@ _headers: PackedStringArray, body: PackedByteArray) -> void:
 					latest_url = release["html_url"]
 
 			var current_ver := ProjectSettings.get_setting("application/config/version") as String
-			prints(latest_ver, current_ver)
+
 			if latest_ver == current_ver:
 				status_label.text = "No new version available."
 			else:

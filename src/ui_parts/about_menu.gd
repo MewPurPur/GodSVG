@@ -7,10 +7,7 @@ extends PanelContainer
 @onready var version_label: Label = %VersionLabel
 
 func _ready() -> void:
-	if not ProjectSettings.has_setting("application/config/version"):
-		version_label.text = "GodSVG (Version information unavailable)"
-	else:
-		version_label.text = "GodSVG v" + ProjectSettings.get_setting("application/config/version")
+	version_label.text = "GodSVG v" + ProjectSettings.get_setting("application/config/version")
 	project_founder_list.items = AppInfo.project_founder_and_manager
 	project_founder_list.setup()
 	authors_list.items = AppInfo.authors
