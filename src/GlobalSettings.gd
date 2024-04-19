@@ -184,7 +184,6 @@ func load_user_data() -> void:
 		save_data = ResourceLoader.load(save_path)
 
 func _exit_tree() -> void:
-	save_data.window_mode = DisplayServer.window_get_mode()
 	ResourceSaver.save(save_data, save_path)
 
 func _enter_tree() -> void:
@@ -192,7 +191,6 @@ func _enter_tree() -> void:
 		default_input_events[action] = InputMap.action_get_events(action)
 	load_settings()
 	load_user_data()
-	DisplayServer.window_set_mode(save_data.window_mode)
 	update_ui_scale()
 	ThemeGenerator.generate_theme()
 

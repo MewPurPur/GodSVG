@@ -21,9 +21,8 @@ msgstr "Засновник і керівник проекту"
 msgid "Developers"
 msgstr "Розробники"
 
-#, fuzzy
 msgid "Translators"
-msgstr "Трансформації"
+msgstr "Перекладачі"
 
 msgid "Language"
 msgstr "Мова"
@@ -46,19 +45,11 @@ msgstr ""
 msgid "Use CTRL for zooming"
 msgstr "Використовувати CTRL для масштабування"
 
-msgid ""
-"If turned on, scrolling will pan the view. To zoom, hold CTRL while "
-"scrolling."
-msgstr ""
-"Якщо увімкнено, гортання буде рухати вікно перегляду. Щоб масштабувати, "
-"затисніть CTRL доки гортаєте."
-
-#, fuzzy
 msgid "UI scale"
-msgstr "Масштаб"
+msgstr "Масштаб інтерфейсу"
 
 msgid "Changes the scale of the visual user interface."
-msgstr ""
+msgstr "Змінити масштаб інтерфейсу користувача."
 
 #, fuzzy
 msgid "Auto UI scale"
@@ -112,9 +103,8 @@ msgstr "Показати ручки редагування"
 msgid "Rasterized SVG"
 msgstr "Растеризувати SVG"
 
-#, fuzzy
 msgid "Show rasterized SVG"
-msgstr "Растеризувати SVG"
+msgstr "Показати растеризуваний SVG"
 
 msgid "Enable Snapping"
 msgstr "Активувати прилипання"
@@ -125,16 +115,14 @@ msgstr "Розмір прилипання"
 msgid "Reset to default"
 msgstr "Скинути значення до замовчування"
 
-#, fuzzy
 msgid "Copy all text"
 msgstr "Скопіювати весь текст"
 
 msgid "Clear SVG"
-msgstr ""
+msgstr "Очистити SVG"
 
-#, fuzzy
 msgid "Reset SVG"
-msgstr "Растеризувати SVG"
+msgstr "Скинути SVG"
 
 msgid "Save"
 msgstr "Зберегти"
@@ -227,7 +215,7 @@ msgid "Final size"
 msgstr "Фінальний розмір"
 
 msgid "Invalid"
-msgstr ""
+msgstr "Неправильно"
 
 msgid "Export Configuration"
 msgstr "Налаштування експорту"
@@ -235,13 +223,11 @@ msgstr "Налаштування експорту"
 msgid "Add new tag"
 msgstr "Додати новий тег"
 
-#, fuzzy
 msgid "New tag"
-msgstr "Додати новий тег"
+msgstr "Новий тег"
 
-#, fuzzy
 msgid "New transform"
-msgstr "Без трансформацій"
+msgstr "Нова трансформація"
 
 msgid "License"
 msgstr "Ліцензія"
@@ -285,9 +271,8 @@ msgstr "Колір коментаря"
 msgid "Text color"
 msgstr "Колір тексту"
 
-#, fuzzy
 msgid "CDATA color"
-msgstr "Колір тегу"
+msgstr "Колір CDATA"
 
 msgid "Error color"
 msgstr "Колір помилки"
@@ -341,7 +326,7 @@ msgid "Delete color"
 msgstr "Видалити колір"
 
 msgid "Edit"
-msgstr "Редагувати"
+msgstr "Редагування"
 
 msgid "Remove"
 msgstr "Видалити"
@@ -355,42 +340,39 @@ msgstr "Активувати колір"
 msgid "Disable the color"
 msgstr "Деактивувати колір"
 
-#, fuzzy
 msgid "Path"
-msgstr "Шляхи"
+msgstr "Шлях"
 
 msgid "Replace"
-msgstr ""
+msgstr "Замінити"
 
 msgid "Go to parent folder"
-msgstr ""
+msgstr "Перейти до батьківської теки"
 
 msgid "Refresh files"
-msgstr ""
+msgstr "Оновити файли"
 
 msgid "Toggle the visibility of hidden files"
-msgstr ""
+msgstr "Перемикнути видимість прихованих файлів"
 
-#, fuzzy
 msgid "Search files"
-msgstr "Шукати колір"
+msgstr "Пошук файлів"
 
-#, fuzzy
 msgid "Select an SVG"
-msgstr "Обрати усі теги"
+msgstr "Обрати SVG"
 
-#, fuzzy
 msgid "Save SVG"
-msgstr "Зберегти"
+msgstr "Зберегти SVG"
 
-#, fuzzy
 msgid "Select"
-msgstr "Колір обраного"
+msgstr "Обрати"
 
 msgid ""
 "A file named \"{file_name}\" already exists. Replacing will overwrite its "
 "contents!"
 msgstr ""
+"Файл з назваою \"{file_name}\" вже існує. Його заміна призведе до перезапису "
+"його вмісту!"
 
 msgid "Godot third-party components"
 msgstr "Компоненти Godot від третіх сторін"
@@ -514,13 +496,13 @@ msgid "Remove unnecessary parameters"
 msgstr "Видалити необов'язкові параметри"
 
 msgid "Relative"
-msgstr "Відносна"
+msgstr "Відносно"
 
 msgid "Absolute"
 msgstr "Абсолютна"
 
 msgid "Clear saving path"
-msgstr ""
+msgstr "Очистити шлях збереження"
 
 msgid "Apply the matrix"
 msgstr "Застосувати матрицю"
@@ -541,45 +523,50 @@ msgid "Search color"
 msgstr "Шукати колір"
 
 msgid "File"
-msgstr ""
+msgstr "Файл"
 
 msgid "View"
-msgstr ""
+msgstr "Перегляд"
 
 msgid "Tool"
-msgstr ""
+msgstr "Інструмент"
 
-#, fuzzy
 msgid "Move to"
-msgstr "Пересунути вниз"
+msgstr "Пересунути до"
 
 msgid "Line to"
-msgstr ""
+msgstr "Лінія до"
 
 msgid "Horizontal Line to"
-msgstr ""
+msgstr "Горизонтальна лінія до"
 
 msgid "Vertical Line to"
-msgstr ""
+msgstr "Вертикальна лінія до"
 
-#, fuzzy
 msgid "Close Path"
-msgstr "Закрити"
+msgstr "Закрити шлях"
 
 msgid "Elliptical Arc to"
-msgstr ""
+msgstr "Еліптична дуга до"
 
 msgid "Quadratic Bezier to"
-msgstr ""
+msgstr "Квадратичний Безьє до"
 
 msgid "Shorthand Quadratic Bezier to"
-msgstr ""
+msgstr "Скорочена квадратична Безьє"
 
 msgid "Cubic Bezier to"
-msgstr ""
+msgstr "Кубічна Безьє до"
 
 msgid "Shorthand Cubic Bezier to"
-msgstr ""
+msgstr "Скорочена кубічна Безьє до"
+
+#~ msgid ""
+#~ "If turned on, scrolling will pan the view. To zoom, hold CTRL while "
+#~ "scrolling."
+#~ msgstr ""
+#~ "Якщо увімкнено, гортання буде рухати вікно перегляду. Щоб масштабувати, "
+#~ "затисніть CTRL доки гортаєте."
 
 #, fuzzy
 #~ msgid "Clear association"

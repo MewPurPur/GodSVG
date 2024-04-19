@@ -21,9 +21,8 @@ msgstr "Основатель и руководитель проекта"
 msgid "Developers"
 msgstr "Разработчики"
 
-#, fuzzy
 msgid "Translators"
-msgstr "Трансформации"
+msgstr "Переводчики"
 
 msgid "Language"
 msgstr "Язык"
@@ -52,12 +51,11 @@ msgstr ""
 "Если включено, прокрутка будет перемещать окно просмотра. Чтобы "
 "масштабировать Зажмите CTRL когда прокручиваете."
 
-#, fuzzy
 msgid "UI scale"
-msgstr "Масштаб"
+msgstr "Масштаб интерфейса"
 
 msgid "Changes the scale of the visual user interface."
-msgstr ""
+msgstr "Изменить масштаб пользовательского интерфейса."
 
 #, fuzzy
 msgid "Auto UI scale"
@@ -91,7 +89,7 @@ msgid "Zoom in"
 msgstr "Приблизить масштаб"
 
 msgid "Zoom reset"
-msgstr "Скинуть масштаб"
+msgstr "Сбросить масштаб"
 
 msgid "Zoom out"
 msgstr "Отдалить масштаб"
@@ -111,9 +109,8 @@ msgstr "Показать ручки редактирования"
 msgid "Rasterized SVG"
 msgstr "Растеризовать SVG"
 
-#, fuzzy
 msgid "Show rasterized SVG"
-msgstr "Растеризовать SVG"
+msgstr "Показать растеризованый SVG"
 
 msgid "Enable Snapping"
 msgstr "Включить привязку"
@@ -124,16 +121,14 @@ msgstr "Размер привязки"
 msgid "Reset to default"
 msgstr "Восстановить значение по умолчанию"
 
-#, fuzzy
 msgid "Copy all text"
 msgstr "Скопировать весь текст"
 
 msgid "Clear SVG"
-msgstr ""
+msgstr "Очистить SVG"
 
-#, fuzzy
 msgid "Reset SVG"
-msgstr "Растеризовать SVG"
+msgstr "Сбросить SVG"
 
 msgid "Save"
 msgstr "Сохранить"
@@ -226,7 +221,7 @@ msgid "Final size"
 msgstr "Финальный размер"
 
 msgid "Invalid"
-msgstr ""
+msgstr "Неправильно"
 
 msgid "Export Configuration"
 msgstr "Настройки экспорта"
@@ -234,13 +229,11 @@ msgstr "Настройки экспорта"
 msgid "Add new tag"
 msgstr "Добавить новый тег"
 
-#, fuzzy
 msgid "New tag"
-msgstr "Добавить новый тег"
+msgstr "Новый тег"
 
-#, fuzzy
 msgid "New transform"
-msgstr "Нет трансформаций"
+msgstr "Новая трансформация"
 
 msgid "License"
 msgstr "Лицензия"
@@ -284,9 +277,8 @@ msgstr "Цвет комментария"
 msgid "Text color"
 msgstr "Цвет текста"
 
-#, fuzzy
 msgid "CDATA color"
-msgstr "Цвет тега"
+msgstr "Цвет CDATA"
 
 msgid "Error color"
 msgstr "Цвет ошибки"
@@ -340,7 +332,7 @@ msgid "Delete color"
 msgstr "Удалить цвет"
 
 msgid "Edit"
-msgstr "Редактировать"
+msgstr "Редактирование"
 
 msgid "Remove"
 msgstr "Удалить"
@@ -354,42 +346,39 @@ msgstr "Активировать цвет"
 msgid "Disable the color"
 msgstr "Деактивировать цвет"
 
-#, fuzzy
 msgid "Path"
-msgstr "Пути"
+msgstr "Путь"
 
 msgid "Replace"
-msgstr ""
+msgstr "Заменить"
 
 msgid "Go to parent folder"
-msgstr ""
+msgstr "Перейти к родительской папке"
 
 msgid "Refresh files"
-msgstr ""
+msgstr "Обновить файлы"
 
 msgid "Toggle the visibility of hidden files"
-msgstr ""
+msgstr "Переключить видимость скрытых файлов"
 
-#, fuzzy
 msgid "Search files"
-msgstr "Искать цвет"
+msgstr "Искать файлы"
 
-#, fuzzy
 msgid "Select an SVG"
-msgstr "Выбрать все теги"
+msgstr "Выбрать SVG"
 
-#, fuzzy
 msgid "Save SVG"
-msgstr "Сохранить"
+msgstr "Сохранить SVG"
 
-#, fuzzy
 msgid "Select"
-msgstr "Цвет выбранного"
+msgstr "Выбрать"
 
 msgid ""
 "A file named \"{file_name}\" already exists. Replacing will overwrite its "
 "contents!"
 msgstr ""
+"Файл с названием \"{file_name}\" уже существует. Его замена перезапишет его "
+"содержимое!"
 
 msgid "Godot third-party components"
 msgstr "Компоненты Godot от третьих лиц"
@@ -519,7 +508,7 @@ msgid "Absolute"
 msgstr "Абсолютная"
 
 msgid "Clear saving path"
-msgstr ""
+msgstr "Очистить путь сохранения"
 
 msgid "Apply the matrix"
 msgstr "Применить матрицу"
@@ -540,45 +529,43 @@ msgid "Search color"
 msgstr "Искать цвет"
 
 msgid "File"
-msgstr ""
+msgstr "Файл"
 
 msgid "View"
-msgstr ""
+msgstr "Просмотр"
 
 msgid "Tool"
-msgstr ""
+msgstr "Инструмент"
 
-#, fuzzy
 msgid "Move to"
-msgstr "Подвинуть вниз"
+msgstr "Подвинуть до"
 
 msgid "Line to"
-msgstr ""
+msgstr "Линия до"
 
 msgid "Horizontal Line to"
-msgstr ""
+msgstr "Горизонтальная линия до"
 
 msgid "Vertical Line to"
-msgstr ""
+msgstr "Вертикальная линия до"
 
-#, fuzzy
 msgid "Close Path"
-msgstr "Закрыть"
+msgstr "Закрыть путь"
 
 msgid "Elliptical Arc to"
-msgstr ""
+msgstr "Эллиптическая дуга до"
 
 msgid "Quadratic Bezier to"
-msgstr ""
+msgstr "Квадратичная Безье до"
 
 msgid "Shorthand Quadratic Bezier to"
-msgstr ""
+msgstr "Сокращенная квадратичная Безье до"
 
 msgid "Cubic Bezier to"
-msgstr ""
+msgstr "Кибическая Безье до"
 
 msgid "Shorthand Cubic Bezier to"
-msgstr ""
+msgstr "Сокращенная кубическая Безье до"
 
 #, fuzzy
 #~ msgid "Clear association"
