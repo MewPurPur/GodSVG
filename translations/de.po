@@ -66,10 +66,18 @@ msgstr "Öffnen"
 msgid "Close"
 msgstr "Schließen"
 
+#, fuzzy
+msgid "GodSVG Settings…"
+msgstr "Einstellungen"
+
 msgid "GodSVG Repository"
 msgstr "GodSVG Repository"
 
 msgid "About…"
+msgstr "Über…"
+
+#, fuzzy
+msgid "About GodSVG…"
 msgstr "Über…"
 
 msgid "Documentation…"
@@ -78,11 +86,27 @@ msgstr "Dokumentation…"
 msgid "Donate…"
 msgstr "Spenden…"
 
+#, fuzzy
+msgid "Donate to GodSVG…"
+msgstr "Spenden…"
+
+#, fuzzy
+msgid "Zoom In"
+msgstr "Hineinzoomen"
+
 msgid "Zoom in"
 msgstr "Hineinzoomen"
 
+#, fuzzy
+msgid "Zoom Reset"
+msgstr "Zoom zurücksetzen"
+
 msgid "Zoom reset"
 msgstr "Zoom zurücksetzen"
+
+#, fuzzy
+msgid "Zoom Out"
+msgstr "Herauszoomen"
 
 msgid "Zoom out"
 msgstr "Herauszoomen"
@@ -546,6 +570,42 @@ msgid "Tool"
 msgstr ""
 
 #, fuzzy
+msgid "Snap"
+msgstr "Einrastgröße"
+
+#, fuzzy
+msgid "Enable Snap"
+msgstr "Einrasten aktivieren"
+
+#, fuzzy
+msgid "Import SVG"
+msgstr "Importieren"
+
+#, fuzzy
+msgid "Export Image"
+msgstr "Exportieren"
+
+#, fuzzy
+msgid "Export SVG"
+msgstr "Exportieren"
+
+#, fuzzy
+msgid "Copy SVG Text"
+msgstr "Text kopieren"
+
+#, fuzzy
+msgid "Optimize SVG"
+msgstr "Optimieren"
+
+#, fuzzy
+msgid "Clear Association"
+msgstr "Dateizuordnung entfernen"
+
+#, fuzzy
+msgid "Select All"
+msgstr "Farbe löschen"
+
+#, fuzzy
 msgid "Move to"
 msgstr "Nach unten"
 
@@ -578,5 +638,67 @@ msgid "Shorthand Cubic Bezier to"
 msgstr ""
 
 #, fuzzy
-#~ msgid "Clear association"
-#~ msgstr "Dateizuordnung entfernen"
+msgid "Move Relative"
+msgstr "Relativ"
+
+#, fuzzy
+msgid "Move Absolute"
+msgstr "Absolut"
+
+#, fuzzy
+msgid "Line Relative"
+msgstr "Relativ"
+
+#, fuzzy
+msgid "Line Absolute"
+msgstr "Absolut"
+
+msgid "Horizontal Line Relative"
+msgstr ""
+
+msgid "Horizontal Line Absolute"
+msgstr ""
+
+msgid "Vertical Line Relative"
+msgstr ""
+
+msgid "Vertical Line Absolute"
+msgstr ""
+
+#, fuzzy
+msgid "Close Path Relative"
+msgstr "Schließen"
+
+#, fuzzy
+msgid "Close Path Absolute"
+msgstr "Schließen"
+
+msgid "Elliptical Arc Relative"
+msgstr ""
+
+msgid "Elliptical Arc Absolute"
+msgstr ""
+
+msgid "Quadratic Bezier Relative"
+msgstr ""
+
+msgid "Quadratic Bezier Absolute"
+msgstr ""
+
+msgid "Shorthand Quadratic Bezier Relative"
+msgstr ""
+
+msgid "Shorthand Quadratic Bezier Absolute"
+msgstr ""
+
+msgid "Cubic Bezier Relative"
+msgstr ""
+
+msgid "Cubic Bezier Absolute"
+msgstr ""
+
+msgid "Shorthand Cubic Bezier Relative"
+msgstr ""
+
+msgid "Shorthand Cubic Bezier Absolute"
+msgstr ""

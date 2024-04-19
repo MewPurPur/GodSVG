@@ -62,10 +62,16 @@ msgstr ""
 msgid "Close"
 msgstr ""
 
+msgid "GodSVG Settings…"
+msgstr ""
+
 msgid "GodSVG Repository"
 msgstr ""
 
 msgid "About…"
+msgstr ""
+
+msgid "About GodSVG…"
 msgstr ""
 
 msgid "Documentation…"
@@ -74,10 +80,22 @@ msgstr ""
 msgid "Donate…"
 msgstr ""
 
+msgid "Donate to GodSVG…"
+msgstr ""
+
+msgid "Zoom In"
+msgstr ""
+
 msgid "Zoom in"
 msgstr ""
 
+msgid "Zoom Reset"
+msgstr ""
+
 msgid "Zoom reset"
+msgstr ""
+
+msgid "Zoom Out"
 msgstr ""
 
 msgid "Zoom out"
@@ -519,6 +537,33 @@ msgstr ""
 msgid "Tool"
 msgstr ""
 
+msgid "Snap"
+msgstr ""
+
+msgid "Enable Snap"
+msgstr ""
+
+msgid "Import SVG"
+msgstr ""
+
+msgid "Export Image"
+msgstr ""
+
+msgid "Export SVG"
+msgstr ""
+
+msgid "Copy SVG Text"
+msgstr ""
+
+msgid "Optimize SVG"
+msgstr ""
+
+msgid "Clear Association"
+msgstr ""
+
+msgid "Select All"
+msgstr ""
+
 msgid "Move to"
 msgstr ""
 
@@ -547,4 +592,64 @@ msgid "Cubic Bezier to"
 msgstr ""
 
 msgid "Shorthand Cubic Bezier to"
+msgstr ""
+
+msgid "Move Relative"
+msgstr ""
+
+msgid "Move Absolute"
+msgstr ""
+
+msgid "Line Relative"
+msgstr ""
+
+msgid "Line Absolute"
+msgstr ""
+
+msgid "Horizontal Line Relative"
+msgstr ""
+
+msgid "Horizontal Line Absolute"
+msgstr ""
+
+msgid "Vertical Line Relative"
+msgstr ""
+
+msgid "Vertical Line Absolute"
+msgstr ""
+
+msgid "Close Path Relative"
+msgstr ""
+
+msgid "Close Path Absolute"
+msgstr ""
+
+msgid "Elliptical Arc Relative"
+msgstr ""
+
+msgid "Elliptical Arc Absolute"
+msgstr ""
+
+msgid "Quadratic Bezier Relative"
+msgstr ""
+
+msgid "Quadratic Bezier Absolute"
+msgstr ""
+
+msgid "Shorthand Quadratic Bezier Relative"
+msgstr ""
+
+msgid "Shorthand Quadratic Bezier Absolute"
+msgstr ""
+
+msgid "Cubic Bezier Relative"
+msgstr ""
+
+msgid "Cubic Bezier Absolute"
+msgstr ""
+
+msgid "Shorthand Cubic Bezier Relative"
+msgstr ""
+
+msgid "Shorthand Cubic Bezier Absolute"
 msgstr ""

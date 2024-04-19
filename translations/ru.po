@@ -66,10 +66,18 @@ msgstr "Открыть"
 msgid "Close"
 msgstr "Закрыть"
 
+#, fuzzy
+msgid "GodSVG Settings…"
+msgstr "Настройки"
+
 msgid "GodSVG Repository"
 msgstr "Репозиторий GodSVG"
 
 msgid "About…"
+msgstr "Про программу…"
+
+#, fuzzy
+msgid "About GodSVG…"
 msgstr "Про программу…"
 
 msgid "Documentation…"
@@ -78,11 +86,27 @@ msgstr "Документация…"
 msgid "Donate…"
 msgstr "Сделать пожертвование…"
 
+#, fuzzy
+msgid "Donate to GodSVG…"
+msgstr "Сделать пожертвование…"
+
+#, fuzzy
+msgid "Zoom In"
+msgstr "Приблизить масштаб"
+
 msgid "Zoom in"
 msgstr "Приблизить масштаб"
 
+#, fuzzy
+msgid "Zoom Reset"
+msgstr "Сбросить масштаб"
+
 msgid "Zoom reset"
 msgstr "Сбросить масштаб"
+
+#, fuzzy
+msgid "Zoom Out"
+msgstr "Отдалить масштаб"
 
 msgid "Zoom out"
 msgstr "Отдалить масштаб"
@@ -530,6 +554,41 @@ msgstr "Просмотр"
 msgid "Tool"
 msgstr "Инструмент"
 
+#, fuzzy
+msgid "Snap"
+msgstr "Размер привязки"
+
+#, fuzzy
+msgid "Enable Snap"
+msgstr "Включить привязку"
+
+msgid "Import SVG"
+msgstr "Импортировать SVG"
+
+#, fuzzy
+msgid "Export Image"
+msgstr "Экспортовать"
+
+#, fuzzy
+msgid "Export SVG"
+msgstr "Импортировать SVG"
+
+#, fuzzy
+msgid "Copy SVG Text"
+msgstr "Скопировать весь текст"
+
+#, fuzzy
+msgid "Optimize SVG"
+msgstr "Оптимизировать"
+
+#, fuzzy
+msgid "Clear Association"
+msgstr "Удалить"
+
+#, fuzzy
+msgid "Select All"
+msgstr "Выбрать"
+
 msgid "Move to"
 msgstr "Подвинуть до"
 
@@ -561,8 +620,81 @@ msgid "Shorthand Cubic Bezier to"
 msgstr "Сокращенная кубическая Безье до"
 
 #, fuzzy
-#~ msgid "Clear association"
-#~ msgstr "Удалить"
+msgid "Move Relative"
+msgstr "Относительная"
 
-#~ msgid "Import SVG"
-#~ msgstr "Импортировать SVG"
+#, fuzzy
+msgid "Move Absolute"
+msgstr "Абсолютная"
+
+#, fuzzy
+msgid "Line Relative"
+msgstr "Относительная"
+
+#, fuzzy
+msgid "Line Absolute"
+msgstr "Абсолютная"
+
+#, fuzzy
+msgid "Horizontal Line Relative"
+msgstr "Горизонтальная линия до"
+
+#, fuzzy
+msgid "Horizontal Line Absolute"
+msgstr "Горизонтальная линия до"
+
+#, fuzzy
+msgid "Vertical Line Relative"
+msgstr "Вертикальная линия до"
+
+#, fuzzy
+msgid "Vertical Line Absolute"
+msgstr "Вертикальная линия до"
+
+#, fuzzy
+msgid "Close Path Relative"
+msgstr "Закрыть путь"
+
+#, fuzzy
+msgid "Close Path Absolute"
+msgstr "Закрыть путь"
+
+#, fuzzy
+msgid "Elliptical Arc Relative"
+msgstr "Эллиптическая дуга до"
+
+#, fuzzy
+msgid "Elliptical Arc Absolute"
+msgstr "Эллиптическая дуга до"
+
+#, fuzzy
+msgid "Quadratic Bezier Relative"
+msgstr "Квадратичная Безье до"
+
+#, fuzzy
+msgid "Quadratic Bezier Absolute"
+msgstr "Квадратичная Безье до"
+
+#, fuzzy
+msgid "Shorthand Quadratic Bezier Relative"
+msgstr "Сокращенная квадратичная Безье до"
+
+#, fuzzy
+msgid "Shorthand Quadratic Bezier Absolute"
+msgstr "Сокращенная квадратичная Безье до"
+
+#, fuzzy
+msgid "Cubic Bezier Relative"
+msgstr "Кибическая Безье до"
+
+#, fuzzy
+msgid "Cubic Bezier Absolute"
+msgstr "Кибическая Безье до"
+
+#, fuzzy
+msgid "Shorthand Cubic Bezier Relative"
+msgstr "Сокращенная кубическая Безье до"
+
+#, fuzzy
+msgid "Shorthand Cubic Bezier Absolute"
+msgstr "Сокращенная кубическая Безье до"

@@ -45,6 +45,13 @@ msgstr ""
 msgid "Use CTRL for zooming"
 msgstr "Використовувати CTRL для масштабування"
 
+msgid ""
+"If turned on, scrolling will pan the view. To zoom, hold CTRL while "
+"scrolling."
+msgstr ""
+"Якщо увімкнено, гортання буде рухати вікно перегляду. Щоб масштабувати, "
+"затисніть CTRL доки гортаєте."
+
 msgid "UI scale"
 msgstr "Масштаб інтерфейсу"
 
@@ -60,10 +67,18 @@ msgstr "Відкрити"
 msgid "Close"
 msgstr "Закрити"
 
+#, fuzzy
+msgid "GodSVG Settings…"
+msgstr "Налаштування"
+
 msgid "GodSVG Repository"
 msgstr "Репозиторій GodSVG"
 
 msgid "About…"
+msgstr "Про додаток…"
+
+#, fuzzy
+msgid "About GodSVG…"
 msgstr "Про додаток…"
 
 msgid "Documentation…"
@@ -72,11 +87,27 @@ msgstr "Документація…"
 msgid "Donate…"
 msgstr "Зробити пожертвування…"
 
+#, fuzzy
+msgid "Donate to GodSVG…"
+msgstr "Зробити пожертвування…"
+
+#, fuzzy
+msgid "Zoom In"
+msgstr "Збільшити масштаб"
+
 msgid "Zoom in"
 msgstr "Збільшити масштаб"
 
+#, fuzzy
+msgid "Zoom Reset"
+msgstr "Скинути масштаб"
+
 msgid "Zoom reset"
 msgstr "Скинути масштаб"
+
+#, fuzzy
+msgid "Zoom Out"
+msgstr "Зменшити масштаб"
 
 msgid "Zoom out"
 msgstr "Зменшити масштаб"
@@ -524,6 +555,41 @@ msgstr "Перегляд"
 msgid "Tool"
 msgstr "Інструмент"
 
+#, fuzzy
+msgid "Snap"
+msgstr "Розмір прилипання"
+
+#, fuzzy
+msgid "Enable Snap"
+msgstr "Активувати прилипання"
+
+msgid "Import SVG"
+msgstr "Імпортувати SVG"
+
+#, fuzzy
+msgid "Export Image"
+msgstr "Експортувати"
+
+#, fuzzy
+msgid "Export SVG"
+msgstr "Імпортувати SVG"
+
+#, fuzzy
+msgid "Copy SVG Text"
+msgstr "Скопіювати весь текст"
+
+#, fuzzy
+msgid "Optimize SVG"
+msgstr "Оптимізувати"
+
+#, fuzzy
+msgid "Clear Association"
+msgstr "Видалити асоціацію"
+
+#, fuzzy
+msgid "Select All"
+msgstr "Обрати"
+
 msgid "Move to"
 msgstr "Пересунути до"
 
@@ -554,16 +620,82 @@ msgstr "Кубічна Безьє до"
 msgid "Shorthand Cubic Bezier to"
 msgstr "Скорочена кубічна Безьє до"
 
-#~ msgid ""
-#~ "If turned on, scrolling will pan the view. To zoom, hold CTRL while "
-#~ "scrolling."
-#~ msgstr ""
-#~ "Якщо увімкнено, гортання буде рухати вікно перегляду. Щоб масштабувати, "
-#~ "затисніть CTRL доки гортаєте."
+#, fuzzy
+msgid "Move Relative"
+msgstr "Відносно"
 
 #, fuzzy
-#~ msgid "Clear association"
-#~ msgstr "Видалити асоціацію"
+msgid "Move Absolute"
+msgstr "Абсолютна"
 
-#~ msgid "Import SVG"
-#~ msgstr "Імпортувати SVG"
+#, fuzzy
+msgid "Line Relative"
+msgstr "Відносно"
+
+#, fuzzy
+msgid "Line Absolute"
+msgstr "Абсолютна"
+
+#, fuzzy
+msgid "Horizontal Line Relative"
+msgstr "Горизонтальна лінія до"
+
+#, fuzzy
+msgid "Horizontal Line Absolute"
+msgstr "Горизонтальна лінія до"
+
+#, fuzzy
+msgid "Vertical Line Relative"
+msgstr "Вертикальна лінія до"
+
+#, fuzzy
+msgid "Vertical Line Absolute"
+msgstr "Вертикальна лінія до"
+
+#, fuzzy
+msgid "Close Path Relative"
+msgstr "Закрити шлях"
+
+#, fuzzy
+msgid "Close Path Absolute"
+msgstr "Закрити шлях"
+
+#, fuzzy
+msgid "Elliptical Arc Relative"
+msgstr "Еліптична дуга до"
+
+#, fuzzy
+msgid "Elliptical Arc Absolute"
+msgstr "Еліптична дуга до"
+
+#, fuzzy
+msgid "Quadratic Bezier Relative"
+msgstr "Квадратичний Безьє до"
+
+#, fuzzy
+msgid "Quadratic Bezier Absolute"
+msgstr "Квадратичний Безьє до"
+
+#, fuzzy
+msgid "Shorthand Quadratic Bezier Relative"
+msgstr "Скорочена квадратична Безьє"
+
+#, fuzzy
+msgid "Shorthand Quadratic Bezier Absolute"
+msgstr "Скорочена квадратична Безьє"
+
+#, fuzzy
+msgid "Cubic Bezier Relative"
+msgstr "Кубічна Безьє до"
+
+#, fuzzy
+msgid "Cubic Bezier Absolute"
+msgstr "Кубічна Безьє до"
+
+#, fuzzy
+msgid "Shorthand Cubic Bezier Relative"
+msgstr "Скорочена кубічна Безьє до"
+
+#, fuzzy
+msgid "Shorthand Cubic Bezier Absolute"
+msgstr "Скорочена кубічна Безьє до"
