@@ -165,13 +165,16 @@ func _input(event: InputEvent) -> void:
 
 func _unhandled_input(event: InputEvent) -> void:
 	# Clear popups or overlays.
-	if event.is_action_pressed("ui_cancel"):
-		if not popup_overlay_stack.is_empty():
-			get_viewport().set_input_as_handled()
+	if not popup_overlay_stack.is_empty():
+		get_viewport().set_input_as_handled()
+		if event.is_action_pressed("ui_cancel"):
 			remove_popup_overlay()
-		elif not overlay_stack.is_empty():
-			get_viewport().set_input_as_handled()
+		return
+	elif not overlay_stack.is_empty():
+		get_viewport().set_input_as_handled()
+		if event.is_action_pressed("ui_cancel"):
 			remove_overlay()
+		return
 	
 	if event.is_action_pressed("redo"):
 		get_viewport().set_input_as_handled()

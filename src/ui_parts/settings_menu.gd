@@ -119,11 +119,6 @@ func setup_setting_labels() -> void:
 	%BasicColorsVBox/ErrorColor.label.text = tr("Error color")
 	%BasicColorsVBox/WarningColor.label.text = tr("Warning color")
 
-func _on_window_mode_pressed() -> void:
-	GlobalSettings.save_window_mode = not GlobalSettings.save_window_mode
-
-func _on_svg_pressed() -> void:
-	GlobalSettings.save_svg = not GlobalSettings.save_svg
 
 func _on_language_pressed() -> void:
 	var btn_arr: Array[Button] = []
@@ -206,8 +201,7 @@ func _on_number_precision_changed() -> void:
 		GlobalSettings.save_data.snap = quanta
 		if not snapping_on:
 			GlobalSettings.save_data.snap *= -1
-	get_tree().get_root().propagate_notification(
-			Utils.CustomNotification.NUMBER_PRECISION_CHANGED)
+	custom_notify(Utils.CustomNotification.NUMBER_PRECISION_CHANGED)
 
 func disable_autoformat_checkboxes() -> void:
 	var is_autoformatting_numbers := GlobalSettings.number_enable_autoformatting
