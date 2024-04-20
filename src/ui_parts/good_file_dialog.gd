@@ -8,15 +8,6 @@ signal file_selected(path: String)
 const folder_icon = preload("res://visual/icons/Folder.svg")
 const broken_file_icon = preload("res://visual/icons/FileBroken.svg")
 
-const system_dir_icons = {
-	OS.SYSTEM_DIR_DESKTOP: preload("res://visual/icons/DirDesktop.svg"),
-	OS.SYSTEM_DIR_DOCUMENTS: preload("res://visual/icons/DirDocuments.svg"),
-	OS.SYSTEM_DIR_DOWNLOADS: preload("res://visual/icons/DirDownloads.svg"),
-	OS.SYSTEM_DIR_MOVIES: preload("res://visual/icons/DirMovies.svg"),
-	OS.SYSTEM_DIR_MUSIC: preload("res://visual/icons/DirMusic.svg"),
-	OS.SYSTEM_DIR_PICTURES: preload("res://visual/icons/DirPictures.svg"),
-}
-
 var item_height := 16
 
 enum FileMode {SELECT, SAVE}
@@ -39,18 +30,24 @@ var search_text := ""
 @onready var file_field: BetterLineEdit = %FileField
 @onready var extension_panel: PanelContainer = %ExtensionPanel
 @onready var extension_label: Label = %ExtensionLabel
-@onready var system_dir_list: ItemList = %SystemDirList
+@onready var drives_list: ItemList = %DrivesList
 @onready var file_list: ItemList = %FileList
 @onready var folder_up_button: Button = %FolderUpButton
 @onready var refresh_button: Button = %RefreshButton
 @onready var show_hidden_button: Button = %ShowHiddenButton
 @onready var search_button: Button = %SearchButton
 
-@onready var center_container: CenterContainer = $CenterContainer
+@onready var alert_center_container: CenterContainer = $AlertCenterContainer
 @onready var alert_title_label: Label = %AlertTitleLabel
 @onready var alert_label: RichTextLabel = %AlertLabel
 @onready var alert_cancel_button: Button = %AlertCancelButton
 @onready var alert_replace_button: Button = %AlertReplaceButton
+
+@onready var create_folder_center_container: CenterContainer = $CreateFolderCenterContainer
+@onready var create_folder_title_label: Label = %CreateFolderTitleLabel
+@onready var create_folder_line_edit: BetterLineEdit = %CreateFolderLineEdit
+@onready var create_folder_cancel_button: Button = %CreateFolderCancelButton
+@onready var create_folder_create_button: Button = %CreateFolderCreateButton
 
 
 class Actions:
@@ -72,6 +69,10 @@ func call_selection_action(actions: Actions) -> void:
 	if actions != null and not actions.selection_action.is_null():
 		actions.selection_action.call()
 
+func call_right_click_action(actions: Actions) -> void:
+	if actions != null and not actions.right_click_action.is_null():
+		actions.right_click_action.call()
+
 
 func setup(new_dir: String, new_file: String, new_mode: FileMode,
 new_extension: String) -> void:
@@ -85,10 +86,12 @@ new_extension: String) -> void:
 
 func _ready() -> void:
 	# Signal connections.
+	refresh_button.pressed.connect(refresh_dir)
 	close_button.pressed.connect(queue_free)
 	file_selected.connect(HandlerGUI.remove_all_overlays.unbind(1))
 	special_button.pressed.connect(select_file)
-	alert_cancel_button.pressed.connect(center_container.hide)
+	alert_cancel_button.pressed.connect(alert_center_container.hide)
+	create_folder_cancel_button.pressed.connect(create_folder_center_container.hide)
 	file_list.get_v_scroll_bar().value_changed.connect(_setup_file_images.unbind(1))
 	# Rest of setup.
 	if mode == FileMode.SELECT:
@@ -97,6 +100,9 @@ func _ready() -> void:
 		alert_title_label.text = tr("Alert!")
 		alert_cancel_button.text = tr("Cancel")
 		alert_replace_button.text = tr("Replace")
+		create_folder_title_label.text = tr("Create new directory")
+		create_folder_cancel_button.text = tr("Cancel")
+		create_folder_create_button.text = tr("Create")
 	var extension_panel_stylebox := extension_panel.get_theme_stylebox("panel")
 	extension_panel_stylebox.content_margin_top -= 4
 	extension_panel.add_theme_stylebox_override("panel", extension_panel_stylebox)
@@ -114,7 +120,7 @@ func _ready() -> void:
 	extension_label.text = "." + extension
 	
 	# Should always be safe.
-	set_dir(current_dir)
+	refresh_dir()
 	if mode == FileMode.SAVE:
 		set_file(current_file)
 		file_field.grab_focus()
@@ -128,6 +134,9 @@ func enter_dir(dir: String) -> void:
 		search_button.button_pressed = false
 	set_dir(dir)
 
+func refresh_dir() -> void:
+	set_dir(current_dir)
+
 func file_sort(file1: String, file2: String) -> bool:
 	return file1.naturalnocasecmp_to(file2) == -1
 
@@ -138,23 +147,40 @@ func set_dir(dir: String) -> void:
 	unfocus_file()
 	current_dir = dir
 	path_field.text = current_dir
-	# Rebuild the system dirs to see if we now need to highlight the relevant one.
-	system_dir_list.clear()
-	for sysdir in [OS.SYSTEM_DIR_DESKTOP, OS.SYSTEM_DIR_DOCUMENTS, OS.SYSTEM_DIR_DOWNLOADS,
-	OS.SYSTEM_DIR_MOVIES, OS.SYSTEM_DIR_MUSIC, OS.SYSTEM_DIR_PICTURES]:
-		var dir_string := OS.get_system_dir(sysdir)
-		if dir_string.is_empty():
-			continue
-		
-		var item_idx := system_dir_list.add_item(dir_string.get_file(),
-				system_dir_icons[sysdir] if sysdir in system_dir_icons else folder_icon)
-		system_dir_list.set_item_metadata(item_idx,
-				Actions.new(Callable(), enter_dir.bind(dir_string)))
-		if current_dir == dir_string:
-			system_dir_list.select(item_idx)
-	# Create the DirAccess object.
 	var DA := DirAccess.open(dir)
 	DA.include_hidden = GlobalSettings.save_data.file_dialog_show_hidden
+	# Rebuild the system dirs and drives, as we may now need to highlight the current one.
+	var first_section: Array[String] = []
+	var second_section: Array[String] = []
+	drives_list.clear()
+	for drive_idx in DirAccess.get_drive_count():
+		var drive_path := DirAccess.get_drive_name(drive_idx)
+		if is_system_dir(drive_path):
+			first_section.append(drive_path)
+		else:
+			second_section.append(drive_path)
+	var drive_paths := first_section + second_section
+	print(drive_paths)
+	for drive_path in drive_paths:
+		var drive_name := drive_path.get_file()
+		if drive_name.is_empty():
+			continue
+		
+		var item_idx := drives_list.add_item(drive_path.get_file(),
+				get_drive_icon(drive_path))
+		drives_list.set_item_metadata(item_idx,
+				Actions.new(Callable(), enter_dir.bind(drive_path)))
+		if current_dir == drive_path:
+			drives_list.select(item_idx)
+	# Disable or enable the "Go to parent" button.
+	if current_dir == current_dir.get_base_dir():
+		if not folder_up_button.disabled:
+			folder_up_button.disabled = true
+			folder_up_button.mouse_default_cursor_shape = Control.CURSOR_ARROW
+	else:
+		if folder_up_button.disabled:
+			folder_up_button.disabled = false
+			folder_up_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	# Gather the files and directories.
 	var directories: Array[String] = []
 	var files: Array[String] = []
@@ -169,8 +195,9 @@ func set_dir(dir: String) -> void:
 		if not search_text.is_empty() and not search_text.is_subsequence_ofn(directory):
 			continue
 		var item_idx := file_list.add_item(directory, folder_icon)
-		file_list.set_item_metadata(item_idx,
-				Actions.new(enter_dir.bind(current_dir.path_join(directory)), unfocus_file))
+		var dir_path := current_dir.path_join(directory)
+		file_list.set_item_metadata(item_idx, Actions.new(
+				enter_dir.bind(dir_path), unfocus_file, open_dir_context.bind(dir_path)))
 	
 	for file in files:
 		if file.get_extension() != extension or\
@@ -178,8 +205,8 @@ func set_dir(dir: String) -> void:
 			continue
 		
 		var item_idx := file_list.add_item(file, null)
-		file_list.set_item_metadata(item_idx,
-				Actions.new(select_file, focus_file.bind(file)))
+		file_list.set_item_metadata(item_idx, Actions.new(
+				select_file, focus_file.bind(file), open_file_context.bind(file)))
 	# If we don't await this stuff, sometimes the item_rect we get is all wrong.
 	await file_list.draw
 	await get_tree().process_frame
@@ -233,7 +260,7 @@ func _setup_file_images() -> void:
 func select_file() -> void:
 	if mode == FileMode.SAVE and current_file in DirAccess.get_files_at(current_dir):
 		alert_label.text = tr("A file named \"{file_name}\" already exists. Replacing will overwrite its contents!").format({"file_name": current_file})
-		center_container.show()
+		alert_center_container.show()
 		alert_replace_button.grab_focus()
 	else:
 		file_selected.emit(current_dir.path_join(current_file))
@@ -244,6 +271,40 @@ func focus_file(path: String) -> void:
 func unfocus_file() -> void:
 	set_file(default_file)
 
+func copy_path() -> void:
+	DisplayServer.clipboard_set(current_dir.path_join(current_file))
+
+func create_folder() -> void:
+	create_folder_center_container.show()
+	create_folder_line_edit.grab_focus()
+
+
+func open_dir_context(dir: String) -> void:
+	var context_popup := ContextPopup.new()
+	var btn_arr: Array[Button] = [
+		Utils.create_btn(tr("Open"), enter_dir.bind(dir), false,
+				load("res://visual/icons/OpenFolder.svg")),
+		Utils.create_btn(tr("Copy path"), copy_path, false,
+				load("res://visual/icons/Copy.svg")),
+	]
+	context_popup.setup(btn_arr, true)
+	var vp := get_viewport()
+	HandlerGUI.popup_under_pos(context_popup, vp.get_mouse_position(), vp)
+
+func open_file_context(file: String) -> void:
+	focus_file(file)
+	var btn_arr: Array[Button] = [
+		Utils.create_btn(special_button.text, select_file, false,
+				load("res://visual/icons/OpenFile.svg")),
+		Utils.create_btn(tr("Copy path"), copy_path, false,
+				load("res://visual/icons/Copy.svg")),
+	]
+	var context_popup := ContextPopup.new()
+	context_popup.setup(btn_arr, true)
+	var vp := get_viewport()
+	HandlerGUI.popup_under_pos(context_popup, vp.get_mouse_position(), vp)
+
+
 func _on_folder_up_button_pressed() -> void:
 	set_dir(current_dir.get_base_dir())
 
@@ -251,6 +312,15 @@ func _on_file_list_empty_clicked(_at_position: Vector2, mouse_button_index: int)
 	if mouse_button_index in [MOUSE_BUTTON_LEFT, MOUSE_BUTTON_MIDDLE, MOUSE_BUTTON_RIGHT]:
 		file_list.deselect_all()
 		unfocus_file()
+	if mouse_button_index == MOUSE_BUTTON_RIGHT and mode == FileMode.SAVE:
+		var context_popup := ContextPopup.new()
+		var btn_arr: Array[Button] = [
+			Utils.create_btn(tr("Create new folder"), create_folder, false,
+					load("res://visual/icons/CreateFolder.svg")),
+		]
+		context_popup.setup(btn_arr, true)
+		var vp := get_viewport()
+		HandlerGUI.popup_under_pos(context_popup, vp.get_mouse_position(), vp)
 
 func _on_file_list_item_activated(index: int) -> void:
 	call_activation_action(file_list.get_item_metadata(index))
@@ -258,15 +328,17 @@ func _on_file_list_item_activated(index: int) -> void:
 func _on_file_list_item_selected(index: int) -> void:
 	call_selection_action(file_list.get_item_metadata(index))
 
-func _on_system_dir_list_item_selected(index: int) -> void:
-	call_selection_action(system_dir_list.get_item_metadata(index))
+func _on_file_list_item_clicked(index: int, _at_position: Vector2,
+mouse_button_index: int) -> void:
+	if mouse_button_index == MOUSE_BUTTON_RIGHT:
+		call_right_click_action(file_list.get_item_metadata(index))
 
-func _on_refresh_button_pressed() -> void:
-	set_dir(current_dir)
+func _on_drives_list_item_selected(index: int) -> void:
+	call_selection_action(drives_list.get_item_metadata(index))
 
 func _on_show_hidden_button_toggled(toggled_on: bool) -> void:
 	GlobalSettings.modify_save_data("file_dialog_show_hidden", toggled_on)
-	set_dir(current_dir)
+	refresh_dir()
 
 func _on_search_button_toggled(toggled_on: bool) -> void:
 	if toggled_on:
@@ -275,7 +347,7 @@ func _on_search_button_toggled(toggled_on: bool) -> void:
 	else:
 		search_field.hide()
 		search_field.clear()
-		set_dir(current_dir)
+		refresh_dir()
 
 
 func _on_file_field_text_submitted(new_text: String) -> void:
@@ -294,7 +366,7 @@ func _on_path_field_text_submitted(new_text: String) -> void:
 
 func _on_search_field_text_changed(new_text: String) -> void:
 	search_text = new_text
-	set_dir(current_dir)
+	refresh_dir()
 
 func _on_search_field_text_change_canceled() -> void:
 	search_field.text = search_text
@@ -314,3 +386,58 @@ func _on_file_field_text_changed(new_text: String) -> void:
 
 func _on_alert_replace_button_pressed() -> void:
 	file_selected.emit(current_dir.path_join(current_file))
+
+func _on_create_folder_create_button_pressed() -> void:
+	var DA := DirAccess.open(current_dir)
+	var err := DA.make_dir(create_folder_line_edit.text)
+	if err == OK:
+		create_folder_line_edit.clear()
+		create_folder_center_container.hide()
+		refresh_dir()
+	else:
+		create_folder_line_edit.grab_focus()
+		create_folder_line_edit.add_theme_color_override("font_color",
+				GlobalSettings.basic_color_error)
+		create_folder_create_button.disabled = true
+		create_folder_create_button.mouse_default_cursor_shape = Control.CURSOR_ARROW
+
+func _on_create_folder_line_edit_text_submitted(_new_text: String) -> void:
+	create_folder_create_button.grab_focus()
+
+func _on_create_folder_line_edit_text_changed(_new_text: String) -> void:
+	create_folder_line_edit.remove_theme_color_override("font_color")
+	if create_folder_line_edit.text.is_empty():
+		create_folder_create_button.disabled = true
+		create_folder_create_button.mouse_default_cursor_shape = Control.CURSOR_ARROW
+	elif create_folder_create_button.disabled:
+		create_folder_create_button.disabled = false
+		create_folder_create_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+
+# Helpers
+
+func _init() -> void:
+	for enum_value in [OS.SYSTEM_DIR_DCIM, OS.SYSTEM_DIR_DESKTOP, OS.SYSTEM_DIR_DOCUMENTS,
+	OS.SYSTEM_DIR_DOWNLOADS, OS.SYSTEM_DIR_MOVIES, OS.SYSTEM_DIR_MUSIC,
+	OS.SYSTEM_DIR_PICTURES, OS.SYSTEM_DIR_RINGTONES]:
+		system_dir_paths[enum_value] = OS.get_system_dir(enum_value)
+
+var system_dir_paths := {}
+
+func get_drive_icon(path: String) -> Texture2D:
+	if path == system_dir_paths[OS.SYSTEM_DIR_DESKTOP]:
+		return load("res://visual/icons/DirDesktop.svg")
+	elif path == system_dir_paths[OS.SYSTEM_DIR_DOCUMENTS]:
+		return load("res://visual/icons/DirDocuments.svg")
+	elif path == system_dir_paths[OS.SYSTEM_DIR_DOWNLOADS]:
+		return load("res://visual/icons/DirDownloads.svg")
+	elif path == system_dir_paths[OS.SYSTEM_DIR_MOVIES]:
+		return load("res://visual/icons/DirMovies.svg")
+	elif path == system_dir_paths[OS.SYSTEM_DIR_MUSIC]:
+		return load("res://visual/icons/DirMusic.svg")
+	elif path == system_dir_paths[OS.SYSTEM_DIR_PICTURES]:
+		return load("res://visual/icons/DirPictures.svg")
+	else:
+		return folder_icon
+
+func is_system_dir(path: String) -> bool:
+	return path in system_dir_paths.values()

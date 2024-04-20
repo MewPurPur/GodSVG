@@ -52,6 +52,8 @@ theme_override_constants/separation = 2
 [node name="Check" type="Button" parent="VBoxContainer/PanelContainer/VBoxContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
+focus_mode = 0
+mouse_default_cursor_shape = 2
 text = "Check for Updates"
 
 [node name="Hint" type="Label" parent="VBoxContainer/PanelContainer/VBoxContainer/VBoxContainer"]
