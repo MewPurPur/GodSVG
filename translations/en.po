@@ -53,6 +53,12 @@ msgstr ""
 msgid "Changes the scale of the visual user interface."
 msgstr ""
 
+msgid "Auto UI scale"
+msgstr ""
+
+msgid "Scales the user interface based on the screen size."
+msgstr ""
+
 msgid "Input"
 msgstr ""
 
