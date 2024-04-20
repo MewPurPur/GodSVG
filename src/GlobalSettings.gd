@@ -293,7 +293,7 @@ func _calculate_auto_scale() -> float:
 			return 1.0
 		elif dpi <= 120:
 			return 1.25
-		elif dpi <=160:
+		elif dpi <= 160:
 			return 1.5
 		elif dpi <= 200:
 			return 2.0
