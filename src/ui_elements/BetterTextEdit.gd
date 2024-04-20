@@ -113,17 +113,18 @@ func _gui_input(event: InputEvent) -> void:
 			var btn_arr: Array[Button] = []
 			var separator_arr: Array[int] = []
 			if editable:
-				separator_arr = [2]
 				btn_arr.append(Utils.create_btn(tr("Undo"), undo, !has_undo(),
 						load("res://visual/icons/Undo.svg")))
 				btn_arr.append(Utils.create_btn(tr("Redo"), redo, !has_redo(),
 						load("res://visual/icons/Redo.svg")))
-				btn_arr.append(Utils.create_btn(tr("Cut"), cut, text.is_empty(),
-						load("res://visual/icons/Cut.svg")))
-				btn_arr.append(Utils.create_btn(tr("Copy"), copy, text.is_empty(),
-						load("res://visual/icons/Copy.svg")))
-				btn_arr.append(Utils.create_btn(tr("Paste"), paste,
-						!DisplayServer.clipboard_has(), load("res://visual/icons/Paste.svg")))
+				if DisplayServer.has_feature(DisplayServer.FEATURE_CLIPBOARD):
+					separator_arr = [2]
+					btn_arr.append(Utils.create_btn(tr("Cut"), cut, text.is_empty(),
+							load("res://visual/icons/Cut.svg")))
+					btn_arr.append(Utils.create_btn(tr("Copy"), copy, text.is_empty(),
+							load("res://visual/icons/Copy.svg")))
+					btn_arr.append(Utils.create_btn(tr("Paste"), paste,
+							!DisplayServer.clipboard_has(), load("res://visual/icons/Paste.svg")))
 			else:
 				btn_arr.append(Utils.create_btn(tr("Copy"), copy, text.is_empty(),
 						load("res://visual/icons/Copy.svg")))

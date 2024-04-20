@@ -69,11 +69,12 @@ icon = ExtResource("6_otods")
 [node name="MainContainer" type="HBoxContainer" parent="VBoxContainer"]
 layout_mode = 2
 
-[node name="SystemDirContainer" type="PanelContainer" parent="VBoxContainer/MainContainer"]
+[node name="DrivesContainer" type="PanelContainer" parent="VBoxContainer/MainContainer"]
 custom_minimum_size = Vector2(120, 0)
 layout_mode = 2
+size_flags_vertical = 3
 
-[node name="SystemDirList" type="ItemList" parent="VBoxContainer/MainContainer/SystemDirContainer"]
+[node name="DrivesList" type="ItemList" parent="VBoxContainer/MainContainer/DrivesContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 fixed_icon_size = Vector2i(16, 16)
@@ -96,6 +97,7 @@ size_flags_vertical = 3
 [node name="FileList" type="ItemList" parent="VBoxContainer/MainContainer/FilePicker/VisualPicker"]
 unique_name_in_owner = true
 layout_mode = 2
+allow_rmb_select = true
 fixed_icon_size = Vector2i(16, 16)
 
 [node name="FileContainer" type="HBoxContainer" parent="VBoxContainer/MainContainer/FilePicker"]
@@ -137,69 +139,107 @@ size_flags_horizontal = 6
 focus_mode = 0
 mouse_default_cursor_shape = 2
 
-[node name="CenterContainer" type="CenterContainer" parent="."]
+[node name="AlertCenterContainer" type="CenterContainer" parent="."]
 visible = false
 layout_mode = 2
 
-[node name="AlertDialog" type="PanelContainer" parent="CenterContainer"]
+[node name="AlertDialog" type="PanelContainer" parent="AlertCenterContainer"]
 custom_minimum_size = Vector2(280, 0)
 layout_mode = 2
 theme_type_variation = &"OverlayPanel"
 
-[node name="MainContainer" type="VBoxContainer" parent="CenterContainer/AlertDialog"]
-unique_name_in_owner = true
+[node name="AlertMainContainer" type="VBoxContainer" parent="AlertCenterContainer/AlertDialog"]
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="TextContainer" type="VBoxContainer" parent="CenterContainer/AlertDialog/MainContainer"]
+[node name="TextContainer" type="VBoxContainer" parent="AlertCenterContainer/AlertDialog/AlertMainContainer"]
 layout_mode = 2
 
-[node name="AlertTitleLabel" type="Label" parent="CenterContainer/AlertDialog/MainContainer/TextContainer"]
+[node name="AlertTitleLabel" type="Label" parent="AlertCenterContainer/AlertDialog/AlertMainContainer/TextContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_fonts/font = ExtResource("7_br1c0")
 theme_override_font_sizes/font_size = 16
 horizontal_alignment = 1
 
-[node name="AlertLabel" type="RichTextLabel" parent="CenterContainer/AlertDialog/MainContainer/TextContainer"]
+[node name="AlertLabel" type="RichTextLabel" parent="AlertCenterContainer/AlertDialog/AlertMainContainer/TextContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(180, 0)
 layout_mode = 2
 theme_override_font_sizes/normal_font_size = 12
 fit_content = true
 
-[node name="HBoxContainer" type="HBoxContainer" parent="CenterContainer/AlertDialog/MainContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="AlertCenterContainer/AlertDialog/AlertMainContainer"]
 layout_mode = 2
 alignment = 1
 
-[node name="AlertCancelButton" type="Button" parent="CenterContainer/AlertDialog/MainContainer/HBoxContainer"]
+[node name="AlertCancelButton" type="Button" parent="AlertCenterContainer/AlertDialog/AlertMainContainer/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 6
 mouse_default_cursor_shape = 2
 
-[node name="AlertReplaceButton" type="Button" parent="CenterContainer/AlertDialog/MainContainer/HBoxContainer"]
+[node name="AlertReplaceButton" type="Button" parent="AlertCenterContainer/AlertDialog/AlertMainContainer/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 6
 mouse_default_cursor_shape = 2
 
-[connection signal="file_selected" from="." to="." method="_on_file_selected"]
+[node name="CreateFolderCenterContainer" type="CenterContainer" parent="."]
+visible = false
+layout_mode = 2
+
+[node name="CreateFolderDialog" type="PanelContainer" parent="CreateFolderCenterContainer"]
+custom_minimum_size = Vector2(280, 0)
+layout_mode = 2
+theme_type_variation = &"OverlayPanel"
+
+[node name="MainContainer" type="VBoxContainer" parent="CreateFolderCenterContainer/CreateFolderDialog"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="CreateFolderTitleLabel" type="Label" parent="CreateFolderCenterContainer/CreateFolderDialog/MainContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_fonts/font = ExtResource("7_br1c0")
+theme_override_font_sizes/font_size = 16
+horizontal_alignment = 1
+
+[node name="CreateFolderLineEdit" type="LineEdit" parent="CreateFolderCenterContainer/CreateFolderDialog/MainContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+script = ExtResource("2_52puw")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CreateFolderCenterContainer/CreateFolderDialog/MainContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="CreateFolderCancelButton" type="Button" parent="CreateFolderCenterContainer/CreateFolderDialog/MainContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 6
+mouse_default_cursor_shape = 2
+
+[node name="CreateFolderCreateButton" type="Button" parent="CreateFolderCenterContainer/CreateFolderDialog/MainContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 6
+mouse_default_cursor_shape = 2
+
 [connection signal="pressed" from="VBoxContainer/TopBar/FolderUpButton" to="." method="_on_folder_up_button_pressed"]
 [connection signal="text_submitted" from="VBoxContainer/TopBar/PathField" to="." method="_on_path_field_text_submitted"]
-[connection signal="pressed" from="VBoxContainer/TopBar/RefreshButton" to="." method="_on_refresh_button_pressed"]
 [connection signal="toggled" from="VBoxContainer/TopBar/ShowHiddenButton" to="." method="_on_show_hidden_button_toggled"]
 [connection signal="toggled" from="VBoxContainer/TopBar/SearchButton" to="." method="_on_search_button_toggled"]
-[connection signal="empty_clicked" from="VBoxContainer/MainContainer/SystemDirContainer/SystemDirList" to="." method="_on_system_dir_list_empty_clicked"]
-[connection signal="item_selected" from="VBoxContainer/MainContainer/SystemDirContainer/SystemDirList" to="." method="_on_system_dir_list_item_selected"]
+[connection signal="item_selected" from="VBoxContainer/MainContainer/DrivesContainer/DrivesList" to="." method="_on_drives_list_item_selected"]
 [connection signal="text_change_canceled" from="VBoxContainer/MainContainer/FilePicker/SearchField" to="." method="_on_search_field_text_change_canceled"]
 [connection signal="text_changed" from="VBoxContainer/MainContainer/FilePicker/SearchField" to="." method="_on_search_field_text_changed"]
 [connection signal="empty_clicked" from="VBoxContainer/MainContainer/FilePicker/VisualPicker/FileList" to="." method="_on_file_list_empty_clicked"]
 [connection signal="item_activated" from="VBoxContainer/MainContainer/FilePicker/VisualPicker/FileList" to="." method="_on_file_list_item_activated"]
+[connection signal="item_clicked" from="VBoxContainer/MainContainer/FilePicker/VisualPicker/FileList" to="." method="_on_file_list_item_clicked"]
 [connection signal="item_selected" from="VBoxContainer/MainContainer/FilePicker/VisualPicker/FileList" to="." method="_on_file_list_item_selected"]
 [connection signal="text_changed" from="VBoxContainer/MainContainer/FilePicker/FileContainer/FileField" to="." method="_on_file_field_text_changed"]
 [connection signal="text_submitted" from="VBoxContainer/MainContainer/FilePicker/FileContainer/FileField" to="." method="_on_file_field_text_submitted"]
-[connection signal="pressed" from="VBoxContainer/ButtonsContainer/CloseButton" to="." method="_on_close_button_pressed"]
-[connection signal="pressed" from="VBoxContainer/ButtonsContainer/SpecialButton" to="." method="_on_special_button_pressed"]
-[connection signal="pressed" from="CenterContainer/AlertDialog/MainContainer/HBoxContainer/AlertCancelButton" to="." method="_on_alert_cancel_button_pressed"]
-[connection signal="pressed" from="CenterContainer/AlertDialog/MainContainer/HBoxContainer/AlertReplaceButton" to="." method="_on_alert_replace_button_pressed"]
+[connection signal="pressed" from="AlertCenterContainer/AlertDialog/AlertMainContainer/HBoxContainer/AlertReplaceButton" to="." method="_on_alert_replace_button_pressed"]
+[connection signal="text_changed" from="CreateFolderCenterContainer/CreateFolderDialog/MainContainer/CreateFolderLineEdit" to="." method="_on_create_folder_line_edit_text_changed"]
+[connection signal="text_submitted" from="CreateFolderCenterContainer/CreateFolderDialog/MainContainer/CreateFolderLineEdit" to="." method="_on_create_folder_line_edit_text_submitted"]
+[connection signal="pressed" from="CreateFolderCenterContainer/CreateFolderDialog/MainContainer/HBoxContainer/CreateFolderCreateButton" to="." method="_on_create_folder_create_button_pressed"]
