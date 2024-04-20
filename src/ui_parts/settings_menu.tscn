@@ -539,11 +539,11 @@ number_max = 2.5
 layout_mode = 2
 section_name = "other"
 setting_name = "ui_scale"
-values = Array[String](["0.75", "1.0", "1.25", "1.5", "1.75", "2.0"])
+values = Array[String](["0.75", "1.0", "1.25", "1.5", "1.75", "2.0", "2.5", "3.0", "4.0"])
 type = 3
 restricted = false
 number_min = 0.5
-number_max = 2.5
+number_max = 10.0
 
 [node name="AutoUIScale" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Other/OtherSettings/Misc" instance=ExtResource("4_2qeh2")]
 layout_mode = 2

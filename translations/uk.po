@@ -51,6 +51,13 @@ msgstr "Масштаб інтерфейсу"
 msgid "Changes the scale of the visual user interface."
 msgstr "Змінити масштаб інтерфейсу користувача."
 
+#, fuzzy
+msgid "Auto UI scale"
+msgstr "Масштаб"
+
+msgid "Scales the user interface based on the screen size."
+msgstr ""
+
 msgid "Input"
 msgstr "Пристрої вводу"
 
