@@ -31,6 +31,16 @@ func get_child_count() -> int:
 
 # Why is there no way to duplicate RefCounteds, again?
 func create_duplicate() -> Tag:
+	var new_tag := create_duplicate_without_children()
+	
+	# Iterate this over all children.
+	var new_child_tags: Array[Tag] = []
+	for tag in child_tags:
+		new_child_tags.append(tag.create_duplicate())
+	new_tag.child_tags = new_child_tags
+	return new_tag
+
+func create_duplicate_without_children() -> Tag:
 	var type: GDScript = get_script()
 	var new_tag: Tag
 	if type == TagUnknown:
@@ -45,12 +55,6 @@ func create_duplicate() -> Tag:
 		new_attrib.set_value(attribute.get_value())
 		unknown_attributes_array.append(new_attrib)
 	new_tag.set_unknown_attributes(unknown_attributes_array)
-	
-	# Iterate this over all children.
-	var new_child_tags: Array[Tag] = []
-	for tag in child_tags:
-		new_child_tags.append(tag.create_duplicate())
-	new_tag.child_tags = new_child_tags
 	return new_tag
 
 # To be overridden in extending classes.

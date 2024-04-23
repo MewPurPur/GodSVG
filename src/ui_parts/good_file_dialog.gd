@@ -8,7 +8,9 @@ signal file_selected(path: String)
 const folder_icon = preload("res://visual/icons/Folder.svg")
 const broken_file_icon = preload("res://visual/icons/FileBroken.svg")
 
-var item_height := 16
+const system_dirs_to_show = [OS.SYSTEM_DIR_DESKTOP, OS.SYSTEM_DIR_DOCUMENTS,
+		OS.SYSTEM_DIR_DOWNLOADS, OS.SYSTEM_DIR_MOVIES, OS.SYSTEM_DIR_MUSIC,
+		OS.SYSTEM_DIR_PICTURES]
 
 enum FileMode {SELECT, SAVE}
 var mode: FileMode
@@ -18,7 +20,10 @@ var current_file := ""
 var default_file := ""
 var extension := ""
 
+var item_height := 16
 var search_text := ""
+
+var DA: DirAccess
 
 @onready var close_button: Button = %CloseButton
 @onready var special_button: Button = %SpecialButton
@@ -142,26 +147,20 @@ func file_sort(file1: String, file2: String) -> bool:
 
 # This function requires a safe input.
 func set_dir(dir: String) -> void:
+	DA = DirAccess.open(dir)
+	if DA == null:
+		return
+	
 	file_list.clear()
 	# Basic setup.
 	unfocus_file()
 	current_dir = dir
 	path_field.text = current_dir
-	var DA := DirAccess.open(dir)
 	DA.include_hidden = GlobalSettings.save_data.file_dialog_show_hidden
-	# Rebuild the system dirs and drives, as we may now need to highlight the current one.
-	var first_section: Array[String] = []
-	var second_section: Array[String] = []
+	# Rebuild the system dirs, as we may now need to highlight the current one.
 	drives_list.clear()
-	for drive_idx in DirAccess.get_drive_count():
-		var drive_path := DirAccess.get_drive_name(drive_idx)
-		if is_system_dir(drive_path):
-			first_section.append(drive_path)
-		else:
-			second_section.append(drive_path)
-	var drive_paths := first_section + second_section
-	print(drive_paths)
-	for drive_path in drive_paths:
+	for drive in system_dirs_to_show:
+		var drive_path := OS.get_system_dir(drive)
 		var drive_name := drive_path.get_file()
 		if drive_name.is_empty():
 			continue
@@ -172,6 +171,7 @@ func set_dir(dir: String) -> void:
 				Actions.new(Callable(), enter_dir.bind(drive_path)))
 		if current_dir == drive_path:
 			drives_list.select(item_idx)
+	drives_list.sort_items_by_text()
 	# Disable or enable the "Go to parent" button.
 	if current_dir == current_dir.get_base_dir():
 		if not folder_up_button.disabled:
@@ -358,7 +358,7 @@ func _on_file_field_text_submitted(new_text: String) -> void:
 		file_field.text = current_file
 
 func _on_path_field_text_submitted(new_text: String) -> void:
-	var DA := DirAccess.open(new_text)
+	DA = DirAccess.open(new_text)
 	if DA != null:
 		set_dir(new_text)
 	else:
@@ -388,7 +388,10 @@ func _on_alert_replace_button_pressed() -> void:
 	file_selected.emit(current_dir.path_join(current_file))
 
 func _on_create_folder_create_button_pressed() -> void:
-	var DA := DirAccess.open(current_dir)
+	DA = DirAccess.open(current_dir)
+	if DA == null:
+		return
+	
 	var err := DA.make_dir(create_folder_line_edit.text)
 	if err == OK:
 		create_folder_line_edit.clear()
