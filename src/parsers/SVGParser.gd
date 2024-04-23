@@ -1,37 +1,26 @@
 class_name SVGParser extends RefCounted
 
 # Tags that don't make sense without other tags inside them.
-const shorthand_tag_exceptions = ["g", "linearGradient, radialGradient"]
+const shorthand_tag_exceptions = ["svg", "g", "linearGradient, radialGradient"]
 
-static func svg_to_text(svg_tag: TagSVG) -> String:
-	if svg_tag == null:
-		return ""
-	
-	var w: String = svg_tag.attributes.width.get_value()
-	var h: String = svg_tag.attributes.height.get_value()
-	var viewbox: String = svg_tag.attributes.viewBox.get_value()
-	
-	var text := '<svg'
-	if !w.is_empty():
-		text += ' width="' + w + '"'
-	if !h.is_empty():
-		text += ' height="' + h + '"'
-	if !viewbox.is_empty():
-		text += ' viewBox="' + viewbox + '"'
-	
-	for attribute in svg_tag.unknown_attributes:
-		text += " " + attribute.name + '="' + attribute.get_value() + '"'
-	
-	# SVG tags should never be shorthand.
-	text += '>'
-	for inner_tag in svg_tag.child_tags:
-		text += _tag_to_text(inner_tag)
-	text += '</svg>'
-	
+# For rendering only a section of the SVG.
+static func svg_to_text_custom(svg_tag: TagSVG, custom_width: float,
+custom_height: float, custom_viewbox: Rect2) -> String:
+	var new_svg_tag := svg_tag.create_duplicate_without_children()
+	new_svg_tag.attributes.viewBox.set_rect(custom_viewbox)
+	new_svg_tag.attributes.width.set_num(custom_width)
+	new_svg_tag.attributes.height.set_num(custom_height)
+	var text := _tag_to_text(new_svg_tag)
+	text = text.left(-6)  # Removee the </svg> at the end.
+	for child_idx in svg_tag.get_child_count():
+		text += _tag_to_text(svg_tag.get_tag(PackedInt32Array([child_idx])))
+	return text + "</svg>"
+
+static func svg_to_text(tag: TagSVG) -> String:
 	if GlobalSettings.xml_add_trailing_newline:
-		text += '\n'
-	
-	return text
+		return _tag_to_text(tag) + "\n"
+	else:
+		return _tag_to_text(tag)
 
 static func _tag_to_text(tag: Tag) -> String:
 	var text := ""
