@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://src/ui_parts/code_editor.gd" id="1_nffk0"]
 [ext_resource type="Texture2D" uid="uid://c5kgvxffw35gi" path="res://visual/icons/Compress.svg" id="2_33tgq"]
-[ext_resource type="FontFile" uid="uid://cp4hxpojjqksf" path="res://visual/fonts/FontMono.ttf" id="2_p4nol"]
+[ext_resource type="FontFile" uid="uid://dtb4wkus51hxs" path="res://visual/fonts/FontMono.ttf" id="2_p4nol"]
 [ext_resource type="Texture2D" uid="uid://6ymbl3jqersp" path="res://visual/icons/Import.svg" id="4_cuhac"]
 [ext_resource type="Texture2D" uid="uid://dthdjf4v2vlvg" path="res://visual/icons/CodeOptions.svg" id="4_sos04"]
 [ext_resource type="Texture2D" uid="uid://d0uvwj0t44n6v" path="res://visual/icons/Export.svg" id="5_pgurh"]
