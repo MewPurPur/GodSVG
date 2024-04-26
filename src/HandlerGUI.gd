@@ -14,12 +14,17 @@ func _enter_tree() -> void:
 
 func _ready() -> void:
 	get_window().files_dropped.connect(_on_files_dropped)
+	get_window().dpi_changed.connect(update_ui_scale)
 	if OS.has_feature("web"):
 		_define_web_js()
+	await get_tree().process_frame
+	update_ui_scale()
 
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_WM_WINDOW_FOCUS_IN:
 		_in_focus.emit()
+	elif what == Utils.CustomNotification.UI_SCALE_CHANGED:
+		update_ui_scale()
 
 # Drag-and-drop of files.
 func _on_files_dropped(files: PackedStringArray) -> void:
@@ -200,6 +205,72 @@ func _unhandled_input(event: InputEvent) -> void:
 		Indications.select_all()
 	elif event is InputEventKey:
 		Indications.respond_to_key_input(event)
+
+
+func update_ui_scale() -> void:
+	var window := get_window()
+	if not window.is_node_ready():
+		await window.ready
+	
+	# Get window size without the decorations.
+	var usable_screen_size := Vector2(DisplayServer.screen_get_usable_rect(
+			DisplayServer.window_get_current_screen()).size -\
+			window.get_size_with_decorations() + window.size)
+	
+	# How much can window content size be multiplied by before it extends over the usable screen size.
+	var diff :=  usable_screen_size / window.get_contents_minimum_size()
+	var max_scale := floorf(minf(diff.x, diff.y) * 4.0) / 4.0
+	var desired_scale: float = GlobalSettings.ui_scale * _calculate_auto_scale()
+	
+	if not desired_scale > max_scale:
+		window.min_size = window.get_contents_minimum_size() * desired_scale
+		window.content_scale_factor = desired_scale
+	else:
+		window.min_size = usable_screen_size
+		window.content_scale_factor = max_scale
+
+
+func _calculate_auto_scale() -> float:
+	if not GlobalSettings.auto_ui_scale:
+		return 1.0
+	
+	# Credit: Godots (MIT, by MakovWait and contributors)
+	
+	var screen := DisplayServer.window_get_current_screen()
+	if DisplayServer.screen_get_size(screen) == Vector2i():
+		return 1.0
+	
+	# Use the smallest dimension to use a correct display scale on portrait displays.
+	var smallest_dimension := mini(
+		DisplayServer.screen_get_size(screen).x,
+		DisplayServer.screen_get_size(screen).y
+	)
+	
+	var dpi :=  DisplayServer.screen_get_dpi(screen)
+	if dpi != 72:
+		if dpi < 72:
+			return 0.75
+		elif dpi <= 96:
+			return 1.0
+		elif dpi <= 120:
+			return 1.25
+		elif dpi <= 160:
+			return 1.5
+		elif dpi <= 200:
+			return 2.0
+		elif dpi <= 240:
+			return 2.5
+		elif dpi <= 320:
+			return 3.0
+		elif dpi <= 480:
+			return 4.0
+		else:  # dpi > 480
+			return 5.0
+	elif smallest_dimension >= 1700:
+		# Likely a hiDPI display, but we aren't certain due to the returned DPI.
+		# Use an intermediate scale to handle this situation.
+		return 1.5
+	return 1.0
 
 
 # Web file access code credit (Modified):
