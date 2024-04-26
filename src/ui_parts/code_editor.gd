@@ -91,6 +91,19 @@ func setup_theme() -> void:
 			stylebox.border_width_bottom = 1
 		code_edit.add_theme_stylebox_override(theming, stylebox)
 	code_edit.end_bulk_theme_override()
+	# Make it so the scrollbar doesn't overlap with the code editor's border.
+	var scrollbar := code_edit.get_v_scroll_bar()
+	scrollbar.begin_bulk_theme_override()
+	for theming in ["grabber", "grabber_highlight", "grabber_pressed"]:
+		var stylebox := get_theme_stylebox(theming, "VScrollBar").duplicate()
+		stylebox.expand_margin_right = -2.0
+		scrollbar.add_theme_stylebox_override(theming, stylebox)
+	var bg_stylebox := get_theme_stylebox("scroll", "VScrollBar").duplicate()
+	bg_stylebox.expand_margin_right = -2.0
+	bg_stylebox.content_margin_left += 1.0
+	bg_stylebox.content_margin_right += 1.0
+	scrollbar.add_theme_stylebox_override("scroll", bg_stylebox)
+	scrollbar.end_bulk_theme_override()
 	
 	error_label.add_theme_color_override("default_color", GlobalSettings.basic_color_error)
 	var panel_stylebox := get_theme_stylebox("panel", "PanelContainer")

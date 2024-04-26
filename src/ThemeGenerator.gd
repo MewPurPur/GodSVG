@@ -742,8 +742,8 @@ static func setup_scrollbar(theme: Theme) -> void:
 	
 	var v_scroll_stylebox := StyleBoxFlat.new()
 	v_scroll_stylebox.set_corner_radius_all(3)
-	v_scroll_stylebox.content_margin_left = 4
-	v_scroll_stylebox.content_margin_right = 4
+	v_scroll_stylebox.content_margin_left = 4.0
+	v_scroll_stylebox.content_margin_right = 4.0
 	v_scroll_stylebox.bg_color = scrollbar_background_color
 	theme.set_stylebox("scroll", "VScrollBar", v_scroll_stylebox)
 
