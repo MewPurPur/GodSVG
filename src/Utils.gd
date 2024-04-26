@@ -3,11 +3,12 @@ class_name Utils extends RefCounted
 # In my opinion, this is nicer than groups.
 enum CustomNotification {
 	LANGUAGE_CHANGED = 300,
-	THEME_CHANGED = 301,
-	NUMBER_PRECISION_CHANGED = 302,
-	HIGHLIGHT_COLORS_CHANGED = 303,
-	DEFAULT_VALUE_OPACITY_CHANGED = 304,
-	HANDLE_VISUALS_CHANGED = 305,
+	UI_SCALE_CHANGED = 301,
+	THEME_CHANGED = 302,
+	NUMBER_PRECISION_CHANGED = 303,
+	HIGHLIGHT_COLORS_CHANGED = 304,
+	DEFAULT_VALUE_OPACITY_CHANGED = 305,
+	HANDLE_VISUALS_CHANGED = 306,
 }
 
 # Enum with values to be used for set_value() of attribute editors.

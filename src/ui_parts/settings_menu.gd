@@ -303,6 +303,10 @@ func _on_other_tab_toggled(toggled_on: bool) -> void:
 	if toggled_on and not generated_content.other:
 		%ContentContainer/Other/OtherSettings/Misc/HandleSize.value_changed.connect(
 				custom_notify.bind(Utils.CustomNotification.HANDLE_VISUALS_CHANGED))
+		%ContentContainer/Other/OtherSettings/Misc/UIScale.value_changed.connect(
+				custom_notify.bind(Utils.CustomNotification.UI_SCALE_CHANGED))
+		%ContentContainer/Other/OtherSettings/Misc/AutoUIScale.pressed.connect(
+				custom_notify.bind(Utils.CustomNotification.UI_SCALE_CHANGED))
 		# Disable mouse wrap if not available.
 		if not DisplayServer.has_feature(DisplayServer.FEATURE_MOUSE_WARP):
 			wrap_mouse.checkbox.set_pressed_no_signal(false)
