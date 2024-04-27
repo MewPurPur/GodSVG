@@ -26,21 +26,10 @@ offset_right = 392.0
 grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-theme_override_constants/separation = 8
+theme_override_constants/separation = 6
 script = ExtResource("1_16ggy")
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
-layout_mode = 2
-theme_override_constants/margin_bottom = 6
-
-[node name="SVGTagEditor" parent="MarginContainer" instance=ExtResource("2_jnl50")]
-layout_mode = 2
-
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="AddButton" type="Button" parent="VBoxContainer"]
+[node name="AddButton" type="Button" parent="."]
 layout_mode = 2
 size_flags_horizontal = 0
 focus_mode = 0
@@ -49,7 +38,7 @@ theme_override_constants/h_separation = 4
 text = "Add new tag"
 icon = ExtResource("3_vo6hf")
 
-[node name="TagContainer" type="PanelContainer" parent="VBoxContainer"]
+[node name="TagContainer" type="PanelContainer" parent="."]
 clip_contents = true
 custom_minimum_size = Vector2(0, 200)
 layout_mode = 2
@@ -58,22 +47,35 @@ size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_4j4hv")
 script = ExtResource("4_i4hc2")
 
-[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer/TagContainer"]
-unique_name_in_owner = true
+[node name="ScrollContainer" type="ScrollContainer" parent="TagContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 horizontal_scroll_mode = 0
 
-[node name="Tags" type="VBoxContainer" parent="VBoxContainer/TagContainer/ScrollContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="TagContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_top = 3
+theme_override_constants/margin_bottom = 3
+
+[node name="AllTags" type="VBoxContainer" parent="TagContainer/ScrollContainer/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 8
+
+[node name="RootTagEditor" parent="TagContainer/ScrollContainer/MarginContainer/AllTags" instance=ExtResource("2_jnl50")]
+layout_mode = 2
+
+[node name="Tags" type="VBoxContainer" parent="TagContainer/ScrollContainer/MarginContainer/AllTags"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/separation = 5
 
-[node name="MoveToOverlay" type="Control" parent="VBoxContainer/TagContainer"]
+[node name="MoveToOverlay" type="Control" parent="TagContainer"]
 visible = false
 layout_mode = 2
 script = ExtResource("5_otlmf")
 
-[connection signal="pressed" from="VBoxContainer/AddButton" to="." method="_on_add_button_pressed"]
+[connection signal="pressed" from="AddButton" to="." method="_on_add_button_pressed"]
