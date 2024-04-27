@@ -25,6 +25,7 @@ const authors: Array[String] = [
 	"Swarkin",
 	"thiagola92",
 	"Tom Blackwell (Volts-s)",
+	"Qainguin",
 ]
 
 # GodSVG is a non-profit project developed by voluntary contributors.
