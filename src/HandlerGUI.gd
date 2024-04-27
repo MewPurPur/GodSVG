@@ -315,13 +315,25 @@ func _import(svg_text: String, file_name: String) -> void:
 
 
 func web_save_svg() -> void:
-	JavaScriptBridge.download_buffer(SVG.text.to_utf8_buffer(),
-			GlobalSettings.save_data.current_file_path.get_file())
+	var file_name := Utils.get_file_name(GlobalSettings.save_data.current_file_path)
+	if file_name.is_empty():
+		file_name = "export"
+	JavaScriptBridge.download_buffer(
+		SVG.text.to_utf8_buffer(),
+		file_name,
+		"image/svg+xml"
+	)
+
 
 func web_save_png(img: Image) -> void:
-	JavaScriptBridge.download_buffer(img.save_png_to_buffer(),
-			Utils.get_file_name(GlobalSettings.save_data.current_file_path) + ".png")
-
+	var file_name := Utils.get_file_name(GlobalSettings.save_data.current_file_path)
+	if file_name.is_empty():
+		file_name = "export"
+	JavaScriptBridge.download_buffer(
+		img.save_png_to_buffer(),
+		file_name,
+		"image/png"
+	)
 
 const web_glue = """var fileData;
 var fileName;
