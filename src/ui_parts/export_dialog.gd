@@ -53,6 +53,8 @@ func _on_ok_button_pressed() -> void:
 		match extension:
 			"png":
 				HandlerGUI.web_save_png(SVG.generate_image_from_tags(upscale_amount))
+			"jpg":
+				HandlerGUI.web_save_jpg(SVG.generate_image_from_tags(upscale_amount))
 			_:
 				HandlerGUI.web_save_svg()
 	else:
@@ -74,4 +76,4 @@ func update_final_scale() -> void:
 			": %d×%d" % [exported_size.x, exported_size.y]
 
 func update_extension_configuration() -> void:
-	scale_container.visible = (extension == "png")
+	scale_container.visible = (extension == "png" or extension == "jpg")

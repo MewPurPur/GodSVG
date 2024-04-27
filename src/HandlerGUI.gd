@@ -335,6 +335,17 @@ func web_save_png(img: Image) -> void:
 		"image/png"
 	)
 
+
+func web_save_jpg(img: Image) -> void:
+	var file_name := Utils.get_file_name(GlobalSettings.save_data.current_file_path)
+	if file_name.is_empty():
+		file_name = "export"
+	JavaScriptBridge.download_buffer(
+		img.save_png_to_buffer(),
+		file_name,
+		"image/jpg"
+	)
+
 const web_glue = """var fileData;
 var fileName;
 var canceled;
