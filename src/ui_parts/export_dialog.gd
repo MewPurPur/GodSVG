@@ -3,6 +3,7 @@ extends PanelContainer
 const NumberEditType = preload("res://src/ui_elements/number_edit.gd")
 
 var upscale_amount := -1.0
+var quality := 0.8
 var extension := ""
 var dimensions := Vector2.ZERO
 
@@ -13,10 +14,13 @@ var dimensions := Vector2.ZERO
 @onready var final_dimensions_label: Label = %FinalDimensions
 @onready var scale_edit: NumberEditType = %Scale
 @onready var scale_container: VBoxContainer = %ScaleContainer
+@onready var quality_edit : NumberEditType = %Quality
+@onready var quality_hbox : HBoxContainer = %QualityHBox
 @onready var fallback_format_label: Label = %FallbackFormatLabel
 
 func _ready() -> void:
 	scale_edit.value_changed.connect(_on_scale_value_changed)
+	quality_edit.value_changed.connect(_on_quality_value_changed)
 	format_dropdown.value_changed.connect(_on_dropdown_value_changed)
 	extension = format_dropdown.value
 	update_extension_configuration()
@@ -50,15 +54,20 @@ func _on_dropdown_value_changed(new_value: String) -> void:
 
 func _on_ok_button_pressed() -> void:
 	if OS.has_feature("web"):
+		var svg_image := SVG.generate_image_from_tags(upscale_amount)
 		match extension:
 			"png":
-				HandlerGUI.web_save_png(SVG.generate_image_from_tags(upscale_amount))
+				HandlerGUI.web_save_png(svg_image)
+			"jpg":
+				HandlerGUI.web_save_jpg(svg_image)
+			"webp":
+				HandlerGUI.web_save_webp(svg_image)
 			_:
 				HandlerGUI.web_save_svg()
 	else:
 		SVG.open_save_dialog(extension,
 				SVG.native_file_export.bind(extension, upscale_amount),
-				SVG.finish_export.bind(extension, upscale_amount))
+				SVG.finish_export.bind(extension, upscale_amount, quality))
 
 func _on_cancel_button_pressed() -> void:
 	HandlerGUI.remove_overlay()
@@ -67,6 +76,9 @@ func _on_cancel_button_pressed() -> void:
 func _on_scale_value_changed(_new_value: float) -> void:
 	update_final_scale()
 
+func _on_quality_value_changed(_new_value : int) -> void:
+	quality = _new_value / 10
+
 func update_final_scale() -> void:
 	upscale_amount = scale_edit.get_value()
 	var exported_size: Vector2i = dimensions * upscale_amount
@@ -74,4 +86,5 @@ func update_final_scale() -> void:
 			": %d×%d" % [exported_size.x, exported_size.y]
 
 func update_extension_configuration() -> void:
-	scale_container.visible = (extension == "png")
+	scale_container.visible = (extension == "png" or extension == "jpg" or extension == "webp")
+	quality_hbox.visible = (extension == "jpg" or extension == "webp")

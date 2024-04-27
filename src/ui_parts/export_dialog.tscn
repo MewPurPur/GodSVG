@@ -76,7 +76,24 @@ text = "Format"
 
 [node name="Dropdown" parent="VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/FormatHBox" instance=ExtResource("5_y6ex0")]
 layout_mode = 2
-values = Array[String](["svg", "png"])
+values = Array[String](["svg", "png", "jpg", "webp"])
+
+[node name="QualityHBox" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/QualityHBox"]
+layout_mode = 2
+text = "Quality"
+
+[node name="Quality" parent="VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/QualityHBox" instance=ExtResource("6_w1sag")]
+unique_name_in_owner = true
+layout_mode = 2
+min_value = 0.1
+max_value = 10.0
+initial_value = 8.0
+allow_lower = false
+allow_higher = false
 
 [node name="ScaleContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
