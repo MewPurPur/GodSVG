@@ -76,7 +76,7 @@ text = "Format"
 
 [node name="Dropdown" parent="VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/FormatHBox" instance=ExtResource("5_y6ex0")]
 layout_mode = 2
-values = Array[String](["svg", "png", "jpg"])
+values = Array[String](["svg", "png", "jpg", "webp"])
 
 [node name="ScaleContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer"]
 unique_name_in_owner = true

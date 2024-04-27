@@ -50,11 +50,14 @@ func _on_dropdown_value_changed(new_value: String) -> void:
 
 func _on_ok_button_pressed() -> void:
 	if OS.has_feature("web"):
+		var svg_image := SVG.generate_image_from_tags(upscale_amount)
 		match extension:
 			"png":
-				HandlerGUI.web_save_png(SVG.generate_image_from_tags(upscale_amount))
+				HandlerGUI.web_save_png(svg_image)
 			"jpg":
-				HandlerGUI.web_save_jpg(SVG.generate_image_from_tags(upscale_amount))
+				HandlerGUI.web_save_jpg(svg_image)
+			"webp":
+				HandlerGUI.web_save_webp(svg_image)
 			_:
 				HandlerGUI.web_save_svg()
 	else:
@@ -76,4 +79,4 @@ func update_final_scale() -> void:
 			": %d×%d" % [exported_size.x, exported_size.y]
 
 func update_extension_configuration() -> void:
-	scale_container.visible = (extension == "png" or extension == "jpg")
+	scale_container.visible = (extension == "png" or extension == "jpg" or extension == "webp")

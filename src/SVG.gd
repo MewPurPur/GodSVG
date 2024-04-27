@@ -202,6 +202,8 @@ func finish_export(file_path: String, extension: String, upscale_amount := 1.0) 
 			generate_image_from_tags(upscale_amount).save_png(file_path)
 		"jpg":
 			generate_image_from_tags(upscale_amount).save_jpg(file_path)
+		"webp":
+			generate_image_from_tags(upscale_amount).save_webp(file_path)
 		_:
 			# SVG / fallback.
 			GlobalSettings.modify_save_data("current_file_path", file_path)
