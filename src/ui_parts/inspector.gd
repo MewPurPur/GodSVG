@@ -2,9 +2,8 @@ extends VBoxContainer
 
 const TagFrame = preload("tag_frame.tscn")
 
-@onready var tags_container: VBoxContainer = %ScrollContainer/Tags
-@onready var svg_tag_editor: CenterContainer = $MarginContainer/SVGTagEditor
-@onready var add_button: Button = $VBoxContainer/AddButton
+@onready var tags_container: VBoxContainer = %Tags
+@onready var add_button: Button = $AddButton
 
 func _ready() -> void:
 	SVG.root_tag.tag_layout_changed.connect(full_rebuild)
