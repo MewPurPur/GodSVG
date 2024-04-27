@@ -141,7 +141,7 @@ unique_name_in_owner = true
 offset_right = 40.0
 offset_bottom = 40.0
 expand_mode = 1
-stretch_mode = 4
+stretch_mode = 5
 
 [node name="Checkerboard" type="TextureRect" parent="ViewportPanel/ViewportContainer/Viewport"]
 unique_name_in_owner = true

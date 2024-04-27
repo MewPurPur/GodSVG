@@ -156,9 +156,9 @@ func open_update_checker() -> void:
 	HandlerGUI.add_overlay(update_menu_instance)
 
 func open_reference_file() -> void:
-	# TODO: Add GodSVG file dialog and web.
+	# TODO: Add web and GoodFileDialog support.
 	DisplayServer.file_dialog_show("Import a .png file", Utils.get_last_dir(), "", false,
-			DisplayServer.FILE_DIALOG_MODE_OPEN_FILE, ["*.png"], native_reference_import)
+		DisplayServer.FILE_DIALOG_MODE_OPEN_FILE, ["*.png"], native_reference_import)
 
 func toggle_reference_overlay() -> void:
 	reference_overlay = not reference_overlay
