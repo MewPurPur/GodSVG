@@ -94,7 +94,6 @@ max_value = 10.0
 initial_value = 8.0
 allow_lower = false
 allow_higher = false
-is_float = false
 
 [node name="ScaleContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
