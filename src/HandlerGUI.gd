@@ -343,7 +343,7 @@ func web_save_jpg(img: Image) -> void:
 	JavaScriptBridge.download_buffer(
 		img.save_jpg_to_buffer(),
 		file_name,
-		"image/jpg"
+		"image/jpeg"
 	)
 
 
