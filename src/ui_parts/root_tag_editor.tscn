@@ -13,9 +13,9 @@ corner_radius_top_right = 5
 corner_radius_bottom_right = 5
 corner_radius_bottom_left = 5
 
-[node name="SVGTagEditor" type="CenterContainer"]
-offset_right = 100.0
-offset_bottom = 35.0
+[node name="RootTagEditor" type="CenterContainer"]
+offset_right = 470.0
+offset_bottom = 56.0
 script = ExtResource("1_xgyg0")
 
 [node name="Edits" type="HBoxContainer" parent="."]
@@ -23,6 +23,7 @@ layout_mode = 2
 theme_override_constants/separation = 12
 
 [node name="Size" type="HBoxContainer" parent="Edits"]
+unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 8
 
@@ -82,6 +83,7 @@ script = ExtResource("4_7r848")
 hover_pressed_stylebox = SubResource("StyleBoxFlat_u8h0i")
 
 [node name="Viewbox" type="VBoxContainer" parent="Edits"]
+unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 0
 

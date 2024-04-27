@@ -10,15 +10,15 @@ const coupled_icon = preload("res://visual/icons/Coupled.svg")
 const decoupled_icon = preload("res://visual/icons/Decoupled.svg")
 
 @onready var couple_button: Button = $Edits/CoupleButton
-@onready var width_button: Button = $Edits/Size/Width/WidthButton
-@onready var height_button: Button = $Edits/Size/Height/HeightButton
-@onready var viewbox_button: Button = $Edits/Viewbox/ViewboxButton
-@onready var width_edit: NumberEditType = $Edits/Size/Width/WidthEdit
-@onready var height_edit: NumberEditType = $Edits/Size/Height/HeightEdit
-@onready var viewbox_edit_x: NumberEditType = $Edits/Viewbox/Rect/ViewboxEditX
-@onready var viewbox_edit_y: NumberEditType = $Edits/Viewbox/Rect/ViewboxEditY
-@onready var viewbox_edit_w: NumberEditType = $Edits/Viewbox/Rect/ViewboxEditW
-@onready var viewbox_edit_h: NumberEditType = $Edits/Viewbox/Rect/ViewboxEditH
+@onready var width_button: Button = %Size/Width/WidthButton
+@onready var height_button: Button = %Size/Height/HeightButton
+@onready var viewbox_button: Button = %Viewbox/ViewboxButton
+@onready var width_edit: NumberEditType = %Size/Width/WidthEdit
+@onready var height_edit: NumberEditType = %Size/Height/HeightEdit
+@onready var viewbox_edit_x: NumberEditType = %Viewbox/Rect/ViewboxEditX
+@onready var viewbox_edit_y: NumberEditType = %Viewbox/Rect/ViewboxEditY
+@onready var viewbox_edit_w: NumberEditType = %Viewbox/Rect/ViewboxEditW
+@onready var viewbox_edit_h: NumberEditType = %Viewbox/Rect/ViewboxEditH
 
 func _ready() -> void:
 	SVG.root_tag.resized.connect(_on_resized)

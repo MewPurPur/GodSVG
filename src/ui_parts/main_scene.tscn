@@ -29,7 +29,7 @@ size_flags_horizontal = 3
 
 [node name="MainContainer" type="VSplitContainer" parent="HSplitContainer/PanelContainer"]
 layout_mode = 2
-theme_override_constants/separation = 8
+theme_override_constants/separation = 10
 split_offset = -400
 
 [node name="CodeEditor" parent="HSplitContainer/PanelContainer/MainContainer" instance=ExtResource("1_0jgh3")]
