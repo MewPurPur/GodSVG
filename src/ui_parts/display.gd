@@ -26,7 +26,10 @@ const NumberField = preload("res://src/ui_elements/number_field.tscn")
 @onready var panel_container: PanelContainer = $PanelContainer
 @onready var viewport_panel: PanelContainer = $ViewportPanel
 
+var reference_overlay = false
+
 func _ready() -> void:
+	reference_texture.hide()
 	update_snap_config()
 	view_settings_updated.emit(grid_visuals.visible, controls.visible,
 			viewport.display_texture.rasterized)
@@ -103,7 +106,8 @@ func _on_visuals_button_pressed() -> void:
 func _on_reference_pressed() -> void:
 	var btn_arr: Array[Button] = [
 		Utils.create_btn(tr("Select Image"), open_reference_file, false, load("res://visual/icons/Reference.svg")),
-		Utils.create_checkbox(tr("Show Reference Image"), toggle_reference_visuals, reference_texture.visible)
+		Utils.create_checkbox(tr("Show Reference Image"), toggle_reference_visuals, reference_texture.visible),
+		Utils.create_checkbox(tr("Overlay Reference Image"), toggle_reference_overlay, reference_overlay)
 	]
 	
 	var reference_popup := ContextPopup.new()
@@ -156,6 +160,13 @@ func open_reference_file() -> void:
 	DisplayServer.file_dialog_show("Import a .png file", Utils.get_last_dir(), "", false,
 			DisplayServer.FILE_DIALOG_MODE_OPEN_FILE, ["*.png"], native_reference_import)
 
+func toggle_reference_overlay() -> void:
+	reference_overlay = not reference_overlay
+	if reference_overlay: 
+		viewport.move_child(reference_texture, 2)
+	else:
+		viewport.move_child(reference_texture, 0)
+
 func toggle_reference_visuals() -> void:
 	reference_texture.visible = not reference_texture.visible
 
@@ -181,9 +192,12 @@ func toggle_snap() -> void:
 func set_snap_amount(snap_value: float) -> void:
 	snapper.set_value(snap_value)
 
+
 func native_reference_import(has_selected: bool, files: PackedStringArray, _filter_idx: int) -> void:
 	if has_selected:
-		reference_texture.texture = load(files[0])
+		if files[0].ends_with(".png"):
+			reference_texture.texture = load(files[0])
+			reference_texture.visible = true
 
 func _on_snap_button_toggled(toggled_on: bool) -> void:
 	GlobalSettings.modify_save_data("snap",

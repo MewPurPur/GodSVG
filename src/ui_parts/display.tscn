@@ -67,16 +67,6 @@ theme_type_variation = &"IconButton"
 icon = ExtResource("3_0w618")
 icon_alignment = 1
 
-[node name="Visuals" type="Button" parent="PanelContainer/HBoxContainer/LeftMenu"]
-layout_mode = 2
-size_flags_horizontal = 2
-tooltip_text = "Visuals"
-focus_mode = 0
-mouse_default_cursor_shape = 2
-theme_type_variation = &"IconButton"
-icon = ExtResource("4_n3qjt")
-icon_alignment = 1
-
 [node name="Reference" type="Button" parent="PanelContainer/HBoxContainer/LeftMenu"]
 layout_mode = 2
 size_flags_horizontal = 2
@@ -85,6 +75,16 @@ focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_type_variation = &"IconButton"
 icon = ExtResource("5_qufah")
+icon_alignment = 1
+
+[node name="Visuals" type="Button" parent="PanelContainer/HBoxContainer/LeftMenu"]
+layout_mode = 2
+size_flags_horizontal = 2
+tooltip_text = "Visuals"
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_type_variation = &"IconButton"
+icon = ExtResource("4_n3qjt")
 icon_alignment = 1
 
 [node name="Snapping" type="HBoxContainer" parent="PanelContainer/HBoxContainer/LeftMenu"]
@@ -181,8 +181,8 @@ script = ExtResource("15_hevpa")
 
 [connection signal="pressed" from="PanelContainer/HBoxContainer/LeftMenu/MoreOptions" to="." method="_on_more_options_pressed"]
 [connection signal="pressed" from="PanelContainer/HBoxContainer/LeftMenu/Settings" to="." method="_on_settings_pressed"]
-[connection signal="pressed" from="PanelContainer/HBoxContainer/LeftMenu/Visuals" to="." method="_on_visuals_button_pressed"]
 [connection signal="pressed" from="PanelContainer/HBoxContainer/LeftMenu/Reference" to="." method="_on_reference_pressed"]
+[connection signal="pressed" from="PanelContainer/HBoxContainer/LeftMenu/Visuals" to="." method="_on_visuals_button_pressed"]
 [connection signal="toggled" from="PanelContainer/HBoxContainer/LeftMenu/Snapping/SnapButton" to="." method="_on_snap_button_toggled"]
 [connection signal="value_changed" from="PanelContainer/HBoxContainer/LeftMenu/Snapping/SnapNumberEdit" to="." method="_on_snap_number_edit_value_changed"]
 [connection signal="zoom_changed" from="PanelContainer/HBoxContainer/ZoomMenu" to="ViewportPanel/ViewportContainer/Viewport" method="_on_zoom_changed"]
