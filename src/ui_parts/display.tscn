@@ -1,14 +1,16 @@
-[gd_scene load_steps=17 format=3 uid="uid://bvrncl7e6yn5b"]
+[gd_scene load_steps=19 format=3 uid="uid://bvrncl7e6yn5b"]
 
 [ext_resource type="Script" path="res://src/ui_parts/display.gd" id="1_oib5g"]
 [ext_resource type="Texture2D" uid="uid://ccbta5q43jobk" path="res://visual/icons/More.svg" id="2_3wliq"]
 [ext_resource type="Texture2D" uid="uid://ckkkgof1hcbld" path="res://visual/icons/Gear.svg" id="3_0w618"]
 [ext_resource type="Texture2D" uid="uid://kkxyv1gyrjgj" path="res://visual/icons/Visuals.svg" id="4_n3qjt"]
 [ext_resource type="Texture2D" uid="uid://buire51l0mifg" path="res://visual/icons/Snap.svg" id="5_1k2cq"]
+[ext_resource type="Texture2D" uid="uid://bvoetuaifdv8i" path="res://visual/icons/Reference.svg" id="5_qufah"]
 [ext_resource type="Script" path="res://src/ui_elements/BetterToggleButton.gd" id="6_3v3ve"]
 [ext_resource type="PackedScene" uid="uid://dad7fkhmsooc6" path="res://src/ui_elements/number_edit.tscn" id="7_wrrfr"]
 [ext_resource type="PackedScene" uid="uid://oltvrf01xrxl" path="res://src/ui_parts/zoom_menu.tscn" id="8_xtdmn"]
 [ext_resource type="Script" path="res://src/ui_parts/viewport.gd" id="9_4xrk7"]
+[ext_resource type="Texture2D" uid="uid://bat6836ih43p3" path="res://chrome-icon.png" id="10_cd25l"]
 [ext_resource type="Shader" path="res://src/shaders/zoom_shader.gdshader" id="10_x7ybk"]
 [ext_resource type="Texture2D" uid="uid://c68og6bsqt0lb" path="res://visual/icons/backgrounds/Checkerboard.svg" id="11_1bm1s"]
 [ext_resource type="Script" path="res://src/ui_parts/display_texture.gd" id="12_qi23s"]
@@ -76,6 +78,16 @@ theme_type_variation = &"IconButton"
 icon = ExtResource("4_n3qjt")
 icon_alignment = 1
 
+[node name="Reference" type="Button" parent="PanelContainer/HBoxContainer/LeftMenu"]
+layout_mode = 2
+size_flags_horizontal = 2
+tooltip_text = "Visuals"
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_type_variation = &"IconButton"
+icon = ExtResource("5_qufah")
+icon_alignment = 1
+
 [node name="Snapping" type="HBoxContainer" parent="PanelContainer/HBoxContainer/LeftMenu"]
 layout_mode = 2
 theme_override_constants/separation = 0
@@ -125,6 +137,14 @@ size_2d_override_stretch = true
 render_target_update_mode = 4
 script = ExtResource("9_4xrk7")
 
+[node name="ReferenceTexture" type="TextureRect" parent="ViewportPanel/ViewportContainer/Viewport"]
+unique_name_in_owner = true
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("10_cd25l")
+expand_mode = 1
+stretch_mode = 4
+
 [node name="Checkerboard" type="TextureRect" parent="ViewportPanel/ViewportContainer/Viewport"]
 unique_name_in_owner = true
 texture_filter = 1
@@ -164,6 +184,7 @@ script = ExtResource("15_hevpa")
 [connection signal="pressed" from="PanelContainer/HBoxContainer/LeftMenu/MoreOptions" to="." method="_on_more_options_pressed"]
 [connection signal="pressed" from="PanelContainer/HBoxContainer/LeftMenu/Settings" to="." method="_on_settings_pressed"]
 [connection signal="pressed" from="PanelContainer/HBoxContainer/LeftMenu/Visuals" to="." method="_on_visuals_button_pressed"]
+[connection signal="pressed" from="PanelContainer/HBoxContainer/LeftMenu/Reference" to="." method="_on_reference_pressed"]
 [connection signal="toggled" from="PanelContainer/HBoxContainer/LeftMenu/Snapping/SnapButton" to="." method="_on_snap_button_toggled"]
 [connection signal="value_changed" from="PanelContainer/HBoxContainer/LeftMenu/Snapping/SnapNumberEdit" to="." method="_on_snap_number_edit_value_changed"]
 [connection signal="zoom_changed" from="PanelContainer/HBoxContainer/ZoomMenu" to="ViewportPanel/ViewportContainer/Viewport" method="_on_zoom_changed"]

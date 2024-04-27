@@ -17,13 +17,14 @@ const NumberField = preload("res://src/ui_elements/number_field.tscn")
 @onready var viewport: SubViewport = $ViewportPanel/ViewportContainer/Viewport
 @onready var controls: Control = %Checkerboard/Controls
 @onready var grid_visuals: Control = %Camera
+@onready var reference_texture : TextureRect = %ReferenceTexture
 @onready var visuals_button: Button = %LeftMenu/Visuals
 @onready var more_button: Button = %LeftMenu/MoreOptions
+@onready var reference_button : Button = %LeftMenu/Reference
 @onready var snapper: NumberEditType = %LeftMenu/Snapping/SnapNumberEdit
 @onready var snap_button: BetterToggleButtonType = %LeftMenu/Snapping/SnapButton
 @onready var panel_container: PanelContainer = $PanelContainer
 @onready var viewport_panel: PanelContainer = $ViewportPanel
-
 
 func _ready() -> void:
 	update_snap_config()
@@ -99,6 +100,17 @@ func _on_visuals_button_pressed() -> void:
 	HandlerGUI.popup_under_rect_center(visuals_popup, visuals_button.get_global_rect(),
 			get_viewport())
 
+func _on_reference_pressed() -> void:
+	var btn_arr: Array[Button] = [
+		Utils.create_btn(tr("Select Image"), open_reference_file, false, load("res://visual/icons/Reference.svg")),
+		Utils.create_checkbox(tr("Show Reference Image"), toggle_reference_visuals, reference_texture.visible)
+	]
+	
+	var reference_popup := ContextPopup.new()
+	reference_popup.setup(btn_arr, true)
+	HandlerGUI.popup_under_rect_center(reference_popup, reference_button.get_global_rect(), get_viewport())
+
+
 func _on_more_options_pressed() -> void:
 	var about_btn := Utils.create_btn(tr("About…"), open_about, false,
 			load("res://visual/icon.svg"))
@@ -139,6 +151,13 @@ func open_update_checker() -> void:
 	var update_menu_instance := update_menu.instantiate()
 	HandlerGUI.add_overlay(update_menu_instance)
 
+func open_reference_file() -> void:
+	# TODO: Add GodSVG file dialog and web.
+	DisplayServer.file_dialog_show("Import a .png file", Utils.get_last_dir(), "", false,
+			DisplayServer.FILE_DIALOG_MODE_OPEN_FILE, ["*.png"], native_reference_import)
+
+func toggle_reference_visuals() -> void:
+	reference_texture.visible = not reference_texture.visible
 
 func toggle_grid_visuals() -> void:
 	grid_visuals.visible = not grid_visuals.visible
@@ -162,6 +181,9 @@ func toggle_snap() -> void:
 func set_snap_amount(snap_value: float) -> void:
 	snapper.set_value(snap_value)
 
+func native_reference_import(has_selected: bool, files: PackedStringArray, _filter_idx: int) -> void:
+	if has_selected:
+		reference_texture.texture = load(files[0])
 
 func _on_snap_button_toggled(toggled_on: bool) -> void:
 	GlobalSettings.modify_save_data("snap",
