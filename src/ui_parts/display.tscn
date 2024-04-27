@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://bvrncl7e6yn5b"]
+[gd_scene load_steps=18 format=3 uid="uid://bvrncl7e6yn5b"]
 
 [ext_resource type="Script" path="res://src/ui_parts/display.gd" id="1_oib5g"]
 [ext_resource type="Texture2D" uid="uid://ccbta5q43jobk" path="res://visual/icons/More.svg" id="2_3wliq"]
@@ -10,7 +10,6 @@
 [ext_resource type="PackedScene" uid="uid://dad7fkhmsooc6" path="res://src/ui_elements/number_edit.tscn" id="7_wrrfr"]
 [ext_resource type="PackedScene" uid="uid://oltvrf01xrxl" path="res://src/ui_parts/zoom_menu.tscn" id="8_xtdmn"]
 [ext_resource type="Script" path="res://src/ui_parts/viewport.gd" id="9_4xrk7"]
-[ext_resource type="Texture2D" uid="uid://bat6836ih43p3" path="res://chrome-icon.png" id="10_cd25l"]
 [ext_resource type="Shader" path="res://src/shaders/zoom_shader.gdshader" id="10_x7ybk"]
 [ext_resource type="Texture2D" uid="uid://c68og6bsqt0lb" path="res://visual/icons/backgrounds/Checkerboard.svg" id="11_1bm1s"]
 [ext_resource type="Script" path="res://src/ui_parts/display_texture.gd" id="12_qi23s"]
@@ -141,7 +140,6 @@ script = ExtResource("9_4xrk7")
 unique_name_in_owner = true
 offset_right = 40.0
 offset_bottom = 40.0
-texture = ExtResource("10_cd25l")
 expand_mode = 1
 stretch_mode = 4
 
