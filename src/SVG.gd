@@ -191,7 +191,7 @@ func finish_import(svg_text: String, file_path: String) -> void:
 	GlobalSettings.modify_save_data("current_file_path", file_path)
 	apply_svg_text(svg_text)
 
-func finish_export(file_path: String, extension: String, upscale_amount := 1.0) -> void:
+func finish_export(file_path: String, extension: String, upscale_amount := 1.0, quality := 0.8) -> void:
 	if file_path.get_extension().is_empty():
 		file_path += "." + extension
 	
@@ -200,6 +200,10 @@ func finish_export(file_path: String, extension: String, upscale_amount := 1.0) 
 	match extension:
 		"png":
 			generate_image_from_tags(upscale_amount).save_png(file_path)
+		"jpg":
+			generate_image_from_tags(upscale_amount).save_jpg(file_path, quality)
+		"webp":
+			generate_image_from_tags(upscale_amount).save_webp(file_path, quality)
 		_:
 			# SVG / fallback.
 			GlobalSettings.modify_save_data("current_file_path", file_path)
