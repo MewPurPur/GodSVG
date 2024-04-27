@@ -89,7 +89,7 @@ text = "Quality"
 [node name="Quality" parent="VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/QualityHBox" instance=ExtResource("6_w1sag")]
 unique_name_in_owner = true
 layout_mode = 2
-min_value = 1.0
+min_value = 0.1
 max_value = 10.0
 initial_value = 8.0
 allow_lower = false
