@@ -8,7 +8,9 @@ static var TagFrame: PackedScene:
 			TagFrame = load("res://src/ui_parts/tag_frame.tscn")
 		return TagFrame
 
+const UnknownField = preload("res://src/ui_elements/unknown_field.tscn")
 const TagContentUnknown = preload("res://src/ui_elements/tag_content_unknown.tscn")
+const TagContentPath = preload("res://src/ui_elements/tag_content_path.tscn")
 
 @onready var main_container: VBoxContainer = $Content/MainContainer
 @onready var title_bar: Panel = $TitleBar
@@ -26,16 +28,28 @@ func _ready() -> void:
 	title_bar.custom_minimum_size.y = title_button.size.y + 4
 	RenderingServer.canvas_item_set_parent(surface, get_canvas_item())
 	RenderingServer.canvas_item_set_z_index(surface, 1)
-	#title_label.text = tag.name
-	#Utils.set_max_text_width(title_label, 180.0, 0.0)  # Handle TagUnknown gracefully.
-	#title_icon.texture = tag.icon
 	Indications.selection_changed.connect(determine_selection_highlight)
 	Indications.hover_changed.connect(determine_selection_highlight)
 	Indications.proposed_drop_changed.connect(queue_redraw)
 	determine_selection_highlight()
 	title_bar.queue_redraw()
 	
-	var tag_content := TagContentUnknown.instantiate()
+	# If there are unknown attributes, they would always be on top.
+	if not tag.unknown_attributes.is_empty():
+		var unknown_container := HFlowContainer.new()
+		main_container.add_child(unknown_container)
+		main_container.move_child(unknown_container, 0)
+		for attribute in tag.unknown_attributes:
+			var input_field := UnknownField.instantiate()
+			input_field.attribute = attribute
+			input_field.attribute_name = attribute.name
+			unknown_container.add_child(input_field)
+	
+	var tag_content: Control
+	if tag is TagPath:
+		tag_content = TagContentPath.instantiate()
+	else:
+		tag_content = TagContentUnknown.instantiate()
 	tag_content.tag = tag
 	tag_content.tid = tid
 	main_container.add_child(tag_content)
@@ -180,7 +194,7 @@ func determine_selection_highlight() -> void:
 func _draw() -> void:
 	RenderingServer.canvas_item_clear(surface)
 	
-	# Check for drag and drop actions.
+	# There's only stuff to draw if there are drag-and-drop actions.
 	if Indications.proposed_drop_tid.is_empty():
 		return
 	

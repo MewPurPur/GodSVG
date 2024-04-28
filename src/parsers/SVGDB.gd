@@ -4,12 +4,12 @@ const known_tags = ["svg", "circle", "ellipse", "rect", "path", "line", "stop"]
 
 const known_tag_attributes = {  # Dictionary{String: Array[String]}
 	"svg": TagSVG.known_attributes,
-	"circle": TagCircle.known_shape_attributes + TagCircle.known_inheritable_attributes,
-	"ellipse": TagEllipse.known_shape_attributes + TagEllipse.known_inheritable_attributes,
-	"rect": TagRect.known_shape_attributes + TagRect.known_inheritable_attributes,
-	"path": TagPath.known_shape_attributes + TagPath.known_inheritable_attributes,
-	"line": TagLine.known_shape_attributes + TagLine.known_inheritable_attributes,
-	"stop": TagStop.known_shape_attributes + TagStop.known_inheritable_attributes,
+	"circle": TagCircle.known_attributes,
+	"ellipse": TagEllipse.known_attributes,
+	"rect": TagRect.known_attributes,
+	"path": TagPath.known_attributes,
+	"line": TagLine.known_attributes,
+	"stop": TagStop.known_attributes,
 }
 
 static func is_tag_known(tag_name: String) -> bool:

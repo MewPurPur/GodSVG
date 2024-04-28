@@ -22,7 +22,8 @@ func set_value(new_value: String, update_type := Utils.UpdateType.REGULAR) -> vo
 			_:
 				attribute.set_value(new_value)
 
-func _ready() -> void:
+func set_attribute(new_attribute: AttributePath) -> void:
+	attribute = new_attribute
 	set_value(attribute.get_value())
 	attribute.value_changed.connect(set_value)
 	line_edit.tooltip_text = attribute_name
@@ -51,7 +52,7 @@ func sync(new_value: String) -> void:
 				var new_command_editor := CommandEditor.instantiate()
 				new_command_editor.path_command = command
 				# TODO Fix this mess, it's needed for individual path commands selection.
-				new_command_editor.tid = get_node(^"../../../../..").tid
+				new_command_editor.tid = get_node(^"../../../..").tid
 				new_command_editor.cmd_idx = command_idx
 				command_editor.clear_children()
 				command_editor.replace_by(new_command_editor)
@@ -62,7 +63,7 @@ func sync(new_value: String) -> void:
 		var command_editor := CommandEditor.instantiate()
 		command_editor.path_command = attribute.get_command(command_idx)
 		# TODO Fix this mess, it's needed for individual path commands selection.
-		command_editor.tid = get_node(^"../../../../..").tid
+		command_editor.tid = get_node(^"../../../..").tid
 		command_editor.cmd_idx = command_idx
 		commands_container.add_child(command_editor)
 		command_idx += 1

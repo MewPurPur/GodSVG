@@ -3,24 +3,22 @@ class_name TagCircle extends Tag
 
 const name = "circle"
 const possible_conversions = ["ellipse", "rect", "path"]
+const known_attributes = ["transform", "cx", "cy", "r", "opacity", "fill",
+		"fill-opacity", "stroke", "stroke-opacity", "stroke-width"]
 const icon = preload("res://visual/icons/tag/circle.svg")
-
-const known_shape_attributes = ["cx", "cy", "r"]
-const known_inheritable_attributes = ["transform", "opacity", "fill", "fill-opacity",
-		"stroke", "stroke-opacity", "stroke-width"]
 
 func _init(pos := Vector2.ZERO) -> void:
 	attributes = {
 		"transform": AttributeTransform.new(),
-		"cx": AttributeNumeric.new(AttributeNumeric.Mode.FLOAT, "0"),
-		"cy": AttributeNumeric.new(AttributeNumeric.Mode.FLOAT, "0"),
-		"r": AttributeNumeric.new(AttributeNumeric.Mode.UFLOAT, "0", "1"),
-		"opacity": AttributeNumeric.new(AttributeNumeric.Mode.NFLOAT, "1"),
+		"cx": AttributeNumeric.new(-INF, INF, "0"),
+		"cy": AttributeNumeric.new(-INF, INF, "0"),
+		"r": AttributeNumeric.new(0.0, INF, "0", "1"),
+		"opacity": AttributeNumeric.new(0.0, 1.0, "1"),
 		"fill": AttributeColor.new("black"),
-		"fill-opacity": AttributeNumeric.new(AttributeNumeric.Mode.NFLOAT, "1"),
+		"fill-opacity": AttributeNumeric.new(0.0, 1.0, "1"),
 		"stroke": AttributeColor.new("none"),
-		"stroke-opacity": AttributeNumeric.new(AttributeNumeric.Mode.NFLOAT, "1"),
-		"stroke-width": AttributeNumeric.new(AttributeNumeric.Mode.UFLOAT, "1"),
+		"stroke-opacity": AttributeNumeric.new(0.0, 1.0, "1"),
+		"stroke-width": AttributeNumeric.new(0.0, INF, "1"),
 	}
 	attributes.cx.set_num(pos.x)
 	attributes.cy.set_num(pos.y)
