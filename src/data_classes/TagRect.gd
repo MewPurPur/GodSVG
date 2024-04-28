@@ -5,25 +5,25 @@ const name = "rect"
 const possible_conversions = ["circle", "ellipse", "path"]
 const icon = preload("res://visual/icons/tag/rect.svg")
 
-const known_shape_attributes = ["x", "y", "width", "height", "rx", "ry"]
-const known_inheritable_attributes = ["transform", "opacity", "fill", "fill-opacity",
-		"stroke", "stroke-opacity", "stroke-width", "stroke-linejoin"]
+const known_attributes = ["x", "y", "width", "height", "rx", "ry", "transform",
+		"opacity", "fill", "fill-opacity", "stroke", "stroke-opacity", "stroke-width",
+		"stroke-linejoin"]
 
 func _init(pos := Vector2.ZERO) -> void:
 	attributes = {
 		"transform": AttributeTransform.new(),
-		"x": AttributeNumeric.new(AttributeNumeric.Mode.FLOAT, "0"),
-		"y": AttributeNumeric.new(AttributeNumeric.Mode.FLOAT, "0"),
-		"width": AttributeNumeric.new(AttributeNumeric.Mode.UFLOAT, "0", "1"),
-		"height": AttributeNumeric.new(AttributeNumeric.Mode.UFLOAT, "0", "1"),
-		"rx": AttributeNumeric.new(AttributeNumeric.Mode.UFLOAT, "0"),
-		"ry": AttributeNumeric.new(AttributeNumeric.Mode.UFLOAT, "0"),
-		"opacity": AttributeNumeric.new(AttributeNumeric.Mode.NFLOAT, "1"),
+		"x": AttributeNumeric.new(-INF, INF, "0"),
+		"y": AttributeNumeric.new(-INF, INF, "0"),
+		"width": AttributeNumeric.new(0.0, INF, "0", "1"),
+		"height": AttributeNumeric.new(0.0, INF, "0", "1"),
+		"rx": AttributeNumeric.new(0.0, INF, "0"),
+		"ry": AttributeNumeric.new(0.0, INF, "0"),
+		"opacity": AttributeNumeric.new(0.0, 1.0, "1"),
 		"fill": AttributeColor.new("black"),
-		"fill-opacity": AttributeNumeric.new(AttributeNumeric.Mode.NFLOAT, "1"),
+		"fill-opacity": AttributeNumeric.new(0.0, 1.0, "1"),
 		"stroke": AttributeColor.new("none"),
-		"stroke-opacity": AttributeNumeric.new(AttributeNumeric.Mode.NFLOAT, "1"),
-		"stroke-width": AttributeNumeric.new(AttributeNumeric.Mode.UFLOAT, "1"),
+		"stroke-opacity": AttributeNumeric.new(0.0, 1.0, "1"),
+		"stroke-width": AttributeNumeric.new(0.0, INF, "1"),
 		"stroke-linejoin": AttributeEnum.new(["miter", "round", "bevel"], 0),
 	}
 	attributes.x.set_num(pos.x)
