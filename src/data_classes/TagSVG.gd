@@ -25,8 +25,8 @@ const name = "svg"
 
 func _init() -> void:
 	attributes = {
-		"height": AttributeNumeric.new(AttributeNumeric.Mode.UFLOAT, ""),
-		"width": AttributeNumeric.new(AttributeNumeric.Mode.UFLOAT, ""),
+		"height": AttributeNumeric.new(0.0, INF, ""),
+		"width": AttributeNumeric.new(0.0, INF, ""),
 		"viewBox": AttributeList.new(),
 	}
 	unknown_attributes.append(AttributeUnknown.new("xmlns", "http://www.w3.org/2000/svg"))

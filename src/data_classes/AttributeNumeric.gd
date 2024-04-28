@@ -2,11 +2,12 @@ class_name AttributeNumeric extends Attribute
 ## An attribute representing a number.
 
 var _number := NAN
-enum Mode {FLOAT, UFLOAT, NFLOAT}  # UFLOAT is positive-only, NFLOAT is in [0, 1].
-var mode := Mode.FLOAT
+var min_value: float
+var max_value: float
 
-func _init(new_mode: Mode, new_default: String, new_init := "") -> void:
-	mode = new_mode
+func _init(new_min: float, new_max: float, new_default: String, new_init := "") -> void:
+	min_value = new_min
+	max_value = new_max
 	default = new_default
 	set_value(new_init if !new_init.is_empty() else new_default, SyncMode.SILENT)
 

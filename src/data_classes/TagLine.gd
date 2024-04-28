@@ -5,21 +5,20 @@ const name = "line"
 const possible_conversions = ["path"]
 const icon = preload("res://visual/icons/tag/line.svg")
 
-const known_shape_attributes = ["x1", "y1", "x2", "y2"]
-const known_inheritable_attributes = ["transform", "opacity", "stroke", "stroke-opacity",
-		"stroke-width", "stroke-linecap"]
+const known_attributes = ["x1", "y1", "x2", "y2", "transform", "opacity", "stroke",
+		"stroke-opacity", "stroke-width", "stroke-linecap"]
 
 func _init(pos := Vector2.ZERO) -> void:
 	attributes = {
 		"transform": AttributeTransform.new(),
-		"x1": AttributeNumeric.new(AttributeNumeric.Mode.FLOAT, "0"),
-		"y1": AttributeNumeric.new(AttributeNumeric.Mode.FLOAT, "0"),
-		"x2": AttributeNumeric.new(AttributeNumeric.Mode.FLOAT, "0", "1"),
-		"y2": AttributeNumeric.new(AttributeNumeric.Mode.FLOAT, "0"),
-		"opacity": AttributeNumeric.new(AttributeNumeric.Mode.NFLOAT, "1"),
+		"x1": AttributeNumeric.new(-INF, INF, "0"),
+		"y1": AttributeNumeric.new(-INF, INF, "0"),
+		"x2": AttributeNumeric.new(-INF, INF, "0", "1"),
+		"y2": AttributeNumeric.new(-INF, INF, "0"),
+		"opacity": AttributeNumeric.new(0.0, 1.0, "1"),
 		"stroke": AttributeColor.new("none", "#000"),
-		"stroke-opacity": AttributeNumeric.new(AttributeNumeric.Mode.NFLOAT, "1"),
-		"stroke-width": AttributeNumeric.new(AttributeNumeric.Mode.UFLOAT, "1"),
+		"stroke-opacity": AttributeNumeric.new(0.0, 1.0, "1"),
+		"stroke-width": AttributeNumeric.new(0.0, INF, "1"),
 		"stroke-linecap": AttributeEnum.new(["butt", "round", "square"], 0),
 	}
 	attributes.x1.set_num(pos.x)

@@ -7,13 +7,17 @@ const ColorField = preload("res://src/ui_elements/color_field.tscn")
 const EnumField = preload("res://src/ui_elements/enum_field.tscn")
 
 @onready var attribute_container: HFlowContainer = $AttributeContainer
+@onready var path_field: VBoxContainer = $PathField
 
 var tag: Tag
 var tid: PackedInt32Array
 
 func _ready() -> void:
-	# Continue with supported attributes.
+	path_field.attribute_name = "d"
+	path_field.set_attribute(tag.attributes.d)
 	for attribute_key in tag.attributes:
+		if attribute_key == "d":
+			continue
 		var attribute: Attribute = tag.attributes[attribute_key]
 		var input_field: Control
 		if attribute is AttributeTransform:
