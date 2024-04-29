@@ -1,4 +1,4 @@
-## A minimalistic numeric editor, not tied to an attribute.
+# A minimalistic numeric editor, not tied to an attribute.
 extends BetterLineEdit
 
 enum Mode {DEFAULT, ONLY_POSITIVE, ANGLE, HALF_ANGLE}

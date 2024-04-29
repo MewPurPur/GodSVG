@@ -1,5 +1,5 @@
+# A <line/> tag.
 class_name TagLine extends Tag
-## A <line/> tag.
 
 const name = "line"
 const possible_conversions = ["path"]
@@ -9,22 +9,14 @@ const known_attributes = ["x1", "y1", "x2", "y2", "transform", "opacity", "strok
 		"stroke-opacity", "stroke-width", "stroke-linecap"]
 
 func _init(pos := Vector2.ZERO) -> void:
-	attributes = {
-		"transform": AttributeTransform.new(),
-		"x1": AttributeNumeric.new(-INF, INF, "0"),
-		"y1": AttributeNumeric.new(-INF, INF, "0"),
-		"x2": AttributeNumeric.new(-INF, INF, "0", "1"),
-		"y2": AttributeNumeric.new(-INF, INF, "0"),
-		"opacity": AttributeNumeric.new(0.0, 1.0, "1"),
-		"stroke": AttributeColor.new("none", "#000"),
-		"stroke-opacity": AttributeNumeric.new(0.0, 1.0, "1"),
-		"stroke-width": AttributeNumeric.new(0.0, INF, "1"),
-		"stroke-linecap": AttributeEnum.new(["butt", "round", "square"], 0),
-	}
-	attributes.x1.set_num(pos.x)
-	attributes.y1.set_num(pos.y)
-	attributes.x2.set_num(pos.x + 1)
-	attributes.y2.set_num(pos.y)
+	for attrib_name in ["transform", "opacity", "stroke", "stroke-opacity",
+	"stroke-width", "stroke-linecap"]:
+		attributes[attrib_name] = DB.attribute(attrib_name)
+	if pos != Vector2.ZERO:
+		attributes.x1.set_num(pos.x)
+		attributes.y1.set_num(pos.y)
+		attributes.x2.set_num(pos.x + 1)
+		attributes.y2.set_num(pos.y)
 	super()
 
 

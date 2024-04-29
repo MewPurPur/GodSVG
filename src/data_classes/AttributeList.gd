@@ -1,11 +1,7 @@
+# An attribute representing a list of numbers.
 class_name AttributeList extends Attribute
-## An attribute representing a list of numbers.
 
 var _list: PackedFloat32Array
-
-func _init() -> void:
-	default = ""
-	set_value("", SyncMode.SILENT)
 
 func _sync() -> void:
 	_list = ListParser.string_to_list(get_value())

@@ -64,6 +64,5 @@ theme_override_font_sizes/font_size = 13
 text = "Palettes"
 
 [connection signal="tree_exited" from="." to="." method="_on_tree_exited"]
-[connection signal="text_changed" from="MainContainer/Content/Palettes/VBoxContainer/SearchBox/SearchField" to="." method="_on_search_field_text_changed"]
 [connection signal="color_changed" from="MainContainer/Content/ColorPicker" to="." method="pick_color"]
 [connection signal="pressed" from="MainContainer/SwitchMode" to="." method="_on_switch_mode_pressed"]

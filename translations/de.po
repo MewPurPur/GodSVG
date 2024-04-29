@@ -289,9 +289,6 @@ msgstr "Tagfarbe"
 msgid "Error color"
 msgstr "Fehlerfarbe"
 
-msgid "Default value opacity"
-msgstr "Standardwertopazität"
-
 msgid "Warning color"
 msgstr "Warnfarbe"
 
@@ -583,6 +580,9 @@ msgstr ""
 
 msgid "Shorthand Cubic Bezier to"
 msgstr ""
+
+#~ msgid "Default value opacity"
+#~ msgstr "Standardwertopazität"
 
 #, fuzzy
 #~ msgid "Clear association"

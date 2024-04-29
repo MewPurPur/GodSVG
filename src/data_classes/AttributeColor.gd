@@ -1,21 +1,26 @@
+# An attribute representing a color string, or an url to the ID of a paint element.
 class_name AttributeColor extends Attribute
-## An attribute representing a color string, or an url to an ID.
 
 # No direct color representation for this attribute type. There are too many quirks.
 
-func _init(new_default: String, new_init := "") -> void:
-	default = new_default
-	set_value(new_init if !new_init.is_empty() else new_default, SyncMode.SILENT)
-
 func set_value(new_value: String, sync_mode := SyncMode.LOUD) -> void:
-	super(new_value if ColorParser.is_valid(new_value) else default, sync_mode)
+	super(new_value if (new_value.is_empty() or ColorParser.is_valid(new_value))\
+			else get_default(), sync_mode)
 
 func autoformat(text: String) -> String:
 	if GlobalSettings.color_enable_autoformatting:
 		var new_text := ColorParser.format_text(text)
-		return default if ColorParser.are_colors_same(new_text, default) else new_text
+		return get_default() if ColorParser.are_colors_same(new_text, get_default()) else\
+				new_text
 	else:
 		return text
+
+
+func get_color() -> Color:
+	if _value.is_empty():
+		return ColorParser.string_to_color(DB.attribute_defaults[name])
+	else:
+		return ColorParser.string_to_color(_value)
 
 
 const special_colors = ["none", "currentColor"]

@@ -1,5 +1,5 @@
+# A popup for picking a path command.
 extends PanelContainer
-## A popup for picking a path command.
 
 signal path_command_picked(new_command: String)
 

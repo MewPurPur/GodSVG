@@ -1,4 +1,4 @@
-## A button for a path command picker.
+# A button for a path command picker.
 extends Button
 
 signal pressed_custom(cmd_char: String)

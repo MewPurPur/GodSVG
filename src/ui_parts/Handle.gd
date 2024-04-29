@@ -1,4 +1,4 @@
-## Base class for handles.
+# Base class for handles.
 class_name Handle extends RefCounted
 
 enum Display {BIG, SMALL}
