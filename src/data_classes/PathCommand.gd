@@ -1,4 +1,4 @@
-## A native class that represents a path command and its parameters.
+# A native class that represents a path command and its parameters.
 class_name PathCommand extends RefCounted
 
 const translation_dict := {

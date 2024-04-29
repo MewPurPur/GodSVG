@@ -1,5 +1,5 @@
+# A <svg></svg> tag.
 class_name TagSVG extends Tag
-## A <svg></svg> tag.
 
 var width: float
 var height: float
@@ -24,11 +24,8 @@ const known_attributes = ["width", "height", "viewBox", "xmlns"]
 const name = "svg"
 
 func _init() -> void:
-	attributes = {
-		"height": AttributeNumeric.new(0.0, INF, ""),
-		"width": AttributeNumeric.new(0.0, INF, ""),
-		"viewBox": AttributeList.new(),
-	}
+	for attrib_name in ["width", "height", "viewBox"]:
+		attributes[attrib_name] = DB.attribute(attrib_name)
 	unknown_attributes.append(AttributeUnknown.new("xmlns", "http://www.w3.org/2000/svg"))
 	attribute_changed.connect(update_cache.unbind(1))
 	changed_unknown.connect(update_cache)

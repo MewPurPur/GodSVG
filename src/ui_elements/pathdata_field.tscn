@@ -1,6 +1,6 @@
 [gd_scene load_steps=7 format=3 uid="uid://dqy5lv33sy5r7"]
 
-[ext_resource type="Script" path="res://src/ui_elements/path_field.gd" id="1_22rk2"]
+[ext_resource type="Script" path="res://src/ui_elements/pathdata_field.gd" id="1_22rk2"]
 [ext_resource type="Script" path="res://src/ui_elements/BetterLineEdit.gd" id="2_48xgh"]
 [ext_resource type="Texture2D" uid="uid://eif2ioi0mw17" path="res://visual/icons/Plus.svg" id="3_at2g1"]
 

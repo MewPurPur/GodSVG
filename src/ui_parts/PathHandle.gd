@@ -1,4 +1,4 @@
-## A handle that binds to one or two path parameters.
+# A handle that binds to one or two path parameters.
 class_name PathHandle extends Handle
 
 var path_attribute: AttributePath

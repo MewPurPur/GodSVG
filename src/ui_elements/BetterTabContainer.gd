@@ -1,6 +1,6 @@
-## A TabContainer that automatically localizes tab titles.
 @icon("res://visual/godot_only/BetterTabContainer.svg")
 class_name BetterTabContainer extends TabContainer
+## A TabContainer that automatically localizes tab titles.
 
 var tab_keys: Array[String]
 

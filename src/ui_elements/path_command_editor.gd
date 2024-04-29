@@ -1,4 +1,4 @@
-## An editor for a single path command.
+# An editor for a single path command.
 extends Control
 
 @export var absolute_button_normal: StyleBoxFlat

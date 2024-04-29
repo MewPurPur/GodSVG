@@ -278,9 +278,6 @@ msgstr ""
 msgid "Error color"
 msgstr ""
 
-msgid "Default value opacity"
-msgstr ""
-
 msgid "Warning color"
 msgstr ""
 

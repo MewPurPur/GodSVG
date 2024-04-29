@@ -282,9 +282,6 @@ msgstr "Цвят на CDATA"
 msgid "Error color"
 msgstr "Цвят на грешките"
 
-msgid "Default value opacity"
-msgstr "Прозрачност на стандартните стойности"
-
 msgid "Warning color"
 msgstr "Цвят на предупрежденията"
 
@@ -565,3 +562,6 @@ msgstr "Кубична крива на Безие до"
 
 msgid "Shorthand Cubic Bezier to"
 msgstr "Кратка кубична крива на Безие до"
+
+#~ msgid "Default value opacity"
+#~ msgstr "Прозрачност на стандартните стойности"

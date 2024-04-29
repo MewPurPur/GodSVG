@@ -446,17 +446,6 @@ theme_override_constants/separation = 3
 layout_mode = 2
 text = "Basic colors"
 
-[node name="DefaultValueOpacity" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Theme/ThemeSettings/BasicColorsVBox" instance=ExtResource("5_dx7vp")]
-unique_name_in_owner = true
-layout_mode = 2
-section_name = "theming"
-setting_name = "default_value_opacity"
-values = Array[String](["0.55", "0.7", "0.85"])
-type = 3
-restricted = false
-number_min = 0.1
-number_max = 1.0
-
 [node name="ValidColor" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Theme/ThemeSettings/BasicColorsVBox" instance=ExtResource("4_dacsc")]
 layout_mode = 2
 section_name = "theming"

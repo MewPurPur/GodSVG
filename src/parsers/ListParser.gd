@@ -1,4 +1,4 @@
-## A parser for [AttributeList].
+# A parser for AttributeList.
 class_name ListParser extends RefCounted
 
 static func string_to_list(string: String) -> PackedFloat32Array:

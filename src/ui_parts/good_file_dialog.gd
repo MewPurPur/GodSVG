@@ -1,4 +1,4 @@
-## A fallback file dialog for if the native file dialog is not available.
+# A fallback file dialog, always used if the native file dialog is not available.
 extends PanelContainer
 
 const AlertDialog = preload("res://src/ui_parts/alert_dialog.tscn")

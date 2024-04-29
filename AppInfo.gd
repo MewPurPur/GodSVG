@@ -1,4 +1,4 @@
-## Stores basic information about GodSVG.
+# Stores basic information about GodSVG.
 class_name AppInfo extends RefCounted
 
 const project_founder_and_manager: Array[String] = ["MewPurPur"]

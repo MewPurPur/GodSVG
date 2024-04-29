@@ -1,4 +1,4 @@
-## An editor for flags with the value of 0 or 1, not tied to any attribute.
+# An editor for flags with the value of 0 or 1, not tied to an attribute.
 extends Button
 
 var hovered := false

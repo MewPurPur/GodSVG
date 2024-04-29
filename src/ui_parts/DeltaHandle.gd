@@ -1,4 +1,4 @@
-## A handle that binds to a numeric attribute, relative to two other numeric attributes.
+# A handle that binds to a numeric attribute, relative to two other numeric attributes.
 class_name DeltaHandle extends Handle
 
 # Required.

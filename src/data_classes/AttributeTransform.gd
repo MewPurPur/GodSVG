@@ -1,5 +1,5 @@
+# An attribute representing a list of transformations.
 class_name AttributeTransform extends Attribute
-## An attribute representing a list of transforms.
 
 class Transform extends RefCounted:
 	func compute_transform() -> Transform2D:
@@ -82,10 +82,6 @@ class TransformSkewY extends Transform:
 
 var _transform_list: Array[Transform] = []
 var _final_transform := Transform2D.IDENTITY
-
-func _init() -> void:
-	default = ""
-	set_value(default, SyncMode.SILENT)
 
 func _sync() -> void:
 	_transform_list = TransformListParser.text_to_transform_list(get_value())

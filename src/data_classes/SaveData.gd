@@ -1,4 +1,4 @@
-## Stores data that needs to be retained between sessions.
+# Stores data that needs to be retained between sessions.
 class_name SaveData extends Resource
 
 const GoodColorPicker = preload("res://src/ui_elements/good_color_picker.gd")

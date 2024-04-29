@@ -1,14 +1,14 @@
-## A TextEdit with some improvements.
 @icon("res://visual/godot_only/BetterTextEdit.svg")
 class_name BetterTextEdit extends TextEdit
+## A TextEdit with some improvements.
 
 const code_font = preload("res://visual/fonts/FontMono.ttf")
 const caret_color = Color("defd")
 
-var surface := RenderingServer.canvas_item_create()
-var timer := Timer.new()
+var _surface := RenderingServer.canvas_item_create()
+var _timer := Timer.new()
 
-var hovered := false
+var _hovered := false
 
 func _init() -> void:
 	context_menu_enabled = false
@@ -19,9 +19,9 @@ func _init() -> void:
 	highlight_all_occurrences = true
 
 func _ready() -> void:
-	RenderingServer.canvas_item_set_parent(surface, get_canvas_item())
-	add_child(timer)
-	timer.timeout.connect(blink)
+	RenderingServer.canvas_item_set_parent(_surface, get_canvas_item())
+	add_child(_timer)
+	_timer.timeout.connect(blink)
 	get_v_scroll_bar().value_changed.connect(queue_redraw_caret.unbind(1))
 	get_h_scroll_bar().value_changed.connect(queue_redraw_caret.unbind(1))
 	mouse_exited.connect(_on_mouse_exited)
@@ -45,8 +45,8 @@ func redraw_caret() -> void:
 	is_caret_queued_for_redraw = false
 	blonk = false
 	blink()
-	timer.start(0.6)
-	RenderingServer.canvas_item_clear(surface)
+	_timer.start(0.6)
+	RenderingServer.canvas_item_clear(_surface)
 	if not has_focus():
 		return
 	
@@ -74,26 +74,26 @@ func redraw_caret() -> void:
 			caret_end.x += char_size.x - 1
 		else:
 			caret_end.y -= char_size.y + 1
-		RenderingServer.canvas_item_add_line(surface, caret_pos, caret_end, caret_color, 1)
+		RenderingServer.canvas_item_add_line(_surface, caret_pos, caret_end, caret_color, 1)
 
 var blonk := true
 func blink() -> void:
 	blonk = not blonk
-	RenderingServer.canvas_item_set_visible(surface, blonk)
+	RenderingServer.canvas_item_set_visible(_surface, blonk)
 
 func _on_focus_entered() -> void:
-	timer.start(0.6)
+	_timer.start(0.6)
 
 func _on_focus_exited() -> void:
-	timer.stop()
-	RenderingServer.canvas_item_clear(surface)
+	_timer.stop()
+	RenderingServer.canvas_item_clear(_surface)
 
 func _on_mouse_exited() -> void:
-	hovered = false
+	_hovered = false
 	queue_redraw()
 
 func _draw() -> void:
-	if editable and hovered and has_theme_stylebox("hover"):
+	if editable and _hovered and has_theme_stylebox("hover"):
 		draw_style_box(get_theme_stylebox("hover"), Rect2(Vector2.ZERO, size))
 
 func _input(event: InputEvent) -> void:
@@ -105,7 +105,7 @@ func _gui_input(event: InputEvent) -> void:
 	mouse_filter = Utils.mouse_filter_pass_non_drag_events(event)
 	
 	if event is InputEventMouseMotion and event.button_mask == 0:
-		hovered = true
+		_hovered = true
 		queue_redraw()
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_RIGHT and event.is_pressed():

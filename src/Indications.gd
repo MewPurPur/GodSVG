@@ -1,5 +1,5 @@
+# This singleton handles temporary editor information like zoom level and selections.
 extends Node
-## This singleton handles editor information like zoom level and selections.
 
 const PathCommandPopup = preload("res://src/ui_elements/path_popup.tscn")
 
@@ -69,8 +69,8 @@ func _ready() -> void:
 	SVG.root_tag.changed_unknown.connect(clear_all_selections)
 
 
-## Override the selected tags with a single new selected tag.
-## If inner_idx is given, this will be an inner selection.
+# Override the selected tags with a single new selected tag.
+# If inner_idx is given, this will be an inner selection.
 func normal_select(tid: PackedInt32Array, inner_idx := -1) -> void:
 	if tid.is_empty():
 		return
@@ -98,8 +98,8 @@ func normal_select(tid: PackedInt32Array, inner_idx := -1) -> void:
 		if inner_selections != old_inner_selections:
 			selection_changed.emit()
 
-## If the tag was selected, unselect it. If it was unselected, select it.
-## If inner_idx is given, this will be an inner selection.
+# If the tag was selected, unselect it. If it was unselected, select it.
+# If inner_idx is given, this will be an inner selection.
 func ctrl_select(tid: PackedInt32Array, inner_idx := -1) -> void:
 	if tid.is_empty():
 		return
@@ -130,8 +130,8 @@ func ctrl_select(tid: PackedInt32Array, inner_idx := -1) -> void:
 	
 	selection_changed.emit()
 
-## Select all tags with the same depth from the tag to the last selected tag.
-## Similarly for inner selections if inner_idx is given, but without tree logic.
+# Select all tags with the same depth from the tag to the last selected tag.
+# Similarly for inner selections if inner_idx is given, but without tree logic.
 func shift_select(tid: PackedInt32Array, inner_idx := -1) -> void:
 	if tid.is_empty():
 		return
@@ -187,7 +187,7 @@ func shift_select(tid: PackedInt32Array, inner_idx := -1) -> void:
 	
 	selection_changed.emit()
 
-## Select all tags.
+# Select all tags.
 func select_all() -> void:
 	clear_inner_selection()
 	var tid_list := SVG.root_tag.get_all_tids()
@@ -200,14 +200,14 @@ func select_all() -> void:
 	selection_changed.emit()
 
 
-## Clear the selected tags.
+# Clear the selected tags.
 func clear_selection() -> void:
 	if not selected_tids.is_empty():
 		selected_tids.clear()
 		selection_pivot_tid.clear()
 		selection_changed.emit()
 
-## Clear the inner selection.
+# Clear the inner selection.
 func clear_inner_selection() -> void:
 	if not inner_selections.is_empty() or not semi_selected_tid.is_empty():
 		inner_selections.clear()
@@ -215,7 +215,7 @@ func clear_inner_selection() -> void:
 		inner_selection_pivot = -1
 		selection_changed.emit()
 
-## Clear the selected tags or the inner selection.
+# Clear the selected tags or the inner selection.
 func clear_all_selections() -> void:
 	if not inner_selections.is_empty() or not semi_selected_tid.is_empty() or\
 	not selected_tids.is_empty():
@@ -225,7 +225,7 @@ func clear_all_selections() -> void:
 		selection_changed.emit()
 
 
-## Set the hovered tag.
+# Set the hovered tag.
 func set_hovered(tid: PackedInt32Array, inner_idx := -1) -> void:
 	if inner_idx == -1:
 		if hovered_tid != tid:
@@ -247,7 +247,7 @@ func set_hovered(tid: PackedInt32Array, inner_idx := -1) -> void:
 				hovered_tid.clear()
 			hover_changed.emit()
 
-## If the tag is hovered, make it not hovered.
+# If the tag is hovered, make it not hovered.
 func remove_hovered(tid: PackedInt32Array, inner_idx := -1) -> void:
 	if inner_idx == -1:
 		if hovered_tid == tid:
@@ -259,13 +259,13 @@ func remove_hovered(tid: PackedInt32Array, inner_idx := -1) -> void:
 			inner_hovered = -1
 			hover_changed.emit()
 
-## Clear the hovered tag.
+# Clear the hovered tag.
 func clear_hovered() -> void:
 	if not hovered_tid.is_empty():
 		hovered_tid.clear()
 		hover_changed.emit()
 
-## Clear the inner hover.
+# Clear the inner hover.
 func clear_inner_hovered() -> void:
 	if inner_hovered != -1:
 		inner_hovered = -1

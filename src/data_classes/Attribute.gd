@@ -1,10 +1,10 @@
+# Abstract class for an attribute inside a tag, i.e. <tag attribute="value"/>
 class_name Attribute extends RefCounted
-## Abstract class for an attribute inside a [Tag], i.e. <tag attribute="value"/>
 
 signal value_changed(new_value: String)
 signal propagate_value_changed(undo_redo: bool)
 
-var default: String
+var name: String
 var _value: String
 
 enum SyncMode {LOUD, INTERMEDIATE, FINAL, NO_PROPAGATION, SILENT}
@@ -46,3 +46,13 @@ func _sync() -> void:
 
 func autoformat(text: String) -> String:
 	return text
+
+func get_default() -> String:
+	if name in DB.attribute_defaults:
+		return DB.attribute_defaults[name]
+	else:
+		return ""
+
+func _init(new_name: String, init_value := "") -> void:
+	name = new_name
+	set_value(init_value, SyncMode.FINAL)

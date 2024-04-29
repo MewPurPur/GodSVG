@@ -31,7 +31,7 @@ func _ready() -> void:
 func _notification(what: int) -> void:
 	if what == Utils.CustomNotification.HIGHLIGHT_COLORS_CHANGED:
 		setup_highlighter()
-	if what == Utils.CustomNotification.THEME_CHANGED:
+	elif what == Utils.CustomNotification.THEME_CHANGED:
 		setup_theme()
 
 

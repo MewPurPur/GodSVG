@@ -283,9 +283,6 @@ msgstr "Цвет CDATA"
 msgid "Error color"
 msgstr "Цвет ошибки"
 
-msgid "Default value opacity"
-msgstr "Стандартное значение непрозрачности"
-
 msgid "Warning color"
 msgstr "Цвет предупреждения"
 
@@ -566,6 +563,9 @@ msgstr "Кибическая Безье до"
 
 msgid "Shorthand Cubic Bezier to"
 msgstr "Сокращенная кубическая Безье до"
+
+#~ msgid "Default value opacity"
+#~ msgstr "Стандартное значение непрозрачности"
 
 #, fuzzy
 #~ msgid "Clear association"

@@ -1,5 +1,5 @@
+# A <path/> tag.
 class_name TagPath extends Tag
-## A <path/> tag.
 
 const name = "path"
 const possible_conversions = []
@@ -9,18 +9,9 @@ const known_attributes = ["d", "transform", "opacity", "fill", "fill-opacity",
 		"stroke", "stroke-opacity", "stroke-width", "stroke-linecap", "stroke-linejoin"]
 
 func _init(pos := Vector2.ZERO) -> void:
-	attributes = {
-		"transform": AttributeTransform.new(),
-		"d": AttributePath.new(),
-		"opacity": AttributeNumeric.new(0.0, 1.0, "1"),
-		"fill": AttributeColor.new("black"),
-		"fill-opacity": AttributeNumeric.new(0.0, 1.0, "1"),
-		"stroke": AttributeColor.new("none"),
-		"stroke-opacity": AttributeNumeric.new(0.0, 1.0, "1"),
-		"stroke-width": AttributeNumeric.new(0.0, INF, "1"),
-		"stroke-linecap": AttributeEnum.new(["butt", "round", "square"], 0),
-		"stroke-linejoin": AttributeEnum.new(["miter", "round", "bevel"], 0),
-	}
+	for attrib_name in ["transform", "d", "opacity", "fill", "fill-opacity",
+	"stroke", "stroke-opacity", "stroke-width", "stroke-linecap", "stroke-linejoin"]:
+		attributes[attrib_name] = DB.attribute(attrib_name)
 	attributes.d.insert_command(0, "M")
 	attributes.d.set_command_property(0, "x", pos.x)
 	attributes.d.set_command_property(0, "y", pos.y)

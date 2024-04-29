@@ -28,13 +28,21 @@ static func _tag_to_text(tag: Tag) -> String:
 	for attribute_key in tag.attributes:
 		var attribute: Attribute = tag.attributes[attribute_key]
 		var value := attribute.get_value()
-		if value == attribute.default:
+		
+		if value.is_empty():
 			continue
 		
-		text += " " + attribute_key + '="' + value + '"'
+		if not '"' in value:
+			text += ' %s="%s"' % [attribute_key, value]
+		else:
+			text += " %s='%s'" % [attribute_key, value]
 	
 	for attribute in tag.unknown_attributes:
-		text += " " + attribute.name + '="' + attribute.get_value() + '"'
+		var value := attribute.get_value()
+		if not '"' in value:
+			text += ' %s="%s"' % [attribute.name, value]
+		else:
+			text += " %s='%s'" % [attribute.name, value]
 	
 	if tag.is_standalone() and GlobalSettings.xml_shorthand_tags and\
 	not tag.name in shorthand_tag_exceptions:
