@@ -1,4 +1,4 @@
-## A color editor, not tied to any attribute.
+# A color editor, not tied to any attribute.
 extends HBoxContainer
 
 const ColorPopup = preload("res://src/ui_elements/color_popup.tscn")

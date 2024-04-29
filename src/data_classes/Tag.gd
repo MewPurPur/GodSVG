@@ -1,5 +1,5 @@
+# An SVG tag, standalone (<tag/>) or container (<tag></tag>).
 class_name Tag extends RefCounted
-## A SVG tag, standalone ([code]<tag/>[/code]) or container ([code]<tag></tag>[/code]).
 
 var child_tags: Array[Tag]
 

@@ -1,11 +1,7 @@
+# The "d" attribute of [TagPath].
 class_name AttributePath extends Attribute
-## The "d" attribute of [TagPath].
 
 var _commands: Array[PathCommand]
-
-func _init() -> void:
-	default = ""
-	set_value(default, SyncMode.SILENT)
 
 func _sync() -> void:
 	_commands = PathDataParser.parse_path_data(get_value())

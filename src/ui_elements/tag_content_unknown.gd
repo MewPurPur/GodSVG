@@ -19,23 +19,24 @@ func _ready() -> void:
 		if attribute is AttributeTransform:
 			input_field = TransformField.instantiate()
 		elif attribute is AttributeNumeric:
-			if is_inf(attribute.max_value):
+			var min_value: float = DB.attribute_numeric_bounds[attribute.name].x
+			var max_value: float = DB.attribute_numeric_bounds[attribute.name].y
+			if is_inf(max_value):
 				input_field = NumberField.instantiate()
-				if not is_inf(attribute.min_value):
+				if not is_inf(min_value):
 					input_field.allow_lower = false
-					input_field.min_value = attribute.min_value
+					input_field.min_value = min_value
 			else:
 				input_field = NumberSlider.instantiate()
 				input_field.allow_lower = false
 				input_field.allow_higher = false
-				input_field.min_value = attribute.min_value
-				input_field.max_value = attribute.max_value
+				input_field.min_value = min_value
+				input_field.max_value = max_value
 				input_field.slider_step = 0.01
 		elif attribute is AttributeColor:
 			input_field = ColorField.instantiate()
 		elif attribute is AttributeEnum:
 			input_field = EnumField.instantiate()
 		input_field.attribute = attribute
-		input_field.attribute_name = attribute_key
 		input_field.focused.connect(Indications.normal_select.bind(tid))
 		attribute_container.add_child(input_field)

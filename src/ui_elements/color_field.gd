@@ -1,9 +1,8 @@
-## An editor to be tied to a color attribute.
+# An editor to be tied to a color attribute.
 extends HBoxContainer
 
 signal focused
 var attribute: AttributeColor
-var attribute_name: String
 
 const ColorPopup = preload("res://src/ui_elements/color_popup.tscn")
 const checkerboard = preload("res://visual/icons/backgrounds/ColorButtonBG.svg")
@@ -15,16 +14,14 @@ const checkerboard = preload("res://visual/icons/backgrounds/ColorButtonBG.svg")
 var ci := get_canvas_item()
 
 func set_value(new_value: String, update_type := Utils.UpdateType.REGULAR) -> void:
-	# Validate the value.
-	if not is_valid(new_value):
-		sync(attribute.get_value())
-		return
-	
+	if not new_value.is_empty():
+		# Validate the value.
+		if not is_valid(new_value):
+			sync(attribute.get_value())
+			return
 	new_value = ColorParser.add_hash_if_hex(new_value)
-	if ColorParser.are_colors_same(new_value, attribute.default):
-		new_value = attribute.default
-	
 	sync(attribute.autoformat(new_value))
+	
 	# Update the attribute.
 	if attribute.get_value() != new_value or update_type == Utils.UpdateType.FINAL:
 		match update_type:
@@ -38,9 +35,11 @@ func set_value(new_value: String, update_type := Utils.UpdateType.REGULAR) -> vo
 
 func _ready() -> void:
 	set_value(attribute.get_value())
-	attribute.value_changed.connect(set_value)
-	color_edit.tooltip_text = attribute_name
+	color_edit.tooltip_text = attribute.name
+	color_edit.placeholder_text = attribute.get_default()
 	color_button.resized.connect(queue_redraw)
+	attribute.value_changed.connect(set_value)
+	color_edit.text_submitted.connect(set_value)
 
 
 func _on_button_pressed() -> void:
@@ -56,7 +55,7 @@ func _draw() -> void:
 	var stylebox := StyleBoxFlat.new()
 	stylebox.corner_radius_top_right = 5
 	stylebox.corner_radius_bottom_right = 5
-	stylebox.bg_color = ColorParser.string_to_color(attribute.get_value())
+	stylebox.bg_color = attribute.get_color()
 	checkerboard.draw(ci, Vector2.ZERO)
 	stylebox.draw(ci, Rect2(Vector2.ZERO, button_size - Vector2(1, 2)))
 
@@ -64,12 +63,6 @@ func _draw() -> void:
 func _on_focus_entered() -> void:
 	color_edit.remove_theme_color_override("font_color")
 	focused.emit()
-
-func _on_text_submitted(new_text: String) -> void:
-	if new_text.strip_edges().is_empty():
-		set_value(attribute.default)
-	else:
-		set_value(new_text)
 
 func _on_text_change_canceled() -> void:
 	sync(attribute.get_value())
@@ -93,14 +86,13 @@ func _on_text_changed(new_text: String) -> void:
 func sync(new_value: String) -> void:
 	if color_edit != null:
 		color_edit.remove_theme_color_override("font_color")
-		if new_value == attribute.default:
-			color_edit.add_theme_color_override("font_color", Color(color_edit.get_theme_color(
-					"font_color"), GlobalSettings.default_value_opacity))
+		if new_value == attribute.get_default():
+			color_edit.add_theme_color_override("font_color", GlobalSettings.basic_color_warning)
 		color_edit.text = new_value.trim_prefix("#")
 	queue_redraw()
 
 func _notification(what: int) -> void:
-	if what == Utils.CustomNotification.DEFAULT_VALUE_OPACITY_CHANGED:
+	if what == Utils.CustomNotification.BASIC_COLORS_CHANGED:
 		sync(color_edit.text)
 
 

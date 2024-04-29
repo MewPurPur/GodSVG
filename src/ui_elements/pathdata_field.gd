@@ -1,9 +1,8 @@
-## An editor to be tied to an AttributePath.
+# An editor to be tied to a pathdata attribute.
 extends VBoxContainer
 
 signal focused
 var attribute: AttributePath
-var attribute_name: String
 
 const CommandEditor = preload("path_command_editor.tscn")
 
@@ -26,7 +25,7 @@ func set_attribute(new_attribute: AttributePath) -> void:
 	attribute = new_attribute
 	set_value(attribute.get_value())
 	attribute.value_changed.connect(set_value)
-	line_edit.tooltip_text = attribute_name
+	line_edit.tooltip_text = attribute.name
 	add_move.pressed.connect(attribute.insert_command.bind(0, "M"))
 	line_edit.text_submitted.connect(set_value)
 	line_edit.focus_entered.connect(_on_line_edit_focus_entered)

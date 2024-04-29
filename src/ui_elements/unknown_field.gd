@@ -1,10 +1,8 @@
-## An editor to be tied to an AttributeUnknown.
-## Allows attributes to be edited even if they aren't recognized by GodSVG.
+# An editor to be tied to an attribute GodSVG can't recognize, allowing to still edit it.
 extends BetterLineEdit
 
 signal focused
 var attribute: AttributeUnknown
-var attribute_name: String
 
 func set_value(new_value: String, update_type := Utils.UpdateType.REGULAR) -> void:
 	sync(new_value)
@@ -21,7 +19,7 @@ func set_value(new_value: String, update_type := Utils.UpdateType.REGULAR) -> vo
 func _ready() -> void:
 	super()
 	set_value(attribute.get_value())
-	tooltip_text = attribute_name + "\n(" + tr("GodSVG doesn’t recognize this attribute") + ")"
+	tooltip_text = attribute.name + "\n(%s)" % tr("GodSVG doesn’t recognize this attribute")
 
 
 func _on_focus_entered() -> void:

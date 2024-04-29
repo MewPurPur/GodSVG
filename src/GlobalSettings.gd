@@ -1,4 +1,4 @@
-## This singleton handles save data and settings.
+# This singleton handles session data and settings.
 extends Node
 
 # Session data
@@ -47,7 +47,6 @@ const default_config = {
 		"handle_hovered_color": Color("#aaa"),
 		"handle_selected_color": Color("#46f"),
 		"handle_hovered_selected_color": Color("#f44"),
-		"default_value_opacity": 0.7,
 		"basic_color_valid": Color("9f9"),
 		"basic_color_error": Color("f99"),
 		"basic_color_warning": Color("ff9"),
@@ -128,7 +127,6 @@ var handle_color := Color("#111")
 var handle_hovered_color := Color("#aaa")
 var handle_selected_color := Color("#46f")
 var handle_hovered_selected_color := Color("#f44")
-var default_value_opacity := 0.7
 var basic_color_valid := Color("9f9")
 var basic_color_error := Color("f99")
 var basic_color_warning := Color("ff9")

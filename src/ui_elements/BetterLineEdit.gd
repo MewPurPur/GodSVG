@@ -1,12 +1,13 @@
-## A LineEdit with a few tweaks to make it nicer to use.
 @icon("res://visual/godot_only/BetterLineEdit.svg")
 class_name BetterLineEdit extends LineEdit
+## A LineEdit with a few tweaks to make it nicer to use.
 
+## Emitted when Esc is pressed to cancel the current text change.
 signal text_change_canceled
 
 const code_font = preload("res://visual/fonts/FontMono.ttf")
 
-var hovered := false
+var _hovered := false
 
 ## When turned on, uses the mono font for the tooltip.
 @export var code_font_tooltip := false
@@ -58,11 +59,11 @@ func _on_focus_exited() -> void:
 
 
 func _on_mouse_exited() -> void:
-	hovered = false
+	_hovered = false
 	queue_redraw()
 
 func _draw() -> void:
-	if editable and hovered and has_theme_stylebox("hover"):
+	if editable and _hovered and has_theme_stylebox("hover"):
 		draw_style_box(get_theme_stylebox("hover"), Rect2(Vector2.ZERO, size))
 
 func _make_custom_tooltip(for_text: String) -> Object:
@@ -82,7 +83,7 @@ func _gui_input(event: InputEvent) -> void:
 	mouse_filter = Utils.mouse_filter_pass_non_drag_events(event)
 	
 	if event is InputEventMouseMotion and event.button_mask == 0:
-		hovered = true
+		_hovered = true
 		queue_redraw()
 	elif event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_RIGHT and event.is_pressed():

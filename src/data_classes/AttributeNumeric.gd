@@ -1,18 +1,13 @@
+# An attribute representing a number.
 class_name AttributeNumeric extends Attribute
-## An attribute representing a number.
 
 var _number := NAN
-var min_value: float
-var max_value: float
-
-func _init(new_min: float, new_max: float, new_default: String, new_init := "") -> void:
-	min_value = new_min
-	max_value = new_max
-	default = new_default
-	set_value(new_init if !new_init.is_empty() else new_default, SyncMode.SILENT)
 
 func _sync() -> void:
-	_number = NumberParser.text_to_num(get_value())
+	if _value.is_empty():
+		_number = NumberParser.text_to_num(DB.attribute_defaults[name])
+	else:
+		_number = NumberParser.text_to_num(_value)
 
 func autoformat(text: String) -> String:
 	if GlobalSettings.number_enable_autoformatting:

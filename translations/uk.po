@@ -45,6 +45,13 @@ msgstr ""
 msgid "Use CTRL for zooming"
 msgstr "Використовувати CTRL для масштабування"
 
+msgid ""
+"If turned on, scrolling will pan the view. To zoom, hold CTRL while "
+"scrolling."
+msgstr ""
+"Якщо увімкнено, гортання буде рухати вікно перегляду. Щоб масштабувати, "
+"затисніть CTRL доки гортаєте."
+
 msgid "UI scale"
 msgstr "Масштаб інтерфейсу"
 
@@ -276,9 +283,6 @@ msgstr "Колір CDATA"
 
 msgid "Error color"
 msgstr "Колір помилки"
-
-msgid "Default value opacity"
-msgstr "Стандартне значення непрозорості"
 
 msgid "Warning color"
 msgstr "Колір попередження"
@@ -561,12 +565,8 @@ msgstr "Кубічна Безьє до"
 msgid "Shorthand Cubic Bezier to"
 msgstr "Скорочена кубічна Безьє до"
 
-#~ msgid ""
-#~ "If turned on, scrolling will pan the view. To zoom, hold CTRL while "
-#~ "scrolling."
-#~ msgstr ""
-#~ "Якщо увімкнено, гортання буде рухати вікно перегляду. Щоб масштабувати, "
-#~ "затисніть CTRL доки гортаєте."
+#~ msgid "Default value opacity"
+#~ msgstr "Стандартне значення непрозорості"
 
 #, fuzzy
 #~ msgid "Clear association"

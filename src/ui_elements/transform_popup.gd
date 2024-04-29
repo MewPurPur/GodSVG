@@ -1,5 +1,7 @@
-## A popup for editing a transform matrix.
+# A popup for editing a transform list.
 extends PanelContainer
+
+const DEFAULT_VALUE_OPACITY = 2/3.0
 
 const NumberEditType = preload("res://src/ui_elements/number_edit.gd")
 
@@ -56,7 +58,7 @@ func rebuild() -> void:
 			if t.y == 0:
 				transform_editor.fields[1].add_theme_color_override("font_color", Color(
 						transform_editor.fields[1].get_theme_color("font_color"),
-						GlobalSettings.default_value_opacity))
+						DEFAULT_VALUE_OPACITY))
 			else:
 				transform_editor.fields[1].remove_theme_color_override("font_color")
 		elif t is AttributeTransform.TransformRotate and transform_editor.type == "rotate":
@@ -66,10 +68,10 @@ func rebuild() -> void:
 			if t.x == 0 and t.y == 0:
 				transform_editor.fields[1].add_theme_color_override("font_color", Color(
 						transform_editor.fields[1].get_theme_color("font_color"),
-						GlobalSettings.default_value_opacity))
+						DEFAULT_VALUE_OPACITY))
 				transform_editor.fields[2].add_theme_color_override("font_color", Color(
 						transform_editor.fields[2].get_theme_color("font_color"),
-						GlobalSettings.default_value_opacity))
+						DEFAULT_VALUE_OPACITY))
 			else:
 				transform_editor.fields[1].remove_theme_color_override("font_color")
 				transform_editor.fields[2].remove_theme_color_override("font_color")
@@ -79,7 +81,7 @@ func rebuild() -> void:
 			if t.x == t.y:
 				transform_editor.fields[1].add_theme_color_override("font_color", Color(
 						transform_editor.fields[1].get_theme_color("font_color"),
-						GlobalSettings.default_value_opacity))
+						DEFAULT_VALUE_OPACITY))
 			else:
 				transform_editor.fields[1].remove_theme_color_override("font_color")
 		elif t is AttributeTransform.TransformSkewX and transform_editor.type == "skewX":
@@ -197,7 +199,7 @@ property: String) -> BetterLineEdit:
 	(transform is AttributeTransform.TransformScale and transform.x == transform.y and\
 	property == "y"):
 		field.add_theme_color_override("font_color", Color(
-				field.get_theme_color("font_color"), GlobalSettings.default_value_opacity))
+				field.get_theme_color("font_color"), DEFAULT_VALUE_OPACITY))
 	field.tooltip_text = property
 	field.value_changed.connect(update_value.bind(idx, property))
 	return field

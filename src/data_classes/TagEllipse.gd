@@ -1,5 +1,5 @@
+# An <ellipse/> tag.
 class_name TagEllipse extends Tag
-## An <ellipse/> tag.
 
 const name = "ellipse"
 const possible_conversions = ["circle", "rect", "path"]
@@ -9,21 +9,14 @@ const known_attributes = ["cx", "cy", "rx", "ry", "transform", "opacity",
 		"fill", "fill-opacity", "stroke", "stroke-opacity", "stroke-width"]
 
 func _init(pos := Vector2.ZERO) -> void:
-	attributes = {
-		"transform": AttributeTransform.new(),
-		"cx": AttributeNumeric.new(-INF, INF, "0"),
-		"cy": AttributeNumeric.new(-INF, INF, "0"),
-		"rx": AttributeNumeric.new(0.0, INF, "0", "1"),
-		"ry": AttributeNumeric.new(0.0, INF, "0", "1"),
-		"opacity": AttributeNumeric.new(0.0, 1.0, "1"),
-		"fill": AttributeColor.new("black"),
-		"fill-opacity": AttributeNumeric.new(0.0, 1.0, "1"),
-		"stroke": AttributeColor.new("none"),
-		"stroke-opacity": AttributeNumeric.new(0.0, 1.0, "1"),
-		"stroke-width": AttributeNumeric.new(0.0, INF, "1"),
-	}
-	attributes.cx.set_num(pos.x)
-	attributes.cy.set_num(pos.y)
+	for attrib_name in ["transform", "cx", "cy", "opacity", "fill", "fill-opacity",
+	"stroke", "stroke-opacity", "stroke-width"]:
+		attributes[attrib_name] = DB.attribute(attrib_name)
+	attributes.rx = DB.attribute("rx", "1")
+	attributes.ry = DB.attribute("ry", "1")
+	if pos != Vector2.ZERO:
+		attributes.cx.set_num(pos.x)
+		attributes.cy.set_num(pos.y)
 	super()
 
 

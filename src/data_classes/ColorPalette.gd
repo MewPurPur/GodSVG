@@ -1,5 +1,5 @@
+# A resource for the color palettes that are listed in the color picker.
 class_name ColorPalette extends Resource
-## A resource for the color palettes that are listed in the color picker.
 
 signal layout_changed
 

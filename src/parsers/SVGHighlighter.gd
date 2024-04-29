@@ -1,4 +1,4 @@
-## A syntax highlighter for SVGs, allows for more flexibility than CodeHighlighter.
+# A syntax highlighter for SVGs, allows for more flexibility than CodeHighlighter.
 class_name SVGHighlighter extends SyntaxHighlighter
 
 @export var symbol_color := Color("abc9ff")
@@ -39,7 +39,7 @@ func _get_line_syntax_highlighting(line: int) -> Dictionary:
 					return color_map
 				else:
 					color_map[offset] = {"color":
-							tag_color if SVGDB.is_tag_known(tag_name) else unknown_tag_color}
+							tag_color if DB.is_tag_known(tag_name) else unknown_tag_color}
 				offset += tag_name.length()
 				
 				# Attribute names can't be directly after a quotation or after the tag name.
@@ -70,19 +70,19 @@ func _get_line_syntax_highlighting(line: int) -> Dictionary:
 					elif not current_attribute_name.is_empty():
 						if c in " \t\n\r":
 							color_map[offset - current_attribute_name.length()] = {"color":
-									attribute_color if SVGDB.is_attribute_known(tag_name,
+									attribute_color if DB.is_attribute_known(tag_name,
 									current_attribute_name) else unknown_attribute_color}
 							current_attribute_name = ""
 							expecting_equal_sign = true
 						elif c in "/>":
 							color_map[offset - current_attribute_name.length()] = {"color":
-									attribute_color if SVGDB.is_attribute_known(tag_name,
+									attribute_color if DB.is_attribute_known(tag_name,
 									current_attribute_name) else unknown_attribute_color}
 							color_map[offset] = {"color": error_color}
 							return color_map
 						elif c == "=":
 							color_map[offset - current_attribute_name.length()] = {"color":
-									attribute_color if SVGDB.is_attribute_known(tag_name,
+									attribute_color if DB.is_attribute_known(tag_name,
 									current_attribute_name) else unknown_attribute_color}
 							color_map[offset] = {"color": symbol_color}
 							current_attribute_name = ""
@@ -123,7 +123,7 @@ func _get_line_syntax_highlighting(line: int) -> Dictionary:
 					offset += 1
 				if not current_attribute_name.is_empty():
 					color_map[svg_text.length() - current_attribute_name.length() - 1] =\
-							{"color": attribute_color if SVGDB.is_attribute_known(tag_name,
+							{"color": attribute_color if DB.is_attribute_known(tag_name,
 							current_attribute_name) else unknown_attribute_color}
 			XMLParser.NODE_ELEMENT_END:
 				offset = svg_text.find("<", offset)
@@ -131,7 +131,7 @@ func _get_line_syntax_highlighting(line: int) -> Dictionary:
 				color_map[offset] = {"color": symbol_color}
 				offset += 2
 				color_map[offset] = {"color":
-						tag_color if SVGDB.is_tag_known(tag_name) else unknown_tag_color}
+						tag_color if DB.is_tag_known(tag_name) else unknown_tag_color}
 				offset += tag_name.length()
 				color_map[offset] = {"color": symbol_color}
 			XMLParser.NODE_TEXT:

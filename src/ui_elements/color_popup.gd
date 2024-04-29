@@ -1,5 +1,5 @@
+# A popup for picking a color.
 extends PanelContainer
-## A popup for picking a color.
 
 const GoodColorPickerType = preload("res://src/ui_elements/good_color_picker.gd")
 const ColorSwatchType = preload("res://src/ui_elements/color_swatch.gd")
@@ -35,6 +35,8 @@ func _ready() -> void:
 	# Setup the rest.
 	update_palettes()
 	update_color_picker()
+	search_field.text_changed.connect(update_palettes)
+	search_field.text_change_canceled.connect(update_palettes)
 
 func update_palettes(search_text := "") -> void:
 	for child in palettes_content_container.get_children():
@@ -74,7 +76,8 @@ func update_palettes(search_text := "") -> void:
 			swatch.pressed.connect(pick_palette_color.bind(color_to_show))
 			swatch_container.add_child(swatch)
 			swatches_list.append(swatch)
-			if ColorParser.are_colors_same("#" + color_to_show, current_value):
+			if ColorParser.are_colors_same(ColorParser.add_hash_if_hex(color_to_show),
+			current_value):
 				swatch.disabled = true
 				swatch.mouse_default_cursor_shape = Control.CURSOR_ARROW
 		palette_container.add_child(swatch_container)
@@ -102,6 +105,3 @@ func _on_switch_mode_pressed() -> void:
 
 func _on_tree_exited() -> void:
 	color_picked.emit(current_value, true)
-
-func _on_search_field_text_changed(new_text: String) -> void:
-	update_palettes(new_text)

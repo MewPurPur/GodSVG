@@ -1,9 +1,8 @@
-## An editor to be tied to a transform attribute.
+# An editor to be tied to a transform list attribute.
 extends HBoxContainer
 
 signal focused
 var attribute: AttributeTransform
-var attribute_name: String
 
 const TransformPopup = preload("res://src/ui_elements/transform_popup.tscn")
 
@@ -21,22 +20,15 @@ func set_value(new_value: String, update_type := Utils.UpdateType.REGULAR) -> vo
 			_:
 				attribute.set_value(new_value)
 
-func set_num(new_number: float, update_type := Utils.UpdateType.REGULAR) -> void:
-	set_value(NumberParser.num_to_text(new_number), update_type)
 
 func _ready() -> void:
 	set_value(attribute.get_value())
 	attribute.value_changed.connect(set_value)
-	line_edit.tooltip_text = attribute_name
+	line_edit.tooltip_text = attribute.name
+	line_edit.text_submitted.connect(set_value)
 
 func _on_focus_entered() -> void:
 	focused.emit()
-
-func _on_text_submitted(submitted_text: String) -> void:
-	set_value(submitted_text)
-
-func _on_matrix_popup_edited(new_matrix: String) -> void:
-	set_value(new_matrix)
 
 func sync(new_value: String) -> void:
 	line_edit.text = new_value

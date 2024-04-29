@@ -1,6 +1,6 @@
+# This singleton handles the two representations of the SVG:
+# The SVG text, and the native TagSVG representation.
 extends Node
-## This singleton handles the two representations of the SVG:
-## The SVG text, and the native [TagSVG] representation.
 
 
 signal parsing_finished(error_id: SVGParser.ParseError)

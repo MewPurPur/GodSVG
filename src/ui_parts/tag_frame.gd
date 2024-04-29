@@ -42,7 +42,6 @@ func _ready() -> void:
 		for attribute in tag.unknown_attributes:
 			var input_field := UnknownField.instantiate()
 			input_field.attribute = attribute
-			input_field.attribute_name = attribute.name
 			unknown_container.add_child(input_field)
 	
 	var tag_content: Control

@@ -114,7 +114,6 @@ func setup_setting_labels() -> void:
 	%HandleColors/HoveredColor.label.text = tr("Hovered color")
 	%HandleColors/SelectedColor.label.text = tr("Selected color")
 	%HandleColors/HoveredSelectedColor.label.text = tr("Hovered selected color")
-	%BasicColorsVBox/DefaultValueOpacity.label.text = tr("Default value opacity")
 	%BasicColorsVBox/ValidColor.label.text = tr("Valid color")
 	%BasicColorsVBox/ErrorColor.label.text = tr("Error color")
 	%BasicColorsVBox/WarningColor.label.text = tr("Warning color")
@@ -259,8 +258,10 @@ func setup_theming_tab() -> void:
 		if child is SettingColor:
 			child.value_changed.connect(custom_notify.bind(
 					Utils.CustomNotification.HANDLE_VISUALS_CHANGED))
-	%DefaultValueOpacity.value_changed.connect(custom_notify.bind(
-			Utils.CustomNotification.DEFAULT_VALUE_OPACITY_CHANGED))
+	for child in %BasicColorsVBox.get_children():
+		if child is SettingColor:
+			child.value_changed.connect(custom_notify.bind(
+					Utils.CustomNotification.BASIC_COLORS_CHANGED))
 
 func _on_theme_settings_changed() -> void:
 	ThemeGenerator.generate_theme()

@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://ntom8irbw0d5"]
 
 [ext_resource type="Script" path="res://src/ui_elements/tag_content_path.gd" id="1_t5x4b"]
-[ext_resource type="PackedScene" uid="uid://dqy5lv33sy5r7" path="res://src/ui_elements/path_field.tscn" id="1_vf17i"]
+[ext_resource type="PackedScene" uid="uid://dqy5lv33sy5r7" path="res://src/ui_elements/pathdata_field.tscn" id="1_vf17i"]
 
 [node name="TagContentPath" type="VBoxContainer"]
 offset_right = 40.0

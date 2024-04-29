@@ -1,4 +1,4 @@
-## A number editor, not tied to any attribute.
+# A number editor, not tied to any attribute.
 extends BetterLineEdit
 
 @export var min_value := 0.0
