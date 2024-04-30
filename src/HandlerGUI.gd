@@ -15,6 +15,7 @@ func _enter_tree() -> void:
 func _ready() -> void:
 	get_window().files_dropped.connect(_on_files_dropped)
 	get_window().dpi_changed.connect(update_ui_scale)
+	get_window().size_changed.connect(remove_all_popup_overlays)
 	if OS.has_feature("web"):
 		_define_web_js()
 	await get_tree().process_frame
@@ -33,8 +34,7 @@ func _on_files_dropped(files: PackedStringArray) -> void:
 
 
 func add_overlay(overlay_menu: Control) -> void:
-	while not popup_overlay_stack.is_empty():
-		remove_popup_overlay()
+	remove_all_popup_overlays()
 	
 	if not overlay_stack.is_empty():
 		overlay_stack.back().hide()
@@ -92,6 +92,10 @@ func remove_popup_overlay(overlay_ref: Control = null) -> void:
 	overlay_ref = popup_overlay_stack.pop_back()
 	if is_instance_valid(overlay_ref):
 		overlay_ref.queue_free()
+
+func remove_all_popup_overlays() -> void:
+	while not popup_overlay_stack.is_empty():
+		remove_popup_overlay()
 
 
 # Should usually be the global rect of a control.

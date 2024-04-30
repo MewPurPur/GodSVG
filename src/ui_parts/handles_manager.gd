@@ -1,4 +1,4 @@
-# This script manages contour drawing and hHandles. 
+# This script manages contour drawing and handles. 
 extends Control
 
 var normal_handle_textures: Dictionary
@@ -196,8 +196,8 @@ func _draw() -> void:
 		var attribs := tag.attributes
 		
 		# Determine if the tag is hovered/selected or has a hovered/selected parent.
-		var tag_hovered := tid_is_hovered(tid, -1)
-		var tag_selected := tid_is_selected(tid, -1)
+		var tag_hovered := Indications.is_hovered(tid, -1, true)
+		var tag_selected := Indications.is_selected(tid, -1, true)
 		
 		match tag.name:
 			"circle":
@@ -352,10 +352,10 @@ func _draw() -> void:
 					var relative := cmd.relative
 					
 					current_mode = Utils.InteractionType.NONE
-					if tid_is_hovered(tid, cmd_idx):
+					if Indications.is_hovered(tid, cmd_idx, true):
 						@warning_ignore("int_as_enum_without_cast")
 						current_mode += Utils.InteractionType.HOVERED
-					if tid_is_selected(tid, cmd_idx):
+					if Indications.is_selected(tid, cmd_idx, true):
 						@warning_ignore("int_as_enum_without_cast")
 						current_mode += Utils.InteractionType.SELECTED
 					
@@ -571,8 +571,8 @@ func _draw() -> void:
 	var hovered_selected_handles: Array[Handle] = []
 	for handle in handles:
 		var cmd_idx: int = handle.command_index if handle is PathHandle else -1
-		var is_hovered := tid_is_hovered(handle.tid, cmd_idx)
-		var is_selected := tid_is_selected(handle.tid, cmd_idx)
+		var is_hovered := Indications.is_hovered(handle.tid, cmd_idx, true)
+		var is_selected := Indications.is_selected(handle.tid, cmd_idx, true)
 		
 		if is_hovered and is_selected:
 			hovered_selected_handles.append(handle)
@@ -607,27 +607,6 @@ width: float) -> void:
 	for i in int(points.size() / 2.0):
 		var i2 := i * 2
 		draw_line(points[i2], points[i2 + 1], color, width, true)
-
-
-func tid_is_hovered(tid: PackedInt32Array, cmd_idx := -1) -> bool:
-	if cmd_idx == -1:
-		return Utils.is_tid_parent_or_self(Indications.hovered_tid, tid)
-	else:
-		return Utils.is_tid_parent_or_self(Indications.hovered_tid, tid) or\
-				(Indications.semi_hovered_tid == tid and Indications.inner_hovered == cmd_idx)
-
-func tid_is_selected(tid: PackedInt32Array, cmd_idx := -1) -> bool:
-	if cmd_idx == -1:
-		for selected_tid in Indications.selected_tids:
-			if Utils.is_tid_parent_or_self(selected_tid, tid):
-				return true
-		return false
-	else:
-		for selected_tid in Indications.selected_tids:
-			if Utils.is_tid_parent_or_self(selected_tid, tid):
-				return true
-		return Indications.semi_selected_tid == tid and\
-				cmd_idx in Indications.inner_selections
 
 
 var dragged_handle: Handle = null

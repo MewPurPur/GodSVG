@@ -106,15 +106,16 @@ func _draw() -> void:
 	stylebox.bg_color = num_edit.get_theme_stylebox("normal", "LineEdit").bg_color
 	draw_style_box(stylebox, Rect2(Vector2.ZERO, slider_size - Vector2(1, 2)))
 	var fill_height := (slider_size.y - 4) * (attribute.get_num() - min_value) / max_value
+	# Create a stylebox that'll occupy the exact amount of space.
+	var fill_stylebox := StyleBoxFlat.new()
 	if slider_dragged:
-		draw_rect(Rect2(0, 1 + slider_size.y - 4 - fill_height,
-				slider_size.x - 2, fill_height), Color("#def"))
+		fill_stylebox.bg_color = Color("#def")
 	elif slider_hovered:
-		draw_rect(Rect2(0, 1 + slider_size.y - 4 - fill_height,
-				slider_size.x - 2, fill_height), Color("#defb"))
+		fill_stylebox.bg_color = Color("#defb")
 	else:
-		draw_rect(Rect2(0, 1 + slider_size.y - 4 - fill_height,
-				slider_size.x - 2, fill_height), Color("#def8"))
+		fill_stylebox.bg_color = Color("#def8")
+	draw_style_box(fill_stylebox, Rect2(0, 1 + slider_size.y - 4 - fill_height,
+			slider_size.x - 2, fill_height))
 
 func _on_slider_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and\
