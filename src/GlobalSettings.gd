@@ -49,7 +49,7 @@ const default_config = {
 		"handle_hovered_selected_color": Color("#f44"),
 		"basic_color_valid": Color("9f9"),
 		"basic_color_error": Color("f99"),
-		"basic_color_warning": Color("ff9"),
+		"basic_color_warning": Color("ee5"),
 	},
 	"other": {
 		"invert_zoom": false,
@@ -129,7 +129,7 @@ var handle_selected_color := Color("#46f")
 var handle_hovered_selected_color := Color("#f44")
 var basic_color_valid := Color("9f9")
 var basic_color_error := Color("f99")
-var basic_color_warning := Color("ff9")
+var basic_color_warning := Color("ee5")
 
 # Other
 var invert_zoom := false
