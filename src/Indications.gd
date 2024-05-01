@@ -271,6 +271,39 @@ func clear_inner_hovered() -> void:
 		inner_hovered = -1
 		hover_changed.emit()
 
+# Returns whether the given tag or inner editor is hovered.
+func is_hovered(tid: PackedInt32Array, cmd_idx := -1, propagate := false) -> bool:
+	if propagate:
+		if cmd_idx == -1:
+			return Utils.is_tid_parent_or_self(hovered_tid, tid)
+		else:
+			return Utils.is_tid_parent_or_self(hovered_tid, tid) or\
+					(semi_hovered_tid == tid and inner_hovered == cmd_idx)
+	else:
+		if cmd_idx == -1:
+			return hovered_tid == tid
+		else:
+			return semi_hovered_tid == tid and inner_hovered == cmd_idx
+
+# Returns whether the given tag or inner editor is selected.
+func is_selected(tid: PackedInt32Array, cmd_idx := -1, propagate := false) -> bool:
+	if propagate:
+		if cmd_idx == -1:
+			for selected_tid in selected_tids:
+				if Utils.is_tid_parent_or_self(selected_tid, tid):
+					return true
+			return false
+		else:
+			for selected_tid in selected_tids:
+				if Utils.is_tid_parent_or_self(selected_tid, tid):
+					return true
+			return semi_selected_tid == tid and cmd_idx in inner_selections
+	else:
+		if cmd_idx == -1:
+			return tid in selected_tids
+		else:
+			return semi_selected_tid == tid and cmd_idx in inner_selections
+
 
 func set_proposed_drop_tid(tid: PackedInt32Array) -> void:
 	if proposed_drop_tid != tid:

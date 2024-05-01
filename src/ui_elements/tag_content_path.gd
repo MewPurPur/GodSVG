@@ -14,6 +14,7 @@ var tid: PackedInt32Array
 
 func _ready() -> void:
 	path_field.set_attribute(tag.attributes.d)
+	path_field.tid = tid
 	for attribute_key in tag.attributes:
 		if attribute_key == "d":
 			continue
