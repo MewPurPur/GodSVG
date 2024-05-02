@@ -39,6 +39,8 @@ var active_idx := -1
 @onready var relative_button: Button
 @onready var action_button: Button
 var fields: Array[Control] = []
+var current_selections: Array[int] = []
+var current_hovered: int = -1
 
 
 func set_value(new_value: String, update_type := Utils.UpdateType.REGULAR) -> void:
@@ -62,8 +64,8 @@ func set_attribute(new_attribute: AttributePath) -> void:
 	line_edit.text_submitted.connect(set_value)
 	line_edit.focus_entered.connect(_on_line_edit_focus_entered)
 	commands_container.draw.connect(commands_draw)
-	Indications.hover_changed.connect(commands_container.queue_redraw)
-	Indications.selection_changed.connect(commands_container.queue_redraw)
+	Indications.hover_changed.connect(_on_selections_or_hover_changed)
+	Indications.selection_changed.connect(_on_selections_or_hover_changed)
 
 
 func _on_line_edit_focus_entered() -> void:
@@ -103,6 +105,21 @@ func setup_relative_button_theming(cmd_char: String) -> void:
 	relative_button.text = cmd_char
 
 # Path commands editor orchestration.
+
+func _on_selections_or_hover_changed() -> void:
+	var new_selections: Array[int] = []
+	if Indications.semi_selected_tid == tid:
+		new_selections = Indications.inner_selections
+	var new_hovered: int = -1
+	if Indications.semi_hovered_tid == tid:
+		new_hovered = Indications.inner_hovered
+	# Only redraw if selections or hovered changed.
+	if new_selections != current_selections:
+		current_selections = new_selections
+		commands_container.queue_redraw()
+	if new_hovered != current_hovered:
+		current_hovered = new_hovered
+		commands_container.queue_redraw()
 
 func _on_commands_mouse_exited() -> void:
 	var cmd_idx := Indications.inner_hovered
