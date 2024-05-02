@@ -36,8 +36,6 @@ var mini_line_edit_font_color := get_theme_color("font_color", "MiniLineEdit")
 # Variables around the big optimization.
 var active_idx := -1  
 @onready var ci := commands_container.get_canvas_item()
-@onready var relative_button: Button
-@onready var action_button: Button
 var fields: Array[Control] = []
 var current_selections: Array[int] = []
 var current_hovered: int = -1
@@ -86,23 +84,8 @@ func update_value(new_value: float, property: String) -> void:
 
 func _on_relative_button_pressed() -> void:
 	attribute.toggle_relative_command(active_idx)
-	setup_relative_button_theming(attribute.get_command(active_idx).command_char)
+	activate(active_idx, true)
 
-func setup_relative_button_theming(cmd_char: String) -> void:
-	relative_button.begin_bulk_theme_override()
-	relative_button.add_theme_font_override("font", code_font)
-	relative_button.add_theme_font_size_override("font_size", 13)
-	relative_button.add_theme_color_override("font_color", Color(1, 1, 1))
-	if Utils.is_string_upper(cmd_char):
-		relative_button.add_theme_stylebox_override("normal", absolute_button_normal)
-		relative_button.add_theme_stylebox_override("hover", absolute_button_hovered)
-		relative_button.add_theme_stylebox_override("pressed", absolute_button_pressed)
-	else:
-		relative_button.add_theme_stylebox_override("normal", relative_button_normal)
-		relative_button.add_theme_stylebox_override("hover", relative_button_hovered)
-		relative_button.add_theme_stylebox_override("pressed", relative_button_pressed)
-	relative_button.end_bulk_theme_override()
-	relative_button.text = cmd_char
 
 # Path commands editor orchestration.
 
@@ -115,7 +98,8 @@ func _on_selections_or_hover_changed() -> void:
 		new_hovered = Indications.inner_hovered
 	# Only redraw if selections or hovered changed.
 	if new_selections != current_selections:
-		current_selections = new_selections
+		# TODO Figure out why the fuck must I duplicate it.
+		current_selections = new_selections.duplicate()
 		commands_container.queue_redraw()
 	if new_hovered != current_hovered:
 		current_hovered = new_hovered
@@ -132,8 +116,6 @@ func _on_commands_mouse_exited() -> void:
 		# you've focused a BetterLineEdit, because it pauses the tree.
 		if active_idx != cmd_idx:
 			fields = []
-			relative_button = null
-			action_button = null
 			deactivate()
 
 
@@ -272,23 +254,19 @@ path_command: PathCommand) -> void:
 		first_rect.position.x = first_rect.end.x + spacings[i]
 		draw_numfield(first_rect, names[i + 1], path_command)
 
-# Prevents the relative button from selecting a whole subpath when double-clicked.
-func _on_relative_button_gui_input(event: InputEvent) -> void:
-	if active_idx:
-		if event is InputEventMouseButton and event.double_click:
-			relative_button.accept_event()
-			relative_button.pressed.emit()
-
-# Prevents the action button from selecting a whole subpath when double-clicked.
-func _on_action_button_gui_input(event: InputEvent) -> void:
-	if active_idx:
-		if event is InputEventMouseButton and event.double_click:
-			action_button.accept_event()
-			action_button.pressed.emit()
+# Prevents buttons from selecting a whole subpath when double-clicked.
+func _eat_double_clicks(event: InputEvent, button: Button) -> void:
+	if active_idx and event is InputEventMouseButton and event.double_click:
+		button.accept_event()
+		if event.is_pressed():
+			if button.toggle_mode:
+				button.toggled.emit(not button.button_pressed)
+			else:
+				button.pressed.emit()
 
 
-func activate(idx: int) -> void:
-	if active_idx == idx:
+func activate(idx: int, force := false) -> void:
+	if not force and active_idx == idx:
 		return
 	
 	for child in commands_container.get_children():
@@ -297,29 +275,43 @@ func activate(idx: int) -> void:
 	var cmd_char := cmd.command_char
 	active_idx = idx
 	# Setup the relative button.
-	relative_button = Button.new()
+	var relative_button := Button.new()
 	relative_button.focus_mode = Control.FOCUS_NONE
 	relative_button.mouse_filter = Control.MOUSE_FILTER_PASS
 	relative_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-	setup_relative_button_theming(cmd_char)
+	var is_absolute := Utils.is_string_upper(cmd_char)
+	relative_button.begin_bulk_theme_override()
+	relative_button.add_theme_font_override("font", code_font)
+	relative_button.add_theme_font_size_override("font_size", 13)
+	relative_button.add_theme_color_override("font_color", Color(1, 1, 1))
+	if is_absolute:
+		relative_button.add_theme_stylebox_override("normal", absolute_button_normal)
+		relative_button.add_theme_stylebox_override("hover", absolute_button_hovered)
+		relative_button.add_theme_stylebox_override("pressed", absolute_button_pressed)
+	else:
+		relative_button.add_theme_stylebox_override("normal", relative_button_normal)
+		relative_button.add_theme_stylebox_override("hover", relative_button_hovered)
+		relative_button.add_theme_stylebox_override("pressed", relative_button_pressed)
+	relative_button.end_bulk_theme_override()
+	relative_button.text = cmd_char
 	relative_button.tooltip_text = "%s (%s)" %\
 			[TranslationUtils.new().get_command_char_description(cmd_char),
-			tr("Absolute") if Utils.is_string_upper(cmd_char) else tr("Relative")]
+			tr("Absolute") if is_absolute else tr("Relative")]
 	commands_container.add_child(relative_button)
 	relative_button.pressed.connect(_on_relative_button_pressed)
-	relative_button.gui_input.connect(_on_relative_button_gui_input)
+	relative_button.gui_input.connect(_eat_double_clicks.bind(relative_button))
 	relative_button.position = Vector2(3, 2 + idx * COMMAND_HEIGHT)
 	relative_button.size = Vector2(18, COMMAND_HEIGHT - 4)
 	# Setup the action button.
-	action_button = Button.new()
+	var action_button := Button.new()
 	action_button.icon = more_icon
 	action_button.theme_type_variation = "FlatButton"
 	action_button.focus_mode = Control.FOCUS_NONE
 	action_button.mouse_filter = Control.MOUSE_FILTER_PASS
 	action_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	commands_container.add_child(action_button)
-	action_button.pressed.connect(_on_action_button_pressed)
-	action_button.gui_input.connect(_on_action_button_gui_input)
+	action_button.pressed.connect(_on_action_button_pressed.bind(action_button))
+	action_button.gui_input.connect(_eat_double_clicks.bind(action_button))
 	action_button.position = Vector2(commands_container.size.x - 21,
 			2 + idx * COMMAND_HEIGHT)
 	action_button.size = Vector2(COMMAND_HEIGHT - 4, COMMAND_HEIGHT - 4)
@@ -332,8 +324,12 @@ func activate(idx: int) -> void:
 			field_rx.mode = field_rx.Mode.ONLY_POSITIVE
 			field_ry.mode = field_ry.Mode.ONLY_POSITIVE
 			field_rot.mode = field_rot.Mode.HALF_ANGLE
-			fields = [field_rx, field_ry, field_rot, FlagField.instantiate(),
-					FlagField.instantiate(), add_numfield(idx), add_numfield(idx)]
+			var field_large_arc := FlagField.instantiate()
+			var field_sweep := FlagField.instantiate()
+			field_large_arc.gui_input.connect(_eat_double_clicks.bind(field_large_arc))
+			field_sweep.gui_input.connect(_eat_double_clicks.bind(field_sweep))
+			fields = [field_rx, field_ry, field_rot, field_large_arc, field_sweep,
+					add_numfield(idx), add_numfield(idx)]
 			setup_fields(cmd, [3, 4, 4, 4, 4, 3],
 					["rx", "ry", "rot", "large_arc_flag", "sweep_flag", "x", "y"])
 		"C":
@@ -386,12 +382,12 @@ func setup_fields(path_command: PathCommand, spacings: Array, names: Array) -> v
 		fields[i + 1].position.x = fields[i].get_end().x + spacings[i]
 
 
-func _on_action_button_pressed() -> void:
+func _on_action_button_pressed(action_button_ref: Button) -> void:
 	# Update the selection immediately, since if this path command is
 	# in a multi-selection, only the mouse button release would change the selection.
 	Indications.normal_select(tid, active_idx)
 	var viewport := get_viewport()
-	var action_button_rect := action_button.get_global_rect()
+	var action_button_rect := action_button_ref.get_global_rect()
 	HandlerGUI.popup_under_rect_center(Indications.get_selection_context(
 			HandlerGUI.popup_under_rect_center.bind(action_button_rect, viewport)),
 			action_button_rect, viewport)
