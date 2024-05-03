@@ -285,37 +285,36 @@ func emit_attribute_changed(undo_redo: bool) -> void:
 # Optimizes the SVG text in more ways than what autoformatting allows.
 # The return value is true if the SVG can be optimized, otherwise false.
 # If apply_changes is false, you'll only get the return value.
-func optimize(apply_changes := true) -> bool:
-	var can_optimize := false
+func optimize(not_applied := false) -> bool:
 	for tid in get_all_tids():
 		var tag := get_tag(tid)
 		match tag.name:
 			"ellipse":
 				# If possible, turn ellipses into circles.
 				if tag.can_replace("circle"):
-					can_optimize = true
-					if apply_changes:
-						replace_tag(tid, get_tag(tid).get_replacement("circle"))
+					if not_applied:
+						return true
+					replace_tag(tid, get_tag(tid).get_replacement("circle"))
 			"line":
 				# Turn lines into paths.
-				can_optimize = true
-				if apply_changes:
-					replace_tag(tid, get_tag(tid).get_replacement("path"))
+				if not_applied:
+					return true
+				replace_tag(tid, get_tag(tid).get_replacement("path"))
 			"rect":
 				# If possible, turn rounded rects into circles or ellipses.
 				if tag.can_replace("circle"):
-					can_optimize = true
-					if apply_changes:
-						replace_tag(tid, get_tag(tid).get_replacement("circle"))
+					if not_applied:
+						return true
+					replace_tag(tid, get_tag(tid).get_replacement("circle"))
 				elif tag.can_replace("ellipse"):
-					can_optimize = true
-					if apply_changes:
-						replace_tag(tid, get_tag(tid).get_replacement("ellipse"))
+					if not_applied:
+						return true
+					replace_tag(tid, get_tag(tid).get_replacement("ellipse"))
 				elif tag.attributes.rx.get_num() == 0 and tag.attributes.ry.get_num() == 0:
 					# If the rectangle is not rounded, turn it into a path.
-					can_optimize = true
-					if apply_changes:
-						replace_tag(tid, get_tag(tid).get_replacement("path"))
+					if not_applied:
+						return true
+					replace_tag(tid, get_tag(tid).get_replacement("path"))
 			"path":
 				var pathdata: AttributePath = tag.attributes.d
 				# Simplify A rotation to 0 degrees for circular arcs.
@@ -323,29 +322,29 @@ func optimize(apply_changes := true) -> bool:
 					var command := pathdata.get_command(cmd_idx)
 					var cmd_char := command.command_char
 					if cmd_char in "Aa" and command.rx == command.ry and command.rot != 0:
-						can_optimize = true
-						if apply_changes:
-							pathdata.set_command_property(cmd_idx, "rot", 0)
+						if not_applied:
+							return true
+						pathdata.set_command_property(cmd_idx, "rot", 0)
 				# Replace L with H or V when possible.
 				for cmd_idx in pathdata.get_command_count():
 					var command := pathdata.get_command(cmd_idx)
 					var cmd_char := command.command_char
 					if cmd_char == "l":
 						if command.x == 0:
-							can_optimize = true
-							if apply_changes:
-								pathdata.convert_command(cmd_idx, "v")
+							if not_applied:
+								return true
+							pathdata.convert_command(cmd_idx, "v")
 						elif command.y == 0:
-							can_optimize = true
-							if apply_changes:
-								pathdata.convert_command(cmd_idx, "h")
+							if not_applied:
+								return true
+							pathdata.convert_command(cmd_idx, "h")
 					elif cmd_char == "L":
 						if command.x == command.start.x:
-							can_optimize = true
-							if apply_changes:
-								pathdata.convert_command(cmd_idx, "V")
+							if not_applied:
+								return true
+							pathdata.convert_command(cmd_idx, "V")
 						elif command.y == command.start.y:
-							can_optimize = true
-							if apply_changes:
-								pathdata.convert_command(cmd_idx, "H")
-	return can_optimize
+							if not_applied:
+								return true
+							pathdata.convert_command(cmd_idx, "H")
+	return false
