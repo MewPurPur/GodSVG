@@ -135,10 +135,10 @@ func _on_copy_button_pressed() -> void:
 
 
 func _on_import_button_pressed() -> void:
-	SVG.open_import_dialog()
+	FileUtils.open_import_dialog()
 
 func _on_export_button_pressed() -> void:
-	SVG.open_export_dialog()
+	FileUtils.open_export_dialog()
 
 func set_new_text(svg_text: String) -> void:
 	code_edit.text = svg_text
@@ -187,11 +187,11 @@ func _on_optimize_button_pressed() -> void:
 
 func _on_file_button_pressed() -> void:
 	var btn_array: Array[Button] = []
-	btn_array.append(Utils.create_btn(tr("Save SVG"), SVG.open_save_dialog.bind("svg",
-			SVG.native_file_save, SVG.save_svg_to_file),
+	btn_array.append(Utils.create_btn(tr("Save SVG"), FileUtils.open_save_dialog.bind(
+			"svg", FileUtils.native_file_save, FileUtils.save_svg_to_file),
 			false, load("res://visual/icons/Save.svg")))
 	btn_array.append(Utils.create_btn(tr("Reset SVG"), reset_svg,
-			SVG.does_svg_data_match_disk_contents(),
+			FileUtils.does_svg_data_match_disk_contents(),
 			load("res://visual/icons/Reload.svg")))
 	btn_array.append(Utils.create_btn(tr("Clear saving path"), clear_file_path,
 			false, load("res://visual/icons/Clear.svg")))
@@ -217,7 +217,7 @@ func clear_file_path() -> void:
 	GlobalSettings.modify_save_data("current_file_path", "")
 
 func reset_svg() -> void:
-	SVG.apply_svg_from_path(GlobalSettings.save_data.current_file_path)
+	FileUtils.apply_svg_from_path(GlobalSettings.save_data.current_file_path)
 
 func clear_svg() -> void:
 	SVG.apply_svg_text(SVG.DEFAULT)
