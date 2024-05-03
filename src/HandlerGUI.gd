@@ -30,7 +30,7 @@ func _notification(what: int) -> void:
 # Drag-and-drop of files.
 func _on_files_dropped(files: PackedStringArray) -> void:
 	if overlay_stack.is_empty():
-		SVG.apply_svg_from_path(files[0])
+		FileUtils.apply_svg_from_path(files[0])
 
 
 func add_overlay(overlay_menu: Control) -> void:
@@ -170,7 +170,7 @@ func _input(event: InputEvent) -> void:
 	
 	if event.is_action_pressed("save"):
 		get_viewport().set_input_as_handled()
-		SVG.open_save_dialog("svg", SVG.native_file_save, SVG.save_svg_to_file)
+		FileUtils.open_save_dialog("svg", FileUtils.native_file_save, FileUtils.save_svg_to_file)
 
 func _unhandled_input(event: InputEvent) -> void:
 	# Clear popups or overlays.
@@ -298,68 +298,19 @@ func web_load_svg() -> void:
 	var extension := file_name.get_extension()
 	if extension == "svg":
 		var warning_panel := ImportWarningDialog.instantiate()
-		warning_panel.imported.connect(_import.bind(file_data, file_name))
+		warning_panel.imported.connect(FileUtils.web_import.bind(file_data, file_name))
 		warning_panel.set_svg(file_data)
 		HandlerGUI.add_overlay(warning_panel)
 	else:
 		var error := ""
 		if extension.is_empty():
-			error = "The file extension is empty. Only \"svg\" files are supported."
+			error = tr("The file extension is empty. Only \"svg\" files are supported.")
 		else:
 			error = tr("\"{passed_extension}\" is a unsupported file extension. Only \"svg\" files are supported.").format({"passed_extension": extension})
 		var alert_dialog := AlertDialog.instantiate()
 		HandlerGUI.add_overlay(alert_dialog)
 		alert_dialog.setup(error, tr("Alert!"), 280.0)
 
-
-func _import(svg_text: String, file_name: String) -> void:
-	SVG.apply_svg_text(svg_text)
-	GlobalSettings.modify_save_data("current_file_path", file_name)
-	JavaScriptBridge.eval("fileData = undefined;", true)
-
-
-func web_save_svg() -> void:
-	var file_name := Utils.get_file_name(GlobalSettings.save_data.current_file_path)
-	if file_name.is_empty():
-		file_name = "export"
-	JavaScriptBridge.download_buffer(
-		SVG.text.to_utf8_buffer(),
-		file_name,
-		"image/svg+xml"
-	)
-
-
-func web_save_png(img: Image) -> void:
-	var file_name := Utils.get_file_name(GlobalSettings.save_data.current_file_path)
-	if file_name.is_empty():
-		file_name = "export"
-	JavaScriptBridge.download_buffer(
-		img.save_png_to_buffer(),
-		file_name,
-		"image/png"
-	)
-
-
-func web_save_jpg(img: Image) -> void:
-	var file_name := Utils.get_file_name(GlobalSettings.save_data.current_file_path)
-	if file_name.is_empty():
-		file_name = "export"
-	JavaScriptBridge.download_buffer(
-		img.save_jpg_to_buffer(),
-		file_name,
-		"image/jpeg"
-	)
-
-
-func web_save_webp(img: Image) -> void:
-	var file_name := Utils.get_file_name(GlobalSettings.save_data.current_file_path)
-	if file_name.is_empty():
-		file_name = "export"
-	JavaScriptBridge.download_buffer(
-		img.save_webp_to_buffer(),
-		file_name,
-		"image/webp"
-	)
 
 const web_glue = """var fileData;
 var fileName;
