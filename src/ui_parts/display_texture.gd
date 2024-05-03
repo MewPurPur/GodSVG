@@ -17,10 +17,10 @@ var update_pending := false
 
 
 func _ready() -> void:
-	SVG.root_tag.tag_layout_changed.connect(queue_update)
-	SVG.root_tag.changed_unknown.connect(queue_update)
-	SVG.root_tag.attribute_changed.connect(queue_update.unbind(1))
-	SVG.root_tag.child_attribute_changed.connect(queue_update.unbind(1))
+	SVG.tag_layout_changed.connect(queue_update)
+	SVG.changed_unknown.connect(queue_update)
+	SVG.attribute_changed.connect(queue_update.unbind(1))
+	SVG.child_attribute_changed.connect(queue_update.unbind(1))
 	Indications.zoom_changed.connect(queue_update)
 	queue_update()
 

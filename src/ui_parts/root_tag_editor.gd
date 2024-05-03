@@ -21,13 +21,10 @@ const decoupled_icon = preload("res://visual/icons/Decoupled.svg")
 @onready var viewbox_edit_h: NumberEditType = %Viewbox/Rect/ViewboxEditH
 
 func _ready() -> void:
-	SVG.root_tag.resized.connect(_on_resized)
-	SVG.root_tag.changed_unknown.connect(_on_unknown_changed)
+	SVG.attribute_changed.connect(update_attributes)
+	SVG.changed_unknown.connect(_on_unknown_changed)
 	update_attributes(true)
 
-
-func _on_resized() -> void:
-	update_attributes()
 
 func update_attributes(configure_coupling := false) -> void:
 	if configure_coupling:

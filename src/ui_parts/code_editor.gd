@@ -21,10 +21,10 @@ func _ready() -> void:
 	setup_theme()
 	setup_highlighter()
 	code_edit.clear_undo_history()
-	SVG.root_tag.attribute_changed.connect(auto_update_text.unbind(1))
-	SVG.root_tag.child_attribute_changed.connect(auto_update_text.unbind(1))
-	SVG.root_tag.tag_layout_changed.connect(auto_update_text)
-	SVG.root_tag.changed_unknown.connect(auto_update_text)
+	SVG.attribute_changed.connect(auto_update_text.unbind(1))
+	SVG.child_attribute_changed.connect(auto_update_text.unbind(1))
+	SVG.tag_layout_changed.connect(auto_update_text)
+	SVG.changed_unknown.connect(auto_update_text)
 	GlobalSettings.save_data.current_file_path_changed.connect(update_file_button)
 
 
@@ -168,7 +168,7 @@ func update_file_button() -> void:
 
 
 func update_optimize_button() -> void:
-	var enabled: bool = SVG.root_tag.optimize(false)
+	var enabled: bool = SVG.optimize(true)
 	optimize_button.disabled = not enabled
 	optimize_button.mouse_default_cursor_shape = Control.CURSOR_ARROW if\
 			optimize_button.disabled else Control.CURSOR_POINTING_HAND
@@ -182,13 +182,13 @@ func _on_svg_code_edit_focus_exited() -> void:
 
 
 func _on_optimize_button_pressed() -> void:
-	SVG.root_tag.optimize()
+	SVG.optimize()
 
 
 func _on_file_button_pressed() -> void:
 	var btn_array: Array[Button] = []
 	btn_array.append(Utils.create_btn(tr("Save SVG"), SVG.open_save_dialog.bind("svg",
-			SVG.native_file_save, SVG.save_svg_to_file),
+			SVG.native_file_save, FileUtils.save_svg_to_file),
 			false, load("res://visual/icons/Save.svg")))
 	btn_array.append(Utils.create_btn(tr("Reset SVG"), reset_svg,
 			SVG.does_svg_data_match_disk_contents(),

@@ -39,7 +39,7 @@ func update_proposed_tid() -> void:
 	var next_tid := PackedInt32Array([SVG.root_tag.get_child_count()])
 	var next_y := INF
 	
-	for tid in SVG.root_tag.get_all_tids():
+	for tid in SVG.get_all_tids():
 		var tag_rect := get_tag_editor_rect(tid)
 		var buffer := minf(tag_rect.size.y / 3, 26)
 		var tag_end := tag_rect.end.y
@@ -105,11 +105,11 @@ func _gui_input(event: InputEvent) -> void:
 
 func add_tag(tag_name: String, tag_location: int) -> void:
 	match tag_name:
-		"path": SVG.root_tag.add_tag(TagPath.new(), PackedInt32Array([tag_location]))
-		"circle": SVG.root_tag.add_tag(TagCircle.new(), PackedInt32Array([tag_location]))
-		"ellipse": SVG.root_tag.add_tag(TagEllipse.new(), PackedInt32Array([tag_location]))
-		"rect": SVG.root_tag.add_tag(TagRect.new(), PackedInt32Array([tag_location]))
-		"line": SVG.root_tag.add_tag(TagLine.new(), PackedInt32Array([tag_location]))
+		"path": SVG.add_tag(TagPath.new(), PackedInt32Array([tag_location]))
+		"circle": SVG.add_tag(TagCircle.new(), PackedInt32Array([tag_location]))
+		"ellipse": SVG.add_tag(TagEllipse.new(), PackedInt32Array([tag_location]))
+		"rect": SVG.add_tag(TagRect.new(), PackedInt32Array([tag_location]))
+		"line": SVG.add_tag(TagLine.new(), PackedInt32Array([tag_location]))
 
 # This function assumes there exists a tag editor for the corresponding TID.
 func get_tag_editor_rect(tid: PackedInt32Array) -> Rect2:

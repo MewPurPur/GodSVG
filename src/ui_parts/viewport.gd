@@ -17,7 +17,7 @@ var _zoom_to: Vector2
 
 func _ready() -> void:
 	zoom_menu.zoom_changed.connect(view.update.unbind(2))
-	SVG.root_tag.resized.connect(resize)
+	SVG.resized.connect(resize)
 	Indications.viewport_size_changed.connect(adjust_view)
 	resize()
 	await get_tree().process_frame

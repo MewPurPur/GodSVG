@@ -62,11 +62,11 @@ func set_viewport_size(new_value: Vector2i) -> void:
 
 
 func _ready() -> void:
-	SVG.root_tag.tags_added.connect(_on_tags_added)
-	SVG.root_tag.tags_deleted.connect(_on_tags_deleted)
-	SVG.root_tag.tags_moved_in_parent.connect(_on_tags_moved_in_parent)
-	SVG.root_tag.tags_moved_to.connect(_on_tags_moved_to)
-	SVG.root_tag.changed_unknown.connect(clear_all_selections)
+	SVG.tags_added.connect(_on_tags_added)
+	SVG.tags_deleted.connect(_on_tags_deleted)
+	SVG.tags_moved_in_parent.connect(_on_tags_moved_in_parent)
+	SVG.tags_moved_to.connect(_on_tags_moved_to)
+	SVG.changed_unknown.connect(clear_all_selections)
 
 
 # Override the selected tags with a single new selected tag.
@@ -190,11 +190,11 @@ func shift_select(tid: PackedInt32Array, inner_idx := -1) -> void:
 # Select all tags.
 func select_all() -> void:
 	clear_inner_selection()
-	var tid_list := SVG.root_tag.get_all_tids()
+	var tid_list := SVG.get_all_tids()
 	if selected_tids == tid_list:
 		return
 	
-	for tid in SVG.root_tag.get_all_tids():
+	for tid in SVG.get_all_tids():
 		if not tid in selected_tids:
 			selected_tids.append(tid)
 	selection_changed.emit()
@@ -382,7 +382,7 @@ func respond_to_key_input(event: InputEventKey) -> void:
 	if inner_selections.is_empty() or event.is_command_or_control_pressed():
 		# If a single path tag is selected, add the new command at the end.
 		if selected_tids.size() == 1:
-			var tag_ref := SVG.root_tag.get_tag(selected_tids[0])
+			var tag_ref := SVG.get_tag(selected_tids[0])
 			if tag_ref.name == "path":
 				var path_attrib: AttributePath = tag_ref.attributes.d
 				for action_name in path_actions_dict.keys():
@@ -403,7 +403,7 @@ func respond_to_key_input(event: InputEventKey) -> void:
 		return
 	# If path commands are selected, insert after the last one.
 	for action_name in path_actions_dict.keys():
-		var tag_ref := SVG.root_tag.get_tag(semi_selected_tid)
+		var tag_ref := SVG.get_tag(semi_selected_tid)
 		if tag_ref.name == "path":
 			if event.is_action_pressed(action_name):
 				var path_attrib: AttributePath = tag_ref.attributes.d
@@ -424,27 +424,27 @@ func respond_to_key_input(event: InputEventKey) -> void:
 
 func delete_selected() -> void:
 	if not selected_tids.is_empty():
-		SVG.root_tag.delete_tags(selected_tids)
+		SVG.delete_tags(selected_tids)
 	elif not inner_selections.is_empty() and not semi_selected_tid.is_empty():
 		inner_selections.sort()
 		inner_selections.reverse()
-		var tag_ref := SVG.root_tag.get_tag(semi_selected_tid)
+		var tag_ref := SVG.get_tag(semi_selected_tid)
 		match tag_ref.name:
 			"path": tag_ref.attributes.d.delete_commands(inner_selections)
 		clear_inner_selection()
 		clear_inner_hovered()
 
 func move_up_selected() -> void:
-	SVG.root_tag.move_tags_in_parent(selected_tids, false)
+	SVG.move_tags_in_parent(selected_tids, false)
 
 func move_down_selected() -> void:
-	SVG.root_tag.move_tags_in_parent(selected_tids, true)
+	SVG.move_tags_in_parent(selected_tids, true)
 
 func duplicate_selected() -> void:
-	SVG.root_tag.duplicate_tags(selected_tids)
+	SVG.duplicate_tags(selected_tids)
 
 func insert_inner_after_selection(new_command: String) -> void:
-	var tag_ref := SVG.root_tag.get_tag(semi_selected_tid)
+	var tag_ref := SVG.get_tag(semi_selected_tid)
 	match tag_ref.name:
 		"path":
 			var path_attrib: AttributePath = tag_ref.attributes.d
@@ -475,7 +475,7 @@ func get_selection_context(popup_method: Callable) -> ContextPopup:
 			can_move_up = false
 			var parent_tid := Utils.get_parent_tid(filtered_tids[0])
 			var filtered_count := filtered_tids.size()
-			var parent_child_count := SVG.root_tag.get_tag(parent_tid).get_child_count()
+			var parent_child_count := SVG.get_tag(parent_tid).get_child_count()
 			for base_tid in filtered_tids:
 				if not can_move_up and base_tid[-1] >= filtered_count:
 					can_move_up = true
@@ -485,7 +485,7 @@ func get_selection_context(popup_method: Callable) -> ContextPopup:
 		btn_arr.append(Utils.create_btn(tr("Duplicate"), duplicate_selected,
 				false, load("res://visual/icons/Duplicate.svg")))
 		
-		if selected_tids.size() == 1 and not SVG.root_tag.get_tag(
+		if selected_tids.size() == 1 and not SVG.get_tag(
 		selected_tids[0]).possible_conversions.is_empty():
 			btn_arr.append(Utils.create_btn(tr("Convert To"),
 					popup_convert_to_context.bind(popup_method), false,
@@ -520,7 +520,7 @@ func popup_convert_to_context(popup_method: Callable) -> void:
 	# The "Convert To" context popup.
 	if not selected_tids.is_empty():
 		var btn_arr: Array[Button] = []
-		var tag := SVG.root_tag.get_tag(selected_tids[0])
+		var tag := SVG.get_tag(selected_tids[0])
 		for tag_name in tag.possible_conversions:
 			var btn := Utils.create_btn(tag_name, convert_selected_tag_to.bind(tag_name),
 					!tag.can_replace(tag_name), load("res://visual/icons/tag/%s.svg" % tag_name))
@@ -530,7 +530,7 @@ func popup_convert_to_context(popup_method: Callable) -> void:
 		context_popup.setup(btn_arr, true)
 		popup_method.call(context_popup)
 	elif not inner_selections.is_empty() and not semi_selected_tid.is_empty():
-		var cmd_char: String = SVG.root_tag.get_tag(semi_selected_tid).\
+		var cmd_char: String = SVG.get_tag(semi_selected_tid).\
 				attributes.d.get_command(inner_selections[0]).command_char
 		var command_picker := PathCommandPopup.instantiate()
 		popup_method.call(command_picker)
@@ -539,7 +539,7 @@ func popup_convert_to_context(popup_method: Callable) -> void:
 		command_picker.path_command_picked.connect(convert_selected_command_to)
 
 func popup_insert_command_after_context(popup_method: Callable) -> void:
-	var cmd_char: String = SVG.root_tag.get_tag(semi_selected_tid).attributes.d.\
+	var cmd_char: String = SVG.get_tag(semi_selected_tid).attributes.d.\
 			get_command(inner_selections.max()).command_char
 	
 	var command_picker := PathCommandPopup.instantiate()
@@ -554,9 +554,9 @@ func popup_insert_command_after_context(popup_method: Callable) -> void:
 
 func convert_selected_tag_to(tag_name: String) -> void:
 	var tid := selected_tids[0]
-	SVG.root_tag.replace_tag(tid, SVG.root_tag.get_tag(tid).get_replacement(tag_name))
+	SVG.replace_tag(tid, SVG.get_tag(tid).get_replacement(tag_name))
 
 func convert_selected_command_to(cmd_type: String) -> void:
-	var tag_ref := SVG.root_tag.get_tag(semi_selected_tid)
+	var tag_ref := SVG.get_tag(semi_selected_tid)
 	match tag_ref.name:
 		"path": tag_ref.attributes.d.convert_command(inner_selections[0], cmd_type)

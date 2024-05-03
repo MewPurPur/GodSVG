@@ -1,23 +1,12 @@
 # A <svg></svg> tag.
 class_name TagSVG extends Tag
 
+signal child_attribute_changed
+
 var width: float
 var height: float
 var viewbox: Rect2
 var canvas_transform: Transform2D
-
-# The difference between attribute_changed() and resized() is that
-# resized() will emit even after unknown changes.
-signal resized
-
-signal child_attribute_changed(undo_redo: bool)
-signal changed_unknown
-
-signal tags_added(tids: Array[PackedInt32Array])
-signal tags_deleted(tids: Array[PackedInt32Array])
-signal tags_moved_in_parent(parent_tid: PackedInt32Array, old_indices: Array[int])
-signal tags_moved_to(tids: Array[PackedInt32Array], location: PackedInt32Array)
-signal tag_layout_changed  # Emitted together with any of the above 5.
 
 # This list is currently only used by the highlighter, so xmlns is here.
 const known_attributes = ["width", "height", "viewBox", "xmlns"]
@@ -28,7 +17,6 @@ func _init() -> void:
 		attributes[attrib_name] = DB.attribute(attrib_name)
 	unknown_attributes.append(AttributeUnknown.new("xmlns", "http://www.w3.org/2000/svg"))
 	attribute_changed.connect(update_cache.unbind(1))
-	changed_unknown.connect(update_cache)
 	update_cache()
 	super()
 
@@ -73,7 +61,6 @@ func canvas_to_world(pos: Vector2) -> Vector2:
 func world_to_canvas(pos: Vector2) -> Vector2:
 	return canvas_transform.affine_inverse() * pos
 
-
 func get_size() -> Vector2:
 	return Vector2(width, height)
 
@@ -107,30 +94,6 @@ func add_tag(new_tag: Tag, new_tid: PackedInt32Array) -> void:
 	var parent_tid := Utils.get_parent_tid(new_tid)
 	get_tag(parent_tid).child_tags.insert(new_tid[-1], new_tag)
 	new_tag.attribute_changed.connect(emit_child_attribute_changed)
-	var new_tid_array: Array[PackedInt32Array] = [new_tid]
-	tags_added.emit(new_tid_array)
-	tag_layout_changed.emit()
-
-func replace_self(new_tag: Tag) -> void:
-	var old_size := get_size()
-	for attrib in attributes:
-		attributes[attrib].set_value(new_tag.attributes[attrib].get_value(),
-				Attribute.SyncMode.SILENT)
-	
-	unknown_attributes.clear()
-	for attrib in new_tag.unknown_attributes:
-		unknown_attributes.append(attrib)
-	child_tags.clear()
-	
-	for tag in new_tag.child_tags:
-		child_tags.append(tag)
-	
-	for tid in get_all_tids():
-		get_tag(tid).attribute_changed.connect(emit_child_attribute_changed)
-	
-	changed_unknown.emit()
-	if old_size != get_size():
-		resized.emit()
 
 func delete_tags(tids: Array[PackedInt32Array]) -> void:
 	if tids.is_empty():
@@ -144,13 +107,11 @@ func delete_tags(tids: Array[PackedInt32Array]) -> void:
 			var tag_idx := tid[-1]
 			if tag_idx < parent_tag.get_child_count():
 				parent_tag.child_tags.remove_at(tag_idx)
-	tags_deleted.emit(tids)
-	tag_layout_changed.emit()
 
 # Moves tags up or down, not to an arbitrary position.
-func move_tags_in_parent(tids: Array[PackedInt32Array], down: bool) -> void:
+func move_tags_in_parent(tids: Array[PackedInt32Array], down: bool) -> Array:
 	if tids.is_empty():
-		return
+		return []
 	
 	# For moving, all these tags must be direct children of the same parent.
 	tids = Utils.filter_descendant_tids(tids)
@@ -158,7 +119,7 @@ func move_tags_in_parent(tids: Array[PackedInt32Array], down: bool) -> void:
 	var parent_tid := Utils.get_parent_tid(tids[0])
 	for tid in tids:
 		if tid.size() != depth or Utils.get_parent_tid(tid) != parent_tid:
-			return
+			return []
 	
 	var tid_indices: Array[int] = []  # The last indices of the TIDs.
 	for tid in tids:
@@ -194,13 +155,14 @@ func move_tags_in_parent(tids: Array[PackedInt32Array], down: bool) -> void:
 				old_indices.insert(i, moved_i)
 				parent_tag.child_tags.insert(i, moved_tag)
 			i += 1
-	# Check if indices were really changed after the operation.
+	# If the indices changed, return true.
 	if old_indices != range(old_indices.size()):
-		tags_moved_in_parent.emit(parent_tid, old_indices)
-		tag_layout_changed.emit()
+		return [parent_tid, tids]
+	else:
+		return []
 
 # Moves tags to an arbitrary position. The first moved tag will move to the location TID.
-func move_tags_to(tids: Array[PackedInt32Array], location: PackedInt32Array) -> void:
+func move_tags_to(tids: Array[PackedInt32Array], location: PackedInt32Array) -> Array:
 	tids = Utils.filter_descendant_tids(tids)
 	# A tag can't move deeper inside itself. Remove the descendants of the location.
 	for i in range(tids.size() - 1, -1, -1):
@@ -231,14 +193,13 @@ func move_tags_to(tids: Array[PackedInt32Array], location: PackedInt32Array) -> 
 		if not Utils.are_tid_parents_same(tid, location) or tid[-1] < location[-1] or\
 		tid[-1] >= location[-1] + tids_stored.size():
 			# If this condition is passed, then there was a layout change.
-			tags_moved_to.emit(tids, location)
-			tag_layout_changed.emit()
-			return
+			return [tids, location]
+	return []
 
 # Duplicates tags and puts them below.
-func duplicate_tags(tids: Array[PackedInt32Array]) -> void:
+func duplicate_tags(tids: Array[PackedInt32Array]) -> Array[PackedInt32Array]:
 	if tids.is_empty():
-		return
+		return []
 	
 	tids = Utils.filter_descendant_tids(tids)
 	var tids_added: Array[PackedInt32Array] = []
@@ -247,13 +208,13 @@ func duplicate_tags(tids: Array[PackedInt32Array]) -> void:
 	var added_to_last_parent := 0
 	
 	for tid in tids:
-		var new_tag := get_tag(tid).create_duplicate()
+		var new_tag := get_tag(tid).duplicate()
 		# Add the new tag.
 		var new_tid := tid.duplicate()
 		new_tid[-1] += 1
 		var parent_tid := Utils.get_parent_tid(new_tid)
 		get_tag(parent_tid).child_tags.insert(new_tid[-1], new_tag)
-		new_tag.attribute_changed.connect(emit_child_attribute_changed)
+		attribute_changed.connect(emit_child_attribute_changed)
 		# Add the TID and offset the other ones from the same parent.
 		var added_tid_idx := tids_added.size()
 		tids_added.append(new_tid)
@@ -264,88 +225,10 @@ func duplicate_tags(tids: Array[PackedInt32Array]) -> void:
 			added_to_last_parent = 0
 		for tid_idx in range(added_tid_idx - added_to_last_parent , added_tid_idx):
 			tids_added[tid_idx][-1] += 1
-	tags_added.emit(tids_added)
-	tag_layout_changed.emit()
+	return tids_added
 
 func replace_tag(tid: PackedInt32Array, new_tag: Tag) -> void:
-	if tid.is_empty():
-		replace_self(new_tag)
 	get_tag(Utils.get_parent_tid(tid)).child_tags[tid[-1]] = new_tag
-	new_tag.attribute_changed.connect(emit_child_attribute_changed)
-	tag_layout_changed.emit()
 
-func emit_child_attribute_changed(undo_redo: bool) -> void:
-	child_attribute_changed.emit(undo_redo)
-
-func emit_attribute_changed(undo_redo: bool) -> void:
-	super(undo_redo)
-	resized.emit()
-
-
-# Optimizes the SVG text in more ways than what autoformatting allows.
-# The return value is true if the SVG can be optimized, otherwise false.
-# If apply_changes is false, you'll only get the return value.
-func optimize(apply_changes := true) -> bool:
-	var can_optimize := false
-	for tid in get_all_tids():
-		var tag := get_tag(tid)
-		match tag.name:
-			"ellipse":
-				# If possible, turn ellipses into circles.
-				if tag.can_replace("circle"):
-					can_optimize = true
-					if apply_changes:
-						replace_tag(tid, get_tag(tid).get_replacement("circle"))
-			"line":
-				# Turn lines into paths.
-				can_optimize = true
-				if apply_changes:
-					replace_tag(tid, get_tag(tid).get_replacement("path"))
-			"rect":
-				# If possible, turn rounded rects into circles or ellipses.
-				if tag.can_replace("circle"):
-					can_optimize = true
-					if apply_changes:
-						replace_tag(tid, get_tag(tid).get_replacement("circle"))
-				elif tag.can_replace("ellipse"):
-					can_optimize = true
-					if apply_changes:
-						replace_tag(tid, get_tag(tid).get_replacement("ellipse"))
-				elif tag.attributes.rx.get_num() == 0 and tag.attributes.ry.get_num() == 0:
-					# If the rectangle is not rounded, turn it into a path.
-					can_optimize = true
-					if apply_changes:
-						replace_tag(tid, get_tag(tid).get_replacement("path"))
-			"path":
-				var pathdata: AttributePath = tag.attributes.d
-				# Simplify A rotation to 0 degrees for circular arcs.
-				for cmd_idx in pathdata.get_command_count():
-					var command := pathdata.get_command(cmd_idx)
-					var cmd_char := command.command_char
-					if cmd_char in "Aa" and command.rx == command.ry and command.rot != 0:
-						can_optimize = true
-						if apply_changes:
-							pathdata.set_command_property(cmd_idx, "rot", 0)
-				# Replace L with H or V when possible.
-				for cmd_idx in pathdata.get_command_count():
-					var command := pathdata.get_command(cmd_idx)
-					var cmd_char := command.command_char
-					if cmd_char == "l":
-						if command.x == 0:
-							can_optimize = true
-							if apply_changes:
-								pathdata.convert_command(cmd_idx, "v")
-						elif command.y == 0:
-							can_optimize = true
-							if apply_changes:
-								pathdata.convert_command(cmd_idx, "h")
-					elif cmd_char == "L":
-						if command.x == command.start.x:
-							can_optimize = true
-							if apply_changes:
-								pathdata.convert_command(cmd_idx, "V")
-						elif command.y == command.start.y:
-							can_optimize = true
-							if apply_changes:
-								pathdata.convert_command(cmd_idx, "H")
-	return can_optimize
+func emit_child_attribute_changed() -> void:
+	child_attribute_changed.emit()

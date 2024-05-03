@@ -6,7 +6,7 @@ const shorthand_tag_exceptions = ["svg", "g", "linearGradient, radialGradient"]
 # For rendering only a section of the SVG.
 static func svg_to_text_custom(svg_tag: TagSVG, custom_width: float,
 custom_height: float, custom_viewbox: Rect2) -> String:
-	var new_svg_tag := svg_tag.create_duplicate_without_children()
+	var new_svg_tag := svg_tag.duplicate(false)
 	new_svg_tag.attributes.viewBox.set_rect(custom_viewbox)
 	new_svg_tag.attributes.width.set_num(custom_width)
 	new_svg_tag.attributes.height.set_num(custom_height)

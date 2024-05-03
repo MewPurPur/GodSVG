@@ -136,7 +136,7 @@ func _on_commands_gui_input(event: InputEvent) -> void:
 					# Unselect the tag, so then it's selected again.
 					Indications.ctrl_select(tid, cmd_idx)
 					var subpath_range: Vector2i =\
-							SVG.root_tag.get_tag(tid).attributes.d.get_subpath(cmd_idx)
+							SVG.get_tag(tid).attributes.d.get_subpath(cmd_idx)
 					for idx in range(subpath_range.x, subpath_range.y + 1):
 						Indications.ctrl_select(tid, idx)
 				elif event.is_command_or_control_pressed():

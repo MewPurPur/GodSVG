@@ -71,11 +71,11 @@ func render_handle_textures() -> void:
 func _ready() -> void:
 	render_handle_textures()
 	RenderingServer.canvas_item_set_parent(surface, get_canvas_item())
-	SVG.root_tag.attribute_changed.connect(queue_update.unbind(1))
-	SVG.root_tag.child_attribute_changed.connect(queue_redraw.unbind(1))
-	SVG.root_tag.child_attribute_changed.connect(sync_handles.unbind(1))
-	SVG.root_tag.tag_layout_changed.connect(queue_update)
-	SVG.root_tag.changed_unknown.connect(queue_update)
+	SVG.attribute_changed.connect(queue_update.unbind(1))
+	SVG.child_attribute_changed.connect(queue_redraw.unbind(1))
+	SVG.child_attribute_changed.connect(sync_handles.unbind(1))
+	SVG.tag_layout_changed.connect(queue_update)
+	SVG.changed_unknown.connect(queue_update)
 	Indications.selection_changed.connect(queue_redraw)
 	Indications.hover_changed.connect(queue_redraw)
 	Indications.zoom_changed.connect(queue_redraw)
@@ -98,8 +98,8 @@ func _process(_delta: float) -> void:
 
 func update_handles() -> void:
 	handles.clear()
-	for tid in SVG.root_tag.get_all_tids():
-		var tag := SVG.root_tag.get_tag(tid)
+	for tid in SVG.get_all_tids():
+		var tag := SVG.get_tag(tid)
 		match tag.name:
 			"circle":
 				handles.append(generate_xy_handle(tid, tag, "cx", "cy", "transform"))
@@ -142,8 +142,8 @@ func sync_handles() -> void:
 		else:
 			handle.sync()
 	
-	for tid in SVG.root_tag.get_all_tids():
-		var tag := SVG.root_tag.get_tag(tid)
+	for tid in SVG.get_all_tids():
+		var tag := SVG.get_tag(tid)
 		if tag.name == "path":
 			handles += generate_path_handles(tid, tag.attributes.d, tag.attributes.transform)
 	queue_redraw()
@@ -191,8 +191,8 @@ func _draw() -> void:
 	var hovered_multiline := PackedVector2Array()
 	var hovered_selected_multiline := PackedVector2Array()
 	
-	for tid in SVG.root_tag.get_all_tids():
-		var tag := SVG.root_tag.get_tag(tid)
+	for tid in SVG.get_all_tids():
+		var tag := SVG.get_tag(tid)
 		var attribs := tag.attributes
 		
 		# Determine if the tag is hovered/selected or has a hovered/selected parent.
@@ -732,7 +732,7 @@ func find_nearest_handle(event_pos: Vector2) -> Handle:
 func _on_handle_added() -> void:
 	if not get_viewport_rect().has_point(get_viewport().get_mouse_position()):
 		if not Indications.semi_selected_tid.is_empty():
-			SVG.root_tag.get_tag(Indications.semi_selected_tid).attributes.d.\
+			SVG.get_tag(Indications.semi_selected_tid).attributes.d.\
 					sync_after_commands_change(Attribute.SyncMode.FINAL)
 		return
 	
@@ -774,4 +774,4 @@ func add_tag_at_pos(tag_name: String, pos: Vector2) -> void:
 		"ellipse": tag = TagEllipse.new(pos)
 		"rect": tag = TagRect.new(pos)
 		"line": tag = TagLine.new(pos)
-	SVG.root_tag.add_tag(tag, PackedInt32Array([SVG.root_tag.get_child_count()]))
+	SVG.add_tag(tag, PackedInt32Array([SVG.root_tag.get_child_count()]))

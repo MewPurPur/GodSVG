@@ -170,7 +170,7 @@ func _input(event: InputEvent) -> void:
 	
 	if event.is_action_pressed("save"):
 		get_viewport().set_input_as_handled()
-		SVG.open_save_dialog("svg", SVG.native_file_save, SVG.save_svg_to_file)
+		SVG.open_save_dialog("svg", SVG.native_file_save, FileUtils.save_svg_to_file)
 
 func _unhandled_input(event: InputEvent) -> void:
 	# Clear popups or overlays.
@@ -277,7 +277,7 @@ func _calculate_auto_scale() -> float:
 	return 1.0
 
 
-# Web file access code credit (Modified):
+# Parts of the below code have been modified from the following places:
 # https://github.com/Pukkah/HTML5-File-Exchange-for-Godot
 # https://github.com/Orama-Interactive/Pixelorama/blob/master/src/Autoload/HTML5FileExchange.gd
 
@@ -311,55 +311,34 @@ func web_load_svg() -> void:
 		HandlerGUI.add_overlay(alert_dialog)
 		alert_dialog.setup(error, tr("Alert!"), 280.0)
 
-
 func _import(svg_text: String, file_name: String) -> void:
 	SVG.apply_svg_text(svg_text)
 	GlobalSettings.modify_save_data("current_file_path", file_name)
 	JavaScriptBridge.eval("fileData = undefined;", true)
 
-
 func web_save_svg() -> void:
 	var file_name := Utils.get_file_name(GlobalSettings.save_data.current_file_path)
 	if file_name.is_empty():
 		file_name = "export"
-	JavaScriptBridge.download_buffer(
-		SVG.text.to_utf8_buffer(),
-		file_name,
-		"image/svg+xml"
-	)
-
+	JavaScriptBridge.download_buffer(SVG.text.to_utf8_buffer(), file_name, "image/svg+xml")
 
 func web_save_png(img: Image) -> void:
 	var file_name := Utils.get_file_name(GlobalSettings.save_data.current_file_path)
 	if file_name.is_empty():
 		file_name = "export"
-	JavaScriptBridge.download_buffer(
-		img.save_png_to_buffer(),
-		file_name,
-		"image/png"
-	)
-
+	JavaScriptBridge.download_buffer(img.save_png_to_buffer(), file_name,"image/png")
 
 func web_save_jpg(img: Image) -> void:
 	var file_name := Utils.get_file_name(GlobalSettings.save_data.current_file_path)
 	if file_name.is_empty():
 		file_name = "export"
-	JavaScriptBridge.download_buffer(
-		img.save_jpg_to_buffer(),
-		file_name,
-		"image/jpeg"
-	)
-
+	JavaScriptBridge.download_buffer(img.save_jpg_to_buffer(), file_name, "image/jpeg")
 
 func web_save_webp(img: Image) -> void:
 	var file_name := Utils.get_file_name(GlobalSettings.save_data.current_file_path)
 	if file_name.is_empty():
 		file_name = "export"
-	JavaScriptBridge.download_buffer(
-		img.save_webp_to_buffer(),
-		file_name,
-		"image/webp"
-	)
+	JavaScriptBridge.download_buffer(img.save_webp_to_buffer(), file_name, "image/webp")
 
 const web_glue = """var fileData;
 var fileName;

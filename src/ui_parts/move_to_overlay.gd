@@ -13,4 +13,4 @@ func _can_drop_data(_at_position: Vector2, data: Variant) -> bool:
 # Runs when you drop the TIDs.
 func _drop_data(_at_position: Vector2, data: Variant) -> void:
 	if data is Array[PackedInt32Array]:
-		SVG.root_tag.move_tags_to(data, Indications.proposed_drop_tid)
+		SVG.move_tags_to(data, Indications.proposed_drop_tid)

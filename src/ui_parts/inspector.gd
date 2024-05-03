@@ -6,8 +6,8 @@ const TagFrame = preload("tag_frame.tscn")
 @onready var add_button: Button = $AddButton
 
 func _ready() -> void:
-	SVG.root_tag.tag_layout_changed.connect(full_rebuild)
-	SVG.root_tag.changed_unknown.connect(full_rebuild)
+	SVG.tag_layout_changed.connect(full_rebuild)
+	SVG.changed_unknown.connect(full_rebuild)
 	full_rebuild()
 
 
@@ -30,7 +30,7 @@ func add_tag(tag_name: String) -> void:
 		"rect": new_tag = TagRect.new()
 		"path": new_tag = TagPath.new()
 		"line": new_tag = TagLine.new()
-	SVG.root_tag.add_tag(new_tag, new_tid)
+	SVG.add_tag(new_tag, new_tid)
 
 
 func _on_add_button_pressed() -> void:

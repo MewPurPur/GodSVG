@@ -2,16 +2,23 @@
 # The SVG text, and the native TagSVG representation.
 extends Node
 
+# These are all attributes in RootTag. The RootTag is constantly changed,
+# but it connects to these signals, so other parts of the editor can connect to them.
+signal attribute_changed(undo_redo: bool)
+signal child_attribute_changed(undo_redo: bool)
+signal changed_unknown
+signal tags_added(tids: Array[PackedInt32Array])
+signal tags_deleted(tids: Array[PackedInt32Array])
+signal tags_moved_in_parent(parent_tid: PackedInt32Array, old_indices: Array[int])
+signal tags_moved_to(tids: Array[PackedInt32Array], location: PackedInt32Array)
+signal tag_layout_changed  # Emitted together with any of the above 5.
 
+signal resized
 signal parsing_finished(error_id: SVGParser.ParseError)
-signal svg_text_changed()
-
-const GoodFileDialogType = preload("res://src/ui_parts/good_file_dialog.gd")
+signal svg_text_changed
 
 const AlertDialog := preload("res://src/ui_parts/alert_dialog.tscn")
 const ImportWarningDialog = preload("res://src/ui_parts/import_warning_dialog.tscn")
-const GoodFileDialog = preload("res://src/ui_parts/good_file_dialog.tscn")
-const ExportDialog = preload("res://src/ui_parts/export_dialog.tscn")
 
 const DEFAULT = '<svg width="16" height="16" xmlns="http://www.w3.org/2000/svg"></svg>'
 
@@ -24,12 +31,18 @@ var root_tag := TagSVG.new()
 
 var UR := UndoRedo.new()
 
+var size := Vector2.INF:
+	set(value):
+		if size != value:
+			size = value
+			resized.emit()
+
 func _ready() -> void:
 	UR.version_changed.connect(_on_undo_redo)
-	root_tag.changed_unknown.connect(update_text.bind(false))
-	root_tag.attribute_changed.connect(update_text)
-	root_tag.child_attribute_changed.connect(update_text)
-	root_tag.tag_layout_changed.connect(update_text)
+	changed_unknown.connect(update_text.bind(false))
+	attribute_changed.connect(update_text)
+	child_attribute_changed.connect(update_text)
+	tag_layout_changed.connect(update_text)
 	
 	var cmdline_args := OS.get_cmdline_args()
 	var load_cmdl := false
@@ -56,7 +69,11 @@ func update_tags() -> void:
 	var svg_parse_result := SVGParser.text_to_svg(text)
 	parsing_finished.emit(svg_parse_result.error)
 	if svg_parse_result.error == SVGParser.ParseError.OK:
-		root_tag.replace_self(svg_parse_result.svg)
+		root_tag = svg_parse_result.svg
+		root_tag.attribute_changed.connect(emit_attribute_changed)
+
+func emit_attribute_changed() -> void:
+	attribute_changed.emit()
 
 
 func update_text(undo_redo := true) -> void:
@@ -84,66 +101,7 @@ func _on_undo_redo() -> void:
 
 
 func refresh() -> void:
-	SVG.root_tag.replace_self(SVG.root_tag.create_duplicate())
-
-
-func is_native_preferred() -> bool:
-	return DisplayServer.has_feature(DisplayServer.FEATURE_NATIVE_DIALOG) and\
-			GlobalSettings.use_native_file_dialog
-
-func open_import_dialog() -> void:
-	# Open it inside a native file dialog, or our custom one if it's not available.
-	if is_native_preferred():
-		DisplayServer.file_dialog_show("Import a .svg file", Utils.get_last_dir(), "", false,
-				DisplayServer.FILE_DIALOG_MODE_OPEN_FILE, ["*.svg"], native_file_import)
-	elif OS.has_feature("web"):
-		HandlerGUI.web_load_svg()
-	else:
-		var svg_import_dialog := GoodFileDialog.instantiate()
-		svg_import_dialog.setup(Utils.get_last_dir(), "",
-				GoodFileDialogType.FileMode.SELECT, "svg")
-		HandlerGUI.add_overlay(svg_import_dialog)
-		svg_import_dialog.file_selected.connect(apply_svg_from_path)
-
-func native_file_import(has_selected: bool, files: PackedStringArray,
-_filter_idx: int) -> void:
-	if has_selected:
-		apply_svg_from_path(files[0])
-
-
-func open_export_dialog() -> void:
-	HandlerGUI.add_overlay(ExportDialog.instantiate())
-
-func open_save_dialog(extension: String, native_callable: Callable,
-non_native_callable: Callable) -> void:
-	# Open it inside a native file dialog, or our custom one if it's not available.
-	if is_native_preferred():
-		DisplayServer.file_dialog_show("Save the .%s file" % extension,
-				Utils.get_last_dir(),
-				Utils.get_file_name(GlobalSettings.save_data.current_file_path) + "." + extension,
-				false, DisplayServer.FILE_DIALOG_MODE_SAVE_FILE,
-				["*." + extension], native_callable)
-	elif OS.has_feature("web"):
-		HandlerGUI.web_save_svg()
-	else:
-		var svg_export_dialog := GoodFileDialog.instantiate()
-		svg_export_dialog.setup(Utils.get_last_dir(),
-				Utils.get_file_name(GlobalSettings.save_data.current_file_path),
-				GoodFileDialogType.FileMode.SAVE, extension)
-		HandlerGUI.add_overlay(svg_export_dialog)
-		svg_export_dialog.file_selected.connect(non_native_callable)
-
-func native_file_export(has_selected: bool, files: PackedStringArray,
-_filter_idx: int, extension: String, upscale_amount := 1.0) -> void:
-	if has_selected:
-		SVG.finish_export(files[0], extension, upscale_amount)
-
-func native_file_save(has_selected: bool, files: PackedStringArray,
-_filter_idx: int) -> void:
-	if has_selected:
-		GlobalSettings.modify_save_data("current_file_path", files[0])
-		GlobalSettings.modify_save_data("last_used_dir", files[0].get_base_dir())
-		save_svg_to_file(files[0])
+	SVG.root_tag = SVG.root_tag.duplicate()
 
 
 func apply_svg_from_path(path: String) -> int:
@@ -170,56 +128,157 @@ func apply_svg_from_path(path: String) -> int:
 	
 	var svg_text := svg_file.get_as_text()
 	var warning_panel := ImportWarningDialog.instantiate()
-	warning_panel.imported.connect(finish_import.bind(svg_text, path))
+	warning_panel.imported.connect(FileUtils.finish_import.bind(svg_text, path))
 	warning_panel.set_svg(svg_text)
 	HandlerGUI.add_overlay(warning_panel)
 	return OK
-
-func generate_image_from_tags(upscale_amount := 1.0) -> Image:
-	var export_svg := SVG.root_tag.create_duplicate()
-	if export_svg.attributes.viewBox.get_list().is_empty():
-		export_svg.attributes.viewBox.set_list([0, 0, export_svg.width, export_svg.height])
-	export_svg.attributes.width.set_num(export_svg.width * upscale_amount)
-	export_svg.attributes.height.set_num(export_svg.height * upscale_amount)
-	var img := Image.new()
-	img.load_svg_from_string(SVGParser.svg_to_text(export_svg))
-	img.fix_alpha_edges()  # See godot issue 82579.
-	return img
-
-
-func finish_import(svg_text: String, file_path: String) -> void:
-	GlobalSettings.modify_save_data("current_file_path", file_path)
-	apply_svg_text(svg_text)
-
-func finish_export(file_path: String, extension: String, upscale_amount := 1.0, quality := 0.8) -> void:
-	if file_path.get_extension().is_empty():
-		file_path += "." + extension
-	
-	GlobalSettings.modify_save_data("last_used_dir", file_path.get_base_dir())
-	
-	match extension:
-		"png":
-			generate_image_from_tags(upscale_amount).save_png(file_path)
-		"jpg":
-			generate_image_from_tags(upscale_amount).save_jpg(file_path, quality)
-		"webp":
-			generate_image_from_tags(upscale_amount).save_webp(file_path, quality)
-		_:
-			# SVG / fallback.
-			GlobalSettings.modify_save_data("current_file_path", file_path)
-			save_svg_to_file(file_path)
-	HandlerGUI.remove_overlay()
-
-
-func does_svg_data_match_disk_contents() -> bool:
-	return text == FileAccess.get_file_as_string(GlobalSettings.save_data.current_file_path)
-
-
-func save_svg_to_file(path: String) -> void:
-	var FA := FileAccess.open(path, FileAccess.WRITE)
-	FA.store_string(text)
 
 func apply_svg_text(svg_text: String,) -> void:
 	text = svg_text
 	GlobalSettings.modify_save_data("svg_text", text)
 	update_tags()
+
+
+func get_all_tids() -> Array[PackedInt32Array]:
+	var tids: Array[PackedInt32Array] = []
+	var unchecked_tids: Array[PackedInt32Array] = []
+	for idx in get_child_count():
+		unchecked_tids.append(PackedInt32Array([idx]))
+	
+	while not unchecked_tids.is_empty():
+		var checked_tid: PackedInt32Array = unchecked_tids.pop_back()
+		var checked_tag: Tag = get_tag(checked_tid)
+		for idx in checked_tag.get_child_count():
+			var new_tid := checked_tid.duplicate()
+			new_tid.append(idx)
+			unchecked_tids.append(new_tid)
+		tids.append(checked_tid)
+	return tids
+
+func get_tag(tid: PackedInt32Array) -> Tag:
+	var current_tag := root_tag
+	for idx in tid:
+		if idx >= current_tag.child_tags.size():
+			return null
+		current_tag = current_tag.child_tags[idx]
+	return current_tag
+
+
+func add_tag(new_tag: Tag, new_tid: PackedInt32Array) -> void:
+	var parent_tid := Utils.get_parent_tid(new_tid)
+	root_tag.get_tag(parent_tid).child_tags.insert(new_tid[-1], new_tag)
+	new_tag.attribute_changed.connect(emit_child_attribute_changed)
+	var new_tid_array: Array[PackedInt32Array] = [new_tid]
+	tags_added.emit(new_tid_array)
+	tag_layout_changed.emit()
+
+func delete_tags(tids: Array[PackedInt32Array]) -> void:
+	if tids.is_empty():
+		return
+	
+	tids = Utils.filter_descendant_tids(tids)
+	for tid in tids:
+		var parent_tid := Utils.get_parent_tid(tid)
+		var parent_tag := get_tag(parent_tid)
+		if parent_tag != null:
+			var tag_idx := tid[-1]
+			if tag_idx < parent_tag.get_child_count():
+				parent_tag.child_tags.remove_at(tag_idx)
+	tags_deleted.emit(tids)
+	tag_layout_changed.emit()
+
+# Moves tags up or down, not to an arbitrary position.
+func move_tags_in_parent(tids: Array[PackedInt32Array], down: bool) -> void:
+	var signal_args := root_tag.move_tags_in_parent(tids, down)
+	if not signal_args.is_empty():
+		tags_moved_in_parent.emit(signal_args[0], signal_args[1])
+		tag_layout_changed.emit()
+
+# Moves tags to an arbitrary position. The first moved tag will move to the location TID.
+func move_tags_to(tids: Array[PackedInt32Array], location: PackedInt32Array) -> void:
+	var signal_args := root_tag.move_tags_to(tids, location)
+	if not signal_args.is_empty():
+		tags_moved_to.emit(signal_args[0], signal_args[1])
+		tag_layout_changed.emit()
+
+# Duplicates tags and puts them below.
+func duplicate_tags(tids: Array[PackedInt32Array]) -> void:
+	var tids_added := root_tag.duplicate_tags(tids)
+	tags_added.emit(tids_added)
+	tag_layout_changed.emit()
+
+func replace_tag(tid: PackedInt32Array, new_tag: Tag) -> void:
+	root_tag.replace_tag(tid, new_tag)
+	tag_layout_changed.emit()
+
+func emit_child_attribute_changed() -> void:
+	child_attribute_changed.emit()
+
+
+# Optimizes the SVG text in more ways than what autoformatting allows.
+# The return value is true if the SVG can be optimized, otherwise false.
+# If apply_changes is false, you'll only get the return value.
+func optimize(not_applied := false) -> bool:
+	var svg_tag: TagSVG= root_tag.duplicate()  # Only needed if changes are applied. Welp.
+	for tid in svg_tag.get_all_tids():
+		var tag := svg_tag.get_tag(tid)
+		match tag.name:
+			"ellipse":
+				# If possible, turn ellipses into circles.
+				if tag.can_replace("circle"):
+					if not_applied:
+						return true
+					svg_tag.replace_tag(tid, get_tag(tid).get_replacement("circle"))
+			"line":
+				# Turn lines into paths.
+				if not_applied:
+					return true
+				svg_tag.replace_tag(tid, get_tag(tid).get_replacement("path"))
+			"rect":
+				# If possible, turn rounded rects into circles or ellipses.
+				if tag.can_replace("circle"):
+					if not_applied:
+						return true
+					svg_tag.replace_tag(tid, get_tag(tid).get_replacement("circle"))
+				elif tag.can_replace("ellipse"):
+					if not_applied:
+						return true
+					svg_tag.replace_tag(tid, get_tag(tid).get_replacement("ellipse"))
+				elif tag.attributes.rx.get_num() == 0 and tag.attributes.ry.get_num() == 0:
+					# If the rectangle is not rounded, turn it into a path.
+					if not_applied:
+						return true
+					svg_tag.replace_tag(tid, get_tag(tid).get_replacement("path"))
+			"path":
+				var pathdata: AttributePath = tag.attributes.d
+				# Simplify A rotation to 0 degrees for circular arcs.
+				for cmd_idx in pathdata.get_command_count():
+					var command := pathdata.get_command(cmd_idx)
+					var cmd_char := command.command_char
+					if cmd_char in "Aa" and command.rx == command.ry and command.rot != 0:
+						if not_applied:
+							return true
+						pathdata.set_command_property(cmd_idx, "rot", 0)
+				# Replace L with H or V when possible.
+				for cmd_idx in pathdata.get_command_count():
+					var command := pathdata.get_command(cmd_idx)
+					var cmd_char := command.command_char
+					if cmd_char == "l":
+						if command.x == 0:
+							if not_applied:
+								return true
+							pathdata.convert_command(cmd_idx, "v")
+						elif command.y == 0:
+							if not_applied:
+								return true
+							pathdata.convert_command(cmd_idx, "h")
+					elif cmd_char == "L":
+						if command.x == command.start.x:
+							if not_applied:
+								return true
+							pathdata.convert_command(cmd_idx, "V")
+						elif command.y == command.start.y:
+							if not_applied:
+								return true
+							pathdata.convert_command(cmd_idx, "H")
+	return false

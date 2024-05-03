@@ -76,7 +76,7 @@ func _get_drag_data(_at_position: Vector2) -> Variant:
 	for data_idx in range(data.size() - 1, -1, -1):
 		var drag_tid := data[data_idx]
 		var preview := TagFrame.instantiate()
-		preview.tag = SVG.root_tag.get_tag(drag_tid)
+		preview.tag = SVG.get_tag(drag_tid)
 		preview.tid = drag_tid
 		preview.custom_minimum_size.x = size.x
 		preview.z_index = 2
