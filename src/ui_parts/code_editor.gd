@@ -168,7 +168,7 @@ func update_file_button() -> void:
 
 
 func update_optimize_button() -> void:
-	var enabled: bool = SVG.root_tag.optimize(false)
+	var enabled: bool = SVG.root_tag.optimize(true)
 	optimize_button.disabled = not enabled
 	optimize_button.mouse_default_cursor_shape = Control.CURSOR_ARROW if\
 			optimize_button.disabled else Control.CURSOR_POINTING_HAND
