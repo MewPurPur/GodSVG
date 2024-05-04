@@ -121,7 +121,7 @@ unique_name_in_owner = true
 disable_3d = true
 handle_input_locally = false
 gui_snap_controls_to_pixels = false
-size = Vector2i(450, 2)
+size = Vector2i(1024, 609)
 size_2d_override_stretch = true
 render_target_update_mode = 4
 script = ExtResource("9_4xrk7")
@@ -172,7 +172,9 @@ theme_override_constants/margin_right = 12
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
 theme_override_constants/line_spacing = 0
+theme_override_font_sizes/font_size = 14
 horizontal_alignment = 2
 
 [connection signal="pressed" from="PanelContainer/HBoxContainer/LeftMenu/MoreOptions" to="." method="_on_more_options_pressed"]
