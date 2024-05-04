@@ -8,7 +8,7 @@ signal attribute_changed(undo_redo: bool)
 var attributes: Dictionary  # Dictionary{String: Attribute}
 
 # Attributes that aren't recognized (usually because GodSVG doesn't support them).
-var unknown_attributes: Array[AttributeUnknown]
+var unknown_attributes: Array[Attribute]
 
 func is_standalone() -> bool:
 	return child_tags.is_empty()
@@ -17,7 +17,7 @@ func _init() -> void:
 	for attribute: Attribute in attributes.values():
 		attribute.propagate_value_changed.connect(emit_attribute_changed)
 
-func set_unknown_attributes(attribs: Array[AttributeUnknown]) -> void:
+func set_unknown_attributes(attribs: Array[Attribute]) -> void:
 	unknown_attributes = attribs.duplicate()
 	for attribute in unknown_attributes:
 		attribute.propagate_value_changed.connect(emit_attribute_changed)
@@ -30,17 +30,7 @@ func get_child_count() -> int:
 
 
 # Why is there no way to duplicate RefCounteds, again?
-func create_duplicate() -> Tag:
-	var new_tag := create_duplicate_without_children()
-	
-	# Iterate this over all children.
-	var new_child_tags: Array[Tag] = []
-	for tag in child_tags:
-		new_child_tags.append(tag.create_duplicate())
-	new_tag.child_tags = new_child_tags
-	return new_tag
-
-func create_duplicate_without_children() -> Tag:
+func duplicate(include_children := true) -> Tag:
 	var type: GDScript = get_script()
 	var new_tag: Tag
 	if type == TagUnknown:
@@ -49,13 +39,21 @@ func create_duplicate_without_children() -> Tag:
 		new_tag = type.new()
 	for attribute in new_tag.attributes:
 		new_tag.attributes[attribute].set_value(attributes[attribute].get_value())
-	var unknown_attributes_array: Array[AttributeUnknown] = []
+	var unknown_attributes_array: Array[Attribute] = []
 	for attribute in unknown_attributes:
-		var new_attrib := AttributeUnknown.new(attribute.name)
+		var new_attrib := Attribute.new(attribute.name)
 		new_attrib.set_value(attribute.get_value())
 		unknown_attributes_array.append(new_attrib)
 	new_tag.set_unknown_attributes(unknown_attributes_array)
+	
+	if include_children:
+		# Iterate this over all children.
+		var new_child_tags: Array[Tag] = []
+		for tag in child_tags:
+			new_child_tags.append(tag.duplicate())
+		new_tag.child_tags = new_child_tags
 	return new_tag
+
 
 # To be overridden in extending classes.
 func can_replace(_new_tag: String) -> bool:

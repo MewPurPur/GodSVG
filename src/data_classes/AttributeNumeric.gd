@@ -9,7 +9,7 @@ func _sync() -> void:
 	else:
 		_number = NumberParser.text_to_num(_value)
 
-func autoformat(text: String) -> String:
+func format(text: String) -> String:
 	if GlobalSettings.number_enable_autoformatting:
 		return NumberParser.format_text(text)
 	else:

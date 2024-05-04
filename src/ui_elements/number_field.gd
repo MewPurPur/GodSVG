@@ -25,7 +25,7 @@ func set_value(new_value: String, update_type := Utils.UpdateType.REGULAR) -> vo
 			new_value = NumberParser.num_to_text(numeric_value)
 		
 		new_value = NumberParser.num_to_text(numeric_value)
-		sync(attribute.autoformat(new_value))
+		sync(attribute.format(new_value))
 	
 	# Update the attribute.
 	if new_value != attribute.get_value() or update_type == Utils.UpdateType.FINAL:

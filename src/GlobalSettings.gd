@@ -128,7 +128,7 @@ var language: String:
 var palettes: Array[ColorPalette] = []
 
 
-# Autoformat
+# Formatting
 var general_number_precision := 3
 var general_angle_precision := 1
 var xml_add_trailing_newline := false

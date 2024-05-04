@@ -213,7 +213,7 @@ func rebuild_color_palettes() -> void:
 	add_palette_button.pressed.connect(add_palette)
 
 
-# Autoformatting tab helpers.
+# Helpers for the Formatting tab.
 
 @onready var xml_vbox: VBoxContainer = %XMLVBox
 @onready var number_vbox: VBoxContainer = %NumberVBox
@@ -221,18 +221,18 @@ func rebuild_color_palettes() -> void:
 @onready var path_vbox: VBoxContainer = %PathVBox
 @onready var transform_vbox: VBoxContainer = %TransformVBox
 
-func setup_autoformat_tab() -> void:
-	disable_autoformat_checkboxes()
+func setup_format_tab() -> void:
+	disable_format_checkboxes()
 	for vbox in [xml_vbox, number_vbox, color_vbox, path_vbox, transform_vbox]:
 		for child in vbox.get_children():
 			if child is SettingCheckBox:
-				child.pressed.connect(_on_autoformat_settings_changed)
+				child.pressed.connect(_on_format_settings_changed)
 	%GeneralVBox/NumberPrecision.value_changed.connect(_on_number_precision_changed)
 	%GeneralVBox/AnglePrecision.value_changed.connect(SVG.refresh)
 
-func _on_autoformat_settings_changed() -> void:
+func _on_format_settings_changed() -> void:
 	SVG.refresh()
-	disable_autoformat_checkboxes()
+	disable_format_checkboxes()
 
 func _on_number_precision_changed() -> void:
 	SVG.refresh()
@@ -246,7 +246,7 @@ func _on_number_precision_changed() -> void:
 			GlobalSettings.save_data.snap *= -1
 	custom_notify(Utils.CustomNotification.NUMBER_PRECISION_CHANGED)
 
-func disable_autoformat_checkboxes() -> void:
+func disable_format_checkboxes() -> void:
 	var is_autoformatting_numbers := GlobalSettings.number_enable_autoformatting
 	var is_autoformatting_colors := GlobalSettings.color_enable_autoformatting
 	%NumberVBox/RemoveZeroPadding.set_checkbox_enabled(is_autoformatting_numbers)
@@ -315,17 +315,17 @@ func custom_notify(notif: Utils.CustomNotification) -> void:
 # Optimize by only generating content on demand.
 
 var generated_content := {  # String: bool
-	"autoformat": false,
+	"formatting": false,
 	"palettes": false,
 	"shortcuts": false,
 	"theming": false,
 	"other": false,
 }
 
-func _on_autoformatting_tab_toggled(toggled_on: bool) -> void:
-	if toggled_on and not generated_content.autoformat:
-		setup_autoformat_tab()
-		generated_content.autoformat = true
+func _on_formatting_tab_toggled(toggled_on: bool) -> void:
+	if toggled_on and not generated_content.formatting:
+		setup_format_tab()
+		generated_content.formatting = true
 
 func _on_palettes_tab_toggled(toggled_on: bool) -> void:
 	if toggled_on and not generated_content.palettes:

@@ -42,7 +42,7 @@ quality := 0.8, lossless := true) -> void:
 
 
 static func generate_image_from_tags(upscale_amount := 1.0) -> Image:
-	var export_svg := SVG.root_tag.create_duplicate()
+	var export_svg := SVG.root_tag.duplicate()
 	if export_svg.attributes.viewBox.get_list().is_empty():
 		export_svg.attributes.viewBox.set_list([0, 0, export_svg.width, export_svg.height])
 	export_svg.attributes.width.set_num(export_svg.width * upscale_amount)
