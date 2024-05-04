@@ -14,15 +14,18 @@ const BetterToggleButtonType = preload("res://src/ui_elements/BetterToggleButton
 
 const NumberField = preload("res://src/ui_elements/number_field.tscn")
 
-@onready var viewport: SubViewport = $ViewportPanel/ViewportContainer/Viewport
-@onready var controls: Control = %Checkerboard/Controls
-@onready var grid_visuals: Control = %Camera
+@onready var viewport: SubViewport = %Viewport
+@onready var controls: Control = %Viewport/Checkerboard/Controls
+@onready var grid_visuals: Control = %Viewport/Camera
 @onready var visuals_button: Button = %LeftMenu/Visuals
 @onready var more_button: Button = %LeftMenu/MoreOptions
 @onready var snapper: NumberEditType = %LeftMenu/Snapping/SnapNumberEdit
 @onready var snap_button: BetterToggleButtonType = %LeftMenu/Snapping/SnapButton
 @onready var panel_container: PanelContainer = $PanelContainer
 @onready var viewport_panel: PanelContainer = $ViewportPanel
+
+@onready var debug_container: MarginContainer = $ViewportPanel/DebugContainer
+@onready var debug_label: Label = $ViewportPanel/DebugContainer/DebugLabel
 
 
 func _ready() -> void:
@@ -32,7 +35,13 @@ func _ready() -> void:
 
 
 func _unhandled_input(input_event: InputEvent) -> void:
-	if input_event.is_action_pressed("open_settings"):
+	if Input.is_action_pressed("debug"):
+		if debug_container.visible:
+			debug_container.hide()
+		else:
+			debug_container.show()
+			update_debug()
+	elif input_event.is_action_pressed("open_settings"):
 		_on_settings_pressed()
 	elif input_event.is_action_pressed("view_show_grid"):
 		toggle_grid_visuals()
@@ -88,11 +97,12 @@ func _on_settings_pressed() -> void:
 
 func _on_visuals_button_pressed() -> void:
 	var btn_arr: Array[Button] = [
-		Utils.create_checkbox(tr("Show Grid"), toggle_grid_visuals, grid_visuals.visible),
-		Utils.create_checkbox(tr("Show Handles"), toggle_handles_visuals, controls.visible),
-		Utils.create_checkbox(tr("Rasterized SVG"), toggle_rasterization,
-				viewport.display_texture.rasterized),
-	]
+		Utils.create_checkbox(TranslationServer.translate("Show Grid"),
+				toggle_grid_visuals, grid_visuals.visible),
+		Utils.create_checkbox(TranslationServer.translate("Show Handles"),
+				toggle_handles_visuals, controls.visible),
+		Utils.create_checkbox(TranslationServer.translate("Rasterized SVG"),
+				toggle_rasterization, viewport.display_texture.rasterized)]
 	
 	var visuals_popup := ContextPopup.new()
 	visuals_popup.setup(btn_arr, true)
@@ -100,22 +110,21 @@ func _on_visuals_button_pressed() -> void:
 			get_viewport())
 
 func _on_more_options_pressed() -> void:
-	var about_btn := Utils.create_btn(tr("About…"), open_about, false,
-			load("res://visual/icon.svg"))
+	var about_btn := Utils.create_btn(TranslationServer.translate("About…"),
+			open_about, false, load("res://visual/icon.svg"))
 	about_btn.expand_icon = true
 	var buttons_arr: Array[Button] = [
 		about_btn,
-		Utils.create_btn(tr("Donate…"), open_sponsor, false,
-				load("res://visual/icons/Heart.svg")),
-		Utils.create_btn(tr("GodSVG Repository"), open_godsvg_repo, false,
-				load("res://visual/icons/Link.svg")),
-		Utils.create_btn(tr("GodSVG Website"), open_godsvg_website, false,
-				load("res://visual/icons/Link.svg")),
-		Utils.create_btn(tr("Check for Updates"), open_update_checker, false,
-				load("res://visual/icons/Reload.svg"))
-	]
+		Utils.create_btn(TranslationServer.translate("Donate…"),
+				open_sponsor, false, load("res://visual/icons/Heart.svg")),
+		Utils.create_btn(TranslationServer.translate("GodSVG Repository"),
+				open_godsvg_repo, false, load("res://visual/icons/Link.svg")),
+		Utils.create_btn(TranslationServer.translate("GodSVG Website"),
+				open_godsvg_website, false, load("res://visual/icons/Link.svg")),
+		Utils.create_btn(TranslationServer.translate("Check for Updates"),
+				open_update_checker, false, load("res://visual/icons/Reload.svg"))]
 	var separator_indices: Array[int] = [2,4]
-
+	
 	var more_popup := ContextPopup.new()
 	more_popup.setup(buttons_arr, true, -1, separator_indices)
 	HandlerGUI.popup_under_rect_center(more_popup, more_button.get_global_rect(),
@@ -172,3 +181,16 @@ func _on_snap_number_edit_value_changed(new_value: float) -> void:
 	GlobalSettings.modify_save_data("snap",
 			new_value * signf(GlobalSettings.save_data.snap))
 	update_snap_config()
+
+
+func update_debug() -> void:
+	var debug_text := ""
+	debug_text += "FPS: %s\n" % Performance.get_monitor(Performance.TIME_FPS)
+	debug_text += "nStatic Mem: %s\n" % String.humanize_size(int(Performance.get_monitor(
+			Performance.MEMORY_STATIC)))
+	debug_text += "Nodes: %s\n" % Performance.get_monitor(Performance.OBJECT_NODE_COUNT)
+	debug_text += "Objects: %s\n" % Performance.get_monitor(Performance.OBJECT_COUNT)
+	debug_label.text = debug_text
+	# Set up the next update if the container is still visible.
+	if debug_container.visible:
+		get_tree().create_timer(1.0).timeout.connect(update_debug)

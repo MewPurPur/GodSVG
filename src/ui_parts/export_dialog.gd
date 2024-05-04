@@ -29,7 +29,7 @@ func _ready() -> void:
 	scale_edit.max_value = 16384/maxf(dimensions.x, dimensions.y)
 	scale_edit.set_value(minf(scale_edit.get_value(),
 			2048/maxf(dimensions.x, dimensions.y)))
-	fallback_format_label.text = tr("Format") + ": svg"
+	fallback_format_label.text = TranslationServer.translate("Format") + ": svg"
 	update_dimensions_label()
 	update_final_scale()
 	texture_preview.setup(SVG.text, dimensions)
@@ -37,12 +37,12 @@ func _ready() -> void:
 
 func update_dimensions_label() -> void:
 	var valid_dimensions := is_finite(dimensions.x) and is_finite(dimensions.y)
-	dimensions_label.text = tr("Size") + ": "
+	dimensions_label.text = TranslationServer.translate("Size") + ": "
 	if valid_dimensions:
 		dimensions_label.text += NumberParser.num_to_text(dimensions.x) +\
 				"×" + NumberParser.num_to_text(dimensions.y)
 	else:
-		dimensions_label.text += tr("Invalid")
+		dimensions_label.text += TranslationServer.translate("Invalid")
 	# If the size is invalid, only SVG exports are relevant. So hide the dropdown.
 	fallback_format_label.visible = !valid_dimensions
 	format_hbox.visible = valid_dimensions
@@ -78,7 +78,7 @@ func _on_quality_value_changed(_new_value : int) -> void:
 func update_final_scale() -> void:
 	upscale_amount = scale_edit.get_value()
 	var exported_size: Vector2i = dimensions * upscale_amount
-	final_dimensions_label.text = tr("Final size") +\
+	final_dimensions_label.text = TranslationServer.translate("Final size") +\
 			": %d×%d" % [exported_size.x, exported_size.y]
 
 func update_extension_configuration() -> void:
