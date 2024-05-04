@@ -90,7 +90,7 @@ func _sync() -> void:
 func sync_after_transforms_change(sync_mode := SyncMode.LOUD) -> void:
 	super.set_value(TransformListParser.transform_list_to_text(_transform_list), sync_mode)
 
-func autoformat(text: String) -> String:
+func format(text: String) -> String:
 	return TransformListParser.transform_list_to_text(
 			TransformListParser.text_to_transform_list(text))
 

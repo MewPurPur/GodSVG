@@ -76,7 +76,7 @@ func _on_undo_redo() -> void:
 
 
 func refresh() -> void:
-	SVG.root_tag.replace_self(SVG.root_tag.create_duplicate())
+	SVG.root_tag.replace_self(SVG.root_tag.duplicate())
 
 func apply_svg_text(svg_text: String,) -> void:
 	text = svg_text
