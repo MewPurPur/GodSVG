@@ -73,7 +73,6 @@ func _on_cancel_button_pressed() -> void:
 
 func _on_lossless_check_box_toggled(toggled_on : bool) -> void:
 	lossless = toggled_on
-	print(lossless)
 
 	if extension == "webp":
 		quality_hbox.visible = not lossless
@@ -94,5 +93,4 @@ func update_extension_configuration() -> void:
 	scale_container.visible = (extension == "png" or extension == "jpg" or extension == "webp")
 	lossless_hbox.visible = (extension == "webp")
 	quality_hbox.visible = (extension == "jpg" or extension == "webp")
-	if lossless and extension == "webp":
-		quality_hbox.visible = false
+	_on_lossless_check_box_toggled(lossless)
