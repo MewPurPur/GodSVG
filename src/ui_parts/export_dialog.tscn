@@ -48,7 +48,7 @@ theme_override_constants/margin_bottom = 6
 
 [node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/MarginContainer"]
 layout_mode = 2
-theme_override_constants/separation = 12
+theme_override_constants/separation = 8
 
 [node name="DimensionsLabel" type="Label" parent="VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
@@ -78,22 +78,37 @@ text = "Format"
 layout_mode = 2
 values = Array[String](["svg", "png", "jpg", "webp"])
 
+[node name="LosslessHBox" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/LosslessHBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "Lossless"
+
+[node name="CheckBox" type="CheckBox" parent="VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/LosslessHBox"]
+layout_mode = 2
+button_pressed = true
+
 [node name="QualityHBox" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 
 [node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/QualityHBox"]
 layout_mode = 2
+theme_override_font_sizes/font_size = 12
 text = "Quality"
 
 [node name="Quality" parent="VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/QualityHBox" instance=ExtResource("6_w1sag")]
 unique_name_in_owner = true
 layout_mode = 2
-min_value = 0.1
-max_value = 10.0
-initial_value = 8.0
+min_value = 1.0
+max_value = 100.0
+initial_value = 80.0
 allow_lower = false
 allow_higher = false
+is_float = false
 
 [node name="ScaleContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
@@ -105,7 +120,7 @@ theme_override_constants/separation = 8
 
 [node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/ScaleContainer/HBoxContainer"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 14
+theme_override_font_sizes/font_size = 12
 text = "Scale"
 
 [node name="Scale" parent="VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/ScaleContainer/HBoxContainer" instance=ExtResource("6_w1sag")]
@@ -141,5 +156,6 @@ focus_mode = 0
 mouse_default_cursor_shape = 2
 text = "Export"
 
+[connection signal="toggled" from="VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/LosslessHBox/CheckBox" to="." method="_on_lossless_check_box_toggled"]
 [connection signal="pressed" from="VBoxContainer/ButtonContainer/CancelButton" to="." method="_on_cancel_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/ButtonContainer/OKButton" to="." method="_on_ok_button_pressed"]
