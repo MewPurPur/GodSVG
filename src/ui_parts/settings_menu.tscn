@@ -55,7 +55,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 0
 
-[node name="AutoformattingTab" type="Button" parent="VBoxContainer/HBoxContainer/ContentPicker/ScrollContainer/Tabs"]
+[node name="FormattingTab" type="Button" parent="VBoxContainer/HBoxContainer/ContentPicker/ScrollContainer/Tabs"]
 layout_mode = 2
 focus_mode = 0
 theme_type_variation = &"SideTab"
@@ -548,7 +548,7 @@ mouse_default_cursor_shape = 2
 text = "Close"
 
 [connection signal="pressed" from="VBoxContainer/Language" to="." method="_on_language_pressed"]
-[connection signal="toggled" from="VBoxContainer/HBoxContainer/ContentPicker/ScrollContainer/Tabs/AutoformattingTab" to="." method="_on_autoformatting_tab_toggled"]
+[connection signal="toggled" from="VBoxContainer/HBoxContainer/ContentPicker/ScrollContainer/Tabs/FormattingTab" to="." method="_on_autoformatting_tab_toggled"]
 [connection signal="toggled" from="VBoxContainer/HBoxContainer/ContentPicker/ScrollContainer/Tabs/PalettesTab" to="." method="_on_palettes_tab_toggled"]
 [connection signal="toggled" from="VBoxContainer/HBoxContainer/ContentPicker/ScrollContainer/Tabs/ShortcutsTab" to="." method="_on_shortcuts_tab_toggled"]
 [connection signal="toggled" from="VBoxContainer/HBoxContainer/ContentPicker/ScrollContainer/Tabs/ThemeTab" to="." method="_on_theme_tab_toggled"]

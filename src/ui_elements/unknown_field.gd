@@ -19,7 +19,8 @@ func set_value(new_value: String, update_type := Utils.UpdateType.REGULAR) -> vo
 func _ready() -> void:
 	super()
 	set_value(attribute.get_value())
-	tooltip_text = attribute.name + "\n(%s)" % tr("GodSVG doesn’t recognize this attribute")
+	tooltip_text = attribute.name + "\n(%s)" %\
+			TranslationServer.translate("GodSVG doesn’t recognize this attribute")
 
 
 func _on_focus_entered() -> void:

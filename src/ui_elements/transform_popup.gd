@@ -253,14 +253,14 @@ func update_final_transform() -> void:
 
 func popup_transform_actions(idx: int, control: Control) -> void:
 	var btn_array: Array[Button] = []
-	btn_array.append(Utils.create_btn(tr("Insert After"),
+	btn_array.append(Utils.create_btn(TranslationServer.translate("Insert After"),
 			popup_new_transform_context.bind(idx + 1, control), false,
 			load("res://visual/icons/InsertAfter.svg")))
-	btn_array.append(Utils.create_btn(tr("Insert Before"),
+	btn_array.append(Utils.create_btn(TranslationServer.translate("Insert Before"),
 			popup_new_transform_context.bind(idx, control), false,
 			load("res://visual/icons/InsertBefore.svg")))
-	btn_array.append(Utils.create_btn(tr("Delete"), delete_transform.bind(idx), false,
-			load("res://visual/icons/Delete.svg")))
+	btn_array.append(Utils.create_btn(TranslationServer.translate("Delete"),
+			delete_transform.bind(idx), false, load("res://visual/icons/Delete.svg")))
 	
 	var context_popup := ContextPopup.new()
 	context_popup.setup(btn_array, true)
@@ -276,7 +276,8 @@ func popup_new_transform_context(idx: int, control: Control) -> void:
 		btn_array.append(btn)
 	
 	var transform_context := ContextPopup.new()
-	transform_context.setup_with_title(btn_array, tr("New transform"), true)
+	transform_context.setup_with_title(btn_array,
+			TranslationServer.translate("New transform"), true)
 	HandlerGUI.popup_under_rect_center(transform_context, control.get_global_rect(),
 			get_viewport())
 

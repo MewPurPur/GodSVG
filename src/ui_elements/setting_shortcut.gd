@@ -11,7 +11,7 @@ var events: Array[InputEvent] = []
 var listening_idx := -1
 
 func _ready() -> void:
-	reset_button.tooltip_text = tr("Reset to default")
+	reset_button.tooltip_text = TranslationServer.translate("Reset to default")
 
 func setup(new_action: String) -> void:
 	action = new_action
@@ -53,9 +53,9 @@ func sync() -> void:
 			new_btn.add_theme_color_override("font_hover_color", Color("#def6"))
 			new_btn.add_theme_color_override("font_pressed_color", Color("#def8"))
 			new_btn.end_bulk_theme_override()
-			new_btn.text = tr("Unused")
+			new_btn.text = TranslationServer.translate("Unused")
 			if i == events.size():
-				new_btn.tooltip_text = tr("Add shortcut")
+				new_btn.tooltip_text = TranslationServer.translate("Add shortcut")
 				new_btn.pressed.connect(enter_listening_mode.bind(i))
 			else:
 				new_btn.disabled = true
@@ -64,10 +64,10 @@ func sync() -> void:
 
 func popup_options(idx: int) -> void:
 	var btn_arr: Array[Button] = [
-		Utils.create_btn(tr("Edit"), enter_listening_mode.bind(idx), false,
-				load("res://visual/icons/Edit.svg")),
-		Utils.create_btn(tr("Remove"), delete_shortcut.bind(idx), false,
-				load("res://visual/icons/Delete.svg"))]
+		Utils.create_btn(TranslationServer.translate("Edit"),
+				enter_listening_mode.bind(idx), false, load("res://visual/icons/Edit.svg")),
+		Utils.create_btn(TranslationServer.translate("Remove"),
+				delete_shortcut.bind(idx), false, load("res://visual/icons/Delete.svg"))]
 	var context_popup := ContextPopup.new()
 	context_popup.setup(btn_arr, true, shortcut_buttons[idx].size.x)
 	HandlerGUI.popup_under_rect(context_popup, shortcut_buttons[idx].get_global_rect(),
@@ -97,7 +97,7 @@ func enter_listening_mode(idx: int) -> void:
 	btn.text = activation_event.as_text_keycode().\
 			trim_suffix("(Unset)").trim_suffix("+")
 	if btn.text.is_empty():
-		btn.text = tr("Press keys…")
+		btn.text = TranslationServer.translate("Press keys…")
 
 func cancel_listening() -> void:
 	listening_idx = -1

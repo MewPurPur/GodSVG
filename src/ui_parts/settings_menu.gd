@@ -50,73 +50,116 @@ func setup_theming() -> void:
 
 # Sets the text for all the labels.
 func setup_setting_labels() -> void:
-	tabs.get_node(^"AutoformattingTab").text = tr("Autoformatting")
-	tabs.get_node(^"PalettesTab").text = tr("Palettes")
-	tabs.get_node(^"ShortcutsTab").text = tr("Shortcuts")
-	tabs.get_node(^"ThemeTab").text = tr("Theme")
-	tabs.get_node(^"OtherTab").text = tr("Other")
+	tabs.get_node(^"FormattingTab").text = TranslationServer.translate("Formatting")
+	tabs.get_node(^"PalettesTab").text = TranslationServer.translate("Palettes")
+	tabs.get_node(^"ShortcutsTab").text = TranslationServer.translate("Shortcuts")
+	tabs.get_node(^"ThemeTab").text = TranslationServer.translate("Theme")
+	tabs.get_node(^"OtherTab").text = TranslationServer.translate("Other")
 	
 	var invert_zoom := %ContentContainer/Other/OtherSettings/Input/InvertZoom
-	invert_zoom.label.text = tr("Invert zoom direction")
-	invert_zoom.tooltip_text = tr("Swaps zoom in and zoom out with the mouse wheel.")
+	invert_zoom.label.text = TranslationServer.translate("Invert zoom direction")
+	invert_zoom.tooltip_text = TranslationServer.translate(
+			"Swaps zoom in and zoom out with the mouse wheel.")
 	
-	wrap_mouse.label.text = tr("Wrap mouse")
-	wrap_mouse.tooltip_text = tr("Wraps the mouse cursor around when panning the viewport.")
+	wrap_mouse.label.text = TranslationServer.translate("Wrap mouse")
+	wrap_mouse.tooltip_text = TranslationServer.translate(
+			"Wraps the mouse cursor around when panning the viewport.")
 	
 	var ctrl_for_zoom := %ContentContainer/Other/OtherSettings/Input/UseCtrlForZoom
-	ctrl_for_zoom.label.text = tr("Use CTRL for zooming")
-	ctrl_for_zoom.tooltip_text = tr("If turned on, scrolling will pan the view. To zoom, hold CTRL while scrolling.")
+	ctrl_for_zoom.label.text = TranslationServer.translate("Use CTRL for zooming")
+	ctrl_for_zoom.tooltip_text = TranslationServer.translate(
+			"If turned on, scrolling will pan the view. To zoom, hold CTRL while scrolling.")
 	
-	use_native_file_dialog.label.text = tr("Use native file dialog")
-	use_native_file_dialog.tooltip_text = tr("If turned on, uses your operating system's native file dialog. If turned off, uses GodSVG's built-in file dialog.")
+	use_native_file_dialog.label.text = TranslationServer.translate(
+			"Use native file dialog")
+	use_native_file_dialog.tooltip_text = TranslationServer.translate(
+			"If turned on, uses your operating system's native file dialog. If turned off, uses GodSVG's built-in file dialog.")
 	
 	var handles_size := %Misc/HandleSize
-	handles_size.label.text = tr("Handles size")
-	handles_size.tooltip_text = tr("Increases the visual size and grabbing area of handles.")
+	handles_size.label.text = TranslationServer.translate("Handles size")
+	handles_size.tooltip_text = TranslationServer.translate(
+			"Increases the visual size and grabbing area of handles.")
 	
 	var ui_scale := %Misc/UIScale
-	ui_scale.label.text = tr("UI scale")
-	ui_scale.tooltip_text = tr("Changes the scale of the visual user interface.")
+	ui_scale.label.text = TranslationServer.translate("UI scale")
+	ui_scale.tooltip_text = TranslationServer.translate(
+			"Changes the scale of the visual user interface.")
 	
 	var auto_ui_scale := %Misc/AutoUIScale
-	auto_ui_scale.label.text = tr("Auto UI scale")
-	auto_ui_scale.tooltip_text = tr("Scales the user interface based on the screen size.")
+	auto_ui_scale.label.text = TranslationServer.translate("Auto UI scale")
+	auto_ui_scale.tooltip_text = TranslationServer.translate(
+			"Scales the user interface based on the screen size.")
 	
-	%GeneralVBox/NumberPrecision.label.text = tr("Number precision digits")
-	%GeneralVBox/AnglePrecision.label.text = tr("Angle precision digits")
-	%XMLVBox/AddTrailingNewline.label.text = tr("Add trailing newline")
-	%XMLVBox/UseShorthandTagSyntax.label.text = tr("Use shorthand tag syntax")
-	%NumberVBox/NumberEnable.label.text = tr("Enable autoformatting")
-	%NumberVBox/RemoveZeroPadding.label.text = tr("Remove zero padding")
-	%NumberVBox/RemoveLeadingZero.label.text = tr("Remove leading zero")
-	%ColorVBox/ColorEnable.label.text = tr("Enable autoformatting")
-	%ColorVBox/ConvertRGBToHex.label.text = tr("Convert rgb format to hex")
-	%ColorVBox/ConvertNamedToHex.label.text = tr("Convert named colors to hex")
-	%ColorVBox/UseShorthandHex.label.text = tr("Use shorthand hex code")
-	%ColorVBox/UseNamedColors.label.text = tr("Use short named colors")
-	%PathVBox/CompressNumbers.label.text = tr("Compress numbers")
-	%PathVBox/MinimizeSpacing.label.text = tr("Minimize spacing")
-	%PathVBox/RemoveSpacingAfterFlags.label.text = tr("Remove spacing after flags")
-	%PathVBox/RemoveConsecutiveCommands.label.text = tr("Remove consecutive commands")
-	%TransformVBox/CompressNumbers.label.text = tr("Compress numbers")
-	%TransformVBox/MinimizeSpacing.label.text = tr("Minimize spacing")
-	%TransformVBox/RemoveUnnecessaryParams.label.text = tr("Remove unnecessary parameters")
-	%HighlighterVBox/SymbolColor.label.text = tr("Symbol color")
-	%HighlighterVBox/TagColor.label.text = tr("Tag color")
-	%HighlighterVBox/AttributeColor.label.text = tr("Attribute color")
-	%HighlighterVBox/StringColor.label.text = tr("String color")
-	%HighlighterVBox/CommentColor.label.text = tr("Comment color")
-	%HighlighterVBox/TextColor.label.text = tr("Text color")
-	%HighlighterVBox/CDATAColor.label.text = tr("CDATA color")
-	%HighlighterVBox/ErrorColor.label.text = tr("Error color")
-	%HandleColors/InsideColor.label.text = tr("Inside color")
-	%HandleColors/NormalColor.label.text = tr("Normal color")
-	%HandleColors/HoveredColor.label.text = tr("Hovered color")
-	%HandleColors/SelectedColor.label.text = tr("Selected color")
-	%HandleColors/HoveredSelectedColor.label.text = tr("Hovered selected color")
-	%BasicColorsVBox/ValidColor.label.text = tr("Valid color")
-	%BasicColorsVBox/ErrorColor.label.text = tr("Error color")
-	%BasicColorsVBox/WarningColor.label.text = tr("Warning color")
+	%GeneralVBox/NumberPrecision.label.text = TranslationServer.translate(
+			"Number precision digits")
+	%GeneralVBox/AnglePrecision.label.text = TranslationServer.translate(
+			"Angle precision digits")
+	%XMLVBox/AddTrailingNewline.label.text = TranslationServer.translate(
+			"Add trailing newline")
+	%XMLVBox/UseShorthandTagSyntax.label.text = TranslationServer.translate(
+			"Use shorthand tag syntax")
+	%NumberVBox/NumberEnable.label.text = TranslationServer.translate(
+			"Enable autoformatting")
+	%NumberVBox/RemoveZeroPadding.label.text = TranslationServer.translate(
+			"Remove zero padding")
+	%NumberVBox/RemoveLeadingZero.label.text = TranslationServer.translate(
+			"Remove leading zero")
+	%ColorVBox/ColorEnable.label.text = TranslationServer.translate(
+			"Enable autoformatting")
+	%ColorVBox/ConvertRGBToHex.label.text = TranslationServer.translate(
+			"Convert rgb format to hex")
+	%ColorVBox/ConvertNamedToHex.label.text = TranslationServer.translate(
+			"Convert named colors to hex")
+	%ColorVBox/UseShorthandHex.label.text = TranslationServer.translate(
+			"Use shorthand hex code")
+	%ColorVBox/UseNamedColors.label.text = TranslationServer.translate(
+			"Use short named colors")
+	%PathVBox/CompressNumbers.label.text = TranslationServer.translate(
+			"Compress numbers")
+	%PathVBox/MinimizeSpacing.label.text = TranslationServer.translate(
+			"Minimize spacing")
+	%PathVBox/RemoveSpacingAfterFlags.label.text = TranslationServer.translate(
+			"Remove spacing after flags")
+	%PathVBox/RemoveConsecutiveCommands.label.text = TranslationServer.translate(
+			"Remove consecutive commands")
+	%TransformVBox/CompressNumbers.label.text = TranslationServer.translate(
+			"Compress numbers")
+	%TransformVBox/MinimizeSpacing.label.text = TranslationServer.translate(
+			"Minimize spacing")
+	%TransformVBox/RemoveUnnecessaryParams.label.text = TranslationServer.translate(
+			"Remove unnecessary parameters")
+	%HighlighterVBox/SymbolColor.label.text = TranslationServer.translate(
+			"Symbol color")
+	%HighlighterVBox/TagColor.label.text = TranslationServer.translate(
+			"Tag color")
+	%HighlighterVBox/AttributeColor.label.text = TranslationServer.translate(
+			"Attribute color")
+	%HighlighterVBox/StringColor.label.text = TranslationServer.translate(
+			"String color")
+	%HighlighterVBox/CommentColor.label.text = TranslationServer.translate(
+			"Comment color")
+	%HighlighterVBox/TextColor.label.text = TranslationServer.translate(
+			"Text color")
+	%HighlighterVBox/CDATAColor.label.text = TranslationServer.translate(
+			"CDATA color")
+	%HighlighterVBox/ErrorColor.label.text = TranslationServer.translate(
+			"Error color")
+	%HandleColors/InsideColor.label.text = TranslationServer.translate(
+			"Inside color")
+	%HandleColors/NormalColor.label.text = TranslationServer.translate(
+			"Normal color")
+	%HandleColors/HoveredColor.label.text = TranslationServer.translate(
+			"Hovered color")
+	%HandleColors/SelectedColor.label.text = TranslationServer.translate(
+			"Selected color")
+	%HandleColors/HoveredSelectedColor.label.text = TranslationServer.translate(
+			"Hovered selected color")
+	%BasicColorsVBox/ValidColor.label.text = TranslationServer.translate(
+			"Valid color")
+	%BasicColorsVBox/ErrorColor.label.text = TranslationServer.translate(
+			"Error color")
+	%BasicColorsVBox/WarningColor.label.text = TranslationServer.translate(
+			"Warning color")
 
 
 func _on_language_pressed() -> void:
@@ -135,7 +178,8 @@ func _on_language_chosen(locale: String) -> void:
 	update_language_button()
 
 func update_language_button() -> void:
-	lang_button.text = tr("Language") + ": " + TranslationServer.get_locale().to_upper()
+	lang_button.text = TranslationServer.translate("Language") + ": " +\
+			TranslationServer.get_locale().to_upper()
 
 
 # Palette tab helpers.
@@ -214,10 +258,14 @@ func disable_autoformat_checkboxes() -> void:
 
 
 func setup_shortcuts_tab() -> void:
-	shortcut_categories.add_child(Utils.create_btn(tr("File"), show_keybinds.bind("file")))
-	shortcut_categories.add_child(Utils.create_btn(tr("Edit"), show_keybinds.bind("edit")))
-	shortcut_categories.add_child(Utils.create_btn(tr("View"), show_keybinds.bind("view")))
-	shortcut_categories.add_child(Utils.create_btn(tr("Tool"), show_tool_keybinds))
+	shortcut_categories.add_child(Utils.create_btn(TranslationServer.translate("File"),
+			show_keybinds.bind("file")))
+	shortcut_categories.add_child(Utils.create_btn(TranslationServer.translate("Edit"),
+			show_keybinds.bind("edit")))
+	shortcut_categories.add_child(Utils.create_btn(TranslationServer.translate("View"),
+			show_keybinds.bind("view")))
+	shortcut_categories.add_child(Utils.create_btn(TranslationServer.translate("Tool"),
+			show_keybinds.bind("tool")))
 	# Add them all to a button group.
 	var button_group := ButtonGroup.new()
 	for btn: Button in shortcut_categories.get_children():
@@ -230,23 +278,17 @@ func show_keybinds(category: String):
 	for child in shortcut_container.get_children():
 		child.queue_free()
 	
-	var translation_utils := TranslationUtils.new()
-	for action in GlobalSettings.configurable_keybinds[category]:
-		var keybind_config := ShortcutConfigWidget.instantiate()
-		shortcut_container.add_child(keybind_config)
-		keybind_config.label.text = translation_utils.get_shortcut_description(action)
-		keybind_config.setup(action)
-
-func show_tool_keybinds() -> void:
-	for child in shortcut_container.get_children():
-		child.queue_free()
-	
-	var translation_utils := TranslationUtils.new()
-	for action in GlobalSettings.unconfigurable_keybinds:
-		var keybind_config := ShortcutShowcaseWidget.instantiate()
-		shortcut_container.add_child(keybind_config)
-		keybind_config.label.text = translation_utils.get_shortcut_description(action)
-		keybind_config.setup(action)
+	for action in GlobalSettings.keybinds_dict[category]:
+		if GlobalSettings.keybinds_dict[category][action]:
+			var keybind_config := ShortcutConfigWidget.instantiate()
+			shortcut_container.add_child(keybind_config)
+			keybind_config.label.text = TranslationUtils.get_shortcut_description(action)
+			keybind_config.setup(action)
+		else:
+			var keybind_config := ShortcutShowcaseWidget.instantiate()
+			shortcut_container.add_child(keybind_config)
+			keybind_config.label.text = TranslationUtils.get_shortcut_description(action)
+			keybind_config.setup(action)
 
 
 func setup_theming_tab() -> void:

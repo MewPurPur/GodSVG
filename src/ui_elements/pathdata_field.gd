@@ -295,8 +295,9 @@ func activate(idx: int, force := false) -> void:
 	relative_button.end_bulk_theme_override()
 	relative_button.text = cmd_char
 	relative_button.tooltip_text = "%s (%s)" %\
-			[TranslationUtils.new().get_command_char_description(cmd_char),
-			tr("Absolute") if is_absolute else tr("Relative")]
+			[TranslationUtils.get_command_char_description(cmd_char),
+			TranslationServer.translate("Absolute") if is_absolute\
+			else TranslationServer.translate("Relative")]
 	commands_container.add_child(relative_button)
 	relative_button.pressed.connect(_on_relative_button_pressed)
 	relative_button.gui_input.connect(_eat_double_clicks.bind(relative_button))

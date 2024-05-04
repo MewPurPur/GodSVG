@@ -21,4 +21,4 @@ func translate_titles() -> void:
 	await get_tree().process_frame
 	set_tab_title(0, tab_keys[0] + "1")
 	for i in tab_keys.size():
-		set_tab_title(i, tr(tab_keys[i]))
+		set_tab_title(i, TranslationServer.translate(tab_keys[i]))

@@ -187,14 +187,14 @@ func _on_optimize_button_pressed() -> void:
 
 func _on_file_button_pressed() -> void:
 	var btn_array: Array[Button] = []
-	btn_array.append(Utils.create_btn(tr("Save SVG"), FileUtils.open_save_dialog.bind(
-			"svg", FileUtils.native_file_save, FileUtils.save_svg_to_file),
-			false, load("res://visual/icons/Save.svg")))
-	btn_array.append(Utils.create_btn(tr("Reset SVG"), reset_svg,
-			FileUtils.does_svg_data_match_disk_contents(),
+	btn_array.append(Utils.create_btn(TranslationServer.translate("Save SVG"),
+			FileUtils.open_save_dialog.bind("svg", FileUtils.native_file_save,
+			FileUtils.save_svg_to_file), false, load("res://visual/icons/Save.svg")))
+	btn_array.append(Utils.create_btn(TranslationServer.translate("Reset SVG"),
+			reset_svg, FileUtils.does_svg_data_match_disk_contents(),
 			load("res://visual/icons/Reload.svg")))
-	btn_array.append(Utils.create_btn(tr("Clear saving path"), clear_file_path,
-			false, load("res://visual/icons/Clear.svg")))
+	btn_array.append(Utils.create_btn(TranslationServer.translate("Clear saving path"),
+			clear_file_path, false, load("res://visual/icons/Clear.svg")))
 	var context_popup := ContextPopup.new()
 	context_popup.setup(btn_array, true, file_button.size.x)
 	HandlerGUI.popup_under_rect_center(context_popup, file_button.get_global_rect(),
@@ -203,10 +203,10 @@ func _on_file_button_pressed() -> void:
 
 func _on_options_button_pressed() -> void:
 	var btn_array: Array[Button] = []
-	btn_array.append(Utils.create_btn(tr("Copy all text"), _on_copy_button_pressed,
-			false, load("res://visual/icons/Copy.svg")))
-	btn_array.append(Utils.create_btn(tr("Clear SVG"), clear_svg,
-			SVG.text == SVG.DEFAULT, load("res://visual/icons/Clear.svg")))
+	btn_array.append(Utils.create_btn(TranslationServer.translate("Copy all text"),
+			_on_copy_button_pressed, false, load("res://visual/icons/Copy.svg")))
+	btn_array.append(Utils.create_btn(TranslationServer.translate("Clear SVG"),
+			clear_svg, SVG.text == SVG.DEFAULT, load("res://visual/icons/Clear.svg")))
 	var context_popup := ContextPopup.new()
 	context_popup.setup(btn_array, true)
 	HandlerGUI.popup_under_rect_center(context_popup, options_button.get_global_rect(),

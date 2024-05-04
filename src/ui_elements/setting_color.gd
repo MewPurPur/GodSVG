@@ -13,7 +13,7 @@ signal value_changed
 func _ready() -> void:
 	color_edit.enable_alpha = enable_alpha
 	color_edit.value = GlobalSettings.get(setting_name).to_html(enable_alpha)
-	reset_button.tooltip_text = tr("Reset to default")
+	reset_button.tooltip_text = TranslationServer.translate("Reset to default")
 
 func _on_color_edit_value_changed(new_value: String) -> void:
 	GlobalSettings.modify_setting(section_name, setting_name, Color(new_value))
