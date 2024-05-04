@@ -763,7 +763,7 @@ func create_tag_context(pos: Vector2) -> ContextPopup:
 		btn.add_theme_font_override("font", load("res://visual/fonts/FontMono.ttf"))
 		btn_array.append(btn)
 	var tag_context := ContextPopup.new()
-	tag_context.setup_with_title(btn_array, tr("New tag"), true)
+	tag_context.setup_with_title(btn_array, TranslationServer.translate("New tag"), true)
 	return tag_context
 
 func add_tag_at_pos(tag_name: String, pos: Vector2) -> void:

@@ -26,8 +26,9 @@ func _ready() -> void:
 		size.y = 0
 		warnings_label.add_theme_color_override("default_color",
 				GlobalSettings.basic_color_error)
-		warnings_label.text = "[center]" + tr("Syntax error") + ": " +\
-				tr(SVGParser.get_error_string(imported_text_parse_result.error))
+		warnings_label.text = "[center]%s: %s" % [TranslationServer.translate(
+				"Syntax error"), TranslationServer.translate(SVGParser.get_error_string(
+				imported_text_parse_result.error))]
 	else:
 		var svg_warnings := get_svg_warnings(imported_text_parse_result.svg)
 		if svg_warnings.is_empty():
@@ -51,10 +52,12 @@ func get_svg_warnings(svg_tag: TagSVG) -> Array[String]:
 	for tid in tids:
 		var tag := svg_tag.get_tag(tid)
 		if tag is TagUnknown:
-			warnings.append(tr("Unknown Tag") + ": " + tag.name)
+			warnings.append("%s: %s" % [TranslationServer.translate("Unknown tag"),
+					tag.name])
 		else:
 			for unknown_attrib in tag.unknown_attributes:
-				warnings.append(tr("Unknown Attribute") + ": " + unknown_attrib.name)
+				warnings.append("%s: %s" % [TranslationServer.translate("Unknown attribute"),
+						unknown_attrib.name])
 	return warnings
 
 

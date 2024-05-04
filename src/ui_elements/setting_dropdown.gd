@@ -21,7 +21,7 @@ func _ready() -> void:
 	dropdown_widget.values = values
 	dropdown_widget.restricted = restricted
 	dropdown_widget.value = var_to_str(GlobalSettings.get(setting_name))
-	reset_button.tooltip_text = tr("Reset to default")
+	reset_button.tooltip_text = TranslationServer.translate("Reset to default")
 
 func _on_dropdown_value_changed(new_value: String) -> void:
 	if type in [TYPE_INT, TYPE_FLOAT]:

@@ -116,7 +116,7 @@ func remove_color(idx: int) -> void:
 
 func set_label_text(new_text: String) -> void:
 	if new_text.is_empty():
-		palette_label.text = tr("Unnamed")
+		palette_label.text = TranslationServer.translate("Unnamed")
 		palette_label.add_theme_color_override("font_color",
 				GlobalSettings.basic_color_error)
 	else:
@@ -162,19 +162,20 @@ func _on_action_button_pressed() -> void:
 	var btn_arr: Array[Button] = []
 	
 	if palette_idx >= 1:
-		btn_arr.append(Utils.create_btn(tr("Move Up"), move_up.bind(palette_idx),
-				false, load("res://visual/icons/MoveUp.svg")))
+		btn_arr.append(Utils.create_btn(TranslationServer.translate("Move Up"),
+				move_up.bind(palette_idx), false, load("res://visual/icons/MoveUp.svg")))
 	if palette_idx < GlobalSettings.palettes.size() - 1:
-		btn_arr.append(Utils.create_btn(tr("Move Down"), move_down.bind(palette_idx),
-				false, load("res://visual/icons/MoveDown.svg")))
-	btn_arr.append(Utils.create_btn(tr("Copy as XML"),
+		btn_arr.append(Utils.create_btn(TranslationServer.translate("Move Down"),
+				move_down.bind(palette_idx), false, load("res://visual/icons/MoveDown.svg")))
+	btn_arr.append(Utils.create_btn(TranslationServer.translate("Copy as XML"),
 			DisplayServer.clipboard_set.bind(GlobalSettings.palettes[palette_idx].to_text()),
 			false, load("res://visual/icons/Copy.svg")))
-	btn_arr.append(Utils.create_btn(tr("Paste XML"), paste_palette.bind(palette_idx),
+	btn_arr.append(Utils.create_btn(TranslationServer.translate("Paste XML"),
+			paste_palette.bind(palette_idx),
 			!ColorPalette.is_valid_palette(DisplayServer.clipboard_get()),
 			load("res://visual/icons/Paste.svg")))
-	btn_arr.append(Utils.create_btn(tr("Delete"), delete.bind(palette_idx),
-			false, load("res://visual/icons/Delete.svg")))
+	btn_arr.append(Utils.create_btn(TranslationServer.translate("Delete"),
+			delete.bind(palette_idx), false, load("res://visual/icons/Delete.svg")))
 	
 	var context_popup := ContextPopup.new()
 	context_popup.setup(btn_arr, true)

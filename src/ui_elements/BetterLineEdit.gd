@@ -91,25 +91,26 @@ func _gui_input(event: InputEvent) -> void:
 			var btn_arr: Array[Button] = []
 			var separator_arr: Array[int] = []
 			if editable:
-				btn_arr.append(Utils.create_btn(tr("Undo"),
+				btn_arr.append(Utils.create_btn(TranslationServer.translate("Undo"),
 						menu_option.bind(LineEdit.MENU_UNDO),
 						false, load("res://visual/icons/Undo.svg")))
-				btn_arr.append(Utils.create_btn(tr("Redo"),
+				btn_arr.append(Utils.create_btn(TranslationServer.translate("Redo"),
 						menu_option.bind(LineEdit.MENU_REDO),
 						false, load("res://visual/icons/Redo.svg")))
 				if DisplayServer.has_feature(DisplayServer.FEATURE_CLIPBOARD):
 					separator_arr = [2]
-					btn_arr.append(Utils.create_btn(tr("Cut"),
+					btn_arr.append(Utils.create_btn(TranslationServer.translate("Cut"),
 							menu_option.bind(LineEdit.MENU_CUT),
 							text.is_empty(), load("res://visual/icons/Cut.svg")))
-					btn_arr.append(Utils.create_btn(tr("Copy"),
+					btn_arr.append(Utils.create_btn(TranslationServer.translate("Copy"),
 							menu_option.bind(LineEdit.MENU_COPY),
 							text.is_empty(), load("res://visual/icons/Copy.svg")))
-					btn_arr.append(Utils.create_btn(tr("Paste"),
+					btn_arr.append(Utils.create_btn(TranslationServer.translate("Paste"),
 							menu_option.bind(LineEdit.MENU_PASTE),
-							!DisplayServer.clipboard_has(), load("res://visual/icons/Paste.svg")))
+							!DisplayServer.clipboard_has(),
+							load("res://visual/icons/Paste.svg")))
 			else:
-				btn_arr.append(Utils.create_btn(tr("Copy"),
+				btn_arr.append(Utils.create_btn(TranslationServer.translate("Copy"),
 						menu_option.bind(LineEdit.MENU_COPY),
 						text.is_empty(), load("res://visual/icons/Copy.svg")))
 			

@@ -65,22 +65,58 @@ const default_config = {
 # No way to fetch defaults otherwise.
 var default_input_events := {}  # Dictionary{String: Array[InputEvent]}
 
-const configurable_keybinds = {
-	"file": ["import", "export", "save", "optimize", "copy_svg_text", "clear_svg",
-			"clear_file_path", "reset_svg"],
-	"edit": ["undo", "redo", "select_all", "duplicate", "move_up", "move_down", "delete"],
-	"view": ["zoom_in", "zoom_out", "zoom_reset", "view_show_grid", "view_show_handles",
-			"view_rasterized_svg"]}
-
-const unconfigurable_keybinds = [
-	"move_relative", "move_absolute", "line_relative", "line_absolute",
-	"horizontal_line_relative", "horizontal_line_absolute", "vertical_line_relative",
-	"vertical_line_absolute", "close_path_relative", "close_path_absolute",
-	"elliptical_arc_relative", "elliptical_arc_absolute", "quadratic_bezier_relative",
-	"quadratic_bezier_absolute", "shorthand_quadratic_bezier_relative",
-	"shorthand_quadratic_bezier_absolute", "cubic_bezier_relative",
-	"cubic_bezier_absolute", "shorthand_cubic_bezier_relative",
-	"shorthand_cubic_bezier_absolute"]
+const keybinds_dict = {
+	"file": {
+		"import": true,
+		"export": true,
+		"save": true,
+		"optimize": true,
+		"copy_svg_text": true,
+		"clear_svg": true,
+		"clear_file_path": true,
+		"reset_svg": true,
+	},
+	"edit": {
+		"undo": true,
+		"redo": true,
+		"select_all": true,
+		"duplicate": true,
+		"move_up": true,
+		"move_down": true,
+		"delete": true,
+	},
+	"view": {
+		"zoom_in": true,
+		"zoom_out": true,
+		"zoom_reset": true,
+		"debug": false,
+		"view_show_grid": true,
+		"view_show_handles": true,
+		"view_rasterized_svg": true,
+	},
+	"tool": {
+		"move_relative": true,
+		"move_absolute": true,
+		"line_relative": true,
+		"line_absolute": true,
+		"horizontal_line_relative": true,
+		"horizontal_line_absolute": true,
+		"vertical_line_relative": true,
+		"vertical_line_absolute": true,
+		"close_path_relative": true,
+		"close_path_absolute": true,
+		"elliptical_arc_relative": true,
+		"elliptical_arc_absolute": true,
+		"quadratic_bezier_relative": true,
+		"quadratic_bezier_absolute": true,
+		"shorthand_quadratic_bezier_relative": true,
+		"shorthand_quadratic_bezier_absolute": true,
+		"cubic_bezier_relative": true,
+		"cubic_bezier_absolute": true,
+		"shorthand_cubic_bezier_relative": true,
+		"shorthand_cubic_bezier_absolute": true,
+	}
+}
 
 
 var language: String:
@@ -197,10 +233,15 @@ func load_settings() -> void:
 	else:
 		for section in config.get_sections():
 			if section == "keybinds":
-				for category in configurable_keybinds:
-					for action in GlobalSettings.configurable_keybinds[category]:
-						if config.has_section_key("keybinds", action):
-							modify_keybind(action, config.get_value("keybinds", action))
+				for category in keybinds_dict:
+					var category_dict: Dictionary = keybinds_dict[category]
+					for action in category_dict:
+						# Only save ones that are configurable.
+						if category_dict[action]:
+							if config.has_section_key("keybinds", action):
+								modify_keybind(action, config.get_value("keybinds", action))
+							else:
+								save_keybind(action)
 			else:
 				for setting in config.get_section_keys(section):
 					set(setting, config.get_value(section, setting))
@@ -218,9 +259,12 @@ func reset_setting(section: String, setting: String) -> void:
 
 func reset_keybinds() -> void:
 	InputMap.load_from_project_settings()
-	for category in configurable_keybinds:
-		for action in GlobalSettings.configurable_keybinds[category]:
-			save_keybind(action)
+	for category in keybinds_dict:
+		var category_dict: Dictionary = keybinds_dict[category]
+		for action in category_dict:
+			# Only reset the configurable ones.
+			if category_dict[action]:
+					save_keybind(action)
 
 func reset_palettes() -> void:
 	palettes = [ColorPalette.new("Pure",

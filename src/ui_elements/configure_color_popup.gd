@@ -36,7 +36,7 @@ func hide_name_edit() -> void:
 
 func set_label_text(new_text: String) -> void:
 	if new_text.is_empty():
-		color_label.text = tr("Unnamed")
+		color_label.text = TranslationServer.translate("Unnamed")
 		color_label.add_theme_color_override("font_color",
 				ThemeGenerator.common_subtle_text_color)
 	else:

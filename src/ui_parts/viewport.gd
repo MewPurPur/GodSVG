@@ -8,10 +8,10 @@ const zoom_reset_buffer = 0.875
 # Holds zoom position for Ctrl + MMB zooming.
 var _zoom_to: Vector2
 
-@onready var display: TextureRect = %Checkerboard
-@onready var view: Control = %Camera
-@onready var controls: Control = %Checkerboard/Controls
-@onready var display_texture: TextureRect = %Checkerboard/DisplayTexture
+@onready var display: TextureRect = $Checkerboard
+@onready var view: Control = $Camera
+@onready var controls: Control = $Checkerboard/Controls
+@onready var display_texture: TextureRect = $Checkerboard/DisplayTexture
 @onready var zoom_menu: ZoomMenuType = %ZoomMenu
 
 

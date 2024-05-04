@@ -99,7 +99,7 @@ func _gui_input(event: InputEvent) -> void:
 				btn_array.append(btn)
 			
 			var add_popup := ContextPopup.new()
-			add_popup.setup_with_title(btn_array, tr("New tag"), true)
+			add_popup.setup_with_title(btn_array, TranslationServer.translate("New tag"), true)
 			var vp := get_viewport()
 			HandlerGUI.popup_under_pos(add_popup, vp.get_mouse_position(), vp)
 

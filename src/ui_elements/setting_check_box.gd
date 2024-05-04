@@ -11,7 +11,7 @@ signal pressed
 
 func _ready() -> void:
 	checkbox.button_pressed = GlobalSettings.get(setting_name)
-	reset_button.tooltip_text = tr("Reset to default")
+	reset_button.tooltip_text = TranslationServer.translate("Reset to default")
 	update_widgets()
 
 func _on_pressed() -> void:
