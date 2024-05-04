@@ -94,5 +94,3 @@ func update_extension_configuration() -> void:
 	scale_container.visible = (extension == "png" or extension == "jpg" or extension == "webp")
 	lossless_hbox.visible = (extension == "webp")
 	quality_hbox.visible = (extension == "jpg" or extension == "webp")
-	if lossless and extension == "webp":
-		quality_hbox.visible = false
