@@ -117,4 +117,4 @@ static func attribute(name: String, initial_value := "") -> Attribute:
 		"offset": return AttributeNumeric.new(name, initial_value)
 		"stop-color": return AttributeColor.new(name, initial_value)
 		"stop-opacity": return AttributeNumeric.new(name, initial_value)
-		_: return AttributeUnknown.new(name)
+		_: return Attribute.new(name, initial_value)

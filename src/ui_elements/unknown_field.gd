@@ -2,7 +2,7 @@
 extends BetterLineEdit
 
 signal focused
-var attribute: AttributeUnknown
+var attribute: Attribute
 
 func set_value(new_value: String, update_type := Utils.UpdateType.REGULAR) -> void:
 	sync(new_value)

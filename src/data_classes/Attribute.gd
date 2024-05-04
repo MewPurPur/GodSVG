@@ -1,4 +1,5 @@
-# Abstract class for an attribute inside a tag, i.e. <tag attribute="value"/>
+# Represents an attribute inside a tag, i.e. <tag attribute="value"/>.
+# If the Attribute's data type is known, one of the inheriting classes should be used.
 class_name Attribute extends RefCounted
 
 signal value_changed(new_value: String)
@@ -28,7 +29,7 @@ enum SyncMode {LOUD, INTERMEDIATE, FINAL, NO_PROPAGATION, SILENT}
 # if there is logic for updating the corresponding attribute editor despite that.
 
 func set_value(new_value: String, sync_mode := SyncMode.LOUD) -> void:
-	var proposed_new_value := autoformat(new_value)
+	var proposed_new_value := format(new_value)
 	if proposed_new_value != _value or sync_mode == SyncMode.FINAL:
 		_value = proposed_new_value
 		_sync()
@@ -44,7 +45,7 @@ func get_value() -> String:
 func _sync() -> void:
 	return
 
-func autoformat(text: String) -> String:
+func format(text: String) -> String:
 	return text
 
 func get_default() -> String:

@@ -6,7 +6,7 @@ var display_mode := Display.BIG
 
 var tid := PackedInt32Array()
 var pos: Vector2
-var transform : Transform2D
+var transform: Transform2D
 var initial_pos: Vector2  # The position of a handle when it started being dragged.
 
 func _init() -> void:

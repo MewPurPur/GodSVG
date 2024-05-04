@@ -7,7 +7,7 @@ func set_value(new_value: String, sync_mode := SyncMode.LOUD) -> void:
 	super(new_value if (new_value.is_empty() or ColorParser.is_valid(new_value))\
 			else get_default(), sync_mode)
 
-func autoformat(text: String) -> String:
+func format(text: String) -> String:
 	if GlobalSettings.color_enable_autoformatting:
 		var new_text := ColorParser.format_text(text)
 		return get_default() if ColorParser.are_colors_same(new_text, get_default()) else\

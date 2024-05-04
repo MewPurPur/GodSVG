@@ -15,10 +15,10 @@ var dimensions := Vector2.ZERO
 @onready var final_dimensions_label: Label = %FinalDimensions
 @onready var scale_edit: NumberEditType = %Scale
 @onready var scale_container: VBoxContainer = %ScaleContainer
-@onready var lossless_checkbox : CheckBox = %LosslessHBox/CheckBox
-@onready var lossless_hbox : HBoxContainer = %LosslessHBox
-@onready var quality_edit : NumberEditType = %Quality
-@onready var quality_hbox : HBoxContainer = %QualityHBox
+@onready var lossless_checkbox: CheckBox = %LosslessHBox/CheckBox
+@onready var lossless_hbox: HBoxContainer = %LosslessHBox
+@onready var quality_edit: NumberEditType = %Quality
+@onready var quality_hbox: HBoxContainer = %QualityHBox
 @onready var fallback_format_label: Label = %FallbackFormatLabel
 
 func _ready() -> void:
@@ -71,7 +71,7 @@ func _on_ok_button_pressed() -> void:
 func _on_cancel_button_pressed() -> void:
 	HandlerGUI.remove_overlay()
 
-func _on_lossless_check_box_toggled(toggled_on : bool) -> void:
+func _on_lossless_check_box_toggled(toggled_on: bool) -> void:
 	lossless = toggled_on
 
 	if extension == "webp":
@@ -80,7 +80,7 @@ func _on_lossless_check_box_toggled(toggled_on : bool) -> void:
 func _on_scale_value_changed(_new_value: float) -> void:
 	update_final_scale()
 
-func _on_quality_value_changed(_new_value : int) -> void:
+func _on_quality_value_changed(_new_value: float) -> void:
 	quality = _new_value / 100
 
 func update_final_scale() -> void:

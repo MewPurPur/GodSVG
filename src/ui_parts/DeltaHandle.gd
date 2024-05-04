@@ -4,13 +4,13 @@ class_name DeltaHandle extends Handle
 # Required.
 var x_attribute: AttributeNumeric
 var y_attribute: AttributeNumeric
-var t_attribute : AttributeTransform
+var t_attribute: AttributeTransform
 
 var horizontal: bool
 var d_attribute: AttributeNumeric
 
 func _init(id: PackedInt32Array, xref: AttributeNumeric, yref: AttributeNumeric,
-tref : AttributeTransform, dref: AttributeNumeric, p_horizontal: bool) -> void:
+tref: AttributeTransform, dref: AttributeNumeric, p_horizontal: bool) -> void:
 	tid = id
 	x_attribute = xref
 	y_attribute = yref

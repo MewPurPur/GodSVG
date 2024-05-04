@@ -26,7 +26,7 @@ const name = "svg"
 func _init() -> void:
 	for attrib_name in ["width", "height", "viewBox"]:
 		attributes[attrib_name] = DB.attribute(attrib_name)
-	unknown_attributes.append(AttributeUnknown.new("xmlns", "http://www.w3.org/2000/svg"))
+	unknown_attributes.append(Attribute.new("xmlns", "http://www.w3.org/2000/svg"))
 	attribute_changed.connect(update_cache.unbind(1))
 	changed_unknown.connect(update_cache)
 	update_cache()
@@ -247,7 +247,7 @@ func duplicate_tags(tids: Array[PackedInt32Array]) -> void:
 	var added_to_last_parent := 0
 	
 	for tid in tids:
-		var new_tag := get_tag(tid).create_duplicate()
+		var new_tag := get_tag(tid).duplicate()
 		# Add the new tag.
 		var new_tid := tid.duplicate()
 		new_tid[-1] += 1
@@ -282,7 +282,7 @@ func emit_attribute_changed(undo_redo: bool) -> void:
 	resized.emit()
 
 
-# Optimizes the SVG text in more ways than what autoformatting allows.
+# Optimizes the SVG text in more ways than what formatting attributes allows.
 # The return value is true if the SVG can be optimized, otherwise false.
 # If apply_changes is false, you'll only get the return value.
 func optimize(not_applied := false) -> bool:

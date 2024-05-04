@@ -186,10 +186,10 @@ func _on_snap_number_edit_value_changed(new_value: float) -> void:
 func update_debug() -> void:
 	var debug_text := ""
 	debug_text += "FPS: %s\n" % Performance.get_monitor(Performance.TIME_FPS)
-	debug_text += "nStatic Mem: %s\n" % String.humanize_size(int(Performance.get_monitor(
+	debug_text += "Static Mem: %s\n" % String.humanize_size(int(Performance.get_monitor(
 			Performance.MEMORY_STATIC)))
 	debug_text += "Nodes: %s\n" % Performance.get_monitor(Performance.OBJECT_NODE_COUNT)
-	debug_text += "Objects: %s\n" % Performance.get_monitor(Performance.OBJECT_COUNT)
+	debug_text += "Objects: %s" % Performance.get_monitor(Performance.OBJECT_COUNT)
 	debug_label.text = debug_text
 	# Set up the next update if the container is still visible.
 	if debug_container.visible:
