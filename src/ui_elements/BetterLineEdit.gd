@@ -1,4 +1,4 @@
-@icon("res://visual/godot_only/BetterLineEdit.svg")
+@icon("res://godot_only/icons/BetterLineEdit.svg")
 class_name BetterLineEdit extends LineEdit
 ## A LineEdit with a few tweaks to make it nicer to use.
 

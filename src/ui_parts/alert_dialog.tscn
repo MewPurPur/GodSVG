@@ -30,7 +30,6 @@ layout_mode = 2
 layout_mode = 2
 theme_override_fonts/font = ExtResource("1_3yrpq")
 theme_override_font_sizes/font_size = 16
-text = "Alert!"
 horizontal_alignment = 1
 
 [node name="Label" type="RichTextLabel" parent="MainContainer/TextContainer"]
@@ -43,4 +42,3 @@ fit_content = true
 layout_mode = 2
 size_flags_horizontal = 4
 mouse_default_cursor_shape = 2
-text = "OK"

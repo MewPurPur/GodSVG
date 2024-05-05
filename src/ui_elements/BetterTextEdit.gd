@@ -1,4 +1,4 @@
-@icon("res://visual/godot_only/BetterTextEdit.svg")
+@icon("res://godot_only/icons/BetterTextEdit.svg")
 class_name BetterTextEdit extends TextEdit
 ## A TextEdit with some improvements.
 

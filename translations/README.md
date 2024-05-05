@@ -2,21 +2,13 @@
 # The po format
 You can familiarize yourself with the po format [here](https://www.gnu.org/software/gettext/manual/html_node/PO-Files.html).
 # For programmers
-New translatable strings have to be added manually. This is done in the `GodSVG.pot` template file.
+New translatable strings must be within GDScript files, inside a `TranslationServer.translate()` method or its plural version.
 
-A single translatable string to add in the POT looks like this:
-```po
-msgid "Your translatable string"
-msgstr ""
-```
+To include update the strings, open godot_only/update_translations.gd in the Godot editor and follow the comment on top.
+
 >[!IMPORTANT]  
->The `msgstr` should be left empty in the template. The `msgid` should be in plain english and exactly the same as what's used in the source code.
+>To run the above script, you must install [gettext tools](https://www.gnu.org/software/gettext/). It's preinstalled on most Linux distributions and Git Bash on Windows.
 
-All translation files have to be updated to include the new strings.
-This is best done with [gettext tools](https://www.gnu.org/software/gettext/manual/html_node/Updating.html). These are preinstalled in most Linux distros and Git Bash on Windows. A bash script to automate the process (`update_po_files.sh`) is included in this directory.
-```sh
-sh translations/update_po_files.sh
-```
 # Contributing translations
 ## [Adding a new language](https://www.gnu.org/software/gettext/manual/html_node/Creating.html)
 ### With editor ([Poedit](https://poedit.net)):
@@ -36,4 +28,4 @@ sh translations/update_po_files.sh
 3. Create a pull request with your changes.
 # Testing translations
 Translation changes can be viewed by running the project from the Godot editor.
-If you added a new language, you need to make sure its added in the project settings.
+If you added a new language, you need to make sure it's added in the project settings.

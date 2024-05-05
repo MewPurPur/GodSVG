@@ -21,11 +21,20 @@ func set_value(new_value: String, update_type := Utils.UpdateType.REGULAR) -> vo
 				attribute.set_value(new_value)
 
 
+func _notification(what: int) -> void:
+	if what == Utils.CustomNotification.LANGUAGE_CHANGED:
+		update_translation()
+
 func _ready() -> void:
 	set_value(attribute.get_value())
 	attribute.value_changed.connect(set_value)
 	line_edit.tooltip_text = attribute.name
 	line_edit.text_submitted.connect(set_value)
+	update_translation()
+
+
+func update_translation() -> void:
+	line_edit.placeholder_text = TranslationServer.translate("No transforms")
 
 func _on_focus_entered() -> void:
 	focused.emit()

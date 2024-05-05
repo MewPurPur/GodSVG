@@ -15,6 +15,114 @@ msgstr ""
 msgid "translation-credits"
 msgstr "volkov <volkovissocool@gmail.com>"
 
+msgid "Doesn’t describe an SVG."
+msgstr "Не є описом SVG."
+
+msgid "Improper nesting."
+msgstr "Неправильне вкладення."
+
+msgid "Undo"
+msgstr "Скасувати"
+
+msgid "Redo"
+msgstr "Повернути"
+
+msgid "Cut"
+msgstr "Вирізати"
+
+msgid "Copy"
+msgstr "Скопіювати"
+
+msgid "Paste"
+msgstr "Вставити"
+
+msgid "Search color"
+msgstr "Шукати колір"
+
+msgid "Palettes"
+msgstr "Палітри"
+
+msgid "Color Picker"
+msgstr "Кольорова піпетка"
+
+msgid "Edit color name"
+msgstr "Редагувати назву кольору"
+
+msgid "Delete color"
+msgstr "Видалити колір"
+
+msgid "Unnamed"
+msgstr "Без назви"
+
+msgid "Enable the color"
+msgstr "Активувати колір"
+
+msgid "Disable the color"
+msgstr "Деактивувати колір"
+
+msgid "Move Up"
+msgstr "Пересунути вгору"
+
+msgid "Move Down"
+msgstr "Пересунути вниз"
+
+msgid "Copy as XML"
+msgstr "Скопіювати як XML"
+
+msgid "Paste XML"
+msgstr "Вставити XML"
+
+msgid "Delete"
+msgstr "Видалити"
+
+msgid "Edit palette name"
+msgstr "Редагувати назву палітри"
+
+msgid "No path data"
+msgstr "Немає даних шляху"
+
+msgid "Absolute"
+msgstr "Абсолютна"
+
+msgid "Relative"
+msgstr "Відносно"
+
+msgid "Reset to default"
+msgstr "Скинути значення до замовчування"
+
+msgid "Unused"
+msgstr "Не використовується"
+
+msgid "Add shortcut"
+msgstr "Додати клавіатурне скорочення"
+
+msgid "Edit"
+msgstr "Редагування"
+
+msgid "Remove"
+msgstr "Видалити"
+
+msgid "Press keys…"
+msgstr "Натисніть кнопки…"
+
+msgid "No transforms"
+msgstr "Без трансформацій"
+
+msgid "Apply the matrix"
+msgstr "Застосувати матрицю"
+
+msgid "Insert After"
+msgstr "Вставити після"
+
+msgid "Insert Before"
+msgstr "Вставити до"
+
+msgid "New transform"
+msgstr "Нова трансформація"
+
+msgid "GodSVG doesn’t recognize this attribute"
+msgstr "GodSVG не може розпізнати цей атрибут"
+
 msgid "Project Founder and Manager"
 msgstr "Засновник і керівник проекту"
 
@@ -24,76 +132,42 @@ msgstr "Розробники"
 msgid "Translators"
 msgstr "Перекладачі"
 
-msgid "Language"
-msgstr "Мова"
+msgid "Authors"
+msgstr "Автори"
 
-msgid "Invert zoom direction"
-msgstr "Інвертувати напрямок масштабування"
-
-msgid "Swaps zoom in and zoom out with the mouse wheel."
+msgid "Donors"
 msgstr ""
-"Міняє місцями збільшення і зменшення масштабування через коліщатко миші."
 
-msgid "Wrap mouse"
-msgstr "Захопити мишу"
+msgid "License"
+msgstr "Ліцензія"
 
-msgid "Wraps the mouse cursor around when panning the viewport."
-msgstr ""
-"Курсор буде телепортуватися від одного краю до протилежного при пересуванні "
-"вікна перегляду."
-
-msgid "Use CTRL for zooming"
-msgstr "Використовувати CTRL для масштабування"
-
-msgid ""
-"If turned on, scrolling will pan the view. To zoom, hold CTRL while "
-"scrolling."
-msgstr ""
-"Якщо увімкнено, гортання буде рухати вікно перегляду. Щоб масштабувати, "
-"затисніть CTRL доки гортаєте."
-
-msgid "UI scale"
-msgstr "Масштаб інтерфейсу"
-
-msgid "Changes the scale of the visual user interface."
-msgstr "Змінити масштаб інтерфейсу користувача."
+msgid "Godot third-party components"
+msgstr "Компоненти Godot від третіх сторін"
 
 #, fuzzy
-msgid "Auto UI scale"
-msgstr "Масштаб"
+msgid "Third-party licenses"
+msgstr "Ліцензії третіх осіб"
 
-msgid "Scales the user interface based on the screen size."
-msgstr ""
+msgid "Alert!"
+msgstr "Увага!"
 
-msgid "Input"
-msgstr "Пристрої вводу"
+msgid "OK"
+msgstr "Добре"
 
-msgid "Open"
-msgstr "Відкрити"
+msgid "Save SVG"
+msgstr "Зберегти SVG"
 
-msgid "Close"
-msgstr "Закрити"
+msgid "Reset SVG"
+msgstr "Скинути SVG"
 
-msgid "GodSVG Repository"
-msgstr "Репозиторій GodSVG"
+msgid "Clear saving path"
+msgstr "Очистити шлях збереження"
 
-msgid "About…"
-msgstr "Про додаток…"
+msgid "Copy all text"
+msgstr "Скопіювати весь текст"
 
-msgid "Documentation…"
-msgstr "Документація…"
-
-msgid "Donate…"
-msgstr "Зробити пожертвування…"
-
-msgid "Zoom in"
-msgstr "Збільшити масштаб"
-
-msgid "Zoom reset"
-msgstr "Скинути масштаб"
-
-msgid "Zoom out"
-msgstr "Зменшити масштаб"
+msgid "Clear SVG"
+msgstr "Очистити SVG"
 
 msgid "Settings"
 msgstr "Налаштування"
@@ -110,245 +184,68 @@ msgstr "Показати ручки редагування"
 msgid "Rasterized SVG"
 msgstr "Растеризувати SVG"
 
-msgid "Show rasterized SVG"
-msgstr "Показати растеризуваний SVG"
+msgid "About…"
+msgstr "Про додаток…"
 
-msgid "Enable Snapping"
+msgid "Donate…"
+msgstr "Зробити пожертвування…"
+
+#, fuzzy
+msgid "GodSVG repository"
+msgstr "Репозиторій GodSVG"
+
+#, fuzzy
+msgid "GodSVG website"
+msgstr "Репозиторій GodSVG"
+
+msgid "Check for updates"
+msgstr ""
+
+#, fuzzy
+msgid "Enable snapping"
 msgstr "Активувати прилипання"
 
 msgid "Snap size"
 msgstr "Розмір прилипання"
 
-msgid "Reset to default"
-msgstr "Скинути значення до замовчування"
-
-msgid "Copy all text"
-msgstr "Скопіювати весь текст"
-
-msgid "Clear SVG"
-msgstr "Очистити SVG"
-
-msgid "Reset SVG"
-msgstr "Скинути SVG"
-
-msgid "Save"
-msgstr "Зберегти"
-
-msgid "Export"
-msgstr "Експортувати"
-
-msgid "Select all tags"
-msgstr "Обрати усі теги"
-
-msgid "Couple/Decouple"
-msgstr "З’єднати/Роз’єднати"
-
-msgid "Duplicate"
-msgstr "Дублювати"
-
-msgid "Move Up"
-msgstr "Пересунути вгору"
-
-msgid "Move Down"
-msgstr "Пересунути вниз"
-
-msgid "Delete"
-msgstr "Видалити"
-
-msgid "Insert Before"
-msgstr "Вставити до"
-
-msgid "Insert After"
-msgstr "Вставити після"
-
-msgid "Convert To"
-msgstr "Конвертувати в"
-
-msgid "Doesn’t describe an SVG."
-msgstr "Не є описом SVG."
-
-msgid "Improper nesting."
-msgstr "Неправильне вкладення."
-
-msgid "Syntax error"
-msgstr "Синтаксична помилка"
-
-msgid "Delete the selection"
-msgstr "Видалити усі обрані теги"
-
-msgid "Move the selected tags down"
-msgstr "Пересунути усі обрані теги вниз"
-
-msgid "Move the selected tags up"
-msgstr "Пересунути усі обрані теги вгору"
-
-msgid "Duplicate the selected tags"
-msgstr "Дублювати обрані теги"
-
-msgid "Unknown Tag"
-msgstr "Невідомий тег"
-
-msgid "Unknown Attribute"
-msgstr "Невідомий атрибут"
-
-msgid "No path data"
-msgstr "Немає даних шляху"
-
-msgid "No transforms"
-msgstr "Без трансформацій"
-
-msgid "Import"
-msgstr "Імпортувати"
-
-msgid "Cancel"
-msgstr "Скасувати"
-
-msgid "Import Problems"
-msgstr "Проблема з імпортуванням"
-
-msgid "GodSVG doesn’t recognize this attribute"
-msgstr "GodSVG не може розпізнати цей атрибут"
-
-msgid "Format"
-msgstr "Формат"
-
-msgid "Scale"
-msgstr "Масштаб"
-
 msgid "Size"
 msgstr "Розмір"
-
-msgid "Final size"
-msgstr "Фінальний розмір"
 
 msgid "Invalid"
 msgstr "Неправильно"
 
+msgid "Format"
+msgstr "Формат"
+
 msgid "Export Configuration"
 msgstr "Налаштування експорту"
 
-msgid "Add new tag"
-msgstr "Додати новий тег"
+msgid "Lossless"
+msgstr ""
 
-msgid "New tag"
-msgstr "Новий тег"
+msgid "Quality"
+msgstr ""
 
-msgid "New transform"
-msgstr "Нова трансформація"
+msgid "Scale"
+msgstr "Масштаб"
 
-msgid "License"
-msgstr "Ліцензія"
+msgid "Cancel"
+msgstr "Скасувати"
 
-msgid "Third-party Licenses"
-msgstr "Ліцензії третіх осіб"
+msgid "Export"
+msgstr "Експортувати"
 
-msgid "Authors"
-msgstr "Автори"
-
-msgid "Shortcuts"
-msgstr "Клавіатурні скорочення"
-
-msgid "Add shortcut"
-msgstr "Додати клавіатурне скорочення"
-
-msgid "Theme"
-msgstr "Тема"
-
-msgid "Basic colors"
-msgstr "Базовий колір"
-
-msgid "SVG Text Colors"
-msgstr "Колір SVG тексту"
-
-msgid "Symbol color"
-msgstr "Колір символу"
-
-msgid "Tag color"
-msgstr "Колір тегу"
-
-msgid "Attribute color"
-msgstr "Колір атрибуту"
-
-msgid "String color"
-msgstr "Колір строки"
-
-msgid "Comment color"
-msgstr "Колір коментаря"
-
-msgid "Text color"
-msgstr "Колір тексту"
-
-msgid "CDATA color"
-msgstr "Колір CDATA"
-
-msgid "Error color"
-msgstr "Колір помилки"
-
-msgid "Warning color"
-msgstr "Колір попередження"
-
-msgid "Valid color"
-msgstr "Колір валідності"
-
-msgid "Handle colors"
-msgstr "Колір ручки редагування"
-
-msgid "Inside color"
-msgstr "Внутрішній колір"
-
-msgid "Normal color"
-msgstr "Звичайний колір"
-
-msgid "Hovered color"
-msgstr "Колір наведеного"
-
-msgid "Selected color"
-msgstr "Колір обраного"
-
-msgid "Hovered selected color"
-msgstr "Колір наведено-виділеного"
-
-msgid "Palettes"
-msgstr "Палітри"
-
-msgid "Color Picker"
-msgstr "Кольорова піпетка"
-
-msgid "Add color"
-msgstr "Додати колір"
-
-msgid "Edit palette name"
-msgstr "Редагувати назву палітри"
-
-msgid "Unnamed"
-msgstr "Без назви"
-
-msgid "Edit color name"
-msgstr "Редагувати назву кольору"
-
-msgid "Delete color"
-msgstr "Видалити колір"
-
-msgid "Edit"
-msgstr "Редагування"
-
-msgid "Remove"
-msgstr "Видалити"
-
-msgid "Press keys…"
-msgstr "Натисніть кнопки…"
-
-msgid "Enable the color"
-msgstr "Активувати колір"
-
-msgid "Disable the color"
-msgstr "Деактивувати колір"
-
-msgid "Path"
-msgstr "Шлях"
+msgid "Final size"
+msgstr "Фінальний розмір"
 
 msgid "Replace"
 msgstr "Замінити"
+
+msgid "Create new folder"
+msgstr ""
+
+msgid "Create"
+msgstr ""
 
 msgid "Go to parent folder"
 msgstr "Перейти до батьківської теки"
@@ -365,11 +262,24 @@ msgstr "Пошук файлів"
 msgid "Select an SVG"
 msgstr "Обрати SVG"
 
-msgid "Save SVG"
-msgstr "Зберегти SVG"
+msgid "Close"
+msgstr "Закрити"
 
 msgid "Select"
 msgstr "Обрати"
+
+msgid "Save"
+msgstr "Зберегти"
+
+msgid "Path"
+msgstr "Шлях"
+
+msgid "Open"
+msgstr "Відкрити"
+
+#, fuzzy
+msgid "Copy path"
+msgstr "Скопіювати весь текст"
 
 msgid ""
 "A file named \"{file_name}\" already exists. Replacing will overwrite its "
@@ -378,60 +288,36 @@ msgstr ""
 "Файл з назваою \"{file_name}\" вже існує. Його заміна призведе до перезапису "
 "його вмісту!"
 
-msgid "Godot third-party components"
-msgstr "Компоненти Godot від третіх сторін"
+msgid "New tag"
+msgstr "Новий тег"
 
-msgid "Undo"
-msgstr "Скасувати"
+msgid "Import Problems"
+msgstr "Проблема з імпортуванням"
 
-msgid "Redo"
-msgstr "Повернути"
+#, fuzzy
+msgid "Unknown tag"
+msgstr "Невідомий тег"
 
-msgid "Copy"
-msgstr "Скопіювати"
+#, fuzzy
+msgid "Unknown attribute"
+msgstr "Невідомий атрибут"
 
-msgid "Paste"
-msgstr "Вставити"
+msgid "Syntax error"
+msgstr "Синтаксична помилка"
 
-msgid "Copy as XML"
-msgstr "Скопіювати як XML"
+msgid "Add new tag"
+msgstr "Додати новий тег"
 
-msgid "Paste XML"
-msgstr "Вставити XML"
+#, fuzzy
+msgid "SVG Text colors"
+msgstr "Колір SVG тексту"
 
-msgid "Unused"
-msgstr "Не використовується"
+#, fuzzy
+msgid "Handle colors"
+msgstr "Внутрішній колір"
 
-msgid "Cut"
-msgstr "Вирізати"
-
-msgid "Alert!"
-msgstr "Увага!"
-
-msgid ""
-"The file couldn't be opened.\n"
-"Try checking the file path, ensure that the file is not deleted, or choose a "
-"different file."
-msgstr ""
-"Неможливо відкрити файл.\n"
-"Спробуйте перевірити шлях до файлу, впевніться що файл не видалений або "
-"оберіть інший файл."
-
-msgid ""
-"\"{passed_extension}\" is a unsupported file extension. Only \"svg\" files "
-"are supported."
-msgstr ""
-"\"{passed_extension}\" це розширення файлу яке не підтримується. "
-"Підтримуються тільки «svg» файли."
-
-msgid "The file extension is empty. Only \"svg\" files are supported."
-msgstr "Розширення файлу порожнє. Підтримується тільки «svg» файли."
-
-msgid "OK"
-msgstr "Добре"
-
-msgid "Autoformatting"
-msgstr "Автоформатування"
+msgid "Basic colors"
+msgstr "Базовий колір"
 
 msgid "General"
 msgstr "Загальні"
@@ -445,8 +331,101 @@ msgstr "Кольори"
 msgid "Paths"
 msgstr "Шляхи"
 
+msgid "Always active."
+msgstr "Завжди активно."
+
 msgid "Transforms"
 msgstr "Трансформації"
+
+msgid "Input"
+msgstr "Пристрої вводу"
+
+msgid "Miscellaneous"
+msgstr ""
+
+msgid "Any changes will apply immediately."
+msgstr "Будь-які зміни будуть застосовані одразу."
+
+#, fuzzy
+msgid "Formatting"
+msgstr "Автоформатування"
+
+msgid "Shortcuts"
+msgstr "Клавіатурні скорочення"
+
+msgid "Theme"
+msgstr "Тема"
+
+msgid "Other"
+msgstr "Інше"
+
+msgid "Invert zoom direction"
+msgstr "Інвертувати напрямок масштабування"
+
+msgid "Wrap mouse"
+msgstr "Захопити мишу"
+
+msgid "Use CTRL for zooming"
+msgstr "Використовувати CTRL для масштабування"
+
+#, fuzzy
+msgid "Handles size"
+msgstr "Колір ручки редагування"
+
+msgid "UI scale"
+msgstr "Масштаб інтерфейсу"
+
+#, fuzzy
+msgid "Auto UI scale"
+msgstr "Масштаб"
+
+msgid "Language"
+msgstr "Мова"
+
+msgid "File"
+msgstr "Файл"
+
+msgid "View"
+msgstr "Перегляд"
+
+msgid "Tool"
+msgstr "Інструмент"
+
+msgid "Help"
+msgstr ""
+
+msgid "Swaps zoom in and zoom out with the mouse wheel."
+msgstr ""
+"Міняє місцями збільшення і зменшення масштабування через коліщатко миші."
+
+msgid "Wraps the mouse cursor around when panning the viewport."
+msgstr ""
+"Курсор буде телепортуватися від одного краю до протилежного при пересуванні "
+"вікна перегляду."
+
+msgid ""
+"If turned on, scrolling will pan the view. To zoom, hold CTRL while "
+"scrolling."
+msgstr ""
+"Якщо увімкнено, гортання буде рухати вікно перегляду. Щоб масштабувати, "
+"затисніть CTRL доки гортаєте."
+
+msgid "Use native file dialog"
+msgstr ""
+
+msgid ""
+"If turned on, uses your operating system's native file dialog. If turned "
+"off, uses GodSVG's built-in file dialog."
+msgstr ""
+
+msgid "Increases the visual size and grabbing area of handles."
+msgstr ""
+
+msgid "Changes the scale of the visual user interface."
+msgstr "Змінити масштаб інтерфейсу користувача."
+
+msgid "Scales the user interface based on the screen size."
+msgstr ""
 
 msgid "Number precision digits"
 msgstr "Кількість цифр точності чисел"
@@ -468,9 +447,6 @@ msgstr "Видалити заповнюючи нулі"
 
 msgid "Remove leading zero"
 msgstr "Видалити початковий нуль"
-
-msgid "Remove plus sign"
-msgstr "Видалити знак плюс"
 
 msgid "Convert rgb format to hex"
 msgstr "Конвертувати rgb формат у hex"
@@ -499,41 +475,143 @@ msgstr "Видалити послідовні команди"
 msgid "Remove unnecessary parameters"
 msgstr "Видалити необов'язкові параметри"
 
-msgid "Relative"
-msgstr "Відносно"
+msgid "Symbol color"
+msgstr "Колір символу"
 
-msgid "Absolute"
-msgstr "Абсолютна"
+msgid "Tag color"
+msgstr "Колір тегу"
 
-msgid "Clear saving path"
-msgstr "Очистити шлях збереження"
+msgid "Attribute color"
+msgstr "Колір атрибуту"
 
-msgid "Apply the matrix"
-msgstr "Застосувати матрицю"
+msgid "String color"
+msgstr "Колір строки"
 
-msgid "Other"
-msgstr "Інше"
+msgid "Comment color"
+msgstr "Колір коментаря"
+
+msgid "Text color"
+msgstr "Колір тексту"
+
+msgid "CDATA color"
+msgstr "Колір CDATA"
+
+msgid "Error color"
+msgstr "Колір помилки"
+
+msgid "Inside color"
+msgstr "Внутрішній колір"
+
+msgid "Normal color"
+msgstr "Звичайний колір"
+
+msgid "Hovered color"
+msgstr "Колір наведеного"
+
+msgid "Selected color"
+msgstr "Колір обраного"
+
+msgid "Hovered selected color"
+msgstr "Колір наведено-виділеного"
+
+msgid "Valid color"
+msgstr "Колір валідності"
+
+msgid "Warning color"
+msgstr "Колір попередження"
+
+msgid "Save the .\"{extension}\" file"
+msgstr ""
+
+msgid "Import a .svg file"
+msgstr ""
+
+msgid "The file extension is empty. Only \"svg\" files are supported."
+msgstr "Розширення файлу порожнє. Підтримується тільки «svg» файли."
+
+msgid ""
+"\"{passed_extension}\" is a unsupported file extension. Only \"svg\" files "
+"are supported."
+msgstr ""
+"\"{passed_extension}\" це розширення файлу яке не підтримується. "
+"Підтримуються тільки «svg» файли."
+
+msgid ""
+"The file couldn't be opened.\n"
+"Try checking the file path, ensure that the file is not deleted, or choose a "
+"different file."
+msgstr ""
+"Неможливо відкрити файл.\n"
+"Спробуйте перевірити шлях до файлу, впевніться що файл не видалений або "
+"оберіть інший файл."
+
+msgid "Duplicate"
+msgstr "Дублювати"
+
+msgid "Convert To"
+msgstr "Конвертувати в"
+
+msgid "Import"
+msgstr "Імпортувати"
 
 msgid "Optimize"
 msgstr "Оптимізувати"
 
-msgid "Any changes will apply immediately."
-msgstr "Будь-які зміни будуть застосовані одразу."
+msgid "Select all tags"
+msgstr "Обрати усі теги"
 
-msgid "Always active."
-msgstr "Завжди активно."
+msgid "Duplicate the selected tags"
+msgstr "Дублювати обрані теги"
 
-msgid "Search color"
-msgstr "Шукати колір"
+msgid "Delete the selection"
+msgstr "Видалити усі обрані теги"
 
-msgid "File"
-msgstr "Файл"
+msgid "Move the selected tags up"
+msgstr "Пересунути усі обрані теги вгору"
 
-msgid "View"
-msgstr "Перегляд"
+msgid "Move the selected tags down"
+msgstr "Пересунути усі обрані теги вниз"
 
-msgid "Tool"
-msgstr "Інструмент"
+msgid "Zoom in"
+msgstr "Збільшити масштаб"
+
+msgid "Zoom out"
+msgstr "Зменшити масштаб"
+
+msgid "Zoom reset"
+msgstr "Скинути масштаб"
+
+#, fuzzy
+msgid "Show grid"
+msgstr "Показати ґратку"
+
+#, fuzzy
+msgid "Show handles"
+msgstr "Показати ручки редагування"
+
+msgid "Show rasterized SVG"
+msgstr "Показати растеризуваний SVG"
+
+msgid "View debug information"
+msgstr ""
+
+#, fuzzy
+msgid "Open Settings menu"
+msgstr "Налаштування"
+
+msgid "Open About menu"
+msgstr ""
+
+msgid "Open Donate menu"
+msgstr ""
+
+#, fuzzy
+msgid "Open GodSVG repository"
+msgstr "Репозиторій GodSVG"
+
+#, fuzzy
+msgid "Open GodSVG website"
+msgstr "Репозиторій GodSVG"
 
 msgid "Move to"
 msgstr "Пересунути до"
@@ -564,6 +642,18 @@ msgstr "Кубічна Безьє до"
 
 msgid "Shorthand Cubic Bezier to"
 msgstr "Скорочена кубічна Безьє до"
+
+#~ msgid "Documentation…"
+#~ msgstr "Документація…"
+
+#~ msgid "Couple/Decouple"
+#~ msgstr "З’єднати/Роз’єднати"
+
+#~ msgid "Add color"
+#~ msgstr "Додати колір"
+
+#~ msgid "Remove plus sign"
+#~ msgstr "Видалити знак плюс"
 
 #~ msgid "Default value opacity"
 #~ msgstr "Стандартне значення непрозорості"

@@ -115,6 +115,14 @@ const keybinds_dict = {
 		"cubic_bezier_absolute": true,
 		"shorthand_cubic_bezier_relative": true,
 		"shorthand_cubic_bezier_absolute": true,
+	},
+	"help": {
+		"open_settings": true,
+		"about_info": true,
+		"about_donate": true,
+		"about_repo": true,
+		"about_website": true,
+		"check_updates": true,
 	}
 }
 

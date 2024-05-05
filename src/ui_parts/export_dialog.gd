@@ -21,6 +21,10 @@ var dimensions := Vector2.ZERO
 @onready var quality_hbox: HBoxContainer = %QualityHBox
 @onready var fallback_format_label: Label = %FallbackFormatLabel
 
+func _notification(what: int) -> void:
+	if what == Utils.CustomNotification.LANGUAGE_CHANGED:
+		update_translation()
+
 func _ready() -> void:
 	scale_edit.value_changed.connect(_on_scale_value_changed)
 	quality_edit.value_changed.connect(_on_quality_value_changed)
@@ -28,17 +32,16 @@ func _ready() -> void:
 	extension = format_dropdown.value
 	update_extension_configuration()
 	dimensions = SVG.root_tag.get_size()
-	scale_edit.min_value = 1/minf(dimensions.x, dimensions.y)
-	scale_edit.max_value = 16384/maxf(dimensions.x, dimensions.y)
-	scale_edit.set_value(minf(scale_edit.get_value(),
-			2048/maxf(dimensions.x, dimensions.y)))
-	fallback_format_label.text = TranslationServer.translate("Format") + ": svg"
-	update_dimensions_label()
-	update_final_scale()
+	var bigger_dimension := maxf(dimensions.x, dimensions.y)
+	scale_edit.min_value = 1 / minf(dimensions.x, dimensions.y)
+	scale_edit.max_value = 16384 / bigger_dimension
+	scale_edit.set_value(minf(scale_edit.get_value(), 2048 / bigger_dimension))
+	update_translation()
 	texture_preview.setup(SVG.text, dimensions)
 
 
-func update_dimensions_label() -> void:
+func update_translation() -> void:
+	# Update dimensions label.
 	var valid_dimensions := is_finite(dimensions.x) and is_finite(dimensions.y)
 	dimensions_label.text = TranslationServer.translate("Size") + ": "
 	if valid_dimensions:
@@ -49,13 +52,25 @@ func update_dimensions_label() -> void:
 	# If the size is invalid, only SVG exports are relevant. So hide the dropdown.
 	fallback_format_label.visible = !valid_dimensions
 	format_hbox.visible = valid_dimensions
+	update_final_scale()
+	fallback_format_label.text = TranslationServer.translate("Format") + ": svg"
+	$VBoxContainer/Label.text = TranslationServer.translate("Export Configuration")
+	%FormatHBox/Label.text = TranslationServer.translate("Format")
+	%LosslessHBox/Label.text = TranslationServer.translate("Lossless")
+	%QualityHBox/Label.text = TranslationServer.translate("Quality")
+	%ScaleContainer/HBoxContainer/Label.text = TranslationServer.translate("Scale")
+	$VBoxContainer/ButtonContainer/CancelButton.text =\
+			TranslationServer.translate("Cancel")
+	$VBoxContainer/ButtonContainer/ExportButton.text =\
+			TranslationServer.translate("Export")
+
 
 func _on_dropdown_value_changed(new_value: String) -> void:
 	extension = new_value
 	update_extension_configuration()
 
 
-func _on_ok_button_pressed() -> void:
+func _on_export_button_pressed() -> void:
 	if OS.has_feature("web"):
 		var svg_image := FileUtils.generate_image_from_tags(upscale_amount)
 		match extension:
@@ -73,7 +88,6 @@ func _on_cancel_button_pressed() -> void:
 
 func _on_lossless_check_box_toggled(toggled_on: bool) -> void:
 	lossless = toggled_on
-
 	if extension == "webp":
 		quality_hbox.visible = not lossless
 
@@ -90,7 +104,7 @@ func update_final_scale() -> void:
 			": %d×%d" % [exported_size.x, exported_size.y]
 
 func update_extension_configuration() -> void:
-	scale_container.visible = (extension == "png" or extension == "jpg" or extension == "webp")
+	scale_container.visible = extension in ["png", "jpg", "webp"]
 	lossless_hbox.visible = (extension == "webp")
-	quality_hbox.visible = (extension == "jpg" or extension == "webp")
+	quality_hbox.visible = extension in ["jpg", "webp"]
 	_on_lossless_check_box_toggled(lossless)

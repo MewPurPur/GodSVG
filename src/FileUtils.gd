@@ -134,7 +134,7 @@ static func apply_svg_from_path(path: String) -> int:
 	if not error.is_empty():
 		var alert_dialog := AlertDialog.instantiate()
 		HandlerGUI.add_overlay(alert_dialog)
-		alert_dialog.setup(error, TranslationServer.translate("Alert!"), 280.0)
+		alert_dialog.setup(error)
 		return ERR_FILE_CANT_OPEN
 	
 	var svg_text := svg_file.get_as_text()
