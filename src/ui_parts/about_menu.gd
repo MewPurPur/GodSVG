@@ -5,6 +5,22 @@ extends PanelContainer
 @onready var translations_list: PanelGrid = %Translations/List
 @onready var donors_list: PanelGrid = %DonorsList
 @onready var version_label: Label = %VersionLabel
+@onready var close_button: Button = $VBoxContainer/CloseButton
+
+func _notification(what: int) -> void:
+	if what == Utils.CustomNotification.LANGUAGE_CHANGED:
+		update_translation()
+
+func update_translation() -> void:
+	%ProjectFounder/Label.text = TranslationServer.translate("Project Founder and Manager")
+	%Developers/Label.text = TranslationServer.translate("Developers")
+	%Translations/Label.text = TranslationServer.translate("Translators")
+	$VBoxContainer/TabContainer.set_tab_title(0, TranslationServer.translate("Authors"))
+	$VBoxContainer/TabContainer.set_tab_title(1, TranslationServer.translate("Donors"))
+	$VBoxContainer/TabContainer.set_tab_title(2, TranslationServer.translate("License"))
+	$VBoxContainer/TabContainer.set_tab_title(3, TranslationServer.translate(
+			"Third-party licenses"))
+	%Components.text = TranslationServer.translate("Godot third-party components")
 
 func _ready() -> void:
 	version_label.text = "GodSVG v" + ProjectSettings.get_setting("application/config/version")
@@ -22,9 +38,8 @@ func _ready() -> void:
 			translation_items.append(lang + ": " + credits)
 	translations_list.items = translation_items
 	translations_list.setup()
+	close_button.pressed.connect(queue_free)
+	update_translation()
 
 func _on_components_pressed() -> void:
 	OS.shell_open("https://github.com/godotengine/godot/blob/master/COPYRIGHT.txt")
-
-func _on_close_pressed() -> void:
-	HandlerGUI.remove_overlay()

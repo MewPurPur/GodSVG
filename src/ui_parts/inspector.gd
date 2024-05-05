@@ -5,10 +5,20 @@ const TagFrame = preload("tag_frame.tscn")
 @onready var tags_container: VBoxContainer = %Tags
 @onready var add_button: Button = $AddButton
 
+
+func _notification(what: int) -> void:
+	if what == Utils.CustomNotification.LANGUAGE_CHANGED:
+		update_translation()
+
 func _ready() -> void:
+	update_translation()
 	SVG.root_tag.tag_layout_changed.connect(full_rebuild)
 	SVG.root_tag.changed_unknown.connect(full_rebuild)
 	full_rebuild()
+
+
+func update_translation() -> void:
+	$AddButton.text = TranslationServer.translate("Add new tag")
 
 
 func full_rebuild() -> void:

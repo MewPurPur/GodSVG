@@ -14,7 +14,7 @@ const SettingColor = preload("res://src/ui_elements/setting_color.gd")
 @onready var tabs: VBoxContainer = %Tabs
 @onready var close_button: Button = $VBoxContainer/CloseButton
 
-@onready var wrap_mouse: HBoxContainer = %WrapMouse
+@onready var wrap_mouse: HBoxContainer = %Input/WrapMouse
 @onready var use_native_file_dialog: HBoxContainer = %UseNativeFileDialog
 
 @onready var shortcut_categories: HFlowContainer = %Categories
@@ -50,13 +50,32 @@ func setup_theming() -> void:
 
 # Sets the text for all the labels.
 func setup_setting_labels() -> void:
+	%HighlighterVBox/SectionLabel.text = TranslationServer.translate("SVG Text colors")
+	%HandleColors/SectionLabel.text = TranslationServer.translate("Handle colors")
+	%BasicColorsVBox/SectionLabel.text = TranslationServer.translate("Basic colors")
+	%GeneralVBox/SectionLabel.text = TranslationServer.translate("General")
+	%NumberVBox/SectionLabel.text = TranslationServer.translate("Numbers")
+	%ColorVBox/SectionLabel.text = TranslationServer.translate("Colors")
+	%PathVBox/SectionLabel.text = TranslationServer.translate("Paths")
+	%PathVBox/Note.text = TranslationServer.translate("Always active.")
+	%TransformVBox/SectionLabel.text = TranslationServer.translate("Transforms")
+	%TransformVBox/Note.text = TranslationServer.translate("Always active.")
+	%Input/Label.text = TranslationServer.translate("Input")
+	%Misc/Label.text = TranslationServer.translate("Miscellaneous")
+	
+	%ContentContainer/Autoformatting/AutoformattingVBox/Warning.text =\
+			TranslationServer.translate("Any changes will apply immediately.")
+	%ContentContainer/Theme/ThemeSettings/Warning.text =\
+			TranslationServer.translate("Any changes will apply immediately.")
+
+	
 	tabs.get_node(^"FormattingTab").text = TranslationServer.translate("Formatting")
 	tabs.get_node(^"PalettesTab").text = TranslationServer.translate("Palettes")
 	tabs.get_node(^"ShortcutsTab").text = TranslationServer.translate("Shortcuts")
 	tabs.get_node(^"ThemeTab").text = TranslationServer.translate("Theme")
 	tabs.get_node(^"OtherTab").text = TranslationServer.translate("Other")
 	
-	var invert_zoom := %ContentContainer/Other/OtherSettings/Input/InvertZoom
+	var invert_zoom := %Input/InvertZoom
 	invert_zoom.label.text = TranslationServer.translate("Invert zoom direction")
 	invert_zoom.tooltip_text = TranslationServer.translate(
 			"Swaps zoom in and zoom out with the mouse wheel.")
@@ -65,7 +84,7 @@ func setup_setting_labels() -> void:
 	wrap_mouse.tooltip_text = TranslationServer.translate(
 			"Wraps the mouse cursor around when panning the viewport.")
 	
-	var ctrl_for_zoom := %ContentContainer/Other/OtherSettings/Input/UseCtrlForZoom
+	var ctrl_for_zoom := %Input/UseCtrlForZoom
 	ctrl_for_zoom.label.text = TranslationServer.translate("Use CTRL for zooming")
 	ctrl_for_zoom.tooltip_text = TranslationServer.translate(
 			"If turned on, scrolling will pan the view. To zoom, hold CTRL while scrolling.")
@@ -266,6 +285,8 @@ func setup_shortcuts_tab() -> void:
 			show_keybinds.bind("view")))
 	shortcut_categories.add_child(Utils.create_btn(TranslationServer.translate("Tool"),
 			show_keybinds.bind("tool")))
+	shortcut_categories.add_child(Utils.create_btn(TranslationServer.translate("Help"),
+			show_keybinds.bind("help")))
 	# Add them all to a button group.
 	var button_group := ButtonGroup.new()
 	for btn: Button in shortcut_categories.get_children():

@@ -1,17 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://bktmk76u7dsu0"]
+[gd_scene load_steps=5 format=3 uid="uid://bktmk76u7dsu0"]
 
 [ext_resource type="Script" path="res://src/ui_parts/root_tag_editor.gd" id="1_xgyg0"]
 [ext_resource type="FontFile" uid="uid://dtb4wkus51hxs" path="res://visual/fonts/FontMono.ttf" id="2_fm5sa"]
 [ext_resource type="PackedScene" uid="uid://dad7fkhmsooc6" path="res://src/ui_elements/number_edit.tscn" id="3_1gu7n"]
-[ext_resource type="Texture2D" uid="uid://bv4lcvienlyfa" path="res://visual/icons/Coupled.svg" id="3_yhfll"]
 [ext_resource type="Script" path="res://src/ui_elements/BetterToggleButton.gd" id="4_7r848"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_u8h0i"]
-bg_color = Color(0.866667, 0.933333, 1, 0.133333)
-corner_radius_top_left = 5
-corner_radius_top_right = 5
-corner_radius_bottom_right = 5
-corner_radius_bottom_left = 5
 
 [node name="RootTagEditor" type="CenterContainer"]
 offset_right = 470.0
@@ -20,7 +12,7 @@ script = ExtResource("1_xgyg0")
 
 [node name="Edits" type="HBoxContainer" parent="."]
 layout_mode = 2
-theme_override_constants/separation = 12
+theme_override_constants/separation = 30
 
 [node name="Size" type="HBoxContainer" parent="Edits"]
 unique_name_in_owner = true
@@ -69,19 +61,6 @@ custom_minimum_size = Vector2(48, 22)
 layout_mode = 2
 allow_lower = false
 
-[node name="CoupleButton" type="Button" parent="Edits"]
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-tooltip_text = "Couple/Decouple"
-focus_mode = 0
-mouse_default_cursor_shape = 2
-theme_type_variation = &"IconButton"
-toggle_mode = true
-icon = ExtResource("3_yhfll")
-script = ExtResource("4_7r848")
-hover_pressed_stylebox = SubResource("StyleBoxFlat_u8h0i")
-
 [node name="Viewbox" type="VBoxContainer" parent="Edits"]
 unique_name_in_owner = true
 layout_mode = 2
@@ -124,7 +103,6 @@ allow_lower = false
 [connection signal="value_changed" from="Edits/Size/Width/WidthEdit" to="." method="_on_width_edit_value_changed"]
 [connection signal="toggled" from="Edits/Size/Height/HeightButton" to="." method="_on_height_button_toggled"]
 [connection signal="value_changed" from="Edits/Size/Height/HeightEdit" to="." method="_on_height_edit_value_changed"]
-[connection signal="toggled" from="Edits/CoupleButton" to="." method="_on_couple_button_toggled"]
 [connection signal="toggled" from="Edits/Viewbox/ViewboxButton" to="." method="_on_viewbox_button_toggled"]
 [connection signal="value_changed" from="Edits/Viewbox/Rect/ViewboxEditX" to="." method="_on_viewbox_edit_x_value_changed"]
 [connection signal="value_changed" from="Edits/Viewbox/Rect/ViewboxEditY" to="." method="_on_viewbox_edit_y_value_changed"]

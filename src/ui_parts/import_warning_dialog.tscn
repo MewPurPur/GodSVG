@@ -25,7 +25,6 @@ theme_override_constants/separation = 12
 
 [node name="Title" type="Label" parent="VBoxContainer"]
 layout_mode = 2
-text = "Import Problems"
 horizontal_alignment = 1
 
 [node name="TextureContainer" type="HBoxContainer" parent="VBoxContainer"]
@@ -34,6 +33,7 @@ theme_override_constants/separation = 12
 
 [node name="TexturePreview" parent="VBoxContainer/TextureContainer" instance=ExtResource("2_j1v8v")]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(192, 192)
 layout_mode = 2
 
 [node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/TextureContainer"]

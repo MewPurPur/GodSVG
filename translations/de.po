@@ -15,6 +15,115 @@ msgstr ""
 msgid "translation-credits"
 msgstr "Kiisu-Master, Swarkin"
 
+msgid "Doesn’t describe an SVG."
+msgstr "Beschreibt kein SVG."
+
+msgid "Improper nesting."
+msgstr "Ungültige Formatierung."
+
+msgid "Undo"
+msgstr "Rückgängig"
+
+msgid "Redo"
+msgstr "Wiederholen"
+
+msgid "Cut"
+msgstr "Ausschneiden"
+
+msgid "Copy"
+msgstr "Kopieren"
+
+msgid "Paste"
+msgstr "Einfügen"
+
+msgid "Search color"
+msgstr "Farbe suchen"
+
+msgid "Palettes"
+msgstr "Paletten"
+
+msgid "Color Picker"
+msgstr "Farbauswahl"
+
+msgid "Edit color name"
+msgstr "Farbnamen ändern"
+
+msgid "Delete color"
+msgstr "Farbe löschen"
+
+msgid "Unnamed"
+msgstr "Unbenannt"
+
+msgid "Enable the color"
+msgstr "Farbe aktivieren"
+
+msgid "Disable the color"
+msgstr "Farbe deaktivieren"
+
+msgid "Move Up"
+msgstr "Nach oben"
+
+msgid "Move Down"
+msgstr "Nach unten"
+
+msgid "Copy as XML"
+msgstr "Kopiere als XML"
+
+msgid "Paste XML"
+msgstr "XML Einfügen"
+
+msgid "Delete"
+msgstr "Löschen"
+
+msgid "Edit palette name"
+msgstr "Palettennamen ändern"
+
+msgid "No path data"
+msgstr "Keine Pfaddaten"
+
+msgid "Absolute"
+msgstr "Absolut"
+
+msgid "Relative"
+msgstr "Relativ"
+
+msgid "Reset to default"
+msgstr "Zurücksetzen"
+
+msgid "Unused"
+msgstr "Unbenutzt"
+
+msgid "Add shortcut"
+msgstr "Tastenkombination hinzufügen"
+
+msgid "Edit"
+msgstr "Bearbeiten"
+
+msgid "Remove"
+msgstr "Entfernen"
+
+msgid "Press keys…"
+msgstr "Drücke Tasten…"
+
+msgid "No transforms"
+msgstr "Keine Transformationen"
+
+msgid "Apply the matrix"
+msgstr "Die Matrix anwenden"
+
+msgid "Insert After"
+msgstr "Danach einsetzen"
+
+msgid "Insert Before"
+msgstr "Davor einsetzen"
+
+#, fuzzy
+msgid "New transform"
+msgstr "Keine Transformationen"
+
+msgid "GodSVG doesn’t recognize this attribute"
+msgstr "GodSVG erkennt diese Attribute nicht"
+
 msgid "Project Founder and Manager"
 msgstr "Projektgründer und Manager"
 
@@ -25,74 +134,46 @@ msgstr "Entwickler"
 msgid "Translators"
 msgstr "Transformationen"
 
-msgid "Language"
-msgstr "Sprache"
+msgid "Authors"
+msgstr "Autoren"
 
-msgid "Invert zoom direction"
-msgstr "Zoomrichtung umkehren"
-
-msgid "Swaps zoom in and zoom out with the mouse wheel."
-msgstr "Vertauscht Hinein- und Herauszoomen mit dem Mausrad."
-
-msgid "Wrap mouse"
-msgstr "Maus einschließen"
-
-msgid "Wraps the mouse cursor around when panning the viewport."
-msgstr "Schließt die Maus beim bewegen innerhalb des Fensters ein."
-
-msgid "Use CTRL for zooming"
-msgstr "Strg-Taste zum Zoomen benutzen"
-
-msgid ""
-"If turned on, scrolling will pan the view. To zoom, hold CTRL while "
-"scrolling."
+msgid "Donors"
 msgstr ""
-"Wenn diese Option aktiviert ist, wird durch Scrollen die Ansicht geschwenkt. "
-"Halten Sie zum Zoomen beim Scrollen die Strg-Taste gedrückt."
+
+msgid "License"
+msgstr "Lizenz"
+
+msgid "Godot third-party components"
+msgstr "Godot Drittanbieter-Komponente"
 
 #, fuzzy
-msgid "UI scale"
-msgstr "Skalieren"
+msgid "Third-party licenses"
+msgstr "Drittanbieter-Lizenzen"
 
-msgid "Changes the scale of the visual user interface."
+msgid "Alert!"
+msgstr "Warnung!"
+
+msgid "OK"
+msgstr "OK"
+
+#, fuzzy
+msgid "Save SVG"
+msgstr "Speichern"
+
+#, fuzzy
+msgid "Reset SVG"
+msgstr "SVG rasterisieren"
+
+msgid "Clear saving path"
 msgstr ""
 
 #, fuzzy
-msgid "Auto UI scale"
-msgstr "Skalieren"
+msgid "Copy all text"
+msgstr "Text kopieren"
 
-msgid "Scales the user interface based on the screen size."
-msgstr ""
-
-msgid "Input"
-msgstr "Eingabe"
-
-msgid "Open"
-msgstr "Öffnen"
-
-msgid "Close"
-msgstr "Schließen"
-
-msgid "GodSVG Repository"
-msgstr "GodSVG Repository"
-
-msgid "About…"
-msgstr "Über…"
-
-msgid "Documentation…"
-msgstr "Dokumentation…"
-
-msgid "Donate…"
-msgstr "Spenden…"
-
-msgid "Zoom in"
-msgstr "Hineinzoomen"
-
-msgid "Zoom reset"
-msgstr "Zoom zurücksetzen"
-
-msgid "Zoom out"
-msgstr "Herauszoomen"
+#, fuzzy
+msgid "Clear SVG"
+msgstr "Alle Tags auswählen"
 
 msgid "Settings"
 msgstr "Einstellungen"
@@ -109,264 +190,75 @@ msgstr "Griffe anzeigen"
 msgid "Rasterized SVG"
 msgstr "SVG rasterisieren"
 
-#, fuzzy
-msgid "Show rasterized SVG"
-msgstr "SVG rasterisieren"
+msgid "About…"
+msgstr "Über…"
 
-msgid "Enable Snapping"
+msgid "Donate…"
+msgstr "Spenden…"
+
+#, fuzzy
+msgid "GodSVG repository"
+msgstr "GodSVG Repository"
+
+#, fuzzy
+msgid "GodSVG website"
+msgstr "GodSVG Repository"
+
+msgid "Check for updates"
+msgstr ""
+
+#, fuzzy
+msgid "Enable snapping"
 msgstr "Einrasten aktivieren"
 
 msgid "Snap size"
 msgstr "Einrastgröße"
 
-msgid "Reset to default"
-msgstr "Zurücksetzen"
-
-#, fuzzy
-msgid "Copy all text"
-msgstr "Text kopieren"
-
-msgid "Clear SVG"
-msgstr ""
-
-#, fuzzy
-msgid "Reset SVG"
-msgstr "SVG rasterisieren"
-
-msgid "Save"
-msgstr "Speichern"
-
-msgid "Export"
-msgstr "Exportieren"
-
-msgid "Select all tags"
-msgstr "Alle Tags auswählen"
-
-msgid "Couple/Decouple"
-msgstr "Koppeln/Entkoppeln"
-
-msgid "Duplicate"
-msgstr "Duplizieren"
-
-msgid "Move Up"
-msgstr "Nach oben"
-
-msgid "Move Down"
-msgstr "Nach unten"
-
-msgid "Delete"
-msgstr "Löschen"
-
-msgid "Insert Before"
-msgstr "Davor einsetzen"
-
-msgid "Insert After"
-msgstr "Danach einsetzen"
-
-msgid "Convert To"
-msgstr "Konvertieren zu"
-
-msgid "Doesn’t describe an SVG."
-msgstr "Beschreibt kein SVG."
-
-msgid "Improper nesting."
-msgstr "Ungültige Formatierung."
-
-msgid "Syntax error"
-msgstr "Syntaxfehler"
-
-msgid "Delete the selection"
-msgstr "Auswahl löschen"
-
-msgid "Move the selected tags down"
-msgstr "Ausgewählte Tags nach unten verschieben"
-
-msgid "Move the selected tags up"
-msgstr "Ausgewählte Tags nach oben verschieben"
-
-msgid "Duplicate the selected tags"
-msgstr "Ausgewählte Tags duplizieren"
-
-msgid "Unknown Tag"
-msgstr "Unbekanntes Element"
-
-msgid "Unknown Attribute"
-msgstr "Unbekannte Attribute"
-
-msgid "No path data"
-msgstr "Keine Pfaddaten"
-
-msgid "No transforms"
-msgstr "Keine Transformationen"
-
-msgid "Import"
-msgstr "Importieren"
-
-msgid "Cancel"
-msgstr "Abbrechen"
-
-msgid "Import Problems"
-msgstr "Probleme beim Importieren"
-
-msgid "GodSVG doesn’t recognize this attribute"
-msgstr "GodSVG erkennt diese Attribute nicht"
-
-msgid "Format"
-msgstr "Format"
-
-msgid "Scale"
-msgstr "Skalieren"
-
 msgid "Size"
 msgstr "Größe"
-
-msgid "Final size"
-msgstr "Endgültige Größe"
 
 msgid "Invalid"
 msgstr ""
 
+msgid "Format"
+msgstr "Format"
+
 msgid "Export Configuration"
 msgstr "Export-Konfiguration"
 
-msgid "Add new tag"
-msgstr "Neues Element hinzufügen"
+msgid "Lossless"
+msgstr ""
 
-#, fuzzy
-msgid "New tag"
-msgstr "Neues Element hinzufügen"
+msgid "Quality"
+msgstr ""
 
-#, fuzzy
-msgid "New transform"
-msgstr "Keine Transformationen"
+msgid "Scale"
+msgstr "Skalieren"
 
-msgid "License"
-msgstr "Lizenz"
+msgid "Cancel"
+msgstr "Abbrechen"
 
-msgid "Third-party Licenses"
-msgstr "Drittanbieter-Lizenzen"
+msgid "Export"
+msgstr "Exportieren"
 
-msgid "Authors"
-msgstr "Autoren"
-
-msgid "Shortcuts"
-msgstr "Tastenkombinationen"
-
-msgid "Add shortcut"
-msgstr "Tastenkombination hinzufügen"
-
-msgid "Theme"
-msgstr "Thema"
-
-msgid "Basic colors"
-msgstr "Allgemeine Farben"
-
-msgid "SVG Text Colors"
-msgstr "SVG Textfarben"
-
-msgid "Symbol color"
-msgstr "Symbolfarbe"
-
-msgid "Tag color"
-msgstr "Tagfarbe"
-
-msgid "Attribute color"
-msgstr "Attributfarbe"
-
-msgid "String color"
-msgstr "Stringfarbe"
-
-msgid "Comment color"
-msgstr "Kommentarfarbe"
-
-msgid "Text color"
-msgstr "Textfarbe"
-
-#, fuzzy
-msgid "CDATA color"
-msgstr "Tagfarbe"
-
-msgid "Error color"
-msgstr "Fehlerfarbe"
-
-msgid "Warning color"
-msgstr "Warnfarbe"
-
-msgid "Valid color"
-msgstr "Gültige Farbe"
-
-#, fuzzy
-msgid "Handle colors"
-msgstr "Gültige Farbe"
-
-#, fuzzy
-msgid "Inside color"
-msgstr "Gültige Farbe"
-
-#, fuzzy
-msgid "Normal color"
-msgstr "Fehlerfarbe"
-
-#, fuzzy
-msgid "Hovered color"
-msgstr "Fehlerfarbe"
-
-#, fuzzy
-msgid "Selected color"
-msgstr "Farbe löschen"
-
-#, fuzzy
-msgid "Hovered selected color"
-msgstr "Farbe löschen"
-
-msgid "Palettes"
-msgstr "Paletten"
-
-msgid "Color Picker"
-msgstr "Farbauswahl"
-
-msgid "Add color"
-msgstr "Farbe hinzufügen"
-
-msgid "Edit palette name"
-msgstr "Palettennamen ändern"
-
-msgid "Unnamed"
-msgstr "Unbenannt"
-
-msgid "Edit color name"
-msgstr "Farbnamen ändern"
-
-msgid "Delete color"
-msgstr "Farbe löschen"
-
-msgid "Edit"
-msgstr "Bearbeiten"
-
-msgid "Remove"
-msgstr "Entfernen"
-
-msgid "Press keys…"
-msgstr "Drücke Tasten…"
-
-msgid "Enable the color"
-msgstr "Farbe aktivieren"
-
-msgid "Disable the color"
-msgstr "Farbe deaktivieren"
-
-#, fuzzy
-msgid "Path"
-msgstr "Pfade"
+msgid "Final size"
+msgstr "Endgültige Größe"
 
 msgid "Replace"
+msgstr ""
+
+msgid "Create new folder"
+msgstr ""
+
+msgid "Create"
 msgstr ""
 
 msgid "Go to parent folder"
 msgstr ""
 
+#, fuzzy
 msgid "Refresh files"
-msgstr ""
+msgstr "Farbe suchen"
 
 msgid "Toggle the visibility of hidden files"
 msgstr ""
@@ -379,73 +271,63 @@ msgstr "Farbe suchen"
 msgid "Select an SVG"
 msgstr "Alle Tags auswählen"
 
-#, fuzzy
-msgid "Save SVG"
-msgstr "Speichern"
+msgid "Close"
+msgstr "Schließen"
 
 #, fuzzy
 msgid "Select"
 msgstr "Farbe löschen"
+
+msgid "Save"
+msgstr "Speichern"
+
+#, fuzzy
+msgid "Path"
+msgstr "Pfade"
+
+msgid "Open"
+msgstr "Öffnen"
+
+#, fuzzy
+msgid "Copy path"
+msgstr "Text kopieren"
 
 msgid ""
 "A file named \"{file_name}\" already exists. Replacing will overwrite its "
 "contents!"
 msgstr ""
 
-msgid "Godot third-party components"
-msgstr "Godot Drittanbieter-Komponente"
+#, fuzzy
+msgid "New tag"
+msgstr "Neues Element hinzufügen"
 
-msgid "Undo"
-msgstr "Rückgängig"
+msgid "Import Problems"
+msgstr "Probleme beim Importieren"
 
-msgid "Redo"
-msgstr "Wiederholen"
+#, fuzzy
+msgid "Unknown tag"
+msgstr "Unbekanntes Element"
 
-msgid "Copy"
-msgstr "Kopieren"
+#, fuzzy
+msgid "Unknown attribute"
+msgstr "Unbekannte Attribute"
 
-msgid "Paste"
-msgstr "Einfügen"
+msgid "Syntax error"
+msgstr "Syntaxfehler"
 
-msgid "Copy as XML"
-msgstr "Kopiere als XML"
+msgid "Add new tag"
+msgstr "Neues Element hinzufügen"
 
-msgid "Paste XML"
-msgstr "XML Einfügen"
+#, fuzzy
+msgid "SVG Text colors"
+msgstr "SVG Textfarben"
 
-msgid "Unused"
-msgstr "Unbenutzt"
+#, fuzzy
+msgid "Handle colors"
+msgstr "Gültige Farbe"
 
-msgid "Cut"
-msgstr "Ausschneiden"
-
-msgid "Alert!"
-msgstr "Warnung!"
-
-msgid ""
-"The file couldn't be opened.\n"
-"Try checking the file path, ensure that the file is not deleted, or choose a "
-"different file."
-msgstr ""
-"Die Datei konnte nicht geöffnet werden.\n"
-"Überprüfe den Dateipfad, ob die Datei existiert, oder wähle eine andere "
-"Datei."
-
-msgid ""
-"\"{passed_extension}\" is a unsupported file extension. Only \"svg\" files "
-"are supported."
-msgstr ""
-"\"{passed_extension}\" ist eine nicht unterstützte Dateierweiterung. Nur "
-"\"svg\" Dateien werden unterstützt."
-
-msgid "The file extension is empty. Only \"svg\" files are supported."
-msgstr "Die Dateierweiterung ist leer. Nur \"svg\"-Dateien werden unterstützt."
-
-msgid "OK"
-msgstr "OK"
-
-msgid "Autoformatting"
-msgstr "Autoformatierung"
+msgid "Basic colors"
+msgstr "Allgemeine Farben"
 
 msgid "General"
 msgstr "Allgemein"
@@ -459,8 +341,99 @@ msgstr "Farben"
 msgid "Paths"
 msgstr "Pfade"
 
+msgid "Always active."
+msgstr "Immer aktiv."
+
 msgid "Transforms"
 msgstr "Transformationen"
+
+msgid "Input"
+msgstr "Eingabe"
+
+msgid "Miscellaneous"
+msgstr ""
+
+msgid "Any changes will apply immediately."
+msgstr "Änderungen werden sofort wirksam."
+
+#, fuzzy
+msgid "Formatting"
+msgstr "Autoformatierung"
+
+msgid "Shortcuts"
+msgstr "Tastenkombinationen"
+
+msgid "Theme"
+msgstr "Thema"
+
+msgid "Other"
+msgstr "Anderes"
+
+msgid "Invert zoom direction"
+msgstr "Zoomrichtung umkehren"
+
+msgid "Wrap mouse"
+msgstr "Maus einschließen"
+
+msgid "Use CTRL for zooming"
+msgstr "Strg-Taste zum Zoomen benutzen"
+
+#, fuzzy
+msgid "Handles size"
+msgstr "Gültige Farbe"
+
+#, fuzzy
+msgid "UI scale"
+msgstr "Skalieren"
+
+#, fuzzy
+msgid "Auto UI scale"
+msgstr "Skalieren"
+
+msgid "Language"
+msgstr "Sprache"
+
+msgid "File"
+msgstr ""
+
+msgid "View"
+msgstr ""
+
+msgid "Tool"
+msgstr ""
+
+msgid "Help"
+msgstr ""
+
+msgid "Swaps zoom in and zoom out with the mouse wheel."
+msgstr "Vertauscht Hinein- und Herauszoomen mit dem Mausrad."
+
+msgid "Wraps the mouse cursor around when panning the viewport."
+msgstr "Schließt die Maus beim bewegen innerhalb des Fensters ein."
+
+msgid ""
+"If turned on, scrolling will pan the view. To zoom, hold CTRL while "
+"scrolling."
+msgstr ""
+"Wenn diese Option aktiviert ist, wird durch Scrollen die Ansicht geschwenkt. "
+"Halten Sie zum Zoomen beim Scrollen die Strg-Taste gedrückt."
+
+msgid "Use native file dialog"
+msgstr ""
+
+msgid ""
+"If turned on, uses your operating system's native file dialog. If turned "
+"off, uses GodSVG's built-in file dialog."
+msgstr ""
+
+msgid "Increases the visual size and grabbing area of handles."
+msgstr ""
+
+msgid "Changes the scale of the visual user interface."
+msgstr ""
+
+msgid "Scales the user interface based on the screen size."
+msgstr ""
 
 msgid "Number precision digits"
 msgstr "Zahlengenauigkeit"
@@ -482,9 +455,6 @@ msgstr "Nullenversatz entfernen"
 
 msgid "Remove leading zero"
 msgstr "Führende Null entfernen"
-
-msgid "Remove plus sign"
-msgstr "Pluszeichen entfernen"
 
 msgid "Convert rgb format to hex"
 msgstr "RGB zu HEX konvertieren"
@@ -513,41 +483,150 @@ msgstr "Aufeinanderfolgende Befehle entfernen"
 msgid "Remove unnecessary parameters"
 msgstr "Unnötige Parameter entfernen"
 
-msgid "Relative"
-msgstr "Relativ"
+msgid "Symbol color"
+msgstr "Symbolfarbe"
 
-msgid "Absolute"
-msgstr "Absolut"
+msgid "Tag color"
+msgstr "Tagfarbe"
 
-msgid "Clear saving path"
+msgid "Attribute color"
+msgstr "Attributfarbe"
+
+msgid "String color"
+msgstr "Stringfarbe"
+
+msgid "Comment color"
+msgstr "Kommentarfarbe"
+
+msgid "Text color"
+msgstr "Textfarbe"
+
+#, fuzzy
+msgid "CDATA color"
+msgstr "Tagfarbe"
+
+msgid "Error color"
+msgstr "Fehlerfarbe"
+
+#, fuzzy
+msgid "Inside color"
+msgstr "Gültige Farbe"
+
+#, fuzzy
+msgid "Normal color"
+msgstr "Fehlerfarbe"
+
+#, fuzzy
+msgid "Hovered color"
+msgstr "Fehlerfarbe"
+
+#, fuzzy
+msgid "Selected color"
+msgstr "Farbe löschen"
+
+#, fuzzy
+msgid "Hovered selected color"
+msgstr "Farbe löschen"
+
+msgid "Valid color"
+msgstr "Gültige Farbe"
+
+msgid "Warning color"
+msgstr "Warnfarbe"
+
+msgid "Save the .\"{extension}\" file"
 msgstr ""
 
-msgid "Apply the matrix"
-msgstr "Die Matrix anwenden"
+msgid "Import a .svg file"
+msgstr ""
 
-msgid "Other"
-msgstr "Anderes"
+msgid "The file extension is empty. Only \"svg\" files are supported."
+msgstr "Die Dateierweiterung ist leer. Nur \"svg\"-Dateien werden unterstützt."
+
+msgid ""
+"\"{passed_extension}\" is a unsupported file extension. Only \"svg\" files "
+"are supported."
+msgstr ""
+"\"{passed_extension}\" ist eine nicht unterstützte Dateierweiterung. Nur "
+"\"svg\" Dateien werden unterstützt."
+
+msgid ""
+"The file couldn't be opened.\n"
+"Try checking the file path, ensure that the file is not deleted, or choose a "
+"different file."
+msgstr ""
+"Die Datei konnte nicht geöffnet werden.\n"
+"Überprüfe den Dateipfad, ob die Datei existiert, oder wähle eine andere "
+"Datei."
+
+msgid "Duplicate"
+msgstr "Duplizieren"
+
+msgid "Convert To"
+msgstr "Konvertieren zu"
+
+msgid "Import"
+msgstr "Importieren"
 
 msgid "Optimize"
 msgstr "Optimieren"
 
-msgid "Any changes will apply immediately."
-msgstr "Änderungen werden sofort wirksam."
+msgid "Select all tags"
+msgstr "Alle Tags auswählen"
 
-msgid "Always active."
-msgstr "Immer aktiv."
+msgid "Duplicate the selected tags"
+msgstr "Ausgewählte Tags duplizieren"
 
-msgid "Search color"
-msgstr "Farbe suchen"
+msgid "Delete the selection"
+msgstr "Auswahl löschen"
 
-msgid "File"
+msgid "Move the selected tags up"
+msgstr "Ausgewählte Tags nach oben verschieben"
+
+msgid "Move the selected tags down"
+msgstr "Ausgewählte Tags nach unten verschieben"
+
+msgid "Zoom in"
+msgstr "Hineinzoomen"
+
+msgid "Zoom out"
+msgstr "Herauszoomen"
+
+msgid "Zoom reset"
+msgstr "Zoom zurücksetzen"
+
+#, fuzzy
+msgid "Show grid"
+msgstr "Raster anzeigen"
+
+#, fuzzy
+msgid "Show handles"
+msgstr "Griffe anzeigen"
+
+#, fuzzy
+msgid "Show rasterized SVG"
+msgstr "SVG rasterisieren"
+
+msgid "View debug information"
 msgstr ""
 
-msgid "View"
+#, fuzzy
+msgid "Open Settings menu"
+msgstr "Einstellungen"
+
+msgid "Open About menu"
 msgstr ""
 
-msgid "Tool"
+msgid "Open Donate menu"
 msgstr ""
+
+#, fuzzy
+msgid "Open GodSVG repository"
+msgstr "GodSVG Repository"
+
+#, fuzzy
+msgid "Open GodSVG website"
+msgstr "GodSVG Repository"
 
 #, fuzzy
 msgid "Move to"
@@ -580,6 +659,18 @@ msgstr ""
 
 msgid "Shorthand Cubic Bezier to"
 msgstr ""
+
+#~ msgid "Documentation…"
+#~ msgstr "Dokumentation…"
+
+#~ msgid "Couple/Decouple"
+#~ msgstr "Koppeln/Entkoppeln"
+
+#~ msgid "Add color"
+#~ msgstr "Farbe hinzufügen"
+
+#~ msgid "Remove plus sign"
+#~ msgstr "Pluszeichen entfernen"
 
 #~ msgid "Default value opacity"
 #~ msgstr "Standardwertopazität"

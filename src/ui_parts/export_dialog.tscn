@@ -27,80 +27,69 @@ theme_override_constants/separation = 12
 
 [node name="Label" type="Label" parent="VBoxContainer"]
 layout_mode = 2
-text = "Export Configuration"
 horizontal_alignment = 1
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
 layout_mode = 2
-theme_override_constants/separation = 12
+theme_override_constants/separation = 16
 
 [node name="TexturePreview" parent="VBoxContainer/HBoxContainer" instance=ExtResource("2_ewk0a")]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(192, 192)
 layout_mode = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/HBoxContainer"]
-custom_minimum_size = Vector2(160, 0)
-layout_mode = 2
-theme_override_constants/margin_left = 4
-theme_override_constants/margin_top = 6
-theme_override_constants/margin_right = 4
-theme_override_constants/margin_bottom = 6
-
-[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer"]
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="DimensionsLabel" type="Label" parent="VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer"]
+[node name="DimensionsLabel" type="Label" parent="VBoxContainer/HBoxContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0.866667, 0.866667, 0.866667, 1)
 theme_override_font_sizes/font_size = 16
 horizontal_alignment = 1
 
-[node name="FallbackFormatLabel" type="Label" parent="VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer"]
+[node name="FallbackFormatLabel" type="Label" parent="VBoxContainer/HBoxContainer/VBoxContainer"]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 theme_override_font_sizes/font_size = 14
 horizontal_alignment = 1
 
-[node name="FormatHBox" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer"]
+[node name="FormatHBox" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/FormatHBox"]
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/VBoxContainer/FormatHBox"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 14
-text = "Format"
 
-[node name="Dropdown" parent="VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/FormatHBox" instance=ExtResource("5_y6ex0")]
+[node name="Dropdown" parent="VBoxContainer/HBoxContainer/VBoxContainer/FormatHBox" instance=ExtResource("5_y6ex0")]
 layout_mode = 2
 values = Array[String](["svg", "png", "jpg", "webp"])
 
-[node name="LosslessHBox" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer"]
+[node name="LosslessHBox" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/LosslessHBox"]
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/VBoxContainer/LosslessHBox"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
-text = "Lossless"
 
-[node name="CheckBox" type="CheckBox" parent="VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/LosslessHBox"]
+[node name="CheckBox" type="CheckBox" parent="VBoxContainer/HBoxContainer/VBoxContainer/LosslessHBox"]
 layout_mode = 2
 button_pressed = true
 
-[node name="QualityHBox" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer"]
+[node name="QualityHBox" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/QualityHBox"]
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/VBoxContainer/QualityHBox"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
-text = "Quality"
 
-[node name="Quality" parent="VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/QualityHBox" instance=ExtResource("6_w1sag")]
+[node name="Quality" parent="VBoxContainer/HBoxContainer/VBoxContainer/QualityHBox" instance=ExtResource("6_w1sag")]
 unique_name_in_owner = true
 layout_mode = 2
 min_value = 1.0
@@ -110,20 +99,19 @@ allow_lower = false
 allow_higher = false
 is_float = false
 
-[node name="ScaleContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer"]
+[node name="ScaleContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/ScaleContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/VBoxContainer/ScaleContainer"]
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/ScaleContainer/HBoxContainer"]
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/VBoxContainer/ScaleContainer/HBoxContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
-text = "Scale"
 
-[node name="Scale" parent="VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/ScaleContainer/HBoxContainer" instance=ExtResource("6_w1sag")]
+[node name="Scale" parent="VBoxContainer/HBoxContainer/VBoxContainer/ScaleContainer/HBoxContainer" instance=ExtResource("6_w1sag")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(46, 22)
 layout_mode = 2
@@ -131,7 +119,7 @@ initial_value = 8.0
 allow_lower = false
 allow_higher = false
 
-[node name="FinalDimensions" type="Label" parent="VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/ScaleContainer"]
+[node name="FinalDimensions" type="Label" parent="VBoxContainer/HBoxContainer/VBoxContainer/ScaleContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0.666667, 0.666667, 0.666667, 1)
@@ -147,15 +135,13 @@ layout_mode = 2
 size_flags_horizontal = 6
 focus_mode = 0
 mouse_default_cursor_shape = 2
-text = "Cancel"
 
-[node name="OKButton" type="Button" parent="VBoxContainer/ButtonContainer"]
+[node name="ExportButton" type="Button" parent="VBoxContainer/ButtonContainer"]
 layout_mode = 2
 size_flags_horizontal = 6
 focus_mode = 0
 mouse_default_cursor_shape = 2
-text = "Export"
 
-[connection signal="toggled" from="VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/LosslessHBox/CheckBox" to="." method="_on_lossless_check_box_toggled"]
+[connection signal="toggled" from="VBoxContainer/HBoxContainer/VBoxContainer/LosslessHBox/CheckBox" to="." method="_on_lossless_check_box_toggled"]
 [connection signal="pressed" from="VBoxContainer/ButtonContainer/CancelButton" to="." method="_on_cancel_button_pressed"]
-[connection signal="pressed" from="VBoxContainer/ButtonContainer/OKButton" to="." method="_on_ok_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/ButtonContainer/ExportButton" to="." method="_on_export_button_pressed"]

@@ -24,6 +24,52 @@ static func get_shortcut_description(action_name: String) -> String:
 		"view_show_handles": return TranslationServer.translate("Show handles")
 		"view_rasterized_svg": return TranslationServer.translate("Show rasterized SVG")
 		"debug": return TranslationServer.translate("View debug information")
+		"move_relative": return "%s (%s)" %\
+				[get_command_char_description("M"), TranslationServer.translate("Relative")]
+		"move_absolute": return "%s (%s)" %\
+				[get_command_char_description("M"), TranslationServer.translate("Absolute")]
+		"line_relative": return "%s (%s)" %\
+				[get_command_char_description("L"), TranslationServer.translate("Relative")]
+		"line_absolute": return "%s (%s)" %\
+				[get_command_char_description("L"), TranslationServer.translate("Absolute")]
+		"horizontal_line_relative": return "%s (%s)" %\
+				[get_command_char_description("H"), TranslationServer.translate("Relative")]
+		"horizontal_line_absolute": return "%s (%s)" %\
+				[get_command_char_description("H"), TranslationServer.translate("Absolute")]
+		"vertical_line_relative": return "%s (%s)" %\
+				[get_command_char_description("V"), TranslationServer.translate("Relative")]
+		"vertical_line_absolute": return "%s (%s)" %\
+				[get_command_char_description("V"), TranslationServer.translate("Absolute")]
+		"close_path_relative": return "%s (%s)" %\
+				[get_command_char_description("Z"), TranslationServer.translate("Relative")]
+		"close_path_absolute": return "%s (%s)" %\
+				[get_command_char_description("Z"), TranslationServer.translate("Absolute")]
+		"elliptical_arc_relative": return "%s (%s)" %\
+				[get_command_char_description("A"), TranslationServer.translate("Relative")]
+		"elliptical_arc_absolute": return "%s (%s)" %\
+				[get_command_char_description("A"), TranslationServer.translate("Absolute")]
+		"quadratic_bezier_relative": return "%s (%s)" %\
+				[get_command_char_description("Q"), TranslationServer.translate("Relative")]
+		"quadratic_bezier_absolute": return "%s (%s)" %\
+				[get_command_char_description("Q"), TranslationServer.translate("Absolute")]
+		"shorthand_quadratic_bezier_relative": return "%s (%s)" %\
+				[get_command_char_description("T"), TranslationServer.translate("Relative")]
+		"shorthand_quadratic_bezier_absolute": return "%s (%s)" %\
+				[get_command_char_description("T"), TranslationServer.translate("Absolute")]
+		"cubic_bezier_relative": return "%s (%s)" %\
+				[get_command_char_description("C"), TranslationServer.translate("Relative")]
+		"cubic_bezier_absolute": return "%s (%s)" %\
+				[get_command_char_description("C"), TranslationServer.translate("Absolute")]
+		"shorthand_cubic_bezier_relative": return "%s (%s)" %\
+				[get_command_char_description("S"), TranslationServer.translate("Relative")]
+		"shorthand_cubic_bezier_absolute": return "%s (%s)" %\
+				[get_command_char_description("S"), TranslationServer.translate("Absolute")]
+		"open_settings": return TranslationServer.translate("Open Settings menu")
+		"about_info": return TranslationServer.translate("Open About menu")
+		"about_donate": return TranslationServer.translate("Open Donate menu")
+		"about_repo": return TranslationServer.translate("Open GodSVG repository")
+		"about_website": return TranslationServer.translate("Open GodSVG website")
+		"check_updates": return TranslationServer.translate("Check for updates")
 		_: return action_name
 
 

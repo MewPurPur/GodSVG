@@ -133,7 +133,6 @@ theme_override_constants/separation = 8
 layout_mode = 2
 theme_override_colors/font_color = Color(0.501961, 0.501961, 0.501961, 1)
 theme_override_font_sizes/font_size = 12
-text = "Any changes will apply immediately."
 
 [node name="GeneralVBox" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Autoformatting/AutoformattingVBox"]
 unique_name_in_owner = true
@@ -184,7 +183,6 @@ theme_override_constants/separation = 3
 
 [node name="SectionLabel" type="Label" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Autoformatting/AutoformattingVBox/NumberVBox"]
 layout_mode = 2
-text = "Numbers"
 
 [node name="NumberEnable" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Autoformatting/AutoformattingVBox/NumberVBox" instance=ExtResource("4_2qeh2")]
 layout_mode = 2
@@ -208,7 +206,6 @@ theme_override_constants/separation = 3
 
 [node name="SectionLabel" type="Label" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Autoformatting/AutoformattingVBox/ColorVBox"]
 layout_mode = 2
-text = "Colors"
 
 [node name="ColorEnable" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Autoformatting/AutoformattingVBox/ColorVBox" instance=ExtResource("4_2qeh2")]
 layout_mode = 2
@@ -242,13 +239,11 @@ theme_override_constants/separation = 3
 
 [node name="SectionLabel" type="Label" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Autoformatting/AutoformattingVBox/PathVBox"]
 layout_mode = 2
-text = "Paths"
 
 [node name="Note" type="Label" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Autoformatting/AutoformattingVBox/PathVBox"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.501961, 0.501961, 0.501961, 1)
 theme_override_font_sizes/font_size = 12
-text = "Always active."
 
 [node name="CompressNumbers" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Autoformatting/AutoformattingVBox/PathVBox" instance=ExtResource("4_2qeh2")]
 layout_mode = 2
@@ -277,13 +272,11 @@ theme_override_constants/separation = 3
 
 [node name="SectionLabel" type="Label" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Autoformatting/AutoformattingVBox/TransformVBox"]
 layout_mode = 2
-text = "Transforms"
 
 [node name="Note" type="Label" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Autoformatting/AutoformattingVBox/TransformVBox"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.501961, 0.501961, 0.501961, 1)
 theme_override_font_sizes/font_size = 12
-text = "Always active."
 
 [node name="CompressNumbers" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Autoformatting/AutoformattingVBox/TransformVBox" instance=ExtResource("4_2qeh2")]
 layout_mode = 2
@@ -347,7 +340,6 @@ theme_override_constants/separation = 8
 layout_mode = 2
 theme_override_colors/font_color = Color(0.501961, 0.501961, 0.501961, 1)
 theme_override_font_sizes/font_size = 12
-text = "Any changes will apply immediately."
 
 [node name="HighlighterVBox" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Theme/ThemeSettings"]
 unique_name_in_owner = true
@@ -356,7 +348,6 @@ theme_override_constants/separation = 3
 
 [node name="SectionLabel" type="Label" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Theme/ThemeSettings/HighlighterVBox"]
 layout_mode = 2
-text = "SVG Text Colors"
 
 [node name="SymbolColor" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Theme/ThemeSettings/HighlighterVBox" instance=ExtResource("4_dacsc")]
 layout_mode = 2
@@ -405,7 +396,6 @@ theme_override_constants/separation = 3
 
 [node name="SectionLabel" type="Label" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Theme/ThemeSettings/HandleColors"]
 layout_mode = 2
-text = "Handle colors"
 
 [node name="InsideColor" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Theme/ThemeSettings/HandleColors" instance=ExtResource("4_dacsc")]
 layout_mode = 2
@@ -472,6 +462,7 @@ size_flags_horizontal = 3
 theme_override_constants/separation = 8
 
 [node name="Input" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Other/OtherSettings"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -479,7 +470,6 @@ theme_override_constants/separation = 3
 
 [node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Other/OtherSettings/Input"]
 layout_mode = 2
-text = "Input"
 
 [node name="InvertZoom" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Other/OtherSettings/Input" instance=ExtResource("4_2qeh2")]
 layout_mode = 2
@@ -487,7 +477,6 @@ section_name = "other"
 setting_name = "invert_zoom"
 
 [node name="WrapMouse" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Other/OtherSettings/Input" instance=ExtResource("4_2qeh2")]
-unique_name_in_owner = true
 layout_mode = 2
 section_name = "other"
 setting_name = "wrap_mouse"
@@ -506,7 +495,6 @@ theme_override_constants/separation = 3
 
 [node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Other/OtherSettings/Misc"]
 layout_mode = 2
-text = "Miscellaneous"
 
 [node name="UseNativeFileDialog" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Other/OtherSettings/Misc" instance=ExtResource("4_2qeh2")]
 unique_name_in_owner = true

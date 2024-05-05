@@ -16,7 +16,6 @@ size_flags_horizontal = 3
 focus_mode = 1
 mouse_filter = 1
 theme_type_variation = &"RightConnectedLineEdit"
-placeholder_text = "No transforms"
 script = ExtResource("2_aucxm")
 code_font_tooltip = true
 

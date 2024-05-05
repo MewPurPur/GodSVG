@@ -302,16 +302,14 @@ func web_load_svg() -> void:
 		warning_panel.set_svg(file_data)
 		HandlerGUI.add_overlay(warning_panel)
 	else:
-		var error := ""
-		if extension.is_empty():
-			error = TranslationServer.translate(
-					"The file extension is empty. Only \"svg\" files are supported.")
-		else:
-			error = TranslationServer.translate(
-					"\"{passed_extension}\" is a unsupported file extension. Only \"svg\" files are supported.").format({"passed_extension": extension})
 		var alert_dialog := AlertDialog.instantiate()
 		HandlerGUI.add_overlay(alert_dialog)
-		alert_dialog.setup(error, TranslationServer.translate("Alert!"), 280.0)
+		if extension.is_empty():
+			alert_dialog.setup(TranslationServer.translate(
+					"The file extension is empty. Only \"svg\" files are supported."))
+		else:
+			alert_dialog.setup(TranslationServer.translate(
+					"\"{passed_extension}\" is a unsupported file extension. Only \"svg\" files are supported.").format({"passed_extension": extension}))
 
 
 const web_glue = """var fileData;

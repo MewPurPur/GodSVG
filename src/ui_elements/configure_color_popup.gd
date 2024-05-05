@@ -11,11 +11,22 @@ signal color_deletion_requested
 var color_palette: ColorPalette
 var idx: int
 
+
+func _notification(what: int) -> void:
+	if what == Utils.CustomNotification.LANGUAGE_CHANGED:
+		update_translation()
+
 func _ready() -> void:
 	set_label_text(color_palette.color_names[idx])
 	color_edit.value = color_palette.colors[idx]
+	update_translation()
 
 
+func update_translation() -> void:
+	%LabelContainer/EditButton.tooltip_text =\
+			TranslationServer.translate("Edit color name")
+	$ConfigureContainer/BottomContainer/DeleteButton.tooltip_text =\
+			TranslationServer.translate("Delete color")
 func _on_edit_button_pressed() -> void:
 	color_name_edit.text = color_palette.color_names[idx]
 	color_name_edit.show()

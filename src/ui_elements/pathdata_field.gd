@@ -53,6 +53,10 @@ func set_value(new_value: String, update_type := Utils.UpdateType.REGULAR) -> vo
 				attribute.set_value(new_value)
 
 
+func _notification(what: int) -> void:
+	if what == Utils.CustomNotification.LANGUAGE_CHANGED:
+		update_translation()
+
 func set_attribute(new_attribute: AttributePath) -> void:
 	attribute = new_attribute
 	set_value(attribute.get_value())
@@ -64,7 +68,11 @@ func set_attribute(new_attribute: AttributePath) -> void:
 	commands_container.draw.connect(commands_draw)
 	Indications.hover_changed.connect(_on_selections_or_hover_changed)
 	Indications.selection_changed.connect(_on_selections_or_hover_changed)
+	update_translation()
 
+
+func update_translation() -> void:
+	line_edit.placeholder_text = TranslationServer.translate("No path data")
 
 func _on_line_edit_focus_entered() -> void:
 	focused.emit()

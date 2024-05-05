@@ -59,7 +59,6 @@ icon_alignment = 1
 [node name="Settings" type="Button" parent="PanelContainer/HBoxContainer/LeftMenu"]
 layout_mode = 2
 size_flags_horizontal = 2
-tooltip_text = "Settings"
 focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_type_variation = &"IconButton"
@@ -69,7 +68,6 @@ icon_alignment = 1
 [node name="Visuals" type="Button" parent="PanelContainer/HBoxContainer/LeftMenu"]
 layout_mode = 2
 size_flags_horizontal = 2
-tooltip_text = "Visuals"
 focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_type_variation = &"IconButton"
@@ -82,7 +80,6 @@ theme_override_constants/separation = 0
 
 [node name="SnapButton" type="Button" parent="PanelContainer/HBoxContainer/LeftMenu/Snapping"]
 layout_mode = 2
-tooltip_text = "Enable Snapping"
 focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_type_variation = &"RightConnectedButton"
@@ -94,7 +91,6 @@ hover_pressed_stylebox = SubResource("StyleBoxFlat_eujxa")
 [node name="SnapNumberEdit" parent="PanelContainer/HBoxContainer/LeftMenu/Snapping" instance=ExtResource("7_wrrfr")]
 custom_minimum_size = Vector2(48, 22)
 layout_mode = 2
-tooltip_text = "Snap size"
 theme_type_variation = &"LeftConnectedLineEdit"
 max_length = 20
 editable = false
@@ -121,7 +117,7 @@ unique_name_in_owner = true
 disable_3d = true
 handle_input_locally = false
 gui_snap_controls_to_pixels = false
-size = Vector2i(1024, 609)
+size = Vector2i(450, 2)
 size_2d_override_stretch = true
 render_target_update_mode = 4
 script = ExtResource("9_4xrk7")
