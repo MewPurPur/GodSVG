@@ -43,7 +43,7 @@ class Message:
 	func _to_string() -> String:
 		var ret := "\n"
 		for ref in refs:
-			ret += "#: ../%s\n" % ref
+			ret += "#: %s\n" % ref
 		return ret + 'msgid "%s"\nmsgstr ""\n' % msgid
 
 

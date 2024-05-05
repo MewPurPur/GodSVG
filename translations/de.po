@@ -15,554 +15,545 @@ msgstr ""
 msgid "translation-credits"
 msgstr "Kiisu-Master, Swarkin"
 
-#: ../src/parsers/SVGParser.gd:72
+#: src/parsers/SVGParser.gd:72
 msgid "Doesn’t describe an SVG."
 msgstr "Beschreibt kein SVG."
 
-#: ../src/parsers/SVGParser.gd:74
+#: src/parsers/SVGParser.gd:74
 msgid "Improper nesting."
 msgstr "Ungültige Formatierung."
 
-#: ../src/ui_elements/BetterLineEdit.gd:94
-#: ../src/ui_elements/BetterTextEdit.gd:116 ../src/TranslationUtils.gd:13
+#: src/ui_elements/BetterLineEdit.gd:94 src/ui_elements/BetterTextEdit.gd:116
+#: src/TranslationUtils.gd:13
 msgid "Undo"
 msgstr "Rückgängig"
 
-#: ../src/ui_elements/BetterLineEdit.gd:97
-#: ../src/ui_elements/BetterTextEdit.gd:118 ../src/TranslationUtils.gd:14
+#: src/ui_elements/BetterLineEdit.gd:97 src/ui_elements/BetterTextEdit.gd:118
+#: src/TranslationUtils.gd:14
 msgid "Redo"
 msgstr "Wiederholen"
 
-#: ../src/ui_elements/BetterLineEdit.gd:102
-#: ../src/ui_elements/BetterTextEdit.gd:122
+#: src/ui_elements/BetterLineEdit.gd:102 src/ui_elements/BetterTextEdit.gd:122
 msgid "Cut"
 msgstr "Ausschneiden"
 
-#: ../src/ui_elements/BetterLineEdit.gd:105
-#: ../src/ui_elements/BetterLineEdit.gd:113
-#: ../src/ui_elements/BetterTextEdit.gd:124
-#: ../src/ui_elements/BetterTextEdit.gd:130
+#: src/ui_elements/BetterLineEdit.gd:105 src/ui_elements/BetterLineEdit.gd:113
+#: src/ui_elements/BetterTextEdit.gd:124 src/ui_elements/BetterTextEdit.gd:130
 msgid "Copy"
 msgstr "Kopieren"
 
-#: ../src/ui_elements/BetterLineEdit.gd:108
-#: ../src/ui_elements/BetterTextEdit.gd:126
+#: src/ui_elements/BetterLineEdit.gd:108 src/ui_elements/BetterTextEdit.gd:126
 msgid "Paste"
 msgstr "Einfügen"
 
-#: ../src/ui_elements/color_popup.gd:44
+#: src/ui_elements/color_popup.gd:44
 msgid "Search color"
 msgstr "Farbe suchen"
 
-#: ../src/ui_elements/color_popup.gd:102 ../src/ui_parts/settings_menu.gd:73
+#: src/ui_elements/color_popup.gd:102 src/ui_parts/settings_menu.gd:73
 msgid "Palettes"
 msgstr "Paletten"
 
-#: ../src/ui_elements/color_popup.gd:103
+#: src/ui_elements/color_popup.gd:103
 msgid "Color Picker"
 msgstr "Farbauswahl"
 
-#: ../src/ui_elements/configure_color_popup.gd:27
+#: src/ui_elements/configure_color_popup.gd:27
 msgid "Edit color name"
 msgstr "Farbnamen ändern"
 
-#: ../src/ui_elements/configure_color_popup.gd:29
+#: src/ui_elements/configure_color_popup.gd:29
 msgid "Delete color"
 msgstr "Farbe löschen"
 
-#: ../src/ui_elements/configure_color_popup.gd:50
-#: ../src/ui_elements/palette_config.gd:125
+#: src/ui_elements/configure_color_popup.gd:50
+#: src/ui_elements/palette_config.gd:125
 msgid "Unnamed"
 msgstr "Unbenannt"
 
-#: ../src/ui_elements/good_color_picker.gd:152
+#: src/ui_elements/good_color_picker.gd:152
 msgid "Enable the color"
 msgstr "Farbe aktivieren"
 
-#: ../src/ui_elements/good_color_picker.gd:153
+#: src/ui_elements/good_color_picker.gd:153
 msgid "Disable the color"
 msgstr "Farbe deaktivieren"
 
-#: ../src/ui_elements/palette_config.gd:171 ../src/Indications.gd:495
+#: src/ui_elements/palette_config.gd:171 src/Indications.gd:495
 msgid "Move Up"
 msgstr "Nach oben"
 
-#: ../src/ui_elements/palette_config.gd:174 ../src/Indications.gd:498
+#: src/ui_elements/palette_config.gd:174 src/Indications.gd:498
 msgid "Move Down"
 msgstr "Nach unten"
 
-#: ../src/ui_elements/palette_config.gd:176
+#: src/ui_elements/palette_config.gd:176
 msgid "Copy as XML"
 msgstr "Kopiere als XML"
 
-#: ../src/ui_elements/palette_config.gd:179
+#: src/ui_elements/palette_config.gd:179
 msgid "Paste XML"
 msgstr "XML Einfügen"
 
-#: ../src/ui_elements/palette_config.gd:183
-#: ../src/ui_elements/transform_popup.gd:270 ../src/Indications.gd:501
-#: ../src/Indications.gd:512
+#: src/ui_elements/palette_config.gd:183 src/ui_elements/transform_popup.gd:270
+#: src/Indications.gd:501 src/Indications.gd:512
 msgid "Delete"
 msgstr "Löschen"
 
-#: ../src/ui_elements/palette_config.gd:22
+#: src/ui_elements/palette_config.gd:22
 msgid "Edit palette name"
 msgstr "Palettennamen ändern"
 
-#: ../src/ui_elements/pathdata_field.gd:75
+#: src/ui_elements/pathdata_field.gd:75
 msgid "No path data"
 msgstr "Keine Pfaddaten"
 
-#: ../src/ui_elements/pathdata_field.gd:307 ../src/TranslationUtils.gd:30
-#: ../src/TranslationUtils.gd:34 ../src/TranslationUtils.gd:38
-#: ../src/TranslationUtils.gd:42 ../src/TranslationUtils.gd:46
-#: ../src/TranslationUtils.gd:50 ../src/TranslationUtils.gd:54
-#: ../src/TranslationUtils.gd:58 ../src/TranslationUtils.gd:62
-#: ../src/TranslationUtils.gd:66
+#: src/ui_elements/pathdata_field.gd:307 src/TranslationUtils.gd:30
+#: src/TranslationUtils.gd:34 src/TranslationUtils.gd:38
+#: src/TranslationUtils.gd:42 src/TranslationUtils.gd:46
+#: src/TranslationUtils.gd:50 src/TranslationUtils.gd:54
+#: src/TranslationUtils.gd:58 src/TranslationUtils.gd:62
+#: src/TranslationUtils.gd:66
 msgid "Absolute"
 msgstr "Absolut"
 
-#: ../src/ui_elements/pathdata_field.gd:308 ../src/TranslationUtils.gd:28
-#: ../src/TranslationUtils.gd:32 ../src/TranslationUtils.gd:36
-#: ../src/TranslationUtils.gd:40 ../src/TranslationUtils.gd:44
-#: ../src/TranslationUtils.gd:48 ../src/TranslationUtils.gd:52
-#: ../src/TranslationUtils.gd:56 ../src/TranslationUtils.gd:60
-#: ../src/TranslationUtils.gd:64
+#: src/ui_elements/pathdata_field.gd:308 src/TranslationUtils.gd:28
+#: src/TranslationUtils.gd:32 src/TranslationUtils.gd:36
+#: src/TranslationUtils.gd:40 src/TranslationUtils.gd:44
+#: src/TranslationUtils.gd:48 src/TranslationUtils.gd:52
+#: src/TranslationUtils.gd:56 src/TranslationUtils.gd:60
+#: src/TranslationUtils.gd:64
 msgid "Relative"
 msgstr "Relativ"
 
-#: ../src/ui_elements/setting_check_box.gd:14
-#: ../src/ui_elements/setting_color.gd:16
-#: ../src/ui_elements/setting_dropdown.gd:24
-#: ../src/ui_elements/setting_shortcut.gd:14
+#: src/ui_elements/setting_check_box.gd:14 src/ui_elements/setting_color.gd:16
+#: src/ui_elements/setting_dropdown.gd:24
+#: src/ui_elements/setting_shortcut.gd:14
 msgid "Reset to default"
 msgstr "Zurücksetzen"
 
-#: ../src/ui_elements/setting_shortcut.gd:56
+#: src/ui_elements/setting_shortcut.gd:56
 msgid "Unused"
 msgstr "Unbenutzt"
 
-#: ../src/ui_elements/setting_shortcut.gd:58
+#: src/ui_elements/setting_shortcut.gd:58
 msgid "Add shortcut"
 msgstr "Tastenkombination hinzufügen"
 
-#: ../src/ui_elements/setting_shortcut.gd:67
-#: ../src/ui_parts/settings_menu.gd:282
+#: src/ui_elements/setting_shortcut.gd:67 src/ui_parts/settings_menu.gd:282
 msgid "Edit"
 msgstr "Bearbeiten"
 
-#: ../src/ui_elements/setting_shortcut.gd:69
+#: src/ui_elements/setting_shortcut.gd:69
 msgid "Remove"
 msgstr "Entfernen"
 
-#: ../src/ui_elements/setting_shortcut.gd:100
+#: src/ui_elements/setting_shortcut.gd:100
 msgid "Press keys…"
 msgstr "Drücke Tasten…"
 
-#: ../src/ui_elements/transform_field.gd:37
+#: src/ui_elements/transform_field.gd:37
 msgid "No transforms"
 msgstr "Keine Transformationen"
 
-#: ../src/ui_elements/transform_popup.gd:45
+#: src/ui_elements/transform_popup.gd:45
 msgid "Apply the matrix"
 msgstr "Die Matrix anwenden"
 
-#: ../src/ui_elements/transform_popup.gd:264 ../src/Indications.gd:505
+#: src/ui_elements/transform_popup.gd:264 src/Indications.gd:505
 msgid "Insert After"
 msgstr "Danach einsetzen"
 
-#: ../src/ui_elements/transform_popup.gd:267
+#: src/ui_elements/transform_popup.gd:267
 msgid "Insert Before"
 msgstr "Davor einsetzen"
 
-#: ../src/ui_elements/transform_popup.gd:288
+#: src/ui_elements/transform_popup.gd:288
 #, fuzzy
 msgid "New transform"
 msgstr "Keine Transformationen"
 
-#: ../src/ui_elements/unknown_field.gd:31
+#: src/ui_elements/unknown_field.gd:31
 msgid "GodSVG doesn’t recognize this attribute"
 msgstr "GodSVG erkennt diese Attribute nicht"
 
-#: ../src/ui_parts/about_menu.gd:15
+#: src/ui_parts/about_menu.gd:15
 msgid "Project Founder and Manager"
 msgstr "Projektgründer und Manager"
 
-#: ../src/ui_parts/about_menu.gd:16
+#: src/ui_parts/about_menu.gd:16
 msgid "Developers"
 msgstr "Entwickler"
 
-#: ../src/ui_parts/about_menu.gd:17
+#: src/ui_parts/about_menu.gd:17
 #, fuzzy
 msgid "Translators"
 msgstr "Transformationen"
 
-#: ../src/ui_parts/about_menu.gd:18
+#: src/ui_parts/about_menu.gd:18
 msgid "Authors"
 msgstr "Autoren"
 
-#: ../src/ui_parts/about_menu.gd:19
+#: src/ui_parts/about_menu.gd:19
 msgid "Donors"
 msgstr ""
 
-#: ../src/ui_parts/about_menu.gd:20
+#: src/ui_parts/about_menu.gd:20
 msgid "License"
 msgstr "Lizenz"
 
-#: ../src/ui_parts/about_menu.gd:23
+#: src/ui_parts/about_menu.gd:23
 msgid "Godot third-party components"
 msgstr "Godot Drittanbieter-Komponente"
 
-#: ../src/ui_parts/about_menu.gd:22
+#: src/ui_parts/about_menu.gd:22
 #, fuzzy
 msgid "Third-party licenses"
 msgstr "Drittanbieter-Lizenzen"
 
-#: ../src/ui_parts/alert_dialog.gd:13 ../src/ui_parts/good_file_dialog.gd:105
+#: src/ui_parts/alert_dialog.gd:13 src/ui_parts/good_file_dialog.gd:105
 msgid "Alert!"
 msgstr "Warnung!"
 
-#: ../src/ui_parts/alert_dialog.gd:14
+#: src/ui_parts/alert_dialog.gd:14
 msgid "OK"
 msgstr "OK"
 
-#: ../src/ui_parts/code_editor.gd:190 ../src/ui_parts/good_file_dialog.gd:123
-#: ../src/TranslationUtils.gd:7
+#: src/ui_parts/code_editor.gd:190 src/ui_parts/good_file_dialog.gd:123
+#: src/TranslationUtils.gd:7
 #, fuzzy
 msgid "Save SVG"
 msgstr "Speichern"
 
-#: ../src/ui_parts/code_editor.gd:193 ../src/TranslationUtils.gd:10
+#: src/ui_parts/code_editor.gd:193 src/TranslationUtils.gd:10
 #, fuzzy
 msgid "Reset SVG"
 msgstr "SVG rasterisieren"
 
-#: ../src/ui_parts/code_editor.gd:196 ../src/TranslationUtils.gd:12
+#: src/ui_parts/code_editor.gd:196 src/TranslationUtils.gd:12
 msgid "Clear saving path"
 msgstr ""
 
-#: ../src/ui_parts/code_editor.gd:206 ../src/TranslationUtils.gd:9
+#: src/ui_parts/code_editor.gd:206 src/TranslationUtils.gd:9
 #, fuzzy
 msgid "Copy all text"
 msgstr "Text kopieren"
 
-#: ../src/ui_parts/code_editor.gd:208 ../src/TranslationUtils.gd:11
+#: src/ui_parts/code_editor.gd:208 src/TranslationUtils.gd:11
 #, fuzzy
 msgid "Clear SVG"
 msgstr "Alle Tags auswählen"
 
-#: ../src/ui_parts/display.gd:76
+#: src/ui_parts/display.gd:76
 msgid "Settings"
 msgstr "Einstellungen"
 
-#: ../src/ui_parts/display.gd:77
+#: src/ui_parts/display.gd:77
 msgid "Visuals"
 msgstr "Visuelles"
 
-#: ../src/ui_parts/display.gd:113
+#: src/ui_parts/display.gd:113
 msgid "Show Grid"
 msgstr "Raster anzeigen"
 
-#: ../src/ui_parts/display.gd:115
+#: src/ui_parts/display.gd:115
 msgid "Show Handles"
 msgstr "Griffe anzeigen"
 
-#: ../src/ui_parts/display.gd:117
+#: src/ui_parts/display.gd:117
 msgid "Rasterized SVG"
 msgstr "SVG rasterisieren"
 
-#: ../src/ui_parts/display.gd:126
+#: src/ui_parts/display.gd:126
 msgid "About…"
 msgstr "Über…"
 
-#: ../src/ui_parts/display.gd:131
+#: src/ui_parts/display.gd:131
 msgid "Donate…"
 msgstr "Spenden…"
 
-#: ../src/ui_parts/display.gd:133
+#: src/ui_parts/display.gd:133
 #, fuzzy
 msgid "GodSVG repository"
 msgstr "GodSVG Repository"
 
-#: ../src/ui_parts/display.gd:135
+#: src/ui_parts/display.gd:135
 #, fuzzy
 msgid "GodSVG website"
 msgstr "GodSVG Repository"
 
-#: ../src/ui_parts/display.gd:137 ../src/TranslationUtils.gd:72
+#: src/ui_parts/display.gd:137 src/TranslationUtils.gd:72
 msgid "Check for updates"
 msgstr ""
 
-#: ../src/ui_parts/display.gd:79
+#: src/ui_parts/display.gd:79
 #, fuzzy
 msgid "Enable snapping"
 msgstr "Einrasten aktivieren"
 
-#: ../src/ui_parts/display.gd:81
+#: src/ui_parts/display.gd:81
 msgid "Snap size"
 msgstr "Einrastgröße"
 
-#: ../src/ui_parts/export_dialog.gd:46
+#: src/ui_parts/export_dialog.gd:46
 msgid "Size"
 msgstr "Größe"
 
-#: ../src/ui_parts/export_dialog.gd:51
+#: src/ui_parts/export_dialog.gd:51
 msgid "Invalid"
 msgstr ""
 
-#: ../src/ui_parts/export_dialog.gd:56 ../src/ui_parts/export_dialog.gd:58
+#: src/ui_parts/export_dialog.gd:56 src/ui_parts/export_dialog.gd:58
 msgid "Format"
 msgstr "Format"
 
-#: ../src/ui_parts/export_dialog.gd:57
+#: src/ui_parts/export_dialog.gd:57
 msgid "Export Configuration"
 msgstr "Export-Konfiguration"
 
-#: ../src/ui_parts/export_dialog.gd:59
+#: src/ui_parts/export_dialog.gd:59
 msgid "Lossless"
 msgstr ""
 
-#: ../src/ui_parts/export_dialog.gd:60
+#: src/ui_parts/export_dialog.gd:60
 msgid "Quality"
 msgstr ""
 
-#: ../src/ui_parts/export_dialog.gd:61
+#: src/ui_parts/export_dialog.gd:61
 msgid "Scale"
 msgstr "Skalieren"
 
-#: ../src/ui_parts/export_dialog.gd:63 ../src/ui_parts/good_file_dialog.gd:106
-#: ../src/ui_parts/good_file_dialog.gd:109
+#: src/ui_parts/export_dialog.gd:63 src/ui_parts/good_file_dialog.gd:106
+#: src/ui_parts/good_file_dialog.gd:109
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: ../src/ui_parts/export_dialog.gd:65 ../src/TranslationUtils.gd:5
+#: src/ui_parts/export_dialog.gd:65 src/TranslationUtils.gd:5
 msgid "Export"
 msgstr "Exportieren"
 
-#: ../src/ui_parts/export_dialog.gd:103
+#: src/ui_parts/export_dialog.gd:103
 msgid "Final size"
 msgstr "Endgültige Größe"
 
-#: ../src/ui_parts/good_file_dialog.gd:107
+#: src/ui_parts/good_file_dialog.gd:107
 msgid "Replace"
 msgstr ""
 
-#: ../src/ui_parts/good_file_dialog.gd:108
-#: ../src/ui_parts/good_file_dialog.gd:320
+#: src/ui_parts/good_file_dialog.gd:108 src/ui_parts/good_file_dialog.gd:320
 msgid "Create new folder"
 msgstr ""
 
-#: ../src/ui_parts/good_file_dialog.gd:110
+#: src/ui_parts/good_file_dialog.gd:110
 msgid "Create"
 msgstr ""
 
-#: ../src/ui_parts/good_file_dialog.gd:116
+#: src/ui_parts/good_file_dialog.gd:116
 msgid "Go to parent folder"
 msgstr ""
 
-#: ../src/ui_parts/good_file_dialog.gd:117
+#: src/ui_parts/good_file_dialog.gd:117
 #, fuzzy
 msgid "Refresh files"
 msgstr "Farbe suchen"
 
-#: ../src/ui_parts/good_file_dialog.gd:119
+#: src/ui_parts/good_file_dialog.gd:119
 msgid "Toggle the visibility of hidden files"
 msgstr ""
 
-#: ../src/ui_parts/good_file_dialog.gd:120
+#: src/ui_parts/good_file_dialog.gd:120
 #, fuzzy
 msgid "Search files"
 msgstr "Farbe suchen"
 
-#: ../src/ui_parts/good_file_dialog.gd:122
+#: src/ui_parts/good_file_dialog.gd:122
 #, fuzzy
 msgid "Select an SVG"
 msgstr "Alle Tags auswählen"
 
-#: ../src/ui_parts/good_file_dialog.gd:124
+#: src/ui_parts/good_file_dialog.gd:124
 msgid "Close"
 msgstr "Schließen"
 
-#: ../src/ui_parts/good_file_dialog.gd:125
+#: src/ui_parts/good_file_dialog.gd:125
 #, fuzzy
 msgid "Select"
 msgstr "Farbe löschen"
 
-#: ../src/ui_parts/good_file_dialog.gd:126
+#: src/ui_parts/good_file_dialog.gd:126
 msgid "Save"
 msgstr "Speichern"
 
-#: ../src/ui_parts/good_file_dialog.gd:127
+#: src/ui_parts/good_file_dialog.gd:127
 #, fuzzy
 msgid "Path"
 msgstr "Pfade"
 
-#: ../src/ui_parts/good_file_dialog.gd:289
+#: src/ui_parts/good_file_dialog.gd:289
 msgid "Open"
 msgstr "Öffnen"
 
-#: ../src/ui_parts/good_file_dialog.gd:291
-#: ../src/ui_parts/good_file_dialog.gd:302
+#: src/ui_parts/good_file_dialog.gd:291 src/ui_parts/good_file_dialog.gd:302
 #, fuzzy
 msgid "Copy path"
 msgstr "Text kopieren"
 
-#: ../src/ui_parts/good_file_dialog.gd:266
+#: src/ui_parts/good_file_dialog.gd:266
 msgid ""
 "A file named \"{file_name}\" already exists. Replacing will overwrite its "
 "contents!"
 msgstr ""
 
-#: ../src/ui_parts/handles_manager.gd:766 ../src/ui_parts/tag_container.gd:102
+#: src/ui_parts/handles_manager.gd:766 src/ui_parts/tag_container.gd:102
 #, fuzzy
 msgid "New tag"
 msgstr "Neues Element hinzufügen"
 
-#: ../src/ui_parts/import_warning_dialog.gd:50
+#: src/ui_parts/import_warning_dialog.gd:50
 msgid "Import Problems"
 msgstr "Probleme beim Importieren"
 
-#: ../src/ui_parts/import_warning_dialog.gd:63
+#: src/ui_parts/import_warning_dialog.gd:63
 #, fuzzy
 msgid "Unknown tag"
 msgstr "Unbekanntes Element"
 
-#: ../src/ui_parts/import_warning_dialog.gd:67
+#: src/ui_parts/import_warning_dialog.gd:67
 #, fuzzy
 msgid "Unknown attribute"
 msgstr "Unbekannte Attribute"
 
-#: ../src/ui_parts/import_warning_dialog.gd:38
+#: src/ui_parts/import_warning_dialog.gd:38
 msgid "Syntax error"
 msgstr "Syntaxfehler"
 
-#: ../src/ui_parts/inspector.gd:21
+#: src/ui_parts/inspector.gd:21
 msgid "Add new tag"
 msgstr "Neues Element hinzufügen"
 
-#: ../src/ui_parts/settings_menu.gd:53
+#: src/ui_parts/settings_menu.gd:53
 #, fuzzy
 msgid "SVG Text colors"
 msgstr "SVG Textfarben"
 
-#: ../src/ui_parts/settings_menu.gd:54
+#: src/ui_parts/settings_menu.gd:54
 #, fuzzy
 msgid "Handle colors"
 msgstr "Gültige Farbe"
 
-#: ../src/ui_parts/settings_menu.gd:55
+#: src/ui_parts/settings_menu.gd:55
 msgid "Basic colors"
 msgstr "Allgemeine Farben"
 
-#: ../src/ui_parts/settings_menu.gd:56
+#: src/ui_parts/settings_menu.gd:56
 msgid "General"
 msgstr "Allgemein"
 
-#: ../src/ui_parts/settings_menu.gd:57
+#: src/ui_parts/settings_menu.gd:57
 msgid "Numbers"
 msgstr "Nummern"
 
-#: ../src/ui_parts/settings_menu.gd:58
+#: src/ui_parts/settings_menu.gd:58
 msgid "Colors"
 msgstr "Farben"
 
-#: ../src/ui_parts/settings_menu.gd:59
+#: src/ui_parts/settings_menu.gd:59
 msgid "Paths"
 msgstr "Pfade"
 
-#: ../src/ui_parts/settings_menu.gd:60 ../src/ui_parts/settings_menu.gd:62
+#: src/ui_parts/settings_menu.gd:60 src/ui_parts/settings_menu.gd:62
 msgid "Always active."
 msgstr "Immer aktiv."
 
-#: ../src/ui_parts/settings_menu.gd:61
+#: src/ui_parts/settings_menu.gd:61
 msgid "Transforms"
 msgstr "Transformationen"
 
-#: ../src/ui_parts/settings_menu.gd:63
+#: src/ui_parts/settings_menu.gd:63
 msgid "Input"
 msgstr "Eingabe"
 
-#: ../src/ui_parts/settings_menu.gd:64
+#: src/ui_parts/settings_menu.gd:64
 msgid "Miscellaneous"
 msgstr ""
 
-#: ../src/ui_parts/settings_menu.gd:67 ../src/ui_parts/settings_menu.gd:69
+#: src/ui_parts/settings_menu.gd:67 src/ui_parts/settings_menu.gd:69
 msgid "Any changes will apply immediately."
 msgstr "Änderungen werden sofort wirksam."
 
-#: ../src/ui_parts/settings_menu.gd:72
+#: src/ui_parts/settings_menu.gd:72
 #, fuzzy
 msgid "Formatting"
 msgstr "Autoformatierung"
 
-#: ../src/ui_parts/settings_menu.gd:74
+#: src/ui_parts/settings_menu.gd:74
 msgid "Shortcuts"
 msgstr "Tastenkombinationen"
 
-#: ../src/ui_parts/settings_menu.gd:75
+#: src/ui_parts/settings_menu.gd:75
 msgid "Theme"
 msgstr "Thema"
 
-#: ../src/ui_parts/settings_menu.gd:76
+#: src/ui_parts/settings_menu.gd:76
 msgid "Other"
 msgstr "Anderes"
 
-#: ../src/ui_parts/settings_menu.gd:79
+#: src/ui_parts/settings_menu.gd:79
 msgid "Invert zoom direction"
 msgstr "Zoomrichtung umkehren"
 
-#: ../src/ui_parts/settings_menu.gd:83
+#: src/ui_parts/settings_menu.gd:83
 msgid "Wrap mouse"
 msgstr "Maus einschließen"
 
-#: ../src/ui_parts/settings_menu.gd:88
+#: src/ui_parts/settings_menu.gd:88
 msgid "Use CTRL for zooming"
 msgstr "Strg-Taste zum Zoomen benutzen"
 
-#: ../src/ui_parts/settings_menu.gd:98
+#: src/ui_parts/settings_menu.gd:98
 #, fuzzy
 msgid "Handles size"
 msgstr "Gültige Farbe"
 
-#: ../src/ui_parts/settings_menu.gd:103
+#: src/ui_parts/settings_menu.gd:103
 #, fuzzy
 msgid "UI scale"
 msgstr "Skalieren"
 
-#: ../src/ui_parts/settings_menu.gd:108
+#: src/ui_parts/settings_menu.gd:108
 #, fuzzy
 msgid "Auto UI scale"
 msgstr "Skalieren"
 
-#: ../src/ui_parts/settings_menu.gd:200
+#: src/ui_parts/settings_menu.gd:200
 msgid "Language"
 msgstr "Sprache"
 
-#: ../src/ui_parts/settings_menu.gd:280
+#: src/ui_parts/settings_menu.gd:280
 msgid "File"
 msgstr ""
 
-#: ../src/ui_parts/settings_menu.gd:284
+#: src/ui_parts/settings_menu.gd:284
 msgid "View"
 msgstr ""
 
-#: ../src/ui_parts/settings_menu.gd:286
+#: src/ui_parts/settings_menu.gd:286
 msgid "Tool"
 msgstr ""
 
-#: ../src/ui_parts/settings_menu.gd:288
+#: src/ui_parts/settings_menu.gd:288
 msgid "Help"
 msgstr ""
 
-#: ../src/ui_parts/settings_menu.gd:81
+#: src/ui_parts/settings_menu.gd:81
 msgid "Swaps zoom in and zoom out with the mouse wheel."
 msgstr "Vertauscht Hinein- und Herauszoomen mit dem Mausrad."
 
-#: ../src/ui_parts/settings_menu.gd:85
+#: src/ui_parts/settings_menu.gd:85
 msgid "Wraps the mouse cursor around when panning the viewport."
 msgstr "Schließt die Maus beim bewegen innerhalb des Fensters ein."
 
-#: ../src/ui_parts/settings_menu.gd:90
+#: src/ui_parts/settings_menu.gd:90
 msgid ""
 "If turned on, scrolling will pan the view. To zoom, hold CTRL while "
 "scrolling."
@@ -570,171 +561,171 @@ msgstr ""
 "Wenn diese Option aktiviert ist, wird durch Scrollen die Ansicht geschwenkt. "
 "Halten Sie zum Zoomen beim Scrollen die Strg-Taste gedrückt."
 
-#: ../src/ui_parts/settings_menu.gd:93
+#: src/ui_parts/settings_menu.gd:93
 msgid "Use native file dialog"
 msgstr ""
 
-#: ../src/ui_parts/settings_menu.gd:95
+#: src/ui_parts/settings_menu.gd:95
 msgid ""
 "If turned on, uses your operating system's native file dialog. If turned "
 "off, uses GodSVG's built-in file dialog."
 msgstr ""
 
-#: ../src/ui_parts/settings_menu.gd:100
+#: src/ui_parts/settings_menu.gd:100
 msgid "Increases the visual size and grabbing area of handles."
 msgstr ""
 
-#: ../src/ui_parts/settings_menu.gd:105
+#: src/ui_parts/settings_menu.gd:105
 msgid "Changes the scale of the visual user interface."
 msgstr ""
 
-#: ../src/ui_parts/settings_menu.gd:110
+#: src/ui_parts/settings_menu.gd:110
 msgid "Scales the user interface based on the screen size."
 msgstr ""
 
-#: ../src/ui_parts/settings_menu.gd:113
+#: src/ui_parts/settings_menu.gd:113
 msgid "Number precision digits"
 msgstr "Zahlengenauigkeit"
 
-#: ../src/ui_parts/settings_menu.gd:115
+#: src/ui_parts/settings_menu.gd:115
 msgid "Angle precision digits"
 msgstr "Winkelgenauigkeit"
 
-#: ../src/ui_parts/settings_menu.gd:117
+#: src/ui_parts/settings_menu.gd:117
 msgid "Add trailing newline"
 msgstr "Nachfolgenden Zeilenumbruch hinzufügen"
 
-#: ../src/ui_parts/settings_menu.gd:119
+#: src/ui_parts/settings_menu.gd:119
 msgid "Use shorthand tag syntax"
 msgstr "Kurzbezeichnung für Tags verwenden"
 
-#: ../src/ui_parts/settings_menu.gd:121 ../src/ui_parts/settings_menu.gd:127
+#: src/ui_parts/settings_menu.gd:121 src/ui_parts/settings_menu.gd:127
 msgid "Enable autoformatting"
 msgstr "Autoformatierung einschalten"
 
-#: ../src/ui_parts/settings_menu.gd:123
+#: src/ui_parts/settings_menu.gd:123
 msgid "Remove zero padding"
 msgstr "Nullenversatz entfernen"
 
-#: ../src/ui_parts/settings_menu.gd:125
+#: src/ui_parts/settings_menu.gd:125
 msgid "Remove leading zero"
 msgstr "Führende Null entfernen"
 
-#: ../src/ui_parts/settings_menu.gd:129
+#: src/ui_parts/settings_menu.gd:129
 msgid "Convert rgb format to hex"
 msgstr "RGB zu HEX konvertieren"
 
-#: ../src/ui_parts/settings_menu.gd:131
+#: src/ui_parts/settings_menu.gd:131
 msgid "Convert named colors to hex"
 msgstr "Benannte Farben zu HEX konvertieren"
 
-#: ../src/ui_parts/settings_menu.gd:133
+#: src/ui_parts/settings_menu.gd:133
 msgid "Use shorthand hex code"
 msgstr "Verkürzten HEX-Code verwenden"
 
-#: ../src/ui_parts/settings_menu.gd:135
+#: src/ui_parts/settings_menu.gd:135
 msgid "Use short named colors"
 msgstr "Verkürzte Farbnamen verwenden"
 
-#: ../src/ui_parts/settings_menu.gd:137 ../src/ui_parts/settings_menu.gd:145
+#: src/ui_parts/settings_menu.gd:137 src/ui_parts/settings_menu.gd:145
 msgid "Compress numbers"
 msgstr "Nummern komprimieren"
 
-#: ../src/ui_parts/settings_menu.gd:139 ../src/ui_parts/settings_menu.gd:147
+#: src/ui_parts/settings_menu.gd:139 src/ui_parts/settings_menu.gd:147
 msgid "Minimize spacing"
 msgstr "Leerplatz minimieren"
 
-#: ../src/ui_parts/settings_menu.gd:141
+#: src/ui_parts/settings_menu.gd:141
 msgid "Remove spacing after flags"
 msgstr "Leerplätze nach Eigenschaften (flag) entfernen"
 
-#: ../src/ui_parts/settings_menu.gd:143
+#: src/ui_parts/settings_menu.gd:143
 msgid "Remove consecutive commands"
 msgstr "Aufeinanderfolgende Befehle entfernen"
 
-#: ../src/ui_parts/settings_menu.gd:149
+#: src/ui_parts/settings_menu.gd:149
 msgid "Remove unnecessary parameters"
 msgstr "Unnötige Parameter entfernen"
 
-#: ../src/ui_parts/settings_menu.gd:151
+#: src/ui_parts/settings_menu.gd:151
 msgid "Symbol color"
 msgstr "Symbolfarbe"
 
-#: ../src/ui_parts/settings_menu.gd:153
+#: src/ui_parts/settings_menu.gd:153
 msgid "Tag color"
 msgstr "Tagfarbe"
 
-#: ../src/ui_parts/settings_menu.gd:155
+#: src/ui_parts/settings_menu.gd:155
 msgid "Attribute color"
 msgstr "Attributfarbe"
 
-#: ../src/ui_parts/settings_menu.gd:157
+#: src/ui_parts/settings_menu.gd:157
 msgid "String color"
 msgstr "Stringfarbe"
 
-#: ../src/ui_parts/settings_menu.gd:159
+#: src/ui_parts/settings_menu.gd:159
 msgid "Comment color"
 msgstr "Kommentarfarbe"
 
-#: ../src/ui_parts/settings_menu.gd:161
+#: src/ui_parts/settings_menu.gd:161
 msgid "Text color"
 msgstr "Textfarbe"
 
-#: ../src/ui_parts/settings_menu.gd:163
+#: src/ui_parts/settings_menu.gd:163
 #, fuzzy
 msgid "CDATA color"
 msgstr "Tagfarbe"
 
-#: ../src/ui_parts/settings_menu.gd:165 ../src/ui_parts/settings_menu.gd:179
+#: src/ui_parts/settings_menu.gd:165 src/ui_parts/settings_menu.gd:179
 msgid "Error color"
 msgstr "Fehlerfarbe"
 
-#: ../src/ui_parts/settings_menu.gd:167
+#: src/ui_parts/settings_menu.gd:167
 #, fuzzy
 msgid "Inside color"
 msgstr "Gültige Farbe"
 
-#: ../src/ui_parts/settings_menu.gd:169
+#: src/ui_parts/settings_menu.gd:169
 #, fuzzy
 msgid "Normal color"
 msgstr "Fehlerfarbe"
 
-#: ../src/ui_parts/settings_menu.gd:171
+#: src/ui_parts/settings_menu.gd:171
 #, fuzzy
 msgid "Hovered color"
 msgstr "Fehlerfarbe"
 
-#: ../src/ui_parts/settings_menu.gd:173
+#: src/ui_parts/settings_menu.gd:173
 #, fuzzy
 msgid "Selected color"
 msgstr "Farbe löschen"
 
-#: ../src/ui_parts/settings_menu.gd:175
+#: src/ui_parts/settings_menu.gd:175
 #, fuzzy
 msgid "Hovered selected color"
 msgstr "Farbe löschen"
 
-#: ../src/ui_parts/settings_menu.gd:177
+#: src/ui_parts/settings_menu.gd:177
 msgid "Valid color"
 msgstr "Gültige Farbe"
 
-#: ../src/ui_parts/settings_menu.gd:181
+#: src/ui_parts/settings_menu.gd:181
 msgid "Warning color"
 msgstr "Warnfarbe"
 
-#: ../src/FileUtils.gd:64
+#: src/FileUtils.gd:64
 msgid "Save the .\"{extension}\" file"
 msgstr ""
 
-#: ../src/FileUtils.gd:98
+#: src/FileUtils.gd:98
 msgid "Import a .svg file"
 msgstr ""
 
-#: ../src/FileUtils.gd:124 ../src/HandlerGUI.gd:309
+#: src/FileUtils.gd:124 src/HandlerGUI.gd:309
 msgid "The file extension is empty. Only \"svg\" files are supported."
 msgstr "Die Dateierweiterung ist leer. Nur \"svg\"-Dateien werden unterstützt."
 
-#: ../src/FileUtils.gd:129 ../src/HandlerGUI.gd:312
+#: src/FileUtils.gd:129 src/HandlerGUI.gd:312
 msgid ""
 "\"{passed_extension}\" is a unsupported file extension. Only \"svg\" files "
 "are supported."
@@ -742,7 +733,7 @@ msgstr ""
 "\"{passed_extension}\" ist eine nicht unterstützte Dateierweiterung. Nur "
 "\"svg\" Dateien werden unterstützt."
 
-#: ../src/FileUtils.gd:132
+#: src/FileUtils.gd:132
 msgid ""
 "The file couldn't be opened.\n"
 "Try checking the file path, ensure that the file is not deleted, or choose a "
@@ -752,135 +743,135 @@ msgstr ""
 "Überprüfe den Dateipfad, ob die Datei existiert, oder wähle eine andere "
 "Datei."
 
-#: ../src/Indications.gd:485
+#: src/Indications.gd:485
 msgid "Duplicate"
 msgstr "Duplizieren"
 
-#: ../src/Indications.gd:490 ../src/Indications.gd:508
+#: src/Indications.gd:490 src/Indications.gd:508
 msgid "Convert To"
 msgstr "Konvertieren zu"
 
-#: ../src/TranslationUtils.gd:6
+#: src/TranslationUtils.gd:6
 msgid "Import"
 msgstr "Importieren"
 
-#: ../src/TranslationUtils.gd:8
+#: src/TranslationUtils.gd:8
 msgid "Optimize"
 msgstr "Optimieren"
 
-#: ../src/TranslationUtils.gd:15
+#: src/TranslationUtils.gd:15
 msgid "Select all tags"
 msgstr "Alle Tags auswählen"
 
-#: ../src/TranslationUtils.gd:16
+#: src/TranslationUtils.gd:16
 msgid "Duplicate the selected tags"
 msgstr "Ausgewählte Tags duplizieren"
 
-#: ../src/TranslationUtils.gd:17
+#: src/TranslationUtils.gd:17
 msgid "Delete the selection"
 msgstr "Auswahl löschen"
 
-#: ../src/TranslationUtils.gd:18
+#: src/TranslationUtils.gd:18
 msgid "Move the selected tags up"
 msgstr "Ausgewählte Tags nach oben verschieben"
 
-#: ../src/TranslationUtils.gd:19
+#: src/TranslationUtils.gd:19
 msgid "Move the selected tags down"
 msgstr "Ausgewählte Tags nach unten verschieben"
 
-#: ../src/TranslationUtils.gd:20
+#: src/TranslationUtils.gd:20
 msgid "Zoom in"
 msgstr "Hineinzoomen"
 
-#: ../src/TranslationUtils.gd:21
+#: src/TranslationUtils.gd:21
 msgid "Zoom out"
 msgstr "Herauszoomen"
 
-#: ../src/TranslationUtils.gd:22
+#: src/TranslationUtils.gd:22
 msgid "Zoom reset"
 msgstr "Zoom zurücksetzen"
 
-#: ../src/TranslationUtils.gd:23
+#: src/TranslationUtils.gd:23
 #, fuzzy
 msgid "Show grid"
 msgstr "Raster anzeigen"
 
-#: ../src/TranslationUtils.gd:24
+#: src/TranslationUtils.gd:24
 #, fuzzy
 msgid "Show handles"
 msgstr "Griffe anzeigen"
 
-#: ../src/TranslationUtils.gd:25
+#: src/TranslationUtils.gd:25
 #, fuzzy
 msgid "Show rasterized SVG"
 msgstr "SVG rasterisieren"
 
-#: ../src/TranslationUtils.gd:26
+#: src/TranslationUtils.gd:26
 msgid "View debug information"
 msgstr ""
 
-#: ../src/TranslationUtils.gd:67
+#: src/TranslationUtils.gd:67
 #, fuzzy
 msgid "Open Settings menu"
 msgstr "Einstellungen"
 
-#: ../src/TranslationUtils.gd:68
+#: src/TranslationUtils.gd:68
 msgid "Open About menu"
 msgstr ""
 
-#: ../src/TranslationUtils.gd:69
+#: src/TranslationUtils.gd:69
 msgid "Open Donate menu"
 msgstr ""
 
-#: ../src/TranslationUtils.gd:70
+#: src/TranslationUtils.gd:70
 #, fuzzy
 msgid "Open GodSVG repository"
 msgstr "GodSVG Repository"
 
-#: ../src/TranslationUtils.gd:71
+#: src/TranslationUtils.gd:71
 #, fuzzy
 msgid "Open GodSVG website"
 msgstr "GodSVG Repository"
 
-#: ../src/TranslationUtils.gd:78
+#: src/TranslationUtils.gd:78
 #, fuzzy
 msgid "Move to"
 msgstr "Nach unten"
 
-#: ../src/TranslationUtils.gd:79
+#: src/TranslationUtils.gd:79
 msgid "Line to"
 msgstr ""
 
-#: ../src/TranslationUtils.gd:80
+#: src/TranslationUtils.gd:80
 msgid "Horizontal Line to"
 msgstr ""
 
-#: ../src/TranslationUtils.gd:81
+#: src/TranslationUtils.gd:81
 msgid "Vertical Line to"
 msgstr ""
 
-#: ../src/TranslationUtils.gd:82
+#: src/TranslationUtils.gd:82
 #, fuzzy
 msgid "Close Path"
 msgstr "Schließen"
 
-#: ../src/TranslationUtils.gd:83
+#: src/TranslationUtils.gd:83
 msgid "Elliptical Arc to"
 msgstr ""
 
-#: ../src/TranslationUtils.gd:84
+#: src/TranslationUtils.gd:84
 msgid "Quadratic Bezier to"
 msgstr ""
 
-#: ../src/TranslationUtils.gd:85
+#: src/TranslationUtils.gd:85
 msgid "Shorthand Quadratic Bezier to"
 msgstr ""
 
-#: ../src/TranslationUtils.gd:86
+#: src/TranslationUtils.gd:86
 msgid "Cubic Bezier to"
 msgstr ""
 
-#: ../src/TranslationUtils.gd:87
+#: src/TranslationUtils.gd:87
 msgid "Shorthand Cubic Bezier to"
 msgstr ""
 
