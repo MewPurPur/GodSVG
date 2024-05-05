@@ -15,6 +15,114 @@ msgstr ""
 msgid "translation-credits"
 msgstr ""
 
+msgid "Doesn’t describe an SVG."
+msgstr ""
+
+msgid "Improper nesting."
+msgstr ""
+
+msgid "Undo"
+msgstr ""
+
+msgid "Redo"
+msgstr ""
+
+msgid "Cut"
+msgstr ""
+
+msgid "Copy"
+msgstr ""
+
+msgid "Paste"
+msgstr ""
+
+msgid "Search color"
+msgstr ""
+
+msgid "Palettes"
+msgstr ""
+
+msgid "Color Picker"
+msgstr ""
+
+msgid "Edit color name"
+msgstr ""
+
+msgid "Delete color"
+msgstr ""
+
+msgid "Unnamed"
+msgstr ""
+
+msgid "Enable the color"
+msgstr ""
+
+msgid "Disable the color"
+msgstr ""
+
+msgid "Move Up"
+msgstr ""
+
+msgid "Move Down"
+msgstr ""
+
+msgid "Copy as XML"
+msgstr ""
+
+msgid "Paste XML"
+msgstr ""
+
+msgid "Delete"
+msgstr ""
+
+msgid "Edit palette name"
+msgstr ""
+
+msgid "No path data"
+msgstr ""
+
+msgid "Absolute"
+msgstr ""
+
+msgid "Relative"
+msgstr ""
+
+msgid "Reset to default"
+msgstr ""
+
+msgid "Unused"
+msgstr ""
+
+msgid "Add shortcut"
+msgstr ""
+
+msgid "Edit"
+msgstr ""
+
+msgid "Remove"
+msgstr ""
+
+msgid "Press keys…"
+msgstr ""
+
+msgid "No transforms"
+msgstr ""
+
+msgid "Apply the matrix"
+msgstr ""
+
+msgid "Insert After"
+msgstr ""
+
+msgid "Insert Before"
+msgstr ""
+
+msgid "New transform"
+msgstr ""
+
+msgid "GodSVG doesn’t recognize this attribute"
+msgstr ""
+
 msgid "Project Founder and Manager"
 msgstr ""
 
@@ -24,69 +132,40 @@ msgstr ""
 msgid "Translators"
 msgstr ""
 
-msgid "Language"
+msgid "Authors"
 msgstr ""
 
-msgid "Invert zoom direction"
+msgid "Donors"
 msgstr ""
 
-msgid "Swaps zoom in and zoom out with the mouse wheel."
+msgid "License"
 msgstr ""
 
-msgid "Wrap mouse"
+msgid "Godot third-party components"
 msgstr ""
 
-msgid "Wraps the mouse cursor around when panning the viewport."
+msgid "Third-party licenses"
 msgstr ""
 
-msgid "Use CTRL for zooming"
+msgid "Alert!"
 msgstr ""
 
-msgid ""
-"If turned on, scrolling will pan the view. To zoom, hold CTRL while "
-"scrolling."
+msgid "OK"
 msgstr ""
 
-msgid "UI scale"
+msgid "Save SVG"
 msgstr ""
 
-msgid "Changes the scale of the visual user interface."
+msgid "Reset SVG"
 msgstr ""
 
-msgid "Auto UI scale"
+msgid "Clear saving path"
 msgstr ""
 
-msgid "Scales the user interface based on the screen size."
+msgid "Copy all text"
 msgstr ""
 
-msgid "Input"
-msgstr ""
-
-msgid "Open"
-msgstr ""
-
-msgid "Close"
-msgstr ""
-
-msgid "GodSVG Repository"
-msgstr ""
-
-msgid "About…"
-msgstr ""
-
-msgid "Documentation…"
-msgstr ""
-
-msgid "Donate…"
-msgstr ""
-
-msgid "Zoom in"
-msgstr ""
-
-msgid "Zoom reset"
-msgstr ""
-
-msgid "Zoom out"
+msgid "Clear SVG"
 msgstr ""
 
 msgid "Settings"
@@ -104,244 +183,64 @@ msgstr ""
 msgid "Rasterized SVG"
 msgstr ""
 
-msgid "Show rasterized SVG"
+msgid "About…"
 msgstr ""
 
-msgid "Enable Snapping"
+msgid "Donate…"
+msgstr ""
+
+msgid "GodSVG repository"
+msgstr ""
+
+msgid "GodSVG website"
+msgstr ""
+
+msgid "Check for updates"
+msgstr ""
+
+msgid "Enable snapping"
 msgstr ""
 
 msgid "Snap size"
 msgstr ""
 
-msgid "Reset to default"
-msgstr ""
-
-msgid "Copy all text"
-msgstr ""
-
-msgid "Clear SVG"
-msgstr ""
-
-msgid "Reset SVG"
-msgstr ""
-
-msgid "Save"
-msgstr ""
-
-msgid "Export"
-msgstr ""
-
-msgid "Select all tags"
-msgstr ""
-
-msgid "Couple/Decouple"
-msgstr ""
-
-msgid "Duplicate"
-msgstr ""
-
-msgid "Move Up"
-msgstr ""
-
-msgid "Move Down"
-msgstr ""
-
-msgid "Delete"
-msgstr ""
-
-msgid "Insert Before"
-msgstr ""
-
-msgid "Insert After"
-msgstr ""
-
-msgid "Convert To"
-msgstr ""
-
-msgid "Doesn’t describe an SVG."
-msgstr ""
-
-msgid "Improper nesting."
-msgstr ""
-
-msgid "Syntax error"
-msgstr ""
-
-msgid "Delete the selection"
-msgstr ""
-
-msgid "Move the selected tags down"
-msgstr ""
-
-msgid "Move the selected tags up"
-msgstr ""
-
-msgid "Duplicate the selected tags"
-msgstr ""
-
-msgid "Unknown Tag"
-msgstr ""
-
-msgid "Unknown Attribute"
-msgstr ""
-
-msgid "No path data"
-msgstr ""
-
-msgid "No transforms"
-msgstr ""
-
-msgid "Import"
-msgstr ""
-
-msgid "Cancel"
-msgstr ""
-
-msgid "Import Problems"
-msgstr ""
-
-msgid "GodSVG doesn’t recognize this attribute"
-msgstr ""
-
-msgid "Format"
-msgstr ""
-
-msgid "Scale"
-msgstr ""
-
 msgid "Size"
-msgstr ""
-
-msgid "Final size"
 msgstr ""
 
 msgid "Invalid"
 msgstr ""
 
+msgid "Format"
+msgstr ""
+
 msgid "Export Configuration"
 msgstr ""
 
-msgid "Add new tag"
+msgid "Lossless"
 msgstr ""
 
-msgid "New tag"
+msgid "Quality"
 msgstr ""
 
-msgid "New transform"
+msgid "Scale"
 msgstr ""
 
-msgid "License"
+msgid "Cancel"
 msgstr ""
 
-msgid "Third-party Licenses"
+msgid "Export"
 msgstr ""
 
-msgid "Authors"
-msgstr ""
-
-msgid "Shortcuts"
-msgstr ""
-
-msgid "Add shortcut"
-msgstr ""
-
-msgid "Theme"
-msgstr ""
-
-msgid "Basic colors"
-msgstr ""
-
-msgid "SVG Text Colors"
-msgstr ""
-
-msgid "Symbol color"
-msgstr ""
-
-msgid "Tag color"
-msgstr ""
-
-msgid "Attribute color"
-msgstr ""
-
-msgid "String color"
-msgstr ""
-
-msgid "Comment color"
-msgstr ""
-
-msgid "Text color"
-msgstr ""
-
-msgid "CDATA color"
-msgstr ""
-
-msgid "Error color"
-msgstr ""
-
-msgid "Warning color"
-msgstr ""
-
-msgid "Valid color"
-msgstr ""
-
-msgid "Handle colors"
-msgstr ""
-
-msgid "Inside color"
-msgstr ""
-
-msgid "Normal color"
-msgstr ""
-
-msgid "Hovered color"
-msgstr ""
-
-msgid "Selected color"
-msgstr ""
-
-msgid "Hovered selected color"
-msgstr ""
-
-msgid "Palettes"
-msgstr ""
-
-msgid "Color Picker"
-msgstr ""
-
-msgid "Add color"
-msgstr ""
-
-msgid "Edit palette name"
-msgstr ""
-
-msgid "Unnamed"
-msgstr ""
-
-msgid "Edit color name"
-msgstr ""
-
-msgid "Delete color"
-msgstr ""
-
-msgid "Edit"
-msgstr ""
-
-msgid "Remove"
-msgstr ""
-
-msgid "Press keys…"
-msgstr ""
-
-msgid "Enable the color"
-msgstr ""
-
-msgid "Disable the color"
-msgstr ""
-
-msgid "Path"
+msgid "Final size"
 msgstr ""
 
 msgid "Replace"
+msgstr ""
+
+msgid "Create new folder"
+msgstr ""
+
+msgid "Create"
 msgstr ""
 
 msgid "Go to parent folder"
@@ -359,10 +258,22 @@ msgstr ""
 msgid "Select an SVG"
 msgstr ""
 
-msgid "Save SVG"
+msgid "Close"
 msgstr ""
 
 msgid "Select"
+msgstr ""
+
+msgid "Save"
+msgstr ""
+
+msgid "Path"
+msgstr ""
+
+msgid "Open"
+msgstr ""
+
+msgid "Copy path"
 msgstr ""
 
 msgid ""
@@ -370,54 +281,31 @@ msgid ""
 "contents!"
 msgstr ""
 
-msgid "Godot third-party components"
+msgid "New tag"
 msgstr ""
 
-msgid "Undo"
+msgid "Import Problems"
 msgstr ""
 
-msgid "Redo"
+msgid "Unknown tag"
 msgstr ""
 
-msgid "Copy"
+msgid "Unknown attribute"
 msgstr ""
 
-msgid "Paste"
+msgid "Syntax error"
 msgstr ""
 
-msgid "Copy as XML"
+msgid "Add new tag"
 msgstr ""
 
-msgid "Paste XML"
+msgid "SVG Text colors"
 msgstr ""
 
-msgid "Unused"
+msgid "Handle colors"
 msgstr ""
 
-msgid "Cut"
-msgstr ""
-
-msgid "Alert!"
-msgstr ""
-
-msgid ""
-"The file couldn't be opened.\n"
-"Try checking the file path, ensure that the file is not deleted, or choose a "
-"different file."
-msgstr ""
-
-msgid ""
-"\"{passed_extension}\" is a unsupported file extension. Only \"svg\" files "
-"are supported."
-msgstr ""
-
-msgid "The file extension is empty. Only \"svg\" files are supported."
-msgstr ""
-
-msgid "OK"
-msgstr ""
-
-msgid "Autoformatting"
+msgid "Basic colors"
 msgstr ""
 
 msgid "General"
@@ -432,7 +320,92 @@ msgstr ""
 msgid "Paths"
 msgstr ""
 
+msgid "Always active."
+msgstr ""
+
 msgid "Transforms"
+msgstr ""
+
+msgid "Input"
+msgstr ""
+
+msgid "Miscellaneous"
+msgstr ""
+
+msgid "Any changes will apply immediately."
+msgstr ""
+
+msgid "Formatting"
+msgstr ""
+
+msgid "Shortcuts"
+msgstr ""
+
+msgid "Theme"
+msgstr ""
+
+msgid "Other"
+msgstr ""
+
+msgid "Invert zoom direction"
+msgstr ""
+
+msgid "Wrap mouse"
+msgstr ""
+
+msgid "Use CTRL for zooming"
+msgstr ""
+
+msgid "Handles size"
+msgstr ""
+
+msgid "UI scale"
+msgstr ""
+
+msgid "Auto UI scale"
+msgstr ""
+
+msgid "Language"
+msgstr ""
+
+msgid "File"
+msgstr ""
+
+msgid "View"
+msgstr ""
+
+msgid "Tool"
+msgstr ""
+
+msgid "Help"
+msgstr ""
+
+msgid "Swaps zoom in and zoom out with the mouse wheel."
+msgstr ""
+
+msgid "Wraps the mouse cursor around when panning the viewport."
+msgstr ""
+
+msgid ""
+"If turned on, scrolling will pan the view. To zoom, hold CTRL while "
+"scrolling."
+msgstr ""
+
+msgid "Use native file dialog"
+msgstr ""
+
+msgid ""
+"If turned on, uses your operating system's native file dialog. If turned "
+"off, uses GodSVG's built-in file dialog."
+msgstr ""
+
+msgid "Increases the visual size and grabbing area of handles."
+msgstr ""
+
+msgid "Changes the scale of the visual user interface."
+msgstr ""
+
+msgid "Scales the user interface based on the screen size."
 msgstr ""
 
 msgid "Number precision digits"
@@ -454,9 +427,6 @@ msgid "Remove zero padding"
 msgstr ""
 
 msgid "Remove leading zero"
-msgstr ""
-
-msgid "Remove plus sign"
 msgstr ""
 
 msgid "Convert rgb format to hex"
@@ -486,40 +456,132 @@ msgstr ""
 msgid "Remove unnecessary parameters"
 msgstr ""
 
-msgid "Relative"
+msgid "Symbol color"
 msgstr ""
 
-msgid "Absolute"
+msgid "Tag color"
 msgstr ""
 
-msgid "Clear saving path"
+msgid "Attribute color"
 msgstr ""
 
-msgid "Apply the matrix"
+msgid "String color"
 msgstr ""
 
-msgid "Other"
+msgid "Comment color"
+msgstr ""
+
+msgid "Text color"
+msgstr ""
+
+msgid "CDATA color"
+msgstr ""
+
+msgid "Error color"
+msgstr ""
+
+msgid "Inside color"
+msgstr ""
+
+msgid "Normal color"
+msgstr ""
+
+msgid "Hovered color"
+msgstr ""
+
+msgid "Selected color"
+msgstr ""
+
+msgid "Hovered selected color"
+msgstr ""
+
+msgid "Valid color"
+msgstr ""
+
+msgid "Warning color"
+msgstr ""
+
+msgid "Save the .\"{extension}\" file"
+msgstr ""
+
+msgid "Import a .svg file"
+msgstr ""
+
+msgid "The file extension is empty. Only \"svg\" files are supported."
+msgstr ""
+
+msgid ""
+"\"{passed_extension}\" is a unsupported file extension. Only \"svg\" files "
+"are supported."
+msgstr ""
+
+msgid ""
+"The file couldn't be opened.\n"
+"Try checking the file path, ensure that the file is not deleted, or choose a "
+"different file."
+msgstr ""
+
+msgid "Duplicate"
+msgstr ""
+
+msgid "Convert To"
+msgstr ""
+
+msgid "Import"
 msgstr ""
 
 msgid "Optimize"
 msgstr ""
 
-msgid "Any changes will apply immediately."
+msgid "Select all tags"
 msgstr ""
 
-msgid "Always active."
+msgid "Duplicate the selected tags"
 msgstr ""
 
-msgid "Search color"
+msgid "Delete the selection"
 msgstr ""
 
-msgid "File"
+msgid "Move the selected tags up"
 msgstr ""
 
-msgid "View"
+msgid "Move the selected tags down"
 msgstr ""
 
-msgid "Tool"
+msgid "Zoom in"
+msgstr ""
+
+msgid "Zoom out"
+msgstr ""
+
+msgid "Zoom reset"
+msgstr ""
+
+msgid "Show grid"
+msgstr ""
+
+msgid "Show handles"
+msgstr ""
+
+msgid "Show rasterized SVG"
+msgstr ""
+
+msgid "View debug information"
+msgstr ""
+
+msgid "Open Settings menu"
+msgstr ""
+
+msgid "Open About menu"
+msgstr ""
+
+msgid "Open Donate menu"
+msgstr ""
+
+msgid "Open GodSVG repository"
+msgstr ""
+
+msgid "Open GodSVG website"
 msgstr ""
 
 msgid "Move to"

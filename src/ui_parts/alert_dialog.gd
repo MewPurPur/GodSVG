@@ -8,7 +8,8 @@ func _ready() -> void:
 	ok_button.pressed.connect(queue_free)
 	ok_button.grab_focus()
 
-func setup(message: String, title_text := "Alert!", min_width := 180.0) -> void:
-	label.text = tr(message)
-	title.text = tr(title_text)
-	label.custom_minimum_size.x = min_width
+func setup(message: String) -> void:
+	label.text = message
+	title.text = TranslationServer.translate("Alert!")
+	ok_button.text = TranslationServer.translate("OK")
+	label.custom_minimum_size.x = 280.0

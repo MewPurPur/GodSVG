@@ -36,7 +36,6 @@ horizontal_alignment = 1
 
 [node name="EditButton" type="Button" parent="ConfigureContainer/TopContainer/LabelContainer"]
 layout_mode = 2
-tooltip_text = "Edit color name"
 focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_type_variation = &"FlatButton"
@@ -65,7 +64,6 @@ enable_palettes = false
 
 [node name="DeleteButton" type="Button" parent="ConfigureContainer/BottomContainer"]
 layout_mode = 2
-tooltip_text = "Delete color"
 focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_type_variation = &"IconButton"

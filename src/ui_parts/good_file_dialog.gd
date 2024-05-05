@@ -105,7 +105,7 @@ func _ready() -> void:
 		alert_title_label.text = TranslationServer.translate("Alert!")
 		alert_cancel_button.text = TranslationServer.translate("Cancel")
 		alert_replace_button.text = TranslationServer.translate("Replace")
-		create_folder_title_label.text = TranslationServer.translate("Create new directory")
+		create_folder_title_label.text = TranslationServer.translate("Create new folder")
 		create_folder_cancel_button.text = TranslationServer.translate("Cancel")
 		create_folder_create_button.text = TranslationServer.translate("Create")
 	var extension_panel_stylebox := extension_panel.get_theme_stylebox("panel")

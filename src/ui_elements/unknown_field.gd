@@ -16,9 +16,17 @@ func set_value(new_value: String, update_type := Utils.UpdateType.REGULAR) -> vo
 				attribute.set_value(new_value)
 
 
+func _notification(what: int) -> void:
+	if what == Utils.CustomNotification.LANGUAGE_CHANGED:
+		update_translation()
+
 func _ready() -> void:
 	super()
 	set_value(attribute.get_value())
+	update_translation()
+
+
+func update_translation() -> void:
 	tooltip_text = attribute.name + "\n(%s)" %\
 			TranslationServer.translate("GodSVG doesn’t recognize this attribute")
 

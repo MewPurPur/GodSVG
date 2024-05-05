@@ -65,7 +65,6 @@ script = ExtResource("2_coqnx")
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
-tooltip_text = "Edit palette name"
 focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_type_variation = &"FlatButton"

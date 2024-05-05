@@ -23,12 +23,23 @@ const NumberField = preload("res://src/ui_elements/number_field.tscn")
 @onready var snap_button: BetterToggleButtonType = %LeftMenu/Snapping/SnapButton
 @onready var panel_container: PanelContainer = $PanelContainer
 @onready var viewport_panel: PanelContainer = $ViewportPanel
-
 @onready var debug_container: MarginContainer = $ViewportPanel/DebugContainer
 @onready var debug_label: Label = $ViewportPanel/DebugContainer/DebugLabel
 
 
+func _notification(what: int) -> void:
+	if what == Utils.CustomNotification.LANGUAGE_CHANGED:
+		update_translations()
+	elif what == Utils.CustomNotification.NUMBER_PRECISION_CHANGED:
+		update_snap_config()
+	elif what == NOTIFICATION_WM_ABOUT:
+		open_about.call_deferred()
+	elif what ==  Utils.CustomNotification.THEME_CHANGED:
+		update_theme()
+
 func _ready() -> void:
+	update_translations()
+	update_theme()
 	update_snap_config()
 	view_settings_updated.emit(grid_visuals.visible, controls.visible,
 			viewport.display_texture.rasterized)
@@ -61,25 +72,27 @@ func _unhandled_input(input_event: InputEvent) -> void:
 		open_sponsor()
 
 
-func _notification(what: int) -> void:
-	if what == Utils.CustomNotification.NUMBER_PRECISION_CHANGED:
-		update_snap_config()
-	elif what == NOTIFICATION_WM_ABOUT:
-		open_about.call_deferred()
-	elif what in [NOTIFICATION_READY, Utils.CustomNotification.THEME_CHANGED]:
-		var stylebox := StyleBoxFlat.new()
-		stylebox.bg_color = ThemeGenerator.overlay_panel_inner_color
-		stylebox.set_content_margin_all(6)
-		panel_container.add_theme_stylebox_override("panel", stylebox)
-		var frame := StyleBoxFlat.new()
-		frame.draw_center = false
-		frame.border_width_left = 2
-		frame.border_width_top = 2
-		frame.border_color = ThemeGenerator.connected_button_border_color_pressed
-		frame.content_margin_left = 2
-		frame.content_margin_top = 2
-		viewport_panel.add_theme_stylebox_override("panel", frame)
+func update_translations() -> void:
+	%LeftMenu/Settings.tooltip_text = TranslationServer.translate("Settings")
+	%LeftMenu/Visuals.tooltip_text = TranslationServer.translate("Visuals")
+	%LeftMenu/Snapping/SnapButton.tooltip_text = TranslationServer.translate(
+			"Enable snapping")
+	%LeftMenu/Snapping/SnapNumberEdit.tooltip_text = TranslationServer.translate(
+			"Snap size")
 
+func update_theme() -> void:
+	var stylebox := StyleBoxFlat.new()
+	stylebox.bg_color = ThemeGenerator.overlay_panel_inner_color
+	stylebox.set_content_margin_all(6)
+	panel_container.add_theme_stylebox_override("panel", stylebox)
+	var frame := StyleBoxFlat.new()
+	frame.draw_center = false
+	frame.border_width_left = 2
+	frame.border_width_top = 2
+	frame.border_color = ThemeGenerator.connected_button_border_color_pressed
+	frame.content_margin_left = 2
+	frame.content_margin_top = 2
+	viewport_panel.add_theme_stylebox_override("panel", frame)
 
 func update_snap_config() -> void:
 	var snap_config := GlobalSettings.save_data.snap
@@ -117,11 +130,11 @@ func _on_more_options_pressed() -> void:
 		about_btn,
 		Utils.create_btn(TranslationServer.translate("Donate…"),
 				open_sponsor, false, load("res://visual/icons/Heart.svg")),
-		Utils.create_btn(TranslationServer.translate("GodSVG Repository"),
+		Utils.create_btn(TranslationServer.translate("GodSVG repository"),
 				open_godsvg_repo, false, load("res://visual/icons/Link.svg")),
-		Utils.create_btn(TranslationServer.translate("GodSVG Website"),
+		Utils.create_btn(TranslationServer.translate("GodSVG website"),
 				open_godsvg_website, false, load("res://visual/icons/Link.svg")),
-		Utils.create_btn(TranslationServer.translate("Check for Updates"),
+		Utils.create_btn(TranslationServer.translate("Check for updates"),
 				open_update_checker, false, load("res://visual/icons/Reload.svg"))]
 	var separator_indices: Array[int] = [2,4]
 	

@@ -31,10 +31,18 @@ var UR := UndoRedo.new()
 @onready var add_button: Button = %AddButton
 @onready var apply_matrix: Button = %ApplyMatrix
 
+func _notification(what: int) -> void:
+	if what == Utils.CustomNotification.LANGUAGE_CHANGED:
+		update_translations()
+
 func _ready() -> void:
 	add_button.pressed.connect(popup_new_transform_context.bind(0, add_button))
 	apply_matrix.pressed.connect(_on_apply_matrix_pressed)
 	rebuild()
+	update_translations()
+
+func update_translations() -> void:
+	%ApplyMatrix.tooltip_text = TranslationServer.translate("Apply the matrix")
 
 func rebuild() -> void:
 	var transform_count := attribute_ref.get_transform_count()

@@ -16,6 +16,12 @@ var currently_edited_idx := -1
 @onready var colors_container: HFlowContainer = %MainContainer/ColorsContainer
 @onready var action_button: Button = $HBoxContainer/ActionButton
 
+func _notification(what: int) -> void:
+	if what == Utils.CustomNotification.LANGUAGE_CHANGED:
+		%MainContainer/HBoxContainer/EditButton.tooltip_text = TranslationServer.translate(
+				"Edit palette name")
+
+
 # Used to setup a palette for this element.
 func assign_palette(palette: ColorPalette) -> void:
 	current_palette = palette

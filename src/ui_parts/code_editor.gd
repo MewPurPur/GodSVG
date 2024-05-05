@@ -71,7 +71,7 @@ func update_error(err_id: SVGParser.ParseError) -> void:
 		# When the error is shown, the code editor's theme is changed to match up.
 		if not error_bar.visible:
 			error_bar.show()
-			error_label.text = tr(SVGParser.get_error_string(err_id))
+			error_label.text = SVGParser.get_error_string(err_id)
 			var error_bar_real_height := error_bar.size.y - 2
 			code_edit.custom_minimum_size.y -= error_bar_real_height
 			code_edit.size.y -= error_bar_real_height
