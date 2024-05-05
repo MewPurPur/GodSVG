@@ -15,8 +15,7 @@ var dimensions := Vector2.ZERO
 @onready var final_dimensions_label: Label = %FinalDimensions
 @onready var scale_edit: NumberEditType = %Scale
 @onready var scale_container: VBoxContainer = %ScaleContainer
-@onready var lossless_checkbox: CheckBox = %LosslessHBox/CheckBox
-@onready var lossless_hbox: HBoxContainer = %LosslessHBox
+@onready var lossless_checkbox: CheckBox = %LosslessCheckBox
 @onready var quality_edit: NumberEditType = %Quality
 @onready var quality_hbox: HBoxContainer = %QualityHBox
 @onready var fallback_format_label: Label = %FallbackFormatLabel
@@ -56,7 +55,7 @@ func update_translation() -> void:
 	fallback_format_label.text = TranslationServer.translate("Format") + ": svg"
 	$VBoxContainer/Label.text = TranslationServer.translate("Export Configuration")
 	%FormatHBox/Label.text = TranslationServer.translate("Format")
-	%LosslessHBox/Label.text = TranslationServer.translate("Lossless")
+	%LosslessCheckBox.text = TranslationServer.translate("Lossless")
 	%QualityHBox/Label.text = TranslationServer.translate("Quality")
 	%ScaleContainer/HBoxContainer/Label.text = TranslationServer.translate("Scale")
 	$VBoxContainer/ButtonContainer/CancelButton.text =\
@@ -105,6 +104,6 @@ func update_final_scale() -> void:
 
 func update_extension_configuration() -> void:
 	scale_container.visible = extension in ["png", "jpg", "webp"]
-	lossless_hbox.visible = (extension == "webp")
+	lossless_checkbox.visible = (extension == "webp")
 	quality_hbox.visible = extension in ["jpg", "webp"]
 	_on_lossless_check_box_toggled(lossless)

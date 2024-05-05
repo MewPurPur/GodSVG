@@ -31,11 +31,11 @@ horizontal_alignment = 1
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
 layout_mode = 2
-theme_override_constants/separation = 16
+theme_override_constants/separation = 20
 
 [node name="TexturePreview" parent="VBoxContainer/HBoxContainer" instance=ExtResource("2_ewk0a")]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(192, 192)
+custom_minimum_size = Vector2(160, 160)
 layout_mode = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer"]
@@ -69,27 +69,27 @@ theme_override_font_sizes/font_size = 14
 layout_mode = 2
 values = Array[String](["svg", "png", "jpg", "webp"])
 
-[node name="LosslessHBox" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/VBoxContainer"]
+[node name="QualityRelated" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="LosslessCheckBox" type="CheckBox" parent="VBoxContainer/HBoxContainer/VBoxContainer/QualityRelated"]
 unique_name_in_owner = true
 layout_mode = 2
-
-[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/VBoxContainer/LosslessHBox"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 12
-
-[node name="CheckBox" type="CheckBox" parent="VBoxContainer/HBoxContainer/VBoxContainer/LosslessHBox"]
-layout_mode = 2
+size_flags_horizontal = 0
+focus_mode = 0
+mouse_default_cursor_shape = 2
 button_pressed = true
 
-[node name="QualityHBox" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/VBoxContainer"]
+[node name="QualityHBox" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/VBoxContainer/QualityRelated"]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/VBoxContainer/QualityHBox"]
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/VBoxContainer/QualityRelated/QualityHBox"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
 
-[node name="Quality" parent="VBoxContainer/HBoxContainer/VBoxContainer/QualityHBox" instance=ExtResource("6_w1sag")]
+[node name="Quality" parent="VBoxContainer/HBoxContainer/VBoxContainer/QualityRelated/QualityHBox" instance=ExtResource("6_w1sag")]
 unique_name_in_owner = true
 layout_mode = 2
 min_value = 1.0
@@ -142,6 +142,6 @@ size_flags_horizontal = 6
 focus_mode = 0
 mouse_default_cursor_shape = 2
 
-[connection signal="toggled" from="VBoxContainer/HBoxContainer/VBoxContainer/LosslessHBox/CheckBox" to="." method="_on_lossless_check_box_toggled"]
+[connection signal="toggled" from="VBoxContainer/HBoxContainer/VBoxContainer/QualityRelated/LosslessCheckBox" to="." method="_on_lossless_check_box_toggled"]
 [connection signal="pressed" from="VBoxContainer/ButtonContainer/CancelButton" to="." method="_on_cancel_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/ButtonContainer/ExportButton" to="." method="_on_export_button_pressed"]

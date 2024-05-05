@@ -117,6 +117,7 @@ const keybinds_dict = {
 		"shorthand_cubic_bezier_absolute": true,
 	},
 	"help": {
+		"quit": false,
 		"open_settings": true,
 		"about_info": true,
 		"about_donate": true,
