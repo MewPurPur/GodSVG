@@ -1,7 +1,7 @@
 # A fallback file dialog, always used if the native file dialog is not available.
 extends PanelContainer
 
-const AlertDialog = preload("res://src/ui_parts/alert_dialog.tscn")
+const ConfirmDialog = preload("res://src/ui_parts/confirm_dialog.tscn")
 
 signal file_selected(path: String)
 
@@ -42,12 +42,7 @@ var DA: DirAccess
 @onready var show_hidden_button: Button = %ShowHiddenButton
 @onready var search_button: Button = %SearchButton
 
-@onready var alert_center_container: CenterContainer = $AlertCenterContainer
-@onready var alert_title_label: Label = %AlertTitleLabel
-@onready var alert_label: RichTextLabel = %AlertLabel
-@onready var alert_cancel_button: Button = %AlertCancelButton
-@onready var alert_replace_button: Button = %AlertReplaceButton
-
+@onready var alert_container: CenterContainer = $AlertCenterContainer
 @onready var create_folder_center_container: CenterContainer = $CreateFolderCenterContainer
 @onready var create_folder_title_label: Label = %CreateFolderTitleLabel
 @onready var create_folder_line_edit: BetterLineEdit = %CreateFolderLineEdit
@@ -95,16 +90,12 @@ func _ready() -> void:
 	close_button.pressed.connect(queue_free)
 	file_selected.connect(HandlerGUI.remove_all_overlays.unbind(1))
 	special_button.pressed.connect(select_file)
-	alert_cancel_button.pressed.connect(alert_center_container.hide)
 	create_folder_cancel_button.pressed.connect(create_folder_center_container.hide)
 	file_list.get_v_scroll_bar().value_changed.connect(_setup_file_images.unbind(1))
 	# Rest of setup.
 	if mode == FileMode.SELECT:
 		file_container.hide()
 	if mode == FileMode.SAVE:
-		alert_title_label.text = TranslationServer.translate("Alert!")
-		alert_cancel_button.text = TranslationServer.translate("Cancel")
-		alert_replace_button.text = TranslationServer.translate("Replace")
 		create_folder_title_label.text = TranslationServer.translate("Create new folder")
 		create_folder_cancel_button.text = TranslationServer.translate("Cancel")
 		create_folder_create_button.text = TranslationServer.translate("Create")
@@ -262,10 +253,14 @@ func _setup_file_images() -> void:
 
 func select_file() -> void:
 	if mode == FileMode.SAVE and current_file in DirAccess.get_files_at(current_dir):
-		alert_label.text = TranslationServer.translate(
-				"A file named \"{file_name}\" already exists. Replacing will overwrite its contents!").format({"file_name": current_file})
-		alert_center_container.show()
-		alert_replace_button.grab_focus()
+		var confirm_dialog := ConfirmDialog.instantiate()
+		confirm_dialog.tree_exited.connect(alert_container.hide)
+		alert_container.add_child(confirm_dialog)
+		confirm_dialog.setup(TranslationServer.translate("Alert!"), TranslationServer.translate(
+				"A file named \"{file_name}\" already exists. Replacing will overwrite its contents!").format(
+				{"file_name": current_file}), TranslationServer.translate("Replace"),
+				_on_replace_button_pressed)
+		alert_container.show()
 	else:
 		file_selected.emit(current_dir.path_join(current_file))
 
@@ -385,7 +380,7 @@ func _on_file_field_text_changed(new_text: String) -> void:
 			GlobalSettings.get_validity_color(is_invalid_filename))
 
 
-func _on_alert_replace_button_pressed() -> void:
+func _on_replace_button_pressed() -> void:
 	file_selected.emit(current_dir.path_join(current_file))
 
 func _on_create_folder_create_button_pressed() -> void:

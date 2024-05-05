@@ -70,6 +70,7 @@ static func get_shortcut_description(action_name: String) -> String:
 		"about_repo": return TranslationServer.translate("Open GodSVG repository")
 		"about_website": return TranslationServer.translate("Open GodSVG website")
 		"check_updates": return TranslationServer.translate("Check for updates")
+		"quit": return TranslationServer.translate("Quit the application")
 		_: return action_name
 
 

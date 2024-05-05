@@ -1,7 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://c0x44loihhyyo"]
+[gd_scene load_steps=3 format=3 uid="uid://ywarfvqdho0"]
 
-[ext_resource type="FontFile" uid="uid://dc0w4sx0h0fui" path="res://visual/fonts/FontBold.ttf" id="1_3yrpq"]
-[ext_resource type="Script" path="res://src/ui_parts/alert_dialog.gd" id="1_qntyo"]
+[ext_resource type="Script" path="res://src/ui_parts/confirm_dialog.gd" id="1_g3djf"]
+[ext_resource type="FontFile" uid="uid://dc0w4sx0h0fui" path="res://visual/fonts/FontBold.ttf" id="2_drhgn"]
 
 [node name="AlertDialog" type="PanelContainer"]
 anchors_preset = 8
@@ -16,7 +16,7 @@ offset_bottom = 2.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_type_variation = &"OverlayPanel"
-script = ExtResource("1_qntyo")
+script = ExtResource("1_g3djf")
 
 [node name="MainContainer" type="VBoxContainer" parent="."]
 layout_mode = 2
@@ -28,7 +28,7 @@ theme_override_constants/separation = 8
 
 [node name="Title" type="Label" parent="MainContainer/TextContainer"]
 layout_mode = 2
-theme_override_fonts/font = ExtResource("1_3yrpq")
+theme_override_fonts/font = ExtResource("2_drhgn")
 theme_override_font_sizes/font_size = 16
 horizontal_alignment = 1
 
@@ -38,7 +38,16 @@ layout_mode = 2
 theme_override_font_sizes/normal_font_size = 12
 fit_content = true
 
-[node name="OKButton" type="Button" parent="MainContainer"]
+[node name="ButtonContainer" type="HBoxContainer" parent="MainContainer"]
 layout_mode = 2
-size_flags_horizontal = 4
+alignment = 1
+
+[node name="CancelButton" type="Button" parent="MainContainer/ButtonContainer"]
+layout_mode = 2
+size_flags_horizontal = 6
+mouse_default_cursor_shape = 2
+
+[node name="ActionButton" type="Button" parent="MainContainer/ButtonContainer"]
+layout_mode = 2
+size_flags_horizontal = 6
 mouse_default_cursor_shape = 2
