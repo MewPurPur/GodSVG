@@ -8,6 +8,9 @@ const autoscroll_speed = 1500.0
 @onready var tags: VBoxContainer = %Tags
 @onready var covering_rect: Control = $MoveToOverlay
 
+func _ready():
+	Indications.requested_scroll_to_tag_editor.connect(scroll_to_view_tag_editor)
+
 func _process(delta: float) -> void:
 	if Indications.proposed_drop_tid.is_empty():
 		return
@@ -122,3 +125,7 @@ func get_tag_editor_rect(tid: PackedInt32Array) -> Rect2:
 	# Position relative to the tag container.
 	return Rect2(tag_editor.global_position - scroll_container.global_position +\
 			Vector2(0, scroll_container.scroll_vertical), tag_editor.size)
+
+# This function assumes there exists a tag editor for the corresponding TID
+func scroll_to_view_tag_editor(tid: PackedInt32Array, inner: int = 0) -> void:
+	scroll_container.get_v_scroll_bar().value = get_tag_editor_rect(tid).position.y + inner * 22 # TODO: Make this const available somewhere other than pathdata_field.gd, preferably somewhere with a class_name.

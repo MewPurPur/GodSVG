@@ -20,6 +20,8 @@ signal hover_changed
 signal selection_changed
 signal proposed_drop_changed
 
+signal requested_scroll_to_tag_editor(tid: PackedInt32Array, inner: int)
+
 # The viewport listens for this signal to put you in handle-placing mode.
 signal handle_added
 
@@ -440,6 +442,11 @@ func move_up_selected() -> void:
 func move_down_selected() -> void:
 	SVG.root_tag.move_tags_in_parent(selected_tids, true)
 
+func view_in_list(tid: PackedInt32Array, inner: int = 0) -> void:
+	if tid.is_empty():
+		return
+	requested_scroll_to_tag_editor.emit(tid, inner)
+
 func duplicate_selected() -> void:
 	SVG.root_tag.duplicate_tags(selected_tids)
 
@@ -482,6 +489,9 @@ func get_selection_context(popup_method: Callable) -> ContextPopup:
 				if not can_move_down and base_tid[-1] < parent_child_count - filtered_count:
 					can_move_down = true
 		
+		btn_arr.append(Utils.create_btn(TranslationServer.translate("View In List"),
+				view_in_list.bind(selected_tids[0]), false, load("res://visual/icons/ViewInList.svg")))
+
 		btn_arr.append(Utils.create_btn(TranslationServer.translate("Duplicate"),
 				duplicate_selected, false, load("res://visual/icons/Duplicate.svg")))
 		
@@ -501,6 +511,8 @@ func get_selection_context(popup_method: Callable) -> ContextPopup:
 		btn_arr.append(Utils.create_btn(TranslationServer.translate("Delete"),
 				delete_selected, false, load("res://visual/icons/Delete.svg")))
 	elif not inner_selections.is_empty() and not semi_selected_tid.is_empty():
+		btn_arr.append(Utils.create_btn(TranslationServer.translate("View In List"),
+				view_in_list.bind(semi_selected_tid, inner_selections[0]), false, load("res://visual/icons/ViewInList.svg")))
 		if inner_selections.size() == 1:
 			btn_arr.append(Utils.create_btn(TranslationServer.translate("Insert After"),
 					popup_insert_command_after_context.bind(popup_method), false,
