@@ -127,5 +127,5 @@ func get_tag_editor_rect(tid: PackedInt32Array) -> Rect2:
 			Vector2(0, scroll_container.scroll_vertical), tag_editor.size)
 
 # This function assumes there exists a tag editor for the corresponding TID
-func scroll_to_view_tag_editor(tid: PackedInt32Array, inner: int = 0) -> void:
-	scroll_container.get_v_scroll_bar().value = get_tag_editor_rect(tid).position.y + inner * 22 # TODO: Make this const available somewhere other than pathdata_field.gd, preferably somewhere with a class_name.
+func scroll_to_view_tag_editor(tid: PackedInt32Array) -> void:
+	scroll_container.get_v_scroll_bar().value = get_tag_editor_rect(tid).position.y
