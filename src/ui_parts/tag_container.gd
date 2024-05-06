@@ -128,4 +128,4 @@ func get_tag_editor_rect(tid: PackedInt32Array) -> Rect2:
 
 # This function assumes there exists a tag editor for the corresponding TID
 func scroll_to_view_tag_editor(tid: PackedInt32Array) -> void:
-	scroll_container.get_v_scroll_bar().value = get_tag_editor_rect(tid).position.y
+	scroll_container.get_v_scroll_bar().value = get_tag_editor_rect(tid).position.y - scroll_container.size.y / 5
