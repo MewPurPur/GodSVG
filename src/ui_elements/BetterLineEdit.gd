@@ -21,7 +21,7 @@ func _ready() -> void:
 	focus_entered.connect(_on_focus_entered)
 	focus_exited.connect(_on_focus_exited)
 	mouse_exited.connect(_on_mouse_exited)
-	text_submitted.connect(_on_text_submitted.unbind(1))
+	text_submitted.connect(_on_text_submitted)
 
 func _input(event: InputEvent) -> void:
 	if has_focus():
