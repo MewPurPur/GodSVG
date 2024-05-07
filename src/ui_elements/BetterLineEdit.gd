@@ -21,7 +21,7 @@ func _ready() -> void:
 	focus_entered.connect(_on_focus_entered)
 	focus_exited.connect(_on_focus_exited)
 	mouse_exited.connect(_on_mouse_exited)
-	text_submitted.connect(release_focus.unbind(1))
+	text_submitted.connect(_on_text_submitted)
 
 func _input(event: InputEvent) -> void:
 	if has_focus():
@@ -35,6 +35,8 @@ func _input(event: InputEvent) -> void:
 		elif first_click:
 			first_click = false
 			select_all()
+		elif event.is_action_pressed("ui_focus_next") || event.is_action_pressed("ui_focus_prev"):
+			text_submitted.emit(text)
 
 var tree_was_paused_before := false
 var first_click := false
@@ -56,6 +58,10 @@ func _on_focus_exited() -> void:
 	if Input.is_action_pressed("ui_cancel"):
 		text = text_before_focus
 		text_change_canceled.emit()
+
+func _on_text_submitted(_submitted_text) -> void:
+	if not Input.is_action_just_pressed("ui_focus_next") && not Input.is_action_just_pressed("ui_focus_prev"):
+		release_focus()
 
 
 func _on_mouse_exited() -> void:
