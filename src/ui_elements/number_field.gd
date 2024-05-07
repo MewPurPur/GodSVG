@@ -16,17 +16,17 @@ func set_value(new_value: String, update_type := Utils.UpdateType.REGULAR) -> vo
 		if !is_finite(numeric_value):
 			sync(attribute.get_value())
 			return
-
+		
 		if not allow_higher and numeric_value > max_value:
 			numeric_value = max_value
 			new_value = NumberParser.num_to_text(numeric_value)
 		elif not allow_lower and numeric_value < min_value:
 			numeric_value = min_value
 			new_value = NumberParser.num_to_text(numeric_value)
-
+		
 		new_value = NumberParser.num_to_text(numeric_value)
 		sync(attribute.format(new_value))
-
+	
 	# Update the attribute.
 	if new_value != attribute.get_value() or update_type == Utils.UpdateType.FINAL:
 		match update_type:
