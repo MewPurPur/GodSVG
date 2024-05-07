@@ -12,4 +12,5 @@ focus_mode = 1
 script = ExtResource("1_saak1")
 code_font_tooltip = true
 
+[connection signal="focus_entered" from="." to="." method="_on_focus_entered"]
 [connection signal="text_change_canceled" from="." to="." method="_on_text_change_canceled"]

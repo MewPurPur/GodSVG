@@ -24,7 +24,7 @@ func _ready() -> void:
 	_timer.timeout.connect(blink)
 	get_v_scroll_bar().value_changed.connect(queue_redraw_caret.unbind(1))
 	get_h_scroll_bar().value_changed.connect(queue_redraw_caret.unbind(1))
-	mouse_exited.connect(_on_mouse_exited)
+	mouse_exited.connect(_on_base_class_mouse_exited)
 
 
 # Workaround for there not being a built-in overtype_mode_changed signal.
@@ -88,7 +88,7 @@ func _on_focus_exited() -> void:
 	_timer.stop()
 	RenderingServer.canvas_item_clear(_surface)
 
-func _on_mouse_exited() -> void:
+func _on_base_class_mouse_exited() -> void:
 	_hovered = false
 	queue_redraw()
 
