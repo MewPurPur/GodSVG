@@ -463,12 +463,12 @@ func insert_inner_after_selection(new_command: String) -> void:
 			path_attrib.insert_command(last_selection + 1, new_command)
 			normal_select(semi_selected_tid, last_selection + 1)
 
-enum SELECTION_CONTEXT {
+enum SelectionContext {
 	VIEWPORT,
 	TAG_EDITOR
 }
 
-func get_selection_context(popup_method: Callable, context: SELECTION_CONTEXT) -> ContextPopup:
+func get_selection_context(popup_method: Callable, context: SelectionContext) -> ContextPopup:
 	var btn_arr: Array[Button] = []
 	
 	if not selected_tids.is_empty():
@@ -492,7 +492,7 @@ func get_selection_context(popup_method: Callable, context: SELECTION_CONTEXT) -
 					can_move_up = true
 				if not can_move_down and base_tid[-1] < parent_child_count - filtered_count:
 					can_move_down = true
-		if context == SELECTION_CONTEXT.VIEWPORT:
+		if context == SelectionContext.VIEWPORT:
 			btn_arr.append(Utils.create_btn(TranslationServer.translate("View In List"),
 					view_in_list.bind(selected_tids[0]), false, load("res://visual/icons/ViewInList.svg")))
 
@@ -515,7 +515,7 @@ func get_selection_context(popup_method: Callable, context: SELECTION_CONTEXT) -
 		btn_arr.append(Utils.create_btn(TranslationServer.translate("Delete"),
 				delete_selected, false, load("res://visual/icons/Delete.svg")))
 	elif not inner_selections.is_empty() and not semi_selected_tid.is_empty():
-		if context == SELECTION_CONTEXT.VIEWPORT:
+		if context == SelectionContext.VIEWPORT:
 			btn_arr.append(Utils.create_btn(TranslationServer.translate("View In List"),
 					view_in_list.bind(semi_selected_tid), false, load("res://visual/icons/ViewInList.svg")))
 		if inner_selections.size() == 1:
