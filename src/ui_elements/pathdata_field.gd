@@ -166,7 +166,7 @@ func _on_commands_gui_input(event: InputEvent) -> void:
 			var viewport := get_viewport()
 			var popup_pos := viewport.get_mouse_position()
 			HandlerGUI.popup_under_pos(Indications.get_selection_context(
-					HandlerGUI.popup_under_pos.bind(popup_pos, viewport)), popup_pos, viewport)
+					HandlerGUI.popup_under_pos.bind(popup_pos, viewport), Indications.SelectionContext.TAG_EDITOR), popup_pos, viewport)
 
 
 func commands_draw() -> void:
@@ -398,5 +398,5 @@ func _on_action_button_pressed(action_button_ref: Button) -> void:
 	var viewport := get_viewport()
 	var action_button_rect := action_button_ref.get_global_rect()
 	HandlerGUI.popup_under_rect_center(Indications.get_selection_context(
-			HandlerGUI.popup_under_rect_center.bind(action_button_rect, viewport)),
+			HandlerGUI.popup_under_rect_center.bind(action_button_rect, viewport), Indications.SelectionContext.VIEWPORT),
 			action_button_rect, viewport)
