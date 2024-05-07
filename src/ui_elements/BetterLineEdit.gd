@@ -60,7 +60,7 @@ func _on_focus_exited() -> void:
 		text_change_canceled.emit()
 
 func _on_text_submitted(_submitted_text) -> void:
-	if not Input.is_action_just_pressed("ui_focus_next") && not Input.is_action_just_pressed("ui_focus_prev"):
+	if not Input.is_action_just_pressed("ui_focus_next") and not Input.is_action_just_pressed("ui_focus_prev"):
 		release_focus()
 
 
