@@ -23,6 +23,7 @@ func get_value() -> float:
 
 func _on_text_submitted(submitted_text: String) -> void:
 	set_value(evaluate_after_input(submitted_text))
+	super(submitted_text)
 
 func evaluate_after_input(eval_text: String) -> float:
 	var num := NumberParser.evaluate(eval_text)

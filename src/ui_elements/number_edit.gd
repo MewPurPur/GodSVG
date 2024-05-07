@@ -39,6 +39,7 @@ func _ready() -> void:
 
 func _on_text_submitted(submitted_text: String) -> void:
 	set_value(NumberParser.evaluate(submitted_text))
+	super(submitted_text)
 
 func sync_text() -> void:
 	text = String.num(_value, GlobalSettings.general_number_precision)
