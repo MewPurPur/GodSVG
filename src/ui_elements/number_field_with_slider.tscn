@@ -31,6 +31,5 @@ keep_pressed_outside = true
 
 [connection signal="focus_entered" from="LineEdit" to="." method="_on_focus_entered"]
 [connection signal="text_change_canceled" from="LineEdit" to="." method="_on_text_change_canceled"]
-[connection signal="text_submitted" from="LineEdit" to="." method="_on_text_submitted"]
 [connection signal="gui_input" from="Slider" to="." method="_on_slider_gui_input"]
 [connection signal="mouse_exited" from="Slider" to="." method="_on_slider_mouse_exited"]
