@@ -21,7 +21,7 @@ func set_value(new_value: String, update_type := Utils.UpdateType.REGULAR) -> vo
 		if !is_finite(numeric_value):
 			sync(attribute.get_value())
 			return
-
+		
 		if not allow_higher and numeric_value > max_value:
 			numeric_value = max_value
 			new_value = NumberParser.num_to_text(numeric_value)
@@ -129,7 +129,7 @@ func _on_slider_gui_input(event: InputEvent) -> void:
 		Utils.throw_mouse_motion_event(get_viewport())
 	else:
 		slider.mouse_filter = Utils.mouse_filter_pass_non_drag_events(event)
-
+	
 	if not slider_dragged:
 		if event is InputEventMouseMotion and event.button_mask == 0:
 			slider_hovered = true

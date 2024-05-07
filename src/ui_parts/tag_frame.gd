@@ -34,7 +34,7 @@ func _ready() -> void:
 	Indications.proposed_drop_changed.connect(queue_redraw)
 	determine_selection_highlight()
 	title_bar.queue_redraw()
-
+	
 	# If there are unknown attributes, they would always be on top.
 	if not tag.unknown_attributes.is_empty():
 		var unknown_container := HFlowContainer.new()
