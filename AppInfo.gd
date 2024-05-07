@@ -21,11 +21,12 @@ const authors: Array[String] = [
 	"ilikefrogs101",
 	"Kiisu-Master",
 	"MewPurPur",
+	"Qainguin",
 	"Serem Titus (SeremTitus)",
 	"Swarkin",
 	"thiagola92",
 	"Tom Blackwell (Volts-s)",
-	"Qainguin",
+	"WeaverSong",
 ]
 
 # GodSVG is a non-profit project developed by voluntary contributors.
