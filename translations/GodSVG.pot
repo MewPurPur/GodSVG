@@ -6,7 +6,6 @@ msgstr ""
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
-"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -23,26 +22,32 @@ msgstr ""
 msgid "Improper nesting."
 msgstr ""
 
-#: src/ui_elements/BetterLineEdit.gd:94 src/ui_elements/BetterTextEdit.gd:116
+#: src/ui_elements/BetterLineEdit.gd:94
+#: src/ui_elements/BetterTextEdit.gd:116
 #: src/TranslationUtils.gd:13
 msgid "Undo"
 msgstr ""
 
-#: src/ui_elements/BetterLineEdit.gd:97 src/ui_elements/BetterTextEdit.gd:118
+#: src/ui_elements/BetterLineEdit.gd:97
+#: src/ui_elements/BetterTextEdit.gd:118
 #: src/TranslationUtils.gd:14
 msgid "Redo"
 msgstr ""
 
-#: src/ui_elements/BetterLineEdit.gd:102 src/ui_elements/BetterTextEdit.gd:122
+#: src/ui_elements/BetterLineEdit.gd:102
+#: src/ui_elements/BetterTextEdit.gd:122
 msgid "Cut"
 msgstr ""
 
-#: src/ui_elements/BetterLineEdit.gd:105 src/ui_elements/BetterLineEdit.gd:113
-#: src/ui_elements/BetterTextEdit.gd:124 src/ui_elements/BetterTextEdit.gd:130
+#: src/ui_elements/BetterLineEdit.gd:105
+#: src/ui_elements/BetterLineEdit.gd:113
+#: src/ui_elements/BetterTextEdit.gd:124
+#: src/ui_elements/BetterTextEdit.gd:130
 msgid "Copy"
 msgstr ""
 
-#: src/ui_elements/BetterLineEdit.gd:108 src/ui_elements/BetterTextEdit.gd:126
+#: src/ui_elements/BetterLineEdit.gd:108
+#: src/ui_elements/BetterTextEdit.gd:126
 msgid "Paste"
 msgstr ""
 
@@ -50,7 +55,8 @@ msgstr ""
 msgid "Search color"
 msgstr ""
 
-#: src/ui_elements/color_popup.gd:102 src/ui_parts/settings_menu.gd:73
+#: src/ui_elements/color_popup.gd:102
+#: src/ui_parts/settings_menu.gd:73
 msgid "Palettes"
 msgstr ""
 
@@ -79,11 +85,13 @@ msgstr ""
 msgid "Disable the color"
 msgstr ""
 
-#: src/ui_elements/palette_config.gd:171 src/Indications.gd:495
+#: src/ui_elements/palette_config.gd:171
+#: src/Indications.gd:509
 msgid "Move Up"
 msgstr ""
 
-#: src/ui_elements/palette_config.gd:174 src/Indications.gd:498
+#: src/ui_elements/palette_config.gd:174
+#: src/Indications.gd:512
 msgid "Move Down"
 msgstr ""
 
@@ -95,8 +103,10 @@ msgstr ""
 msgid "Paste XML"
 msgstr ""
 
-#: src/ui_elements/palette_config.gd:183 src/ui_elements/transform_popup.gd:270
-#: src/Indications.gd:501 src/Indications.gd:512
+#: src/ui_elements/palette_config.gd:183
+#: src/ui_elements/transform_popup.gd:270
+#: src/Indications.gd:515
+#: src/Indications.gd:529
 msgid "Delete"
 msgstr ""
 
@@ -108,25 +118,36 @@ msgstr ""
 msgid "No path data"
 msgstr ""
 
-#: src/ui_elements/pathdata_field.gd:307 src/TranslationUtils.gd:30
-#: src/TranslationUtils.gd:34 src/TranslationUtils.gd:38
-#: src/TranslationUtils.gd:42 src/TranslationUtils.gd:46
-#: src/TranslationUtils.gd:50 src/TranslationUtils.gd:54
-#: src/TranslationUtils.gd:58 src/TranslationUtils.gd:62
+#: src/ui_elements/pathdata_field.gd:307
+#: src/TranslationUtils.gd:30
+#: src/TranslationUtils.gd:34
+#: src/TranslationUtils.gd:38
+#: src/TranslationUtils.gd:42
+#: src/TranslationUtils.gd:46
+#: src/TranslationUtils.gd:50
+#: src/TranslationUtils.gd:54
+#: src/TranslationUtils.gd:58
+#: src/TranslationUtils.gd:62
 #: src/TranslationUtils.gd:66
 msgid "Absolute"
 msgstr ""
 
-#: src/ui_elements/pathdata_field.gd:308 src/TranslationUtils.gd:28
-#: src/TranslationUtils.gd:32 src/TranslationUtils.gd:36
-#: src/TranslationUtils.gd:40 src/TranslationUtils.gd:44
-#: src/TranslationUtils.gd:48 src/TranslationUtils.gd:52
-#: src/TranslationUtils.gd:56 src/TranslationUtils.gd:60
+#: src/ui_elements/pathdata_field.gd:308
+#: src/TranslationUtils.gd:28
+#: src/TranslationUtils.gd:32
+#: src/TranslationUtils.gd:36
+#: src/TranslationUtils.gd:40
+#: src/TranslationUtils.gd:44
+#: src/TranslationUtils.gd:48
+#: src/TranslationUtils.gd:52
+#: src/TranslationUtils.gd:56
+#: src/TranslationUtils.gd:60
 #: src/TranslationUtils.gd:64
 msgid "Relative"
 msgstr ""
 
-#: src/ui_elements/setting_check_box.gd:14 src/ui_elements/setting_color.gd:16
+#: src/ui_elements/setting_check_box.gd:14
+#: src/ui_elements/setting_color.gd:16
 #: src/ui_elements/setting_dropdown.gd:24
 #: src/ui_elements/setting_shortcut.gd:14
 msgid "Reset to default"
@@ -140,7 +161,8 @@ msgstr ""
 msgid "Add shortcut"
 msgstr ""
 
-#: src/ui_elements/setting_shortcut.gd:67 src/ui_parts/settings_menu.gd:282
+#: src/ui_elements/setting_shortcut.gd:67
+#: src/ui_parts/settings_menu.gd:282
 msgid "Edit"
 msgstr ""
 
@@ -160,7 +182,8 @@ msgstr ""
 msgid "Apply the matrix"
 msgstr ""
 
-#: src/ui_elements/transform_popup.gd:264 src/Indications.gd:505
+#: src/ui_elements/transform_popup.gd:264
+#: src/Indications.gd:522
 msgid "Insert After"
 msgstr ""
 
@@ -208,7 +231,8 @@ msgstr ""
 msgid "Third-party licenses"
 msgstr ""
 
-#: src/ui_parts/alert_dialog.gd:13 src/ui_parts/good_file_dialog.gd:105
+#: src/ui_parts/alert_dialog.gd:13
+#: src/ui_parts/good_file_dialog.gd:259
 msgid "Alert!"
 msgstr ""
 
@@ -216,25 +240,36 @@ msgstr ""
 msgid "OK"
 msgstr ""
 
-#: src/ui_parts/code_editor.gd:190 src/ui_parts/good_file_dialog.gd:123
+#: src/ui_parts/code_editor.gd:190
+#: src/ui_parts/good_file_dialog.gd:114
 #: src/TranslationUtils.gd:7
 msgid "Save SVG"
 msgstr ""
 
-#: src/ui_parts/code_editor.gd:193 src/TranslationUtils.gd:10
+#: src/ui_parts/code_editor.gd:193
+#: src/TranslationUtils.gd:10
 msgid "Reset SVG"
 msgstr ""
 
-#: src/ui_parts/code_editor.gd:196 src/TranslationUtils.gd:12
+#: src/ui_parts/code_editor.gd:196
+#: src/TranslationUtils.gd:12
 msgid "Clear saving path"
 msgstr ""
 
-#: src/ui_parts/code_editor.gd:206 src/TranslationUtils.gd:9
+#: src/ui_parts/code_editor.gd:206
+#: src/TranslationUtils.gd:9
 msgid "Copy all text"
 msgstr ""
 
-#: src/ui_parts/code_editor.gd:208 src/TranslationUtils.gd:11
+#: src/ui_parts/code_editor.gd:208
+#: src/TranslationUtils.gd:11
 msgid "Clear SVG"
+msgstr ""
+
+#: src/ui_parts/confirm_dialog.gd:16
+#: src/ui_parts/export_dialog.gd:62
+#: src/ui_parts/good_file_dialog.gd:100
+msgid "Cancel"
 msgstr ""
 
 #: src/ui_parts/display.gd:76
@@ -273,7 +308,8 @@ msgstr ""
 msgid "GodSVG website"
 msgstr ""
 
-#: src/ui_parts/display.gd:137 src/TranslationUtils.gd:72
+#: src/ui_parts/display.gd:137
+#: src/TranslationUtils.gd:72
 msgid "Check for updates"
 msgstr ""
 
@@ -285,110 +321,108 @@ msgstr ""
 msgid "Snap size"
 msgstr ""
 
-#: src/ui_parts/export_dialog.gd:46
+#: src/ui_parts/export_dialog.gd:45
 msgid "Size"
 msgstr ""
 
-#: src/ui_parts/export_dialog.gd:51
+#: src/ui_parts/export_dialog.gd:50
 msgid "Invalid"
 msgstr ""
 
-#: src/ui_parts/export_dialog.gd:56 src/ui_parts/export_dialog.gd:58
+#: src/ui_parts/export_dialog.gd:55
+#: src/ui_parts/export_dialog.gd:57
 msgid "Format"
 msgstr ""
 
-#: src/ui_parts/export_dialog.gd:57
+#: src/ui_parts/export_dialog.gd:56
 msgid "Export Configuration"
 msgstr ""
 
-#: src/ui_parts/export_dialog.gd:59
+#: src/ui_parts/export_dialog.gd:58
 msgid "Lossless"
 msgstr ""
 
-#: src/ui_parts/export_dialog.gd:60
+#: src/ui_parts/export_dialog.gd:59
 msgid "Quality"
 msgstr ""
 
-#: src/ui_parts/export_dialog.gd:61
+#: src/ui_parts/export_dialog.gd:60
 msgid "Scale"
 msgstr ""
 
-#: src/ui_parts/export_dialog.gd:63 src/ui_parts/good_file_dialog.gd:106
-#: src/ui_parts/good_file_dialog.gd:109
-msgid "Cancel"
-msgstr ""
-
-#: src/ui_parts/export_dialog.gd:65 src/TranslationUtils.gd:5
+#: src/ui_parts/export_dialog.gd:64
+#: src/TranslationUtils.gd:5
 msgid "Export"
 msgstr ""
 
-#: src/ui_parts/export_dialog.gd:103
+#: src/ui_parts/export_dialog.gd:102
 msgid "Final size"
 msgstr ""
 
-#: src/ui_parts/good_file_dialog.gd:107
-msgid "Replace"
-msgstr ""
-
-#: src/ui_parts/good_file_dialog.gd:108 src/ui_parts/good_file_dialog.gd:320
+#: src/ui_parts/good_file_dialog.gd:99
+#: src/ui_parts/good_file_dialog.gd:315
 msgid "Create new folder"
 msgstr ""
 
-#: src/ui_parts/good_file_dialog.gd:110
+#: src/ui_parts/good_file_dialog.gd:101
 msgid "Create"
 msgstr ""
 
-#: src/ui_parts/good_file_dialog.gd:116
+#: src/ui_parts/good_file_dialog.gd:107
 msgid "Go to parent folder"
 msgstr ""
 
-#: src/ui_parts/good_file_dialog.gd:117
+#: src/ui_parts/good_file_dialog.gd:108
 msgid "Refresh files"
 msgstr ""
 
-#: src/ui_parts/good_file_dialog.gd:119
+#: src/ui_parts/good_file_dialog.gd:110
 msgid "Toggle the visibility of hidden files"
 msgstr ""
 
-#: src/ui_parts/good_file_dialog.gd:120
+#: src/ui_parts/good_file_dialog.gd:111
 msgid "Search files"
 msgstr ""
 
-#: src/ui_parts/good_file_dialog.gd:122
+#: src/ui_parts/good_file_dialog.gd:113
 msgid "Select an SVG"
 msgstr ""
 
-#: src/ui_parts/good_file_dialog.gd:124
+#: src/ui_parts/good_file_dialog.gd:115
 msgid "Close"
 msgstr ""
 
-#: src/ui_parts/good_file_dialog.gd:125
+#: src/ui_parts/good_file_dialog.gd:116
 msgid "Select"
 msgstr ""
 
-#: src/ui_parts/good_file_dialog.gd:126
+#: src/ui_parts/good_file_dialog.gd:117
 msgid "Save"
 msgstr ""
 
-#: src/ui_parts/good_file_dialog.gd:127
+#: src/ui_parts/good_file_dialog.gd:118
 msgid "Path"
 msgstr ""
 
-#: src/ui_parts/good_file_dialog.gd:289
+#: src/ui_parts/good_file_dialog.gd:261
+msgid "Replace"
+msgstr ""
+
+#: src/ui_parts/good_file_dialog.gd:284
 msgid "Open"
 msgstr ""
 
-#: src/ui_parts/good_file_dialog.gd:291 src/ui_parts/good_file_dialog.gd:302
+#: src/ui_parts/good_file_dialog.gd:286
+#: src/ui_parts/good_file_dialog.gd:297
 msgid "Copy path"
 msgstr ""
 
-#: src/ui_parts/good_file_dialog.gd:266
-msgid ""
-"A file named \"{file_name}\" already exists. Replacing will overwrite its "
-"contents!"
+#: src/ui_parts/good_file_dialog.gd:260
+msgid "A file named \"{file_name}\" already exists. Replacing will overwrite its contents!"
 msgstr ""
 
-#: src/ui_parts/handles_manager.gd:766 src/ui_parts/tag_container.gd:102
+#: src/ui_parts/handles_manager.gd:766
+#: src/ui_parts/tag_container.gd:105
 msgid "New tag"
 msgstr ""
 
@@ -440,7 +474,8 @@ msgstr ""
 msgid "Paths"
 msgstr ""
 
-#: src/ui_parts/settings_menu.gd:60 src/ui_parts/settings_menu.gd:62
+#: src/ui_parts/settings_menu.gd:60
+#: src/ui_parts/settings_menu.gd:62
 msgid "Always active."
 msgstr ""
 
@@ -456,7 +491,8 @@ msgstr ""
 msgid "Miscellaneous"
 msgstr ""
 
-#: src/ui_parts/settings_menu.gd:67 src/ui_parts/settings_menu.gd:69
+#: src/ui_parts/settings_menu.gd:67
+#: src/ui_parts/settings_menu.gd:69
 msgid "Any changes will apply immediately."
 msgstr ""
 
@@ -529,9 +565,7 @@ msgid "Wraps the mouse cursor around when panning the viewport."
 msgstr ""
 
 #: src/ui_parts/settings_menu.gd:90
-msgid ""
-"If turned on, scrolling will pan the view. To zoom, hold CTRL while "
-"scrolling."
+msgid "If turned on, scrolling will pan the view. To zoom, hold CTRL while scrolling."
 msgstr ""
 
 #: src/ui_parts/settings_menu.gd:93
@@ -539,9 +573,7 @@ msgid "Use native file dialog"
 msgstr ""
 
 #: src/ui_parts/settings_menu.gd:95
-msgid ""
-"If turned on, uses your operating system's native file dialog. If turned "
-"off, uses GodSVG's built-in file dialog."
+msgid "If turned on, uses your operating system's native file dialog. If turned off, uses GodSVG's built-in file dialog."
 msgstr ""
 
 #: src/ui_parts/settings_menu.gd:100
@@ -572,7 +604,8 @@ msgstr ""
 msgid "Use shorthand tag syntax"
 msgstr ""
 
-#: src/ui_parts/settings_menu.gd:121 src/ui_parts/settings_menu.gd:127
+#: src/ui_parts/settings_menu.gd:121
+#: src/ui_parts/settings_menu.gd:127
 msgid "Enable autoformatting"
 msgstr ""
 
@@ -600,11 +633,13 @@ msgstr ""
 msgid "Use short named colors"
 msgstr ""
 
-#: src/ui_parts/settings_menu.gd:137 src/ui_parts/settings_menu.gd:145
+#: src/ui_parts/settings_menu.gd:137
+#: src/ui_parts/settings_menu.gd:145
 msgid "Compress numbers"
 msgstr ""
 
-#: src/ui_parts/settings_menu.gd:139 src/ui_parts/settings_menu.gd:147
+#: src/ui_parts/settings_menu.gd:139
+#: src/ui_parts/settings_menu.gd:147
 msgid "Minimize spacing"
 msgstr ""
 
@@ -648,7 +683,8 @@ msgstr ""
 msgid "CDATA color"
 msgstr ""
 
-#: src/ui_parts/settings_menu.gd:165 src/ui_parts/settings_menu.gd:179
+#: src/ui_parts/settings_menu.gd:165
+#: src/ui_parts/settings_menu.gd:179
 msgid "Error color"
 msgstr ""
 
@@ -688,28 +724,43 @@ msgstr ""
 msgid "Import a .svg file"
 msgstr ""
 
-#: src/FileUtils.gd:124 src/HandlerGUI.gd:309
+#: src/FileUtils.gd:124
+#: src/HandlerGUI.gd:316
 msgid "The file extension is empty. Only \"svg\" files are supported."
 msgstr ""
 
-#: src/FileUtils.gd:129 src/HandlerGUI.gd:312
-msgid ""
-"\"{passed_extension}\" is a unsupported file extension. Only \"svg\" files "
-"are supported."
+#: src/FileUtils.gd:129
+#: src/HandlerGUI.gd:319
+msgid "\"{passed_extension}\" is a unsupported file extension. Only \"svg\" files are supported."
 msgstr ""
 
 #: src/FileUtils.gd:132
-msgid ""
-"The file couldn't be opened.\n"
-"Try checking the file path, ensure that the file is not deleted, or choose a "
-"different file."
+msgid "The file couldn't be opened.\nTry checking the file path, ensure that the file is not deleted, or choose a different file."
 msgstr ""
 
-#: src/Indications.gd:485
+#: src/HandlerGUI.gd:198
+msgid "Quit GodSVG"
+msgstr ""
+
+#: src/HandlerGUI.gd:199
+msgid "Do you want to quit GodSVG?"
+msgstr ""
+
+#: src/HandlerGUI.gd:200
+msgid "Quit"
+msgstr ""
+
+#: src/Indications.gd:496
+#: src/Indications.gd:519
+msgid "View In List"
+msgstr ""
+
+#: src/Indications.gd:499
 msgid "Duplicate"
 msgstr ""
 
-#: src/Indications.gd:490 src/Indications.gd:508
+#: src/Indications.gd:504
+#: src/Indications.gd:525
 msgid "Convert To"
 msgstr ""
 
@@ -789,42 +840,46 @@ msgstr ""
 msgid "Open GodSVG website"
 msgstr ""
 
-#: src/TranslationUtils.gd:78
-msgid "Move to"
+#: src/TranslationUtils.gd:73
+msgid "Quit the application"
 msgstr ""
 
 #: src/TranslationUtils.gd:79
-msgid "Line to"
+msgid "Move to"
 msgstr ""
 
 #: src/TranslationUtils.gd:80
-msgid "Horizontal Line to"
+msgid "Line to"
 msgstr ""
 
 #: src/TranslationUtils.gd:81
-msgid "Vertical Line to"
+msgid "Horizontal Line to"
 msgstr ""
 
 #: src/TranslationUtils.gd:82
-msgid "Close Path"
+msgid "Vertical Line to"
 msgstr ""
 
 #: src/TranslationUtils.gd:83
-msgid "Elliptical Arc to"
+msgid "Close Path"
 msgstr ""
 
 #: src/TranslationUtils.gd:84
-msgid "Quadratic Bezier to"
+msgid "Elliptical Arc to"
 msgstr ""
 
 #: src/TranslationUtils.gd:85
-msgid "Shorthand Quadratic Bezier to"
+msgid "Quadratic Bezier to"
 msgstr ""
 
 #: src/TranslationUtils.gd:86
-msgid "Cubic Bezier to"
+msgid "Shorthand Quadratic Bezier to"
 msgstr ""
 
 #: src/TranslationUtils.gd:87
+msgid "Cubic Bezier to"
+msgstr ""
+
+#: src/TranslationUtils.gd:88
 msgid "Shorthand Cubic Bezier to"
 msgstr ""

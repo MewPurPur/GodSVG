@@ -714,7 +714,7 @@ func respond_to_input_event(event: InputEvent) -> void:
 				not hovered_tid in Indications.selected_tids:
 					Indications.normal_select(hovered_tid, inner_idx)
 				HandlerGUI.popup_under_pos(Indications.get_selection_context(
-						HandlerGUI.popup_under_pos.bind(popup_pos, vp)), popup_pos, vp)
+						HandlerGUI.popup_under_pos.bind(popup_pos, vp), Indications.SelectionContext.VIEWPORT), popup_pos, vp)
 
 func find_nearest_handle(event_pos: Vector2) -> Handle:
 	var nearest_handle: Handle = null
