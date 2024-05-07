@@ -49,6 +49,7 @@ script = ExtResource("4_i4hc2")
 [node name="ScrollContainer" type="ScrollContainer" parent="TagContainer"]
 layout_mode = 2
 size_flags_vertical = 3
+follow_focus = true
 horizontal_scroll_mode = 0
 
 [node name="MarginContainer" type="MarginContainer" parent="TagContainer/ScrollContainer"]
