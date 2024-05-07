@@ -5,6 +5,7 @@ const TagFrame = preload("tag_frame.tscn")
 @onready var tags_container: VBoxContainer = %Tags
 @onready var add_button: Button = $AddButton
 
+var previous_focusable: Control
 
 func _notification(what: int) -> void:
 	if what == Utils.CustomNotification.LANGUAGE_CHANGED:
@@ -24,12 +25,15 @@ func update_translation() -> void:
 func full_rebuild() -> void:
 	for node in tags_container.get_children():
 		node.queue_free()
+	previous_focusable = null
 	# Only add the first level of tags, they will automatically add their children.
 	for tag_idx in SVG.root_tag.get_child_count():
 		var tag_editor := TagFrame.instantiate()
+		tag_editor.previous_focusable = previous_focusable
 		tag_editor.tag = SVG.root_tag.child_tags[tag_idx]
 		tag_editor.tid = PackedInt32Array([tag_idx])
 		tags_container.add_child(tag_editor)
+		previous_focusable = tag_editor.previous_focusable
 
 func add_tag(tag_name: String) -> void:
 	var new_tid := PackedInt32Array([SVG.root_tag.get_child_count()])

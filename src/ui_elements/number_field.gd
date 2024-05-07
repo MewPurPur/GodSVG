@@ -3,6 +3,7 @@ extends BetterLineEdit
 
 signal focused
 var attribute: AttributeNumeric
+var previous_focusable: Control
 
 var min_value := 0.0
 var max_value := 1.0
@@ -45,6 +46,10 @@ func _ready() -> void:
 	tooltip_text = attribute.name
 	placeholder_text = attribute.get_default()
 	text_submitted.connect(set_value)
+	if previous_focusable:
+		previous_focusable.focus_next = previous_focusable.get_path_to(self)
+		self.focus_previous = get_path_to(previous_focusable)
+	previous_focusable = self
 
 func _on_focus_entered() -> void:
 	remove_theme_color_override("font_color")

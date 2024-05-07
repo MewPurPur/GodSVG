@@ -10,6 +10,7 @@ const EnumField = preload("res://src/ui_elements/enum_field.tscn")
 
 var tag: Tag
 var tid: PackedInt32Array
+var previous_focusable: Control
 
 func _ready() -> void:
 	# Continue with supported attributes.
@@ -39,4 +40,6 @@ func _ready() -> void:
 			input_field = EnumField.instantiate()
 		input_field.attribute = attribute
 		input_field.focused.connect(Indications.normal_select.bind(tid))
+		input_field.previous_focusable = previous_focusable
 		attribute_container.add_child(input_field)
+		previous_focusable = input_field.previous_focusable

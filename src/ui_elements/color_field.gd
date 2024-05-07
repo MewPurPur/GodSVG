@@ -3,6 +3,7 @@ extends HBoxContainer
 
 signal focused
 var attribute: AttributeColor
+var previous_focusable: Control
 
 const ColorPopup = preload("res://src/ui_elements/color_popup.tscn")
 const checkerboard = preload("res://visual/icons/backgrounds/ColorButtonBG.svg")
@@ -40,6 +41,10 @@ func _ready() -> void:
 	color_button.resized.connect(queue_redraw)
 	attribute.value_changed.connect(set_value)
 	color_edit.text_submitted.connect(set_value)
+	if previous_focusable:
+		previous_focusable.focus_next = previous_focusable.get_path_to(color_edit)
+		color_edit.focus_previous = color_edit.get_path_to(previous_focusable)
+	previous_focusable = color_edit
 
 
 func _on_button_pressed() -> void:

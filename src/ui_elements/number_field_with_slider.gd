@@ -3,6 +3,7 @@ extends HBoxContainer
 
 signal focused
 var attribute: AttributeNumeric
+var previous_focusable: Control
 
 @onready var num_edit: LineEdit = $LineEdit
 @onready var slider: Button = $Slider
@@ -20,17 +21,17 @@ func set_value(new_value: String, update_type := Utils.UpdateType.REGULAR) -> vo
 		if !is_finite(numeric_value):
 			sync(attribute.get_value())
 			return
-		
+
 		if not allow_higher and numeric_value > max_value:
 			numeric_value = max_value
 			new_value = NumberParser.num_to_text(numeric_value)
 		elif not allow_lower and numeric_value < min_value:
 			numeric_value = min_value
 			new_value = NumberParser.num_to_text(numeric_value)
-		
+
 		new_value = NumberParser.num_to_text(numeric_value)
 		sync(attribute.format(new_value))
-	
+
 	sync(attribute.format(new_value))
 	# Update the attribute.
 	if new_value != attribute.get_value() or update_type == Utils.UpdateType.FINAL:
@@ -53,6 +54,10 @@ func _ready() -> void:
 	num_edit.placeholder_text = attribute.get_default()
 	slider.resized.connect(queue_redraw)  # Whyyyyy are their sizes wrong at first...
 	num_edit.text_submitted.connect(set_value)
+	if previous_focusable:
+		previous_focusable.focus_next = previous_focusable.get_path_to(num_edit)
+		num_edit.focus_previous = num_edit.get_path_to(previous_focusable)
+	previous_focusable = num_edit
 
 func _on_focus_entered() -> void:
 	num_edit.remove_theme_color_override("font_color")
@@ -124,7 +129,7 @@ func _on_slider_gui_input(event: InputEvent) -> void:
 		Utils.throw_mouse_motion_event(get_viewport())
 	else:
 		slider.mouse_filter = Utils.mouse_filter_pass_non_drag_events(event)
-	
+
 	if not slider_dragged:
 		if event is InputEventMouseMotion and event.button_mask == 0:
 			slider_hovered = true

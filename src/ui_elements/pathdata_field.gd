@@ -17,6 +17,7 @@ const COMMAND_HEIGHT = 22.0
 
 signal focused
 var attribute: AttributePath
+var previous_focusable: Control
 var tid: PackedInt32Array  # The path field has inner selectables, so it needs this.
 
 const MiniNumberField = preload("mini_number_field.tscn")

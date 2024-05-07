@@ -3,6 +3,7 @@ extends HBoxContainer
 
 signal focused
 var attribute: AttributeEnum
+var previous_focusable: Control
 
 const bold_font = preload("res://visual/fonts/FontBold.ttf")
 const reload_icon = preload("res://visual/icons/Reload.svg")
@@ -26,6 +27,10 @@ func _ready() -> void:
 	set_value(attribute.get_value())
 	indicator.tooltip_text = attribute.name
 	indicator.placeholder_text = attribute.get_default()
+	if previous_focusable:
+		previous_focusable.focus_next = previous_focusable.get_path_to(indicator)
+		indicator.focus_previous = indicator.get_path_to(previous_focusable)
+	previous_focusable = indicator
 
 func _on_button_pressed() -> void:
 	var btn_arr: Array[Button] = []

@@ -20,6 +20,7 @@ var child_tags_container: VBoxContainer  # Only created if there are child tags.
 
 var tid: PackedInt32Array
 var tag: Tag
+var previous_focusable: Control
 
 var surface := RenderingServer.canvas_item_create()  # Used for the drop indicator.
 @onready var title_bar_ci := title_bar.get_canvas_item()
@@ -33,25 +34,31 @@ func _ready() -> void:
 	Indications.proposed_drop_changed.connect(queue_redraw)
 	determine_selection_highlight()
 	title_bar.queue_redraw()
-	
+
 	# If there are unknown attributes, they would always be on top.
 	if not tag.unknown_attributes.is_empty():
 		var unknown_container := HFlowContainer.new()
 		main_container.add_child(unknown_container)
 		main_container.move_child(unknown_container, 0)
 		for attribute in tag.unknown_attributes:
-			var input_field := UnknownField.instantiate()
+			var input_field: BetterLineEdit = UnknownField.instantiate()
 			input_field.attribute = attribute
 			unknown_container.add_child(input_field)
+			if previous_focusable:
+				previous_focusable.focus_next = previous_focusable.get_path_to(input_field)
+				input_field.focus_previous = input_field.get_path_to(previous_focusable)
+			previous_focusable = input_field
 	
 	var tag_content: Control
 	if tag is TagPath:
 		tag_content = TagContentPath.instantiate()
 	else:
 		tag_content = TagContentUnknown.instantiate()
+	tag_content.previous_focusable = previous_focusable
 	tag_content.tag = tag
 	tag_content.tid = tid
 	main_container.add_child(tag_content)
+	previous_focusable = tag_content.previous_focusable
 	
 	if not tag.is_standalone():
 		child_tags_container = VBoxContainer.new()
@@ -60,11 +67,13 @@ func _ready() -> void:
 		for tag_idx in tag.get_child_count():
 			var child_tag := tag.child_tags[tag_idx]
 			var tag_editor := TagFrame.instantiate()
+			tag_editor.previous_focusable = previous_focusable
 			tag_editor.tag = child_tag
 			var new_tid := tid.duplicate()
 			new_tid.append(tag_idx)
 			tag_editor.tid = new_tid
 			child_tags_container.add_child(tag_editor)
+			previous_focusable = tag_editor.previous_focusable
 
 
 # Logic for dragging.

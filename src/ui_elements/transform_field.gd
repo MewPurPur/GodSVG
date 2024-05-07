@@ -3,6 +3,7 @@ extends HBoxContainer
 
 signal focused
 var attribute: AttributeTransform
+var previous_focusable: Control
 
 const TransformPopup = preload("res://src/ui_elements/transform_popup.tscn")
 
@@ -31,6 +32,10 @@ func _ready() -> void:
 	line_edit.tooltip_text = attribute.name
 	line_edit.text_submitted.connect(set_value)
 	update_translation()
+	if previous_focusable:
+		previous_focusable.focus_next = previous_focusable.get_path_to(line_edit)
+		line_edit.focus_previous = line_edit.get_path_to(previous_focusable)
+	previous_focusable = line_edit
 
 
 func update_translation() -> void:
