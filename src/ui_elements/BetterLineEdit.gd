@@ -18,9 +18,9 @@ func _init() -> void:
 	caret_blink_interval = 0.6
 
 func _ready() -> void:
-	focus_entered.connect(_on_focus_entered)
-	focus_exited.connect(_on_focus_exited)
-	mouse_exited.connect(_on_mouse_exited)
+	focus_entered.connect(_on_base_class_focus_entered)
+	focus_exited.connect(_on_base_class_focus_exited)
+	mouse_exited.connect(_on_base_class_mouse_exited)
 	text_submitted.connect(_on_base_class_text_submitted)
 
 func _input(event: InputEvent) -> void:
@@ -42,7 +42,7 @@ var tree_was_paused_before := false
 var first_click := false
 var text_before_focus := ""
 
-func _on_focus_entered() -> void:
+func _on_base_class_focus_entered() -> void:
 	process_mode = PROCESS_MODE_ALWAYS
 	tree_was_paused_before = get_tree().paused
 	first_click = true
@@ -50,7 +50,7 @@ func _on_focus_entered() -> void:
 	if not tree_was_paused_before:
 		get_tree().paused = true
 
-func _on_focus_exited() -> void:
+func _on_base_class_focus_exited() -> void:
 	process_mode = PROCESS_MODE_INHERIT
 	first_click = false
 	if not tree_was_paused_before:
@@ -64,7 +64,7 @@ func _on_base_class_text_submitted(_submitted_text) -> void:
 		release_focus()
 
 
-func _on_mouse_exited() -> void:
+func _on_base_class_mouse_exited() -> void:
 	_hovered = false
 	queue_redraw()
 
