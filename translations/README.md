@@ -4,7 +4,7 @@ You can familiarize yourself with the po format [here](https://www.gnu.org/softw
 # For programmers
 New translatable strings must be within GDScript files, inside a `TranslationServer.translate()` method or its plural version.
 
-To include update the strings, open godot_only/update_translations.gd in the Godot editor and follow the comment on top.
+To include or update strings, open godot_only/update_translations.gd in the Godot editor and follow the comment on top.
 
 >[!IMPORTANT]  
 >To run the above script, you must install [gettext tools](https://www.gnu.org/software/gettext/). It's preinstalled on most Linux distributions and Git Bash on Windows.
