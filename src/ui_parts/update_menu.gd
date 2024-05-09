@@ -7,11 +7,11 @@ extends PanelContainer
 
 
 func _ready() -> void:
-	status_label.text = "Current Version: " + ProjectSettings.get_setting("application/config/version")
+	status_label.text = "[center]Current Version: " + ProjectSettings.get_setting("application/config/version")
 
 func _on_check_pressed() -> void:
 	check_button.disabled = true
-	status_label.text = "Checking..."
+	status_label.text = "[center]Checking..."
 
 	var err := http.request(
 		"https://api.github.com/repos/MewPurPur/GodSVG/releases",
@@ -54,11 +54,13 @@ _headers: PackedStringArray, body: PackedByteArray) -> void:
 					latest_url = release["html_url"]
 
 			var current_ver := ProjectSettings.get_setting("application/config/version") as String
-
+			
+			
 			if latest_ver == current_ver:
-				status_label.text = "No new version available."
+				status_label.text = "[center]No new version available."
 			else:
-				status_label.parse_bbcode("New version available! %s\n[url=%s]Open GitHub page[/url]" % [latest_ver, latest_url])
+				status_label.parse_bbcode("[center][url=%s]New version available![/url] %s" % [latest_ver, latest_url])
+			print(status_label.text)
 
 			check_button.disabled = false
 
