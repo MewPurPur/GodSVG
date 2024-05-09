@@ -23,26 +23,26 @@ msgstr ""
 msgid "Improper nesting."
 msgstr ""
 
-#: src/ui_elements/BetterLineEdit.gd:94 src/ui_elements/BetterTextEdit.gd:116
+#: src/ui_elements/BetterLineEdit.gd:100 src/ui_elements/BetterTextEdit.gd:116
 #: src/TranslationUtils.gd:13
 msgid "Undo"
 msgstr ""
 
-#: src/ui_elements/BetterLineEdit.gd:97 src/ui_elements/BetterTextEdit.gd:118
+#: src/ui_elements/BetterLineEdit.gd:103 src/ui_elements/BetterTextEdit.gd:118
 #: src/TranslationUtils.gd:14
 msgid "Redo"
 msgstr ""
 
-#: src/ui_elements/BetterLineEdit.gd:102 src/ui_elements/BetterTextEdit.gd:122
+#: src/ui_elements/BetterLineEdit.gd:108 src/ui_elements/BetterTextEdit.gd:122
 msgid "Cut"
 msgstr ""
 
-#: src/ui_elements/BetterLineEdit.gd:105 src/ui_elements/BetterLineEdit.gd:113
+#: src/ui_elements/BetterLineEdit.gd:111 src/ui_elements/BetterLineEdit.gd:119
 #: src/ui_elements/BetterTextEdit.gd:124 src/ui_elements/BetterTextEdit.gd:130
 msgid "Copy"
 msgstr ""
 
-#: src/ui_elements/BetterLineEdit.gd:108 src/ui_elements/BetterTextEdit.gd:126
+#: src/ui_elements/BetterLineEdit.gd:114 src/ui_elements/BetterTextEdit.gd:126
 msgid "Paste"
 msgstr ""
 
@@ -79,11 +79,11 @@ msgstr ""
 msgid "Disable the color"
 msgstr ""
 
-#: src/ui_elements/palette_config.gd:171 src/Indications.gd:495
+#: src/ui_elements/palette_config.gd:171 src/Indications.gd:509
 msgid "Move Up"
 msgstr ""
 
-#: src/ui_elements/palette_config.gd:174 src/Indications.gd:498
+#: src/ui_elements/palette_config.gd:174 src/Indications.gd:512
 msgid "Move Down"
 msgstr ""
 
@@ -96,7 +96,7 @@ msgid "Paste XML"
 msgstr ""
 
 #: src/ui_elements/palette_config.gd:183 src/ui_elements/transform_popup.gd:270
-#: src/Indications.gd:501 src/Indications.gd:512
+#: src/Indications.gd:515 src/Indications.gd:529
 msgid "Delete"
 msgstr ""
 
@@ -160,7 +160,7 @@ msgstr ""
 msgid "Apply the matrix"
 msgstr ""
 
-#: src/ui_elements/transform_popup.gd:264 src/Indications.gd:505
+#: src/ui_elements/transform_popup.gd:264 src/Indications.gd:522
 msgid "Insert After"
 msgstr ""
 
@@ -208,7 +208,7 @@ msgstr ""
 msgid "Third-party licenses"
 msgstr ""
 
-#: src/ui_parts/alert_dialog.gd:13 src/ui_parts/good_file_dialog.gd:105
+#: src/ui_parts/alert_dialog.gd:13 src/ui_parts/good_file_dialog.gd:259
 msgid "Alert!"
 msgstr ""
 
@@ -216,7 +216,7 @@ msgstr ""
 msgid "OK"
 msgstr ""
 
-#: src/ui_parts/code_editor.gd:190 src/ui_parts/good_file_dialog.gd:123
+#: src/ui_parts/code_editor.gd:190 src/ui_parts/good_file_dialog.gd:114
 #: src/TranslationUtils.gd:7
 msgid "Save SVG"
 msgstr ""
@@ -235,6 +235,11 @@ msgstr ""
 
 #: src/ui_parts/code_editor.gd:208 src/TranslationUtils.gd:11
 msgid "Clear SVG"
+msgstr ""
+
+#: src/ui_parts/confirm_dialog.gd:16 src/ui_parts/export_dialog.gd:62
+#: src/ui_parts/good_file_dialog.gd:100
+msgid "Cancel"
 msgstr ""
 
 #: src/ui_parts/display.gd:76
@@ -285,110 +290,105 @@ msgstr ""
 msgid "Snap size"
 msgstr ""
 
-#: src/ui_parts/export_dialog.gd:46
+#: src/ui_parts/export_dialog.gd:45
 msgid "Size"
 msgstr ""
 
-#: src/ui_parts/export_dialog.gd:51
+#: src/ui_parts/export_dialog.gd:50
 msgid "Invalid"
 msgstr ""
 
-#: src/ui_parts/export_dialog.gd:56 src/ui_parts/export_dialog.gd:58
+#: src/ui_parts/export_dialog.gd:55 src/ui_parts/export_dialog.gd:57
 msgid "Format"
 msgstr ""
 
-#: src/ui_parts/export_dialog.gd:57
+#: src/ui_parts/export_dialog.gd:56
 msgid "Export Configuration"
 msgstr ""
 
-#: src/ui_parts/export_dialog.gd:59
+#: src/ui_parts/export_dialog.gd:58
 msgid "Lossless"
 msgstr ""
 
-#: src/ui_parts/export_dialog.gd:60
+#: src/ui_parts/export_dialog.gd:59
 msgid "Quality"
 msgstr ""
 
-#: src/ui_parts/export_dialog.gd:61
+#: src/ui_parts/export_dialog.gd:60
 msgid "Scale"
 msgstr ""
 
-#: src/ui_parts/export_dialog.gd:63 src/ui_parts/good_file_dialog.gd:106
-#: src/ui_parts/good_file_dialog.gd:109
-msgid "Cancel"
-msgstr ""
-
-#: src/ui_parts/export_dialog.gd:65 src/TranslationUtils.gd:5
+#: src/ui_parts/export_dialog.gd:64 src/TranslationUtils.gd:5
 msgid "Export"
 msgstr ""
 
-#: src/ui_parts/export_dialog.gd:103
+#: src/ui_parts/export_dialog.gd:102
 msgid "Final size"
 msgstr ""
 
-#: src/ui_parts/good_file_dialog.gd:107
-msgid "Replace"
-msgstr ""
-
-#: src/ui_parts/good_file_dialog.gd:108 src/ui_parts/good_file_dialog.gd:320
+#: src/ui_parts/good_file_dialog.gd:99 src/ui_parts/good_file_dialog.gd:315
 msgid "Create new folder"
 msgstr ""
 
-#: src/ui_parts/good_file_dialog.gd:110
+#: src/ui_parts/good_file_dialog.gd:101
 msgid "Create"
 msgstr ""
 
-#: src/ui_parts/good_file_dialog.gd:116
+#: src/ui_parts/good_file_dialog.gd:107
 msgid "Go to parent folder"
 msgstr ""
 
-#: src/ui_parts/good_file_dialog.gd:117
+#: src/ui_parts/good_file_dialog.gd:108
 msgid "Refresh files"
 msgstr ""
 
-#: src/ui_parts/good_file_dialog.gd:119
+#: src/ui_parts/good_file_dialog.gd:110
 msgid "Toggle the visibility of hidden files"
 msgstr ""
 
-#: src/ui_parts/good_file_dialog.gd:120
+#: src/ui_parts/good_file_dialog.gd:111
 msgid "Search files"
 msgstr ""
 
-#: src/ui_parts/good_file_dialog.gd:122
+#: src/ui_parts/good_file_dialog.gd:113
 msgid "Select an SVG"
 msgstr ""
 
-#: src/ui_parts/good_file_dialog.gd:124
+#: src/ui_parts/good_file_dialog.gd:115
 msgid "Close"
 msgstr ""
 
-#: src/ui_parts/good_file_dialog.gd:125
+#: src/ui_parts/good_file_dialog.gd:116
 msgid "Select"
 msgstr ""
 
-#: src/ui_parts/good_file_dialog.gd:126
+#: src/ui_parts/good_file_dialog.gd:117
 msgid "Save"
 msgstr ""
 
-#: src/ui_parts/good_file_dialog.gd:127
+#: src/ui_parts/good_file_dialog.gd:118
 msgid "Path"
 msgstr ""
 
-#: src/ui_parts/good_file_dialog.gd:289
+#: src/ui_parts/good_file_dialog.gd:261
+msgid "Replace"
+msgstr ""
+
+#: src/ui_parts/good_file_dialog.gd:284
 msgid "Open"
 msgstr ""
 
-#: src/ui_parts/good_file_dialog.gd:291 src/ui_parts/good_file_dialog.gd:302
+#: src/ui_parts/good_file_dialog.gd:286 src/ui_parts/good_file_dialog.gd:297
 msgid "Copy path"
 msgstr ""
 
-#: src/ui_parts/good_file_dialog.gd:266
+#: src/ui_parts/good_file_dialog.gd:260
 msgid ""
 "A file named \"{file_name}\" already exists. Replacing will overwrite its "
 "contents!"
 msgstr ""
 
-#: src/ui_parts/handles_manager.gd:766 src/ui_parts/tag_container.gd:102
+#: src/ui_parts/handles_manager.gd:766 src/ui_parts/tag_container.gd:105
 msgid "New tag"
 msgstr ""
 
@@ -688,11 +688,11 @@ msgstr ""
 msgid "Import a .svg file"
 msgstr ""
 
-#: src/FileUtils.gd:124 src/HandlerGUI.gd:309
+#: src/FileUtils.gd:124 src/HandlerGUI.gd:316
 msgid "The file extension is empty. Only \"svg\" files are supported."
 msgstr ""
 
-#: src/FileUtils.gd:129 src/HandlerGUI.gd:312
+#: src/FileUtils.gd:129 src/HandlerGUI.gd:319
 msgid ""
 "\"{passed_extension}\" is a unsupported file extension. Only \"svg\" files "
 "are supported."
@@ -705,11 +705,27 @@ msgid ""
 "different file."
 msgstr ""
 
-#: src/Indications.gd:485
+#: src/HandlerGUI.gd:198
+msgid "Quit GodSVG"
+msgstr ""
+
+#: src/HandlerGUI.gd:199
+msgid "Do you want to quit GodSVG?"
+msgstr ""
+
+#: src/HandlerGUI.gd:200
+msgid "Quit"
+msgstr ""
+
+#: src/Indications.gd:496 src/Indications.gd:519
+msgid "View In List"
+msgstr ""
+
+#: src/Indications.gd:499
 msgid "Duplicate"
 msgstr ""
 
-#: src/Indications.gd:490 src/Indications.gd:508
+#: src/Indications.gd:504 src/Indications.gd:525
 msgid "Convert To"
 msgstr ""
 
@@ -789,42 +805,46 @@ msgstr ""
 msgid "Open GodSVG website"
 msgstr ""
 
-#: src/TranslationUtils.gd:78
-msgid "Move to"
+#: src/TranslationUtils.gd:73
+msgid "Quit the application"
 msgstr ""
 
 #: src/TranslationUtils.gd:79
-msgid "Line to"
+msgid "Move to"
 msgstr ""
 
 #: src/TranslationUtils.gd:80
-msgid "Horizontal Line to"
+msgid "Line to"
 msgstr ""
 
 #: src/TranslationUtils.gd:81
-msgid "Vertical Line to"
+msgid "Horizontal Line to"
 msgstr ""
 
 #: src/TranslationUtils.gd:82
-msgid "Close Path"
+msgid "Vertical Line to"
 msgstr ""
 
 #: src/TranslationUtils.gd:83
-msgid "Elliptical Arc to"
+msgid "Close Path"
 msgstr ""
 
 #: src/TranslationUtils.gd:84
-msgid "Quadratic Bezier to"
+msgid "Elliptical Arc to"
 msgstr ""
 
 #: src/TranslationUtils.gd:85
-msgid "Shorthand Quadratic Bezier to"
+msgid "Quadratic Bezier to"
 msgstr ""
 
 #: src/TranslationUtils.gd:86
-msgid "Cubic Bezier to"
+msgid "Shorthand Quadratic Bezier to"
 msgstr ""
 
 #: src/TranslationUtils.gd:87
+msgid "Cubic Bezier to"
+msgstr ""
+
+#: src/TranslationUtils.gd:88
 msgid "Shorthand Cubic Bezier to"
 msgstr ""
