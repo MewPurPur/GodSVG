@@ -398,5 +398,5 @@ func _on_action_button_pressed(action_button_ref: Button) -> void:
 	var viewport := get_viewport()
 	var action_button_rect := action_button_ref.get_global_rect()
 	HandlerGUI.popup_under_rect_center(Indications.get_selection_context(
-			HandlerGUI.popup_under_rect_center.bind(action_button_rect, viewport), Indications.SelectionContext.VIEWPORT),
+			HandlerGUI.popup_under_rect_center.bind(action_button_rect, viewport), Indications.SelectionContext.TAG_EDITOR),
 			action_button_rect, viewport)
