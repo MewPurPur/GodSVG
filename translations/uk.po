@@ -23,26 +23,26 @@ msgstr "Не є описом SVG."
 msgid "Improper nesting."
 msgstr "Неправильне вкладення."
 
-#: src/ui_elements/BetterLineEdit.gd:94 src/ui_elements/BetterTextEdit.gd:116
+#: src/ui_elements/BetterLineEdit.gd:100 src/ui_elements/BetterTextEdit.gd:116
 #: src/TranslationUtils.gd:13
 msgid "Undo"
 msgstr "Скасувати"
 
-#: src/ui_elements/BetterLineEdit.gd:97 src/ui_elements/BetterTextEdit.gd:118
+#: src/ui_elements/BetterLineEdit.gd:103 src/ui_elements/BetterTextEdit.gd:118
 #: src/TranslationUtils.gd:14
 msgid "Redo"
 msgstr "Повернути"
 
-#: src/ui_elements/BetterLineEdit.gd:102 src/ui_elements/BetterTextEdit.gd:122
+#: src/ui_elements/BetterLineEdit.gd:108 src/ui_elements/BetterTextEdit.gd:122
 msgid "Cut"
 msgstr "Вирізати"
 
-#: src/ui_elements/BetterLineEdit.gd:105 src/ui_elements/BetterLineEdit.gd:113
+#: src/ui_elements/BetterLineEdit.gd:111 src/ui_elements/BetterLineEdit.gd:119
 #: src/ui_elements/BetterTextEdit.gd:124 src/ui_elements/BetterTextEdit.gd:130
 msgid "Copy"
 msgstr "Скопіювати"
 
-#: src/ui_elements/BetterLineEdit.gd:108 src/ui_elements/BetterTextEdit.gd:126
+#: src/ui_elements/BetterLineEdit.gd:114 src/ui_elements/BetterTextEdit.gd:126
 msgid "Paste"
 msgstr "Вставити"
 
@@ -79,11 +79,11 @@ msgstr "Активувати колір"
 msgid "Disable the color"
 msgstr "Деактивувати колір"
 
-#: src/ui_elements/palette_config.gd:171 src/Indications.gd:495
+#: src/ui_elements/palette_config.gd:171 src/Indications.gd:509
 msgid "Move Up"
 msgstr "Пересунути вгору"
 
-#: src/ui_elements/palette_config.gd:174 src/Indications.gd:498
+#: src/ui_elements/palette_config.gd:174 src/Indications.gd:512
 msgid "Move Down"
 msgstr "Пересунути вниз"
 
@@ -96,7 +96,7 @@ msgid "Paste XML"
 msgstr "Вставити XML"
 
 #: src/ui_elements/palette_config.gd:183 src/ui_elements/transform_popup.gd:270
-#: src/Indications.gd:501 src/Indications.gd:512
+#: src/Indications.gd:515 src/Indications.gd:529
 msgid "Delete"
 msgstr "Видалити"
 
@@ -115,7 +115,7 @@ msgstr "Немає даних шляху"
 #: src/TranslationUtils.gd:58 src/TranslationUtils.gd:62
 #: src/TranslationUtils.gd:66
 msgid "Absolute"
-msgstr "Абсолютна"
+msgstr "Абсолютно"
 
 #: src/ui_elements/pathdata_field.gd:308 src/TranslationUtils.gd:28
 #: src/TranslationUtils.gd:32 src/TranslationUtils.gd:36
@@ -160,7 +160,7 @@ msgstr "Без трансформацій"
 msgid "Apply the matrix"
 msgstr "Застосувати матрицю"
 
-#: src/ui_elements/transform_popup.gd:264 src/Indications.gd:505
+#: src/ui_elements/transform_popup.gd:264 src/Indications.gd:522
 msgid "Insert After"
 msgstr "Вставити після"
 
@@ -194,7 +194,7 @@ msgstr "Автори"
 
 #: src/ui_parts/about_menu.gd:19
 msgid "Donors"
-msgstr ""
+msgstr "Благодійники"
 
 #: src/ui_parts/about_menu.gd:20
 msgid "License"
@@ -205,11 +205,10 @@ msgid "Godot third-party components"
 msgstr "Компоненти Godot від третіх сторін"
 
 #: src/ui_parts/about_menu.gd:22
-#, fuzzy
 msgid "Third-party licenses"
 msgstr "Ліцензії третіх осіб"
 
-#: src/ui_parts/alert_dialog.gd:13 src/ui_parts/good_file_dialog.gd:105
+#: src/ui_parts/alert_dialog.gd:13 src/ui_parts/good_file_dialog.gd:259
 msgid "Alert!"
 msgstr "Увага!"
 
@@ -217,7 +216,7 @@ msgstr "Увага!"
 msgid "OK"
 msgstr "Добре"
 
-#: src/ui_parts/code_editor.gd:190 src/ui_parts/good_file_dialog.gd:123
+#: src/ui_parts/code_editor.gd:190 src/ui_parts/good_file_dialog.gd:114
 #: src/TranslationUtils.gd:7
 msgid "Save SVG"
 msgstr "Зберегти SVG"
@@ -237,6 +236,11 @@ msgstr "Скопіювати весь текст"
 #: src/ui_parts/code_editor.gd:208 src/TranslationUtils.gd:11
 msgid "Clear SVG"
 msgstr "Очистити SVG"
+
+#: src/ui_parts/confirm_dialog.gd:16 src/ui_parts/export_dialog.gd:62
+#: src/ui_parts/good_file_dialog.gd:100
+msgid "Cancel"
+msgstr "Скасувати"
 
 #: src/ui_parts/display.gd:76
 msgid "Settings"
@@ -267,21 +271,18 @@ msgid "Donate…"
 msgstr "Зробити пожертвування…"
 
 #: src/ui_parts/display.gd:133
-#, fuzzy
 msgid "GodSVG repository"
 msgstr "Репозиторій GodSVG"
 
 #: src/ui_parts/display.gd:135
-#, fuzzy
 msgid "GodSVG website"
-msgstr "Репозиторій GodSVG"
+msgstr "Веб-сайт GodSVG"
 
 #: src/ui_parts/display.gd:137 src/TranslationUtils.gd:72
 msgid "Check for updates"
-msgstr ""
+msgstr "Перевірити оновлення"
 
 #: src/ui_parts/display.gd:79
-#, fuzzy
 msgid "Enable snapping"
 msgstr "Активувати прилипання"
 
@@ -289,105 +290,99 @@ msgstr "Активувати прилипання"
 msgid "Snap size"
 msgstr "Розмір прилипання"
 
-#: src/ui_parts/export_dialog.gd:46
+#: src/ui_parts/export_dialog.gd:45
 msgid "Size"
 msgstr "Розмір"
 
-#: src/ui_parts/export_dialog.gd:51
+#: src/ui_parts/export_dialog.gd:50
 msgid "Invalid"
 msgstr "Неправильно"
 
-#: src/ui_parts/export_dialog.gd:56 src/ui_parts/export_dialog.gd:58
+#: src/ui_parts/export_dialog.gd:55 src/ui_parts/export_dialog.gd:57
 msgid "Format"
 msgstr "Формат"
 
-#: src/ui_parts/export_dialog.gd:57
+#: src/ui_parts/export_dialog.gd:56
 msgid "Export Configuration"
 msgstr "Налаштування експорту"
 
-#: src/ui_parts/export_dialog.gd:59
+#: src/ui_parts/export_dialog.gd:58
 msgid "Lossless"
-msgstr ""
+msgstr "Без втрат"
+
+#: src/ui_parts/export_dialog.gd:59
+msgid "Quality"
+msgstr "Якість"
 
 #: src/ui_parts/export_dialog.gd:60
-msgid "Quality"
-msgstr ""
-
-#: src/ui_parts/export_dialog.gd:61
 msgid "Scale"
 msgstr "Масштаб"
 
-#: src/ui_parts/export_dialog.gd:63 src/ui_parts/good_file_dialog.gd:106
-#: src/ui_parts/good_file_dialog.gd:109
-msgid "Cancel"
-msgstr "Скасувати"
-
-#: src/ui_parts/export_dialog.gd:65 src/TranslationUtils.gd:5
+#: src/ui_parts/export_dialog.gd:64 src/TranslationUtils.gd:5
 msgid "Export"
 msgstr "Експортувати"
 
-#: src/ui_parts/export_dialog.gd:103
+#: src/ui_parts/export_dialog.gd:102
 msgid "Final size"
 msgstr "Фінальний розмір"
 
-#: src/ui_parts/good_file_dialog.gd:107
-msgid "Replace"
-msgstr "Замінити"
-
-#: src/ui_parts/good_file_dialog.gd:108 src/ui_parts/good_file_dialog.gd:320
+#: src/ui_parts/good_file_dialog.gd:99 src/ui_parts/good_file_dialog.gd:315
 msgid "Create new folder"
-msgstr ""
+msgstr "Створити нову теку"
 
-#: src/ui_parts/good_file_dialog.gd:110
+#: src/ui_parts/good_file_dialog.gd:101
 msgid "Create"
-msgstr ""
+msgstr "Створити"
 
-#: src/ui_parts/good_file_dialog.gd:116
+#: src/ui_parts/good_file_dialog.gd:107
 msgid "Go to parent folder"
 msgstr "Перейти до батьківської теки"
 
-#: src/ui_parts/good_file_dialog.gd:117
+#: src/ui_parts/good_file_dialog.gd:108
 msgid "Refresh files"
 msgstr "Оновити файли"
 
-#: src/ui_parts/good_file_dialog.gd:119
+#: src/ui_parts/good_file_dialog.gd:110
 msgid "Toggle the visibility of hidden files"
 msgstr "Перемикнути видимість прихованих файлів"
 
-#: src/ui_parts/good_file_dialog.gd:120
+#: src/ui_parts/good_file_dialog.gd:111
 msgid "Search files"
 msgstr "Пошук файлів"
 
-#: src/ui_parts/good_file_dialog.gd:122
+#: src/ui_parts/good_file_dialog.gd:113
 msgid "Select an SVG"
 msgstr "Обрати SVG"
 
-#: src/ui_parts/good_file_dialog.gd:124
+#: src/ui_parts/good_file_dialog.gd:115
 msgid "Close"
 msgstr "Закрити"
 
-#: src/ui_parts/good_file_dialog.gd:125
+#: src/ui_parts/good_file_dialog.gd:116
 msgid "Select"
 msgstr "Обрати"
 
-#: src/ui_parts/good_file_dialog.gd:126
+#: src/ui_parts/good_file_dialog.gd:117
 msgid "Save"
 msgstr "Зберегти"
 
-#: src/ui_parts/good_file_dialog.gd:127
+#: src/ui_parts/good_file_dialog.gd:118
 msgid "Path"
 msgstr "Шлях"
 
-#: src/ui_parts/good_file_dialog.gd:289
+#: src/ui_parts/good_file_dialog.gd:261
+msgid "Replace"
+msgstr "Замінити"
+
+#: src/ui_parts/good_file_dialog.gd:284
 msgid "Open"
 msgstr "Відкрити"
 
-#: src/ui_parts/good_file_dialog.gd:291 src/ui_parts/good_file_dialog.gd:302
-#, fuzzy
+#: src/ui_parts/good_file_dialog.gd:286 src/ui_parts/good_file_dialog.gd:297
 msgid "Copy path"
-msgstr "Скопіювати весь текст"
+msgstr "Скопіювати шлях"
 
-#: src/ui_parts/good_file_dialog.gd:266
+#: src/ui_parts/good_file_dialog.gd:260
 msgid ""
 "A file named \"{file_name}\" already exists. Replacing will overwrite its "
 "contents!"
@@ -395,7 +390,7 @@ msgstr ""
 "Файл з назваою \"{file_name}\" вже існує. Його заміна призведе до перезапису "
 "його вмісту!"
 
-#: src/ui_parts/handles_manager.gd:766 src/ui_parts/tag_container.gd:102
+#: src/ui_parts/handles_manager.gd:766 src/ui_parts/tag_container.gd:105
 msgid "New tag"
 msgstr "Новий тег"
 
@@ -404,12 +399,10 @@ msgid "Import Problems"
 msgstr "Проблема з імпортуванням"
 
 #: src/ui_parts/import_warning_dialog.gd:63
-#, fuzzy
 msgid "Unknown tag"
 msgstr "Невідомий тег"
 
 #: src/ui_parts/import_warning_dialog.gd:67
-#, fuzzy
 msgid "Unknown attribute"
 msgstr "Невідомий атрибут"
 
@@ -422,14 +415,12 @@ msgid "Add new tag"
 msgstr "Додати новий тег"
 
 #: src/ui_parts/settings_menu.gd:53
-#, fuzzy
 msgid "SVG Text colors"
 msgstr "Колір SVG тексту"
 
 #: src/ui_parts/settings_menu.gd:54
-#, fuzzy
 msgid "Handle colors"
-msgstr "Внутрішній колір"
+msgstr "Колір ручки редагування"
 
 #: src/ui_parts/settings_menu.gd:55
 msgid "Basic colors"
@@ -465,16 +456,15 @@ msgstr "Пристрої вводу"
 
 #: src/ui_parts/settings_menu.gd:64
 msgid "Miscellaneous"
-msgstr ""
+msgstr "Різне"
 
 #: src/ui_parts/settings_menu.gd:67 src/ui_parts/settings_menu.gd:69
 msgid "Any changes will apply immediately."
 msgstr "Будь-які зміни будуть застосовані одразу."
 
 #: src/ui_parts/settings_menu.gd:72
-#, fuzzy
 msgid "Formatting"
-msgstr "Автоформатування"
+msgstr "Форматування"
 
 #: src/ui_parts/settings_menu.gd:74
 msgid "Shortcuts"
@@ -501,18 +491,16 @@ msgid "Use CTRL for zooming"
 msgstr "Використовувати CTRL для масштабування"
 
 #: src/ui_parts/settings_menu.gd:98
-#, fuzzy
 msgid "Handles size"
-msgstr "Колір ручки редагування"
+msgstr "Розмір ручок редагування"
 
 #: src/ui_parts/settings_menu.gd:103
 msgid "UI scale"
 msgstr "Масштаб інтерфейсу"
 
 #: src/ui_parts/settings_menu.gd:108
-#, fuzzy
 msgid "Auto UI scale"
-msgstr "Масштаб"
+msgstr "Автоматичний масштаб інтерфейсу"
 
 #: src/ui_parts/settings_menu.gd:200
 msgid "Language"
@@ -532,7 +520,7 @@ msgstr "Інструмент"
 
 #: src/ui_parts/settings_menu.gd:288
 msgid "Help"
-msgstr ""
+msgstr "Допомога"
 
 #: src/ui_parts/settings_menu.gd:81
 msgid "Swaps zoom in and zoom out with the mouse wheel."
@@ -555,17 +543,20 @@ msgstr ""
 
 #: src/ui_parts/settings_menu.gd:93
 msgid "Use native file dialog"
-msgstr ""
+msgstr "Використовувати рідний файловий діалог"
 
 #: src/ui_parts/settings_menu.gd:95
 msgid ""
 "If turned on, uses your operating system's native file dialog. If turned "
 "off, uses GodSVG's built-in file dialog."
 msgstr ""
+"Якщо увімкнено, то буде використовувати рідний файловий діалог вашої "
+"операційної системи для обирання файлів. Якщо вимкнено, то замість буде "
+"використовуватися вбудований файловий діалог."
 
 #: src/ui_parts/settings_menu.gd:100
 msgid "Increases the visual size and grabbing area of handles."
-msgstr ""
+msgstr "Збільшує візуальну та область захоплення для ручок."
 
 #: src/ui_parts/settings_menu.gd:105
 msgid "Changes the scale of the visual user interface."
@@ -573,7 +564,7 @@ msgstr "Змінити масштаб інтерфейсу користувач�
 
 #: src/ui_parts/settings_menu.gd:110
 msgid "Scales the user interface based on the screen size."
-msgstr ""
+msgstr "Масштабувати інтерфейс користувача в залежності від розміру екрану."
 
 #: src/ui_parts/settings_menu.gd:113
 msgid "Number precision digits"
@@ -701,17 +692,17 @@ msgstr "Колір попередження"
 
 #: src/FileUtils.gd:64
 msgid "Save the .\"{extension}\" file"
-msgstr ""
+msgstr "Зберегти .\"{extension}\" файл"
 
 #: src/FileUtils.gd:98
 msgid "Import a .svg file"
-msgstr ""
+msgstr "Імпортувати .svg файл"
 
-#: src/FileUtils.gd:124 src/HandlerGUI.gd:309
+#: src/FileUtils.gd:124 src/HandlerGUI.gd:316
 msgid "The file extension is empty. Only \"svg\" files are supported."
 msgstr "Розширення файлу порожнє. Підтримується тільки «svg» файли."
 
-#: src/FileUtils.gd:129 src/HandlerGUI.gd:312
+#: src/FileUtils.gd:129 src/HandlerGUI.gd:319
 msgid ""
 "\"{passed_extension}\" is a unsupported file extension. Only \"svg\" files "
 "are supported."
@@ -729,11 +720,27 @@ msgstr ""
 "Спробуйте перевірити шлях до файлу, впевніться що файл не видалений або "
 "оберіть інший файл."
 
-#: src/Indications.gd:485
+#: src/HandlerGUI.gd:198
+msgid "Quit GodSVG"
+msgstr "Вийти із GodSVG"
+
+#: src/HandlerGUI.gd:199
+msgid "Do you want to quit GodSVG?"
+msgstr "Ви дійсно бажаєте вийти із GodSVG?"
+
+#: src/HandlerGUI.gd:200
+msgid "Quit"
+msgstr "Вийти"
+
+#: src/Indications.gd:496 src/Indications.gd:519
+msgid "View In List"
+msgstr "Переглянути списком"
+
+#: src/Indications.gd:499
 msgid "Duplicate"
 msgstr "Дублювати"
 
-#: src/Indications.gd:490 src/Indications.gd:508
+#: src/Indications.gd:504 src/Indications.gd:525
 msgid "Convert To"
 msgstr "Конвертувати в"
 
@@ -778,12 +785,10 @@ msgid "Zoom reset"
 msgstr "Скинути масштаб"
 
 #: src/TranslationUtils.gd:23
-#, fuzzy
 msgid "Show grid"
 msgstr "Показати ґратку"
 
 #: src/TranslationUtils.gd:24
-#, fuzzy
 msgid "Show handles"
 msgstr "Показати ручки редагування"
 
@@ -793,68 +798,69 @@ msgstr "Показати растеризуваний SVG"
 
 #: src/TranslationUtils.gd:26
 msgid "View debug information"
-msgstr ""
+msgstr "Переглянути інформацію про відладку"
 
 #: src/TranslationUtils.gd:67
-#, fuzzy
 msgid "Open Settings menu"
-msgstr "Налаштування"
+msgstr "Відкрити меню налаштувань"
 
 #: src/TranslationUtils.gd:68
 msgid "Open About menu"
-msgstr ""
+msgstr "Відкрити меню \"Про додаток\""
 
 #: src/TranslationUtils.gd:69
 msgid "Open Donate menu"
-msgstr ""
+msgstr "Відкрити меню благодійників"
 
 #: src/TranslationUtils.gd:70
-#, fuzzy
 msgid "Open GodSVG repository"
-msgstr "Репозиторій GodSVG"
+msgstr "Відкрити репозиторій GodSVG"
 
 #: src/TranslationUtils.gd:71
-#, fuzzy
 msgid "Open GodSVG website"
-msgstr "Репозиторій GodSVG"
+msgstr "Відкрити веб-сайт GodSVG"
 
-#: src/TranslationUtils.gd:78
+#: src/TranslationUtils.gd:73
+msgid "Quit the application"
+msgstr "Вийти із додатку"
+
+#: src/TranslationUtils.gd:79
 msgid "Move to"
 msgstr "Пересунути до"
 
-#: src/TranslationUtils.gd:79
+#: src/TranslationUtils.gd:80
 msgid "Line to"
 msgstr "Лінія до"
 
-#: src/TranslationUtils.gd:80
+#: src/TranslationUtils.gd:81
 msgid "Horizontal Line to"
 msgstr "Горизонтальна лінія до"
 
-#: src/TranslationUtils.gd:81
+#: src/TranslationUtils.gd:82
 msgid "Vertical Line to"
 msgstr "Вертикальна лінія до"
 
-#: src/TranslationUtils.gd:82
+#: src/TranslationUtils.gd:83
 msgid "Close Path"
 msgstr "Закрити шлях"
 
-#: src/TranslationUtils.gd:83
+#: src/TranslationUtils.gd:84
 msgid "Elliptical Arc to"
 msgstr "Еліптична дуга до"
 
-#: src/TranslationUtils.gd:84
+#: src/TranslationUtils.gd:85
 msgid "Quadratic Bezier to"
 msgstr "Квадратичний Безьє до"
 
-#: src/TranslationUtils.gd:85
+#: src/TranslationUtils.gd:86
 msgid "Shorthand Quadratic Bezier to"
 msgstr "Скорочена квадратична Безьє"
 
-#: src/TranslationUtils.gd:86
+#: src/TranslationUtils.gd:87
 msgid "Cubic Bezier to"
 msgstr "Кубічна Безьє до"
 
-#: src/TranslationUtils.gd:87
+#: src/TranslationUtils.gd:88
 msgid "Shorthand Cubic Bezier to"
 msgstr "Скорочена кубічна Безьє до"
 
