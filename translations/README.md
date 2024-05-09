@@ -1,6 +1,8 @@
 **The official GNU gettext manual can be found [here](https://www.gnu.org/software/gettext/manual/html_node/index.html)**
+
 # The po format
 You can familiarize yourself with the po format [here](https://www.gnu.org/software/gettext/manual/html_node/PO-Files.html).
+
 # For programmers
 New translatable strings must be within GDScript files, inside a `TranslationServer.translate()` method or its plural version.
 
