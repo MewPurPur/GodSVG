@@ -644,6 +644,11 @@ func respond_to_input_event(event: InputEvent) -> void:
 	var snap_vector := Vector2(snap_size, snap_size)
 	
 	if event is InputEventMouseMotion:
+		
+		# Allow moving view while dragging handle.
+		if event.button_mask & MOUSE_BUTTON_MASK_MIDDLE:
+			return
+		
 		should_deselect_all = false
 		var event_pos: Vector2 = event.position / Indications.zoom +\
 				get_node(^"../..").view.position
