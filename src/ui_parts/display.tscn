@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://bvrncl7e6yn5b"]
+[gd_scene load_steps=18 format=3 uid="uid://bvrncl7e6yn5b"]
 
 [ext_resource type="Script" path="res://src/ui_parts/display.gd" id="1_oib5g"]
 [ext_resource type="Texture2D" uid="uid://ccbta5q43jobk" path="res://visual/icons/More.svg" id="2_3wliq"]
@@ -14,7 +14,6 @@
 [ext_resource type="Texture2D" uid="uid://c68og6bsqt0lb" path="res://visual/icons/backgrounds/Checkerboard.svg" id="11_1bm1s"]
 [ext_resource type="Script" path="res://src/ui_parts/display_texture.gd" id="12_qi23s"]
 [ext_resource type="Script" path="res://src/ui_parts/handles_manager.gd" id="13_lwhwy"]
-[ext_resource type="Texture2D" uid="uid://barsurula6j8n" path="res://visual/icon.svg" id="13_wevhv"]
 [ext_resource type="Script" path="res://src/ui_parts/camera.gd" id="15_hevpa"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eujxa"]
@@ -138,7 +137,6 @@ unique_name_in_owner = true
 visible = false
 offset_right = 128.0
 offset_bottom = 128.0
-texture = ExtResource("13_wevhv")
 expand_mode = 1
 stretch_mode = 5
 
