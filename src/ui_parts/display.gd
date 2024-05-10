@@ -28,6 +28,7 @@ const NumberField = preload("res://src/ui_elements/number_field.tscn")
 @onready var debug_label: Label = $ViewportPanel/DebugContainer/DebugLabel
 @onready var reference_texture = %ReferenceTexture
 
+var reference_overlay := false
 
 func _notification(what: int) -> void:
 	if what == Utils.CustomNotification.LANGUAGE_CHANGED:
@@ -115,7 +116,9 @@ func _on_reference_pressed() -> void:
 		Utils.create_btn(TranslationServer.translate("Import Reference Image"),
 			import_reference_image, false, load("res://visual/icons/Reference.svg")),
 		Utils.create_checkbox(TranslationServer.translate("Show Reference Image"),
-			toggle_reference_image, reference_texture.visible)
+			toggle_reference_image, reference_texture.visible),
+		Utils.create_checkbox(TranslationServer.translate("Overlay Reference Image"),
+			toggle_reference_overlay, reference_overlay)
 	]
 	
 	var reference_popup := ContextPopup.new()
@@ -193,6 +196,14 @@ func toggle_rasterization() -> void:
 
 func toggle_reference_image() -> void:
 	reference_texture.visible = not reference_texture.visible
+
+func toggle_reference_overlay() -> void:
+	reference_overlay = not reference_overlay
+	
+	if reference_overlay:
+		viewport.move_child(reference_texture, 2)
+	else:
+		viewport.move_child(reference_texture, 0)
 
 func import_reference_image() -> void:
 	FileUtils.open_reference_import_dialog()
