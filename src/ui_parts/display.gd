@@ -195,12 +195,8 @@ func toggle_reference_image() -> void:
 	reference_texture.visible = not reference_texture.visible
 
 func import_reference_image() -> void:
-	print("import reference image")
-	
 	FileUtils.open_reference_import_dialog()
-	
 	await GlobalSettings.imported_reference
-	
 	var ref_path = GlobalSettings.save_data.get("reference_path")
 	var img = Image.load_from_file(ref_path)
 	reference_texture.texture = ImageTexture.create_from_image(img)
