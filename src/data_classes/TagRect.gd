@@ -5,9 +5,9 @@ const name = "rect"
 const possible_conversions = ["circle", "ellipse", "path"]
 const icon = preload("res://visual/icons/tag/rect.svg")
 
-const known_attributes = ["x", "y", "width", "height", "rx", "ry", "transform",
-		"opacity", "fill", "fill-opacity", "stroke", "stroke-opacity", "stroke-width",
-		"stroke-linejoin"]
+const known_attributes = ["transform", "opacity", "fill", "fill-opacity",
+		"stroke", "stroke-opacity", "stroke-width", "stroke-linejoin", 
+		"x", "y", "width", "height", "rx", "ry",]
 
 func _init(pos := Vector2.ZERO) -> void:
 	for attrib_name in known_attributes:

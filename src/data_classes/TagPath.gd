@@ -5,8 +5,9 @@ const name = "path"
 const possible_conversions = []
 const icon = preload("res://visual/icons/tag/path.svg")
 
-const known_attributes = ["d", "transform", "opacity", "fill", "fill-opacity",
-		"stroke", "stroke-opacity", "stroke-width", "stroke-linecap", "stroke-linejoin"]
+const known_attributes = ["transform", "opacity", "fill", "fill-opacity",
+		"stroke", "stroke-opacity", "stroke-width", "stroke-linecap",
+		"stroke-linejoin", "d"]
 
 func _init() -> void:
 	for attrib_name in known_attributes:

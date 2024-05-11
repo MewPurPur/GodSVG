@@ -5,8 +5,8 @@ const name = "ellipse"
 const possible_conversions = ["circle", "rect", "path"]
 const icon = preload("res://visual/icons/tag/ellipse.svg")
 
-const known_attributes = ["cx", "cy", "rx", "ry", "transform", "opacity",
-		"fill", "fill-opacity", "stroke", "stroke-opacity", "stroke-width"]
+const known_attributes = ["transform", "opacity", "fill", "fill-opacity",
+		"stroke", "stroke-opacity", "stroke-width", "cx", "cy", "rx", "ry"]
 
 func _init() -> void:
 	for attrib_name in known_attributes:

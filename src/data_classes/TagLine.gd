@@ -5,8 +5,8 @@ const name = "line"
 const possible_conversions = ["path"]
 const icon = preload("res://visual/icons/tag/line.svg")
 
-const known_attributes = ["x1", "y1", "x2", "y2", "transform", "opacity", "stroke",
-		"stroke-opacity", "stroke-width", "stroke-linecap"]
+const known_attributes = ["transform", "opacity", "stroke", "stroke-opacity",
+		"stroke-width", "stroke-linecap", "x1", "y1", "x2", "y2", ]
 
 func _init(pos := Vector2.ZERO) -> void:
 	for attrib_name in known_attributes:
