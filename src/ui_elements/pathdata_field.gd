@@ -1,7 +1,7 @@
 # An editor to be tied to a pathdata attribute.
 extends VBoxContainer
 
-# So, about this editor. Most of the code code is around implementing a huge optimization.
+# So, about this editor. Most of this code is about implementing a huge optimization.
 # All the path commands are a single node that draws fake-outs in order to prevent
 # adding too many nodes to the scene tree. The real controls are only created when
 # necessary, such as when hovered or focused.

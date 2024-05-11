@@ -12,5 +12,4 @@ right_icon = ExtResource("1_sd7sr")
 script = ExtResource("1_decfb")
 code_font_tooltip = true
 
-[connection signal="focus_entered" from="." to="." method="_on_focus_entered"]
 [connection signal="text_submitted" from="." to="." method="_on_text_submitted"]

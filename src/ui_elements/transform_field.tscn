@@ -1,34 +1,15 @@
-[gd_scene load_steps=4 format=3 uid="uid://bc45fp38kar6a"]
+[gd_scene load_steps=3 format=3 uid="uid://bc45fp38kar6a"]
 
 [ext_resource type="Script" path="res://src/ui_elements/transform_field.gd" id="1_5gokr"]
-[ext_resource type="Script" path="res://src/ui_elements/BetterLineEdit.gd" id="2_aucxm"]
-[ext_resource type="Texture2D" uid="uid://coda6chhcatal" path="res://visual/icons/Arrow.svg" id="3_gqs5i"]
+[ext_resource type="Texture2D" uid="uid://coda6chhcatal" path="res://visual/icons/Arrow.svg" id="2_2uudq"]
 
-[node name="TransformField" type="HBoxContainer"]
-custom_minimum_size = Vector2(0, 22)
-theme_override_constants/separation = 0
+[node name="TransformField" type="Control"]
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 3
+anchors_preset = 0
 script = ExtResource("1_5gokr")
+icon = ExtResource("2_2uudq")
 
-[node name="LineEdit" type="LineEdit" parent="."]
-custom_minimum_size = Vector2(134, 0)
-layout_mode = 2
-size_flags_horizontal = 3
-focus_mode = 1
-mouse_filter = 1
-theme_type_variation = &"RightConnectedLineEdit"
-script = ExtResource("2_aucxm")
-code_font_tooltip = true
-
-[node name="Button" type="Button" parent="."]
-custom_minimum_size = Vector2(15, 0)
-layout_mode = 2
-focus_mode = 0
-mouse_filter = 1
-mouse_default_cursor_shape = 2
-theme_type_variation = &"LeftConnectedButton"
-icon = ExtResource("3_gqs5i")
-expand_icon = true
-
-[connection signal="focus_entered" from="LineEdit" to="." method="_on_focus_entered"]
-[connection signal="gui_input" from="Button" to="." method="_on_button_gui_input"]
-[connection signal="pressed" from="Button" to="." method="_on_button_pressed"]
+[connection signal="button_gui_input" from="." to="." method="_on_button_gui_input"]
+[connection signal="focus_entered" from="." to="." method="_on_focus_entered"]
+[connection signal="pressed" from="." to="." method="_on_pressed"]
