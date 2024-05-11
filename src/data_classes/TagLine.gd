@@ -9,16 +9,17 @@ const known_attributes = ["x1", "y1", "x2", "y2", "transform", "opacity", "strok
 		"stroke-opacity", "stroke-width", "stroke-linecap"]
 
 func _init(pos := Vector2.ZERO) -> void:
-	for attrib_name in ["transform", "opacity", "stroke", "stroke-opacity",
-	"stroke-width", "stroke-linecap"]:
+	for attrib_name in known_attributes:
 		attributes[attrib_name] = DB.attribute(attrib_name)
+	super()
+
+func user_setup(pos := Vector2.ZERO) -> void:
 	if pos != Vector2.ZERO:
 		attributes.x1.set_num(pos.x)
 		attributes.y1.set_num(pos.y)
 		attributes.x2.set_num(pos.x + 1)
 		attributes.y2.set_num(pos.y)
-	super()
-
+	attributes.stroke.set_value("black")
 
 func can_replace(new_tag: String) -> bool:
 	return new_tag == "path"

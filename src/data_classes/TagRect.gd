@@ -10,16 +10,16 @@ const known_attributes = ["x", "y", "width", "height", "rx", "ry", "transform",
 		"stroke-linejoin"]
 
 func _init(pos := Vector2.ZERO) -> void:
-	for attrib_name in ["transform", "x", "y", "rx", "ry", "opacity", "fill",
-	"fill-opacity", "stroke", "stroke-opacity", "stroke-width", "stroke-linejoin"]:
+	for attrib_name in known_attributes:
 		attributes[attrib_name] = DB.attribute(attrib_name)
+	super()
+
+func user_setup(pos := Vector2.ZERO) -> void:
 	attributes.width = DB.attribute("width", "1")
 	attributes.height = DB.attribute("height", "1")
 	if pos != Vector2.ZERO:
 		attributes.x.set_num(pos.x)
 		attributes.y.set_num(pos.y)
-	super()
-
 
 func can_replace(new_tag: String) -> bool:
 	if new_tag == "ellipse":

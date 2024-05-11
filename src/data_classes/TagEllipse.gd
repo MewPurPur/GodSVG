@@ -8,17 +8,17 @@ const icon = preload("res://visual/icons/tag/ellipse.svg")
 const known_attributes = ["cx", "cy", "rx", "ry", "transform", "opacity",
 		"fill", "fill-opacity", "stroke", "stroke-opacity", "stroke-width"]
 
-func _init(pos := Vector2.ZERO) -> void:
-	for attrib_name in ["transform", "cx", "cy", "opacity", "fill", "fill-opacity",
-	"stroke", "stroke-opacity", "stroke-width"]:
+func _init() -> void:
+	for attrib_name in known_attributes:
 		attributes[attrib_name] = DB.attribute(attrib_name)
+	super()
+
+func user_setup(pos := Vector2.ZERO) -> void:
 	attributes.rx = DB.attribute("rx", "1")
 	attributes.ry = DB.attribute("ry", "1")
 	if pos != Vector2.ZERO:
 		attributes.cx.set_num(pos.x)
 		attributes.cy.set_num(pos.y)
-	super()
-
 
 func can_replace(new_tag: String) -> bool:
 	if new_tag == "circle":

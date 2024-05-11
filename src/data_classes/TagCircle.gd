@@ -7,16 +7,16 @@ const known_attributes = ["transform", "cx", "cy", "r", "opacity", "fill",
 		"fill-opacity", "stroke", "stroke-opacity", "stroke-width"]
 const icon = preload("res://visual/icons/tag/circle.svg")
 
-func _init(pos := Vector2.ZERO) -> void:
-	for attrib_name in ["transform", "cx", "cy", "opacity", "fill", "fill-opacity",
-	"stroke", "stroke-opacity", "stroke-width"]:
+func _init() -> void:
+	for attrib_name in known_attributes:
 		attributes[attrib_name] = DB.attribute(attrib_name)
+	super()
+
+func user_setup(pos := Vector2.ZERO) -> void:
 	attributes.r = DB.attribute("r", "1")
 	if pos != Vector2.ZERO:
 		attributes.cx.set_num(pos.x)
 		attributes.cy.set_num(pos.y)
-	super()
-
 
 func can_replace(new_tag: String) -> bool:
 	return new_tag in ["ellipse", "rect", "path"]

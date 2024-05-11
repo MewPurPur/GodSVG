@@ -17,6 +17,10 @@ func _init() -> void:
 	for attribute: Attribute in attributes.values():
 		attribute.propagate_value_changed.connect(emit_attribute_changed)
 
+func user_setup(_what = null) -> void:
+	printerr("Unimplemented function")
+	breakpoint
+
 func set_unknown_attributes(attribs: Array[Attribute]) -> void:
 	unknown_attributes = attribs.duplicate()
 	for attribute in unknown_attributes:
