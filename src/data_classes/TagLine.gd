@@ -17,8 +17,8 @@ func user_setup(pos := Vector2.ZERO) -> void:
 	if pos != Vector2.ZERO:
 		attributes.x1.set_num(pos.x)
 		attributes.y1.set_num(pos.y)
-		attributes.x2.set_num(pos.x + 1)
 		attributes.y2.set_num(pos.y)
+	attributes.x2.set_num(pos.x + 1)
 	attributes.stroke.set_value("black")
 
 func can_replace(new_tag: String) -> bool:

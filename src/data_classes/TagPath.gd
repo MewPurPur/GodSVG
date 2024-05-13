@@ -15,9 +15,10 @@ func _init() -> void:
 	super()
 
 func user_setup(pos := Vector2.ZERO) -> void:
-	attributes.d.insert_command(0, "M")
-	attributes.d.set_command_property(0, "x", pos.x)
-	attributes.d.set_command_property(0, "y", pos.y)
+	if pos != Vector2.ZERO:
+		attributes.d.insert_command(0, "M")
+		attributes.d.set_command_property(0, "x", pos.x)
+		attributes.d.set_command_property(0, "y", pos.y)
 
 func can_replace(_new_tag: String) -> bool:
 	return false
