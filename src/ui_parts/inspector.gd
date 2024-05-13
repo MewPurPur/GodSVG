@@ -40,6 +40,7 @@ func add_tag(tag_name: String) -> void:
 		"rect": new_tag = TagRect.new()
 		"path": new_tag = TagPath.new()
 		"line": new_tag = TagLine.new()
+	new_tag.user_setup()
 	SVG.root_tag.add_tag(new_tag, new_tid)
 
 

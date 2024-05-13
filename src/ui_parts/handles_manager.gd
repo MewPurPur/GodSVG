@@ -774,9 +774,10 @@ func create_tag_context(pos: Vector2) -> ContextPopup:
 func add_tag_at_pos(tag_name: String, pos: Vector2) -> void:
 	var tag: Tag
 	match tag_name:
-		"path": tag = TagPath.new(pos)
-		"circle": tag = TagCircle.new(pos)
-		"ellipse": tag = TagEllipse.new(pos)
-		"rect": tag = TagRect.new(pos)
-		"line": tag = TagLine.new(pos)
+		"path": tag = TagPath.new()
+		"circle": tag = TagCircle.new()
+		"ellipse": tag = TagEllipse.new()
+		"rect": tag = TagRect.new()
+		"line": tag = TagLine.new()
+	tag.user_setup(pos)
 	SVG.root_tag.add_tag(tag, PackedInt32Array([SVG.root_tag.get_child_count()]))
