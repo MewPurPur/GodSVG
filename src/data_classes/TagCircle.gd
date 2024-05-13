@@ -3,20 +3,22 @@ class_name TagCircle extends Tag
 
 const name = "circle"
 const possible_conversions = ["ellipse", "rect", "path"]
-const known_attributes = ["transform", "cx", "cy", "r", "opacity", "fill",
-		"fill-opacity", "stroke", "stroke-opacity", "stroke-width"]
 const icon = preload("res://visual/icons/tag/circle.svg")
 
-func _init(pos := Vector2.ZERO) -> void:
-	for attrib_name in ["transform", "cx", "cy", "opacity", "fill", "fill-opacity",
-	"stroke", "stroke-opacity", "stroke-width"]:
+const known_attributes = ["transform", "opacity", "fill", "fill-opacity",
+		"stroke", "stroke-opacity", "stroke-width", "cx", "cy", "r"]
+		
+
+func _init() -> void:
+	for attrib_name in known_attributes:
 		attributes[attrib_name] = DB.attribute(attrib_name)
-	attributes.r = DB.attribute("r", "1")
+	super()
+
+func user_setup(pos := Vector2.ZERO) -> void:
+	attributes.r.set_num(1.0)
 	if pos != Vector2.ZERO:
 		attributes.cx.set_num(pos.x)
 		attributes.cy.set_num(pos.y)
-	super()
-
 
 func can_replace(new_tag: String) -> bool:
 	return new_tag in ["ellipse", "rect", "path"]

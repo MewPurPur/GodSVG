@@ -107,12 +107,15 @@ func _gui_input(event: InputEvent) -> void:
 			HandlerGUI.popup_under_pos(add_popup, vp.get_mouse_position(), vp)
 
 func add_tag(tag_name: String, tag_location: int) -> void:
+	var tag: Tag
 	match tag_name:
-		"path": SVG.root_tag.add_tag(TagPath.new(), PackedInt32Array([tag_location]))
-		"circle": SVG.root_tag.add_tag(TagCircle.new(), PackedInt32Array([tag_location]))
-		"ellipse": SVG.root_tag.add_tag(TagEllipse.new(), PackedInt32Array([tag_location]))
-		"rect": SVG.root_tag.add_tag(TagRect.new(), PackedInt32Array([tag_location]))
-		"line": SVG.root_tag.add_tag(TagLine.new(), PackedInt32Array([tag_location]))
+		"path": tag = TagPath.new()
+		"circle": tag = TagCircle.new()
+		"ellipse": tag = TagEllipse.new()
+		"rect": tag = TagRect.new()
+		"line": tag = TagLine.new()
+	tag.user_setup()
+	SVG.root_tag.add_tag(tag, PackedInt32Array([tag_location]))
 
 # This function assumes there exists a tag editor for the corresponding TID.
 func get_tag_editor_rect(tid: PackedInt32Array) -> Rect2:
