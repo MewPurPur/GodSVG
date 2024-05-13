@@ -1,7 +1,6 @@
 # An editor to be tied to a transform list attribute.
 extends LineEditButton
 
-signal focused
 var attribute: AttributeTransform
 
 const TransformPopup = preload("res://src/ui_elements/transform_popup.tscn")
@@ -32,9 +31,6 @@ func _ready() -> void:
 
 func update_translation() -> void:
 	placeholder_text = TranslationServer.translate("No transforms")
-
-func _on_focus_entered() -> void:
-	focused.emit()
 
 func sync(new_value: String) -> void:
 	text = new_value

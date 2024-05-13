@@ -45,7 +45,7 @@ static func create_btn(text: String, press_action: Callable, disabled := false,
 icon: Texture2D = null) -> Button:
 	var btn := Button.new()
 	btn.text = text
-	if icon != null:
+	if is_instance_valid(icon):
 		btn.icon = icon
 	if disabled:
 		btn.disabled = true

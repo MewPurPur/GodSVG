@@ -4,12 +4,11 @@
 [ext_resource type="Texture2D" uid="uid://coda6chhcatal" path="res://visual/icons/Arrow.svg" id="2_2uudq"]
 
 [node name="TransformField" type="Control"]
-custom_minimum_size = Vector2(160, 0)
+custom_minimum_size = Vector2(162, 0)
 layout_mode = 3
 anchors_preset = 0
 script = ExtResource("1_5gokr")
 icon = ExtResource("2_2uudq")
 
 [connection signal="button_gui_input" from="." to="." method="_on_button_gui_input"]
-[connection signal="focus_entered" from="." to="." method="_on_focus_entered"]
 [connection signal="pressed" from="." to="." method="_on_pressed"]

@@ -1,7 +1,6 @@
 # An editor to be tied to an enum attribute.
 extends LineEditButton
 
-signal focused
 var attribute: AttributeEnum
 
 const bold_font = preload("res://visual/fonts/FontBold.ttf")
@@ -23,6 +22,7 @@ func _ready() -> void:
 	set_value(attribute.get_value())
 	tooltip_text = attribute.name
 	placeholder_text = attribute.get_default()
+	focus_entered.connect(reset_font_color)
 
 func _on_pressed() -> void:
 	var btn_arr: Array[Button] = []
@@ -42,10 +42,6 @@ func _on_pressed() -> void:
 	value_picker.setup(btn_arr, false, size.x)
 	HandlerGUI.popup_under_rect(value_picker, get_global_rect(), get_viewport())
 
-
-func _on_focus_entered() -> void:
-	reset_font_color()
-	focused.emit()
 
 func _on_text_submitted(new_text: String) -> void:
 	if new_text.is_empty() or new_text in DB.attribute_enum_values[attribute.name]:

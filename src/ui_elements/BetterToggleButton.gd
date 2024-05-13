@@ -26,5 +26,6 @@ func _on_mouse_exited() -> void:
 	queue_redraw()
 
 func _draw() -> void:
-	if not disabled and button_pressed and _hovered and hover_pressed_stylebox != null:
+	if not disabled and button_pressed and _hovered and\
+	is_instance_valid(hover_pressed_stylebox):
 		draw_style_box(hover_pressed_stylebox, Rect2(Vector2.ZERO, size))

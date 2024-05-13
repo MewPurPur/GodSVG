@@ -180,6 +180,9 @@ func _on_svg_code_edit_focus_exited() -> void:
 	if GlobalSettings.save_data.svg_text != code_edit.text:
 		SVG.update_text(true)
 
+func _on_svg_code_edit_focus_entered() -> void:
+	Indications.clear_all_selections()
+
 
 func _on_optimize_button_pressed() -> void:
 	SVG.root_tag.optimize()
@@ -223,7 +226,7 @@ func clear_svg() -> void:
 	SVG.apply_svg_text(SVG.DEFAULT)
 
 func setup_highlighter() -> void:
-	if code_edit != null:
+	if is_instance_valid(code_edit):
 		var new_highlighter := SVGHighlighter.new()
 		new_highlighter.symbol_color = GlobalSettings.highlighting_symbol_color
 		new_highlighter.tag_color = GlobalSettings.highlighting_tag_color

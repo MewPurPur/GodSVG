@@ -1,11 +1,7 @@
 # An editor to be tied to a numeric attribute, plus a slider widget.
-extends HBoxContainer
+extends LineEditButton
 
-signal focused
 var attribute: AttributeNumeric
-
-@onready var num_edit: LineEdit = $LineEdit
-@onready var slider: Button = $Slider
 
 var slider_step := 0.01
 var min_value := 0.0
@@ -49,29 +45,24 @@ func set_num(new_number: float, update_type := Utils.UpdateType.REGULAR) -> void
 func _ready() -> void:
 	set_value(attribute.get_value())
 	attribute.value_changed.connect(set_value)
-	num_edit.tooltip_text = attribute.name
-	num_edit.placeholder_text = attribute.get_default()
-	slider.resized.connect(queue_redraw)  # Whyyyyy are their sizes wrong at first...
-	num_edit.text_submitted.connect(set_value)
-
-func _on_focus_entered() -> void:
-	num_edit.remove_theme_color_override("font_color")
-	focused.emit()
+	tooltip_text = attribute.name
+	placeholder_text = attribute.get_default()
+	text_submitted.connect(set_value)
+	focus_entered.connect(reset_font_color)
 
 func _on_text_change_canceled() -> void:
 	sync(attribute.get_value())
 
 func sync(new_value: String) -> void:
-	if num_edit != null:
-		num_edit.text = new_value
-		num_edit.remove_theme_color_override("font_color")
-		if new_value == attribute.get_default():
-			num_edit.add_theme_color_override("font_color", GlobalSettings.basic_color_warning)
+	text = new_value
+	reset_font_color()
+	if new_value == attribute.get_default():
+		font_color = GlobalSettings.basic_color_warning
 	queue_redraw()
 
 func _notification(what: int) -> void:
 	if what == Utils.CustomNotification.BASIC_COLORS_CHANGED:
-		sync(num_edit.text)
+		sync(text)
 
 
 # Slider
@@ -87,8 +78,8 @@ var slider_dragged := false:
 				# FIXME workaround because "button_pressed" remains true
 				# if you unclick while outside of the area, for some reason.
 				# Couldn't replicate this in a minimal project.
-				remove_child(slider)
-				add_child(slider)
+				remove_child(temp_button)
+				add_child(temp_button)
 
 var slider_hovered := false:
 	set(new_value):
@@ -97,33 +88,40 @@ var slider_hovered := false:
 			queue_redraw()
 
 func _draw() -> void:
-	var slider_size := slider.get_size()
-	var line_edit_size := num_edit.get_size()
-	draw_set_transform(Vector2(line_edit_size.x, 1))
+	super()
 	var stylebox := StyleBoxFlat.new()
 	stylebox.corner_radius_top_right = 5
 	stylebox.corner_radius_bottom_right = 5
-	stylebox.bg_color = num_edit.get_theme_stylebox("normal", "LineEdit").bg_color
-	draw_style_box(stylebox, Rect2(Vector2.ZERO, slider_size - Vector2(1, 2)))
-	var fill_height := (slider_size.y - 4) * (attribute.get_num() - min_value) / max_value
+	stylebox.bg_color = get_theme_stylebox("normal", "LineEdit").bg_color
+	stylebox.draw(ci, Rect2(get_size().x - BUTTON_WIDTH,
+			1, BUTTON_WIDTH - 2, get_size().y - 2))
+	var fill_height := (get_size().y - 4) * (attribute.get_num() - min_value) / max_value
 	# Create a stylebox that'll occupy the exact amount of space.
 	var fill_stylebox := StyleBoxFlat.new()
+	fill_stylebox.bg_color = Color("#def")
+	if not slider_dragged and slider_hovered:
+		fill_stylebox.bg_color.a = 0.75
+	elif not slider_hovered:
+		fill_stylebox.bg_color.a = 0.5
+	fill_stylebox.draw(ci, Rect2(get_size().x - BUTTON_WIDTH,
+			get_size().y - 2 - fill_height, BUTTON_WIDTH - 2, fill_height))
 	if slider_dragged:
-		fill_stylebox.bg_color = Color("#def")
+		draw_button_border("pressed")
 	elif slider_hovered:
-		fill_stylebox.bg_color = Color("#defb")
+		draw_button_border("hover")
 	else:
-		fill_stylebox.bg_color = Color("#def8")
-	draw_style_box(fill_stylebox, Rect2(0, 1 + slider_size.y - 4 - fill_height,
-			slider_size.x - 2, fill_height))
+		draw_button_border("normal")
 
 func _on_slider_gui_input(event: InputEvent) -> void:
+	if not temp_button.mouse_exited.is_connected(_on_slider_mouse_exited):
+		temp_button.mouse_exited.connect(_on_slider_mouse_exited)
+	
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and\
 	event.is_pressed():
 		accept_event()
 		Utils.throw_mouse_motion_event(get_viewport())
 	else:
-		slider.mouse_filter = Utils.mouse_filter_pass_non_drag_events(event)
+		temp_button.mouse_filter = Utils.mouse_filter_pass_non_drag_events(event)
 	
 	if not slider_dragged:
 		if event is InputEventMouseMotion and event.button_mask == 0:
@@ -149,7 +147,7 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func get_slider_value_at_y(y_coord: float) -> float:
 	return snappedf(lerpf(max_value, min_value,
-			(y_coord - 4) / (slider.get_size().y - 4)), slider_step)
+			(y_coord - 4) / (temp_button.get_size().y - 4)), slider_step)
 
 func _on_slider_mouse_exited() -> void:
 	slider_hovered = false

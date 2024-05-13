@@ -42,5 +42,9 @@ func _ready() -> void:
 		elif attribute is AttributeEnum:
 			input_field = EnumField.instantiate()
 		input_field.attribute = attribute
-		input_field.focused.connect(Indications.normal_select.bind(tid))
+		# Focused signal for pathdata attribute.
+		if input_field.has_signal("focused"):
+			input_field.focused.connect(Indications.normal_select.bind(tid))
+		else:
+			input_field.focus_entered.connect(Indications.normal_select.bind(tid))
 		attribute_container.add_child(input_field)
