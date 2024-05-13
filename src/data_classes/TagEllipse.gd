@@ -14,8 +14,8 @@ func _init() -> void:
 	super()
 
 func user_setup(pos := Vector2.ZERO) -> void:
-	attributes.rx = DB.attribute("rx", "1")
-	attributes.ry = DB.attribute("ry", "1")
+	attributes.rx.set_num(1.0)
+	attributes.ry.set_num(1.0)
 	if pos != Vector2.ZERO:
 		attributes.cx.set_num(pos.x)
 		attributes.cy.set_num(pos.y)
