@@ -28,38 +28,24 @@ const delimiters = {
 	'TranslationServer.translate_plural("""': '""")',
 }
 
-var messages: Array[Message] = [Message.new("translation-credits")]
+var messages: Array[Message] = [Message.new("translation-credits", PackedStringArray())]
 
 
 class Message:
-	var refs: Array[MsgRef]
+	# The files this message is in are added as comments. The lines aren't
+	# kept track of, as they don't provide useful context and change frequently.
+	var files := PackedStringArray()
 	var msgid := String()
 	
-	func _init(p_msgid: String, ref := MsgRef.new("", 0)):
+	func _init(p_msgid: String, p_files: PackedStringArray):
 		msgid = p_msgid
-		if not ref.is_empty():
-			refs.append(ref)
+		files = p_files.duplicate()
 	
 	func _to_string() -> String:
 		var ret := "\n"
-		for ref in refs:
-			ret += "#: %s\n" % ref
+		for file in files:
+			ret += "#: %s\n" % file
 		return ret + 'msgid "%s"\nmsgstr ""\n' % msgid
-
-
-class MsgRef:
-	var path := String()
-	var line := 0
-	
-	func _init(p_path: String, p_line: int):
-		path = p_path
-		line = p_line
-	
-	func is_empty():
-		return path.is_empty()
-	
-	func _to_string():
-		return path + ":%d" % line
 
 
 func _run() -> void:
@@ -83,20 +69,19 @@ func search_directory(dir: String) -> void:
 					break
 				
 				var string_start := cursor + start_delim.length()
-				var line := file_text.count("\n", 0, string_start) + 1
 				cursor = file_text.find(end_delim, cursor)
 				
 				var msgid := file_text.substr(string_start, cursor - string_start)
-				var ref := MsgRef.new(dir.path_join(file_name), line)
+				var full_file_name := dir.path_join(file_name)
 				
 				var already_exists := false
 				for msg in messages:
 					if msg.msgid == msgid:
 						already_exists = true
-						msg.refs.append(ref)
+						msg.files.append(full_file_name)
 						break
 				if not already_exists:
-					messages.append(Message.new(msgid, ref))
+					messages.append(Message.new(msgid, PackedStringArray([full_file_name])))
 
 
 func update_translations() -> void:
@@ -114,14 +99,8 @@ func update_translations() -> void:
 		if not file.get_extension() == "po" and file != "GodSVG.pot":
 			continue
 		
-		var args := PackedStringArray([
-			"--update",
-			"--quiet",
-			"--verbose",
-			"--backup=off",
-			ProjectSettings.globalize_path("translations").path_join(file),
-			location
-		])
+		var args := PackedStringArray(["--update", "--quiet", "--verbose", "--backup=off",
+				ProjectSettings.globalize_path("translations").path_join(file), location])
 		var output := []
 		var result := OS.execute("msgmerge", args, output, true)
 		if not result == -1:

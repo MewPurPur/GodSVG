@@ -196,6 +196,7 @@ func _on_snap_number_edit_value_changed(new_value: float) -> void:
 	update_snap_config()
 
 
+# The strings are intentionally not localized.
 func update_debug() -> void:
 	var debug_text := ""
 	debug_text += "FPS: %s\n" % Performance.get_monitor(Performance.TIME_FPS)
