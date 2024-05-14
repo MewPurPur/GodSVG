@@ -8,7 +8,7 @@ const icon = preload("res://visual/icons/tag/line.svg")
 const known_attributes = ["transform", "opacity", "stroke", "stroke-opacity",
 		"stroke-width", "stroke-linecap", "x1", "y1", "x2", "y2", ]
 
-func _init(pos := Vector2.ZERO) -> void:
+func _init() -> void:
 	for attrib_name in known_attributes:
 		attributes[attrib_name] = DB.attribute(attrib_name)
 	super()

@@ -9,7 +9,7 @@ const known_attributes = ["transform", "opacity", "fill", "fill-opacity",
 		"stroke", "stroke-opacity", "stroke-width", "stroke-linejoin", 
 		"x", "y", "width", "height", "rx", "ry",]
 
-func _init(pos := Vector2.ZERO) -> void:
+func _init() -> void:
 	for attrib_name in known_attributes:
 		attributes[attrib_name] = DB.attribute(attrib_name)
 	super()
