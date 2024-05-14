@@ -120,8 +120,7 @@ func _on_commands_mouse_exited() -> void:
 		for field in fields:
 			if field.has_focus():
 				active_idx = cmd_idx
-		# Should switch out the controls for fake outs. This is safe even when
-		# you've focused a BetterLineEdit, because it pauses the tree.
+		# Should switch out the controls for fake outs.
 		if active_idx != cmd_idx:
 			fields = []
 			deactivate()
