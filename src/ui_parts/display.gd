@@ -24,7 +24,8 @@ const NumberField = preload("res://src/ui_elements/number_field.tscn")
 @onready var panel_container: PanelContainer = $PanelContainer
 @onready var viewport_panel: PanelContainer = $ViewportPanel
 @onready var debug_container: MarginContainer = $ViewportPanel/DebugContainer
-@onready var debug_label: Label = $ViewportPanel/DebugContainer/DebugLabel
+@onready var debug_label: Label = $ViewportPanel/DebugContainer/VBoxContainer/DebugLabel
+@onready var input_debug_label: Label = $ViewportPanel/DebugContainer/VBoxContainer/InputDebugLabel
 
 
 func _notification(what: int) -> void:
@@ -41,6 +42,7 @@ func _ready() -> void:
 	update_translations()
 	update_theme()
 	update_snap_config()
+	get_window().window_input.connect(_input_debug_handler)
 	view_settings_updated.emit(grid_visuals.visible, controls.visible,
 			viewport.display_texture.rasterized)
 
@@ -202,8 +204,17 @@ func update_debug() -> void:
 	debug_text += "Static Mem: %s\n" % String.humanize_size(int(Performance.get_monitor(
 			Performance.MEMORY_STATIC)))
 	debug_text += "Nodes: %s\n" % Performance.get_monitor(Performance.OBJECT_NODE_COUNT)
-	debug_text += "Objects: %s" % Performance.get_monitor(Performance.OBJECT_COUNT)
+	debug_text += "Objects: %s\n" % Performance.get_monitor(Performance.OBJECT_COUNT)
+	debug_text += "Input:"
 	debug_label.text = debug_text
 	# Set up the next update if the container is still visible.
 	if debug_container.visible:
 		get_tree().create_timer(1.0).timeout.connect(update_debug)
+
+func _input_debug_handler(event: InputEvent) -> void:
+	if event.is_pressed():
+		var text := input_debug_label.text
+		text += event.as_text() + "\n"
+		if input_debug_label.text.count("\n") > 10:
+			text = text.right(-text.find("\n") - 1)
+		input_debug_label.text = text
