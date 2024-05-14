@@ -1,13 +1,9 @@
 # An editor to be tied to a transform list attribute.
-extends HBoxContainer
+extends LineEditButton
 
-signal focused
 var attribute: AttributeTransform
 
 const TransformPopup = preload("res://src/ui_elements/transform_popup.tscn")
-
-@onready var line_edit: BetterLineEdit = $LineEdit
-@onready var popup_button: Button = $Button
 
 func set_value(new_value: String, update_type := Utils.UpdateType.REGULAR) -> void:
 	sync(attribute.format(new_value))
@@ -28,24 +24,21 @@ func _notification(what: int) -> void:
 func _ready() -> void:
 	set_value(attribute.get_value())
 	attribute.value_changed.connect(set_value)
-	line_edit.tooltip_text = attribute.name
-	line_edit.text_submitted.connect(set_value)
+	tooltip_text = attribute.name
+	text_submitted.connect(set_value)
 	update_translation()
 
 
 func update_translation() -> void:
-	line_edit.placeholder_text = TranslationServer.translate("No transforms")
-
-func _on_focus_entered() -> void:
-	focused.emit()
+	placeholder_text = TranslationServer.translate("No transforms")
 
 func sync(new_value: String) -> void:
-	line_edit.text = new_value
+	text = new_value
 
-func _on_button_pressed() -> void:
+func _on_pressed() -> void:
 	var transform_popup := TransformPopup.instantiate()
 	transform_popup.attribute_ref = attribute
-	HandlerGUI.popup_under_rect(transform_popup, line_edit.get_global_rect(), get_viewport())
+	HandlerGUI.popup_under_rect(transform_popup, get_global_rect(), get_viewport())
 
 
 func _on_button_gui_input(event: InputEvent) -> void:
@@ -54,4 +47,5 @@ func _on_button_gui_input(event: InputEvent) -> void:
 		accept_event()
 		Utils.throw_mouse_motion_event(get_viewport())
 	else:
-		popup_button.mouse_filter = Utils.mouse_filter_pass_non_drag_events(event)
+		if is_instance_valid(temp_button):
+			temp_button.mouse_filter = Utils.mouse_filter_pass_non_drag_events(event)

@@ -6,7 +6,7 @@ signal value_changed
 @export var setting_name: String
 @export var enable_alpha := true
 
-@onready var color_edit: HBoxContainer = $PanelContainer/HBoxContainer/ColorEdit
+@onready var color_edit: LineEditButton = $PanelContainer/HBoxContainer/ColorEdit
 @onready var label: Label = $Label
 @onready var reset_button: Button = $PanelContainer/HBoxContainer/ResetButton
 

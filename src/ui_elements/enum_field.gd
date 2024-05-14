@@ -1,14 +1,10 @@
 # An editor to be tied to an enum attribute.
-extends HBoxContainer
+extends LineEditButton
 
-signal focused
 var attribute: AttributeEnum
 
 const bold_font = preload("res://visual/fonts/FontBold.ttf")
 const reload_icon = preload("res://visual/icons/Reload.svg")
-
-@onready var indicator: LineEdit = $LineEdit
-@onready var button: Button = $Button
 
 func set_value(new_value: String, update_type := Utils.UpdateType.REGULAR) -> void:
 	sync(new_value)
@@ -24,10 +20,11 @@ func set_value(new_value: String, update_type := Utils.UpdateType.REGULAR) -> vo
 
 func _ready() -> void:
 	set_value(attribute.get_value())
-	indicator.tooltip_text = attribute.name
-	indicator.placeholder_text = attribute.get_default()
+	tooltip_text = attribute.name
+	placeholder_text = attribute.get_default()
+	focus_entered.connect(reset_font_color)
 
-func _on_button_pressed() -> void:
+func _on_pressed() -> void:
 	var btn_arr: Array[Button] = []
 	# Add a default.
 	var reset_btn := Utils.create_btn("", set_value.bind(""),
@@ -43,12 +40,8 @@ func _on_button_pressed() -> void:
 		btn_arr.append(btn)
 	var value_picker := ContextPopup.new()
 	value_picker.setup(btn_arr, false, size.x)
-	HandlerGUI.popup_under_rect(value_picker, indicator.get_global_rect(), get_viewport())
+	HandlerGUI.popup_under_rect(value_picker, get_global_rect(), get_viewport())
 
-
-func _on_focus_entered() -> void:
-	indicator.remove_theme_color_override("font_color")
-	focused.emit()
 
 func _on_text_submitted(new_text: String) -> void:
 	if new_text.is_empty() or new_text in DB.attribute_enum_values[attribute.name]:
@@ -61,19 +54,18 @@ func _on_text_change_canceled() -> void:
 
 
 func _on_text_changed(new_text: String) -> void:
-	indicator.add_theme_color_override("font_color", GlobalSettings.get_validity_color(
-			not new_text in DB.attribute_enum_values[attribute.name]))
+	font_color = GlobalSettings.get_validity_color(
+			not new_text in DB.attribute_enum_values[attribute.name])
 
 func sync(new_value: String) -> void:
-	if indicator != null:
-		indicator.text = new_value
-		indicator.remove_theme_color_override("font_color")
-		if new_value == attribute.get_default():
-			indicator.add_theme_color_override("font_color", GlobalSettings.basic_color_warning)
+	text = new_value
+	reset_font_color()
+	if new_value == attribute.get_default():
+		font_color = GlobalSettings.basic_color_warning
 
 func _notification(what: int) -> void:
 	if what == Utils.CustomNotification.BASIC_COLORS_CHANGED:
-		sync(indicator.text)
+		sync(text)
 
 
 func _on_button_gui_input(event: InputEvent) -> void:
@@ -82,4 +74,4 @@ func _on_button_gui_input(event: InputEvent) -> void:
 		accept_event()
 		Utils.throw_mouse_motion_event(get_viewport())
 	else:
-		button.mouse_filter = Utils.mouse_filter_pass_non_drag_events(event)
+		temp_button.mouse_filter = Utils.mouse_filter_pass_non_drag_events(event)

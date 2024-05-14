@@ -4,7 +4,7 @@ const code_font = preload("res://visual/fonts/FontMono.ttf")
 
 static var TagFrame: PackedScene:
 	get:
-		if TagFrame == null:
+		if !is_instance_valid(TagFrame):
 			TagFrame = load("res://src/ui_parts/tag_frame.tscn")
 		return TagFrame
 
@@ -212,7 +212,7 @@ func _draw() -> void:
 		drop_sb.border_width_bottom = 2
 	elif proposed_drop_tid == tid + PackedInt32Array([0]):
 		drop_sb.set_border_width_all(2)
-		if child_tags_container != null:
+		if is_instance_valid(child_tags_container):
 			drop_sb.border_color = Color(Color.YELLOW, 0.4)
 	else:
 		return

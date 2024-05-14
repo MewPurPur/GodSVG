@@ -1,7 +1,6 @@
 # An editor to be tied to a numeric attribute.
 extends BetterLineEdit
 
-signal focused
 var attribute: AttributeNumeric
 
 var min_value := 0.0
@@ -48,7 +47,6 @@ func _ready() -> void:
 
 func _on_focus_entered() -> void:
 	remove_theme_color_override("font_color")
-	focused.emit()
 
 func _on_text_change_canceled() -> void:
 	sync(attribute.get_value())

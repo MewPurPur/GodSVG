@@ -4,7 +4,7 @@ signal color_deletion_requested
 
 @onready var color_label: Label = %LabelContainer/ColorLabel
 @onready var color_name_edit: BetterLineEdit = %ConfigureContainer/TopContainer/NameEdit
-@onready var color_edit: HBoxContainer = %ConfigureContainer/BottomContainer/ColorEdit
+@onready var color_edit: LineEditButton = %ConfigureContainer/BottomContainer/ColorEdit
 @onready var delete_button: Button = %ConfigureContainer/BottomContainer/DeleteButton
 @onready var label_container: HBoxContainer = %LabelContainer
 

@@ -140,7 +140,7 @@ func delete_tags(tids: Array[PackedInt32Array]) -> void:
 	for tid in tids:
 		var parent_tid := Utils.get_parent_tid(tid)
 		var parent_tag := get_tag(parent_tid)
-		if parent_tag != null:
+		if is_instance_valid(parent_tag):
 			var tag_idx := tid[-1]
 			if tag_idx < parent_tag.get_child_count():
 				parent_tag.child_tags.remove_at(tag_idx)

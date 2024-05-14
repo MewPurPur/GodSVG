@@ -25,7 +25,7 @@ func setup() -> void:
 	var preview_text := SVGParser.svg_to_text(imported_text_parse_result.svg)
 	var preview_parse_result := SVGParser.text_to_svg(preview_text)
 	var preview := preview_parse_result.svg
-	if preview != null:
+	if is_instance_valid(preview):
 		texture_preview.setup(SVGParser.svg_to_text(preview), preview.get_size())
 	
 	if imported_text_parse_result.error != SVGParser.ParseError.OK:

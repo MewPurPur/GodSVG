@@ -164,6 +164,7 @@ fit_content = true
 [connection signal="pressed" from="PanelContainer/CodeButtons/MetaActions/ImportButton" to="." method="_on_import_button_pressed"]
 [connection signal="pressed" from="PanelContainer/CodeButtons/MetaActions/ExportButton" to="." method="_on_export_button_pressed"]
 [connection signal="caret_changed" from="ScriptEditor/SVGCodeEdit" to="ScriptEditor/SVGCodeEdit" method="redraw_caret"]
+[connection signal="focus_entered" from="ScriptEditor/SVGCodeEdit" to="." method="_on_svg_code_edit_focus_entered"]
 [connection signal="focus_entered" from="ScriptEditor/SVGCodeEdit" to="ScriptEditor/SVGCodeEdit" method="_on_focus_entered"]
 [connection signal="focus_exited" from="ScriptEditor/SVGCodeEdit" to="." method="_on_svg_code_edit_focus_exited"]
 [connection signal="focus_exited" from="ScriptEditor/SVGCodeEdit" to="ScriptEditor/SVGCodeEdit" method="_on_focus_exited"]
