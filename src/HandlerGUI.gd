@@ -56,7 +56,7 @@ func remove_overlay(overlay_ref: ColorRect = null) -> void:
 		return
 	# If an overlay_ref is passed but doesn't match, do nothing.
 	# This is a hack against exiting overlay menus closing other menus than their own.
-	if overlay_ref != null and overlay_ref != overlay_stack.back():
+	if is_instance_valid(overlay_ref) and overlay_ref != overlay_stack.back():
 		return
 	
 	overlay_ref = overlay_stack.pop_back()
@@ -87,7 +87,7 @@ func remove_popup_overlay(overlay_ref: Control = null) -> void:
 	if popup_overlay_stack.is_empty():
 		return
 	# Refer to remove_overlay() for why the logic is like this.
-	if overlay_ref != null and overlay_ref != popup_overlay_stack.back():
+	if is_instance_valid(overlay_ref) and overlay_ref != popup_overlay_stack.back():
 		return
 	
 	overlay_ref = popup_overlay_stack.pop_back()
@@ -157,6 +157,16 @@ func _parse_popup_overlay_event(event: InputEvent) -> void:
 var last_mouse_click_double := false
 
 func _input(event: InputEvent) -> void:
+	# Clear popups or overlays.
+	if not popup_overlay_stack.is_empty() and event.is_action_pressed("ui_cancel"):
+		get_viewport().set_input_as_handled()
+		remove_popup_overlay()
+		return
+	elif not overlay_stack.is_empty() and event.is_action_pressed("ui_cancel"):
+		get_viewport().set_input_as_handled()
+		remove_overlay()
+		return
+	
 	# So, it turns out that when you double click, only the press will count as such.
 	# I don't like that, and it causes problems! So mark the release as double_click too.
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
@@ -173,18 +183,11 @@ func _input(event: InputEvent) -> void:
 		get_viewport().set_input_as_handled()
 		FileUtils.open_save_dialog("svg", FileUtils.native_file_save, FileUtils.save_svg_to_file)
 
+
 func _unhandled_input(event: InputEvent) -> void:
-	# Clear popups or overlays.
-	if not popup_overlay_stack.is_empty():
+	# Stop stuff from propagating when there's overlays.
+	if not popup_overlay_stack.is_empty() or not overlay_stack.is_empty():
 		get_viewport().set_input_as_handled()
-		if event.is_action_pressed("ui_cancel"):
-			remove_popup_overlay()
-		return
-	elif not overlay_stack.is_empty():
-		get_viewport().set_input_as_handled()
-		if event.is_action_pressed("ui_cancel"):
-			remove_overlay()
-		return
 	
 	if event.is_action_pressed("redo"):
 		get_viewport().set_input_as_handled()

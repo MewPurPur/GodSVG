@@ -96,7 +96,7 @@ func _draw() -> void:
 	if editable and _hovered and has_theme_stylebox("hover"):
 		draw_style_box(get_theme_stylebox("hover"), Rect2(Vector2.ZERO, size))
 
-func _input(event: InputEvent) -> void:
+func _unhandled_input(event: InputEvent) -> void:
 	if (has_focus() and event is InputEventMouseButton and event.is_pressed() and\
 	not get_global_rect().has_point(event.position)):
 		release_focus()

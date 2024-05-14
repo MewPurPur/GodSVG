@@ -42,3 +42,6 @@ layout_mode = 2
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 2

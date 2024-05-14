@@ -1,36 +1,15 @@
-[gd_scene load_steps=3 format=3 uid="uid://bp2vpf7g8w8aj"]
+[gd_scene load_steps=2 format=3 uid="uid://bp2vpf7g8w8aj"]
 
 [ext_resource type="Script" path="res://src/ui_elements/number_field_with_slider.gd" id="1_ymm02"]
-[ext_resource type="Script" path="res://src/ui_elements/BetterLineEdit.gd" id="2_ytia1"]
 
-[node name="NumberFieldWithSlider" type="HBoxContainer"]
-custom_minimum_size = Vector2(0, 22)
-offset_right = 46.0
-offset_bottom = 22.0
-theme_override_constants/separation = 0
-script = ExtResource("1_ymm02")
-
-[node name="LineEdit" type="LineEdit" parent="."]
-custom_minimum_size = Vector2(46, 0)
-layout_mode = 2
-size_flags_horizontal = 3
-focus_mode = 1
-mouse_filter = 1
-theme_type_variation = &"RightConnectedLineEdit"
-script = ExtResource("2_ytia1")
-code_font_tooltip = true
-
-[node name="Slider" type="Button" parent="."]
+[node name="NumberFieldWithSlider" type="Control"]
 clip_contents = true
-custom_minimum_size = Vector2(12, 0)
-layout_mode = 2
-focus_mode = 0
-mouse_default_cursor_shape = 2
-theme_type_variation = &"LeftConnectedButtonTransparent"
-keep_pressed_outside = true
+custom_minimum_size = Vector2(62, 0)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 100.0
+script = ExtResource("1_ymm02")
+button_visuals = false
 
-[connection signal="focus_entered" from="LineEdit" to="." method="_on_focus_entered"]
-[connection signal="text_change_canceled" from="LineEdit" to="." method="_on_text_change_canceled"]
-[connection signal="text_submitted" from="LineEdit" to="." method="_on_text_submitted"]
-[connection signal="gui_input" from="Slider" to="." method="_on_slider_gui_input"]
-[connection signal="mouse_exited" from="Slider" to="." method="_on_slider_mouse_exited"]
+[connection signal="button_gui_input" from="." to="." method="_on_slider_gui_input"]
+[connection signal="text_change_canceled" from="." to="." method="_on_text_change_canceled"]

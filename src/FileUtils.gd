@@ -127,7 +127,7 @@ static func apply_svg_from_path(path: String) -> int:
 	elif extension != "svg":
 		error = TranslationServer.translate(
 				"\"{passed_extension}\" is a unsupported file extension. Only \"svg\" files are supported.").format({"passed_extension": extension})
-	elif svg_file == null:
+	elif !is_instance_valid(svg_file):
 		error = TranslationServer.translate(
 				"The file couldn't be opened.\nTry checking the file path, ensure that the file is not deleted, or choose a different file.")
 	

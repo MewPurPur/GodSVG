@@ -622,13 +622,13 @@ func respond_to_input_event(event: InputEvent) -> void:
 		return
 	
 	# Set the nearest handle as hovered, if any handles are within range.
-	if (event is InputEventMouseMotion and dragged_handle == null and\
+	if (event is InputEventMouseMotion and !is_instance_valid(dragged_handle) and\
 	event.button_mask == 0) or (event is InputEventMouseButton and\
 	(event.button_index in [MOUSE_BUTTON_LEFT, MOUSE_BUTTON_RIGHT, MOUSE_BUTTON_WHEEL_DOWN,
 	MOUSE_BUTTON_WHEEL_UP, MOUSE_BUTTON_WHEEL_LEFT, MOUSE_BUTTON_WHEEL_RIGHT])):
 		var nearest_handle := find_nearest_handle(event.position / Indications.zoom +\
 				get_node(^"../..").view.position)
-		if nearest_handle != null:
+		if is_instance_valid(nearest_handle):
 			hovered_handle = nearest_handle
 			if hovered_handle is PathHandle:
 				Indications.set_hovered(hovered_handle.tid, hovered_handle.command_index)
@@ -652,7 +652,7 @@ func respond_to_input_event(event: InputEvent) -> void:
 		should_deselect_all = false
 		var event_pos: Vector2 = event.position / Indications.zoom +\
 				get_node(^"../..").view.position
-		if dragged_handle != null:
+		if is_instance_valid(dragged_handle):
 			# Move the handle that's being dragged.
 			if snap_enabled:
 				event_pos = event_pos.snapped(snap_vector)
@@ -669,7 +669,7 @@ func respond_to_input_event(event: InputEvent) -> void:
 		
 		if event.button_index == MOUSE_BUTTON_LEFT:
 			# React to LMB actions.
-			if hovered_handle != null and event.is_pressed():
+			if is_instance_valid(hovered_handle) and event.is_pressed():
 				dragged_handle = hovered_handle
 				dragged_handle.initial_pos = dragged_handle.pos
 				var inner_idx := -1
@@ -690,22 +690,22 @@ func respond_to_input_event(event: InputEvent) -> void:
 					Indications.shift_select(dragged_tid, inner_idx)
 				else:
 					Indications.normal_select(dragged_tid, inner_idx)
-			elif dragged_handle != null and event.is_released():
+			elif is_instance_valid(dragged_handle) and event.is_released():
 				if was_handle_moved:
 					var new_pos := dragged_handle.transform.affine_inverse() *\
 							SVG.root_tag.world_to_canvas(event_pos)
 					dragged_handle.set_pos(new_pos, true)
 					was_handle_moved = false
 				dragged_handle = null
-			elif hovered_handle == null and event.is_pressed():
+			elif !is_instance_valid(hovered_handle) and event.is_pressed():
 				should_deselect_all = true
-			elif hovered_handle == null and event.is_released() and should_deselect_all:
+			elif !is_instance_valid(hovered_handle) and event.is_released() and should_deselect_all:
 				dragged_handle = null
 				Indications.clear_all_selections()
 		elif event.button_index == MOUSE_BUTTON_RIGHT and event.is_pressed():
 			var vp := get_viewport()
 			var popup_pos := vp.get_mouse_position()
-			if hovered_handle == null:
+			if !is_instance_valid(hovered_handle):
 				Indications.clear_all_selections()
 				HandlerGUI.popup_under_pos(create_tag_context(event_pos), popup_pos, vp)
 			else:

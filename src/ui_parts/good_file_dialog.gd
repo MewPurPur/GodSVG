@@ -62,15 +62,15 @@ class Actions:
 		right_click_action = on_right_click
 
 func call_activation_action(actions: Actions) -> void:
-	if actions != null and not actions.activation_action.is_null():
+	if is_instance_valid(actions) and not actions.activation_action.is_null():
 		actions.activation_action.call()
 
 func call_selection_action(actions: Actions) -> void:
-	if actions != null and not actions.selection_action.is_null():
+	if is_instance_valid(actions) and not actions.selection_action.is_null():
 		actions.selection_action.call()
 
 func call_right_click_action(actions: Actions) -> void:
-	if actions != null and not actions.right_click_action.is_null():
+	if is_instance_valid(actions) and not actions.right_click_action.is_null():
 		actions.right_click_action.call()
 
 
@@ -142,7 +142,7 @@ func file_sort(file1: String, file2: String) -> bool:
 # This function requires a safe input.
 func set_dir(dir: String) -> void:
 	DA = DirAccess.open(dir)
-	if DA == null:
+	if !is_instance_valid(DA):
 		return
 	
 	file_list.clear()
@@ -227,13 +227,13 @@ func _setup_file_images() -> void:
 	var visible_end := visible_start + file_list.size.y
 	for item_idx in file_list.item_count:
 		var file_rect := file_list.get_item_rect(item_idx)
-		if file_list.get_item_icon(item_idx) == null and\
+		if !is_instance_valid(file_list.get_item_icon(item_idx)) and\
 		file_rect.end.y > visible_start and file_rect.position.y < visible_end:
 			var file := file_list.get_item_text(item_idx)
 			match file.get_extension():
 				"png":
 					var img := Image.load_from_file(current_dir.path_join(file))
-					if img == null or img.is_empty():
+					if !is_instance_valid(img) or img.is_empty():
 						file_list.set_item_icon(item_idx, broken_file_icon)
 					else:
 						file_list.set_item_icon(item_idx, ImageTexture.create_from_image(img))
@@ -243,7 +243,7 @@ func _setup_file_images() -> void:
 							FileAccess.READ).get_as_text()
 					var img := Image.new()
 					img.load_svg_from_string(svg_text)
-					if img == null or img.is_empty():
+					if !is_instance_valid(img) or img.is_empty():
 						file_list.set_item_icon(item_idx, broken_file_icon)
 					else:
 						img.load_svg_from_string(svg_text,
@@ -355,7 +355,7 @@ func _on_file_field_text_submitted(new_text: String) -> void:
 
 func _on_path_field_text_submitted(new_text: String) -> void:
 	DA = DirAccess.open(new_text)
-	if DA != null:
+	if is_instance_valid(DA):
 		set_dir(new_text)
 	else:
 		path_field.text = current_dir
@@ -385,7 +385,7 @@ func _on_replace_button_pressed() -> void:
 
 func _on_create_folder_create_button_pressed() -> void:
 	DA = DirAccess.open(current_dir)
-	if DA == null:
+	if !is_instance_valid(DA):
 		return
 	
 	var err := DA.make_dir(create_folder_line_edit.text)

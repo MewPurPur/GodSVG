@@ -16,7 +16,6 @@ script = ExtResource("1_133xu")
 
 [node name="LineEdit" type="LineEdit" parent="."]
 layout_mode = 2
-focus_mode = 1
 theme_type_variation = &"RightConnectedLineEdit"
 theme_override_fonts/font = ExtResource("2_s4ro5")
 script = ExtResource("1_0ifbb")

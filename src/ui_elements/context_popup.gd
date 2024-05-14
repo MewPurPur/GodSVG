@@ -1,4 +1,8 @@
 class_name ContextPopup extends PanelContainer
+## Standard popup for actions with methods for easy setup.
+
+func _init() -> void:
+	mouse_filter = Control.MOUSE_FILTER_STOP
 
 func setup_button(btn: Button, align_left: bool) -> Button:
 	if not btn is CheckBox:
