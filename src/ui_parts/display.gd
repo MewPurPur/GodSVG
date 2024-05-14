@@ -211,10 +211,21 @@ func update_debug() -> void:
 	if debug_container.visible:
 		get_tree().create_timer(1.0).timeout.connect(update_debug)
 
+var last_input := ""
+var last_input_count := 1
+
 func _input_debug_handler(event: InputEvent) -> void:
 	if event.is_pressed():
-		var text := input_debug_label.text
-		text += event.as_text() + "\n"
-		if input_debug_label.text.count("\n") > 10:
-			text = text.right(-text.find("\n") - 1)
-		input_debug_label.text = text
+		var debug_text := input_debug_label.text
+		var event_text := event.as_text()
+		if event_text == last_input:
+			debug_text = debug_text.left(debug_text.left(-1).rfind("\n") + 1)
+			last_input_count += 1
+			event_text += " (%d)" % last_input_count
+		else:
+			last_input_count = 1
+			last_input = event_text
+		debug_text += event_text + "\n"
+		if debug_text.count("\n") > 10:
+			debug_text = debug_text.right(-debug_text.find("\n") - 1)
+		input_debug_label.text = debug_text
