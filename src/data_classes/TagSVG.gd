@@ -86,8 +86,7 @@ func get_all_tids() -> Array[PackedInt32Array]:
 	
 	while not unchecked_tids.is_empty():
 		var checked_tid: PackedInt32Array = unchecked_tids.pop_back()
-		var checked_tag: Tag = get_tag(checked_tid)
-		for idx in checked_tag.get_child_count():
+		for idx in get_tag(checked_tid).get_child_count():
 			var new_tid := checked_tid.duplicate()
 			new_tid.append(idx)
 			unchecked_tids.append(new_tid)

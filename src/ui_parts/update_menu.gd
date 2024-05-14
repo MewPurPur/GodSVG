@@ -29,30 +29,30 @@ _headers: PackedStringArray, body: PackedByteArray) -> void:
 			if not response_code == 200:
 				_failed("Response code "+str(response_code))
 				return
-
+			
 			var json = JSON.parse_string(body.get_string_from_utf8())
 			if not json:
 				_failed("Failed to decode JSON")
 				return
-
+			
 			# Always enabled as long as there is no stable GodSVG release yet.
 			var include_prereleases := true  # prereleases_checkbox.button_pressed
 			var latest_ver := ""
 			var latest_url := ""
 			var latest_timestamp := 0
-
+			
 			for release: Dictionary in json:
 				var is_prerelease := release["prerelease"] as bool
 				if is_prerelease and not include_prereleases:
 					continue
-
+				
 				var timestamp := Time.get_unix_time_from_datetime_string(release["created_at"] as String)
-
+				
 				if timestamp > latest_timestamp:
 					latest_timestamp = timestamp
 					latest_ver = release["name"]
 					latest_url = release["html_url"]
-
+			
 			var current_ver := ProjectSettings.get_setting("application/config/version") as String
 			
 			
@@ -60,8 +60,7 @@ _headers: PackedStringArray, body: PackedByteArray) -> void:
 				status_label.text = "[center]No new version available."
 			else:
 				status_label.parse_bbcode("[center][url=%s]New version available![/url] %s" % [latest_ver, latest_url])
-			print(status_label.text)
-
+			
 			check_button.disabled = false
 
 		http.RESULT_TIMEOUT:
