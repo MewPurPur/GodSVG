@@ -49,12 +49,10 @@ var first_click := false
 var text_before_focus := ""
 
 func _on_base_class_focus_entered() -> void:
-	process_mode = PROCESS_MODE_ALWAYS
 	first_click = true
 	text_before_focus = text
 
 func _on_base_class_focus_exited() -> void:
-	process_mode = PROCESS_MODE_INHERIT
 	first_click = false
 	if Input.is_action_pressed("ui_cancel"):
 		text = text_before_focus
