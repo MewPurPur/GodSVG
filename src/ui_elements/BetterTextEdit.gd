@@ -26,6 +26,8 @@ func _ready() -> void:
 	get_h_scroll_bar().value_changed.connect(queue_redraw_caret.unbind(1))
 	mouse_exited.connect(_on_base_class_mouse_exited)
 
+func _exit_tree():
+	RenderingServer.free_rid(_surface)
 
 # Workaround for there not being a built-in overtype_mode_changed signal.
 var overtype_mode := false

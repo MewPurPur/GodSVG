@@ -63,6 +63,7 @@ func rebuild_colors() -> void:
 	fake_swatch.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	fake_swatch.custom_minimum_size = color_swatch_ref.custom_minimum_size
 	fake_swatch.pressed.connect(popup_add_color)
+	color_swatch_ref.free()
 	colors_container.add_child(fake_swatch)
 
 func popup_configure_color(swatch: Button) -> void:
