@@ -42,7 +42,7 @@ func _ready() -> void:
 	update_translations()
 	update_theme()
 	update_snap_config()
-	get_window().window_input.connect(_input_debug_handler)
+	get_window().window_input.connect(_update_input_debug)
 	view_settings_updated.emit(grid_visuals.visible, controls.visible,
 			viewport.display_texture.rasterized)
 
@@ -198,7 +198,6 @@ func _on_snap_number_edit_value_changed(new_value: float) -> void:
 			new_value * signf(GlobalSettings.save_data.snap))
 	update_snap_config()
 
-
 # The strings are intentionally not localized.
 func update_debug() -> void:
 	var debug_text := ""
@@ -206,29 +205,28 @@ func update_debug() -> void:
 	debug_text += "Static Mem: %s\n" % String.humanize_size(int(Performance.get_monitor(
 			Performance.MEMORY_STATIC)))
 	debug_text += "Nodes: %s\n" % Performance.get_monitor(Performance.OBJECT_NODE_COUNT)
-	debug_text += "Orphan nodes: %s\n" % Performance.get_monitor(Performance.OBJECT_ORPHAN_NODE_COUNT)
+	debug_text += "Stray nodes: %s\n" % Performance.get_monitor(Performance.OBJECT_ORPHAN_NODE_COUNT)
 	debug_text += "Objects: %s\n" % Performance.get_monitor(Performance.OBJECT_COUNT)
-	debug_text += "Input:"
 	debug_label.text = debug_text
 	# Set up the next update if the container is still visible.
 	if debug_container.visible:
 		get_tree().create_timer(1.0).timeout.connect(update_debug)
 
-var last_input := ""
-var last_input_count := 1
+var last_event_text := ""
+var last_event_repeat_count := 1
 
-func _input_debug_handler(event: InputEvent) -> void:
+func _update_input_debug(event: InputEvent) -> void:
 	if debug_container.visible and event.is_pressed():
-		var debug_text := input_debug_label.text
+		var new_text := input_debug_label.text
 		var event_text := event.as_text()
-		if event_text == last_input:
-			debug_text = debug_text.left(debug_text.left(-1).rfind("\n") + 1)
-			last_input_count += 1
-			event_text += " (%d)" % last_input_count
+		if event_text == last_event_text:
+			last_event_repeat_count += 1
+			new_text = new_text.left(new_text.rfind("\n", new_text.length() - 2) + 1)
+			event_text += " (%d)" % last_event_repeat_count
 		else:
-			last_input_count = 1
-			last_input = event_text
-		debug_text += event_text + "\n"
-		if debug_text.count("\n") > 5:
-			debug_text = debug_text.right(-debug_text.find("\n") - 1)
-		input_debug_label.text = debug_text
+			last_event_text = event_text
+			last_event_repeat_count = 1
+		if new_text.count("\n") >= 5:
+			new_text = new_text.right(-new_text.find("\n") - 1)
+		new_text += event_text + "\n"
+		input_debug_label.text = new_text
