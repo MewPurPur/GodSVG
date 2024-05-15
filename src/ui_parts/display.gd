@@ -205,6 +205,7 @@ func update_debug() -> void:
 	debug_text += "Static Mem: %s\n" % String.humanize_size(int(Performance.get_monitor(
 			Performance.MEMORY_STATIC)))
 	debug_text += "Nodes: %s\n" % Performance.get_monitor(Performance.OBJECT_NODE_COUNT)
+	debug_text += "Orphan nodes: %s\n" % Performance.get_monitor(Performance.OBJECT_ORPHAN_NODE_COUNT)
 	debug_text += "Objects: %s\n" % Performance.get_monitor(Performance.OBJECT_COUNT)
 	debug_text += "Input:"
 	debug_label.text = debug_text
