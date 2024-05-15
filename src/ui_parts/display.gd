@@ -24,7 +24,8 @@ const NumberField = preload("res://src/ui_elements/number_field.tscn")
 @onready var panel_container: PanelContainer = $PanelContainer
 @onready var viewport_panel: PanelContainer = $ViewportPanel
 @onready var debug_container: MarginContainer = $ViewportPanel/DebugContainer
-@onready var debug_label: Label = $ViewportPanel/DebugContainer/DebugLabel
+@onready var debug_label: Label = $ViewportPanel/DebugContainer/VBoxContainer/DebugLabel
+@onready var input_debug_label: Label = $ViewportPanel/DebugContainer/VBoxContainer/InputDebugLabel
 
 
 func _notification(what: int) -> void:
@@ -41,6 +42,7 @@ func _ready() -> void:
 	update_translations()
 	update_theme()
 	update_snap_config()
+	get_window().window_input.connect(_input_debug_handler)
 	view_settings_updated.emit(grid_visuals.visible, controls.visible,
 			viewport.display_texture.rasterized)
 
@@ -52,6 +54,7 @@ func _unhandled_input(input_event: InputEvent) -> void:
 		else:
 			debug_container.show()
 			update_debug()
+			input_debug_label.text = ""
 	elif input_event.is_action_pressed("open_settings"):
 		_on_settings_pressed()
 	elif input_event.is_action_pressed("view_show_grid"):
@@ -203,8 +206,29 @@ func update_debug() -> void:
 	debug_text += "Static Mem: %s\n" % String.humanize_size(int(Performance.get_monitor(
 			Performance.MEMORY_STATIC)))
 	debug_text += "Nodes: %s\n" % Performance.get_monitor(Performance.OBJECT_NODE_COUNT)
-	debug_text += "Objects: %s" % Performance.get_monitor(Performance.OBJECT_COUNT)
+	debug_text += "Orphan nodes: %s\n" % Performance.get_monitor(Performance.OBJECT_ORPHAN_NODE_COUNT)
+	debug_text += "Objects: %s\n" % Performance.get_monitor(Performance.OBJECT_COUNT)
+	debug_text += "Input:"
 	debug_label.text = debug_text
 	# Set up the next update if the container is still visible.
 	if debug_container.visible:
 		get_tree().create_timer(1.0).timeout.connect(update_debug)
+
+var last_input := ""
+var last_input_count := 1
+
+func _input_debug_handler(event: InputEvent) -> void:
+	if debug_container.visible and event.is_pressed():
+		var debug_text := input_debug_label.text
+		var event_text := event.as_text()
+		if event_text == last_input:
+			debug_text = debug_text.left(debug_text.left(-1).rfind("\n") + 1)
+			last_input_count += 1
+			event_text += " (%d)" % last_input_count
+		else:
+			last_input_count = 1
+			last_input = event_text
+		debug_text += event_text + "\n"
+		if debug_text.count("\n") > 5:
+			debug_text = debug_text.right(-debug_text.find("\n") - 1)
+		input_debug_label.text = debug_text
