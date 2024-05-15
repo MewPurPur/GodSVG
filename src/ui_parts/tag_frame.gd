@@ -66,7 +66,7 @@ func _ready() -> void:
 			tag_editor.tid = new_tid
 			child_tags_container.add_child(tag_editor)
 
-func _exit_tree():
+func _exit_tree() -> void:
 	RenderingServer.free_rid(surface)
 
 # Logic for dragging.
