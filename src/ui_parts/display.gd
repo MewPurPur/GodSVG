@@ -54,6 +54,7 @@ func _unhandled_input(input_event: InputEvent) -> void:
 		else:
 			debug_container.show()
 			update_debug()
+			input_debug_label.text = ""
 	elif input_event.is_action_pressed("open_settings"):
 		_on_settings_pressed()
 	elif input_event.is_action_pressed("view_show_grid"):
