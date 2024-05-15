@@ -26,6 +26,7 @@ const NumberField = preload("res://src/ui_elements/number_field.tscn")
 @onready var viewport_panel: PanelContainer = $ViewportPanel
 @onready var debug_container: MarginContainer = $ViewportPanel/DebugContainer
 @onready var debug_label: Label = $ViewportPanel/DebugContainer/DebugLabel
+@onready var input_debug_label: Label = $ViewportPanel/DebugContainer/VBoxContainer/InputDebugLabel
 @onready var reference_texture = %ReferenceTexture
 
 var reference_overlay := false
