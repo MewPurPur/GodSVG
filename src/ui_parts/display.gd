@@ -215,7 +215,7 @@ var last_input := ""
 var last_input_count := 1
 
 func _input_debug_handler(event: InputEvent) -> void:
-	if event.is_pressed():
+	if debug_container.visible and event.is_pressed():
 		var debug_text := input_debug_label.text
 		var event_text := event.as_text()
 		if event_text == last_input:
@@ -226,6 +226,6 @@ func _input_debug_handler(event: InputEvent) -> void:
 			last_input_count = 1
 			last_input = event_text
 		debug_text += event_text + "\n"
-		if debug_text.count("\n") > 10:
+		if debug_text.count("\n") > 5:
 			debug_text = debug_text.right(-debug_text.find("\n") - 1)
 		input_debug_label.text = debug_text
