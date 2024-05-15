@@ -185,8 +185,6 @@ var handle_size := 1.0
 var ui_scale := 1.0
 var auto_ui_scale := true
 
-signal imported_reference
-
 func toggle_bool_setting(section: String, setting: String) -> void:
 	set(setting, !get(setting))
 	save_setting(section, setting)

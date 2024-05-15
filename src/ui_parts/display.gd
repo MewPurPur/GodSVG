@@ -47,6 +47,8 @@ func _ready() -> void:
 	view_settings_updated.emit(grid_visuals.visible, controls.visible,
 			viewport.display_texture.rasterized)
 
+	if OS.has_feature("web"):
+		reference_button.hide()
 
 func _unhandled_input(input_event: InputEvent) -> void:
 	if Input.is_action_pressed("debug"):
@@ -207,7 +209,7 @@ func toggle_reference_overlay() -> void:
 
 func import_reference_image() -> void:
 	FileUtils.open_reference_import_dialog()
-	await GlobalSettings.imported_reference
+	await Indications.imported_reference
 	var ref_path = GlobalSettings.save_data.get("reference_path")
 	var img = Image.load_from_file(ref_path)
 	reference_texture.texture = ImageTexture.create_from_image(img)

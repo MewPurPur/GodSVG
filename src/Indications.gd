@@ -25,6 +25,8 @@ signal requested_scroll_to_tag_editor(tid: PackedInt32Array)
 # The viewport listens for this signal to put you in handle-placing mode.
 signal handle_added
 
+signal imported_reference
+
 # The PackedInt32Array holds the hierarchical orders. TID means Tag ID.
 # For example, the 5th child of the 2nd child of the root tag would be (1, 4).
 # PackedInt32Array() means it's invalid.

@@ -131,7 +131,7 @@ _filter_idx: int) -> void:
 
 static func reference_image_import(path : String) -> void:
 	GlobalSettings.modify_save_data("reference_path", path)
-	GlobalSettings.imported_reference.emit()
+	Indications.imported_reference.emit()
 
 static func apply_svg_from_path(path: String) -> int:
 	var svg_file := FileAccess.open(path, FileAccess.READ)
