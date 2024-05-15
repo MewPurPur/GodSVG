@@ -113,6 +113,7 @@ func _ready() -> void:
 
 func _exit_tree() -> void:
 	RenderingServer.free_rid(color_wheel_surface)
+	UR.free()
 
 func register_visual_change(new_color: Color, use_backup := true) -> void:
 	UR.create_action("")

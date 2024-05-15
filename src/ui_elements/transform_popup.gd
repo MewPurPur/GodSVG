@@ -41,6 +41,9 @@ func _ready() -> void:
 	rebuild()
 	update_translations()
 
+func _exit_tree() -> void:
+	UR.free()
+
 func update_translations() -> void:
 	%ApplyMatrix.tooltip_text = TranslationServer.translate("Apply the matrix")
 
