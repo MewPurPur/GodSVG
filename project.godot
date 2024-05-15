@@ -147,15 +147,18 @@ select_all={
 }
 view_show_grid={
 "deadzone": 0.5,
-"events": []
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"command_or_control_autoremap":true,"alt_pressed":false,"shift_pressed":true,"pressed":false,"keycode":71,"physical_keycode":0,"key_label":0,"unicode":71,"echo":false,"script":null)
+]
 }
 view_show_handles={
 "deadzone": 0.5,
-"events": []
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"command_or_control_autoremap":true,"alt_pressed":false,"shift_pressed":true,"pressed":false,"keycode":72,"physical_keycode":0,"key_label":0,"unicode":72,"echo":false,"script":null)
+]
 }
 view_rasterized_svg={
 "deadzone": 0.5,
-"events": []
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"command_or_control_autoremap":true,"alt_pressed":false,"shift_pressed":true,"pressed":false,"keycode":82,"physical_keycode":0,"key_label":0,"unicode":82,"echo":false,"script":null)
+]
 }
 snap_toggle={
 "deadzone": 0.5,

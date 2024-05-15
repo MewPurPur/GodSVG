@@ -28,6 +28,9 @@ func assign_palette(palette: ColorPalette) -> void:
 	current_palette.layout_changed.connect(rebuild_colors)
 	rebuild_colors()
 
+func _ready() -> void:
+	mouse_exited.connect(clear_proposed_drop)
+
 # Rebuilds the content of the colors container.
 func rebuild_colors() -> void:
 	for child in colors_container.get_children():
@@ -47,7 +50,8 @@ func rebuild_colors() -> void:
 			# If you add a color, after the rebuild you should instantly edit the new color.
 			await colors_container.sort_children
 			await get_tree().process_frame
-			swatch.pressed.emit()
+			if is_instance_valid(swatch):
+				swatch.pressed.emit()
 	# Add the add button.
 	var color_swatch_ref := ColorSwatch.instantiate()
 	var fake_swatch := Button.new()
@@ -64,6 +68,7 @@ func rebuild_colors() -> void:
 	fake_swatch.custom_minimum_size = color_swatch_ref.custom_minimum_size
 	fake_swatch.pressed.connect(popup_add_color)
 	colors_container.add_child(fake_swatch)
+	color_swatch_ref.queue_free()
 
 func popup_configure_color(swatch: Button) -> void:
 	var configure_popup := ConfigurePopup.instantiate()
@@ -244,8 +249,6 @@ func _drop_data(_at_position: Vector2, data: Variant) -> void:
 		current_palette.emit_changed()
 		data[0].remove_color(data[1])
 
-func _on_mouse_exited() -> void:
-	clear_proposed_drop()
 
 func clear_proposed_drop() -> void:
 	proposed_drop_idx = -1
