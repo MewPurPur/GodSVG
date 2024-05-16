@@ -97,28 +97,34 @@ func _gui_input(event: InputEvent) -> void:
 			var btn_arr: Array[Button] = []
 			var separator_arr: Array[int] = []
 			if editable:
-				btn_arr.append(Utils.create_btn(TranslationServer.translate("Undo"),
+				btn_arr.append(ContextPopup.create_button(
+						TranslationServer.translate("Undo"),
 						menu_option.bind(LineEdit.MENU_UNDO),
-						false, load("res://visual/icons/Undo.svg")))
-				btn_arr.append(Utils.create_btn(TranslationServer.translate("Redo"),
+						false, load("res://visual/icons/Undo.svg"), "ui_undo"))
+				btn_arr.append(ContextPopup.create_button(
+						TranslationServer.translate("Redo"),
 						menu_option.bind(LineEdit.MENU_REDO),
-						false, load("res://visual/icons/Redo.svg")))
+						false, load("res://visual/icons/Redo.svg"), "ui_redo"))
 				if DisplayServer.has_feature(DisplayServer.FEATURE_CLIPBOARD):
 					separator_arr = [2]
-					btn_arr.append(Utils.create_btn(TranslationServer.translate("Cut"),
+					btn_arr.append(ContextPopup.create_button(
+							TranslationServer.translate("Cut"),
 							menu_option.bind(LineEdit.MENU_CUT),
-							text.is_empty(), load("res://visual/icons/Cut.svg")))
-					btn_arr.append(Utils.create_btn(TranslationServer.translate("Copy"),
+							text.is_empty(), load("res://visual/icons/Cut.svg"), "ui_cut"))
+					btn_arr.append(ContextPopup.create_button(
+							TranslationServer.translate("Copy"),
 							menu_option.bind(LineEdit.MENU_COPY),
-							text.is_empty(), load("res://visual/icons/Copy.svg")))
-					btn_arr.append(Utils.create_btn(TranslationServer.translate("Paste"),
+							text.is_empty(), load("res://visual/icons/Copy.svg"), "ui_copy"))
+					btn_arr.append(ContextPopup.create_button(
+							TranslationServer.translate("Paste"),
 							menu_option.bind(LineEdit.MENU_PASTE),
 							!DisplayServer.clipboard_has(),
-							load("res://visual/icons/Paste.svg")))
+							load("res://visual/icons/Paste.svg"), "ui_paste"))
 			else:
-				btn_arr.append(Utils.create_btn(TranslationServer.translate("Copy"),
+				btn_arr.append(ContextPopup.create_button(
+						TranslationServer.translate("Copy"),
 						menu_option.bind(LineEdit.MENU_COPY),
-						text.is_empty(), load("res://visual/icons/Copy.svg")))
+						text.is_empty(), load("res://visual/icons/Copy.svg"), "ui_copy"))
 			
 			var vp := get_viewport()
 			var context_popup := ContextPopup.new()

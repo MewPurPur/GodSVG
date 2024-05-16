@@ -4,14 +4,131 @@ class_name ContextPopup extends PanelContainer
 func _init() -> void:
 	mouse_filter = Control.MOUSE_FILTER_STOP
 
-func setup_button(btn: Button, align_left: bool) -> Button:
-	if not btn is CheckBox:
-		btn.theme_type_variation = "ContextButton"
-		btn.pressed.connect(HandlerGUI.remove_popup_overlay)
-		btn.ready.connect(_order_signals.bind(btn))
-	btn.focus_mode = Control.FOCUS_NONE
+
+static func create_button(text: String, press_action: Callable, disabled := false,
+icon: Texture2D = null, shortcut := "") -> Button:
+	# Create main button.
+	var main_button := Button.new()
+	main_button.text = text
+	if is_instance_valid(icon):
+		main_button.icon = icon
+	
+	if not shortcut.is_empty():
+		if not InputMap.has_action(shortcut):
+			printerr("A non-existent shortcut was passed to Utils.create_btn().")
+		elif InputMap.has_action(shortcut):
+			var events := InputMap.action_get_events(shortcut)
+			if not events.is_empty():
+				# Add button with a shortcut.
+				var ret_button := Button.new()
+				ret_button.theme_type_variation = "ContextButton"
+				ret_button.focus_mode = Control.FOCUS_NONE
+				if disabled:
+					main_button.disabled = true
+					ret_button.disabled = true
+					main_button.add_theme_stylebox_override("disabled",
+							main_button.get_theme_stylebox("normal", "ContextButton"))
+				else:
+					ret_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+					main_button.add_theme_stylebox_override("normal",
+							main_button.get_theme_stylebox("normal", "ContextButton"))
+				var internal_hbox := HBoxContainer.new()
+				main_button.mouse_filter = Control.MOUSE_FILTER_IGNORE  # Unpressable.
+				internal_hbox.add_theme_constant_override("separation", 6)
+				main_button.add_theme_color_override("icon_normal_color",
+						ret_button.get_theme_color("icon_normal_color", "ContextButton"))
+				var label_margin := MarginContainer.new()
+				label_margin.add_theme_constant_override("margin_right",
+						int(ret_button.get_theme_stylebox("normal").content_margin_right))
+				var label := Label.new()
+				label.text = events[0].as_text_keycode()
+				label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+				label.add_theme_color_override("font_color",
+						ThemeGenerator.common_subtle_text_color)
+				label.add_theme_font_size_override("font_size",
+						main_button.get_theme_font_size("font_size"))
+				
+				ret_button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+				internal_hbox.set_anchors_and_offsets_preset(Control.PRESET_TOP_WIDE)
+				label_margin.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+				label.size_flags_horizontal = Control.SIZE_FILL
+				internal_hbox.add_child(main_button)
+				label_margin.add_child(label)
+				internal_hbox.add_child(label_margin)
+				ret_button.add_child(internal_hbox)
+				ret_button.pressed.connect(press_action)
+				ret_button.pressed.connect(HandlerGUI.remove_popup_overlay)
+				return ret_button
+	# Finish setting up the main button and return it if there's no shortcut.
+	main_button.theme_type_variation = "ContextButton"
+	main_button.focus_mode = Control.FOCUS_NONE
+	if disabled:
+		main_button.disabled = true
+	else:
+		main_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+	main_button.pressed.connect(press_action)
+	main_button.pressed.connect(HandlerGUI.remove_popup_overlay)
+	return main_button
+
+static func create_checkbox(text: String, toggle_action: Callable,
+start_pressed: bool, shortcut := "") -> CheckBox:
+	# Create main checkbox.
+	var checkbox := CheckBox.new()
+	checkbox.text = text
+	checkbox.button_pressed = start_pressed
+	checkbox.toggled.connect(toggle_action.unbind(1))
+	
+	if not shortcut.is_empty():
+		if not InputMap.has_action(shortcut):
+			printerr("A non-existent shortcut was passed to Utils.create_btn().")
+		elif InputMap.has_action(shortcut):
+			var events := InputMap.action_get_events(shortcut)
+			if not events.is_empty():
+				# Add button with a shortcut.
+				var ret_button := Button.new()
+				ret_button.theme_type_variation = "ContextButton"
+				ret_button.focus_mode = Control.FOCUS_NONE
+				ret_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+				checkbox.add_theme_stylebox_override("normal",
+						checkbox.get_theme_stylebox("normal", "ContextButton"))
+				var internal_hbox := HBoxContainer.new()
+				checkbox.mouse_filter = Control.MOUSE_FILTER_IGNORE  # Unpressable.
+				internal_hbox.add_theme_constant_override("separation", 6)
+				checkbox.add_theme_color_override("icon_normal_color",
+						ret_button.get_theme_color("icon_normal_color", "ContextButton"))
+				var label_margin := MarginContainer.new()
+				label_margin.add_theme_constant_override("margin_right",
+						int(ret_button.get_theme_stylebox("normal").content_margin_right))
+				var label := Label.new()
+				label.text = events[0].as_text_keycode()
+				label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+				label.add_theme_color_override("font_color",
+						ThemeGenerator.common_subtle_text_color)
+				label.add_theme_font_size_override("font_size",
+						checkbox.get_theme_font_size("font_size"))
+				
+				ret_button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+				internal_hbox.set_anchors_and_offsets_preset(Control.PRESET_TOP_WIDE)
+				label_margin.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+				label.size_flags_horizontal = Control.SIZE_FILL
+				internal_hbox.add_child(checkbox)
+				label_margin.add_child(label)
+				internal_hbox.add_child(label_margin)
+				ret_button.add_child(internal_hbox)
+				ret_button.pressed.connect(
+						func(): checkbox.button_pressed = !checkbox.button_pressed)
+				return ret_button
+	# Finish setting up the checkbox and return it if there's no shortcut.
+	checkbox.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+	checkbox.focus_mode = Control.FOCUS_NONE
+	return checkbox
+
+func _setup_button(btn: Button, align_left: bool) -> Button:
 	if align_left:
 		btn.alignment = HORIZONTAL_ALIGNMENT_LEFT
+	btn.ready.connect(_order_signals.bind(btn))
+	if btn.get_child_count() == 1:
+		btn.get_child(0).resized.connect(_resize_button_around_child.bind(btn))
 	return btn
 
 # A hack to deal with situations where a popup is replaced by another.
@@ -22,6 +139,10 @@ func _order_signals(btn: Button) -> void:
 			btn.pressed.connect(connection.callable, CONNECT_DEFERRED)
 	set_block_signals(true)
 
+# A hack for buttons that are wrapped around a control.
+func _resize_button_around_child(btn: Button) -> void:
+	var child: Control = btn.get_child(0)
+	btn.custom_minimum_size = child.size
 
 func setup(buttons: Array[Button], align_left := false, min_width := -1.0,
 separator_indices: Array[int] = []) -> void:
@@ -35,7 +156,7 @@ separator_indices: Array[int] = []) -> void:
 				var separator := HSeparator.new()
 				separator.theme_type_variation = "SmallHSeparator"
 				main_container.add_child(separator)
-			main_container.add_child(setup_button(buttons[idx], align_left))
+			main_container.add_child(_setup_button(buttons[idx], align_left))
 		if min_width > 0:
 			custom_minimum_size.x = ceili(min_width)
 
@@ -72,7 +193,7 @@ min_width := -1.0, separator_indices: Array[int] = []) -> void:
 				var separator := HSeparator.new()
 				separator.theme_type_variation = "SmallHSeparator"
 				main_container.add_child(separator)
-			main_container.add_child(setup_button(buttons[idx], align_left))
+			main_container.add_child(_setup_button(buttons[idx], align_left))
 		if min_width > 0:
 			custom_minimum_size.x = min_width
 

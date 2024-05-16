@@ -41,29 +41,6 @@ font_size_property := "font_size") -> void:
 			control.get_theme_font_size(font_size_property)).x + buffer, max_width)
 
 
-static func create_btn(text: String, press_action: Callable, disabled := false,
-icon: Texture2D = null) -> Button:
-	var btn := Button.new()
-	btn.text = text
-	if is_instance_valid(icon):
-		btn.icon = icon
-	if disabled:
-		btn.disabled = true
-	else:
-		btn.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-	btn.pressed.connect(press_action)
-	return btn
-
-static func create_checkbox(text: String, toggle_action: Callable,
-start_pressed: bool) -> CheckBox:
-	var checkbox := CheckBox.new()
-	checkbox.text = text
-	checkbox.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-	checkbox.button_pressed = start_pressed
-	checkbox.pressed.connect(toggle_action)
-	return checkbox
-
-
 static func get_cubic_bezier_points(cp1: Vector2, cp2: Vector2, cp3: Vector2,
 cp4: Vector2) -> PackedVector2Array:
 	var curve := Curve2D.new()
