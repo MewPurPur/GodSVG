@@ -113,12 +113,13 @@ func _on_settings_pressed() -> void:
 
 func _on_visuals_button_pressed() -> void:
 	var btn_arr: Array[Button] = [
-		Utils.create_checkbox(TranslationServer.translate("Show Grid"),
-				toggle_grid_visuals, grid_visuals.visible),
-		Utils.create_checkbox(TranslationServer.translate("Show Handles"),
-				toggle_handles_visuals, controls.visible),
-		Utils.create_checkbox(TranslationServer.translate("Rasterized SVG"),
-				toggle_rasterization, viewport.display_texture.rasterized)]
+		ContextPopup.create_checkbox(TranslationServer.translate("Show Grid"),
+				toggle_grid_visuals, grid_visuals.visible, "view_show_grid"),
+		ContextPopup.create_checkbox(TranslationServer.translate("Show Handles"),
+				toggle_handles_visuals, controls.visible, "view_show_handles"),
+		ContextPopup.create_checkbox(TranslationServer.translate("Rasterized SVG"),
+				toggle_rasterization, viewport.display_texture.rasterized,
+				"view_rasterized_svg")]
 	
 	var visuals_popup := ContextPopup.new()
 	visuals_popup.setup(btn_arr, true)
@@ -126,19 +127,21 @@ func _on_visuals_button_pressed() -> void:
 			get_viewport())
 
 func _on_more_options_pressed() -> void:
-	var about_btn := Utils.create_btn(TranslationServer.translate("About…"),
-			open_about, false, load("res://visual/icon.svg"))
+	var about_btn := ContextPopup.create_button(TranslationServer.translate("About…"),
+			open_about, false, load("res://visual/icon.svg"), "about_info")
 	about_btn.expand_icon = true
 	var buttons_arr: Array[Button] = [
 		about_btn,
-		Utils.create_btn(TranslationServer.translate("Donate…"),
-				open_sponsor, false, load("res://visual/icons/Heart.svg")),
-		Utils.create_btn(TranslationServer.translate("GodSVG repository"),
-				open_godsvg_repo, false, load("res://visual/icons/Link.svg")),
-		Utils.create_btn(TranslationServer.translate("GodSVG website"),
-				open_godsvg_website, false, load("res://visual/icons/Link.svg")),
-		Utils.create_btn(TranslationServer.translate("Check for updates"),
-				open_update_checker, false, load("res://visual/icons/Reload.svg"))]
+		ContextPopup.create_button(TranslationServer.translate("Donate…"),
+				open_sponsor, false, load("res://visual/icons/Heart.svg"), "about_donate"),
+		ContextPopup.create_button(TranslationServer.translate("GodSVG repository"),
+				open_godsvg_repo, false, load("res://visual/icons/Link.svg"), "about_repo"),
+		ContextPopup.create_button(TranslationServer.translate("GodSVG website"),
+				open_godsvg_website, false, load("res://visual/icons/Link.svg"),
+				"about_website"),
+		ContextPopup.create_button(TranslationServer.translate("Check for updates"),
+				open_update_checker, false, load("res://visual/icons/Reload.svg"),
+				"check_updates")]
 	var separator_indices: Array[int] = [2,4]
 	
 	var more_popup := ContextPopup.new()

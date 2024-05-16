@@ -493,41 +493,53 @@ func get_selection_context(popup_method: Callable, context: SelectionContext) ->
 				if not can_move_down and base_tid[-1] < parent_child_count - filtered_count:
 					can_move_down = true
 		if context == SelectionContext.VIEWPORT:
-			btn_arr.append(Utils.create_btn(TranslationServer.translate("View In List"),
-					view_in_list.bind(selected_tids[0]), false, load("res://visual/icons/ViewInList.svg")))
+			btn_arr.append(ContextPopup.create_button(
+					TranslationServer.translate("View In List"),
+					view_in_list.bind(selected_tids[0]), false,
+					load("res://visual/icons/ViewInList.svg")))
 
-		btn_arr.append(Utils.create_btn(TranslationServer.translate("Duplicate"),
-				duplicate_selected, false, load("res://visual/icons/Duplicate.svg")))
+		btn_arr.append(ContextPopup.create_button(TranslationServer.translate("Duplicate"),
+				duplicate_selected, false, load("res://visual/icons/Duplicate.svg"),
+				"duplicate"))
 		
 		if selected_tids.size() == 1 and not SVG.root_tag.get_tag(
 		selected_tids[0]).possible_conversions.is_empty():
-			btn_arr.append(Utils.create_btn(TranslationServer.translate("Convert To"),
+			btn_arr.append(ContextPopup.create_button(
+					TranslationServer.translate("Convert To"),
 					popup_convert_to_context.bind(popup_method), false,
 					load("res://visual/icons/Reload.svg")))
 		
 		if can_move_up:
-			btn_arr.append(Utils.create_btn(TranslationServer.translate("Move Up"),
-					move_up_selected, false, load("res://visual/icons/MoveUp.svg")))
+			btn_arr.append(ContextPopup.create_button(
+					TranslationServer.translate("Move Up"),
+					move_up_selected, false,
+					load("res://visual/icons/MoveUp.svg"), "move_up"))
 		if can_move_down:
-			btn_arr.append(Utils.create_btn(TranslationServer.translate("Move Down"),
-					move_down_selected, false, load("res://visual/icons/MoveDown.svg")))
+			btn_arr.append(ContextPopup.create_button(
+					TranslationServer.translate("Move Down"),
+					move_down_selected, false,
+					load("res://visual/icons/MoveDown.svg"), "move_down"))
 		
-		btn_arr.append(Utils.create_btn(TranslationServer.translate("Delete"),
-				delete_selected, false, load("res://visual/icons/Delete.svg")))
+		btn_arr.append(ContextPopup.create_button(TranslationServer.translate("Delete"),
+				delete_selected, false, load("res://visual/icons/Delete.svg"), "delete"))
 	elif not inner_selections.is_empty() and not semi_selected_tid.is_empty():
 		if context == SelectionContext.VIEWPORT:
-			btn_arr.append(Utils.create_btn(TranslationServer.translate("View In List"),
-					view_in_list.bind(semi_selected_tid), false, load("res://visual/icons/ViewInList.svg")))
+			btn_arr.append(ContextPopup.create_button(
+					TranslationServer.translate("View In List"),
+					view_in_list.bind(semi_selected_tid), false,
+					load("res://visual/icons/ViewInList.svg")))
 		if inner_selections.size() == 1:
-			btn_arr.append(Utils.create_btn(TranslationServer.translate("Insert After"),
+			btn_arr.append(ContextPopup.create_button(
+					TranslationServer.translate("Insert After"),
 					popup_insert_command_after_context.bind(popup_method), false,
 					load("res://visual/icons/Plus.svg")))
-			btn_arr.append(Utils.create_btn(TranslationServer.translate("Convert To"),
+			btn_arr.append(ContextPopup.create_button(
+					TranslationServer.translate("Convert To"),
 					popup_convert_to_context.bind(popup_method), false,
 					load("res://visual/icons/Reload.svg")))
 		
-		btn_arr.append(Utils.create_btn(TranslationServer.translate("Delete"),
-				delete_selected, false, load("res://visual/icons/Delete.svg")))
+		btn_arr.append(ContextPopup.create_button(TranslationServer.translate("Delete"),
+				delete_selected, false, load("res://visual/icons/Delete.svg"), "delete"))
 	
 	var tag_context := ContextPopup.new()
 	tag_context.setup(btn_arr, true)
@@ -539,8 +551,9 @@ func popup_convert_to_context(popup_method: Callable) -> void:
 		var btn_arr: Array[Button] = []
 		var tag := SVG.root_tag.get_tag(selected_tids[0])
 		for tag_name in tag.possible_conversions:
-			var btn := Utils.create_btn(tag_name, convert_selected_tag_to.bind(tag_name),
-					!tag.can_replace(tag_name), load("res://visual/icons/tag/%s.svg" % tag_name))
+			var btn := ContextPopup.create_button(tag_name,
+					convert_selected_tag_to.bind(tag_name), !tag.can_replace(tag_name),
+					load("res://visual/icons/tag/%s.svg" % tag_name))
 			btn.add_theme_font_override("font", load("res://visual/fonts/FontMono.ttf"))
 			btn_arr.append(btn)
 		var context_popup := ContextPopup.new()

@@ -64,9 +64,9 @@ func sync() -> void:
 
 func popup_options(idx: int) -> void:
 	var btn_arr: Array[Button] = [
-		Utils.create_btn(TranslationServer.translate("Edit"),
+		ContextPopup.create_button(TranslationServer.translate("Edit"),
 				enter_listening_mode.bind(idx), false, load("res://visual/icons/Edit.svg")),
-		Utils.create_btn(TranslationServer.translate("Remove"),
+		ContextPopup.create_button(TranslationServer.translate("Remove"),
 				delete_shortcut.bind(idx), false, load("res://visual/icons/Delete.svg"))]
 	var context_popup := ContextPopup.new()
 	context_popup.setup(btn_arr, true, shortcut_buttons[idx].size.x)

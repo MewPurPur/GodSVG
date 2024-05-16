@@ -281,10 +281,10 @@ func create_folder() -> void:
 func open_dir_context(dir: String) -> void:
 	var context_popup := ContextPopup.new()
 	var btn_arr: Array[Button] = [
-		Utils.create_btn(TranslationServer.translate("Open"), enter_dir.bind(dir), false,
-				load("res://visual/icons/OpenFolder.svg")),
-		Utils.create_btn(TranslationServer.translate("Copy path"), copy_path, false,
-				load("res://visual/icons/Copy.svg"))]
+		ContextPopup.create_button(TranslationServer.translate("Open"),
+				enter_dir.bind(dir), false, load("res://visual/icons/OpenFolder.svg")),
+		ContextPopup.create_button(TranslationServer.translate("Copy path"),
+				copy_path, false, load("res://visual/icons/Copy.svg"))]
 	context_popup.setup(btn_arr, true)
 	var vp := get_viewport()
 	HandlerGUI.popup_under_pos(context_popup, vp.get_mouse_position(), vp)
@@ -292,10 +292,10 @@ func open_dir_context(dir: String) -> void:
 func open_file_context(file: String) -> void:
 	focus_file(file)
 	var btn_arr: Array[Button] = [
-		Utils.create_btn(special_button.text, select_file, false,
-				load("res://visual/icons/OpenFile.svg")),
-		Utils.create_btn(TranslationServer.translate("Copy path"), copy_path, false,
-				load("res://visual/icons/Copy.svg"))]
+		ContextPopup.create_button(special_button.text,
+				select_file, false, load("res://visual/icons/OpenFile.svg")),
+		ContextPopup.create_button(TranslationServer.translate("Copy path"),
+				copy_path, false, load("res://visual/icons/Copy.svg"))]
 	var context_popup := ContextPopup.new()
 	context_popup.setup(btn_arr, true)
 	var vp := get_viewport()
@@ -312,8 +312,8 @@ func _on_file_list_empty_clicked(_at_position: Vector2, mouse_button_index: int)
 	if mouse_button_index == MOUSE_BUTTON_RIGHT and mode == FileMode.SAVE:
 		var context_popup := ContextPopup.new()
 		var btn_arr: Array[Button] = [
-			Utils.create_btn(TranslationServer.translate("Create new folder"), create_folder,
-					false, load("res://visual/icons/CreateFolder.svg"))]
+			ContextPopup.create_button(TranslationServer.translate("Create new folder"),
+					create_folder, false, load("res://visual/icons/CreateFolder.svg"))]
 		context_popup.setup(btn_arr, true)
 		var vp := get_viewport()
 		HandlerGUI.popup_under_pos(context_popup, vp.get_mouse_position(), vp)

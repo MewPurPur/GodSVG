@@ -764,7 +764,7 @@ func _on_handle_added() -> void:
 func create_tag_context(pos: Vector2) -> ContextPopup:
 	var btn_array: Array[Button] = []
 	for shape in ["path", "circle", "ellipse", "rect", "line"]:
-		var btn := Utils.create_btn(shape, add_tag_at_pos.bind(shape, pos),
+		var btn := ContextPopup.create_button(shape, add_tag_at_pos.bind(shape, pos),
 				false, DB.get_tag_icon(shape))
 		btn.add_theme_font_override("font", load("res://visual/fonts/FontMono.ttf"))
 		btn_array.append(btn)
