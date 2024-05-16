@@ -32,7 +32,8 @@ func _ready() -> void:
 func _on_button_pressed() -> void:
 	var btn_arr: Array[Button] = []
 	for val in values:
-		btn_arr.append(Utils.create_btn(val, _on_value_chosen.bind(val), val == value))
+		btn_arr.append(ContextPopup.create_button(val, _on_value_chosen.bind(val),
+				val == value))
 	
 	var value_picker := ContextPopup.new()
 	value_picker.setup(btn_arr, false, size.x)

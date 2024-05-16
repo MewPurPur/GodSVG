@@ -173,19 +173,19 @@ func _on_action_button_pressed() -> void:
 	var btn_arr: Array[Button] = []
 	
 	if palette_idx >= 1:
-		btn_arr.append(Utils.create_btn(TranslationServer.translate("Move Up"),
+		btn_arr.append(ContextPopup.create_button(TranslationServer.translate("Move Up"),
 				move_up.bind(palette_idx), false, load("res://visual/icons/MoveUp.svg")))
 	if palette_idx < GlobalSettings.palettes.size() - 1:
-		btn_arr.append(Utils.create_btn(TranslationServer.translate("Move Down"),
+		btn_arr.append(ContextPopup.create_button(TranslationServer.translate("Move Down"),
 				move_down.bind(palette_idx), false, load("res://visual/icons/MoveDown.svg")))
-	btn_arr.append(Utils.create_btn(TranslationServer.translate("Copy as XML"),
+	btn_arr.append(ContextPopup.create_button(TranslationServer.translate("Copy as XML"),
 			DisplayServer.clipboard_set.bind(GlobalSettings.palettes[palette_idx].to_text()),
 			false, load("res://visual/icons/Copy.svg")))
-	btn_arr.append(Utils.create_btn(TranslationServer.translate("Paste XML"),
+	btn_arr.append(ContextPopup.create_button(TranslationServer.translate("Paste XML"),
 			paste_palette.bind(palette_idx),
 			!ColorPalette.is_valid_palette(DisplayServer.clipboard_get()),
 			load("res://visual/icons/Paste.svg")))
-	btn_arr.append(Utils.create_btn(TranslationServer.translate("Delete"),
+	btn_arr.append(ContextPopup.create_button(TranslationServer.translate("Delete"),
 			delete.bind(palette_idx), false, load("res://visual/icons/Delete.svg")))
 	
 	var context_popup := ContextPopup.new()

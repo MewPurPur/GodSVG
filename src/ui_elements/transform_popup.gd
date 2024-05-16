@@ -261,13 +261,13 @@ func update_final_transform() -> void:
 
 func popup_transform_actions(idx: int, control: Control) -> void:
 	var btn_array: Array[Button] = []
-	btn_array.append(Utils.create_btn(TranslationServer.translate("Insert After"),
+	btn_array.append(ContextPopup.create_button(TranslationServer.translate("Insert After"),
 			popup_new_transform_context.bind(idx + 1, control), false,
 			load("res://visual/icons/InsertAfter.svg")))
-	btn_array.append(Utils.create_btn(TranslationServer.translate("Insert Before"),
+	btn_array.append(ContextPopup.create_button(TranslationServer.translate("Insert Before"),
 			popup_new_transform_context.bind(idx, control), false,
 			load("res://visual/icons/InsertBefore.svg")))
-	btn_array.append(Utils.create_btn(TranslationServer.translate("Delete"),
+	btn_array.append(ContextPopup.create_button(TranslationServer.translate("Delete"),
 			delete_transform.bind(idx), false, load("res://visual/icons/Delete.svg")))
 	
 	var context_popup := ContextPopup.new()
@@ -278,8 +278,8 @@ func popup_transform_actions(idx: int, control: Control) -> void:
 func popup_new_transform_context(idx: int, control: Control) -> void:
 	var btn_array: Array[Button] = []
 	for transform in ["matrix", "translate", "rotate", "scale", "skewX", "skewY"]:
-		var btn := Utils.create_btn(transform, insert_transform.bind(idx, transform),
-				false, icons_dict[transform])
+		var btn := ContextPopup.create_button(transform,
+				insert_transform.bind(idx, transform), false, icons_dict[transform])
 		btn.add_theme_font_override("font", code_font)
 		btn_array.append(btn)
 	

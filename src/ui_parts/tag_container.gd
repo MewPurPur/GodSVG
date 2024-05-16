@@ -96,8 +96,8 @@ func _gui_input(event: InputEvent) -> void:
 			# Create the context popup.
 			var btn_array: Array[Button] = []
 			for tag_name in ["path", "circle", "ellipse", "rect", "line"]:
-				var btn := Utils.create_btn(tag_name, add_tag.bind(tag_name, location),
-						false, DB.get_tag_icon(tag_name))
+				var btn := ContextPopup.create_button(tag_name,
+						add_tag.bind(tag_name, location), false, DB.get_tag_icon(tag_name))
 				btn.add_theme_font_override("font", load("res://visual/fonts/FontMono.ttf"))
 				btn_array.append(btn)
 			

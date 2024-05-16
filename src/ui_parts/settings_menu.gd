@@ -184,7 +184,7 @@ func setup_setting_labels() -> void:
 func _on_language_pressed() -> void:
 	var btn_arr: Array[Button] = []
 	for lang in TranslationServer.get_loaded_locales():
-		btn_arr.append(Utils.create_btn(
+		btn_arr.append(ContextPopup.create_button(
 				TranslationServer.get_locale_name(lang) + " (" + lang + ")",
 				_on_language_chosen.bind(lang), lang == TranslationServer.get_locale()))
 	var lang_popup := ContextPopup.new()
@@ -277,16 +277,13 @@ func disable_format_checkboxes() -> void:
 
 
 func setup_shortcuts_tab() -> void:
-	shortcut_categories.add_child(Utils.create_btn(TranslationServer.translate("File"),
-			show_keybinds.bind("file")))
-	shortcut_categories.add_child(Utils.create_btn(TranslationServer.translate("Edit"),
-			show_keybinds.bind("edit")))
-	shortcut_categories.add_child(Utils.create_btn(TranslationServer.translate("View"),
-			show_keybinds.bind("view")))
-	shortcut_categories.add_child(Utils.create_btn(TranslationServer.translate("Tool"),
-			show_keybinds.bind("tool")))
-	shortcut_categories.add_child(Utils.create_btn(TranslationServer.translate("Help"),
-			show_keybinds.bind("help")))
+	for setup_arr in [["file", "File"], ["edit", "Edit"], ["view", "View"],
+	["tool", "Tool"], ["help", "Help"]]:
+		var btn := Button.new()
+		btn.pressed.connect(show_keybinds.bind(setup_arr[0]))
+		btn.text = TranslationServer.translate(setup_arr[1])
+		btn.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+		shortcut_categories.add_child(btn)
 	# Add them all to a button group.
 	var button_group := ButtonGroup.new()
 	for btn: Button in shortcut_categories.get_children():

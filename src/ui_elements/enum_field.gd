@@ -27,13 +27,13 @@ func _ready() -> void:
 func _on_pressed() -> void:
 	var btn_arr: Array[Button] = []
 	# Add a default.
-	var reset_btn := Utils.create_btn("", set_value.bind(""),
+	var reset_btn := ContextPopup.create_button("", set_value.bind(""),
 			attribute.get_value().is_empty(), reload_icon)
 	reset_btn.icon_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	btn_arr.append(reset_btn)
 	# Add a button for each enum value.
 	for enum_constant in DB.attribute_enum_values[attribute.name]:
-		var btn := Utils.create_btn(enum_constant, set_value.bind(enum_constant),
+		var btn := ContextPopup.create_button(enum_constant, set_value.bind(enum_constant),
 				enum_constant == attribute.get_value())
 		if enum_constant == attribute.get_default():
 			btn.add_theme_font_override("font", bold_font)
