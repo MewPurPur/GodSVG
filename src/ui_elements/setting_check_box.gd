@@ -26,7 +26,7 @@ func update_widgets() -> void:
 			GlobalSettings.default_config[section_name][setting_name])
 	if checkbox.disabled:
 		label.add_theme_color_override("font_color",
-				GlobalSettings.common_subtle_text_color)
+				ThemeGenerator.common_subtle_text_color)
 	else:
 		label.remove_theme_color_override("font_color")
 

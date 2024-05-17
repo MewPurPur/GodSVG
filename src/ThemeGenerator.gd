@@ -4,69 +4,69 @@ const regular_font = preload("res://visual/fonts/Font.ttf")
 const bold_font = preload("res://visual/fonts/FontBold.ttf")
 const code_font = preload("res://visual/fonts/FontMono.ttf")
 
-#const focus_color = Color("66ccff")
-#const common_panel_inner_color = Color("191926")
-#const common_panel_border_color = Color("414159")
-#const common_caret_color = Color("ddeeffdd")
-#const common_selection_color = Color("668cff66")
-#const common_text_color = Color("ddeeff")
-#const common_subtle_text_color = Color("ffffff55")
-#const common_inner_color_disabled = Color("0e0e12")
-#const common_border_color_disabled = Color("1e1f24")
-#const common_separator_color = Color("414159", 0.6)
-#
-#const common_button_inner_color_normal = Color("1c1e38")
-#const common_button_border_color_normal = Color("313859")
-#const common_button_inner_color_hover = Color("232840")
-#const common_button_border_color_hover = Color("43567a")
-#const common_button_inner_color_pressed = Color("3d5499")
-#const common_button_border_color_pressed = Color("608fbf")
-#
-#const connected_button_inner_color_normal = Color("10101a")
-#const connected_button_border_color_normal = Color("272733")
-#const connected_button_inner_color_hover = Color("181826")
-#const connected_button_border_color_hover = Color("3a3a4d")
-#const connected_button_inner_color_pressed = Color("313559")
-#const connected_button_border_color_pressed = Color("54678c")
-#
-#const icon_normal_color = Color("bfbfbf")
-#const context_icon_normal_color = Color("d9d9d9")
-#const icon_hover_color = Color("ffffff")
-#const icon_pressed_color = Color("bfdfff")
-#const icon_toggled_off_color = Color("808080")
-#const icon_toggled_on_color = Color("ddeeffdd")
-#
-#const translucent_button_color_normal = Color("ddeeff11")
-#const translucent_button_color_hover = Color("ddeeff22")
-#const translucent_button_color_pressed = Color("ddeeff44")
-#const translucent_button_color_disabled = Color("05060755")
-#const flat_button_color_hover = Color("ddeeff11")
-#const flat_button_color_pressed = Color("ddeeff33")
-#const flat_button_color_disabled = Color("05060744")
-#
-#const dark_panel_color = Color("11111a")
-#const overlay_panel_inner_color = Color("060614")
-#const overlay_panel_border_color = Color("344166")
-#
-#const scrollbar_normal_color = Color("344166")
-#const scrollbar_hover_color = Color("465580")
-#const scrollbar_pressed_color = Color("608fbf")
-#const scrollbar_background_color = Color("0f0f1a99")
-#
-#const line_edit_focus_color = Color("3d6b99")
-#const line_edit_background_color = Color("10101a")
-#const line_edit_normal_border_color = Color("272733")
-#const line_edit_hover_border_overlay_color = Color("ddeeff1b")
-#const mini_line_edit_normal_border_color = Color("4d4e66")
-#
-#
-#const tab_container_panel_inner_color = Color("171726")
-#const tab_container_panel_border_color = Color("2a2e4d")
-#const tabbar_background_color = Color("13131f80")
-#const hovered_tab_color = Color("1f2138")
-#const normal_tab_color = Color("17192e")
-#const selected_tab_color = Color("293052")
-#const selected_tab_border_color = Color("608fbf")
+const focus_color = Color("66ccff")
+const common_panel_inner_color = Color("191926")
+const common_panel_border_color = Color("414159")
+const common_caret_color = Color("ddeeffdd")
+const common_selection_color = Color("668cff66")
+const common_text_color = Color("ddeeff")
+const common_subtle_text_color = Color("ffffff55")
+const common_inner_color_disabled = Color("0e0e12")
+const common_border_color_disabled = Color("1e1f24")
+const common_separator_color = Color("414159", 0.6)
+
+const common_button_inner_color_normal = Color("1c1e38")
+const common_button_border_color_normal = Color("313859")
+const common_button_inner_color_hover = Color("232840")
+const common_button_border_color_hover = Color("43567a")
+const common_button_inner_color_pressed = Color("3d5499")
+const common_button_border_color_pressed = Color("608fbf")
+
+const connected_button_inner_color_normal = Color("10101a")
+const connected_button_border_color_normal = Color("272733")
+const connected_button_inner_color_hover = Color("181826")
+const connected_button_border_color_hover = Color("3a3a4d")
+const connected_button_inner_color_pressed = Color("313559")
+const connected_button_border_color_pressed = Color("54678c")
+
+const icon_normal_color = Color("bfbfbf")
+const context_icon_normal_color = Color("d9d9d9")
+const icon_hover_color = Color("ffffff")
+const icon_pressed_color = Color("bfdfff")
+const icon_toggled_off_color = Color("808080")
+const icon_toggled_on_color = Color("ddeeffdd")
+
+const translucent_button_color_normal = Color("ddeeff11")
+const translucent_button_color_hover = Color("ddeeff22")
+const translucent_button_color_pressed = Color("ddeeff44")
+const translucent_button_color_disabled = Color("05060755")
+const flat_button_color_hover = Color("ddeeff11")
+const flat_button_color_pressed = Color("ddeeff33")
+const flat_button_color_disabled = Color("05060744")
+
+const dark_panel_color = Color("11111a")
+const overlay_panel_inner_color = Color("060614")
+const overlay_panel_border_color = Color("344166")
+
+const scrollbar_normal_color = Color("344166")
+const scrollbar_hover_color = Color("465580")
+const scrollbar_pressed_color = Color("608fbf")
+const scrollbar_background_color = Color("0f0f1a99")
+
+const line_edit_focus_color = Color("3d6b99")
+const line_edit_background_color = Color("10101a")
+const line_edit_normal_border_color = Color("272733")
+const line_edit_hover_border_overlay_color = Color("ddeeff1b")
+const mini_line_edit_normal_border_color = Color("4d4e66")
+
+
+const tab_container_panel_inner_color = Color("171726")
+const tab_container_panel_border_color = Color("2a2e4d")
+const tabbar_background_color = Color("13131f80")
+const hovered_tab_color = Color("1f2138")
+const normal_tab_color = Color("17192e")
+const selected_tab_color = Color("293052")
+const selected_tab_border_color = Color("608fbf")
 
 static func generate_theme() -> void:
 	var default_theme := ThemeDB.get_default_theme()
@@ -87,7 +87,7 @@ static func generate_theme() -> void:
 	setup_tooltip(theme)
 	setup_splitcontainer(theme)
 	default_theme.merge_with(theme)
-	Indications.theme_changed.emit()
+
 
 
 static func setup_panelcontainer(theme: Theme) -> void:
@@ -634,8 +634,8 @@ static func setup_lineedit(theme: Theme) -> void:
 	right_connected_stylebox.content_margin_bottom = 0.0
 	
 	var right_connected_disabled_stylebox := right_connected_stylebox.duplicate()
-	right_connected_disabled_stylebox.bg_color = GlobalSettings.common_inner_color_disabled
-	right_connected_disabled_stylebox.border_color = GlobalSettings.common_border_color_disabled
+	right_connected_disabled_stylebox.bg_color = common_inner_color_disabled
+	right_connected_disabled_stylebox.border_color = common_border_color_disabled
 	theme.set_stylebox("read_only", "RightConnectedLineEdit", right_connected_disabled_stylebox)
 	
 	var right_connected_normal_stylebox := right_connected_stylebox.duplicate()
@@ -878,7 +878,7 @@ static func setup_tooltip(theme: Theme) -> void:
 	theme.set_stylebox("panel", "TooltipPanel", stylebox)
 	
 	theme.add_type("TooltipLabel")
-	theme.set_color("font_color", "TooltipLabel", GlobalSettings.common_text_color)
+	theme.set_color("font_color", "TooltipLabel", common_text_color)
 	theme.set_font_size("font_size", "TooltipLabel", 14)
 	theme.set_font("font", "TooltipLabel", regular_font)
 

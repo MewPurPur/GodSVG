@@ -39,7 +39,6 @@ func _notification(what: int) -> void:
 		update_theme()
 
 func _ready() -> void:
-	Indications.theme_changed.connect(update_theme)
 	update_translations()
 	update_theme()
 	update_snap_config()
@@ -86,15 +85,14 @@ func update_translations() -> void:
 
 func update_theme() -> void:
 	var stylebox := StyleBoxFlat.new()
-	stylebox.bg_color = GlobalSettings.overlay_panel_inner_color
-	stylebox.border_color = GlobalSettings.overlay_panel_border_color
+	stylebox.bg_color = ThemeGenerator.overlay_panel_inner_color
 	stylebox.set_content_margin_all(6)
 	panel_container.add_theme_stylebox_override("panel", stylebox)
 	var frame := StyleBoxFlat.new()
 	frame.draw_center = false
 	frame.border_width_left = 2
 	frame.border_width_top = 2
-	frame.border_color = GlobalSettings.connected_button_border_color_pressed
+	frame.border_color = ThemeGenerator.connected_button_border_color_pressed
 	frame.content_margin_left = 2
 	frame.content_margin_top = 2
 	viewport_panel.add_theme_stylebox_override("panel", frame)

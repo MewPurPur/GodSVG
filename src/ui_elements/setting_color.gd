@@ -18,8 +18,6 @@ func _ready() -> void:
 func _on_color_edit_value_changed(new_value: String) -> void:
 	GlobalSettings.modify_setting(section_name, setting_name, Color(new_value))
 	value_changed.emit()
-	ThemeGenerator.generate_theme()
-	Indications.theme_changed.emit()
 	update_widgets()
 
 func _on_reset_button_pressed() -> void:

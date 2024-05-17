@@ -455,26 +455,6 @@ setting_name = "basic_color_warning"
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="FocusColor" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Theme/ThemeSettings/ThemeColorsVBox" instance=ExtResource("4_dacsc")]
-layout_mode = 2
-section_name = "theming"
-setting_name = "focus_color"
-
-[node name="LineEditFocusColor" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Theme/ThemeSettings/ThemeColorsVBox" instance=ExtResource("4_dacsc")]
-layout_mode = 2
-section_name = "theming"
-setting_name = "line_edit_focus_color"
-
-[node name="CommonPanelInnerColor" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Theme/ThemeSettings/ThemeColorsVBox" instance=ExtResource("4_dacsc")]
-layout_mode = 2
-section_name = "theming"
-setting_name = "common_panel_inner_color"
-
-[node name="CommonPanelBorderColor" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Theme/ThemeSettings/ThemeColorsVBox" instance=ExtResource("4_dacsc")]
-layout_mode = 2
-section_name = "theming"
-setting_name = "common_panel_border_color"
-
 [node name="OverlayPanelInnerColor" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Theme/ThemeSettings/ThemeColorsVBox" instance=ExtResource("4_dacsc")]
 layout_mode = 2
 section_name = "theming"
