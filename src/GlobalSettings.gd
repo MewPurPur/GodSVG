@@ -50,8 +50,13 @@ const default_config = {
 		"basic_color_valid": Color("9f9"),
 		"basic_color_error": Color("f99"),
 		"basic_color_warning": Color("ee5"),
+		"focus_color": Color("66ccff"),
+		"line_edit_focus_color": Color("3d6b99"),
+		"common_panel_inner_color": Color("191926"),
+		"common_panel_border_color": Color("414159"),
 		"overlay_panel_inner_color": Color("060614"),
 		"overlay_panel_border_color": Color("344166"),
+		"common_selection_color": Color("668cff66")
 	},
 	"other": {
 		"invert_zoom": false,
@@ -214,20 +219,20 @@ var translucent_button_color_normal = Color("ddeeff11")
 var translucent_button_color_hover = Color("ddeeff22")
 var translucent_button_color_pressed = Color("ddeeff44")
 var translucent_button_color_disabled = Color("05060755")
-var flat_button_color_hover = Color("ddeeff11")
-var flat_button_color_pressed = Color("ddeeff33")
-var flat_button_color_disabled = Color("05060744")
+var flat_button_color_hover := Color("ddeeff11")
+var flat_button_color_pressed := Color("ddeeff33")
+var flat_button_color_disabled := Color("05060744")
 
-var dark_panel_color = Color("11111a")
-var overlay_panel_inner_color = Color("060614")
-var overlay_panel_border_color = Color("344166")
+var dark_panel_color := Color("11111a")
+var overlay_panel_inner_color := Color("060614")
+var overlay_panel_border_color := Color("344166")
 
-var scrollbar_normal_color = Color("344166")
-var scrollbar_hover_color = Color("465580")
-var scrollbar_pressed_color = Color("608fbf")
-var scrollbar_background_color = Color("0f0f1a99")
+var scrollbar_normal_color := Color("344166")
+var scrollbar_hover_color := Color("465580")
+var scrollbar_pressed_color := Color("608fbf")
+var scrollbar_background_color := Color("0f0f1a99")
 
-var line_edit_focus_color = Color("3d6b99")
+var line_edit_focus_color := Color("3d6b99")
 var line_edit_background_color = Color("10101a")
 var line_edit_normal_border_color = Color("272733")
 var line_edit_hover_border_overlay_color = Color("ddeeff1b")

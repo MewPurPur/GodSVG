@@ -44,7 +44,7 @@ icon: Texture2D = null, shortcut := "") -> Button:
 				label.text = events[0].as_text_keycode()
 				label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 				label.add_theme_color_override("font_color",
-						ThemeGenerator.common_subtle_text_color)
+						GlobalSettings.common_subtle_text_color)
 				label.add_theme_font_size_override("font_size",
 						main_button.get_theme_font_size("font_size"))
 				
@@ -103,7 +103,7 @@ start_pressed: bool, shortcut := "") -> CheckBox:
 				label.text = events[0].as_text_keycode()
 				label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 				label.add_theme_color_override("font_color",
-						ThemeGenerator.common_subtle_text_color)
+						GlobalSettings.common_subtle_text_color)
 				label.add_theme_font_size_override("font_size",
 						checkbox.get_theme_font_size("font_size"))
 				
@@ -176,7 +176,7 @@ min_width := -1.0, separator_indices: Array[int] = []) -> void:
 		stylebox.content_margin_left = 8
 		stylebox.content_margin_right = 8
 		stylebox.border_width_bottom = 2
-		stylebox.border_color = ThemeGenerator.common_separator_color
+		stylebox.border_color = GlobalSettings.common_separator_color
 		title_container.add_theme_stylebox_override("panel", stylebox)
 		var title_label := Label.new()
 		title_label.text = top_title

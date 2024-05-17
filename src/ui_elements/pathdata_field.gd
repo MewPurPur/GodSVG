@@ -196,7 +196,7 @@ func commands_draw() -> void:
 		var cmd_char := cmd.command_char
 		# Draw the action button.
 		more_icon.draw_rect(ci, Rect2(Vector2(commands_container.size.x - 19, 4 + v_offset),
-				Vector2(14, 14)), false, ThemeGenerator.icon_normal_color)
+				Vector2(14, 14)), false, GlobalSettings.icon_normal_color)
 		# Draw the relative/absolute button.
 		var relative_stylebox := absolute_button_normal if\
 				Utils.is_string_upper(cmd_char) else relative_button_normal

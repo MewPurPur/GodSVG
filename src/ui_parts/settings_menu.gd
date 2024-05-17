@@ -23,6 +23,7 @@ const SettingColor = preload("res://src/ui_elements/setting_color.gd")
 var focused_content := 0
 
 func _ready() -> void:
+	Indications.theme_changed.connect(setup_theming)
 	update_language_button()
 	setup_setting_labels()
 	for i in tabs.get_child_count():
@@ -44,8 +45,11 @@ func _notification(what: int) -> void:
 		setup_theming()
 
 func setup_theming() -> void:
+	print("setting up theming")
 	var stylebox := get_theme_stylebox("panel").duplicate()
 	stylebox.content_margin_top = 8.0
+	stylebox.bg_color = GlobalSettings.overlay_panel_inner_color
+	stylebox.border_color = GlobalSettings.overlay_panel_border_color
 	add_theme_stylebox_override("panel", stylebox)
 
 # Sets the text for all the labels.
@@ -179,6 +183,14 @@ func setup_setting_labels() -> void:
 			"Error color")
 	%BasicColorsVBox/WarningColor.label.text = TranslationServer.translate(
 			"Warning color")
+	%ThemeColorsVBox/FocusColor.label.text =  TranslationServer.translate(
+			"Focus Color")
+	%ThemeColorsVBox/LineEditFocusColor.label.text =  TranslationServer.translate(
+			"Line Edit Focus Color")
+	%ThemeColorsVBox/CommonPanelInnerColor.label.text =  TranslationServer.translate(
+			"Common Panel Inner Color")
+	%ThemeColorsVBox/CommonPanelBorderColor.label.text =  TranslationServer.translate(
+			"Common Panel Border Color")
 	%ThemeColorsVBox/OverlayPanelInnerColor.label.text =  TranslationServer.translate(
 			"Overlay Panel Inner Color")
 	%ThemeColorsVBox/OverlayPanelBorderColor.label.text =  TranslationServer.translate(
