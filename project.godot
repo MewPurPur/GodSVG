@@ -33,6 +33,7 @@ GlobalSettings="*res://src/GlobalSettings.gd"
 SVG="*res://src/SVG.gd"
 Indications="*res://src/Indications.gd"
 HandlerGUI="*res://src/HandlerGUI.gd"
+ColorDB="*res://src/ColorDB.gd"
 
 [display]
 

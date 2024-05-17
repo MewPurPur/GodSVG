@@ -49,7 +49,7 @@ func set_label_text(new_text: String) -> void:
 	if new_text.is_empty():
 		color_label.text = TranslationServer.translate("Unnamed")
 		color_label.add_theme_color_override("font_color",
-				ThemeGenerator.common_subtle_text_color)
+				ColorDB.get_color("common_subtle_text_color"))
 	else:
 		color_label.text = new_text
 		color_label.remove_theme_color_override("font_color")
