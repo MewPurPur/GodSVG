@@ -31,5 +31,4 @@ func update_widgets() -> void:
 	var setting_str: String = setting_value.to_html(show_alpha)
 	color_edit.value = setting_str
 	var default_value: Color = GlobalSettings.default_config[section_name][setting_name]
-	notification(Utils.CustomNotification.THEME_CHANGED)
 	reset_button.visible = (setting_str != default_value.to_html(default_value.a != 1.0))
