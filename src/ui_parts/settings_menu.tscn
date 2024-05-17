@@ -451,6 +451,20 @@ layout_mode = 2
 section_name = "theming"
 setting_name = "basic_color_warning"
 
+[node name="ThemeColorsVBox" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Theme/ThemeSettings"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="OverlayPanelInnerColor" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Theme/ThemeSettings/ThemeColorsVBox" instance=ExtResource("4_dacsc")]
+layout_mode = 2
+section_name = "theming"
+setting_name = "overlay_panel_inner_color"
+
+[node name="OverlayPanelBorderColor" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Theme/ThemeSettings/ThemeColorsVBox" instance=ExtResource("4_dacsc")]
+layout_mode = 2
+section_name = "theming"
+setting_name = "overlay_panel_border_color"
+
 [node name="Other" type="ScrollContainer" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer"]
 visible = false
 layout_mode = 2

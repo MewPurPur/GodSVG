@@ -45,7 +45,7 @@ func _notification(what: int) -> void:
 
 func setup_theming() -> void:
 	var stylebox := get_theme_stylebox("panel").duplicate()
-	stylebox.content_margin_top += 4.0
+	stylebox.content_margin_top = 8.0
 	add_theme_stylebox_override("panel", stylebox)
 
 # Sets the text for all the labels.
@@ -179,6 +179,10 @@ func setup_setting_labels() -> void:
 			"Error color")
 	%BasicColorsVBox/WarningColor.label.text = TranslationServer.translate(
 			"Warning color")
+	%ThemeColorsVBox/OverlayPanelInnerColor.label.text =  TranslationServer.translate(
+			"Overlay Panel Inner Color")
+	%ThemeColorsVBox/OverlayPanelBorderColor.label.text =  TranslationServer.translate(
+			"Overlay Panel Border Color")
 
 
 func _on_language_pressed() -> void:

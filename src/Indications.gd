@@ -20,6 +20,8 @@ signal hover_changed
 signal selection_changed
 signal proposed_drop_changed
 
+signal theme_changed
+
 signal requested_scroll_to_tag_editor(tid: PackedInt32Array)
 
 # The viewport listens for this signal to put you in handle-placing mode.
