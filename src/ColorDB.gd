@@ -1,7 +1,8 @@
 ## A database for the colors that themes use in the project.
 extends Node
 
-var focus_color := Color("66ccff", 0.8)
+var focus_color := Color("6cf", 0.8)
+
 var common_panel_inner_color := Color("191926")
 var common_panel_border_color := Color("414159")
 var common_caret_color := Color("def", 0.87)
