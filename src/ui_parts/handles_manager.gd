@@ -520,22 +520,23 @@ func _draw() -> void:
 								end += prev_M_cmd.start
 							
 							points = PackedVector2Array([cmd.start, end])
-						_: continue
+						"M": 
+							continue
 					points = attribs.transform.get_final_transform() * points
 					tangent_points = attribs.transform.get_final_transform() * tangent_points
 					match current_mode:
 						Utils.InteractionType.NONE:
-							normal_polylines.append(points.duplicate())
-							normal_multiline += tangent_points.duplicate()
+							normal_polylines.append(points)
+							normal_multiline += tangent_points
 						Utils.InteractionType.HOVERED:
-							hovered_polylines.append(points.duplicate())
-							hovered_multiline += tangent_points.duplicate()
+							hovered_polylines.append(points)
+							hovered_multiline += tangent_points
 						Utils.InteractionType.SELECTED:
-							selected_polylines.append(points.duplicate())
-							selected_multiline += tangent_points.duplicate()
+							selected_polylines.append(points)
+							selected_multiline += tangent_points
 						Utils.InteractionType.HOVERED_SELECTED:
-							hovered_selected_polylines.append(points.duplicate())
-							hovered_selected_multiline += tangent_points.duplicate()
+							hovered_selected_polylines.append(points)
+							hovered_selected_multiline += tangent_points
 	
 	var draw_zoom := Indications.zoom * SVG.root_tag.canvas_transform.get_scale().x
 	var contour_width := 1.0 / draw_zoom
