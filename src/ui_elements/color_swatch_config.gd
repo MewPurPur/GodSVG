@@ -18,6 +18,9 @@ func _ready() -> void:
 	# _make_custom_tooltip() requires some text to work.
 	tooltip_text = "lmofa"
 
+func _exit_tree() -> void:
+	RenderingServer.free_rid(surface)
+
 func _draw() -> void:
 	if idx >= color_palette.colors.size():
 		return

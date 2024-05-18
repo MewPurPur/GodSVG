@@ -26,6 +26,10 @@ var hovered_color: Color
 var selected_color: Color
 var hovered_selected_color: Color
 
+
+func _exit_tree() -> void:
+	RenderingServer.free_rid(surface)
+
 func render_handle_textures() -> void:
 	normal_color = GlobalSettings.handle_color
 	hovered_color = GlobalSettings.handle_hovered_color
