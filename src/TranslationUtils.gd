@@ -25,45 +25,45 @@ static func get_shortcut_description(action_name: String) -> String:
 		"view_rasterized_svg": return TranslationServer.translate("Show rasterized SVG")
 		"debug": return TranslationServer.translate("View debug information")
 		"move_relative": return "%s (%s)" %\
-				[get_command_char_description("M"), TranslationServer.translate("Relative")]
+				[get_command_description("M"), TranslationServer.translate("Relative")]
 		"move_absolute": return "%s (%s)" %\
-				[get_command_char_description("M"), TranslationServer.translate("Absolute")]
+				[get_command_description("M"), TranslationServer.translate("Absolute")]
 		"line_relative": return "%s (%s)" %\
-				[get_command_char_description("L"), TranslationServer.translate("Relative")]
+				[get_command_description("L"), TranslationServer.translate("Relative")]
 		"line_absolute": return "%s (%s)" %\
-				[get_command_char_description("L"), TranslationServer.translate("Absolute")]
+				[get_command_description("L"), TranslationServer.translate("Absolute")]
 		"horizontal_line_relative": return "%s (%s)" %\
-				[get_command_char_description("H"), TranslationServer.translate("Relative")]
+				[get_command_description("H"), TranslationServer.translate("Relative")]
 		"horizontal_line_absolute": return "%s (%s)" %\
-				[get_command_char_description("H"), TranslationServer.translate("Absolute")]
+				[get_command_description("H"), TranslationServer.translate("Absolute")]
 		"vertical_line_relative": return "%s (%s)" %\
-				[get_command_char_description("V"), TranslationServer.translate("Relative")]
+				[get_command_description("V"), TranslationServer.translate("Relative")]
 		"vertical_line_absolute": return "%s (%s)" %\
-				[get_command_char_description("V"), TranslationServer.translate("Absolute")]
+				[get_command_description("V"), TranslationServer.translate("Absolute")]
 		"close_path_relative": return "%s (%s)" %\
-				[get_command_char_description("Z"), TranslationServer.translate("Relative")]
+				[get_command_description("Z"), TranslationServer.translate("Relative")]
 		"close_path_absolute": return "%s (%s)" %\
-				[get_command_char_description("Z"), TranslationServer.translate("Absolute")]
+				[get_command_description("Z"), TranslationServer.translate("Absolute")]
 		"elliptical_arc_relative": return "%s (%s)" %\
-				[get_command_char_description("A"), TranslationServer.translate("Relative")]
+				[get_command_description("A"), TranslationServer.translate("Relative")]
 		"elliptical_arc_absolute": return "%s (%s)" %\
-				[get_command_char_description("A"), TranslationServer.translate("Absolute")]
+				[get_command_description("A"), TranslationServer.translate("Absolute")]
 		"quadratic_bezier_relative": return "%s (%s)" %\
-				[get_command_char_description("Q"), TranslationServer.translate("Relative")]
+				[get_command_description("Q"), TranslationServer.translate("Relative")]
 		"quadratic_bezier_absolute": return "%s (%s)" %\
-				[get_command_char_description("Q"), TranslationServer.translate("Absolute")]
+				[get_command_description("Q"), TranslationServer.translate("Absolute")]
 		"shorthand_quadratic_bezier_relative": return "%s (%s)" %\
-				[get_command_char_description("T"), TranslationServer.translate("Relative")]
+				[get_command_description("T"), TranslationServer.translate("Relative")]
 		"shorthand_quadratic_bezier_absolute": return "%s (%s)" %\
-				[get_command_char_description("T"), TranslationServer.translate("Absolute")]
+				[get_command_description("T"), TranslationServer.translate("Absolute")]
 		"cubic_bezier_relative": return "%s (%s)" %\
-				[get_command_char_description("C"), TranslationServer.translate("Relative")]
+				[get_command_description("C"), TranslationServer.translate("Relative")]
 		"cubic_bezier_absolute": return "%s (%s)" %\
-				[get_command_char_description("C"), TranslationServer.translate("Absolute")]
+				[get_command_description("C"), TranslationServer.translate("Absolute")]
 		"shorthand_cubic_bezier_relative": return "%s (%s)" %\
-				[get_command_char_description("S"), TranslationServer.translate("Relative")]
+				[get_command_description("S"), TranslationServer.translate("Relative")]
 		"shorthand_cubic_bezier_absolute": return "%s (%s)" %\
-				[get_command_char_description("S"), TranslationServer.translate("Absolute")]
+				[get_command_description("S"), TranslationServer.translate("Absolute")]
 		"open_settings": return TranslationServer.translate("Open Settings menu")
 		"about_info": return TranslationServer.translate("Open About menu")
 		"about_donate": return TranslationServer.translate("Open Donate menu")
@@ -74,7 +74,7 @@ static func get_shortcut_description(action_name: String) -> String:
 		_: return action_name
 
 
-static func get_command_char_description(command_char: String) -> String:
+static func get_command_description(command_char: String) -> String:
 	match command_char:
 		"M", "m": return TranslationServer.translate("Move to")
 		"L", "l": return TranslationServer.translate("Line to")
