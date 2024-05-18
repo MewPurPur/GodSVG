@@ -786,7 +786,7 @@ msgstr "Покажи дебъг информацията"
 
 #: src/TranslationUtils.gd
 msgid "Open Settings menu"
-msgstr "Отоври настройките"
+msgstr "Отвори настройките"
 
 #: src/TranslationUtils.gd
 msgid "Open About menu"
