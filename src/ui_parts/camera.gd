@@ -22,6 +22,8 @@ func _ready() -> void:
 	Indications.zoom_changed.connect(change_zoom)
 	Indications.zoom_changed.connect(queue_redraw)
 
+func exit_tree() -> void:
+	RenderingServer.free_rid(surface)
 
 func change_zoom() -> void:
 	zoom = Indications.zoom

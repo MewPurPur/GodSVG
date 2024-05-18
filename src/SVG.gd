@@ -44,6 +44,9 @@ func _ready() -> void:
 	UR.clear_history()
 
 
+func _exit_tree() -> void:
+	UR.free()
+
 func update_tags() -> void:
 	var svg_parse_result := SVGParser.text_to_svg(text)
 	parsing_finished.emit(svg_parse_result.error)
