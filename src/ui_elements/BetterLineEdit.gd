@@ -26,7 +26,10 @@ func _ready() -> void:
 func _input(event: InputEvent) -> void:
 	if has_focus():
 		if event is InputEventMouseButton:
-			if event.is_released() and first_click and not has_selection():
+			if event.is_pressed() and not get_global_rect().has_point(event.position) and\
+			HandlerGUI.popup_overlay_stack.is_empty():
+				release_focus()
+			elif event.is_released() and first_click and not has_selection():
 				first_click = false
 				select_all()
 		elif first_click:
@@ -36,14 +39,6 @@ func _input(event: InputEvent) -> void:
 		event.is_action_pressed("ui_focus_prev"):
 			text_submitted.emit(text)
 
-func _unhandled_input(event: InputEvent) -> void:
-	# Context menu items need the LineEdit to exist in order to ask it for things
-	# like its text, so this needs to be in unhandled_input so it doesn't unfocus
-	# when you click on buttons.
-	if has_focus() and event is InputEventMouseButton and event.is_pressed() and\
-	not get_global_rect().has_point(event.position):
-		release_focus()
-		text_submitted.emit(text)
 
 var first_click := false
 var text_before_focus := ""

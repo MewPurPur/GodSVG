@@ -98,12 +98,18 @@ func _draw() -> void:
 	if editable and _hovered and has_theme_stylebox("hover"):
 		draw_style_box(get_theme_stylebox("hover"), Rect2(Vector2.ZERO, size))
 
-func _unhandled_input(event: InputEvent) -> void:
+
+func _input(event: InputEvent) -> void:
 	if (has_focus() and event is InputEventMouseButton and event.is_pressed() and\
-	not get_global_rect().has_point(event.position)):
+	not get_global_rect().has_point(event.position) and\
+	HandlerGUI.popup_overlay_stack.is_empty()):
 		release_focus()
 
 func _gui_input(event: InputEvent) -> void:
+	if event.is_action_pressed("ui_cancel"):
+		release_focus()
+		return
+	
 	mouse_filter = Utils.mouse_filter_pass_non_drag_events(event)
 	
 	if event is InputEventMouseMotion and event.button_mask == 0:
