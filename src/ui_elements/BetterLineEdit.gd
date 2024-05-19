@@ -28,8 +28,13 @@ var first_click := false
 var text_before_focus := ""
 
 func _on_base_class_focus_entered() -> void:
-	first_click = true
-	text_before_focus = text
+	# Hack to check if focus entered was from a mouse click.
+	if get_global_rect().has_point(get_viewport().get_mouse_position()) and\
+	Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
+		first_click = true
+		text_before_focus = text
+	else:
+		select_all()
 
 func _on_base_class_focus_exited() -> void:
 	first_click = false
@@ -43,19 +48,6 @@ func _on_base_class_mouse_exited() -> void:
 	_hovered = false
 	queue_redraw()
 
-
-func _input(event: InputEvent) -> void:
-	if not has_focus():
-		if event is InputEventMouseButton:
-			if event.is_pressed() and not get_global_rect().has_point(event.position) and\
-			HandlerGUI.popup_overlay_stack.is_empty():
-				release_focus()
-			elif event.is_released() and first_click and not has_selection():
-				first_click = false
-				select_all()
-		if first_click:
-			first_click = false
-			select_all()
 
 func _draw() -> void:
 	if editable and _hovered and has_theme_stylebox("hover"):
@@ -73,6 +65,21 @@ func _make_custom_tooltip(for_text: String) -> Object:
 	else:
 		return null
 
+
+func _input(event: InputEvent) -> void:
+	if not has_focus():
+		return
+	
+	if event is InputEventMouseButton:
+		if event.is_pressed() and not get_global_rect().has_point(event.position) and\
+		HandlerGUI.popup_overlay_stack.is_empty():
+			release_focus()
+		elif event.is_released() and first_click and not has_selection():
+			first_click = false
+			select_all()
+	if first_click:
+		first_click = false
+		select_all()
 
 func _gui_input(event: InputEvent) -> void:
 	mouse_filter = Utils.mouse_filter_pass_non_drag_events(event)
