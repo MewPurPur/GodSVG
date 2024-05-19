@@ -119,11 +119,11 @@ func _on_settings_pressed() -> void:
 
 func _on_reference_pressed() -> void:
 	var btn_arr: Array[Button] = [
-		Utils.create_btn(TranslationServer.translate("Import Reference Image"),
+		ContextPopup.create_button(TranslationServer.translate("Import Reference Image"),
 			import_reference_image, false, load("res://visual/icons/Reference.svg")),
-		Utils.create_checkbox(TranslationServer.translate("Show Reference Image"),
+		ContextPopup.create_checkbox(TranslationServer.translate("Show Reference Image"),
 			toggle_reference_image, reference_texture.visible),
-		Utils.create_checkbox(TranslationServer.translate("Overlay Reference Image"),
+		ContextPopup.create_checkbox(TranslationServer.translate("Overlay Reference Image"),
 			toggle_reference_overlay, reference_overlay)
 	]
 	
