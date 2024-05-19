@@ -12,6 +12,7 @@ var _zoom_to: Vector2
 @onready var view: Control = $Camera
 @onready var controls: Control = $Checkerboard/Controls
 @onready var display_texture: TextureRect = $Checkerboard/DisplayTexture
+@onready var reference_texture = %ReferenceTexture
 @onready var zoom_menu: ZoomMenuType = %ZoomMenu
 
 
@@ -42,6 +43,7 @@ func set_view(new_position: Vector2) -> void:
 func resize() -> void:
 	if SVG.root_tag.get_size().is_finite():
 		display.size = SVG.root_tag.get_size()
+		reference_texture.size = SVG.root_tag.get_size()
 	zoom_menu.zoom_reset()
 
 func center_frame() -> void:
