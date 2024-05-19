@@ -23,19 +23,6 @@ func _ready() -> void:
 	mouse_exited.connect(_on_base_class_mouse_exited)
 	text_submitted.connect(release_focus.unbind(1))
 
-func _input(event: InputEvent) -> void:
-	if has_focus():
-		if event is InputEventMouseButton:
-			if event.is_pressed() and not get_global_rect().has_point(event.position) and\
-			HandlerGUI.popup_overlay_stack.is_empty():
-				release_focus()
-			elif event.is_released() and first_click and not has_selection():
-				first_click = false
-				select_all()
-		elif first_click:
-			first_click = false
-			select_all()
-
 
 var first_click := false
 var text_before_focus := ""
@@ -52,10 +39,23 @@ func _on_base_class_focus_exited() -> void:
 	else:
 		text_submitted.emit(text)
 
-
 func _on_base_class_mouse_exited() -> void:
 	_hovered = false
 	queue_redraw()
+
+
+func _input(event: InputEvent) -> void:
+	if not has_focus():
+		if event is InputEventMouseButton:
+			if event.is_pressed() and not get_global_rect().has_point(event.position) and\
+			HandlerGUI.popup_overlay_stack.is_empty():
+				release_focus()
+			elif event.is_released() and first_click and not has_selection():
+				first_click = false
+				select_all()
+		if first_click:
+			first_click = false
+			select_all()
 
 func _draw() -> void:
 	if editable and _hovered and has_theme_stylebox("hover"):

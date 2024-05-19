@@ -63,6 +63,7 @@ func _init() -> void:
 	custom_minimum_size.y = 22
 	set_anchors_and_offsets_preset(PRESET_TOP_LEFT)
 	focus_mode = Control.FOCUS_ALL
+	mouse_filter = Control.MOUSE_FILTER_PASS
 	focus_entered.connect(_on_base_class_focus_entered)
 	mouse_entered.connect(_on_base_class_mouse_entered)
 	mouse_exited.connect(_on_base_class_mouse_exited)
