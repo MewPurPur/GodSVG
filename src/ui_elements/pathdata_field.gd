@@ -34,7 +34,7 @@ var mini_line_edit_font_color := get_theme_color("font_color", "MiniLineEdit")
 @onready var add_move: Button = $AddMove
 
 # Variables around the big optimization.
-var active_idx := -1  
+var active_idx := -1
 @onready var ci := commands_container.get_canvas_item()
 var fields: Array[Control] = []
 var current_selections: Array[int] = []
