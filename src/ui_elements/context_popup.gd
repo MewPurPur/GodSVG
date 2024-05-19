@@ -15,7 +15,7 @@ icon: Texture2D = null, shortcut := "") -> Button:
 	
 	if not shortcut.is_empty():
 		if not InputMap.has_action(shortcut):
-			printerr("A non-existent shortcut was passed to Utils.create_btn().")
+			printerr("A non-existent shortcut was passed to ContextPopup.create_button().")
 		elif InputMap.has_action(shortcut):
 			var events := InputMap.action_get_events(shortcut)
 			if not events.is_empty():
@@ -80,7 +80,7 @@ start_pressed: bool, shortcut := "") -> CheckBox:
 	
 	if not shortcut.is_empty():
 		if not InputMap.has_action(shortcut):
-			printerr("A non-existent shortcut was passed to Utils.create_btn().")
+			printerr("A non-existent shortcut was passed to ContextPopup.create_checkbox().")
 		elif InputMap.has_action(shortcut):
 			var events := InputMap.action_get_events(shortcut)
 			if not events.is_empty():
