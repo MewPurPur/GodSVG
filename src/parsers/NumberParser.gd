@@ -49,18 +49,18 @@ static func evaluate(text: String) -> float:
 	text = text.trim_prefix("+")  # Expression can't handle unary plus.
 	var expr := Expression.new()
 	var err := expr.parse(text.replace(",", "."))
-	if err == OK and text.is_valid_float():
-		var result: float = expr.execute()
-		if not expr.has_execute_failed():
-			return result
+	if err == OK:
+		var result: String = var_to_str(expr.execute())
+		if not expr.has_execute_failed() and result.is_valid_float():
+			return str_to_var(result);
 	err = expr.parse(text.replace(";", "."))
-	if err == OK and text.is_valid_float():
-		var result: float = expr.execute()
-		if not expr.has_execute_failed():
-			return result
+	if err == OK:
+		var result: String = var_to_str(expr.execute())
+		if not expr.has_execute_failed() and result.is_valid_float():
+			return str_to_var(result);
 	err = expr.parse(text)
-	if err == OK and text.is_valid_float():
-		var result: float = expr.execute()
-		if not expr.has_execute_failed():
-			return result
+	if err == OK:
+		var result: String = var_to_str(expr.execute())
+		if not expr.has_execute_failed() and result.is_valid_float():
+			return str_to_var(result);
 	return NAN
