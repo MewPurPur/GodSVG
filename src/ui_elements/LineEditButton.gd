@@ -50,6 +50,7 @@ var temp_button: Button
 @export var icon: Texture2D
 @export var button_visuals := true
 @export var code_font := true
+@export var code_font_tooltip := false
 
 var ci := get_canvas_item()
 
@@ -94,6 +95,7 @@ func _setup() -> void:
 		temp_line_edit.custom_minimum_size =\
 				Vector2(custom_minimum_size.x - BUTTON_WIDTH, 22)
 		temp_line_edit.tooltip_text = tooltip_text
+		temp_line_edit.code_font_tooltip = code_font_tooltip
 		temp_line_edit.placeholder_text = placeholder_text
 		temp_line_edit.text = text
 		temp_line_edit.mouse_filter = Control.MOUSE_FILTER_PASS
