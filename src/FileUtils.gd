@@ -8,7 +8,6 @@ const ImportWarningDialog = preload("res://src/ui_parts/import_warning_dialog.ts
 const GoodFileDialog = preload("res://src/ui_parts/good_file_dialog.tscn")
 const ExportDialog = preload("res://src/ui_parts/export_dialog.tscn")
 
-
 static func save_svg_to_file(path: String) -> void:
 	var FA := FileAccess.open(path, FileAccess.WRITE)
 	FA.store_string(SVG.text)
@@ -107,10 +106,32 @@ static func open_import_dialog() -> void:
 		HandlerGUI.add_overlay(svg_import_dialog)
 		svg_import_dialog.file_selected.connect(apply_svg_from_path)
 
+static func open_reference_import_dialog() -> void:
+	if FileUtils._is_native_preferred():
+		DisplayServer.file_dialog_show(TranslationServer.translate("Import a .png file"),
+				Utils.get_last_dir(), "", false, DisplayServer.FILE_DIALOG_MODE_OPEN_FILE,
+				["*.png"], native_file_import)
+	# TODO : Add Web Support
+	#elif OS.has_feature("web"):
+		#HandlerGUI.web_load_svg()
+	else:
+		var png_import_dialog := GoodFileDialog.instantiate()
+		png_import_dialog.setup(Utils.get_last_dir(), "",
+			GoodFileDialogType.FileMode.SELECT, "png")
+		HandlerGUI.add_overlay(png_import_dialog)
+		png_import_dialog.file_selected.connect(reference_image_import)
+
 static func native_file_import(has_selected: bool, files: PackedStringArray,
 _filter_idx: int) -> void:
 	if has_selected:
-		apply_svg_from_path(files[0])
+		if files[0].ends_with(".svg"):
+			apply_svg_from_path(files[0])
+		else:
+			reference_image_import(files[0])
+
+static func reference_image_import(path : String) -> void:
+	GlobalSettings.modify_save_data("reference_path", path)
+	Indications.imported_reference.emit()
 
 static func apply_svg_from_path(path: String) -> int:
 	var svg_file := FileAccess.open(path, FileAccess.READ)
@@ -143,7 +164,6 @@ static func apply_svg_from_path(path: String) -> int:
 	warning_panel.set_svg(svg_text)
 	HandlerGUI.add_overlay(warning_panel)
 	return OK
-
 
 # Web stuff. The loading logic had to remain in HandlerGUI. 
 

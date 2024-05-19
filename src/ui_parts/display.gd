@@ -17,6 +17,7 @@ const NumberField = preload("res://src/ui_elements/number_field.tscn")
 @onready var viewport: SubViewport = %Viewport
 @onready var controls: Control = %Viewport/Checkerboard/Controls
 @onready var grid_visuals: Control = %Viewport/Camera
+@onready var reference_button = %LeftMenu/Reference
 @onready var visuals_button: Button = %LeftMenu/Visuals
 @onready var more_button: Button = %LeftMenu/MoreOptions
 @onready var snapper: NumberEditType = %LeftMenu/Snapping/SnapNumberEdit
@@ -27,6 +28,9 @@ const NumberField = preload("res://src/ui_elements/number_field.tscn")
 @onready var debug_label: Label = $ViewportPanel/DebugContainer/VBoxContainer/DebugLabel
 @onready var input_debug_label: Label = $ViewportPanel/DebugContainer/VBoxContainer/InputDebugLabel
 
+@onready var reference_texture = %ReferenceTexture
+
+var reference_overlay := false
 
 func _notification(what: int) -> void:
 	if what == Utils.CustomNotification.LANGUAGE_CHANGED:
@@ -46,6 +50,8 @@ func _ready() -> void:
 	view_settings_updated.emit(grid_visuals.visible, controls.visible,
 			viewport.display_texture.rasterized)
 
+	if OS.has_feature("web"):
+		reference_button.hide()
 
 func _unhandled_input(input_event: InputEvent) -> void:
 	if Input.is_action_pressed("debug"):
@@ -110,6 +116,21 @@ func _on_settings_pressed() -> void:
 	var settings_menu_instance := settings_menu.instantiate()
 	HandlerGUI.add_overlay(settings_menu_instance)
 
+
+func _on_reference_pressed() -> void:
+	var btn_arr: Array[Button] = [
+		Utils.create_btn(TranslationServer.translate("Import Reference Image"),
+			import_reference_image, false, load("res://visual/icons/Reference.svg")),
+		Utils.create_checkbox(TranslationServer.translate("Show Reference Image"),
+			toggle_reference_image, reference_texture.visible),
+		Utils.create_checkbox(TranslationServer.translate("Overlay Reference Image"),
+			toggle_reference_overlay, reference_overlay)
+	]
+	
+	var reference_popup := ContextPopup.new()
+	reference_popup.setup(btn_arr, false)
+	HandlerGUI.popup_under_rect_center(reference_popup, reference_button.get_global_rect(),
+			get_viewport())
 
 func _on_visuals_button_pressed() -> void:
 	var btn_arr: Array[Button] = [
@@ -182,6 +203,24 @@ func toggle_rasterization() -> void:
 	viewport.display_texture.rasterized = not viewport.display_texture.rasterized
 	view_settings_updated.emit(grid_visuals.visible, controls.visible, viewport.display_texture.rasterized)
 
+func toggle_reference_image() -> void:
+	reference_texture.visible = not reference_texture.visible
+
+func toggle_reference_overlay() -> void:
+	reference_overlay = not reference_overlay
+	
+	if reference_overlay:
+		viewport.move_child(reference_texture, 2)
+	else:
+		viewport.move_child(reference_texture, 0)
+
+func import_reference_image() -> void:
+	FileUtils.open_reference_import_dialog()
+	await Indications.imported_reference
+	var ref_path = GlobalSettings.save_data.get("reference_path")
+	var img = Image.load_from_file(ref_path)
+	reference_texture.texture = ImageTexture.create_from_image(img)
+	reference_texture.show()
 
 func toggle_snap() -> void:
 	snap_button.button_pressed = not snap_button.button_pressed
