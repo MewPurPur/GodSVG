@@ -10,6 +10,7 @@ anchors_preset = 0
 offset_right = 100.0
 script = ExtResource("1_ymm02")
 button_visuals = false
+code_font_tooltip = true
 
 [connection signal="button_gui_input" from="." to="." method="_on_slider_gui_input"]
 [connection signal="text_change_canceled" from="." to="." method="_on_text_change_canceled"]

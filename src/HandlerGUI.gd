@@ -232,7 +232,7 @@ func update_ui_scale() -> void:
 			window.get_size_with_decorations() + window.size)
 	
 	# How much can window content size be multiplied by before it extends over the usable screen size.
-	var diff :=  usable_screen_size / window.get_contents_minimum_size()
+	var diff := usable_screen_size / window.get_contents_minimum_size()
 	var max_scale := floorf(minf(diff.x, diff.y) * 4.0) / 4.0
 	var desired_scale: float = GlobalSettings.ui_scale * _calculate_auto_scale()
 	

@@ -9,6 +9,7 @@ layout_mode = 3
 anchors_preset = 0
 script = ExtResource("1_1jqoy")
 icon = ExtResource("3_vhd8v")
+code_font_tooltip = true
 
 [connection signal="button_gui_input" from="." to="." method="_on_button_gui_input"]
 [connection signal="pressed" from="." to="." method="_on_pressed"]

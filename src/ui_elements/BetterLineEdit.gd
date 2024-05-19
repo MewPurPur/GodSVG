@@ -21,29 +21,21 @@ func _ready() -> void:
 	focus_entered.connect(_on_base_class_focus_entered)
 	focus_exited.connect(_on_base_class_focus_exited)
 	mouse_exited.connect(_on_base_class_mouse_exited)
-	text_submitted.connect(_on_base_class_text_submitted)
+	text_submitted.connect(release_focus.unbind(1))
 
 func _input(event: InputEvent) -> void:
 	if has_focus():
 		if event is InputEventMouseButton:
-			if event.is_released() and first_click and not has_selection():
+			if event.is_pressed() and not get_global_rect().has_point(event.position) and\
+			HandlerGUI.popup_overlay_stack.is_empty():
+				release_focus()
+			elif event.is_released() and first_click and not has_selection():
 				first_click = false
 				select_all()
 		elif first_click:
 			first_click = false
 			select_all()
-		elif event.is_action_pressed("ui_focus_next") or\
-		event.is_action_pressed("ui_focus_prev"):
-			text_submitted.emit(text)
 
-func _unhandled_input(event: InputEvent) -> void:
-	# Context menu items need the LineEdit to exist in order to ask it for things
-	# like its text, so this needs to be in unhandled_input so it doesn't unfocus
-	# when you click on buttons.
-	if has_focus() and event is InputEventMouseButton and event.is_pressed() and\
-	not get_global_rect().has_point(event.position):
-		release_focus()
-		text_submitted.emit(text)
 
 var first_click := false
 var text_before_focus := ""
@@ -57,11 +49,8 @@ func _on_base_class_focus_exited() -> void:
 	if Input.is_action_pressed("ui_cancel"):
 		text = text_before_focus
 		text_change_canceled.emit()
-
-func _on_base_class_text_submitted(_submitted_text) -> void:
-	if not Input.is_action_just_pressed("ui_focus_next") and\
-	not Input.is_action_just_pressed("ui_focus_prev"):
-		release_focus()
+	else:
+		text_submitted.emit(text)
 
 
 func _on_base_class_mouse_exited() -> void:
