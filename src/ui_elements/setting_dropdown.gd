@@ -28,7 +28,10 @@ func _on_dropdown_value_changed(new_value: String) -> void:
 		var actual_number := NumberParser.evaluate(new_value)
 		actual_number = clamp(actual_number, number_min, number_max)
 		new_value = var_to_str(actual_number)
-	GlobalSettings.modify_setting(section_name, setting_name, str_to_var(new_value))
+	if new_value == "nan":
+		GlobalSettings.reset_setting(section_name, setting_name)
+	else:
+		GlobalSettings.modify_setting(section_name, setting_name, str_to_var(new_value))
 	value_changed.emit()
 	update_widgets()
 
