@@ -18,7 +18,7 @@ static func format_text(text: String) -> String:
 		return ""  # Equivalent to NAN in the app's logic.
 	
 	var leading_decimal_point := text.begins_with(".") or text.begins_with("-.") or\
-			text.begins_with("+.")
+		text.begins_with("+.")
 	var padded_zeros := 0
 	if "." in text and not GlobalSettings.number_remove_zero_padding:
 		while text.ends_with("0"):
@@ -49,17 +49,17 @@ static func evaluate(text: String) -> float:
 	text = text.trim_prefix("+")  # Expression can't handle unary plus.
 	var expr := Expression.new()
 	var err := expr.parse(text.replace(",", "."))
-	if err == OK:
+	if err == OK and text.is_valid_float():
 		var result: float = expr.execute()
 		if not expr.has_execute_failed():
 			return result
 	err = expr.parse(text.replace(";", "."))
-	if err == OK:
+	if err == OK and text.is_valid_float():
 		var result: float = expr.execute()
 		if not expr.has_execute_failed():
 			return result
 	err = expr.parse(text)
-	if err == OK:
+	if err == OK and text.is_valid_float():
 		var result: float = expr.execute()
 		if not expr.has_execute_failed():
 			return result
