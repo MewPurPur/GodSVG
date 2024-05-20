@@ -4,7 +4,7 @@ static func get_shortcut_description(action_name: String) -> String:
 	match action_name:
 		"export": return TranslationServer.translate("Export")
 		"import": return TranslationServer.translate("Import SVG")
-		"import_reference_image": return TranslationServer.translate("Import Reference Image")
+		"load_reference_image": return TranslationServer.translate("Load Reference Image")
 		"save": return TranslationServer.translate("Save SVG")
 		"optimize": return TranslationServer.translate("Optimize")
 		"copy_svg_text": return TranslationServer.translate("Copy all text")
