@@ -436,6 +436,12 @@ theme_override_constants/separation = 3
 layout_mode = 2
 text = "Basic colors"
 
+[node name="BackgroundColor" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Theme/ThemeSettings/BasicColorsVBox" instance=ExtResource("4_dacsc")]
+layout_mode = 2
+section_name = "theming"
+setting_name = "background_color"
+enable_alpha = false
+
 [node name="ValidColor" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Theme/ThemeSettings/BasicColorsVBox" instance=ExtResource("4_dacsc")]
 layout_mode = 2
 section_name = "theming"

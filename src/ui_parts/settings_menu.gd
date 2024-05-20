@@ -173,6 +173,8 @@ func setup_setting_labels() -> void:
 			"Selected color")
 	%HandleColors/HoveredSelectedColor.label.text = TranslationServer.translate(
 			"Hovered selected color")
+	%BasicColorsVBox/BackgroundColor.label.text = TranslationServer.translate(
+			"Background color")
 	%BasicColorsVBox/ValidColor.label.text = TranslationServer.translate(
 			"Valid color")
 	%BasicColorsVBox/ErrorColor.label.text = TranslationServer.translate(
