@@ -38,6 +38,7 @@ func sync() -> void:
 	# Create new ones.
 	for i in 3:
 		var new_btn := Button.new()
+		new_btn.auto_translate = false
 		shortcut_container.add_child.call_deferred(new_btn)
 		shortcut_buttons.append(new_btn)
 		new_btn.size_flags_horizontal = Control.SIZE_EXPAND_FILL

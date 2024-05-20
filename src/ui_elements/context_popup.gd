@@ -41,6 +41,7 @@ icon: Texture2D = null, shortcut := "") -> Button:
 				label_margin.add_theme_constant_override("margin_right",
 						int(ret_button.get_theme_stylebox("normal").content_margin_right))
 				var label := Label.new()
+				label.auto_translate = false
 				label.text = events[0].as_text_keycode()
 				label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 				label.add_theme_color_override("font_color",

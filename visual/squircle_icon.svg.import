@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://buq1qplerloq5"
-path="res://.godot/imported/squircled_icon.svg-3c7cf1c70f2c8ac13ca4cbf370a484a7.ctex"
+uid="uid://csqs2n4vsbh6t"
+path="res://.godot/imported/squircle_icon.svg-9e31901e13a98a03530951e14807bf53.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://visual/squircled_icon.svg"
-dest_files=["res://.godot/imported/squircled_icon.svg-3c7cf1c70f2c8ac13ca4cbf370a484a7.ctex"]
+source_file="res://visual/squircle_icon.svg"
+dest_files=["res://.godot/imported/squircle_icon.svg-9e31901e13a98a03530951e14807bf53.ctex"]
 
 [params]
 
