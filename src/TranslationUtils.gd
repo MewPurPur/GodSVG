@@ -3,7 +3,7 @@ class_name TranslationUtils extends RefCounted
 static func get_shortcut_description(action_name: String) -> String:
 	match action_name:
 		"export": return TranslationServer.translate("Export")
-		"import": return TranslationServer.translate("Import SVG")
+		"import": return TranslationServer.translate("Import")
 		"load_reference_image": return TranslationServer.translate("Load Reference Image")
 		"save": return TranslationServer.translate("Save SVG")
 		"optimize": return TranslationServer.translate("Optimize")
