@@ -155,7 +155,7 @@ func _on_visuals_button_pressed() -> void:
 
 func _on_more_options_pressed() -> void:
 	var about_btn := ContextPopup.create_button(TranslationServer.translate("About…"),
-			open_about, false, load("res://visual/icon.svg"), "about_info")
+			open_about, false, load("res://visual/icon.png"), "about_info")
 	about_btn.expand_icon = true
 	var buttons_arr: Array[Button] = [
 		about_btn,
@@ -169,7 +169,7 @@ func _on_more_options_pressed() -> void:
 		ContextPopup.create_button(TranslationServer.translate("Check for updates"),
 				open_update_checker, false, load("res://visual/icons/Reload.svg"),
 				"check_updates")]
-	var separator_indices: Array[int] = [2,4]
+	var separator_indices: Array[int] = [2, 4]
 	
 	var more_popup := ContextPopup.new()
 	more_popup.setup(buttons_arr, true, -1, separator_indices)
