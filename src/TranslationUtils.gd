@@ -4,6 +4,7 @@ static func get_shortcut_description(action_name: String) -> String:
 	match action_name:
 		"export": return TranslationServer.translate("Export")
 		"import": return TranslationServer.translate("Import")
+		"load_reference_image": return TranslationServer.translate("Load Reference Image")
 		"save": return TranslationServer.translate("Save SVG")
 		"optimize": return TranslationServer.translate("Optimize")
 		"copy_svg_text": return TranslationServer.translate("Copy all text")
@@ -23,6 +24,8 @@ static func get_shortcut_description(action_name: String) -> String:
 		"view_show_grid": return TranslationServer.translate("Show grid")
 		"view_show_handles": return TranslationServer.translate("Show handles")
 		"view_rasterized_svg": return TranslationServer.translate("Show rasterized SVG")
+		"view_reference_image": return TranslationServer.translate("Show reference image")
+		"view_overlay_reference": return TranslationServer.translate("Overlay reference image")
 		"debug": return TranslationServer.translate("View debug information")
 		"move_relative": return "%s (%s)" %\
 				[get_command_description("M"), TranslationServer.translate("Relative")]

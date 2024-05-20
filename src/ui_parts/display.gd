@@ -61,6 +61,8 @@ func _unhandled_input(input_event: InputEvent) -> void:
 			debug_container.show()
 			update_debug()
 			input_debug_label.text = ""
+	elif input_event.is_action_pressed("load_reference_image"):
+		load_reference_image()
 	elif input_event.is_action_pressed("open_settings"):
 		_on_settings_pressed()
 	elif input_event.is_action_pressed("view_show_grid"):
@@ -69,6 +71,10 @@ func _unhandled_input(input_event: InputEvent) -> void:
 		toggle_handles_visuals()
 	elif input_event.is_action_pressed("view_rasterized_svg"):
 		toggle_rasterization()
+	elif input_event.is_action_pressed("view_reference_image"):
+		toggle_reference_image()
+	elif input_event.is_action_pressed("view_overlay_reference"):
+		toggle_reference_overlay()
 	elif input_event.is_action_pressed("snap_toggle"):
 		toggle_snap()
 	elif input_event.is_action_pressed("about_repo"):
@@ -120,7 +126,7 @@ func _on_settings_pressed() -> void:
 func _on_reference_pressed() -> void:
 	var btn_arr: Array[Button] = [
 		ContextPopup.create_button(TranslationServer.translate("Import Reference Image"),
-			import_reference_image, false, load("res://visual/icons/Reference.svg")),
+			load_reference_image, false, load("res://visual/icons/Reference.svg")),
 		ContextPopup.create_checkbox(TranslationServer.translate("Show Reference Image"),
 			toggle_reference_image, reference_texture.visible),
 		ContextPopup.create_checkbox(TranslationServer.translate("Overlay Reference Image"),
@@ -214,7 +220,7 @@ func toggle_reference_overlay() -> void:
 	else:
 		viewport.move_child(reference_texture, 0)
 
-func import_reference_image() -> void:
+func load_reference_image() -> void:
 	FileUtils.open_reference_import_dialog()
 	await Indications.imported_reference
 	var ref_path = GlobalSettings.save_data.get("reference_path")
