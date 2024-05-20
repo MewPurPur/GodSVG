@@ -127,7 +127,7 @@ msgstr "Неизползван"
 msgid "Add shortcut"
 msgstr "Добави бърз клавиш"
 
-#: src/ui_elements/setting_shortcut.gd src/ui_parts/settings_menu.gd
+#: src/ui_elements/setting_shortcut.gd
 msgid "Edit"
 msgstr "Промени"
 
@@ -236,6 +236,18 @@ msgstr "Настройки"
 #: src/ui_parts/display.gd
 msgid "Visuals"
 msgstr "Графики"
+
+#: src/ui_parts/display.gd
+msgid "Import Reference Image"
+msgstr ""
+
+#: src/ui_parts/display.gd
+msgid "Show Reference Image"
+msgstr ""
+
+#: src/ui_parts/display.gd
+msgid "Overlay Reference Image"
+msgstr ""
 
 #: src/ui_parts/display.gd
 msgid "Show Grid"
@@ -494,22 +506,6 @@ msgid "Language"
 msgstr "Език"
 
 #: src/ui_parts/settings_menu.gd
-msgid "File"
-msgstr "Файл"
-
-#: src/ui_parts/settings_menu.gd
-msgid "View"
-msgstr "Гледка"
-
-#: src/ui_parts/settings_menu.gd
-msgid "Tool"
-msgstr "Инструмент"
-
-#: src/ui_parts/settings_menu.gd
-msgid "Help"
-msgstr "Помощ"
-
-#: src/ui_parts/settings_menu.gd
 msgid "Swaps zoom in and zoom out with the mouse wheel."
 msgstr "Разменя увеличението и намалянето с колелцето на мишката."
 
@@ -667,6 +663,11 @@ msgid "Hovered selected color"
 msgstr "Избран цвят под курсора"
 
 #: src/ui_parts/settings_menu.gd
+#, fuzzy
+msgid "Background color"
+msgstr "Основни цветове"
+
+#: src/ui_parts/settings_menu.gd
 msgid "Valid color"
 msgstr "Цвят на валидният текст"
 
@@ -680,6 +681,11 @@ msgstr "Запази .\"{extension}\" файла."
 
 #: src/FileUtils.gd
 msgid "Import a .svg file"
+msgstr "Импортирай .svg файл"
+
+#: src/FileUtils.gd
+#, fuzzy
+msgid "Import a .png file"
 msgstr "Импортирай .svg файл"
 
 #: src/FileUtils.gd src/HandlerGUI.gd
@@ -733,6 +739,10 @@ msgid "Import"
 msgstr "Импортирай"
 
 #: src/TranslationUtils.gd
+msgid "Load Reference Image"
+msgstr ""
+
+#: src/TranslationUtils.gd
 msgid "Optimize"
 msgstr "Оптимизирай"
 
@@ -779,6 +789,14 @@ msgstr "Покажи дръжките"
 #: src/TranslationUtils.gd
 msgid "Show rasterized SVG"
 msgstr "Покажи растеризиран SVG"
+
+#: src/TranslationUtils.gd
+msgid "Show reference image"
+msgstr ""
+
+#: src/TranslationUtils.gd
+msgid "Overlay reference image"
+msgstr ""
 
 #: src/TranslationUtils.gd
 msgid "View debug information"
@@ -847,3 +865,15 @@ msgstr "Кубична крива на Безие до"
 #: src/TranslationUtils.gd
 msgid "Shorthand Cubic Bezier to"
 msgstr "Кратка кубична крива на Безие до"
+
+#~ msgid "File"
+#~ msgstr "Файл"
+
+#~ msgid "View"
+#~ msgstr "Гледка"
+
+#~ msgid "Tool"
+#~ msgstr "Инструмент"
+
+#~ msgid "Help"
+#~ msgstr "Помощ"

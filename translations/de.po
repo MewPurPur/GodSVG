@@ -127,7 +127,7 @@ msgstr "Unbenutzt"
 msgid "Add shortcut"
 msgstr "Tastenkombination hinzufügen"
 
-#: src/ui_elements/setting_shortcut.gd src/ui_parts/settings_menu.gd
+#: src/ui_elements/setting_shortcut.gd
 msgid "Edit"
 msgstr "Bearbeiten"
 
@@ -243,6 +243,18 @@ msgstr "Einstellungen"
 #: src/ui_parts/display.gd
 msgid "Visuals"
 msgstr "Visuelles"
+
+#: src/ui_parts/display.gd
+msgid "Import Reference Image"
+msgstr ""
+
+#: src/ui_parts/display.gd
+msgid "Show Reference Image"
+msgstr ""
+
+#: src/ui_parts/display.gd
+msgid "Overlay Reference Image"
+msgstr ""
 
 #: src/ui_parts/display.gd
 msgid "Show Grid"
@@ -517,22 +529,6 @@ msgid "Language"
 msgstr "Sprache"
 
 #: src/ui_parts/settings_menu.gd
-msgid "File"
-msgstr ""
-
-#: src/ui_parts/settings_menu.gd
-msgid "View"
-msgstr ""
-
-#: src/ui_parts/settings_menu.gd
-msgid "Tool"
-msgstr ""
-
-#: src/ui_parts/settings_menu.gd
-msgid "Help"
-msgstr ""
-
-#: src/ui_parts/settings_menu.gd
 msgid "Swaps zoom in and zoom out with the mouse wheel."
 msgstr "Vertauscht Hinein- und Herauszoomen mit dem Mausrad."
 
@@ -693,6 +689,11 @@ msgid "Hovered selected color"
 msgstr "Farbe löschen"
 
 #: src/ui_parts/settings_menu.gd
+#, fuzzy
+msgid "Background color"
+msgstr "Allgemeine Farben"
+
+#: src/ui_parts/settings_menu.gd
 msgid "Valid color"
 msgstr "Gültige Farbe"
 
@@ -706,6 +707,10 @@ msgstr ""
 
 #: src/FileUtils.gd
 msgid "Import a .svg file"
+msgstr ""
+
+#: src/FileUtils.gd
+msgid "Import a .png file"
 msgstr ""
 
 #: src/FileUtils.gd src/HandlerGUI.gd
@@ -759,6 +764,10 @@ msgid "Import"
 msgstr "Importieren"
 
 #: src/TranslationUtils.gd
+msgid "Load Reference Image"
+msgstr ""
+
+#: src/TranslationUtils.gd
 msgid "Optimize"
 msgstr "Optimieren"
 
@@ -808,6 +817,14 @@ msgstr "Griffe anzeigen"
 #, fuzzy
 msgid "Show rasterized SVG"
 msgstr "SVG rasterisieren"
+
+#: src/TranslationUtils.gd
+msgid "Show reference image"
+msgstr ""
+
+#: src/TranslationUtils.gd
+msgid "Overlay reference image"
+msgstr ""
 
 #: src/TranslationUtils.gd
 msgid "View debug information"

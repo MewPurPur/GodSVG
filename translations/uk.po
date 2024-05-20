@@ -127,7 +127,7 @@ msgstr "Не використовується"
 msgid "Add shortcut"
 msgstr "Додати клавіатурне скорочення"
 
-#: src/ui_elements/setting_shortcut.gd src/ui_parts/settings_menu.gd
+#: src/ui_elements/setting_shortcut.gd
 msgid "Edit"
 msgstr "Редагування"
 
@@ -236,6 +236,18 @@ msgstr "Налаштування"
 #: src/ui_parts/display.gd
 msgid "Visuals"
 msgstr "Зовнішній вигляд"
+
+#: src/ui_parts/display.gd
+msgid "Import Reference Image"
+msgstr ""
+
+#: src/ui_parts/display.gd
+msgid "Show Reference Image"
+msgstr ""
+
+#: src/ui_parts/display.gd
+msgid "Overlay Reference Image"
+msgstr ""
 
 #: src/ui_parts/display.gd
 msgid "Show Grid"
@@ -494,22 +506,6 @@ msgid "Language"
 msgstr "Мова"
 
 #: src/ui_parts/settings_menu.gd
-msgid "File"
-msgstr "Файл"
-
-#: src/ui_parts/settings_menu.gd
-msgid "View"
-msgstr "Перегляд"
-
-#: src/ui_parts/settings_menu.gd
-msgid "Tool"
-msgstr "Інструмент"
-
-#: src/ui_parts/settings_menu.gd
-msgid "Help"
-msgstr "Допомога"
-
-#: src/ui_parts/settings_menu.gd
 msgid "Swaps zoom in and zoom out with the mouse wheel."
 msgstr ""
 "Міняє місцями збільшення і зменшення масштабування через коліщатко миші."
@@ -670,6 +666,11 @@ msgid "Hovered selected color"
 msgstr "Колір наведено-виділеного"
 
 #: src/ui_parts/settings_menu.gd
+#, fuzzy
+msgid "Background color"
+msgstr "Базовий колір"
+
+#: src/ui_parts/settings_menu.gd
 msgid "Valid color"
 msgstr "Колір валідності"
 
@@ -683,6 +684,11 @@ msgstr "Зберегти .\"{extension}\" файл"
 
 #: src/FileUtils.gd
 msgid "Import a .svg file"
+msgstr "Імпортувати .svg файл"
+
+#: src/FileUtils.gd
+#, fuzzy
+msgid "Import a .png file"
 msgstr "Імпортувати .svg файл"
 
 #: src/FileUtils.gd src/HandlerGUI.gd
@@ -736,6 +742,10 @@ msgid "Import"
 msgstr "Імпортувати"
 
 #: src/TranslationUtils.gd
+msgid "Load Reference Image"
+msgstr ""
+
+#: src/TranslationUtils.gd
 msgid "Optimize"
 msgstr "Оптимізувати"
 
@@ -782,6 +792,14 @@ msgstr "Показати ручки редагування"
 #: src/TranslationUtils.gd
 msgid "Show rasterized SVG"
 msgstr "Показати растеризуваний SVG"
+
+#: src/TranslationUtils.gd
+msgid "Show reference image"
+msgstr ""
+
+#: src/TranslationUtils.gd
+msgid "Overlay reference image"
+msgstr ""
 
 #: src/TranslationUtils.gd
 msgid "View debug information"
@@ -850,6 +868,18 @@ msgstr "Кубічна Безьє до"
 #: src/TranslationUtils.gd
 msgid "Shorthand Cubic Bezier to"
 msgstr "Скорочена кубічна Безьє до"
+
+#~ msgid "File"
+#~ msgstr "Файл"
+
+#~ msgid "View"
+#~ msgstr "Перегляд"
+
+#~ msgid "Tool"
+#~ msgstr "Інструмент"
+
+#~ msgid "Help"
+#~ msgstr "Допомога"
 
 #~ msgid "Documentation…"
 #~ msgstr "Документація…"
