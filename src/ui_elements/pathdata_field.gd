@@ -222,10 +222,9 @@ func commands_draw() -> void:
 				flag_field.get_theme_stylebox("normal" if is_large_arc\
 						else "pressed").draw(ci, rect)
 				code_font.draw_string(ci, rect.position + Vector2(5, 14),
-						String.num_uint64(cmd.large_arc_flag),
-						HORIZONTAL_ALIGNMENT_LEFT, rect.size.x, 14,
-						flag_field.get_theme_color("font_color" if is_large_arc\
-								else "font_pressed_color"))
+						String.num_uint64(cmd.large_arc_flag), HORIZONTAL_ALIGNMENT_LEFT,
+						rect.size.x, 14, flag_field.get_theme_color(
+								"font_color" if is_large_arc else "font_pressed_color"))
 				rect.position.x = rect.end.x + 4
 				flag_field.get_theme_stylebox("normal" if is_sweep
 						else "pressed").draw(ci, rect)
