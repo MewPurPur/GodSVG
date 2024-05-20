@@ -95,7 +95,7 @@ const keybinds_dict = {
 		"view_show_handles": true,
 		"view_rasterized_svg": true,
 		"view_reference_image": true,
-		"view_overlay_reference": true
+		"view_overlay_reference": true,
 	},
 	"tool": {
 		"move_relative": true,
