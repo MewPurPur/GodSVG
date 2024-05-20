@@ -73,6 +73,8 @@ func _unhandled_input(input_event: InputEvent) -> void:
 		toggle_rasterization()
 	elif input_event.is_action_pressed("view_reference_image"):
 		toggle_reference_image()
+	elif input_event.is_action_pressed("view_overlay_reference"):
+		toggle_reference_overlay()
 	elif input_event.is_action_pressed("snap_toggle"):
 		toggle_snap()
 	elif input_event.is_action_pressed("about_repo"):

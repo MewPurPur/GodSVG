@@ -302,6 +302,10 @@ view_reference_image={
 "deadzone": 0.5,
 "events": []
 }
+view_overlay_reference={
+"deadzone": 0.5,
+"events": []
+}
 
 [input_devices]
 
