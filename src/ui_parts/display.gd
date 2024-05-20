@@ -61,6 +61,8 @@ func _unhandled_input(input_event: InputEvent) -> void:
 			debug_container.show()
 			update_debug()
 			input_debug_label.text = ""
+	elif input_event.is_action_pressed("import_reference_image"):
+		import_reference_image()
 	elif input_event.is_action_pressed("open_settings"):
 		_on_settings_pressed()
 	elif input_event.is_action_pressed("view_show_grid"):
@@ -69,6 +71,8 @@ func _unhandled_input(input_event: InputEvent) -> void:
 		toggle_handles_visuals()
 	elif input_event.is_action_pressed("view_rasterized_svg"):
 		toggle_rasterization()
+	elif input_event.is_action_pressed("view_reference_image"):
+		toggle_reference_image()
 	elif input_event.is_action_pressed("snap_toggle"):
 		toggle_snap()
 	elif input_event.is_action_pressed("about_repo"):
