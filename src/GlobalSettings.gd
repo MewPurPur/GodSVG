@@ -68,7 +68,6 @@ var default_input_events := {}  # Dictionary{String: Array[InputEvent]}
 const keybinds_dict = {
 	"file": {
 		"import": true,
-		"load_reference_image": true,
 		"export": true,
 		"save": true,
 		"optimize": true,
@@ -94,7 +93,8 @@ const keybinds_dict = {
 		"view_show_grid": true,
 		"view_show_handles": true,
 		"view_rasterized_svg": true,
-		"view_reference_image": true,
+		"load_reference": true,
+		"view_show_reference": true,
 		"view_overlay_reference": true,
 	},
 	"tool": {

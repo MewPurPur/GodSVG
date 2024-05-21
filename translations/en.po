@@ -199,7 +199,7 @@ msgstr ""
 msgid "Alert!"
 msgstr ""
 
-#: src/ui_parts/alert_dialog.gd
+#: src/ui_parts/alert_dialog.gd src/ui_parts/display.gd
 msgid "OK"
 msgstr ""
 
@@ -237,6 +237,18 @@ msgstr ""
 msgid "Visuals"
 msgstr ""
 
+#: src/ui_parts/display.gd src/TranslationUtils.gd
+msgid "Load reference image"
+msgstr ""
+
+#: src/ui_parts/display.gd
+msgid "Show reference"
+msgstr ""
+
+#: src/ui_parts/display.gd
+msgid "Overlay reference"
+msgstr ""
+
 #: src/ui_parts/display.gd
 msgid "Show Grid"
 msgstr ""
@@ -267,6 +279,14 @@ msgstr ""
 
 #: src/ui_parts/display.gd src/TranslationUtils.gd
 msgid "Check for updates"
+msgstr ""
+
+#: src/ui_parts/display.gd
+msgid "Check for updates?"
+msgstr ""
+
+#: src/ui_parts/display.gd
+msgid "This requires GodSVG to connect to the internet."
 msgstr ""
 
 #: src/ui_parts/display.gd
@@ -342,6 +362,10 @@ msgid "Select an SVG"
 msgstr ""
 
 #: src/ui_parts/good_file_dialog.gd
+msgid "Select an image"
+msgstr ""
+
+#: src/ui_parts/good_file_dialog.gd src/ui_parts/update_menu.gd
 msgid "Close"
 msgstr ""
 
@@ -667,12 +691,40 @@ msgstr ""
 msgid "Warning color"
 msgstr ""
 
+#: src/ui_parts/update_menu.gd
+msgid "Include prereleases"
+msgstr ""
+
+#: src/ui_parts/update_menu.gd
+msgid "Current Version"
+msgstr ""
+
+#: src/ui_parts/update_menu.gd
+msgid "Retrieving information..."
+msgstr ""
+
+#: src/ui_parts/update_menu.gd
+msgid "Update check failed"
+msgstr ""
+
+#: src/ui_parts/update_menu.gd
+msgid "GodSVG is up-to-date."
+msgstr ""
+
+#: src/ui_parts/update_menu.gd
+msgid "New versions"
+msgstr ""
+
 #: src/FileUtils.gd
 msgid "Save the .\"{extension}\" file"
 msgstr ""
 
 #: src/FileUtils.gd
 msgid "Import a .svg file"
+msgstr ""
+
+#: src/FileUtils.gd
+msgid "Load an image file"
 msgstr ""
 
 #: src/FileUtils.gd src/HandlerGUI.gd
@@ -766,6 +818,14 @@ msgstr ""
 
 #: src/TranslationUtils.gd
 msgid "Show rasterized SVG"
+msgstr ""
+
+#: src/TranslationUtils.gd
+msgid "Show reference image"
+msgstr ""
+
+#: src/TranslationUtils.gd
+msgid "Overlay reference image"
 msgstr ""
 
 #: src/TranslationUtils.gd
