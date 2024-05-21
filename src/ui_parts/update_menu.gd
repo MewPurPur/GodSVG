@@ -1,84 +1,88 @@
 extends PanelContainer
 
-@onready var status_label: RichTextLabel = %Status
-@onready var check_button: Button = %Check
-#@onready var prereleases_checkbox: CheckBox = %IncludePrereleases
-@onready var http: HTTPRequest = %HTTPRequest
+@onready var http: HTTPRequest = $HTTPRequest
+@onready var status_label: RichTextLabel = $VBoxContainer/Status
+@onready var current_version_label: Label = $VBoxContainer/CurrentVersionLabel
+@onready var prereleases_checkbox: CheckBox = $VBoxContainer/IncludePrereleases
+@onready var close_button: Button = $VBoxContainer/CloseButton
 
+var current_version: String = ProjectSettings.get_setting("application/config/version")
+var results := {}  # Dictionary{String: String}  version: [url, is_prerelease]
 
 func _ready() -> void:
-	status_label.text = "[center]Current Version: " + ProjectSettings.get_setting("application/config/version")
+	close_button.text = TranslationServer.translate("Close")
+	prereleases_checkbox.text = TranslationServer.translate("Include prereleases")
+	current_version_label.text = TranslationServer.translate("Current Version") + ": " +\
+			current_version
+	status_label.text = TranslationServer.translate("Retrieving information...")
+	
+	status_label.meta_clicked.connect(OS.shell_open)
+	close_button.pressed.connect(queue_free)
+	prereleases_checkbox.toggled.connect(display_results)
+	
+	var err := http.request("https://api.github.com/repos/MewPurPur/GodSVG/releases",
+			["User-Agent: MewPurPur/GodSVG"])
+	
+	if err != OK:
+		display_error_message(error_string(err))
 
-func _on_check_pressed() -> void:
-	check_button.disabled = true
-	status_label.text = "[center]Checking..."
 
-	var err := http.request(
-		"https://api.github.com/repos/MewPurPur/GodSVG/releases",
-		["User-Agent: MewPurPur/GodSVG"]
-	)
-
-	if err:
-		_failed(error_string(err))
-
-
-func _on_request_completed(result: HTTPRequest.Result, response_code: int,
+# Do not internationalize the errors.
+func _on_request_completed(http_result: HTTPRequest.Result, response_code: int,
 _headers: PackedStringArray, body: PackedByteArray) -> void:
-	match result:
+	match http_result:
 		http.RESULT_SUCCESS:
-			if not response_code == 200:
-				_failed("Response code "+str(response_code))
+			if response_code != 200:
+				display_error_message("Response code %d" % response_code)
 				return
 			
 			var json = JSON.parse_string(body.get_string_from_utf8())
-			if not json:
-				_failed("Failed to decode JSON")
+			if json == null:
+				display_error_message("Failed to decode JSON")
 				return
 			
-			# Always enabled as long as there is no stable GodSVG release yet.
-			var include_prereleases := true  # prereleases_checkbox.button_pressed
-			var latest_ver := ""
-			var latest_url := ""
-			var latest_timestamp := 0
+			var include_prereleases := prereleases_checkbox.button_pressed
+			
+			var current_timestamp := -1
+			for release: Dictionary in json:
+				if release["name"] == current_version:
+					current_timestamp = Time.get_unix_time_from_datetime_string(
+							release["created_at"])
+					var is_prerelease: bool = release["prerelease"]
+					if is_prerelease == true:
+						prereleases_checkbox.disabled = false
+						prereleases_checkbox.set_pressed_no_signal(is_prerelease)
+					break
 			
 			for release: Dictionary in json:
-				var is_prerelease := release["prerelease"] as bool
-				if is_prerelease and not include_prereleases:
-					continue
-				
-				var timestamp := Time.get_unix_time_from_datetime_string(release["created_at"] as String)
-				
-				if timestamp > latest_timestamp:
-					latest_timestamp = timestamp
-					latest_ver = release["name"]
-					latest_url = release["html_url"]
-			
-			var current_ver := ProjectSettings.get_setting("application/config/version") as String
-			
-			
-			if latest_ver == current_ver:
-				status_label.text = "[center]No new version available."
-			else:
-				status_label.parse_bbcode("[center][url=%s]New version available![/url] %s" % [latest_ver, latest_url])
-			
-			check_button.disabled = false
-
+				var creation_time: String = release["created_at"]
+				var timestamp := Time.get_unix_time_from_datetime_string(creation_time)
+				if timestamp > current_timestamp:
+					results[release["name"]] = [release["html_url"], release["prerelease"]]
 		http.RESULT_TIMEOUT:
-			_failed("Request timed out ("+str(http.timeout)+"s)")
+			display_error_message("Request timed out (%d sec)" % http.timeout)
 			return
 		_:
-			_failed("Error code "+str(result))
+			display_error_message("Error code %d" % http_result)
 			return
+	
+	display_results()
 
 
-func _failed(msg: String) -> void:
-	status_label.text = "Failed to check for updates:\n"+msg
-	check_button.disabled = false
+func display_error_message(msg: String) -> void:
+	status_label.text = TranslationServer.translate("Update check failed") + ": %s" % msg
+
+func display_results() -> void:
+	if results.is_empty():
+		status_label.text = TranslationServer.translate("GodSVG is up-to-date.")
+		return
+	else:
+		status_label.text = TranslationServer.translate("New versions") + ":"
+		for version in results:
+			var result: Array = results[version]
+			if prereleases_checkbox.button_pressed or result[1] == false:
+				status_label.text += "\n[url=%s]%s[/url]" % [result[0], version]
 
 
 func _on_close_pressed() -> void:
 	HandlerGUI.remove_overlay()
-
-
-func _on_status_label_link_clicked(meta: Variant) -> void:
-	OS.shell_open(meta)

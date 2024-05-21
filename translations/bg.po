@@ -199,7 +199,7 @@ msgstr "Лицензи от трети партии"
 msgid "Alert!"
 msgstr "Предупреждение!"
 
-#: src/ui_parts/alert_dialog.gd
+#: src/ui_parts/alert_dialog.gd src/ui_parts/display.gd
 msgid "OK"
 msgstr "Добре"
 
@@ -237,6 +237,18 @@ msgstr "Настройки"
 msgid "Visuals"
 msgstr "Графики"
 
+#: src/ui_parts/display.gd src/TranslationUtils.gd
+msgid "Load reference image"
+msgstr "Зареди справочно изображение"
+
+#: src/ui_parts/display.gd
+msgid "Show reference"
+msgstr "Покажни справочното изображение"
+
+#: src/ui_parts/display.gd
+msgid "Overlay reference"
+msgstr "Насложи справочното изображение"
+
 #: src/ui_parts/display.gd
 msgid "Show Grid"
 msgstr "Покажи решетката"
@@ -268,6 +280,14 @@ msgstr "Уебсайта на GodSVG"
 #: src/ui_parts/display.gd src/TranslationUtils.gd
 msgid "Check for updates"
 msgstr "Провери за ъпдейти"
+
+#: src/ui_parts/display.gd
+msgid "Check for updates?"
+msgstr "Провери за ъпдейти?"
+
+#: src/ui_parts/display.gd
+msgid "This requires GodSVG to connect to the internet."
+msgstr "Това изисква GodSVG да се свърже с интерната."
 
 #: src/ui_parts/display.gd
 msgid "Enable snapping"
@@ -342,6 +362,10 @@ msgid "Select an SVG"
 msgstr "Избери SVG"
 
 #: src/ui_parts/good_file_dialog.gd
+msgid "Select an image"
+msgstr "Избери изображение"
+
+#: src/ui_parts/good_file_dialog.gd src/ui_parts/update_menu.gd
 msgid "Close"
 msgstr "Затвори"
 
@@ -674,6 +698,30 @@ msgstr "Цвят на валидният текст"
 msgid "Warning color"
 msgstr "Цвят на предупрежденията"
 
+#: src/ui_parts/update_menu.gd
+msgid "Include prereleases"
+msgstr "Включи предварителните издания"
+
+#: src/ui_parts/update_menu.gd
+msgid "Current Version"
+msgstr "Настояща версия"
+
+#: src/ui_parts/update_menu.gd
+msgid "Retrieving information..."
+msgstr "Извлича се информацията..."
+
+#: src/ui_parts/update_menu.gd
+msgid "Update check failed"
+msgstr "Грешка в проверката за ъпдейти"
+
+#: src/ui_parts/update_menu.gd
+msgid "GodSVG is up-to-date."
+msgstr "GodSVG е актуален."
+
+#: src/ui_parts/update_menu.gd
+msgid "New versions"
+msgstr "Нови версии"
+
 #: src/FileUtils.gd
 msgid "Save the .\"{extension}\" file"
 msgstr "Запази .\"{extension}\" файла."
@@ -681,6 +729,10 @@ msgstr "Запази .\"{extension}\" файла."
 #: src/FileUtils.gd
 msgid "Import a .svg file"
 msgstr "Импортирай .svg файл"
+
+#: src/FileUtils.gd
+msgid "Load an image file"
+msgstr "Зареди изображение"
 
 #: src/FileUtils.gd src/HandlerGUI.gd
 msgid "The file extension is empty. Only \"svg\" files are supported."
@@ -779,6 +831,14 @@ msgstr "Покажи дръжките"
 #: src/TranslationUtils.gd
 msgid "Show rasterized SVG"
 msgstr "Покажи растеризиран SVG"
+
+#: src/TranslationUtils.gd
+msgid "Show reference image"
+msgstr "Покажи справочното изображение"
+
+#: src/TranslationUtils.gd
+msgid "Overlay reference image"
+msgstr "Насложи справочното изображение"
 
 #: src/TranslationUtils.gd
 msgid "View debug information"

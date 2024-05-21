@@ -15,10 +15,10 @@ const system_dirs_to_show = [OS.SYSTEM_DIR_DESKTOP, OS.SYSTEM_DIR_DOCUMENTS,
 enum FileMode {SELECT, SAVE}
 var mode: FileMode
 
-var current_dir: String
+var current_dir := ""
 var current_file := ""
 var default_file := ""
-var extension := ""
+var extensions := PackedStringArray()
 
 var item_height := 16
 var search_text := ""
@@ -75,13 +75,13 @@ func call_right_click_action(actions: Actions) -> void:
 
 
 func setup(new_dir: String, new_file: String, new_mode: FileMode,
-new_extension: String) -> void:
+new_extensions: PackedStringArray) -> void:
 	current_dir = new_dir
 	current_file = new_file
 	if new_mode == FileMode.SAVE:
 		default_file = new_file
 	mode = new_mode
-	extension = new_extension
+	extensions = new_extensions
 
 
 func _ready() -> void:
@@ -110,13 +110,19 @@ func _ready() -> void:
 			TranslationServer.translate("Toggle the visibility of hidden files")
 	search_button.tooltip_text = TranslationServer.translate("Search files")
 	
-	title_label.text = TranslationServer.translate("Select an SVG") if\
-			mode == FileMode.SELECT else TranslationServer.translate("Save SVG")
+	if mode != FileMode.SELECT:
+		title_label.text = TranslationServer.translate("Save SVG")
+		extension_label.text = "." + extensions[0]
+	else:
+		if extensions.size() == 1 and extensions[0] == "svg":
+			title_label.text = TranslationServer.translate("Select an SVG")
+		else:
+			title_label.text = TranslationServer.translate("Select an image")
+	
 	close_button.text = TranslationServer.translate("Close")
 	special_button.text = TranslationServer.translate("Select") if\
 			mode == FileMode.SELECT else TranslationServer.translate("Save")
 	path_label.text = TranslationServer.translate("Path") + ":"
-	extension_label.text = "." + extension
 	
 	# Should always be safe.
 	refresh_dir()
@@ -194,7 +200,7 @@ func set_dir(dir: String) -> void:
 				enter_dir.bind(dir_path), unfocus_file, open_dir_context.bind(dir_path)))
 	
 	for file in files:
-		if file.get_extension() != extension or\
+		if not file.get_extension() in extensions or\
 		(not search_text.is_empty() and not search_text.is_subsequence_ofn(file)):
 			continue
 		
@@ -214,9 +220,9 @@ func set_file(file: String) -> void:
 		else:
 			special_button.disabled = false
 			special_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-	if not file.is_empty():
-		if file.get_extension() != extension:
-			file += "." + extension
+	if not file.is_empty() and not file.get_extension() in extensions and\
+	extensions.size() == 1:
+		file += "." + extensions[0]
 	file_list.ensure_current_is_visible()
 	current_file = file
 	file_field.text = current_file
@@ -230,25 +236,24 @@ func _setup_file_images() -> void:
 		if !is_instance_valid(file_list.get_item_icon(item_idx)) and\
 		file_rect.end.y > visible_start and file_rect.position.y < visible_end:
 			var file := file_list.get_item_text(item_idx)
-			match file.get_extension():
-				"png":
-					var img := Image.load_from_file(current_dir.path_join(file))
-					if !is_instance_valid(img) or img.is_empty():
-						file_list.set_item_icon(item_idx, broken_file_icon)
-					else:
-						file_list.set_item_icon(item_idx, ImageTexture.create_from_image(img))
-				"svg":
-					# Setup a clean SVG graphic by using the scaling parameter.
-					var svg_text := FileAccess.open(current_dir.path_join(file),
-							FileAccess.READ).get_as_text()
-					var img := Image.new()
-					img.load_svg_from_string(svg_text)
-					if !is_instance_valid(img) or img.is_empty():
-						file_list.set_item_icon(item_idx, broken_file_icon)
-					else:
-						img.load_svg_from_string(svg_text,
-								item_height / maxf(img.get_width(), img.get_height()))
-						file_list.set_item_icon(item_idx, ImageTexture.create_from_image(img))
+			if file.get_extension() == "svg":
+				# Setup a clean SVG graphic by using the scaling parameter.
+				var svg_text := FileAccess.open(current_dir.path_join(file),
+						FileAccess.READ).get_as_text()
+				var img := Image.new()
+				img.load_svg_from_string(svg_text)
+				if !is_instance_valid(img) or img.is_empty():
+					file_list.set_item_icon(item_idx, broken_file_icon)
+				else:
+					img.load_svg_from_string(svg_text,
+							item_height / maxf(img.get_width(), img.get_height()))
+					file_list.set_item_icon(item_idx, ImageTexture.create_from_image(img))
+			else:
+				var img := Image.load_from_file(current_dir.path_join(file))
+				if !is_instance_valid(img) or img.is_empty():
+					file_list.set_item_icon(item_idx, broken_file_icon)
+				else:
+					file_list.set_item_icon(item_idx, ImageTexture.create_from_image(img))
 
 
 func select_file() -> void:

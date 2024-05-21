@@ -202,7 +202,7 @@ msgstr "Drittanbieter-Lizenzen"
 msgid "Alert!"
 msgstr "Warnung!"
 
-#: src/ui_parts/alert_dialog.gd
+#: src/ui_parts/alert_dialog.gd src/ui_parts/display.gd
 msgid "OK"
 msgstr "OK"
 
@@ -244,6 +244,18 @@ msgstr "Einstellungen"
 msgid "Visuals"
 msgstr "Visuelles"
 
+#: src/ui_parts/display.gd src/TranslationUtils.gd
+msgid "Load reference image"
+msgstr ""
+
+#: src/ui_parts/display.gd
+msgid "Show reference"
+msgstr ""
+
+#: src/ui_parts/display.gd
+msgid "Overlay reference"
+msgstr ""
+
 #: src/ui_parts/display.gd
 msgid "Show Grid"
 msgstr "Raster anzeigen"
@@ -276,6 +288,14 @@ msgstr "GodSVG Repository"
 
 #: src/ui_parts/display.gd src/TranslationUtils.gd
 msgid "Check for updates"
+msgstr ""
+
+#: src/ui_parts/display.gd
+msgid "Check for updates?"
+msgstr ""
+
+#: src/ui_parts/display.gd
+msgid "This requires GodSVG to connect to the internet."
 msgstr ""
 
 #: src/ui_parts/display.gd
@@ -355,6 +375,11 @@ msgid "Select an SVG"
 msgstr "Alle Tags auswählen"
 
 #: src/ui_parts/good_file_dialog.gd
+#, fuzzy
+msgid "Select an image"
+msgstr "Alle Tags auswählen"
+
+#: src/ui_parts/good_file_dialog.gd src/ui_parts/update_menu.gd
 msgid "Close"
 msgstr "Schließen"
 
@@ -700,12 +725,40 @@ msgstr "Gültige Farbe"
 msgid "Warning color"
 msgstr "Warnfarbe"
 
+#: src/ui_parts/update_menu.gd
+msgid "Include prereleases"
+msgstr ""
+
+#: src/ui_parts/update_menu.gd
+msgid "Current Version"
+msgstr ""
+
+#: src/ui_parts/update_menu.gd
+msgid "Retrieving information..."
+msgstr ""
+
+#: src/ui_parts/update_menu.gd
+msgid "Update check failed"
+msgstr ""
+
+#: src/ui_parts/update_menu.gd
+msgid "GodSVG is up-to-date."
+msgstr ""
+
+#: src/ui_parts/update_menu.gd
+msgid "New versions"
+msgstr ""
+
 #: src/FileUtils.gd
 msgid "Save the .\"{extension}\" file"
 msgstr ""
 
 #: src/FileUtils.gd
 msgid "Import a .svg file"
+msgstr ""
+
+#: src/FileUtils.gd
+msgid "Load an image file"
 msgstr ""
 
 #: src/FileUtils.gd src/HandlerGUI.gd
@@ -808,6 +861,14 @@ msgstr "Griffe anzeigen"
 #, fuzzy
 msgid "Show rasterized SVG"
 msgstr "SVG rasterisieren"
+
+#: src/TranslationUtils.gd
+msgid "Show reference image"
+msgstr ""
+
+#: src/TranslationUtils.gd
+msgid "Overlay reference image"
+msgstr ""
 
 #: src/TranslationUtils.gd
 msgid "View debug information"
