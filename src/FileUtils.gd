@@ -70,7 +70,7 @@ non_native_callable: Callable) -> void:
 		var svg_export_dialog := GoodFileDialog.instantiate()
 		svg_export_dialog.setup(Utils.get_last_dir(),
 				Utils.get_file_name(GlobalSettings.save_data.current_file_path),
-				GoodFileDialogType.FileMode.SAVE, extension)
+				GoodFileDialogType.FileMode.SAVE, PackedStringArray([extension]))
 		HandlerGUI.add_overlay(svg_export_dialog)
 		svg_export_dialog.file_selected.connect(non_native_callable)
 
@@ -102,24 +102,25 @@ static func open_import_dialog() -> void:
 	else:
 		var svg_import_dialog := GoodFileDialog.instantiate()
 		svg_import_dialog.setup(Utils.get_last_dir(), "",
-				GoodFileDialogType.FileMode.SELECT, "svg")
+				GoodFileDialogType.FileMode.SELECT, PackedStringArray(["svg"]))
 		HandlerGUI.add_overlay(svg_import_dialog)
 		svg_import_dialog.file_selected.connect(apply_svg_from_path)
 
-static func open_reference_import_dialog() -> void:
+static func open_reference_load_dialog() -> void:
 	if FileUtils._is_native_preferred():
-		DisplayServer.file_dialog_show(TranslationServer.translate("Import a .png file"),
+		DisplayServer.file_dialog_show(TranslationServer.translate("Load an image file"),
 				Utils.get_last_dir(), "", false, DisplayServer.FILE_DIALOG_MODE_OPEN_FILE,
-				["*.png"], native_file_import)
-	# TODO : Add Web Support
+				["*.svg", "*.png", "*.jpeg", "*.jpg", "*.webp"], native_file_import)
+	# TODO: Add Web Support
 	#elif OS.has_feature("web"):
 		#HandlerGUI.web_load_svg()
 	else:
 		var png_import_dialog := GoodFileDialog.instantiate()
 		png_import_dialog.setup(Utils.get_last_dir(), "",
-			GoodFileDialogType.FileMode.SELECT, "png")
+				GoodFileDialogType.FileMode.SELECT,
+				PackedStringArray(["svg", "png", "jpeg", "jpg", "webp"]))
 		HandlerGUI.add_overlay(png_import_dialog)
-		png_import_dialog.file_selected.connect(reference_image_import)
+		png_import_dialog.file_selected.connect(load_reference_image)
 
 static func native_file_import(has_selected: bool, files: PackedStringArray,
 _filter_idx: int) -> void:
@@ -127,9 +128,9 @@ _filter_idx: int) -> void:
 		if files[0].ends_with(".svg"):
 			apply_svg_from_path(files[0])
 		else:
-			reference_image_import(files[0])
+			load_reference_image(files[0])
 
-static func reference_image_import(path : String) -> void:
+static func load_reference_image(path: String) -> void:
 	GlobalSettings.modify_save_data("reference_path", path)
 	Indications.imported_reference.emit()
 
