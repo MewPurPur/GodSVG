@@ -127,7 +127,7 @@ msgstr "Неизползван"
 msgid "Add shortcut"
 msgstr "Добави бърз клавиш"
 
-#: src/ui_elements/setting_shortcut.gd src/ui_parts/settings_menu.gd
+#: src/ui_elements/setting_shortcut.gd
 msgid "Edit"
 msgstr "Промени"
 
@@ -248,6 +248,18 @@ msgstr "Покажни справочното изображение"
 #: src/ui_parts/display.gd
 msgid "Overlay reference"
 msgstr "Насложи справочното изображение"
+
+#: src/ui_parts/display.gd
+msgid "Import Reference Image"
+msgstr ""
+
+#: src/ui_parts/display.gd
+msgid "Show Reference Image"
+msgstr ""
+
+#: src/ui_parts/display.gd
+msgid "Overlay Reference Image"
+msgstr ""
 
 #: src/ui_parts/display.gd
 msgid "Show Grid"
@@ -518,22 +530,6 @@ msgid "Language"
 msgstr "Език"
 
 #: src/ui_parts/settings_menu.gd
-msgid "File"
-msgstr "Файл"
-
-#: src/ui_parts/settings_menu.gd
-msgid "View"
-msgstr "Гледка"
-
-#: src/ui_parts/settings_menu.gd
-msgid "Tool"
-msgstr "Инструмент"
-
-#: src/ui_parts/settings_menu.gd
-msgid "Help"
-msgstr "Помощ"
-
-#: src/ui_parts/settings_menu.gd
 msgid "Swaps zoom in and zoom out with the mouse wheel."
 msgstr "Разменя увеличението и намалянето с колелцето на мишката."
 
@@ -691,6 +687,11 @@ msgid "Hovered selected color"
 msgstr "Избран цвят под курсора"
 
 #: src/ui_parts/settings_menu.gd
+#, fuzzy
+msgid "Background color"
+msgstr "Основни цветове"
+
+#: src/ui_parts/settings_menu.gd
 msgid "Valid color"
 msgstr "Цвят на валидният текст"
 
@@ -783,6 +784,10 @@ msgstr "Превърни в"
 #: src/TranslationUtils.gd
 msgid "Import"
 msgstr "Импортирай"
+
+#: src/TranslationUtils.gd
+msgid "Load Reference Image"
+msgstr ""
 
 #: src/TranslationUtils.gd
 msgid "Optimize"
@@ -907,3 +912,15 @@ msgstr "Кубична крива на Безие до"
 #: src/TranslationUtils.gd
 msgid "Shorthand Cubic Bezier to"
 msgstr "Кратка кубична крива на Безие до"
+
+#~ msgid "File"
+#~ msgstr "Файл"
+
+#~ msgid "View"
+#~ msgstr "Гледка"
+
+#~ msgid "Tool"
+#~ msgstr "Инструмент"
+
+#~ msgid "Help"
+#~ msgstr "Помощ"

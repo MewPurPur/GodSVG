@@ -127,7 +127,7 @@ msgstr "Unbenutzt"
 msgid "Add shortcut"
 msgstr "Tastenkombination hinzufügen"
 
-#: src/ui_elements/setting_shortcut.gd src/ui_parts/settings_menu.gd
+#: src/ui_elements/setting_shortcut.gd
 msgid "Edit"
 msgstr "Bearbeiten"
 
@@ -254,6 +254,18 @@ msgstr ""
 
 #: src/ui_parts/display.gd
 msgid "Overlay reference"
+msgstr ""
+
+#: src/ui_parts/display.gd
+msgid "Import Reference Image"
+msgstr ""
+
+#: src/ui_parts/display.gd
+msgid "Show Reference Image"
+msgstr ""
+
+#: src/ui_parts/display.gd
+msgid "Overlay Reference Image"
 msgstr ""
 
 #: src/ui_parts/display.gd
@@ -542,22 +554,6 @@ msgid "Language"
 msgstr "Sprache"
 
 #: src/ui_parts/settings_menu.gd
-msgid "File"
-msgstr ""
-
-#: src/ui_parts/settings_menu.gd
-msgid "View"
-msgstr ""
-
-#: src/ui_parts/settings_menu.gd
-msgid "Tool"
-msgstr ""
-
-#: src/ui_parts/settings_menu.gd
-msgid "Help"
-msgstr ""
-
-#: src/ui_parts/settings_menu.gd
 msgid "Swaps zoom in and zoom out with the mouse wheel."
 msgstr "Vertauscht Hinein- und Herauszoomen mit dem Mausrad."
 
@@ -718,6 +714,11 @@ msgid "Hovered selected color"
 msgstr "Farbe löschen"
 
 #: src/ui_parts/settings_menu.gd
+#, fuzzy
+msgid "Background color"
+msgstr "Allgemeine Farben"
+
+#: src/ui_parts/settings_menu.gd
 msgid "Valid color"
 msgstr "Gültige Farbe"
 
@@ -810,6 +811,10 @@ msgstr "Konvertieren zu"
 #: src/TranslationUtils.gd
 msgid "Import"
 msgstr "Importieren"
+
+#: src/TranslationUtils.gd
+msgid "Load Reference Image"
+msgstr ""
 
 #: src/TranslationUtils.gd
 msgid "Optimize"

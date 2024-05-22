@@ -127,7 +127,7 @@ msgstr ""
 msgid "Add shortcut"
 msgstr ""
 
-#: src/ui_elements/setting_shortcut.gd src/ui_parts/settings_menu.gd
+#: src/ui_elements/setting_shortcut.gd
 msgid "Edit"
 msgstr ""
 
@@ -247,6 +247,18 @@ msgstr ""
 
 #: src/ui_parts/display.gd
 msgid "Overlay reference"
+msgstr ""
+
+#: src/ui_parts/display.gd
+msgid "Import Reference Image"
+msgstr ""
+
+#: src/ui_parts/display.gd
+msgid "Show Reference Image"
+msgstr ""
+
+#: src/ui_parts/display.gd
+msgid "Overlay Reference Image"
 msgstr ""
 
 #: src/ui_parts/display.gd
@@ -516,22 +528,6 @@ msgid "Language"
 msgstr ""
 
 #: src/ui_parts/settings_menu.gd
-msgid "File"
-msgstr ""
-
-#: src/ui_parts/settings_menu.gd
-msgid "View"
-msgstr ""
-
-#: src/ui_parts/settings_menu.gd
-msgid "Tool"
-msgstr ""
-
-#: src/ui_parts/settings_menu.gd
-msgid "Help"
-msgstr ""
-
-#: src/ui_parts/settings_menu.gd
 msgid "Swaps zoom in and zoom out with the mouse wheel."
 msgstr ""
 
@@ -684,6 +680,10 @@ msgid "Hovered selected color"
 msgstr ""
 
 #: src/ui_parts/settings_menu.gd
+msgid "Background color"
+msgstr ""
+
+#: src/ui_parts/settings_menu.gd
 msgid "Valid color"
 msgstr ""
 
@@ -770,6 +770,10 @@ msgstr ""
 
 #: src/TranslationUtils.gd
 msgid "Import"
+msgstr ""
+
+#: src/TranslationUtils.gd
+msgid "Load Reference Image"
 msgstr ""
 
 #: src/TranslationUtils.gd
