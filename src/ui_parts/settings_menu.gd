@@ -278,12 +278,19 @@ func disable_format_checkboxes() -> void:
 	%ColorVBox/UseNamedColors.set_checkbox_enabled(is_autoformatting_colors)
 
 
+var shortcut_tab_names := {
+	"file": TranslationServer.translate("File"),
+	"edit": TranslationServer.translate("Edit"),
+	"view": TranslationServer.translate("View"),
+	"tool": TranslationServer.translate("Tool"),
+	"help": TranslationServer.translate("Help"),
+}
+
 func setup_shortcuts_tab() -> void:
-	for setup_arr in [["file", "File"], ["edit", "Edit"], ["view", "View"],
-	["tool", "Tool"], ["help", "Help"]]:
+	for tab_idx in shortcut_tab_names:
 		var btn := Button.new()
-		btn.pressed.connect(show_keybinds.bind(setup_arr[0]))
-		btn.text = TranslationServer.translate(setup_arr[1])
+		btn.pressed.connect(show_keybinds.bind(tab_idx))
+		btn.text = shortcut_tab_names[tab_idx]
 		btn.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 		shortcut_categories.add_child(btn)
 	# Add them all to a button group.

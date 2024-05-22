@@ -13,6 +13,7 @@ const NumberEditType = preload("res://src/ui_elements/number_edit.gd")
 const BetterToggleButtonType = preload("res://src/ui_elements/BetterToggleButton.gd")
 
 const NumberField = preload("res://src/ui_elements/number_field.tscn")
+const ConfirmDialog := preload("res://src/ui_parts/confirm_dialog.tscn")
 
 @onready var viewport: SubViewport = %Viewport
 @onready var controls: Control = %Viewport/Checkerboard/Controls
@@ -61,7 +62,7 @@ func _unhandled_input(input_event: InputEvent) -> void:
 			debug_container.show()
 			update_debug()
 			input_debug_label.text = ""
-	elif input_event.is_action_pressed("load_reference_image"):
+	elif input_event.is_action_pressed("load_reference"):
 		load_reference_image()
 	elif input_event.is_action_pressed("open_settings"):
 		_on_settings_pressed()
@@ -71,7 +72,7 @@ func _unhandled_input(input_event: InputEvent) -> void:
 		toggle_handles_visuals()
 	elif input_event.is_action_pressed("view_rasterized_svg"):
 		toggle_rasterization()
-	elif input_event.is_action_pressed("view_reference_image"):
+	elif input_event.is_action_pressed("view_show_reference"):
 		toggle_reference_image()
 	elif input_event.is_action_pressed("view_overlay_reference"):
 		toggle_reference_overlay()
@@ -85,6 +86,8 @@ func _unhandled_input(input_event: InputEvent) -> void:
 		open_about()
 	elif input_event.is_action_pressed("about_donate"):
 		open_sponsor()
+	elif input_event.is_action_pressed("check_updates"):
+		open_update_checker()
 
 
 func update_translations() -> void:
@@ -125,11 +128,11 @@ func _on_settings_pressed() -> void:
 
 func _on_reference_pressed() -> void:
 	var btn_arr: Array[Button] = [
-		ContextPopup.create_button(TranslationServer.translate("Import Reference Image"),
+		ContextPopup.create_button(TranslationServer.translate("Load reference image"),
 			load_reference_image, false, load("res://visual/icons/Reference.svg")),
-		ContextPopup.create_checkbox(TranslationServer.translate("Show Reference Image"),
-			toggle_reference_image, reference_texture.visible),
-		ContextPopup.create_checkbox(TranslationServer.translate("Overlay Reference Image"),
+		ContextPopup.create_checkbox(TranslationServer.translate("Show reference"),
+			toggle_reference_image, reference_texture.visible, ""),
+		ContextPopup.create_checkbox(TranslationServer.translate("Overlay reference"),
 			toggle_reference_overlay, reference_overlay)
 	]
 	
@@ -191,6 +194,14 @@ func open_sponsor() -> void:
 	HandlerGUI.add_overlay(donate_menu_instance)
 
 func open_update_checker() -> void:
+	var confirmation_dialog := ConfirmDialog.instantiate()
+	HandlerGUI.add_overlay(confirmation_dialog)
+	confirmation_dialog.setup(TranslationServer.translate("Check for updates?"),
+			TranslationServer.translate("This requires GodSVG to connect to the internet."),
+			TranslationServer.translate("OK"), _list_updates)
+
+func _list_updates() -> void:
+	HandlerGUI.remove_all_overlays()
 	var update_menu_instance := update_menu.instantiate()
 	HandlerGUI.add_overlay(update_menu_instance)
 
@@ -214,14 +225,13 @@ func toggle_reference_image() -> void:
 
 func toggle_reference_overlay() -> void:
 	reference_overlay = not reference_overlay
-	
 	if reference_overlay:
-		viewport.move_child(reference_texture, 2)
+		viewport.move_child(reference_texture, viewport.get_child_count() - 1)
 	else:
 		viewport.move_child(reference_texture, 0)
 
 func load_reference_image() -> void:
-	FileUtils.open_reference_import_dialog()
+	FileUtils.open_reference_load_dialog()
 	await Indications.imported_reference
 	var ref_path = GlobalSettings.save_data.get("reference_path")
 	var img = Image.load_from_file(ref_path)
