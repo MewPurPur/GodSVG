@@ -1,7 +1,7 @@
 # GodSVG
 
 <p align="center">
-  <img src="visual/splash.svg" width="480" alt="GodSVG logo">
+  <img src="godot_only/source_assets/splash.svg" width="480" alt="GodSVG logo">
 </p>
 
 **GodSVG is an editor for Scalable Vector Graphics (SVG) files.** Unlike other editors, it represents the SVG code directly, doesn't add any metadata, and even lets you edit the SVG code in real time. GodSVG is inspired by the need for an SVG editor without abstractions that produces clean and optimized files.
