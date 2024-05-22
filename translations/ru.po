@@ -127,7 +127,7 @@ msgstr "Не используется"
 msgid "Add shortcut"
 msgstr "Добавить сочетание клавиш"
 
-#: src/ui_elements/setting_shortcut.gd src/ui_parts/settings_menu.gd
+#: src/ui_elements/setting_shortcut.gd
 msgid "Edit"
 msgstr "Редактирование"
 
@@ -247,6 +247,18 @@ msgstr ""
 
 #: src/ui_parts/display.gd
 msgid "Overlay reference"
+msgstr ""
+
+#: src/ui_parts/display.gd
+msgid "Import Reference Image"
+msgstr ""
+
+#: src/ui_parts/display.gd
+msgid "Show Reference Image"
+msgstr ""
+
+#: src/ui_parts/display.gd
+msgid "Overlay Reference Image"
 msgstr ""
 
 #: src/ui_parts/display.gd
@@ -520,22 +532,6 @@ msgid "Language"
 msgstr "Язык"
 
 #: src/ui_parts/settings_menu.gd
-msgid "File"
-msgstr "Файл"
-
-#: src/ui_parts/settings_menu.gd
-msgid "View"
-msgstr "Просмотр"
-
-#: src/ui_parts/settings_menu.gd
-msgid "Tool"
-msgstr "Инструмент"
-
-#: src/ui_parts/settings_menu.gd
-msgid "Help"
-msgstr "Помощь"
-
-#: src/ui_parts/settings_menu.gd
 msgid "Swaps zoom in and zoom out with the mouse wheel."
 msgstr "Поменяет местами увеличение и уменьшение масштаба через колесико мыши."
 
@@ -695,6 +691,11 @@ msgid "Hovered selected color"
 msgstr "Цвет выделенного-наведенного"
 
 #: src/ui_parts/settings_menu.gd
+#, fuzzy
+msgid "Background color"
+msgstr "Базовый цвет"
+
+#: src/ui_parts/settings_menu.gd
 msgid "Valid color"
 msgstr "Цвет валидности"
 
@@ -788,6 +789,10 @@ msgstr "Конвертировать в"
 #: src/TranslationUtils.gd
 msgid "Import"
 msgstr "Импортировать"
+
+#: src/TranslationUtils.gd
+msgid "Load Reference Image"
+msgstr ""
 
 #: src/TranslationUtils.gd
 msgid "Optimize"
@@ -912,6 +917,18 @@ msgstr "Кибическая Безье до"
 #: src/TranslationUtils.gd
 msgid "Shorthand Cubic Bezier to"
 msgstr "Сокращенная кубическая Безье до"
+
+#~ msgid "File"
+#~ msgstr "Файл"
+
+#~ msgid "View"
+#~ msgstr "Просмотр"
+
+#~ msgid "Tool"
+#~ msgstr "Инструмент"
+
+#~ msgid "Help"
+#~ msgstr "Помощь"
 
 #~ msgid "Documentation…"
 #~ msgstr "Документация…"

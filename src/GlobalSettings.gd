@@ -47,6 +47,7 @@ const default_config = {
 		"handle_hovered_color": Color("#aaa"),
 		"handle_selected_color": Color("#46f"),
 		"handle_hovered_selected_color": Color("#f44"),
+		"background_color": Color(0.12, 0.132, 0.2, 1),
 		"basic_color_valid": Color("9f9"),
 		"basic_color_error": Color("f99"),
 		"basic_color_warning": Color("ee5"),
@@ -175,6 +176,10 @@ var handle_color := Color("#111")
 var handle_hovered_color := Color("#aaa")
 var handle_selected_color := Color("#46f")
 var handle_hovered_selected_color := Color("#f44")
+var background_color := Color(0.12, 0.132, 0.2, 1):
+	set(new_value):
+		background_color = new_value
+		RenderingServer.set_default_clear_color(background_color)
 var basic_color_valid := Color("9f9")
 var basic_color_error := Color("f99")
 var basic_color_warning := Color("ee5")
