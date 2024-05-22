@@ -18,7 +18,7 @@ func _ready() -> void:
 	
 	status_label.meta_clicked.connect(OS.shell_open)
 	close_button.pressed.connect(queue_free)
-	prereleases_checkbox.toggled.connect(display_results)
+	prereleases_checkbox.toggled.connect(display_results.unbind(1))
 	
 	var err := http.request("https://api.github.com/repos/MewPurPur/GodSVG/releases",
 			["User-Agent: MewPurPur/GodSVG"])
@@ -40,8 +40,6 @@ _headers: PackedStringArray, body: PackedByteArray) -> void:
 			if json == null:
 				display_error_message("Failed to decode JSON")
 				return
-			
-			var include_prereleases := prereleases_checkbox.button_pressed
 			
 			var current_timestamp := -1
 			for release: Dictionary in json:
