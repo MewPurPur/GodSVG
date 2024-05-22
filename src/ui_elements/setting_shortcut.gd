@@ -1,5 +1,7 @@
 extends PanelContainer
 
+const delete_icon := preload("res://visual/icons/Delete.svg")
+
 @onready var label: Label = %MainContainer/Label
 @onready var reset_button: Button = %MainContainer/HBoxContainer/ResetButton
 @onready var shortcut_container: HBoxContainer = %ShortcutContainer
@@ -47,7 +49,7 @@ func sync() -> void:
 		new_btn.focus_mode = Control.FOCUS_NONE
 		if i < events.size():
 			new_btn.text = events[i].as_text_keycode()
-			new_btn.pressed.connect(popup_options.bind(i))
+			new_btn.pressed.connect(enter_listening_mode.bind(i, true))
 		else:
 			new_btn.begin_bulk_theme_override()
 			new_btn.add_theme_color_override("font_color", Color("#def6"))
@@ -63,19 +65,7 @@ func sync() -> void:
 				new_btn.mouse_default_cursor_shape = Control.CURSOR_ARROW
 
 
-func popup_options(idx: int) -> void:
-	var btn_arr: Array[Button] = [
-		ContextPopup.create_button(TranslationServer.translate("Edit"),
-				enter_listening_mode.bind(idx), false, load("res://visual/icons/Edit.svg")),
-		ContextPopup.create_button(TranslationServer.translate("Remove"),
-				delete_shortcut.bind(idx), false, load("res://visual/icons/Delete.svg"))]
-	var context_popup := ContextPopup.new()
-	context_popup.setup(btn_arr, true, shortcut_buttons[idx].size.x)
-	HandlerGUI.popup_under_rect(context_popup, shortcut_buttons[idx].get_global_rect(),
-			get_viewport())
-
-
-func enter_listening_mode(idx: int) -> void:
+func enter_listening_mode(idx: int, show_delete_button := false) -> void:
 	listening_idx = idx
 	var btn := shortcut_buttons[idx]
 	btn.begin_bulk_theme_override()
@@ -99,6 +89,22 @@ func enter_listening_mode(idx: int) -> void:
 			trim_suffix("(Unset)").trim_suffix("+")
 	if btn.text.is_empty():
 		btn.text = TranslationServer.translate("Press keys…")
+	# Add optional delete button.
+	if show_delete_button:
+		btn.icon = delete_icon
+		var delete_btn := Button.new()
+		delete_btn.theme_type_variation = "FlatButton"
+		delete_btn.tooltip_text = TranslationServer.translate("Delete")
+		delete_btn.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+		delete_btn.focus_mode = Control.FOCUS_NONE
+		var sb := btn.get_theme_stylebox("normal")
+		var flat_sb := delete_btn.get_theme_stylebox("normal")
+		# Position the delete button around the delte icon. Seems like the simplest way
+		# to set up something that looks like a delete button, without needing to make
+		# complex node hierarchies.
+		delete_btn.size = Vector2(btn.size.y - 2, btn.size.y)
+		btn.add_child(delete_btn)
+		delete_btn.pressed.connect(delete_shortcut.bind(idx))
 
 func cancel_listening() -> void:
 	listening_idx = -1
@@ -110,23 +116,32 @@ func delete_shortcut(idx: int) -> void:
 	GlobalSettings.modify_keybind(action, events)
 	sync()
 
-func _unhandled_key_input(event: InputEvent) -> void:
-	if listening_idx >= 0 and event is InputEventKey:
-		if event.is_action("ui_cancel"):
-			cancel_listening()
-			accept_event()
-		elif event.is_pressed():
-			shortcut_buttons[listening_idx].text = event.as_text_keycode()
-			accept_event()
-		elif event.is_released():
-			if listening_idx < events.size():
-				events[listening_idx] = event
-				GlobalSettings.modify_keybind(action, events)
-			else:
-				events.append(event)
-				GlobalSettings.modify_keybind(action, events)
-			sync()
-			listening_idx = -1
+func _input(event: InputEvent) -> void:
+	if not (listening_idx >= 0 and event is InputEventKey):
+		return
+	
+	var shortcut_button := shortcut_buttons[listening_idx]
+	if shortcut_button.icon != null:
+		# Button has delete icon.
+		shortcut_button.icon = null
+		for child in shortcut_button.get_children():
+			child.queue_free()
+	
+	if event.is_action("ui_cancel"):
+		cancel_listening()
+		accept_event()
+	elif event.is_pressed():
+		shortcut_button.text = event.as_text_keycode()
+		accept_event()
+	elif event.is_released():
+		if listening_idx < events.size():
+			events[listening_idx] = event
+			GlobalSettings.modify_keybind(action, events)
+		else:
+			events.append(event)
+			GlobalSettings.modify_keybind(action, events)
+		sync()
+		listening_idx = -1
 
 func _on_reset_button_pressed() -> void:
 	events = GlobalSettings.default_input_events[action].duplicate(true)
