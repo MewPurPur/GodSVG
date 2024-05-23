@@ -97,8 +97,6 @@ func enter_listening_mode(idx: int, show_delete_button := false) -> void:
 		delete_btn.tooltip_text = TranslationServer.translate("Delete")
 		delete_btn.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 		delete_btn.focus_mode = Control.FOCUS_NONE
-		var sb := btn.get_theme_stylebox("normal")
-		var flat_sb := delete_btn.get_theme_stylebox("normal")
 		# Position the delete button around the delte icon. Seems like the simplest way
 		# to set up something that looks like a delete button, without needing to make
 		# complex node hierarchies.
