@@ -325,9 +325,9 @@ func activate(idx: int, force := false) -> void:
 	# Setup the fields.
 	match cmd_char.to_upper():
 		"A":
-			var field_rx: BetterLineEdit = add_numfield(idx)
-			var field_ry: BetterLineEdit = add_numfield(idx)
-			var field_rot: BetterLineEdit = add_numfield(idx)
+			var field_rx: BetterLineEdit = numfield(idx)
+			var field_ry: BetterLineEdit = numfield(idx)
+			var field_rot: BetterLineEdit = numfield(idx)
 			field_rx.mode = field_rx.Mode.ONLY_POSITIVE
 			field_ry.mode = field_ry.Mode.ONLY_POSITIVE
 			field_rot.mode = field_rot.Mode.HALF_ANGLE
@@ -336,29 +336,27 @@ func activate(idx: int, force := false) -> void:
 			field_large_arc.gui_input.connect(_eat_double_clicks.bind(field_large_arc))
 			field_sweep.gui_input.connect(_eat_double_clicks.bind(field_sweep))
 			fields = [field_rx, field_ry, field_rot, field_large_arc, field_sweep,
-					add_numfield(idx), add_numfield(idx)]
+					numfield(idx), numfield(idx)]
 			setup_fields(cmd, [3, 4, 4, 4, 4, 3],
 					["rx", "ry", "rot", "large_arc_flag", "sweep_flag", "x", "y"])
 		"C":
-			fields = [add_numfield(idx), add_numfield(idx), add_numfield(idx),
-					add_numfield(idx), add_numfield(idx), add_numfield(idx)]
+			fields = [numfield(idx), numfield(idx), numfield(idx), numfield(idx),
+					numfield(idx), numfield(idx)]
 			setup_fields(cmd, [3, 4, 3, 4, 3], ["x1", "y1", "x2", "y2", "x", "y"])
 		"Q":
-			fields = [add_numfield(idx), add_numfield(idx), add_numfield(idx),
-					add_numfield(idx)]
+			fields = [numfield(idx), numfield(idx), numfield(idx), numfield(idx)]
 			setup_fields(cmd, [3, 4, 3], ["x1", "y1", "x", "y"])
 		"S":
-			fields = [add_numfield(idx), add_numfield(idx), add_numfield(idx),
-					add_numfield(idx)]
+			fields = [numfield(idx), numfield(idx), numfield(idx), numfield(idx)]
 			setup_fields(cmd, [3, 4, 3], ["x2", "y2", "x", "y"])
 		"M", "L", "T":
-			fields = [add_numfield(idx), add_numfield(idx)]
+			fields = [numfield(idx), numfield(idx)]
 			setup_fields(cmd, [3], ["x", "y"])
 		"H":
-			fields = [add_numfield(idx)]
+			fields = [numfield(idx)]
 			setup_fields(cmd, [], ["x"])
 		"V":
-			fields = [add_numfield(idx)]
+			fields = [numfield(idx)]
 			setup_fields(cmd, [], ["y"])
 		"Z": fields.clear()
 	# Remove the graphics, as now there are real nodes.
@@ -370,7 +368,7 @@ func deactivate() -> void:
 		child.queue_free()
 	commands_container.queue_redraw()
 
-func add_numfield(cmd_idx: int) -> BetterLineEdit:
+func numfield(cmd_idx: int) -> BetterLineEdit:
 	var new_field := MiniNumberField.instantiate()
 	new_field.focus_entered.connect(Indications.normal_select.bind(tid, cmd_idx))
 	return new_field
