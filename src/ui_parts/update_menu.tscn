@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://src/ui_parts/update_menu.gd" id="1_up0ed"]
 
 [node name="UpdateMenu" type="PanelContainer"]
-custom_minimum_size = Vector2(300, 120)
+custom_minimum_size = Vector2(300, 160)
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5

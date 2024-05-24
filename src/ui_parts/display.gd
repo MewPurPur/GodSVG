@@ -210,15 +210,14 @@ func toggle_grid_visuals() -> void:
 	grid_visuals.visible = not grid_visuals.visible
 	view_settings_updated.emit(grid_visuals.visible, controls.visible, viewport.display_texture.rasterized)
 
-
 func toggle_handles_visuals() -> void:
 	controls.visible = not controls.visible
 	view_settings_updated.emit(grid_visuals.visible, controls.visible, viewport.display_texture.rasterized)
 
-
 func toggle_rasterization() -> void:
 	viewport.display_texture.rasterized = not viewport.display_texture.rasterized
 	view_settings_updated.emit(grid_visuals.visible, controls.visible, viewport.display_texture.rasterized)
+
 
 func toggle_reference_image() -> void:
 	reference_texture.visible = not reference_texture.visible
@@ -238,13 +237,12 @@ func load_reference_image() -> void:
 	reference_texture.texture = ImageTexture.create_from_image(img)
 	reference_texture.show()
 
+
 func toggle_snap() -> void:
 	snap_button.button_pressed = not snap_button.button_pressed
 
-
 func set_snap_amount(snap_value: float) -> void:
 	snapper.set_value(snap_value)
-
 
 func _on_snap_button_toggled(toggled_on: bool) -> void:
 	GlobalSettings.modify_save_data("snap",
@@ -256,7 +254,7 @@ func _on_snap_number_edit_value_changed(new_value: float) -> void:
 			new_value * signf(GlobalSettings.save_data.snap))
 	update_snap_config()
 
-# The strings are intentionally not localized.
+# The strings here are intentionally not localized.
 func update_debug() -> void:
 	var debug_text := ""
 	debug_text += "FPS: %s\n" % Performance.get_monitor(Performance.TIME_FPS)
