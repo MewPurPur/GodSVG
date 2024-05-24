@@ -71,7 +71,17 @@ func display_error_message(msg: String) -> void:
 	status_label.text = TranslationServer.translate("Update check failed") + ": %s" % msg
 
 func display_results() -> void:
-	if results.is_empty():
+	# Check if there are results to be displayed.
+	var has_results := false
+	if prereleases_checkbox.button_pressed:
+		has_results = results.is_empty()
+	else:
+		for version in results:
+			if results[version][1] == true:
+				has_results = true
+				break
+	# Set the text.
+	if has_results:
 		status_label.text = TranslationServer.translate("GodSVG is up-to-date.")
 		return
 	else:

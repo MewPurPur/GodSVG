@@ -1,8 +1,7 @@
-[gd_scene load_steps=13 format=3 uid="uid://dqy5lv33sy5r7"]
+[gd_scene load_steps=9 format=3 uid="uid://dqy5lv33sy5r7"]
 
 [ext_resource type="Script" path="res://src/ui_elements/pathdata_field.gd" id="1_22rk2"]
 [ext_resource type="Script" path="res://src/ui_elements/BetterLineEdit.gd" id="2_48xgh"]
-[ext_resource type="Texture2D" uid="uid://eif2ioi0mw17" path="res://visual/icons/Plus.svg" id="3_at2g1"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2f3ln"]
 content_margin_left = 5.0
@@ -100,34 +99,6 @@ corner_radius_top_right = 4
 corner_radius_bottom_right = 4
 corner_radius_bottom_left = 4
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_lcnxl"]
-content_margin_left = 2.0
-content_margin_top = 2.0
-content_margin_right = 2.0
-content_margin_bottom = 2.0
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4yine"]
-content_margin_left = 2.0
-content_margin_top = 2.0
-content_margin_right = 2.0
-content_margin_bottom = 2.0
-bg_color = Color(1, 1, 1, 0.0666667)
-corner_radius_top_left = 3
-corner_radius_top_right = 3
-corner_radius_bottom_right = 3
-corner_radius_bottom_left = 3
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kmpxk"]
-content_margin_left = 2.0
-content_margin_top = 2.0
-content_margin_right = 2.0
-content_margin_bottom = 2.0
-bg_color = Color(1, 1, 1, 0.2)
-corner_radius_top_left = 3
-corner_radius_top_right = 3
-corner_radius_bottom_right = 3
-corner_radius_bottom_left = 3
-
 [node name="PathDataField" type="VBoxContainer"]
 offset_right = 336.0
 offset_bottom = 45.0
@@ -148,17 +119,6 @@ focus_mode = 1
 placeholder_text = "No path data"
 script = ExtResource("2_48xgh")
 code_font_tooltip = true
-
-[node name="AddMove" type="Button" parent="."]
-layout_mode = 2
-size_flags_horizontal = 0
-size_flags_vertical = 0
-focus_mode = 0
-mouse_default_cursor_shape = 2
-theme_override_styles/normal = SubResource("StyleBoxEmpty_lcnxl")
-theme_override_styles/hover = SubResource("StyleBoxFlat_4yine")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_kmpxk")
-icon = ExtResource("3_at2g1")
 
 [node name="Commands" type="Control" parent="."]
 custom_minimum_size = Vector2(344, 0)

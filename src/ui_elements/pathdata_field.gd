@@ -6,6 +6,7 @@ extends VBoxContainer
 # adding too many nodes to the scene tree. The real controls are only created when
 # necessary, such as when hovered or focused.
 
+const plus_icon = preload("res://visual/icons/Plus.svg")
 const COMMAND_HEIGHT = 22.0
 
 @export var absolute_button_normal: StyleBoxFlat
@@ -31,14 +32,14 @@ var mini_line_edit_font_color := get_theme_color("font_color", "MiniLineEdit")
 
 @onready var line_edit: LineEdit = $LineEdit
 @onready var commands_container: Control = $Commands
-@onready var add_move: Button = $AddMove
 
 # Variables around the big optimization.
 var active_idx := -1
-@onready var ci := commands_container.get_canvas_item()
 var fields: Array[Control] = []
+
 var current_selections: Array[int] = []
 var current_hovered: int = -1
+@onready var ci := commands_container.get_canvas_item()
 
 
 func set_value(new_value: String, update_type := Utils.UpdateType.REGULAR) -> void:
@@ -62,7 +63,6 @@ func set_attribute(new_attribute: AttributePath) -> void:
 	set_value(attribute.get_value())
 	attribute.value_changed.connect(set_value)
 	line_edit.tooltip_text = attribute.name
-	add_move.pressed.connect(attribute.insert_command.bind(0, "M"))
 	line_edit.text_submitted.connect(set_value)
 	line_edit.focus_entered.connect(_on_line_edit_focus_entered)
 	commands_container.draw.connect(commands_draw)
@@ -81,7 +81,17 @@ func sync(new_value: String) -> void:
 	line_edit.text = new_value
 	# A plus button for adding a move command if empty.
 	var cmd_count := attribute.get_command_count()
-	add_move.visible = (cmd_count == 0)
+	if cmd_count == 0:
+		var add_move := Button.new()
+		add_move.icon = plus_icon
+		add_move.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
+		add_move.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
+		add_move.focus_mode = Control.FOCUS_NONE
+		add_move.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+		add_move.theme_type_variation = "FlatButton"
+		add_child(add_move)
+		add_move.pressed.connect(attribute.insert_command.bind(0, "M"))
+		add_move.pressed.connect(add_move.queue_free)
 	# Rebuild the path commands.
 	commands_container.custom_minimum_size.y = cmd_count * COMMAND_HEIGHT
 	commands_container.queue_redraw()
