@@ -33,16 +33,33 @@ func _init() -> void:
 	super()
 
 func update_cache() -> void:
-	# Cache width.
-	if is_finite(attributes.width.get_num()):
+	var has_valid_width: bool = !attributes.width.get_value().is_empty()
+	var has_valid_height: bool = !attributes.height.get_value().is_empty()
+	var has_valid_viewbox: bool = attributes.viewBox.get_list_size() >= 4
+	# Return early on invalid input.
+	if not has_valid_viewbox and not (has_valid_width and has_valid_height):
+		width = attributes.width.get_num() if has_valid_width else 0
+		height = attributes.height.get_num() if has_valid_height else 0
+		viewbox = Rect2(0, 0, 0, 0)
+		canvas_transform = Transform2D.IDENTITY
+		return
+	
+	# From now on we're sure the input is valid. Cache width and height.
+	if has_valid_width:
 		width = attributes.width.get_num()
+		if not has_valid_height:
+			height = attributes.width.get_num() / attributes.viewBox.get_list_element(2) *\
+					attributes.viewBox.get_list_element(3)
+		else:
+			height = attributes.height.get_num()
+	elif has_valid_height:
+		height = attributes.height.get_num()
+		width = attributes.height.get_num() / attributes.viewBox.get_list_element(3) *\
+				attributes.viewBox.get_list_element(2)
 	else:
 		width = attributes.viewBox.get_list_element(2)
-	# Cache height.
-	if is_finite(attributes.height.get_num()):
-		height = attributes.height.get_num()
-	else:
 		height = attributes.viewBox.get_list_element(3)
+	
 	# Cache viewbox.
 	if attributes.viewBox.get_list_size() >= 4:
 		viewbox = Rect2(attributes.viewBox.get_list_element(0),
@@ -50,10 +67,7 @@ func update_cache() -> void:
 				attributes.viewBox.get_list_element(2),
 				attributes.viewBox.get_list_element(3))
 	else:
-		if is_finite(attributes.width.get_num()) and is_finite(attributes.height.get_num()):
-			viewbox = Rect2(0, 0, attributes.width.get_num(), attributes.height.get_num())
-		else:
-			viewbox = Rect2(0, 0, 0, 0)
+		viewbox = Rect2(0, 0, attributes.width.get_num(), attributes.height.get_num())
 	# Cache canvas transform.
 	var width_ratio := width / viewbox.size.x
 	var height_ratio := height / viewbox.size.y
@@ -65,6 +79,8 @@ func update_cache() -> void:
 		canvas_transform = Transform2D(0.0, Vector2(height_ratio, height_ratio), 0.0,
 				-viewbox.position * height_ratio +\
 				Vector2((width - height_ratio * viewbox.size.x) / 2, 0))
+	if not canvas_transform.is_finite():
+		canvas_transform = Transform2D.IDENTITY
 
 
 func canvas_to_world(pos: Vector2) -> Vector2:

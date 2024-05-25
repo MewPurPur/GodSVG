@@ -133,7 +133,6 @@ render_target_update_mode = 4
 script = ExtResource("9_4xrk7")
 
 [node name="ReferenceTexture" type="TextureRect" parent="ViewportPanel/ViewportContainer/Viewport"]
-unique_name_in_owner = true
 visible = false
 offset_right = 128.0
 offset_bottom = 128.0
@@ -158,13 +157,10 @@ grow_vertical = 2
 expand_mode = 1
 script = ExtResource("12_qi23s")
 
-[node name="Controls" type="Control" parent="ViewportPanel/ViewportContainer/Viewport/Checkerboard"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+[node name="Controls" type="Control" parent="ViewportPanel/ViewportContainer/Viewport"]
+custom_minimum_size = Vector2(16384, 16384)
+layout_mode = 3
+anchors_preset = 0
 mouse_filter = 1
 script = ExtResource("13_lwhwy")
 
@@ -174,7 +170,7 @@ anchors_preset = 0
 mouse_filter = 2
 script = ExtResource("15_hevpa")
 
-[node name="DebugContainer" type="MarginContainer" parent="ViewportPanel"]
+[node name="DebugMargins" type="MarginContainer" parent="ViewportPanel"]
 visible = false
 layout_mode = 2
 size_flags_horizontal = 8
@@ -183,11 +179,12 @@ mouse_filter = 2
 theme_override_constants/margin_top = 4
 theme_override_constants/margin_right = 12
 
-[node name="VBoxContainer" type="VBoxContainer" parent="ViewportPanel/DebugContainer"]
+[node name="DebugContainer" type="VBoxContainer" parent="ViewportPanel/DebugMargins"]
+unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 2
 
-[node name="DebugLabel" type="Label" parent="ViewportPanel/DebugContainer/VBoxContainer"]
+[node name="DebugLabel" type="Label" parent="ViewportPanel/DebugMargins/DebugContainer"]
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
@@ -196,7 +193,7 @@ theme_override_constants/line_spacing = 0
 theme_override_font_sizes/font_size = 14
 horizontal_alignment = 2
 
-[node name="InputDebugLabel" type="Label" parent="ViewportPanel/DebugContainer/VBoxContainer"]
+[node name="InputDebugLabel" type="Label" parent="ViewportPanel/DebugMargins/DebugContainer"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.75, 0.75, 0.75, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)

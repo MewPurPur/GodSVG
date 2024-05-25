@@ -10,9 +10,9 @@ var _zoom_to: Vector2
 
 @onready var display: TextureRect = $Checkerboard
 @onready var view: Control = $Camera
-@onready var controls: Control = $Checkerboard/Controls
+@onready var controls: Control = $Controls
 @onready var display_texture: TextureRect = $Checkerboard/DisplayTexture
-@onready var reference_texture = %ReferenceTexture
+@onready var reference_texture = $ReferenceTexture
 @onready var zoom_menu: ZoomMenuType = %ZoomMenu
 
 
@@ -50,7 +50,10 @@ func center_frame() -> void:
 	var available_size := size * zoom_reset_buffer
 	var w_ratio := available_size.x / SVG.root_tag.width
 	var h_ratio := available_size.y / SVG.root_tag.height
-	zoom_menu.set_zoom(nearest_po2(ceili(minf(w_ratio, h_ratio) * 32)) / 64.0)
+	if is_finite(w_ratio) and is_finite(h_ratio):
+		zoom_menu.set_zoom(nearest_po2(ceili(minf(w_ratio, h_ratio) * 32)) / 64.0)
+	else:
+		zoom_menu.set_zoom(1.0)
 	adjust_view()
 	set_view((SVG.root_tag.get_size() - size / Indications.zoom) / 2)
 
@@ -146,15 +149,19 @@ func adjust_view(offset := Vector2(0.5, 0.5)) -> void:
 	var old_size := last_size_adjusted
 	last_size_adjusted = size / Indications.zoom
 	
+	var svg_w := 16384.0 if SVG.root_tag.attributes.width.get_value().is_empty()\
+			else SVG.root_tag.width
+	var svg_h := 16384.0 if SVG.root_tag.attributes.height.get_value().is_empty()\
+			else SVG.root_tag.height
+	
 	var zoomed_size := buffer_view_space * size / Indications.zoom
 	view.limit_left = int(-zoomed_size.x)
-	view.limit_right = int(zoomed_size.x + SVG.root_tag.width)
+	view.limit_right = int(zoomed_size.x + svg_w)
 	view.limit_top = int(-zoomed_size.y)
-	view.limit_bottom = int(zoomed_size.y + SVG.root_tag.height)
-	set_view(Vector2(lerpf(view.position.x,
-			view.position.x + old_size.x - size.x / Indications.zoom, offset.x),
-			lerpf(view.position.y, view.position.y + old_size.y - size.y / Indications.zoom,
-			offset.y)))
+	view.limit_bottom = int(zoomed_size.y + svg_h)
+	set_view(Vector2(lerpf(view.position.x, view.position.x + old_size.x -\
+			size.x / Indications.zoom, offset.x), lerpf(view.position.y,
+			view.position.y + old_size.y - size.y / Indications.zoom, offset.y)))
 
 func _on_size_changed() -> void:
 	Indications.set_viewport_size(size)
