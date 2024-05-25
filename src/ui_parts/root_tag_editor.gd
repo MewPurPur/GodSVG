@@ -33,9 +33,9 @@ func update_attributes() -> void:
 
 
 func update_editable() -> void:
-	var is_width_valid := is_finite(SVG.root_tag.attributes.width.get_num())
-	var is_height_valid := is_finite(SVG.root_tag.attributes.height.get_num())
-	var is_viewbox_valid: bool = !SVG.root_tag.attributes.viewBox.get_value().is_empty()
+	var is_width_valid: bool = !SVG.root_tag.attributes.width.get_value().is_empty()
+	var is_height_valid: bool = !SVG.root_tag.attributes.height.get_value().is_empty()
+	var is_viewbox_valid: bool = SVG.root_tag.attributes.viewBox.get_list_size() >= 4
 	
 	width_button.set_pressed_no_signal(is_width_valid)
 	height_button.set_pressed_no_signal(is_height_valid)
@@ -107,8 +107,8 @@ func _on_viewbox_button_toggled(toggled_on: bool) -> void:
 	if toggled_on:
 		SVG.root_tag.attributes.viewBox.set_rect(SVG.root_tag.viewbox)
 	else:
-		if is_finite(SVG.root_tag.attributes.width.get_num()) and\
-		is_finite(SVG.root_tag.attributes.height.get_num()):
+		if not SVG.root_tag.attributes.width.get_value().is_empty() and\
+		not SVG.root_tag.attributes.height.get_value().is_empty():
 			SVG.root_tag.attributes.viewBox.set_value("")
 		else:
 			viewbox_button.set_pressed_no_signal(true)
