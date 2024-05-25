@@ -157,6 +157,13 @@ func _parse_popup_overlay_event(event: InputEvent) -> void:
 var last_mouse_click_double := false
 
 func _input(event: InputEvent) -> void:
+	if event.is_action_pressed("quit"):
+		var confirm_dialog := ConfirmDialog.instantiate()
+		add_overlay(confirm_dialog)
+		confirm_dialog.setup(TranslationServer.translate("Quit GodSVG"),
+				TranslationServer.translate("Do you want to quit GodSVG?"),
+				TranslationServer.translate("Quit"), get_tree().quit)
+	
 	# Clear popups or overlays.
 	if not popup_overlay_stack.is_empty() and event.is_action_pressed("ui_cancel"):
 		get_viewport().set_input_as_handled()
@@ -195,12 +202,6 @@ func _unhandled_input(event: InputEvent) -> void:
 	elif event.is_action_pressed("undo"):
 		get_viewport().set_input_as_handled()
 		SVG.undo()
-	elif event.is_action_pressed("quit"):
-		var confirm_dialog := ConfirmDialog.instantiate()
-		add_overlay(confirm_dialog)
-		confirm_dialog.setup(TranslationServer.translate("Quit GodSVG"),
-				TranslationServer.translate("Do you want to quit GodSVG?"),
-				TranslationServer.translate("Quit"), get_tree().quit)
 	
 	if get_viewport().gui_is_dragging():
 		return
