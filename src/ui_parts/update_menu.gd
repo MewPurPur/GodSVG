@@ -74,14 +74,14 @@ func display_results() -> void:
 	# Check if there are results to be displayed.
 	var has_results := false
 	if prereleases_checkbox.button_pressed:
-		has_results = results.is_empty()
+		has_results = not results.is_empty()
 	else:
 		for version in results:
-			if results[version][1] == true:
+			if results[version][1] == false:
 				has_results = true
 				break
 	# Set the text.
-	if has_results:
+	if not has_results:
 		status_label.text = TranslationServer.translate("GodSVG is up-to-date.")
 		return
 	else:

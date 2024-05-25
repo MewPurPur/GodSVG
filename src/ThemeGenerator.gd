@@ -676,7 +676,9 @@ static func setup_lineedit(theme: Theme) -> void:
 	
 	var mini_stylebox_hover := mini_stylebox.duplicate()
 	mini_stylebox_hover.draw_center = false
-	mini_stylebox_hover.border_color = line_edit_hover_border_overlay_color
+	var mini_line_edit_hover_border_overlay_color := line_edit_hover_border_overlay_color
+	mini_line_edit_hover_border_overlay_color.a *= 1.5
+	mini_stylebox_hover.border_color = mini_line_edit_hover_border_overlay_color
 	theme.set_stylebox("hover", "MiniLineEdit", mini_stylebox_hover)
 	
 	var mini_stylebox_pressed := mini_stylebox.duplicate()
