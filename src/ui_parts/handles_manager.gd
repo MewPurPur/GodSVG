@@ -632,7 +632,7 @@ func respond_to_input_event(event: InputEvent) -> void:
 	(event.button_index in [MOUSE_BUTTON_LEFT, MOUSE_BUTTON_RIGHT, MOUSE_BUTTON_WHEEL_DOWN,
 	MOUSE_BUTTON_WHEEL_UP, MOUSE_BUTTON_WHEEL_LEFT, MOUSE_BUTTON_WHEEL_RIGHT])):
 		var nearest_handle := find_nearest_handle(event.position / Indications.zoom +\
-				get_node(^"../..").view.position)
+				get_parent().view.position)
 		if is_instance_valid(nearest_handle):
 			hovered_handle = nearest_handle
 			if hovered_handle is PathHandle:
@@ -649,14 +649,13 @@ func respond_to_input_event(event: InputEvent) -> void:
 	var snap_vector := Vector2(snap_size, snap_size)
 	
 	if event is InputEventMouseMotion:
-		
 		# Allow moving view while dragging handle.
 		if event.button_mask & MOUSE_BUTTON_MASK_MIDDLE:
 			return
 		
 		should_deselect_all = false
 		var event_pos: Vector2 = event.position / Indications.zoom +\
-				get_node(^"../..").view.position
+				get_parent().view.position
 		if is_instance_valid(dragged_handle):
 			# Move the handle that's being dragged.
 			if snap_enabled:
@@ -668,7 +667,7 @@ func respond_to_input_event(event: InputEvent) -> void:
 			accept_event()
 	elif event is InputEventMouseButton:
 		var event_pos: Vector2 = event.position / Indications.zoom +\
-				get_node(^"../..").view.position
+				get_parent().view.position
 		if snap_enabled:
 			event_pos = event_pos.snapped(snap_vector)
 		

@@ -16,8 +16,9 @@ const NumberField = preload("res://src/ui_elements/number_field.tscn")
 const ConfirmDialog := preload("res://src/ui_parts/confirm_dialog.tscn")
 
 @onready var viewport: SubViewport = %Viewport
-@onready var controls: Control = %Viewport/Checkerboard/Controls
+@onready var controls: Control = %Viewport/Controls
 @onready var grid_visuals: Control = %Viewport/Camera
+@onready var reference_texture = %Viewport/ReferenceTexture
 @onready var reference_button = %LeftMenu/Reference
 @onready var visuals_button: Button = %LeftMenu/Visuals
 @onready var more_button: Button = %LeftMenu/MoreOptions
@@ -25,11 +26,9 @@ const ConfirmDialog := preload("res://src/ui_parts/confirm_dialog.tscn")
 @onready var snap_button: BetterToggleButtonType = %LeftMenu/Snapping/SnapButton
 @onready var panel_container: PanelContainer = $PanelContainer
 @onready var viewport_panel: PanelContainer = $ViewportPanel
-@onready var debug_container: MarginContainer = $ViewportPanel/DebugContainer
-@onready var debug_label: Label = $ViewportPanel/DebugContainer/VBoxContainer/DebugLabel
-@onready var input_debug_label: Label = $ViewportPanel/DebugContainer/VBoxContainer/InputDebugLabel
-
-@onready var reference_texture = %ReferenceTexture
+@onready var debug_container: MarginContainer = $ViewportPanel/DebugMargins
+@onready var debug_label: Label = %DebugContainer/DebugLabel
+@onready var input_debug_label: Label = %DebugContainer/InputDebugLabel
 
 var reference_overlay := false
 
