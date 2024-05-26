@@ -9,7 +9,7 @@
 >[!IMPORTANT]
 >GodSVG is not officially released, it's currently in late alpha.
 >
->GodSVG is almost entirely made by my work in my free time. If you like this project and want to help secure it through its development, you can use GitHub Sponsorship and make it a less financially stupid endeavor for me.
+>GodSVG is almost entirely made by my work in my free time. If you like this project and want to help secure it through its development, you can donate on one of the platforms listed to the right and make it a less financially stupid endeavor for me.
 
 ## Features
 
@@ -31,7 +31,7 @@ To run the latest unreleased version, you can download Godot from https://godote
 
 ## How to use it
 
-Documentation for GodSVG is likely eventually going to be built-in. In the meantime, the basics of using it will be outlined here. This documentation is for the current master, which is a little ahead of the alpha 2 release.
+Documentation for GodSVG is likely eventually going to be built-in. In the meantime, the basics of using it will be outlined here.
 
 If you want to import an existing graphic from scratch, use the Import button on top of the code editor or drag-and-drop an SVG file into the app.
 
