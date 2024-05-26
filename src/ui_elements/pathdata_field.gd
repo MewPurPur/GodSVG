@@ -6,7 +6,6 @@ extends VBoxContainer
 # adding too many nodes to the scene tree. The real controls are only created when
 # necessary, such as when hovered or focused.
 
-const plus_icon = preload("res://visual/icons/Plus.svg")
 const COMMAND_HEIGHT = 22.0
 
 @export var absolute_button_normal: StyleBoxFlat
@@ -24,7 +23,9 @@ const MiniNumberField = preload("mini_number_field.tscn")
 const FlagField = preload("flag_field.tscn")
 
 const code_font = preload("res://visual/fonts/FontMono.ttf")
+const normal_font = preload("res://visual/fonts/Font.ttf")
 const more_icon = preload("res://visual/icons/SmallMore.svg")
+const plus_icon = preload("res://visual/icons/Plus.svg")
 
 var mini_line_edit_stylebox := get_theme_stylebox("normal", "MiniLineEdit")
 var mini_line_edit_font_size := get_theme_font_size("font_size", "MiniLineEdit")
@@ -72,6 +73,7 @@ func set_attribute(new_attribute: AttributePath) -> void:
 	attribute.value_changed.connect(set_value)
 	line_edit.tooltip_text = attribute.name
 	line_edit.text_submitted.connect(set_value)
+	line_edit.text_changed.connect(setup_font)
 	line_edit.focus_entered.connect(_on_line_edit_focus_entered)
 	commands_container.draw.connect(commands_draw)
 	Indications.hover_changed.connect(_on_selections_or_hover_changed)
@@ -85,8 +87,15 @@ func update_translation() -> void:
 func _on_line_edit_focus_entered() -> void:
 	focused.emit()
 
+func setup_font(new_text: String) -> void:
+	if new_text.is_empty():
+		line_edit.add_theme_font_override("font", normal_font)
+	else:
+		line_edit.remove_theme_font_override("font")
+
 func sync(new_value: String) -> void:
 	line_edit.text = new_value
+	setup_font(new_value)
 	# A plus button for adding a move command if empty.
 	var cmd_count := attribute.get_command_count()
 	if cmd_count == 0 and not is_instance_valid(add_move_button):

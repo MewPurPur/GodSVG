@@ -182,7 +182,7 @@ func open_godsvg_repo() -> void:
 	OS.shell_open("https://github.com/MewPurPur/GodSVG")
 
 func open_godsvg_website() -> void:
-	OS.shell_open("https://github.com/MewPurPur/GodSVG")
+	OS.shell_open("https://godsvg.com")
 
 func open_about() -> void:
 	var about_menu_instance := about_menu.instantiate()

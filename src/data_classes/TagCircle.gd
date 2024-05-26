@@ -7,7 +7,6 @@ const icon = preload("res://visual/icons/tag/circle.svg")
 
 const known_attributes = ["transform", "opacity", "fill", "fill-opacity",
 		"stroke", "stroke-opacity", "stroke-width", "cx", "cy", "r"]
-		
 
 func _init() -> void:
 	for attrib_name in known_attributes:
