@@ -5,6 +5,9 @@ class_name LineEditButton extends Control
 # A fake-out is drawn to avoid adding unnecessary nodes.
 # The real controls are only created when necessary, such as when hovered or focused.
 
+const normal_font = preload("res://visual/fonts/Font.ttf")
+const mono_font = preload("res://visual/fonts/FontMono.ttf")
+
 const BUTTON_WIDTH = 14.0
 
 signal pressed
@@ -31,12 +34,14 @@ var temp_button: Button
 
 @export var text: String:
 	set(new_value):
-		if text != new_value:
-			text = new_value
-			if active:
-				temp_line_edit.text = new_value
-			else:
-				queue_redraw()
+		# No equivalence check because of a certain potential situation.
+		# For example, if you start with empty text and enter a value, but it's dismissed,
+		# the text would revert back to empty. There should be an update in that case.
+		text = new_value
+		if active:
+			temp_line_edit.text = new_value
+		else:
+			queue_redraw()
 
 @export var font_color := Color.TRANSPARENT:
 	set(new_value):
@@ -47,9 +52,17 @@ var temp_button: Button
 			else:
 				queue_redraw()
 
+@export var use_code_font := true:
+	set(new_value):
+		if use_code_font != new_value:
+			use_code_font = new_value
+			if active:
+				temp_line_edit.add_theme_font_override("font", _get_font())
+			else:
+				queue_redraw()
+
 @export var icon: Texture2D
 @export var button_visuals := true
-@export var code_font := true
 @export var code_font_tooltip := false
 
 var ci := get_canvas_item()
@@ -103,6 +116,7 @@ func _setup() -> void:
 		temp_line_edit.theme_type_variation = "RightConnectedLineEdit"
 		if font_color != Color.TRANSPARENT:
 			temp_line_edit.add_theme_color_override("font_color", _get_font_color())
+		temp_line_edit.add_theme_font_override("font", _get_font())
 		temp_line_edit.text_change_canceled.connect(emit_text_change_canceled)
 		temp_line_edit.text_changed.connect(emit_text_changed)
 		temp_line_edit.text_submitted.connect(emit_text_submitted)
@@ -152,7 +166,7 @@ func _draw() -> void:
 		text_line_object.text_overrun_behavior = TextServer.OVERRUN_TRIM_CHAR
 		text_line_object.width = size.x - BUTTON_WIDTH - horizontal_margin_width
 		text_line_object.add_string(placeholder_text if text.is_empty() else text,
-				get_theme_font("font", "LineEdit"), get_theme_font_size("font_size", "LineEdit"))
+				_get_font(), get_theme_font_size("font_size", "LineEdit"))
 		text_line_object.draw(ci, Vector2(5, 2), get_theme_color("font_placeholder_color",
 				"LineEdit") if text.is_empty() else _get_font_color())
 	
@@ -179,6 +193,9 @@ func emit_button_gui_input(event: InputEvent) -> void:
 
 
 # Helpers
+
+func _get_font() -> Font:
+	return mono_font if use_code_font else normal_font
 
 func _get_font_color() -> Color:
 	return get_theme_color("font_color", "LineEdit") if font_color == Color.TRANSPARENT\
