@@ -14,7 +14,6 @@ const TagContentPath = preload("res://src/ui_elements/tag_content_path.tscn")
 
 @onready var main_container: VBoxContainer = $Content/MainContainer
 @onready var title_bar: Panel = $TitleBar
-@onready var title_button: Button = $TitleBar/TitleButton
 var child_tags_container: VBoxContainer  # Only created if there are child tags.
 @onready var content: PanelContainer = $Content
 
@@ -25,7 +24,6 @@ var surface := RenderingServer.canvas_item_create()  # Used for the drop indicat
 @onready var title_bar_ci := title_bar.get_canvas_item()
 
 func _ready() -> void:
-	title_bar.custom_minimum_size.y = title_button.size.y + 4
 	RenderingServer.canvas_item_set_parent(surface, get_canvas_item())
 	RenderingServer.canvas_item_set_z_index(surface, 1)
 	Indications.selection_changed.connect(determine_selection_highlight)
@@ -98,10 +96,10 @@ func _on_title_button_pressed() -> void:
 	# in a multi-selection, only the mouse button release would change the selection.
 	Indications.normal_select(tid)
 	var viewport := get_viewport()
-	var title_button_rect := title_button.get_global_rect()
+	var rect := title_bar.get_global_rect()
 	HandlerGUI.popup_under_rect_center(Indications.get_selection_context(
-			HandlerGUI.popup_under_rect_center.bind(title_button_rect, viewport), Indications.SelectionContext.TAG_EDITOR),
-			title_button_rect, viewport)
+			HandlerGUI.popup_under_rect_center.bind(rect, viewport),
+			Indications.SelectionContext.TAG_EDITOR), rect, viewport)
 
 
 func _gui_input(event: InputEvent) -> void:
@@ -229,14 +227,23 @@ func _on_title_bar_draw() -> void:
 	var half_bar_width := title_bar.size.x / 2
 	var title_width := code_font.get_string_size(tag.name,
 			HORIZONTAL_ALIGNMENT_LEFT, 180, 12).x
-	code_font.draw_string(title_bar_ci, Vector2(half_bar_width - title_width / 2, 18),
+	code_font.draw_string(title_bar_ci, Vector2(half_bar_width - title_width / 2 + 4, 18),
 			tag.name, HORIZONTAL_ALIGNMENT_LEFT, 180, 12)
-	title_button.position = title_bar.position +\
-			Vector2(half_bar_width + title_width / 2 + 3, 4)
-	title_button.reset_size()
 	tag.icon.draw_rect(title_bar_ci, Rect2(Vector2(half_bar_width - title_width / 2 -\
-			tag_icon_size.x - 4, 4).round(), tag_icon_size), false)
+			tag_icon_size.x, 4).round(), tag_icon_size), false)
+	# Add the button.
+	var title_button := Button.new()
+	title_button.focus_mode = Control.FOCUS_NONE
+	title_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+	title_button.mouse_filter = Control.MOUSE_FILTER_PASS
+	title_button.theme_type_variation = "FlatButton"
+	title_button.position = title_bar.position +\
+			Vector2(half_bar_width - title_width / 2 - tag_icon_size.x - 2, 3)
+	title_button.size = Vector2(title_width + 28, 20)
+	title_bar.add_child(title_button)
+	title_button.gui_input.connect(_on_title_button_gui_input.bind(title_button))
+	title_button.pressed.connect(_on_title_button_pressed)
 
 # Block dragging from starting when pressing the title button.
-func _on_title_button_gui_input(event: InputEvent) -> void:
+func _on_title_button_gui_input(event: InputEvent, title_button: Button) -> void:
 	title_button.mouse_filter = Utils.mouse_filter_pass_non_drag_events(event)
