@@ -111,7 +111,8 @@ func sync(new_value: String) -> void:
 		add_move_button.pressed.connect(add_move_button.queue_free)
 	# Rebuild the path commands.
 	commands_container.custom_minimum_size.y = cmd_count * COMMAND_HEIGHT
-	activate_hovered(-1)
+	if hovered_idx >= attribute.get_command_count():
+		activate_hovered(-1)
 	var mm := InputEventMouseMotion.new()
 	mm.position = get_viewport().get_mouse_position()
 	Input.parse_input_event(mm)
@@ -435,7 +436,7 @@ func setup_path_command_controls(idx: int) -> Control:
 			field.tooltip_text = property_name
 			field.value_changed.connect(update_value.bind(property_name, idx))
 			field.focus_entered.connect(activate_focused.bind(idx))
-			field.focus_exited.connect(check_focused)
+			field.focus_exited.connect(check_focused, CONNECT_DEFERRED)
 			container.add_child(field)
 			field.position.y = 2
 		fields[0].position.x = 25
