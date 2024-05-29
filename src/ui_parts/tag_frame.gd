@@ -130,6 +130,25 @@ func _gui_input(event: InputEvent) -> void:
 					HandlerGUI.popup_under_pos.bind(popup_pos, viewport), Indications.SelectionContext.TAG_EDITOR), popup_pos, viewport)
 			accept_event()
 
+func _on_mouse_entered() -> void:
+	var tag_icon_size: Vector2 = tag.icon.get_size()
+	var half_bar_width := title_bar.size.x / 2
+	var title_width := code_font.get_string_size(tag.name,
+			HORIZONTAL_ALIGNMENT_LEFT, 180, 12).x
+	# Add button.
+	var title_button := Button.new()
+	title_button.focus_mode = Control.FOCUS_NONE
+	title_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+	title_button.mouse_filter = Control.MOUSE_FILTER_PASS
+	title_button.theme_type_variation = "FlatButton"
+	title_button.position = title_bar.position +\
+			Vector2(half_bar_width - title_width / 2 - tag_icon_size.x - 2, 3)
+	title_button.size = Vector2(title_width + 28, 20)
+	title_bar.add_child(title_button)
+	title_button.gui_input.connect(_on_title_button_gui_input.bind(title_button))
+	title_button.pressed.connect(_on_title_button_pressed)
+	mouse_exited.connect(title_button.queue_free)
+
 func _on_mouse_exited() -> void:
 	Indications.remove_hovered(tid)
 	determine_selection_highlight()
@@ -222,7 +241,6 @@ func _draw() -> void:
 	drop_sb.draw(surface, Rect2(Vector2.ZERO, get_size()))
 
 func _on_title_bar_draw() -> void:
-	# Decorate the title bar.
 	var tag_icon_size: Vector2 = tag.icon.get_size()
 	var half_bar_width := title_bar.size.x / 2
 	var title_width := code_font.get_string_size(tag.name,
@@ -231,18 +249,6 @@ func _on_title_bar_draw() -> void:
 			tag.name, HORIZONTAL_ALIGNMENT_LEFT, 180, 12)
 	tag.icon.draw_rect(title_bar_ci, Rect2(Vector2(half_bar_width - title_width / 2 -\
 			tag_icon_size.x, 4).round(), tag_icon_size), false)
-	# Add the button.
-	var title_button := Button.new()
-	title_button.focus_mode = Control.FOCUS_NONE
-	title_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-	title_button.mouse_filter = Control.MOUSE_FILTER_PASS
-	title_button.theme_type_variation = "FlatButton"
-	title_button.position = title_bar.position +\
-			Vector2(half_bar_width - title_width / 2 - tag_icon_size.x - 2, 3)
-	title_button.size = Vector2(title_width + 28, 20)
-	title_bar.add_child(title_button)
-	title_button.gui_input.connect(_on_title_button_gui_input.bind(title_button))
-	title_button.pressed.connect(_on_title_button_pressed)
 
 # Block dragging from starting when pressing the title button.
 func _on_title_button_gui_input(event: InputEvent, title_button: Button) -> void:
