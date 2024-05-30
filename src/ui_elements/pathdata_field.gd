@@ -115,7 +115,7 @@ func sync(new_value: String) -> void:
 		activate_hovered(-1)
 	var mm := InputEventMouseMotion.new()
 	mm.position = get_viewport().get_mouse_position()
-	Input.parse_input_event(mm)
+	respond_to_mouse_input(mm)
 	commands_container.queue_redraw()
 
 
@@ -163,14 +163,20 @@ func _eat_double_clicks(event: InputEvent, button: Button) -> void:
 				button.pressed.emit()
 
 func _on_commands_gui_input(event: InputEvent) -> void:
-	if not event is InputEventMouse:
-		return
-	
-	var cmd_idx: int = (event.global_position.y - commands_container.global_position.y) /\
-			COMMAND_HEIGHT
+	if event is InputEventMouse:
+		respond_to_mouse_input(event)
+
+func respond_to_mouse_input(event: InputEventMouse) -> void:
+	var cmd_idx := -1
+	var event_pos := event.global_position
+	if commands_container.get_global_rect().has_point(event_pos):
+		cmd_idx = int((event_pos.y - commands_container.global_position.y) / COMMAND_HEIGHT)
 	
 	if event is InputEventMouseMotion and event.button_mask == 0:
-		Indications.set_hovered(tid, cmd_idx)
+		if cmd_idx != -1:
+			Indications.set_hovered(tid, cmd_idx)
+		else:
+			Indications.remove_hovered(tid, cmd_idx)
 		activate_hovered(cmd_idx)
 	elif event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_LEFT:
