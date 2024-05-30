@@ -96,7 +96,7 @@ static func open_import_dialog() -> void:
 	if FileUtils._is_native_preferred():
 		DisplayServer.file_dialog_show(TranslationServer.translate("Import a .svg file"),
 				Utils.get_last_dir(), "", false, DisplayServer.FILE_DIALOG_MODE_OPEN_FILE,
-				["*.svg"], native_file_import)
+				["*.svg"], native_svg_import)
 	elif OS.has_feature("web"):
 		HandlerGUI.web_load_svg()
 	else:
@@ -110,25 +110,28 @@ static func open_reference_load_dialog() -> void:
 	if FileUtils._is_native_preferred():
 		DisplayServer.file_dialog_show(TranslationServer.translate("Load an image file"),
 				Utils.get_last_dir(), "", false, DisplayServer.FILE_DIALOG_MODE_OPEN_FILE,
-				["*.svg", "*.png", "*.jpeg", "*.jpg", "*.webp"], native_file_import)
+				PackedStringArray(["*.svg,*.png,*.jpeg,*.jpg,*.webp"]),
+				native_reference_image_load)
 	# TODO: Add Web Support
 	#elif OS.has_feature("web"):
-		#HandlerGUI.web_load_svg()
+		#HandlerGUI.web_load_reference_image()
 	else:
-		var png_import_dialog := GoodFileDialog.instantiate()
-		png_import_dialog.setup(Utils.get_last_dir(), "",
+		var image_import_dialog := GoodFileDialog.instantiate()
+		image_import_dialog.setup(Utils.get_last_dir(), "",
 				GoodFileDialogType.FileMode.SELECT,
 				PackedStringArray(["svg", "png", "jpeg", "jpg", "webp"]))
-		HandlerGUI.add_overlay(png_import_dialog)
-		png_import_dialog.file_selected.connect(load_reference_image)
+		HandlerGUI.add_overlay(image_import_dialog)
+		image_import_dialog.file_selected.connect(load_reference_image)
 
-static func native_file_import(has_selected: bool, files: PackedStringArray,
+static func native_svg_import(has_selected: bool, files: PackedStringArray,
 _filter_idx: int) -> void:
 	if has_selected:
-		if files[0].ends_with(".svg"):
-			apply_svg_from_path(files[0])
-		else:
-			load_reference_image(files[0])
+		apply_svg_from_path(files[0])
+
+static func native_reference_image_load(has_selected: bool, files: PackedStringArray,
+_filter_idx: int) -> void:
+	if has_selected:
+		load_reference_image(files[0])
 
 static func load_reference_image(path: String) -> void:
 	GlobalSettings.modify_save_data("reference_path", path)
