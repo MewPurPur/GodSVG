@@ -315,16 +315,18 @@ func activate_focused(idx: int) -> void:
 	if idx == focused_idx:
 		return
 	
-	if is_instance_valid(focused_strip):
-		focused_strip.queue_free()
-	if hovered_idx != idx:
-		focused_strip = setup_path_command_controls(idx)
-		if idx == -1:
-			hovered_strip = setup_path_command_controls(hovered_idx)
+	if idx == -1:
+		if focused_idx == hovered_idx:
+			hovered_strip = focused_strip
 			focused_strip = null
-	else:
+		else:
+			focused_strip.queue_free()
+	elif idx == hovered_idx:
 		focused_strip = hovered_strip
 		hovered_strip = null
+	else:
+		focused_strip = setup_path_command_controls(idx)
+	
 	focused_idx = idx
 	commands_container.queue_redraw()
 
