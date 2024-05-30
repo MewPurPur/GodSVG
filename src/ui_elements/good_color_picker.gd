@@ -116,6 +116,11 @@ func _exit_tree() -> void:
 	UR.free()
 
 func register_visual_change(new_color: Color, use_backup := true) -> void:
+	if use_backup and new_color == backup_display_color:
+		return
+	elif not use_backup and new_color == display_color:
+		return
+	
 	UR.create_action("")
 	UR.add_do_method(set_color.bind(hex(new_color), new_color))
 	if use_backup:
@@ -181,6 +186,7 @@ func update() -> void:
 	if alpha_enabled:
 		backup_display_color.a = clampf(backup_display_color.a, 0.0, 1.0)
 		display_color.a = clampf(display_color.a, 0.0, 1.0)
+	update_color_button()
 
 
 func _on_color_wheel_gui_input(event: InputEvent) -> void:
@@ -380,24 +386,23 @@ func _on_slider4_draw() -> void:
 	draw_hslider(4, display_color.a, "A")
 
 
-func _on_reset_color_button_gui_input(event: InputEvent) -> void:
-	if event is InputEventMouseMotion and event.button_mask != MOUSE_BUTTON_MASK_LEFT:
-		if ColorParser.are_colors_same(starting_color, color):
-			reset_color_button.disabled = true
-			return
-		reset_color_button.disabled = false
-		if display_color.get_luminance() < 0.455:
-			reset_color_button.begin_bulk_theme_override()
-			reset_color_button.add_theme_color_override("icon_hover_color", Color.WHITE)
-			reset_color_button.add_theme_color_override("icon_pressed_color",
-					Color(0.5, 1, 1))
-			reset_color_button.end_bulk_theme_override()
-		else:
-			reset_color_button.begin_bulk_theme_override()
-			reset_color_button.add_theme_color_override("icon_hover_color", Color.BLACK)
-			reset_color_button.add_theme_color_override("icon_pressed_color",
-					Color(0, 0.5, 0.5))
-			reset_color_button.end_bulk_theme_override()
+func update_color_button() -> void:
+	if ColorParser.are_colors_same(starting_color, color):
+		reset_color_button.disabled = true
+		return
+	reset_color_button.disabled = false
+	if display_color.get_luminance() < 0.455:
+		reset_color_button.begin_bulk_theme_override()
+		reset_color_button.add_theme_color_override("icon_hover_color", Color.WHITE)
+		reset_color_button.add_theme_color_override("icon_pressed_color",
+				Color(0.5, 1, 1))
+		reset_color_button.end_bulk_theme_override()
+	else:
+		reset_color_button.begin_bulk_theme_override()
+		reset_color_button.add_theme_color_override("icon_hover_color", Color.BLACK)
+		reset_color_button.add_theme_color_override("icon_pressed_color",
+				Color(0, 0.5, 0.5))
+		reset_color_button.end_bulk_theme_override()
 
 func hex(col: Color) -> String:
 	return col.to_html(alpha_enabled and col.a != 1.0)

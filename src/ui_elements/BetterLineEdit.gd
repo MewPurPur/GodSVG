@@ -23,7 +23,6 @@ func _ready() -> void:
 	mouse_exited.connect(_on_base_class_mouse_exited)
 	text_submitted.connect(release_focus.unbind(1))
 
-
 var first_click := false
 var text_before_focus := ""
 
@@ -41,7 +40,7 @@ func _on_base_class_focus_exited() -> void:
 	if Input.is_action_pressed("ui_cancel"):
 		text = text_before_focus
 		text_change_canceled.emit()
-	else:
+	elif not Input.is_action_pressed("ui_accept"):
 		text_submitted.emit(text)
 
 func _on_base_class_mouse_exited() -> void:
