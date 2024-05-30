@@ -124,6 +124,7 @@ func update_value(new_value: float, property: String, idx: int) -> void:
 
 func _on_relative_button_pressed() -> void:
 	attribute.toggle_relative_command(hovered_idx)
+	reactivate_hovered()
 
 
 # Path commands editor orchestration.
@@ -215,10 +216,8 @@ func commands_draw() -> void:
 			var stylebox := StyleBoxFlat.new()
 			stylebox.set_corner_radius_all(3)
 			if selected:
-				if hovered:
-					stylebox.bg_color = Color(0.7, 0.7, 1.0, 0.18)
-				else:
-					stylebox.bg_color = Color(0.6, 0.6, 1.0, 0.16)
+				stylebox.bg_color = Color(0.7, 0.7, 1.0, 0.18) if hovered else\
+						Color(0.6, 0.6, 1.0, 0.16)
 			else:
 				stylebox.bg_color = Color(0.8, 0.8, 1.0, 0.05)
 			stylebox.draw(ci, Rect2(Vector2(0, v_offset), Vector2(commands_container.size.x,
@@ -298,9 +297,13 @@ path_command: PathCommand) -> void:
 
 
 func activate_hovered(idx: int) -> void:
-	if idx == hovered_idx or idx >= attribute.get_command_count():
-		return
-	
+	if idx != hovered_idx and idx < attribute.get_command_count():
+		activate_hovered_shared_logic(idx)
+
+func reactivate_hovered() -> void:
+	activate_hovered_shared_logic(hovered_idx)
+
+func activate_hovered_shared_logic(idx: int) -> void:
 	if is_instance_valid(hovered_strip):
 		hovered_strip.queue_free()
 	if focused_idx != idx:
