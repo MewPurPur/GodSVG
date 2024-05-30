@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://5l4oyxbb7rek"]
+
+[ext_resource type="Script" path="res://src/ui_elements/tag_content_stop.gd" id="1_ymc3o"]
+
+[node name="TagContentStop" type="VBoxContainer"]
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_ymc3o")
+
+[node name="AttributeContainer" type="HFlowContainer" parent="."]
+layout_mode = 2

@@ -5,6 +5,3 @@
 [node name="TagContentUnknown" type="VBoxContainer"]
 size_flags_horizontal = 3
 script = ExtResource("1_vy7fr")
-
-[node name="AttributeContainer" type="HFlowContainer" parent="."]
-layout_mode = 2

@@ -151,15 +151,15 @@ separator_indices: Array[int] = []) -> void:
 	# Add the buttons.
 	if buttons.is_empty():
 		return
-	else:
-		for idx in buttons.size():
-			if idx in separator_indices:
-				var separator := HSeparator.new()
-				separator.theme_type_variation = "SmallHSeparator"
-				main_container.add_child(separator)
-			main_container.add_child(_setup_button(buttons[idx], align_left))
-		if min_width > 0:
-			custom_minimum_size.x = ceili(min_width)
+	
+	for idx in buttons.size():
+		if idx in separator_indices:
+			var separator := HSeparator.new()
+			separator.theme_type_variation = "SmallHSeparator"
+			main_container.add_child(separator)
+		main_container.add_child(_setup_button(buttons[idx], align_left))
+	if min_width > 0:
+		custom_minimum_size.x = ceili(min_width)
 
 
 func setup_with_title(buttons: Array[Button], top_title: String, align_left := false,
