@@ -43,6 +43,7 @@ func sync() -> void:
 		new_btn.auto_translate = false
 		shortcut_container.add_child.call_deferred(new_btn)
 		shortcut_buttons.append(new_btn)
+		new_btn.button_mask = MOUSE_BUTTON_MASK_LEFT | MOUSE_BUTTON_MASK_RIGHT
 		new_btn.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		new_btn.theme_type_variation = "TranslucentButton"
 		new_btn.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
