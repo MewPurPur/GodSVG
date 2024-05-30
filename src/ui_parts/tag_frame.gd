@@ -11,6 +11,11 @@ static var TagFrame: PackedScene:
 const UnknownField = preload("res://src/ui_elements/unknown_field.tscn")
 const TagContentUnknown = preload("res://src/ui_elements/tag_content_unknown.tscn")
 const TagContentPath = preload("res://src/ui_elements/tag_content_path.tscn")
+const TagContentCircle = preload("res://src/ui_elements/tag_content_circle.tscn")
+const TagContentEllipse = preload("res://src/ui_elements/tag_content_ellipse.tscn")
+const TagContentRect = preload("res://src/ui_elements/tag_content_rect.tscn")
+const TagContentLine = preload("res://src/ui_elements/tag_content_line.tscn")
+const TagContentStop = preload("res://src/ui_elements/tag_content_stop.tscn")
 
 @onready var main_container: VBoxContainer = $Content/MainContainer
 @onready var title_bar: Panel = $TitleBar
@@ -45,6 +50,16 @@ func _ready() -> void:
 	var tag_content: Control
 	if tag is TagPath:
 		tag_content = TagContentPath.instantiate()
+	elif tag is TagCircle:
+		tag_content = TagContentCircle.instantiate()
+	elif tag is TagEllipse:
+		tag_content = TagContentEllipse.instantiate()
+	elif tag is TagRect:
+		tag_content = TagContentRect.instantiate()
+	elif tag is TagLine:
+		tag_content = TagContentLine.instantiate()
+	elif tag is TagStop:
+		tag_content = TagContentStop.instantiate()
 	else:
 		tag_content = TagContentUnknown.instantiate()
 	tag_content.tag = tag
@@ -142,7 +157,7 @@ func _on_mouse_entered() -> void:
 	title_button.mouse_filter = Control.MOUSE_FILTER_PASS
 	title_button.theme_type_variation = "FlatButton"
 	title_button.position = title_bar.position +\
-			Vector2(half_bar_width - title_width / 2 - tag_icon_size.x - 2, 3)
+			Vector2(half_bar_width - title_width / 2 - tag_icon_size.x / 2 - 6, 3)
 	title_button.size = Vector2(title_width + 28, 20)
 	title_bar.add_child(title_button)
 	title_button.gui_input.connect(_on_title_button_gui_input.bind(title_button))
@@ -245,10 +260,11 @@ func _on_title_bar_draw() -> void:
 	var half_bar_width := title_bar.size.x / 2
 	var title_width := code_font.get_string_size(tag.name,
 			HORIZONTAL_ALIGNMENT_LEFT, 180, 12).x
-	code_font.draw_string(title_bar_ci, Vector2(half_bar_width - title_width / 2 + 4, 18),
+	code_font.draw_string(title_bar_ci, Vector2(half_bar_width - title_width / 2 +\
+			tag_icon_size.x / 2, 18),
 			tag.name, HORIZONTAL_ALIGNMENT_LEFT, 180, 12)
 	tag.icon.draw_rect(title_bar_ci, Rect2(Vector2(half_bar_width - title_width / 2 -\
-			tag_icon_size.x, 4).round(), tag_icon_size), false)
+			tag_icon_size.x + 6, 4).round(), tag_icon_size), false)
 
 # Block dragging from starting when pressing the title button.
 func _on_title_button_gui_input(event: InputEvent, title_button: Button) -> void:

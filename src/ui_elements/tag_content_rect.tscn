@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://dxeni0ewiuop8"]
+
+[ext_resource type="Script" path="res://src/ui_elements/tag_content_rect.gd" id="1_bhc7f"]
+
+[node name="TagContentRect" type="VBoxContainer"]
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_bhc7f")
+
+[node name="AttributeContainer" type="HFlowContainer" parent="."]
+layout_mode = 2
