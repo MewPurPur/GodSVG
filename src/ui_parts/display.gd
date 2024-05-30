@@ -49,9 +49,10 @@ func _ready() -> void:
 	get_window().window_input.connect(_update_input_debug)
 	view_settings_updated.emit(grid_visuals.visible, controls.visible,
 			viewport.display_texture.rasterized)
-
+	
 	if OS.has_feature("web"):
-		reference_button.hide()
+		reference_button.disabled = true
+		reference_button.tooltip_text = "Not currently available on web."
 
 func _unhandled_input(input_event: InputEvent) -> void:
 	if Input.is_action_pressed("debug"):

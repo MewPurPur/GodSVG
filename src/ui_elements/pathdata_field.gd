@@ -176,8 +176,8 @@ func _on_commands_gui_input(event: InputEvent) -> void:
 		if event.button_index == MOUSE_BUTTON_LEFT:
 			if event.is_pressed():
 				if event.double_click:
-					# Unselect the tag, so then it's selected again.
-					Indications.ctrl_select(tid, cmd_idx)
+					# Unselect the tags so we can use Ctrl select.
+					Indications.clear_inner_selection()
 					var subpath_range: Vector2i =\
 							SVG.root_tag.get_tag(tid).attributes.d.get_subpath(cmd_idx)
 					for idx in range(subpath_range.x, subpath_range.y + 1):
