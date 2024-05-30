@@ -44,6 +44,10 @@ static func generate_image_from_tags(upscale_amount := 1.0) -> Image:
 	var export_svg := SVG.root_tag.duplicate()
 	if export_svg.attributes.viewBox.get_list().is_empty():
 		export_svg.attributes.viewBox.set_list([0, 0, export_svg.width, export_svg.height])
+	# First ensure there are dimensions.
+	# Otherwise changing one side could influence the other.
+	export_svg.attributes.width.set_num(export_svg.width)
+	export_svg.attributes.height.set_num(export_svg.height)
 	export_svg.attributes.width.set_num(export_svg.width * upscale_amount)
 	export_svg.attributes.height.set_num(export_svg.height * upscale_amount)
 	var img := Image.new()
@@ -63,7 +67,8 @@ non_native_callable: Callable) -> void:
 				TranslationServer.translate("Save the .\"{extension}\" file") %\
 				{"extension": extension}, Utils.get_last_dir(), Utils.get_file_name(
 				GlobalSettings.save_data.current_file_path) + "." + extension, false,
-				DisplayServer.FILE_DIALOG_MODE_SAVE_FILE, ["*." + extension], native_callable)
+				DisplayServer.FILE_DIALOG_MODE_SAVE_FILE,
+				PackedStringArray(["*." + extension]), native_callable)
 	elif OS.has_feature("web"):
 		web_save_svg()
 	else:
