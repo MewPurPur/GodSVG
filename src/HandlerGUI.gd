@@ -5,6 +5,10 @@ signal _in_focus
 const ImportWarningDialog = preload("res://src/ui_parts/import_warning_dialog.tscn")
 const AlertDialog = preload("res://src/ui_parts/alert_dialog.tscn")
 const ConfirmDialog = preload("res://src/ui_parts/confirm_dialog.tscn")
+const SettingsMenu = preload("res://src/ui_parts/settings_menu.tscn")
+const AboutMenu = preload("res://src/ui_parts/about_menu.tscn")
+const DonateMenu = preload("res://src/ui_parts/donate_menu.tscn")
+const UpdateMenu = preload("res://src/ui_parts/update_menu.tscn")
 
 var overlay_stack: Array[ColorRect]
 var popup_overlay_stack: Array[Control]
@@ -23,10 +27,13 @@ func _ready() -> void:
 	update_ui_scale()
 
 func _notification(what: int) -> void:
-	if what == NOTIFICATION_WM_WINDOW_FOCUS_IN:
-		_in_focus.emit()
-	elif what == Utils.CustomNotification.UI_SCALE_CHANGED:
-		update_ui_scale()
+	match what:
+		NOTIFICATION_WM_WINDOW_FOCUS_IN:
+			_in_focus.emit()
+		Utils.CustomNotification.UI_SCALE_CHANGED:
+			update_ui_scale()
+		NOTIFICATION_WM_ABOUT:
+			open_about()
 
 # Drag-and-drop of files.
 func _on_files_dropped(files: PackedStringArray) -> void:
@@ -176,6 +183,7 @@ func _input(event: InputEvent) -> void:
 	
 	# So, it turns out that when you double click, only the press will count as such.
 	# I don't like that, and it causes problems! So mark the release as double_click too.
+	# TODO Godot PR #92582 fixes this.
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
 		if event.double_click:
 			last_mouse_click_double = true
@@ -188,37 +196,47 @@ func _input(event: InputEvent) -> void:
 	
 	if event.is_action_pressed("save"):
 		get_viewport().set_input_as_handled()
-		FileUtils.open_save_dialog("svg", FileUtils.native_file_save, FileUtils.save_svg_to_file)
-
+		FileUtils.open_save_dialog("svg", FileUtils.native_file_save,
+				FileUtils.save_svg_to_file)
 
 func _unhandled_input(event: InputEvent) -> void:
+	# Stuff that should replace the existing overlays.
+	for action in ["about_info", "about_donate", "check_updates", "open_settings"]:
+		if event.is_action_pressed(action):
+			remove_all_overlays()
+			get_viewport().set_input_as_handled()
+			ShortcutUtils.fn_call(action)
+			return
+	
+	# Stuff that links externally.
+	for action in ["about_repo", "about_website"]:
+		if event.is_action_pressed(action):
+			get_viewport().set_input_as_handled()
+			ShortcutUtils.fn_call(action)
+			return
+	
 	# Stop stuff from propagating when there's overlays.
 	if not popup_overlay_stack.is_empty() or not overlay_stack.is_empty():
 		get_viewport().set_input_as_handled()
+		return
 	
-	if event.is_action_pressed("redo"):
-		get_viewport().set_input_as_handled()
-		SVG.redo()
-	elif event.is_action_pressed("undo"):
-		get_viewport().set_input_as_handled()
-		SVG.undo()
+	for action in ["import", "export", "copy_svg_text", "clear_svg", "optimize",
+	"clear_file_path", "reset_svg", "redo", "undo"]:
+		if event.is_action_pressed(action):
+			get_viewport().set_input_as_handled()
+			ShortcutUtils.fn_call(action)
+			return
 	
 	if get_viewport().gui_is_dragging():
 		return
 	
-	if event.is_action_pressed("ui_cancel"):
-		Indications.clear_all_selections()
-	elif event.is_action_pressed("delete"):
-		Indications.delete_selected()
-	elif event.is_action_pressed("move_up"):
-		Indications.move_up_selected()
-	elif event.is_action_pressed("move_down"):
-		Indications.move_down_selected()
-	elif event.is_action_pressed("duplicate"):
-		Indications.duplicate_selected()
-	elif event.is_action_pressed("select_all"):
-		Indications.select_all()
-	elif event is InputEventKey:
+	for action in ["ui_cancel", "delete", "move_up", "move_down", "duplicate",
+	"select_all"]:
+		if event.is_action_pressed(action):
+			get_viewport().set_input_as_handled()
+			ShortcutUtils.fn_call(action)
+			return
+	if event is InputEventKey:
 		Indications.respond_to_key_input(event)
 
 
@@ -243,6 +261,28 @@ func update_ui_scale() -> void:
 	else:
 		window.min_size = usable_screen_size
 		window.content_scale_factor = max_scale
+
+
+func open_update_checker() -> void:
+	var confirmation_dialog := ConfirmDialog.instantiate()
+	add_overlay(confirmation_dialog)
+	confirmation_dialog.setup(TranslationServer.translate("Check for updates?"),
+			TranslationServer.translate("This requires GodSVG to connect to the internet."),
+			TranslationServer.translate("OK"), _list_updates)
+
+func _list_updates() -> void:
+	remove_all_overlays()
+	var update_menu_instance := UpdateMenu.instantiate()
+	add_overlay(update_menu_instance)
+
+func open_settings() -> void:
+	add_overlay(SettingsMenu.instantiate())
+
+func open_about() -> void:
+	add_overlay(AboutMenu.instantiate())
+
+func open_donate() -> void:
+	add_overlay(DonateMenu.instantiate())
 
 
 func _calculate_auto_scale() -> float:

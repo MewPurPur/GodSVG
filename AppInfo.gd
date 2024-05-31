@@ -30,8 +30,13 @@ const authors: Array[String] = [
 ]
 
 # GodSVG is a non-profit project developed by voluntary contributors.
-# Everyone who has generously sponsored the project is listed here.
+# Thousands of hours of work have gone into it so far.
+# Everyone who has generously sponsored this effort is listed here.
 
-const donors: Array[String] = [
+const donors: Array[String] = []
+
+const golden_donors: Array[String] = []
+
+const diamond_donors: Array[String] = [
 	"Aaron Franke (aaronfranke)",
 ]
