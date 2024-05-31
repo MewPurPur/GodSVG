@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://cr1fdlmbknnko"]
+[gd_scene load_steps=11 format=3 uid="uid://cr1fdlmbknnko"]
 
 [ext_resource type="Script" path="res://src/ui_parts/code_editor.gd" id="1_nffk0"]
 [ext_resource type="Texture2D" uid="uid://c5kgvxffw35gi" path="res://visual/icons/Compress.svg" id="2_33tgq"]
@@ -31,18 +31,6 @@ corner_radius_top_left = 3
 corner_radius_top_right = 3
 corner_radius_bottom_right = 3
 corner_radius_bottom_left = 3
-
-[sub_resource type="InputEventAction" id="InputEventAction_7f3rx"]
-action = &"import"
-
-[sub_resource type="Shortcut" id="Shortcut_2nqbo"]
-events = [SubResource("InputEventAction_7f3rx")]
-
-[sub_resource type="InputEventAction" id="InputEventAction_oqold"]
-action = &"export"
-
-[sub_resource type="Shortcut" id="Shortcut_6w18e"]
-events = [SubResource("InputEventAction_oqold")]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_k0een"]
 content_margin_left = 10.0
@@ -101,6 +89,7 @@ theme_type_variation = &"FlatButton"
 text_overrun_behavior = 3
 
 [node name="MetaActions" type="HBoxContainer" parent="PanelContainer/CodeButtons"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 10
 
@@ -119,8 +108,6 @@ tooltip_text = "Import"
 focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_type_variation = &"IconButton"
-shortcut = SubResource("Shortcut_2nqbo")
-shortcut_in_tooltip = false
 icon = ExtResource("4_cuhac")
 
 [node name="ExportButton" type="Button" parent="PanelContainer/CodeButtons/MetaActions"]
@@ -129,8 +116,6 @@ tooltip_text = "Export"
 focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_type_variation = &"IconButton"
-shortcut = SubResource("Shortcut_6w18e")
-shortcut_in_tooltip = false
 icon = ExtResource("5_pgurh")
 
 [node name="ScriptEditor" type="VBoxContainer" parent="."]
@@ -158,14 +143,9 @@ theme_override_fonts/normal_font = ExtResource("2_p4nol")
 theme_override_font_sizes/normal_font_size = 14
 fit_content = true
 
-[connection signal="pressed" from="PanelContainer/CodeButtons/OptimizeButton" to="." method="_on_optimize_button_pressed"]
 [connection signal="pressed" from="PanelContainer/CodeButtons/MarginContainer/FileButton" to="." method="_on_file_button_pressed"]
 [connection signal="pressed" from="PanelContainer/CodeButtons/MetaActions/OptionsButton" to="." method="_on_options_button_pressed"]
-[connection signal="pressed" from="PanelContainer/CodeButtons/MetaActions/ImportButton" to="." method="_on_import_button_pressed"]
-[connection signal="pressed" from="PanelContainer/CodeButtons/MetaActions/ExportButton" to="." method="_on_export_button_pressed"]
 [connection signal="caret_changed" from="ScriptEditor/SVGCodeEdit" to="ScriptEditor/SVGCodeEdit" method="redraw_caret"]
 [connection signal="focus_entered" from="ScriptEditor/SVGCodeEdit" to="." method="_on_svg_code_edit_focus_entered"]
-[connection signal="focus_entered" from="ScriptEditor/SVGCodeEdit" to="ScriptEditor/SVGCodeEdit" method="_on_focus_entered"]
 [connection signal="focus_exited" from="ScriptEditor/SVGCodeEdit" to="." method="_on_svg_code_edit_focus_exited"]
-[connection signal="focus_exited" from="ScriptEditor/SVGCodeEdit" to="ScriptEditor/SVGCodeEdit" method="_on_focus_exited"]
-[connection signal="text_changed" from="ScriptEditor/SVGCodeEdit" to="." method="_on_code_edit_text_changed"]
+[connection signal="text_changed" from="ScriptEditor/SVGCodeEdit" to="." method="_on_svg_code_edit_text_changed"]

@@ -4,11 +4,6 @@ extends VBoxContainer
 signal view_settings_updated(show_grid: bool, show_handles: bool, rasterized_svg: bool)
 signal snap_settings_updated(snap_enabled: bool, snap_amount: float)
 
-const settings_menu = preload("settings_menu.tscn")
-const about_menu = preload("about_menu.tscn")
-const donate_menu = preload("res://src/ui_parts/donate_menu.tscn")
-const update_menu = preload("res://src/ui_parts/update_menu.tscn")
-
 const NumberEditType = preload("res://src/ui_elements/number_edit.gd")
 const BetterToggleButtonType = preload("res://src/ui_elements/BetterToggleButton.gd")
 
@@ -37,8 +32,6 @@ func _notification(what: int) -> void:
 		update_translations()
 	elif what == Utils.CustomNotification.NUMBER_PRECISION_CHANGED:
 		update_snap_config()
-	elif what == NOTIFICATION_WM_ABOUT:
-		open_about.call_deferred()
 	elif what ==  Utils.CustomNotification.THEME_CHANGED:
 		update_theme()
 
@@ -64,8 +57,6 @@ func _unhandled_input(input_event: InputEvent) -> void:
 			input_debug_label.text = ""
 	elif input_event.is_action_pressed("load_reference"):
 		load_reference_image()
-	elif input_event.is_action_pressed("open_settings"):
-		_on_settings_pressed()
 	elif input_event.is_action_pressed("view_show_grid"):
 		toggle_grid_visuals()
 	elif input_event.is_action_pressed("view_show_handles"):
@@ -78,16 +69,6 @@ func _unhandled_input(input_event: InputEvent) -> void:
 		toggle_reference_overlay()
 	elif input_event.is_action_pressed("snap_toggle"):
 		toggle_snap()
-	elif input_event.is_action_pressed("about_repo"):
-		open_godsvg_repo()
-	elif input_event.is_action_pressed("about_website"):
-		open_godsvg_website()
-	elif input_event.is_action_pressed("about_info"):
-		open_about()
-	elif input_event.is_action_pressed("about_donate"):
-		open_sponsor()
-	elif input_event.is_action_pressed("check_updates"):
-		open_update_checker()
 
 
 func update_translations() -> void:
@@ -122,8 +103,7 @@ func update_snap_config() -> void:
 
 
 func _on_settings_pressed() -> void:
-	var settings_menu_instance := settings_menu.instantiate()
-	HandlerGUI.add_overlay(settings_menu_instance)
+	ShortcutUtils.fn_call("open_settings")
 
 
 func _on_reference_pressed() -> void:
@@ -158,20 +138,23 @@ func _on_visuals_button_pressed() -> void:
 
 func _on_more_options_pressed() -> void:
 	var about_btn := ContextPopup.create_button(TranslationServer.translate("About…"),
-			open_about, false, load("res://visual/icon.png"), "about_info")
+			ShortcutUtils.fn("about_info"), false, load("res://visual/icon.png"),
+			"about_info")
 	about_btn.expand_icon = true
 	var buttons_arr: Array[Button] = [
 		about_btn,
 		ContextPopup.create_button(TranslationServer.translate("Donate…"),
-				open_sponsor, false, load("res://visual/icons/Heart.svg"), "about_donate"),
+				ShortcutUtils.fn("about_donate"), false, load("res://visual/icons/Heart.svg"),
+				"about_donate"),
 		ContextPopup.create_button(TranslationServer.translate("GodSVG repository"),
-				open_godsvg_repo, false, load("res://visual/icons/Link.svg"), "about_repo"),
+				ShortcutUtils.fn("about_repo"), false, load("res://visual/icons/Link.svg"),
+				"about_repo"),
 		ContextPopup.create_button(TranslationServer.translate("GodSVG website"),
-				open_godsvg_website, false, load("res://visual/icons/Link.svg"),
+				ShortcutUtils.fn("about_website"), false, load("res://visual/icons/Link.svg"),
 				"about_website"),
 		ContextPopup.create_button(TranslationServer.translate("Check for updates"),
-				open_update_checker, false, load("res://visual/icons/Reload.svg"),
-				"check_updates")]
+				ShortcutUtils.fn("check_updates"), false,
+				load("res://visual/icons/Reload.svg"), "check_updates")]
 	var separator_indices: Array[int] = [2, 4]
 	
 	var more_popup := ContextPopup.new()
@@ -179,44 +162,21 @@ func _on_more_options_pressed() -> void:
 	HandlerGUI.popup_under_rect_center(more_popup, more_button.get_global_rect(),
 			get_viewport())
 
-func open_godsvg_repo() -> void:
-	OS.shell_open("https://github.com/MewPurPur/GodSVG")
-
-func open_godsvg_website() -> void:
-	OS.shell_open("https://godsvg.com")
-
-func open_about() -> void:
-	var about_menu_instance := about_menu.instantiate()
-	HandlerGUI.add_overlay(about_menu_instance)
-
-func open_sponsor() -> void:
-	var donate_menu_instance := donate_menu.instantiate()
-	HandlerGUI.add_overlay(donate_menu_instance)
-
-func open_update_checker() -> void:
-	var confirmation_dialog := ConfirmDialog.instantiate()
-	HandlerGUI.add_overlay(confirmation_dialog)
-	confirmation_dialog.setup(TranslationServer.translate("Check for updates?"),
-			TranslationServer.translate("This requires GodSVG to connect to the internet."),
-			TranslationServer.translate("OK"), _list_updates)
-
-func _list_updates() -> void:
-	HandlerGUI.remove_all_overlays()
-	var update_menu_instance := update_menu.instantiate()
-	HandlerGUI.add_overlay(update_menu_instance)
-
 
 func toggle_grid_visuals() -> void:
 	grid_visuals.visible = not grid_visuals.visible
-	view_settings_updated.emit(grid_visuals.visible, controls.visible, viewport.display_texture.rasterized)
+	view_settings_updated.emit(grid_visuals.visible, controls.visible,
+			viewport.display_texture.rasterized)
 
 func toggle_handles_visuals() -> void:
 	controls.visible = not controls.visible
-	view_settings_updated.emit(grid_visuals.visible, controls.visible, viewport.display_texture.rasterized)
+	view_settings_updated.emit(grid_visuals.visible, controls.visible,
+			viewport.display_texture.rasterized)
 
 func toggle_rasterization() -> void:
 	viewport.display_texture.rasterized = not viewport.display_texture.rasterized
-	view_settings_updated.emit(grid_visuals.visible, controls.visible, viewport.display_texture.rasterized)
+	view_settings_updated.emit(grid_visuals.visible, controls.visible,
+			viewport.display_texture.rasterized)
 
 
 func toggle_reference_image() -> void:
