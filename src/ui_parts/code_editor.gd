@@ -9,9 +9,11 @@ signal optimize_button_enable_updated(is_optimize_enabled: bool)
 @onready var size_label: Label = %SizeLabelContainer/SizeLabel
 @onready var size_label_container: PanelContainer = %SizeLabelContainer
 @onready var file_button: Button = %FileButton
-@onready var options_button: Button = $PanelContainer/CodeButtons/MetaActions/OptionsButton
 @onready var optimize_button: Button = $PanelContainer/CodeButtons/OptimizeButton
 
+@onready var options_button: Button = %MetaActions/OptionsButton
+@onready var import_button: Button = %MetaActions/ImportButton
+@onready var export_button: Button = %MetaActions/ExportButton
 
 func _ready() -> void:
 	SVG.parsing_finished.connect(update_error)
@@ -26,6 +28,9 @@ func _ready() -> void:
 	SVG.root_tag.tag_layout_changed.connect(auto_update_text)
 	SVG.root_tag.changed_unknown.connect(auto_update_text)
 	GlobalSettings.save_data.current_file_path_changed.connect(update_file_button)
+	import_button.pressed.connect(ShortcutUtils.fn("import"))
+	export_button.pressed.connect(ShortcutUtils.fn("export"))
+	optimize_button.pressed.connect(ShortcutUtils.fn("optimize"))
 
 
 func _notification(what: int) -> void:
@@ -33,23 +38,6 @@ func _notification(what: int) -> void:
 		setup_highlighter()
 	elif what == Utils.CustomNotification.THEME_CHANGED:
 		setup_theme()
-
-
-func _unhandled_input(input_event: InputEvent) -> void:
-	if input_event.is_action_pressed("import"):
-		_on_import_button_pressed()
-	elif input_event.is_action_pressed("export"):
-		_on_export_button_pressed()
-	elif input_event.is_action_pressed("copy_svg_text"):
-		_on_copy_button_pressed()
-	elif input_event.is_action_pressed("clear_svg"):
-		clear_svg()
-	elif input_event.is_action_pressed("optimize"):
-		_on_optimize_button_pressed()
-	elif input_event.is_action_pressed("clear_file_path"):
-		clear_file_path()
-	elif input_event.is_action_pressed("reset_svg"):
-		reset_svg()
 
 
 func auto_update_text() -> void:
@@ -130,22 +118,11 @@ func setup_theme() -> void:
 	error_bar.add_theme_stylebox_override("panel", bottom_stylebox)
 
 
-func _on_copy_button_pressed() -> void:
-	DisplayServer.clipboard_set(code_edit.text)
-
-
-func _on_import_button_pressed() -> void:
-	FileUtils.open_import_dialog()
-
-func _on_export_button_pressed() -> void:
-	FileUtils.open_export_dialog()
-
 func set_new_text(svg_text: String) -> void:
 	code_edit.text = svg_text
-	_on_code_edit_text_changed()  # Call it automatically yeah.
+	_on_svg_code_edit_text_changed()  # Call it automatically yeah.
 
-
-func _on_code_edit_text_changed() -> void:
+func _on_svg_code_edit_text_changed() -> void:
 	SVG.text = code_edit.text
 	SVG.update_tags()
 
@@ -184,21 +161,18 @@ func _on_svg_code_edit_focus_entered() -> void:
 	Indications.clear_all_selections()
 
 
-func _on_optimize_button_pressed() -> void:
-	SVG.root_tag.optimize()
-
-
 func _on_file_button_pressed() -> void:
 	var btn_array: Array[Button] = []
 	btn_array.append(ContextPopup.create_button(TranslationServer.translate("Save SVG"),
 			FileUtils.open_save_dialog.bind("svg", FileUtils.native_file_save,
 			FileUtils.save_svg_to_file), false, load("res://visual/icons/Save.svg"), "save"))
 	btn_array.append(ContextPopup.create_button(TranslationServer.translate("Reset SVG"),
-			reset_svg, FileUtils.does_svg_data_match_disk_contents(),
+			ShortcutUtils.fn("reset_svg"), FileUtils.does_svg_data_match_disk_contents(),
 			load("res://visual/icons/Reload.svg"), "reset_svg"))
 	btn_array.append(ContextPopup.create_button(
 			TranslationServer.translate("Clear saving path"),
-			clear_file_path, false, load("res://visual/icons/Clear.svg")))
+			ShortcutUtils.fn("clear_file_path"), false, load("res://visual/icons/Clear.svg"),
+			"clear_file_path"))
 	var context_popup := ContextPopup.new()
 	context_popup.setup(btn_array, true, file_button.size.x)
 	HandlerGUI.popup_under_rect_center(context_popup, file_button.get_global_rect(),
@@ -208,25 +182,16 @@ func _on_file_button_pressed() -> void:
 func _on_options_button_pressed() -> void:
 	var btn_array: Array[Button] = []
 	btn_array.append(ContextPopup.create_button(
-			TranslationServer.translate("Copy all text"), _on_copy_button_pressed, false,
-			load("res://visual/icons/Copy.svg"), "copy_svg_text"))
+			TranslationServer.translate("Copy all text"), ShortcutUtils.fn("copy_svg_text"),
+			false, load("res://visual/icons/Copy.svg"), "copy_svg_text"))
 	btn_array.append(ContextPopup.create_button(
-			TranslationServer.translate("Clear SVG"), clear_svg, SVG.text == SVG.DEFAULT,
-			load("res://visual/icons/Clear.svg"), "clear_svg"))
+			TranslationServer.translate("Clear SVG"), ShortcutUtils.fn("clear_svg"),
+			SVG.text == SVG.DEFAULT, load("res://visual/icons/Clear.svg"), "clear_svg"))
 	var context_popup := ContextPopup.new()
 	context_popup.setup(btn_array, true)
 	HandlerGUI.popup_under_rect_center(context_popup, options_button.get_global_rect(),
 			get_viewport())
 
-
-func clear_file_path() -> void:
-	GlobalSettings.modify_save_data("current_file_path", "")
-
-func reset_svg() -> void:
-	FileUtils.apply_svg_from_path(GlobalSettings.save_data.current_file_path)
-
-func clear_svg() -> void:
-	SVG.apply_svg_text(SVG.DEFAULT)
 
 func setup_highlighter() -> void:
 	if is_instance_valid(code_edit):

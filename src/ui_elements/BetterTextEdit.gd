@@ -25,6 +25,8 @@ func _ready() -> void:
 	get_v_scroll_bar().value_changed.connect(queue_redraw_caret.unbind(1))
 	get_h_scroll_bar().value_changed.connect(queue_redraw_caret.unbind(1))
 	mouse_exited.connect(_on_base_class_mouse_exited)
+	focus_entered.connect(_on_base_class_focus_entered)
+	focus_exited.connect(_on_base_class_focus_exited)
 
 func _exit_tree() -> void:
 	RenderingServer.free_rid(_surface)
@@ -83,10 +85,10 @@ func blink() -> void:
 	blonk = not blonk
 	RenderingServer.canvas_item_set_visible(_surface, blonk)
 
-func _on_focus_entered() -> void:
+func _on_base_class_focus_entered() -> void:
 	_timer.start(0.6)
 
-func _on_focus_exited() -> void:
+func _on_base_class_focus_exited() -> void:
 	_timer.stop()
 	RenderingServer.canvas_item_clear(_surface)
 

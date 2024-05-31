@@ -41,6 +41,7 @@ func _on_base_class_focus_exited() -> void:
 		text = text_before_focus
 		text_change_canceled.emit()
 	elif not Input.is_action_pressed("ui_accept"):
+		# If ui_accept is pressed, text_submitted gets emitted anyway.
 		text_submitted.emit(text)
 
 func _on_base_class_mouse_exited() -> void:
