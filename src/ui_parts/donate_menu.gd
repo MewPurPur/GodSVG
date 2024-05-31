@@ -22,7 +22,7 @@ func _on_close_pressed() -> void:
 
 func _on_github_link_mouse_entered() -> void:
 	show_description("Guthub Sponsors", PackedStringArray(["Low extra fees",
-			"Can donate an arbitrary amount", "Includes all perks."]))
+			"Can donate an arbitrary amount", "Includes all perks"]))
 
 func _on_ko_fi_link_mouse_entered() -> void:
 	show_description("Ko-Fi", PackedStringArray(["Low extra fees",

@@ -293,7 +293,7 @@ func popup_new_transform_context(idx: int, control: Control) -> void:
 			get_viewport())
 
 
-func _input(event: InputEvent) -> void:
+func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("redo"):
 		if UR.has_redo():
 			UR.redo()
