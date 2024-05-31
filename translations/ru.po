@@ -1,3 +1,4 @@
+#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: GodSVG\n"
@@ -12,7 +13,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 msgid "translation-credits"
-msgstr "volkov <volkovissocool@gmail.com>"
+msgstr "volkov <volkovissocool@gmail.com>, Gallifreyan <gallifreyan@protonmail.ch>"
 
 #: src/parsers/SVGParser.gd
 msgid "Doesn’t describe an SVG."
@@ -86,7 +87,7 @@ msgstr "Подвинуть вниз"
 
 #: src/ui_elements/palette_config.gd
 msgid "Copy as XML"
-msgstr "Скопировать XML"
+msgstr "Скопировать как XML"
 
 #: src/ui_elements/palette_config.gd
 msgid "Paste XML"
@@ -238,7 +239,7 @@ msgstr "Внешний вид"
 
 #: src/ui_parts/display.gd src/TranslationUtils.gd
 msgid "Load reference image"
-msgstr "Загрузить "
+msgstr "Загрузить референс"
 
 #: src/ui_parts/display.gd
 msgid "Show reference"
