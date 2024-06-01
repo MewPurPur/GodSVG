@@ -4,7 +4,7 @@
   <img src="godot_only/source_assets/splash.svg" width="480" alt="GodSVG logo">
 </p>
 
-**GodSVG is an editor for Scalable Vector Graphics (SVG) files.** Unlike other editors, it represents the SVG code directly, doesn't add any metadata, and even lets you edit the SVG code in real time. GodSVG is inspired by the need for an SVG editor without abstractions that produces clean and optimized files.
+**[GodSVG](https://godsvg.com) is an editor for Scalable Vector Graphics (SVG) files.** Unlike other editors, it represents the SVG code directly, doesn't add any metadata, and even lets you edit the SVG code in real time. GodSVG is inspired by the need for an SVG editor without abstractions that produces clean and optimized files.
 
 >[!IMPORTANT]
 >GodSVG is not officially released, it's currently in late alpha.
@@ -25,7 +25,7 @@ Download the version you want from [the list of GodSVG releases](https://github.
 
 Note that if you're on MacOS, you need to [disable Gatekeeper](https://disable-gatekeeper.github.io/) if you haven't yet. I don't have the time or money to deal with Apple's gatekeeping.
 
-Link to the web build: https://mewpurpur.github.io/GodSVG/web-build (Currently experimental)
+Link to the web build: https://godsvg.com/web-build (Currently moving)
 
 To run the latest unreleased version, you can download Godot from https://godotengine.org (development is currently happening in v4.2.2). After getting the repository files on your machine, you must open Godot, click on the "Import" button, and import the `project.godot` folder. If there are a lot of errors as some people have reported, it's Godot's fault. Try closing and opening the project a few times, changing small things on the code that errors out, etc. until the errors hopefully clear.
 

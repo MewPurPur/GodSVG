@@ -27,13 +27,13 @@ If web exports need to be tested without pushing any changes to the repository, 
 
 Profile path should be adjusted
 
-- `scons p=linuxbsd arch=x86_64 optimize=speed profile=../GodSVG/xport/custom.py`
+- `scons p=linuxbsd arch=x86_64 optimize=speed deprecated=no minizip=no brotli=no vulkan=no openxr=no use_volk=no disable_3d=yes modules_enabled_by_default=no module_freetype_enabled=yes module_gdscript_enabled=yes module_svg_enabled=yes module_jpg_enabled=yes module_text_server_adv_enabled=yes graphite=no module_webp_enabled=yes`
 
-- `scons p=windows arch=x86_64 optimize=speed profile=../GodSVG/xport/custom.py`
+- `scons p=windows arch=x86_64 optimize=speed deprecated=no minizip=no brotli=no vulkan=no openxr=no use_volk=no disable_3d=yes modules_enabled_by_default=no module_freetype_enabled=yes module_gdscript_enabled=yes module_svg_enabled=yes module_jpg_enabled=yes module_text_server_adv_enabled=yes graphite=no module_webp_enabled=yes`
 
-- `scons p=web arch=wasm32 optimize=size javascript_eval=no profile=../GodSVG/xport/custom.py`
+- `scons p=macos arch=arm64 optimize=speed deprecated=no minizip=no brotli=no vulkan=no openxr=no use_volk=no disable_3d=yes modules_enabled_by_default=no module_freetype_enabled=yes module_gdscript_enabled=yes module_svg_enabled=yes module_jpg_enabled=yes module_text_server_adv_enabled=yes graphite=no module_webp_enabled=yes`
 
-(If the web one doesn't work, type it out - currently that's `scons p=web arch=wasm32 javascript_eval=no target=template_release lto=full production=yes dev_build=no optimize=size deprecated=no minizip=no brotli=no vulkan=no openxr=no use_volk=no disable_3d=yes modules_enabled_by_default=no module_freetype_enabled=yes module_gdscript_enabled=yes module_svg_enabled=yes module_jpg_enabled=yes module_text_server_adv_enabled=yes graphite=no module_webp_enabled=yes`)
+- `scons p=web arch=wasm32 javascript_eval=no target=template_release lto=full production=yes dev_build=no optimize=size deprecated=no minizip=no brotli=no vulkan=no openxr=no use_volk=no disable_3d=yes modules_enabled_by_default=no module_freetype_enabled=yes module_gdscript_enabled=yes module_svg_enabled=yes module_jpg_enabled=yes module_text_server_adv_enabled=yes graphite=no module_webp_enabled=yes`
 
 ## Misc:
 
