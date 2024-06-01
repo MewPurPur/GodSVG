@@ -114,7 +114,7 @@ func sync(new_value: String) -> void:
 	if hovered_idx >= attribute.get_command_count():
 		activate_hovered(-1)
 	var mm := InputEventMouseMotion.new()
-	mm.position = get_viewport().get_mouse_position()
+	mm.position = commands_container.get_local_mouse_position()
 	respond_to_mouse_input(mm)
 	commands_container.queue_redraw()
 
@@ -168,9 +168,9 @@ func _on_commands_gui_input(event: InputEvent) -> void:
 
 func respond_to_mouse_input(event: InputEventMouse) -> void:
 	var cmd_idx := -1
-	var event_pos := event.global_position
-	if commands_container.get_global_rect().has_point(event_pos):
-		cmd_idx = int((event_pos.y - commands_container.global_position.y) / COMMAND_HEIGHT)
+	var event_pos := event.position
+	if Rect2(Vector2.ZERO, commands_container.get_size()).has_point(event_pos):
+		cmd_idx = int(event_pos.y / COMMAND_HEIGHT)
 	
 	if event is InputEventMouseMotion and event.button_mask == 0:
 		if cmd_idx != -1:

@@ -1,7 +1,7 @@
 [gd_scene load_steps=8 format=3 uid="uid://mhfp37lr7q4f"]
 
 [ext_resource type="Script" path="res://src/ui_parts/about_menu.gd" id="1_xxltt"]
-[ext_resource type="Texture2D" uid="uid://v7hej5yexkvl" path="res://visual/icon.png" id="2_5uakw"]
+[ext_resource type="Texture2D" uid="uid://barsurula6j8n" path="res://visual/icon.svg" id="2_t7fbd"]
 [ext_resource type="FontFile" uid="uid://dtb4wkus51hxs" path="res://visual/fonts/FontMono.ttf" id="3_e8i1t"]
 [ext_resource type="FontFile" uid="uid://dc0w4sx0h0fui" path="res://visual/fonts/FontBold.ttf" id="4_n6gp0"]
 [ext_resource type="Texture2D" uid="uid://cgxpm1e3v0i3v" path="res://visual/icons/Link.svg" id="6_hbk78"]
@@ -46,7 +46,7 @@ theme_override_constants/separation = 8
 
 [node name="TextureRect" type="TextureRect" parent="VBoxContainer/HBoxContainer"]
 layout_mode = 2
-texture = ExtResource("2_5uakw")
+texture = ExtResource("2_t7fbd")
 expand_mode = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer"]
@@ -122,12 +122,8 @@ theme_override_constants/separation = 6
 layout_mode = 2
 horizontal_alignment = 1
 
-[node name="List" type="GridContainer" parent="VBoxContainer/TabContainer/Authors/VBoxContainer/Translations"]
+[node name="List" type="VBoxContainer" parent="VBoxContainer/TabContainer/Authors/VBoxContainer/Translations"]
 layout_mode = 2
-theme_override_constants/h_separation = -1
-theme_override_constants/v_separation = -1
-script = ExtResource("7_nvctb")
-stylebox = SubResource("StyleBoxFlat_jtvwe")
 
 [node name="Donors" type="ScrollContainer" parent="VBoxContainer/TabContainer"]
 visible = false

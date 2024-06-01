@@ -109,15 +109,16 @@ func _on_settings_pressed() -> void:
 func _on_reference_pressed() -> void:
 	var btn_arr: Array[Button] = [
 		ContextPopup.create_button(TranslationServer.translate("Load reference image"),
-			load_reference_image, false, load("res://visual/icons/Reference.svg")),
+			load_reference_image, false, load("res://visual/icons/Reference.svg"),
+			"load_reference"),
 		ContextPopup.create_checkbox(TranslationServer.translate("Show reference"),
-			toggle_reference_image, reference_texture.visible, ""),
+			toggle_reference_image, reference_texture.visible, "view_show_reference"),
 		ContextPopup.create_checkbox(TranslationServer.translate("Overlay reference"),
-			toggle_reference_overlay, reference_overlay)
+			toggle_reference_overlay, reference_overlay, "view_overlay_reference")
 	]
 	
 	var reference_popup := ContextPopup.new()
-	reference_popup.setup(btn_arr, false)
+	reference_popup.setup(btn_arr, true)
 	HandlerGUI.popup_under_rect_center(reference_popup, reference_button.get_global_rect(),
 			get_viewport())
 

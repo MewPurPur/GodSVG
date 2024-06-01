@@ -2,10 +2,10 @@ extends PanelContainer
 
 @onready var version_label: Label = %VersionLabel
 @onready var close_button: Button = $VBoxContainer/CloseButton
+@onready var translations_list: VBoxContainer = %Translations/List
 
 @onready var project_founder_list: PanelGrid = %ProjectFounder/List
 @onready var authors_list: PanelGrid = %Developers/List
-@onready var translations_list: PanelGrid = %Translations/List
 
 @onready var donors_list: PanelGrid = %Donors/List
 @onready var golden_donors_list: PanelGrid = %GoldenDonors/List
@@ -41,14 +41,27 @@ func _ready() -> void:
 	golden_donors_list.setup()
 	diamond_donors_list.items = AppInfo.diamond_donors
 	diamond_donors_list.setup()
-	var translation_items: Array[String] = []
+	# There can be multiple translators for a single locale.
 	for lang in TranslationServer.get_loaded_locales():
 		var credits := TranslationServer.get_translation_object(lang).get_message(
-				"translation-credits")
-		if not credits.is_empty():
-			translation_items.append(lang + ": " + credits)
-	translations_list.items = translation_items
-	translations_list.setup()
+				"translation-credits").split(",", false)
+		if credits.is_empty():
+			continue
+		
+		for i in credits.size():
+			credits[i] = credits[i].strip_edges()
+		
+		var label := Label.new()
+		label.text = TranslationServer.get_locale_name(lang) + " (%s):" % lang
+		translations_list.add_child(label)
+		var list := PanelGrid.new()
+		list.stylebox = authors_list.stylebox
+		list.add_theme_constant_override("h_separation", -1)
+		list.add_theme_constant_override("v_separation", -1)
+		list.items = credits
+		list.setup()
+		translations_list.add_child(list)
+	
 	close_button.pressed.connect(queue_free)
 	update_translation()
 
