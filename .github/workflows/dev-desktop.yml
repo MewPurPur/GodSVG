@@ -7,12 +7,9 @@ on:
   pull_request:
     branches: [ main ]
 
-
 env:
   GODOT_VERSION: 4.2.2
-  GODOT_RELEASE: rc3
   PROJECT_NAME: GodSVG
-
 
 jobs:
   export-windows:
@@ -29,9 +26,10 @@ jobs:
         uses: ./.github/actions/set-up-godot
       - name: Set up WINE and rcedit for Windows export
         run: |
-          # Download rcedit and intall wine.
+          # Download rcedit and install wine.
           wget -q https://github.com/electron/rcedit/releases/download/v1.1.1/rcedit-x64.exe
-          sudo apt install wine64
+          sudo apt-get update
+          sudo apt-get install -y --fix-missing wine64
           # Move rcedit to different place.
           mkdir -v -p ~/.local/share/rcedit
           mv rcedit-x64.exe ~/.local/share/rcedit

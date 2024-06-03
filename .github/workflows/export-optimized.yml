@@ -23,7 +23,7 @@ jobs:
 
       - name: Check user
         run: |
-          if [[ "${{ github.actor }}" != "MewPurPur" ]]; then
+          if [ "${{ github.actor }}" != "MewPurPur" ]; then
             echo "Unauthorized user: ${{ github.actor }}"
             exit 1
           fi
@@ -51,6 +51,7 @@ jobs:
         with:
           name: godot_template_linux
           path: $BUILD_DIR/godot_template_linux
+          retention-days: 1
 
   build-windows:
     runs-on: windows-latest
@@ -60,10 +61,10 @@ jobs:
 
       - name: Check user
         run: |
-          if [[ "${{ github.actor }}" != "MewPurPur" ]]; then
-            echo "Unauthorized user: ${{ github.actor }}"
+          if ($env:GITHUB_ACTOR -ne "MewPurPur") {
+            Write-Host "Unauthorized user: $env:GITHUB_ACTOR"
             exit 1
-          fi
+          }
 
       - name: Install dependencies
         run: choco install scons
@@ -90,41 +91,52 @@ jobs:
           path: $BUILD_DIR/godot_template_windows
 
   build-web:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+  runs-on: ubuntu-latest
+  steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
 
-      - name: Check user
-        run: |
-          if [[ "${{ github.actor }}" != "MewPurPur" ]]; then
-            echo "Unauthorized user: ${{ github.actor }}"
-            exit 1
-          fi
+    - name: Check user
+      run: |
+        if [ "${{ github.actor }}" != "MewPurPur" ]; then
+          echo "Unauthorized user: ${{ github.actor }}"
+          exit 1
+        fi
 
-      - name: Install dependencies
-        run: sudo apt-get install -y scons python3
+    - name: Install dependencies
+      run: sudo apt-get install -y scons python3
 
-      - name: Clone Godot repository
-        run: git clone $GODOT_REPO $GODOT_DIR
+    - name: Install Emscripten
+      run: |
+        git clone https://github.com/emscripten-core/emsdk.git
+        cd emsdk
+        ./emsdk install latest
+        ./emsdk activate latest
+        source ./emsdk_env.sh
+      shell: bash
 
-      - name: Checkout specific commit
-        run: |
-          cd $GODOT_DIR
-          git fetch
-          git checkout $GODOT_COMMIT_HASH
+    - name: Clone Godot repository
+      run: git clone $GODOT_REPO $GODOT_DIR
 
-      - name: Build Godot template for Web
-        run: |
-          cd $GODOT_DIR
-          scons p=web arch=wasm32 javascript_eval=no target=template_release lto=full production=yes dev_build=no optimize=size $BUILD_OPTIONS
-          cp bin/godot.web.*.template_release.wasm ../$BUILD_DIR/godot_template_web
+    - name: Checkout specific commit
+      run: |
+        cd $GODOT_DIR
+        git fetch
+        git checkout $GODOT_COMMIT_HASH
 
-      - name: Upload Web template
-        uses: actions/upload-artifact@v3
-        with:
-          name: godot_template_web
-          path: $BUILD_DIR/godot_template_web
+    - name: Build Godot template for Web
+      run: |
+        cd $GODOT_DIR
+        source ../emsdk/emsdk_env.sh
+        scons platform=javascript target=release_debug $BUILD_OPTIONS
+        mkdir -p ../$BUILD_DIR/godot_template_web
+        cp bin/godot.javascript.opt.* ../$BUILD_DIR/godot_template_web
+
+    - name: Upload Web template
+      uses: actions/upload-artifact@v3
+      with:
+        name: godot_template_web
+        path: $BUILD_DIR/godot_template_web
 
   build-macos:
     runs-on: macos-latest
@@ -134,7 +146,7 @@ jobs:
 
       - name: Check user
         run: |
-          if [[ "${{ github.actor }}" != "MewPurPur" ]]; then
+          if [ "${{ github.actor }}" != "MewPurPur" ]; then
             echo "Unauthorized user: ${{ github.actor }}"
             exit 1
           fi
@@ -154,26 +166,26 @@ jobs:
       - name: Build Godot template for macOS (arm64 release)
         run: |
           cd $GODOT_DIR
-          scons p=osx arch=arm64 target=template_release optimize=speed $BUILD_OPTIONS
-          cp bin/godot.osx.template_release.arm64 ../$BUILD_DIR/godot_template_macos_release_arm64
+          scons p=macos arch=arm64 target=template_release optimize=speed $BUILD_OPTIONS
+          cp bin/godot.macos.template_release.arm64 ../$BUILD_DIR/godot_template_macos_release_arm64
 
       - name: Build Godot template for macOS (x86_64 release)
         run: |
           cd $GODOT_DIR
-          scons p=osx arch=x86_64 target=template_release optimize=speed $BUILD_OPTIONS
-          cp bin/godot.osx.template_release.x86_64 ../$BUILD_DIR/godot_template_macos_release_x86_64
+          scons p=macos arch=x86_64 target=template_release optimize=speed $BUILD_OPTIONS
+          cp bin/godot.macos.template_release.x86_64 ../$BUILD_DIR/godot_template_macos_release_x86_64
 
       - name: Build Godot template for macOS (arm64 debug)
         run: |
           cd $GODOT_DIR
-          scons p=osx arch=arm64 target=template_debug optimize=speed $BUILD_OPTIONS
-          cp bin/godot.osx.template_debug.arm64 ../$BUILD_DIR/godot_template_macos_debug_arm64
+          scons p=macos arch=arm64 target=template_debug optimize=speed $BUILD_OPTIONS
+          cp bin/godot.macos.template_debug.arm64 ../$BUILD_DIR/godot_template_macos_debug_arm64
 
       - name: Build Godot template for macOS (x86_64 debug)
         run: |
           cd $GODOT_DIR
-          scons p=osx arch=x86_64 target=template_debug optimize=speed $BUILD_OPTIONS
-          cp bin/godot.osx.template_debug.x86_64 ../$BUILD_DIR/godot_template_macos_debug_x86_64
+          scons p=macos arch=x86_64 target=template_debug optimize=speed $BUILD_OPTIONS
+          cp bin/godot.macos.template_debug.x86_64 ../$BUILD_DIR/godot_template_macos_debug_x86_64
 
       - name: Combine binaries with lipo
         run: |
@@ -198,3 +210,4 @@ jobs:
         with:
           name: godot_template_macos
           path: macos.zip
+
