@@ -12,7 +12,7 @@ env:
   GODOT_DIR: godot
   BUILD_DIR: build
   GODOT_COMMIT_HASH: ${{ github.event.inputs.commit_hash }}
-  BUILD_OPTIONS: "deprecated=no minizip=no brotli=no vulkan=no openxr=no use_volk=no disable_3d=yes modules_enabled_by_default=no module_freetype_enabled=yes module_gdscript_enabled=yes module_svg_enabled=yes module_jpg_enabled=yes module_text_server_adv_enabled=yes graphite=no module_webp_enabled=yes"
+  BUILD_OPTIONS: "target=template_release lto=full production=yes deprecated=no minizip=no brotli=no vulkan=no openxr=no use_volk=no disable_3d=yes modules_enabled_by_default=no module_freetype_enabled=yes module_gdscript_enabled=yes module_svg_enabled=yes module_jpg_enabled=yes module_text_server_adv_enabled=yes graphite=no module_webp_enabled=yes"
 
 jobs:
   build-linux:
@@ -20,13 +20,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-
-      - name: Check user
-        run: |
-          if [ "${{ github.actor }}" != "MewPurPur" ]; then
-            echo "Unauthorized user: ${{ github.actor }}"
-            exit 1
-          fi
 
       - name: Install dependencies
         run: sudo apt-get install -y scons python3
@@ -59,13 +52,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Check user
-        run: |
-          if ($env:GITHUB_ACTOR -ne "MewPurPur") {
-            Write-Host "Unauthorized user: $env:GITHUB_ACTOR"
-            exit 1
-          }
-
       - name: Install dependencies
         run: choco install scons
 
@@ -96,13 +82,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Check user
-        run: |
-          if [ "${{ github.actor }}" != "MewPurPur" ]; then
-            echo "Unauthorized user: ${{ github.actor }}"
-            exit 1
-          fi
-
       - name: Install dependencies
         run: sudo apt-get install -y scons python3
 
@@ -128,7 +107,7 @@ jobs:
         run: |
           cd $GODOT_DIR
           source ../emsdk/emsdk_env.sh
-          scons platform=javascript target=release_debug $BUILD_OPTIONS
+          scons p=web arch=wasm32 javascript_eval=no optimize=size $BUILD_OPTIONS
           mkdir -p ../$BUILD_DIR/godot_template_web
           cp bin/godot.javascript.opt.* ../$BUILD_DIR/godot_template_web
 
