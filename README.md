@@ -25,13 +25,15 @@ Download the version you want from [the list of GodSVG releases](https://github.
 
 Note that if you're on MacOS, you need to [disable Gatekeeper](https://disable-gatekeeper.github.io/) if you haven't yet. I don't have the time or money to deal with Apple's gatekeeping.
 
-Link to the web build: https://godsvg.com/web-build (Currently moving)
+Link to the web build: https://godsvg.com/editor
 
 To run the latest unreleased version, you can download Godot from https://godotengine.org (development is currently happening in v4.2.2). After getting the repository files on your machine, you must open Godot, click on the "Import" button, and import the `project.godot` folder. If there are a lot of errors as some people have reported, it's Godot's fault. Try closing and opening the project a few times, changing small things on the code that errors out, etc. until the errors hopefully clear.
 
 ## How to use it
 
-Documentation for GodSVG is likely eventually going to be built-in. In the meantime, the basics of using it will be outlined here.
+Documentation for GodSVG is likely eventually going to be built-in. Meanwhile, the basics of using it will be outlined below.
+
+GodSVG is something between an SVG editor and an assisted code editor for SVG files. SVGs are a text-based format, and to understand how to be efficient with the tool, it would really help to first familiarize with the SVG basics (Check out [the first few tutorials here](https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Introduction).
 
 If you want to import an existing graphic from scratch, use the Import button on top of the code editor or drag-and-drop an SVG file into the app.
 
@@ -50,6 +52,8 @@ To export the graphic, use the Export button on top of the code editor.
 Contributions are very welcome! GodSVG is built in [Godot](https://github.com/godotengine/godot). For code contributions, read [Contributing Guidelines](CONTRIBUTING.md). Before starting work on features, first propose them by using the issue form and wait for approval.
 
 To report bugs or propose features, use Github's issue form. For more casual discussion around the tool or contributing to it, find me on [GodSVG's Discord](https://discord.gg/R8pM6vXWTY).
+
+GodSVG is free for everyone to use however they want. This is not to say that the official communities are anarchy: All of them, including this Github repository, are actively moderated.
 
 ## License
 
