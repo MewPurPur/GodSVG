@@ -2,16 +2,12 @@ name: export-optimized
 
 on:
   workflow_dispatch:
-    inputs:
-      commit_hash:
-        description: 'The commit hash of the Godot version to use'
-        required: true
 
 env:
   GODOT_REPO: https://github.com/godotengine/godot.git
   GODOT_DIR: godot
   BUILD_DIR: build
-  GODOT_COMMIT_HASH: ${{ github.event.inputs.commit_hash }}
+  GODOT_COMMIT_HASH: 15073af
   BUILD_OPTIONS: "target=template_release lto=full production=yes deprecated=no minizip=no brotli=no vulkan=no openxr=no use_volk=no disable_3d=yes modules_enabled_by_default=no module_freetype_enabled=yes module_gdscript_enabled=yes module_svg_enabled=yes module_jpg_enabled=yes module_text_server_adv_enabled=yes graphite=no module_webp_enabled=yes"
 
 jobs:
@@ -22,7 +18,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Install dependencies
-        run: sudo apt-get install -y scons python3
+        run: sudo apt install -y scons python3
 
       - name: Clone Godot repository
         run: git clone $GODOT_REPO $GODOT_DIR
@@ -37,7 +33,11 @@ jobs:
         run: |
           cd $GODOT_DIR
           scons p=linuxbsd arch=x86_64 optimize=speed $BUILD_OPTIONS
-          cp bin/godot.linuxbsd.*.64 ../$BUILD_DIR/godot_template_linux
+          mkdir -p ../$BUILD_DIR
+          cp bin/godot.linuxbsd.*.x86_64 ../$BUILD_DIR/godot_template_linux
+        
+        name: Lmofa
+        run: ls $BUILD_DIR
 
       - name: Upload Linux template
         uses: actions/upload-artifact@v3
@@ -75,6 +75,7 @@ jobs:
         with:
           name: godot_template_windows
           path: $BUILD_DIR/godot_template_windows
+          retention-days: 1
 
   build-web:
     runs-on: ubuntu-latest
@@ -116,19 +117,13 @@ jobs:
         with:
           name: godot_template_web
           path: $BUILD_DIR/godot_template_web
+          retention-days: 1
 
   build-macos:
     runs-on: macos-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-
-      - name: Check user
-        run: |
-          if [ "${{ github.actor }}" != "MewPurPur" ]; then
-            echo "Unauthorized user: ${{ github.actor }}"
-            exit 1
-          fi
 
       - name: Install dependencies
         run: brew install scons
@@ -145,32 +140,20 @@ jobs:
       - name: Build Godot template for macOS (arm64 release)
         run: |
           cd $GODOT_DIR
-          scons p=macos arch=arm64 target=template_release optimize=speed $BUILD_OPTIONS
+          scons p=macos arch=arm64 optimize=speed $BUILD_OPTIONS
+          mkdir -p ../$BUILD_DIR
           cp bin/godot.macos.template_release.arm64 ../$BUILD_DIR/godot_template_macos_release_arm64
 
       - name: Build Godot template for macOS (x86_64 release)
         run: |
           cd $GODOT_DIR
-          scons p=macos arch=x86_64 target=template_release optimize=speed $BUILD_OPTIONS
+          scons p=macos arch=x86_64 optimize=speed $BUILD_OPTIONS
           cp bin/godot.macos.template_release.x86_64 ../$BUILD_DIR/godot_template_macos_release_x86_64
-
-      - name: Build Godot template for macOS (arm64 debug)
-        run: |
-          cd $GODOT_DIR
-          scons p=macos arch=arm64 target=template_debug optimize=speed $BUILD_OPTIONS
-          cp bin/godot.macos.template_debug.arm64 ../$BUILD_DIR/godot_template_macos_debug_arm64
-
-      - name: Build Godot template for macOS (x86_64 debug)
-        run: |
-          cd $GODOT_DIR
-          scons p=macos arch=x86_64 target=template_debug optimize=speed $BUILD_OPTIONS
-          cp bin/godot.macos.template_debug.x86_64 ../$BUILD_DIR/godot_template_macos_debug_x86_64
 
       - name: Combine binaries with lipo
         run: |
           cd $BUILD_DIR
-          lipo -create godot_template_macos_debug_arm64 godot_template_macos_debug_x86_64 -output godot_template_macos_debug_universal
-          lipo -create godot_template_macos_release_arm64 godot_template_macos_release_x86_64 -output godot_template_macos_release_universal
+          lipo -create godot.macos.template_release.arm64 godot.macos.template_release.x86_64 -output godot_template_macos_release_universal
           chmod +x godot_template_macos_*
 
       - name: Prepare .app bundle
@@ -189,4 +172,5 @@ jobs:
         with:
           name: godot_template_macos
           path: macos.zip
+          retention-days: 1
 
