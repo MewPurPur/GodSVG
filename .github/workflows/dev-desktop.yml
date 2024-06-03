@@ -28,8 +28,8 @@ jobs:
         run: |
           # Download rcedit and install wine.
           wget -q https://github.com/electron/rcedit/releases/download/v1.1.1/rcedit-x64.exe
-          sudo apt-get update
-          sudo apt-get install -y --fix-missing wine64
+          sudo apt update
+          sudo apt install -y --fix-missing wine64
           # Move rcedit to different place.
           mkdir -v -p ~/.local/share/rcedit
           mv rcedit-x64.exe ~/.local/share/rcedit

@@ -46,6 +46,7 @@ func _ready() -> void:
 	if OS.has_feature("web"):
 		reference_button.disabled = true
 		reference_button.tooltip_text = "Not currently available on web."
+		reference_button.mouse_default_cursor_shape = CURSOR_ARROW
 
 func _unhandled_input(input_event: InputEvent) -> void:
 	if Input.is_action_pressed("debug"):
