@@ -19,15 +19,13 @@ This will be needed the first time.
 
 For most platforms, to export, you'd need to find the relevant template in your file system to fill in the Custom Template field, then use "Export Project".
 
-For official web exports, after this is done, you'll get a lot of files. Normally, only `web-build/GodSVG.pck` needs to be changed to the new .pck file between builds. `web-build/GodSVG.wasm` file may need to be updated too if there's a new version of Godot.
-
-If web exports need to be tested without pushing any changes to the repository, you should run `python3 -m http.server` to run a local server inside the root folder (it won't have any effect on the git repository) and then visit the `http://localhost:8000/web-build/` URL.
+For official web exports, after this is done, you'll get a lot of files. Normally, only `GodSVG.pck` and `GodSVG.wasm` need to be changed between builds.
 
 ## Commands
 
-- `scons p=linuxbsd arch=x86_64 optimize=speed deprecated=no minizip=no brotli=no vulkan=no openxr=no use_volk=no disable_3d=yes modules_enabled_by_default=no module_freetype_enabled=yes module_gdscript_enabled=yes module_svg_enabled=yes module_jpg_enabled=yes module_text_server_adv_enabled=yes graphite=no module_webp_enabled=yes`
+- `scons p=linuxbsd arch=x86_64 target=template_release optimize=speed lto=full deprecated=no minizip=no brotli=no vulkan=no openxr=no use_volk=no disable_3d=yes modules_enabled_by_default=no module_freetype_enabled=yes module_gdscript_enabled=yes module_svg_enabled=yes module_jpg_enabled=yes module_text_server_adv_enabled=yes graphite=no module_webp_enabled=yes`
 
-- `scons p=windows arch=x86_64 optimize=speed deprecated=no minizip=no brotli=no vulkan=no openxr=no use_volk=no disable_3d=yes modules_enabled_by_default=no module_freetype_enabled=yes module_gdscript_enabled=yes module_svg_enabled=yes module_jpg_enabled=yes module_text_server_adv_enabled=yes graphite=no module_webp_enabled=yes`
+- `scons p=windows arch=x86_64 target=template_release optimize=speed lto=full deprecated=no minizip=no brotli=no vulkan=no openxr=no use_volk=no disable_3d=yes modules_enabled_by_default=no module_freetype_enabled=yes module_gdscript_enabled=yes module_svg_enabled=yes module_jpg_enabled=yes module_text_server_adv_enabled=yes graphite=no module_webp_enabled=yes`
 
 - `scons p=web arch=wasm32 javascript_eval=no target=template_release lto=full production=yes dev_build=no optimize=size deprecated=no minizip=no brotli=no vulkan=no openxr=no use_volk=no disable_3d=yes modules_enabled_by_default=no module_freetype_enabled=yes module_gdscript_enabled=yes module_svg_enabled=yes module_jpg_enabled=yes module_text_server_adv_enabled=yes graphite=no module_webp_enabled=yes`
 

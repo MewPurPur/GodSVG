@@ -1,0 +1,200 @@
+name: Build and Export Godot Templates
+
+on:
+  workflow_dispatch:
+    inputs:
+      commit_hash:
+        description: 'The commit hash of the Godot version to use'
+        required: true
+
+env:
+  GODOT_REPO: https://github.com/godotengine/godot.git
+  GODOT_DIR: godot
+  BUILD_DIR: build
+  GODOT_COMMIT_HASH: ${{ github.event.inputs.commit_hash }}
+  BUILD_OPTIONS: "deprecated=no minizip=no brotli=no vulkan=no openxr=no use_volk=no disable_3d=yes modules_enabled_by_default=no module_freetype_enabled=yes module_gdscript_enabled=yes module_svg_enabled=yes module_jpg_enabled=yes module_text_server_adv_enabled=yes graphite=no module_webp_enabled=yes"
+
+jobs:
+  build-linux:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Check user
+        run: |
+          if [[ "${{ github.actor }}" != "MewPurPur" ]]; then
+            echo "Unauthorized user: ${{ github.actor }}"
+            exit 1
+          fi
+
+      - name: Install dependencies
+        run: sudo apt-get install -y scons python3
+
+      - name: Clone Godot repository
+        run: git clone $GODOT_REPO $GODOT_DIR
+
+      - name: Checkout specific commit
+        run: |
+          cd $GODOT_DIR
+          git fetch
+          git checkout $GODOT_COMMIT_HASH
+
+      - name: Build Godot template for Linux
+        run: |
+          cd $GODOT_DIR
+          scons p=linuxbsd arch=x86_64 optimize=speed $BUILD_OPTIONS
+          cp bin/godot.linuxbsd.*.64 ../$BUILD_DIR/godot_template_linux
+
+      - name: Upload Linux template
+        uses: actions/upload-artifact@v3
+        with:
+          name: godot_template_linux
+          path: $BUILD_DIR/godot_template_linux
+
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Check user
+        run: |
+          if [[ "${{ github.actor }}" != "MewPurPur" ]]; then
+            echo "Unauthorized user: ${{ github.actor }}"
+            exit 1
+          fi
+
+      - name: Install dependencies
+        run: choco install scons
+
+      - name: Clone Godot repository
+        run: git clone $GODOT_REPO $GODOT_DIR
+
+      - name: Checkout specific commit
+        run: |
+          cd $GODOT_DIR
+          git fetch
+          git checkout $GODOT_COMMIT_HASH
+
+      - name: Build Godot template for Windows
+        run: |
+          cd $GODOT_DIR
+          scons p=windows arch=x86_64 optimize=speed $BUILD_OPTIONS
+          cp bin/godot.windows.*.64 ../$BUILD_DIR/godot_template_windows
+
+      - name: Upload Windows template
+        uses: actions/upload-artifact@v3
+        with:
+          name: godot_template_windows
+          path: $BUILD_DIR/godot_template_windows
+
+  build-web:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Check user
+        run: |
+          if [[ "${{ github.actor }}" != "MewPurPur" ]]; then
+            echo "Unauthorized user: ${{ github.actor }}"
+            exit 1
+          fi
+
+      - name: Install dependencies
+        run: sudo apt-get install -y scons python3
+
+      - name: Clone Godot repository
+        run: git clone $GODOT_REPO $GODOT_DIR
+
+      - name: Checkout specific commit
+        run: |
+          cd $GODOT_DIR
+          git fetch
+          git checkout $GODOT_COMMIT_HASH
+
+      - name: Build Godot template for Web
+        run: |
+          cd $GODOT_DIR
+          scons p=web arch=wasm32 javascript_eval=no target=template_release lto=full production=yes dev_build=no optimize=size $BUILD_OPTIONS
+          cp bin/godot.web.*.template_release.wasm ../$BUILD_DIR/godot_template_web
+
+      - name: Upload Web template
+        uses: actions/upload-artifact@v3
+        with:
+          name: godot_template_web
+          path: $BUILD_DIR/godot_template_web
+
+  build-macos:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Check user
+        run: |
+          if [[ "${{ github.actor }}" != "MewPurPur" ]]; then
+            echo "Unauthorized user: ${{ github.actor }}"
+            exit 1
+          fi
+
+      - name: Install dependencies
+        run: brew install scons
+
+      - name: Clone Godot repository
+        run: git clone $GODOT_REPO $GODOT_DIR
+
+      - name: Checkout specific commit
+        run: |
+          cd $GODOT_DIR
+          git fetch
+          git checkout $GODOT_COMMIT_HASH
+
+      - name: Build Godot template for macOS (arm64 release)
+        run: |
+          cd $GODOT_DIR
+          scons p=osx arch=arm64 target=template_release optimize=speed $BUILD_OPTIONS
+          cp bin/godot.osx.template_release.arm64 ../$BUILD_DIR/godot_template_macos_release_arm64
+
+      - name: Build Godot template for macOS (x86_64 release)
+        run: |
+          cd $GODOT_DIR
+          scons p=osx arch=x86_64 target=template_release optimize=speed $BUILD_OPTIONS
+          cp bin/godot.osx.template_release.x86_64 ../$BUILD_DIR/godot_template_macos_release_x86_64
+
+      - name: Build Godot template for macOS (arm64 debug)
+        run: |
+          cd $GODOT_DIR
+          scons p=osx arch=arm64 target=template_debug optimize=speed $BUILD_OPTIONS
+          cp bin/godot.osx.template_debug.arm64 ../$BUILD_DIR/godot_template_macos_debug_arm64
+
+      - name: Build Godot template for macOS (x86_64 debug)
+        run: |
+          cd $GODOT_DIR
+          scons p=osx arch=x86_64 target=template_debug optimize=speed $BUILD_OPTIONS
+          cp bin/godot.osx.template_debug.x86_64 ../$BUILD_DIR/godot_template_macos_debug_x86_64
+
+      - name: Combine binaries with lipo
+        run: |
+          cd $BUILD_DIR
+          lipo -create godot_template_macos_debug_arm64 godot_template_macos_debug_x86_64 -output godot_template_macos_debug_universal
+          lipo -create godot_template_macos_release_arm64 godot_template_macos_release_x86_64 -output godot_template_macos_release_universal
+          chmod +x godot_template_macos_*
+
+      - name: Prepare .app bundle
+        run: |
+          cp -R ~/workspace/misc/dist/macos_template.app .
+          mkdir -p macos_template.app/Contents/MacOS
+          cp godot_template_macos_debug_universal macos_template.app/Contents/MacOS/godot_macos_debug.universal
+          cp godot_template_macos_release_universal macos_template.app/Contents/MacOS/godot_macos_release.universal
+          chmod +x macos_template.app/Contents/MacOS/godot_macos*
+
+      - name: Zip the .app bundle
+        run: zip -q -9 -r macos.zip macos_template.app
+
+      - name: Upload macOS template
+        uses: actions/upload-artifact@v3
+        with:
+          name: godot_template_macos
+          path: macos.zip
