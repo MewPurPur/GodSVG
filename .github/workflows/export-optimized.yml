@@ -1,4 +1,4 @@
-name: Build and Export Godot Templates
+name: export-optimized
 
 on:
   workflow_dispatch:
@@ -91,52 +91,52 @@ jobs:
           path: $BUILD_DIR/godot_template_windows
 
   build-web:
-  runs-on: ubuntu-latest
-  steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-    - name: Check user
-      run: |
-        if [ "${{ github.actor }}" != "MewPurPur" ]; then
-          echo "Unauthorized user: ${{ github.actor }}"
-          exit 1
-        fi
+      - name: Check user
+        run: |
+          if [ "${{ github.actor }}" != "MewPurPur" ]; then
+            echo "Unauthorized user: ${{ github.actor }}"
+            exit 1
+          fi
 
-    - name: Install dependencies
-      run: sudo apt-get install -y scons python3
+      - name: Install dependencies
+        run: sudo apt-get install -y scons python3
 
-    - name: Install Emscripten
-      run: |
-        git clone https://github.com/emscripten-core/emsdk.git
-        cd emsdk
-        ./emsdk install latest
-        ./emsdk activate latest
-        source ./emsdk_env.sh
-      shell: bash
+      - name: Install Emscripten
+        run: |
+          git clone https://github.com/emscripten-core/emsdk.git
+          cd emsdk
+          ./emsdk install latest
+          ./emsdk activate latest
+          source ./emsdk_env.sh
+        shell: bash
 
-    - name: Clone Godot repository
-      run: git clone $GODOT_REPO $GODOT_DIR
+      - name: Clone Godot repository
+        run: git clone $GODOT_REPO $GODOT_DIR
 
-    - name: Checkout specific commit
-      run: |
-        cd $GODOT_DIR
-        git fetch
-        git checkout $GODOT_COMMIT_HASH
+      - name: Checkout specific commit
+        run: |
+          cd $GODOT_DIR
+          git fetch
+          git checkout $GODOT_COMMIT_HASH
 
-    - name: Build Godot template for Web
-      run: |
-        cd $GODOT_DIR
-        source ../emsdk/emsdk_env.sh
-        scons platform=javascript target=release_debug $BUILD_OPTIONS
-        mkdir -p ../$BUILD_DIR/godot_template_web
-        cp bin/godot.javascript.opt.* ../$BUILD_DIR/godot_template_web
+      - name: Build Godot template for Web
+        run: |
+          cd $GODOT_DIR
+          source ../emsdk/emsdk_env.sh
+          scons platform=javascript target=release_debug $BUILD_OPTIONS
+          mkdir -p ../$BUILD_DIR/godot_template_web
+          cp bin/godot.javascript.opt.* ../$BUILD_DIR/godot_template_web
 
-    - name: Upload Web template
-      uses: actions/upload-artifact@v3
-      with:
-        name: godot_template_web
-        path: $BUILD_DIR/godot_template_web
+      - name: Upload Web template
+        uses: actions/upload-artifact@v3
+        with:
+          name: godot_template_web
+          path: $BUILD_DIR/godot_template_web
 
   build-macos:
     runs-on: macos-latest
