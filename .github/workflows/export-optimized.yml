@@ -4,15 +4,20 @@ on:
   workflow_dispatch:
 
 env:
+  GODOT_VERSION: 4.2.2
+  PROJECT_NAME: GodSVG
   GODOT_REPO: https://github.com/godotengine/godot.git
-  GODOT_DIR: godot
-  BUILD_DIR: build
   GODOT_COMMIT_HASH: 15073af
-  BUILD_OPTIONS: "target=template_release lto=full production=yes deprecated=no minizip=no brotli=no vulkan=no openxr=no use_volk=no disable_3d=yes modules_enabled_by_default=no module_freetype_enabled=yes module_gdscript_enabled=yes module_svg_enabled=yes module_jpg_enabled=yes module_text_server_adv_enabled=yes graphite=no module_webp_enabled=yes"
+  BUILD_OPTIONS: target=template_release lto=full production=yes deprecated=no minizip=no brotli=no vulkan=no openxr=no use_volk=no disable_3d=yes modules_enabled_by_default=no module_freetype_enabled=yes module_gdscript_enabled=yes module_svg_enabled=yes module_jpg_enabled=yes module_text_server_adv_enabled=yes graphite=no module_webp_enabled=yes
 
 jobs:
   build-linux:
+    name: Export GodSVG for Linux
     runs-on: ubuntu-latest
+    env:
+      PLATFORM: "Linux/X11"
+      EXTENSION: "exe"
+      BUILD_NAME: "linux-64bit"
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -21,105 +26,64 @@ jobs:
         run: sudo apt install -y scons python3
 
       - name: Clone Godot repository
-        run: git clone $GODOT_REPO $GODOT_DIR
+        run: git clone $GODOT_REPO godot
 
       - name: Checkout specific commit
         run: |
-          cd $GODOT_DIR
+          cd godot
           git fetch
           git checkout $GODOT_COMMIT_HASH
 
       - name: Build Godot template for Linux
         run: |
-          cd $GODOT_DIR
-          scons p=linuxbsd arch=x86_64 optimize=speed $BUILD_OPTIONS
-          mkdir -p ../$BUILD_DIR
-          cp bin/godot.linuxbsd.*.x86_64 ../$BUILD_DIR/godot_template_linux
+          cd godot
+          scons p=linuxbsd arch=x86_64 optimize=speed ${BUILD_OPTIONS}
 
-      - name: Lmofa
-        run: ls $BUILD_DIR
-
-      - name: Upload Linux template
-        uses: actions/upload-artifact@v3
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
         with:
-          name: godot_template_linux
-          path: $BUILD_DIR/godot_template_linux
+          name: godot_template_linux.x86_64
+          path: godot/bin/godot.linuxbsd.template_release.x86_64
+          if-no-files-found: error
           retention-days: 1
 
   build-windows:
-    runs-on: windows-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
-      - name: Install dependencies
-        run: choco install scons
-
-      - name: Clone Godot repository
-        run: git clone $GODOT_REPO $GODOT_DIR
-
-      - name: Checkout specific commit
-        run: |
-          cd $GODOT_DIR
-          git fetch
-          git checkout $GODOT_COMMIT_HASH
-
-      - name: Build Godot template for Windows
-        run: |
-          cd $GODOT_DIR
-          scons p=windows arch=x86_64 optimize=speed $BUILD_OPTIONS
-          cp bin/godot.windows.*.64 ../$BUILD_DIR/godot_template_windows
-
-      - name: Upload Windows template
-        uses: actions/upload-artifact@v3
-        with:
-          name: godot_template_windows
-          path: $BUILD_DIR/godot_template_windows
-          retention-days: 1
-
-  build-web:
+    name: Export GodSVG for Windows
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
 
       - name: Install dependencies
-        run: sudo apt-get install -y scons python3
-
-      - name: Install Emscripten
         run: |
-          git clone https://github.com/emscripten-core/emsdk.git
-          cd emsdk
-          ./emsdk install latest
-          ./emsdk activate latest
-          source ./emsdk_env.sh
-        shell: bash
+          sudo apt install -y scons python3
+          sudo apt install -y g++-mingw-w64-x86-64-posix
 
       - name: Clone Godot repository
-        run: git clone $GODOT_REPO $GODOT_DIR
+        run: git clone $GODOT_REPO godot
 
       - name: Checkout specific commit
         run: |
-          cd $GODOT_DIR
+          cd godot
           git fetch
           git checkout $GODOT_COMMIT_HASH
 
-      - name: Build Godot template for Web
+      - name: Build Godot template for Windows
         run: |
-          cd $GODOT_DIR
-          source ../emsdk/emsdk_env.sh
-          scons p=web arch=wasm32 javascript_eval=no optimize=size $BUILD_OPTIONS
-          mkdir -p ../$BUILD_DIR/godot_template_web
-          cp bin/godot.javascript.opt.* ../$BUILD_DIR/godot_template_web
+          apt search mingw
+          cd godot
+          scons p=windows target=release_debug tools=no ${BUILD_OPTIONS}
 
-      - name: Upload Web template
-        uses: actions/upload-artifact@v3
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
         with:
-          name: godot_template_web
-          path: $BUILD_DIR/godot_template_web
+          name: godot_template_windows.exe
+          path: godot/bin/godot.windows.template_release.x86_64.exe
+          if-no-files-found: error
           retention-days: 1
 
   build-macos:
+    name: Export GodSVG for MacOS
     runs-on: macos-latest
     steps:
       - name: Checkout repository
@@ -129,48 +93,44 @@ jobs:
         run: brew install scons
 
       - name: Clone Godot repository
-        run: git clone $GODOT_REPO $GODOT_DIR
+        run: git clone $GODOT_REPO godot
 
       - name: Checkout specific commit
         run: |
-          cd $GODOT_DIR
+          cd godot
           git fetch
           git checkout $GODOT_COMMIT_HASH
 
       - name: Build Godot template for macOS (arm64 release)
         run: |
-          cd $GODOT_DIR
-          scons p=macos arch=arm64 optimize=speed $BUILD_OPTIONS
-          mkdir -p ../$BUILD_DIR
-          cp bin/godot.macos.template_release.arm64 ../$BUILD_DIR/godot_template_macos_release_arm64
+          cd godot
+          scons p=macos arch=arm64 optimize=speed ${BUILD_OPTIONS}
 
       - name: Build Godot template for macOS (x86_64 release)
         run: |
-          cd $GODOT_DIR
-          scons p=macos arch=x86_64 optimize=speed $BUILD_OPTIONS
-          cp bin/godot.macos.template_release.x86_64 ../$BUILD_DIR/godot_template_macos_release_x86_64
+          cd godot
+          scons p=macos arch=x86_64 optimize=speed ${BUILD_OPTIONS}
 
       - name: Combine binaries with lipo
         run: |
-          cd $BUILD_DIR
-          lipo -create godot.macos.template_release.arm64 godot.macos.template_release.x86_64 -output godot_template_macos_release_universal
-          chmod +x godot_template_macos_*
+          cd godot/bin
+          lipo -create godot.macos.template_release.x86_64 godot.macos.template_release.arm64 -output godot.macos.template_release.universal
+          chmod +x *
 
       - name: Prepare .app bundle
         run: |
-          cp -R ~/workspace/misc/dist/macos_template.app .
+          cd godot/bin
+          cp -R ../misc/dist/macos_template.app .
           mkdir -p macos_template.app/Contents/MacOS
-          cp godot_template_macos_debug_universal macos_template.app/Contents/MacOS/godot_macos_debug.universal
-          cp godot_template_macos_release_universal macos_template.app/Contents/MacOS/godot_macos_release.universal
-          chmod +x macos_template.app/Contents/MacOS/godot_macos*
-
-      - name: Zip the .app bundle
-        run: zip -q -9 -r macos.zip macos_template.app
+          cp godot.macos.template_release.universal macos_template.app/Contents/MacOS/godot_macos_release.universal;
+          chmod +x macos_template.app/Contents/MacOS/godot_macos*;
+          zip -q -9 -r godot_template_macos.zip macos_template.app;
 
       - name: Upload macOS template
         uses: actions/upload-artifact@v3
         with:
-          name: godot_template_macos
-          path: macos.zip
+          name: godot_template_macos.zip
+          path: godot/bin/godot_template_macos.zip
+          if-no-files-found: error
           retention-days: 1
 
