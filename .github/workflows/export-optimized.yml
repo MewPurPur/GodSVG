@@ -35,8 +35,8 @@ jobs:
           scons p=linuxbsd arch=x86_64 optimize=speed $BUILD_OPTIONS
           mkdir -p ../$BUILD_DIR
           cp bin/godot.linuxbsd.*.x86_64 ../$BUILD_DIR/godot_template_linux
-        
-        name: Lmofa
+
+      - name: Lmofa
         run: ls $BUILD_DIR
 
       - name: Upload Linux template
