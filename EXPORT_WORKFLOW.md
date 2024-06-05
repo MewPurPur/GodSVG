@@ -3,9 +3,9 @@ This is a tutorial on exporting with a custom template, which makes the executab
 ## Getting the export templates
 
 - Go to the "Actions" tab on Github, find the "export-optimized" workflow, and run it.
-- Get all of the export templates that are generated.
 - Wait for it to finish.
 - Open the workflow file and find the artifact.
+- Get all of the export templates that are generated.
 
 ## Getting the export templates for Web
 
