@@ -194,8 +194,7 @@ func toggle_reference_overlay() -> void:
 func load_reference_image() -> void:
 	FileUtils.open_reference_load_dialog()
 	await Indications.imported_reference
-	var ref_path = GlobalSettings.save_data.get("reference_path")
-	var img = Image.load_from_file(ref_path)
+	var img = Image.load_from_file("user://reference_image.png")
 	reference_texture.texture = ImageTexture.create_from_image(img)
 	reference_texture.show()
 
