@@ -40,6 +40,7 @@ func _ready() -> void:
 	update_theme()
 	update_snap_config()
 	get_window().window_input.connect(_update_input_debug)
+	Indications.imported_reference.connect(finish_reference_load)
 	view_settings_updated.emit(grid_visuals.visible, controls.visible,
 			viewport.display_texture.rasterized)
 	
@@ -180,6 +181,8 @@ func toggle_rasterization() -> void:
 	view_settings_updated.emit(grid_visuals.visible, controls.visible,
 			viewport.display_texture.rasterized)
 
+func load_reference_image() -> void:
+	FileUtils.open_reference_load_dialog()
 
 func toggle_reference_image() -> void:
 	reference_texture.visible = not reference_texture.visible
@@ -191,13 +194,10 @@ func toggle_reference_overlay() -> void:
 	else:
 		viewport.move_child(reference_texture, 0)
 
-func load_reference_image() -> void:
-	FileUtils.open_reference_load_dialog()
-	await Indications.imported_reference
+func finish_reference_load() -> void:
 	var img = Image.load_from_file("user://reference_image.png")
 	reference_texture.texture = ImageTexture.create_from_image(img)
 	reference_texture.show()
-
 
 func toggle_snap() -> void:
 	snap_button.button_pressed = not snap_button.button_pressed
