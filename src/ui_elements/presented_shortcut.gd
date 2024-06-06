@@ -11,7 +11,6 @@ func setup(new_action: String) -> void:
 	# Create new ones.
 	for i in events.size():
 		var new_btn := Button.new()
-		new_btn.auto_translate = false
 		shortcut_container.add_child.call_deferred(new_btn)
 		new_btn.custom_minimum_size.x = 144.0
 		new_btn.size_flags_horizontal = Control.SIZE_FILL

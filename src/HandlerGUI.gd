@@ -15,14 +15,14 @@ var popup_overlay_stack: Array[Control]
 
 
 func _enter_tree() -> void:
-	process_mode = Node.PROCESS_MODE_ALWAYS
-
-func _ready() -> void:
+	get_tree().root.auto_translate_mode = Node.AUTO_TRANSLATE_MODE_DISABLED
 	get_window().files_dropped.connect(_on_files_dropped)
 	get_window().dpi_changed.connect(update_ui_scale)
 	get_window().size_changed.connect(remove_all_popup_overlays)
 	if OS.has_feature("web"):
 		_define_web_js()
+
+func _ready() -> void:
 	await get_tree().process_frame
 	update_ui_scale()
 

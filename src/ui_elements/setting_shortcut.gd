@@ -40,7 +40,6 @@ func sync() -> void:
 	# Create new ones.
 	for i in 3:
 		var new_btn := Button.new()
-		new_btn.auto_translate = false
 		shortcut_container.add_child.call_deferred(new_btn)
 		shortcut_buttons.append(new_btn)
 		new_btn.button_mask = MOUSE_BUTTON_MASK_LEFT | MOUSE_BUTTON_MASK_RIGHT
