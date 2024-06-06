@@ -559,15 +559,18 @@ func _draw() -> void:
 	for polyline in hovered_selected_polylines:
 		draw_polyline(polyline, hovered_selected_color, contour_width, true)
 	
-	# TODO Change this when it's implemented in Godot.
-	draw_multiline_antaliased(normal_multiline,
-			Color(normal_color, tangent_alpha), tangent_width)
-	draw_multiline_antaliased(selected_multiline,
-			Color(selected_color, tangent_alpha), tangent_width)
-	draw_multiline_antaliased(hovered_multiline,
-			Color(hovered_color, tangent_alpha), tangent_width)
-	draw_multiline_antaliased(hovered_selected_multiline,
-			Color(hovered_selected_color, tangent_alpha), tangent_width)
+	if not normal_multiline.is_empty():
+		draw_multiline(normal_multiline,
+				Color(normal_color, tangent_alpha), tangent_width, true)
+	if not selected_multiline.is_empty():
+		draw_multiline(selected_multiline,
+				Color(selected_color, tangent_alpha), tangent_width, true)
+	if not hovered_multiline.is_empty():
+		draw_multiline(hovered_multiline,
+				Color(hovered_color, tangent_alpha), tangent_width, true)
+	if not hovered_selected_multiline.is_empty():
+		draw_multiline(hovered_selected_multiline,
+				Color(hovered_selected_color, tangent_alpha), tangent_width, true)
 	
 	# First gather all handles in 4 categories, then draw them in the right order.
 	var normal_handles: Array[Handle] = []
@@ -605,13 +608,6 @@ func _draw() -> void:
 		var texture: Texture2D = hovered_selected_handle_textures[handle.display_mode]
 		texture.draw(surface, SVG.root_tag.canvas_to_world(handle.transform * handle.pos) *\
 				Indications.zoom - texture.get_size() / 2)
-
-# TODO remove this when it's implemented in Godot.
-func draw_multiline_antaliased(points: PackedVector2Array, color: Color,
-width: float) -> void:
-	for i in int(points.size() / 2.0):
-		var i2 := i * 2
-		draw_line(points[i2], points[i2 + 1], color, width, true)
 
 
 var dragged_handle: Handle = null

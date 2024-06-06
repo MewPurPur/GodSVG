@@ -4,7 +4,6 @@ const ColorSwatch = preload("res://src/ui_elements/color_swatch_config.tscn")
 const ConfigurePopup = preload("res://src/ui_elements/configure_color_popup.tscn")
 const plus_icon = preload("res://visual/icons/Plus.svg")
 
-signal color_picked(color: String)
 signal layout_changed
 
 var current_palette: ColorPalette
