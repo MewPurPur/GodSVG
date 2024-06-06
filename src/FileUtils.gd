@@ -115,7 +115,7 @@ static func open_reference_load_dialog() -> void:
 	if FileUtils._is_native_preferred():
 		DisplayServer.file_dialog_show(TranslationServer.translate("Load an image file"),
 				Utils.get_last_dir(), "", false, DisplayServer.FILE_DIALOG_MODE_OPEN_FILE,
-				PackedStringArray(["*.svg,*.png,*.jpeg,*.jpg,*.webp"]),
+				PackedStringArray(["*.png,*.jpeg,*.jpg,*.webp,*.svg"]),
 				native_reference_image_load)
 	# TODO: Add Web Support
 	#elif OS.has_feature("web"):
@@ -124,7 +124,7 @@ static func open_reference_load_dialog() -> void:
 		var image_import_dialog := GoodFileDialog.instantiate()
 		image_import_dialog.setup(Utils.get_last_dir(), "",
 				GoodFileDialogType.FileMode.SELECT,
-				PackedStringArray(["svg", "png", "jpeg", "jpg", "webp"]))
+				PackedStringArray(["png", "jpeg", "jpg", "webp", "svg"]))
 		HandlerGUI.add_overlay(image_import_dialog)
 		image_import_dialog.file_selected.connect(load_reference_image)
 
@@ -139,7 +139,9 @@ _filter_idx: int) -> void:
 		load_reference_image(files[0])
 
 static func load_reference_image(path: String) -> void:
-	GlobalSettings.modify_save_data("reference_path", path)
+	var img = Image.new()
+	img.load_from_file(path)
+	img.save_png("user://reference_image.png")
 	Indications.imported_reference.emit()
 
 static func apply_svg_from_path(path: String) -> int:
