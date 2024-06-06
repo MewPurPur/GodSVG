@@ -140,7 +140,7 @@ _filter_idx: int) -> void:
 
 static func load_reference_image(path: String) -> void:
 	var img = Image.new()
-	img.load_from_file(path)
+	img.load(path)
 	img.save_png("user://reference_image.png")
 	Indications.imported_reference.emit()
 
