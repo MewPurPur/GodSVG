@@ -48,7 +48,7 @@ I couldn't get Github actions to generate the web template, unfortunately. So th
         run: |
           cd godot
           source ../emsdk/emsdk_env.sh
-          scons p=web arch=wasm32 optimize=size lto=auto ${BUILD_OPTIONS}
+          scons p=web arch=wasm32 ${BUILD_OPTIONS}
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
@@ -69,7 +69,7 @@ I couldn't get Github actions to generate the web template, unfortunately. So th
 - `git checkout <commit hash>`
 - Read the documentation on how to set up scons for web: https://docs.godotengine.org/en/latest/contributing/development/compiling/compiling_for_web.html
 - Use `scons p=list` to check if the web platform is set up.
-- `scons p=web arch=wasm32 target=template_release lto=full production=yes dev_build=no optimize=size deprecated=no minizip=no brotli=no vulkan=no openxr=no use_volk=no disable_3d=yes modules_enabled_by_default=no module_freetype_enabled=yes module_gdscript_enabled=yes module_svg_enabled=yes module_jpg_enabled=yes module_text_server_adv_enabled=yes graphite=no module_webp_enabled=yes`
+- `scons p=web arch=wasm32 target=template_release lto=full production=yes dev_build=no deprecated=no minizip=no brotli=no vulkan=no openxr=no use_volk=no disable_3d=yes modules_enabled_by_default=no module_freetype_enabled=yes module_gdscript_enabled=yes module_svg_enabled=yes module_jpg_enabled=yes module_text_server_adv_enabled=yes graphite=no module_webp_enabled=yes`
 - Wait for it to finish. The template will be in the bin directory, but avoid moving it inside the GodSVG project.
 
 ## Exporting

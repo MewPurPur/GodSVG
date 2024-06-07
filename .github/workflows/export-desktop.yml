@@ -1,13 +1,17 @@
-name: export-optimized
+name: export-desktop
 
 on:
   workflow_dispatch:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
 
 env:
-  GODOT_VERSION: 4.2.2
+  GODOT_VERSION: 4.3-beta1
   PROJECT_NAME: GodSVG
   GODOT_REPO: https://github.com/godotengine/godot.git
-  GODOT_COMMIT_HASH: 15073af
+  GODOT_COMMIT_HASH: a4f2ea91a
   BUILD_OPTIONS: target=template_release lto=full production=yes deprecated=no minizip=no brotli=no vulkan=no openxr=no use_volk=no disable_3d=yes modules_enabled_by_default=no module_freetype_enabled=yes module_gdscript_enabled=yes module_svg_enabled=yes module_jpg_enabled=yes module_text_server_adv_enabled=yes graphite=no module_webp_enabled=yes
 
 jobs:
@@ -16,14 +20,23 @@ jobs:
     runs-on: ubuntu-latest
     env:
       PLATFORM: "Linux/X11"
-      EXTENSION: "exe"
+      EXTENSION: "x86_64"
       BUILD_NAME: "linux-64bit"
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
 
       - name: Install dependencies
-        run: sudo apt install -y scons python3
+        run: |
+          sudo apt update
+          sudo apt install -y scons python3 wget unzip
+
+      - name: Install editor
+        run: |
+          mkdir -p ~/editor
+          cd ~/editor
+          wget -q https://github.com/godotengine/godot-builds/releases/download/${GODOT_VERSION}/Godot_v${GODOT_VERSION}_linux.x86_64.zip
+          unzip Godot_v${GODOT_VERSION}_linux.x86_64.zip -d ~/editor
 
       - name: Clone Godot repository
         run: git clone $GODOT_REPO godot
@@ -37,15 +50,22 @@ jobs:
       - name: Build Godot template for Linux
         run: |
           cd godot
-          scons p=linuxbsd arch=x86_64 optimize=speed ${BUILD_OPTIONS}
+          scons p=linuxbsd arch=x86_64 ${BUILD_OPTIONS}
+
+      - name: Export Godot
+        run: |
+          mkdir -v -p ~/${BUILD_NAME}
+          cd ~/editor
+          ls
+          ./Godot_v${GODOT_VERSION}_linux.x86_64 --headless --export-release "${PLATFORM}" ~/${BUILD_NAME}/${PROJECT_NAME}.${EXTENSION}
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: godot_template_linux.x86_64
-          path: godot/bin/godot.linuxbsd.template_release.x86_64
+          path: ~/${BUILD_NAME}/${PROJECT_NAME}.${EXTENSION}
           if-no-files-found: error
-          retention-days: 1
+          retention-days: 14
 
   build-windows:
     name: Export GodSVG for Windows
@@ -104,12 +124,12 @@ jobs:
       - name: Build Godot template for macOS (arm64 release)
         run: |
           cd godot
-          scons p=macos arch=arm64 optimize=speed ${BUILD_OPTIONS}
+          scons p=macos arch=arm64 ${BUILD_OPTIONS}
 
       - name: Build Godot template for macOS (x86_64 release)
         run: |
           cd godot
-          scons p=macos arch=x86_64 optimize=speed ${BUILD_OPTIONS}
+          scons p=macos arch=x86_64 ${BUILD_OPTIONS}
 
       - name: Combine binaries with lipo
         run: |
