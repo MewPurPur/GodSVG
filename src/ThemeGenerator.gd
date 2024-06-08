@@ -456,6 +456,10 @@ static func setup_button(theme: Theme) -> void:
 	normal_sidetab_stylebox.content_margin_top = 3
 	theme.set_stylebox("normal", "SideTab", normal_sidetab_stylebox)
 	
+	var hovered_sidetab_stylebox := normal_sidetab_stylebox.duplicate()
+	hovered_sidetab_stylebox.bg_color = hovered_tab_color
+	theme.set_stylebox("hover", "SideTab", hovered_sidetab_stylebox)
+	
 	var pressed_sidetab_stylebox := StyleBoxFlat.new()
 	pressed_sidetab_stylebox.bg_color = selected_tab_color
 	pressed_sidetab_stylebox.border_color = selected_tab_border_color
@@ -466,15 +470,23 @@ static func setup_button(theme: Theme) -> void:
 	pressed_sidetab_stylebox.content_margin_top = 3
 	theme.set_stylebox("pressed", "SideTab", pressed_sidetab_stylebox)
 	
-	var hovered_sidetab_stylebox := StyleBoxFlat.new()
-	hovered_sidetab_stylebox.bg_color = hovered_tab_color
-	hovered_sidetab_stylebox.corner_radius_top_left = 4
-	hovered_sidetab_stylebox.corner_radius_bottom_left = 4
-	hovered_sidetab_stylebox.content_margin_left = 6
-	hovered_sidetab_stylebox.content_margin_right = 6
-	hovered_sidetab_stylebox.content_margin_bottom = 3
-	hovered_sidetab_stylebox.content_margin_top = 3
-	theme.set_stylebox("hover", "SideTab", hovered_sidetab_stylebox)
+	theme.add_type("Swatch")
+	theme.set_type_variation("Swatch", "Button")
+	var swatch_stylebox := StyleBoxFlat.new()
+	swatch_stylebox.set_corner_radius_all(3)
+	
+	var normal_swatch_stylebox := swatch_stylebox.duplicate()
+	normal_swatch_stylebox.bg_color = common_button_border_color_normal
+	theme.set_stylebox("normal", "Swatch", normal_swatch_stylebox)
+	
+	var hover_swatch_stylebox := swatch_stylebox.duplicate()
+	hover_swatch_stylebox.bg_color = common_button_border_color_hover
+	theme.set_stylebox("hover", "Swatch", hover_swatch_stylebox)
+	
+	var pressed_swatch_stylebox := swatch_stylebox.duplicate()
+	pressed_swatch_stylebox.bg_color = common_button_border_color_pressed
+	theme.set_stylebox("pressed", "Swatch", pressed_swatch_stylebox)
+	theme.set_stylebox("disabled", "Swatch", pressed_swatch_stylebox)
 
 static func setup_checkbox(theme: Theme) -> void:
 	theme.add_type("CheckBox")

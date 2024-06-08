@@ -1,27 +1,6 @@
-[gd_scene load_steps=5 format=3 uid="uid://cpvtf3kaa2ltr"]
+[gd_scene load_steps=2 format=3 uid="uid://cpvtf3kaa2ltr"]
 
 [ext_resource type="Script" path="res://src/ui_elements/color_swatch.gd" id="1_2b2yq"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_m3oh3"]
-bg_color = Color(0.164706, 0.188235, 0.301961, 1)
-corner_radius_top_left = 3
-corner_radius_top_right = 3
-corner_radius_bottom_right = 3
-corner_radius_bottom_left = 3
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kojaf"]
-bg_color = Color(0.247059, 0.313726, 0.45098, 1)
-corner_radius_top_left = 3
-corner_radius_top_right = 3
-corner_radius_bottom_right = 3
-corner_radius_bottom_left = 3
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ym6fi"]
-bg_color = Color(0.34902, 0.52549, 0.701961, 1)
-corner_radius_top_left = 3
-corner_radius_top_right = 3
-corner_radius_bottom_right = 3
-corner_radius_bottom_left = 3
 
 [node name="ColorSwatch" type="Button"]
 custom_minimum_size = Vector2(22, 22)
@@ -30,8 +9,5 @@ offset_bottom = 20.0
 focus_mode = 0
 mouse_filter = 1
 mouse_default_cursor_shape = 2
-theme_override_styles/normal = SubResource("StyleBoxFlat_m3oh3")
-theme_override_styles/hover = SubResource("StyleBoxFlat_kojaf")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_ym6fi")
-theme_override_styles/disabled = SubResource("StyleBoxFlat_ym6fi")
+theme_type_variation = &"Swatch"
 script = ExtResource("1_2b2yq")
