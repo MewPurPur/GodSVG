@@ -52,22 +52,22 @@ func rebuild_colors() -> void:
 			if is_instance_valid(swatch):
 				swatch.pressed.emit()
 	# Add the add button.
-	var color_swatch_ref := ColorSwatch.instantiate()
 	var fake_swatch := Button.new()
 	fake_swatch.begin_bulk_theme_override()
 	for stylebox_type in ["normal", "hover", "pressed"]:
 		fake_swatch.add_theme_stylebox_override(stylebox_type,
-				color_swatch_ref.get_theme_stylebox(stylebox_type))
+				fake_swatch.get_theme_stylebox(stylebox_type, "Swatch"))
 	fake_swatch.end_bulk_theme_override()
 	fake_swatch.icon = plus_icon
 	fake_swatch.icon_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	fake_swatch.focus_mode = Control.FOCUS_NONE
 	fake_swatch.mouse_filter = Control.MOUSE_FILTER_PASS
 	fake_swatch.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+	var color_swatch_ref := ColorSwatch.instantiate()
 	fake_swatch.custom_minimum_size = color_swatch_ref.custom_minimum_size
+	color_swatch_ref.queue_free()
 	fake_swatch.pressed.connect(popup_add_color)
 	colors_container.add_child(fake_swatch)
-	color_swatch_ref.queue_free()
 
 func popup_configure_color(swatch: Button) -> void:
 	var configure_popup := ConfigurePopup.instantiate()
