@@ -1,57 +1,56 @@
 class_name SVGParser extends RefCounted
 
-# Tags that don't make sense without other tags inside them.
-const shorthand_tag_exceptions = ["svg", "g", "linearGradient, radialGradient"]
+# Elements that don't make sense without child elements.
+const shorthand_tags_exceptions = ["svg", "g", "linearGradient", "radialGradient"]
 
 # For rendering only a section of the SVG.
-static func svg_to_text_custom(svg_tag: TagSVG, custom_width: float,
+static func root_to_text_custom(root_element: ElementRoot, custom_width: float,
 custom_height: float, custom_viewbox: Rect2) -> String:
-	var new_svg_tag: TagSVG = svg_tag.duplicate(false)
-	new_svg_tag.attributes.viewBox.set_rect(custom_viewbox)
-	new_svg_tag.attributes.width.set_num(custom_width)
-	new_svg_tag.attributes.height.set_num(custom_height)
-	var text := _tag_to_text(new_svg_tag)
-	text = text.left(-6)  # Removee the </svg> at the end.
-	for child_idx in svg_tag.get_child_count():
-		text += _tag_to_text(svg_tag.get_tag(PackedInt32Array([child_idx])))
+	var new_root_element: ElementRoot = root_element.duplicate(false)
+	new_root_element.set_attribute("viewBox", custom_viewbox)
+	new_root_element.set_attribute("width", custom_width)
+	new_root_element.set_attribute("height", custom_height)
+	var text := _element_to_text(new_root_element)
+	text = text.left(-6)  # Remove the </svg> at the end.
+	for child_idx in root_element.get_child_count():
+		text += _element_to_text(root_element.get_element(PackedInt32Array([child_idx])))
 	return text + "</svg>"
 
-static func svg_to_text(tag: TagSVG) -> String:
+static func root_to_text(root_element: ElementRoot) -> String:
+	var text := _element_to_text(root_element).trim_suffix('\n')
 	if GlobalSettings.xml_add_trailing_newline:
-		return _tag_to_text(tag) + "\n"
-	else:
-		return _tag_to_text(tag)
+		text += "\n"
+	return text
 
-static func _tag_to_text(tag: Tag) -> String:
+static func _element_to_text(element: Element) -> String:
 	var text := ""
-	text += '<' + tag.name
-	for attribute_key in tag.attributes:
-		var attribute: Attribute = tag.attributes[attribute_key]
+	if GlobalSettings.xml_pretty_formatting:
+		text += '\t'.repeat(element.xid.size())
+	text += '<' + element.name
+	for attribute: Attribute in element.get_all_attributes():
 		var value := attribute.get_value()
 		
-		if value.is_empty():
-			continue
-		
-		if not '"' in value:
-			text += ' %s="%s"' % [attribute_key, value]
-		else:
-			text += " %s='%s'" % [attribute_key, value]
-	
-	for attribute in tag.unknown_attributes:
-		var value := attribute.get_value()
 		if not '"' in value:
 			text += ' %s="%s"' % [attribute.name, value]
 		else:
 			text += " %s='%s'" % [attribute.name, value]
 	
-	if tag.is_standalone() and GlobalSettings.xml_shorthand_tags and\
-	not tag.name in shorthand_tag_exceptions:
+	if element.has_children() and GlobalSettings.xml_shorthand_tags and\
+	not element.name in shorthand_tags_exceptions:
 		text += '/>'
+		if GlobalSettings.xml_pretty_formatting:
+			text += '\n'
 	else:
 		text += '>'
-		for child_tag in tag.child_tags:
-			text += _tag_to_text(child_tag)
-		text += '</' + tag.name + '>'
+		if GlobalSettings.xml_pretty_formatting:
+			text += '\n'
+		for child in element.get_children():
+			text += _element_to_text(child)
+		if GlobalSettings.xml_pretty_formatting:
+			text += '\t'.repeat(element.xid.size())
+		text += '</%s>' % element.name
+		if GlobalSettings.xml_pretty_formatting:
+			text += '\n'
 	
 	return text
 
@@ -60,9 +59,9 @@ enum ParseError {OK, ERR_NOT_SVG, ERR_IMPROPER_NESTING}
 
 class ParseResult extends RefCounted:
 	var error: SVGParser.ParseError
-	var svg: TagSVG
+	var svg: ElementRoot
 	
-	func _init(err_id: SVGParser.ParseError, result: TagSVG = null) -> void:
+	func _init(err_id: SVGParser.ParseError, result: ElementSVG = null) -> void:
 		error = err_id
 		svg = result
 
@@ -74,14 +73,16 @@ static func get_error_string(parse_error: ParseError) -> String:
 			return TranslationServer.translate("Improper nesting.")
 		_: return ""
 
-static func text_to_svg(text: String) -> ParseResult:
+static func text_to_root(text: String) -> ParseResult:
 	if text.is_empty():
 		return ParseResult.new(ParseError.ERR_NOT_SVG)
 	
-	var svg_tag := TagSVG.new()
+	var root_element := ElementRoot.new()
+	root_element.xid = PackedInt32Array()
+	root_element.root = root_element
 	var parser := XMLParser.new()
 	parser.open_buffer(text.to_utf8_buffer())
-	var unclosed_tag_stack: Array[Tag] = []
+	var unclosed_element_stack: Array[Element] = []
 	
 	# Remove everything before the first SVG tag.
 	var describes_svg := false
@@ -94,37 +95,17 @@ static func text_to_svg(text: String) -> ParseResult:
 		
 		describes_svg = true
 		
-		var attrib_dict := {}
 		for i in parser.get_attribute_count():
-			attrib_dict[parser.get_attribute_name(i)] = parser.get_attribute_value(i)
-		# width, height, and viewBox don't have defaults.
-		if attrib_dict.has("width"):
-			svg_tag.attributes.width.set_value(attrib_dict["width"],
-					Attribute.SyncMode.SILENT)
-		if attrib_dict.has("height"):
-			svg_tag.attributes.height.set_value(attrib_dict["height"],
-					Attribute.SyncMode.SILENT)
-		if attrib_dict.has("viewBox"):
-			svg_tag.attributes.viewBox.set_value(attrib_dict["viewBox"],
-					Attribute.SyncMode.SILENT)
-		svg_tag.update_cache()
-		
-		var unknown: Array[Attribute] = []
-		for element in attrib_dict:
-			if svg_tag.attributes.has(element):
-				var attribute: Attribute = svg_tag.attributes[element]
-				attribute.set_value(attrib_dict[element], Attribute.SyncMode.SILENT)
-			else:
-				unknown.append(Attribute.new(element, attrib_dict[element]))
-		svg_tag.set_unknown_attributes(unknown)
+			root_element.set_attribute(parser.get_attribute_name(i),
+					parser.get_attribute_value(i))
 		
 		var node_offset := parser.get_node_offset()
 		var closure_pos := text.find("/>", node_offset)
 		if closure_pos == -1 or closure_pos > text.find(">", node_offset):
-			unclosed_tag_stack.append(svg_tag)
+			unclosed_element_stack.append(root_element)
 			break
 		else:
-			return ParseResult.new(ParseError.OK, svg_tag)
+			return ParseResult.new(ParseError.OK, root_element)
 	
 	if not describes_svg:
 		return ParseResult.new(ParseError.ERR_NOT_SVG)
@@ -133,50 +114,30 @@ static func text_to_svg(text: String) -> ParseResult:
 	while parser.read() == OK:
 		match parser.get_node_type():
 			XMLParser.NODE_ELEMENT:
-				var node_name := parser.get_node_name()
-				var attrib_dict := {}
-				for i in parser.get_attribute_count():
-					attrib_dict[parser.get_attribute_name(i)] = parser.get_attribute_value(i)
-				
-				var tag: Tag
-				match node_name:
-					"circle": tag = TagCircle.new()
-					"ellipse": tag = TagEllipse.new()
-					"rect": tag = TagRect.new()
-					"path": tag = TagPath.new()
-					"line": tag = TagLine.new()
-					"stop": tag = TagStop.new()
-					_: tag = TagUnknown.new(node_name)
-				
-				var unknown: Array[Attribute] = []
-				for element in attrib_dict:
-					if tag.attributes.has(element):
-						var attribute: Attribute = tag.attributes[element]
-						attribute.set_value(attrib_dict[element], Attribute.SyncMode.SILENT)
-					else:
-						unknown.append(Attribute.new(element, attrib_dict[element]))
-				tag.set_unknown_attributes(unknown)
-				
-				# Check if we're entering or exiting the tag.
+				var element := DB.element(parser.get_node_name())
+				# Check if we're entering or exiting the element.
 				var node_offset := parser.get_node_offset()
 				var closure_pos := text.find("/>", node_offset)
+				
+				unclosed_element_stack.back().insert_child(-1, element)
+				for i in parser.get_attribute_count():
+					element.set_attribute(parser.get_attribute_name(i),
+							parser.get_attribute_value(i))
+				
 				if closure_pos == -1 or closure_pos > text.find(">", node_offset):
-					unclosed_tag_stack.append(tag)
-				else:
-					unclosed_tag_stack.back().child_tags.append(tag)
+					unclosed_element_stack.append(element)
+			
 			XMLParser.NODE_ELEMENT_END:
-				if unclosed_tag_stack.is_empty():
+				if unclosed_element_stack.is_empty():
 					return ParseResult.new(ParseError.ERR_IMPROPER_NESTING)
 				else:
-					var closed_tag: Tag = unclosed_tag_stack.pop_back()
-					if closed_tag.name != parser.get_node_name():
+					var closed_element: Element = unclosed_element_stack.pop_back()
+					if closed_element.name != parser.get_node_name():
 						return ParseResult.new(ParseError.ERR_IMPROPER_NESTING)
-					if unclosed_tag_stack.size() >= 1:
-						unclosed_tag_stack.back().child_tags.append(closed_tag)
-					else:
+					if unclosed_element_stack.is_empty():
 						break
 	
-	if not unclosed_tag_stack.is_empty():
+	if not unclosed_element_stack.is_empty():
 		return ParseResult.new(ParseError.ERR_IMPROPER_NESTING)
 	
-	return ParseResult.new(ParseError.OK, svg_tag)
+	return ParseResult.new(ParseError.OK, root_element)

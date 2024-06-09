@@ -1,20 +1,16 @@
 # An editor to be tied to a transform list attribute.
 extends LineEditButton
 
-var attribute: AttributeTransform
+var element: Element
+var attribute_name: String  # Never propagates.
 
 const TransformPopup = preload("res://src/ui_elements/transform_popup.tscn")
 
-func set_value(new_value: String, update_type := Utils.UpdateType.REGULAR) -> void:
-	sync(attribute.format(new_value))
-	if attribute.get_value() != new_value or update_type == Utils.UpdateType.FINAL:
-		match update_type:
-			Utils.UpdateType.INTERMEDIATE:
-				attribute.set_value(new_value, Attribute.SyncMode.INTERMEDIATE)
-			Utils.UpdateType.FINAL:
-				attribute.set_value(new_value, Attribute.SyncMode.FINAL)
-			_:
-				attribute.set_value(new_value)
+func set_value(new_value: String, save := false) -> void:
+	sync(new_value)
+	element.set_attribute(attribute_name, new_value)
+	if save:
+		SVG.queue_save()
 
 
 func _notification(what: int) -> void:
@@ -22,13 +18,17 @@ func _notification(what: int) -> void:
 		update_translation()
 
 func _ready() -> void:
-	set_value(attribute.get_value())
-	attribute.value_changed.connect(set_value)
-	tooltip_text = attribute.name
-	text_submitted.connect(set_value)
+	set_value(element.get_attribute_value(attribute_name, true))
+	element.attribute_changed.connect(_on_element_attribute_changed)
+	tooltip_text = attribute_name
+	text_submitted.connect(set_value.bind(true))
 	text_changed.connect(setup_font)
 	update_translation()
 
+
+func _on_element_attribute_changed(attribute_changed: String) -> void:
+	if attribute_name == attribute_changed:
+		set_value(element.get_attribute_value(attribute_name, true))
 
 func update_translation() -> void:
 	placeholder_text = TranslationServer.translate("No transforms")
@@ -42,7 +42,7 @@ func sync(new_value: String) -> void:
 
 func _on_pressed() -> void:
 	var transform_popup := TransformPopup.instantiate()
-	transform_popup.attribute_ref = attribute
+	transform_popup.attribute_ref = element.get_attribute(attribute_name)
 	HandlerGUI.popup_under_rect(transform_popup, get_global_rect(), get_viewport())
 
 

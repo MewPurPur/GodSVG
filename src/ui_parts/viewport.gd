@@ -18,7 +18,7 @@ var _zoom_to: Vector2
 
 func _ready() -> void:
 	zoom_menu.zoom_changed.connect(view.update.unbind(2))
-	SVG.root_tag.resized.connect(resize)
+	SVG.resized.connect(resize)
 	Indications.viewport_size_changed.connect(adjust_view)
 	resize()
 	await get_tree().process_frame
@@ -32,8 +32,8 @@ func set_view(new_position: Vector2) -> void:
 	
 	var stripped_left := maxf(view.position.x, 0.0)
 	var stripped_top := maxf(view.position.y, 0.0)
-	var stripped_right := minf(view.position.x + scaled_size.x, SVG.root_tag.width)
-	var stripped_bottom := minf(view.position.y + scaled_size.y, SVG.root_tag.height)
+	var stripped_right := minf(view.position.x + scaled_size.x, SVG.root_element.width)
+	var stripped_bottom := minf(view.position.y + scaled_size.y, SVG.root_element.height)
 	display_texture.view_rect = Rect2(stripped_left, stripped_top,
 			stripped_right - stripped_left, stripped_bottom - stripped_top)
 	view.update()
@@ -41,21 +41,21 @@ func set_view(new_position: Vector2) -> void:
 
 # Adjust the SVG dimensions.
 func resize() -> void:
-	if SVG.root_tag.get_size().is_finite():
-		display.size = SVG.root_tag.get_size()
-		reference_texture.size = SVG.root_tag.get_size()
+	if SVG.root_element.get_size().is_finite():
+		display.size = SVG.root_element.get_size()
+		reference_texture.size = SVG.root_element.get_size()
 	zoom_menu.zoom_reset()
 
 func center_frame() -> void:
 	var available_size := size * zoom_reset_buffer
-	var w_ratio := available_size.x / SVG.root_tag.width
-	var h_ratio := available_size.y / SVG.root_tag.height
+	var w_ratio := available_size.x / SVG.root_element.width
+	var h_ratio := available_size.y / SVG.root_element.height
 	if is_finite(w_ratio) and is_finite(h_ratio):
 		zoom_menu.set_zoom(nearest_po2(ceili(minf(w_ratio, h_ratio) * 32)) / 64.0)
 	else:
 		zoom_menu.set_zoom(1.0)
 	adjust_view()
-	set_view((SVG.root_tag.get_size() - size / Indications.zoom) / 2)
+	set_view((SVG.root_element.get_size() - size / Indications.zoom) / 2)
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -149,10 +149,10 @@ func adjust_view(offset := Vector2(0.5, 0.5)) -> void:
 	var old_size := last_size_adjusted
 	last_size_adjusted = size / Indications.zoom
 	
-	var svg_w := 16384.0 if SVG.root_tag.attributes.width.get_value().is_empty()\
-			else SVG.root_tag.width
-	var svg_h := 16384.0 if SVG.root_tag.attributes.height.get_value().is_empty()\
-			else SVG.root_tag.height
+	var svg_w := SVG.root_element.width if\
+			SVG.root_element.has_attribute("width") else 16384.0
+	var svg_h := SVG.root_element.height if\
+			SVG.root_element.has_attribute("height") else 16384.0
 	
 	var zoomed_size := buffer_view_space * size / Indications.zoom
 	view.limit_left = int(-zoomed_size.x)

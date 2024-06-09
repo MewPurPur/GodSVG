@@ -82,7 +82,7 @@ func setup_color(new_color: String) -> void:
 	starting_color = new_color
 	color = new_color
 	# Setup the display color.
-	starting_display_color = ColorParser.string_to_color(starting_color, Color(),
+	starting_display_color = ColorParser.text_to_color(starting_color, Color(),
 			alpha_enabled)
 	if slider_mode == SliderMode.HSV:
 		# Clamping like this doesn't change the hex representation, but

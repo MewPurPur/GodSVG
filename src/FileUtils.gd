@@ -3,7 +3,7 @@ class_name FileUtils extends RefCounted
 
 const GoodFileDialogType = preload("res://src/ui_parts/good_file_dialog.gd")
 
-const AlertDialog := preload("res://src/ui_parts/alert_dialog.tscn")
+const AlertDialog = preload("res://src/ui_parts/alert_dialog.tscn")
 const ImportWarningDialog = preload("res://src/ui_parts/import_warning_dialog.tscn")
 const GoodFileDialog = preload("res://src/ui_parts/good_file_dialog.tscn")
 const ExportDialog = preload("res://src/ui_parts/export_dialog.tscn")
@@ -30,9 +30,11 @@ quality := 0.8, lossless := true) -> void:
 	GlobalSettings.modify_save_data("last_used_dir", file_path.get_base_dir())
 	
 	match extension:
-		"png": generate_image_from_tags(upscale_amount).save_png(file_path)
-		"jpg": generate_image_from_tags(upscale_amount).save_jpg(file_path, quality)
-		"webp": generate_image_from_tags(upscale_amount).save_webp(file_path, !lossless, quality)
+		"png": generate_image_from_elements(upscale_amount).save_png(file_path)
+		"jpg": generate_image_from_elements(upscale_amount).save_jpg(file_path, quality)
+		"webp":
+			generate_image_from_elements(upscale_amount).save_webp(file_path, !lossless,
+					quality)
 		_:
 			# SVG / fallback.
 			GlobalSettings.modify_save_data("current_file_path", file_path)
@@ -40,18 +42,19 @@ quality := 0.8, lossless := true) -> void:
 	HandlerGUI.remove_overlay()
 
 
-static func generate_image_from_tags(upscale_amount := 1.0) -> Image:
-	var export_svg := SVG.root_tag.duplicate()
-	if export_svg.attributes.viewBox.get_list().is_empty():
-		export_svg.attributes.viewBox.set_list([0, 0, export_svg.width, export_svg.height])
+static func generate_image_from_elements(upscale_amount := 1.0) -> Image:
+	var export_svg := SVG.root_element.duplicate()
+	if export_svg.get_attribute_list("viewBox").is_empty():
+		export_svg.set_attribute("viewBox",
+				PackedFloat32Array([0, 0, export_svg.width, export_svg.height]))
 	# First ensure there are dimensions.
 	# Otherwise changing one side could influence the other.
-	export_svg.attributes.width.set_num(export_svg.width)
-	export_svg.attributes.height.set_num(export_svg.height)
-	export_svg.attributes.width.set_num(export_svg.width * upscale_amount)
-	export_svg.attributes.height.set_num(export_svg.height * upscale_amount)
+	export_svg.set_attribute("width", export_svg.width)
+	export_svg.set_attribute("height", export_svg.height)
+	export_svg.set_attribute("width", export_svg.width * upscale_amount)
+	export_svg.set_attribute("height", export_svg.height * upscale_amount)
 	var img := Image.new()
-	img.load_svg_from_string(SVGParser.svg_to_text(export_svg))
+	img.load_svg_from_string(SVGParser.root_to_text(export_svg))
 	img.fix_alpha_edges()  # See godot issue 82579.
 	return img
 
@@ -111,12 +114,12 @@ static func open_import_dialog() -> void:
 		HandlerGUI.add_overlay(svg_import_dialog)
 		svg_import_dialog.file_selected.connect(apply_svg_from_path)
 
-static func open_reference_load_dialog() -> void:
+static func open_reference_load_dialog(callable: Callable) -> void:
 	if FileUtils._is_native_preferred():
 		DisplayServer.file_dialog_show(TranslationServer.translate("Load an image file"),
 				Utils.get_last_dir(), "", false, DisplayServer.FILE_DIALOG_MODE_OPEN_FILE,
 				PackedStringArray(["*.png,*.jpeg,*.jpg,*.webp,*.svg"]),
-				native_reference_image_load)
+				native_reference_image_load.bind(callable))
 	# TODO: Add Web Support
 	#elif OS.has_feature("web"):
 		#HandlerGUI.web_load_reference_image()
@@ -126,7 +129,7 @@ static func open_reference_load_dialog() -> void:
 				GoodFileDialogType.FileMode.SELECT,
 				PackedStringArray(["png", "jpeg", "jpg", "webp", "svg"]))
 		HandlerGUI.add_overlay(image_import_dialog)
-		image_import_dialog.file_selected.connect(load_reference_image)
+		image_import_dialog.file_selected.connect(load_reference_image.bind(callable))
 
 static func native_svg_import(has_selected: bool, files: PackedStringArray,
 _filter_idx: int) -> void:
@@ -134,15 +137,15 @@ _filter_idx: int) -> void:
 		apply_svg_from_path(files[0])
 
 static func native_reference_image_load(has_selected: bool, files: PackedStringArray,
-_filter_idx: int) -> void:
+_filter_idx: int, callable: Callable) -> void:
 	if has_selected:
-		load_reference_image(files[0])
+		load_reference_image(files[0], callable)
 
-static func load_reference_image(path: String) -> void:
+static func load_reference_image(path: String, callable: Callable) -> void:
 	var img = Image.new()
 	img.load(path)
 	img.save_png("user://reference_image.png")
-	Indications.imported_reference.emit()
+	callable.call()
 
 static func apply_svg_from_path(path: String) -> int:
 	var svg_file := FileAccess.open(path, FileAccess.READ)

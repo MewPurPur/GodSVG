@@ -15,6 +15,24 @@ msgstr ""
 msgid "translation-credits"
 msgstr ""
 
+#: src/data_classes/ElementCircle.gd src/data_classes/ElementEllipse.gd
+#: src/data_classes/ElementG.gd src/data_classes/ElementLine.gd
+#: src/data_classes/ElementLinearGradient.gd src/data_classes/ElementPath.gd
+#: src/data_classes/ElementRadialGradient.gd src/data_classes/ElementRect.gd
+#: src/data_classes/ElementStop.gd
+msgid "{element} must be inside {allowed} to have any effect."
+msgstr ""
+
+#: src/data_classes/ElementLinearGradient.gd
+#: src/data_classes/ElementRadialGradient.gd
+msgid "No id attribute defined."
+msgstr ""
+
+#: src/data_classes/ElementLinearGradient.gd
+#: src/data_classes/ElementRadialGradient.gd
+msgid "No stop elements under this gradient."
+msgstr ""
+
 #: src/parsers/SVGParser.gd
 msgid "Doesn’t describe an SVG."
 msgstr ""
@@ -93,8 +111,8 @@ msgstr ""
 msgid "Paste XML"
 msgstr ""
 
-#: src/ui_elements/palette_config.gd src/ui_elements/transform_popup.gd
-#: src/Indications.gd
+#: src/ui_elements/palette_config.gd src/ui_elements/setting_shortcut.gd
+#: src/ui_elements/transform_popup.gd src/Indications.gd
 msgid "Delete"
 msgstr ""
 
@@ -128,14 +146,6 @@ msgid "Add shortcut"
 msgstr ""
 
 #: src/ui_elements/setting_shortcut.gd
-msgid "Edit"
-msgstr ""
-
-#: src/ui_elements/setting_shortcut.gd
-msgid "Remove"
-msgstr ""
-
-#: src/ui_elements/setting_shortcut.gd
 msgid "Press keys…"
 msgstr ""
 
@@ -159,7 +169,7 @@ msgstr ""
 msgid "New transform"
 msgstr ""
 
-#: src/ui_elements/unknown_field.gd
+#: src/ui_elements/unrecognized_field.gd
 msgid "GodSVG doesn’t recognize this attribute"
 msgstr ""
 
@@ -176,11 +186,19 @@ msgid "Translators"
 msgstr ""
 
 #: src/ui_parts/about_menu.gd
-msgid "Authors"
+msgid "Donors"
 msgstr ""
 
 #: src/ui_parts/about_menu.gd
-msgid "Donors"
+msgid "Golden donors"
+msgstr ""
+
+#: src/ui_parts/about_menu.gd
+msgid "Diamond donors"
+msgstr ""
+
+#: src/ui_parts/about_menu.gd
+msgid "Authors"
 msgstr ""
 
 #: src/ui_parts/about_menu.gd
@@ -199,7 +217,7 @@ msgstr ""
 msgid "Alert!"
 msgstr ""
 
-#: src/ui_parts/alert_dialog.gd src/ui_parts/display.gd
+#: src/ui_parts/alert_dialog.gd src/HandlerGUI.gd
 msgid "OK"
 msgstr ""
 
@@ -250,18 +268,6 @@ msgid "Overlay reference"
 msgstr ""
 
 #: src/ui_parts/display.gd
-msgid "Import Reference Image"
-msgstr ""
-
-#: src/ui_parts/display.gd
-msgid "Show Reference Image"
-msgstr ""
-
-#: src/ui_parts/display.gd
-msgid "Overlay Reference Image"
-msgstr ""
-
-#: src/ui_parts/display.gd
 msgid "Show Grid"
 msgstr ""
 
@@ -277,6 +283,10 @@ msgstr ""
 msgid "About…"
 msgstr ""
 
+#: src/ui_parts/display.gd src/TranslationUtils.gd
+msgid "Check for updates"
+msgstr ""
+
 #: src/ui_parts/display.gd
 msgid "Donate…"
 msgstr ""
@@ -289,24 +299,16 @@ msgstr ""
 msgid "GodSVG website"
 msgstr ""
 
-#: src/ui_parts/display.gd src/TranslationUtils.gd
-msgid "Check for updates"
-msgstr ""
-
-#: src/ui_parts/display.gd
-msgid "Check for updates?"
-msgstr ""
-
-#: src/ui_parts/display.gd
-msgid "This requires GodSVG to connect to the internet."
-msgstr ""
-
 #: src/ui_parts/display.gd
 msgid "Enable snapping"
 msgstr ""
 
 #: src/ui_parts/display.gd
 msgid "Snap size"
+msgstr ""
+
+#: src/ui_parts/element_container.gd
+msgid "New element"
 msgstr ""
 
 #: src/ui_parts/export_dialog.gd
@@ -411,8 +413,8 @@ msgid ""
 "contents!"
 msgstr ""
 
-#: src/ui_parts/handles_manager.gd src/ui_parts/tag_container.gd
-msgid "New tag"
+#: src/ui_parts/handles_manager.gd
+msgid "New shape"
 msgstr ""
 
 #: src/ui_parts/import_warning_dialog.gd
@@ -420,11 +422,11 @@ msgid "Import Problems"
 msgstr ""
 
 #: src/ui_parts/import_warning_dialog.gd
-msgid "Unknown tag"
+msgid "Unrecognized element"
 msgstr ""
 
 #: src/ui_parts/import_warning_dialog.gd
-msgid "Unknown attribute"
+msgid "Unrecognized attribute"
 msgstr ""
 
 #: src/ui_parts/import_warning_dialog.gd
@@ -432,7 +434,7 @@ msgid "Syntax error"
 msgstr ""
 
 #: src/ui_parts/inspector.gd
-msgid "Add new tag"
+msgid "Add element"
 msgstr ""
 
 #: src/ui_parts/settings_menu.gd
@@ -460,15 +462,11 @@ msgid "Colors"
 msgstr ""
 
 #: src/ui_parts/settings_menu.gd
-msgid "Paths"
+msgid "Path data"
 msgstr ""
 
 #: src/ui_parts/settings_menu.gd
-msgid "Always active."
-msgstr ""
-
-#: src/ui_parts/settings_menu.gd
-msgid "Transforms"
+msgid "Transform lists"
 msgstr ""
 
 #: src/ui_parts/settings_menu.gd
@@ -512,6 +510,10 @@ msgid "Use CTRL for zooming"
 msgstr ""
 
 #: src/ui_parts/settings_menu.gd
+msgid "Sync window title to file name"
+msgstr ""
+
+#: src/ui_parts/settings_menu.gd
 msgid "Handles size"
 msgstr ""
 
@@ -524,7 +526,83 @@ msgid "Auto UI scale"
 msgstr ""
 
 #: src/ui_parts/settings_menu.gd
+msgid "Enable autoformatting"
+msgstr ""
+
+#: src/ui_parts/settings_menu.gd
+msgid "Symbol color"
+msgstr ""
+
+#: src/ui_parts/settings_menu.gd
+msgid "Element color"
+msgstr ""
+
+#: src/ui_parts/settings_menu.gd
+msgid "String color"
+msgstr ""
+
+#: src/ui_parts/settings_menu.gd
+msgid "Comment color"
+msgstr ""
+
+#: src/ui_parts/settings_menu.gd
+msgid "Text color"
+msgstr ""
+
+#: src/ui_parts/settings_menu.gd
+msgid "CDATA color"
+msgstr ""
+
+#: src/ui_parts/settings_menu.gd
+msgid "Error color"
+msgstr ""
+
+#: src/ui_parts/settings_menu.gd
+msgid "Inside color"
+msgstr ""
+
+#: src/ui_parts/settings_menu.gd
+msgid "Normal color"
+msgstr ""
+
+#: src/ui_parts/settings_menu.gd
+msgid "Hovered color"
+msgstr ""
+
+#: src/ui_parts/settings_menu.gd
+msgid "Selected color"
+msgstr ""
+
+#: src/ui_parts/settings_menu.gd
+msgid "Valid color"
+msgstr ""
+
+#: src/ui_parts/settings_menu.gd
+msgid "Warning color"
+msgstr ""
+
+#: src/ui_parts/settings_menu.gd
 msgid "Language"
+msgstr ""
+
+#: src/ui_parts/settings_menu.gd
+msgid "File"
+msgstr ""
+
+#: src/ui_parts/settings_menu.gd
+msgid "Edit"
+msgstr ""
+
+#: src/ui_parts/settings_menu.gd
+msgid "View"
+msgstr ""
+
+#: src/ui_parts/settings_menu.gd
+msgid "Tool"
+msgstr ""
+
+#: src/ui_parts/settings_menu.gd
+msgid "Help"
 msgstr ""
 
 #: src/ui_parts/settings_menu.gd
@@ -549,6 +627,10 @@ msgstr ""
 msgid ""
 "If turned on, uses your operating system's native file dialog. If turned "
 "off, uses GodSVG's built-in file dialog."
+msgstr ""
+
+#: src/ui_parts/settings_menu.gd
+msgid "If turned off, the window title will remain just \"GodSVG\"."
 msgstr ""
 
 #: src/ui_parts/settings_menu.gd
@@ -580,7 +662,7 @@ msgid "Use shorthand tag syntax"
 msgstr ""
 
 #: src/ui_parts/settings_menu.gd
-msgid "Enable autoformatting"
+msgid "Use pretty formatting"
 msgstr ""
 
 #: src/ui_parts/settings_menu.gd
@@ -628,51 +710,7 @@ msgid "Remove unnecessary parameters"
 msgstr ""
 
 #: src/ui_parts/settings_menu.gd
-msgid "Symbol color"
-msgstr ""
-
-#: src/ui_parts/settings_menu.gd
-msgid "Tag color"
-msgstr ""
-
-#: src/ui_parts/settings_menu.gd
 msgid "Attribute color"
-msgstr ""
-
-#: src/ui_parts/settings_menu.gd
-msgid "String color"
-msgstr ""
-
-#: src/ui_parts/settings_menu.gd
-msgid "Comment color"
-msgstr ""
-
-#: src/ui_parts/settings_menu.gd
-msgid "Text color"
-msgstr ""
-
-#: src/ui_parts/settings_menu.gd
-msgid "CDATA color"
-msgstr ""
-
-#: src/ui_parts/settings_menu.gd
-msgid "Error color"
-msgstr ""
-
-#: src/ui_parts/settings_menu.gd
-msgid "Inside color"
-msgstr ""
-
-#: src/ui_parts/settings_menu.gd
-msgid "Normal color"
-msgstr ""
-
-#: src/ui_parts/settings_menu.gd
-msgid "Hovered color"
-msgstr ""
-
-#: src/ui_parts/settings_menu.gd
-msgid "Selected color"
 msgstr ""
 
 #: src/ui_parts/settings_menu.gd
@@ -681,14 +719,6 @@ msgstr ""
 
 #: src/ui_parts/settings_menu.gd
 msgid "Background color"
-msgstr ""
-
-#: src/ui_parts/settings_menu.gd
-msgid "Valid color"
-msgstr ""
-
-#: src/ui_parts/settings_menu.gd
-msgid "Warning color"
 msgstr ""
 
 #: src/ui_parts/update_menu.gd
@@ -756,6 +786,14 @@ msgstr ""
 msgid "Quit"
 msgstr ""
 
+#: src/HandlerGUI.gd
+msgid "Check for updates?"
+msgstr ""
+
+#: src/HandlerGUI.gd
+msgid "This requires GodSVG to connect to the internet."
+msgstr ""
+
 #: src/Indications.gd
 msgid "View In List"
 msgstr ""
@@ -773,19 +811,15 @@ msgid "Import"
 msgstr ""
 
 #: src/TranslationUtils.gd
-msgid "Load Reference Image"
-msgstr ""
-
-#: src/TranslationUtils.gd
 msgid "Optimize"
 msgstr ""
 
 #: src/TranslationUtils.gd
-msgid "Select all tags"
+msgid "Select all elements"
 msgstr ""
 
 #: src/TranslationUtils.gd
-msgid "Duplicate the selected tags"
+msgid "Duplicate the selected elements"
 msgstr ""
 
 #: src/TranslationUtils.gd
@@ -793,11 +827,11 @@ msgid "Delete the selection"
 msgstr ""
 
 #: src/TranslationUtils.gd
-msgid "Move the selected tags up"
+msgid "Move the selected elements up"
 msgstr ""
 
 #: src/TranslationUtils.gd
-msgid "Move the selected tags down"
+msgid "Move the selected elements down"
 msgstr ""
 
 #: src/TranslationUtils.gd

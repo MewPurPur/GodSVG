@@ -16,8 +16,6 @@ func _init() -> void:
 	context_menu_enabled = false
 	caret_blink = true
 	caret_blink_interval = 0.6
-
-func _ready() -> void:
 	focus_entered.connect(_on_base_class_focus_entered)
 	focus_exited.connect(_on_base_class_focus_exited)
 	mouse_exited.connect(_on_base_class_mouse_exited)
@@ -71,6 +69,7 @@ func _input(event: InputEvent) -> void:
 		return
 	
 	if event is InputEventMouseButton:
+		# TODO This causes part of #798.
 		if event.is_pressed() and not get_global_rect().has_point(event.position) and\
 		HandlerGUI.popup_overlay_stack.is_empty():
 			release_focus()

@@ -10,6 +10,3 @@ size_flags_horizontal = 0
 size_flags_vertical = 0
 script = ExtResource("1_saak1")
 code_font_tooltip = true
-
-[connection signal="focus_entered" from="." to="." method="_on_focus_entered"]
-[connection signal="text_change_canceled" from="." to="." method="_on_text_change_canceled"]

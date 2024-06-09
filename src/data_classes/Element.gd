@@ -1,0 +1,314 @@
+# An SVG element, standalone (<element/>) or container (<element></element>).
+class_name Element extends XNode
+
+signal attribute_changed(name: String)
+signal ancestor_attribute_changed(name: String)
+
+var _parent: WeakRef = null
+var parent: Element:
+	get():
+		if _parent != null:
+			return _parent.get_ref()
+		return null
+	set(new_value):
+		_parent = weakref(new_value)
+
+var _svg: WeakRef = null
+var svg: ElementSVG:
+	get():
+		if _svg != null:
+			return _svg.get_ref()
+		return null
+	set(new_value):
+		_svg = weakref(new_value)
+
+var _root: WeakRef = null
+var root: ElementSVG:
+	get():
+		if _root != null:
+			return _root.get_ref()
+		return null
+	set(new_value):
+		_root = weakref(new_value)
+
+var _child_elements: Array[Element]
+var _attributes: Dictionary  # Dictionary{String: Attribute}
+
+func _init() -> void:
+	attribute_changed.connect(_on_attribute_changed)
+	ancestor_attribute_changed.connect(_on_ancestor_attribute_changed)
+
+func _on_attribute_changed(attribute_name: String) -> void:
+	for child in get_children():
+		child.ancestor_attribute_changed.emit(attribute_name)
+	if root != null:
+		root.attribute_somewhere_changed.emit(xid)
+
+func _on_ancestor_attribute_changed(attribute_name: String) -> void:
+	for child in get_children():
+		child.ancestor_attribute_changed.emit(attribute_name)
+
+func _on_attribute_value_changed(attribute: Attribute) -> void:
+	var has_attrib := has_attribute(attribute.name)
+	if has_attrib and _attributes[attribute.name].get_value().is_empty():
+		_attributes.erase(attribute.name)
+	elif not has_attrib:
+		_attributes[attribute.name] = attribute
+	attribute_changed.emit(attribute.name)
+
+
+func get_children() -> Array[Element]:
+	return _child_elements.duplicate()
+
+func get_child(idx: int) -> Element:
+	return _child_elements[idx]
+
+func has_children() -> bool:
+	return _child_elements.is_empty()
+
+func get_child_count() -> int:
+	return _child_elements.size()
+
+
+func replace_child(idx: int, new_element: Element) -> void:
+	var old_element := get_child(idx)
+	_child_elements[idx] = new_element
+	new_element.xid = old_element.xid
+	new_element.parent = old_element.parent
+	new_element.svg = old_element.svg
+	new_element.root = old_element.root
+
+func insert_child(idx: int, new_element: Element) -> void:
+	if idx < 0:
+		idx += get_child_count() + 1
+	new_element.parent = self
+	new_element.root = root
+	new_element.svg = self if self is ElementSVG else svg
+	var new_xid := xid.duplicate()
+	new_xid.append(idx)
+	new_element.xid = new_xid
+	for i in range(idx, get_child_count()):
+		var child := get_child(i)
+		child.xid[-1] += 1
+		child.propagate_xid_correction()
+	_child_elements.insert(idx, new_element)
+
+func remove_child(idx: int) -> void:
+	for i in range(idx + 1, get_child_count()):
+		var child := get_child(i)
+		child.xid[-1] -= 1
+		child.propagate_xid_correction()
+	_child_elements.remove_at(idx)
+
+func pop_child(idx: int) -> Element:
+	for i in range(idx + 1, get_child_count()):
+		var child := get_child(i)
+		child.xid[-1] -= 1
+		child.propagate_xid_correction()
+	return _child_elements.pop_at(idx)
+
+
+func propagate_xid_correction() -> void:
+	for i in get_child_count():
+		var new_xid := xid.duplicate()
+		new_xid.append(i)
+		var child := get_child(i)
+		child.xid = new_xid
+		child.propagate_xid_correction()
+
+
+func has_attribute(attribute_name: String) -> bool:
+	return _attributes.has(attribute_name)
+
+func get_attribute(attribute_name: String, must_own := true) -> Attribute:
+	if has_attribute(attribute_name):
+		return _attributes[attribute_name]
+	elif not must_own and DB.propagated_attributes.has(attribute_name):
+		if is_parent_g():
+			return parent.get_attribute(attribute_name, false)
+		elif svg != null:
+			return svg.get_attribute(attribute_name, false)
+	return new_attribute(attribute_name)
+
+
+# "real" determines if we want the true value or fallback on defaults.
+func get_attribute_value(attribute_name: String, real := false) -> String:
+	if has_attribute(attribute_name):
+		return _attributes[attribute_name].get_value()
+	if real:
+		return ""
+	else:
+		return get_default(attribute_name)
+
+func get_attribute_num(attribute_name: String) -> float:
+	if DB.get_attribute_type(attribute_name) != DB.AttributeType.NUMERIC:
+		push_error("Attribute not the correct type.")
+	var attrib: AttributeNumeric = _attributes[attribute_name] if\
+			has_attribute(attribute_name) else new_default_attribute(attribute_name)
+	# Possibly adjust for percentage.
+	var num := attrib.get_num()
+	if attrib.is_percentage():
+		match get_percentage_handling(attribute_name):
+			DB.PercentageHandling.FRACTION: return num
+			DB.PercentageHandling.HORIZONTAL: return svg.width * num
+			DB.PercentageHandling.VERTICAL: return svg.height * num
+			DB.PercentageHandling.NORMALIZED: return svg.normalized_diagonal * num
+	return num
+
+func is_attribute_percentage(attribute_name: String) -> bool:
+	if DB.get_attribute_type(attribute_name) != DB.AttributeType.NUMERIC:
+		push_error("Attribute not the correct type.")
+	var attrib: AttributeNumeric = _attributes[attribute_name] if\
+			has_attribute(attribute_name) else new_default_attribute(attribute_name)
+	return attrib.is_percentage()
+
+func get_attribute_rect(attribute_name: String) -> float:
+	if DB.get_attribute_type(attribute_name) != DB.AttributeType.LIST:
+		push_error("Attribute not the correct type.")
+	var attrib: AttributeList = _attributes[attribute_name] if\
+			has_attribute(attribute_name) else new_default_attribute(attribute_name)
+	return attrib.get_rect()
+
+func get_attribute_list(attribute_name: String) -> PackedFloat32Array:
+	if DB.get_attribute_type(attribute_name) != DB.AttributeType.LIST:
+		push_error("Attribute not the correct type.")
+	var attrib: AttributeList = _attributes[attribute_name] if\
+			has_attribute(attribute_name) else new_default_attribute(attribute_name)
+	return attrib.get_list()
+
+func get_attribute_commands(attribute_name: String) -> Array[PathCommand]:
+	if DB.get_attribute_type(attribute_name) != DB.AttributeType.PATHDATA:
+		push_error("Attribute not the correct type.")
+	var attrib: AttributePathdata = _attributes[attribute_name] if\
+			has_attribute(attribute_name) else new_default_attribute(attribute_name)
+	return attrib.get_commands()
+
+func get_attribute_transforms(attribute_name: String) -> Array[Transform]:
+	if DB.get_attribute_type(attribute_name) != DB.AttributeType.TRANSFORM_LIST:
+		push_error("Attribute not the correct type.")
+	var attrib: AttributeTransformList = _attributes[attribute_name] if\
+			has_attribute(attribute_name) else new_default_attribute(attribute_name)
+	return attrib.get_transform_list()
+
+func get_attribute_final_transform(attribute_name: String) -> Transform2D:
+	if DB.get_attribute_type(attribute_name) != DB.AttributeType.TRANSFORM_LIST:
+		push_error("Attribute not the correct type.")
+	var attrib: AttributeTransformList = _attributes[attribute_name] if\
+			has_attribute(attribute_name) else new_default_attribute(attribute_name)
+	return attrib.get_final_transform()
+
+
+func set_attribute(attribute_name: String, value: Variant) -> void:
+	var attrib: Attribute
+	if has_attribute(attribute_name):
+		attrib = _attributes[attribute_name]
+	else:
+		attrib = new_attribute(attribute_name)
+	
+	var value_type := typeof(value)
+	
+	if value_type == TYPE_STRING:
+		attrib.set_value(value)
+	else:
+		match DB.get_attribute_type(attribute_name):
+			DB.AttributeType.NUMERIC:
+				if value_type in [TYPE_FLOAT, TYPE_INT]: attrib.set_num(value)
+				else: push_error("Invalid value set to attribute.")
+			DB.AttributeType.LIST:
+				if value_type in [TYPE_RECT2, TYPE_RECT2I]: attrib.set_rect(value)
+				elif value_type == TYPE_PACKED_FLOAT32_ARRAY: attrib.set_list(value)
+				else: push_error("Invalid value set to attribute.")
+			DB.AttributeType.PATHDATA:
+				if value_type == TYPE_ARRAY: attrib.set_commands(value)
+				else: push_error("Invalid value set to attribute.")
+			DB.AttributeType.TRANSFORM_LIST:
+				if value_type == TYPE_ARRAY: attrib.set_commands(value)
+				else: push_error("Invalid value set to attribute.")
+			_:
+				push_error("Invalid value set to attribute.")
+
+func get_default(attribute_name: String) -> String:
+	if attribute_name in DB.propagated_attributes:
+		if is_parent_g():
+			return parent.get_attribute_value(attribute_name)
+		elif svg != null:
+			return svg.get_attribute_value(attribute_name)
+	return get_own_default(attribute_name)
+
+func get_all_attributes() -> Array:
+	return _attributes.values()
+
+
+# Why is there no way to duplicate RefCounteds, again?
+func duplicate(include_children := true) -> Element:
+	var type: GDScript = get_script()
+	var new_element: Element
+	if type == ElementUnrecognized:
+		new_element = ElementUnrecognized.new(self.name)
+	else:
+		new_element = type.new()
+	for attribute in _attributes:
+		new_element.set_attribute(attribute, get_attribute_value(attribute))
+	
+	if include_children:
+		for i in get_child_count():
+			new_element.insert_child(i, get_child(i))
+	return new_element
+
+# Applies children and attributes to another element. Useful for conversion.
+func apply_to(element: Element, dropped_attributes: PackedStringArray) -> void:
+	element._child_elements = _child_elements
+	for attribute_name in _attributes:
+		if not attribute_name in dropped_attributes:
+			element.set_attribute(attribute_name, get_attribute_value(attribute_name))
+
+
+# To be overridden in extending classes.
+func get_own_default(_attribute_name: String) -> String:
+	return ""
+
+func get_percentage_handling(attribute_name: String) -> DB.PercentageHandling:
+	return DB.get_attribute_default_percentage_handling(attribute_name)
+
+func can_replace(_new_element: String) -> bool:
+	return false
+
+func get_replacement(_new_element: String) -> Element:
+	return null
+
+func get_config_warnings() -> PackedStringArray:
+	return PackedStringArray()
+
+func user_setup(_what = null) -> void:
+	return
+
+# Helpers
+func is_parent_g() -> bool:
+	return parent != null and parent is ElementG
+
+func get_transform() -> Transform2D:
+	var result := Transform2D.IDENTITY
+	if is_parent_g():
+		result *= parent.get_transform()
+	if has_attribute("transform"):
+		result *= get_attribute_final_transform("transform")
+	return result
+
+func new_attribute(name: String, value := "") -> Attribute:
+	var attrib := _create_attribute(name, value)
+	attrib.value_changed.connect(_on_attribute_value_changed.bind(attrib))
+	return attrib
+
+func new_default_attribute(name: String) -> Attribute:
+	return _create_attribute(name, get_default(name))
+
+func _create_attribute(name: String, value := "") -> Attribute:
+	match DB.get_attribute_type(name):
+		DB.AttributeType.NUMERIC: return AttributeNumeric.new(name, value)
+		DB.AttributeType.COLOR: return AttributeColor.new(name, value)
+		DB.AttributeType.LIST: return AttributeList.new(name, value)
+		DB.AttributeType.PATHDATA: return AttributePathdata.new(name, value)
+		DB.AttributeType.ENUM: return AttributeEnum.new(name, value)
+		DB.AttributeType.TRANSFORM_LIST: return AttributeTransformList.new(name, value)
+		DB.AttributeType.ID: return AttributeID.new(name, value)
+		_: return Attribute.new(name, value)

@@ -3,24 +3,14 @@ class_name AttributeColor extends Attribute
 
 # No direct color representation for this attribute type. There are too many quirks.
 
-func set_value(new_value: String, sync_mode := SyncMode.LOUD) -> void:
-	super(new_value if (new_value.is_empty() or ColorParser.is_valid(new_value))\
-			else get_default(), sync_mode)
+func set_value(new_value: String) -> void:
+	super(new_value if ColorParser.is_valid(new_value) else "")
 
 func format(text: String) -> String:
 	if GlobalSettings.color_enable_autoformatting:
-		var new_text := ColorParser.format_text(text)
-		return get_default() if ColorParser.are_colors_same(new_text, get_default()) else\
-				new_text
+		return ColorParser.format_text(text)
 	else:
 		return text
-
-
-func get_color() -> Color:
-	if _value.is_empty():
-		return ColorParser.string_to_color(DB.attribute_defaults[name])
-	else:
-		return ColorParser.string_to_color(_value)
 
 
 const special_colors = ["none", "currentColor"]

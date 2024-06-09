@@ -42,9 +42,18 @@ func update_palettes(search_text := "") -> void:
 	for child in palettes_content_container.get_children():
 		child.queue_free()
 	search_field.placeholder_text = TranslationServer.translate("Search color")
-	var reserved_color_palette := ColorPalette.new("")
-	reserved_color_palette.add_color()  # Add the "none" color.
-	# TODO Gradients should be added here.
+	var reserved_colors := PackedStringArray(["none"])
+	var reserved_color_names := PackedStringArray(["No color"])
+	for element in SVG.root_element.get_all_elements():
+		if element.has_attribute("id"):
+			if element is ElementLinearGradient:
+				reserved_color_names.append("Linear gradient")
+				reserved_colors.append("url(#%s)" % element.get_attribute_value("id"))
+			elif element is ElementRadialGradient:
+				reserved_color_names.append("Radial gradient")
+				reserved_colors.append("url(#%s)" % element.get_attribute_value("id"))
+	var reserved_color_palette := ColorPalette.new("", reserved_colors, reserved_color_names)
+	
 	var displayed_palettes: Array[ColorPalette] = [reserved_color_palette]
 	displayed_palettes += GlobalSettings.palettes
 	for palette in displayed_palettes:

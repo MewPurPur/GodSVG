@@ -1,12 +1,12 @@
-class_name PathDataParser extends RefCounted
+class_name PathdataParser extends RefCounted
 
 const translation_dict = PathCommand.translation_dict
 
-static func parse_path_data(text: String) -> Array[PathCommand]:
-	return path_commands_from_parsed_data(path_data_to_arrays(text))
+static func parse_pathdata(text: String) -> Array[PathCommand]:
+	return path_commands_from_parsed_data(pathdata_to_arrays(text))
 
 # godot_only/tests.gd has a test for this.
-static func path_data_to_arrays(text: String) -> Array[Array]:
+static func pathdata_to_arrays(text: String) -> Array[Array]:
 	var new_commands: Array[Array] = []
 	var curr_command := ""
 	var prev_command := ""
@@ -173,21 +173,21 @@ static func path_commands_from_parsed_data(data: Array[Array]) -> Array[PathComm
 static func path_commands_to_text(commands_arr: Array[PathCommand]) -> String:
 	var output := ""
 	var num_parser := NumberArrayParser.new()
-	num_parser.compress_numbers = GlobalSettings.path_compress_numbers
-	num_parser.minimize_spacing = GlobalSettings.path_minimize_spacing
+	num_parser.compress_numbers = GlobalSettings.pathdata_compress_numbers
+	num_parser.minimize_spacing = GlobalSettings.pathdata_minimize_spacing
 	
 	var last_command := ""
 	for i in commands_arr.size():
 		var cmd := commands_arr[i]
 		var cmd_char_capitalized := cmd.command_char.to_upper()
-		if not (GlobalSettings.path_remove_consecutive_commands and\
+		if not (GlobalSettings.pathdata_remove_consecutive_commands and\
 		((cmd_char_capitalized != "M" and last_command == cmd.command_char) or\
 		(last_command == "m" and cmd.command_char == "l") or\
 		(last_command == "M" and cmd.command_char == "L"))):
 			output += cmd.command_char
-			if not GlobalSettings.path_minimize_spacing:
+			if not GlobalSettings.pathdata_minimize_spacing:
 				output += " "
-		elif i > 0 and GlobalSettings.path_minimize_spacing:
+		elif i > 0 and GlobalSettings.pathdata_minimize_spacing:
 			var current_char := ""
 			var prev_numstr := ""
 			match cmd_char_capitalized:
@@ -209,7 +209,7 @@ static func path_commands_to_text(commands_arr: Array[PathCommand]) -> String:
 				"V":
 					current_char = num_parser.num_to_text(cmd.y)[0]
 					prev_numstr = num_parser.num_to_text(+commands_arr[i - 1].y)
-			if not GlobalSettings.path_minimize_spacing or not\
+			if not GlobalSettings.pathdata_minimize_spacing or not\
 			(("." in prev_numstr and current_char == ".") or current_char in "-+"):
 				output += " "
 		
@@ -218,7 +218,7 @@ static func path_commands_to_text(commands_arr: Array[PathCommand]) -> String:
 			"A":
 				output += num_parser.numstr_arr_to_text([num_parser.num_to_text(cmd.rx),
 						num_parser.num_to_text(cmd.ry), num_parser.num_to_text(cmd.rot, true)])
-				if GlobalSettings.path_remove_spacing_after_flags:
+				if GlobalSettings.pathdata_remove_spacing_after_flags:
 					output += (" 0" if cmd.large_arc_flag == 0 else " 1") +\
 							("0" if cmd.sweep_flag == 0 else "1")
 				else:
@@ -247,7 +247,7 @@ static func path_commands_to_text(commands_arr: Array[PathCommand]) -> String:
 			"V":
 				output += num_parser.num_to_text(cmd.y)
 			_: continue
-		if not GlobalSettings.path_minimize_spacing:
+		if not GlobalSettings.pathdata_minimize_spacing:
 			output += " "
 	
 	output = output.rstrip(" ")

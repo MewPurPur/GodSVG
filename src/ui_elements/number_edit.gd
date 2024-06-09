@@ -31,7 +31,6 @@ func get_value() -> float:
 
 
 func _ready() -> void:
-	super()
 	# Done like this so a signal isn't emitted.
 	_value = initial_value
 	text = String.num(_value, GlobalSettings.general_number_precision)

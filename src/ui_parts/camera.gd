@@ -18,7 +18,7 @@ var surface := RenderingServer.canvas_item_create()  # Used for drawing the numb
 
 func _ready() -> void:
 	RenderingServer.canvas_item_set_parent(surface, ci)
-	SVG.root_tag.resized.connect(queue_redraw)
+	SVG.resized.connect(queue_redraw)
 	Indications.zoom_changed.connect(change_zoom)
 	Indications.zoom_changed.connect(queue_redraw)
 

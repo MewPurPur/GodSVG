@@ -15,6 +15,7 @@ var popup_overlay_stack: Array[Control]
 
 
 func _enter_tree() -> void:
+	process_mode = PROCESS_MODE_ALWAYS
 	get_tree().root.auto_translate_mode = Node.AUTO_TRANSLATE_MODE_DISABLED
 	get_window().files_dropped.connect(_on_files_dropped)
 	get_window().dpi_changed.connect(update_ui_scale)

@@ -1,27 +1,44 @@
 # This singleton handles the two representations of the SVG:
-# The SVG text, and the native TagSVG representation.
+# The SVG text, and the native ElementSVG representation.
 extends Node
 
+signal changed_unknown
+signal resized
+
+# These signals copy the ones in ElementRoot.
+# ElementRoot is not persistent, while these signals can be connected to reliably.
+signal attribute_somewhere_changed(xid: PackedInt32Array)
+signal elements_added(xids: Array[PackedInt32Array])
+signal elements_deleted(xids: Array[PackedInt32Array])
+signal elements_moved_in_parenet(parent_xid: PackedInt32Array, old_indices: Array[int])
+signal elements_moved_to(xids: Array[PackedInt32Array], location: PackedInt32Array)
+signal elements_layout_changed  # Emitted together with any of the above 4.
+
 signal parsing_finished(error_id: SVGParser.ParseError)
-signal svg_text_changed()
+signal text_changed
 
-const DEFAULT = '<svg width="16" height="16" xmlns="http://www.w3.org/2000/svg"></svg>'
+const DEFAULT = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"></svg>'
 
-var text := "":
-	set(value):
-		text = value
-		svg_text_changed.emit()
+var current_size := Vector2.ZERO
 
-var root_tag := TagSVG.new()
+var update_pending := false
+var save_pending := false
+
+var text := ""
+
+var root_element := ElementRoot.new()
 
 var UR := UndoRedo.new()
 
 func _ready() -> void:
 	UR.version_changed.connect(_on_undo_redo)
-	root_tag.changed_unknown.connect(update_text.bind(false))
-	root_tag.attribute_changed.connect(update_text)
-	root_tag.child_attribute_changed.connect(update_text)
-	root_tag.tag_layout_changed.connect(update_text)
+	# Can be intermediate, like while you're editing text, so don't queue save.
+	changed_unknown.connect(queue_update)
+	# Layout changes are never intermediate, so queue save to save the bother.
+	elements_layout_changed.connect(queue_update)
+	elements_layout_changed.connect(queue_save)
+	# Can be intermediate, like when dragging an opacity slider, so don't queue save.
+	attribute_somewhere_changed.connect(queue_update.unbind(1))
 	
 	var cmdline_args := OS.get_cmdline_args()
 	var load_cmdl := false
@@ -43,45 +60,82 @@ func _ready() -> void:
 	
 	UR.clear_history()
 
-
 func _exit_tree() -> void:
 	UR.free()
 
-func update_tags() -> void:
-	var svg_parse_result := SVGParser.text_to_svg(text)
+
+func queue_update() -> void:
+	update_pending = true
+
+func queue_save() -> void:
+	save_pending = true
+
+func _process(_delta: float) -> void:
+	if update_pending:
+		update_text()
+		update_pending = false
+	if save_pending:
+		save_text()
+		save_pending = false
+
+
+func sync_elements() -> void:
+	var svg_parse_result := SVGParser.text_to_root(text)
 	parsing_finished.emit(svg_parse_result.error)
 	if svg_parse_result.error == SVGParser.ParseError.OK:
-		root_tag.replace_self(svg_parse_result.svg)
+		root_element = svg_parse_result.svg
+		root_element.attribute_somewhere_changed.connect(attribute_somewhere_changed.emit)
+		root_element.elements_added.connect(elements_added.emit)
+		root_element.elements_deleted.connect(elements_deleted.emit)
+		root_element.elements_moved_in_parenet.connect(elements_moved_in_parenet.emit)
+		root_element.elements_moved_to.connect(elements_moved_to.emit)
+		root_element.elements_layout_changed.connect(elements_layout_changed.emit)
+		root_element.attribute_changed.connect(_on_root_attribute_changed)
+		changed_unknown.emit()
+		update_current_size()
 
 
-func update_text(undo_redo := true) -> void:
-	if undo_redo:
-		UR.create_action("")
-		UR.add_do_property(self, "text", SVGParser.svg_to_text(root_tag))
-		UR.add_undo_property(self, "text", GlobalSettings.save_data.svg_text)
-		UR.commit_action()
-		GlobalSettings.modify_save_data("svg_text", text)
-	else:
-		text = SVGParser.svg_to_text(root_tag)
+func _on_root_attribute_changed(attribute_name: String) -> void:
+	if attribute_name in ["width", "height", "viewBox"]:
+		update_current_size()
+
+func update_current_size() -> void:
+	if current_size != root_element.get_size():
+		current_size = root_element.get_size()
+		resized.emit()
+
+func update_text() -> void:
+	set_text(SVGParser.root_to_text(root_element))
+
+func set_text(new_text: String) -> void:
+	text = new_text
+	text_changed.emit()
+
+func save_text() -> void:
+	var saved_text := GlobalSettings.save_data.svg_text
+	if saved_text == text:
+		return
+	UR.create_action("")
+	UR.add_do_property(GlobalSettings.save_data, "svg_text", text)
+	UR.add_undo_property(GlobalSettings.save_data, "svg_text", saved_text)
+	UR.add_do_property(self, "text", text)
+	UR.add_undo_property(self, "text", saved_text)
+	UR.commit_action()
 
 func undo() -> void:
 	if UR.has_undo():
 		UR.undo()
-		update_tags()
+		sync_elements()
 
 func redo() -> void:
 	if UR.has_redo():
 		UR.redo()
-		update_tags()
+		sync_elements()
 
 func _on_undo_redo() -> void:
 	GlobalSettings.modify_save_data("svg_text", text)
 
-
-func refresh() -> void:
-	SVG.root_tag.replace_self(SVG.root_tag.duplicate())
-
-func apply_svg_text(svg_text: String,) -> void:
-	text = svg_text
-	GlobalSettings.modify_save_data("svg_text", text)
-	update_tags()
+func apply_svg_text(svg_text: String) -> void:
+	set_text(svg_text)
+	save_text()
+	sync_elements()
