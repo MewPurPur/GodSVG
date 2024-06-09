@@ -53,11 +53,7 @@ func rebuild_colors() -> void:
 				swatch.pressed.emit()
 	# Add the add button.
 	var fake_swatch := Button.new()
-	fake_swatch.begin_bulk_theme_override()
-	for stylebox_type in ["normal", "hover", "pressed"]:
-		fake_swatch.add_theme_stylebox_override(stylebox_type,
-				fake_swatch.get_theme_stylebox(stylebox_type, "Swatch"))
-	fake_swatch.end_bulk_theme_override()
+	fake_swatch.theme_type_variation = "Swatch"
 	fake_swatch.icon = plus_icon
 	fake_swatch.icon_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	fake_swatch.focus_mode = Control.FOCUS_NONE

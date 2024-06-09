@@ -117,9 +117,9 @@ func _setup() -> void:
 		if font_color != Color.TRANSPARENT:
 			temp_line_edit.add_theme_color_override("font_color", _get_font_color())
 		temp_line_edit.add_theme_font_override("font", _get_font())
-		temp_line_edit.text_change_canceled.connect(emit_text_change_canceled)
-		temp_line_edit.text_changed.connect(emit_text_changed)
-		temp_line_edit.text_submitted.connect(emit_text_submitted)
+		temp_line_edit.text_change_canceled.connect(text_change_canceled.emit)
+		temp_line_edit.text_changed.connect(text_changed.emit)
+		temp_line_edit.text_submitted.connect(text_submitted.emit)
 		temp_line_edit.focus_entered.connect(_on_underlying_control_focused)
 		temp_line_edit.focus_exited.connect(_on_underlying_control_unfocused)
 		add_child(temp_line_edit)
@@ -134,8 +134,8 @@ func _setup() -> void:
 			temp_button.theme_type_variation = "LeftConnectedButton"
 		else:
 			temp_button.flat = true
-		temp_button.pressed.connect(emit_pressed)
-		temp_button.gui_input.connect(emit_button_gui_input)
+		temp_button.pressed.connect(pressed.emit)
+		temp_button.gui_input.connect(button_gui_input.emit)
 		temp_button.button_down.connect(_on_underlying_control_focused)
 		temp_button.button_up.connect(_on_underlying_control_unfocused)
 		add_child(temp_button)
@@ -174,22 +174,6 @@ func _draw() -> void:
 		var icon_side := BUTTON_WIDTH - horizontal_margin_width + 2
 		icon.draw_rect(ci, Rect2(size.x - (BUTTON_WIDTH + 0.5 + icon_side) / 2,
 				(size.y - icon_side) / 2, icon_side, icon_side), false)
-
-
-func emit_pressed() -> void:
-	pressed.emit()
-
-func emit_text_change_canceled() -> void:
-	text_change_canceled.emit()
-
-func emit_text_changed(new_text: String) -> void:
-	text_changed.emit(new_text)
-
-func emit_text_submitted(new_text: String) -> void:
-	text_submitted.emit(new_text)
-
-func emit_button_gui_input(event: InputEvent) -> void:
-	button_gui_input.emit(event)
 
 
 # Helpers

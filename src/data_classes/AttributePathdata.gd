@@ -1,22 +1,22 @@
 # The "d" attribute of [TagPath].
-class_name AttributePath extends Attribute
+class_name AttributePathdata extends Attribute
 
 var _commands: Array[PathCommand]
 
 func _sync() -> void:
-	_commands = PathDataParser.parse_path_data(get_value())
+	_commands = PathdataParser.parse_pathdata(get_value())
 	locate_start_points()
 
 func autoformat(text: String) -> String:
-	return PathDataParser.path_commands_to_text(PathDataParser.parse_path_data(text))
+	return PathdataParser.path_commands_to_text(PathdataParser.parse_pathdata(text))
 
 
-func set_commands(new_commands: Array[PathCommand], sync_mode := SyncMode.LOUD) -> void:
+func set_commands(new_commands: Array[PathCommand], save := true) -> void:
 	_commands = new_commands
-	sync_after_commands_change(sync_mode)
+	sync_after_commands_change(save)
 
-func sync_after_commands_change(sync_mode := SyncMode.LOUD) -> void:
-	set_value(PathDataParser.path_commands_to_text(_commands), sync_mode)
+func sync_after_commands_change(save := true) -> void:
+	set_value(PathdataParser.path_commands_to_text(_commands), save)
 
 
 func locate_start_points() -> void:
@@ -113,51 +113,50 @@ func get_implied_T_control(idx: int) -> Vector2:
 
 
 func set_command_property(idx: int, property: String, new_value: float,
-sync_mode := SyncMode.LOUD) -> void:
+save := true) -> void:
 	var cmd := get_command(idx)
-	if cmd.get(property) != new_value or sync_mode == SyncMode.FINAL:
+	if cmd.get(property) != new_value:
 		cmd.set(property, new_value)
-		sync_after_commands_change(sync_mode)
+		sync_after_commands_change(save)
 
-func insert_command(idx: int, command_char: String, vec := Vector2.ZERO,
-sync_mode := SyncMode.LOUD) -> void:
-	var new_cmd: PathCommand = PathCommand.translation_dict[command_char.to_upper()].new()
-	var relative := Utils.is_string_lower(command_char)
+func insert_command(idx: int, cmd_char: String, vec := Vector2.ZERO, save := true) -> void:
+	var new_cmd: PathCommand = PathCommand.translation_dict[cmd_char.to_upper()].new()
+	var relative := Utils.is_string_lower(cmd_char)
 	if relative:
 		new_cmd.toggle_relative()
 	_commands.insert(idx, new_cmd)
 	locate_start_points()
-	if not command_char in "Zz":
-		if not command_char in "Vv":
+	if not cmd_char in "Zz":
+		if not cmd_char in "Vv":
 			new_cmd.x = vec.x
-		if not command_char in "Hh":
+		if not cmd_char in "Hh":
 			new_cmd.y = vec.y
-		if command_char in "Qq":
+		if cmd_char in "Qq":
 			new_cmd.x1 = lerpf(0.0 if relative else new_cmd.start.x, vec.x, 0.5)
 			new_cmd.y1 = lerpf(0.0 if relative else new_cmd.start.y, vec.y, 0.5)
-		elif command_char in "Ss":
+		elif cmd_char in "Ss":
 			new_cmd.x2 = lerpf(0.0 if relative else new_cmd.start.x, vec.x, 2/3.0)
 			new_cmd.y2 = lerpf(0.0 if relative else new_cmd.start.y, vec.y, 2/3.0)
-		elif command_char in "Cc":
+		elif cmd_char in "Cc":
 			new_cmd.x1 = lerpf(0.0 if relative else new_cmd.start.x, vec.x, 1/3.0)
 			new_cmd.y1 = lerpf(0.0 if relative else new_cmd.start.y, vec.y, 1/3.0)
 			new_cmd.x2 = lerpf(0.0 if relative else new_cmd.start.x, vec.x, 2/3.0)
 			new_cmd.y2 = lerpf(0.0 if relative else new_cmd.start.y, vec.y, 2/3.0)
-	sync_after_commands_change(sync_mode)
+	sync_after_commands_change(save)
 
 
-func convert_command(idx: int, command_char: String, sync_mode := SyncMode.LOUD) -> void:
+func convert_command(idx: int, cmd_char: String, save := true) -> void:
 	var old_cmd := get_command(idx)
-	if old_cmd.command_char == command_char:
+	if old_cmd.command_char == cmd_char:
 		return
 	
-	var cmd_absolute_char := command_char.to_upper()
+	var cmd_absolute_char := cmd_char.to_upper()
 	var new_cmd: PathCommand = PathCommand.translation_dict[cmd_absolute_char].new()
 	for property in ["x", "y", "x1", "y1", "x2", "y2"]:
 		if property in old_cmd and property in new_cmd:
 			new_cmd[property] = old_cmd[property]
 	
-	var relative := Utils.is_string_lower(command_char)
+	var relative := Utils.is_string_lower(cmd_char)
 	
 	if "x" in new_cmd and not "x" in old_cmd:
 		new_cmd.x = 0.0 if relative else old_cmd.start.x
@@ -192,10 +191,10 @@ func convert_command(idx: int, command_char: String, sync_mode := SyncMode.LOUD)
 	_commands.insert(idx, new_cmd)
 	if relative:
 		_commands[idx].toggle_relative()
-	sync_after_commands_change(sync_mode)
+	sync_after_commands_change(save)
 
 
-func delete_commands(indices: Array[int], sync_mode := SyncMode.LOUD) -> void:
+func delete_commands(indices: Array[int], save := true) -> void:
 	if indices.is_empty():
 		return
 	
@@ -204,8 +203,8 @@ func delete_commands(indices: Array[int], sync_mode := SyncMode.LOUD) -> void:
 	indices.reverse()
 	for idx in indices:
 		_commands.remove_at(idx)
-	sync_after_commands_change(sync_mode)
+	sync_after_commands_change(save)
 
-func toggle_relative_command(idx: int, sync_mode := SyncMode.LOUD) -> void:
+func toggle_relative_command(idx: int, save := true) -> void:
 	_commands[idx].toggle_relative()
-	sync_after_commands_change(sync_mode)
+	sync_after_commands_change(save)

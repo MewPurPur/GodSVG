@@ -1,12 +1,12 @@
-class_name PathDataParser extends RefCounted
+class_name PathdataParser extends RefCounted
 
 const translation_dict = PathCommand.translation_dict
 
-static func parse_path_data(text: String) -> Array[PathCommand]:
-	return path_commands_from_parsed_data(path_data_to_arrays(text))
+static func parse_pathdata(text: String) -> Array[PathCommand]:
+	return path_commands_from_parsed_data(pathdata_to_arrays(text))
 
 # godot_only/tests.gd has a test for this.
-static func path_data_to_arrays(text: String) -> Array[Array]:
+static func pathdata_to_arrays(text: String) -> Array[Array]:
 	var new_commands: Array[Array] = []
 	var curr_command := ""
 	var prev_command := ""

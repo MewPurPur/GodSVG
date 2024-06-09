@@ -1,14 +1,16 @@
 # An editor to be tied to a numeric attribute.
 extends BetterLineEdit
 
-var attribute: AttributeNumeric
+var tag: Tag
+var attribute_name: String
 
 var min_value := 0.0
 var max_value := 1.0
 var allow_lower := true
 var allow_higher := true
 
-func set_value(new_value: String, update_type := Utils.UpdateType.REGULAR) -> void:
+func set_value(new_value: String, save := true) -> void:
+	var attribute := tag.get_attribute(attribute_name)
 	if not new_value.is_empty():
 		var numeric_value := NumberParser.evaluate(new_value)
 		# Validate the value.
@@ -27,34 +29,29 @@ func set_value(new_value: String, update_type := Utils.UpdateType.REGULAR) -> vo
 		sync(attribute.format(new_value))
 	
 	# Update the attribute.
-	if new_value != attribute.get_value() or update_type == Utils.UpdateType.FINAL:
-		match update_type:
-			Utils.UpdateType.INTERMEDIATE:
-				attribute.set_value(new_value, Attribute.SyncMode.INTERMEDIATE)
-			Utils.UpdateType.FINAL:
-				attribute.set_value(new_value, Attribute.SyncMode.FINAL)
-			_:
-				attribute.set_value(new_value)
+	if attribute.get_value() != new_value:
+		attribute.set_value(new_value, save)
 
 
 func _ready() -> void:
-	set_value(attribute.get_value())
 	super()
+	var attribute: AttributeNumeric = tag.get_attribute(attribute_name)
+	set_value(attribute.get_value())
 	attribute.value_changed.connect(set_value)
-	tooltip_text = attribute.name
-	placeholder_text = attribute.get_default()
+	tooltip_text = attribute_name
+	placeholder_text = tag.get_default(attribute_name)
 	text_submitted.connect(set_value)
 
 func _on_focus_entered() -> void:
 	remove_theme_color_override("font_color")
 
 func _on_text_change_canceled() -> void:
-	sync(attribute.get_value())
+	sync(tag.get_attribute(attribute_name).get_value())
 
 func sync(new_value: String) -> void:
 	text = new_value
 	remove_theme_color_override("font_color")
-	if new_value == attribute.get_default():
+	if new_value == tag.get_default(attribute_name):
 		add_theme_color_override("font_color", GlobalSettings.basic_color_warning)
 
 func _notification(what: int) -> void:

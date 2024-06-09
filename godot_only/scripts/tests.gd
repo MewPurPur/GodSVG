@@ -32,7 +32,7 @@ func pathdata_tests(print_success := false) -> bool:
 	
 	var tests_passed := true
 	for test in tests.keys():
-		var result := PathDataParser.path_data_to_arrays(test)
+		var result := PathdataParser.pathdata_to_arrays(test)
 		var expected: Array = tests[test]
 		if result != expected:
 			tests_passed = false

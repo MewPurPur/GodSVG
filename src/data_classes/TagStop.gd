@@ -3,10 +3,17 @@ class_name TagStop extends Tag
 
 const name = "stop"
 const possible_conversions = []
-const known_attributes = ["offset", "stop-color", "stop-opacity"]
-const icon = preload("res://visual/icons/tag/stop.svg")
 
-func _init() -> void:
-	for attrib_name in ["offset", "stop-color", "stop-opacity"]:
-		attributes[attrib_name] = DB.attribute(attrib_name)
-	super()
+func get_own_default(attribute_name: String) -> String:
+	match attribute_name:
+		"offset": return "0"
+		"stop-color": return "black"
+		"stop-opacity": return "1"
+		_: return ""
+
+func get_config_warnings() -> PackedStringArray:
+	var warnings := super()
+	if not (parent is TagLinearGradient or parent is TagRadialGradient):
+		warnings.append(TranslationServer.translate("{tag} must be a child of {allowed} to have any effect.").format(
+				{"tag": name, "allowed": "[linearGradient, radialGradient]"}))
+	return warnings

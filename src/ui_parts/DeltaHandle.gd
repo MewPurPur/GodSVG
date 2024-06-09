@@ -2,41 +2,39 @@
 class_name DeltaHandle extends Handle
 
 # Required.
-var x_attribute: AttributeNumeric
-var y_attribute: AttributeNumeric
-var t_attribute: AttributeTransform
-
+var x_name: String
+var y_name: String
+var d_name: String
 var horizontal: bool
-var d_attribute: AttributeNumeric
 
-func _init(id: PackedInt32Array, xref: AttributeNumeric, yref: AttributeNumeric,
-tref: AttributeTransform, dref: AttributeNumeric, p_horizontal: bool) -> void:
-	tid = id
-	x_attribute = xref
-	y_attribute = yref
-	t_attribute = tref
-	d_attribute = dref
+func _init(new_tag: Tag, xref: String, yref: String, dref: String, p_horizontal: bool) -> void:
+	tag = new_tag
+	x_name = xref
+	y_name = yref
+	d_name = dref
 	horizontal = p_horizontal
 	display_mode = Display.SMALL
 	sync()
 
-func set_pos(new_pos: Vector2, undo_redo := false) -> void:
-	if initial_pos != new_pos and undo_redo:
-		d_attribute.set_num(absf(new_pos.x - x_attribute.get_num() if horizontal else\
-				new_pos.y - y_attribute.get_num()), Attribute.SyncMode.FINAL)
-	else:
-		d_attribute.set_num(absf(new_pos.x - x_attribute.get_num() if horizontal else\
-				new_pos.y - y_attribute.get_num()), Attribute.SyncMode.FINAL if undo_redo\
-				else Attribute.SyncMode.INTERMEDIATE)
-	pos = Vector2(x_attribute.get_num(), y_attribute.get_num())
+func set_pos(new_pos: Vector2, save := true) -> void:
 	if horizontal:
-		pos += Vector2(d_attribute.get_num(), 0.0)
+		new_pos = Vector2(tag.get_attribute(x_name).get_num() +\
+				tag.get_attribute(d_name).get_num(), tag.get_attribute(y_name).get_num())
 	else:
-		pos += Vector2(0.0, d_attribute.get_num())
+		new_pos = Vector2(tag.get_attribute(x_name).get_num(),
+				tag.get_attribute(y_name).get_num() + tag.get_attribute(d_name).get_num())
+	
+	if pos != new_pos:
+		pos = new_pos
+		tag.get_attribute(d_name).set_num(
+				absf(new_pos.x - tag.get_attribute(x_name).get_num() if horizontal\
+				else new_pos.y - tag.get_attribute(y_name).get_num()), save)
 
 func sync() -> void:
 	if horizontal:
-		pos = Vector2(x_attribute.get_num() + d_attribute.get_num(), y_attribute.get_num())
+		pos = Vector2(tag.get_attribute(x_name).get_num() +\
+				tag.get_attribute(d_name).get_num(), tag.get_attribute(y_name).get_num())
 	else:
-		pos = Vector2(x_attribute.get_num(), y_attribute.get_num() + d_attribute.get_num())
-	transform = t_attribute.get_final_transform()
+		pos = Vector2(tag.get_attribute(x_name).get_num(),
+				tag.get_attribute(y_name).get_num() + tag.get_attribute(d_name).get_num())
+	super()

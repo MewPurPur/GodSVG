@@ -111,8 +111,12 @@ func cancel_listening() -> void:
 
 func delete_shortcut(idx: int) -> void:
 	events.remove_at(idx)
-	GlobalSettings.modify_keybind(action, events)
+	update_shortcut()
 	sync()
+
+func update_shortcut() -> void:
+	Utils.custom_notify(Utils.CustomNotification.SHORTCUTS_CHANGED)
+	GlobalSettings.modify_keybind(action, events)
 
 func _input(event: InputEvent) -> void:
 	if not (listening_idx >= 0 and event is InputEventKey):
@@ -134,14 +138,14 @@ func _input(event: InputEvent) -> void:
 	elif event.is_released():
 		if listening_idx < events.size():
 			events[listening_idx] = event
-			GlobalSettings.modify_keybind(action, events)
+			update_shortcut()
 		else:
 			events.append(event)
-			GlobalSettings.modify_keybind(action, events)
+			update_shortcut()
 		sync()
 		listening_idx = -1
 
 func _on_reset_button_pressed() -> void:
 	events = GlobalSettings.default_input_events[action].duplicate(true)
-	GlobalSettings.modify_keybind(action, events)
+	update_shortcut()
 	sync()

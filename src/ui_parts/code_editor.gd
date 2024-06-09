@@ -23,10 +23,9 @@ func _ready() -> void:
 	setup_theme()
 	setup_highlighter()
 	code_edit.clear_undo_history()
-	SVG.root_tag.attribute_changed.connect(auto_update_text.unbind(1))
-	SVG.root_tag.child_attribute_changed.connect(auto_update_text.unbind(1))
-	SVG.root_tag.tag_layout_changed.connect(auto_update_text)
-	SVG.root_tag.changed_unknown.connect(auto_update_text)
+	SVG.attribute_somewhere_changed.connect(auto_update_text.unbind(1))
+	SVG.tag_layout_changed.connect(auto_update_text)
+	SVG.changed_unknown.connect(auto_update_text)
 	GlobalSettings.save_data.current_file_path_changed.connect(update_file_button)
 	import_button.pressed.connect(ShortcutUtils.fn("import"))
 	export_button.pressed.connect(ShortcutUtils.fn("export"))
@@ -124,7 +123,7 @@ func set_new_text(svg_text: String) -> void:
 
 func _on_svg_code_edit_text_changed() -> void:
 	SVG.text = code_edit.text
-	SVG.update_tags()
+	SVG.sync()
 
 
 func update_size_label() -> void:

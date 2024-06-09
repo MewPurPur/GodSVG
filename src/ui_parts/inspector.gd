@@ -12,13 +12,13 @@ func _notification(what: int) -> void:
 
 func _ready() -> void:
 	update_translation()
-	SVG.root_tag.tag_layout_changed.connect(full_rebuild)
-	SVG.root_tag.changed_unknown.connect(full_rebuild)
+	SVG.tag_layout_changed.connect(full_rebuild)
+	SVG.changed_unknown.connect(full_rebuild)
 	full_rebuild()
 
 
 func update_translation() -> void:
-	$AddButton.text = TranslationServer.translate("Add new tag")
+	add_button.text = TranslationServer.translate("Add element")
 
 
 func full_rebuild() -> void:
@@ -28,30 +28,26 @@ func full_rebuild() -> void:
 	for tag_idx in SVG.root_tag.get_child_count():
 		var tag_editor := TagFrame.instantiate()
 		tag_editor.tag = SVG.root_tag.child_tags[tag_idx]
-		tag_editor.tid = PackedInt32Array([tag_idx])
 		tags_container.add_child(tag_editor)
 
 func add_tag(tag_name: String) -> void:
-	var new_tid := PackedInt32Array([SVG.root_tag.get_child_count()])
-	var new_tag: Tag
-	match tag_name:
-		"circle": new_tag = TagCircle.new()
-		"ellipse": new_tag = TagEllipse.new()
-		"rect": new_tag = TagRect.new()
-		"path": new_tag = TagPath.new()
-		"line": new_tag = TagLine.new()
-	new_tag.user_setup()
-	SVG.root_tag.add_tag(new_tag, new_tid)
+	var new_tag := DB.tag(tag_name)
+	if tag_name in ["linearGradient", "radialGradient"]:
+		SVG.root_tag.add_tag(new_tag, PackedInt32Array([0]))
+	else:
+		SVG.root_tag.add_tag(new_tag, PackedInt32Array([SVG.root_tag.get_child_count()]))
 
 
 func _on_add_button_pressed() -> void:
 	var btn_array: Array[Button] = []
-	for tag_name in ["path", "circle", "ellipse", "rect", "line"]:
+	for tag_name in PackedStringArray(["path", "circle", "ellipse", "rect", "line",
+	"g", "linearGradient", "radialGradient"]):
 		var btn := ContextPopup.create_button(tag_name, add_tag.bind(tag_name), false,
 				DB.get_tag_icon(tag_name))
 		btn.add_theme_font_override("font", load("res://visual/fonts/FontMono.ttf"))
 		btn_array.append(btn)
+	var separator_indices: Array[int] = [1, 5]
 	
 	var add_popup := ContextPopup.new()
-	add_popup.setup(btn_array, true, add_button.size.x)
+	add_popup.setup(btn_array, true, add_button.size.x, separator_indices)
 	HandlerGUI.popup_under_rect(add_popup, add_button.get_global_rect(), get_viewport())

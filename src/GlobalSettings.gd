@@ -11,11 +11,12 @@ const config_path = "user://config.tres"
 
 # Don't have the language setting here, so it's not reset.
 const default_config = {
-	"autoformat": {
+	"formatting": {
 		"general_number_precision": 3,
 		"general_angle_precision": 1,
 		"xml_add_trailing_newline": false,
 		"xml_shorthand_tags": true,
+		"xml_pretty_formatting": false,
 		"number_enable_autoformatting": false,
 		"number_remove_zero_padding": false,
 		"number_remove_leading_zero": true,
@@ -25,13 +26,15 @@ const default_config = {
 		"color_convert_named_to_hex": true,
 		"color_use_shorthand_hex_code": true,
 		"color_use_short_named_colors": false,
-		"path_compress_numbers": true,
-		"path_minimize_spacing": true,
-		"path_remove_spacing_after_flags": false,
-		"path_remove_consecutive_commands": true,
-		"transform_compress_numbers": true,
-		"transform_minimize_spacing": true,
-		"transform_remove_unnecessary_params": true,
+		"pathdata_enable_autoformatting": true,
+		"pathdata_compress_numbers": true,
+		"pathdata_minimize_spacing": true,
+		"pathdata_remove_spacing_after_flags": false,
+		"pathdata_remove_consecutive_commands": true,
+		"transform_list_enable_autoformatting": true,
+		"transform_list_compress_numbers": true,
+		"transform_list_minimize_spacing": true,
+		"transform_list_remove_unnecessary_params": true,
 	},
 	"theming": {
 		"highlighting_symbol_color": Color("abc9ff"),
@@ -66,6 +69,7 @@ const default_config = {
 # No way to fetch defaults otherwise.
 var default_input_events := {}  # Dictionary{String: Array[InputEvent]}
 
+# Stores whether the keybinds should be modifiable.
 const keybinds_dict = {
 	"file": {
 		"import": true,
@@ -146,6 +150,7 @@ var general_number_precision := 3
 var general_angle_precision := 1
 var xml_add_trailing_newline := false
 var xml_shorthand_tags := true
+var xml_pretty_formatting := false
 var number_enable_autoformatting := false
 var number_remove_zero_padding := true
 var number_remove_leading_zero := false
@@ -154,13 +159,15 @@ var color_convert_rgb_to_hex := false
 var color_convert_named_to_hex := true
 var color_use_shorthand_hex_code := true
 var color_use_short_named_colors := false
-var path_compress_numbers := true
-var path_minimize_spacing := true
-var path_remove_spacing_after_flags := false
-var path_remove_consecutive_commands := true
-var transform_compress_numbers := true
-var transform_minimize_spacing := true
-var transform_remove_unnecessary_params := true
+var pathdata_enable_autoformatting := true
+var pathdata_compress_numbers := true
+var pathdata_minimize_spacing := true
+var pathdata_remove_spacing_after_flags := false
+var pathdata_remove_consecutive_commands := true
+var transform_list_enable_autoformatting := true
+var transform_list_compress_numbers := true
+var transform_list_minimize_spacing := true
+var transform_list_remove_unnecessary_params := true
 
 # Theming
 var highlighting_symbol_color := Color("abc9ff")
@@ -291,6 +298,5 @@ func reset_palettes() -> void:
 
 # Just a helper.
 func get_validity_color(error_condition: bool, warning_condition := false) -> Color:
-	return GlobalSettings.basic_color_error if error_condition else\
-			GlobalSettings.basic_color_warning if warning_condition else\
-			GlobalSettings.basic_color_valid
+	return basic_color_error if error_condition else\
+			basic_color_warning if warning_condition else basic_color_valid

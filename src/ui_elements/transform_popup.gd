@@ -18,7 +18,7 @@ const icons_dict := {
 	"skewY": preload("res://visual/icons/SkewY.svg"),
 }
 
-var attribute_ref: AttributeTransform
+var attribute_ref: AttributeTransformList
 var UR := UndoRedo.new()
 
 @onready var x1_edit: NumberEditType = %FinalMatrix/X1
@@ -55,15 +55,14 @@ func rebuild() -> void:
 		if i >= transform_count:
 			break
 		var t := attribute_ref.get_transform(i)
-		if t is AttributeTransform.TransformMatrix and transform_editor.type == "matrix":
+		if t is Transform.TransformMatrix and transform_editor.type == "matrix":
 			transform_editor.fields[0].set_value(t.x1, true)
 			transform_editor.fields[1].set_value(t.x2, true)
 			transform_editor.fields[2].set_value(t.y1, true)
 			transform_editor.fields[3].set_value(t.y2, true)
 			transform_editor.fields[4].set_value(t.o1, true)
 			transform_editor.fields[5].set_value(t.o2, true)
-		elif t is AttributeTransform.TransformTranslate and\
-		transform_editor.type == "translate":
+		elif t is Transform.TransformTranslate and transform_editor.type == "translate":
 			transform_editor.fields[0].set_value(t.x, true)
 			transform_editor.fields[1].set_value(t.y, true)
 			if t.y == 0:
@@ -72,7 +71,7 @@ func rebuild() -> void:
 						DEFAULT_VALUE_OPACITY))
 			else:
 				transform_editor.fields[1].remove_theme_color_override("font_color")
-		elif t is AttributeTransform.TransformRotate and transform_editor.type == "rotate":
+		elif t is Transform.TransformRotate and transform_editor.type == "rotate":
 			transform_editor.fields[0].set_value(t.deg, true)
 			transform_editor.fields[1].set_value(t.x, true)
 			transform_editor.fields[2].set_value(t.y, true)
@@ -86,7 +85,7 @@ func rebuild() -> void:
 			else:
 				transform_editor.fields[1].remove_theme_color_override("font_color")
 				transform_editor.fields[2].remove_theme_color_override("font_color")
-		elif t is AttributeTransform.TransformScale and transform_editor.type == "scale":
+		elif t is Transform.TransformScale and transform_editor.type == "scale":
 			transform_editor.fields[0].set_value(t.x, true)
 			transform_editor.fields[1].set_value(t.y, true)
 			if t.x == t.y:
@@ -95,9 +94,9 @@ func rebuild() -> void:
 						DEFAULT_VALUE_OPACITY))
 			else:
 				transform_editor.fields[1].remove_theme_color_override("font_color")
-		elif t is AttributeTransform.TransformSkewX and transform_editor.type == "skewX":
+		elif t is Transform.TransformSkewX and transform_editor.type == "skewX":
 			transform_editor.fields[0].set_value(t.x, true)
-		elif t is AttributeTransform.TransformSkewY and transform_editor.type == "skewY":
+		elif t is Transform.TransformSkewY and transform_editor.type == "skewY":
 			transform_editor.fields[0].set_value(t.y, true)
 		else:
 			break
@@ -111,24 +110,24 @@ func rebuild() -> void:
 		var t_editor := TransformEditor.instantiate()
 		transform_list.add_child(t_editor)
 		# Setup top panel
-		if t is AttributeTransform.TransformMatrix:
+		if t is Transform.TransformMatrix:
 			t_editor.type = "matrix"
-		elif t is AttributeTransform.TransformTranslate:
+		elif t is Transform.TransformTranslate:
 			t_editor.type = "translate"
-		elif t is AttributeTransform.TransformRotate:
+		elif t is Transform.TransformRotate:
 			t_editor.type = "rotate"
-		elif t is AttributeTransform.TransformScale:
+		elif t is Transform.TransformScale:
 			t_editor.type = "scale"
-		elif t is AttributeTransform.TransformSkewX:
+		elif t is Transform.TransformSkewX:
 			t_editor.type = "skewX"
-		elif t is AttributeTransform.TransformSkewY:
+		elif t is Transform.TransformSkewY:
 			t_editor.type = "skewY"
 		t_editor.transform_label.text = t_editor.type
 		t_editor.transform_icon.texture = icons_dict[t_editor.type]
 		t_editor.more_button.pressed.connect(
 				popup_transform_actions.bind(i, t_editor.more_button))
 		# Setup fields.
-		if t is AttributeTransform.TransformMatrix:
+		if t is Transform.TransformMatrix:
 			var field_x1 := create_mini_number_field(t, i, "x1")
 			var field_x2 := create_mini_number_field(t, i, "x2")
 			var field_y1 := create_mini_number_field(t, i, "y1")
@@ -149,7 +148,7 @@ func rebuild() -> void:
 			transform_fields_additional.add_child(field_o2)
 			t_editor.transform_list.add_child(transform_fields)
 			t_editor.transform_list.add_child(transform_fields_additional)
-		elif t is AttributeTransform.TransformTranslate:
+		elif t is Transform.TransformTranslate:
 			var field_x := create_mini_number_field(t, i, "x")
 			var field_y := create_mini_number_field(t, i, "y")
 			t_editor.fields = [field_x, field_y] as Array[BetterLineEdit]
@@ -158,7 +157,7 @@ func rebuild() -> void:
 			transform_fields.add_child(field_x)
 			transform_fields.add_child(field_y)
 			t_editor.transform_list.add_child(transform_fields)
-		elif t is AttributeTransform.TransformRotate:
+		elif t is Transform.TransformRotate:
 			var field_deg := create_mini_number_field(t, i, "deg")
 			field_deg.mode = field_deg.Mode.ANGLE
 			var field_x := create_mini_number_field(t, i, "x")
@@ -170,7 +169,7 @@ func rebuild() -> void:
 			transform_fields.add_child(field_x)
 			transform_fields.add_child(field_y)
 			t_editor.transform_list.add_child(transform_fields)
-		elif t is AttributeTransform.TransformScale:
+		elif t is Transform.TransformScale:
 			var field_x := create_mini_number_field(t, i, "x")
 			var field_y := create_mini_number_field(t, i, "y")
 			t_editor.fields = [field_x, field_y] as Array[BetterLineEdit]
@@ -179,14 +178,14 @@ func rebuild() -> void:
 			transform_fields.add_child(field_x)
 			transform_fields.add_child(field_y)
 			t_editor.transform_list.add_child(transform_fields)
-		elif t is AttributeTransform.TransformSkewX:
+		elif t is Transform.TransformSkewX:
 			var field_x := create_mini_number_field(t, i, "x")
 			t_editor.fields = [field_x] as Array[BetterLineEdit]
 			var transform_fields := HBoxContainer.new()
 			transform_fields.alignment = BoxContainer.ALIGNMENT_CENTER
 			transform_fields.add_child(field_x)
 			t_editor.transform_list.add_child(transform_fields)
-		elif t is AttributeTransform.TransformSkewY:
+		elif t is Transform.TransformSkewY:
 			var field_y := create_mini_number_field(t, i, "y")
 			t_editor.fields = [field_y] as Array[BetterLineEdit]
 			var transform_fields := HBoxContainer.new()
@@ -199,15 +198,15 @@ func rebuild() -> void:
 	add_button.visible = (transform_count == 0)
 	update_final_transform()
 
-func create_mini_number_field(transform: AttributeTransform.Transform, idx: int,
+func create_mini_number_field(transform: Transform, idx: int,
 property: String) -> BetterLineEdit:
 	var field := MiniNumberField.instantiate()
 	field.custom_minimum_size.x = 44
 	field.set_value(transform.get(property))
-	if (transform is AttributeTransform.TransformTranslate and transform.y == 0 and\
-	property == "y") or (transform is AttributeTransform.TransformRotate and\
-	transform.x == 0 and transform.y == 0 and (property == "x" or property == "y")) or\
-	(transform is AttributeTransform.TransformScale and transform.x == transform.y and\
+	if (transform is Transform.TransformTranslate and transform.y == 0 and\
+	property == "y") or (transform is Transform.TransformRotate and transform.x == 0 and\
+	transform.y == 0 and (property == "x" or property == "y")) or\
+	(transform is Transform.TransformScale and transform.x == transform.y and\
 	property == "y"):
 		field.add_theme_color_override("font_color", Color(
 				field.get_theme_color("font_color"), DEFAULT_VALUE_OPACITY))
@@ -244,9 +243,9 @@ func _on_apply_matrix_pressed() -> void:
 	var final_transform := attribute_ref.get_final_transform()
 	UR.create_action("")
 	UR.add_do_method(attribute_ref.set_transform_list.bind([
-			AttributeTransform.TransformMatrix.new(final_transform.x.x, final_transform.x.y,
+			Transform.TransformMatrix.new(final_transform.x.x, final_transform.x.y,
 			final_transform.y.x, final_transform.y.y, final_transform.origin.x,
-			final_transform.origin.y)] as Array[AttributeTransform.Transform]))
+			final_transform.origin.y)] as Array[Transform]))
 	UR.add_do_method(rebuild)
 	UR.add_undo_method(attribute_ref.set_transform_list.bind(get_transform_list()))
 	UR.add_undo_method(rebuild)
@@ -303,20 +302,20 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 # So I have to rebuild this in its entirety to keep the references safe or something...
-func get_transform_list() -> Array[AttributeTransform.Transform]:
-	var t_list: Array[AttributeTransform.Transform] = []
+func get_transform_list() -> Array[Transform]:
+	var t_list: Array[Transform] = []
 	for t in attribute_ref.get_transform_list():
-		if t is AttributeTransform.TransformMatrix:
-			t_list.append(AttributeTransform.TransformMatrix.new(
+		if t is Transform.TransformMatrix:
+			t_list.append(Transform.TransformMatrix.new(
 					t.x1, t.x2, t.y1, t.y2, t.o1, t.o2))
-		elif t is AttributeTransform.TransformTranslate:
-			t_list.append(AttributeTransform.TransformTranslate.new(t.x, t.y))
-		elif t is AttributeTransform.TransformRotate:
-			t_list.append(AttributeTransform.TransformRotate.new(t.deg, t.x, t.y))
-		elif t is AttributeTransform.TransformScale:
-			t_list.append(AttributeTransform.TransformScale.new(t.x, t.y))
-		elif t is AttributeTransform.TransformSkewX:
-			t_list.append(AttributeTransform.TransformSkewX.new(t.x))
-		elif t is AttributeTransform.TransformSkewY:
-			t_list.append(AttributeTransform.TransformSkewY.new(t.y))
+		elif t is Transform.TransformTranslate:
+			t_list.append(Transform.TransformTranslate.new(t.x, t.y))
+		elif t is Transform.TransformRotate:
+			t_list.append(Transform.TransformRotate.new(t.deg, t.x, t.y))
+		elif t is Transform.TransformScale:
+			t_list.append(Transform.TransformScale.new(t.x, t.y))
+		elif t is Transform.TransformSkewX:
+			t_list.append(Transform.TransformSkewX.new(t.x))
+		elif t is Transform.TransformSkewY:
+			t_list.append(Transform.TransformSkewY.new(t.y))
 	return t_list

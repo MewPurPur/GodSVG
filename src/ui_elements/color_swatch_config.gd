@@ -44,7 +44,7 @@ func _draw() -> void:
 	# Draw the drag-and-drop indicator.
 	var drop_sb := StyleBoxFlat.new()
 	drop_sb.draw_center = false
-	drop_sb.border_color = Color.YELLOW
+	drop_sb.border_color = Color.GREEN
 	drop_sb.set_corner_radius_all(3)
 	if drop_idx == idx:
 		drop_sb.border_width_left = 2

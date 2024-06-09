@@ -1,14 +1,16 @@
 # An editor to be tied to a color attribute.
 extends LineEditButton
 
-var attribute: AttributeColor
+var tag: Tag
+var attribute_name: String
 
 const ColorPopup = preload("res://src/ui_elements/color_popup.tscn")
 const checkerboard = preload("res://visual/icons/backgrounds/ColorButtonBG.svg")
 
 @onready var color_popup: Control
 
-func set_value(new_value: String, update_type := Utils.UpdateType.REGULAR) -> void:
+func set_value(new_value: String, save := true) -> void:
+	var attribute := tag.get_attribute(attribute_name)
 	if not new_value.is_empty():
 		# Validate the value.
 		if not is_valid(new_value):
@@ -18,28 +20,35 @@ func set_value(new_value: String, update_type := Utils.UpdateType.REGULAR) -> vo
 	sync(attribute.format(new_value))
 	
 	# Update the attribute.
-	if attribute.get_value() != new_value or update_type == Utils.UpdateType.FINAL:
-		match update_type:
-			Utils.UpdateType.INTERMEDIATE:
-				attribute.set_value(new_value, Attribute.SyncMode.INTERMEDIATE)
-			Utils.UpdateType.FINAL:
-				attribute.set_value(new_value, Attribute.SyncMode.FINAL)
-			_:
-				attribute.set_value(new_value)
+	if attribute.get_value() != new_value:
+		attribute.set_value(new_value, save)
+
+func setup_default() -> void:
+	placeholder_text = tag.get_default(attribute_name)
 
 
 func _ready() -> void:
-	set_value(attribute.get_value())
-	tooltip_text = attribute.name
-	placeholder_text = attribute.get_default()
-	attribute.value_changed.connect(set_value)
+	set_value(tag.get_attribute_value(attribute_name, true))
+	tag.attribute_changed.connect(_on_tag_attribute_changed)
+	if attribute_name in DB.propagated_attributes:
+		tag.ancestor_attribute_changed.connect(_on_tag_ancestor_attribute_changed)
 	text_submitted.connect(set_value)
 	focus_entered.connect(reset_font_color)
+	tooltip_text = attribute_name
+	setup_default()
 
+
+func _on_tag_attribute_changed(attribute_changed: String) -> void:
+	if attribute_name == attribute_changed:
+		set_value(tag.get_attribute_value(attribute_name, true), false)
+
+func _on_tag_ancestor_attribute_changed(attribute_changed: String) -> void:
+	if attribute_name == attribute_changed:
+		setup_default()
 
 func _on_pressed() -> void:
 	color_popup = ColorPopup.instantiate()
-	color_popup.current_value = attribute.get_value()
+	color_popup.current_value = tag.get_attribute(attribute_name).get_value()
 	color_popup.color_picked.connect(_on_color_picked)
 	HandlerGUI.popup_under_rect(color_popup, get_global_rect(), get_viewport())
 
@@ -48,7 +57,7 @@ func _draw() -> void:
 	var stylebox := StyleBoxFlat.new()
 	stylebox.corner_radius_top_right = 5
 	stylebox.corner_radius_bottom_right = 5
-	stylebox.bg_color = attribute.get_color()
+	stylebox.bg_color = tag.get_attribute(attribute_name).get_color()
 	checkerboard.draw(ci, Vector2(size.x - BUTTON_WIDTH, 1))
 	stylebox.draw(ci, Rect2(size.x - BUTTON_WIDTH, 1, BUTTON_WIDTH - 1, size.y - 2))
 	if is_instance_valid(temp_button) and temp_button.button_pressed:
@@ -61,15 +70,15 @@ func _draw() -> void:
 
 
 func _on_text_change_canceled() -> void:
-	sync(attribute.get_value())
+	sync(tag.get_attribute(attribute_name).get_value())
 
 
 func _on_color_picked(new_color: String, close_picker: bool) -> void:
 	if close_picker:
 		color_popup.queue_free()
-		set_value(new_color, Utils.UpdateType.FINAL)
+		set_value(new_color, true)
 	else:
-		set_value(new_color, Utils.UpdateType.INTERMEDIATE)
+		set_value(new_color, false)
 
 func is_valid(color_text: String) -> bool:
 	return ColorParser.is_valid(ColorParser.add_hash_if_hex(color_text))
@@ -80,7 +89,7 @@ func _on_text_changed(new_text: String) -> void:
 
 func sync(new_value: String) -> void:
 	reset_font_color()
-	if new_value == attribute.get_default():
+	if new_value == tag.get_default(attribute_name):
 		font_color = GlobalSettings.basic_color_warning
 	text = new_value.trim_prefix("#")
 	queue_redraw()

@@ -40,7 +40,6 @@ func _ready() -> void:
 	update_theme()
 	update_snap_config()
 	get_window().window_input.connect(_update_input_debug)
-	Indications.imported_reference.connect(finish_reference_load)
 	view_settings_updated.emit(grid_visuals.visible, controls.visible,
 			viewport.display_texture.rasterized)
 	
@@ -145,6 +144,9 @@ func _on_more_options_pressed() -> void:
 			"about_info")
 	about_btn.expand_icon = true
 	var buttons_arr: Array[Button] = [
+		ContextPopup.create_button(TranslationServer.translate("Check for updates"),
+				ShortcutUtils.fn("check_updates"), false,
+				load("res://visual/icons/Reload.svg"), "check_updates"),
 		about_btn,
 		ContextPopup.create_button(TranslationServer.translate("Donate…"),
 				ShortcutUtils.fn("about_donate"), false, load("res://visual/icons/Heart.svg"),
@@ -154,11 +156,8 @@ func _on_more_options_pressed() -> void:
 				"about_repo"),
 		ContextPopup.create_button(TranslationServer.translate("GodSVG website"),
 				ShortcutUtils.fn("about_website"), false, load("res://visual/icons/Link.svg"),
-				"about_website"),
-		ContextPopup.create_button(TranslationServer.translate("Check for updates"),
-				ShortcutUtils.fn("check_updates"), false,
-				load("res://visual/icons/Reload.svg"), "check_updates")]
-	var separator_indices: Array[int] = [2, 4]
+				"about_website")]
+	var separator_indices: Array[int] = [1, 3]
 	
 	var more_popup := ContextPopup.new()
 	more_popup.setup(buttons_arr, true, -1, separator_indices)
@@ -182,7 +181,7 @@ func toggle_rasterization() -> void:
 			viewport.display_texture.rasterized)
 
 func load_reference_image() -> void:
-	FileUtils.open_reference_load_dialog()
+	FileUtils.open_reference_load_dialog(finish_reference_load)
 
 func toggle_reference_image() -> void:
 	reference_texture.visible = not reference_texture.visible

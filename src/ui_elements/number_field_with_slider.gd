@@ -1,7 +1,8 @@
 # An editor to be tied to a numeric attribute, plus a slider widget.
 extends LineEditButton
 
-var attribute: AttributeNumeric
+var tag: Tag
+var attribute_name: String
 
 var slider_step := 0.01
 var min_value := 0.0
@@ -9,7 +10,8 @@ var max_value := 1.0
 var allow_lower := true
 var allow_higher := true
 
-func set_value(new_value: String, update_type := Utils.UpdateType.REGULAR) -> void:
+func set_value(new_value: String, save := true) -> void:
+	var attribute := tag.get_attribute(attribute_name)
 	if not new_value.is_empty():
 		var numeric_value := NumberParser.evaluate(new_value)
 		# Validate the value.
@@ -29,34 +31,29 @@ func set_value(new_value: String, update_type := Utils.UpdateType.REGULAR) -> vo
 	
 	sync(attribute.format(new_value))
 	# Update the attribute.
-	if new_value != attribute.get_value() or update_type == Utils.UpdateType.FINAL:
-		match update_type:
-			Utils.UpdateType.INTERMEDIATE:
-				attribute.set_value(new_value, Attribute.SyncMode.INTERMEDIATE)
-			Utils.UpdateType.FINAL:
-				attribute.set_value(new_value, Attribute.SyncMode.FINAL)
-			_:
-				attribute.set_value(new_value)
+	if new_value != attribute.get_value():
+		attribute.set_value(new_value, save)
 
-func set_num(new_number: float, update_type := Utils.UpdateType.REGULAR) -> void:
-	set_value(NumberParser.num_to_text(new_number), update_type)
+func set_num(new_number: float, save := true) -> void:
+	set_value(NumberParser.num_to_text(new_number), save)
 
 
 func _ready() -> void:
+	var attribute: AttributeNumeric = tag.get_attribute(attribute_name)
 	set_value(attribute.get_value())
 	attribute.value_changed.connect(set_value)
-	tooltip_text = attribute.name
-	placeholder_text = attribute.get_default()
+	tooltip_text = attribute_name
+	placeholder_text = tag.get_default(attribute_name)
 	text_submitted.connect(set_value)
 	focus_entered.connect(reset_font_color)
 
 func _on_text_change_canceled() -> void:
-	sync(attribute.get_value())
+	set_value(tag.get_attribute(attribute_name).get_value())
 
 func sync(new_value: String) -> void:
 	text = new_value
 	reset_font_color()
-	if new_value == attribute.get_default():
+	if new_value == tag.get_default(attribute_name):
 		font_color = GlobalSettings.basic_color_warning
 	queue_redraw()
 
@@ -95,7 +92,8 @@ func _draw() -> void:
 	stylebox.bg_color = get_theme_stylebox("normal", "LineEdit").bg_color
 	stylebox.draw(ci, Rect2(get_size().x - BUTTON_WIDTH,
 			1, BUTTON_WIDTH - 2, get_size().y - 2))
-	var fill_height := (get_size().y - 4) * (attribute.get_num() - min_value) / max_value
+	var fill_height: float = (get_size().y - 4) *\
+			(tag.get_attribute(attribute_name).get_num() - min_value) / max_value
 	# Create a stylebox that'll occupy the exact amount of space.
 	var fill_stylebox := StyleBoxFlat.new()
 	fill_stylebox.bg_color = Color("#def")
@@ -128,21 +126,21 @@ func _on_slider_gui_input(event: InputEvent) -> void:
 			slider_hovered = true
 		if Utils.is_event_drag_start(event):
 			slider_dragged = true
-			initial_slider_value = attribute.get_num()
-			set_num(get_slider_value_at_y(event.position.y), Utils.UpdateType.INTERMEDIATE)
+			initial_slider_value = tag.get_attribute(attribute_name).get_num()
+			set_num(get_slider_value_at_y(event.position.y), false)
 	else:
 		if Utils.is_event_drag(event):
-			set_num(get_slider_value_at_y(event.position.y), Utils.UpdateType.INTERMEDIATE)
+			set_num(get_slider_value_at_y(event.position.y), false)
 		elif Utils.is_event_drag_end(event):
 			slider_dragged = false
 			var final_slider_value := get_slider_value_at_y(event.position.y)
 			if initial_slider_value != final_slider_value:
-				set_num(final_slider_value, Utils.UpdateType.FINAL)
+				set_num(final_slider_value, true)
 
 func _unhandled_input(event: InputEvent) -> void:
 	if slider_dragged and Utils.is_event_cancel(event):
 		slider_dragged = false
-		set_num(initial_slider_value, Utils.UpdateType.INTERMEDIATE)
+		set_num(initial_slider_value, false)
 		accept_event()
 
 func get_slider_value_at_y(y_coord: float) -> float:

@@ -4,54 +4,54 @@ class_name SVGParser extends RefCounted
 const shorthand_tag_exceptions = ["svg", "g", "linearGradient, radialGradient"]
 
 # For rendering only a section of the SVG.
-static func svg_to_text_custom(svg_tag: TagSVG, custom_width: float,
+static func root_to_text_custom(svg_tag: TagSVG, custom_width: float,
 custom_height: float, custom_viewbox: Rect2) -> String:
 	var new_svg_tag: TagSVG = svg_tag.duplicate(false)
-	new_svg_tag.attributes.viewBox.set_rect(custom_viewbox)
-	new_svg_tag.attributes.width.set_num(custom_width)
-	new_svg_tag.attributes.height.set_num(custom_height)
+	new_svg_tag.set_attribute("viewBox", custom_viewbox)
+	new_svg_tag.set_attribute("width", custom_width)
+	new_svg_tag.set_attribute("height", custom_height)
 	var text := _tag_to_text(new_svg_tag)
-	text = text.left(-6)  # Removee the </svg> at the end.
+	text = text.left(-6)  # Remove the </svg> at the end.
 	for child_idx in svg_tag.get_child_count():
 		text += _tag_to_text(svg_tag.get_tag(PackedInt32Array([child_idx])))
 	return text + "</svg>"
 
-static func svg_to_text(tag: TagSVG) -> String:
+static func root_to_text(tag: TagRoot) -> String:
+	var text := _tag_to_text(tag).trim_suffix('\n')
 	if GlobalSettings.xml_add_trailing_newline:
-		return _tag_to_text(tag) + "\n"
-	else:
-		return _tag_to_text(tag)
+		text += "\n"
+	return text
 
 static func _tag_to_text(tag: Tag) -> String:
 	var text := ""
+	if GlobalSettings.xml_pretty_formatting:
+		text += '\t'.repeat(tag.xid.size())
 	text += '<' + tag.name
 	for attribute_key in tag.attributes:
 		var attribute: Attribute = tag.attributes[attribute_key]
 		var value := attribute.get_value()
-		
-		if value.is_empty():
-			continue
 		
 		if not '"' in value:
 			text += ' %s="%s"' % [attribute_key, value]
 		else:
 			text += " %s='%s'" % [attribute_key, value]
 	
-	for attribute in tag.unknown_attributes:
-		var value := attribute.get_value()
-		if not '"' in value:
-			text += ' %s="%s"' % [attribute.name, value]
-		else:
-			text += " %s='%s'" % [attribute.name, value]
-	
 	if tag.is_standalone() and GlobalSettings.xml_shorthand_tags and\
 	not tag.name in shorthand_tag_exceptions:
 		text += '/>'
+		if GlobalSettings.xml_pretty_formatting:
+			text += '\n'
 	else:
 		text += '>'
+		if GlobalSettings.xml_pretty_formatting:
+			text += '\n'
 		for child_tag in tag.child_tags:
 			text += _tag_to_text(child_tag)
-		text += '</' + tag.name + '>'
+		if GlobalSettings.xml_pretty_formatting:
+			text += '\t'.repeat(tag.xid.size())
+		text += '</%s>' % tag.name
+		if GlobalSettings.xml_pretty_formatting:
+			text += '\n'
 	
 	return text
 
@@ -60,7 +60,7 @@ enum ParseError {OK, ERR_NOT_SVG, ERR_IMPROPER_NESTING}
 
 class ParseResult extends RefCounted:
 	var error: SVGParser.ParseError
-	var svg: TagSVG
+	var svg: TagRoot
 	
 	func _init(err_id: SVGParser.ParseError, result: TagSVG = null) -> void:
 		error = err_id
@@ -74,11 +74,14 @@ static func get_error_string(parse_error: ParseError) -> String:
 			return TranslationServer.translate("Improper nesting.")
 		_: return ""
 
-static func text_to_svg(text: String) -> ParseResult:
+static func text_to_root(text: String) -> ParseResult:
 	if text.is_empty():
 		return ParseResult.new(ParseError.ERR_NOT_SVG)
 	
-	var svg_tag := TagSVG.new()
+	var root_tag := TagRoot.new()
+	root_tag.xid = PackedInt32Array()
+	root_tag.root = root_tag
+	root_tag.svg = null
 	var parser := XMLParser.new()
 	parser.open_buffer(text.to_utf8_buffer())
 	var unclosed_tag_stack: Array[Tag] = []
@@ -97,34 +100,17 @@ static func text_to_svg(text: String) -> ParseResult:
 		var attrib_dict := {}
 		for i in parser.get_attribute_count():
 			attrib_dict[parser.get_attribute_name(i)] = parser.get_attribute_value(i)
-		# width, height, and viewBox don't have defaults.
-		if attrib_dict.has("width"):
-			svg_tag.attributes.width.set_value(attrib_dict["width"],
-					Attribute.SyncMode.SILENT)
-		if attrib_dict.has("height"):
-			svg_tag.attributes.height.set_value(attrib_dict["height"],
-					Attribute.SyncMode.SILENT)
-		if attrib_dict.has("viewBox"):
-			svg_tag.attributes.viewBox.set_value(attrib_dict["viewBox"],
-					Attribute.SyncMode.SILENT)
-		svg_tag.update_cache()
 		
-		var unknown: Array[Attribute] = []
 		for element in attrib_dict:
-			if svg_tag.attributes.has(element):
-				var attribute: Attribute = svg_tag.attributes[element]
-				attribute.set_value(attrib_dict[element], Attribute.SyncMode.SILENT)
-			else:
-				unknown.append(Attribute.new(element, attrib_dict[element]))
-		svg_tag.set_unknown_attributes(unknown)
+			root_tag.set_attribute(element, attrib_dict[element])
 		
 		var node_offset := parser.get_node_offset()
 		var closure_pos := text.find("/>", node_offset)
 		if closure_pos == -1 or closure_pos > text.find(">", node_offset):
-			unclosed_tag_stack.append(svg_tag)
+			unclosed_tag_stack.append(root_tag)
 			break
 		else:
-			return ParseResult.new(ParseError.OK, svg_tag)
+			return ParseResult.new(ParseError.OK, root_tag)
 	
 	if not describes_svg:
 		return ParseResult.new(ParseError.ERR_NOT_SVG)
@@ -138,32 +124,23 @@ static func text_to_svg(text: String) -> ParseResult:
 				for i in parser.get_attribute_count():
 					attrib_dict[parser.get_attribute_name(i)] = parser.get_attribute_value(i)
 				
-				var tag: Tag
-				match node_name:
-					"circle": tag = TagCircle.new()
-					"ellipse": tag = TagEllipse.new()
-					"rect": tag = TagRect.new()
-					"path": tag = TagPath.new()
-					"line": tag = TagLine.new()
-					"stop": tag = TagStop.new()
-					_: tag = TagUnknown.new(node_name)
+				var tag := DB.tag(node_name)
+				tag.set_parent(unclosed_tag_stack.back())
+				tag.xid = tag.parent.xid.duplicate()
+				tag.xid.append(tag.parent.get_child_count())
 				
-				var unknown: Array[Attribute] = []
 				for element in attrib_dict:
-					if tag.attributes.has(element):
-						var attribute: Attribute = tag.attributes[element]
-						attribute.set_value(attrib_dict[element], Attribute.SyncMode.SILENT)
-					else:
-						unknown.append(Attribute.new(element, attrib_dict[element]))
-				tag.set_unknown_attributes(unknown)
+					tag.set_attribute(element, attrib_dict[element])
 				
 				# Check if we're entering or exiting the tag.
 				var node_offset := parser.get_node_offset()
 				var closure_pos := text.find("/>", node_offset)
+				
 				if closure_pos == -1 or closure_pos > text.find(">", node_offset):
 					unclosed_tag_stack.append(tag)
 				else:
 					unclosed_tag_stack.back().child_tags.append(tag)
+			
 			XMLParser.NODE_ELEMENT_END:
 				if unclosed_tag_stack.is_empty():
 					return ParseResult.new(ParseError.ERR_IMPROPER_NESTING)
@@ -179,4 +156,4 @@ static func text_to_svg(text: String) -> ParseResult:
 	if not unclosed_tag_stack.is_empty():
 		return ParseResult.new(ParseError.ERR_IMPROPER_NESTING)
 	
-	return ParseResult.new(ParseError.OK, svg_tag)
+	return ParseResult.new(ParseError.OK, root_tag)

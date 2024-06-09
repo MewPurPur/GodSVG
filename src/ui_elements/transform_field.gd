@@ -1,20 +1,16 @@
 # An editor to be tied to a transform list attribute.
 extends LineEditButton
 
-var attribute: AttributeTransform
+var tag: Tag
+var attribute_name: String
 
 const TransformPopup = preload("res://src/ui_elements/transform_popup.tscn")
 
-func set_value(new_value: String, update_type := Utils.UpdateType.REGULAR) -> void:
-	sync(attribute.format(new_value))
-	if attribute.get_value() != new_value or update_type == Utils.UpdateType.FINAL:
-		match update_type:
-			Utils.UpdateType.INTERMEDIATE:
-				attribute.set_value(new_value, Attribute.SyncMode.INTERMEDIATE)
-			Utils.UpdateType.FINAL:
-				attribute.set_value(new_value, Attribute.SyncMode.FINAL)
-			_:
-				attribute.set_value(new_value)
+func set_value(new_value: String, save := true) -> void:
+	sync(new_value)
+	var attribute := tag.get_attribute(attribute_name)
+	if attribute.get_value() != new_value:
+		attribute.set_value(new_value, save)
 
 
 func _notification(what: int) -> void:
@@ -22,9 +18,10 @@ func _notification(what: int) -> void:
 		update_translation()
 
 func _ready() -> void:
+	var attribute: AttributeTransformList = tag.get_attribute(attribute_name)
 	set_value(attribute.get_value())
 	attribute.value_changed.connect(set_value)
-	tooltip_text = attribute.name
+	tooltip_text = attribute_name
 	text_submitted.connect(set_value)
 	text_changed.connect(setup_font)
 	update_translation()
@@ -42,7 +39,7 @@ func sync(new_value: String) -> void:
 
 func _on_pressed() -> void:
 	var transform_popup := TransformPopup.instantiate()
-	transform_popup.attribute_ref = attribute
+	transform_popup.attribute_ref = tag.get_attribute(attribute_name)
 	HandlerGUI.popup_under_rect(transform_popup, get_global_rect(), get_viewport())
 
 

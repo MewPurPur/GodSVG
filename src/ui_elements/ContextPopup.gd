@@ -15,7 +15,7 @@ icon: Texture2D = null, shortcut := "") -> Button:
 	
 	if not shortcut.is_empty():
 		if not InputMap.has_action(shortcut):
-			printerr("A non-existent shortcut was passed to ContextPopup.create_button().")
+			push_error("Non-existent shortcut was passed to ContextPopup.create_button().")
 		elif InputMap.has_action(shortcut):
 			var events := InputMap.action_get_events(shortcut)
 			if not events.is_empty():
@@ -26,11 +26,10 @@ icon: Texture2D = null, shortcut := "") -> Button:
 				if disabled:
 					main_button.disabled = true
 					ret_button.disabled = true
-					main_button.add_theme_stylebox_override("disabled",
-							main_button.get_theme_stylebox("normal", "ContextButton"))
 				else:
 					ret_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-					main_button.add_theme_stylebox_override("normal",
+				for theme_item in ["normal", "hover", "pressed", "disabled"]:
+					main_button.add_theme_stylebox_override(theme_item,
 							main_button.get_theme_stylebox("normal", "ContextButton"))
 				var internal_hbox := HBoxContainer.new()
 				main_button.mouse_filter = Control.MOUSE_FILTER_IGNORE  # Unpressable.
@@ -43,8 +42,10 @@ icon: Texture2D = null, shortcut := "") -> Button:
 				var label := Label.new()
 				label.text = events[0].as_text_keycode()
 				label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
-				label.add_theme_color_override("font_color",
-						ThemeGenerator.common_subtle_text_color)
+				var shortcut_text_color := ThemeGenerator.common_subtle_text_color
+				if disabled:
+					shortcut_text_color.a *= 0.75
+				label.add_theme_color_override("font_color", shortcut_text_color)
 				label.add_theme_font_size_override("font_size",
 						main_button.get_theme_font_size("font_size"))
 				
@@ -80,7 +81,7 @@ start_pressed: bool, shortcut := "") -> CheckBox:
 	
 	if not shortcut.is_empty():
 		if not InputMap.has_action(shortcut):
-			printerr("A non-existent shortcut was passed to ContextPopup.create_checkbox().")
+			push_error("Non-existent shortcut was passed to ContextPopup.create_checkbox().")
 		elif InputMap.has_action(shortcut):
 			var events := InputMap.action_get_events(shortcut)
 			if not events.is_empty():
@@ -102,8 +103,10 @@ start_pressed: bool, shortcut := "") -> CheckBox:
 				var label := Label.new()
 				label.text = events[0].as_text_keycode()
 				label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
-				label.add_theme_color_override("font_color",
-						ThemeGenerator.common_subtle_text_color)
+				var shortcut_text_color := ThemeGenerator.common_subtle_text_color
+				#if disabled:
+					#shortcut_text_color.a *= 0.75
+				label.add_theme_color_override("font_color", shortcut_text_color)
 				label.add_theme_font_size_override("font_size",
 						checkbox.get_theme_font_size("font_size"))
 				
@@ -176,7 +179,7 @@ min_width := -1.0, separator_indices: Array[int] = []) -> void:
 		stylebox.content_margin_left = 8
 		stylebox.content_margin_right = 8
 		stylebox.border_width_bottom = 2
-		stylebox.border_color = ThemeGenerator.common_separator_color
+		stylebox.border_color = ThemeGenerator.common_panel_border_color
 		title_container.add_theme_stylebox_override("panel", stylebox)
 		var title_label := Label.new()
 		title_label.text = top_title

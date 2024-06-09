@@ -18,7 +18,7 @@ var _zoom_to: Vector2
 
 func _ready() -> void:
 	zoom_menu.zoom_changed.connect(view.update.unbind(2))
-	SVG.root_tag.resized.connect(resize)
+	SVG.resized.connect(resize)
 	Indications.viewport_size_changed.connect(adjust_view)
 	resize()
 	await get_tree().process_frame
@@ -149,10 +149,8 @@ func adjust_view(offset := Vector2(0.5, 0.5)) -> void:
 	var old_size := last_size_adjusted
 	last_size_adjusted = size / Indications.zoom
 	
-	var svg_w := 16384.0 if SVG.root_tag.attributes.width.get_value().is_empty()\
-			else SVG.root_tag.width
-	var svg_h := 16384.0 if SVG.root_tag.attributes.height.get_value().is_empty()\
-			else SVG.root_tag.height
+	var svg_w := SVG.root_tag.width if SVG.root_tag.attributes.has("width") else 16384.0
+	var svg_h := SVG.root_tag.height if SVG.root_tag.attributes.has("height") else 16384.0
 	
 	var zoomed_size := buffer_view_space * size / Indications.zoom
 	view.limit_left = int(-zoomed_size.x)

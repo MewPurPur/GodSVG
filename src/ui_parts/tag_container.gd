@@ -12,7 +12,7 @@ func _ready():
 	Indications.requested_scroll_to_tag_editor.connect(scroll_to_view_tag_editor)
 
 func _process(delta: float) -> void:
-	if Indications.proposed_drop_tid.is_empty():
+	if Indications.proposed_drop_xid.is_empty():
 		return
 	
 	# Autoscroll when the dragged object is near the edge of the screen.
@@ -29,57 +29,57 @@ func _process(delta: float) -> void:
 	var old_scroll_vertical := scroll_container.scroll_vertical
 	scroll_container.scroll_vertical += scroll_value
 	if scroll_container.scroll_vertical != old_scroll_vertical:
-		update_proposed_tid()
+		update_proposed_xid()
 
-func update_proposed_tid() -> void:
+func update_proposed_xid() -> void:
 	var y_pos := get_local_mouse_position().y + scroll_container.scroll_vertical
 	var in_top_buffer := false
 	var in_bottom_buffer := false
 	# Keep track of the last tag editor whose position is before y_pos.
-	var prev_tid := PackedInt32Array([-1])
+	var prev_xid := PackedInt32Array([-1])
 	var prev_y := -INF
 	# Keep track of the first tag editor whose end is after y_pos.
-	var next_tid := PackedInt32Array([SVG.root_tag.get_child_count()])
+	var next_xid := PackedInt32Array([SVG.root_tag.get_child_count()])
 	var next_y := INF
 	
-	for tid in SVG.root_tag.get_all_tids():
-		var tag_rect := get_tag_editor_rect(tid)
+	for tag in SVG.root_tag.get_all_tags():
+		var tag_rect := get_tag_editor_rect(tag.xid)
 		var buffer := minf(tag_rect.size.y / 3, 26)
 		var tag_end := tag_rect.end.y
 		var tag_start := tag_rect.position.y
 		if y_pos < tag_end and tag_end < next_y:
 			next_y = tag_end
-			next_tid = tid
+			next_xid = tag.xid
 			if y_pos > tag_end - buffer:
 				in_bottom_buffer = true
 		if y_pos > tag_start and tag_start > prev_y:
 			prev_y = tag_start
-			prev_tid = tid
+			prev_xid = tag.xid
 			if y_pos < tag_start + buffer:
 				in_top_buffer = true
-	# Set the proposed drop TID based on what the previous and next tag editors are.
+	# Set the proposed drop XID based on what the previous and next tag editors are.
 	if in_top_buffer:
-		Indications.set_proposed_drop_tid(prev_tid)
+		Indications.set_proposed_drop_xid(prev_xid)
 	elif in_bottom_buffer:
-		Indications.set_proposed_drop_tid(Utils.get_parent_tid(next_tid) +\
-				PackedInt32Array([next_tid[-1] + 1]))
-	elif next_tid[0] >= SVG.root_tag.get_child_count():
-		Indications.set_proposed_drop_tid(next_tid)
-	elif Utils.is_tid_parent_or_self(prev_tid, next_tid):
-		for i in range(prev_tid.size(), next_tid.size()):
-			if next_tid[i] != 0:
+		Indications.set_proposed_drop_xid(Utils.get_parent_xid(next_xid) +\
+				PackedInt32Array([next_xid[-1] + 1]))
+	elif next_xid[0] >= SVG.root_tag.get_child_count():
+		Indications.set_proposed_drop_xid(next_xid)
+	elif Utils.is_xid_parent_or_self(prev_xid, next_xid):
+		for i in range(prev_xid.size(), next_xid.size()):
+			if next_xid[i] != 0:
 				return
-		Indications.set_proposed_drop_tid(prev_tid + PackedInt32Array([0]))
+		Indications.set_proposed_drop_xid(prev_xid + PackedInt32Array([0]))
 
 
 func _notification(what: int) -> void:
 	if is_inside_tree() and not get_tree().paused:
 		if what == NOTIFICATION_DRAG_BEGIN:
 			covering_rect.show()
-			update_proposed_tid()
+			update_proposed_xid()
 		elif what == NOTIFICATION_DRAG_END:
 			covering_rect.hide()
-			Indications.clear_proposed_drop_tid()
+			Indications.clear_proposed_drop_xid()
 
 func _gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
@@ -95,40 +95,43 @@ func _gui_input(event: InputEvent) -> void:
 				location += 1
 			# Create the context popup.
 			var btn_array: Array[Button] = []
-			for tag_name in ["path", "circle", "ellipse", "rect", "line"]:
+			for tag_name in ["path", "circle", "ellipse", "rect", "line", "g"]:
 				var btn := ContextPopup.create_button(tag_name,
 						add_tag.bind(tag_name, location), false, DB.get_tag_icon(tag_name))
 				btn.add_theme_font_override("font", load("res://visual/fonts/FontMono.ttf"))
 				btn_array.append(btn)
 			
+			if location == 0:
+				for tag_name in ["linearGradient", "radialGradient"]:
+					var btn := ContextPopup.create_button(tag_name,
+							add_tag.bind(tag_name, location), false, DB.get_tag_icon(tag_name))
+					btn.add_theme_font_override("font", load("res://visual/fonts/FontMono.ttf"))
+					btn_array.append(btn)
+			
+			var separation_indices: Array[int] = [1, 5]
+			
 			var add_popup := ContextPopup.new()
-			add_popup.setup_with_title(btn_array, TranslationServer.translate("New tag"), true)
+			add_popup.setup_with_title(btn_array, TranslationServer.translate("New tag"),
+					true, -1, separation_indices)
 			var vp := get_viewport()
 			HandlerGUI.popup_under_pos(add_popup, vp.get_mouse_position(), vp)
 
 func add_tag(tag_name: String, tag_location: int) -> void:
-	var tag: Tag
-	match tag_name:
-		"path": tag = TagPath.new()
-		"circle": tag = TagCircle.new()
-		"ellipse": tag = TagEllipse.new()
-		"rect": tag = TagRect.new()
-		"line": tag = TagLine.new()
-	tag.user_setup()
-	SVG.root_tag.add_tag(tag, PackedInt32Array([tag_location]))
+	SVG.root_tag.add_tag(DB.tag(tag_name), PackedInt32Array([tag_location]))
 
-# This function assumes there exists a tag editor for the corresponding TID.
-func get_tag_editor_rect(tid: PackedInt32Array) -> Rect2:
-	if tid.is_empty():
+# This function assumes there exists a tag editor for the corresponding XID.
+func get_tag_editor_rect(xid: PackedInt32Array) -> Rect2:
+	if xid.is_empty():
 		return Rect2()
 	
-	var tag_editor: Control = tags.get_child(tid[0])
-	for i in range(1, tid.size()):
-		tag_editor = tag_editor.child_tags_container.get_child(tid[i])
+	var tag_editor: Control = tags.get_child(xid[0])
+	for i in range(1, xid.size()):
+		tag_editor = tag_editor.child_tags_container.get_child(xid[i])
 	# Position relative to the tag container.
 	return Rect2(tag_editor.global_position - scroll_container.global_position +\
 			Vector2(0, scroll_container.scroll_vertical), tag_editor.size)
 
-# This function assumes there exists a tag editor for the corresponding TID
-func scroll_to_view_tag_editor(tid: PackedInt32Array) -> void:
-	scroll_container.get_v_scroll_bar().value = get_tag_editor_rect(tid).position.y - scroll_container.size.y / 5
+# This function assumes there exists a tag editor for the corresponding XID.
+func scroll_to_view_tag_editor(xid: PackedInt32Array) -> void:
+	scroll_container.get_v_scroll_bar().value = get_tag_editor_rect(xid).position.y -\
+			scroll_container.size.y / 5

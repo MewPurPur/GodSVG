@@ -17,10 +17,9 @@ var update_pending := false
 
 
 func _ready() -> void:
-	SVG.root_tag.tag_layout_changed.connect(queue_update)
-	SVG.root_tag.changed_unknown.connect(queue_update)
-	SVG.root_tag.attribute_changed.connect(queue_update.unbind(1))
-	SVG.root_tag.child_attribute_changed.connect(queue_update.unbind(1))
+	SVG.tag_layout_changed.connect(queue_update)
+	SVG.changed_unknown.connect(queue_update)
+	SVG.attribute_somewhere_changed.connect(queue_update.unbind(1))
 	Indications.zoom_changed.connect(queue_update)
 	queue_update()
 
@@ -47,10 +46,9 @@ func svg_update() -> void:
 	display_rect.end.x = minf(display_rect.end.x, SVG.root_tag.width)
 	display_rect.end.y = minf(display_rect.end.y, SVG.root_tag.height)
 	
-	var svg_text := SVGParser.svg_to_text_custom(SVG.root_tag, display_rect.size.x,
+	var svg_text := SVGParser.root_to_text_custom(SVG.root_tag, display_rect.size.x,
 			display_rect.size.y, Rect2(SVG.root_tag.world_to_canvas(display_rect.position),
 			display_rect.size / SVG.root_tag.canvas_transform.get_scale()))
-	
 	var img := Image.new()
 	var err := img.load_svg_from_string(svg_text, image_zoom)
 	if err == OK:

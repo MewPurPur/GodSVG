@@ -1,5 +1,7 @@
 extends PanelContainer
 
+const app_info_json = preload("res://app_info.json")
+
 @onready var version_label: Label = %VersionLabel
 @onready var close_button: Button = $VBoxContainer/CloseButton
 @onready var translations_list: VBoxContainer = %Translations/List
@@ -30,16 +32,17 @@ func update_translation() -> void:
 	%Components.text = TranslationServer.translate("Godot third-party components")
 
 func _ready() -> void:
+	var app_info: Dictionary = app_info_json.data
 	version_label.text = "GodSVG v" + ProjectSettings.get_setting("application/config/version")
-	project_founder_list.items = AppInfo.project_founder_and_manager
+	project_founder_list.items = app_info.project_founder_and_manager
 	project_founder_list.setup()
-	authors_list.items = AppInfo.authors
+	authors_list.items = app_info.authors
 	authors_list.setup()
-	donors_list.items = AppInfo.donors
+	donors_list.items = app_info.donors
 	donors_list.setup()
-	golden_donors_list.items = AppInfo.golden_donors
+	golden_donors_list.items = app_info.golden_donors
 	golden_donors_list.setup()
-	diamond_donors_list.items = AppInfo.diamond_donors
+	diamond_donors_list.items = app_info.diamond_donors
 	diamond_donors_list.setup()
 	# There can be multiple translators for a single locale.
 	for lang in TranslationServer.get_loaded_locales():
