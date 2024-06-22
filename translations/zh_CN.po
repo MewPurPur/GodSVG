@@ -185,7 +185,7 @@ msgstr "捐赠者"
 
 #: src/ui_parts/about_menu.gd
 msgid "License"
-msgstr "许可证"
+msgstr "协议"
 
 #: src/ui_parts/about_menu.gd
 msgid "Godot third-party components"
@@ -193,7 +193,7 @@ msgstr "Godot 第三方组件"
 
 #: src/ui_parts/about_menu.gd
 msgid "Third-party licenses"
-msgstr "第三方许可证"
+msgstr "第三方协议"
 
 #: src/ui_parts/alert_dialog.gd src/ui_parts/good_file_dialog.gd
 msgid "Alert!"
