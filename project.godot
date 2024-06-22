@@ -314,10 +314,11 @@ pointing/android/enable_pan_and_scale_gestures=true
 
 [internationalization]
 
-locale/translations=PackedStringArray("res://translations/bg.po", "res://translations/de.po", "res://translations/en.po", "res://translations/ru.po", "res://translations/uk.po")
+locale/translations=PackedStringArray("res://translations/bg.po", "res://translations/de.po", "res://translations/en.po", "res://translations/ru.po", "res://translations/uk.po", "res://translations/zh_CN.po")
 
 [rendering]
 
 renderer/rendering_method="gl_compatibility"
 textures/vram_compression/import_etc2_astc=true
 environment/defaults/default_clear_color=Color(0.12, 0.132, 0.2, 1)
+ 
