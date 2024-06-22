@@ -13,7 +13,7 @@ msgstr ""
 "X-Generator: Poedit 3.4.4\n"
 
 msgid "translation-credits"
-msgstr "翻译鸣谢"
+msgstr "Hamster5295 <hamster5295@163.com>"
 
 #: src/parsers/SVGParser.gd
 msgid "Doesn’t describe an SVG."
