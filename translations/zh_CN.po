@@ -412,10 +412,10 @@ msgid ""
 msgstr "文件 “{file_name}” 已经存在。替换操作将会覆写它的内容！"
 
 # Tag 原意为“标签”，在 SVG 编辑语境下表示一个由 <tag> ... </tag> 构成的代码块。
-# 为了更方便用户，尤其是不了解 SVG 的用户的理解，此处翻译为 “图形” 而非 “标签”
+# 为了更方便用户，尤其是不了解 SVG 的用户的理解，此处翻译为 “元素” 而非 “标签”
 #: src/ui_parts/handles_manager.gd src/ui_parts/tag_container.gd
 msgid "New tag"
-msgstr "创建图形"
+msgstr "添加元素"
 
 #: src/ui_parts/import_warning_dialog.gd
 msgid "Import Problems"
@@ -423,7 +423,7 @@ msgstr "导入出错"
 
 #: src/ui_parts/import_warning_dialog.gd
 msgid "Unknown tag"
-msgstr "未知的图形标签"
+msgstr "未知的元素"
 
 #: src/ui_parts/import_warning_dialog.gd
 msgid "Unknown attribute"
@@ -435,7 +435,7 @@ msgstr "语法错误"
 
 #: src/ui_parts/inspector.gd
 msgid "Add new tag"
-msgstr "添加图形"
+msgstr "添加新元素"
 
 #: src/ui_parts/settings_menu.gd
 msgid "SVG Text colors"
@@ -584,7 +584,7 @@ msgstr "在末尾添加空行"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Use shorthand tag syntax"
-msgstr "使用自闭合图形标签语法"
+msgstr "使用自闭合元素语法"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Enable autoformatting"
@@ -644,7 +644,7 @@ msgstr "符号颜色"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Tag color"
-msgstr "图形标签颜色"
+msgstr "元素颜色"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Attribute color"
@@ -795,11 +795,11 @@ msgstr "优化"
 
 #: src/TranslationUtils.gd
 msgid "Select all tags"
-msgstr "选择所有图形标签"
+msgstr "选择所有元素"
 
 #: src/TranslationUtils.gd
 msgid "Duplicate the selected tags"
-msgstr "克隆选中的图形标签"
+msgstr "克隆选中的元素"
 
 #: src/TranslationUtils.gd
 msgid "Delete the selection"
@@ -807,11 +807,11 @@ msgstr "删除所选项"
 
 #: src/TranslationUtils.gd
 msgid "Move the selected tags up"
-msgstr "将选中的图形标签上移"
+msgstr "将选中的元素上移"
 
 #: src/TranslationUtils.gd
 msgid "Move the selected tags down"
-msgstr "将选中的图形标签下移"
+msgstr "将选中的元素下移"
 
 #: src/TranslationUtils.gd
 msgid "Zoom in"
