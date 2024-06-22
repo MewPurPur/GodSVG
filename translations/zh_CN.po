@@ -93,8 +93,8 @@ msgstr "复制为 XML"
 msgid "Paste XML"
 msgstr "粘贴 XML"
 
-#: src/ui_elements/palette_config.gd src/ui_elements/transform_popup.gd
-#: src/Indications.gd
+#: src/ui_elements/palette_config.gd src/ui_elements/setting_shortcut.gd
+#: src/ui_elements/transform_popup.gd src/Indications.gd
 msgid "Delete"
 msgstr "删除"
 
@@ -126,14 +126,6 @@ msgstr "未使用"
 #: src/ui_elements/setting_shortcut.gd
 msgid "Add shortcut"
 msgstr "添加快捷键"
-
-#: src/ui_elements/setting_shortcut.gd
-msgid "Edit"
-msgstr "编辑"
-
-#: src/ui_elements/setting_shortcut.gd
-msgid "Remove"
-msgstr "删除"
 
 #: src/ui_elements/setting_shortcut.gd
 msgid "Press keys…"
@@ -176,12 +168,20 @@ msgid "Translators"
 msgstr "翻译者"
 
 #: src/ui_parts/about_menu.gd
-msgid "Authors"
-msgstr "作者"
-
-#: src/ui_parts/about_menu.gd
 msgid "Donors"
 msgstr "捐赠者"
+
+#: src/ui_parts/about_menu.gd
+msgid "Golden donors"
+msgstr "金牌捐赠者"
+
+#: src/ui_parts/about_menu.gd
+msgid "Diamond donors"
+msgstr "钻石捐赠者"
+
+#: src/ui_parts/about_menu.gd
+msgid "Authors"
+msgstr "作者"
 
 #: src/ui_parts/about_menu.gd
 msgid "License"
@@ -199,7 +199,7 @@ msgstr "第三方协议"
 msgid "Alert!"
 msgstr "警告！"
 
-#: src/ui_parts/alert_dialog.gd src/ui_parts/display.gd
+#: src/ui_parts/alert_dialog.gd src/HandlerGUI.gd
 msgid "OK"
 msgstr "确定"
 
@@ -250,18 +250,6 @@ msgid "Overlay reference"
 msgstr "置顶参考"
 
 #: src/ui_parts/display.gd
-msgid "Import Reference Image"
-msgstr "导入参考图像"
-
-#: src/ui_parts/display.gd
-msgid "Show Reference Image"
-msgstr "显示参考图像"
-
-#: src/ui_parts/display.gd
-msgid "Overlay Reference Image"
-msgstr "置顶参考图像"
-
-#: src/ui_parts/display.gd
 msgid "Show Grid"
 msgstr "显示网格"
 
@@ -292,14 +280,6 @@ msgstr "GodSVG 网站"
 #: src/ui_parts/display.gd src/TranslationUtils.gd
 msgid "Check for updates"
 msgstr "检查更新"
-
-#: src/ui_parts/display.gd
-msgid "Check for updates?"
-msgstr "检查更新？"
-
-#: src/ui_parts/display.gd
-msgid "This requires GodSVG to connect to the internet."
-msgstr "需要连接网络。"
 
 #: src/ui_parts/display.gd
 msgid "Enable snapping"
@@ -528,6 +508,26 @@ msgstr "自动 UI 大小"
 #: src/ui_parts/settings_menu.gd
 msgid "Language"
 msgstr "语言"
+
+#: src/ui_parts/settings_menu.gd
+msgid "File"
+msgstr "文件"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Edit"
+msgstr "编辑"
+
+#: src/ui_parts/settings_menu.gd
+msgid "View"
+msgstr "视图"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Tool"
+msgstr "工具"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Help"
+msgstr "帮助"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Swaps zoom in and zoom out with the mouse wheel."
@@ -769,6 +769,14 @@ msgstr "确定退出 GodSVG 吗？"
 msgid "Quit"
 msgstr "退出"
 
+#: src/HandlerGUI.gd
+msgid "Check for updates?"
+msgstr "检查更新？"
+
+#: src/HandlerGUI.gd
+msgid "This requires GodSVG to connect to the internet."
+msgstr "需要连接网络。"
+
 #: src/Indications.gd
 msgid "View In List"
 msgstr "在列表中查看"
@@ -784,10 +792,6 @@ msgstr "转换为"
 #: src/TranslationUtils.gd
 msgid "Import"
 msgstr "导入"
-
-#: src/TranslationUtils.gd
-msgid "Load Reference Image"
-msgstr "加载参考图像"
 
 #: src/TranslationUtils.gd
 msgid "Optimize"
@@ -912,3 +916,18 @@ msgstr "三点三次贝塞尔曲线"
 #: src/TranslationUtils.gd
 msgid "Shorthand Cubic Bezier to"
 msgstr "两点三次贝塞尔曲线"
+
+#~ msgid "Remove"
+#~ msgstr "删除"
+
+#~ msgid "Import Reference Image"
+#~ msgstr "导入参考图像"
+
+#~ msgid "Show Reference Image"
+#~ msgstr "显示参考图像"
+
+#~ msgid "Overlay Reference Image"
+#~ msgstr "置顶参考图像"
+
+#~ msgid "Load Reference Image"
+#~ msgstr "加载参考图像"
