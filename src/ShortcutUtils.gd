@@ -10,7 +10,7 @@ static func fn(shortcut: String) -> Callable:
 		"export": return FileUtils.open_export_dialog
 		"copy_svg_text": return DisplayServer.clipboard_set.bind(SVG.text)
 		"clear_svg": return SVG.apply_svg_text.bind(SVG.DEFAULT)
-		"optimize": return SVG.root_tag.optimize
+		"optimize": return SVG.root_element.optimize
 		"clear_file_path": return GlobalSettings.modify_save_data.bind(
 				"current_file_path", "")
 		"reset_svg": return FileUtils.apply_svg_from_path.bind(

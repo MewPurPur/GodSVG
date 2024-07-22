@@ -30,7 +30,7 @@ func _ready() -> void:
 	format_dropdown.value_changed.connect(_on_dropdown_value_changed)
 	extension = format_dropdown.value
 	update_extension_configuration()
-	dimensions = SVG.root_tag.get_size()
+	dimensions = SVG.root_element.get_size()
 	var bigger_dimension := maxf(dimensions.x, dimensions.y)
 	scale_edit.min_value = 1 / minf(dimensions.x, dimensions.y)
 	scale_edit.max_value = 16384 / bigger_dimension
@@ -71,7 +71,7 @@ func _on_dropdown_value_changed(new_value: String) -> void:
 
 func _on_export_button_pressed() -> void:
 	if OS.has_feature("web"):
-		var svg_image := FileUtils.generate_image_from_tags(upscale_amount)
+		var svg_image := FileUtils.generate_image_from_elements(upscale_amount)
 		match extension:
 			"png": FileUtils.web_save_png(svg_image)
 			"jpg": FileUtils.web_save_jpg(svg_image)

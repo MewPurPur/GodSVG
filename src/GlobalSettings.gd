@@ -11,11 +11,12 @@ const config_path = "user://config.tres"
 
 # Don't have the language setting here, so it's not reset.
 const default_config = {
-	"autoformat": {
+	"formatting": {
 		"general_number_precision": 3,
 		"general_angle_precision": 1,
 		"xml_add_trailing_newline": false,
 		"xml_shorthand_tags": true,
+		"xml_pretty_formatting": false,
 		"number_enable_autoformatting": false,
 		"number_remove_zero_padding": false,
 		"number_remove_leading_zero": true,
@@ -25,17 +26,19 @@ const default_config = {
 		"color_convert_named_to_hex": true,
 		"color_use_shorthand_hex_code": true,
 		"color_use_short_named_colors": false,
-		"path_compress_numbers": true,
-		"path_minimize_spacing": true,
-		"path_remove_spacing_after_flags": false,
-		"path_remove_consecutive_commands": true,
-		"transform_compress_numbers": true,
-		"transform_minimize_spacing": true,
-		"transform_remove_unnecessary_params": true,
+		"pathdata_enable_autoformatting": true,
+		"pathdata_compress_numbers": true,
+		"pathdata_minimize_spacing": true,
+		"pathdata_remove_spacing_after_flags": false,
+		"pathdata_remove_consecutive_commands": true,
+		"transform_list_enable_autoformatting": true,
+		"transform_list_compress_numbers": true,
+		"transform_list_minimize_spacing": true,
+		"transform_list_remove_unnecessary_params": true,
 	},
 	"theming": {
 		"highlighting_symbol_color": Color("abc9ff"),
-		"highlighting_tag_color": Color("ff8ccc"),
+		"highlighting_element_color": Color("ff8ccc"),
 		"highlighting_attribute_color": Color("bce0ff"),
 		"highlighting_string_color": Color("a1ffe0"),
 		"highlighting_comment_color": Color("cdcfd280"),
@@ -57,6 +60,7 @@ const default_config = {
 		"wrap_mouse": false,
 		"use_ctrl_for_zoom": true,
 		"use_native_file_dialog": true,
+		"use_current_filename_for_window_title": true,
 		"handle_size": 1.0,
 		"ui_scale": 1.0,
 		"auto_ui_scale": true,
@@ -66,6 +70,7 @@ const default_config = {
 # No way to fetch defaults otherwise.
 var default_input_events := {}  # Dictionary{String: Array[InputEvent]}
 
+# Stores whether the keybinds should be modifiable.
 const keybinds_dict = {
 	"file": {
 		"import": true,
@@ -146,6 +151,7 @@ var general_number_precision := 3
 var general_angle_precision := 1
 var xml_add_trailing_newline := false
 var xml_shorthand_tags := true
+var xml_pretty_formatting := false
 var number_enable_autoformatting := false
 var number_remove_zero_padding := true
 var number_remove_leading_zero := false
@@ -154,17 +160,19 @@ var color_convert_rgb_to_hex := false
 var color_convert_named_to_hex := true
 var color_use_shorthand_hex_code := true
 var color_use_short_named_colors := false
-var path_compress_numbers := true
-var path_minimize_spacing := true
-var path_remove_spacing_after_flags := false
-var path_remove_consecutive_commands := true
-var transform_compress_numbers := true
-var transform_minimize_spacing := true
-var transform_remove_unnecessary_params := true
+var pathdata_enable_autoformatting := true
+var pathdata_compress_numbers := true
+var pathdata_minimize_spacing := true
+var pathdata_remove_spacing_after_flags := false
+var pathdata_remove_consecutive_commands := true
+var transform_list_enable_autoformatting := true
+var transform_list_compress_numbers := true
+var transform_list_minimize_spacing := true
+var transform_list_remove_unnecessary_params := true
 
 # Theming
 var highlighting_symbol_color := Color("abc9ff")
-var highlighting_tag_color := Color("ff8ccc")
+var highlighting_element_color := Color("ff8ccc")
 var highlighting_attribute_color := Color("bce0ff")
 var highlighting_string_color := Color("a1ffe0")
 var highlighting_comment_color := Color("cdcfd280")
@@ -189,6 +197,7 @@ var invert_zoom := false
 var wrap_mouse := false
 var use_ctrl_for_zoom := true
 var use_native_file_dialog := true
+var use_current_filename_for_window_title := true
 var handle_size := 1.0
 var ui_scale := 1.0
 var auto_ui_scale := true
@@ -285,12 +294,14 @@ func reset_keybinds() -> void:
 
 func reset_palettes() -> void:
 	palettes = [ColorPalette.new("Pure",
-			["#fff", "#000", "#f00", "#0f0", "#00f", "#ff0", "#f0f", "#0ff"],
-			["White", "Black", "Red", "Green", "Blue", "Yellow", "Magenta", "Cyan"])]
+			PackedStringArray(["#fff", "#000", "#f00", "#0f0", "#00f", "#ff0", "#f0f", "#0ff"]),
+			PackedStringArray(["White", "Black", "Red", "Green", "Blue", "Yellow", "Magenta", "Cyan"]))]
 	save_palettes()
 
-# Just a helper.
+# Just some helpers.
 func get_validity_color(error_condition: bool, warning_condition := false) -> Color:
-	return GlobalSettings.basic_color_error if error_condition else\
-			GlobalSettings.basic_color_warning if warning_condition else\
-			GlobalSettings.basic_color_valid
+	return basic_color_error if error_condition else\
+			basic_color_warning if warning_condition else basic_color_valid
+
+func get_quanta() -> float:
+	return 0.1 ** general_number_precision

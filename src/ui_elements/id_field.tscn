@@ -1,0 +1,12 @@
+[gd_scene load_steps=2 format=3 uid="uid://6tbfb2t0tyfh"]
+
+[ext_resource type="Script" path="res://src/ui_elements/id_field.gd" id="1_dqgkn"]
+
+[node name="IdField" type="LineEdit"]
+custom_minimum_size = Vector2(54, 22)
+offset_right = 35.8125
+offset_bottom = 21.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+script = ExtResource("1_dqgkn")
+code_font_tooltip = true

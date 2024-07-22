@@ -145,14 +145,14 @@ text = "General"
 
 [node name="NumberPrecision" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Autoformatting/AutoformattingVBox/GeneralVBox" instance=ExtResource("5_dx7vp")]
 layout_mode = 2
-section_name = "autoformat"
+section_name = "formatting"
 setting_name = "general_number_precision"
 values = Array[String](["2", "3", "4"])
 type = 2
 
 [node name="AnglePrecision" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Autoformatting/AutoformattingVBox/GeneralVBox" instance=ExtResource("5_dx7vp")]
 layout_mode = 2
-section_name = "autoformat"
+section_name = "formatting"
 setting_name = "general_angle_precision"
 values = Array[String](["1", "2"])
 type = 2
@@ -168,13 +168,18 @@ text = "XML"
 
 [node name="AddTrailingNewline" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Autoformatting/AutoformattingVBox/XMLVBox" instance=ExtResource("4_2qeh2")]
 layout_mode = 2
-section_name = "autoformat"
+section_name = "formatting"
 setting_name = "xml_add_trailing_newline"
 
-[node name="UseShorthandTagSyntax" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Autoformatting/AutoformattingVBox/XMLVBox" instance=ExtResource("4_2qeh2")]
+[node name="ShorthandTags" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Autoformatting/AutoformattingVBox/XMLVBox" instance=ExtResource("4_2qeh2")]
 layout_mode = 2
-section_name = "autoformat"
+section_name = "formatting"
 setting_name = "xml_shorthand_tags"
+
+[node name="PrettyFormatting" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Autoformatting/AutoformattingVBox/XMLVBox" instance=ExtResource("4_2qeh2")]
+layout_mode = 2
+section_name = "formatting"
+setting_name = "xml_pretty_formatting"
 
 [node name="NumberVBox" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Autoformatting/AutoformattingVBox"]
 unique_name_in_owner = true
@@ -186,17 +191,17 @@ layout_mode = 2
 
 [node name="NumberEnable" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Autoformatting/AutoformattingVBox/NumberVBox" instance=ExtResource("4_2qeh2")]
 layout_mode = 2
-section_name = "autoformat"
+section_name = "formatting"
 setting_name = "number_enable_autoformatting"
 
 [node name="RemoveZeroPadding" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Autoformatting/AutoformattingVBox/NumberVBox" instance=ExtResource("4_2qeh2")]
 layout_mode = 2
-section_name = "autoformat"
+section_name = "formatting"
 setting_name = "number_remove_zero_padding"
 
 [node name="RemoveLeadingZero" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Autoformatting/AutoformattingVBox/NumberVBox" instance=ExtResource("4_2qeh2")]
 layout_mode = 2
-section_name = "autoformat"
+section_name = "formatting"
 setting_name = "number_remove_leading_zero"
 
 [node name="ColorVBox" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Autoformatting/AutoformattingVBox"]
@@ -209,89 +214,89 @@ layout_mode = 2
 
 [node name="ColorEnable" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Autoformatting/AutoformattingVBox/ColorVBox" instance=ExtResource("4_2qeh2")]
 layout_mode = 2
-section_name = "autoformat"
+section_name = "formatting"
 setting_name = "color_enable_autoformatting"
 
 [node name="ConvertRGBToHex" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Autoformatting/AutoformattingVBox/ColorVBox" instance=ExtResource("4_2qeh2")]
 layout_mode = 2
-section_name = "autoformat"
+section_name = "formatting"
 setting_name = "color_convert_rgb_to_hex"
 
 [node name="ConvertNamedToHex" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Autoformatting/AutoformattingVBox/ColorVBox" instance=ExtResource("4_2qeh2")]
 layout_mode = 2
-section_name = "autoformat"
+section_name = "formatting"
 setting_name = "color_convert_named_to_hex"
 
 [node name="UseShorthandHex" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Autoformatting/AutoformattingVBox/ColorVBox" instance=ExtResource("4_2qeh2")]
 layout_mode = 2
-section_name = "autoformat"
+section_name = "formatting"
 setting_name = "color_use_shorthand_hex_code"
 
 [node name="UseNamedColors" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Autoformatting/AutoformattingVBox/ColorVBox" instance=ExtResource("4_2qeh2")]
 layout_mode = 2
-section_name = "autoformat"
+section_name = "formatting"
 setting_name = "color_use_short_named_colors"
 
-[node name="PathVBox" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Autoformatting/AutoformattingVBox"]
+[node name="PathdataVBox" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Autoformatting/AutoformattingVBox"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 3
 
-[node name="SectionLabel" type="Label" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Autoformatting/AutoformattingVBox/PathVBox"]
+[node name="SectionLabel" type="Label" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Autoformatting/AutoformattingVBox/PathdataVBox"]
 layout_mode = 2
 
-[node name="Note" type="Label" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Autoformatting/AutoformattingVBox/PathVBox"]
+[node name="PathdataEnable" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Autoformatting/AutoformattingVBox/PathdataVBox" instance=ExtResource("4_2qeh2")]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.501961, 0.501961, 0.501961, 1)
-theme_override_font_sizes/font_size = 12
+section_name = "formatting"
+setting_name = "pathdata_enable_autoformatting"
 
-[node name="CompressNumbers" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Autoformatting/AutoformattingVBox/PathVBox" instance=ExtResource("4_2qeh2")]
+[node name="CompressNumbers" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Autoformatting/AutoformattingVBox/PathdataVBox" instance=ExtResource("4_2qeh2")]
 layout_mode = 2
-section_name = "autoformat"
-setting_name = "path_compress_numbers"
+section_name = "formatting"
+setting_name = "pathdata_compress_numbers"
 
-[node name="MinimizeSpacing" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Autoformatting/AutoformattingVBox/PathVBox" instance=ExtResource("4_2qeh2")]
+[node name="MinimizeSpacing" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Autoformatting/AutoformattingVBox/PathdataVBox" instance=ExtResource("4_2qeh2")]
 layout_mode = 2
-section_name = "autoformat"
-setting_name = "path_minimize_spacing"
+section_name = "formatting"
+setting_name = "pathdata_minimize_spacing"
 
-[node name="RemoveSpacingAfterFlags" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Autoformatting/AutoformattingVBox/PathVBox" instance=ExtResource("4_2qeh2")]
+[node name="RemoveSpacingAfterFlags" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Autoformatting/AutoformattingVBox/PathdataVBox" instance=ExtResource("4_2qeh2")]
 layout_mode = 2
-section_name = "autoformat"
-setting_name = "path_remove_spacing_after_flags"
+section_name = "formatting"
+setting_name = "pathdata_remove_spacing_after_flags"
 
-[node name="RemoveConsecutiveCommands" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Autoformatting/AutoformattingVBox/PathVBox" instance=ExtResource("4_2qeh2")]
+[node name="RemoveConsecutiveCommands" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Autoformatting/AutoformattingVBox/PathdataVBox" instance=ExtResource("4_2qeh2")]
 layout_mode = 2
-section_name = "autoformat"
-setting_name = "path_remove_consecutive_commands"
+section_name = "formatting"
+setting_name = "pathdata_remove_consecutive_commands"
 
-[node name="TransformVBox" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Autoformatting/AutoformattingVBox"]
+[node name="TransformListVBox" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Autoformatting/AutoformattingVBox"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 3
 
-[node name="SectionLabel" type="Label" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Autoformatting/AutoformattingVBox/TransformVBox"]
+[node name="SectionLabel" type="Label" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Autoformatting/AutoformattingVBox/TransformListVBox"]
 layout_mode = 2
 
-[node name="Note" type="Label" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Autoformatting/AutoformattingVBox/TransformVBox"]
+[node name="TransformListEnable" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Autoformatting/AutoformattingVBox/TransformListVBox" instance=ExtResource("4_2qeh2")]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.501961, 0.501961, 0.501961, 1)
-theme_override_font_sizes/font_size = 12
+section_name = "formatting"
+setting_name = "transform_list_enable_autoformatting"
 
-[node name="CompressNumbers" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Autoformatting/AutoformattingVBox/TransformVBox" instance=ExtResource("4_2qeh2")]
+[node name="CompressNumbers" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Autoformatting/AutoformattingVBox/TransformListVBox" instance=ExtResource("4_2qeh2")]
 layout_mode = 2
-section_name = "autoformat"
-setting_name = "transform_compress_numbers"
+section_name = "formatting"
+setting_name = "transform_list_compress_numbers"
 
-[node name="MinimizeSpacing" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Autoformatting/AutoformattingVBox/TransformVBox" instance=ExtResource("4_2qeh2")]
+[node name="MinimizeSpacing" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Autoformatting/AutoformattingVBox/TransformListVBox" instance=ExtResource("4_2qeh2")]
 layout_mode = 2
-section_name = "autoformat"
-setting_name = "transform_minimize_spacing"
+section_name = "formatting"
+setting_name = "transform_list_minimize_spacing"
 
-[node name="RemoveUnnecessaryParams" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Autoformatting/AutoformattingVBox/TransformVBox" instance=ExtResource("4_2qeh2")]
+[node name="RemoveUnnecessaryParams" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Autoformatting/AutoformattingVBox/TransformListVBox" instance=ExtResource("4_2qeh2")]
 layout_mode = 2
-section_name = "autoformat"
-setting_name = "transform_remove_unnecessary_params"
+section_name = "formatting"
+setting_name = "transform_list_remove_unnecessary_params"
 
 [node name="Palettes" type="ScrollContainer" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer"]
 visible = false
@@ -354,10 +359,10 @@ layout_mode = 2
 section_name = "theming"
 setting_name = "highlighting_symbol_color"
 
-[node name="TagColor" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Theme/ThemeSettings/HighlighterVBox" instance=ExtResource("4_dacsc")]
+[node name="ElementColor" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Theme/ThemeSettings/HighlighterVBox" instance=ExtResource("4_dacsc")]
 layout_mode = 2
 section_name = "theming"
-setting_name = "highlighting_tag_color"
+setting_name = "highlighting_element_color"
 
 [node name="AttributeColor" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Theme/ThemeSettings/HighlighterVBox" instance=ExtResource("4_dacsc")]
 layout_mode = 2
@@ -507,6 +512,11 @@ unique_name_in_owner = true
 layout_mode = 2
 section_name = "other"
 setting_name = "use_native_file_dialog"
+
+[node name="UseCurrentFilenameForWindowTitle" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Other/OtherSettings/Misc" instance=ExtResource("4_2qeh2")]
+layout_mode = 2
+section_name = "other"
+setting_name = "use_current_filename_for_window_title"
 
 [node name="HandleSize" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Other/OtherSettings/Misc" instance=ExtResource("5_dx7vp")]
 layout_mode = 2

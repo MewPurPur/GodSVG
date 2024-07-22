@@ -15,6 +15,24 @@ msgstr ""
 msgid "translation-credits"
 msgstr "volkov <volkovissocool@gmail.com>"
 
+#: src/data_classes/ElementCircle.gd src/data_classes/ElementEllipse.gd
+#: src/data_classes/ElementG.gd src/data_classes/ElementLine.gd
+#: src/data_classes/ElementLinearGradient.gd src/data_classes/ElementPath.gd
+#: src/data_classes/ElementRadialGradient.gd src/data_classes/ElementRect.gd
+#: src/data_classes/ElementStop.gd
+msgid "{element} must be inside {allowed} to have any effect."
+msgstr ""
+
+#: src/data_classes/ElementLinearGradient.gd
+#: src/data_classes/ElementRadialGradient.gd
+msgid "No id attribute defined."
+msgstr ""
+
+#: src/data_classes/ElementLinearGradient.gd
+#: src/data_classes/ElementRadialGradient.gd
+msgid "No stop elements under this gradient."
+msgstr ""
+
 #: src/parsers/SVGParser.gd
 msgid "Doesn’t describe an SVG."
 msgstr "Не є описом SVG."
@@ -93,8 +111,8 @@ msgstr "Скопіювати як XML"
 msgid "Paste XML"
 msgstr "Вставити XML"
 
-#: src/ui_elements/palette_config.gd src/ui_elements/transform_popup.gd
-#: src/Indications.gd
+#: src/ui_elements/palette_config.gd src/ui_elements/setting_shortcut.gd
+#: src/ui_elements/transform_popup.gd src/Indications.gd
 msgid "Delete"
 msgstr "Видалити"
 
@@ -128,14 +146,6 @@ msgid "Add shortcut"
 msgstr "Додати клавіатурне скорочення"
 
 #: src/ui_elements/setting_shortcut.gd
-msgid "Edit"
-msgstr "Редагування"
-
-#: src/ui_elements/setting_shortcut.gd
-msgid "Remove"
-msgstr "Видалити"
-
-#: src/ui_elements/setting_shortcut.gd
 msgid "Press keys…"
 msgstr "Натисніть кнопки…"
 
@@ -159,7 +169,7 @@ msgstr "Вставити до"
 msgid "New transform"
 msgstr "Нова трансформація"
 
-#: src/ui_elements/unknown_field.gd
+#: src/ui_elements/unrecognized_field.gd
 msgid "GodSVG doesn’t recognize this attribute"
 msgstr "GodSVG не може розпізнати цей атрибут"
 
@@ -176,12 +186,21 @@ msgid "Translators"
 msgstr "Перекладачі"
 
 #: src/ui_parts/about_menu.gd
-msgid "Authors"
-msgstr "Автори"
-
-#: src/ui_parts/about_menu.gd
 msgid "Donors"
 msgstr "Благодійники"
+
+#: src/ui_parts/about_menu.gd
+msgid "Golden donors"
+msgstr ""
+
+#: src/ui_parts/about_menu.gd
+#, fuzzy
+msgid "Diamond donors"
+msgstr "Благодійники"
+
+#: src/ui_parts/about_menu.gd
+msgid "Authors"
+msgstr "Автори"
 
 #: src/ui_parts/about_menu.gd
 msgid "License"
@@ -199,7 +218,7 @@ msgstr "Ліцензії третіх осіб"
 msgid "Alert!"
 msgstr "Увага!"
 
-#: src/ui_parts/alert_dialog.gd src/ui_parts/display.gd
+#: src/ui_parts/alert_dialog.gd src/HandlerGUI.gd
 msgid "OK"
 msgstr "Добре"
 
@@ -250,18 +269,6 @@ msgid "Overlay reference"
 msgstr ""
 
 #: src/ui_parts/display.gd
-msgid "Import Reference Image"
-msgstr ""
-
-#: src/ui_parts/display.gd
-msgid "Show Reference Image"
-msgstr ""
-
-#: src/ui_parts/display.gd
-msgid "Overlay Reference Image"
-msgstr ""
-
-#: src/ui_parts/display.gd
 msgid "Show Grid"
 msgstr "Показати ґратку"
 
@@ -277,6 +284,10 @@ msgstr "Растеризувати SVG"
 msgid "About…"
 msgstr "Про додаток…"
 
+#: src/ui_parts/display.gd src/TranslationUtils.gd
+msgid "Check for updates"
+msgstr "Перевірити оновлення"
+
 #: src/ui_parts/display.gd
 msgid "Donate…"
 msgstr "Зробити пожертвування…"
@@ -289,19 +300,6 @@ msgstr "Репозиторій GodSVG"
 msgid "GodSVG website"
 msgstr "Веб-сайт GodSVG"
 
-#: src/ui_parts/display.gd src/TranslationUtils.gd
-msgid "Check for updates"
-msgstr "Перевірити оновлення"
-
-#: src/ui_parts/display.gd
-#, fuzzy
-msgid "Check for updates?"
-msgstr "Перевірити оновлення"
-
-#: src/ui_parts/display.gd
-msgid "This requires GodSVG to connect to the internet."
-msgstr ""
-
 #: src/ui_parts/display.gd
 msgid "Enable snapping"
 msgstr "Активувати прилипання"
@@ -309,6 +307,10 @@ msgstr "Активувати прилипання"
 #: src/ui_parts/display.gd
 msgid "Snap size"
 msgstr "Розмір прилипання"
+
+#: src/ui_parts/element_container.gd
+msgid "New element"
+msgstr ""
 
 #: src/ui_parts/export_dialog.gd
 msgid "Size"
@@ -415,8 +417,9 @@ msgstr ""
 "Файл з назваою \"{file_name}\" вже існує. Його заміна призведе до перезапису "
 "його вмісту!"
 
-#: src/ui_parts/handles_manager.gd src/ui_parts/tag_container.gd
-msgid "New tag"
+#: src/ui_parts/handles_manager.gd
+#, fuzzy
+msgid "New shape"
 msgstr "Новий тег"
 
 #: src/ui_parts/import_warning_dialog.gd
@@ -424,11 +427,13 @@ msgid "Import Problems"
 msgstr "Проблема з імпортуванням"
 
 #: src/ui_parts/import_warning_dialog.gd
-msgid "Unknown tag"
-msgstr "Невідомий тег"
+#, fuzzy
+msgid "Unrecognized element"
+msgstr "Невідомий атрибут"
 
 #: src/ui_parts/import_warning_dialog.gd
-msgid "Unknown attribute"
+#, fuzzy
+msgid "Unrecognized attribute"
 msgstr "Невідомий атрибут"
 
 #: src/ui_parts/import_warning_dialog.gd
@@ -436,8 +441,8 @@ msgid "Syntax error"
 msgstr "Синтаксична помилка"
 
 #: src/ui_parts/inspector.gd
-msgid "Add new tag"
-msgstr "Додати новий тег"
+msgid "Add element"
+msgstr ""
 
 #: src/ui_parts/settings_menu.gd
 msgid "SVG Text colors"
@@ -464,15 +469,13 @@ msgid "Colors"
 msgstr "Кольори"
 
 #: src/ui_parts/settings_menu.gd
-msgid "Paths"
-msgstr "Шляхи"
+#, fuzzy
+msgid "Path data"
+msgstr "Немає даних шляху"
 
 #: src/ui_parts/settings_menu.gd
-msgid "Always active."
-msgstr "Завжди активно."
-
-#: src/ui_parts/settings_menu.gd
-msgid "Transforms"
+#, fuzzy
+msgid "Transform lists"
 msgstr "Трансформації"
 
 #: src/ui_parts/settings_menu.gd
@@ -516,6 +519,10 @@ msgid "Use CTRL for zooming"
 msgstr "Використовувати CTRL для масштабування"
 
 #: src/ui_parts/settings_menu.gd
+msgid "Sync window title to file name"
+msgstr ""
+
+#: src/ui_parts/settings_menu.gd
 msgid "Handles size"
 msgstr "Розмір ручок редагування"
 
@@ -528,8 +535,85 @@ msgid "Auto UI scale"
 msgstr "Автоматичний масштаб інтерфейсу"
 
 #: src/ui_parts/settings_menu.gd
+msgid "Enable autoformatting"
+msgstr "Активувати автоформатування"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Symbol color"
+msgstr "Колір символу"
+
+#: src/ui_parts/settings_menu.gd
+#, fuzzy
+msgid "Element color"
+msgstr "Колір коментаря"
+
+#: src/ui_parts/settings_menu.gd
+msgid "String color"
+msgstr "Колір строки"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Comment color"
+msgstr "Колір коментаря"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Text color"
+msgstr "Колір тексту"
+
+#: src/ui_parts/settings_menu.gd
+msgid "CDATA color"
+msgstr "Колір CDATA"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Error color"
+msgstr "Колір помилки"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Inside color"
+msgstr "Внутрішній колір"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Normal color"
+msgstr "Звичайний колір"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Hovered color"
+msgstr "Колір наведеного"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Selected color"
+msgstr "Колір обраного"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Valid color"
+msgstr "Колір валідності"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Warning color"
+msgstr "Колір попередження"
+
+#: src/ui_parts/settings_menu.gd
 msgid "Language"
 msgstr "Мова"
+
+#: src/ui_parts/settings_menu.gd
+msgid "File"
+msgstr "Файл"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Edit"
+msgstr "Редагування"
+
+#: src/ui_parts/settings_menu.gd
+msgid "View"
+msgstr "Перегляд"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Tool"
+msgstr "Інструмент"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Help"
+msgstr "Допомога"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Swaps zoom in and zoom out with the mouse wheel."
@@ -564,6 +648,10 @@ msgstr ""
 "використовуватися вбудований файловий діалог."
 
 #: src/ui_parts/settings_menu.gd
+msgid "If turned off, the window title will remain just \"GodSVG\"."
+msgstr ""
+
+#: src/ui_parts/settings_menu.gd
 msgid "Increases the visual size and grabbing area of handles."
 msgstr "Збільшує візуальну та область захоплення для ручок."
 
@@ -588,11 +676,13 @@ msgid "Add trailing newline"
 msgstr "Додавати нову строку в кінці"
 
 #: src/ui_parts/settings_menu.gd
+#, fuzzy
 msgid "Use shorthand tag syntax"
 msgstr "Використовувати теги зі скороченим синтаксисом"
 
 #: src/ui_parts/settings_menu.gd
-msgid "Enable autoformatting"
+#, fuzzy
+msgid "Use pretty formatting"
 msgstr "Активувати автоформатування"
 
 #: src/ui_parts/settings_menu.gd
@@ -640,52 +730,8 @@ msgid "Remove unnecessary parameters"
 msgstr "Видалити необов'язкові параметри"
 
 #: src/ui_parts/settings_menu.gd
-msgid "Symbol color"
-msgstr "Колір символу"
-
-#: src/ui_parts/settings_menu.gd
-msgid "Tag color"
-msgstr "Колір тегу"
-
-#: src/ui_parts/settings_menu.gd
 msgid "Attribute color"
 msgstr "Колір атрибуту"
-
-#: src/ui_parts/settings_menu.gd
-msgid "String color"
-msgstr "Колір строки"
-
-#: src/ui_parts/settings_menu.gd
-msgid "Comment color"
-msgstr "Колір коментаря"
-
-#: src/ui_parts/settings_menu.gd
-msgid "Text color"
-msgstr "Колір тексту"
-
-#: src/ui_parts/settings_menu.gd
-msgid "CDATA color"
-msgstr "Колір CDATA"
-
-#: src/ui_parts/settings_menu.gd
-msgid "Error color"
-msgstr "Колір помилки"
-
-#: src/ui_parts/settings_menu.gd
-msgid "Inside color"
-msgstr "Внутрішній колір"
-
-#: src/ui_parts/settings_menu.gd
-msgid "Normal color"
-msgstr "Звичайний колір"
-
-#: src/ui_parts/settings_menu.gd
-msgid "Hovered color"
-msgstr "Колір наведеного"
-
-#: src/ui_parts/settings_menu.gd
-msgid "Selected color"
-msgstr "Колір обраного"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Hovered selected color"
@@ -695,14 +741,6 @@ msgstr "Колір наведено-виділеного"
 #, fuzzy
 msgid "Background color"
 msgstr "Базовий колір"
-
-#: src/ui_parts/settings_menu.gd
-msgid "Valid color"
-msgstr "Колір валідності"
-
-#: src/ui_parts/settings_menu.gd
-msgid "Warning color"
-msgstr "Колір попередження"
 
 #: src/ui_parts/update_menu.gd
 msgid "Include prereleases"
@@ -775,6 +813,15 @@ msgstr "Ви дійсно бажаєте вийти із GodSVG?"
 msgid "Quit"
 msgstr "Вийти"
 
+#: src/HandlerGUI.gd
+#, fuzzy
+msgid "Check for updates?"
+msgstr "Перевірити оновлення"
+
+#: src/HandlerGUI.gd
+msgid "This requires GodSVG to connect to the internet."
+msgstr ""
+
 #: src/Indications.gd
 msgid "View In List"
 msgstr "Переглянути списком"
@@ -792,19 +839,17 @@ msgid "Import"
 msgstr "Імпортувати"
 
 #: src/TranslationUtils.gd
-msgid "Load Reference Image"
-msgstr ""
-
-#: src/TranslationUtils.gd
 msgid "Optimize"
 msgstr "Оптимізувати"
 
 #: src/TranslationUtils.gd
-msgid "Select all tags"
+#, fuzzy
+msgid "Select all elements"
 msgstr "Обрати усі теги"
 
 #: src/TranslationUtils.gd
-msgid "Duplicate the selected tags"
+#, fuzzy
+msgid "Duplicate the selected elements"
 msgstr "Дублювати обрані теги"
 
 #: src/TranslationUtils.gd
@@ -812,11 +857,13 @@ msgid "Delete the selection"
 msgstr "Видалити усі обрані теги"
 
 #: src/TranslationUtils.gd
-msgid "Move the selected tags up"
+#, fuzzy
+msgid "Move the selected elements up"
 msgstr "Пересунути усі обрані теги вгору"
 
 #: src/TranslationUtils.gd
-msgid "Move the selected tags down"
+#, fuzzy
+msgid "Move the selected elements down"
 msgstr "Пересунути усі обрані теги вниз"
 
 #: src/TranslationUtils.gd
@@ -919,17 +966,26 @@ msgstr "Кубічна Безьє до"
 msgid "Shorthand Cubic Bezier to"
 msgstr "Скорочена кубічна Безьє до"
 
-#~ msgid "File"
-#~ msgstr "Файл"
+#~ msgid "Tag color"
+#~ msgstr "Колір тегу"
 
-#~ msgid "View"
-#~ msgstr "Перегляд"
+#~ msgid "New tag"
+#~ msgstr "Новий тег"
 
-#~ msgid "Tool"
-#~ msgstr "Інструмент"
+#~ msgid "Add new tag"
+#~ msgstr "Додати новий тег"
 
-#~ msgid "Help"
-#~ msgstr "Допомога"
+#~ msgid "Paths"
+#~ msgstr "Шляхи"
+
+#~ msgid "Always active."
+#~ msgstr "Завжди активно."
+
+#~ msgid "Remove"
+#~ msgstr "Видалити"
+
+#~ msgid "Unknown tag"
+#~ msgstr "Невідомий тег"
 
 #~ msgid "Documentation…"
 #~ msgstr "Документація…"

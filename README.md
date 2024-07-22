@@ -37,13 +37,13 @@ GodSVG is something between an SVG editor and an assisted code editor for SVG fi
 
 If you want to import an existing graphic from scratch, use the Import button on top of the code editor or drag-and-drop an SVG file into the app.
 
-To add new shapes, press the "+ Add new tag" button, right-click inside the viewport, or right-click inside the tags container. You can then select your shape from the dropdown. After your shape is added, you can drag its handles in the viewport to change its geometry, or modify the attributes in the inspector to change its other properties, like fill and stroke. You can also always modify the SVG code directly.
+To add new shapes, press the "+ Add new element" button, right-click inside the viewport, or right-click inside the elements list. You can then select your shape from the dropdown. After your shape is added, you can drag its handles in the viewport to change its geometry, or modify the attributes in the inspector to change its other properties, like fill and stroke. You can also always modify the SVG code directly.
 
-In the inspector, you can hover each tag's fields to see which attribute they represent. You may select tags in the viewport on the right or the inspector on the left, and right-click to do operations on them such as deleting or moving them. Some of these actions shortcuts, you can find them in the settings menu.
+In the inspector, you can hover each element's fields to see which attribute they represent. You may select elements in the viewport on the right or the inspector on the left, and right-click to do operations on them such as deleting or moving them. Some of these actions shortcuts, you can find them in the settings menu.
 
-Pathdata attributes have a very complex editor that allows for selecting individual path commands with a lot of similarities to tags. You can right-click the path command and click "Insert After", then pick the one you want. If you're used to SVG paths, you can also use the M, L, H, V, Z, A, Q, T, C, S keys to insert a new path command after a selected one; pressing Shift will also make the new command absolute instead of relative.
+Pathdata attributes have a very complex editor that allows for selecting individual path commands with a lot of similarities to elements. You can right-click the path command and click "Insert After", then pick the one you want. If you're used to SVG paths, you can also use the M, L, H, V, Z, A, Q, T, C, S keys to insert a new path command after a selected one; pressing Shift will also make the new command absolute instead of relative.
 
-Multiple tags or path commands can be selected as usual with Ctrl+Click and Shift+Click. Additionally, double-clicking a path command will select the whole subpath it's in.
+Multiple elements or path commands can be selected as usual with Ctrl+Click and Shift+Click. Additionally, double-clicking a path command will select the whole subpath it's in.
 
 To export the graphic, use the Export button on top of the code editor.
 

@@ -23,10 +23,7 @@ func _ready() -> void:
 	setup_theme()
 	setup_highlighter()
 	code_edit.clear_undo_history()
-	SVG.root_tag.attribute_changed.connect(auto_update_text.unbind(1))
-	SVG.root_tag.child_attribute_changed.connect(auto_update_text.unbind(1))
-	SVG.root_tag.tag_layout_changed.connect(auto_update_text)
-	SVG.root_tag.changed_unknown.connect(auto_update_text)
+	SVG.text_changed.connect(auto_update_text)
 	GlobalSettings.save_data.current_file_path_changed.connect(update_file_button)
 	import_button.pressed.connect(ShortcutUtils.fn("import"))
 	export_button.pressed.connect(ShortcutUtils.fn("export"))
@@ -34,10 +31,10 @@ func _ready() -> void:
 
 
 func _notification(what: int) -> void:
-	if what == Utils.CustomNotification.HIGHLIGHT_COLORS_CHANGED:
-		setup_highlighter()
-	elif what == Utils.CustomNotification.THEME_CHANGED:
-		setup_theme()
+	match what:
+		Utils.CustomNotification.HIGHLIGHT_COLORS_CHANGED: setup_highlighter()
+		Utils.CustomNotification.THEME_CHANGED: setup_theme()
+		Utils.CustomNotification.WINDOW_TITLE_SCHEME_CHANGED: update_window_title()
 
 
 func auto_update_text() -> void:
@@ -123,8 +120,8 @@ func set_new_text(svg_text: String) -> void:
 	_on_svg_code_edit_text_changed()  # Call it automatically yeah.
 
 func _on_svg_code_edit_text_changed() -> void:
-	SVG.text = code_edit.text
-	SVG.update_tags()
+	SVG.set_text(code_edit.text)
+	SVG.sync_elements()
 
 
 func update_size_label() -> void:
@@ -138,14 +135,18 @@ func update_file_button() -> void:
 	file_button.text = file_path.get_file()
 	file_button.tooltip_text = file_path.get_file()
 	Utils.set_max_text_width(file_button, 140.0, 12.0)
-	if not file_path.is_empty():
+	update_window_title()
+
+func update_window_title() -> void:
+	var file_path := GlobalSettings.save_data.current_file_path
+	if GlobalSettings.use_current_filename_for_window_title and not file_path.is_empty():
 		get_window().title = file_path.get_file() + " - GodSVG"
 	else:
 		get_window().title = "GodSVG"
 
 
 func update_optimize_button() -> void:
-	var enabled: bool = SVG.root_tag.optimize(true)
+	var enabled := SVG.root_element.optimize(true)
 	optimize_button.disabled = not enabled
 	optimize_button.mouse_default_cursor_shape = Control.CURSOR_ARROW if\
 			optimize_button.disabled else Control.CURSOR_POINTING_HAND
@@ -153,9 +154,8 @@ func update_optimize_button() -> void:
 
 
 func _on_svg_code_edit_focus_exited() -> void:
+	SVG.queue_save()
 	code_edit.text = SVG.text
-	if GlobalSettings.save_data.svg_text != code_edit.text:
-		SVG.update_text(true)
 
 func _on_svg_code_edit_focus_entered() -> void:
 	Indications.clear_all_selections()
@@ -197,7 +197,7 @@ func setup_highlighter() -> void:
 	if is_instance_valid(code_edit):
 		var new_highlighter := SVGHighlighter.new()
 		new_highlighter.symbol_color = GlobalSettings.highlighting_symbol_color
-		new_highlighter.tag_color = GlobalSettings.highlighting_tag_color
+		new_highlighter.element_color = GlobalSettings.highlighting_element_color
 		new_highlighter.attribute_color = GlobalSettings.highlighting_attribute_color
 		new_highlighter.string_color = GlobalSettings.highlighting_string_color
 		new_highlighter.comment_color = GlobalSettings.highlighting_comment_color

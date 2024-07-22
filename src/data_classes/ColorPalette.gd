@@ -4,11 +4,11 @@ class_name ColorPalette extends Resource
 signal layout_changed
 
 @export var title: String  # Color palettes must be uniquely named.
-@export var colors: Array[String]  # Colors must be unique within a palette.
-@export var color_names: Array[String]
+@export var colors: PackedStringArray  # Colors must be unique within a palette.
+@export var color_names: PackedStringArray
 
-func _init(new_title := "", new_colors: Array[String] = [],
-new_color_names: Array[String] = []) -> void:
+func _init(new_title := "", new_colors := PackedStringArray(),
+new_color_names := PackedStringArray()) -> void:
 	title = new_title
 	colors = new_colors
 	color_names = new_color_names
@@ -34,8 +34,12 @@ func move_color(old_idx: int, new_idx: int) -> void:
 	if old_idx < new_idx:
 		new_idx -= 1
 	
-	colors.insert(new_idx, colors.pop_at(old_idx))
-	color_names.insert(new_idx, color_names.pop_at(old_idx))
+	var old_color := colors[old_idx]
+	colors.remove_at(old_idx)
+	colors.insert(new_idx, old_color)
+	var old_name := color_names[old_idx]
+	color_names.remove_at(old_idx)
+	color_names.insert(new_idx, old_name)
 	emit_changed()
 	layout_changed.emit()
 
@@ -62,24 +66,24 @@ func to_text() -> String:
 	return text + "</palette>"
 
 static func from_text(text: String) -> ColorPalette:
-	var xml_parser := XMLParser.new()
-	xml_parser.open_buffer(text.to_utf8_buffer())
+	var parser := XMLParser.new()
+	parser.open_buffer(text.to_utf8_buffer())
 	var parsed_title: String
-	var parsed_colors: Array[String] = []
-	var parsed_color_names: Array[String] = []
-	while xml_parser.read() == OK:
-		if xml_parser.get_node_type() != XMLParser.NODE_ELEMENT:
+	var parsed_colors := PackedStringArray()
+	var parsed_color_names := PackedStringArray()
+	while parser.read() == OK:
+		if parser.get_node_type() != XMLParser.NODE_ELEMENT:
 			continue
-		if xml_parser.get_node_name() == "palette":
-			parsed_title = xml_parser.get_named_attribute_value_safe("title")
-		elif xml_parser.get_node_name() == "color":
-			parsed_colors.append(xml_parser.get_named_attribute_value_safe("value"))
-			parsed_color_names.append(xml_parser.get_named_attribute_value_safe("name"))
+		if parser.get_node_name() == "palette":
+			parsed_title = parser.get_named_attribute_value_safe("title")
+		elif parser.get_node_name() == "color":
+			parsed_colors.append(parser.get_named_attribute_value_safe("value"))
+			parsed_color_names.append(parser.get_named_attribute_value_safe("name"))
 	return ColorPalette.new(parsed_title, parsed_colors, parsed_color_names)
 
 static func is_valid_palette(text: String) -> bool:
-	var xml_parser := XMLParser.new()
-	xml_parser.open_buffer(text.to_utf8_buffer())
-	xml_parser.read()
-	return xml_parser.get_node_type() == XMLParser.NODE_ELEMENT and\
-			xml_parser.get_node_name() == "palette"
+	var parser := XMLParser.new()
+	parser.open_buffer(text.to_utf8_buffer())
+	parser.read()
+	return parser.get_node_type() == XMLParser.NODE_ELEMENT and\
+			parser.get_node_name() == "palette"

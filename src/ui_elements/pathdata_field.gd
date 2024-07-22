@@ -1,6 +1,9 @@
 # An editor to be tied to a pathdata attribute.
 extends VBoxContainer
 
+var element: Element
+const attribute_name = "d"  # Never propagates.
+
 # So, about this editor. Most of this code is about implementing a huge optimization.
 # All the path commands are a single node that draws fake-outs in order to prevent
 # adding too many nodes to the scene tree. The real controls are only created when
@@ -16,8 +19,6 @@ const COMMAND_HEIGHT = 22.0
 @export var relative_button_pressed: StyleBoxFlat
 
 signal focused
-var attribute: AttributePath
-var tid: PackedInt32Array  # The path field has inner selectables, so it needs this.
 
 const MiniNumberField = preload("mini_number_field.tscn")
 const FlagField = preload("flag_field.tscn")
@@ -51,28 +52,25 @@ var current_hovered: int = -1
 var add_move_button: Control
 
 
-func set_value(new_value: String, update_type := Utils.UpdateType.REGULAR) -> void:
-	sync(attribute.format(new_value))
-	if attribute.get_value() != new_value or update_type == Utils.UpdateType.FINAL:
-		match update_type:
-			Utils.UpdateType.INTERMEDIATE:
-				attribute.set_value(new_value, Attribute.SyncMode.INTERMEDIATE)
-			Utils.UpdateType.FINAL:
-				attribute.set_value(new_value, Attribute.SyncMode.FINAL)
-			_:
-				attribute.set_value(new_value)
+func set_value(new_value: String, save := false) -> void:
+	sync(new_value)
+	element.set_attribute(attribute_name, new_value)
+	if save:
+		SVG.queue_save()
+
+func update_value() -> void:
+	set_value(element.get_attribute_value(attribute_name))
 
 
 func _notification(what: int) -> void:
 	if what == Utils.CustomNotification.LANGUAGE_CHANGED:
 		update_translation()
 
-func set_attribute(new_attribute: AttributePath) -> void:
-	attribute = new_attribute
-	set_value(attribute.get_value())
-	attribute.value_changed.connect(set_value)
-	line_edit.tooltip_text = attribute.name
-	line_edit.text_submitted.connect(set_value)
+func setup() -> void:
+	update_value()
+	element.attribute_changed.connect(_on_element_attribute_changed)
+	line_edit.tooltip_text = attribute_name
+	line_edit.text_submitted.connect(set_value.bind(true))
 	line_edit.text_changed.connect(setup_font)
 	line_edit.focus_entered.connect(_on_line_edit_focus_entered)
 	commands_container.draw.connect(commands_draw)
@@ -80,6 +78,10 @@ func set_attribute(new_attribute: AttributePath) -> void:
 	Indications.selection_changed.connect(_on_selections_or_hover_changed)
 	update_translation()
 
+
+func _on_element_attribute_changed(attribute_changed: String) -> void:
+	if attribute_name == attribute_changed:
+		update_value()
 
 func update_translation() -> void:
 	line_edit.placeholder_text = TranslationServer.translate("No path data")
@@ -97,7 +99,7 @@ func sync(new_value: String) -> void:
 	line_edit.text = new_value
 	setup_font(new_value)
 	# A plus button for adding a move command if empty.
-	var cmd_count := attribute.get_command_count()
+	var cmd_count: int = element.get_attribute(attribute_name).get_command_count()
 	if cmd_count == 0 and not is_instance_valid(add_move_button):
 		add_move_button = Button.new()
 		add_move_button.icon = plus_icon
@@ -107,11 +109,12 @@ func sync(new_value: String) -> void:
 		add_move_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 		add_move_button.theme_type_variation = "FlatButton"
 		add_child(add_move_button)
-		add_move_button.pressed.connect(attribute.insert_command.bind(0, "M"))
+		add_move_button.pressed.connect(
+				element.get_attribute(attribute_name).insert_command.bind(0, "M"))
 		add_move_button.pressed.connect(add_move_button.queue_free)
 	# Rebuild the path commands.
 	commands_container.custom_minimum_size.y = cmd_count * COMMAND_HEIGHT
-	if hovered_idx >= attribute.get_command_count():
+	if hovered_idx >= element.get_attribute(attribute_name).get_command_count():
 		activate_hovered(-1)
 	var mm := InputEventMouseMotion.new()
 	mm.position = commands_container.get_local_mouse_position()
@@ -119,11 +122,11 @@ func sync(new_value: String) -> void:
 	commands_container.queue_redraw()
 
 
-func update_value(new_value: float, property: String, idx: int) -> void:
-	attribute.set_command_property(idx, property, new_value)
+func update_parameter(new_value: float, property: String, idx: int) -> void:
+	element.get_attribute(attribute_name).set_command_property(idx, property, new_value)
 
 func _on_relative_button_pressed() -> void:
-	attribute.toggle_relative_command(hovered_idx)
+	element.get_attribute(attribute_name).toggle_relative_command(hovered_idx)
 	reactivate_hovered()
 
 
@@ -131,10 +134,10 @@ func _on_relative_button_pressed() -> void:
 
 func _on_selections_or_hover_changed() -> void:
 	var new_selections: Array[int] = []
-	if Indications.semi_selected_tid == tid:
+	if Indications.semi_selected_xid == element.xid:
 		new_selections = Indications.inner_selections
 	var new_hovered: int = -1
-	if Indications.semi_hovered_tid == tid:
+	if Indications.semi_hovered_xid == element.xid:
 		new_hovered = Indications.inner_hovered
 	# Only redraw if selections or hovered changed.
 	if new_selections != current_selections:
@@ -147,8 +150,8 @@ func _on_selections_or_hover_changed() -> void:
 
 func _on_commands_mouse_exited() -> void:
 	var cmd_idx := Indications.inner_hovered
-	Indications.remove_hovered(tid, cmd_idx)
-	if Indications.semi_hovered_tid == tid:
+	Indications.remove_hovered(element.xid, cmd_idx)
+	if Indications.semi_hovered_xid == element.xid:
 		activate_hovered(-1)
 
 
@@ -174,50 +177,50 @@ func respond_to_mouse_input(event: InputEventMouse) -> void:
 	
 	if event is InputEventMouseMotion and event.button_mask == 0:
 		if cmd_idx != -1:
-			Indications.set_hovered(tid, cmd_idx)
+			Indications.set_hovered(element.xid, cmd_idx)
 		else:
-			Indications.remove_hovered(tid, cmd_idx)
+			Indications.remove_hovered(element.xid, cmd_idx)
 		activate_hovered(cmd_idx)
 	elif event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_LEFT:
 			if event.is_pressed():
 				if event.double_click:
-					# Unselect the tags so we can use Ctrl select.
+					# Unselect the elements so we can use Ctrl select.
 					Indications.clear_inner_selection()
 					var subpath_range: Vector2i =\
-							SVG.root_tag.get_tag(tid).attributes.d.get_subpath(cmd_idx)
+							element.get_attribute(attribute_name).get_subpath(cmd_idx)
 					for idx in range(subpath_range.x, subpath_range.y + 1):
-						Indications.ctrl_select(tid, idx)
+						Indications.ctrl_select(element.xid, idx)
 				elif event.is_command_or_control_pressed():
-					Indications.ctrl_select(tid, cmd_idx)
+					Indications.ctrl_select(element.xid, cmd_idx)
 				elif event.shift_pressed:
-					Indications.shift_select(tid, cmd_idx)
+					Indications.shift_select(element.xid, cmd_idx)
 				elif not cmd_idx in Indications.inner_selections:
-					Indications.normal_select(tid, cmd_idx)
+					Indications.normal_select(element.xid, cmd_idx)
 			elif event.is_released() and not event.shift_pressed and\
 			not event.is_command_or_control_pressed() and not event.double_click and\
 			Indications.inner_selections.size() > 1 and\
 			cmd_idx in Indications.inner_selections:
-				Indications.normal_select(tid, cmd_idx)
+				Indications.normal_select(element.xid, cmd_idx)
 		elif event.button_index == MOUSE_BUTTON_RIGHT and event.is_pressed():
-			if Indications.semi_selected_tid != tid or\
+			if Indications.semi_selected_xid != element.xid or\
 			not cmd_idx in Indications.inner_selections:
-				Indications.normal_select(tid, cmd_idx)
+				Indications.normal_select(element.xid, cmd_idx)
 			# Popup the actions.
 			var viewport := get_viewport()
 			var popup_pos := viewport.get_mouse_position()
 			HandlerGUI.popup_under_pos(Indications.get_selection_context(
 					HandlerGUI.popup_under_pos.bind(popup_pos, viewport),
-					Indications.SelectionContext.TAG_EDITOR), popup_pos, viewport)
+					Indications.Context.LIST), popup_pos, viewport)
 
 
 func commands_draw() -> void:
 	RenderingServer.canvas_item_clear(ci)
-	for i in attribute.get_command_count():
+	for i: int in element.get_attribute(attribute_name).get_command_count():
 		var v_offset := COMMAND_HEIGHT * i
 		# Draw the background hover or selection stylebox.
-		var hovered := Indications.is_hovered(tid, i)
-		var selected := Indications.is_selected(tid, i)
+		var hovered := Indications.is_hovered(element.xid, i)
+		var selected := Indications.is_selected(element.xid, i)
 		if selected or hovered:
 			var stylebox := StyleBoxFlat.new()
 			stylebox.set_corner_radius_all(3)
@@ -233,7 +236,7 @@ func commands_draw() -> void:
 		if i == hovered_idx or i == focused_idx:
 			continue
 		
-		var cmd := attribute.get_command(i)
+		var cmd: PathCommand = element.get_attribute(attribute_name).get_command(i)
 		var cmd_char := cmd.command_char
 		# Draw the action button.
 		more_icon.draw_rect(ci, Rect2(Vector2(commands_container.size.x - 19, 4 + v_offset),
@@ -303,7 +306,8 @@ path_command: PathCommand) -> void:
 
 
 func activate_hovered(idx: int) -> void:
-	if idx != hovered_idx and idx < attribute.get_command_count():
+	if idx != hovered_idx and\
+	idx < element.get_attribute(attribute_name).get_command_count():
 		activate_hovered_shared_logic(idx)
 
 func reactivate_hovered() -> void:
@@ -346,7 +350,7 @@ func setup_path_command_controls(idx: int) -> Control:
 	if idx < 0:
 		return null
 	
-	var cmd := attribute.get_command(idx)
+	var cmd: PathCommand = element.get_attribute(attribute_name).get_command(idx)
 	var cmd_char := cmd.command_char
 	var is_absolute := Utils.is_string_upper(cmd_char)
 	
@@ -364,11 +368,14 @@ func setup_path_command_controls(idx: int) -> Control:
 	relative_button.add_theme_font_override("font", code_font)
 	relative_button.add_theme_font_size_override("font_size", 13)
 	relative_button.add_theme_color_override("font_color", Color(1, 1, 1))
+	# Disabled styleboxes aren unused, but must be set for the correct content margins.
 	if is_absolute:
+		relative_button.add_theme_stylebox_override("disabled", absolute_button_normal)
 		relative_button.add_theme_stylebox_override("normal", absolute_button_normal)
 		relative_button.add_theme_stylebox_override("hover", absolute_button_hovered)
 		relative_button.add_theme_stylebox_override("pressed", absolute_button_pressed)
 	else:
+		relative_button.add_theme_stylebox_override("disabled", relative_button_normal)
 		relative_button.add_theme_stylebox_override("normal", relative_button_normal)
 		relative_button.add_theme_stylebox_override("hover", relative_button_hovered)
 		relative_button.add_theme_stylebox_override("pressed", relative_button_pressed)
@@ -445,7 +452,7 @@ func setup_path_command_controls(idx: int) -> Control:
 			var property_name := property_names[i]
 			field.set_value(cmd.get(property_name))
 			field.tooltip_text = property_name
-			field.value_changed.connect(update_value.bind(property_name, idx))
+			field.value_changed.connect(update_parameter.bind(property_name, idx))
 			field.focus_entered.connect(activate_focused.bind(idx))
 			field.focus_exited.connect(check_focused, CONNECT_DEFERRED)
 			container.add_child(field)
@@ -458,16 +465,16 @@ func setup_path_command_controls(idx: int) -> Control:
 
 func numfield(cmd_idx: int) -> BetterLineEdit:
 	var new_field := MiniNumberField.instantiate()
-	new_field.focus_entered.connect(Indications.normal_select.bind(tid, cmd_idx))
+	new_field.focus_entered.connect(Indications.normal_select.bind(element.xid, cmd_idx))
 	return new_field
 
 
 func _on_action_button_pressed(action_button_ref: Button) -> void:
 	# Update the selection immediately, since if this path command is
 	# in a multi-selection, only the mouse button release would change the selection.
-	Indications.normal_select(tid, hovered_idx)
+	Indications.normal_select(element.xid, hovered_idx)
 	var viewport := get_viewport()
 	var action_button_rect := action_button_ref.get_global_rect()
 	HandlerGUI.popup_under_rect_center(Indications.get_selection_context(
 			HandlerGUI.popup_under_rect_center.bind(action_button_rect, viewport),
-			Indications.SelectionContext.TAG_EDITOR), action_button_rect, viewport)
+			Indications.Context.LIST), action_button_rect, viewport)

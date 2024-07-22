@@ -1,7 +1,7 @@
 # A parser for AttributeList.
 class_name ListParser extends RefCounted
 
-static func string_to_list(string: String) -> PackedFloat32Array:
+static func text_to_list(string: String) -> PackedFloat32Array:
 	var nums_parsed := PackedFloat32Array()
 	var current_num_string: String = ""
 	var comma_exhausted := false
@@ -35,7 +35,7 @@ static func string_to_list(string: String) -> PackedFloat32Array:
 	
 	return nums_parsed
 
-static func list_to_string(list: PackedFloat32Array) -> String:
+static func list_to_text(list: PackedFloat32Array) -> String:
 	var params := PackedStringArray()
 	for element in list:
 		# It's fine to use this parser, AttributeList is just a list of numbers.

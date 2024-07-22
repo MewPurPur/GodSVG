@@ -24,7 +24,7 @@ vec3 hsv2rgb(vec3 c) {
 void fragment() {
 	float offset = (horizontal ? UV.x : UV.y);
 	offset = (inverted ? 1.0 - offset : offset);
-	
+
 	if (interpolation == 0) {
 		COLOR = vec4(base_color.r, base_color.g, base_color.b, offset);
 	} else if (interpolation == 1) {

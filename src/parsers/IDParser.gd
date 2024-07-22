@@ -5,7 +5,7 @@ class_name IDParser extends RefCounted
 enum ValidityLevel {VALID, INVALID_XML_NAMETOKEN, INVALID}
 
 
-static func get_id_validity(id: String) -> ValidityLevel:
+static func get_validity(id: String) -> ValidityLevel:
 	if id.is_empty() or id[0] == "#":
 		return ValidityLevel.INVALID
 	

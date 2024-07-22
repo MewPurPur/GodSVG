@@ -2,7 +2,7 @@
 class_name SVGHighlighter extends SyntaxHighlighter
 
 @export var symbol_color := Color("abc9ff")
-@export var tag_color := Color("ff8ccc")
+@export var element_color := Color("ff8ccc")
 @export var attribute_color := Color("bce0ff")
 @export var string_color := Color("a1ffe0")
 @export var comment_color := Color("cdcfd280")
@@ -10,12 +10,12 @@ class_name SVGHighlighter extends SyntaxHighlighter
 @export var cdata_color := Color("ffeda1ac")
 @export var error_color := Color("ff866b")
 
-var unknown_tag_color: Color
-var unknown_attribute_color: Color
+var unrecognized_element_color: Color
+var unrecognized_attribute_color: Color
 
 func setup_extra_colors() -> void:
-	unknown_tag_color = Color(tag_color, tag_color.a * 0.7)
-	unknown_attribute_color = Color(attribute_color, attribute_color.a * 0.7)
+	unrecognized_element_color = Color(element_color, element_color.a * 2 / 3.0)
+	unrecognized_attribute_color = Color(attribute_color, attribute_color.a * 2 / 3.0)
 
 
 func _get_line_syntax_highlighting(line: int) -> Dictionary:
@@ -31,18 +31,17 @@ func _get_line_syntax_highlighting(line: int) -> Dictionary:
 		match parser.get_node_type():
 			XMLParser.NODE_ELEMENT:
 				offset = svg_text.find("<", offset)
-				var tag_name := parser.get_node_name()
+				var element_name := parser.get_node_name()
 				color_map[offset] = {"color": symbol_color}
 				offset += 1
-				if tag_name.is_empty():
+				if element_name.is_empty():
 					color_map[offset] = {"color": error_color}
 					return color_map
 				else:
-					color_map[offset] = {"color":
-							tag_color if DB.is_tag_known(tag_name) else unknown_tag_color}
-				offset += tag_name.length()
+					color_map[offset] = {"color": get_element_color(element_name)}
+				offset += element_name.length()
 				
-				# Attribute names can't be directly after a quotation or after the tag name.
+				# Attribute names can't be directly after a quotation or after the element name.
 				var expecting_attribute_name := false
 				var expecting_end := true
 				
@@ -70,20 +69,17 @@ func _get_line_syntax_highlighting(line: int) -> Dictionary:
 					elif not current_attribute_name.is_empty():
 						if c in " \t\n\r":
 							color_map[offset - current_attribute_name.length()] = {"color":
-									attribute_color if DB.is_attribute_known(tag_name,
-									current_attribute_name) else unknown_attribute_color}
+									get_attribute_color(element_name, current_attribute_name)}
 							current_attribute_name = ""
 							expecting_equal_sign = true
 						elif c in "/>":
 							color_map[offset - current_attribute_name.length()] = {"color":
-									attribute_color if DB.is_attribute_known(tag_name,
-									current_attribute_name) else unknown_attribute_color}
+									get_attribute_color(element_name, current_attribute_name)}
 							color_map[offset] = {"color": error_color}
 							return color_map
 						elif c == "=":
 							color_map[offset - current_attribute_name.length()] = {"color":
-									attribute_color if DB.is_attribute_known(tag_name,
-									current_attribute_name) else unknown_attribute_color}
+									get_attribute_color(element_name, current_attribute_name)}
 							color_map[offset] = {"color": symbol_color}
 							current_attribute_name = ""
 							expecting_attribute_value = true
@@ -123,16 +119,14 @@ func _get_line_syntax_highlighting(line: int) -> Dictionary:
 					offset += 1
 				if not current_attribute_name.is_empty():
 					color_map[svg_text.length() - current_attribute_name.length() - 1] =\
-							{"color": attribute_color if DB.is_attribute_known(tag_name,
-							current_attribute_name) else unknown_attribute_color}
+							{"color": get_attribute_color(element_name, current_attribute_name)}
 			XMLParser.NODE_ELEMENT_END:
 				offset = svg_text.find("<", offset)
-				var tag_name := parser.get_node_name()
+				var element_name := parser.get_node_name()
 				color_map[offset] = {"color": symbol_color}
 				offset += 2
-				color_map[offset] = {"color":
-						tag_color if DB.is_tag_known(tag_name) else unknown_tag_color}
-				offset += tag_name.length()
+				color_map[offset] = {"color": get_element_color(element_name)}
+				offset += element_name.length()
 				color_map[offset] = {"color": symbol_color}
 			XMLParser.NODE_TEXT:
 				color_map[offset] = {"color": text_color}
@@ -143,3 +137,12 @@ func _get_line_syntax_highlighting(line: int) -> Dictionary:
 	
 	return color_map
 
+
+# Helpers.
+func get_element_color(element_name: String) -> Color:
+	return element_color if element_name in DB.recognized_elements\
+			else unrecognized_element_color
+
+func get_attribute_color(element_name: String, attribute_name: String) -> Color:
+	return attribute_color if DB.is_attribute_recognized(element_name,
+			attribute_name) else unrecognized_attribute_color

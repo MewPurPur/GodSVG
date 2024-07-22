@@ -10,12 +10,26 @@ static func num_to_text(number: float) -> String:
 	return output
 
 static func text_to_num(text: String) -> float:
-	return NAN if text.is_empty() else text.to_float()
+	text = text.strip_edges()
+	if text.is_empty():
+		return NAN
+	if text.ends_with("%"):
+		return text.to_float() / 100
+	return text.to_float()
+
+static func is_percentage(text: String):
+	text = text.strip_edges()
+	return text.ends_with("%")
 
 # The passed text should already be a valid number.
 static func format_text(text: String) -> String:
+	text = text.strip_edges()
 	if text.is_empty():
 		return ""  # Equivalent to NAN in the app's logic.
+	
+	var has_percentage := text.ends_with("%")
+	if has_percentage:
+		text.left(-1)
 	
 	var leading_decimal_point := text.begins_with(".") or text.begins_with("-.") or\
 		text.begins_with("+.")
@@ -41,6 +55,9 @@ static func format_text(text: String) -> String:
 			text += "."
 		text += "0".repeat(padded_zeros)
 	text = text.left(text.find(".") + 5)
+	
+	if has_percentage:
+		text += "%"
 	
 	return text
 

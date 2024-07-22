@@ -5,17 +5,16 @@ enum CustomNotification {
 	LANGUAGE_CHANGED = 300,
 	UI_SCALE_CHANGED = 301,
 	THEME_CHANGED = 302,
-	NUMBER_PRECISION_CHANGED = 303,
-	HIGHLIGHT_COLORS_CHANGED = 304,
-	BASIC_COLORS_CHANGED = 305,
-	HANDLE_VISUALS_CHANGED = 306,
+	SHORTCUTS_CHANGED = 303,
+	NUMBER_PRECISION_CHANGED = 304,
+	HIGHLIGHT_COLORS_CHANGED = 305,
+	BASIC_COLORS_CHANGED = 306,
+	HANDLE_VISUALS_CHANGED = 307,
+	WINDOW_TITLE_SCHEME_CHANGED = 308,
 }
 
-# Enum with values to be used for set_value() of attribute editors.
-# REGULAR means that the attribute will update if the new value is different.
-# INTERMEDIATE and FINAL cause the attribute update to have the corresponding sync mode.
-# FINAL also causes the equivalence check to be skipped.
-enum UpdateType {REGULAR, INTERMEDIATE, FINAL}
+static func custom_notify(notif: CustomNotification) -> void:
+	Engine.get_main_loop().get_root().propagate_notification(notif)
 
 enum InteractionType {NONE = 0, HOVERED = 1, SELECTED = 2, HOVERED_SELECTED = 3}
 
@@ -53,6 +52,16 @@ cp3: Vector2) -> PackedVector2Array:
 	return Utils.get_cubic_bezier_points(
 			cp1, 2/3.0 * (cp2 - cp1), 2/3.0 * (cp2 - cp3), cp3)
 
+# Calculate quadratic bezier point coordinate along an axis.
+static func quadratic_bezier_point(p0: float, p1: float, p2: float, t: float) -> float:
+	var u := 1.0 - t
+	return u * u * p0 + 2 * u * t * p1 + t * t * p2
+
+# Calculate cubic bezier point coordinate along an axis.
+static func cubic_bezier_point(p0: float, p1: float, p2: float, p3: float, t: float) -> float:
+	var u := 1.0 - t
+	return u * u * u * p0 + 3 * u * u * t * p1 + 3 * u * t * t * p2 + t * t * t * p3
+
 # Ellipse parametric equation.
 static func E(c: Vector2, r: Vector2, cosine: float, sine: float, t: float) -> Vector2:
 	var xt := r.x * cos(t)
@@ -67,20 +76,20 @@ static func Et(r: Vector2, cosine: float, sine: float, t: float) -> Vector2:
 
 
 # [1] > [1, 2] > [1, 0] > [0]
-static func compare_tids(tid1: PackedInt32Array, tid2: PackedInt32Array) -> bool:
-	var smaller_tid_size := mini(tid1.size(), tid2.size())
-	for i in smaller_tid_size:
-		if tid1[i] < tid2[i]:
+static func compare_xids(xid1: PackedInt32Array, xid2: PackedInt32Array) -> bool:
+	var smaller_xid_size := mini(xid1.size(), xid2.size())
+	for i in smaller_xid_size:
+		if xid1[i] < xid2[i]:
 			return true
-		elif tid1[i] > tid2[i]:
+		elif xid1[i] > xid2[i]:
 			return false
-	return tid1.size() > smaller_tid_size
+	return xid1.size() > smaller_xid_size
 
-static func compare_tids_r(tid1: PackedInt32Array, tid2: PackedInt32Array) -> bool:
-	return compare_tids(tid2, tid1)
+static func compare_xids_r(xid1: PackedInt32Array, xid2: PackedInt32Array) -> bool:
+	return compare_xids(xid2, xid1)
 
-# Indirect parent, i.e. ancestor. Passing the root tag as parent will return false.
-static func is_tid_parent(parent: PackedInt32Array, child: PackedInt32Array) -> bool:
+# Indirect parent, i.e. ancestor. Passing the root element as parent will return false.
+static func is_xid_parent(parent: PackedInt32Array, child: PackedInt32Array) -> bool:
 	if parent.is_empty():
 		return false
 	var parent_size := parent.size()
@@ -92,38 +101,38 @@ static func is_tid_parent(parent: PackedInt32Array, child: PackedInt32Array) -> 
 			return false
 	return true
 
-static func is_tid_parent_or_self(parent: PackedInt32Array,
+static func is_xid_parent_or_self(parent: PackedInt32Array,
 child: PackedInt32Array) -> bool:
-	return is_tid_parent(parent, child) or parent == child
+	return is_xid_parent(parent, child) or parent == child
 
-static func get_parent_tid(tid: PackedInt32Array) -> PackedInt32Array:
-	var parent_tid := tid.duplicate()
-	parent_tid.resize(tid.size() - 1)
-	return parent_tid
+static func get_parent_xid(xid: PackedInt32Array) -> PackedInt32Array:
+	var parent_xid := xid.duplicate()
+	parent_xid.resize(xid.size() - 1)
+	return parent_xid
 
-static func are_tid_parents_same(tid1: PackedInt32Array, tid2: PackedInt32Array) -> bool:
-	if tid1.size() != tid2.size():
+static func are_xid_parents_same(xid1: PackedInt32Array, xid2: PackedInt32Array) -> bool:
+	if xid1.size() != xid2.size():
 		return false
-	for i in tid1.size() - 1:
-		if tid1[i] != tid2[i]:
+	for i in xid1.size() - 1:
+		if xid1[i] != xid2[i]:
 			return false
 	return true
 
 # Filter out all descendants.
-static func filter_descendant_tids(tids: Array[PackedInt32Array]) -> Array[PackedInt32Array]:
-	var new_tids: Array[PackedInt32Array] = tids.duplicate()
-	new_tids.sort_custom(Utils.compare_tids_r)
+static func filter_descendant_xids(xids: Array[PackedInt32Array]) -> Array[PackedInt32Array]:
+	var new_xids: Array[PackedInt32Array] = xids.duplicate()
+	new_xids.sort_custom(Utils.compare_xids_r)
 	# Linear scan to filter out the descendants.
-	var last_accepted := new_tids[0]
+	var last_accepted := new_xids[0]
 	var i := 1
-	while i < new_tids.size():
-		var tid := new_tids[i]
-		if Utils.is_tid_parent_or_self(last_accepted, tid):
-			new_tids.remove_at(i)
+	while i < new_xids.size():
+		var xid := new_xids[i]
+		if Utils.is_xid_parent_or_self(last_accepted, xid):
+			new_xids.remove_at(i)
 		else:
-			last_accepted = new_tids[i]
+			last_accepted = new_xids[i]
 			i += 1
-	return new_tids
+	return new_xids
 
 
 static func is_event_drag(event: InputEvent) -> bool:
@@ -142,7 +151,7 @@ static func is_event_cancel(event: InputEvent) -> bool:
 			event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT
 
 
-# Used to somewhat prevent unwanted inputs from triggering tag drag & drop.
+# Used to somewhat prevent unwanted inputs from triggering XNode drag & drop.
 static func mouse_filter_pass_non_drag_events(event: InputEvent) -> Control.MouseFilter:
 	return Control.MOUSE_FILTER_STOP if event is InputEventMouseMotion and\
 			event.button_mask == MOUSE_BUTTON_MASK_LEFT else Control.MOUSE_FILTER_PASS
@@ -159,3 +168,22 @@ static func get_last_dir() -> String:
 		return OS.get_system_dir(OS.SYSTEM_DIR_PICTURES)
 	else:
 		return GlobalSettings.save_data.last_used_dir
+
+
+static func generate_gradient(element: Element) -> Gradient:
+	if not (element is ElementLinearGradient or element is ElementRadialGradient):
+		return null
+	
+	var gradient := Gradient.new()
+	var current_offset := 0.0
+	for child in element.get_children():
+		if not child is ElementStop:
+			continue
+		current_offset = clamp(child.get_attribute_num("offset"), current_offset, 1.0)
+		gradient.add_point(current_offset,
+				Color(ColorParser.text_to_color(child.get_attribute_value("stop-color")),
+				child.get_attribute_num("stop-opacity")))
+	# Remove the default two gradient points.
+	gradient.remove_point(0)
+	gradient.remove_point(0)
+	return gradient

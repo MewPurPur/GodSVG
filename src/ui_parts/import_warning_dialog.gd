@@ -14,19 +14,20 @@ func _notification(what: int) -> void:
 	if what == Utils.CustomNotification.LANGUAGE_CHANGED:
 		setup()
 
-
 func _ready() -> void:
+	imported.connect(queue_free)
+	ok_button.pressed.connect(imported.emit)
 	setup()
 
+
 func setup() -> void:
-	imported.connect(queue_free)
 	# Convert forward and backward to show how GodSVG would display the given SVG.
-	var imported_text_parse_result := SVGParser.text_to_svg(imported_text)
-	var preview_text := SVGParser.svg_to_text(imported_text_parse_result.svg)
-	var preview_parse_result := SVGParser.text_to_svg(preview_text)
+	var imported_text_parse_result := SVGParser.text_to_root(imported_text)
+	var preview_text := SVGParser.root_to_text(imported_text_parse_result.svg)
+	var preview_parse_result := SVGParser.text_to_root(preview_text)
 	var preview := preview_parse_result.svg
 	if is_instance_valid(preview):
-		texture_preview.setup(SVGParser.svg_to_text(preview), preview.get_size())
+		texture_preview.setup(SVGParser.root_to_text(preview), preview.get_size())
 	
 	if imported_text_parse_result.error != SVGParser.ParseError.OK:
 		texture_preview.hide()
@@ -54,20 +55,23 @@ func set_svg(text: String) -> void:
 	imported_text = text
 
 
-func get_svg_warnings(svg_tag: TagSVG) -> Array[String]:
-	var warnings: Array[String] = []
-	var tids := svg_tag.get_all_tids()
-	for tid in tids:
-		var tag := svg_tag.get_tag(tid)
-		if tag is TagUnknown:
-			warnings.append("%s: %s" % [TranslationServer.translate("Unknown tag"),
-					tag.name])
+func get_svg_warnings(root_element: ElementRoot) -> PackedStringArray:
+	var unrecognized_elements := PackedStringArray()
+	var unrecognized_attributes := PackedStringArray()
+	for element in root_element.get_all_elements():
+		if element is ElementUnrecognized:
+			if not element.name in unrecognized_elements:
+				unrecognized_elements.append(element.name)
 		else:
-			for unknown_attrib in tag.unknown_attributes:
-				warnings.append("%s: %s" % [TranslationServer.translate("Unknown attribute"),
-						unknown_attrib.name])
+			for attribute in element.get_all_attributes():
+				if not DB.is_attribute_recognized(element.name, attribute.name) and\
+				not attribute.name in unrecognized_attributes:
+					unrecognized_attributes.append(attribute.name)
+	var warnings := PackedStringArray()
+	for element in unrecognized_elements:
+		warnings.append("%s: %s" % [TranslationServer.translate("Unrecognized element"),
+				element])
+	for attribute in unrecognized_attributes:
+		warnings.append("%s: %s" % [TranslationServer.translate("Unrecognized attribute"),
+				attribute])
 	return warnings
-
-
-func _on_ok_button_pressed() -> void:
-	imported.emit()

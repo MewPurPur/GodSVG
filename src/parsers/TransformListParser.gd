@@ -1,48 +1,48 @@
 class_name TransformListParser extends RefCounted
 
 static func transform_list_to_text(
-transform_list: Array[AttributeTransform.Transform]) -> String:
+transform_list: Array[Transform]) -> String:
 	var output := ""
 	var num_parser := NumberArrayParser.new()
-	num_parser.compress_numbers = GlobalSettings.transform_compress_numbers
-	num_parser.minimize_spacing = GlobalSettings.transform_minimize_spacing
+	num_parser.compress_numbers = GlobalSettings.transform_list_compress_numbers
+	num_parser.minimize_spacing = GlobalSettings.transform_list_minimize_spacing
 	
 	for t in transform_list:
-		if t is AttributeTransform.TransformMatrix:
+		if t is Transform.TransformMatrix:
 			output += "matrix(%s) " % num_parser.numstr_arr_to_text([
 					num_parser.num_to_text(t.x1), num_parser.num_to_text(t.x2),
 					num_parser.num_to_text(t.y1), num_parser.num_to_text(t.y2),
 					num_parser.num_to_text(t.o1), num_parser.num_to_text(t.o2)])
-		elif t is AttributeTransform.TransformTranslate:
-			if t.y == 0 and GlobalSettings.transform_remove_unnecessary_params:
+		elif t is Transform.TransformTranslate:
+			if t.y == 0 and GlobalSettings.transform_list_remove_unnecessary_params:
 				output += "translate(%s) " % num_parser.num_to_text(t.x)
 			else:
 				output += "translate(%s) " % num_parser.numstr_arr_to_text([
 						num_parser.num_to_text(t.x), num_parser.num_to_text(t.y)])
-		elif t is AttributeTransform.TransformRotate:
-			if t.x == 0 and t.y == 0 and GlobalSettings.transform_remove_unnecessary_params:
+		elif t is Transform.TransformRotate:
+			if t.x == 0 and t.y == 0 and GlobalSettings.transform_list_remove_unnecessary_params:
 				output += "rotate(%s) " % num_parser.num_to_text(t.deg, true)
 			else:
 				output += "rotate(%s) " % num_parser.numstr_arr_to_text([
 						num_parser.num_to_text(t.deg, true),
 						num_parser.num_to_text(t.x), num_parser.num_to_text(t.y)])
-		elif t is AttributeTransform.TransformScale:
-			if t.x == t.y and GlobalSettings.transform_remove_unnecessary_params:
+		elif t is Transform.TransformScale:
+			if t.x == t.y and GlobalSettings.transform_list_remove_unnecessary_params:
 				output += "scale(%s) " % num_parser.num_to_text(t.x)
 			else:
 				output += "scale(%s) " % num_parser.numstr_arr_to_text([
 						num_parser.num_to_text(t.x), num_parser.num_to_text(t.y)])
-		elif t is AttributeTransform.TransformSkewX:
+		elif t is Transform.TransformSkewX:
 			output += "skewX(%s) " % num_parser.num_to_text(t.x, true)
-		elif t is AttributeTransform.TransformSkewY:
+		elif t is Transform.TransformSkewY:
 			output += "skewY(%s) " % num_parser.num_to_text(t.y, true)
 	return output.trim_suffix(" ")
 
-static func text_to_transform_list(text: String) -> Array[AttributeTransform.Transform]:
+static func text_to_transform_list(text: String) -> Array[Transform]:
 	if text.is_empty():
 		return []
 	
-	var output: Array[AttributeTransform.Transform] = []
+	var output: Array[Transform] = []
 	text = text.strip_edges()
 	var transforms := text.split(")", false)
 	for transform in transforms:
@@ -127,40 +127,40 @@ static func text_to_transform_list(text: String) -> Array[AttributeTransform.Tra
 		match transform_info[0].strip_edges():
 			"matrix":
 				if nums.size() == 6:
-					output.append(AttributeTransform.TransformMatrix.new(nums[0], nums[1],
+					output.append(Transform.TransformMatrix.new(nums[0], nums[1],
 							nums[2], nums[3], nums[4], nums[5]))
 				else:
 					return []
 			"translate":
 				if nums.size() == 1:
-					output.append(AttributeTransform.TransformTranslate.new(nums[0], 0.0))
+					output.append(Transform.TransformTranslate.new(nums[0], 0.0))
 				elif nums.size() == 2:
-					output.append(AttributeTransform.TransformTranslate.new(nums[0], nums[1]))
+					output.append(Transform.TransformTranslate.new(nums[0], nums[1]))
 				else:
 					return []
 			"rotate":
 				if nums.size() == 1:
-					output.append(AttributeTransform.TransformRotate.new(nums[0], 0.0, 0.0))
+					output.append(Transform.TransformRotate.new(nums[0], 0.0, 0.0))
 				elif nums.size() == 3:
-					output.append(AttributeTransform.TransformRotate.new(
+					output.append(Transform.TransformRotate.new(
 							nums[0], nums[1], nums[2]))
 				else:
 					return []
 			"scale":
 				if nums.size() == 1:
-					output.append(AttributeTransform.TransformScale.new(nums[0], nums[0]))
+					output.append(Transform.TransformScale.new(nums[0], nums[0]))
 				elif nums.size() == 2:
-					output.append(AttributeTransform.TransformScale.new(nums[0], nums[1]))
+					output.append(Transform.TransformScale.new(nums[0], nums[1]))
 				else:
 					return []
 			"skewX":
 				if nums.size() == 1:
-					output.append(AttributeTransform.TransformSkewX.new(nums[0]))
+					output.append(Transform.TransformSkewX.new(nums[0]))
 				else:
 					return []
 			"skewY":
 				if nums.size() == 1:
-					output.append(AttributeTransform.TransformSkewY.new(nums[0]))
+					output.append(Transform.TransformSkewY.new(nums[0]))
 				else:
 					return []
 			_:

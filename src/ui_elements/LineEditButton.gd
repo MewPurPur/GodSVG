@@ -103,49 +103,51 @@ func _on_underlying_control_unfocused() -> void:
 		_setdown()
 
 func _setup() -> void:
-	if not active:
-		active = true
-		temp_line_edit = BetterLineEdit.new()
-		temp_line_edit.custom_minimum_size =\
-				Vector2(custom_minimum_size.x - BUTTON_WIDTH, 22)
-		temp_line_edit.tooltip_text = tooltip_text
-		temp_line_edit.code_font_tooltip = code_font_tooltip
-		temp_line_edit.placeholder_text = placeholder_text
-		temp_line_edit.text = text
-		temp_line_edit.mouse_filter = Control.MOUSE_FILTER_PASS
-		temp_line_edit.theme_type_variation = "RightConnectedLineEdit"
-		if font_color != Color.TRANSPARENT:
-			temp_line_edit.add_theme_color_override("font_color", _get_font_color())
-		temp_line_edit.add_theme_font_override("font", _get_font())
-		temp_line_edit.text_change_canceled.connect(emit_text_change_canceled)
-		temp_line_edit.text_changed.connect(emit_text_changed)
-		temp_line_edit.text_submitted.connect(emit_text_submitted)
-		temp_line_edit.focus_entered.connect(_on_underlying_control_focused)
-		temp_line_edit.focus_exited.connect(_on_underlying_control_unfocused)
-		add_child(temp_line_edit)
-		temp_button = Button.new()
-		temp_button.show_behind_parent = true  # Lets the icon draw in front.
-		temp_button.custom_minimum_size = Vector2(BUTTON_WIDTH, 22)
-		temp_button.position.x = size.x - BUTTON_WIDTH
-		temp_button.focus_mode = Control.FOCUS_NONE
-		temp_button.mouse_filter = Control.MOUSE_FILTER_PASS
-		temp_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-		if button_visuals:
-			temp_button.theme_type_variation = "LeftConnectedButton"
-		else:
-			temp_button.flat = true
-		temp_button.pressed.connect(emit_pressed)
-		temp_button.gui_input.connect(emit_button_gui_input)
-		temp_button.button_down.connect(_on_underlying_control_focused)
-		temp_button.button_up.connect(_on_underlying_control_unfocused)
-		add_child(temp_button)
-		queue_redraw()
-		# If there aren't button visuals, then they are probably
-		# handed off to draw functions which need to be aware of the hover state.
-		if not button_visuals:
-			temp_button.mouse_exited.connect(queue_redraw)
-			temp_line_edit.mouse_exited.connect(queue_redraw)
+	if active:
+		return
+	active = true
+	temp_line_edit = BetterLineEdit.new()
+	temp_line_edit.custom_minimum_size =\
+			Vector2(custom_minimum_size.x - BUTTON_WIDTH, 22)
+	temp_line_edit.tooltip_text = tooltip_text
+	temp_line_edit.code_font_tooltip = code_font_tooltip
+	temp_line_edit.placeholder_text = placeholder_text
+	temp_line_edit.text = text
+	temp_line_edit.mouse_filter = Control.MOUSE_FILTER_PASS
+	temp_line_edit.theme_type_variation = "RightConnectedLineEdit"
+	if font_color != Color.TRANSPARENT:
+		temp_line_edit.add_theme_color_override("font_color", _get_font_color())
+	temp_line_edit.add_theme_font_override("font", _get_font())
+	temp_line_edit.text_change_canceled.connect(text_change_canceled.emit)
+	temp_line_edit.text_changed.connect(text_changed.emit)
+	temp_line_edit.text_submitted.connect(text_submitted.emit)
+	temp_line_edit.focus_entered.connect(_on_underlying_control_focused)
+	temp_line_edit.focus_exited.connect(_on_underlying_control_unfocused)
+	add_child(temp_line_edit)
+	temp_button = Button.new()
+	temp_button.show_behind_parent = true  # Lets the icon draw in front.
+	temp_button.custom_minimum_size = Vector2(BUTTON_WIDTH, 22)
+	temp_button.position.x = size.x - BUTTON_WIDTH
+	temp_button.focus_mode = Control.FOCUS_NONE
+	temp_button.mouse_filter = Control.MOUSE_FILTER_PASS
+	temp_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+	if button_visuals:
+		temp_button.theme_type_variation = "LeftConnectedButton"
+	else:
+		temp_button.flat = true
+	temp_button.pressed.connect(pressed.emit)
+	temp_button.gui_input.connect(button_gui_input.emit)
+	temp_button.button_down.connect(_on_underlying_control_focused)
+	temp_button.button_up.connect(_on_underlying_control_unfocused)
+	add_child(temp_button)
+	queue_redraw()
+	# If there aren't button visuals, then they are probably
+	# handed off to draw functions which need to be aware of the hover state.
+	if not button_visuals:
+		temp_button.mouse_exited.connect(queue_redraw)
+		temp_line_edit.mouse_exited.connect(queue_redraw)
 
+# Opposite of setup.
 func _setdown() -> void:
 	if active:
 		active = false
@@ -174,22 +176,6 @@ func _draw() -> void:
 		var icon_side := BUTTON_WIDTH - horizontal_margin_width + 2
 		icon.draw_rect(ci, Rect2(size.x - (BUTTON_WIDTH + 0.5 + icon_side) / 2,
 				(size.y - icon_side) / 2, icon_side, icon_side), false)
-
-
-func emit_pressed() -> void:
-	pressed.emit()
-
-func emit_text_change_canceled() -> void:
-	text_change_canceled.emit()
-
-func emit_text_changed(new_text: String) -> void:
-	text_changed.emit(new_text)
-
-func emit_text_submitted(new_text: String) -> void:
-	text_submitted.emit(new_text)
-
-func emit_button_gui_input(event: InputEvent) -> void:
-	button_gui_input.emit(event)
 
 
 # Helpers

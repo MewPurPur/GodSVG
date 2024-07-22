@@ -1,23 +1,41 @@
 extends Button
 
+const bounds = Vector2(2, 2)
+
 const code_font = preload("res://visual/fonts/FontMono.ttf")
 const checkerboard = preload("res://visual/icons/backgrounds/Checkerboard.svg")
 
 var color_palette: ColorPalette
 var idx := -1  # Index inside the palette.
 
+var ci := get_canvas_item()
+var gradient_texture: GradientTexture2D
+
 func _ready() -> void:
-	# _make_custom_tooltip() requires some text to work.
-	tooltip_text = "lmofa"
+	tooltip_text = "lmofa"  # _make_custom_tooltip() requires some text to work.
+	# TODO remove this when #94584 is fixed.
+	var color := color_palette.colors[idx]
+	if ColorParser.is_valid_url(color):
+		var id := color.substr(5, color.length() - 6)
+		var gradient_element := SVG.root_element.get_element_by_id(id)
+		if gradient_element != null:
+			gradient_texture = gradient_element.generate_texture()
 
 func _draw() -> void:
 	var color := color_palette.colors[idx]
-	var parsed_color := Color.from_string(color, Color(0, 0, 0))
-	var bounds := Vector2(2, 2)
-	if parsed_color.a != 1 or color == "none":
-		draw_texture_rect(checkerboard, Rect2(bounds, size - bounds * 2), false)
-	if color != "none":
-		draw_rect(Rect2(bounds, size - bounds * 2), color)
+	var inside_rect := Rect2(bounds, size - bounds * 2)
+	if ColorParser.is_valid_url(color):
+		checkerboard.draw_rect(ci, inside_rect, false)
+		var id := color.substr(5, color.length() - 6)
+		var gradient_element := SVG.root_element.get_element_by_id(id)
+		if gradient_element != null:
+			gradient_texture.draw_rect(ci, inside_rect, false)
+	else:
+		var parsed_color := ColorParser.text_to_color(color)
+		if parsed_color.a != 1 or color == "none":
+			checkerboard.draw_rect(ci, inside_rect, false)
+		if color != "none":
+			RenderingServer.canvas_item_add_rect(ci,inside_rect, parsed_color)
 
 func _make_custom_tooltip(_for_text: String) -> Object:
 	var rtl := RichTextLabel.new()
