@@ -216,9 +216,10 @@ func _input(event: InputEvent) -> void:
 		if event.is_action_pressed(action):
 			get_viewport().set_input_as_handled()
 			ShortcutUtils.fn_call(action)
-			return
-	
-	if get_viewport().gui_is_dragging():
+
+func _unhandled_input(event: InputEvent) -> void:
+	if not popup_overlay_stack.is_empty() or not overlay_stack.is_empty() or\
+	get_viewport().gui_is_dragging():
 		return
 	
 	for action in ["ui_cancel", "delete", "move_up", "move_down", "duplicate",
