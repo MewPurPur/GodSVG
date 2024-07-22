@@ -1,9 +1,7 @@
 name: Feature request
-about: Suggest a new feature for GodSVG
-title: Title
-labels: proposal
-assignees: ''
-
+description: Suggest a new feature for GodSVG
+title: "Title"
+labels: [proposal]
 body:
   - type: textarea
     id: description
