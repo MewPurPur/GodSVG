@@ -90,6 +90,7 @@ const keybinds_dict = {
 		"move_up": true,
 		"move_down": true,
 		"delete": true,
+		"find": true,
 	},
 	"view": {
 		"zoom_in": true,

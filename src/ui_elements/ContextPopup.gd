@@ -59,6 +59,13 @@ icon: Texture2D = null, shortcut := "") -> Button:
 				ret_button.add_child(internal_hbox)
 				ret_button.pressed.connect(press_action)
 				ret_button.pressed.connect(HandlerGUI.remove_popup_overlay)
+				
+				var shortcut_obj := Shortcut.new()
+				var action_obj := InputEventAction.new()
+				action_obj.action = shortcut
+				shortcut_obj.events.append(action_obj)
+				ret_button.shortcut = shortcut_obj
+				ret_button.shortcut_feedback = false
 				return ret_button
 	# Finish setting up the main button and return it if there's no shortcut.
 	main_button.theme_type_variation = "ContextButton"
@@ -120,7 +127,14 @@ start_pressed: bool, shortcut := "") -> CheckBox:
 				internal_hbox.add_child(label_margin)
 				ret_button.add_child(internal_hbox)
 				ret_button.pressed.connect(
-						func(): checkbox.button_pressed = !checkbox.button_pressed)
+						func(): checkbox.button_pressed = not checkbox.button_pressed)
+				
+				var shortcut_obj := Shortcut.new()
+				var action_obj := InputEventAction.new()
+				action_obj.action = shortcut
+				shortcut_obj.events.append(action_obj)
+				ret_button.shortcut = shortcut_obj
+				ret_button.shortcut_feedback = false
 				return ret_button
 	# Finish setting up the checkbox and return it if there's no shortcut.
 	checkbox.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND

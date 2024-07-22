@@ -115,3 +115,8 @@ func _on_switch_mode_pressed() -> void:
 
 func _on_tree_exited() -> void:
 	color_picked.emit(current_value, true)
+
+func _input(event: InputEvent) -> void:
+	if event.is_action_pressed("find"):
+		search_field.grab_focus()
+		accept_event()
