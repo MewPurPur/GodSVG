@@ -445,3 +445,8 @@ func get_drive_icon(path: String) -> Texture2D:
 
 func is_system_dir(path: String) -> bool:
 	return path in system_dir_paths.values()
+
+func _input(event: InputEvent) -> void:
+	if event.is_action_pressed("find"):
+		search_button.button_pressed = true
+		accept_event()

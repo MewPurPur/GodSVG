@@ -192,15 +192,6 @@ func _input(event: InputEvent) -> void:
 			event.double_click = true
 			last_mouse_click_double = false
 	
-	if not overlay_stack.is_empty():
-		return
-	
-	if event.is_action_pressed("save"):
-		get_viewport().set_input_as_handled()
-		FileUtils.open_save_dialog("svg", FileUtils.native_file_save,
-				FileUtils.save_svg_to_file)
-
-func _unhandled_input(event: InputEvent) -> void:
 	# Stuff that should replace the existing overlays.
 	for action in ["about_info", "about_donate", "check_updates", "open_settings"]:
 		if event.is_action_pressed(action):
@@ -218,10 +209,9 @@ func _unhandled_input(event: InputEvent) -> void:
 	
 	# Stop stuff from propagating when there's overlays.
 	if not popup_overlay_stack.is_empty() or not overlay_stack.is_empty():
-		get_viewport().set_input_as_handled()
 		return
 	
-	for action in ["import", "export", "copy_svg_text", "clear_svg", "optimize",
+	for action in ["import", "export", "save", "copy_svg_text", "clear_svg", "optimize",
 	"clear_file_path", "reset_svg", "redo", "undo"]:
 		if event.is_action_pressed(action):
 			get_viewport().set_input_as_handled()
