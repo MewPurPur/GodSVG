@@ -1,14 +1,12 @@
 name: Bug report
-about: Report a bug in GodSVG
-title: Title
-labels: bug
-assignees: ''
-
+description: Report a bug in GodSVG
+title: "Title"
+labels: [bug]
 body:
   - type: textarea
     id: description
     attributes:
       label: Description
-      description: Give a clear and concise description of what the bug is and what the expected behavior is. For non-trivial issues, provide reproduction steps and screenshots if relevant.
+      description: Give a clear and concise description of what the bug is and what the expected behavior is. For non-trivial issues, provide reproduction steps and screenshots or video if relevant.
     validations:
       required: true
