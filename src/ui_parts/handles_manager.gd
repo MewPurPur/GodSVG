@@ -748,7 +748,7 @@ func _on_handle_added() -> void:
 	if not get_viewport_rect().has_point(get_viewport().get_mouse_position()):
 		if not Indications.semi_selected_xid.is_empty():
 			SVG.root_element.get_element(Indications.semi_selected_xid).get_attribute("d").\
-					sync_after_commands_change(true)
+					sync_after_commands_change()
 		return
 	
 	update_handles()
