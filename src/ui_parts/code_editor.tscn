@@ -1,7 +1,7 @@
-[gd_scene load_steps=11 format=3 uid="uid://cr1fdlmbknnko"]
+[gd_scene load_steps=10 format=3 uid="uid://cr1fdlmbknnko"]
 
 [ext_resource type="Script" path="res://src/ui_parts/code_editor.gd" id="1_nffk0"]
-[ext_resource type="Texture2D" uid="uid://c5kgvxffw35gi" path="res://visual/icons/Compress.svg" id="2_33tgq"]
+[ext_resource type="FontFile" uid="uid://dc0w4sx0h0fui" path="res://visual/fonts/FontBold.ttf" id="2_hl52o"]
 [ext_resource type="FontFile" uid="uid://dtb4wkus51hxs" path="res://visual/fonts/FontMono.ttf" id="2_p4nol"]
 [ext_resource type="Texture2D" uid="uid://6ymbl3jqersp" path="res://visual/icons/Import.svg" id="4_cuhac"]
 [ext_resource type="Texture2D" uid="uid://dthdjf4v2vlvg" path="res://visual/icons/CodeOptions.svg" id="4_sos04"]
@@ -20,17 +20,6 @@ border_width_right = 2
 border_color = Color(0.152941, 0.152941, 0.2, 1)
 corner_radius_top_left = 5
 corner_radius_top_right = 5
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rppt3"]
-content_margin_left = 5.0
-content_margin_top = 2.0
-content_margin_right = 5.0
-content_margin_bottom = 2.0
-bg_color = Color(1, 1, 1, 0.0666667)
-corner_radius_top_left = 3
-corner_radius_top_right = 3
-corner_radius_bottom_right = 3
-corner_radius_bottom_left = 3
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_k0een"]
 content_margin_left = 10.0
@@ -55,34 +44,20 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_q56qh")
 
 [node name="CodeButtons" type="HBoxContainer" parent="PanelContainer"]
 layout_mode = 2
+theme_override_constants/separation = 8
 
-[node name="OptimizeButton" type="Button" parent="PanelContainer/CodeButtons"]
+[node name="SizeButton" type="Button" parent="PanelContainer/CodeButtons"]
+unique_name_in_owner = true
 layout_mode = 2
-tooltip_text = "Optimize"
 focus_mode = 0
 mouse_default_cursor_shape = 2
-theme_type_variation = &"IconButton"
-icon = ExtResource("2_33tgq")
+theme_type_variation = &"TranslucentButton"
+theme_override_fonts/font = ExtResource("2_hl52o")
 
-[node name="SizeLabelContainer" type="PanelContainer" parent="PanelContainer/CodeButtons"]
+[node name="FileButton" type="Button" parent="PanelContainer/CodeButtons"]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_vertical = 4
-theme_override_styles/panel = SubResource("StyleBoxFlat_rppt3")
-
-[node name="SizeLabel" type="Label" parent="PanelContainer/CodeButtons/SizeLabelContainer"]
-layout_mode = 2
-theme_override_fonts/font = ExtResource("2_p4nol")
-theme_override_font_sizes/font_size = 12
-
-[node name="MarginContainer" type="MarginContainer" parent="PanelContainer/CodeButtons"]
-layout_mode = 2
-theme_override_constants/margin_left = 8
-
-[node name="FileButton" type="Button" parent="PanelContainer/CodeButtons/MarginContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 6
+size_flags_horizontal = 2
 focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_type_variation = &"FlatButton"
@@ -143,7 +118,8 @@ theme_override_fonts/normal_font = ExtResource("2_p4nol")
 theme_override_font_sizes/normal_font_size = 14
 fit_content = true
 
-[connection signal="pressed" from="PanelContainer/CodeButtons/MarginContainer/FileButton" to="." method="_on_file_button_pressed"]
+[connection signal="pressed" from="PanelContainer/CodeButtons/SizeButton" to="." method="_on_size_button_pressed"]
+[connection signal="pressed" from="PanelContainer/CodeButtons/FileButton" to="." method="_on_file_button_pressed"]
 [connection signal="pressed" from="PanelContainer/CodeButtons/MetaActions/OptionsButton" to="." method="_on_options_button_pressed"]
 [connection signal="caret_changed" from="ScriptEditor/SVGCodeEdit" to="ScriptEditor/SVGCodeEdit" method="redraw_caret"]
 [connection signal="focus_entered" from="ScriptEditor/SVGCodeEdit" to="." method="_on_svg_code_edit_focus_entered"]

@@ -6,7 +6,7 @@ msgstr ""
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: Hamster5295\n"
-"Language: zh_CN\n"
+"Language: zh\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -14,6 +14,24 @@ msgstr ""
 
 msgid "translation-credits"
 msgstr "Hamster5295 <hamster5295@163.com>"
+
+#: src/data_classes/ElementCircle.gd src/data_classes/ElementEllipse.gd
+#: src/data_classes/ElementG.gd src/data_classes/ElementLine.gd
+#: src/data_classes/ElementLinearGradient.gd src/data_classes/ElementPath.gd
+#: src/data_classes/ElementRadialGradient.gd src/data_classes/ElementRect.gd
+#: src/data_classes/ElementStop.gd
+msgid "{element} must be inside {allowed} to have any effect."
+msgstr ""
+
+#: src/data_classes/ElementLinearGradient.gd
+#: src/data_classes/ElementRadialGradient.gd
+msgid "No id attribute defined."
+msgstr ""
+
+#: src/data_classes/ElementLinearGradient.gd
+#: src/data_classes/ElementRadialGradient.gd
+msgid "No stop elements under this gradient."
+msgstr ""
 
 #: src/parsers/SVGParser.gd
 msgid "Doesn’t describe an SVG."
@@ -151,7 +169,7 @@ msgstr "在前方插入"
 msgid "New transform"
 msgstr "新的变换"
 
-#: src/ui_elements/unknown_field.gd
+#: src/ui_elements/unrecognized_field.gd
 msgid "GodSVG doesn’t recognize this attribute"
 msgstr "GodSVG 无法识别该属性"
 
@@ -217,6 +235,10 @@ msgid "Clear saving path"
 msgstr "清除保存路径"
 
 #: src/ui_parts/code_editor.gd src/TranslationUtils.gd
+msgid "Optimize"
+msgstr "优化"
+
+#: src/ui_parts/code_editor.gd src/TranslationUtils.gd
 msgid "Copy all text"
 msgstr "保存所有文本"
 
@@ -265,6 +287,10 @@ msgstr "光栅化 SVG"
 msgid "About…"
 msgstr "关于…"
 
+#: src/ui_parts/display.gd src/TranslationUtils.gd
+msgid "Check for updates"
+msgstr "检查更新"
+
 #: src/ui_parts/display.gd
 msgid "Donate…"
 msgstr "捐赠…"
@@ -277,10 +303,6 @@ msgstr "GodSVG 代码仓库"
 msgid "GodSVG website"
 msgstr "GodSVG 网站"
 
-#: src/ui_parts/display.gd src/TranslationUtils.gd
-msgid "Check for updates"
-msgstr "检查更新"
-
 #: src/ui_parts/display.gd
 msgid "Enable snapping"
 msgstr "启用吸附"
@@ -288,6 +310,10 @@ msgstr "启用吸附"
 #: src/ui_parts/display.gd
 msgid "Snap size"
 msgstr "吸附大小"
+
+#: src/ui_parts/element_container.gd
+msgid "New element"
+msgstr ""
 
 #: src/ui_parts/export_dialog.gd
 msgid "Size"
@@ -393,8 +419,9 @@ msgstr "文件 “{file_name}” 已经存在。替换操作将会覆写它的�
 
 # Tag 原意为“标签”，在 SVG 编辑语境下表示一个由 <tag> ... </tag> 构成的代码块。
 # 为了更方便用户，尤其是不了解 SVG 的用户的理解，此处翻译为 “元素” 而非 “标签”
-#: src/ui_parts/handles_manager.gd src/ui_parts/tag_container.gd
-msgid "New tag"
+#: src/ui_parts/handles_manager.gd
+#, fuzzy
+msgid "New shape"
 msgstr "添加元素"
 
 #: src/ui_parts/import_warning_dialog.gd
@@ -402,11 +429,12 @@ msgid "Import Problems"
 msgstr "导入出错"
 
 #: src/ui_parts/import_warning_dialog.gd
-msgid "Unknown tag"
-msgstr "未知的元素"
+msgid "Unrecognized element"
+msgstr ""
 
 #: src/ui_parts/import_warning_dialog.gd
-msgid "Unknown attribute"
+#, fuzzy
+msgid "Unrecognized attribute"
 msgstr "未知的属性"
 
 #: src/ui_parts/import_warning_dialog.gd
@@ -414,8 +442,8 @@ msgid "Syntax error"
 msgstr "语法错误"
 
 #: src/ui_parts/inspector.gd
-msgid "Add new tag"
-msgstr "添加新元素"
+msgid "Add element"
+msgstr ""
 
 #: src/ui_parts/settings_menu.gd
 msgid "SVG Text colors"
@@ -442,15 +470,13 @@ msgid "Colors"
 msgstr "颜色"
 
 #: src/ui_parts/settings_menu.gd
-msgid "Paths"
-msgstr "文件路径"
+#, fuzzy
+msgid "Path data"
+msgstr "没有路径数据"
 
 #: src/ui_parts/settings_menu.gd
-msgid "Always active."
-msgstr "自动格式化固定启用。"
-
-#: src/ui_parts/settings_menu.gd
-msgid "Transforms"
+#, fuzzy
+msgid "Transform lists"
 msgstr "变换"
 
 #: src/ui_parts/settings_menu.gd
@@ -494,6 +520,10 @@ msgid "Use CTRL for zooming"
 msgstr "使用 CTRL 键缩放"
 
 #: src/ui_parts/settings_menu.gd
+msgid "Sync window title to file name"
+msgstr ""
+
+#: src/ui_parts/settings_menu.gd
 msgid "Handles size"
 msgstr "拖拽框大小"
 
@@ -504,6 +534,63 @@ msgstr "UI 缩放"
 #: src/ui_parts/settings_menu.gd
 msgid "Auto UI scale"
 msgstr "自动 UI 大小"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Enable autoformatting"
+msgstr "启用自动格式化"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Symbol color"
+msgstr "符号颜色"
+
+#: src/ui_parts/settings_menu.gd
+#, fuzzy
+msgid "Element color"
+msgstr "注释颜色"
+
+#: src/ui_parts/settings_menu.gd
+msgid "String color"
+msgstr "字符串颜色"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Comment color"
+msgstr "注释颜色"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Text color"
+msgstr "文字颜色"
+
+#: src/ui_parts/settings_menu.gd
+msgid "CDATA color"
+msgstr "CDATA 颜色"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Error color"
+msgstr "错误颜色"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Inside color"
+msgstr "内部颜色"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Normal color"
+msgstr "普通颜色"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Hovered color"
+msgstr "鼠标悬停颜色"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Selected color"
+msgstr "选中颜色"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Valid color"
+msgstr "正常颜色"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Warning color"
+msgstr "警告颜色"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Language"
@@ -559,6 +646,10 @@ msgstr ""
 "择窗口。"
 
 #: src/ui_parts/settings_menu.gd
+msgid "If turned off, the window title will remain just \"GodSVG\"."
+msgstr ""
+
+#: src/ui_parts/settings_menu.gd
 msgid "Increases the visual size and grabbing area of handles."
 msgstr "增加拖拽框的视觉尺寸。"
 
@@ -587,7 +678,8 @@ msgid "Use shorthand tag syntax"
 msgstr "使用自闭合元素语法"
 
 #: src/ui_parts/settings_menu.gd
-msgid "Enable autoformatting"
+#, fuzzy
+msgid "Use pretty formatting"
 msgstr "启用自动格式化"
 
 #: src/ui_parts/settings_menu.gd
@@ -639,52 +731,8 @@ msgid "Remove unnecessary parameters"
 msgstr "移除不必要的参数"
 
 #: src/ui_parts/settings_menu.gd
-msgid "Symbol color"
-msgstr "符号颜色"
-
-#: src/ui_parts/settings_menu.gd
-msgid "Tag color"
-msgstr "元素颜色"
-
-#: src/ui_parts/settings_menu.gd
 msgid "Attribute color"
 msgstr "属性颜色"
-
-#: src/ui_parts/settings_menu.gd
-msgid "String color"
-msgstr "字符串颜色"
-
-#: src/ui_parts/settings_menu.gd
-msgid "Comment color"
-msgstr "注释颜色"
-
-#: src/ui_parts/settings_menu.gd
-msgid "Text color"
-msgstr "文字颜色"
-
-#: src/ui_parts/settings_menu.gd
-msgid "CDATA color"
-msgstr "CDATA 颜色"
-
-#: src/ui_parts/settings_menu.gd
-msgid "Error color"
-msgstr "错误颜色"
-
-#: src/ui_parts/settings_menu.gd
-msgid "Inside color"
-msgstr "内部颜色"
-
-#: src/ui_parts/settings_menu.gd
-msgid "Normal color"
-msgstr "普通颜色"
-
-#: src/ui_parts/settings_menu.gd
-msgid "Hovered color"
-msgstr "鼠标悬停颜色"
-
-#: src/ui_parts/settings_menu.gd
-msgid "Selected color"
-msgstr "选中颜色"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Hovered selected color"
@@ -693,14 +741,6 @@ msgstr "悬停且选中颜色"
 #: src/ui_parts/settings_menu.gd
 msgid "Background color"
 msgstr "背景颜色"
-
-#: src/ui_parts/settings_menu.gd
-msgid "Valid color"
-msgstr "正常颜色"
-
-#: src/ui_parts/settings_menu.gd
-msgid "Warning color"
-msgstr "警告颜色"
 
 #: src/ui_parts/update_menu.gd
 msgid "Include prereleases"
@@ -794,15 +834,13 @@ msgid "Import"
 msgstr "导入"
 
 #: src/TranslationUtils.gd
-msgid "Optimize"
-msgstr "优化"
-
-#: src/TranslationUtils.gd
-msgid "Select all tags"
+#, fuzzy
+msgid "Select all elements"
 msgstr "选择所有元素"
 
 #: src/TranslationUtils.gd
-msgid "Duplicate the selected tags"
+#, fuzzy
+msgid "Duplicate the selected elements"
 msgstr "克隆选中的元素"
 
 #: src/TranslationUtils.gd
@@ -810,11 +848,13 @@ msgid "Delete the selection"
 msgstr "删除所选项"
 
 #: src/TranslationUtils.gd
-msgid "Move the selected tags up"
+#, fuzzy
+msgid "Move the selected elements up"
 msgstr "将选中的元素上移"
 
 #: src/TranslationUtils.gd
-msgid "Move the selected tags down"
+#, fuzzy
+msgid "Move the selected elements down"
 msgstr "将选中的元素下移"
 
 #: src/TranslationUtils.gd
@@ -916,6 +956,21 @@ msgstr "三点三次贝塞尔曲线"
 #: src/TranslationUtils.gd
 msgid "Shorthand Cubic Bezier to"
 msgstr "两点三次贝塞尔曲线"
+
+#~ msgid "Unknown tag"
+#~ msgstr "未知的元素"
+
+#~ msgid "Add new tag"
+#~ msgstr "添加新元素"
+
+#~ msgid "Paths"
+#~ msgstr "文件路径"
+
+#~ msgid "Always active."
+#~ msgstr "自动格式化固定启用。"
+
+#~ msgid "Tag color"
+#~ msgstr "元素颜色"
 
 #~ msgid "Remove"
 #~ msgstr "删除"

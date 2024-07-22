@@ -235,6 +235,10 @@ msgid "Clear saving path"
 msgstr "Премахни запазената пътека"
 
 #: src/ui_parts/code_editor.gd src/TranslationUtils.gd
+msgid "Optimize"
+msgstr "Оптимизирай"
+
+#: src/ui_parts/code_editor.gd src/TranslationUtils.gd
 msgid "Copy all text"
 msgstr "Копирай всичкия текст"
 
@@ -821,10 +825,6 @@ msgstr "Превърни в"
 #: src/TranslationUtils.gd
 msgid "Import"
 msgstr "Импортирай"
-
-#: src/TranslationUtils.gd
-msgid "Optimize"
-msgstr "Оптимизирай"
 
 #: src/TranslationUtils.gd
 msgid "Select all elements"
