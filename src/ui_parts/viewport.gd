@@ -135,7 +135,8 @@ func _unhandled_input(event: InputEvent) -> void:
 		set_view(view.position + move_vec * factor / Indications.zoom * 32)
 	
 	else:
-		_zoom_to = Vector2.ZERO  # Reset Ctrl + MMB zoom position if released.
+		if not event.is_echo():
+			_zoom_to = Vector2.ZERO  # Reset Ctrl + MMB zoom position if released.
 
 
 func _on_zoom_changed(new_zoom_level: float, offset: Vector2) -> void:
