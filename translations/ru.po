@@ -237,6 +237,10 @@ msgid "Clear saving path"
 msgstr "Очистить путь сохранения"
 
 #: src/ui_parts/code_editor.gd src/TranslationUtils.gd
+msgid "Optimize"
+msgstr "Оптимизировать"
+
+#: src/ui_parts/code_editor.gd src/TranslationUtils.gd
 msgid "Copy all text"
 msgstr "Скопировать весь текст"
 
@@ -833,10 +837,6 @@ msgstr "Конвертировать в"
 #: src/TranslationUtils.gd
 msgid "Import"
 msgstr "Импортировать"
-
-#: src/TranslationUtils.gd
-msgid "Optimize"
-msgstr "Оптимизировать"
 
 #: src/TranslationUtils.gd
 #, fuzzy

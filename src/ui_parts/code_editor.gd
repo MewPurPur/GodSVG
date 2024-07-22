@@ -1,15 +1,11 @@
 extends VBoxContainer
 
-signal optimize_button_enable_updated(is_optimize_enabled: bool)
-
 @onready var panel_container: PanelContainer = $PanelContainer
 @onready var code_edit: TextEdit = $ScriptEditor/SVGCodeEdit
 @onready var error_bar: PanelContainer = $ScriptEditor/ErrorBar
 @onready var error_label: RichTextLabel = $ScriptEditor/ErrorBar/Label
-@onready var size_label: Label = %SizeLabelContainer/SizeLabel
-@onready var size_label_container: PanelContainer = %SizeLabelContainer
+@onready var size_button: Button = %SizeButton
 @onready var file_button: Button = %FileButton
-@onready var optimize_button: Button = $PanelContainer/CodeButtons/OptimizeButton
 
 @onready var options_button: Button = %MetaActions/OptionsButton
 @onready var import_button: Button = %MetaActions/ImportButton
@@ -18,7 +14,7 @@ signal optimize_button_enable_updated(is_optimize_enabled: bool)
 func _ready() -> void:
 	SVG.parsing_finished.connect(update_error)
 	auto_update_text()
-	update_size_label()
+	update_size_button()
 	update_file_button()
 	setup_theme()
 	setup_highlighter()
@@ -27,7 +23,12 @@ func _ready() -> void:
 	GlobalSettings.save_data.current_file_path_changed.connect(update_file_button)
 	import_button.pressed.connect(ShortcutUtils.fn("import"))
 	export_button.pressed.connect(ShortcutUtils.fn("export"))
-	optimize_button.pressed.connect(ShortcutUtils.fn("optimize"))
+	# Fix the size button sizing.
+	for theming in ["normal", "hover", "pressed", "disabled"]:
+		var stylebox := size_button.get_theme_stylebox(theming).duplicate()
+		stylebox.content_margin_bottom = 0
+		stylebox.content_margin_top = 0
+		size_button.add_theme_stylebox_override(theming, stylebox)
 
 
 func _notification(what: int) -> void:
@@ -41,8 +42,7 @@ func auto_update_text() -> void:
 	if not code_edit.has_focus():
 		code_edit.text = SVG.text
 		code_edit.clear_undo_history()
-	update_size_label()
-	update_optimize_button()
+	update_size_button()
 
 func update_error(err_id: SVGParser.ParseError) -> void:
 	if err_id == SVGParser.ParseError.OK:
@@ -124,10 +124,20 @@ func _on_svg_code_edit_text_changed() -> void:
 	SVG.sync_elements()
 
 
-func update_size_label() -> void:
+func update_size_button() -> void:
 	var svg_text_size := SVG.text.length()
-	size_label.text = String.humanize_size(svg_text_size)
-	size_label_container.tooltip_text = String.num_uint64(svg_text_size) + " B"
+	size_button.text = String.humanize_size(svg_text_size)
+	size_button.tooltip_text = String.num_uint64(svg_text_size) + " B"
+	if SVG.root_element.optimize(true):
+		size_button.disabled = false
+		size_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+		for theming in ["font_color", "font_hover_color", "font_pressed_color"]:
+			size_button.add_theme_color_override(theming,
+					Color.WHITE * 0.5 + GlobalSettings.basic_color_warning * 0.5)
+	else:
+		size_button.disabled = true
+		size_button.mouse_default_cursor_shape = Control.CURSOR_ARROW
+		size_button.remove_theme_color_override("font_color")
 
 func update_file_button() -> void:
 	var file_path := GlobalSettings.save_data.current_file_path
@@ -143,14 +153,6 @@ func update_window_title() -> void:
 		get_window().title = file_path.get_file() + " - GodSVG"
 	else:
 		get_window().title = "GodSVG"
-
-
-func update_optimize_button() -> void:
-	var enabled := SVG.root_element.optimize(true)
-	optimize_button.disabled = not enabled
-	optimize_button.mouse_default_cursor_shape = Control.CURSOR_ARROW if\
-			optimize_button.disabled else Control.CURSOR_POINTING_HAND
-	optimize_button_enable_updated.emit(enabled)
 
 
 func _on_svg_code_edit_focus_exited() -> void:
@@ -176,6 +178,16 @@ func _on_file_button_pressed() -> void:
 	var context_popup := ContextPopup.new()
 	context_popup.setup(btn_array, true, file_button.size.x)
 	HandlerGUI.popup_under_rect_center(context_popup, file_button.get_global_rect(),
+			get_viewport())
+
+func _on_size_button_pressed() -> void:
+	var btn_array: Array[Button] = [
+		ContextPopup.create_button(TranslationServer.translate("Optimize"),
+				ShortcutUtils.fn("optimize"), false, load("res://visual/icons/Compress.svg"),
+				"optimize")]
+	var context_popup := ContextPopup.new()
+	context_popup.setup(btn_array, true)
+	HandlerGUI.popup_under_rect_center(context_popup, size_button.get_global_rect(),
 			get_viewport())
 
 
