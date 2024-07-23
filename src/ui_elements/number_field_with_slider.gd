@@ -152,7 +152,7 @@ func _on_slider_gui_input(event: InputEvent) -> void:
 				set_num(final_slider_value, true)
 
 func _unhandled_input(event: InputEvent) -> void:
-	if slider_dragged and Utils.is_event_cancel(event):
+	if slider_dragged and Utils.is_event_drag_cancel(event):
 		slider_dragged = false
 		set_num(initial_slider_value)
 		accept_event()
