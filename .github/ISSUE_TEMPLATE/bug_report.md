@@ -1,7 +1,6 @@
 ---
 name: Bug report
 about: Report a bug in GodSVG
-title: Title
 labels: bug
 ---
 
