@@ -1,4 +1,4 @@
-## Governance 
+## Governance
 
 Your contribution is always appreciated!
 
@@ -14,7 +14,7 @@ The documentation won't go into detail about how to use Git. Refer to outside re
 
 ## PR workflow
 
-Look through the list of issues to see if your contribution would resolve any of them. If said issue is not assigned to anyone and you don't want anyone else to work on it, ask to be assigned to the issue. If an issue doesn't exist and you want to fix a bug, then it's a good practice, but not required, to make an issue for it. 
+Look through the list of issues to see if your contribution would resolve any of them. If said issue is not assigned to anyone and you don't want anyone else to work on it, ask to be assigned to the issue. If an issue doesn't exist and you want to fix a bug, then it's a good practice, but not required, to make an issue for it.
 
 1. Fork the repository.
 2. Create a new branch: `git checkout -b implement-gradients`

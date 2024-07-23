@@ -1,4 +1,4 @@
-# This script manages contour drawing and handles. 
+# This script manages contour drawing and handles.
 extends Control
 
 var normal_handle_textures: Dictionary
@@ -90,7 +90,7 @@ func _ready() -> void:
 	# FIXME this shouldn't be needed, but otherwise the shader doesn't want to work.
 	var c := Control.new()
 	c.material = stroke_material
-	add_child(c, false, InternalMode.INTERNAL_MODE_BACK)  
+	add_child(c, false, InternalMode.INTERNAL_MODE_BACK)
 	
 	SVG.attribute_somewhere_changed.connect(queue_redraw.unbind(1))
 	SVG.attribute_somewhere_changed.connect(sync_handles.unbind(1))
@@ -514,7 +514,7 @@ func _draw() -> void:
 								end += prev_M_cmd.start
 							
 							points = PackedVector2Array([cmd.start, end])
-						"M": 
+						"M":
 							continue
 					
 					var final_transform := element.get_transform()
