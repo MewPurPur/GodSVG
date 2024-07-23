@@ -1,0 +1,74 @@
+[gd_scene load_steps=7 format=3 uid="uid://b7wobq0ndm35"]
+
+[ext_resource type="Script" path="res://src/ui_widgets/BetterLineEdit.gd" id="1_i4wi2"]
+[ext_resource type="Script" path="res://src/ui_widgets/configure_color_popup.gd" id="1_x6cll"]
+[ext_resource type="Texture2D" uid="uid://dr2erka82g6j4" path="res://visual/icons/Edit.svg" id="2_0dind"]
+[ext_resource type="FontFile" uid="uid://clpf84p1lfwlp" path="res://visual/fonts/Font.ttf" id="2_j4qfn"]
+[ext_resource type="PackedScene" uid="uid://5f8uxavn1or1" path="res://src/ui_widgets/color_edit.tscn" id="3_dq5ly"]
+[ext_resource type="Texture2D" uid="uid://cj5x2ti8150ja" path="res://visual/icons/Delete.svg" id="5_5n8tt"]
+
+[node name="ConfigurePopup" type="PanelContainer"]
+custom_minimum_size = Vector2(128, 40)
+offset_right = 4.0
+offset_bottom = 4.0
+theme_type_variation = &"SpaciousPanel"
+script = ExtResource("1_x6cll")
+
+[node name="ConfigureContainer" type="VBoxContainer" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="TopContainer" type="HBoxContainer" parent="ConfigureContainer"]
+layout_mode = 2
+theme_override_constants/separation = 6
+alignment = 1
+
+[node name="LabelContainer" type="HBoxContainer" parent="ConfigureContainer/TopContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="ColorLabel" type="Label" parent="ConfigureContainer/TopContainer/LabelContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 13
+horizontal_alignment = 1
+
+[node name="EditButton" type="Button" parent="ConfigureContainer/TopContainer/LabelContainer"]
+layout_mode = 2
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_type_variation = &"FlatButton"
+icon = ExtResource("2_0dind")
+
+[node name="NameEdit" type="LineEdit" parent="ConfigureContainer/TopContainer"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+focus_mode = 1
+theme_override_fonts/font = ExtResource("2_j4qfn")
+max_length = 30
+script = ExtResource("1_i4wi2")
+
+[node name="BottomContainer" type="HBoxContainer" parent="ConfigureContainer"]
+layout_mode = 2
+theme_override_constants/separation = 6
+alignment = 1
+
+[node name="ColorEdit" parent="ConfigureContainer/BottomContainer" instance=ExtResource("3_dq5ly")]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+enable_palettes = false
+
+[node name="DeleteButton" type="Button" parent="ConfigureContainer/BottomContainer"]
+layout_mode = 2
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_type_variation = &"IconButton"
+icon = ExtResource("5_5n8tt")
+
+[connection signal="pressed" from="ConfigureContainer/TopContainer/LabelContainer/EditButton" to="." method="_on_edit_button_pressed"]
+[connection signal="text_submitted" from="ConfigureContainer/TopContainer/NameEdit" to="." method="_on_name_edit_text_submitted"]
+[connection signal="pressed" from="ConfigureContainer/BottomContainer/DeleteButton" to="." method="_on_delete_button_pressed"]

@@ -10,26 +10,26 @@ static var ElementFrame: PackedScene:
 			ElementFrame = load("res://src/ui_parts/element_frame.tscn")
 		return ElementFrame
 
-const UnrecognizedField = preload("res://src/ui_elements/unrecognized_field.tscn")
-const ColorField = preload("res://src/ui_elements/color_field.tscn")
-const NumberField = preload("res://src/ui_elements/number_field.tscn")
-const NumberSlider = preload("res://src/ui_elements/number_field_with_slider.tscn")
-const IDField = preload("res://src/ui_elements/id_field.tscn")
-const EnumField = preload("res://src/ui_elements/enum_field.tscn")
-const TransformField = preload("res://src/ui_elements/transform_field.tscn")
+const UnrecognizedField = preload("res://src/ui_widgets/unrecognized_field.tscn")
+const ColorField = preload("res://src/ui_widgets/color_field.tscn")
+const NumberField = preload("res://src/ui_widgets/number_field.tscn")
+const NumberSlider = preload("res://src/ui_widgets/number_field_with_slider.tscn")
+const IDField = preload("res://src/ui_widgets/id_field.tscn")
+const EnumField = preload("res://src/ui_widgets/enum_field.tscn")
+const TransformField = preload("res://src/ui_widgets/transform_field.tscn")
 
 const element_content_types = {
-	"path": preload("res://src/ui_elements/element_content_path.tscn"),
-	"circle": preload("res://src/ui_elements/element_content_basic_shape.tscn"),
-	"ellipse": preload("res://src/ui_elements/element_content_basic_shape.tscn"),
-	"rect": preload("res://src/ui_elements/element_content_basic_shape.tscn"),
-	"line": preload("res://src/ui_elements/element_content_basic_shape.tscn"),
-	"stop": preload("res://src/ui_elements/element_content_stop.tscn"),
-	"g": preload("res://src/ui_elements/element_content_g.tscn"),
-	"linearGradient": preload("res://src/ui_elements/element_content_linear_gradient.tscn"),
-	"radialGradient": preload("res://src/ui_elements/element_content_radial_gradient.tscn"),
+	"path": preload("res://src/ui_widgets/element_content_path.tscn"),
+	"circle": preload("res://src/ui_widgets/element_content_basic_shape.tscn"),
+	"ellipse": preload("res://src/ui_widgets/element_content_basic_shape.tscn"),
+	"rect": preload("res://src/ui_widgets/element_content_basic_shape.tscn"),
+	"line": preload("res://src/ui_widgets/element_content_basic_shape.tscn"),
+	"stop": preload("res://src/ui_widgets/element_content_stop.tscn"),
+	"g": preload("res://src/ui_widgets/element_content_g.tscn"),
+	"linearGradient": preload("res://src/ui_widgets/element_content_linear_gradient.tscn"),
+	"radialGradient": preload("res://src/ui_widgets/element_content_radial_gradient.tscn"),
 }
-const ElementContentUnrecognized = preload("res://src/ui_elements/element_content_unrecognized.tscn")
+const ElementContentUnrecognized = preload("res://src/ui_widgets/element_content_unrecognized.tscn")
 
 @onready var main_container: VBoxContainer = $Content/MainContainer
 @onready var title_bar: Panel = $TitleBar

@@ -1,14 +1,14 @@
 extends HBoxContainer
 
+const MacMenu = preload("res://src/ui_parts/global_menu.tscn")
+
 @onready var panel_container: PanelContainer = $HSplitContainer/PanelContainer
 
-func _notification(what: int) -> void:
-	if what == Utils.CustomNotification.THEME_CHANGED:
-		update_theme()
-
 func _ready() -> void:
+	GlobalSettings.theme_changed.connect(update_theme)
 	update_theme()
-
+	if NativeMenu.has_feature(NativeMenu.FEATURE_GLOBAL_MENU):
+		add_child(MacMenu.instantiate())
 
 func update_theme() -> void:
 	var stylebox := StyleBoxFlat.new()

@@ -2,9 +2,9 @@
 
 [ext_resource type="Script" path="res://src/ui_parts/settings_menu.gd" id="1_1gf4m"]
 [ext_resource type="Texture2D" uid="uid://c528knojuxbw6" path="res://visual/icons/Languages.svg" id="2_ndyp7"]
-[ext_resource type="PackedScene" uid="uid://ctsee23lxlrib" path="res://src/ui_elements/setting_check_box.tscn" id="4_2qeh2"]
-[ext_resource type="PackedScene" uid="uid://d032j54llwkca" path="res://src/ui_elements/setting_color.tscn" id="4_dacsc"]
-[ext_resource type="PackedScene" uid="uid://dwjkq21fei35f" path="res://src/ui_elements/setting_dropdown.tscn" id="5_dx7vp"]
+[ext_resource type="PackedScene" uid="uid://ctsee23lxlrib" path="res://src/ui_widgets/setting_check_box.tscn" id="4_2qeh2"]
+[ext_resource type="PackedScene" uid="uid://d032j54llwkca" path="res://src/ui_widgets/setting_color.tscn" id="4_dacsc"]
+[ext_resource type="PackedScene" uid="uid://dwjkq21fei35f" path="res://src/ui_widgets/setting_dropdown.tscn" id="5_dx7vp"]
 
 [sub_resource type="ButtonGroup" id="ButtonGroup_f7wyd"]
 

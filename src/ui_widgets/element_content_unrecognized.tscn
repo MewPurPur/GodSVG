@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://b70dhqt8ldcmc"]
+
+[ext_resource type="Script" path="res://src/ui_widgets/element_content_unrecognized.gd" id="1_vy7fr"]
+
+[node name="ElementContentUnrecognized" type="VBoxContainer"]
+size_flags_horizontal = 3
+script = ExtResource("1_vy7fr")

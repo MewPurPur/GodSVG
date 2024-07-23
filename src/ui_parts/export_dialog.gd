@@ -1,6 +1,6 @@
 extends PanelContainer
 
-const NumberEditType = preload("res://src/ui_elements/number_edit.gd")
+const NumberEditType = preload("res://src/ui_widgets/number_edit.gd")
 
 var upscale_amount := -1.0
 var quality := 0.8
@@ -20,11 +20,8 @@ var dimensions := Vector2.ZERO
 @onready var quality_hbox: HBoxContainer = %QualityHBox
 @onready var fallback_format_label: Label = %FallbackFormatLabel
 
-func _notification(what: int) -> void:
-	if what == Utils.CustomNotification.LANGUAGE_CHANGED:
-		update_translation()
-
 func _ready() -> void:
+	GlobalSettings.language_changed.connect(update_translation)
 	scale_edit.value_changed.connect(_on_scale_value_changed)
 	quality_edit.value_changed.connect(_on_quality_value_changed)
 	format_dropdown.value_changed.connect(_on_dropdown_value_changed)

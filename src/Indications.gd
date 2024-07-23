@@ -1,7 +1,7 @@
 # This singleton handles temporary editor information like zoom level and selections.
 extends Node
 
-const PathCommandPopup = preload("res://src/ui_elements/path_popup.tscn")
+const PathCommandPopup = preload("res://src/ui_widgets/path_popup.tscn")
 
 const path_actions_dict := {
 	"move_absolute": "M", "move_relative": "m",

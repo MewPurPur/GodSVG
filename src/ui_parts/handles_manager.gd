@@ -77,6 +77,7 @@ func render_handle_textures() -> void:
 	queue_redraw()
 
 func _ready() -> void:
+	GlobalSettings.handle_visuals_changed.connect(render_handle_textures)
 	render_handle_textures()
 	RenderingServer.canvas_item_set_parent(surface, get_canvas_item())
 	RenderingServer.canvas_item_set_parent(selections_surface, get_canvas_item())
@@ -100,10 +101,6 @@ func _ready() -> void:
 	Indications.zoom_changed.connect(queue_redraw)
 	Indications.handle_added.connect(_on_handle_added)
 	queue_update()
-
-func _notification(what: int) -> void:
-	if what == Utils.CustomNotification.HANDLE_VISUALS_CHANGED:
-		render_handle_textures()
 
 
 func queue_update() -> void:

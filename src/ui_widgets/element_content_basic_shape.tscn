@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://b0srm51hsvpel"]
+
+[ext_resource type="Script" path="res://src/ui_widgets/element_content_basic_shape.gd" id="1_tg77v"]
+
+[node name="ElementContentBasicShape" type="VBoxContainer"]
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_tg77v")
+
+[node name="AttributeContainer" type="HFlowContainer" parent="."]
+layout_mode = 2

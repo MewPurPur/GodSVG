@@ -12,6 +12,9 @@ extends VBoxContainer
 @onready var export_button: Button = %MetaActions/ExportButton
 
 func _ready() -> void:
+	GlobalSettings.highlight_colors_changed.connect(setup_highlighter)
+	GlobalSettings.theme_changed.connect(setup_theme)
+	GlobalSettings.window_title_scheme_changed.connect(update_window_title)
 	SVG.parsing_finished.connect(update_error)
 	auto_update_text()
 	update_size_button()
@@ -29,13 +32,6 @@ func _ready() -> void:
 		stylebox.content_margin_bottom = 0
 		stylebox.content_margin_top = 0
 		size_button.add_theme_stylebox_override(theming, stylebox)
-
-
-func _notification(what: int) -> void:
-	match what:
-		Utils.CustomNotification.HIGHLIGHT_COLORS_CHANGED: setup_highlighter()
-		Utils.CustomNotification.THEME_CHANGED: setup_theme()
-		Utils.CustomNotification.WINDOW_TITLE_SCHEME_CHANGED: update_window_title()
 
 
 func auto_update_text() -> void:

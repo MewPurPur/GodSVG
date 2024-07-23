@@ -24,17 +24,15 @@ func _enter_tree() -> void:
 		_define_web_js()
 
 func _ready() -> void:
+	GlobalSettings.ui_scale_changed.connect(update_ui_scale)
 	await get_tree().process_frame
 	update_ui_scale()
 
 func _notification(what: int) -> void:
-	match what:
-		NOTIFICATION_WM_WINDOW_FOCUS_IN:
-			_in_focus.emit()
-		Utils.CustomNotification.UI_SCALE_CHANGED:
-			update_ui_scale()
-		NOTIFICATION_WM_ABOUT:
-			open_about()
+	if what == NOTIFICATION_WM_WINDOW_FOCUS_IN:
+		_in_focus.emit()
+	elif what == NOTIFICATION_WM_ABOUT:
+		open_about()
 
 # Drag-and-drop of files.
 func _on_files_dropped(files: PackedStringArray) -> void:

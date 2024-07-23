@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://bhskf8yrulqtj"]
 
 [ext_resource type="Script" path="res://src/ui_parts/import_warning_dialog.gd" id="1_1rv5w"]
-[ext_resource type="PackedScene" uid="uid://xh26qa68xed4" path="res://src/ui_elements/svg_preview.tscn" id="2_j1v8v"]
+[ext_resource type="PackedScene" uid="uid://xh26qa68xed4" path="res://src/ui_widgets/svg_preview.tscn" id="2_j1v8v"]
 [ext_resource type="FontFile" uid="uid://dtb4wkus51hxs" path="res://visual/fonts/FontMono.ttf" id="4_rpfrk"]
 
 [node name="ImportWarningPanel" type="PanelContainer"]

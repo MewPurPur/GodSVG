@@ -13,10 +13,6 @@ const app_info_json = preload("res://app_info.json")
 @onready var golden_donors_list: PanelGrid = %GoldenDonors/List
 @onready var diamond_donors_list: PanelGrid = %DiamondDonors/List
 
-func _notification(what: int) -> void:
-	if what == Utils.CustomNotification.LANGUAGE_CHANGED:
-		update_translation()
-
 func update_translation() -> void:
 	%ProjectFounder/Label.text = TranslationServer.translate("Project Founder and Manager")
 	%Developers/Label.text = TranslationServer.translate("Developers")
@@ -32,6 +28,7 @@ func update_translation() -> void:
 	%Components.text = TranslationServer.translate("Godot third-party components")
 
 func _ready() -> void:
+	GlobalSettings.language_changed.connect(update_translation)
 	var app_info: Dictionary = app_info_json.data
 	version_label.text = "GodSVG v" + ProjectSettings.get_setting("application/config/version")
 	project_founder_list.items = app_info.project_founder_and_manager

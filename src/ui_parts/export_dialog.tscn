@@ -1,10 +1,10 @@
 [gd_scene load_steps=6 format=3 uid="uid://c13dadqbljqlu"]
 
 [ext_resource type="Script" path="res://src/ui_parts/export_dialog.gd" id="1_objnb"]
-[ext_resource type="PackedScene" uid="uid://xh26qa68xed4" path="res://src/ui_elements/svg_preview.tscn" id="2_ewk0a"]
+[ext_resource type="PackedScene" uid="uid://xh26qa68xed4" path="res://src/ui_widgets/svg_preview.tscn" id="2_ewk0a"]
 [ext_resource type="FontFile" uid="uid://clpf84p1lfwlp" path="res://visual/fonts/Font.ttf" id="5_s3e6m"]
-[ext_resource type="PackedScene" uid="uid://dbu1lvajypafb" path="res://src/ui_elements/dropdown.tscn" id="5_y6ex0"]
-[ext_resource type="PackedScene" uid="uid://dad7fkhmsooc6" path="res://src/ui_elements/number_edit.tscn" id="6_w1sag"]
+[ext_resource type="PackedScene" uid="uid://dbu1lvajypafb" path="res://src/ui_widgets/dropdown.tscn" id="5_y6ex0"]
+[ext_resource type="PackedScene" uid="uid://dad7fkhmsooc6" path="res://src/ui_widgets/number_edit.tscn" id="6_w1sag"]
 
 [node name="ExportDialog" type="PanelContainer"]
 anchors_preset = 8
