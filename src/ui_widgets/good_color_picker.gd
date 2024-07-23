@@ -171,7 +171,7 @@ func update() -> void:
 			fields_arr[1].text = String.num_uint64(roundi(display_color.r * 255))
 			fields_arr[2].text = String.num_uint64(roundi(display_color.g * 255))
 			fields_arr[3].text = String.num_uint64(roundi(display_color.b * 255))
-		SliderMode.HSV: 
+		SliderMode.HSV:
 			fields_arr[1].text = String.num_uint64(roundi(display_color.h * 360))
 			fields_arr[2].text = String.num_uint64(roundi(display_color.s * 100))
 			fields_arr[3].text = String.num_uint64(roundi(display_color.v * 100))

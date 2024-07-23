@@ -179,7 +179,7 @@ static func apply_svg_from_path(path: String) -> int:
 	HandlerGUI.add_overlay(warning_panel)
 	return OK
 
-# Web stuff. The loading logic had to remain in HandlerGUI. 
+# Web stuff. The loading logic had to remain in HandlerGUI.
 
 static func web_import(svg_text: String, file_name: String) -> void:
 	SVG.apply_svg_text(svg_text)

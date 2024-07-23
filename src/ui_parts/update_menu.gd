@@ -47,7 +47,7 @@ _headers: PackedStringArray, body: PackedByteArray) -> void:
 					current_timestamp = Time.get_unix_time_from_datetime_string(
 							release["created_at"])
 					var is_prerelease: bool = release["prerelease"]
-					if is_prerelease == true:
+					if is_prerelease:
 						prereleases_checkbox.disabled = false
 						prereleases_checkbox.set_pressed_no_signal(is_prerelease)
 					break

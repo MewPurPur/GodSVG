@@ -77,7 +77,7 @@ const attribute_types = {
 	"id": AttributeType.ID,
 	"gradientTransform": AttributeType.TRANSFORM_LIST,
 	"gradientUnits": AttributeType.ENUM,
-	"spreadMethod": AttributeType.ENUM 
+	"spreadMethod": AttributeType.ENUM,
 }
 
 const attribute_enum_values = {
