@@ -43,6 +43,9 @@ func _on_files_dropped(files: PackedStringArray) -> void:
 
 
 func add_overlay(overlay_menu: Control) -> void:
+	# FIXME subpar workaround to drag & drop not able to be cancelled manually.
+	get_tree().root.propagate_notification(NOTIFICATION_DRAG_END)
+	
 	remove_all_popup_overlays()
 	
 	if not overlay_stack.is_empty():
@@ -207,12 +210,13 @@ func _input(event: InputEvent) -> void:
 			ShortcutUtils.fn_call(action)
 			return
 	
-	# Stop stuff from propagating when there's overlays.
+	# Stop the logic below from running if there's overlays.
 	if not popup_overlay_stack.is_empty() or not overlay_stack.is_empty():
 		return
 	
+	# Global actions that should happen regardless of the context.
 	for action in ["import", "export", "save", "copy_svg_text", "clear_svg", "optimize",
-	"clear_file_path", "reset_svg", "redo", "undo"]:
+	"clear_file_path", "reset_svg"]:
 		if event.is_action_pressed(action):
 			get_viewport().set_input_as_handled()
 			ShortcutUtils.fn_call(action)
@@ -222,8 +226,8 @@ func _unhandled_input(event: InputEvent) -> void:
 	get_viewport().gui_is_dragging():
 		return
 	
-	for action in ["ui_cancel", "delete", "move_up", "move_down", "duplicate",
-	"select_all"]:
+	for action in ["redo", "undo", "ui_cancel", "delete", "move_up", "move_down",
+	"duplicate", "select_all"]:
 		if event.is_action_pressed(action):
 			get_viewport().set_input_as_handled()
 			ShortcutUtils.fn_call(action)

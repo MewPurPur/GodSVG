@@ -146,7 +146,7 @@ static func is_event_drag_end(event: InputEvent) -> bool:
 	return event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and\
 			event.is_released()
 
-static func is_event_cancel(event: InputEvent) -> bool:
+static func is_event_drag_cancel(event: InputEvent) -> bool:
 	return event.is_action_pressed("ui_cancel") or\
 			event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT
 
