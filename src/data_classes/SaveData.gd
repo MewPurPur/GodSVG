@@ -1,7 +1,7 @@
 # Stores data that needs to be retained between sessions.
 class_name SaveData extends Resource
 
-const GoodColorPicker = preload("res://src/ui_elements/good_color_picker.gd")
+const GoodColorPicker = preload("res://src/ui_widgets/good_color_picker.gd")
 
 @export var svg_text := ""
 @export var viewbox_coupling := true

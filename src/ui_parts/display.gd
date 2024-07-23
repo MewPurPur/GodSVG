@@ -1,13 +1,12 @@
 extends VBoxContainer
 
-
 signal view_settings_updated(show_grid: bool, show_handles: bool, rasterized_svg: bool)
 signal snap_settings_updated(snap_enabled: bool, snap_amount: float)
 
-const NumberEditType = preload("res://src/ui_elements/number_edit.gd")
-const BetterToggleButtonType = preload("res://src/ui_elements/BetterToggleButton.gd")
+const NumberEditType = preload("res://src/ui_widgets/number_edit.gd")
+const BetterToggleButtonType = preload("res://src/ui_widgets/BetterToggleButton.gd")
 
-const NumberField = preload("res://src/ui_elements/number_field.tscn")
+const NumberField = preload("res://src/ui_widgets/number_field.tscn")
 const ConfirmDialog := preload("res://src/ui_parts/confirm_dialog.tscn")
 
 @onready var viewport: SubViewport = %Viewport
@@ -27,15 +26,10 @@ const ConfirmDialog := preload("res://src/ui_parts/confirm_dialog.tscn")
 
 var reference_overlay := false
 
-func _notification(what: int) -> void:
-	if what == Utils.CustomNotification.LANGUAGE_CHANGED:
-		update_translations()
-	elif what == Utils.CustomNotification.NUMBER_PRECISION_CHANGED:
-		update_snap_config()
-	elif what ==  Utils.CustomNotification.THEME_CHANGED:
-		update_theme()
-
 func _ready() -> void:
+	GlobalSettings.language_changed.connect(update_translations)
+	GlobalSettings.number_precision_changed.connect(update_snap_config)
+	GlobalSettings.theme_changed.connect(update_theme)
 	update_translations()
 	update_theme()
 	update_snap_config()

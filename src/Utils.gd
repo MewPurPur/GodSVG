@@ -1,21 +1,5 @@
 class_name Utils extends RefCounted
 
-# In my opinion, this is nicer than groups.
-enum CustomNotification {
-	LANGUAGE_CHANGED = 300,
-	UI_SCALE_CHANGED = 301,
-	THEME_CHANGED = 302,
-	SHORTCUTS_CHANGED = 303,
-	NUMBER_PRECISION_CHANGED = 304,
-	HIGHLIGHT_COLORS_CHANGED = 305,
-	BASIC_COLORS_CHANGED = 306,
-	HANDLE_VISUALS_CHANGED = 307,
-	WINDOW_TITLE_SCHEME_CHANGED = 308,
-}
-
-static func custom_notify(notif: CustomNotification) -> void:
-	Engine.get_main_loop().get_root().propagate_notification(notif)
-
 enum InteractionType {NONE = 0, HOVERED = 1, SELECTED = 2, HOVERED_SELECTED = 3}
 
 

@@ -10,11 +10,8 @@ signal imported
 
 var imported_text := ""
 
-func _notification(what: int) -> void:
-	if what == Utils.CustomNotification.LANGUAGE_CHANGED:
-		setup()
-
 func _ready() -> void:
+	GlobalSettings.language_changed.connect(setup)
 	imported.connect(queue_free)
 	ok_button.pressed.connect(imported.emit)
 	setup()

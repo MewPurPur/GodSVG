@@ -1,12 +1,12 @@
 extends PanelContainer
 
-const PaletteConfigWidget = preload("res://src/ui_elements/palette_config.tscn")
-const ShortcutConfigWidget = preload("res://src/ui_elements/setting_shortcut.tscn")
-const ShortcutShowcaseWidget = preload("res://src/ui_elements/presented_shortcut.tscn")
+const PaletteConfigWidget = preload("res://src/ui_widgets/palette_config.tscn")
+const ShortcutConfigWidget = preload("res://src/ui_widgets/setting_shortcut.tscn")
+const ShortcutShowcaseWidget = preload("res://src/ui_widgets/presented_shortcut.tscn")
 const plus_icon = preload("res://visual/icons/Plus.svg")
 
-const SettingCheckBox = preload("res://src/ui_elements/setting_check_box.gd")
-const SettingColor = preload("res://src/ui_elements/setting_color.gd")
+const SettingCheckBox = preload("res://src/ui_widgets/setting_check_box.gd")
+const SettingColor = preload("res://src/ui_widgets/setting_color.gd")
 
 @onready var lang_button: Button = %Language
 @onready var palette_container: VBoxContainer = %PaletteContainer
@@ -37,13 +37,10 @@ func update_focused_content(idx: int) -> void:
 		content_container.get_child(i).visible = (focused_content == i)
 	tabs.get_child(focused_content).button_pressed = true
 
-func _notification(what: int) -> void:
-	if what == Utils.CustomNotification.LANGUAGE_CHANGED:
-		setup_setting_labels()
-	elif what == Utils.CustomNotification.THEME_CHANGED:
-		setup_theming()
 
 func setup_theming() -> void:
+	GlobalSettings.language_changed.connect(setup_setting_labels)
+	GlobalSettings.theme_changed.connect(setup_theming)
 	var stylebox := get_theme_stylebox("panel").duplicate()
 	stylebox.content_margin_top += 4.0
 	add_theme_stylebox_override("panel", stylebox)
@@ -245,7 +242,7 @@ func _on_language_pressed() -> void:
 
 func _on_language_chosen(locale: String) -> void:
 	GlobalSettings.language = locale
-	Utils.custom_notify(Utils.CustomNotification.LANGUAGE_CHANGED)
+	GlobalSettings.language_changed.emit()
 	update_language_button()
 
 func update_language_button() -> void:
@@ -315,7 +312,7 @@ func _on_number_precision_changed() -> void:
 		GlobalSettings.save_data.snap = quanta
 		if not snapping_on:
 			GlobalSettings.save_data.snap *= -1
-	Utils.custom_notify(Utils.CustomNotification.NUMBER_PRECISION_CHANGED)
+	GlobalSettings.number_precision_changed.emit()
 
 func disable_format_checkboxes() -> void:
 	var is_autoformatting_numbers := GlobalSettings.number_enable_autoformatting
@@ -371,16 +368,13 @@ func show_keybinds(category: String):
 func setup_theming_tab() -> void:
 	for child in %HighlighterVBox.get_children():
 		if child is SettingColor:
-			child.value_changed.connect(Utils.custom_notify.bind(
-					Utils.CustomNotification.HIGHLIGHT_COLORS_CHANGED))
+			child.value_changed.connect(GlobalSettings.highlight_colors_changed.emit)
 	for child in %HandleColors.get_children():
 		if child is SettingColor:
-			child.value_changed.connect(Utils.custom_notify.bind(
-					Utils.CustomNotification.HANDLE_VISUALS_CHANGED))
+			child.value_changed.connect(GlobalSettings.handle_visuals_changed.emit)
 	for child in %BasicColorsVBox.get_children():
 		if child is SettingColor:
-			child.value_changed.connect(Utils.custom_notify.bind(
-					Utils.CustomNotification.BASIC_COLORS_CHANGED))
+			child.value_changed.connect(GlobalSettings.basic_colors_changed.emit)
 
 func _on_theme_settings_changed() -> void:
 	ThemeGenerator.generate_theme()
@@ -418,14 +412,11 @@ func _on_theme_tab_toggled(toggled_on: bool) -> void:
 
 func _on_other_tab_toggled(toggled_on: bool) -> void:
 	if toggled_on and not generated_content.other:
-		%Misc/HandleSize.value_changed.connect(Utils.custom_notify.bind(
-				Utils.CustomNotification.HANDLE_VISUALS_CHANGED))
-		%Misc/UIScale.value_changed.connect(Utils.custom_notify.bind(
-				Utils.CustomNotification.UI_SCALE_CHANGED))
-		%Misc/AutoUIScale.pressed.connect(Utils.custom_notify.bind(
-				Utils.CustomNotification.UI_SCALE_CHANGED))
-		%Misc/UseCurrentFilenameForWindowTitle.pressed.connect(Utils.custom_notify.bind(
-				Utils.CustomNotification.WINDOW_TITLE_SCHEME_CHANGED))
+		%Misc/HandleSize.value_changed.connect(GlobalSettings.handle_visuals_changed.emit)
+		%Misc/UIScale.value_changed.connect(GlobalSettings.ui_scale_changed.emit)
+		%Misc/AutoUIScale.pressed.connect(GlobalSettings.ui_scale_changed.emit)
+		%Misc/UseCurrentFilenameForWindowTitle.pressed.connect(
+				GlobalSettings.window_title_scheme_changed.emit)
 		# Disable mouse wrap if not available.
 		if not DisplayServer.has_feature(DisplayServer.FEATURE_MOUSE_WARP):
 			wrap_mouse.checkbox.set_pressed_no_signal(false)

@@ -4,15 +4,15 @@ extends VBoxContainer
 # use NumberEdit, rather than NumberField. Viewbox is a list and it also doesn't have a
 # default value, so it uses 4 NumberEdits.
 
-const UnrecognizedField = preload("res://src/ui_elements/unrecognized_field.tscn")
-const ColorField = preload("res://src/ui_elements/color_field.tscn")
-const NumberField = preload("res://src/ui_elements/number_field.tscn")
-const NumberSlider = preload("res://src/ui_elements/number_field_with_slider.tscn")
-const IDField = preload("res://src/ui_elements/id_field.tscn")
-const EnumField = preload("res://src/ui_elements/enum_field.tscn")
-const TransformField = preload("res://src/ui_elements/transform_field.tscn")
+const UnrecognizedField = preload("res://src/ui_widgets/unrecognized_field.tscn")
+const ColorField = preload("res://src/ui_widgets/color_field.tscn")
+const NumberField = preload("res://src/ui_widgets/number_field.tscn")
+const NumberSlider = preload("res://src/ui_widgets/number_field_with_slider.tscn")
+const IDField = preload("res://src/ui_widgets/id_field.tscn")
+const EnumField = preload("res://src/ui_widgets/enum_field.tscn")
+const TransformField = preload("res://src/ui_widgets/transform_field.tscn")
 
-const NumberEditType = preload("res://src/ui_elements/number_edit.gd")
+const NumberEditType = preload("res://src/ui_widgets/number_edit.gd")
 
 @onready var width_button: Button = %Size/Width/WidthButton
 @onready var height_button: Button = %Size/Height/HeightButton

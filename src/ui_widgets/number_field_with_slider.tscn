@@ -1,0 +1,16 @@
+[gd_scene load_steps=2 format=3 uid="uid://bp2vpf7g8w8aj"]
+
+[ext_resource type="Script" path="res://src/ui_widgets/number_field_with_slider.gd" id="1_ymm02"]
+
+[node name="NumberFieldWithSlider" type="Control"]
+clip_contents = true
+custom_minimum_size = Vector2(62, 0)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 100.0
+script = ExtResource("1_ymm02")
+button_visuals = false
+code_font_tooltip = true
+
+[connection signal="button_gui_input" from="." to="." method="_on_slider_gui_input"]
+[connection signal="text_change_canceled" from="." to="." method="_on_text_change_canceled"]

@@ -6,7 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://6ymbl3jqersp" path="res://visual/icons/Import.svg" id="4_cuhac"]
 [ext_resource type="Texture2D" uid="uid://dthdjf4v2vlvg" path="res://visual/icons/CodeOptions.svg" id="4_sos04"]
 [ext_resource type="Texture2D" uid="uid://d0uvwj0t44n6v" path="res://visual/icons/Export.svg" id="5_pgurh"]
-[ext_resource type="Script" path="res://src/ui_elements/BetterTextEdit.gd" id="8_ser4i"]
+[ext_resource type="Script" path="res://src/ui_widgets/BetterTextEdit.gd" id="8_ser4i"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_q56qh"]
 content_margin_left = 8.0

@@ -41,138 +41,6 @@ msgstr ""
 msgid "Improper nesting."
 msgstr ""
 
-#: src/ui_elements/BetterLineEdit.gd src/ui_elements/BetterTextEdit.gd
-#: src/TranslationUtils.gd
-msgid "Undo"
-msgstr ""
-
-#: src/ui_elements/BetterLineEdit.gd src/ui_elements/BetterTextEdit.gd
-#: src/TranslationUtils.gd
-msgid "Redo"
-msgstr ""
-
-#: src/ui_elements/BetterLineEdit.gd src/ui_elements/BetterTextEdit.gd
-msgid "Cut"
-msgstr ""
-
-#: src/ui_elements/BetterLineEdit.gd src/ui_elements/BetterTextEdit.gd
-msgid "Copy"
-msgstr ""
-
-#: src/ui_elements/BetterLineEdit.gd src/ui_elements/BetterTextEdit.gd
-msgid "Paste"
-msgstr ""
-
-#: src/ui_elements/color_popup.gd
-msgid "Search color"
-msgstr ""
-
-#: src/ui_elements/color_popup.gd src/ui_parts/settings_menu.gd
-msgid "Palettes"
-msgstr ""
-
-#: src/ui_elements/color_popup.gd
-msgid "Color Picker"
-msgstr ""
-
-#: src/ui_elements/configure_color_popup.gd
-msgid "Edit color name"
-msgstr ""
-
-#: src/ui_elements/configure_color_popup.gd
-msgid "Delete color"
-msgstr ""
-
-#: src/ui_elements/configure_color_popup.gd src/ui_elements/palette_config.gd
-msgid "Unnamed"
-msgstr ""
-
-#: src/ui_elements/good_color_picker.gd
-msgid "Enable the color"
-msgstr ""
-
-#: src/ui_elements/good_color_picker.gd
-msgid "Disable the color"
-msgstr ""
-
-#: src/ui_elements/palette_config.gd src/Indications.gd
-msgid "Move Up"
-msgstr ""
-
-#: src/ui_elements/palette_config.gd src/Indications.gd
-msgid "Move Down"
-msgstr ""
-
-#: src/ui_elements/palette_config.gd
-msgid "Copy as XML"
-msgstr ""
-
-#: src/ui_elements/palette_config.gd
-msgid "Paste XML"
-msgstr ""
-
-#: src/ui_elements/palette_config.gd src/ui_elements/setting_shortcut.gd
-#: src/ui_elements/transform_popup.gd src/Indications.gd
-msgid "Delete"
-msgstr ""
-
-#: src/ui_elements/palette_config.gd
-msgid "Edit palette name"
-msgstr ""
-
-#: src/ui_elements/pathdata_field.gd
-msgid "No path data"
-msgstr ""
-
-#: src/ui_elements/pathdata_field.gd src/TranslationUtils.gd
-msgid "Absolute"
-msgstr ""
-
-#: src/ui_elements/pathdata_field.gd src/TranslationUtils.gd
-msgid "Relative"
-msgstr ""
-
-#: src/ui_elements/setting_check_box.gd src/ui_elements/setting_color.gd
-#: src/ui_elements/setting_dropdown.gd src/ui_elements/setting_shortcut.gd
-msgid "Reset to default"
-msgstr ""
-
-#: src/ui_elements/setting_shortcut.gd
-msgid "Unused"
-msgstr ""
-
-#: src/ui_elements/setting_shortcut.gd
-msgid "Add shortcut"
-msgstr ""
-
-#: src/ui_elements/setting_shortcut.gd
-msgid "Press keys…"
-msgstr ""
-
-#: src/ui_elements/transform_field.gd
-msgid "No transforms"
-msgstr ""
-
-#: src/ui_elements/transform_popup.gd
-msgid "Apply the matrix"
-msgstr ""
-
-#: src/ui_elements/transform_popup.gd src/Indications.gd
-msgid "Insert After"
-msgstr ""
-
-#: src/ui_elements/transform_popup.gd
-msgid "Insert Before"
-msgstr ""
-
-#: src/ui_elements/transform_popup.gd
-msgid "New transform"
-msgstr ""
-
-#: src/ui_elements/unrecognized_field.gd
-msgid "GodSVG doesn’t recognize this attribute"
-msgstr ""
-
 #: src/ui_parts/about_menu.gd
 msgid "Project Founder and Manager"
 msgstr ""
@@ -342,7 +210,7 @@ msgstr ""
 msgid "Scale"
 msgstr ""
 
-#: src/ui_parts/export_dialog.gd
+#: src/ui_parts/export_dialog.gd src/TranslationUtils.gd
 msgid "Export"
 msgstr ""
 
@@ -410,7 +278,7 @@ msgstr ""
 msgid "Select"
 msgstr ""
 
-#: src/ui_parts/good_file_dialog.gd
+#: src/ui_parts/good_file_dialog.gd src/TranslationUtils.gd
 msgid "Save"
 msgstr ""
 
@@ -506,6 +374,10 @@ msgstr ""
 
 #: src/ui_parts/settings_menu.gd
 msgid "Formatting"
+msgstr ""
+
+#: src/ui_parts/settings_menu.gd src/ui_widgets/color_popup.gd
+msgid "Palettes"
 msgstr ""
 
 #: src/ui_parts/settings_menu.gd
@@ -752,6 +624,134 @@ msgstr ""
 msgid "New versions"
 msgstr ""
 
+#: src/ui_widgets/BetterLineEdit.gd src/ui_widgets/BetterTextEdit.gd
+#: src/TranslationUtils.gd
+msgid "Undo"
+msgstr ""
+
+#: src/ui_widgets/BetterLineEdit.gd src/ui_widgets/BetterTextEdit.gd
+#: src/TranslationUtils.gd
+msgid "Redo"
+msgstr ""
+
+#: src/ui_widgets/BetterLineEdit.gd src/ui_widgets/BetterTextEdit.gd
+msgid "Cut"
+msgstr ""
+
+#: src/ui_widgets/BetterLineEdit.gd src/ui_widgets/BetterTextEdit.gd
+msgid "Copy"
+msgstr ""
+
+#: src/ui_widgets/BetterLineEdit.gd src/ui_widgets/BetterTextEdit.gd
+msgid "Paste"
+msgstr ""
+
+#: src/ui_widgets/color_popup.gd
+msgid "Search color"
+msgstr ""
+
+#: src/ui_widgets/color_popup.gd
+msgid "Color Picker"
+msgstr ""
+
+#: src/ui_widgets/configure_color_popup.gd
+msgid "Edit color name"
+msgstr ""
+
+#: src/ui_widgets/configure_color_popup.gd
+msgid "Delete color"
+msgstr ""
+
+#: src/ui_widgets/configure_color_popup.gd src/ui_widgets/palette_config.gd
+msgid "Unnamed"
+msgstr ""
+
+#: src/ui_widgets/good_color_picker.gd
+msgid "Enable the color"
+msgstr ""
+
+#: src/ui_widgets/good_color_picker.gd
+msgid "Disable the color"
+msgstr ""
+
+#: src/ui_widgets/palette_config.gd src/Indications.gd
+msgid "Move Up"
+msgstr ""
+
+#: src/ui_widgets/palette_config.gd src/Indications.gd
+msgid "Move Down"
+msgstr ""
+
+#: src/ui_widgets/palette_config.gd
+msgid "Copy as XML"
+msgstr ""
+
+#: src/ui_widgets/palette_config.gd
+msgid "Paste XML"
+msgstr ""
+
+#: src/ui_widgets/palette_config.gd src/ui_widgets/setting_shortcut.gd
+#: src/ui_widgets/transform_popup.gd src/Indications.gd
+msgid "Delete"
+msgstr ""
+
+#: src/ui_widgets/palette_config.gd
+msgid "Edit palette name"
+msgstr ""
+
+#: src/ui_widgets/pathdata_field.gd
+msgid "No path data"
+msgstr ""
+
+#: src/ui_widgets/pathdata_field.gd src/TranslationUtils.gd
+msgid "Absolute"
+msgstr ""
+
+#: src/ui_widgets/pathdata_field.gd src/TranslationUtils.gd
+msgid "Relative"
+msgstr ""
+
+#: src/ui_widgets/setting_check_box.gd src/ui_widgets/setting_color.gd
+#: src/ui_widgets/setting_dropdown.gd src/ui_widgets/setting_shortcut.gd
+msgid "Reset to default"
+msgstr ""
+
+#: src/ui_widgets/setting_shortcut.gd
+msgid "Unused"
+msgstr ""
+
+#: src/ui_widgets/setting_shortcut.gd
+msgid "Add shortcut"
+msgstr ""
+
+#: src/ui_widgets/setting_shortcut.gd
+msgid "Press keys…"
+msgstr ""
+
+#: src/ui_widgets/transform_field.gd
+msgid "No transforms"
+msgstr ""
+
+#: src/ui_widgets/transform_popup.gd
+msgid "Apply the matrix"
+msgstr ""
+
+#: src/ui_widgets/transform_popup.gd src/Indications.gd
+msgid "Insert After"
+msgstr ""
+
+#: src/ui_widgets/transform_popup.gd
+msgid "Insert Before"
+msgstr ""
+
+#: src/ui_widgets/transform_popup.gd
+msgid "New transform"
+msgstr ""
+
+#: src/ui_widgets/unrecognized_field.gd
+msgid "GodSVG doesn’t recognize this attribute"
+msgstr ""
+
 #: src/FileUtils.gd
 msgid "Save the .\"{extension}\" file"
 msgstr ""
@@ -814,15 +814,7 @@ msgid "Convert To"
 msgstr ""
 
 #: src/TranslationUtils.gd
-msgid "Export Image"
-msgstr ""
-
-#: src/TranslationUtils.gd
-msgid "Import SVG"
-msgstr ""
-
-#: src/TranslationUtils.gd
-msgid "Export SVG"
+msgid "Import"
 msgstr ""
 
 #: src/TranslationUtils.gd

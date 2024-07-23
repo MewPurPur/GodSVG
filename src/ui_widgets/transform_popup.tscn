@@ -1,0 +1,109 @@
+[gd_scene load_steps=5 format=3 uid="uid://dyc4so8qdkmmc"]
+
+[ext_resource type="Script" path="res://src/ui_widgets/transform_popup.gd" id="1_ye80i"]
+[ext_resource type="PackedScene" uid="uid://dad7fkhmsooc6" path="res://src/ui_widgets/number_edit.tscn" id="2_tdse4"]
+[ext_resource type="Texture2D" uid="uid://eif2ioi0mw17" path="res://visual/icons/Plus.svg" id="2_w40hh"]
+[ext_resource type="Texture2D" uid="uid://cqg7ga6y3m0v1" path="res://visual/icons/ApplyMatrix.svg" id="3_eegha"]
+
+[node name="TransformPopup" type="PanelContainer"]
+custom_minimum_size = Vector2(168, 0)
+offset_right = 4.0
+offset_bottom = 4.0
+script = ExtResource("1_ye80i")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 160)
+layout_mode = 2
+horizontal_scroll_mode = 0
+
+[node name="TransformsBox" type="VBoxContainer" parent="MarginContainer/VBoxContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="TransformList" type="VBoxContainer" parent="MarginContainer/VBoxContainer/ScrollContainer/TransformsBox"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="AddButton" type="Button" parent="MarginContainer/VBoxContainer/ScrollContainer/TransformsBox"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 0
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_type_variation = &"TranslucentButton"
+icon = ExtResource("2_w40hh")
+icon_alignment = 1
+
+[node name="Separator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="FinalMatrix" type="GridContainer" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 3
+
+[node name="X1" parent="MarginContainer/VBoxContainer/HBoxContainer/FinalMatrix" instance=ExtResource("2_tdse4")]
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "x1"
+editable = false
+code_font_tooltip = true
+
+[node name="Y1" parent="MarginContainer/VBoxContainer/HBoxContainer/FinalMatrix" instance=ExtResource("2_tdse4")]
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "y1"
+editable = false
+code_font_tooltip = true
+
+[node name="O1" parent="MarginContainer/VBoxContainer/HBoxContainer/FinalMatrix" instance=ExtResource("2_tdse4")]
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "o1"
+editable = false
+code_font_tooltip = true
+
+[node name="X2" parent="MarginContainer/VBoxContainer/HBoxContainer/FinalMatrix" instance=ExtResource("2_tdse4")]
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "x2"
+editable = false
+code_font_tooltip = true
+
+[node name="Y2" parent="MarginContainer/VBoxContainer/HBoxContainer/FinalMatrix" instance=ExtResource("2_tdse4")]
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "y2"
+editable = false
+code_font_tooltip = true
+
+[node name="O2" parent="MarginContainer/VBoxContainer/HBoxContainer/FinalMatrix" instance=ExtResource("2_tdse4")]
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "o2"
+editable = false
+code_font_tooltip = true
+
+[node name="ApplyMatrix" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_type_variation = &"TranslucentButton"
+icon = ExtResource("3_eegha")

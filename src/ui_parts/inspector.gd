@@ -6,11 +6,8 @@ const ElementFrame = preload("element_frame.tscn")
 @onready var add_button: Button = $AddButton
 
 
-func _notification(what: int) -> void:
-	if what == Utils.CustomNotification.LANGUAGE_CHANGED:
-		update_translation()
-
 func _ready() -> void:
+	GlobalSettings.language_changed.connect(update_translation)
 	update_translation()
 	SVG.elements_layout_changed.connect(full_rebuild)
 	SVG.changed_unknown.connect(full_rebuild)
