@@ -29,7 +29,15 @@ After submitting your pull request, I (MewPurPur) will review your changes and m
 
 ## Translation
 
-Editing tranlations is explained [here](translations/README.md)
+Editing translations is explained [here](translations/README.md)
+
+## Code guidelines
+
+To document some quirks of our code that we've decided on:
+
+- StringNames are avoided when possible. We do this because it makes the codebase simpler, although if something is actually shown to be performance-critical, it can be reconsidered.
+- Nodes may only be exported if their runtime structure isn't known.
+- Translating is done via `TranslationServer.translate()` rather than `tr()`. We've decided to stick to this everywhere because `tr()` doesn't work in static contexts.
 
 ## Code style
 
@@ -40,7 +48,5 @@ For scripts, only GDScript code is allowed. Follow the [GDScript style guide](ht
 - Two spaces are used to separate code and inline comments.
 - For empty lines in the middle of indented blocks, the scope's indentation is kept.
 - Class names use `class_name X extends Y` syntax.
-- StringNames are only used if something is performance-critical.
-- `@export` for nodes is only used if the runtime structure is not known.
 
 Don't make pull requests for code style changes without discussing them first (unless it's for corrections to abide by the ones described here). Pull requests may also get production tweaks to fix their style before being merged.
