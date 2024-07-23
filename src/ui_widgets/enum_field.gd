@@ -18,7 +18,7 @@ func setup_placeholder() -> void:
 
 
 func _ready() -> void:
-	GlobalSettings.basic_colors_changed.connect(sync.bind(text))
+	GlobalSettings.basic_colors_changed.connect(resync)
 	set_value(element.get_attribute_value(attribute_name, true))
 	element.attribute_changed.connect(_on_element_attribute_changed)
 	if attribute_name in DB.propagated_attributes:
@@ -75,6 +75,9 @@ func _on_text_change_canceled() -> void:
 func _on_text_changed(new_text: String) -> void:
 	font_color = GlobalSettings.get_validity_color(
 			not new_text in DB.attribute_enum_values[attribute_name])
+
+func resync() -> void:
+	sync(text)
 
 func sync(new_value: String) -> void:
 	text = new_value

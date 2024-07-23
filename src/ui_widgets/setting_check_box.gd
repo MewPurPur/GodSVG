@@ -23,7 +23,7 @@ func update_widgets() -> void:
 	var setting_value: bool = GlobalSettings.get(setting_name)
 	checkbox.text = "On" if setting_value else "Off"
 	reset_button.visible = not checkbox.disabled and (setting_value !=\
-			GlobalSettings.default_config[section_name][setting_name])
+			GlobalSettings.get_default(section_name, setting_name))
 	if checkbox.disabled:
 		label.add_theme_color_override("font_color",
 				ThemeGenerator.common_subtle_text_color)

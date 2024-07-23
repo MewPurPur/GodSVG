@@ -30,5 +30,5 @@ func update_widgets() -> void:
 	var show_alpha := enable_alpha and setting_value.a != 1.0
 	var setting_str: String = setting_value.to_html(show_alpha)
 	color_edit.value = setting_str
-	var default_value: Color = GlobalSettings.default_config[section_name][setting_name]
+	var default_value: Color = GlobalSettings.get_default(section_name, setting_name)
 	reset_button.visible = (setting_str != default_value.to_html(default_value.a != 1.0))

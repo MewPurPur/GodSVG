@@ -44,4 +44,4 @@ func update_widgets() -> void:
 	var setting_value: Variant = GlobalSettings.get(setting_name)
 	dropdown_widget.value = var_to_str(setting_value)
 	reset_button.visible = (setting_value !=\
-			GlobalSettings.default_config[section_name][setting_name])
+			GlobalSettings.get_default(section_name, setting_name))

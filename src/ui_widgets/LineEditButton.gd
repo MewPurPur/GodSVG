@@ -14,7 +14,7 @@ signal pressed
 signal text_change_canceled
 signal text_changed
 signal text_submitted
-signal button_gui_input
+signal button_gui_input(event: InputEvent)
 
 var _should_stay_active_outside := false
 var _is_mouse_outside := true
