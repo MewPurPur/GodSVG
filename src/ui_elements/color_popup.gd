@@ -85,8 +85,8 @@ func update_palettes(search_text := "") -> void:
 			swatch.pressed.connect(pick_palette_color.bind(color_to_show))
 			swatch_container.add_child(swatch)
 			swatches_list.append(swatch)
-			if ColorParser.are_colors_same(ColorParser.add_hash_if_hex(color_to_show),
-			current_value):
+			if not current_value.is_empty() and ColorParser.are_colors_same(
+			ColorParser.add_hash_if_hex(color_to_show), current_value):
 				swatch.disabled = true
 				swatch.mouse_default_cursor_shape = Control.CURSOR_ARROW
 		palette_container.add_child(swatch_container)
