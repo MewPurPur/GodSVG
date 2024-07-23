@@ -111,7 +111,8 @@ func sync(new_value: String) -> void:
 		add_child(add_move_button)
 		add_move_button.pressed.connect(
 				element.get_attribute(attribute_name).insert_command.bind(0, "M"))
-		add_move_button.pressed.connect(add_move_button.queue_free)
+	elif cmd_count != 0 and is_instance_valid(add_move_button):
+		add_move_button.queue_free()
 	# Rebuild the path commands.
 	commands_container.custom_minimum_size.y = cmd_count * COMMAND_HEIGHT
 	if hovered_idx >= element.get_attribute(attribute_name).get_command_count():

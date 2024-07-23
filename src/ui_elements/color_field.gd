@@ -55,7 +55,7 @@ func _on_svg_text_changed() -> void:
 
 func _on_pressed() -> void:
 	color_popup = ColorPopup.instantiate()
-	color_popup.current_value = element.get_attribute_value(attribute_name)
+	color_popup.current_value = element.get_attribute_value(attribute_name, true)
 	color_popup.color_picked.connect(_on_color_picked)
 	HandlerGUI.popup_under_rect(color_popup, get_global_rect(), get_viewport())
 
