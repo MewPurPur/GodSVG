@@ -23,6 +23,8 @@ const SettingColor = preload("res://src/ui_widgets/setting_color.gd")
 var focused_content := 0
 
 func _ready() -> void:
+	GlobalSettings.language_changed.connect(setup_setting_labels)
+	GlobalSettings.theme_changed.connect(setup_theming)
 	update_language_button()
 	setup_setting_labels()
 	for i in tabs.get_child_count():
@@ -37,10 +39,7 @@ func update_focused_content(idx: int) -> void:
 		content_container.get_child(i).visible = (focused_content == i)
 	tabs.get_child(focused_content).button_pressed = true
 
-
 func setup_theming() -> void:
-	GlobalSettings.language_changed.connect(setup_setting_labels)
-	GlobalSettings.theme_changed.connect(setup_theming)
 	var stylebox := get_theme_stylebox("panel").duplicate()
 	stylebox.content_margin_top += 4.0
 	add_theme_stylebox_override("panel", stylebox)
@@ -242,7 +241,6 @@ func _on_language_pressed() -> void:
 
 func _on_language_chosen(locale: String) -> void:
 	GlobalSettings.language = locale
-	GlobalSettings.language_changed.emit()
 	update_language_button()
 
 func update_language_button() -> void:
@@ -312,7 +310,6 @@ func _on_number_precision_changed() -> void:
 		GlobalSettings.save_data.snap = quanta
 		if not snapping_on:
 			GlobalSettings.save_data.snap *= -1
-	GlobalSettings.number_precision_changed.emit()
 
 func disable_format_checkboxes() -> void:
 	var is_autoformatting_numbers := GlobalSettings.number_enable_autoformatting
@@ -364,18 +361,6 @@ func show_keybinds(category: String):
 			keybind_config.label.text = TranslationUtils.get_shortcut_description(action)
 			keybind_config.setup(action)
 
-
-func setup_theming_tab() -> void:
-	for child in %HighlighterVBox.get_children():
-		if child is SettingColor:
-			child.value_changed.connect(GlobalSettings.highlight_colors_changed.emit)
-	for child in %HandleColors.get_children():
-		if child is SettingColor:
-			child.value_changed.connect(GlobalSettings.handle_visuals_changed.emit)
-	for child in %BasicColorsVBox.get_children():
-		if child is SettingColor:
-			child.value_changed.connect(GlobalSettings.basic_colors_changed.emit)
-
 func _on_theme_settings_changed() -> void:
 	ThemeGenerator.generate_theme()
 
@@ -407,16 +392,10 @@ func _on_shortcuts_tab_toggled(toggled_on: bool) -> void:
 
 func _on_theme_tab_toggled(toggled_on: bool) -> void:
 	if toggled_on and not generated_content.theming:
-		setup_theming_tab()
 		generated_content.theming = true
 
 func _on_other_tab_toggled(toggled_on: bool) -> void:
 	if toggled_on and not generated_content.other:
-		%Misc/HandleSize.value_changed.connect(GlobalSettings.handle_visuals_changed.emit)
-		%Misc/UIScale.value_changed.connect(GlobalSettings.ui_scale_changed.emit)
-		%Misc/AutoUIScale.pressed.connect(GlobalSettings.ui_scale_changed.emit)
-		%Misc/UseCurrentFilenameForWindowTitle.pressed.connect(
-				GlobalSettings.window_title_scheme_changed.emit)
 		# Disable mouse wrap if not available.
 		if not DisplayServer.has_feature(DisplayServer.FEATURE_MOUSE_WARP):
 			wrap_mouse.checkbox.set_pressed_no_signal(false)

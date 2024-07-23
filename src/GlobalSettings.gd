@@ -19,61 +19,67 @@ const save_path = "user://save.tres"
 var config := ConfigFile.new()
 const config_path = "user://config.tres"
 
+func get_default(section: String, setting: String) -> Variant:
+	return defaults[section][setting][0]
+
+func get_signal(section: String, setting: String) -> Signal:
+	return defaults[section][setting][1]
+
 # Don't have the language setting here, so it's not reset.
-const default_config = {
+var defaults = {
 	"formatting": {
-		"general_number_precision": 3,
-		"general_angle_precision": 1,
-		"xml_add_trailing_newline": false,
-		"xml_shorthand_tags": true,
-		"xml_pretty_formatting": false,
-		"number_enable_autoformatting": false,
-		"number_remove_zero_padding": false,
-		"number_remove_leading_zero": true,
-		"number_remove_plus_sign": false,
-		"color_enable_autoformatting": false,
-		"color_convert_rgb_to_hex": false,
-		"color_convert_named_to_hex": true,
-		"color_use_shorthand_hex_code": true,
-		"color_use_short_named_colors": false,
-		"pathdata_enable_autoformatting": true,
-		"pathdata_compress_numbers": true,
-		"pathdata_minimize_spacing": true,
-		"pathdata_remove_spacing_after_flags": false,
-		"pathdata_remove_consecutive_commands": true,
-		"transform_list_enable_autoformatting": true,
-		"transform_list_compress_numbers": true,
-		"transform_list_minimize_spacing": true,
-		"transform_list_remove_unnecessary_params": true,
+		"general_number_precision": [3, number_precision_changed],
+		"general_angle_precision": [1, number_precision_changed],
+		"xml_add_trailing_newline": [false, Signal()],
+		"xml_shorthand_tags": [true, Signal()],
+		"xml_pretty_formatting": [false, Signal()],
+		"number_enable_autoformatting": [false, Signal()],
+		"number_remove_zero_padding": [false, Signal()],
+		"number_remove_leading_zero": [true, Signal()],
+		"number_remove_plus_sign": [false, Signal()],
+		"color_enable_autoformatting": [false, Signal()],
+		"color_convert_rgb_to_hex": [false, Signal()],
+		"color_convert_named_to_hex": [true, Signal()],
+		"color_use_shorthand_hex_code": [true, Signal()],
+		"color_use_short_named_colors": [false, Signal()],
+		"pathdata_enable_autoformatting": [true, Signal()],
+		"pathdata_compress_numbers": [true, Signal()],
+		"pathdata_minimize_spacing": [true, Signal()],
+		"pathdata_remove_spacing_after_flags": [false, Signal()],
+		"pathdata_remove_consecutive_commands": [true, Signal()],
+		"transform_list_enable_autoformatting": [true, Signal()],
+		"transform_list_compress_numbers": [true, Signal()],
+		"transform_list_minimize_spacing": [true, Signal()],
+		"transform_list_remove_unnecessary_params": [true, Signal()],
 	},
 	"theming": {
-		"highlighting_symbol_color": Color("abc9ff"),
-		"highlighting_element_color": Color("ff8ccc"),
-		"highlighting_attribute_color": Color("bce0ff"),
-		"highlighting_string_color": Color("a1ffe0"),
-		"highlighting_comment_color": Color("cdcfd280"),
-		"highlighting_text_color": Color("cdcfeaac"),
-		"highlighting_cdata_color": Color("ffeda1ac"),
-		"highlighting_error_color": Color("ff866b"),
-		"handle_inside_color": Color("fff"),
-		"handle_color": Color("#111"),
-		"handle_hovered_color": Color("#aaa"),
-		"handle_selected_color": Color("#46f"),
-		"handle_hovered_selected_color": Color("#f44"),
-		"background_color": Color(0.12, 0.132, 0.2, 1),
-		"basic_color_valid": Color("9f9"),
-		"basic_color_error": Color("f99"),
-		"basic_color_warning": Color("ee5"),
+		"highlighting_symbol_color": [Color("abc9ff"), highlight_colors_changed],
+		"highlighting_element_color": [Color("ff8ccc"), highlight_colors_changed],
+		"highlighting_attribute_color": [Color("bce0ff"), highlight_colors_changed],
+		"highlighting_string_color": [Color("a1ffe0"), highlight_colors_changed],
+		"highlighting_comment_color": [Color("cdcfd280"), highlight_colors_changed],
+		"highlighting_text_color": [Color("cdcfeaac"), highlight_colors_changed],
+		"highlighting_cdata_color": [Color("ffeda1ac"), highlight_colors_changed],
+		"highlighting_error_color": [Color("ff866b"), highlight_colors_changed],
+		"handle_inside_color": [Color("fff"), handle_visuals_changed],
+		"handle_color": [Color("#111"), handle_visuals_changed],
+		"handle_hovered_color": [Color("#aaa"), handle_visuals_changed],
+		"handle_selected_color": [Color("#46f"), handle_visuals_changed],
+		"handle_hovered_selected_color": [Color("#f44"), handle_visuals_changed],
+		"background_color": [Color("1f2233"), Signal()],
+		"basic_color_valid": [Color("9f9"), basic_colors_changed],
+		"basic_color_error": [Color("f99"), basic_colors_changed],
+		"basic_color_warning": [Color("ee5"), basic_colors_changed],
 	},
 	"other": {
-		"invert_zoom": false,
-		"wrap_mouse": false,
-		"use_ctrl_for_zoom": true,
-		"use_native_file_dialog": true,
-		"use_current_filename_for_window_title": true,
-		"handle_size": 1.0,
-		"ui_scale": 1.0,
-		"auto_ui_scale": true,
+		"invert_zoom": [false, Signal()],
+		"wrap_mouse": [false, Signal()],
+		"use_ctrl_for_zoom": [true, Signal()],
+		"use_native_file_dialog": [true, Signal()],
+		"use_current_filename_for_window_title": [true, window_title_scheme_changed],
+		"handle_size": [1.0, handle_visuals_changed],
+		"ui_scale": [1.0, ui_scale_changed],
+		"auto_ui_scale": [true, ui_scale_changed],
 	},
 }
 
@@ -150,9 +156,11 @@ const keybinds_dict = {
 
 var language: String:
 	set(new_value):
-		language = new_value
-		TranslationServer.set_locale(new_value)
-		save_setting("localization", "language")
+		if language != new_value:
+			language = new_value
+			TranslationServer.set_locale(new_value)
+			save_setting("localization", "language")
+			language_changed.emit()
 
 var palettes: Array[ColorPalette] = []
 
@@ -218,14 +226,19 @@ func toggle_bool_setting(section: String, setting: String) -> void:
 	save_setting(section, setting)
 
 func modify_setting(section: String, setting: String, new_value: Variant) -> void:
-	set(setting, new_value)
-	save_setting(section, setting)
+	if get(setting) != new_value:
+		set(setting, new_value)
+		save_setting(section, setting)
+		var related_signal := get_signal(section, setting)
+		if not related_signal.is_null():
+			related_signal.emit()
 
 func modify_keybind(action: String, new_events: Array[InputEvent]) -> void:
 	InputMap.action_erase_events(action)
 	for event in new_events:
 		InputMap.action_add_event(action, event)
 	save_keybind(action)
+	shortcuts_changed.emit()
 
 func save_setting(section: String, setting: String) -> void:
 	config.set_value(section, setting, get(setting))
@@ -285,13 +298,13 @@ func load_settings() -> void:
 					save_setting(section, setting)
 
 func reset_settings() -> void:
-	for section in default_config.keys():
-		for setting in default_config[section].keys():
-			set(setting, default_config[section][setting])
+	for section in defaults.keys():
+		for setting in defaults[section].keys():
+			set(setting, get_default(section, setting))
 			save_setting(section, setting)
 
 func reset_setting(section: String, setting: String) -> void:
-	set(setting, default_config[section][setting])
+	set(setting, get_default(section, setting))
 	save_setting(section, setting)
 
 func reset_keybinds() -> void:

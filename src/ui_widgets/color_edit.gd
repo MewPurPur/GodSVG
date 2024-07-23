@@ -25,6 +25,9 @@ var value: String:
 
 
 func _ready() -> void:
+	text_submitted.connect(set.bind("value"))
+	text_change_canceled.connect(sync.bind(value))
+	button_gui_input.connect(queue_redraw.unbind(1))
 	if enable_alpha:
 		custom_minimum_size.x += 14.0
 	sync(value)
@@ -50,6 +53,9 @@ func _on_pressed() -> void:
 	HandlerGUI.popup_under_rect(color_picker, get_global_rect(), get_viewport())
 	color_picker.color_picked.connect(_on_color_picked)
 
+func _on_text_changed(new_text: String) -> void:
+	font_color = GlobalSettings.get_validity_color(!is_color_valid_non_url(new_text))
+
 func _draw() -> void:
 	super()
 	var stylebox := StyleBoxFlat.new()
@@ -67,22 +73,7 @@ func _draw() -> void:
 	else:
 		draw_button_border("normal")
 
-
-func _on_text_submitted(new_text: String) -> void:
-	value = new_text
-
-func _on_text_change_canceled() -> void:
-	sync(value)
-
 func _on_color_picked(new_color: String, close_picker: bool) -> void:
 	value = new_color
 	if close_picker:
 		color_picker.queue_free()
-
-
-func _on_text_changed(new_text: String) -> void:
-	font_color = GlobalSettings.get_validity_color(!is_color_valid_non_url(new_text))
-
-
-func _on_button_gui_input(_event: InputEvent) -> void:
-	queue_redraw()
