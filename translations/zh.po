@@ -222,7 +222,6 @@ msgid "OK"
 msgstr "确定"
 
 #: src/ui_parts/code_editor.gd src/ui_parts/good_file_dialog.gd
-#: src/TranslationUtils.gd
 msgid "Save SVG"
 msgstr "保存 SVG"
 
@@ -343,13 +342,34 @@ msgstr "质量"
 msgid "Scale"
 msgstr "缩放"
 
-#: src/ui_parts/export_dialog.gd src/TranslationUtils.gd
+#: src/ui_parts/export_dialog.gd
 msgid "Export"
 msgstr "导出"
 
 #: src/ui_parts/export_dialog.gd
 msgid "Final size"
 msgstr "最终大小"
+
+#: src/ui_parts/global_menu.gd src/ui_parts/settings_menu.gd
+msgid "File"
+msgstr "文件"
+
+#: src/ui_parts/global_menu.gd src/ui_parts/settings_menu.gd
+msgid "Edit"
+msgstr "编辑"
+
+#: src/ui_parts/global_menu.gd src/ui_parts/settings_menu.gd
+msgid "Tool"
+msgstr "工具"
+
+#: src/ui_parts/global_menu.gd src/ui_parts/settings_menu.gd
+msgid "View"
+msgstr "视图"
+
+#: src/ui_parts/global_menu.gd
+#, fuzzy
+msgid "Snap"
+msgstr "吸附大小"
 
 #: src/ui_parts/good_file_dialog.gd
 msgid "Create new folder"
@@ -597,22 +617,6 @@ msgid "Language"
 msgstr "语言"
 
 #: src/ui_parts/settings_menu.gd
-msgid "File"
-msgstr "文件"
-
-#: src/ui_parts/settings_menu.gd
-msgid "Edit"
-msgstr "编辑"
-
-#: src/ui_parts/settings_menu.gd
-msgid "View"
-msgstr "视图"
-
-#: src/ui_parts/settings_menu.gd
-msgid "Tool"
-msgstr "工具"
-
-#: src/ui_parts/settings_menu.gd
 msgid "Help"
 msgstr "帮助"
 
@@ -830,8 +834,19 @@ msgid "Convert To"
 msgstr "转换为"
 
 #: src/TranslationUtils.gd
-msgid "Import"
+#, fuzzy
+msgid "Export Image"
+msgstr "导出"
+
+#: src/TranslationUtils.gd
+#, fuzzy
+msgid "Import SVG"
 msgstr "导入"
+
+#: src/TranslationUtils.gd
+#, fuzzy
+msgid "Export SVG"
+msgstr "导出"
 
 #: src/TranslationUtils.gd
 #, fuzzy
@@ -858,6 +873,10 @@ msgid "Move the selected elements down"
 msgstr "将选中的元素下移"
 
 #: src/TranslationUtils.gd
+msgid "Find"
+msgstr ""
+
+#: src/TranslationUtils.gd
 msgid "Zoom in"
 msgstr "放大"
 
@@ -880,6 +899,11 @@ msgstr "显示拖拽框"
 #: src/TranslationUtils.gd
 msgid "Show rasterized SVG"
 msgstr "显示光栅化 SVG"
+
+#: src/TranslationUtils.gd
+#, fuzzy
+msgid "Enable snap"
+msgstr "启用吸附"
 
 #: src/TranslationUtils.gd
 msgid "Show reference image"

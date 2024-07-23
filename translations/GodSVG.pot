@@ -222,7 +222,6 @@ msgid "OK"
 msgstr ""
 
 #: src/ui_parts/code_editor.gd src/ui_parts/good_file_dialog.gd
-#: src/TranslationUtils.gd
 msgid "Save SVG"
 msgstr ""
 
@@ -343,12 +342,32 @@ msgstr ""
 msgid "Scale"
 msgstr ""
 
-#: src/ui_parts/export_dialog.gd src/TranslationUtils.gd
+#: src/ui_parts/export_dialog.gd
 msgid "Export"
 msgstr ""
 
 #: src/ui_parts/export_dialog.gd
 msgid "Final size"
+msgstr ""
+
+#: src/ui_parts/global_menu.gd src/ui_parts/settings_menu.gd
+msgid "File"
+msgstr ""
+
+#: src/ui_parts/global_menu.gd src/ui_parts/settings_menu.gd
+msgid "Edit"
+msgstr ""
+
+#: src/ui_parts/global_menu.gd src/ui_parts/settings_menu.gd
+msgid "Tool"
+msgstr ""
+
+#: src/ui_parts/global_menu.gd src/ui_parts/settings_menu.gd
+msgid "View"
+msgstr ""
+
+#: src/ui_parts/global_menu.gd
+msgid "Snap"
 msgstr ""
 
 #: src/ui_parts/good_file_dialog.gd
@@ -590,22 +609,6 @@ msgid "Language"
 msgstr ""
 
 #: src/ui_parts/settings_menu.gd
-msgid "File"
-msgstr ""
-
-#: src/ui_parts/settings_menu.gd
-msgid "Edit"
-msgstr ""
-
-#: src/ui_parts/settings_menu.gd
-msgid "View"
-msgstr ""
-
-#: src/ui_parts/settings_menu.gd
-msgid "Tool"
-msgstr ""
-
-#: src/ui_parts/settings_menu.gd
 msgid "Help"
 msgstr ""
 
@@ -811,7 +814,15 @@ msgid "Convert To"
 msgstr ""
 
 #: src/TranslationUtils.gd
-msgid "Import"
+msgid "Export Image"
+msgstr ""
+
+#: src/TranslationUtils.gd
+msgid "Import SVG"
+msgstr ""
+
+#: src/TranslationUtils.gd
+msgid "Export SVG"
 msgstr ""
 
 #: src/TranslationUtils.gd
@@ -832,6 +843,10 @@ msgstr ""
 
 #: src/TranslationUtils.gd
 msgid "Move the selected elements down"
+msgstr ""
+
+#: src/TranslationUtils.gd
+msgid "Find"
 msgstr ""
 
 #: src/TranslationUtils.gd
@@ -856,6 +871,10 @@ msgstr ""
 
 #: src/TranslationUtils.gd
 msgid "Show rasterized SVG"
+msgstr ""
+
+#: src/TranslationUtils.gd
+msgid "Enable snap"
 msgstr ""
 
 #: src/TranslationUtils.gd

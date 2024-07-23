@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=3 uid="uid://ce6j54x27pom"]
+[gd_scene load_steps=7 format=3 uid="uid://ce6j54x27pom"]
 
 [ext_resource type="PackedScene" uid="uid://cr1fdlmbknnko" path="res://src/ui_parts/code_editor.tscn" id="1_0jgh3"]
 [ext_resource type="Texture2D" uid="uid://co75w07yqmcro" path="res://visual/icons/theme/SplitGrabber2.svg" id="1_7y812"]
 [ext_resource type="PackedScene" uid="uid://ccynisiuyn5qn" path="res://src/ui_parts/inspector.tscn" id="1_afxvd"]
 [ext_resource type="Script" path="res://src/ui_parts/main_scene.gd" id="1_c0fkj"]
 [ext_resource type="PackedScene" uid="uid://bvrncl7e6yn5b" path="res://src/ui_parts/display.tscn" id="3_qbqbs"]
+[ext_resource type="Script" path="res://src/ui_parts/global_menu.gd" id="5_wda5e"]
 
 [node name="MainScene" type="HBoxContainer"]
 anchors_preset = 15
@@ -42,3 +43,9 @@ layout_mode = 2
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
+
+[node name="GlobalMenu" type="Node" parent="."]
+script = ExtResource("5_wda5e")
+
+[connection signal="snap_settings_updated" from="HSplitContainer/Display" to="GlobalMenu" method="_on_display_snap_settings_updated"]
+[connection signal="view_settings_updated" from="HSplitContainer/Display" to="GlobalMenu" method="_on_display_view_settings_updated"]
