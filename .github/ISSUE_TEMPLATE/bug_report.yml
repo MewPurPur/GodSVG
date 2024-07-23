@@ -1,5 +1,5 @@
 name: Bug report
-about: Report a bug in GodSVG
+description: Report a bug in GodSVG
 labels: [bug]
 body:
   - type: textarea
