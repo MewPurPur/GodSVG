@@ -10,7 +10,7 @@ static func pathdata_to_arrays(text: String) -> Array[Array]:
 	var new_commands: Array[Array] = []
 	var curr_command := ""
 	var prev_command := ""
-	var curr_command_args: Array = []
+	var nums: Array[float] = []
 	var args_left := 0
 	var comma_exhausted := false  # Can ignore many whitespaces, but only one comma.
 	
@@ -53,8 +53,8 @@ static func pathdata_to_arrays(text: String) -> Array[Array]:
 			# Arc flags are represented by a single character.
 			if curr_command in "Aa" and (args_left == 4 or args_left == 3):
 				match char:
-					"0": curr_command_args.append(0)
-					"1": curr_command_args.append(1)
+					"0": nums.append(0)
+					"1": nums.append(1)
 					" ", "\n", "\t", "\r": continue
 					",":
 						if comma_exhausted:
@@ -63,7 +63,7 @@ static func pathdata_to_arrays(text: String) -> Array[Array]:
 							comma_exhausted = true
 							continue
 					_: return new_commands
-				if args_left == 3 and curr_command_args.size() == 5:
+				if args_left == 3 and nums.size() == 5:
 					# The number parsing part doesn't account for whitespace at the start,
 					# so jump over the whitespace here.
 					while idx < text.length() - 1:
@@ -117,6 +117,8 @@ static func pathdata_to_arrays(text: String) -> Array[Array]:
 								start_idx += 1
 								end_idx += 1
 								continue
+							if not text.substr(start_idx, idx - start_idx).is_valid_float():
+								return new_commands
 							number_proceed = false
 						",":
 							if comma_exhausted:
@@ -132,14 +134,13 @@ static func pathdata_to_arrays(text: String) -> Array[Array]:
 								idx += 1
 								exponent_just_passed = true
 						_:
-							if args_left >= 1 and\
-							not text.substr(start_idx, end_idx - start_idx).is_valid_float():
+							if args_left >= 1 and not\
+							text.substr(start_idx, end_idx - start_idx).is_valid_float():
 								return new_commands
 							else:
 								idx -= 1
 								break
-				curr_command_args.append(
-						text.substr(start_idx, end_idx - start_idx).to_float())
+				nums.append(text.substr(start_idx, end_idx - start_idx).to_float())
 			args_left -= 1
 		
 		# Wrap up the array.
@@ -147,8 +148,8 @@ static func pathdata_to_arrays(text: String) -> Array[Array]:
 			prev_command = curr_command
 			var finalized_arr: Array = [curr_command]
 			curr_command = ""
-			finalized_arr.append_array(curr_command_args)
-			curr_command_args.clear()
+			finalized_arr.append_array(nums)
+			nums.clear()
 			new_commands.append(finalized_arr)
 	return new_commands
 

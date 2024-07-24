@@ -101,6 +101,8 @@ static func text_to_transform_list(text: String) -> Array[Transform]:
 							start_idx += 1
 							end_idx += 1
 							continue
+						if not text.substr(start_idx, idx - start_idx).is_valid_float():
+							return []
 						number_proceed = false
 					",":
 						if comma_exhausted:
