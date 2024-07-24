@@ -41,8 +41,8 @@ jobs:
           # Run Godot to generate editor config file.
           godot --headless --quit
           # Add wine and rcedit paths to Godot config.
-          echo 'export/windows/wine = "/usr/bin/wine64"' >> ~/.config/godot/editor_settings-4.tres
-          echo 'export/windows/rcedit = "/home/runner/.local/share/rcedit/rcedit-x64.exe"' >> ~/.config/godot/editor_settings-4.tres
+          echo 'export/windows/wine = "/usr/bin/wine64"' >> ~/.config/godot/editor_settings-${GODOT_VERSION}.tres
+          echo 'export/windows/rcedit = "/home/runner/.local/share/rcedit/rcedit-x64.exe"' >> ~/.config/godot/editor_settings-${GODOT_VERSION}.tres
 
       - name: Export project
         uses: ./.github/actions/godot-export
