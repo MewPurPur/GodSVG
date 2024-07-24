@@ -610,9 +610,9 @@ func _draw() -> void:
 			var bounding_box: Rect2 = element.get_bounding_box()
 			if bounding_box.has_area():
 				RenderingServer.canvas_item_add_set_transform(selections_surface,
-						element.get_transform())
+						element.get_transform() * SVG.root_element.canvas_transform)
 				RenderingServer.canvas_item_add_rect(selections_surface,
-						bounding_box.grow(2.0 / Indications.zoom), Color.WHITE)
+						bounding_box.grow(3.0 / Indications.zoom), Color.WHITE)
 
 
 var dragged_handle: Handle = null

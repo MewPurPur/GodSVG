@@ -67,8 +67,8 @@ non_native_callable: Callable) -> void:
 	# Open it inside a native file dialog, or our custom one if it's not available.
 	if _is_native_preferred():
 		DisplayServer.file_dialog_show(
-				TranslationServer.translate("Save the .\"{extension}\" file") %\
-				{"extension": extension}, Utils.get_last_dir(), Utils.get_file_name(
+				TranslationServer.translate("Save the .\"{extension}\" file").format(
+				{"extension": extension}), Utils.get_last_dir(), Utils.get_file_name(
 				GlobalSettings.save_data.current_file_path) + "." + extension, false,
 				DisplayServer.FILE_DIALOG_MODE_SAVE_FILE,
 				PackedStringArray(["*." + extension]), native_callable)
@@ -96,7 +96,7 @@ _filter_idx: int) -> void:
 
 
 static func _is_native_preferred() -> bool:
-	return DisplayServer.has_feature(DisplayServer.FEATURE_NATIVE_DIALOG) and\
+	return DisplayServer.has_feature(DisplayServer.FEATURE_NATIVE_DIALOG_FILE) and\
 			GlobalSettings.use_native_file_dialog
 
 static func open_import_dialog() -> void:

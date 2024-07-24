@@ -145,7 +145,7 @@ func update_file_button() -> void:
 
 func update_window_title() -> void:
 	var file_path := GlobalSettings.save_data.current_file_path
-	if GlobalSettings.use_current_filename_for_window_title and not file_path.is_empty():
+	if GlobalSettings.use_filename_for_window_title and not file_path.is_empty():
 		get_window().title = file_path.get_file() + " - GodSVG"
 	else:
 		get_window().title = "GodSVG"
