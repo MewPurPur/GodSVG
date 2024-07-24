@@ -513,10 +513,10 @@ layout_mode = 2
 section_name = "other"
 setting_name = "use_native_file_dialog"
 
-[node name="UseCurrentFilenameForWindowTitle" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Other/OtherSettings/Misc" instance=ExtResource("4_2qeh2")]
+[node name="UseFilenameForWindowTitle" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Other/OtherSettings/Misc" instance=ExtResource("4_2qeh2")]
 layout_mode = 2
 section_name = "other"
-setting_name = "use_current_filename_for_window_title"
+setting_name = "use_filename_for_window_title"
 
 [node name="HandleSize" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Other/OtherSettings/Misc" instance=ExtResource("5_dx7vp")]
 layout_mode = 2

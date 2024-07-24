@@ -87,7 +87,7 @@ func setup_setting_labels() -> void:
 	use_native_file_dialog.tooltip_text = TranslationServer.translate(
 			"If turned on, uses your operating system's native file dialog. If turned off, uses GodSVG's built-in file dialog.")
 	
-	var window_title_changing := %Misc/UseCurrentFilenameForWindowTitle
+	var window_title_changing := %Misc/UseFilenameForWindowTitle
 	window_title_changing.label.text = TranslationServer.translate("Sync window title to file name")
 	window_title_changing.tooltip_text = TranslationServer.translate(
 			"If turned off, the window title will remain just \"GodSVG\".")
@@ -404,7 +404,7 @@ func _on_other_tab_toggled(toggled_on: bool) -> void:
 		if OS.has_feature("web"):
 			use_native_file_dialog.checkbox.set_pressed_no_signal(true)
 			use_native_file_dialog.set_checkbox_enabled(false)
-		if not DisplayServer.has_feature(DisplayServer.FEATURE_NATIVE_DIALOG):
+		if not DisplayServer.has_feature(DisplayServer.FEATURE_NATIVE_DIALOG_FILE):
 			use_native_file_dialog.checkbox.set_pressed_no_signal(false)
 			use_native_file_dialog.set_checkbox_enabled(false)
 		generated_content.other = true

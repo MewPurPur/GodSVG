@@ -76,7 +76,7 @@ var defaults = {
 		"wrap_mouse": [false, Signal()],
 		"use_ctrl_for_zoom": [true, Signal()],
 		"use_native_file_dialog": [true, Signal()],
-		"use_current_filename_for_window_title": [true, window_title_scheme_changed],
+		"use_filename_for_window_title": [true, window_title_scheme_changed],
 		"handle_size": [1.0, handle_visuals_changed],
 		"ui_scale": [1.0, ui_scale_changed],
 		"auto_ui_scale": [true, ui_scale_changed],
@@ -216,7 +216,7 @@ var invert_zoom := false
 var wrap_mouse := false
 var use_ctrl_for_zoom := true
 var use_native_file_dialog := true
-var use_current_filename_for_window_title := true
+var use_filename_for_window_title := true
 var handle_size := 1.0
 var ui_scale := 1.0
 var auto_ui_scale := true
