@@ -225,6 +225,10 @@ func toggle_bool_setting(section: String, setting: String) -> void:
 	set(setting, !get(setting))
 	save_setting(section, setting)
 
+
+func reset_setting(section: String, setting: String) -> void:
+	modify_setting(section, setting, get_default(section, setting))
+
 func modify_setting(section: String, setting: String, new_value: Variant) -> void:
 	if get(setting) != new_value:
 		set(setting, new_value)
@@ -233,12 +237,24 @@ func modify_setting(section: String, setting: String, new_value: Variant) -> voi
 		if not related_signal.is_null():
 			related_signal.emit()
 
+
 func modify_keybind(action: String, new_events: Array[InputEvent]) -> void:
 	InputMap.action_erase_events(action)
 	for event in new_events:
 		InputMap.action_add_event(action, event)
 	save_keybind(action)
 	shortcuts_changed.emit()
+
+func reset_keybinds() -> void:
+	InputMap.load_from_project_settings()
+	for category in keybinds_dict:
+		var category_dict: Dictionary = keybinds_dict[category]
+		for action in category_dict:
+			# Only reset the configurable ones.
+			if category_dict[action]:
+				save_keybind(action)
+	shortcuts_changed.emit()
+
 
 func save_setting(section: String, setting: String) -> void:
 	config.set_value(section, setting, get(setting))
@@ -302,19 +318,6 @@ func reset_settings() -> void:
 		for setting in defaults[section].keys():
 			set(setting, get_default(section, setting))
 			save_setting(section, setting)
-
-func reset_setting(section: String, setting: String) -> void:
-	set(setting, get_default(section, setting))
-	save_setting(section, setting)
-
-func reset_keybinds() -> void:
-	InputMap.load_from_project_settings()
-	for category in keybinds_dict:
-		var category_dict: Dictionary = keybinds_dict[category]
-		for action in category_dict:
-			# Only reset the configurable ones.
-			if category_dict[action]:
-					save_keybind(action)
 
 func reset_palettes() -> void:
 	palettes = [ColorPalette.new("Pure",
