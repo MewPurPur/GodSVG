@@ -28,6 +28,7 @@ func pathdata_tests(print_success := false) -> bool:
 	"M 0 0 z 2 3": [["M", 0.0, 0.0], ["z"]],
 	"M3e1 4e-2": [["M", 3e1, 4e-2]],
 	"M5,1 A4,4,0,1,1,5,9": [["M", 5.0, 1.0], ["A", 4.0, 4.0, 0.0, 1, 1, 5.0, 9.0]],
+	"M4 1 2 - 4 4z": [["M", 4.0, 1.0]]
 	}
 	
 	var tests_passed := true
