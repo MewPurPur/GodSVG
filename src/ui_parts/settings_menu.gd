@@ -404,7 +404,7 @@ func _on_other_tab_toggled(toggled_on: bool) -> void:
 		if OS.has_feature("web"):
 			use_native_file_dialog.checkbox.set_pressed_no_signal(true)
 			use_native_file_dialog.set_checkbox_enabled(false)
-		if not DisplayServer.has_feature(DisplayServer.FEATURE_NATIVE_DIALOG_FILE):
+		elif not DisplayServer.has_feature(DisplayServer.FEATURE_NATIVE_DIALOG_FILE):
 			use_native_file_dialog.checkbox.set_pressed_no_signal(false)
 			use_native_file_dialog.set_checkbox_enabled(false)
 		generated_content.other = true
