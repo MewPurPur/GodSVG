@@ -8,7 +8,8 @@ on:
     branches: [ main ]
 
 env:
-  GODOT_VERSION: 4.2.2
+  GODOT_VERSION: 4.3
+  GODOT_RELEASE: beta3
   PROJECT_NAME: GodSVG
 
 jobs:
