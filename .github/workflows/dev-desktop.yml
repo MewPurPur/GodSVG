@@ -30,7 +30,7 @@ jobs:
       - name: Set up WINE and rcedit for Windows export
         run: |
           # Download rcedit and install wine.
-          wget -q https://github.com/electron/rcedit/releases/download/v1.1.1/rcedit-x64.exe
+          wget -q https://github.com/electron/rcedit/releases/download/v2.0.0/rcedit-x64.exe
           sudo apt update
           sudo apt install -y --fix-missing wine64
           # Move rcedit to different place.
