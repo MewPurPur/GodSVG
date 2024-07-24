@@ -134,8 +134,8 @@ static func pathdata_to_arrays(text: String) -> Array[Array]:
 								idx += 1
 								exponent_just_passed = true
 						_:
-							if args_left >= 1 and not\
-							text.substr(start_idx, end_idx - start_idx).is_valid_float():
+							if args_left >= 1 and\
+							not text.substr(start_idx, end_idx - start_idx).is_valid_float():
 								return new_commands
 							else:
 								idx -= 1
