@@ -20,10 +20,6 @@ func get_percentage_handling(attribute_name: String) -> DB.PercentageHandling:
 
 func get_config_warnings() -> PackedStringArray:
 	var warnings := super()
-	if not (parent is ElementG or parent is ElementSVG or\
-	parent is ElementUnrecognized):
-		warnings.append(TranslationServer.translate("{element} must be inside {allowed} to have any effect.").format(
-				{"element": name, "allowed": "[g, svg]"}))
 	if not has_attribute("id"):
 		warnings.append(TranslationServer.translate("No id attribute defined."))
 	

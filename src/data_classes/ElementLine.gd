@@ -49,10 +49,3 @@ func get_bounding_box() -> Rect2:
 	rect.end = Vector2(maxf(get_attribute_num("x1"), get_attribute_num("x2")),
 			maxf(get_attribute_num("y1"), get_attribute_num("y2")))
 	return rect
-
-func get_config_warnings() -> PackedStringArray:
-	var warnings := super()
-	if not (parent is ElementG or parent is ElementSVG or parent is ElementUnrecognized):
-		warnings.append(TranslationServer.translate("{element} must be inside {allowed} to have any effect.").format(
-				{"element": self.name, "allowed": "[svg, g]"}))
-	return warnings

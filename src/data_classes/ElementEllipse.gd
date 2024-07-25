@@ -68,10 +68,3 @@ func get_own_default(attribute_name: String) -> String:
 func get_bounding_box() -> Rect2:
 	return Rect2(get_attribute_num("cx") - get_rx(),
 			get_attribute_num("cy") - get_ry(), get_rx() * 2, get_ry() * 2)
-
-func get_config_warnings() -> PackedStringArray:
-	var warnings := super()
-	if not (parent is ElementG or parent is ElementSVG or parent is ElementUnrecognized):
-		warnings.append(TranslationServer.translate("{element} must be inside {allowed} to have any effect.").format(
-				{"element": self.name, "allowed": "[svg, g]"}))
-	return warnings

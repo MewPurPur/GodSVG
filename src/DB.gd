@@ -43,6 +43,21 @@ const recognized_attributes = {  # Dictionary{String: Array[String]}
 	"stop": ["offset", "stop-color", "stop-opacity"],
 }
 
+const valid_children = {  # Dictionary{String: Array[String]}
+	"svg": ["path", "circle", "ellipse", "rect", "line", "g", "linearGradient",
+			"radialGradient"],
+	"g": ["path", "circle", "ellipse", "rect", "line", "g", "linearGradient",
+			"radialGradient"],
+	"linearGradient": ["stop"],
+	"radialGradient": ["stop"],
+	"circle": [],
+	"ellipse": [],
+	"rect": [],
+	"path": [],
+	"line": [],
+	"stop": [],
+}
+
 const propagated_attributes = ["fill", "fill-opacity", "stroke", "stroke-opacity",
 		"stroke-width", "stroke-linecap", "stroke-linejoin"]
 
@@ -114,9 +129,22 @@ static func is_attribute_recognized(element_name: String, attribute_name: String
 	return recognized_attributes.has(element_name) and\
 			attribute_name in recognized_attributes[element_name]
 
+static func is_child_element_valid(parent_name: String, child_name: String) -> bool:
+	if not valid_children.has(parent_name):
+		return true
+	return child_name in valid_children[parent_name]
+
+static func get_valid_parents(child_name: String) -> PackedStringArray:
+	var valid_parents := PackedStringArray()
+	for parent_name in valid_children.keys():
+		if child_name in valid_children[parent_name]:
+			valid_parents.append(parent_name)
+	return valid_parents
+
 static func get_element_icon(element_name: String) -> Texture2D:
 	return element_icons[element_name] if element_icons.has(element_name) else\
 			unrecognized_element_icon
+
 
 static func get_attribute_type(attribute_name: String) -> AttributeType:
 	return attribute_types[attribute_name] if attribute_types.has(attribute_name)\
