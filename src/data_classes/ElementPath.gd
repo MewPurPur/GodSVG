@@ -190,10 +190,3 @@ static func solve_quadratic(a: float, b: float, c: float) -> Array:
 		return [null, null]
 	else:
 		return [(-b + D) / (2 * a), (-b - D) / (2 * a)]
-
-func get_config_warnings() -> PackedStringArray:
-	var warnings := super()
-	if not (parent is ElementG or parent is ElementSVG or parent is ElementUnrecognized):
-		warnings.append(TranslationServer.translate("{element} must be inside {allowed} to have any effect.").format(
-				{"element": self.name, "allowed": "[svg, g]"}))
-	return warnings
