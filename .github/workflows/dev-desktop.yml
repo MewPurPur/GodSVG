@@ -8,8 +8,12 @@ on:
     branches: [ main ]
 
 env:
+  # Which godot version to use for exporting
   GODOT_VERSION: 4.3
-  GODOT_RELEASE: beta3
+  # Which godot release to use for exporting. (stable/rc/beta/alpha)
+  GODOT_RELEASE: rc1
+  # Used in the editor config file name. Do not change this for patch releases.
+  GODOT_FEATURE_VERSION: 4.3
   PROJECT_NAME: GodSVG
 
 jobs:
@@ -41,8 +45,8 @@ jobs:
           # Run Godot to generate editor config file.
           godot --headless --quit
           # Add wine and rcedit paths to Godot config.
-          echo 'export/windows/wine = "/usr/bin/wine64"' >> ~/.config/godot/editor_settings-${GODOT_VERSION}.tres
-          echo 'export/windows/rcedit = "/home/runner/.local/share/rcedit/rcedit-x64.exe"' >> ~/.config/godot/editor_settings-${GODOT_VERSION}.tres
+          echo 'export/windows/wine = "/usr/bin/wine64"' >> ~/.config/godot/editor_settings-${GODOT_FEATURE_VERSION}.tres
+          echo 'export/windows/rcedit = "/home/runner/.local/share/rcedit/rcedit-x64.exe"' >> ~/.config/godot/editor_settings-${GODOT_FEATURE_VERSION}.tres
 
       - name: Export project
         uses: ./.github/actions/godot-export
