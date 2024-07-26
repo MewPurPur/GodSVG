@@ -282,15 +282,23 @@ func _draw() -> void:
 			return
 	
 	var parent_xid := Utils.get_parent_xid(element.xid)
-	# Draw the yellow indicator of drag and drop actions.
+	# Draw the indicator of drag and drop actions.
 	var drop_sb := StyleBoxFlat.new()
-	var proposed_drop_xid := Indications.proposed_drop_xid
-	drop_sb.border_color = Color.GREEN
-	if proposed_drop_xid == parent_xid + PackedInt32Array([element.xid[-1]]):
+	var drop_xid := Indications.proposed_drop_xid
+	
+	var drop_tag := element.root.get_element(Utils.get_parent_xid(drop_xid))
+	var are_all_children_valid := true
+	for xid in Indications.selected_xids:
+		if !DB.is_child_element_valid(drop_tag.name, element.root.get_element(xid).name):
+			are_all_children_valid = false
+			break
+	
+	drop_sb.border_color = Color.GREEN if are_all_children_valid else Color.ORANGE
+	if drop_xid == parent_xid + PackedInt32Array([element.xid[-1]]):
 		drop_sb.border_width_top = 2
-	elif proposed_drop_xid == parent_xid + PackedInt32Array([element.xid[-1] + 1]):
+	elif drop_xid == parent_xid + PackedInt32Array([element.xid[-1] + 1]):
 		drop_sb.border_width_bottom = 2
-	elif proposed_drop_xid == element.xid + PackedInt32Array([0]):
+	elif drop_xid == element.xid + PackedInt32Array([0]):
 		drop_sb.set_border_width_all(2)
 		if is_instance_valid(child_elements_container):
 			drop_sb.border_color = Color(Color.GREEN, 0.4)
