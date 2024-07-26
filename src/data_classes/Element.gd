@@ -23,7 +23,7 @@ var svg: ElementSVG:
 		_svg = weakref(new_value)
 
 var _root: WeakRef = null
-var root: ElementSVG:
+var root: ElementRoot:
 	get():
 		if _root != null:
 			return _root.get_ref()
