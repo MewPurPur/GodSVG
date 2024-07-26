@@ -61,6 +61,7 @@ func _on_element_attribute_changed(attribute_changed: String) -> void:
 func _on_element_ancestor_attribute_changed(attribute_changed: String) -> void:
 	if attribute_name == attribute_changed:
 		setup_placeholder()
+		resync()
 
 func _on_text_change_canceled() -> void:
 	set_value(element.get_attribute_value(attribute_name))

@@ -47,6 +47,7 @@ func _on_element_attribute_changed(attribute_changed: String) -> void:
 func _on_element_ancestor_attribute_changed(attribute_changed: String) -> void:
 	if attribute_name == attribute_changed:
 		setup_placeholder()
+		resync()
 
 # Redraw in case the gradient might have changed.
 func _on_svg_text_changed() -> void:
