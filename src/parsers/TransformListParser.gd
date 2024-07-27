@@ -39,11 +39,11 @@ transform_list: Array[Transform]) -> String:
 	return output.trim_suffix(" ")
 
 static func text_to_transform_list(text: String) -> Array[Transform]:
+	text = text.strip_edges()
 	if text.is_empty():
 		return []
 	
 	var output: Array[Transform] = []
-	text = text.strip_edges()
 	var transforms := text.split(")", false)
 	for transform in transforms:
 		var transform_info := transform.split("(")
@@ -101,7 +101,7 @@ static func text_to_transform_list(text: String) -> Array[Transform]:
 							start_idx += 1
 							end_idx += 1
 							continue
-						if not text.substr(start_idx, idx - start_idx).is_valid_float():
+						if not transform_params.substr(start_idx, idx - start_idx).is_valid_float():
 							return []
 						number_proceed = false
 					",":

@@ -10,6 +10,3 @@ anchors_preset = 0
 script = ExtResource("1_5gokr")
 icon = ExtResource("2_2uudq")
 code_font_tooltip = true
-
-[connection signal="button_gui_input" from="." to="." method="_on_button_gui_input"]
-[connection signal="pressed" from="." to="." method="_on_pressed"]
