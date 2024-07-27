@@ -131,7 +131,7 @@ func resync() -> void:
 
 func sync(new_value: String) -> void:
 	reset_font_color()
-	if new_value == element.get_default(attribute_name):
+	if ColorParser.add_hash_if_hex(new_value) == element.get_default(attribute_name):
 		font_color = GlobalSettings.basic_color_warning
 	text = new_value.trim_prefix("#")
 	update_gradient_texture()

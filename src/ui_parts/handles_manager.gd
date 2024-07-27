@@ -92,8 +92,8 @@ func _ready() -> void:
 	c.material = stroke_material
 	add_child(c, false, InternalMode.INTERNAL_MODE_BACK)
 	
-	SVG.attribute_somewhere_changed.connect(queue_redraw.unbind(1))
-	SVG.attribute_somewhere_changed.connect(sync_handles.unbind(1))
+	SVG.any_attribute_changed.connect(queue_redraw.unbind(1))
+	SVG.any_attribute_changed.connect(sync_handles.unbind(1))
 	SVG.elements_layout_changed.connect(queue_update)
 	SVG.changed_unknown.connect(queue_update)
 	Indications.selection_changed.connect(queue_redraw)

@@ -15,22 +15,34 @@ msgstr ""
 msgid "translation-credits"
 msgstr "Hamster5295 <hamster5295@163.com>"
 
-#: src/data_classes/ElementCircle.gd src/data_classes/ElementEllipse.gd
-#: src/data_classes/ElementG.gd src/data_classes/ElementLine.gd
-#: src/data_classes/ElementLinearGradient.gd src/data_classes/ElementPath.gd
-#: src/data_classes/ElementRadialGradient.gd src/data_classes/ElementRect.gd
-#: src/data_classes/ElementStop.gd
+#: src/data_classes/Element.gd
 msgid "{element} must be inside {allowed} to have any effect."
 msgstr ""
 
+#: src/data_classes/ElementG.gd
+msgid "This group has no elements."
+msgstr ""
+
+#: src/data_classes/ElementG.gd
+msgid "This group has only one element."
+msgstr ""
+
 #: src/data_classes/ElementLinearGradient.gd
-#: src/data_classes/ElementRadialGradient.gd
 msgid "No id attribute defined."
 msgstr ""
 
 #: src/data_classes/ElementLinearGradient.gd
 #: src/data_classes/ElementRadialGradient.gd
-msgid "No stop elements under this gradient."
+msgid "No <stop> elements under this gradient."
+msgstr ""
+
+#: src/data_classes/ElementLinearGradient.gd
+#: src/data_classes/ElementRadialGradient.gd
+msgid "This gradient is a solid color."
+msgstr ""
+
+#: src/data_classes/ElementRadialGradient.gd
+msgid "No \"id\" attribute defined."
 msgstr ""
 
 #: src/parsers/SVGParser.gd

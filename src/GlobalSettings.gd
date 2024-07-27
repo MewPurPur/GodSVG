@@ -221,10 +221,6 @@ var handle_size := 1.0
 var ui_scale := 1.0
 var auto_ui_scale := true
 
-func toggle_bool_setting(section: String, setting: String) -> void:
-	set(setting, !get(setting))
-	save_setting(section, setting)
-
 
 func reset_setting(section: String, setting: String) -> void:
 	modify_setting(section, setting, get_default(section, setting))

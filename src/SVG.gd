@@ -7,7 +7,7 @@ signal resized
 
 # These signals copy the ones in ElementRoot.
 # ElementRoot is not persistent, while these signals can be connected to reliably.
-signal attribute_somewhere_changed(xid: PackedInt32Array)
+signal any_attribute_changed(xid: PackedInt32Array)
 signal elements_added(xids: Array[PackedInt32Array])
 signal elements_deleted(xids: Array[PackedInt32Array])
 signal elements_moved_in_parenet(parent_xid: PackedInt32Array, old_indices: Array[int])
@@ -38,7 +38,7 @@ func _ready() -> void:
 	elements_layout_changed.connect(queue_update)
 	elements_layout_changed.connect(queue_save)
 	# Can be intermediate, like when dragging an opacity slider, so don't queue save.
-	attribute_somewhere_changed.connect(queue_update.unbind(1))
+	any_attribute_changed.connect(queue_update.unbind(1))
 	
 	var cmdline_args := OS.get_cmdline_args()
 	var load_cmdl := false
@@ -84,7 +84,7 @@ func sync_elements() -> void:
 	parsing_finished.emit(svg_parse_result.error)
 	if svg_parse_result.error == SVGParser.ParseError.OK:
 		root_element = svg_parse_result.svg
-		root_element.attribute_somewhere_changed.connect(attribute_somewhere_changed.emit)
+		root_element.any_attribute_changed.connect(any_attribute_changed.emit)
 		root_element.elements_added.connect(elements_added.emit)
 		root_element.elements_deleted.connect(elements_deleted.emit)
 		root_element.elements_moved_in_parenet.connect(elements_moved_in_parenet.emit)

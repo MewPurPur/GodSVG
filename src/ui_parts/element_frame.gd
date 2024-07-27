@@ -47,6 +47,11 @@ func _ready() -> void:
 	Indications.selection_changed.connect(determine_selection_highlight)
 	Indications.hover_changed.connect(determine_selection_highlight)
 	Indications.proposed_drop_changed.connect(queue_redraw)
+	title_bar.draw.connect(_on_title_bar_draw)
+	mouse_entered.connect(_on_mouse_entered)
+	mouse_exited.connect(_on_mouse_exited)
+	element.descendant_attribute_changed.connect(title_bar.queue_redraw.unbind(1))
+	element.attribute_changed.connect(title_bar.queue_redraw.unbind(1))
 	determine_selection_highlight()
 	title_bar.queue_redraw()
 	

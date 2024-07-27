@@ -22,3 +22,11 @@ func get_bounding_box() -> Rect2:
 			#else:
 				#bounding_box = bounding_box.merge(cbb)
 	return bounding_box
+
+func get_config_warnings() -> PackedStringArray:
+	var warnings := super()
+	if get_child_count() == 0:
+		warnings.append(TranslationServer.translate("This group has no elements."))
+	elif get_child_count() == 1:
+		warnings.append(TranslationServer.translate("This group has only one element."))
+	return warnings
