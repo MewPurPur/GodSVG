@@ -1,7 +1,7 @@
 # A popup for editing a transform list.
 extends PanelContainer
 
-const DEFAULT_VALUE_OPACITY = 2/3.0
+const OMITTABLE_OPACITY = 2/3.0
 
 const NumberEditType = preload("res://src/ui_widgets/number_edit.gd")
 
@@ -62,35 +62,17 @@ func rebuild() -> void:
 		elif t is Transform.TransformTranslate and transform_editor.type == "translate":
 			transform_editor.fields[0].set_value(t.x, true)
 			transform_editor.fields[1].set_value(t.y, true)
-			if t.y == 0:
-				transform_editor.fields[1].add_theme_color_override("font_color", Color(
-						transform_editor.fields[1].get_theme_color("font_color"),
-						DEFAULT_VALUE_OPACITY))
-			else:
-				transform_editor.fields[1].remove_theme_color_override("font_color")
+			field_setup_color(transform_editor.fields[1], "y", t)
 		elif t is Transform.TransformRotate and transform_editor.type == "rotate":
 			transform_editor.fields[0].set_value(t.deg, true)
 			transform_editor.fields[1].set_value(t.x, true)
 			transform_editor.fields[2].set_value(t.y, true)
-			if t.x == 0 and t.y == 0:
-				transform_editor.fields[1].add_theme_color_override("font_color", Color(
-						transform_editor.fields[1].get_theme_color("font_color"),
-						DEFAULT_VALUE_OPACITY))
-				transform_editor.fields[2].add_theme_color_override("font_color", Color(
-						transform_editor.fields[2].get_theme_color("font_color"),
-						DEFAULT_VALUE_OPACITY))
-			else:
-				transform_editor.fields[1].remove_theme_color_override("font_color")
-				transform_editor.fields[2].remove_theme_color_override("font_color")
+			field_setup_color(transform_editor.fields[1], "x", t)
+			field_setup_color(transform_editor.fields[2], "y", t)
 		elif t is Transform.TransformScale and transform_editor.type == "scale":
 			transform_editor.fields[0].set_value(t.x, true)
 			transform_editor.fields[1].set_value(t.y, true)
-			if t.x == t.y:
-				transform_editor.fields[1].add_theme_color_override("font_color", Color(
-						transform_editor.fields[1].get_theme_color("font_color"),
-						DEFAULT_VALUE_OPACITY))
-			else:
-				transform_editor.fields[1].remove_theme_color_override("font_color")
+			field_setup_color(transform_editor.fields[1], "x", t)
 		elif t is Transform.TransformSkewX and transform_editor.type == "skewX":
 			transform_editor.fields[0].set_value(t.x, true)
 		elif t is Transform.TransformSkewY and transform_editor.type == "skewY":
@@ -195,19 +177,31 @@ func rebuild() -> void:
 	add_button.visible = (transform_count == 0)
 	update_final_transform()
 
-func create_mini_number_field(transform: Transform, idx: int,
-property: String) -> BetterLineEdit:
-	var field := MiniNumberField.instantiate()
-	field.custom_minimum_size.x = 44
-	field.set_value(transform.get(property))
+
+func field_setup_color(field: BetterLineEdit, property: String,
+transform: Transform) -> void:
 	if (transform is Transform.TransformTranslate and transform.y == 0 and\
 	property == "y") or (transform is Transform.TransformRotate and transform.x == 0 and\
 	transform.y == 0 and (property == "x" or property == "y")) or\
 	(transform is Transform.TransformScale and transform.x == transform.y and\
 	property == "y"):
-		field.add_theme_color_override("font_color", Color(
-				field.get_theme_color("font_color"), DEFAULT_VALUE_OPACITY))
+		field.add_theme_color_override("font_color",
+				Color(field.get_theme_color("font_color"), OMITTABLE_OPACITY))
+	else:
+		reset_field_font_color(field)
+
+func reset_field_font_color(field: BetterLineEdit) -> void:
+	field.remove_theme_color_override("font_color")
+
+func create_mini_number_field(transform: Transform, idx: int,
+property: String) -> BetterLineEdit:
+	var field := MiniNumberField.instantiate()
+	field.custom_minimum_size.x = 44
+	field.set_value(transform.get(property))
 	field.tooltip_text = property
+	field.focus_entered.connect(reset_field_font_color.bind(field))
+	field.focus_exited.connect(field_setup_color.bind(field))
+	field_setup_color(field, property, transform)
 	field.value_changed.connect(update_value.bind(idx, property))
 	return field
 

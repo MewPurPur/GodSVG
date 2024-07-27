@@ -173,16 +173,6 @@ func _input(event: InputEvent) -> void:
 				TranslationServer.translate("Do you want to quit GodSVG?"),
 				TranslationServer.translate("Quit"), get_tree().quit)
 	
-	# Clear popups or overlays.
-	if not popup_overlay_stack.is_empty() and event.is_action_pressed("ui_cancel"):
-		get_viewport().set_input_as_handled()
-		remove_popup_overlay()
-		return
-	elif not overlay_stack.is_empty() and event.is_action_pressed("ui_cancel"):
-		get_viewport().set_input_as_handled()
-		remove_overlay()
-		return
-	
 	# So, it turns out that when you double click, only the press will count as such.
 	# I don't like that, and it causes problems! So mark the release as double_click too.
 	# TODO Godot PR #92582 fixes this.
@@ -220,6 +210,16 @@ func _input(event: InputEvent) -> void:
 			ShortcutUtils.fn_call(action)
 
 func _unhandled_input(event: InputEvent) -> void:
+	# Clear popups or overlays.
+	if not popup_overlay_stack.is_empty() and event.is_action_pressed("ui_cancel"):
+		get_viewport().set_input_as_handled()
+		remove_popup_overlay()
+		return
+	elif not overlay_stack.is_empty() and event.is_action_pressed("ui_cancel"):
+		get_viewport().set_input_as_handled()
+		remove_overlay()
+		return
+	
 	if not popup_overlay_stack.is_empty() or not overlay_stack.is_empty() or\
 	get_viewport().gui_is_dragging():
 		return
