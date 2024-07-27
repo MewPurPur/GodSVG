@@ -69,9 +69,7 @@ func _input(event: InputEvent) -> void:
 		return
 	
 	if event is InputEventMouseButton:
-		# TODO This causes part of #798.
-		if event.is_pressed() and not get_global_rect().has_point(event.position) and\
-		HandlerGUI.popup_overlay_stack.is_empty():
+		if event.is_pressed() and not get_global_rect().has_point(event.position):
 			release_focus()
 		elif event.is_released() and first_click and not has_selection():
 			first_click = false
@@ -86,46 +84,39 @@ func _gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion and event.button_mask == 0:
 		_hovered = true
 		queue_redraw()
-	elif event is InputEventMouseButton:
-		if event.button_index == MOUSE_BUTTON_RIGHT and event.is_pressed():
-			grab_focus()
-			var btn_arr: Array[Button] = []
-			var separator_arr: Array[int] = []
-			if editable:
-				btn_arr.append(ContextPopup.create_button(
-						TranslationServer.translate("Undo"),
-						menu_option.bind(LineEdit.MENU_UNDO),
-						false, load("res://visual/icons/Undo.svg"), "ui_undo"))
-				btn_arr.append(ContextPopup.create_button(
-						TranslationServer.translate("Redo"),
-						menu_option.bind(LineEdit.MENU_REDO),
-						false, load("res://visual/icons/Redo.svg"), "ui_redo"))
-				if DisplayServer.has_feature(DisplayServer.FEATURE_CLIPBOARD):
-					separator_arr = [2]
-					btn_arr.append(ContextPopup.create_button(
-							TranslationServer.translate("Cut"),
-							menu_option.bind(LineEdit.MENU_CUT),
-							text.is_empty(), load("res://visual/icons/Cut.svg"), "ui_cut"))
-					btn_arr.append(ContextPopup.create_button(
-							TranslationServer.translate("Copy"),
-							menu_option.bind(LineEdit.MENU_COPY),
-							text.is_empty(), load("res://visual/icons/Copy.svg"), "ui_copy"))
-					btn_arr.append(ContextPopup.create_button(
-							TranslationServer.translate("Paste"),
-							menu_option.bind(LineEdit.MENU_PASTE),
-							!DisplayServer.clipboard_has(),
-							load("res://visual/icons/Paste.svg"), "ui_paste"))
-			else:
-				btn_arr.append(ContextPopup.create_button(
-						TranslationServer.translate("Copy"),
-						menu_option.bind(LineEdit.MENU_COPY),
-						text.is_empty(), load("res://visual/icons/Copy.svg"), "ui_copy"))
-			
-			var vp := get_viewport()
-			var context_popup := ContextPopup.new()
-			context_popup.setup(btn_arr, true, -1, separator_arr)
-			HandlerGUI.popup_under_pos(context_popup, vp.get_mouse_position(), vp)
-			accept_event()
-			# Wow, no way to find out the column of a given click? Okay...
-			# TODO Make it so LineEdit caret automatically moves to the clicked position
-			# to finish the right-click logic.
+	elif event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and\
+	event.is_pressed():
+		grab_focus()
+		var btn_arr: Array[Button] = []
+		var separator_arr: Array[int] = []
+		if editable:
+			btn_arr.append(ContextPopup.create_button(TranslationServer.translate("Undo"),
+					menu_option.bind(LineEdit.MENU_UNDO), false,
+					load("res://visual/icons/Undo.svg"), "ui_undo"))
+			btn_arr.append(ContextPopup.create_button(TranslationServer.translate("Redo"),
+					menu_option.bind(LineEdit.MENU_REDO), false,
+					load("res://visual/icons/Redo.svg"), "ui_redo"))
+			if DisplayServer.has_feature(DisplayServer.FEATURE_CLIPBOARD):
+				separator_arr = [2]
+				btn_arr.append(ContextPopup.create_button(TranslationServer.translate("Cut"),
+						menu_option.bind(LineEdit.MENU_CUT), text.is_empty(),
+						load("res://visual/icons/Cut.svg"), "ui_cut"))
+				btn_arr.append(ContextPopup.create_button(TranslationServer.translate("Copy"),
+						menu_option.bind(LineEdit.MENU_COPY), text.is_empty(),
+						load("res://visual/icons/Copy.svg"), "ui_copy"))
+				btn_arr.append(ContextPopup.create_button(TranslationServer.translate("Paste"),
+						menu_option.bind(LineEdit.MENU_PASTE), !DisplayServer.clipboard_has(),
+						load("res://visual/icons/Paste.svg"), "ui_paste"))
+		else:
+			btn_arr.append(ContextPopup.create_button( TranslationServer.translate("Copy"),
+					menu_option.bind(LineEdit.MENU_COPY), text.is_empty(),
+					load("res://visual/icons/Copy.svg"), "ui_copy"))
+		
+		var vp := get_viewport()
+		var context_popup := ContextPopup.new()
+		context_popup.setup(btn_arr, true, -1, separator_arr)
+		HandlerGUI.popup_under_pos(context_popup, vp.get_mouse_position(), vp)
+		accept_event()
+		# Wow, no way to find out the column of a given click? Okay...
+		# TODO Make it so LineEdit caret automatically moves to the clicked position
+		# to finish the right-click logic.
