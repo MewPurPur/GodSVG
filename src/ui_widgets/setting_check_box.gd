@@ -2,28 +2,28 @@ extends HBoxContainer
 
 signal pressed
 
-@export var section_name: String
-@export var setting_name: String
+@export var section: String
+@export var setting: String
 
 @onready var checkbox: CheckBox = $PanelContainer/HBoxContainer/CheckBox
 @onready var label: Label = $Label
 @onready var reset_button: Button = $PanelContainer/HBoxContainer/ResetButton
 
 func _ready() -> void:
-	checkbox.button_pressed = GlobalSettings.get(setting_name)
+	checkbox.button_pressed = GlobalSettings.get(setting)
 	reset_button.tooltip_text = TranslationServer.translate("Reset to default")
 	update_widgets()
 
 func _on_pressed() -> void:
-	GlobalSettings.toggle_bool_setting(section_name, setting_name)
+	GlobalSettings.modify_setting(section, setting, !GlobalSettings.get(setting))
 	update_widgets()
 	pressed.emit()
 
 func update_widgets() -> void:
-	var setting_value: bool = GlobalSettings.get(setting_name)
+	var setting_value: bool = GlobalSettings.get(setting)
 	checkbox.text = "On" if setting_value else "Off"
 	reset_button.visible = not checkbox.disabled and (setting_value !=\
-			GlobalSettings.get_default(section_name, setting_name))
+			GlobalSettings.get_default(section, setting))
 	if checkbox.disabled:
 		label.add_theme_color_override("font_color",
 				ThemeGenerator.common_subtle_text_color)

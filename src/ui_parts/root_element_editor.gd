@@ -26,7 +26,7 @@ const NumberEditType = preload("res://src/ui_widgets/number_edit.gd")
 @onready var unknown_container: MarginContainer
 
 func _ready() -> void:
-	SVG.attribute_somewhere_changed.connect(_on_attribute_somewhere_changed)
+	SVG.any_attribute_changed.connect(_on_any_attribute_changed)
 	SVG.changed_unknown.connect(update_attributes)
 	update_attributes()
 	width_edit.value_changed.connect(_on_width_edit_value_changed)
@@ -39,7 +39,7 @@ func _ready() -> void:
 	height_button.toggled.connect(_on_height_button_toggled)
 	viewbox_button.toggled.connect(_on_viewbox_button_toggled)
 
-func _on_attribute_somewhere_changed(xid: PackedInt32Array) -> void:
+func _on_any_attribute_changed(xid: PackedInt32Array) -> void:
 	if xid.is_empty():
 		update_attributes()
 

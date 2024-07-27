@@ -145,15 +145,15 @@ text = "General"
 
 [node name="NumberPrecision" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Autoformatting/AutoformattingVBox/GeneralVBox" instance=ExtResource("5_dx7vp")]
 layout_mode = 2
-section_name = "formatting"
-setting_name = "general_number_precision"
+section = "formatting"
+setting = "general_number_precision"
 values = Array[String](["2", "3", "4"])
 type = 2
 
 [node name="AnglePrecision" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Autoformatting/AutoformattingVBox/GeneralVBox" instance=ExtResource("5_dx7vp")]
 layout_mode = 2
-section_name = "formatting"
-setting_name = "general_angle_precision"
+section = "formatting"
+setting = "general_angle_precision"
 values = Array[String](["1", "2"])
 type = 2
 
@@ -168,18 +168,18 @@ text = "XML"
 
 [node name="AddTrailingNewline" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Autoformatting/AutoformattingVBox/XMLVBox" instance=ExtResource("4_2qeh2")]
 layout_mode = 2
-section_name = "formatting"
-setting_name = "xml_add_trailing_newline"
+section = "formatting"
+setting = "xml_add_trailing_newline"
 
 [node name="ShorthandTags" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Autoformatting/AutoformattingVBox/XMLVBox" instance=ExtResource("4_2qeh2")]
 layout_mode = 2
-section_name = "formatting"
-setting_name = "xml_shorthand_tags"
+section = "formatting"
+setting = "xml_shorthand_tags"
 
 [node name="PrettyFormatting" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Autoformatting/AutoformattingVBox/XMLVBox" instance=ExtResource("4_2qeh2")]
 layout_mode = 2
-section_name = "formatting"
-setting_name = "xml_pretty_formatting"
+section = "formatting"
+setting = "xml_pretty_formatting"
 
 [node name="NumberVBox" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Autoformatting/AutoformattingVBox"]
 unique_name_in_owner = true
@@ -191,18 +191,18 @@ layout_mode = 2
 
 [node name="NumberEnable" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Autoformatting/AutoformattingVBox/NumberVBox" instance=ExtResource("4_2qeh2")]
 layout_mode = 2
-section_name = "formatting"
-setting_name = "number_enable_autoformatting"
+section = "formatting"
+setting = "number_enable_autoformatting"
 
 [node name="RemoveZeroPadding" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Autoformatting/AutoformattingVBox/NumberVBox" instance=ExtResource("4_2qeh2")]
 layout_mode = 2
-section_name = "formatting"
-setting_name = "number_remove_zero_padding"
+section = "formatting"
+setting = "number_remove_zero_padding"
 
 [node name="RemoveLeadingZero" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Autoformatting/AutoformattingVBox/NumberVBox" instance=ExtResource("4_2qeh2")]
 layout_mode = 2
-section_name = "formatting"
-setting_name = "number_remove_leading_zero"
+section = "formatting"
+setting = "number_remove_leading_zero"
 
 [node name="ColorVBox" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Autoformatting/AutoformattingVBox"]
 unique_name_in_owner = true
@@ -214,28 +214,28 @@ layout_mode = 2
 
 [node name="ColorEnable" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Autoformatting/AutoformattingVBox/ColorVBox" instance=ExtResource("4_2qeh2")]
 layout_mode = 2
-section_name = "formatting"
-setting_name = "color_enable_autoformatting"
+section = "formatting"
+setting = "color_enable_autoformatting"
 
 [node name="ConvertRGBToHex" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Autoformatting/AutoformattingVBox/ColorVBox" instance=ExtResource("4_2qeh2")]
 layout_mode = 2
-section_name = "formatting"
-setting_name = "color_convert_rgb_to_hex"
+section = "formatting"
+setting = "color_convert_rgb_to_hex"
 
 [node name="ConvertNamedToHex" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Autoformatting/AutoformattingVBox/ColorVBox" instance=ExtResource("4_2qeh2")]
 layout_mode = 2
-section_name = "formatting"
-setting_name = "color_convert_named_to_hex"
+section = "formatting"
+setting = "color_convert_named_to_hex"
 
 [node name="UseShorthandHex" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Autoformatting/AutoformattingVBox/ColorVBox" instance=ExtResource("4_2qeh2")]
 layout_mode = 2
-section_name = "formatting"
-setting_name = "color_use_shorthand_hex_code"
+section = "formatting"
+setting = "color_use_shorthand_hex_code"
 
 [node name="UseNamedColors" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Autoformatting/AutoformattingVBox/ColorVBox" instance=ExtResource("4_2qeh2")]
 layout_mode = 2
-section_name = "formatting"
-setting_name = "color_use_short_named_colors"
+section = "formatting"
+setting = "color_use_short_named_colors"
 
 [node name="PathdataVBox" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Autoformatting/AutoformattingVBox"]
 unique_name_in_owner = true
@@ -247,28 +247,28 @@ layout_mode = 2
 
 [node name="PathdataEnable" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Autoformatting/AutoformattingVBox/PathdataVBox" instance=ExtResource("4_2qeh2")]
 layout_mode = 2
-section_name = "formatting"
-setting_name = "pathdata_enable_autoformatting"
+section = "formatting"
+setting = "pathdata_enable_autoformatting"
 
 [node name="CompressNumbers" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Autoformatting/AutoformattingVBox/PathdataVBox" instance=ExtResource("4_2qeh2")]
 layout_mode = 2
-section_name = "formatting"
-setting_name = "pathdata_compress_numbers"
+section = "formatting"
+setting = "pathdata_compress_numbers"
 
 [node name="MinimizeSpacing" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Autoformatting/AutoformattingVBox/PathdataVBox" instance=ExtResource("4_2qeh2")]
 layout_mode = 2
-section_name = "formatting"
-setting_name = "pathdata_minimize_spacing"
+section = "formatting"
+setting = "pathdata_minimize_spacing"
 
 [node name="RemoveSpacingAfterFlags" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Autoformatting/AutoformattingVBox/PathdataVBox" instance=ExtResource("4_2qeh2")]
 layout_mode = 2
-section_name = "formatting"
-setting_name = "pathdata_remove_spacing_after_flags"
+section = "formatting"
+setting = "pathdata_remove_spacing_after_flags"
 
 [node name="RemoveConsecutiveCommands" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Autoformatting/AutoformattingVBox/PathdataVBox" instance=ExtResource("4_2qeh2")]
 layout_mode = 2
-section_name = "formatting"
-setting_name = "pathdata_remove_consecutive_commands"
+section = "formatting"
+setting = "pathdata_remove_consecutive_commands"
 
 [node name="TransformListVBox" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Autoformatting/AutoformattingVBox"]
 unique_name_in_owner = true
@@ -280,23 +280,23 @@ layout_mode = 2
 
 [node name="TransformListEnable" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Autoformatting/AutoformattingVBox/TransformListVBox" instance=ExtResource("4_2qeh2")]
 layout_mode = 2
-section_name = "formatting"
-setting_name = "transform_list_enable_autoformatting"
+section = "formatting"
+setting = "transform_list_enable_autoformatting"
 
 [node name="CompressNumbers" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Autoformatting/AutoformattingVBox/TransformListVBox" instance=ExtResource("4_2qeh2")]
 layout_mode = 2
-section_name = "formatting"
-setting_name = "transform_list_compress_numbers"
+section = "formatting"
+setting = "transform_list_compress_numbers"
 
 [node name="MinimizeSpacing" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Autoformatting/AutoformattingVBox/TransformListVBox" instance=ExtResource("4_2qeh2")]
 layout_mode = 2
-section_name = "formatting"
-setting_name = "transform_list_minimize_spacing"
+section = "formatting"
+setting = "transform_list_minimize_spacing"
 
 [node name="RemoveUnnecessaryParams" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Autoformatting/AutoformattingVBox/TransformListVBox" instance=ExtResource("4_2qeh2")]
 layout_mode = 2
-section_name = "formatting"
-setting_name = "transform_list_remove_unnecessary_params"
+section = "formatting"
+setting = "transform_list_remove_unnecessary_params"
 
 [node name="Palettes" type="ScrollContainer" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer"]
 visible = false
@@ -356,43 +356,43 @@ layout_mode = 2
 
 [node name="SymbolColor" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Theme/ThemeSettings/HighlighterVBox" instance=ExtResource("4_dacsc")]
 layout_mode = 2
-section_name = "theming"
-setting_name = "highlighting_symbol_color"
+section = "theming"
+setting = "highlighting_symbol_color"
 
 [node name="ElementColor" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Theme/ThemeSettings/HighlighterVBox" instance=ExtResource("4_dacsc")]
 layout_mode = 2
-section_name = "theming"
-setting_name = "highlighting_element_color"
+section = "theming"
+setting = "highlighting_element_color"
 
 [node name="AttributeColor" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Theme/ThemeSettings/HighlighterVBox" instance=ExtResource("4_dacsc")]
 layout_mode = 2
-section_name = "theming"
-setting_name = "highlighting_attribute_color"
+section = "theming"
+setting = "highlighting_attribute_color"
 
 [node name="StringColor" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Theme/ThemeSettings/HighlighterVBox" instance=ExtResource("4_dacsc")]
 layout_mode = 2
-section_name = "theming"
-setting_name = "highlighting_string_color"
+section = "theming"
+setting = "highlighting_string_color"
 
 [node name="CommentColor" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Theme/ThemeSettings/HighlighterVBox" instance=ExtResource("4_dacsc")]
 layout_mode = 2
-section_name = "theming"
-setting_name = "highlighting_comment_color"
+section = "theming"
+setting = "highlighting_comment_color"
 
 [node name="TextColor" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Theme/ThemeSettings/HighlighterVBox" instance=ExtResource("4_dacsc")]
 layout_mode = 2
-section_name = "theming"
-setting_name = "highlighting_text_color"
+section = "theming"
+setting = "highlighting_text_color"
 
 [node name="CDATAColor" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Theme/ThemeSettings/HighlighterVBox" instance=ExtResource("4_dacsc")]
 layout_mode = 2
-section_name = "theming"
-setting_name = "highlighting_cdata_color"
+section = "theming"
+setting = "highlighting_cdata_color"
 
 [node name="ErrorColor" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Theme/ThemeSettings/HighlighterVBox" instance=ExtResource("4_dacsc")]
 layout_mode = 2
-section_name = "theming"
-setting_name = "highlighting_error_color"
+section = "theming"
+setting = "highlighting_error_color"
 
 [node name="HandleColors" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Theme/ThemeSettings"]
 unique_name_in_owner = true
@@ -404,32 +404,32 @@ layout_mode = 2
 
 [node name="InsideColor" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Theme/ThemeSettings/HandleColors" instance=ExtResource("4_dacsc")]
 layout_mode = 2
-section_name = "theming"
-setting_name = "handle_inside_color"
+section = "theming"
+setting = "handle_inside_color"
 enable_alpha = false
 
 [node name="NormalColor" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Theme/ThemeSettings/HandleColors" instance=ExtResource("4_dacsc")]
 layout_mode = 2
-section_name = "theming"
-setting_name = "handle_color"
+section = "theming"
+setting = "handle_color"
 enable_alpha = false
 
 [node name="HoveredColor" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Theme/ThemeSettings/HandleColors" instance=ExtResource("4_dacsc")]
 layout_mode = 2
-section_name = "theming"
-setting_name = "handle_hovered_color"
+section = "theming"
+setting = "handle_hovered_color"
 enable_alpha = false
 
 [node name="SelectedColor" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Theme/ThemeSettings/HandleColors" instance=ExtResource("4_dacsc")]
 layout_mode = 2
-section_name = "theming"
-setting_name = "handle_selected_color"
+section = "theming"
+setting = "handle_selected_color"
 enable_alpha = false
 
 [node name="HoveredSelectedColor" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Theme/ThemeSettings/HandleColors" instance=ExtResource("4_dacsc")]
 layout_mode = 2
-section_name = "theming"
-setting_name = "handle_hovered_selected_color"
+section = "theming"
+setting = "handle_hovered_selected_color"
 enable_alpha = false
 
 [node name="BasicColorsVBox" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Theme/ThemeSettings"]
@@ -443,24 +443,24 @@ text = "Basic colors"
 
 [node name="BackgroundColor" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Theme/ThemeSettings/BasicColorsVBox" instance=ExtResource("4_dacsc")]
 layout_mode = 2
-section_name = "theming"
-setting_name = "background_color"
+section = "theming"
+setting = "background_color"
 enable_alpha = false
 
 [node name="ValidColor" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Theme/ThemeSettings/BasicColorsVBox" instance=ExtResource("4_dacsc")]
 layout_mode = 2
-section_name = "theming"
-setting_name = "basic_color_valid"
+section = "theming"
+setting = "basic_color_valid"
 
 [node name="ErrorColor" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Theme/ThemeSettings/BasicColorsVBox" instance=ExtResource("4_dacsc")]
 layout_mode = 2
-section_name = "theming"
-setting_name = "basic_color_error"
+section = "theming"
+setting = "basic_color_error"
 
 [node name="WarningColor" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Theme/ThemeSettings/BasicColorsVBox" instance=ExtResource("4_dacsc")]
 layout_mode = 2
-section_name = "theming"
-setting_name = "basic_color_warning"
+section = "theming"
+setting = "basic_color_warning"
 
 [node name="Other" type="ScrollContainer" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer"]
 visible = false
@@ -484,18 +484,18 @@ layout_mode = 2
 
 [node name="InvertZoom" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Other/OtherSettings/Input" instance=ExtResource("4_2qeh2")]
 layout_mode = 2
-section_name = "other"
-setting_name = "invert_zoom"
+section = "other"
+setting = "invert_zoom"
 
 [node name="WrapMouse" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Other/OtherSettings/Input" instance=ExtResource("4_2qeh2")]
 layout_mode = 2
-section_name = "other"
-setting_name = "wrap_mouse"
+section = "other"
+setting = "wrap_mouse"
 
 [node name="UseCtrlForZoom" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Other/OtherSettings/Input" instance=ExtResource("4_2qeh2")]
 layout_mode = 2
-section_name = "other"
-setting_name = "use_ctrl_for_zoom"
+section = "other"
+setting = "use_ctrl_for_zoom"
 
 [node name="Misc" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Other/OtherSettings"]
 unique_name_in_owner = true
@@ -510,18 +510,18 @@ layout_mode = 2
 [node name="UseNativeFileDialog" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Other/OtherSettings/Misc" instance=ExtResource("4_2qeh2")]
 unique_name_in_owner = true
 layout_mode = 2
-section_name = "other"
-setting_name = "use_native_file_dialog"
+section = "other"
+setting = "use_native_file_dialog"
 
 [node name="UseFilenameForWindowTitle" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Other/OtherSettings/Misc" instance=ExtResource("4_2qeh2")]
 layout_mode = 2
-section_name = "other"
-setting_name = "use_filename_for_window_title"
+section = "other"
+setting = "use_filename_for_window_title"
 
 [node name="HandleSize" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Other/OtherSettings/Misc" instance=ExtResource("5_dx7vp")]
 layout_mode = 2
-section_name = "other"
-setting_name = "handle_size"
+section = "other"
+setting = "handle_size"
 values = Array[String](["0.75", "1.0", "1.25", "1.5", "1.75", "2.0"])
 type = 3
 restricted = false
@@ -530,8 +530,8 @@ number_max = 2.5
 
 [node name="UIScale" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Other/OtherSettings/Misc" instance=ExtResource("5_dx7vp")]
 layout_mode = 2
-section_name = "other"
-setting_name = "ui_scale"
+section = "other"
+setting = "ui_scale"
 values = Array[String](["0.75", "1.0", "1.25", "1.5", "1.75", "2.0", "2.5", "3.0", "4.0"])
 type = 3
 restricted = false
@@ -540,8 +540,8 @@ number_max = 10.0
 
 [node name="AutoUIScale" parent="VBoxContainer/HBoxContainer/MainPanel/ContentContainer/Other/OtherSettings/Misc" instance=ExtResource("4_2qeh2")]
 layout_mode = 2
-section_name = "other"
-setting_name = "auto_ui_scale"
+section = "other"
+setting = "auto_ui_scale"
 
 [node name="CloseButton" type="Button" parent="VBoxContainer"]
 layout_mode = 2

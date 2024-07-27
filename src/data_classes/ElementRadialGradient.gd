@@ -20,15 +20,27 @@ func get_percentage_handling(attribute_name: String) -> DB.PercentageHandling:
 func get_config_warnings() -> PackedStringArray:
 	var warnings := super()
 	if not has_attribute("id"):
-		warnings.append(TranslationServer.translate("No id attribute defined."))
+		warnings.append(TranslationServer.translate("No \"id\" attribute defined."))
 	
-	var has_stops := false
+	var first_stop_color := ""
+	var first_stop_opacity := -1.0
+	var is_solid_color := true
 	for child in get_children():
 		if child is ElementStop:
-			has_stops = true
-			break
-	if not has_stops:
-		warnings.append(TranslationServer.translate("No stop elements under this gradient."))
+			if first_stop_color.is_empty():
+				first_stop_color = child.get_attribute_value("stop-color")
+				first_stop_opacity = maxf(0.0, child.get_attribute_num("stop-opacity"))
+			elif is_solid_color and not (ColorParser.are_colors_same(first_stop_color,
+			child.get_attribute_value("stop-color")) and\
+			first_stop_opacity == child.get_attribute_num("stop-opacity")) and\
+			not (first_stop_opacity == 0 and child.get_attribute_num("stop-opacity") <= 0):
+				is_solid_color = false
+				break
+	
+	if first_stop_color.is_empty():
+		warnings.append(TranslationServer.translate("No <stop> elements under this gradient."))
+	elif is_solid_color:
+		warnings.append(TranslationServer.translate("This gradient is a solid color."))
 	
 	return warnings
 

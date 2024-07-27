@@ -1,7 +1,7 @@
 class_name ElementRoot extends ElementSVG
 
 @warning_ignore("unused_signal")
-signal attribute_somewhere_changed(xid: PackedInt32Array)
+signal any_attribute_changed(xid: PackedInt32Array)
 
 signal elements_added(xids: Array[PackedInt32Array])
 signal elements_deleted(xids: Array[PackedInt32Array])

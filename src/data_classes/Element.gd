@@ -3,6 +3,7 @@ class_name Element extends XNode
 
 signal attribute_changed(name: String)
 signal ancestor_attribute_changed(name: String)
+signal descendant_attribute_changed(name: String)
 
 var _parent: WeakRef = null
 var parent: Element:
@@ -37,16 +38,23 @@ var _attributes: Dictionary  # Dictionary{String: Attribute}
 func _init() -> void:
 	attribute_changed.connect(_on_attribute_changed)
 	ancestor_attribute_changed.connect(_on_ancestor_attribute_changed)
+	descendant_attribute_changed.connect(_on_descendant_attribute_changed)
 
 func _on_attribute_changed(attribute_name: String) -> void:
 	for child in get_children():
 		child.ancestor_attribute_changed.emit(attribute_name)
+	if parent != null:
+		parent.descendant_attribute_changed.emit(attribute_name)
 	if root != null:
-		root.attribute_somewhere_changed.emit(xid)
+		root.any_attribute_changed.emit(xid)
 
 func _on_ancestor_attribute_changed(attribute_name: String) -> void:
 	for child in get_children():
 		child.ancestor_attribute_changed.emit(attribute_name)
+
+func _on_descendant_attribute_changed(attribute_name: String) -> void:
+	if parent != null:
+		parent.descendant_attribute_changed.emit(attribute_name)
 
 func _on_attribute_value_changed(attribute: Attribute) -> void:
 	var has_attrib := has_attribute(attribute.name)

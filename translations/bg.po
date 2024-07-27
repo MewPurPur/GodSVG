@@ -15,23 +15,35 @@ msgstr ""
 msgid "translation-credits"
 msgstr "MewPurPur <mew.pur.pur@gmail.com>"
 
-#: src/data_classes/ElementCircle.gd src/data_classes/ElementEllipse.gd
-#: src/data_classes/ElementG.gd src/data_classes/ElementLine.gd
-#: src/data_classes/ElementLinearGradient.gd src/data_classes/ElementPath.gd
-#: src/data_classes/ElementRadialGradient.gd src/data_classes/ElementRect.gd
-#: src/data_classes/ElementStop.gd
+#: src/data_classes/Element.gd
 msgid "{element} must be inside {allowed} to have any effect."
 msgstr "{element} трябва да е във {allowed} за да има ефект."
 
+#: src/data_classes/ElementG.gd
+msgid "This group has no elements."
+msgstr "Тази група няма елементи."
+
+#: src/data_classes/ElementG.gd
+msgid "This group has only one element."
+msgstr "Тази група има само един елемент."
+
 #: src/data_classes/ElementLinearGradient.gd
-#: src/data_classes/ElementRadialGradient.gd
 msgid "No id attribute defined."
 msgstr "Не е дефиниран id атрибут."
 
 #: src/data_classes/ElementLinearGradient.gd
 #: src/data_classes/ElementRadialGradient.gd
-msgid "No stop elements under this gradient."
-msgstr "Няма stop елемент под този градиент."
+msgid "No <stop> elements under this gradient."
+msgstr "Няма <stop> елемент под този градиент."
+
+#: src/data_classes/ElementLinearGradient.gd
+#: src/data_classes/ElementRadialGradient.gd
+msgid "This gradient is a solid color."
+msgstr "Този градиент е едноцветен."
+
+#: src/data_classes/ElementRadialGradient.gd
+msgid "No \"id\" attribute defined."
+msgstr "Не е дефиниран \"id\" атрибут."
 
 #: src/parsers/SVGParser.gd
 msgid "Doesn’t describe an SVG."
@@ -235,9 +247,8 @@ msgid "View"
 msgstr "Гледка"
 
 #: src/ui_parts/global_menu.gd
-#, fuzzy
 msgid "Snap"
-msgstr "Размер на захващането"
+msgstr "Захващане"
 
 #: src/ui_parts/good_file_dialog.gd
 msgid "Create new folder"

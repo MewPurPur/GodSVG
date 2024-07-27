@@ -3,7 +3,7 @@
 set -uo pipefail
 IFS=$'\n\t'
 
-# Function to process a single file
+# Function to process a single file.
 process_file() {
     local f="$1"
     # Exclude some types of files.
@@ -29,7 +29,7 @@ process_file() {
     sed -z -i 's/\x0A\x0A\x7D/\x0A\x7D/g' "$f"
 }
 
-# Process all files passed as arguments
+# Process all files passed as arguments.
 for file in "$@"; do
     if [ -f "$file" ]; then
         process_file "$file"

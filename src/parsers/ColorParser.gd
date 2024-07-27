@@ -111,10 +111,6 @@ static func are_colors_same(col1: String, col2: String) -> bool:
 		return false
 	elif is_valid_url(col1) != is_valid_url(col2):
 		return false
-	elif is_valid_url(col1) and is_valid_url(col2) and\
-	col1.substr(4, col1.length() - 5).strip_edges() ==\
-	col2.substr(4, col2.length() - 5).strip_edges():
-		return true
 	
 	# Represent both colors as 6-digit hex codes to serve as basis for comparison.
 	for i in 2:
