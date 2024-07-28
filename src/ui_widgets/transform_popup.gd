@@ -1,8 +1,6 @@
 # A popup for editing a transform list.
 extends PanelContainer
 
-const OMITTABLE_OPACITY = 2/3.0
-
 const NumberEditType = preload("res://src/ui_widgets/number_edit.gd")
 
 const MiniNumberField = preload("res://src/ui_widgets/mini_number_field.tscn")
@@ -52,31 +50,13 @@ func rebuild() -> void:
 		if i >= transform_count:
 			break
 		var t := attribute_ref.get_transform(i)
-		if t is Transform.TransformMatrix and transform_editor.type == "matrix":
-			transform_editor.fields[0].set_value(t.x1, true)
-			transform_editor.fields[1].set_value(t.x2, true)
-			transform_editor.fields[2].set_value(t.y1, true)
-			transform_editor.fields[3].set_value(t.y2, true)
-			transform_editor.fields[4].set_value(t.o1, true)
-			transform_editor.fields[5].set_value(t.o2, true)
-		elif t is Transform.TransformTranslate and transform_editor.type == "translate":
-			transform_editor.fields[0].set_value(t.x, true)
-			transform_editor.fields[1].set_value(t.y, true)
-			field_setup_color(transform_editor.fields[1], "y", t)
-		elif t is Transform.TransformRotate and transform_editor.type == "rotate":
-			transform_editor.fields[0].set_value(t.deg, true)
-			transform_editor.fields[1].set_value(t.x, true)
-			transform_editor.fields[2].set_value(t.y, true)
-			field_setup_color(transform_editor.fields[1], "x", t)
-			field_setup_color(transform_editor.fields[2], "y", t)
-		elif t is Transform.TransformScale and transform_editor.type == "scale":
-			transform_editor.fields[0].set_value(t.x, true)
-			transform_editor.fields[1].set_value(t.y, true)
-			field_setup_color(transform_editor.fields[1], "x", t)
-		elif t is Transform.TransformSkewX and transform_editor.type == "skewX":
-			transform_editor.fields[0].set_value(t.x, true)
-		elif t is Transform.TransformSkewY and transform_editor.type == "skewY":
-			transform_editor.fields[0].set_value(t.y, true)
+		if t is Transform.TransformMatrix and transform_editor.type == "matrix" or\
+		t is Transform.TransformTranslate and transform_editor.type == "translate" or\
+		t is Transform.TransformRotate and transform_editor.type == "rotate" or\
+		t is Transform.TransformScale and transform_editor.type == "scale" or\
+		t is Transform.TransformSkewX and transform_editor.type == "skewX" or\
+		t is Transform.TransformSkewY and transform_editor.type == "skewY":
+			transform_editor.resync(t)
 		else:
 			break
 		i += 1
@@ -88,89 +68,33 @@ func rebuild() -> void:
 		var t := attribute_ref.get_transform(i)
 		var t_editor := TransformEditor.instantiate()
 		transform_list.add_child(t_editor)
-		# Setup top panel
-		if t is Transform.TransformMatrix:
-			t_editor.type = "matrix"
-		elif t is Transform.TransformTranslate:
-			t_editor.type = "translate"
-		elif t is Transform.TransformRotate:
-			t_editor.type = "rotate"
-		elif t is Transform.TransformScale:
-			t_editor.type = "scale"
-		elif t is Transform.TransformSkewX:
-			t_editor.type = "skewX"
-		elif t is Transform.TransformSkewY:
-			t_editor.type = "skewY"
-		t_editor.transform_label.text = t_editor.type
-		t_editor.transform_icon.texture = icons_dict[t_editor.type]
-		t_editor.more_button.pressed.connect(
-				popup_transform_actions.bind(i, t_editor.more_button))
+		var fields: Array[BetterLineEdit]
 		# Setup fields.
 		if t is Transform.TransformMatrix:
-			var field_x1 := create_mini_number_field(t, i, "x1")
-			var field_x2 := create_mini_number_field(t, i, "x2")
-			var field_y1 := create_mini_number_field(t, i, "y1")
-			var field_y2 := create_mini_number_field(t, i, "y2")
-			var field_o1 := create_mini_number_field(t, i, "o1")
-			var field_o2 := create_mini_number_field(t, i, "o2")
-			t_editor.fields = [field_x1, field_x2, field_y1, field_y2, field_o1, field_o1]\
-					as Array[BetterLineEdit]
-			var transform_fields := HBoxContainer.new()
-			transform_fields.alignment = BoxContainer.ALIGNMENT_CENTER
-			transform_fields.add_child(field_x1)
-			transform_fields.add_child(field_y1)
-			transform_fields.add_child(field_o1)
-			var transform_fields_additional := HBoxContainer.new()
-			transform_fields_additional.alignment = BoxContainer.ALIGNMENT_CENTER
-			transform_fields_additional.add_child(field_x2)
-			transform_fields_additional.add_child(field_y2)
-			transform_fields_additional.add_child(field_o2)
-			t_editor.transform_list.add_child(transform_fields)
-			t_editor.transform_list.add_child(transform_fields_additional)
+			fields = [create_mini_number_field(t_editor, i, "x1"),
+					create_mini_number_field(t_editor, i, "x2"),
+					create_mini_number_field(t_editor, i, "y1"),
+					create_mini_number_field(t_editor, i, "y2"),
+					create_mini_number_field(t_editor, i, "o1"),
+					create_mini_number_field(t_editor, i, "o2")]
 		elif t is Transform.TransformTranslate:
-			var field_x := create_mini_number_field(t, i, "x")
-			var field_y := create_mini_number_field(t, i, "y")
-			t_editor.fields = [field_x, field_y] as Array[BetterLineEdit]
-			var transform_fields := HBoxContainer.new()
-			transform_fields.alignment = BoxContainer.ALIGNMENT_CENTER
-			transform_fields.add_child(field_x)
-			transform_fields.add_child(field_y)
-			t_editor.transform_list.add_child(transform_fields)
+			fields = [create_mini_number_field(t_editor, i, "x"),
+					create_mini_number_field(t_editor, i, "y")]
 		elif t is Transform.TransformRotate:
-			var field_deg := create_mini_number_field(t, i, "deg")
-			field_deg.mode = field_deg.Mode.ANGLE
-			var field_x := create_mini_number_field(t, i, "x")
-			var field_y := create_mini_number_field(t, i, "y")
-			t_editor.fields = [field_deg, field_x, field_y] as Array[BetterLineEdit]
-			var transform_fields := HBoxContainer.new()
-			transform_fields.alignment = BoxContainer.ALIGNMENT_CENTER
-			transform_fields.add_child(field_deg)
-			transform_fields.add_child(field_x)
-			transform_fields.add_child(field_y)
-			t_editor.transform_list.add_child(transform_fields)
+			fields = [create_mini_number_field(t_editor, i, "deg"),
+					create_mini_number_field(t_editor, i, "x"),
+					create_mini_number_field(t_editor, i, "y")]
 		elif t is Transform.TransformScale:
-			var field_x := create_mini_number_field(t, i, "x")
-			var field_y := create_mini_number_field(t, i, "y")
-			t_editor.fields = [field_x, field_y] as Array[BetterLineEdit]
-			var transform_fields := HBoxContainer.new()
-			transform_fields.alignment = BoxContainer.ALIGNMENT_CENTER
-			transform_fields.add_child(field_x)
-			transform_fields.add_child(field_y)
-			t_editor.transform_list.add_child(transform_fields)
+			fields = [create_mini_number_field(t_editor, i, "x"),
+					create_mini_number_field(t_editor, i, "y")]
 		elif t is Transform.TransformSkewX:
-			var field_x := create_mini_number_field(t, i, "x")
-			t_editor.fields = [field_x] as Array[BetterLineEdit]
-			var transform_fields := HBoxContainer.new()
-			transform_fields.alignment = BoxContainer.ALIGNMENT_CENTER
-			transform_fields.add_child(field_x)
-			t_editor.transform_list.add_child(transform_fields)
+			fields = [create_mini_number_field(t_editor, i, "x")]
 		elif t is Transform.TransformSkewY:
-			var field_y := create_mini_number_field(t, i, "y")
-			t_editor.fields = [field_y] as Array[BetterLineEdit]
-			var transform_fields := HBoxContainer.new()
-			transform_fields.alignment = BoxContainer.ALIGNMENT_CENTER
-			transform_fields.add_child(field_y)
-			t_editor.transform_list.add_child(transform_fields)
+			fields = [create_mini_number_field(t_editor, i, "y")]
+		t_editor.setup(t, fields)
+		t_editor.transform_button.icon = icons_dict[t_editor.type]
+		t_editor.transform_button.pressed.connect(
+				popup_transform_actions.bind(i, t_editor.transform_button))
 		i += 1
 	# Show the add button if there are no transforms.
 	transform_list.visible = (transform_count != 0)
@@ -178,30 +102,11 @@ func rebuild() -> void:
 	update_final_transform()
 
 
-func field_setup_color(field: BetterLineEdit, property: String,
-transform: Transform) -> void:
-	if (transform is Transform.TransformTranslate and transform.y == 0 and\
-	property == "y") or (transform is Transform.TransformRotate and transform.x == 0 and\
-	transform.y == 0 and (property == "x" or property == "y")) or\
-	(transform is Transform.TransformScale and transform.x == transform.y and\
-	property == "y"):
-		field.add_theme_color_override("font_color",
-				Color(field.get_theme_color("font_color"), OMITTABLE_OPACITY))
-	else:
-		reset_field_font_color(field)
-
-func reset_field_font_color(field: BetterLineEdit) -> void:
-	field.remove_theme_color_override("font_color")
-
-func create_mini_number_field(transform: Transform, idx: int,
+func create_mini_number_field(transform_editor: Control, idx: int,
 property: String) -> BetterLineEdit:
 	var field := MiniNumberField.instantiate()
 	field.custom_minimum_size.x = 44
-	field.set_value(transform.get(property))
 	field.tooltip_text = property
-	field.focus_entered.connect(reset_field_font_color.bind(field))
-	field.focus_exited.connect(field_setup_color.bind(field))
-	field_setup_color(field, property, transform)
 	field.value_changed.connect(update_value.bind(idx, property))
 	return field
 
