@@ -66,7 +66,7 @@ func setup(new_transform: Transform, new_fields: Array[BetterLineEdit]) -> void:
 			transform_fields.alignment = BoxContainer.ALIGNMENT_CENTER
 			transform_fields.add_child(_fields[0])
 			transform_list.add_child(transform_fields)
-		"skewX":
+		"skewY":
 			var transform_fields := HBoxContainer.new()
 			transform_fields.alignment = BoxContainer.ALIGNMENT_CENTER
 			transform_fields.add_child(_fields[0])
