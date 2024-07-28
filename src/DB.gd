@@ -130,7 +130,7 @@ static func is_attribute_recognized(element_name: String, attribute_name: String
 			attribute_name in recognized_attributes[element_name]
 
 static func is_child_element_valid(parent_name: String, child_name: String) -> bool:
-	if not valid_children.has(parent_name):
+	if not parent_name in recognized_elements or not child_name in recognized_elements:
 		return true
 	return child_name in valid_children[parent_name]
 

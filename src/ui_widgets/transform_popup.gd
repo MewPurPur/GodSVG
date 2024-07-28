@@ -71,26 +71,20 @@ func rebuild() -> void:
 		var fields: Array[BetterLineEdit]
 		# Setup fields.
 		if t is Transform.TransformMatrix:
-			fields = [create_mini_number_field(t_editor, i, "x1"),
-					create_mini_number_field(t_editor, i, "x2"),
-					create_mini_number_field(t_editor, i, "y1"),
-					create_mini_number_field(t_editor, i, "y2"),
-					create_mini_number_field(t_editor, i, "o1"),
-					create_mini_number_field(t_editor, i, "o2")]
+			fields = [create_mini_number_field(i, "x1"), create_mini_number_field(i, "x2"),
+					create_mini_number_field(i, "y1"), create_mini_number_field(i, "y2"),
+					create_mini_number_field(i, "o1"), create_mini_number_field(i, "o2")]
 		elif t is Transform.TransformTranslate:
-			fields = [create_mini_number_field(t_editor, i, "x"),
-					create_mini_number_field(t_editor, i, "y")]
+			fields = [create_mini_number_field(i, "x"), create_mini_number_field(i, "y")]
 		elif t is Transform.TransformRotate:
-			fields = [create_mini_number_field(t_editor, i, "deg"),
-					create_mini_number_field(t_editor, i, "x"),
-					create_mini_number_field(t_editor, i, "y")]
+			fields = [create_mini_number_field(i, "deg"),
+					create_mini_number_field(i, "x"), create_mini_number_field(i, "y")]
 		elif t is Transform.TransformScale:
-			fields = [create_mini_number_field(t_editor, i, "x"),
-					create_mini_number_field(t_editor, i, "y")]
+			fields = [create_mini_number_field(i, "x"), create_mini_number_field(i, "y")]
 		elif t is Transform.TransformSkewX:
-			fields = [create_mini_number_field(t_editor, i, "x")]
+			fields = [create_mini_number_field(i, "x")]
 		elif t is Transform.TransformSkewY:
-			fields = [create_mini_number_field(t_editor, i, "y")]
+			fields = [create_mini_number_field(i, "y")]
 		t_editor.setup(t, fields)
 		t_editor.transform_button.icon = icons_dict[t_editor.type]
 		t_editor.transform_button.pressed.connect(
@@ -102,8 +96,7 @@ func rebuild() -> void:
 	update_final_transform()
 
 
-func create_mini_number_field(transform_editor: Control, idx: int,
-property: String) -> BetterLineEdit:
+func create_mini_number_field(idx: int, property: String) -> BetterLineEdit:
 	var field := MiniNumberField.instantiate()
 	field.custom_minimum_size.x = 44
 	field.tooltip_text = property
