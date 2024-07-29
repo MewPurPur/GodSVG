@@ -35,6 +35,7 @@ func add_element(element_name: String) -> void:
 	else:
 		loc = PackedInt32Array([SVG.root_element.get_child_count()])
 	SVG.root_element.add_element(new_element, loc)
+	SVG.queue_save()
 
 
 func _on_add_button_pressed() -> void:

@@ -30,7 +30,7 @@ func _on_focus_entered() -> void:
 	remove_theme_color_override("font_color")
 
 func _on_text_change_canceled() -> void:
-	sync(element.get_attribute_value(attribute_name))
+	sync(element.get_attribute_value(attribute_name, true))
 
 func _on_text_changed(new_text: String) -> void:
 	var validity_level := IDParser.get_validity(new_text)

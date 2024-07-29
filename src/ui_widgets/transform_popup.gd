@@ -37,10 +37,11 @@ func _ready() -> void:
 	update_translation()
 
 func _exit_tree() -> void:
+	SVG.queue_save()
 	UR.free()
 
 func update_translation() -> void:
-	%ApplyMatrix.tooltip_text = TranslationServer.translate("Apply the matrix")
+	apply_matrix.tooltip_text = TranslationServer.translate("Apply the matrix")
 
 func rebuild() -> void:
 	var transform_count := attribute_ref.get_transform_count()

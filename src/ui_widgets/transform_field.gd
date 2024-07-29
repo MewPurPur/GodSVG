@@ -20,6 +20,7 @@ func _ready() -> void:
 	tooltip_text = attribute_name
 	text_submitted.connect(set_value.bind(true))
 	text_changed.connect(setup_font)
+	text_change_canceled.connect(func(): setup_font(text))
 	button_gui_input.connect(_on_button_gui_input)
 	pressed.connect(_on_pressed)
 	update_translation()

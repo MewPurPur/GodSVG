@@ -70,7 +70,7 @@ func _on_text_submitted(new_text: String) -> void:
 		sync(element.get_attribute_value(attribute_name))
 
 func _on_text_change_canceled() -> void:
-	sync(element.get_attribute_value(attribute_name))
+	sync(element.get_attribute_value(attribute_name, true))
 
 
 func _on_text_changed(new_text: String) -> void:
