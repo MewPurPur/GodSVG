@@ -75,6 +75,7 @@ func remove_overlay(overlay_ref: ColorRect = null) -> void:
 		get_tree().paused = false
 	else:
 		overlay_stack.back().show()
+	Utils.throw_mouse_motion_event()
 
 func remove_all_overlays() -> void:
 	while not overlay_stack.is_empty():
@@ -102,6 +103,7 @@ func remove_popup_overlay(overlay_ref: Control = null) -> void:
 	overlay_ref = popup_overlay_stack.pop_back()
 	if is_instance_valid(overlay_ref):
 		overlay_ref.queue_free()
+	Utils.throw_mouse_motion_event()
 
 func remove_all_popup_overlays() -> void:
 	while not popup_overlay_stack.is_empty():

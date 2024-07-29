@@ -132,7 +132,7 @@ func _on_slider_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and\
 	event.is_pressed():
 		accept_event()
-		Utils.throw_mouse_motion_event(get_viewport())
+		Utils.throw_mouse_motion_event()
 	else:
 		temp_button.mouse_filter = Utils.mouse_filter_pass_non_drag_events(event)
 	

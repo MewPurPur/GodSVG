@@ -38,8 +38,8 @@ var mini_line_edit_font_color := get_theme_color("font_color", "MiniLineEdit")
 # Variables around the big optimization.
 # The idea is that when the mouse enters a strip, it's remembered as hovered.
 # If a numfield is focused, its strip is remembered as focused.
-# If a numfield is hovered and then focused, the controls aren't re-added, instead
-# the references are moved from the hovered to the focused fields array.
+# If a numfield is hovered and then focused, the controls aren't re-added,
+# instead, the references are moved from the hovered to the focused fields array.
 # If a focused field is hovered, no hovered fields are added.
 var hovered_idx := -1
 var focused_idx := -1
@@ -114,9 +114,7 @@ func sync(new_value: String) -> void:
 	commands_container.custom_minimum_size.y = cmd_count * COMMAND_HEIGHT
 	if hovered_idx >= element.get_attribute(attribute_name).get_command_count():
 		activate_hovered(-1)
-	var mm := InputEventMouseMotion.new()
-	mm.position = commands_container.get_local_mouse_position()
-	respond_to_mouse_input(mm)
+	Utils.throw_mouse_motion_event()
 	commands_container.queue_redraw()
 
 
@@ -170,16 +168,15 @@ func _eat_double_clicks(event: InputEvent, button: Button) -> void:
 				button.pressed.emit()
 
 func _on_commands_gui_input(event: InputEvent) -> void:
-	if event is InputEventMouse:
-		respond_to_mouse_input(event)
-
-func respond_to_mouse_input(event: InputEventMouse) -> void:
+	if not event is InputEventMouse:
+		return
+	
 	var cmd_idx := -1
-	var event_pos := event.position
+	var event_pos: Vector2 = event.position
 	if Rect2(Vector2.ZERO, commands_container.get_size()).has_point(event_pos):
 		cmd_idx = int(event_pos.y / COMMAND_HEIGHT)
 	
-	if event is InputEventMouseMotion and event.button_mask == 0:
+	if event.button_mask == 0:
 		if cmd_idx != -1:
 			Indications.set_hovered(element.xid, cmd_idx)
 		else:

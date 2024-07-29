@@ -133,9 +133,7 @@ func update_handles() -> void:
 			"path":
 				handles += generate_path_handles(element)
 	# Pretend the mouse was moved to update the hovering.
-	var mouse_motion_event := InputEventMouseMotion.new()
-	mouse_motion_event.position = get_viewport().get_mouse_position()
-	respond_to_input_event(mouse_motion_event)
+	Utils.throw_mouse_motion_event()
 	queue_redraw()
 
 
@@ -621,9 +619,6 @@ var was_handle_moved := false
 var should_deselect_all := false
 
 func _unhandled_input(event: InputEvent) -> void:
-	respond_to_input_event(event)
-
-func respond_to_input_event(event: InputEvent) -> void:
 	if not visible:
 		return
 	
