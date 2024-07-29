@@ -4,28 +4,33 @@ extends PanelContainer
 @onready var status_label: RichTextLabel = $VBoxContainer/Status
 @onready var current_version_label: Label = $VBoxContainer/CurrentVersionLabel
 @onready var prereleases_checkbox: CheckBox = $VBoxContainer/IncludePrereleases
+@onready var retry_button: Button = $VBoxContainer/RetryButton
 @onready var close_button: Button = $VBoxContainer/CloseButton
 
 var current_version: String = ProjectSettings.get_setting("application/config/version")
 var results := {}  # Dictionary{String: String}  version: [url, is_prerelease]
 
 func _ready() -> void:
-	close_button.text = TranslationServer.translate("Close")
-	prereleases_checkbox.text = TranslationServer.translate("Include prereleases")
-	current_version_label.text = TranslationServer.translate("Current Version") + ": " +\
-			current_version
-	status_label.text = TranslationServer.translate("Retrieving information...")
-	
+	http.request_completed.connect(_on_request_completed)
+	retry_button.pressed.connect(_on_retry)
 	status_label.meta_clicked.connect(OS.shell_open)
 	close_button.pressed.connect(queue_free)
 	prereleases_checkbox.toggled.connect(display_results.unbind(1))
 	
+	close_button.text = TranslationServer.translate("Close")
+	prereleases_checkbox.text = TranslationServer.translate("Include prereleases")
+	retry_button.text = TranslationServer.translate("Retry")
+	current_version_label.text = TranslationServer.translate("Current Version") + ": " +\
+			current_version
+	request()
+
+func request() -> void:
+	retry_button.hide()
+	status_label.text = TranslationServer.translate("Retrieving information...")
 	var err := http.request("https://api.github.com/repos/MewPurPur/GodSVG/releases",
 			["User-Agent: MewPurPur/GodSVG"])
-	
 	if err != OK:
 		display_error_message(error_string(err))
-
 
 # Do not internationalize the errors.
 func _on_request_completed(http_result: HTTPRequest.Result, response_code: int,
@@ -60,15 +65,22 @@ _headers: PackedStringArray, body: PackedByteArray) -> void:
 		http.RESULT_TIMEOUT:
 			display_error_message("Request timed out (%d sec)" % http.timeout)
 			return
+		http.RESULT_CANT_CONNECT, http.RESULT_CONNECTION_ERROR, http.RESULT_CANT_RESOLVE:
+			display_error_message("Connection failed")
+			return
 		_:
 			display_error_message("Error code %d" % http_result)
 			return
-	
 	display_results()
 
 
 func display_error_message(msg: String) -> void:
 	status_label.text = TranslationServer.translate("Update check failed") + ": %s" % msg
+	retry_button.show()
+
+func _on_retry() -> void:
+	retry_button.hide()
+	request()
 
 func display_results() -> void:
 	# Check if there are results to be displayed.
