@@ -121,6 +121,7 @@ func _gui_input(event: InputEvent) -> void:
 func add_element(element_name: String, element_idx: int) -> void:
 	SVG.root_element.add_element(DB.element_with_setup(element_name),
 			PackedInt32Array([element_idx]))
+	SVG.queue_save()
 
 # This function assumes there exists a element editor for the corresponding XID.
 func get_element_editor_rect(xid: PackedInt32Array) -> Rect2:

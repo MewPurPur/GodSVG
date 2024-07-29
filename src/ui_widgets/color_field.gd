@@ -111,7 +111,7 @@ func _draw() -> void:
 
 
 func _on_text_change_canceled() -> void:
-	sync(element.get_attribute_value(attribute_name))
+	sync(element.get_attribute_value(attribute_name, true))
 
 
 func _on_color_picked(new_color: String, close_picker: bool) -> void:

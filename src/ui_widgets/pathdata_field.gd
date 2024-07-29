@@ -69,6 +69,7 @@ func setup() -> void:
 	line_edit.tooltip_text = attribute_name
 	line_edit.text_submitted.connect(set_value.bind(true))
 	line_edit.text_changed.connect(setup_font)
+	line_edit.text_change_canceled.connect(func(): setup_font(line_edit.text))
 	line_edit.focus_entered.connect(_on_line_edit_focus_entered)
 	commands_container.draw.connect(commands_draw)
 	Indications.hover_changed.connect(_on_selections_or_hover_changed)
@@ -106,8 +107,7 @@ func sync(new_value: String) -> void:
 		add_move_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 		add_move_button.theme_type_variation = "FlatButton"
 		add_child(add_move_button)
-		add_move_button.pressed.connect(
-				element.get_attribute(attribute_name).insert_command.bind(0, "M"))
+		add_move_button.pressed.connect(_on_add_move_button_pressed)
 	elif cmd_count != 0 and is_instance_valid(add_move_button):
 		add_move_button.queue_free()
 	# Rebuild the path commands.
@@ -122,10 +122,16 @@ func sync(new_value: String) -> void:
 
 func update_parameter(new_value: float, property: String, idx: int) -> void:
 	element.get_attribute(attribute_name).set_command_property(idx, property, new_value)
+	SVG.queue_save()
 
 func _on_relative_button_pressed() -> void:
 	element.get_attribute(attribute_name).toggle_relative_command(hovered_idx)
 	reactivate_hovered()
+	SVG.queue_save()
+
+func _on_add_move_button_pressed() -> void:
+	element.get_attribute(attribute_name).insert_command(0, "M")
+	SVG.queue_save()
 
 
 # Path commands editor orchestration.
@@ -237,8 +243,10 @@ func commands_draw() -> void:
 		var cmd: PathCommand = element.get_attribute(attribute_name).get_command(i)
 		var cmd_char := cmd.command_char
 		# Draw the action button.
-		more_icon.draw_rect(ci, Rect2(Vector2(commands_container.size.x - 19, 4 + v_offset),
+		more_icon.draw_rect(ci, Rect2(Vector2(commands_container.size.x - 42, 4 + v_offset),
 				Vector2(14, 14)), false, ThemeGenerator.icon_normal_color)
+		#more_icon.draw_rect(ci, Rect2(Vector2(commands_container.size.x - 19, 4 + v_offset),
+				#Vector2(14, 14)), false, ThemeGenerator.icon_normal_color)
 		# Draw the relative/absolute button.
 		var relative_stylebox := absolute_button_normal if\
 				Utils.is_string_upper(cmd_char) else relative_button_normal

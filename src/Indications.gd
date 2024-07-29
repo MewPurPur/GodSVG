@@ -426,6 +426,7 @@ func respond_to_key_input(event: InputEventKey) -> void:
 func delete_selected() -> void:
 	if not selected_xids.is_empty():
 		SVG.root_element.delete_elements(selected_xids)
+		SVG.queue_save()
 	elif not inner_selections.is_empty() and not semi_selected_xid.is_empty():
 		inner_selections.sort()
 		inner_selections.reverse()
@@ -434,12 +435,15 @@ func delete_selected() -> void:
 			"path": element_ref.get_attribute("d").delete_commands(inner_selections)
 		clear_inner_selection()
 		clear_inner_hovered()
+		SVG.queue_save()
 
 func move_up_selected() -> void:
 	SVG.root_element.move_elements_in_parent(selected_xids, false)
+	SVG.queue_save()
 
 func move_down_selected() -> void:
 	SVG.root_element.move_elements_in_parent(selected_xids, true)
+	SVG.queue_save()
 
 func view_in_list(xid: PackedInt32Array) -> void:
 	if xid.is_empty():
@@ -448,6 +452,7 @@ func view_in_list(xid: PackedInt32Array) -> void:
 
 func duplicate_selected() -> void:
 	SVG.root_element.duplicate_elements(selected_xids)
+	SVG.queue_save()
 
 func insert_inner_after_selection(new_command: String) -> void:
 	var element_ref := SVG.root_element.get_element(semi_selected_xid)
@@ -461,6 +466,7 @@ func insert_inner_after_selection(new_command: String) -> void:
 				return
 			path_attrib.insert_command(last_selection + 1, new_command)
 			normal_select(semi_selected_xid, last_selection + 1)
+			SVG.queue_save()
 
 enum Context {
 	VIEWPORT,
@@ -585,8 +591,11 @@ func convert_selected_element_to(element_name: String) -> void:
 	var xid := selected_xids[0]
 	SVG.root_element.replace_element(xid,
 			SVG.root_element.get_element(xid).get_replacement(element_name))
+	SVG.queue_save()
 
 func convert_selected_command_to(cmd_type: String) -> void:
 	var element_ref := SVG.root_element.get_element(semi_selected_xid)
 	match element_ref.name:
-		"path": element_ref.get_attribute("d").convert_command(inner_selections[0], cmd_type)
+		"path":
+			element_ref.get_attribute("d").convert_command(inner_selections[0], cmd_type)
+			SVG.queue_save()

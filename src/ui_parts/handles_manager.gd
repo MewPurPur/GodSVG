@@ -746,6 +746,7 @@ func _on_handle_added() -> void:
 		if not Indications.semi_selected_xid.is_empty():
 			SVG.root_element.get_element(Indications.semi_selected_xid).get_attribute("d").\
 					sync_after_commands_change()
+			SVG.queue_save()
 		return
 	
 	update_handles()
@@ -770,7 +771,7 @@ func _on_handle_added() -> void:
 func create_element_context(pos: Vector2) -> ContextPopup:
 	var btn_array: Array[Button] = []
 	for shape in ["path", "circle", "ellipse", "rect", "line"]:
-		var btn := ContextPopup.create_button(shape, add_element_at_pos.bind(shape, pos),
+		var btn := ContextPopup.create_button(shape, add_shape_at_pos.bind(shape, pos),
 				false, DB.get_element_icon(shape))
 		btn.add_theme_font_override("font", load("res://visual/fonts/FontMono.ttf"))
 		btn_array.append(btn)
@@ -780,6 +781,7 @@ func create_element_context(pos: Vector2) -> ContextPopup:
 			true, -1, separation_indices)
 	return element_context
 
-func add_element_at_pos(element_name: String, pos: Vector2) -> void:
+func add_shape_at_pos(element_name: String, pos: Vector2) -> void:
 	SVG.root_element.add_element(DB.element_with_setup(element_name, pos),
 			PackedInt32Array([SVG.root_element.get_child_count()]))
+	SVG.queue_save()

@@ -113,7 +113,7 @@ func _on_switch_mode_pressed() -> void:
 	color_picker_content.visible = not palette_mode
 	palettes_content.visible = palette_mode
 
-func _on_tree_exited() -> void:
+func _exit_tree() -> void:
 	color_picked.emit(current_value, true)
 
 func _input(event: InputEvent) -> void:

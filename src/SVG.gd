@@ -32,12 +32,8 @@ var UR := UndoRedo.new()
 
 func _ready() -> void:
 	UR.version_changed.connect(_on_undo_redo)
-	# Can be intermediate, like while you're editing text, so don't queue save.
 	changed_unknown.connect(queue_update)
-	# Layout changes are never intermediate, so queue save to save the bother.
 	elements_layout_changed.connect(queue_update)
-	elements_layout_changed.connect(queue_save)
-	# Can be intermediate, like when dragging an opacity slider, so don't queue save.
 	any_attribute_changed.connect(queue_update.unbind(1))
 	
 	var cmdline_args := OS.get_cmdline_args()

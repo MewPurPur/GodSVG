@@ -95,6 +95,7 @@ func insert_child(idx: int, new_element: Element) -> void:
 	var new_xid := xid.duplicate()
 	new_xid.append(idx)
 	new_element.xid = new_xid
+	new_element.propagate_xid_correction()
 	for i in range(idx, get_child_count()):
 		var child := get_child(i)
 		child.xid[-1] += 1
@@ -230,7 +231,7 @@ func set_attribute(attribute_name: String, value: Variant) -> void:
 				if value_type == TYPE_ARRAY: attrib.set_commands(value)
 				else: push_error("Invalid value set to attribute.")
 			DB.AttributeType.TRANSFORM_LIST:
-				if value_type == TYPE_ARRAY: attrib.set_commands(value)
+				if value_type == TYPE_ARRAY: attrib.set_transform_list(value)
 				else: push_error("Invalid value set to attribute.")
 			_:
 				push_error("Invalid value set to attribute.")
