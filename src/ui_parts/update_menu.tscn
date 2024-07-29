@@ -45,11 +45,17 @@ fit_content = true
 scroll_active = false
 autowrap_mode = 0
 
+[node name="RetryButton" type="Button" parent="VBoxContainer"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+focus_mode = 0
+mouse_default_cursor_shape = 2
+
 [node name="CloseButton" type="Button" parent="VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 8
 focus_mode = 0
 mouse_default_cursor_shape = 2
-
-[connection signal="request_completed" from="HTTPRequest" to="." method="_on_request_completed"]

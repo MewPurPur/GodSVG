@@ -22,9 +22,9 @@ func full_rebuild() -> void:
 	for node in elements_container.get_children():
 		node.queue_free()
 	# Only add the first level of elements, they will automatically add their children.
-	for element_idx in SVG.root_element.get_child_count():
+	for root_child in SVG.root_element.get_children():
 		var element_editor := ElementFrame.instantiate()
-		element_editor.element = SVG.root_element.get_child(element_idx)
+		element_editor.element = root_child
 		elements_container.add_child(element_editor)
 
 func add_element(element_name: String) -> void:
