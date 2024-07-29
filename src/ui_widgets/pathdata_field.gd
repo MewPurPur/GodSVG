@@ -152,14 +152,14 @@ func _on_selections_or_hover_changed() -> void:
 
 func _on_commands_mouse_exited() -> void:
 	var cmd_idx := Indications.inner_hovered
-	Indications.remove_hovered(element.xid, cmd_idx)
 	if Indications.semi_hovered_xid == element.xid:
 		activate_hovered(-1)
+	Indications.remove_hovered(element.xid, cmd_idx)
 
 
 # Prevents buttons from selecting a whole subpath when double-clicked.
 func _eat_double_clicks(event: InputEvent, button: Button) -> void:
-	if hovered_idx != -1 and event is InputEventMouseButton and event.double_click:
+	if hovered_idx >= 0 and event is InputEventMouseButton and event.double_click:
 		button.accept_event()
 		if event.is_pressed():
 			if button.toggle_mode:
@@ -177,7 +177,7 @@ func _on_commands_gui_input(event: InputEvent) -> void:
 		cmd_idx = int(event_pos.y / COMMAND_HEIGHT)
 	
 	if event is InputEventMouseMotion and event.button_mask == 0:
-		if cmd_idx != -1:
+		if cmd_idx >= 0:
 			Indications.set_hovered(element.xid, cmd_idx)
 		else:
 			Indications.remove_hovered(element.xid, cmd_idx)
@@ -335,6 +335,8 @@ func activate_focused(idx: int) -> void:
 		else:
 			focused_strip.queue_free()
 	elif idx == hovered_idx:
+		if focused_idx >= 0:
+			focused_strip.queue_free()
 		focused_strip = hovered_strip
 		hovered_strip = null
 	else:
