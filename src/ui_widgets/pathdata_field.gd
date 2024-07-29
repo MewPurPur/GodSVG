@@ -112,9 +112,9 @@ func sync(new_value: String) -> void:
 		add_move_button.queue_free()
 	# Rebuild the path commands.
 	commands_container.custom_minimum_size.y = cmd_count * COMMAND_HEIGHT
+	Utils.throw_mouse_motion_event()
 	if hovered_idx >= element.get_attribute(attribute_name).get_command_count():
 		activate_hovered(-1)
-	Utils.throw_mouse_motion_event()
 	commands_container.queue_redraw()
 
 
@@ -176,7 +176,7 @@ func _on_commands_gui_input(event: InputEvent) -> void:
 	if Rect2(Vector2.ZERO, commands_container.get_size()).has_point(event_pos):
 		cmd_idx = int(event_pos.y / COMMAND_HEIGHT)
 	
-	if event.button_mask == 0:
+	if event is InputEventMouseMotion and event.button_mask == 0:
 		if cmd_idx != -1:
 			Indications.set_hovered(element.xid, cmd_idx)
 		else:

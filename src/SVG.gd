@@ -135,3 +135,7 @@ func apply_svg_text(svg_text: String) -> void:
 	set_text(svg_text)
 	save_text()
 	sync_elements()
+
+func optimize() -> void:
+	SVG.root_element.optimize()
+	SVG.queue_save()
