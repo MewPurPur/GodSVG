@@ -140,10 +140,12 @@ static func mouse_filter_pass_non_drag_events(event: InputEvent) -> Control.Mous
 	return Control.MOUSE_FILTER_STOP if event is InputEventMouseMotion and\
 			event.button_mask == MOUSE_BUTTON_MASK_LEFT else Control.MOUSE_FILTER_PASS
 
-static func throw_mouse_motion_event(viewport: Viewport) -> void:
+# Used to trigger a mouse motion event, which can be used to update some things,
+# when Godot doesn't want to do so automatically.
+static func throw_mouse_motion_event() -> void:
 	var mouse_motion_event := InputEventMouseMotion.new()
-	mouse_motion_event.position = viewport.get_mouse_position()
-	Input.parse_input_event(mouse_motion_event)
+	mouse_motion_event.position = Engine.get_main_loop().root.get_mouse_position()
+	Input.call_deferred("parse_input_event", mouse_motion_event)
 
 
 static func get_last_dir() -> String:
