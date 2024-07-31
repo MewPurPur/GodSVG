@@ -81,6 +81,10 @@ func get_child_count() -> int:
 func replace_child(idx: int, new_element: Element) -> void:
 	var old_element := get_child(idx)
 	_child_elements[idx] = new_element
+	for grandchild_element in new_element.get_children():
+		grandchild_element.parent = new_element
+		if new_element is ElementSVG:
+			grandchild_element.svg = new_element
 	new_element.xid = old_element.xid
 	new_element.parent = old_element.parent
 	new_element.svg = old_element.svg

@@ -45,11 +45,13 @@ func _draw() -> void:
 				draw_rect(Rect2(pos + Vector2(x, y) * 7 - Vector2(3, 3), Vector2(7, 7)),
 						texture_image.get_pixelv(pos + Vector2(x, y)))
 	
+	var theme_color := Color(0.9, 0.9, 0.9)
+	
 	for i in range(-45, 50, 7):
 		var offset := sqrt(2604 - i * i)
 		draw_line(pos + Vector2(i, -offset), pos + Vector2(i, offset), grid_color)
 		draw_line(pos + Vector2(-offset, i), pos + Vector2(offset, i), grid_color)
-	draw_circle(pos, 52, Color.WHITE, false, 6.0, true)
+	draw_circle(pos, 52, theme_color, false, 6.0, true)
 	draw_rect(Rect2(pos - Vector2(3, 3), Vector2(7, 7)), Color.WHITE, false, 1.0)
 	draw_rect(Rect2(pos - Vector2(4, 4), Vector2(9, 9)), Color.BLACK, false, 1.0)
 	
@@ -57,15 +59,14 @@ func _draw() -> void:
 			pos.y + (50 if (pos.y + 75 <= viewport_height) else -75))
 	var stylebox := StyleBoxFlat.new()
 	stylebox.set_corner_radius_all(4)
-	stylebox.bg_color = Color.WHITE
+	stylebox.bg_color = theme_color
 	stylebox.draw(ci, Rect2(stylebox_corner, Vector2(103, 25)))
 	
 	color = texture_image.get_pixelv(pos)
-	code_font.draw_string(ci, stylebox_corner + Vector2(25, 19), "#" + color.to_html(false),
+	code_font.draw_string(ci, stylebox_corner + Vector2(26, 19), "#" + color.to_html(false),
 			HORIZONTAL_ALIGNMENT_LEFT, -1, 16, Color.BLACK)
+	draw_rect(Rect2(stylebox_corner + Vector2(5, 5), Vector2(15, 15)), color)
+	var border := Color.WHITE
 	if color.get_luminance() > 0.455:
-		draw_rect(Rect2(stylebox_corner + Vector2(5, 5), Vector2(15, 15)), color)
-		draw_rect(Rect2(stylebox_corner + Vector2(5, 5), Vector2(16, 16)), Color.BLACK,
-				false, 1.0)
-	else:
-		draw_rect(Rect2(stylebox_corner + Vector2(4, 4), Vector2(17, 17)), color)
+		border = Color.BLACK
+	draw_rect(Rect2(stylebox_corner + Vector2(5, 5), Vector2(16, 16)), border, false, 1.0)
