@@ -115,6 +115,7 @@ func sync(new_value: String) -> void:
 	Utils.throw_mouse_motion_event()
 	if hovered_idx >= element.get_attribute(attribute_name).get_command_count():
 		activate_hovered(-1)
+	reactivate_hovered()
 	commands_container.queue_redraw()
 
 
@@ -124,7 +125,6 @@ func update_parameter(new_value: float, property: String, idx: int) -> void:
 
 func _on_relative_button_pressed() -> void:
 	element.get_attribute(attribute_name).toggle_relative_command(hovered_idx)
-	reactivate_hovered()
 	SVG.queue_save()
 
 func _on_add_move_button_pressed() -> void:
