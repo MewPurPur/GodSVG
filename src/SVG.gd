@@ -42,7 +42,7 @@ func _ready() -> void:
 	cmdline_args.size() >= 1:
 		load_cmdl = true
 	
-	await get_tree().get_root().ready  # Await tree ready to be able to add error dialogs.
+	await get_tree().root.ready  # Await tree ready to be able to add error dialogs.
 	
 	# Guarantee a proper SVG text first, as the import warnings dialog
 	# that might pop up from command line file opening is cancellable.

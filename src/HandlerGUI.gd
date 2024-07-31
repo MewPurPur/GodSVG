@@ -54,7 +54,7 @@ func add_overlay(overlay_menu: Control) -> void:
 	overlay_ref.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	overlay_ref.process_mode = PROCESS_MODE_ALWAYS
 	overlay_stack.append(overlay_ref)
-	get_tree().get_root().add_child(overlay_ref)
+	get_tree().root.add_child(overlay_ref)
 	overlay_ref.add_child(overlay_menu)
 	overlay_menu.set_anchors_and_offsets_preset(Control.PRESET_CENTER)
 	overlay_menu.tree_exiting.connect(remove_overlay.bind(overlay_ref))
@@ -88,7 +88,7 @@ func add_popup_overlay(popup: Control) -> void:
 	overlay_ref.gui_input.connect(_parse_popup_overlay_event)
 	overlay_ref.process_mode = PROCESS_MODE_ALWAYS
 	popup_overlay_stack.append(overlay_ref)
-	get_tree().get_root().add_child(overlay_ref)
+	get_tree().root.add_child(overlay_ref)
 	overlay_ref.add_child(popup)
 	popup.reset_size()
 	popup.tree_exiting.connect(remove_popup_overlay.bind(overlay_ref))

@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://b1eig44cov474"]
+[gd_scene load_steps=19 format=3 uid="uid://b1eig44cov474"]
 
 [ext_resource type="Script" path="res://src/ui_widgets/good_color_picker.gd" id="1_0pc78"]
 [ext_resource type="Shader" path="res://src/shaders/color_wheel.gdshader" id="2_nf1uk"]
@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://d36qn2f7a0nok" path="res://visual/icons/NoneColor.svg" id="5_rnr60"]
 [ext_resource type="Script" path="res://src/ui_widgets/BetterLineEdit.gd" id="6_aqyoh"]
 [ext_resource type="Texture2D" uid="uid://stpallv5q0rb" path="res://visual/icons/backgrounds/CheckerboardMini.svg" id="6_qq1j3"]
+[ext_resource type="Texture2D" uid="uid://brff7fx0puj6" path="res://visual/icons/Eyedropper.svg" id="6_titg4"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_wl372"]
 shader = ExtResource("2_nf1uk")
@@ -19,19 +20,19 @@ shader_parameter/interpolation = 6
 shader_parameter/horizontal = false
 shader_parameter/inverted = true
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mqx76"]
-content_margin_top = 1.0
-content_margin_bottom = 1.0
-bg_color = Color(0.866667, 0.933333, 1, 0.133333)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sndty"]
+bg_color = Color(0.866667, 0.933333, 1, 0.333333)
+border_width_top = 2
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cle8x"]
 content_margin_top = 1.0
 content_margin_bottom = 1.0
 bg_color = Color(0.866667, 0.933333, 1, 0.2)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sndty"]
-bg_color = Color(0.866667, 0.933333, 1, 0.333333)
-border_width_top = 2
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mqx76"]
+content_margin_top = 1.0
+content_margin_bottom = 1.0
+bg_color = Color(0.866667, 0.933333, 1, 0.133333)
 
 [sub_resource type="ButtonGroup" id="ButtonGroup_w0iiw"]
 
@@ -118,8 +119,9 @@ icon = ExtResource("5_rnr60")
 
 [node name="ColorsDisplay" type="HBoxContainer" parent="ColorContainer"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(160, 16)
+custom_minimum_size = Vector2(0, 16)
 layout_mode = 2
+size_flags_horizontal = 3
 size_flags_vertical = 4
 theme_override_constants/separation = 0
 
@@ -129,6 +131,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 
 [node name="ColorRect" type="Control" parent="ColorContainer/ColorsDisplay"]
+clip_contents = true
 layout_mode = 2
 size_flags_horizontal = 3
 
@@ -146,6 +149,14 @@ theme_override_colors/icon_disabled_color = Color(0, 0, 0, 0)
 icon = ExtResource("5_rh0xc")
 icon_alignment = 1
 
+[node name="EyedropperButton" type="Button" parent="ColorContainer"]
+layout_mode = 2
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_type_variation = &"IconButton"
+theme_override_font_sizes/font_size = 10
+icon = ExtResource("6_titg4")
+
 [node name="SliderContainer" type="VBoxContainer" parent="."]
 layout_mode = 2
 theme_override_constants/separation = 8
@@ -160,10 +171,10 @@ size_flags_horizontal = 3
 focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_override_colors/font_disabled_color = Color(0.866667, 0.933333, 1, 1)
-theme_override_styles/normal = SubResource("StyleBoxFlat_mqx76")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_sndty")
 theme_override_styles/hover = SubResource("StyleBoxFlat_cle8x")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_sndty")
-theme_override_styles/disabled = SubResource("StyleBoxFlat_sndty")
+theme_override_styles/normal = SubResource("StyleBoxFlat_mqx76")
 toggle_mode = true
 button_group = SubResource("ButtonGroup_w0iiw")
 text = "RGB"
@@ -174,10 +185,10 @@ size_flags_horizontal = 3
 focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_override_colors/font_disabled_color = Color(0.866667, 0.933333, 1, 1)
-theme_override_styles/normal = SubResource("StyleBoxFlat_mqx76")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_sndty")
 theme_override_styles/hover = SubResource("StyleBoxFlat_cle8x")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_sndty")
-theme_override_styles/disabled = SubResource("StyleBoxFlat_sndty")
+theme_override_styles/normal = SubResource("StyleBoxFlat_mqx76")
 toggle_mode = true
 button_group = SubResource("ButtonGroup_w0iiw")
 text = "HSV"
@@ -318,6 +329,7 @@ script = ExtResource("6_aqyoh")
 [connection signal="draw" from="ColorContainer/ColorsDisplay/ColorRect" to="." method="_on_color_rect_draw"]
 [connection signal="gui_input" from="ColorContainer/ColorsDisplay/ColorRect/ResetColorButton" to="." method="_on_reset_color_button_gui_input"]
 [connection signal="pressed" from="ColorContainer/ColorsDisplay/ColorRect/ResetColorButton" to="." method="_on_reset_color_button_pressed"]
+[connection signal="pressed" from="ColorContainer/EyedropperButton" to="." method="_on_eyedropper_pressed"]
 [connection signal="pressed" from="SliderContainer/ColorSpaceContainer/RGB" to="." method="_on_rgb_pressed"]
 [connection signal="pressed" from="SliderContainer/ColorSpaceContainer/HSV" to="." method="_on_hsv_pressed"]
 [connection signal="draw" from="SliderContainer/HBoxContainer/TracksContainer/Slider1/MarginContainer" to="." method="_on_slider1_draw"]
