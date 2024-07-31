@@ -43,8 +43,7 @@ static func format_text(text: String) -> String:
 	if text == "-0":
 		text = "0"
 	
-	if leading_decimal_point or\
-	(GlobalSettings.number_remove_leading_zero and "." in text):
+	if leading_decimal_point or (GlobalSettings.number_remove_leading_zero and "." in text):
 		if text.begins_with("0"):
 			text = text.right(-1)
 		if text.begins_with("-0") or text.begins_with("+0"):
