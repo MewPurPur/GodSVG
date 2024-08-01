@@ -9,7 +9,7 @@ func _sync() -> void:
 	_final_transform = compute_final_transform(_transform_list)
 
 func sync_after_transforms_change() -> void:
-	super.set_value(TransformListParser.transform_list_to_text(_transform_list))
+	set_value(TransformListParser.transform_list_to_text(_transform_list))
 
 func format(text: String) -> String:
 	return TransformListParser.transform_list_to_text(
@@ -18,7 +18,7 @@ func format(text: String) -> String:
 func set_transform_list(new_transform_list: Array[Transform]) -> void:
 	_transform_list = new_transform_list
 	_final_transform = compute_final_transform(new_transform_list)
-	super.set_value(TransformListParser.transform_list_to_text(new_transform_list))
+	set_value(TransformListParser.transform_list_to_text(new_transform_list))
 
 func set_transform_property(idx: int, property: String, new_value: float) -> void:
 	if _transform_list[idx].get(property) != new_value:
