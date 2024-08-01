@@ -41,7 +41,8 @@ func _draw() -> void:
 	var texture_image := texture.get_image()
 	for x in range(-7, 8):
 		for y in range(-7, 8):
-			if Vector2(x, y).length_squared() < 58:
+			if Vector2(x, y).length_squared() < 58 and pos.x + x >= 0 and\
+			pos.x + x < viewport_width and pos.y + y >= 0 and pos.y + y < viewport_height:
 				draw_rect(Rect2(pos + Vector2(x, y) * 7 - Vector2(3, 3), Vector2(7, 7)),
 						texture_image.get_pixelv(pos + Vector2(x, y)))
 	

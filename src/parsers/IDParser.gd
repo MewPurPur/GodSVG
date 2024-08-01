@@ -1,7 +1,6 @@
 class_name IDParser extends RefCounted
 
 # Invalid XML nametokens are discouraged but still valid.
-# TODO Have logic for displaying them as some kind of warning, say with yellow text.
 enum ValidityLevel {VALID, INVALID_XML_NAMETOKEN, INVALID}
 
 

@@ -29,9 +29,9 @@ func _on_base_class_focus_entered() -> void:
 	if get_global_rect().has_point(get_viewport().get_mouse_position()) and\
 	Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
 		first_click = true
-		text_before_focus = text
 	else:
 		select_all()
+	text_before_focus = text
 
 func _on_base_class_focus_exited() -> void:
 	first_click = false
