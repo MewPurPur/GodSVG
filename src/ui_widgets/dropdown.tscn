@@ -16,6 +16,7 @@ script = ExtResource("1_133xu")
 
 [node name="LineEdit" type="LineEdit" parent="."]
 layout_mode = 2
+size_flags_horizontal = 3
 theme_type_variation = &"RightConnectedLineEdit"
 theme_override_fonts/font = ExtResource("2_s4ro5")
 script = ExtResource("1_0ifbb")
@@ -23,6 +24,7 @@ script = ExtResource("1_0ifbb")
 [node name="Button" type="Button" parent="."]
 custom_minimum_size = Vector2(15, 0)
 layout_mode = 2
+size_flags_horizontal = 8
 focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_type_variation = &"LeftConnectedButton"

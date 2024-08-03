@@ -55,7 +55,7 @@ func update_palettes(search_text := "") -> void:
 	var reserved_color_palette := ColorPalette.new("", reserved_colors, reserved_color_names)
 	
 	var displayed_palettes: Array[ColorPalette] = [reserved_color_palette]
-	displayed_palettes += GlobalSettings.palettes
+	displayed_palettes += GlobalSettings.savedata.palettes
 	for palette in displayed_palettes:
 		var indices_to_show: Array[int] = []
 		for i in palette.colors.size():

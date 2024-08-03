@@ -2,7 +2,7 @@
 
 importer="font_data_dynamic"
 type="FontFile"
-uid="uid://dtb4wkus51hxs"
+uid="uid://ci7h8j5t52tqj"
 path="res://.godot/imported/FontMono.ttf-a376ecc2a480b8f7f1be2af334133b0b.fontdata"
 
 [deps]
@@ -25,18 +25,10 @@ hinting=1
 subpixel_positioning=1
 oversampling=0.0
 Fallbacks=null
-fallbacks=[Resource("res://visual/fonts/Font.ttf")]
+fallbacks=[]
 Compress=null
 compress=true
-preload=[{
-"chars": [],
-"glyphs": [],
-"name": "New Configuration",
-"size": Vector2i(16, 0),
-"variation_embolden": 0.0
-}]
+preload=[]
 language_support={}
-script_support={
-"Latn": true
-}
+script_support={}
 opentype_features={}

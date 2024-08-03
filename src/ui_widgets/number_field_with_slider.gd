@@ -14,7 +14,7 @@ func set_value(new_value: String, save := false) -> void:
 	if not new_value.is_empty():
 		new_value = new_value.strip_edges()
 		if not new_value.ends_with("%"):
-			var numeric_value := NumberParser.evaluate(new_value)
+			var numeric_value := NumstringParser.evaluate(new_value)
 			# Validate the value.
 			if !is_finite(numeric_value):
 				sync(element.get_attribute_value(attribute_name))
@@ -22,12 +22,12 @@ func set_value(new_value: String, save := false) -> void:
 			
 			if not allow_higher and numeric_value > max_value:
 				numeric_value = max_value
-				new_value = NumberParser.num_to_text(numeric_value)
+				new_value = element.get_attribute(attribute_name).num_to_text(numeric_value)
 			elif not allow_lower and numeric_value < min_value:
 				numeric_value = min_value
-				new_value = NumberParser.num_to_text(numeric_value)
+				new_value = element.get_attribute(attribute_name).num_to_text(numeric_value)
 			
-			new_value = NumberParser.num_to_text(numeric_value)
+			new_value = element.get_attribute(attribute_name).num_to_text(numeric_value)
 		sync(element.get_attribute(attribute_name).format(new_value))
 	
 	sync(element.get_attribute(attribute_name).format(new_value))
@@ -36,7 +36,7 @@ func set_value(new_value: String, save := false) -> void:
 		SVG.queue_save()
 
 func set_num(new_number: float, save := false) -> void:
-	set_value(NumberParser.num_to_text(new_number), save)
+	set_value(element.get_attribute(attribute_name).num_to_text(new_number), save)
 
 func setup_placeholder() -> void:
 	placeholder_text = element.get_default(attribute_name)
@@ -73,7 +73,7 @@ func sync(new_value: String) -> void:
 	text = new_value
 	reset_font_color()
 	if new_value == element.get_default(attribute_name):
-		font_color = GlobalSettings.basic_color_warning
+		font_color = GlobalSettings.savedata.basic_color_warning
 	queue_redraw()
 
 

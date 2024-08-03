@@ -1,7 +1,6 @@
 # Run with Ctrl+Shift+X.
 # A script intended to test sensitive parts of the codebase.
-# This isn't an invitation to add tests to random methods.
-# Please discuss before adding more tests here.
+# This isn't an invitation to add random tests, please discuss before doing so.
 @tool
 extends EditorScript
 
@@ -33,7 +32,7 @@ func pathdata_tests(print_success := false) -> bool:
 	
 	var tests_passed := true
 	for test in tests.keys():
-		var result := PathdataParser.pathdata_to_arrays(test)
+		var result := AttributePathdata.pathdata_to_arrays(test)
 		var expected: Array = tests[test]
 		if result != expected:
 			tests_passed = false

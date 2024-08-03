@@ -17,7 +17,6 @@ var value: String:
 		if ColorParser.is_valid_hex(new_value) or ColorParser.is_valid_named(new_value) or\
 		ColorParser.is_valid_rgb(new_value) or (enable_alpha and\
 		ColorParser.is_valid_hex_with_alpha(new_value)):
-			new_value = new_value.trim_prefix("#")
 			if new_value != value:
 				value = new_value
 				value_changed.emit(value)
@@ -25,7 +24,9 @@ var value: String:
 
 
 func _ready() -> void:
-	text_submitted.connect(set.bind("value"))
+	text_submitted.connect(func(x): set("value", x))
+	pressed.connect(_on_pressed)
+	text_changed.connect(_on_text_changed)
 	text_change_canceled.connect(sync.bind(value))
 	button_gui_input.connect(queue_redraw.unbind(1))
 	if enable_alpha:

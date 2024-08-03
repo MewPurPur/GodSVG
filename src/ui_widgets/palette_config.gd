@@ -9,15 +9,20 @@ signal layout_changed
 var current_palette: ColorPalette
 var currently_edited_idx := -1
 
-@onready var palette_label: Label = %MainContainer/HBoxContainer/PaletteLabel
+@onready var palette_button: Button = %MainContainer/HBoxContainer/PaletteButton
 @onready var name_edit: BetterLineEdit = %MainContainer/HBoxContainer/NameEdit
-@onready var name_edit_button: Button = %MainContainer/HBoxContainer/EditButton
 @onready var colors_container: HFlowContainer = %MainContainer/ColorsContainer
-@onready var action_button: Button = $HBoxContainer/ActionButton
 
-func update_translation() -> void:
-	%MainContainer/HBoxContainer/EditButton.tooltip_text = TranslationServer.translate(
-			"Edit palette name")
+func setup_theme() -> void:
+	for theming in ["normal", "hover", "pressed"]:
+		var stylebox := palette_button.get_theme_stylebox(theming).duplicate()
+		stylebox.content_margin_top -= 3
+		stylebox.content_margin_bottom -= 2
+		stylebox.content_margin_left += 1
+		palette_button.add_theme_stylebox_override(theming, stylebox)
+	var panel_stylebox := get_theme_stylebox("panel").duplicate()
+	panel_stylebox.content_margin_top = panel_stylebox.content_margin_bottom
+	add_theme_stylebox_override("panel", panel_stylebox)
 
 
 # Used to setup a palette for this element.
@@ -27,8 +32,13 @@ func assign_palette(palette: ColorPalette) -> void:
 	rebuild_colors()
 
 func _ready() -> void:
-	GlobalSettings.language_changed.connect(update_translation)
+	palette_button.pressed.connect(_on_palette_button_pressed)
+	name_edit.text_change_canceled.connect(_on_name_edit_text_change_canceled)
+	name_edit.text_changed.connect(_on_name_edit_text_changed)
+	name_edit.text_submitted.connect(_on_name_edit_text_submitted)
 	mouse_exited.connect(clear_proposed_drop)
+	GlobalSettings.theme_changed.connect(setup_theme)
+	setup_theme()
 
 # Rebuilds the content of the colors container.
 func rebuild_colors() -> void:
@@ -76,35 +86,34 @@ func popup_configure_color(swatch: Button) -> void:
 	configure_popup.color_name_edit.text_submitted.connect(swatch.change_color_name)
 
 func popup_edit_name() -> void:
-	palette_label.hide()
-	name_edit_button.hide()
+	palette_button.hide()
 	name_edit.show()
 	name_edit.text = current_palette.title
 	name_edit.grab_focus()
 	name_edit.caret_column = name_edit.text.length()
 
 func hide_name_edit() -> void:
-	palette_label.show()
-	name_edit_button.show()
+	palette_button.show()
 	name_edit.hide()
 
 # Update text color to red if the title won't work (because it's a duplicate).
 func _on_name_edit_text_changed(new_text: String) -> void:
 	var names: Array[String] = []
-	for palette in GlobalSettings.palettes:
+	for palette in GlobalSettings.savedata.palettes:
 		names.append(palette.title)
-	name_edit.add_theme_color_override("font_color", GlobalSettings.get_validity_color(
-			new_text in names and new_text != current_palette.title))
+	for theme_color in ["font_color", "font_hover_color"]:
+		name_edit.add_theme_color_override(theme_color, GlobalSettings.get_validity_color(
+				new_text in names and new_text != current_palette.title))
 
 func _on_name_edit_text_submitted(new_title: String) -> void:
 	new_title = new_title.strip_edges()
 	var titles: Array[String] = []
-	for palette in GlobalSettings.palettes:
+	for palette in GlobalSettings.savedata.palettes:
 		titles.append(palette.title)
 	
 	if not new_title.is_empty() and new_title != current_palette.title and\
 	not new_title in titles:
-		current_palette.modify_title(new_title)
+		current_palette.title = new_title
 	
 	set_label_text(current_palette.title)
 	hide_name_edit()
@@ -122,60 +131,72 @@ func remove_color(idx: int) -> void:
 
 func set_label_text(new_text: String) -> void:
 	if new_text.is_empty():
-		palette_label.text = TranslationServer.translate("Unnamed")
-		palette_label.add_theme_color_override("font_color",
-				GlobalSettings.basic_color_error)
+		palette_button.text = TranslationServer.translate("Unnamed")
+		for theme_color in ["font_color", "font_hover_color"]:
+			palette_button.add_theme_color_override(theme_color,
+					GlobalSettings.savedata.basic_color_error)
 	else:
-		palette_label.text = new_text
-		palette_label.remove_theme_color_override("font_color")
+		palette_button.text = new_text
+		for theme_color in ["font_color", "font_hover_color"]:
+			palette_button.remove_theme_color_override(theme_color)
 
 func delete(idx: int) -> void:
-	GlobalSettings.palettes.remove_at(idx)
-	GlobalSettings.save_palettes()
+	GlobalSettings.savedata.palettes.remove_at(idx)
+	GlobalSettings.save()
 	layout_changed.emit()
 
 func move_up(idx: int) -> void:
-	var palette: ColorPalette = GlobalSettings.palettes.pop_at(idx)
-	GlobalSettings.palettes.insert(idx - 1, palette)
-	GlobalSettings.save_palettes()
+	var palette: ColorPalette = GlobalSettings.savedata.palettes.pop_at(idx)
+	GlobalSettings.savedata.palettes.insert(idx - 1, palette)
+	GlobalSettings.save()
 	layout_changed.emit()
 
 func move_down(idx: int) -> void:
-	var palette: ColorPalette = GlobalSettings.palettes.pop_at(idx)
-	GlobalSettings.palettes.insert(idx + 1, palette)
-	GlobalSettings.save_palettes()
+	var palette: ColorPalette = GlobalSettings.savedata.palettes.pop_at(idx)
+	GlobalSettings.savedata.palettes.insert(idx + 1, palette)
+	GlobalSettings.save()
 	layout_changed.emit()
 
 func paste_palette(idx: int) -> void:
-	GlobalSettings.palettes[idx] = ColorPalette.from_text(DisplayServer.clipboard_get())
+	var pasted_palettes := ColorPalette.text_to_palettes(DisplayServer.clipboard_get())
+	if pasted_palettes.is_empty():
+		return
+	
+	GlobalSettings.savedata.palettes[idx] = pasted_palettes[0]
 	# If another palette has the same title, disable the title.
-	for i in GlobalSettings.palettes.size():
+	for i in GlobalSettings.savedata.palettes.size():
 		if i == idx:
 			continue
-		if GlobalSettings.palettes[i].title == GlobalSettings.palettes[idx].title:
-			GlobalSettings.palettes[idx].title = ""
+		if GlobalSettings.savedata.palettes[i].title ==\
+		GlobalSettings.savedata.palettes[idx].title:
+			GlobalSettings.savedata.palettes[idx].title = ""
 			break
-	GlobalSettings.save_palettes()
+	GlobalSettings.save()
 	layout_changed.emit()
 
 
-func _on_action_button_pressed() -> void:
+func _on_palette_button_pressed() -> void:
+	if current_palette.title.is_empty():
+		popup_edit_name()
+		return
+	
 	var palette_idx := -1
-	for idx in GlobalSettings.palettes.size():
-		if GlobalSettings.palettes[idx].title == current_palette.title:
+	for idx in GlobalSettings.savedata.palettes.size():
+		if GlobalSettings.savedata.palettes[idx].title == current_palette.title:
 			palette_idx = idx
 	
 	var btn_arr: Array[Button] = []
-	
+	btn_arr.append(ContextPopup.create_button(TranslationServer.translate("Rename"),
+			popup_edit_name, false, load("res://visual/icons/Rename.svg")))
 	if palette_idx >= 1:
 		btn_arr.append(ContextPopup.create_button(TranslationServer.translate("Move Up"),
 				move_up.bind(palette_idx), false, load("res://visual/icons/MoveUp.svg")))
-	if palette_idx < GlobalSettings.palettes.size() - 1:
+	if palette_idx < GlobalSettings.savedata.palettes.size() - 1:
 		btn_arr.append(ContextPopup.create_button(TranslationServer.translate("Move Down"),
 				move_down.bind(palette_idx), false, load("res://visual/icons/MoveDown.svg")))
 	btn_arr.append(ContextPopup.create_button(TranslationServer.translate("Copy as XML"),
-			DisplayServer.clipboard_set.bind(GlobalSettings.palettes[palette_idx].to_text()),
-			false, load("res://visual/icons/Copy.svg")))
+			DisplayServer.clipboard_set.bind(GlobalSettings.savedata.palettes[palette_idx].\
+			to_text()), false, load("res://visual/icons/Copy.svg")))
 	btn_arr.append(ContextPopup.create_button(TranslationServer.translate("Paste XML"),
 			paste_palette.bind(palette_idx),
 			!ColorPalette.is_valid_palette(DisplayServer.clipboard_get()),
@@ -185,7 +206,7 @@ func _on_action_button_pressed() -> void:
 	
 	var context_popup := ContextPopup.new()
 	context_popup.setup(btn_arr, true)
-	HandlerGUI.popup_under_rect_center(context_popup, action_button.get_global_rect(),
+	HandlerGUI.popup_under_rect_center(context_popup, palette_button.get_global_rect(),
 			get_viewport())
 
 

@@ -117,8 +117,8 @@ func _setup_menu_items() -> void:
 	file_reset_svg_idx = _add_action(file_rid, "reset_svg")
 	_on_svg_text_changed()
 	# Edit and Tool menus.
-	_add_many_actions(edit_rid, GlobalSettings.keybinds_dict["edit"].keys())
-	_add_many_actions(tool_rid, GlobalSettings.keybinds_dict["tool"].keys())
+	_add_many_actions(edit_rid, ShortcutUtils.get_keybinds("edit"))
+	_add_many_actions(tool_rid, ShortcutUtils.get_keybinds("tool"))
 	# View menu.
 	view_show_grid_idx = _add_check_item(view_rid, "view_show_grid")
 	view_show_handles_idx = _add_check_item(view_rid, "view_show_handles")
@@ -181,7 +181,7 @@ func _get_keycode_for_events(input_events: Array[InputEvent]) -> Key:
 
 func _on_svg_text_changed() -> void:
 	NativeMenu.set_item_disabled(file_rid, file_clear_svg_idx, SVG.text == SVG.DEFAULT)
-	var empty_path := GlobalSettings.save_data.current_file_path.is_empty()
+	var empty_path := GlobalSettings.savedata.current_file_path.is_empty()
 	NativeMenu.set_item_disabled(file_rid, file_clear_association_idx, empty_path)
 	NativeMenu.set_item_disabled(file_rid, file_reset_svg_idx, empty_path)
 

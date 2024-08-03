@@ -46,8 +46,8 @@ func _ready() -> void:
 	
 	# Guarantee a proper SVG text first, as the import warnings dialog
 	# that might pop up from command line file opening is cancellable.
-	if not GlobalSettings.save_data.svg_text.is_empty():
-		apply_svg_text(GlobalSettings.save_data.svg_text)
+	if not GlobalSettings.svg_text.is_empty():
+		apply_svg_text(GlobalSettings.svg_text)
 	else:
 		apply_svg_text(DEFAULT)
 	
@@ -76,7 +76,8 @@ func _process(_delta: float) -> void:
 
 
 func sync_elements() -> void:
-	var svg_parse_result := SVGParser.text_to_root(text)
+	var svg_parse_result := SVGParser.text_to_root(text,
+			GlobalSettings.savedata.editor_formatter)
 	parsing_finished.emit(svg_parse_result.error)
 	if svg_parse_result.error == SVGParser.ParseError.OK:
 		root_element = svg_parse_result.svg
@@ -108,12 +109,12 @@ func set_text(new_text: String) -> void:
 	text_changed.emit()
 
 func save_text() -> void:
-	var saved_text := GlobalSettings.save_data.svg_text
+	var saved_text := GlobalSettings.svg_text
 	if saved_text == text:
 		return
 	UR.create_action("")
-	UR.add_do_property(GlobalSettings.save_data, "svg_text", text)
-	UR.add_undo_property(GlobalSettings.save_data, "svg_text", saved_text)
+	UR.add_do_property(GlobalSettings, "svg_text", text)
+	UR.add_undo_property(GlobalSettings, "svg_text", saved_text)
 	UR.add_do_property(self, "text", text)
 	UR.add_undo_property(self, "text", saved_text)
 	UR.commit_action()
@@ -129,7 +130,7 @@ func redo() -> void:
 		sync_elements()
 
 func _on_undo_redo() -> void:
-	GlobalSettings.modify_save_data("svg_text", text)
+	GlobalSettings.svg_text = text
 
 func apply_svg_text(svg_text: String) -> void:
 	set_text(svg_text)
@@ -139,3 +140,6 @@ func apply_svg_text(svg_text: String) -> void:
 func optimize() -> void:
 	SVG.root_element.optimize()
 	SVG.queue_save()
+
+func get_export_text() -> String:
+	return SVGParser.root_to_text(root_element)

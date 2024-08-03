@@ -84,7 +84,7 @@ func sync(new_value: String) -> void:
 	text = new_value
 	reset_font_color()
 	if new_value == element.get_default(attribute_name):
-		font_color = GlobalSettings.basic_color_warning
+		font_color = GlobalSettings.savedata.basic_color_warning
 
 
 func _on_button_gui_input(event: InputEvent) -> void:

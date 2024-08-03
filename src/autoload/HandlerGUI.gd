@@ -2,13 +2,14 @@ extends Node
 
 signal _in_focus
 
-const ImportWarningDialog = preload("res://src/ui_parts/import_warning_dialog.tscn")
-const AlertDialog = preload("res://src/ui_parts/alert_dialog.tscn")
-const ConfirmDialog = preload("res://src/ui_parts/confirm_dialog.tscn")
-const SettingsMenu = preload("res://src/ui_parts/settings_menu.tscn")
-const AboutMenu = preload("res://src/ui_parts/about_menu.tscn")
-const DonateMenu = preload("res://src/ui_parts/donate_menu.tscn")
-const UpdateMenu = preload("res://src/ui_parts/update_menu.tscn")
+# Not a good idea to preload scenes inside a singleton.
+var ImportWarningDialog = load("res://src/ui_parts/import_warning_dialog.tscn")
+var AlertDialog = load("res://src/ui_parts/alert_dialog.tscn")
+var ConfirmDialog = load("res://src/ui_parts/confirm_dialog.tscn")
+var SettingsMenu = load("res://src/ui_parts/settings_menu.tscn")
+var AboutMenu = load("res://src/ui_parts/about_menu.tscn")
+var DonateMenu = load("res://src/ui_parts/donate_menu.tscn")
+var UpdateMenu = load("res://src/ui_parts/update_menu.tscn")
 
 var overlay_stack: Array[ColorRect]
 var popup_overlay_stack: Array[Control]
@@ -58,7 +59,6 @@ func add_overlay(overlay_menu: Control) -> void:
 	overlay_ref.add_child(overlay_menu)
 	overlay_menu.set_anchors_and_offsets_preset(Control.PRESET_CENTER)
 	overlay_menu.tree_exiting.connect(remove_overlay.bind(overlay_ref))
-	get_tree().paused = true
 
 func remove_overlay(overlay_ref: ColorRect = null) -> void:
 	if overlay_stack.is_empty():
@@ -71,9 +71,7 @@ func remove_overlay(overlay_ref: ColorRect = null) -> void:
 	overlay_ref = overlay_stack.pop_back()
 	if is_instance_valid(overlay_ref):
 		overlay_ref.queue_free()
-	if overlay_stack.is_empty():
-		get_tree().paused = false
-	else:
+	if not overlay_stack.is_empty():
 		overlay_stack.back().show()
 	Utils.throw_mouse_motion_event()
 
@@ -169,7 +167,7 @@ var last_mouse_click_double := false
 
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("quit"):
-		var confirm_dialog := ConfirmDialog.instantiate()
+		var confirm_dialog = ConfirmDialog.instantiate()
 		add_overlay(confirm_dialog)
 		confirm_dialog.setup(TranslationServer.translate("Quit GodSVG"),
 				TranslationServer.translate("Do you want to quit GodSVG?"),
@@ -249,7 +247,7 @@ func update_ui_scale() -> void:
 	# How much can window content size be multiplied by before it extends over the usable screen size.
 	var diff := usable_screen_size / window.get_contents_minimum_size()
 	var max_scale := floorf(minf(diff.x, diff.y) * 4.0) / 4.0
-	var desired_scale: float = GlobalSettings.ui_scale * _calculate_auto_scale()
+	var desired_scale: float = GlobalSettings.savedata.ui_scale * _calculate_auto_scale()
 	
 	if not desired_scale > max_scale:
 		window.min_size = window.get_contents_minimum_size() * desired_scale
@@ -260,7 +258,7 @@ func update_ui_scale() -> void:
 
 
 func open_update_checker() -> void:
-	var confirmation_dialog := ConfirmDialog.instantiate()
+	var confirmation_dialog = ConfirmDialog.instantiate()
 	add_overlay(confirmation_dialog)
 	confirmation_dialog.setup(TranslationServer.translate("Check for updates?"),
 			TranslationServer.translate("This requires GodSVG to connect to the internet."),
@@ -268,7 +266,7 @@ func open_update_checker() -> void:
 
 func _list_updates() -> void:
 	remove_all_overlays()
-	var update_menu_instance := UpdateMenu.instantiate()
+	var update_menu_instance = UpdateMenu.instantiate()
 	add_overlay(update_menu_instance)
 
 func open_settings() -> void:
@@ -282,7 +280,7 @@ func open_donate() -> void:
 
 
 func _calculate_auto_scale() -> float:
-	if not GlobalSettings.auto_ui_scale:
+	if not GlobalSettings.savedata.auto_ui_scale:
 		return 1.0
 	
 	# Credit: Godots (MIT, by MakovWait and contributors)
@@ -292,10 +290,8 @@ func _calculate_auto_scale() -> float:
 		return 1.0
 	
 	# Use the smallest dimension to use a correct display scale on portrait displays.
-	var smallest_dimension := mini(
-		DisplayServer.screen_get_size(screen).x,
-		DisplayServer.screen_get_size(screen).y
-	)
+	var smallest_dimension := mini(DisplayServer.screen_get_size(screen).x,
+			DisplayServer.screen_get_size(screen).y)
 	
 	var dpi :=  DisplayServer.screen_get_dpi(screen)
 	if dpi != 72:
@@ -344,19 +340,19 @@ func web_load_svg() -> void:
 	var file_name: String = JavaScriptBridge.eval("fileName;", true)
 	var extension := file_name.get_extension()
 	if extension == "svg":
-		var warning_panel := ImportWarningDialog.instantiate()
+		var warning_panel = ImportWarningDialog.instantiate()
 		warning_panel.imported.connect(FileUtils.web_import.bind(file_data, file_name))
 		warning_panel.set_svg(file_data)
 		HandlerGUI.add_overlay(warning_panel)
 	else:
-		var alert_dialog := AlertDialog.instantiate()
+		var alert_dialog = AlertDialog.instantiate()
 		HandlerGUI.add_overlay(alert_dialog)
 		if extension.is_empty():
 			alert_dialog.setup(TranslationServer.translate(
 					"The file extension is empty. Only \"svg\" files are supported."))
 		else:
 			alert_dialog.setup(TranslationServer.translate(
-					"\"{passed_extension}\" is a unsupported file extension. Only \"svg\" files are supported.").format({"passed_extension": extension}))
+					"\"{passed_extension}\" is an unsupported file extension. Only \"svg\" files are supported.").format({"passed_extension": extension}))
 
 
 const web_glue = """var fileData;

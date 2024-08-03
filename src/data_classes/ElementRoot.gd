@@ -9,6 +9,11 @@ signal elements_moved_in_parenet(parent_xid: PackedInt32Array, old_indices: Arra
 signal elements_moved_to(xids: Array[PackedInt32Array], location: PackedInt32Array)
 signal elements_layout_changed  # Emitted together with any of the above 4.
 
+var formatter: Formatter
+
+func _init(new_formatter: Formatter = GlobalSettings.savedata.editor_formatter) -> void:
+	super()
+	formatter = new_formatter
 
 func get_all_elements() -> Array[Element]:
 	var elements: Array[Element] = []

@@ -1,5 +1,8 @@
 class_name Utils extends RefCounted
 
+const MAX_NUMERIC_PRECISION = 6
+const MAX_ANGLE_PRECISION = 4
+
 enum InteractionType {NONE = 0, HOVERED = 1, SELECTED = 2, HOVERED_SELECTED = 3}
 
 
@@ -149,11 +152,11 @@ static func throw_mouse_motion_event() -> void:
 
 
 static func get_last_dir() -> String:
-	if GlobalSettings.save_data.last_used_dir.is_empty()\
-	or not DirAccess.dir_exists_absolute(GlobalSettings.save_data.last_used_dir):
+	if GlobalSettings.savedata.last_used_dir.is_empty() or\
+	not DirAccess.dir_exists_absolute(GlobalSettings.savedata.last_used_dir):
 		return OS.get_system_dir(OS.SYSTEM_DIR_PICTURES)
 	else:
-		return GlobalSettings.save_data.last_used_dir
+		return GlobalSettings.savedata.last_used_dir
 
 
 static func generate_gradient(element: Element) -> Gradient:

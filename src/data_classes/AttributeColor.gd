@@ -7,10 +7,54 @@ func set_value(new_value: String) -> void:
 	super(new_value if ColorParser.is_valid(new_value) else "")
 
 func format(text: String) -> String:
-	if GlobalSettings.color_enable_autoformatting:
-		return ColorParser.format_text(text)
-	else:
+	text = text.strip_edges()
+	
+	if ColorParser.is_valid_url(text):
+		return "url(" + text.substr(4, text.length() - 5).strip_edges() + ")"
+	elif text in special_colors:
 		return text
+	
+	var named_colors_usage := formatter.color_use_named_colors
+	# First make sure we have a 6-digit hex.
+	if ColorParser.is_valid_rgb(text):
+		var inside_brackets := text.substr(4, text.length() - 5)
+		var args := inside_brackets.split(",", false)
+		text = "#" +\
+				Color8(args[0].to_int(), args[1].to_int(), args[2].to_int()).to_html(false)
+	if text in named_colors:
+		text = named_colors[text]
+	if ColorParser.is_valid_hex(text) and text.length() == 4:
+		text = "#" + text[1] + text[1] + text[2] + text[2] + text[3] + text[3]
+	
+	text = text.to_upper() if true else text.to_lower()
+	match formatter.color_primary_syntax:
+		Formatter.PrimaryColorSyntax.THREE_OR_SIX_DIGIT_HEX:
+			if text.length() == 7 and text[0] == "#" and\
+			text[1] == text[2] and text[3] == text[4] and text[5] == text[6]:
+				text = "#" + text[1] + text[3] + text[5]
+		Formatter.PrimaryColorSyntax.RGB:
+			var new_text := "rgb("
+			for i in [1, 3, 5]:
+				new_text += String.num_uint64(text.substr(i, 2).hex_to_int())
+				if i != 5:
+					new_text += ", "
+			text = new_text + ")"
+	
+	if named_colors_usage != Formatter.NamedColorUse.NEVER:
+		var hex := text.to_lower()
+		if ColorParser.is_valid_hex(hex) and hex.length() == 4:
+			hex = "#" + hex[1] + hex[1] + hex[2] + hex[2] + hex[3] + hex[3]
+		
+		if hex in AttributeColor.named_colors.values():
+			if named_colors_usage == Formatter.NamedColorUse.ALWAYS:
+				text = AttributeColor.named_colors.find_key(hex)
+			else:
+				var named_color_text: String = AttributeColor.named_colors.find_key(hex)
+				if named_color_text.length() < text.length() or\
+				(named_colors_usage == Formatter.NamedColorUse.WHEN_SHORTER_OR_EQUAL and\
+				named_color_text.length() == text.length()):
+					text = named_color_text
+	return text
 
 
 const special_colors = ["none", "currentColor"]

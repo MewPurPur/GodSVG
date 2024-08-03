@@ -21,7 +21,6 @@ var dimensions := Vector2.ZERO
 @onready var fallback_format_label: Label = %FallbackFormatLabel
 
 func _ready() -> void:
-	GlobalSettings.language_changed.connect(update_translation)
 	scale_edit.value_changed.connect(_on_scale_value_changed)
 	quality_edit.value_changed.connect(_on_quality_value_changed)
 	format_dropdown.value_changed.connect(_on_dropdown_value_changed)
@@ -32,17 +31,14 @@ func _ready() -> void:
 	scale_edit.min_value = 1 / minf(dimensions.x, dimensions.y)
 	scale_edit.max_value = 16384 / bigger_dimension
 	scale_edit.set_value(minf(scale_edit.get_value(), 2048 / bigger_dimension))
-	update_translation()
-	texture_preview.setup(SVG.text, dimensions)
-
-
-func update_translation() -> void:
+	texture_preview.setup(SVG.get_export_text(), dimensions)
+	
 	# Update dimensions label.
 	var valid_dimensions := is_finite(dimensions.x) and is_finite(dimensions.y)
 	dimensions_label.text = TranslationServer.translate("Size") + ": "
 	if valid_dimensions:
-		dimensions_label.text += NumberParser.num_to_text(dimensions.x) +\
-				"×" + NumberParser.num_to_text(dimensions.y)
+		dimensions_label.text += String.num(dimensions.x, 2) + "×" +\
+				String.num(dimensions.y, 2)
 	else:
 		dimensions_label.text += TranslationServer.translate("Invalid")
 	# If the size is invalid, only SVG exports are relevant. So hide the dropdown.
