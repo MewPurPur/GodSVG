@@ -9,6 +9,3 @@ anchors_preset = 0
 offset_right = 68.0
 script = ExtResource("1_1uexr")
 button_visuals = false
-
-[connection signal="pressed" from="." to="." method="_on_pressed"]
-[connection signal="text_changed" from="." to="." method="_on_text_changed"]

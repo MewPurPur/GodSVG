@@ -640,8 +640,8 @@ func _unhandled_input(event: InputEvent) -> void:
 			Indications.clear_hovered()
 			Indications.clear_inner_hovered()
 	
-	var snap_enabled := GlobalSettings.save_data.snap > 0.0
-	var snap_size := absf(GlobalSettings.save_data.snap)
+	var snap_enabled := GlobalSettings.snap > 0.0
+	var snap_size := absf(GlobalSettings.snap)
 	var snap_vector := Vector2(snap_size, snap_size)
 	
 	if event is InputEventMouseMotion:
@@ -752,7 +752,7 @@ func _on_handle_added() -> void:
 			dragged_handle = handle
 			# Move the handle that's being dragged.
 			var mouse_pos := get_global_mouse_position()
-			var snap_size := GlobalSettings.save_data.snap
+			var snap_size := GlobalSettings.snap
 			if snap_size > 0.0:
 				mouse_pos = mouse_pos.snapped(Vector2(snap_size, snap_size))
 			

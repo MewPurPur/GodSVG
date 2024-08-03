@@ -147,7 +147,11 @@ func move_down(idx: int) -> void:
 	layout_changed.emit()
 
 func paste_palette(idx: int) -> void:
-	GlobalSettings.palettes[idx] = ColorPalette.from_text(DisplayServer.clipboard_get())
+	var pasted_palettes := ColorPalette.text_to_palettes(DisplayServer.clipboard_get())
+	if pasted_palettes.is_empty():
+		return
+	
+	GlobalSettings.palettes[idx] = pasted_palettes[0]
 	# If another palette has the same title, disable the title.
 	for i in GlobalSettings.palettes.size():
 		if i == idx:

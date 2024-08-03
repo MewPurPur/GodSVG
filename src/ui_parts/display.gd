@@ -89,7 +89,7 @@ func update_theme() -> void:
 	viewport_panel.add_theme_stylebox_override("panel", frame)
 
 func update_snap_config() -> void:
-	var snap_config := GlobalSettings.save_data.snap
+	var snap_config := GlobalSettings.snap
 	var snap_enabled := snap_config > 0.0
 	snap_button.button_pressed = snap_enabled
 	snapper.editable = snap_enabled
@@ -188,7 +188,7 @@ func toggle_reference_overlay() -> void:
 		viewport.move_child(reference_texture, 0)
 
 func finish_reference_load() -> void:
-	var img = Image.load_from_file("user://reference_image.png")
+	var img = Image.load_from_file(GlobalSettings.reference_image_path)
 	reference_texture.texture = ImageTexture.create_from_image(img)
 	reference_texture.show()
 
@@ -199,13 +199,12 @@ func set_snap_amount(snap_value: float) -> void:
 	snapper.set_value(snap_value)
 
 func _on_snap_button_toggled(toggled_on: bool) -> void:
-	GlobalSettings.modify_save_data("snap",
-			absf(GlobalSettings.save_data.snap) * (1 if toggled_on else -1))
+	GlobalSettings.modify_setting("session", "snap",
+			absf(GlobalSettings.snap) if toggled_on else -absf(GlobalSettings.snap))
 	update_snap_config()
 
 func _on_snap_number_edit_value_changed(new_value: float) -> void:
-	GlobalSettings.modify_save_data("snap",
-			new_value * signf(GlobalSettings.save_data.snap))
+	GlobalSettings.modify_setting("session", "snap", new_value * signf(GlobalSettings.snap))
 	update_snap_config()
 
 # The strings here are intentionally not localized.

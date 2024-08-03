@@ -1,23 +1,69 @@
 # This singleton handles session data and settings.
 extends Node
 
+const GoodColorPicker = preload("res://src/ui_widgets/good_color_picker.gd")
+
+enum ShorthandTags {ALWAYS, ALL_EXCEPT_CONTAINERS, NEVER}
+enum NamedColorUse {ALWAYS, WHEN_SHORTER_OR_EQUAL, WHEN_SHORTER, NEVER}
+enum PrimaryColorSyntax {THREE_OR_SIX_DIGIT_HEX, SIX_DIGIT_HEX, RGB}
+
+signal file_path_changed
+signal snapping_changed
 signal language_changed
 signal ui_scale_changed
 signal theme_changed
 signal shortcuts_changed
 signal number_precision_changed
+signal attribute_formatting_changed
 signal highlight_colors_changed
 signal basic_colors_changed
 signal handle_visuals_changed
-signal window_title_scheme_changed
 
-# Session data
-var save_data := SaveData.new()
-const save_path = "user://save.tres"
 
-# Settings
 var config := ConfigFile.new()
-const config_path = "user://config.tres"
+const config_path = "user://config.cfg"
+
+var palettes: Array[ColorPalette] = []
+const palettes_path = "user://palettes.xml"
+
+var svg_text := "":
+	set(new_value):
+		if new_value != svg_text:
+			svg_text = new_value
+			FileAccess.open(svg_path, FileAccess.WRITE).store_string(svg_text)
+const svg_path = "user://save.svg"
+
+const reference_image_path = "user://reference.png"
+
+# TODO investigate why this can't be const. 
+var enum_text = {
+	"xml_shorthand_tags": {
+		ShorthandTags.ALWAYS: TranslationServer.translate("Always"),
+		ShorthandTags.ALL_EXCEPT_CONTAINERS: TranslationServer.translate("All except containers"),
+		ShorthandTags.NEVER: TranslationServer.translate("Never"),
+	},
+	"color_use_named_colors": {
+		NamedColorUse.ALWAYS: TranslationServer.translate("Always"),
+		NamedColorUse.WHEN_SHORTER_OR_EQUAL: TranslationServer.translate("When shorter or equal"),
+		NamedColorUse.WHEN_SHORTER: TranslationServer.translate("When shorter"),
+		NamedColorUse.NEVER: TranslationServer.translate("Never"),
+	},
+	"color_primary_syntax": {
+		PrimaryColorSyntax.THREE_OR_SIX_DIGIT_HEX: TranslationServer.translate("3- or 6-digit hex"),
+		PrimaryColorSyntax.SIX_DIGIT_HEX: TranslationServer.translate("6-digit hex"),
+		PrimaryColorSyntax.RGB: "RGB",
+	},
+}
+
+func get_enum_texts(setting: String) -> Array[String]:
+	var values: Array[String] = []
+	var enum_dict: Dictionary = enum_text[setting]
+	for key in enum_dict:
+		values.append(enum_dict[key])
+	return values
+
+func get_enum_text(setting: String) -> String:
+	return enum_text[setting][get(setting)]
 
 func get_default(section: String, setting: String) -> Variant:
 	return defaults[section][setting][0]
@@ -25,32 +71,42 @@ func get_default(section: String, setting: String) -> Variant:
 func get_signal(section: String, setting: String) -> Signal:
 	return defaults[section][setting][1]
 
-# Don't have the language setting here, so it's not reset.
 var defaults = {
+	"localization": {
+		"language": ["en", Signal()],
+	},
+	"session": {
+		"snap": [-0.5, snapping_changed],
+		"color_picker_slider_mode": [GoodColorPicker.SliderMode.RGB, Signal()],
+		"path_command_relative": [false, Signal()],
+		"last_used_dir": ["", Signal()],
+		"file_dialog_show_hidden": [false, Signal()],
+		"current_file_path": ["", file_path_changed],
+	},
 	"formatting": {
 		"general_number_precision": [3, number_precision_changed],
 		"general_angle_precision": [1, number_precision_changed],
-		"xml_add_trailing_newline": [false, Signal()],
-		"xml_shorthand_tags": [true, Signal()],
-		"xml_pretty_formatting": [false, Signal()],
-		"number_enable_autoformatting": [false, Signal()],
-		"number_remove_zero_padding": [false, Signal()],
-		"number_remove_leading_zero": [true, Signal()],
-		"number_remove_plus_sign": [false, Signal()],
-		"color_enable_autoformatting": [false, Signal()],
-		"color_convert_rgb_to_hex": [false, Signal()],
-		"color_convert_named_to_hex": [true, Signal()],
-		"color_use_shorthand_hex_code": [true, Signal()],
-		"color_use_short_named_colors": [false, Signal()],
-		"pathdata_enable_autoformatting": [true, Signal()],
-		"pathdata_compress_numbers": [true, Signal()],
-		"pathdata_minimize_spacing": [true, Signal()],
-		"pathdata_remove_spacing_after_flags": [false, Signal()],
-		"pathdata_remove_consecutive_commands": [true, Signal()],
-		"transform_list_enable_autoformatting": [true, Signal()],
-		"transform_list_compress_numbers": [true, Signal()],
-		"transform_list_minimize_spacing": [true, Signal()],
-		"transform_list_remove_unnecessary_params": [true, Signal()],
+		"xml_add_trailing_newline": [false, attribute_formatting_changed],
+		"xml_shorthand_tags": [ShorthandTags.ALL_EXCEPT_CONTAINERS, attribute_formatting_changed],
+		"xml_shorthand_tags_space_out_slash": [false, attribute_formatting_changed],
+		"xml_pretty_formatting": [false, attribute_formatting_changed],
+		"xml_indentation_use_spaces": [false, attribute_formatting_changed],
+		"xml_indentation_spaces": [2, attribute_formatting_changed],
+		"number_remove_leading_zero": [true, attribute_formatting_changed],
+		"number_use_exponential_when_shorter": [true, attribute_formatting_changed],
+		"color_autoformat_raw_text": [false, attribute_formatting_changed],
+		"color_use_named_colors": [NamedColorUse.WHEN_SHORTER, attribute_formatting_changed],
+		"color_primary_syntax": [PrimaryColorSyntax.THREE_OR_SIX_DIGIT_HEX, attribute_formatting_changed],
+		"color_capital_hex": [false, attribute_formatting_changed],
+		"pathdata_autoformat_raw_text": [true, attribute_formatting_changed],
+		"pathdata_compress_numbers": [true, attribute_formatting_changed],
+		"pathdata_minimize_spacing": [true, attribute_formatting_changed],
+		"pathdata_remove_spacing_after_flags": [false, attribute_formatting_changed],
+		"pathdata_remove_consecutive_commands": [true, attribute_formatting_changed],
+		"transform_list_autoformat_raw_text": [true, attribute_formatting_changed],
+		"transform_list_compress_numbers": [true, attribute_formatting_changed],
+		"transform_list_minimize_spacing": [true, attribute_formatting_changed],
+		"transform_list_remove_unnecessary_params": [true, attribute_formatting_changed],
 	},
 	"theming": {
 		"highlighting_symbol_color": [Color("abc9ff"), highlight_colors_changed],
@@ -76,7 +132,7 @@ var defaults = {
 		"wrap_mouse": [false, Signal()],
 		"use_ctrl_for_zoom": [true, Signal()],
 		"use_native_file_dialog": [true, Signal()],
-		"use_filename_for_window_title": [true, window_title_scheme_changed],
+		"use_filename_for_window_title": [true, Signal()],
 		"handle_size": [1.0, handle_visuals_changed],
 		"ui_scale": [1.0, ui_scale_changed],
 		"auto_ui_scale": [true, ui_scale_changed],
@@ -153,38 +209,41 @@ const keybinds_dict = {
 	}
 }
 
-
-var language: String:
+var language := "":
 	set(new_value):
-		if language != new_value:
+		if new_value != language:
 			language = new_value
 			TranslationServer.set_locale(new_value)
-			save_setting("localization", "language")
 			language_changed.emit()
 
-var palettes: Array[ColorPalette] = []
-
+var snap := -0.5  # Negative when disabled.
+var color_picker_slider_mode := GoodColorPicker.SliderMode.RGB
+var path_command_relative := false
+var last_used_dir := ""
+var file_dialog_show_hidden := false
+var current_file_path := ""
 
 # Formatting
 var general_number_precision := 3
 var general_angle_precision := 1
 var xml_add_trailing_newline := false
-var xml_shorthand_tags := true
+var xml_shorthand_tags := ShorthandTags.ALL_EXCEPT_CONTAINERS
+var xml_shorthand_tags_space_out_slash := false
 var xml_pretty_formatting := false
-var number_enable_autoformatting := false
-var number_remove_zero_padding := true
-var number_remove_leading_zero := false
-var color_enable_autoformatting := false
-var color_convert_rgb_to_hex := false
-var color_convert_named_to_hex := true
-var color_use_shorthand_hex_code := true
-var color_use_short_named_colors := false
-var pathdata_enable_autoformatting := true
+var xml_indentation_use_spaces := false
+var xml_indentation_spaces := 2
+var number_remove_leading_zero := true
+var number_use_exponential_when_shorter := true
+var color_autoformat_raw_text := false
+var color_use_named_colors := NamedColorUse.WHEN_SHORTER
+var color_primary_syntax := PrimaryColorSyntax.THREE_OR_SIX_DIGIT_HEX
+var color_capital_hex := false
+var pathdata_autoformat_raw_text := true
 var pathdata_compress_numbers := true
 var pathdata_minimize_spacing := true
 var pathdata_remove_spacing_after_flags := false
 var pathdata_remove_consecutive_commands := true
-var transform_list_enable_autoformatting := true
+var transform_list_autoformat_raw_text := true
 var transform_list_compress_numbers := true
 var transform_list_minimize_spacing := true
 var transform_list_remove_unnecessary_params := true
@@ -205,8 +264,9 @@ var handle_selected_color := Color("#46f")
 var handle_hovered_selected_color := Color("#f44")
 var background_color := Color(0.12, 0.132, 0.2, 1):
 	set(new_value):
-		background_color = new_value
-		RenderingServer.set_default_clear_color(background_color)
+		if new_value != background_color:
+			background_color = new_value
+			RenderingServer.set_default_clear_color(new_value)
 var basic_color_valid := Color("9f9")
 var basic_color_error := Color("f99")
 var basic_color_warning := Color("ee5")
@@ -216,7 +276,11 @@ var invert_zoom := false
 var wrap_mouse := false
 var use_ctrl_for_zoom := true
 var use_native_file_dialog := true
-var use_filename_for_window_title := true
+var use_filename_for_window_title := true:
+	set(new_value):
+		if new_value != use_filename_for_window_title:
+			use_filename_for_window_title = new_value
+			update_window_title()
 var handle_size := 1.0
 var ui_scale := 1.0
 var auto_ui_scale := true
@@ -226,12 +290,13 @@ func reset_setting(section: String, setting: String) -> void:
 	modify_setting(section, setting, get_default(section, setting))
 
 func modify_setting(section: String, setting: String, new_value: Variant) -> void:
-	if get(setting) != new_value:
-		set(setting, new_value)
-		save_setting(section, setting)
-		var related_signal := get_signal(section, setting)
-		if not related_signal.is_null():
-			related_signal.emit()
+	if get(setting) == new_value:
+		return
+	set(setting, new_value)
+	save_setting(section, setting)
+	var related_signal := get_signal(section, setting)
+	if not related_signal.is_null():
+		related_signal.emit()
 
 
 func modify_keybind(action: String, new_events: Array[InputEvent]) -> void:
@@ -257,57 +322,66 @@ func save_setting(section: String, setting: String) -> void:
 	config.save(config_path)
 
 func save_palettes() -> void:
-	config.set_value("palettes", "palettes", palettes)
-	config.save(config_path)
+	var palette_strings := PackedStringArray()
+	for palette in palettes:
+		palette_strings.append(palette.to_text())
+	var palettes_xml := "\n".join(palette_strings)
+	FileAccess.open(palettes_path, FileAccess.WRITE).store_string(palettes_xml)
 
 func save_keybind(action: String) -> void:
 	config.set_value("keybinds", action, InputMap.action_get_events(action))
 	config.save(config_path)
 
 
-func modify_save_data(property: String, new_value: Variant) -> void:
-	save_data.set(property, new_value)
-	ResourceSaver.save(save_data, save_path)
-
-func load_user_data() -> void:
-	if FileAccess.file_exists(save_path):
-		save_data = ResourceLoader.load(save_path)
-
-func _exit_tree() -> void:
-	ResourceSaver.save(save_data, save_path)
-
 func _enter_tree() -> void:
 	for action in InputMap.get_actions():
 		default_input_events[action] = InputMap.action_get_events(action)
-	load_settings()
-	load_user_data()
-	ThemeGenerator.generate_theme()
+	load_config()
+	load_palettes()
+	load_svg_text()
+	ThemeGenerator.generate_and_apply_theme()
+	# Connect to settings that have a global effect.
+	number_precision_changed.connect(_on_number_precision_changed)
+	file_path_changed.connect(update_window_title)
+	update_window_title()
 
 
-func load_settings() -> void:
+func load_config() -> void:
 	var error := config.load(config_path)
 	if error:
 		# File wasn't found or maybe something broke, setup defaults again.
 		reset_settings()
-		reset_palettes()
 		reset_keybinds()
-		language = "en"
-	else:
-		for section in config.get_sections():
-			if section == "keybinds":
-				for category in keybinds_dict:
-					var category_dict: Dictionary = keybinds_dict[category]
-					for action in category_dict:
-						# Only save ones that are configurable.
-						if category_dict[action]:
-							if config.has_section_key("keybinds", action):
-								modify_keybind(action, config.get_value("keybinds", action))
-							else:
-								save_keybind(action)
-			else:
-				for setting in config.get_section_keys(section):
-					set(setting, config.get_value(section, setting))
-					save_setting(section, setting)
+		return
+	
+	for section in config.get_sections():
+		if section == "keybinds":
+			for category in keybinds_dict:
+				var category_dict: Dictionary = keybinds_dict[category]
+				for action in category_dict:
+					# Only save ones that are configurable.
+					if category_dict[action]:
+						if config.has_section_key("keybinds", action):
+							modify_keybind(action, config.get_value("keybinds", action))
+						else:
+							save_keybind(action)
+		else:
+			for setting in config.get_section_keys(section):
+				set(setting, config.get_value(section, setting))
+				save_setting(section, setting)
+
+func load_palettes() -> void:
+	var fa := FileAccess.open(palettes_path, FileAccess.READ)
+	if fa == null:
+		reset_palettes()
+		return
+	palettes = ColorPalette.text_to_palettes(fa.get_as_text())
+
+func load_svg_text() -> void:
+	var fa := FileAccess.open(svg_path, FileAccess.READ)
+	if fa != null:
+		svg_text = fa.get_as_text()
+
 
 func reset_settings() -> void:
 	for section in defaults.keys():
@@ -328,3 +402,23 @@ func get_validity_color(error_condition: bool, warning_condition := false) -> Co
 
 func get_quanta() -> float:
 	return 0.1 ** general_number_precision
+
+
+# Global effects from settings.
+
+func _on_number_precision_changed() -> void:
+	# Update snap to fit the new precision.
+	var snapping_on := snap > 0
+	var quanta := get_quanta()
+	var new_snap := snappedf(snap, quanta)
+	if absf(new_snap) < quanta:
+		new_snap = quanta
+		if not snapping_on:
+			new_snap *= -1
+	modify_setting("session", "snap", new_snap)
+
+func update_window_title() -> void:
+	if use_filename_for_window_title and not current_file_path.is_empty():
+		get_window().title = current_file_path.get_file() + " - GodSVG"
+	else:
+		get_window().title = "GodSVG"

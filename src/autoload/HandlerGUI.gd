@@ -58,7 +58,6 @@ func add_overlay(overlay_menu: Control) -> void:
 	overlay_ref.add_child(overlay_menu)
 	overlay_menu.set_anchors_and_offsets_preset(Control.PRESET_CENTER)
 	overlay_menu.tree_exiting.connect(remove_overlay.bind(overlay_ref))
-	get_tree().paused = true
 
 func remove_overlay(overlay_ref: ColorRect = null) -> void:
 	if overlay_stack.is_empty():
@@ -71,9 +70,7 @@ func remove_overlay(overlay_ref: ColorRect = null) -> void:
 	overlay_ref = overlay_stack.pop_back()
 	if is_instance_valid(overlay_ref):
 		overlay_ref.queue_free()
-	if overlay_stack.is_empty():
-		get_tree().paused = false
-	else:
+	if not overlay_stack.is_empty():
 		overlay_stack.back().show()
 	Utils.throw_mouse_motion_event()
 

@@ -66,11 +66,10 @@ const normal_tab_color = Color("17192e")
 const selected_tab_color = Color("293052")
 const selected_tab_border_color = Color("608fbf")
 
-static func generate_theme() -> void:
-	var default_theme := ThemeDB.get_default_theme()
-	default_theme.default_font = regular_font
-	default_theme.default_font_size = 13
+static func generate_theme() -> Theme:
 	var theme := Theme.new()
+	theme.default_font = regular_font
+	theme.default_font_size = 13
 	setup_panelcontainer(theme)
 	setup_button(theme)
 	setup_checkbox(theme)
@@ -84,7 +83,14 @@ static func generate_theme() -> void:
 	setup_textedit(theme)
 	setup_tooltip(theme)
 	setup_splitcontainer(theme)
-	default_theme.merge_with(theme)
+	return theme
+
+static func generate_and_apply_theme() -> void:
+	var default_theme := ThemeDB.get_default_theme()
+	default_theme.default_font = regular_font
+	default_theme.default_font_size = 13
+	var generated_theme := generate_theme()
+	default_theme.merge_with(generated_theme)
 
 
 static func setup_panelcontainer(theme: Theme) -> void:
@@ -137,6 +143,19 @@ static func setup_panelcontainer(theme: Theme) -> void:
 	overlay_stylebox.border_color = overlay_panel_border_color
 	theme.set_stylebox("panel", "OverlayPanel", overlay_stylebox)
 	
+	theme.add_type("TextBox")
+	theme.set_type_variation("TextBox", "PanelContainer")
+	var textbox_stylebox := StyleBoxFlat.new()
+	textbox_stylebox.set_corner_radius_all(2)
+	textbox_stylebox.set_border_width_all(2)
+	textbox_stylebox.content_margin_left = 6.0
+	textbox_stylebox.content_margin_right = 6.0
+	textbox_stylebox.content_margin_top = 2.0
+	textbox_stylebox.content_margin_bottom = 4.0
+	textbox_stylebox.bg_color = overlay_panel_inner_color * 0.8 + Color.BLACK * 0.2
+	textbox_stylebox.border_color = Color(overlay_panel_border_color, 0.6)
+	theme.set_stylebox("panel", "TextBox", textbox_stylebox)
+	
 	theme.add_type("SideTabBar")
 	theme.set_type_variation("SideTabBar", "PanelContainer")
 	var side_tabbar_stylebox := StyleBoxFlat.new()
@@ -154,10 +173,10 @@ static func setup_panelcontainer(theme: Theme) -> void:
 	panel_stylebox.set_border_width_all(2)
 	panel_stylebox.corner_radius_top_right = 5
 	panel_stylebox.corner_radius_bottom_right = 5
-	panel_stylebox.content_margin_left = 8
-	panel_stylebox.content_margin_right = 8
-	panel_stylebox.content_margin_bottom = 6
-	panel_stylebox.content_margin_top = 5
+	panel_stylebox.content_margin_left = 14
+	panel_stylebox.content_margin_right = 14
+	panel_stylebox.content_margin_bottom = 12
+	panel_stylebox.content_margin_top = 11
 	theme.set_stylebox("panel", "SideBarContent", panel_stylebox)
 
 static func setup_button(theme: Theme) -> void:

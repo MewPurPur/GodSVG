@@ -1,0 +1,34 @@
+[gd_scene load_steps=5 format=3 uid="uid://b4qgdo1od11hx"]
+
+[ext_resource type="Script" path="res://src/ui_widgets/number_dropdown.gd" id="1_axymu"]
+[ext_resource type="FontFile" uid="uid://clpf84p1lfwlp" path="res://visual/fonts/Font.ttf" id="2_v4n2i"]
+[ext_resource type="Script" path="res://src/ui_widgets/BetterLineEdit.gd" id="3_y7lt6"]
+[ext_resource type="Texture2D" uid="uid://coda6chhcatal" path="res://visual/icons/Arrow.svg" id="4_vet1k"]
+
+[node name="NumberDropdown" type="HBoxContainer"]
+custom_minimum_size = Vector2(0, 22)
+offset_right = 49.0
+offset_bottom = 22.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_constants/separation = 0
+script = ExtResource("1_axymu")
+
+[node name="LineEdit" type="LineEdit" parent="."]
+layout_mode = 2
+theme_type_variation = &"RightConnectedLineEdit"
+theme_override_fonts/font = ExtResource("2_v4n2i")
+script = ExtResource("3_y7lt6")
+
+[node name="Button" type="Button" parent="."]
+custom_minimum_size = Vector2(15, 0)
+layout_mode = 2
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_type_variation = &"LeftConnectedButton"
+icon = ExtResource("4_vet1k")
+expand_icon = true
+
+[connection signal="text_changed" from="LineEdit" to="." method="_on_text_changed"]
+[connection signal="text_submitted" from="LineEdit" to="." method="_on_text_submitted"]
+[connection signal="pressed" from="Button" to="." method="_on_button_pressed"]

@@ -181,7 +181,7 @@ func _get_keycode_for_events(input_events: Array[InputEvent]) -> Key:
 
 func _on_svg_text_changed() -> void:
 	NativeMenu.set_item_disabled(file_rid, file_clear_svg_idx, SVG.text == SVG.DEFAULT)
-	var empty_path := GlobalSettings.save_data.current_file_path.is_empty()
+	var empty_path := GlobalSettings.current_file_path.is_empty()
 	NativeMenu.set_item_disabled(file_rid, file_clear_association_idx, empty_path)
 	NativeMenu.set_item_disabled(file_rid, file_reset_svg_idx, empty_path)
 
