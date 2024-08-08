@@ -25,7 +25,9 @@ var value: String:
 
 
 func _ready() -> void:
-	text_submitted.connect(set.bind("value"))
+	text_submitted.connect(func(x): set("value", x))
+	pressed.connect(_on_pressed)
+	text_changed.connect(_on_text_changed)
 	text_change_canceled.connect(sync.bind(value))
 	button_gui_input.connect(queue_redraw.unbind(1))
 	if enable_alpha:

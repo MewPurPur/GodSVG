@@ -1,7 +1,6 @@
 class_name TransformListParser extends RefCounted
 
-static func transform_list_to_text(
-transform_list: Array[Transform]) -> String:
+static func transform_list_to_text(transform_list: Array[Transform]) -> String:
 	var output := ""
 	var num_parser := NumberArrayParser.new()
 	num_parser.compress_numbers = GlobalSettings.transform_list_compress_numbers

@@ -14,7 +14,6 @@ extends VBoxContainer
 func _ready() -> void:
 	GlobalSettings.highlight_colors_changed.connect(setup_highlighter)
 	GlobalSettings.theme_changed.connect(setup_theme)
-	GlobalSettings.window_title_scheme_changed.connect(update_window_title)
 	SVG.parsing_finished.connect(update_error)
 	auto_update_text()
 	update_size_button()
@@ -23,7 +22,7 @@ func _ready() -> void:
 	setup_highlighter()
 	code_edit.clear_undo_history()
 	SVG.text_changed.connect(auto_update_text)
-	GlobalSettings.save_data.current_file_path_changed.connect(update_file_button)
+	GlobalSettings.file_path_changed.connect(update_file_button)
 	import_button.pressed.connect(ShortcutUtils.fn("import"))
 	export_button.pressed.connect(ShortcutUtils.fn("export"))
 	# Fix the size button sizing.
@@ -136,19 +135,11 @@ func update_size_button() -> void:
 		size_button.remove_theme_color_override("font_color")
 
 func update_file_button() -> void:
-	var file_path := GlobalSettings.save_data.current_file_path
+	var file_path := GlobalSettings.current_file_path
 	file_button.visible = !file_path.is_empty()
 	file_button.text = file_path.get_file()
 	file_button.tooltip_text = file_path.get_file()
 	Utils.set_max_text_width(file_button, 140.0, 12.0)
-	update_window_title()
-
-func update_window_title() -> void:
-	var file_path := GlobalSettings.save_data.current_file_path
-	if GlobalSettings.use_filename_for_window_title and not file_path.is_empty():
-		get_window().title = file_path.get_file() + " - GodSVG"
-	else:
-		get_window().title = "GodSVG"
 
 
 func _on_svg_code_edit_focus_exited() -> void:

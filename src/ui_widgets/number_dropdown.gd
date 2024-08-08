@@ -5,43 +5,43 @@ signal value_changed(new_value: String)
 
 @onready var line_edit: BetterLineEdit = $LineEdit
 
-@export var values: Array[String]
+@export var values: Array[float]
+@export var is_integer := false
 @export var restricted := true
+@export var min_value := 0
+@export var max_value := 0
 
 var value := "":
 	set(new_value):
-		if value != new_value:
-			value = new_value
+		var current_num := value.to_float()
+		var proposed_num := new_value.to_float()
+		if is_integer:
+			proposed_num = roundi(proposed_num)
+		if not is_equal_approx(current_num, proposed_num):
+			value = to_str(proposed_num)
 			value_changed.emit(value)
 			if is_instance_valid(line_edit):
+				if not is_integer and not "." in value:
+					value += ".0"
 				line_edit.text = value
-
-func _ready() -> void:
-	if not values.is_empty():
-		value = values[0]
-	
-	var max_length := 0
-	for val in values:
-		max_length = maxi(val.length(), max_length)
-		
-	line_edit.custom_minimum_size.x = line_edit.get_theme_font("font").get_string_size(
-			"m".repeat(max_length + 1), HORIZONTAL_ALIGNMENT_LEFT, -1,
-			line_edit.get_theme_font_size("font_size")).x
-	line_edit.reset_size()
 
 func _on_button_pressed() -> void:
 	var btn_arr: Array[Button] = []
 	for val in values:
-		btn_arr.append(ContextPopup.create_button(val, _on_value_chosen.bind(val),
-				val == value))
+		var new_value := to_str(val)
+		btn_arr.append(ContextPopup.create_button(new_value,
+				set.bind("value", new_value), new_value == value))
 	
 	var value_picker := ContextPopup.new()
 	value_picker.setup(btn_arr, false, size.x)
 	HandlerGUI.popup_under_rect(value_picker, line_edit.get_global_rect(), get_viewport())
 
-func _on_value_chosen(new_value: String) -> void:
-	value = new_value
 
+func to_str(num: float) -> String:
+	var ret := String.num(num)
+	if not (is_integer or "." in ret):
+		ret += ".0"
+	return ret
 
 func _on_text_submitted(new_text: String) -> void:
 	if (restricted and new_text in values) or not restricted:

@@ -77,7 +77,7 @@ static func is_valid_url(color: String) -> bool:
 	if not color.begins_with("url(") or not color.ends_with(")"):
 		return false
 	var id := color.substr(4, color.length() - 5).strip_edges().trim_prefix("#")
-	return IDParser.get_validity(id) != IDParser.ValidityLevel.INVALID
+	return AttributeID.get_validity(id) != AttributeID.ValidityLevel.INVALID
 
 # URL doesn't have a color interpretation, so it'll give the backup.
 static func text_to_color(color: String, backup := Color.BLACK,

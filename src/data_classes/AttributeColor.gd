@@ -7,10 +7,9 @@ func set_value(new_value: String) -> void:
 	super(new_value if ColorParser.is_valid(new_value) else "")
 
 func format(text: String) -> String:
-	if GlobalSettings.color_enable_autoformatting:
+	if GlobalSettings.color_autoformat_raw_text:
 		return ColorParser.format_text(text)
-	else:
-		return text
+	return super(text)
 
 
 const special_colors = ["none", "currentColor"]

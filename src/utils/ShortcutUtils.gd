@@ -13,10 +13,10 @@ static func fn(shortcut: String) -> Callable:
 		"copy_svg_text": return DisplayServer.clipboard_set.bind(SVG.text)
 		"clear_svg": return SVG.apply_svg_text.bind(SVG.DEFAULT)
 		"optimize": return SVG.optimize
-		"clear_file_path": return GlobalSettings.modify_save_data.bind(
-				"current_file_path", "")
+		"clear_file_path": return GlobalSettings.modify_setting.bind(
+				"session", "current_file_path", "")
 		"reset_svg": return FileUtils.apply_svg_from_path.bind(
-				GlobalSettings.save_data.current_file_path)
+				GlobalSettings.current_file_path)
 		"redo": return SVG.redo
 		"undo": return SVG.undo
 		"ui_cancel": return Indications.clear_all_selections

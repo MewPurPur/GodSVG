@@ -65,21 +65,28 @@ func to_text() -> String:
 		text += "/>\n"
 	return text + "</palette>"
 
-static func from_text(text: String) -> ColorPalette:
+static func text_to_palettes(text: String) -> Array[ColorPalette]:
 	var parser := XMLParser.new()
 	parser.open_buffer(text.to_utf8_buffer())
 	var parsed_title: String
 	var parsed_colors := PackedStringArray()
 	var parsed_color_names := PackedStringArray()
+	var palettes: Array[ColorPalette] = []
 	while parser.read() == OK:
-		if parser.get_node_type() != XMLParser.NODE_ELEMENT:
-			continue
-		if parser.get_node_name() == "palette":
-			parsed_title = parser.get_named_attribute_value_safe("title")
-		elif parser.get_node_name() == "color":
-			parsed_colors.append(parser.get_named_attribute_value_safe("value"))
-			parsed_color_names.append(parser.get_named_attribute_value_safe("name"))
-	return ColorPalette.new(parsed_title, parsed_colors, parsed_color_names)
+		match parser.get_node_type():
+			XMLParser.NODE_ELEMENT:
+				if parser.get_node_name() == "palette":
+					parsed_title = parser.get_named_attribute_value_safe("title")
+				elif parser.get_node_name() == "color":
+					parsed_colors.append(parser.get_named_attribute_value_safe("value"))
+					parsed_color_names.append(parser.get_named_attribute_value_safe("name"))
+			XMLParser.NODE_ELEMENT_END:
+				palettes.append(ColorPalette.new(parsed_title, parsed_colors.duplicate(),
+						parsed_color_names.duplicate()))
+				parsed_colors.clear()
+				parsed_color_names.clear()
+				parsed_title = ""
+	return palettes
 
 static func is_valid_palette(text: String) -> bool:
 	var parser := XMLParser.new()

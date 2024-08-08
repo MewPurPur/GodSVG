@@ -9,12 +9,6 @@ func _sync() -> void:
 		_number = NumberParser.text_to_num(_value)
 		_percentage = NumberParser.is_percentage(_value)
 
-func format(text: String) -> String:
-	if GlobalSettings.number_enable_autoformatting:
-		return NumberParser.format_text(text)
-	else:
-		return text
-
 func set_num(new_number: float) -> void:
 	_number = new_number
 	super.set_value(NumberParser.num_to_text(new_number) if is_finite(_number) else "")

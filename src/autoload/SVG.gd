@@ -31,6 +31,8 @@ var root_element := ElementRoot.new()
 var UR := UndoRedo.new()
 
 func _ready() -> void:
+	GlobalSettings.number_precision_changed.connect(sync_elements)
+	GlobalSettings.attribute_formatting_changed.connect(sync_elements)
 	UR.version_changed.connect(_on_undo_redo)
 	changed_unknown.connect(queue_update)
 	elements_layout_changed.connect(queue_update)
@@ -46,8 +48,8 @@ func _ready() -> void:
 	
 	# Guarantee a proper SVG text first, as the import warnings dialog
 	# that might pop up from command line file opening is cancellable.
-	if not GlobalSettings.save_data.svg_text.is_empty():
-		apply_svg_text(GlobalSettings.save_data.svg_text)
+	if not GlobalSettings.svg_text.is_empty():
+		apply_svg_text(GlobalSettings.svg_text)
 	else:
 		apply_svg_text(DEFAULT)
 	
@@ -108,12 +110,12 @@ func set_text(new_text: String) -> void:
 	text_changed.emit()
 
 func save_text() -> void:
-	var saved_text := GlobalSettings.save_data.svg_text
+	var saved_text := GlobalSettings.svg_text
 	if saved_text == text:
 		return
 	UR.create_action("")
-	UR.add_do_property(GlobalSettings.save_data, "svg_text", text)
-	UR.add_undo_property(GlobalSettings.save_data, "svg_text", saved_text)
+	UR.add_do_property(GlobalSettings, "svg_text", text)
+	UR.add_undo_property(GlobalSettings, "svg_text", saved_text)
 	UR.add_do_property(self, "text", text)
 	UR.add_undo_property(self, "text", saved_text)
 	UR.commit_action()
@@ -129,7 +131,7 @@ func redo() -> void:
 		sync_elements()
 
 func _on_undo_redo() -> void:
-	GlobalSettings.modify_save_data("svg_text", text)
+	GlobalSettings.svg_text = text
 
 func apply_svg_text(svg_text: String) -> void:
 	set_text(svg_text)

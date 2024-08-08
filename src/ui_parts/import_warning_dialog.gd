@@ -11,13 +11,9 @@ signal imported
 var imported_text := ""
 
 func _ready() -> void:
-	GlobalSettings.language_changed.connect(setup)
 	imported.connect(queue_free)
 	ok_button.pressed.connect(imported.emit)
-	setup()
-
-
-func setup() -> void:
+	
 	# Convert forward and backward to show how GodSVG would display the given SVG.
 	var imported_text_parse_result := SVGParser.text_to_root(imported_text)
 	var preview_text := SVGParser.root_to_text(imported_text_parse_result.svg)

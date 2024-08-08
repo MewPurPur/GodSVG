@@ -107,8 +107,7 @@ func _setup() -> void:
 		return
 	active = true
 	temp_line_edit = BetterLineEdit.new()
-	temp_line_edit.custom_minimum_size =\
-			Vector2(custom_minimum_size.x - BUTTON_WIDTH, 22)
+	temp_line_edit.size = Vector2(size.x - BUTTON_WIDTH, 22)
 	temp_line_edit.tooltip_text = tooltip_text
 	temp_line_edit.code_font_tooltip = code_font_tooltip
 	temp_line_edit.placeholder_text = placeholder_text
@@ -160,7 +159,7 @@ func _draw() -> void:
 	var sb: StyleBoxFlat = get_theme_stylebox("normal", "LineEdit")
 	var horizontal_margin_width := sb.content_margin_left + sb.content_margin_right
 	if not active:
-		draw_style_box(sb, Rect2(Vector2.ZERO, size))
+		sb.draw(ci, Rect2(Vector2.ZERO, size))
 		draw_line(Vector2(size.x - BUTTON_WIDTH, 0),
 				Vector2(size.x - BUTTON_WIDTH, size.y), sb.border_color, 2)
 		# The default overrun behavior couldn't be changed for the simplest draw methods.
