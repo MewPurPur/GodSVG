@@ -33,7 +33,7 @@ To run the latest unreleased version, you can download Godot from https://godote
 
 Documentation for GodSVG is likely eventually going to be built-in. Meanwhile, the basics of using it will be outlined below.
 
-GodSVG is something between an SVG editor and an assisted code editor for SVG files. SVGs are a text-based format, and to understand how to be efficient with the tool, it would really help to first familiarize with the SVG basics (Check out [the first few tutorials here](https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Introduction).
+GodSVG is something between an SVG editor and an assisted code editor for SVG files. SVGs are a text-based format, and to understand how to be efficient with the tool, it would really help to first familiarize with the SVG basics (Check out [the first few tutorials here](https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Introduction)).
 
 If you want to import an existing graphic from scratch, use the Import button on top of the code editor or drag-and-drop an SVG file into the app.
 
