@@ -42,7 +42,8 @@ func _on_formatter_button_pressed() -> void:
 	btn_arr.append(ContextPopup.create_button(TranslationServer.translate("Rename"),
 			popup_edit_name, false, load("res://visual/icons/Rename.svg")))
 	btn_arr.append(ContextPopup.create_button(TranslationServer.translate("Delete"),
-			delete.bind(formatter_idx), false, load("res://visual/icons/Delete.svg")))
+			delete.bind(formatter_idx), GlobalSettings.savedata.formatters.size() > 1,
+			load("res://visual/icons/Delete.svg")))
 	
 	var context_popup := ContextPopup.new()
 	context_popup.setup(btn_arr, true)
@@ -64,7 +65,7 @@ func hide_name_edit() -> void:
 
 func delete(idx: int) -> void:
 	GlobalSettings.savedata.formatters.remove_at(idx)
-	GlobalSettings.save_formatters()
+	GlobalSettings.save()
 	layout_changed.emit()
 
 

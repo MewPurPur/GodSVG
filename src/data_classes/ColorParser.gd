@@ -54,6 +54,8 @@ allow_alpha := false) -> Color:
 	if is_valid_named(color):
 		if color == "none":
 			return Color(0, 0, 0, 0)
+		elif color in AttributeColor.special_colors:
+			return backup
 		else:
 			return Color(AttributeColor.named_colors[color])
 	elif is_valid_rgb(color):

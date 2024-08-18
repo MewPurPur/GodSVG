@@ -26,7 +26,7 @@ func format(text: String) -> String:
 	if ColorParser.is_valid_hex(text) and text.length() == 4:
 		text = "#" + text[1] + text[1] + text[2] + text[2] + text[3] + text[3]
 	
-	text = text.to_upper() if true else text.to_lower()
+	text = text.to_upper() if formatter.color_capital_hex else text.to_lower()
 	match formatter.color_primary_syntax:
 		Formatter.PrimaryColorSyntax.THREE_OR_SIX_DIGIT_HEX:
 			if text.length() == 7 and text[0] == "#" and\
