@@ -20,14 +20,12 @@ func _ready() -> void:
 	if not values.is_empty():
 		value = values[0]
 	
-	var max_length := 0
+	var max_width := 0
 	for val in values:
-		max_length = maxi(val.length(), max_length)
-		
-	line_edit.custom_minimum_size.x = line_edit.get_theme_font("font").get_string_size(
-			"m".repeat(max_length + 1), HORIZONTAL_ALIGNMENT_LEFT, -1,
-			line_edit.get_theme_font_size("font_size")).x
-	line_edit.size.x = 0
+		max_width = maxi(int(line_edit.get_theme_font("font").get_string_size(val,
+				HORIZONTAL_ALIGNMENT_LEFT, -1, line_edit.get_theme_font_size("font_size")).x),
+				max_width)
+	line_edit.size.x = max_width + 4
 
 func _on_button_pressed() -> void:
 	var btn_arr: Array[Button] = []

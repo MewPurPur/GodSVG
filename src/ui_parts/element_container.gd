@@ -73,7 +73,7 @@ func update_proposed_xid() -> void:
 
 
 func _notification(what: int) -> void:
-	if is_inside_tree() and not get_tree().paused:
+	if is_inside_tree() and HandlerGUI.overlay_stack.is_empty():
 		if what == NOTIFICATION_DRAG_BEGIN:
 			covering_rect.show()
 			update_proposed_xid()

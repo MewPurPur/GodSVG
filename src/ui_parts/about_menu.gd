@@ -13,22 +13,7 @@ const app_info_json = preload("res://app_info.json")
 @onready var golden_donors_list: PanelGrid = %GoldenDonors/List
 @onready var diamond_donors_list: PanelGrid = %DiamondDonors/List
 
-func update_translation() -> void:
-	%ProjectFounder/Label.text = TranslationServer.translate("Project Founder and Manager")
-	%Developers/Label.text = TranslationServer.translate("Developers")
-	%Translations/Label.text = TranslationServer.translate("Translators")
-	%Donors/Label.text = TranslationServer.translate("Donors")
-	%GoldenDonors/Label.text = TranslationServer.translate("Golden donors")
-	%DiamondDonors/Label.text = TranslationServer.translate("Diamond donors")
-	$VBoxContainer/TabContainer.set_tab_title(0, TranslationServer.translate("Authors"))
-	$VBoxContainer/TabContainer.set_tab_title(1, TranslationServer.translate("Donors"))
-	$VBoxContainer/TabContainer.set_tab_title(2, TranslationServer.translate("License"))
-	$VBoxContainer/TabContainer.set_tab_title(3, TranslationServer.translate(
-			"Third-party licenses"))
-	%Components.text = TranslationServer.translate("Godot third-party components")
-
 func _ready() -> void:
-	GlobalSettings.language_changed.connect(update_translation)
 	var app_info: Dictionary = app_info_json.data
 	version_label.text = "GodSVG v" + ProjectSettings.get_setting("application/config/version")
 	project_founder_list.items = app_info.project_founder_and_manager
@@ -63,7 +48,19 @@ func _ready() -> void:
 		translations_list.add_child(list)
 	
 	close_button.pressed.connect(queue_free)
-	update_translation()
+	
+	%ProjectFounder/Label.text = TranslationServer.translate("Project Founder and Manager")
+	%Developers/Label.text = TranslationServer.translate("Developers")
+	%Translations/Label.text = TranslationServer.translate("Translators")
+	%Donors/Label.text = TranslationServer.translate("Donors")
+	%GoldenDonors/Label.text = TranslationServer.translate("Golden donors")
+	%DiamondDonors/Label.text = TranslationServer.translate("Diamond donors")
+	$VBoxContainer/TabContainer.set_tab_title(0, TranslationServer.translate("Authors"))
+	$VBoxContainer/TabContainer.set_tab_title(1, TranslationServer.translate("Donors"))
+	$VBoxContainer/TabContainer.set_tab_title(2, TranslationServer.translate("License"))
+	$VBoxContainer/TabContainer.set_tab_title(3, TranslationServer.translate(
+			"Third-party licenses"))
+	%Components.text = TranslationServer.translate("Godot third-party components")
 
 func _on_components_pressed() -> void:
 	OS.shell_open("https://github.com/godotengine/godot/blob/master/COPYRIGHT.txt")

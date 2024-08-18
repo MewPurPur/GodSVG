@@ -70,12 +70,13 @@ func _unhandled_input(event: InputEvent) -> void:
 			if _zoom_to == Vector2.ZERO:  # Set zoom position if starting action.
 				_zoom_to = get_mouse_position() / (size * 1.0)
 			zoom_menu.set_zoom(Indications.zoom * (1.0 +\
-				(1 if GlobalSettings.invert_zoom else -1) * (wrap_mouse(event.relative).y if\
-				GlobalSettings.wrap_mouse else event.relative.y) / 128.0), _zoom_to)
+				(1 if GlobalSettings.savedata.invert_zoom else -1) *\
+				(wrap_mouse(event.relative).y if GlobalSettings.savedata.wrap_mouse else\
+				event.relative.y) / 128.0), _zoom_to)
 		# Panning with LMB or MMB.
 		else:
-			set_view(view.position - (wrap_mouse(event.relative)\
-					if GlobalSettings.wrap_mouse else event.relative) / Indications.zoom)
+			set_view(view.position - (wrap_mouse(event.relative) if\
+					GlobalSettings.savedata.wrap_mouse else event.relative) / Indications.zoom)
 	
 	elif event is InputEventPanGesture:
 		
@@ -99,11 +100,11 @@ func _unhandled_input(event: InputEvent) -> void:
 		
 		# Zooming with scrolling.
 		if (not event.ctrl_pressed and not event.shift_pressed and\
-		not GlobalSettings.use_ctrl_for_zoom) or\
-		(event.ctrl_pressed and GlobalSettings.use_ctrl_for_zoom):
+		not GlobalSettings.savedata.use_ctrl_for_zoom) or\
+		(event.ctrl_pressed and GlobalSettings.savedata.use_ctrl_for_zoom):
 			match event.button_index:
-				MOUSE_BUTTON_WHEEL_UP when GlobalSettings.invert_zoom: zoom_dir = -1
-				MOUSE_BUTTON_WHEEL_DOWN when GlobalSettings.invert_zoom: zoom_dir = 1
+				MOUSE_BUTTON_WHEEL_UP when GlobalSettings.savedata.invert_zoom: zoom_dir = -1
+				MOUSE_BUTTON_WHEEL_DOWN when GlobalSettings.savedata.invert_zoom: zoom_dir = 1
 				MOUSE_BUTTON_WHEEL_UP: zoom_dir = 1
 				MOUSE_BUTTON_WHEEL_DOWN: zoom_dir = -1
 		

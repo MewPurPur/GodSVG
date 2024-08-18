@@ -33,11 +33,11 @@ func get_value() -> float:
 func _ready() -> void:
 	# Done like this so a signal isn't emitted.
 	_value = initial_value
-	text = String.num(_value, GlobalSettings.general_number_precision)
+	sync_text()
 
 
 func _on_text_submitted(submitted_text: String) -> void:
-	set_value(NumberParser.evaluate(submitted_text))
+	set_value(NumstringParser.evaluate(submitted_text))
 
 func sync_text() -> void:
-	text = String.num(_value, GlobalSettings.general_number_precision)
+	text = String.num(_value, Utils.MAX_NUMERIC_PRECISION)

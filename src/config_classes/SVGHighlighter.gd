@@ -1,21 +1,23 @@
 # A syntax highlighter for SVGs, allows for more flexibility than CodeHighlighter.
 class_name SVGHighlighter extends SyntaxHighlighter
 
-@export var symbol_color := Color("abc9ff")
-@export var element_color := Color("ff8ccc")
-@export var attribute_color := Color("bce0ff")
-@export var string_color := Color("a1ffe0")
-@export var comment_color := Color("cdcfd280")
-@export var text_color := Color("cdcfeaac")
-@export var cdata_color := Color("ffeda1ac")
-@export var error_color := Color("ff866b")
-
 var unrecognized_element_color: Color
 var unrecognized_attribute_color: Color
 
-func setup_extra_colors() -> void:
-	unrecognized_element_color = Color(element_color, element_color.a * 2 / 3.0)
-	unrecognized_attribute_color = Color(attribute_color, attribute_color.a * 2 / 3.0)
+var symbol_color := Color("abc9ff")
+var string_color := Color("a1ffe0")
+var comment_color := Color("cdcfd280")
+var text_color := Color("cdcfeaac")
+var cdata_color := Color("ffeda1ac")
+var error_color := Color("ff866b")
+var element_color := Color("ff8ccc"):
+	set(new_value):
+		element_color = new_value
+		unrecognized_element_color = Color(new_value, new_value.a * 2 / 3.0)
+var attribute_color := Color("bce0ff"):
+	set(new_value):
+		attribute_color = new_value
+		unrecognized_attribute_color = Color(new_value, new_value.a * 2 / 3.0)
 
 
 func _get_line_syntax_highlighting(line: int) -> Dictionary:

@@ -48,6 +48,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 4
 focus_mode = 1
 theme_override_fonts/font = ExtResource("2_j4qfn")
+alignment = 1
 max_length = 30
 script = ExtResource("1_i4wi2")
 
@@ -70,5 +71,4 @@ theme_type_variation = &"IconButton"
 icon = ExtResource("5_5n8tt")
 
 [connection signal="pressed" from="ConfigureContainer/TopContainer/LabelContainer/EditButton" to="." method="_on_edit_button_pressed"]
-[connection signal="text_submitted" from="ConfigureContainer/TopContainer/NameEdit" to="." method="_on_name_edit_text_submitted"]
 [connection signal="pressed" from="ConfigureContainer/BottomContainer/DeleteButton" to="." method="_on_delete_button_pressed"]

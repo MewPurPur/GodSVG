@@ -12,18 +12,17 @@ extends VBoxContainer
 @onready var export_button: Button = %MetaActions/ExportButton
 
 func _ready() -> void:
-	GlobalSettings.highlight_colors_changed.connect(setup_highlighter)
 	GlobalSettings.theme_changed.connect(setup_theme)
-	GlobalSettings.window_title_scheme_changed.connect(update_window_title)
 	SVG.parsing_finished.connect(update_error)
+	GlobalSettings.highlighting_colors_changed.connect(update_syntax_highlighter)
 	auto_update_text()
 	update_size_button()
 	update_file_button()
 	setup_theme()
-	setup_highlighter()
+	update_syntax_highlighter()
 	code_edit.clear_undo_history()
 	SVG.text_changed.connect(auto_update_text)
-	GlobalSettings.save_data.current_file_path_changed.connect(update_file_button)
+	GlobalSettings.file_path_changed.connect(update_file_button)
 	import_button.pressed.connect(ShortcutUtils.fn("import"))
 	export_button.pressed.connect(ShortcutUtils.fn("export"))
 	# Fix the size button sizing.
@@ -86,7 +85,8 @@ func setup_theme() -> void:
 	scrollbar.add_theme_stylebox_override("scroll", bg_stylebox)
 	scrollbar.end_bulk_theme_override()
 	
-	error_label.add_theme_color_override("default_color", GlobalSettings.basic_color_error)
+	error_label.add_theme_color_override("default_color",
+			GlobalSettings.savedata.basic_color_error)
 	var panel_stylebox := get_theme_stylebox("panel", "PanelContainer")
 	# Set up the top panel.
 	var top_stylebox := panel_stylebox.duplicate()
@@ -129,26 +129,18 @@ func update_size_button() -> void:
 		size_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 		for theming in ["font_color", "font_hover_color", "font_pressed_color"]:
 			size_button.add_theme_color_override(theming,
-					Color.WHITE * 0.5 + GlobalSettings.basic_color_warning * 0.5)
+					Color.WHITE * 0.5 + GlobalSettings.savedata.basic_color_warning * 0.5)
 	else:
 		size_button.disabled = true
 		size_button.mouse_default_cursor_shape = Control.CURSOR_ARROW
 		size_button.remove_theme_color_override("font_color")
 
 func update_file_button() -> void:
-	var file_path := GlobalSettings.save_data.current_file_path
+	var file_path := GlobalSettings.savedata.current_file_path
 	file_button.visible = !file_path.is_empty()
 	file_button.text = file_path.get_file()
 	file_button.tooltip_text = file_path.get_file()
 	Utils.set_max_text_width(file_button, 140.0, 12.0)
-	update_window_title()
-
-func update_window_title() -> void:
-	var file_path := GlobalSettings.save_data.current_file_path
-	if GlobalSettings.use_filename_for_window_title and not file_path.is_empty():
-		get_window().title = file_path.get_file() + " - GodSVG"
-	else:
-		get_window().title = "GodSVG"
 
 
 func _on_svg_code_edit_focus_exited() -> void:
@@ -201,16 +193,6 @@ func _on_options_button_pressed() -> void:
 			get_viewport())
 
 
-func setup_highlighter() -> void:
+func update_syntax_highlighter() -> void:
 	if is_instance_valid(code_edit):
-		var new_highlighter := SVGHighlighter.new()
-		new_highlighter.symbol_color = GlobalSettings.highlighting_symbol_color
-		new_highlighter.element_color = GlobalSettings.highlighting_element_color
-		new_highlighter.attribute_color = GlobalSettings.highlighting_attribute_color
-		new_highlighter.string_color = GlobalSettings.highlighting_string_color
-		new_highlighter.comment_color = GlobalSettings.highlighting_comment_color
-		new_highlighter.text_color = GlobalSettings.highlighting_text_color
-		new_highlighter.cdata_color = GlobalSettings.highlighting_cdata_color
-		new_highlighter.error_color = GlobalSettings.highlighting_error_color
-		new_highlighter.setup_extra_colors()
-		code_edit.syntax_highlighter = new_highlighter
+		code_edit.syntax_highlighter = GlobalSettings.generate_highlighter()

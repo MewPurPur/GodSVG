@@ -9,9 +9,9 @@ var _value := NAN  # Must not be updated directly.
 
 func set_value(new_value: float, no_signal := false) -> void:
 	if not is_finite(new_value):
-		text = NumberArrayParser.basic_num_to_text(_value)
+		text = NumstringParser.basic_num_to_text(_value)
 		return
-	text = NumberArrayParser.basic_num_to_text(new_value)
+	text = NumstringParser.basic_num_to_text(new_value)
 	if new_value != _value:
 		_value = new_value
 		if not no_signal:
@@ -25,9 +25,9 @@ func _on_text_submitted(submitted_text: String) -> void:
 	set_value(evaluate_after_input(submitted_text))
 
 func evaluate_after_input(eval_text: String) -> float:
-	var num := NumberParser.evaluate(eval_text)
+	var num := NumstringParser.evaluate(eval_text)
 	match mode:
-		Mode.ONLY_POSITIVE: return maxf(absf(num), GlobalSettings.get_quanta())
+		Mode.ONLY_POSITIVE: return maxf(absf(num), 0.000001)
 		Mode.HALF_ANGLE: return fmod(num, 180.0)
 		Mode.ANGLE: return fmod(num, 360.0)
 		_: return num

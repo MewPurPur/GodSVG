@@ -35,17 +35,17 @@ func _exit_tree() -> void:
 	RenderingServer.free_rid(selections_surface)
 
 func render_handle_textures() -> void:
-	normal_color = GlobalSettings.handle_color
-	hovered_color = GlobalSettings.handle_hovered_color
-	selected_color = GlobalSettings.handle_selected_color
-	hovered_selected_color = GlobalSettings.handle_hovered_selected_color
-	var inside_str := "#" + GlobalSettings.handle_inside_color.to_html(false)
-	var normal_str := "#" + GlobalSettings.handle_color.to_html(false)
-	var hovered_str := "#" + GlobalSettings.handle_hovered_color.to_html(false)
-	var selected_str := "#" + GlobalSettings.handle_selected_color.to_html(false)
+	normal_color = GlobalSettings.savedata.handle_color
+	hovered_color = GlobalSettings.savedata.handle_hovered_color
+	selected_color = GlobalSettings.savedata.handle_selected_color
+	hovered_selected_color = GlobalSettings.savedata.handle_hovered_selected_color
+	var inside_str := "#" + GlobalSettings.savedata.handle_inside_color.to_html(false)
+	var normal_str := "#" + GlobalSettings.savedata.handle_color.to_html(false)
+	var hovered_str := "#" + GlobalSettings.savedata.handle_hovered_color.to_html(false)
+	var selected_str := "#" + GlobalSettings.savedata.handle_selected_color.to_html(false)
 	var hovered_selected_str := "#" +\
-			GlobalSettings.handle_hovered_selected_color.to_html(false)
-	var s := GlobalSettings.handle_size  # Shorthand
+			GlobalSettings.savedata.handle_hovered_selected_color.to_html(false)
+	var s := GlobalSettings.savedata.handle_size  # Shorthand
 	var img := Image.new()
 	
 	var handles_dict := {
@@ -640,8 +640,8 @@ func _unhandled_input(event: InputEvent) -> void:
 			Indications.clear_hovered()
 			Indications.clear_inner_hovered()
 	
-	var snap_enabled := GlobalSettings.save_data.snap > 0.0
-	var snap_size := absf(GlobalSettings.save_data.snap)
+	var snap_enabled := GlobalSettings.savedata.snap > 0.0
+	var snap_size := absf(GlobalSettings.savedata.snap)
 	var snap_vector := Vector2(snap_size, snap_size)
 	
 	if event is InputEventMouseMotion:
@@ -726,7 +726,7 @@ func _unhandled_input(event: InputEvent) -> void:
 func find_nearest_handle(event_pos: Vector2) -> Handle:
 	var nearest_handle: Handle = null
 	var nearest_dist_squared := DEFAULT_GRAB_DISTANCE_SQUARED *\
-			(GlobalSettings.handle_size * GlobalSettings.handle_size) /\
+			(GlobalSettings.savedata.handle_size * GlobalSettings.savedata.handle_size) /\
 			(Indications.zoom * Indications.zoom)
 	for handle in handles:
 		var dist_to_handle_squared := event_pos.distance_squared_to(
@@ -752,7 +752,7 @@ func _on_handle_added() -> void:
 			dragged_handle = handle
 			# Move the handle that's being dragged.
 			var mouse_pos := get_global_mouse_position()
-			var snap_size := GlobalSettings.save_data.snap
+			var snap_size := GlobalSettings.savedata.snap
 			if snap_size > 0.0:
 				mouse_pos = mouse_pos.snapped(Vector2(snap_size, snap_size))
 			

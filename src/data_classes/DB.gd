@@ -13,6 +13,7 @@ const element_icons = {
 	"rect": preload("res://visual/icons/element/rect.svg"),
 	"path": preload("res://visual/icons/element/path.svg"),
 	"line": preload("res://visual/icons/element/line.svg"),
+	"svg": preload("res://visual/icons/element/svg.svg"),
 	"g": preload("res://visual/icons/element/g.svg"),
 	"linearGradient": preload("res://visual/icons/element/linearGradient.svg"),
 	"radialGradient": preload("res://visual/icons/element/radialGradient.svg"),
@@ -44,9 +45,9 @@ const recognized_attributes = {  # Dictionary{String: Array[String]}
 }
 
 const valid_children = {  # Dictionary{String: Array[String]}
-	"svg": ["path", "circle", "ellipse", "rect", "line", "g", "linearGradient",
+	"svg": ["svg", "path", "circle", "ellipse", "rect", "line", "g", "linearGradient",
 			"radialGradient"],
-	"g": ["path", "circle", "ellipse", "rect", "line", "g", "linearGradient",
+	"g": ["svg", "path", "circle", "ellipse", "rect", "line", "g", "linearGradient",
 			"radialGradient"],
 	"linearGradient": ["stop"],
 	"radialGradient": ["stop"],

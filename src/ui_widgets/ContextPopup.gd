@@ -23,6 +23,7 @@ icon: Texture2D = null, shortcut := "") -> Button:
 				var ret_button := Button.new()
 				ret_button.theme_type_variation = "ContextButton"
 				ret_button.focus_mode = Control.FOCUS_NONE
+				ret_button.shortcut_in_tooltip = false
 				if disabled:
 					main_button.disabled = true
 					ret_button.disabled = true
@@ -98,6 +99,7 @@ start_pressed: bool, shortcut := "") -> CheckBox:
 				ret_button.theme_type_variation = "ContextButton"
 				ret_button.focus_mode = Control.FOCUS_NONE
 				ret_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+				ret_button.shortcut_in_tooltip = false
 				checkbox.add_theme_stylebox_override("normal",
 						checkbox.get_theme_stylebox("normal", "ContextButton"))
 				var internal_hbox := HBoxContainer.new()

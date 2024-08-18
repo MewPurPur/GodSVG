@@ -11,17 +11,15 @@ signal imported
 var imported_text := ""
 
 func _ready() -> void:
-	GlobalSettings.language_changed.connect(setup)
 	imported.connect(queue_free)
 	ok_button.pressed.connect(imported.emit)
-	setup()
-
-
-func setup() -> void:
+	
 	# Convert forward and backward to show how GodSVG would display the given SVG.
-	var imported_text_parse_result := SVGParser.text_to_root(imported_text)
+	var imported_text_parse_result := SVGParser.text_to_root(imported_text,
+			GlobalSettings.savedata.editor_formatter)
 	var preview_text := SVGParser.root_to_text(imported_text_parse_result.svg)
-	var preview_parse_result := SVGParser.text_to_root(preview_text)
+	var preview_parse_result := SVGParser.text_to_root(preview_text,
+			GlobalSettings.savedata.editor_formatter)
 	var preview := preview_parse_result.svg
 	if is_instance_valid(preview):
 		texture_preview.setup(SVGParser.root_to_text(preview), preview.get_size())
@@ -31,7 +29,7 @@ func setup() -> void:
 		margin_container.custom_minimum_size.y = 48
 		size.y = 0
 		warnings_label.add_theme_color_override("default_color",
-				GlobalSettings.basic_color_error)
+				GlobalSettings.savedata.basic_color_error)
 		warnings_label.text = "[center]%s: %s" % [TranslationServer.translate(
 				"Syntax error"), SVGParser.get_error_string(imported_text_parse_result.error)]
 	else:
@@ -40,7 +38,7 @@ func setup() -> void:
 			imported.emit()
 		else:
 			warnings_label.add_theme_color_override("default_color",
-					GlobalSettings.basic_color_warning)
+					GlobalSettings.savedata.basic_color_warning)
 			for warning in svg_warnings:
 				warnings_label.text += warning + "\n"
 	ok_button.grab_focus()

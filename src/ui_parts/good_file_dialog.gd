@@ -102,7 +102,7 @@ func _ready() -> void:
 	var extension_panel_stylebox := extension_panel.get_theme_stylebox("panel")
 	extension_panel_stylebox.content_margin_top -= 4
 	extension_panel.add_theme_stylebox_override("panel", extension_panel_stylebox)
-	if GlobalSettings.save_data.file_dialog_show_hidden:
+	if GlobalSettings.savedata.file_dialog_show_hidden:
 		show_hidden_button.set_pressed_no_signal(true)
 	folder_up_button.tooltip_text = TranslationServer.translate("Go to parent folder")
 	refresh_button.tooltip_text = TranslationServer.translate("Refresh files")
@@ -156,7 +156,7 @@ func set_dir(dir: String) -> void:
 	unfocus_file()
 	current_dir = dir
 	path_field.text = current_dir
-	DA.include_hidden = GlobalSettings.save_data.file_dialog_show_hidden
+	DA.include_hidden = GlobalSettings.savedata.file_dialog_show_hidden
 	# Rebuild the system dirs, as we may now need to highlight the current one.
 	drives_list.clear()
 	for drive in system_dirs_to_show:
@@ -338,7 +338,7 @@ func _on_drives_list_item_selected(index: int) -> void:
 	call_selection_action(drives_list.get_item_metadata(index))
 
 func _on_show_hidden_button_toggled(toggled_on: bool) -> void:
-	GlobalSettings.modify_save_data("file_dialog_show_hidden", toggled_on)
+	GlobalSettings.savedata.file_dialog_show_hidden = toggled_on
 	refresh_dir()
 
 func _on_search_button_toggled(toggled_on: bool) -> void:
@@ -401,7 +401,7 @@ func _on_create_folder_create_button_pressed() -> void:
 	else:
 		create_folder_line_edit.grab_focus()
 		create_folder_line_edit.add_theme_color_override("font_color",
-				GlobalSettings.basic_color_error)
+				GlobalSettings.savedata.basic_color_error)
 		create_folder_create_button.disabled = true
 		create_folder_create_button.mouse_default_cursor_shape = Control.CURSOR_ARROW
 

@@ -96,7 +96,7 @@ func setup_color(new_color: String) -> void:
 	if not alpha_enabled:
 		starting_display_color.a = 1
 	display_color = starting_display_color
-	slider_mode = GlobalSettings.save_data.color_picker_slider_mode
+	slider_mode = GlobalSettings.savedata.color_picker_slider_mode
 	update()
 
 func _ready() -> void:
@@ -306,12 +306,14 @@ func _on_reset_color_button_pressed() -> void:
 
 
 func _on_rgb_pressed() -> void:
-	slider_mode = SliderMode.RGB
-	GlobalSettings.modify_save_data("color_picker_slider_mode", SliderMode.RGB)
+	change_slider_mode(SliderMode.RGB)
 
 func _on_hsv_pressed() -> void:
-	slider_mode = SliderMode.HSV
-	GlobalSettings.modify_save_data("color_picker_slider_mode", SliderMode.HSV)
+	change_slider_mode(SliderMode.HSV)
+
+func change_slider_mode(new_slider_mode: SliderMode) -> void:
+	slider_mode = new_slider_mode
+	GlobalSettings.savedata.color_picker_slider_mode = new_slider_mode
 
 
 # Gray out the start color rect if it's not actually a color.

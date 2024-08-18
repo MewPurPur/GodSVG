@@ -33,10 +33,10 @@ func _on_text_change_canceled() -> void:
 	sync(element.get_attribute_value(attribute_name, true))
 
 func _on_text_changed(new_text: String) -> void:
-	var validity_level := IDParser.get_validity(new_text)
+	var validity_level := AttributeID.get_validity(new_text)
 	var font_color := GlobalSettings.get_validity_color(
-			validity_level == IDParser.ValidityLevel.INVALID,
-			validity_level == IDParser.ValidityLevel.INVALID_XML_NAMETOKEN)
+			validity_level == AttributeID.ValidityLevel.INVALID,
+			validity_level == AttributeID.ValidityLevel.INVALID_XML_NAMETOKEN)
 	add_theme_color_override("font_color", font_color)
 
 func resync() -> void:

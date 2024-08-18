@@ -28,7 +28,7 @@ var reference_overlay := false
 
 func _ready() -> void:
 	GlobalSettings.language_changed.connect(update_translations)
-	GlobalSettings.number_precision_changed.connect(update_snap_config)
+	GlobalSettings.snap_changed.connect(update_snap_config)
 	GlobalSettings.theme_changed.connect(update_theme)
 	update_translations()
 	update_theme()
@@ -89,7 +89,7 @@ func update_theme() -> void:
 	viewport_panel.add_theme_stylebox_override("panel", frame)
 
 func update_snap_config() -> void:
-	var snap_config := GlobalSettings.save_data.snap
+	var snap_config := GlobalSettings.savedata.snap
 	var snap_enabled := snap_config > 0.0
 	snap_button.button_pressed = snap_enabled
 	snapper.editable = snap_enabled
@@ -99,6 +99,9 @@ func update_snap_config() -> void:
 
 func _on_settings_pressed() -> void:
 	ShortcutUtils.fn_call("open_settings")
+
+func open_savedata_folder() -> void:
+	OS.shell_show_in_file_manager(ProjectSettings.globalize_path("user://"))
 
 
 func _on_reference_pressed() -> void:
@@ -133,25 +136,35 @@ func _on_visuals_button_pressed() -> void:
 			get_viewport())
 
 func _on_more_options_pressed() -> void:
+	var can_show_savedata_folder := DisplayServer.has_feature(
+				DisplayServer.FEATURE_NATIVE_DIALOG_FILE)
+	var buttons_arr: Array[Button] = []
+	buttons_arr.append(ContextPopup.create_button(TranslationServer.translate(
+			"Check for updates"), ShortcutUtils.fn("check_updates"), false,
+			load("res://visual/icons/Reload.svg"), "check_updates"))
+	
+	if can_show_savedata_folder:
+		buttons_arr.append(ContextPopup.create_button(TranslationServer.translate(
+				"View savedata"), open_savedata_folder , false,
+				load("res://visual/icons/OpenFolder.svg")))
+	
 	var about_btn := ContextPopup.create_button(TranslationServer.translate("About…"),
 			ShortcutUtils.fn("about_info"), false, load("res://visual/icon.png"),
 			"about_info")
 	about_btn.expand_icon = true
-	var buttons_arr: Array[Button] = [
-		ContextPopup.create_button(TranslationServer.translate("Check for updates"),
-				ShortcutUtils.fn("check_updates"), false,
-				load("res://visual/icons/Reload.svg"), "check_updates"),
-		about_btn,
-		ContextPopup.create_button(TranslationServer.translate("Donate…"),
-				ShortcutUtils.fn("about_donate"), false, load("res://visual/icons/Heart.svg"),
-				"about_donate"),
-		ContextPopup.create_button(TranslationServer.translate("GodSVG repository"),
-				ShortcutUtils.fn("about_repo"), false, load("res://visual/icons/Link.svg"),
-				"about_repo"),
-		ContextPopup.create_button(TranslationServer.translate("GodSVG website"),
-				ShortcutUtils.fn("about_website"), false, load("res://visual/icons/Link.svg"),
-				"about_website")]
+	buttons_arr.append(about_btn)
+	buttons_arr.append(ContextPopup.create_button(TranslationServer.translate(
+			"Donate…"), ShortcutUtils.fn("about_donate"), false,
+			load("res://visual/icons/Heart.svg"), "about_donate"))
+	buttons_arr.append(ContextPopup.create_button(TranslationServer.translate(
+			"GodSVG repository"), ShortcutUtils.fn("about_repo"), false,
+			load("res://visual/icons/Link.svg"), "about_repo"))
+	buttons_arr.append(ContextPopup.create_button(TranslationServer.translate(
+			"GodSVG website"), ShortcutUtils.fn("about_website"), false,
+			load("res://visual/icons/Link.svg"), "about_website"))
 	var separator_indices: Array[int] = [1, 3]
+	if can_show_savedata_folder:
+		separator_indices = [2, 4]
 	
 	var more_popup := ContextPopup.new()
 	more_popup.setup(buttons_arr, true, -1, separator_indices)
@@ -188,7 +201,7 @@ func toggle_reference_overlay() -> void:
 		viewport.move_child(reference_texture, 0)
 
 func finish_reference_load() -> void:
-	var img = Image.load_from_file("user://reference_image.png")
+	var img = Image.load_from_file(GlobalSettings.reference_image_path)
 	reference_texture.texture = ImageTexture.create_from_image(img)
 	reference_texture.show()
 
@@ -199,14 +212,11 @@ func set_snap_amount(snap_value: float) -> void:
 	snapper.set_value(snap_value)
 
 func _on_snap_button_toggled(toggled_on: bool) -> void:
-	GlobalSettings.modify_save_data("snap",
-			absf(GlobalSettings.save_data.snap) * (1 if toggled_on else -1))
-	update_snap_config()
+	GlobalSettings.savedata.snap = absf(GlobalSettings.savedata.snap) if toggled_on\
+			else -absf(GlobalSettings.savedata.snap)
 
 func _on_snap_number_edit_value_changed(new_value: float) -> void:
-	GlobalSettings.modify_save_data("snap",
-			new_value * signf(GlobalSettings.save_data.snap))
-	update_snap_config()
+	GlobalSettings.savedata.snap = new_value * signf(GlobalSettings.savedata.snap)
 
 # The strings here are intentionally not localized.
 func update_debug() -> void:

@@ -98,7 +98,7 @@ func _draw() -> void:
 		var stylebox := StyleBoxFlat.new()
 		stylebox.corner_radius_top_right = r
 		stylebox.corner_radius_bottom_right = r
-		stylebox.bg_color = ColorParser.text_to_color(color_value)
+		stylebox.bg_color = ColorParser.text_to_color(color_value, Color.TRANSPARENT)
 		stylebox.draw(ci, Rect2(h_offset, 1, BUTTON_WIDTH - 1, size.y - 2))
 	# Draw the button border.
 	if is_instance_valid(temp_button) and temp_button.button_pressed:
@@ -132,7 +132,7 @@ func resync() -> void:
 func sync(new_value: String) -> void:
 	reset_font_color()
 	if ColorParser.add_hash_if_hex(new_value) == element.get_default(attribute_name):
-		font_color = GlobalSettings.basic_color_warning
+		font_color = GlobalSettings.savedata.basic_color_warning
 	text = new_value.trim_prefix("#")
 	update_gradient_texture()
 	queue_redraw()

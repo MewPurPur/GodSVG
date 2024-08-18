@@ -1,7 +1,8 @@
 # This singleton handles temporary editor information like zoom level and selections.
 extends Node
 
-const PathCommandPopup = preload("res://src/ui_widgets/path_popup.tscn")
+# Not a good idea to preload scenes inside a singleton.
+var PathCommandPopup = load("res://src/ui_widgets/path_popup.tscn")
 
 const path_actions_dict := {
 	"move_absolute": "M", "move_relative": "m",
@@ -567,7 +568,7 @@ func popup_convert_to_context(popup_method: Callable) -> void:
 	elif not inner_selections.is_empty() and not semi_selected_xid.is_empty():
 		var cmd_char: String = SVG.root_element.get_element(semi_selected_xid).\
 				get_attribute("d").get_command(inner_selections[0]).command_char
-		var command_picker := PathCommandPopup.instantiate()
+		var command_picker = PathCommandPopup.instantiate()
 		popup_method.call(command_picker)
 		command_picker.force_relativity(Utils.is_string_lower(cmd_char))
 		command_picker.disable_invalid([cmd_char.to_upper()])
@@ -577,7 +578,7 @@ func popup_insert_command_after_context(popup_method: Callable) -> void:
 	var cmd_char: String = SVG.root_element.get_element(semi_selected_xid).\
 			get_attribute("d").get_command(inner_selections.max()).command_char
 	
-	var command_picker := PathCommandPopup.instantiate()
+	var command_picker = PathCommandPopup.instantiate()
 	popup_method.call(command_picker)
 	command_picker.path_command_picked.connect(insert_inner_after_selection)
 	match cmd_char.to_upper():

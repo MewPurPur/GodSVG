@@ -67,10 +67,17 @@ func update_attributes() -> void:
 			
 			var input_field: Control
 			match DB.get_attribute_type(attribute.name):
-				DB.AttributeType.COLOR: input_field = ColorField.instantiate()
-				DB.AttributeType.ENUM: input_field = EnumField.instantiate()
-				DB.AttributeType.TRANSFORM_LIST: input_field = TransformField.instantiate()
-				DB.AttributeType.ID: input_field = IDField.instantiate()
+				DB.AttributeType.COLOR:
+					input_field = ColorField.instantiate()
+					input_field.attribute_name = attribute.name
+				DB.AttributeType.ENUM:
+					input_field = EnumField.instantiate()
+					input_field.attribute_name = attribute.name
+				DB.AttributeType.TRANSFORM_LIST:
+					input_field = TransformField.instantiate()
+					input_field.attribute_name = attribute.name
+				DB.AttributeType.ID:
+					input_field = IDField.instantiate()
 				DB.AttributeType.NUMERIC:
 					var min_value: float = DB.attribute_numeric_bounds[attribute.name].x
 					var max_value: float = DB.attribute_numeric_bounds[attribute.name].y
@@ -88,7 +95,6 @@ func update_attributes() -> void:
 						input_field.slider_step = 0.01
 				_: input_field = UnrecognizedField.instantiate()
 			input_field.element = SVG.root_element
-			input_field.attribute_name = attribute.name
 			unknown_container.get_child(0).add_child(input_field)
 	if not has_unrecognized_attributes and is_instance_valid(unknown_container):
 		unknown_container.queue_free()

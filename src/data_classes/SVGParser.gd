@@ -1,31 +1,36 @@
 class_name SVGParser extends RefCounted
 
-# Elements that don't make sense without child elements.
-const shorthand_tags_exceptions = ["svg", "g", "linearGradient", "radialGradient"]
-
 # For rendering only a section of the SVG.
 static func root_to_text_custom(root_element: ElementRoot, custom_width: float,
 custom_height: float, custom_viewbox: Rect2) -> String:
+	var blank_formatter := Formatter.new()
+	blank_formatter.xml_shorthand_tags = Formatter.ShorthandTags.ALL_EXCEPT_CONTAINERS
 	var new_root_element: ElementRoot = root_element.duplicate(false)
+	
 	new_root_element.set_attribute("viewBox", custom_viewbox)
 	new_root_element.set_attribute("width", custom_width)
 	new_root_element.set_attribute("height", custom_height)
-	var text := _element_to_text(new_root_element)
+	var text := _element_to_text(new_root_element, blank_formatter)
 	text = text.strip_edges(false, true).left(-6)  # Remove the </svg> at the end.)
 	for child_idx in root_element.get_child_count():
-		text += _element_to_text(root_element.get_element(PackedInt32Array([child_idx])))
+		text += _element_to_text(root_element.get_element(PackedInt32Array([child_idx])),
+				blank_formatter)
 	return text + "</svg>"
 
-static func root_to_text(root_element: ElementRoot) -> String:
-	var text := _element_to_text(root_element).trim_suffix('\n')
-	if GlobalSettings.xml_add_trailing_newline:
+static func root_to_text(root_element: ElementRoot,
+formatter: Formatter = GlobalSettings.savedata.editor_formatter) -> String:
+	var text := _element_to_text(root_element, formatter).trim_suffix('\n')
+	if formatter.xml_add_trailing_newline:
 		text += "\n"
 	return text
 
-static func _element_to_text(element: Element) -> String:
+static func _element_to_text(element: Element, formatter: Formatter) -> String:
 	var text := ""
-	if GlobalSettings.xml_pretty_formatting:
-		text += '\t'.repeat(element.xid.size())
+	if formatter.xml_pretty_formatting:
+		if formatter.xml_indentation_use_spaces:
+			text += ' '.repeat(element.xid.size() * formatter.xml_indentation_spaces)
+		else:
+			text += '\t'.repeat(element.xid.size())
 	text += '<' + element.name
 	for attribute: Attribute in element.get_all_attributes():
 		var value := attribute.get_value()
@@ -35,21 +40,23 @@ static func _element_to_text(element: Element) -> String:
 		else:
 			text += " %s='%s'" % [attribute.name, value]
 	
-	if element.has_children() and GlobalSettings.xml_shorthand_tags and\
-	not element.name in shorthand_tags_exceptions:
-		text += '/>'
-		if GlobalSettings.xml_pretty_formatting:
+	if element.has_children() and (formatter.xml_shorthand_tags ==\
+	Formatter.ShorthandTags.ALWAYS or (formatter.xml_shorthand_tags ==\
+	Formatter.ShorthandTags.ALL_EXCEPT_CONTAINERS and\
+	not element.name in Formatter.container_elements)):
+		text += ' />' if formatter.xml_shorthand_tags_space_out_slash else '/>'
+		if formatter.xml_pretty_formatting:
 			text += '\n'
 	else:
 		text += '>'
-		if GlobalSettings.xml_pretty_formatting:
+		if formatter.xml_pretty_formatting:
 			text += '\n'
 		for child in element.get_children():
-			text += _element_to_text(child)
-		if GlobalSettings.xml_pretty_formatting:
+			text += _element_to_text(child, formatter)
+		if formatter.xml_pretty_formatting:
 			text += '\t'.repeat(element.xid.size())
 		text += '</%s>' % element.name
-		if GlobalSettings.xml_pretty_formatting:
+		if formatter.xml_pretty_formatting:
 			text += '\n'
 	
 	return text
@@ -73,11 +80,12 @@ static func get_error_string(parse_error: ParseError) -> String:
 			return TranslationServer.translate("Improper nesting.")
 		_: return ""
 
-static func text_to_root(text: String) -> ParseResult:
+static func text_to_root(text: String, formatter: Formatter) -> ParseResult:
 	if text.is_empty():
 		return ParseResult.new(ParseError.ERR_NOT_SVG)
 	
-	var root_element := ElementRoot.new()
+	var root_element := ElementRoot.new(formatter)
+	root_element.formatter = formatter
 	root_element.xid = PackedInt32Array()
 	root_element.root = root_element
 	var parser := XMLParser.new()

@@ -17,6 +17,8 @@ func _ready() -> void:
 	set_label_text(color_palette.color_names[idx])
 	color_edit.value = color_palette.colors[idx]
 	update_translation()
+	color_name_edit.text_submitted.connect(_on_name_edit_text_submitted)
+	color_name_edit.text_change_canceled.connect(hide_name_edit)
 
 
 func update_translation() -> void:
@@ -24,6 +26,7 @@ func update_translation() -> void:
 			TranslationServer.translate("Edit color name")
 	$ConfigureContainer/BottomContainer/DeleteButton.tooltip_text =\
 			TranslationServer.translate("Delete color")
+
 func _on_edit_button_pressed() -> void:
 	color_name_edit.text = color_palette.color_names[idx]
 	color_name_edit.show()

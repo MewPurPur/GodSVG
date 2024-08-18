@@ -10,16 +10,16 @@ const ExportDialog = preload("res://src/ui_parts/export_dialog.tscn")
 
 static func save_svg_to_file(path: String) -> void:
 	var FA := FileAccess.open(path, FileAccess.WRITE)
-	FA.store_string(SVG.text)
+	FA.store_string(SVG.get_export_text())
 
 static func does_svg_data_match_disk_contents() -> bool:
 	# If the file doesn't exist, we get an empty string, so it's false anyway.
-	return SVG.text ==\
-			FileAccess.get_file_as_string(GlobalSettings.save_data.current_file_path)
+	return SVG.get_export_text() ==\
+			FileAccess.get_file_as_string(GlobalSettings.savedata.current_file_path)
 
 
 static func finish_import(svg_text: String, file_path: String) -> void:
-	GlobalSettings.modify_save_data("current_file_path", file_path)
+	GlobalSettings.savedata.current_file_path = file_path
 	SVG.apply_svg_text(svg_text)
 
 static func finish_export(file_path: String, extension: String, upscale_amount := 1.0,
@@ -27,7 +27,7 @@ quality := 0.8, lossless := true) -> void:
 	if file_path.get_extension().is_empty():
 		file_path += "." + extension
 	
-	GlobalSettings.modify_save_data("last_used_dir", file_path.get_base_dir())
+	GlobalSettings.savedata.last_used_dir = file_path.get_base_dir()
 	
 	match extension:
 		"png": generate_image_from_elements(upscale_amount).save_png(file_path)
@@ -37,7 +37,7 @@ quality := 0.8, lossless := true) -> void:
 					quality)
 		_:
 			# SVG / fallback.
-			GlobalSettings.modify_save_data("current_file_path", file_path)
+			GlobalSettings.savedata.current_file_path = file_path
 			save_svg_to_file(file_path)
 	HandlerGUI.remove_overlay()
 
@@ -54,7 +54,7 @@ static func generate_image_from_elements(upscale_amount := 1.0) -> Image:
 	export_svg.set_attribute("width", export_svg.width * upscale_amount)
 	export_svg.set_attribute("height", export_svg.height * upscale_amount)
 	var img := Image.new()
-	img.load_svg_from_string(SVGParser.root_to_text(export_svg))
+	img.load_svg_from_string(SVGParser.root_to_text(export_svg, Formatter.new()))
 	img.fix_alpha_edges()  # See godot issue 82579.
 	return img
 
@@ -69,7 +69,7 @@ non_native_callable: Callable) -> void:
 		DisplayServer.file_dialog_show(
 				TranslationServer.translate("Save the .\"{extension}\" file").format(
 				{"extension": extension}), Utils.get_last_dir(), Utils.get_file_name(
-				GlobalSettings.save_data.current_file_path) + "." + extension, false,
+				GlobalSettings.savedata.current_file_path) + "." + extension, false,
 				DisplayServer.FILE_DIALOG_MODE_SAVE_FILE,
 				PackedStringArray(["*." + extension]), native_callable)
 	elif OS.has_feature("web"):
@@ -77,7 +77,7 @@ non_native_callable: Callable) -> void:
 	else:
 		var svg_export_dialog := GoodFileDialog.instantiate()
 		svg_export_dialog.setup(Utils.get_last_dir(),
-				Utils.get_file_name(GlobalSettings.save_data.current_file_path),
+				Utils.get_file_name(GlobalSettings.savedata.current_file_path),
 				GoodFileDialogType.FileMode.SAVE, PackedStringArray([extension]))
 		HandlerGUI.add_overlay(svg_export_dialog)
 		svg_export_dialog.file_selected.connect(non_native_callable)
@@ -90,14 +90,14 @@ _filter_idx: int, extension: String, upscale_amount := 1.0) -> void:
 static func native_file_save(has_selected: bool, files: PackedStringArray,
 _filter_idx: int) -> void:
 	if has_selected:
-		GlobalSettings.modify_save_data("current_file_path", files[0])
-		GlobalSettings.modify_save_data("last_used_dir", files[0].get_base_dir())
+		GlobalSettings.savedata.current_file_path = files[0]
+		GlobalSettings.savedata.last_used_dir = files[0].get_base_dir()
 		save_svg_to_file(files[0])
 
 
 static func _is_native_preferred() -> bool:
 	return DisplayServer.has_feature(DisplayServer.FEATURE_NATIVE_DIALOG_FILE) and\
-			GlobalSettings.use_native_file_dialog
+			GlobalSettings.savedata.use_native_file_dialog
 
 static func open_import_dialog() -> void:
 	# Open it inside a native file dialog, or our custom one if it's not available.
@@ -144,7 +144,7 @@ _filter_idx: int, callable: Callable) -> void:
 static func load_reference_image(path: String, callable: Callable) -> void:
 	var img = Image.new()
 	img.load(path)
-	img.save_png("user://reference_image.png")
+	img.save_png(GlobalSettings.reference_image_path)
 	callable.call()
 
 static func apply_svg_from_path(path: String) -> int:
@@ -152,7 +152,7 @@ static func apply_svg_from_path(path: String) -> int:
 	var error := ""
 	var extension := path.get_extension()
 	
-	GlobalSettings.modify_save_data("last_used_dir", path.get_base_dir())
+	GlobalSettings.savedata.last_used_dir = path.get_base_dir()
 	
 	if extension.is_empty():
 		error = TranslationServer.translate(
@@ -161,7 +161,7 @@ static func apply_svg_from_path(path: String) -> int:
 		return ERR_FILE_CANT_OPEN
 	elif extension != "svg":
 		error = TranslationServer.translate(
-				"\"{passed_extension}\" is a unsupported file extension. Only \"svg\" files are supported.").format({"passed_extension": extension})
+				"\"{passed_extension}\" is an unsupported file extension. Only \"svg\" files are supported.").format({"passed_extension": extension})
 	elif !is_instance_valid(svg_file):
 		error = TranslationServer.translate(
 				"The file couldn't be opened.\nTry checking the file path, ensure that the file is not deleted, or choose a different file.")
@@ -183,11 +183,11 @@ static func apply_svg_from_path(path: String) -> int:
 
 static func web_import(svg_text: String, file_name: String) -> void:
 	SVG.apply_svg_text(svg_text)
-	GlobalSettings.modify_save_data("current_file_path", file_name)
+	GlobalSettings.savedata.current_file_path = file_name
 	JavaScriptBridge.eval("fileData = undefined;", true)
 
 static func web_save_svg() -> void:
-	_web_save(SVG.text.to_utf8_buffer(), "image/svg+xml")
+	_web_save(SVG.get_export_text().to_utf8_buffer(), "image/svg+xml")
 
 static func web_save_png(img: Image) -> void:
 	_web_save(img.save_png_to_buffer(), "image/png")
@@ -199,7 +199,7 @@ static func web_save_webp(img: Image) -> void:
 	_web_save(img.save_webp_to_buffer(), "image/webp")
 
 static func _web_save(buffer: PackedByteArray, format_name: String) -> void:
-	var file_name := Utils.get_file_name(GlobalSettings.save_data.current_file_path)
+	var file_name := Utils.get_file_name(GlobalSettings.savedata.current_file_path)
 	if file_name.is_empty():
 		file_name = "export"
 	JavaScriptBridge.download_buffer(buffer, file_name, format_name)
