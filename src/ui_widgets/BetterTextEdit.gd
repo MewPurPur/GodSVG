@@ -17,6 +17,7 @@ func _init() -> void:
 	scroll_v_scroll_speed = 30.0
 	caret_multiple = false
 	highlight_all_occurrences = true
+	#set_tab_size(2)
 
 func _ready() -> void:
 	RenderingServer.canvas_item_set_parent(_surface, get_canvas_item())
@@ -56,22 +57,26 @@ func redraw_caret() -> void:
 	
 	var char_size := code_font.get_char_size(69, get_theme_font_size("font_size"))
 	for caret in get_caret_count():
-		var caret_line := get_caret_line(caret)
+		var caret_pos := Vector2.ZERO
 		var caret_column := get_caret_column(caret)
-		var glyph_end := Vector2(get_rect_at_line_column(caret_line, caret_column).end)
-		# Workaround for empty text.
-		if glyph_end == Vector2.ZERO:
-			glyph_end = Vector2(get_theme_stylebox("normal").content_margin_left,
-					get_line_height() + 2)
+		var caret_line := get_caret_line(caret)
 		
-		var caret_pos := glyph_end + Vector2(1, -2)
-		# Workaround for ligatures.
-		if glyph_end.x > 0 and glyph_end.y > 0:
-			var chars_back := 0
-			while get_line(caret_line).length() > caret_column + chars_back and glyph_end ==\
-			Vector2(get_rect_at_line_column(caret_line, caret_column + chars_back + 1).end):
-				chars_back += 1
-				caret_pos.x -= char_size.x
+		if caret_column == 0:
+			caret_pos = Vector2(get_theme_stylebox("normal").content_margin_left + 1,
+					get_line_height() * (caret_line + 1) + 1)
+		else:
+			var glyph_end := Vector2(get_rect_at_line_column(caret_line, caret_column).end)
+			caret_pos = glyph_end + Vector2(1, -2)
+			# Workaround for ligatures.
+			var line := get_line(caret_line)
+			if caret_column < line.length() and line[caret_column] == '\t':
+				caret_pos = caret_pos
+			elif glyph_end.x > 0 and glyph_end.y > 0:
+				var chars_back := 0
+				while line.length() > caret_column + chars_back and glyph_end ==\
+				Vector2(get_rect_at_line_column(caret_line, caret_column + chars_back + 1).end):
+					chars_back += 1
+					caret_pos.x -= char_size.x
 		# Determine the end of the caret and draw it.
 		var caret_end := caret_pos
 		if is_overtype_mode_enabled():
