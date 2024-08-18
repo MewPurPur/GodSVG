@@ -10,7 +10,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.4.2\n"
+"X-Generator: Poedit 3.4.4\n"
 
 msgid "translation-credits"
 msgstr "volkov <volkovissocool@gmail.com>"
@@ -28,9 +28,8 @@ msgid "Quit"
 msgstr "Вийти"
 
 #: src/autoload/HandlerGUI.gd
-#, fuzzy
 msgid "Check for updates?"
-msgstr "Перевірити оновлення"
+msgstr "Перевірити оновлення?"
 
 #: src/autoload/HandlerGUI.gd
 msgid "This requires GodSVG to connect to the internet."
@@ -45,7 +44,6 @@ msgid "The file extension is empty. Only \"svg\" files are supported."
 msgstr "Розширення файлу порожнє. Підтримується тільки «svg» файли."
 
 #: src/autoload/HandlerGUI.gd src/utils/FileUtils.gd
-#, fuzzy
 msgid ""
 "\"{passed_extension}\" is an unsupported file extension. Only \"svg\" files "
 "are supported."
@@ -84,9 +82,8 @@ msgid "Insert After"
 msgstr "Вставити після"
 
 #: src/config_classes/Formatter.gd
-#, fuzzy
 msgid "Always"
-msgstr "Завжди активно."
+msgstr "Завжди"
 
 #: src/config_classes/Formatter.gd
 msgid "All except containers"
@@ -94,7 +91,7 @@ msgstr ""
 
 #: src/config_classes/Formatter.gd
 msgid "Never"
-msgstr ""
+msgstr "Ніколи"
 
 #: src/config_classes/Formatter.gd
 msgid "When shorter or equal"
@@ -171,9 +168,8 @@ msgid "Golden donors"
 msgstr ""
 
 #: src/ui_parts/about_menu.gd
-#, fuzzy
 msgid "Diamond donors"
-msgstr "Благодійники"
+msgstr "Діамантові благодійники"
 
 #: src/ui_parts/about_menu.gd
 msgid "Authors"
@@ -345,9 +341,8 @@ msgid "View"
 msgstr "Перегляд"
 
 #: src/ui_parts/global_menu.gd
-#, fuzzy
 msgid "Snap"
-msgstr "Розмір прилипання"
+msgstr "Прилипання"
 
 #: src/ui_parts/good_file_dialog.gd
 msgid "Create new folder"
@@ -378,9 +373,8 @@ msgid "Select an SVG"
 msgstr "Обрати SVG"
 
 #: src/ui_parts/good_file_dialog.gd
-#, fuzzy
 msgid "Select an image"
-msgstr "Обрати усі теги"
+msgstr "Обрати зображення"
 
 #: src/ui_parts/good_file_dialog.gd src/ui_parts/update_menu.gd
 msgid "Close"
@@ -419,21 +413,18 @@ msgstr ""
 "його вмісту!"
 
 #: src/ui_parts/handles_manager.gd
-#, fuzzy
 msgid "New shape"
-msgstr "Новий тег"
+msgstr "Нова форма"
 
 #: src/ui_parts/import_warning_dialog.gd
 msgid "Import Problems"
 msgstr "Проблема з імпортуванням"
 
 #: src/ui_parts/import_warning_dialog.gd
-#, fuzzy
 msgid "Unrecognized element"
-msgstr "Невідомий атрибут"
+msgstr "Невідомий елемент"
 
 #: src/ui_parts/import_warning_dialog.gd
-#, fuzzy
 msgid "Unrecognized attribute"
 msgstr "Невідомий атрибут"
 
@@ -458,7 +449,6 @@ msgid "Shortcuts"
 msgstr "Клавіатурні скорочення"
 
 #: src/ui_parts/settings_menu.gd
-#, fuzzy
 msgid "Theming"
 msgstr "Тема"
 
@@ -475,9 +465,8 @@ msgid "Symbol color"
 msgstr "Колір символу"
 
 #: src/ui_parts/settings_menu.gd
-#, fuzzy
 msgid "Element color"
-msgstr "Колір коментаря"
+msgstr "Колір елементу"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Attribute color"
@@ -532,9 +521,8 @@ msgid "Basic colors"
 msgstr "Базовий колір"
 
 #: src/ui_parts/settings_menu.gd
-#, fuzzy
 msgid "Background color"
-msgstr "Базовий колір"
+msgstr "Колір фону"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Valid color"
@@ -573,7 +561,6 @@ msgid "Sync window title to file name"
 msgstr ""
 
 #: src/ui_parts/settings_menu.gd
-#, fuzzy
 msgid "Handle size"
 msgstr "Розмір ручок редагування"
 
@@ -594,9 +581,8 @@ msgid "Editor formatter"
 msgstr ""
 
 #: src/ui_parts/settings_menu.gd
-#, fuzzy
 msgid "Export formatter"
-msgstr "Експортувати"
+msgstr "Експортувати форматер"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Help"
@@ -661,9 +647,8 @@ msgid "Current Version"
 msgstr ""
 
 #: src/ui_parts/update_menu.gd
-#, fuzzy
 msgid "Retrieving information..."
-msgstr "Переглянути інформацію про відладку"
+msgstr "Отримуємо інформацію..."
 
 #: src/ui_parts/update_menu.gd
 msgid "Update check failed"
@@ -721,16 +706,14 @@ msgid "Unnamed"
 msgstr "Без назви"
 
 #: src/ui_widgets/formatter_config.gd src/ui_widgets/palette_config.gd
-#, fuzzy
 msgid "Rename"
-msgstr "Без назви"
+msgstr "Перейменувати"
 
 #: src/ui_widgets/formatter_config.gd
 msgid "Add trailing newline"
 msgstr "Додавати нову строку в кінці"
 
 #: src/ui_widgets/formatter_config.gd
-#, fuzzy
 msgid "Use shorthand tag syntax"
 msgstr "Використовувати теги зі скороченим синтаксисом"
 
@@ -739,9 +722,8 @@ msgid "Space out the slash of shorthand tags"
 msgstr ""
 
 #: src/ui_widgets/formatter_config.gd
-#, fuzzy
 msgid "Use pretty formatting"
-msgstr "Активувати автоформатування"
+msgstr "Використовувати гарне форматування"
 
 #: src/ui_widgets/formatter_config.gd
 msgid "Use spaces instead of tabs"
@@ -768,9 +750,8 @@ msgid "Colors"
 msgstr "Кольори"
 
 #: src/ui_widgets/formatter_config.gd
-#, fuzzy
 msgid "Use named colors"
-msgstr "Використовувати скорочені назви кольорів"
+msgstr "Використовувати назви кольорів"
 
 #: src/ui_widgets/formatter_config.gd
 msgid "Primary syntax"
@@ -781,9 +762,8 @@ msgid "Capitalize hexadecimal letters"
 msgstr ""
 
 #: src/ui_widgets/formatter_config.gd
-#, fuzzy
 msgid "Pathdata"
-msgstr "Немає даних шляху"
+msgstr "Дані шляху"
 
 #: src/ui_widgets/formatter_config.gd
 msgid "Compress numbers"
@@ -802,9 +782,8 @@ msgid "Remove consecutive commands"
 msgstr "Видалити послідовні команди"
 
 #: src/ui_widgets/formatter_config.gd
-#, fuzzy
 msgid "Transform lists"
-msgstr "Трансформації"
+msgstr "Список трансформацій"
 
 #: src/ui_widgets/formatter_config.gd
 msgid "Remove unnecessary parameters"
@@ -901,28 +880,24 @@ msgid "Import"
 msgstr "Імпортувати"
 
 #: src/utils/TranslationUtils.gd
-#, fuzzy
 msgid "Select all elements"
-msgstr "Обрати усі теги"
+msgstr "Обрати всі елементи"
 
 #: src/utils/TranslationUtils.gd
-#, fuzzy
 msgid "Duplicate the selected elements"
-msgstr "Дублювати обрані теги"
+msgstr "Дублювати обрані елементи"
 
 #: src/utils/TranslationUtils.gd
 msgid "Delete the selection"
 msgstr "Видалити усі обрані теги"
 
 #: src/utils/TranslationUtils.gd
-#, fuzzy
 msgid "Move the selected elements up"
-msgstr "Пересунути усі обрані теги вгору"
+msgstr "Пересунути всі обрані елементи вгору"
 
 #: src/utils/TranslationUtils.gd
-#, fuzzy
 msgid "Move the selected elements down"
-msgstr "Пересунути усі обрані теги вниз"
+msgstr "Пересунути всі обрані елементи вниз"
 
 #: src/utils/TranslationUtils.gd
 msgid "Find"
@@ -953,7 +928,6 @@ msgid "Show rasterized SVG"
 msgstr "Показати растеризуваний SVG"
 
 #: src/utils/TranslationUtils.gd
-#, fuzzy
 msgid "Enable snap"
 msgstr "Активувати прилипання"
 
