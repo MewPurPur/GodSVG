@@ -30,7 +30,7 @@ func full_rebuild() -> void:
 func add_element(element_name: String) -> void:
 	var new_element := DB.element_with_setup(element_name)
 	var loc: PackedInt32Array
-	if element_name in ["linearGradient", "radialGradient"]:
+	if element_name in ["linearGradient", "radialGradient", "stop"]:
 		loc = PackedInt32Array([0])
 	else:
 		loc = PackedInt32Array([SVG.root_element.get_child_count()])
@@ -41,7 +41,7 @@ func add_element(element_name: String) -> void:
 func _on_add_button_pressed() -> void:
 	var btn_array: Array[Button] = []
 	for element_name in PackedStringArray(["path", "circle", "ellipse", "rect", "line",
-	"g", "linearGradient", "radialGradient"]):
+	"g", "linearGradient", "radialGradient", "stop"]):
 		var btn := ContextPopup.create_button(element_name, add_element.bind(element_name),
 				false, DB.get_element_icon(element_name))
 		btn.add_theme_font_override("font", load("res://visual/fonts/FontMono.ttf"))
