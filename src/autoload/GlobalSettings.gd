@@ -81,13 +81,13 @@ var triggers = {
 }
 
 
-func modify_setting(setting: String, new_value: Variant, save := true) -> void:
+func modify_setting(setting: String, new_value: Variant, omit_save := false) -> void:
 	if savedata.get(setting) == new_value:
 		return
-	if save:
-		save_setting(setting, new_value)
-	else:
+	if omit_save:
 		savedata.set(setting, new_value)
+	else:
+		save_setting(setting, new_value)
 	var related_modification_method := get_modification_method(setting)
 	if not related_modification_method.is_null():
 		related_modification_method.call()
@@ -144,7 +144,7 @@ func load_svg_text() -> void:
 
 func reset_settings() -> void:
 	savedata = SaveData.new()
-	modify_setting("language", "en", false)
+	modify_setting("language", "en", true)
 	
 	InputMap.load_from_project_settings()
 	for action in ShortcutUtils.get_all_keybinds():
@@ -156,7 +156,7 @@ func reset_settings() -> void:
 	var palettes_array: Array[ColorPalette] = [ColorPalette.new("Pure", PackedStringArray(
 			["#fff", "#000", "#f00", "#0f0", "#00f", "#ff0", "#f0f", "#0ff"]), PackedStringArray(
 			["White", "Black", "Red", "Green", "Blue", "Yellow", "Magenta", "Cyan"]))]
-	modify_setting("palettes", palettes_array, false)
+	modify_setting("palettes", palettes_array, true)
 	
 	var compact_formatter := Formatter.new("Compact")
 	var pretty_formatter := Formatter.new("Pretty")
@@ -174,9 +174,9 @@ func reset_settings() -> void:
 	pretty_formatter.transform_list_remove_unnecessary_params = false
 	# The array needs to be typed.
 	var formatters_array: Array[Formatter] = [pretty_formatter, compact_formatter]
-	modify_setting("formatters", formatters_array, false)
-	modify_setting("editor_formatter", pretty_formatter, false)
-	modify_setting("export_formatter", compact_formatter, false)
+	modify_setting("formatters", formatters_array, true)
+	modify_setting("editor_formatter", pretty_formatter, true)
+	modify_setting("export_formatter", compact_formatter, true)
 	save()
 
 
