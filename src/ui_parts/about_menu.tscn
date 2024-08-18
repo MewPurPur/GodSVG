@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://src/ui_parts/about_menu.gd" id="1_xxltt"]
 [ext_resource type="Texture2D" uid="uid://barsurula6j8n" path="res://visual/icon.svg" id="2_t7fbd"]
-[ext_resource type="FontFile" uid="uid://dtb4wkus51hxs" path="res://visual/fonts/FontMono.ttf" id="3_e8i1t"]
+[ext_resource type="FontFile" uid="uid://depydd16jq777" path="res://visual/fonts/FontMono.ttf" id="3_e8i1t"]
 [ext_resource type="FontFile" uid="uid://dc0w4sx0h0fui" path="res://visual/fonts/FontBold.ttf" id="4_n6gp0"]
 [ext_resource type="Texture2D" uid="uid://cgxpm1e3v0i3v" path="res://visual/icons/Link.svg" id="6_hbk78"]
 [ext_resource type="Script" path="res://src/ui_widgets/GridDrawingControl.gd" id="7_nvctb"]
@@ -68,9 +68,11 @@ text = "© 2023 MewPurPur
 custom_minimum_size = Vector2(0, 280)
 layout_mode = 2
 size_flags_vertical = 3
+current_tab = 0
 
 [node name="Authors" type="ScrollContainer" parent="VBoxContainer/TabContainer"]
 layout_mode = 2
+metadata/_tab_index = 0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/TabContainer/Authors"]
 layout_mode = 2
@@ -128,6 +130,7 @@ layout_mode = 2
 [node name="Donors" type="ScrollContainer" parent="VBoxContainer/TabContainer"]
 visible = false
 layout_mode = 2
+metadata/_tab_index = 1
 
 [node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/TabContainer/Donors"]
 layout_mode = 2
@@ -194,6 +197,7 @@ stylebox = SubResource("StyleBoxFlat_jtvwe")
 visible = false
 layout_mode = 2
 size_flags_vertical = 3
+metadata/_tab_index = 2
 
 [node name="LicenseLabel" type="Label" parent="VBoxContainer/TabContainer/License"]
 layout_mode = 2
@@ -225,6 +229,7 @@ SOFTWARE."
 [node name="Third-party Licenses" type="ScrollContainer" parent="VBoxContainer/TabContainer"]
 visible = false
 layout_mode = 2
+metadata/_tab_index = 3
 
 [node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/TabContainer/Third-party Licenses"]
 layout_mode = 2
