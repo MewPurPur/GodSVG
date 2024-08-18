@@ -81,7 +81,7 @@ var triggers = {
 }
 
 
-func modify_setting(setting: String, new_value: Variant, omit_save := true) -> void:
+func modify_setting(setting: String, new_value: Variant, omit_save := false) -> void:
 	if savedata.get(setting) == new_value:
 		return
 	if omit_save:
