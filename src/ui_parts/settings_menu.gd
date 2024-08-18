@@ -419,7 +419,8 @@ func rebuild_formatters() -> void:
 		var frame := ProfileFrame.instantiate()
 		frame.text = context[1]
 		frame.getter = func(): return GlobalSettings.savedata.get(context[0]).title
-		frame.setter = func(p): GlobalSettings.modify_setting(context[0], formatters[p])
+		frame.setter = func(p): GlobalSettings.modify_setting(context[0], formatters[p] if\
+				formatters.has(p) else formatters[formatters.keys()[0]])
 		frame.mouse_entered.connect(show_advice.bind(current_setup_setting))
 		frame.mouse_exited.connect(hide_advice.bind(current_setup_setting))
 		formatter_container.add_child(frame)

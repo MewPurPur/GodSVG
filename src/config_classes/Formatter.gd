@@ -142,16 +142,11 @@ func get_enum_texts(property: String) -> Array[String]:
 
 func _init(new_title := "") -> void:
 	title = new_title
-	# Connect to _workaround after one frame (CONNECT_DEFERRED) and only once (CONNECT_ONE_SHOT)
-	changed.connect(_workaround, CONNECT_DEFERRED | CONNECT_ONE_SHOT)
-
-func _workaround() -> void:
 	# Connects to the _on_changed function once all initial file loading is done.
-	# This avoids saving the config 24 times on launch, during initialization and loading.
-	changed.connect(_on_changed)
+	# This way the config is saved only once on launch.
+	changed.connect(changed.connect.bind(_on_changed), CONNECT_DEFERRED | CONNECT_ONE_SHOT)
 
 func _on_changed() -> void:
 	if self == GlobalSettings.savedata.editor_formatter:
 		SVG.sync_elements()
 	GlobalSettings.save()
-
