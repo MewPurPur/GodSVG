@@ -154,4 +154,3 @@ func _on_changed() -> void:
 	if self == GlobalSettings.savedata.editor_formatter:
 		SVG.sync_elements()
 	GlobalSettings.save()
-
