@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GodSVG\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2024-08-18 17:21+0300\n"
+"PO-Revision-Date: 2024-08-18 20:43+0300\n"
 "Last-Translator: volkov <volkovissocool@gmail.com>\n"
 "Language-Team: \n"
 "Language: ru\n"
@@ -89,7 +89,7 @@ msgstr "Всегда активно"
 
 #: src/config_classes/Formatter.gd
 msgid "All except containers"
-msgstr ""
+msgstr "Все кроме контейнеров"
 
 #: src/config_classes/Formatter.gd
 msgid "Never"
@@ -105,11 +105,11 @@ msgstr "Когда короче"
 
 #: src/config_classes/Formatter.gd
 msgid "3-digit or 6-digit hex"
-msgstr ""
+msgstr "3 или 6 цифровое шестандацитиричное значение"
 
 #: src/config_classes/Formatter.gd
 msgid "6-digit hex"
-msgstr ""
+msgstr "6 цифровое шестандцатяричное значение"
 
 #: src/data_classes/Element.gd
 msgid "{element} must be inside {allowed} to have any effect."
@@ -130,7 +130,7 @@ msgstr "Атрибут идентефикатора не определен."
 #: src/data_classes/ElementLinearGradient.gd
 #: src/data_classes/ElementRadialGradient.gd
 msgid "No <stop> elements under this gradient."
-msgstr ""
+msgstr "Нет <stop> елементов под этим градиентом."
 
 #: src/data_classes/ElementLinearGradient.gd
 #: src/data_classes/ElementRadialGradient.gd
@@ -722,7 +722,7 @@ msgstr "Использовать теги с сокращенным синтак
 
 #: src/ui_widgets/formatter_config.gd
 msgid "Space out the slash of shorthand tags"
-msgstr ""
+msgstr "Ставить пробел после тега"
 
 #: src/ui_widgets/formatter_config.gd
 msgid "Use pretty formatting"
@@ -746,7 +746,7 @@ msgstr "Удалить начальный ноль"
 
 #: src/ui_widgets/formatter_config.gd
 msgid "Use exponential when shorter"
-msgstr ""
+msgstr "Использовать экспоненту когда короткий"
 
 #: src/ui_widgets/formatter_config.gd
 msgid "Colors"
