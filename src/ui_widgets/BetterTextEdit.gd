@@ -24,6 +24,7 @@ func _ready() -> void:
 	add_child(_timer)
 	_timer.timeout.connect(blink)
 	get_v_scroll_bar().value_changed.connect(queue_redraw_caret.unbind(1))
+	resized.connect(queue_redraw_caret.unbind(1), CONNECT_DEFERRED)
 	get_h_scroll_bar().value_changed.connect(queue_redraw_caret.unbind(1))
 	mouse_exited.connect(_on_base_class_mouse_exited)
 	focus_entered.connect(_on_base_class_focus_entered)
@@ -62,8 +63,8 @@ func redraw_caret() -> void:
 		var caret_line := get_caret_line(caret)
 		
 		if caret_column == 0:
-			caret_pos = Vector2(get_theme_stylebox("normal").content_margin_left + 1,
-					get_line_height() * (caret_line + 1) + 1)
+			caret_pos = Vector2(get_theme_stylebox("normal").content_margin_left,
+					get_rect_at_line_column(caret_line, caret_column).end.y) + Vector2(1, -2)
 		else:
 			var glyph_end := Vector2(get_rect_at_line_column(caret_line, caret_column).end)
 			caret_pos = glyph_end + Vector2(1, -2)
