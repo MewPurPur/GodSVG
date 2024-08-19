@@ -5,6 +5,9 @@ static func num_to_text(number: float, formatter: Formatter) -> String:
 	if not is_finite(number):
 		return ""
 	
+	if number == -0.0:
+		number = absf(number)
+	
 	if formatter.number_use_exponent_if_shorter and absf(number) >= 1000.0:
 		var ending_zeros := 0
 		while is_zero_approx(fmod(number, 10 ** (ending_zeros + 1))):
@@ -19,4 +22,5 @@ static func num_to_text(number: float, formatter: Formatter) -> String:
 			output = output.right(-1)
 		elif output.begins_with("-0"):
 			output = output.erase(1)
+	
 	return output
