@@ -95,7 +95,7 @@ func setup_content() -> void:
 				btn.toggle_mode = true
 				btn.button_group = button_group
 				btn.pressed.connect(show_keybinds.bind(tab_idx))
-				btn.text = shortcut_tab_names[tab_idx].call()
+				btn.text = get_translated_shortcut_tab(tab_idx)
 				btn.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 				btn.focus_mode = Control.FOCUS_NONE
 				categories.add_child(btn)
@@ -451,13 +451,17 @@ func set_formatter(formatter_purpose: String, formatter_name: String) -> void:
 		GlobalSettings.modify_setting(formatter_purpose, new_formatter)
 
 
-var shortcut_tab_names := {
-	"file": TranslationServer.translate.bind("File"),
-	"edit": TranslationServer.translate.bind("Edit"),
-	"view": TranslationServer.translate.bind("View"),
-	"tool": TranslationServer.translate.bind("Tool"),
-	"help": TranslationServer.translate.bind("Help"),
-}
+var shortcut_tab_names := ["file", "edit", "view", "tool", "help"]
+
+func get_translated_shortcut_tab(tab_idx: String) -> String:
+	match tab_idx:
+		"file": return TranslationServer.translate("File")
+		"edit": return TranslationServer.translate("Edit")
+		"view": return TranslationServer.translate("View")
+		"tool": return TranslationServer.translate("Tool")
+		"help": return TranslationServer.translate("Help")
+		_: return ""
+
 
 func show_keybinds(category: String):
 	var keybinds_container := content_container.get_child(-1).get_child(-1)
