@@ -237,12 +237,12 @@ msgstr "Покажни справочното изображение"
 msgid "Overlay reference"
 msgstr "Насложи справочното изображение"
 
-#: src/ui_parts/display.gd
-msgid "Show Grid"
+#: src/ui_parts/display.gd src/utils/TranslationUtils.gd
+msgid "Show grid"
 msgstr "Покажи решетката"
 
-#: src/ui_parts/display.gd
-msgid "Show Handles"
+#: src/ui_parts/display.gd src/utils/TranslationUtils.gd
+msgid "Show handles"
 msgstr "Покажи дръжките"
 
 #: src/ui_parts/display.gd
@@ -910,14 +910,6 @@ msgstr "Намали"
 #: src/utils/TranslationUtils.gd
 msgid "Zoom reset"
 msgstr "Рестартирай мащаба"
-
-#: src/utils/TranslationUtils.gd
-msgid "Show grid"
-msgstr "Покажи решетката"
-
-#: src/utils/TranslationUtils.gd
-msgid "Show handles"
-msgstr "Покажи дръжките"
 
 #: src/utils/TranslationUtils.gd
 msgid "Show rasterized SVG"

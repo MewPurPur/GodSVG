@@ -241,12 +241,12 @@ msgstr "Показать референс-изображение"
 msgid "Overlay reference"
 msgstr "Наложить референс-изображение"
 
-#: src/ui_parts/display.gd
-msgid "Show Grid"
+#: src/ui_parts/display.gd src/utils/TranslationUtils.gd
+msgid "Show grid"
 msgstr "Показать сетку"
 
-#: src/ui_parts/display.gd
-msgid "Show Handles"
+#: src/ui_parts/display.gd src/utils/TranslationUtils.gd
+msgid "Show handles"
 msgstr "Показать ручки редактирования"
 
 #: src/ui_parts/display.gd
@@ -932,14 +932,6 @@ msgstr "Отдалить масштаб"
 #: src/utils/TranslationUtils.gd
 msgid "Zoom reset"
 msgstr "Сбросить масштаб"
-
-#: src/utils/TranslationUtils.gd
-msgid "Show grid"
-msgstr "Показать сетку"
-
-#: src/utils/TranslationUtils.gd
-msgid "Show handles"
-msgstr "Показать ручки редактирования"
 
 #: src/utils/TranslationUtils.gd
 msgid "Show rasterized SVG"

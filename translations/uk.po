@@ -241,12 +241,12 @@ msgstr ""
 msgid "Overlay reference"
 msgstr ""
 
-#: src/ui_parts/display.gd
-msgid "Show Grid"
+#: src/ui_parts/display.gd src/utils/TranslationUtils.gd
+msgid "Show grid"
 msgstr "Показати ґратку"
 
-#: src/ui_parts/display.gd
-msgid "Show Handles"
+#: src/ui_parts/display.gd src/utils/TranslationUtils.gd
+msgid "Show handles"
 msgstr "Показати ручки редагування"
 
 #: src/ui_parts/display.gd
@@ -936,14 +936,6 @@ msgstr "Зменшити масштаб"
 #: src/utils/TranslationUtils.gd
 msgid "Zoom reset"
 msgstr "Скинути масштаб"
-
-#: src/utils/TranslationUtils.gd
-msgid "Show grid"
-msgstr "Показати ґратку"
-
-#: src/utils/TranslationUtils.gd
-msgid "Show handles"
-msgstr "Показати ручки редагування"
 
 #: src/utils/TranslationUtils.gd
 msgid "Show rasterized SVG"

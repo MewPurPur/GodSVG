@@ -122,9 +122,9 @@ func _on_reference_pressed() -> void:
 
 func _on_visuals_button_pressed() -> void:
 	var btn_arr: Array[Button] = [
-		ContextPopup.create_checkbox(TranslationServer.translate("Show Grid"),
+		ContextPopup.create_checkbox(TranslationServer.translate("Show grid"),
 				toggle_grid_visuals, grid_visuals.visible, "view_show_grid"),
-		ContextPopup.create_checkbox(TranslationServer.translate("Show Handles"),
+		ContextPopup.create_checkbox(TranslationServer.translate("Show handles"),
 				toggle_handles_visuals, controls.visible, "view_show_handles"),
 		ContextPopup.create_checkbox(TranslationServer.translate("Rasterized SVG"),
 				toggle_rasterization, viewport.display_texture.rasterized,
