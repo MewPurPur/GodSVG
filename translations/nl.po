@@ -13,7 +13,7 @@ msgstr ""
 "X-Generator: Poedit 3.4.4\n"
 
 msgid "translation-credits"
-msgstr "Racer911-1 / Racer911dash1 "
+msgstr "Racer911dash1"
 
 #: src/autoload/HandlerGUI.gd
 msgid "Quit GodSVG"
