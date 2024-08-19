@@ -123,8 +123,9 @@ msgid "This group has only one element."
 msgstr "Diese Gruppe hat nur ein Element."
 
 #: src/data_classes/ElementLinearGradient.gd
-msgid "No id attribute defined."
-msgstr "Kein id Attribut definiert."
+#: src/data_classes/ElementRadialGradient.gd
+msgid "No \"id\" attribute defined."
+msgstr "Kein \"id\" Attribut definiert."
 
 #: src/data_classes/ElementLinearGradient.gd
 #: src/data_classes/ElementRadialGradient.gd
@@ -135,10 +136,6 @@ msgstr "Keine <stop> Elemente unter diesem Farbverlauf."
 #: src/data_classes/ElementRadialGradient.gd
 msgid "This gradient is a solid color."
 msgstr "Dieser Farbverlauf ist einfarbig."
-
-#: src/data_classes/ElementRadialGradient.gd
-msgid "No \"id\" attribute defined."
-msgstr "Kein \"id\" Attribut definiert."
 
 #: src/data_classes/SVGParser.gd
 msgid "Doesn’t describe an SVG."
@@ -1006,6 +1003,9 @@ msgstr "Kubischer Bezier to"
 #: src/utils/TranslationUtils.gd
 msgid "Shorthand Cubic Bezier to"
 msgstr "Kurzhand-Kubischer Bezier to"
+
+#~ msgid "No id attribute defined."
+#~ msgstr "Kein id Attribut definiert."
 
 #~ msgid "General"
 #~ msgstr "Allgemein"

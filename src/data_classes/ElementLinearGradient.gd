@@ -21,7 +21,7 @@ func get_percentage_handling(attribute_name: String) -> DB.PercentageHandling:
 func get_config_warnings() -> PackedStringArray:
 	var warnings := super()
 	if not has_attribute("id"):
-		warnings.append(TranslationServer.translate("No id attribute defined."))
+		warnings.append(TranslationServer.translate("No \"id\" attribute defined."))
 	
 	var first_stop_color := ""
 	var first_stop_opacity := -1.0

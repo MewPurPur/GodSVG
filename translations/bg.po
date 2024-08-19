@@ -122,8 +122,9 @@ msgid "This group has only one element."
 msgstr "Тази група има само един елемент."
 
 #: src/data_classes/ElementLinearGradient.gd
-msgid "No id attribute defined."
-msgstr "Не е дефиниран id атрибут."
+#: src/data_classes/ElementRadialGradient.gd
+msgid "No \"id\" attribute defined."
+msgstr "Не е дефиниран \"id\" атрибут."
 
 #: src/data_classes/ElementLinearGradient.gd
 #: src/data_classes/ElementRadialGradient.gd
@@ -134,10 +135,6 @@ msgstr "Няма <stop> елемент под този градиент."
 #: src/data_classes/ElementRadialGradient.gd
 msgid "This gradient is a solid color."
 msgstr "Този градиент е едноцветен."
-
-#: src/data_classes/ElementRadialGradient.gd
-msgid "No \"id\" attribute defined."
-msgstr "Не е дефиниран \"id\" атрибут."
 
 #: src/data_classes/SVGParser.gd
 msgid "Doesn’t describe an SVG."

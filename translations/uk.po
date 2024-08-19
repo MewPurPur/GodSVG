@@ -125,7 +125,8 @@ msgid "This group has only one element."
 msgstr ""
 
 #: src/data_classes/ElementLinearGradient.gd
-msgid "No id attribute defined."
+#: src/data_classes/ElementRadialGradient.gd
+msgid "No \"id\" attribute defined."
 msgstr ""
 
 #: src/data_classes/ElementLinearGradient.gd
@@ -136,10 +137,6 @@ msgstr ""
 #: src/data_classes/ElementLinearGradient.gd
 #: src/data_classes/ElementRadialGradient.gd
 msgid "This gradient is a solid color."
-msgstr ""
-
-#: src/data_classes/ElementRadialGradient.gd
-msgid "No \"id\" attribute defined."
 msgstr ""
 
 #: src/data_classes/SVGParser.gd
