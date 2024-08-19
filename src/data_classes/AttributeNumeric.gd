@@ -7,7 +7,7 @@ var _number := NAN
 func _sync() -> void:
 	if not _value.is_empty():
 		_number = text_to_num(_value)
-		_percentage = _value.strip_edges().ends_with("%")
+		_percentage = text_check_percentage(_value)
 
 func set_num(new_number: float) -> void:
 	_number = new_number
@@ -20,6 +20,13 @@ func is_percentage() -> bool:
 	return _percentage
 
 
+func format(text: String) -> String:
+	var num := text_to_num(text)
+	if text_check_percentage(text):
+		return num_to_text(num * 100.0) + "%"
+	else:
+		return num_to_text(num)
+
 func num_to_text(number: float) -> String:
 	return NumberParser.num_to_text(number, formatter)
 
@@ -30,3 +37,6 @@ static func text_to_num(text: String) -> float:
 	if text.ends_with("%"):
 		return text.to_float() / 100
 	return text.to_float()
+
+func text_check_percentage(text: String) -> bool:
+	return text.strip_edges().ends_with("%")
