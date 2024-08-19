@@ -123,8 +123,9 @@ msgid "This group has only one element."
 msgstr "Deze groep heeft alleen een element."
 
 #: src/data_classes/ElementLinearGradient.gd
-msgid "No id attribute defined."
-msgstr "Geen id attribuut gedefinieert."
+#: src/data_classes/ElementRadialGradient.gd
+msgid "No \"id\" attribute defined."
+msgstr "Geen \"id\" attribuut gedefineerd."
 
 #: src/data_classes/ElementLinearGradient.gd
 #: src/data_classes/ElementRadialGradient.gd
@@ -135,10 +136,6 @@ msgstr "Geen <stop> elementen onder deze kleurovergang."
 #: src/data_classes/ElementRadialGradient.gd
 msgid "This gradient is a solid color."
 msgstr "Deze kleurovergang is een vaste kleur."
-
-#: src/data_classes/ElementRadialGradient.gd
-msgid "No \"id\" attribute defined."
-msgstr "Geen \"id\" attribuut gedefineerd."
 
 #: src/data_classes/SVGParser.gd
 msgid "Doesn’t describe an SVG."
@@ -241,12 +238,12 @@ msgstr "Referentie weergeven"
 msgid "Overlay reference"
 msgstr "Referentie overlappen"
 
-#: src/ui_parts/display.gd
-msgid "Show Grid"
+#: src/ui_parts/display.gd src/utils/TranslationUtils.gd
+msgid "Show grid"
 msgstr "Rooster weergeven"
 
-#: src/ui_parts/display.gd
-msgid "Show Handles"
+#: src/ui_parts/display.gd src/utils/TranslationUtils.gd
+msgid "Show handles"
 msgstr "Hendelgrepen weergeven"
 
 #: src/ui_parts/display.gd
@@ -913,14 +910,6 @@ msgstr "Uitzoomen"
 #: src/utils/TranslationUtils.gd
 msgid "Zoom reset"
 msgstr "Zoom opnieuw zetten"
-
-#: src/utils/TranslationUtils.gd
-msgid "Show grid"
-msgstr "Rooster weergeven"
-
-#: src/utils/TranslationUtils.gd
-msgid "Show handles"
-msgstr "Hendelgrepen weergeven"
 
 #: src/utils/TranslationUtils.gd
 msgid "Show rasterized SVG"

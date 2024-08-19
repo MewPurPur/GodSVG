@@ -235,12 +235,12 @@ msgstr ""
 msgid "Overlay reference"
 msgstr ""
 
-#: src/ui_parts/display.gd
-msgid "Show Grid"
+#: src/ui_parts/display.gd src/utils/TranslationUtils.gd
+msgid "Show grid"
 msgstr ""
 
-#: src/ui_parts/display.gd
-msgid "Show Handles"
+#: src/ui_parts/display.gd src/utils/TranslationUtils.gd
+msgid "Show handles"
 msgstr ""
 
 #: src/ui_parts/display.gd
@@ -895,14 +895,6 @@ msgstr ""
 
 #: src/utils/TranslationUtils.gd
 msgid "Zoom reset"
-msgstr ""
-
-#: src/utils/TranslationUtils.gd
-msgid "Show grid"
-msgstr ""
-
-#: src/utils/TranslationUtils.gd
-msgid "Show handles"
 msgstr ""
 
 #: src/utils/TranslationUtils.gd

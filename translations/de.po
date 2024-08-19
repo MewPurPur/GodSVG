@@ -238,12 +238,12 @@ msgstr "Referenz anzeigen"
 msgid "Overlay reference"
 msgstr "Referenz überblenden"
 
-#: src/ui_parts/display.gd
-msgid "Show Grid"
+#: src/ui_parts/display.gd src/utils/TranslationUtils.gd
+msgid "Show grid"
 msgstr "Raster anzeigen"
 
-#: src/ui_parts/display.gd
-msgid "Show Handles"
+#: src/ui_parts/display.gd src/utils/TranslationUtils.gd
+msgid "Show handles"
 msgstr "Griffe anzeigen"
 
 #: src/ui_parts/display.gd
@@ -913,14 +913,6 @@ msgid "Zoom reset"
 msgstr "Zoom zurücksetzen"
 
 #: src/utils/TranslationUtils.gd
-msgid "Show grid"
-msgstr "Raster anzeigen"
-
-#: src/utils/TranslationUtils.gd
-msgid "Show handles"
-msgstr "Griffe anzeigen"
-
-#: src/utils/TranslationUtils.gd
 msgid "Show rasterized SVG"
 msgstr "Rasterisiertes SVG anzeigen"
 
@@ -1003,9 +995,6 @@ msgstr "Kubischer Bezier to"
 #: src/utils/TranslationUtils.gd
 msgid "Shorthand Cubic Bezier to"
 msgstr "Kurzhand-Kubischer Bezier to"
-
-#~ msgid "No id attribute defined."
-#~ msgstr "Kein id Attribut definiert."
 
 #~ msgid "General"
 #~ msgstr "Allgemein"

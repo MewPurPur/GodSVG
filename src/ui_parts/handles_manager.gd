@@ -640,32 +640,22 @@ func _unhandled_input(event: InputEvent) -> void:
 			Indications.clear_hovered()
 			Indications.clear_inner_hovered()
 	
-	var snap_enabled := GlobalSettings.savedata.snap > 0.0
-	var snap_size := absf(GlobalSettings.savedata.snap)
-	var snap_vector := Vector2(snap_size, snap_size)
-	
 	if event is InputEventMouseMotion:
 		# Allow moving view while dragging handle.
 		if event.button_mask & MOUSE_BUTTON_MASK_MIDDLE:
 			return
 		
 		should_deselect_all = false
-		var event_pos: Vector2 = event.position / Indications.zoom +\
-				get_parent().view.position
 		if is_instance_valid(dragged_handle):
 			# Move the handle that's being dragged.
-			if snap_enabled:
-				event_pos = event_pos.snapped(snap_vector)
+			var event_pos := get_event_pos(event)
 			var new_pos := dragged_handle.transform.affine_inverse() *\
 					SVG.root_element.world_to_canvas(event_pos)
 			dragged_handle.set_pos(new_pos)
 			was_handle_moved = true
 			accept_event()
 	elif event is InputEventMouseButton:
-		var event_pos: Vector2 = event.position / Indications.zoom +\
-				get_parent().view.position
-		if snap_enabled:
-			event_pos = event_pos.snapped(snap_vector)
+		var event_pos := get_event_pos(event)
 		
 		if event.button_index == MOUSE_BUTTON_LEFT:
 			# React to LMB actions.
@@ -735,6 +725,20 @@ func find_nearest_handle(event_pos: Vector2) -> Handle:
 			nearest_dist_squared = dist_to_handle_squared
 			nearest_handle = handle
 	return nearest_handle
+
+func get_event_pos(event: InputEvent) -> Vector2:
+	var snap_enabled := GlobalSettings.savedata.snap > 0.0
+	var snap_size := absf(GlobalSettings.savedata.snap)
+	var snap_vector := Vector2(snap_size, snap_size)
+	
+	var event_pos: Vector2 = event.position / Indications.zoom +\
+				get_parent().view.position
+	var precision := maxi(ceili(-log(1.0 / Indications.zoom) / log(10)), 0)
+	event_pos = event_pos.snapped(Vector2(0.1 ** precision, 0.1 ** precision))
+	if snap_enabled:
+		event_pos = event_pos.snapped(snap_vector)
+	return event_pos
+
 
 func _on_handle_added() -> void:
 	if not get_viewport_rect().has_point(get_viewport().get_mouse_position()):
