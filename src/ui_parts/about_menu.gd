@@ -20,7 +20,7 @@ func _ready() -> void:
 	project_founder_list.setup()
 	authors_list.items = app_info.authors
 	authors_list.setup()
-	donors_list.items = app_info.donors
+	donors_list.items = app_info.donors + ["%d anonymous" % app_info.anonymous_donors]
 	donors_list.setup()
 	golden_donors_list.items = app_info.golden_donors
 	golden_donors_list.setup()
