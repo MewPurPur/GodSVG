@@ -24,7 +24,6 @@ func _ready() -> void:
 	add_child(_timer)
 	_timer.timeout.connect(blink)
 	get_v_scroll_bar().value_changed.connect(queue_redraw_caret.unbind(1))
-	resized.connect(queue_redraw_caret.unbind(1), CONNECT_DEFERRED)
 	get_h_scroll_bar().value_changed.connect(queue_redraw_caret.unbind(1))
 	mouse_exited.connect(_on_base_class_mouse_exited)
 	focus_entered.connect(_on_base_class_focus_entered)

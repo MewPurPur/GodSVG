@@ -8,13 +8,12 @@ static func num_to_text(number: float, formatter: Formatter) -> String:
 	if number == -0.0:
 		number = absf(number)
 	
-	if formatter.number_use_exponent_if_shorter and absf(number) >= 1000.0:
-		var ending_zeros := 0
-		while is_zero_approx(fmod(number, 10 ** (ending_zeros + 1))):
-			ending_zeros += 1
-		if ending_zeros >= 3:
-			return String.num_int64(int(number / 10 ** ending_zeros)) + "e" +\
-					String.num_uint64(ending_zeros)
+	if formatter.number_use_exponent_if_shorter and not is_zero_approx(number):
+		var e := 2
+		while is_zero_approx(fposmod(absf(number), 10 ** (e + 1))):
+			e += 1
+		if e >= 3:
+			return String.num_int64(int(number / 10 ** e)) + "e" + String.num_int64(e)
 	
 	var output := String.num(number, Utils.MAX_NUMERIC_PRECISION)
 	if formatter.number_remove_leading_zero and not is_zero_approx(fmod(number, 1)):
