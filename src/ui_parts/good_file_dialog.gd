@@ -338,7 +338,7 @@ func _on_drives_list_item_selected(index: int) -> void:
 	call_selection_action(drives_list.get_item_metadata(index))
 
 func _on_show_hidden_button_toggled(toggled_on: bool) -> void:
-	GlobalSettings.savedata.file_dialog_show_hidden = toggled_on
+	GlobalSettings.modify_setting("file_dialog_show_hidden", toggled_on)
 	refresh_dir()
 
 func _on_search_button_toggled(toggled_on: bool) -> void:

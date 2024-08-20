@@ -115,7 +115,12 @@ func save() -> void:
 	ResourceSaver.save(savedata, savedata_path)
 
 
+var default_keybinds := {}
+
 func _enter_tree() -> void:
+	for action in InputMap.get_actions():
+		if action in ShortcutUtils.get_all_keybinds():
+			default_keybinds[action] = InputMap.action_get_events(action)
 	load_config()
 	load_svg_text()
 	ThemeGenerator.generate_and_apply_theme()

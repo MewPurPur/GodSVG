@@ -19,7 +19,7 @@ func emit_picked(cmd_char: String) -> void:
 	queue_free()
 
 func _on_relative_toggle_toggled(toggled_on: bool) -> void:
-	GlobalSettings.savedata.path_command_relative = toggled_on
+	GlobalSettings.savedata.modify_setting("path_command_relative", toggled_on)
 	for command_button in command_container.get_children():
 		command_button.command_char = command_button.command_char.to_lower() if toggled_on\
 				else command_button.command_char.to_upper()
