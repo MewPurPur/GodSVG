@@ -212,11 +212,11 @@ func set_snap_amount(snap_value: float) -> void:
 	snapper.set_value(snap_value)
 
 func _on_snap_button_toggled(toggled_on: bool) -> void:
-	GlobalSettings.savedata.snap = absf(GlobalSettings.savedata.snap) if toggled_on\
-			else -absf(GlobalSettings.savedata.snap)
+	GlobalSettings.modify_setting("snap", absf(GlobalSettings.savedata.snap) if toggled_on\
+			else -absf(GlobalSettings.savedata.snap))
 
 func _on_snap_number_edit_value_changed(new_value: float) -> void:
-	GlobalSettings.savedata.snap = new_value * signf(GlobalSettings.savedata.snap)
+	GlobalSettings.modify_setting("snap", new_value * signf(GlobalSettings.savedata.snap))
 
 # The strings here are intentionally not localized.
 func update_debug() -> void:

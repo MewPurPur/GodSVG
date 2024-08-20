@@ -100,8 +100,9 @@ start_pressed: bool, shortcut := "") -> CheckBox:
 				ret_button.focus_mode = Control.FOCUS_NONE
 				ret_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 				ret_button.shortcut_in_tooltip = false
-				checkbox.add_theme_stylebox_override("normal",
-						checkbox.get_theme_stylebox("normal", "ContextButton"))
+				for theme_stylebox in ["normal", "pressed"]:
+					checkbox.add_theme_stylebox_override(theme_stylebox,
+							checkbox.get_theme_stylebox("normal", "ContextButton"))
 				var internal_hbox := HBoxContainer.new()
 				checkbox.mouse_filter = Control.MOUSE_FILTER_IGNORE  # Unpressable.
 				internal_hbox.add_theme_constant_override("separation", 6)

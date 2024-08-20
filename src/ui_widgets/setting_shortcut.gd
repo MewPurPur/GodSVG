@@ -12,8 +12,12 @@ var events: Array[InputEvent] = []
 
 var listening_idx := -1
 
-func _ready() -> void:
+func update_translation() -> void:
 	reset_button.tooltip_text = TranslationServer.translate("Reset to default")
+
+func _ready() -> void:
+	GlobalSettings.language_changed.connect(update_translation)
+	update_translation()
 
 func setup(new_action: String) -> void:
 	action = new_action
@@ -23,7 +27,7 @@ func setup(new_action: String) -> void:
 # Syncs based on current events.
 func sync() -> void:
 	# Show the reset button if any of the actions don't match.
-	var action_defaults: Array[InputEvent] = GlobalSettings.savedata.keybinds[action]
+	var action_defaults: Array[InputEvent] = GlobalSettings.default_keybinds[action]
 	if events.size() != action_defaults.size():
 		reset_button.show()
 	else:
@@ -146,6 +150,6 @@ func _input(event: InputEvent) -> void:
 		listening_idx = -1
 
 func _on_reset_button_pressed() -> void:
-	events = GlobalSettings.savedata.keybinds[action].duplicate(true)
+	events = GlobalSettings.default_keybinds[action].duplicate(true)
 	update_shortcut()
 	sync()

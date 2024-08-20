@@ -19,7 +19,7 @@ static func does_svg_data_match_disk_contents() -> bool:
 
 
 static func finish_import(svg_text: String, file_path: String) -> void:
-	GlobalSettings.savedata.current_file_path = file_path
+	GlobalSettings.modify_setting("current_file_path", file_path)
 	SVG.apply_svg_text(svg_text)
 
 static func finish_export(file_path: String, extension: String, upscale_amount := 1.0,
@@ -27,7 +27,7 @@ quality := 0.8, lossless := true) -> void:
 	if file_path.get_extension().is_empty():
 		file_path += "." + extension
 	
-	GlobalSettings.savedata.last_used_dir = file_path.get_base_dir()
+	GlobalSettings.modify_setting("last_used_dir", file_path.get_base_dir())
 	
 	match extension:
 		"png": generate_image_from_elements(upscale_amount).save_png(file_path)
@@ -37,7 +37,7 @@ quality := 0.8, lossless := true) -> void:
 					quality)
 		_:
 			# SVG / fallback.
-			GlobalSettings.savedata.current_file_path = file_path
+			GlobalSettings.modify_setting("current_file_path", file_path)
 			save_svg_to_file(file_path)
 	HandlerGUI.remove_overlay()
 
@@ -90,8 +90,8 @@ _filter_idx: int, extension: String, upscale_amount := 1.0) -> void:
 static func native_file_save(has_selected: bool, files: PackedStringArray,
 _filter_idx: int) -> void:
 	if has_selected:
-		GlobalSettings.savedata.current_file_path = files[0]
-		GlobalSettings.savedata.last_used_dir = files[0].get_base_dir()
+		GlobalSettings.modify_setting("current_file_path", files[0])
+		GlobalSettings.modify_setting("last_used_dir", files[0].get_base_dir())
 		save_svg_to_file(files[0])
 
 
@@ -152,7 +152,7 @@ static func apply_svg_from_path(path: String) -> int:
 	var error := ""
 	var extension := path.get_extension()
 	
-	GlobalSettings.savedata.last_used_dir = path.get_base_dir()
+	GlobalSettings.modify_setting("last_used_dir", path.get_base_dir())
 	
 	if extension.is_empty():
 		error = TranslationServer.translate(
