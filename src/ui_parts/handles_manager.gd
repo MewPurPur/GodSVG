@@ -145,6 +145,7 @@ func update_handles() -> void:
 func sync_handles(xid: PackedInt32Array) -> void:
 	var element := SVG.root_element.get_element(xid)
 	if not element is ElementPath:
+		queue_redraw()
 		return
 	
 	var new_handles: Array[Handle] = []
@@ -614,7 +615,7 @@ func _draw() -> void:
 				RenderingServer.canvas_item_add_set_transform(selections_surface,
 						element.get_transform() * SVG.root_element.canvas_transform)
 				RenderingServer.canvas_item_add_rect(selections_surface,
-						bounding_box.grow(3.0 / Indications.zoom), Color.WHITE)
+						bounding_box.grow(4.0 / Indications.zoom), Color.WHITE)
 
 
 var dragged_handle: Handle = null
