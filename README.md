@@ -17,7 +17,7 @@
 - **Real-time code:** As you manipulate elements in the UI, code is instantly generated and can be edited.
 - **Optimized SVGs:** The generated SVG files are small and efficient, and there are many options to assist with optimization.
 
-![image](https://github.com/MewPurPur/GodSVG/assets/85438892/4c2de628-4284-4d4a-b9de-a8521c2b74a5)
+![usage](https://github.com/user-attachments/assets/51171c0c-cd88-4b69-b1a1-495b3f45f5bf)
 
 ## How to get it
 
