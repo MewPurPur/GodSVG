@@ -35,7 +35,7 @@ func _ready() -> void:
 		element.ancestor_attribute_changed.connect(_on_element_ancestor_attribute_changed)
 	text_submitted.connect(set_value.bind(true))
 	focus_entered.connect(reset_font_color)
-	SVG.text_changed.connect(_on_svg_text_changed)
+	SVG.parsing_finished.connect(_on_svg_text_changed.unbind(1))
 	tooltip_text = attribute_name
 	setup_placeholder()
 

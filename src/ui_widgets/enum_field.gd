@@ -23,10 +23,10 @@ func _ready() -> void:
 	element.attribute_changed.connect(_on_element_attribute_changed)
 	if attribute_name in DB.propagated_attributes:
 		element.ancestor_attribute_changed.connect(_on_element_ancestor_attribute_changed)
-	text_submitted.connect(set_value.bind(true))
+	text_submitted.connect(_on_text_submitted)
 	focus_entered.connect(reset_font_color)
 	text_changed.connect(_on_text_changed)
-	text_change_canceled.connect(_on_text_change_canceled)
+	text_change_canceled.connect(sync_to_attribute)
 	pressed.connect(_on_pressed)
 	button_gui_input.connect(_on_button_gui_input)
 	tooltip_text = attribute_name
@@ -35,7 +35,7 @@ func _ready() -> void:
 
 func _on_element_attribute_changed(attribute_changed: String) -> void:
 	if attribute_name == attribute_changed:
-		set_value(element.get_attribute_value(attribute_name, true))
+		sync_to_attribute()
 
 func _on_element_ancestor_attribute_changed(attribute_changed: String) -> void:
 	if attribute_name == attribute_changed:
@@ -67,9 +67,9 @@ func _on_text_submitted(new_text: String) -> void:
 	if new_text.is_empty() or new_text in DB.attribute_enum_values[attribute_name]:
 		set_value(new_text)
 	else:
-		sync(element.get_attribute_value(attribute_name))
+		sync_to_attribute()
 
-func _on_text_change_canceled() -> void:
+func sync_to_attribute() -> void:
 	sync(element.get_attribute_value(attribute_name, true))
 
 

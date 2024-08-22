@@ -7,8 +7,8 @@ var attribute_name: String  # Never propagates.
 const TransformPopup = preload("res://src/ui_widgets/transform_popup.tscn")
 
 func set_value(new_value: String, save := false) -> void:
-	sync(new_value)
 	element.set_attribute(attribute_name, new_value)
+	sync_to_attribute()
 	if save:
 		SVG.queue_save()
 
@@ -20,7 +20,7 @@ func _ready() -> void:
 	tooltip_text = attribute_name
 	text_submitted.connect(set_value.bind(true))
 	text_changed.connect(setup_font)
-	text_change_canceled.connect(func(): setup_font(text))
+	text_change_canceled.connect(sync_to_attribute)
 	button_gui_input.connect(_on_button_gui_input)
 	pressed.connect(_on_pressed)
 	update_translation()
@@ -44,6 +44,10 @@ func _on_pressed() -> void:
 	var transform_popup := TransformPopup.instantiate()
 	transform_popup.attribute_ref = element.get_attribute(attribute_name)
 	HandlerGUI.popup_under_rect(transform_popup, get_global_rect(), get_viewport())
+
+func sync_to_attribute() -> void:
+	sync(element.get_attribute_value(attribute_name))
+	setup_font(text)
 
 
 func _on_button_gui_input(event: InputEvent) -> void:
