@@ -150,8 +150,7 @@ func get_attribute_value(attribute_name: String, real := false) -> String:
 		return _attributes[attribute_name].get_value()
 	if real:
 		return ""
-	else:
-		return get_default(attribute_name)
+	return get_default(attribute_name)
 
 func get_attribute_num(attribute_name: String) -> float:
 	if DB.get_attribute_type(attribute_name) != DB.AttributeType.NUMERIC:
@@ -288,7 +287,9 @@ func make_all_attributes_absolute() -> void:
 # Converts a percentage numeric attribute to absolute.
 func make_attribute_absolute(attribute_name: String) -> void:
 	if is_attribute_percentage(attribute_name):
-		set_attribute(attribute_name, get_attribute_num(attribute_name))
+		var new_attrib := new_attribute(attribute_name)
+		new_attrib.set_num(get_attribute_num(attribute_name))
+		_attributes[attribute_name] = new_attrib
 
 
 # To be overridden in extending classes.
