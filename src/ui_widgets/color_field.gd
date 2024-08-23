@@ -35,7 +35,7 @@ func _ready() -> void:
 		element.ancestor_attribute_changed.connect(_on_element_ancestor_attribute_changed)
 	text_submitted.connect(set_value.bind(true))
 	focus_entered.connect(reset_font_color)
-	SVG.parsing_finished.connect(_on_svg_text_changed.unbind(1))
+	SVG.changed.connect(_on_svg_changed.unbind(1))
 	tooltip_text = attribute_name
 	setup_placeholder()
 
@@ -50,7 +50,7 @@ func _on_element_ancestor_attribute_changed(attribute_changed: String) -> void:
 		resync()
 
 # Redraw in case the gradient might have changed.
-func _on_svg_text_changed() -> void:
+func _on_svg_changed() -> void:
 	if ColorParser.is_valid_url(element.get_attribute_value(attribute_name, false)):
 		update_gradient_texture()
 		queue_redraw()
