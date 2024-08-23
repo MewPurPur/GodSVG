@@ -15,7 +15,7 @@ signal elements_moved_to(xids: Array[PackedInt32Array], location: PackedInt32Arr
 signal elements_layout_changed  # Emitted together with any of the above 4.
 
 signal parsing_finished(error_id: SVGParser.ParseError)
-signal text_changed
+signal changed
 
 const DEFAULT = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"></svg>'
 
@@ -106,7 +106,7 @@ func update_text() -> void:
 
 func set_text(new_text: String) -> void:
 	text = new_text
-	text_changed.emit()
+	changed.emit()
 
 func save_text() -> void:
 	var saved_text := GlobalSettings.svg_text

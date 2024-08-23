@@ -44,7 +44,7 @@ func _enter_tree() -> void:
 	# Custom menus.
 	_generate_main_menus()
 	_setup_menu_items()
-	SVG.text_changed.connect(_on_svg_text_changed)
+	SVG.changed.connect(_on_svg_changed)
 
 
 func _reset_menus() -> void:
@@ -115,7 +115,7 @@ func _setup_menu_items() -> void:
 	NativeMenu.add_separator(file_rid)
 	file_clear_association_idx = _add_action(file_rid, "clear_file_path")
 	file_reset_svg_idx = _add_action(file_rid, "reset_svg")
-	_on_svg_text_changed()
+	_on_svg_changed()
 	# Edit and Tool menus.
 	_add_many_actions(edit_rid, ShortcutUtils.get_keybinds("edit"))
 	_add_many_actions(tool_rid, ShortcutUtils.get_keybinds("tool"))
@@ -179,7 +179,7 @@ func _get_keycode_for_events(input_events: Array[InputEvent]) -> Key:
 	return KEY_NONE
 
 
-func _on_svg_text_changed() -> void:
+func _on_svg_changed() -> void:
 	NativeMenu.set_item_disabled(file_rid, file_clear_svg_idx, SVG.text == SVG.DEFAULT)
 	var empty_path := GlobalSettings.savedata.current_file_path.is_empty()
 	NativeMenu.set_item_disabled(file_rid, file_clear_association_idx, empty_path)

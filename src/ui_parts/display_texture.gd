@@ -16,7 +16,7 @@ var rasterized := false:
 var update_pending := false
 
 func _ready() -> void:
-	SVG.text_changed.connect(texture_update)
+	SVG.changed.connect(texture_update)
 	Indications.zoom_changed.connect(texture_update)
 	queue_update()
 
