@@ -583,7 +583,7 @@ msgstr "Форматер редактору"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Export formatter"
-msgstr "Експортувати форматер"
+msgstr "Форматер експорту"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Help"
