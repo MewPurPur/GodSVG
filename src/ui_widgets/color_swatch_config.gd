@@ -1,6 +1,5 @@
 extends Button
 
-const code_font = preload("res://visual/fonts/FontMono.ttf")
 const checkerboard = preload("res://visual/icons/backgrounds/Checkerboard.svg")
 const gear_icon = preload("res://visual/icons/GearOutlined.svg")
 
@@ -59,7 +58,7 @@ func _make_custom_tooltip(_for_text: String) -> Object:
 	rtl.autowrap_mode = TextServer.AUTOWRAP_OFF
 	rtl.fit_content = true
 	rtl.bbcode_enabled = true
-	rtl.add_theme_font_override("mono_font", code_font)
+	rtl.add_theme_font_override("mono_font", ThemeUtils.mono_font)
 	# Set up the text.
 	var color_name := color_palette.color_names[idx]
 	if not color_name.is_empty():

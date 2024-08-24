@@ -98,7 +98,7 @@ func hide_name_edit() -> void:
 
 # Update text color to red if the title won't work (because it's a duplicate).
 func _on_name_edit_text_changed(new_text: String) -> void:
-	var names: Array[String] = []
+	var names := PackedStringArray()
 	for palette in GlobalSettings.savedata.palettes:
 		names.append(palette.title)
 	for theme_color in ["font_color", "font_hover_color"]:
@@ -107,7 +107,7 @@ func _on_name_edit_text_changed(new_text: String) -> void:
 
 func _on_name_edit_text_submitted(new_title: String) -> void:
 	new_title = new_title.strip_edges()
-	var titles: Array[String] = []
+	var titles := PackedStringArray()
 	for palette in GlobalSettings.savedata.palettes:
 		titles.append(palette.title)
 	

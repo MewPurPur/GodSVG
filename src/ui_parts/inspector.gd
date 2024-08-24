@@ -44,9 +44,9 @@ func _on_add_button_pressed() -> void:
 	"g", "linearGradient", "radialGradient", "stop"]):
 		var btn := ContextPopup.create_button(element_name, add_element.bind(element_name),
 				false, DB.get_element_icon(element_name))
-		btn.add_theme_font_override("font", load("res://visual/fonts/FontMono.ttf"))
+		btn.add_theme_font_override("font", ThemeUtils.mono_font)
 		btn_array.append(btn)
-	var separator_indices: Array[int] = [1, 5]
+	var separator_indices := PackedInt32Array([1, 5])
 	
 	var add_popup := ContextPopup.new()
 	add_popup.setup(btn_array, true, add_button.size.x, separator_indices)

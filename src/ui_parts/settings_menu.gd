@@ -319,7 +319,7 @@ func _on_language_pressed() -> void:
 			var label := Label.new()
 			label.text = percentage
 			label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
-			var shortcut_text_color := ThemeGenerator.common_subtle_text_color
+			var shortcut_text_color := ThemeUtils.common_subtle_text_color
 			if is_current_locale:
 				shortcut_text_color.a *= 0.75
 			label.add_theme_color_override("font_color", shortcut_text_color)
@@ -410,7 +410,7 @@ func rebuild_formatters() -> void:
 		if not formatter.changed.is_connected(rebuild_formatters):
 			formatter.changed.connect(rebuild_formatters)
 	# TODO Do I need to do this...
-	var formatter_names: Array[String] = []
+	var formatter_names := PackedStringArray()
 	for formatter_name in formatters.keys():
 		formatter_names.append(formatter_name)
 	

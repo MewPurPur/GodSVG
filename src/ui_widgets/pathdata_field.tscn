@@ -118,7 +118,7 @@ size_flags_horizontal = 0
 focus_mode = 1
 placeholder_text = "No path data"
 script = ExtResource("2_48xgh")
-code_font_tooltip = true
+mono_font_tooltip = true
 
 [node name="Commands" type="Control" parent="."]
 custom_minimum_size = Vector2(344, 0)

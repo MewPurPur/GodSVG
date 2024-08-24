@@ -5,9 +5,6 @@ class_name LineEditButton extends Control
 # A fake-out is drawn to avoid adding unnecessary nodes.
 # The real controls are only created when necessary, such as when hovered or focused.
 
-const normal_font = preload("res://visual/fonts/Font.ttf")
-const mono_font = preload("res://visual/fonts/FontMono.ttf")
-
 const BUTTON_WIDTH = 14.0
 
 signal pressed
@@ -52,10 +49,10 @@ var temp_button: Button
 			else:
 				queue_redraw()
 
-@export var use_code_font := true:
+@export var use_mono_font := true:
 	set(new_value):
-		if use_code_font != new_value:
-			use_code_font = new_value
+		if use_mono_font != new_value:
+			use_mono_font = new_value
 			if active:
 				temp_line_edit.add_theme_font_override("font", _get_font())
 			else:
@@ -63,7 +60,7 @@ var temp_button: Button
 
 @export var icon: Texture2D
 @export var button_visuals := true
-@export var code_font_tooltip := false
+@export var mono_font_tooltip := false
 
 var ci := get_canvas_item()
 
@@ -109,7 +106,7 @@ func _setup() -> void:
 	temp_line_edit = BetterLineEdit.new()
 	temp_line_edit.size = Vector2(size.x - BUTTON_WIDTH, 22)
 	temp_line_edit.tooltip_text = tooltip_text
-	temp_line_edit.code_font_tooltip = code_font_tooltip
+	temp_line_edit.mono_font_tooltip = mono_font_tooltip
 	temp_line_edit.placeholder_text = placeholder_text
 	temp_line_edit.text = text
 	temp_line_edit.mouse_filter = Control.MOUSE_FILTER_PASS
@@ -180,7 +177,7 @@ func _draw() -> void:
 # Helpers
 
 func _get_font() -> Font:
-	return mono_font if use_code_font else normal_font
+	return ThemeUtils.mono_font if use_mono_font else ThemeUtils.regular_font
 
 func _get_font_color() -> Color:
 	return get_theme_color("font_color", "LineEdit") if font_color == Color.TRANSPARENT\

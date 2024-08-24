@@ -76,14 +76,14 @@ func update_translations() -> void:
 
 func update_theme() -> void:
 	var stylebox := StyleBoxFlat.new()
-	stylebox.bg_color = ThemeGenerator.overlay_panel_inner_color
+	stylebox.bg_color = ThemeUtils.overlay_panel_inner_color
 	stylebox.set_content_margin_all(6)
 	panel_container.add_theme_stylebox_override("panel", stylebox)
 	var frame := StyleBoxFlat.new()
 	frame.draw_center = false
 	frame.border_width_left = 2
 	frame.border_width_top = 2
-	frame.border_color = ThemeGenerator.connected_button_border_color_pressed
+	frame.border_color = ThemeUtils.connected_button_border_color_pressed
 	frame.content_margin_left = 2
 	frame.content_margin_top = 2
 	viewport_panel.add_theme_stylebox_override("panel", frame)
@@ -162,9 +162,9 @@ func _on_more_options_pressed() -> void:
 	buttons_arr.append(ContextPopup.create_button(TranslationServer.translate(
 			"GodSVG website"), ShortcutUtils.fn("about_website"), false,
 			load("res://visual/icons/Link.svg"), "about_website"))
-	var separator_indices: Array[int] = [1, 3]
+	var separator_indices := PackedInt32Array([1, 3])
 	if can_show_savedata_folder:
-		separator_indices = [2, 4]
+		separator_indices = PackedInt32Array([2, 4])
 	
 	var more_popup := ContextPopup.new()
 	more_popup.setup(buttons_arr, true, -1, separator_indices)

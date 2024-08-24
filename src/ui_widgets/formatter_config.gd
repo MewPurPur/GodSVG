@@ -149,7 +149,7 @@ func add_dropdown(text: String) -> Control:
 	add_frame(frame)
 	return frame
 
-func add_number_dropdown(text: String, values: Array[float], is_integer := false,
+func add_number_dropdown(text: String, values: PackedFloat64Array, is_integer := false,
 restricted := true, min_value := -INF, max_value := INF) -> Control:
 	var frame := SettingFrame.instantiate()
 	frame.text = text
@@ -170,7 +170,7 @@ func add_frame(frame: Control) -> void:
 
 # Update text color to red if the title won't work (because it's a duplicate).
 func _on_name_edit_text_changed(new_text: String) -> void:
-	var names: Array[String] = []
+	var names := PackedStringArray()
 	for formatter in GlobalSettings.savedata.formatters:
 		names.append(formatter.title)
 	name_edit.add_theme_color_override("font_color", GlobalSettings.get_validity_color(
@@ -178,7 +178,7 @@ func _on_name_edit_text_changed(new_text: String) -> void:
 
 func _on_name_edit_text_submitted(new_title: String) -> void:
 	new_title = new_title.strip_edges()
-	var titles: Array[String] = []
+	var titles := PackedStringArray()
 	for formatter in GlobalSettings.savedata.formatters:
 		titles.append(formatter.title)
 	

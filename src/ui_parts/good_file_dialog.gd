@@ -181,7 +181,7 @@ func set_dir(dir: String) -> void:
 		if folder_up_button.disabled:
 			folder_up_button.disabled = false
 			folder_up_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-	# Gather the files and directories.
+	# Gather the files and directories. Must be sorted, so can't use PackedStringArray.
 	var directories: Array[String] = []
 	var files: Array[String] = []
 	for directory in DA.get_directories():

@@ -57,7 +57,7 @@ func update_palettes(search_text := "") -> void:
 	var displayed_palettes: Array[ColorPalette] = [reserved_color_palette]
 	displayed_palettes += GlobalSettings.savedata.palettes
 	for palette in displayed_palettes:
-		var indices_to_show: Array[int] = []
+		var indices_to_show := PackedInt32Array()
 		for i in palette.colors.size():
 			if search_text.is_empty() or\
 			search_text.is_subsequence_ofn(palette.color_names[i]):

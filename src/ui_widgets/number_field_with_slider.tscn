@@ -10,4 +10,4 @@ anchors_preset = 0
 offset_right = 100.0
 script = ExtResource("1_ymm02")
 button_visuals = false
-code_font_tooltip = true
+mono_font_tooltip = true

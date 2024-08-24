@@ -1,6 +1,5 @@
 extends VBoxContainer
 
-const code_font = preload("res://visual/fonts/FontMono.ttf")
 const warning_icon = preload("res://visual/icons/Warning.svg")
 
 # FIXME this seems like a not us issue.
@@ -189,7 +188,7 @@ func _gui_input(event: InputEvent) -> void:
 func _on_mouse_entered() -> void:
 	var element_icon_size := DB.get_element_icon(element.name).get_size()
 	var half_bar_width := title_bar.size.x / 2
-	var title_width := code_font.get_string_size(element.name,
+	var title_width := ThemeUtils.mono_font.get_string_size(element.name,
 			HORIZONTAL_ALIGNMENT_LEFT, 180, 12).x
 	# Add button.
 	var title_button := Button.new()
@@ -318,11 +317,11 @@ func _on_title_bar_draw() -> void:
 	var element_icon := DB.get_element_icon(element.name)
 	var element_icon_size: Vector2 = element_icon.get_size()
 	var half_bar_width := title_bar.size.x / 2
-	var title_width := code_font.get_string_size(element.name,
+	var title_width := ThemeUtils.mono_font.get_string_size(element.name,
 			HORIZONTAL_ALIGNMENT_LEFT, 180, 12).x
-	code_font.draw_string(title_bar_ci, Vector2(half_bar_width - title_width / 2 +\
-			element_icon_size.x / 2, 18),
-			element.name, HORIZONTAL_ALIGNMENT_LEFT, 180, 12)
+	ThemeUtils.mono_font.draw_string(title_bar_ci, Vector2(half_bar_width -\
+			title_width / 2 + element_icon_size.x / 2, 18), element.name,
+			HORIZONTAL_ALIGNMENT_LEFT, 180, 12)
 	element_icon.draw_rect(title_bar_ci, Rect2(Vector2(half_bar_width - title_width / 2 -\
 			element_icon_size.x + 6, 4).round(), element_icon_size), false)
 	

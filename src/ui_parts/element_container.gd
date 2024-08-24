@@ -100,10 +100,10 @@ func _gui_input(event: InputEvent) -> void:
 				var btn := ContextPopup.create_button(element_name,
 						add_element.bind(element_name, location), false,
 						DB.get_element_icon(element_name))
-				btn.add_theme_font_override("font", load("res://visual/fonts/FontMono.ttf"))
+				btn.add_theme_font_override("font", ThemeUtils.mono_font)
 				btn_array.append(btn)
 			
-			var separation_indices: Array[int] = [1, 5]
+			var separation_indices := PackedInt32Array([1, 5])
 			
 			var add_popup := ContextPopup.new()
 			add_popup.setup_with_title(btn_array, TranslationServer.translate("New element"),
