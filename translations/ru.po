@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GodSVG\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2024-08-18 20:43+0300\n"
+"PO-Revision-Date: 2024-08-24 21:40+0300\n"
 "Last-Translator: volkov <volkovissocool@gmail.com>\n"
 "Language-Team: \n"
 "Language: ru\n"
@@ -85,7 +85,7 @@ msgstr "Вставить после"
 
 #: src/config_classes/Formatter.gd
 msgid "Always"
-msgstr "Всегда активно"
+msgstr "Всегда"
 
 #: src/config_classes/Formatter.gd
 msgid "All except containers"
