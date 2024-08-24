@@ -1,6 +1,5 @@
 extends Control
 
-const default_font = preload("res://visual/fonts/Font.ttf")
 const axis_line_color = Color(0.5, 0.5, 0.5, 0.75)
 const major_grid_color = Color(0.5, 0.5, 0.5, 0.35)
 const minor_grid_color = Color(0.5, 0.5, 0.5, 0.15)
@@ -66,7 +65,7 @@ func _draw() -> void:
 				minor_points.append(Vector2(i, 0))
 				minor_points.append(Vector2(i, grid_size.y))
 				if mark_pixel_lines:
-					default_font.draw_string(surface, Vector2(i * zoom + 4, 14),
+					ThemeUtils.regular_font.draw_string(surface, Vector2(i * zoom + 4, 14),
 							String.num_int64(floori(i + position.x)),
 							HORIZONTAL_ALIGNMENT_LEFT, -1, 14, axis_line_color)
 		else:
@@ -74,7 +73,7 @@ func _draw() -> void:
 			if int(float(coord) / ticks_interval) % rate == 0:
 				major_points.append(Vector2(i, 0))
 				major_points.append(Vector2(i, grid_size.y))
-				default_font.draw_string(surface, Vector2(i * zoom + 4, 14),
+				ThemeUtils.regular_font.draw_string(surface, Vector2(i * zoom + 4, 14),
 						String.num_int64(coord), HORIZONTAL_ALIGNMENT_LEFT, -1, 14,
 						axis_line_color)
 			elif coord % rate == 0:
@@ -89,7 +88,7 @@ func _draw() -> void:
 				minor_points.append(Vector2(0, i))
 				minor_points.append(Vector2(grid_size.x, i))
 				if mark_pixel_lines:
-					default_font.draw_string(surface, Vector2(4, i * zoom + 14),
+					ThemeUtils.regular_font.draw_string(surface, Vector2(4, i * zoom + 14),
 							String.num_int64(floori(i + position.y)),
 							HORIZONTAL_ALIGNMENT_LEFT, -1, 14, axis_line_color)
 		else:
@@ -97,7 +96,7 @@ func _draw() -> void:
 			if int(coord / float(ticks_interval)) % rate == 0:
 				major_points.append(Vector2(0, i))
 				major_points.append(Vector2(grid_size.x, i))
-				default_font.draw_string(surface, Vector2(4, i * zoom + 14),
+				ThemeUtils.regular_font.draw_string(surface, Vector2(4, i * zoom + 14),
 						String.num_int64(coord), HORIZONTAL_ALIGNMENT_LEFT, -1, 14,
 						axis_line_color)
 			elif coord % rate == 0:

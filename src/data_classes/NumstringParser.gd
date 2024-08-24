@@ -23,7 +23,7 @@ func num_to_text(num: float, is_angle := false) -> String:
 		text = "0"
 	return text
 
-func numstr_arr_to_text(numstr_arr: Array[String]) -> String:
+func numstr_arr_to_text(numstr_arr: PackedStringArray) -> String:
 	var output := ""
 	for i in numstr_arr.size() - 1:
 		var current_numstr := numstr_arr[i]
@@ -32,7 +32,7 @@ func numstr_arr_to_text(numstr_arr: Array[String]) -> String:
 		if not minimize_spacing or not (("." in current_numstr and next_char == ".") or\
 		next_char in "-+"):
 			output += " "
-	return output + numstr_arr.back()
+	return output + numstr_arr[-1]
 
 
 # This function evaluates expressions even if "," or ";" is used as a decimal separator.

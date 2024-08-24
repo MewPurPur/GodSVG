@@ -2,7 +2,6 @@
 class_name BetterTextEdit extends TextEdit
 ## A TextEdit with some improvements.
 
-const code_font = preload("res://visual/fonts/FontMono.ttf")
 const caret_color = Color("defd")
 
 var _surface := RenderingServer.canvas_item_create()
@@ -55,7 +54,8 @@ func redraw_caret() -> void:
 	if not has_focus():
 		return
 	
-	var char_size := code_font.get_char_size(69, get_theme_font_size("font_size"))
+	var char_size := ThemeUtils.mono_font.get_char_size(69,
+			get_theme_font_size("font_size"))
 	for caret in get_caret_count():
 		var caret_pos := Vector2.ZERO
 		var caret_column := get_caret_column(caret)
@@ -126,7 +126,7 @@ func _gui_input(event: InputEvent) -> void:
 		if event.button_index == MOUSE_BUTTON_RIGHT and event.is_pressed():
 			grab_focus()
 			var btn_arr: Array[Button] = []
-			var separator_arr: Array[int] = []
+			var separator_arr := PackedInt32Array()
 			if editable:
 				btn_arr.append(ContextPopup.create_button(
 						TranslationServer.translate("Undo"), undo,
@@ -135,7 +135,7 @@ func _gui_input(event: InputEvent) -> void:
 						TranslationServer.translate("Redo"), redo,
 						!has_redo(), load("res://visual/icons/Redo.svg"), "ui_redo"))
 				if DisplayServer.has_feature(DisplayServer.FEATURE_CLIPBOARD):
-					separator_arr = [2]
+					separator_arr = PackedInt32Array([2])
 					btn_arr.append(ContextPopup.create_button(
 							TranslationServer.translate("Cut"), cut,
 							text.is_empty(), load("res://visual/icons/Cut.svg"), "ui_cut"))

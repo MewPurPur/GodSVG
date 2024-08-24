@@ -777,7 +777,7 @@ func create_element_context(pos: Vector2) -> ContextPopup:
 	for shape in ["path", "circle", "ellipse", "rect", "line"]:
 		var btn := ContextPopup.create_button(shape, add_shape_at_pos.bind(shape, pos),
 				false, DB.get_element_icon(shape))
-		btn.add_theme_font_override("font", load("res://visual/fonts/FontMono.ttf"))
+		btn.add_theme_font_override("font", ThemeUtils.mono_font)
 		btn_array.append(btn)
 	var element_context := ContextPopup.new()
 	var separation_indices: Array[int] = [1]

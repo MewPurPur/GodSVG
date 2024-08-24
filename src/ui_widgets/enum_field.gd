@@ -4,7 +4,6 @@ extends LineEditButton
 var element: Element
 var attribute_name: String  # May propagate.
 
-const bold_font = preload("res://visual/fonts/FontBold.ttf")
 const reload_icon = preload("res://visual/icons/Reload.svg")
 
 func set_value(new_value: String, save := false) -> void:
@@ -56,7 +55,7 @@ func _on_pressed() -> void:
 				set_value.bind(enum_constant, true),
 				enum_constant == element.get_attribute_value(attribute_name, true))
 		if enum_constant == element.get_default(attribute_name):
-			btn.add_theme_font_override("font", bold_font)
+			btn.add_theme_font_override("font", ThemeUtils.bold_font)
 		btn_arr.append(btn)
 	var value_picker := ContextPopup.new()
 	value_picker.setup(btn_arr, false, size.x)

@@ -5,12 +5,10 @@ class_name BetterLineEdit extends LineEdit
 ## Emitted when Esc is pressed to cancel the current text change.
 signal text_change_canceled
 
-const code_font = preload("res://visual/fonts/FontMono.ttf")
-
 var _hovered := false
 
 ## When turned on, uses the mono font for the tooltip.
-@export var code_font_tooltip := false
+@export var mono_font_tooltip := false
 
 func _init() -> void:
 	context_menu_enabled = false
@@ -52,10 +50,10 @@ func _draw() -> void:
 		draw_style_box(get_theme_stylebox("hover"), Rect2(Vector2.ZERO, size))
 
 func _make_custom_tooltip(for_text: String) -> Object:
-	if code_font_tooltip:
+	if mono_font_tooltip:
 		var label := Label.new()
 		label.begin_bulk_theme_override()
-		label.add_theme_font_override("font", code_font)
+		label.add_theme_font_override("font", ThemeUtils.mono_font)
 		label.add_theme_font_size_override("font_size", 13)
 		label.end_bulk_theme_override()
 		label.text = for_text

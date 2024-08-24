@@ -43,7 +43,7 @@ icon: Texture2D = null, shortcut := "") -> Button:
 				var label := Label.new()
 				label.text = events[0].as_text_keycode()
 				label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
-				var shortcut_text_color := ThemeGenerator.common_subtle_text_color
+				var shortcut_text_color := ThemeUtils.common_subtle_text_color
 				if disabled:
 					shortcut_text_color.a *= 0.75
 				label.add_theme_color_override("font_color", shortcut_text_color)
@@ -114,7 +114,7 @@ start_pressed: bool, shortcut := "") -> CheckBox:
 				var label := Label.new()
 				label.text = events[0].as_text_keycode()
 				label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
-				var shortcut_text_color := ThemeGenerator.common_subtle_text_color
+				var shortcut_text_color := ThemeUtils.common_subtle_text_color
 				#if disabled:
 					#shortcut_text_color.a *= 0.75
 				label.add_theme_color_override("font_color", shortcut_text_color)
@@ -166,7 +166,7 @@ func _resize_button_around_child(btn: Button) -> void:
 	btn.custom_minimum_size = child.size
 
 func setup(buttons: Array[Button], align_left := false, min_width := -1.0,
-separator_indices: Array[int] = []) -> void:
+separator_indices := PackedInt32Array()) -> void:
 	var main_container := _common_initial_setup()
 	# Add the buttons.
 	if buttons.is_empty():
@@ -183,7 +183,7 @@ separator_indices: Array[int] = []) -> void:
 
 
 func setup_with_title(buttons: Array[Button], top_title: String, align_left := false,
-min_width := -1.0, separator_indices: Array[int] = []) -> void:
+min_width := -1.0, separator_indices := PackedInt32Array()) -> void:
 	var main_container := _common_initial_setup()
 	# Add the buttons.
 	if buttons.is_empty():
@@ -197,7 +197,7 @@ min_width := -1.0, separator_indices: Array[int] = []) -> void:
 		stylebox.content_margin_left = 8
 		stylebox.content_margin_right = 8
 		stylebox.border_width_bottom = 2
-		stylebox.border_color = ThemeGenerator.common_panel_border_color
+		stylebox.border_color = ThemeUtils.common_panel_border_color
 		title_container.add_theme_stylebox_override("panel", stylebox)
 		var title_label := Label.new()
 		title_label.text = top_title

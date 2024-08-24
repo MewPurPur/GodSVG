@@ -26,8 +26,8 @@ const reference_image_path = "user://reference.png"
 
 var enum_text := {}
 
-func get_enum_texts(setting: String) -> Array[String]:
-	var values: Array[String] = []
+func get_enum_texts(setting: String) -> PackedStringArray:
+	var values := PackedStringArray()
 	var enum_dict: Dictionary = enum_text[setting]
 	for key in enum_dict:
 		values.append(enum_dict[key])
@@ -123,7 +123,7 @@ func _enter_tree() -> void:
 			default_keybinds[action] = InputMap.action_get_events(action)
 	load_config()
 	load_svg_text()
-	ThemeGenerator.generate_and_apply_theme()
+	ThemeUtils.generate_and_apply_theme()
 	# Connect to settings that have a global effect.
 	file_path_changed.connect(update_window_title)
 	update_window_title()

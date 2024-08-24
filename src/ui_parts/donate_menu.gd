@@ -50,5 +50,5 @@ func show_description(title: String, pros: PackedStringArray, cons := PackedStri
 
 func reset_clarifications() -> void:
 	clarifications.clear()
-	clarifications.push_color(ThemeGenerator.common_subtle_text_color)
+	clarifications.push_color(ThemeUtils.common_subtle_text_color)
 	clarifications.add_text("\nHover a platform for details.")

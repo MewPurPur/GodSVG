@@ -27,8 +27,8 @@ static var enum_text := {
 	},
 }
 
-func get_enum_texts(property: String) -> Array[String]:
-	var values: Array[String] = []
+func get_enum_texts(property: String) -> PackedStringArray:
+	var values := PackedStringArray()
 	var enum_dict: Dictionary = enum_text[property]
 	for key in enum_dict:
 		values.append(enum_dict[key])

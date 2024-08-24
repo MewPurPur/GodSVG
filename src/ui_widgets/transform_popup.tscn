@@ -62,42 +62,42 @@ layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "x1"
 editable = false
-code_font_tooltip = true
+mono_font_tooltip = true
 
 [node name="Y1" parent="MarginContainer/VBoxContainer/HBoxContainer/FinalMatrix" instance=ExtResource("2_tdse4")]
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "y1"
 editable = false
-code_font_tooltip = true
+mono_font_tooltip = true
 
 [node name="O1" parent="MarginContainer/VBoxContainer/HBoxContainer/FinalMatrix" instance=ExtResource("2_tdse4")]
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "o1"
 editable = false
-code_font_tooltip = true
+mono_font_tooltip = true
 
 [node name="X2" parent="MarginContainer/VBoxContainer/HBoxContainer/FinalMatrix" instance=ExtResource("2_tdse4")]
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "x2"
 editable = false
-code_font_tooltip = true
+mono_font_tooltip = true
 
 [node name="Y2" parent="MarginContainer/VBoxContainer/HBoxContainer/FinalMatrix" instance=ExtResource("2_tdse4")]
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "y2"
 editable = false
-code_font_tooltip = true
+mono_font_tooltip = true
 
 [node name="O2" parent="MarginContainer/VBoxContainer/HBoxContainer/FinalMatrix" instance=ExtResource("2_tdse4")]
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "o2"
 editable = false
-code_font_tooltip = true
+mono_font_tooltip = true
 
 [node name="ApplyMatrix" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer"]
 unique_name_in_owner = true

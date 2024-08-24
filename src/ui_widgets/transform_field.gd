@@ -34,7 +34,7 @@ func update_translation() -> void:
 	placeholder_text = TranslationServer.translate("No transforms")
 
 func setup_font(new_text: String) -> void:
-	use_code_font = !new_text.is_empty()
+	use_mono_font = !new_text.is_empty()
 
 func sync(new_value: String) -> void:
 	text = new_value

@@ -1,7 +1,5 @@
 class_name PanelGrid extends GridContainer
 
-const font = preload("res://visual/fonts/Font.ttf")
-
 @export var items: PackedStringArray
 @export var stylebox: StyleBox
 

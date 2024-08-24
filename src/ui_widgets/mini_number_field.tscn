@@ -9,6 +9,6 @@ offset_bottom = 14.0
 mouse_filter = 1
 theme_type_variation = &"MiniLineEdit"
 script = ExtResource("1_ggi5v")
-code_font_tooltip = true
+mono_font_tooltip = true
 
 [connection signal="text_submitted" from="." to="." method="_on_text_submitted"]
