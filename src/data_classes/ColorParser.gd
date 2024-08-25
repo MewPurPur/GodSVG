@@ -7,9 +7,9 @@ static func add_hash_if_hex(color: String) -> String:
 		color = "#" + color
 	return color
 
-static func is_valid(color: String) -> bool:
+static func is_valid(color: String, allow_url := true) -> bool:
 	return is_valid_hex(color) or is_valid_rgb(color) or is_valid_named(color) or\
-			is_valid_url(color)
+			(allow_url and is_valid_url(color))
 
 static func is_valid_hex(color: String) -> bool:
 	color = color.strip_edges()

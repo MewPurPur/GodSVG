@@ -2,12 +2,18 @@
 extends BetterLineEdit
 
 var element: Element
-var attribute_name: String  # May propagate.
+var attribute_name: String:  # May propagate.
+	set(new_value):
+		attribute_name = new_value
+		if DB.attribute_number_range[attribute_name] == DB.NumberRange.ARBITRARY:
+			cached_min_value = -INF
+			cached_max_value = INF
+		else:
+			cached_min_value = 0.0
+			cached_max_value = INF
 
-var min_value := 0.0
-var max_value := 1.0
-var allow_lower := true
-var allow_higher := true
+var cached_min_value: float
+var cached_max_value: float
 
 func set_value(new_value: String, save := false) -> void:
 	if not new_value.is_empty():
@@ -19,10 +25,7 @@ func set_value(new_value: String, save := false) -> void:
 				sync_to_attribute()
 				return
 			
-			if not allow_higher and numeric_value > max_value:
-				numeric_value = max_value
-			elif not allow_lower and numeric_value < min_value:
-				numeric_value = min_value
+			numeric_value = clampf(numeric_value, cached_min_value, cached_max_value)
 			new_value = element.get_attribute(attribute_name).num_to_text(numeric_value)
 		sync(element.get_attribute(attribute_name).format(new_value))
 	element.set_attribute(attribute_name, new_value)

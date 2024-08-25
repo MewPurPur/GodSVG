@@ -4,11 +4,10 @@ extends LineEditButton
 var element: Element
 var attribute_name: String  # May propagate.
 
-var slider_step := 0.01
-var min_value := 0.0
-var max_value := 1.0
-var allow_lower := true
-var allow_higher := true
+# Could be made to not be constants if needed.
+const SLIDER_STEP := 0.01
+const MIN_VALUE := 0.0
+const MAX_VALUE := 1.0
 
 func set_value(new_value: String, save := false) -> void:
 	if not new_value.is_empty():
@@ -20,10 +19,10 @@ func set_value(new_value: String, save := false) -> void:
 				sync_to_attribute()
 				return
 			
-			if not allow_higher and numeric_value > max_value:
-				numeric_value = max_value
-			elif not allow_lower and numeric_value < min_value:
-				numeric_value = min_value
+			if numeric_value > MAX_VALUE:
+				numeric_value = MAX_VALUE
+			elif numeric_value < MIN_VALUE:
+				numeric_value = MIN_VALUE
 			new_value = element.get_attribute(attribute_name).num_to_text(numeric_value)
 	
 	sync(element.get_attribute(attribute_name).format(new_value))
@@ -106,7 +105,7 @@ func _draw() -> void:
 	stylebox.draw(ci, Rect2(get_size().x - BUTTON_WIDTH,
 			1, BUTTON_WIDTH - 2, get_size().y - 2))
 	var fill_height: float = (get_size().y - 4) *\
-			(element.get_attribute_num(attribute_name) - min_value) / max_value
+			(element.get_attribute_num(attribute_name) - MIN_VALUE) / MAX_VALUE
 	# Create a stylebox that'll occupy the exact amount of space.
 	var fill_stylebox := StyleBoxFlat.new()
 	fill_stylebox.bg_color = Color("#def")
@@ -157,8 +156,8 @@ func _unhandled_input(event: InputEvent) -> void:
 		accept_event()
 
 func get_slider_value_at_y(y_coord: float) -> float:
-	return snappedf(lerpf(max_value, min_value,
-			(y_coord - 4) / (temp_button.get_size().y - 4)), slider_step)
+	return snappedf(lerpf(MAX_VALUE, MIN_VALUE,
+			(y_coord - 4) / (temp_button.get_size().y - 4)), SLIDER_STEP)
 
 func _on_slider_mouse_exited() -> void:
 	slider_hovered = false

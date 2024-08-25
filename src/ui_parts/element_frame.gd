@@ -66,40 +66,7 @@ func _ready() -> void:
 			unknown_container = HFlowContainer.new()
 			main_container.add_child(unknown_container)
 			main_container.move_child(unknown_container, 0)
-		
-		var input_field: Control
-		match DB.get_attribute_type(attribute.name):
-			DB.AttributeType.COLOR:
-				input_field = ColorField.instantiate()
-				input_field.attribute_name = attribute.name
-			DB.AttributeType.ENUM:
-				input_field = EnumField.instantiate()
-				input_field.attribute_name = attribute.name
-			DB.AttributeType.TRANSFORM_LIST:
-				input_field = TransformField.instantiate()
-				input_field.attribute_name = attribute.name
-			DB.AttributeType.ID: input_field = IDField.instantiate()
-			DB.AttributeType.NUMERIC:
-				var min_value: float = DB.attribute_numeric_bounds[attribute.name].x
-				var max_value: float = DB.attribute_numeric_bounds[attribute.name].y
-				if is_inf(max_value):
-					input_field = NumberField.instantiate()
-					if not is_inf(min_value):
-						input_field.allow_lower = false
-						input_field.min_value = min_value
-				else:
-					input_field = NumberSlider.instantiate()
-					input_field.allow_lower = false
-					input_field.allow_higher = false
-					input_field.min_value = min_value
-					input_field.max_value = max_value
-					input_field.slider_step = 0.01
-				input_field.attribute_name = attribute.name
-			_:
-				input_field = UnrecognizedField.instantiate()
-				input_field.attribute_name = attribute.name
-		input_field.element = element
-		unknown_container.add_child(input_field)
+		unknown_container.add_child(AttributeFieldBuilder.create(attribute.name, element))
 	
 	var element_content: Control
 	if element.name in element_content_types:
