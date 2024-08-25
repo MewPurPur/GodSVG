@@ -112,7 +112,7 @@ relative_button_hovered = SubResource("StyleBoxFlat_7fw87")
 relative_button_pressed = SubResource("StyleBoxFlat_l7drx")
 
 [node name="LineEdit" type="LineEdit" parent="."]
-custom_minimum_size = Vector2(352, 0)
+custom_minimum_size = Vector2(358, 0)
 layout_mode = 2
 size_flags_horizontal = 0
 focus_mode = 1

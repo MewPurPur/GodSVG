@@ -4,7 +4,8 @@ class_name AttributeColor extends Attribute
 # No direct color representation for this attribute type. There are too many quirks.
 
 func set_value(new_value: String) -> void:
-	super(new_value if ColorParser.is_valid(new_value) else "")
+	super(new_value if ColorParser.is_valid(new_value,
+			name in DB.attribute_color_url_allowed) else "")
 
 func format(text: String) -> String:
 	text = text.strip_edges()
@@ -16,11 +17,8 @@ func format(text: String) -> String:
 	
 	var named_colors_usage := formatter.color_use_named_colors
 	# First make sure we have a 6-digit hex.
-	if ColorParser.is_valid_rgb(text):
-		var inside_brackets := text.substr(4, text.length() - 5)
-		var args := inside_brackets.split(",", false)
-		text = "#" +\
-				Color8(args[0].to_int(), args[1].to_int(), args[2].to_int()).to_html(false)
+	if ColorParser.is_valid_rgb(text) or ColorParser.is_valid_hsl(text):
+		text = "#" + ColorParser.text_to_color(text).to_html(false)
 	if text in named_colors:
 		text = named_colors[text]
 	if ColorParser.is_valid_hex(text) and text.length() == 4:
