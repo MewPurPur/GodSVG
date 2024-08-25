@@ -2,6 +2,7 @@ class_name DB extends RefCounted
 
 enum AttributeType {NUMERIC, COLOR, LIST, PATHDATA, ENUM, TRANSFORM_LIST, ID, UNKNOWN}
 enum PercentageHandling {FRACTION, HORIZONTAL, VERTICAL, NORMALIZED}
+enum NumberRange {ARBITRARY, POSITIVE, UNIT}
 
 
 const recognized_elements = ["svg", "g", "circle", "ellipse", "rect", "path", "line",
@@ -103,27 +104,29 @@ const attribute_enum_values = {
 	"spreadMethod": ["pad", "reflect", "repeat"],
 }
 
-const attribute_numeric_bounds = {
-	"width": Vector2(0, INF),
-	"height": Vector2(0, INF),
-	"x": Vector2(-INF, INF),
-	"y": Vector2(-INF, INF),
-	"x1": Vector2(-INF, INF),
-	"y1": Vector2(-INF, INF),
-	"x2": Vector2(-INF, INF),
-	"y2": Vector2(-INF, INF),
-	"cx": Vector2(-INF, INF),
-	"cy": Vector2(-INF, INF),
-	"r": Vector2(0, INF),
-	"rx": Vector2(0, INF),
-	"ry": Vector2(0, INF),
-	"opacity": Vector2(0, 1),
-	"fill-opacity": Vector2(0, 1),
-	"stroke-opacity": Vector2(0, 1),
-	"stroke-width": Vector2(0, INF),
-	"offset": Vector2(0, 1),
-	"stop-opacity": Vector2(0, 1),
+const attribute_number_range = {
+	"width": NumberRange.POSITIVE,
+	"height": NumberRange.POSITIVE,
+	"x": NumberRange.ARBITRARY,
+	"y": NumberRange.ARBITRARY,
+	"x1": NumberRange.ARBITRARY,
+	"y1": NumberRange.ARBITRARY,
+	"x2": NumberRange.ARBITRARY,
+	"y2": NumberRange.ARBITRARY,
+	"cx": NumberRange.ARBITRARY,
+	"cy": NumberRange.ARBITRARY,
+	"r": NumberRange.POSITIVE,
+	"rx": NumberRange.POSITIVE,
+	"ry": NumberRange.POSITIVE,
+	"opacity": NumberRange.UNIT,
+	"fill-opacity": NumberRange.UNIT,
+	"stroke-opacity": NumberRange.UNIT,
+	"stroke-width": NumberRange.POSITIVE,
+	"offset": NumberRange.UNIT,
+	"stop-opacity": NumberRange.UNIT,
 }
+
+const attribute_color_url_allowed = ["fill", "stroke"]
 
 
 static func is_attribute_recognized(element_name: String, attribute_name: String) -> bool:

@@ -65,36 +65,7 @@ func update_attributes() -> void:
 				add_child(unknown_container)
 				move_child(unknown_container, 0)
 			
-			var input_field: Control
-			match DB.get_attribute_type(attribute.name):
-				DB.AttributeType.COLOR:
-					input_field = ColorField.instantiate()
-					input_field.attribute_name = attribute.name
-				DB.AttributeType.ENUM:
-					input_field = EnumField.instantiate()
-					input_field.attribute_name = attribute.name
-				DB.AttributeType.TRANSFORM_LIST:
-					input_field = TransformField.instantiate()
-					input_field.attribute_name = attribute.name
-				DB.AttributeType.ID:
-					input_field = IDField.instantiate()
-				DB.AttributeType.NUMERIC:
-					var min_value: float = DB.attribute_numeric_bounds[attribute.name].x
-					var max_value: float = DB.attribute_numeric_bounds[attribute.name].y
-					if is_inf(max_value):
-						input_field = NumberField.instantiate()
-						if not is_inf(min_value):
-							input_field.allow_lower = false
-							input_field.min_value = min_value
-					else:
-						input_field = NumberSlider.instantiate()
-						input_field.allow_lower = false
-						input_field.allow_higher = false
-						input_field.min_value = min_value
-						input_field.max_value = max_value
-						input_field.slider_step = 0.01
-				_: input_field = UnrecognizedField.instantiate()
-			input_field.element = SVG.root_element
+			var input_field := AttributeFieldBuilder.create(attribute.name, SVG.root_element)
 			unknown_container.get_child(0).add_child(input_field)
 	if not has_unrecognized_attributes and is_instance_valid(unknown_container):
 		unknown_container.queue_free()

@@ -63,6 +63,5 @@ mouse_default_cursor_shape = 2
 theme_override_font_sizes/font_size = 13
 text = "Palettes"
 
-[connection signal="tree_exited" from="." to="." method="_on_tree_exited"]
 [connection signal="color_changed" from="MainContainer/Content/ColorPicker" to="." method="pick_color"]
 [connection signal="pressed" from="MainContainer/SwitchMode" to="." method="_on_switch_mode_pressed"]
