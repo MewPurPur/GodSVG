@@ -4,11 +4,10 @@ extends LineEditButton
 var element: Element
 var attribute_name: String  # May propagate.
 
-var slider_step := 0.01
-var min_value := 0.0
-var max_value := 1.0
-var allow_lower := true
-var allow_higher := true
+# Could be made to not be constants if needed.
+const SLIDER_STEP := 0.01
+const MIN_VALUE := 0.0
+const MAX_VALUE := 1.0
 
 func set_value(new_value: String, save := false) -> void:
 	if not new_value.is_empty():
@@ -17,18 +16,14 @@ func set_value(new_value: String, save := false) -> void:
 			var numeric_value := NumstringParser.evaluate(new_value)
 			# Validate the value.
 			if !is_finite(numeric_value):
-				sync(element.get_attribute_value(attribute_name))
+				sync_to_attribute()
 				return
 			
-			if not allow_higher and numeric_value > max_value:
-				numeric_value = max_value
-				new_value = element.get_attribute(attribute_name).num_to_text(numeric_value)
-			elif not allow_lower and numeric_value < min_value:
-				numeric_value = min_value
-				new_value = element.get_attribute(attribute_name).num_to_text(numeric_value)
-			
+			if numeric_value > MAX_VALUE:
+				numeric_value = MAX_VALUE
+			elif numeric_value < MIN_VALUE:
+				numeric_value = MIN_VALUE
 			new_value = element.get_attribute(attribute_name).num_to_text(numeric_value)
-		sync(element.get_attribute(attribute_name).format(new_value))
 	
 	sync(element.get_attribute(attribute_name).format(new_value))
 	element.set_attribute(attribute_name, new_value)
@@ -50,6 +45,8 @@ func _ready() -> void:
 		element.ancestor_attribute_changed.connect(_on_element_ancestor_attribute_changed)
 	text_submitted.connect(set_value.bind(true))
 	focus_entered.connect(reset_font_color)
+	text_change_canceled.connect(sync_to_attribute)
+	button_gui_input.connect(_on_slider_gui_input)
 	tooltip_text = attribute_name
 	setup_placeholder()
 
@@ -63,7 +60,7 @@ func _on_element_ancestor_attribute_changed(attribute_changed: String) -> void:
 		setup_placeholder()
 		resync()
 
-func _on_text_change_canceled() -> void:
+func sync_to_attribute() -> void:
 	set_value(element.get_attribute_value(attribute_name, true))
 
 func resync() -> void:
@@ -108,7 +105,7 @@ func _draw() -> void:
 	stylebox.draw(ci, Rect2(get_size().x - BUTTON_WIDTH,
 			1, BUTTON_WIDTH - 2, get_size().y - 2))
 	var fill_height: float = (get_size().y - 4) *\
-			(element.get_attribute_num(attribute_name) - min_value) / max_value
+			(element.get_attribute_num(attribute_name) - MIN_VALUE) / MAX_VALUE
 	# Create a stylebox that'll occupy the exact amount of space.
 	var fill_stylebox := StyleBoxFlat.new()
 	fill_stylebox.bg_color = Color("#def")
@@ -159,8 +156,8 @@ func _unhandled_input(event: InputEvent) -> void:
 		accept_event()
 
 func get_slider_value_at_y(y_coord: float) -> float:
-	return snappedf(lerpf(max_value, min_value,
-			(y_coord - 4) / (temp_button.get_size().y - 4)), slider_step)
+	return snappedf(lerpf(MAX_VALUE, MIN_VALUE,
+			(y_coord - 4) / (temp_button.get_size().y - 4)), SLIDER_STEP)
 
 func _on_slider_mouse_exited() -> void:
 	slider_hovered = false

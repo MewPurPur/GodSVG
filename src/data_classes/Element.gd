@@ -150,8 +150,7 @@ func get_attribute_value(attribute_name: String, real := false) -> String:
 		return _attributes[attribute_name].get_value()
 	if real:
 		return ""
-	else:
-		return get_default(attribute_name)
+	return get_default(attribute_name)
 
 func get_attribute_num(attribute_name: String) -> float:
 	if DB.get_attribute_type(attribute_name) != DB.AttributeType.NUMERIC:
@@ -279,6 +278,19 @@ func apply_to(element: Element, dropped_attributes: PackedStringArray) -> void:
 		if not attribute_name in dropped_attributes:
 			element.set_attribute(attribute_name, get_attribute_value(attribute_name))
 
+# Converts all percentage numeric attributes to absolute.
+func make_all_attributes_absolute() -> void:
+	for attribute_name in _attributes:
+		if _attributes[attribute_name] is AttributeNumeric:
+			make_attribute_absolute(attribute_name)
+
+# Converts a percentage numeric attribute to absolute.
+func make_attribute_absolute(attribute_name: String) -> void:
+	if is_attribute_percentage(attribute_name):
+		var new_attrib := new_attribute(attribute_name)
+		new_attrib.set_num(get_attribute_num(attribute_name))
+		_attributes[attribute_name] = new_attrib
+
 
 # To be overridden in extending classes.
 func get_own_default(_attribute_name: String) -> String:
@@ -303,6 +315,7 @@ func get_config_warnings() -> PackedStringArray:
 
 func user_setup(_what = null) -> void:
 	return
+
 
 # Helpers
 func is_parent_g() -> bool:

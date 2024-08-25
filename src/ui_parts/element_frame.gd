@@ -1,6 +1,5 @@
 extends VBoxContainer
 
-const code_font = preload("res://visual/fonts/FontMono.ttf")
 const warning_icon = preload("res://visual/icons/Warning.svg")
 
 # FIXME this seems like a not us issue.
@@ -67,40 +66,7 @@ func _ready() -> void:
 			unknown_container = HFlowContainer.new()
 			main_container.add_child(unknown_container)
 			main_container.move_child(unknown_container, 0)
-		
-		var input_field: Control
-		match DB.get_attribute_type(attribute.name):
-			DB.AttributeType.COLOR:
-				input_field = ColorField.instantiate()
-				input_field.attribute_name = attribute.name
-			DB.AttributeType.ENUM:
-				input_field = EnumField.instantiate()
-				input_field.attribute_name = attribute.name
-			DB.AttributeType.TRANSFORM_LIST:
-				input_field = TransformField.instantiate()
-				input_field.attribute_name = attribute.name
-			DB.AttributeType.ID: input_field = IDField.instantiate()
-			DB.AttributeType.NUMERIC:
-				var min_value: float = DB.attribute_numeric_bounds[attribute.name].x
-				var max_value: float = DB.attribute_numeric_bounds[attribute.name].y
-				if is_inf(max_value):
-					input_field = NumberField.instantiate()
-					if not is_inf(min_value):
-						input_field.allow_lower = false
-						input_field.min_value = min_value
-				else:
-					input_field = NumberSlider.instantiate()
-					input_field.allow_lower = false
-					input_field.allow_higher = false
-					input_field.min_value = min_value
-					input_field.max_value = max_value
-					input_field.slider_step = 0.01
-				input_field.attribute_name = attribute.name
-			_:
-				input_field = UnrecognizedField.instantiate()
-				input_field.attribute_name = attribute.name
-		input_field.element = element
-		unknown_container.add_child(input_field)
+		unknown_container.add_child(AttributeFieldBuilder.create(attribute.name, element))
 	
 	var element_content: Control
 	if element.name in element_content_types:
@@ -189,7 +155,7 @@ func _gui_input(event: InputEvent) -> void:
 func _on_mouse_entered() -> void:
 	var element_icon_size := DB.get_element_icon(element.name).get_size()
 	var half_bar_width := title_bar.size.x / 2
-	var title_width := code_font.get_string_size(element.name,
+	var title_width := ThemeUtils.mono_font.get_string_size(element.name,
 			HORIZONTAL_ALIGNMENT_LEFT, 180, 12).x
 	# Add button.
 	var title_button := Button.new()
@@ -318,11 +284,11 @@ func _on_title_bar_draw() -> void:
 	var element_icon := DB.get_element_icon(element.name)
 	var element_icon_size: Vector2 = element_icon.get_size()
 	var half_bar_width := title_bar.size.x / 2
-	var title_width := code_font.get_string_size(element.name,
+	var title_width := ThemeUtils.mono_font.get_string_size(element.name,
 			HORIZONTAL_ALIGNMENT_LEFT, 180, 12).x
-	code_font.draw_string(title_bar_ci, Vector2(half_bar_width - title_width / 2 +\
-			element_icon_size.x / 2, 18),
-			element.name, HORIZONTAL_ALIGNMENT_LEFT, 180, 12)
+	ThemeUtils.mono_font.draw_string(title_bar_ci, Vector2(half_bar_width -\
+			title_width / 2 + element_icon_size.x / 2, 18), element.name,
+			HORIZONTAL_ALIGNMENT_LEFT, 180, 12)
 	element_icon.draw_rect(title_bar_ci, Rect2(Vector2(half_bar_width - title_width / 2 -\
 			element_icon_size.x + 6, 4).round(), element_icon_size), false)
 	

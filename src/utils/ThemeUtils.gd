@@ -1,8 +1,8 @@
-class_name ThemeGenerator extends RefCounted
+class_name ThemeUtils extends RefCounted
 
 const regular_font = preload("res://visual/fonts/Font.ttf")
 const bold_font = preload("res://visual/fonts/FontBold.ttf")
-const code_font = preload("res://visual/fonts/FontMono.ttf")
+const mono_font = preload("res://visual/fonts/FontMono.ttf")
 
 const focus_color = Color("66ccffcc")
 const common_panel_inner_color = Color("191926")
@@ -70,19 +70,19 @@ static func generate_theme() -> Theme:
 	var theme := Theme.new()
 	theme.default_font = regular_font
 	theme.default_font_size = 13
-	setup_panelcontainer(theme)
-	setup_button(theme)
-	setup_checkbox(theme)
-	setup_checkbutton(theme)
-	setup_itemlist(theme)
-	setup_lineedit(theme)
-	setup_scrollbar(theme)
-	setup_separator(theme)
-	setup_label(theme)
-	setup_tabcontainer(theme)
-	setup_textedit(theme)
-	setup_tooltip(theme)
-	setup_splitcontainer(theme)
+	_setup_panelcontainer(theme)
+	_setup_button(theme)
+	_setup_checkbox(theme)
+	_setup_checkbutton(theme)
+	_setup_itemlist(theme)
+	_setup_lineedit(theme)
+	_setup_scrollbar(theme)
+	_setup_separator(theme)
+	_setup_label(theme)
+	_setup_tabcontainer(theme)
+	_setup_textedit(theme)
+	_setup_tooltip(theme)
+	_setup_splitcontainer(theme)
 	return theme
 
 static func generate_and_apply_theme() -> void:
@@ -93,7 +93,7 @@ static func generate_and_apply_theme() -> void:
 	default_theme.merge_with(generated_theme)
 
 
-static func setup_panelcontainer(theme: Theme) -> void:
+static func _setup_panelcontainer(theme: Theme) -> void:
 	theme.add_type("PanelContainer")
 	var stylebox := StyleBoxFlat.new()
 	stylebox.set_corner_radius_all(4)
@@ -179,7 +179,7 @@ static func setup_panelcontainer(theme: Theme) -> void:
 	panel_stylebox.content_margin_top = 11
 	theme.set_stylebox("panel", "SideBarContent", panel_stylebox)
 
-static func setup_button(theme: Theme) -> void:
+static func _setup_button(theme: Theme) -> void:
 	theme.add_type("Button")
 	theme.set_constant("h_separation", "Button", 6)
 	var button_stylebox := StyleBoxFlat.new()
@@ -510,12 +510,12 @@ static func setup_button(theme: Theme) -> void:
 	theme.set_stylebox("pressed", "Swatch", pressed_swatch_stylebox)
 	theme.set_stylebox("disabled", "Swatch", pressed_swatch_stylebox)
 
-static func setup_checkbox(theme: Theme) -> void:
+static func _setup_checkbox(theme: Theme) -> void:
 	theme.add_type("CheckBox")
-	theme.set_icon("checked", "CheckBox", icon("GuiBoxChecked"))
-	theme.set_icon("checked_disabled", "CheckBox", icon("GuiBoxCheckedDisabled"))
-	theme.set_icon("unchecked", "CheckBox", icon("GuiBoxUnchecked"))
-	theme.set_icon("unchecked_disabled", "CheckBox", icon("GuiBoxUncheckedDisabled"))
+	theme.set_icon("checked", "CheckBox", _icon("GuiBoxChecked"))
+	theme.set_icon("checked_disabled", "CheckBox", _icon("GuiBoxCheckedDisabled"))
+	theme.set_icon("unchecked", "CheckBox", _icon("GuiBoxUnchecked"))
+	theme.set_icon("unchecked_disabled", "CheckBox", _icon("GuiBoxUncheckedDisabled"))
 	
 	var checkbox_stylebox := StyleBoxFlat.new()
 	checkbox_stylebox.set_corner_radius_all(4)
@@ -541,12 +541,12 @@ static func setup_checkbox(theme: Theme) -> void:
 	disabled_checkbox_stylebox.bg_color = flat_button_color_disabled
 	theme.set_stylebox("disabled", "CheckBox", disabled_checkbox_stylebox)
 
-static func setup_checkbutton(theme: Theme) -> void:
+static func _setup_checkbutton(theme: Theme) -> void:
 	theme.add_type("CheckButton")
-	theme.set_icon("checked", "CheckButton", icon("GuiToggleChecked"))
-	theme.set_icon("unchecked", "CheckButton", icon("GuiToggleUnchecked"))
+	theme.set_icon("checked", "CheckButton", _icon("GuiToggleChecked"))
+	theme.set_icon("unchecked", "CheckButton", _icon("GuiToggleUnchecked"))
 
-static func setup_itemlist(theme: Theme) -> void:
+static func _setup_itemlist(theme: Theme) -> void:
 	theme.add_type("ItemList")
 	theme.set_color("font_color", "ItemList", Color(0.9, 0.9, 0.9))
 	theme.set_color("font_hovered", "ItemList", Color.WHITE)
@@ -575,14 +575,14 @@ static func setup_itemlist(theme: Theme) -> void:
 	theme.set_stylebox("selected", "ItemList", selected_item_stylebox)
 	theme.set_stylebox("selected_focus", "ItemList", selected_item_stylebox)
 
-static func setup_lineedit(theme: Theme) -> void:
+static func _setup_lineedit(theme: Theme) -> void:
 	theme.add_type("LineEdit")
 	theme.set_color("caret_color", "LineEdit", common_caret_color)
 	theme.set_color("font_color", "LineEdit", common_text_color)
 	theme.set_color("font_placeholder_color", "LineEdit", common_subtle_text_color)
 	theme.set_color("selection_color", "LineEdit", common_selection_color)
 	theme.set_font_size("font_size", "LineEdit", 12)
-	theme.set_font("font", "LineEdit", code_font)
+	theme.set_font("font", "LineEdit", mono_font)
 	
 	var stylebox := StyleBoxFlat.new()
 	stylebox.set_corner_radius_all(5)
@@ -613,7 +613,7 @@ static func setup_lineedit(theme: Theme) -> void:
 	theme.add_type("LeftConnectedLineEdit")
 	theme.set_type_variation("LeftConnectedLineEdit", "LineEdit")
 	theme.set_font_size("font_size", "LeftConnectedLineEdit", 12)
-	theme.set_font("font", "LeftConnectedLineEdit", code_font)
+	theme.set_font("font", "LeftConnectedLineEdit", mono_font)
 	var left_connected_stylebox := StyleBoxFlat.new()
 	left_connected_stylebox.corner_radius_top_left = 0
 	left_connected_stylebox.corner_radius_bottom_left = 0
@@ -651,7 +651,7 @@ static func setup_lineedit(theme: Theme) -> void:
 	theme.add_type("RightConnectedLineEdit")
 	theme.set_type_variation("RightConnectedLineEdit", "LineEdit")
 	theme.set_font_size("font_size", "RightConnectedLineEdit", 12)
-	theme.set_font("font", "RightConnectedLineEdit", code_font)
+	theme.set_font("font", "RightConnectedLineEdit", mono_font)
 	var right_connected_stylebox := StyleBoxFlat.new()
 	right_connected_stylebox.corner_radius_top_left = 5
 	right_connected_stylebox.corner_radius_bottom_left = 5
@@ -690,7 +690,7 @@ static func setup_lineedit(theme: Theme) -> void:
 	theme.set_color("font_color", "MiniLineEdit", common_text_color)
 	theme.set_type_variation("MiniLineEdit", "LineEdit")
 	theme.set_font_size("font_size", "MiniLineEdit", 10)
-	theme.set_font("font", "MiniLineEdit", code_font)
+	theme.set_font("font", "MiniLineEdit", mono_font)
 	var mini_stylebox := StyleBoxFlat.new()
 	mini_stylebox.corner_radius_top_left = 3
 	mini_stylebox.corner_radius_bottom_left = 0
@@ -724,7 +724,7 @@ static func setup_lineedit(theme: Theme) -> void:
 	theme.add_type("GoodColorPickerLineEdit")
 	theme.set_type_variation("GoodColorPickerLineEdit", "LineEdit")
 	theme.set_font_size("font_size", "GoodColorPickerLineEdit", 11)
-	theme.set_font("font", "GoodColorPickerLineEdit", code_font)
+	theme.set_font("font", "GoodColorPickerLineEdit", mono_font)
 	var color_picker_line_edit_stylebox := StyleBoxFlat.new()
 	color_picker_line_edit_stylebox.set_corner_radius_all(2)
 	color_picker_line_edit_stylebox.bg_color = line_edit_background_color
@@ -734,7 +734,7 @@ static func setup_lineedit(theme: Theme) -> void:
 	theme.set_stylebox("focus", "GoodColorPickerLineEdit", empty_stylebox)
 	theme.set_stylebox("read_only", "GoodColorPickerLineEdit", empty_stylebox)
 
-static func setup_scrollbar(theme: Theme) -> void:
+static func _setup_scrollbar(theme: Theme) -> void:
 	theme.add_type("HScrollBar")
 	var h_stylebox := StyleBoxFlat.new()
 	h_stylebox.set_corner_radius_all(3)
@@ -785,7 +785,7 @@ static func setup_scrollbar(theme: Theme) -> void:
 	v_scroll_stylebox.bg_color = scrollbar_background_color
 	theme.set_stylebox("scroll", "VScrollBar", v_scroll_stylebox)
 
-static func setup_separator(theme: Theme) -> void:
+static func _setup_separator(theme: Theme) -> void:
 	theme.add_type("HSeparator")
 	var stylebox := StyleBoxLine.new()
 	stylebox.color = common_panel_border_color
@@ -800,7 +800,7 @@ static func setup_separator(theme: Theme) -> void:
 	small_stylebox.grow_end = -3
 	theme.set_stylebox("separator", "SmallHSeparator", small_stylebox)
 
-static func setup_label(theme: Theme) -> void:
+static func _setup_label(theme: Theme) -> void:
 	theme.add_type("Label")
 	theme.set_font_size("font_size", "Label", 15)
 	
@@ -808,7 +808,7 @@ static func setup_label(theme: Theme) -> void:
 	theme.set_color("selection_color", "RichTextLabel", common_selection_color)
 	theme.set_font("bold_font", "RichTextLabel", bold_font)
 
-static func setup_tabcontainer(theme: Theme) -> void:
+static func _setup_tabcontainer(theme: Theme) -> void:
 	theme.add_type("TabContainer")
 	theme.set_constant("side_margin", "TabContainer", 0)
 	theme.set_font_size("font_size", "TabContainer", 14)
@@ -872,12 +872,12 @@ static func setup_tabcontainer(theme: Theme) -> void:
 	tabbar_background_stylebox.corner_radius_top_right = 5
 	theme.set_stylebox("tabbar_background", "TabContainer", tabbar_background_stylebox)
 
-static func setup_textedit(theme: Theme) -> void:
+static func _setup_textedit(theme: Theme) -> void:
 	theme.add_type("TextEdit")
 	theme.set_color("caret_color", "TextEdit", Color.TRANSPARENT)
 	theme.set_color("selection_color", "TextEdit", common_selection_color)
 	theme.set_font_size("font_size", "TextEdit", 12)
-	theme.set_font("font", "TextEdit", code_font)
+	theme.set_font("font", "TextEdit", mono_font)
 	
 	var normal_stylebox := StyleBoxFlat.new()
 	normal_stylebox.bg_color = line_edit_background_color
@@ -901,7 +901,7 @@ static func setup_textedit(theme: Theme) -> void:
 	hover_stylebox.set_corner_radius_all(5)
 	theme.set_stylebox("hover", "TextEdit", hover_stylebox)
 
-static func setup_tooltip(theme: Theme) -> void:
+static func _setup_tooltip(theme: Theme) -> void:
 	theme.add_type("TooltipPanel")
 	var stylebox := StyleBoxFlat.new()
 	stylebox.bg_color = common_panel_inner_color
@@ -919,10 +919,10 @@ static func setup_tooltip(theme: Theme) -> void:
 	theme.set_font_size("font_size", "TooltipLabel", 14)
 	theme.set_font("font", "TooltipLabel", regular_font)
 
-static func setup_splitcontainer(theme: Theme) -> void:
+static func _setup_splitcontainer(theme: Theme) -> void:
 	theme.add_type("VSplitContainer")
-	theme.set_icon("grabber", "VSplitContainer", icon("SplitGrabber"))
+	theme.set_icon("grabber", "VSplitContainer", _icon("SplitGrabber"))
 
 
-static func icon(name: String) -> Texture2D:
+static func _icon(name: String) -> Texture2D:
 	return load("res://visual/icons/theme/" + name + ".svg")

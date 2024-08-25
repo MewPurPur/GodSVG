@@ -27,8 +27,8 @@ static var enum_text := {
 	},
 }
 
-func get_enum_texts(property: String) -> Array[String]:
-	var values: Array[String] = []
+func get_enum_texts(property: String) -> PackedStringArray:
+	var values := PackedStringArray()
 	var enum_dict: Dictionary = enum_text[property]
 	for key in enum_dict:
 		values.append(enum_dict[key])
@@ -144,7 +144,7 @@ func _init(new_title := "") -> void:
 	title = new_title
 	# Connects to the _on_changed function once all initial file loading is done.
 	# This way the config is saved only once on launch.
-	changed.connect(changed.connect.bind(_on_changed), CONNECT_DEFERRED | CONNECT_ONE_SHOT)
+	changed.connect(func(): changed.connect(_on_changed), CONNECT_DEFERRED | CONNECT_ONE_SHOT)
 
 func _on_changed() -> void:
 	if self == GlobalSettings.savedata.editor_formatter:

@@ -120,7 +120,8 @@ msgid "This group has only one element."
 msgstr ""
 
 #: src/data_classes/ElementLinearGradient.gd
-msgid "No id attribute defined."
+#: src/data_classes/ElementRadialGradient.gd
+msgid "No \"id\" attribute defined."
 msgstr ""
 
 #: src/data_classes/ElementLinearGradient.gd
@@ -131,10 +132,6 @@ msgstr ""
 #: src/data_classes/ElementLinearGradient.gd
 #: src/data_classes/ElementRadialGradient.gd
 msgid "This gradient is a solid color."
-msgstr ""
-
-#: src/data_classes/ElementRadialGradient.gd
-msgid "No \"id\" attribute defined."
 msgstr ""
 
 #: src/data_classes/SVGParser.gd
@@ -238,12 +235,12 @@ msgstr ""
 msgid "Overlay reference"
 msgstr ""
 
-#: src/ui_parts/display.gd
-msgid "Show Grid"
+#: src/ui_parts/display.gd src/utils/TranslationUtils.gd
+msgid "Show grid"
 msgstr ""
 
-#: src/ui_parts/display.gd
-msgid "Show Handles"
+#: src/ui_parts/display.gd src/utils/TranslationUtils.gd
+msgid "Show handles"
 msgstr ""
 
 #: src/ui_parts/display.gd
@@ -898,14 +895,6 @@ msgstr ""
 
 #: src/utils/TranslationUtils.gd
 msgid "Zoom reset"
-msgstr ""
-
-#: src/utils/TranslationUtils.gd
-msgid "Show grid"
-msgstr ""
-
-#: src/utils/TranslationUtils.gd
-msgid "Show handles"
 msgstr ""
 
 #: src/utils/TranslationUtils.gd

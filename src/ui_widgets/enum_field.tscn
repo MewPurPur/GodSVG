@@ -9,4 +9,4 @@ layout_mode = 3
 anchors_preset = 0
 script = ExtResource("1_1jqoy")
 icon = ExtResource("3_vhd8v")
-code_font_tooltip = true
+mono_font_tooltip = true

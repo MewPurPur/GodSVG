@@ -21,7 +21,7 @@ func _ready() -> void:
 	setup_theme()
 	update_syntax_highlighter()
 	code_edit.clear_undo_history()
-	SVG.text_changed.connect(auto_update_text)
+	SVG.changed.connect(auto_update_text)
 	GlobalSettings.file_path_changed.connect(update_file_button)
 	import_button.pressed.connect(ShortcutUtils.fn("import"))
 	export_button.pressed.connect(ShortcutUtils.fn("export"))
@@ -111,15 +111,6 @@ func setup_theme() -> void:
 	error_bar.add_theme_stylebox_override("panel", bottom_stylebox)
 
 
-func set_new_text(svg_text: String) -> void:
-	code_edit.text = svg_text
-	_on_svg_code_edit_text_changed()  # Call it automatically yeah.
-
-func _on_svg_code_edit_text_changed() -> void:
-	SVG.set_text(code_edit.text)
-	SVG.sync_elements()
-
-
 func update_size_button() -> void:
 	var svg_text_size := SVG.text.length()
 	size_button.text = String.humanize_size(svg_text_size)
@@ -142,6 +133,10 @@ func update_file_button() -> void:
 	file_button.tooltip_text = file_path.get_file()
 	Utils.set_max_text_width(file_button, 140.0, 12.0)
 
+
+func _on_svg_code_edit_text_changed() -> void:
+	SVG.set_text(code_edit.text)
+	SVG.sync_elements()
 
 func _on_svg_code_edit_focus_exited() -> void:
 	SVG.queue_save()

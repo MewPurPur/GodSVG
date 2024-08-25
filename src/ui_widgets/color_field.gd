@@ -2,7 +2,12 @@
 extends LineEditButton
 
 var element: Element
-var attribute_name: String  # May propagate.
+var attribute_name: String:  # May propagate.
+	set(new_value):
+		attribute_name = new_value
+		cached_allow_url = attribute_name in DB.attribute_color_url_allowed
+
+var cached_allow_url: bool
 
 const ColorPopup = preload("res://src/ui_widgets/color_popup.tscn")
 const checkerboard = preload("res://visual/icons/backgrounds/ColorButtonBG.svg")
@@ -35,7 +40,9 @@ func _ready() -> void:
 		element.ancestor_attribute_changed.connect(_on_element_ancestor_attribute_changed)
 	text_submitted.connect(set_value.bind(true))
 	focus_entered.connect(reset_font_color)
-	SVG.text_changed.connect(_on_svg_text_changed)
+	# If URL is allowed, we need to always check if the gradient has changed.
+	if cached_allow_url:
+		SVG.changed.connect(_on_svg_changed)
 	tooltip_text = attribute_name
 	setup_placeholder()
 
@@ -50,7 +57,7 @@ func _on_element_ancestor_attribute_changed(attribute_changed: String) -> void:
 		resync()
 
 # Redraw in case the gradient might have changed.
-func _on_svg_text_changed() -> void:
+func _on_svg_changed() -> void:
 	if ColorParser.is_valid_url(element.get_attribute_value(attribute_name, false)):
 		update_gradient_texture()
 		queue_redraw()
@@ -58,6 +65,7 @@ func _on_svg_text_changed() -> void:
 func _on_pressed() -> void:
 	color_popup = ColorPopup.instantiate()
 	color_popup.current_value = element.get_attribute_value(attribute_name, true)
+	color_popup.show_url = cached_allow_url
 	color_popup.color_picked.connect(_on_color_picked)
 	HandlerGUI.popup_under_rect(color_popup, get_global_rect(), get_viewport())
 
@@ -69,7 +77,7 @@ func _draw() -> void:
 	# Draw the color or gradient.
 	var drawn := false
 	var color_value := element.get_attribute_value(attribute_name, false)
-	if ColorParser.is_valid_url(color_value):
+	if cached_allow_url and ColorParser.is_valid_url(color_value):
 		var id := color_value.substr(5, color_value.length() - 6)
 		var gradient_element := SVG.root_element.get_element_by_id(id)
 		if gradient_element != null:
@@ -120,7 +128,7 @@ func _on_color_picked(new_color: String, close_picker: bool) -> void:
 		color_popup.queue_free()
 
 func is_valid(color_text: String) -> bool:
-	return ColorParser.is_valid(ColorParser.add_hash_if_hex(color_text))
+	return ColorParser.is_valid(ColorParser.add_hash_if_hex(color_text), cached_allow_url)
 
 
 func _on_text_changed(new_text: String) -> void:
@@ -134,7 +142,8 @@ func sync(new_value: String) -> void:
 	if ColorParser.add_hash_if_hex(new_value) == element.get_default(attribute_name):
 		font_color = GlobalSettings.savedata.basic_color_warning
 	text = new_value.trim_prefix("#")
-	update_gradient_texture()
+	if cached_allow_url:
+		update_gradient_texture()
 	queue_redraw()
 
 # TODO remove this method when #94584 is fixed.

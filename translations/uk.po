@@ -122,7 +122,7 @@ msgid "This group has only one element."
 msgstr "Ця група має тільки один елемент."
 
 #: src/data_classes/ElementLinearGradient.gd
-msgid "No id attribute defined."
+msgid "No \"id\" attribute defined."
 msgstr "Не вказано \"id\" атрибуту."
 
 #: src/data_classes/ElementLinearGradient.gd
@@ -134,10 +134,6 @@ msgstr "Немає <stop> елементів під цим градієнтом.
 #: src/data_classes/ElementRadialGradient.gd
 msgid "This gradient is a solid color."
 msgstr "Цей градієнт це суцільний колір."
-
-#: src/data_classes/ElementRadialGradient.gd
-msgid "No \"id\" attribute defined."
-msgstr "Не вказано \"id\" атрибуту."
 
 #: src/data_classes/SVGParser.gd
 msgid "Doesn’t describe an SVG."
@@ -241,12 +237,12 @@ msgstr "Показати еталонне зображення"
 msgid "Overlay reference"
 msgstr "Накласти еталонне зображення"
 
-#: src/ui_parts/display.gd
-msgid "Show Grid"
+#: src/ui_parts/display.gd src/utils/TranslationUtils.gd
+msgid "Show grid"
 msgstr "Показати ґратку"
 
-#: src/ui_parts/display.gd
-msgid "Show Handles"
+#: src/ui_parts/display.gd src/utils/TranslationUtils.gd
+msgid "Show handles"
 msgstr "Показати ручки редагування"
 
 #: src/ui_parts/display.gd
@@ -920,14 +916,6 @@ msgstr "Зменшити масштаб"
 #: src/utils/TranslationUtils.gd
 msgid "Zoom reset"
 msgstr "Скинути масштаб"
-
-#: src/utils/TranslationUtils.gd
-msgid "Show grid"
-msgstr "Показати ґратку"
-
-#: src/utils/TranslationUtils.gd
-msgid "Show handles"
-msgstr "Показати ручки редагування"
 
 #: src/utils/TranslationUtils.gd
 msgid "Show rasterized SVG"

@@ -5,7 +5,6 @@ const NumberEditType = preload("res://src/ui_widgets/number_edit.gd")
 
 const MiniNumberField = preload("res://src/ui_widgets/mini_number_field.tscn")
 const TransformEditor = preload("res://src/ui_widgets/transform_editor.tscn")
-const code_font = preload("res://visual/fonts/FontMono.ttf")
 
 const icons_dict := {
 	"matrix": preload("res://visual/icons/Matrix.svg"),
@@ -172,7 +171,7 @@ func popup_new_transform_context(idx: int, control: Control) -> void:
 	for transform in ["matrix", "translate", "rotate", "scale", "skewX", "skewY"]:
 		var btn := ContextPopup.create_button(transform,
 				insert_transform.bind(idx, transform), false, icons_dict[transform])
-		btn.add_theme_font_override("font", code_font)
+		btn.add_theme_font_override("font", ThemeUtils.mono_font)
 		btn_array.append(btn)
 	
 	var transform_context := ContextPopup.new()

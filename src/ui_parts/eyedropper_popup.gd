@@ -2,8 +2,6 @@ extends TextureRect
 
 signal color_picked(color: Color)
 
-const code_font = preload("res://visual/fonts/FontMono.ttf")
-
 const grid_color = Color(0.5, 0.5, 0.5, 0.35)
 
 var color: Color
@@ -64,8 +62,8 @@ func _draw() -> void:
 	stylebox.draw(ci, Rect2(stylebox_corner, Vector2(103, 25)))
 	
 	color = texture_image.get_pixelv(pos)
-	code_font.draw_string(ci, stylebox_corner + Vector2(26, 19), "#" + color.to_html(false),
-			HORIZONTAL_ALIGNMENT_LEFT, -1, 16, Color.BLACK)
+	ThemeUtils.mono_font.draw_string(ci, stylebox_corner + Vector2(26, 19), "#" +\
+			color.to_html(false), HORIZONTAL_ALIGNMENT_LEFT, -1, 16, Color.BLACK)
 	draw_rect(Rect2(stylebox_corner + Vector2(5, 5), Vector2(15, 15)), color)
 	var border := Color.WHITE
 	if color.get_luminance() > 0.455:

@@ -23,8 +23,6 @@ signal focused
 const MiniNumberField = preload("mini_number_field.tscn")
 const FlagField = preload("flag_field.tscn")
 
-const code_font = preload("res://visual/fonts/FontMono.ttf")
-const normal_font = preload("res://visual/fonts/Font.ttf")
 const more_icon = preload("res://visual/icons/SmallMore.svg")
 const plus_icon = preload("res://visual/icons/Plus.svg")
 
@@ -89,7 +87,7 @@ func _on_line_edit_focus_entered() -> void:
 
 func setup_font(new_text: String) -> void:
 	if new_text.is_empty():
-		line_edit.add_theme_font_override("font", normal_font)
+		line_edit.add_theme_font_override("font", ThemeUtils.regular_font)
 	else:
 		line_edit.remove_theme_font_override("font")
 
@@ -241,13 +239,13 @@ func commands_draw() -> void:
 		var cmd_char := cmd.command_char
 		# Draw the action button.
 		more_icon.draw_rect(ci, Rect2(Vector2(commands_container.size.x - 19, 4 + v_offset),
-				Vector2(14, 14)), false, ThemeGenerator.icon_normal_color)
+				Vector2(14, 14)), false, ThemeUtils.icon_normal_color)
 		# Draw the relative/absolute button.
 		var relative_stylebox := absolute_button_normal if\
 				Utils.is_string_upper(cmd_char) else relative_button_normal
 		relative_stylebox.draw(ci, Rect2(Vector2(3, 2 + v_offset),
 				Vector2(18, COMMAND_HEIGHT - 4)))
-		code_font.draw_string(ci, Vector2(6, v_offset + COMMAND_HEIGHT - 6),
+		ThemeUtils.mono_font.draw_string(ci, Vector2(6, v_offset + COMMAND_HEIGHT - 6),
 				cmd_char, HORIZONTAL_ALIGNMENT_CENTER, 12, 13)
 		# Draw the fields.
 		var rect := Rect2(Vector2(25, 2 + v_offset), Vector2(44, 18))
@@ -266,14 +264,14 @@ func commands_draw() -> void:
 				var is_sweep: bool = (cmd.sweep_flag == 0)
 				flag_field.get_theme_stylebox("normal" if is_large_arc\
 						else "pressed").draw(ci, rect)
-				code_font.draw_string(ci, rect.position + Vector2(5, 14),
+				ThemeUtils.mono_font.draw_string(ci, rect.position + Vector2(5, 14),
 						String.num_uint64(cmd.large_arc_flag), HORIZONTAL_ALIGNMENT_LEFT,
 						rect.size.x, 14, flag_field.get_theme_color(
 								"font_color" if is_large_arc else "font_pressed_color"))
 				rect.position.x = rect.end.x + 4
 				flag_field.get_theme_stylebox("normal" if is_sweep
 						else "pressed").draw(ci, rect)
-				code_font.draw_string(ci, rect.position + Vector2(5, 14),
+				ThemeUtils.mono_font.draw_string(ci, rect.position + Vector2(5, 14),
 						String.num_uint64(cmd.sweep_flag), HORIZONTAL_ALIGNMENT_LEFT,
 						rect.size.x, 14, flag_field.get_theme_color("font_color" if is_sweep\
 						else "font_pressed_color"))
@@ -293,12 +291,12 @@ func commands_draw() -> void:
 
 func draw_numfield(rect: Rect2, property: String, path_command: PathCommand) -> void:
 	mini_line_edit_stylebox.draw(ci, rect)
-	code_font.draw_string(ci, rect.position + Vector2(3, 13),
+	ThemeUtils.mono_font.draw_string(ci, rect.position + Vector2(3, 13),
 			NumstringParser.basic_num_to_text(path_command.get(property)),
 			HORIZONTAL_ALIGNMENT_LEFT, rect.size.x - 6,
 			mini_line_edit_font_size, mini_line_edit_font_color)
 
-func draw_numfield_arr(first_rect: Rect2, spacings: Array, names: Array[String],
+func draw_numfield_arr(first_rect: Rect2, spacings: Array, names: PackedStringArray,
 path_command: PathCommand) -> void:
 	draw_numfield(first_rect, names[0], path_command)
 	for i in spacings.size():
@@ -368,7 +366,7 @@ func setup_path_command_controls(idx: int) -> Control:
 	relative_button.mouse_filter = Control.MOUSE_FILTER_PASS
 	relative_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	relative_button.begin_bulk_theme_override()
-	relative_button.add_theme_font_override("font", code_font)
+	relative_button.add_theme_font_override("font", ThemeUtils.mono_font)
 	relative_button.add_theme_font_size_override("font_size", 13)
 	relative_button.add_theme_color_override("font_color", Color(1, 1, 1))
 	# Disabled styleboxes aren unused, but must be set for the correct content margins.
@@ -407,8 +405,8 @@ func setup_path_command_controls(idx: int) -> Control:
 	action_button.size = Vector2(COMMAND_HEIGHT - 4, COMMAND_HEIGHT - 4)
 	# Setup the fields.
 	var fields: Array[Control] = []
-	var spacings: Array[int] = []
-	var property_names: Array[String] = []
+	var spacings := PackedInt32Array()
+	var property_names: PackedStringArray = []
 	match cmd_char.to_upper():
 		"A":
 			var field_rx: BetterLineEdit = numfield(idx)
@@ -423,31 +421,32 @@ func setup_path_command_controls(idx: int) -> Control:
 			field_sweep.gui_input.connect(_eat_double_clicks.bind(field_sweep))
 			fields = [field_rx, field_ry, field_rot, field_large_arc, field_sweep,
 					numfield(idx), numfield(idx)]
-			spacings = [3, 4, 4, 4, 4, 3]
-			property_names = ["rx", "ry", "rot", "large_arc_flag", "sweep_flag", "x", "y"]
+			spacings = PackedInt32Array([3, 4, 4, 4, 4, 3])
+			property_names = PackedStringArray(
+					["rx", "ry", "rot", "large_arc_flag", "sweep_flag", "x", "y"])
 		"C":
 			fields = [numfield(idx), numfield(idx), numfield(idx), numfield(idx),
 					numfield(idx), numfield(idx)]
-			spacings = [3, 4, 3, 4, 3]
-			property_names = ["x1", "y1", "x2", "y2", "x", "y"]
+			spacings = PackedInt32Array([3, 4, 3, 4, 3])
+			property_names = PackedStringArray(["x1", "y1", "x2", "y2", "x", "y"])
 		"Q":
 			fields = [numfield(idx), numfield(idx), numfield(idx), numfield(idx)]
-			spacings = [3, 4, 3]
-			property_names = ["x1", "y1", "x", "y"]
+			spacings = PackedInt32Array([3, 4, 3])
+			property_names = PackedStringArray(["x1", "y1", "x", "y"])
 		"S":
 			fields = [numfield(idx), numfield(idx), numfield(idx), numfield(idx)]
-			spacings = [3, 4, 3]
-			property_names = ["x2", "y2", "x", "y"]
+			spacings = PackedInt32Array([3, 4, 3])
+			property_names = PackedStringArray(["x2", "y2", "x", "y"])
 		"M", "L", "T":
 			fields = [numfield(idx), numfield(idx)]
-			spacings = [3]
-			property_names = ["x", "y"]
+			spacings = PackedInt32Array([3])
+			property_names = PackedStringArray(["x", "y"])
 		"H":
 			fields = [numfield(idx)]
-			property_names = ["x"]
+			property_names = PackedStringArray(["x"])
 		"V":
 			fields = [numfield(idx)]
-			property_names = ["y"]
+			property_names = PackedStringArray(["y"])
 	# Setup the fields.
 	if not fields.is_empty():
 		for i in fields.size():

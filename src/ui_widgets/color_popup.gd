@@ -8,6 +8,7 @@ const ColorSwatch = preload("res://src/ui_widgets/color_swatch.tscn")
 
 signal color_picked(new_color: String, final: bool)
 var current_value: String
+var show_url: bool
 
 var palette_mode := true
 
@@ -44,20 +45,21 @@ func update_palettes(search_text := "") -> void:
 	search_field.placeholder_text = TranslationServer.translate("Search color")
 	var reserved_colors := PackedStringArray(["none"])
 	var reserved_color_names := PackedStringArray(["No color"])
-	for element in SVG.root_element.get_all_elements():
-		if element.has_attribute("id"):
-			if element is ElementLinearGradient:
-				reserved_color_names.append("Linear gradient")
-				reserved_colors.append("url(#%s)" % element.get_attribute_value("id"))
-			elif element is ElementRadialGradient:
-				reserved_color_names.append("Radial gradient")
-				reserved_colors.append("url(#%s)" % element.get_attribute_value("id"))
+	if show_url:
+		for element in SVG.root_element.get_all_elements():
+			if element.has_attribute("id"):
+				if element is ElementLinearGradient:
+					reserved_color_names.append("Linear gradient")
+					reserved_colors.append("url(#%s)" % element.get_attribute_value("id"))
+				elif element is ElementRadialGradient:
+					reserved_color_names.append("Radial gradient")
+					reserved_colors.append("url(#%s)" % element.get_attribute_value("id"))
 	var reserved_color_palette := ColorPalette.new("", reserved_colors, reserved_color_names)
 	
 	var displayed_palettes: Array[ColorPalette] = [reserved_color_palette]
 	displayed_palettes += GlobalSettings.savedata.palettes
 	for palette in displayed_palettes:
-		var indices_to_show: Array[int] = []
+		var indices_to_show := PackedInt32Array()
 		for i in palette.colors.size():
 			if search_text.is_empty() or\
 			search_text.is_subsequence_ofn(palette.color_names[i]):

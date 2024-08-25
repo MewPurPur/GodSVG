@@ -5,9 +5,8 @@ var element: Element
 const attribute_name = "id"  # Never propagates.
 
 func set_value(new_value: String, save := false) -> void:
-	if not new_value.is_empty():
-		sync(new_value)
 	element.set_attribute(attribute_name, new_value)
+	sync_to_attribute()
 	if save:
 		SVG.queue_save()
 
@@ -17,20 +16,27 @@ func _ready() -> void:
 	set_value(element.get_attribute_value(attribute_name, true))
 	element.attribute_changed.connect(_on_element_attribute_changed)
 	text_changed.connect(_on_text_changed)
-	text_submitted.connect(set_value.bind(true))
-	text_change_canceled.connect(_on_text_change_canceled)
+	text_submitted.connect(_on_text_submitted)
+	text_change_canceled.connect(sync_to_attribute)
 	focus_entered.connect(_on_focus_entered)
 	tooltip_text = attribute_name
 
 func _on_element_attribute_changed(attribute_changed: String) -> void:
 	if attribute_name == attribute_changed:
-		set_value(element.get_attribute_value(attribute_name, true))
+		sync_to_attribute()
 
 func _on_focus_entered() -> void:
 	remove_theme_color_override("font_color")
 
-func _on_text_change_canceled() -> void:
+func sync_to_attribute() -> void:
 	sync(element.get_attribute_value(attribute_name, true))
+
+func _on_text_submitted(new_text: String) -> void:
+	if new_text.is_empty() or\
+	AttributeID.get_validity(new_text) != AttributeID.ValidityLevel.INVALID:
+		set_value(new_text)
+	else:
+		sync_to_attribute()
 
 func _on_text_changed(new_text: String) -> void:
 	var validity_level := AttributeID.get_validity(new_text)

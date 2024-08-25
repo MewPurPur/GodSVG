@@ -92,8 +92,7 @@ func _ready() -> void:
 	c.material = stroke_material
 	add_child(c, false, InternalMode.INTERNAL_MODE_BACK)
 	
-	SVG.any_attribute_changed.connect(queue_redraw.unbind(1))
-	SVG.any_attribute_changed.connect(sync_handles.unbind(1))
+	SVG.any_attribute_changed.connect(sync_handles)
 	SVG.elements_layout_changed.connect(queue_update)
 	SVG.changed_unknown.connect(queue_update)
 	Indications.selection_changed.connect(queue_redraw)
@@ -111,22 +110,29 @@ func _process(_delta: float) -> void:
 		update_handles()
 		update_pending = false
 
-
 func update_handles() -> void:
 	handles.clear()
 	for element in SVG.root_element.get_all_elements():
 		match element.name:
 			"circle":
-				handles.append(XYHandle.new(element, "cx", "cy"))
-				handles.append(DeltaHandle.new(element, "cx", "cy", "r", true))
+				var delta_handle := DeltaHandle.new(element, "cx", "cy", "r", true)
+				var delta_handle_arr: Array[Handle] = [delta_handle]
+				handles.append(XYHandle.new(element, "cx", "cy", delta_handle_arr))
+				handles.append(delta_handle)
 			"ellipse":
-				handles.append(XYHandle.new(element, "cx", "cy"))
-				handles.append(DeltaHandle.new(element, "cx", "cy", "rx", true))
-				handles.append(DeltaHandle.new(element, "cx", "cy", "ry", false))
+				var delta_handle_1 := DeltaHandle.new(element, "cx", "cy", "rx", true)
+				var delta_handle_2 := DeltaHandle.new(element, "cx", "cy", "ry", false)
+				var delta_handle_arr: Array[Handle] = [delta_handle_1, delta_handle_2]
+				handles.append(XYHandle.new(element, "cx", "cy", delta_handle_arr))
+				handles.append(delta_handle_1)
+				handles.append(delta_handle_2)
 			"rect":
-				handles.append(XYHandle.new(element, "x", "y"))
-				handles.append(DeltaHandle.new(element, "x", "y", "width", true))
-				handles.append(DeltaHandle.new(element, "x", "y", "height", false))
+				var delta_handle_1 := DeltaHandle.new(element, "x", "y", "width", true)
+				var delta_handle_2 := DeltaHandle.new(element, "x", "y", "height", false)
+				var delta_handle_arr: Array[Handle] = [delta_handle_1, delta_handle_2]
+				handles.append(XYHandle.new(element, "x", "y", delta_handle_arr))
+				handles.append(delta_handle_1)
+				handles.append(delta_handle_2)
 			"line":
 				handles.append(XYHandle.new(element, "x1", "y1"))
 				handles.append(XYHandle.new(element, "x2", "y2"))
@@ -136,38 +142,37 @@ func update_handles() -> void:
 	Utils.throw_mouse_motion_event()
 	queue_redraw()
 
-
-func sync_handles() -> void:
-	# For XYHandles, sync them. For PathHandles, they can be added and removed as an
-	# attribute changes, so remove them and re-add them except for the dragged one.
-	for handle_idx in range(handles.size() - 1, -1, -1):
-		var handle := handles[handle_idx]
-		if handle is PathHandle:
-			if dragged_handle != handle:
-				handles.remove_at(handle_idx)
-		else:
-			handle.sync()
+func sync_handles(xid: PackedInt32Array) -> void:
+	var element := SVG.root_element.get_element(xid)
+	if not element is ElementPath:
+		queue_redraw()
+		return
 	
-	for element in SVG.root_element.get_all_elements():
-		if element.name == "path":
-			handles += generate_path_handles(element)
+	var new_handles: Array[Handle] = []
+	for handle in handles:
+		if handle.element != element:
+			new_handles.append(handle)
+	handles = new_handles
+	handles += generate_path_handles(element)
 	queue_redraw()
 
 func generate_path_handles(element: Element) -> Array[Handle]:
-	var path_handles: Array[Handle] = []
 	var data_attrib: AttributePathdata = element.get_attribute("d")
-	for idx in data_attrib.get_command_count():
+	var path_handles: Array[Handle] = []
+	for idx in range(data_attrib.get_command_count() - 1, -1, -1):
 		var path_command := data_attrib.get_command(idx)
-		if not path_command.command_char in "Zz":
-			path_handles.append(PathHandle.new(element, idx))
-			if path_command.command_char in "CcQq":
-				var tangent := PathHandle.new(element, idx, "x1", "y1")
-				tangent.display_mode = Handle.Display.SMALL
-				path_handles.append(tangent)
-			if path_command.command_char in "CcSs":
-				var tangent := PathHandle.new(element, idx, "x2", "y2")
-				tangent.display_mode = Handle.Display.SMALL
-				path_handles.append(tangent)
+		if path_command.command_char in "Zz":
+			continue
+		
+		if path_command.command_char in "CcQq":
+			var tangent := PathHandle.new(element, idx, "x1", "y1")
+			tangent.display_mode = Handle.Display.SMALL
+			path_handles.append(tangent)
+		if path_command.command_char in "CcSs":
+			var tangent := PathHandle.new(element, idx, "x2", "y2")
+			tangent.display_mode = Handle.Display.SMALL
+			path_handles.append(tangent)
+		path_handles.append(PathHandle.new(element, idx, "x", "y"))
 	return path_handles
 
 
@@ -610,7 +615,7 @@ func _draw() -> void:
 				RenderingServer.canvas_item_add_set_transform(selections_surface,
 						element.get_transform() * SVG.root_element.canvas_transform)
 				RenderingServer.canvas_item_add_rect(selections_surface,
-						bounding_box.grow(3.0 / Indications.zoom), Color.WHITE)
+						bounding_box.grow(4.0 / Indications.zoom), Color.WHITE)
 
 
 var dragged_handle: Handle = null
@@ -640,32 +645,22 @@ func _unhandled_input(event: InputEvent) -> void:
 			Indications.clear_hovered()
 			Indications.clear_inner_hovered()
 	
-	var snap_enabled := GlobalSettings.savedata.snap > 0.0
-	var snap_size := absf(GlobalSettings.savedata.snap)
-	var snap_vector := Vector2(snap_size, snap_size)
-	
 	if event is InputEventMouseMotion:
 		# Allow moving view while dragging handle.
 		if event.button_mask & MOUSE_BUTTON_MASK_MIDDLE:
 			return
 		
 		should_deselect_all = false
-		var event_pos: Vector2 = event.position / Indications.zoom +\
-				get_parent().view.position
 		if is_instance_valid(dragged_handle):
 			# Move the handle that's being dragged.
-			if snap_enabled:
-				event_pos = event_pos.snapped(snap_vector)
+			var event_pos := get_event_pos(event)
 			var new_pos := dragged_handle.transform.affine_inverse() *\
 					SVG.root_element.world_to_canvas(event_pos)
 			dragged_handle.set_pos(new_pos)
 			was_handle_moved = true
 			accept_event()
 	elif event is InputEventMouseButton:
-		var event_pos: Vector2 = event.position / Indications.zoom +\
-				get_parent().view.position
-		if snap_enabled:
-			event_pos = event_pos.snapped(snap_vector)
+		var event_pos := get_event_pos(event)
 		
 		if event.button_index == MOUSE_BUTTON_LEFT:
 			# React to LMB actions.
@@ -736,6 +731,20 @@ func find_nearest_handle(event_pos: Vector2) -> Handle:
 			nearest_handle = handle
 	return nearest_handle
 
+func get_event_pos(event: InputEvent) -> Vector2:
+	var snap_enabled := GlobalSettings.savedata.snap > 0.0
+	var snap_size := absf(GlobalSettings.savedata.snap)
+	var snap_vector := Vector2(snap_size, snap_size)
+	
+	var event_pos: Vector2 = event.position / Indications.zoom +\
+				get_parent().view.position
+	var precision := maxi(ceili(-log(1.0 / Indications.zoom) / log(10)), 0)
+	event_pos = event_pos.snapped(Vector2(0.1 ** precision, 0.1 ** precision))
+	if snap_enabled:
+		event_pos = event_pos.snapped(snap_vector)
+	return event_pos
+
+
 func _on_handle_added() -> void:
 	if not get_viewport_rect().has_point(get_viewport().get_mouse_position()):
 		if not Indications.semi_selected_xid.is_empty():
@@ -768,7 +777,7 @@ func create_element_context(pos: Vector2) -> ContextPopup:
 	for shape in ["path", "circle", "ellipse", "rect", "line"]:
 		var btn := ContextPopup.create_button(shape, add_shape_at_pos.bind(shape, pos),
 				false, DB.get_element_icon(shape))
-		btn.add_theme_font_override("font", load("res://visual/fonts/FontMono.ttf"))
+		btn.add_theme_font_override("font", ThemeUtils.mono_font)
 		btn_array.append(btn)
 	var element_context := ContextPopup.new()
 	var separation_indices: Array[int] = [1]

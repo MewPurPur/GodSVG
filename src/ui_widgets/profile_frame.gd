@@ -3,8 +3,6 @@ extends Control
 
 signal value_changed
 
-const font = preload("res://visual/fonts/Font.ttf")
-
 var getter: Callable
 var setter: Callable
 var text: String
@@ -33,4 +31,5 @@ func _dropdown_modification(value: String) -> void:
 func _draw() -> void:
 	if Rect2(Vector2.ZERO, size).has_point(get_local_mouse_position()):
 		get_theme_stylebox("hover", "FlatButton").draw(ci, Rect2(Vector2.ZERO, size))
-	font.draw_string(ci, Vector2(4, 18), text, HORIZONTAL_ALIGNMENT_LEFT, -1, 13, Color.WHITE)
+	ThemeUtils.regular_font.draw_string(ci, Vector2(4, 18), text,
+			HORIZONTAL_ALIGNMENT_LEFT, -1, 13, Color.WHITE)

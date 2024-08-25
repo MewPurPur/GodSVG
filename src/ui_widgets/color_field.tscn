@@ -9,7 +9,7 @@ anchors_preset = 0
 offset_right = 68.0
 script = ExtResource("1_2pe1j")
 button_visuals = false
-code_font_tooltip = true
+mono_font_tooltip = true
 
 [connection signal="button_gui_input" from="." to="." method="_on_button_gui_input"]
 [connection signal="pressed" from="." to="." method="_on_pressed"]

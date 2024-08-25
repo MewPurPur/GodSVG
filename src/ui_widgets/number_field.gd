@@ -2,12 +2,18 @@
 extends BetterLineEdit
 
 var element: Element
-var attribute_name: String  # May propagate.
+var attribute_name: String:  # May propagate.
+	set(new_value):
+		attribute_name = new_value
+		if DB.attribute_number_range[attribute_name] == DB.NumberRange.ARBITRARY:
+			cached_min_value = -INF
+			cached_max_value = INF
+		else:
+			cached_min_value = 0.0
+			cached_max_value = INF
 
-var min_value := 0.0
-var max_value := 1.0
-var allow_lower := true
-var allow_higher := true
+var cached_min_value: float
+var cached_max_value: float
 
 func set_value(new_value: String, save := false) -> void:
 	if not new_value.is_empty():
@@ -16,16 +22,10 @@ func set_value(new_value: String, save := false) -> void:
 			var numeric_value := NumstringParser.evaluate(new_value)
 			# Validate the value.
 			if !is_finite(numeric_value):
-				sync(element.get_attribute_value(attribute_name))
+				sync_to_attribute()
 				return
 			
-			if not allow_higher and numeric_value > max_value:
-				numeric_value = max_value
-				new_value = element.get_attribute(attribute_name).num_to_text(numeric_value)
-			elif not allow_lower and numeric_value < min_value:
-				numeric_value = min_value
-				new_value = element.get_attribute(attribute_name).num_to_text(numeric_value)
-			
+			numeric_value = clampf(numeric_value, cached_min_value, cached_max_value)
 			new_value = element.get_attribute(attribute_name).num_to_text(numeric_value)
 		sync(element.get_attribute(attribute_name).format(new_value))
 	element.set_attribute(attribute_name, new_value)
@@ -44,7 +44,7 @@ func _ready() -> void:
 		element.ancestor_attribute_changed.connect(_on_element_ancestor_attribute_changed)
 	tooltip_text = attribute_name
 	text_submitted.connect(set_value.bind(true))
-	text_change_canceled.connect(_on_text_change_canceled)
+	text_change_canceled.connect(sync_to_attribute)
 	focus_entered.connect(_on_focus_entered)
 	setup_placeholder()
 
@@ -61,7 +61,7 @@ func _on_element_ancestor_attribute_changed(attribute_changed: String) -> void:
 func _on_focus_entered() -> void:
 	remove_theme_color_override("font_color")
 
-func _on_text_change_canceled() -> void:
+func sync_to_attribute() -> void:
 	sync(element.get_attribute_value(attribute_name, true))
 
 func resync() -> void:

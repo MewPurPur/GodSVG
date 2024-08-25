@@ -9,7 +9,7 @@ func _sync() -> void:
 	_commands = parse_pathdata(get_value())
 	locate_start_points()
 
-func autoformat(text: String) -> String:
+func format(text: String) -> String:
 	return path_commands_to_text(parse_pathdata(text))
 
 
@@ -435,8 +435,11 @@ func path_commands_to_text(commands_arr: Array[PathCommand]) -> String:
 					output += (" 0" if cmd.large_arc_flag == 0 else " 1") +\
 							("0" if cmd.sweep_flag == 0 else "1")
 				else:
-					output += (" 0 " if cmd.large_arc_flag == 0 else " 1 ") +\
-							("0 " if cmd.sweep_flag == 0 else "1 ")
+					output += " 0 " if cmd.large_arc_flag == 0 else " 1 "
+					if num_parser.num_to_text(cmd.x)[0] == "-":
+						output += "0" if cmd.sweep_flag == 0 else "1"
+					else:
+						output += "0 " if cmd.sweep_flag == 0 else "1 "
 				output += num_parser.numstr_arr_to_text([num_parser.num_to_text(cmd.x),
 						num_parser.num_to_text(cmd.y)])
 			"C":

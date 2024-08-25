@@ -6,7 +6,8 @@ var command_index: int
 var x_param: String
 var y_param: String
 
-func _init(new_element: Element, command_idx: int, x_name := "x", y_name := "y") -> void:
+
+func _init(new_element: Element, command_idx: int, x_name: String, y_name: String) -> void:
 	element = new_element
 	command_index = command_idx
 	x_param = x_name
@@ -14,13 +15,13 @@ func _init(new_element: Element, command_idx: int, x_name := "x", y_name := "y")
 	sync()
 
 func set_pos(new_pos: Vector2) -> void:
-	var path_attribute: AttributePathdata = element.get_attribute(pathdata_name)
-	var command := path_attribute.get_command(command_index)
-	var new_coords := new_pos - command.start if command.relative else new_pos
 	if pos != new_pos:
-		pos = new_pos
+		var path_attribute: AttributePathdata = element.get_attribute(pathdata_name)
+		var command := path_attribute.get_command(command_index)
+		var new_coords := new_pos - command.start if command.relative else new_pos
 		path_attribute.set_command_property(command_index, x_param, new_coords.x)
 		path_attribute.set_command_property(command_index, y_param, new_coords.y)
+		sync()
 
 
 func sync() -> void:

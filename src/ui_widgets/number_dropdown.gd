@@ -5,7 +5,7 @@ signal value_changed(new_value: String)
 
 @onready var line_edit: BetterLineEdit = $LineEdit
 
-@export var values: Array[float]
+@export var values: PackedFloat64Array
 @export var is_integer := false
 @export var restricted := true
 @export var min_value := -INF

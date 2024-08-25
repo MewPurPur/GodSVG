@@ -9,8 +9,6 @@ const ColorEdit = preload("res://src/ui_widgets/color_edit.tscn")
 const Dropdown = preload("res://src/ui_widgets/enum_dropdown.tscn")
 const NumberDropdown = preload("res://src/ui_widgets/number_dropdown.tscn")
 
-const font = preload("res://visual/fonts/Font.ttf")
-
 var getter: Callable
 var setter: Callable
 var default: Variant
@@ -45,7 +43,7 @@ func setup_color(enable_alpha: bool) -> void:
 	type = Type.COLOR
 	panel_width = 114 if enable_alpha else 100
 
-func setup_dropdown(values: Array[String]) -> void:
+func setup_dropdown(values: PackedStringArray) -> void:
 	widget = Dropdown.instantiate()
 	widget.values = values
 	add_child(widget)
@@ -140,11 +138,11 @@ func _draw() -> void:
 	
 	var color := Color.WHITE
 	if disabled:
-		color = ThemeGenerator.common_subtle_text_color
+		color = ThemeUtils.common_subtle_text_color
 	
 	var non_panel_width := size.x - panel_width
 	var text_line := TextLine.new()
-	text_line.add_string(text, font, 13)
+	text_line.add_string(text, ThemeUtils.regular_font, 13)
 	text_line.width = non_panel_width - 16
 	text_line.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	text_line.draw(ci, Vector2(4, 5), color)

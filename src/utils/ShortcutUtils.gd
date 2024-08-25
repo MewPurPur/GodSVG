@@ -80,7 +80,7 @@ static func fn(shortcut: String) -> Callable:
 		"clear_svg": return SVG.apply_svg_text.bind(SVG.DEFAULT)
 		"optimize": return SVG.optimize
 		"clear_file_path": return GlobalSettings.modify_setting.bind(
-				"session", "current_file_path", "")
+				"current_file_path", "")
 		"reset_svg": return FileUtils.apply_svg_from_path.bind(
 				GlobalSettings.savedata.current_file_path)
 		"redo": return SVG.redo

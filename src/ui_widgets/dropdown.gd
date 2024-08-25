@@ -5,7 +5,7 @@ signal value_changed(new_value: String)
 
 @onready var line_edit: BetterLineEdit = $LineEdit
 
-@export var values: Array[String]
+@export var values: PackedStringArray
 @export var restricted := true
 
 var value := "":

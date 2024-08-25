@@ -122,7 +122,8 @@ msgid "This group has only one element."
 msgstr ""
 
 #: src/data_classes/ElementLinearGradient.gd
-msgid "No id attribute defined."
+#: src/data_classes/ElementRadialGradient.gd
+msgid "No \"id\" attribute defined."
 msgstr ""
 
 #: src/data_classes/ElementLinearGradient.gd
@@ -133,10 +134,6 @@ msgstr ""
 #: src/data_classes/ElementLinearGradient.gd
 #: src/data_classes/ElementRadialGradient.gd
 msgid "This gradient is a solid color."
-msgstr ""
-
-#: src/data_classes/ElementRadialGradient.gd
-msgid "No \"id\" attribute defined."
 msgstr ""
 
 #: src/data_classes/SVGParser.gd
@@ -240,12 +237,12 @@ msgstr "显示参考"
 msgid "Overlay reference"
 msgstr "置顶参考"
 
-#: src/ui_parts/display.gd
-msgid "Show Grid"
+#: src/ui_parts/display.gd src/utils/TranslationUtils.gd
+msgid "Show grid"
 msgstr "显示网格"
 
-#: src/ui_parts/display.gd
-msgid "Show Handles"
+#: src/ui_parts/display.gd src/utils/TranslationUtils.gd
+msgid "Show handles"
 msgstr "显示拖拽框"
 
 #: src/ui_parts/display.gd
@@ -927,14 +924,6 @@ msgstr "缩小"
 #: src/utils/TranslationUtils.gd
 msgid "Zoom reset"
 msgstr "重置缩放"
-
-#: src/utils/TranslationUtils.gd
-msgid "Show grid"
-msgstr "显示网格"
-
-#: src/utils/TranslationUtils.gd
-msgid "Show handles"
-msgstr "显示拖拽框"
 
 #: src/utils/TranslationUtils.gd
 msgid "Show rasterized SVG"

@@ -181,7 +181,7 @@ func set_dir(dir: String) -> void:
 		if folder_up_button.disabled:
 			folder_up_button.disabled = false
 			folder_up_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-	# Gather the files and directories.
+	# Gather the files and directories. Must be sorted, so can't use PackedStringArray.
 	var directories: Array[String] = []
 	var files: Array[String] = []
 	for directory in DA.get_directories():
@@ -338,7 +338,7 @@ func _on_drives_list_item_selected(index: int) -> void:
 	call_selection_action(drives_list.get_item_metadata(index))
 
 func _on_show_hidden_button_toggled(toggled_on: bool) -> void:
-	GlobalSettings.savedata.file_dialog_show_hidden = toggled_on
+	GlobalSettings.modify_setting("file_dialog_show_hidden", toggled_on)
 	refresh_dir()
 
 func _on_search_button_toggled(toggled_on: bool) -> void:

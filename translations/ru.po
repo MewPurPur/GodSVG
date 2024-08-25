@@ -124,8 +124,9 @@ msgid "This group has only one element."
 msgstr "В этой группе только один элемент."
 
 #: src/data_classes/ElementLinearGradient.gd
-msgid "No id attribute defined."
-msgstr "Атрибут идентефикатора не определен."
+#: src/data_classes/ElementRadialGradient.gd
+msgid "No \"id\" attribute defined."
+msgstr "Атрибут \"id\" не определен."
 
 #: src/data_classes/ElementLinearGradient.gd
 #: src/data_classes/ElementRadialGradient.gd
@@ -136,10 +137,6 @@ msgstr "Нет <stop> елементов под этим градиентом."
 #: src/data_classes/ElementRadialGradient.gd
 msgid "This gradient is a solid color."
 msgstr "Этот градиент это обычный цвет."
-
-#: src/data_classes/ElementRadialGradient.gd
-msgid "No \"id\" attribute defined."
-msgstr "Атрибут \"id\" не определен."
 
 #: src/data_classes/SVGParser.gd
 msgid "Doesn’t describe an SVG."
@@ -242,12 +239,12 @@ msgstr "Показать референс-изображение"
 msgid "Overlay reference"
 msgstr "Наложить референс-изображение"
 
-#: src/ui_parts/display.gd
-msgid "Show Grid"
+#: src/ui_parts/display.gd src/utils/TranslationUtils.gd
+msgid "Show grid"
 msgstr "Показать сетку"
 
-#: src/ui_parts/display.gd
-msgid "Show Handles"
+#: src/ui_parts/display.gd src/utils/TranslationUtils.gd
+msgid "Show handles"
 msgstr "Показать ручки редактирования"
 
 #: src/ui_parts/display.gd
@@ -917,14 +914,6 @@ msgstr "Отдалить масштаб"
 #: src/utils/TranslationUtils.gd
 msgid "Zoom reset"
 msgstr "Сбросить масштаб"
-
-#: src/utils/TranslationUtils.gd
-msgid "Show grid"
-msgstr "Показать сетку"
-
-#: src/utils/TranslationUtils.gd
-msgid "Show handles"
-msgstr "Показать ручки редактирования"
 
 #: src/utils/TranslationUtils.gd
 msgid "Show rasterized SVG"

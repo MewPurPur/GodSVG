@@ -76,14 +76,14 @@ func update_translations() -> void:
 
 func update_theme() -> void:
 	var stylebox := StyleBoxFlat.new()
-	stylebox.bg_color = ThemeGenerator.overlay_panel_inner_color
+	stylebox.bg_color = ThemeUtils.overlay_panel_inner_color
 	stylebox.set_content_margin_all(6)
 	panel_container.add_theme_stylebox_override("panel", stylebox)
 	var frame := StyleBoxFlat.new()
 	frame.draw_center = false
 	frame.border_width_left = 2
 	frame.border_width_top = 2
-	frame.border_color = ThemeGenerator.connected_button_border_color_pressed
+	frame.border_color = ThemeUtils.connected_button_border_color_pressed
 	frame.content_margin_left = 2
 	frame.content_margin_top = 2
 	viewport_panel.add_theme_stylebox_override("panel", frame)
@@ -122,9 +122,9 @@ func _on_reference_pressed() -> void:
 
 func _on_visuals_button_pressed() -> void:
 	var btn_arr: Array[Button] = [
-		ContextPopup.create_checkbox(TranslationServer.translate("Show Grid"),
+		ContextPopup.create_checkbox(TranslationServer.translate("Show grid"),
 				toggle_grid_visuals, grid_visuals.visible, "view_show_grid"),
-		ContextPopup.create_checkbox(TranslationServer.translate("Show Handles"),
+		ContextPopup.create_checkbox(TranslationServer.translate("Show handles"),
 				toggle_handles_visuals, controls.visible, "view_show_handles"),
 		ContextPopup.create_checkbox(TranslationServer.translate("Rasterized SVG"),
 				toggle_rasterization, viewport.display_texture.rasterized,
@@ -162,9 +162,9 @@ func _on_more_options_pressed() -> void:
 	buttons_arr.append(ContextPopup.create_button(TranslationServer.translate(
 			"GodSVG website"), ShortcutUtils.fn("about_website"), false,
 			load("res://visual/icons/Link.svg"), "about_website"))
-	var separator_indices: Array[int] = [1, 3]
+	var separator_indices := PackedInt32Array([1, 3])
 	if can_show_savedata_folder:
-		separator_indices = [2, 4]
+		separator_indices = PackedInt32Array([2, 4])
 	
 	var more_popup := ContextPopup.new()
 	more_popup.setup(buttons_arr, true, -1, separator_indices)
@@ -212,11 +212,11 @@ func set_snap_amount(snap_value: float) -> void:
 	snapper.set_value(snap_value)
 
 func _on_snap_button_toggled(toggled_on: bool) -> void:
-	GlobalSettings.savedata.snap = absf(GlobalSettings.savedata.snap) if toggled_on\
-			else -absf(GlobalSettings.savedata.snap)
+	GlobalSettings.modify_setting("snap", absf(GlobalSettings.savedata.snap) if toggled_on\
+			else -absf(GlobalSettings.savedata.snap))
 
 func _on_snap_number_edit_value_changed(new_value: float) -> void:
-	GlobalSettings.savedata.snap = new_value * signf(GlobalSettings.savedata.snap)
+	GlobalSettings.modify_setting("snap", new_value * signf(GlobalSettings.savedata.snap))
 
 # The strings here are intentionally not localized.
 func update_debug() -> void:

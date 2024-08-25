@@ -14,7 +14,7 @@ custom_height: float, custom_viewbox: Rect2) -> String:
 	text = text.strip_edges(false, true).left(-6)  # Remove the </svg> at the end.)
 	for child_idx in root_element.get_child_count():
 		text += _element_to_text(root_element.get_element(PackedInt32Array([child_idx])),
-				blank_formatter)
+				blank_formatter, true)
 	return text + "</svg>"
 
 static func root_to_text(root_element: ElementRoot,
@@ -24,7 +24,11 @@ formatter: Formatter = GlobalSettings.savedata.editor_formatter) -> String:
 		text += "\n"
 	return text
 
-static func _element_to_text(element: Element, formatter: Formatter) -> String:
+static func _element_to_text(element: Element, formatter: Formatter,
+make_attributes_absolute := false) -> String:
+	if make_attributes_absolute:
+		element.make_all_attributes_absolute()
+	
 	var text := ""
 	if formatter.xml_pretty_formatting:
 		if formatter.xml_indentation_use_spaces:

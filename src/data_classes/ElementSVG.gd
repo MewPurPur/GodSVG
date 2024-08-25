@@ -10,8 +10,8 @@ var canvas_transform: Transform2D
 const name = "svg"
 
 func _init() -> void:
-	super()
 	attribute_changed.connect(update_cache.unbind(1))
+	super()
 
 func update_cache() -> void:
 	var has_valid_width := has_attribute("width")

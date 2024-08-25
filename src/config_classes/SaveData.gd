@@ -46,8 +46,3 @@ const GoodColorPicker = preload("res://src/ui_widgets/good_color_picker.gd")
 @export var formatters: Array[Formatter] = []
 @export var editor_formatter: Formatter = null
 @export var export_formatter: Formatter = null
-
-func _init() -> void:
-	for action in InputMap.get_actions():
-		if action in ShortcutUtils.get_all_keybinds():
-			keybinds[action] = InputMap.action_get_events(action)
