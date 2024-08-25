@@ -3,14 +3,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GodSVG\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2024-05-31 11:16+0300\n"
-"Last-Translator: Gallifreyan <gallifreyan@protonmail.ch>\n"
+"PO-Revision-Date: 2024-08-24 21:40+0300\n"
+"Last-Translator: volkov <volkovissocool@gmail.com>\n"
+"Language-Team: \n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Lokalize 24.05.0\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 3.4.4\n"
 
 msgid "translation-credits"
 msgstr ""
@@ -34,7 +35,7 @@ msgstr "Проверить обновления?"
 
 #: src/autoload/HandlerGUI.gd
 msgid "This requires GodSVG to connect to the internet."
-msgstr "Для этого необходимо подключение к Интернету"
+msgstr "Для этого необходимо подключение к Интернету."
 
 #: src/autoload/HandlerGUI.gd src/ui_parts/alert_dialog.gd
 msgid "OK"
@@ -45,12 +46,11 @@ msgid "The file extension is empty. Only \"svg\" files are supported."
 msgstr "Расширение файла пустое. Поддерживается только «svg» файлы."
 
 #: src/autoload/HandlerGUI.gd src/utils/FileUtils.gd
-#, fuzzy
 msgid ""
 "\"{passed_extension}\" is an unsupported file extension. Only \"svg\" files "
 "are supported."
 msgstr ""
-"Расширение \"{passed_extension}\" поддерживается. Поддерживается только "
+"Расширение \"{passed_extension}\" не поддерживается. Поддерживается только "
 "«svg»."
 
 #: src/autoload/Indications.gd
@@ -84,60 +84,59 @@ msgid "Insert After"
 msgstr "Вставить после"
 
 #: src/config_classes/Formatter.gd
-#, fuzzy
 msgid "Always"
-msgstr "Всегда активно."
+msgstr "Всегда"
 
 #: src/config_classes/Formatter.gd
 msgid "All except containers"
-msgstr ""
+msgstr "Все кроме контейнеров"
 
 #: src/config_classes/Formatter.gd
 msgid "Never"
-msgstr ""
+msgstr "Никогда"
 
 #: src/config_classes/Formatter.gd
 msgid "When shorter or equal"
-msgstr ""
+msgstr "Когда короче или равно"
 
 #: src/config_classes/Formatter.gd
 msgid "When shorter"
-msgstr ""
+msgstr "Когда короче"
 
 #: src/config_classes/Formatter.gd
 msgid "3-digit or 6-digit hex"
-msgstr ""
+msgstr "3 или 6 цифровое шестандацитиричное значение"
 
 #: src/config_classes/Formatter.gd
 msgid "6-digit hex"
-msgstr ""
+msgstr "6 цифровое шестандцатяричное значение"
 
 #: src/data_classes/Element.gd
 msgid "{element} must be inside {allowed} to have any effect."
-msgstr ""
+msgstr "{element} должен быть внутри {allowed} чтобы это имело эффект."
 
 #: src/data_classes/ElementG.gd
 msgid "This group has no elements."
-msgstr ""
+msgstr "В этой групе нет элементов."
 
 #: src/data_classes/ElementG.gd
 msgid "This group has only one element."
-msgstr ""
+msgstr "В этой группе только один элемент."
 
 #: src/data_classes/ElementLinearGradient.gd
 #: src/data_classes/ElementRadialGradient.gd
 msgid "No \"id\" attribute defined."
-msgstr ""
+msgstr "Атрибут \"id\" не определен."
 
 #: src/data_classes/ElementLinearGradient.gd
 #: src/data_classes/ElementRadialGradient.gd
 msgid "No <stop> elements under this gradient."
-msgstr ""
+msgstr "Нет <stop> елементов под этим градиентом."
 
 #: src/data_classes/ElementLinearGradient.gd
 #: src/data_classes/ElementRadialGradient.gd
 msgid "This gradient is a solid color."
-msgstr ""
+msgstr "Этот градиент это обычный цвет."
 
 #: src/data_classes/SVGParser.gd
 msgid "Doesn’t describe an SVG."
@@ -165,12 +164,11 @@ msgstr "Благотворители"
 
 #: src/ui_parts/about_menu.gd
 msgid "Golden donors"
-msgstr ""
+msgstr "Золотые благотворители"
 
 #: src/ui_parts/about_menu.gd
-#, fuzzy
 msgid "Diamond donors"
-msgstr "Благотворители"
+msgstr "Алмазные благотворители"
 
 #: src/ui_parts/about_menu.gd
 msgid "Authors"
@@ -283,11 +281,11 @@ msgstr "Веб-сайт GodSVG"
 
 #: src/ui_parts/display.gd
 msgid "View savedata"
-msgstr ""
+msgstr "Просмотреть даные сохранения"
 
 #: src/ui_parts/element_container.gd
 msgid "New element"
-msgstr ""
+msgstr "Новый элемент"
 
 #: src/ui_parts/export_dialog.gd
 msgid "Size"
@@ -342,9 +340,8 @@ msgid "View"
 msgstr "Просмотр"
 
 #: src/ui_parts/global_menu.gd
-#, fuzzy
 msgid "Snap"
-msgstr "Размер привязки"
+msgstr "Привязка"
 
 #: src/ui_parts/good_file_dialog.gd
 msgid "Create new folder"
@@ -415,21 +412,18 @@ msgstr ""
 "содержимое!"
 
 #: src/ui_parts/handles_manager.gd
-#, fuzzy
 msgid "New shape"
-msgstr "Новый тег"
+msgstr "Новая привязка"
 
 #: src/ui_parts/import_warning_dialog.gd
 msgid "Import Problems"
 msgstr "Проблемы с импортированием"
 
 #: src/ui_parts/import_warning_dialog.gd
-#, fuzzy
 msgid "Unrecognized element"
-msgstr "Неизвестный атрибут"
+msgstr "Неизвестный элемент"
 
 #: src/ui_parts/import_warning_dialog.gd
-#, fuzzy
 msgid "Unrecognized attribute"
 msgstr "Неизвестный атрибут"
 
@@ -439,7 +433,7 @@ msgstr "Синтаксическая ошибка"
 
 #: src/ui_parts/inspector.gd
 msgid "Add element"
-msgstr ""
+msgstr "Добавить элемент"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Formatting"
@@ -454,7 +448,6 @@ msgid "Shortcuts"
 msgstr "Сочетания клавиш"
 
 #: src/ui_parts/settings_menu.gd
-#, fuzzy
 msgid "Theming"
 msgstr "Тема"
 
@@ -471,9 +464,8 @@ msgid "Symbol color"
 msgstr "Цвет символа"
 
 #: src/ui_parts/settings_menu.gd
-#, fuzzy
 msgid "Element color"
-msgstr "Цвет комментария"
+msgstr "Цвет элемента"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Attribute color"
@@ -565,10 +557,9 @@ msgstr "Использовать родной файловый диалог си
 
 #: src/ui_parts/settings_menu.gd
 msgid "Sync window title to file name"
-msgstr ""
+msgstr "Синхронизировать заголовок окна с названием файла"
 
 #: src/ui_parts/settings_menu.gd
-#, fuzzy
 msgid "Handle size"
 msgstr "Размер ручек"
 
@@ -586,12 +577,11 @@ msgstr "Язык"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Editor formatter"
-msgstr ""
+msgstr "Редактор форматтера"
 
 #: src/ui_parts/settings_menu.gd
-#, fuzzy
 msgid "Export formatter"
-msgstr "Экспортовать"
+msgstr "Экспортовать форматер"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Help"
@@ -629,6 +619,8 @@ msgid ""
 "If turned off, the window title will remain simply \"GodSVG\" regardless of "
 "the current file."
 msgstr ""
+"Если выключено, заголовок окна будет просто \"GodSVG\" независимо от "
+"текущего файла."
 
 #: src/ui_parts/settings_menu.gd
 msgid "Increases the visual size and grabbing area of handles."
@@ -648,7 +640,7 @@ msgstr "Включить пре-релизы"
 
 #: src/ui_parts/update_menu.gd
 msgid "Retry"
-msgstr ""
+msgstr "Попробовать еще раз"
 
 #: src/ui_parts/update_menu.gd
 msgid "Current Version"
@@ -664,7 +656,7 @@ msgstr "Не удалось проверит обновления"
 
 #: src/ui_parts/update_menu.gd
 msgid "GodSVG is up-to-date."
-msgstr "Установлена последняя версия GodSVG"
+msgstr "Установлена последняя версия GodSVG."
 
 #: src/ui_parts/update_menu.gd
 msgid "New versions"
@@ -714,35 +706,32 @@ msgid "Unnamed"
 msgstr "Без названия"
 
 #: src/ui_widgets/formatter_config.gd src/ui_widgets/palette_config.gd
-#, fuzzy
 msgid "Rename"
-msgstr "Без названия"
+msgstr "Переименовать"
 
 #: src/ui_widgets/formatter_config.gd
 msgid "Add trailing newline"
 msgstr "Добавлять новую строку в конце"
 
 #: src/ui_widgets/formatter_config.gd
-#, fuzzy
 msgid "Use shorthand tag syntax"
 msgstr "Использовать теги с сокращенным синтаксисом"
 
 #: src/ui_widgets/formatter_config.gd
 msgid "Space out the slash of shorthand tags"
-msgstr ""
+msgstr "Ставить пробел после тега"
 
 #: src/ui_widgets/formatter_config.gd
-#, fuzzy
 msgid "Use pretty formatting"
-msgstr "Включить автоформатирование"
+msgstr "Использовать красивое форматирование"
 
 #: src/ui_widgets/formatter_config.gd
 msgid "Use spaces instead of tabs"
-msgstr ""
+msgstr "Использовать пробелы вместо tab-ов"
 
 #: src/ui_widgets/formatter_config.gd
 msgid "Number of indentation spaces"
-msgstr ""
+msgstr "Количество символов отступа"
 
 #: src/ui_widgets/formatter_config.gd
 msgid "Numbers"
@@ -754,29 +743,27 @@ msgstr "Удалить начальный ноль"
 
 #: src/ui_widgets/formatter_config.gd
 msgid "Use exponential when shorter"
-msgstr ""
+msgstr "Использовать экспоненту когда короткий"
 
 #: src/ui_widgets/formatter_config.gd
 msgid "Colors"
 msgstr "Цвета"
 
 #: src/ui_widgets/formatter_config.gd
-#, fuzzy
 msgid "Use named colors"
-msgstr "Использовать короткие названия цветов"
+msgstr "Использовать названия цветов"
 
 #: src/ui_widgets/formatter_config.gd
 msgid "Primary syntax"
-msgstr ""
+msgstr "Основной синтаксис"
 
 #: src/ui_widgets/formatter_config.gd
 msgid "Capitalize hexadecimal letters"
-msgstr ""
+msgstr "Использовать заглавную букву для шестнадцатиричных букв"
 
 #: src/ui_widgets/formatter_config.gd
-#, fuzzy
 msgid "Pathdata"
-msgstr "Нет данных пути"
+msgstr "Данные пути"
 
 #: src/ui_widgets/formatter_config.gd
 msgid "Compress numbers"
@@ -795,9 +782,8 @@ msgid "Remove consecutive commands"
 msgstr "Удалить последовательные команды"
 
 #: src/ui_widgets/formatter_config.gd
-#, fuzzy
 msgid "Transform lists"
-msgstr "Трансформации"
+msgstr "Список трансформаций"
 
 #: src/ui_widgets/formatter_config.gd
 msgid "Remove unnecessary parameters"
@@ -894,32 +880,28 @@ msgid "Import"
 msgstr "Импортировать"
 
 #: src/utils/TranslationUtils.gd
-#, fuzzy
 msgid "Select all elements"
-msgstr "Выбрать все теги"
+msgstr "Выбрать все элементы"
 
 #: src/utils/TranslationUtils.gd
-#, fuzzy
 msgid "Duplicate the selected elements"
-msgstr "Дублировать выбранные теги"
+msgstr "Дублировать выбранные элементы"
 
 #: src/utils/TranslationUtils.gd
 msgid "Delete the selection"
 msgstr "Удалить все выбранные теги"
 
 #: src/utils/TranslationUtils.gd
-#, fuzzy
 msgid "Move the selected elements up"
 msgstr "Подвинуть вверх все выбранные теги"
 
 #: src/utils/TranslationUtils.gd
-#, fuzzy
 msgid "Move the selected elements down"
-msgstr "Подвинуть вниз все выбранные теги"
+msgstr "Подвинуть вниз все выбранные элементы"
 
 #: src/utils/TranslationUtils.gd
 msgid "Find"
-msgstr ""
+msgstr "Найти"
 
 #: src/utils/TranslationUtils.gd
 msgid "Zoom in"
@@ -938,7 +920,6 @@ msgid "Show rasterized SVG"
 msgstr "Показать растеризованый SVG"
 
 #: src/utils/TranslationUtils.gd
-#, fuzzy
 msgid "Enable snap"
 msgstr "Включить привязку"
 

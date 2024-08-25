@@ -10,7 +10,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.4.2\n"
+"X-Generator: Poedit 3.4.4\n"
 
 msgid "translation-credits"
 msgstr "volkov <volkovissocool@gmail.com>"
@@ -28,13 +28,12 @@ msgid "Quit"
 msgstr "Вийти"
 
 #: src/autoload/HandlerGUI.gd
-#, fuzzy
 msgid "Check for updates?"
-msgstr "Перевірити оновлення"
+msgstr "Перевірити оновлення?"
 
 #: src/autoload/HandlerGUI.gd
 msgid "This requires GodSVG to connect to the internet."
-msgstr ""
+msgstr "Ця опція потребує інтернет-з'єднання."
 
 #: src/autoload/HandlerGUI.gd src/ui_parts/alert_dialog.gd
 msgid "OK"
@@ -45,7 +44,6 @@ msgid "The file extension is empty. Only \"svg\" files are supported."
 msgstr "Розширення файлу порожнє. Підтримується тільки «svg» файли."
 
 #: src/autoload/HandlerGUI.gd src/utils/FileUtils.gd
-#, fuzzy
 msgid ""
 "\"{passed_extension}\" is an unsupported file extension. Only \"svg\" files "
 "are supported."
@@ -84,60 +82,58 @@ msgid "Insert After"
 msgstr "Вставити після"
 
 #: src/config_classes/Formatter.gd
-#, fuzzy
 msgid "Always"
-msgstr "Завжди активно."
+msgstr "Завжди"
 
 #: src/config_classes/Formatter.gd
 msgid "All except containers"
-msgstr ""
+msgstr "Усі крім контейнерів"
 
 #: src/config_classes/Formatter.gd
 msgid "Never"
-msgstr ""
+msgstr "Ніколи"
 
 #: src/config_classes/Formatter.gd
 msgid "When shorter or equal"
-msgstr ""
+msgstr "Коли коротше або дорівнює"
 
 #: src/config_classes/Formatter.gd
 msgid "When shorter"
-msgstr ""
+msgstr "Коли коротше"
 
 #: src/config_classes/Formatter.gd
 msgid "3-digit or 6-digit hex"
-msgstr ""
+msgstr "3 або 6 значне шістнадцятирічне число"
 
 #: src/config_classes/Formatter.gd
 msgid "6-digit hex"
-msgstr ""
+msgstr "6 значне шістнадцятирічне число"
 
 #: src/data_classes/Element.gd
 msgid "{element} must be inside {allowed} to have any effect."
-msgstr ""
+msgstr "{element} повинен бути всередині {allowed} щоб зміни вступили в силу."
 
 #: src/data_classes/ElementG.gd
 msgid "This group has no elements."
-msgstr ""
+msgstr "Ця група не має елементів."
 
 #: src/data_classes/ElementG.gd
 msgid "This group has only one element."
-msgstr ""
+msgstr "Ця група має тільки один елемент."
 
 #: src/data_classes/ElementLinearGradient.gd
-#: src/data_classes/ElementRadialGradient.gd
 msgid "No \"id\" attribute defined."
-msgstr ""
+msgstr "Не вказано \"id\" атрибуту."
 
 #: src/data_classes/ElementLinearGradient.gd
 #: src/data_classes/ElementRadialGradient.gd
 msgid "No <stop> elements under this gradient."
-msgstr ""
+msgstr "Немає <stop> елементів під цим градієнтом."
 
 #: src/data_classes/ElementLinearGradient.gd
 #: src/data_classes/ElementRadialGradient.gd
 msgid "This gradient is a solid color."
-msgstr ""
+msgstr "Цей градієнт це суцільний колір."
 
 #: src/data_classes/SVGParser.gd
 msgid "Doesn’t describe an SVG."
@@ -165,12 +161,11 @@ msgstr "Благодійники"
 
 #: src/ui_parts/about_menu.gd
 msgid "Golden donors"
-msgstr ""
+msgstr "Золоті благодійники"
 
 #: src/ui_parts/about_menu.gd
-#, fuzzy
 msgid "Diamond donors"
-msgstr "Благодійники"
+msgstr "Діамантові благодійники"
 
 #: src/ui_parts/about_menu.gd
 msgid "Authors"
@@ -231,15 +226,16 @@ msgstr "Зовнішній вигляд"
 
 #: src/ui_parts/display.gd src/utils/TranslationUtils.gd
 msgid "Load reference image"
-msgstr ""
+msgstr "Завантажити еталонне зображення"
 
 #: src/ui_parts/display.gd
 msgid "Show reference"
-msgstr ""
+msgstr "Показати еталонне зображення"
 
+# Мабуть
 #: src/ui_parts/display.gd
 msgid "Overlay reference"
-msgstr ""
+msgstr "Накласти еталонне зображення"
 
 #: src/ui_parts/display.gd src/utils/TranslationUtils.gd
 msgid "Show grid"
@@ -283,11 +279,11 @@ msgstr "Веб-сайт GodSVG"
 
 #: src/ui_parts/display.gd
 msgid "View savedata"
-msgstr ""
+msgstr "Переглянути дані збереження"
 
 #: src/ui_parts/element_container.gd
 msgid "New element"
-msgstr ""
+msgstr "Новий елемент"
 
 #: src/ui_parts/export_dialog.gd
 msgid "Size"
@@ -342,9 +338,8 @@ msgid "View"
 msgstr "Перегляд"
 
 #: src/ui_parts/global_menu.gd
-#, fuzzy
 msgid "Snap"
-msgstr "Розмір прилипання"
+msgstr "Прилипання"
 
 #: src/ui_parts/good_file_dialog.gd
 msgid "Create new folder"
@@ -375,9 +370,8 @@ msgid "Select an SVG"
 msgstr "Обрати SVG"
 
 #: src/ui_parts/good_file_dialog.gd
-#, fuzzy
 msgid "Select an image"
-msgstr "Обрати усі теги"
+msgstr "Обрати зображення"
 
 #: src/ui_parts/good_file_dialog.gd src/ui_parts/update_menu.gd
 msgid "Close"
@@ -416,21 +410,18 @@ msgstr ""
 "його вмісту!"
 
 #: src/ui_parts/handles_manager.gd
-#, fuzzy
 msgid "New shape"
-msgstr "Новий тег"
+msgstr "Нова форма"
 
 #: src/ui_parts/import_warning_dialog.gd
 msgid "Import Problems"
 msgstr "Проблема з імпортуванням"
 
 #: src/ui_parts/import_warning_dialog.gd
-#, fuzzy
 msgid "Unrecognized element"
-msgstr "Невідомий атрибут"
+msgstr "Невідомий елемент"
 
 #: src/ui_parts/import_warning_dialog.gd
-#, fuzzy
 msgid "Unrecognized attribute"
 msgstr "Невідомий атрибут"
 
@@ -440,7 +431,7 @@ msgstr "Синтаксична помилка"
 
 #: src/ui_parts/inspector.gd
 msgid "Add element"
-msgstr ""
+msgstr "Додати елемент"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Formatting"
@@ -455,7 +446,6 @@ msgid "Shortcuts"
 msgstr "Клавіатурні скорочення"
 
 #: src/ui_parts/settings_menu.gd
-#, fuzzy
 msgid "Theming"
 msgstr "Тема"
 
@@ -472,9 +462,8 @@ msgid "Symbol color"
 msgstr "Колір символу"
 
 #: src/ui_parts/settings_menu.gd
-#, fuzzy
 msgid "Element color"
-msgstr "Колір коментаря"
+msgstr "Колір елементу"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Attribute color"
@@ -529,9 +518,8 @@ msgid "Basic colors"
 msgstr "Базовий колір"
 
 #: src/ui_parts/settings_menu.gd
-#, fuzzy
 msgid "Background color"
-msgstr "Базовий колір"
+msgstr "Колір фону"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Valid color"
@@ -567,10 +555,9 @@ msgstr "Використовувати рідний файловий діало�
 
 #: src/ui_parts/settings_menu.gd
 msgid "Sync window title to file name"
-msgstr ""
+msgstr "Синхронізувати заголовок вікна з назвою поточного файлу"
 
 #: src/ui_parts/settings_menu.gd
-#, fuzzy
 msgid "Handle size"
 msgstr "Розмір ручок редагування"
 
@@ -588,12 +575,11 @@ msgstr "Мова"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Editor formatter"
-msgstr ""
+msgstr "Форматер редактору"
 
 #: src/ui_parts/settings_menu.gd
-#, fuzzy
 msgid "Export formatter"
-msgstr "Експортувати"
+msgstr "Форматер експорту"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Help"
@@ -632,6 +618,8 @@ msgid ""
 "If turned off, the window title will remain simply \"GodSVG\" regardless of "
 "the current file."
 msgstr ""
+"Якщо вимкнено, заголовок вікна залишиться \"GodSVG\" незалежно від поточного "
+"файлу."
 
 #: src/ui_parts/settings_menu.gd
 msgid "Increases the visual size and grabbing area of handles."
@@ -647,32 +635,31 @@ msgstr "Масштабувати інтерфейс користувача в з
 
 #: src/ui_parts/update_menu.gd
 msgid "Include prereleases"
-msgstr ""
+msgstr "Включати тестові версії"
 
 #: src/ui_parts/update_menu.gd
 msgid "Retry"
-msgstr ""
+msgstr "Спробувати ще раз"
 
 #: src/ui_parts/update_menu.gd
 msgid "Current Version"
-msgstr ""
+msgstr "Поточна версія"
 
 #: src/ui_parts/update_menu.gd
-#, fuzzy
 msgid "Retrieving information..."
-msgstr "Переглянути інформацію про відладку"
+msgstr "Отримуємо інформацію..."
 
 #: src/ui_parts/update_menu.gd
 msgid "Update check failed"
-msgstr ""
+msgstr "Не вдалося перевірити оновлення"
 
 #: src/ui_parts/update_menu.gd
 msgid "GodSVG is up-to-date."
-msgstr ""
+msgstr "GodSVG оновлено до останньої версії."
 
 #: src/ui_parts/update_menu.gd
 msgid "New versions"
-msgstr ""
+msgstr "Нові версії"
 
 #: src/ui_widgets/BetterLineEdit.gd src/ui_widgets/BetterTextEdit.gd
 #: src/utils/TranslationUtils.gd
@@ -718,35 +705,34 @@ msgid "Unnamed"
 msgstr "Без назви"
 
 #: src/ui_widgets/formatter_config.gd src/ui_widgets/palette_config.gd
-#, fuzzy
 msgid "Rename"
-msgstr "Без назви"
+msgstr "Перейменувати"
 
 #: src/ui_widgets/formatter_config.gd
 msgid "Add trailing newline"
 msgstr "Додавати нову строку в кінці"
 
 #: src/ui_widgets/formatter_config.gd
-#, fuzzy
 msgid "Use shorthand tag syntax"
 msgstr "Використовувати теги зі скороченим синтаксисом"
 
+# Шось...
 #: src/ui_widgets/formatter_config.gd
 msgid "Space out the slash of shorthand tags"
-msgstr ""
+msgstr "Ставити пробіл перед скороченими тегами"
 
 #: src/ui_widgets/formatter_config.gd
-#, fuzzy
 msgid "Use pretty formatting"
-msgstr "Активувати автоформатування"
+msgstr "Використовувати гарне форматування"
 
 #: src/ui_widgets/formatter_config.gd
 msgid "Use spaces instead of tabs"
-msgstr ""
+msgstr "Використовувати пробіли замість табуляції"
 
+# Взяв ідею для перекладу з гновоського текстового редактора
 #: src/ui_widgets/formatter_config.gd
 msgid "Number of indentation spaces"
-msgstr ""
+msgstr "Кількість пробілів на табуляцію"
 
 #: src/ui_widgets/formatter_config.gd
 msgid "Numbers"
@@ -756,31 +742,30 @@ msgstr "Цифри"
 msgid "Remove leading zero"
 msgstr "Видалити початковий нуль"
 
+# Ґа...
 #: src/ui_widgets/formatter_config.gd
 msgid "Use exponential when shorter"
-msgstr ""
+msgstr "Використовувати експоненту коли коротше"
 
 #: src/ui_widgets/formatter_config.gd
 msgid "Colors"
 msgstr "Кольори"
 
 #: src/ui_widgets/formatter_config.gd
-#, fuzzy
 msgid "Use named colors"
-msgstr "Використовувати скорочені назви кольорів"
+msgstr "Використовувати назви кольорів"
 
 #: src/ui_widgets/formatter_config.gd
 msgid "Primary syntax"
-msgstr ""
+msgstr "Основний синтаксис"
 
 #: src/ui_widgets/formatter_config.gd
 msgid "Capitalize hexadecimal letters"
-msgstr ""
+msgstr "Відображати шістнадцятирічні числа великими літери"
 
 #: src/ui_widgets/formatter_config.gd
-#, fuzzy
 msgid "Pathdata"
-msgstr "Немає даних шляху"
+msgstr "Дані шляху"
 
 #: src/ui_widgets/formatter_config.gd
 msgid "Compress numbers"
@@ -799,9 +784,8 @@ msgid "Remove consecutive commands"
 msgstr "Видалити послідовні команди"
 
 #: src/ui_widgets/formatter_config.gd
-#, fuzzy
 msgid "Transform lists"
-msgstr "Трансформації"
+msgstr "Список трансформацій"
 
 #: src/ui_widgets/formatter_config.gd
 msgid "Remove unnecessary parameters"
@@ -881,7 +865,7 @@ msgstr "Імпортувати .svg файл"
 
 #: src/utils/FileUtils.gd
 msgid "Load an image file"
-msgstr ""
+msgstr "Завантажити файл зображення"
 
 #: src/utils/FileUtils.gd
 msgid ""
@@ -898,32 +882,28 @@ msgid "Import"
 msgstr "Імпортувати"
 
 #: src/utils/TranslationUtils.gd
-#, fuzzy
 msgid "Select all elements"
-msgstr "Обрати усі теги"
+msgstr "Обрати всі елементи"
 
 #: src/utils/TranslationUtils.gd
-#, fuzzy
 msgid "Duplicate the selected elements"
-msgstr "Дублювати обрані теги"
+msgstr "Дублювати обрані елементи"
 
 #: src/utils/TranslationUtils.gd
 msgid "Delete the selection"
 msgstr "Видалити усі обрані теги"
 
 #: src/utils/TranslationUtils.gd
-#, fuzzy
 msgid "Move the selected elements up"
-msgstr "Пересунути усі обрані теги вгору"
+msgstr "Пересунути всі обрані елементи вгору"
 
 #: src/utils/TranslationUtils.gd
-#, fuzzy
 msgid "Move the selected elements down"
-msgstr "Пересунути усі обрані теги вниз"
+msgstr "Пересунути всі обрані елементи вниз"
 
 #: src/utils/TranslationUtils.gd
 msgid "Find"
-msgstr ""
+msgstr "Знайти"
 
 #: src/utils/TranslationUtils.gd
 msgid "Zoom in"
@@ -942,17 +922,17 @@ msgid "Show rasterized SVG"
 msgstr "Показати растеризуваний SVG"
 
 #: src/utils/TranslationUtils.gd
-#, fuzzy
 msgid "Enable snap"
 msgstr "Активувати прилипання"
 
+# Нехай "reference image" буде "еталонне зображення", мені так гугл сказав
 #: src/utils/TranslationUtils.gd
 msgid "Show reference image"
-msgstr ""
+msgstr "Показати еталонне зображення"
 
 #: src/utils/TranslationUtils.gd
 msgid "Overlay reference image"
-msgstr ""
+msgstr "Накласти еталонне зображення"
 
 #: src/utils/TranslationUtils.gd
 msgid "View debug information"
