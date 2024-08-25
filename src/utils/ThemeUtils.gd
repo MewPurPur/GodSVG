@@ -82,7 +82,6 @@ static func generate_theme() -> Theme:
 	_setup_tabcontainer(theme)
 	_setup_textedit(theme)
 	_setup_tooltip(theme)
-	_setup_splitcontainer(theme)
 	return theme
 
 static func generate_and_apply_theme() -> void:
@@ -918,10 +917,6 @@ static func _setup_tooltip(theme: Theme) -> void:
 	theme.set_color("font_color", "TooltipLabel", common_text_color)
 	theme.set_font_size("font_size", "TooltipLabel", 14)
 	theme.set_font("font", "TooltipLabel", regular_font)
-
-static func _setup_splitcontainer(theme: Theme) -> void:
-	theme.add_type("VSplitContainer")
-	theme.set_icon("grabber", "VSplitContainer", _icon("SplitGrabber"))
 
 
 static func _icon(name: String) -> Texture2D:
