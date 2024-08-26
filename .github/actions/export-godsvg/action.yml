@@ -1,0 +1,20 @@
+name: Export Godot project
+description: Export Godot project for a specific platform
+inputs:
+  platform:
+    description: 'Platform to export for'
+    required: true
+  export-name:
+    description: 'Name of the export preset'
+    required: true
+  extension:
+    description: 'File extension for the exported file'
+    required: true
+runs:
+  using: composite
+  steps:
+    - name: Export
+      shell: bash
+      run: |
+        mkdir -v -p ~/build/${{ inputs.export-name }}
+        godot --headless --export-release "${{ inputs.platform }}" ~/build/${{ inputs.export-name }}/${{ env.PROJECT_NAME }}.${{ inputs.extension }}
