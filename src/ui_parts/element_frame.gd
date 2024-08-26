@@ -173,9 +173,8 @@ func _on_mouse_entered() -> void:
 	# Add warning button.
 	var element_warnings := element.get_config_warnings()
 	if not element_warnings.is_empty():
-		var warning_sign := TextureRect.new()
+		var warning_sign := Control.new()
 		warning_sign.tooltip_text = "\n".join(element_warnings)
-		warning_sign.texture = warning_icon
 		warning_sign.size = Vector2(warning_icon.get_size())
 		warning_sign.position = title_bar.position + Vector2(title_bar.size.x - 23, 4)
 		title_bar.add_child(warning_sign)
