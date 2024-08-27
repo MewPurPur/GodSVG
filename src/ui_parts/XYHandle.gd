@@ -3,14 +3,13 @@ class_name XYHandle extends Handle
 
 var x_name: String
 var y_name: String
-var attached_handles: Array[Handle]
 
 func _init(new_element: Element, xref: String, yref: String,
 new_attached_handles: Array[Handle] = []) -> void:
 	element = new_element
 	x_name = xref
 	y_name = yref
-	attached_handles = new_attached_handles
+	element.attribute_changed.connect(_on_attribute_changed)
 	sync()
 
 func set_pos(new_pos: Vector2) -> void:
@@ -21,6 +20,8 @@ func set_pos(new_pos: Vector2) -> void:
 
 func sync() -> void:
 	pos = Vector2(element.get_attribute_num(x_name), element.get_attribute_num(y_name))
-	for handle in attached_handles:
-		handle.sync()
 	super()
+
+func _on_attribute_changed(attribute_name: String) -> void:
+	if attribute_name == x_name or attribute_name == y_name:
+		sync()
