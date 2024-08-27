@@ -115,24 +115,16 @@ func update_handles() -> void:
 	for element in SVG.root_element.get_all_elements():
 		match element.name:
 			"circle":
-				var delta_handle := DeltaHandle.new(element, "cx", "cy", "r", true)
-				var delta_handle_arr: Array[Handle] = [delta_handle]
-				handles.append(XYHandle.new(element, "cx", "cy", delta_handle_arr))
-				handles.append(delta_handle)
+				handles.append(XYHandle.new(element, "cx", "cy"))
+				handles.append(DeltaHandle.new(element, "cx", "cy", "r", true))
 			"ellipse":
-				var delta_handle_1 := DeltaHandle.new(element, "cx", "cy", "rx", true)
-				var delta_handle_2 := DeltaHandle.new(element, "cx", "cy", "ry", false)
-				var delta_handle_arr: Array[Handle] = [delta_handle_1, delta_handle_2]
-				handles.append(XYHandle.new(element, "cx", "cy", delta_handle_arr))
-				handles.append(delta_handle_1)
-				handles.append(delta_handle_2)
+				handles.append(XYHandle.new(element, "cx", "cy"))
+				handles.append(DeltaHandle.new(element, "cx", "cy", "rx", true))
+				handles.append(DeltaHandle.new(element, "cx", "cy", "ry", false))
 			"rect":
-				var delta_handle_1 := DeltaHandle.new(element, "x", "y", "width", true)
-				var delta_handle_2 := DeltaHandle.new(element, "x", "y", "height", false)
-				var delta_handle_arr: Array[Handle] = [delta_handle_1, delta_handle_2]
-				handles.append(XYHandle.new(element, "x", "y", delta_handle_arr))
-				handles.append(delta_handle_1)
-				handles.append(delta_handle_2)
+				handles.append(XYHandle.new(element, "x", "y"))
+				handles.append(DeltaHandle.new(element, "x", "y", "width", true))
+				handles.append(DeltaHandle.new(element, "x", "y", "height", false))
 			"line":
 				handles.append(XYHandle.new(element, "x1", "y1"))
 				handles.append(XYHandle.new(element, "x2", "y2"))
