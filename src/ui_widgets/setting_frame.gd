@@ -14,7 +14,11 @@ var setter: Callable
 var default: Variant
 
 var text: String
-var disabled := false
+var disabled := false:
+	set(new_value):
+		if disabled != new_value:
+			disabled = new_value
+			update_widgets()
 
 var widget: Control
 var panel_width := 0
@@ -120,6 +124,9 @@ func update_widgets() -> void:
 		Type.CHECKBOX:
 			widget.text = "On" if getter.call() else "Off"
 			reset_button.visible = (not disabled and getter.call() != default)
+			if disabled:
+				widget.mouse_default_cursor_shape = Control.CURSOR_ARROW
+				widget.disabled = true
 		Type.COLOR:
 			var setting_value: Color = getter.call()
 			var show_alpha: bool = widget.enable_alpha and setting_value.a != 1.0
@@ -144,7 +151,7 @@ func _on_mouse_exited() -> void:
 	queue_redraw()
 
 func _draw() -> void:
-	if not disabled and is_hovered:
+	if is_hovered:
 		get_theme_stylebox("hover", "FlatButton").draw(ci, Rect2(Vector2.ZERO, size))
 	
 	var color := Color.WHITE
