@@ -79,25 +79,20 @@ func _unhandled_input(event: InputEvent) -> void:
 					GlobalSettings.savedata.wrap_mouse else event.relative) / Indications.zoom)
 	
 	elif event is InputEventPanGesture:
-		
 		# Zooming with Ctrl + touch?
 		if event.ctrl_pressed:
 			zoom_menu.set_zoom(Indications.zoom * (1 + event.delta.y / 2))
-		
 		# Panning with touch.
 		else:
 			set_view(view.position + event.delta * 32 / Indications.zoom)
-	
 	# Zooming with touch.
 	elif event is InputEventMagnifyGesture:
 		zoom_menu.set_zoom(Indications.zoom * event.factor)
-	
 	# Actions with scrolling.
 	elif event is InputEventMouseButton and event.is_pressed():
 		var move_vec := Vector2.ZERO
 		var zoom_dir := 0
 		var mouse_offset := get_mouse_position() / (size * 1.0)
-		
 		# Zooming with scrolling.
 		if (not event.ctrl_pressed and not event.shift_pressed and\
 		not GlobalSettings.savedata.use_ctrl_for_zoom) or\
@@ -107,7 +102,6 @@ func _unhandled_input(event: InputEvent) -> void:
 				MOUSE_BUTTON_WHEEL_DOWN when GlobalSettings.savedata.invert_zoom: zoom_dir = 1
 				MOUSE_BUTTON_WHEEL_UP: zoom_dir = 1
 				MOUSE_BUTTON_WHEEL_DOWN: zoom_dir = -1
-		
 		# Inverted panning with Shift + scrolling.
 		elif event.shift_pressed:
 			match event.button_index:
@@ -115,7 +109,6 @@ func _unhandled_input(event: InputEvent) -> void:
 				MOUSE_BUTTON_WHEEL_DOWN: move_vec = Vector2.RIGHT
 				MOUSE_BUTTON_WHEEL_LEFT: move_vec = Vector2.UP
 				MOUSE_BUTTON_WHEEL_RIGHT: move_vec = Vector2.DOWN
-		
 		# Panning with scrolling.
 		else:
 			match event.button_index:
@@ -147,6 +140,7 @@ func _on_zoom_changed(new_zoom_level: float, offset: Vector2) -> void:
 			nearest_po2(int(Indications.zoom * 32.0)) / 32.0)
 
 var last_size_adjusted := size / Indications.zoom
+
 func adjust_view(offset := Vector2(0.5, 0.5)) -> void:
 	var old_size := last_size_adjusted
 	last_size_adjusted = size / Indications.zoom
