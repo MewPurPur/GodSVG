@@ -10,6 +10,13 @@ var _hovered := false
 ## When turned on, uses the mono font for the tooltip.
 @export var mono_font_tooltip := false
 
+func _set(property: StringName, value: Variant) -> bool:
+	if property == &"editable" and editable != value:
+		editable = value
+		update_theme()
+		return true
+	return false
+
 func _init() -> void:
 	context_menu_enabled = false
 	caret_blink = true
@@ -18,6 +25,14 @@ func _init() -> void:
 	focus_exited.connect(_on_base_class_focus_exited)
 	mouse_exited.connect(_on_base_class_mouse_exited)
 	text_submitted.connect(release_focus.unbind(1))
+	GlobalSettings.theme_changed.connect(update_theme)
+
+func update_theme() -> void:
+	if editable:
+		remove_theme_color_override("selection_color")
+	else:
+		add_theme_color_override("selection_color",
+				get_theme_color("disabled_selection_color"))
 
 var first_click := false
 var text_before_focus := ""
