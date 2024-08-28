@@ -4,8 +4,7 @@ class_name XYHandle extends Handle
 var x_name: String
 var y_name: String
 
-func _init(new_element: Element, xref: String, yref: String,
-new_attached_handles: Array[Handle] = []) -> void:
+func _init(new_element: Element, xref: String, yref: String) -> void:
 	element = new_element
 	x_name = xref
 	y_name = yref
