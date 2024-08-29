@@ -23,14 +23,17 @@ func _ready() -> void:
 	code_edit.clear_undo_history()
 	SVG.changed.connect(auto_update_text)
 	GlobalSettings.file_path_changed.connect(update_file_button)
+	GlobalSettings.basic_colors_changed.connect(update_size_button_colors)
 	import_button.pressed.connect(ShortcutUtils.fn("import"))
 	export_button.pressed.connect(ShortcutUtils.fn("export"))
 	# Fix the size button sizing.
+	size_button.begin_bulk_theme_override()
 	for theming in ["normal", "hover", "pressed", "disabled"]:
 		var stylebox := size_button.get_theme_stylebox(theming).duplicate()
 		stylebox.content_margin_bottom = 0
 		stylebox.content_margin_top = 0
 		size_button.add_theme_stylebox_override(theming, stylebox)
+	size_button.end_bulk_theme_override()
 
 
 func auto_update_text() -> void:
@@ -118,13 +121,19 @@ func update_size_button() -> void:
 	if SVG.root_element.optimize(true):
 		size_button.disabled = false
 		size_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-		for theming in ["font_color", "font_hover_color", "font_pressed_color"]:
-			size_button.add_theme_color_override(theming,
-					Color.WHITE * 0.5 + GlobalSettings.savedata.basic_color_warning * 0.5)
+		update_size_button_colors()
+		
 	else:
 		size_button.disabled = true
 		size_button.mouse_default_cursor_shape = Control.CURSOR_ARROW
 		size_button.remove_theme_color_override("font_color")
+
+func update_size_button_colors() -> void:
+	size_button.begin_bulk_theme_override()
+	for theming in ["font_color", "font_hover_color", "font_pressed_color"]:
+		size_button.add_theme_color_override(theming,
+				GlobalSettings.savedata.basic_color_warning.lerp(Color.WHITE, 0.5))
+	size_button.end_bulk_theme_override()
 
 func update_file_button() -> void:
 	var file_path := GlobalSettings.savedata.current_file_path

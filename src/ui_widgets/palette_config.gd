@@ -14,12 +14,14 @@ var currently_edited_idx := -1
 @onready var colors_container: HFlowContainer = %MainContainer/ColorsContainer
 
 func setup_theme() -> void:
+	palette_button.begin_bulk_theme_override()
 	for theming in ["normal", "hover", "pressed"]:
 		var stylebox := palette_button.get_theme_stylebox(theming).duplicate()
 		stylebox.content_margin_top -= 3
 		stylebox.content_margin_bottom -= 2
 		stylebox.content_margin_left += 1
 		palette_button.add_theme_stylebox_override(theming, stylebox)
+	palette_button.end_bulk_theme_override()
 	var panel_stylebox := get_theme_stylebox("panel").duplicate()
 	panel_stylebox.content_margin_top = panel_stylebox.content_margin_bottom
 	add_theme_stylebox_override("panel", panel_stylebox)
