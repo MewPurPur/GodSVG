@@ -14,8 +14,10 @@ static func save_svg_to_file(path: String) -> void:
 
 static func does_svg_data_match_disk_contents() -> bool:
 	# If the file doesn't exist, we get an empty string, so it's false anyway.
-	return SVG.get_export_text() ==\
-			FileAccess.get_file_as_string(GlobalSettings.savedata.current_file_path)
+	# Check if importing the file's text into GodSVG would change the current SVG text.
+	return SVG.text == SVGParser.root_to_text(SVGParser.text_to_root(
+			FileAccess.get_file_as_string(GlobalSettings.savedata.current_file_path),
+			GlobalSettings.savedata.editor_formatter).svg)
 
 
 static func finish_import(svg_text: String, file_path: String) -> void:
