@@ -19,6 +19,8 @@ var disabled := false
 var widget: Control
 var panel_width := 0
 
+var is_hovered := false
+
 @onready var reset_button: Button = $ResetButton
 var ci := get_canvas_item()
 
@@ -66,8 +68,8 @@ min_value: float, max_value: float) -> void:
 
 func _ready() -> void:
 	widget.size = Vector2(panel_width - 32, 22)
-	mouse_entered.connect(queue_redraw)
-	mouse_exited.connect(queue_redraw)
+	mouse_entered.connect(_on_mouse_entered)
+	mouse_exited.connect(_on_mouse_exited)
 	resized.connect(_on_resized)
 	reset_button.reset_size()
 	if type != Type.NONE:
@@ -132,8 +134,16 @@ func update_widgets() -> void:
 			reset_button.visible = not (disabled or is_equal_approx(getter.call(), default))
 	queue_redraw()
 
+func _on_mouse_entered() -> void:
+	is_hovered = true
+	queue_redraw()
+
+func _on_mouse_exited() -> void:
+	is_hovered = false
+	queue_redraw()
+
 func _draw() -> void:
-	if not disabled and Rect2(Vector2.ZERO, size).has_point(get_local_mouse_position()):
+	if not disabled and is_hovered:
 		get_theme_stylebox("hover", "FlatButton").draw(ci, Rect2(Vector2.ZERO, size))
 	
 	var color := Color.WHITE
