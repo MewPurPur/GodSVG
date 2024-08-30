@@ -65,6 +65,8 @@ func _on_svg_changed() -> void:
 func _on_pressed() -> void:
 	color_popup = ColorPopup.instantiate()
 	color_popup.current_value = element.get_attribute_value(attribute_name, true)
+	color_popup.effective_color = ColorParser.text_to_color(
+			element.get_attribute_value(attribute_name, false))
 	color_popup.show_url = cached_allow_url
 	color_popup.color_picked.connect(_on_color_picked)
 	HandlerGUI.popup_under_rect(color_popup, get_global_rect(), get_viewport())
