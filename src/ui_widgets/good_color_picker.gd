@@ -80,11 +80,11 @@ func backup() -> void:
 	backup_display_color = display_color
 
 # To be called right after the color picker is added.
-func setup_color(new_color: String) -> void:
+func setup_color(new_color: String, default_color: Color) -> void:
 	starting_color = new_color
 	color = new_color
 	# Setup the display color.
-	starting_display_color = ColorParser.text_to_color(starting_color, Color(),
+	starting_display_color = ColorParser.text_to_color(starting_color, default_color,
 			alpha_enabled)
 	if slider_mode == SliderMode.HSV:
 		# Clamping like this doesn't change the hex representation, but

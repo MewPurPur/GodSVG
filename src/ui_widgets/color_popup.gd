@@ -8,6 +8,7 @@ const ColorSwatch = preload("res://src/ui_widgets/color_swatch.tscn")
 
 signal color_picked(new_color: String, final: bool)
 var current_value: String
+var effective_color: Color
 var show_url: bool
 
 var palette_mode := true
@@ -95,7 +96,7 @@ func update_palettes(search_text := "") -> void:
 		palettes_content_container.add_child(palette_container)
 
 func update_color_picker() -> void:
-	color_picker.setup_color(current_value)
+	color_picker.setup_color(current_value, effective_color)
 
 func pick_palette_color(color: String) -> void:
 	current_value = color
