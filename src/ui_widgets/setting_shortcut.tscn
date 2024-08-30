@@ -35,5 +35,3 @@ focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_type_variation = &"FlatButton"
 icon = ExtResource("2_n8e0s")
-
-[connection signal="pressed" from="MainContainer/HBoxContainer/ResetButton" to="." method="_on_reset_button_pressed"]
