@@ -16,6 +16,7 @@ func update_translation() -> void:
 	reset_button.tooltip_text = TranslationServer.translate("Reset to default")
 
 func _ready() -> void:
+	reset_button.pressed.connect(_on_reset_button_pressed)
 	GlobalSettings.language_changed.connect(update_translation)
 	update_translation()
 
