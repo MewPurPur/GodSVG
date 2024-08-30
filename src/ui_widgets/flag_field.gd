@@ -46,3 +46,13 @@ func _draw() -> void:
 		hover_stylebox.border_width_bottom = 2
 		hover_stylebox.border_color = Color(1, 1, 1, 0.2)
 		draw_style_box(hover_stylebox, Rect2(Vector2.ZERO, size))
+
+
+func _make_custom_tooltip(for_text: String) -> Object:
+	var label := Label.new()
+	label.begin_bulk_theme_override()
+	label.add_theme_font_override("font", ThemeUtils.mono_font)
+	label.add_theme_font_size_override("font_size", 13)
+	label.end_bulk_theme_override()
+	label.text = for_text
+	return label
