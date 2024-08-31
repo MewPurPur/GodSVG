@@ -157,7 +157,6 @@ stylebox = SubResource("StyleBoxFlat_jtvwe")
 
 [node name="GoldenDonors" type="VBoxContainer" parent="VBoxContainer/TabContainer/Donors/VBoxContainer"]
 unique_name_in_owner = true
-visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 6
@@ -185,6 +184,61 @@ layout_mode = 2
 horizontal_alignment = 1
 
 [node name="List" type="GridContainer" parent="VBoxContainer/TabContainer/Donors/VBoxContainer/Donors"]
+layout_mode = 2
+theme_override_constants/h_separation = -1
+theme_override_constants/v_separation = -1
+script = ExtResource("7_nvctb")
+stylebox = SubResource("StyleBoxFlat_jtvwe")
+
+[node name="PastDiamondDonors" type="VBoxContainer" parent="VBoxContainer/TabContainer/Donors/VBoxContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 6
+
+[node name="Label" type="Label" parent="VBoxContainer/TabContainer/Donors/VBoxContainer/PastDiamondDonors"]
+layout_mode = 2
+horizontal_alignment = 1
+
+[node name="List" type="GridContainer" parent="VBoxContainer/TabContainer/Donors/VBoxContainer/PastDiamondDonors"]
+layout_mode = 2
+theme_override_constants/h_separation = -1
+theme_override_constants/v_separation = -1
+script = ExtResource("7_nvctb")
+stylebox = SubResource("StyleBoxFlat_jtvwe")
+
+[node name="PastGoldenDonors" type="VBoxContainer" parent="VBoxContainer/TabContainer/Donors/VBoxContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 6
+
+[node name="Label" type="Label" parent="VBoxContainer/TabContainer/Donors/VBoxContainer/PastGoldenDonors"]
+layout_mode = 2
+horizontal_alignment = 1
+
+[node name="List" type="GridContainer" parent="VBoxContainer/TabContainer/Donors/VBoxContainer/PastGoldenDonors"]
+layout_mode = 2
+theme_override_constants/h_separation = -1
+theme_override_constants/v_separation = -1
+columns = 2
+script = ExtResource("7_nvctb")
+stylebox = SubResource("StyleBoxFlat_jtvwe")
+
+[node name="PastDonors" type="VBoxContainer" parent="VBoxContainer/TabContainer/Donors/VBoxContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 6
+
+[node name="Label" type="Label" parent="VBoxContainer/TabContainer/Donors/VBoxContainer/PastDonors"]
+layout_mode = 2
+horizontal_alignment = 1
+
+[node name="List" type="GridContainer" parent="VBoxContainer/TabContainer/Donors/VBoxContainer/PastDonors"]
 layout_mode = 2
 theme_override_constants/h_separation = -1
 theme_override_constants/v_separation = -1
