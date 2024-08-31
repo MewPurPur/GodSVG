@@ -12,6 +12,8 @@ func _init(new_element: Element, command_idx: int, x_name: String, y_name: Strin
 	command_index = command_idx
 	x_param = x_name
 	y_param = y_name
+	element.attribute_changed.connect(sync)
+	element.ancestor_attribute_changed.connect(sync)
 	sync()
 
 func set_pos(new_pos: Vector2) -> void:

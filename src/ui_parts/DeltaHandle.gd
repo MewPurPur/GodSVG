@@ -15,7 +15,8 @@ p_horizontal: bool) -> void:
 	d_name = dref
 	horizontal = p_horizontal
 	display_mode = Display.SMALL
-	element.attribute_changed.connect(_on_attribute_changed)
+	element.attribute_changed.connect(sync)
+	element.ancestor_attribute_changed.connect(sync)
 	sync()
 
 func set_pos(new_pos: Vector2) -> void:
@@ -37,7 +38,3 @@ func sync() -> void:
 		pos = Vector2(element.get_attribute_num(x_name),
 				element.get_attribute_num(y_name) + element.get_attribute_num(d_name))
 	super()
-
-func _on_attribute_changed(attribute_name: String) -> void:
-	if attribute_name == d_name or attribute_name == x_name or attribute_name == y_name:
-		sync()

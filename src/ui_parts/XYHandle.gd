@@ -8,7 +8,8 @@ func _init(new_element: Element, xref: String, yref: String) -> void:
 	element = new_element
 	x_name = xref
 	y_name = yref
-	element.attribute_changed.connect(_on_attribute_changed)
+	element.attribute_changed.connect(sync)
+	element.ancestor_attribute_changed.connect(sync)
 	sync()
 
 func set_pos(new_pos: Vector2) -> void:
@@ -20,7 +21,3 @@ func set_pos(new_pos: Vector2) -> void:
 func sync() -> void:
 	pos = Vector2(element.get_attribute_num(x_name), element.get_attribute_num(y_name))
 	super()
-
-func _on_attribute_changed(attribute_name: String) -> void:
-	if attribute_name == x_name or attribute_name == y_name:
-		sync()
