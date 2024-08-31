@@ -174,9 +174,10 @@ func _on_mouse_entered() -> void:
 	var element_warnings := element.get_config_warnings()
 	if not element_warnings.is_empty():
 		var warning_sign := Control.new()
+		warning_sign.mouse_filter = Control.MOUSE_FILTER_PASS
 		warning_sign.tooltip_text = "\n".join(element_warnings)
-		warning_sign.size = Vector2(warning_icon.get_size())
-		warning_sign.position = title_bar.position + Vector2(title_bar.size.x - 23, 4)
+		warning_sign.size = Vector2(warning_icon.get_size()) + Vector2(4, 4)
+		warning_sign.position = title_bar.position + Vector2(title_bar.size.x - 25, 2)
 		title_bar.add_child(warning_sign)
 		mouse_exited.connect(warning_sign.queue_free)
 
