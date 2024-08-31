@@ -15,8 +15,8 @@ p_horizontal: bool) -> void:
 	d_name = dref
 	horizontal = p_horizontal
 	display_mode = Display.SMALL
-	element.attribute_changed.connect(sync)
-	element.ancestor_attribute_changed.connect(sync)
+	element.attribute_changed.connect(sync.unbind(1))
+	element.ancestor_attribute_changed.connect(sync.unbind(1))
 	sync()
 
 func set_pos(new_pos: Vector2) -> void:

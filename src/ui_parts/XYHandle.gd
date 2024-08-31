@@ -8,8 +8,8 @@ func _init(new_element: Element, xref: String, yref: String) -> void:
 	element = new_element
 	x_name = xref
 	y_name = yref
-	element.attribute_changed.connect(sync)
-	element.ancestor_attribute_changed.connect(sync)
+	element.attribute_changed.connect(sync.unbind(1))
+	element.ancestor_attribute_changed.connect(sync.unbind(1))
 	sync()
 
 func set_pos(new_pos: Vector2) -> void:
