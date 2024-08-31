@@ -268,7 +268,7 @@ func duplicate(include_children := true) -> Element:
 	
 	if include_children:
 		for i in get_child_count():
-			new_element.insert_child(i, get_child(i))
+			new_element.insert_child(i, get_child(i).duplicate())
 	return new_element
 
 # Applies children and attributes to another element. Useful for conversion.
