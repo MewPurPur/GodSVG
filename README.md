@@ -4,7 +4,7 @@
   <img src="godot_only/source_assets/splash.svg" width="480" alt="GodSVG logo">
 </p>
 
-**[GodSVG](https://godsvg.com) is an editor for Scalable Vector Graphics (SVG) files.** Unlike other editors, it represents the SVG code directly, doesn't add any metadata, and even lets you edit the SVG code in real time. GodSVG is inspired by the need for an SVG editor without abstractions that produces clean and optimized files.
+**[GodSVG](https://godsvg.com) is an editor for Scalable Vector Graphics (SVG) files.** Unlike other editors, it represents the SVG code directly, doesn't add any metadata, and even lets you edit the SVG code in real time. GodSVG aims to be an editor for SVG code with low abstraction, producing clean and optimized files.
 
 >[!IMPORTANT]
 >GodSVG is not officially released, it's currently in late alpha.
@@ -27,7 +27,7 @@ Note that if you're on MacOS, you need to [disable Gatekeeper](https://disable-g
 
 Link to the web build: https://godsvg.com/editor
 
-To run the latest unreleased version, you can download Godot from https://godotengine.org (development is currently happening in v4.3.beta1). After getting the repository files on your machine, you must open Godot, click on the "Import" button, and import the `project.godot` folder. If there are a lot of errors as some people have reported, it's Godot's fault. Try closing and opening the project a few times, changing small things on the code that errors out, etc. until the errors hopefully clear.
+To run the latest unreleased version, you can download Godot from https://godotengine.org (development is currently happening in v4.3). After getting the repository files on your machine, you must open Godot, click on the "Import" button, and import the `project.godot` folder. If there are a lot of errors as some people have reported, it's Godot's fault. Try closing and opening the project a few times, changing small things on the code that errors out, etc. until the errors hopefully clear.
 
 ## How to use it
 
@@ -61,6 +61,6 @@ GodSVG is licensed under the MIT License:
 
 - You are free to use GodSVG for any purpose. GodSVG's license terms and copyright do not apply to the content created with it.
 - You can study how GodSVG works and change it.
-- You may distribute modified versions of GodSVG. Derivative products may use a different license, but they must still document that they derive from the MIT-licensed GodSVG.
+- You may distribute modified versions of GodSVG. Derivative products may use a different license, but they must clearly document that they derive from the MIT-licensed GodSVG.
 
 The above explanation reflects my understanding of my own license terms and does not constitute legal advice.
