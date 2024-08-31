@@ -33,31 +33,44 @@ func _ready() -> void:
 	else:
 		donors_list.items = app_info.donors
 		if app_info.anonymous_donors != 0:
+			donors_list.dim_last_item = true
 			donors_list.items.append("%d anonymous" % app_info.anonymous_donors)
 		donors_list.setup()
-	if app_info.golden_donors.is_empty() and app_info.anonymous_golden_donors != 0:
+	
+	if app_info.golden_donors.is_empty() and app_info.anonymous_golden_donors == 0:
 		golden_donors_vbox.hide()
 	else:
 		golden_donors_list.items = app_info.golden_donors
 		if app_info.anonymous_golden_donors != 0:
+			golden_donors_list.dim_last_item = true
 			golden_donors_list.items.append("%d anonymous" % app_info.anonymous_golden_donors)
 		golden_donors_list.setup()
+	
 	if app_info.diamond_donors.is_empty() and app_info.anonymous_diamond_donors == 0:
 		diamond_donors_vbox.hide()
 	else:
 		diamond_donors_list.items = app_info.diamond_donors
 		if app_info.anonymous_diamond_donors != 0:
+			diamond_donors_list.dim_last_item = true
 			diamond_donors_list.items.append("%d anonymous" % app_info.anonymous_diamond_donors)
 		diamond_donors_list.setup()
 	
-	past_donors_list.items = app_info.past_donors +\
-			["%d anonymous" % app_info.past_anonymous_donors]
+	past_donors_list.items = app_info.past_donors
+	if app_info.past_anonymous_donors != 0:
+		past_donors_list.dim_last_item = true
+		past_donors_list.items.append("%d anonymous" % app_info.past_anonymous_donors)
 	past_donors_list.setup()
-	past_golden_donors_list.items = app_info.past_golden_donors +\
-			["%d anonymous" % app_info.past_anonymous_golden_donors]
+	
+	past_golden_donors_list.items = app_info.past_golden_donors
+	if app_info.past_anonymous_golden_donors != 0:
+		past_golden_donors_list.dim_last_item = true
+		past_golden_donors_list.items.append("%d anonymous" % app_info.past_anonymous_golden_donors)
 	past_golden_donors_list.setup()
-	past_diamond_donors_list.items = app_info.past_diamond_donors +\
-			["%d anonymous" % app_info.past_anonymous_diamond_donors]
+	
+	past_donors_list.items = app_info.past_diamond_donors
+	if app_info.past_anonymous_diamond_donors != 0:
+		past_diamond_donors_list.dim_last_item = true
+		past_diamond_donors_list.items.append("%d anonymous" % app_info.past_anonymous_diamond_donors)
 	past_diamond_donors_list.setup()
 	# There can be multiple translators for a single locale.
 	for lang in TranslationServer.get_loaded_locales():
