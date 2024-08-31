@@ -27,6 +27,10 @@ formatter: Formatter = GlobalSettings.savedata.editor_formatter) -> String:
 static func _element_to_text(element: Element, formatter: Formatter,
 make_attributes_absolute := false) -> String:
 	if make_attributes_absolute:
+		# A fake SVG ref is needed, for percentages to work.
+		var fake_svg_ref := element.svg
+		element = element.duplicate()
+		element.svg = fake_svg_ref
 		element.make_all_attributes_absolute()
 	
 	var text := ""
