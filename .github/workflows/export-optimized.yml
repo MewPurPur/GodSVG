@@ -72,7 +72,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ env.PROJECT_NAME }}-linux
+          name: ${{ env.PROJECT_NAME }}.Linux
           path: godsvg/build/GodSVG.x86_64
           if-no-files-found: error
           retention-days: 28
@@ -133,7 +133,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ env.PROJECT_NAME }}-windows
+          name: ${{ env.PROJECT_NAME }}.Windows
           path: godsvg/build/GodSVG.exe
           if-no-files-found: error
           retention-days: 28
@@ -204,7 +204,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ env.PROJECT_NAME }}-macos
+          name: ${{ env.PROJECT_NAME }}.MacOS
           path: godsvg/build/GodSVG.zip
           if-no-files-found: error
           retention-days: 28
