@@ -67,7 +67,7 @@ theme_override_font_sizes/font_size = 14
 
 [node name="Dropdown" parent="VBoxContainer/HBoxContainer/VBoxContainer/FormatHBox" instance=ExtResource("5_y6ex0")]
 layout_mode = 2
-values = Array[String](["svg", "png", "jpg", "webp"])
+values = PackedStringArray("svg", "png", "jpg", "webp")
 
 [node name="QualityRelated" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
