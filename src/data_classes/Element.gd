@@ -280,8 +280,11 @@ func apply_to(element: Element, dropped_attributes: PackedStringArray) -> void:
 
 # Converts all percentage numeric attributes to absolute.
 func make_all_attributes_absolute() -> void:
-	for attribute_name in _attributes:
-		if _attributes[attribute_name] is AttributeNumeric:
+	var attributes_to_convert := _attributes.keys()
+	if DB.recognized_attributes.has(self.name):
+		attributes_to_convert += DB.recognized_attributes[self.name]
+	for attribute_name in attributes_to_convert:
+		if DB.get_attribute_type(attribute_name) == DB.AttributeType.NUMERIC:
 			make_attribute_absolute(attribute_name)
 
 # Converts a percentage numeric attribute to absolute.
