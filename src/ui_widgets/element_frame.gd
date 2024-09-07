@@ -6,7 +6,7 @@ const warning_icon = preload("res://visual/icons/Warning.svg")
 static var ElementFrame: PackedScene:
 	get:
 		if !is_instance_valid(ElementFrame):
-			ElementFrame = load("res://src/ui_parts/element_frame.tscn")
+			ElementFrame = load("res://src/ui_widgets/element_frame.tscn")
 		return ElementFrame
 
 const UnrecognizedField = preload("res://src/ui_widgets/unrecognized_field.tscn")
@@ -32,7 +32,7 @@ const ElementContentUnrecognized = preload("res://src/ui_widgets/element_content
 
 @onready var main_container: VBoxContainer = $Content/MainContainer
 @onready var title_bar: Panel = $TitleBar
-var child_elements_container: VBoxContainer  # Only created if there are child elements.
+var child_xnodes_container: VBoxContainer  # Only created if there are child xnodes.
 @onready var content: PanelContainer = $Content
 
 var element: Element
@@ -76,15 +76,12 @@ func _ready() -> void:
 	element_content.element = element
 	main_container.add_child(element_content)
 	
-	if not element.has_children():
-		child_elements_container = VBoxContainer.new()
-		child_elements_container.mouse_filter = Control.MOUSE_FILTER_STOP
-		main_container.add_child(child_elements_container)
-		for element_idx in element.get_child_count():
-			var child := element.get_child(element_idx)
-			var element_editor := ElementFrame.instantiate()
-			element_editor.element = child
-			child_elements_container.add_child(element_editor)
+	if element.has_children():
+		child_xnodes_container = VBoxContainer.new()
+		child_xnodes_container.mouse_filter = Control.MOUSE_FILTER_STOP
+		main_container.add_child(child_xnodes_container)
+		for xnode_editor in XNodeChildrenBuilder.create(element):
+			child_xnodes_container.add_child(xnode_editor)
 
 func _exit_tree() -> void:
 	RenderingServer.free_rid(surface)
@@ -98,7 +95,7 @@ func _get_drag_data(_at_position: Vector2) -> Variant:
 	for data_idx in range(data.size() - 1, -1, -1):
 		var drag_xid := data[data_idx]
 		var preview := ElementFrame.instantiate()
-		preview.element = SVG.root_element.get_element(drag_xid)
+		preview.element = SVG.root_element.get_xnode(drag_xid)
 		preview.custom_minimum_size.x = size.x
 		preview.z_index = 2
 		elements_container.add_child(preview)
@@ -257,10 +254,12 @@ func _draw() -> void:
 	var drop_sb := StyleBoxFlat.new()
 	var drop_xid := Indications.proposed_drop_xid
 	
-	var drop_tag := element.root.get_element(Utils.get_parent_xid(drop_xid))
+	var root_element := element.root
+	var drop_tag := root_element.get_xnode(Utils.get_parent_xid(drop_xid))
 	var are_all_children_valid := true
 	for xid in Indications.selected_xids:
-		if !DB.is_child_element_valid(drop_tag.name, element.root.get_element(xid).name):
+		var xnode := root_element.get_xnode(xid)
+		if xnode is Element and !DB.is_child_element_valid(drop_tag.name, xnode.name):
 			are_all_children_valid = false
 			break
 	
@@ -271,8 +270,8 @@ func _draw() -> void:
 		drop_sb.border_width_bottom = 2
 	elif drop_xid == element.xid + PackedInt32Array([0]):
 		drop_sb.set_border_width_all(2)
-		if is_instance_valid(child_elements_container):
-			drop_sb.border_color = Color(Color.GREEN, 0.4)
+		if is_instance_valid(child_xnodes_container):
+			drop_sb.border_color.a *= 0.4
 	else:
 		return
 	
@@ -282,14 +281,14 @@ func _draw() -> void:
 
 func _on_title_bar_draw() -> void:
 	var element_icon := DB.get_element_icon(element.name)
-	var element_icon_size: Vector2 = element_icon.get_size()
+	var element_icon_size := element_icon.get_size()
 	var half_bar_width := title_bar.size.x / 2
-	var title_width := ThemeUtils.mono_font.get_string_size(element.name,
-			HORIZONTAL_ALIGNMENT_LEFT, 180, 12).x
+	var half_title_width := ThemeUtils.mono_font.get_string_size(element.name,
+			HORIZONTAL_ALIGNMENT_LEFT, 180, 12).x / 2
 	ThemeUtils.mono_font.draw_string(title_bar_ci, Vector2(half_bar_width -\
-			title_width / 2 + element_icon_size.x / 2, 18), element.name,
+			half_title_width + element_icon_size.x / 2, 18), element.name,
 			HORIZONTAL_ALIGNMENT_LEFT, 180, 12)
-	element_icon.draw_rect(title_bar_ci, Rect2(Vector2(half_bar_width - title_width / 2 -\
+	element_icon.draw_rect(title_bar_ci, Rect2(Vector2(half_bar_width - half_title_width -\
 			element_icon_size.x + 6, 4).round(), element_icon_size), false)
 	
 	var element_warnings := element.get_config_warnings()

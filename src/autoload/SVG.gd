@@ -13,6 +13,8 @@ signal elements_deleted(xids: Array[PackedInt32Array])
 signal elements_moved_in_parenet(parent_xid: PackedInt32Array, old_indices: Array[int])
 signal elements_moved_to(xids: Array[PackedInt32Array], location: PackedInt32Array)
 signal elements_layout_changed  # Emitted together with any of the above 4.
+signal basic_xnode_text_changed
+signal basic_xnode_rendered_text_changed
 
 signal parsing_finished(error_id: SVGParser.ParseError)
 signal changed
@@ -35,6 +37,8 @@ func _ready() -> void:
 	changed_unknown.connect(queue_update)
 	elements_layout_changed.connect(queue_update)
 	any_attribute_changed.connect(queue_update.unbind(1))
+	basic_xnode_text_changed.connect(queue_update)
+	basic_xnode_rendered_text_changed.connect(queue_update)
 	
 	var cmdline_args := OS.get_cmdline_args()
 	var load_cmdl := false
@@ -88,6 +92,9 @@ func sync_elements() -> void:
 		root_element.elements_moved_to.connect(elements_moved_to.emit)
 		root_element.elements_layout_changed.connect(elements_layout_changed.emit)
 		root_element.attribute_changed.connect(_on_root_attribute_changed)
+		root_element.basic_xnode_text_changed.connect(basic_xnode_text_changed.emit)
+		root_element.basic_xnode_rendered_text_changed.connect(
+				basic_xnode_rendered_text_changed.emit)
 		changed_unknown.emit()
 		update_current_size()
 

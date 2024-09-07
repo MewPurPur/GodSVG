@@ -109,6 +109,14 @@ msgstr "Хекс с 3 или 6 цифри"
 msgid "6-digit hex"
 msgstr "Хекс с 6 цифри"
 
+#: src/data_classes/BasicXNode.gd
+msgid "Comment"
+msgstr "Коментар"
+
+#: src/data_classes/BasicXNode.gd
+msgid "Text"
+msgstr "Текст"
+
 #: src/data_classes/Element.gd
 msgid "{element} must be inside {allowed} to have any effect."
 msgstr "{element} трябва да е във {allowed} за да има ефект."
@@ -373,7 +381,8 @@ msgstr "Избери SVG"
 msgid "Select an image"
 msgstr "Избери изображение"
 
-#: src/ui_parts/good_file_dialog.gd src/ui_parts/update_menu.gd
+#: src/ui_parts/good_file_dialog.gd src/ui_parts/settings_menu.gd
+#: src/ui_parts/update_menu.gd
 msgid "Close"
 msgstr "Затвори"
 
@@ -704,6 +713,14 @@ msgstr "Неименуван"
 #: src/ui_widgets/formatter_config.gd src/ui_widgets/palette_config.gd
 msgid "Rename"
 msgstr "Преименувай"
+
+#: src/ui_widgets/formatter_config.gd
+msgid "Keep comments"
+msgstr "Запази коментарите"
+
+#: src/ui_widgets/formatter_config.gd
+msgid "Keep unrecognized XML structures"
+msgstr "Запази непознатите XML структури"
 
 #: src/ui_widgets/formatter_config.gd
 msgid "Add trailing newline"

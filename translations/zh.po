@@ -109,6 +109,15 @@ msgstr ""
 msgid "6-digit hex"
 msgstr ""
 
+#: src/data_classes/BasicXNode.gd
+#, fuzzy
+msgid "Comment"
+msgstr "注释颜色"
+
+#: src/data_classes/BasicXNode.gd
+msgid "Text"
+msgstr ""
+
 #: src/data_classes/Element.gd
 msgid "{element} must be inside {allowed} to have any effect."
 msgstr ""
@@ -374,7 +383,8 @@ msgstr "选择 SVG"
 msgid "Select an image"
 msgstr "选择图像"
 
-#: src/ui_parts/good_file_dialog.gd src/ui_parts/update_menu.gd
+#: src/ui_parts/good_file_dialog.gd src/ui_parts/settings_menu.gd
+#: src/ui_parts/update_menu.gd
 msgid "Close"
 msgstr "关闭"
 
@@ -710,6 +720,15 @@ msgstr "未命名"
 #, fuzzy
 msgid "Rename"
 msgstr "未命名"
+
+#: src/ui_widgets/formatter_config.gd
+msgid "Keep comments"
+msgstr ""
+
+#: src/ui_widgets/formatter_config.gd
+#, fuzzy
+msgid "Keep unrecognized XML structures"
+msgstr "未知的属性"
 
 #: src/ui_widgets/formatter_config.gd
 msgid "Add trailing newline"

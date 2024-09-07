@@ -193,8 +193,8 @@ func shift_select(xid: PackedInt32Array, inner_idx := -1) -> void:
 # Select all elements.
 func select_all() -> void:
 	clear_inner_selection()
-	var element_list: Array[Element] = SVG.root_element.get_all_elements()
-	var xid_list: Array = element_list.map(func(element): return element.xid)
+	var xnode_list: Array[XNode] = SVG.root_element.get_all_xnode_descendants()
+	var xid_list: Array = xnode_list.map(func(xnode): return xnode.xid)
 	if selected_xids == xid_list:
 		return
 	
@@ -386,9 +386,9 @@ func respond_to_key_input(event: InputEventKey) -> void:
 	if inner_selections.is_empty() or event.is_command_or_control_pressed():
 		# If a single path element is selected, add the new command at the end.
 		if selected_xids.size() == 1:
-			var element_ref := SVG.root_element.get_element(selected_xids[0])
-			if element_ref.name == "path":
-				var path_attrib: AttributePathdata = element_ref.get_attribute("d")
+			var xnode_ref := SVG.root_element.get_xnode(selected_xids[0])
+			if xnode_ref is Element and xnode_ref.name == "path":
+				var path_attrib: AttributePathdata = xnode_ref.get_attribute("d")
 				for action_name in path_actions_dict.keys():
 					if event.is_action_pressed(action_name):
 						var path_cmd_count := path_attrib.get_command_count()
@@ -406,7 +406,7 @@ func respond_to_key_input(event: InputEventKey) -> void:
 		return
 	# If path commands are selected, insert after the last one.
 	for action_name in path_actions_dict.keys():
-		var element_ref := SVG.root_element.get_element(semi_selected_xid)
+		var element_ref := SVG.root_element.get_xnode(semi_selected_xid)
 		if element_ref.name == "path":
 			if event.is_action_pressed(action_name):
 				var path_attrib: AttributePathdata = element_ref.get_attribute("d")
@@ -426,12 +426,12 @@ func respond_to_key_input(event: InputEventKey) -> void:
 
 func delete_selected() -> void:
 	if not selected_xids.is_empty():
-		SVG.root_element.delete_elements(selected_xids)
+		SVG.root_element.delete_xnodes(selected_xids)
 		SVG.queue_save()
 	elif not inner_selections.is_empty() and not semi_selected_xid.is_empty():
 		inner_selections.sort()
 		inner_selections.reverse()
-		var element_ref := SVG.root_element.get_element(semi_selected_xid)
+		var element_ref := SVG.root_element.get_xnode(semi_selected_xid)
 		match element_ref.name:
 			"path": element_ref.get_attribute("d").delete_commands(inner_selections)
 		clear_inner_selection()
@@ -439,11 +439,11 @@ func delete_selected() -> void:
 		SVG.queue_save()
 
 func move_up_selected() -> void:
-	SVG.root_element.move_elements_in_parent(selected_xids, false)
+	SVG.root_element.move_xnodes_in_parent(selected_xids, false)
 	SVG.queue_save()
 
 func move_down_selected() -> void:
-	SVG.root_element.move_elements_in_parent(selected_xids, true)
+	SVG.root_element.move_xnodes_in_parent(selected_xids, true)
 	SVG.queue_save()
 
 func view_in_list(xid: PackedInt32Array) -> void:
@@ -452,11 +452,11 @@ func view_in_list(xid: PackedInt32Array) -> void:
 	requested_scroll_to_element_editor.emit(xid)
 
 func duplicate_selected() -> void:
-	SVG.root_element.duplicate_elements(selected_xids)
+	SVG.root_element.duplicate_xnodes(selected_xids)
 	SVG.queue_save()
 
 func insert_inner_after_selection(new_command: String) -> void:
-	var element_ref := SVG.root_element.get_element(semi_selected_xid)
+	var element_ref := SVG.root_element.get_xnode(semi_selected_xid)
 	match element_ref.name:
 		"path":
 			var path_attrib: AttributePathdata = element_ref.get_attribute("d")
@@ -492,7 +492,7 @@ func get_selection_context(popup_method: Callable, context: Context) -> ContextP
 			can_move_up = false
 			var parent_xid := Utils.get_parent_xid(filtered_xids[0])
 			var filtered_count := filtered_xids.size()
-			var parent_child_count := SVG.root_element.get_element(parent_xid).get_child_count()
+			var parent_child_count: int = SVG.root_element.get_xnode(parent_xid).get_child_count()
 			for base_xid in filtered_xids:
 				if not can_move_up and base_xid[-1] >= filtered_count:
 					can_move_up = true
@@ -508,8 +508,9 @@ func get_selection_context(popup_method: Callable, context: Context) -> ContextP
 				duplicate_selected, false, load("res://visual/icons/Duplicate.svg"),
 				"duplicate"))
 		
-		if selected_xids.size() == 1 and not SVG.root_element.get_element(
-		selected_xids[0]).possible_conversions.is_empty():
+		var xnode := SVG.root_element.get_xnode(selected_xids[0])
+		if selected_xids.size() == 1 and xnode is BasicXNode or\
+		not xnode.possible_conversions.is_empty():
 			btn_arr.append(ContextPopup.create_button(
 					TranslationServer.translate("Convert To"),
 					popup_convert_to_context.bind(popup_method), false,
@@ -555,18 +556,26 @@ func popup_convert_to_context(popup_method: Callable) -> void:
 	# The "Convert To" context popup.
 	if not selected_xids.is_empty():
 		var btn_arr: Array[Button] = []
-		var element := SVG.root_element.get_element(selected_xids[0])
-		for element_name in element.possible_conversions:
-			var btn := ContextPopup.create_button(element_name,
-					convert_selected_element_to.bind(element_name),
-					!element.can_replace(element_name), DB.get_element_icon(element_name))
-			btn.add_theme_font_override("font", ThemeUtils.mono_font)
-			btn_arr.append(btn)
+		var xnode := SVG.root_element.get_xnode(selected_xids[0])
+		if xnode is BasicXNode:
+			for xnode_type in xnode.get_possible_conversions():
+				var btn := ContextPopup.create_button(BasicXNode.get_type_string(xnode_type),
+						convert_selected_xnode_to.bind(xnode_type),
+						false, DB.get_xnode_icon(xnode_type))
+				btn.add_theme_font_override("font", ThemeUtils.mono_font)
+				btn_arr.append(btn)
+		else:
+			for element_name in xnode.possible_conversions:
+				var btn := ContextPopup.create_button(element_name,
+						convert_selected_element_to.bind(element_name),
+						!xnode.can_replace(element_name), DB.get_element_icon(element_name))
+				btn.add_theme_font_override("font", ThemeUtils.mono_font)
+				btn_arr.append(btn)
 		var context_popup := ContextPopup.new()
 		context_popup.setup(btn_arr, true)
 		popup_method.call(context_popup)
 	elif not inner_selections.is_empty() and not semi_selected_xid.is_empty():
-		var cmd_char: String = SVG.root_element.get_element(semi_selected_xid).\
+		var cmd_char: String = SVG.root_element.get_xnode(semi_selected_xid).\
 				get_attribute("d").get_command(inner_selections[0]).command_char
 		var command_picker = PathCommandPopup.instantiate()
 		popup_method.call(command_picker)
@@ -575,7 +584,7 @@ func popup_convert_to_context(popup_method: Callable) -> void:
 		command_picker.path_command_picked.connect(convert_selected_command_to)
 
 func popup_insert_command_after_context(popup_method: Callable) -> void:
-	var cmd_char: String = SVG.root_element.get_element(semi_selected_xid).\
+	var cmd_char: String = SVG.root_element.get_xnode(semi_selected_xid).\
 			get_attribute("d").get_command(inner_selections.max()).command_char
 	
 	var command_picker = PathCommandPopup.instantiate()
@@ -590,12 +599,18 @@ func popup_insert_command_after_context(popup_method: Callable) -> void:
 
 func convert_selected_element_to(element_name: String) -> void:
 	var xid := selected_xids[0]
-	SVG.root_element.replace_element(xid,
-			SVG.root_element.get_element(xid).get_replacement(element_name))
+	SVG.root_element.replace_xnode(xid,
+			SVG.root_element.get_xnode(xid).get_replacement(element_name))
+	SVG.queue_save()
+
+func convert_selected_xnode_to(xnode_type: BasicXNode.NodeType) -> void:
+	var xid := selected_xids[0]
+	SVG.root_element.replace_xnode(xid,
+			SVG.root_element.get_xnode(xid).get_replacement(xnode_type))
 	SVG.queue_save()
 
 func convert_selected_command_to(cmd_type: String) -> void:
-	var element_ref := SVG.root_element.get_element(semi_selected_xid)
+	var element_ref := SVG.root_element.get_xnode(semi_selected_xid)
 	match element_ref.name:
 		"path":
 			element_ref.get_attribute("d").convert_command(inner_selections[0], cmd_type)

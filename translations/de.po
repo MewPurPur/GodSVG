@@ -109,6 +109,15 @@ msgstr "3-stelligen oder 6-stelligen Hex"
 msgid "6-digit hex"
 msgstr "6-stelligen Hex"
 
+#: src/data_classes/BasicXNode.gd
+#, fuzzy
+msgid "Comment"
+msgstr "Kommentarfarbe"
+
+#: src/data_classes/BasicXNode.gd
+msgid "Text"
+msgstr ""
+
 #: src/data_classes/Element.gd
 msgid "{element} must be inside {allowed} to have any effect."
 msgstr ""
@@ -374,7 +383,8 @@ msgstr "SVG auswählen"
 msgid "Select an image"
 msgstr "Bild auswählen"
 
-#: src/ui_parts/good_file_dialog.gd src/ui_parts/update_menu.gd
+#: src/ui_parts/good_file_dialog.gd src/ui_parts/settings_menu.gd
+#: src/ui_parts/update_menu.gd
 msgid "Close"
 msgstr "Schließen"
 
@@ -705,6 +715,15 @@ msgstr "Unbenannt"
 #: src/ui_widgets/formatter_config.gd src/ui_widgets/palette_config.gd
 msgid "Rename"
 msgstr "Umbenennen"
+
+#: src/ui_widgets/formatter_config.gd
+msgid "Keep comments"
+msgstr ""
+
+#: src/ui_widgets/formatter_config.gd
+#, fuzzy
+msgid "Keep unrecognized XML structures"
+msgstr "Unerkanntes Attribut"
 
 #: src/ui_widgets/formatter_config.gd
 msgid "Add trailing newline"

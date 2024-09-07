@@ -24,6 +24,7 @@ func _ready() -> void:
 	close_button.pressed.connect(queue_free)
 	GlobalSettings.language_changed.connect(setup_everything)
 	update_language_button()
+	update_close_button()
 	setup_tabs()
 	tabs.get_child(0).button_pressed = true
 	GlobalSettings.theme_changed.connect(setup_theming)
@@ -61,6 +62,10 @@ func add_tab(tab_name: String, tab_text: String, button_group: ButtonGroup) -> v
 func setup_everything() -> void:
 	setup_tabs()
 	setup_content()
+	update_close_button()
+
+func update_close_button() -> void:
+	close_button.text = TranslationServer.translate("Close")
 
 func _on_tab_toggled(toggled_on: bool, tab_name: String) -> void:
 	if toggled_on:

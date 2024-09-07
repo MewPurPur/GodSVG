@@ -5,7 +5,7 @@ const autoscroll_frac = 0.35  # 35% of the screen will be taken by the autoscrol
 const autoscroll_speed = 1500.0
 
 @onready var scroll_container: ScrollContainer = $ScrollContainer
-@onready var elements: VBoxContainer = %Elements
+@onready var xnodes: VBoxContainer = %RootChildren
 @onready var covering_rect: Control = $MoveToOverlay
 
 func _ready():
@@ -42,20 +42,21 @@ func update_proposed_xid() -> void:
 	var next_xid := PackedInt32Array([SVG.root_element.get_child_count()])
 	var next_y := INF
 	
-	for element in SVG.root_element.get_all_elements():
-		var element_rect := get_element_editor_rect(element.xid)
-		var buffer := minf(element_rect.size.y / 3, 26)
-		var element_end := element_rect.end.y
-		var element_start := element_rect.position.y
-		if y_pos < element_end and element_end < next_y:
-			next_y = element_end
-			next_xid = element.xid
-			if y_pos > element_end - buffer:
+	for xnode in SVG.root_element.get_all_xnode_descendants():
+		var xnode_rect := get_xnode_editor_rect(xnode.xid)
+		var xnode_start := xnode_rect.position.y
+		var xnode_end := xnode_rect.end.y
+		var buffer := minf(xnode_rect.size.y / 3, 26) if xnode is Element else\
+				xnode_rect.size.y / 2 + 1
+		if y_pos < xnode_end and xnode_end < next_y:
+			next_y = xnode_end
+			next_xid = xnode.xid
+			if y_pos > xnode_end - buffer:
 				in_bottom_buffer = true
-		if y_pos > element_start and element_start > prev_y:
-			prev_y = element_start
-			prev_xid = element.xid
-			if y_pos < element_start + buffer:
+		if y_pos > xnode_start and xnode_start > prev_y:
+			prev_y = xnode_start
+			prev_xid = xnode.xid
+			if y_pos < xnode_start + buffer:
 				in_top_buffer = true
 	# Set the proposed drop XID based on what the previous and next element editors are.
 	if in_top_buffer:
@@ -91,7 +92,7 @@ func _gui_input(event: InputEvent) -> void:
 			var location := 0
 			var y_pos := get_local_mouse_position().y + scroll_container.scroll_vertical
 			while location < SVG.root_element.get_child_count() and\
-			get_element_editor_rect(PackedInt32Array([location])).end.y < y_pos:
+			get_xnode_editor_rect(PackedInt32Array([location])).end.y < y_pos:
 				location += 1
 			# Create the context popup.
 			var btn_array: Array[Button] = []
@@ -112,23 +113,23 @@ func _gui_input(event: InputEvent) -> void:
 			HandlerGUI.popup_under_pos(add_popup, vp.get_mouse_position(), vp)
 
 func add_element(element_name: String, element_idx: int) -> void:
-	SVG.root_element.add_element(DB.element_with_setup(element_name),
+	SVG.root_element.add_xnode(DB.element_with_setup(element_name),
 			PackedInt32Array([element_idx]))
 	SVG.queue_save()
 
 # This function assumes there exists a element editor for the corresponding XID.
-func get_element_editor_rect(xid: PackedInt32Array) -> Rect2:
+func get_xnode_editor_rect(xid: PackedInt32Array) -> Rect2:
 	if xid.is_empty():
 		return Rect2()
 	
-	var element_editor: Control = elements.get_child(xid[0])
+	var xnode_editor: Control = xnodes.get_child(xid[0])
 	for i in range(1, xid.size()):
-		element_editor = element_editor.child_elements_container.get_child(xid[i])
+		xnode_editor = xnode_editor.child_xnodes_container.get_child(xid[i])
 	# Position relative to the element container.
-	return Rect2(element_editor.global_position - scroll_container.global_position +\
-			Vector2(0, scroll_container.scroll_vertical), element_editor.size)
+	return Rect2(xnode_editor.global_position - scroll_container.global_position +\
+			Vector2(0, scroll_container.scroll_vertical), xnode_editor.size)
 
 # This function assumes there exists a element editor for the corresponding XID.
 func scroll_to_view_element_editor(xid: PackedInt32Array) -> void:
-	scroll_container.get_v_scroll_bar().value = get_element_editor_rect(xid).position.y -\
+	scroll_container.get_v_scroll_bar().value = get_xnode_editor_rect(xid).position.y -\
 			scroll_container.size.y / 5

@@ -19,9 +19,11 @@ var dimensions := Vector2.ZERO
 @onready var quality_edit: NumberEditType = %Quality
 @onready var quality_hbox: HBoxContainer = %QualityHBox
 @onready var fallback_format_label: Label = %FallbackFormatLabel
+@onready var cancel_button: Button = %ButtonContainer/CancelButton
 
 func _ready() -> void:
-	scale_edit.value_changed.connect(_on_scale_value_changed)
+	cancel_button.pressed.connect(HandlerGUI.remove_overlay)
+	scale_edit.value_changed.connect(update_final_scale.unbind(1))
 	quality_edit.value_changed.connect(_on_quality_value_changed)
 	format_dropdown.value_changed.connect(_on_dropdown_value_changed)
 	extension = format_dropdown.value
@@ -75,16 +77,10 @@ func _on_export_button_pressed() -> void:
 				FileUtils.native_file_export.bind(extension, upscale_amount),
 				FileUtils.finish_export.bind(extension, upscale_amount, quality, lossless))
 
-func _on_cancel_button_pressed() -> void:
-	HandlerGUI.remove_overlay()
-
 func _on_lossless_check_box_toggled(toggled_on: bool) -> void:
 	lossless = toggled_on
 	if extension == "webp":
 		quality_hbox.visible = not lossless
-
-func _on_scale_value_changed(_new_value: float) -> void:
-	update_final_scale()
 
 func _on_quality_value_changed(_new_value: float) -> void:
 	quality = _new_value / 100

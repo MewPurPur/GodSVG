@@ -10,22 +10,39 @@ custom_height: float, custom_viewbox: Rect2) -> String:
 	new_root_element.set_attribute("viewBox", custom_viewbox)
 	new_root_element.set_attribute("width", custom_width)
 	new_root_element.set_attribute("height", custom_height)
-	var text := _element_to_text(new_root_element, blank_formatter)
+	var text := _xnode_to_text(new_root_element, blank_formatter)
 	text = text.strip_edges(false, true).left(-6)  # Remove the </svg> at the end.)
 	for child_idx in root_element.get_child_count():
-		text += _element_to_text(root_element.get_element(PackedInt32Array([child_idx])),
+		text += _xnode_to_text(root_element.get_xnode(PackedInt32Array([child_idx])),
 				blank_formatter, true)
 	return text + "</svg>"
 
 static func root_to_text(root_element: ElementRoot,
 formatter: Formatter = GlobalSettings.savedata.editor_formatter) -> String:
-	var text := _element_to_text(root_element, formatter).trim_suffix('\n')
+	var text := _xnode_to_text(root_element, formatter).trim_suffix('\n')
 	if formatter.xml_add_trailing_newline:
 		text += "\n"
 	return text
 
-static func _element_to_text(element: Element, formatter: Formatter,
+static func _xnode_to_text(xnode: XNode, formatter: Formatter,
 make_attributes_absolute := false) -> String:
+	var text := ""
+	if formatter.xml_pretty_formatting:
+		if formatter.xml_indentation_use_spaces:
+			text = ' '.repeat(xnode.xid.size() * formatter.xml_indentation_spaces)
+		else:
+			text = '\t'.repeat(xnode.xid.size())
+	
+	if xnode is BasicXNode:
+		match xnode.get_type():
+			BasicXNode.NodeType.COMMENT: text += "<!--%s-->" % xnode.get_text()
+			BasicXNode.NodeType.CDATA: text += "<![CDATA[%s]]>" % xnode.get_text()
+			_: text += xnode.get_text()
+		if formatter.xml_pretty_formatting:
+			text += "\n"
+		return text
+	
+	var element := xnode as Element
 	if make_attributes_absolute:
 		# A fake SVG ref is needed for percentages to work.
 		var fake_svg_ref := element.svg
@@ -33,12 +50,6 @@ make_attributes_absolute := false) -> String:
 		element.svg = fake_svg_ref
 		element.make_all_attributes_absolute()
 	
-	var text := ""
-	if formatter.xml_pretty_formatting:
-		if formatter.xml_indentation_use_spaces:
-			text += ' '.repeat(element.xid.size() * formatter.xml_indentation_spaces)
-		else:
-			text += '\t'.repeat(element.xid.size())
 	text += '<' + element.name
 	for attribute: Attribute in element.get_all_attributes():
 		var value := attribute.get_value()
@@ -48,7 +59,7 @@ make_attributes_absolute := false) -> String:
 		else:
 			text += " %s='%s'" % [attribute.name, value]
 	
-	if element.has_children() and (formatter.xml_shorthand_tags ==\
+	if not element.has_children() and (formatter.xml_shorthand_tags ==\
 	Formatter.ShorthandTags.ALWAYS or (formatter.xml_shorthand_tags ==\
 	Formatter.ShorthandTags.ALL_EXCEPT_CONTAINERS and\
 	not element.name in Formatter.container_elements)):
@@ -60,7 +71,7 @@ make_attributes_absolute := false) -> String:
 		if formatter.xml_pretty_formatting:
 			text += '\n'
 		for child in element.get_children():
-			text += _element_to_text(child, formatter)
+			text += _xnode_to_text(child, formatter)
 		if formatter.xml_pretty_formatting:
 			text += '\t'.repeat(element.xid.size())
 		text += '</%s>' % element.name
@@ -152,6 +163,23 @@ static func text_to_root(text: String, formatter: Formatter) -> ParseResult:
 						return ParseResult.new(ParseError.ERR_IMPROPER_NESTING)
 					if unclosed_element_stack.is_empty():
 						break
+			
+			XMLParser.NODE_COMMENT:
+				if formatter.xml_keep_comments:
+					unclosed_element_stack.back().insert_child(-1,
+							BasicXNode.new(BasicXNode.NodeType.COMMENT, parser.get_node_name()))
+			XMLParser.NODE_TEXT:
+				var real_text := parser.get_node_data().strip_edges()
+				if not real_text.is_empty():
+					unclosed_element_stack.back().insert_child(-1,
+							BasicXNode.new(BasicXNode.NodeType.TEXT, real_text))
+			XMLParser.NODE_CDATA:
+				unclosed_element_stack.back().insert_child(-1,
+						BasicXNode.new(BasicXNode.NodeType.CDATA, parser.get_node_name()))
+			_:
+				if formatter.xml_keep_unrecognized:
+					unclosed_element_stack.back().insert_child(-1,
+							BasicXNode.new(BasicXNode.NodeType.UNKNOWN, parser.get_node_name()))
 	
 	if not unclosed_element_stack.is_empty():
 		return ParseResult.new(ParseError.ERR_IMPROPER_NESTING)

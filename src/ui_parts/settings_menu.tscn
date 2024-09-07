@@ -75,6 +75,5 @@ size_flags_horizontal = 4
 size_flags_vertical = 8
 focus_mode = 0
 mouse_default_cursor_shape = 2
-text = "Close"
 
 [connection signal="pressed" from="VBoxContainer/Language" to="." method="_on_language_pressed"]

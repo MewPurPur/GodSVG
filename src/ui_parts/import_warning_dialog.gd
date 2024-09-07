@@ -53,7 +53,7 @@ func set_svg(text: String) -> void:
 func get_svg_warnings(root_element: ElementRoot) -> PackedStringArray:
 	var unrecognized_elements := PackedStringArray()
 	var unrecognized_attributes := PackedStringArray()
-	for element in root_element.get_all_elements():
+	for element in root_element.get_all_element_descendants():
 		if element is ElementUnrecognized:
 			if not element.name in unrecognized_elements:
 				unrecognized_elements.append(element.name)

@@ -1,8 +1,9 @@
 extends VBoxContainer
 
-const ElementFrame = preload("element_frame.tscn")
+const ElementFrame = preload("res://src/ui_widgets/element_frame.tscn")
+const BasicXNodeFrame = preload("res://src/ui_widgets/basic_xnode_frame.tscn")
 
-@onready var elements_container: VBoxContainer = %Elements
+@onready var xnodes_container: VBoxContainer = %RootChildren
 @onready var add_button: Button = $AddButton
 
 
@@ -19,13 +20,10 @@ func update_translation() -> void:
 
 
 func full_rebuild() -> void:
-	for node in elements_container.get_children():
+	for node in xnodes_container.get_children():
 		node.queue_free()
-	# Only add the first level of elements, they will automatically add their children.
-	for root_child in SVG.root_element.get_children():
-		var element_editor := ElementFrame.instantiate()
-		element_editor.element = root_child
-		elements_container.add_child(element_editor)
+	for xnode_editor in XNodeChildrenBuilder.create(SVG.root_element):
+		xnodes_container.add_child(xnode_editor)
 
 func add_element(element_name: String) -> void:
 	var new_element := DB.element_with_setup(element_name)
@@ -34,7 +32,7 @@ func add_element(element_name: String) -> void:
 		loc = PackedInt32Array([0])
 	else:
 		loc = PackedInt32Array([SVG.root_element.get_child_count()])
-	SVG.root_element.add_element(new_element, loc)
+	SVG.root_element.add_xnode(new_element, loc)
 	SVG.queue_save()
 
 
