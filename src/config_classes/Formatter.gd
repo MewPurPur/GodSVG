@@ -41,6 +41,18 @@ func get_enum_texts(property: String) -> PackedStringArray:
 			title = new_value
 			emit_changed()
 
+@export var xml_keep_comments := false:
+	set(new_value):
+		if xml_keep_comments != new_value:
+			xml_keep_comments = new_value
+			emit_changed()
+
+@export var xml_keep_unrecognized := false:
+	set(new_value):
+		if xml_keep_unrecognized != new_value:
+			xml_keep_unrecognized = new_value
+			emit_changed()
+
 @export var xml_add_trailing_newline := false:
 	set(new_value):
 		if xml_add_trailing_newline != new_value:

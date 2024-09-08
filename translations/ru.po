@@ -111,6 +111,15 @@ msgstr "3 или 6 цифровое шестандацитиричное зна�
 msgid "6-digit hex"
 msgstr "6 цифровое шестандцатяричное значение"
 
+#: src/data_classes/BasicXNode.gd
+#, fuzzy
+msgid "Comment"
+msgstr "Цвет комментария"
+
+#: src/data_classes/BasicXNode.gd
+msgid "Text"
+msgstr ""
+
 #: src/data_classes/Element.gd
 msgid "{element} must be inside {allowed} to have any effect."
 msgstr "{element} должен быть внутри {allowed} чтобы это имело эффект."
@@ -375,7 +384,8 @@ msgstr "Выбрать SVG"
 msgid "Select an image"
 msgstr "Выбрать изображение"
 
-#: src/ui_parts/good_file_dialog.gd src/ui_parts/update_menu.gd
+#: src/ui_parts/good_file_dialog.gd src/ui_parts/settings_menu.gd
+#: src/ui_parts/update_menu.gd
 msgid "Close"
 msgstr "Закрыть"
 
@@ -708,6 +718,15 @@ msgstr "Без названия"
 #: src/ui_widgets/formatter_config.gd src/ui_widgets/palette_config.gd
 msgid "Rename"
 msgstr "Переименовать"
+
+#: src/ui_widgets/formatter_config.gd
+msgid "Keep comments"
+msgstr ""
+
+#: src/ui_widgets/formatter_config.gd
+#, fuzzy
+msgid "Keep unrecognized XML structures"
+msgstr "Неизвестный атрибут"
 
 #: src/ui_widgets/formatter_config.gd
 msgid "Add trailing newline"

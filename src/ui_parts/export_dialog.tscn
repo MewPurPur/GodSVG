@@ -127,6 +127,7 @@ theme_override_fonts/font = ExtResource("5_s3e6m")
 theme_override_font_sizes/font_size = 10
 
 [node name="ButtonContainer" type="HBoxContainer" parent="VBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 alignment = 1
 
@@ -143,5 +144,4 @@ focus_mode = 0
 mouse_default_cursor_shape = 2
 
 [connection signal="toggled" from="VBoxContainer/HBoxContainer/VBoxContainer/QualityRelated/LosslessCheckBox" to="." method="_on_lossless_check_box_toggled"]
-[connection signal="pressed" from="VBoxContainer/ButtonContainer/CancelButton" to="." method="_on_cancel_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/ButtonContainer/ExportButton" to="." method="_on_export_button_pressed"]

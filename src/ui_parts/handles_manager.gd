@@ -112,7 +112,7 @@ func _process(_delta: float) -> void:
 
 func update_handles() -> void:
 	handles.clear()
-	for element in SVG.root_element.get_all_elements():
+	for element in SVG.root_element.get_all_element_descendants():
 		match element.name:
 			"circle":
 				handles.append(XYHandle.new(element, "cx", "cy"))
@@ -135,7 +135,7 @@ func update_handles() -> void:
 	queue_redraw()
 
 func sync_handles(xid: PackedInt32Array) -> void:
-	var element := SVG.root_element.get_element(xid)
+	var element := SVG.root_element.get_xnode(xid)
 	if not element is ElementPath:
 		queue_redraw()
 		return
@@ -180,7 +180,7 @@ func _draw() -> void:
 	var hovered_multiline := PackedVector2Array()
 	var hovered_selected_multiline := PackedVector2Array()
 	
-	for element: Element in SVG.root_element.get_all_elements():
+	for element: Element in SVG.root_element.get_all_element_descendants():
 		# Determine if the element is hovered/selected or has a hovered/selected parent.
 		var element_hovered := Indications.is_hovered(element.xid, -1, true)
 		var element_selected := Indications.is_selected(element.xid, -1, true)
@@ -600,12 +600,12 @@ func _draw() -> void:
 				Indications.zoom - texture.get_size() / 2)
 	
 	for xid in Indications.selected_xids:
-		var element := SVG.root_element.get_element(xid)
-		if DB.is_attribute_recognized(element.name, "transform"):
-			var bounding_box: Rect2 = element.get_bounding_box()
+		var xnode := SVG.root_element.get_xnode(xid)
+		if xnode is Element and DB.is_attribute_recognized(xnode.name, "transform"):
+			var bounding_box: Rect2 = xnode.get_bounding_box()
 			if bounding_box.has_area():
 				RenderingServer.canvas_item_add_set_transform(selections_surface,
-						element.get_transform() * SVG.root_element.canvas_transform)
+						xnode.get_transform() * SVG.root_element.canvas_transform)
 				RenderingServer.canvas_item_add_rect(selections_surface,
 						bounding_box.grow(4.0 / Indications.zoom), Color.WHITE)
 
@@ -740,7 +740,7 @@ func get_event_pos(event: InputEvent) -> Vector2:
 func _on_handle_added() -> void:
 	if not get_viewport_rect().has_point(get_viewport().get_mouse_position()):
 		if not Indications.semi_selected_xid.is_empty():
-			SVG.root_element.get_element(Indications.semi_selected_xid).get_attribute("d").\
+			SVG.root_element.get_xnode(Indications.semi_selected_xid).get_attribute("d").\
 					sync_after_commands_change()
 			SVG.queue_save()
 		return
@@ -778,6 +778,6 @@ func create_element_context(pos: Vector2) -> ContextPopup:
 	return element_context
 
 func add_shape_at_pos(element_name: String, pos: Vector2) -> void:
-	SVG.root_element.add_element(DB.element_with_setup(element_name, pos),
+	SVG.root_element.add_xnode(DB.element_with_setup(element_name, pos),
 			PackedInt32Array([SVG.root_element.get_child_count()]))
 	SVG.queue_save()

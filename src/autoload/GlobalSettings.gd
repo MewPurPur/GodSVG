@@ -165,6 +165,7 @@ func reset_settings() -> void:
 	
 	var compact_formatter := Formatter.new("Compact")
 	var pretty_formatter := Formatter.new("Pretty")
+	pretty_formatter.xml_keep_comments = true
 	pretty_formatter.xml_shorthand_tags = Formatter.ShorthandTags.ALL_EXCEPT_CONTAINERS
 	pretty_formatter.xml_shorthand_tags_space_out_slash = true
 	pretty_formatter.xml_pretty_formatting = true

@@ -121,7 +121,6 @@ fit_content = true
 [connection signal="pressed" from="PanelContainer/CodeButtons/SizeButton" to="." method="_on_size_button_pressed"]
 [connection signal="pressed" from="PanelContainer/CodeButtons/FileButton" to="." method="_on_file_button_pressed"]
 [connection signal="pressed" from="PanelContainer/CodeButtons/MetaActions/OptionsButton" to="." method="_on_options_button_pressed"]
-[connection signal="caret_changed" from="ScriptEditor/SVGCodeEdit" to="ScriptEditor/SVGCodeEdit" method="redraw_caret"]
 [connection signal="focus_entered" from="ScriptEditor/SVGCodeEdit" to="." method="_on_svg_code_edit_focus_entered"]
 [connection signal="focus_exited" from="ScriptEditor/SVGCodeEdit" to="." method="_on_svg_code_edit_focus_exited"]
 [connection signal="text_changed" from="ScriptEditor/SVGCodeEdit" to="." method="_on_svg_code_edit_text_changed"]

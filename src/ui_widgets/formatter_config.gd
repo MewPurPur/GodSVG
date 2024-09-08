@@ -77,6 +77,10 @@ var current_setup_config: String
 func construct() -> void:
 	set_label_text(current_formatter.title)
 	add_section("XML")
+	current_setup_config = "xml_keep_comments"
+	add_checkbox(TranslationServer.translate("Keep comments"))
+	current_setup_config = "xml_keep_unrecognized"
+	add_checkbox(TranslationServer.translate("Keep unrecognized XML structures"))
 	current_setup_config = "xml_add_trailing_newline"
 	add_checkbox(TranslationServer.translate("Add trailing newline"))
 	current_setup_config = "xml_shorthand_tags"

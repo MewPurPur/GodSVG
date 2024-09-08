@@ -8,6 +8,10 @@ signal elements_deleted(xids: Array[PackedInt32Array])
 signal elements_moved_in_parenet(parent_xid: PackedInt32Array, old_indices: Array[int])
 signal elements_moved_to(xids: Array[PackedInt32Array], location: PackedInt32Array)
 signal elements_layout_changed  # Emitted together with any of the above 4.
+@warning_ignore("unused_signal")
+signal basic_xnode_text_changed(xid: PackedInt32Array)
+@warning_ignore("unused_signal")
+signal basic_xnode_rendered_text_changed(xid: PackedInt32Array)
 
 var formatter: Formatter
 
@@ -15,17 +19,8 @@ func _init(new_formatter: Formatter = GlobalSettings.savedata.editor_formatter) 
 	super()
 	formatter = new_formatter
 
-func get_all_elements() -> Array[Element]:
-	var elements: Array[Element] = []
-	var unchecked_elements: Array[Element] = get_children()
-	while not unchecked_elements.is_empty():
-		var checked_element: Element = unchecked_elements.pop_back()
-		unchecked_elements += checked_element.get_children()
-		elements.append(checked_element)
-	return elements
-
-func get_element(loc: PackedInt32Array) -> Element:
-	var current_element: Element = self
+func get_xnode(loc: PackedInt32Array) -> XNode:
+	var current_element: XNode = self
 	for idx in loc:
 		if idx >= current_element.get_child_count():
 			return null
@@ -33,7 +28,7 @@ func get_element(loc: PackedInt32Array) -> Element:
 	return current_element
 
 func get_element_by_id(id: String) -> Element:
-	for element in get_all_elements():
+	for element in get_all_element_descendants():
 		if element.get_attribute_value("id") == id:
 			return element
 	return null
@@ -51,24 +46,24 @@ func get_own_default(attribute_name: String) -> String:
 		_: return ""
 
 
-func add_element(new_element: Element, new_xid: PackedInt32Array) -> void:
-	get_element(Utils.get_parent_xid(new_xid)).insert_child(new_xid[-1], new_element)
+func add_xnode(new_xnode: XNode, new_xid: PackedInt32Array) -> void:
+	get_xnode(Utils.get_parent_xid(new_xid)).insert_child(new_xid[-1], new_xnode)
 	var new_xid_array: Array[PackedInt32Array] = [new_xid]
 	elements_added.emit(new_xid_array)
 	elements_layout_changed.emit()
 
-func delete_elements(xids: Array[PackedInt32Array]) -> void:
+func delete_xnodes(xids: Array[PackedInt32Array]) -> void:
 	if xids.is_empty():
 		return
 	
 	xids = Utils.filter_descendant_xids(xids)
 	for id in xids:
-		get_element(id).parent.remove_child(id[-1])
+		get_xnode(id).parent.remove_child(id[-1])
 	elements_deleted.emit(xids)
 	elements_layout_changed.emit()
 
 # Moves elements up or down, not to an arbitrary position.
-func move_elements_in_parent(xids: Array[PackedInt32Array], down: bool) -> void:
+func move_xnodes_in_parent(xids: Array[PackedInt32Array], down: bool) -> void:
 	if xids.is_empty():
 		return
 	
@@ -84,7 +79,7 @@ func move_elements_in_parent(xids: Array[PackedInt32Array], down: bool) -> void:
 	for id in xids:
 		xid_indices.append(id[-1])
 	
-	var parent_element := get_element(parent_xid)
+	var parent_element: Element = get_xnode(parent_xid)
 	var parent_child_count := parent_element.get_child_count()
 	var old_indices: Array[int] = []
 	for i in parent_child_count:
@@ -121,7 +116,7 @@ func move_elements_in_parent(xids: Array[PackedInt32Array], down: bool) -> void:
 
 # Moves elements to an arbitrary location.
 # The first moved element will now be at the location XID.
-func move_elements_to(xids: Array[PackedInt32Array], location: PackedInt32Array) -> void:
+func move_xnodes_to(xids: Array[PackedInt32Array], location: PackedInt32Array) -> void:
 	xids = Utils.filter_descendant_xids(xids)
 	# An element can't move deeper inside itself. Remove the descendants of the location.
 	for i in range(xids.size() - 1, -1, -1):
@@ -130,7 +125,7 @@ func move_elements_to(xids: Array[PackedInt32Array], location: PackedInt32Array)
 	
 	# Remove elements from their old locations.
 	var xids_stored: Array[PackedInt32Array] = []
-	var elements_stored: Array[Element] = []
+	var xnodes_stored: Array[XNode] = []
 	for id in xids:
 		# Shift the new location if elements before it were removed. An element is "before"
 		# if it has the same parent as the new location, but is before that location.
@@ -143,10 +138,10 @@ func move_elements_to(xids: Array[PackedInt32Array], location: PackedInt32Array)
 			if before and id[-1] < location[id.size() - 1]:
 				location[id.size() - 1] -= 1
 		xids_stored.append(id)
-		elements_stored.append(get_element(Utils.get_parent_xid(id)).pop_child(id[-1]))
+		xnodes_stored.append(get_xnode(Utils.get_parent_xid(id)).pop_child(id[-1]))
 	# Add the elements back in the new location.
-	for element in elements_stored:
-		get_element(Utils.get_parent_xid(location)).insert_child(location[-1], element)
+	for xnode in xnodes_stored:
+		get_xnode(Utils.get_parent_xid(location)).insert_child(location[-1], xnode)
 	# Check if this actually chagned the layout.
 	for id in xids_stored:
 		if not Utils.are_xid_parents_same(id, location) or id[-1] < location[-1] or\
@@ -157,7 +152,7 @@ func move_elements_to(xids: Array[PackedInt32Array], location: PackedInt32Array)
 			return
 
 # Duplicates elements and puts them below.
-func duplicate_elements(xids: Array[PackedInt32Array]) -> void:
+func duplicate_xnodes(xids: Array[PackedInt32Array]) -> void:
 	if xids.is_empty():
 		return
 	
@@ -168,12 +163,12 @@ func duplicate_elements(xids: Array[PackedInt32Array]) -> void:
 	var added_to_last_parent := 0
 	
 	for id in xids:
-		var new_element := get_element(id).duplicate()
+		var new_xnode: XNode = get_xnode(id).duplicate()
 		# Add the new element.
 		var new_xid := id.duplicate()
 		new_xid[-1] += 1
 		var parent_xid := Utils.get_parent_xid(new_xid)
-		get_element(parent_xid).insert_child(new_xid[-1], new_element)
+		get_xnode(parent_xid).insert_child(new_xid[-1], new_xnode)
 		# Add the XID and offset the other ones from the same parent.
 		var added_xid_idx := xids_added.size()
 		xids_added.append(new_xid)
@@ -187,8 +182,8 @@ func duplicate_elements(xids: Array[PackedInt32Array]) -> void:
 	elements_added.emit(xids_added)
 	elements_layout_changed.emit()
 
-func replace_element(id: PackedInt32Array, new_element: Element) -> void:
-	get_element(id).parent.replace_child(id[-1], new_element)
+func replace_xnode(id: PackedInt32Array, new_xnode: XNode) -> void:
+	get_xnode(id).parent.replace_child(id[-1], new_xnode)
 	elements_layout_changed.emit()
 
 
@@ -196,34 +191,34 @@ func replace_element(id: PackedInt32Array, new_element: Element) -> void:
 # The return value is true if the SVG can be optimized, otherwise false.
 # If apply_changes is false, you'll only get the return value.
 func optimize(not_applied := false) -> bool:
-	for element in get_all_elements():
+	for element in get_all_element_descendants():
 		match element.name:
 			"ellipse":
 				# If possible, turn ellipses into circles.
 				if element.can_replace("circle"):
 					if not_applied:
 						return true
-					replace_element(element.xid, element.get_replacement("circle"))
+					replace_xnode(element.xid, element.get_replacement("circle"))
 			"line":
 				# Turn lines into paths.
 				if not_applied:
 					return true
-				replace_element(element.xid, element.get_replacement("path"))
+				replace_xnode(element.xid, element.get_replacement("path"))
 			"rect":
 				# If possible, turn rounded rects into circles or ellipses.
 				if element.can_replace("circle"):
 					if not_applied:
 						return true
-					replace_element(element.xid, element.get_replacement("circle"))
+					replace_xnode(element.xid, element.get_replacement("circle"))
 				elif element.can_replace("ellipse"):
 					if not_applied:
 						return true
-					replace_element(element.xid, element.get_replacement("ellipse"))
+					replace_xnode(element.xid, element.get_replacement("ellipse"))
 				elif element.get_rx() == 0:
 					# If the rectangle is not rounded, turn it into a path.
 					if not_applied:
 						return true
-					replace_element(element.xid, element.get_replacement("path"))
+					replace_xnode(element.xid, element.get_replacement("path"))
 			"path":
 				var pathdata: AttributePathdata = element.get_attribute("d")
 				# Simplify A rotation to 0 degrees for circular arcs.

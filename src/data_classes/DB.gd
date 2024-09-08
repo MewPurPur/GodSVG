@@ -20,7 +20,13 @@ const element_icons = {
 	"radialGradient": preload("res://visual/icons/element/radialGradient.svg"),
 	"stop": preload("res://visual/icons/element/stop.svg"),
 }
-const unrecognized_element_icon = preload("res://visual/icons/element/unrecognized.svg")
+const unrecognized_xnode_icon = preload("res://visual/icons/element/unrecognized.svg")
+
+const xnode_icons = {
+	BasicXNode.NodeType.COMMENT: preload("res://visual/icons/element/xmlnodeComment.svg"),
+	BasicXNode.NodeType.TEXT: preload("res://visual/icons/element/xmlnodeText.svg"),
+	BasicXNode.NodeType.CDATA: preload("res://visual/icons/element/xmlnodeCDATA.svg"),
+}
 
 const recognized_attributes = {  # Dictionary{String: Array[String]}
 	# TODO this is just propagated_attributes, but it ruins the const because of Godot bug.
@@ -147,7 +153,11 @@ static func get_valid_parents(child_name: String) -> PackedStringArray:
 
 static func get_element_icon(element_name: String) -> Texture2D:
 	return element_icons[element_name] if element_icons.has(element_name) else\
-			unrecognized_element_icon
+			unrecognized_xnode_icon
+
+static func get_xnode_icon(xnode_type: BasicXNode.NodeType) -> Texture2D:
+	return xnode_icons[xnode_type] if xnode_icons.has(xnode_type) else\
+			unrecognized_xnode_icon
 
 
 static func get_attribute_type(attribute_name: String) -> AttributeType:

@@ -61,7 +61,6 @@ size_flags_horizontal = 3
 focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_override_font_sizes/font_size = 13
-text = "Palettes"
 
 [connection signal="color_changed" from="MainContainer/Content/ColorPicker" to="." method="pick_color"]
 [connection signal="pressed" from="MainContainer/SwitchMode" to="." method="_on_switch_mode_pressed"]

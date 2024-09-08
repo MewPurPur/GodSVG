@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://dfvfsput41mnw"]
 
-[ext_resource type="Script" path="res://src/ui_parts/element_frame.gd" id="1_5mc4m"]
+[ext_resource type="Script" path="res://src/ui_widgets/element_frame.gd" id="1_5mc4m"]
 
 [node name="ElementFrame" type="VBoxContainer"]
 offset_left = 2.0

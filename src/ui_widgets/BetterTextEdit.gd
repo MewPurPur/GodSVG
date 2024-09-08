@@ -27,6 +27,8 @@ func _ready() -> void:
 	mouse_exited.connect(_on_base_class_mouse_exited)
 	focus_entered.connect(_on_base_class_focus_entered)
 	focus_exited.connect(_on_base_class_focus_exited)
+	caret_changed.connect(redraw_caret)
+	
 
 func _exit_tree() -> void:
 	RenderingServer.free_rid(_surface)

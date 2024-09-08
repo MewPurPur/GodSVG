@@ -24,6 +24,7 @@ var swatches_list: Array[ColorSwatchType] = []  # Updated manually.
 
 func _ready() -> void:
 	# Setup the switch mode button.
+	update_switch_mode_button_text()
 	for theme_type in ["normal", "hover", "pressed"]:
 		var sb: StyleBoxFlat = switch_mode_button.get_theme_stylebox(theme_type,
 				"TranslucentButton").duplicate()
@@ -47,7 +48,7 @@ func update_palettes(search_text := "") -> void:
 	var reserved_colors := PackedStringArray(["none"])
 	var reserved_color_names := PackedStringArray(["No color"])
 	if show_url:
-		for element in SVG.root_element.get_all_elements():
+		for element in SVG.root_element.get_all_element_descendants():
 			if element.has_attribute("id"):
 				if element is ElementLinearGradient:
 					reserved_color_names.append("Linear gradient")
@@ -114,7 +115,12 @@ func _on_switch_mode_pressed() -> void:
 	switch_mode_button.text = TranslationServer.translate("Palettes") if palette_mode\
 			else TranslationServer.translate("Color Picker")
 	color_picker_content.visible = not palette_mode
+	update_switch_mode_button_text()
 	palettes_content.visible = palette_mode
+
+func update_switch_mode_button_text() -> void:
+	switch_mode_button.text = TranslationServer.translate("Palettes") if palette_mode\
+			else TranslationServer.translate("Color Picker")
 
 func _exit_tree() -> void:
 	color_picked.emit(current_value, true)

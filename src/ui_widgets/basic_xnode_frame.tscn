@@ -1,0 +1,28 @@
+[gd_scene load_steps=3 format=3 uid="uid://cwc7ke3w7bf6t"]
+
+[ext_resource type="Script" path="res://src/ui_widgets/basic_xnode_frame.gd" id="1_c72yn"]
+[ext_resource type="Script" path="res://src/ui_widgets/BetterTextEdit.gd" id="2_0i3q7"]
+
+[node name="BasicXNodeFrame" type="HBoxContainer"]
+offset_left = 2.0
+offset_top = 2.0
+offset_right = 55.0
+offset_bottom = 32.0
+theme_override_constants/separation = 0
+script = ExtResource("1_c72yn")
+
+[node name="TitleBar" type="Panel" parent="."]
+custom_minimum_size = Vector2(26, 0)
+layout_mode = 2
+size_flags_horizontal = 0
+mouse_filter = 2
+
+[node name="Content" type="PanelContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="TextEdit" type="TextEdit" parent="Content"]
+custom_minimum_size = Vector2(0, 28)
+layout_mode = 2
+script = ExtResource("2_0i3q7")

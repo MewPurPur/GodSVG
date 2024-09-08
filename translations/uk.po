@@ -109,6 +109,15 @@ msgstr "3 або 6 значне шістнадцятирічне число"
 msgid "6-digit hex"
 msgstr "6 значне шістнадцятирічне число"
 
+#: src/data_classes/BasicXNode.gd
+#, fuzzy
+msgid "Comment"
+msgstr "Колір коментаря"
+
+#: src/data_classes/BasicXNode.gd
+msgid "Text"
+msgstr ""
+
 #: src/data_classes/Element.gd
 msgid "{element} must be inside {allowed} to have any effect."
 msgstr "{element} повинен бути всередині {allowed} щоб зміни вступили в силу."
@@ -122,6 +131,7 @@ msgid "This group has only one element."
 msgstr "Ця група має тільки один елемент."
 
 #: src/data_classes/ElementLinearGradient.gd
+#: src/data_classes/ElementRadialGradient.gd
 msgid "No \"id\" attribute defined."
 msgstr "Не вказано \"id\" атрибуту."
 
@@ -373,7 +383,8 @@ msgstr "Обрати SVG"
 msgid "Select an image"
 msgstr "Обрати зображення"
 
-#: src/ui_parts/good_file_dialog.gd src/ui_parts/update_menu.gd
+#: src/ui_parts/good_file_dialog.gd src/ui_parts/settings_menu.gd
+#: src/ui_parts/update_menu.gd
 msgid "Close"
 msgstr "Закрити"
 
@@ -707,6 +718,15 @@ msgstr "Без назви"
 #: src/ui_widgets/formatter_config.gd src/ui_widgets/palette_config.gd
 msgid "Rename"
 msgstr "Перейменувати"
+
+#: src/ui_widgets/formatter_config.gd
+msgid "Keep comments"
+msgstr ""
+
+#: src/ui_widgets/formatter_config.gd
+#, fuzzy
+msgid "Keep unrecognized XML structures"
+msgstr "Невідомий атрибут"
 
 #: src/ui_widgets/formatter_config.gd
 msgid "Add trailing newline"

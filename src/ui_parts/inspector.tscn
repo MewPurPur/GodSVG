@@ -65,7 +65,7 @@ theme_override_constants/separation = 8
 [node name="RootElementEditor" parent="ElementContainer/ScrollContainer/MarginContainer/AllElements" instance=ExtResource("2_jnl50")]
 layout_mode = 2
 
-[node name="Elements" type="VBoxContainer" parent="ElementContainer/ScrollContainer/MarginContainer/AllElements"]
+[node name="RootChildren" type="VBoxContainer" parent="ElementContainer/ScrollContainer/MarginContainer/AllElements"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
