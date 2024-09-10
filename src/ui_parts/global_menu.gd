@@ -129,7 +129,7 @@ func _setup_menu_items() -> void:
 	_add_action(view_rid, "zoom_out")
 	_add_action(view_rid, "zoom_reset")
 	# Snap menu.
-	snap_enable_idx = _add_check_item(snap_rid, "snap_toggle")
+	snap_enable_idx = _add_check_item(snap_rid, "toggle_snap")
 	NativeMenu.add_separator(snap_rid)
 	snap_0125_idx = NativeMenu.add_radio_check_item(snap_rid, "0.125", _set_snap, _set_snap, 0.125)
 	snap_025_idx = NativeMenu.add_radio_check_item(snap_rid, "0.25", _set_snap, _set_snap, 0.25)

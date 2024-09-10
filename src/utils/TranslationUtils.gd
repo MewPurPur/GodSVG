@@ -24,7 +24,7 @@ static func get_shortcut_description(action_name: String) -> String:
 		"view_show_grid": return TranslationServer.translate("Show grid")
 		"view_show_handles": return TranslationServer.translate("Show handles")
 		"view_rasterized_svg": return TranslationServer.translate("Show rasterized SVG")
-		"snap_toggle": return TranslationServer.translate("Enable snap")
+		"toggle_snap": return TranslationServer.translate("Toggle snapping")
 		"load_reference": return TranslationServer.translate("Load reference image")
 		"view_show_reference": return TranslationServer.translate("Show reference image")
 		"view_overlay_reference": return TranslationServer.translate("Overlay reference image")

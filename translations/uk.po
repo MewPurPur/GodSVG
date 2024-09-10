@@ -264,10 +264,6 @@ msgid "About…"
 msgstr "Про додаток…"
 
 #: src/ui_parts/display.gd
-msgid "Enable snapping"
-msgstr "Активувати прилипання"
-
-#: src/ui_parts/display.gd
 msgid "Snap size"
 msgstr "Розмір прилипання"
 
@@ -942,7 +938,8 @@ msgid "Show rasterized SVG"
 msgstr "Показати растеризуваний SVG"
 
 #: src/utils/TranslationUtils.gd
-msgid "Enable snap"
+#, fuzzy
+msgid "Toggle snapping"
 msgstr "Активувати прилипання"
 
 # Нехай "reference image" буде "еталонне зображення", мені так гугл сказав
@@ -1021,6 +1018,9 @@ msgstr "Кубічна Безьє до"
 #: src/utils/TranslationUtils.gd
 msgid "Shorthand Cubic Bezier to"
 msgstr "Скорочена кубічна Безьє до"
+
+#~ msgid "Enable snap"
+#~ msgstr "Активувати прилипання"
 
 #~ msgid "General"
 #~ msgstr "Загальні"

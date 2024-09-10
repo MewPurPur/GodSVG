@@ -262,10 +262,6 @@ msgid "About…"
 msgstr "Относно приложението…"
 
 #: src/ui_parts/display.gd
-msgid "Enable snapping"
-msgstr "Включи захващането"
-
-#: src/ui_parts/display.gd
 msgid "Snap size"
 msgstr "Размер на захващането"
 
@@ -933,8 +929,8 @@ msgid "Show rasterized SVG"
 msgstr "Покажи растеризиран SVG"
 
 #: src/utils/TranslationUtils.gd
-msgid "Enable snap"
-msgstr "Включи захващането"
+msgid "Toggle snapping"
+msgstr "Превключи захващането"
 
 #: src/utils/TranslationUtils.gd
 msgid "Show reference image"
