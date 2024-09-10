@@ -34,6 +34,7 @@ const _keybinds_dict = {
 		"view_overlay_reference": true,
 	},
 	"tool": {
+		"toggle_snap": true,
 		"move_relative": false,
 		"move_absolute": false,
 		"line_relative": false,
@@ -97,6 +98,7 @@ static func fn(shortcut: String) -> Callable:
 		"about_website": return OS.shell_open.bind("https://godsvg.com")
 		"check_updates": return HandlerGUI.open_update_checker
 		"open_settings": return HandlerGUI.open_settings
+		"toggle_snap": return Callable()
 		_: return Callable()
 
 static func get_keybinds(category: String) -> PackedStringArray:

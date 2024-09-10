@@ -264,10 +264,6 @@ msgid "About…"
 msgstr "Over…"
 
 #: src/ui_parts/display.gd
-msgid "Enable snapping"
-msgstr "Snappen inschakelen"
-
-#: src/ui_parts/display.gd
 msgid "Snap size"
 msgstr "Snap maat"
 
@@ -935,8 +931,9 @@ msgid "Show rasterized SVG"
 msgstr "Gerasterd SVG weergeven"
 
 #: src/utils/TranslationUtils.gd
-msgid "Enable snap"
-msgstr "Snap inschakelen"
+#, fuzzy
+msgid "Toggle snapping"
+msgstr "Snappen inschakelen"
 
 #: src/utils/TranslationUtils.gd
 msgid "Show reference image"
@@ -1013,3 +1010,6 @@ msgstr "Kubieke Bézier naar"
 #: src/utils/TranslationUtils.gd
 msgid "Shorthand Cubic Bezier to"
 msgstr "Korte Kubieke Bézier naar"
+
+#~ msgid "Enable snap"
+#~ msgstr "Snap inschakelen"

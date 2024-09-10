@@ -265,10 +265,6 @@ msgid "About…"
 msgstr "Про программу…"
 
 #: src/ui_parts/display.gd
-msgid "Enable snapping"
-msgstr "Включить привязку"
-
-#: src/ui_parts/display.gd
 msgid "Snap size"
 msgstr "Размер привязки"
 
@@ -939,7 +935,8 @@ msgid "Show rasterized SVG"
 msgstr "Показать растеризованый SVG"
 
 #: src/utils/TranslationUtils.gd
-msgid "Enable snap"
+#, fuzzy
+msgid "Toggle snapping"
 msgstr "Включить привязку"
 
 #: src/utils/TranslationUtils.gd
@@ -1017,6 +1014,9 @@ msgstr "Кубическая Безье до"
 #: src/utils/TranslationUtils.gd
 msgid "Shorthand Cubic Bezier to"
 msgstr "Сокращенная кубическая Безье до"
+
+#~ msgid "Enable snap"
+#~ msgstr "Включить привязку"
 
 #~ msgid "General"
 #~ msgstr "Общие"

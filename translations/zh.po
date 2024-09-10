@@ -263,10 +263,6 @@ msgid "About…"
 msgstr "关于…"
 
 #: src/ui_parts/display.gd
-msgid "Enable snapping"
-msgstr "启用吸附"
-
-#: src/ui_parts/display.gd
 msgid "Snap size"
 msgstr "吸附大小"
 
@@ -950,7 +946,7 @@ msgstr "显示光栅化 SVG"
 
 #: src/utils/TranslationUtils.gd
 #, fuzzy
-msgid "Enable snap"
+msgid "Toggle snapping"
 msgstr "启用吸附"
 
 #: src/utils/TranslationUtils.gd
@@ -1028,6 +1024,10 @@ msgstr "三点三次贝塞尔曲线"
 #: src/utils/TranslationUtils.gd
 msgid "Shorthand Cubic Bezier to"
 msgstr "两点三次贝塞尔曲线"
+
+#, fuzzy
+#~ msgid "Enable snap"
+#~ msgstr "启用吸附"
 
 #~ msgid "General"
 #~ msgstr "通用"

@@ -264,10 +264,6 @@ msgid "About…"
 msgstr "Über…"
 
 #: src/ui_parts/display.gd
-msgid "Enable snapping"
-msgstr "Einrasten aktivieren"
-
-#: src/ui_parts/display.gd
 msgid "Snap size"
 msgstr "Rastergröße"
 
@@ -936,7 +932,8 @@ msgid "Show rasterized SVG"
 msgstr "Rasterisiertes SVG anzeigen"
 
 #: src/utils/TranslationUtils.gd
-msgid "Enable snap"
+#, fuzzy
+msgid "Toggle snapping"
 msgstr "Einrasten aktivieren"
 
 #: src/utils/TranslationUtils.gd
@@ -1014,6 +1011,9 @@ msgstr "Kubischer Bezier to"
 #: src/utils/TranslationUtils.gd
 msgid "Shorthand Cubic Bezier to"
 msgstr "Kurzhand-Kubischer Bezier to"
+
+#~ msgid "Enable snap"
+#~ msgstr "Einrasten aktivieren"
 
 #~ msgid "General"
 #~ msgstr "Allgemein"

@@ -62,15 +62,15 @@ func _unhandled_input(input_event: InputEvent) -> void:
 		toggle_reference_image()
 	elif input_event.is_action_pressed("view_overlay_reference"):
 		toggle_reference_overlay()
-	elif input_event.is_action_pressed("snap_toggle"):
+	elif input_event.is_action_pressed("toggle_snap"):
 		toggle_snap()
 
 
 func update_translations() -> void:
 	%LeftMenu/Settings.tooltip_text = TranslationServer.translate("Settings")
 	%LeftMenu/Visuals.tooltip_text = TranslationServer.translate("Visuals")
-	%LeftMenu/Snapping/SnapButton.tooltip_text = TranslationServer.translate(
-			"Enable snapping")
+	%LeftMenu/Snapping/SnapButton.tooltip_text =\
+			TranslationUtils.get_shortcut_description("toggle_snap")
 	%LeftMenu/Snapping/SnapNumberEdit.tooltip_text = TranslationServer.translate(
 			"Snap size")
 

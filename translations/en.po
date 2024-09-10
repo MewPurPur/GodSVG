@@ -260,10 +260,6 @@ msgid "About…"
 msgstr ""
 
 #: src/ui_parts/display.gd
-msgid "Enable snapping"
-msgstr ""
-
-#: src/ui_parts/display.gd
 msgid "Snap size"
 msgstr ""
 
@@ -919,7 +915,7 @@ msgid "Show rasterized SVG"
 msgstr ""
 
 #: src/utils/TranslationUtils.gd
-msgid "Enable snap"
+msgid "Toggle snapping"
 msgstr ""
 
 #: src/utils/TranslationUtils.gd
