@@ -209,9 +209,18 @@ jobs:
           if-no-files-found: error
           retention-days: 28
   build-web:
-    name: Get GodSVG export template for Web
+    name: Export GodSVG for Web
     runs-on: ubuntu-latest
     steps:
+      - name: Set up Godot Editor
+        run: |
+          mkdir -v -p ~/godot-editor
+          cd ~/godot-editor
+          wget -q https://github.com/godotengine/godot-builds/releases/download/${GODOT_VERSION}-${GODOT_RELEASE}/Godot_v${GODOT_VERSION}-${GODOT_RELEASE}_linux.x86_64.zip
+          unzip Godot_v${GODOT_VERSION}-${GODOT_RELEASE}_linux.x86_64.zip
+          mv ./Godot_v${GODOT_VERSION}-${GODOT_RELEASE}_linux.x86_64 ~/godot-editor/godot
+          echo "~/godot-editor" >> $GITHUB_PATH
+
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
@@ -242,12 +251,20 @@ jobs:
         run: |
           cd godot
           source ../emsdk/emsdk_env.sh
-          scons p=web arch=wasm32 optimize=size lto=auto threads=no ${BUILD_OPTIONS}
+          scons p=web arch=wasm32 ${BUILD_OPTIONS} threads=no
+          mkdir -v -p ~/.local/share/godot/export_templates/${GODOT_VERSION}.${GODOT_RELEASE}/
+          mv ./bin/godot.web.template_release.wasm32.nothreads.zip ~/.local/share/godot/export_templates/${GODOT_VERSION}.${GODOT_RELEASE}/web_nothreads_release.zip
+
+      - name: Export project
+        run: |
+          cd godsvg
+          mkdir -v -p build/web
+          godot --headless --export-release "Web" build/web/index.html
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: godot_template_web.zip
-          path: godot/bin/godot.web.template_release.wasm32.nothreads.zip
+          name: ${{ env.PROJECT_NAME }}.Web
+          path: godsvg/build/web
           if-no-files-found: error
-          retention-days: 1
+          retention-days: 28
