@@ -8,7 +8,10 @@ func _sync() -> void:
 
 func set_list(new_list: PackedFloat32Array) -> void:
 	_list = new_list
-	super.set_value(list_to_text(new_list))
+	sync_after_list_change()
+
+func sync_after_list_change() -> void:
+	super.set_value(list_to_text(_list))
 
 func get_list() -> PackedFloat32Array:
 	return _list
@@ -21,13 +24,42 @@ func set_rect(new_rect: Rect2) -> void:
 	set_list(PackedFloat32Array([new_rect.position.x, new_rect.position.y,
 			new_rect.size.x, new_rect.size.y]))
 
+# Just a helper to return the list as if it's a list of points.
+func get_points() -> PackedVector2Array:
+	var points := PackedVector2Array()
+	for idx in get_list_size() / 2:
+		points.append(Vector2(get_list_element(idx * 2), get_list_element(idx * 2 + 1)))
+	return points
+
+func set_points(points: PackedVector2Array) -> void:
+	var new_list := PackedFloat32Array()
+	for point in points:
+		new_list.append(point.x)
+		new_list.append(point.y)
+	set_list(new_list)
+
 
 func set_list_element(idx: int, new_value: float) -> void:
 	_list[idx] = new_value
-	set_value(list_to_text(_list))
+	sync_after_list_change()
 
 func get_list_element(idx: int) -> float:
 	return _list[idx] if idx < _list.size() else NAN
+
+func delete_elements(indices: Array[int]) -> void:
+	if indices.is_empty():
+		return
+	
+	indices = indices.duplicate()
+	indices.sort()
+	indices.reverse()
+	for idx in indices:
+		_list.remove_at(idx)
+	sync_after_list_change()
+
+func insert_element(idx: int, value := 0.0) -> void:
+	_list.insert(idx, value)
+	sync_after_list_change()
 
 
 static func text_to_list(string: String) -> PackedFloat32Array:

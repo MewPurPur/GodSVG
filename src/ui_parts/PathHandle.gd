@@ -27,6 +27,10 @@ func set_pos(new_pos: Vector2) -> void:
 
 
 func sync() -> void:
+	if command_index >= element.get_attribute(pathdata_name).get_command_count():
+		# Handle might have been removed.
+		return
+	
 	var command: PathCommand =\
 			element.get_attribute(pathdata_name).get_command(command_index)
 	if x_param in command:

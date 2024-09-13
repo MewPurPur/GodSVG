@@ -96,15 +96,15 @@ func _gui_input(event: InputEvent) -> void:
 				location += 1
 			# Create the context popup.
 			var btn_array: Array[Button] = []
-			for element_name in ["path", "circle", "ellipse", "rect", "line", "g",
-			"linearGradient", "radialGradient", "stop"]:
+			for element_name in ["path", "circle", "ellipse", "rect", "line", "polygon",
+			"polyline", "g", "linearGradient", "radialGradient", "stop"]:
 				var btn := ContextPopup.create_button(element_name,
 						add_element.bind(element_name, location), false,
 						DB.get_element_icon(element_name))
 				btn.add_theme_font_override("font", ThemeUtils.mono_font)
 				btn_array.append(btn)
 			
-			var separation_indices := PackedInt32Array([1, 5])
+			var separation_indices := PackedInt32Array([1, 4, 7])
 			
 			var add_popup := ContextPopup.new()
 			add_popup.setup_with_title(btn_array, TranslationServer.translate("New element"),

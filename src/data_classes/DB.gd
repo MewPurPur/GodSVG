@@ -6,7 +6,7 @@ enum NumberRange {ARBITRARY, POSITIVE, UNIT}
 
 
 const recognized_elements = ["svg", "g", "circle", "ellipse", "rect", "path", "line",
-		"stop", "linearGradient", "radialGradient"]
+		"polyline", "polygon", "stop", "linearGradient", "radialGradient"]
 
 const element_icons = {
 	"circle": preload("res://visual/icons/element/circle.svg"),
@@ -14,6 +14,8 @@ const element_icons = {
 	"rect": preload("res://visual/icons/element/rect.svg"),
 	"path": preload("res://visual/icons/element/path.svg"),
 	"line": preload("res://visual/icons/element/line.svg"),
+	"polygon":  preload("res://visual/icons/element/polygon.svg"),
+	"polyline":  preload("res://visual/icons/element/polyline.svg"),
 	"svg": preload("res://visual/icons/element/svg.svg"),
 	"g": preload("res://visual/icons/element/g.svg"),
 	"linearGradient": preload("res://visual/icons/element/linearGradient.svg"),
@@ -48,14 +50,18 @@ const recognized_attributes = {  # Dictionary{String: Array[String]}
 			"stroke-width", "stroke-linecap", "stroke-linejoin", "d"],
 	"line": ["transform", "opacity", "stroke", "stroke-opacity", "stroke-width",
 			"stroke-linecap", "x1", "y1", "x2", "y2"],
+	"polygon": ["transform", "opacity", "fill", "fill-opacity", "stroke", "stroke-opacity",
+			"stroke-width", "stroke-linecap", "stroke-linejoin", "points"],
+	"polyline": ["transform", "opacity", "fill", "fill-opacity", "stroke",
+			"stroke-opacity", "stroke-width", "stroke-linecap", "stroke-linejoin", "points"],
 	"stop": ["offset", "stop-color", "stop-opacity"],
 }
 
 const valid_children = {  # Dictionary{String: Array[String]}
-	"svg": ["svg", "path", "circle", "ellipse", "rect", "line", "g", "linearGradient",
-			"radialGradient"],
-	"g": ["svg", "path", "circle", "ellipse", "rect", "line", "g", "linearGradient",
-			"radialGradient"],
+	"svg": ["svg", "path", "circle", "ellipse", "rect", "line", "polygon", "polyline",
+			"g", "linearGradient", "radialGradient"],
+	"g": ["svg", "path", "circle", "ellipse", "rect", "line", "polygon", "polyline",
+			"g", "linearGradient", "radialGradient"],
 	"linearGradient": ["stop"],
 	"radialGradient": ["stop"],
 	"circle": [],
@@ -63,6 +69,8 @@ const valid_children = {  # Dictionary{String: Array[String]}
 	"rect": [],
 	"path": [],
 	"line": [],
+	"polygon": [],
+	"polyline": [],
 	"stop": [],
 }
 
@@ -93,6 +101,7 @@ const attribute_types = {
 	"stroke-linecap": AttributeType.ENUM,
 	"stroke-linejoin": AttributeType.ENUM,
 	"d": AttributeType.PATHDATA,
+	"points": AttributeType.LIST,
 	"transform": AttributeType.TRANSFORM_LIST,
 	"offset": AttributeType.NUMERIC,
 	"stop-color": AttributeType.COLOR,
@@ -201,6 +210,8 @@ static func element(name: String) -> Element:
 		"rect": return ElementRect.new()
 		"path": return ElementPath.new()
 		"line": return ElementLine.new()
+		"polygon": return ElementPolygon.new()
+		"polyline": return ElementPolyline.new()
 		"linearGradient": return ElementLinearGradient.new()
 		"radialGradient": return ElementRadialGradient.new()
 		"stop": return ElementStop.new()

@@ -64,7 +64,7 @@ func _on_pressed() -> void:
 
 func _on_text_submitted(new_text: String) -> void:
 	if new_text.is_empty() or new_text in DB.attribute_enum_values[attribute_name]:
-		set_value(new_text)
+		set_value(new_text, true)
 	else:
 		sync_to_attribute()
 

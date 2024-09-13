@@ -99,8 +99,8 @@ corner_radius_top_right = 4
 corner_radius_bottom_right = 4
 corner_radius_bottom_left = 4
 
-[node name="PathDataField" type="VBoxContainer"]
-offset_right = 336.0
+[node name="PathdataField" type="VBoxContainer"]
+offset_right = 358.0
 offset_bottom = 45.0
 theme_override_constants/separation = 2
 script = ExtResource("1_22rk2")
@@ -116,7 +116,6 @@ custom_minimum_size = Vector2(358, 0)
 layout_mode = 2
 size_flags_horizontal = 0
 focus_mode = 1
-placeholder_text = "No path data"
 script = ExtResource("2_48xgh")
 mono_font_tooltip = true
 
@@ -124,6 +123,3 @@ mono_font_tooltip = true
 custom_minimum_size = Vector2(344, 0)
 layout_mode = 2
 size_flags_horizontal = 8
-
-[connection signal="gui_input" from="Commands" to="." method="_on_commands_gui_input"]
-[connection signal="mouse_exited" from="Commands" to="." method="_on_commands_mouse_exited"]

@@ -9,7 +9,7 @@ const attribute_name = "d"  # Never propagates.
 # adding too many nodes to the scene tree. The real controls are only created when
 # necessary, such as when hovered or focused.
 
-const COMMAND_HEIGHT = 22.0
+const STRIP_HEIGHT = 22.0
 
 @export var absolute_button_normal: StyleBoxFlat
 @export var absolute_button_hovered: StyleBoxFlat
@@ -70,6 +70,8 @@ func setup() -> void:
 	line_edit.text_change_canceled.connect(func(): setup_font(line_edit.text))
 	line_edit.focus_entered.connect(_on_line_edit_focus_entered)
 	commands_container.draw.connect(commands_draw)
+	commands_container.gui_input.connect(_on_commands_gui_input)
+	commands_container.mouse_exited.connect(_on_commands_mouse_exited)
 	Indications.hover_changed.connect(_on_selections_or_hover_changed)
 	Indications.selection_changed.connect(_on_selections_or_hover_changed)
 	update_translation()
@@ -109,9 +111,9 @@ func sync(new_value: String) -> void:
 	elif cmd_count != 0 and is_instance_valid(add_move_button):
 		add_move_button.queue_free()
 	# Rebuild the path commands.
-	commands_container.custom_minimum_size.y = cmd_count * COMMAND_HEIGHT
+	commands_container.custom_minimum_size.y = cmd_count * STRIP_HEIGHT
 	Utils.throw_mouse_motion_event()
-	if hovered_idx >= element.get_attribute(attribute_name).get_command_count():
+	if hovered_idx >= cmd_count:
 		activate_hovered(-1)
 	reactivate_hovered()
 	commands_container.queue_redraw()
@@ -172,7 +174,7 @@ func _on_commands_gui_input(event: InputEvent) -> void:
 	var cmd_idx := -1
 	var event_pos: Vector2 = event.position
 	if Rect2(Vector2.ZERO, commands_container.get_size()).has_point(event_pos):
-		cmd_idx = int(event_pos.y / COMMAND_HEIGHT)
+		cmd_idx = int(event_pos.y / STRIP_HEIGHT)
 	
 	if event is InputEventMouseMotion and event.button_mask == 0:
 		if cmd_idx >= 0:
@@ -216,7 +218,7 @@ func _on_commands_gui_input(event: InputEvent) -> void:
 func commands_draw() -> void:
 	RenderingServer.canvas_item_clear(ci)
 	for i: int in element.get_attribute(attribute_name).get_command_count():
-		var v_offset := COMMAND_HEIGHT * i
+		var v_offset := STRIP_HEIGHT * i
 		# Draw the background hover or selection stylebox.
 		var hovered := Indications.is_hovered(element.xid, i)
 		var selected := Indications.is_selected(element.xid, i)
@@ -229,7 +231,7 @@ func commands_draw() -> void:
 			else:
 				stylebox.bg_color = Color(0.8, 0.8, 1.0, 0.05)
 			stylebox.draw(ci, Rect2(Vector2(0, v_offset), Vector2(commands_container.size.x,
-					COMMAND_HEIGHT)))
+					STRIP_HEIGHT)))
 		# Draw the child controls. They are going to be drawn, not added as a node unless
 		# the mouse hovers them. This is a hack to significantly improve performance.
 		if i == hovered_idx or i == focused_idx:
@@ -244,8 +246,8 @@ func commands_draw() -> void:
 		var relative_stylebox := absolute_button_normal if\
 				Utils.is_string_upper(cmd_char) else relative_button_normal
 		relative_stylebox.draw(ci, Rect2(Vector2(3, 2 + v_offset),
-				Vector2(18, COMMAND_HEIGHT - 4)))
-		ThemeUtils.mono_font.draw_string(ci, Vector2(6, v_offset + COMMAND_HEIGHT - 6),
+				Vector2(18, STRIP_HEIGHT - 4)))
+		ThemeUtils.mono_font.draw_string(ci, Vector2(6, v_offset + STRIP_HEIGHT - 6),
 				cmd_char, HORIZONTAL_ALIGNMENT_CENTER, 12, 13)
 		# Draw the fields.
 		var rect := Rect2(Vector2(25, 2 + v_offset), Vector2(44, 18))
@@ -356,8 +358,8 @@ func setup_path_command_controls(idx: int) -> Control:
 	var is_absolute := Utils.is_string_upper(cmd_char)
 	
 	var container := Control.new()
-	container.position.y = idx * COMMAND_HEIGHT
-	container.size = Vector2(commands_container.size.x, COMMAND_HEIGHT)
+	container.position.y = idx * STRIP_HEIGHT
+	container.size = Vector2(commands_container.size.x, STRIP_HEIGHT)
 	container.mouse_filter = Control.MOUSE_FILTER_PASS
 	commands_container.add_child(container)
 	# Setup the relative button.
@@ -390,7 +392,7 @@ func setup_path_command_controls(idx: int) -> Control:
 	relative_button.pressed.connect(_on_relative_button_pressed)
 	relative_button.gui_input.connect(_eat_double_clicks.bind(relative_button))
 	relative_button.position = Vector2(3, 2)
-	relative_button.size = Vector2(COMMAND_HEIGHT - 4, COMMAND_HEIGHT - 4)
+	relative_button.size = Vector2(STRIP_HEIGHT - 4, STRIP_HEIGHT - 4)
 	# Setup the action button.
 	var action_button := Button.new()
 	action_button.icon = more_icon
@@ -402,7 +404,7 @@ func setup_path_command_controls(idx: int) -> Control:
 	action_button.pressed.connect(_on_action_button_pressed.bind(action_button))
 	action_button.gui_input.connect(_eat_double_clicks.bind(action_button))
 	action_button.position = Vector2(commands_container.size.x - 21, 2)
-	action_button.size = Vector2(COMMAND_HEIGHT - 4, COMMAND_HEIGHT - 4)
+	action_button.size = Vector2(STRIP_HEIGHT - 4, STRIP_HEIGHT - 4)
 	# Setup the fields.
 	var fields: Array[Control] = []
 	var spacings := PackedInt32Array()

@@ -1,17 +1,17 @@
 extends VBoxContainer
 
 @onready var attribute_container: HFlowContainer = $AttributeContainer
-@onready var path_field: VBoxContainer = $PathField
+@onready var points_field: VBoxContainer = $PointsField
 
 var element: Element
 
 func _ready() -> void:
-	path_field.element = element
-	path_field.setup()
-	path_field.focused.connect(Indications.normal_select.bind(element.xid))
+	points_field.element = element
+	points_field.setup()
+	points_field.focused.connect(Indications.normal_select.bind(element.xid))
 	
-	for attribute in DB.recognized_attributes["path"]:
-		if attribute == "d":
+	for attribute in DB.recognized_attributes[element.name]:
+		if attribute == "points":
 			continue
 		var input_field := AttributeFieldBuilder.create(attribute, element)
 		# Focused signal for pathdata attribute.

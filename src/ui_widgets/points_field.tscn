@@ -1,0 +1,23 @@
+[gd_scene load_steps=3 format=3 uid="uid://b2gchy70px8jt"]
+
+[ext_resource type="Script" path="res://src/ui_widgets/points_field.gd" id="1_pnk5w"]
+[ext_resource type="Script" path="res://src/ui_widgets/BetterLineEdit.gd" id="2_4uivs"]
+
+[node name="PointsField" type="VBoxContainer"]
+offset_right = 358.0
+offset_bottom = 45.0
+theme_override_constants/separation = 2
+script = ExtResource("1_pnk5w")
+
+[node name="LineEdit" type="LineEdit" parent="."]
+custom_minimum_size = Vector2(358, 0)
+layout_mode = 2
+size_flags_horizontal = 0
+focus_mode = 1
+script = ExtResource("2_4uivs")
+mono_font_tooltip = true
+
+[node name="Points" type="Control" parent="."]
+custom_minimum_size = Vector2(344, 0)
+layout_mode = 2
+size_flags_horizontal = 8
