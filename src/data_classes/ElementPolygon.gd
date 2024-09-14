@@ -23,6 +23,7 @@ func get_bounding_box() -> Rect2:
 	var max_x := -INF
 	var max_y := -INF
 	
+	@warning_ignore("integer_division")
 	for idx in list.get_list_size() / 2:
 		var x_coord := list.get_list_element(idx * 2)
 		var y_coord := list.get_list_element(idx * 2 + 1)

@@ -167,6 +167,7 @@ var last_mouse_click_double := false
 
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("quit"):
+		remove_all_overlays()
 		var confirm_dialog = ConfirmDialog.instantiate()
 		add_overlay(confirm_dialog)
 		confirm_dialog.setup(TranslationServer.translate("Quit GodSVG"),

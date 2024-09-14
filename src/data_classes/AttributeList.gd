@@ -27,6 +27,7 @@ func set_rect(new_rect: Rect2) -> void:
 # Just a helper to return the list as if it's a list of points.
 func get_points() -> PackedVector2Array:
 	var points := PackedVector2Array()
+	@warning_ignore("integer_division")
 	for idx in get_list_size() / 2:
 		points.append(Vector2(get_list_element(idx * 2), get_list_element(idx * 2 + 1)))
 	return points
