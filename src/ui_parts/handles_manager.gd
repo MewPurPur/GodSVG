@@ -128,6 +128,8 @@ func update_handles() -> void:
 			"line":
 				handles.append(XYHandle.new(element, "x1", "y1"))
 				handles.append(XYHandle.new(element, "x2", "y2"))
+			"polygon", "polyline":
+				handles += generate_polyhandles(element)
 			"path":
 				handles += generate_path_handles(element)
 	# Pretend the mouse was moved to update the hovering.
@@ -136,7 +138,7 @@ func update_handles() -> void:
 
 func sync_handles(xid: PackedInt32Array) -> void:
 	var element := SVG.root_element.get_xnode(xid)
-	if not element is ElementPath:
+	if not (element is ElementPath or element is ElementPolygon or element is ElementPolyline):
 		queue_redraw()
 		return
 	
@@ -146,6 +148,7 @@ func sync_handles(xid: PackedInt32Array) -> void:
 			new_handles.append(handle)
 	handles = new_handles
 	handles += generate_path_handles(element)
+	handles += generate_polyhandles(element)
 	queue_redraw()
 
 func generate_path_handles(element: Element) -> Array[Handle]:
@@ -166,6 +169,13 @@ func generate_path_handles(element: Element) -> Array[Handle]:
 			path_handles.append(tangent)
 		path_handles.append(PathHandle.new(element, idx, "x", "y"))
 	return path_handles
+
+func generate_polyhandles(element: Element) -> Array[Handle]:
+	var points: PackedVector2Array = element.get_attribute("points").get_points()
+	var polyhandles: Array[Handle] = []
+	for idx in points.size():
+		polyhandles.append(PolyHandle.new(element, idx))
+	return polyhandles
 
 
 func _draw() -> void:
@@ -324,6 +334,52 @@ func _draw() -> void:
 					selected_polylines.append(points)
 				else:
 					normal_polylines.append(points)
+			
+			"polygon", "polyline":
+				var point_list: PackedVector2Array = element.get_attribute("points").get_points()
+				
+				var current_mode := Utils.InteractionType.NONE
+				for idx in range(1, point_list.size()):
+					current_mode = Utils.InteractionType.NONE
+					if Indications.is_hovered(element.xid, idx, true):
+						@warning_ignore("int_as_enum_without_cast")
+						current_mode += Utils.InteractionType.HOVERED
+					if Indications.is_selected(element.xid, idx, true):
+						@warning_ignore("int_as_enum_without_cast")
+						current_mode += Utils.InteractionType.SELECTED
+					
+					var points := PackedVector2Array([point_list[idx - 1], point_list[idx]])
+					points = element.get_transform() * points
+					match current_mode:
+						Utils.InteractionType.NONE:
+							normal_polylines.append(points)
+						Utils.InteractionType.HOVERED:
+							hovered_polylines.append(points)
+						Utils.InteractionType.SELECTED:
+							selected_polylines.append(points)
+						Utils.InteractionType.HOVERED_SELECTED:
+							hovered_selected_polylines.append(points)
+				
+				if element.name == "polygon" and point_list.size() > 2:
+					current_mode = Utils.InteractionType.NONE
+					if Indications.is_hovered(element.xid, 0, true):
+						@warning_ignore("int_as_enum_without_cast")
+						current_mode += Utils.InteractionType.HOVERED
+					if Indications.is_selected(element.xid, 0, true):
+						@warning_ignore("int_as_enum_without_cast")
+						current_mode += Utils.InteractionType.SELECTED
+					
+					var points := PackedVector2Array([point_list[-1], point_list[0]])
+					points = element.get_transform() * points
+					match current_mode:
+						Utils.InteractionType.NONE:
+							normal_polylines.append(points)
+						Utils.InteractionType.HOVERED:
+							hovered_polylines.append(points)
+						Utils.InteractionType.SELECTED:
+							selected_polylines.append(points)
+						Utils.InteractionType.HOVERED_SELECTED:
+							hovered_selected_polylines.append(points)
 			
 			"path":
 				var pathdata: AttributePathdata = element.get_attribute("d")
@@ -543,9 +599,13 @@ func _draw() -> void:
 	var hovered_handles: Array[Handle] = []
 	var hovered_selected_handles: Array[Handle] = []
 	for handle in handles:
-		var cmd_idx: int = handle.command_index if handle is PathHandle else -1
-		var is_hovered := Indications.is_hovered(handle.element.xid, cmd_idx, true)
-		var is_selected := Indications.is_selected(handle.element.xid, cmd_idx, true)
+		var inner_idx := -1
+		if handle is PathHandle:
+			inner_idx = handle.command_index
+		elif handle is PolyHandle:
+			inner_idx = handle.point_index
+		var is_hovered := Indications.is_hovered(handle.element.xid, inner_idx, true)
+		var is_selected := Indications.is_selected(handle.element.xid, inner_idx, true)
 		
 		if is_hovered and is_selected:
 			hovered_selected_handles.append(handle)
@@ -630,6 +690,8 @@ func _unhandled_input(event: InputEvent) -> void:
 			hovered_handle = nearest_handle
 			if hovered_handle is PathHandle:
 				Indications.set_hovered(hovered_handle.element.xid, hovered_handle.command_index)
+			elif hovered_handle is PolyHandle:
+				Indications.set_hovered(hovered_handle.element.xid, hovered_handle.point_index)
 			else:
 				Indications.set_hovered(hovered_handle.element.xid)
 		else:
@@ -663,14 +725,17 @@ func _unhandled_input(event: InputEvent) -> void:
 				var dragged_xid := dragged_handle.element.xid
 				if dragged_handle is PathHandle:
 					inner_idx = dragged_handle.command_index
+				if dragged_handle is PolyHandle:
+					inner_idx = dragged_handle.point_index
 				
 				if event.double_click and inner_idx != -1:
 					# Unselect the element, so then it's selected again in the subpath.
-					Indications.ctrl_select(dragged_xid, inner_idx)
-					var subpath_range: Vector2i =\
-							dragged_handle.element.get_attribute("d").get_subpath(inner_idx)
-					for idx in range(subpath_range.x, subpath_range.y + 1):
-						Indications.ctrl_select(dragged_xid, idx)
+					if dragged_handle is PathHandle:
+						Indications.ctrl_select(dragged_xid, inner_idx)
+						var subpath_range: Vector2i =\
+								dragged_handle.element.get_attribute("d").get_subpath(inner_idx)
+						for idx in range(subpath_range.x, subpath_range.y + 1):
+							Indications.ctrl_select(dragged_xid, idx)
 				elif event.is_command_or_control_pressed():
 					Indications.ctrl_select(dragged_xid, inner_idx)
 				elif event.shift_pressed:
@@ -701,6 +766,8 @@ func _unhandled_input(event: InputEvent) -> void:
 				var inner_idx := -1
 				if hovered_handle is PathHandle:
 					inner_idx = hovered_handle.command_index
+				if hovered_handle is PolyHandle:
+					inner_idx = hovered_handle.point_index
 				
 				if (Indications.semi_selected_xid != hovered_xid or\
 				not inner_idx in Indications.inner_selections) and\
@@ -766,13 +833,13 @@ func _on_handle_added() -> void:
 # Creates a popup for adding a shape at a position.
 func create_element_context(pos: Vector2) -> ContextPopup:
 	var btn_array: Array[Button] = []
-	for shape in ["path", "circle", "ellipse", "rect", "line"]:
+	for shape in ["path", "circle", "ellipse", "rect", "line", "polygon", "polyline"]:
 		var btn := ContextPopup.create_button(shape, add_shape_at_pos.bind(shape, pos),
 				false, DB.get_element_icon(shape))
 		btn.add_theme_font_override("font", ThemeUtils.mono_font)
 		btn_array.append(btn)
 	var element_context := ContextPopup.new()
-	var separation_indices: Array[int] = [1]
+	var separation_indices: Array[int] = [1, 4]
 	element_context.setup_with_title(btn_array, TranslationServer.translate("New shape"),
 			true, -1, separation_indices)
 	return element_context

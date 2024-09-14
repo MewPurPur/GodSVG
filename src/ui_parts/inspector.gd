@@ -39,12 +39,12 @@ func add_element(element_name: String) -> void:
 func _on_add_button_pressed() -> void:
 	var btn_array: Array[Button] = []
 	for element_name in PackedStringArray(["path", "circle", "ellipse", "rect", "line",
-	"g", "linearGradient", "radialGradient", "stop"]):
+	"polygon", "polyline", "g", "linearGradient", "radialGradient", "stop"]):
 		var btn := ContextPopup.create_button(element_name, add_element.bind(element_name),
 				false, DB.get_element_icon(element_name))
 		btn.add_theme_font_override("font", ThemeUtils.mono_font)
 		btn_array.append(btn)
-	var separator_indices := PackedInt32Array([1, 5])
+	var separator_indices := PackedInt32Array([1, 4, 7])
 	
 	var add_popup := ContextPopup.new()
 	add_popup.setup(btn_array, true, add_button.size.x, separator_indices)

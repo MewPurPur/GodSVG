@@ -276,23 +276,23 @@ func clear_inner_hovered() -> void:
 		hover_changed.emit()
 
 # Returns whether the given element or inner editor is hovered.
-func is_hovered(xid: PackedInt32Array, cmd_idx := -1, propagate := false) -> bool:
+func is_hovered(xid: PackedInt32Array, inner_idx := -1, propagate := false) -> bool:
 	if propagate:
-		if cmd_idx == -1:
+		if inner_idx == -1:
 			return Utils.is_xid_parent_or_self(hovered_xid, xid)
 		else:
 			return Utils.is_xid_parent_or_self(hovered_xid, xid) or\
-					(semi_hovered_xid == xid and inner_hovered == cmd_idx)
+					(semi_hovered_xid == xid and inner_hovered == inner_idx)
 	else:
-		if cmd_idx == -1:
+		if inner_idx == -1:
 			return hovered_xid == xid
 		else:
-			return semi_hovered_xid == xid and inner_hovered == cmd_idx
+			return semi_hovered_xid == xid and inner_hovered == inner_idx
 
 # Returns whether the given element or inner editor is selected.
-func is_selected(xid: PackedInt32Array, cmd_idx := -1, propagate := false) -> bool:
+func is_selected(xid: PackedInt32Array, inner_idx := -1, propagate := false) -> bool:
 	if propagate:
-		if cmd_idx == -1:
+		if inner_idx == -1:
 			for selected_xid in selected_xids:
 				if Utils.is_xid_parent_or_self(selected_xid, xid):
 					return true
@@ -301,12 +301,12 @@ func is_selected(xid: PackedInt32Array, cmd_idx := -1, propagate := false) -> bo
 			for selected_xid in selected_xids:
 				if Utils.is_xid_parent_or_self(selected_xid, xid):
 					return true
-			return semi_selected_xid == xid and cmd_idx in inner_selections
+			return semi_selected_xid == xid and inner_idx in inner_selections
 	else:
-		if cmd_idx == -1:
+		if inner_idx == -1:
 			return xid in selected_xids
 		else:
-			return semi_selected_xid == xid and cmd_idx in inner_selections
+			return semi_selected_xid == xid and inner_idx in inner_selections
 
 
 func set_proposed_drop_xid(xid: PackedInt32Array) -> void:
@@ -387,7 +387,7 @@ func respond_to_key_input(event: InputEventKey) -> void:
 		# If a single path element is selected, add the new command at the end.
 		if selected_xids.size() == 1:
 			var xnode_ref := SVG.root_element.get_xnode(selected_xids[0])
-			if xnode_ref is Element and xnode_ref.name == "path":
+			if xnode_ref is ElementPath:
 				var path_attrib: AttributePathdata = xnode_ref.get_attribute("d")
 				for action_name in path_actions_dict.keys():
 					if event.is_action_pressed(action_name):
@@ -403,6 +403,7 @@ func respond_to_key_input(event: InputEventKey) -> void:
 						normal_select(selected_xids[0], path_cmd_count)
 						handle_added.emit()
 						break
+				
 		return
 	# If path commands are selected, insert after the last one.
 	for action_name in path_actions_dict.keys():
@@ -434,6 +435,12 @@ func delete_selected() -> void:
 		var element_ref := SVG.root_element.get_xnode(semi_selected_xid)
 		match element_ref.name:
 			"path": element_ref.get_attribute("d").delete_commands(inner_selections)
+			"polygon", "polyline":
+				var indices_to_delete: Array[int] = []
+				for idx in inner_selections:
+					indices_to_delete.append(idx * 2)
+					indices_to_delete.append(idx * 2 + 1)
+				element_ref.get_attribute("points").delete_elements(indices_to_delete)
 		clear_inner_selection()
 		clear_inner_hovered()
 		SVG.queue_save()
@@ -455,19 +462,25 @@ func duplicate_selected() -> void:
 	SVG.root_element.duplicate_xnodes(selected_xids)
 	SVG.queue_save()
 
-func insert_inner_after_selection(new_command: String) -> void:
-	var element_ref := SVG.root_element.get_xnode(semi_selected_xid)
-	match element_ref.name:
-		"path":
-			var path_attrib: AttributePathdata = element_ref.get_attribute("d")
-			var last_selection: int = inner_selections.max()
-			# Z after a Z is syntactically invalid.
-			if path_attrib.get_command(last_selection) is PathCommand.CloseCommand and\
-			new_command in "Zz":
-				return
-			path_attrib.insert_command(last_selection + 1, new_command)
-			normal_select(semi_selected_xid, last_selection + 1)
-			SVG.queue_save()
+func insert_path_command_after_selection(new_command: String) -> void:
+	var path_attrib: AttributePathdata = SVG.root_element.get_xnode(
+			semi_selected_xid).get_attribute("d")
+	var last_selection: int = inner_selections.max()
+	# Z after a Z is syntactically invalid.
+	if path_attrib.get_command(last_selection) is PathCommand.CloseCommand and\
+	new_command in "Zz":
+		return
+	path_attrib.insert_command(last_selection + 1, new_command)
+	normal_select(semi_selected_xid, last_selection + 1)
+	SVG.queue_save()
+
+func insert_point_after_selection() -> void:
+	var element_ref: Element = SVG.root_element.get_xnode(semi_selected_xid)
+	var last_selection: int = inner_selections.max()
+	element_ref.get_attribute("points").insert_element(last_selection * 2, 0)
+	element_ref.get_attribute("points").insert_element(last_selection * 2, 0)
+	SVG.queue_save()
+
 
 enum Context {
 	VIEWPORT,
@@ -529,21 +542,32 @@ func get_selection_context(popup_method: Callable, context: Context) -> ContextP
 		
 		btn_arr.append(ContextPopup.create_button(TranslationServer.translate("Delete"),
 				delete_selected, false, load("res://visual/icons/Delete.svg"), "delete"))
+	
 	elif not inner_selections.is_empty() and not semi_selected_xid.is_empty():
+		var element_ref := SVG.root_element.get_xnode(semi_selected_xid)
+		
 		if context == Context.VIEWPORT:
 			btn_arr.append(ContextPopup.create_button(
 					TranslationServer.translate("View In List"),
 					view_in_list.bind(semi_selected_xid), false,
 					load("res://visual/icons/ViewInList.svg")))
-		if inner_selections.size() == 1:
-			btn_arr.append(ContextPopup.create_button(
-					TranslationServer.translate("Insert After"),
-					popup_insert_command_after_context.bind(popup_method), false,
-					load("res://visual/icons/Plus.svg")))
-			btn_arr.append(ContextPopup.create_button(
-					TranslationServer.translate("Convert To"),
-					popup_convert_to_context.bind(popup_method), false,
-					load("res://visual/icons/Reload.svg")))
+		match element_ref.name:
+			"path":
+				if inner_selections.size() == 1:
+					btn_arr.append(ContextPopup.create_button(
+							TranslationServer.translate("Insert After"),
+							popup_insert_command_after_context.bind(popup_method), false,
+							load("res://visual/icons/Plus.svg")))
+					btn_arr.append(ContextPopup.create_button(
+							TranslationServer.translate("Convert To"),
+							popup_convert_to_context.bind(popup_method), false,
+							load("res://visual/icons/Reload.svg")))
+			"polygon", "polyline":
+				if inner_selections.size() == 1:
+					btn_arr.append(ContextPopup.create_button(
+							TranslationServer.translate("Insert After"),
+							insert_point_after_selection, false,
+							load("res://visual/icons/Plus.svg")))
 		
 		btn_arr.append(ContextPopup.create_button(TranslationServer.translate("Delete"),
 				delete_selected, false, load("res://visual/icons/Delete.svg"), "delete"))
@@ -589,7 +613,7 @@ func popup_insert_command_after_context(popup_method: Callable) -> void:
 	
 	var command_picker = PathCommandPopup.instantiate()
 	popup_method.call(command_picker)
-	command_picker.path_command_picked.connect(insert_inner_after_selection)
+	command_picker.path_command_picked.connect(insert_path_command_after_selection)
 	match cmd_char.to_upper():
 		"M": command_picker.disable_invalid(["M", "Z", "T"])
 		"Z": command_picker.disable_invalid(["Z"])
@@ -610,8 +634,6 @@ func convert_selected_xnode_to(xnode_type: BasicXNode.NodeType) -> void:
 	SVG.queue_save()
 
 func convert_selected_command_to(cmd_type: String) -> void:
-	var element_ref := SVG.root_element.get_xnode(semi_selected_xid)
-	match element_ref.name:
-		"path":
-			element_ref.get_attribute("d").convert_command(inner_selections[0], cmd_type)
-			SVG.queue_save()
+	SVG.root_element.get_xnode(semi_selected_xid).get_attribute("d").convert_command(
+			inner_selections[0], cmd_type)
+	SVG.queue_save()

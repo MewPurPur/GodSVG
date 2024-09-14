@@ -9,16 +9,10 @@ static var ElementFrame: PackedScene:
 			ElementFrame = load("res://src/ui_widgets/element_frame.tscn")
 		return ElementFrame
 
-const UnrecognizedField = preload("res://src/ui_widgets/unrecognized_field.tscn")
-const ColorField = preload("res://src/ui_widgets/color_field.tscn")
-const NumberField = preload("res://src/ui_widgets/number_field.tscn")
-const NumberSlider = preload("res://src/ui_widgets/number_field_with_slider.tscn")
-const IDField = preload("res://src/ui_widgets/id_field.tscn")
-const EnumField = preload("res://src/ui_widgets/enum_field.tscn")
-const TransformField = preload("res://src/ui_widgets/transform_field.tscn")
-
 const element_content_types = {
 	"path": preload("res://src/ui_widgets/element_content_path.tscn"),
+	"polygon": preload("res://src/ui_widgets/element_content_polyshape.tscn"),
+	"polyline": preload("res://src/ui_widgets/element_content_polyshape.tscn"),
 	"circle": preload("res://src/ui_widgets/element_content_basic_shape.tscn"),
 	"ellipse": preload("res://src/ui_widgets/element_content_basic_shape.tscn"),
 	"rect": preload("res://src/ui_widgets/element_content_basic_shape.tscn"),

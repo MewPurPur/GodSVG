@@ -199,11 +199,6 @@ func optimize(not_applied := false) -> bool:
 					if not_applied:
 						return true
 					replace_xnode(element.xid, element.get_replacement("circle"))
-			"line":
-				# Turn lines into paths.
-				if not_applied:
-					return true
-				replace_xnode(element.xid, element.get_replacement("path"))
 			"rect":
 				# If possible, turn rounded rects into circles or ellipses.
 				if element.can_replace("circle"):
@@ -219,6 +214,10 @@ func optimize(not_applied := false) -> bool:
 					if not_applied:
 						return true
 					replace_xnode(element.xid, element.get_replacement("path"))
+			"polygon", "line", "polyline":
+				if not_applied:
+					return true
+				replace_xnode(element.xid, element.get_replacement("path"))
 			"path":
 				var pathdata: AttributePathdata = element.get_attribute("d")
 				# Simplify A rotation to 0 degrees for circular arcs.
