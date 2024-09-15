@@ -10,10 +10,13 @@ func set_value(new_value: String, save := false) -> void:
 	if save:
 		SVG.queue_save()
 
+func sync_to_attribute() -> void:
+	set_value(element.get_attribute_value(attribute_name, true))
+
 
 func _ready() -> void:
 	GlobalSettings.language_changed.connect(update_translation)
-	set_value(element.get_attribute_value(attribute_name, true))
+	sync_to_attribute()
 	update_translation()
 	text_submitted.connect(set_value.bind(true))
 

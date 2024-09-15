@@ -39,7 +39,7 @@ func setup_placeholder() -> void:
 
 func _ready() -> void:
 	GlobalSettings.basic_colors_changed.connect(resync)
-	set_value(element.get_attribute_value(attribute_name, true))
+	sync_to_attribute()
 	element.attribute_changed.connect(_on_element_attribute_changed)
 	if attribute_name in DB.propagated_attributes:
 		element.ancestor_attribute_changed.connect(_on_element_ancestor_attribute_changed)
@@ -53,7 +53,7 @@ func _ready() -> void:
 
 func _on_element_attribute_changed(attribute_changed: String) -> void:
 	if attribute_name == attribute_changed:
-		set_value(element.get_attribute_value(attribute_name, true))
+		sync_to_attribute()
 
 func _on_element_ancestor_attribute_changed(attribute_changed: String) -> void:
 	if attribute_name == attribute_changed:

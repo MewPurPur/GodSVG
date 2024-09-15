@@ -838,6 +838,10 @@ msgstr "绝对"
 msgid "Relative"
 msgstr "相对"
 
+#: src/ui_widgets/points_field.gd
+msgid "No points"
+msgstr ""
+
 #: src/ui_widgets/setting_frame.gd src/ui_widgets/setting_shortcut.gd
 msgid "Reset to default"
 msgstr "恢复默认"

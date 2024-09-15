@@ -12,13 +12,16 @@ func set_value(new_value: String, save := false) -> void:
 	if save:
 		SVG.queue_save()
 
+func sync_to_attribute() -> void:
+	set_value(element.get_attribute_value(attribute_name, true))
+
 func setup_placeholder() -> void:
 	placeholder_text = element.get_default(attribute_name)
 
 
 func _ready() -> void:
 	GlobalSettings.basic_colors_changed.connect(resync)
-	set_value(element.get_attribute_value(attribute_name, true))
+	sync_to_attribute()
 	element.attribute_changed.connect(_on_element_attribute_changed)
 	if attribute_name in DB.propagated_attributes:
 		element.ancestor_attribute_changed.connect(_on_element_ancestor_attribute_changed)
@@ -67,9 +70,6 @@ func _on_text_submitted(new_text: String) -> void:
 		set_value(new_text, true)
 	else:
 		sync_to_attribute()
-
-func sync_to_attribute() -> void:
-	sync(element.get_attribute_value(attribute_name, true))
 
 
 func _on_text_changed(new_text: String) -> void:
