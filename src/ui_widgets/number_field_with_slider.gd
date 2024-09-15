@@ -25,7 +25,7 @@ func set_value(new_value: String, save := false) -> void:
 				numeric_value = MIN_VALUE
 			new_value = element.get_attribute(attribute_name).num_to_text(numeric_value)
 	
-	sync(element.get_attribute(attribute_name).format(new_value))
+	sync(new_value)
 	element.set_attribute(attribute_name, new_value)
 	if save:
 		SVG.queue_save()
