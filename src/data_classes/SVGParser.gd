@@ -1,31 +1,14 @@
 class_name SVGParser extends RefCounted
 
-# For rendering only a section of the SVG.
-static func root_to_text_custom(root_element: ElementRoot, custom_width: float,
-custom_height: float, custom_viewbox: Rect2) -> String:
-	var blank_formatter := Formatter.new()
-	blank_formatter.xml_shorthand_tags = Formatter.ShorthandTags.ALL_EXCEPT_CONTAINERS
-	var new_root_element: ElementRoot = root_element.duplicate(false)
-	
-	new_root_element.set_attribute("viewBox", custom_viewbox)
-	new_root_element.set_attribute("width", custom_width)
-	new_root_element.set_attribute("height", custom_height)
-	var text := _xnode_to_text(new_root_element, blank_formatter)
-	text = text.strip_edges(false, true).left(-6)  # Remove the </svg> at the end.)
-	for child_idx in root_element.get_child_count():
-		text += _xnode_to_text(root_element.get_xnode(PackedInt32Array([child_idx])),
-				blank_formatter, true)
-	return text + "</svg>"
-
 static func root_to_text(root_element: ElementRoot,
 formatter: Formatter = GlobalSettings.savedata.editor_formatter) -> String:
-	var text := _xnode_to_text(root_element, formatter).trim_suffix('\n')
+	var text := xnode_to_text(root_element, formatter).trim_suffix('\n')
 	if formatter.xml_add_trailing_newline:
 		text += "\n"
 	return text
 
-static func _xnode_to_text(xnode: XNode, formatter: Formatter,
-make_attributes_absolute := false) -> String:
+static func xnode_to_text(xnode: XNode, formatter: Formatter,
+for_cutout := false) -> String:
 	var text := ""
 	if formatter.xml_pretty_formatting:
 		if formatter.xml_indentation_use_spaces:
@@ -43,10 +26,10 @@ make_attributes_absolute := false) -> String:
 		return text
 	
 	var element := xnode as Element
-	if make_attributes_absolute:
+	if for_cutout:
 		# A fake SVG ref is needed for percentages to work.
 		var fake_svg_ref := element.svg
-		element = element.duplicate()
+		element = element.duplicate(true, true)
 		element.svg = fake_svg_ref
 		element.make_all_attributes_absolute()
 	
@@ -71,7 +54,7 @@ make_attributes_absolute := false) -> String:
 		if formatter.xml_pretty_formatting:
 			text += '\n'
 		for child in element.get_children():
-			text += _xnode_to_text(child, formatter)
+			text += xnode_to_text(child, formatter)
 		if formatter.xml_pretty_formatting:
 			text += '\t'.repeat(element.xid.size())
 		text += '</%s>' % element.name

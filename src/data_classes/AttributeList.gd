@@ -3,15 +3,26 @@ class_name AttributeList extends Attribute
 
 var _list: PackedFloat32Array
 
-func _sync() -> void:
-	_list = text_to_list(get_value())
+func set_value(new_value: String) -> void:
+	var proposed_list := text_to_list(new_value)
+	var proposed_value := list_to_text(proposed_list)
+	if proposed_value != _value:
+		_value = proposed_value
+		_list = proposed_list
+		value_changed.emit()
 
 func set_list(new_list: PackedFloat32Array) -> void:
 	_list = new_list
-	sync_after_list_change()
+	sync_after_only_list_change()
 
-func sync_after_list_change() -> void:
-	super.set_value(list_to_text(_list))
+func sync_value() -> void:
+	var proposed_value := list_to_text(_list)
+	if proposed_value != _value:
+		_value = proposed_value
+		value_changed.emit()
+
+func sync_after_only_list_change() -> void:
+	sync_value()
 
 func get_list() -> PackedFloat32Array:
 	return _list
@@ -42,7 +53,7 @@ func set_points(points: PackedVector2Array) -> void:
 
 func set_list_element(idx: int, new_value: float) -> void:
 	_list[idx] = new_value
-	sync_after_list_change()
+	sync_after_only_list_change()
 
 func get_list_element(idx: int) -> float:
 	return _list[idx] if idx < _list.size() else NAN
@@ -56,11 +67,11 @@ func delete_elements(indices: Array[int]) -> void:
 	indices.reverse()
 	for idx in indices:
 		_list.remove_at(idx)
-	sync_after_list_change()
+	sync_after_only_list_change()
 
 func insert_element(idx: int, value := 0.0) -> void:
 	_list.insert(idx, value)
-	sync_after_list_change()
+	sync_after_only_list_change()
 
 
 static func text_to_list(string: String) -> PackedFloat32Array:

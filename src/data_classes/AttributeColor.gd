@@ -4,10 +4,15 @@ class_name AttributeColor extends Attribute
 # No direct color representation for this attribute type. There are too many quirks.
 
 func set_value(new_value: String) -> void:
-	super(new_value if ColorParser.is_valid(new_value,
-			name in DB.attribute_color_url_allowed) else "")
+	if not ColorParser.is_valid(new_value, name in DB.attribute_color_url_allowed):
+		new_value = ""
+	# Formatting logic.
+	var proposed_new_value := _format(new_value)
+	if proposed_new_value != _value:
+		_value = proposed_new_value
+		value_changed.emit()
 
-func format(text: String) -> String:
+func _format(text: String) -> String:
 	text = text.strip_edges()
 	
 	if ColorParser.is_valid_url(text):

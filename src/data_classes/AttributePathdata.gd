@@ -5,23 +5,25 @@ const translation_dict = PathCommand.translation_dict
 
 var _commands: Array[PathCommand]
 
-func _sync() -> void:
-	_commands = parse_pathdata(get_value())
-	locate_start_points()
-
-func format(text: String) -> String:
-	return path_commands_to_text(parse_pathdata(text))
+func set_value(new_value: String) -> void:
+	var proposed_commands := parse_pathdata(new_value)
+	var proposed_value := path_commands_to_text(proposed_commands)
+	if proposed_value != _value:
+		_value = proposed_value
+		_commands = proposed_commands
+		locate_start_points()
+		value_changed.emit()
 
 
 func get_commands() -> Array[PathCommand]:
 	return _commands
 
-func set_commands(new_commands: Array[PathCommand]) -> void:
-	_commands = new_commands
-	sync_after_commands_change()
-
-func sync_after_commands_change() -> void:
-	set_value(path_commands_to_text(_commands))
+func sync_after_only_commands_change() -> void:
+	var proposed_value := path_commands_to_text(_commands)
+	if proposed_value != _value:
+		_value = proposed_value
+		value_changed.emit()
+	locate_start_points()
 
 
 func locate_start_points() -> void:
@@ -121,7 +123,7 @@ func set_command_property(idx: int, property: String, new_value: float) -> void:
 	var cmd := get_command(idx)
 	if cmd.get(property) != new_value:
 		cmd.set(property, new_value)
-		sync_after_commands_change()
+		sync_after_only_commands_change()
 
 func insert_command(idx: int, cmd_char: String, vec := Vector2.ZERO) -> void:
 	var new_cmd: PathCommand = PathCommand.translation_dict[cmd_char.to_upper()].new()
@@ -146,7 +148,7 @@ func insert_command(idx: int, cmd_char: String, vec := Vector2.ZERO) -> void:
 			new_cmd.y1 = lerpf(0.0 if relative else new_cmd.start.y, vec.y, 1/3.0)
 			new_cmd.x2 = lerpf(0.0 if relative else new_cmd.start.x, vec.x, 2/3.0)
 			new_cmd.y2 = lerpf(0.0 if relative else new_cmd.start.y, vec.y, 2/3.0)
-	sync_after_commands_change()
+	sync_after_only_commands_change()
 
 
 func convert_command(idx: int, cmd_char: String) -> void:
@@ -195,7 +197,7 @@ func convert_command(idx: int, cmd_char: String) -> void:
 	_commands.insert(idx, new_cmd)
 	if relative:
 		_commands[idx].toggle_relative()
-	sync_after_commands_change()
+	sync_after_only_commands_change()
 
 
 func delete_commands(indices: Array[int]) -> void:
@@ -207,11 +209,11 @@ func delete_commands(indices: Array[int]) -> void:
 	indices.reverse()
 	for idx in indices:
 		_commands.remove_at(idx)
-	sync_after_commands_change()
+	sync_after_only_commands_change()
 
 func toggle_relative_command(idx: int) -> void:
 	_commands[idx].toggle_relative()
-	sync_after_commands_change()
+	sync_after_only_commands_change()
 
 
 static func parse_pathdata(text: String) -> Array[PathCommand]:
@@ -219,6 +221,8 @@ static func parse_pathdata(text: String) -> Array[PathCommand]:
 
 # godot_only/tests.gd has a test for this.
 static func pathdata_to_arrays(text: String) -> Array[Array]:
+	print_stack()
+	print()
 	var new_commands: Array[Array] = []
 	var curr_command := ""
 	var prev_command := ""

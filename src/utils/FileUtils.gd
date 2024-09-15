@@ -13,10 +13,11 @@ static func save_svg_to_file(path: String) -> void:
 	FA.store_string(SVG.get_export_text())
 
 static func does_svg_data_match_disk_contents() -> bool:
-	# If the file doesn't exist, we get an empty string, so it's false anyway.
+	var content := FileAccess.get_file_as_string(GlobalSettings.savedata.current_file_path)
+	if content.is_empty():
+		return true  # For now this is only used to disable the reset button, so this is ok.
 	# Check if importing the file's text into GodSVG would change the current SVG text.
-	return SVG.text == SVGParser.root_to_text(SVGParser.text_to_root(
-			FileAccess.get_file_as_string(GlobalSettings.savedata.current_file_path),
+	return SVG.text == SVGParser.root_to_text(SVGParser.text_to_root(content,
 			GlobalSettings.savedata.editor_formatter).svg)
 
 

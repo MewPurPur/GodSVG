@@ -82,6 +82,9 @@ func _exit_tree() -> void:
 
 # Logic for dragging.
 func _get_drag_data(_at_position: Vector2) -> Variant:
+	if Indications.selected_xids.is_empty():
+		return null
+	
 	var data: Array[PackedInt32Array] = Utils.filter_descendant_xids(
 			Indications.selected_xids.duplicate(true))
 	# Set up a preview.

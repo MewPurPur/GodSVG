@@ -4,25 +4,30 @@ class_name AttributeTransformList extends Attribute
 var _transform_list: Array[Transform] = []
 var _final_transform := Transform2D.IDENTITY
 
-func _sync() -> void:
-	_transform_list = text_to_transform_list(get_value())
+func set_value(new_value: String) -> void:
+	var proposed_transform_list := text_to_transform_list(new_value)
+	var proposed_value := transform_list_to_text(proposed_transform_list)
+	if proposed_value != _value:
+		_value = proposed_value
+		_transform_list = proposed_transform_list
+		value_changed.emit()
+
+func sync_after_only_transforms_change() -> void:
+	var proposed_value := transform_list_to_text(_transform_list)
+	if proposed_value != _value:
+		_value = proposed_value
+		value_changed.emit()
 	_final_transform = compute_final_transform(_transform_list)
-
-func sync_after_transforms_change() -> void:
-	set_value(transform_list_to_text(_transform_list))
-
-func format(text: String) -> String:
-	return transform_list_to_text(text_to_transform_list(text))
 
 func set_transform_list(new_transform_list: Array[Transform]) -> void:
 	_transform_list = new_transform_list
-	_final_transform = compute_final_transform(new_transform_list)
-	set_value(transform_list_to_text(new_transform_list))
+	sync_after_only_transforms_change()
+
 
 func set_transform_property(idx: int, property: String, new_value: float) -> void:
 	if _transform_list[idx].get(property) != new_value:
 		_transform_list[idx].set(property, new_value)
-		sync_after_transforms_change()
+		sync_after_only_transforms_change()
 
 func get_transform_list() -> Array[Transform]:
 	return _transform_list
@@ -45,7 +50,7 @@ static func compute_final_transform(transform_list: Array[Transform]) -> Transfo
 
 func delete_transform(idx: int) -> void:
 	_transform_list.remove_at(idx)
-	sync_after_transforms_change()
+	sync_after_only_transforms_change()
 
 func insert_transform(idx: int, type: String) -> void:
 	match type:
@@ -55,7 +60,7 @@ func insert_transform(idx: int, type: String) -> void:
 		"scale": _transform_list.insert(idx, Transform.TransformScale.new(1, 1))
 		"skewX": _transform_list.insert(idx, Transform.TransformSkewX.new(0))
 		"skewY": _transform_list.insert(idx, Transform.TransformSkewY.new(0))
-	sync_after_transforms_change()
+	sync_after_only_transforms_change()
 
 
 func transform_list_to_text(transform_list: Array[Transform]) -> String:

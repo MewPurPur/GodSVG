@@ -8,21 +8,15 @@ var name: String
 var formatter: Formatter
 var _value: String
 
+# Expected to be overridden.
 func set_value(new_value: String) -> void:
-	var proposed_new_value := format(new_value)
+	var proposed_new_value = new_value.strip_edges()
 	if proposed_new_value != _value:
 		_value = proposed_new_value
-		_sync()
 		value_changed.emit()
 
 func get_value() -> String:
 	return _value
-
-func _sync() -> void:
-	pass
-
-func format(text: String) -> String:
-	return text
 
 func _init(new_name: String, new_formatter: Formatter, init_value := "") -> void:
 	name = new_name

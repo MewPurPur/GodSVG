@@ -213,6 +213,7 @@ func set_attribute(attribute_name: String, value: Variant) -> void:
 	if value_type == TYPE_STRING:
 		attrib.set_value(value)
 	else:
+		# Other types of setting that have been useful so far.
 		match DB.get_attribute_type(attribute_name):
 			DB.AttributeType.NUMERIC:
 				if value_type in [TYPE_FLOAT, TYPE_INT]: attrib.set_num(value)
@@ -220,12 +221,6 @@ func set_attribute(attribute_name: String, value: Variant) -> void:
 			DB.AttributeType.LIST:
 				if value_type in [TYPE_RECT2, TYPE_RECT2I]: attrib.set_rect(value)
 				elif value_type == TYPE_PACKED_FLOAT32_ARRAY: attrib.set_list(value)
-				else: push_error("Invalid value set to attribute.")
-			DB.AttributeType.PATHDATA:
-				if value_type == TYPE_ARRAY: attrib.set_commands(value)
-				else: push_error("Invalid value set to attribute.")
-			DB.AttributeType.TRANSFORM_LIST:
-				if value_type == TYPE_ARRAY: attrib.set_transform_list(value)
 				else: push_error("Invalid value set to attribute.")
 			_:
 				push_error("Invalid value set to attribute.")
@@ -243,7 +238,7 @@ func get_all_attributes() -> Array:
 
 
 # Why is there no way to duplicate RefCounteds, again?
-func duplicate(include_children := true) -> Element:
+func duplicate(include_children := true, cheap := false) -> Element:
 	var type: GDScript = get_script()
 	var new_element: Element
 	if type == ElementUnrecognized:
@@ -255,11 +250,15 @@ func duplicate(include_children := true) -> Element:
 		new_element.formatter = self.formatter
 	
 	for attribute in _attributes:
-		new_element.set_attribute(attribute, get_attribute_value(attribute))
+		# The "cheap" parameter makes it so only the value is copied, avoiding parsing.
+		if cheap:
+			new_element.get_attribute(attribute)._value = get_attribute_value(attribute)
+		else:
+			new_element.set_attribute(attribute, get_attribute_value(attribute))
 	
 	if include_children:
 		for i in get_child_count():
-			new_element.insert_child(i, get_child(i).duplicate())
+			new_element.insert_child(i, get_child(i).duplicate(true, false))
 	return new_element
 
 # Applies children and attributes to another element. Useful for conversion.

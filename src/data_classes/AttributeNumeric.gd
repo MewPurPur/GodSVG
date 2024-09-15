@@ -4,10 +4,20 @@ class_name AttributeNumeric extends Attribute
 var _percentage := false
 var _number := NAN
 
-func _sync() -> void:
-	if not _value.is_empty():
-		_number = text_to_num(_value)
-		_percentage = text_check_percentage(_value)
+func set_value(new_value: String) -> void:
+	var proposed_num := text_to_num(new_value)
+	var proposed_percentage_state := text_check_percentage(new_value)
+	var proposed_value := ""
+	if proposed_percentage_state:
+		proposed_value = num_to_text(proposed_num * 100.0) + "%"
+	else:
+		proposed_value = num_to_text(proposed_num)
+	if proposed_value != _value:
+		_value = proposed_value
+		if not _value.is_empty():
+			_number = proposed_num
+			_percentage = proposed_percentage_state
+		value_changed.emit()
 
 func set_num(new_number: float) -> void:
 	_number = new_number
@@ -18,14 +28,6 @@ func get_num() -> float:
 
 func is_percentage() -> bool:
 	return _percentage
-
-
-func format(text: String) -> String:
-	var num := text_to_num(text)
-	if text_check_percentage(text):
-		return num_to_text(num * 100.0) + "%"
-	else:
-		return num_to_text(num)
 
 func num_to_text(number: float) -> String:
 	return NumberParser.num_to_text(number, formatter)

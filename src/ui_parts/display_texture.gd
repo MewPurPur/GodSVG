@@ -43,7 +43,7 @@ func texture_update() -> void:
 	display_rect.end.x = minf(display_rect.end.x, SVG.root_element.width)
 	display_rect.end.y = minf(display_rect.end.y, SVG.root_element.height)
 	
-	var svg_text := SVGParser.root_to_text_custom(SVG.root_element, display_rect.size.x,
+	var svg_text := cutout_to_text(SVG.root_element, display_rect.size.x,
 			display_rect.size.y, Rect2(SVG.root_element.world_to_canvas(display_rect.position),
 			display_rect.size / SVG.root_element.canvas_transform.get_scale()))
 	var img := Image.new()
@@ -53,3 +53,23 @@ func texture_update() -> void:
 		# TODO check if deferred is still needed.
 		set_deferred("size", display_rect.size)
 		texture = ImageTexture.create_from_image(img)
+
+
+func cutout_to_text(root_element: ElementRoot, cutout_width: float,
+cutout_height: float, cutout_viewport: Rect2) -> String:
+	var blank_formatter := Formatter.new()
+	blank_formatter.xml_shorthand_tags = Formatter.ShorthandTags.ALL_EXCEPT_CONTAINERS
+	# Optimization: Custom duplication that avoids parsing anything other than the text.
+	var new_root_element := ElementRoot.new(root_element.formatter)
+	for attrib in root_element._attributes:
+		new_root_element.get_attribute(attrib)._value = root_element.get_attribute_value(attrib)
+	
+	new_root_element.set_attribute("viewBox", cutout_viewport)
+	new_root_element.set_attribute("width", cutout_width)
+	new_root_element.set_attribute("height", cutout_height)
+	var text := SVGParser.xnode_to_text(new_root_element, blank_formatter)
+	text = text.strip_edges(false, true).left(-6)  # Remove the </svg> at the end.)
+	for child_idx in root_element.get_child_count():
+		text += SVGParser.xnode_to_text(root_element.get_xnode(PackedInt32Array([child_idx])),
+				blank_formatter, true)
+	return text + "</svg>"
