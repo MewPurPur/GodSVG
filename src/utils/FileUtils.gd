@@ -1,6 +1,8 @@
 # This class has functionality for importing, exporting, and saving files.
 class_name FileUtils extends RefCounted
 
+enum FileState {SAME, DIFFERENT, DOES_NOT_EXIST}
+
 const GoodFileDialogType = preload("res://src/ui_parts/good_file_dialog.gd")
 
 const AlertDialog = preload("res://src/ui_parts/alert_dialog.tscn")
@@ -12,12 +14,16 @@ static func save_svg_to_file(path: String) -> void:
 	var FA := FileAccess.open(path, FileAccess.WRITE)
 	FA.store_string(SVG.get_export_text())
 
-static func does_svg_data_match_disk_contents() -> bool:
-	# If the file doesn't exist, we get an empty string, so it's false anyway.
+static func compare_svg_to_disk_contents() -> FileState:
+	var content := FileAccess.get_file_as_string(GlobalSettings.savedata.current_file_path)
+	if content.is_empty():
+		return FileState.DOES_NOT_EXIST
 	# Check if importing the file's text into GodSVG would change the current SVG text.
-	return SVG.text == SVGParser.root_to_text(SVGParser.text_to_root(
-			FileAccess.get_file_as_string(GlobalSettings.savedata.current_file_path),
-			GlobalSettings.savedata.editor_formatter).svg)
+	if SVG.text == SVGParser.root_to_text(SVGParser.text_to_root(content,
+	GlobalSettings.savedata.editor_formatter).svg):
+		return FileState.SAME
+	else:
+		return FileState.DIFFERENT
 
 
 static func finish_import(svg_text: String, file_path: String) -> void:

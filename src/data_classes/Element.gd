@@ -221,12 +221,6 @@ func set_attribute(attribute_name: String, value: Variant) -> void:
 				if value_type in [TYPE_RECT2, TYPE_RECT2I]: attrib.set_rect(value)
 				elif value_type == TYPE_PACKED_FLOAT32_ARRAY: attrib.set_list(value)
 				else: push_error("Invalid value set to attribute.")
-			DB.AttributeType.PATHDATA:
-				if value_type == TYPE_ARRAY: attrib.set_commands(value)
-				else: push_error("Invalid value set to attribute.")
-			DB.AttributeType.TRANSFORM_LIST:
-				if value_type == TYPE_ARRAY: attrib.set_transform_list(value)
-				else: push_error("Invalid value set to attribute.")
 			_:
 				push_error("Invalid value set to attribute.")
 
