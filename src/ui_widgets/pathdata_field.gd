@@ -56,18 +56,19 @@ func set_value(new_value: String, save := false) -> void:
 	if save:
 		SVG.queue_save()
 
-func update_value() -> void:
-	set_value(element.get_attribute_value(attribute_name))
+func sync_to_attribute() -> void:
+	set_value(element.get_attribute_value(attribute_name, true))
 
 
 func setup() -> void:
 	GlobalSettings.language_changed.connect(update_translation)
-	update_value()
+	sync_to_attribute()
 	element.attribute_changed.connect(_on_element_attribute_changed)
 	line_edit.tooltip_text = attribute_name
 	line_edit.text_submitted.connect(set_value.bind(true))
-	line_edit.text_changed.connect(setup_font)
-	line_edit.text_change_canceled.connect(func(): setup_font(line_edit.text))
+	line_edit.text_changed.connect(setup_font.unbind(1))
+	line_edit.text_change_canceled.connect(setup_font)
+	setup_font()
 	line_edit.focus_entered.connect(_on_line_edit_focus_entered)
 	commands_container.draw.connect(commands_draw)
 	commands_container.gui_input.connect(_on_commands_gui_input)
@@ -79,7 +80,7 @@ func setup() -> void:
 
 func _on_element_attribute_changed(attribute_changed: String) -> void:
 	if attribute_name == attribute_changed:
-		update_value()
+		sync_to_attribute()
 
 func update_translation() -> void:
 	line_edit.placeholder_text = TranslationServer.translate("No path data")
@@ -87,15 +88,14 @@ func update_translation() -> void:
 func _on_line_edit_focus_entered() -> void:
 	focused.emit()
 
-func setup_font(new_text: String) -> void:
-	if new_text.is_empty():
+func setup_font() -> void:
+	if line_edit.text.is_empty():
 		line_edit.add_theme_font_override("font", ThemeUtils.regular_font)
 	else:
 		line_edit.remove_theme_font_override("font")
 
 func sync(new_value: String) -> void:
 	line_edit.text = new_value
-	setup_font(new_value)
 	# A plus button for adding a move command if empty.
 	var cmd_count: int = element.get_attribute(attribute_name).get_command_count()
 	if cmd_count == 0 and not is_instance_valid(add_move_button):

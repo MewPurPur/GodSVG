@@ -13,7 +13,7 @@ func set_value(new_value: String, save := false) -> void:
 
 func _ready() -> void:
 	GlobalSettings.basic_colors_changed.connect(resync)
-	set_value(element.get_attribute_value(attribute_name, true))
+	sync_to_attribute()
 	element.attribute_changed.connect(_on_element_attribute_changed)
 	text_changed.connect(_on_text_changed)
 	text_submitted.connect(_on_text_submitted)
@@ -29,7 +29,7 @@ func _on_focus_entered() -> void:
 	remove_theme_color_override("font_color")
 
 func sync_to_attribute() -> void:
-	sync(element.get_attribute_value(attribute_name, true))
+	set_value(element.get_attribute_value(attribute_name, true))
 
 func _on_text_submitted(new_text: String) -> void:
 	if new_text.is_empty() or\

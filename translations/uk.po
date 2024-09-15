@@ -835,6 +835,10 @@ msgstr "Абсолютно"
 msgid "Relative"
 msgstr "Відносно"
 
+#: src/ui_widgets/points_field.gd
+msgid "No points"
+msgstr ""
+
 #: src/ui_widgets/setting_frame.gd src/ui_widgets/setting_shortcut.gd
 msgid "Reset to default"
 msgstr "Скинути значення до замовчування"

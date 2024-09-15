@@ -48,13 +48,13 @@ func set_value(new_value: String, save := false) -> void:
 	if save:
 		SVG.queue_save()
 
-func update_value() -> void:
+func sync_to_attribute() -> void:
 	set_value(element.get_attribute_value(attribute_name))
 
 
 func setup() -> void:
 	GlobalSettings.language_changed.connect(update_translation)
-	update_value()
+	sync_to_attribute()
 	element.attribute_changed.connect(_on_element_attribute_changed)
 	line_edit.tooltip_text = attribute_name
 	line_edit.text_submitted.connect(set_value.bind(true))
@@ -71,7 +71,7 @@ func setup() -> void:
 
 func _on_element_attribute_changed(attribute_changed: String) -> void:
 	if attribute_name == attribute_changed:
-		update_value()
+		sync_to_attribute()
 
 func update_translation() -> void:
 	line_edit.placeholder_text = TranslationServer.translate("No points")

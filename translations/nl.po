@@ -828,6 +828,10 @@ msgstr "Absoluut"
 msgid "Relative"
 msgstr "Relativ"
 
+#: src/ui_widgets/points_field.gd
+msgid "No points"
+msgstr ""
+
 #: src/ui_widgets/setting_frame.gd src/ui_widgets/setting_shortcut.gd
 msgid "Reset to default"
 msgstr "Opnieuw naar standaard zetten"
