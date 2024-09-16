@@ -2,7 +2,7 @@
 class_name ElementLine extends Element
 
 const name = "line"
-const possible_conversions = ["path"]
+const possible_conversions = ["path", "polyline"]
 
 func user_setup(pos := Vector2.ZERO) -> void:
 	if pos != Vector2.ZERO:
@@ -13,7 +13,7 @@ func user_setup(pos := Vector2.ZERO) -> void:
 	set_attribute("stroke", "black")
 
 func can_replace(new_element: String) -> bool:
-	return new_element == "path"
+	return new_element in possible_conversions
 
 func get_replacement(new_element: String) -> Element:
 	if not can_replace(new_element):
@@ -22,6 +22,12 @@ func get_replacement(new_element: String) -> Element:
 	var element := DB.element(new_element)
 	var dropped_attributes: PackedStringArray
 	match new_element:
+		"polyline":
+			dropped_attributes = PackedStringArray(["x1", "y1", "x2", "y2", "points"])
+			var points := PackedVector2Array([
+					Vector2(get_attribute_num("x1"), get_attribute_num("y1")),
+					Vector2(get_attribute_num("x2"), get_attribute_num("y2"))])
+			element.get_attribute("points").set_points(points)
 		"path":
 			element = ElementPath.new()
 			dropped_attributes = PackedStringArray(["x1", "y1", "x2", "y2", "d"])
