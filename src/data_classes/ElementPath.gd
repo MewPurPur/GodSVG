@@ -11,7 +11,7 @@ func user_setup(pos := Vector2.ZERO) -> void:
 		attrib.set_command_property(0, "x", pos.x)
 		attrib.set_command_property(0, "y", pos.y)
 
-func get_own_default(attribute_name: String) -> String:
+func _get_own_default(attribute_name: String) -> String:
 	if attribute_name == "opacity":
 		return "1"
 	return ""

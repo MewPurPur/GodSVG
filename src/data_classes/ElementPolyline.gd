@@ -10,7 +10,7 @@ func user_setup(pos := Vector2.ZERO) -> void:
 	set_attribute("fill", "none")
 	set_attribute("stroke", "black")
 
-func get_own_default(attribute_name: String) -> String:
+func _get_own_default(attribute_name: String) -> String:
 	if attribute_name == "opacity":
 		return "1"
 	return ""

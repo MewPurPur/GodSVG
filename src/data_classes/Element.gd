@@ -1,4 +1,4 @@
-# An SVG element, standalone (<element/>) or container (<element></element>).
+# An SVG element, standalone (<element/>) or container (<element>...</element>).
 class_name Element extends XNode
 
 signal attribute_changed(name: String)
@@ -124,14 +124,10 @@ func propagate_xid_correction() -> void:
 func has_attribute(attribute_name: String) -> bool:
 	return _attributes.has(attribute_name)
 
-func get_attribute(attribute_name: String, must_own := true) -> Attribute:
+# If the attribute exists, gets that attribute. If it doesn't, generates it.
+func get_attribute(attribute_name: String) -> Attribute:
 	if has_attribute(attribute_name):
 		return _attributes[attribute_name]
-	elif not must_own and DB.propagated_attributes.has(attribute_name):
-		if is_parent_g():
-			return parent.get_attribute(attribute_name, false)
-		elif svg != null:
-			return svg.get_attribute(attribute_name, false)
 	return new_attribute(attribute_name)
 
 
@@ -221,6 +217,12 @@ func set_attribute(attribute_name: String, value: Variant) -> void:
 				if value_type in [TYPE_RECT2, TYPE_RECT2I]: attrib.set_rect(value)
 				elif value_type == TYPE_PACKED_FLOAT32_ARRAY: attrib.set_list(value)
 				else: push_error("Invalid value set to attribute.")
+			DB.AttributeType.PATHDATA:
+				if value_type == TYPE_ARRAY: attrib.set_commands(value)
+				else: push_error("Invalid value set to attribute.")
+			DB.AttributeType.TRANSFORM_LIST:
+				if value_type == TYPE_ARRAY: attrib.set_transform_list(value)
+				else: push_error("Invalid value set to attribute.")
 			_:
 				push_error("Invalid value set to attribute.")
 
@@ -230,7 +232,7 @@ func get_default(attribute_name: String) -> String:
 			return parent.get_attribute_value(attribute_name)
 		elif svg != null:
 			return svg.get_attribute_value(attribute_name)
-	return get_own_default(attribute_name)
+	return _get_own_default(attribute_name)
 
 func get_all_attributes() -> Array:
 	return _attributes.values()
@@ -281,7 +283,7 @@ func make_attribute_absolute(attribute_name: String) -> void:
 
 
 # To be overridden in extending classes.
-func get_own_default(_attribute_name: String) -> String:
+func _get_own_default(_attribute_name: String) -> String:
 	return ""
 
 func get_percentage_handling(attribute_name: String) -> DB.PercentageHandling:

@@ -57,7 +57,7 @@ func get_ry() -> float:
 			get_attribute_num("rx") if has_attribute("rx") else 0.0
 
 
-func get_own_default(attribute_name: String) -> String:
+func _get_own_default(attribute_name: String) -> String:
 	match attribute_name:
 		"cx", "cy": return "0"
 		"rx": return "auto"

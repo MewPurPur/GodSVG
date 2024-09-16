@@ -48,7 +48,7 @@ func get_replacement(new_element: String) -> Element:
 	return element
 
 
-func get_own_default(attribute_name: String) -> String:
+func _get_own_default(attribute_name: String) -> String:
 	match attribute_name:
 		"cx", "cy": return "0"
 		"r": return "0"

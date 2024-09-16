@@ -112,7 +112,7 @@ func get_ry() -> float:
 		return 0.0
 
 
-func get_own_default(attribute_name: String) -> String:
+func _get_own_default(attribute_name: String) -> String:
 	match attribute_name:
 		"x", "y", "width", "height": return "0"
 		"rx": return "auto"
