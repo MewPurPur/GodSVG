@@ -3,7 +3,7 @@ class_name ElementLinearGradient extends Element
 const name = "linearGradient"
 const possible_conversions = []
 
-func get_own_default(attribute_name: String) -> String:
+func _get_own_default(attribute_name: String) -> String:
 	match attribute_name:
 		"x1", "y1", "y2": return "0%"
 		"x2": return "100%"

@@ -3,7 +3,7 @@ class_name ElementG extends Element
 const name = "g"
 const possible_conversions = []
 
-func get_own_default(attribute_name: String) -> String:
+func _get_own_default(attribute_name: String) -> String:
 	match attribute_name:
 		"opacity": return "1"
 		_: return ""

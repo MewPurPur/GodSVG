@@ -4,7 +4,7 @@ class_name ElementStop extends Element
 const name = "stop"
 const possible_conversions = []
 
-func get_own_default(attribute_name: String) -> String:
+func _get_own_default(attribute_name: String) -> String:
 	match attribute_name:
 		"offset": return "0"
 		"stop-color": return "black"

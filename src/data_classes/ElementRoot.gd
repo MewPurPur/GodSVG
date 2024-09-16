@@ -34,7 +34,7 @@ func get_element_by_id(id: String) -> Element:
 	return null
 
 
-func get_own_default(attribute_name: String) -> String:
+func _get_own_default(attribute_name: String) -> String:
 	match attribute_name:
 		"fill": return "black"
 		"fill-opacity": return "1"

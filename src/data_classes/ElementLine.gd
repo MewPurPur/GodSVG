@@ -36,7 +36,7 @@ func get_replacement(new_element: String) -> Element:
 	return element
 
 
-func get_own_default(attribute_name: String) -> String:
+func _get_own_default(attribute_name: String) -> String:
 	match attribute_name:
 		"x1", "y1", "x2", "y2": return "0"
 		"opacity": return "1"
