@@ -1,7 +1,7 @@
 class_name SVGParser extends RefCounted
 
 # For rendering only a section of the SVG.
-static func root_to_text_custom(root_element: ElementRoot, custom_width: float,
+static func root_cutout_to_text(root_element: ElementRoot, custom_width: float,
 custom_height: float, custom_viewbox: Rect2) -> String:
 	var blank_formatter := Formatter.new()
 	blank_formatter.xml_shorthand_tags = Formatter.ShorthandTags.ALL_EXCEPT_CONTAINERS

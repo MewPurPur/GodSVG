@@ -72,11 +72,20 @@ func queue_save() -> void:
 
 func _process(_delta: float) -> void:
 	if update_pending:
-		update_text()
 		update_pending = false
+		set_text(SVGParser.root_to_text(root_element))
+	
 	if save_pending:
-		save_text()
 		save_pending = false
+		var saved_text := GlobalSettings.svg_text
+		if saved_text == text:
+			return
+		UR.create_action("")
+		UR.add_do_property(GlobalSettings, "svg_text", text)
+		UR.add_undo_property(GlobalSettings, "svg_text", saved_text)
+		UR.add_do_property(self, "text", text)
+		UR.add_undo_property(self, "text", saved_text)
+		UR.commit_action()
 
 
 func sync_elements() -> void:
@@ -108,23 +117,11 @@ func update_current_size() -> void:
 		current_size = root_element.get_size()
 		resized.emit()
 
-func update_text() -> void:
-	set_text(SVGParser.root_to_text(root_element))
 
 func set_text(new_text: String) -> void:
 	text = new_text
 	changed.emit()
 
-func save_text() -> void:
-	var saved_text := GlobalSettings.svg_text
-	if saved_text == text:
-		return
-	UR.create_action("")
-	UR.add_do_property(GlobalSettings, "svg_text", text)
-	UR.add_undo_property(GlobalSettings, "svg_text", saved_text)
-	UR.add_do_property(self, "text", text)
-	UR.add_undo_property(self, "text", saved_text)
-	UR.commit_action()
 
 func undo() -> void:
 	if UR.has_undo():
@@ -141,7 +138,7 @@ func _on_undo_redo() -> void:
 
 func apply_svg_text(svg_text: String) -> void:
 	set_text(svg_text)
-	save_text()
+	queue_save()
 	sync_elements()
 
 func optimize() -> void:
