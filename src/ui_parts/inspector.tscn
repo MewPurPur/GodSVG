@@ -76,5 +76,3 @@ theme_override_constants/separation = 5
 visible = false
 layout_mode = 2
 script = ExtResource("5_otlmf")
-
-[connection signal="pressed" from="AddButton" to="." method="_on_add_button_pressed"]

@@ -5,8 +5,8 @@ var element: Element
 const attribute_name = "id"  # Never propagates.
 
 func set_value(new_value: String, save := false) -> void:
+	sync(new_value)
 	element.set_attribute(attribute_name, new_value)
-	sync_to_attribute()
 	if save:
 		SVG.queue_save()
 

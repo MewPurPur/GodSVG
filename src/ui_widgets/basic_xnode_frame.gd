@@ -27,8 +27,9 @@ func _ready() -> void:
 	mouse_exited.connect(_on_mouse_exited)
 	determine_selection_highlight()
 	title_bar.queue_redraw()
-	text_edit.text = xnode.get_text()
+	text_edit.text_set.connect(_on_text_modified)
 	text_edit.text_changed.connect(_on_text_modified)
+	text_edit.text = xnode.get_text()
 
 func _exit_tree() -> void:
 	RenderingServer.free_rid(surface)
@@ -221,6 +222,17 @@ func _on_title_button_gui_input(event: InputEvent, title_button: Button) -> void
 	title_button.mouse_filter = Utils.mouse_filter_pass_non_drag_events(event)
 
 func _on_text_modified() -> void:
+	# TODO figure out a way to make this work.
+	#if text_edit.get_line_count() >= 3 or (text_edit.get_line_count() == 2 and\
+	#text_edit.get_line_wrap_count(0) + text_edit.get_line_wrap_count(1) >= 1) or\
+	#(text_edit.get_line_count() == 1 and text_edit.get_line_wrap_count(0) >= 2):
+		#size.y = 36 + text_edit.get_line_height() * 2
+	#elif text_edit.get_line_count() >= 2 or (text_edit.get_line_count() == 1 and\
+	#text_edit.get_line_wrap_count(0) >= 1):
+		#size.y = 36 + text_edit.get_line_height()
+	#else:
+		#size.y = 36
+	
 	if xnode.check_text_validity(text_edit.text):
 		xnode.set_text(text_edit.text)
 		text_edit.remove_theme_color_override("font_color")

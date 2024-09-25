@@ -38,5 +38,5 @@ static func text_to_num(text: String) -> float:
 		return text.to_float() / 100
 	return text.to_float()
 
-func text_check_percentage(text: String) -> bool:
+static func text_check_percentage(text: String) -> bool:
 	return text.strip_edges().ends_with("%")
