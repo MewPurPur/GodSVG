@@ -12,6 +12,7 @@ func _ready() -> void:
 	update_translation()
 	SVG.elements_layout_changed.connect(full_rebuild)
 	SVG.changed_unknown.connect(full_rebuild)
+	add_button.pressed.connect(_on_add_button_pressed)
 	full_rebuild()
 
 

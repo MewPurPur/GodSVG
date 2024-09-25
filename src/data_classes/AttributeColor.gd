@@ -55,7 +55,7 @@ func format(text: String) -> String:
 	return text
 
 
-const special_colors = ["none", "currentColor"]
+const special_colors = ["transparent", "none", "currentColor"]
 
 const named_colors = {  # Dictionary{String: String}
 	"aliceblue": "#f0f8ff",

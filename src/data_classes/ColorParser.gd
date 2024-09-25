@@ -65,9 +65,9 @@ static func text_to_color(color: String, backup := Color.BLACK,
 allow_alpha := false) -> Color:
 	color = color.strip_edges()
 	if is_valid_named(color):
-		if color == "none":
+		if color in ["none", "transparent"]:
 			return Color(0, 0, 0, 0)
-		elif color in AttributeColor.special_colors:
+		elif color == "currentColor":
 			return backup
 		else:
 			return Color(AttributeColor.named_colors[color])
