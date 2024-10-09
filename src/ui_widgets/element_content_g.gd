@@ -1,11 +1,5 @@
 extends VBoxContainer
 
-const TransformField = preload("res://src/ui_widgets/transform_field.tscn")
-const NumberField = preload("res://src/ui_widgets/number_field.tscn")
-const NumberSlider = preload("res://src/ui_widgets/number_field_with_slider.tscn")
-const ColorField = preload("res://src/ui_widgets/color_field.tscn")
-const EnumField = preload("res://src/ui_widgets/enum_field.tscn")
-
 @onready var attribute_container: HFlowContainer = $AttributeContainer
 
 var element: Element

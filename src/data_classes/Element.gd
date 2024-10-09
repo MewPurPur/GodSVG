@@ -328,13 +328,4 @@ func new_default_attribute(name: String) -> Attribute:
 	return _create_attribute(name, get_default(name))
 
 func _create_attribute(name: String, value := "") -> Attribute:
-	var formatter := root.formatter if root != null else Formatter.new()
-	match DB.get_attribute_type(name):
-		DB.AttributeType.NUMERIC: return AttributeNumeric.new(name, formatter, value)
-		DB.AttributeType.COLOR: return AttributeColor.new(name, formatter, value)
-		DB.AttributeType.LIST: return AttributeList.new(name, formatter, value)
-		DB.AttributeType.PATHDATA: return AttributePathdata.new(name, formatter, value)
-		DB.AttributeType.ENUM: return AttributeEnum.new(name, formatter, value)
-		DB.AttributeType.TRANSFORM_LIST: return AttributeTransformList.new(name, formatter, value)
-		DB.AttributeType.ID: return AttributeID.new(name, formatter, value)
-		_: return Attribute.new(name, formatter, value)
+	return DB.attribute(name, root.formatter if root != null else Formatter.new(), value)
