@@ -18,6 +18,9 @@ const handles_svg_dict = {
 }
 
 const DEFAULT_GRAB_DISTANCE_SQUARED := 81.0
+const CONTOUR_WIDTH = 1.0
+const TANGENT_WIDTH = 0.65
+const TANGENT_ALPHA = 0.8
 
 var update_pending := false
 var handles: Array[Handle]
@@ -585,13 +588,9 @@ func _draw() -> void:
 							hovered_selected_polylines.append(points)
 							hovered_selected_multiline += tangent_points
 	
-	var draw_zoom := Indications.zoom * SVG.root_element.canvas_transform.get_scale().x
-	var contour_width := 1.0 / draw_zoom
-	var tangent_width := 0.6 / draw_zoom
-	var tangent_alpha := 0.8
 	draw_set_transform_matrix(SVG.root_element.canvas_transform)
 	RenderingServer.canvas_item_set_transform(surface, Transform2D(0.0,
-			Vector2(1 / Indications.zoom, 1 / Indications.zoom), 0.0, Vector2.ZERO))
+			Vector2(1, 1) / Indications.zoom, 0.0, Vector2.ZERO))
 	
 	# First gather all handles in 4 categories, to then draw them in the right order.
 	var normal_handles: Array[Handle] = []
@@ -619,45 +618,16 @@ func _draw() -> void:
 	RenderingServer.canvas_item_clear(surface)
 	RenderingServer.canvas_item_clear(selections_surface)
 	
-	for polyline in normal_polylines:
-		draw_polyline(polyline, normal_color, contour_width, true)
-	if not normal_multiline.is_empty():
-		draw_multiline(normal_multiline,
-				Color(normal_color, tangent_alpha), tangent_width, true)
-	for handle in normal_handles:
-		var texture: Texture2D = normal_handle_textures[handle.display_mode]
-		texture.draw(surface, SVG.root_element.canvas_to_world(handle.transform * handle.pos) *\
-				Indications.zoom - texture.get_size() / 2)
-	
-	for polyline in selected_polylines:
-		draw_polyline(polyline, selected_color, contour_width, true)
-	if not selected_multiline.is_empty():
-		draw_multiline(selected_multiline,
-				Color(selected_color, tangent_alpha), tangent_width, true)
-	for handle in selected_handles:
-		var texture: Texture2D = selected_handle_textures[handle.display_mode]
-		texture.draw(surface, SVG.root_element.canvas_to_world(handle.transform * handle.pos) *\
-				Indications.zoom - texture.get_size() / 2)
-	
-	for polyline in hovered_polylines:
-		draw_polyline(polyline, hovered_color, contour_width, true)
-	if not hovered_multiline.is_empty():
-		draw_multiline(hovered_multiline,
-				Color(hovered_color, tangent_alpha), tangent_width, true)
-	for handle in hovered_handles:
-		var texture: Texture2D = hovered_handle_textures[handle.display_mode]
-		texture.draw(surface, SVG.root_element.canvas_to_world(handle.transform * handle.pos) *\
-				Indications.zoom - texture.get_size() / 2)
-	
-	for polyline in hovered_selected_polylines:
-		draw_polyline(polyline, hovered_selected_color, contour_width, true)
-	if not hovered_selected_multiline.is_empty():
-		draw_multiline(hovered_selected_multiline,
-				Color(hovered_selected_color, tangent_alpha), tangent_width, true)
-	for handle in hovered_selected_handles:
-		var texture: Texture2D = hovered_selected_handle_textures[handle.display_mode]
-		texture.draw(surface, SVG.root_element.canvas_to_world(handle.transform * handle.pos) *\
-				Indications.zoom - texture.get_size() / 2)
+	var draw_zoom := SVG.root_element.canvas_transform * Indications.zoom
+	draw_objects_of_type(draw_zoom, normal_color, normal_polylines,
+			normal_multiline, normal_handles, normal_handle_textures)
+	draw_objects_of_type(draw_zoom, hovered_color, hovered_polylines,
+			hovered_multiline, hovered_handles, hovered_handle_textures)
+	draw_objects_of_type(draw_zoom, selected_color, selected_polylines,
+			selected_multiline, selected_handles, selected_handle_textures)
+	draw_objects_of_type(draw_zoom, hovered_selected_color, hovered_selected_polylines,
+			hovered_selected_multiline, hovered_selected_handles,
+			hovered_selected_handle_textures)
 	
 	for xid in Indications.selected_xids:
 		var xnode := SVG.root_element.get_xnode(xid)
@@ -668,6 +638,30 @@ func _draw() -> void:
 						xnode.get_transform() * SVG.root_element.canvas_transform)
 				RenderingServer.canvas_item_add_rect(selections_surface,
 						bounding_box.grow(4.0 / Indications.zoom), Color.WHITE)
+
+func draw_objects_of_type(draw_zoom: Transform2D, color: Color,
+polylines: Array[PackedVector2Array], multiline: PackedVector2Array,
+handles_array: Array[Handle], handle_texture_array: Dictionary) -> void:
+	for polyline in polylines:
+		var color_array := PackedColorArray()
+		color_array.resize(polyline.size())
+		color_array.fill(color)
+		for idx in polyline.size():
+			polyline[idx] *= draw_zoom
+		RenderingServer.canvas_item_add_polyline(surface, polyline,
+				color_array, CONTOUR_WIDTH, true)
+	if not multiline.is_empty():
+		for idx in multiline.size():
+			multiline[idx] *= draw_zoom
+		var color_array := PackedColorArray()
+		color_array.resize(multiline.size() / 2)
+		color_array.fill(Color(color, TANGENT_ALPHA))
+		RenderingServer.canvas_item_add_multiline(surface, multiline,
+				color_array, TANGENT_WIDTH, true)
+	for handle in handles_array:
+		var texture: Texture2D = handle_texture_array[handle.display_mode]
+		texture.draw(surface, SVG.root_element.canvas_to_world(handle.transform * handle.pos) *\
+				Indications.zoom - texture.get_size() / 2)
 
 
 var dragged_handle: Handle = null
