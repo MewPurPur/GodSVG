@@ -654,7 +654,7 @@ handles_array: Array[Handle], handle_texture_array: Dictionary) -> void:
 		for idx in multiline.size():
 			multiline[idx] *= draw_zoom
 		var color_array := PackedColorArray()
-		color_array.resize(multiline.size() / 2)
+		color_array.resize(int(multiline.size() / 2.0))
 		color_array.fill(Color(color, TANGENT_ALPHA))
 		RenderingServer.canvas_item_add_multiline(surface, multiline,
 				color_array, TANGENT_WIDTH, true)

@@ -31,14 +31,17 @@ var temp_button: Button
 
 @export var text: String:
 	set(new_value):
-		# No equivalence check because of a certain potential situation.
+		# No early equivalence check because of a certain potential situation.
 		# For example, if you start with empty text and enter a value, but it's dismissed,
 		# the text would revert back to empty. There should be an update in that case.
+		var old_value := text
 		text = new_value
 		if active:
 			temp_line_edit.text = new_value
 		else:
 			queue_redraw()
+			if text != old_value:
+				text_changed.emit(text)
 
 @export var font_color := Color.TRANSPARENT:
 	set(new_value):

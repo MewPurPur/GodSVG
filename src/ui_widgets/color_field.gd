@@ -40,6 +40,10 @@ func _ready() -> void:
 		element.ancestor_attribute_changed.connect(_on_element_ancestor_attribute_changed)
 	text_submitted.connect(set_value.bind(true))
 	focus_entered.connect(reset_font_color)
+	text_changed.connect(_on_text_changed)
+	text_change_canceled.connect(sync_to_attribute)
+	pressed.connect(_on_pressed)
+	button_gui_input.connect(_on_button_gui_input)
 	# If URL is allowed, we need to always check if the gradient has changed.
 	if cached_allow_url:
 		SVG.changed.connect(_on_svg_changed)
@@ -121,10 +125,6 @@ func _draw() -> void:
 		draw_button_border("hover")
 	else:
 		draw_button_border("normal")
-
-
-func _on_text_change_canceled() -> void:
-	sync(element.get_attribute_value(attribute_name, true))
 
 
 func _on_color_picked(new_color: String, close_picker: bool) -> void:

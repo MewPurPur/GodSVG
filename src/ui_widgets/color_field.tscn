@@ -10,8 +10,3 @@ offset_right = 68.0
 script = ExtResource("1_2pe1j")
 button_visuals = false
 mono_font_tooltip = true
-
-[connection signal="button_gui_input" from="." to="." method="_on_button_gui_input"]
-[connection signal="pressed" from="." to="." method="_on_pressed"]
-[connection signal="text_change_canceled" from="." to="." method="_on_text_change_canceled"]
-[connection signal="text_changed" from="." to="." method="_on_text_changed"]
