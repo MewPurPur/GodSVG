@@ -51,7 +51,7 @@ const recognized_attributes = {  # Dictionary{String: Array[String]}
 	"line": ["transform", "opacity", "stroke", "stroke-opacity", "stroke-width",
 			"stroke-linecap", "x1", "y1", "x2", "y2"],
 	"polygon": ["transform", "opacity", "fill", "fill-opacity", "stroke", "stroke-opacity",
-			"stroke-width", "stroke-linecap", "stroke-linejoin", "points"],
+			"stroke-width", "stroke-linejoin", "points"],
 	"polyline": ["transform", "opacity", "fill", "fill-opacity", "stroke",
 			"stroke-opacity", "stroke-width", "stroke-linecap", "stroke-linejoin", "points"],
 	"stop": ["offset", "stop-color", "stop-opacity"],
