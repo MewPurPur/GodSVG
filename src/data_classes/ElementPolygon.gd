@@ -6,7 +6,8 @@ const possible_conversions = ["path", "rect"]
 
 func user_setup(pos := Vector2.ZERO) -> void:
 	if pos != Vector2.ZERO:
-		set_attribute("points", "0 0")
+		var attrib: AttributeList = get_attribute("points")
+		attrib.set_points(PackedVector2Array([pos]))
 
 func _get_own_default(attribute_name: String) -> String:
 	if attribute_name == "opacity":

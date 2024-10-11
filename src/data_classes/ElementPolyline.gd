@@ -6,7 +6,8 @@ const possible_conversions = ["path", "line"]
 
 func user_setup(pos := Vector2.ZERO) -> void:
 	if pos != Vector2.ZERO:
-		set_attribute("points", "0 0")
+		var attrib: AttributeList = get_attribute("points")
+		attrib.set_points(PackedVector2Array([pos]))
 	set_attribute("fill", "none")
 	set_attribute("stroke", "black")
 
