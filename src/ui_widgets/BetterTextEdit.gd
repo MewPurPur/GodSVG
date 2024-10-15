@@ -171,3 +171,8 @@ func _gui_input(event: InputEvent) -> void:
 			if has_undo():
 				undo()
 			accept_event()
+
+
+func initialize_text(initial_text: String) -> void:
+	text = initial_text
+	clear_undo_history()

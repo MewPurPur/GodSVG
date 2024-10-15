@@ -22,7 +22,11 @@ layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 2
 
-[node name="TextEdit" type="TextEdit" parent="Content"]
-custom_minimum_size = Vector2(0, 28)
+[node name="ActionContainer" type="HBoxContainer" parent="Content"]
 layout_mode = 2
+
+[node name="TextEdit" type="TextEdit" parent="Content/ActionContainer"]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+size_flags_horizontal = 3
 script = ExtResource("2_0i3q7")

@@ -1,5 +1,8 @@
 extends HBoxContainer
 
+const delete_icon = preload("res://visual/icons/Delete.svg")
+const merge_icon = preload("res://visual/icons/Merge.svg")
+
 # FIXME this seems like a not us issue.
 static var BasicXNodeFrame: PackedScene:
 	get:
@@ -7,9 +10,10 @@ static var BasicXNodeFrame: PackedScene:
 			BasicXNodeFrame = load("res://src/ui_widgets/basic_xnode_frame.tscn")
 		return BasicXNodeFrame
 
-@onready var text_edit: BetterTextEdit = $Content/TextEdit
+@onready var text_edit: BetterTextEdit = $Content/ActionContainer/TextEdit
 @onready var title_bar: Panel = $TitleBar
 @onready var content: PanelContainer = $Content
+@onready var action_container: HBoxContainer = $Content/ActionContainer
 
 var xnode: BasicXNode
 
@@ -25,18 +29,19 @@ func _ready() -> void:
 	title_bar.draw.connect(_on_title_bar_draw)
 	mouse_entered.connect(_on_mouse_entered)
 	mouse_exited.connect(_on_mouse_exited)
+	text_edit.focus_exited.connect(SVG.queue_save)
 	determine_selection_highlight()
 	title_bar.queue_redraw()
 	text_edit.text_set.connect(_on_text_modified)
 	text_edit.text_changed.connect(_on_text_modified)
-	text_edit.text = xnode.get_text()
+	text_edit.initialize_text(xnode.get_text())
 
 func _exit_tree() -> void:
 	RenderingServer.free_rid(surface)
 
 # Logic for dragging.
 func _get_drag_data(_at_position: Vector2) -> Variant:
-	var data: Array[PackedInt32Array] = Utils.filter_descendant_xids(
+	var data: Array[PackedInt32Array] = XIDUtils.filter_descendants(
 			Indications.selected_xids.duplicate(true))
 	# Set up a preview.
 	var elements_container := VBoxContainer.new()
@@ -71,7 +76,7 @@ func _on_title_button_pressed() -> void:
 func _gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion and event.button_mask == 0:
 		if Indications.semi_hovered_xid != xnode.xid and\
-		not Utils.is_xid_parent(xnode.xid, Indications.hovered_xid):
+		not XIDUtils.is_parent(xnode.xid, Indications.hovered_xid):
 			Indications.set_hovered(xnode.xid)
 	elif event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_LEFT:
@@ -181,15 +186,15 @@ func _draw() -> void:
 		return
 	
 	for selected_xid in Indications.selected_xids:
-		if Utils.is_xid_parent_or_self(selected_xid, xnode.xid):
+		if XIDUtils.is_parent_or_self(selected_xid, xnode.xid):
 			return
 	
-	var parent_xid := Utils.get_parent_xid(xnode.xid)
+	var parent_xid := XIDUtils.get_parent_xid(xnode.xid)
 	# Draw the indicator of drag and drop actions.
 	var drop_sb := StyleBoxFlat.new()
 	var drop_xid := Indications.proposed_drop_xid
 	
-	var drop_element := xnode.root.get_xnode(Utils.get_parent_xid(drop_xid))
+	var drop_element := xnode.root.get_xnode(XIDUtils.get_parent_xid(drop_xid))
 	var are_all_children_valid := true
 	for xid in Indications.selected_xids:
 		var selected_xnode := xnode.root.get_xnode(xid)
@@ -222,6 +227,17 @@ func _on_title_button_gui_input(event: InputEvent, title_button: Button) -> void
 	title_button.mouse_filter = Utils.mouse_filter_pass_non_drag_events(event)
 
 func _on_text_modified() -> void:
+	if xnode.check_text_validity(text_edit.text):
+		xnode.set_text(text_edit.text)
+		text_edit.remove_theme_color_override("font_color")
+	else:
+		text_edit.add_theme_color_override("font_color",
+				GlobalSettings.savedata.basic_color_error)
+	
+	if xnode.get_type() == BasicXNode.NodeType.TEXT:
+		resolve_text_node_buttons()
+		
+	
 	# TODO figure out a way to make this work.
 	#if text_edit.get_line_count() >= 3 or (text_edit.get_line_count() == 2 and\
 	#text_edit.get_line_wrap_count(0) + text_edit.get_line_wrap_count(1) >= 1) or\
@@ -232,10 +248,27 @@ func _on_text_modified() -> void:
 		#size.y = 36 + text_edit.get_line_height()
 	#else:
 		#size.y = 36
+
+func resolve_text_node_buttons() -> void:
+	for child in action_container.get_children():
+		if not child is BetterTextEdit:
+			child.queue_free()
 	
-	if xnode.check_text_validity(text_edit.text):
-		xnode.set_text(text_edit.text)
-		text_edit.remove_theme_color_override("font_color")
+	var should_merge := xnode.can_merge()
+	var should_remove := text_edit.text.strip_edges().is_empty()
+	
+	if not (should_merge or should_remove):
+		return
+	
+	var resolve_button := Button.new()
+	resolve_button.focus_mode = Control.FOCUS_NONE
+	resolve_button.theme_type_variation = "IconButton"
+	resolve_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+	resolve_button.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	resolve_button.icon = merge_icon if should_merge else delete_icon
+	action_container.add_child(resolve_button)
+	var arr: Array[PackedInt32Array] = [xnode.xid]
+	if should_merge:
+		resolve_button.pressed.connect(SVG.root_element.merge_xnodes.bind(arr))
 	else:
-		text_edit.add_theme_color_override("font_color",
-				GlobalSettings.savedata.basic_color_error)
+		resolve_button.pressed.connect(SVG.root_element.delete_xnodes.bind(arr))

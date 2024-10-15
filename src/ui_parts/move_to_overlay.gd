@@ -6,7 +6,7 @@ func _can_drop_data(_at_position: Vector2, data: Variant) -> bool:
 		return false
 	get_parent().update_proposed_xid()
 	for xid in data:
-		if Utils.is_xid_parent(xid, Indications.proposed_drop_xid):
+		if XIDUtils.is_parent(xid, Indications.proposed_drop_xid):
 			return false
 	return true
 
