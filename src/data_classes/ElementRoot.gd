@@ -3,11 +3,12 @@ class_name ElementRoot extends ElementSVG
 @warning_ignore("unused_signal")
 signal any_attribute_changed(xid: PackedInt32Array)
 
-signal elements_added(xids: Array[PackedInt32Array])
-signal elements_deleted(xids: Array[PackedInt32Array])
-signal elements_moved_in_parenet(parent_xid: PackedInt32Array, old_indices: Array[int])
-signal elements_moved_to(xids: Array[PackedInt32Array], location: PackedInt32Array)
-signal elements_layout_changed  # Emitted together with any of the above 4.
+signal xnodes_added(xids: Array[PackedInt32Array])
+signal xnodes_deleted(xids: Array[PackedInt32Array])
+signal xnodes_moved_in_parent(parent_xid: PackedInt32Array, old_indices: Array[int])
+signal xnodes_moved_to(xids: Array[PackedInt32Array], location: PackedInt32Array)
+signal xnode_layout_changed  # Emitted together with any of the above 4.
+
 @warning_ignore("unused_signal")
 signal basic_xnode_text_changed(xid: PackedInt32Array)
 @warning_ignore("unused_signal")
@@ -47,20 +48,20 @@ func _get_own_default(attribute_name: String) -> String:
 
 
 func add_xnode(new_xnode: XNode, new_xid: PackedInt32Array) -> void:
-	get_xnode(Utils.get_parent_xid(new_xid)).insert_child(new_xid[-1], new_xnode)
+	get_xnode(XIDUtils.get_parent_xid(new_xid)).insert_child(new_xid[-1], new_xnode)
 	var new_xid_array: Array[PackedInt32Array] = [new_xid]
-	elements_added.emit(new_xid_array)
-	elements_layout_changed.emit()
+	xnodes_added.emit(new_xid_array)
+	xnode_layout_changed.emit()
 
 func delete_xnodes(xids: Array[PackedInt32Array]) -> void:
 	if xids.is_empty():
 		return
 	
-	xids = Utils.filter_descendant_xids(xids)
+	xids = XIDUtils.filter_descendants(xids)
 	for id in xids:
 		get_xnode(id).parent.remove_child(id[-1])
-	elements_deleted.emit(xids)
-	elements_layout_changed.emit()
+	xnodes_deleted.emit(xids)
+	xnode_layout_changed.emit()
 
 # Moves elements up or down, not to an arbitrary position.
 func move_xnodes_in_parent(xids: Array[PackedInt32Array], down: bool) -> void:
@@ -68,11 +69,11 @@ func move_xnodes_in_parent(xids: Array[PackedInt32Array], down: bool) -> void:
 		return
 	
 	# For moving, all these elements must be direct children of the same parent.
-	xids = Utils.filter_descendant_xids(xids)
+	xids = XIDUtils.filter_descendants(xids)
 	var depth := xids[0].size()
-	var parent_xid := Utils.get_parent_xid(xids[0])
+	var parent_xid := XIDUtils.get_parent_xid(xids[0])
 	for id in xids:
-		if id.size() != depth or Utils.get_parent_xid(id) != parent_xid:
+		if id.size() != depth or XIDUtils.get_parent_xid(id) != parent_xid:
 			return
 	
 	var xid_indices: Array[int] = []  # The last indices of the XIDs.
@@ -111,16 +112,16 @@ func move_xnodes_in_parent(xids: Array[PackedInt32Array], down: bool) -> void:
 			i += 1
 	# Check if indices were really changed after the operation.
 	if old_indices != range(old_indices.size()):
-		elements_moved_in_parenet.emit(parent_xid, old_indices)
-		elements_layout_changed.emit()
+		xnodes_moved_in_parent.emit(parent_xid, old_indices)
+		xnode_layout_changed.emit()
 
 # Moves elements to an arbitrary location.
 # The first moved element will now be at the location XID.
 func move_xnodes_to(xids: Array[PackedInt32Array], location: PackedInt32Array) -> void:
-	xids = Utils.filter_descendant_xids(xids)
+	xids = XIDUtils.filter_descendants(xids)
 	# An element can't move deeper inside itself. Remove the descendants of the location.
 	for i in range(xids.size() - 1, -1, -1):
-		if Utils.is_xid_parent(xids[i], location):
+		if XIDUtils.is_parent(xids[i], location):
 			xids.remove_at(i)
 	
 	# Remove elements from their old locations.
@@ -138,17 +139,17 @@ func move_xnodes_to(xids: Array[PackedInt32Array], location: PackedInt32Array) -
 			if before and id[-1] < location[id.size() - 1]:
 				location[id.size() - 1] -= 1
 		xids_stored.append(id)
-		xnodes_stored.append(get_xnode(Utils.get_parent_xid(id)).pop_child(id[-1]))
+		xnodes_stored.append(get_xnode(XIDUtils.get_parent_xid(id)).pop_child(id[-1]))
 	# Add the elements back in the new location.
 	for xnode in xnodes_stored:
-		get_xnode(Utils.get_parent_xid(location)).insert_child(location[-1], xnode)
+		get_xnode(XIDUtils.get_parent_xid(location)).insert_child(location[-1], xnode)
 	# Check if this actually chagned the layout.
 	for id in xids_stored:
-		if not Utils.are_xid_parents_same(id, location) or id[-1] < location[-1] or\
+		if not XIDUtils.are_siblings(id, location) or id[-1] < location[-1] or\
 		id[-1] >= location[-1] + xids_stored.size():
 			# If this condition is passed, then there was a layout change.
-			elements_moved_to.emit(xids, location)
-			elements_layout_changed.emit()
+			xnodes_moved_to.emit(xids, location)
+			xnode_layout_changed.emit()
 			return
 
 # Duplicates elements and puts them below.
@@ -156,7 +157,7 @@ func duplicate_xnodes(xids: Array[PackedInt32Array]) -> void:
 	if xids.is_empty():
 		return
 	
-	xids = Utils.filter_descendant_xids(xids)
+	xids = XIDUtils.filter_descendants(xids)
 	var xids_added: Array[PackedInt32Array] = []
 	# Used to offset previously added XIDs in xids_added after duplicating an element before.
 	var last_parent := PackedInt32Array([-1])  # Start with a XID that can't be matched.
@@ -167,7 +168,7 @@ func duplicate_xnodes(xids: Array[PackedInt32Array]) -> void:
 		# Add the new element.
 		var new_xid := id.duplicate()
 		new_xid[-1] += 1
-		var parent_xid := Utils.get_parent_xid(new_xid)
+		var parent_xid := XIDUtils.get_parent_xid(new_xid)
 		get_xnode(parent_xid).insert_child(new_xid[-1], new_xnode)
 		# Add the XID and offset the other ones from the same parent.
 		var added_xid_idx := xids_added.size()
@@ -179,12 +180,12 @@ func duplicate_xnodes(xids: Array[PackedInt32Array]) -> void:
 			added_to_last_parent = 0
 		for xid_idx in range(added_xid_idx - added_to_last_parent , added_xid_idx):
 			xids_added[xid_idx][-1] += 1
-	elements_added.emit(xids_added)
-	elements_layout_changed.emit()
+	xnodes_added.emit(xids_added)
+	xnode_layout_changed.emit()
 
 func replace_xnode(id: PackedInt32Array, new_xnode: XNode) -> void:
 	get_xnode(id).parent.replace_child(id[-1], new_xnode)
-	elements_layout_changed.emit()
+	xnode_layout_changed.emit()
 
 
 # Optimizes the SVG text in more ways than what formatting attributes allows.

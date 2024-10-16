@@ -10,7 +10,7 @@ const BasicXNodeFrame = preload("res://src/ui_widgets/basic_xnode_frame.tscn")
 func _ready() -> void:
 	GlobalSettings.language_changed.connect(update_translation)
 	update_translation()
-	SVG.elements_layout_changed.connect(full_rebuild)
+	SVG.xnode_layout_changed.connect(full_rebuild)
 	SVG.changed_unknown.connect(full_rebuild)
 	add_button.pressed.connect(_on_add_button_pressed)
 	full_rebuild()

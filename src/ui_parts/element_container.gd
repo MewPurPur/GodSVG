@@ -62,11 +62,11 @@ func update_proposed_xid() -> void:
 	if in_top_buffer:
 		Indications.set_proposed_drop_xid(prev_xid)
 	elif in_bottom_buffer:
-		Indications.set_proposed_drop_xid(Utils.get_parent_xid(next_xid) +\
+		Indications.set_proposed_drop_xid(XIDUtils.get_parent_xid(next_xid) +\
 				PackedInt32Array([next_xid[-1] + 1]))
 	elif next_xid[0] >= SVG.root_element.get_child_count():
 		Indications.set_proposed_drop_xid(next_xid)
-	elif Utils.is_xid_parent_or_self(prev_xid, next_xid):
+	elif XIDUtils.is_parent_or_self(prev_xid, next_xid):
 		for i in range(prev_xid.size(), next_xid.size()):
 			if next_xid[i] != 0:
 				return

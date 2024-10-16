@@ -29,14 +29,14 @@ func _ready() -> void:
 	title_bar.queue_redraw()
 	text_edit.text_set.connect(_on_text_modified)
 	text_edit.text_changed.connect(_on_text_modified)
-	text_edit.text = xnode.get_text()
+	text_edit.initialize_text(xnode.get_text())
 
 func _exit_tree() -> void:
 	RenderingServer.free_rid(surface)
 
 # Logic for dragging.
 func _get_drag_data(_at_position: Vector2) -> Variant:
-	var data: Array[PackedInt32Array] = Utils.filter_descendant_xids(
+	var data: Array[PackedInt32Array] = XIDUtils.filter_descendants(
 			Indications.selected_xids.duplicate(true))
 	# Set up a preview.
 	var elements_container := VBoxContainer.new()
@@ -71,7 +71,7 @@ func _on_title_button_pressed() -> void:
 func _gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion and event.button_mask == 0:
 		if Indications.semi_hovered_xid != xnode.xid and\
-		not Utils.is_xid_parent(xnode.xid, Indications.hovered_xid):
+		not XIDUtils.is_parent(xnode.xid, Indications.hovered_xid):
 			Indications.set_hovered(xnode.xid)
 	elif event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_LEFT:
@@ -181,15 +181,15 @@ func _draw() -> void:
 		return
 	
 	for selected_xid in Indications.selected_xids:
-		if Utils.is_xid_parent_or_self(selected_xid, xnode.xid):
+		if XIDUtils.is_parent_or_self(selected_xid, xnode.xid):
 			return
 	
-	var parent_xid := Utils.get_parent_xid(xnode.xid)
+	var parent_xid := XIDUtils.get_parent_xid(xnode.xid)
 	# Draw the indicator of drag and drop actions.
 	var drop_sb := StyleBoxFlat.new()
 	var drop_xid := Indications.proposed_drop_xid
 	
-	var drop_element := xnode.root.get_xnode(Utils.get_parent_xid(drop_xid))
+	var drop_element := xnode.root.get_xnode(XIDUtils.get_parent_xid(drop_xid))
 	var are_all_children_valid := true
 	for xid in Indications.selected_xids:
 		var selected_xnode := xnode.root.get_xnode(xid)

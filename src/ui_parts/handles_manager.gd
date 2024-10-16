@@ -96,7 +96,7 @@ func _ready() -> void:
 	add_child(c, false, InternalMode.INTERNAL_MODE_BACK)
 	
 	SVG.any_attribute_changed.connect(sync_handles)
-	SVG.elements_layout_changed.connect(queue_update)
+	SVG.xnode_layout_changed.connect(queue_update)
 	SVG.changed_unknown.connect(queue_update)
 	Indications.selection_changed.connect(queue_redraw)
 	Indications.hover_changed.connect(queue_redraw)

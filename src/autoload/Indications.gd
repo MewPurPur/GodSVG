@@ -65,10 +65,10 @@ func set_viewport_size(new_value: Vector2i) -> void:
 
 
 func _ready() -> void:
-	SVG.elements_added.connect(_on_elements_added)
-	SVG.elements_deleted.connect(_on_elements_deleted)
-	SVG.elements_moved_in_parenet.connect(_on_elements_moved_in_parenet)
-	SVG.elements_moved_to.connect(_on_elements_moved_to)
+	SVG.xnodes_added.connect(_on_xnodes_added)
+	SVG.xnodes_deleted.connect(_on_xnodes_deleted)
+	SVG.xnodes_moved_in_parent.connect(_on_xnodes_moved_in_parent)
+	SVG.xnodes_moved_to.connect(_on_xnodes_moved_to)
 	SVG.changed_unknown.connect(clear_all_selections)
 
 
@@ -279,9 +279,9 @@ func clear_inner_hovered() -> void:
 func is_hovered(xid: PackedInt32Array, inner_idx := -1, propagate := false) -> bool:
 	if propagate:
 		if inner_idx == -1:
-			return Utils.is_xid_parent_or_self(hovered_xid, xid)
+			return XIDUtils.is_parent_or_self(hovered_xid, xid)
 		else:
-			return Utils.is_xid_parent_or_self(hovered_xid, xid) or\
+			return XIDUtils.is_parent_or_self(hovered_xid, xid) or\
 					(semi_hovered_xid == xid and inner_hovered == inner_idx)
 	else:
 		if inner_idx == -1:
@@ -294,12 +294,12 @@ func is_selected(xid: PackedInt32Array, inner_idx := -1, propagate := false) -> 
 	if propagate:
 		if inner_idx == -1:
 			for selected_xid in selected_xids:
-				if Utils.is_xid_parent_or_self(selected_xid, xid):
+				if XIDUtils.is_parent_or_self(selected_xid, xid):
 					return true
 			return false
 		else:
 			for selected_xid in selected_xids:
-				if Utils.is_xid_parent_or_self(selected_xid, xid):
+				if XIDUtils.is_parent_or_self(selected_xid, xid):
 					return true
 			return semi_selected_xid == xid and inner_idx in inner_selections
 	else:
@@ -320,23 +320,23 @@ func clear_proposed_drop_xid() -> void:
 		proposed_drop_changed.emit()
 
 
-func _on_elements_added(xids: Array[PackedInt32Array]) -> void:
+func _on_xnodes_added(xids: Array[PackedInt32Array]) -> void:
 	selected_xids = xids.duplicate()
 
 # If selected elements were deleted, remove them from the list of selected elements.
-func _on_elements_deleted(xids: Array[PackedInt32Array]) -> void:
+func _on_xnodes_deleted(xids: Array[PackedInt32Array]) -> void:
 	xids = xids.duplicate()  # For some reason, it breaks without this.
 	var old_selected_xids := selected_xids.duplicate()
 	for deleted_xid in xids:
 		for i in range(selected_xids.size() - 1, -1, -1):
 			var xid := selected_xids[i]
-			if Utils.is_xid_parent_or_self(deleted_xid, xid):
+			if XIDUtils.is_parent_or_self(deleted_xid, xid):
 				selected_xids.remove_at(i)
 	if old_selected_xids != selected_xids:
 		selection_changed.emit()
 
 # If selected elements were moved up or down, change the XIDs and their children.
-func _on_elements_moved_in_parenet(parent_xid: PackedInt32Array, indices: Array[int]) -> void:
+func _on_xnodes_moved_in_parent(parent_xid: PackedInt32Array, indices: Array[int]) -> void:
 	var old_selected_xids := selected_xids.duplicate()
 	var xids_to_select: Array[PackedInt32Array] = []
 	var xids_to_unselect: Array[PackedInt32Array] = []
@@ -351,7 +351,7 @@ func _on_elements_moved_in_parenet(parent_xid: PackedInt32Array, indices: Array[
 		
 		# If the XID or a child of it is found, append it.
 		for xid in selected_xids:
-			if Utils.is_xid_parent_or_self(old_moved_xid, xid):
+			if XIDUtils.is_parent_or_self(old_moved_xid, xid):
 				var new_selected_xid := xid.duplicate()
 				new_selected_xid[parent_xid.size()] = index_idx
 				xids_to_unselect.append(xid)
@@ -364,14 +364,14 @@ func _on_elements_moved_in_parenet(parent_xid: PackedInt32Array, indices: Array[
 		selection_changed.emit()
 
 # If selected elements were moved to a location, change the XIDs and their children.
-func _on_elements_moved_to(xids: Array[PackedInt32Array], location: PackedInt32Array) -> void:
+func _on_xnodes_moved_to(xids: Array[PackedInt32Array], location: PackedInt32Array) -> void:
 	xids = xids.duplicate()
 	var new_selected_xids: Array[PackedInt32Array] = []
 	for moved_idx in xids.size():
 		var moved_xid := xids[moved_idx]
 		for xid in selected_xids:
-			if Utils.is_xid_parent_or_self(moved_xid, xid):
-				var new_location := Utils.get_parent_xid(location)
+			if XIDUtils.is_parent_or_self(moved_xid, xid):
+				var new_location := XIDUtils.get_parent_xid(location)
 				new_location.append(moved_idx + location[-1])
 				for ii in range(moved_xid.size(), xid.size()):
 					new_location.append(xid[ii])
@@ -491,11 +491,11 @@ func get_selection_context(popup_method: Callable, context: Context) -> ContextP
 	var btn_arr: Array[Button] = []
 	
 	if not selected_xids.is_empty():
-		var filtered_xids := Utils.filter_descendant_xids(selected_xids)
+		var filtered_xids := XIDUtils.filter_descendants(selected_xids)
 		var can_move_down := true
 		var can_move_up := true
 		for base_xid in filtered_xids:
-			if not Utils.are_xid_parents_same(base_xid, filtered_xids[0]):
+			if not XIDUtils.are_siblings(base_xid, filtered_xids[0]):
 				can_move_down = false
 				can_move_up = false
 				break
@@ -503,7 +503,7 @@ func get_selection_context(popup_method: Callable, context: Context) -> ContextP
 		if can_move_up or can_move_down:
 			can_move_down = false
 			can_move_up = false
-			var parent_xid := Utils.get_parent_xid(filtered_xids[0])
+			var parent_xid := XIDUtils.get_parent_xid(filtered_xids[0])
 			var filtered_count := filtered_xids.size()
 			var parent_child_count: int = SVG.root_element.get_xnode(parent_xid).get_child_count()
 			for base_xid in filtered_xids:
@@ -522,8 +522,8 @@ func get_selection_context(popup_method: Callable, context: Context) -> ContextP
 				"duplicate"))
 		
 		var xnode := SVG.root_element.get_xnode(selected_xids[0])
-		if selected_xids.size() == 1 and xnode is BasicXNode or\
-		not xnode.possible_conversions.is_empty():
+		if (selected_xids.size() == 1 and xnode is BasicXNode) or\
+		(xnode is Element and not xnode.possible_conversions.is_empty()):
 			btn_arr.append(ContextPopup.create_button(
 					TranslationServer.translate("Convert To"),
 					popup_convert_to_context.bind(popup_method), false,
