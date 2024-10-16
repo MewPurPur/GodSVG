@@ -62,66 +62,6 @@ static func Et(r: Vector2, cosine: float, sine: float, t: float) -> Vector2:
 	return Vector2(xt * cosine - yt * sine, xt * sine + yt * cosine)
 
 
-# [1] > [1, 2] > [1, 0] > [0]
-static func compare_xids(xid1: PackedInt32Array, xid2: PackedInt32Array) -> bool:
-	var smaller_xid_size := mini(xid1.size(), xid2.size())
-	for i in smaller_xid_size:
-		if xid1[i] < xid2[i]:
-			return true
-		elif xid1[i] > xid2[i]:
-			return false
-	return xid1.size() > smaller_xid_size
-
-static func compare_xids_r(xid1: PackedInt32Array, xid2: PackedInt32Array) -> bool:
-	return compare_xids(xid2, xid1)
-
-# Indirect parent, i.e. ancestor. Passing the root element as parent will return false.
-static func is_xid_parent(parent: PackedInt32Array, child: PackedInt32Array) -> bool:
-	if parent.is_empty():
-		return false
-	var parent_size := parent.size()
-	if parent_size >= child.size():
-		return false
-	
-	for i in parent_size:
-		if parent[i] != child[i]:
-			return false
-	return true
-
-static func is_xid_parent_or_self(parent: PackedInt32Array,
-child: PackedInt32Array) -> bool:
-	return is_xid_parent(parent, child) or parent == child
-
-static func get_parent_xid(xid: PackedInt32Array) -> PackedInt32Array:
-	var parent_xid := xid.duplicate()
-	parent_xid.resize(xid.size() - 1)
-	return parent_xid
-
-static func are_xid_parents_same(xid1: PackedInt32Array, xid2: PackedInt32Array) -> bool:
-	if xid1.size() != xid2.size():
-		return false
-	for i in xid1.size() - 1:
-		if xid1[i] != xid2[i]:
-			return false
-	return true
-
-# Filter out all descendants.
-static func filter_descendant_xids(xids: Array[PackedInt32Array]) -> Array[PackedInt32Array]:
-	var new_xids: Array[PackedInt32Array] = xids.duplicate()
-	new_xids.sort_custom(Utils.compare_xids_r)
-	# Linear scan to filter out the descendants.
-	var last_accepted := new_xids[0]
-	var i := 1
-	while i < new_xids.size():
-		var xid := new_xids[i]
-		if Utils.is_xid_parent_or_self(last_accepted, xid):
-			new_xids.remove_at(i)
-		else:
-			last_accepted = new_xids[i]
-			i += 1
-	return new_xids
-
-
 static func is_event_drag(event: InputEvent) -> bool:
 	return event is InputEventMouseMotion and event.button_mask == MOUSE_BUTTON_LEFT
 

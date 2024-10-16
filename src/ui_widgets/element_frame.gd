@@ -85,7 +85,7 @@ func _get_drag_data(_at_position: Vector2) -> Variant:
 	if Indications.selected_xids.is_empty():
 		return null
 	
-	var data: Array[PackedInt32Array] = Utils.filter_descendant_xids(
+	var data: Array[PackedInt32Array] = XIDUtils.filter_descendants(
 			Indications.selected_xids.duplicate(true))
 	# Set up a preview.
 	var elements_container := VBoxContainer.new()
@@ -120,7 +120,7 @@ func _on_title_button_pressed() -> void:
 func _gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion and event.button_mask == 0:
 		if Indications.semi_hovered_xid != element.xid and\
-		not Utils.is_xid_parent(element.xid, Indications.hovered_xid):
+		not XIDUtils.is_parent(element.xid, Indications.hovered_xid):
 			Indications.set_hovered(element.xid)
 	elif event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_LEFT:
@@ -243,16 +243,16 @@ func _draw() -> void:
 		return
 	
 	for selected_xid in Indications.selected_xids:
-		if Utils.is_xid_parent_or_self(selected_xid, element.xid):
+		if XIDUtils.is_parent_or_self(selected_xid, element.xid):
 			return
 	
-	var parent_xid := Utils.get_parent_xid(element.xid)
+	var parent_xid := XIDUtils.get_parent_xid(element.xid)
 	# Draw the indicator of drag and drop actions.
 	var drop_sb := StyleBoxFlat.new()
 	var drop_xid := Indications.proposed_drop_xid
 	
 	var root_element := element.root
-	var drop_tag := root_element.get_xnode(Utils.get_parent_xid(drop_xid))
+	var drop_tag := root_element.get_xnode(XIDUtils.get_parent_xid(drop_xid))
 	var are_all_children_valid := true
 	for xid in Indications.selected_xids:
 		var xnode := root_element.get_xnode(xid)

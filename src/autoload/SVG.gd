@@ -8,11 +8,11 @@ signal resized
 # These signals copy the ones in ElementRoot.
 # ElementRoot is not persistent, while these signals can be connected to reliably.
 signal any_attribute_changed(xid: PackedInt32Array)
-signal elements_added(xids: Array[PackedInt32Array])
-signal elements_deleted(xids: Array[PackedInt32Array])
-signal elements_moved_in_parenet(parent_xid: PackedInt32Array, old_indices: Array[int])
-signal elements_moved_to(xids: Array[PackedInt32Array], location: PackedInt32Array)
-signal elements_layout_changed  # Emitted together with any of the above 4.
+signal xnodes_added(xids: Array[PackedInt32Array])
+signal xnodes_deleted(xids: Array[PackedInt32Array])
+signal xnodes_moved_in_parent(parent_xid: PackedInt32Array, old_indices: Array[int])
+signal xnodes_moved_to(xids: Array[PackedInt32Array], location: PackedInt32Array)
+signal xnode_layout_changed  # Emitted together with any of the above 4.
 signal basic_xnode_text_changed
 signal basic_xnode_rendered_text_changed
 
@@ -35,7 +35,7 @@ var UR := UndoRedo.new()
 func _ready() -> void:
 	UR.version_changed.connect(_on_undo_redo)
 	changed_unknown.connect(queue_update)
-	elements_layout_changed.connect(queue_update)
+	xnode_layout_changed.connect(queue_update)
 	any_attribute_changed.connect(queue_update.unbind(1))
 	basic_xnode_text_changed.connect(queue_update)
 	basic_xnode_rendered_text_changed.connect(queue_update)
@@ -95,11 +95,11 @@ func sync_elements() -> void:
 	if svg_parse_result.error == SVGParser.ParseError.OK:
 		root_element = svg_parse_result.svg
 		root_element.any_attribute_changed.connect(any_attribute_changed.emit)
-		root_element.elements_added.connect(elements_added.emit)
-		root_element.elements_deleted.connect(elements_deleted.emit)
-		root_element.elements_moved_in_parenet.connect(elements_moved_in_parenet.emit)
-		root_element.elements_moved_to.connect(elements_moved_to.emit)
-		root_element.elements_layout_changed.connect(elements_layout_changed.emit)
+		root_element.xnodes_added.connect(xnodes_added.emit)
+		root_element.xnodes_deleted.connect(xnodes_deleted.emit)
+		root_element.xnodes_moved_in_parent.connect(xnodes_moved_in_parent.emit)
+		root_element.xnodes_moved_to.connect(xnodes_moved_to.emit)
+		root_element.xnode_layout_changed.connect(xnode_layout_changed.emit)
 		root_element.attribute_changed.connect(_on_root_attribute_changed)
 		root_element.basic_xnode_text_changed.connect(basic_xnode_text_changed.emit)
 		root_element.basic_xnode_rendered_text_changed.connect(
