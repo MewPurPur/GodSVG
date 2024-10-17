@@ -147,7 +147,8 @@ static func mouse_filter_pass_non_drag_events(event: InputEvent) -> Control.Mous
 # when Godot doesn't want to do so automatically.
 static func throw_mouse_motion_event() -> void:
 	var mouse_motion_event := InputEventMouseMotion.new()
-	mouse_motion_event.position = Engine.get_main_loop().root.get_mouse_position()
+	var root: Node = Engine.get_main_loop().root
+	mouse_motion_event.position = root.get_mouse_position() * root.get_final_transform()
 	Input.call_deferred("parse_input_event", mouse_motion_event)
 
 
