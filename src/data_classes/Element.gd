@@ -24,7 +24,8 @@ func _on_attribute_changed(attribute_name: String) -> void:
 
 func _on_ancestor_attribute_changed(attribute_name: String) -> void:
 	for child in get_children():
-		child.ancestor_attribute_changed.emit(attribute_name)
+		if child is Element:
+			child.ancestor_attribute_changed.emit(attribute_name)
 
 func _on_descendant_attribute_changed(attribute_name: String) -> void:
 	if parent != null:
