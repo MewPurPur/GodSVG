@@ -631,7 +631,7 @@ func _draw() -> void:
 	
 	for xid in Indications.selected_xids:
 		var xnode := SVG.root_element.get_xnode(xid)
-		if xnode is Element and DB.is_attribute_recognized(xnode.name, "transform"):
+		if xnode.is_element() and DB.is_attribute_recognized(xnode.name, "transform"):
 			var bounding_box: Rect2 = xnode.get_bounding_box()
 			if bounding_box.has_area():
 				RenderingServer.canvas_item_add_set_transform(selections_surface,
