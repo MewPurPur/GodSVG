@@ -17,6 +17,9 @@ var value := "":
 				line_edit.text = value
 
 func _ready() -> void:
+	line_edit.text_changed.connect(_on_text_changed)
+	line_edit.text_submitted.connect(_on_text_submitted)
+	
 	if not values.is_empty():
 		value = values[0]
 	

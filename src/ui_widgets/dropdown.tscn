@@ -31,6 +31,4 @@ theme_type_variation = &"LeftConnectedButton"
 icon = ExtResource("2_4oygd")
 expand_icon = true
 
-[connection signal="text_changed" from="LineEdit" to="." method="_on_text_changed"]
-[connection signal="text_submitted" from="LineEdit" to="." method="_on_text_submitted"]
 [connection signal="pressed" from="Button" to="." method="_on_button_pressed"]

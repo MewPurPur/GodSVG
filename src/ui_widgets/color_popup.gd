@@ -56,7 +56,9 @@ func update_palettes(search_text := "") -> void:
 				elif element is ElementRadialGradient:
 					reserved_color_names.append("Radial gradient")
 					reserved_colors.append("url(#%s)" % element.get_attribute_value("id"))
-	var reserved_color_palette := ColorPalette.new("", reserved_colors, reserved_color_names)
+	var reserved_color_palette := ColorPalette.new()
+	reserved_color_palette.colors = reserved_colors
+	reserved_color_palette.color_names = reserved_color_names
 	
 	var displayed_palettes: Array[ColorPalette] = [reserved_color_palette]
 	displayed_palettes += GlobalSettings.savedata.palettes
