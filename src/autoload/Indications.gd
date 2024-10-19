@@ -522,8 +522,8 @@ func get_selection_context(popup_method: Callable, context: Context) -> ContextP
 				"duplicate"))
 		
 		var xnode := SVG.root_element.get_xnode(selected_xids[0])
-		if (selected_xids.size() == 1 and xnode is BasicXNode) or\
-		(xnode is Element and not xnode.possible_conversions.is_empty()):
+		if (selected_xids.size() == 1 and not xnode.is_element()) or\
+		(xnode.is_element() and not xnode.possible_conversions.is_empty()):
 			btn_arr.append(ContextPopup.create_button(
 					TranslationServer.translate("Convert To"),
 					popup_convert_to_context.bind(popup_method), false,
@@ -581,7 +581,7 @@ func popup_convert_to_context(popup_method: Callable) -> void:
 	if not selected_xids.is_empty():
 		var btn_arr: Array[Button] = []
 		var xnode := SVG.root_element.get_xnode(selected_xids[0])
-		if xnode is BasicXNode:
+		if not xnode.is_element():
 			for xnode_type in xnode.get_possible_conversions():
 				var btn := ContextPopup.create_button(BasicXNode.get_type_string(xnode_type),
 						convert_selected_xnode_to.bind(xnode_type),

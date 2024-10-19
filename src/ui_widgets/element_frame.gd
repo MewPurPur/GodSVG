@@ -256,7 +256,7 @@ func _draw() -> void:
 	var are_all_children_valid := true
 	for xid in Indications.selected_xids:
 		var xnode := root_element.get_xnode(xid)
-		if xnode is Element and !DB.is_child_element_valid(drop_tag.name, xnode.name):
+		if xnode.is_element() and !DB.is_child_element_valid(drop_tag.name, xnode.name):
 			are_all_children_valid = false
 			break
 	

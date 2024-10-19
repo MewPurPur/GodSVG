@@ -46,7 +46,7 @@ func update_proposed_xid() -> void:
 		var xnode_rect := get_xnode_editor_rect(xnode.xid)
 		var xnode_start := xnode_rect.position.y
 		var xnode_end := xnode_rect.end.y
-		var buffer := minf(xnode_rect.size.y / 3, 26) if xnode is Element else\
+		var buffer := minf(xnode_rect.size.y / 3, 26) if xnode.is_element() else\
 				xnode_rect.size.y / 2 + 1
 		if y_pos < xnode_end and xnode_end < next_y:
 			next_y = xnode_end

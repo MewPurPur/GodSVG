@@ -33,7 +33,7 @@ make_attributes_absolute := false) -> String:
 		else:
 			text = '\t'.repeat(xnode.xid.size())
 	
-	if xnode is BasicXNode:
+	if not xnode.is_element():
 		match xnode.get_type():
 			BasicXNode.NodeType.COMMENT: text += "<!--%s-->" % xnode.get_text()
 			BasicXNode.NodeType.CDATA: text += "<![CDATA[%s]]>" % xnode.get_text()

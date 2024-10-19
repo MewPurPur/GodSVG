@@ -15,7 +15,7 @@ func _init() -> void:
 
 func _on_attribute_changed(attribute_name: String) -> void:
 	for child in get_children():
-		if child is Element:
+		if child.is_element():
 			child.ancestor_attribute_changed.emit(attribute_name)
 	if parent != null:
 		parent.descendant_attribute_changed.emit(attribute_name)
@@ -24,7 +24,7 @@ func _on_attribute_changed(attribute_name: String) -> void:
 
 func _on_ancestor_attribute_changed(attribute_name: String) -> void:
 	for child in get_children():
-		if child is Element:
+		if child.is_element():
 			child.ancestor_attribute_changed.emit(attribute_name)
 
 func _on_descendant_attribute_changed(attribute_name: String) -> void:
@@ -55,7 +55,7 @@ func get_child_count() -> int:
 func get_all_element_descendants() -> Array[Element]:
 	var elements: Array[Element] = []
 	for child in get_children():
-		if child is Element:
+		if child.is_element():
 			elements.append(child)
 			elements += child.get_all_element_descendants()
 	return elements
@@ -64,39 +64,39 @@ func get_all_xnode_descendants() -> Array[XNode]:
 	var xnodes: Array[XNode] = []
 	for child in get_children():
 		xnodes.append(child)
-		if child is Element:
+		if child.is_element():
 			xnodes += child.get_all_xnode_descendants()
 	return xnodes
 
 
-func replace_child(idx: int, new_element: XNode) -> void:
-	var old_element := get_child(idx)
-	_child_elements[idx] = new_element
-	if new_element is Element:
-		for grandchild_element in new_element.get_children():
-			grandchild_element.parent = new_element
-			if new_element is ElementSVG:
-				grandchild_element.svg = new_element
-	new_element.xid = old_element.xid
-	new_element.parent = old_element.parent
-	new_element.svg = old_element.svg
-	new_element.root = old_element.root
+func replace_child(idx: int, new_xnode: XNode) -> void:
+	var old_xnode := get_child(idx)
+	_child_elements[idx] = new_xnode
+	if new_xnode.is_element():
+		for grandchild_element in new_xnode.get_children():
+			grandchild_element.parent = new_xnode
+			if new_xnode is ElementSVG:
+				grandchild_element.svg = new_xnode
+	new_xnode.xid = old_xnode.xid
+	new_xnode.parent = old_xnode.parent
+	new_xnode.svg = old_xnode.svg
+	new_xnode.root = old_xnode.root
 
-func insert_child(idx: int, new_element: XNode) -> void:
+func insert_child(idx: int, new_xnode: XNode) -> void:
 	if idx < 0:
 		idx += get_child_count() + 1
-	new_element.parent = self
-	new_element.root = root
-	new_element.svg = self if self is ElementSVG else svg
+	new_xnode.parent = self
+	new_xnode.root = root
+	new_xnode.svg = self if self is ElementSVG else svg
 	var new_xid := xid.duplicate()
 	new_xid.append(idx)
-	new_element.xid = new_xid
-	new_element.propagate_xid_correction()
+	new_xnode.xid = new_xid
+	new_xnode.propagate_xid_correction()
 	for i in range(idx, get_child_count()):
 		var child := get_child(i)
 		child.xid[-1] += 1
 		child.propagate_xid_correction()
-	_child_elements.insert(idx, new_element)
+	_child_elements.insert(idx, new_xnode)
 
 func remove_child(idx: int) -> void:
 	for i in range(idx + 1, get_child_count()):

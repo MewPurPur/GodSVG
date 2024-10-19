@@ -33,3 +33,12 @@ var root: ElementRoot:
 # Overridden only in Element. In other XNodes, it does nothing.
 func propagate_xid_correction() -> void:
 	return
+
+func is_element() -> bool:
+	return self is Element
+
+func is_text_xnode() -> bool:
+	return self is BasicXNode and self._type == BasicXNode.NodeType.TEXT
+
+func is_non_text_xnode() -> bool:
+	return self is BasicXNode and self._type != BasicXNode.NodeType.TEXT
