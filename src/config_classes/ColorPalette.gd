@@ -1,6 +1,8 @@
 # A resource for the color palettes that are listed in the color picker.
 class_name ColorPalette extends Resource
 
+enum Preset {EMPTY, PURE, GRAYSCALE}
+
 signal layout_changed
 
 # The title must be unique.
@@ -13,12 +15,9 @@ signal layout_changed
 @export var colors: PackedStringArray  # Colors must be unique within a palette.
 @export var color_names: PackedStringArray
 
-func _init(new_title := "", new_colors := PackedStringArray(),
-new_color_names := PackedStringArray()) -> void:
+func _init(new_title := "", new_preset := Preset.EMPTY) -> void:
 	title = new_title
-	colors = new_colors
-	color_names = new_color_names
-	color_names.resize(colors.size())
+	apply_preset(new_preset)
 	changed.connect(GlobalSettings.save, CONNECT_DEFERRED)
 
 func add_color() -> void:
@@ -57,6 +56,32 @@ func modify_color_name(idx: int, new_color_name: String) -> void:
 	color_names[idx] = new_color_name
 	emit_changed()
 
+func apply_preset(new_preset: Preset) -> void:
+	var new_colors: PackedStringArray
+	var new_color_names: PackedStringArray
+	
+	match new_preset:
+		Preset.EMPTY:
+			new_colors = PackedStringArray()
+			new_color_names = PackedStringArray()
+		Preset.PURE:
+			new_colors = PackedStringArray(["#fff", "#000", "#f00", "#0f0", "#00f", "#ff0",
+					"#f0f", "#0ff"])
+			new_color_names = PackedStringArray(["White", "Black", "Red", "Green", "Blue",
+					"Yellow", "Magenta", "Cyan"])
+		Preset.GRAYSCALE:
+			new_colors = PackedStringArray(["#000", "#1a1a1a", "#333", "#4d4d4d", "#666",
+					"#808080", "#999", "#b3b3b3", "#ccc", "#e6e6e6", "#fff"])
+			new_color_names = PackedStringArray(["Black", "10% Gray", "20% Gray", "30% Gray",
+					"40% Gray", "50% Gray", "60% Gray", "70% Gray", "80% Gray", "90% Gray",
+					"White"])
+	
+	if colors != new_colors or color_names != new_color_names:
+		colors = new_colors
+		color_names = new_color_names
+		emit_changed()
+		layout_changed.emit()
+
 
 func to_text() -> String:
 	var text := '<palette title="%s">\n' % title
@@ -83,8 +108,9 @@ static func text_to_palettes(text: String) -> Array[ColorPalette]:
 					parsed_colors.append(parser.get_named_attribute_value_safe("value"))
 					parsed_color_names.append(parser.get_named_attribute_value_safe("name"))
 			XMLParser.NODE_ELEMENT_END:
-				palettes.append(ColorPalette.new(parsed_title, parsed_colors.duplicate(),
-						parsed_color_names.duplicate()))
+				var new_palette := ColorPalette.new(parsed_title)
+				new_palette.colors = parsed_colors.duplicate()
+				new_palette.color_names = parsed_color_names.duplicate()
 				parsed_colors.clear()
 				parsed_color_names.clear()
 				parsed_title = ""

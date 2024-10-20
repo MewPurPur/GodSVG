@@ -176,6 +176,27 @@ func paste_palette(idx: int) -> void:
 	GlobalSettings.save()
 	layout_changed.emit()
 
+func open_palette_options() -> void:
+	var btn_arr: Array[Button] = []
+	btn_arr.append(ContextPopup.create_button("Pure",
+			apply_preset.bind(ColorPalette.Preset.PURE), false,
+			load("res://visual/icons/PresetPure.svg")))
+	btn_arr.append(ContextPopup.create_button("Grayscale",
+			apply_preset.bind(ColorPalette.Preset.GRAYSCALE), false,
+			load("res://visual/icons/PresetGrayscale.svg")))
+	btn_arr.append(ContextPopup.create_button("Empty",
+			apply_preset.bind(ColorPalette.Preset.EMPTY), false,
+			load("res://visual/icons/Clear.svg")))
+	
+	var context_popup := ContextPopup.new()
+	context_popup.setup(btn_arr, true)
+	HandlerGUI.popup_under_rect_center(context_popup, palette_button.get_global_rect(),
+			get_viewport())
+
+func apply_preset(preset: ColorPalette.Preset) -> void:
+	current_palette.apply_preset(preset)
+	GlobalSettings.save()
+
 
 func _on_palette_button_pressed() -> void:
 	if current_palette.title.is_empty():
@@ -203,6 +224,8 @@ func _on_palette_button_pressed() -> void:
 			paste_palette.bind(palette_idx),
 			!ColorPalette.is_valid_palette(DisplayServer.clipboard_get()),
 			load("res://visual/icons/Paste.svg")))
+	btn_arr.append(ContextPopup.create_button(TranslationServer.translate("Apply Preset"),
+			open_palette_options, false, load("res://visual/icons/Import.svg")))
 	btn_arr.append(ContextPopup.create_button(TranslationServer.translate("Delete"),
 			delete.bind(palette_idx), false, load("res://visual/icons/Delete.svg")))
 	

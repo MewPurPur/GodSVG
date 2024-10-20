@@ -158,9 +158,8 @@ func reset_settings() -> void:
 	shortcuts_changed.emit()
 	
 	# The array needs to be typed.
-	var palettes_array: Array[ColorPalette] = [ColorPalette.new("Pure", PackedStringArray(
-			["#fff", "#000", "#f00", "#0f0", "#00f", "#ff0", "#f0f", "#0ff"]), PackedStringArray(
-			["White", "Black", "Red", "Green", "Blue", "Yellow", "Magenta", "Cyan"]))]
+	var palettes_array: Array[ColorPalette] = [
+			ColorPalette.new("Pure", ColorPalette.Preset.PURE)]
 	modify_setting("palettes", palettes_array, true)
 	
 	var compact_formatter := Formatter.new("Compact")
