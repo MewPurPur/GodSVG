@@ -42,6 +42,7 @@ window/size/viewport_height=640
 window/size/mode=2
 window/energy_saving/keep_screen_on=false
 mouse_cursor/tooltip_position_offset=Vector2(0, 10)
+display_server/driver.wayland="wayland"
 
 [filesystem]
 
