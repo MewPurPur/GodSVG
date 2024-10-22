@@ -29,6 +29,13 @@ jobs:
       EXTENSION: "exe"
       BUILD_NAME: "linux-64bit"
     steps:
+      - name: Cache Template
+        id: cache-template
+        uses: actions/cache@v3
+        with:
+          key: template-${{ env.PLATFORM }}-${{ env.GODOT_VERSION }}-${{ env.GODOT_RELEASE }}-${{ env.GODOT_REPO }}-${{ env.GODOT_COMMIT_HASH }}-${{ env.BUILD_OPTIONS }}
+          path: |
+            ~/.local/share/godot/export_templates/
       - name: Set up Godot Editor
         run: |
           mkdir -v -p ~/godot-editor
@@ -38,19 +45,23 @@ jobs:
           mv ./Godot_v${GODOT_VERSION}-${GODOT_RELEASE}_linux.x86_64 ~/godot-editor/godot
           echo "~/godot-editor" >> $GITHUB_PATH
 
-      - name: Install dependencies
+      - if: ${{ steps.cache-template.outputs.cache-hit != 'true' }}
+        name: Install dependencies
         run: sudo apt install -y scons python3
 
-      - name: Clone Godot repository
+      - if: ${{ steps.cache-template.outputs.cache-hit != 'true' }}
+        name: Clone Godot repository
         run: git clone $GODOT_REPO godot
 
-      - name: Checkout specific commit
+      - if: ${{ steps.cache-template.outputs.cache-hit != 'true' }}
+        name: Checkout specific commit
         run: |
           cd godot
           git fetch
           git checkout $GODOT_COMMIT_HASH
 
-      - name: Build Godot template for Linux
+      - if: ${{ steps.cache-template.outputs.cache-hit != 'true' }}
+        name: Build Godot template for Linux
         run: |
           cd godot
           scons p=linuxbsd arch=x86_64 ${BUILD_OPTIONS}
@@ -72,7 +83,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ env.PROJECT_NAME }}.Linux
+          name: ${{ env.PROJECT_NAME }}.Linux-X11
           path: godsvg/build/GodSVG.x86_64
           if-no-files-found: error
           retention-days: 28
@@ -85,6 +96,13 @@ jobs:
       EXTENSION: "exe"
       BUILD_NAME: "linux-64bit"
     steps:
+      - name: Cache Template
+        id: cache-template
+        uses: actions/cache@v3
+        with:
+          key: template-${{ env.PLATFORM }}-${{ env.GODOT_VERSION }}-${{ env.GODOT_RELEASE }}-${{ env.GODOT_REPO }}-${{ env.GODOT_COMMIT_HASH }}-${{ env.BUILD_OPTIONS }}
+          path: |
+            ~/.local/share/godot/export_templates/
       - name: Set up Godot Editor
         run: |
           mkdir -v -p ~/godot-editor
@@ -94,19 +112,23 @@ jobs:
           mv ./Godot_v${GODOT_VERSION}-${GODOT_RELEASE}_linux.x86_64 ~/godot-editor/godot
           echo "~/godot-editor" >> $GITHUB_PATH
 
-      - name: Install dependencies
-        run: sudo apt install -y scons python3
+      - if: ${{ steps.cache-template.outputs.cache-hit != 'true' }}
+        name: Install dependencies
+        run: sudo apt install -y scons python3 libwayland-dev
 
-      - name: Clone Godot repository
+      - if: ${{ steps.cache-template.outputs.cache-hit != 'true' }}
+        name: Clone Godot repository
         run: git clone $GODOT_REPO godot
 
-      - name: Checkout specific commit
+      - if: ${{ steps.cache-template.outputs.cache-hit != 'true' }}
+        name: Checkout specific commit
         run: |
           cd godot
           git fetch
           git checkout $GODOT_COMMIT_HASH
 
-      - name: Build Godot template for Linux
+      - if: ${{ steps.cache-template.outputs.cache-hit != 'true' }}
+        name: Build Godot template for Linux
         run: |
           cd godot
           scons p=linuxbsd arch=x86_64 ${BUILD_OPTIONS}
@@ -128,7 +150,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ env.PROJECT_NAME }}.Linux
+          name: ${{ env.PROJECT_NAME }}.Linux-Wayland
           path: godsvg/build/GodSVG.x86_64
           if-no-files-found: error
           retention-days: 28
@@ -137,6 +159,14 @@ jobs:
     name: Export GodSVG for Windows
     runs-on: ubuntu-latest
     steps:
+      - name: Cache Template
+        id: cache-template
+        uses: actions/cache@v3
+        with:
+          key: template-${{ env.PLATFORM }}-${{ env.GODOT_VERSION }}-${{ env.GODOT_RELEASE }}-${{ env.GODOT_REPO }}-${{ env.GODOT_COMMIT_HASH }}-${{ env.BUILD_OPTIONS }}
+          path: |
+            ~/.local/share/godot/export_templates/
+
       - name: Set up Godot Editor
         run: |
           mkdir -v -p ~/godot-editor
@@ -146,7 +176,8 @@ jobs:
           mv ./Godot_v${GODOT_VERSION}-${GODOT_RELEASE}_linux.x86_64 ~/godot-editor/godot
           echo "~/godot-editor" >> $GITHUB_PATH
 
-      - name: Install dependencies
+      - if: ${{ steps.cache-template.outputs.cache-hit != 'true' }}
+        name: Install dependencies
         run: |
           sudo apt install -y scons python3
           sudo apt install -y g++-mingw-w64-x86-64-posix
@@ -158,16 +189,19 @@ jobs:
           echo 'export/windows/wine = "/usr/bin/wine64"' >> ~/.config/godot/editor_settings-${GODOT_FEATURE_VERSION}.tres
           echo 'export/windows/rcedit = "/home/runner/.local/share/rcedit/rcedit-x64.exe"' >> ~/.config/godot/editor_settings-${GODOT_FEATURE_VERSION}.tres
 
-      - name: Clone Godot repository
+      - if: ${{ steps.cache-template.outputs.cache-hit != 'true' }}
+        name: Clone Godot repository
         run: git clone $GODOT_REPO godot
 
-      - name: Checkout specific commit
+      - if: ${{ steps.cache-template.outputs.cache-hit != 'true' }}
+        name: Checkout specific commit
         run: |
           cd godot
           git fetch
           git checkout $GODOT_COMMIT_HASH
 
-      - name: Build Godot template for Windows
+      - if: ${{ steps.cache-template.outputs.cache-hit != 'true' }}
+        name: Build Godot template for Windows
         run: |
           apt search mingw
           cd godot
@@ -198,6 +232,14 @@ jobs:
     name: Export GodSVG for MacOS
     runs-on: macos-latest
     steps:
+      - name: Cache Template
+        id: cache-template
+        uses: actions/cache@v3
+        with:
+          key: template-${{ env.PLATFORM }}-${{ env.GODOT_VERSION }}-${{ env.GODOT_RELEASE }}-${{ env.GODOT_REPO }}-${{ env.GODOT_COMMIT_HASH }}-${{ env.BUILD_OPTIONS }}
+          path: |
+            /Users/runner/Library/Application Support/Godot/export_templates/
+
       - name: Set up Godot Editor
         run: |
           mkdir -v -p ~/godot-editor
@@ -206,36 +248,43 @@ jobs:
           unzip -a Godot_v${GODOT_VERSION}-${GODOT_RELEASE}_macos.universal.zip
           echo "~/godot-editor/Godot.app/Contents/MacOS" >> $GITHUB_PATH
 
-      - name: Install dependencies
+      - if: ${{ steps.cache-template.outputs.cache-hit != 'true' }}
+        name: Install dependencies
         run: brew install scons
 
-      - name: Clone Godot repository
+      - if: ${{ steps.cache-template.outputs.cache-hit != 'true' }}
+        name: Clone Godot repository
         run: git clone $GODOT_REPO godot
 
-      - name: Checkout specific commit
+      - if: ${{ steps.cache-template.outputs.cache-hit != 'true' }}
+        name: Checkout specific commit
         run: |
           cd godot
           git fetch
           git checkout $GODOT_COMMIT_HASH
 
-      - name: Build Godot template for macOS (arm64 release)
+      - if: ${{ steps.cache-template.outputs.cache-hit != 'true' }}
+        name: Build Godot template for macOS (arm64 release)
         run: |
           godot --help
           cd godot
           scons p=macos arch=arm64 ${BUILD_OPTIONS}
 
-      - name: Build Godot template for macOS (x86_64 release)
+      - if: ${{ steps.cache-template.outputs.cache-hit != 'true' }}
+        name: Build Godot template for macOS (x86_64 release)
         run: |
           cd godot
           scons p=macos arch=x86_64 ${BUILD_OPTIONS}
 
-      - name: Combine binaries with lipo
+      - if: ${{ steps.cache-template.outputs.cache-hit != 'true' }}
+        name: Combine binaries with lipo
         run: |
           cd godot/bin
           lipo -create godot.macos.template_release.x86_64 godot.macos.template_release.arm64 -output godot.macos.template_release.universal
           chmod +x *
 
-      - name: Prepare .app bundle
+      - if: ${{ steps.cache-template.outputs.cache-hit != 'true' }}
+        name: Prepare .app bundle
         run: |
           cd godot/bin
           cp -r ../misc/dist/macos_template.app .
@@ -268,6 +317,14 @@ jobs:
     name: Export GodSVG for Web
     runs-on: ubuntu-latest
     steps:
+      - name: Cache Template
+        id: cache-template
+        uses: actions/cache@v3
+        with:
+          key: template-${{ env.PLATFORM }}-${{ env.GODOT_VERSION }}-${{ env.GODOT_RELEASE }}-${{ env.GODOT_REPO }}-${{ env.GODOT_COMMIT_HASH }}-${{ env.BUILD_OPTIONS }}
+          path: |
+            ~/.local/share/godot/export_templates/
+
       - name: Set up Godot Editor
         run: |
           mkdir -v -p ~/godot-editor
@@ -277,10 +334,12 @@ jobs:
           mv ./Godot_v${GODOT_VERSION}-${GODOT_RELEASE}_linux.x86_64 ~/godot-editor/godot
           echo "~/godot-editor" >> $GITHUB_PATH
 
-      - name: Install dependencies
+      - if: ${{ steps.cache-template.outputs.cache-hit != 'true' }}
+        name: Install dependencies
         run: sudo apt-get install -y scons python3
 
-      - name: Install Emscripten
+      - if: ${{ steps.cache-template.outputs.cache-hit != 'true' }}
+        name: Install Emscripten
         run: |
           git clone https://github.com/emscripten-core/emsdk.git
           cd emsdk
@@ -289,16 +348,19 @@ jobs:
           source ./emsdk_env.sh
         shell: bash
 
-      - name: Clone Godot repository
+      - if: ${{ steps.cache-template.outputs.cache-hit != 'true' }}
+        name: Clone Godot repository
         run: git clone $GODOT_REPO godot
 
-      - name: Checkout specific commit
+      - if: ${{ steps.cache-template.outputs.cache-hit != 'true' }}
+        name: Checkout specific commit
         run: |
           cd godot
           git fetch
           git checkout $GODOT_COMMIT_HASH
 
-      - name: Build Godot template for Web
+      - if: ${{ steps.cache-template.outputs.cache-hit != 'true' }}
+        name: Build Godot template for Web
         run: |
           cd godot
           source ../emsdk/emsdk_env.sh
