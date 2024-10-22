@@ -158,6 +158,8 @@ jobs:
   build-windows:
     name: Export GodSVG for Windows
     runs-on: ubuntu-latest
+    env:
+      PLATFORM: "Windows"
     steps:
       - name: Cache Template
         id: cache-template
@@ -231,6 +233,8 @@ jobs:
   build-macos:
     name: Export GodSVG for MacOS
     runs-on: macos-latest
+    env:
+      PLATFORM: "macOS"
     steps:
       - name: Cache Template
         id: cache-template
@@ -316,6 +320,8 @@ jobs:
   build-web:
     name: Export GodSVG for Web
     runs-on: ubuntu-latest
+    env:
+      PLATFORM: "Web"
     steps:
       - name: Cache Template
         id: cache-template
