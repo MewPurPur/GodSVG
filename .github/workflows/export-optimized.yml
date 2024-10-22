@@ -22,7 +22,7 @@ env:
 
 jobs:
   build-linux-x11:
-    name: Export GodSVG for Linux
+    name: Export GodSVG for Linux X11
     runs-on: ubuntu-latest
     env:
       PLATFORM: "Linux/X11"
@@ -37,11 +37,6 @@ jobs:
           unzip Godot_v${GODOT_VERSION}-${GODOT_RELEASE}_linux.x86_64.zip
           mv ./Godot_v${GODOT_VERSION}-${GODOT_RELEASE}_linux.x86_64 ~/godot-editor/godot
           echo "~/godot-editor" >> $GITHUB_PATH
-
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          path: godsvg
 
       - name: Install dependencies
         run: sudo apt install -y scons python3
@@ -61,6 +56,11 @@ jobs:
           scons p=linuxbsd arch=x86_64 ${BUILD_OPTIONS}
           mkdir -v -p ~/.local/share/godot/export_templates/${GODOT_VERSION}.${GODOT_RELEASE}/
           mv ./bin/godot.linuxbsd.template_release.x86_64 ~/.local/share/godot/export_templates/${GODOT_VERSION}.${GODOT_RELEASE}/linux_release.x86_64
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          path: godsvg
 
       - name: Export project
         run: |
@@ -78,7 +78,7 @@ jobs:
           retention-days: 28
 
   build-linux-wayland:
-    name: Export GodSVG for Linux
+    name: Export GodSVG for Linux Wayland
     runs-on: ubuntu-latest
     env:
       PLATFORM: "Linux/Wayland"
@@ -93,11 +93,6 @@ jobs:
           unzip Godot_v${GODOT_VERSION}-${GODOT_RELEASE}_linux.x86_64.zip
           mv ./Godot_v${GODOT_VERSION}-${GODOT_RELEASE}_linux.x86_64 ~/godot-editor/godot
           echo "~/godot-editor" >> $GITHUB_PATH
-
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          path: godsvg
 
       - name: Install dependencies
         run: sudo apt install -y scons python3
@@ -117,6 +112,11 @@ jobs:
           scons p=linuxbsd arch=x86_64 ${BUILD_OPTIONS}
           mkdir -v -p ~/.local/share/godot/export_templates/${GODOT_VERSION}.${GODOT_RELEASE}/
           mv ./bin/godot.linuxbsd.template_release.x86_64 ~/.local/share/godot/export_templates/${GODOT_VERSION}.${GODOT_RELEASE}/linux_release.x86_64
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          path: godsvg
 
       - name: Export project
         run: |
@@ -145,11 +145,6 @@ jobs:
           unzip Godot_v${GODOT_VERSION}-${GODOT_RELEASE}_linux.x86_64.zip
           mv ./Godot_v${GODOT_VERSION}-${GODOT_RELEASE}_linux.x86_64 ~/godot-editor/godot
           echo "~/godot-editor" >> $GITHUB_PATH
-
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          path: godsvg
 
       - name: Install dependencies
         run: |
@@ -180,6 +175,11 @@ jobs:
           mkdir -v -p ~/.local/share/godot/export_templates/${GODOT_VERSION}.${GODOT_RELEASE}/
           mv ./bin/godot.windows.template_release.x86_64.exe ~/.local/share/godot/export_templates/${GODOT_VERSION}.${GODOT_RELEASE}/windows_release_x86_64.exe
 
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          path: godsvg
+
       - name: Export project
         run: |
           cd godsvg
@@ -205,11 +205,6 @@ jobs:
           wget -q https://github.com/godotengine/godot-builds/releases/download/${GODOT_VERSION}-${GODOT_RELEASE}/Godot_v${GODOT_VERSION}-${GODOT_RELEASE}_macos.universal.zip
           unzip -a Godot_v${GODOT_VERSION}-${GODOT_RELEASE}_macos.universal.zip
           echo "~/godot-editor/Godot.app/Contents/MacOS" >> $GITHUB_PATH
-
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          path: godsvg
 
       - name: Install dependencies
         run: brew install scons
@@ -251,6 +246,11 @@ jobs:
           mkdir -v -p "/Users/runner/Library/Application Support/Godot/export_templates/${GODOT_VERSION}.${GODOT_RELEASE}"
           mv macos.zip "/Users/runner/Library/Application Support/Godot/export_templates/${GODOT_VERSION}.${GODOT_RELEASE}"
 
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          path: godsvg
+
       - name: Export project
         run: |
           cd godsvg
@@ -276,11 +276,6 @@ jobs:
           unzip Godot_v${GODOT_VERSION}-${GODOT_RELEASE}_linux.x86_64.zip
           mv ./Godot_v${GODOT_VERSION}-${GODOT_RELEASE}_linux.x86_64 ~/godot-editor/godot
           echo "~/godot-editor" >> $GITHUB_PATH
-
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          path: godsvg
 
       - name: Install dependencies
         run: sudo apt-get install -y scons python3
@@ -310,6 +305,11 @@ jobs:
           scons p=web arch=wasm32 ${BUILD_OPTIONS} threads=no
           mkdir -v -p ~/.local/share/godot/export_templates/${GODOT_VERSION}.${GODOT_RELEASE}/
           mv ./bin/godot.web.template_release.wasm32.nothreads.zip ~/.local/share/godot/export_templates/${GODOT_VERSION}.${GODOT_RELEASE}/web_nothreads_release.zip
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          path: godsvg
 
       - name: Export project
         run: |
