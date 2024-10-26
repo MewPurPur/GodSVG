@@ -10,7 +10,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.4.4\n"
+"X-Generator: Poedit 3.5\n"
 
 msgid "translation-credits"
 msgstr "Kiisu-Master, Swarkin"
@@ -110,13 +110,12 @@ msgid "6-digit hex"
 msgstr "6-stelligen Hex"
 
 #: src/data_classes/BasicXNode.gd
-#, fuzzy
 msgid "Comment"
-msgstr "Kommentarfarbe"
+msgstr "Kommentar"
 
 #: src/data_classes/BasicXNode.gd
 msgid "Text"
-msgstr ""
+msgstr "Text"
 
 #: src/data_classes/Element.gd
 msgid "{element} must be inside {allowed} to have any effect."
@@ -714,12 +713,11 @@ msgstr "Umbenennen"
 
 #: src/ui_widgets/formatter_config.gd
 msgid "Keep comments"
-msgstr ""
+msgstr "Kommentare beibehalten"
 
 #: src/ui_widgets/formatter_config.gd
-#, fuzzy
 msgid "Keep unrecognized XML structures"
-msgstr "Unerkanntes Attribut"
+msgstr "Unbekannte XML Strukturen beibehalten"
 
 #: src/ui_widgets/formatter_config.gd
 msgid "Add trailing newline"
@@ -831,7 +829,7 @@ msgstr "Relativ"
 
 #: src/ui_widgets/points_field.gd
 msgid "No points"
-msgstr ""
+msgstr "Keine Punkte"
 
 #: src/ui_widgets/setting_frame.gd src/ui_widgets/setting_shortcut.gd
 msgid "Reset to default"
@@ -936,7 +934,6 @@ msgid "Show rasterized SVG"
 msgstr "Rasterisiertes SVG anzeigen"
 
 #: src/utils/TranslationUtils.gd
-#, fuzzy
 msgid "Toggle snapping"
 msgstr "Einrasten aktivieren"
 
