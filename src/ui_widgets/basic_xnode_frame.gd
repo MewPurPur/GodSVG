@@ -199,7 +199,9 @@ func _draw() -> void:
 			are_all_children_valid = false
 			break
 	
-	drop_sb.border_color = Color.GREEN if are_all_children_valid else Color.ORANGE
+	var drop_border_color := GlobalSettings.get_validity_color(false, not are_all_children_valid)
+	drop_border_color.s = lerpf(drop_border_color.s, 1.0, 0.5)
+	drop_sb.border_color = drop_border_color
 	if drop_xid == parent_xid + PackedInt32Array([xnode.xid[-1]]):
 		drop_sb.border_width_top = 2
 	elif drop_xid == parent_xid + PackedInt32Array([xnode.xid[-1] + 1]):
