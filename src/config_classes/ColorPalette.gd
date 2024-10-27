@@ -109,6 +109,7 @@ static func text_to_palettes(text: String) -> Array[ColorPalette]:
 				parsed_colors.clear()
 				parsed_color_names.clear()
 				parsed_title = ""
+				palettes.append(new_palette)
 	return palettes
 
 static func is_valid_palette(text: String) -> bool:
