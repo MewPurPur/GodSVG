@@ -267,6 +267,7 @@ func apply_to(element: Element, dropped_attributes: PackedStringArray) -> void:
 			element.set_attribute(attribute_name, get_attribute_value(attribute_name))
 
 # Converts all percentage numeric attributes to absolute.
+# TODO this is no longer used, but might become useful again in the future.
 func make_all_attributes_absolute() -> void:
 	var attributes_to_convert := _attributes.keys()
 	if DB.recognized_attributes.has(self.name):
@@ -276,6 +277,7 @@ func make_all_attributes_absolute() -> void:
 			make_attribute_absolute(attribute_name)
 
 # Converts a percentage numeric attribute to absolute.
+# TODO this is no longer used, but might become useful again in the future.
 func make_attribute_absolute(attribute_name: String) -> void:
 	if is_attribute_percentage(attribute_name):
 		var new_attrib := new_attribute(attribute_name)
@@ -329,4 +331,9 @@ func new_default_attribute(name: String) -> Attribute:
 	return _create_attribute(name, get_default(name))
 
 func _create_attribute(name: String, value := "") -> Attribute:
-	return DB.attribute(name, root.formatter if root != null else Formatter.new(), value)
+	if root != null:
+		return DB.attribute(name, root.formatter, value)
+	elif root == self:
+		return DB.attribute(name, self.formatter, value)
+	else:
+		return DB.attribute(name, Formatter.new(), value)
