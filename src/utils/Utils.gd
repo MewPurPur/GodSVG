@@ -114,6 +114,6 @@ static func generate_gradient(element: Element) -> Gradient:
 				Color(ColorParser.text_to_color(child.get_attribute_value("stop-color")),
 				child.get_attribute_num("stop-opacity")))
 	# Remove the default two gradient points.
-	gradient.remove_point(0)
-	gradient.remove_point(0)
+	while gradient.get_point_count() > 1:
+		gradient.remove_point(0)
 	return gradient

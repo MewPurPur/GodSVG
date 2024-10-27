@@ -43,15 +43,33 @@ make_attributes_absolute := false) -> String:
 		return text
 	
 	var element := xnode as Element
+	var attribute_array := element.get_all_attributes()
 	if make_attributes_absolute:
-		# A fake SVG ref is needed for percentages to work.
-		var fake_svg_ref := element.svg
-		element = element.duplicate()
-		element.svg = fake_svg_ref
-		element.make_all_attributes_absolute()
+		# Add known default value attributes if they are percentage-based.
+		for attrib_name in DB.recognized_attributes[element.name]:
+			if DB.get_attribute_type(attrib_name) != DB.AttributeType.NUMERIC:
+				continue
+			
+			var already_exists := false
+			for attrib in attribute_array:
+				if attrib.name == attrib_name:
+					already_exists = true
+					break
+			if already_exists:
+				continue
+			
+			if element.is_attribute_percentage(attrib_name):
+				attribute_array.append(element._create_attribute(attrib_name))
+		# Turn percentages into numbers.
+		for attrib_idx in attribute_array.size():
+			var attrib: Attribute = attribute_array[attrib_idx]
+			if attrib is AttributeNumeric and element.is_attribute_percentage(attrib.name):
+				var new_attrib := element._create_attribute(attrib.name)
+				new_attrib.set_num(element.get_attribute_num(attrib.name))
+				attribute_array[attrib_idx] = new_attrib
 	
 	text += '<' + element.name
-	for attribute: Attribute in element.get_all_attributes():
+	for attribute: Attribute in attribute_array:
 		var value := attribute.get_value()
 		
 		if not '"' in value:
@@ -77,7 +95,6 @@ make_attributes_absolute := false) -> String:
 		text += '</%s>' % element.name
 		if formatter.xml_pretty_formatting:
 			text += '\n'
-	
 	return text
 
 
