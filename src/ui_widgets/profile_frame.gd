@@ -3,14 +3,21 @@ extends Control
 
 signal value_changed
 
+const Dropdown = preload("res://src/ui_widgets/dropdown.tscn")
+const EnumDropdown = preload("res://src/ui_widgets/enum_dropdown.tscn")
+
 var getter: Callable
 var setter: Callable
 var text: String
 
 var ci := get_canvas_item()
-@onready var dropdown: HBoxContainer = $Dropdown
+var dropdown: Control
+
+func setup_dropdown(enum_mode := false) -> void:
+	dropdown = EnumDropdown.instantiate() if enum_mode else Dropdown.instantiate()
 
 func _ready() -> void:
+	add_child(dropdown)
 	dropdown.value_changed.connect(_dropdown_modification)
 	mouse_entered.connect(queue_redraw)
 	mouse_exited.connect(queue_redraw)
@@ -23,7 +30,8 @@ func setup_size() -> void:
 	dropdown.size = Vector2(98, 22)
 	queue_redraw()
 
-func _dropdown_modification(value: String) -> void:
+# value can be String for dropdown or int for enum dropdown.
+func _dropdown_modification(value: Variant) -> void:
 	setter.call(value)
 	dropdown.value = getter.call()
 	value_changed.emit()

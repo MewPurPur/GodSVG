@@ -422,6 +422,7 @@ func rebuild_formatters() -> void:
 	for context in [["editor_formatter", TranslationServer.translate("Editor formatter")],
 	["export_formatter", TranslationServer.translate("Export formatter")]]:
 		var frame := ProfileFrame.instantiate()
+		frame.setup_dropdown()
 		frame.text = context[1]
 		frame.getter = func(): return GlobalSettings.savedata.get(context[0]).title
 		frame.setter = func(p): GlobalSettings.modify_setting(context[0], formatters[p] if\

@@ -179,13 +179,16 @@ func paste_palette(idx: int) -> void:
 func open_palette_options() -> void:
 	var btn_arr: Array[Button] = []
 	btn_arr.append(ContextPopup.create_button("Pure",
-			apply_preset.bind(ColorPalette.Preset.PURE), false,
+			apply_preset.bind(ColorPalette.Preset.PURE),
+			current_palette.is_same_as_preset(ColorPalette.Preset.PURE),
 			load("res://visual/icons/PresetPure.svg")))
 	btn_arr.append(ContextPopup.create_button("Grayscale",
-			apply_preset.bind(ColorPalette.Preset.GRAYSCALE), false,
+			apply_preset.bind(ColorPalette.Preset.GRAYSCALE),
+			current_palette.is_same_as_preset(ColorPalette.Preset.GRAYSCALE),
 			load("res://visual/icons/PresetGrayscale.svg")))
 	btn_arr.append(ContextPopup.create_button("Empty",
-			apply_preset.bind(ColorPalette.Preset.EMPTY), false,
+			apply_preset.bind(ColorPalette.Preset.EMPTY),
+			current_palette.is_same_as_preset(ColorPalette.Preset.EMPTY),
 			load("res://visual/icons/Clear.svg")))
 	
 	var context_popup := ContextPopup.new()

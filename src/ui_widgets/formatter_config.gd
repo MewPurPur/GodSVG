@@ -3,6 +3,7 @@ extends PanelContainer
 signal layout_changed
 
 const SettingFrame = preload("res://src/ui_widgets/setting_frame.tscn")
+const ProfileFrame = preload("res://src/ui_widgets/profile_frame.tscn")
 
 var current_formatter: Formatter
 var currently_edited_idx := -1
@@ -43,8 +44,14 @@ func _on_formatter_button_pressed() -> void:
 	var btn_arr: Array[Button] = []
 	btn_arr.append(ContextPopup.create_button(TranslationServer.translate("Rename"),
 			popup_edit_name, false, load("res://visual/icons/Rename.svg")))
+	btn_arr.append(ContextPopup.create_button(
+			TranslationServer.translate("Reset to default"),
+			current_formatter.reset_to_default, current_formatter.is_everything_default(),
+			load("res://visual/icons/Reload.svg")))
 	btn_arr.append(ContextPopup.create_button(TranslationServer.translate("Delete"),
-			delete.bind(formatter_idx), GlobalSettings.savedata.formatters.size() > 1,
+			delete.bind(formatter_idx), current_formatter in\
+			[GlobalSettings.savedata.editor_formatter,
+			GlobalSettings.savedata.export_formatter],
 			load("res://visual/icons/Delete.svg")))
 	
 	var context_popup := ContextPopup.new()
@@ -76,6 +83,16 @@ var current_setup_config: String
 
 func construct() -> void:
 	set_label_text(current_formatter.title)
+	
+	# The preset field shouldn't have a reset button or a section, so set it up manually.
+	var frame := ProfileFrame.instantiate()
+	frame.setup_dropdown(true)
+	frame.getter = current_formatter.get.bind("preset")
+	frame.setter = func(p): current_formatter.set("preset", p)
+	frame.text = TranslationServer.translate("Preset")
+	frame.dropdown.values = Formatter.get_enum_texts("preset")
+	configs_container.add_child(frame)
+	
 	add_section("XML")
 	current_setup_config = "xml_keep_comments"
 	add_checkbox(TranslationServer.translate("Keep comments"))
@@ -139,36 +156,33 @@ func add_section(section_name: String) -> void:
 	vbox.add_child(spacer)
 	configs_container.add_child(vbox)
 
-func add_checkbox(text: String) -> Control:
+func add_checkbox(text: String) -> void:
 	var frame := SettingFrame.instantiate()
 	frame.text = text
 	setup_frame(frame)
 	frame.setup_checkbox()
 	add_frame(frame)
-	return frame
 
-func add_dropdown(text: String) -> Control:
+func add_dropdown(text: String) -> void:
 	var frame := SettingFrame.instantiate()
 	frame.text = text
 	setup_frame(frame)
-	frame.setup_dropdown(current_formatter.get_enum_texts(current_setup_config))
+	frame.setup_dropdown(Formatter.get_enum_texts(current_setup_config))
 	add_frame(frame)
-	return frame
 
 func add_number_dropdown(text: String, values: PackedFloat64Array, is_integer := false,
-restricted := true, min_value := -INF, max_value := INF) -> Control:
+restricted := true, min_value := -INF, max_value := INF) -> void:
 	var frame := SettingFrame.instantiate()
 	frame.text = text
 	setup_frame(frame)
 	frame.setup_number_dropdown(values, is_integer, restricted, min_value, max_value)
 	add_frame(frame)
-	return frame
 
 func setup_frame(frame: Control) -> void:
 	frame.getter = current_formatter.get.bind(current_setup_config)
 	var bind := current_setup_config
 	frame.setter = func(p): current_formatter.set(bind, p)
-	frame.default = Formatter.new().get(current_setup_config)
+	frame.default = current_formatter.get_setting_default(current_setup_config)
 
 func add_frame(frame: Control) -> void:
 	configs_container.get_child(-1).add_child(frame)
