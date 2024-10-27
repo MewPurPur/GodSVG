@@ -84,6 +84,14 @@ msgid "Insert After"
 msgstr "Вставить после"
 
 #: src/config_classes/Formatter.gd
+msgid "Compact"
+msgstr ""
+
+#: src/config_classes/Formatter.gd
+msgid "Pretty"
+msgstr ""
+
+#: src/config_classes/Formatter.gd
 msgid "Always"
 msgstr "Всегда"
 
@@ -715,6 +723,16 @@ msgstr "Без названия"
 msgid "Rename"
 msgstr "Переименовать"
 
+#: src/ui_widgets/formatter_config.gd src/ui_widgets/setting_frame.gd
+#: src/ui_widgets/setting_shortcut.gd
+msgid "Reset to default"
+msgstr "Восстановить значение по умолчанию"
+
+#: src/ui_widgets/formatter_config.gd
+#, fuzzy
+msgid "Preset"
+msgstr "Сбросить масштаб"
+
 #: src/ui_widgets/formatter_config.gd
 msgid "Keep comments"
 msgstr ""
@@ -820,6 +838,10 @@ msgstr "Скопировать как XML"
 msgid "Paste XML"
 msgstr "Вставить XML"
 
+#: src/ui_widgets/palette_config.gd
+msgid "Apply Preset"
+msgstr ""
+
 #: src/ui_widgets/pathdata_field.gd
 msgid "No path data"
 msgstr "Нет данных пути"
@@ -835,10 +857,6 @@ msgstr "Относительно"
 #: src/ui_widgets/points_field.gd
 msgid "No points"
 msgstr ""
-
-#: src/ui_widgets/setting_frame.gd src/ui_widgets/setting_shortcut.gd
-msgid "Reset to default"
-msgstr "Восстановить значение по умолчанию"
 
 #: src/ui_widgets/setting_shortcut.gd
 msgid "Unused"

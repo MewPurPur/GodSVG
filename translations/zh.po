@@ -81,6 +81,14 @@ msgid "Insert After"
 msgstr "在后方插入"
 
 #: src/config_classes/Formatter.gd
+msgid "Compact"
+msgstr ""
+
+#: src/config_classes/Formatter.gd
+msgid "Pretty"
+msgstr ""
+
+#: src/config_classes/Formatter.gd
 #, fuzzy
 msgid "Always"
 msgstr "自动格式化固定启用。"
@@ -717,6 +725,16 @@ msgstr "未命名"
 msgid "Rename"
 msgstr "未命名"
 
+#: src/ui_widgets/formatter_config.gd src/ui_widgets/setting_frame.gd
+#: src/ui_widgets/setting_shortcut.gd
+msgid "Reset to default"
+msgstr "恢复默认"
+
+#: src/ui_widgets/formatter_config.gd
+#, fuzzy
+msgid "Preset"
+msgstr "重置缩放"
+
 #: src/ui_widgets/formatter_config.gd
 msgid "Keep comments"
 msgstr ""
@@ -826,6 +844,10 @@ msgstr "复制为 XML"
 msgid "Paste XML"
 msgstr "粘贴 XML"
 
+#: src/ui_widgets/palette_config.gd
+msgid "Apply Preset"
+msgstr ""
+
 #: src/ui_widgets/pathdata_field.gd
 msgid "No path data"
 msgstr "没有路径数据"
@@ -841,10 +863,6 @@ msgstr "相对"
 #: src/ui_widgets/points_field.gd
 msgid "No points"
 msgstr ""
-
-#: src/ui_widgets/setting_frame.gd src/ui_widgets/setting_shortcut.gd
-msgid "Reset to default"
-msgstr "恢复默认"
 
 #: src/ui_widgets/setting_shortcut.gd
 msgid "Unused"

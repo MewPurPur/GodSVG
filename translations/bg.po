@@ -82,6 +82,14 @@ msgid "Insert After"
 msgstr "Вмъкни отпред"
 
 #: src/config_classes/Formatter.gd
+msgid "Compact"
+msgstr "Компактен"
+
+#: src/config_classes/Formatter.gd
+msgid "Pretty"
+msgstr "Красив"
+
+#: src/config_classes/Formatter.gd
 msgid "Always"
 msgstr "Винаги"
 
@@ -710,6 +718,15 @@ msgstr "Неименуван"
 msgid "Rename"
 msgstr "Преименувай"
 
+#: src/ui_widgets/formatter_config.gd src/ui_widgets/setting_frame.gd
+#: src/ui_widgets/setting_shortcut.gd
+msgid "Reset to default"
+msgstr "Възстанови началната стойност"
+
+#: src/ui_widgets/formatter_config.gd
+msgid "Preset"
+msgstr "Шаблон"
+
 #: src/ui_widgets/formatter_config.gd
 msgid "Keep comments"
 msgstr "Запази коментарите"
@@ -814,6 +831,10 @@ msgstr "Копирай като XML"
 msgid "Paste XML"
 msgstr "Постави XML"
 
+#: src/ui_widgets/palette_config.gd
+msgid "Apply Preset"
+msgstr "Приложи шаблон"
+
 #: src/ui_widgets/pathdata_field.gd
 msgid "No path data"
 msgstr "Няма пътека"
@@ -829,10 +850,6 @@ msgstr "Относително"
 #: src/ui_widgets/points_field.gd
 msgid "No points"
 msgstr "Няма точки"
-
-#: src/ui_widgets/setting_frame.gd src/ui_widgets/setting_shortcut.gd
-msgid "Reset to default"
-msgstr "Възстанови началната стойност"
 
 #: src/ui_widgets/setting_shortcut.gd
 msgid "Unused"

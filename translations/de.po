@@ -82,6 +82,14 @@ msgid "Insert After"
 msgstr "Danach einsetzen"
 
 #: src/config_classes/Formatter.gd
+msgid "Compact"
+msgstr ""
+
+#: src/config_classes/Formatter.gd
+msgid "Pretty"
+msgstr ""
+
+#: src/config_classes/Formatter.gd
 msgid "Always"
 msgstr "Immer"
 
@@ -711,6 +719,16 @@ msgstr "Unbenannt"
 msgid "Rename"
 msgstr "Umbenennen"
 
+#: src/ui_widgets/formatter_config.gd src/ui_widgets/setting_frame.gd
+#: src/ui_widgets/setting_shortcut.gd
+msgid "Reset to default"
+msgstr "Zurücksetzen"
+
+#: src/ui_widgets/formatter_config.gd
+#, fuzzy
+msgid "Preset"
+msgstr "Zoom zurücksetzen"
+
 #: src/ui_widgets/formatter_config.gd
 msgid "Keep comments"
 msgstr "Kommentare beibehalten"
@@ -815,6 +833,10 @@ msgstr "Kopiere als XML"
 msgid "Paste XML"
 msgstr "XML Einfügen"
 
+#: src/ui_widgets/palette_config.gd
+msgid "Apply Preset"
+msgstr ""
+
 #: src/ui_widgets/pathdata_field.gd
 msgid "No path data"
 msgstr "Keine Pfaddaten"
@@ -830,10 +852,6 @@ msgstr "Relativ"
 #: src/ui_widgets/points_field.gd
 msgid "No points"
 msgstr "Keine Punkte"
-
-#: src/ui_widgets/setting_frame.gd src/ui_widgets/setting_shortcut.gd
-msgid "Reset to default"
-msgstr "Zurücksetzen"
 
 #: src/ui_widgets/setting_shortcut.gd
 msgid "Unused"

@@ -83,6 +83,14 @@ msgid "Insert After"
 msgstr "Invoegen na"
 
 #: src/config_classes/Formatter.gd
+msgid "Compact"
+msgstr ""
+
+#: src/config_classes/Formatter.gd
+msgid "Pretty"
+msgstr ""
+
+#: src/config_classes/Formatter.gd
 msgid "Always"
 msgstr "Altijd"
 
@@ -711,6 +719,16 @@ msgstr "Onbenoemd"
 msgid "Rename"
 msgstr "Hernoemen"
 
+#: src/ui_widgets/formatter_config.gd src/ui_widgets/setting_frame.gd
+#: src/ui_widgets/setting_shortcut.gd
+msgid "Reset to default"
+msgstr "Opnieuw naar standaard zetten"
+
+#: src/ui_widgets/formatter_config.gd
+#, fuzzy
+msgid "Preset"
+msgstr "Zoom opnieuw zetten"
+
 #: src/ui_widgets/formatter_config.gd
 msgid "Keep comments"
 msgstr ""
@@ -816,6 +834,10 @@ msgstr "Als XML kopieeren"
 msgid "Paste XML"
 msgstr "XML Plakken"
 
+#: src/ui_widgets/palette_config.gd
+msgid "Apply Preset"
+msgstr ""
+
 #: src/ui_widgets/pathdata_field.gd
 msgid "No path data"
 msgstr "Geen padgegevens"
@@ -831,10 +853,6 @@ msgstr "Relativ"
 #: src/ui_widgets/points_field.gd
 msgid "No points"
 msgstr ""
-
-#: src/ui_widgets/setting_frame.gd src/ui_widgets/setting_shortcut.gd
-msgid "Reset to default"
-msgstr "Opnieuw naar standaard zetten"
 
 #: src/ui_widgets/setting_shortcut.gd
 msgid "Unused"
