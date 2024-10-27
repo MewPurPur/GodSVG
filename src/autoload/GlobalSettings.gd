@@ -162,21 +162,8 @@ func reset_settings() -> void:
 			ColorPalette.new("Pure", ColorPalette.Preset.PURE)]
 	modify_setting("palettes", palettes_array, true)
 	
-	var compact_formatter := Formatter.new("Compact")
-	var pretty_formatter := Formatter.new("Pretty")
-	pretty_formatter.xml_keep_comments = true
-	pretty_formatter.xml_shorthand_tags = Formatter.ShorthandTags.ALL_EXCEPT_CONTAINERS
-	pretty_formatter.xml_shorthand_tags_space_out_slash = true
-	pretty_formatter.xml_pretty_formatting = true
-	pretty_formatter.number_remove_leading_zero = false
-	pretty_formatter.number_use_exponent_if_shorter = false
-	pretty_formatter.color_use_named_colors = Formatter.NamedColorUse.ALWAYS
-	pretty_formatter.color_primary_syntax = Formatter.PrimaryColorSyntax.THREE_OR_SIX_DIGIT_HEX
-	pretty_formatter.color_capital_hex = false
-	pretty_formatter.pathdata_remove_spacing_after_flags = false
-	pretty_formatter.transform_list_compress_numbers = false
-	pretty_formatter.transform_list_minimize_spacing = false
-	pretty_formatter.transform_list_remove_unnecessary_params = false
+	var compact_formatter := Formatter.new("Compact", Formatter.Preset.COMPACT)
+	var pretty_formatter := Formatter.new("Pretty", Formatter.Preset.PRETTY)
 	# The array needs to be typed.
 	var formatters_array: Array[Formatter] = [pretty_formatter, compact_formatter]
 	modify_setting("formatters", formatters_array, true)

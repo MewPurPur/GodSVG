@@ -3,6 +3,17 @@ class_name ColorPalette extends Resource
 
 enum Preset {EMPTY, PURE, GRAYSCALE}
 
+var presets = {
+	Preset.EMPTY: [PackedStringArray(), PackedStringArray()],
+	Preset.PURE: [PackedStringArray(["#fff", "#000", "#f00", "#0f0", "#00f", "#ff0",
+			"#f0f", "#0ff"]), PackedStringArray(["White", "Black", "Red", "Green", "Blue",
+			"Yellow", "Magenta", "Cyan"])],
+	Preset.GRAYSCALE: [PackedStringArray(["#000", "#1a1a1a", "#333", "#4d4d4d", "#666",
+			"#808080", "#999", "#b3b3b3", "#ccc", "#e6e6e6", "#fff"]), PackedStringArray([
+			"Black", "10% Gray", "20% Gray", "30% Gray", "40% Gray", "50% Gray", "60% Gray",
+			"70% Gray", "80% Gray", "90% Gray", "White"])],
+}
+
 signal layout_changed
 
 # The title must be unique.
@@ -57,30 +68,14 @@ func modify_color_name(idx: int, new_color_name: String) -> void:
 	emit_changed()
 
 func apply_preset(new_preset: Preset) -> void:
-	var new_colors: PackedStringArray
-	var new_color_names: PackedStringArray
-	
-	match new_preset:
-		Preset.EMPTY:
-			new_colors = PackedStringArray()
-			new_color_names = PackedStringArray()
-		Preset.PURE:
-			new_colors = PackedStringArray(["#fff", "#000", "#f00", "#0f0", "#00f", "#ff0",
-					"#f0f", "#0ff"])
-			new_color_names = PackedStringArray(["White", "Black", "Red", "Green", "Blue",
-					"Yellow", "Magenta", "Cyan"])
-		Preset.GRAYSCALE:
-			new_colors = PackedStringArray(["#000", "#1a1a1a", "#333", "#4d4d4d", "#666",
-					"#808080", "#999", "#b3b3b3", "#ccc", "#e6e6e6", "#fff"])
-			new_color_names = PackedStringArray(["Black", "10% Gray", "20% Gray", "30% Gray",
-					"40% Gray", "50% Gray", "60% Gray", "70% Gray", "80% Gray", "90% Gray",
-					"White"])
-	
-	if colors != new_colors or color_names != new_color_names:
-		colors = new_colors
-		color_names = new_color_names
+	if not is_same_as_preset(new_preset):
+		colors = presets[new_preset][0].duplicate()
+		color_names = presets[new_preset][1].duplicate()
 		emit_changed()
 		layout_changed.emit()
+
+func is_same_as_preset(preset: Preset) -> bool:
+	return colors == presets[preset][0] and color_names == presets[preset][1]
 
 
 func to_text() -> String:
