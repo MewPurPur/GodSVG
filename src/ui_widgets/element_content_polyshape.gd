@@ -10,7 +10,7 @@ func _ready() -> void:
 	points_field.setup()
 	points_field.focused.connect(Indications.normal_select.bind(element.xid))
 	
-	for attribute in DB.recognized_attributes[element.name]:
+	for attribute in DB.get_recognized_attributes(element.name):
 		if attribute == "points":
 			continue
 		var input_field := AttributeFieldBuilder.create(attribute, element)

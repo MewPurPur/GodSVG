@@ -11,7 +11,7 @@ theme_override_constants/separation = 0
 script = ExtResource("1_5mc4m")
 
 [node name="TitleBar" type="Panel" parent="."]
-custom_minimum_size = Vector2(0, 26)
+custom_minimum_size = Vector2(180, 26)
 layout_mode = 2
 mouse_filter = 2
 

@@ -10,7 +10,7 @@ func _ready() -> void:
 	path_field.setup()
 	path_field.focused.connect(Indications.normal_select.bind(element.xid))
 	
-	for attribute in DB.recognized_attributes["path"]:
+	for attribute in DB.get_recognized_attributes("path"):
 		if attribute == "d":
 			continue
 		var input_field := AttributeFieldBuilder.create(attribute, element)
