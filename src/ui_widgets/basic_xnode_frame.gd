@@ -1,12 +1,5 @@
 extends HBoxContainer
 
-# FIXME this seems like a not us issue.
-static var BasicXNodeFrame: PackedScene:
-	get:
-		if !is_instance_valid(BasicXNodeFrame):
-			BasicXNodeFrame = load("res://src/ui_widgets/basic_xnode_frame.tscn")
-		return BasicXNodeFrame
-
 @onready var text_edit: BetterTextEdit = $Content/TextEdit
 @onready var title_bar: Panel = $TitleBar
 @onready var content: PanelContainer = $Content
@@ -36,19 +29,12 @@ func _exit_tree() -> void:
 
 # Logic for dragging.
 func _get_drag_data(_at_position: Vector2) -> Variant:
+	if Indications.selected_xids.is_empty():
+		return null
+	
 	var data: Array[PackedInt32Array] = XIDUtils.filter_descendants(
 			Indications.selected_xids.duplicate(true))
-	# Set up a preview.
-	var elements_container := VBoxContainer.new()
-	for data_idx in range(data.size() - 1, -1, -1):
-		var drag_xid := data[data_idx]
-		var preview := BasicXNodeFrame.instantiate()
-		preview.xnode = SVG.root_element.get_xnode(drag_xid)
-		preview.custom_minimum_size.x = size.x
-		preview.z_index = 2
-		elements_container.add_child(preview)
-	elements_container.modulate = Color(1, 1, 1, 0.85)
-	set_drag_preview(elements_container)
+	set_drag_preview(XNodeChildrenBuilder.generate_drag_preview(data))
 	return data
 
 func _notification(what: int) -> void:
