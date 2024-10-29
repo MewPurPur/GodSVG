@@ -2,13 +2,6 @@ extends VBoxContainer
 
 const warning_icon = preload("res://visual/icons/Warning.svg")
 
-# FIXME this seems like a not us issue.
-static var ElementFrame: PackedScene:
-	get:
-		if !is_instance_valid(ElementFrame):
-			ElementFrame = load("res://src/ui_widgets/element_frame.tscn")
-		return ElementFrame
-
 const element_content_types = {
 	"path": preload("res://src/ui_widgets/element_content_path.tscn"),
 	"polygon": preload("res://src/ui_widgets/element_content_polyshape.tscn"),
@@ -87,31 +80,7 @@ func _get_drag_data(_at_position: Vector2) -> Variant:
 	
 	var data: Array[PackedInt32Array] = XIDUtils.filter_descendants(
 			Indications.selected_xids.duplicate(true))
-	# Set up a preview.
-	var elements_container := VBoxContainer.new()
-	for data_idx in range(data.size() - 1, -1, -1):
-		var drag_xid := data[data_idx]
-		var preview := ElementFrame.instantiate()
-		preview.element = SVG.root_element.get_xnode(drag_xid)
-		preview.custom_minimum_size.x = size.x
-		preview.z_index = 2
-		elements_container.add_child(preview)
-	
-	#var vp := SubViewport.new()
-	#vp.transparent_bg = true
-	#vp.render_target_update_mode = SubViewport.UPDATE_ONCE
-	#vp.size = Vector2.ZERO
-	#vp.add_child(elements_container)
-	#add_child(vp)
-	#vp.transparent_bg = false
-	#var texture_rect := TextureRect.new()
-	#await RenderingServer.frame_post_draw
-	#texture_rect.texture = ImageTexture.create_from_image(vp.get_texture().get_image())
-	#texture_rect.modulate = Color(1, 1, 1, 0.85)
-	#vp.queue_free()
-	#set_drag_preview(texture_rect)
-	elements_container.modulate = Color(1, 1, 1, 0.85)
-	set_drag_preview(elements_container)
+	set_drag_preview(XNodeChildrenBuilder.generate_drag_preview(data))
 	return data
 
 func _notification(what: int) -> void:
