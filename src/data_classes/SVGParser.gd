@@ -46,7 +46,7 @@ make_attributes_absolute := false) -> String:
 	var attribute_array := element.get_all_attributes()
 	if make_attributes_absolute:
 		# Add known default value attributes if they are percentage-based.
-		for attrib_name in DB.recognized_attributes[element.name]:
+		for attrib_name in DB.get_recognized_attributes(element.name):
 			if DB.get_attribute_type(attrib_name) != DB.AttributeType.NUMERIC:
 				continue
 			

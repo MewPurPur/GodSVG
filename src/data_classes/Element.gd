@@ -60,6 +60,7 @@ func get_all_element_descendants() -> Array[Element]:
 			elements += child.get_all_element_descendants()
 	return elements
 
+# Gets the basic XML nodes too.
 func get_all_xnode_descendants() -> Array[XNode]:
 	var xnodes: Array[XNode] = []
 	for child in get_children():
@@ -85,9 +86,17 @@ func replace_child(idx: int, new_xnode: XNode) -> void:
 func insert_child(idx: int, new_xnode: XNode) -> void:
 	if idx < 0:
 		idx += get_child_count() + 1
+	
 	new_xnode.parent = self
 	new_xnode.root = root
 	new_xnode.svg = self if self is ElementSVG else svg
+	
+	if new_xnode is Element:
+		for xnode_descendant in new_xnode.get_all_xnode_descendants():
+			xnode_descendant.svg = xnode_descendant if xnode_descendant is ElementSVG else\
+					xnode_descendant.parent.svg
+			xnode_descendant.root = root
+	
 	var new_xid := xid.duplicate()
 	new_xid.append(idx)
 	new_xnode.xid = new_xid
@@ -265,16 +274,6 @@ func apply_to(element: Element, dropped_attributes: PackedStringArray) -> void:
 	for attribute_name in _attributes:
 		if not attribute_name in dropped_attributes:
 			element.set_attribute(attribute_name, get_attribute_value(attribute_name))
-
-# Converts all percentage numeric attributes to absolute.
-# TODO this is no longer used, but might become useful again in the future.
-func make_all_attributes_absolute() -> void:
-	var attributes_to_convert := _attributes.keys()
-	if DB.recognized_attributes.has(self.name):
-		attributes_to_convert += DB.recognized_attributes[self.name]
-	for attribute_name in attributes_to_convert:
-		if DB.get_attribute_type(attribute_name) == DB.AttributeType.NUMERIC:
-			make_attribute_absolute(attribute_name)
 
 # Converts a percentage numeric attribute to absolute.
 # TODO this is no longer used, but might become useful again in the future.

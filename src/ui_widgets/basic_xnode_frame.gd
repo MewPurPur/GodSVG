@@ -49,7 +49,6 @@ func _get_drag_data(_at_position: Vector2) -> Variant:
 		elements_container.add_child(preview)
 	elements_container.modulate = Color(1, 1, 1, 0.85)
 	set_drag_preview(elements_container)
-	modulate = Color(1, 1, 1, 0.55)
 	return data
 
 func _notification(what: int) -> void:
