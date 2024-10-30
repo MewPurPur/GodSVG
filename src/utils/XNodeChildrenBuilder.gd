@@ -34,18 +34,5 @@ static func generate_drag_preview(xids: Array[PackedInt32Array], ) -> Control:
 			preview.z_index = 2
 			xnode_container.add_child(preview)
 	
-	#var vp := SubViewport.new()
-	#vp.transparent_bg = true
-	#vp.render_target_update_mode = SubViewport.UPDATE_ONCE
-	#vp.size = Vector2.ZERO
-	#vp.add_child(elements_container)
-	#add_child(vp)
-	#vp.transparent_bg = false
-	#var texture_rect := TextureRect.new()
-	#await RenderingServer.frame_post_draw
-	#texture_rect.texture = ImageTexture.create_from_image(vp.get_texture().get_image())
-	#texture_rect.modulate = Color(1, 1, 1, 0.85)
-	#vp.queue_free()
-	#set_drag_preview(texture_rect)
 	xnode_container.modulate = Color(1, 1, 1, 0.85)
 	return xnode_container
