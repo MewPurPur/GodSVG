@@ -11,6 +11,7 @@ var action: String
 var events: Array[InputEvent] = []
 
 var listening_idx := -1
+var pending_event: InputEvent
 
 func update_translation() -> void:
 	reset_button.tooltip_text = TranslationServer.translate("Reset to default")
@@ -136,18 +137,20 @@ func _input(event: InputEvent) -> void:
 	
 	if event.is_action("ui_cancel"):
 		cancel_listening()
+		pending_event = null
 		accept_event()
 	elif event.is_pressed():
 		shortcut_button.text = event.as_text_keycode()
+		pending_event = event
 		accept_event()
 	elif event.is_released():
 		if listening_idx < events.size():
-			events[listening_idx] = event
-			update_shortcut()
+			events[listening_idx] = pending_event
 		else:
-			events.append(event)
-			update_shortcut()
+			events.append(pending_event)
+		update_shortcut()
 		sync()
+		pending_event = null
 		listening_idx = -1
 
 func _on_reset_button_pressed() -> void:
