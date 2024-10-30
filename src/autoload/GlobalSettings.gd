@@ -96,12 +96,14 @@ func modify_setting(setting: String, new_value: Variant, omit_save := false) -> 
 		related_signal.emit()
 
 func modify_keybind(action: String, new_events: Array[InputEvent]) -> void:
-	InputMap.action_erase_events(action)
-	for event in new_events:
-		InputMap.action_add_event(action, event)
+	apply_keybind(action, new_events)
 	save_keybind(action)
 	shortcuts_changed.emit()
 
+func apply_keybind(action: String, events: Array[InputEvent]) -> void:
+	InputMap.action_erase_events(action)
+	for event in events:
+		InputMap.action_add_event(action, event)
 
 func save_keybind(action: String) -> void:
 	savedata.keybinds[action] = InputMap.action_get_events(action)
@@ -134,6 +136,9 @@ func load_config() -> void:
 		reset_settings()
 	else:
 		savedata = ResourceLoader.load(savedata_path)
+		for action in ShortcutUtils.get_all_keybinds():
+			if ShortcutUtils.is_keybind_modifiable(action):
+				apply_keybind(action, savedata.keybinds[action])
 		if not is_instance_valid(savedata) or not savedata is SaveData:
 			reset_settings()
 		else:
