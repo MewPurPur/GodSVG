@@ -384,6 +384,9 @@ func _on_file_field_text_changed(new_text: String) -> void:
 	file_field.add_theme_color_override("font_color",
 			GlobalSettings.get_validity_color(is_invalid_filename))
 
+func _on_file_field_text_change_canceled() -> void:
+	file_field.remove_theme_color_override("font_color")
+
 
 func _on_replace_button_pressed() -> void:
 	file_selected.emit(current_dir.path_join(current_file))
