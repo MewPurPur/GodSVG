@@ -195,6 +195,7 @@ mouse_default_cursor_shape = 2
 [connection signal="item_activated" from="VBoxContainer/MainContainer/FilePicker/VisualPicker/FileList" to="." method="_on_file_list_item_activated"]
 [connection signal="item_clicked" from="VBoxContainer/MainContainer/FilePicker/VisualPicker/FileList" to="." method="_on_file_list_item_clicked"]
 [connection signal="item_selected" from="VBoxContainer/MainContainer/FilePicker/VisualPicker/FileList" to="." method="_on_file_list_item_selected"]
+[connection signal="text_change_canceled" from="VBoxContainer/MainContainer/FilePicker/FileContainer/FileField" to="." method="_on_file_field_text_change_canceled"]
 [connection signal="text_changed" from="VBoxContainer/MainContainer/FilePicker/FileContainer/FileField" to="." method="_on_file_field_text_changed"]
 [connection signal="text_submitted" from="VBoxContainer/MainContainer/FilePicker/FileContainer/FileField" to="." method="_on_file_field_text_submitted"]
 [connection signal="text_changed" from="CreateFolderCenterContainer/CreateFolderDialog/MainContainer/CreateFolderLineEdit" to="." method="_on_create_folder_line_edit_text_changed"]
