@@ -115,3 +115,6 @@ static func is_keybind_modifiable(keybind: String) -> bool:
 		if _keybinds_dict[category].has(keybind):
 			return _keybinds_dict[category][keybind]
 	return false
+
+static func is_action_pressed(event: InputEvent, action: String) -> bool:
+	return event.is_action_pressed(action) and GlobalSettings.is_shortcut_valid(event)

@@ -42,7 +42,7 @@ func _ready() -> void:
 		reference_button.tooltip_text = "Not currently available on web."
 		reference_button.mouse_default_cursor_shape = CURSOR_ARROW
 
-func _unhandled_input(input_event: InputEvent) -> void:
+func _unhandled_input(event: InputEvent) -> void:
 	if Input.is_action_pressed("debug"):
 		if debug_container.visible:
 			debug_container.hide()
@@ -50,19 +50,19 @@ func _unhandled_input(input_event: InputEvent) -> void:
 			debug_container.show()
 			update_debug()
 			input_debug_label.text = ""
-	elif input_event.is_action_pressed("load_reference"):
+	elif ShortcutUtils.is_action_pressed(event, "load_reference"):
 		load_reference_image()
-	elif input_event.is_action_pressed("view_show_grid"):
+	elif ShortcutUtils.is_action_pressed(event, "view_show_grid"):
 		toggle_grid_visuals()
-	elif input_event.is_action_pressed("view_show_handles"):
+	elif ShortcutUtils.is_action_pressed(event, "view_show_handles"):
 		toggle_handles_visuals()
-	elif input_event.is_action_pressed("view_rasterized_svg"):
+	elif ShortcutUtils.is_action_pressed(event, "view_rasterized_svg"):
 		toggle_rasterization()
-	elif input_event.is_action_pressed("view_show_reference"):
+	elif ShortcutUtils.is_action_pressed(event, "view_show_reference"):
 		toggle_reference_image()
-	elif input_event.is_action_pressed("view_overlay_reference"):
+	elif ShortcutUtils.is_action_pressed(event, "view_overlay_reference"):
 		toggle_reference_overlay()
-	elif input_event.is_action_pressed("toggle_snap"):
+	elif ShortcutUtils.is_action_pressed(event, "toggle_snap"):
 		toggle_snap()
 
 

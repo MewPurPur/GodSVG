@@ -24,6 +24,8 @@ const svg_path = "user://save.svg"
 
 const reference_image_path = "user://reference.png"
 
+var shortcut_validities := {}
+
 var enum_text := {}
 
 func get_enum_texts(setting: String) -> PackedStringArray:
@@ -129,6 +131,8 @@ func _enter_tree() -> void:
 	# Connect to settings that have a global effect.
 	file_path_changed.connect(update_window_title)
 	update_window_title()
+	shortcuts_changed.connect(update_shortcut_validities)
+	update_shortcut_validities()
 
 
 func load_config() -> void:
@@ -193,6 +197,36 @@ func generate_highlighter() -> SVGHighlighter:
 	new_highlighter.cdata_color = GlobalSettings.savedata.highlighting_cdata_color
 	new_highlighter.error_color = GlobalSettings.savedata.highlighting_error_color
 	return new_highlighter
+
+
+func update_shortcut_validities() -> void:
+	shortcut_validities.clear()
+	for action in ShortcutUtils.get_all_keybinds():
+		for shortcut: InputEventKey in InputMap.action_get_events(action):
+			var shortcut_id := shortcut.get_keycode_with_modifiers()
+			# If the key already exists, set validity to false, otherwise set to true.
+			shortcut_validities[shortcut_id] = not shortcut_id in shortcut_validities
+
+func is_shortcut_valid(shortcut: InputEvent) -> bool:
+	var shortcut_id = shortcut.get_keycode_with_modifiers()
+	if not shortcut_id in shortcut_validities:
+		return true
+	return shortcut_validities[shortcut_id]
+
+func get_actions_with_shortcut(shortcut: InputEvent) -> PackedStringArray:
+	var shortcut_id = shortcut.get_keycode_with_modifiers()
+	if not shortcut_id in shortcut_validities:
+		return PackedStringArray()
+	elif shortcut_validities[shortcut_id]:
+		return PackedStringArray()
+	
+	var actions_with_shortcut := PackedStringArray()
+	for action in ShortcutUtils.get_all_keybinds():
+		for action_shortcut: InputEventKey in InputMap.action_get_events(action):
+			if action_shortcut.get_keycode_with_modifiers() == shortcut_id:
+				actions_with_shortcut.append(action)
+				break
+	return actions_with_shortcut
 
 
 # Global effects from settings. Some of them should also be used on launch.

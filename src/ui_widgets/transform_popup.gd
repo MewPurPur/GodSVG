@@ -182,10 +182,10 @@ func popup_new_transform_context(idx: int, control: Control) -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_pressed("redo"):
+	if ShortcutUtils.is_action_pressed(event, "redo"):
 		if UR.has_redo():
 			UR.redo()
-	elif event.is_action_pressed("undo"):
+	elif ShortcutUtils.is_action_pressed(event, "undo"):
 		if UR.has_undo():
 			UR.undo()
 

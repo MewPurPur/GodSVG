@@ -390,7 +390,7 @@ func respond_to_key_input(event: InputEventKey) -> void:
 			if xnode_ref is ElementPath:
 				var path_attrib: AttributePathdata = xnode_ref.get_attribute("d")
 				for action_name in path_actions_dict.keys():
-					if event.is_action_pressed(action_name):
+					if ShortcutUtils.is_action_pressed(event, action_name):
 						var path_cmd_count := path_attrib.get_command_count()
 						var path_cmd_char: String = path_actions_dict[action_name]
 						# Z after a Z is syntactically invalid.
@@ -409,7 +409,7 @@ func respond_to_key_input(event: InputEventKey) -> void:
 	for action_name in path_actions_dict.keys():
 		var element_ref := SVG.root_element.get_xnode(semi_selected_xid)
 		if element_ref.name == "path":
-			if event.is_action_pressed(action_name):
+			if ShortcutUtils.is_action_pressed(event, action_name):
 				var path_attrib: AttributePathdata = element_ref.get_attribute("d")
 				var path_cmd_char: String = path_actions_dict[action_name]
 				var last_selection: int = inner_selections.max()

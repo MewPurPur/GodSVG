@@ -166,7 +166,7 @@ func _parse_popup_overlay_event(event: InputEvent) -> void:
 var last_mouse_click_double := false
 
 func _input(event: InputEvent) -> void:
-	if event.is_action_pressed("quit"):
+	if ShortcutUtils.is_action_pressed(event, "quit"):
 		remove_all_overlays()
 		var confirm_dialog = ConfirmDialog.instantiate()
 		add_overlay(confirm_dialog)
@@ -186,7 +186,7 @@ func _input(event: InputEvent) -> void:
 	
 	# Stuff that should replace the existing overlays.
 	for action in ["about_info", "about_donate", "check_updates", "open_settings"]:
-		if event.is_action_pressed(action):
+		if ShortcutUtils.is_action_pressed(event, action):
 			remove_all_overlays()
 			get_viewport().set_input_as_handled()
 			ShortcutUtils.fn_call(action)
@@ -194,7 +194,7 @@ func _input(event: InputEvent) -> void:
 	
 	# Stuff that links externally.
 	for action in ["about_repo", "about_website"]:
-		if event.is_action_pressed(action):
+		if ShortcutUtils.is_action_pressed(event, action):
 			get_viewport().set_input_as_handled()
 			ShortcutUtils.fn_call(action)
 			return
@@ -206,7 +206,7 @@ func _input(event: InputEvent) -> void:
 	# Global actions that should happen regardless of the context.
 	for action in ["import", "export", "save", "copy_svg_text", "clear_svg", "optimize",
 	"clear_file_path", "reset_svg"]:
-		if event.is_action_pressed(action):
+		if ShortcutUtils.is_action_pressed(event, action):
 			get_viewport().set_input_as_handled()
 			ShortcutUtils.fn_call(action)
 
@@ -227,7 +227,7 @@ func _unhandled_input(event: InputEvent) -> void:
 	
 	for action in ["redo", "undo", "ui_cancel", "delete", "move_up", "move_down",
 	"duplicate", "select_all"]:
-		if event.is_action_pressed(action):
+		if ShortcutUtils.is_action_pressed(event, action):
 			get_viewport().set_input_as_handled()
 			ShortcutUtils.fn_call(action)
 			return

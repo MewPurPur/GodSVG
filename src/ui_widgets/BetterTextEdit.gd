@@ -163,11 +163,11 @@ func _gui_input(event: InputEvent) -> void:
 			set_caret_column(click_pos.x, false)
 	else:
 		# Set these inputs as handled, so the default UndoRedo doesn't eat them.
-		if event.is_action_pressed("redo"):
+		if ShortcutUtils.is_action_pressed(event, "redo"):
 			if has_redo():
 				redo()
 			accept_event()
-		elif event.is_action_pressed("undo"):
+		elif ShortcutUtils.is_action_pressed(event, "undo"):
 			if has_undo():
 				undo()
 			accept_event()
