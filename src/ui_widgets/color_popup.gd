@@ -128,6 +128,6 @@ func _exit_tree() -> void:
 	color_picked.emit(current_value, true)
 
 func _input(event: InputEvent) -> void:
-	if event.is_action_pressed("find"):
+	if ShortcutUtils.is_action_pressed(event, "find"):
 		search_field.grab_focus()
 		accept_event()

@@ -11,7 +11,7 @@ var action: String
 var events: Array[InputEvent] = []
 
 var listening_idx := -1
-var pending_event: InputEvent
+var pending_event: InputEventKey
 
 func update_translation() -> void:
 	reset_button.tooltip_text = TranslationServer.translate("Reset to default")
@@ -19,6 +19,7 @@ func update_translation() -> void:
 func _ready() -> void:
 	reset_button.pressed.connect(_on_reset_button_pressed)
 	GlobalSettings.language_changed.connect(update_translation)
+	GlobalSettings.shortcuts_changed.connect(check_shortcuts_validity)
 	update_translation()
 
 func setup(new_action: String) -> void:
@@ -69,16 +70,13 @@ func sync() -> void:
 			else:
 				new_btn.disabled = true
 				new_btn.mouse_default_cursor_shape = Control.CURSOR_ARROW
+	check_shortcuts_validity()
 
 
 func enter_listening_mode(idx: int, show_delete_button := false) -> void:
 	listening_idx = idx
 	var btn := shortcut_buttons[idx]
-	btn.begin_bulk_theme_override()
-	btn.add_theme_color_override("font_focus_color", Color("#defb"))
-	btn.add_theme_color_override("font_hover_color", Color("#defb"))
-	btn.add_theme_color_override("font_pressed_color", Color("#defb"))
-	btn.end_bulk_theme_override()
+	setup_shortcut_button_font_colors(btn, Color("#def"))
 	btn.focus_mode = Control.FOCUS_CLICK
 	btn.grab_focus()
 	if btn.pressed.is_connected(enter_listening_mode):
@@ -122,7 +120,6 @@ func delete_shortcut(idx: int) -> void:
 
 func update_shortcut() -> void:
 	GlobalSettings.modify_keybind(action, events)
-	GlobalSettings.shortcuts_changed.emit()
 
 func _input(event: InputEvent) -> void:
 	if not (listening_idx >= 0 and event is InputEventKey):
@@ -138,22 +135,65 @@ func _input(event: InputEvent) -> void:
 	if event.is_action("ui_cancel"):
 		cancel_listening()
 		pending_event = null
+		setup_shortcut_button_font_colors(shortcut_button, Color("#def"))
 		accept_event()
 	elif event.is_pressed():
 		shortcut_button.text = event.as_text_keycode()
 		pending_event = event
+		if pending_event.keycode & KEY_MODIFIER_MASK != 0:
+			setup_shortcut_button_font_colors(shortcut_button,
+					GlobalSettings.savedata.basic_color_warning)
+		else:
+			setup_shortcut_button_font_colors(shortcut_button, Color("#def"))
 		accept_event()
 	elif event.is_released():
-		if listening_idx < events.size():
-			events[listening_idx] = pending_event
-		else:
-			events.append(pending_event)
+		if pending_event.keycode & KEY_MODIFIER_MASK == 0:
+			if listening_idx < events.size():
+				events[listening_idx] = pending_event
+			else:
+				events.append(pending_event)
 		update_shortcut()
 		sync()
 		pending_event = null
+		setup_shortcut_button_font_colors(shortcut_button, Color("#def"))
 		listening_idx = -1
 
 func _on_reset_button_pressed() -> void:
 	events = GlobalSettings.default_keybinds[action].duplicate(true)
 	update_shortcut()
 	sync()
+
+func setup_shortcut_button_font_colors(button: Button, color: Color) -> void:
+	var dim_color := Color(color, 0.8)
+	button.begin_bulk_theme_override()
+	button.add_theme_color_override("font_color", dim_color)
+	button.add_theme_color_override("font_focus_color", dim_color)
+	button.add_theme_color_override("font_hover_color", dim_color)
+	button.add_theme_color_override("font_pressed_color", dim_color)
+	button.end_bulk_theme_override()
+
+func check_shortcuts_validity() -> void:
+	for i in events.size():
+		var shortcut_btn := shortcut_buttons[i]
+		if not GlobalSettings.is_shortcut_valid(events[i]):
+			setup_shortcut_button_font_colors(shortcut_btn,
+					GlobalSettings.savedata.basic_color_error)
+			var conflicts := GlobalSettings.get_actions_with_shortcut(events[i])
+			var action_pos := conflicts.find(action)
+			if action_pos != -1:
+				conflicts.remove_at(action_pos)
+			for ii in conflicts.size():
+				conflicts[ii] = TranslationUtils.get_shortcut_description(conflicts[ii])
+			if conflicts.size() > 8:
+				conflicts.resize(8)
+				conflicts.append("...")
+			shortcut_btn.tooltip_text = TranslationServer.translate("Also used by") +\
+					":\n" + "\n".join(conflicts)
+		else:
+			shortcut_btn.begin_bulk_theme_override()
+			shortcut_btn.remove_theme_color_override("font_color")
+			shortcut_btn.remove_theme_color_override("font_focus_color")
+			shortcut_btn.remove_theme_color_override("font_hover_color")
+			shortcut_btn.remove_theme_color_override("font_pressed_color")
+			shortcut_btn.end_bulk_theme_override()
+			shortcut_btn.tooltip_text = ""

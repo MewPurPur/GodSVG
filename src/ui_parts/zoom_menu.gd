@@ -13,12 +13,12 @@ signal zoom_reset_pressed
 var _zoom_level: float
 
 
-func _unhandled_input(input_event: InputEvent) -> void:
-	if input_event.is_action_pressed("zoom_in"):
+func _unhandled_input(event: InputEvent) -> void:
+	if ShortcutUtils.is_action_pressed(event, "zoom_in"):
 		zoom_in()
-	elif input_event.is_action_pressed("zoom_out"):
+	elif ShortcutUtils.is_action_pressed(event, "zoom_out"):
 		zoom_out()
-	elif input_event.is_action_pressed("zoom_reset"):
+	elif ShortcutUtils.is_action_pressed(event, "zoom_reset"):
 		zoom_reset()
 
 

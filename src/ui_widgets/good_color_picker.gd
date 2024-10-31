@@ -416,11 +416,11 @@ func _input(event: InputEvent) -> void:
 	if not visible:
 		return
 	
-	if event.is_action_pressed("redo"):
+	if ShortcutUtils.is_action_pressed(event, "redo"):
 		if UR.has_redo():
 			UR.redo()
 		accept_event()
-	elif event.is_action_pressed("undo"):
+	elif ShortcutUtils.is_action_pressed(event, "undo"):
 		if UR.has_undo():
 			UR.undo()
 		accept_event()
