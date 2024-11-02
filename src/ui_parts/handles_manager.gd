@@ -619,13 +619,13 @@ func _draw() -> void:
 	RenderingServer.canvas_item_clear(selections_surface)
 	
 	var draw_zoom := SVG.root_element.canvas_transform * Indications.zoom
-	draw_objects_of_type(draw_zoom, normal_color, normal_polylines,
+	draw_objects_of_type(normal_color, normal_polylines,
 			normal_multiline, normal_handles, normal_handle_textures)
-	draw_objects_of_type(draw_zoom, hovered_color, hovered_polylines,
+	draw_objects_of_type(hovered_color, hovered_polylines,
 			hovered_multiline, hovered_handles, hovered_handle_textures)
-	draw_objects_of_type(draw_zoom, selected_color, selected_polylines,
+	draw_objects_of_type(selected_color, selected_polylines,
 			selected_multiline, selected_handles, selected_handle_textures)
-	draw_objects_of_type(draw_zoom, hovered_selected_color, hovered_selected_polylines,
+	draw_objects_of_type(hovered_selected_color, hovered_selected_polylines,
 			hovered_selected_multiline, hovered_selected_handles,
 			hovered_selected_handle_textures)
 	
@@ -639,20 +639,20 @@ func _draw() -> void:
 				RenderingServer.canvas_item_add_rect(selections_surface,
 						bounding_box.grow(4.0 / Indications.zoom), Color.WHITE)
 
-func draw_objects_of_type(draw_zoom: Transform2D, color: Color,
-polylines: Array[PackedVector2Array], multiline: PackedVector2Array,
-handles_array: Array[Handle], handle_texture_array: Dictionary) -> void:
+func draw_objects_of_type(color: Color, polylines: Array[PackedVector2Array],
+multiline: PackedVector2Array, handles_array: Array[Handle],
+handle_texture_array: Dictionary) -> void:
 	for polyline in polylines:
 		var color_array := PackedColorArray()
 		color_array.resize(polyline.size())
 		color_array.fill(color)
 		for idx in polyline.size():
-			polyline[idx] *= draw_zoom
+			polyline[idx] = SVG.root_element.canvas_to_world(polyline[idx]) * Indications.zoom
 		RenderingServer.canvas_item_add_polyline(surface, polyline,
 				color_array, CONTOUR_WIDTH, true)
 	if not multiline.is_empty():
 		for idx in multiline.size():
-			multiline[idx] *= draw_zoom
+			multiline[idx] = SVG.root_element.canvas_to_world(multiline[idx]) * Indications.zoom
 		var color_array := PackedColorArray()
 		color_array.resize(int(multiline.size() / 2.0))
 		color_array.fill(Color(color, TANGENT_ALPHA))
