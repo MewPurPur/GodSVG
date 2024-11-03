@@ -40,7 +40,7 @@ func get_bounding_box() -> Rect2:
 
 func can_replace(new_element: String) -> bool:
 	if new_element == "line":
-		var optimized_polyline := self.duplicate()
+		var optimized_polyline := duplicate()
 		optimized_polyline.simplify()
 		var list_points: PackedVector2Array =\
 				optimized_polyline.get_attribute("points").get_points()

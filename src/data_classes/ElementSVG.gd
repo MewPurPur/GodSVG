@@ -8,12 +8,21 @@ var viewbox: Rect2
 var canvas_transform: Transform2D
 
 const name = "svg"
+const possible_conversions = []
 
 func _init() -> void:
-	attribute_changed.connect(update_cache.unbind(1))
+	attribute_changed.connect(_conditional_update_cache)
+	ancestor_attribute_changed.connect(_conditional_update_cache)
 	super()
 
+func _conditional_update_cache(attribute_name: String) -> void:
+	if attribute_name in ["width", "height", "viewBox"]:
+		update_cache()
+
 func update_cache() -> void:
+	if root != self and svg == null:
+		return
+	
 	var has_valid_width := has_attribute("width")
 	var has_valid_height := has_attribute("height")
 	var has_valid_viewbox := has_attribute("viewBox")
