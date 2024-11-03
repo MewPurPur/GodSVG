@@ -618,7 +618,6 @@ func _draw() -> void:
 	RenderingServer.canvas_item_clear(surface)
 	RenderingServer.canvas_item_clear(selections_surface)
 	
-	var draw_zoom := SVG.root_element.canvas_transform * Indications.zoom
 	draw_objects_of_type(normal_color, normal_polylines,
 			normal_multiline, normal_handles, normal_handle_textures)
 	draw_objects_of_type(hovered_color, hovered_polylines,
