@@ -182,9 +182,9 @@ func _on_points_gui_input(event: InputEvent) -> void:
 		if event.button_index == MOUSE_BUTTON_LEFT:
 			if event.is_pressed():
 				if event.double_click:
-					Indications.clear_inner_selection()
-					for idx in range(0, element.get_attribute(attribute_name).get_list_size() / 2):
-						Indications.ctrl_select(element.xid, idx)
+					Indications.normal_select(element.xid, 0)
+					Indications.shift_select(element.xid,
+							element.get_attribute(attribute_name).get_list_size() / 2)
 				elif event.is_command_or_control_pressed():
 					Indications.ctrl_select(element.xid, cmd_idx)
 				elif event.shift_pressed:
