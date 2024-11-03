@@ -1,4 +1,4 @@
-# An editor to be tied to a pathdata attribute.
+# An editor to be tied to a points attribute.
 extends VBoxContainer
 
 var element: Element
@@ -182,11 +182,8 @@ func _on_points_gui_input(event: InputEvent) -> void:
 		if event.button_index == MOUSE_BUTTON_LEFT:
 			if event.is_pressed():
 				if event.double_click:
-					# Unselect the elements so we can use Ctrl select.
 					Indications.clear_inner_selection()
-					var subpath_range: Vector2i =\
-							element.get_attribute(attribute_name).get_subpath(cmd_idx)
-					for idx in range(subpath_range.x, subpath_range.y + 1):
+					for idx in range(0, element.get_attribute(attribute_name).get_list_size() / 2):
 						Indications.ctrl_select(element.xid, idx)
 				elif event.is_command_or_control_pressed():
 					Indications.ctrl_select(element.xid, cmd_idx)
