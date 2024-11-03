@@ -38,7 +38,7 @@ func get_bounding_box() -> Rect2:
 
 func can_replace(new_element: String) -> bool:
 	if new_element == "rect":
-		var optimized_polygon := self.duplicate()
+		var optimized_polygon := duplicate()
 		optimized_polygon.simplify()
 		var list_points: PackedVector2Array =\
 				optimized_polygon.get_attribute("points").get_points()
