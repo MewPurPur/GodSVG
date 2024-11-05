@@ -159,10 +159,10 @@ func _draw() -> void:
 		color = ThemeUtils.common_subtle_text_color
 	
 	var non_panel_width := size.x - panel_width
-	var text_line := TextLine.new()
-	text_line.add_string(text, ThemeUtils.regular_font, 13)
-	text_line.width = non_panel_width - 16
-	text_line.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
-	text_line.draw(ci, Vector2(4, 5), color)
+	var text_obj := TextLine.new()
+	text_obj.add_string(text, ThemeUtils.regular_font, 13)
+	text_obj.width = non_panel_width - 16
+	text_obj.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+	text_obj.draw(ci, Vector2(4, 5), color)
 	get_theme_stylebox("panel", "DarkPanel").draw(ci, Rect2(non_panel_width - 2, 2,
 			panel_width, size.y - 4))
