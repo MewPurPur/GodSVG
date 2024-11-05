@@ -2,8 +2,8 @@ extends SubViewport
 
 const ZoomMenuType = preload("res://src/ui_parts/zoom_menu.gd")
 
-const buffer_view_space = 0.8
-const zoom_reset_buffer = 0.875
+const BUFFER_VIEW_SPACE = 0.8
+const ZOOM_RESET_BUFFER = 0.875
 
 # Holds zoom position for Ctrl + MMB zooming.
 var _zoom_to: Vector2
@@ -47,7 +47,7 @@ func resize() -> void:
 	zoom_menu.zoom_reset()
 
 func center_frame() -> void:
-	var available_size := size * zoom_reset_buffer
+	var available_size := size * ZOOM_RESET_BUFFER
 	var w_ratio := available_size.x / SVG.root_element.width
 	var h_ratio := available_size.y / SVG.root_element.height
 	if is_finite(w_ratio) and is_finite(h_ratio):
@@ -150,11 +150,11 @@ func adjust_view(offset := Vector2(0.5, 0.5)) -> void:
 	var svg_h := SVG.root_element.height if\
 			SVG.root_element.has_attribute("height") else 16384.0
 	
-	var zoomed_size := buffer_view_space * size / Indications.zoom
-	view.limit_left = int(-zoomed_size.x)
-	view.limit_right = int(zoomed_size.x + svg_w)
-	view.limit_top = int(-zoomed_size.y)
-	view.limit_bottom = int(zoomed_size.y + svg_h)
+	var zoomed_size := BUFFER_VIEW_SPACE * size / Indications.zoom
+	view.limit_left = -zoomed_size.x
+	view.limit_right = zoomed_size.x + svg_w
+	view.limit_top = -zoomed_size.y
+	view.limit_bottom = zoomed_size.y + svg_h
 	set_view(Vector2(lerpf(view.position.x, view.position.x + old_size.x -\
 			size.x / Indications.zoom, offset.x), lerpf(view.position.y,
 			view.position.y + old_size.y - size.y / Indications.zoom, offset.y)))

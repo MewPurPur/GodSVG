@@ -19,8 +19,8 @@ func _ready() -> void:
 	element.attribute_changed.connect(_on_element_attribute_changed)
 	tooltip_text = attribute_name
 	text_submitted.connect(set_value.bind(true))
-	text_changed.connect(setup_font.unbind(1))
-	setup_font()
+	text_changed.connect(setup_font)
+	setup_font(text)
 	text_change_canceled.connect(sync_to_attribute)
 	button_gui_input.connect(_on_button_gui_input)
 	pressed.connect(_on_pressed)
@@ -34,8 +34,8 @@ func _on_element_attribute_changed(attribute_changed: String) -> void:
 func update_translation() -> void:
 	placeholder_text = TranslationServer.translate("No transforms")
 
-func setup_font() -> void:
-	use_mono_font = !text.is_empty()
+func setup_font(new_text: String) -> void:
+	use_mono_font = !new_text.is_empty()
 
 func sync(new_value: String) -> void:
 	text = new_value

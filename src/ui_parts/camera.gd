@@ -5,10 +5,10 @@ const major_grid_color = Color(0.5, 0.5, 0.5, 0.35)
 const minor_grid_color = Color(0.5, 0.5, 0.5, 0.15)
 const ticks_interval = 4
 
-var limit_left := 0
-var limit_right := 0
-var limit_top := 0
-var limit_bottom := 0
+var limit_left := 0.0
+var limit_right := 0.0
+var limit_top := 0.0
+var limit_bottom := 0.0
 
 var zoom: float
 var ci := get_canvas_item()
