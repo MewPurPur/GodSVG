@@ -95,10 +95,12 @@ func normal_select(xid: PackedInt32Array, inner_idx := -1) -> void:
 		if semi_selected_xid == xid and\
 		inner_selections.size() == 1 and inner_selections[0] == inner_idx:
 			return
+		
+		var old_semi_selected_xid := semi_selected_xid.duplicate()
 		semi_selected_xid = xid.duplicate()
 		inner_selection_pivot = inner_idx
 		inner_selections = [inner_idx]
-		if inner_selections != old_inner_selections:
+		if inner_selections != old_inner_selections or old_semi_selected_xid != xid:
 			selection_changed.emit()
 
 # If the element was selected, unselect it. If it was unselected, select it.
@@ -176,6 +178,10 @@ func shift_select(xid: PackedInt32Array, inner_idx := -1) -> void:
 		if inner_selection_pivot == -1:
 			if inner_selections.is_empty():
 				normal_select(xid, inner_idx)
+			return
+		
+		if xid != semi_selected_xid:
+			normal_select(xid, inner_idx)
 			return
 		
 		var old_inner_selections := inner_selections.duplicate()
