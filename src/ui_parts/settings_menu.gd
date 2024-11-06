@@ -192,7 +192,7 @@ func setup_content() -> void:
 			add_number_dropdown(TranslationServer.translate("Handle size"),
 					[0.75, 1.0, 1.25, 1.5, 1.75, 2.0], false, false, 0.5, 2.5)
 			add_advice(TranslationServer.translate(
-					"Increases the visual size and grabbing area of handles."))
+					"Changes the visual size and grabbing area of handles."))
 			current_setup_setting = "ui_scale"
 			add_number_dropdown(TranslationServer.translate("UI scale"),
 					[0.75, 1.0, 1.25, 1.5, 1.75, 2.0, 2.5, 3.0, 4.0], false, false, 0.5, 5.0)
