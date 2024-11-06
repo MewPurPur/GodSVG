@@ -89,7 +89,7 @@ func _draw() -> void:
 	if cached_allow_url and ColorParser.is_valid_url(color_value):
 		var id := color_value.substr(5, color_value.length() - 6)
 		var gradient_element := SVG.root_element.get_element_by_id(id)
-		if gradient_element != null:
+		if DB.is_element_gradient(gradient_element):
 			# Complex drawing logic, because StyleBoxTexture isn't advanced enough.
 			var points := PackedVector2Array()
 			var colors := PackedColorArray()
@@ -157,7 +157,7 @@ func update_gradient_texture() -> void:
 	if ColorParser.is_valid_url(color_value):
 		var id := color_value.substr(5, color_value.length() - 6)
 		var gradient_element := SVG.root_element.get_element_by_id(id)
-		if gradient_element != null:
+		if DB.is_element_gradient(gradient_element):
 			gradient_texture = gradient_element.generate_texture()
 	else:
 		gradient_texture = null

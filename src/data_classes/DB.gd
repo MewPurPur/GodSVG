@@ -233,3 +233,8 @@ static func attribute(name: String, formatter: Formatter, value: String) -> Attr
 		DB.AttributeType.TRANSFORM_LIST: return AttributeTransformList.new(name, formatter, value)
 		DB.AttributeType.ID: return AttributeID.new(name, formatter, value)
 		_: return Attribute.new(name, formatter, value)
+
+
+static func is_element_gradient(element: Element) -> bool:
+	return element != null and (element is ElementLinearGradient or\
+			element is ElementRadialGradient)

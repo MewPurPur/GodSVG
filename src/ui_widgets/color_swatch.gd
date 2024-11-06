@@ -11,13 +11,13 @@ var ci := get_canvas_item()
 var gradient_texture: GradientTexture2D
 
 func _ready() -> void:
-	tooltip_text = "lmofa"  # _make_custom_tooltip() requires some text to work.
+	tooltip_text = "lmofa"  # TODO: _make_custom_tooltip() requires some text to work.
 	# TODO remove this when #94584 is fixed.
 	var color := color_palette.colors[idx]
 	if ColorParser.is_valid_url(color):
 		var id := color.substr(5, color.length() - 6)
 		var gradient_element := SVG.root_element.get_element_by_id(id)
-		if gradient_element != null:
+		if DB.is_element_gradient(gradient_element):
 			gradient_texture = gradient_element.generate_texture()
 
 func _draw() -> void:
