@@ -49,13 +49,21 @@ func sync() -> void:
 		var new_btn := Button.new()
 		shortcut_container.add_child.call_deferred(new_btn)
 		shortcut_buttons.append(new_btn)
+		new_btn.theme_type_variation = "TranslucentButton"
+		for style in ["normal", "hover", "pressed", "disabled"]:
+			var shortcut_stylebox := get_theme_stylebox(style, "TranslucentButton").duplicate()
+			shortcut_stylebox.content_margin_top = 0
+			shortcut_stylebox.content_margin_bottom = 0
+			new_btn.add_theme_stylebox_override(style, shortcut_stylebox)
+		
 		new_btn.button_mask = MOUSE_BUTTON_MASK_LEFT | MOUSE_BUTTON_MASK_RIGHT
 		new_btn.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		new_btn.theme_type_variation = "TranslucentButton"
+		new_btn.custom_minimum_size = Vector2(116, 24)
+		
 		new_btn.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 		new_btn.focus_mode = Control.FOCUS_NONE
 		if i < events.size():
-			new_btn.text = events[i].as_text_keycode()
+			set_shortcut_button_text(new_btn, events[i].as_text_keycode())
 			new_btn.pressed.connect(enter_listening_mode.bind(i, true))
 		else:
 			new_btn.begin_bulk_theme_override()
@@ -63,7 +71,7 @@ func sync() -> void:
 			new_btn.add_theme_color_override("font_hover_color", Color("#def6"))
 			new_btn.add_theme_color_override("font_pressed_color", Color("#def8"))
 			new_btn.end_bulk_theme_override()
-			new_btn.text = TranslationServer.translate("Unused")
+			set_shortcut_button_text(new_btn, TranslationServer.translate("Unused"))
 			if i == events.size():
 				new_btn.tooltip_text = TranslationServer.translate("Add shortcut")
 				new_btn.pressed.connect(enter_listening_mode.bind(i))
@@ -89,10 +97,10 @@ func enter_listening_mode(idx: int, show_delete_button := false) -> void:
 	activation_event.ctrl_pressed = Input.is_key_pressed(KEY_CTRL)
 	activation_event.shift_pressed = Input.is_key_pressed(KEY_SHIFT)
 	activation_event.alt_pressed = Input.is_key_pressed(KEY_ALT)
-	btn.text = activation_event.as_text_keycode().\
-			trim_suffix("(Unset)").trim_suffix("+")
+	set_shortcut_button_text(btn, activation_event.as_text_keycode().\
+			trim_suffix("(Unset)").trim_suffix("+"))
 	if btn.text.is_empty():
-		btn.text = TranslationServer.translate("Press keys…")
+		set_shortcut_button_text(btn, TranslationServer.translate("Press keys…"))
 	# Add optional delete button.
 	if show_delete_button:
 		btn.icon = delete_icon
@@ -138,7 +146,7 @@ func _input(event: InputEvent) -> void:
 		setup_shortcut_button_font_colors(shortcut_button, Color("#def"))
 		accept_event()
 	elif event.is_pressed():
-		shortcut_button.text = event.as_text_keycode()
+		set_shortcut_button_text(shortcut_button, event.as_text_keycode())
 		pending_event = event
 		if pending_event.keycode & KEY_MODIFIER_MASK != 0:
 			setup_shortcut_button_font_colors(shortcut_button,
@@ -171,6 +179,14 @@ func setup_shortcut_button_font_colors(button: Button, color: Color) -> void:
 	button.add_theme_color_override("font_hover_color", dim_color)
 	button.add_theme_color_override("font_pressed_color", dim_color)
 	button.end_bulk_theme_override()
+
+func set_shortcut_button_text(button: Button, new_text: String) -> void:
+	button.remove_theme_font_size_override("font_size")
+	while button.get_theme_font("font").get_string_size(new_text, HORIZONTAL_ALIGNMENT_LEFT,
+	-1, button.get_theme_font_size("font_size")).x > button.custom_minimum_size.x:
+		button.add_theme_font_size_override("font_size",
+				button.get_theme_font_size("font_size") - 0.5)
+	button.text = new_text
 
 func check_shortcuts_validity() -> void:
 	for i in events.size():
