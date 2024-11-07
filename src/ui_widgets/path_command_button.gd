@@ -1,6 +1,8 @@
 # A button for a path command picker.
 extends Button
 
+var warned := false
+
 signal pressed_custom(cmd_char: String)
 
 @export var command_char := ""
@@ -17,10 +19,18 @@ func set_invalid(new_state := true) -> void:
 	disabled = new_state
 	mouse_default_cursor_shape = CURSOR_ARROW if new_state else CURSOR_POINTING_HAND
 
+func set_warning(new_state := true) -> void:
+	warned = true
+
 # Couldn't think of any way to get RichTextLabel to autoresize its font on one line.
 func _draw() -> void:
 	var text_obj := TextLine.new()
-	var text_color := Color(0.5, 0.5, 0.5) if disabled else Color(1, 1, 1)
+	var text_color := Color(1, 1, 1)
+	if disabled:
+		text_color = Color(0.5, 0.5, 0.5)
+	elif warned:
+		text_color = GlobalSettings.savedata.basic_color_warning
+	
 	var left_margin := get_theme_stylebox("normal").content_margin_left
 	var right_margin := get_theme_stylebox("normal").content_margin_right
 	var max_size := size.x - left_margin - right_margin
