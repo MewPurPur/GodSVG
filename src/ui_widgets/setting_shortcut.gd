@@ -185,7 +185,7 @@ func set_shortcut_button_text(button: Button, new_text: String) -> void:
 	while button.get_theme_font("font").get_string_size(new_text, HORIZONTAL_ALIGNMENT_LEFT,
 	-1, button.get_theme_font_size("font_size")).x > button.custom_minimum_size.x:
 		button.add_theme_font_size_override("font_size",
-				button.get_theme_font_size("font_size") - 0.5)
+				button.get_theme_font_size("font_size") - 1)
 	button.text = new_text
 
 func check_shortcuts_validity() -> void:

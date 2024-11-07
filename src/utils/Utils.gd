@@ -105,15 +105,24 @@ static func generate_gradient(element: Element) -> Gradient:
 		return null
 	
 	var gradient := Gradient.new()
+	gradient.remove_point(0)
+	
 	var current_offset := 0.0
+	var is_gradient_empty := true
+	
 	for child in element.get_children():
 		if not child is ElementStop:
 			continue
+		
 		current_offset = clamp(child.get_attribute_num("offset"), current_offset, 1.0)
 		gradient.add_point(current_offset,
 				Color(ColorParser.text_to_color(child.get_attribute_value("stop-color")),
 				child.get_attribute_num("stop-opacity")))
-	# Remove the default two gradient points.
-	while gradient.get_point_count() > 1:
-		gradient.remove_point(0)
+		if is_gradient_empty:
+			is_gradient_empty = false
+			gradient.remove_point(0)
+	
+	if is_gradient_empty:
+		gradient.set_color(0, Color.TRANSPARENT)
+	
 	return gradient
