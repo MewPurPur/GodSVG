@@ -25,10 +25,11 @@ func _on_relative_toggle_toggled(toggled_on: bool) -> void:
 				else command_button.command_char.to_upper()
 		command_button.queue_redraw()
 
-func disable_invalid(cmd_chars: Array) -> void:
-	for cmd_char in cmd_chars:
-		var cmd_char_upper: String = cmd_char.to_upper()
-		command_container.get_node(cmd_char_upper).set_invalid()
+func mark_invalid(warned: PackedStringArray, disabled: PackedStringArray) -> void:
+	for cmd_char in warned:
+		command_container.get_node(cmd_char.to_upper()).set_warning()
+	for cmd_char in disabled:
+		command_container.get_node(cmd_char.to_upper()).set_invalid()
 
 func force_relativity(relative: bool) -> void:
 	relative_toggle.hide()

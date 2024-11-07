@@ -565,10 +565,12 @@ func get_selection_context(popup_method: Callable, context: Context) -> ContextP
 							TranslationServer.translate("Insert After"),
 							popup_insert_command_after_context.bind(popup_method), false,
 							load("res://visual/icons/Plus.svg")))
-					btn_arr.append(ContextPopup.create_button(
-							TranslationServer.translate("Convert To"),
-							popup_convert_to_context.bind(popup_method), false,
-							load("res://visual/icons/Reload.svg")))
+					if inner_selections[0] != 0 or\
+					element_ref.get_attribute("d").get_command(0).command_char != "M":
+						btn_arr.append(ContextPopup.create_button(
+								TranslationServer.translate("Convert To"),
+								popup_convert_to_context.bind(popup_method), false,
+								load("res://visual/icons/Reload.svg")))
 			"polygon", "polyline":
 				if inner_selections.size() == 1:
 					btn_arr.append(ContextPopup.create_button(
@@ -606,27 +608,54 @@ func popup_convert_to_context(popup_method: Callable) -> void:
 		context_popup.setup(btn_arr, true)
 		popup_method.call(context_popup)
 	elif not inner_selections.is_empty() and not semi_selected_xid.is_empty():
-		var cmd_char: String = SVG.root_element.get_xnode(semi_selected_xid).\
-				get_attribute("d").get_command(inner_selections[0]).command_char
+		var path_attrib: AttributePathdata =\
+				SVG.root_element.get_xnode(semi_selected_xid).get_attribute("d")
+		var selection_idx: int = inner_selections.max()
+		var cmd_char := path_attrib.get_command(selection_idx).command_char
+		
 		var command_picker = PathCommandPopup.instantiate()
 		popup_method.call(command_picker)
 		command_picker.force_relativity(Utils.is_string_lower(cmd_char))
-		command_picker.disable_invalid([cmd_char.to_upper()])
+		
+		var cmd_char_upper := cmd_char.to_upper()
+		var disabled_commands := PackedStringArray()
+		if selection_idx == 0:
+			disabled_commands = PackedStringArray(["L", "H", "V", "A", "Z", "Q", "T", "C", "S"])
+		else:
+			disabled_commands = PackedStringArray([cmd_char.to_upper()])
+			if cmd_char_upper != "Z" and\
+			path_attrib.get_command_count() > selection_idx + 1 and\
+			path_attrib.get_command(selection_idx + 1).command_char.to_upper() == "Z":
+				disabled_commands.append("Z")
+		
+		command_picker.mark_invalid(PackedStringArray(), disabled_commands)
 		command_picker.path_command_picked.connect(convert_selected_command_to)
 
 func popup_insert_command_after_context(popup_method: Callable) -> void:
-	var cmd_char: String = SVG.root_element.get_xnode(semi_selected_xid).\
-			get_attribute("d").get_command(inner_selections.max()).command_char
+	var path_attrib: AttributePathdata =\
+			SVG.root_element.get_xnode(semi_selected_xid).get_attribute("d")
+	var selection_idx: int = inner_selections.max()
+	var cmd_char := path_attrib.get_command(selection_idx).command_char
 	
 	var command_picker = PathCommandPopup.instantiate()
 	popup_method.call(command_picker)
 	command_picker.path_command_picked.connect(insert_path_command_after_selection)
+	# Disable invalid commands. Z is syntactically invalid, so disallow it even harder.
+	var warned_commands := PackedStringArray()
+	var disabled_commands := PackedStringArray()
+	var disable_z := false
 	match cmd_char.to_upper():
-		"M": command_picker.disable_invalid(["M", "Z", "T"])
-		"Z": command_picker.disable_invalid(["Z"])
-		"L", "H", "V", "A": command_picker.disable_invalid(["S", "T"])
-		"C", "S": command_picker.disable_invalid(["T"])
-		"Q", "T": command_picker.disable_invalid(["S"])
+		"M": warned_commands = PackedStringArray(["M", "Z", "T"])
+		"Z": disable_z = true
+		"L", "H", "V", "A": warned_commands = PackedStringArray(["S", "T"])
+		"C", "S": warned_commands = PackedStringArray(["T"])
+		"Q", "T": warned_commands = PackedStringArray(["S"])
+	
+	if disable_z or (path_attrib.get_command_count() > selection_idx and\
+	path_attrib.get_command(selection_idx + 1).command_char.to_upper() == "Z"):
+		disabled_commands = PackedStringArray(["Z"])
+	
+	command_picker.mark_invalid(warned_commands, disabled_commands)
 
 func convert_selected_element_to(element_name: String) -> void:
 	var xid := selected_xids[0]
