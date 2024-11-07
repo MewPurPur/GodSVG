@@ -235,6 +235,6 @@ static func attribute(name: String, formatter: Formatter, value: String) -> Attr
 		_: return Attribute.new(name, formatter, value)
 
 
-static func is_element_gradient(element: Element) -> bool:
-	return element != null and (element is ElementLinearGradient or\
-			element is ElementRadialGradient)
+static func is_element_gradient(checked_element: Element) -> bool:
+	return checked_element != null and (checked_element is ElementLinearGradient or\
+			checked_element is ElementRadialGradient)

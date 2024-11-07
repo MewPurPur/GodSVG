@@ -17,11 +17,11 @@ signal basic_xnode_text_changed
 signal basic_xnode_rendered_text_changed
 
 signal parsing_finished(error_id: SVGParser.ParseError)
-signal changed
+signal changed  # Should only connect to persistent parts of the UI.
 
 const DEFAULT = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"></svg>'
 
-var current_size := Vector2.ZERO
+var _current_size := Vector2.ZERO
 
 var update_pending := false
 var save_pending := false
@@ -105,16 +105,16 @@ func sync_elements() -> void:
 		root_element.basic_xnode_rendered_text_changed.connect(
 				basic_xnode_rendered_text_changed.emit)
 		changed_unknown.emit()
-		update_current_size()
+		_update_current_size()
 
 
 func _on_root_attribute_changed(attribute_name: String) -> void:
 	if attribute_name in ["width", "height", "viewBox"]:
-		update_current_size()
+		_update_current_size()
 
-func update_current_size() -> void:
-	if current_size != root_element.get_size():
-		current_size = root_element.get_size()
+func _update_current_size() -> void:
+	if _current_size != root_element.get_size():
+		_current_size = root_element.get_size()
 		resized.emit()
 
 

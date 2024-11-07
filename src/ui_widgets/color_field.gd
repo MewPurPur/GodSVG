@@ -46,7 +46,8 @@ func _ready() -> void:
 	button_gui_input.connect(_on_button_gui_input)
 	# If URL is allowed, we need to always check if the gradient has changed.
 	if cached_allow_url:
-		SVG.changed.connect(_on_svg_changed)
+		element.root.any_attribute_changed.connect(_on_svg_changed.unbind(1))
+		element.root.xnode_layout_changed.connect(_on_svg_changed)
 	tooltip_text = attribute_name
 	setup_placeholder()
 
