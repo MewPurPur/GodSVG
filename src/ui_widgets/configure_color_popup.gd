@@ -11,7 +11,6 @@ signal color_deletion_requested
 var color_palette: ColorPalette
 var idx: int
 
-
 func _ready() -> void:
 	GlobalSettings.language_changed.connect(update_translation)
 	set_label_text(color_palette.color_names[idx])
