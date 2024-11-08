@@ -43,8 +43,8 @@ var add_move_button: Control
 
 
 func set_value(new_value: String, save := false) -> void:
-	sync(new_value)
 	element.set_attribute(attribute_name, new_value)
+	sync(element.get_attribute(attribute_name).get_value())
 	if save:
 		SVG.queue_save()
 

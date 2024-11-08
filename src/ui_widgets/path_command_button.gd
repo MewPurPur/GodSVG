@@ -20,7 +20,7 @@ func set_invalid(new_state := true) -> void:
 	mouse_default_cursor_shape = CURSOR_ARROW if new_state else CURSOR_POINTING_HAND
 
 func set_warning(new_state := true) -> void:
-	warned = true
+	warned = new_state
 
 # Couldn't think of any way to get RichTextLabel to autoresize its font on one line.
 func _draw() -> void:
