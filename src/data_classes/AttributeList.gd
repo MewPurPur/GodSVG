@@ -76,7 +76,7 @@ static func text_to_list(string: String) -> PackedFloat32Array:
 		@warning_ignore("shadowed_global_identifier")
 		var char := string[pos]
 		match char:
-			"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "-", "+", ".":
+			"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "-", "+", ".", "e":
 				current_num_string += char
 			" ":
 				if current_num_string.is_empty():

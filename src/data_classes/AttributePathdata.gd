@@ -149,7 +149,7 @@ func insert_command(idx: int, cmd_char: String, vec := Vector2.ZERO) -> void:
 	sync_after_commands_change()
 
 
-func convert_command(idx: int, cmd_char: String) -> void:
+func _convert_command(idx: int, cmd_char: String) -> void:
 	var old_cmd := get_command(idx)
 	if old_cmd.command_char == cmd_char:
 		return
@@ -195,6 +195,15 @@ func convert_command(idx: int, cmd_char: String) -> void:
 	_commands.insert(idx, new_cmd)
 	if relative:
 		_commands[idx].toggle_relative()
+
+func convert_command(idx: int, cmd_char: String) -> void:
+	_convert_command(idx, cmd_char)
+	sync_after_commands_change()
+
+func convert_commands_optimized(indices: PackedInt32Array,
+cmd_chars: PackedStringArray) -> void:
+	for i in indices.size():
+		_convert_command(indices[i], cmd_chars[i])
 	sync_after_commands_change()
 
 

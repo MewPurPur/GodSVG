@@ -192,7 +192,21 @@ func replace_xnode(id: PackedInt32Array, new_xnode: XNode) -> void:
 # The return value is true if the SVG can be optimized, otherwise false.
 # If apply_changes is false, you'll only get the return value.
 func optimize(not_applied := false) -> bool:
-	for element in get_all_element_descendants():
+	for xnode in get_all_xnode_descendants():
+		if not xnode.is_element():
+			var basic_xnode: BasicXNode = xnode
+			var xids_to_remove: Array[PackedInt32Array] = []
+			if basic_xnode.get_type() in [BasicXNode.NodeType.COMMENT,
+			BasicXNode.NodeType.UNKNOWN]:
+				if not_applied:
+					return true
+				xids_to_remove.append(xnode.xid)
+			else:
+				continue  # The logic for removing these safely is more particular.
+			delete_xnodes(xids_to_remove)
+			continue
+		
+		var element: Element = xnode
 		match element.name:
 			"ellipse":
 				# If possible, turn ellipses into circles.
@@ -229,26 +243,37 @@ func optimize(not_applied := false) -> bool:
 						if not_applied:
 							return true
 						pathdata.set_command_property(cmd_idx, "rot", 0)
+				
 				# Replace L with H or V when possible.
+				var conversion_indices := PackedInt32Array()
+				var conversion_cmd_chars := PackedStringArray()
+				
 				for cmd_idx in pathdata.get_command_count():
 					var command := pathdata.get_command(cmd_idx)
 					var cmd_char := command.command_char
+					
 					if cmd_char == "l":
 						if command.x == 0:
 							if not_applied:
 								return true
-							pathdata.convert_command(cmd_idx, "v")
+							conversion_indices.append(cmd_idx)
+							conversion_cmd_chars.append("v")
 						elif command.y == 0:
 							if not_applied:
 								return true
-							pathdata.convert_command(cmd_idx, "h")
+							conversion_indices.append(cmd_idx)
+							conversion_cmd_chars.append("h")
 					elif cmd_char == "L":
 						if command.x == command.start.x:
 							if not_applied:
 								return true
-							pathdata.convert_command(cmd_idx, "V")
+							conversion_indices.append(cmd_idx)
+							conversion_cmd_chars.append("V")
 						elif command.y == command.start.y:
 							if not_applied:
 								return true
-							pathdata.convert_command(cmd_idx, "H")
+							conversion_indices.append(cmd_idx)
+							conversion_cmd_chars.append("H")
+				pathdata.convert_commands_optimized(conversion_indices, conversion_cmd_chars)
+	
 	return false
