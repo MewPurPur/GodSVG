@@ -6,12 +6,16 @@ var _list: PackedFloat32Array
 func _sync() -> void:
 	_list = text_to_list(get_value())
 
+func format(text: String) -> String:
+	return list_to_text(text_to_list(text))
+
+
 func set_list(new_list: PackedFloat32Array) -> void:
 	_list = new_list
 	sync_after_list_change()
 
 func sync_after_list_change() -> void:
-	super.set_value(list_to_text(_list))
+	set_value(list_to_text(_list))
 
 func get_list() -> PackedFloat32Array:
 	return _list

@@ -51,8 +51,8 @@ var add_move_button: Control
 
 
 func set_value(new_value: String, save := false) -> void:
-	sync(new_value)
 	element.set_attribute(attribute_name, new_value)
+	sync(element.get_attribute(attribute_name).get_value())
 	if save:
 		SVG.queue_save()
 
@@ -68,6 +68,7 @@ func setup() -> void:
 	line_edit.text_submitted.connect(set_value.bind(true))
 	line_edit.text_changed.connect(setup_font)
 	line_edit.text_change_canceled.connect(func(): setup_font(line_edit.text))
+	line_edit.text_change_canceled.connect(sync_to_attribute)
 	line_edit.focus_entered.connect(_on_line_edit_focus_entered)
 	commands_container.draw.connect(commands_draw)
 	commands_container.gui_input.connect(_on_commands_gui_input)
