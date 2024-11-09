@@ -27,7 +27,7 @@ func _ready() -> void:
 	text_submitted.connect(func(x): set("value", x))
 	pressed.connect(_on_pressed)
 	text_changed.connect(_on_text_changed)
-	text_change_canceled.connect(sync.bind(value))
+	text_change_canceled.connect(func(): sync(value))
 	button_gui_input.connect(queue_redraw.unbind(1))
 	if enable_alpha:
 		custom_minimum_size.x += 14.0
@@ -40,8 +40,8 @@ func is_color_valid_non_url(new_value: String) -> bool:
 			(enable_alpha and ColorParser.is_valid_hex_with_alpha(new_value))
 
 func sync(new_value: String) -> void:
-	reset_font_color()
 	text = new_value.trim_prefix("#")
+	reset_font_color()
 	queue_redraw()
 
 func _on_pressed() -> void:
