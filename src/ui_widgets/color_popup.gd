@@ -61,7 +61,10 @@ func update_palettes(search_text := "") -> void:
 	reserved_color_palette.color_names = reserved_color_names
 	
 	var displayed_palettes: Array[ColorPalette] = [reserved_color_palette]
-	displayed_palettes += GlobalSettings.savedata.palettes
+	for palette in GlobalSettings.savedata.palettes:
+		if GlobalSettings.is_palette_valid(palette):
+			displayed_palettes.append(palette)
+	
 	for palette in displayed_palettes:
 		var indices_to_show := PackedInt32Array()
 		for i in palette.colors.size():
@@ -73,7 +76,7 @@ func update_palettes(search_text := "") -> void:
 			continue
 		
 		var palette_container := VBoxContainer.new()
-		# Only the reserved palette should have an empty name.
+		# Don't add a label for the reserved palette with an empty name.
 		if not palette.title.is_empty():
 			var palette_label := Label.new()
 			palette_label.text = palette.title

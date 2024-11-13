@@ -205,6 +205,15 @@ msgstr "第三方协议"
 msgid "Alert!"
 msgstr "警告！"
 
+#: src/ui_parts/choose_name_dialog.gd src/ui_parts/confirm_dialog.gd
+#: src/ui_parts/export_dialog.gd src/ui_parts/good_file_dialog.gd
+msgid "Cancel"
+msgstr "取消"
+
+#: src/ui_parts/choose_name_dialog.gd src/ui_parts/good_file_dialog.gd
+msgid "Create"
+msgstr "创建"
+
 #: src/ui_parts/code_editor.gd src/ui_parts/good_file_dialog.gd
 msgid "Save SVG"
 msgstr "保存 SVG"
@@ -228,11 +237,6 @@ msgstr "保存所有文本"
 #: src/ui_parts/code_editor.gd src/utils/TranslationUtils.gd
 msgid "Clear SVG"
 msgstr "清除 SVG"
-
-#: src/ui_parts/confirm_dialog.gd src/ui_parts/export_dialog.gd
-#: src/ui_parts/good_file_dialog.gd
-msgid "Cancel"
-msgstr "取消"
 
 #: src/ui_parts/display.gd
 msgid "Settings"
@@ -358,10 +362,6 @@ msgstr "吸附大小"
 #: src/ui_parts/good_file_dialog.gd
 msgid "Create new folder"
 msgstr "创建新文件夹"
-
-#: src/ui_parts/good_file_dialog.gd
-msgid "Create"
-msgstr "创建"
 
 #: src/ui_parts/good_file_dialog.gd
 msgid "Go to parent folder"
@@ -594,6 +594,15 @@ msgid "Language"
 msgstr "语言"
 
 #: src/ui_parts/settings_menu.gd
+#, fuzzy
+msgid "New palette"
+msgstr "调色盘"
+
+#: src/ui_parts/settings_menu.gd
+msgid "New palette from XML"
+msgstr ""
+
+#: src/ui_parts/settings_menu.gd
 msgid "Editor formatter"
 msgstr ""
 
@@ -638,7 +647,8 @@ msgid ""
 msgstr ""
 
 #: src/ui_parts/settings_menu.gd
-msgid "Increases the visual size and grabbing area of handles."
+#, fuzzy
+msgid "Changes the visual size and grabbing area of handles."
 msgstr "增加拖拽框的视觉尺寸。"
 
 #: src/ui_parts/settings_menu.gd
@@ -837,6 +847,18 @@ msgid "Disable the color"
 msgstr "禁用该颜色"
 
 #: src/ui_widgets/palette_config.gd
+msgid "Unnamed palettes won't be shown."
+msgstr ""
+
+#: src/ui_widgets/palette_config.gd
+msgid "Multiple palettes can't have the same name."
+msgstr ""
+
+#: src/ui_widgets/palette_config.gd
+msgid "This palette has identically defined colors."
+msgstr ""
+
+#: src/ui_widgets/palette_config.gd
 msgid "Copy as XML"
 msgstr "复制为 XML"
 
@@ -862,6 +884,10 @@ msgstr "相对"
 
 #: src/ui_widgets/points_field.gd
 msgid "No points"
+msgstr ""
+
+#: src/ui_widgets/presented_shortcut.gd src/ui_widgets/setting_shortcut.gd
+msgid "Also used by"
 msgstr ""
 
 #: src/ui_widgets/setting_shortcut.gd

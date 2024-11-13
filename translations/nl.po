@@ -206,6 +206,15 @@ msgstr "Derde partij Licenties"
 msgid "Alert!"
 msgstr "Waarschuwing!"
 
+#: src/ui_parts/choose_name_dialog.gd src/ui_parts/confirm_dialog.gd
+#: src/ui_parts/export_dialog.gd src/ui_parts/good_file_dialog.gd
+msgid "Cancel"
+msgstr "Annuleren"
+
+#: src/ui_parts/choose_name_dialog.gd src/ui_parts/good_file_dialog.gd
+msgid "Create"
+msgstr "Creëren"
+
 #: src/ui_parts/code_editor.gd src/ui_parts/good_file_dialog.gd
 msgid "Save SVG"
 msgstr "SVG opslaan"
@@ -229,11 +238,6 @@ msgstr "Kopieer alle tekst"
 #: src/ui_parts/code_editor.gd src/utils/TranslationUtils.gd
 msgid "Clear SVG"
 msgstr "SVG wissen"
-
-#: src/ui_parts/confirm_dialog.gd src/ui_parts/export_dialog.gd
-#: src/ui_parts/good_file_dialog.gd
-msgid "Cancel"
-msgstr "Annuleren"
 
 #: src/ui_parts/display.gd
 msgid "Settings"
@@ -358,10 +362,6 @@ msgstr "Snap"
 #: src/ui_parts/good_file_dialog.gd
 msgid "Create new folder"
 msgstr "Nieuw map creëren"
-
-#: src/ui_parts/good_file_dialog.gd
-msgid "Create"
-msgstr "Creëren"
 
 #: src/ui_parts/good_file_dialog.gd
 msgid "Go to parent folder"
@@ -589,6 +589,15 @@ msgid "Language"
 msgstr "Taal"
 
 #: src/ui_parts/settings_menu.gd
+#, fuzzy
+msgid "New palette"
+msgstr "Nieuw element"
+
+#: src/ui_parts/settings_menu.gd
+msgid "New palette from XML"
+msgstr ""
+
+#: src/ui_parts/settings_menu.gd
 msgid "Editor formatter"
 msgstr "Editor-formatter"
 
@@ -633,7 +642,8 @@ msgstr ""
 "achteloos van de huidige bestand."
 
 #: src/ui_parts/settings_menu.gd
-msgid "Increases the visual size and grabbing area of handles."
+#, fuzzy
+msgid "Changes the visual size and grabbing area of handles."
 msgstr "Vergroot the visuelle grootte en grijpgebied van Hendels."
 
 #: src/ui_parts/settings_menu.gd
@@ -827,6 +837,18 @@ msgid "Disable the color"
 msgstr "Kleur uitzetten"
 
 #: src/ui_widgets/palette_config.gd
+msgid "Unnamed palettes won't be shown."
+msgstr ""
+
+#: src/ui_widgets/palette_config.gd
+msgid "Multiple palettes can't have the same name."
+msgstr ""
+
+#: src/ui_widgets/palette_config.gd
+msgid "This palette has identically defined colors."
+msgstr ""
+
+#: src/ui_widgets/palette_config.gd
 msgid "Copy as XML"
 msgstr "Als XML kopieeren"
 
@@ -852,6 +874,10 @@ msgstr "Relativ"
 
 #: src/ui_widgets/points_field.gd
 msgid "No points"
+msgstr ""
+
+#: src/ui_widgets/presented_shortcut.gd src/ui_widgets/setting_shortcut.gd
+msgid "Also used by"
 msgstr ""
 
 #: src/ui_widgets/setting_shortcut.gd

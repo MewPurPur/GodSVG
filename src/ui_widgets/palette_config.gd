@@ -9,9 +9,10 @@ signal layout_changed
 var current_palette: ColorPalette
 var currently_edited_idx := -1
 
-@onready var palette_button: Button = %MainContainer/HBoxContainer/PaletteButton
-@onready var name_edit: BetterLineEdit = %MainContainer/HBoxContainer/NameEdit
-@onready var colors_container: HFlowContainer = %MainContainer/ColorsContainer
+@onready var palette_button: Button = $MainContainer/HBoxContainer/PaletteButton
+@onready var name_edit: BetterLineEdit = $MainContainer/HBoxContainer/NameEdit
+@onready var colors_container: HFlowContainer = $MainContainer/ColorsContainer
+@onready var warning_sign: TextureRect = $WarningSign/TextureRect
 
 func setup_theme() -> void:
 	palette_button.begin_bulk_theme_override()
@@ -31,7 +32,9 @@ func setup_theme() -> void:
 func assign_palette(palette: ColorPalette) -> void:
 	current_palette = palette
 	current_palette.layout_changed.connect(rebuild_colors)
+	current_palette.layout_changed.connect(display_warnings)
 	rebuild_colors()
+	display_warnings()
 
 func _ready() -> void:
 	palette_button.pressed.connect(_on_palette_button_pressed)
@@ -44,12 +47,11 @@ func _ready() -> void:
 
 # Rebuilds the content of the colors container.
 func rebuild_colors() -> void:
+	# Color rebuilding.
 	for child in colors_container.get_children():
 		child.queue_free()
 	
 	set_label_text(current_palette.title)
-	if current_palette.title.is_empty():
-		popup_edit_name()
 	
 	for i in current_palette.colors.size():
 		var swatch := ColorSwatch.instantiate()
@@ -77,6 +79,20 @@ func rebuild_colors() -> void:
 	fake_swatch.pressed.connect(popup_add_color)
 	colors_container.add_child(fake_swatch)
 
+func display_warnings() -> void:
+	var warnings := PackedStringArray()
+	if current_palette.title.is_empty():
+		warnings.append(TranslationServer.translate("Unnamed palettes won't be shown."))
+	elif not GlobalSettings.is_palette_valid(current_palette):
+		warnings.append(
+				TranslationServer.translate("Multiple palettes can't have the same name."))
+	if not current_palette.has_unique_definitions():
+		warnings.append(
+				TranslationServer.translate("This palette has identically defined colors."))
+	warning_sign.visible = not warnings.is_empty()
+	warning_sign.tooltip_text = "\n".join(warnings)
+
+
 func popup_configure_color(swatch: Button) -> void:
 	var configure_popup := ConfigurePopup.instantiate()
 	configure_popup.color_palette = swatch.color_palette
@@ -85,7 +101,9 @@ func popup_configure_color(swatch: Button) -> void:
 	HandlerGUI.popup_under_rect_center(configure_popup, swatch.get_global_rect(),
 			get_viewport())
 	configure_popup.color_edit.value_changed.connect(swatch.change_color)
+	configure_popup.color_edit.value_changed.connect(display_warnings.unbind(1))
 	configure_popup.color_name_edit.text_submitted.connect(swatch.change_color_name)
+	configure_popup.color_name_edit.text_submitted.connect(display_warnings.unbind(1))
 
 func popup_edit_name() -> void:
 	palette_button.hide()
@@ -100,24 +118,17 @@ func hide_name_edit() -> void:
 
 # Update text color to red if the title won't work (because it's a duplicate).
 func _on_name_edit_text_changed(new_text: String) -> void:
-	var names := PackedStringArray()
-	for palette in GlobalSettings.savedata.palettes:
-		names.append(palette.title)
 	for theme_color in ["font_color", "font_hover_color"]:
 		name_edit.add_theme_color_override(theme_color, GlobalSettings.get_validity_color(
-				new_text in names and new_text != current_palette.title))
+				false, new_text != current_palette.title and\
+				not GlobalSettings.is_palette_title_unused(new_text)))
 
 func _on_name_edit_text_submitted(new_title: String) -> void:
 	new_title = new_title.strip_edges()
-	var titles := PackedStringArray()
-	for palette in GlobalSettings.savedata.palettes:
-		titles.append(palette.title)
-	
-	if not new_title.is_empty() and new_title != current_palette.title and\
-	not new_title in titles:
-		current_palette.title = new_title
-	
-	set_label_text(current_palette.title)
+	if new_title != current_palette.title:
+		GlobalSettings.rename_palette(find_palette_index(), new_title)
+		set_label_text(current_palette.title)
+		layout_changed.emit()
 	hide_name_edit()
 
 func _on_name_edit_text_change_canceled() -> void:
@@ -126,55 +137,53 @@ func _on_name_edit_text_change_canceled() -> void:
 func popup_add_color() -> void:
 	currently_edited_idx = current_palette.colors.size()
 	current_palette.add_color()
+	display_warnings()
 
 func remove_color(idx: int) -> void:
 	currently_edited_idx = -1
 	current_palette.remove_color(idx)
+	display_warnings()
 
 func set_label_text(new_text: String) -> void:
 	if new_text.is_empty():
 		palette_button.text = TranslationServer.translate("Unnamed")
-		for theme_color in ["font_color", "font_hover_color"]:
-			palette_button.add_theme_color_override(theme_color,
-					GlobalSettings.savedata.basic_color_error)
 	else:
 		palette_button.text = new_text
-		for theme_color in ["font_color", "font_hover_color"]:
-			palette_button.remove_theme_color_override(theme_color)
+	palette_button.begin_bulk_theme_override()
+	if current_palette.title.is_empty():
+		for theme_name in ["font_color", "font_hover_color", "font_pressed_color"]:
+			palette_button.add_theme_color_override(theme_name,
+					ThemeUtils.common_subtle_text_color)
+	else:
+		if not GlobalSettings.is_palette_valid(current_palette):
+			for theme_name in ["font_color", "font_hover_color", "font_pressed_color"]:
+				palette_button.add_theme_color_override(theme_name,
+						GlobalSettings.savedata.basic_color_error)
+		else:
+			for theme_name in ["font_color", "font_hover_color", "font_pressed_color"]:
+				palette_button.remove_theme_color_override(theme_name)
+	palette_button.end_bulk_theme_override()
 
-func delete(idx: int) -> void:
-	GlobalSettings.savedata.palettes.remove_at(idx)
-	GlobalSettings.save()
+func delete() -> void:
+	GlobalSettings.delete_palette(find_palette_index())
 	layout_changed.emit()
 
-func move_up(idx: int) -> void:
-	var palette: ColorPalette = GlobalSettings.savedata.palettes.pop_at(idx)
-	GlobalSettings.savedata.palettes.insert(idx - 1, palette)
-	GlobalSettings.save()
+func move_up() -> void:
+	GlobalSettings.move_palette_up(find_palette_index())
 	layout_changed.emit()
 
-func move_down(idx: int) -> void:
-	var palette: ColorPalette = GlobalSettings.savedata.palettes.pop_at(idx)
-	GlobalSettings.savedata.palettes.insert(idx + 1, palette)
-	GlobalSettings.save()
+func move_down() -> void:
+	GlobalSettings.move_palette_down(find_palette_index())
 	layout_changed.emit()
 
-func paste_palette(idx: int) -> void:
+func paste_palette() -> void:
+	var old_title := current_palette.title
 	var pasted_palettes := ColorPalette.text_to_palettes(DisplayServer.clipboard_get())
 	if pasted_palettes.is_empty():
 		return
-	
-	GlobalSettings.savedata.palettes[idx] = pasted_palettes[0]
-	# If another palette has the same title, disable the title.
-	for i in GlobalSettings.savedata.palettes.size():
-		if i == idx:
-			continue
-		if GlobalSettings.savedata.palettes[i].title ==\
-		GlobalSettings.savedata.palettes[idx].title:
-			GlobalSettings.savedata.palettes[idx].title = ""
-			break
-	GlobalSettings.save()
-	layout_changed.emit()
+	GlobalSettings.replace_palette(find_palette_index(), pasted_palettes[0])
+	if old_title != pasted_palettes[0].title:
+		layout_changed.emit()
 
 func open_palette_options() -> void:
 	var btn_arr: Array[Button] = []
@@ -197,40 +206,36 @@ func open_palette_options() -> void:
 			get_viewport())
 
 func apply_preset(preset: ColorPalette.Preset) -> void:
-	current_palette.apply_preset(preset)
-	GlobalSettings.save()
+	GlobalSettings.palette_apply_preset(find_palette_index(), preset)
 
+
+func find_palette_index() -> int:
+	for idx in GlobalSettings.savedata.palettes.size():
+		if GlobalSettings.savedata.palettes[idx] == current_palette:
+			return idx
+	return -1
 
 func _on_palette_button_pressed() -> void:
-	if current_palette.title.is_empty():
-		popup_edit_name()
-		return
-	
-	var palette_idx := -1
-	for idx in GlobalSettings.savedata.palettes.size():
-		if GlobalSettings.savedata.palettes[idx].title == current_palette.title:
-			palette_idx = idx
-	
+	var palette_idx := find_palette_index()
 	var btn_arr: Array[Button] = []
 	btn_arr.append(ContextPopup.create_button(TranslationServer.translate("Rename"),
 			popup_edit_name, false, load("res://visual/icons/Rename.svg")))
 	if palette_idx >= 1:
 		btn_arr.append(ContextPopup.create_button(TranslationServer.translate("Move Up"),
-				move_up.bind(palette_idx), false, load("res://visual/icons/MoveUp.svg")))
+				move_up, false, load("res://visual/icons/MoveUp.svg")))
 	if palette_idx < GlobalSettings.savedata.palettes.size() - 1:
 		btn_arr.append(ContextPopup.create_button(TranslationServer.translate("Move Down"),
-				move_down.bind(palette_idx), false, load("res://visual/icons/MoveDown.svg")))
+				move_down, false, load("res://visual/icons/MoveDown.svg")))
 	btn_arr.append(ContextPopup.create_button(TranslationServer.translate("Copy as XML"),
 			DisplayServer.clipboard_set.bind(GlobalSettings.savedata.palettes[palette_idx].\
 			to_text()), false, load("res://visual/icons/Copy.svg")))
 	btn_arr.append(ContextPopup.create_button(TranslationServer.translate("Paste XML"),
-			paste_palette.bind(palette_idx),
-			!ColorPalette.is_valid_palette(DisplayServer.clipboard_get()),
+			paste_palette, !ColorPalette.is_valid_palette(DisplayServer.clipboard_get()),
 			load("res://visual/icons/Paste.svg")))
 	btn_arr.append(ContextPopup.create_button(TranslationServer.translate("Apply Preset"),
 			open_palette_options, false, load("res://visual/icons/Import.svg")))
 	btn_arr.append(ContextPopup.create_button(TranslationServer.translate("Delete"),
-			delete.bind(palette_idx), false, load("res://visual/icons/Delete.svg")))
+			delete, false, load("res://visual/icons/Delete.svg")))
 	
 	var context_popup := ContextPopup.new()
 	context_popup.setup(btn_arr, true)

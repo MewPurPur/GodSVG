@@ -20,11 +20,13 @@ var svg_text := "":
 		if new_value != svg_text:
 			svg_text = new_value
 			FileAccess.open(svg_path, FileAccess.WRITE).store_string(svg_text)
+
 const svg_path = "user://save.svg"
 
 const reference_image_path = "user://reference.png"
 
 var shortcut_validities := {}
+var palette_validities := {}
 
 var enum_text := {}
 
@@ -97,18 +99,18 @@ func modify_setting(setting: String, new_value: Variant, omit_save := false) -> 
 	if not related_signal.is_null():
 		related_signal.emit()
 
-func modify_keybind(action: String, new_events: Array[InputEvent]) -> void:
-	apply_keybind(action, new_events)
-	save_keybind(action)
+func modify_shortcut(action: String, new_events: Array[InputEvent]) -> void:
+	apply_shortcut(action, new_events)
+	save_shortcut(action)
 	shortcuts_changed.emit()
 
-func apply_keybind(action: String, events: Array[InputEvent]) -> void:
+func apply_shortcut(action: String, events: Array[InputEvent]) -> void:
 	InputMap.action_erase_events(action)
 	for event in events:
 		InputMap.action_add_event(action, event)
 
-func save_keybind(action: String) -> void:
-	savedata.keybinds[action] = InputMap.action_get_events(action)
+func save_shortcut(action: String) -> void:
+	savedata.shortcuts[action] = InputMap.action_get_events(action)
 	save()
 
 func save_setting(setting: StringName, value: Variant) -> void:
@@ -119,12 +121,83 @@ func save() -> void:
 	ResourceSaver.save(savedata, savedata_path)
 
 
-var default_keybinds := {}
+func update_palette_validities() -> void:
+	palette_validities.clear()
+	for palette in savedata.palettes:
+		if not palette.title.is_empty():
+			palette_validities[palette.title] = not palette.title in palette_validities
+
+func is_palette_valid(checked_palette: ColorPalette) -> bool:
+	if checked_palette.title.is_empty():
+		return false
+	if not checked_palette.title in palette_validities:
+		return true
+	return palette_validities[checked_palette.title]
+
+func is_palette_title_unused(checked_title: String) -> bool:
+	for palette in savedata.palettes:
+		if palette.title == checked_title:
+			return false
+	return true
+
+func add_new_palette(new_palette: ColorPalette) -> void:
+	savedata.palettes.append(new_palette)
+	update_palette_validities()
+	save()
+
+func delete_palette(idx: int) -> void:
+	if savedata.palettes.size() <= idx:
+		return
+	savedata.palettes.remove_at(idx)
+	update_palette_validities()
+	save()
+
+func rename_palette(idx: int, new_name: String) -> void:
+	if savedata.palettes.size() <= idx:
+		return
+	savedata.palettes[idx].title = new_name
+	update_palette_validities()
+	save()
+
+func replace_palette(idx: int, new_palette: ColorPalette) -> void:
+	if savedata.palettes.size() <= idx:
+		return
+	savedata.palettes[idx] = new_palette
+	update_palette_validities()
+	save()
+
+func move_palette_up(idx: int) -> void:
+	var palette: ColorPalette = savedata.palettes.pop_at(idx)
+	savedata.palettes.insert(idx - 1, palette)
+	save()
+
+func move_palette_down(idx: int) -> void:
+	var palette: ColorPalette = savedata.palettes.pop_at(idx)
+	savedata.palettes.insert(idx + 1, palette)
+	save()
+
+func palette_apply_preset(idx: int, preset: ColorPalette.Preset) -> void:
+	savedata.palettes[idx].apply_preset(preset)
+	save()
+
+
+func add_new_formatter(new_formatter: Formatter) -> void:
+	savedata.formatters.append(new_formatter)
+	save()
+
+func delete_formatter(idx: int) -> void:
+	if savedata.formatters.size() <= idx:
+		return
+	savedata.formatters.remove_at(idx)
+	save()
+
+
+var default_shortcuts := {}
 
 func _enter_tree() -> void:
 	for action in InputMap.get_actions():
-		if action in ShortcutUtils.get_all_keybinds():
-			default_keybinds[action] = InputMap.action_get_events(action)
+		if action in ShortcutUtils.get_all_shortcuts():
+			default_shortcuts[action] = InputMap.action_get_events(action)
 	load_config()
 	load_svg_text()
 	ThemeUtils.generate_and_apply_theme()
@@ -133,22 +206,26 @@ func _enter_tree() -> void:
 	update_window_title()
 	shortcuts_changed.connect(update_shortcut_validities)
 	update_shortcut_validities()
+	update_palette_validities()
 
 
 func load_config() -> void:
 	if not FileAccess.file_exists(savedata_path):
 		reset_settings()
+		return
+	
+	savedata = ResourceLoader.load(savedata_path)
+	
+	for action in ShortcutUtils.get_all_shortcuts():
+		if ShortcutUtils.is_shortcut_modifiable(action):
+			if savedata.shortcuts.has(action):
+				apply_shortcut(action, savedata.shortcuts[action])
+	if not is_instance_valid(savedata) or not savedata is SaveData:
+		reset_settings()
 	else:
-		savedata = ResourceLoader.load(savedata_path)
-		for action in ShortcutUtils.get_all_keybinds():
-			if ShortcutUtils.is_keybind_modifiable(action):
-				apply_keybind(action, savedata.keybinds[action])
-		if not is_instance_valid(savedata) or not savedata is SaveData:
-			reset_settings()
-		else:
-			update_window_title()
-			change_background_color()
-			change_locale()
+		update_window_title()
+		change_background_color()
+		change_locale()
 
 func load_svg_text() -> void:
 	var fa := FileAccess.open(svg_path, FileAccess.READ)
@@ -161,9 +238,9 @@ func reset_settings() -> void:
 	modify_setting("language", "en", true)
 	
 	InputMap.load_from_project_settings()
-	for action in ShortcutUtils.get_all_keybinds():
-		if ShortcutUtils.is_keybind_modifiable(action):
-			save_keybind(action)
+	for action in ShortcutUtils.get_all_shortcuts():
+		if ShortcutUtils.is_shortcut_modifiable(action):
+			save_shortcut(action)
 	shortcuts_changed.emit()
 	
 	# The array needs to be typed.
@@ -201,7 +278,7 @@ func generate_highlighter() -> SVGHighlighter:
 
 func update_shortcut_validities() -> void:
 	shortcut_validities.clear()
-	for action in ShortcutUtils.get_all_keybinds():
+	for action in ShortcutUtils.get_all_shortcuts():
 		for shortcut: InputEventKey in InputMap.action_get_events(action):
 			var shortcut_id := shortcut.get_keycode_with_modifiers()
 			# If the key already exists, set validity to false, otherwise set to true.
@@ -221,7 +298,7 @@ func get_actions_with_shortcut(shortcut: InputEvent) -> PackedStringArray:
 		return PackedStringArray()
 	
 	var actions_with_shortcut := PackedStringArray()
-	for action in ShortcutUtils.get_all_keybinds():
+	for action in ShortcutUtils.get_all_shortcuts():
 		for action_shortcut: InputEventKey in InputMap.action_get_events(action):
 			if action_shortcut.get_keycode_with_modifiers() == shortcut_id:
 				actions_with_shortcut.append(action)

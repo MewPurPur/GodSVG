@@ -204,6 +204,15 @@ msgstr "Лицензи от трети партии"
 msgid "Alert!"
 msgstr "Предупреждение!"
 
+#: src/ui_parts/choose_name_dialog.gd src/ui_parts/confirm_dialog.gd
+#: src/ui_parts/export_dialog.gd src/ui_parts/good_file_dialog.gd
+msgid "Cancel"
+msgstr "Отказ"
+
+#: src/ui_parts/choose_name_dialog.gd src/ui_parts/good_file_dialog.gd
+msgid "Create"
+msgstr "Създай"
+
 #: src/ui_parts/code_editor.gd src/ui_parts/good_file_dialog.gd
 msgid "Save SVG"
 msgstr "Запиши SVG-то"
@@ -227,11 +236,6 @@ msgstr "Копирай всичкия текст"
 #: src/ui_parts/code_editor.gd src/utils/TranslationUtils.gd
 msgid "Clear SVG"
 msgstr "Изчисти SVG-то"
-
-#: src/ui_parts/confirm_dialog.gd src/ui_parts/export_dialog.gd
-#: src/ui_parts/good_file_dialog.gd
-msgid "Cancel"
-msgstr "Отказ"
 
 #: src/ui_parts/display.gd
 msgid "Settings"
@@ -356,10 +360,6 @@ msgstr "Захващане"
 #: src/ui_parts/good_file_dialog.gd
 msgid "Create new folder"
 msgstr "Създай нова папка"
-
-#: src/ui_parts/good_file_dialog.gd
-msgid "Create"
-msgstr "Създай"
 
 #: src/ui_parts/good_file_dialog.gd
 msgid "Go to parent folder"
@@ -587,6 +587,14 @@ msgid "Language"
 msgstr "Език"
 
 #: src/ui_parts/settings_menu.gd
+msgid "New palette"
+msgstr "Добави палета"
+
+#: src/ui_parts/settings_menu.gd
+msgid "New palette from XML"
+msgstr "Добави палета от XML"
+
+#: src/ui_parts/settings_menu.gd
 msgid "Editor formatter"
 msgstr "Форматировач за приложението"
 
@@ -632,7 +640,7 @@ msgstr ""
 "сегашния файл."
 
 #: src/ui_parts/settings_menu.gd
-msgid "Increases the visual size and grabbing area of handles."
+msgid "Changes the visual size and grabbing area of handles."
 msgstr "Увеличава размера и площта в която дръжките могат да бъдат хванати."
 
 #: src/ui_parts/settings_menu.gd
@@ -824,6 +832,18 @@ msgid "Disable the color"
 msgstr "Изключи цвета"
 
 #: src/ui_widgets/palette_config.gd
+msgid "Unnamed palettes won't be shown."
+msgstr "Неименуваните палети няма да бъдат показани."
+
+#: src/ui_widgets/palette_config.gd
+msgid "Multiple palettes can't have the same name."
+msgstr "Не може няколко палети да имат едно и също име."
+
+#: src/ui_widgets/palette_config.gd
+msgid "This palette has identically defined colors."
+msgstr "Тази палета има еднакво определетни цветове."
+
+#: src/ui_widgets/palette_config.gd
 msgid "Copy as XML"
 msgstr "Копирай като XML"
 
@@ -850,6 +870,10 @@ msgstr "Относително"
 #: src/ui_widgets/points_field.gd
 msgid "No points"
 msgstr "Няма точки"
+
+#: src/ui_widgets/presented_shortcut.gd src/ui_widgets/setting_shortcut.gd
+msgid "Also used by"
+msgstr "Използва се също от..."
 
 #: src/ui_widgets/setting_shortcut.gd
 msgid "Unused"

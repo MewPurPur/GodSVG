@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://c5cavwa2xdt0b"]
+[gd_scene load_steps=6 format=3 uid="uid://c5cavwa2xdt0b"]
 
 [ext_resource type="Script" path="res://src/ui_widgets/palette_config.gd" id="1_2fy8k"]
 [ext_resource type="Script" path="res://src/ui_widgets/BetterLineEdit.gd" id="2_coqnx"]
 [ext_resource type="FontFile" uid="uid://clpf84p1lfwlp" path="res://visual/fonts/Font.ttf" id="2_cttpy"]
+[ext_resource type="Texture2D" uid="uid://dbyjet4nt246k" path="res://visual/icons/Warning.svg" id="4_43bpt"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lq3bn"]
 draw_center = false
@@ -24,29 +25,24 @@ size_flags_vertical = 0
 theme_type_variation = &"SpaciousPanel"
 script = ExtResource("1_2fy8k")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="."]
-layout_mode = 2
-theme_override_constants/separation = 12
-
-[node name="MainContainer" type="VBoxContainer" parent="HBoxContainer"]
-unique_name_in_owner = true
+[node name="MainContainer" type="VBoxContainer" parent="."]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 8
 
-[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/MainContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MainContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_constants/separation = 6
 
-[node name="PaletteButton" type="Button" parent="HBoxContainer/MainContainer/HBoxContainer"]
+[node name="PaletteButton" type="Button" parent="MainContainer/HBoxContainer"]
 custom_minimum_size = Vector2(60, 0)
 layout_mode = 2
 focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_type_variation = &"TranslucentButton"
 
-[node name="NameEdit" type="LineEdit" parent="HBoxContainer/MainContainer/HBoxContainer"]
+[node name="NameEdit" type="LineEdit" parent="MainContainer/HBoxContainer"]
 visible = false
 custom_minimum_size = Vector2(120, 0)
 layout_mode = 2
@@ -58,8 +54,25 @@ alignment = 1
 max_length = 30
 script = ExtResource("2_coqnx")
 
-[node name="ColorsContainer" type="HFlowContainer" parent="HBoxContainer/MainContainer"]
+[node name="ColorsContainer" type="HFlowContainer" parent="MainContainer"]
 custom_minimum_size = Vector2(0, 22)
 layout_mode = 2
 size_flags_vertical = 4
 theme_override_constants/h_separation = 3
+
+[node name="WarningSign" type="Control" parent="."]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="TextureRect" type="TextureRect" parent="WarningSign"]
+visible = false
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -16.0
+offset_bottom = 16.0
+grow_horizontal = 0
+texture = ExtResource("4_43bpt")
+stretch_mode = 3

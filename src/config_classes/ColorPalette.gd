@@ -17,12 +17,7 @@ var presets = {
 signal layout_changed
 
 # The title must be unique.
-@export var title: String:
-	set(new_value):
-		if title != new_value:
-			title = new_value
-			emit_changed()
-
+@export var title: String
 @export var colors: PackedStringArray  # Colors must be unique within a palette.
 @export var color_names: PackedStringArray
 
@@ -77,6 +72,18 @@ func apply_preset(new_preset: Preset) -> void:
 func is_same_as_preset(preset: Preset) -> bool:
 	return colors == presets[preset][0] and color_names == presets[preset][1]
 
+func has_unique_definitions() -> bool:
+	var dict := {}
+	for i in color_names.size():
+		var color := ColorParser.text_to_color(colors[i])
+		if dict.has(color) and dict[color].has(color_names[i]):
+			return false
+		elif dict.has(color):
+			dict[color].append(color_names[i])
+		else:
+			dict[color] = [color_names[i]]
+	return true
+
 
 func to_text() -> String:
 	var text := '<palette title="%s">\n' % title
@@ -113,6 +120,9 @@ static func text_to_palettes(text: String) -> Array[ColorPalette]:
 	return palettes
 
 static func is_valid_palette(text: String) -> bool:
+	if text.is_empty():
+		return false
+	
 	var parser := XMLParser.new()
 	parser.open_buffer(text.to_utf8_buffer())
 	parser.read()
