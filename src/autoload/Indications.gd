@@ -65,6 +65,7 @@ func set_viewport_size(new_value: Vector2i) -> void:
 
 
 func _ready() -> void:
+	selection_changed.connect(print.bind("selection changed"))
 	SVG.xnodes_added.connect(_on_xnodes_added)
 	SVG.xnodes_deleted.connect(_on_xnodes_deleted)
 	SVG.xnodes_moved_in_parent.connect(_on_xnodes_moved_in_parent)
@@ -81,8 +82,7 @@ func normal_select(xid: PackedInt32Array, inner_idx := -1) -> void:
 	if inner_idx == -1:
 		var old_selected_xids := selected_xids.duplicate()
 		if not semi_selected_xid.is_empty():
-			semi_selected_xid.clear()
-			inner_selections.clear()
+			_clear_inner_selection_no_signal()
 		if selected_xids.size() == 1 and selected_xids[0] == xid:
 			return
 		selection_pivot_xid = xid.duplicate()
@@ -90,7 +90,7 @@ func normal_select(xid: PackedInt32Array, inner_idx := -1) -> void:
 		if old_selected_xids != selected_xids:
 			selection_changed.emit()
 	else:
-		selected_xids.clear()
+		_clear_selection_no_signal()
 		var old_inner_selections := inner_selections.duplicate()
 		if semi_selected_xid == xid and\
 		inner_selections.size() == 1 and inner_selections[0] == inner_idx:
@@ -110,7 +110,7 @@ func ctrl_select(xid: PackedInt32Array, inner_idx := -1) -> void:
 		return
 	
 	if inner_idx == -1:
-		inner_selections.clear()
+		_clear_inner_selection_no_signal()
 		var xid_idx := selected_xids.find(xid)
 		if xid_idx == -1:
 			selection_pivot_xid = xid.duplicate()
@@ -123,7 +123,8 @@ func ctrl_select(xid: PackedInt32Array, inner_idx := -1) -> void:
 		if semi_selected_xid != xid:
 			normal_select(xid, inner_idx)
 		else:
-			selected_xids.clear()
+			_clear_selection_no_signal()
+			
 			var idx_idx := inner_selections.find(inner_idx)
 			if idx_idx == -1:
 				inner_selection_pivot = inner_idx
@@ -198,7 +199,7 @@ func shift_select(xid: PackedInt32Array, inner_idx := -1) -> void:
 
 # Select all elements.
 func select_all() -> void:
-	clear_inner_selection()
+	_clear_inner_selection_no_signal()
 	var xnode_list: Array[XNode] = SVG.root_element.get_all_xnode_descendants()
 	var xid_list: Array = xnode_list.map(func(xnode): return xnode.xid)
 	if selected_xids == xid_list:
@@ -213,25 +214,30 @@ func select_all() -> void:
 # Clear the selected elements.
 func clear_selection() -> void:
 	if not selected_xids.is_empty():
-		selected_xids.clear()
-		selection_pivot_xid.clear()
+		_clear_selection_no_signal()
 		selection_changed.emit()
+
+func _clear_selection_no_signal() -> void:
+	selected_xids.clear()
+	selection_pivot_xid.clear()
 
 # Clear the inner selection.
 func clear_inner_selection() -> void:
 	if not inner_selections.is_empty() or not semi_selected_xid.is_empty():
-		inner_selections.clear()
-		semi_selected_xid.clear()
-		inner_selection_pivot = -1
+		_clear_inner_selection_no_signal()
 		selection_changed.emit()
+
+func _clear_inner_selection_no_signal() -> void:
+	inner_selections.clear()
+	semi_selected_xid.clear()
+	inner_selection_pivot = -1
 
 # Clear the selected elements or the inner selection.
 func clear_all_selections() -> void:
 	if not inner_selections.is_empty() or not semi_selected_xid.is_empty() or\
 	not selected_xids.is_empty():
-		selected_xids.clear()
-		inner_selections.clear()
-		semi_selected_xid.clear()
+		_clear_selection_no_signal()
+		_clear_inner_selection_no_signal()
 		selection_changed.emit()
 
 
