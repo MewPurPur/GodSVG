@@ -429,7 +429,8 @@ func rebuild_formatters() -> void:
 	# TODO Do I need to do this...
 	var formatter_names := PackedStringArray()
 	for formatter_name in formatters.keys():
-		formatter_names.append(formatter_name)
+		if not formatter_name.is_empty():
+			formatter_names.append(formatter_name)
 	
 	for context in [["editor_formatter", TranslationServer.translate("Editor formatter")],
 	["export_formatter", TranslationServer.translate("Export formatter")]]:
