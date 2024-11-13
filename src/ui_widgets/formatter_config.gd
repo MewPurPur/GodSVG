@@ -105,10 +105,11 @@ func construct() -> void:
 	current_setup_config = "xml_pretty_formatting"
 	add_checkbox(TranslationServer.translate("Use pretty formatting"))
 	current_setup_config = "xml_indentation_use_spaces"
-	add_checkbox(TranslationServer.translate("Use spaces instead of tabs"))
+	add_checkbox(TranslationServer.translate("Use spaces instead of tabs"),
+			not current_formatter.xml_pretty_formatting)
 	current_setup_config = "xml_indentation_spaces"
 	add_number_dropdown(TranslationServer.translate("Number of indentation spaces"),
-			[2, 3, 4, 6, 8], true, false, 0, 16)
+			[2, 3, 4, 6, 8], true, false, 0, 16, not current_formatter.xml_pretty_formatting)
 	
 	add_section(TranslationServer.translate("Numbers"))
 	current_setup_config = "number_remove_leading_zero"
@@ -122,7 +123,8 @@ func construct() -> void:
 	current_setup_config = "color_primary_syntax"
 	add_dropdown(TranslationServer.translate("Primary syntax"))
 	current_setup_config = "color_capital_hex"
-	add_checkbox(TranslationServer.translate("Capitalize hexadecimal letters"))
+	add_checkbox(TranslationServer.translate("Capitalize hexadecimal letters"),
+			current_formatter.color_primary_syntax == Formatter.PrimaryColorSyntax.RGB)
 	
 	add_section(TranslationServer.translate("Pathdata"))
 	current_setup_config = "pathdata_compress_numbers"
@@ -154,8 +156,9 @@ func add_section(section_name: String) -> void:
 	vbox.add_child(spacer)
 	configs_container.add_child(vbox)
 
-func add_checkbox(text: String) -> void:
+func add_checkbox(text: String, dim_text := false) -> void:
 	var frame := SettingFrame.instantiate()
+	frame.dim_text = dim_text
 	frame.text = text
 	setup_frame(frame)
 	frame.setup_checkbox()
@@ -169,8 +172,9 @@ func add_dropdown(text: String) -> void:
 	add_frame(frame)
 
 func add_number_dropdown(text: String, values: PackedFloat64Array, is_integer := false,
-restricted := true, min_value := -INF, max_value := INF) -> void:
+restricted := true, min_value := -INF, max_value := INF, dim_text := false) -> void:
 	var frame := SettingFrame.instantiate()
+	frame.dim_text = dim_text
 	frame.text = text
 	setup_frame(frame)
 	frame.setup_number_dropdown(values, is_integer, restricted, min_value, max_value)

@@ -10,10 +10,10 @@ func set_value(new_value: String) -> void:
 func format(text: String) -> String:
 	text = text.strip_edges()
 	
-	if ColorParser.is_valid_url(text):
-		return "url(" + text.substr(4, text.length() - 5).strip_edges() + ")"
-	elif text in special_colors:
+	if text.is_empty() or text in special_colors:
 		return text
+	elif ColorParser.is_valid_url(text):
+		return "url(" + text.substr(4, text.length() - 5).strip_edges() + ")"
 	
 	var named_colors_usage := formatter.color_use_named_colors
 	# First make sure we have a 6-digit hex.

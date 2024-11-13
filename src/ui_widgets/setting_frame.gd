@@ -20,6 +20,8 @@ var disabled := false:
 			disabled = new_value
 			update_widgets()
 
+var dim_text := false  # For settings that wouldn't have an effect.
+
 var widget: Control
 var panel_width := 0
 
@@ -154,9 +156,11 @@ func _draw() -> void:
 	if is_hovered:
 		get_theme_stylebox("hover", "FlatButton").draw(ci, Rect2(Vector2.ZERO, size))
 	
-	var color := Color.WHITE
+	var color := Color(1, 1, 1, 0.9)
 	if disabled:
 		color = ThemeUtils.common_subtle_text_color
+	elif dim_text:
+		color = Color(1, 1, 1, 0.5)
 	
 	var non_panel_width := size.x - panel_width
 	var text_obj := TextLine.new()
