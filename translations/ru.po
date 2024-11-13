@@ -207,6 +207,15 @@ msgstr "Лицензии третьих лиц"
 msgid "Alert!"
 msgstr "Внимание!"
 
+#: src/ui_parts/choose_name_dialog.gd src/ui_parts/confirm_dialog.gd
+#: src/ui_parts/export_dialog.gd src/ui_parts/good_file_dialog.gd
+msgid "Cancel"
+msgstr "Отменить"
+
+#: src/ui_parts/choose_name_dialog.gd src/ui_parts/good_file_dialog.gd
+msgid "Create"
+msgstr "Создать"
+
 #: src/ui_parts/code_editor.gd src/ui_parts/good_file_dialog.gd
 msgid "Save SVG"
 msgstr "Сохранить SVG"
@@ -230,11 +239,6 @@ msgstr "Скопировать весь текст"
 #: src/ui_parts/code_editor.gd src/utils/TranslationUtils.gd
 msgid "Clear SVG"
 msgstr "Очистить SVG"
-
-#: src/ui_parts/confirm_dialog.gd src/ui_parts/export_dialog.gd
-#: src/ui_parts/good_file_dialog.gd
-msgid "Cancel"
-msgstr "Отменить"
 
 #: src/ui_parts/display.gd
 msgid "Settings"
@@ -359,10 +363,6 @@ msgstr "Привязка"
 #: src/ui_parts/good_file_dialog.gd
 msgid "Create new folder"
 msgstr "Создать новую папку"
-
-#: src/ui_parts/good_file_dialog.gd
-msgid "Create"
-msgstr "Создать"
 
 #: src/ui_parts/good_file_dialog.gd
 msgid "Go to parent folder"
@@ -590,6 +590,15 @@ msgid "Language"
 msgstr "Язык"
 
 #: src/ui_parts/settings_menu.gd
+#, fuzzy
+msgid "New palette"
+msgstr "Новый элемент"
+
+#: src/ui_parts/settings_menu.gd
+msgid "New palette from XML"
+msgstr ""
+
+#: src/ui_parts/settings_menu.gd
 msgid "Editor formatter"
 msgstr "Редактор форматтера"
 
@@ -637,7 +646,8 @@ msgstr ""
 "текущего файла."
 
 #: src/ui_parts/settings_menu.gd
-msgid "Increases the visual size and grabbing area of handles."
+#, fuzzy
+msgid "Changes the visual size and grabbing area of handles."
 msgstr "Увеличить вид и область захвата ручек редактирования."
 
 #: src/ui_parts/settings_menu.gd
@@ -831,6 +841,18 @@ msgid "Disable the color"
 msgstr "Деактивировать цвет"
 
 #: src/ui_widgets/palette_config.gd
+msgid "Unnamed palettes won't be shown."
+msgstr ""
+
+#: src/ui_widgets/palette_config.gd
+msgid "Multiple palettes can't have the same name."
+msgstr ""
+
+#: src/ui_widgets/palette_config.gd
+msgid "This palette has identically defined colors."
+msgstr ""
+
+#: src/ui_widgets/palette_config.gd
 msgid "Copy as XML"
 msgstr "Скопировать как XML"
 
@@ -856,6 +878,10 @@ msgstr "Относительно"
 
 #: src/ui_widgets/points_field.gd
 msgid "No points"
+msgstr ""
+
+#: src/ui_widgets/presented_shortcut.gd src/ui_widgets/setting_shortcut.gd
+msgid "Also used by"
 msgstr ""
 
 #: src/ui_widgets/setting_shortcut.gd

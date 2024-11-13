@@ -220,10 +220,6 @@ min_width := -1.0, separator_indices := PackedInt32Array()) -> void:
 
 # Helper.
 func _common_initial_setup() -> VBoxContainer:
-	var stylebox := get_theme_stylebox("panel").duplicate()
-	stylebox.shadow_color = Color(0, 0, 0, 0.08)
-	stylebox.shadow_size = 8
-	add_theme_stylebox_override("panel", stylebox)
 	var main_container := VBoxContainer.new()
 	main_container.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	main_container.add_theme_constant_override("separation", 0)

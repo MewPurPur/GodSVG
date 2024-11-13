@@ -8,6 +8,7 @@ const SettingFrame = preload("res://src/ui_widgets/setting_frame.tscn")
 const ProfileFrame = preload("res://src/ui_widgets/profile_frame.tscn")
 
 const plus_icon = preload("res://visual/icons/Plus.svg")
+const paste_icon = preload("res://visual/icons/Paste.svg")
 
 @onready var lang_button: Button = $VBoxContainer/Language
 @onready var content_container: ScrollContainer = %ContentContainer
@@ -99,7 +100,7 @@ func setup_content() -> void:
 				var btn := Button.new()
 				btn.toggle_mode = true
 				btn.button_group = button_group
-				btn.pressed.connect(show_keybinds.bind(tab_idx))
+				btn.pressed.connect(show_shortcuts.bind(tab_idx))
 				btn.text = get_translated_shortcut_tab(tab_idx)
 				btn.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 				btn.focus_mode = Control.FOCUS_NONE
@@ -364,14 +365,15 @@ func update_language_button() -> void:
 
 # Palette tab helpers.
 
-func add_palette() -> void:
-	for palette in GlobalSettings.savedata.palettes:
-		# If there's an unnamed pallete, don't add a new one (there'll be a name clash).
-		if palette.title.is_empty():
-			return
-	
-	GlobalSettings.savedata.palettes.append(ColorPalette.new())
-	GlobalSettings.save()
+func add_named_palette() -> void:
+	GlobalSettings.add_new_palette(ColorPalette.new())
+	rebuild_color_palettes()
+
+func add_pasted_palette() -> void:
+	var pasted_palettes := ColorPalette.text_to_palettes(DisplayServer.clipboard_get())
+	if pasted_palettes.is_empty():
+		return
+	GlobalSettings.add_new_palette(pasted_palettes[0])
 	rebuild_color_palettes()
 
 func rebuild_color_palettes() -> void:
@@ -383,25 +385,35 @@ func rebuild_color_palettes() -> void:
 		palette_container.add_child(palette_config)
 		palette_config.assign_palette(palette)
 		palette_config.layout_changed.connect(rebuild_color_palettes)
-	# Add the button for adding a new palette.
+	
+	# Add the buttons for adding a new palette.
+	var spacer := Control.new()
+	palette_container.add_child(spacer)
+	var hbox := HBoxContainer.new()
+	hbox.alignment = BoxContainer.ALIGNMENT_CENTER
+	palette_container.add_child(hbox)
+	
 	var add_palette_button := Button.new()
 	add_palette_button.theme_type_variation = "TranslucentButton"
 	add_palette_button.icon = plus_icon
-	add_palette_button.icon_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	add_palette_button.text = TranslationServer.translate("New palette")
 	add_palette_button.focus_mode = Control.FOCUS_NONE
 	add_palette_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-	palette_container.add_child(add_palette_button)
-	add_palette_button.pressed.connect(add_palette)
+	add_palette_button.pressed.connect(add_named_palette)
+	hbox.add_child(add_palette_button)
+	
+	var paste_palette_button := Button.new()
+	paste_palette_button.script = load("res://src/ui_parts/paste_palette_button.gd")
+	paste_palette_button.theme_type_variation = "TranslucentButton"
+	paste_palette_button.icon = paste_icon
+	paste_palette_button.text = TranslationServer.translate("New palette from XML")
+	paste_palette_button.focus_mode = Control.FOCUS_NONE
+	hbox.add_child(paste_palette_button)
+	paste_palette_button.pressed.connect(add_pasted_palette)
 
 
 func add_formatter() -> void:
-	for formatter in GlobalSettings.savedata.formatters:
-		# If there's an unnamed formatter, don't add a new one (there'll be a name clash).
-		if formatter.title.is_empty():
-			return
-	
-	GlobalSettings.savedata.formatters.append(Formatter.new())
-	GlobalSettings.save()
+	GlobalSettings.add_new_formatter(Formatter.new())
 	rebuild_formatters()
 
 func rebuild_formatters() -> void:
@@ -469,16 +481,16 @@ func get_translated_shortcut_tab(tab_idx: String) -> String:
 		_: return ""
 
 
-func show_keybinds(category: String):
-	var keybinds_container := content_container.get_child(-1).get_child(-1)
-	for child in keybinds_container.get_children():
+func show_shortcuts(category: String):
+	var shortcuts_container := content_container.get_child(-1).get_child(-1)
+	for child in shortcuts_container.get_children():
 		child.queue_free()
 	
-	for action in ShortcutUtils.get_keybinds(category):
-		var keybind_config := ShortcutConfigWidget.instantiate() if\
-				ShortcutUtils.is_keybind_modifiable(action) else\
+	for action in ShortcutUtils.get_shortcuts(category):
+		var shortcut_config := ShortcutConfigWidget.instantiate() if\
+				ShortcutUtils.is_shortcut_modifiable(action) else\
 				ShortcutShowcaseWidget.instantiate()
 		
-		keybinds_container.add_child(keybind_config)
-		keybind_config.label.text = TranslationUtils.get_shortcut_description(action)
-		keybind_config.setup(action)
+		shortcuts_container.add_child(shortcut_config)
+		shortcut_config.label.text = TranslationUtils.get_shortcut_description(action)
+		shortcut_config.setup(action)

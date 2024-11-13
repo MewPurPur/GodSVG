@@ -88,6 +88,12 @@ func add_popup_overlay(popup: Control) -> void:
 	popup_overlay_stack.append(overlay_ref)
 	get_tree().root.add_child(overlay_ref)
 	overlay_ref.add_child(popup)
+	if popup is PanelContainer:
+		var stylebox := popup.get_theme_stylebox("panel").duplicate()
+		stylebox.shadow_color = Color(0, 0, 0, 0.1)
+		stylebox.shadow_size = 8
+		popup.add_theme_stylebox_override("panel", stylebox)
+	
 	popup.reset_size()
 	popup.tree_exiting.connect(remove_popup_overlay.bind(overlay_ref))
 

@@ -35,12 +35,13 @@ func _ready() -> void:
 	construct()
 
 
-func _on_formatter_button_pressed() -> void:
-	var formatter_idx := -1
+func find_formatter_index() -> int:
 	for idx in GlobalSettings.savedata.formatters.size():
-		if GlobalSettings.savedata.formatters[idx].title == current_formatter.title:
-			formatter_idx = idx
-	
+		if GlobalSettings.savedata.formatters[idx] == current_formatter:
+			return idx
+	return -1
+
+func _on_formatter_button_pressed() -> void:
 	var btn_arr: Array[Button] = []
 	btn_arr.append(ContextPopup.create_button(TranslationServer.translate("Rename"),
 			popup_edit_name, false, load("res://visual/icons/Rename.svg")))
@@ -49,10 +50,8 @@ func _on_formatter_button_pressed() -> void:
 			current_formatter.reset_to_default, current_formatter.is_everything_default(),
 			load("res://visual/icons/Reload.svg")))
 	btn_arr.append(ContextPopup.create_button(TranslationServer.translate("Delete"),
-			delete.bind(formatter_idx), current_formatter in\
-			[GlobalSettings.savedata.editor_formatter,
-			GlobalSettings.savedata.export_formatter],
-			load("res://visual/icons/Delete.svg")))
+			delete, current_formatter in [GlobalSettings.savedata.editor_formatter,
+			GlobalSettings.savedata.export_formatter], load("res://visual/icons/Delete.svg")))
 	
 	var context_popup := ContextPopup.new()
 	context_popup.setup(btn_arr, true)
@@ -72,9 +71,8 @@ func hide_name_edit() -> void:
 	name_edit.hide()
 
 
-func delete(idx: int) -> void:
-	GlobalSettings.savedata.formatters.remove_at(idx)
-	GlobalSettings.save()
+func delete() -> void:
+	GlobalSettings.delete_formatter(find_formatter_index())
 	layout_changed.emit()
 
 
@@ -214,10 +212,14 @@ func _on_name_edit_text_change_canceled() -> void:
 
 
 func set_label_text(new_text: String) -> void:
+	formatter_button.begin_bulk_theme_override()
 	if new_text.is_empty():
 		formatter_button.text = TranslationServer.translate("Unnamed")
-		formatter_button.add_theme_color_override("font_color",
-				GlobalSettings.savedata.basic_color_error)
+		for style_name in ["font_color", "font_hover_color", "font_pressed_color"]:
+			formatter_button.add_theme_color_override(style_name,
+					GlobalSettings.savedata.basic_color_error)
 	else:
 		formatter_button.text = new_text
-		formatter_button.remove_theme_color_override("font_color")
+		for style_name in ["font_color", "font_hover_color", "font_pressed_color"]:
+			formatter_button.remove_theme_color_override(style_name)
+	formatter_button.end_bulk_theme_override()

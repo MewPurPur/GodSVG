@@ -1,6 +1,7 @@
 class_name ShortcutUtils extends RefCounted
 
-const _keybinds_dict = {
+# The bool after each action is for whether the shortcut can be modified.
+const _shortcut_categories_dict = {
 	"file": {
 		"import": true,
 		"export": true,
@@ -101,19 +102,19 @@ static func fn(shortcut: String) -> Callable:
 		"toggle_snap": return Callable()
 		_: return Callable()
 
-static func get_keybinds(category: String) -> PackedStringArray:
-	return _keybinds_dict[category].keys()
+static func get_shortcuts(category: String) -> PackedStringArray:
+	return _shortcut_categories_dict[category].keys()
 
-static func get_all_keybinds() -> PackedStringArray:
-	var keybinds := PackedStringArray()
-	for category in _keybinds_dict:
-		keybinds += get_keybinds(category)
-	return keybinds
+static func get_all_shortcuts() -> PackedStringArray:
+	var shortcuts := PackedStringArray()
+	for category in _shortcut_categories_dict:
+		shortcuts += get_shortcuts(category)
+	return shortcuts
 
-static func is_keybind_modifiable(keybind: String) -> bool:
-	for category in _keybinds_dict:
-		if _keybinds_dict[category].has(keybind):
-			return _keybinds_dict[category][keybind]
+static func is_shortcut_modifiable(shortcut: String) -> bool:
+	for category in _shortcut_categories_dict:
+		if _shortcut_categories_dict[category].has(shortcut):
+			return _shortcut_categories_dict[category][shortcut]
 	return false
 
 static func is_action_pressed(event: InputEvent, action: String) -> bool:

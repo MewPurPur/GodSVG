@@ -2,6 +2,7 @@ class_name SaveData extends Resource
 
 const GoodColorPicker = preload("res://src/ui_widgets/good_color_picker.gd")
 
+@export var version := 1
 @export var language := ""
 
 # Theming
@@ -41,7 +42,7 @@ const GoodColorPicker = preload("res://src/ui_widgets/good_color_picker.gd")
 @export var file_dialog_show_hidden := false
 @export var current_file_path := ""
 
-@export var keybinds := {}
+@export var shortcuts := {}
 @export var palettes: Array[ColorPalette] = []
 @export var formatters: Array[Formatter] = []
 @export var editor_formatter: Formatter = null

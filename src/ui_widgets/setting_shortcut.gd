@@ -30,7 +30,7 @@ func setup(new_action: String) -> void:
 # Syncs based on current events.
 func sync() -> void:
 	# Show the reset button if any of the actions don't match.
-	var action_defaults: Array[InputEvent] = GlobalSettings.default_keybinds[action]
+	var action_defaults: Array[InputEvent] = GlobalSettings.default_shortcuts[action]
 	if events.size() != action_defaults.size():
 		reset_button.show()
 	else:
@@ -127,7 +127,7 @@ func delete_shortcut(idx: int) -> void:
 	sync()
 
 func update_shortcut() -> void:
-	GlobalSettings.modify_keybind(action, events)
+	GlobalSettings.modify_shortcut(action, events)
 
 func _input(event: InputEvent) -> void:
 	if not (listening_idx >= 0 and event is InputEventKey):
@@ -167,7 +167,7 @@ func _input(event: InputEvent) -> void:
 		listening_idx = -1
 
 func _on_reset_button_pressed() -> void:
-	events = GlobalSettings.default_keybinds[action].duplicate(true)
+	events = GlobalSettings.default_shortcuts[action].duplicate(true)
 	update_shortcut()
 	sync()
 
