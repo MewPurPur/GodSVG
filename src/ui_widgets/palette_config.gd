@@ -184,6 +184,8 @@ func paste_palette() -> void:
 	GlobalSettings.replace_palette(find_palette_index(), pasted_palettes[0])
 	if old_title != pasted_palettes[0].title:
 		layout_changed.emit()
+	else:
+		rebuild_colors()
 
 func open_palette_options() -> void:
 	var btn_arr: Array[Button] = []
