@@ -215,6 +215,9 @@ func load_config() -> void:
 		return
 	
 	savedata = ResourceLoader.load(savedata_path)
+	if savedata == null or not savedata is SaveData:
+		reset_settings()
+		return
 	
 	for action in ShortcutUtils.get_all_shortcuts():
 		if ShortcutUtils.is_shortcut_modifiable(action):

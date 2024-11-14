@@ -69,7 +69,7 @@ func update_close_button() -> void:
 	close_button.text = TranslationServer.translate("Close")
 
 func _on_tab_toggled(toggled_on: bool, tab_name: String) -> void:
-	if toggled_on:
+	if toggled_on and focused_tab != tab_name:
 		focused_tab = tab_name
 		setup_content()
 

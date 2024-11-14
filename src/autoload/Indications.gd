@@ -65,7 +65,6 @@ func set_viewport_size(new_value: Vector2i) -> void:
 
 
 func _ready() -> void:
-	selection_changed.connect(print.bind("selection changed"))
 	SVG.xnodes_added.connect(_on_xnodes_added)
 	SVG.xnodes_deleted.connect(_on_xnodes_deleted)
 	SVG.xnodes_moved_in_parent.connect(_on_xnodes_moved_in_parent)
