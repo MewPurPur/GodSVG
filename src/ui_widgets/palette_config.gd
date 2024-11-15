@@ -177,15 +177,11 @@ func move_down() -> void:
 	layout_changed.emit()
 
 func paste_palette() -> void:
-	var old_title := current_palette.title
 	var pasted_palettes := ColorPalette.text_to_palettes(DisplayServer.clipboard_get())
 	if pasted_palettes.is_empty():
 		return
 	GlobalSettings.replace_palette(find_palette_index(), pasted_palettes[0])
-	if old_title != pasted_palettes[0].title:
-		layout_changed.emit()
-	else:
-		rebuild_colors()
+	layout_changed.emit()  # Emit it in any case, since the palette is a new object.
 
 func open_palette_options() -> void:
 	var btn_arr: Array[Button] = []

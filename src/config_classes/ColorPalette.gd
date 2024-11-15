@@ -105,10 +105,14 @@ static func text_to_palettes(text: String) -> Array[ColorPalette]:
 		match parser.get_node_type():
 			XMLParser.NODE_ELEMENT:
 				if parser.get_node_name() == "palette":
-					parsed_title = parser.get_named_attribute_value_safe("title")
+					parsed_title = parser.get_named_attribute_value_safe("title").strip_edges()
 				elif parser.get_node_name() == "color":
-					parsed_colors.append(parser.get_named_attribute_value_safe("value"))
-					parsed_color_names.append(parser.get_named_attribute_value_safe("name"))
+					var invalid_color := Color(255, 255, 255)
+					var col_str := parser.get_named_attribute_value_safe("value").strip_edges()
+					if ColorParser.text_to_color(col_str, invalid_color) != invalid_color:
+						parsed_color_names.append(
+								parser.get_named_attribute_value_safe("name").strip_edges())
+						parsed_colors.append(col_str)
 			XMLParser.NODE_ELEMENT_END:
 				var new_palette := ColorPalette.new(parsed_title)
 				new_palette.colors = parsed_colors.duplicate()
