@@ -13,6 +13,8 @@ var show_url: bool
 
 var palette_mode := true
 
+var _palettes_pending_update := false  # Palettes will update when visible.
+
 @onready var palettes_content: ScrollContainer = %Content/Palettes
 @onready var palettes_content_container: VBoxContainer = %PalettesContent
 @onready var search_field: BetterLineEdit = %SearchBox/SearchField
@@ -24,7 +26,10 @@ var swatches_list: Array[ColorSwatchType] = []  # Updated manually.
 
 func _ready() -> void:
 	# Setup the switch mode button.
-	update_switch_mode_button_text()
+	switch_mode_button.pressed.connect(_on_switch_mode_button_pressed)
+	_palettes_pending_update = true
+	setup_content()
+	
 	for theme_type in ["normal", "hover", "pressed"]:
 		var sb: StyleBoxFlat = switch_mode_button.get_theme_stylebox(theme_type,
 				"TranslucentButton").duplicate()
@@ -36,7 +41,6 @@ func _ready() -> void:
 		sb.content_margin_top = 3
 		switch_mode_button.add_theme_stylebox_override(theme_type, sb)
 	# Setup the rest.
-	update_palettes()
 	update_color_picker()
 	search_field.text_changed.connect(update_palettes)
 	search_field.text_change_canceled.connect(update_palettes)
@@ -110,22 +114,23 @@ func pick_palette_color(color: String) -> void:
 
 func pick_color(color: String) -> void:
 	current_value = color
-	update_palettes(search_field.text)
+	_palettes_pending_update = true
 	color_picked.emit(color, false)
 
 
 # Switching between palette mode and color picker mode.
-func _on_switch_mode_pressed() -> void:
+func _on_switch_mode_button_pressed() -> void:
 	palette_mode = not palette_mode
+	setup_content()
+
+func setup_content() -> void:
 	switch_mode_button.text = TranslationServer.translate("Palettes") if palette_mode\
 			else TranslationServer.translate("Color Picker")
 	color_picker_content.visible = not palette_mode
-	update_switch_mode_button_text()
 	palettes_content.visible = palette_mode
-
-func update_switch_mode_button_text() -> void:
-	switch_mode_button.text = TranslationServer.translate("Palettes") if palette_mode\
-			else TranslationServer.translate("Color Picker")
+	if palette_mode and _palettes_pending_update:
+		update_palettes()
+		_palettes_pending_update = false
 
 func _exit_tree() -> void:
 	color_picked.emit(current_value, true)
