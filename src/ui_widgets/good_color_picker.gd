@@ -168,16 +168,10 @@ func update() -> void:
 	color_wheel_drawn.queue_redraw()
 	queue_redraw_widgets()
 	# Set the text of the color fields.
-	match slider_mode:
-		SliderMode.RGB:
-			fields_arr[1].text = String.num_uint64(roundi(display_color.r * 255))
-			fields_arr[2].text = String.num_uint64(roundi(display_color.g * 255))
-			fields_arr[3].text = String.num_uint64(roundi(display_color.b * 255))
-		SliderMode.HSV:
-			fields_arr[1].text = String.num_uint64(roundi(display_color.h * 360))
-			fields_arr[2].text = String.num_uint64(roundi(display_color.s * 100))
-			fields_arr[3].text = String.num_uint64(roundi(display_color.v * 100))
-	fields_arr[4].text = String.num_uint64(roundi(display_color.a * 100))
+	slider1_update()
+	slider2_update()
+	slider3_update()
+	slider4_update()
 	# Ensure that the HSV values are never exactly 0 or 1 to make everything draggable.
 	backup_display_color.h = clampf(backup_display_color.h, 0.0, 0.9999)
 	backup_display_color.v = clampf(backup_display_color.v, 0.0001, 1.0)
@@ -260,12 +254,15 @@ func parse_slider_input(event: InputEvent, idx: int, is_slider_vertical := false
 	elif Utils.is_event_drag_end(event):
 		end_slider_drag(idx)
 
+# When slider text is submitted, it should be clamped, used, and then the slider should
+# be updated again so the text reflects the new value even if the color didn't change.
 func _on_slider1_text_submitted(new_text: String) -> void:
 	var new_color := display_color
 	match slider_mode:
 		SliderMode.RGB: new_color.r = clampf(new_text.to_int() / 255.0, 0.0, 1.0)
 		SliderMode.HSV: new_color.h = clampf(new_text.to_int() / 360.0, 0.0, 0.9999)
 	register_visual_change(new_color, false)
+	slider1_update()
 
 func _on_slider2_text_submitted(new_text: String) -> void:
 	var new_color := display_color
@@ -273,6 +270,7 @@ func _on_slider2_text_submitted(new_text: String) -> void:
 		SliderMode.RGB: new_color.g = clampf(new_text.to_int() / 255.0, 0.0, 1.0)
 		SliderMode.HSV: new_color.s = clampf(new_text.to_int() / 100.0, 0.0001, 1.0)
 	register_visual_change(new_color, false)
+	slider2_update()
 
 func _on_slider3_text_submitted(new_text: String) -> void:
 	var new_color := display_color
@@ -280,11 +278,41 @@ func _on_slider3_text_submitted(new_text: String) -> void:
 		SliderMode.RGB: new_color.b = clampf(new_text.to_int() / 255.0, 0.0, 1.0)
 		SliderMode.HSV: new_color.v = clampf(new_text.to_int() / 100.0, 0.0001, 1.0)
 	register_visual_change(new_color, false)
+	slider3_update()
 
 func _on_slider4_text_submitted(new_text: String) -> void:
 	var new_color := display_color
 	new_color.a = clampf(new_text.to_int() / 100.0, 0.0, 1.0)
 	register_visual_change(new_color, false)
+	slider4_update()
+
+func slider1_update() -> void:
+	var number: float
+	match slider_mode:
+		SliderMode.RGB: number = display_color.r * 255
+		SliderMode.HSV: number = display_color.h * 360
+	_slider_set_text(fields_arr[1], number)
+
+func slider2_update() -> void:
+	var number: float
+	match slider_mode:
+		SliderMode.RGB: number = display_color.g * 255
+		SliderMode.HSV: number = display_color.s * 100
+	_slider_set_text(fields_arr[2], number)
+
+func slider3_update() -> void:
+	var number: float
+	match slider_mode:
+		SliderMode.RGB: number = display_color.b * 255
+		SliderMode.HSV: number = display_color.v * 100
+	_slider_set_text(fields_arr[3], number)
+
+func slider4_update() -> void:
+	_slider_set_text(fields_arr[4],display_color.a * 100)
+
+func _slider_set_text(field: BetterLineEdit, number: float) -> void:
+	field.text = String.num_uint64(roundi(number))
+
 
 func _on_none_button_pressed() -> void:
 	UR.create_action("")
@@ -352,7 +380,6 @@ func _draw() -> void:
 
 # Helper for drawing the horizontal sliders.
 func draw_hslider(idx: int, offset: float, chr: String) -> void:
-	
 	var arrow_modulate := Color(1, 1, 1) if sliders_dragged[idx] else Color(1, 1, 1, 0.7)
 	widgets_arr[idx].draw_texture(slider_arrow, Vector2(tracks_arr[idx].position.x +\
 			tracks_arr[idx].size.x * offset - slider_arrow.get_width() / 2.0,
