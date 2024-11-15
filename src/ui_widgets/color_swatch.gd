@@ -33,8 +33,8 @@ func _draw() -> void:
 		var parsed_color := ColorParser.text_to_color(color)
 		if parsed_color.a != 1 or color == "none":
 			checkerboard.draw_rect(ci, inside_rect, false)
-		if color != "none":
-			RenderingServer.canvas_item_add_rect(ci,inside_rect, parsed_color)
+		if color != "none" and parsed_color.a != 0:
+			RenderingServer.canvas_item_add_rect(ci, inside_rect, parsed_color)
 
 func _make_custom_tooltip(_for_text: String) -> Object:
 	var rtl := RichTextLabel.new()

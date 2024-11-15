@@ -25,12 +25,13 @@ func _draw() -> void:
 		return
 	
 	var color := color_palette.colors[idx]
-	var parsed_color := Color.from_string(color, Color(0, 0, 0))
+	var parsed_color := ColorParser.text_to_color(color)
 	var bounds := Vector2(2, 2)
+	var inside_rect := Rect2(bounds, size - bounds * 2)
 	if parsed_color.a != 1 or color == "none":
-		draw_texture_rect(checkerboard, Rect2(bounds, size - bounds * 2), false)
-	if color != "none":
-		draw_rect(Rect2(bounds, size - bounds * 2), color)
+		draw_texture_rect(checkerboard, inside_rect, false)
+	if color != "none" and parsed_color.a != 0:
+		draw_rect(inside_rect, parsed_color)
 	
 	RenderingServer.canvas_item_clear(surface)
 	if proposed_drop_data.size() != 2 or proposed_drop_data[0] != color_palette:

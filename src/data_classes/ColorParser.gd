@@ -65,8 +65,10 @@ static func text_to_color(color: String, backup := Color.BLACK,
 allow_alpha := false) -> Color:
 	color = color.strip_edges()
 	if is_valid_named(color):
-		if color in ["none", "transparent"]:
+		if color == "none":
 			return Color(0, 0, 0, 0)
+		elif color == "transparent":
+			return Color(0, 0, 0, 0) if allow_alpha else backup
 		elif color == "currentColor":
 			return backup
 		else:
