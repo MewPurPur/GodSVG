@@ -58,3 +58,13 @@ static func filter_descendants(xids: Array[PackedInt32Array]) -> Array[PackedInt
 			last_accepted = new_xids[i]
 			i += 1
 	return new_xids
+
+# Not typed to Array[PackedInt32Array] because typed arrays were annoying.
+static func are_xid_lists_same(xid_list_1: Array, xid_list_2: Array) -> bool:
+	if xid_list_1.size() != xid_list_2.size():
+		return false
+	
+	for xid in xid_list_1:
+		if not xid in xid_list_2:
+			return false
+	return true
