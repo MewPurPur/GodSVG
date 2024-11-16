@@ -86,8 +86,8 @@ func normal_select(xid: PackedInt32Array, inner_idx := -1) -> void:
 			return
 		selection_pivot_xid = xid.duplicate()
 		selected_xids = [xid.duplicate()]
-		if old_selected_xids != selected_xids:
-			selection_changed.emit()
+		if XIDUtils.are_xid_lists_same(old_selected_xids, selected_xids):
+			return
 	else:
 		_clear_selection_no_signal()
 		var old_inner_selections := inner_selections.duplicate()
@@ -99,8 +99,10 @@ func normal_select(xid: PackedInt32Array, inner_idx := -1) -> void:
 		semi_selected_xid = xid.duplicate()
 		inner_selection_pivot = inner_idx
 		inner_selections = [inner_idx]
-		if inner_selections != old_inner_selections or old_semi_selected_xid != xid:
-			selection_changed.emit()
+		if inner_selections == old_inner_selections and old_semi_selected_xid == xid:
+			return
+	
+	selection_changed.emit()
 
 # If the element was selected, unselect it. If it was unselected, select it.
 # If inner_idx is given, this will be an inner selection.
@@ -135,7 +137,7 @@ func ctrl_select(xid: PackedInt32Array, inner_idx := -1) -> void:
 	
 	selection_changed.emit()
 
-# Select all elements with the same depth from the element to the last selected element.
+# Select all elements between the element and the last selected element (pivot).
 # Similarly for inner selections if inner_idx is given, but without tree logic.
 func shift_select(xid: PackedInt32Array, inner_idx := -1) -> void:
 	if xid.is_empty():
@@ -171,16 +173,11 @@ func shift_select(xid: PackedInt32Array, inner_idx := -1) -> void:
 			if not new_xid in selected_xids:
 				selected_xids.append(new_xid)
 		
-		if selected_xids == old_selected_xids:
+		if XIDUtils.are_xid_lists_same(selected_xids, old_selected_xids):
 			return
 	
 	else:
-		if inner_selection_pivot == -1:
-			if inner_selections.is_empty():
-				normal_select(xid, inner_idx)
-			return
-		
-		if xid != semi_selected_xid:
+		if inner_selection_pivot == -1 or xid != semi_selected_xid:
 			normal_select(xid, inner_idx)
 			return
 		
@@ -201,7 +198,8 @@ func select_all() -> void:
 	_clear_inner_selection_no_signal()
 	var xnode_list: Array[XNode] = SVG.root_element.get_all_xnode_descendants()
 	var xid_list: Array = xnode_list.map(func(xnode): return xnode.xid)
-	if selected_xids == xid_list:
+	# The order might not be the same, so ensure like this.
+	if XIDUtils.are_xid_lists_same(xid_list, selected_xids):
 		return
 	
 	for xid in xid_list:
@@ -333,6 +331,7 @@ func clear_proposed_drop_xid() -> void:
 
 func _on_xnodes_added(xids: Array[PackedInt32Array]) -> void:
 	selected_xids = xids.duplicate()
+	selection_pivot_xid = xids[-1]
 
 # If selected elements were deleted, remove them from the list of selected elements.
 func _on_xnodes_deleted(xids: Array[PackedInt32Array]) -> void:
@@ -343,7 +342,7 @@ func _on_xnodes_deleted(xids: Array[PackedInt32Array]) -> void:
 			var xid := selected_xids[i]
 			if XIDUtils.is_parent_or_self(deleted_xid, xid):
 				selected_xids.remove_at(i)
-	if old_selected_xids != selected_xids:
+	if not XIDUtils.are_xid_lists_same(old_selected_xids, selected_xids):
 		selection_changed.emit()
 
 # If selected elements were moved up or down, change the XIDs and their children.
@@ -371,7 +370,7 @@ func _on_xnodes_moved_in_parent(parent_xid: PackedInt32Array, indices: Array[int
 		selected_xids.erase(xid)
 	selected_xids += xids_to_select
 	
-	if old_selected_xids != selected_xids:
+	if not XIDUtils.are_xid_lists_same(old_selected_xids, selected_xids):
 		selection_changed.emit()
 
 # If selected elements were moved to a location, change the XIDs and their children.
@@ -387,7 +386,7 @@ func _on_xnodes_moved_to(xids: Array[PackedInt32Array], location: PackedInt32Arr
 				for ii in range(moved_xid.size(), xid.size()):
 					new_location.append(xid[ii])
 				new_selected_xids.append(new_location)
-	if selected_xids != new_selected_xids:
+	if not XIDUtils.are_xid_lists_same(selected_xids, new_selected_xids):
 		selected_xids = new_selected_xids
 		selection_changed.emit()
 
