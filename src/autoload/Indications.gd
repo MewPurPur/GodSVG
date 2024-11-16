@@ -144,12 +144,11 @@ func shift_select(xid: PackedInt32Array, inner_idx := -1) -> void:
 		return
 	
 	if inner_idx == -1:
-		if selection_pivot_xid.is_empty():
-			if selected_xids.is_empty():
-				normal_select(xid, inner_idx)
+		if xid == selection_pivot_xid:
 			return
 		
-		if xid == selection_pivot_xid:
+		if selection_pivot_xid.is_empty():
+			normal_select(xid, inner_idx)
 			return
 		
 		var old_selected_xids := selected_xids.duplicate()

@@ -37,8 +37,8 @@ func _process(_delta: float) -> void:
 		display_rect.position.x = maxf(display_rect.position.x, 0.0)
 		display_rect.position.y = maxf(display_rect.position.y, 0.0)
 		display_rect.size = display_rect.size.snapped(Vector2(pixel_size, pixel_size))
-		display_rect.end.x = minf(display_rect.end.x, SVG.root_element.width)
-		display_rect.end.y = minf(display_rect.end.y, SVG.root_element.height)
+		display_rect.end.x = minf(display_rect.end.x, ceili(SVG.root_element.width))
+		display_rect.end.y = minf(display_rect.end.y, ceili(SVG.root_element.height))
 		
 		var svg_text := SVGParser.root_cutout_to_text(SVG.root_element, display_rect.size.x,
 				display_rect.size.y, Rect2(SVG.root_element.world_to_canvas(display_rect.position),

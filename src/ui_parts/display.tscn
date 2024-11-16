@@ -142,6 +142,7 @@ stretch_mode = 5
 [node name="Checkerboard" type="TextureRect" parent="ViewportPanel/ViewportContainer/Viewport"]
 texture_filter = 1
 material = SubResource("ShaderMaterial_kqplg")
+clip_contents = true
 texture = ExtResource("11_1bm1s")
 expand_mode = 1
 stretch_mode = 1
