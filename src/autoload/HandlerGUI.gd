@@ -21,8 +21,6 @@ func _enter_tree() -> void:
 	get_window().files_dropped.connect(_on_files_dropped)
 	get_window().dpi_changed.connect(update_ui_scale)
 	get_window().size_changed.connect(remove_all_popup_overlays)
-	if OS.has_feature("web"):
-		_define_web_js()
 
 func _ready() -> void:
 	GlobalSettings.ui_scale_changed.connect(update_ui_scale)
@@ -325,70 +323,3 @@ func _calculate_auto_scale() -> float:
 		# Use an intermediate scale to handle this situation.
 		return 1.5
 	return 1.0
-
-
-# Web file access code credit (Modified):
-# https://github.com/Pukkah/HTML5-File-Exchange-for-Godot
-# https://github.com/Orama-Interactive/Pixelorama/blob/master/src/Autoload/HTML5FileExchange.gd
-
-func web_load_svg() -> void:
-	JavaScriptBridge.eval("upload_svg();", true)  # Open file dialog.
-	await _in_focus  # Wait until dialog closed.
-	await get_tree().create_timer(1.5).timeout  # Give some time for async JS data load.
-	if JavaScriptBridge.eval("canceled;", true):
-		return
-	var file_data: Variant
-	while true:
-		file_data = JavaScriptBridge.eval("fileData;", true)
-		if file_data != null:
-			break
-		await get_tree().create_timer(0.5).timeout
-	
-	var file_name: String = JavaScriptBridge.eval("fileName;", true)
-	var extension := file_name.get_extension()
-	if extension == "svg":
-		var warning_panel = ImportWarningDialog.instantiate()
-		warning_panel.imported.connect(FileUtils.web_import.bind(file_data, file_name))
-		warning_panel.set_svg(file_data)
-		HandlerGUI.add_overlay(warning_panel)
-	else:
-		var alert_dialog = AlertDialog.instantiate()
-		HandlerGUI.add_overlay(alert_dialog)
-		if extension.is_empty():
-			alert_dialog.setup(TranslationServer.translate(
-					"The file extension is empty. Only \"svg\" files are supported."))
-		else:
-			alert_dialog.setup(TranslationServer.translate(
-					"\"{passed_extension}\" is an unsupported file extension. Only \"svg\" files are supported.").format({"passed_extension": extension}))
-
-
-const web_glue = """var fileData;
-var fileName;
-var canceled;
-var input = document.createElement('INPUT');
-input.setAttribute("type", "file");
-input.setAttribute("accept", ".svg");
-input.addEventListener('change', event => {
-	if (event.target.files.length == 0) {
-		return;
-	}
-	canceled = false;
-	var file = event.target.files[0];
-	var reader = new FileReader();
-	fileName = file.name;
-	reader.readAsText(file);
-	reader.onloadend = function(evt) {
-		if (evt.target.readyState == FileReader.DONE) {
-			fileData = evt.target.result;
-		}
-	}
-});
-
-function upload_svg() {
-	canceled = true;
-	input.click();
-};
-"""
-
-func _define_web_js() -> void:
-	JavaScriptBridge.eval(web_glue, true)

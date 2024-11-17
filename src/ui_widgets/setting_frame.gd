@@ -30,6 +30,10 @@ var is_hovered := false
 @onready var reset_button: Button = $ResetButton
 var ci := get_canvas_item()
 
+func permanent_disable_checkbox(checkbox_state: bool) -> void:
+	disabled = true
+	widget.set_pressed_no_signal(checkbox_state)
+
 func setup_checkbox() -> void:
 	widget = CheckBox.new()
 	widget.focus_mode = Control.FOCUS_NONE

@@ -27,6 +27,7 @@ const ConfirmDialog := preload("res://src/ui_parts/confirm_dialog.tscn")
 var reference_overlay := false
 
 func _ready() -> void:
+	GlobalSettings.reference_image_changed.connect(finish_reference_load)
 	GlobalSettings.language_changed.connect(update_translations)
 	GlobalSettings.snap_changed.connect(update_snap_config)
 	GlobalSettings.theme_changed.connect(update_theme)
@@ -36,11 +37,6 @@ func _ready() -> void:
 	get_window().window_input.connect(_update_input_debug)
 	view_settings_updated.emit(grid_visuals.visible, controls.visible,
 			viewport.display_texture.rasterized)
-	
-	if OS.has_feature("web"):
-		reference_button.disabled = true
-		reference_button.tooltip_text = "Not currently available on web."
-		reference_button.mouse_default_cursor_shape = CURSOR_ARROW
 
 func _unhandled_input(event: InputEvent) -> void:
 	if Input.is_action_pressed("debug"):
@@ -51,7 +47,7 @@ func _unhandled_input(event: InputEvent) -> void:
 			update_debug()
 			input_debug_label.text = ""
 	elif ShortcutUtils.is_action_pressed(event, "load_reference"):
-		load_reference_image()
+		FileUtils.open_reference_load_dialog()
 	elif ShortcutUtils.is_action_pressed(event, "view_show_grid"):
 		toggle_grid_visuals()
 	elif ShortcutUtils.is_action_pressed(event, "view_show_handles"):
@@ -107,8 +103,8 @@ func open_savedata_folder() -> void:
 func _on_reference_pressed() -> void:
 	var btn_arr: Array[Button] = [
 		ContextPopup.create_button(TranslationServer.translate("Load reference image"),
-			load_reference_image, false, load("res://visual/icons/Reference.svg"),
-			"load_reference"),
+			FileUtils.open_reference_load_dialog, false,
+			load("res://visual/icons/Reference.svg"), "load_reference"),
 		ContextPopup.create_checkbox(TranslationServer.translate("Show reference"),
 			toggle_reference_image, reference_texture.visible, "view_show_reference"),
 		ContextPopup.create_checkbox(TranslationServer.translate("Overlay reference"),
@@ -186,9 +182,6 @@ func toggle_rasterization() -> void:
 	viewport.display_texture.rasterized = not viewport.display_texture.rasterized
 	view_settings_updated.emit(grid_visuals.visible, controls.visible,
 			viewport.display_texture.rasterized)
-
-func load_reference_image() -> void:
-	FileUtils.open_reference_load_dialog(finish_reference_load)
 
 func toggle_reference_image() -> void:
 	reference_texture.visible = not reference_texture.visible
