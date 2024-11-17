@@ -207,9 +207,7 @@ func _on_name_edit_text_submitted(new_title: String) -> void:
 	if not new_title.is_empty() and new_title != current_formatter.title and\
 	not new_title in titles:
 		current_formatter.title = new_title
-	
-	set_label_text(current_formatter.title)
-	hide_name_edit()
+		layout_changed.emit()
 
 func _on_name_edit_text_change_canceled() -> void:
 	hide_name_edit()

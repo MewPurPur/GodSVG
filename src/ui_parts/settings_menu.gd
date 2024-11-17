@@ -421,16 +421,10 @@ func rebuild_formatters() -> void:
 	for formatter_config in formatter_container.get_children():
 		formatter_config.queue_free()
 	
-	var formatters: Dictionary
+	var available_formatters := {}
 	for formatter in GlobalSettings.savedata.formatters:
-		formatters[formatter.title] = formatter
-		if not formatter.changed.is_connected(rebuild_formatters):
-			formatter.changed.connect(rebuild_formatters)
-	# TODO Do I need to do this...
-	var formatter_names := PackedStringArray()
-	for formatter_name in formatters.keys():
-		if not formatter_name.is_empty():
-			formatter_names.append(formatter_name)
+		if not formatter.title.is_empty():
+			available_formatters[formatter.title] = formatter
 	
 	for context in [["editor_formatter", TranslationServer.translate("Editor formatter")],
 	["export_formatter", TranslationServer.translate("Export formatter")]]:
@@ -438,12 +432,13 @@ func rebuild_formatters() -> void:
 		frame.setup_dropdown()
 		frame.text = context[1]
 		frame.getter = func(): return GlobalSettings.savedata.get(context[0]).title
-		frame.setter = func(p): GlobalSettings.modify_setting(context[0], formatters[p] if\
-				formatters.has(p) else formatters[formatters.keys()[0]])
+		frame.setter = func(p): GlobalSettings.modify_setting(context[0],
+				available_formatters[p] if available_formatters.has(p) else\
+				available_formatters.values()[0])
 		frame.mouse_entered.connect(show_advice.bind(current_setup_setting))
 		frame.mouse_exited.connect(hide_advice.bind(current_setup_setting))
 		formatter_container.add_child(frame)
-		frame.dropdown.values = formatter_names
+		frame.dropdown.values = available_formatters.keys()
 	
 	for formatter in GlobalSettings.savedata.formatters:
 		var formatter_config := FormatterConfigWidget.instantiate()
