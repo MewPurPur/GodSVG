@@ -89,13 +89,14 @@ func normal_select(xid: PackedInt32Array, inner_idx := -1) -> void:
 		if XIDUtils.are_xid_lists_same(old_selected_xids, selected_xids):
 			return
 	else:
-		_clear_selection_no_signal()
 		var old_inner_selections := inner_selections.duplicate()
+		var old_semi_selected_xid := semi_selected_xid.duplicate()
+		_clear_selection_no_signal()
+		
 		if semi_selected_xid == xid and\
 		inner_selections.size() == 1 and inner_selections[0] == inner_idx:
 			return
 		
-		var old_semi_selected_xid := semi_selected_xid.duplicate()
 		semi_selected_xid = xid.duplicate()
 		inner_selection_pivot = inner_idx
 		inner_selections = [inner_idx]

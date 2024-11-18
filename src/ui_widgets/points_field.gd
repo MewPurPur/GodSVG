@@ -189,7 +189,7 @@ func _on_points_gui_input(event: InputEvent) -> void:
 					Indications.ctrl_select(element.xid, cmd_idx)
 				elif event.shift_pressed:
 					Indications.shift_select(element.xid, cmd_idx)
-				elif not cmd_idx in Indications.inner_selections:
+				else:
 					Indications.normal_select(element.xid, cmd_idx)
 			elif event.is_released() and not event.shift_pressed and\
 			not event.is_command_or_control_pressed() and not event.double_click and\
