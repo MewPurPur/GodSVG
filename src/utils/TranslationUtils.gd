@@ -92,3 +92,14 @@ static func get_command_description(command_char: String) -> String:
 		"C", "c": return TranslationServer.translate("Cubic Bezier to")
 		"S", "s": return TranslationServer.translate("Shorthand Cubic Bezier to")
 		_: return command_char
+
+static func get_bad_extension_alert_text(extension: String,
+allowed_extensions: PackedStringArray) -> String:
+	var extension_list := ", ".join(allowed_extensions)
+	if extension.is_empty():
+		return TranslationServer.translate(
+				"The file extension is empty. Only {extension_list} files are supported.".format(
+				{"extension_list": extension_list}))
+	return TranslationServer.translate(
+			"The file extension {extension} is unsupported for this operation. Only {extension_list} files are supported.".format(
+			{"extension": '".' + extension + '"', "extension_list": extension_list}))

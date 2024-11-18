@@ -109,12 +109,12 @@ static func _is_native_preferred() -> bool:
 
 static func open_import_dialog() -> void:
 	# Open it inside a native file dialog, or our custom one if it's not available.
-	if FileUtils._is_native_preferred():
+	if _is_native_preferred():
 		DisplayServer.file_dialog_show(TranslationServer.translate("Import a .svg file"),
 				Utils.get_last_dir(), "", false, DisplayServer.FILE_DIALOG_MODE_OPEN_FILE,
 				["*.svg"], native_svg_import)
 	elif OS.has_feature("web"):
-		HandlerGUI.web_load_svg()
+		web_load_svg()
 	else:
 		var svg_import_dialog := GoodFileDialog.instantiate()
 		svg_import_dialog.setup(Utils.get_last_dir(), "",
@@ -122,22 +122,21 @@ static func open_import_dialog() -> void:
 		HandlerGUI.add_overlay(svg_import_dialog)
 		svg_import_dialog.file_selected.connect(apply_svg_from_path)
 
-static func open_reference_load_dialog(callable: Callable) -> void:
-	if FileUtils._is_native_preferred():
+static func open_reference_load_dialog() -> void:
+	if _is_native_preferred():
 		DisplayServer.file_dialog_show(TranslationServer.translate("Load an image file"),
 				Utils.get_last_dir(), "", false, DisplayServer.FILE_DIALOG_MODE_OPEN_FILE,
 				PackedStringArray(["*.png,*.jpeg,*.jpg,*.webp,*.svg"]),
-				native_reference_image_load.bind(callable))
-	# TODO: Add Web Support
-	#elif OS.has_feature("web"):
-		#HandlerGUI.web_load_reference_image()
+				native_reference_image_load)
+	elif OS.has_feature("web"):
+		web_load_reference_image()
 	else:
 		var image_import_dialog := GoodFileDialog.instantiate()
 		image_import_dialog.setup(Utils.get_last_dir(), "",
 				GoodFileDialogType.FileMode.SELECT,
 				PackedStringArray(["png", "jpeg", "jpg", "webp", "svg"]))
 		HandlerGUI.add_overlay(image_import_dialog)
-		image_import_dialog.file_selected.connect(load_reference_image.bind(callable))
+		image_import_dialog.file_selected.connect(finish_reference_image_load)
 
 static func native_svg_import(has_selected: bool, files: PackedStringArray,
 _filter_idx: int) -> void:
@@ -145,31 +144,28 @@ _filter_idx: int) -> void:
 		apply_svg_from_path(files[0])
 
 static func native_reference_image_load(has_selected: bool, files: PackedStringArray,
-_filter_idx: int, callable: Callable) -> void:
+_filter_idx: int) -> void:
 	if has_selected:
-		load_reference_image(files[0], callable)
+		finish_reference_image_load(files[0])
 
-static func load_reference_image(path: String, callable: Callable) -> void:
-	var img = Image.new()
+static func finish_reference_image_load(path: String) -> void:
+	var img := Image.new()
 	img.load(path)
 	img.save_png(GlobalSettings.reference_image_path)
-	callable.call()
+	GlobalSettings.reference_image_changed.emit()
 
-static func apply_svg_from_path(path: String) -> int:
+static func apply_svg_from_path(path: String) -> Error:
 	var svg_file := FileAccess.open(path, FileAccess.READ)
 	var error := ""
 	var extension := path.get_extension()
 	
 	GlobalSettings.modify_setting("last_used_dir", path.get_base_dir())
 	
-	if extension.is_empty():
-		error = TranslationServer.translate(
-				"The file extension is empty. Only \"svg\" files are supported.")
-	elif extension == "tscn":
+	if extension == "tscn":
 		return ERR_FILE_CANT_OPEN
 	elif extension != "svg":
-		error = TranslationServer.translate(
-				"\"{passed_extension}\" is an unsupported file extension. Only \"svg\" files are supported.").format({"passed_extension": extension})
+		error = TranslationUtils.get_bad_extension_alert_text(extension,
+				PackedStringArray(["svg"]))
 	elif !is_instance_valid(svg_file):
 		error = TranslationServer.translate(
 				"The file couldn't be opened.\nTry checking the file path, ensure that the file is not deleted, or choose a different file.")
@@ -180,19 +176,125 @@ static func apply_svg_from_path(path: String) -> int:
 		alert_dialog.setup(error)
 		return ERR_FILE_CANT_OPEN
 	
-	var svg_text := svg_file.get_as_text()
-	var warning_panel := ImportWarningDialog.instantiate()
-	warning_panel.imported.connect(FileUtils.finish_import.bind(svg_text, path))
-	warning_panel.set_svg(svg_text)
-	HandlerGUI.add_overlay(warning_panel)
+	finish_svg_import(svg_file.get_as_text(), path)
 	return OK
 
-# Web stuff. The loading logic had to remain in HandlerGUI.
+static func finish_svg_import(svg_data: String, svg_path: String) -> void:
+	var warning_panel := ImportWarningDialog.instantiate()
+	warning_panel.imported.connect(finish_import.bind(svg_data, svg_path))
+	warning_panel.set_svg(svg_data)
+	HandlerGUI.add_overlay(warning_panel)
 
-static func web_import(svg_text: String, file_name: String) -> void:
-	SVG.apply_svg_text(svg_text)
-	GlobalSettings.savedata.current_file_path = file_name
-	JavaScriptBridge.eval("fileData = undefined;", true)
+
+# Web stuff.
+
+enum WebImportContext {SVG_IMPORT, REFERENCE_IMAGE}
+
+static func web_load_svg() -> void:
+	_web_load_file(PackedStringArray(["svg"]), WebImportContext.SVG_IMPORT)
+
+static func web_load_reference_image() -> void:
+	_web_load_file(PackedStringArray(["png", "jpeg", "jpg", "webp", "svg"]),
+			WebImportContext.REFERENCE_IMAGE)
+
+
+static func _web_load_file(allowed_extensions: PackedStringArray,
+context: WebImportContext) -> void:
+	var allowed_extensions_with_dots := PackedStringArray()
+	for allowed_extension in allowed_extensions:
+		allowed_extensions_with_dots.append("." + allowed_extension)
+	
+	var document := JavaScriptBridge.get_interface("document")
+	
+	var input: JavaScriptObject = document.createElement("INPUT")
+	input.type = "file"
+	input.accept = ",".join(allowed_extensions_with_dots)
+	
+	# Clear previous data.
+	JavaScriptBridge.eval("window.godsvgFileName = '';", true)
+	JavaScriptBridge.eval("window.godsvgFileData = null;", true)
+	JavaScriptBridge.eval("window.godsvgDialogClosed = false;", true)
+	
+	_change_callback = JavaScriptBridge.create_callback(_web_on_file_selected)
+	input.addEventListener("change", _change_callback)
+	_cancel_callback = JavaScriptBridge.create_callback(_web_on_file_dialog_cancelled)
+	input.addEventListener("cancel", _cancel_callback)
+	
+	input.click()  # Open file dialog.
+	await Engine.get_main_loop().create_timer(0.5).timeout  # Wait for async JS.
+	
+	var file_data: Variant
+	while true:
+		if JavaScriptBridge.eval("window.godsvgDialogClosed;", true):
+			return
+		
+		file_data = JavaScriptBridge.eval("window.godsvgFileData;", true)
+		if file_data != null:
+			break
+		await Engine.get_main_loop().create_timer(0.5).timeout
+	var file_name: String = JavaScriptBridge.eval("window.godsvgFileName;", true)
+	var extension := file_name.get_extension().to_lower()
+	
+	if not extension in allowed_extensions:
+		var alert_dialog: Node = AlertDialog.instantiate()
+		HandlerGUI.add_overlay(alert_dialog)
+		alert_dialog.setup(TranslationUtils.get_bad_extension_alert_text(extension,
+				allowed_extensions))
+	else:
+		match context:
+			WebImportContext.SVG_IMPORT: finish_svg_import(file_data, file_name)
+			WebImportContext.REFERENCE_IMAGE: _web_finish_reference_image_load(file_data, file_name)
+
+static func _web_on_file_selected(args: Array) -> void:
+	var event: JavaScriptObject = args[0]
+	if event.target.files.length == 0:
+		return
+	
+	var file: JavaScriptObject = event.target.files[0]
+	JavaScriptBridge.eval("window.godsvgFileName = '" + file.name + "';", true)
+	
+	# Store the callback reference to prevent garbage collection
+	var reader: JavaScriptObject = JavaScriptBridge.create_object("FileReader")
+	_file_load_callback = JavaScriptBridge.create_callback(_web_on_file_loaded)
+	reader.onloadend = _file_load_callback
+	if file.name.get_extension().to_lower() == "svg":
+		reader.readAsText(file)
+	else:
+		reader.readAsArrayBuffer(file)
+
+# Global variables... Otherwise the garbage collector ruins everything.
+static var _change_callback: JavaScriptObject
+static var _cancel_callback: JavaScriptObject
+static var _file_load_callback: JavaScriptObject
+
+static func _web_on_file_loaded(args: Array) -> void:
+	var event: JavaScriptObject = args[0]
+	
+	var FileReader := JavaScriptBridge.get_interface("FileReader")
+	if event.target.readyState != FileReader.DONE:
+		return
+	
+	var file_name: String = JavaScriptBridge.eval("window.godsvgFileName;", true)
+	# Use proper string escaping for the file content.
+	if file_name.get_extension().to_lower() == "svg":
+		JavaScriptBridge.eval("window.godsvgFileData = `" + event.target.result + "`;", true)
+	else:
+		# For binary files, the ArrayBuffer gets handled.
+		JavaScriptBridge.eval("window.godsvgFileData = new Uint8Array(event.target.result);", true)
+
+static func _web_finish_reference_image_load(data: Variant, path: String) -> void:
+	var img := Image.new()
+	match path.get_extension().to_lower():
+		"svg": img.load_svg_from_string(data)
+		"png": img.load_png_from_buffer(data)
+		"jpg", "jpeg": img.load_jpg_from_buffer(data)
+		"webp": img.load_webp_from_buffer(data)
+	img.save_png(GlobalSettings.reference_image_path)
+	GlobalSettings.reference_image_changed.emit()
+
+static func _web_on_file_dialog_cancelled(_args: Array) -> void:
+	JavaScriptBridge.eval("window.godsvgDialogClosed = true;", true)
+
 
 static func web_save_svg() -> void:
 	_web_save(SVG.get_export_text().to_utf8_buffer(), "image/svg+xml")

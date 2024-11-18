@@ -206,15 +206,12 @@ func setup_content() -> void:
 			
 			# Disable mouse wrap if not available.
 			if not DisplayServer.has_feature(DisplayServer.FEATURE_MOUSE_WARP):
-				wrap_mouse.disabled = true
-				wrap_mouse.checkbox.set_pressed_no_signal(false)
+				wrap_mouse.permanent_disable_checkbox(false)
 			# Disable fallback file dialog on web, and native file dialog if not available.
 			if OS.has_feature("web"):
-				use_native_file_dialog.disabled = true
-				use_native_file_dialog.checkbox.set_pressed_no_signal(true)
+				use_native_file_dialog.permanent_disable_checkbox(true)
 			elif not DisplayServer.has_feature(DisplayServer.FEATURE_NATIVE_DIALOG_FILE):
-				use_native_file_dialog.disabled = true
-				use_native_file_dialog.checkbox.set_pressed_no_signal(false)
+				use_native_file_dialog.permanent_disable_checkbox(false)
 
 
 func add_section(section_name: String) -> void:
