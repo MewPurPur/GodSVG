@@ -75,23 +75,25 @@ func setup(new_transform: Transform, new_fields: Array[BetterLineEdit]) -> void:
 	for field in _fields:
 		field.set_value(transform.get(field.tooltip_text), true)  # "Clean code" is a sham.
 		field.focus_entered.connect(reset_field_color.bind(field))
-		field.focus_exited.connect(setup_field_colors)
-	setup_field_colors()
+		field.focus_exited.connect(setup_field_defaults_and_colors)
+	setup_field_defaults_and_colors()
 
 func resync(new_transform: Transform) -> void:
 	transform = new_transform
 	for field in _fields:
 		field.set_value(transform.get(field.tooltip_text), true)
-	setup_field_colors()
+	setup_field_defaults_and_colors()
 
-func setup_field_colors() -> void:
+func setup_field_defaults_and_colors() -> void:
 	match type:
 		"translate":
+			_fields[1].default = 0
 			determine_field_font_color(_fields[1], transform.y == 0)
 		"rotate":
 			determine_field_font_color(_fields[1], transform.x == 0 and transform.y == 0)
 			determine_field_font_color(_fields[2], transform.x == 0 and transform.y == 0)
 		"scale":
+			_fields[1].default = transform.x
 			determine_field_font_color(_fields[1], transform.x == transform.y)
 
 func determine_field_font_color(field: BetterLineEdit, omit: bool) -> void:

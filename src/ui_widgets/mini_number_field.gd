@@ -7,6 +7,8 @@ var mode := Mode.DEFAULT
 signal value_changed(new_value: float)
 var _value := NAN  # Must not be updated directly.
 
+var default := NAN  # Setting to an empty value would bring you back to the default.
+
 func set_value(new_value: float, no_signal := false) -> void:
 	if not is_finite(new_value):
 		text = NumstringParser.basic_num_to_text(_value)
@@ -22,7 +24,10 @@ func get_value() -> float:
 
 
 func _on_text_submitted(submitted_text: String) -> void:
-	set_value(evaluate_after_input(submitted_text))
+	if not is_nan(default) and submitted_text.strip_edges().is_empty():
+		set_value(default)
+	else:
+		set_value(evaluate_after_input(submitted_text))
 
 func evaluate_after_input(eval_text: String) -> float:
 	var num := NumstringParser.evaluate(eval_text)
