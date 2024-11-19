@@ -101,7 +101,10 @@ func display_results() -> void:
 		for version in results:
 			var result: Array = results[version]
 			if prereleases_checkbox.button_pressed or result[1] == false:
-				status_label.text += "\n[url=%s]%s[/url]" % [result[0], version]
+				if OS.has_feature("web"):
+					status_label.text += "\n%s" % version
+				else:
+					status_label.text += "\n[url=%s]%s[/url]" % [result[0], version]
 
 
 func _on_close_pressed() -> void:

@@ -104,8 +104,8 @@ func _draw() -> void:
 	stylebox.bg_color = get_theme_stylebox("normal", "LineEdit").bg_color
 	stylebox.draw(ci, Rect2(get_size().x - BUTTON_WIDTH,
 			1, BUTTON_WIDTH - 2, get_size().y - 2))
-	var fill_height: float = (get_size().y - 4) *\
-			(element.get_attribute_num(attribute_name) - MIN_VALUE) / MAX_VALUE
+	var fill_height := (get_size().y - 4) * (element.get_attribute_num(attribute_name) -\
+			MIN_VALUE) / MAX_VALUE
 	# Create a stylebox that'll occupy the exact amount of space.
 	var fill_stylebox := StyleBoxFlat.new()
 	fill_stylebox.bg_color = Color("#def")
