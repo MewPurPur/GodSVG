@@ -39,4 +39,5 @@ static func text_to_num(text: String) -> float:
 	return text.to_float()
 
 static func text_check_percentage(text: String) -> bool:
-	return text.strip_edges().ends_with("%")
+	# Only the right side needs to be stripped to check for %.
+	return text.strip_edges(false, true).ends_with("%")
