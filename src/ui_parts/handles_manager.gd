@@ -411,24 +411,26 @@ func _draw() -> void:
 						"L":
 							# Line contour.
 							var v := Vector2(cmd.x, cmd.y)
-							var end := cmd.start + v if relative else v
-							points = PackedVector2Array([cmd.start, end])
+							var end := cmd.get_start_coords() + v if relative else v
+							points = PackedVector2Array([cmd.start_x, end])
 						"H":
 							# Horizontal line contour.
 							var v := Vector2(cmd.x, 0)
-							var end := cmd.start + v if relative else Vector2(v.x, cmd.start.y)
-							points = PackedVector2Array([cmd.start, end])
+							var end := cmd.get_start_coords() + v if\
+									relative else Vector2(v.x, cmd.start_y)
+							points = PackedVector2Array([cmd.get_start_coords(), end])
 						"V":
 							# Vertical line contour.
 							var v := Vector2(0, cmd.y)
-							var end := cmd.start + v if relative else Vector2(cmd.start.x, v.y)
-							points = PackedVector2Array([cmd.start, end])
+							var end := cmd.get_start_coords() + v if\
+									relative else Vector2(cmd.start_x, v.y)
+							points = PackedVector2Array([cmd.get_start_coords(), end])
 						"C":
 							# Cubic Bezier curve contour.
 							var v := Vector2(cmd.x, cmd.y)
 							var v1 := Vector2(cmd.x1, cmd.y1)
 							var v2 := Vector2(cmd.x2, cmd.y2)
-							var cp1 := cmd.start
+							var cp1 := cmd.get_start_coords()
 							var cp4 := cp1 + v if relative else v
 							var cp2 := v1 if relative else v1 - cp1
 							var cp3 := v2 - v
@@ -445,7 +447,7 @@ func _draw() -> void:
 							var v1 := pathdata.get_implied_S_control(cmd_idx)
 							var v2 := Vector2(cmd.x2, cmd.y2)
 							
-							var cp1 := cmd.start
+							var cp1 := cmd.get_start_coords()
 							var cp4 := cp1 + v if relative else v
 							var cp2 := v1 if relative else v1 - cp1
 							var cp3 := v2 - v
@@ -457,7 +459,7 @@ func _draw() -> void:
 							# Quadratic Bezier curve contour.
 							var v := Vector2(cmd.x, cmd.y)
 							var v1 := Vector2(cmd.x1, cmd.y1)
-							var cp1 := cmd.start
+							var cp1 := cmd.get_start_coords()
 							var cp2 := cp1 + v1 if relative else v1
 							var cp3 := cp1 + v if relative else v
 							
@@ -468,7 +470,7 @@ func _draw() -> void:
 							var v := Vector2(cmd.x, cmd.y)
 							var v1 := pathdata.get_implied_T_control(cmd_idx)
 							
-							var cp1 := cmd.start
+							var cp1 := cmd.get_start_coords()
 							var cp2 := v1 + cp1 if relative else v1
 							var cp3 := cp1 + v if relative else v
 							
@@ -480,7 +482,7 @@ func _draw() -> void:
 										PackedVector2Array([cp1, cp2, cp2, cp3]))
 						"A":
 							# Elliptical arc contour.
-							var start := cmd.start
+							var start := cmd.get_start_coords()
 							var v := Vector2(cmd.x, cmd.y)
 							var end := start + v if relative else v
 							# Correct for out-of-range radii.
@@ -565,9 +567,9 @@ func _draw() -> void:
 							
 							var end := Vector2(prev_M_cmd.x, prev_M_cmd.y)
 							if prev_M_cmd.relative:
-								end += prev_M_cmd.start
+								end += prev_M_cmd.get_start_coords()
 							
-							points = PackedVector2Array([cmd.start, end])
+							points = PackedVector2Array([cmd.get_start_coords(), end])
 						"M":
 							continue
 					

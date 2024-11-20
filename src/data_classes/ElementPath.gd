@@ -34,7 +34,7 @@ func get_bounding_box() -> Rect2:
 			"M", "L":
 				# Move / Line
 				var v := Vector2(cmd.x, cmd.y)
-				var end := cmd.start + v if relative else v
+				var end := cmd.get_start_coords() + v if relative else v
 				min_x = minf(min_x, end.x)
 				min_y = minf(min_y, end.y)
 				max_x = maxf(max_x, end.x)
@@ -42,13 +42,13 @@ func get_bounding_box() -> Rect2:
 			"H":
 				# Horizontal line
 				var v := Vector2(cmd.x, 0)
-				var end := cmd.start + v if relative else v
+				var end := cmd.get_start_coords() + v if relative else v
 				min_x = minf(min_x, end.x)
 				max_x = maxf(max_x, end.x)
 			"V":
 				# Vertical line
 				var v := Vector2(0, cmd.y)
-				var end := cmd.start + v if relative else v
+				var end := cmd.get_start_coords() + v if relative else v
 				min_y = minf(min_y, end.y)
 				max_y = maxf(max_y, end.y)
 			"C", "S":
@@ -57,7 +57,7 @@ func get_bounding_box() -> Rect2:
 				var v1 := Vector2(cmd.x1, cmd.y1) if cmd_char == "C" else\
 						pathdata.get_implied_S_control(cmd_idx)
 				var v2 := Vector2(cmd.x2, cmd.y2)
-				var cp1 := cmd.start
+				var cp1 := cmd.get_start_coords()
 				var cp4 := cp1 + v if relative else v
 				var cp2 := cp1 + v1 if relative else v1
 				var cp3 := cp1 + v2 if relative else v2
@@ -94,7 +94,7 @@ func get_bounding_box() -> Rect2:
 				var v1 := Vector2(cmd.x1, cmd.y1) if cmd_char == "Q" else\
 						pathdata.get_implied_T_control(cmd_idx)
 				
-				var cp1 := cmd.start
+				var cp1 := cmd.get_start_coords()
 				var cp2 := cp1 + v1 if relative else v1
 				var cp3 := cp1 + v if relative else v
 				
@@ -116,7 +116,7 @@ func get_bounding_box() -> Rect2:
 					max_y = maxf(max_y, y_extrema)
 			"A":
 				# Elliptical arc.
-				var start := cmd.start
+				var start := cmd.get_start_coords()
 				var v := Vector2(cmd.x, cmd.y)
 				var end := start + v if relative else v
 				

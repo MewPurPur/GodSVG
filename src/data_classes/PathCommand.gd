@@ -11,26 +11,34 @@ const translation_dict := {
 var command_char := ""
 var arg_count := 0
 var relative := false
-var start: Vector2
+
+# This must be floats, because 64-bit precision is needed for intermediate operations.
+var start_x := 0.0
+var start_y := 0.0
+
+func get_start_coords() -> Vector2:
+	return Vector2(start_x, start_y)
+
+
 func toggle_relative() -> void:
 	if relative:
 		relative = false
 		command_char = command_char.to_upper()
 		for property in ["x", "x1", "x2"]:
 			if property in self:
-				set(property, start.x + get(property))
+				set(property, start_x + get(property))
 		for property in ["y", "y1", "y2"]:
 			if property in self:
-				set(property, start.y + get(property))
+				set(property, start_y + get(property))
 	else:
 		relative = true
 		command_char = command_char.to_lower()
 		for property in ["x", "x1", "x2"]:
 			if property in self:
-				set(property, get(property) - start.x)
+				set(property, get(property) - start_x)
 		for property in ["y", "y1", "y2"]:
 			if property in self:
-				set(property, get(property) - start.y)
+				set(property, get(property) - start_y)
 
 
 class MoveCommand extends PathCommand:
