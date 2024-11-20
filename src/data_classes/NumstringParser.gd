@@ -43,16 +43,16 @@ static func evaluate(text: String) -> float:
 	var err := expr.parse(text.replace(",", "."))
 	if err == OK:
 		var result: Variant = expr.execute()
-		if not expr.has_execute_failed() and typeof(result) == TYPE_FLOAT:
+		if not expr.has_execute_failed() and typeof(result) in [TYPE_FLOAT, TYPE_INT]:
 			return result
 	err = expr.parse(text.replace(";", "."))
 	if err == OK:
 		var result: Variant = expr.execute()
-		if not expr.has_execute_failed() and typeof(result) == TYPE_FLOAT:
+		if not expr.has_execute_failed() and typeof(result) in [TYPE_FLOAT, TYPE_INT]:
 			return result
 	err = expr.parse(text)
 	if err == OK:
 		var result: Variant = expr.execute()
-		if not expr.has_execute_failed() and typeof(result) == TYPE_FLOAT:
+		if not expr.has_execute_failed() and typeof(result) in [TYPE_FLOAT, TYPE_INT]:
 			return result
 	return NAN
