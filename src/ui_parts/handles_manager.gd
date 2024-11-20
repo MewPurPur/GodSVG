@@ -412,7 +412,7 @@ func _draw() -> void:
 							# Line contour.
 							var v := Vector2(cmd.x, cmd.y)
 							var end := cmd.get_start_coords() + v if relative else v
-							points = PackedVector2Array([cmd.start_x, end])
+							points = PackedVector2Array([cmd.get_start_coords(), end])
 						"H":
 							# Horizontal line contour.
 							var v := Vector2(cmd.x, 0)

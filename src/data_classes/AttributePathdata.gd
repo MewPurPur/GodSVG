@@ -85,9 +85,10 @@ func get_implied_S_control(cmd_idx: int) -> Vector2:
 	var v := Vector2.ZERO if cmd.relative else cmd.get_start_coords()
 	if prev_cmd.command_char in "CcSs":
 		var prev_control_pt := Vector2(prev_cmd.x2, prev_cmd.y2)
-		v = (cmd.start if cmd.relative else cmd.start * 2) - prev_control_pt
+		v = (cmd.get_start_coords() if\
+				cmd.relative else cmd.get_start_coords() * 2) - prev_control_pt
 		if prev_cmd.relative:
-			v -= prev_cmd.start
+			v -= prev_cmd.get_start_coords()
 	return v
 
 func get_implied_T_control(idx: int) -> Vector2:
@@ -102,8 +103,8 @@ func get_implied_T_control(idx: int) -> Vector2:
 	if prevQ_idx == -1:
 		return Vector2(NAN, NAN)
 	
-	var prevQ_x: float = prevQ_cmd.x if "x" in prevQ_cmd else prevQ_cmd.start.x
-	var prevQ_y: float = prevQ_cmd.y if "y" in prevQ_cmd else prevQ_cmd.start.y
+	var prevQ_x: float = prevQ_cmd.x if "x" in prevQ_cmd else prevQ_cmd.start_x
+	var prevQ_y: float = prevQ_cmd.y if "y" in prevQ_cmd else prevQ_cmd.start_y
 	var prevQ_v := Vector2(prevQ_x, prevQ_y)
 	var prevQ_v1 := Vector2(prevQ_cmd.x1, prevQ_cmd.y1) if\
 			prevQ_cmd.command_char in "Qq" else prevQ_v
@@ -121,7 +122,7 @@ func get_implied_T_control(idx: int) -> Vector2:
 	
 	var cmd := get_command(idx)
 	if cmd.relative:
-		v -= cmd.start
+		v -= cmd.get_start_coords()
 	return v
 
 
@@ -144,16 +145,16 @@ func insert_command(idx: int, cmd_char: String, vec := Vector2.ZERO) -> void:
 		if not cmd_char in "Hh":
 			new_cmd.y = vec.y
 		if cmd_char in "Qq":
-			new_cmd.x1 = lerpf(0.0 if relative else new_cmd.start.x, vec.x, 0.5)
-			new_cmd.y1 = lerpf(0.0 if relative else new_cmd.start.y, vec.y, 0.5)
+			new_cmd.x1 = lerpf(0.0 if relative else new_cmd.start_x, vec.x, 0.5)
+			new_cmd.y1 = lerpf(0.0 if relative else new_cmd.start_y, vec.y, 0.5)
 		elif cmd_char in "Ss":
-			new_cmd.x2 = lerpf(0.0 if relative else new_cmd.start.x, vec.x, 2/3.0)
-			new_cmd.y2 = lerpf(0.0 if relative else new_cmd.start.y, vec.y, 2/3.0)
+			new_cmd.x2 = lerpf(0.0 if relative else new_cmd.start_x, vec.x, 2/3.0)
+			new_cmd.y2 = lerpf(0.0 if relative else new_cmd.start_y, vec.y, 2/3.0)
 		elif cmd_char in "Cc":
-			new_cmd.x1 = lerpf(0.0 if relative else new_cmd.start.x, vec.x, 1/3.0)
-			new_cmd.y1 = lerpf(0.0 if relative else new_cmd.start.y, vec.y, 1/3.0)
-			new_cmd.x2 = lerpf(0.0 if relative else new_cmd.start.x, vec.x, 2/3.0)
-			new_cmd.y2 = lerpf(0.0 if relative else new_cmd.start.y, vec.y, 2/3.0)
+			new_cmd.x1 = lerpf(0.0 if relative else new_cmd.start_x, vec.x, 1/3.0)
+			new_cmd.y1 = lerpf(0.0 if relative else new_cmd.start_y, vec.y, 1/3.0)
+			new_cmd.x2 = lerpf(0.0 if relative else new_cmd.start_x, vec.x, 2/3.0)
+			new_cmd.y2 = lerpf(0.0 if relative else new_cmd.start_y, vec.y, 2/3.0)
 	sync_after_commands_change()
 
 
@@ -171,9 +172,9 @@ func _convert_command(idx: int, cmd_char: String) -> void:
 	var relative := Utils.is_string_lower(cmd_char)
 	
 	if "x" in new_cmd and not "x" in old_cmd:
-		new_cmd.x = 0.0 if relative else old_cmd.start.x
+		new_cmd.x = 0.0 if relative else old_cmd.start_x
 	if "y" in new_cmd and not "y" in old_cmd:
-		new_cmd.y = 0.0 if relative else old_cmd.start.y
+		new_cmd.y = 0.0 if relative else old_cmd.start_y
 	
 	match cmd_absolute_char:
 		"C":
@@ -182,22 +183,22 @@ func _convert_command(idx: int, cmd_char: String) -> void:
 				new_cmd.x1 = v.x
 				new_cmd.y1 = v.y
 			else:
-				new_cmd.x1 = lerpf(0.0 if relative else old_cmd.start.x, new_cmd.x, 1/3.0)
-				new_cmd.y1 = lerpf(0.0 if relative else old_cmd.start.y, new_cmd.y, 1/3.0)
-				new_cmd.x2 = lerpf(0.0 if relative else old_cmd.start.x, new_cmd.x, 2/3.0)
-				new_cmd.y2 = lerpf(0.0 if relative else old_cmd.start.y, new_cmd.y, 2/3.0)
+				new_cmd.x1 = lerpf(0.0 if relative else old_cmd.start_x, new_cmd.x, 1/3.0)
+				new_cmd.y1 = lerpf(0.0 if relative else old_cmd.start_y, new_cmd.y, 1/3.0)
+				new_cmd.x2 = lerpf(0.0 if relative else old_cmd.start_x, new_cmd.x, 2/3.0)
+				new_cmd.y2 = lerpf(0.0 if relative else old_cmd.start_y, new_cmd.y, 2/3.0)
 		"S":
 			if not old_cmd.command_char in "Cc":
-				new_cmd.x2 = lerpf(0.0 if relative else old_cmd.start.x, new_cmd.x, 2/3.0)
-				new_cmd.y2 = lerpf(0.0 if relative else old_cmd.start.y, new_cmd.y, 2/3.0)
+				new_cmd.x2 = lerpf(0.0 if relative else old_cmd.start_x, new_cmd.x, 2/3.0)
+				new_cmd.y2 = lerpf(0.0 if relative else old_cmd.start_y, new_cmd.y, 2/3.0)
 		"Q":
 			if old_cmd.command_char in "Tt":
 				var v := get_implied_T_control(idx)
 				new_cmd.x1 = v.x
 				new_cmd.y1 = v.y
 			else:
-				new_cmd.x1 = lerpf(0.0 if relative else old_cmd.start.x, new_cmd.x, 0.5)
-				new_cmd.y1 = lerpf(0.0 if relative else old_cmd.start.y, new_cmd.y, 0.5)
+				new_cmd.x1 = lerpf(0.0 if relative else old_cmd.start_x, new_cmd.x, 0.5)
+				new_cmd.y1 = lerpf(0.0 if relative else old_cmd.start_y, new_cmd.y, 0.5)
 	
 	_commands.remove_at(idx)
 	_commands.insert(idx, new_cmd)
