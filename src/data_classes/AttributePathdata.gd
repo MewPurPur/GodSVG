@@ -25,30 +25,36 @@ func sync_after_commands_change() -> void:
 
 
 func locate_start_points() -> void:
-	# Start points are absolute.
-	var last_end_point := Vector2.ZERO
-	var current_subpath_start := Vector2.ZERO
-	for command in _commands:
-		command.start = last_end_point
+	# Start points are absolute. Individual floats, since 64-bit precision is needed here.
+	var last_end_point_x := 0.0
+	var last_end_point_y := 0.0
+	var curr_subpath_start_x := 0.0
+	var curr_subpath_start_y := 0.0
+	for command: PathCommand in _commands:
+		command.start_x = last_end_point_x
+		command.start_y = last_end_point_y
 		
 		if command is PathCommand.MoveCommand:
-			current_subpath_start = command.start if command.relative else Vector2.ZERO
-			current_subpath_start += Vector2(command.x, command.y)
+			curr_subpath_start_x = command.start_x + command.x if\
+					command.relative else command.x
+			curr_subpath_start_y = command.start_y + command.y if\
+					command.relative else command.y
 		elif command is PathCommand.CloseCommand:
-			last_end_point = current_subpath_start
+			last_end_point_x = curr_subpath_start_x
+			last_end_point_y = curr_subpath_start_y
 			continue
 		
 		# Prepare for the next iteration.
 		if command.relative:
 			if "x" in command:
-				last_end_point.x += command.x
+				last_end_point_x += command.x
 			if "y" in command:
-				last_end_point.y += command.y
+				last_end_point_y += command.y
 		else:
 			if "x" in command:
-				last_end_point.x = command.x
+				last_end_point_x = command.x
 			if "y" in command:
-				last_end_point.y = command.y
+				last_end_point_y = command.y
 
 
 func get_command_count() -> int:
@@ -76,7 +82,7 @@ func get_subpath(idx: int) -> Vector2i:
 func get_implied_S_control(cmd_idx: int) -> Vector2:
 	var cmd := get_command(cmd_idx)
 	var prev_cmd := get_command(cmd_idx - 1)
-	var v := Vector2.ZERO if cmd.relative else cmd.start
+	var v := Vector2.ZERO if cmd.relative else cmd.get_start_coords()
 	if prev_cmd.command_char in "CcSs":
 		var prev_control_pt := Vector2(prev_cmd.x2, prev_cmd.y2)
 		v = (cmd.start if cmd.relative else cmd.start * 2) - prev_control_pt
@@ -101,14 +107,16 @@ func get_implied_T_control(idx: int) -> Vector2:
 	var prevQ_v := Vector2(prevQ_x, prevQ_y)
 	var prevQ_v1 := Vector2(prevQ_cmd.x1, prevQ_cmd.y1) if\
 			prevQ_cmd.command_char in "Qq" else prevQ_v
-	var prevQ_end := prevQ_cmd.start + prevQ_v if prevQ_cmd.relative else prevQ_v
-	var prevQ_control_pt := prevQ_cmd.start + prevQ_v1 if prevQ_cmd.relative else prevQ_v1
+	var prevQ_end := prevQ_cmd.get_start_coords() + prevQ_v if\
+			prevQ_cmd.relative else prevQ_v
+	var prevQ_control_pt := prevQ_cmd.get_start_coords() + prevQ_v1 if\
+			prevQ_cmd.relative else prevQ_v1
 	
 	var v := prevQ_end * 2 - prevQ_control_pt
 	for T_idx in range(prevQ_idx + 1, idx):
 		var T_cmd := get_command(T_idx)
 		var T_v := Vector2(T_cmd.x, T_cmd.y)
-		var T_end := T_cmd.start + T_v if T_cmd.relative else T_v
+		var T_end := T_cmd.get_start_coords() + T_v if T_cmd.relative else T_v
 		v = T_end * 2 - v
 	
 	var cmd := get_command(idx)

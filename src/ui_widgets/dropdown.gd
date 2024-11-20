@@ -13,8 +13,8 @@ var value := "":
 		if value != new_value:
 			value = new_value
 			value_changed.emit(value)
-			if is_instance_valid(line_edit):
-				line_edit.text = value
+		if is_instance_valid(line_edit):
+			line_edit.text = value
 
 func _ready() -> void:
 	line_edit.text_changed.connect(_on_text_changed)

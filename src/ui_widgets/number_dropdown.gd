@@ -22,8 +22,8 @@ var value := "":
 		if not is_equal_approx(current_num, proposed_num):
 			value = to_str(proposed_num)
 			value_changed.emit(value)
-			if is_instance_valid(line_edit):
-				line_edit.text = value
+		if is_instance_valid(line_edit):
+			line_edit.text = value
 
 func _on_button_pressed() -> void:
 	var btn_arr: Array[Button] = []

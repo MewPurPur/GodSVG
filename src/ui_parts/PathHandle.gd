@@ -19,8 +19,8 @@ func _init(new_element: Element, command_idx: int, x_name: String, y_name: Strin
 func set_pos(new_pos: Vector2) -> void:
 	if pos != new_pos:
 		var path_attribute: AttributePathdata = element.get_attribute(pathdata_name)
-		var command := path_attribute.get_command(command_index)
-		var new_coords := new_pos - command.start if command.relative else new_pos
+		var cmd := path_attribute.get_command(command_index)
+		var new_coords := new_pos - cmd.get_start_coords() if cmd.relative else new_pos
 		path_attribute.set_command_property(command_index, x_param, new_coords.x)
 		path_attribute.set_command_property(command_index, y_param, new_coords.y)
 		sync()
@@ -35,12 +35,12 @@ func sync() -> void:
 			element.get_attribute(pathdata_name).get_command(command_index)
 	if x_param in command:
 		var command_x: float = command.get(x_param)
-		pos.x = command.start.x + command_x if command.relative else command_x
+		pos.x = command.start_x + command_x if command.relative else command_x
 	else:
-		pos.x = command.start.x
+		pos.x = command.start_x
 	if y_param in command:
 		var command_y: float = command.get(y_param)
-		pos.y = command.start.y + command_y if command.relative else command_y
+		pos.y = command.start_y + command_y if command.relative else command_y
 	else:
-		pos.y = command.start.y
+		pos.y = command.start_y
 	super()

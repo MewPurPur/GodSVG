@@ -264,12 +264,12 @@ func optimize(not_applied := false) -> bool:
 							conversion_indices.append(cmd_idx)
 							conversion_cmd_chars.append("h")
 					elif cmd_char == "L":
-						if command.x == command.start.x:
+						if command.x == command.get_start_coordinates().x:
 							if not_applied:
 								return true
 							conversion_indices.append(cmd_idx)
 							conversion_cmd_chars.append("V")
-						elif command.y == command.start.y:
+						elif command.y == command.get_start_coordinates().y:
 							if not_applied:
 								return true
 							conversion_indices.append(cmd_idx)
