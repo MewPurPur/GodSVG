@@ -51,7 +51,7 @@ func setup_color(enable_alpha: bool) -> void:
 	widget.enable_palettes = false
 	widget.value = getter.call().to_html(enable_alpha)
 	add_child(widget)
-	widget.value_changed.connect(_color_modification)
+	widget.value_changed.connect(_color_modification.bind(enable_alpha))
 	type = Type.COLOR
 	panel_width = 114 if enable_alpha else 100
 
@@ -103,8 +103,8 @@ func _checkbox_modification() -> void:
 	setter.call(!getter.call())
 	post_modification()
 
-func _color_modification(value: String) -> void:
-	setter.call(Color(value))
+func _color_modification(value: String, enable_alpha: bool) -> void:
+	setter.call(ColorParser.text_to_color(value, Color(), enable_alpha))
 	post_modification()
 
 func _dropdown_modification(value: int) -> void:

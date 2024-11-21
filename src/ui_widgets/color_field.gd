@@ -20,7 +20,7 @@ func set_value(new_value: String, save := false) -> void:
 	if not new_value.is_empty():
 		# Validate the value.
 		if not is_valid(new_value):
-			sync(element.get_attribute_value(attribute_name))
+			sync_to_attribute()
 			return
 	new_value = ColorParser.add_hash_if_hex(new_value)
 	sync(element.get_attribute(attribute_name).format(new_value))

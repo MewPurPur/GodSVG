@@ -14,9 +14,7 @@ signal value_changed(new_value: String)
 var value: String:
 	set(new_value):
 		new_value = ColorParser.add_hash_if_hex(new_value)
-		if ColorParser.is_valid_hex(new_value) or ColorParser.is_valid_named(new_value) or\
-		ColorParser.is_valid_rgb(new_value) or (enable_alpha and\
-		ColorParser.is_valid_hex_with_alpha(new_value)):
+		if ColorParser.is_valid(new_value, enable_alpha, false):
 			if new_value != value:
 				value = new_value
 				value_changed.emit(value)
@@ -24,7 +22,7 @@ var value: String:
 
 
 func _ready() -> void:
-	text_submitted.connect(func(x): set("value", x))
+	text_submitted.connect(func(x): value = x)
 	pressed.connect(_on_pressed)
 	text_changed.connect(_on_text_changed)
 	text_change_canceled.connect(func(): sync(value))
@@ -35,9 +33,7 @@ func _ready() -> void:
 
 func is_color_valid_non_url(new_value: String) -> bool:
 	new_value = ColorParser.add_hash_if_hex(new_value)
-	return ColorParser.is_valid_named(new_value) or\
-			ColorParser.is_valid_hex(new_value) or ColorParser.is_valid_rgb(new_value) or\
-			(enable_alpha and ColorParser.is_valid_hex_with_alpha(new_value))
+	return ColorParser.is_valid(new_value, enable_alpha, false)
 
 func sync(new_value: String) -> void:
 	text = new_value.trim_prefix("#")
@@ -63,7 +59,7 @@ func _draw() -> void:
 	stylebox.corner_radius_top_right = 5
 	stylebox.corner_radius_bottom_right = 5
 	stylebox.bg_color = ColorParser.text_to_color(ColorParser.add_hash_if_hex(value),
-			Color(), true)
+			Color(), enable_alpha)
 	draw_texture(checkerboard, Vector2(size.x - BUTTON_WIDTH, 1))
 	draw_style_box(stylebox, Rect2(size.x - BUTTON_WIDTH, 1, BUTTON_WIDTH - 1, size.y - 2))
 	if is_instance_valid(temp_button) and temp_button.button_pressed:
