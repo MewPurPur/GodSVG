@@ -185,6 +185,10 @@ static func finish_svg_import(svg_data: String, svg_path: String) -> void:
 	warning_panel.set_svg(svg_data)
 	HandlerGUI.add_overlay(warning_panel)
 
+static func open_svg(file_path: String) -> void:
+	if file_path.get_extension() == "svg":
+		OS.shell_open(file_path)
+
 
 # Web stuff.
 
