@@ -160,6 +160,10 @@ func _on_file_button_pressed() -> void:
 	btn_array.append(ContextPopup.create_button(TranslationServer.translate("Save SVG"),
 			FileUtils.open_save_dialog.bind("svg", FileUtils.native_file_save,
 			FileUtils.save_svg_to_file), false, load("res://visual/icons/Save.svg"), "save"))
+	btn_array.append(ContextPopup.create_button(TranslationServer.translate("Open file"),
+			ShortcutUtils.fn("open_svg"),
+			not FileAccess.file_exists(GlobalSettings.savedata.current_file_path),
+			load("res://visual/icons/OpenFile.svg"), "open_svg"))
 	btn_array.append(ContextPopup.create_button(TranslationServer.translate("Reset SVG"),
 			ShortcutUtils.fn("reset_svg"),
 			FileUtils.compare_svg_to_disk_contents() != FileUtils.FileState.DIFFERENT,

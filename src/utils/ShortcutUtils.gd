@@ -11,6 +11,7 @@ const _shortcut_categories_dict = {
 		"clear_svg": true,
 		"clear_file_path": true,
 		"reset_svg": true,
+		"open_svg": true,
 	},
 	"edit": {
 		"undo": true,
@@ -85,6 +86,7 @@ static func fn(shortcut: String) -> Callable:
 				"current_file_path", "")
 		"reset_svg": return FileUtils.apply_svg_from_path.bind(
 				GlobalSettings.savedata.current_file_path)
+		"open_svg": return FileUtils.open_svg.bind(GlobalSettings.savedata.current_file_path)
 		"redo": return SVG.redo
 		"undo": return SVG.undo
 		"ui_cancel": return Indications.clear_all_selections
