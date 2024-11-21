@@ -287,7 +287,8 @@ func open_dir_context(dir: String) -> void:
 	var context_popup := ContextPopup.new()
 	var btn_arr: Array[Button] = [
 		ContextPopup.create_button(TranslationServer.translate("Open"),
-				enter_dir.bind(dir), false, load("res://visual/icons/OpenFolder.svg")),
+				enter_dir.bind(dir), false, load("res://visual/icons/OpenFolder.svg"),
+				"ui_accept"),
 		ContextPopup.create_button(TranslationServer.translate("Copy path"),
 				copy_path, false, load("res://visual/icons/Copy.svg"))]
 	context_popup.setup(btn_arr, true)
@@ -453,3 +454,8 @@ func _input(event: InputEvent) -> void:
 	if ShortcutUtils.is_action_pressed(event, "find"):
 		search_button.button_pressed = true
 		accept_event()
+	elif Input.is_action_pressed("ui_accept"):
+		var selected_item_indices := file_list.get_selected_items()
+		if not selected_item_indices.is_empty():
+			call_activation_action(file_list.get_item_metadata(selected_item_indices[0]))
+			accept_event()
