@@ -299,7 +299,7 @@ func open_file_context(file: String) -> void:
 	focus_file(file)
 	var btn_arr: Array[Button] = [
 		ContextPopup.create_button(special_button.text,
-				select_file, false, load("res://visual/icons/OpenFile.svg")),
+				select_file, false, load("res://visual/icons/OpenFile.svg"), "ui_accept"),
 		ContextPopup.create_button(TranslationServer.translate("Copy path"),
 				copy_path, false, load("res://visual/icons/Copy.svg"))]
 	var context_popup := ContextPopup.new()
