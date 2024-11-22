@@ -2,104 +2,104 @@ class_name TranslationUtils extends RefCounted
 
 static func get_shortcut_description(action_name: String) -> String:
 	match action_name:
-		"export": return TranslationServer.translate("Export")
-		"import": return TranslationServer.translate("Import")
-		"save": return TranslationServer.translate("Save")
-		"optimize": return TranslationServer.translate("Optimize")
-		"copy_svg_text": return TranslationServer.translate("Copy all text")
-		"reset_svg": return TranslationServer.translate("Reset SVG")
-		"clear_svg": return TranslationServer.translate("Clear SVG")
-		"clear_file_path": return TranslationServer.translate("Clear saving path")
-		"undo": return TranslationServer.translate("Undo")
-		"redo": return TranslationServer.translate("Redo")
-		"select_all": return TranslationServer.translate("Select all elements")
-		"duplicate": return TranslationServer.translate("Duplicate the selected elements")
-		"delete": return TranslationServer.translate("Delete the selection")
-		"move_up": return TranslationServer.translate("Move the selected elements up")
-		"move_down": return TranslationServer.translate("Move the selected elements down")
-		"find": return TranslationServer.translate("Find")
-		"zoom_in": return TranslationServer.translate("Zoom in")
-		"zoom_out": return TranslationServer.translate("Zoom out")
-		"zoom_reset": return TranslationServer.translate("Zoom reset")
-		"view_show_grid": return TranslationServer.translate("Show grid")
-		"view_show_handles": return TranslationServer.translate("Show handles")
-		"view_rasterized_svg": return TranslationServer.translate("Show rasterized SVG")
-		"toggle_snap": return TranslationServer.translate("Toggle snapping")
-		"load_reference": return TranslationServer.translate("Load reference image")
-		"view_show_reference": return TranslationServer.translate("Show reference image")
-		"view_overlay_reference": return TranslationServer.translate("Overlay reference image")
-		"debug": return TranslationServer.translate("View debug information")
+		"export": return Translator.translate("Export")
+		"import": return Translator.translate("Import")
+		"save": return Translator.translate("Save")
+		"optimize": return Translator.translate("Optimize")
+		"copy_svg_text": return Translator.translate("Copy all text")
+		"reset_svg": return Translator.translate("Reset SVG")
+		"clear_svg": return Translator.translate("Clear SVG")
+		"clear_file_path": return Translator.translate("Clear saving path")
+		"undo": return Translator.translate("Undo")
+		"redo": return Translator.translate("Redo")
+		"select_all": return Translator.translate("Select all elements")
+		"duplicate": return Translator.translate("Duplicate the selected elements")
+		"delete": return Translator.translate("Delete the selection")
+		"move_up": return Translator.translate("Move the selected elements up")
+		"move_down": return Translator.translate("Move the selected elements down")
+		"find": return Translator.translate("Find")
+		"zoom_in": return Translator.translate("Zoom in")
+		"zoom_out": return Translator.translate("Zoom out")
+		"zoom_reset": return Translator.translate("Zoom reset")
+		"view_show_grid": return Translator.translate("Show grid")
+		"view_show_handles": return Translator.translate("Show handles")
+		"view_rasterized_svg": return Translator.translate("Show rasterized SVG")
+		"toggle_snap": return Translator.translate("Toggle snapping")
+		"load_reference": return Translator.translate("Load reference image")
+		"view_show_reference": return Translator.translate("Show reference image")
+		"view_overlay_reference": return Translator.translate("Overlay reference image")
+		"debug": return Translator.translate("View debug information")
 		"move_relative": return "%s (%s)" %\
-				[get_command_description("M"), TranslationServer.translate("Relative")]
+				[get_command_description("M"), Translator.translate("Relative")]
 		"move_absolute": return "%s (%s)" %\
-				[get_command_description("M"), TranslationServer.translate("Absolute")]
+				[get_command_description("M"), Translator.translate("Absolute")]
 		"line_relative": return "%s (%s)" %\
-				[get_command_description("L"), TranslationServer.translate("Relative")]
+				[get_command_description("L"), Translator.translate("Relative")]
 		"line_absolute": return "%s (%s)" %\
-				[get_command_description("L"), TranslationServer.translate("Absolute")]
+				[get_command_description("L"), Translator.translate("Absolute")]
 		"horizontal_line_relative": return "%s (%s)" %\
-				[get_command_description("H"), TranslationServer.translate("Relative")]
+				[get_command_description("H"), Translator.translate("Relative")]
 		"horizontal_line_absolute": return "%s (%s)" %\
-				[get_command_description("H"), TranslationServer.translate("Absolute")]
+				[get_command_description("H"), Translator.translate("Absolute")]
 		"vertical_line_relative": return "%s (%s)" %\
-				[get_command_description("V"), TranslationServer.translate("Relative")]
+				[get_command_description("V"), Translator.translate("Relative")]
 		"vertical_line_absolute": return "%s (%s)" %\
-				[get_command_description("V"), TranslationServer.translate("Absolute")]
+				[get_command_description("V"), Translator.translate("Absolute")]
 		"close_path_relative": return "%s (%s)" %\
-				[get_command_description("Z"), TranslationServer.translate("Relative")]
+				[get_command_description("Z"), Translator.translate("Relative")]
 		"close_path_absolute": return "%s (%s)" %\
-				[get_command_description("Z"), TranslationServer.translate("Absolute")]
+				[get_command_description("Z"), Translator.translate("Absolute")]
 		"elliptical_arc_relative": return "%s (%s)" %\
-				[get_command_description("A"), TranslationServer.translate("Relative")]
+				[get_command_description("A"), Translator.translate("Relative")]
 		"elliptical_arc_absolute": return "%s (%s)" %\
-				[get_command_description("A"), TranslationServer.translate("Absolute")]
+				[get_command_description("A"), Translator.translate("Absolute")]
 		"quadratic_bezier_relative": return "%s (%s)" %\
-				[get_command_description("Q"), TranslationServer.translate("Relative")]
+				[get_command_description("Q"), Translator.translate("Relative")]
 		"quadratic_bezier_absolute": return "%s (%s)" %\
-				[get_command_description("Q"), TranslationServer.translate("Absolute")]
+				[get_command_description("Q"), Translator.translate("Absolute")]
 		"shorthand_quadratic_bezier_relative": return "%s (%s)" %\
-				[get_command_description("T"), TranslationServer.translate("Relative")]
+				[get_command_description("T"), Translator.translate("Relative")]
 		"shorthand_quadratic_bezier_absolute": return "%s (%s)" %\
-				[get_command_description("T"), TranslationServer.translate("Absolute")]
+				[get_command_description("T"), Translator.translate("Absolute")]
 		"cubic_bezier_relative": return "%s (%s)" %\
-				[get_command_description("C"), TranslationServer.translate("Relative")]
+				[get_command_description("C"), Translator.translate("Relative")]
 		"cubic_bezier_absolute": return "%s (%s)" %\
-				[get_command_description("C"), TranslationServer.translate("Absolute")]
+				[get_command_description("C"), Translator.translate("Absolute")]
 		"shorthand_cubic_bezier_relative": return "%s (%s)" %\
-				[get_command_description("S"), TranslationServer.translate("Relative")]
+				[get_command_description("S"), Translator.translate("Relative")]
 		"shorthand_cubic_bezier_absolute": return "%s (%s)" %\
-				[get_command_description("S"), TranslationServer.translate("Absolute")]
-		"open_settings": return TranslationServer.translate("Open Settings menu")
-		"about_info": return TranslationServer.translate("Open About menu")
-		"about_donate": return TranslationServer.translate("Open Donate menu")
-		"about_repo": return TranslationServer.translate("Open GodSVG repository")
-		"about_website": return TranslationServer.translate("Open GodSVG website")
-		"check_updates": return TranslationServer.translate("Check for updates")
-		"quit": return TranslationServer.translate("Quit the application")
+				[get_command_description("S"), Translator.translate("Absolute")]
+		"open_settings": return Translator.translate("Open Settings menu")
+		"about_info": return Translator.translate("Open About menu")
+		"about_donate": return Translator.translate("Open Donate menu")
+		"about_repo": return Translator.translate("Open GodSVG repository")
+		"about_website": return Translator.translate("Open GodSVG website")
+		"check_updates": return Translator.translate("Check for updates")
+		"quit": return Translator.translate("Quit the application")
 		_: return action_name
 
 
 static func get_command_description(command_char: String) -> String:
 	match command_char:
-		"M", "m": return TranslationServer.translate("Move to")
-		"L", "l": return TranslationServer.translate("Line to")
-		"H", "h": return TranslationServer.translate("Horizontal Line to")
-		"V", "v": return TranslationServer.translate("Vertical Line to")
-		"Z", "z": return TranslationServer.translate("Close Path")
-		"A", "a": return TranslationServer.translate("Elliptical Arc to")
-		"Q", "q": return TranslationServer.translate("Quadratic Bezier to")
-		"T", "t": return TranslationServer.translate("Shorthand Quadratic Bezier to")
-		"C", "c": return TranslationServer.translate("Cubic Bezier to")
-		"S", "s": return TranslationServer.translate("Shorthand Cubic Bezier to")
+		"M", "m": return Translator.translate("Move to")
+		"L", "l": return Translator.translate("Line to")
+		"H", "h": return Translator.translate("Horizontal Line to")
+		"V", "v": return Translator.translate("Vertical Line to")
+		"Z", "z": return Translator.translate("Close Path")
+		"A", "a": return Translator.translate("Elliptical Arc to")
+		"Q", "q": return Translator.translate("Quadratic Bezier to")
+		"T", "t": return Translator.translate("Shorthand Quadratic Bezier to")
+		"C", "c": return Translator.translate("Cubic Bezier to")
+		"S", "s": return Translator.translate("Shorthand Cubic Bezier to")
 		_: return command_char
 
 static func get_bad_extension_alert_text(extension: String,
 allowed_extensions: PackedStringArray) -> String:
 	var extension_list := ", ".join(allowed_extensions)
 	if extension.is_empty():
-		return TranslationServer.translate(
-				"The file extension is empty. Only {extension_list} files are supported.".format(
-				{"extension_list": extension_list}))
-	return TranslationServer.translate(
-			"The file extension {extension} is unsupported for this operation. Only {extension_list} files are supported.".format(
-			{"extension": '".' + extension + '"', "extension_list": extension_list}))
+		return Translator.translate(
+				"The file extension is empty. Only {extension_list} files are supported.").format(
+				{"extension_list": extension_list})
+	return Translator.translate(
+			"The file extension {extension} is unsupported for this operation. Only {extension_list} files are supported.").format(
+			{"extension": '".' + extension + '"', "extension_list": extension_list})

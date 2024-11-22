@@ -82,13 +82,13 @@ func rebuild_colors() -> void:
 func display_warnings() -> void:
 	var warnings := PackedStringArray()
 	if current_palette.title.is_empty():
-		warnings.append(TranslationServer.translate("Unnamed palettes won't be shown."))
+		warnings.append(Translator.translate("Unnamed palettes won't be shown."))
 	elif not GlobalSettings.is_palette_valid(current_palette):
 		warnings.append(
-				TranslationServer.translate("Multiple palettes can't have the same name."))
+				Translator.translate("Multiple palettes can't have the same name."))
 	if not current_palette.has_unique_definitions():
 		warnings.append(
-				TranslationServer.translate("This palette has identically defined colors."))
+				Translator.translate("This palette has identically defined colors."))
 	warning_sign.visible = not warnings.is_empty()
 	warning_sign.tooltip_text = "\n".join(warnings)
 
@@ -146,7 +146,7 @@ func remove_color(idx: int) -> void:
 
 func set_label_text(new_text: String) -> void:
 	if new_text.is_empty():
-		palette_button.text = TranslationServer.translate("Unnamed")
+		palette_button.text = Translator.translate("Unnamed")
 	else:
 		palette_button.text = new_text
 	palette_button.begin_bulk_theme_override()
@@ -216,23 +216,23 @@ func find_palette_index() -> int:
 func _on_palette_button_pressed() -> void:
 	var palette_idx := find_palette_index()
 	var btn_arr: Array[Button] = []
-	btn_arr.append(ContextPopup.create_button(TranslationServer.translate("Rename"),
+	btn_arr.append(ContextPopup.create_button(Translator.translate("Rename"),
 			popup_edit_name, false, load("res://visual/icons/Rename.svg")))
 	if palette_idx >= 1:
-		btn_arr.append(ContextPopup.create_button(TranslationServer.translate("Move Up"),
+		btn_arr.append(ContextPopup.create_button(Translator.translate("Move Up"),
 				move_up, false, load("res://visual/icons/MoveUp.svg")))
 	if palette_idx < GlobalSettings.savedata.palettes.size() - 1:
-		btn_arr.append(ContextPopup.create_button(TranslationServer.translate("Move Down"),
+		btn_arr.append(ContextPopup.create_button(Translator.translate("Move Down"),
 				move_down, false, load("res://visual/icons/MoveDown.svg")))
-	btn_arr.append(ContextPopup.create_button(TranslationServer.translate("Copy as XML"),
+	btn_arr.append(ContextPopup.create_button(Translator.translate("Copy as XML"),
 			DisplayServer.clipboard_set.bind(GlobalSettings.savedata.palettes[palette_idx].\
 			to_text()), false, load("res://visual/icons/Copy.svg")))
-	btn_arr.append(ContextPopup.create_button(TranslationServer.translate("Paste XML"),
+	btn_arr.append(ContextPopup.create_button(Translator.translate("Paste XML"),
 			paste_palette, !ColorPalette.is_valid_palette(DisplayServer.clipboard_get()),
 			load("res://visual/icons/Paste.svg")))
-	btn_arr.append(ContextPopup.create_button(TranslationServer.translate("Apply Preset"),
+	btn_arr.append(ContextPopup.create_button(Translator.translate("Apply Preset"),
 			open_palette_options, false, load("res://visual/icons/Import.svg")))
-	btn_arr.append(ContextPopup.create_button(TranslationServer.translate("Delete"),
+	btn_arr.append(ContextPopup.create_button(Translator.translate("Delete"),
 			delete, false, load("res://visual/icons/Delete.svg")))
 	
 	var context_popup := ContextPopup.new()

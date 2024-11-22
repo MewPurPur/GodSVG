@@ -95,18 +95,18 @@ func _ready() -> void:
 	
 	close_button.pressed.connect(queue_free)
 	
-	%ProjectFounder/Label.text = TranslationServer.translate("Project Founder and Manager")
-	%Developers/Label.text = TranslationServer.translate("Developers")
-	%Translations/Label.text = TranslationServer.translate("Translators")
-	%Donors/Label.text = TranslationServer.translate("Donors")
-	%GoldenDonors/Label.text = TranslationServer.translate("Golden donors")
-	%DiamondDonors/Label.text = TranslationServer.translate("Diamond donors")
-	$VBoxContainer/TabContainer.set_tab_title(0, TranslationServer.translate("Authors"))
-	$VBoxContainer/TabContainer.set_tab_title(1, TranslationServer.translate("Donors"))
-	$VBoxContainer/TabContainer.set_tab_title(2, TranslationServer.translate("License"))
-	$VBoxContainer/TabContainer.set_tab_title(3, TranslationServer.translate(
+	%ProjectFounder/Label.text = Translator.translate("Project Founder and Manager")
+	%Developers/Label.text = Translator.translate("Developers")
+	%Translations/Label.text = Translator.translate("Translators")
+	%Donors/Label.text = Translator.translate("Donors")
+	%GoldenDonors/Label.text = Translator.translate("Golden donors")
+	%DiamondDonors/Label.text = Translator.translate("Diamond donors")
+	$VBoxContainer/TabContainer.set_tab_title(0, Translator.translate("Authors"))
+	$VBoxContainer/TabContainer.set_tab_title(1, Translator.translate("Donors"))
+	$VBoxContainer/TabContainer.set_tab_title(2, Translator.translate("License"))
+	$VBoxContainer/TabContainer.set_tab_title(3, Translator.translate(
 			"Third-party licenses"))
-	%Components.text = TranslationServer.translate("Godot third-party components")
+	%Components.text = Translator.translate("Godot third-party components")
 
 func _on_components_pressed() -> void:
 	OS.shell_open("https://github.com/godotengine/godot/blob/master/COPYRIGHT.txt")

@@ -21,7 +21,7 @@ func get_percentage_handling(attribute_name: String) -> DB.PercentageHandling:
 func get_config_warnings() -> PackedStringArray:
 	var warnings := super()
 	if not has_attribute("id"):
-		warnings.append(TranslationServer.translate("No \"id\" attribute defined."))
+		warnings.append(Translator.translate("No \"id\" attribute defined."))
 	
 	var first_stop_color := ""
 	var first_stop_opacity := -1.0
@@ -39,9 +39,9 @@ func get_config_warnings() -> PackedStringArray:
 				break
 	
 	if first_stop_color.is_empty():
-		warnings.append(TranslationServer.translate("No <stop> elements under this gradient."))
+		warnings.append(Translator.translate("No <stop> elements under this gradient."))
 	elif is_solid_color:
-		warnings.append(TranslationServer.translate("This gradient is a solid color."))
+		warnings.append(Translator.translate("This gradient is a solid color."))
 	
 	return warnings
 

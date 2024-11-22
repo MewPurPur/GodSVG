@@ -40,11 +40,11 @@ func setup_tabs() -> void:
 	for tab in tabs.get_children():
 		tab.queue_free()
 	var button_group := ButtonGroup.new()
-	add_tab("formatting", TranslationServer.translate("Formatting"), button_group)
-	add_tab("palettes", TranslationServer.translate("Palettes"), button_group)
-	add_tab("shortcuts", TranslationServer.translate("Shortcuts"), button_group)
-	add_tab("theming", TranslationServer.translate("Theming"), button_group)
-	add_tab("other", TranslationServer.translate("Other"), button_group)
+	add_tab("formatting", Translator.translate("Formatting"), button_group)
+	add_tab("palettes", Translator.translate("Palettes"), button_group)
+	add_tab("shortcuts", Translator.translate("Shortcuts"), button_group)
+	add_tab("theming", Translator.translate("Theming"), button_group)
+	add_tab("other", Translator.translate("Other"), button_group)
 
 func add_tab(tab_name: String, tab_text: String, button_group: ButtonGroup) -> void:
 	var tab := Button.new()
@@ -66,7 +66,7 @@ func setup_everything() -> void:
 	update_close_button()
 
 func update_close_button() -> void:
-	close_button.text = TranslationServer.translate("Close")
+	close_button.text = Translator.translate("Close")
 
 func _on_tab_toggled(toggled_on: bool, tab_name: String) -> void:
 	if toggled_on and focused_tab != tab_name:
@@ -120,88 +120,88 @@ func setup_content() -> void:
 			vbox.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 			content_container.add_child(vbox)
 			
-			add_section(TranslationServer.translate("SVG Text colors"))
+			add_section(Translator.translate("SVG Text colors"))
 			current_setup_setting = "highlighting_symbol_color"
-			add_color_edit(TranslationServer.translate("Symbol color"))
+			add_color_edit(Translator.translate("Symbol color"))
 			current_setup_setting = "highlighting_element_color"
-			add_color_edit(TranslationServer.translate("Element color"))
+			add_color_edit(Translator.translate("Element color"))
 			current_setup_setting = "highlighting_attribute_color"
-			add_color_edit(TranslationServer.translate("Attribute color"))
+			add_color_edit(Translator.translate("Attribute color"))
 			current_setup_setting = "highlighting_string_color"
-			add_color_edit(TranslationServer.translate("String color"))
+			add_color_edit(Translator.translate("String color"))
 			current_setup_setting = "highlighting_comment_color"
-			add_color_edit(TranslationServer.translate("Comment color"))
+			add_color_edit(Translator.translate("Comment color"))
 			current_setup_setting = "highlighting_text_color"
-			add_color_edit(TranslationServer.translate("Text color"))
+			add_color_edit(Translator.translate("Text color"))
 			current_setup_setting = "highlighting_cdata_color"
-			add_color_edit(TranslationServer.translate("CDATA color"))
+			add_color_edit(Translator.translate("CDATA color"))
 			current_setup_setting = "highlighting_error_color"
-			add_color_edit(TranslationServer.translate("Error color"))
+			add_color_edit(Translator.translate("Error color"))
 			
-			add_section(TranslationServer.translate("Handle colors"))
+			add_section(Translator.translate("Handle colors"))
 			current_setup_setting = "handle_inside_color"
-			add_color_edit(TranslationServer.translate("Inside color"), false)
+			add_color_edit(Translator.translate("Inside color"), false)
 			current_setup_setting = "handle_color"
-			add_color_edit(TranslationServer.translate("Normal color"), false)
+			add_color_edit(Translator.translate("Normal color"), false)
 			current_setup_setting = "handle_hovered_color"
-			add_color_edit(TranslationServer.translate("Hovered color"), false)
+			add_color_edit(Translator.translate("Hovered color"), false)
 			current_setup_setting = "handle_selected_color"
-			add_color_edit(TranslationServer.translate("Selected color"), false)
+			add_color_edit(Translator.translate("Selected color"), false)
 			current_setup_setting = "handle_hovered_selected_color"
-			add_color_edit(TranslationServer.translate("Hovered selected color"), false)
+			add_color_edit(Translator.translate("Hovered selected color"), false)
 			
-			add_section(TranslationServer.translate("Basic colors"))
+			add_section(Translator.translate("Basic colors"))
 			current_setup_setting = "background_color"
-			add_color_edit(TranslationServer.translate("Background color"), false)
+			add_color_edit(Translator.translate("Background color"), false)
 			current_setup_setting = "basic_color_valid"
-			add_color_edit(TranslationServer.translate("Valid color"))
+			add_color_edit(Translator.translate("Valid color"))
 			current_setup_setting = "basic_color_error"
-			add_color_edit(TranslationServer.translate("Error color"))
+			add_color_edit(Translator.translate("Error color"))
 			current_setup_setting = "basic_color_warning"
-			add_color_edit(TranslationServer.translate("Warning color"))
+			add_color_edit(Translator.translate("Warning color"))
 		"other":
 			advice_panel.show()
 			var vbox := VBoxContainer.new()
 			vbox.add_theme_constant_override("separation", 6)
 			vbox.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 			content_container.add_child(vbox)
-			add_section(TranslationServer.translate("Input"))
+			add_section(Translator.translate("Input"))
 			current_setup_setting = "invert_zoom"
-			add_checkbox(TranslationServer.translate("Invert zoom direction"))
-			add_advice(TranslationServer.translate(
+			add_checkbox(Translator.translate("Invert zoom direction"))
+			add_advice(Translator.translate(
 					"Swaps zoom in and zoom out with the mouse wheel."))
 			current_setup_setting = "wrap_mouse"
-			var wrap_mouse := add_checkbox(TranslationServer.translate("Wrap mouse"))
-			add_advice(TranslationServer.translate(
+			var wrap_mouse := add_checkbox(Translator.translate("Wrap mouse"))
+			add_advice(Translator.translate(
 					"Wraps the mouse cursor around when panning the viewport."))
 			current_setup_setting = "use_ctrl_for_zoom"
-			add_checkbox(TranslationServer.translate("Use CTRL for zooming"))
-			add_advice(TranslationServer.translate(
+			add_checkbox(Translator.translate("Use CTRL for zooming"))
+			add_advice(Translator.translate(
 					"If turned on, scrolling will pan the view. To zoom, hold CTRL while scrolling."))
 			
-			add_section(TranslationServer.translate("Miscellaneous"))
+			add_section(Translator.translate("Miscellaneous"))
 			current_setup_setting = "use_native_file_dialog"
 			var use_native_file_dialog := add_checkbox(
-					TranslationServer.translate("Use native file dialog"))
-			add_advice(TranslationServer.translate(
+					Translator.translate("Use native file dialog"))
+			add_advice(Translator.translate(
 					"If turned on, uses your operating system's native file dialog. If turned off, uses GodSVG's built-in file dialog."))
 			current_setup_setting = "use_filename_for_window_title"
-			add_checkbox(TranslationServer.translate("Sync window title to file name"))
-			add_advice(TranslationServer.translate(
+			add_checkbox(Translator.translate("Sync window title to file name"))
+			add_advice(Translator.translate(
 					"If turned off, the window title will remain simply \"GodSVG\" regardless of the current file."))
 			current_setup_setting = "handle_size"
-			add_number_dropdown(TranslationServer.translate("Handle size"),
+			add_number_dropdown(Translator.translate("Handle size"),
 					[0.75, 1.0, 1.25, 1.5, 1.75, 2.0], false, false, 0.5, 2.5)
-			add_advice(TranslationServer.translate(
+			add_advice(Translator.translate(
 					"Changes the visual size and grabbing area of handles."))
 			current_setup_setting = "ui_scale"
-			add_number_dropdown(TranslationServer.translate("UI scale"),
+			add_number_dropdown(Translator.translate("UI scale"),
 					[0.75, 1.0, 1.25, 1.5, 1.75, 2.0, 2.5, 3.0, 4.0], false, false, 0.5, 5.0)
-			add_advice(TranslationServer.translate(
+			add_advice(Translator.translate(
 					"Changes the scale of the visual user interface."))
 			current_setup_setting = "auto_ui_scale"
-			add_checkbox(TranslationServer.translate("Auto UI scale"))
-			add_advice(TranslationServer.translate(
+			add_checkbox(Translator.translate("Auto UI scale"))
+			add_advice(Translator.translate(
 					"Scales the user interface based on the screen size."))
 			
 			# Disable mouse wrap if not available.
@@ -356,7 +356,7 @@ func _on_language_chosen(locale: String) -> void:
 	update_language_button()
 
 func update_language_button() -> void:
-	lang_button.text = TranslationServer.translate("Language") + ": " +\
+	lang_button.text = Translator.translate("Language") + ": " +\
 			TranslationServer.get_locale().to_upper()
 
 
@@ -393,7 +393,7 @@ func rebuild_color_palettes() -> void:
 	var add_palette_button := Button.new()
 	add_palette_button.theme_type_variation = "TranslucentButton"
 	add_palette_button.icon = plus_icon
-	add_palette_button.text = TranslationServer.translate("New palette")
+	add_palette_button.text = Translator.translate("New palette")
 	add_palette_button.focus_mode = Control.FOCUS_NONE
 	add_palette_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	add_palette_button.pressed.connect(add_named_palette)
@@ -403,7 +403,7 @@ func rebuild_color_palettes() -> void:
 	paste_palette_button.script = load("res://src/ui_parts/paste_palette_button.gd")
 	paste_palette_button.theme_type_variation = "TranslucentButton"
 	paste_palette_button.icon = paste_icon
-	paste_palette_button.text = TranslationServer.translate("New palette from XML")
+	paste_palette_button.text = Translator.translate("New palette from XML")
 	paste_palette_button.focus_mode = Control.FOCUS_NONE
 	hbox.add_child(paste_palette_button)
 	paste_palette_button.pressed.connect(add_pasted_palette)
@@ -423,8 +423,8 @@ func rebuild_formatters() -> void:
 		if not formatter.title.is_empty():
 			available_formatters[formatter.title] = formatter
 	
-	for context in [["editor_formatter", TranslationServer.translate("Editor formatter")],
-	["export_formatter", TranslationServer.translate("Export formatter")]]:
+	for context in [["editor_formatter", Translator.translate("Editor formatter")],
+	["export_formatter", Translator.translate("Export formatter")]]:
 		var frame := ProfileFrame.instantiate()
 		frame.setup_dropdown()
 		frame.text = context[1]
@@ -466,11 +466,11 @@ var shortcut_tab_names := ["file", "edit", "view", "tool", "help"]
 
 func get_translated_shortcut_tab(tab_idx: String) -> String:
 	match tab_idx:
-		"file": return TranslationServer.translate("File")
-		"edit": return TranslationServer.translate("Edit")
-		"view": return TranslationServer.translate("View")
-		"tool": return TranslationServer.translate("Tool")
-		"help": return TranslationServer.translate("Help")
+		"file": return Translator.translate("File")
+		"edit": return Translator.translate("Edit")
+		"view": return Translator.translate("View")
+		"tool": return Translator.translate("Tool")
+		"help": return Translator.translate("Help")
 		_: return ""
 
 

@@ -301,7 +301,7 @@ func get_config_warnings() -> PackedStringArray:
 	var warnings := PackedStringArray()
 	var own_name: String = self.name
 	if parent != null and not DB.is_child_element_valid(parent.name, own_name):
-		warnings.append(TranslationServer.translate("{element} must be inside {allowed} to have any effect.").format(
+		warnings.append(Translator.translate("{element} must be inside {allowed} to have any effect.").format(
 				{"element": own_name, "allowed": "[%s]" % ", ".join(DB.get_valid_parents(own_name))}))
 	return warnings
 

@@ -96,33 +96,33 @@ func _ready() -> void:
 	if mode == FileMode.SELECT:
 		file_container.hide()
 	if mode == FileMode.SAVE:
-		create_folder_title_label.text = TranslationServer.translate("Create new folder")
-		create_folder_cancel_button.text = TranslationServer.translate("Cancel")
-		create_folder_create_button.text = TranslationServer.translate("Create")
+		create_folder_title_label.text = Translator.translate("Create new folder")
+		create_folder_cancel_button.text = Translator.translate("Cancel")
+		create_folder_create_button.text = Translator.translate("Create")
 	var extension_panel_stylebox := extension_panel.get_theme_stylebox("panel")
 	extension_panel_stylebox.content_margin_top -= 4
 	extension_panel.add_theme_stylebox_override("panel", extension_panel_stylebox)
 	if GlobalSettings.savedata.file_dialog_show_hidden:
 		show_hidden_button.set_pressed_no_signal(true)
-	folder_up_button.tooltip_text = TranslationServer.translate("Go to parent folder")
-	refresh_button.tooltip_text = TranslationServer.translate("Refresh files")
+	folder_up_button.tooltip_text = Translator.translate("Go to parent folder")
+	refresh_button.tooltip_text = Translator.translate("Refresh files")
 	show_hidden_button.tooltip_text =\
-			TranslationServer.translate("Toggle the visibility of hidden files")
-	search_button.tooltip_text = TranslationServer.translate("Search files")
+			Translator.translate("Toggle the visibility of hidden files")
+	search_button.tooltip_text = Translator.translate("Search files")
 	
 	if mode != FileMode.SELECT:
-		title_label.text = TranslationServer.translate("Save SVG")
+		title_label.text = Translator.translate("Save SVG")
 		extension_label.text = "." + extensions[0]
 	else:
 		if extensions.size() == 1 and extensions[0] == "svg":
-			title_label.text = TranslationServer.translate("Select an SVG")
+			title_label.text = Translator.translate("Select an SVG")
 		else:
-			title_label.text = TranslationServer.translate("Select an image")
+			title_label.text = Translator.translate("Select an image")
 	
-	close_button.text = TranslationServer.translate("Close")
-	special_button.text = TranslationServer.translate("Select") if\
-			mode == FileMode.SELECT else TranslationServer.translate("Save")
-	path_label.text = TranslationServer.translate("Path") + ":"
+	close_button.text = Translator.translate("Close")
+	special_button.text = Translator.translate("Select") if\
+			mode == FileMode.SELECT else Translator.translate("Save")
+	path_label.text = Translator.translate("Path") + ":"
 	
 	# Should always be safe.
 	refresh_dir()
@@ -261,9 +261,9 @@ func select_file() -> void:
 		var confirm_dialog := ConfirmDialog.instantiate()
 		confirm_dialog.tree_exited.connect(alert_container.hide)
 		alert_container.add_child(confirm_dialog)
-		confirm_dialog.setup(TranslationServer.translate("Alert!"), TranslationServer.translate(
+		confirm_dialog.setup(Translator.translate("Alert!"), Translator.translate(
 				"A file named \"{file_name}\" already exists. Replacing will overwrite its contents!").format(
-				{"file_name": current_file}), TranslationServer.translate("Replace"),
+				{"file_name": current_file}), Translator.translate("Replace"),
 				_on_replace_button_pressed)
 		alert_container.show()
 	else:
@@ -286,10 +286,10 @@ func create_folder() -> void:
 func open_dir_context(dir: String) -> void:
 	var context_popup := ContextPopup.new()
 	var btn_arr: Array[Button] = [
-		ContextPopup.create_button(TranslationServer.translate("Open"),
+		ContextPopup.create_button(Translator.translate("Open"),
 				enter_dir.bind(dir), false, load("res://visual/icons/OpenFolder.svg"),
 				"ui_accept"),
-		ContextPopup.create_button(TranslationServer.translate("Copy path"),
+		ContextPopup.create_button(Translator.translate("Copy path"),
 				copy_path, false, load("res://visual/icons/Copy.svg"))]
 	context_popup.setup(btn_arr, true)
 	var vp := get_viewport()
@@ -300,7 +300,7 @@ func open_file_context(file: String) -> void:
 	var btn_arr: Array[Button] = [
 		ContextPopup.create_button(special_button.text,
 				select_file, false, load("res://visual/icons/OpenFile.svg"), "ui_accept"),
-		ContextPopup.create_button(TranslationServer.translate("Copy path"),
+		ContextPopup.create_button(Translator.translate("Copy path"),
 				copy_path, false, load("res://visual/icons/Copy.svg"))]
 	var context_popup := ContextPopup.new()
 	context_popup.setup(btn_arr, true)
@@ -318,7 +318,7 @@ func _on_file_list_empty_clicked(_at_position: Vector2, mouse_button_index: int)
 	if mouse_button_index == MOUSE_BUTTON_RIGHT and mode == FileMode.SAVE:
 		var context_popup := ContextPopup.new()
 		var btn_arr: Array[Button] = [
-			ContextPopup.create_button(TranslationServer.translate("Create new folder"),
+			ContextPopup.create_button(Translator.translate("Create new folder"),
 					create_folder, false, load("res://visual/icons/CreateFolder.svg"))]
 		context_popup.setup(btn_arr, true)
 		var vp := get_viewport()

@@ -39,17 +39,6 @@ msgstr "需要连接网络。"
 msgid "OK"
 msgstr "确定"
 
-#: src/autoload/HandlerGUI.gd src/utils/FileUtils.gd
-msgid "The file extension is empty. Only \"svg\" files are supported."
-msgstr "文件拓展名是空的。仅支持 “svg” 文件。"
-
-#: src/autoload/HandlerGUI.gd src/utils/FileUtils.gd
-#, fuzzy
-msgid ""
-"\"{passed_extension}\" is an unsupported file extension. Only \"svg\" files "
-"are supported."
-msgstr "不支持 “{passed_extension}” 文件。仅支持 \"svg\" 文件。"
-
 #: src/autoload/Indications.gd
 msgid "View In List"
 msgstr "在列表中查看"
@@ -207,6 +196,7 @@ msgstr "警告！"
 
 #: src/ui_parts/choose_name_dialog.gd src/ui_parts/confirm_dialog.gd
 #: src/ui_parts/export_dialog.gd src/ui_parts/good_file_dialog.gd
+#: src/ui_parts/import_warning_dialog.gd
 msgid "Cancel"
 msgstr "取消"
 
@@ -217,6 +207,11 @@ msgstr "创建"
 #: src/ui_parts/code_editor.gd src/ui_parts/good_file_dialog.gd
 msgid "Save SVG"
 msgstr "保存 SVG"
+
+#: src/ui_parts/code_editor.gd
+#, fuzzy
+msgid "Open file"
+msgstr "打开"
 
 #: src/ui_parts/code_editor.gd src/utils/TranslationUtils.gd
 msgid "Reset SVG"
@@ -299,8 +294,9 @@ msgid "View savedata"
 msgstr ""
 
 #: src/ui_parts/element_container.gd
+#, fuzzy
 msgid "New element"
-msgstr ""
+msgstr "调色盘"
 
 #: src/ui_parts/export_dialog.gd
 msgid "Size"
@@ -433,9 +429,15 @@ msgstr "添加元素"
 msgid "Import Problems"
 msgstr "导入出错"
 
+#: src/ui_parts/import_warning_dialog.gd src/utils/TranslationUtils.gd
+#, fuzzy
+msgid "Import"
+msgstr "导入"
+
 #: src/ui_parts/import_warning_dialog.gd
+#, fuzzy
 msgid "Unrecognized element"
-msgstr ""
+msgstr "未知的属性"
 
 #: src/ui_parts/import_warning_dialog.gd
 #, fuzzy
@@ -599,12 +601,14 @@ msgid "New palette"
 msgstr "调色盘"
 
 #: src/ui_parts/settings_menu.gd
+#, fuzzy
 msgid "New palette from XML"
-msgstr ""
+msgstr "调色盘"
 
 #: src/ui_parts/settings_menu.gd
+#, fuzzy
 msgid "Editor formatter"
-msgstr ""
+msgstr "导出"
 
 #: src/ui_parts/settings_menu.gd
 #, fuzzy
@@ -746,8 +750,9 @@ msgid "Preset"
 msgstr "重置缩放"
 
 #: src/ui_widgets/formatter_config.gd
+#, fuzzy
 msgid "Keep comments"
-msgstr ""
+msgstr "注释颜色"
 
 #: src/ui_widgets/formatter_config.gd
 #, fuzzy
@@ -867,8 +872,9 @@ msgid "Paste XML"
 msgstr "粘贴 XML"
 
 #: src/ui_widgets/palette_config.gd
+#, fuzzy
 msgid "Apply Preset"
-msgstr ""
+msgstr "重置缩放"
 
 #: src/ui_widgets/pathdata_field.gd
 msgid "No path data"
@@ -942,11 +948,6 @@ msgid ""
 msgstr ""
 "文件无法打开。\n"
 "尝试检查路径，确保文件没有被删除，或选择一个不同的文件。"
-
-#: src/utils/TranslationUtils.gd
-#, fuzzy
-msgid "Import"
-msgstr "导入"
 
 #: src/utils/TranslationUtils.gd
 #, fuzzy
@@ -1072,6 +1073,18 @@ msgstr "三点三次贝塞尔曲线"
 #: src/utils/TranslationUtils.gd
 msgid "Shorthand Cubic Bezier to"
 msgstr "两点三次贝塞尔曲线"
+
+#: src/utils/TranslationUtils.gd
+#, fuzzy
+msgid ""
+"The file extension {extension} is unsupported for this operation. Only "
+"{extension_list} files are supported."
+msgstr "不支持 “{passed_extension}” 文件。仅支持 \"svg\" 文件。"
+
+#: src/utils/TranslationUtils.gd
+#, fuzzy
+msgid "The file extension is empty. Only {extension_list} files are supported."
+msgstr "文件拓展名是空的。仅支持 “svg” 文件。"
 
 #, fuzzy
 #~ msgid "Enable snap"

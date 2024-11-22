@@ -41,18 +41,6 @@ msgstr "Для этого необходимо подключение к Инт�
 msgid "OK"
 msgstr "Хорошо"
 
-#: src/autoload/HandlerGUI.gd src/utils/FileUtils.gd
-msgid "The file extension is empty. Only \"svg\" files are supported."
-msgstr "Расширение файла пустое. Поддерживается только «svg» файлы."
-
-#: src/autoload/HandlerGUI.gd src/utils/FileUtils.gd
-msgid ""
-"\"{passed_extension}\" is an unsupported file extension. Only \"svg\" files "
-"are supported."
-msgstr ""
-"Расширение \"{passed_extension}\" не поддерживается. Поддерживается только "
-"«svg»."
-
 #: src/autoload/Indications.gd
 msgid "View In List"
 msgstr "Просмотреть в списке"
@@ -208,6 +196,7 @@ msgstr "Внимание!"
 
 #: src/ui_parts/choose_name_dialog.gd src/ui_parts/confirm_dialog.gd
 #: src/ui_parts/export_dialog.gd src/ui_parts/good_file_dialog.gd
+#: src/ui_parts/import_warning_dialog.gd
 msgid "Cancel"
 msgstr "Отменить"
 
@@ -218,6 +207,11 @@ msgstr "Создать"
 #: src/ui_parts/code_editor.gd src/ui_parts/good_file_dialog.gd
 msgid "Save SVG"
 msgstr "Сохранить SVG"
+
+#: src/ui_parts/code_editor.gd
+#, fuzzy
+msgid "Open file"
+msgstr "Открыть"
 
 #: src/ui_parts/code_editor.gd src/utils/TranslationUtils.gd
 msgid "Reset SVG"
@@ -431,6 +425,10 @@ msgstr "Новая привязка"
 #: src/ui_parts/import_warning_dialog.gd
 msgid "Import Problems"
 msgstr "Проблемы с импортированием"
+
+#: src/ui_parts/import_warning_dialog.gd src/utils/TranslationUtils.gd
+msgid "Import"
+msgstr "Импортировать"
 
 #: src/ui_parts/import_warning_dialog.gd
 msgid "Unrecognized element"
@@ -934,10 +932,6 @@ msgstr ""
 "выберите другой файл."
 
 #: src/utils/TranslationUtils.gd
-msgid "Import"
-msgstr "Импортировать"
-
-#: src/utils/TranslationUtils.gd
 msgid "Select all elements"
 msgstr "Выбрать все элементы"
 
@@ -1056,6 +1050,20 @@ msgstr "Кубическая Безье до"
 #: src/utils/TranslationUtils.gd
 msgid "Shorthand Cubic Bezier to"
 msgstr "Сокращенная кубическая Безье до"
+
+#: src/utils/TranslationUtils.gd
+#, fuzzy
+msgid ""
+"The file extension {extension} is unsupported for this operation. Only "
+"{extension_list} files are supported."
+msgstr ""
+"Расширение \"{passed_extension}\" не поддерживается. Поддерживается только "
+"«svg»."
+
+#: src/utils/TranslationUtils.gd
+#, fuzzy
+msgid "The file extension is empty. Only {extension_list} files are supported."
+msgstr "Расширение файла пустое. Поддерживается только «svg» файлы."
 
 #~ msgid "Enable snap"
 #~ msgstr "Включить привязку"

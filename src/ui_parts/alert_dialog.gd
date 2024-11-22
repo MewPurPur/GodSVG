@@ -10,6 +10,6 @@ func _ready() -> void:
 
 func setup(message: String) -> void:
 	label.text = message
-	title.text = TranslationServer.translate("Alert!")
-	ok_button.text = TranslationServer.translate("OK")
+	title.text = Translator.translate("Alert!")
+	ok_button.text = Translator.translate("OK")
 	label.custom_minimum_size.x = 280.0

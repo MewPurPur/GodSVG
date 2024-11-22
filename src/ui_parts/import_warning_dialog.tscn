@@ -76,4 +76,3 @@ text = "Cancel"
 layout_mode = 2
 size_flags_horizontal = 6
 mouse_default_cursor_shape = 2
-text = "Import"

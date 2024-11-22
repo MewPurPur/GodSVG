@@ -26,7 +26,7 @@ func get_bounding_box() -> Rect2:
 func get_config_warnings() -> PackedStringArray:
 	var warnings := super()
 	if get_child_count() == 0:
-		warnings.append(TranslationServer.translate("This group has no elements."))
+		warnings.append(Translator.translate("This group has no elements."))
 	elif get_child_count() == 1:
-		warnings.append(TranslationServer.translate("This group has only one element."))
+		warnings.append(Translator.translate("This group has only one element."))
 	return warnings

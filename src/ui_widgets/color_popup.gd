@@ -48,7 +48,7 @@ func _ready() -> void:
 func update_palettes(search_text := "") -> void:
 	for child in palettes_content_container.get_children():
 		child.queue_free()
-	search_field.placeholder_text = TranslationServer.translate("Search color")
+	search_field.placeholder_text = Translator.translate("Search color")
 	var reserved_colors := PackedStringArray(["none"])
 	var reserved_color_names := PackedStringArray(["No color"])
 	if show_url:
@@ -124,8 +124,8 @@ func _on_switch_mode_button_pressed() -> void:
 	setup_content()
 
 func setup_content() -> void:
-	switch_mode_button.text = TranslationServer.translate("Palettes") if palette_mode\
-			else TranslationServer.translate("Color Picker")
+	switch_mode_button.text = Translator.translate("Palettes") if palette_mode\
+			else Translator.translate("Color Picker")
 	color_picker_content.visible = not palette_mode
 	palettes_content.visible = palette_mode
 	if palette_mode and _palettes_pending_update:

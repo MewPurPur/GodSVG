@@ -524,11 +524,11 @@ func get_selection_context(popup_method: Callable, context: Context) -> ContextP
 					can_move_down = true
 		if context == Context.VIEWPORT:
 			btn_arr.append(ContextPopup.create_button(
-					TranslationServer.translate("View In List"),
+					Translator.translate("View In List"),
 					view_in_list.bind(selected_xids[0]), false,
 					load("res://visual/icons/ViewInList.svg")))
 
-		btn_arr.append(ContextPopup.create_button(TranslationServer.translate("Duplicate"),
+		btn_arr.append(ContextPopup.create_button(Translator.translate("Duplicate"),
 				duplicate_selected, false, load("res://visual/icons/Duplicate.svg"),
 				"duplicate"))
 		
@@ -536,22 +536,22 @@ func get_selection_context(popup_method: Callable, context: Context) -> ContextP
 		if (selected_xids.size() == 1 and not xnode.is_element()) or\
 		(xnode.is_element() and not xnode.possible_conversions.is_empty()):
 			btn_arr.append(ContextPopup.create_button(
-					TranslationServer.translate("Convert To"),
+					Translator.translate("Convert To"),
 					popup_convert_to_context.bind(popup_method), false,
 					load("res://visual/icons/Reload.svg")))
 		
 		if can_move_up:
 			btn_arr.append(ContextPopup.create_button(
-					TranslationServer.translate("Move Up"),
+					Translator.translate("Move Up"),
 					move_up_selected, false,
 					load("res://visual/icons/MoveUp.svg"), "move_up"))
 		if can_move_down:
 			btn_arr.append(ContextPopup.create_button(
-					TranslationServer.translate("Move Down"),
+					Translator.translate("Move Down"),
 					move_down_selected, false,
 					load("res://visual/icons/MoveDown.svg"), "move_down"))
 		
-		btn_arr.append(ContextPopup.create_button(TranslationServer.translate("Delete"),
+		btn_arr.append(ContextPopup.create_button(Translator.translate("Delete"),
 				delete_selected, false, load("res://visual/icons/Delete.svg"), "delete"))
 	
 	elif not inner_selections.is_empty() and not semi_selected_xid.is_empty():
@@ -559,30 +559,30 @@ func get_selection_context(popup_method: Callable, context: Context) -> ContextP
 		
 		if context == Context.VIEWPORT:
 			btn_arr.append(ContextPopup.create_button(
-					TranslationServer.translate("View In List"),
+					Translator.translate("View In List"),
 					view_in_list.bind(semi_selected_xid), false,
 					load("res://visual/icons/ViewInList.svg")))
 		match element_ref.name:
 			"path":
 				if inner_selections.size() == 1:
 					btn_arr.append(ContextPopup.create_button(
-							TranslationServer.translate("Insert After"),
+							Translator.translate("Insert After"),
 							popup_insert_command_after_context.bind(popup_method), false,
 							load("res://visual/icons/Plus.svg")))
 					if inner_selections[0] != 0 or\
 					element_ref.get_attribute("d").get_command(0).command_char != "M":
 						btn_arr.append(ContextPopup.create_button(
-								TranslationServer.translate("Convert To"),
+								Translator.translate("Convert To"),
 								popup_convert_to_context.bind(popup_method), false,
 								load("res://visual/icons/Reload.svg")))
 			"polygon", "polyline":
 				if inner_selections.size() == 1:
 					btn_arr.append(ContextPopup.create_button(
-							TranslationServer.translate("Insert After"),
+							Translator.translate("Insert After"),
 							insert_point_after_selection, false,
 							load("res://visual/icons/Plus.svg")))
 		
-		btn_arr.append(ContextPopup.create_button(TranslationServer.translate("Delete"),
+		btn_arr.append(ContextPopup.create_button(Translator.translate("Delete"),
 				delete_selected, false, load("res://visual/icons/Delete.svg"), "delete"))
 	
 	var element_context := ContextPopup.new()

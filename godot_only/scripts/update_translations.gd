@@ -16,17 +16,13 @@ msgstr \"\"
 \"X-Generator: Poedit 3.4.2\\n\"\n"""
 
 # Don't have a better solution than handling all these different whitespace variations...
-const delimiters = {
-	'TranslationServer.translate("': '")',
-	'TranslationServer.translate(\n\t\t\t"': '")',
-	'TranslationServer.translate(\n\t\t\t\t"': '")',
-	'TranslationServer.translate(\n\t\t\t\t\t"': '")',
-	"TranslationServer.translate('": "')",
-	'TranslationServer.translate("""': '""")',
-	'TranslationServer.translate_plural("': '")',
-	"TranslationServer.translate_plural('": "')",
-	'TranslationServer.translate_plural("""': '""")',
-}
+var delimiters := {}
+func populate_delimiters() -> void:
+	for method in ["translate"]:
+		for quote in ["'", '"', '"""']:
+			delimiters["Translator." + method + "(" + quote] = quote + ")"
+			for i in 4:
+				delimiters["Translator." + method + "(\n" + "\t".repeat(2 + i) + quote] = quote + ")"
 
 var messages: Array[Message] = [Message.new("translation-credits", PackedStringArray())]
 
@@ -49,6 +45,7 @@ class Message:
 
 
 func _run() -> void:
+	populate_delimiters()
 	if not OS.execute("msgmerge", PackedStringArray()) == -1:
 		search_directory(ProjectSettings.globalize_path("src"))
 		update_translations()
@@ -69,6 +66,7 @@ func search_directory(dir: String) -> void:
 					break
 				
 				var string_start := cursor + start_delim.length()
+				var old_cursor := cursor
 				cursor = file_text.find(end_delim, cursor)
 				
 				var msgid := file_text.substr(string_start, cursor - string_start)

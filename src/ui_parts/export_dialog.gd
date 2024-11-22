@@ -37,26 +37,26 @@ func _ready() -> void:
 	
 	# Update dimensions label.
 	var valid_dimensions := is_finite(dimensions.x) and is_finite(dimensions.y)
-	dimensions_label.text = TranslationServer.translate("Size") + ": "
+	dimensions_label.text = Translator.translate("Size") + ": "
 	if valid_dimensions:
 		dimensions_label.text += String.num(dimensions.x, 2) + "×" +\
 				String.num(dimensions.y, 2)
 	else:
-		dimensions_label.text += TranslationServer.translate("Invalid")
+		dimensions_label.text += Translator.translate("Invalid")
 	# If the size is invalid, only SVG exports are relevant. So hide the dropdown.
 	fallback_format_label.visible = !valid_dimensions
 	format_hbox.visible = valid_dimensions
 	update_final_scale()
-	fallback_format_label.text = TranslationServer.translate("Format") + ": svg"
-	$VBoxContainer/Label.text = TranslationServer.translate("Export Configuration")
-	%FormatHBox/Label.text = TranslationServer.translate("Format")
-	%LosslessCheckBox.text = TranslationServer.translate("Lossless")
-	%QualityHBox/Label.text = TranslationServer.translate("Quality")
-	%ScaleContainer/HBoxContainer/Label.text = TranslationServer.translate("Scale")
+	fallback_format_label.text = Translator.translate("Format") + ": svg"
+	$VBoxContainer/Label.text = Translator.translate("Export Configuration")
+	%FormatHBox/Label.text = Translator.translate("Format")
+	%LosslessCheckBox.text = Translator.translate("Lossless")
+	%QualityHBox/Label.text = Translator.translate("Quality")
+	%ScaleContainer/HBoxContainer/Label.text = Translator.translate("Scale")
 	$VBoxContainer/ButtonContainer/CancelButton.text =\
-			TranslationServer.translate("Cancel")
+			Translator.translate("Cancel")
 	$VBoxContainer/ButtonContainer/ExportButton.text =\
-			TranslationServer.translate("Export")
+			Translator.translate("Export")
 
 
 func _on_dropdown_value_changed(new_value: String) -> void:
@@ -88,7 +88,7 @@ func _on_quality_value_changed(_new_value: float) -> void:
 func update_final_scale() -> void:
 	upscale_amount = scale_edit.get_value()
 	var exported_size: Vector2i = dimensions * upscale_amount
-	final_dimensions_label.text = TranslationServer.translate("Final size") +\
+	final_dimensions_label.text = Translator.translate("Final size") +\
 			": %d×%d" % [exported_size.x, exported_size.y]
 
 func update_extension_configuration() -> void:

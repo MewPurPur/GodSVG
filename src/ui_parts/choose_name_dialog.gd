@@ -10,8 +10,8 @@ extends PanelContainer
 var warning_action := Callable()
 
 func _ready() -> void:
-	cancel_button.text = TranslationServer.translate("Cancel")
-	action_button.text = TranslationServer.translate("Create")
+	cancel_button.text = Translator.translate("Cancel")
+	action_button.text = Translator.translate("Create")
 	cancel_button.pressed.connect(queue_free)
 	action_button.pressed.connect(queue_free)
 	name_edit.text_changed.connect(_on_name_edit_text_changed)

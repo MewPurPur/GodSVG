@@ -32,7 +32,7 @@ func _on_element_attribute_changed(attribute_changed: String) -> void:
 		sync_to_attribute()
 
 func update_translation() -> void:
-	placeholder_text = TranslationServer.translate("No transforms")
+	placeholder_text = Translator.translate("No transforms")
 
 func setup_font(new_text: String) -> void:
 	use_mono_font = !new_text.is_empty()

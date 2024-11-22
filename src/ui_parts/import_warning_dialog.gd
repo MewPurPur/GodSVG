@@ -30,7 +30,7 @@ func _ready() -> void:
 		size.y = 0
 		warnings_label.add_theme_color_override("default_color",
 				GlobalSettings.savedata.basic_color_error)
-		warnings_label.text = "[center]%s: %s" % [TranslationServer.translate(
+		warnings_label.text = "[center]%s: %s" % [Translator.translate(
 				"Syntax error"), SVGParser.get_error_string(imported_text_parse_result.error)]
 	else:
 		var svg_warnings := get_svg_warnings(imported_text_parse_result.svg)
@@ -43,7 +43,9 @@ func _ready() -> void:
 				warnings_label.text += warning + "\n"
 	ok_button.grab_focus()
 	cancel_button.pressed.connect(queue_free)
-	$VBoxContainer/Title.text = TranslationServer.translate("Import Problems")
+	$VBoxContainer/Title.text = Translator.translate("Import Problems")
+	ok_button.text = Translator.translate("Import")
+	cancel_button.text = Translator.translate("Cancel")
 
 
 func set_svg(text: String) -> void:
@@ -64,9 +66,9 @@ func get_svg_warnings(root_element: ElementRoot) -> PackedStringArray:
 					unrecognized_attributes.append(attribute.name)
 	var warnings := PackedStringArray()
 	for element in unrecognized_elements:
-		warnings.append("%s: %s" % [TranslationServer.translate("Unrecognized element"),
+		warnings.append("%s: %s" % [Translator.translate("Unrecognized element"),
 				element])
 	for attribute in unrecognized_attributes:
-		warnings.append("%s: %s" % [TranslationServer.translate("Unrecognized attribute"),
+		warnings.append("%s: %s" % [Translator.translate("Unrecognized attribute"),
 				attribute])
 	return warnings

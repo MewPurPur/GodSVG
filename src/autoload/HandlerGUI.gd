@@ -174,9 +174,9 @@ func _input(event: InputEvent) -> void:
 		remove_all_overlays()
 		var confirm_dialog = ConfirmDialog.instantiate()
 		add_overlay(confirm_dialog)
-		confirm_dialog.setup(TranslationServer.translate("Quit GodSVG"),
-				TranslationServer.translate("Do you want to quit GodSVG?"),
-				TranslationServer.translate("Quit"), get_tree().quit)
+		confirm_dialog.setup(Translator.translate("Quit GodSVG"),
+				Translator.translate("Do you want to quit GodSVG?"),
+				Translator.translate("Quit"), get_tree().quit)
 	
 	# So, it turns out that when you double click, only the press will count as such.
 	# I don't like that, and it causes problems! So mark the release as double_click too.
@@ -265,9 +265,9 @@ func update_ui_scale() -> void:
 func open_update_checker() -> void:
 	var confirmation_dialog = ConfirmDialog.instantiate()
 	add_overlay(confirmation_dialog)
-	confirmation_dialog.setup(TranslationServer.translate("Check for updates?"),
-			TranslationServer.translate("This requires GodSVG to connect to the internet."),
-			TranslationServer.translate("OK"), _list_updates)
+	confirmation_dialog.setup(Translator.translate("Check for updates?"),
+			Translator.translate("This requires GodSVG to connect to the internet."),
+			Translator.translate("OK"), _list_updates)
 
 func _list_updates() -> void:
 	remove_all_overlays()

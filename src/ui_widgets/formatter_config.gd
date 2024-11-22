@@ -43,13 +43,13 @@ func find_formatter_index() -> int:
 
 func _on_formatter_button_pressed() -> void:
 	var btn_arr: Array[Button] = []
-	btn_arr.append(ContextPopup.create_button(TranslationServer.translate("Rename"),
+	btn_arr.append(ContextPopup.create_button(Translator.translate("Rename"),
 			popup_edit_name, false, load("res://visual/icons/Rename.svg")))
 	btn_arr.append(ContextPopup.create_button(
-			TranslationServer.translate("Reset to default"),
+			Translator.translate("Reset to default"),
 			current_formatter.reset_to_default, current_formatter.is_everything_default(),
 			load("res://visual/icons/Reload.svg")))
-	btn_arr.append(ContextPopup.create_button(TranslationServer.translate("Delete"),
+	btn_arr.append(ContextPopup.create_button(Translator.translate("Delete"),
 			delete, current_formatter in [GlobalSettings.savedata.editor_formatter,
 			GlobalSettings.savedata.export_formatter], load("res://visual/icons/Delete.svg")))
 	
@@ -87,62 +87,62 @@ func construct() -> void:
 	frame.setup_dropdown(true)
 	frame.getter = current_formatter.get.bind("preset")
 	frame.setter = func(p): current_formatter.set("preset", p)
-	frame.text = TranslationServer.translate("Preset")
+	frame.text = Translator.translate("Preset")
 	frame.dropdown.values = Formatter.get_enum_texts("preset")
 	configs_container.add_child(frame)
 	
 	add_section("XML")
 	current_setup_config = "xml_keep_comments"
-	add_checkbox(TranslationServer.translate("Keep comments"))
+	add_checkbox(Translator.translate("Keep comments"))
 	current_setup_config = "xml_keep_unrecognized"
-	add_checkbox(TranslationServer.translate("Keep unrecognized XML structures"))
+	add_checkbox(Translator.translate("Keep unrecognized XML structures"))
 	current_setup_config = "xml_add_trailing_newline"
-	add_checkbox(TranslationServer.translate("Add trailing newline"))
+	add_checkbox(Translator.translate("Add trailing newline"))
 	current_setup_config = "xml_shorthand_tags"
-	add_dropdown(TranslationServer.translate("Use shorthand tag syntax"))
+	add_dropdown(Translator.translate("Use shorthand tag syntax"))
 	current_setup_config = "xml_shorthand_tags_space_out_slash"
-	add_checkbox(TranslationServer.translate("Space out the slash of shorthand tags"))
+	add_checkbox(Translator.translate("Space out the slash of shorthand tags"))
 	current_setup_config = "xml_pretty_formatting"
-	add_checkbox(TranslationServer.translate("Use pretty formatting"))
+	add_checkbox(Translator.translate("Use pretty formatting"))
 	current_setup_config = "xml_indentation_use_spaces"
-	add_checkbox(TranslationServer.translate("Use spaces instead of tabs"),
+	add_checkbox(Translator.translate("Use spaces instead of tabs"),
 			not current_formatter.xml_pretty_formatting)
 	current_setup_config = "xml_indentation_spaces"
-	add_number_dropdown(TranslationServer.translate("Number of indentation spaces"),
+	add_number_dropdown(Translator.translate("Number of indentation spaces"),
 			[2, 3, 4, 6, 8], true, false, 0, 16, not current_formatter.xml_pretty_formatting)
 	
-	add_section(TranslationServer.translate("Numbers"))
+	add_section(Translator.translate("Numbers"))
 	current_setup_config = "number_remove_leading_zero"
-	add_checkbox(TranslationServer.translate("Remove leading zero"))
+	add_checkbox(Translator.translate("Remove leading zero"))
 	current_setup_config = "number_use_exponent_if_shorter"
-	add_checkbox(TranslationServer.translate("Use exponential when shorter"))
+	add_checkbox(Translator.translate("Use exponential when shorter"))
 	
-	add_section(TranslationServer.translate("Colors"))
+	add_section(Translator.translate("Colors"))
 	current_setup_config = "color_use_named_colors"
-	add_dropdown(TranslationServer.translate("Use named colors"))
+	add_dropdown(Translator.translate("Use named colors"))
 	current_setup_config = "color_primary_syntax"
-	add_dropdown(TranslationServer.translate("Primary syntax"))
+	add_dropdown(Translator.translate("Primary syntax"))
 	current_setup_config = "color_capital_hex"
-	add_checkbox(TranslationServer.translate("Capitalize hexadecimal letters"),
+	add_checkbox(Translator.translate("Capitalize hexadecimal letters"),
 			current_formatter.color_primary_syntax == Formatter.PrimaryColorSyntax.RGB)
 	
-	add_section(TranslationServer.translate("Pathdata"))
+	add_section(Translator.translate("Pathdata"))
 	current_setup_config = "pathdata_compress_numbers"
-	add_checkbox(TranslationServer.translate("Compress numbers"))
+	add_checkbox(Translator.translate("Compress numbers"))
 	current_setup_config = "pathdata_minimize_spacing"
-	add_checkbox(TranslationServer.translate("Minimize spacing"))
+	add_checkbox(Translator.translate("Minimize spacing"))
 	current_setup_config = "pathdata_remove_spacing_after_flags"
-	add_checkbox(TranslationServer.translate("Remove spacing after flags"))
+	add_checkbox(Translator.translate("Remove spacing after flags"))
 	current_setup_config = "pathdata_remove_consecutive_commands"
-	add_checkbox(TranslationServer.translate("Remove consecutive commands"))
+	add_checkbox(Translator.translate("Remove consecutive commands"))
 	
-	add_section(TranslationServer.translate("Transform lists"))
+	add_section(Translator.translate("Transform lists"))
 	current_setup_config = "transform_list_compress_numbers"
-	add_checkbox(TranslationServer.translate("Compress numbers"))
+	add_checkbox(Translator.translate("Compress numbers"))
 	current_setup_config = "transform_list_minimize_spacing"
-	add_checkbox(TranslationServer.translate("Minimize spacing"))
+	add_checkbox(Translator.translate("Minimize spacing"))
 	current_setup_config = "transform_list_remove_unnecessary_params"
-	add_checkbox(TranslationServer.translate("Remove unnecessary parameters"))
+	add_checkbox(Translator.translate("Remove unnecessary parameters"))
 
 
 func add_section(section_name: String) -> void:
@@ -216,7 +216,7 @@ func _on_name_edit_text_change_canceled() -> void:
 func set_label_text(new_text: String) -> void:
 	formatter_button.begin_bulk_theme_override()
 	if new_text.is_empty():
-		formatter_button.text = TranslationServer.translate("Unnamed")
+		formatter_button.text = Translator.translate("Unnamed")
 		for style_name in ["font_color", "font_hover_color", "font_pressed_color"]:
 			formatter_button.add_theme_color_override(style_name,
 					GlobalSettings.savedata.basic_color_error)

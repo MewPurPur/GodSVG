@@ -22,9 +22,9 @@ func _ready() -> void:
 
 func update_translation() -> void:
 	%LabelContainer/EditButton.tooltip_text =\
-			TranslationServer.translate("Edit color name")
+			Translator.translate("Edit color name")
 	$ConfigureContainer/BottomContainer/DeleteButton.tooltip_text =\
-			TranslationServer.translate("Delete color")
+			Translator.translate("Delete color")
 
 func _on_edit_button_pressed() -> void:
 	color_name_edit.text = color_palette.color_names[idx]
@@ -46,7 +46,7 @@ func hide_name_edit() -> void:
 
 func set_label_text(new_text: String) -> void:
 	if new_text.is_empty():
-		color_label.text = TranslationServer.translate("Unnamed")
+		color_label.text = Translator.translate("Unnamed")
 		color_label.add_theme_color_override("font_color",
 				ThemeUtils.common_subtle_text_color)
 	else:

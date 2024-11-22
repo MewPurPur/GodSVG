@@ -70,15 +70,15 @@ func _generate_main_menus() -> void:
 	view_rid = NativeMenu.create_menu()
 	snap_rid = NativeMenu.create_menu()
 	file_idx = NativeMenu.add_submenu_item(global_rid,
-			TranslationServer.translate("File"), file_rid)
+			Translator.translate("File"), file_rid)
 	edit_idx = NativeMenu.add_submenu_item(global_rid,
-			TranslationServer.translate("Edit"), edit_rid)
+			Translator.translate("Edit"), edit_rid)
 	tool_idx = NativeMenu.add_submenu_item(global_rid,
-			TranslationServer.translate("Tool"), tool_rid)
+			Translator.translate("Tool"), tool_rid)
 	view_idx = NativeMenu.add_submenu_item(global_rid,
-			TranslationServer.translate("View"), view_rid)
+			Translator.translate("View"), view_rid)
 	snap_idx = NativeMenu.add_submenu_item(global_rid,
-			TranslationServer.translate("Snap"), snap_rid)
+			Translator.translate("Snap"), snap_rid)
 
 
 func _reset_menu_items() -> void:

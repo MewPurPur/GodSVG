@@ -39,16 +39,6 @@ msgstr ""
 msgid "OK"
 msgstr ""
 
-#: src/autoload/HandlerGUI.gd src/utils/FileUtils.gd
-msgid "The file extension is empty. Only \"svg\" files are supported."
-msgstr ""
-
-#: src/autoload/HandlerGUI.gd src/utils/FileUtils.gd
-msgid ""
-"\"{passed_extension}\" is an unsupported file extension. Only \"svg\" files "
-"are supported."
-msgstr ""
-
 #: src/autoload/Indications.gd
 msgid "View In List"
 msgstr ""
@@ -204,6 +194,7 @@ msgstr ""
 
 #: src/ui_parts/choose_name_dialog.gd src/ui_parts/confirm_dialog.gd
 #: src/ui_parts/export_dialog.gd src/ui_parts/good_file_dialog.gd
+#: src/ui_parts/import_warning_dialog.gd
 msgid "Cancel"
 msgstr ""
 
@@ -213,6 +204,10 @@ msgstr ""
 
 #: src/ui_parts/code_editor.gd src/ui_parts/good_file_dialog.gd
 msgid "Save SVG"
+msgstr ""
+
+#: src/ui_parts/code_editor.gd
+msgid "Open file"
 msgstr ""
 
 #: src/ui_parts/code_editor.gd src/utils/TranslationUtils.gd
@@ -424,6 +419,10 @@ msgstr ""
 
 #: src/ui_parts/import_warning_dialog.gd
 msgid "Import Problems"
+msgstr ""
+
+#: src/ui_parts/import_warning_dialog.gd src/utils/TranslationUtils.gd
+msgid "Import"
 msgstr ""
 
 #: src/ui_parts/import_warning_dialog.gd
@@ -916,10 +915,6 @@ msgid ""
 msgstr ""
 
 #: src/utils/TranslationUtils.gd
-msgid "Import"
-msgstr ""
-
-#: src/utils/TranslationUtils.gd
 msgid "Select all elements"
 msgstr ""
 
@@ -1037,4 +1032,14 @@ msgstr ""
 
 #: src/utils/TranslationUtils.gd
 msgid "Shorthand Cubic Bezier to"
+msgstr ""
+
+#: src/utils/TranslationUtils.gd
+msgid ""
+"The file extension {extension} is unsupported for this operation. Only "
+"{extension_list} files are supported."
+msgstr ""
+
+#: src/utils/TranslationUtils.gd
+msgid "The file extension is empty. Only {extension_list} files are supported."
 msgstr ""

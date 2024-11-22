@@ -83,7 +83,7 @@ func _on_element_attribute_changed(attribute_changed: String) -> void:
 		sync_to_attribute()
 
 func update_translation() -> void:
-	line_edit.placeholder_text = TranslationServer.translate("No path data")
+	line_edit.placeholder_text = Translator.translate("No path data")
 
 func _on_line_edit_focus_entered() -> void:
 	focused.emit()
@@ -385,8 +385,8 @@ func setup_path_command_controls(idx: int) -> Control:
 	relative_button.text = cmd_char
 	relative_button.tooltip_text = "%s (%s)" %\
 			[TranslationUtils.get_command_description(cmd_char),
-			TranslationServer.translate("Absolute") if is_absolute\
-			else TranslationServer.translate("Relative")]
+			Translator.translate("Absolute") if is_absolute\
+			else Translator.translate("Relative")]
 	container.add_child(relative_button)
 	relative_button.pressed.connect(_on_relative_button_pressed)
 	relative_button.gui_input.connect(_eat_double_clicks.bind(relative_button))
