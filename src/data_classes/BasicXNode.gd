@@ -25,8 +25,8 @@ func duplicate() -> BasicXNode:
 
 static func get_type_string(node_type: NodeType) -> String:
 	match node_type:
-		NodeType.COMMENT: return TranslationServer.translate("Comment")
-		NodeType.TEXT: return TranslationServer.translate("Text")
+		NodeType.COMMENT: return Translator.translate("Comment")
+		NodeType.TEXT: return Translator.translate("Text")
 		NodeType.CDATA: return "CDATA"
 		_: return ""
 

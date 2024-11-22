@@ -39,18 +39,6 @@ msgstr "Hierfür muss sich GodSVG mit dem Internet verbinden."
 msgid "OK"
 msgstr "OK"
 
-#: src/autoload/HandlerGUI.gd src/utils/FileUtils.gd
-msgid "The file extension is empty. Only \"svg\" files are supported."
-msgstr "Die Dateierweiterung ist leer. Nur \"svg\"-Dateien werden unterstützt."
-
-#: src/autoload/HandlerGUI.gd src/utils/FileUtils.gd
-msgid ""
-"\"{passed_extension}\" is an unsupported file extension. Only \"svg\" files "
-"are supported."
-msgstr ""
-"\"{passed_extension}\" ist eine nicht unterstützte Dateierweiterung. Nur "
-"\"svg\" Dateien werden unterstützt."
-
 #: src/autoload/Indications.gd
 msgid "View In List"
 msgstr "Als Liste ansehen"
@@ -207,6 +195,7 @@ msgstr "Achtung!"
 
 #: src/ui_parts/choose_name_dialog.gd src/ui_parts/confirm_dialog.gd
 #: src/ui_parts/export_dialog.gd src/ui_parts/good_file_dialog.gd
+#: src/ui_parts/import_warning_dialog.gd
 msgid "Cancel"
 msgstr "Abbrechen"
 
@@ -217,6 +206,11 @@ msgstr "Erstellen"
 #: src/ui_parts/code_editor.gd src/ui_parts/good_file_dialog.gd
 msgid "Save SVG"
 msgstr "SVG speichern"
+
+#: src/ui_parts/code_editor.gd
+#, fuzzy
+msgid "Open file"
+msgstr "Öffnen"
 
 #: src/ui_parts/code_editor.gd src/utils/TranslationUtils.gd
 msgid "Reset SVG"
@@ -431,6 +425,10 @@ msgstr "Neue Form"
 msgid "Import Problems"
 msgstr "Probleme beim Importieren"
 
+#: src/ui_parts/import_warning_dialog.gd src/utils/TranslationUtils.gd
+msgid "Import"
+msgstr "Importieren"
+
 #: src/ui_parts/import_warning_dialog.gd
 msgid "Unrecognized element"
 msgstr "Unerkanntes Element"
@@ -593,8 +591,9 @@ msgid "New palette"
 msgstr "Neues Element"
 
 #: src/ui_parts/settings_menu.gd
+#, fuzzy
 msgid "New palette from XML"
-msgstr ""
+msgstr "Neues Element"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Editor formatter"
@@ -856,8 +855,9 @@ msgid "Paste XML"
 msgstr "XML Einfügen"
 
 #: src/ui_widgets/palette_config.gd
+#, fuzzy
 msgid "Apply Preset"
-msgstr ""
+msgstr "Zoom zurücksetzen"
 
 #: src/ui_widgets/pathdata_field.gd
 msgid "No path data"
@@ -932,10 +932,6 @@ msgstr ""
 "Die Datei konnte nicht geöffnet werden.\n"
 "Überprüfe den Dateipfad, ob die Datei existiert, oder wähle eine andere "
 "Datei."
-
-#: src/utils/TranslationUtils.gd
-msgid "Import"
-msgstr "Importieren"
 
 #: src/utils/TranslationUtils.gd
 msgid "Select all elements"
@@ -1056,6 +1052,20 @@ msgstr "Kubischer Bezier to"
 #: src/utils/TranslationUtils.gd
 msgid "Shorthand Cubic Bezier to"
 msgstr "Kurzhand-Kubischer Bezier to"
+
+#: src/utils/TranslationUtils.gd
+#, fuzzy
+msgid ""
+"The file extension {extension} is unsupported for this operation. Only "
+"{extension_list} files are supported."
+msgstr ""
+"\"{passed_extension}\" ist eine nicht unterstützte Dateierweiterung. Nur "
+"\"svg\" Dateien werden unterstützt."
+
+#: src/utils/TranslationUtils.gd
+#, fuzzy
+msgid "The file extension is empty. Only {extension_list} files are supported."
+msgstr "Die Dateierweiterung ist leer. Nur \"svg\"-Dateien werden unterstützt."
 
 #~ msgid "Enable snap"
 #~ msgstr "Einrasten aktivieren"

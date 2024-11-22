@@ -75,7 +75,7 @@ non_native_callable: Callable) -> void:
 	# Open it inside a native file dialog, or our custom one if it's not available.
 	if _is_native_preferred():
 		DisplayServer.file_dialog_show(
-				TranslationServer.translate("Save the .\"{extension}\" file").format(
+				Translator.translate("Save the .\"{extension}\" file").format(
 				{"extension": extension}), Utils.get_last_dir(), Utils.get_file_name(
 				GlobalSettings.savedata.current_file_path) + "." + extension, false,
 				DisplayServer.FILE_DIALOG_MODE_SAVE_FILE,
@@ -110,7 +110,7 @@ static func _is_native_preferred() -> bool:
 static func open_import_dialog() -> void:
 	# Open it inside a native file dialog, or our custom one if it's not available.
 	if _is_native_preferred():
-		DisplayServer.file_dialog_show(TranslationServer.translate("Import a .svg file"),
+		DisplayServer.file_dialog_show(Translator.translate("Import a .svg file"),
 				Utils.get_last_dir(), "", false, DisplayServer.FILE_DIALOG_MODE_OPEN_FILE,
 				["*.svg"], native_svg_import)
 	elif OS.has_feature("web"):
@@ -124,7 +124,7 @@ static func open_import_dialog() -> void:
 
 static func open_reference_load_dialog() -> void:
 	if _is_native_preferred():
-		DisplayServer.file_dialog_show(TranslationServer.translate("Load an image file"),
+		DisplayServer.file_dialog_show(Translator.translate("Load an image file"),
 				Utils.get_last_dir(), "", false, DisplayServer.FILE_DIALOG_MODE_OPEN_FILE,
 				PackedStringArray(["*.png,*.jpeg,*.jpg,*.webp,*.svg"]),
 				native_reference_image_load)
@@ -167,7 +167,7 @@ static func apply_svg_from_path(path: String) -> Error:
 		error = TranslationUtils.get_bad_extension_alert_text(extension,
 				PackedStringArray(["svg"]))
 	elif !is_instance_valid(svg_file):
-		error = TranslationServer.translate(
+		error = Translator.translate(
 				"The file couldn't be opened.\nTry checking the file path, ensure that the file is not deleted, or choose a different file.")
 	
 	if not error.is_empty():

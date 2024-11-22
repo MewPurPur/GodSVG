@@ -17,16 +17,16 @@ func _ready() -> void:
 	close_button.pressed.connect(queue_free)
 	prereleases_checkbox.toggled.connect(display_results.unbind(1))
 	
-	close_button.text = TranslationServer.translate("Close")
-	prereleases_checkbox.text = TranslationServer.translate("Include prereleases")
-	retry_button.text = TranslationServer.translate("Retry")
-	current_version_label.text = TranslationServer.translate("Current Version") + ": " +\
+	close_button.text = Translator.translate("Close")
+	prereleases_checkbox.text = Translator.translate("Include prereleases")
+	retry_button.text = Translator.translate("Retry")
+	current_version_label.text = Translator.translate("Current Version") + ": " +\
 			current_version
 	request()
 
 func request() -> void:
 	retry_button.hide()
-	status_label.text = TranslationServer.translate("Retrieving information...")
+	status_label.text = Translator.translate("Retrieving information...")
 	var err := http.request("https://api.github.com/repos/MewPurPur/GodSVG/releases",
 			["User-Agent: MewPurPur/GodSVG"])
 	if err != OK:
@@ -75,7 +75,7 @@ _headers: PackedStringArray, body: PackedByteArray) -> void:
 
 
 func display_error_message(msg: String) -> void:
-	status_label.text = TranslationServer.translate("Update check failed") + ": %s" % msg
+	status_label.text = Translator.translate("Update check failed") + ": %s" % msg
 	retry_button.show()
 
 func _on_retry() -> void:
@@ -94,10 +94,10 @@ func display_results() -> void:
 				break
 	# Set the text.
 	if not has_results:
-		status_label.text = TranslationServer.translate("GodSVG is up-to-date.")
+		status_label.text = Translator.translate("GodSVG is up-to-date.")
 		return
 	else:
-		status_label.text = TranslationServer.translate("New versions") + ":"
+		status_label.text = Translator.translate("New versions") + ":"
 		for version in results:
 			var result: Array = results[version]
 			if prereleases_checkbox.button_pressed or result[1] == false:

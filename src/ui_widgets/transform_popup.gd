@@ -40,7 +40,7 @@ func _exit_tree() -> void:
 	UR.free()
 
 func update_translation() -> void:
-	apply_matrix.tooltip_text = TranslationServer.translate("Apply the matrix")
+	apply_matrix.tooltip_text = Translator.translate("Apply the matrix")
 
 func rebuild() -> void:
 	var transform_count := attribute_ref.get_transform_count()
@@ -152,13 +152,13 @@ func update_final_transform() -> void:
 
 func popup_transform_actions(idx: int, control: Control) -> void:
 	var btn_array: Array[Button] = []
-	btn_array.append(ContextPopup.create_button(TranslationServer.translate("Insert After"),
+	btn_array.append(ContextPopup.create_button(Translator.translate("Insert After"),
 			popup_new_transform_context.bind(idx + 1, control), false,
 			load("res://visual/icons/InsertAfter.svg")))
-	btn_array.append(ContextPopup.create_button(TranslationServer.translate("Insert Before"),
+	btn_array.append(ContextPopup.create_button(Translator.translate("Insert Before"),
 			popup_new_transform_context.bind(idx, control), false,
 			load("res://visual/icons/InsertBefore.svg")))
-	btn_array.append(ContextPopup.create_button(TranslationServer.translate("Delete"),
+	btn_array.append(ContextPopup.create_button(Translator.translate("Delete"),
 			delete_transform.bind(idx), false, load("res://visual/icons/Delete.svg")))
 	
 	var context_popup := ContextPopup.new()
@@ -176,7 +176,7 @@ func popup_new_transform_context(idx: int, control: Control) -> void:
 	
 	var transform_context := ContextPopup.new()
 	transform_context.setup_with_title(btn_array,
-			TranslationServer.translate("New transform"), true)
+			Translator.translate("New transform"), true)
 	HandlerGUI.popup_under_rect_center(transform_context, control.get_global_rect(),
 			get_viewport())
 

@@ -39,19 +39,6 @@ msgstr "Hiervoor moet GodSVG verbinding maken met het internet."
 msgid "OK"
 msgstr "OK"
 
-#: src/autoload/HandlerGUI.gd src/utils/FileUtils.gd
-msgid "The file extension is empty. Only \"svg\" files are supported."
-msgstr ""
-"Deze bestandsextensie is leeg. Alleen \"svg\" bestanden zijn ondersteund."
-
-#: src/autoload/HandlerGUI.gd src/utils/FileUtils.gd
-msgid ""
-"\"{passed_extension}\" is an unsupported file extension. Only \"svg\" files "
-"are supported."
-msgstr ""
-"\"{passed_extension}\" is een niet-ondersteund bestandsextensie. Alleen "
-"\"svg\" bestanden zijn ondersteund."
-
 #: src/autoload/Indications.gd
 msgid "View In List"
 msgstr "Bekijk in lijst"
@@ -208,6 +195,7 @@ msgstr "Waarschuwing!"
 
 #: src/ui_parts/choose_name_dialog.gd src/ui_parts/confirm_dialog.gd
 #: src/ui_parts/export_dialog.gd src/ui_parts/good_file_dialog.gd
+#: src/ui_parts/import_warning_dialog.gd
 msgid "Cancel"
 msgstr "Annuleren"
 
@@ -218,6 +206,11 @@ msgstr "Creëren"
 #: src/ui_parts/code_editor.gd src/ui_parts/good_file_dialog.gd
 msgid "Save SVG"
 msgstr "SVG opslaan"
+
+#: src/ui_parts/code_editor.gd
+#, fuzzy
+msgid "Open file"
+msgstr "Open"
 
 #: src/ui_parts/code_editor.gd src/utils/TranslationUtils.gd
 msgid "Reset SVG"
@@ -432,6 +425,10 @@ msgstr "Nieuw vorm"
 msgid "Import Problems"
 msgstr "Importproblemen"
 
+#: src/ui_parts/import_warning_dialog.gd src/utils/TranslationUtils.gd
+msgid "Import"
+msgstr "Importeren"
+
 #: src/ui_parts/import_warning_dialog.gd
 msgid "Unrecognized element"
 msgstr "Onbekende element"
@@ -594,8 +591,9 @@ msgid "New palette"
 msgstr "Nieuw element"
 
 #: src/ui_parts/settings_menu.gd
+#, fuzzy
 msgid "New palette from XML"
-msgstr ""
+msgstr "Nieuw element"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Editor formatter"
@@ -740,8 +738,9 @@ msgid "Preset"
 msgstr "Zoom opnieuw zetten"
 
 #: src/ui_widgets/formatter_config.gd
+#, fuzzy
 msgid "Keep comments"
-msgstr ""
+msgstr "Commentaarkleur"
 
 #: src/ui_widgets/formatter_config.gd
 #, fuzzy
@@ -857,8 +856,9 @@ msgid "Paste XML"
 msgstr "XML Plakken"
 
 #: src/ui_widgets/palette_config.gd
+#, fuzzy
 msgid "Apply Preset"
-msgstr ""
+msgstr "Zoom opnieuw zetten"
 
 #: src/ui_widgets/pathdata_field.gd
 msgid "No path data"
@@ -933,10 +933,6 @@ msgstr ""
 "De Bestand kon niet geopend worden.\n"
 "Probeer the bestandspad te controleren, zorg ervoor dat de bestand niet "
 "verwijdert is, of kies een ander bestand uit."
-
-#: src/utils/TranslationUtils.gd
-msgid "Import"
-msgstr "Importeren"
 
 #: src/utils/TranslationUtils.gd
 msgid "Select all elements"
@@ -1058,6 +1054,21 @@ msgstr "Kubieke Bézier naar"
 #: src/utils/TranslationUtils.gd
 msgid "Shorthand Cubic Bezier to"
 msgstr "Korte Kubieke Bézier naar"
+
+#: src/utils/TranslationUtils.gd
+#, fuzzy
+msgid ""
+"The file extension {extension} is unsupported for this operation. Only "
+"{extension_list} files are supported."
+msgstr ""
+"\"{passed_extension}\" is een niet-ondersteund bestandsextensie. Alleen "
+"\"svg\" bestanden zijn ondersteund."
+
+#: src/utils/TranslationUtils.gd
+#, fuzzy
+msgid "The file extension is empty. Only {extension_list} files are supported."
+msgstr ""
+"Deze bestandsextensie is leeg. Alleen \"svg\" bestanden zijn ondersteund."
 
 #~ msgid "Enable snap"
 #~ msgstr "Snap inschakelen"

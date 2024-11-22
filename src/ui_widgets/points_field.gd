@@ -74,7 +74,7 @@ func _on_element_attribute_changed(attribute_changed: String) -> void:
 		sync_to_attribute()
 
 func update_translation() -> void:
-	line_edit.placeholder_text = TranslationServer.translate("No points")
+	line_edit.placeholder_text = Translator.translate("No points")
 
 func _on_line_edit_focus_entered() -> void:
 	focused.emit()

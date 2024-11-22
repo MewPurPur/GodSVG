@@ -13,7 +13,7 @@ func _ready() -> void:
 func setup(title: String, message: String, action_text: String, action: Callable) -> void:
 	label.text = message
 	title_label.text = title
-	cancel_button.text = TranslationServer.translate("Cancel")
+	cancel_button.text = Translator.translate("Cancel")
 	action_button.text = action_text
 	action_button.pressed.connect(action)
 	action_button.grab_focus()

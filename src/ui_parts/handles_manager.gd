@@ -838,7 +838,7 @@ func create_element_context(pos: Vector2) -> ContextPopup:
 		btn_array.append(btn)
 	var element_context := ContextPopup.new()
 	var separation_indices: Array[int] = [1, 4]
-	element_context.setup_with_title(btn_array, TranslationServer.translate("New shape"),
+	element_context.setup_with_title(btn_array, Translator.translate("New shape"),
 			true, -1, separation_indices)
 	return element_context
 

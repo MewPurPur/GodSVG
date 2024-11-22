@@ -39,18 +39,6 @@ msgstr "Това изисква GodSVG да се свърже с интерна�
 msgid "OK"
 msgstr "Добре"
 
-#: src/autoload/HandlerGUI.gd src/utils/FileUtils.gd
-msgid "The file extension is empty. Only \"svg\" files are supported."
-msgstr "Форматът е празен. Единствено \"svg\" файловете са подържани."
-
-#: src/autoload/HandlerGUI.gd src/utils/FileUtils.gd
-msgid ""
-"\"{passed_extension}\" is an unsupported file extension. Only \"svg\" files "
-"are supported."
-msgstr ""
-"\"{passed_extension}\" не е поддържан формат. Единствено \"svg\" файловете "
-"са подържани."
-
 #: src/autoload/Indications.gd
 msgid "View In List"
 msgstr "Виж в Списъка"
@@ -206,6 +194,7 @@ msgstr "Предупреждение!"
 
 #: src/ui_parts/choose_name_dialog.gd src/ui_parts/confirm_dialog.gd
 #: src/ui_parts/export_dialog.gd src/ui_parts/good_file_dialog.gd
+#: src/ui_parts/import_warning_dialog.gd
 msgid "Cancel"
 msgstr "Отказ"
 
@@ -216,6 +205,11 @@ msgstr "Създай"
 #: src/ui_parts/code_editor.gd src/ui_parts/good_file_dialog.gd
 msgid "Save SVG"
 msgstr "Запиши SVG-то"
+
+#: src/ui_parts/code_editor.gd
+#, fuzzy
+msgid "Open file"
+msgstr "Отвори"
 
 #: src/ui_parts/code_editor.gd src/utils/TranslationUtils.gd
 msgid "Reset SVG"
@@ -429,6 +423,10 @@ msgstr "Нова фигура"
 #: src/ui_parts/import_warning_dialog.gd
 msgid "Import Problems"
 msgstr "Проблеми в импортирането"
+
+#: src/ui_parts/import_warning_dialog.gd src/utils/TranslationUtils.gd
+msgid "Import"
+msgstr "Импортирай"
 
 #: src/ui_parts/import_warning_dialog.gd
 msgid "Unrecognized element"
@@ -930,10 +928,6 @@ msgstr ""
 "изберете различен файл."
 
 #: src/utils/TranslationUtils.gd
-msgid "Import"
-msgstr "Импортирай"
-
-#: src/utils/TranslationUtils.gd
 msgid "Select all elements"
 msgstr "Избери всички елементи"
 
@@ -1052,3 +1046,14 @@ msgstr "Кубична крива на Безие до"
 #: src/utils/TranslationUtils.gd
 msgid "Shorthand Cubic Bezier to"
 msgstr "Кратка кубична крива на Безие до"
+
+#: src/utils/TranslationUtils.gd
+msgid ""
+"The file extension {extension} is unsupported for this operation. Only "
+"{extension_list} files are supported."
+msgstr ""
+"\"{extension}\" не е поддържан формат за тази операция. Единствено {extension_list} файловете са подържани."
+
+#: src/utils/TranslationUtils.gd
+msgid "The file extension is empty. Only {extension_list} files are supported."
+msgstr "Форматът е празен. Единствено {extension_list} файловете са подържани."

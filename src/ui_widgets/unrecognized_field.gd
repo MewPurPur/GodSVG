@@ -25,4 +25,4 @@ func sync(new_value: String) -> void:
 
 func update_translation() -> void:
 	tooltip_text = attribute_name + "\n(%s)" %\
-			TranslationServer.translate("GodSVG doesn’t recognize this attribute")
+			Translator.translate("GodSVG doesn’t recognize this attribute")

@@ -63,11 +63,11 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func update_translations() -> void:
-	%LeftMenu/Settings.tooltip_text = TranslationServer.translate("Settings")
-	%LeftMenu/Visuals.tooltip_text = TranslationServer.translate("Visuals")
+	%LeftMenu/Settings.tooltip_text = Translator.translate("Settings")
+	%LeftMenu/Visuals.tooltip_text = Translator.translate("Visuals")
 	%LeftMenu/Snapping/SnapButton.tooltip_text =\
 			TranslationUtils.get_shortcut_description("toggle_snap")
-	%LeftMenu/Snapping/SnapNumberEdit.tooltip_text = TranslationServer.translate(
+	%LeftMenu/Snapping/SnapNumberEdit.tooltip_text = Translator.translate(
 			"Snap size")
 
 func update_theme() -> void:
@@ -102,12 +102,12 @@ func open_savedata_folder() -> void:
 
 func _on_reference_pressed() -> void:
 	var btn_arr: Array[Button] = [
-		ContextPopup.create_button(TranslationServer.translate("Load reference image"),
+		ContextPopup.create_button(Translator.translate("Load reference image"),
 			FileUtils.open_reference_load_dialog, false,
 			load("res://visual/icons/Reference.svg"), "load_reference"),
-		ContextPopup.create_checkbox(TranslationServer.translate("Show reference"),
+		ContextPopup.create_checkbox(Translator.translate("Show reference"),
 			toggle_reference_image, reference_texture.visible, "view_show_reference"),
-		ContextPopup.create_checkbox(TranslationServer.translate("Overlay reference"),
+		ContextPopup.create_checkbox(Translator.translate("Overlay reference"),
 			toggle_reference_overlay, reference_overlay, "view_overlay_reference")
 	]
 	
@@ -118,11 +118,11 @@ func _on_reference_pressed() -> void:
 
 func _on_visuals_button_pressed() -> void:
 	var btn_arr: Array[Button] = [
-		ContextPopup.create_checkbox(TranslationServer.translate("Show grid"),
+		ContextPopup.create_checkbox(Translator.translate("Show grid"),
 				toggle_grid_visuals, grid_visuals.visible, "view_show_grid"),
-		ContextPopup.create_checkbox(TranslationServer.translate("Show handles"),
+		ContextPopup.create_checkbox(Translator.translate("Show handles"),
 				toggle_handles_visuals, controls.visible, "view_show_handles"),
-		ContextPopup.create_checkbox(TranslationServer.translate("Rasterized SVG"),
+		ContextPopup.create_checkbox(Translator.translate("Rasterized SVG"),
 				toggle_rasterization, viewport.display_texture.rasterized,
 				"view_rasterized_svg")]
 	
@@ -135,27 +135,27 @@ func _on_more_options_pressed() -> void:
 	var can_show_savedata_folder := DisplayServer.has_feature(
 				DisplayServer.FEATURE_NATIVE_DIALOG_FILE)
 	var buttons_arr: Array[Button] = []
-	buttons_arr.append(ContextPopup.create_button(TranslationServer.translate(
+	buttons_arr.append(ContextPopup.create_button(Translator.translate(
 			"Check for updates"), ShortcutUtils.fn("check_updates"), false,
 			load("res://visual/icons/Reload.svg"), "check_updates"))
 	
 	if can_show_savedata_folder:
-		buttons_arr.append(ContextPopup.create_button(TranslationServer.translate(
+		buttons_arr.append(ContextPopup.create_button(Translator.translate(
 				"View savedata"), open_savedata_folder , false,
 				load("res://visual/icons/OpenFolder.svg")))
 	
-	var about_btn := ContextPopup.create_button(TranslationServer.translate("About…"),
+	var about_btn := ContextPopup.create_button(Translator.translate("About…"),
 			ShortcutUtils.fn("about_info"), false, load("res://visual/icon.png"),
 			"about_info")
 	about_btn.expand_icon = true
 	buttons_arr.append(about_btn)
-	buttons_arr.append(ContextPopup.create_button(TranslationServer.translate(
+	buttons_arr.append(ContextPopup.create_button(Translator.translate(
 			"Donate…"), ShortcutUtils.fn("about_donate"), false,
 			load("res://visual/icons/Heart.svg"), "about_donate"))
-	buttons_arr.append(ContextPopup.create_button(TranslationServer.translate(
+	buttons_arr.append(ContextPopup.create_button(Translator.translate(
 			"GodSVG repository"), ShortcutUtils.fn("about_repo"), false,
 			load("res://visual/icons/Link.svg"), "about_repo"))
-	buttons_arr.append(ContextPopup.create_button(TranslationServer.translate(
+	buttons_arr.append(ContextPopup.create_button(Translator.translate(
 			"GodSVG website"), ShortcutUtils.fn("about_website"), false,
 			load("res://visual/icons/Link.svg"), "about_website"))
 	var separator_indices := PackedInt32Array([1, 3])

@@ -17,7 +17,7 @@ func _ready() -> void:
 
 
 func update_translation() -> void:
-	add_button.text = TranslationServer.translate("Add element")
+	add_button.text = Translator.translate("Add element")
 
 
 func full_rebuild() -> void:

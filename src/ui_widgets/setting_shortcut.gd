@@ -14,7 +14,7 @@ var listening_idx := -1
 var pending_event: InputEventKey
 
 func update_translation() -> void:
-	reset_button.tooltip_text = TranslationServer.translate("Reset to default")
+	reset_button.tooltip_text = Translator.translate("Reset to default")
 
 func _ready() -> void:
 	reset_button.pressed.connect(_on_reset_button_pressed)
@@ -71,9 +71,9 @@ func sync() -> void:
 			new_btn.add_theme_color_override("font_hover_color", Color("#def6"))
 			new_btn.add_theme_color_override("font_pressed_color", Color("#def8"))
 			new_btn.end_bulk_theme_override()
-			set_shortcut_button_text(new_btn, TranslationServer.translate("Unused"))
+			set_shortcut_button_text(new_btn, Translator.translate("Unused"))
 			if i == events.size():
-				new_btn.tooltip_text = TranslationServer.translate("Add shortcut")
+				new_btn.tooltip_text = Translator.translate("Add shortcut")
 				new_btn.pressed.connect(enter_listening_mode.bind(i))
 			else:
 				new_btn.disabled = true
@@ -100,13 +100,13 @@ func enter_listening_mode(idx: int, show_delete_button := false) -> void:
 	set_shortcut_button_text(btn, activation_event.as_text_keycode().\
 			trim_suffix("(Unset)").trim_suffix("+"))
 	if btn.text.is_empty():
-		set_shortcut_button_text(btn, TranslationServer.translate("Press keys…"))
+		set_shortcut_button_text(btn, Translator.translate("Press keys…"))
 	# Add optional delete button.
 	if show_delete_button:
 		btn.icon = delete_icon
 		var delete_btn := Button.new()
 		delete_btn.theme_type_variation = "FlatButton"
-		delete_btn.tooltip_text = TranslationServer.translate("Delete")
+		delete_btn.tooltip_text = Translator.translate("Delete")
 		delete_btn.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 		delete_btn.focus_mode = Control.FOCUS_NONE
 		# Position the delete button around the delte icon. Seems like the simplest way
@@ -203,7 +203,7 @@ func check_shortcuts_validity() -> void:
 			if conflicts.size() > 8:
 				conflicts.resize(8)
 				conflicts.append("...")
-			shortcut_btn.tooltip_text = TranslationServer.translate("Also used by") +\
+			shortcut_btn.tooltip_text = Translator.translate("Also used by") +\
 					":\n" + "\n".join(conflicts)
 		else:
 			shortcut_btn.begin_bulk_theme_override()

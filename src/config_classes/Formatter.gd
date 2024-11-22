@@ -24,32 +24,32 @@ const container_elements = ["svg", "g", "linearGradient", "radialGradient"]
 
 static func get_preset_enum_text(enum_value: Preset) -> String:
 	match enum_value:
-		Preset.COMPACT: return TranslationServer.translate("Compact")
-		Preset.PRETTY: return TranslationServer.translate("Pretty")
+		Preset.COMPACT: return Translator.translate("Compact")
+		Preset.PRETTY: return Translator.translate("Pretty")
 	return ""
 
 static func get_shorthand_tags_enum_text(enum_value: ShorthandTags) -> String:
 	match enum_value:
-		ShorthandTags.ALWAYS: return TranslationServer.translate("Always")
+		ShorthandTags.ALWAYS: return Translator.translate("Always")
 		ShorthandTags.ALL_EXCEPT_CONTAINERS:
-			return TranslationServer.translate("All except containers")
-		ShorthandTags.NEVER: return TranslationServer.translate("Never")
+			return Translator.translate("All except containers")
+		ShorthandTags.NEVER: return Translator.translate("Never")
 	return ""
 
 static func get_named_color_use_enum_text(enum_value: NamedColorUse) -> String:
 	match enum_value:
-		NamedColorUse.ALWAYS: return TranslationServer.translate("Always")
+		NamedColorUse.ALWAYS: return Translator.translate("Always")
 		NamedColorUse.WHEN_SHORTER_OR_EQUAL:
-			return TranslationServer.translate("When shorter or equal")
-		NamedColorUse.WHEN_SHORTER: return TranslationServer.translate("When shorter")
-		NamedColorUse.NEVER: return TranslationServer.translate("Never")
+			return Translator.translate("When shorter or equal")
+		NamedColorUse.WHEN_SHORTER: return Translator.translate("When shorter")
+		NamedColorUse.NEVER: return Translator.translate("Never")
 	return ""
 
 static func get_primary_color_syntax_enum_text(enum_value: PrimaryColorSyntax) -> String:
 	match enum_value:
 		PrimaryColorSyntax.THREE_OR_SIX_DIGIT_HEX:
-			return TranslationServer.translate("3-digit or 6-digit hex")
-		PrimaryColorSyntax.SIX_DIGIT_HEX: return TranslationServer.translate("6-digit hex")
+			return Translator.translate("3-digit or 6-digit hex")
+		PrimaryColorSyntax.SIX_DIGIT_HEX: return Translator.translate("6-digit hex")
 		PrimaryColorSyntax.RGB: return "RGB"
 	return ""
 
