@@ -378,6 +378,11 @@ msgid "Select an SVG"
 msgstr "Выбрать SVG"
 
 #: src/ui_parts/good_file_dialog.gd
+#, fuzzy
+msgid "Select an XML file"
+msgstr "Выбрать изображение"
+
+#: src/ui_parts/good_file_dialog.gd
 msgid "Select an image"
 msgstr "Выбрать изображение"
 
@@ -585,6 +590,15 @@ msgstr "Автоматический маштаб интерфейса поль�
 #: src/ui_parts/settings_menu.gd
 msgid "Language"
 msgstr "Язык"
+
+#: src/ui_parts/settings_menu.gd
+#, fuzzy
+msgid "Import XML"
+msgstr "Импортировать"
+
+#: src/ui_parts/settings_menu.gd src/ui_widgets/palette_config.gd
+msgid "Paste XML"
+msgstr "Вставить XML"
 
 #: src/ui_parts/settings_menu.gd
 msgid "New palette"
@@ -850,10 +864,6 @@ msgid "Copy as XML"
 msgstr "Скопировать как XML"
 
 #: src/ui_widgets/palette_config.gd
-msgid "Paste XML"
-msgstr "Вставить XML"
-
-#: src/ui_widgets/palette_config.gd
 msgid "Apply Preset"
 msgstr "Принять пресет"
 
@@ -914,22 +924,21 @@ msgid "Save the .\"{extension}\" file"
 msgstr "Сохранить .\"{extension}\" файл"
 
 #: src/utils/FileUtils.gd
-msgid "Import a .svg file"
-msgstr "Импортировать .svg файл"
-
-#: src/utils/FileUtils.gd
 msgid "Load an image file"
 msgstr "Загрузить изображение"
 
 #: src/utils/FileUtils.gd
-msgid ""
-"The file couldn't be opened.\n"
-"Try checking the file path, ensure that the file is not deleted, or choose a "
-"different file."
+#, fuzzy
+msgid "Import a {extension} file"
+msgstr "Импортировать .svg файл"
+
+#: src/utils/FileUtils.gd
+msgid "The file couldn't be opened."
 msgstr ""
-"Невозможно открыть этот файл.\n"
-"Попробуйте проверить путь до файла, убедитесь что файл не удален или "
-"выберите другой файл."
+
+#: src/utils/FileUtils.gd
+msgid "Check if the file still exists in the selected file path."
+msgstr ""
 
 #: src/utils/TranslationUtils.gd
 msgid "Select all elements"
@@ -1064,6 +1073,15 @@ msgstr ""
 #, fuzzy
 msgid "The file extension is empty. Only {extension_list} files are supported."
 msgstr "Расширение файла пустое. Поддерживается только «svg» файлы."
+
+#~ msgid ""
+#~ "The file couldn't be opened.\n"
+#~ "Try checking the file path, ensure that the file is not deleted, or "
+#~ "choose a different file."
+#~ msgstr ""
+#~ "Невозможно открыть этот файл.\n"
+#~ "Попробуйте проверить путь до файла, убедитесь что файл не удален или "
+#~ "выберите другой файл."
 
 #~ msgid "Enable snap"
 #~ msgstr "Включить привязку"
