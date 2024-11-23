@@ -27,7 +27,6 @@ const ConfirmDialog := preload("res://src/ui_parts/confirm_dialog.tscn")
 var reference_overlay := false
 
 func _ready() -> void:
-	GlobalSettings.reference_image_changed.connect(finish_reference_load)
 	GlobalSettings.language_changed.connect(update_translations)
 	GlobalSettings.snap_changed.connect(update_snap_config)
 	GlobalSettings.theme_changed.connect(update_theme)
@@ -47,7 +46,7 @@ func _unhandled_input(event: InputEvent) -> void:
 			update_debug()
 			input_debug_label.text = ""
 	elif ShortcutUtils.is_action_pressed(event, "load_reference"):
-		FileUtils.open_reference_load_dialog()
+		FileUtils.open_image_import_dialog(finish_reference_import)
 	elif ShortcutUtils.is_action_pressed(event, "view_show_grid"):
 		toggle_grid_visuals()
 	elif ShortcutUtils.is_action_pressed(event, "view_show_handles"):
@@ -103,7 +102,7 @@ func open_savedata_folder() -> void:
 func _on_reference_pressed() -> void:
 	var btn_arr: Array[Button] = [
 		ContextPopup.create_button(Translator.translate("Load reference image"),
-			FileUtils.open_reference_load_dialog, false,
+			FileUtils.open_image_import_dialog.bind(finish_reference_import), false,
 			load("res://visual/icons/Reference.svg"), "load_reference"),
 		ContextPopup.create_checkbox(Translator.translate("Show reference"),
 			toggle_reference_image, reference_texture.visible, "view_show_reference"),
@@ -193,8 +192,13 @@ func toggle_reference_overlay() -> void:
 	else:
 		viewport.move_child(reference_texture, 0)
 
-func finish_reference_load() -> void:
-	var img = Image.load_from_file(GlobalSettings.reference_image_path)
+func finish_reference_import(data: Variant, path: String) -> void:
+	var img := Image.new()
+	match path.get_extension().to_lower():
+		"svg": img.load_svg_from_string(data)
+		"png": img.load_png_from_buffer(data)
+		"jpg", "jpeg": img.load_jpg_from_buffer(data)
+		"webp": img.load_webp_from_buffer(data)
 	reference_texture.texture = ImageTexture.create_from_image(img)
 	reference_texture.show()
 

@@ -177,7 +177,7 @@ func move_down() -> void:
 	layout_changed.emit()
 
 func paste_palette() -> void:
-	var pasted_palettes := ColorPalette.text_to_palettes(DisplayServer.clipboard_get())
+	var pasted_palettes := ColorPalette.text_to_palettes(Utils.get_clipboard_web_safe())
 	if pasted_palettes.is_empty():
 		return
 	GlobalSettings.replace_palette(find_palette_index(), pasted_palettes[0])
@@ -228,7 +228,7 @@ func _on_palette_button_pressed() -> void:
 			DisplayServer.clipboard_set.bind(GlobalSettings.savedata.palettes[palette_idx].\
 			to_text()), false, load("res://visual/icons/Copy.svg")))
 	btn_arr.append(ContextPopup.create_button(Translator.translate("Paste XML"),
-			paste_palette, !ColorPalette.is_valid_palette(DisplayServer.clipboard_get()),
+			paste_palette, !ColorPalette.is_valid_palette(Utils.get_clipboard_web_safe()),
 			load("res://visual/icons/Paste.svg")))
 	btn_arr.append(ContextPopup.create_button(Translator.translate("Apply Preset"),
 			open_palette_options, false, load("res://visual/icons/Import.svg")))

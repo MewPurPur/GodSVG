@@ -114,13 +114,14 @@ static func text_to_palettes(text: String) -> Array[ColorPalette]:
 								parser.get_named_attribute_value_safe("name").strip_edges())
 						parsed_colors.append(col_str)
 			XMLParser.NODE_ELEMENT_END:
-				var new_palette := ColorPalette.new(parsed_title)
-				new_palette.colors = parsed_colors.duplicate()
-				new_palette.color_names = parsed_color_names.duplicate()
-				parsed_colors.clear()
-				parsed_color_names.clear()
-				parsed_title = ""
-				palettes.append(new_palette)
+				if parser.get_node_name() == "palette":
+					var new_palette := ColorPalette.new(parsed_title)
+					new_palette.colors = parsed_colors.duplicate()
+					new_palette.color_names = parsed_color_names.duplicate()
+					parsed_colors.clear()
+					parsed_color_names.clear()
+					parsed_title = ""
+					palettes.append(new_palette)
 	return palettes
 
 static func is_valid_palette(text: String) -> bool:

@@ -7,6 +7,7 @@ signal file_selected(path: String)
 
 const folder_icon = preload("res://visual/icons/Folder.svg")
 const broken_file_icon = preload("res://visual/icons/FileBroken.svg")
+const text_file_icon = preload("res://visual/icons/TextFile.svg")
 
 const system_dirs_to_show = [OS.SYSTEM_DIR_DESKTOP, OS.SYSTEM_DIR_DOCUMENTS,
 		OS.SYSTEM_DIR_DOWNLOADS, OS.SYSTEM_DIR_MOVIES, OS.SYSTEM_DIR_MUSIC,
@@ -88,7 +89,7 @@ func _ready() -> void:
 	# Signal connections.
 	refresh_button.pressed.connect(refresh_dir)
 	close_button.pressed.connect(queue_free)
-	file_selected.connect(HandlerGUI.remove_all_overlays.unbind(1))
+	file_selected.connect(HandlerGUI.remove_overlay.unbind(1))
 	special_button.pressed.connect(select_file)
 	create_folder_cancel_button.pressed.connect(create_folder_center_container.hide)
 	file_list.get_v_scroll_bar().value_changed.connect(_setup_file_images.unbind(1))
@@ -116,6 +117,8 @@ func _ready() -> void:
 	else:
 		if extensions.size() == 1 and extensions[0] == "svg":
 			title_label.text = Translator.translate("Select an SVG")
+		elif extensions.size() == 1 and extensions[0] == "xml":
+			title_label.text = Translator.translate("Select an XML file")
 		else:
 			title_label.text = Translator.translate("Select an image")
 	
@@ -160,13 +163,13 @@ func set_dir(dir: String) -> void:
 	# Rebuild the system dirs, as we may now need to highlight the current one.
 	drives_list.clear()
 	for drive in system_dirs_to_show:
-		var drive_path := OS.get_system_dir(drive)
+		var drive_path: String =  system_dir_paths[drive] if\
+				system_dir_paths.has(drive) else OS.get_system_dir(drive)
 		var drive_name := drive_path.get_file()
 		if drive_name.is_empty():
 			continue
 		
-		var item_idx := drives_list.add_item(drive_path.get_file(),
-				get_drive_icon(drive_path))
+		var item_idx := drives_list.add_item(drive_name, get_drive_icon(drive_path))
 		drives_list.set_item_metadata(item_idx,
 				Actions.new(Callable(), enter_dir.bind(drive_path)))
 		if current_dir == drive_path:
@@ -236,24 +239,27 @@ func _setup_file_images() -> void:
 		if !is_instance_valid(file_list.get_item_icon(item_idx)) and\
 		file_rect.end.y > visible_start and file_rect.position.y < visible_end:
 			var file := file_list.get_item_text(item_idx)
-			if file.get_extension() == "svg":
-				# Setup a clean SVG graphic by using the scaling parameter.
-				var svg_text := FileAccess.open(current_dir.path_join(file),
-						FileAccess.READ).get_as_text()
-				var img := Image.new()
-				img.load_svg_from_string(svg_text)
-				if !is_instance_valid(img) or img.is_empty():
-					file_list.set_item_icon(item_idx, broken_file_icon)
-				else:
-					img.load_svg_from_string(svg_text,
-							item_height / maxf(img.get_width(), img.get_height()))
-					file_list.set_item_icon(item_idx, ImageTexture.create_from_image(img))
-			else:
-				var img := Image.load_from_file(current_dir.path_join(file))
-				if !is_instance_valid(img) or img.is_empty():
-					file_list.set_item_icon(item_idx, broken_file_icon)
-				else:
-					file_list.set_item_icon(item_idx, ImageTexture.create_from_image(img))
+			match file.get_extension():
+				"xml":
+					file_list.set_item_icon(item_idx, text_file_icon)
+				"svg":
+					# Setup a clean SVG graphic by using the scaling parameter.
+					var svg_text := FileAccess.open(current_dir.path_join(file),
+							FileAccess.READ).get_as_text()
+					var img := Image.new()
+					img.load_svg_from_string(svg_text)
+					if !is_instance_valid(img) or img.is_empty():
+						file_list.set_item_icon(item_idx, broken_file_icon)
+					else:
+						img.load_svg_from_string(svg_text,
+								item_height / maxf(img.get_width(), img.get_height()))
+						file_list.set_item_icon(item_idx, ImageTexture.create_from_image(img))
+				_:
+					var img := Image.load_from_file(current_dir.path_join(file))
+					if !is_instance_valid(img) or img.is_empty():
+						file_list.set_item_icon(item_idx, broken_file_icon)
+					else:
+						file_list.set_item_icon(item_idx, ImageTexture.create_from_image(img))
 
 
 func select_file() -> void:
@@ -446,9 +452,6 @@ func get_drive_icon(path: String) -> Texture2D:
 		return load("res://visual/icons/DirPictures.svg")
 	else:
 		return folder_icon
-
-func is_system_dir(path: String) -> bool:
-	return path in system_dir_paths.values()
 
 func _input(event: InputEvent) -> void:
 	if ShortcutUtils.is_action_pressed(event, "find"):
