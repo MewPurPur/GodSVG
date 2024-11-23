@@ -795,8 +795,10 @@ func get_event_pos(event: InputEvent) -> Vector2:
 	
 	var event_pos: Vector2 = event.position / Indications.zoom +\
 				get_parent().view.position
-	var precision := maxi(ceili(-log(1.0 / Indications.zoom) / log(10)), 0)
-	event_pos = event_pos.snapped(Vector2(0.1 ** precision, 0.1 ** precision))
+	var precision_snap := 0.1 ** maxi(ceili(-log(1.0 / Indications.zoom) / log(10)), 0)
+	# Do this with the floats instead of Vector2 for 64-bit precision.
+	event_pos.x = snappedf(event_pos.x, precision_snap)
+	event_pos.y = snappedf(event_pos.y, precision_snap)
 	if snap_enabled:
 		event_pos = event_pos.snapped(snap_vector)
 	return event_pos
