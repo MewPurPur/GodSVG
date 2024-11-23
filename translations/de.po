@@ -376,6 +376,11 @@ msgid "Select an SVG"
 msgstr "SVG auswählen"
 
 #: src/ui_parts/good_file_dialog.gd
+#, fuzzy
+msgid "Select an XML file"
+msgstr "Bild auswählen"
+
+#: src/ui_parts/good_file_dialog.gd
 msgid "Select an image"
 msgstr "Bild auswählen"
 
@@ -583,6 +588,15 @@ msgstr "Automatische Benutzeroberflächenskalierung"
 #: src/ui_parts/settings_menu.gd
 msgid "Language"
 msgstr "Sprache"
+
+#: src/ui_parts/settings_menu.gd
+#, fuzzy
+msgid "Import XML"
+msgstr "Importieren"
+
+#: src/ui_parts/settings_menu.gd src/ui_widgets/palette_config.gd
+msgid "Paste XML"
+msgstr "XML Einfügen"
 
 #: src/ui_parts/settings_menu.gd
 msgid "New palette"
@@ -846,10 +860,6 @@ msgid "Copy as XML"
 msgstr "Kopiere als XML"
 
 #: src/ui_widgets/palette_config.gd
-msgid "Paste XML"
-msgstr "XML Einfügen"
-
-#: src/ui_widgets/palette_config.gd
 msgid "Apply Preset"
 msgstr "Voreinstellung anwenden"
 
@@ -910,22 +920,21 @@ msgid "Save the .\"{extension}\" file"
 msgstr "Die .\"{extension}\" Datei speichern"
 
 #: src/utils/FileUtils.gd
-msgid "Import a .svg file"
-msgstr "SVG-Datei importieren"
-
-#: src/utils/FileUtils.gd
 msgid "Load an image file"
 msgstr "Bilddatei laden"
 
 #: src/utils/FileUtils.gd
-msgid ""
-"The file couldn't be opened.\n"
-"Try checking the file path, ensure that the file is not deleted, or choose a "
-"different file."
+#, fuzzy
+msgid "Import a {extension} file"
+msgstr "SVG-Datei importieren"
+
+#: src/utils/FileUtils.gd
+msgid "The file couldn't be opened."
 msgstr ""
-"Die Datei konnte nicht geöffnet werden.\n"
-"Überprüfe den Dateipfad, ob die Datei existiert, oder wähle eine andere "
-"Datei."
+
+#: src/utils/FileUtils.gd
+msgid "Check if the file still exists in the selected file path."
+msgstr ""
 
 #: src/utils/TranslationUtils.gd
 msgid "Select all elements"
@@ -1058,6 +1067,15 @@ msgstr ""
 #: src/utils/TranslationUtils.gd
 msgid "The file extension is empty. Only {extension_list} files are supported."
 msgstr "Die Dateierweiterung ist leer. Nur \"svg\"-Dateien werden unterstützt."
+
+#~ msgid ""
+#~ "The file couldn't be opened.\n"
+#~ "Try checking the file path, ensure that the file is not deleted, or "
+#~ "choose a different file."
+#~ msgstr ""
+#~ "Die Datei konnte nicht geöffnet werden.\n"
+#~ "Überprüfe den Dateipfad, ob die Datei existiert, oder wähle eine andere "
+#~ "Datei."
 
 #~ msgid "Enable snap"
 #~ msgstr "Einrasten aktivieren"

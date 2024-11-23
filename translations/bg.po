@@ -207,9 +207,8 @@ msgid "Save SVG"
 msgstr "Запиши SVG-то"
 
 #: src/ui_parts/code_editor.gd
-#, fuzzy
 msgid "Open file"
-msgstr "Отвори"
+msgstr "Отвори файла"
 
 #: src/ui_parts/code_editor.gd src/utils/TranslationUtils.gd
 msgid "Reset SVG"
@@ -374,6 +373,10 @@ msgstr "Търсене из файловете"
 #: src/ui_parts/good_file_dialog.gd
 msgid "Select an SVG"
 msgstr "Избери SVG"
+
+#: src/ui_parts/good_file_dialog.gd
+msgid "Select an XML file"
+msgstr "Избери XML файл"
 
 #: src/ui_parts/good_file_dialog.gd
 msgid "Select an image"
@@ -583,6 +586,14 @@ msgstr "Автоматичен мащаб"
 #: src/ui_parts/settings_menu.gd
 msgid "Language"
 msgstr "Език"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Import XML"
+msgstr "Импортирай XML"
+
+#: src/ui_parts/settings_menu.gd src/ui_widgets/palette_config.gd
+msgid "Paste XML"
+msgstr "Постави XML"
 
 #: src/ui_parts/settings_menu.gd
 msgid "New palette"
@@ -846,10 +857,6 @@ msgid "Copy as XML"
 msgstr "Копирай като XML"
 
 #: src/ui_widgets/palette_config.gd
-msgid "Paste XML"
-msgstr "Постави XML"
-
-#: src/ui_widgets/palette_config.gd
 msgid "Apply Preset"
 msgstr "Приложи шаблон"
 
@@ -910,22 +917,20 @@ msgid "Save the .\"{extension}\" file"
 msgstr "Запази .\"{extension}\" файла."
 
 #: src/utils/FileUtils.gd
-msgid "Import a .svg file"
-msgstr "Импортирай .svg файл"
-
-#: src/utils/FileUtils.gd
 msgid "Load an image file"
 msgstr "Зареди изображение"
 
 #: src/utils/FileUtils.gd
-msgid ""
-"The file couldn't be opened.\n"
-"Try checking the file path, ensure that the file is not deleted, or choose a "
-"different file."
-msgstr ""
-"Файлът не може да бъде отворен.\n"
-"Опитайте да проверите пътя към файла, уверете се, че файла не е изтрит, или "
-"изберете различен файл."
+msgid "Import a {extension} file"
+msgstr "Импортирай {extension} файл"
+
+#: src/utils/FileUtils.gd
+msgid "The file couldn't be opened."
+msgstr "Файлът не можа да бъде отворен."
+
+#: src/utils/FileUtils.gd
+msgid "Check if the file still exists in the selected file path."
+msgstr "Проверете дали файлът все още съществува на избраното място."
 
 #: src/utils/TranslationUtils.gd
 msgid "Select all elements"
@@ -1052,7 +1057,8 @@ msgid ""
 "The file extension {extension} is unsupported for this operation. Only "
 "{extension_list} files are supported."
 msgstr ""
-"\"{extension}\" не е поддържан формат за тази операция. Единствено {extension_list} файловете са подържани."
+"\"{extension}\" не е поддържан формат за тази операция. Единствено "
+"{extension_list} файловете са подържани."
 
 #: src/utils/TranslationUtils.gd
 msgid "The file extension is empty. Only {extension_list} files are supported."

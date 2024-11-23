@@ -167,7 +167,7 @@ allowed_extensions: PackedStringArray) -> Error:
 		# "I think when running from the editor it would give the specific scene
 		# run as first argument",
 		# TODO understand what he meant and if it's still relevant.
-		return ERR_FILE_CANT_OPEN  
+		return ERR_FILE_CANT_OPEN
 	if not file_extension in allowed_extensions:
 		error = TranslationUtils.get_bad_extension_alert_text(file_extension,
 				allowed_extensions)
