@@ -8,7 +8,7 @@ const SettingFrame = preload("res://src/ui_widgets/setting_frame.tscn")
 const ProfileFrame = preload("res://src/ui_widgets/profile_frame.tscn")
 
 const plus_icon = preload("res://visual/icons/Plus.svg")
-const paste_icon = preload("res://visual/icons/Paste.svg")
+const import_icon = preload("res://visual/icons/Import.svg")
 
 @onready var lang_button: Button = $VBoxContainer/Language
 @onready var content_container: ScrollContainer = %ContentContainer
@@ -362,16 +362,40 @@ func update_language_button() -> void:
 
 # Palette tab helpers.
 
-func add_named_palette() -> void:
-	GlobalSettings.add_new_palette(ColorPalette.new())
-	rebuild_color_palettes()
+func _popup_xml_palette_options(palette_xml_button: Button) -> void:
+	var btn_arr: Array[Button] = []
+	btn_arr.append(ContextPopup.create_button(Translator.translate("Import XML"),
+			add_imported_palette, false, load("res://visual/icons/Import.svg")))
+	btn_arr.append(ContextPopup.create_button(Translator.translate("Paste XML"),
+			add_pasted_palette, !ColorPalette.is_valid_palette(Utils.get_clipboard_web_safe()),
+			load("res://visual/icons/Paste.svg")))
+	
+	var context_popup := ContextPopup.new()
+	context_popup.setup(btn_arr, true)
+	HandlerGUI.popup_under_rect_center(context_popup, palette_xml_button.get_global_rect(),
+			get_viewport())
+
+
+func add_empty_palette() -> void:
+	_shared_add_palette_logic(ColorPalette.new())
 
 func add_pasted_palette() -> void:
-	var pasted_palettes := ColorPalette.text_to_palettes(DisplayServer.clipboard_get())
-	if pasted_palettes.is_empty():
-		return
-	GlobalSettings.add_new_palette(pasted_palettes[0])
+	_shared_add_palettes_logic(ColorPalette.text_to_palettes(Utils.get_clipboard_web_safe()))
+
+func add_imported_palette() -> void:
+	FileUtils.open_xml_import_dialog(_on_import_palette_finished)
+
+func _on_import_palette_finished(file_text: String, _file_name: String) -> void:
+	_shared_add_palettes_logic(ColorPalette.text_to_palettes(file_text))
+
+func _shared_add_palettes_logic(palettes: Array[ColorPalette]) -> void:
+	if not palettes.is_empty():
+		_shared_add_palette_logic(palettes[0])
+
+func _shared_add_palette_logic(palette: ColorPalette) -> void:
+	GlobalSettings.add_new_palette(palette)
 	rebuild_color_palettes()
+
 
 func rebuild_color_palettes() -> void:
 	var palette_container := content_container.get_child(-1)
@@ -396,17 +420,17 @@ func rebuild_color_palettes() -> void:
 	add_palette_button.text = Translator.translate("New palette")
 	add_palette_button.focus_mode = Control.FOCUS_NONE
 	add_palette_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-	add_palette_button.pressed.connect(add_named_palette)
+	add_palette_button.pressed.connect(add_empty_palette)
 	hbox.add_child(add_palette_button)
 	
-	var paste_palette_button := Button.new()
-	paste_palette_button.script = load("res://src/ui_parts/paste_palette_button.gd")
-	paste_palette_button.theme_type_variation = "TranslucentButton"
-	paste_palette_button.icon = paste_icon
-	paste_palette_button.text = Translator.translate("New palette from XML")
-	paste_palette_button.focus_mode = Control.FOCUS_NONE
-	hbox.add_child(paste_palette_button)
-	paste_palette_button.pressed.connect(add_pasted_palette)
+	var xml_palette_button := Button.new()
+	xml_palette_button.theme_type_variation = "TranslucentButton"
+	xml_palette_button.icon = import_icon
+	xml_palette_button.text = Translator.translate("New palette from XML")
+	xml_palette_button.focus_mode = Control.FOCUS_NONE
+	xml_palette_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+	hbox.add_child(xml_palette_button)
+	xml_palette_button.pressed.connect(_popup_xml_palette_options.bind(xml_palette_button))
 
 
 func add_formatter() -> void:

@@ -146,7 +146,7 @@ func _gui_input(event: InputEvent) -> void:
 							text.is_empty(), load("res://visual/icons/Copy.svg"), "ui_copy"))
 					btn_arr.append(ContextPopup.create_button(
 							Translator.translate("Paste"), paste,
-							!DisplayServer.clipboard_has(),
+							!Utils.has_clipboard_web_safe(),
 							load("res://visual/icons/Paste.svg"), "ui_paste"))
 			else:
 				btn_arr.append(ContextPopup.create_button(

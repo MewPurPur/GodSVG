@@ -77,7 +77,7 @@ static func fn(shortcut: String) -> Callable:
 	match shortcut:
 		"save": return FileUtils.open_save_dialog.bind("svg",
 				FileUtils.native_file_save, FileUtils.save_svg_to_file)
-		"import": return FileUtils.open_import_dialog
+		"import": return FileUtils.open_svg_import_dialog
 		"export": return FileUtils.open_export_dialog
 		"copy_svg_text": return DisplayServer.clipboard_set.bind(SVG.text)
 		"clear_svg": return SVG.apply_svg_text.bind(SVG.DEFAULT)

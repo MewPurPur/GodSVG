@@ -1,9 +1,6 @@
 # This singleton handles session data and settings.
 extends Node
 
-@warning_ignore("unused_signal")
-signal reference_image_changed  # Called externally from FileUtils.
-
 signal file_path_changed
 signal highlighting_colors_changed
 signal snap_changed
@@ -25,8 +22,6 @@ var svg_text := "":
 			FileAccess.open(svg_path, FileAccess.WRITE).store_string(svg_text)
 
 const svg_path = "user://save.svg"
-
-const reference_image_path = "user://reference.png"
 
 var shortcut_validities := {}
 var palette_validities := {}

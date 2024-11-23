@@ -121,7 +121,7 @@ func _gui_input(event: InputEvent) -> void:
 						menu_option.bind(LineEdit.MENU_COPY), text.is_empty(),
 						load("res://visual/icons/Copy.svg"), "ui_copy"))
 				btn_arr.append(ContextPopup.create_button(Translator.translate("Paste"),
-						menu_option.bind(LineEdit.MENU_PASTE), !DisplayServer.clipboard_has(),
+						menu_option.bind(LineEdit.MENU_PASTE), !Utils.has_clipboard_web_safe(),
 						load("res://visual/icons/Paste.svg"), "ui_paste"))
 		else:
 			btn_arr.append(ContextPopup.create_button( Translator.translate("Copy"),
