@@ -715,7 +715,6 @@ func _unhandled_input(event: InputEvent) -> void:
 			# React to LMB actions.
 			if is_instance_valid(hovered_handle) and event.is_pressed():
 				dragged_handle = hovered_handle
-				dragged_handle.initial_pos = dragged_handle.pos
 				var inner_idx := -1
 				var dragged_xid := dragged_handle.element.xid
 				if dragged_handle is PathHandle:
@@ -793,8 +792,7 @@ func get_event_pos(event: InputEvent) -> Vector2:
 	var snap_size := absf(GlobalSettings.savedata.snap)
 	var snap_vector := Vector2(snap_size, snap_size)
 	
-	var event_pos: Vector2 = event.position / Indications.zoom +\
-				get_parent().view.position
+	var event_pos: Vector2 = event.position / Indications.zoom + get_parent().view.position
 	var precision_snap := 0.1 ** maxi(ceili(-log(1.0 / Indications.zoom) / log(10)), 0)
 	# Do this with the floats instead of Vector2 for 64-bit precision.
 	event_pos.x = snappedf(event_pos.x, precision_snap)
