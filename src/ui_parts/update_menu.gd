@@ -105,7 +105,3 @@ func display_results() -> void:
 					status_label.text += "\n%s" % version
 				else:
 					status_label.text += "\n[url=%s]%s[/url]" % [result[0], version]
-
-
-func _on_close_pressed() -> void:
-	HandlerGUI.remove_menu()

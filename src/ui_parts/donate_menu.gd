@@ -1,8 +1,10 @@
 extends PanelContainer
 
 @onready var clarifications: RichTextLabel = %Clarifications
+@onready var close_button: Button = $VBoxContainer/CloseButton
 
 func _ready() -> void:
+	close_button.pressed.connect(queue_free)
 	reset_clarifications()
 
 func _on_github_link_pressed() -> void:
@@ -13,9 +15,6 @@ func _on_ko_fi_link_pressed() -> void:
 
 func _on_patreon_link_pressed() -> void:
 	OS.shell_open("https://www.patreon.com/GodSVG")
-
-func _on_close_pressed() -> void:
-	HandlerGUI.remove_menu()
 
 
 # Shouldn't be localized.

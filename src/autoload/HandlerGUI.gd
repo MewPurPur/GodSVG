@@ -33,7 +33,11 @@ func _on_files_dropped(files: PackedStringArray) -> void:
 		FileUtils.apply_svg_from_path(files[0])
 
 
-func add_menu(overlay_menu: Control) -> void:
+# TODO Implement this as an alternative that doesn't hide the previous menu.
+func add_dialog(new_dialog: Control) -> void:
+	add_menu(new_dialog)
+
+func add_menu(new_menu: Control) -> void:
 	# FIXME subpar workaround to drag & drop not able to be cancelled manually.
 	get_tree().root.propagate_notification(NOTIFICATION_DRAG_END)
 	
@@ -47,9 +51,9 @@ func add_menu(overlay_menu: Control) -> void:
 	overlay_ref.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	menu_stack.append(overlay_ref)
 	get_tree().root.add_child(overlay_ref)
-	overlay_ref.add_child(overlay_menu)
-	overlay_menu.set_anchors_and_offsets_preset(Control.PRESET_CENTER)
-	overlay_menu.tree_exiting.connect(remove_menu.bind(overlay_ref))
+	overlay_ref.add_child(new_menu)
+	new_menu.set_anchors_and_offsets_preset(Control.PRESET_CENTER)
+	new_menu.tree_exiting.connect(remove_menu.bind(overlay_ref))
 
 func remove_menu(overlay_ref: ColorRect = null) -> void:
 	if menu_stack.is_empty():
@@ -68,25 +72,25 @@ func remove_menu(overlay_ref: ColorRect = null) -> void:
 
 func remove_all_menus() -> void:
 	while not menu_stack.is_empty():
-		menu_stack.back().queue_free()
+		menu_stack.pop_back().queue_free()
 	Utils.throw_mouse_motion_event()
 
 
-func add_popup(popup: Control) -> void:
+func add_popup(new_popup: Control) -> void:
 	var overlay_ref := Control.new()
 	overlay_ref.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	overlay_ref.gui_input.connect(_parse_popup_overlay_event)
 	popup_stack.append(overlay_ref)
 	get_tree().root.add_child(overlay_ref)
-	overlay_ref.add_child(popup)
-	if popup is PanelContainer:
-		var stylebox := popup.get_theme_stylebox("panel").duplicate()
+	overlay_ref.add_child(new_popup)
+	if new_popup is PanelContainer:
+		var stylebox := new_popup.get_theme_stylebox("panel").duplicate()
 		stylebox.shadow_color = Color(0, 0, 0, 0.1)
 		stylebox.shadow_size = 8
-		popup.add_theme_stylebox_override("panel", stylebox)
+		new_popup.add_theme_stylebox_override("panel", stylebox)
 	
-	popup.reset_size()
-	popup.tree_exiting.connect(remove_popup.bind(overlay_ref))
+	new_popup.reset_size()
+	new_popup.tree_exiting.connect(remove_popup.bind(overlay_ref))
 
 func remove_popup(overlay_ref: Control = null) -> void:
 	if popup_stack.is_empty():
@@ -102,7 +106,8 @@ func remove_popup(overlay_ref: Control = null) -> void:
 
 func remove_all_popups() -> void:
 	while not popup_stack.is_empty():
-		remove_popup()
+		popup_stack.pop_back().queue_free()
+	Utils.throw_mouse_motion_event()
 
 
 # Should usually be the global rect of a control.

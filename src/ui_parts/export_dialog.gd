@@ -66,12 +66,7 @@ func _on_dropdown_value_changed(new_value: String) -> void:
 
 func _on_export_button_pressed() -> void:
 	if OS.has_feature("web"):
-		var svg_image := FileUtils.generate_image_from_elements(upscale_amount)
-		match extension:
-			"png": FileUtils.web_save_png(svg_image)
-			"jpg": FileUtils.web_save_jpg(svg_image)
-			"webp": FileUtils.web_save_webp(svg_image)
-			_: FileUtils.web_save_svg()
+		FileUtils.web_save(extension, upscale_amount, quality, lossy)
 	else:
 		FileUtils.open_save_dialog(extension,
 				FileUtils.native_file_export.bind(extension, upscale_amount),
