@@ -1,7 +1,5 @@
 extends Node
 
-signal _in_focus
-
 # Not a good idea to preload scenes inside a singleton.
 var ImportWarningDialog = load("res://src/ui_parts/import_warning_dialog.tscn")
 var AlertDialog = load("res://src/ui_parts/alert_dialog.tscn")
@@ -17,7 +15,6 @@ var popup_overlay_stack: Array[Control]
 
 func _enter_tree() -> void:
 	process_mode = PROCESS_MODE_ALWAYS
-	get_tree().root.auto_translate_mode = Node.AUTO_TRANSLATE_MODE_DISABLED
 	get_window().files_dropped.connect(_on_files_dropped)
 	get_window().dpi_changed.connect(update_ui_scale)
 	get_window().size_changed.connect(remove_all_popup_overlays)
@@ -28,9 +25,7 @@ func _ready() -> void:
 	update_ui_scale()
 
 func _notification(what: int) -> void:
-	if what == NOTIFICATION_WM_WINDOW_FOCUS_IN:
-		_in_focus.emit()
-	elif what == NOTIFICATION_WM_ABOUT:
+	if what == NOTIFICATION_WM_ABOUT:
 		open_about()
 
 # Drag-and-drop of files.
