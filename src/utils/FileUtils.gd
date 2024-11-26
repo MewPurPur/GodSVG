@@ -14,6 +14,8 @@ static func apply_svg_from_path(path: String) -> void:
 	_finish_file_import(path, _apply_svg, PackedStringArray(["svg"]))
 
 static func save_svg_to_file(path: String) -> void:
+	GlobalSettings.modify_setting("current_file_path", path)
+	GlobalSettings.modify_setting("last_used_dir", path.get_base_dir())
 	var FA := FileAccess.open(path, FileAccess.WRITE)
 	FA.store_string(SVG.get_export_text())
 
@@ -30,7 +32,7 @@ static func compare_svg_to_disk_contents() -> FileState:
 
 
 static func finish_export(file_path: String, extension: String, upscale_amount := 1.0,
-quality := 0.8, lossless := true) -> void:
+quality := 0.8, lossy := false) -> void:
 	if file_path.get_extension().is_empty():
 		file_path += "." + extension
 	
@@ -40,13 +42,9 @@ quality := 0.8, lossless := true) -> void:
 		"png": generate_image_from_elements(upscale_amount).save_png(file_path)
 		"jpg": generate_image_from_elements(upscale_amount).save_jpg(file_path, quality)
 		"webp":
-			generate_image_from_elements(upscale_amount).save_webp(file_path, !lossless,
-					quality)
-		_:
-			# SVG / fallback.
-			GlobalSettings.modify_setting("current_file_path", file_path)
-			save_svg_to_file(file_path)
-	HandlerGUI.remove_overlay()
+			generate_image_from_elements(upscale_amount).save_webp(file_path, lossy, quality)
+		_: save_svg_to_file(file_path)  # SVG / fallback.
+	HandlerGUI.remove_menu()
 
 
 static func generate_image_from_elements(upscale_amount := 1.0) -> Image:
@@ -67,7 +65,7 @@ static func generate_image_from_elements(upscale_amount := 1.0) -> Image:
 
 
 static func open_export_dialog() -> void:
-	HandlerGUI.add_overlay(ExportDialog.instantiate())
+	HandlerGUI.add_menu(ExportDialog.instantiate())
 
 static func open_save_dialog(extension: String, native_callable: Callable,
 non_native_callable: Callable) -> void:
@@ -87,7 +85,7 @@ non_native_callable: Callable) -> void:
 			svg_export_dialog.setup(Utils.get_last_dir(),
 					Utils.get_file_name(GlobalSettings.savedata.current_file_path),
 					GoodFileDialogType.FileMode.SAVE, PackedStringArray([extension]))
-			HandlerGUI.add_overlay(svg_export_dialog)
+			HandlerGUI.add_menu(svg_export_dialog)
 			svg_export_dialog.file_selected.connect(non_native_callable)
 
 static func native_file_export(has_selected: bool, files: PackedStringArray,
@@ -98,8 +96,6 @@ _filter_idx: int, extension: String, upscale_amount := 1.0) -> void:
 static func native_file_save(has_selected: bool, files: PackedStringArray,
 _filter_idx: int) -> void:
 	if has_selected:
-		GlobalSettings.modify_setting("current_file_path", files[0])
-		GlobalSettings.modify_setting("last_used_dir", files[0].get_base_dir())
 		save_svg_to_file(files[0])
 
 
@@ -150,7 +146,7 @@ completion_callback: Callable, native_dialog_title := "") -> void:
 			var import_dialog := GoodFileDialog.instantiate()
 			import_dialog.setup(Utils.get_last_dir(), "",
 					GoodFileDialogType.FileMode.SELECT, extensions)
-			HandlerGUI.add_overlay(import_dialog)
+			HandlerGUI.add_menu(import_dialog)
 			import_dialog.file_selected.connect(
 					func(path): _finish_file_import(path, completion_callback, extensions))
 
@@ -178,7 +174,7 @@ allowed_extensions: PackedStringArray) -> Error:
 	
 	if not error.is_empty():
 		var alert_dialog := AlertDialog.instantiate()
-		HandlerGUI.add_overlay(alert_dialog)
+		HandlerGUI.add_menu(alert_dialog)
 		alert_dialog.setup(error)
 		return ERR_FILE_CANT_OPEN
 	
@@ -194,7 +190,7 @@ static func _apply_svg(data: Variant, file_name: String) -> Error:
 	var warning_panel := ImportWarningDialog.instantiate()
 	warning_panel.imported.connect(_finish_svg_import.bind(data, file_name))
 	warning_panel.set_svg(data)
-	HandlerGUI.add_overlay(warning_panel)
+	HandlerGUI.add_menu(warning_panel)
 	return OK
 
 static func _finish_svg_import(svg_text: String, file_path: String) -> void:
@@ -248,7 +244,7 @@ completion_callback: Callable) -> void:
 	
 	if not extension in allowed_extensions:
 		var alert_dialog: Node = AlertDialog.instantiate()
-		HandlerGUI.add_overlay(alert_dialog)
+		HandlerGUI.add_menu(alert_dialog)
 		alert_dialog.setup(TranslationUtils.get_bad_extension_alert_text(extension,
 				allowed_extensions))
 	else:

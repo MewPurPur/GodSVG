@@ -4,7 +4,7 @@ const NumberEditType = preload("res://src/ui_widgets/number_edit.gd")
 
 var upscale_amount := -1.0
 var quality := 0.8
-var lossless := true
+var lossy := false
 var extension := ""
 var dimensions := Vector2.ZERO
 
@@ -20,9 +20,11 @@ var dimensions := Vector2.ZERO
 @onready var quality_hbox: HBoxContainer = %QualityHBox
 @onready var fallback_format_label: Label = %FallbackFormatLabel
 @onready var cancel_button: Button = %ButtonContainer/CancelButton
+@onready var export_button: Button = %ButtonContainer/ExportButton
 
 func _ready() -> void:
-	cancel_button.pressed.connect(HandlerGUI.remove_overlay)
+	cancel_button.pressed.connect(queue_free)
+	export_button.pressed.connect(_on_export_button_pressed)
 	scale_edit.value_changed.connect(update_final_scale.unbind(1))
 	quality_edit.value_changed.connect(_on_quality_value_changed)
 	format_dropdown.value_changed.connect(_on_dropdown_value_changed)
@@ -53,10 +55,8 @@ func _ready() -> void:
 	%LosslessCheckBox.text = Translator.translate("Lossless")
 	%QualityHBox/Label.text = Translator.translate("Quality")
 	%ScaleContainer/HBoxContainer/Label.text = Translator.translate("Scale")
-	$VBoxContainer/ButtonContainer/CancelButton.text =\
-			Translator.translate("Cancel")
-	$VBoxContainer/ButtonContainer/ExportButton.text =\
-			Translator.translate("Export")
+	cancel_button.text = Translator.translate("Cancel")
+	export_button.text = Translator.translate("Export")
 
 
 func _on_dropdown_value_changed(new_value: String) -> void:
@@ -75,12 +75,12 @@ func _on_export_button_pressed() -> void:
 	else:
 		FileUtils.open_save_dialog(extension,
 				FileUtils.native_file_export.bind(extension, upscale_amount),
-				FileUtils.finish_export.bind(extension, upscale_amount, quality, lossless))
+				FileUtils.finish_export.bind(extension, upscale_amount, quality, lossy))
 
 func _on_lossless_check_box_toggled(toggled_on: bool) -> void:
-	lossless = toggled_on
+	lossy = not toggled_on
 	if extension == "webp":
-		quality_hbox.visible = not lossless
+		quality_hbox.visible = lossy
 
 func _on_quality_value_changed(_new_value: float) -> void:
 	quality = _new_value / 100
@@ -95,4 +95,4 @@ func update_extension_configuration() -> void:
 	scale_container.visible = extension in ["png", "jpg", "webp"]
 	lossless_checkbox.visible = (extension == "webp")
 	quality_hbox.visible = extension in ["jpg", "webp"]
-	_on_lossless_check_box_toggled(lossless)
+	_on_lossless_check_box_toggled(not lossy)

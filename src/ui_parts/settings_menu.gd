@@ -338,7 +338,7 @@ func _on_language_pressed() -> void:
 			internal_hbox.add_child(label_margin)
 			ret_button.add_child(internal_hbox)
 			ret_button.pressed.connect(_on_language_chosen.bind(lang))
-			ret_button.pressed.connect(HandlerGUI.remove_popup_overlay)
+			ret_button.pressed.connect(HandlerGUI.remove_popup)
 			
 			btn_arr.append(ret_button)
 		else:

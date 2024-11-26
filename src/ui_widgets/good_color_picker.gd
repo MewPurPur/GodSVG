@@ -456,4 +456,4 @@ func _input(event: InputEvent) -> void:
 func _on_eyedropper_pressed() -> void:
 	var eyedropper_popup := EyedropperPopup.instantiate()
 	eyedropper_popup.color_picked.connect(register_visual_change.bind(false))
-	HandlerGUI.add_popup_overlay(eyedropper_popup)
+	HandlerGUI.add_popup(eyedropper_popup)

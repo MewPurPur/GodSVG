@@ -59,7 +59,7 @@ icon: Texture2D = null, shortcut := "") -> Button:
 				internal_hbox.add_child(label_margin)
 				ret_button.add_child(internal_hbox)
 				ret_button.pressed.connect(press_callback)
-				ret_button.pressed.connect(HandlerGUI.remove_popup_overlay)
+				ret_button.pressed.connect(HandlerGUI.remove_popup)
 				
 				var shortcut_obj := Shortcut.new()
 				var action_obj := InputEventAction.new()
@@ -77,7 +77,7 @@ icon: Texture2D = null, shortcut := "") -> Button:
 		main_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	if press_callback.is_valid():
 		main_button.pressed.connect(press_callback)
-	main_button.pressed.connect(HandlerGUI.remove_popup_overlay)
+	main_button.pressed.connect(HandlerGUI.remove_popup)
 	return main_button
 
 static func create_checkbox(text: String, toggle_action: Callable,
@@ -155,7 +155,7 @@ func _setup_button(btn: Button, align_left: bool) -> Button:
 # A hack to deal with situations where a popup is replaced by another.
 func _order_signals(btn: Button) -> void:
 	for connection in btn.pressed.get_connections():
-		if connection.callable != HandlerGUI.remove_popup_overlay:
+		if connection.callable != HandlerGUI.remove_popup:
 			btn.pressed.disconnect(connection.callable)
 			btn.pressed.connect(connection.callable, CONNECT_DEFERRED)
 	set_block_signals(true)

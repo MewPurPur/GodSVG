@@ -15,7 +15,7 @@ func _on_patreon_link_pressed() -> void:
 	OS.shell_open("https://www.patreon.com/GodSVG")
 
 func _on_close_pressed() -> void:
-	HandlerGUI.remove_overlay()
+	HandlerGUI.remove_menu()
 
 
 # Shouldn't be localized.

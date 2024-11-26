@@ -144,4 +144,3 @@ focus_mode = 0
 mouse_default_cursor_shape = 2
 
 [connection signal="toggled" from="VBoxContainer/HBoxContainer/VBoxContainer/QualityRelated/LosslessCheckBox" to="." method="_on_lossless_check_box_toggled"]
-[connection signal="pressed" from="VBoxContainer/ButtonContainer/ExportButton" to="." method="_on_export_button_pressed"]

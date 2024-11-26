@@ -89,7 +89,7 @@ func _ready() -> void:
 	# Signal connections.
 	refresh_button.pressed.connect(refresh_dir)
 	close_button.pressed.connect(queue_free)
-	file_selected.connect(HandlerGUI.remove_overlay.unbind(1))
+	file_selected.connect(HandlerGUI.remove_menu.unbind(1))
 	special_button.pressed.connect(select_file)
 	create_folder_cancel_button.pressed.connect(create_folder_center_container.hide)
 	file_list.get_v_scroll_bar().value_changed.connect(_setup_file_images.unbind(1))
