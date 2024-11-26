@@ -116,7 +116,6 @@ layout_mode = 2
 size_flags_vertical = 3
 
 [node name="ViewportContainer" type="SubViewportContainer" parent="ViewportPanel"]
-process_mode = 3
 custom_minimum_size = Vector2(450, 0)
 layout_mode = 2
 size_flags_vertical = 3

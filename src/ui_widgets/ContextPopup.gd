@@ -5,7 +5,7 @@ func _init() -> void:
 	mouse_filter = Control.MOUSE_FILTER_STOP
 
 
-static func create_button(text: String, press_action: Callable, disabled := false,
+static func create_button(text: String, press_callback: Callable, disabled := false,
 icon: Texture2D = null, shortcut := "") -> Button:
 	# Create main button.
 	var main_button := Button.new()
@@ -58,7 +58,7 @@ icon: Texture2D = null, shortcut := "") -> Button:
 				label_margin.add_child(label)
 				internal_hbox.add_child(label_margin)
 				ret_button.add_child(internal_hbox)
-				ret_button.pressed.connect(press_action)
+				ret_button.pressed.connect(press_callback)
 				ret_button.pressed.connect(HandlerGUI.remove_popup_overlay)
 				
 				var shortcut_obj := Shortcut.new()
@@ -75,8 +75,8 @@ icon: Texture2D = null, shortcut := "") -> Button:
 		main_button.disabled = true
 	else:
 		main_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-	if not press_action.is_null():
-		main_button.pressed.connect(press_action)
+	if press_callback.is_valid():
+		main_button.pressed.connect(press_callback)
 	main_button.pressed.connect(HandlerGUI.remove_popup_overlay)
 	return main_button
 
