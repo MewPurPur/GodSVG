@@ -1,7 +1,9 @@
 # A fallback file dialog, always used if the native file dialog is not available.
 extends PanelContainer
 
+const ChooseNameDialog = preload("res://src/ui_parts/choose_name_dialog.tscn")
 const ConfirmDialog = preload("res://src/ui_parts/confirm_dialog.tscn")
+const AlertDialog = preload("res://src/ui_parts/alert_dialog.tscn")
 
 signal file_selected(path: String)
 
@@ -43,13 +45,6 @@ var DA: DirAccess
 @onready var show_hidden_button: Button = %ShowHiddenButton
 @onready var search_button: Button = %SearchButton
 
-@onready var alert_container: CenterContainer = $AlertCenterContainer
-@onready var create_folder_center_container: CenterContainer = $CreateFolderCenterContainer
-@onready var create_folder_title_label: Label = %CreateFolderTitleLabel
-@onready var create_folder_line_edit: BetterLineEdit = %CreateFolderLineEdit
-@onready var create_folder_cancel_button: Button = %CreateFolderCancelButton
-@onready var create_folder_create_button: Button = %CreateFolderCreateButton
-
 
 class Actions:
 	var activation_callback: Callable
@@ -89,17 +84,13 @@ func _ready() -> void:
 	# Signal connections.
 	refresh_button.pressed.connect(refresh_dir)
 	close_button.pressed.connect(queue_free)
-	file_selected.connect(HandlerGUI.remove_menu.unbind(1))
+	file_selected.connect(queue_free.unbind(1))
 	special_button.pressed.connect(select_file)
-	create_folder_cancel_button.pressed.connect(create_folder_center_container.hide)
 	file_list.get_v_scroll_bar().value_changed.connect(_setup_file_images.unbind(1))
 	# Rest of setup.
 	if mode == FileMode.SELECT:
 		file_container.hide()
-	if mode == FileMode.SAVE:
-		create_folder_title_label.text = Translator.translate("Create new folder")
-		create_folder_cancel_button.text = Translator.translate("Cancel")
-		create_folder_create_button.text = Translator.translate("Create")
+	
 	var extension_panel_stylebox := extension_panel.get_theme_stylebox("panel")
 	extension_panel_stylebox.content_margin_top -= 4
 	extension_panel.add_theme_stylebox_override("panel", extension_panel_stylebox)
@@ -265,13 +256,11 @@ func _setup_file_images() -> void:
 func select_file() -> void:
 	if mode == FileMode.SAVE and current_file in DirAccess.get_files_at(current_dir):
 		var confirm_dialog := ConfirmDialog.instantiate()
-		confirm_dialog.tree_exited.connect(alert_container.hide)
-		alert_container.add_child(confirm_dialog)
+		HandlerGUI.add_dialog(confirm_dialog)
 		confirm_dialog.setup(Translator.translate("Alert!"), Translator.translate(
 				"A file named \"{file_name}\" already exists. Replacing will overwrite its contents!").format(
 				{"file_name": current_file}), Translator.translate("Replace"),
 				_on_replace_button_pressed)
-		alert_container.show()
 	else:
 		file_selected.emit(current_dir.path_join(current_file))
 
@@ -285,8 +274,32 @@ func copy_path() -> void:
 	DisplayServer.clipboard_set(current_dir.path_join(current_file))
 
 func create_folder() -> void:
-	create_folder_center_container.show()
-	create_folder_line_edit.grab_focus()
+	var create_folder_dialog := ChooseNameDialog.instantiate()
+	HandlerGUI.add_dialog(create_folder_dialog)
+	create_folder_dialog.setup(Translator.translate("Create new folder"),
+			_on_create_folder_finished, _create_folder_error)
+
+func _create_folder_error(text: String) -> String:
+	if text.is_empty():
+		return ""
+	if not text.is_valid_filename():
+		return Translator.translate("Invalid name for a folder.")
+	if DirAccess.dir_exists_absolute(current_dir.path_join(text)):
+		return Translator.translate("A folder with this name already exists.")
+	return ""
+
+func _on_create_folder_finished(text: String) -> void:
+	DA = DirAccess.open(current_dir)
+	if !is_instance_valid(DA):
+		return
+	
+	var err := DA.make_dir(text)
+	if err == OK:
+		refresh_dir()
+	else:
+		var alert_dialog := AlertDialog.instantiate()
+		HandlerGUI.add_dialog(alert_dialog)
+		alert_dialog.setup(Translator.translate("Failed to create a folder."))
 
 
 func open_dir_context(dir: String) -> void:
@@ -398,34 +411,6 @@ func _on_file_field_text_change_canceled() -> void:
 func _on_replace_button_pressed() -> void:
 	file_selected.emit(current_dir.path_join(current_file))
 
-func _on_create_folder_create_button_pressed() -> void:
-	DA = DirAccess.open(current_dir)
-	if !is_instance_valid(DA):
-		return
-	
-	var err := DA.make_dir(create_folder_line_edit.text)
-	if err == OK:
-		create_folder_line_edit.clear()
-		create_folder_center_container.hide()
-		refresh_dir()
-	else:
-		create_folder_line_edit.grab_focus()
-		create_folder_line_edit.add_theme_color_override("font_color",
-				GlobalSettings.savedata.basic_color_error)
-		create_folder_create_button.disabled = true
-		create_folder_create_button.mouse_default_cursor_shape = Control.CURSOR_ARROW
-
-func _on_create_folder_line_edit_text_submitted(_new_text: String) -> void:
-	create_folder_create_button.grab_focus()
-
-func _on_create_folder_line_edit_text_changed(_new_text: String) -> void:
-	create_folder_line_edit.remove_theme_color_override("font_color")
-	if create_folder_line_edit.text.is_empty():
-		create_folder_create_button.disabled = true
-		create_folder_create_button.mouse_default_cursor_shape = Control.CURSOR_ARROW
-	elif create_folder_create_button.disabled:
-		create_folder_create_button.disabled = false
-		create_folder_create_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 
 # Helpers
 

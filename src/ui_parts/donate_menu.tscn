@@ -82,7 +82,7 @@ layout_mode = 2
 bbcode_enabled = true
 fit_content = true
 
-[node name="Close" type="Button" parent="VBoxContainer"]
+[node name="CloseButton" type="Button" parent="VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 8
@@ -97,4 +97,3 @@ text = "Close"
 [connection signal="pressed" from="VBoxContainer/VBoxContainer/MarginContainer/HBoxContainer/KoFiLink" to="." method="_on_ko_fi_link_pressed"]
 [connection signal="mouse_entered" from="VBoxContainer/VBoxContainer/MarginContainer/HBoxContainer/PatreonLink" to="." method="_on_patreon_link_mouse_entered"]
 [connection signal="pressed" from="VBoxContainer/VBoxContainer/MarginContainer/HBoxContainer/PatreonLink" to="." method="_on_patreon_link_pressed"]
-[connection signal="pressed" from="VBoxContainer/Close" to="." method="_on_close_pressed"]

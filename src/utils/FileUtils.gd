@@ -40,9 +40,8 @@ quality := 0.8, lossy := false) -> void:
 	
 	match extension:
 		"png": generate_image_from_elements(upscale_amount).save_png(file_path)
-		"jpg": generate_image_from_elements(upscale_amount).save_jpg(file_path, quality)
-		"webp":
-			generate_image_from_elements(upscale_amount).save_webp(file_path, lossy, quality)
+		"jpg", "jpeg": generate_image_from_elements(upscale_amount).save_jpg(file_path, quality)
+		"webp": generate_image_from_elements(upscale_amount).save_webp(file_path, lossy, quality)
 		_: save_svg_to_file(file_path)  # SVG / fallback.
 	HandlerGUI.remove_menu()
 
@@ -291,17 +290,20 @@ static func _web_on_file_dialog_cancelled(_args: Array) -> void:
 	JavaScriptBridge.eval("window.godsvgDialogClosed = true;", true)
 
 
+static func web_save(extension: String, upscale_amount: float, quality: float,
+lossy: bool) -> void:
+	if extension == "svg":
+		web_save_svg()
+	else:
+		var img := generate_image_from_elements(upscale_amount)
+		match extension:
+			"png": _web_save(img.save_png_to_buffer(), "image/png")
+			"jpg": _web_save(img.save_jpg_to_buffer(quality), "image/jpeg")
+			"webp": _web_save(img.save_webp_to_buffer(lossy, quality), "image/webp")
+			_: web_save_svg()
+
 static func web_save_svg() -> void:
 	_web_save(SVG.get_export_text().to_utf8_buffer(), "image/svg+xml")
-
-static func web_save_png(img: Image) -> void:
-	_web_save(img.save_png_to_buffer(), "image/png")
-
-static func web_save_jpg(img: Image) -> void:
-	_web_save(img.save_jpg_to_buffer(), "image/jpeg")
-
-static func web_save_webp(img: Image) -> void:
-	_web_save(img.save_webp_to_buffer(), "image/webp")
 
 static func _web_save(buffer: PackedByteArray, format_name: String) -> void:
 	var file_name := Utils.get_file_name(GlobalSettings.savedata.current_file_path)

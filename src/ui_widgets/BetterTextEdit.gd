@@ -110,8 +110,7 @@ func _draw() -> void:
 
 func _input(event: InputEvent) -> void:
 	if (has_focus() and event is InputEventMouseButton and event.is_pressed() and\
-	not get_global_rect().has_point(event.position) and\
-	HandlerGUI.popup_stack.is_empty()):
+	not get_global_rect().has_point(event.position) and HandlerGUI.popup_stack.is_empty()):
 		release_focus()
 
 func _gui_input(event: InputEvent) -> void:

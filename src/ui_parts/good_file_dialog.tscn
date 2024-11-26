@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://mp1nxm8i8tv8"]
+[gd_scene load_steps=7 format=3 uid="uid://mp1nxm8i8tv8"]
 
 [ext_resource type="Script" path="res://src/ui_parts/good_file_dialog.gd" id="1_awdto"]
 [ext_resource type="Script" path="res://src/ui_widgets/BetterLineEdit.gd" id="2_52puw"]
@@ -6,7 +6,6 @@
 [ext_resource type="Texture2D" uid="uid://cvh3kwbucf2n1" path="res://visual/icons/Reload.svg" id="4_udwbh"]
 [ext_resource type="Texture2D" uid="uid://kkxyv1gyrjgj" path="res://visual/icons/Visuals.svg" id="5_2ggtv"]
 [ext_resource type="Texture2D" uid="uid://d4c7haflm8evm" path="res://visual/icons/Search.svg" id="6_otods"]
-[ext_resource type="FontFile" uid="uid://dc0w4sx0h0fui" path="res://visual/fonts/FontBold.ttf" id="7_br1c0"]
 
 [node name="NonNativeFileDialog" type="PanelContainer"]
 offset_right = 684.0
@@ -139,51 +138,6 @@ size_flags_horizontal = 6
 focus_mode = 0
 mouse_default_cursor_shape = 2
 
-[node name="AlertCenterContainer" type="CenterContainer" parent="."]
-visible = false
-layout_mode = 2
-
-[node name="CreateFolderCenterContainer" type="CenterContainer" parent="."]
-visible = false
-layout_mode = 2
-
-[node name="CreateFolderDialog" type="PanelContainer" parent="CreateFolderCenterContainer"]
-custom_minimum_size = Vector2(280, 0)
-layout_mode = 2
-theme_type_variation = &"OverlayPanel"
-
-[node name="MainContainer" type="VBoxContainer" parent="CreateFolderCenterContainer/CreateFolderDialog"]
-layout_mode = 2
-theme_override_constants/separation = 10
-
-[node name="CreateFolderTitleLabel" type="Label" parent="CreateFolderCenterContainer/CreateFolderDialog/MainContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-theme_override_fonts/font = ExtResource("7_br1c0")
-theme_override_font_sizes/font_size = 16
-horizontal_alignment = 1
-
-[node name="CreateFolderLineEdit" type="LineEdit" parent="CreateFolderCenterContainer/CreateFolderDialog/MainContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-script = ExtResource("2_52puw")
-
-[node name="HBoxContainer" type="HBoxContainer" parent="CreateFolderCenterContainer/CreateFolderDialog/MainContainer"]
-layout_mode = 2
-alignment = 1
-
-[node name="CreateFolderCancelButton" type="Button" parent="CreateFolderCenterContainer/CreateFolderDialog/MainContainer/HBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 6
-mouse_default_cursor_shape = 2
-
-[node name="CreateFolderCreateButton" type="Button" parent="CreateFolderCenterContainer/CreateFolderDialog/MainContainer/HBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 6
-mouse_default_cursor_shape = 2
-
 [connection signal="pressed" from="VBoxContainer/TopBar/FolderUpButton" to="." method="_on_folder_up_button_pressed"]
 [connection signal="text_submitted" from="VBoxContainer/TopBar/PathField" to="." method="_on_path_field_text_submitted"]
 [connection signal="toggled" from="VBoxContainer/TopBar/ShowHiddenButton" to="." method="_on_show_hidden_button_toggled"]
@@ -198,6 +152,3 @@ mouse_default_cursor_shape = 2
 [connection signal="text_change_canceled" from="VBoxContainer/MainContainer/FilePicker/FileContainer/FileField" to="." method="_on_file_field_text_change_canceled"]
 [connection signal="text_changed" from="VBoxContainer/MainContainer/FilePicker/FileContainer/FileField" to="." method="_on_file_field_text_changed"]
 [connection signal="text_submitted" from="VBoxContainer/MainContainer/FilePicker/FileContainer/FileField" to="." method="_on_file_field_text_submitted"]
-[connection signal="text_changed" from="CreateFolderCenterContainer/CreateFolderDialog/MainContainer/CreateFolderLineEdit" to="." method="_on_create_folder_line_edit_text_changed"]
-[connection signal="text_submitted" from="CreateFolderCenterContainer/CreateFolderDialog/MainContainer/CreateFolderLineEdit" to="." method="_on_create_folder_line_edit_text_submitted"]
-[connection signal="pressed" from="CreateFolderCenterContainer/CreateFolderDialog/MainContainer/HBoxContainer/CreateFolderCreateButton" to="." method="_on_create_folder_create_button_pressed"]
