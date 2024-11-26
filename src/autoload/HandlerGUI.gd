@@ -9,12 +9,11 @@ var AboutMenu = load("res://src/ui_parts/about_menu.tscn")
 var DonateMenu = load("res://src/ui_parts/donate_menu.tscn")
 var UpdateMenu = load("res://src/ui_parts/update_menu.tscn")
 
-var overlay_stack: Array[ColorRect]
-var popup_overlay_stack: Array[Control]
+var menu_stack: Array[ColorRect]
+var popup_stack: Array[Control]
 
 
 func _enter_tree() -> void:
-	process_mode = PROCESS_MODE_ALWAYS
 	get_window().files_dropped.connect(_on_files_dropped)
 	get_window().dpi_changed.connect(update_ui_scale)
 	get_window().size_changed.connect(remove_all_popup_overlays)
@@ -30,7 +29,7 @@ func _notification(what: int) -> void:
 
 # Drag-and-drop of files.
 func _on_files_dropped(files: PackedStringArray) -> void:
-	if overlay_stack.is_empty():
+	if menu_stack.is_empty():
 		FileUtils.apply_svg_from_path(files[0])
 
 
@@ -40,36 +39,35 @@ func add_overlay(overlay_menu: Control) -> void:
 	
 	remove_all_popup_overlays()
 	
-	if not overlay_stack.is_empty():
-		overlay_stack.back().hide()
+	if not menu_stack.is_empty():
+		menu_stack.back().hide()
 	
 	var overlay_ref = ColorRect.new()
 	overlay_ref.color = Color(0, 0, 0, 0.4)
 	overlay_ref.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	overlay_ref.process_mode = PROCESS_MODE_ALWAYS
-	overlay_stack.append(overlay_ref)
+	menu_stack.append(overlay_ref)
 	get_tree().root.add_child(overlay_ref)
 	overlay_ref.add_child(overlay_menu)
 	overlay_menu.set_anchors_and_offsets_preset(Control.PRESET_CENTER)
 	overlay_menu.tree_exiting.connect(remove_overlay.bind(overlay_ref))
 
 func remove_overlay(overlay_ref: ColorRect = null) -> void:
-	if overlay_stack.is_empty():
+	if menu_stack.is_empty():
 		return
 	# If an overlay_ref is passed but doesn't match, do nothing.
 	# This is a hack against exiting overlay menus closing other menus than their own.
-	if is_instance_valid(overlay_ref) and overlay_ref != overlay_stack.back():
+	if is_instance_valid(overlay_ref) and overlay_ref != menu_stack.back():
 		return
 	
-	overlay_ref = overlay_stack.pop_back()
+	overlay_ref = menu_stack.pop_back()
 	if is_instance_valid(overlay_ref):
 		overlay_ref.queue_free()
-	if not overlay_stack.is_empty():
-		overlay_stack.back().show()
+	if not menu_stack.is_empty():
+		menu_stack.back().show()
 	Utils.throw_mouse_motion_event()
 
 func remove_all_overlays() -> void:
-	while not overlay_stack.is_empty():
+	while not menu_stack.is_empty():
 		remove_overlay()
 
 
@@ -77,8 +75,7 @@ func add_popup_overlay(popup: Control) -> void:
 	var overlay_ref := Control.new()
 	overlay_ref.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	overlay_ref.gui_input.connect(_parse_popup_overlay_event)
-	overlay_ref.process_mode = PROCESS_MODE_ALWAYS
-	popup_overlay_stack.append(overlay_ref)
+	popup_stack.append(overlay_ref)
 	get_tree().root.add_child(overlay_ref)
 	overlay_ref.add_child(popup)
 	if popup is PanelContainer:
@@ -91,19 +88,19 @@ func add_popup_overlay(popup: Control) -> void:
 	popup.tree_exiting.connect(remove_popup_overlay.bind(overlay_ref))
 
 func remove_popup_overlay(overlay_ref: Control = null) -> void:
-	if popup_overlay_stack.is_empty():
+	if popup_stack.is_empty():
 		return
 	# Refer to remove_overlay() for why the logic is like this.
-	if is_instance_valid(overlay_ref) and overlay_ref != popup_overlay_stack.back():
+	if is_instance_valid(overlay_ref) and overlay_ref != popup_stack.back():
 		return
 	
-	overlay_ref = popup_overlay_stack.pop_back()
+	overlay_ref = popup_stack.pop_back()
 	if is_instance_valid(overlay_ref):
 		overlay_ref.queue_free()
 	Utils.throw_mouse_motion_event()
 
 func remove_all_popup_overlays() -> void:
-	while not popup_overlay_stack.is_empty():
+	while not popup_stack.is_empty():
 		remove_popup_overlay()
 
 
@@ -156,7 +153,7 @@ func popup_clamp_pos(popup: Control, attempt_pos: Vector2, vp: Viewport) -> Vect
 
 
 func _parse_popup_overlay_event(event: InputEvent) -> void:
-	if not popup_overlay_stack.is_empty():
+	if not popup_stack.is_empty():
 		if event is InputEventMouseButton and event.button_index in [MOUSE_BUTTON_LEFT,
 		MOUSE_BUTTON_MIDDLE, MOUSE_BUTTON_RIGHT]:
 			remove_popup_overlay()
@@ -199,7 +196,7 @@ func _input(event: InputEvent) -> void:
 			return
 	
 	# Stop the logic below from running if there's overlays.
-	if not popup_overlay_stack.is_empty() or not overlay_stack.is_empty():
+	if not popup_stack.is_empty() or not menu_stack.is_empty():
 		return
 	
 	# Global actions that should happen regardless of the context.
@@ -211,16 +208,16 @@ func _input(event: InputEvent) -> void:
 
 func _unhandled_input(event: InputEvent) -> void:
 	# Clear popups or overlays.
-	if not popup_overlay_stack.is_empty() and event.is_action_pressed("ui_cancel"):
+	if not popup_stack.is_empty() and event.is_action_pressed("ui_cancel"):
 		get_viewport().set_input_as_handled()
 		remove_popup_overlay()
 		return
-	elif not overlay_stack.is_empty() and event.is_action_pressed("ui_cancel"):
+	elif not menu_stack.is_empty() and event.is_action_pressed("ui_cancel"):
 		get_viewport().set_input_as_handled()
 		remove_overlay()
 		return
 	
-	if not popup_overlay_stack.is_empty() or not overlay_stack.is_empty() or\
+	if not popup_stack.is_empty() or not menu_stack.is_empty() or\
 	get_viewport().gui_is_dragging():
 		return
 	

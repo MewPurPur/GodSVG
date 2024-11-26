@@ -46,7 +46,7 @@ func _on_base_class_focus_entered() -> void:
 	else:
 		select_all()
 	text_before_focus = text
-	popup_level = HandlerGUI.popup_overlay_stack.size()
+	popup_level = HandlerGUI.popup_stack.size()
 
 func _on_base_class_focus_exited() -> void:
 	first_click = false
@@ -85,7 +85,7 @@ func _input(event: InputEvent) -> void:
 	
 	if event is InputEventMouseButton:
 		if event.is_pressed() and not get_global_rect().has_point(event.position) and\
-		popup_level == HandlerGUI.popup_overlay_stack.size():
+		popup_level == HandlerGUI.popup_stack.size():
 			release_focus()
 		elif event.is_released() and first_click and not has_selection():
 			first_click = false

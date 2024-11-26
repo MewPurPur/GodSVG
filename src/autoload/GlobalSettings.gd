@@ -48,7 +48,7 @@ func get_signal(setting: String) -> Signal:
 	var triggers_arr: Array = triggers[setting]
 	return triggers_arr[0] if triggers_arr.size() > 0 else Signal()
 
-func get_modification_method(setting: String) -> Callable:
+func get_modification_callback(setting: String) -> Callable:
 	if not setting in triggers:
 		return Callable()
 	var triggers_arr: Array = triggers[setting]
@@ -90,9 +90,9 @@ func modify_setting(setting: String, new_value: Variant, omit_save := false) -> 
 		savedata.set(setting, new_value)
 	else:
 		save_setting(setting, new_value)
-	var related_modification_method := get_modification_method(setting)
-	if not related_modification_method.is_null():
-		related_modification_method.call()
+	var related_modification_callback := get_modification_callback(setting)
+	if related_modification_callback.is_valid():
+		related_modification_callback.call()
 	var related_signal := get_signal(setting)
 	if not related_signal.is_null():
 		related_signal.emit()

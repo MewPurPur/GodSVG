@@ -76,7 +76,7 @@ func update_proposed_xid() -> void:
 var dragged_xnode_editors: Array[Control] = []
 
 func _notification(what: int) -> void:
-	if is_inside_tree() and HandlerGUI.overlay_stack.is_empty():
+	if is_inside_tree() and HandlerGUI.menu_stack.is_empty():
 		if what == NOTIFICATION_DRAG_BEGIN:
 			covering_rect.show()
 			for selected_xid in Indications.selected_xids:

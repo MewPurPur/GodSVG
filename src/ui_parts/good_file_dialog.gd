@@ -52,27 +52,27 @@ var DA: DirAccess
 
 
 class Actions:
-	var activation_action: Callable
-	var selection_action: Callable
-	var right_click_action: Callable
+	var activation_callback: Callable
+	var selection_callback: Callable
+	var right_click_callback: Callable
 	
 	func _init(on_activation := Callable(), on_selection := Callable(),
 	on_right_click := Callable()) -> void:
-		activation_action = on_activation
-		selection_action = on_selection
-		right_click_action = on_right_click
+		activation_callback = on_activation
+		selection_callback = on_selection
+		right_click_callback = on_right_click
 
-func call_activation_action(actions: Actions) -> void:
-	if is_instance_valid(actions) and not actions.activation_action.is_null():
-		actions.activation_action.call()
+func call_activation_callback(actions: Actions) -> void:
+	if is_instance_valid(actions) and actions.activation_callback.is_valid():
+		actions.activation_callback.call()
 
-func call_selection_action(actions: Actions) -> void:
-	if is_instance_valid(actions) and not actions.selection_action.is_null():
-		actions.selection_action.call()
+func call_selection_callback(actions: Actions) -> void:
+	if is_instance_valid(actions) and actions.selection_callback.is_valid():
+		actions.selection_callback.call()
 
-func call_right_click_action(actions: Actions) -> void:
-	if is_instance_valid(actions) and not actions.right_click_action.is_null():
-		actions.right_click_action.call()
+func call_right_click_callback(actions: Actions) -> void:
+	if is_instance_valid(actions) and actions.right_click_callback.is_valid():
+		actions.right_click_callback.call()
 
 
 func setup(new_dir: String, new_file: String, new_mode: FileMode,
@@ -331,18 +331,18 @@ func _on_file_list_empty_clicked(_at_position: Vector2, mouse_button_index: int)
 		HandlerGUI.popup_under_pos(context_popup, vp.get_mouse_position(), vp)
 
 func _on_file_list_item_activated(index: int) -> void:
-	call_activation_action(file_list.get_item_metadata(index))
+	call_activation_callback(file_list.get_item_metadata(index))
 
 func _on_file_list_item_selected(index: int) -> void:
-	call_selection_action(file_list.get_item_metadata(index))
+	call_selection_callback(file_list.get_item_metadata(index))
 
 func _on_file_list_item_clicked(index: int, _at_position: Vector2,
 mouse_button_index: int) -> void:
 	if mouse_button_index == MOUSE_BUTTON_RIGHT:
-		call_right_click_action(file_list.get_item_metadata(index))
+		call_right_click_callback(file_list.get_item_metadata(index))
 
 func _on_drives_list_item_selected(index: int) -> void:
-	call_selection_action(drives_list.get_item_metadata(index))
+	call_selection_callback(drives_list.get_item_metadata(index))
 
 func _on_show_hidden_button_toggled(toggled_on: bool) -> void:
 	GlobalSettings.modify_setting("file_dialog_show_hidden", toggled_on)
@@ -460,5 +460,5 @@ func _input(event: InputEvent) -> void:
 	elif Input.is_action_pressed("ui_accept"):
 		var selected_item_indices := file_list.get_selected_items()
 		if not selected_item_indices.is_empty():
-			call_activation_action(file_list.get_item_metadata(selected_item_indices[0]))
+			call_activation_callback(file_list.get_item_metadata(selected_item_indices[0]))
 			accept_event()
