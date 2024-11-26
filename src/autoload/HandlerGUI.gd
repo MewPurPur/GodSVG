@@ -16,7 +16,7 @@ var popup_stack: Array[Control]
 func _enter_tree() -> void:
 	get_window().files_dropped.connect(_on_files_dropped)
 	get_window().dpi_changed.connect(update_ui_scale)
-	get_window().size_changed.connect(remove_all_popup_overlays)
+	get_window().size_changed.connect(remove_all_popups)
 
 func _ready() -> void:
 	GlobalSettings.ui_scale_changed.connect(update_ui_scale)
@@ -33,11 +33,11 @@ func _on_files_dropped(files: PackedStringArray) -> void:
 		FileUtils.apply_svg_from_path(files[0])
 
 
-func add_overlay(overlay_menu: Control) -> void:
+func add_menu(overlay_menu: Control) -> void:
 	# FIXME subpar workaround to drag & drop not able to be cancelled manually.
 	get_tree().root.propagate_notification(NOTIFICATION_DRAG_END)
 	
-	remove_all_popup_overlays()
+	remove_all_popups()
 	
 	if not menu_stack.is_empty():
 		menu_stack.back().hide()
@@ -49,9 +49,9 @@ func add_overlay(overlay_menu: Control) -> void:
 	get_tree().root.add_child(overlay_ref)
 	overlay_ref.add_child(overlay_menu)
 	overlay_menu.set_anchors_and_offsets_preset(Control.PRESET_CENTER)
-	overlay_menu.tree_exiting.connect(remove_overlay.bind(overlay_ref))
+	overlay_menu.tree_exiting.connect(remove_menu.bind(overlay_ref))
 
-func remove_overlay(overlay_ref: ColorRect = null) -> void:
+func remove_menu(overlay_ref: ColorRect = null) -> void:
 	if menu_stack.is_empty():
 		return
 	# If an overlay_ref is passed but doesn't match, do nothing.
@@ -66,12 +66,13 @@ func remove_overlay(overlay_ref: ColorRect = null) -> void:
 		menu_stack.back().show()
 	Utils.throw_mouse_motion_event()
 
-func remove_all_overlays() -> void:
+func remove_all_menus() -> void:
 	while not menu_stack.is_empty():
-		remove_overlay()
+		menu_stack.back().queue_free()
+	Utils.throw_mouse_motion_event()
 
 
-func add_popup_overlay(popup: Control) -> void:
+func add_popup(popup: Control) -> void:
 	var overlay_ref := Control.new()
 	overlay_ref.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	overlay_ref.gui_input.connect(_parse_popup_overlay_event)
@@ -85,12 +86,12 @@ func add_popup_overlay(popup: Control) -> void:
 		popup.add_theme_stylebox_override("panel", stylebox)
 	
 	popup.reset_size()
-	popup.tree_exiting.connect(remove_popup_overlay.bind(overlay_ref))
+	popup.tree_exiting.connect(remove_popup.bind(overlay_ref))
 
-func remove_popup_overlay(overlay_ref: Control = null) -> void:
+func remove_popup(overlay_ref: Control = null) -> void:
 	if popup_stack.is_empty():
 		return
-	# Refer to remove_overlay() for why the logic is like this.
+	# Refer to remove_menu() for why the logic is like this.
 	if is_instance_valid(overlay_ref) and overlay_ref != popup_stack.back():
 		return
 	
@@ -99,14 +100,14 @@ func remove_popup_overlay(overlay_ref: Control = null) -> void:
 		overlay_ref.queue_free()
 	Utils.throw_mouse_motion_event()
 
-func remove_all_popup_overlays() -> void:
+func remove_all_popups() -> void:
 	while not popup_stack.is_empty():
-		remove_popup_overlay()
+		remove_popup()
 
 
 # Should usually be the global rect of a control.
 func popup_under_rect(popup: Control, rect: Rect2, vp: Viewport) -> void:
-	add_popup_overlay(popup)
+	add_popup(popup)
 	var screen_transform := vp.get_screen_transform()
 	var screen_h := vp.get_visible_rect().size.y / screen_transform.get_scale().y
 	var popup_pos := Vector2(rect.position.x, 0)
@@ -121,7 +122,7 @@ func popup_under_rect(popup: Control, rect: Rect2, vp: Viewport) -> void:
 
 # Should usually be the global rect of a control.
 func popup_under_rect_center(popup: Control, rect: Rect2, vp: Viewport) -> void:
-	add_popup_overlay(popup)
+	add_popup(popup)
 	var screen_transform := vp.get_screen_transform()
 	var screen_h := vp.get_visible_rect().size.y
 	var popup_pos := Vector2(rect.position.x - popup.size.x / 2.0 + rect.size.x / 2, 0)
@@ -137,7 +138,7 @@ func popup_under_rect_center(popup: Control, rect: Rect2, vp: Viewport) -> void:
 
 # Should usually be the global position of the mouse.
 func popup_under_pos(popup: Control, pos: Vector2, vp: Viewport) -> void:
-	add_popup_overlay(popup)
+	add_popup(popup)
 	var screen_transform := vp.get_screen_transform()
 	pos += screen_transform.get_origin() / screen_transform.get_scale()
 	popup.position = popup_clamp_pos(popup, pos, vp)
@@ -156,16 +157,16 @@ func _parse_popup_overlay_event(event: InputEvent) -> void:
 	if not popup_stack.is_empty():
 		if event is InputEventMouseButton and event.button_index in [MOUSE_BUTTON_LEFT,
 		MOUSE_BUTTON_MIDDLE, MOUSE_BUTTON_RIGHT]:
-			remove_popup_overlay()
+			remove_popup()
 	get_viewport().set_input_as_handled()
 
 var last_mouse_click_double := false
 
 func _input(event: InputEvent) -> void:
 	if ShortcutUtils.is_action_pressed(event, "quit"):
-		remove_all_overlays()
+		remove_all_menus()
 		var confirm_dialog = ConfirmDialog.instantiate()
-		add_overlay(confirm_dialog)
+		add_menu(confirm_dialog)
 		confirm_dialog.setup(Translator.translate("Quit GodSVG"),
 				Translator.translate("Do you want to quit GodSVG?"),
 				Translator.translate("Quit"), get_tree().quit)
@@ -183,7 +184,7 @@ func _input(event: InputEvent) -> void:
 	# Stuff that should replace the existing overlays.
 	for action in ["about_info", "about_donate", "check_updates", "open_settings"]:
 		if ShortcutUtils.is_action_pressed(event, action):
-			remove_all_overlays()
+			remove_all_menus()
 			get_viewport().set_input_as_handled()
 			ShortcutUtils.fn_call(action)
 			return
@@ -210,11 +211,11 @@ func _unhandled_input(event: InputEvent) -> void:
 	# Clear popups or overlays.
 	if not popup_stack.is_empty() and event.is_action_pressed("ui_cancel"):
 		get_viewport().set_input_as_handled()
-		remove_popup_overlay()
+		remove_popup()
 		return
 	elif not menu_stack.is_empty() and event.is_action_pressed("ui_cancel"):
 		get_viewport().set_input_as_handled()
-		remove_overlay()
+		remove_menu()
 		return
 	
 	if not popup_stack.is_empty() or not menu_stack.is_empty() or\
@@ -256,24 +257,24 @@ func update_ui_scale() -> void:
 
 func open_update_checker() -> void:
 	var confirmation_dialog = ConfirmDialog.instantiate()
-	add_overlay(confirmation_dialog)
+	add_menu(confirmation_dialog)
 	confirmation_dialog.setup(Translator.translate("Check for updates?"),
 			Translator.translate("This requires GodSVG to connect to the internet."),
 			Translator.translate("OK"), _list_updates)
 
 func _list_updates() -> void:
-	remove_all_overlays()
+	remove_all_menus()
 	var update_menu_instance = UpdateMenu.instantiate()
-	add_overlay(update_menu_instance)
+	add_menu(update_menu_instance)
 
 func open_settings() -> void:
-	add_overlay(SettingsMenu.instantiate())
+	add_menu(SettingsMenu.instantiate())
 
 func open_about() -> void:
-	add_overlay(AboutMenu.instantiate())
+	add_menu(AboutMenu.instantiate())
 
 func open_donate() -> void:
-	add_overlay(DonateMenu.instantiate())
+	add_menu(DonateMenu.instantiate())
 
 
 func _calculate_auto_scale() -> float:

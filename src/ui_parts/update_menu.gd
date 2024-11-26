@@ -108,4 +108,4 @@ func display_results() -> void:
 
 
 func _on_close_pressed() -> void:
-	HandlerGUI.remove_overlay()
+	HandlerGUI.remove_menu()
