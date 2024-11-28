@@ -18,6 +18,8 @@ var formatter: Formatter
 
 func _init(new_formatter: Formatter = GlobalSettings.savedata.editor_formatter) -> void:
 	super()
+	xid = PackedInt32Array()
+	root = self
 	formatter = new_formatter
 
 func get_xnode(loc: PackedInt32Array) -> XNode:

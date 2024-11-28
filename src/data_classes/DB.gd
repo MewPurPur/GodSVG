@@ -32,8 +32,8 @@ const xnode_icons = {
 
 const recognized_attributes = {  # Dictionary{String: Array[String]}
 	# TODO this is just propagated_attributes, but it ruins the const because of Godot bug.
-	"svg": ["xmlns", "width", "height", "viewBox", "fill", "fill-opacity", "stroke",
-			"stroke-opacity", "stroke-width", "stroke-linecap", "stroke-linejoin"],
+	"svg": ["xmlns", "x", "y", "width", "height", "viewBox", "fill", "fill-opacity",
+			"stroke", "stroke-opacity", "stroke-width", "stroke-linecap", "stroke-linejoin"],
 	"g": ["transform", "opacity", "fill", "fill-opacity", "stroke", "stroke-opacity",
 			"stroke-width", "stroke-linecap", "stroke-linejoin"],
 	"linearGradient": ["id", "gradientTransform", "gradientUnits", "spreadMethod",

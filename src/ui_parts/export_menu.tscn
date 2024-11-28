@@ -1,12 +1,12 @@
 [gd_scene load_steps=6 format=3 uid="uid://c13dadqbljqlu"]
 
-[ext_resource type="Script" path="res://src/ui_parts/export_dialog.gd" id="1_objnb"]
+[ext_resource type="Script" path="res://src/ui_parts/export_menu.gd" id="1_objnb"]
 [ext_resource type="PackedScene" uid="uid://xh26qa68xed4" path="res://src/ui_widgets/svg_preview.tscn" id="2_ewk0a"]
 [ext_resource type="FontFile" uid="uid://clpf84p1lfwlp" path="res://visual/fonts/Font.ttf" id="5_s3e6m"]
 [ext_resource type="PackedScene" uid="uid://dbu1lvajypafb" path="res://src/ui_widgets/dropdown.tscn" id="5_y6ex0"]
 [ext_resource type="PackedScene" uid="uid://dad7fkhmsooc6" path="res://src/ui_widgets/number_edit.tscn" id="6_w1sag"]
 
-[node name="ExportDialog" type="PanelContainer"]
+[node name="ExportMenu" type="PanelContainer"]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -94,7 +94,7 @@ unique_name_in_owner = true
 layout_mode = 2
 min_value = 1.0
 max_value = 100.0
-initial_value = 80.0
+initial_value = 75.0
 allow_lower = false
 allow_higher = false
 is_float = false

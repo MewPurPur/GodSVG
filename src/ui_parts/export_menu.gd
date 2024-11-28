@@ -2,10 +2,7 @@ extends PanelContainer
 
 const NumberEditType = preload("res://src/ui_widgets/number_edit.gd")
 
-var upscale_amount := -1.0
-var quality := 0.8
-var lossy := false
-var extension := ""
+var export_data := ImageExportData.new()
 var dimensions := Vector2.ZERO
 
 @onready var dimensions_label: Label = %DimensionsLabel
@@ -28,8 +25,8 @@ func _ready() -> void:
 	scale_edit.value_changed.connect(update_final_scale.unbind(1))
 	quality_edit.value_changed.connect(_on_quality_value_changed)
 	format_dropdown.value_changed.connect(_on_dropdown_value_changed)
-	extension = format_dropdown.value
-	update_extension_configuration()
+	export_data.format = format_dropdown.value
+	update_format_configuration()
 	dimensions = SVG.root_element.get_size()
 	var bigger_dimension := maxf(dimensions.x, dimensions.y)
 	scale_edit.min_value = 1 / minf(dimensions.x, dimensions.y)
@@ -60,34 +57,29 @@ func _ready() -> void:
 
 
 func _on_dropdown_value_changed(new_value: String) -> void:
-	extension = new_value
-	update_extension_configuration()
+	export_data.format = new_value
+	update_format_configuration()
 
 
 func _on_export_button_pressed() -> void:
-	if OS.has_feature("web"):
-		FileUtils.web_save(extension, upscale_amount, quality, lossy)
-	else:
-		FileUtils.open_save_dialog(extension,
-				FileUtils.native_file_export.bind(extension, upscale_amount),
-				FileUtils.finish_export.bind(extension, upscale_amount, quality, lossy))
+	FileUtils.open_export_dialog(export_data)
 
 func _on_lossless_check_box_toggled(toggled_on: bool) -> void:
-	lossy = not toggled_on
-	if extension == "webp":
-		quality_hbox.visible = lossy
+	export_data.lossy = not toggled_on
+	if export_data.format == "webp":
+		quality_hbox.visible = export_data.lossy
 
 func _on_quality_value_changed(_new_value: float) -> void:
-	quality = _new_value / 100
+	export_data.quality = _new_value / 100
 
 func update_final_scale() -> void:
-	upscale_amount = scale_edit.get_value()
-	var exported_size: Vector2i = dimensions * upscale_amount
+	export_data.upscale_amount = scale_edit.get_value()
+	var exported_size: Vector2i = dimensions * export_data.upscale_amount
 	final_dimensions_label.text = Translator.translate("Final size") +\
 			": %d×%d" % [exported_size.x, exported_size.y]
 
-func update_extension_configuration() -> void:
-	scale_container.visible = extension in ["png", "jpg", "webp"]
-	lossless_checkbox.visible = (extension == "webp")
-	quality_hbox.visible = extension in ["jpg", "webp"]
-	_on_lossless_check_box_toggled(not lossy)
+func update_format_configuration() -> void:
+	scale_container.visible = export_data.format in ["png", "jpg", "jpeg", "webp"]
+	lossless_checkbox.visible = (export_data.format == "webp")
+	quality_hbox.visible = export_data.format in ["jpg", "jpeg", "webp"]
+	_on_lossless_check_box_toggled(not export_data.lossy)

@@ -12,6 +12,7 @@ const element_content_types = {
 	"line": preload("res://src/ui_widgets/element_content_basic_shape.tscn"),
 	"stop": preload("res://src/ui_widgets/element_content_stop.tscn"),
 	"g": preload("res://src/ui_widgets/element_content_g.tscn"),
+	"svg": preload("res://src/ui_widgets/element_content_g.tscn"),
 	"linearGradient": preload("res://src/ui_widgets/element_content_linear_gradient.tscn"),
 	"radialGradient": preload("res://src/ui_widgets/element_content_radial_gradient.tscn"),
 }

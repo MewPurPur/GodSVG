@@ -75,10 +75,9 @@ static func fn_call(shortcut: String) -> void:
 # The methods that should be called if these shortcuts aren't handled.
 static func fn(shortcut: String) -> Callable:
 	match shortcut:
-		"save": return FileUtils.open_save_dialog.bind("svg",
-				FileUtils.native_file_save, FileUtils.save_svg_to_file)
+		"save": return FileUtils.save_svg
+		"export": return HandlerGUI.open_export
 		"import": return FileUtils.open_svg_import_dialog
-		"export": return FileUtils.open_export_dialog
 		"copy_svg_text": return DisplayServer.clipboard_set.bind(SVG.text)
 		"clear_svg": return SVG.apply_svg_text.bind(SVG.DEFAULT)
 		"optimize": return SVG.optimize

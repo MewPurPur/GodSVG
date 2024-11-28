@@ -157,11 +157,20 @@ func get_attribute_num(attribute_name: String) -> float:
 	# Possibly adjust for percentage.
 	var num := attrib.get_num()
 	if attrib.is_percentage():
-		match get_percentage_handling(attribute_name):
-			DB.PercentageHandling.FRACTION: return num
-			DB.PercentageHandling.HORIZONTAL: return svg.width * num
-			DB.PercentageHandling.VERTICAL: return svg.height * num
-			DB.PercentageHandling.NORMALIZED: return svg.normalized_diagonal * num
+		var percentage_handling := get_percentage_handling(attribute_name)
+		if percentage_handling == DB.PercentageHandling.FRACTION:
+			return num
+		elif root == self:
+			# TODO Implement this properly.
+			match percentage_handling:
+				DB.PercentageHandling.HORIZONTAL: return 1024 * num
+				DB.PercentageHandling.VERTICAL: return 1024 * num
+				DB.PercentageHandling.NORMALIZED: return 1024 * num
+		else:
+			match percentage_handling:
+				DB.PercentageHandling.HORIZONTAL: return svg.width * num
+				DB.PercentageHandling.VERTICAL: return svg.height * num
+				DB.PercentageHandling.NORMALIZED: return svg.normalized_diagonal * num
 	return num
 
 func is_attribute_percentage(attribute_name: String) -> bool:
@@ -248,7 +257,6 @@ func get_all_attributes() -> Array:
 	return _attributes.values()
 
 
-# Why is there no way to duplicate RefCounteds, again?
 func duplicate(include_children := true) -> Element:
 	var type: GDScript = get_script()
 	var new_element: Element

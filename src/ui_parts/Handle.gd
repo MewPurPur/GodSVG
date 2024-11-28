@@ -5,8 +5,9 @@ enum Display {BIG, SMALL}
 var display_mode := Display.BIG
 
 var element: Element
-var pos: Vector2
 var transform: Transform2D
+# TODO This property needs to be two floats for the sake of 64-bit accuracy.
+var pos: Vector2
 
 func _init() -> void:
 	pass

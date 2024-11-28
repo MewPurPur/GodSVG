@@ -1,6 +1,9 @@
 # An <svg></svg> element.
 class_name ElementSVG extends Element
 
+# TODO Fix up the logic for handling x, y, and aspect ratio handling.
+#var x: float
+#var y: float
 var width: float
 var height: float
 var normalized_diagonal: float
@@ -12,6 +15,7 @@ const possible_conversions = []
 
 func _init() -> void:
 	attribute_changed.connect(_conditional_update_cache)
+	# If attributes change in an ancestor, it can affect percentage calculations.
 	ancestor_attribute_changed.connect(_conditional_update_cache)
 	super()
 
@@ -20,7 +24,7 @@ func _conditional_update_cache(attribute_name: String) -> void:
 		update_cache()
 
 func update_cache() -> void:
-	if root != self and svg == null:
+	if svg == null and root != self:
 		return
 	
 	var has_valid_width := has_attribute("width")
@@ -82,3 +86,9 @@ func world_to_canvas(pos: Vector2) -> Vector2:
 
 func get_size() -> Vector2:
 	return Vector2(width, height)
+
+
+func _get_own_default(attribute_name: String) -> String:
+	match attribute_name:
+		"x", "y": return "0"
+		_: return ""

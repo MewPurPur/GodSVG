@@ -16,7 +16,7 @@ func _init() -> void:
 	scroll_v_scroll_speed = 30.0
 	caret_multiple = false
 	highlight_all_occurrences = true
-	#set_tab_size(2)
+	set_tab_size(2)
 
 func _ready() -> void:
 	RenderingServer.canvas_item_set_parent(_surface, get_canvas_item())
