@@ -6,18 +6,11 @@ enum FileState {SAME, DIFFERENT, DOES_NOT_EXIST}
 const GoodFileDialogType = preload("res://src/ui_parts/good_file_dialog.gd")
 
 const AlertDialog = preload("res://src/ui_parts/alert_dialog.tscn")
-const ImportWarningDialog = preload("res://src/ui_parts/import_warning_dialog.tscn")
+const ImportWarningMenu = preload("res://src/ui_parts/import_warning_menu.tscn")
 const GoodFileDialog = preload("res://src/ui_parts/good_file_dialog.tscn")
-const ExportDialog = preload("res://src/ui_parts/export_dialog.tscn")
 
 static func apply_svg_from_path(path: String) -> void:
 	_finish_file_import(path, _apply_svg, PackedStringArray(["svg"]))
-
-static func save_svg_to_file(path: String) -> void:
-	GlobalSettings.modify_setting("current_file_path", path)
-	GlobalSettings.modify_setting("last_used_dir", path.get_base_dir())
-	var FA := FileAccess.open(path, FileAccess.WRITE)
-	FA.store_string(SVG.get_export_text())
 
 static func compare_svg_to_disk_contents() -> FileState:
 	var content := FileAccess.get_file_as_string(GlobalSettings.savedata.current_file_path)
@@ -31,71 +24,54 @@ static func compare_svg_to_disk_contents() -> FileState:
 		return FileState.DIFFERENT
 
 
-static func finish_export(file_path: String, extension: String, upscale_amount := 1.0,
-quality := 0.8, lossy := false) -> void:
+static func save_svg() -> void:
+	open_export_dialog(ImageExportData.new())
+
+static func open_export_dialog(export_data: ImageExportData) -> void:
+	if OS.has_feature("web"):
+		var web_format_name: String = ImageExportData.web_formats[export_data.format]
+		if export_data.format == "svg":
+			_web_save(export_data.svg_to_buffer(), web_format_name)
+		else:
+			var img := export_data.generate_image()
+			_web_save(export_data.image_to_buffer(img), web_format_name)
+	else:
+		if _is_native_preferred():
+			var native_callback :=\
+					func(has_selected: bool, files: PackedStringArray, _filter_idx: int):
+						if has_selected:
+							_finish_export(files[0], export_data)
+			
+			DisplayServer.file_dialog_show(
+					Translator.translate("Save the .\"{format}\" file").format(
+					{"format": export_data.format}), Utils.get_last_dir(), Utils.get_file_name(
+					GlobalSettings.savedata.current_file_path) + "." + export_data.format,
+					false, DisplayServer.FILE_DIALOG_MODE_SAVE_FILE,
+					PackedStringArray(["*." + export_data.format]), native_callback)
+		else:
+			var export_dialog := GoodFileDialog.instantiate()
+			export_dialog.setup(Utils.get_last_dir(),
+					Utils.get_file_name(GlobalSettings.savedata.current_file_path),
+					GoodFileDialogType.FileMode.SAVE, PackedStringArray([export_data.format]))
+			HandlerGUI.add_menu(export_dialog)
+			export_dialog.file_selected.connect(func(path): _finish_export(path, export_data))
+
+static func _finish_export(file_path: String, export_data: ImageExportData) -> void:
 	if file_path.get_extension().is_empty():
-		file_path += "." + extension
+		file_path += "." + export_data.format
 	
 	GlobalSettings.modify_setting("last_used_dir", file_path.get_base_dir())
 	
-	match extension:
-		"png": generate_image_from_elements(upscale_amount).save_png(file_path)
-		"jpg", "jpeg": generate_image_from_elements(upscale_amount).save_jpg(file_path, quality)
-		"webp": generate_image_from_elements(upscale_amount).save_webp(file_path, lossy, quality)
-		_: save_svg_to_file(file_path)  # SVG / fallback.
-	HandlerGUI.remove_menu()
-
-
-static func generate_image_from_elements(upscale_amount := 1.0) -> Image:
-	var export_svg := SVG.root_element.duplicate()
-	if export_svg.get_attribute_list("viewBox").is_empty():
-		export_svg.set_attribute("viewBox",
-				PackedFloat32Array([0.0, 0.0, export_svg.width, export_svg.height]))
-	# First ensure there are dimensions.
-	# Otherwise changing one side could influence the other.
-	export_svg.set_attribute("width", export_svg.width)
-	export_svg.set_attribute("height", export_svg.height)
-	export_svg.set_attribute("width", export_svg.width * upscale_amount)
-	export_svg.set_attribute("height", export_svg.height * upscale_amount)
-	var img := Image.new()
-	img.load_svg_from_string(SVGParser.root_to_text(export_svg, Formatter.new()))
-	img.fix_alpha_edges()  # See godot issue 82579.
-	return img
-
-
-static func open_export_dialog() -> void:
-	HandlerGUI.add_menu(ExportDialog.instantiate())
-
-static func open_save_dialog(extension: String, native_callable: Callable,
-non_native_callable: Callable) -> void:
-	# Open it inside a native file dialog, or our custom one if it's not available.
-	if OS.has_feature("web"):
-		web_save_svg()
-	else:
-		if _is_native_preferred():
-			DisplayServer.file_dialog_show(
-					Translator.translate("Save the .\"{extension}\" file").format(
-					{"extension": extension}), Utils.get_last_dir(), Utils.get_file_name(
-					GlobalSettings.savedata.current_file_path) + "." + extension, false,
-					DisplayServer.FILE_DIALOG_MODE_SAVE_FILE,
-					PackedStringArray(["*." + extension]), native_callable)
-		else:
-			var svg_export_dialog := GoodFileDialog.instantiate()
-			svg_export_dialog.setup(Utils.get_last_dir(),
-					Utils.get_file_name(GlobalSettings.savedata.current_file_path),
-					GoodFileDialogType.FileMode.SAVE, PackedStringArray([extension]))
-			HandlerGUI.add_menu(svg_export_dialog)
-			svg_export_dialog.file_selected.connect(non_native_callable)
-
-static func native_file_export(has_selected: bool, files: PackedStringArray,
-_filter_idx: int, extension: String, upscale_amount := 1.0) -> void:
-	if has_selected:
-		finish_export(files[0], extension, upscale_amount)
-
-static func native_file_save(has_selected: bool, files: PackedStringArray,
-_filter_idx: int) -> void:
-	if has_selected:
-		save_svg_to_file(files[0])
+	match export_data.format:
+		"png": export_data.generate_image().save_png(file_path)
+		"jpg", "jpeg": export_data.generate_image().save_jpg(file_path, export_data.quality)
+		"webp": export_data.generate_image().save_webp(file_path, export_data.lossy, export_data.quality)
+		_:
+			# When saving SVG, also modify the file path to associate it
+			# with the graphic being edited.
+			GlobalSettings.modify_setting("current_file_path", file_path)
+			FileAccess.open(file_path, FileAccess.WRITE).store_string(SVG.get_export_text())
+	HandlerGUI.remove_all_menus()
 
 
 static func _is_native_preferred() -> bool:
@@ -186,7 +162,7 @@ allowed_extensions: PackedStringArray) -> Error:
 
 
 static func _apply_svg(data: Variant, file_name: String) -> Error:
-	var warning_panel := ImportWarningDialog.instantiate()
+	var warning_panel := ImportWarningMenu.instantiate()
 	warning_panel.imported.connect(_finish_svg_import.bind(data, file_name))
 	warning_panel.set_svg(data)
 	HandlerGUI.add_menu(warning_panel)
@@ -289,21 +265,6 @@ static func _web_on_file_loaded(args: Array) -> void:
 static func _web_on_file_dialog_cancelled(_args: Array) -> void:
 	JavaScriptBridge.eval("window.godsvgDialogClosed = true;", true)
 
-
-static func web_save(extension: String, upscale_amount: float, quality: float,
-lossy: bool) -> void:
-	if extension == "svg":
-		web_save_svg()
-	else:
-		var img := generate_image_from_elements(upscale_amount)
-		match extension:
-			"png": _web_save(img.save_png_to_buffer(), "image/png")
-			"jpg": _web_save(img.save_jpg_to_buffer(quality), "image/jpeg")
-			"webp": _web_save(img.save_webp_to_buffer(lossy, quality), "image/webp")
-			_: web_save_svg()
-
-static func web_save_svg() -> void:
-	_web_save(SVG.get_export_text().to_utf8_buffer(), "image/svg+xml")
 
 static func _web_save(buffer: PackedByteArray, format_name: String) -> void:
 	var file_name := Utils.get_file_name(GlobalSettings.savedata.current_file_path)

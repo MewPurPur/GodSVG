@@ -1,14 +1,15 @@
 extends Node
 
 # Not a good idea to preload scenes inside a singleton.
-var ImportWarningDialog = load("res://src/ui_parts/import_warning_dialog.tscn")
 var AlertDialog = load("res://src/ui_parts/alert_dialog.tscn")
 var ConfirmDialog = load("res://src/ui_parts/confirm_dialog.tscn")
 var SettingsMenu = load("res://src/ui_parts/settings_menu.tscn")
 var AboutMenu = load("res://src/ui_parts/about_menu.tscn")
 var DonateMenu = load("res://src/ui_parts/donate_menu.tscn")
 var UpdateMenu = load("res://src/ui_parts/update_menu.tscn")
+var ExportMenu = load("res://src/ui_parts/export_menu.tscn")
 
+# Menus should be added with add_menu() and removed by being freed.
 var menu_stack: Array[ColorRect]
 var popup_stack: Array[Control]
 
@@ -53,17 +54,22 @@ func add_menu(new_menu: Control) -> void:
 	get_tree().root.add_child(overlay_ref)
 	overlay_ref.add_child(new_menu)
 	new_menu.set_anchors_and_offsets_preset(Control.PRESET_CENTER)
-	new_menu.tree_exiting.connect(remove_menu.bind(overlay_ref))
+	new_menu.tree_exiting.connect(_remove_menu.bind(overlay_ref))
 
-func remove_menu(overlay_ref: ColorRect = null) -> void:
-	if menu_stack.is_empty():
-		return
+func _remove_menu(overlay_ref: ColorRect = null) -> void:
 	# If an overlay_ref is passed but doesn't match, do nothing.
 	# This is a hack against exiting overlay menus closing other menus than their own.
-	if is_instance_valid(overlay_ref) and overlay_ref != menu_stack.back():
+	var matching_idx := menu_stack.size() - 1
+	if is_instance_valid(overlay_ref):
+		while matching_idx >= 0:
+			if overlay_ref == menu_stack[matching_idx]:
+				break
+			matching_idx -= 1
+	
+	if matching_idx < 0:
 		return
 	
-	overlay_ref = menu_stack.pop_back()
+	overlay_ref = menu_stack.pop_at(matching_idx)
 	if is_instance_valid(overlay_ref):
 		overlay_ref.queue_free()
 	if not menu_stack.is_empty():
@@ -220,7 +226,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		return
 	elif not menu_stack.is_empty() and event.is_action_pressed("ui_cancel"):
 		get_viewport().set_input_as_handled()
-		remove_menu()
+		_remove_menu()
 		return
 	
 	if not popup_stack.is_empty() or not menu_stack.is_empty() or\
@@ -280,6 +286,9 @@ func open_about() -> void:
 
 func open_donate() -> void:
 	add_menu(DonateMenu.instantiate())
+
+func open_export() -> void:
+	add_menu(ExportMenu.instantiate())
 
 
 func _calculate_auto_scale() -> float:

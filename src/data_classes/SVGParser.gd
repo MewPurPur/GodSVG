@@ -121,9 +121,6 @@ static func text_to_root(text: String, formatter: Formatter) -> ParseResult:
 		return ParseResult.new(ParseError.ERR_NOT_SVG)
 	
 	var root_element := ElementRoot.new(formatter)
-	root_element.formatter = formatter
-	root_element.xid = PackedInt32Array()
-	root_element.root = root_element
 	var parser := XMLParser.new()
 	parser.open_buffer(text.to_utf8_buffer())
 	var unclosed_element_stack: Array[Element] = []

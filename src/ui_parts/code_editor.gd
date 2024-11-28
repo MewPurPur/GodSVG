@@ -158,8 +158,7 @@ func _on_svg_code_edit_focus_entered() -> void:
 func _on_file_button_pressed() -> void:
 	var btn_array: Array[Button] = []
 	btn_array.append(ContextPopup.create_button(Translator.translate("Save SVG"),
-			FileUtils.open_save_dialog.bind("svg", FileUtils.native_file_save,
-			FileUtils.save_svg_to_file), false, load("res://visual/icons/Save.svg"), "save"))
+			FileUtils.save_svg, false, load("res://visual/icons/Save.svg"), "save"))
 	btn_array.append(ContextPopup.create_button(Translator.translate("Open file"),
 			ShortcutUtils.fn("open_svg"),
 			not FileAccess.file_exists(GlobalSettings.savedata.current_file_path),

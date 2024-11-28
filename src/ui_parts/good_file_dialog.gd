@@ -28,22 +28,26 @@ var search_text := ""
 
 var DA: DirAccess
 
-@onready var close_button: Button = %CloseButton
-@onready var special_button: Button = %SpecialButton
-@onready var path_label: Label = %PathLabel
 @onready var title_label: Label = $VBoxContainer/TitleLabel
 @onready var search_field: BetterLineEdit = %SearchField
-@onready var path_field: BetterLineEdit = %PathField
+
 @onready var file_container: HBoxContainer = %FileContainer
-@onready var file_field: BetterLineEdit = %FileField
-@onready var extension_panel: PanelContainer = %ExtensionPanel
-@onready var extension_label: Label = %ExtensionLabel
+@onready var file_field: BetterLineEdit = %FileContainer/FileField
+@onready var extension_panel: PanelContainer = %FileContainer/ExtensionPanel
+@onready var extension_label: Label = %FileContainer/ExtensionPanel/ExtensionLabel
+
 @onready var drives_list: ItemList = %DrivesList
 @onready var file_list: ItemList = %FileList
-@onready var folder_up_button: Button = %FolderUpButton
-@onready var refresh_button: Button = %RefreshButton
-@onready var show_hidden_button: Button = %ShowHiddenButton
-@onready var search_button: Button = %SearchButton
+
+@onready var folder_up_button: Button = %TopBar/FolderUpButton
+@onready var path_label: Label = %TopBar/PathLabel
+@onready var path_field: BetterLineEdit = %TopBar/PathField
+@onready var refresh_button: Button = %TopBar/RefreshButton
+@onready var show_hidden_button: Button = %TopBar/ShowHiddenButton
+@onready var search_button: Button = %TopBar/SearchButton
+
+@onready var close_button: Button = %ButtonContainer/CloseButton
+@onready var special_button: Button = %ButtonContainer/SpecialButton
 
 
 class Actions:
@@ -101,6 +105,7 @@ func _ready() -> void:
 	show_hidden_button.tooltip_text =\
 			Translator.translate("Toggle the visibility of hidden files")
 	search_button.tooltip_text = Translator.translate("Search files")
+	search_field.placeholder_text = Translator.translate("Search files")
 	
 	if mode != FileMode.SELECT:
 		title_label.text = Translator.translate("Save SVG")
@@ -254,7 +259,7 @@ func _setup_file_images() -> void:
 
 
 func select_file() -> void:
-	if mode == FileMode.SAVE and current_file in DirAccess.get_files_at(current_dir):
+	if mode == FileMode.SAVE and FileAccess.file_exists(current_dir.path_join(current_file)):
 		var confirm_dialog := ConfirmDialog.instantiate()
 		HandlerGUI.add_dialog(confirm_dialog)
 		confirm_dialog.setup(Translator.translate("Alert!"), Translator.translate(
