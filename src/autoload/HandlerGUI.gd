@@ -34,29 +34,31 @@ func _on_files_dropped(files: PackedStringArray) -> void:
 		FileUtils.apply_svg_from_path(files[0])
 
 
-# TODO Implement this as an alternative that doesn't hide the previous menu.
-func add_dialog(new_dialog: Control) -> void:
-	add_menu(new_dialog)
-
 func add_menu(new_menu: Control) -> void:
-	# FIXME subpar workaround to drag & drop not able to be cancelled manually.
-	get_tree().root.propagate_notification(NOTIFICATION_DRAG_END)
-	
-	remove_all_popups()
-	
 	if not menu_stack.is_empty():
 		menu_stack.back().hide()
+	_add_control(new_menu)
+
+func add_dialog(new_dialog: Control) -> void:
+	if not menu_stack.is_empty():
+		menu_stack.back().show()
+	_add_control(new_dialog)
+
+func _add_control(new_control: Control) -> void:
+	# FIXME subpar workaround to drag & drop not able to be cancelled manually.
+	get_tree().root.propagate_notification(NOTIFICATION_DRAG_END)
+	remove_all_popups()
 	
 	var overlay_ref = ColorRect.new()
 	overlay_ref.color = Color(0, 0, 0, 0.4)
 	overlay_ref.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	menu_stack.append(overlay_ref)
 	get_tree().root.add_child(overlay_ref)
-	overlay_ref.add_child(new_menu)
-	new_menu.set_anchors_and_offsets_preset(Control.PRESET_CENTER)
-	new_menu.tree_exiting.connect(_remove_menu.bind(overlay_ref))
+	overlay_ref.add_child(new_control)
+	new_control.set_anchors_and_offsets_preset(Control.PRESET_CENTER)
+	new_control.tree_exiting.connect(_remove_control.bind(overlay_ref))
 
-func _remove_menu(overlay_ref: ColorRect = null) -> void:
+func _remove_control(overlay_ref: ColorRect = null) -> void:
 	# If an overlay_ref is passed but doesn't match, do nothing.
 	# This is a hack against exiting overlay menus closing other menus than their own.
 	var matching_idx := menu_stack.size() - 1
@@ -70,10 +72,11 @@ func _remove_menu(overlay_ref: ColorRect = null) -> void:
 		return
 	
 	overlay_ref = menu_stack.pop_at(matching_idx)
+	# If a visible control gets removed, unhide the previous one.
+	if overlay_ref.visible and matching_idx >= 1:
+		menu_stack[matching_idx - 1].show()
 	if is_instance_valid(overlay_ref):
 		overlay_ref.queue_free()
-	if not menu_stack.is_empty():
-		menu_stack.back().show()
 	Utils.throw_mouse_motion_event()
 
 func remove_all_menus() -> void:
@@ -226,7 +229,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		return
 	elif not menu_stack.is_empty() and event.is_action_pressed("ui_cancel"):
 		get_viewport().set_input_as_handled()
-		_remove_menu()
+		_remove_control()
 		return
 	
 	if not popup_stack.is_empty() or not menu_stack.is_empty() or\

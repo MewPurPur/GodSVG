@@ -149,7 +149,7 @@ allowed_extensions: PackedStringArray) -> Error:
 	
 	if not error.is_empty():
 		var alert_dialog := AlertDialog.instantiate()
-		HandlerGUI.add_menu(alert_dialog)
+		HandlerGUI.add_dialog(alert_dialog)
 		alert_dialog.setup(error)
 		return ERR_FILE_CANT_OPEN
 	
@@ -219,7 +219,7 @@ completion_callback: Callable) -> void:
 	
 	if not extension in allowed_extensions:
 		var alert_dialog: Node = AlertDialog.instantiate()
-		HandlerGUI.add_menu(alert_dialog)
+		HandlerGUI.add_dialog(alert_dialog)
 		alert_dialog.setup(TranslationUtils.get_bad_extension_alert_text(extension,
 				allowed_extensions))
 	else:

@@ -8,7 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://d4c7haflm8evm" path="res://visual/icons/Search.svg" id="6_otods"]
 [ext_resource type="FontFile" uid="uid://clpf84p1lfwlp" path="res://visual/fonts/Font.ttf" id="7_eeq17"]
 
-[node name="NonNativeFileDialog" type="PanelContainer"]
+[node name="GoodFileDialog" type="PanelContainer"]
 offset_right = 684.0
 offset_bottom = 386.0
 theme_type_variation = &"OverlayPanel"

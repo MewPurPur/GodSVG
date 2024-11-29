@@ -240,15 +240,14 @@ func _setup_file_images() -> void:
 					file_list.set_item_icon(item_idx, text_file_icon)
 				"svg":
 					# Setup a clean SVG graphic by using the scaling parameter.
-					var svg_text := FileAccess.open(current_dir.path_join(file),
-							FileAccess.READ).get_as_text()
+					var svg_buffer := FileAccess.get_file_as_bytes(current_dir.path_join(file))
 					var img := Image.new()
-					img.load_svg_from_string(svg_text)
+					img.load_svg_from_buffer(svg_buffer, 0.1)
 					if !is_instance_valid(img) or img.is_empty():
 						file_list.set_item_icon(item_idx, broken_file_icon)
 					else:
-						img.load_svg_from_string(svg_text,
-								item_height / maxf(img.get_width(), img.get_height()))
+						img.load_svg_from_buffer(svg_buffer,
+								item_height * 10.0 / maxf(img.get_width(), img.get_height()))
 						file_list.set_item_icon(item_idx, ImageTexture.create_from_image(img))
 				_:
 					var img := Image.load_from_file(current_dir.path_join(file))
