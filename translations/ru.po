@@ -195,12 +195,11 @@ msgid "Alert!"
 msgstr "Внимание!"
 
 #: src/ui_parts/choose_name_dialog.gd src/ui_parts/confirm_dialog.gd
-#: src/ui_parts/export_dialog.gd src/ui_parts/good_file_dialog.gd
-#: src/ui_parts/import_warning_dialog.gd
+#: src/ui_parts/export_menu.gd src/ui_parts/import_warning_menu.gd
 msgid "Cancel"
 msgstr "Отменить"
 
-#: src/ui_parts/choose_name_dialog.gd src/ui_parts/good_file_dialog.gd
+#: src/ui_parts/choose_name_dialog.gd
 msgid "Create"
 msgstr "Создать"
 
@@ -297,39 +296,39 @@ msgstr "Просмотреть даные сохранения"
 msgid "New element"
 msgstr "Новый элемент"
 
-#: src/ui_parts/export_dialog.gd
+#: src/ui_parts/export_menu.gd
 msgid "Size"
 msgstr "Размер"
 
-#: src/ui_parts/export_dialog.gd
+#: src/ui_parts/export_menu.gd
 msgid "Invalid"
 msgstr "Неправильно"
 
-#: src/ui_parts/export_dialog.gd
+#: src/ui_parts/export_menu.gd
 msgid "Format"
 msgstr "Формат"
 
-#: src/ui_parts/export_dialog.gd
+#: src/ui_parts/export_menu.gd
 msgid "Export Configuration"
 msgstr "Настройки экспорта"
 
-#: src/ui_parts/export_dialog.gd
+#: src/ui_parts/export_menu.gd
 msgid "Lossless"
 msgstr "Без потерь"
 
-#: src/ui_parts/export_dialog.gd
+#: src/ui_parts/export_menu.gd
 msgid "Quality"
 msgstr "Качество"
 
-#: src/ui_parts/export_dialog.gd
+#: src/ui_parts/export_menu.gd
 msgid "Scale"
 msgstr "Масштаб"
 
-#: src/ui_parts/export_dialog.gd src/utils/TranslationUtils.gd
+#: src/ui_parts/export_menu.gd src/utils/TranslationUtils.gd
 msgid "Export"
 msgstr "Экспортовать"
 
-#: src/ui_parts/export_dialog.gd
+#: src/ui_parts/export_menu.gd
 msgid "Final size"
 msgstr "Финальный размер"
 
@@ -352,10 +351,6 @@ msgstr "Просмотр"
 #: src/ui_parts/global_menu.gd
 msgid "Snap"
 msgstr "Привязка"
-
-#: src/ui_parts/good_file_dialog.gd
-msgid "Create new folder"
-msgstr "Создать новую папку"
 
 #: src/ui_parts/good_file_dialog.gd
 msgid "Go to parent folder"
@@ -408,6 +403,23 @@ msgid "Replace"
 msgstr "Заменить"
 
 #: src/ui_parts/good_file_dialog.gd
+msgid "Create new folder"
+msgstr "Создать новую папку"
+
+#: src/ui_parts/good_file_dialog.gd
+msgid "Invalid name for a folder."
+msgstr ""
+
+#: src/ui_parts/good_file_dialog.gd
+msgid "A folder with this name already exists."
+msgstr ""
+
+#: src/ui_parts/good_file_dialog.gd
+#, fuzzy
+msgid "Failed to create a folder."
+msgstr "Перейти к родительской папке"
+
+#: src/ui_parts/good_file_dialog.gd
 msgid "Open"
 msgstr "Открыть"
 
@@ -427,23 +439,23 @@ msgstr ""
 msgid "New shape"
 msgstr "Новая привязка"
 
-#: src/ui_parts/import_warning_dialog.gd
+#: src/ui_parts/import_warning_menu.gd
 msgid "Import Problems"
 msgstr "Проблемы с импортированием"
 
-#: src/ui_parts/import_warning_dialog.gd src/utils/TranslationUtils.gd
+#: src/ui_parts/import_warning_menu.gd src/utils/TranslationUtils.gd
 msgid "Import"
 msgstr "Импортировать"
 
-#: src/ui_parts/import_warning_dialog.gd
+#: src/ui_parts/import_warning_menu.gd
 msgid "Unrecognized element"
 msgstr "Неизвестный элемент"
 
-#: src/ui_parts/import_warning_dialog.gd
+#: src/ui_parts/import_warning_menu.gd
 msgid "Unrecognized attribute"
 msgstr "Неизвестный атрибут"
 
-#: src/ui_parts/import_warning_dialog.gd
+#: src/ui_parts/import_warning_menu.gd
 msgid "Syntax error"
 msgstr "Синтаксическая ошибка"
 
@@ -920,7 +932,8 @@ msgid "GodSVG doesn’t recognize this attribute"
 msgstr "GodSVG не может распознать этот атрибут"
 
 #: src/utils/FileUtils.gd
-msgid "Save the .\"{extension}\" file"
+#, fuzzy
+msgid "Save the .\"{format}\" file"
 msgstr "Сохранить .\"{extension}\" файл"
 
 #: src/utils/FileUtils.gd

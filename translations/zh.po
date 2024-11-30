@@ -195,12 +195,11 @@ msgid "Alert!"
 msgstr "警告！"
 
 #: src/ui_parts/choose_name_dialog.gd src/ui_parts/confirm_dialog.gd
-#: src/ui_parts/export_dialog.gd src/ui_parts/good_file_dialog.gd
-#: src/ui_parts/import_warning_dialog.gd
+#: src/ui_parts/export_menu.gd src/ui_parts/import_warning_menu.gd
 msgid "Cancel"
 msgstr "取消"
 
-#: src/ui_parts/choose_name_dialog.gd src/ui_parts/good_file_dialog.gd
+#: src/ui_parts/choose_name_dialog.gd
 msgid "Create"
 msgstr "创建"
 
@@ -298,39 +297,39 @@ msgstr ""
 msgid "New element"
 msgstr "调色盘"
 
-#: src/ui_parts/export_dialog.gd
+#: src/ui_parts/export_menu.gd
 msgid "Size"
 msgstr "大小"
 
-#: src/ui_parts/export_dialog.gd
+#: src/ui_parts/export_menu.gd
 msgid "Invalid"
 msgstr "无效"
 
-#: src/ui_parts/export_dialog.gd
+#: src/ui_parts/export_menu.gd
 msgid "Format"
 msgstr "格式"
 
-#: src/ui_parts/export_dialog.gd
+#: src/ui_parts/export_menu.gd
 msgid "Export Configuration"
 msgstr "导出配置"
 
-#: src/ui_parts/export_dialog.gd
+#: src/ui_parts/export_menu.gd
 msgid "Lossless"
 msgstr "无损"
 
-#: src/ui_parts/export_dialog.gd
+#: src/ui_parts/export_menu.gd
 msgid "Quality"
 msgstr "质量"
 
-#: src/ui_parts/export_dialog.gd
+#: src/ui_parts/export_menu.gd
 msgid "Scale"
 msgstr "缩放"
 
-#: src/ui_parts/export_dialog.gd src/utils/TranslationUtils.gd
+#: src/ui_parts/export_menu.gd src/utils/TranslationUtils.gd
 msgid "Export"
 msgstr "导出"
 
-#: src/ui_parts/export_dialog.gd
+#: src/ui_parts/export_menu.gd
 msgid "Final size"
 msgstr "最终大小"
 
@@ -354,10 +353,6 @@ msgstr "视图"
 #, fuzzy
 msgid "Snap"
 msgstr "吸附大小"
-
-#: src/ui_parts/good_file_dialog.gd
-msgid "Create new folder"
-msgstr "创建新文件夹"
 
 #: src/ui_parts/good_file_dialog.gd
 msgid "Go to parent folder"
@@ -410,6 +405,23 @@ msgid "Replace"
 msgstr "替换"
 
 #: src/ui_parts/good_file_dialog.gd
+msgid "Create new folder"
+msgstr "创建新文件夹"
+
+#: src/ui_parts/good_file_dialog.gd
+msgid "Invalid name for a folder."
+msgstr ""
+
+#: src/ui_parts/good_file_dialog.gd
+msgid "A folder with this name already exists."
+msgstr ""
+
+#: src/ui_parts/good_file_dialog.gd
+#, fuzzy
+msgid "Failed to create a folder."
+msgstr "前往父文件夹"
+
+#: src/ui_parts/good_file_dialog.gd
 msgid "Open"
 msgstr "打开"
 
@@ -430,26 +442,26 @@ msgstr "文件 “{file_name}” 已经存在。替换操作将会覆写它的�
 msgid "New shape"
 msgstr "添加元素"
 
-#: src/ui_parts/import_warning_dialog.gd
+#: src/ui_parts/import_warning_menu.gd
 msgid "Import Problems"
 msgstr "导入出错"
 
-#: src/ui_parts/import_warning_dialog.gd src/utils/TranslationUtils.gd
+#: src/ui_parts/import_warning_menu.gd src/utils/TranslationUtils.gd
 #, fuzzy
 msgid "Import"
 msgstr "导入"
 
-#: src/ui_parts/import_warning_dialog.gd
+#: src/ui_parts/import_warning_menu.gd
 #, fuzzy
 msgid "Unrecognized element"
 msgstr "未知的属性"
 
-#: src/ui_parts/import_warning_dialog.gd
+#: src/ui_parts/import_warning_menu.gd
 #, fuzzy
 msgid "Unrecognized attribute"
 msgstr "未知的属性"
 
-#: src/ui_parts/import_warning_dialog.gd
+#: src/ui_parts/import_warning_menu.gd
 msgid "Syntax error"
 msgstr "语法错误"
 
@@ -939,7 +951,8 @@ msgid "GodSVG doesn’t recognize this attribute"
 msgstr "GodSVG 无法识别该属性"
 
 #: src/utils/FileUtils.gd
-msgid "Save the .\"{extension}\" file"
+#, fuzzy
+msgid "Save the .\"{format}\" file"
 msgstr "保存 .\"{extension}\" 文件"
 
 #: src/utils/FileUtils.gd
