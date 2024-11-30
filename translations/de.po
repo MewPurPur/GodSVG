@@ -371,9 +371,8 @@ msgid "Select an SVG"
 msgstr "SVG auswählen"
 
 #: src/ui_parts/good_file_dialog.gd
-#, fuzzy
 msgid "Select an XML file"
-msgstr "Bild auswählen"
+msgstr "XML Datei auswählen"
 
 #: src/ui_parts/good_file_dialog.gd
 msgid "Select an image"
@@ -406,16 +405,15 @@ msgstr "Neuen Ordner erstellen"
 
 #: src/ui_parts/good_file_dialog.gd
 msgid "Invalid name for a folder."
-msgstr ""
+msgstr "Ungültiger Ordnername."
 
 #: src/ui_parts/good_file_dialog.gd
 msgid "A folder with this name already exists."
-msgstr ""
+msgstr "Ein gleichnamiger Ordner existiert bereits."
 
 #: src/ui_parts/good_file_dialog.gd
-#, fuzzy
 msgid "Failed to create a folder."
-msgstr "Zum übergeordneten Ordner gehen"
+msgstr "Ordner konnte nicht erstellt werden."
 
 #: src/ui_parts/good_file_dialog.gd
 msgid "Open"
@@ -602,13 +600,12 @@ msgid "Language"
 msgstr "Sprache"
 
 #: src/ui_parts/settings_menu.gd
-#, fuzzy
 msgid "Import XML"
-msgstr "Importieren"
+msgstr "XML importieren"
 
 #: src/ui_parts/settings_menu.gd src/ui_widgets/palette_config.gd
 msgid "Paste XML"
-msgstr "XML Einfügen"
+msgstr "XML einfügen"
 
 #: src/ui_parts/settings_menu.gd
 msgid "New palette"
@@ -928,26 +925,24 @@ msgid "GodSVG doesn’t recognize this attribute"
 msgstr "GodSVG erkennt diese Attribute nicht"
 
 #: src/utils/FileUtils.gd
-#, fuzzy
 msgid "Save the .\"{format}\" file"
-msgstr "Die .\"{extension}\" Datei speichern"
+msgstr "Die .\"{format}\" Datei speichern"
 
 #: src/utils/FileUtils.gd
 msgid "Load an image file"
 msgstr "Bilddatei laden"
 
 #: src/utils/FileUtils.gd
-#, fuzzy
 msgid "Import a {extension} file"
-msgstr "SVG-Datei importieren"
+msgstr "{extension}-Datei importieren"
 
 #: src/utils/FileUtils.gd
 msgid "The file couldn't be opened."
-msgstr ""
+msgstr "Die Datei konnte nicht geöffnet werden."
 
 #: src/utils/FileUtils.gd
 msgid "Check if the file still exists in the selected file path."
-msgstr ""
+msgstr "Prüfen, ob die Datei im ausgewählten Dateipfad noch existiert."
 
 #: src/utils/TranslationUtils.gd
 msgid "Select all elements"
@@ -1074,12 +1069,14 @@ msgid ""
 "The file extension {extension} is unsupported for this operation. Only "
 "{extension_list} files are supported."
 msgstr ""
-"Die Dateierweiterung \"{passed_extension}\" ist für diese Operation nicht "
+"Die Dateierweiterung \"{extension}\" ist für diese Operation nicht "
 "unterstützt. Nur {extension_list} Dateien werden unterstützt."
 
 #: src/utils/TranslationUtils.gd
 msgid "The file extension is empty. Only {extension_list} files are supported."
-msgstr "Die Dateierweiterung ist leer. Nur \"svg\"-Dateien werden unterstützt."
+msgstr ""
+"Die Dateierweiterung ist leer. Nur {extension_list} Dateien werden "
+"unterstützt."
 
 #~ msgid ""
 #~ "The file couldn't be opened.\n"
