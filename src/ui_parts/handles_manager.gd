@@ -174,9 +174,8 @@ func generate_path_handles(element: Element) -> Array[Handle]:
 	return path_handles
 
 func generate_polyhandles(element: Element) -> Array[Handle]:
-	var points: PackedVector2Array = element.get_attribute("points").get_points()
 	var polyhandles: Array[Handle] = []
-	for idx in points.size():
+	for idx in element.get_attribute("points").get_list_size() / 2:
 		polyhandles.append(PolyHandle.new(element, idx))
 	return polyhandles
 
@@ -339,7 +338,7 @@ func _draw() -> void:
 					normal_polylines.append(points)
 			
 			"polygon", "polyline":
-				var point_list: PackedVector2Array = element.get_attribute("points").get_points()
+				var point_list := ListParser.list_to_points(element.get_attribute_list("points"))
 				
 				var current_mode := Utils.InteractionType.NONE
 				for idx in range(1, point_list.size()):
@@ -661,8 +660,8 @@ handle_texture_array: Dictionary) -> void:
 				color_array, TANGENT_WIDTH, true)
 	for handle in handles_array:
 		var texture: Texture2D = handle_texture_array[handle.display_mode]
-		texture.draw(surface, SVG.root_element.canvas_to_world(handle.transform * handle.pos) *\
-				Indications.zoom - texture.get_size() / 2)
+		texture.draw(surface, SVG.root_element.canvas_to_world(
+				handle.transform * handle.pos) * Indications.zoom - texture.get_size() / 2)
 
 
 var dragged_handle: Handle = null
@@ -703,8 +702,9 @@ func _unhandled_input(event: InputEvent) -> void:
 		if is_instance_valid(dragged_handle):
 			# Move the handle that's being dragged.
 			var event_pos := get_event_pos(event)
-			var new_pos := dragged_handle.transform.affine_inverse() *\
-					SVG.root_element.world_to_canvas(event_pos)
+			var new_pos := Utils.transform_vector2_mult_64_bit(
+					dragged_handle.transform.affine_inverse(),
+					SVG.root_element.world_to_canvas_64_bit(event_pos))
 			dragged_handle.set_pos(new_pos)
 			was_handle_moved = true
 			accept_event()
@@ -741,8 +741,9 @@ func _unhandled_input(event: InputEvent) -> void:
 					Indications.normal_select(dragged_xid, inner_idx)
 			elif is_instance_valid(dragged_handle) and event.is_released():
 				if was_handle_moved:
-					var new_pos := dragged_handle.transform.affine_inverse() *\
-							SVG.root_element.world_to_canvas(event_pos)
+					var new_pos := Utils.transform_vector2_mult_64_bit(
+							dragged_handle.transform.affine_inverse(),
+							SVG.root_element.world_to_canvas_64_bit(event_pos))
 					dragged_handle.set_pos(new_pos)
 					SVG.queue_save()
 					was_handle_moved = false
@@ -757,7 +758,8 @@ func _unhandled_input(event: InputEvent) -> void:
 			var popup_pos := vp.get_mouse_position()
 			if !is_instance_valid(hovered_handle):
 				Indications.clear_all_selections()
-				HandlerGUI.popup_under_pos(create_element_context(event_pos), popup_pos, vp)
+				var vec2_pos := Vector2(event_pos[0], event_pos[1])
+				HandlerGUI.popup_under_pos(create_element_context(vec2_pos), popup_pos, vp)
 			else:
 				var hovered_xid := hovered_handle.element.xid
 				var inner_idx := -1
@@ -787,19 +789,21 @@ func find_nearest_handle(event_pos: Vector2) -> Handle:
 			nearest_handle = handle
 	return nearest_handle
 
-func get_event_pos(event: InputEvent) -> Vector2:
-	var snap_enabled := GlobalSettings.savedata.snap > 0.0
-	var snap_size := absf(GlobalSettings.savedata.snap)
-	var snap_vector := Vector2(snap_size, snap_size)
-	
-	var event_pos: Vector2 = event.position / Indications.zoom + get_parent().view.position
-	var precision_snap := 0.1 ** maxi(ceili(-log(1.0 / Indications.zoom) / log(10)), 0)
-	# Do this with the floats instead of Vector2 for 64-bit precision.
-	event_pos.x = snappedf(event_pos.x, precision_snap)
-	event_pos.y = snappedf(event_pos.y, precision_snap)
-	if snap_enabled:
-		event_pos = event_pos.snapped(snap_vector)
-	return event_pos
+# Two 64-bit coordinates instead of a Vector2.
+func get_event_pos(event: InputEvent) -> PackedFloat64Array:
+	return apply_snap(event.position / Indications.zoom + get_parent().view.position)
+
+func apply_snap(pos: Vector2) -> PackedFloat64Array:
+	var final_pos := PackedFloat64Array([0.0, 0.0])
+	if GlobalSettings.savedata.snap > 0.0:
+		var snap_size := absf(GlobalSettings.savedata.snap)
+		final_pos[0] = snappedf(final_pos[0], snap_size)
+		final_pos[1] = snappedf(final_pos[1], snap_size)
+	else:
+		var precision_snap := 0.1 ** maxi(ceili(-log(1.0 / Indications.zoom) / log(10)), 0)
+		final_pos[0] = snappedf(pos.x, precision_snap)
+		final_pos[1] = snappedf(pos.y, precision_snap)
+	return final_pos
 
 
 func _on_handle_added() -> void:
@@ -817,13 +821,10 @@ func _on_handle_added() -> void:
 			Indications.set_hovered(handle.element.xid, handle.command_index)
 			dragged_handle = handle
 			# Move the handle that's being dragged.
-			var mouse_pos := get_global_mouse_position()
-			var snap_size := GlobalSettings.savedata.snap
-			if snap_size > 0.0:
-				mouse_pos = mouse_pos.snapped(Vector2(snap_size, snap_size))
-			
-			var new_pos := dragged_handle.transform.affine_inverse() *\
-					SVG.root_element.world_to_canvas(mouse_pos)
+			var mouse_pos := apply_snap(get_global_mouse_position())
+			var new_pos := Utils.transform_vector2_mult_64_bit(
+					dragged_handle.transform.affine_inverse(),
+					SVG.root_element.world_to_canvas_64_bit(mouse_pos))
 			dragged_handle.set_pos(new_pos)
 			was_handle_moved = true
 			return
@@ -832,8 +833,8 @@ func _on_handle_added() -> void:
 func create_element_context(pos: Vector2) -> ContextPopup:
 	var btn_array: Array[Button] = []
 	for shape in ["path", "circle", "ellipse", "rect", "line", "polygon", "polyline"]:
-		var btn := ContextPopup.create_button(shape, add_shape_at_pos.bind(shape, pos),
-				false, DB.get_element_icon(shape))
+		var btn := ContextPopup.create_button(shape,
+				add_shape_at_pos.bind(shape, pos), false, DB.get_element_icon(shape))
 		btn.add_theme_font_override("font", ThemeUtils.mono_font)
 		btn_array.append(btn)
 	var element_context := ContextPopup.new()
@@ -843,6 +844,6 @@ func create_element_context(pos: Vector2) -> ContextPopup:
 	return element_context
 
 func add_shape_at_pos(element_name: String, pos: Vector2) -> void:
-	SVG.root_element.add_xnode(DB.element_with_setup(element_name, pos),
+	SVG.root_element.add_xnode(DB.element_with_setup(element_name, apply_snap(pos)),
 			PackedInt32Array([SVG.root_element.get_child_count()]))
 	SVG.queue_save()

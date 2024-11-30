@@ -1,7 +1,7 @@
 # An attribute representing a list of numbers.
 class_name AttributeList extends Attribute
 
-var _list: PackedFloat32Array
+var _list: PackedFloat64Array
 
 func _sync() -> void:
 	_list = text_to_list(get_value())
@@ -10,43 +10,23 @@ func format(text: String) -> String:
 	return list_to_text(text_to_list(text))
 
 
-func set_list(new_list: PackedFloat32Array) -> void:
+func set_list(new_list: PackedFloat64Array) -> void:
 	_list = new_list
-	sync_after_list_change()
+	_sync_after_list_change()
 
-func sync_after_list_change() -> void:
+func _sync_after_list_change() -> void:
 	set_value(list_to_text(_list))
 
-func get_list() -> PackedFloat32Array:
+func get_list() -> PackedFloat64Array:
 	return _list
 
 func get_list_size() -> int:
 	return _list.size()
 
-# Just a helper to handle Rect2.
-func set_rect(new_rect: Rect2) -> void:
-	set_list(PackedFloat32Array([new_rect.position.x, new_rect.position.y,
-			new_rect.size.x, new_rect.size.y]))
-
-# Just a helper to return the list as if it's a list of points.
-func get_points() -> PackedVector2Array:
-	var points := PackedVector2Array()
-	@warning_ignore("integer_division")
-	for idx in get_list_size() / 2:
-		points.append(Vector2(get_list_element(idx * 2), get_list_element(idx * 2 + 1)))
-	return points
-
-func set_points(points: PackedVector2Array) -> void:
-	var new_list := PackedFloat32Array()
-	for point in points:
-		new_list.append(point.x)
-		new_list.append(point.y)
-	set_list(new_list)
-
 
 func set_list_element(idx: int, new_value: float) -> void:
 	_list[idx] = new_value
-	sync_after_list_change()
+	_sync_after_list_change()
 
 func get_list_element(idx: int) -> float:
 	return _list[idx] if idx < _list.size() else NAN
@@ -60,15 +40,15 @@ func delete_elements(indices: Array[int]) -> void:
 	indices.reverse()
 	for idx in indices:
 		_list.remove_at(idx)
-	sync_after_list_change()
+	_sync_after_list_change()
 
-func insert_element(idx: int, value := 0.0) -> void:
+func insert_element(idx: int, value: float) -> void:
 	_list.insert(idx, value)
-	sync_after_list_change()
+	_sync_after_list_change()
 
 
-static func text_to_list(string: String) -> PackedFloat32Array:
-	var nums_parsed := PackedFloat32Array()
+static func text_to_list(string: String) -> PackedFloat64Array:
+	var nums_parsed := PackedFloat64Array()
 	var current_num_string: String = ""
 	var comma_exhausted := false
 	var pos := 0
@@ -101,7 +81,7 @@ static func text_to_list(string: String) -> PackedFloat32Array:
 	
 	return nums_parsed
 
-func list_to_text(list: PackedFloat32Array) -> String:
+func list_to_text(list: PackedFloat64Array) -> String:
 	var params := PackedStringArray()
 	for element in list:
 		# It's fine to use this parser, AttributeList is just a list of numbers.

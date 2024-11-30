@@ -4,12 +4,12 @@ class_name ElementEllipse extends Element
 const name = "ellipse"
 const possible_conversions = ["circle", "rect", "path"]
 
-func user_setup(pos := Vector2.ZERO) -> void:
+func user_setup(precise_pos := PackedFloat64Array([0.0, 0.0])) -> void:
 	set_attribute("rx", 1.0)
 	set_attribute("ry", 1.0)
-	if pos != Vector2.ZERO:
-		set_attribute("cx", pos.x)
-		set_attribute("cy", pos.y)
+	if precise_pos != PackedFloat64Array([0.0, 0.0]):
+		set_attribute("cx", precise_pos[0])
+		set_attribute("cy", precise_pos[1])
 
 func can_replace(new_element: String) -> bool:
 	if new_element == "circle":

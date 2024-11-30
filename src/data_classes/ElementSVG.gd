@@ -84,6 +84,9 @@ func canvas_to_world(pos: Vector2) -> Vector2:
 func world_to_canvas(pos: Vector2) -> Vector2:
 	return canvas_transform.affine_inverse() * pos
 
+func world_to_canvas_64_bit(pos: PackedFloat64Array) -> PackedFloat64Array:
+	return Utils.transform_vector2_mult_64_bit(canvas_transform.affine_inverse(), pos)
+
 func get_size() -> Vector2:
 	return Vector2(width, height)
 

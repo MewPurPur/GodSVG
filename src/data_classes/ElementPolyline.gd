@@ -4,10 +4,9 @@ class_name ElementPolyline extends Element
 const name = "polyline"
 const possible_conversions = ["path", "line"]
 
-func user_setup(pos := Vector2.ZERO) -> void:
-	if pos != Vector2.ZERO:
-		var attrib: AttributeList = get_attribute("points")
-		attrib.set_points(PackedVector2Array([pos]))
+func user_setup(precise_pos := PackedFloat64Array([0.0, 0.0])) -> void:
+	if precise_pos != PackedFloat64Array([0.0, 0.0]):
+		get_attribute("points").set_list(precise_pos)
 	set_attribute("fill", "none")
 	set_attribute("stroke", "black")
 
@@ -42,9 +41,7 @@ func can_replace(new_element: String) -> bool:
 	if new_element == "line":
 		var optimized_polyline := duplicate()
 		optimized_polyline.simplify()
-		var list_points: PackedVector2Array =\
-				optimized_polyline.get_attribute("points").get_points()
-		return list_points.size() == 2
+		return optimized_polyline.get_attribute("points").get_list_size() == 4
 	else:
 		return new_element == "path"
 
@@ -59,27 +56,26 @@ func get_replacement(new_element: String) -> Element:
 			dropped_attributes = PackedStringArray(["points", "rx", "ry", "cx", "cy",
 					"width", "height"])
 			simplify()
-			var pts: PackedVector2Array = get_attribute("points").get_points()
-			element.set_attribute("x1", pts[0].x)
-			element.set_attribute("y1", pts[0].y)
-			element.set_attribute("x2", pts[1].x)
-			element.set_attribute("y2", pts[1].y)
+			var list := get_attribute_list("points")
+			element.set_attribute("x1", list[0])
+			element.set_attribute("y1", list[1])
+			element.set_attribute("x2", list[2])
+			element.set_attribute("y2", list[3])
 		"path":
 			dropped_attributes = PackedStringArray(["points", "d"])
 			var commands: Array[PathCommand] = []
-			var pts: PackedVector2Array = get_attribute("points").get_points()
-			if not pts.is_empty():
-				commands.append(PathCommand.MoveCommand.new(pts[0].x, pts[0].y))
-			for idx in range(1, pts.size()):
-				var point := pts[idx]
-				commands.append(PathCommand.LineCommand.new(point.x, point.y))
+			var list := get_attribute_list("points")
+			if list.size() > 1:
+				commands.append(PathCommand.MoveCommand.new(list[0], list[1]))
+			for idx in range(3, list.size(), 2):
+				commands.append(PathCommand.LineCommand.new(list[idx - 1], list[idx]))
 			element.set_attribute("d", commands)
 	apply_to(element, dropped_attributes)
 	return element
 
 
 func simplify() -> void:
-	var list_points: PackedVector2Array = get_attribute("points").get_points()
+	var list_points := ListParser.list_to_points(get_attribute_list("points"))
 	var new_list_points := PackedVector2Array()
 	new_list_points.append(list_points[0])
 	for idx in range(1, list_points.size() - 1):

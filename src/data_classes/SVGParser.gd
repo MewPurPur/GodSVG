@@ -7,7 +7,7 @@ custom_height: float, custom_viewbox: Rect2) -> String:
 	blank_formatter.xml_shorthand_tags = Formatter.ShorthandTags.ALL_EXCEPT_CONTAINERS
 	var new_root_element: ElementRoot = root_element.duplicate(false)
 	
-	new_root_element.set_attribute("viewBox", custom_viewbox)
+	new_root_element.set_attribute("viewBox", ListParser.rect_to_list(custom_viewbox))
 	new_root_element.set_attribute("width", custom_width)
 	new_root_element.set_attribute("height", custom_height)
 	var text := _xnode_to_text(new_root_element, blank_formatter)

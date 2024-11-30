@@ -487,8 +487,8 @@ func insert_path_command_after_selection(new_command: String) -> void:
 func insert_point_after_selection() -> void:
 	var element_ref: Element = SVG.root_element.get_xnode(semi_selected_xid)
 	var last_selection_next: int = inner_selections.max() + 1
-	element_ref.get_attribute("points").insert_element(last_selection_next * 2, 0)
-	element_ref.get_attribute("points").insert_element(last_selection_next * 2, 0)
+	element_ref.get_attribute("points").insert_element(last_selection_next * 2, 0.0)
+	element_ref.get_attribute("points").insert_element(last_selection_next * 2, 0.0)
 	normal_select(semi_selected_xid, last_selection_next)
 	SVG.queue_save()
 

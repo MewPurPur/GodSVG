@@ -4,11 +4,11 @@ class_name ElementCircle extends Element
 const name = "circle"
 const possible_conversions = ["ellipse", "rect", "path"]
 
-func user_setup(pos := Vector2.ZERO) -> void:
+func user_setup(precise_pos := PackedFloat64Array([0.0, 0.0])) -> void:
 	set_attribute("r", 1.0)
-	if pos != Vector2.ZERO:
-		set_attribute("cx", pos.x)
-		set_attribute("cy", pos.y)
+	if precise_pos != PackedFloat64Array([0.0, 0.0]):
+		set_attribute("cx", precise_pos[0])
+		set_attribute("cy", precise_pos[1])
 
 func can_replace(new_element: String) -> bool:
 	return new_element in ["ellipse", "rect", "path"]
