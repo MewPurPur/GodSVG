@@ -4,12 +4,12 @@ class_name ElementLine extends Element
 const name = "line"
 const possible_conversions = ["path", "polyline"]
 
-func user_setup(pos := Vector2.ZERO) -> void:
-	if pos != Vector2.ZERO:
-		set_attribute("x1", pos.x)
-		set_attribute("y1", pos.y)
-		set_attribute("y2", pos.y)
-	set_attribute("x2", pos.x + 1)
+func user_setup(precise_pos := PackedFloat64Array([0.0, 0.0])) -> void:
+	if precise_pos != PackedFloat64Array([0.0, 0.0]):
+		set_attribute("x1", precise_pos[0])
+		set_attribute("y1", precise_pos[1])
+		set_attribute("y2", precise_pos[1])
+	set_attribute("x2", precise_pos[0] + 1)
 	set_attribute("stroke", "black")
 
 func can_replace(new_element: String) -> bool:

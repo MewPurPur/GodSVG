@@ -4,12 +4,12 @@ class_name ElementRect extends Element
 const name = "rect"
 const possible_conversions = ["circle", "ellipse", "polygon", "path"]
 
-func user_setup(pos := Vector2.ZERO) -> void:
+func user_setup(precise_pos := PackedFloat64Array([0.0, 0.0])) -> void:
 	set_attribute("width", 1.0)
 	set_attribute("height", 1.0)
-	if pos != Vector2.ZERO:
-		set_attribute("x", pos.x)
-		set_attribute("y", pos.y)
+	if precise_pos != PackedFloat64Array([0.0, 0.0]):
+		set_attribute("x", precise_pos[0])
+		set_attribute("y", precise_pos[1])
 
 func can_replace(new_element: String) -> bool:
 	match new_element:

@@ -187,7 +187,7 @@ func get_attribute_rect(attribute_name: String) -> float:
 			has_attribute(attribute_name) else new_default_attribute(attribute_name)
 	return attrib.get_rect()
 
-func get_attribute_list(attribute_name: String) -> PackedFloat32Array:
+func get_attribute_list(attribute_name: String) -> PackedFloat64Array:
 	if DB.get_attribute_type(attribute_name) != DB.AttributeType.LIST:
 		push_error("Attribute not the correct type.")
 	var attrib: AttributeList = _attributes[attribute_name] if\
@@ -233,8 +233,7 @@ func set_attribute(attribute_name: String, value: Variant) -> void:
 				if value_type in [TYPE_FLOAT, TYPE_INT]: attrib.set_num(value)
 				else: push_error("Invalid value set to attribute.")
 			DB.AttributeType.LIST:
-				if value_type in [TYPE_RECT2, TYPE_RECT2I]: attrib.set_rect(value)
-				elif value_type == TYPE_PACKED_FLOAT32_ARRAY: attrib.set_list(value)
+				if value_type == TYPE_PACKED_FLOAT64_ARRAY: attrib.set_list(value)
 				else: push_error("Invalid value set to attribute.")
 			DB.AttributeType.PATHDATA:
 				if value_type == TYPE_ARRAY: attrib.set_commands(value)

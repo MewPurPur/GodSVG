@@ -4,10 +4,9 @@ class_name ElementPolygon extends Element
 const name = "polygon"
 const possible_conversions = ["path", "rect"]
 
-func user_setup(pos := Vector2.ZERO) -> void:
-	if pos != Vector2.ZERO:
-		var attrib: AttributeList = get_attribute("points")
-		attrib.set_points(PackedVector2Array([pos]))
+func user_setup(precise_pos := PackedFloat64Array([0.0, 0.0])) -> void:
+	if precise_pos != PackedFloat64Array([0.0, 0.0]):
+		get_attribute("points").set_list(precise_pos)
 
 func _get_own_default(attribute_name: String) -> String:
 	if attribute_name == "opacity":
@@ -40,15 +39,13 @@ func can_replace(new_element: String) -> bool:
 	if new_element == "rect":
 		var optimized_polygon := duplicate()
 		optimized_polygon.simplify()
-		var list_points: PackedVector2Array =\
-				optimized_polygon.get_attribute("points").get_points()
-		if list_points.size() != 4:
+		var list: PackedFloat64Array = optimized_polygon.get_attribute_list("points")
+		if list.size() != 8:
 			return false
-		
-		return (list_points[0].x == list_points[1].x and list_points[1].y == list_points[2].y and\
-		list_points[2].x == list_points[3].x and list_points[3].y == list_points[0].y) or\
-		(list_points[0].y == list_points[1].y and list_points[1].x == list_points[2].x and\
-		list_points[2].y == list_points[3].y and list_points[3].x == list_points[0].x)
+		# Do the x or y coordinates match between opposite pairs of points?
+		return (list[0] == list[2] and list[3] == list[5] and list[4] == list[6] and\
+				list[7] == list[1]) or (list[1] == list[3] and list[2] == list[4] and\
+				list[5] == list[7] and list[6] == list[0])
 	else:
 		return new_element == "path"
 
@@ -63,11 +60,11 @@ func get_replacement(new_element: String) -> Element:
 			dropped_attributes = PackedStringArray(["points", "rx", "ry", "cx", "cy",
 					"width", "height"])
 			simplify()
-			var pts: PackedVector2Array = get_attribute("points").get_points()
-			var x1 := pts[0].x
-			var y1 := pts[0].y
-			var x2 := pts[2].x
-			var y2 := pts[2].y
+			var list: PackedFloat64Array = get_attribute_list("points")
+			var x1 := list[0]
+			var y1 := list[1]
+			var x2 := list[4]
+			var y2 := list[5]
 			element.set_attribute("x", minf(x1, x2))
 			element.set_attribute("y", minf(y1, y2))
 			element.set_attribute("width", absf(x1 - x2))
@@ -75,13 +72,12 @@ func get_replacement(new_element: String) -> Element:
 		"path":
 			dropped_attributes = PackedStringArray(["points", "d"])
 			var commands: Array[PathCommand] = []
-			var pts: PackedVector2Array = get_attribute("points").get_points()
-			if not pts.is_empty():
-				commands.append(PathCommand.MoveCommand.new(pts[0].x, pts[0].y))
-			for idx in range(1, pts.size()):
-				var point := pts[idx]
-				commands.append(PathCommand.LineCommand.new(point.x, point.y))
-			if not pts.is_empty():
+			var list := get_attribute_list("points")
+			if list.size() > 1:
+				commands.append(PathCommand.MoveCommand.new(list[0], list[1]))
+			for idx in range(3, list.size(), 2):
+				commands.append(PathCommand.LineCommand.new(list[idx - 1], list[idx]))
+			if list.size() > 5:
 				commands.append(PathCommand.CloseCommand.new())
 			element.set_attribute("d", commands)
 	apply_to(element, dropped_attributes)
@@ -89,7 +85,7 @@ func get_replacement(new_element: String) -> Element:
 
 
 func simplify() -> void:
-	var list_points: PackedVector2Array = get_attribute("points").get_points()
+	var list_points := ListParser.list_to_points(get_attribute_list("points"))
 	var new_list_points := PackedVector2Array()
 	
 	for idx in list_points.size() - 1:

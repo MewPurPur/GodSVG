@@ -61,6 +61,15 @@ static func Et(r: Vector2, cosine: float, sine: float, t: float) -> Vector2:
 	var yt := r.y * cos(t)
 	return Vector2(xt * cosine - yt * sine, xt * sine + yt * cosine)
 
+# Vector2 is 32-bit and that's not enough sometimes. This operation does the
+# Transform2D * Vector2 operation, but with a PackedFloat64Array instead.
+static func transform_vector2_mult_64_bit(transform: Transform2D,
+vector: PackedFloat64Array) -> PackedFloat64Array:
+	var x := vector[0]
+	var y := vector[1]
+	return PackedFloat64Array([transform.x.x * x + transform.y.x * y + transform.origin.x,
+			transform.x.y * x + transform.y.y * y + transform.origin.y])
+
 
 static func is_event_drag(event: InputEvent) -> bool:
 	return event is InputEventMouseMotion and event.button_mask == MOUSE_BUTTON_LEFT

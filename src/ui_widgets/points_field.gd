@@ -89,7 +89,7 @@ func sync(new_value: String) -> void:
 	line_edit.text = new_value
 	setup_font(new_value)
 	# A plus button for adding a first point if empty.
-	var points_count: int = element.get_attribute(attribute_name).get_points().size()
+	var points_count: int = element.get_attribute(attribute_name).get_list_size() / 2
 	if points_count == 0 and not is_instance_valid(add_move_button):
 		add_move_button = Button.new()
 		add_move_button.icon = plus_icon
@@ -112,19 +112,19 @@ func sync(new_value: String) -> void:
 
 
 func update_point_x_coordinate(new_value: float, idx: int) -> void:
-	var pts: PackedVector2Array = element.get_attribute(attribute_name).get_points()
-	pts[idx] = Vector2(new_value, pts[idx].y)
-	element.get_attribute(attribute_name).set_points(pts)
+	var list := element.get_attribute_list(attribute_name)
+	list[idx * 2] = new_value
+	element.get_attribute(attribute_name).set_list(list)
 	SVG.queue_save()
 
 func update_point_y_coordinate(new_value: float, idx: int) -> void:
-	var pts: PackedVector2Array = element.get_attribute(attribute_name).get_points()
-	pts[idx] = Vector2(pts[idx].x, new_value)
-	element.get_attribute(attribute_name).set_points(pts)
+	var list := element.get_attribute_list(attribute_name)
+	list[idx * 2 + 1] = new_value
+	element.get_attribute(attribute_name).set_list(list)
 	SVG.queue_save()
 
 func _on_add_move_button_pressed() -> void:
-	element.get_attribute(attribute_name).set_points(PackedVector2Array([Vector2.ZERO]))
+	element.get_attribute(attribute_name).set_list(PackedFloat64Array([0.0, 0.0]))
 	SVG.queue_save()
 
 
@@ -210,7 +210,7 @@ func _on_points_gui_input(event: InputEvent) -> void:
 
 func points_draw() -> void:
 	RenderingServer.canvas_item_clear(ci)
-	for i: int in element.get_attribute(attribute_name).get_points().size():
+	for i: int in element.get_attribute(attribute_name).get_list_size() / 2:
 		var v_offset := STRIP_HEIGHT * i
 		# Draw the background hover or selection stylebox.
 		var hovered := Indications.is_hovered(element.xid, i)
@@ -230,13 +230,14 @@ func points_draw() -> void:
 		if i == hovered_idx or i == focused_idx:
 			continue
 		
-		var point: Vector2 = element.get_attribute(attribute_name).get_points()[i]
+		var point_x := element.get_attribute_list(attribute_name)[i * 2]
+		var point_y := element.get_attribute_list(attribute_name)[i * 2 + 1]
 		# Draw the action button.
 		more_icon.draw_rect(ci, Rect2(Vector2(points_container.size.x - 19, 4 + v_offset),
 				Vector2(14, 14)), false, ThemeUtils.icon_normal_color)
 		# Draw the fields.
-		draw_numfield(Rect2(Vector2(4, 2 + v_offset), Vector2(44, 18)), point.x)
-		draw_numfield(Rect2(Vector2(52, 2 + v_offset), Vector2(44, 18)), point.y)
+		draw_numfield(Rect2(Vector2(4, 2 + v_offset), Vector2(44, 18)), point_x)
+		draw_numfield(Rect2(Vector2(52, 2 + v_offset), Vector2(44, 18)), point_y)
 
 func draw_numfield(rect: Rect2, num: float) -> void:
 	mini_line_edit_stylebox.draw(ci, rect)
@@ -247,7 +248,7 @@ func draw_numfield(rect: Rect2, num: float) -> void:
 
 func activate_hovered(idx: int) -> void:
 	if idx != hovered_idx and\
-	idx < element.get_attribute(attribute_name).get_points().size():
+	idx < element.get_attribute(attribute_name).get_list_size() / 2:
 		activate_hovered_shared_logic(idx)
 
 func reactivate_hovered() -> void:
@@ -292,7 +293,8 @@ func setup_point_controls(idx: int) -> Control:
 	if idx < 0:
 		return null
 	
-	var point: Vector2 = element.get_attribute(attribute_name).get_points()[idx]
+	var point_x := element.get_attribute_list(attribute_name)[idx * 2]
+	var point_y := element.get_attribute_list(attribute_name)[idx * 2 + 1]
 	
 	var container := Control.new()
 	container.position.y = idx * STRIP_HEIGHT
@@ -313,13 +315,13 @@ func setup_point_controls(idx: int) -> Control:
 	action_button.size = Vector2(STRIP_HEIGHT - 4, STRIP_HEIGHT - 4)
 	# Setup the fields.
 	var x_field := numfield(idx)
-	x_field.set_value(point.x)
+	x_field.set_value(point_x)
 	x_field.tooltip_text = "x"
 	x_field.value_changed.connect(update_point_x_coordinate.bind(idx))
 	x_field.focus_entered.connect(activate_focused.bind(idx))
 	x_field.focus_exited.connect(check_focused, CONNECT_DEFERRED)
 	var y_field := numfield(idx)
-	y_field.set_value(point.y)
+	y_field.set_value(point_y)
 	y_field.tooltip_text = "y"
 	y_field.value_changed.connect(update_point_y_coordinate.bind(idx))
 	y_field.focus_entered.connect(activate_focused.bind(idx))

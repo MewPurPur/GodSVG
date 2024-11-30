@@ -19,22 +19,22 @@ p_horizontal: bool) -> void:
 	element.ancestor_attribute_changed.connect(sync.unbind(1))
 	sync()
 
-func set_pos(new_pos: Vector2) -> void:
+func set_pos(new_pos: PackedFloat64Array) -> void:
 	if horizontal:
-		new_pos.y = element.get_attribute_num(y_name)
+		new_pos[1] = element.get_attribute_num(y_name)
 	else:
-		new_pos.x = element.get_attribute_num(x_name)
+		new_pos[0] = element.get_attribute_num(x_name)
 	
-	if pos != new_pos:
-		pos = new_pos
-		element.set_attribute(d_name, absf(new_pos.x - element.get_attribute_num(x_name)\
-				if horizontal else new_pos.y - element.get_attribute_num(y_name)))
+	if precise_pos != new_pos:
+		element.set_attribute(d_name, absf(new_pos[0] - element.get_attribute_num(x_name)\
+				if horizontal else new_pos[1] - element.get_attribute_num(y_name)))
+		sync()
 
 func sync() -> void:
 	if horizontal:
-		pos = Vector2(element.get_attribute_num(x_name) + element.get_attribute_num(d_name),
-				element.get_attribute_num(y_name))
+		precise_pos[0] = element.get_attribute_num(x_name) + element.get_attribute_num(d_name)
+		precise_pos[1] = element.get_attribute_num(y_name)
 	else:
-		pos = Vector2(element.get_attribute_num(x_name),
-				element.get_attribute_num(y_name) + element.get_attribute_num(d_name))
+		precise_pos[0] = element.get_attribute_num(x_name)
+		precise_pos[1] = element.get_attribute_num(y_name) + element.get_attribute_num(d_name)
 	super()

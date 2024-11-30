@@ -10,6 +10,7 @@ var UpdateMenu = load("res://src/ui_parts/update_menu.tscn")
 var ExportMenu = load("res://src/ui_parts/export_menu.tscn")
 
 # Menus should be added with add_menu() and removed by being freed.
+# To add them as modals that don't hide the previous one, use add_dialog().
 var menu_stack: Array[ColorRect]
 var popup_stack: Array[Control]
 
