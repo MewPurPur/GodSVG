@@ -194,12 +194,11 @@ msgid "Alert!"
 msgstr "Achtung!"
 
 #: src/ui_parts/choose_name_dialog.gd src/ui_parts/confirm_dialog.gd
-#: src/ui_parts/export_dialog.gd src/ui_parts/good_file_dialog.gd
-#: src/ui_parts/import_warning_dialog.gd
+#: src/ui_parts/export_menu.gd src/ui_parts/import_warning_menu.gd
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: src/ui_parts/choose_name_dialog.gd src/ui_parts/good_file_dialog.gd
+#: src/ui_parts/choose_name_dialog.gd
 msgid "Create"
 msgstr "Erstellen"
 
@@ -295,39 +294,39 @@ msgstr "Speicherdaten anzeigen"
 msgid "New element"
 msgstr "Neues Element"
 
-#: src/ui_parts/export_dialog.gd
+#: src/ui_parts/export_menu.gd
 msgid "Size"
 msgstr "Größe"
 
-#: src/ui_parts/export_dialog.gd
+#: src/ui_parts/export_menu.gd
 msgid "Invalid"
 msgstr "Ungültig"
 
-#: src/ui_parts/export_dialog.gd
+#: src/ui_parts/export_menu.gd
 msgid "Format"
 msgstr "Format"
 
-#: src/ui_parts/export_dialog.gd
+#: src/ui_parts/export_menu.gd
 msgid "Export Configuration"
 msgstr "Export-Konfiguration"
 
-#: src/ui_parts/export_dialog.gd
+#: src/ui_parts/export_menu.gd
 msgid "Lossless"
 msgstr "Verlustlos"
 
-#: src/ui_parts/export_dialog.gd
+#: src/ui_parts/export_menu.gd
 msgid "Quality"
 msgstr "Qualität"
 
-#: src/ui_parts/export_dialog.gd
+#: src/ui_parts/export_menu.gd
 msgid "Scale"
 msgstr "Skalieren"
 
-#: src/ui_parts/export_dialog.gd src/utils/TranslationUtils.gd
+#: src/ui_parts/export_menu.gd src/utils/TranslationUtils.gd
 msgid "Export"
 msgstr "Exportieren"
 
-#: src/ui_parts/export_dialog.gd
+#: src/ui_parts/export_menu.gd
 msgid "Final size"
 msgstr "Endgültige Größe"
 
@@ -350,10 +349,6 @@ msgstr "Ansicht"
 #: src/ui_parts/global_menu.gd
 msgid "Snap"
 msgstr "Einrasten"
-
-#: src/ui_parts/good_file_dialog.gd
-msgid "Create new folder"
-msgstr "Neuen Ordner erstellen"
 
 #: src/ui_parts/good_file_dialog.gd
 msgid "Go to parent folder"
@@ -406,6 +401,23 @@ msgid "Replace"
 msgstr "Ersetzen"
 
 #: src/ui_parts/good_file_dialog.gd
+msgid "Create new folder"
+msgstr "Neuen Ordner erstellen"
+
+#: src/ui_parts/good_file_dialog.gd
+msgid "Invalid name for a folder."
+msgstr ""
+
+#: src/ui_parts/good_file_dialog.gd
+msgid "A folder with this name already exists."
+msgstr ""
+
+#: src/ui_parts/good_file_dialog.gd
+#, fuzzy
+msgid "Failed to create a folder."
+msgstr "Zum übergeordneten Ordner gehen"
+
+#: src/ui_parts/good_file_dialog.gd
 msgid "Open"
 msgstr "Öffnen"
 
@@ -425,23 +437,23 @@ msgstr ""
 msgid "New shape"
 msgstr "Neue Form"
 
-#: src/ui_parts/import_warning_dialog.gd
+#: src/ui_parts/import_warning_menu.gd
 msgid "Import Problems"
 msgstr "Probleme beim Importieren"
 
-#: src/ui_parts/import_warning_dialog.gd src/utils/TranslationUtils.gd
+#: src/ui_parts/import_warning_menu.gd src/utils/TranslationUtils.gd
 msgid "Import"
 msgstr "Importieren"
 
-#: src/ui_parts/import_warning_dialog.gd
+#: src/ui_parts/import_warning_menu.gd
 msgid "Unrecognized element"
 msgstr "Unerkanntes Element"
 
-#: src/ui_parts/import_warning_dialog.gd
+#: src/ui_parts/import_warning_menu.gd
 msgid "Unrecognized attribute"
 msgstr "Unerkanntes Attribut"
 
-#: src/ui_parts/import_warning_dialog.gd
+#: src/ui_parts/import_warning_menu.gd
 msgid "Syntax error"
 msgstr "Syntaxfehler"
 
@@ -916,7 +928,8 @@ msgid "GodSVG doesn’t recognize this attribute"
 msgstr "GodSVG erkennt diese Attribute nicht"
 
 #: src/utils/FileUtils.gd
-msgid "Save the .\"{extension}\" file"
+#, fuzzy
+msgid "Save the .\"{format}\" file"
 msgstr "Die .\"{extension}\" Datei speichern"
 
 #: src/utils/FileUtils.gd

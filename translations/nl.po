@@ -194,12 +194,11 @@ msgid "Alert!"
 msgstr "Waarschuwing!"
 
 #: src/ui_parts/choose_name_dialog.gd src/ui_parts/confirm_dialog.gd
-#: src/ui_parts/export_dialog.gd src/ui_parts/good_file_dialog.gd
-#: src/ui_parts/import_warning_dialog.gd
+#: src/ui_parts/export_menu.gd src/ui_parts/import_warning_menu.gd
 msgid "Cancel"
 msgstr "Annuleren"
 
-#: src/ui_parts/choose_name_dialog.gd src/ui_parts/good_file_dialog.gd
+#: src/ui_parts/choose_name_dialog.gd
 msgid "Create"
 msgstr "Creëren"
 
@@ -296,39 +295,39 @@ msgstr "Bekijk opgeslagen gegevens"
 msgid "New element"
 msgstr "Nieuw element"
 
-#: src/ui_parts/export_dialog.gd
+#: src/ui_parts/export_menu.gd
 msgid "Size"
 msgstr "Maat"
 
-#: src/ui_parts/export_dialog.gd
+#: src/ui_parts/export_menu.gd
 msgid "Invalid"
 msgstr "Ongeldig"
 
-#: src/ui_parts/export_dialog.gd
+#: src/ui_parts/export_menu.gd
 msgid "Format"
 msgstr "Formaat"
 
-#: src/ui_parts/export_dialog.gd
+#: src/ui_parts/export_menu.gd
 msgid "Export Configuration"
 msgstr "Export Configuratie"
 
-#: src/ui_parts/export_dialog.gd
+#: src/ui_parts/export_menu.gd
 msgid "Lossless"
 msgstr "Lossless"
 
-#: src/ui_parts/export_dialog.gd
+#: src/ui_parts/export_menu.gd
 msgid "Quality"
 msgstr "Kwaliteit"
 
-#: src/ui_parts/export_dialog.gd
+#: src/ui_parts/export_menu.gd
 msgid "Scale"
 msgstr "Schaal"
 
-#: src/ui_parts/export_dialog.gd src/utils/TranslationUtils.gd
+#: src/ui_parts/export_menu.gd src/utils/TranslationUtils.gd
 msgid "Export"
 msgstr "Exporteren"
 
-#: src/ui_parts/export_dialog.gd
+#: src/ui_parts/export_menu.gd
 msgid "Final size"
 msgstr "Laatste Maat"
 
@@ -351,10 +350,6 @@ msgstr "Bekijk"
 #: src/ui_parts/global_menu.gd
 msgid "Snap"
 msgstr "Snap"
-
-#: src/ui_parts/good_file_dialog.gd
-msgid "Create new folder"
-msgstr "Nieuw map creëren"
 
 #: src/ui_parts/good_file_dialog.gd
 msgid "Go to parent folder"
@@ -407,6 +402,23 @@ msgid "Replace"
 msgstr "Vervangen"
 
 #: src/ui_parts/good_file_dialog.gd
+msgid "Create new folder"
+msgstr "Nieuw map creëren"
+
+#: src/ui_parts/good_file_dialog.gd
+msgid "Invalid name for a folder."
+msgstr ""
+
+#: src/ui_parts/good_file_dialog.gd
+msgid "A folder with this name already exists."
+msgstr ""
+
+#: src/ui_parts/good_file_dialog.gd
+#, fuzzy
+msgid "Failed to create a folder."
+msgstr "Go naar bovenliggende map"
+
+#: src/ui_parts/good_file_dialog.gd
 msgid "Open"
 msgstr "Open"
 
@@ -426,23 +438,23 @@ msgstr ""
 msgid "New shape"
 msgstr "Nieuw vorm"
 
-#: src/ui_parts/import_warning_dialog.gd
+#: src/ui_parts/import_warning_menu.gd
 msgid "Import Problems"
 msgstr "Importproblemen"
 
-#: src/ui_parts/import_warning_dialog.gd src/utils/TranslationUtils.gd
+#: src/ui_parts/import_warning_menu.gd src/utils/TranslationUtils.gd
 msgid "Import"
 msgstr "Importeren"
 
-#: src/ui_parts/import_warning_dialog.gd
+#: src/ui_parts/import_warning_menu.gd
 msgid "Unrecognized element"
 msgstr "Onbekende element"
 
-#: src/ui_parts/import_warning_dialog.gd
+#: src/ui_parts/import_warning_menu.gd
 msgid "Unrecognized attribute"
 msgstr "Onbekende attribuut"
 
-#: src/ui_parts/import_warning_dialog.gd
+#: src/ui_parts/import_warning_menu.gd
 msgid "Syntax error"
 msgstr "Syntaxisfout"
 
@@ -923,7 +935,8 @@ msgid "GodSVG doesn’t recognize this attribute"
 msgstr "GodSVG herkent dit attribuut niet"
 
 #: src/utils/FileUtils.gd
-msgid "Save the .\"{extension}\" file"
+#, fuzzy
+msgid "Save the .\"{format}\" file"
 msgstr "Bewaar de .\"{extension}\" bestand"
 
 #: src/utils/FileUtils.gd
