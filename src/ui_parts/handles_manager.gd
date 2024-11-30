@@ -797,8 +797,8 @@ func apply_snap(pos: Vector2) -> PackedFloat64Array:
 	var final_pos := PackedFloat64Array([0.0, 0.0])
 	if GlobalSettings.savedata.snap > 0.0:
 		var snap_size := absf(GlobalSettings.savedata.snap)
-		final_pos[0] = snappedf(final_pos[0], snap_size)
-		final_pos[1] = snappedf(final_pos[1], snap_size)
+		final_pos[0] = snappedf(pos.x, snap_size)
+		final_pos[1] = snappedf(pos.y, snap_size)
 	else:
 		var precision_snap := 0.1 ** maxi(ceili(-log(1.0 / Indications.zoom) / log(10)), 0)
 		final_pos[0] = snappedf(pos.x, precision_snap)
