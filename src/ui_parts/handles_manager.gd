@@ -794,16 +794,19 @@ func get_event_pos(event: InputEvent) -> PackedFloat64Array:
 	return apply_snap(event.position / Indications.zoom + get_parent().view.position)
 
 func apply_snap(pos: Vector2) -> PackedFloat64Array:
-	var final_pos := PackedFloat64Array([0.0, 0.0])
-	if GlobalSettings.savedata.snap > 0.0:
-		var snap_size := absf(GlobalSettings.savedata.snap)
-		final_pos[0] = snappedf(pos.x, snap_size)
-		final_pos[1] = snappedf(pos.y, snap_size)
+	var precision_snap := 0.1 ** maxi(ceili(-log(1.0 / Indications.zoom) / log(10)), 0)
+	var configured_snap := absf(GlobalSettings.savedata.snap)
+	var snap_size: float  # To be used for the snap.
+	
+	# If the snap is disabled, or the precision snap is bigger than the configured snap
+	# and a multiple of it, use the precision snap. Otherwise use the user-configured snap.
+	if GlobalSettings.savedata.snap < 0.0 or (precision_snap > configured_snap and\
+	is_zero_approx(fmod(precision_snap, configured_snap))):
+		snap_size = precision_snap
 	else:
-		var precision_snap := 0.1 ** maxi(ceili(-log(1.0 / Indications.zoom) / log(10)), 0)
-		final_pos[0] = snappedf(pos.x, precision_snap)
-		final_pos[1] = snappedf(pos.y, precision_snap)
-	return final_pos
+		snap_size = configured_snap
+	
+	return PackedFloat64Array([snappedf(pos.x, snap_size), snappedf(pos.y, snap_size)])
 
 
 func _on_handle_added() -> void:
