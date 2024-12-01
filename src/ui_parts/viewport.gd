@@ -78,7 +78,7 @@ func _unhandled_input(event: InputEvent) -> void:
 			set_view(view.position - (wrap_mouse(event.relative) if\
 					GlobalSettings.savedata.wrap_mouse else event.relative) / Indications.zoom)
 	
-	elif event is InputEventPanGesture:
+	elif event is InputEventPanGesture and not DisplayServer.get_name() == "Android":
 		# Zooming with Ctrl + touch?
 		if event.ctrl_pressed:
 			zoom_menu.set_zoom(Indications.zoom * (1 + event.delta.y / 2))
