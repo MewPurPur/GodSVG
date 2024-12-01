@@ -321,6 +321,7 @@ toggle_snap={
 
 [input_devices]
 
+pointing/android/enable_long_press_as_right_click=true
 pointing/android/enable_pan_and_scale_gestures=true
 
 [internationalization]
