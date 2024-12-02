@@ -19,6 +19,8 @@ env:
   PROJECT_NAME: GodSVG
   GODOT_REPO: https://github.com/godotengine/godot.git
   BUILD_OPTIONS: target=template_release lto=full production=yes deprecated=no minizip=no brotli=no vulkan=no openxr=no use_volk=no disable_3d=yes modules_enabled_by_default=no module_freetype_enabled=yes module_gdscript_enabled=yes module_svg_enabled=yes module_jpg_enabled=yes module_text_server_adv_enabled=yes graphite=no module_webp_enabled=yes
+  # Something that's needed to make the Compatibility rendering backend work on some Windows and MacOS machines.
+  ANGLE_REPO: https://github.com/godotengine/godot-angle-static.git
 
 jobs:
   build-linux-x11:
@@ -36,6 +38,7 @@ jobs:
           key: template-${{ env.PLATFORM }}-${{ env.GODOT_VERSION }}-${{ env.GODOT_RELEASE }}-${{ env.GODOT_REPO }}-${{ env.GODOT_COMMIT_HASH }}-${{ env.BUILD_OPTIONS }}
           path: |
             ~/.local/share/godot/export_templates/
+
       - name: Set up Godot Editor
         run: |
           mkdir -v -p ~/godot-editor
@@ -103,6 +106,7 @@ jobs:
           key: template-${{ env.PLATFORM }}-${{ env.GODOT_VERSION }}-${{ env.GODOT_RELEASE }}-${{ env.GODOT_REPO }}-${{ env.GODOT_COMMIT_HASH }}-${{ env.BUILD_OPTIONS }}
           path: |
             ~/.local/share/godot/export_templates/
+
       - name: Set up Godot Editor
         run: |
           mkdir -v -p ~/godot-editor
@@ -178,8 +182,7 @@ jobs:
           mv ./Godot_v${GODOT_VERSION}-${GODOT_RELEASE}_linux.x86_64 ~/godot-editor/godot
           echo "~/godot-editor" >> $GITHUB_PATH
 
-      - if: ${{ steps.cache-template.outputs.cache-hit != 'true' }}
-        name: Install dependencies
+      - name: Install dependencies
         run: |
           sudo apt install -y scons python3
           sudo apt install -y g++-mingw-w64-x86-64-posix
@@ -191,23 +194,27 @@ jobs:
           echo 'export/windows/wine = "/usr/bin/wine64"' >> ~/.config/godot/editor_settings-${GODOT_FEATURE_VERSION}.tres
           echo 'export/windows/rcedit = "/home/runner/.local/share/rcedit/rcedit-x64.exe"' >> ~/.config/godot/editor_settings-${GODOT_FEATURE_VERSION}.tres
 
-      - if: ${{ steps.cache-template.outputs.cache-hit != 'true' }}
-        name: Clone Godot repository
+      - name: Clone Godot repository
         run: git clone $GODOT_REPO godot
 
-      - if: ${{ steps.cache-template.outputs.cache-hit != 'true' }}
-        name: Checkout specific commit
+      - name: Clone ANGLE repository
+        run: |
+          git clone $ANGLE_REPO godot-angle-static
+          cd godot-angle-static
+          git submodule update --init
+          ./update_angle.sh
+          scons
+
+      - name: Checkout specific commit
         run: |
           cd godot
           git fetch
           git checkout $GODOT_COMMIT_HASH
 
-      - if: ${{ steps.cache-template.outputs.cache-hit != 'true' }}
-        name: Build Godot template for Windows
+      - name: Build Godot template for Windows
         run: |
-          apt search mingw
           cd godot
-          scons p=windows ${BUILD_OPTIONS}
+          scons p=windows angle_libs=../godot-angle-static ${BUILD_OPTIONS}
           mkdir -v -p ~/.local/share/godot/export_templates/${GODOT_VERSION}.${GODOT_RELEASE}/
           mv ./bin/godot.windows.template_release.x86_64.exe ~/.local/share/godot/export_templates/${GODOT_VERSION}.${GODOT_RELEASE}/windows_release_x86_64.exe
 
