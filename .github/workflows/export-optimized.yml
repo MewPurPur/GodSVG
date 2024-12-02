@@ -21,78 +21,11 @@ env:
   BUILD_OPTIONS: target=template_release lto=full production=yes deprecated=no minizip=no brotli=no vulkan=no openxr=no use_volk=no disable_3d=yes modules_enabled_by_default=no module_freetype_enabled=yes module_gdscript_enabled=yes module_svg_enabled=yes module_jpg_enabled=yes module_text_server_adv_enabled=yes graphite=no module_webp_enabled=yes
 
 jobs:
-  build-linux-x11:
-    name: Export GodSVG for Linux X11
+  build-linux:
+    name: Export GodSVG for Linux
     runs-on: ubuntu-latest
     env:
-      PLATFORM: "Linux/X11"
-      EXTENSION: "exe"
-      BUILD_NAME: "linux-64bit"
-    steps:
-      - name: Cache Template
-        id: cache-template
-        uses: actions/cache@v3
-        with:
-          key: template-${{ env.PLATFORM }}-${{ env.GODOT_VERSION }}-${{ env.GODOT_RELEASE }}-${{ env.GODOT_REPO }}-${{ env.GODOT_COMMIT_HASH }}-${{ env.BUILD_OPTIONS }}
-          path: |
-            ~/.local/share/godot/export_templates/
-      - name: Set up Godot Editor
-        run: |
-          mkdir -v -p ~/godot-editor
-          cd ~/godot-editor
-          wget -q https://github.com/godotengine/godot-builds/releases/download/${GODOT_VERSION}-${GODOT_RELEASE}/Godot_v${GODOT_VERSION}-${GODOT_RELEASE}_linux.x86_64.zip
-          unzip Godot_v${GODOT_VERSION}-${GODOT_RELEASE}_linux.x86_64.zip
-          mv ./Godot_v${GODOT_VERSION}-${GODOT_RELEASE}_linux.x86_64 ~/godot-editor/godot
-          echo "~/godot-editor" >> $GITHUB_PATH
-
-      - if: ${{ steps.cache-template.outputs.cache-hit != 'true' }}
-        name: Install dependencies
-        run: sudo apt install -y scons python3
-
-      - if: ${{ steps.cache-template.outputs.cache-hit != 'true' }}
-        name: Clone Godot repository
-        run: git clone $GODOT_REPO godot
-
-      - if: ${{ steps.cache-template.outputs.cache-hit != 'true' }}
-        name: Checkout specific commit
-        run: |
-          cd godot
-          git fetch
-          git checkout $GODOT_COMMIT_HASH
-
-      - if: ${{ steps.cache-template.outputs.cache-hit != 'true' }}
-        name: Build Godot template for Linux
-        run: |
-          cd godot
-          scons p=linuxbsd arch=x86_64 ${BUILD_OPTIONS}
-          mkdir -v -p ~/.local/share/godot/export_templates/${GODOT_VERSION}.${GODOT_RELEASE}/
-          mv ./bin/godot.linuxbsd.template_release.x86_64 ~/.local/share/godot/export_templates/${GODOT_VERSION}.${GODOT_RELEASE}/linux_release.x86_64
-
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          path: godsvg
-
-      - name: Export project
-        run: |
-          ls -l
-          cd godsvg
-          mkdir -v -p build
-          godot --headless --export-release "${{ env.PLATFORM }}" build/GodSVG.x86_64
-
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: ${{ env.PROJECT_NAME }}.Linux-X11
-          path: godsvg/build/GodSVG.x86_64
-          if-no-files-found: error
-          retention-days: 28
-
-  build-linux-wayland:
-    name: Export GodSVG for Linux Wayland
-    runs-on: ubuntu-latest
-    env:
-      PLATFORM: "Linux/Wayland"
+      PLATFORM: "Linux"
       EXTENSION: "exe"
       BUILD_NAME: "linux-64bit"
     steps:
@@ -150,7 +83,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ env.PROJECT_NAME }}.Linux-Wayland
+          name: ${{ env.PROJECT_NAME }}.Linux
           path: godsvg/build/GodSVG.x86_64
           if-no-files-found: error
           retention-days: 28

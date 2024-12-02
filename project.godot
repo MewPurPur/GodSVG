@@ -41,8 +41,8 @@ window/size/viewport_width=1024
 window/size/viewport_height=640
 window/size/mode=2
 window/energy_saving/keep_screen_on=false
+display_server/driver.linuxbsd="wayland"
 mouse_cursor/tooltip_position_offset=Vector2(0, 10)
-display_server/driver.wayland="wayland"
 
 [filesystem]
 
