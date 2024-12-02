@@ -10,7 +10,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.4.4\n"
+"X-Generator: Poedit 3.5\n"
 
 msgid "translation-credits"
 msgstr "volkov <volkovissocool@gmail.com>"
@@ -206,9 +206,8 @@ msgid "Save SVG"
 msgstr "Зберегти SVG"
 
 #: src/ui_parts/code_editor.gd
-#, fuzzy
 msgid "Open file"
-msgstr "Відкрити"
+msgstr "Відкрити файл"
 
 #: src/ui_parts/code_editor.gd src/utils/TranslationUtils.gd
 msgid "Reset SVG"
@@ -372,9 +371,8 @@ msgid "Select an SVG"
 msgstr "Обрати SVG"
 
 #: src/ui_parts/good_file_dialog.gd
-#, fuzzy
 msgid "Select an XML file"
-msgstr "Обрати зображення"
+msgstr "Обрати XML файл"
 
 #: src/ui_parts/good_file_dialog.gd
 msgid "Select an image"
@@ -407,16 +405,15 @@ msgstr "Створити нову теку"
 
 #: src/ui_parts/good_file_dialog.gd
 msgid "Invalid name for a folder."
-msgstr ""
+msgstr "Не правильна назва для теки."
 
 #: src/ui_parts/good_file_dialog.gd
 msgid "A folder with this name already exists."
-msgstr ""
+msgstr "Тека з такою назвою вже існує."
 
 #: src/ui_parts/good_file_dialog.gd
-#, fuzzy
 msgid "Failed to create a folder."
-msgstr "Перейти до батьківської теки"
+msgstr "Не вдалося створити теку."
 
 #: src/ui_parts/good_file_dialog.gd
 msgid "Open"
@@ -603,9 +600,8 @@ msgid "Language"
 msgstr "Мова"
 
 #: src/ui_parts/settings_menu.gd
-#, fuzzy
 msgid "Import XML"
-msgstr "Імпортувати"
+msgstr "Імпортувати XML"
 
 #: src/ui_parts/settings_menu.gd src/ui_widgets/palette_config.gd
 msgid "Paste XML"
@@ -936,26 +932,24 @@ msgid "GodSVG doesn’t recognize this attribute"
 msgstr "GodSVG не може розпізнати цей атрибут"
 
 #: src/utils/FileUtils.gd
-#, fuzzy
 msgid "Save the .\"{format}\" file"
-msgstr "Зберегти .\"{extension}\" файл"
+msgstr "Зберегти .\"{format}\" файл"
 
 #: src/utils/FileUtils.gd
 msgid "Load an image file"
 msgstr "Завантажити файл зображення"
 
 #: src/utils/FileUtils.gd
-#, fuzzy
 msgid "Import a {extension} file"
-msgstr "Імпортувати .svg файл"
+msgstr "Імпортувати {extension} файл"
 
 #: src/utils/FileUtils.gd
 msgid "The file couldn't be opened."
-msgstr ""
+msgstr "Цей файл неможливо відкрити."
 
 #: src/utils/FileUtils.gd
 msgid "Check if the file still exists in the selected file path."
-msgstr ""
+msgstr "Перевірити, чи файл все щє існує по обраному шляху."
 
 #: src/utils/TranslationUtils.gd
 msgid "Select all elements"
@@ -1079,18 +1073,16 @@ msgid "Shorthand Cubic Bezier to"
 msgstr "Скорочена кубічна Безьє до"
 
 #: src/utils/TranslationUtils.gd
-#, fuzzy
 msgid ""
 "The file extension {extension} is unsupported for this operation. Only "
 "{extension_list} files are supported."
 msgstr ""
-"\"{passed_extension}\" це розширення файлу яке не підтримується. "
-"Підтримуються тільки «svg» файли."
+"Розширення файлу {extension} не підтримується для цієї операції. Тільки "
+"{extension_list} файли підтримуються."
 
 #: src/utils/TranslationUtils.gd
-#, fuzzy
 msgid "The file extension is empty. Only {extension_list} files are supported."
-msgstr "Розширення файлу порожнє. Підтримується тільки «svg» файли."
+msgstr "Розширення файлу порожнє. Тільки {extension_list} файли підтримуються."
 
 #~ msgid ""
 #~ "The file couldn't be opened.\n"
