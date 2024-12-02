@@ -8,6 +8,8 @@ on:
     branches: [ main ]
 
 env:
+  # Path of this file, used for caching logic.
+  WORKFLOW_FILE_PATH: .github/workflows/export-optimized.yml
   # Which godot version to use for exporting.
   GODOT_VERSION: 4.3
   # Which godot release to use for exporting. (stable/rc/beta/alpha)
@@ -29,13 +31,20 @@ jobs:
       EXTENSION: "exe"
       BUILD_NAME: "linux-64bit"
     steps:
+      - name: Checkout for caching
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: .github/workflows/export-optimized.yml
+          sparse-checkout-cone-mode: false
+
       - name: Cache Template
         id: cache-template
         uses: actions/cache@v3
         with:
-          key: template-${{ env.PLATFORM }}-${{ env.GODOT_VERSION }}-${{ env.GODOT_RELEASE }}-${{ env.GODOT_REPO }}-${{ env.GODOT_COMMIT_HASH }}-${{ env.BUILD_OPTIONS }}
+          key: template-${{ env.PLATFORM }}-${{ hashFiles(env.WORKFLOW_FILE_PATH) }}-${{ env.GODOT_VERSION }}
           path: |
             ~/.local/share/godot/export_templates/
+
       - name: Set up Godot Editor
         run: |
           mkdir -v -p ~/godot-editor
@@ -94,11 +103,17 @@ jobs:
     env:
       PLATFORM: "Windows"
     steps:
+      - name: Checkout for caching
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: .github/workflows/export-optimized.yml
+          sparse-checkout-cone-mode: false
+
       - name: Cache Template
         id: cache-template
         uses: actions/cache@v3
         with:
-          key: template-${{ env.PLATFORM }}-${{ env.GODOT_VERSION }}-${{ env.GODOT_RELEASE }}-${{ env.GODOT_REPO }}-${{ env.GODOT_COMMIT_HASH }}-${{ env.BUILD_OPTIONS }}
+          key: template-${{ env.PLATFORM }}-${{ hashFiles(env.WORKFLOW_FILE_PATH) }}-${{ env.GODOT_VERSION }}
           path: |
             ~/.local/share/godot/export_templates/
 
@@ -138,7 +153,6 @@ jobs:
       - if: ${{ steps.cache-template.outputs.cache-hit != 'true' }}
         name: Build Godot template for Windows
         run: |
-          apt search mingw
           cd godot
           scons p=windows ${BUILD_OPTIONS}
           mkdir -v -p ~/.local/share/godot/export_templates/${GODOT_VERSION}.${GODOT_RELEASE}/
@@ -169,11 +183,17 @@ jobs:
     env:
       PLATFORM: "macOS"
     steps:
+      - name: Checkout for caching
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: .github/workflows/export-optimized.yml
+          sparse-checkout-cone-mode: false
+
       - name: Cache Template
         id: cache-template
         uses: actions/cache@v3
         with:
-          key: template-${{ env.PLATFORM }}-${{ env.GODOT_VERSION }}-${{ env.GODOT_RELEASE }}-${{ env.GODOT_REPO }}-${{ env.GODOT_COMMIT_HASH }}-${{ env.BUILD_OPTIONS }}
+          key: template-${{ env.PLATFORM }}-${{ hashFiles(env.WORKFLOW_FILE_PATH) }}-${{ env.GODOT_VERSION }}
           path: |
             /Users/runner/Library/Application Support/Godot/export_templates/
 
@@ -256,11 +276,17 @@ jobs:
     env:
       PLATFORM: "Web"
     steps:
+      - name: Checkout for caching
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: .github/workflows/export-optimized.yml
+          sparse-checkout-cone-mode: false
+
       - name: Cache Template
         id: cache-template
         uses: actions/cache@v3
         with:
-          key: template-${{ env.PLATFORM }}-${{ env.GODOT_VERSION }}-${{ env.GODOT_RELEASE }}-${{ env.GODOT_REPO }}-${{ env.GODOT_COMMIT_HASH }}-${{ env.BUILD_OPTIONS }}
+          key: template-${{ env.PLATFORM }}-${{ hashFiles(env.WORKFLOW_FILE_PATH) }}-${{ env.GODOT_VERSION }}
           path: |
             ~/.local/share/godot/export_templates/
 
