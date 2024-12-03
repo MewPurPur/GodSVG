@@ -119,4 +119,9 @@ static func is_shortcut_modifiable(shortcut: String) -> bool:
 	return false
 
 static func is_action_pressed(event: InputEvent, action: String) -> bool:
+	# TODO Sometimes MacOS gives us an InputEventAction here.
+	# This doesn't happen on my Linux laptop. I don't know which platform's behavior
+	# is the correct one... But it should be handled gracefully.
+	if event is InputEventAction:
+		event = InputMap.action_get_events(event.action)[event.event_index]
 	return event.is_action_pressed(action) and GlobalSettings.is_shortcut_valid(event)
