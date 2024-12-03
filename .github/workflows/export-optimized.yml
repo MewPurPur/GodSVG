@@ -17,8 +17,10 @@ env:
   # Commit hash
   GODOT_COMMIT_HASH: 77dcf97
   PROJECT_NAME: GodSVG
-  GODOT_REPO: https://github.com/godotengine/godot.git
   BUILD_OPTIONS: target=template_release lto=full production=yes deprecated=no minizip=no brotli=no vulkan=no openxr=no use_volk=no disable_3d=yes modules_enabled_by_default=no module_freetype_enabled=yes module_gdscript_enabled=yes module_svg_enabled=yes module_jpg_enabled=yes module_text_server_adv_enabled=yes graphite=no module_webp_enabled=yes
+  # Links
+  GODOT_REPO: https://github.com/godotengine/godot.git
+  ANGLE_REPO: https://github.com/godotengine/godot-angle-static.git
 
 jobs:
   build-linux:
@@ -26,8 +28,6 @@ jobs:
     runs-on: ubuntu-latest
     env:
       PLATFORM: "Linux"
-      EXTENSION: "exe"
-      BUILD_NAME: "linux-64bit"
     steps:
       - name: Cache Template
         id: cache-template
@@ -39,7 +39,7 @@ jobs:
 
       - name: Set up Godot Editor
         run: |
-          mkdir -v -p ~/godot-editor
+          mkdir -p ~/godot-editor
           cd ~/godot-editor
           wget -q https://github.com/godotengine/godot-builds/releases/download/${GODOT_VERSION}-${GODOT_RELEASE}/Godot_v${GODOT_VERSION}-${GODOT_RELEASE}_linux.x86_64.zip
           unzip Godot_v${GODOT_VERSION}-${GODOT_RELEASE}_linux.x86_64.zip
@@ -66,7 +66,7 @@ jobs:
         run: |
           cd godot
           scons p=linuxbsd arch=x86_64 ${BUILD_OPTIONS}
-          mkdir -v -p ~/.local/share/godot/export_templates/${GODOT_VERSION}.${GODOT_RELEASE}/
+          mkdir -p ~/.local/share/godot/export_templates/${GODOT_VERSION}.${GODOT_RELEASE}/
           mv ./bin/godot.linuxbsd.template_release.x86_64 ~/.local/share/godot/export_templates/${GODOT_VERSION}.${GODOT_RELEASE}/linux_release.x86_64
 
       - name: Checkout repository
@@ -78,7 +78,7 @@ jobs:
         run: |
           ls -l
           cd godsvg
-          mkdir -v -p build
+          mkdir -p build
           godot --headless --export-release "${{ env.PLATFORM }}" build/GodSVG.x86_64
 
       - name: Upload artifact
@@ -102,10 +102,11 @@ jobs:
           key: template-${{ env.PLATFORM }}-${{ env.GODOT_VERSION }}-${{ env.GODOT_RELEASE }}-${{ env.BUILD_OPTIONS }}
           path: |
             ~/.local/share/godot/export_templates/
+            ~/angle/
 
       - name: Set up Godot Editor
         run: |
-          mkdir -v -p ~/godot-editor
+          mkdir -p ~/godot-editor
           cd ~/godot-editor
           wget -q https://github.com/godotengine/godot-builds/releases/download/${GODOT_VERSION}-${GODOT_RELEASE}/Godot_v${GODOT_VERSION}-${GODOT_RELEASE}_linux.x86_64.zip
           unzip Godot_v${GODOT_VERSION}-${GODOT_RELEASE}_linux.x86_64.zip
@@ -119,11 +120,21 @@ jobs:
           sudo apt install -y g++-mingw-w64-x86-64-posix
           sudo apt install -y --fix-missing wine64
           wget -q https://github.com/electron/rcedit/releases/download/v2.0.0/rcedit-x64.exe
-          mkdir -v -p ~/.local/share/rcedit
+          mkdir -p ~/.local/share/rcedit
           mv rcedit-x64.exe ~/.local/share/rcedit
           godot --headless --quit
           echo 'export/windows/wine = "/usr/bin/wine64"' >> ~/.config/godot/editor_settings-${GODOT_FEATURE_VERSION}.tres
           echo 'export/windows/rcedit = "/home/runner/.local/share/rcedit/rcedit-x64.exe"' >> ~/.config/godot/editor_settings-${GODOT_FEATURE_VERSION}.tres
+          x86_64-w64-mingw32-g++ --version
+
+      - if: ${{ steps.cache-template.outputs.cache-hit != 'true' }}
+        name: Download ANGLE Static Libraries
+        run: |
+          mkdir -v -p ~/angle
+          cd ~/angle
+          curl -L -o windows_x86_64.zip ${ANGLE_DOWNLOAD_BASE_URL}-x86_64-gcc-release.zip
+          unzip -o windows_x86_64.zip
+          rm -f windows_x86_64.zip
 
       - if: ${{ steps.cache-template.outputs.cache-hit != 'true' }}
         name: Clone Godot repository
@@ -140,8 +151,8 @@ jobs:
         name: Build Godot template for Windows
         run: |
           cd godot
-          scons p=windows ${BUILD_OPTIONS}
-          mkdir -v -p ~/.local/share/godot/export_templates/${GODOT_VERSION}.${GODOT_RELEASE}/
+          scons p=windows angle_libs=~/angle ${BUILD_OPTIONS} module_astcenc_enabled=yes use_mingw=yes
+          mkdir -p ~/.local/share/godot/export_templates/${GODOT_VERSION}.${GODOT_RELEASE}/
           mv ./bin/godot.windows.template_release.x86_64.exe ~/.local/share/godot/export_templates/${GODOT_VERSION}.${GODOT_RELEASE}/windows_release_x86_64.exe
 
       - name: Checkout repository
@@ -152,7 +163,7 @@ jobs:
       - name: Export project
         run: |
           cd godsvg
-          mkdir -v -p build
+          mkdir -p build
           godot --headless --export-release "Windows Desktop" build/GodSVG.exe
 
       - name: Upload artifact
@@ -179,7 +190,7 @@ jobs:
 
       - name: Set up Godot Editor
         run: |
-          mkdir -v -p ~/godot-editor
+          mkdir -p ~/godot-editor
           cd ~/godot-editor
           wget -q https://github.com/godotengine/godot-builds/releases/download/${GODOT_VERSION}-${GODOT_RELEASE}/Godot_v${GODOT_VERSION}-${GODOT_RELEASE}_macos.universal.zip
           unzip -a Godot_v${GODOT_VERSION}-${GODOT_RELEASE}_macos.universal.zip
@@ -229,7 +240,7 @@ jobs:
           cp godot.macos.template_release.universal macos_template.app/Contents/MacOS/godot_macos_release.universal;
           chmod +x macos_template.app/Contents/MacOS/godot_macos*;
           zip -q -9 -r macos.zip macos_template.app;
-          mkdir -v -p "/Users/runner/Library/Application Support/Godot/export_templates/${GODOT_VERSION}.${GODOT_RELEASE}"
+          mkdir -p "/Users/runner/Library/Application Support/Godot/export_templates/${GODOT_VERSION}.${GODOT_RELEASE}"
           mv macos.zip "/Users/runner/Library/Application Support/Godot/export_templates/${GODOT_VERSION}.${GODOT_RELEASE}"
 
       - name: Checkout repository
@@ -240,7 +251,7 @@ jobs:
       - name: Export project
         run: |
           cd godsvg
-          mkdir -v -p build
+          mkdir -p build
           godot --headless --export-release "macOS" build/GodSVG.zip
 
       - name: Upload artifact
@@ -267,7 +278,7 @@ jobs:
 
       - name: Set up Godot Editor
         run: |
-          mkdir -v -p ~/godot-editor
+          mkdir -p ~/godot-editor
           cd ~/godot-editor
           wget -q https://github.com/godotengine/godot-builds/releases/download/${GODOT_VERSION}-${GODOT_RELEASE}/Godot_v${GODOT_VERSION}-${GODOT_RELEASE}_linux.x86_64.zip
           unzip Godot_v${GODOT_VERSION}-${GODOT_RELEASE}_linux.x86_64.zip
@@ -305,7 +316,7 @@ jobs:
           cd godot
           source ../emsdk/emsdk_env.sh
           scons p=web arch=wasm32 ${BUILD_OPTIONS} threads=no
-          mkdir -v -p ~/.local/share/godot/export_templates/${GODOT_VERSION}.${GODOT_RELEASE}/
+          mkdir -p ~/.local/share/godot/export_templates/${GODOT_VERSION}.${GODOT_RELEASE}/
           mv ./bin/godot.web.template_release.wasm32.nothreads.zip ~/.local/share/godot/export_templates/${GODOT_VERSION}.${GODOT_RELEASE}/web_nothreads_release.zip
 
       - name: Checkout repository
@@ -316,7 +327,7 @@ jobs:
       - name: Export project
         run: |
           cd godsvg
-          mkdir -v -p build/web
+          mkdir -p build/web
           godot --headless --export-release "Web" build/web/index.html
 
       - name: Upload artifact
