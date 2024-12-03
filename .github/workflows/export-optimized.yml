@@ -31,17 +31,27 @@ jobs:
       EXTENSION: "exe"
       BUILD_NAME: "linux-64bit"
     steps:
-      - name: Checkout for caching
+      - name: Checkout for sparse hash calculation
         uses: actions/checkout@v4
         with:
           sparse-checkout: .github/workflows/export-optimized.yml
           sparse-checkout-cone-mode: false
 
+      - name: Calculate hash for cache key
+        id: hash-calculation
+        run: |
+          HASH=$(sha256sum .github/workflows/export-optimized.yml | awk '{print $1}')
+          echo "HASH=$HASH" >> $GITHUB_ENV
+
+      - name: Clean up sparse checkout
+        run: |
+          rm -rf .github
+
       - name: Cache Template
         id: cache-template
         uses: actions/cache@v3
         with:
-          key: template-${{ env.PLATFORM }}-${{ hashFiles(env.WORKFLOW_FILE_PATH) }}-${{ env.GODOT_VERSION }}
+          key: template-${{ env.PLATFORM }}-${{ env.HASH }}-${{ env.GODOT_VERSION }}
           path: |
             ~/.local/share/godot/export_templates/
 
@@ -103,17 +113,27 @@ jobs:
     env:
       PLATFORM: "Windows"
     steps:
-      - name: Checkout for caching
+      - name: Checkout for sparse hash calculation
         uses: actions/checkout@v4
         with:
           sparse-checkout: .github/workflows/export-optimized.yml
           sparse-checkout-cone-mode: false
 
+      - name: Calculate hash for cache key
+        id: hash-calculation
+        run: |
+          HASH=$(sha256sum .github/workflows/export-optimized.yml | awk '{print $1}')
+          echo "HASH=$HASH" >> $GITHUB_ENV
+
+      - name: Clean up sparse checkout
+        run: |
+          rm -rf .github
+
       - name: Cache Template
         id: cache-template
         uses: actions/cache@v3
         with:
-          key: template-${{ env.PLATFORM }}-${{ hashFiles(env.WORKFLOW_FILE_PATH) }}-${{ env.GODOT_VERSION }}
+          key: template-${{ env.PLATFORM }}-${{ env.HASH }}-${{ env.GODOT_VERSION }}
           path: |
             ~/.local/share/godot/export_templates/
 
@@ -183,17 +203,27 @@ jobs:
     env:
       PLATFORM: "macOS"
     steps:
-      - name: Checkout for caching
+      - name: Checkout for sparse hash calculation
         uses: actions/checkout@v4
         with:
           sparse-checkout: .github/workflows/export-optimized.yml
           sparse-checkout-cone-mode: false
 
+      - name: Calculate hash for cache key
+        id: hash-calculation
+        run: |
+          HASH=$(sha256sum .github/workflows/export-optimized.yml | awk '{print $1}')
+          echo "HASH=$HASH" >> $GITHUB_ENV
+
+      - name: Clean up sparse checkout
+        run: |
+          rm -rf .github
+
       - name: Cache Template
         id: cache-template
         uses: actions/cache@v3
         with:
-          key: template-${{ env.PLATFORM }}-${{ hashFiles(env.WORKFLOW_FILE_PATH) }}-${{ env.GODOT_VERSION }}
+          key: template-${{ env.PLATFORM }}-${{ env.HASH }}-${{ env.GODOT_VERSION }}
           path: |
             /Users/runner/Library/Application Support/Godot/export_templates/
 
@@ -270,23 +300,34 @@ jobs:
           path: godsvg/build/GodSVG.zip
           if-no-files-found: error
           retention-days: 28
+
   build-web:
     name: Export GodSVG for Web
     runs-on: ubuntu-latest
     env:
       PLATFORM: "Web"
     steps:
-      - name: Checkout for caching
+      - name: Checkout for sparse hash calculation
         uses: actions/checkout@v4
         with:
           sparse-checkout: .github/workflows/export-optimized.yml
           sparse-checkout-cone-mode: false
 
+      - name: Calculate hash for cache key
+        id: hash-calculation
+        run: |
+          HASH=$(sha256sum .github/workflows/export-optimized.yml | awk '{print $1}')
+          echo "HASH=$HASH" >> $GITHUB_ENV
+
+      - name: Clean up sparse checkout
+        run: |
+          rm -rf .github
+
       - name: Cache Template
         id: cache-template
         uses: actions/cache@v3
         with:
-          key: template-${{ env.PLATFORM }}-${{ hashFiles(env.WORKFLOW_FILE_PATH) }}-${{ env.GODOT_VERSION }}
+          key: template-${{ env.PLATFORM }}-${{ env.HASH }}-${{ env.GODOT_VERSION }}
           path: |
             ~/.local/share/godot/export_templates/
 
