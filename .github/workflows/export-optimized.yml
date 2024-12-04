@@ -149,6 +149,11 @@ jobs:
         with:
           path: godsvg
 
+      - name: Copy angle libs to export templates
+        run: |
+          cp godsvg/angle_libs/libegl.x86_64.dll ~/.local/share/godot/export_templates/${GODOT_VERSION}.${GODOT_RELEASE}/
+          cp godsvg/angle_libs/libGLESv2.x86_64.dll ~/.local/share/godot/export_templates/${GODOT_VERSION}.${GODOT_RELEASE}/
+
       - name: Export project
         run: |
           cd godsvg
