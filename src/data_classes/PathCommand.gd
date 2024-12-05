@@ -40,6 +40,10 @@ func toggle_relative() -> void:
 			if property in self:
 				set(property, get(property) - start_y)
 
+#func set_pos(pos_x: float, pos_y: float) -> void:
+	#if relative:
+		#
+
 
 class MoveCommand extends PathCommand:
 	var x: float

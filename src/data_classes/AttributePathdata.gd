@@ -4,10 +4,11 @@ class_name AttributePathdata extends Attribute
 const translation_dict = PathCommand.translation_dict
 
 var _commands: Array[PathCommand]
+var subpath_start_indices: PackedInt32Array
 
 func _sync() -> void:
 	_commands = parse_pathdata(get_value())
-	locate_start_points()
+	parse_properties()
 
 func format(text: String) -> String:
 	return path_commands_to_text(parse_pathdata(text))
@@ -24,21 +25,25 @@ func sync_after_commands_change() -> void:
 	set_value(path_commands_to_text(_commands))
 
 
-func locate_start_points() -> void:
+func parse_properties() -> void:
 	# Start points are absolute. Individual floats, since 64-bit precision is needed here.
 	var last_end_point_x := 0.0
 	var last_end_point_y := 0.0
 	var curr_subpath_start_x := 0.0
 	var curr_subpath_start_y := 0.0
-	for command: PathCommand in _commands:
+	for idx in _commands.size():
+		var command := _commands[idx]
 		command.start_x = last_end_point_x
 		command.start_y = last_end_point_y
 		
 		if command is PathCommand.MoveCommand:
+			subpath_start_indices.append(idx)
 			curr_subpath_start_x = command.start_x + command.x if\
 					command.relative else command.x
 			curr_subpath_start_y = command.start_y + command.y if\
 					command.relative else command.y
+		elif idx > 0 and _commands[idx - 1] is PathCommand.CloseCommand:
+			subpath_start_indices.append(idx)
 		elif command is PathCommand.CloseCommand:
 			last_end_point_x = curr_subpath_start_x
 			last_end_point_y = curr_subpath_start_y
@@ -66,18 +71,36 @@ func get_command(idx: int) -> PathCommand:
 # Return the start and end indices of the subpath.
 func get_subpath(idx: int) -> Vector2i:
 	var output := Vector2i(idx, idx)
-	# Subpaths start from the last M command, or the commmand after the last Z command.
-	while output.x > 0:
-		if get_command(output.x) is PathCommand.MoveCommand or\
-		get_command(output.x - 1) is PathCommand.CloseCommand:
+	for i in range(subpath_start_indices.size() - 1, -1, -1):
+		if subpath_start_indices[i] <= idx:
+			output.x = subpath_start_indices[i]
+			if i < subpath_start_indices.size() - 1:
+				output.y = subpath_start_indices[i + 1] - 1
+			else:
+				output.y = get_command_count() - 1
 			break
-		output.x -= 1
-	while output.y < get_command_count() - 1:
-		if get_command(output.y + 1) is PathCommand.MoveCommand or\
-		get_command(output.y) is PathCommand.CloseCommand:
-			break
-		output.y += 1
 	return output
+
+func move_subpath(idx: int, down: bool) -> void:
+	if subpath_start_indices.is_empty():
+		return
+	var subpath := get_subpath(idx)
+	
+	if down:
+		if subpath.x == subpath_start_indices[-1]:
+			return
+		var next_subpath := get_subpath(subpath.y + 1)
+		for i in subpath.y - subpath.x + 1:
+			var element: PathCommand = _commands.pop_at(subpath.x)
+			_commands.insert(next_subpath.y, element)
+	else:
+		if subpath.x == subpath_start_indices[0]:
+			return
+		var previous_subpath := get_subpath(subpath.x - 1)
+		for i in subpath.y - subpath.x + 1:
+			var element: PathCommand = _commands.pop_at(subpath.x)
+			_commands.insert(previous_subpath.x - 1, element)
+	sync_after_commands_change()
 
 func get_implied_S_control(cmd_idx: int) -> Vector2:
 	var cmd := get_command(cmd_idx)
@@ -138,7 +161,7 @@ func insert_command(idx: int, cmd_char: String, vec := Vector2.ZERO) -> void:
 	if relative:
 		new_cmd.toggle_relative()
 	_commands.insert(idx, new_cmd)
-	locate_start_points()
+	parse_properties()
 	if not cmd_char in "Zz":
 		if not cmd_char in "Vv":
 			new_cmd.x = vec.x

@@ -433,6 +433,20 @@ func respond_to_key_input(event: InputEventKey) -> void:
 				break
 
 
+func is_selection_subpath() -> bool:
+	if semi_selected_xid.is_empty() or inner_selections.is_empty():
+		return false
+	
+	var element_ref := SVG.root_element.get_xnode(semi_selected_xid)
+	if not element_ref is ElementPath:
+		return false
+	
+	var subpath: Vector2i = element_ref.get_attribute("d").get_subpath(inner_selections[0])
+	for i in range(subpath.x, subpath.y):
+		if not i in inner_selections:
+			return false
+	return true
+
 # Operations on selected elements.
 
 func delete_selected() -> void:
@@ -456,12 +470,21 @@ func delete_selected() -> void:
 		SVG.queue_save()
 
 func move_up_selected() -> void:
-	SVG.root_element.move_xnodes_in_parent(selected_xids, false)
-	SVG.queue_save()
+	_move_selected(false)
 
 func move_down_selected() -> void:
-	SVG.root_element.move_xnodes_in_parent(selected_xids, true)
-	SVG.queue_save()
+	_move_selected(true)
+
+func _move_selected(down: bool) -> void:
+	if not selected_xids.is_empty():
+		SVG.root_element.move_xnodes_in_parent(selected_xids, down)
+		SVG.queue_save()
+	elif not semi_selected_xid.is_empty():
+		var xnode := SVG.root_element.get_xnode(semi_selected_xid)
+		if not xnode is ElementPath:
+			return
+		xnode.get_attribute("d").move_subpath(inner_selections[0], down)
+		SVG.queue_save()
 
 func view_in_list(xid: PackedInt32Array) -> void:
 	if xid.is_empty():
@@ -490,6 +513,11 @@ func insert_point_after_selection() -> void:
 	element_ref.get_attribute("points").insert_element(last_selection_next * 2, 0.0)
 	element_ref.get_attribute("points").insert_element(last_selection_next * 2, 0.0)
 	normal_select(semi_selected_xid, last_selection_next)
+	SVG.queue_save()
+
+func reverse_subpath() -> void:
+	var element_ref: ElementPath = SVG.root_element.get_xnode(semi_selected_xid)
+	element_ref.get_attribute("d").reverse_subpath(inner_selections[0])
 	SVG.queue_save()
 
 
@@ -556,7 +584,7 @@ func get_selection_context(popup_method: Callable, context: Context) -> ContextP
 	
 	elif not inner_selections.is_empty() and not semi_selected_xid.is_empty():
 		var element_ref := SVG.root_element.get_xnode(semi_selected_xid)
-		
+		element_ref.get_attribute("d")
 		if context == Context.VIEWPORT:
 			btn_arr.append(ContextPopup.create_button(
 					Translator.translate("View In List"),
@@ -575,6 +603,24 @@ func get_selection_context(popup_method: Callable, context: Context) -> ContextP
 								Translator.translate("Convert To"),
 								popup_convert_to_context.bind(popup_method), false,
 								load("res://visual/icons/Reload.svg")))
+				if is_selection_subpath():
+					# TODO
+					var can_move_up := true
+					var can_move_down := true
+					if can_move_up:
+						btn_arr.append(ContextPopup.create_button(
+								Translator.translate("Move Subpath Up"),
+								move_up_selected, false,
+								load("res://visual/icons/MoveUp.svg"), "move_up"))
+					if can_move_down:
+						btn_arr.append(ContextPopup.create_button(
+								Translator.translate("Move Subpath Down"),
+								move_down_selected, false,
+								load("res://visual/icons/MoveDown.svg"), "move_down"))
+					#if inner_selections.size() > 1:
+						#btn_arr.append(ContextPopup.create_button(
+								#Translator.translate("Reverse Subpath"), reverse_subpath, false,
+								#load("res://visual/icons/Rotate.svg")))
 			"polygon", "polyline":
 				if inner_selections.size() == 1:
 					btn_arr.append(ContextPopup.create_button(
