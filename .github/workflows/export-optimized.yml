@@ -26,8 +26,6 @@ jobs:
     runs-on: ubuntu-latest
     env:
       PLATFORM: "Linux"
-      EXTENSION: "exe"
-      BUILD_NAME: "linux-64bit"
     steps:
       - name: Cache Template
         id: cache-template
