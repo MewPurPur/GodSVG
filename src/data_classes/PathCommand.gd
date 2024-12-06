@@ -8,8 +8,11 @@ const translation_dict := {
 	"C": CubicBezierCommand, "S": ShorthandCubicBezierCommand
 }
 
+const arg_count_dict := {  # Dictionary{String: int}
+	"M": 2, "L": 2, "H": 1, "V": 1, "Z": 0, "A": 7, "Q": 4, "T": 2, "C": 6, "S": 4
+}
+
 var command_char := ""
-var arg_count := 0
 var relative := false
 
 # This must be floats, because 64-bit precision is needed for intermediate operations.
@@ -47,7 +50,6 @@ class MoveCommand extends PathCommand:
 	func _init(new_x := 0.0, new_y := 0.0, p_rel := false) -> void:
 		relative = p_rel
 		command_char = "m" if p_rel else "M"
-		arg_count = 2
 		x = new_x
 		y = new_y
 
@@ -57,7 +59,6 @@ class LineCommand extends PathCommand:
 	func _init(new_x := 0.0, new_y := 0.0, p_rel := false) -> void:
 		relative = p_rel
 		command_char = "l" if p_rel else "L"
-		arg_count = 2
 		x = new_x
 		y = new_y
 
@@ -66,7 +67,6 @@ class HorizontalLineCommand extends PathCommand:
 	func _init(new_x := 0.0, p_rel := false) -> void:
 		relative = p_rel
 		command_char = "h" if p_rel else "H"
-		arg_count = 1
 		x = new_x
 
 class VerticalLineCommand extends PathCommand:
@@ -74,7 +74,6 @@ class VerticalLineCommand extends PathCommand:
 	func _init(new_y := 0.0, p_rel := false) -> void:
 		relative = p_rel
 		command_char = "v" if p_rel else "V"
-		arg_count = 1
 		y = new_y
 
 class EllipticalArcCommand extends PathCommand:
@@ -89,7 +88,6 @@ class EllipticalArcCommand extends PathCommand:
 	new_sweep_flag := 0, new_x := 0.0, new_y := 0.0, p_rel := false) -> void:
 		relative = p_rel
 		command_char = "a" if p_rel else "A"
-		arg_count = 7
 		rx = new_rx
 		ry = new_ry
 		rot = new_rot
@@ -107,7 +105,6 @@ class QuadraticBezierCommand extends PathCommand:
 	p_rel := false) -> void:
 		relative = p_rel
 		command_char = "q" if p_rel else "Q"
-		arg_count = 4
 		x1 = new_x1
 		y1 = new_y1
 		x = new_x
@@ -119,7 +116,6 @@ class ShorthandQuadraticBezierCommand extends PathCommand:
 	func _init(new_x := 0.0, new_y := 0.0, p_rel := false) -> void:
 		relative = p_rel
 		command_char = "t" if p_rel else "T"
-		arg_count = 2
 		x = new_x
 		y = new_y
 
@@ -134,7 +130,6 @@ class CubicBezierCommand extends PathCommand:
 	new_x := 0.0, new_y := 0.0, p_rel := false) -> void:
 		relative = p_rel
 		command_char = "c" if p_rel else "C"
-		arg_count = 6
 		x1 = new_x1
 		y1 = new_y1
 		x2 = new_x2
@@ -151,7 +146,6 @@ class ShorthandCubicBezierCommand extends PathCommand:
 	p_rel := false) -> void:
 		relative = p_rel
 		command_char = "s" if p_rel else "S"
-		arg_count = 4
 		x2 = new_x2
 		y2 = new_y2
 		x = new_x

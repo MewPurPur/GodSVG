@@ -1,8 +1,6 @@
 # The "d" attribute of ElementPath.
 class_name AttributePathdata extends Attribute
 
-const translation_dict = PathCommand.translation_dict
-
 var _commands: Array[PathCommand]
 
 func _sync() -> void:
@@ -258,7 +256,7 @@ static func pathdata_to_arrays(text: String) -> Array[Array]:
 				"M", "m", "L", "l", "H", "h", "V", "v", "A", "a", "Q", "q", "T", "t",\
 				"C", "c", "S", "s", "Z", "z":
 					curr_command = char
-					args_left = translation_dict[curr_command.to_upper()].new().arg_count
+					args_left = PathCommand.arg_count_dict[curr_command.to_upper()]
 				" ", "\t", "\n", "\r": continue
 				"-", "+", ".", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9":
 					if prev_command.is_empty():
@@ -269,11 +267,11 @@ static func pathdata_to_arrays(text: String) -> Array[Array]:
 							return new_commands
 						"M", "m":
 							curr_command = "L" if prev_command == "M" else "l"
-							args_left = translation_dict[curr_command.to_upper()].new().arg_count
+							args_left = PathCommand.arg_count_dict[curr_command.to_upper()]
 						"L", "l", "H", "h", "V", "v", "A", "a", "Q", "q", "T", "t", "C", "c",\
 						"S", "s":
 							curr_command = prev_command
-							args_left = translation_dict[curr_command.to_upper()].new().arg_count
+							args_left = PathCommand.arg_count_dict[curr_command.to_upper()]
 					idx -= 1
 				_: return new_commands
 		# Logic for parsing new numbers until args_left == 0.
@@ -388,7 +386,7 @@ static func path_commands_from_parsed_data(data: Array[Array]) -> Array[PathComm
 	for a in data:
 		var new_cmd: PathCommand
 		# The idx 0 element is the command char, the rest are the arguments.
-		var cmd_type: Script = translation_dict[a[0].to_upper()]
+		var cmd_type: Script = PathCommand.translation_dict[a[0].to_upper()]
 		var relative := Utils.is_string_lower(a[0])
 		match a.size():
 			1: new_cmd = cmd_type.new(relative)
