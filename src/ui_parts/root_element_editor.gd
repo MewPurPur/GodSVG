@@ -163,7 +163,8 @@ func _on_height_button_toggled(toggled_on: bool) -> void:
 
 func _on_viewbox_button_toggled(toggled_on: bool) -> void:
 	if toggled_on:
-		SVG.root_element.set_attribute("viewBox", SVG.root_element.viewbox)
+		SVG.root_element.set_attribute("viewBox",
+				ListParser.rect_to_list(SVG.root_element.viewbox))
 		SVG.queue_save()
 	else:
 		if SVG.root_element.has_attribute("width") and\
