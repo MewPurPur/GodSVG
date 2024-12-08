@@ -39,6 +39,21 @@ msgstr ""
 msgid "OK"
 msgstr ""
 
+#: src/autoload/HandlerGUI.gd
+msgid "Export SVG"
+msgstr ""
+
+#: src/autoload/HandlerGUI.gd src/ui_parts/export_menu.gd
+#: src/utils/TranslationUtils.gd
+msgid "Export"
+msgstr ""
+
+#: src/autoload/HandlerGUI.gd
+msgid ""
+"The graphic can only be exported as SVG because its size is not defined. Do "
+"you want to proceed?"
+msgstr ""
+
 #: src/autoload/Indications.gd
 msgid "View In List"
 msgstr ""
@@ -294,19 +309,19 @@ msgid "New element"
 msgstr ""
 
 #: src/ui_parts/export_menu.gd
+msgid "Dimensions"
+msgstr ""
+
+#: src/ui_parts/export_menu.gd
 msgid "Size"
 msgstr ""
 
 #: src/ui_parts/export_menu.gd
-msgid "Invalid"
+msgid "Export Configuration"
 msgstr ""
 
 #: src/ui_parts/export_menu.gd
 msgid "Format"
-msgstr ""
-
-#: src/ui_parts/export_menu.gd
-msgid "Export Configuration"
 msgstr ""
 
 #: src/ui_parts/export_menu.gd
@@ -321,12 +336,16 @@ msgstr ""
 msgid "Scale"
 msgstr ""
 
-#: src/ui_parts/export_menu.gd src/utils/TranslationUtils.gd
-msgid "Export"
+#: src/ui_parts/export_menu.gd
+msgid "Width"
 msgstr ""
 
 #: src/ui_parts/export_menu.gd
-msgid "Final size"
+msgid "Height"
+msgstr ""
+
+#: src/ui_parts/export_menu.gd
+msgid "Preview image size is limited to {dimensions}"
 msgstr ""
 
 #: src/ui_parts/global_menu.gd src/ui_parts/settings_menu.gd

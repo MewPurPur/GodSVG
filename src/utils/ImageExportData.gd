@@ -8,10 +8,32 @@ const web_formats = {  # Dictionary{String: String}
 	"webp": "image/webp",
 }
 
-var format := "svg"
-var upscale_amount := 1.0
-var quality := 0.75
-var lossy := false
+signal changed
+
+var format := "svg":
+	set(new_value):
+		if new_value != format:
+			format = new_value
+			changed.emit()
+
+var upscale_amount := 1.0:
+	set(new_value):
+		if new_value != upscale_amount:
+			upscale_amount = new_value
+			changed.emit()
+
+var quality := 0.75:
+	set(new_value):
+		if new_value != quality:
+			quality = new_value
+			changed.emit()
+
+var lossy := false:
+	set(new_value):
+		if new_value != lossy:
+			lossy = new_value
+			changed.emit()
+
 
 func svg_to_buffer() -> PackedByteArray:
 	return SVG.get_export_text().to_utf8_buffer()

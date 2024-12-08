@@ -39,6 +39,21 @@ msgstr "Това изисква GodSVG да се свърже с интерна�
 msgid "OK"
 msgstr "Добре"
 
+#: src/autoload/HandlerGUI.gd
+msgid "Export SVG"
+msgstr "Експортирай SVG-то"
+
+#: src/autoload/HandlerGUI.gd src/ui_parts/export_menu.gd
+#: src/utils/TranslationUtils.gd
+msgid "Export"
+msgstr "Експортирай"
+
+#: src/autoload/HandlerGUI.gd
+msgid ""
+"The graphic can only be exported as SVG because its size is not defined. Do "
+"you want to proceed?"
+msgstr "Графиката може да бъде експортирана само като SVG защото размерът не е определен. Искаш ли да продължиш?"
+
 #: src/autoload/Indications.gd
 msgid "View In List"
 msgstr "Виж в Списъка"
@@ -294,20 +309,20 @@ msgid "New element"
 msgstr "Добави елемент"
 
 #: src/ui_parts/export_menu.gd
+msgid "Dimensions"
+msgstr "Измерения"
+
+#: src/ui_parts/export_menu.gd
 msgid "Size"
 msgstr "Размер"
 
 #: src/ui_parts/export_menu.gd
-msgid "Invalid"
-msgstr "Невалиден"
+msgid "Export Configuration"
+msgstr "Конфигурация на експорта"
 
 #: src/ui_parts/export_menu.gd
 msgid "Format"
 msgstr "Формат"
-
-#: src/ui_parts/export_menu.gd
-msgid "Export Configuration"
-msgstr "Конфигурация на експорта"
 
 #: src/ui_parts/export_menu.gd
 msgid "Lossless"
@@ -321,13 +336,17 @@ msgstr "Качество"
 msgid "Scale"
 msgstr "Мащаб"
 
-#: src/ui_parts/export_menu.gd src/utils/TranslationUtils.gd
-msgid "Export"
-msgstr "Експортирай"
+#: src/ui_parts/export_menu.gd
+msgid "Width"
+msgstr "Широчина"
 
 #: src/ui_parts/export_menu.gd
-msgid "Final size"
-msgstr "Краен размер"
+msgid "Height"
+msgstr "Височина"
+
+#: src/ui_parts/export_menu.gd
+msgid "Preview image size is limited to {dimensions}"
+msgstr "Размерът на визуализацията е ограничен до {dimensions}"
 
 #: src/ui_parts/global_menu.gd src/ui_parts/settings_menu.gd
 msgid "File"
@@ -924,9 +943,8 @@ msgid "GodSVG doesn’t recognize this attribute"
 msgstr "GodSVG не разпознава този атрибут"
 
 #: src/utils/FileUtils.gd
-#, fuzzy
 msgid "Save the .\"{format}\" file"
-msgstr "Запази .\"{extension}\" файла."
+msgstr "Запази .\"{format}\" файла."
 
 #: src/utils/FileUtils.gd
 msgid "Load an image file"

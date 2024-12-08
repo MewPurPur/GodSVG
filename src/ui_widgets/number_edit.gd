@@ -32,6 +32,7 @@ func get_value() -> float:
 
 func _ready() -> void:
 	# Done like this so a signal isn't emitted.
+	text_submitted.connect(_on_text_submitted)
 	_value = initial_value
 	sync_text()
 

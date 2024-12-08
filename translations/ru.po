@@ -41,6 +41,22 @@ msgstr "Для этого необходимо подключение к Инт�
 msgid "OK"
 msgstr "Хорошо"
 
+#: src/autoload/HandlerGUI.gd
+#, fuzzy
+msgid "Export SVG"
+msgstr "Импортировать SVG"
+
+#: src/autoload/HandlerGUI.gd src/ui_parts/export_menu.gd
+#: src/utils/TranslationUtils.gd
+msgid "Export"
+msgstr "Экспортовать"
+
+#: src/autoload/HandlerGUI.gd
+msgid ""
+"The graphic can only be exported as SVG because its size is not defined. Do "
+"you want to proceed?"
+msgstr ""
+
 #: src/autoload/Indications.gd
 msgid "View In List"
 msgstr "Просмотреть в списке"
@@ -296,20 +312,20 @@ msgid "New element"
 msgstr "Новый элемент"
 
 #: src/ui_parts/export_menu.gd
+msgid "Dimensions"
+msgstr ""
+
+#: src/ui_parts/export_menu.gd
 msgid "Size"
 msgstr "Размер"
 
 #: src/ui_parts/export_menu.gd
-msgid "Invalid"
-msgstr "Неправильно"
+msgid "Export Configuration"
+msgstr "Настройки экспорта"
 
 #: src/ui_parts/export_menu.gd
 msgid "Format"
 msgstr "Формат"
-
-#: src/ui_parts/export_menu.gd
-msgid "Export Configuration"
-msgstr "Настройки экспорта"
 
 #: src/ui_parts/export_menu.gd
 msgid "Lossless"
@@ -323,13 +339,17 @@ msgstr "Качество"
 msgid "Scale"
 msgstr "Масштаб"
 
-#: src/ui_parts/export_menu.gd src/utils/TranslationUtils.gd
-msgid "Export"
-msgstr "Экспортовать"
+#: src/ui_parts/export_menu.gd
+msgid "Width"
+msgstr ""
 
 #: src/ui_parts/export_menu.gd
-msgid "Final size"
-msgstr "Финальный размер"
+msgid "Height"
+msgstr ""
+
+#: src/ui_parts/export_menu.gd
+msgid "Preview image size is limited to {dimensions}"
+msgstr ""
 
 #: src/ui_parts/global_menu.gd src/ui_parts/settings_menu.gd
 msgid "File"
@@ -1079,6 +1099,12 @@ msgstr ""
 msgid "The file extension is empty. Only {extension_list} files are supported."
 msgstr "Расширение файла пустое. Поддерживаются только {extension_list} файлы."
 
+#~ msgid "Invalid"
+#~ msgstr "Неправильно"
+
+#~ msgid "Final size"
+#~ msgstr "Финальный размер"
+
 #~ msgid ""
 #~ "The file couldn't be opened.\n"
 #~ "Try checking the file path, ensure that the file is not deleted, or "
@@ -1122,10 +1148,6 @@ msgstr "Расширение файла пустое. Поддерживаютс
 #~ msgstr "Редактировать название палитры"
 
 #~ msgid "Import SVG"
-#~ msgstr "Импортировать SVG"
-
-#, fuzzy
-#~ msgid "Export SVG"
 #~ msgstr "Импортировать SVG"
 
 #~ msgid "Tag color"

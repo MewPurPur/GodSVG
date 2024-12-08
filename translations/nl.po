@@ -39,6 +39,22 @@ msgstr "Hiervoor moet GodSVG verbinding maken met het internet."
 msgid "OK"
 msgstr "OK"
 
+#: src/autoload/HandlerGUI.gd
+#, fuzzy
+msgid "Export SVG"
+msgstr "Exporteren"
+
+#: src/autoload/HandlerGUI.gd src/ui_parts/export_menu.gd
+#: src/utils/TranslationUtils.gd
+msgid "Export"
+msgstr "Exporteren"
+
+#: src/autoload/HandlerGUI.gd
+msgid ""
+"The graphic can only be exported as SVG because its size is not defined. Do "
+"you want to proceed?"
+msgstr ""
+
 #: src/autoload/Indications.gd
 msgid "View In List"
 msgstr "Bekijk in lijst"
@@ -296,20 +312,20 @@ msgid "New element"
 msgstr "Nieuw element"
 
 #: src/ui_parts/export_menu.gd
+msgid "Dimensions"
+msgstr ""
+
+#: src/ui_parts/export_menu.gd
 msgid "Size"
 msgstr "Maat"
 
 #: src/ui_parts/export_menu.gd
-msgid "Invalid"
-msgstr "Ongeldig"
+msgid "Export Configuration"
+msgstr "Export Configuratie"
 
 #: src/ui_parts/export_menu.gd
 msgid "Format"
 msgstr "Formaat"
-
-#: src/ui_parts/export_menu.gd
-msgid "Export Configuration"
-msgstr "Export Configuratie"
 
 #: src/ui_parts/export_menu.gd
 msgid "Lossless"
@@ -323,13 +339,17 @@ msgstr "Kwaliteit"
 msgid "Scale"
 msgstr "Schaal"
 
-#: src/ui_parts/export_menu.gd src/utils/TranslationUtils.gd
-msgid "Export"
-msgstr "Exporteren"
+#: src/ui_parts/export_menu.gd
+msgid "Width"
+msgstr ""
 
 #: src/ui_parts/export_menu.gd
-msgid "Final size"
-msgstr "Laatste Maat"
+msgid "Height"
+msgstr ""
+
+#: src/ui_parts/export_menu.gd
+msgid "Preview image size is limited to {dimensions}"
+msgstr ""
 
 #: src/ui_parts/global_menu.gd src/ui_parts/settings_menu.gd
 msgid "File"
@@ -1091,6 +1111,12 @@ msgstr ""
 msgid "The file extension is empty. Only {extension_list} files are supported."
 msgstr ""
 "Deze bestandsextensie is leeg. Alleen \"svg\" bestanden zijn ondersteund."
+
+#~ msgid "Invalid"
+#~ msgstr "Ongeldig"
+
+#~ msgid "Final size"
+#~ msgstr "Laatste Maat"
 
 #~ msgid ""
 #~ "The file couldn't be opened.\n"
