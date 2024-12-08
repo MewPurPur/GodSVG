@@ -285,7 +285,4 @@ func _on_title_bar_draw() -> void:
 # Block dragging from starting when pressing the title button.
 func _on_title_button_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
-		if event.is_pressed():
-			suppress_drag = true
-		else:
-			suppress_drag = false
+		suppress_drag = event.is_pressed()
