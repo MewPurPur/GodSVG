@@ -28,6 +28,8 @@ var element: Element
 var surface := RenderingServer.canvas_item_create()  # Used for the drop indicator.
 @onready var title_bar_ci := title_bar.get_canvas_item()
 
+var suppress_drag: bool = false
+
 func _ready() -> void:
 	RenderingServer.canvas_item_set_parent(surface, get_canvas_item())
 	RenderingServer.canvas_item_set_z_index(surface, 1)
@@ -76,7 +78,7 @@ func _exit_tree() -> void:
 
 # Logic for dragging.
 func _get_drag_data(_at_position: Vector2) -> Variant:
-	if Indications.selected_xids.is_empty():
+	if suppress_drag or Indications.selected_xids.is_empty():
 		return null
 	
 	var data: Array[PackedInt32Array] = XIDUtils.filter_descendants(
@@ -144,7 +146,7 @@ func _on_mouse_entered() -> void:
 			Vector2(half_bar_width - title_width / 2 - element_icon_size.x / 2 - 6, 3)
 	title_button.size = Vector2(title_width + 28, 20)
 	title_bar.add_child(title_button)
-	title_button.gui_input.connect(_on_title_button_gui_input.bind(title_button))
+	title_button.gui_input.connect(_on_title_button_gui_input)
 	title_button.pressed.connect(_on_title_button_pressed)
 	mouse_exited.connect(title_button.queue_free)
 	# Add warning button.
@@ -159,6 +161,7 @@ func _on_mouse_entered() -> void:
 		mouse_exited.connect(warning_sign.queue_free)
 
 func _on_mouse_exited() -> void:
+	suppress_drag = false
 	Indications.remove_hovered(element.xid)
 	determine_selection_highlight()
 
@@ -280,5 +283,6 @@ func _on_title_bar_draw() -> void:
 				warning_icon.get_size()), false)
 
 # Block dragging from starting when pressing the title button.
-func _on_title_button_gui_input(event: InputEvent, title_button: Button) -> void:
-	title_button.mouse_filter = Utils.mouse_filter_pass_non_drag_events(event)
+func _on_title_button_gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton:
+		suppress_drag = event.is_pressed()
