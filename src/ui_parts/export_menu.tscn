@@ -1,7 +1,8 @@
-[gd_scene load_steps=6 format=3 uid="uid://c13dadqbljqlu"]
+[gd_scene load_steps=7 format=3 uid="uid://c13dadqbljqlu"]
 
 [ext_resource type="Script" path="res://src/ui_parts/export_menu.gd" id="1_objnb"]
-[ext_resource type="PackedScene" uid="uid://xh26qa68xed4" path="res://src/ui_widgets/svg_preview.tscn" id="2_ewk0a"]
+[ext_resource type="PackedScene" uid="uid://xh26qa68xed4" path="res://src/ui_widgets/preview_rect.tscn" id="2_ewk0a"]
+[ext_resource type="Texture2D" uid="uid://v0lqyuvo50yq" path="res://visual/icons/Info.svg" id="2_rk3rd"]
 [ext_resource type="FontFile" uid="uid://clpf84p1lfwlp" path="res://visual/fonts/Font.ttf" id="5_s3e6m"]
 [ext_resource type="PackedScene" uid="uid://dbu1lvajypafb" path="res://src/ui_widgets/dropdown.tscn" id="5_y6ex0"]
 [ext_resource type="PackedScene" uid="uid://dad7fkhmsooc6" path="res://src/ui_widgets/number_edit.tscn" id="6_w1sag"]
@@ -21,59 +22,121 @@ grow_vertical = 2
 theme_type_variation = &"OverlayPanel"
 script = ExtResource("1_objnb")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2
-theme_override_constants/separation = 12
+theme_override_constants/margin_left = 2
+theme_override_constants/margin_right = 2
 
-[node name="Label" type="Label" parent="VBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="TitleLabel" type="Label" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 horizontal_alignment = 1
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
-theme_override_constants/separation = 20
+theme_override_constants/separation = -1
 
-[node name="TexturePreview" parent="VBoxContainer/HBoxContainer" instance=ExtResource("2_ewk0a")]
+[node name="LeftPanel" type="PanelContainer" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="PreviewContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/LeftPanel"]
+layout_mode = 2
+theme_override_constants/separation = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/LeftPanel/PreviewContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 2
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_right = 2
+theme_override_constants/margin_bottom = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/LeftPanel/PreviewContainer/MarginContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="FileTitle" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/LeftPanel/PreviewContainer/MarginContainer/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(132, 20)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.866667, 0.866667, 0.866667, 1)
+theme_override_font_sizes/font_size = 13
+horizontal_alignment = 1
+vertical_alignment = 1
+text_overrun_behavior = 3
+
+[node name="InfoTooltip" type="MarginContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/LeftPanel/PreviewContainer/MarginContainer/HBoxContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+theme_override_constants/margin_left = 2
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_right = 2
+theme_override_constants/margin_bottom = 2
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer/LeftPanel/PreviewContainer/MarginContainer/HBoxContainer/InfoTooltip"]
+layout_mode = 2
+texture = ExtResource("2_rk3rd")
+
+[node name="TexturePreview" parent="MarginContainer/VBoxContainer/HBoxContainer/LeftPanel/PreviewContainer" instance=ExtResource("2_ewk0a")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(160, 160)
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer"]
+[node name="RightPanel" type="PanelContainer" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(240, 0)
 layout_mode = 2
-theme_override_constants/separation = 8
+theme_type_variation = &"SpaciousPanel"
 
-[node name="DimensionsLabel" type="Label" parent="VBoxContainer/HBoxContainer/VBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/RightPanel"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="DimensionsLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/RightPanel/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0.866667, 0.866667, 0.866667, 1)
-theme_override_font_sizes/font_size = 16
 horizontal_alignment = 1
 
-[node name="FallbackFormatLabel" type="Label" parent="VBoxContainer/HBoxContainer/VBoxContainer"]
+[node name="CenterContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/RightPanel/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/RightPanel/VBoxContainer/CenterContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="FormatHBox" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/RightPanel/VBoxContainer/CenterContainer/VBoxContainer"]
 unique_name_in_owner = true
-visible = false
 layout_mode = 2
-theme_override_font_sizes/font_size = 14
-horizontal_alignment = 1
 
-[node name="FormatHBox" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/VBoxContainer"]
-unique_name_in_owner = true
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/RightPanel/VBoxContainer/CenterContainer/VBoxContainer/FormatHBox"]
 layout_mode = 2
-theme_override_constants/separation = 8
+theme_override_font_sizes/font_size = 12
 
-[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/VBoxContainer/FormatHBox"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 14
-
-[node name="Dropdown" parent="VBoxContainer/HBoxContainer/VBoxContainer/FormatHBox" instance=ExtResource("5_y6ex0")]
+[node name="Dropdown" parent="MarginContainer/VBoxContainer/HBoxContainer/RightPanel/VBoxContainer/CenterContainer/VBoxContainer/FormatHBox" instance=ExtResource("5_y6ex0")]
 layout_mode = 2
 values = PackedStringArray("svg", "png", "jpg", "webp")
 
-[node name="QualityRelated" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/VBoxContainer"]
+[node name="FinalSizeLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/RightPanel/VBoxContainer/CenterContainer/VBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
-theme_override_constants/separation = 6
+theme_override_colors/font_color = Color(0.666667, 0.666667, 0.666667, 1)
+theme_override_fonts/font = ExtResource("5_s3e6m")
+theme_override_font_sizes/font_size = 12
 
-[node name="LosslessCheckBox" type="CheckBox" parent="VBoxContainer/HBoxContainer/VBoxContainer/QualityRelated"]
+[node name="QualityRelatedContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/RightPanel/VBoxContainer/CenterContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="LosslessCheckBox" type="CheckBox" parent="MarginContainer/VBoxContainer/HBoxContainer/RightPanel/VBoxContainer/CenterContainer/VBoxContainer/QualityRelatedContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 0
@@ -81,15 +144,16 @@ focus_mode = 0
 mouse_default_cursor_shape = 2
 button_pressed = true
 
-[node name="QualityHBox" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/VBoxContainer/QualityRelated"]
+[node name="QualityHBox" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/RightPanel/VBoxContainer/CenterContainer/VBoxContainer/QualityRelatedContainer"]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_horizontal = 2
 
-[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/VBoxContainer/QualityRelated/QualityHBox"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/RightPanel/VBoxContainer/CenterContainer/VBoxContainer/QualityRelatedContainer/QualityHBox"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
 
-[node name="Quality" parent="VBoxContainer/HBoxContainer/VBoxContainer/QualityRelated/QualityHBox" instance=ExtResource("6_w1sag")]
+[node name="Quality" parent="MarginContainer/VBoxContainer/HBoxContainer/RightPanel/VBoxContainer/CenterContainer/VBoxContainer/QualityRelatedContainer/QualityHBox" instance=ExtResource("6_w1sag")]
 unique_name_in_owner = true
 layout_mode = 2
 min_value = 1.0
@@ -99,48 +163,97 @@ allow_lower = false
 allow_higher = false
 is_float = false
 
-[node name="ScaleContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/VBoxContainer"]
+[node name="SizeContainer" type="CenterContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/RightPanel/VBoxContainer/CenterContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/VBoxContainer/ScaleContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/RightPanel/VBoxContainer/CenterContainer/VBoxContainer/SizeContainer"]
 layout_mode = 2
-theme_override_constants/separation = 8
+theme_override_constants/separation = 6
 
-[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/VBoxContainer/ScaleContainer/HBoxContainer"]
+[node name="LeftPanel" type="PanelContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/RightPanel/VBoxContainer/CenterContainer/VBoxContainer/SizeContainer/HBoxContainer"]
+layout_mode = 2
+theme_type_variation = &"LightPanel"
+
+[node name="ScaleContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/RightPanel/VBoxContainer/CenterContainer/VBoxContainer/SizeContainer/HBoxContainer/LeftPanel"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/separation = 4
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/RightPanel/VBoxContainer/CenterContainer/VBoxContainer/SizeContainer/HBoxContainer/LeftPanel/ScaleContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
+horizontal_alignment = 1
 
-[node name="Scale" parent="VBoxContainer/HBoxContainer/VBoxContainer/ScaleContainer/HBoxContainer" instance=ExtResource("6_w1sag")]
+[node name="Scale" parent="MarginContainer/VBoxContainer/HBoxContainer/RightPanel/VBoxContainer/CenterContainer/VBoxContainer/SizeContainer/HBoxContainer/LeftPanel/ScaleContainer" instance=ExtResource("6_w1sag")]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(46, 22)
+custom_minimum_size = Vector2(47, 22)
 layout_mode = 2
-initial_value = 8.0
+size_flags_vertical = 4
+initial_value = 1.0
 allow_lower = false
 allow_higher = false
 
-[node name="FinalDimensions" type="Label" parent="VBoxContainer/HBoxContainer/VBoxContainer/ScaleContainer"]
+[node name="RightPanel" type="PanelContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/RightPanel/VBoxContainer/CenterContainer/VBoxContainer/SizeContainer/HBoxContainer"]
+layout_mode = 2
+theme_type_variation = &"LightPanel"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/RightPanel/VBoxContainer/CenterContainer/VBoxContainer/SizeContainer/HBoxContainer/RightPanel"]
+layout_mode = 2
+
+[node name="WidthContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/RightPanel/VBoxContainer/CenterContainer/VBoxContainer/SizeContainer/HBoxContainer/RightPanel/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_colors/font_color = Color(0.666667, 0.666667, 0.666667, 1)
-theme_override_fonts/font = ExtResource("5_s3e6m")
-theme_override_font_sizes/font_size = 10
+size_flags_horizontal = 8
 
-[node name="ButtonContainer" type="HBoxContainer" parent="VBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/RightPanel/VBoxContainer/CenterContainer/VBoxContainer/SizeContainer/HBoxContainer/RightPanel/VBoxContainer/WidthContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+
+[node name="Width" parent="MarginContainer/VBoxContainer/HBoxContainer/RightPanel/VBoxContainer/CenterContainer/VBoxContainer/SizeContainer/HBoxContainer/RightPanel/VBoxContainer/WidthContainer" instance=ExtResource("6_w1sag")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(47, 22)
+layout_mode = 2
+max_value = 16384.0
+initial_value = 1.0
+allow_lower = false
+allow_higher = false
+is_float = false
+
+[node name="HeightContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/RightPanel/VBoxContainer/CenterContainer/VBoxContainer/SizeContainer/HBoxContainer/RightPanel/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 8
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/RightPanel/VBoxContainer/CenterContainer/VBoxContainer/SizeContainer/HBoxContainer/RightPanel/VBoxContainer/HeightContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+
+[node name="Height" parent="MarginContainer/VBoxContainer/HBoxContainer/RightPanel/VBoxContainer/CenterContainer/VBoxContainer/SizeContainer/HBoxContainer/RightPanel/VBoxContainer/HeightContainer" instance=ExtResource("6_w1sag")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(47, 22)
+layout_mode = 2
+max_value = 16384.0
+initial_value = 1.0
+allow_lower = false
+allow_higher = false
+is_float = false
+
+[node name="ButtonContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 alignment = 1
 
-[node name="CancelButton" type="Button" parent="VBoxContainer/ButtonContainer"]
+[node name="CancelButton" type="Button" parent="MarginContainer/VBoxContainer/ButtonContainer"]
 layout_mode = 2
 size_flags_horizontal = 6
 focus_mode = 0
 mouse_default_cursor_shape = 2
 
-[node name="ExportButton" type="Button" parent="VBoxContainer/ButtonContainer"]
+[node name="ExportButton" type="Button" parent="MarginContainer/VBoxContainer/ButtonContainer"]
 layout_mode = 2
 size_flags_horizontal = 6
 focus_mode = 0
 mouse_default_cursor_shape = 2
-
-[connection signal="toggled" from="VBoxContainer/HBoxContainer/VBoxContainer/QualityRelated/LosslessCheckBox" to="." method="_on_lossless_check_box_toggled"]

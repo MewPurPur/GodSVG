@@ -22,7 +22,7 @@ func _ready() -> void:
 			GlobalSettings.savedata.editor_formatter)
 	var preview := preview_parse_result.svg
 	if is_instance_valid(preview):
-		texture_preview.setup(SVGParser.root_to_text(preview), preview.get_size())
+		texture_preview.setup_svg(SVGParser.root_to_text(preview), preview.get_size())
 	
 	if imported_text_parse_result.error != SVGParser.ParseError.OK:
 		texture_preview.hide()

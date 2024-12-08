@@ -1,85 +1,182 @@
 extends PanelContainer
 
 const NumberEditType = preload("res://src/ui_widgets/number_edit.gd")
+const DropdownType = preload("res://src/ui_widgets/dropdown.gd")
 
+var UR := UndoRedo.new()
 var export_data := ImageExportData.new()
 var dimensions := Vector2.ZERO
 
 @onready var dimensions_label: Label = %DimensionsLabel
 @onready var texture_preview: CenterContainer = %TexturePreview
 @onready var format_hbox: HBoxContainer = %FormatHBox
-@onready var format_dropdown: HBoxContainer = %FormatHBox/Dropdown
-@onready var final_dimensions_label: Label = %FinalDimensions
+@onready var format_dropdown: DropdownType = %FormatHBox/Dropdown
+@onready var final_size_label: Label = %FinalSizeLabel
 @onready var scale_edit: NumberEditType = %Scale
-@onready var scale_container: VBoxContainer = %ScaleContainer
+@onready var width_edit: NumberEditType = %Width
+@onready var height_edit: NumberEditType = %Height
+@onready var size_container: CenterContainer = %SizeContainer
 @onready var lossless_checkbox: CheckBox = %LosslessCheckBox
 @onready var quality_edit: NumberEditType = %Quality
 @onready var quality_hbox: HBoxContainer = %QualityHBox
-@onready var fallback_format_label: Label = %FallbackFormatLabel
 @onready var cancel_button: Button = %ButtonContainer/CancelButton
 @onready var export_button: Button = %ButtonContainer/ExportButton
+@onready var file_title: Label = %FileTitle
+@onready var info_tooltip: MarginContainer = %InfoTooltip
+@onready var quality_related_container: HBoxContainer = %QualityRelatedContainer
+
+func _exit_tree() -> void:
+	UR.free()
 
 func _ready() -> void:
 	cancel_button.pressed.connect(queue_free)
 	export_button.pressed.connect(_on_export_button_pressed)
-	scale_edit.value_changed.connect(update_final_scale.unbind(1))
+	scale_edit.value_changed.connect(_on_scale_edit_value_changed)
+	width_edit.value_changed.connect(_on_width_edit_value_changed)
+	height_edit.value_changed.connect(_on_height_edit_value_changed)
 	quality_edit.value_changed.connect(_on_quality_value_changed)
+	lossless_checkbox.toggled.connect(_on_lossless_check_box_toggled)
 	format_dropdown.value_changed.connect(_on_dropdown_value_changed)
-	export_data.format = format_dropdown.value
-	update_format_configuration()
+	
 	dimensions = SVG.root_element.get_size()
 	var bigger_dimension := maxf(dimensions.x, dimensions.y)
 	scale_edit.min_value = 1 / minf(dimensions.x, dimensions.y)
 	scale_edit.max_value = 16384 / bigger_dimension
-	scale_edit.set_value(minf(scale_edit.get_value(), 2048 / bigger_dimension))
-	texture_preview.setup(SVG.get_export_text(), dimensions)
 	
 	# Update dimensions label.
-	var valid_dimensions := is_finite(dimensions.x) and is_finite(dimensions.y)
-	dimensions_label.text = Translator.translate("Size") + ": "
-	if valid_dimensions:
-		dimensions_label.text += String.num(dimensions.x, 2) + "×" +\
-				String.num(dimensions.y, 2)
-	else:
-		dimensions_label.text += Translator.translate("Invalid")
-	# If the size is invalid, only SVG exports are relevant. So hide the dropdown.
-	fallback_format_label.visible = !valid_dimensions
-	format_hbox.visible = valid_dimensions
-	update_final_scale()
-	fallback_format_label.text = Translator.translate("Format") + ": svg"
-	$VBoxContainer/Label.text = Translator.translate("Export Configuration")
-	%FormatHBox/Label.text = Translator.translate("Format")
+	dimensions = SVG.root_element.get_size()
+	dimensions_label.text = Translator.translate("Dimensions") + ": " +\
+			get_dimensions_text(dimensions)
+	update()
+	export_data.changed.connect(update)
+	
+	# Setup the warning for when the image is too big to have a preview.
+	var scaling_factor: float = texture_preview.MAX_IMAGE_DIMENSION / bigger_dimension
+	info_tooltip.tooltip_text = Translator.translate(
+			"Preview image size is limited to {dimensions}").format(
+			{"dimensions": get_dimensions_text(dimensions * scaling_factor, true)})
+	
+	final_size_label.text = Translator.translate("Size") + ": " +\
+			String.humanize_size(SVG.get_export_text().length())
+	%TitleLabel.text = Translator.translate("Export Configuration")
+	%FormatHBox/Label.text = Translator.translate("Format") + ":"
 	%LosslessCheckBox.text = Translator.translate("Lossless")
-	%QualityHBox/Label.text = Translator.translate("Quality")
-	%ScaleContainer/HBoxContainer/Label.text = Translator.translate("Scale")
+	%QualityHBox/Label.text = Translator.translate("Quality") + ":"
+	%ScaleContainer/Label.text = Translator.translate("Scale")
+	%WidthContainer/Label.text = Translator.translate("Width") + ":"
+	%HeightContainer/Label.text = Translator.translate("Height") + ":"
 	cancel_button.text = Translator.translate("Cancel")
 	export_button.text = Translator.translate("Export")
-
-
-func _on_dropdown_value_changed(new_value: String) -> void:
-	export_data.format = new_value
-	update_format_configuration()
+	
+	var left_panel_stylebox: StyleBoxFlat = %LeftPanel.get_theme_stylebox("panel").duplicate()
+	left_panel_stylebox.corner_radius_top_right = 0
+	left_panel_stylebox.corner_radius_bottom_right = 0
+	left_panel_stylebox.corner_radius_bottom_left = 0
+	%LeftPanel.add_theme_stylebox_override("panel", left_panel_stylebox)
+	var right_panel_stylebox: StyleBoxFlat = %RightPanel.get_theme_stylebox("panel").duplicate()
+	right_panel_stylebox.corner_radius_top_left = 0
+	right_panel_stylebox.corner_radius_bottom_left = 0
+	%RightPanel.add_theme_stylebox_override("panel", right_panel_stylebox)
 
 
 func _on_export_button_pressed() -> void:
 	FileUtils.open_export_dialog(export_data)
 
+func _on_dropdown_value_changed(new_value: String) -> void:
+	var current_format := export_data.format
+	print("a")
+	UR.create_action("")
+	UR.add_do_property(export_data, "format", new_value)
+	UR.add_undo_property(export_data, "format", current_format)
+	UR.commit_action()
+
 func _on_lossless_check_box_toggled(toggled_on: bool) -> void:
-	export_data.lossy = not toggled_on
-	if export_data.format == "webp":
-		quality_hbox.visible = export_data.lossy
+	var current_lossy := export_data.lossy
+	UR.create_action("")
+	UR.add_do_property(export_data, "lossy", not toggled_on)
+	UR.add_undo_property(export_data, "lossy", current_lossy)
+	UR.commit_action()
 
-func _on_quality_value_changed(_new_value: float) -> void:
-	export_data.quality = _new_value / 100
+func _on_quality_value_changed(new_value: float) -> void:
+	var current_quality := export_data.quality
+	UR.create_action("")
+	UR.add_do_property(export_data, "quality", new_value / 100)
+	UR.add_undo_property(export_data, "quality", current_quality)
+	UR.commit_action()
 
-func update_final_scale() -> void:
-	export_data.upscale_amount = scale_edit.get_value()
-	var exported_size: Vector2i = dimensions * export_data.upscale_amount
-	final_dimensions_label.text = Translator.translate("Final size") +\
-			": %d×%d" % [exported_size.x, exported_size.y]
+func _on_scale_edit_value_changed(new_value: float) -> void:
+	if new_value == export_data.upscale_amount:
+		return
+	var current_upscale_amount := export_data.upscale_amount
+	UR.create_action("")
+	UR.add_do_property(export_data, "upscale_amount", new_value)
+	UR.add_undo_property(export_data, "upscale_amount", current_upscale_amount)
+	UR.commit_action()
 
-func update_format_configuration() -> void:
-	scale_container.visible = export_data.format in ["png", "jpg", "jpeg", "webp"]
+func _on_width_edit_value_changed(new_value: float) -> void:
+	if roundi(dimensions.x * export_data.upscale_amount) == roundi(new_value):
+		return
+	var current_upscale_amount := export_data.upscale_amount
+	UR.create_action("")
+	UR.add_do_property(export_data, "upscale_amount", new_value / dimensions.x)
+	UR.add_undo_property(export_data, "upscale_amount", current_upscale_amount)
+	UR.commit_action()
+
+func _on_height_edit_value_changed(new_value: float) -> void:
+	if roundi(dimensions.y * export_data.upscale_amount) == roundi(new_value):
+		return
+	var current_upscale_amount := export_data.upscale_amount
+	UR.create_action("")
+	UR.add_do_property(export_data, "upscale_amount", new_value / dimensions.y)
+	UR.add_undo_property(export_data, "upscale_amount", current_upscale_amount)
+	UR.commit_action()
+
+# Everything gets updated at once when export config changes for simplicity.
+func update() -> void:
+	# Determine which fields are visible.
+	quality_related_container.visible = export_data.format in ["jpg", "jpeg", "webp"]
+	quality_hbox.visible = export_data.format in ["jpg", "jpeg"] or\
+			export_data.format == "webp" and export_data.lossy
 	lossless_checkbox.visible = (export_data.format == "webp")
-	quality_hbox.visible = export_data.format in ["jpg", "jpeg", "webp"]
-	_on_lossless_check_box_toggled(not export_data.lossy)
+	size_container.visible = export_data.format in ["png", "jpg", "jpeg", "webp"]
+	
+	final_size_label.visible = (export_data.format == "svg")
+	file_title.text = Utils.get_file_name(GlobalSettings.savedata.current_file_path) +\
+			"." + export_data.format
+	
+	# Display the texture and the warning for inaccurate previews.
+	if export_data.format == "svg":
+		texture_preview.setup_svg(SVG.get_export_text(), dimensions)
+	else:
+		texture_preview.setup_image(export_data)
+		# Sync width, height, and scale without affecting the upscale amount.
+		width_edit.set_value(roundi(dimensions.x * export_data.upscale_amount), false)
+		height_edit.set_value(roundi(dimensions.y * export_data.upscale_amount), false)
+		if roundi(dimensions.x * scale_edit.get_value()) != width_edit.get_value() and\
+		roundi(dimensions.y * scale_edit.get_value()) != height_edit.get_value():
+			scale_edit.set_value(export_data.upscale_amount, false)
+		# Sync all other widgets, so they are updated on changes from UndoRedo too.
+		quality_edit.set_value(export_data.quality * 100, false)
+		lossless_checkbox.set_pressed_no_signal(not export_data.lossy)
+	format_dropdown.set_value(export_data.format, false)
+	
+	info_tooltip.visible = (export_data.format != "svg" and export_data.upscale_amount *\
+			maxf(dimensions.x, dimensions.y) > texture_preview.MAX_IMAGE_DIMENSION)
+
+func get_dimensions_text(sides: Vector2, integer := false) -> String:
+	var precision := 0 if integer else 2
+	return String.num(sides.x, precision) + "×" + String.num(sides.y, precision)
+
+
+func _input(event: InputEvent) -> void:
+	if not visible:
+		return
+	
+	if ShortcutUtils.is_action_pressed(event, "redo"):
+		if UR.has_redo():
+			UR.redo()
+		accept_event()
+	elif ShortcutUtils.is_action_pressed(event, "undo"):
+		if UR.has_undo():
+			UR.undo()
+		accept_event()

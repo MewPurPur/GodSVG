@@ -141,10 +141,10 @@ func update_widgets() -> void:
 			reset_button.visible = (not disabled and\
 					getter.call().to_html() != default.to_html())
 		Type.DROPDOWN:
-			widget.value = str(getter.call())
+			widget.set_value(getter.call())
 			reset_button.visible = (not disabled and getter.call() != default)
 		Type.NUMBER_DROPDOWN:
-			widget.value = widget.to_str(getter.call())
+			widget.set_value(widget.to_str(getter.call()))
 			reset_button.visible = not (disabled or is_equal_approx(getter.call(), default))
 	queue_redraw()
 

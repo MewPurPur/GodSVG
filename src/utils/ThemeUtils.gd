@@ -45,6 +45,7 @@ const flat_button_color_pressed = Color("ddeeff33")
 const flat_button_color_disabled = Color("05060744")
 
 const dark_panel_color = Color("11111a")
+const light_panel_color = Color("ddeeff0c")
 const overlay_panel_inner_color = Color("060614")
 const overlay_panel_border_color = Color("344166")
 
@@ -129,6 +130,17 @@ static func _setup_panelcontainer(theme: Theme) -> void:
 	dark_stylebox.content_margin_bottom = 2.0
 	dark_stylebox.bg_color = dark_panel_color
 	theme.set_stylebox("panel", "DarkPanel", dark_stylebox)
+	
+	theme.add_type("LightPanel")
+	theme.set_type_variation("LightPanel", "PanelContainer")
+	var light_stylebox := StyleBoxFlat.new()
+	light_stylebox.set_corner_radius_all(5)
+	light_stylebox.content_margin_left = 4.0
+	light_stylebox.content_margin_right = 4.0
+	light_stylebox.content_margin_top = 2.0
+	light_stylebox.content_margin_bottom = 2.0
+	light_stylebox.bg_color = light_panel_color
+	theme.set_stylebox("panel", "LightPanel", light_stylebox)
 	
 	theme.add_type("OverlayPanel")
 	theme.set_type_variation("OverlayPanel", "PanelContainer")

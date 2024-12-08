@@ -38,8 +38,8 @@ const GoodColorPicker = preload("res://src/ui_widgets/good_color_picker.gd")
 @export var snap := -0.5  # Negative when disabled.
 @export var color_picker_slider_mode := GoodColorPicker.SliderMode.RGB
 @export var path_command_relative := false
-@export var last_used_dir := ""
 @export var file_dialog_show_hidden := false
+@export var last_used_dir := ""
 @export var current_file_path := ""
 
 @export var shortcuts := {}
