@@ -8,6 +8,7 @@ func setup() -> void:
 	for item_idx in items.size():
 		var item := items[item_idx]
 		var panel_container := PanelContainer.new()
+		panel_container.mouse_filter = Control.MOUSE_FILTER_PASS
 		panel_container.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		panel_container.add_theme_stylebox_override("panel", stylebox)
 		var label := Label.new()

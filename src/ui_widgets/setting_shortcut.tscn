@@ -6,6 +6,7 @@
 [node name="SettingShortcut" type="PanelContainer"]
 offset_right = 172.0
 offset_bottom = 62.0
+mouse_filter = 1
 theme_type_variation = &"SpaciousPanel"
 script = ExtResource("1_4c8oc")
 
