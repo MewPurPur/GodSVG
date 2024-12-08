@@ -21,6 +21,7 @@ offset_right = 21.0
 offset_bottom = 46.0
 size_flags_horizontal = 3
 size_flags_vertical = 0
+mouse_filter = 1
 theme_type_variation = &"SpaciousPanel"
 script = ExtResource("1_itv71")
 

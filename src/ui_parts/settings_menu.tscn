@@ -49,6 +49,7 @@ theme_override_constants/separation = 0
 [node name="PanelContainer" type="PanelContainer" parent="VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
+mouse_filter = 1
 theme_type_variation = &"SideBarContent"
 
 [node name="ContentContainer" type="ScrollContainer" parent="VBoxContainer/HBoxContainer/PanelContainer"]
