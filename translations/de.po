@@ -39,6 +39,22 @@ msgstr "Hierfür muss sich GodSVG mit dem Internet verbinden."
 msgid "OK"
 msgstr "OK"
 
+#: src/autoload/HandlerGUI.gd
+#, fuzzy
+msgid "Export SVG"
+msgstr "Exportieren"
+
+#: src/autoload/HandlerGUI.gd src/ui_parts/export_menu.gd
+#: src/utils/TranslationUtils.gd
+msgid "Export"
+msgstr "Exportieren"
+
+#: src/autoload/HandlerGUI.gd
+msgid ""
+"The graphic can only be exported as SVG because its size is not defined. Do "
+"you want to proceed?"
+msgstr ""
+
 #: src/autoload/Indications.gd
 msgid "View In List"
 msgstr "Als Liste ansehen"
@@ -295,20 +311,20 @@ msgid "New element"
 msgstr "Neues Element"
 
 #: src/ui_parts/export_menu.gd
+msgid "Dimensions"
+msgstr ""
+
+#: src/ui_parts/export_menu.gd
 msgid "Size"
 msgstr "Größe"
 
 #: src/ui_parts/export_menu.gd
-msgid "Invalid"
-msgstr "Ungültig"
+msgid "Export Configuration"
+msgstr "Export-Konfiguration"
 
 #: src/ui_parts/export_menu.gd
 msgid "Format"
 msgstr "Format"
-
-#: src/ui_parts/export_menu.gd
-msgid "Export Configuration"
-msgstr "Export-Konfiguration"
 
 #: src/ui_parts/export_menu.gd
 msgid "Lossless"
@@ -322,13 +338,17 @@ msgstr "Qualität"
 msgid "Scale"
 msgstr "Skalieren"
 
-#: src/ui_parts/export_menu.gd src/utils/TranslationUtils.gd
-msgid "Export"
-msgstr "Exportieren"
+#: src/ui_parts/export_menu.gd
+msgid "Width"
+msgstr ""
 
 #: src/ui_parts/export_menu.gd
-msgid "Final size"
-msgstr "Endgültige Größe"
+msgid "Height"
+msgstr ""
+
+#: src/ui_parts/export_menu.gd
+msgid "Preview image size is limited to {dimensions}"
+msgstr ""
 
 #: src/ui_parts/global_menu.gd src/ui_parts/settings_menu.gd
 msgid "File"
@@ -1078,6 +1098,12 @@ msgstr ""
 "Die Dateierweiterung ist leer. Nur {extension_list} Dateien werden "
 "unterstützt."
 
+#~ msgid "Invalid"
+#~ msgstr "Ungültig"
+
+#~ msgid "Final size"
+#~ msgstr "Endgültige Größe"
+
 #~ msgid ""
 #~ "The file couldn't be opened.\n"
 #~ "Try checking the file path, ensure that the file is not deleted, or "
@@ -1119,10 +1145,6 @@ msgstr ""
 
 #~ msgid "Edit palette name"
 #~ msgstr "Palettennamen ändern"
-
-#, fuzzy
-#~ msgid "Export SVG"
-#~ msgstr "Exportieren"
 
 #~ msgid "Tag color"
 #~ msgstr "Tagfarbe"

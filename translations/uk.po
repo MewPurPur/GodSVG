@@ -39,6 +39,22 @@ msgstr "Ця опція потребує інтернет-з'єднання."
 msgid "OK"
 msgstr "Добре"
 
+#: src/autoload/HandlerGUI.gd
+#, fuzzy
+msgid "Export SVG"
+msgstr "Імпортувати SVG"
+
+#: src/autoload/HandlerGUI.gd src/ui_parts/export_menu.gd
+#: src/utils/TranslationUtils.gd
+msgid "Export"
+msgstr "Експортувати"
+
+#: src/autoload/HandlerGUI.gd
+msgid ""
+"The graphic can only be exported as SVG because its size is not defined. Do "
+"you want to proceed?"
+msgstr ""
+
 #: src/autoload/Indications.gd
 msgid "View In List"
 msgstr "Переглянути списком"
@@ -295,20 +311,20 @@ msgid "New element"
 msgstr "Новий елемент"
 
 #: src/ui_parts/export_menu.gd
+msgid "Dimensions"
+msgstr ""
+
+#: src/ui_parts/export_menu.gd
 msgid "Size"
 msgstr "Розмір"
 
 #: src/ui_parts/export_menu.gd
-msgid "Invalid"
-msgstr "Неправильно"
+msgid "Export Configuration"
+msgstr "Налаштування експорту"
 
 #: src/ui_parts/export_menu.gd
 msgid "Format"
 msgstr "Формат"
-
-#: src/ui_parts/export_menu.gd
-msgid "Export Configuration"
-msgstr "Налаштування експорту"
 
 #: src/ui_parts/export_menu.gd
 msgid "Lossless"
@@ -322,13 +338,17 @@ msgstr "Якість"
 msgid "Scale"
 msgstr "Масштаб"
 
-#: src/ui_parts/export_menu.gd src/utils/TranslationUtils.gd
-msgid "Export"
-msgstr "Експортувати"
+#: src/ui_parts/export_menu.gd
+msgid "Width"
+msgstr ""
 
 #: src/ui_parts/export_menu.gd
-msgid "Final size"
-msgstr "Фінальний розмір"
+msgid "Height"
+msgstr ""
+
+#: src/ui_parts/export_menu.gd
+msgid "Preview image size is limited to {dimensions}"
+msgstr ""
 
 #: src/ui_parts/global_menu.gd src/ui_parts/settings_menu.gd
 msgid "File"
@@ -1084,6 +1104,12 @@ msgstr ""
 msgid "The file extension is empty. Only {extension_list} files are supported."
 msgstr "Розширення файлу порожнє. Тільки {extension_list} файли підтримуються."
 
+#~ msgid "Invalid"
+#~ msgstr "Неправильно"
+
+#~ msgid "Final size"
+#~ msgstr "Фінальний розмір"
+
 #~ msgid ""
 #~ "The file couldn't be opened.\n"
 #~ "Try checking the file path, ensure that the file is not deleted, or "
@@ -1127,10 +1153,6 @@ msgstr "Розширення файлу порожнє. Тільки {extension_
 #~ msgstr "Редагувати назву палітри"
 
 #~ msgid "Import SVG"
-#~ msgstr "Імпортувати SVG"
-
-#, fuzzy
-#~ msgid "Export SVG"
 #~ msgstr "Імпортувати SVG"
 
 #~ msgid "Tag color"

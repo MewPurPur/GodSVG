@@ -292,7 +292,17 @@ func open_donate() -> void:
 	add_menu(DonateMenu.instantiate())
 
 func open_export() -> void:
-	add_menu(ExportMenu.instantiate())
+	var width := SVG.root_element.width
+	var height := SVG.root_element.height
+	if is_finite(width) and is_finite(height) and width > 0.0 and height > 0.0:
+		add_menu(ExportMenu.instantiate())
+	else:
+		var confirm_dialog = ConfirmDialog.instantiate()
+		add_menu(confirm_dialog)
+		var svg_export_data := ImageExportData.new()
+		confirm_dialog.setup(Translator.translate("Export SVG"), Translator.translate(
+				"The graphic can only be exported as SVG because its size is not defined. Do you want to proceed?"),
+				Translator.translate("Export"), FileUtils.open_export_dialog.bind(svg_export_data))
 
 
 func _calculate_auto_scale() -> float:
