@@ -1,6 +1,7 @@
 extends HBoxContainer
 
 const MacMenu = preload("res://src/ui_parts/global_menu.tscn")
+const Toolbar = preload("res://src/ui_parts/toolbar.tscn")
 
 @onready var panel_container: PanelContainer = $PanelContainer
 
@@ -9,6 +10,8 @@ func _ready() -> void:
 	update_theme()
 	if NativeMenu.has_feature(NativeMenu.FEATURE_GLOBAL_MENU):
 		add_child(MacMenu.instantiate())
+	if DisplayServer.get_name() == "Android":
+		add_child(Toolbar.instantiate())
 
 func update_theme() -> void:
 	var stylebox := StyleBoxFlat.new()
