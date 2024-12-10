@@ -1,0 +1,81 @@
+[gd_scene load_steps=7 format=3 uid="uid://jf1wq6xy617n"]
+
+[ext_resource type="Script" path="res://src/ui_parts/toolbar.gd" id="1_bdakw"]
+[ext_resource type="Texture2D" uid="uid://dgwjiijcgblou" path="res://visual/icons/Undo.svg" id="1_crkhh"]
+[ext_resource type="Texture2D" uid="uid://gxcy17tjtyfv" path="res://visual/icons/DragHandle.svg" id="2_8txvx"]
+[ext_resource type="Texture2D" uid="uid://x7hsvbn0k3i8" path="res://visual/icons/Redo.svg" id="2_xhuso"]
+[ext_resource type="Texture2D" uid="uid://cj5x2ti8150ja" path="res://visual/icons/Delete.svg" id="3_46m7v"]
+[ext_resource type="Texture2D" uid="uid://rxfu7kcmo7c1" path="res://visual/icons/Save.svg" id="3_q3uii"]
+
+[node name="Toolbar" type="VBoxContainer"]
+top_level = true
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -109.0
+offset_top = -84.0
+offset_right = 109.0
+offset_bottom = -34.0
+grow_horizontal = 2
+grow_vertical = 0
+script = ExtResource("1_bdakw")
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+theme_type_variation = &"DarkPanel"
+metadata/_edit_use_anchors_ = true
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="DragHandle" type="TextureRect" parent="PanelContainer/HBoxContainer"]
+custom_minimum_size = Vector2(25, 0)
+layout_mode = 2
+mouse_default_cursor_shape = 6
+texture = ExtResource("2_8txvx")
+stretch_mode = 5
+
+[node name="Save" type="Button" parent="PanelContainer/HBoxContainer"]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+size_flags_vertical = 4
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_constants/h_separation = 4
+icon = ExtResource("3_q3uii")
+icon_alignment = 1
+
+[node name="Delete" type="Button" parent="PanelContainer/HBoxContainer"]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+size_flags_vertical = 4
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_constants/h_separation = 4
+icon = ExtResource("3_46m7v")
+icon_alignment = 1
+
+[node name="Undo" type="Button" parent="PanelContainer/HBoxContainer"]
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 2
+size_flags_vertical = 4
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_constants/h_separation = 4
+text = "Undo"
+icon = ExtResource("1_crkhh")
+
+[node name="Redo" type="Button" parent="PanelContainer/HBoxContainer"]
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 2
+size_flags_vertical = 4
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_constants/h_separation = 4
+text = "Redo"
+icon = ExtResource("2_xhuso")
