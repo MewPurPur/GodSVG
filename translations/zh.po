@@ -39,6 +39,22 @@ msgstr "需要连接网络。"
 msgid "OK"
 msgstr "确定"
 
+#: src/autoload/HandlerGUI.gd
+#, fuzzy
+msgid "Export SVG"
+msgstr "导出"
+
+#: src/autoload/HandlerGUI.gd src/ui_parts/export_menu.gd
+#: src/utils/TranslationUtils.gd
+msgid "Export"
+msgstr "导出"
+
+#: src/autoload/HandlerGUI.gd
+msgid ""
+"The graphic can only be exported as SVG because its size is not defined. Do "
+"you want to proceed?"
+msgstr ""
+
 #: src/autoload/Indications.gd
 msgid "View In List"
 msgstr "在列表中查看"
@@ -298,20 +314,20 @@ msgid "New element"
 msgstr "调色盘"
 
 #: src/ui_parts/export_menu.gd
+msgid "Dimensions"
+msgstr ""
+
+#: src/ui_parts/export_menu.gd
 msgid "Size"
 msgstr "大小"
 
 #: src/ui_parts/export_menu.gd
-msgid "Invalid"
-msgstr "无效"
+msgid "Export Configuration"
+msgstr "导出配置"
 
 #: src/ui_parts/export_menu.gd
 msgid "Format"
 msgstr "格式"
-
-#: src/ui_parts/export_menu.gd
-msgid "Export Configuration"
-msgstr "导出配置"
 
 #: src/ui_parts/export_menu.gd
 msgid "Lossless"
@@ -325,13 +341,17 @@ msgstr "质量"
 msgid "Scale"
 msgstr "缩放"
 
-#: src/ui_parts/export_menu.gd src/utils/TranslationUtils.gd
-msgid "Export"
-msgstr "导出"
+#: src/ui_parts/export_menu.gd
+msgid "Width"
+msgstr ""
 
 #: src/ui_parts/export_menu.gd
-msgid "Final size"
-msgstr "最终大小"
+msgid "Height"
+msgstr ""
+
+#: src/ui_parts/export_menu.gd
+msgid "Preview image size is limited to {dimensions}"
+msgstr ""
 
 #: src/ui_parts/global_menu.gd src/ui_parts/settings_menu.gd
 msgid "File"
@@ -1109,6 +1129,12 @@ msgstr "不支持 “{passed_extension}” 文件。仅支持 \"svg\" 文件。"
 msgid "The file extension is empty. Only {extension_list} files are supported."
 msgstr "文件拓展名是空的。仅支持 “svg” 文件。"
 
+#~ msgid "Invalid"
+#~ msgstr "无效"
+
+#~ msgid "Final size"
+#~ msgstr "最终大小"
+
 #~ msgid ""
 #~ "The file couldn't be opened.\n"
 #~ "Try checking the file path, ensure that the file is not deleted, or "
@@ -1154,10 +1180,6 @@ msgstr "文件拓展名是空的。仅支持 “svg” 文件。"
 
 #~ msgid "Edit palette name"
 #~ msgstr "编辑调色盘名称"
-
-#, fuzzy
-#~ msgid "Export SVG"
-#~ msgstr "导出"
 
 #~ msgid "Unknown tag"
 #~ msgstr "未知的元素"

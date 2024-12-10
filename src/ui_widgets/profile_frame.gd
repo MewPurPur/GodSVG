@@ -22,7 +22,7 @@ func _ready() -> void:
 	mouse_entered.connect(queue_redraw)
 	mouse_exited.connect(queue_redraw)
 	resized.connect(setup_size)
-	dropdown.value = getter.call()
+	dropdown.set_value(getter.call())
 	setup_size()
 
 func setup_size() -> void:
@@ -33,7 +33,7 @@ func setup_size() -> void:
 # value can be String for dropdown or int for enum dropdown.
 func _dropdown_modification(value: Variant) -> void:
 	setter.call(value)
-	dropdown.value = getter.call()
+	dropdown.set_value(getter.call())
 	value_changed.emit()
 
 func _draw() -> void:

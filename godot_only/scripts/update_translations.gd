@@ -21,8 +21,8 @@ func populate_delimiters() -> void:
 	for method in ["translate"]:
 		for quote in ["'", '"', '"""']:
 			delimiters["Translator." + method + "(" + quote] = quote + ")"
-			for i in 4:
-				delimiters["Translator." + method + "(\n" + "\t".repeat(2 + i) + quote] = quote + ")"
+			for i in range(2, 8):
+				delimiters["Translator." + method + "(\n" + "\t".repeat(i) + quote] = quote + ")"
 
 var messages: Array[Message] = [Message.new("translation-credits", PackedStringArray())]
 
@@ -94,7 +94,7 @@ func update_translations() -> void:
 	
 	var files := DirAccess.get_files_at(ProjectSettings.globalize_path("translations"))
 	for file in files:
-		if not file.get_extension() == "po" and file != "GodSVG.pot":
+		if not (file.get_extension() == "po" or file == "GodSVG.pot"):
 			continue
 		
 		var args := PackedStringArray(["--update", "--quiet", "--verbose", "--backup=off",
