@@ -178,6 +178,9 @@ max_height := -1.0, separator_indices := PackedInt32Array()) -> void:
 			separator.theme_type_variation = "SmallHSeparator"
 			main_container.add_child(separator)
 		main_container.add_child(_setup_button(buttons[idx], align_left))
+	
+	# Without this delay, get_minimum_size().y was returning a value larger than expected.
+	await main_container.ready
 	if min_width > 0:
 		custom_minimum_size.x = min_width
 	if max_height > 0 and max_height < get_minimum_size().y:

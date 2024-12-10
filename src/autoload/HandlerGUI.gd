@@ -8,12 +8,14 @@ var AboutMenu = load("res://src/ui_parts/about_menu.tscn")
 var DonateMenu = load("res://src/ui_parts/donate_menu.tscn")
 var UpdateMenu = load("res://src/ui_parts/update_menu.tscn")
 var ExportMenu = load("res://src/ui_parts/export_menu.tscn")
+var ShortcutPanelScene = load("res://src/ui_parts/shortcut_panel.tscn")
 
 # Menus should be added with add_menu() and removed by being freed.
 # To add them as modals that don't hide the previous one, use add_dialog().
 var menu_stack: Array[ColorRect]
 var popup_stack: Array[Control]
 
+var shortcut_panel: VBoxContainer
 
 func _enter_tree() -> void:
 	var window := get_window()
@@ -25,6 +27,10 @@ func _ready() -> void:
 	Configs.ui_scale_changed.connect(update_ui_scale)
 	await get_tree().process_frame  # Helps make things more consistent.
 	update_ui_scale()
+	
+	if OS.get_name() == "Android":
+		shortcut_panel = ShortcutPanelScene.instantiate()
+		get_tree().root.add_child(shortcut_panel)
 
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_WM_ABOUT:
