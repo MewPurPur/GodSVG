@@ -282,6 +282,7 @@ func clear_hovered() -> void:
 func clear_inner_hovered() -> void:
 	if inner_hovered != -1:
 		inner_hovered = -1
+		semi_hovered_xid.clear()
 		hover_changed.emit()
 
 # Returns whether the given element or inner editor is hovered.
