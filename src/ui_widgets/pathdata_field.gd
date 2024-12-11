@@ -45,7 +45,7 @@ var hovered_strip: Control
 var focused_strip: Control
 
 var current_selections: Array[int] = []
-var current_hovered: int = -1
+var current_hovered := -1
 @onready var ci := commands_container.get_canvas_item()
 var add_move_button: Control
 
@@ -70,11 +70,16 @@ func setup() -> void:
 	line_edit.text_change_canceled.connect(func(): setup_font(line_edit.text))
 	line_edit.text_change_canceled.connect(sync_to_attribute)
 	line_edit.focus_entered.connect(_on_line_edit_focus_entered)
-	commands_container.draw.connect(commands_draw)
+	commands_container.draw.connect(_commands_draw)
 	commands_container.gui_input.connect(_on_commands_gui_input)
 	commands_container.mouse_exited.connect(_on_commands_mouse_exited)
 	Indications.hover_changed.connect(_on_selections_or_hover_changed)
 	Indications.selection_changed.connect(_on_selections_or_hover_changed)
+	# So, the reason we need this is quite complicated. We need to know
+	# the current_selections and current_hovered at the time this widget is created.
+	# This is because the widget can sometimes be created before they are cleared
+	# from a past state of the SVG. So we trigger this method to update those.
+	_on_selections_or_hover_changed()
 	update_translation()
 
 
@@ -139,7 +144,7 @@ func _on_selections_or_hover_changed() -> void:
 	var new_selections: Array[int] = []
 	if Indications.semi_selected_xid == element.xid:
 		new_selections = Indications.inner_selections
-	var new_hovered: int = -1
+	var new_hovered := -1
 	if Indications.semi_hovered_xid == element.xid:
 		new_hovered = Indications.inner_hovered
 	# Only redraw if selections or hovered changed.
@@ -214,7 +219,7 @@ func _on_commands_gui_input(event: InputEvent) -> void:
 					Indications.Context.LIST), popup_pos, viewport)
 
 
-func commands_draw() -> void:
+func _commands_draw() -> void:
 	RenderingServer.canvas_item_clear(ci)
 	for i: int in element.get_attribute(attribute_name).get_command_count():
 		var v_offset := STRIP_HEIGHT * i

@@ -37,7 +37,7 @@ var hovered_strip: Control
 var focused_strip: Control
 
 var current_selections: Array[int] = []
-var current_hovered: int = -1
+var current_hovered := -1
 @onready var ci := points_container.get_canvas_item()
 var add_move_button: Control
 
@@ -66,6 +66,11 @@ func setup() -> void:
 	points_container.mouse_exited.connect(_on_points_mouse_exited)
 	Indications.hover_changed.connect(_on_selections_or_hover_changed)
 	Indications.selection_changed.connect(_on_selections_or_hover_changed)
+	# So, the reason we need this is quite complicated. We need to know
+	# the current_selections and current_hovered at the time this widget is created.
+	# This is because the widget can sometimes be created before they are cleared
+	# from a past state of the SVG. So we trigger this method to update those.
+	_on_selections_or_hover_changed()
 	update_translation()
 
 
@@ -134,7 +139,7 @@ func _on_selections_or_hover_changed() -> void:
 	var new_selections: Array[int] = []
 	if Indications.semi_selected_xid == element.xid:
 		new_selections = Indications.inner_selections
-	var new_hovered: int = -1
+	var new_hovered := -1
 	if Indications.semi_hovered_xid == element.xid:
 		new_hovered = Indications.inner_hovered
 	# Only redraw if selections or hovered changed.
