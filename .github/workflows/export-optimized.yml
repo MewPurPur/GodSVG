@@ -324,3 +324,75 @@ jobs:
           path: godsvg/build/web
           if-no-files-found: error
           retention-days: 28
+
+  build-android:
+    name: Export GodSVG for Android
+    runs-on: ubuntu-latest
+    env:
+      PLATFORM: "Android"
+    steps:
+      - name: Cache Template
+        id: cache-template
+        uses: actions/cache@v3
+        with:
+          key: template-${{ env.PLATFORM }}-${{ env.GODOT_VERSION }}-${{ env.GODOT_RELEASE }}-${{ env.BUILD_OPTIONS }}
+          path: |
+            ~/.local/share/godot/export_templates/
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: 17
+          distribution: temurin
+
+      - name: Set up Godot Editor
+        run: |
+          mkdir -p ~/godot-editor
+          cd ~/godot-editor
+          wget -q https://github.com/godotengine/godot-builds/releases/download/${GODOT_VERSION}-${GODOT_RELEASE}/Godot_v${GODOT_VERSION}-${GODOT_RELEASE}_linux.x86_64.zip
+          unzip Godot_v${GODOT_VERSION}-${GODOT_RELEASE}_linux.x86_64.zip
+          mv ./Godot_v${GODOT_VERSION}-${GODOT_RELEASE}_linux.x86_64 ~/godot-editor/godot
+          echo "~/godot-editor" >> $GITHUB_PATH
+
+      - if: ${{ steps.cache-template.outputs.cache-hit != 'true' }}
+        name: Install dependencies
+        run: sudo apt-get install -y scons python3
+
+      - if: ${{ steps.cache-template.outputs.cache-hit != 'true' }}
+        name: Clone Godot repository
+        run: git clone $GODOT_REPO godot
+
+      - if: ${{ steps.cache-template.outputs.cache-hit != 'true' }}
+        name: Checkout specific commit
+        run: |
+          cd godot
+          git fetch
+          git checkout $GODOT_COMMIT_HASH
+
+      - if: ${{ steps.cache-template.outputs.cache-hit != 'true' }}
+        name: Build Godot template for Android
+        run: |
+          cd godot
+          scons p=android arch=arm64 generate_apk=yes ${BUILD_OPTIONS} target=template_debug
+          mkdir -p ~/.local/share/godot/export_templates/${GODOT_VERSION}.${GODOT_RELEASE}/
+          mv ./bin/android_debug.apk ~/.local/share/godot/export_templates/${GODOT_VERSION}.${GODOT_RELEASE}/android_debug.apk
+          mv ./bin/android_source.zip ~/.local/share/godot/export_templates/${GODOT_VERSION}.${GODOT_RELEASE}/android_source.zip
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          path: godsvg
+
+      - name: Export project
+        run: |
+          cd godsvg
+          mkdir -p build/android
+          godot --headless --export-debug "Android" build/android/GodSVG.apk
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.PROJECT_NAME }}.Android
+          path: godsvg/build/android/GodSVG.apk
+          if-no-files-found: error
+          retention-days: 28
