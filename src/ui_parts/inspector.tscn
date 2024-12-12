@@ -1,22 +1,10 @@
-[gd_scene load_steps=7 format=3 uid="uid://ccynisiuyn5qn"]
+[gd_scene load_steps=6 format=3 uid="uid://ccynisiuyn5qn"]
 
 [ext_resource type="Script" path="res://src/ui_parts/inspector.gd" id="1_16ggy"]
 [ext_resource type="PackedScene" uid="uid://bktmk76u7dsu0" path="res://src/ui_parts/root_element_editor.tscn" id="2_jnl50"]
 [ext_resource type="Texture2D" uid="uid://eif2ioi0mw17" path="res://visual/icons/Plus.svg" id="3_vo6hf"]
 [ext_resource type="Script" path="res://src/ui_parts/element_container.gd" id="4_i4hc2"]
 [ext_resource type="Script" path="res://src/ui_parts/move_to_overlay.gd" id="5_otlmf"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4j4hv"]
-draw_center = false
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.0980392, 0.0980392, 0.14902, 1)
-corner_radius_top_left = 5
-corner_radius_top_right = 5
-corner_radius_bottom_right = 5
-corner_radius_bottom_left = 5
 
 [node name="Inspector" type="VBoxContainer"]
 custom_minimum_size = Vector2(408, 0)
@@ -26,10 +14,17 @@ offset_right = 392.0
 grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-theme_override_constants/separation = 6
+theme_override_constants/separation = -2
 script = ExtResource("1_16ggy")
 
-[node name="AddButton" type="Button" parent="."]
+[node name="ActionPanel" type="PanelContainer" parent="."]
+layout_mode = 2
+
+[node name="ActionContainer" type="HBoxContainer" parent="ActionPanel"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="AddButton" type="Button" parent="ActionPanel/ActionContainer"]
 layout_mode = 2
 size_flags_horizontal = 0
 focus_mode = 0
@@ -43,7 +38,6 @@ custom_minimum_size = Vector2(0, 240)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-theme_override_styles/panel = SubResource("StyleBoxFlat_4j4hv")
 script = ExtResource("4_i4hc2")
 
 [node name="ScrollContainer" type="ScrollContainer" parent="ElementContainer"]
