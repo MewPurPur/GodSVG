@@ -24,6 +24,7 @@ var dimensions := Vector2.ZERO
 @onready var file_title: Label = %FileTitle
 @onready var info_tooltip: MarginContainer = %InfoTooltip
 @onready var quality_related_container: HBoxContainer = %QualityRelatedContainer
+@onready var titled_panel: HTitledPanel = %TitledPanel
 
 func _exit_tree() -> void:
 	UR.free()
@@ -68,15 +69,15 @@ func _ready() -> void:
 	cancel_button.text = Translator.translate("Cancel")
 	export_button.text = Translator.translate("Export")
 	
-	var left_panel_stylebox: StyleBoxFlat = %LeftPanel.get_theme_stylebox("panel").duplicate()
-	left_panel_stylebox.corner_radius_top_right = 0
-	left_panel_stylebox.corner_radius_bottom_right = 0
-	left_panel_stylebox.corner_radius_bottom_left = 0
-	%LeftPanel.add_theme_stylebox_override("panel", left_panel_stylebox)
-	var right_panel_stylebox: StyleBoxFlat = %RightPanel.get_theme_stylebox("panel").duplicate()
-	right_panel_stylebox.corner_radius_top_left = 0
-	right_panel_stylebox.corner_radius_bottom_left = 0
-	%RightPanel.add_theme_stylebox_override("panel", right_panel_stylebox)
+	titled_panel.corner_radius_bottom_left = 0
+	titled_panel.corner_radius_bottom_right = 5
+	titled_panel.corner_radius_top_left = 5
+	titled_panel.corner_radius_top_right = 5
+	titled_panel.color = ThemeUtils.common_panel_inner_color
+	titled_panel.border_color = ThemeUtils.common_panel_border_color
+	titled_panel.border_width = 2
+	titled_panel.title_margin = 2
+	titled_panel.panel_margin = 8
 
 
 func _on_export_button_pressed() -> void:
@@ -84,7 +85,6 @@ func _on_export_button_pressed() -> void:
 
 func _on_dropdown_value_changed(new_value: String) -> void:
 	var current_format := export_data.format
-	print("a")
 	UR.create_action("")
 	UR.add_do_property(export_data, "format", new_value)
 	UR.add_undo_property(export_data, "format", current_format)

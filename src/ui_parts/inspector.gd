@@ -1,12 +1,10 @@
-extends VBoxContainer
+extends VTitledPanel
 
 const ElementFrame = preload("res://src/ui_widgets/element_frame.tscn")
 const BasicXNodeFrame = preload("res://src/ui_widgets/basic_xnode_frame.tscn")
 
 @onready var xnodes_container: VBoxContainer = %RootChildren
-@onready var add_button: Button = %ActionContainer/AddButton
-@onready var action_panel: PanelContainer = $ActionPanel
-@onready var element_container: PanelContainer = $ElementContainer
+@onready var add_button: Button = $ActionContainer/AddButton
 
 
 func _ready() -> void:
@@ -21,20 +19,9 @@ func _ready() -> void:
 
 
 func update_theme() -> void:
-	var bottom_stylebox := StyleBoxFlat.new()
-	bottom_stylebox.set_border_width_all(2)
-	bottom_stylebox.border_color = ThemeUtils.common_panel_inner_color
-	var top_stylebox := bottom_stylebox.duplicate()
-	
-	bottom_stylebox.corner_radius_bottom_left = 5
-	bottom_stylebox.corner_radius_bottom_right = 5
-	bottom_stylebox.draw_center = false
-	top_stylebox.corner_radius_top_left = 5
-	top_stylebox.corner_radius_top_right = 5
-	top_stylebox.bg_color = Color(ThemeUtils.common_panel_inner_color, 0.4)
-	top_stylebox.set_content_margin_all(4)
-	action_panel.add_theme_stylebox_override("panel", top_stylebox)
-	element_container.add_theme_stylebox_override("panel", bottom_stylebox)
+	color = Color.TRANSPARENT
+	border_color = ThemeUtils.common_panel_inner_color
+	title_color = Color(ThemeUtils.common_panel_inner_color, 0.4)
 
 func update_translation() -> void:
 	add_button.text = Translator.translate("Add element")

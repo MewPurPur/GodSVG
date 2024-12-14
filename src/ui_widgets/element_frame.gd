@@ -1,4 +1,4 @@
-extends VBoxContainer
+extends VTitledPanel
 
 const warning_icon = preload("res://visual/icons/Warning.svg")
 
@@ -18,10 +18,9 @@ const element_content_types = {
 }
 const ElementContentUnrecognized = preload("res://src/ui_widgets/element_content_unrecognized.tscn")
 
-@onready var main_container: VBoxContainer = $Content/MainContainer
-@onready var title_bar: Panel = $TitleBar
+@onready var main_container: VBoxContainer = $MainContainer
+@onready var title_bar: Control = $TitleBar
 var child_xnodes_container: VBoxContainer  # Only created if there are child xnodes.
-@onready var content: PanelContainer = $Content
 
 var element: Element
 
@@ -142,8 +141,8 @@ func _on_mouse_entered() -> void:
 	title_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	title_button.mouse_filter = Control.MOUSE_FILTER_PASS
 	title_button.theme_type_variation = "FlatButton"
-	title_button.position = title_bar.position +\
-			Vector2(half_bar_width - title_width / 2 - element_icon_size.x / 2 - 6, 3)
+	title_button.position = Vector2(half_bar_width - title_width / 2 -\
+			element_icon_size.x / 2 - 6, 0)
 	title_button.size = Vector2(title_width + 28, 20)
 	title_bar.add_child(title_button)
 	title_button.gui_input.connect(_on_title_button_gui_input)
@@ -167,59 +166,33 @@ func _on_mouse_exited() -> void:
 
 
 func determine_selection_highlight() -> void:
-	var title_sb := StyleBoxFlat.new()
-	title_sb.corner_radius_top_left = 4
-	title_sb.corner_radius_top_right = 4
-	title_sb.set_border_width_all(2)
-	title_sb.set_content_margin_all(4)
-	
-	var content_sb := StyleBoxFlat.new()
-	content_sb.corner_radius_bottom_left = 4
-	content_sb.corner_radius_bottom_right = 4
-	content_sb.border_width_left = 2
-	content_sb.border_width_right = 2
-	content_sb.border_width_bottom = 2
-	content_sb.content_margin_top = 5
-	content_sb.content_margin_left = 7
-	content_sb.content_margin_bottom = 7
-	content_sb.content_margin_right = 7
-	
 	var is_selected := element.xid in Indications.selected_xids
 	var is_hovered := Indications.hovered_xid == element.xid
 	
 	if is_selected:
 		if is_hovered:
-			content_sb.bg_color = Color.from_hsv(0.625, 0.48, 0.27)
-			title_sb.bg_color = Color.from_hsv(0.625, 0.5, 0.38)
+			color = Color.from_hsv(0.625, 0.48, 0.27)
+			title_color = Color.from_hsv(0.625, 0.5, 0.38)
 		else:
-			content_sb.bg_color = Color.from_hsv(0.625, 0.5, 0.25)
-			title_sb.bg_color = Color.from_hsv(0.625, 0.6, 0.35)
-		content_sb.border_color = Color.from_hsv(0.6, 0.75, 0.75)
-		title_sb.border_color = Color.from_hsv(0.6, 0.75, 0.75)
+			color = Color.from_hsv(0.625, 0.5, 0.25)
+			title_color = Color.from_hsv(0.625, 0.6, 0.35)
+		border_color = Color.from_hsv(0.6, 0.75, 0.75)
 	elif is_hovered:
-		content_sb.bg_color = Color.from_hsv(0.625, 0.57, 0.19)
-		title_sb.bg_color = Color.from_hsv(0.625, 0.4, 0.2)
-		content_sb.border_color = Color.from_hsv(0.6, 0.55, 0.45)
-		title_sb.border_color = Color.from_hsv(0.6, 0.55, 0.45)
+		color = Color.from_hsv(0.625, 0.57, 0.19)
+		title_color = Color.from_hsv(0.625, 0.4, 0.2)
+		border_color = Color.from_hsv(0.6, 0.55, 0.45)
 	else:
-		content_sb.bg_color = Color.from_hsv(0.625, 0.6, 0.16)
-		title_sb.bg_color = Color.from_hsv(0.625, 0.45, 0.17)
-		content_sb.border_color = Color.from_hsv(0.6, 0.5, 0.35)
-		title_sb.border_color = Color.from_hsv(0.6, 0.5, 0.35)
+		color = Color.from_hsv(0.625, 0.6, 0.16)
+		title_color = Color.from_hsv(0.625, 0.45, 0.17)
+		border_color = Color.from_hsv(0.6, 0.5, 0.35)
 	
 	var depth := element.xid.size() - 1
 	var depth_tint := depth * 0.12
 	if depth > 0:
-		content_sb.bg_color = Color.from_hsv(content_sb.bg_color.h + depth_tint,
-				content_sb.bg_color.s, content_sb.bg_color.v)
-		content_sb.border_color = Color.from_hsv(content_sb.border_color.h + depth_tint,
-				content_sb.border_color.s, content_sb.border_color.v)
-		title_sb.bg_color = Color.from_hsv(title_sb.bg_color.h + depth_tint,
-				title_sb.bg_color.s, title_sb.bg_color.v)
-		title_sb.border_color = Color.from_hsv(title_sb.border_color.h + depth_tint,
-				title_sb.border_color.s, title_sb.border_color.v)
-	content.add_theme_stylebox_override("panel", content_sb)
-	title_bar.add_theme_stylebox_override("panel", title_sb)
+		color.h += depth_tint
+		border_color.h += depth_tint
+		title_color.h += depth_tint
+	queue_redraw()
 
 func _draw() -> void:
 	RenderingServer.canvas_item_clear(surface)
@@ -272,14 +245,14 @@ func _on_title_bar_draw() -> void:
 	var half_title_width := ThemeUtils.mono_font.get_string_size(element.name,
 			HORIZONTAL_ALIGNMENT_LEFT, 180, 12).x / 2
 	ThemeUtils.mono_font.draw_string(title_bar_ci, Vector2(half_bar_width -\
-			half_title_width + element_icon_size.x / 2, 18), element.name,
+			half_title_width + element_icon_size.x / 2, 15), element.name,
 			HORIZONTAL_ALIGNMENT_LEFT, 180, 12)
 	element_icon.draw_rect(title_bar_ci, Rect2(Vector2(half_bar_width - half_title_width -\
-			element_icon_size.x + 6, 4).round(), element_icon_size), false)
+			element_icon_size.x + 6, 1).round(), element_icon_size), false)
 	
 	var element_warnings := element.get_config_warnings()
 	if not element_warnings.is_empty():
-		warning_icon.draw_rect(title_bar_ci, Rect2(Vector2(title_bar.size.x - 23, 4),
+		warning_icon.draw_rect(title_bar_ci, Rect2(Vector2(title_bar.size.x - 23, 2),
 				warning_icon.get_size()), false)
 
 # Block dragging from starting when pressing the title button.
