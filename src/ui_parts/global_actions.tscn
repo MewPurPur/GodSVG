@@ -1,0 +1,58 @@
+[gd_scene load_steps=7 format=3 uid="uid://c5sepglho1q70"]
+
+[ext_resource type="FontFile" uid="uid://dc0w4sx0h0fui" path="res://visual/fonts/MainFontBold.ttf" id="1_1hpf8"]
+[ext_resource type="Script" path="res://src/ui_parts/global_actions.gd" id="1_ci8uq"]
+[ext_resource type="Texture2D" uid="uid://c47mt41k028j2" path="res://visual/icons/Duplicate.svg" id="2_04aqx"]
+[ext_resource type="Texture2D" uid="uid://6ymbl3jqersp" path="res://visual/icons/Import.svg" id="2_wn7v7"]
+[ext_resource type="Texture2D" uid="uid://d0uvwj0t44n6v" path="res://visual/icons/Export.svg" id="3_k33gv"]
+[ext_resource type="Texture2D" uid="uid://ccbta5q43jobk" path="res://visual/icons/More.svg" id="6_fk7js"]
+
+[node name="GlobalActions" type="HBoxContainer"]
+script = ExtResource("1_ci8uq")
+
+[node name="LayoutButton" type="Button" parent="."]
+layout_mode = 2
+size_flags_horizontal = 8
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_type_variation = &"IconButton"
+icon = ExtResource("2_04aqx")
+
+[node name="SizeButton" type="Button" parent="."]
+layout_mode = 2
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_type_variation = &"TranslucentButton"
+theme_override_fonts/font = ExtResource("1_1hpf8")
+
+[node name="FileButton" type="Button" parent="."]
+layout_mode = 2
+size_flags_horizontal = 2
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_type_variation = &"FlatButton"
+text_overrun_behavior = 3
+
+[node name="ImportButton" type="Button" parent="."]
+layout_mode = 2
+size_flags_horizontal = 8
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_type_variation = &"IconButton"
+icon = ExtResource("2_wn7v7")
+
+[node name="ExportButton" type="Button" parent="."]
+layout_mode = 2
+size_flags_horizontal = 8
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_type_variation = &"IconButton"
+icon = ExtResource("3_k33gv")
+
+[node name="MoreButton" type="Button" parent="."]
+layout_mode = 2
+size_flags_horizontal = 8
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_type_variation = &"IconButton"
+icon = ExtResource("6_fk7js")

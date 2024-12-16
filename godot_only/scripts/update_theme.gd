@@ -5,6 +5,6 @@
 extends EditorScript
 
 func _run() -> void:
-	var theme := ThemeUtils.generate_theme()
-	ResourceSaver.save(theme, "res://godot_only/temp_theme.tres")
+	ThemeUtils.generate_theme(ThemeConfig.new())
+	ResourceSaver.save(ThemeUtils.generate_theme(), "res://godot_only/temp_theme.tres")
 	print("Theme updated.")

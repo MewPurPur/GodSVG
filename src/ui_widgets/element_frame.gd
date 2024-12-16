@@ -133,7 +133,7 @@ func _gui_input(event: InputEvent) -> void:
 func _on_mouse_entered() -> void:
 	var element_icon_size := DB.get_element_icon(element.name).get_size()
 	var half_bar_width := title_bar.size.x / 2
-	var title_width := ThemeUtils.mono_font.get_string_size(element.name,
+	var title_width := ThemeConfig.mono_font.get_string_size(element.name,
 			HORIZONTAL_ALIGNMENT_LEFT, 180, 12).x
 	# Add button.
 	var title_button := Button.new()
@@ -219,8 +219,7 @@ func _draw() -> void:
 			are_all_children_valid = false
 			break
 	
-	var drop_border_color := GlobalSettings.get_validity_color(false,
-			not are_all_children_valid)
+	var drop_border_color := Utils.get_validity_color(false, not are_all_children_valid)
 	drop_border_color.s = lerpf(drop_border_color.s, 1.0, 0.5)
 	drop_sb.border_color = drop_border_color
 	if drop_xid == parent_xid + PackedInt32Array([element.xid[-1]]):
@@ -242,9 +241,9 @@ func _on_title_bar_draw() -> void:
 	var element_icon := DB.get_element_icon(element.name)
 	var element_icon_size := element_icon.get_size()
 	var half_bar_width := title_bar.size.x / 2
-	var half_title_width := ThemeUtils.mono_font.get_string_size(element.name,
+	var half_title_width := ThemeConfig.mono_font.get_string_size(element.name,
 			HORIZONTAL_ALIGNMENT_LEFT, 180, 12).x / 2
-	ThemeUtils.mono_font.draw_string(title_bar_ci, Vector2(half_bar_width -\
+	ThemeConfig.mono_font.draw_string(title_bar_ci, Vector2(half_bar_width -\
 			half_title_width + element_icon_size.x / 2, 15), element.name,
 			HORIZONTAL_ALIGNMENT_LEFT, 180, 12)
 	element_icon.draw_rect(title_bar_ci, Rect2(Vector2(half_bar_width - half_title_width -\

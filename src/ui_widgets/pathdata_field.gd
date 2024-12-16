@@ -61,7 +61,7 @@ func sync_to_attribute() -> void:
 
 
 func setup() -> void:
-	GlobalSettings.language_changed.connect(update_translation)
+	Configs.language_changed.connect(update_translation)
 	sync_to_attribute()
 	element.attribute_changed.connect(_on_element_attribute_changed)
 	line_edit.tooltip_text = attribute_name
@@ -95,7 +95,7 @@ func _on_line_edit_focus_entered() -> void:
 
 func setup_font(new_text: String) -> void:
 	if new_text.is_empty():
-		line_edit.add_theme_font_override("font", ThemeUtils.regular_font)
+		line_edit.add_theme_font_override("font", ThemeConfig.main_font)
 	else:
 		line_edit.remove_theme_font_override("font")
 
@@ -245,13 +245,13 @@ func _commands_draw() -> void:
 		var cmd_char := cmd.command_char
 		# Draw the action button.
 		more_icon.draw_rect(ci, Rect2(Vector2(commands_container.size.x - 19, 4 + v_offset),
-				Vector2(14, 14)), false, ThemeUtils.icon_normal_color)
+				Vector2(14, 14)), false, ThemeConfig.icon_normal_color)
 		# Draw the relative/absolute button.
 		var relative_stylebox := absolute_button_normal if\
 				Utils.is_string_upper(cmd_char) else relative_button_normal
 		relative_stylebox.draw(ci, Rect2(Vector2(3, 2 + v_offset),
 				Vector2(18, STRIP_HEIGHT - 4)))
-		ThemeUtils.mono_font.draw_string(ci, Vector2(6, v_offset + STRIP_HEIGHT - 6),
+		ThemeConfig.mono_font.draw_string(ci, Vector2(6, v_offset + STRIP_HEIGHT - 6),
 				cmd_char, HORIZONTAL_ALIGNMENT_CENTER, 12, 13)
 		# Draw the fields.
 		var rect := Rect2(Vector2(25, 2 + v_offset), Vector2(44, 18))
@@ -270,14 +270,14 @@ func _commands_draw() -> void:
 				var is_sweep: bool = (cmd.sweep_flag == 0)
 				flag_field.get_theme_stylebox("normal" if is_large_arc\
 						else "pressed").draw(ci, rect)
-				ThemeUtils.mono_font.draw_string(ci, rect.position + Vector2(5, 14),
+				ThemeConfig.mono_font.draw_string(ci, rect.position + Vector2(5, 14),
 						String.num_uint64(cmd.large_arc_flag), HORIZONTAL_ALIGNMENT_LEFT,
 						rect.size.x, 14, flag_field.get_theme_color(
 								"font_color" if is_large_arc else "font_pressed_color"))
 				rect.position.x = rect.end.x + 4
 				flag_field.get_theme_stylebox("normal" if is_sweep
 						else "pressed").draw(ci, rect)
-				ThemeUtils.mono_font.draw_string(ci, rect.position + Vector2(5, 14),
+				ThemeConfig.mono_font.draw_string(ci, rect.position + Vector2(5, 14),
 						String.num_uint64(cmd.sweep_flag), HORIZONTAL_ALIGNMENT_LEFT,
 						rect.size.x, 14, flag_field.get_theme_color("font_color" if is_sweep\
 						else "font_pressed_color"))
@@ -297,7 +297,7 @@ func _commands_draw() -> void:
 
 func draw_numfield(rect: Rect2, property: String, path_command: PathCommand) -> void:
 	mini_line_edit_stylebox.draw(ci, rect)
-	ThemeUtils.mono_font.draw_string(ci, rect.position + Vector2(3, 13),
+	ThemeConfig.mono_font.draw_string(ci, rect.position + Vector2(3, 13),
 			NumstringParser.basic_num_to_text(path_command.get(property)),
 			HORIZONTAL_ALIGNMENT_LEFT, rect.size.x - 6,
 			mini_line_edit_font_size, mini_line_edit_font_color)
@@ -372,7 +372,7 @@ func setup_path_command_controls(idx: int) -> Control:
 	relative_button.mouse_filter = Control.MOUSE_FILTER_PASS
 	relative_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	relative_button.begin_bulk_theme_override()
-	relative_button.add_theme_font_override("font", ThemeUtils.mono_font)
+	relative_button.add_theme_font_override("font", ThemeConfig.mono_font)
 	relative_button.add_theme_font_size_override("font_size", 13)
 	relative_button.add_theme_color_override("font_color", Color(1, 1, 1))
 	# Disabled styleboxes aren unused, but must be set for the correct content margins.

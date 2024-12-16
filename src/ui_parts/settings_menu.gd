@@ -23,12 +23,12 @@ var advice := {}  # String: String
 
 func _ready() -> void:
 	close_button.pressed.connect(queue_free)
-	GlobalSettings.language_changed.connect(setup_everything)
+	Configs.language_changed.connect(setup_everything)
 	update_language_button()
 	update_close_button()
 	setup_tabs()
 	tabs.get_child(0).button_pressed = true
-	GlobalSettings.theme_changed.connect(setup_theming)
+	Configs.theme_changed.connect(setup_theming)
 	setup_theming()
 
 func setup_theming() -> void:
@@ -82,7 +82,25 @@ func setup_content() -> void:
 			var vbox := VBoxContainer.new()
 			vbox.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 			content_container.add_child(vbox)
-			rebuild_formatters()
+			var categories := HFlowContainer.new()
+			var button_group := ButtonGroup.new()
+			for tab_idx in formatter_tab_names:
+				var btn := Button.new()
+				btn.toggle_mode = true
+				btn.button_group = button_group
+				btn.pressed.connect(show_formatter.bind(tab_idx))
+				btn.text = get_translated_formatter_tab(tab_idx)
+				btn.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+				btn.focus_mode = Control.FOCUS_NONE
+				categories.add_child(btn)
+			vbox.add_child(categories)
+			var formatters := VBoxContainer.new()
+			formatters.add_theme_constant_override("separation", 3)
+			formatters.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+			formatters.size_flags_vertical = Control.SIZE_EXPAND_FILL
+			vbox.add_child(formatters)
+			categories.get_child(0).button_pressed = true
+			categories.get_child(0).pressed.emit()
 		"palettes":
 			advice_panel.hide()
 			var vbox := VBoxContainer.new()
@@ -237,7 +255,7 @@ func add_dropdown(text: String) -> Control:
 	var frame := SettingFrame.instantiate()
 	frame.text = text
 	setup_frame(frame)
-	frame.setup_dropdown(GlobalSettings.get_enum_texts(current_setup_setting))
+	frame.setup_dropdown(Configs.savedata.get_enum_texts(current_setup_setting))
 	add_frame(frame)
 	return frame
 
@@ -259,10 +277,10 @@ func add_color_edit(text: String, enable_alpha := true) -> Control:
 	return frame
 
 func setup_frame(frame: Control) -> void:
-	frame.getter = GlobalSettings.savedata.get.bind(current_setup_setting)
+	frame.getter = Configs.savedata.get.bind(current_setup_setting)
 	var bind := current_setup_setting
-	frame.setter = func(p): GlobalSettings.modify_setting(bind, p)
-	frame.default = GlobalSettings.get_default(current_setup_setting)
+	frame.setter = func(p): Configs.savedata.set(bind, p)
+	frame.default = Configs.get_default(current_setup_setting)
 	frame.mouse_entered.connect(show_advice.bind(current_setup_setting))
 	frame.mouse_exited.connect(hide_advice.bind(current_setup_setting))
 
@@ -322,7 +340,7 @@ func _on_language_pressed() -> void:
 			var label := Label.new()
 			label.text = percentage
 			label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
-			var shortcut_text_color := ThemeUtils.common_subtle_text_color
+			var shortcut_text_color := ThemeConfig.common_subtle_text_color
 			if is_current_locale:
 				shortcut_text_color.a *= 0.75
 			label.add_theme_color_override("font_color", shortcut_text_color)
@@ -352,12 +370,12 @@ func _on_language_pressed() -> void:
 	HandlerGUI.popup_under_rect_center(lang_popup, lang_button.get_global_rect(), get_viewport())
 
 func _on_language_chosen(locale: String) -> void:
-	GlobalSettings.modify_setting("language", locale)
+	Configs.savedata.language = locale
 	update_language_button()
 
 func update_language_button() -> void:
 	lang_button.text = Translator.translate("Language") + ": " +\
-			TranslationServer.get_locale().to_upper()
+			Configs.savedata.language.to_upper()
 
 
 # Palette tab helpers.
@@ -393,7 +411,7 @@ func _shared_add_palettes_logic(palettes: Array[ColorPalette]) -> void:
 		_shared_add_palette_logic(palettes[0])
 
 func _shared_add_palette_logic(palette: ColorPalette) -> void:
-	GlobalSettings.add_new_palette(palette)
+	Configs.savedata.add_new_palette(palette)
 	rebuild_color_palettes()
 
 
@@ -401,7 +419,7 @@ func rebuild_color_palettes() -> void:
 	var palette_container := content_container.get_child(-1)
 	for palette_config in palette_container.get_children():
 		palette_config.queue_free()
-	for palette in GlobalSettings.savedata.palettes:
+	for palette in Configs.savedata.get_palettes():
 		var palette_config := PaletteConfigWidget.instantiate()
 		palette_container.add_child(palette_config)
 		palette_config.assign_palette(palette)
@@ -433,57 +451,22 @@ func rebuild_color_palettes() -> void:
 	xml_palette_button.pressed.connect(_popup_xml_palette_options.bind(xml_palette_button))
 
 
-func add_formatter() -> void:
-	GlobalSettings.add_new_formatter(Formatter.new())
-	rebuild_formatters()
+var formatter_tab_names := ["editor_formatter", "export_formatter"]
 
-func rebuild_formatters() -> void:
-	var formatter_container := content_container.get_child(-1)
-	for formatter_config in formatter_container.get_children():
-		formatter_config.queue_free()
-	
-	var available_formatters := {}
-	for formatter in GlobalSettings.savedata.formatters:
-		if not formatter.title.is_empty():
-			available_formatters[formatter.title] = formatter
-	
-	for context in [["editor_formatter", Translator.translate("Editor formatter")],
-	["export_formatter", Translator.translate("Export formatter")]]:
-		var frame := ProfileFrame.instantiate()
-		frame.setup_dropdown()
-		frame.text = context[1]
-		frame.getter = func(): return GlobalSettings.savedata.get(context[0]).title
-		frame.setter = func(p): GlobalSettings.modify_setting(context[0],
-				available_formatters[p] if available_formatters.has(p) else\
-				available_formatters.values()[0])
-		frame.mouse_entered.connect(show_advice.bind(current_setup_setting))
-		frame.mouse_exited.connect(hide_advice.bind(current_setup_setting))
-		formatter_container.add_child(frame)
-		frame.dropdown.values = available_formatters.keys()
-	
-	for formatter in GlobalSettings.savedata.formatters:
-		var formatter_config := FormatterConfigWidget.instantiate()
-		formatter_config.current_formatter = formatter
-		formatter_container.add_child(formatter_config)
-		formatter_config.layout_changed.connect(rebuild_formatters)
-	# Add the button for adding a new formatter.
-	var add_formatter_button := Button.new()
-	add_formatter_button.theme_type_variation = "TranslucentButton"
-	add_formatter_button.icon = plus_icon
-	add_formatter_button.icon_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	add_formatter_button.focus_mode = Control.FOCUS_NONE
-	add_formatter_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-	formatter_container.add_child(add_formatter_button)
-	add_formatter_button.pressed.connect(add_formatter)
+func get_translated_formatter_tab(tab_idx: String) -> String:
+	match tab_idx:
+		"editor_formatter": return Translator.translate("Editor formatter")
+		"export_formatter": return Translator.translate("Export formatter")
+		_: return ""
 
-func set_formatter(formatter_purpose: String, formatter_name: String) -> void:
-	var new_formatter: Formatter
-	for formatter in GlobalSettings.savedata.formatters:
-		if formatter.title == formatter_name:
-			new_formatter = formatter
-			break
-	if is_instance_valid(new_formatter):
-		GlobalSettings.modify_setting(formatter_purpose, new_formatter)
+func show_formatter(category: String):
+	var formatter_container := content_container.get_child(-1).get_child(-1)
+	for child in formatter_container.get_children():
+		child.queue_free()
+	
+	var formatter_config := FormatterConfigWidget.instantiate()
+	formatter_config.current_formatter = Configs.savedata.get(category)
+	formatter_container.add_child(formatter_config)
 
 
 var shortcut_tab_names := ["file", "edit", "view", "tool", "help"]
@@ -495,8 +478,7 @@ func get_translated_shortcut_tab(tab_idx: String) -> String:
 		"view": return Translator.translate("View")
 		"tool": return Translator.translate("Tool")
 		"help": return Translator.translate("Help")
-		_: return ""
-
+	return ""
 
 func show_shortcuts(category: String):
 	var shortcuts_container := content_container.get_child(-1).get_child(-1)

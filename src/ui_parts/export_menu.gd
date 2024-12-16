@@ -73,8 +73,8 @@ func _ready() -> void:
 	titled_panel.corner_radius_bottom_right = 5
 	titled_panel.corner_radius_top_left = 5
 	titled_panel.corner_radius_top_right = 5
-	titled_panel.color = ThemeUtils.common_panel_inner_color
-	titled_panel.border_color = ThemeUtils.common_panel_border_color
+	titled_panel.color = ThemeConfig.common_panel_inner_color
+	titled_panel.border_color = ThemeConfig.common_panel_border_color
 	titled_panel.border_width = 2
 	titled_panel.title_margin = 2
 	titled_panel.panel_margin = 8
@@ -141,8 +141,8 @@ func update() -> void:
 	size_container.visible = export_data.format in ["png", "jpg", "jpeg", "webp"]
 	
 	final_size_label.visible = (export_data.format == "svg")
-	file_title.text = Utils.get_file_name(GlobalSettings.savedata.current_file_path) +\
-			"." + export_data.format
+	file_title.text = Utils.get_file_name(Configs.savedata.get_current_tab().svg_file_path) + "." +\
+			export_data.format
 	
 	# Display the texture and the warning for inaccurate previews.
 	if export_data.format == "svg":

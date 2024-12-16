@@ -600,14 +600,14 @@ func popup_convert_to_context(popup_method: Callable) -> void:
 				var btn := ContextPopup.create_button(BasicXNode.get_type_string(xnode_type),
 						convert_selected_xnode_to.bind(xnode_type),
 						false, DB.get_xnode_icon(xnode_type))
-				btn.add_theme_font_override("font", ThemeUtils.mono_font)
+				btn.add_theme_font_override("font", Configs.savedata.theme_config.mono_font)
 				btn_arr.append(btn)
 		else:
 			for element_name in xnode.possible_conversions:
 				var btn := ContextPopup.create_button(element_name,
 						convert_selected_element_to.bind(element_name),
 						!xnode.can_replace(element_name), DB.get_element_icon(element_name))
-				btn.add_theme_font_override("font", ThemeUtils.mono_font)
+				btn.add_theme_font_override("font", Configs.savedata.theme_config.mono_font)
 				btn_arr.append(btn)
 		var context_popup := ContextPopup.new()
 		context_popup.setup(btn_arr, true)

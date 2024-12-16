@@ -16,7 +16,7 @@ signal basic_xnode_rendered_text_changed(xid: PackedInt32Array)
 
 var formatter: Formatter
 
-func _init(new_formatter: Formatter = GlobalSettings.savedata.editor_formatter) -> void:
+func _init(new_formatter: Formatter) -> void:
 	super()
 	xid = PackedInt32Array()
 	root = self

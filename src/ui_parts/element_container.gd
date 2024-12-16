@@ -1,12 +1,12 @@
-extends PanelContainer
+extends Control
 
 # Autoscroll area on drag and drop. As a factor from edge to center.
 const autoscroll_frac = 0.35  # 35% of the screen will be taken by the autoscroll areas.
 const autoscroll_speed = 1500.0
 
-@onready var scroll_container: ScrollContainer = $ScrollContainer
 @onready var xnodes: VBoxContainer = %RootChildren
 @onready var covering_rect: Control = $MoveToOverlay
+@onready var scroll_container: ScrollContainer = $ScrollContainer
 
 func _ready():
 	Indications.requested_scroll_to_element_editor.connect(scroll_to_view_element_editor)
@@ -16,7 +16,7 @@ func _process(delta: float) -> void:
 		return
 	
 	# Autoscroll when the dragged object is near the edge of the screen.
-	var full_area := scroll_container.get_global_rect()
+	var full_area := get_global_rect()
 	var mouse_y := get_global_mouse_position().y
 	var center_y := full_area.get_center().y
 	# A factor in the range [-1, 1] for how far away the mouse is from the center.
@@ -110,7 +110,7 @@ func _gui_input(event: InputEvent) -> void:
 				var btn := ContextPopup.create_button(element_name,
 						add_element.bind(element_name, location), false,
 						DB.get_element_icon(element_name))
-				btn.add_theme_font_override("font", ThemeUtils.mono_font)
+				btn.add_theme_font_override("font", ThemeConfig.mono_font)
 				btn_array.append(btn)
 			
 			var separation_indices := PackedInt32Array([1, 4, 7])
@@ -141,10 +141,10 @@ func get_xnode_editor_rect(xid: PackedInt32Array) -> Rect2:
 		return Rect2()
 	
 	# Position relative to the element container.
-	return Rect2(xnode_editor.global_position - scroll_container.global_position +\
+	return Rect2(xnode_editor.global_position - global_position +\
 			Vector2(0, scroll_container.scroll_vertical), xnode_editor.size)
 
 # This function assumes there exists a element editor for the corresponding XID.
 func scroll_to_view_element_editor(xid: PackedInt32Array) -> void:
-	scroll_container.get_v_scroll_bar().value = get_xnode_editor_rect(xid).position.y -\
-			scroll_container.size.y / 5
+	scroll_container.get_v_scroll_bar().value =\
+			get_xnode_editor_rect(xid).position.y - size.y / 5

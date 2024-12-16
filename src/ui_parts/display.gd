@@ -23,19 +23,23 @@ const ConfirmDialog := preload("res://src/ui_parts/confirm_dialog.tscn")
 @onready var debug_container: MarginContainer = $ViewportPanel/DebugMargins
 @onready var debug_label: Label = %DebugContainer/DebugLabel
 @onready var input_debug_label: Label = %DebugContainer/InputDebugLabel
+@onready var tab_bar: TabBar = $TabBar
 
 var reference_overlay := false
 
 func _ready() -> void:
-	GlobalSettings.language_changed.connect(update_translations)
-	GlobalSettings.snap_changed.connect(update_snap_config)
-	GlobalSettings.theme_changed.connect(update_theme)
+	Configs.language_changed.connect(update_translations)
+	Configs.snap_changed.connect(update_snap_config)
+	Configs.theme_changed.connect(update_theme)
 	update_translations()
 	update_theme()
 	update_snap_config()
 	get_window().window_input.connect(_update_input_debug)
 	view_settings_updated.emit(grid_visuals.visible, controls.visible,
 			viewport.display_texture.rasterized)
+	# TEMP
+	for tab in Configs.savedata.get_tabs():
+		tab_bar.add_tab(tab.svg_file_path if not tab.svg_file_path.is_empty() else "[Not saved]")
 
 func _unhandled_input(event: InputEvent) -> void:
 	if Input.is_action_pressed("debug"):
@@ -71,20 +75,20 @@ func update_translations() -> void:
 
 func update_theme() -> void:
 	var stylebox := StyleBoxFlat.new()
-	stylebox.bg_color = ThemeUtils.overlay_panel_inner_color
+	stylebox.bg_color = ThemeConfig.overlay_panel_inner_color
 	stylebox.set_content_margin_all(6)
 	panel_container.add_theme_stylebox_override("panel", stylebox)
 	var frame := StyleBoxFlat.new()
 	frame.draw_center = false
 	frame.border_width_left = 2
 	frame.border_width_top = 2
-	frame.border_color = ThemeUtils.connected_button_border_color_pressed
+	frame.border_color = ThemeConfig.connected_button_border_color_pressed
 	frame.content_margin_left = 2
 	frame.content_margin_top = 2
 	viewport_panel.add_theme_stylebox_override("panel", frame)
 
 func update_snap_config() -> void:
-	var snap_config := GlobalSettings.savedata.snap
+	var snap_config := Configs.savedata.snap
 	var snap_enabled := snap_config > 0.0
 	snap_button.button_pressed = snap_enabled
 	snapper.editable = snap_enabled
@@ -209,11 +213,11 @@ func set_snap_amount(snap_value: float) -> void:
 	snapper.set_value(snap_value)
 
 func _on_snap_button_toggled(toggled_on: bool) -> void:
-	GlobalSettings.modify_setting("snap", absf(GlobalSettings.savedata.snap) if toggled_on\
-			else -absf(GlobalSettings.savedata.snap))
+	Configs.savedata.snap = absf(Configs.savedata.snap) if toggled_on else\
+			-absf(Configs.savedata.snap)
 
 func _on_snap_number_edit_value_changed(new_value: float) -> void:
-	GlobalSettings.modify_setting("snap", new_value * signf(GlobalSettings.savedata.snap))
+	Configs.savedata.snap = new_value * signf(Configs.savedata.snap)
 
 # The strings here are intentionally not localized.
 func update_debug() -> void:

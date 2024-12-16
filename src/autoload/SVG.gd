@@ -1,5 +1,5 @@
 # This singleton handles the two representations of the SVG:
-# The SVG text, and the native ElementSVG representation.
+# The SVG text, and the native ElementRoot representation.
 extends Node
 
 signal changed_unknown
@@ -28,12 +28,11 @@ var save_pending := false
 
 var text := ""
 
-var root_element := ElementRoot.new()
+var root_element := ElementRoot.new(Formatter.new())
 
 var UR := UndoRedo.new()
 
 func _ready() -> void:
-	UR.version_changed.connect(_on_undo_redo)
 	changed_unknown.connect(queue_update)
 	xnode_layout_changed.connect(queue_update)
 	any_attribute_changed.connect(queue_update.unbind(1))
@@ -50,8 +49,8 @@ func _ready() -> void:
 	
 	# Guarantee a proper SVG text first, as the import warnings dialog
 	# that might pop up from command line file opening is cancellable.
-	if not GlobalSettings.svg_text.is_empty():
-		apply_svg_text(GlobalSettings.svg_text)
+	if not Configs.svg_text.is_empty():
+		apply_svg_text(Configs.svg_text)
 	else:
 		apply_svg_text(DEFAULT)
 	
@@ -59,9 +58,7 @@ func _ready() -> void:
 		FileUtils.apply_svg_from_path(cmdline_args[0])
 	
 	UR.clear_history()
-
-func _exit_tree() -> void:
-	UR.free()
+	UR.version_changed.connect(_on_undo_redo)
 
 
 func queue_update() -> void:
@@ -77,20 +74,19 @@ func _process(_delta: float) -> void:
 	
 	if save_pending:
 		save_pending = false
-		var saved_text := GlobalSettings.svg_text
+		var saved_text := Configs.savedata.get_current_tab().get_svg_text()
 		if saved_text == text:
 			return
 		UR.create_action("")
-		UR.add_do_property(GlobalSettings, "svg_text", text)
-		UR.add_undo_property(GlobalSettings, "svg_text", saved_text)
+		UR.add_do_property(Configs, "svg_text", text)
+		UR.add_undo_property(Configs, "svg_text", saved_text)
 		UR.add_do_property(self, "text", text)
 		UR.add_undo_property(self, "text", saved_text)
 		UR.commit_action()
 
 
 func sync_elements() -> void:
-	var svg_parse_result := SVGParser.text_to_root(text,
-			GlobalSettings.savedata.editor_formatter)
+	var svg_parse_result := SVGParser.text_to_root(text, Configs.savedata.editor_formatter)
 	parsing_finished.emit(svg_parse_result.error)
 	if svg_parse_result.error == SVGParser.ParseError.OK:
 		root_element = svg_parse_result.svg
@@ -134,7 +130,7 @@ func redo() -> void:
 		sync_elements()
 
 func _on_undo_redo() -> void:
-	GlobalSettings.svg_text = text
+	Configs.svg_text = text
 
 func apply_svg_text(svg_text: String) -> void:
 	set_text(svg_text)
@@ -142,8 +138,8 @@ func apply_svg_text(svg_text: String) -> void:
 	sync_elements()
 
 func optimize() -> void:
-	SVG.root_element.optimize()
-	SVG.queue_save()
+	root_element.optimize()
+	queue_save()
 
 func get_export_text() -> String:
 	return SVGParser.root_to_text(root_element)

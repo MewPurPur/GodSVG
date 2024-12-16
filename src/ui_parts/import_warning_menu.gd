@@ -16,10 +16,10 @@ func _ready() -> void:
 	
 	# Convert forward and backward to show how GodSVG would display the given SVG.
 	var imported_text_parse_result := SVGParser.text_to_root(imported_text,
-			GlobalSettings.savedata.editor_formatter)
+			Configs.savedata.editor_formatter)
 	var preview_text := SVGParser.root_to_text(imported_text_parse_result.svg)
 	var preview_parse_result := SVGParser.text_to_root(preview_text,
-			GlobalSettings.savedata.editor_formatter)
+			Configs.savedata.editor_formatter)
 	var preview := preview_parse_result.svg
 	if is_instance_valid(preview):
 		texture_preview.setup_svg(SVGParser.root_to_text(preview), preview.get_size())
@@ -29,7 +29,7 @@ func _ready() -> void:
 		margin_container.custom_minimum_size.y = 48
 		size.y = 0
 		warnings_label.add_theme_color_override("default_color",
-				GlobalSettings.savedata.basic_color_error)
+				Configs.savedata.basic_color_error)
 		warnings_label.text = "[center]%s: %s" % [Translator.translate(
 				"Syntax error"), SVGParser.get_error_string(imported_text_parse_result.error)]
 	else:
@@ -38,7 +38,7 @@ func _ready() -> void:
 			imported.emit()
 		else:
 			warnings_label.add_theme_color_override("default_color",
-					GlobalSettings.savedata.basic_color_warning)
+					Configs.savedata.theme_config.basic_color_warning)
 			for warning in svg_warnings:
 				warnings_label.text += warning + "\n"
 	ok_button.grab_focus()

@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://ccynisiuyn5qn"]
+[gd_scene load_steps=6 format=3 uid="uid://ccynisiuyn5qn"]
 
 [ext_resource type="Script" path="res://src/ui_parts/inspector.gd" id="1_16ggy"]
 [ext_resource type="PackedScene" uid="uid://bktmk76u7dsu0" path="res://src/ui_parts/root_element_editor.tscn" id="2_jnl50"]
+[ext_resource type="Script" path="res://src/ui_parts/element_container.gd" id="3_0bow6"]
 [ext_resource type="Texture2D" uid="uid://eif2ioi0mw17" path="res://visual/icons/Plus.svg" id="3_vo6hf"]
 [ext_resource type="Script" path="res://src/ui_parts/move_to_overlay.gd" id="5_otlmf"]
 
@@ -33,27 +34,36 @@ mouse_default_cursor_shape = 2
 theme_override_constants/h_separation = 4
 icon = ExtResource("3_vo6hf")
 
-[node name="ElementContainer" type="ScrollContainer" parent="."]
+[node name="ElementContainer" type="Control" parent="."]
 custom_minimum_size = Vector2(0, 240)
 layout_mode = 2
+script = ExtResource("3_0bow6")
+
+[node name="ScrollContainer" type="ScrollContainer" parent="ElementContainer"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 size_flags_vertical = 3
 horizontal_scroll_mode = 0
 
-[node name="MarginContainer" type="MarginContainer" parent="ElementContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="ElementContainer/ScrollContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/margin_top = 3
 theme_override_constants/margin_bottom = 3
 
-[node name="AllElements" type="VBoxContainer" parent="ElementContainer/MarginContainer"]
+[node name="AllElements" type="VBoxContainer" parent="ElementContainer/ScrollContainer/MarginContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 8
 
-[node name="RootElementEditor" parent="ElementContainer/MarginContainer/AllElements" instance=ExtResource("2_jnl50")]
+[node name="RootElementEditor" parent="ElementContainer/ScrollContainer/MarginContainer/AllElements" instance=ExtResource("2_jnl50")]
 layout_mode = 2
 
-[node name="RootChildren" type="VBoxContainer" parent="ElementContainer/MarginContainer/AllElements"]
+[node name="RootChildren" type="VBoxContainer" parent="ElementContainer/ScrollContainer/MarginContainer/AllElements"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -62,5 +72,13 @@ theme_override_constants/separation = 5
 
 [node name="MoveToOverlay" type="Control" parent="ElementContainer"]
 visible = false
-layout_mode = 2
+modulate = Color(1, 1, 1, 0.733333)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 script = ExtResource("5_otlmf")

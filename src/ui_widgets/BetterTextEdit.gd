@@ -56,7 +56,7 @@ func redraw_caret() -> void:
 	if not has_focus():
 		return
 	
-	var char_size := ThemeUtils.mono_font.get_char_size(69,
+	var char_size := ThemeConfig.mono_font.get_char_size(69,
 			get_theme_font_size("font_size"))
 	for caret in get_caret_count():
 		var caret_pos := Vector2.ZERO

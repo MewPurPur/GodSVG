@@ -162,13 +162,13 @@ func _draw() -> void:
 	
 	var color := Color(1, 1, 1, 0.9)
 	if disabled:
-		color = ThemeUtils.common_subtle_text_color
+		color = ThemeConfig.common_subtle_text_color
 	elif dim_text:
 		color = Color(1, 1, 1, 0.5)
 	
 	var non_panel_width := size.x - panel_width
 	var text_obj := TextLine.new()
-	text_obj.add_string(text, ThemeUtils.regular_font, 13)
+	text_obj.add_string(text, ThemeConfig.main_font, 13)
 	text_obj.width = non_panel_width - 16
 	text_obj.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	text_obj.draw(ci, Vector2(4, 5), color)

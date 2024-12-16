@@ -1,15 +1,11 @@
 extends PanelContainer
 
-signal layout_changed
-
 const SettingFrame = preload("res://src/ui_widgets/setting_frame.tscn")
 const ProfileFrame = preload("res://src/ui_widgets/profile_frame.tscn")
 
 var current_formatter: Formatter
-var currently_edited_idx := -1
 
-@onready var formatter_button: Button = %MainContainer/HBoxContainer/FormatterButton
-@onready var name_edit: BetterLineEdit = %MainContainer/HBoxContainer/NameEdit
+@onready var formatter_button: Button = %MainContainer/FormatterButton
 @onready var configs_container: VBoxContainer = %MainContainer/ConfigsContainer
 
 func setup_theme() -> void:
@@ -27,31 +23,17 @@ func setup_theme() -> void:
 
 func _ready() -> void:
 	formatter_button.pressed.connect(_on_formatter_button_pressed)
-	name_edit.text_change_canceled.connect(_on_name_edit_text_change_canceled)
-	name_edit.text_changed.connect(_on_name_edit_text_changed)
-	name_edit.text_submitted.connect(_on_name_edit_text_submitted)
-	GlobalSettings.theme_changed.connect(setup_theme)
+	Configs.theme_changed.connect(setup_theme)
 	setup_theme()
 	construct()
 
 
-func find_formatter_index() -> int:
-	for idx in GlobalSettings.savedata.formatters.size():
-		if GlobalSettings.savedata.formatters[idx] == current_formatter:
-			return idx
-	return -1
-
 func _on_formatter_button_pressed() -> void:
 	var btn_arr: Array[Button] = []
-	btn_arr.append(ContextPopup.create_button(Translator.translate("Rename"),
-			popup_edit_name, false, load("res://visual/icons/Rename.svg")))
 	btn_arr.append(ContextPopup.create_button(
 			Translator.translate("Reset to default"),
 			current_formatter.reset_to_default, current_formatter.is_everything_default(),
 			load("res://visual/icons/Reload.svg")))
-	btn_arr.append(ContextPopup.create_button(Translator.translate("Delete"),
-			delete, current_formatter in [GlobalSettings.savedata.editor_formatter,
-			GlobalSettings.savedata.export_formatter], load("res://visual/icons/Delete.svg")))
 	
 	var context_popup := ContextPopup.new()
 	context_popup.setup(btn_arr, true)
@@ -59,28 +41,13 @@ func _on_formatter_button_pressed() -> void:
 			get_viewport())
 
 
-func popup_edit_name() -> void:
-	formatter_button.hide()
-	name_edit.show()
-	name_edit.text = current_formatter.title
-	name_edit.grab_focus()
-	name_edit.caret_column = name_edit.text.length()
-
-func hide_name_edit() -> void:
-	formatter_button.show()
-	name_edit.hide()
-
-
-func delete() -> void:
-	GlobalSettings.delete_formatter(find_formatter_index())
-	layout_changed.emit()
-
-
 var current_setup_config: String
 
-
 func construct() -> void:
-	set_label_text(current_formatter.title)
+	if current_formatter == Configs.savedata.editor_formatter:
+		set_label_text(Translator.translate("Editor formatter"))
+	else:
+		set_label_text(Translator.translate("Export formatter"))
 	
 	# The preset field shouldn't have a reset button or a section, so set it up manually.
 	var frame := ProfileFrame.instantiate()
@@ -190,28 +157,6 @@ func add_frame(frame: Control) -> void:
 	configs_container.get_child(-1).add_child(frame)
 
 
-# Update text color to red if the title won't work (because it's a duplicate).
-func _on_name_edit_text_changed(new_text: String) -> void:
-	var names := PackedStringArray()
-	for formatter in GlobalSettings.savedata.formatters:
-		names.append(formatter.title)
-	name_edit.add_theme_color_override("font_color", GlobalSettings.get_validity_color(
-			new_text in names and new_text != current_formatter.title))
-
-func _on_name_edit_text_submitted(new_title: String) -> void:
-	new_title = new_title.strip_edges()
-	var titles := PackedStringArray()
-	for formatter in GlobalSettings.savedata.formatters:
-		titles.append(formatter.title)
-	
-	if not new_title.is_empty() and new_title != current_formatter.title and\
-	not new_title in titles:
-		current_formatter.title = new_title
-		layout_changed.emit()
-
-func _on_name_edit_text_change_canceled() -> void:
-	hide_name_edit()
-
 
 func set_label_text(new_text: String) -> void:
 	formatter_button.begin_bulk_theme_override()
@@ -219,7 +164,7 @@ func set_label_text(new_text: String) -> void:
 		formatter_button.text = Translator.translate("Unnamed")
 		for style_name in ["font_color", "font_hover_color", "font_pressed_color"]:
 			formatter_button.add_theme_color_override(style_name,
-					GlobalSettings.savedata.basic_color_error)
+					Configs.savedata.theme_config.basic_color_error)
 	else:
 		formatter_button.text = new_text
 		for style_name in ["font_color", "font_hover_color", "font_pressed_color"]:

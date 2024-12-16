@@ -65,8 +65,8 @@ func update_palettes(search_text := "") -> void:
 	reserved_color_palette.color_names = reserved_color_names
 	
 	var displayed_palettes: Array[ColorPalette] = [reserved_color_palette]
-	for palette in GlobalSettings.savedata.palettes:
-		if GlobalSettings.is_palette_valid(palette):
+	for palette in Configs.savedata.palettes:
+		if Configs.is_palette_valid(palette):
 			displayed_palettes.append(palette)
 	
 	for palette in displayed_palettes:

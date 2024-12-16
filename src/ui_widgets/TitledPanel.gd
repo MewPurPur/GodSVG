@@ -1,5 +1,6 @@
 # Titled panels have two children: The first is on top and it's the title,
 # the second one is on the bottom and it's the panel.
+# The children after won't be resized.
 class_name TitledPanel extends Container
 
 @export var border_width: int
@@ -14,7 +15,7 @@ class_name TitledPanel extends Container
 @export var panel_margin: int
 
 func _get_minimum_size_common_logic(vertical: bool) -> Vector2:
-	if get_child_count() != 2:
+	if get_child_count() < 2:
 		return Vector2.ZERO
 	
 	var title_minimum_size: Vector2 = get_child(0).get_combined_minimum_size()
@@ -31,7 +32,7 @@ func _get_minimum_size_common_logic(vertical: bool) -> Vector2:
 
 
 func _notification_common_logic(what: int, vertical: bool) -> void:
-	if get_child_count() != 2:
+	if get_child_count() < 2:
 		return
 	
 	var stack_axis := 1 if vertical else 0

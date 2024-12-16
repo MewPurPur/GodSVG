@@ -18,8 +18,8 @@ func update_translation() -> void:
 
 func _ready() -> void:
 	reset_button.pressed.connect(_on_reset_button_pressed)
-	GlobalSettings.language_changed.connect(update_translation)
-	GlobalSettings.shortcuts_changed.connect(check_shortcuts_validity)
+	Configs.language_changed.connect(update_translation)
+	Configs.shortcuts_changed.connect(check_shortcuts_validity)
 	update_translation()
 
 func setup(new_action: String) -> void:
@@ -30,7 +30,7 @@ func setup(new_action: String) -> void:
 # Syncs based on current events.
 func sync() -> void:
 	# Show the reset button if any of the actions don't match.
-	var action_defaults: Array[InputEvent] = GlobalSettings.default_shortcuts[action]
+	var action_defaults: Array[InputEvent] = Configs.default_shortcuts[action]
 	if events.size() != action_defaults.size():
 		reset_button.show()
 	else:
@@ -127,7 +127,7 @@ func delete_shortcut(idx: int) -> void:
 	sync()
 
 func update_shortcut() -> void:
-	GlobalSettings.modify_shortcut(action, events)
+	Configs.savedata.action_modify_shortcuts(action, events)
 
 func _input(event: InputEvent) -> void:
 	if not (listening_idx >= 0 and event is InputEventKey):
@@ -150,7 +150,7 @@ func _input(event: InputEvent) -> void:
 		pending_event = event
 		if pending_event.keycode & KEY_MODIFIER_MASK != 0:
 			setup_shortcut_button_font_colors(shortcut_button,
-					GlobalSettings.savedata.basic_color_warning)
+					Configs.savedata.theme_config.basic_color_warning)
 		else:
 			setup_shortcut_button_font_colors(shortcut_button, Color("#def"))
 		accept_event()
@@ -167,7 +167,7 @@ func _input(event: InputEvent) -> void:
 		listening_idx = -1
 
 func _on_reset_button_pressed() -> void:
-	events = GlobalSettings.default_shortcuts[action].duplicate(true)
+	events = Configs.default_shortcuts[action].duplicate(true)
 	update_shortcut()
 	sync()
 
@@ -191,10 +191,10 @@ func set_shortcut_button_text(button: Button, new_text: String) -> void:
 func check_shortcuts_validity() -> void:
 	for i in events.size():
 		var shortcut_btn := shortcut_buttons[i]
-		if not GlobalSettings.is_shortcut_valid(events[i]):
+		if not Configs.savedata.is_shortcut_valid(events[i]):
 			setup_shortcut_button_font_colors(shortcut_btn,
-					GlobalSettings.savedata.basic_color_error)
-			var conflicts := GlobalSettings.get_actions_with_shortcut(events[i])
+					Configs.savedata.theme_config.basic_color_error)
+			var conflicts := Configs.get_actions_with_shortcut(events[i])
 			var action_pos := conflicts.find(action)
 			if action_pos != -1:
 				conflicts.remove_at(action_pos)

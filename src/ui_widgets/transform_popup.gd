@@ -29,7 +29,7 @@ var UR := UndoRedo.new()
 @onready var apply_matrix: Button = %ApplyMatrix
 
 func _ready() -> void:
-	GlobalSettings.language_changed.connect(update_translation)
+	Configs.language_changed.connect(update_translation)
 	add_button.pressed.connect(popup_new_transform_context.bind(0, add_button))
 	apply_matrix.pressed.connect(_on_apply_matrix_pressed)
 	rebuild()
@@ -171,7 +171,7 @@ func popup_new_transform_context(idx: int, control: Control) -> void:
 	for transform in ["matrix", "translate", "rotate", "scale", "skewX", "skewY"]:
 		var btn := ContextPopup.create_button(transform,
 				insert_transform.bind(idx, transform), false, icons_dict[transform])
-		btn.add_theme_font_override("font", ThemeUtils.mono_font)
+		btn.add_theme_font_override("font", ThemeConfig.mono_font)
 		btn_array.append(btn)
 	
 	var transform_context := ContextPopup.new()

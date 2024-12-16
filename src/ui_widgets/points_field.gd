@@ -53,7 +53,7 @@ func sync_to_attribute() -> void:
 
 
 func setup() -> void:
-	GlobalSettings.language_changed.connect(update_translation)
+	Configs.language_changed.connect(update_translation)
 	sync_to_attribute()
 	element.attribute_changed.connect(_on_element_attribute_changed)
 	line_edit.tooltip_text = attribute_name
@@ -86,7 +86,7 @@ func _on_line_edit_focus_entered() -> void:
 
 func setup_font(new_text: String) -> void:
 	if new_text.is_empty():
-		line_edit.add_theme_font_override("font", ThemeUtils.regular_font)
+		line_edit.add_theme_font_override("font", ThemeConfig.main_font)
 	else:
 		line_edit.remove_theme_font_override("font")
 
@@ -239,14 +239,14 @@ func points_draw() -> void:
 		var point_y := element.get_attribute_list(attribute_name)[i * 2 + 1]
 		# Draw the action button.
 		more_icon.draw_rect(ci, Rect2(Vector2(points_container.size.x - 19, 4 + v_offset),
-				Vector2(14, 14)), false, ThemeUtils.icon_normal_color)
+				Vector2(14, 14)), false, ThemeConfig.icon_normal_color)
 		# Draw the fields.
 		draw_numfield(Rect2(Vector2(4, 2 + v_offset), Vector2(44, 18)), point_x)
 		draw_numfield(Rect2(Vector2(52, 2 + v_offset), Vector2(44, 18)), point_y)
 
 func draw_numfield(rect: Rect2, num: float) -> void:
 	mini_line_edit_stylebox.draw(ci, rect)
-	ThemeUtils.mono_font.draw_string(ci, rect.position + Vector2(3, 13),
+	ThemeConfig.mono_font.draw_string(ci, rect.position + Vector2(3, 13),
 			NumstringParser.basic_num_to_text(num), HORIZONTAL_ALIGNMENT_LEFT,
 			rect.size.x - 6, mini_line_edit_font_size, mini_line_edit_font_color)
 

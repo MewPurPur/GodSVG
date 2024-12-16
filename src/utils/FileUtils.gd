@@ -13,12 +13,12 @@ static func apply_svg_from_path(path: String) -> void:
 	_finish_file_import(path, _apply_svg, PackedStringArray(["svg"]))
 
 static func compare_svg_to_disk_contents() -> FileState:
-	var content := FileAccess.get_file_as_string(GlobalSettings.savedata.current_file_path)
+	var content := FileAccess.get_file_as_string(Configs.get_current_tab().svg_file_path)
 	if content.is_empty():
 		return FileState.DOES_NOT_EXIST
 	# Check if importing the file's text into GodSVG would change the current SVG text.
 	if SVG.text == SVGParser.root_to_text(SVGParser.text_to_root(content,
-	GlobalSettings.savedata.editor_formatter).svg):
+	Configs.savedata.editor_formatter).svg):
 		return FileState.SAME
 	else:
 		return FileState.DIFFERENT
@@ -45,13 +45,13 @@ static func open_export_dialog(export_data: ImageExportData) -> void:
 			DisplayServer.file_dialog_show(
 					Translator.translate("Save the .\"{format}\" file").format(
 					{"format": export_data.format}), Utils.get_last_dir(), Utils.get_file_name(
-					GlobalSettings.savedata.current_file_path) + "." + export_data.format,
+					Configs.savedata.get_current_tab().svg_file_path) + "." + export_data.format,
 					false, DisplayServer.FILE_DIALOG_MODE_SAVE_FILE,
 					PackedStringArray(["*." + export_data.format]), native_callback)
 		else:
 			var export_dialog := GoodFileDialog.instantiate()
 			export_dialog.setup(Utils.get_last_dir(),
-					Utils.get_file_name(GlobalSettings.savedata.current_file_path),
+					Utils.get_file_name(Configs.get_current_tab().svg_file_path),
 					GoodFileDialogType.FileMode.SAVE, PackedStringArray([export_data.format]))
 			HandlerGUI.add_menu(export_dialog)
 			export_dialog.file_selected.connect(func(path): _finish_export(path, export_data))
@@ -60,7 +60,7 @@ static func _finish_export(file_path: String, export_data: ImageExportData) -> v
 	if file_path.get_extension().is_empty():
 		file_path += "." + export_data.format
 	
-	GlobalSettings.modify_setting("last_used_dir", file_path.get_base_dir())
+	Configs.savedata.last_used_dir = file_path.get_base_dir()
 	
 	match export_data.format:
 		"png": export_data.generate_image().save_png(file_path)
@@ -69,14 +69,14 @@ static func _finish_export(file_path: String, export_data: ImageExportData) -> v
 		_:
 			# When saving SVG, also modify the file path to associate it
 			# with the graphic being edited.
-			GlobalSettings.modify_setting("current_file_path", file_path)
+			Configs.savedata.get_current_tab().svg_file_path = file_path
 			FileAccess.open(file_path, FileAccess.WRITE).store_string(SVG.get_export_text())
 	HandlerGUI.remove_all_menus()
 
 
 static func _is_native_preferred() -> bool:
 	return DisplayServer.has_feature(DisplayServer.FEATURE_NATIVE_DIALOG_FILE) and\
-			GlobalSettings.savedata.use_native_file_dialog
+			Configs.savedata.use_native_file_dialog
 
 
 # No need for completion callback here yet.
@@ -131,7 +131,7 @@ allowed_extensions: PackedStringArray) -> Error:
 	var error := ""
 	var file_extension := file_path.get_extension()
 	
-	GlobalSettings.modify_setting("last_used_dir", file_path.get_base_dir())
+	Configs.savedata.last_used_dir = file_path.get_base_dir()
 	
 	if file_extension == "tscn":
 		# I asked kiisu about why he wrote this special case. He said:
@@ -169,7 +169,7 @@ static func _apply_svg(data: Variant, file_name: String) -> Error:
 	return OK
 
 static func _finish_svg_import(svg_text: String, file_path: String) -> void:
-	GlobalSettings.modify_setting("current_file_path", file_path)
+	Configs.savedata.current_file_path = file_path
 	SVG.apply_svg_text(svg_text)
 
 
@@ -267,7 +267,7 @@ static func _web_on_file_dialog_cancelled(_args: Array) -> void:
 
 
 static func _web_save(buffer: PackedByteArray, format_name: String) -> void:
-	var file_name := Utils.get_file_name(GlobalSettings.savedata.current_file_path)
+	var file_name := Utils.get_file_name(Configs.get_current_tab().svg_file_path)
 	if file_name.is_empty():
 		file_name = "export"
 	JavaScriptBridge.download_buffer(buffer, file_name, format_name)

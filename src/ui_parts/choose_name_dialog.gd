@@ -17,7 +17,8 @@ func _ready() -> void:
 	name_edit.text_changed.connect(adapt_to_text)
 	name_edit.text_change_canceled.connect(queue_free)
 	name_edit.text_submitted.connect(action_button.grab_focus.unbind(1))
-	name_edit.add_theme_font_override("font", ThemeUtils.regular_font)
+	name_edit.add_theme_font_override("font",
+			Configs.savedata.theme_config.main_font)
 
 # The error/warning callables should take the stripped text and return a string.
 func setup(title: String, action: Callable, error_callable := Callable(),
@@ -39,11 +40,11 @@ func adapt_to_text(text: String) -> void:
 			warning_callback.is_valid() else ""
 	if not error.is_empty():
 		rich_text_label.add_theme_color_override("default_color",
-				GlobalSettings.savedata.basic_color_error)
+				Configs.savedata.theme_config.basic_color_error)
 		rich_text_label.text = error
 	elif not warning.is_empty():
 		rich_text_label.add_theme_color_override("default_color",
-				GlobalSettings.savedata.basic_color_warning)
+				Configs.savedata.theme_config.basic_color_warning)
 		rich_text_label.text = warning
 	else:
 		rich_text_label.text = ""

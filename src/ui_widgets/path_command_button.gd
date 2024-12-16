@@ -29,7 +29,7 @@ func _draw() -> void:
 	if disabled:
 		text_color = Color(0.5, 0.5, 0.5)
 	elif warned:
-		text_color = GlobalSettings.savedata.basic_color_warning
+		text_color = Configs.savedata.theme_config.basic_color_warning
 	
 	var left_margin := get_theme_stylebox("normal").content_margin_left
 	var right_margin := get_theme_stylebox("normal").content_margin_right
@@ -37,13 +37,13 @@ func _draw() -> void:
 	var bold_text := command_char + ":"
 	var normal_text := " " + TranslationUtils.get_command_description(command_char)
 	# Try with font size 13.
-	text_obj.add_string(bold_text, ThemeUtils.bold_font, 13)
-	text_obj.add_string(normal_text, ThemeUtils.regular_font, 13)
+	text_obj.add_string(bold_text, ThemeConfig.main_font_bold, 13)
+	text_obj.add_string(normal_text, ThemeConfig.main_font, 13)
 	if text_obj.get_line_width() > max_size:
 		# Try with font size 12.
 		text_obj.clear()
-		text_obj.add_string(bold_text, ThemeUtils.bold_font, 12)
-		text_obj.add_string(normal_text, ThemeUtils.regular_font, 12)
+		text_obj.add_string(bold_text, ThemeConfig.main_font_bold, 12)
+		text_obj.add_string(normal_text, ThemeConfig.main_font, 12)
 		if text_obj.get_line_width() > max_size:
 			custom_minimum_size.x = size.x + 4 + text_obj.get_line_width() - max_size
 	text_obj.draw(get_canvas_item(), Vector2(left_margin + 2, 3), text_color)

@@ -102,11 +102,16 @@ static func throw_mouse_motion_event() -> void:
 
 
 static func get_last_dir() -> String:
-	if GlobalSettings.savedata.last_used_dir.is_empty() or\
-	not DirAccess.dir_exists_absolute(GlobalSettings.savedata.last_used_dir):
+	if Configs.savedata.last_used_dir.is_empty() or\
+	not DirAccess.dir_exists_absolute(Configs.savedata.last_used_dir):
 		return OS.get_system_dir(OS.SYSTEM_DIR_PICTURES)
 	else:
-		return GlobalSettings.savedata.last_used_dir
+		return Configs.savedata.last_used_dir
+
+static func get_validity_color(error_condition: bool, warning_condition := false) -> Color:
+	return Configs.savedata.theme_config.basic_color_error if error_condition else\
+			Configs.savedata.theme_config.basic_color_warning if warning_condition else\
+			Configs.savedata.theme_config.basic_color_valid
 
 
 static func generate_gradient(element: Element) -> Gradient:

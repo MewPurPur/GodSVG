@@ -18,7 +18,7 @@ custom_height: float, custom_viewbox: Rect2) -> String:
 	return text + "</svg>"
 
 static func root_to_text(root_element: ElementRoot,
-formatter: Formatter = GlobalSettings.savedata.editor_formatter) -> String:
+formatter := Configs.savedata.editor_formatter) -> String:
 	var text := _xnode_to_text(root_element, formatter).trim_suffix('\n')
 	if formatter.xml_add_trailing_newline:
 		text += "\n"
@@ -80,7 +80,7 @@ make_attributes_absolute := false) -> String:
 	if not element.has_children() and (formatter.xml_shorthand_tags ==\
 	Formatter.ShorthandTags.ALWAYS or (formatter.xml_shorthand_tags ==\
 	Formatter.ShorthandTags.ALL_EXCEPT_CONTAINERS and\
-	not element.name in Formatter.container_elements)):
+	not element.name in DB.container_elements)):
 		text += ' />' if formatter.xml_shorthand_tags_space_out_slash else '/>'
 		if formatter.xml_pretty_formatting:
 			text += '\n'

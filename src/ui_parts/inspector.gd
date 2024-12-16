@@ -8,8 +8,8 @@ const BasicXNodeFrame = preload("res://src/ui_widgets/basic_xnode_frame.tscn")
 
 
 func _ready() -> void:
-	GlobalSettings.theme_changed.connect(update_theme)
-	GlobalSettings.language_changed.connect(update_translation)
+	Configs.theme_changed.connect(update_theme)
+	Configs.language_changed.connect(update_translation)
 	update_theme()
 	update_translation()
 	SVG.xnode_layout_changed.connect(full_rebuild)
@@ -20,8 +20,8 @@ func _ready() -> void:
 
 func update_theme() -> void:
 	color = Color.TRANSPARENT
-	border_color = ThemeUtils.common_panel_inner_color
-	title_color = Color(ThemeUtils.common_panel_inner_color, 0.4)
+	border_color = ThemeConfig.common_panel_inner_color
+	title_color = Color(ThemeConfig.common_panel_inner_color, 0.4)
 
 func update_translation() -> void:
 	add_button.text = Translator.translate("Add element")
@@ -50,7 +50,7 @@ func _on_add_button_pressed() -> void:
 	"polygon", "polyline", "g", "linearGradient", "radialGradient", "stop"]):
 		var btn := ContextPopup.create_button(element_name, add_element.bind(element_name),
 				false, DB.get_element_icon(element_name))
-		btn.add_theme_font_override("font", ThemeUtils.mono_font)
+		btn.add_theme_font_override("font", ThemeConfig.mono_font)
 		btn_array.append(btn)
 	var separator_indices := PackedInt32Array([1, 4, 7])
 	

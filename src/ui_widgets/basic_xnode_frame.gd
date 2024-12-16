@@ -140,8 +140,7 @@ func _draw() -> void:
 			are_all_children_valid = false
 			break
 	
-	var drop_border_color := GlobalSettings.get_validity_color(false,
-			not are_all_children_valid)
+	var drop_border_color := Utils.get_validity_color(false, not are_all_children_valid)
 	drop_border_color.s = lerpf(drop_border_color.s, 1.0, 0.5)
 	drop_sb.border_color = drop_border_color
 	if drop_xid == parent_xid + PackedInt32Array([xnode.xid[-1]]):
@@ -178,4 +177,4 @@ func _on_text_modified() -> void:
 		text_edit.remove_theme_color_override("font_color")
 	else:
 		text_edit.add_theme_color_override("font_color",
-				GlobalSettings.savedata.basic_color_error)
+				Configs.savedata.theme_config.basic_color_error)

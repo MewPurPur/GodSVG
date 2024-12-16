@@ -25,7 +25,7 @@ func _init() -> void:
 	focus_exited.connect(_on_base_class_focus_exited)
 	mouse_exited.connect(_on_base_class_mouse_exited)
 	text_submitted.connect(release_focus.unbind(1))
-	GlobalSettings.theme_changed.connect(update_theme)
+	Configs.theme_changed.connect(update_theme)
 
 func update_theme() -> void:
 	if editable:
@@ -70,7 +70,7 @@ func _make_custom_tooltip(for_text: String) -> Object:
 	if mono_font_tooltip:
 		var label := Label.new()
 		label.begin_bulk_theme_override()
-		label.add_theme_font_override("font", ThemeUtils.mono_font)
+		label.add_theme_font_override("font", Configs.savedata.theme_config.mono_font)
 		label.add_theme_font_size_override("font_size", 13)
 		label.end_bulk_theme_override()
 		label.text = for_text

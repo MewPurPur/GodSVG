@@ -12,7 +12,7 @@ var color_palette: ColorPalette
 var idx: int
 
 func _ready() -> void:
-	GlobalSettings.language_changed.connect(update_translation)
+	Configs.language_changed.connect(update_translation)
 	set_label_text(color_palette.color_names[idx])
 	color_edit.value = color_palette.colors[idx]
 	update_translation()
@@ -48,7 +48,7 @@ func set_label_text(new_text: String) -> void:
 	if new_text.is_empty():
 		color_label.text = Translator.translate("Unnamed")
 		color_label.add_theme_color_override("font_color",
-				ThemeUtils.common_subtle_text_color)
+				ThemeConfig.common_subtle_text_color)
 	else:
 		color_label.text = new_text
 		color_label.remove_theme_color_override("font_color")

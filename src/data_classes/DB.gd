@@ -8,6 +8,9 @@ enum NumberRange {ARBITRARY, POSITIVE, UNIT}
 const recognized_elements = ["svg", "g", "circle", "ellipse", "rect", "path", "line",
 		"polyline", "polygon", "stop", "linearGradient", "radialGradient"]
 
+# Elements that don't make sense without child elements.
+const container_elements = ["svg", "g", "linearGradient", "radialGradient"]
+
 const element_icons = {
 	"circle": preload("res://visual/icons/element/circle.svg"),
 	"ellipse": preload("res://visual/icons/element/ellipse.svg"),

@@ -4,43 +4,23 @@ extends VBoxContainer
 @onready var code_edit: TextEdit = $ScriptEditor/SVGCodeEdit
 @onready var error_bar: PanelContainer = $ScriptEditor/ErrorBar
 @onready var error_label: RichTextLabel = $ScriptEditor/ErrorBar/Label
-@onready var size_button: Button = %SizeButton
-@onready var file_button: Button = %FileButton
-
-@onready var options_button: Button = %MetaActions/OptionsButton
-@onready var import_button: Button = %MetaActions/ImportButton
-@onready var export_button: Button = %MetaActions/ExportButton
+@onready var options_button: Button = %OptionsButton
 
 func _ready() -> void:
-	GlobalSettings.theme_changed.connect(setup_theme)
+	Configs.theme_changed.connect(setup_theme)
 	SVG.parsing_finished.connect(update_error)
-	GlobalSettings.highlighting_colors_changed.connect(update_syntax_highlighter)
+	Configs.highlighting_colors_changed.connect(update_syntax_highlighter)
 	auto_update_text()
-	update_size_button()
-	update_file_button()
 	setup_theme()
 	update_syntax_highlighter()
 	code_edit.clear_undo_history()
 	SVG.changed.connect(auto_update_text)
-	GlobalSettings.file_path_changed.connect(update_file_button)
-	GlobalSettings.basic_colors_changed.connect(update_size_button_colors)
-	import_button.pressed.connect(ShortcutUtils.fn("import"))
-	export_button.pressed.connect(ShortcutUtils.fn("export"))
-	# Fix the size button sizing.
-	size_button.begin_bulk_theme_override()
-	for theming in ["normal", "hover", "pressed", "disabled"]:
-		var stylebox := size_button.get_theme_stylebox(theming).duplicate()
-		stylebox.content_margin_bottom = 0
-		stylebox.content_margin_top = 0
-		size_button.add_theme_stylebox_override(theming, stylebox)
-	size_button.end_bulk_theme_override()
 
 
 func auto_update_text() -> void:
 	if not code_edit.has_focus():
 		code_edit.text = SVG.text
 		code_edit.clear_undo_history()
-	update_size_button()
 
 func update_error(err_id: SVGParser.ParseError) -> void:
 	if err_id == SVGParser.ParseError.OK:
@@ -89,7 +69,7 @@ func setup_theme() -> void:
 	scrollbar.end_bulk_theme_override()
 	
 	error_label.add_theme_color_override("default_color",
-			GlobalSettings.savedata.basic_color_error)
+			Configs.savedata.theme_config.basic_color_error)
 	var panel_stylebox := get_theme_stylebox("panel", "PanelContainer")
 	# Set up the top panel.
 	var top_stylebox := panel_stylebox.duplicate()
@@ -114,35 +94,6 @@ func setup_theme() -> void:
 	error_bar.add_theme_stylebox_override("panel", bottom_stylebox)
 
 
-func update_size_button() -> void:
-	var svg_text_size := SVG.text.length()
-	size_button.text = String.humanize_size(svg_text_size)
-	size_button.tooltip_text = String.num_uint64(svg_text_size) + " B"
-	if SVG.root_element.optimize(true):
-		size_button.disabled = false
-		size_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-		update_size_button_colors()
-		
-	else:
-		size_button.disabled = true
-		size_button.mouse_default_cursor_shape = Control.CURSOR_ARROW
-		size_button.remove_theme_color_override("font_color")
-
-func update_size_button_colors() -> void:
-	size_button.begin_bulk_theme_override()
-	for theming in ["font_color", "font_hover_color", "font_pressed_color"]:
-		size_button.add_theme_color_override(theming,
-				GlobalSettings.savedata.basic_color_warning.lerp(Color.WHITE, 0.5))
-	size_button.end_bulk_theme_override()
-
-func update_file_button() -> void:
-	var file_path := GlobalSettings.savedata.current_file_path
-	file_button.visible = !file_path.is_empty()
-	file_button.text = file_path.get_file()
-	file_button.tooltip_text = file_path.get_file()
-	Utils.set_max_text_width(file_button, 140.0, 12.0)
-
-
 func _on_svg_code_edit_text_changed() -> void:
 	SVG.set_text(code_edit.text)
 	SVG.sync_elements()
@@ -155,46 +106,11 @@ func _on_svg_code_edit_focus_entered() -> void:
 	Indications.clear_all_selections()
 
 
-func _on_file_button_pressed() -> void:
-	var btn_array: Array[Button] = []
-	btn_array.append(ContextPopup.create_button(Translator.translate("Save SVG"),
-			FileUtils.save_svg, false, load("res://visual/icons/Save.svg"), "save"))
-	btn_array.append(ContextPopup.create_button(Translator.translate("Open file"),
-			ShortcutUtils.fn("open_svg"),
-			not FileAccess.file_exists(GlobalSettings.savedata.current_file_path),
-			load("res://visual/icons/OpenFile.svg"), "open_svg"))
-	btn_array.append(ContextPopup.create_button(Translator.translate("Reset SVG"),
-			ShortcutUtils.fn("reset_svg"),
-			FileUtils.compare_svg_to_disk_contents() != FileUtils.FileState.DIFFERENT,
-			load("res://visual/icons/Reload.svg"), "reset_svg"))
-	btn_array.append(ContextPopup.create_button(
-			Translator.translate("Clear saving path"),
-			ShortcutUtils.fn("clear_file_path"), false, load("res://visual/icons/Clear.svg"),
-			"clear_file_path"))
-	var context_popup := ContextPopup.new()
-	context_popup.setup(btn_array, true, file_button.size.x)
-	HandlerGUI.popup_under_rect_center(context_popup, file_button.get_global_rect(),
-			get_viewport())
-
-func _on_size_button_pressed() -> void:
-	var btn_array: Array[Button] = [
-		ContextPopup.create_button(Translator.translate("Optimize"),
-				ShortcutUtils.fn("optimize"), false, load("res://visual/icons/Compress.svg"),
-				"optimize")]
-	var context_popup := ContextPopup.new()
-	context_popup.setup(btn_array, true)
-	HandlerGUI.popup_under_rect_center(context_popup, size_button.get_global_rect(),
-			get_viewport())
-
-
 func _on_options_button_pressed() -> void:
 	var btn_array: Array[Button] = []
 	btn_array.append(ContextPopup.create_button(
 			Translator.translate("Copy all text"), ShortcutUtils.fn("copy_svg_text"),
 			false, load("res://visual/icons/Copy.svg"), "copy_svg_text"))
-	btn_array.append(ContextPopup.create_button(
-			Translator.translate("Clear SVG"), ShortcutUtils.fn("clear_svg"),
-			SVG.text == SVG.DEFAULT, load("res://visual/icons/Clear.svg"), "clear_svg"))
 	var context_popup := ContextPopup.new()
 	context_popup.setup(btn_array, true)
 	HandlerGUI.popup_under_rect_center(context_popup, options_button.get_global_rect(),
@@ -203,4 +119,5 @@ func _on_options_button_pressed() -> void:
 
 func update_syntax_highlighter() -> void:
 	if is_instance_valid(code_edit):
-		code_edit.syntax_highlighter = GlobalSettings.generate_highlighter()
+		code_edit.syntax_highlighter = Configs.savedata.theme_config.highlighter_config.\
+				generate_highlighter()

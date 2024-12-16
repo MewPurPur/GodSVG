@@ -1,20 +1,6 @@
-[gd_scene load_steps=5 format=3 uid="uid://cqp4hvlyw50rx"]
+[gd_scene load_steps=2 format=3 uid="uid://cqp4hvlyw50rx"]
 
 [ext_resource type="Script" path="res://src/ui_widgets/formatter_config.gd" id="1_itv71"]
-[ext_resource type="FontFile" uid="uid://clpf84p1lfwlp" path="res://visual/fonts/Font.ttf" id="1_qcayd"]
-[ext_resource type="Script" path="res://src/ui_widgets/BetterLineEdit.gd" id="2_6t8w1"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xxapd"]
-draw_center = false
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.2, 0.34902, 0.501961, 1)
-corner_radius_top_left = 5
-corner_radius_top_right = 5
-corner_radius_bottom_right = 5
-corner_radius_bottom_left = 5
 
 [node name="FormatterConfig" type="PanelContainer"]
 offset_right = 21.0
@@ -35,29 +21,12 @@ layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 8
 
-[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/MainContainer"]
+[node name="FormatterButton" type="Button" parent="HBoxContainer/MainContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
-theme_override_constants/separation = 6
-
-[node name="FormatterButton" type="Button" parent="HBoxContainer/MainContainer/HBoxContainer"]
-custom_minimum_size = Vector2(60, 0)
-layout_mode = 2
 focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_type_variation = &"TranslucentButton"
-
-[node name="NameEdit" type="LineEdit" parent="HBoxContainer/MainContainer/HBoxContainer"]
-visible = false
-custom_minimum_size = Vector2(120, 0)
-layout_mode = 2
-size_flags_horizontal = 3
-focus_mode = 1
-theme_override_fonts/font = ExtResource("1_qcayd")
-theme_override_styles/normal = SubResource("StyleBoxFlat_xxapd")
-alignment = 1
-max_length = 30
-script = ExtResource("2_6t8w1")
 
 [node name="ConfigsContainer" type="VBoxContainer" parent="HBoxContainer/MainContainer"]
 custom_minimum_size = Vector2(0, 22)

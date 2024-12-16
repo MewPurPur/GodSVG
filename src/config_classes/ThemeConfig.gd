@@ -1,8 +1,111 @@
-class_name ThemeUtils extends RefCounted
+class_name ThemeConfig extends Resource
 
-const regular_font = preload("res://visual/fonts/Font.ttf")
-const bold_font = preload("res://visual/fonts/FontBold.ttf")
-const mono_font = preload("res://visual/fonts/FontMono.ttf")
+var _config_signal_queued := false
+signal config_settings_changed
+
+enum Preset {DEFAULT_DARK, DEFAULT_LIGHT}
+
+static func get_preset_enum_text(enum_value: Preset) -> String:
+	match enum_value:
+		Preset.DEFAULT_DARK: return Translator.translate("Default dark")
+		Preset.DEFAULT_LIGHT: return Translator.translate("Default light")
+	return ""
+
+
+func get_setting_default(setting: String) -> Variant:
+	match preset:
+		Preset.DEFAULT_DARK:
+			match setting:
+				"highlighter_config":
+					return HighlighterConfig.new(HighlighterConfig.Preset.DEFAULT_DARK)
+				"handle_inner_color": return Color("fff")
+				"handle_color": return Color("111")
+				"handle_hovered_color": return Color("aaa")
+				"handle_selected_color": return Color("46f")
+				"handle_hovered_selected_color": return Color("f44")
+				"background_color": return Color(0.12, 0.132, 0.2, 1)
+				"basic_color_valid": return Color("9f9")
+				"basic_color_error": return Color("f99")
+				"basic_color_warning": return Color("ee5")
+		Preset.DEFAULT_LIGHT:
+			match setting:
+				"highlighter_config":
+					return HighlighterConfig.new(HighlighterConfig.Preset.DEFAULT_LIGHT)
+				"handle_inner_color": return Color.BLACK
+				"handle_color": return Color.BLACK
+				"handle_hovered_color": return Color.BLACK
+				"handle_selected_color": return Color.BLACK
+				"handle_hovered_selected_color": return Color.BLACK
+				"background_color": return Color.BLACK
+				"basic_color_valid": return Color.BLACK
+				"basic_color_error": return Color.BLACK
+				"basic_color_warning": return Color.BLACK
+	return null
+
+func _set(property: StringName, value: Variant) -> bool:
+	if get(property) == value:
+		return true
+	emit_changed()
+	if property != &"preset":
+		_queue_emit_config_settings_changed()
+	# Special actions for certain properties.
+	match property:
+		&"highlighter_config": Configs.highlighting_colors_changed.emit.call_deferred()
+		&"handle_inner_color", &"handle_color", &"handle_hovered_color",\
+		&"handle_selected_color", &"handle_hovered_selected_color":
+			Configs.handle_visuals_changed.emit.call_deferred()
+		&"background_color": Configs.sync_background_color()
+		&"basic_color_valid", &"basic_color_error", &"basic_color_warning":
+			Configs.basic_colors_changed.emit.call_deferred()
+	return true
+
+func reset_to_default() -> void:
+	for dict in get_property_list():
+		if dict.usage & PROPERTY_USAGE_SCRIPT_VARIABLE and dict.name != "preset":
+			set(dict.name, get_setting_default(dict.name))
+
+func is_everything_default() -> bool:
+	for setting_dict in get_property_list():
+		var setting: String = setting_dict.name
+		if not setting in Resource and setting != "preset" and\
+		get(setting) != get_setting_default(setting):
+			return false
+	return true
+
+
+@export var preset := Preset.DEFAULT_DARK
+
+@export var highlighter_config: HighlighterConfig = null
+
+@export var handle_inner_color := Color("fff")
+@export var handle_color := Color("111")
+@export var handle_hovered_color := Color("aaa")
+@export var handle_selected_color := Color("46f")
+@export var handle_hovered_selected_color := Color("f44")
+@export var background_color := Color(0.12, 0.132, 0.2, 1)
+
+@export var basic_color_valid := Color("9f9")
+@export var basic_color_error := Color("f99")
+@export var basic_color_warning := Color("ee5")
+
+func _init(new_preset := Preset.DEFAULT_DARK) -> void:
+	preset = new_preset
+	reset_to_default()
+	changed.connect(_queue_emit_config_settings_changed)
+
+func _queue_emit_config_settings_changed() -> void:
+	_config_signal_queued = true
+	_emit_config_settings_changed.call_deferred()
+
+func _emit_config_settings_changed() -> void:
+	if _config_signal_queued:
+		_config_signal_queued = false
+		config_settings_changed.emit()
+
+
+const main_font = preload("res://visual/fonts/MainFont.ttf")
+const main_font_bold = preload("res://visual/fonts/MainFontBold.ttf")
+const mono_font = preload("res://visual/fonts/MonoFont.ttf")
 
 const focus_color = Color("66ccffcc")
 const common_panel_inner_color = Color("191926")
@@ -70,7 +173,7 @@ const selected_tab_border_color = Color("608fbf")
 
 static func generate_theme() -> Theme:
 	var theme := Theme.new()
-	theme.default_font = regular_font
+	theme.default_font = main_font
 	theme.default_font_size = 13
 	_setup_panelcontainer(theme)
 	_setup_button(theme)
@@ -88,7 +191,7 @@ static func generate_theme() -> Theme:
 
 static func generate_and_apply_theme() -> void:
 	var default_theme := ThemeDB.get_default_theme()
-	default_theme.default_font = regular_font
+	default_theme.default_font = main_font
 	default_theme.default_font_size = 13
 	var generated_theme := generate_theme()
 	default_theme.merge_with(generated_theme)
@@ -819,7 +922,7 @@ static func _setup_label(theme: Theme) -> void:
 	
 	theme.add_type("RichTextLabel")
 	theme.set_color("selection_color", "RichTextLabel", common_selection_color)
-	theme.set_font("bold_font", "RichTextLabel", bold_font)
+	theme.set_font("bold_font", "RichTextLabel", main_font_bold)
 
 static func _setup_tabcontainer(theme: Theme) -> void:
 	theme.add_type("TabContainer")
@@ -930,7 +1033,7 @@ static func _setup_tooltip(theme: Theme) -> void:
 	theme.add_type("TooltipLabel")
 	theme.set_color("font_color", "TooltipLabel", common_text_color)
 	theme.set_font_size("font_size", "TooltipLabel", 14)
-	theme.set_font("font", "TooltipLabel", regular_font)
+	theme.set_font("font", "TooltipLabel", main_font)
 
 
 static func _icon(name: String) -> Texture2D:

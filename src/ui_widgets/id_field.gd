@@ -12,7 +12,7 @@ func set_value(new_value: String, save := false) -> void:
 
 
 func _ready() -> void:
-	GlobalSettings.basic_colors_changed.connect(resync)
+	Configs.basic_colors_changed.connect(resync)
 	sync_to_attribute()
 	element.attribute_changed.connect(_on_element_attribute_changed)
 	text_changed.connect(_on_text_changed)
@@ -40,7 +40,7 @@ func _on_text_submitted(new_text: String) -> void:
 
 func _on_text_changed(new_text: String) -> void:
 	var validity_level := AttributeID.get_validity(new_text)
-	var font_color := GlobalSettings.get_validity_color(
+	var font_color := Utils.get_validity_color(
 			validity_level == AttributeID.ValidityLevel.INVALID,
 			validity_level == AttributeID.ValidityLevel.INVALID_XML_NAMETOKEN)
 	add_theme_color_override("font_color", font_color)

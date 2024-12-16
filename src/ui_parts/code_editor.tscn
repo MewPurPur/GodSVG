@@ -1,11 +1,8 @@
-[gd_scene load_steps=10 format=3 uid="uid://cr1fdlmbknnko"]
+[gd_scene load_steps=7 format=3 uid="uid://cr1fdlmbknnko"]
 
 [ext_resource type="Script" path="res://src/ui_parts/code_editor.gd" id="1_nffk0"]
-[ext_resource type="FontFile" uid="uid://dc0w4sx0h0fui" path="res://visual/fonts/FontBold.ttf" id="2_hl52o"]
-[ext_resource type="FontFile" uid="uid://depydd16jq777" path="res://visual/fonts/FontMono.ttf" id="2_p4nol"]
-[ext_resource type="Texture2D" uid="uid://6ymbl3jqersp" path="res://visual/icons/Import.svg" id="4_cuhac"]
+[ext_resource type="FontFile" uid="uid://depydd16jq777" path="res://visual/fonts/MonoFont.ttf" id="2_p4nol"]
 [ext_resource type="Texture2D" uid="uid://dthdjf4v2vlvg" path="res://visual/icons/CodeOptions.svg" id="4_sos04"]
-[ext_resource type="Texture2D" uid="uid://d0uvwj0t44n6v" path="res://visual/icons/Export.svg" id="5_pgurh"]
 [ext_resource type="Script" path="res://src/ui_widgets/BetterTextEdit.gd" id="8_ser4i"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_q56qh"]
@@ -46,52 +43,16 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_q56qh")
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="SizeButton" type="Button" parent="PanelContainer/CodeButtons"]
-unique_name_in_owner = true
-layout_mode = 2
-focus_mode = 0
-mouse_default_cursor_shape = 2
-theme_type_variation = &"TranslucentButton"
-theme_override_fonts/font = ExtResource("2_hl52o")
-
-[node name="FileButton" type="Button" parent="PanelContainer/CodeButtons"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 2
-focus_mode = 0
-mouse_default_cursor_shape = 2
-theme_type_variation = &"FlatButton"
-text_overrun_behavior = 3
-
-[node name="MetaActions" type="HBoxContainer" parent="PanelContainer/CodeButtons"]
+[node name="OptionsButton" type="Button" parent="PanelContainer/CodeButtons"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 10
-
-[node name="OptionsButton" type="Button" parent="PanelContainer/CodeButtons/MetaActions"]
-layout_mode = 2
 tooltip_text = "More"
 focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_type_variation = &"IconButton"
 icon = ExtResource("4_sos04")
 icon_alignment = 1
-
-[node name="ImportButton" type="Button" parent="PanelContainer/CodeButtons/MetaActions"]
-layout_mode = 2
-tooltip_text = "Import"
-focus_mode = 0
-mouse_default_cursor_shape = 2
-theme_type_variation = &"IconButton"
-icon = ExtResource("4_cuhac")
-
-[node name="ExportButton" type="Button" parent="PanelContainer/CodeButtons/MetaActions"]
-layout_mode = 2
-tooltip_text = "Export"
-focus_mode = 0
-mouse_default_cursor_shape = 2
-theme_type_variation = &"IconButton"
-icon = ExtResource("5_pgurh")
 
 [node name="ScriptEditor" type="VBoxContainer" parent="."]
 layout_mode = 2
@@ -118,9 +79,7 @@ theme_override_fonts/normal_font = ExtResource("2_p4nol")
 theme_override_font_sizes/normal_font_size = 14
 fit_content = true
 
-[connection signal="pressed" from="PanelContainer/CodeButtons/SizeButton" to="." method="_on_size_button_pressed"]
-[connection signal="pressed" from="PanelContainer/CodeButtons/FileButton" to="." method="_on_file_button_pressed"]
-[connection signal="pressed" from="PanelContainer/CodeButtons/MetaActions/OptionsButton" to="." method="_on_options_button_pressed"]
+[connection signal="pressed" from="PanelContainer/CodeButtons/OptionsButton" to="." method="_on_options_button_pressed"]
 [connection signal="focus_entered" from="ScriptEditor/SVGCodeEdit" to="." method="_on_svg_code_edit_focus_entered"]
 [connection signal="focus_exited" from="ScriptEditor/SVGCodeEdit" to="." method="_on_svg_code_edit_focus_exited"]
 [connection signal="text_changed" from="ScriptEditor/SVGCodeEdit" to="." method="_on_svg_code_edit_text_changed"]

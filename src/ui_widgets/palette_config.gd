@@ -42,7 +42,7 @@ func _ready() -> void:
 	name_edit.text_changed.connect(_on_name_edit_text_changed)
 	name_edit.text_submitted.connect(_on_name_edit_text_submitted)
 	mouse_exited.connect(clear_proposed_drop)
-	GlobalSettings.theme_changed.connect(setup_theme)
+	Configs.theme_changed.connect(setup_theme)
 	setup_theme()
 
 # Rebuilds the content of the colors container.
@@ -83,7 +83,7 @@ func display_warnings() -> void:
 	var warnings := PackedStringArray()
 	if current_palette.title.is_empty():
 		warnings.append(Translator.translate("Unnamed palettes won't be shown."))
-	elif not GlobalSettings.is_palette_valid(current_palette):
+	elif not Configs.savedata.is_palette_valid(current_palette):
 		warnings.append(
 				Translator.translate("Multiple palettes can't have the same name."))
 	if not current_palette.has_unique_definitions():
@@ -119,14 +119,14 @@ func hide_name_edit() -> void:
 # Update text color to red if the title won't work (because it's a duplicate).
 func _on_name_edit_text_changed(new_text: String) -> void:
 	for theme_color in ["font_color", "font_hover_color"]:
-		name_edit.add_theme_color_override(theme_color, GlobalSettings.get_validity_color(
+		name_edit.add_theme_color_override(theme_color, Configs.get_validity_color(
 				false, new_text != current_palette.title and\
-				not GlobalSettings.is_palette_title_unused(new_text)))
+				not Configs.is_palette_title_unused(new_text)))
 
 func _on_name_edit_text_submitted(new_title: String) -> void:
 	new_title = new_title.strip_edges()
 	if new_title != current_palette.title:
-		GlobalSettings.rename_palette(find_palette_index(), new_title)
+		Configs.rename_palette(find_palette_index(), new_title)
 		set_label_text(current_palette.title)
 		layout_changed.emit()
 	hide_name_edit()
@@ -153,34 +153,34 @@ func set_label_text(new_text: String) -> void:
 	if current_palette.title.is_empty():
 		for theme_name in ["font_color", "font_hover_color", "font_pressed_color"]:
 			palette_button.add_theme_color_override(theme_name,
-					ThemeUtils.common_subtle_text_color)
+					ThemeConfig.common_subtle_text_color)
 	else:
-		if not GlobalSettings.is_palette_valid(current_palette):
+		if not Configs.savedata.is_palette_valid(current_palette):
 			for theme_name in ["font_color", "font_hover_color", "font_pressed_color"]:
 				palette_button.add_theme_color_override(theme_name,
-						GlobalSettings.savedata.basic_color_error)
+						Configs.savedata.theme_config.basic_color_error)
 		else:
 			for theme_name in ["font_color", "font_hover_color", "font_pressed_color"]:
 				palette_button.remove_theme_color_override(theme_name)
 	palette_button.end_bulk_theme_override()
 
 func delete() -> void:
-	GlobalSettings.delete_palette(find_palette_index())
+	Configs.savedata.delete_palette(find_palette_index())
 	layout_changed.emit()
 
 func move_up() -> void:
-	GlobalSettings.move_palette_up(find_palette_index())
+	Configs.savedata.move_palette_up(find_palette_index())
 	layout_changed.emit()
 
 func move_down() -> void:
-	GlobalSettings.move_palette_down(find_palette_index())
+	Configs.savedata.move_palette_down(find_palette_index())
 	layout_changed.emit()
 
 func paste_palette() -> void:
 	var pasted_palettes := ColorPalette.text_to_palettes(Utils.get_clipboard_web_safe())
 	if pasted_palettes.is_empty():
 		return
-	GlobalSettings.replace_palette(find_palette_index(), pasted_palettes[0])
+	Configs.replace_palette(find_palette_index(), pasted_palettes[0])
 	layout_changed.emit()  # Emit it in any case, since the palette is a new object.
 
 func open_palette_options() -> void:
@@ -204,12 +204,12 @@ func open_palette_options() -> void:
 			get_viewport())
 
 func apply_preset(preset: ColorPalette.Preset) -> void:
-	GlobalSettings.palette_apply_preset(find_palette_index(), preset)
+	Configs.palette_apply_preset(find_palette_index(), preset)
 
 
 func find_palette_index() -> int:
-	for idx in GlobalSettings.savedata.palettes.size():
-		if GlobalSettings.savedata.palettes[idx] == current_palette:
+	for idx in Configs.savedata.get_palette_count():
+		if Configs.savedata.get_palette(idx) == current_palette:
 			return idx
 	return -1
 
@@ -221,11 +221,11 @@ func _on_palette_button_pressed() -> void:
 	if palette_idx >= 1:
 		btn_arr.append(ContextPopup.create_button(Translator.translate("Move Up"),
 				move_up, false, load("res://visual/icons/MoveUp.svg")))
-	if palette_idx < GlobalSettings.savedata.palettes.size() - 1:
+	if palette_idx < Configs.savedata.get_palette_count() - 1:
 		btn_arr.append(ContextPopup.create_button(Translator.translate("Move Down"),
 				move_down, false, load("res://visual/icons/MoveDown.svg")))
 	btn_arr.append(ContextPopup.create_button(Translator.translate("Copy as XML"),
-			DisplayServer.clipboard_set.bind(GlobalSettings.savedata.palettes[palette_idx].\
+			DisplayServer.clipboard_set.bind(Configs.savedata.get_palette(palette_idx).\
 			to_text()), false, load("res://visual/icons/Copy.svg")))
 	btn_arr.append(ContextPopup.create_button(Translator.translate("Paste XML"),
 			paste_palette, !ColorPalette.is_valid_palette(Utils.get_clipboard_web_safe()),
