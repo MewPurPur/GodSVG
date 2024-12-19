@@ -10,6 +10,7 @@ signal theme_changed
 signal shortcuts_changed
 signal basic_colors_changed
 signal handle_visuals_changed
+signal layout_changed
 
 var DEFAULT_SAVEDATA := SaveData.new()
 var savedata := SaveData.new()
@@ -80,6 +81,7 @@ var triggers = {
 	"auto_ui_scale": [ui_scale_changed],
 	"snap": [snap_changed],
 	"current_file_path": [file_path_changed],
+	"layout": [layout_changed],
 }
 
 
