@@ -40,9 +40,8 @@ msgid "OK"
 msgstr "OK"
 
 #: src/autoload/HandlerGUI.gd
-#, fuzzy
 msgid "Export SVG"
-msgstr "Exportieren"
+msgstr "SVG exportieren"
 
 #: src/autoload/HandlerGUI.gd src/ui_parts/export_menu.gd
 #: src/utils/TranslationUtils.gd
