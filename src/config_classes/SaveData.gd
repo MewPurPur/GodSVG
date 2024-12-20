@@ -1,6 +1,7 @@
 class_name SaveData extends Resource
 
 const GoodColorPicker = preload("res://src/ui_widgets/good_color_picker.gd")
+const GlobalActions = preload("res://src/ui_parts/global_actions.gd")
 
 @export var version := 1
 @export var language := ""
@@ -39,6 +40,7 @@ const GoodColorPicker = preload("res://src/ui_widgets/good_color_picker.gd")
 @export var color_picker_slider_mode := GoodColorPicker.SliderMode.RGB
 @export var path_command_relative := false
 @export var file_dialog_show_hidden := false
+@export var layout := GlobalActions.Layout.CODE_EDITOR_TOP_INSPECTOR_BOTTOM
 @export var last_used_dir := ""
 @export var current_file_path := ""
 
