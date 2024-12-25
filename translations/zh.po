@@ -4,16 +4,16 @@ msgstr ""
 "Project-Id-Version: GodSVG\n"
 "POT-Creation-Date: \n"
 "PO-Revision-Date: \n"
-"Last-Translator: \n"
-"Language-Team: Hamster5295\n"
-"Language: zh\n"
+"Last-Translator: Mike Lei <mikelei@duck.com>\n"
+"Language-Team: Hamster5295, Mike Lei\n"
+"Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 3.4.4\n"
 
 msgid "translation-credits"
-msgstr "Hamster5295 <hamster5295@163.com>"
+msgstr "Hamster5295 <hamster5295@163.com>, Mike Lei <mikelei@duck.com>"
 
 #: src/autoload/HandlerGUI.gd
 msgid "Quit GodSVG"
@@ -21,7 +21,7 @@ msgstr "退出 GodSVG"
 
 #: src/autoload/HandlerGUI.gd
 msgid "Do you want to quit GodSVG?"
-msgstr "确定退出 GodSVG 吗？"
+msgstr "您确定要退出 GodSVG 吗？"
 
 #: src/autoload/HandlerGUI.gd
 msgid "Quit"
@@ -33,16 +33,15 @@ msgstr "检查更新？"
 
 #: src/autoload/HandlerGUI.gd
 msgid "This requires GodSVG to connect to the internet."
-msgstr "需要连接网络。"
+msgstr "这需要 GodSVG 连接互联网。"
 
 #: src/autoload/HandlerGUI.gd src/ui_parts/alert_dialog.gd
 msgid "OK"
 msgstr "确定"
 
 #: src/autoload/HandlerGUI.gd
-#, fuzzy
 msgid "Export SVG"
-msgstr "导出"
+msgstr "导出 SVG"
 
 #: src/autoload/HandlerGUI.gd src/ui_parts/export_menu.gd
 #: src/utils/TranslationUtils.gd
@@ -53,7 +52,7 @@ msgstr "导出"
 msgid ""
 "The graphic can only be exported as SVG because its size is not defined. Do "
 "you want to proceed?"
-msgstr ""
+msgstr "此图像只能以 SVG 格式导出，因为其大小未定义。您确定要继续吗？"
 
 #: src/autoload/Indications.gd
 msgid "View In List"
@@ -87,76 +86,74 @@ msgstr "在后方插入"
 
 #: src/config_classes/Formatter.gd
 msgid "Compact"
-msgstr ""
+msgstr "压缩"
 
 #: src/config_classes/Formatter.gd
 msgid "Pretty"
-msgstr ""
+msgstr "美化"
 
 #: src/config_classes/Formatter.gd
-#, fuzzy
 msgid "Always"
-msgstr "自动格式化固定启用。"
+msgstr "总是"
 
 #: src/config_classes/Formatter.gd
 msgid "All except containers"
-msgstr ""
+msgstr "除容器外所有"
 
 #: src/config_classes/Formatter.gd
 msgid "Never"
-msgstr ""
+msgstr "从不"
 
 #: src/config_classes/Formatter.gd
 msgid "When shorter or equal"
-msgstr ""
+msgstr "当更短或相等时"
 
 #: src/config_classes/Formatter.gd
 msgid "When shorter"
-msgstr ""
+msgstr "当更短时"
 
 #: src/config_classes/Formatter.gd
 msgid "3-digit or 6-digit hex"
-msgstr ""
+msgstr "3 位或 6 位十六进制"
 
 #: src/config_classes/Formatter.gd
 msgid "6-digit hex"
-msgstr ""
+msgstr "6 位十六进制"
 
 #: src/data_classes/BasicXNode.gd
-#, fuzzy
 msgid "Comment"
-msgstr "注释颜色"
+msgstr "注释"
 
 #: src/data_classes/BasicXNode.gd
 msgid "Text"
-msgstr ""
+msgstr "文本"
 
 #: src/data_classes/Element.gd
 msgid "{element} must be inside {allowed} to have any effect."
-msgstr ""
+msgstr "{element} 必须在 {allowed} 内才能产生作用。"
 
 #: src/data_classes/ElementG.gd
 msgid "This group has no elements."
-msgstr ""
+msgstr "此组内没有元素。"
 
 #: src/data_classes/ElementG.gd
 msgid "This group has only one element."
-msgstr ""
+msgstr "此组内只有一个元素。"
 
 #: src/data_classes/ElementLinearGradient.gd
 #: src/data_classes/ElementRadialGradient.gd
 msgid "No \"id\" attribute defined."
-msgstr ""
+msgstr "\"id\" 属性未定义。"
 
 #: src/data_classes/ElementLinearGradient.gd
 #: src/data_classes/ElementRadialGradient.gd
 msgid "No <stop> elements under this gradient."
-msgstr ""
+msgstr "此渐变下没有 <stop> 元素。"
 
 #: src/data_classes/ElementLinearGradient.gd
 #: src/data_classes/ElementRadialGradient.gd
 msgid "This gradient is a solid color."
-msgstr ""
+msgstr "此渐变为单一颜色。"
 
 #: src/data_classes/SVGParser.gd
 msgid "Doesn’t describe an SVG."
@@ -164,7 +161,7 @@ msgstr "文本不是 SVG 格式。"
 
 #: src/data_classes/SVGParser.gd
 msgid "Improper nesting."
-msgstr "SVG 代码块嵌套存在错误。"
+msgstr "错误的嵌套。"
 
 #: src/ui_parts/about_menu.gd
 msgid "Project Founder and Manager"
@@ -224,9 +221,8 @@ msgid "Save SVG"
 msgstr "保存 SVG"
 
 #: src/ui_parts/code_editor.gd
-#, fuzzy
 msgid "Open file"
-msgstr "打开"
+msgstr "打开文件"
 
 #: src/ui_parts/code_editor.gd src/utils/TranslationUtils.gd
 msgid "Reset SVG"
@@ -242,7 +238,7 @@ msgstr "优化"
 
 #: src/ui_parts/code_editor.gd src/utils/TranslationUtils.gd
 msgid "Copy all text"
-msgstr "保存所有文本"
+msgstr "复制所有文本"
 
 #: src/ui_parts/code_editor.gd src/utils/TranslationUtils.gd
 msgid "Clear SVG"
@@ -306,16 +302,15 @@ msgstr "GodSVG 网站"
 
 #: src/ui_parts/display.gd
 msgid "View savedata"
-msgstr ""
+msgstr "查看保存的数据"
 
 #: src/ui_parts/element_container.gd
-#, fuzzy
 msgid "New element"
-msgstr "调色盘"
+msgstr "新元素"
 
 #: src/ui_parts/export_menu.gd
 msgid "Dimensions"
-msgstr ""
+msgstr "大小"
 
 #: src/ui_parts/export_menu.gd
 msgid "Size"
@@ -323,7 +318,7 @@ msgstr "大小"
 
 #: src/ui_parts/export_menu.gd
 msgid "Export Configuration"
-msgstr "导出配置"
+msgstr "导出设置"
 
 #: src/ui_parts/export_menu.gd
 msgid "Format"
@@ -343,15 +338,15 @@ msgstr "缩放"
 
 #: src/ui_parts/export_menu.gd
 msgid "Width"
-msgstr ""
+msgstr "宽度"
 
 #: src/ui_parts/export_menu.gd
 msgid "Height"
-msgstr ""
+msgstr "高度"
 
 #: src/ui_parts/export_menu.gd
 msgid "Preview image size is limited to {dimensions}"
-msgstr ""
+msgstr "预览图像大小被限制到 {dimensions}"
 
 #: src/ui_parts/global_menu.gd src/ui_parts/settings_menu.gd
 msgid "File"
@@ -370,9 +365,8 @@ msgid "View"
 msgstr "视图"
 
 #: src/ui_parts/global_menu.gd
-#, fuzzy
 msgid "Snap"
-msgstr "吸附大小"
+msgstr "吸附"
 
 #: src/ui_parts/good_file_dialog.gd
 msgid "Go to parent folder"
@@ -395,9 +389,8 @@ msgid "Select an SVG"
 msgstr "选择 SVG"
 
 #: src/ui_parts/good_file_dialog.gd
-#, fuzzy
 msgid "Select an XML file"
-msgstr "选择图像"
+msgstr "选择 XML 文件"
 
 #: src/ui_parts/good_file_dialog.gd
 msgid "Select an image"
@@ -426,20 +419,19 @@ msgstr "替换"
 
 #: src/ui_parts/good_file_dialog.gd
 msgid "Create new folder"
-msgstr "创建新文件夹"
+msgstr "新建文件夹"
 
 #: src/ui_parts/good_file_dialog.gd
 msgid "Invalid name for a folder."
-msgstr ""
+msgstr "无效的文件夹名。"
 
 #: src/ui_parts/good_file_dialog.gd
 msgid "A folder with this name already exists."
-msgstr ""
+msgstr "以此为名的文件夹已存在。"
 
 #: src/ui_parts/good_file_dialog.gd
-#, fuzzy
 msgid "Failed to create a folder."
-msgstr "前往父文件夹"
+msgstr "创建文件夹失败。"
 
 #: src/ui_parts/good_file_dialog.gd
 msgid "Open"
@@ -447,7 +439,7 @@ msgstr "打开"
 
 #: src/ui_parts/good_file_dialog.gd
 msgid "Copy path"
-msgstr "复制文件路径"
+msgstr "复制路径"
 
 #: src/ui_parts/good_file_dialog.gd
 msgid ""
@@ -455,31 +447,25 @@ msgid ""
 "contents!"
 msgstr "文件 “{file_name}” 已经存在。替换操作将会覆写它的内容！"
 
-# Tag 原意为“标签”，在 SVG 编辑语境下表示一个由 <tag> ... </tag> 构成的代码块。
-# 为了更方便用户，尤其是不了解 SVG 的用户的理解，此处翻译为 “元素” 而非 “标签”
 #: src/ui_parts/handles_manager.gd
-#, fuzzy
 msgid "New shape"
-msgstr "添加元素"
+msgstr "新形状"
 
 #: src/ui_parts/import_warning_menu.gd
 msgid "Import Problems"
 msgstr "导入出错"
 
 #: src/ui_parts/import_warning_menu.gd src/utils/TranslationUtils.gd
-#, fuzzy
 msgid "Import"
 msgstr "导入"
 
 #: src/ui_parts/import_warning_menu.gd
-#, fuzzy
 msgid "Unrecognized element"
-msgstr "未知的属性"
+msgstr "未知元素"
 
 #: src/ui_parts/import_warning_menu.gd
-#, fuzzy
 msgid "Unrecognized attribute"
-msgstr "未知的属性"
+msgstr "未知属性"
 
 #: src/ui_parts/import_warning_menu.gd
 msgid "Syntax error"
@@ -487,7 +473,7 @@ msgstr "语法错误"
 
 #: src/ui_parts/inspector.gd
 msgid "Add element"
-msgstr ""
+msgstr "添加元素"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Formatting"
@@ -502,7 +488,6 @@ msgid "Shortcuts"
 msgstr "快捷键"
 
 #: src/ui_parts/settings_menu.gd
-#, fuzzy
 msgid "Theming"
 msgstr "主题"
 
@@ -519,9 +504,8 @@ msgid "Symbol color"
 msgstr "符号颜色"
 
 #: src/ui_parts/settings_menu.gd
-#, fuzzy
 msgid "Element color"
-msgstr "注释颜色"
+msgstr "元素颜色"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Attribute color"
@@ -537,7 +521,7 @@ msgstr "注释颜色"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Text color"
-msgstr "文字颜色"
+msgstr "文本颜色"
 
 #: src/ui_parts/settings_menu.gd
 msgid "CDATA color"
@@ -597,7 +581,7 @@ msgstr "反转缩放方向"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Wrap mouse"
-msgstr "鼠标无限拖拽"
+msgstr "连续拖拽"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Use CTRL for zooming"
@@ -613,10 +597,9 @@ msgstr "使用系统自带文件选择窗口"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Sync window title to file name"
-msgstr ""
+msgstr "同步窗口标题为文件名"
 
 #: src/ui_parts/settings_menu.gd
-#, fuzzy
 msgid "Handle size"
 msgstr "拖拽框大小"
 
@@ -633,33 +616,28 @@ msgid "Language"
 msgstr "语言"
 
 #: src/ui_parts/settings_menu.gd
-#, fuzzy
 msgid "Import XML"
-msgstr "导入"
+msgstr "导入 XML"
 
 #: src/ui_parts/settings_menu.gd src/ui_widgets/palette_config.gd
 msgid "Paste XML"
 msgstr "粘贴 XML"
 
 #: src/ui_parts/settings_menu.gd
-#, fuzzy
 msgid "New palette"
-msgstr "调色盘"
+msgstr "新建调色盘"
 
 #: src/ui_parts/settings_menu.gd
-#, fuzzy
 msgid "New palette from XML"
-msgstr "调色盘"
+msgstr "从 XML 创建新调色盘"
 
 #: src/ui_parts/settings_menu.gd
-#, fuzzy
 msgid "Editor formatter"
-msgstr "导出"
+msgstr "编辑器格式"
 
 #: src/ui_parts/settings_menu.gd
-#, fuzzy
 msgid "Export formatter"
-msgstr "导出"
+msgstr "导出格式"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Help"
@@ -667,20 +645,17 @@ msgstr "帮助"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Swaps zoom in and zoom out with the mouse wheel."
-msgstr "反转鼠标滚轮对缩放的控制方向。"
+msgstr "反转鼠标滚轮缩放控制。"
 
-# 此处 wrap around 表示当鼠标靠近窗口边缘时，自动将其“瞬移”到对侧的边缘，从而在视觉上实现 “鬼打墙” 的效果，以表现出更加直观的拖拽移动效果。
-# 此处翻译过于冗长，有待优化。
 #: src/ui_parts/settings_menu.gd
-#, fuzzy
 msgid "Wraps the mouse cursor around when panning the viewport."
-msgstr "鼠标拖拽视图移动至窗口边缘时，自动瞬移到另一侧（以实现顺滑拖拽）。"
+msgstr "拖拽视图时使鼠标保持连续运动。"
 
 #: src/ui_parts/settings_menu.gd
 msgid ""
 "If turned on, scrolling will pan the view. To zoom, hold CTRL while "
 "scrolling."
-msgstr "如果启用，鼠标滚轮将移动视图。按住 CTRL 并滚动滚轮以缩放。"
+msgstr "如果启用，滚动鼠标滚轮将移动视图。按住 CTRL 并滚动滚轮以缩放。"
 
 #: src/ui_parts/settings_menu.gd
 msgid ""
@@ -694,28 +669,27 @@ msgstr ""
 msgid ""
 "If turned off, the window title will remain simply \"GodSVG\" regardless of "
 "the current file."
-msgstr ""
+msgstr "如果禁用，不论当前打开的文件是什么，窗口标题都将固定为 “GodSVG”。"
 
 #: src/ui_parts/settings_menu.gd
-#, fuzzy
 msgid "Changes the visual size and grabbing area of handles."
-msgstr "增加拖拽框的视觉尺寸。"
+msgstr "改变拖拽框的视觉和操作区域大小。"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Changes the scale of the visual user interface."
-msgstr "改变 UI 的缩放尺度。"
+msgstr "改变用户界面的缩放尺寸。"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Scales the user interface based on the screen size."
-msgstr "依据屏幕大小自动缩放 UI。"
+msgstr "根据屏幕大小缩放用户界面。"
 
 #: src/ui_parts/update_menu.gd
 msgid "Include prereleases"
-msgstr "包含预发布版本"
+msgstr "包括预发布版本"
 
 #: src/ui_parts/update_menu.gd
 msgid "Retry"
-msgstr ""
+msgstr "重试"
 
 #: src/ui_parts/update_menu.gd
 msgid "Current Version"
@@ -781,9 +755,8 @@ msgid "Unnamed"
 msgstr "未命名"
 
 #: src/ui_widgets/formatter_config.gd src/ui_widgets/palette_config.gd
-#, fuzzy
 msgid "Rename"
-msgstr "未命名"
+msgstr "重命名"
 
 #: src/ui_widgets/formatter_config.gd src/ui_widgets/setting_frame.gd
 #: src/ui_widgets/setting_shortcut.gd
@@ -791,44 +764,40 @@ msgid "Reset to default"
 msgstr "恢复默认"
 
 #: src/ui_widgets/formatter_config.gd
-#, fuzzy
 msgid "Preset"
-msgstr "重置缩放"
+msgstr "预设"
 
 #: src/ui_widgets/formatter_config.gd
-#, fuzzy
 msgid "Keep comments"
-msgstr "注释颜色"
+msgstr "保留注释"
 
 #: src/ui_widgets/formatter_config.gd
-#, fuzzy
 msgid "Keep unrecognized XML structures"
-msgstr "未知的属性"
+msgstr "保留未知 XML 结构"
 
 #: src/ui_widgets/formatter_config.gd
 msgid "Add trailing newline"
-msgstr "在末尾添加空行"
+msgstr "在文件末尾添加"
 
 #: src/ui_widgets/formatter_config.gd
 msgid "Use shorthand tag syntax"
-msgstr "使用自闭合元素语法"
+msgstr "使用简写标签语法"
 
 #: src/ui_widgets/formatter_config.gd
 msgid "Space out the slash of shorthand tags"
-msgstr ""
+msgstr "在简写标签斜线前添加空格"
 
 #: src/ui_widgets/formatter_config.gd
-#, fuzzy
 msgid "Use pretty formatting"
-msgstr "启用自动格式化"
+msgstr "使用美化格式"
 
 #: src/ui_widgets/formatter_config.gd
 msgid "Use spaces instead of tabs"
-msgstr ""
+msgstr "使用空格而不是 tab"
 
 #: src/ui_widgets/formatter_config.gd
 msgid "Number of indentation spaces"
-msgstr ""
+msgstr "缩进空格数量"
 
 #: src/ui_widgets/formatter_config.gd
 msgid "Numbers"
@@ -836,33 +805,31 @@ msgstr "数字"
 
 #: src/ui_widgets/formatter_config.gd
 msgid "Remove leading zero"
-msgstr "移除数字前多余的 0"
+msgstr "移除前面的 0"
 
 #: src/ui_widgets/formatter_config.gd
 msgid "Use exponential when shorter"
-msgstr ""
+msgstr "当更短时使用指数形式"
 
 #: src/ui_widgets/formatter_config.gd
 msgid "Colors"
 msgstr "颜色"
 
 #: src/ui_widgets/formatter_config.gd
-#, fuzzy
 msgid "Use named colors"
-msgstr "使用简化颜色常量"
+msgstr "使用颜色名"
 
 #: src/ui_widgets/formatter_config.gd
 msgid "Primary syntax"
-msgstr ""
+msgstr "主语法"
 
 #: src/ui_widgets/formatter_config.gd
 msgid "Capitalize hexadecimal letters"
-msgstr ""
+msgstr "大写十六进制字母"
 
 #: src/ui_widgets/formatter_config.gd
-#, fuzzy
 msgid "Pathdata"
-msgstr "没有路径数据"
+msgstr "路径数据"
 
 #: src/ui_widgets/formatter_config.gd
 msgid "Compress numbers"
@@ -874,16 +841,15 @@ msgstr "最小化间距"
 
 #: src/ui_widgets/formatter_config.gd
 msgid "Remove spacing after flags"
-msgstr "移除标志后的间隔"
+msgstr "移除标志后的空格"
 
 #: src/ui_widgets/formatter_config.gd
 msgid "Remove consecutive commands"
 msgstr "移除连续指令"
 
 #: src/ui_widgets/formatter_config.gd
-#, fuzzy
 msgid "Transform lists"
-msgstr "变换"
+msgstr "变换列表"
 
 #: src/ui_widgets/formatter_config.gd
 msgid "Remove unnecessary parameters"
@@ -899,24 +865,23 @@ msgstr "禁用该颜色"
 
 #: src/ui_widgets/palette_config.gd
 msgid "Unnamed palettes won't be shown."
-msgstr ""
+msgstr "未命名的调色盘不会被显示。"
 
 #: src/ui_widgets/palette_config.gd
 msgid "Multiple palettes can't have the same name."
-msgstr ""
+msgstr "多个调色盘不能使用同一个名称。"
 
 #: src/ui_widgets/palette_config.gd
 msgid "This palette has identically defined colors."
-msgstr ""
+msgstr "此调色盘使用了完全相同的颜色定义。"
 
 #: src/ui_widgets/palette_config.gd
 msgid "Copy as XML"
 msgstr "复制为 XML"
 
 #: src/ui_widgets/palette_config.gd
-#, fuzzy
 msgid "Apply Preset"
-msgstr "重置缩放"
+msgstr "应用预设"
 
 #: src/ui_widgets/pathdata_field.gd
 msgid "No path data"
@@ -932,11 +897,11 @@ msgstr "相对"
 
 #: src/ui_widgets/points_field.gd
 msgid "No points"
-msgstr ""
+msgstr "没有点"
 
 #: src/ui_widgets/presented_shortcut.gd src/ui_widgets/setting_shortcut.gd
 msgid "Also used by"
-msgstr ""
+msgstr "还用于"
 
 #: src/ui_widgets/setting_shortcut.gd
 msgid "Unused"
@@ -971,34 +936,30 @@ msgid "GodSVG doesn’t recognize this attribute"
 msgstr "GodSVG 无法识别该属性"
 
 #: src/utils/FileUtils.gd
-#, fuzzy
 msgid "Save the .\"{format}\" file"
-msgstr "保存 .\"{extension}\" 文件"
+msgstr "保存 .\"{format}\" 文件"
 
 #: src/utils/FileUtils.gd
 msgid "Load an image file"
 msgstr "加载图像文件"
 
 #: src/utils/FileUtils.gd
-#, fuzzy
 msgid "Import a {extension} file"
-msgstr "导入 .svg 文件"
+msgstr "导入 {extension} 文件"
 
 #: src/utils/FileUtils.gd
 msgid "The file couldn't be opened."
-msgstr ""
+msgstr "无法打开文件。"
 
 #: src/utils/FileUtils.gd
 msgid "Check if the file still exists in the selected file path."
-msgstr ""
+msgstr "检查文件是否还存在于选中的路径。"
 
 #: src/utils/TranslationUtils.gd
-#, fuzzy
 msgid "Select all elements"
 msgstr "选择所有元素"
 
 #: src/utils/TranslationUtils.gd
-#, fuzzy
 msgid "Duplicate the selected elements"
 msgstr "克隆选中的元素"
 
@@ -1007,18 +968,16 @@ msgid "Delete the selection"
 msgstr "删除所选项"
 
 #: src/utils/TranslationUtils.gd
-#, fuzzy
 msgid "Move the selected elements up"
 msgstr "将选中的元素上移"
 
 #: src/utils/TranslationUtils.gd
-#, fuzzy
 msgid "Move the selected elements down"
 msgstr "将选中的元素下移"
 
 #: src/utils/TranslationUtils.gd
 msgid "Find"
-msgstr ""
+msgstr "查找"
 
 #: src/utils/TranslationUtils.gd
 msgid "Zoom in"
@@ -1034,12 +993,11 @@ msgstr "重置缩放"
 
 #: src/utils/TranslationUtils.gd
 msgid "Show rasterized SVG"
-msgstr "显示光栅化 SVG"
+msgstr "显示光栅化的 SVG"
 
 #: src/utils/TranslationUtils.gd
-#, fuzzy
 msgid "Toggle snapping"
-msgstr "启用吸附"
+msgstr "切换吸附"
 
 #: src/utils/TranslationUtils.gd
 msgid "Show reference image"
@@ -1118,16 +1076,15 @@ msgid "Shorthand Cubic Bezier to"
 msgstr "两点三次贝塞尔曲线"
 
 #: src/utils/TranslationUtils.gd
-#, fuzzy
 msgid ""
 "The file extension {extension} is unsupported for this operation. Only "
 "{extension_list} files are supported."
-msgstr "不支持 “{passed_extension}” 文件。仅支持 \"svg\" 文件。"
+msgstr ""
+"扩展名 {extension} 不支持此操作。只有 {extension_list} 内的文件受支持。"
 
 #: src/utils/TranslationUtils.gd
-#, fuzzy
 msgid "The file extension is empty. Only {extension_list} files are supported."
-msgstr "文件拓展名是空的。仅支持 “svg” 文件。"
+msgstr "文件扩展名为空。只有 {extension_list} 内的文件受支持。"
 
 #~ msgid "Invalid"
 #~ msgstr "无效"
