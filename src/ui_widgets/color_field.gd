@@ -138,7 +138,7 @@ func is_valid(color_text: String) -> bool:
 
 
 func _on_text_changed(new_text: String) -> void:
-	font_color = GlobalSettings.get_validity_color(!is_valid(new_text))
+	font_color = Utils.get_validity_color(!is_valid(new_text))
 
 func resync() -> void:
 	sync(text)

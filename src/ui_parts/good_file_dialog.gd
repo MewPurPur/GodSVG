@@ -406,7 +406,7 @@ func _on_file_field_text_changed(new_text: String) -> void:
 		special_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	
 	file_field.add_theme_color_override("font_color",
-			GlobalSettings.get_validity_color(is_invalid_filename))
+			Utils.get_validity_color(is_invalid_filename))
 
 func _on_file_field_text_change_canceled() -> void:
 	file_field.remove_theme_color_override("font_color")

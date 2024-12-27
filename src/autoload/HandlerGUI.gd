@@ -16,9 +16,10 @@ var popup_stack: Array[Control]
 
 
 func _enter_tree() -> void:
-	get_window().files_dropped.connect(_on_files_dropped)
-	get_window().dpi_changed.connect(update_ui_scale)
-	get_window().size_changed.connect(remove_all_popups)
+	var window := get_window()
+	window.files_dropped.connect(_on_files_dropped)
+	window.dpi_changed.connect(update_ui_scale)
+	window.size_changed.connect(remove_all_popups)
 
 func _ready() -> void:
 	GlobalSettings.ui_scale_changed.connect(update_ui_scale)

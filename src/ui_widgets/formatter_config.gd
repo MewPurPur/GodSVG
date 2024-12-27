@@ -195,7 +195,7 @@ func _on_name_edit_text_changed(new_text: String) -> void:
 	var names := PackedStringArray()
 	for formatter in GlobalSettings.savedata.formatters:
 		names.append(formatter.title)
-	name_edit.add_theme_color_override("font_color", GlobalSettings.get_validity_color(
+	name_edit.add_theme_color_override("font_color", Utils.get_validity_color(
 			new_text in names and new_text != current_formatter.title))
 
 func _on_name_edit_text_submitted(new_title: String) -> void:

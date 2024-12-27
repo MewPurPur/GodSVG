@@ -51,7 +51,7 @@ func _on_pressed() -> void:
 	color_picker.color_picked.connect(_on_color_picked)
 
 func _on_text_changed(new_text: String) -> void:
-	font_color = GlobalSettings.get_validity_color(!is_color_valid_non_url(new_text))
+	font_color = Utils.get_validity_color(!is_color_valid_non_url(new_text))
 
 func _draw() -> void:
 	super()

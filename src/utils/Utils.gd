@@ -108,6 +108,11 @@ static func get_last_dir() -> String:
 	else:
 		return GlobalSettings.savedata.last_used_dir
 
+static func get_validity_color(error_condition: bool, warning_condition := false) -> Color:
+	return GlobalSettings.savedata.basic_color_error if error_condition else\
+			GlobalSettings.savedata.basic_color_warning if warning_condition else\
+			GlobalSettings.savedata.basic_color_valid
+
 
 static func generate_gradient(element: Element) -> Gradient:
 	if not (element is ElementLinearGradient or element is ElementRadialGradient):
