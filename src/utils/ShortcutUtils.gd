@@ -81,11 +81,10 @@ static func fn(shortcut: String) -> Callable:
 		"copy_svg_text": return DisplayServer.clipboard_set.bind(SVG.text)
 		"clear_svg": return SVG.apply_svg_text.bind(SVG.DEFAULT)
 		"optimize": return SVG.optimize
-		"clear_file_path": return GlobalSettings.modify_setting.bind(
-				"current_file_path", "")
+		"clear_file_path": return Configs.modify_setting.bind("current_file_path", "")
 		"reset_svg": return FileUtils.apply_svg_from_path.bind(
-				GlobalSettings.savedata.current_file_path)
-		"open_svg": return FileUtils.open_svg.bind(GlobalSettings.savedata.current_file_path)
+				Configs.savedata.current_file_path)
+		"open_svg": return FileUtils.open_svg.bind(Configs.savedata.current_file_path)
 		"redo": return SVG.redo
 		"undo": return SVG.undo
 		"ui_cancel": return Indications.clear_all_selections
@@ -124,4 +123,4 @@ static func is_action_pressed(event: InputEvent, action: String) -> bool:
 	# is the correct one... But it should be handled gracefully.
 	if event is InputEventAction:
 		event = InputMap.action_get_events(event.action)[event.event_index]
-	return event.is_action_pressed(action) and GlobalSettings.is_shortcut_valid(event)
+	return event.is_action_pressed(action) and Configs.is_shortcut_valid(event)

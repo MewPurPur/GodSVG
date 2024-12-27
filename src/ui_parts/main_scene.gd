@@ -5,7 +5,7 @@ const MacMenu = preload("res://src/ui_parts/global_menu.tscn")
 @onready var panel_container: PanelContainer = $PanelContainer
 
 func _ready() -> void:
-	GlobalSettings.theme_changed.connect(update_theme)
+	Configs.theme_changed.connect(update_theme)
 	update_theme()
 	if NativeMenu.has_feature(NativeMenu.FEATURE_GLOBAL_MENU):
 		add_child(MacMenu.instantiate())

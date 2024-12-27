@@ -23,12 +23,12 @@ var advice := {}  # String: String
 
 func _ready() -> void:
 	close_button.pressed.connect(queue_free)
-	GlobalSettings.language_changed.connect(setup_everything)
+	Configs.language_changed.connect(setup_everything)
 	update_language_button()
 	update_close_button()
 	setup_tabs()
 	tabs.get_child(0).button_pressed = true
-	GlobalSettings.theme_changed.connect(setup_theming)
+	Configs.theme_changed.connect(setup_theming)
 	setup_theming()
 
 func setup_theming() -> void:
@@ -237,7 +237,7 @@ func add_dropdown(text: String) -> Control:
 	var frame := SettingFrame.instantiate()
 	frame.text = text
 	setup_frame(frame)
-	frame.setup_dropdown(GlobalSettings.get_enum_texts(current_setup_setting))
+	frame.setup_dropdown(Configs.get_enum_texts(current_setup_setting))
 	add_frame(frame)
 	return frame
 
@@ -259,10 +259,10 @@ func add_color_edit(text: String, enable_alpha := true) -> Control:
 	return frame
 
 func setup_frame(frame: Control) -> void:
-	frame.getter = GlobalSettings.savedata.get.bind(current_setup_setting)
+	frame.getter = Configs.savedata.get.bind(current_setup_setting)
 	var bind := current_setup_setting
-	frame.setter = func(p): GlobalSettings.modify_setting(bind, p)
-	frame.default = GlobalSettings.get_default(current_setup_setting)
+	frame.setter = func(p): Configs.modify_setting(bind, p)
+	frame.default = Configs.get_default(current_setup_setting)
 	frame.mouse_entered.connect(show_advice.bind(current_setup_setting))
 	frame.mouse_exited.connect(hide_advice.bind(current_setup_setting))
 
@@ -352,7 +352,7 @@ func _on_language_pressed() -> void:
 	HandlerGUI.popup_under_rect_center(lang_popup, lang_button.get_global_rect(), get_viewport())
 
 func _on_language_chosen(locale: String) -> void:
-	GlobalSettings.modify_setting("language", locale)
+	Configs.modify_setting("language", locale)
 	update_language_button()
 
 func update_language_button() -> void:
@@ -393,7 +393,7 @@ func _shared_add_palettes_logic(palettes: Array[ColorPalette]) -> void:
 		_shared_add_palette_logic(palettes[0])
 
 func _shared_add_palette_logic(palette: ColorPalette) -> void:
-	GlobalSettings.add_new_palette(palette)
+	Configs.add_new_palette(palette)
 	rebuild_color_palettes()
 
 
@@ -401,7 +401,7 @@ func rebuild_color_palettes() -> void:
 	var palette_container := content_container.get_child(-1)
 	for palette_config in palette_container.get_children():
 		palette_config.queue_free()
-	for palette in GlobalSettings.savedata.palettes:
+	for palette in Configs.savedata.palettes:
 		var palette_config := PaletteConfigWidget.instantiate()
 		palette_container.add_child(palette_config)
 		palette_config.assign_palette(palette)
@@ -434,7 +434,7 @@ func rebuild_color_palettes() -> void:
 
 
 func add_formatter() -> void:
-	GlobalSettings.add_new_formatter(Formatter.new())
+	Configs.add_new_formatter(Formatter.new())
 	rebuild_formatters()
 
 func rebuild_formatters() -> void:
@@ -443,7 +443,7 @@ func rebuild_formatters() -> void:
 		formatter_config.queue_free()
 	
 	var available_formatters := {}
-	for formatter in GlobalSettings.savedata.formatters:
+	for formatter in Configs.savedata.formatters:
 		if not formatter.title.is_empty():
 			available_formatters[formatter.title] = formatter
 	
@@ -452,8 +452,8 @@ func rebuild_formatters() -> void:
 		var frame := ProfileFrame.instantiate()
 		frame.setup_dropdown()
 		frame.text = context[1]
-		frame.getter = func(): return GlobalSettings.savedata.get(context[0]).title
-		frame.setter = func(p): GlobalSettings.modify_setting(context[0],
+		frame.getter = func(): return Configs.savedata.get(context[0]).title
+		frame.setter = func(p): Configs.modify_setting(context[0],
 				available_formatters[p] if available_formatters.has(p) else\
 				available_formatters.values()[0])
 		frame.mouse_entered.connect(show_advice.bind(current_setup_setting))
@@ -461,7 +461,7 @@ func rebuild_formatters() -> void:
 		formatter_container.add_child(frame)
 		frame.dropdown.values = available_formatters.keys()
 	
-	for formatter in GlobalSettings.savedata.formatters:
+	for formatter in Configs.savedata.formatters:
 		var formatter_config := FormatterConfigWidget.instantiate()
 		formatter_config.current_formatter = formatter
 		formatter_container.add_child(formatter_config)
@@ -478,12 +478,12 @@ func rebuild_formatters() -> void:
 
 func set_formatter(formatter_purpose: String, formatter_name: String) -> void:
 	var new_formatter: Formatter
-	for formatter in GlobalSettings.savedata.formatters:
+	for formatter in Configs.savedata.formatters:
 		if formatter.title == formatter_name:
 			new_formatter = formatter
 			break
 	if is_instance_valid(new_formatter):
-		GlobalSettings.modify_setting(formatter_purpose, new_formatter)
+		Configs.modify_setting(formatter_purpose, new_formatter)
 
 
 var shortcut_tab_names := ["file", "edit", "view", "tool", "help"]

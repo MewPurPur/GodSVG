@@ -33,7 +33,7 @@ static func get_type_string(node_type: NodeType) -> String:
 func get_possible_conversions() -> Array[NodeType]:
 	var conversions: Array[NodeType] = []
 	if (_type == NodeType.TEXT or _type == NodeType.CDATA) and\
-	GlobalSettings.savedata.editor_formatter.xml_keep_comments:
+	Configs.savedata.editor_formatter.xml_keep_comments:
 		conversions.append(NodeType.COMMENT)
 	
 	if _type == NodeType.COMMENT or _type == NodeType.CDATA:

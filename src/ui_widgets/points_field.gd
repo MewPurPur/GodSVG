@@ -53,7 +53,7 @@ func sync_to_attribute() -> void:
 
 
 func setup() -> void:
-	GlobalSettings.language_changed.connect(update_translation)
+	Configs.language_changed.connect(update_translation)
 	sync_to_attribute()
 	element.attribute_changed.connect(_on_element_attribute_changed)
 	line_edit.tooltip_text = attribute_name

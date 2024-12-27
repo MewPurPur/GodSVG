@@ -29,7 +29,7 @@ func _draw() -> void:
 	if disabled:
 		text_color = Color(0.5, 0.5, 0.5)
 	elif warned:
-		text_color = GlobalSettings.savedata.basic_color_warning
+		text_color = Configs.savedata.basic_color_warning
 	
 	var left_margin := get_theme_stylebox("normal").content_margin_left
 	var right_margin := get_theme_stylebox("normal").content_margin_right

@@ -40,10 +40,10 @@ func show_description(title: String, pros: PackedStringArray, cons := PackedStri
 	clarifications.push_bold()
 	clarifications.add_text(title + ":")
 	clarifications.pop()
-	clarifications.push_color(GlobalSettings.savedata.basic_color_valid)
+	clarifications.push_color(Configs.savedata.basic_color_valid)
 	for pro in pros:
 		clarifications.add_text("\n+ " + pro)
-	clarifications.push_color(GlobalSettings.savedata.basic_color_error)
+	clarifications.push_color(Configs.savedata.basic_color_error)
 	for con in cons:
 		clarifications.add_text("\n– " + con)
 
