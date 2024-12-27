@@ -250,8 +250,8 @@ func _init(new_title := "", new_preset := Preset.COMPACT) -> void:
 func _on_changed() -> void:
 	if not _suppress_sync:
 		_svg_sync()
-	GlobalSettings.save()
+	Configs.save()
 
 func _svg_sync() -> void:
-	if self == GlobalSettings.savedata.editor_formatter:
+	if self == Configs.savedata.editor_formatter:
 		SVG.sync_elements()

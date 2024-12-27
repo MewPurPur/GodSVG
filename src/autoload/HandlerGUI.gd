@@ -22,8 +22,8 @@ func _enter_tree() -> void:
 	window.size_changed.connect(remove_all_popups)
 
 func _ready() -> void:
-	GlobalSettings.ui_scale_changed.connect(update_ui_scale)
-	await get_tree().process_frame
+	Configs.ui_scale_changed.connect(update_ui_scale)
+	await get_tree().process_frame  # Helps make things more consistent.
 	update_ui_scale()
 
 func _notification(what: int) -> void:
@@ -252,23 +252,29 @@ func update_ui_scale() -> void:
 	var window := get_window()
 	if not window.is_node_ready():
 		await window.ready
-	
+	var old_scale_factor := window.content_scale_factor
+
 	# Get window size without the decorations.
-	var usable_screen_size := Vector2(DisplayServer.screen_get_usable_rect(
+	var usable_screen_size := Vector2i(DisplayServer.screen_get_usable_rect(
 			DisplayServer.window_get_current_screen()).size -\
 			window.get_size_with_decorations() + window.size)
-	
-	# How much can window content size be multiplied by before it extends over the usable screen size.
-	var diff := usable_screen_size / window.get_contents_minimum_size()
+
+	# Presumably the default size would always be enough for the contents.
+	var window_default_size := Vector2i(
+			ProjectSettings.get_setting("display/window/size/viewport_width"),
+			ProjectSettings.get_setting("display/window/size/viewport_height"))
+
+	# How much can the default size be increased before it takes all usable screen space.
+	var diff := Vector2(usable_screen_size) / Vector2(window_default_size)
 	var max_scale := floorf(minf(diff.x, diff.y) * 4.0) / 4.0
-	var desired_scale: float = GlobalSettings.savedata.ui_scale * _calculate_auto_scale()
-	
-	if not desired_scale > max_scale:
-		window.min_size = window.get_contents_minimum_size() * desired_scale
-		window.content_scale_factor = desired_scale
-	else:
-		window.min_size = usable_screen_size
-		window.content_scale_factor = max_scale
+	var final_scale := minf(Configs.savedata.ui_scale * _calculate_auto_scale(), max_scale)
+	var resize_factor := final_scale / old_scale_factor
+
+	window.size.x = mini(int(window.size.x * resize_factor), usable_screen_size.x)
+	window.size.y = mini(int(window.size.y * resize_factor), usable_screen_size.y)
+	window.min_size.x = mini(int(window_default_size.x * final_scale), usable_screen_size.x)
+	window.min_size.y = mini(int(window_default_size.y * final_scale), usable_screen_size.y)
+	window.content_scale_factor = final_scale
 
 
 func open_update_checker() -> void:
@@ -307,7 +313,7 @@ func open_export() -> void:
 
 
 func _calculate_auto_scale() -> float:
-	if not GlobalSettings.savedata.auto_ui_scale:
+	if not Configs.savedata.auto_ui_scale:
 		return 1.0
 	
 	# Credit: Godots (MIT, by MakovWait and contributors)

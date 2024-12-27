@@ -12,9 +12,9 @@ extends VBoxContainer
 @onready var export_button: Button = %MetaActions/ExportButton
 
 func _ready() -> void:
-	GlobalSettings.theme_changed.connect(setup_theme)
+	Configs.theme_changed.connect(setup_theme)
 	SVG.parsing_finished.connect(update_error)
-	GlobalSettings.highlighting_colors_changed.connect(update_syntax_highlighter)
+	Configs.highlighting_colors_changed.connect(update_syntax_highlighter)
 	auto_update_text()
 	update_size_button()
 	update_file_button()
@@ -22,8 +22,8 @@ func _ready() -> void:
 	update_syntax_highlighter()
 	code_edit.clear_undo_history()
 	SVG.changed.connect(auto_update_text)
-	GlobalSettings.file_path_changed.connect(update_file_button)
-	GlobalSettings.basic_colors_changed.connect(update_size_button_colors)
+	Configs.file_path_changed.connect(update_file_button)
+	Configs.basic_colors_changed.connect(update_size_button_colors)
 	import_button.pressed.connect(ShortcutUtils.fn("import"))
 	export_button.pressed.connect(ShortcutUtils.fn("export"))
 	# Fix the size button sizing.
@@ -89,7 +89,7 @@ func setup_theme() -> void:
 	scrollbar.end_bulk_theme_override()
 	
 	error_label.add_theme_color_override("default_color",
-			GlobalSettings.savedata.basic_color_error)
+			Configs.savedata.basic_color_error)
 	var panel_stylebox := get_theme_stylebox("panel", "PanelContainer")
 	# Set up the top panel.
 	var top_stylebox := panel_stylebox.duplicate()
@@ -132,11 +132,11 @@ func update_size_button_colors() -> void:
 	size_button.begin_bulk_theme_override()
 	for theming in ["font_color", "font_hover_color", "font_pressed_color"]:
 		size_button.add_theme_color_override(theming,
-				GlobalSettings.savedata.basic_color_warning.lerp(Color.WHITE, 0.5))
+				Configs.savedata.basic_color_warning.lerp(Color.WHITE, 0.5))
 	size_button.end_bulk_theme_override()
 
 func update_file_button() -> void:
-	var file_path := GlobalSettings.savedata.current_file_path
+	var file_path := Configs.savedata.current_file_path
 	file_button.visible = !file_path.is_empty()
 	file_button.text = file_path.get_file()
 	file_button.tooltip_text = file_path.get_file()
@@ -161,7 +161,7 @@ func _on_file_button_pressed() -> void:
 			FileUtils.save_svg, false, load("res://visual/icons/Save.svg"), "save"))
 	btn_array.append(ContextPopup.create_button(Translator.translate("Open file"),
 			ShortcutUtils.fn("open_svg"),
-			not FileAccess.file_exists(GlobalSettings.savedata.current_file_path),
+			not FileAccess.file_exists(Configs.savedata.current_file_path),
 			load("res://visual/icons/OpenFile.svg"), "open_svg"))
 	btn_array.append(ContextPopup.create_button(Translator.translate("Reset SVG"),
 			ShortcutUtils.fn("reset_svg"),
@@ -203,4 +203,4 @@ func _on_options_button_pressed() -> void:
 
 func update_syntax_highlighter() -> void:
 	if is_instance_valid(code_edit):
-		code_edit.syntax_highlighter = GlobalSettings.generate_highlighter()
+		code_edit.syntax_highlighter = Configs.generate_highlighter()

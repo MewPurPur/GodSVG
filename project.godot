@@ -30,7 +30,7 @@ driver/driver="Dummy"
 
 [autoload]
 
-GlobalSettings="*res://src/autoload/GlobalSettings.gd"
+Configs="*res://src/autoload/Configs.gd"
 SVG="*res://src/autoload/SVG.gd"
 Indications="*res://src/autoload/Indications.gd"
 HandlerGUI="*res://src/autoload/HandlerGUI.gd"

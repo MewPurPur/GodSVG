@@ -12,7 +12,7 @@ func set_value(new_value: String, save := false) -> void:
 
 
 func _ready() -> void:
-	GlobalSettings.basic_colors_changed.connect(resync)
+	Configs.basic_colors_changed.connect(resync)
 	sync_to_attribute()
 	element.attribute_changed.connect(_on_element_attribute_changed)
 	text_changed.connect(_on_text_changed)

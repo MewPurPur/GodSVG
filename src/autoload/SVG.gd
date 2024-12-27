@@ -49,8 +49,8 @@ func _ready() -> void:
 	
 	# Guarantee a proper SVG text first, as the import warnings dialog
 	# that might pop up from command line file opening is cancellable.
-	if not GlobalSettings.svg_text.is_empty():
-		apply_svg_text(GlobalSettings.svg_text)
+	if not Configs.svg_text.is_empty():
+		apply_svg_text(Configs.svg_text)
 	else:
 		apply_svg_text(DEFAULT)
 	
@@ -81,20 +81,19 @@ func _save() -> void:
 	if not _save_pending:
 		return
 	_save_pending = false
-	var saved_text := GlobalSettings.svg_text
+	var saved_text := Configs.svg_text
 	if saved_text == text:
 		return
 	UR.create_action("")
-	UR.add_do_property(GlobalSettings, "svg_text", text)
-	UR.add_undo_property(GlobalSettings, "svg_text", saved_text)
+	UR.add_do_property(Configs, "svg_text", text)
+	UR.add_undo_property(Configs, "svg_text", saved_text)
 	UR.add_do_property(self, "text", text)
 	UR.add_undo_property(self, "text", saved_text)
 	UR.commit_action()
 
 
 func sync_elements() -> void:
-	var svg_parse_result := SVGParser.text_to_root(text,
-			GlobalSettings.savedata.editor_formatter)
+	var svg_parse_result := SVGParser.text_to_root(text, Configs.savedata.editor_formatter)
 	parsing_finished.emit(svg_parse_result.error)
 	if svg_parse_result.error == SVGParser.ParseError.OK:
 		root_element = svg_parse_result.svg
@@ -138,7 +137,7 @@ func redo() -> void:
 		sync_elements()
 
 func _on_undo_redo() -> void:
-	GlobalSettings.svg_text = text
+	Configs.svg_text = text
 
 func apply_svg_text(svg_text: String) -> void:
 	set_text(svg_text)

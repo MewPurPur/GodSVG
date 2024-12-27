@@ -20,7 +20,7 @@ func setup_placeholder() -> void:
 
 
 func _ready() -> void:
-	GlobalSettings.basic_colors_changed.connect(resync)
+	Configs.basic_colors_changed.connect(resync)
 	sync_to_attribute()
 	element.attribute_changed.connect(_on_element_attribute_changed)
 	if attribute_name in DB.propagated_attributes:
@@ -83,7 +83,7 @@ func sync(new_value: String) -> void:
 	text = new_value
 	reset_font_color()
 	if new_value == element.get_default(attribute_name):
-		font_color = GlobalSettings.savedata.basic_color_warning
+		font_color = Configs.savedata.basic_color_warning
 
 
 func _on_button_gui_input(event: InputEvent) -> void:

@@ -26,17 +26,17 @@ func setup(new_action: String) -> void:
 		new_btn.disabled = true
 		new_btn.text = events[i].as_text_keycode()
 		shortcut_container.add_child(new_btn)
-	GlobalSettings.shortcuts_changed.connect(check_shortcuts_validity)
+	Configs.shortcuts_changed.connect(check_shortcuts_validity)
 	check_shortcuts_validity()
 
 func check_shortcuts_validity() -> void:
 	var events := InputMap.action_get_events(action)
 	for i in events.size():
 		var shortcut_btn := shortcut_container.get_child(i)
-		if not GlobalSettings.is_shortcut_valid(events[i]):
-			var error_color := Color(GlobalSettings.savedata.basic_color_error, 0.8)
+		if not Configs.is_shortcut_valid(events[i]):
+			var error_color := Color(Configs.savedata.basic_color_error, 0.8)
 			shortcut_btn.add_theme_color_override("font_disabled_color", error_color)
-			var conflicts := GlobalSettings.get_actions_with_shortcut(events[i])
+			var conflicts := Configs.get_actions_with_shortcut(events[i])
 			var action_pos := conflicts.find(action)
 			if action_pos != -1:
 				conflicts.remove_at(action_pos)

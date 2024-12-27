@@ -25,7 +25,7 @@ func _init() -> void:
 	focus_exited.connect(_on_base_class_focus_exited)
 	mouse_exited.connect(_on_base_class_mouse_exited)
 	text_submitted.connect(release_focus.unbind(1))
-	GlobalSettings.theme_changed.connect(update_theme)
+	Configs.theme_changed.connect(update_theme)
 
 func update_theme() -> void:
 	if editable:

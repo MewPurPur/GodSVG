@@ -14,7 +14,7 @@ func set_value(new_value: String, save := false) -> void:
 
 
 func _ready() -> void:
-	GlobalSettings.language_changed.connect(update_translation)
+	Configs.language_changed.connect(update_translation)
 	sync_to_attribute()
 	element.attribute_changed.connect(_on_element_attribute_changed)
 	tooltip_text = attribute_name

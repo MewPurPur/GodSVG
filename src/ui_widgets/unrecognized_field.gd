@@ -15,7 +15,7 @@ func sync_to_attribute() -> void:
 
 
 func _ready() -> void:
-	GlobalSettings.language_changed.connect(update_translation)
+	Configs.language_changed.connect(update_translation)
 	sync_to_attribute()
 	update_translation()
 	text_submitted.connect(set_value.bind(true))

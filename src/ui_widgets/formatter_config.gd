@@ -30,14 +30,14 @@ func _ready() -> void:
 	name_edit.text_change_canceled.connect(_on_name_edit_text_change_canceled)
 	name_edit.text_changed.connect(_on_name_edit_text_changed)
 	name_edit.text_submitted.connect(_on_name_edit_text_submitted)
-	GlobalSettings.theme_changed.connect(setup_theme)
+	Configs.theme_changed.connect(setup_theme)
 	setup_theme()
 	construct()
 
 
 func find_formatter_index() -> int:
-	for idx in GlobalSettings.savedata.formatters.size():
-		if GlobalSettings.savedata.formatters[idx] == current_formatter:
+	for idx in Configs.savedata.formatters.size():
+		if Configs.savedata.formatters[idx] == current_formatter:
 			return idx
 	return -1
 
@@ -50,8 +50,8 @@ func _on_formatter_button_pressed() -> void:
 			current_formatter.reset_to_default, current_formatter.is_everything_default(),
 			load("res://visual/icons/Reload.svg")))
 	btn_arr.append(ContextPopup.create_button(Translator.translate("Delete"),
-			delete, current_formatter in [GlobalSettings.savedata.editor_formatter,
-			GlobalSettings.savedata.export_formatter], load("res://visual/icons/Delete.svg")))
+			delete, current_formatter in [Configs.savedata.editor_formatter,
+			Configs.savedata.export_formatter], load("res://visual/icons/Delete.svg")))
 	
 	var context_popup := ContextPopup.new()
 	context_popup.setup(btn_arr, true)
@@ -72,7 +72,7 @@ func hide_name_edit() -> void:
 
 
 func delete() -> void:
-	GlobalSettings.delete_formatter(find_formatter_index())
+	Configs.delete_formatter(find_formatter_index())
 	layout_changed.emit()
 
 
@@ -193,7 +193,7 @@ func add_frame(frame: Control) -> void:
 # Update text color to red if the title won't work (because it's a duplicate).
 func _on_name_edit_text_changed(new_text: String) -> void:
 	var names := PackedStringArray()
-	for formatter in GlobalSettings.savedata.formatters:
+	for formatter in Configs.savedata.formatters:
 		names.append(formatter.title)
 	name_edit.add_theme_color_override("font_color", Utils.get_validity_color(
 			new_text in names and new_text != current_formatter.title))
@@ -201,7 +201,7 @@ func _on_name_edit_text_changed(new_text: String) -> void:
 func _on_name_edit_text_submitted(new_title: String) -> void:
 	new_title = new_title.strip_edges()
 	var titles := PackedStringArray()
-	for formatter in GlobalSettings.savedata.formatters:
+	for formatter in Configs.savedata.formatters:
 		titles.append(formatter.title)
 	
 	if not new_title.is_empty() and new_title != current_formatter.title and\
@@ -219,7 +219,7 @@ func set_label_text(new_text: String) -> void:
 		formatter_button.text = Translator.translate("Unnamed")
 		for style_name in ["font_color", "font_hover_color", "font_pressed_color"]:
 			formatter_button.add_theme_color_override(style_name,
-					GlobalSettings.savedata.basic_color_error)
+					Configs.savedata.basic_color_error)
 	else:
 		formatter_button.text = new_text
 		for style_name in ["font_color", "font_hover_color", "font_pressed_color"]:

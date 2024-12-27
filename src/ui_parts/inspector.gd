@@ -8,8 +8,8 @@ const BasicXNodeFrame = preload("res://src/ui_widgets/basic_xnode_frame.tscn")
 
 
 func _ready() -> void:
-	GlobalSettings.theme_changed.connect(update_theme)
-	GlobalSettings.language_changed.connect(update_translation)
+	Configs.theme_changed.connect(update_theme)
+	Configs.language_changed.connect(update_translation)
 	update_theme()
 	update_translation()
 	SVG.xnode_layout_changed.connect(full_rebuild)

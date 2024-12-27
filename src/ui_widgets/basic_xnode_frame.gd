@@ -176,5 +176,4 @@ func _on_text_modified() -> void:
 		xnode.set_text(text_edit.text)
 		text_edit.remove_theme_color_override("font_color")
 	else:
-		text_edit.add_theme_color_override("font_color",
-				GlobalSettings.savedata.basic_color_error)
+		text_edit.add_theme_color_override("font_color", Configs.savedata.basic_color_error)

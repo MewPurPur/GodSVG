@@ -29,7 +29,7 @@ var UR := UndoRedo.new()
 @onready var apply_matrix: Button = %ApplyMatrix
 
 func _ready() -> void:
-	GlobalSettings.language_changed.connect(update_translation)
+	Configs.language_changed.connect(update_translation)
 	add_button.pressed.connect(popup_new_transform_context.bind(0, add_button))
 	apply_matrix.pressed.connect(_on_apply_matrix_pressed)
 	rebuild()

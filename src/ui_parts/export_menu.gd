@@ -141,8 +141,8 @@ func update() -> void:
 	size_container.visible = export_data.format in ["png", "jpg", "jpeg", "webp"]
 	
 	final_size_label.visible = (export_data.format == "svg")
-	file_title.text = Utils.get_file_name(GlobalSettings.savedata.current_file_path) +\
-			"." + export_data.format
+	file_title.text = Utils.get_file_name(Configs.savedata.current_file_path) + "." +\
+			export_data.format
 	
 	# Display the texture and the warning for inaccurate previews.
 	if export_data.format == "svg":

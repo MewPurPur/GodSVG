@@ -27,9 +27,9 @@ const ConfirmDialog := preload("res://src/ui_parts/confirm_dialog.tscn")
 var reference_overlay := false
 
 func _ready() -> void:
-	GlobalSettings.language_changed.connect(update_translations)
-	GlobalSettings.snap_changed.connect(update_snap_config)
-	GlobalSettings.theme_changed.connect(update_theme)
+	Configs.language_changed.connect(update_translations)
+	Configs.snap_changed.connect(update_snap_config)
+	Configs.theme_changed.connect(update_theme)
 	update_translations()
 	update_theme()
 	update_snap_config()
@@ -84,7 +84,7 @@ func update_theme() -> void:
 	viewport_panel.add_theme_stylebox_override("panel", frame)
 
 func update_snap_config() -> void:
-	var snap_config := GlobalSettings.savedata.snap
+	var snap_config := Configs.savedata.snap
 	var snap_enabled := snap_config > 0.0
 	snap_button.button_pressed = snap_enabled
 	snapper.editable = snap_enabled
@@ -209,11 +209,11 @@ func set_snap_amount(snap_value: float) -> void:
 	snapper.set_value(snap_value)
 
 func _on_snap_button_toggled(toggled_on: bool) -> void:
-	GlobalSettings.modify_setting("snap", absf(GlobalSettings.savedata.snap) if toggled_on\
-			else -absf(GlobalSettings.savedata.snap))
+	Configs.modify_setting("snap", absf(Configs.savedata.snap) if toggled_on\
+			else -absf(Configs.savedata.snap))
 
 func _on_snap_number_edit_value_changed(new_value: float) -> void:
-	GlobalSettings.modify_setting("snap", new_value * signf(GlobalSettings.savedata.snap))
+	Configs.modify_setting("snap", new_value * signf(Configs.savedata.snap))
 
 # The strings here are intentionally not localized.
 func update_debug() -> void:

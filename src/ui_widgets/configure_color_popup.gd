@@ -12,7 +12,7 @@ var color_palette: ColorPalette
 var idx: int
 
 func _ready() -> void:
-	GlobalSettings.language_changed.connect(update_translation)
+	Configs.language_changed.connect(update_translation)
 	set_label_text(color_palette.color_names[idx])
 	color_edit.value = color_palette.colors[idx]
 	update_translation()

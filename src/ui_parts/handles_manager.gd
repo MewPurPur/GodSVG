@@ -38,17 +38,17 @@ func _exit_tree() -> void:
 	RenderingServer.free_rid(selections_surface)
 
 func render_handle_textures() -> void:
-	normal_color = GlobalSettings.savedata.handle_color
-	hovered_color = GlobalSettings.savedata.handle_hovered_color
-	selected_color = GlobalSettings.savedata.handle_selected_color
-	hovered_selected_color = GlobalSettings.savedata.handle_hovered_selected_color
-	var inside_str := "#" + GlobalSettings.savedata.handle_inside_color.to_html(false)
-	var normal_str := "#" + GlobalSettings.savedata.handle_color.to_html(false)
-	var hovered_str := "#" + GlobalSettings.savedata.handle_hovered_color.to_html(false)
-	var selected_str := "#" + GlobalSettings.savedata.handle_selected_color.to_html(false)
+	normal_color = Configs.savedata.handle_color
+	hovered_color = Configs.savedata.handle_hovered_color
+	selected_color = Configs.savedata.handle_selected_color
+	hovered_selected_color = Configs.savedata.handle_hovered_selected_color
+	var inside_str := "#" + Configs.savedata.handle_inside_color.to_html(false)
+	var normal_str := "#" + Configs.savedata.handle_color.to_html(false)
+	var hovered_str := "#" + Configs.savedata.handle_hovered_color.to_html(false)
+	var selected_str := "#" + Configs.savedata.handle_selected_color.to_html(false)
 	var hovered_selected_str := "#" +\
-			GlobalSettings.savedata.handle_hovered_selected_color.to_html(false)
-	var s := GlobalSettings.savedata.handle_size  # Shorthand
+			Configs.savedata.handle_hovered_selected_color.to_html(false)
+	var s := Configs.savedata.handle_size  # Shorthand
 	var img := Image.new()
 	
 	var handles_dict := {
@@ -80,7 +80,7 @@ func render_handle_textures() -> void:
 	queue_redraw()
 
 func _ready() -> void:
-	GlobalSettings.handle_visuals_changed.connect(render_handle_textures)
+	Configs.handle_visuals_changed.connect(render_handle_textures)
 	render_handle_textures()
 	RenderingServer.canvas_item_set_parent(surface, get_canvas_item())
 	RenderingServer.canvas_item_set_parent(selections_surface, get_canvas_item())
@@ -779,7 +779,7 @@ func _unhandled_input(event: InputEvent) -> void:
 func find_nearest_handle(event_pos: Vector2) -> Handle:
 	var nearest_handle: Handle = null
 	var nearest_dist_squared := DEFAULT_GRAB_DISTANCE_SQUARED *\
-			(GlobalSettings.savedata.handle_size * GlobalSettings.savedata.handle_size) /\
+			(Configs.savedata.handle_size * Configs.savedata.handle_size) /\
 			(Indications.zoom * Indications.zoom)
 	for handle in handles:
 		var dist_to_handle_squared := event_pos.distance_squared_to(
@@ -795,12 +795,12 @@ func get_event_pos(event: InputEvent) -> PackedFloat64Array:
 
 func apply_snap(pos: Vector2) -> PackedFloat64Array:
 	var precision_snap := 0.1 ** maxi(ceili(-log(1.0 / Indications.zoom) / log(10)), 0)
-	var configured_snap := absf(GlobalSettings.savedata.snap)
+	var configured_snap := absf(Configs.savedata.snap)
 	var snap_size: float  # To be used for the snap.
 	
 	# If the snap is disabled, or the precision snap is bigger than the configured snap
 	# and a multiple of it, use the precision snap. Otherwise use the user-configured snap.
-	if GlobalSettings.savedata.snap < 0.0 or (precision_snap > configured_snap and\
+	if Configs.savedata.snap < 0.0 or (precision_snap > configured_snap and\
 	is_zero_approx(fmod(precision_snap, configured_snap))):
 		snap_size = precision_snap
 	else:

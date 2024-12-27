@@ -39,11 +39,11 @@ func adapt_to_text(text: String) -> void:
 			warning_callback.is_valid() else ""
 	if not error.is_empty():
 		rich_text_label.add_theme_color_override("default_color",
-				GlobalSettings.savedata.basic_color_error)
+				Configs.savedata.basic_color_error)
 		rich_text_label.text = error
 	elif not warning.is_empty():
 		rich_text_label.add_theme_color_override("default_color",
-				GlobalSettings.savedata.basic_color_warning)
+				Configs.savedata.basic_color_warning)
 		rich_text_label.text = warning
 	else:
 		rich_text_label.text = ""
