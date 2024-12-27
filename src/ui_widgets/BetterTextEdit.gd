@@ -7,6 +7,8 @@ const caret_color = Color("defd")
 var _surface := RenderingServer.canvas_item_create()
 var _timer := Timer.new()
 
+var _is_caret_queued_for_redraw := false
+
 var _hovered := false
 
 func _init() -> void:
@@ -35,21 +37,22 @@ func _exit_tree() -> void:
 
 # Workaround for there not being a built-in overtype_mode_changed signal.
 var overtype_mode := false
-var is_caret_queued_for_redraw := false
 func _process(_delta: float) -> void:
 	if is_overtype_mode_enabled() != overtype_mode:
 		overtype_mode = not overtype_mode
 		redraw_caret()
-	if is_caret_queued_for_redraw:
-		redraw_caret()
 
 
 func queue_redraw_caret() -> void:
-	is_caret_queued_for_redraw = true
+	redraw_caret.call_deferred()
+	_is_caret_queued_for_redraw = true
 
 func redraw_caret() -> void:
-	is_caret_queued_for_redraw = false
-	blonk = false
+	if not _is_caret_queued_for_redraw:
+		return
+	
+	_is_caret_queued_for_redraw = false
+	_blonk = false
 	blink()
 	_timer.start(0.6)
 	RenderingServer.canvas_item_clear(_surface)
@@ -87,10 +90,10 @@ func redraw_caret() -> void:
 			caret_end.y -= char_size.y + 1
 		RenderingServer.canvas_item_add_line(_surface, caret_pos, caret_end, caret_color, 1)
 
-var blonk := true
+var _blonk := true
 func blink() -> void:
-	blonk = not blonk
-	RenderingServer.canvas_item_set_visible(_surface, blonk)
+	_blonk = not _blonk
+	RenderingServer.canvas_item_set_visible(_surface, _blonk)
 
 func _on_base_class_focus_entered() -> void:
 	_timer.start(0.6)

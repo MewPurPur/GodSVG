@@ -23,11 +23,10 @@ const DEFAULT = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16">
 
 var _current_size := Vector2.ZERO
 
-var update_pending := false
-var save_pending := false
+var _update_pending := false
+var _save_pending := false
 
 var text := ""
-
 var root_element := ElementRoot.new()
 
 var UR := UndoRedo.new()
@@ -65,27 +64,32 @@ func _exit_tree() -> void:
 
 
 func queue_update() -> void:
-	update_pending = true
+	_update.call_deferred()
+	_update_pending = true
 
 func queue_save() -> void:
-	save_pending = true
+	_save.call_deferred()
+	_save_pending = true
 
-func _process(_delta: float) -> void:
-	if update_pending:
-		update_pending = false
-		set_text(SVGParser.root_to_text(root_element))
-	
-	if save_pending:
-		save_pending = false
-		var saved_text := GlobalSettings.svg_text
-		if saved_text == text:
-			return
-		UR.create_action("")
-		UR.add_do_property(GlobalSettings, "svg_text", text)
-		UR.add_undo_property(GlobalSettings, "svg_text", saved_text)
-		UR.add_do_property(self, "text", text)
-		UR.add_undo_property(self, "text", saved_text)
-		UR.commit_action()
+func _update() -> void:
+	if not _update_pending:
+		return
+	_update_pending = false
+	set_text(SVGParser.root_to_text(root_element))
+
+func _save() -> void:
+	if not _save_pending:
+		return
+	_save_pending = false
+	var saved_text := GlobalSettings.svg_text
+	if saved_text == text:
+		return
+	UR.create_action("")
+	UR.add_do_property(GlobalSettings, "svg_text", text)
+	UR.add_undo_property(GlobalSettings, "svg_text", saved_text)
+	UR.add_do_property(self, "text", text)
+	UR.add_undo_property(self, "text", saved_text)
+	UR.commit_action()
 
 
 func sync_elements() -> void:
