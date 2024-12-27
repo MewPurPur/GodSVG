@@ -258,15 +258,11 @@ func reset_settings() -> void:
 	modify_setting("export_formatter", compact_formatter, true)
 	
 	# Higher default handle_size on Android for better touch control.
-	if DisplayServer.get_name() == "Android": modify_setting("handle_size", 2.0, true)
-
+	if DisplayServer.get_name() == "Android":
+		modify_setting("handle_size", 2.0, true)
+	
 	save()
 
-
-# Just some helpers.
-func get_validity_color(error_condition: bool, warning_condition := false) -> Color:
-	return savedata.basic_color_error if error_condition else\
-			savedata.basic_color_warning if warning_condition else savedata.basic_color_valid
 
 func generate_highlighter() -> SVGHighlighter:
 	var new_highlighter := SVGHighlighter.new()

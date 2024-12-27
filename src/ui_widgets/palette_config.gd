@@ -119,7 +119,7 @@ func hide_name_edit() -> void:
 # Update text color to red if the title won't work (because it's a duplicate).
 func _on_name_edit_text_changed(new_text: String) -> void:
 	for theme_color in ["font_color", "font_hover_color"]:
-		name_edit.add_theme_color_override(theme_color, GlobalSettings.get_validity_color(
+		name_edit.add_theme_color_override(theme_color, Utils.get_validity_color(
 				false, new_text != current_palette.title and\
 				not GlobalSettings.is_palette_title_unused(new_text)))
 
