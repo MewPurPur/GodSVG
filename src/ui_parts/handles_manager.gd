@@ -22,7 +22,7 @@ const CONTOUR_WIDTH = 1.0
 const TANGENT_WIDTH = 0.65
 const TANGENT_ALPHA = 0.8
 
-var update_pending := false
+var _handles_update_pending := false
 var handles: Array[Handle]
 var surface := RenderingServer.canvas_item_create()
 var selections_surface := RenderingServer.canvas_item_create()
@@ -96,24 +96,24 @@ func _ready() -> void:
 	add_child(c, false, InternalMode.INTERNAL_MODE_BACK)
 	
 	SVG.any_attribute_changed.connect(sync_handles)
-	SVG.xnode_layout_changed.connect(queue_update)
-	SVG.changed_unknown.connect(queue_update)
+	SVG.xnode_layout_changed.connect(queue_update_handles)
+	SVG.changed_unknown.connect(queue_update_handles)
 	Indications.selection_changed.connect(queue_redraw)
 	Indications.hover_changed.connect(queue_redraw)
 	Indications.zoom_changed.connect(queue_redraw)
 	Indications.handle_added.connect(_on_handle_added)
-	queue_update()
+	queue_update_handles()
 
 
-func queue_update() -> void:
-	update_pending = true
-
-func _process(_delta: float) -> void:
-	if update_pending:
-		update_handles()
-		update_pending = false
+func queue_update_handles() -> void:
+	update_handles.call_deferred()
+	_handles_update_pending = true
 
 func update_handles() -> void:
+	if not _handles_update_pending:
+		return
+	
+	_handles_update_pending = false
 	handles.clear()
 	for element in SVG.root_element.get_all_element_descendants():
 		match element.name:
