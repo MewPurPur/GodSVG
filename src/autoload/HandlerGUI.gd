@@ -253,28 +253,31 @@ func update_ui_scale() -> void:
 	if not window.is_node_ready():
 		await window.ready
 	var old_scale_factor := window.content_scale_factor
-
+	
 	# Get window size without the decorations.
 	var usable_screen_size := Vector2i(DisplayServer.screen_get_usable_rect(
 			DisplayServer.window_get_current_screen()).size -\
 			window.get_size_with_decorations() + window.size)
-
+	
 	# Presumably the default size would always be enough for the contents.
 	var window_default_size := Vector2i(
 			ProjectSettings.get_setting("display/window/size/viewport_width"),
 			ProjectSettings.get_setting("display/window/size/viewport_height"))
-
+	
 	# How much can the default size be increased before it takes all usable screen space.
-	var diff := Vector2(usable_screen_size) / Vector2(window_default_size)
-	var max_scale := floorf(minf(diff.x, diff.y) * 4.0) / 4.0
+	var max_expansion := Vector2(usable_screen_size) / Vector2(window_default_size)
+	var max_scale := snappedf(minf(max_expansion.x, max_expansion.y) - 0.125, 0.25)
 	var final_scale := minf(Configs.savedata.ui_scale * _calculate_auto_scale(), max_scale)
 	var resize_factor := final_scale / old_scale_factor
-
-	window.size.x = mini(int(window.size.x * resize_factor), usable_screen_size.x)
-	window.size.y = mini(int(window.size.y * resize_factor), usable_screen_size.y)
-	window.min_size.x = mini(int(window_default_size.x * final_scale), usable_screen_size.x)
-	window.min_size.y = mini(int(window_default_size.y * final_scale), usable_screen_size.y)
+	
 	window.content_scale_factor = final_scale
+	# The minimum size can manipulate the window size if the UI scale increases.
+	if resize_factor < 1.0:
+		window.min_size = window_default_size * final_scale
+		window.size *= resize_factor
+	else:
+		window.size *= resize_factor
+		window.min_size = window_default_size * final_scale
 
 
 func open_update_checker() -> void:
