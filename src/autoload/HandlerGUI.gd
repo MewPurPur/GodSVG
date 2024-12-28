@@ -270,14 +270,14 @@ func update_ui_scale() -> void:
 	var final_scale := minf(Configs.savedata.ui_scale * _calculate_auto_scale(), max_scale)
 	var resize_factor := final_scale / old_scale_factor
 	
+	if OS.get_name() != "Android":
+		# TODO Check later if this workaround is still necessary for Windows.
+		if OS.get_name() != "Windows" or window.mode == Window.MODE_WINDOWED:
+			# The window's minimum size can mess with the size change, so we set it to zero.
+			window.min_size = Vector2i.ZERO
+			window.size *= resize_factor
+		window.min_size = window_default_size * final_scale
 	window.content_scale_factor = final_scale
-	# The minimum size can manipulate the window size if the UI scale increases.
-	if resize_factor < 1.0:
-		window.min_size = window_default_size * final_scale
-		window.size *= resize_factor
-	else:
-		window.size *= resize_factor
-		window.min_size = window_default_size * final_scale
 
 
 func open_update_checker() -> void:

@@ -258,7 +258,7 @@ func reset_settings() -> void:
 	modify_setting("export_formatter", compact_formatter, true)
 	
 	# Higher default handle_size on Android for better touch control.
-	if DisplayServer.get_name() == "Android":
+	if OS.get_name() == "Android":
 		modify_setting("handle_size", 2.0, true)
 	
 	save()
