@@ -1,4 +1,4 @@
-extends PanelContainer
+extends Control
 
 # Autoscroll area on drag and drop. As a factor from edge to center.
 const autoscroll_frac = 0.35  # 35% of the screen will be taken by the autoscroll areas.
