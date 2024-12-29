@@ -74,9 +74,8 @@ msgstr "上移"
 msgid "Move Down"
 msgstr "下移"
 
-#: src/autoload/Indications.gd src/ui_widgets/formatter_config.gd
-#: src/ui_widgets/palette_config.gd src/ui_widgets/setting_shortcut.gd
-#: src/ui_widgets/transform_popup.gd
+#: src/autoload/Indications.gd src/ui_widgets/palette_config.gd
+#: src/ui_widgets/setting_shortcut.gd src/ui_widgets/transform_popup.gd
 msgid "Delete"
 msgstr "删除"
 
@@ -632,16 +631,115 @@ msgid "New palette from XML"
 msgstr "从 XML 创建新调色盘"
 
 #: src/ui_parts/settings_menu.gd
+#, fuzzy
 msgid "Editor formatter"
 msgstr "编辑器格式"
 
 #: src/ui_parts/settings_menu.gd
+#, fuzzy
 msgid "Export formatter"
 msgstr "导出格式"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Help"
 msgstr "帮助"
+
+#: src/ui_parts/settings_menu.gd
+#, fuzzy
+msgid "Reset all to default"
+msgstr "恢复默认"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Preset"
+msgstr "预设"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Keep comments"
+msgstr "保留注释"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Keep unrecognized XML structures"
+msgstr "保留未知 XML 结构"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Add trailing newline"
+msgstr "在文件末尾添加"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Use shorthand tag syntax"
+msgstr "使用简写标签语法"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Space out the slash of shorthand tags"
+msgstr "在简写标签斜线前添加空格"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Use pretty formatting"
+msgstr "使用美化格式"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Use spaces instead of tabs"
+msgstr "使用空格而不是 tab"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Number of indentation spaces"
+msgstr "缩进空格数量"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Numbers"
+msgstr "数字"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Remove leading zero"
+msgstr "移除前面的 0"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Use exponential when shorter"
+msgstr "当更短时使用指数形式"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Colors"
+msgstr "颜色"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Use named colors"
+msgstr "使用颜色名"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Primary syntax"
+msgstr "主语法"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Capitalize hexadecimal letters"
+msgstr "大写十六进制字母"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Pathdata"
+msgstr "路径数据"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Compress numbers"
+msgstr "压缩数字"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Minimize spacing"
+msgstr "最小化间距"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Remove spacing after flags"
+msgstr "移除标志后的空格"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Remove consecutive commands"
+msgstr "移除连续指令"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Transform lists"
+msgstr "变换列表"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Remove unnecessary parameters"
+msgstr "移除不必要的参数"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Swaps zoom in and zoom out with the mouse wheel."
@@ -749,111 +847,9 @@ msgstr "编辑颜色名称"
 msgid "Delete color"
 msgstr "删除颜色"
 
-#: src/ui_widgets/configure_color_popup.gd src/ui_widgets/formatter_config.gd
-#: src/ui_widgets/palette_config.gd
+#: src/ui_widgets/configure_color_popup.gd src/ui_widgets/palette_config.gd
 msgid "Unnamed"
 msgstr "未命名"
-
-#: src/ui_widgets/formatter_config.gd src/ui_widgets/palette_config.gd
-msgid "Rename"
-msgstr "重命名"
-
-#: src/ui_widgets/formatter_config.gd src/ui_widgets/setting_frame.gd
-#: src/ui_widgets/setting_shortcut.gd
-msgid "Reset to default"
-msgstr "恢复默认"
-
-#: src/ui_widgets/formatter_config.gd
-msgid "Preset"
-msgstr "预设"
-
-#: src/ui_widgets/formatter_config.gd
-msgid "Keep comments"
-msgstr "保留注释"
-
-#: src/ui_widgets/formatter_config.gd
-msgid "Keep unrecognized XML structures"
-msgstr "保留未知 XML 结构"
-
-#: src/ui_widgets/formatter_config.gd
-msgid "Add trailing newline"
-msgstr "在文件末尾添加"
-
-#: src/ui_widgets/formatter_config.gd
-msgid "Use shorthand tag syntax"
-msgstr "使用简写标签语法"
-
-#: src/ui_widgets/formatter_config.gd
-msgid "Space out the slash of shorthand tags"
-msgstr "在简写标签斜线前添加空格"
-
-#: src/ui_widgets/formatter_config.gd
-msgid "Use pretty formatting"
-msgstr "使用美化格式"
-
-#: src/ui_widgets/formatter_config.gd
-msgid "Use spaces instead of tabs"
-msgstr "使用空格而不是 tab"
-
-#: src/ui_widgets/formatter_config.gd
-msgid "Number of indentation spaces"
-msgstr "缩进空格数量"
-
-#: src/ui_widgets/formatter_config.gd
-msgid "Numbers"
-msgstr "数字"
-
-#: src/ui_widgets/formatter_config.gd
-msgid "Remove leading zero"
-msgstr "移除前面的 0"
-
-#: src/ui_widgets/formatter_config.gd
-msgid "Use exponential when shorter"
-msgstr "当更短时使用指数形式"
-
-#: src/ui_widgets/formatter_config.gd
-msgid "Colors"
-msgstr "颜色"
-
-#: src/ui_widgets/formatter_config.gd
-msgid "Use named colors"
-msgstr "使用颜色名"
-
-#: src/ui_widgets/formatter_config.gd
-msgid "Primary syntax"
-msgstr "主语法"
-
-#: src/ui_widgets/formatter_config.gd
-msgid "Capitalize hexadecimal letters"
-msgstr "大写十六进制字母"
-
-#: src/ui_widgets/formatter_config.gd
-msgid "Pathdata"
-msgstr "路径数据"
-
-#: src/ui_widgets/formatter_config.gd
-msgid "Compress numbers"
-msgstr "压缩数字"
-
-#: src/ui_widgets/formatter_config.gd
-msgid "Minimize spacing"
-msgstr "最小化间距"
-
-#: src/ui_widgets/formatter_config.gd
-msgid "Remove spacing after flags"
-msgstr "移除标志后的空格"
-
-#: src/ui_widgets/formatter_config.gd
-msgid "Remove consecutive commands"
-msgstr "移除连续指令"
-
-#: src/ui_widgets/formatter_config.gd
-msgid "Transform lists"
-msgstr "变换列表"
-
-#: src/ui_widgets/formatter_config.gd
-msgid "Remove unnecessary parameters"
-msgstr "移除不必要的参数"
 
 #: src/ui_widgets/good_color_picker.gd
 msgid "Enable the color"
@@ -874,6 +870,10 @@ msgstr "多个调色盘不能使用同一个名称。"
 #: src/ui_widgets/palette_config.gd
 msgid "This palette has identically defined colors."
 msgstr "此调色盘使用了完全相同的颜色定义。"
+
+#: src/ui_widgets/palette_config.gd
+msgid "Rename"
+msgstr "重命名"
 
 #: src/ui_widgets/palette_config.gd
 msgid "Copy as XML"
@@ -902,6 +902,10 @@ msgstr "没有点"
 #: src/ui_widgets/presented_shortcut.gd src/ui_widgets/setting_shortcut.gd
 msgid "Also used by"
 msgstr "还用于"
+
+#: src/ui_widgets/setting_frame.gd src/ui_widgets/setting_shortcut.gd
+msgid "Reset to default"
+msgstr "恢复默认"
 
 #: src/ui_widgets/setting_shortcut.gd
 msgid "Unused"

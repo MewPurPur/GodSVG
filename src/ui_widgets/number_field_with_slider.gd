@@ -108,7 +108,7 @@ func _draw() -> void:
 			MIN_VALUE) / MAX_VALUE
 	# Create a stylebox that'll occupy the exact amount of space.
 	var fill_stylebox := StyleBoxFlat.new()
-	fill_stylebox.bg_color = Color("#def")
+	fill_stylebox.bg_color = Color("def")
 	if not slider_dragged and slider_hovered:
 		fill_stylebox.bg_color.a = 0.75
 	elif not slider_hovered:

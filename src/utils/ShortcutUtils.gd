@@ -81,7 +81,7 @@ static func fn(shortcut: String) -> Callable:
 		"copy_svg_text": return DisplayServer.clipboard_set.bind(SVG.text)
 		"clear_svg": return SVG.apply_svg_text.bind(SVG.DEFAULT)
 		"optimize": return SVG.optimize
-		"clear_file_path": return Configs.modify_setting.bind("current_file_path", "")
+		"clear_file_path": return Configs.savedata.set.bind("current_file_path", "")
 		"reset_svg": return FileUtils.apply_svg_from_path.bind(
 				Configs.savedata.current_file_path)
 		"open_svg": return FileUtils.open_svg.bind(Configs.savedata.current_file_path)

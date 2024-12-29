@@ -1,6 +1,8 @@
 # This singleton handles session data and settings.
 extends Node
 
+var _save_queued := false
+
 signal file_path_changed
 signal highlighting_colors_changed
 signal snap_changed
@@ -11,7 +13,6 @@ signal shortcuts_changed
 signal basic_colors_changed
 signal handle_visuals_changed
 
-var DEFAULT_SAVEDATA := SaveData.new()
 var savedata := SaveData.new()
 const savedata_path = "user://savedata.tres"
 
@@ -26,21 +27,6 @@ const svg_path = "user://save.svg"
 var shortcut_validities := {}
 var palette_validities := {}
 
-var enum_text := {}
-
-func get_enum_texts(setting: String) -> PackedStringArray:
-	var values := PackedStringArray()
-	var enum_dict: Dictionary = enum_text[setting]
-	for key in enum_dict:
-		values.append(enum_dict[key])
-	return values
-
-func get_enum_text(setting: String) -> String:
-	return enum_text[setting][get(setting)]
-
-
-func get_default(setting: String) -> Variant:
-	return DEFAULT_SAVEDATA.get(setting)
 
 func get_signal(setting: String) -> Signal:
 	if not setting in triggers:
@@ -56,7 +42,6 @@ func get_modification_callback(setting: String) -> Callable:
 
 var triggers = {
 	"language": [language_changed, change_locale],
-	"editor_formatter": [Signal(), sync_elements],
 	"highlighting_symbol_color": [highlighting_colors_changed],
 	"highlighting_element_color": [highlighting_colors_changed],
 	"highlighting_attribute_color": [highlighting_colors_changed],
@@ -65,7 +50,7 @@ var triggers = {
 	"highlighting_text_color": [highlighting_colors_changed],
 	"highlighting_cdata_color": [highlighting_colors_changed],
 	"highlighting_error_color": [highlighting_colors_changed],
-	"handle_inside_color": [handle_visuals_changed],
+	"handle_inner_color": [handle_visuals_changed],
 	"handle_color": [handle_visuals_changed],
 	"handle_hovered_color": [handle_visuals_changed],
 	"handle_selected_color": [handle_visuals_changed],
@@ -83,111 +68,14 @@ var triggers = {
 }
 
 
-func modify_setting(setting: String, new_value: Variant, omit_save := false) -> void:
-	if savedata.get(setting) == new_value:
-		return
-	if omit_save:
-		savedata.set(setting, new_value)
-	else:
-		save_setting(setting, new_value)
-	var related_modification_callback := get_modification_callback(setting)
-	if related_modification_callback.is_valid():
-		related_modification_callback.call()
-	var related_signal := get_signal(setting)
-	if not related_signal.is_null():
-		related_signal.emit()
+func queue_save() -> void:
+	_save_queued = true
+	_save.call_deferred()
 
-func modify_shortcut(action: String, new_events: Array[InputEvent]) -> void:
-	apply_shortcut(action, new_events)
-	save_shortcut(action)
-	shortcuts_changed.emit()
-
-func apply_shortcut(action: String, events: Array[InputEvent]) -> void:
-	InputMap.action_erase_events(action)
-	for event in events:
-		InputMap.action_add_event(action, event)
-
-func save_shortcut(action: String) -> void:
-	savedata.shortcuts[action] = InputMap.action_get_events(action)
-	save()
-
-func save_setting(setting: StringName, value: Variant) -> void:
-	savedata.set(setting, value)
-	save()
-
-func save() -> void:
-	ResourceSaver.save(savedata, savedata_path)
-
-
-func update_palette_validities() -> void:
-	palette_validities.clear()
-	for palette in savedata.palettes:
-		if not palette.title.is_empty():
-			palette_validities[palette.title] = not palette.title in palette_validities
-
-func is_palette_valid(checked_palette: ColorPalette) -> bool:
-	if checked_palette.title.is_empty():
-		return false
-	if not checked_palette.title in palette_validities:
-		return true
-	return palette_validities[checked_palette.title]
-
-func is_palette_title_unused(checked_title: String) -> bool:
-	for palette in savedata.palettes:
-		if palette.title == checked_title:
-			return false
-	return true
-
-func add_new_palette(new_palette: ColorPalette) -> void:
-	savedata.palettes.append(new_palette)
-	update_palette_validities()
-	save()
-
-func delete_palette(idx: int) -> void:
-	if savedata.palettes.size() <= idx:
-		return
-	savedata.palettes.remove_at(idx)
-	update_palette_validities()
-	save()
-
-func rename_palette(idx: int, new_name: String) -> void:
-	if savedata.palettes.size() <= idx:
-		return
-	savedata.palettes[idx].title = new_name
-	update_palette_validities()
-	save()
-
-func replace_palette(idx: int, new_palette: ColorPalette) -> void:
-	if savedata.palettes.size() <= idx:
-		return
-	savedata.palettes[idx] = new_palette
-	update_palette_validities()
-	save()
-
-func move_palette_up(idx: int) -> void:
-	var palette: ColorPalette = savedata.palettes.pop_at(idx)
-	savedata.palettes.insert(idx - 1, palette)
-	save()
-
-func move_palette_down(idx: int) -> void:
-	var palette: ColorPalette = savedata.palettes.pop_at(idx)
-	savedata.palettes.insert(idx + 1, palette)
-	save()
-
-func palette_apply_preset(idx: int, preset: ColorPalette.Preset) -> void:
-	savedata.palettes[idx].apply_preset(preset)
-	save()
-
-
-func add_new_formatter(new_formatter: Formatter) -> void:
-	savedata.formatters.append(new_formatter)
-	save()
-
-func delete_formatter(idx: int) -> void:
-	if savedata.formatters.size() <= idx:
-		return
-	savedata.formatters.remove_at(idx)
-	save()
+func _save() -> void:
+	if _save_queued:
+		_save_queued = false
+		ResourceSaver.save(savedata, savedata_path)
 
 
 var default_shortcuts := {}
@@ -203,8 +91,6 @@ func _enter_tree() -> void:
 	file_path_changed.connect(update_window_title)
 	update_window_title()
 	shortcuts_changed.connect(update_shortcut_validities)
-	update_shortcut_validities()
-	update_palette_validities()
 
 
 func load_config() -> void:
@@ -213,55 +99,24 @@ func load_config() -> void:
 		return
 	
 	savedata = ResourceLoader.load(savedata_path)
-	if savedata == null or not savedata is SaveData:
+	if not is_instance_valid(savedata):
 		reset_settings()
 		return
 	
-	for action in ShortcutUtils.get_all_shortcuts():
-		if ShortcutUtils.is_shortcut_modifiable(action):
-			if savedata.shortcuts.has(action):
-				apply_shortcut(action, savedata.shortcuts[action])
-	if not is_instance_valid(savedata) or not savedata is SaveData:
-		reset_settings()
-	else:
-		update_window_title()
-		change_background_color()
-		change_locale()
+	update_window_title()
+	change_background_color()
+	change_locale()
+
+func reset_settings() -> void:
+	savedata = SaveData.new()
+	savedata.reset_to_default()
+	queue_save()
+
 
 func load_svg_text() -> void:
 	var fa := FileAccess.open(svg_path, FileAccess.READ)
 	if fa != null:
 		svg_text = fa.get_as_text()
-
-
-func reset_settings() -> void:
-	savedata = SaveData.new()
-	modify_setting("language", "en", true)
-	
-	InputMap.load_from_project_settings()
-	for action in ShortcutUtils.get_all_shortcuts():
-		if ShortcutUtils.is_shortcut_modifiable(action):
-			save_shortcut(action)
-	shortcuts_changed.emit()
-	
-	# The array needs to be typed.
-	var palettes_array: Array[ColorPalette] = [
-			ColorPalette.new("Pure", ColorPalette.Preset.PURE)]
-	modify_setting("palettes", palettes_array, true)
-	
-	var compact_formatter := Formatter.new("Compact", Formatter.Preset.COMPACT)
-	var pretty_formatter := Formatter.new("Pretty", Formatter.Preset.PRETTY)
-	# The array needs to be typed.
-	var formatters_array: Array[Formatter] = [pretty_formatter, compact_formatter]
-	modify_setting("formatters", formatters_array, true)
-	modify_setting("editor_formatter", pretty_formatter, true)
-	modify_setting("export_formatter", compact_formatter, true)
-	
-	# Higher default handle_size on Android for better touch control.
-	if OS.get_name() == "Android":
-		modify_setting("handle_size", 2.0, true)
-	
-	save()
 
 
 func generate_highlighter() -> SVGHighlighter:
@@ -317,9 +172,6 @@ func update_window_title() -> void:
 
 func change_background_color() -> void:
 	RenderingServer.set_default_clear_color(savedata.background_color)
-
-func sync_elements() -> void:
-	SVG.sync_elements()
 
 func change_locale() -> void:
 	TranslationServer.set_locale(savedata.language)

@@ -77,9 +77,8 @@ msgstr "Подвинуть вверх"
 msgid "Move Down"
 msgstr "Подвинуть вниз"
 
-#: src/autoload/Indications.gd src/ui_widgets/formatter_config.gd
-#: src/ui_widgets/palette_config.gd src/ui_widgets/setting_shortcut.gd
-#: src/ui_widgets/transform_popup.gd
+#: src/autoload/Indications.gd src/ui_widgets/palette_config.gd
+#: src/ui_widgets/setting_shortcut.gd src/ui_widgets/transform_popup.gd
 msgid "Delete"
 msgstr "Удалить"
 
@@ -637,16 +636,115 @@ msgid "New palette from XML"
 msgstr "Новая палитра из XML"
 
 #: src/ui_parts/settings_menu.gd
+#, fuzzy
 msgid "Editor formatter"
 msgstr "Редактор форматтера"
 
 #: src/ui_parts/settings_menu.gd
+#, fuzzy
 msgid "Export formatter"
 msgstr "Экспортовать форматер"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Help"
 msgstr "Помощь"
+
+#: src/ui_parts/settings_menu.gd
+#, fuzzy
+msgid "Reset all to default"
+msgstr "Восстановить значение по умолчанию"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Preset"
+msgstr "Пресет"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Keep comments"
+msgstr "Сохранять коментарии"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Keep unrecognized XML structures"
+msgstr "Сохранять не распознанные XML"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Add trailing newline"
+msgstr "Добавлять новую строку в конце"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Use shorthand tag syntax"
+msgstr "Использовать теги с сокращенным синтаксисом"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Space out the slash of shorthand tags"
+msgstr "Ставить пробел после тега"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Use pretty formatting"
+msgstr "Использовать красивое форматирование"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Use spaces instead of tabs"
+msgstr "Использовать пробелы вместо tab-ов"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Number of indentation spaces"
+msgstr "Количество символов отступа"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Numbers"
+msgstr "Цифры"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Remove leading zero"
+msgstr "Удалить начальный ноль"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Use exponential when shorter"
+msgstr "Использовать экспоненту когда короткий"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Colors"
+msgstr "Цвета"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Use named colors"
+msgstr "Использовать названия цветов"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Primary syntax"
+msgstr "Основной синтаксис"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Capitalize hexadecimal letters"
+msgstr "Использовать заглавную букву для шестнадцатиричных букв"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Pathdata"
+msgstr "Данные пути"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Compress numbers"
+msgstr "Сжать цифры"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Minimize spacing"
+msgstr "Минимизировать интервалы"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Remove spacing after flags"
+msgstr "Удалить интервалы после флагов"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Remove consecutive commands"
+msgstr "Удалить последовательные команды"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Transform lists"
+msgstr "Список трансформаций"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Remove unnecessary parameters"
+msgstr "Удалить ненужные параметры"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Swaps zoom in and zoom out with the mouse wheel."
@@ -761,111 +859,9 @@ msgstr "Редактировать название цвета"
 msgid "Delete color"
 msgstr "Удалить цвет"
 
-#: src/ui_widgets/configure_color_popup.gd src/ui_widgets/formatter_config.gd
-#: src/ui_widgets/palette_config.gd
+#: src/ui_widgets/configure_color_popup.gd src/ui_widgets/palette_config.gd
 msgid "Unnamed"
 msgstr "Без названия"
-
-#: src/ui_widgets/formatter_config.gd src/ui_widgets/palette_config.gd
-msgid "Rename"
-msgstr "Переименовать"
-
-#: src/ui_widgets/formatter_config.gd src/ui_widgets/setting_frame.gd
-#: src/ui_widgets/setting_shortcut.gd
-msgid "Reset to default"
-msgstr "Восстановить значение по умолчанию"
-
-#: src/ui_widgets/formatter_config.gd
-msgid "Preset"
-msgstr "Пресет"
-
-#: src/ui_widgets/formatter_config.gd
-msgid "Keep comments"
-msgstr "Сохранять коментарии"
-
-#: src/ui_widgets/formatter_config.gd
-msgid "Keep unrecognized XML structures"
-msgstr "Сохранять не распознанные XML"
-
-#: src/ui_widgets/formatter_config.gd
-msgid "Add trailing newline"
-msgstr "Добавлять новую строку в конце"
-
-#: src/ui_widgets/formatter_config.gd
-msgid "Use shorthand tag syntax"
-msgstr "Использовать теги с сокращенным синтаксисом"
-
-#: src/ui_widgets/formatter_config.gd
-msgid "Space out the slash of shorthand tags"
-msgstr "Ставить пробел после тега"
-
-#: src/ui_widgets/formatter_config.gd
-msgid "Use pretty formatting"
-msgstr "Использовать красивое форматирование"
-
-#: src/ui_widgets/formatter_config.gd
-msgid "Use spaces instead of tabs"
-msgstr "Использовать пробелы вместо tab-ов"
-
-#: src/ui_widgets/formatter_config.gd
-msgid "Number of indentation spaces"
-msgstr "Количество символов отступа"
-
-#: src/ui_widgets/formatter_config.gd
-msgid "Numbers"
-msgstr "Цифры"
-
-#: src/ui_widgets/formatter_config.gd
-msgid "Remove leading zero"
-msgstr "Удалить начальный ноль"
-
-#: src/ui_widgets/formatter_config.gd
-msgid "Use exponential when shorter"
-msgstr "Использовать экспоненту когда короткий"
-
-#: src/ui_widgets/formatter_config.gd
-msgid "Colors"
-msgstr "Цвета"
-
-#: src/ui_widgets/formatter_config.gd
-msgid "Use named colors"
-msgstr "Использовать названия цветов"
-
-#: src/ui_widgets/formatter_config.gd
-msgid "Primary syntax"
-msgstr "Основной синтаксис"
-
-#: src/ui_widgets/formatter_config.gd
-msgid "Capitalize hexadecimal letters"
-msgstr "Использовать заглавную букву для шестнадцатиричных букв"
-
-#: src/ui_widgets/formatter_config.gd
-msgid "Pathdata"
-msgstr "Данные пути"
-
-#: src/ui_widgets/formatter_config.gd
-msgid "Compress numbers"
-msgstr "Сжать цифры"
-
-#: src/ui_widgets/formatter_config.gd
-msgid "Minimize spacing"
-msgstr "Минимизировать интервалы"
-
-#: src/ui_widgets/formatter_config.gd
-msgid "Remove spacing after flags"
-msgstr "Удалить интервалы после флагов"
-
-#: src/ui_widgets/formatter_config.gd
-msgid "Remove consecutive commands"
-msgstr "Удалить последовательные команды"
-
-#: src/ui_widgets/formatter_config.gd
-msgid "Transform lists"
-msgstr "Список трансформаций"
-
-#: src/ui_widgets/formatter_config.gd
-msgid "Remove unnecessary parameters"
-msgstr "Удалить ненужные параметры"
 
 #: src/ui_widgets/good_color_picker.gd
 msgid "Enable the color"
@@ -886,6 +882,10 @@ msgstr "Несколько палитр не могут иметь одно и �
 #: src/ui_widgets/palette_config.gd
 msgid "This palette has identically defined colors."
 msgstr "Эти палитры имеют идентичные цвета."
+
+#: src/ui_widgets/palette_config.gd
+msgid "Rename"
+msgstr "Переименовать"
 
 #: src/ui_widgets/palette_config.gd
 msgid "Copy as XML"
@@ -914,6 +914,10 @@ msgstr "Нет точек"
 #: src/ui_widgets/presented_shortcut.gd src/ui_widgets/setting_shortcut.gd
 msgid "Also used by"
 msgstr "Так же используется"
+
+#: src/ui_widgets/setting_frame.gd src/ui_widgets/setting_shortcut.gd
+msgid "Reset to default"
+msgstr "Восстановить значение по умолчанию"
 
 #: src/ui_widgets/setting_shortcut.gd
 msgid "Unused"

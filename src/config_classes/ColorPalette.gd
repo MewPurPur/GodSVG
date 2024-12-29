@@ -24,7 +24,6 @@ signal layout_changed
 func _init(new_title := "", new_preset := Preset.EMPTY) -> void:
 	title = new_title
 	apply_preset(new_preset)
-	changed.connect(Configs.save, CONNECT_DEFERRED)
 
 func add_color() -> void:
 	colors.append("none")

@@ -101,13 +101,6 @@ static func throw_mouse_motion_event() -> void:
 	Input.call_deferred("parse_input_event", mouse_motion_event)
 
 
-static func get_last_dir() -> String:
-	if Configs.savedata.last_used_dir.is_empty() or\
-	not DirAccess.dir_exists_absolute(Configs.savedata.last_used_dir):
-		return OS.get_system_dir(OS.SYSTEM_DIR_PICTURES)
-	else:
-		return Configs.savedata.last_used_dir
-
 static func get_validity_color(error_condition: bool, warning_condition := false) -> Color:
 	return Configs.savedata.basic_color_error if error_condition else\
 			Configs.savedata.basic_color_warning if warning_condition else\

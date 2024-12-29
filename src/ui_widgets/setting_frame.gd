@@ -133,6 +133,7 @@ func update_widgets() -> void:
 			if disabled:
 				widget.mouse_default_cursor_shape = Control.CURSOR_ARROW
 				widget.disabled = true
+			widget.set_pressed_no_signal(getter.call())
 		Type.COLOR:
 			var setting_value: Color = getter.call()
 			var show_alpha: bool = widget.enable_alpha and setting_value.a != 1.0

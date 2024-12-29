@@ -1,22 +1,12 @@
 # A resource for the color palettes that are listed in the color picker.
 class_name Formatter extends Resource
 
-var _suppress_sync := false
+signal formatting_setting_changed
 
 enum Preset {COMPACT, PRETTY}
 enum ShorthandTags {ALWAYS, ALL_EXCEPT_CONTAINERS, NEVER}
 enum NamedColorUse {ALWAYS, WHEN_SHORTER_OR_EQUAL, WHEN_SHORTER, NEVER}
 enum PrimaryColorSyntax {THREE_OR_SIX_DIGIT_HEX, SIX_DIGIT_HEX, RGB}
-
-const SETTINGS_ARRAY = ["xml_keep_unrecognized", "xml_add_trailing_newline",
-	"xml_indentation_use_spaces", "xml_indentation_spaces", "pathdata_compress_numbers",
-	"pathdata_minimize_spacing", "pathdata_remove_consecutive_commands",
-	"xml_keep_comments", "xml_shorthand_tags", "xml_shorthand_tags_space_out_slash",
-	"xml_pretty_formatting", "number_remove_leading_zero",
-	"number_use_exponent_if_shorter", "color_use_named_colors", "color_primary_syntax",
-	"color_capital_hex", "pathdata_remove_spacing_after_flags",
-	"transform_list_compress_numbers", "transform_list_minimize_spacing",
-	"transform_list_remove_unnecessary_params"]
 
 # Elements that don't make sense without child elements.
 const container_elements = ["svg", "g", "linearGradient", "radialGradient"]
@@ -99,159 +89,54 @@ func get_setting_default(setting: String) -> Variant:
 	return null
 
 func reset_to_default() -> void:
-	_suppress_sync = true
-	for setting in SETTINGS_ARRAY:
+	for setting in _get_setting_names():
 		set(setting, get_setting_default(setting))
-	_suppress_sync = false
-	_svg_sync()
 
 func is_everything_default() -> bool:
-	for setting in SETTINGS_ARRAY:
+	for setting in _get_setting_names():
 		if get(setting) != get_setting_default(setting):
 			return false
 	return true
 
+func _set(property: StringName, value: Variant) -> bool:
+	if property in _get_setting_names() and get(property) != value:
+		if property != &"preset":
+			formatting_setting_changed.emit.call_deferred()
+		changed.emit.call_deferred()
+	return true
 
-@export var preset := Preset.COMPACT:
-	set(new_value):
-		if preset != new_value:
-			preset = new_value
-			# Changing the preset doesn't need to sync the SVG.
-			_suppress_sync = true
-			emit_changed()
-			_suppress_sync = false
-
-# The title must be unique.
-@export var title := "":
-	set(new_value):
-		if title != new_value:
-			title = new_value
-			emit_changed()
-
-@export var xml_keep_comments := false:
-	set(new_value):
-		if xml_keep_comments != new_value:
-			xml_keep_comments = new_value
-			emit_changed()
-
-@export var xml_keep_unrecognized := false:
-	set(new_value):
-		if xml_keep_unrecognized != new_value:
-			xml_keep_unrecognized = new_value
-			emit_changed()
-
-@export var xml_add_trailing_newline := false:
-	set(new_value):
-		if xml_add_trailing_newline != new_value:
-			xml_add_trailing_newline = new_value
-			emit_changed()
-
-@export var xml_shorthand_tags := ShorthandTags.ALWAYS:
-	set(new_value):
-		if xml_shorthand_tags != new_value:
-			xml_shorthand_tags = new_value
-			emit_changed()
-
-@export var xml_shorthand_tags_space_out_slash := false:
-	set(new_value):
-		if xml_shorthand_tags_space_out_slash != new_value:
-			xml_shorthand_tags_space_out_slash = new_value
-			emit_changed()
-
-@export var xml_pretty_formatting := false:
-	set(new_value):
-		if xml_pretty_formatting != new_value:
-			xml_pretty_formatting = new_value
-			emit_changed()
-
-@export var xml_indentation_use_spaces := false:
-	set(new_value):
-		if xml_indentation_use_spaces != new_value:
-			xml_indentation_use_spaces = new_value
-			emit_changed()
-
-@export var xml_indentation_spaces := 2:
-	set(new_value):
-		if xml_indentation_spaces != new_value:
-			xml_indentation_spaces = new_value
-			emit_changed()
-
-@export var number_remove_leading_zero := true:
-	set(new_value):
-		number_remove_leading_zero = new_value
-		emit_changed()
-
-@export var number_use_exponent_if_shorter := true:
-	set(new_value):
-		number_use_exponent_if_shorter = new_value
-		emit_changed()
-
-@export var color_use_named_colors := NamedColorUse.WHEN_SHORTER:
-	set(new_value):
-		if color_use_named_colors != new_value:
-			color_use_named_colors = new_value
-			emit_changed()
-
-@export var color_primary_syntax := PrimaryColorSyntax.THREE_OR_SIX_DIGIT_HEX:
-	set(new_value):
-		if color_primary_syntax != new_value:
-			color_primary_syntax = new_value
-			emit_changed()
-
-@export var color_capital_hex := false:
-	set(new_value):
-		color_capital_hex = new_value
-		emit_changed()
-
-@export var pathdata_compress_numbers := true:
-	set(new_value):
-		pathdata_compress_numbers = new_value
-		emit_changed()
-
-@export var pathdata_minimize_spacing := true:
-	set(new_value):
-		pathdata_minimize_spacing = new_value
-		emit_changed()
-
-@export var pathdata_remove_spacing_after_flags := true:
-	set(new_value):
-		pathdata_remove_spacing_after_flags = new_value
-		emit_changed()
-
-@export var pathdata_remove_consecutive_commands := true:
-	set(new_value):
-		pathdata_remove_consecutive_commands = new_value
-		emit_changed()
-
-@export var transform_list_compress_numbers := true:
-	set(new_value):
-		transform_list_compress_numbers = new_value
-		emit_changed()
-
-@export var transform_list_minimize_spacing := true:
-	set(new_value):
-		transform_list_minimize_spacing = new_value
-		emit_changed()
-
-@export var transform_list_remove_unnecessary_params := true:
-	set(new_value):
-		transform_list_remove_unnecessary_params = new_value
-		emit_changed()
+func _get_setting_names() -> PackedStringArray:
+	var arr := PackedStringArray()
+	for p in get_property_list():
+		if p.usage & PROPERTY_USAGE_SCRIPT_VARIABLE and p.usage & PROPERTY_USAGE_STORAGE:
+			if p.name != "preset":
+				arr.append(p.name)
+	return arr
 
 
-func _init(new_title := "", new_preset := Preset.COMPACT) -> void:
-	title = new_title
+@export var preset := Preset.COMPACT
+
+@export var xml_keep_comments := false
+@export var xml_keep_unrecognized := false
+@export var xml_add_trailing_newline := false
+@export var xml_shorthand_tags := ShorthandTags.ALWAYS
+@export var xml_shorthand_tags_space_out_slash := false
+@export var xml_pretty_formatting := false
+@export var xml_indentation_use_spaces := false
+@export var xml_indentation_spaces := 2
+@export var number_remove_leading_zero := true
+@export var number_use_exponent_if_shorter := true
+@export var color_use_named_colors := NamedColorUse.WHEN_SHORTER
+@export var color_primary_syntax := PrimaryColorSyntax.THREE_OR_SIX_DIGIT_HEX
+@export var color_capital_hex := false
+@export var pathdata_compress_numbers := true
+@export var pathdata_minimize_spacing := true
+@export var pathdata_remove_spacing_after_flags := true
+@export var pathdata_remove_consecutive_commands := true
+@export var transform_list_compress_numbers := true
+@export var transform_list_minimize_spacing := true
+@export var transform_list_remove_unnecessary_params := true
+
+func _init(new_preset := Preset.COMPACT) -> void:
 	preset = new_preset
 	reset_to_default()
-	# Connects to the _on_changed function once all initial file loading is done.
-	# This way the config is saved only once on launch.
-	changed.connect(func(): changed.connect(_on_changed), CONNECT_DEFERRED | CONNECT_ONE_SHOT)
-
-func _on_changed() -> void:
-	if not _suppress_sync:
-		_svg_sync()
-	Configs.save()
-
-func _svg_sync() -> void:
-	if self == Configs.savedata.editor_formatter:
-		SVG.sync_elements()

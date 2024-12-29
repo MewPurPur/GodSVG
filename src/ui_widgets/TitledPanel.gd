@@ -8,7 +8,7 @@ class_name TitledPanel extends Container
 @export var corner_radius_bottom_left: int
 @export var corner_radius_bottom_right: int
 @export var color: Color  # Background color; the title panel is in front of it.
-@export var border_color: Color
+@export_color_no_alpha var border_color: Color
 @export var title_color := Color.TRANSPARENT
 @export var title_margin: int
 @export var panel_margin: int
