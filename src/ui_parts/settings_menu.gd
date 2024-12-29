@@ -1,6 +1,5 @@
 extends PanelContainer
 
-const FormatterConfigWidget = preload("res://src/ui_widgets/formatter_config.tscn")
 const PaletteConfigWidget = preload("res://src/ui_widgets/palette_config.tscn")
 const ShortcutConfigWidget = preload("res://src/ui_widgets/setting_shortcut.tscn")
 const ShortcutShowcaseWidget = preload("res://src/ui_widgets/presented_shortcut.tscn")
@@ -9,6 +8,7 @@ const ProfileFrame = preload("res://src/ui_widgets/profile_frame.tscn")
 
 const plus_icon = preload("res://visual/icons/Plus.svg")
 const import_icon = preload("res://visual/icons/Import.svg")
+const reset_icon = preload("res://visual/icons/Reload.svg")
 
 @onready var lang_button: Button = $VBoxContainer/Language
 @onready var content_container: ScrollContainer = %ContentContainer
@@ -19,6 +19,8 @@ const import_icon = preload("res://visual/icons/Import.svg")
 
 var focused_tab := ""
 var current_setup_setting := ""
+var current_setup_resource: Resource
+var setting_container: VBoxContainer
 var advice := {}  # String: String
 
 func _ready() -> void:
@@ -30,6 +32,8 @@ func _ready() -> void:
 	tabs.get_child(0).button_pressed = true
 	Configs.theme_changed.connect(setup_theming)
 	setup_theming()
+	Configs.savedata.editor_formatter.changed.connect(show_formatter.bind("editor"))
+	Configs.savedata.export_formatter.changed.connect(show_formatter.bind("export"))
 
 func setup_theming() -> void:
 	var stylebox := get_theme_stylebox("panel").duplicate()
@@ -74,15 +78,33 @@ func _on_tab_toggled(toggled_on: bool, tab_name: String) -> void:
 		setup_content()
 
 func setup_content() -> void:
+	content_container.scroll_vertical = 0
 	for child in content_container.get_children():
 		child.queue_free()
+	
 	match focused_tab:
 		"formatting":
 			advice_panel.hide()
 			var vbox := VBoxContainer.new()
 			vbox.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+			vbox.add_theme_constant_override("separation", 6)
 			content_container.add_child(vbox)
-			rebuild_formatters()
+			var categories := HFlowContainer.new()
+			var button_group := ButtonGroup.new()
+			for tab_idx in formatter_tab_names:
+				var btn := Button.new()
+				btn.toggle_mode = true
+				btn.button_group = button_group
+				btn.pressed.connect(show_formatter.bind(tab_idx))
+				btn.text = get_translated_formatter_tab(tab_idx)
+				btn.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+				btn.focus_mode = Control.FOCUS_NONE
+				categories.add_child(btn)
+			vbox.add_child(categories)
+			create_setting_container()
+			vbox.add_child(setting_container)
+			categories.get_child(0).button_pressed = true
+			categories.get_child(0).pressed.emit()
 		"palettes":
 			advice_panel.hide()
 			var vbox := VBoxContainer.new()
@@ -93,6 +115,7 @@ func setup_content() -> void:
 			advice_panel.hide()
 			var vbox := VBoxContainer.new()
 			vbox.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+			vbox.add_theme_constant_override("separation", 6)
 			content_container.add_child(vbox)
 			var categories := HFlowContainer.new()
 			var button_group := ButtonGroup.new()
@@ -115,11 +138,10 @@ func setup_content() -> void:
 			categories.get_child(0).pressed.emit()
 		"theming":
 			advice_panel.hide()
-			var vbox := VBoxContainer.new()
-			vbox.add_theme_constant_override("separation", 6)
-			vbox.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-			content_container.add_child(vbox)
+			create_setting_container()
+			content_container.add_child(setting_container)
 			
+			current_setup_resource = Configs.savedata
 			add_section(Translator.translate("SVG Text colors"))
 			current_setup_setting = "highlighting_symbol_color"
 			add_color_edit(Translator.translate("Symbol color"))
@@ -139,7 +161,7 @@ func setup_content() -> void:
 			add_color_edit(Translator.translate("Error color"))
 			
 			add_section(Translator.translate("Handle colors"))
-			current_setup_setting = "handle_inside_color"
+			current_setup_setting = "handle_inner_color"
 			add_color_edit(Translator.translate("Inside color"), false)
 			current_setup_setting = "handle_color"
 			add_color_edit(Translator.translate("Normal color"), false)
@@ -161,10 +183,10 @@ func setup_content() -> void:
 			add_color_edit(Translator.translate("Warning color"))
 		"other":
 			advice_panel.show()
-			var vbox := VBoxContainer.new()
-			vbox.add_theme_constant_override("separation", 6)
-			vbox.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-			content_container.add_child(vbox)
+			create_setting_container()
+			content_container.add_child(setting_container)
+			
+			current_setup_resource = Configs.savedata
 			add_section(Translator.translate("Input"))
 			current_setup_setting = "invert_zoom"
 			add_checkbox(Translator.translate("Invert zoom direction"))
@@ -191,7 +213,7 @@ func setup_content() -> void:
 					"If turned off, the window title will remain simply \"GodSVG\" regardless of the current file."))
 			current_setup_setting = "handle_size"
 			add_number_dropdown(Translator.translate("Handle size"),
-					[0.75, 1.0, 1.25, 1.5, 1.75, 2.0], false, false, 0.5, 2.5)
+					[0.75, 1.0, 1.25, 1.5, 1.75, 2.0, 2.5, 3.0], false, false, 0.5, 4.0)
 			add_advice(Translator.translate(
 					"Changes the visual size and grabbing area of handles."))
 			current_setup_setting = "ui_scale"
@@ -223,10 +245,11 @@ func add_section(section_name: String) -> void:
 	var spacer := Control.new()
 	spacer.custom_minimum_size.y = 2
 	vbox.add_child(spacer)
-	content_container.get_child(-1).add_child(vbox)
+	setting_container.add_child(vbox)
 
-func add_checkbox(text: String) -> Control:
+func add_checkbox(text: String, dim_text := false) -> Control:
 	var frame := SettingFrame.instantiate()
+	frame.dim_text = dim_text
 	frame.text = text
 	setup_frame(frame)
 	frame.setup_checkbox()
@@ -237,13 +260,14 @@ func add_dropdown(text: String) -> Control:
 	var frame := SettingFrame.instantiate()
 	frame.text = text
 	setup_frame(frame)
-	frame.setup_dropdown(Configs.get_enum_texts(current_setup_setting))
+	frame.setup_dropdown(current_setup_resource.get_enum_texts(current_setup_setting))
 	add_frame(frame)
 	return frame
 
 func add_number_dropdown(text: String, values: Array[float], is_integer := false,
-restricted := true, min_value := -INF, max_value := INF) -> Control:
+restricted := true, min_value := -INF, max_value := INF, dim_text := false) -> Control:
 	var frame := SettingFrame.instantiate()
+	frame.dim_text = dim_text
 	frame.text = text
 	setup_frame(frame)
 	frame.setup_number_dropdown(values, is_integer, restricted, min_value, max_value)
@@ -259,15 +283,18 @@ func add_color_edit(text: String, enable_alpha := true) -> Control:
 	return frame
 
 func setup_frame(frame: Control) -> void:
-	frame.getter = Configs.savedata.get.bind(current_setup_setting)
 	var bind := current_setup_setting
-	frame.setter = func(p): Configs.modify_setting(bind, p)
-	frame.default = Configs.get_default(current_setup_setting)
+	frame.getter = current_setup_resource.get.bind(bind)
+	if current_setup_resource == Configs.savedata:
+		frame.setter = func(p): Configs.modify_setting(bind, p)
+	else:
+		frame.setter = func(p): current_setup_resource.set(bind, p)
+	frame.default = current_setup_resource.get_setting_default(current_setup_setting)
 	frame.mouse_entered.connect(show_advice.bind(current_setup_setting))
 	frame.mouse_exited.connect(hide_advice.bind(current_setup_setting))
 
 func add_frame(frame: Control) -> void:
-	content_container.get_child(-1).get_child(-1).add_child(frame)
+	setting_container.get_child(-1).add_child(frame)
 
 func add_advice(text: String) -> void:
 	advice[current_setup_setting] = text
@@ -433,60 +460,14 @@ func rebuild_color_palettes() -> void:
 	xml_palette_button.pressed.connect(_popup_xml_palette_options.bind(xml_palette_button))
 
 
-func add_formatter() -> void:
-	Configs.add_new_formatter(Formatter.new())
-	rebuild_formatters()
-
-func rebuild_formatters() -> void:
-	var formatter_container := content_container.get_child(-1)
-	for formatter_config in formatter_container.get_children():
-		formatter_config.queue_free()
-	
-	var available_formatters := {}
-	for formatter in Configs.savedata.formatters:
-		if not formatter.title.is_empty():
-			available_formatters[formatter.title] = formatter
-	
-	for context in [["editor_formatter", Translator.translate("Editor formatter")],
-	["export_formatter", Translator.translate("Export formatter")]]:
-		var frame := ProfileFrame.instantiate()
-		frame.setup_dropdown()
-		frame.text = context[1]
-		frame.getter = func(): return Configs.savedata.get(context[0]).title
-		frame.setter = func(p): Configs.modify_setting(context[0],
-				available_formatters[p] if available_formatters.has(p) else\
-				available_formatters.values()[0])
-		frame.mouse_entered.connect(show_advice.bind(current_setup_setting))
-		frame.mouse_exited.connect(hide_advice.bind(current_setup_setting))
-		formatter_container.add_child(frame)
-		frame.dropdown.values = available_formatters.keys()
-	
-	for formatter in Configs.savedata.formatters:
-		var formatter_config := FormatterConfigWidget.instantiate()
-		formatter_config.current_formatter = formatter
-		formatter_container.add_child(formatter_config)
-		formatter_config.layout_changed.connect(rebuild_formatters)
-	# Add the button for adding a new formatter.
-	var add_formatter_button := Button.new()
-	add_formatter_button.theme_type_variation = "TranslucentButton"
-	add_formatter_button.icon = plus_icon
-	add_formatter_button.icon_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	add_formatter_button.focus_mode = Control.FOCUS_NONE
-	add_formatter_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-	formatter_container.add_child(add_formatter_button)
-	add_formatter_button.pressed.connect(add_formatter)
-
-func set_formatter(formatter_purpose: String, formatter_name: String) -> void:
-	var new_formatter: Formatter
-	for formatter in Configs.savedata.formatters:
-		if formatter.title == formatter_name:
-			new_formatter = formatter
-			break
-	if is_instance_valid(new_formatter):
-		Configs.modify_setting(formatter_purpose, new_formatter)
-
-
 var shortcut_tab_names := ["file", "edit", "view", "tool", "help"]
+var formatter_tab_names := ["editor", "export"]
+
+func get_translated_formatter_tab(tab_idx: String) -> String:
+	match tab_idx:
+		"editor": return Translator.translate("Editor formatter")
+		"export": return Translator.translate("Export formatter")
+	return ""
 
 func get_translated_shortcut_tab(tab_idx: String) -> String:
 	match tab_idx:
@@ -495,10 +476,93 @@ func get_translated_shortcut_tab(tab_idx: String) -> String:
 		"view": return Translator.translate("View")
 		"tool": return Translator.translate("Tool")
 		"help": return Translator.translate("Help")
-		_: return ""
+	return ""
 
 
-func show_shortcuts(category: String):
+func show_formatter(category: String) -> void:
+	for child in setting_container.get_children():
+		child.queue_free()
+	
+	match category:
+		"editor": current_setup_resource = Configs.savedata.editor_formatter
+		"export": current_setup_resource = Configs.savedata.export_formatter
+	
+	var button := Button.new()
+	button.theme_type_variation = "TranslucentButton"
+	button.text = Translator.translate("Reset all to default")
+	button.icon = reset_icon
+	button.focus_mode = Control.FOCUS_NONE
+	button.disabled = current_setup_resource.is_everything_default()
+	button.mouse_default_cursor_shape = Control.CURSOR_ARROW if\
+			button.disabled else Control.CURSOR_POINTING_HAND
+	setting_container.add_child(button)
+	button.pressed.connect(current_setup_resource.reset_to_default)
+	
+	# The preset field shouldn't have a reset button or a section, so set it up manually.
+	var frame := ProfileFrame.instantiate()
+	frame.setup_dropdown(true)
+	frame.getter = current_setup_resource.get.bind("preset")
+	frame.setter = func(p): current_setup_resource.set("preset", p)
+	frame.text = Translator.translate("Preset")
+	frame.dropdown.values = Formatter.get_enum_texts("preset")
+	setting_container.add_child(frame)
+	
+	add_section("XML")
+	current_setup_setting = "xml_keep_comments"
+	add_checkbox(Translator.translate("Keep comments"))
+	current_setup_setting = "xml_keep_unrecognized"
+	add_checkbox(Translator.translate("Keep unrecognized XML structures"))
+	current_setup_setting = "xml_add_trailing_newline"
+	add_checkbox(Translator.translate("Add trailing newline"))
+	current_setup_setting = "xml_shorthand_tags"
+	add_dropdown(Translator.translate("Use shorthand tag syntax"))
+	current_setup_setting = "xml_shorthand_tags_space_out_slash"
+	add_checkbox(Translator.translate("Space out the slash of shorthand tags"))
+	current_setup_setting = "xml_pretty_formatting"
+	add_checkbox(Translator.translate("Use pretty formatting"))
+	current_setup_setting = "xml_indentation_use_spaces"
+	add_checkbox(Translator.translate("Use spaces instead of tabs"),
+			not current_setup_resource.xml_pretty_formatting)
+	current_setup_setting = "xml_indentation_spaces"
+	add_number_dropdown(Translator.translate("Number of indentation spaces"),
+			[2, 3, 4, 6, 8], true, false, 0, 16,
+			not current_setup_resource.xml_pretty_formatting)
+	
+	add_section(Translator.translate("Numbers"))
+	current_setup_setting = "number_remove_leading_zero"
+	add_checkbox(Translator.translate("Remove leading zero"))
+	current_setup_setting = "number_use_exponent_if_shorter"
+	add_checkbox(Translator.translate("Use exponential when shorter"))
+	
+	add_section(Translator.translate("Colors"))
+	current_setup_setting = "color_use_named_colors"
+	add_dropdown(Translator.translate("Use named colors"))
+	current_setup_setting = "color_primary_syntax"
+	add_dropdown(Translator.translate("Primary syntax"))
+	current_setup_setting = "color_capital_hex"
+	add_checkbox(Translator.translate("Capitalize hexadecimal letters"),
+			current_setup_resource.color_primary_syntax == Formatter.PrimaryColorSyntax.RGB)
+	
+	add_section(Translator.translate("Pathdata"))
+	current_setup_setting = "pathdata_compress_numbers"
+	add_checkbox(Translator.translate("Compress numbers"))
+	current_setup_setting = "pathdata_minimize_spacing"
+	add_checkbox(Translator.translate("Minimize spacing"))
+	current_setup_setting = "pathdata_remove_spacing_after_flags"
+	add_checkbox(Translator.translate("Remove spacing after flags"))
+	current_setup_setting = "pathdata_remove_consecutive_commands"
+	add_checkbox(Translator.translate("Remove consecutive commands"))
+	
+	add_section(Translator.translate("Transform lists"))
+	current_setup_setting = "transform_list_compress_numbers"
+	add_checkbox(Translator.translate("Compress numbers"))
+	current_setup_setting = "transform_list_minimize_spacing"
+	add_checkbox(Translator.translate("Minimize spacing"))
+	current_setup_setting = "transform_list_remove_unnecessary_params"
+	add_checkbox(Translator.translate("Remove unnecessary parameters"))
+
+
+func show_shortcuts(category: String) -> void:
 	var shortcuts_container := content_container.get_child(-1).get_child(-1)
 	for child in shortcuts_container.get_children():
 		child.queue_free()
@@ -511,3 +575,8 @@ func show_shortcuts(category: String):
 		shortcuts_container.add_child(shortcut_config)
 		shortcut_config.label.text = TranslationUtils.get_shortcut_description(action)
 		shortcut_config.setup(action)
+
+func create_setting_container() -> void:
+	setting_container = VBoxContainer.new()
+	setting_container.add_theme_constant_override("separation", 6)
+	setting_container.size_flags_horizontal = Control.SIZE_EXPAND_FILL

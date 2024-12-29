@@ -8,16 +8,6 @@ enum ShorthandTags {ALWAYS, ALL_EXCEPT_CONTAINERS, NEVER}
 enum NamedColorUse {ALWAYS, WHEN_SHORTER_OR_EQUAL, WHEN_SHORTER, NEVER}
 enum PrimaryColorSyntax {THREE_OR_SIX_DIGIT_HEX, SIX_DIGIT_HEX, RGB}
 
-const SETTINGS_ARRAY = ["xml_keep_unrecognized", "xml_add_trailing_newline",
-	"xml_indentation_use_spaces", "xml_indentation_spaces", "pathdata_compress_numbers",
-	"pathdata_minimize_spacing", "pathdata_remove_consecutive_commands",
-	"xml_keep_comments", "xml_shorthand_tags", "xml_shorthand_tags_space_out_slash",
-	"xml_pretty_formatting", "number_remove_leading_zero",
-	"number_use_exponent_if_shorter", "color_use_named_colors", "color_primary_syntax",
-	"color_capital_hex", "pathdata_remove_spacing_after_flags",
-	"transform_list_compress_numbers", "transform_list_minimize_spacing",
-	"transform_list_remove_unnecessary_params"]
-
 # Elements that don't make sense without child elements.
 const container_elements = ["svg", "g", "linearGradient", "radialGradient"]
 
@@ -100,16 +90,24 @@ func get_setting_default(setting: String) -> Variant:
 
 func reset_to_default() -> void:
 	_suppress_sync = true
-	for setting in SETTINGS_ARRAY:
+	for setting in _get_setting_names():
 		set(setting, get_setting_default(setting))
 	_suppress_sync = false
 	_svg_sync()
 
 func is_everything_default() -> bool:
-	for setting in SETTINGS_ARRAY:
+	for setting in _get_setting_names():
 		if get(setting) != get_setting_default(setting):
 			return false
 	return true
+
+func _get_setting_names() -> PackedStringArray:
+	var arr := PackedStringArray()
+	for p in get_property_list():
+		if p.usage & PROPERTY_USAGE_SCRIPT_VARIABLE and p.usage & PROPERTY_USAGE_STORAGE:
+			if p.name != "preset":
+				arr.append(p.name)
+	return arr
 
 
 @export var preset := Preset.COMPACT:
@@ -121,12 +119,6 @@ func is_everything_default() -> bool:
 			emit_changed()
 			_suppress_sync = false
 
-# The title must be unique.
-@export var title := "":
-	set(new_value):
-		if title != new_value:
-			title = new_value
-			emit_changed()
 
 @export var xml_keep_comments := false:
 	set(new_value):
@@ -239,8 +231,7 @@ func is_everything_default() -> bool:
 		emit_changed()
 
 
-func _init(new_title := "", new_preset := Preset.COMPACT) -> void:
-	title = new_title
+func _init(new_preset := Preset.COMPACT) -> void:
 	preset = new_preset
 	reset_to_default()
 	# Connects to the _on_changed function once all initial file loading is done.

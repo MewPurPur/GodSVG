@@ -29,8 +29,7 @@ func _ready() -> void:
 	mouse_exited.connect(_on_base_class_mouse_exited)
 	focus_entered.connect(_on_base_class_focus_entered)
 	focus_exited.connect(_on_base_class_focus_exited)
-	caret_changed.connect(redraw_caret)
-	
+	caret_changed.connect(queue_redraw_caret)
 
 func _exit_tree() -> void:
 	RenderingServer.free_rid(_surface)
@@ -40,14 +39,14 @@ var overtype_mode := false
 func _process(_delta: float) -> void:
 	if is_overtype_mode_enabled() != overtype_mode:
 		overtype_mode = not overtype_mode
-		redraw_caret()
+		queue_redraw_caret()
 
 
 func queue_redraw_caret() -> void:
-	redraw_caret.call_deferred()
+	_redraw_caret.call_deferred()
 	_is_caret_queued_for_redraw = true
 
-func redraw_caret() -> void:
+func _redraw_caret() -> void:
 	if not _is_caret_queued_for_redraw:
 		return
 	
@@ -85,7 +84,7 @@ func redraw_caret() -> void:
 		# Determine the end of the caret and draw it.
 		var caret_end := caret_pos
 		if is_overtype_mode_enabled():
-			caret_end.x += char_size.x - 1
+			caret_end.x += char_size.x
 		else:
 			caret_end.y -= char_size.y + 1
 		RenderingServer.canvas_item_add_line(_surface, caret_pos, caret_end, caret_color, 1)

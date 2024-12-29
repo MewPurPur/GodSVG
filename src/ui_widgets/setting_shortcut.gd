@@ -67,9 +67,9 @@ func sync() -> void:
 			new_btn.pressed.connect(enter_listening_mode.bind(i, true))
 		else:
 			new_btn.begin_bulk_theme_override()
-			new_btn.add_theme_color_override("font_color", Color("#def6"))
-			new_btn.add_theme_color_override("font_hover_color", Color("#def6"))
-			new_btn.add_theme_color_override("font_pressed_color", Color("#def8"))
+			new_btn.add_theme_color_override("font_color", Color("def6"))
+			new_btn.add_theme_color_override("font_hover_color", Color("def6"))
+			new_btn.add_theme_color_override("font_pressed_color", Color("def8"))
 			new_btn.end_bulk_theme_override()
 			set_shortcut_button_text(new_btn, Translator.translate("Unused"))
 			if i == events.size():
@@ -84,7 +84,7 @@ func sync() -> void:
 func enter_listening_mode(idx: int, show_delete_button := false) -> void:
 	listening_idx = idx
 	var btn := shortcut_buttons[idx]
-	setup_shortcut_button_font_colors(btn, Color("#def"))
+	setup_shortcut_button_font_colors(btn, Color("def"))
 	btn.focus_mode = Control.FOCUS_CLICK
 	btn.grab_focus()
 	if btn.pressed.is_connected(enter_listening_mode):
@@ -143,7 +143,7 @@ func _input(event: InputEvent) -> void:
 	if event.is_action("ui_cancel"):
 		cancel_listening()
 		pending_event = null
-		setup_shortcut_button_font_colors(shortcut_button, Color("#def"))
+		setup_shortcut_button_font_colors(shortcut_button, Color("def"))
 		accept_event()
 	elif event.is_pressed():
 		set_shortcut_button_text(shortcut_button, event.as_text_keycode())
@@ -152,7 +152,7 @@ func _input(event: InputEvent) -> void:
 			setup_shortcut_button_font_colors(shortcut_button,
 					Configs.savedata.basic_color_warning)
 		else:
-			setup_shortcut_button_font_colors(shortcut_button, Color("#def"))
+			setup_shortcut_button_font_colors(shortcut_button, Color("def"))
 		accept_event()
 	elif event.is_released():
 		if pending_event.keycode & KEY_MODIFIER_MASK == 0:
@@ -163,7 +163,7 @@ func _input(event: InputEvent) -> void:
 		update_shortcut()
 		sync()
 		pending_event = null
-		setup_shortcut_button_font_colors(shortcut_button, Color("#def"))
+		setup_shortcut_button_font_colors(shortcut_button, Color("def"))
 		listening_idx = -1
 
 func _on_reset_button_pressed() -> void:

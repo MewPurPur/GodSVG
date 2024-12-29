@@ -75,9 +75,8 @@ msgstr "Omhoog gaan"
 msgid "Move Down"
 msgstr "Omlaag gaan"
 
-#: src/autoload/Indications.gd src/ui_widgets/formatter_config.gd
-#: src/ui_widgets/palette_config.gd src/ui_widgets/setting_shortcut.gd
-#: src/ui_widgets/transform_popup.gd
+#: src/autoload/Indications.gd src/ui_widgets/palette_config.gd
+#: src/ui_widgets/setting_shortcut.gd src/ui_widgets/transform_popup.gd
 msgid "Delete"
 msgstr "Verwijderen"
 
@@ -642,16 +641,118 @@ msgid "New palette from XML"
 msgstr "Nieuw element"
 
 #: src/ui_parts/settings_menu.gd
+#, fuzzy
 msgid "Editor formatter"
 msgstr "Editor-formatter"
 
 #: src/ui_parts/settings_menu.gd
+#, fuzzy
 msgid "Export formatter"
 msgstr "Exportformatter"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Help"
 msgstr "Help"
+
+#: src/ui_parts/settings_menu.gd
+#, fuzzy
+msgid "Reset all to default"
+msgstr "Opnieuw naar standaard zetten"
+
+#: src/ui_parts/settings_menu.gd
+#, fuzzy
+msgid "Preset"
+msgstr "Zoom opnieuw zetten"
+
+#: src/ui_parts/settings_menu.gd
+#, fuzzy
+msgid "Keep comments"
+msgstr "Commentaarkleur"
+
+#: src/ui_parts/settings_menu.gd
+#, fuzzy
+msgid "Keep unrecognized XML structures"
+msgstr "Onbekende attribuut"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Add trailing newline"
+msgstr "Achterfolgende nieuwe regel toevoegen"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Use shorthand tag syntax"
+msgstr "Gebruik korte etiket syntaxis"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Space out the slash of shorthand tags"
+msgstr "Spatie the slash uit van de korte syntaxis"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Use pretty formatting"
+msgstr "Gebruik mooie format"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Use spaces instead of tabs"
+msgstr "Gebruik spaties in plaats van tabbladen"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Number of indentation spaces"
+msgstr "Aantal inspringingen"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Numbers"
+msgstr "Nummers"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Remove leading zero"
+msgstr "Verwijder leidende Nul"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Use exponential when shorter"
+msgstr "Gebruik exponentieel als her korter is"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Colors"
+msgstr "Kleuren"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Use named colors"
+msgstr "Gebruik benoemde kleuren"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Primary syntax"
+msgstr "Primair syntaxis"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Capitalize hexadecimal letters"
+msgstr "Kapitaliseer hexadecimal letters"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Pathdata"
+msgstr "Padgegevens"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Compress numbers"
+msgstr "Nummers verdichten"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Minimize spacing"
+msgstr "Minimaliseer afstand"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Remove spacing after flags"
+msgstr "Verwijder afstand na vlaggen"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Remove consecutive commands"
+msgstr "Verwijder opeenvolgende opdrachten"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Transform lists"
+msgstr "Transformeer lijst"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Remove unnecessary parameters"
+msgstr "Verwijder onnodige parameters"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Swaps zoom in and zoom out with the mouse wheel."
@@ -764,114 +865,9 @@ msgstr "Kleurnaam bewerken"
 msgid "Delete color"
 msgstr "Kleur verwijderen"
 
-#: src/ui_widgets/configure_color_popup.gd src/ui_widgets/formatter_config.gd
-#: src/ui_widgets/palette_config.gd
+#: src/ui_widgets/configure_color_popup.gd src/ui_widgets/palette_config.gd
 msgid "Unnamed"
 msgstr "Onbenoemd"
-
-#: src/ui_widgets/formatter_config.gd src/ui_widgets/palette_config.gd
-msgid "Rename"
-msgstr "Hernoemen"
-
-#: src/ui_widgets/formatter_config.gd src/ui_widgets/setting_frame.gd
-#: src/ui_widgets/setting_shortcut.gd
-msgid "Reset to default"
-msgstr "Opnieuw naar standaard zetten"
-
-#: src/ui_widgets/formatter_config.gd
-#, fuzzy
-msgid "Preset"
-msgstr "Zoom opnieuw zetten"
-
-#: src/ui_widgets/formatter_config.gd
-#, fuzzy
-msgid "Keep comments"
-msgstr "Commentaarkleur"
-
-#: src/ui_widgets/formatter_config.gd
-#, fuzzy
-msgid "Keep unrecognized XML structures"
-msgstr "Onbekende attribuut"
-
-#: src/ui_widgets/formatter_config.gd
-msgid "Add trailing newline"
-msgstr "Achterfolgende nieuwe regel toevoegen"
-
-#: src/ui_widgets/formatter_config.gd
-msgid "Use shorthand tag syntax"
-msgstr "Gebruik korte etiket syntaxis"
-
-#: src/ui_widgets/formatter_config.gd
-msgid "Space out the slash of shorthand tags"
-msgstr "Spatie the slash uit van de korte syntaxis"
-
-#: src/ui_widgets/formatter_config.gd
-msgid "Use pretty formatting"
-msgstr "Gebruik mooie format"
-
-#: src/ui_widgets/formatter_config.gd
-msgid "Use spaces instead of tabs"
-msgstr "Gebruik spaties in plaats van tabbladen"
-
-#: src/ui_widgets/formatter_config.gd
-msgid "Number of indentation spaces"
-msgstr "Aantal inspringingen"
-
-#: src/ui_widgets/formatter_config.gd
-msgid "Numbers"
-msgstr "Nummers"
-
-#: src/ui_widgets/formatter_config.gd
-msgid "Remove leading zero"
-msgstr "Verwijder leidende Nul"
-
-#: src/ui_widgets/formatter_config.gd
-msgid "Use exponential when shorter"
-msgstr "Gebruik exponentieel als her korter is"
-
-#: src/ui_widgets/formatter_config.gd
-msgid "Colors"
-msgstr "Kleuren"
-
-#: src/ui_widgets/formatter_config.gd
-msgid "Use named colors"
-msgstr "Gebruik benoemde kleuren"
-
-#: src/ui_widgets/formatter_config.gd
-msgid "Primary syntax"
-msgstr "Primair syntaxis"
-
-#: src/ui_widgets/formatter_config.gd
-msgid "Capitalize hexadecimal letters"
-msgstr "Kapitaliseer hexadecimal letters"
-
-#: src/ui_widgets/formatter_config.gd
-msgid "Pathdata"
-msgstr "Padgegevens"
-
-#: src/ui_widgets/formatter_config.gd
-msgid "Compress numbers"
-msgstr "Nummers verdichten"
-
-#: src/ui_widgets/formatter_config.gd
-msgid "Minimize spacing"
-msgstr "Minimaliseer afstand"
-
-#: src/ui_widgets/formatter_config.gd
-msgid "Remove spacing after flags"
-msgstr "Verwijder afstand na vlaggen"
-
-#: src/ui_widgets/formatter_config.gd
-msgid "Remove consecutive commands"
-msgstr "Verwijder opeenvolgende opdrachten"
-
-#: src/ui_widgets/formatter_config.gd
-msgid "Transform lists"
-msgstr "Transformeer lijst"
-
-#: src/ui_widgets/formatter_config.gd
-msgid "Remove unnecessary parameters"
-msgstr "Verwijder onnodige parameters"
 
 #: src/ui_widgets/good_color_picker.gd
 msgid "Enable the color"
@@ -892,6 +888,10 @@ msgstr ""
 #: src/ui_widgets/palette_config.gd
 msgid "This palette has identically defined colors."
 msgstr ""
+
+#: src/ui_widgets/palette_config.gd
+msgid "Rename"
+msgstr "Hernoemen"
 
 #: src/ui_widgets/palette_config.gd
 msgid "Copy as XML"
@@ -921,6 +921,10 @@ msgstr ""
 #: src/ui_widgets/presented_shortcut.gd src/ui_widgets/setting_shortcut.gd
 msgid "Also used by"
 msgstr ""
+
+#: src/ui_widgets/setting_frame.gd src/ui_widgets/setting_shortcut.gd
+msgid "Reset to default"
+msgstr "Opnieuw naar standaard zetten"
 
 #: src/ui_widgets/setting_shortcut.gd
 msgid "Unused"
