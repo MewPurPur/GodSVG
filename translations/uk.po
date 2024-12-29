@@ -75,9 +75,8 @@ msgstr "Пересунути вгору"
 msgid "Move Down"
 msgstr "Пересунути вниз"
 
-#: src/autoload/Indications.gd src/ui_widgets/formatter_config.gd
-#: src/ui_widgets/palette_config.gd src/ui_widgets/setting_shortcut.gd
-#: src/ui_widgets/transform_popup.gd
+#: src/autoload/Indications.gd src/ui_widgets/palette_config.gd
+#: src/ui_widgets/setting_shortcut.gd src/ui_widgets/transform_popup.gd
 msgid "Delete"
 msgstr "Видалити"
 
@@ -636,16 +635,119 @@ msgid "New palette from XML"
 msgstr "Нова палітра з XML"
 
 #: src/ui_parts/settings_menu.gd
+#, fuzzy
 msgid "Editor formatter"
 msgstr "Форматер редактору"
 
 #: src/ui_parts/settings_menu.gd
+#, fuzzy
 msgid "Export formatter"
 msgstr "Форматер експорту"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Help"
 msgstr "Допомога"
+
+#: src/ui_parts/settings_menu.gd
+#, fuzzy
+msgid "Reset all to default"
+msgstr "Скинути значення до замовчування"
+
+# не знаю
+#: src/ui_parts/settings_menu.gd
+msgid "Preset"
+msgstr "Пресет"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Keep comments"
+msgstr "Зберігати коментарі"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Keep unrecognized XML structures"
+msgstr "Зберігати не розпізнані структури XML"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Add trailing newline"
+msgstr "Додавати нову строку в кінці"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Use shorthand tag syntax"
+msgstr "Використовувати теги зі скороченим синтаксисом"
+
+# Шось...
+#: src/ui_parts/settings_menu.gd
+msgid "Space out the slash of shorthand tags"
+msgstr "Ставити пробіл перед скороченими тегами"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Use pretty formatting"
+msgstr "Використовувати гарне форматування"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Use spaces instead of tabs"
+msgstr "Використовувати пробіли замість табуляції"
+
+# Взяв ідею для перекладу з гновоського текстового редактора
+#: src/ui_parts/settings_menu.gd
+msgid "Number of indentation spaces"
+msgstr "Кількість пробілів на табуляцію"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Numbers"
+msgstr "Цифри"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Remove leading zero"
+msgstr "Видалити початковий нуль"
+
+# Ґа...
+#: src/ui_parts/settings_menu.gd
+msgid "Use exponential when shorter"
+msgstr "Використовувати експоненту коли коротше"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Colors"
+msgstr "Кольори"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Use named colors"
+msgstr "Використовувати назви кольорів"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Primary syntax"
+msgstr "Основний синтаксис"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Capitalize hexadecimal letters"
+msgstr "Відображати шістнадцятирічні числа великими літери"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Pathdata"
+msgstr "Дані шляху"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Compress numbers"
+msgstr "Стиснути цифри"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Minimize spacing"
+msgstr "Мінімізувати відстань"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Remove spacing after flags"
+msgstr "Видалити відстань після прапорців"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Remove consecutive commands"
+msgstr "Видалити послідовні команди"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Transform lists"
+msgstr "Список трансформацій"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Remove unnecessary parameters"
+msgstr "Видалити необов'язкові параметри"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Swaps zoom in and zoom out with the mouse wheel."
@@ -761,115 +863,9 @@ msgstr "Редагувати назву кольору"
 msgid "Delete color"
 msgstr "Видалити колір"
 
-#: src/ui_widgets/configure_color_popup.gd src/ui_widgets/formatter_config.gd
-#: src/ui_widgets/palette_config.gd
+#: src/ui_widgets/configure_color_popup.gd src/ui_widgets/palette_config.gd
 msgid "Unnamed"
 msgstr "Без назви"
-
-#: src/ui_widgets/formatter_config.gd src/ui_widgets/palette_config.gd
-msgid "Rename"
-msgstr "Перейменувати"
-
-#: src/ui_widgets/formatter_config.gd src/ui_widgets/setting_frame.gd
-#: src/ui_widgets/setting_shortcut.gd
-msgid "Reset to default"
-msgstr "Скинути значення до замовчування"
-
-# не знаю
-#: src/ui_widgets/formatter_config.gd
-msgid "Preset"
-msgstr "Пресет"
-
-#: src/ui_widgets/formatter_config.gd
-msgid "Keep comments"
-msgstr "Зберігати коментарі"
-
-#: src/ui_widgets/formatter_config.gd
-msgid "Keep unrecognized XML structures"
-msgstr "Зберігати не розпізнані структури XML"
-
-#: src/ui_widgets/formatter_config.gd
-msgid "Add trailing newline"
-msgstr "Додавати нову строку в кінці"
-
-#: src/ui_widgets/formatter_config.gd
-msgid "Use shorthand tag syntax"
-msgstr "Використовувати теги зі скороченим синтаксисом"
-
-# Шось...
-#: src/ui_widgets/formatter_config.gd
-msgid "Space out the slash of shorthand tags"
-msgstr "Ставити пробіл перед скороченими тегами"
-
-#: src/ui_widgets/formatter_config.gd
-msgid "Use pretty formatting"
-msgstr "Використовувати гарне форматування"
-
-#: src/ui_widgets/formatter_config.gd
-msgid "Use spaces instead of tabs"
-msgstr "Використовувати пробіли замість табуляції"
-
-# Взяв ідею для перекладу з гновоського текстового редактора
-#: src/ui_widgets/formatter_config.gd
-msgid "Number of indentation spaces"
-msgstr "Кількість пробілів на табуляцію"
-
-#: src/ui_widgets/formatter_config.gd
-msgid "Numbers"
-msgstr "Цифри"
-
-#: src/ui_widgets/formatter_config.gd
-msgid "Remove leading zero"
-msgstr "Видалити початковий нуль"
-
-# Ґа...
-#: src/ui_widgets/formatter_config.gd
-msgid "Use exponential when shorter"
-msgstr "Використовувати експоненту коли коротше"
-
-#: src/ui_widgets/formatter_config.gd
-msgid "Colors"
-msgstr "Кольори"
-
-#: src/ui_widgets/formatter_config.gd
-msgid "Use named colors"
-msgstr "Використовувати назви кольорів"
-
-#: src/ui_widgets/formatter_config.gd
-msgid "Primary syntax"
-msgstr "Основний синтаксис"
-
-#: src/ui_widgets/formatter_config.gd
-msgid "Capitalize hexadecimal letters"
-msgstr "Відображати шістнадцятирічні числа великими літери"
-
-#: src/ui_widgets/formatter_config.gd
-msgid "Pathdata"
-msgstr "Дані шляху"
-
-#: src/ui_widgets/formatter_config.gd
-msgid "Compress numbers"
-msgstr "Стиснути цифри"
-
-#: src/ui_widgets/formatter_config.gd
-msgid "Minimize spacing"
-msgstr "Мінімізувати відстань"
-
-#: src/ui_widgets/formatter_config.gd
-msgid "Remove spacing after flags"
-msgstr "Видалити відстань після прапорців"
-
-#: src/ui_widgets/formatter_config.gd
-msgid "Remove consecutive commands"
-msgstr "Видалити послідовні команди"
-
-#: src/ui_widgets/formatter_config.gd
-msgid "Transform lists"
-msgstr "Список трансформацій"
-
-#: src/ui_widgets/formatter_config.gd
-msgid "Remove unnecessary parameters"
-msgstr "Видалити необов'язкові параметри"
 
 #: src/ui_widgets/good_color_picker.gd
 msgid "Enable the color"
@@ -890,6 +886,10 @@ msgstr "Декілька палітр не можуть мати однаков�
 #: src/ui_widgets/palette_config.gd
 msgid "This palette has identically defined colors."
 msgstr "Ця палітра має ідентичні кольори."
+
+#: src/ui_widgets/palette_config.gd
+msgid "Rename"
+msgstr "Перейменувати"
 
 #: src/ui_widgets/palette_config.gd
 msgid "Copy as XML"
@@ -918,6 +918,10 @@ msgstr "Немає точок"
 #: src/ui_widgets/presented_shortcut.gd src/ui_widgets/setting_shortcut.gd
 msgid "Also used by"
 msgstr "Також використовується"
+
+#: src/ui_widgets/setting_frame.gd src/ui_widgets/setting_shortcut.gd
+msgid "Reset to default"
+msgstr "Скинути значення до замовчування"
 
 #: src/ui_widgets/setting_shortcut.gd
 msgid "Unused"

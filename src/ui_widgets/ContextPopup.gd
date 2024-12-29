@@ -192,7 +192,7 @@ min_width := -1.0, separator_indices := PackedInt32Array()) -> void:
 		# Setup the title.
 		var title_container := PanelContainer.new()
 		var stylebox := StyleBoxFlat.new()
-		stylebox.bg_color = Color("#0003")
+		stylebox.bg_color = Color("0003")
 		stylebox.content_margin_bottom = 3
 		stylebox.content_margin_left = 8
 		stylebox.content_margin_right = 8

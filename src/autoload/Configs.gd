@@ -11,7 +11,6 @@ signal shortcuts_changed
 signal basic_colors_changed
 signal handle_visuals_changed
 
-var DEFAULT_SAVEDATA := SaveData.new()
 var savedata := SaveData.new()
 const savedata_path = "user://savedata.tres"
 
@@ -26,21 +25,6 @@ const svg_path = "user://save.svg"
 var shortcut_validities := {}
 var palette_validities := {}
 
-var enum_text := {}
-
-func get_enum_texts(setting: String) -> PackedStringArray:
-	var values := PackedStringArray()
-	var enum_dict: Dictionary = enum_text[setting]
-	for key in enum_dict:
-		values.append(enum_dict[key])
-	return values
-
-func get_enum_text(setting: String) -> String:
-	return enum_text[setting][get(setting)]
-
-
-func get_default(setting: String) -> Variant:
-	return DEFAULT_SAVEDATA.get(setting)
 
 func get_signal(setting: String) -> Signal:
 	if not setting in triggers:
@@ -65,7 +49,7 @@ var triggers = {
 	"highlighting_text_color": [highlighting_colors_changed],
 	"highlighting_cdata_color": [highlighting_colors_changed],
 	"highlighting_error_color": [highlighting_colors_changed],
-	"handle_inside_color": [handle_visuals_changed],
+	"handle_inner_color": [handle_visuals_changed],
 	"handle_color": [handle_visuals_changed],
 	"handle_hovered_color": [handle_visuals_changed],
 	"handle_selected_color": [handle_visuals_changed],
@@ -179,17 +163,6 @@ func palette_apply_preset(idx: int, preset: ColorPalette.Preset) -> void:
 	save()
 
 
-func add_new_formatter(new_formatter: Formatter) -> void:
-	savedata.formatters.append(new_formatter)
-	save()
-
-func delete_formatter(idx: int) -> void:
-	if savedata.formatters.size() <= idx:
-		return
-	savedata.formatters.remove_at(idx)
-	save()
-
-
 var default_shortcuts := {}
 
 func _enter_tree() -> void:
@@ -249,13 +222,8 @@ func reset_settings() -> void:
 			ColorPalette.new("Pure", ColorPalette.Preset.PURE)]
 	modify_setting("palettes", palettes_array, true)
 	
-	var compact_formatter := Formatter.new("Compact", Formatter.Preset.COMPACT)
-	var pretty_formatter := Formatter.new("Pretty", Formatter.Preset.PRETTY)
-	# The array needs to be typed.
-	var formatters_array: Array[Formatter] = [pretty_formatter, compact_formatter]
-	modify_setting("formatters", formatters_array, true)
-	modify_setting("editor_formatter", pretty_formatter, true)
-	modify_setting("export_formatter", compact_formatter, true)
+	modify_setting("editor_formatter", Formatter.new(Formatter.Preset.PRETTY), true)
+	modify_setting("export_formatter", Formatter.new(Formatter.Preset.COMPACT), true)
 	
 	# Higher default handle_size on Android for better touch control.
 	if OS.get_name() == "Android":

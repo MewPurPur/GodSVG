@@ -42,7 +42,7 @@ func render_handle_textures() -> void:
 	hovered_color = Configs.savedata.handle_hovered_color
 	selected_color = Configs.savedata.handle_selected_color
 	hovered_selected_color = Configs.savedata.handle_hovered_selected_color
-	var inside_str := "#" + Configs.savedata.handle_inside_color.to_html(false)
+	var inside_str := "#" + Configs.savedata.handle_inner_color.to_html(false)
 	var normal_str := "#" + Configs.savedata.handle_color.to_html(false)
 	var hovered_str := "#" + Configs.savedata.handle_hovered_color.to_html(false)
 	var selected_str := "#" + Configs.savedata.handle_selected_color.to_html(false)

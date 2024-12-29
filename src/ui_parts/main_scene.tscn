@@ -43,13 +43,6 @@ layout_mode = 2
 
 [node name="Inspector" parent="PanelContainer/HSplitContainer/MarginContainer/MainContainer" instance=ExtResource("1_afxvd")]
 layout_mode = 2
-corner_radius_top_left = null
-corner_radius_top_right = null
-corner_radius_bottom_left = null
-corner_radius_bottom_right = null
-color = null
-border_color = null
-title_color = null
 
 [node name="Display" parent="PanelContainer/HSplitContainer" instance=ExtResource("3_qbqbs")]
 unique_name_in_owner = true

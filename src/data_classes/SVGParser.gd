@@ -89,7 +89,7 @@ make_attributes_absolute := false) -> String:
 		if formatter.xml_pretty_formatting:
 			text += '\n'
 		for child in element.get_children():
-			text += _xnode_to_text(child, formatter)
+			text += _xnode_to_text(child, formatter, make_attributes_absolute)
 		if formatter.xml_pretty_formatting:
 			text += '\t'.repeat(element.xid.size())
 		text += '</%s>' % element.name
