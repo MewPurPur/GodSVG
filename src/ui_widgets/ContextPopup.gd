@@ -166,7 +166,7 @@ func _resize_button_around_child(btn: Button) -> void:
 	btn.custom_minimum_size = child.size
 
 func setup(buttons: Array[Button], align_left := false, min_width := -1.0,
-separator_indices := PackedInt32Array()) -> void:
+max_height := -1.0, separator_indices := PackedInt32Array()) -> void:
 	var main_container := _common_initial_setup()
 	# Add the buttons.
 	if buttons.is_empty():
@@ -178,12 +178,15 @@ separator_indices := PackedInt32Array()) -> void:
 			separator.theme_type_variation = "SmallHSeparator"
 			main_container.add_child(separator)
 		main_container.add_child(_setup_button(buttons[idx], align_left))
-	if min_width > 0:
-		custom_minimum_size.x = ceili(min_width)
+		if min_width > 0:
+			custom_minimum_size.x = min_width
+		if max_height > 0 and max_height < get_minimum_size().y:
+			custom_minimum_size.y = max_height
+			main_container.get_parent().vertical_scroll_mode = ScrollContainer.SCROLL_MODE_AUTO
 
 
 func setup_with_title(buttons: Array[Button], top_title: String, align_left := false,
-min_width := -1.0, separator_indices := PackedInt32Array()) -> void:
+min_width := -1.0, max_height := -1.0, separator_indices := PackedInt32Array()) -> void:
 	var main_container := _common_initial_setup()
 	# Add the buttons.
 	if buttons.is_empty():
@@ -217,11 +220,30 @@ min_width := -1.0, separator_indices := PackedInt32Array()) -> void:
 			main_container.add_child(_setup_button(buttons[idx], align_left))
 		if min_width > 0:
 			custom_minimum_size.x = min_width
+		if max_height > 0 and max_height < get_minimum_size().y:
+			custom_minimum_size.y = max_height
+			main_container.get_parent().vertical_scroll_mode = ScrollContainer.SCROLL_MODE_AUTO
+
 
 # Helper.
 func _common_initial_setup() -> VBoxContainer:
+	# Create a ScrollContainer to allow scrolling.
+	var scroll_container := ScrollContainer.new()
+	scroll_container.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	scroll_container.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	
+	# Increase the scrollbar area on Android.
+	if OS.get_name() == "Android":
+		var scrollbar := scroll_container.get_v_scroll_bar()
+		var stylebox := scrollbar.get_theme_stylebox("scroll").duplicate()
+		stylebox.content_margin_left = 10
+		stylebox.content_margin_right = 10
+		scrollbar.add_theme_stylebox_override("scroll", stylebox)
+	
 	var main_container := VBoxContainer.new()
-	main_container.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	main_container.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	main_container.add_theme_constant_override("separation", 0)
-	add_child(main_container)
+	
+	scroll_container.add_child(main_container)
+	add_child(scroll_container)
 	return main_container

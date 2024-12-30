@@ -55,5 +55,5 @@ func _on_add_button_pressed() -> void:
 	var separator_indices := PackedInt32Array([1, 4, 7])
 	
 	var add_popup := ContextPopup.new()
-	add_popup.setup(btn_array, true, add_button.size.x, separator_indices)
+	add_popup.setup(btn_array, true, add_button.size.x, -1, separator_indices)
 	HandlerGUI.popup_under_rect(add_popup, add_button.get_global_rect(), get_viewport())

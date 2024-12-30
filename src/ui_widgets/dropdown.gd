@@ -5,6 +5,8 @@ extends HBoxContainer
 
 @export var values: PackedStringArray
 @export var restricted := true
+## If set to a value greater than 0, the popup will have a fixed height, and scrolling will activate if the content exceeds it.
+@export var popup_panel_height := -1.0
 
 signal value_changed(new_value: String)
 var _value := ""
@@ -38,7 +40,7 @@ func _on_button_pressed() -> void:
 				val == _value))
 	
 	var value_picker := ContextPopup.new()
-	value_picker.setup(btn_arr, false, size.x)
+	value_picker.setup(btn_arr, false, size.x, popup_panel_height)
 	HandlerGUI.popup_under_rect(value_picker, line_edit.get_global_rect(), get_viewport())
 
 func _on_value_chosen(new_value: String) -> void:
