@@ -267,6 +267,10 @@ func update_ui_scale() -> void:
 	# How much can the default size be increased before it takes all usable screen space.
 	var max_expansion := Vector2(usable_screen_size) / Vector2(window_default_size)
 	var max_scale := snappedf(minf(max_expansion.x, max_expansion.y) - 0.125, 0.25)
+	if OS.get_name() == "Android":
+		# This is a temporary fix for smaller UI scale on Android.
+		# TODO Update this logic after moving to Godot 4.4
+		max_scale *= 1.5
 	var final_scale := minf(Configs.savedata.ui_scale * _calculate_auto_scale(), max_scale)
 	var resize_factor := final_scale / old_scale_factor
 	
