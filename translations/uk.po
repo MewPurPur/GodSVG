@@ -40,9 +40,8 @@ msgid "OK"
 msgstr "Добре"
 
 #: src/autoload/HandlerGUI.gd
-#, fuzzy
 msgid "Export SVG"
-msgstr "Імпортувати SVG"
+msgstr "Експортувати SVG"
 
 #: src/autoload/HandlerGUI.gd src/ui_parts/export_menu.gd
 #: src/utils/TranslationUtils.gd
@@ -54,6 +53,8 @@ msgid ""
 "The graphic can only be exported as SVG because its size is not defined. Do "
 "you want to proceed?"
 msgstr ""
+"Зображення можна експортувати тільки як SVG, оскільки його розміри не "
+"задані. Бажаєте продовжити?"
 
 #: src/autoload/Indications.gd
 msgid "View In List"
@@ -311,7 +312,7 @@ msgstr "Новий елемент"
 
 #: src/ui_parts/export_menu.gd
 msgid "Dimensions"
-msgstr ""
+msgstr "Розміри"
 
 #: src/ui_parts/export_menu.gd
 msgid "Size"
@@ -339,15 +340,15 @@ msgstr "Масштаб"
 
 #: src/ui_parts/export_menu.gd
 msgid "Width"
-msgstr ""
+msgstr "Ширина"
 
 #: src/ui_parts/export_menu.gd
 msgid "Height"
-msgstr ""
+msgstr "Висота"
 
 #: src/ui_parts/export_menu.gd
 msgid "Preview image size is limited to {dimensions}"
-msgstr ""
+msgstr "Розмір попереднього перегляду зображення обмежено до {dimensions}"
 
 #: src/ui_parts/global_menu.gd src/ui_parts/settings_menu.gd
 msgid "File"
@@ -635,12 +636,10 @@ msgid "New palette from XML"
 msgstr "Нова палітра з XML"
 
 #: src/ui_parts/settings_menu.gd
-#, fuzzy
 msgid "Editor formatter"
 msgstr "Форматер редактору"
 
 #: src/ui_parts/settings_menu.gd
-#, fuzzy
 msgid "Export formatter"
 msgstr "Форматер експорту"
 
@@ -649,9 +648,8 @@ msgid "Help"
 msgstr "Допомога"
 
 #: src/ui_parts/settings_menu.gd
-#, fuzzy
 msgid "Reset all to default"
-msgstr "Скинути значення до замовчування"
+msgstr "Скинути до замовчування"
 
 # не знаю
 #: src/ui_parts/settings_menu.gd
