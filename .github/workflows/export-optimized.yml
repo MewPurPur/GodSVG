@@ -392,6 +392,10 @@ jobs:
           path: godsvg
 
       - name: Export debug project
+        env:
+          GODOT_ANDROID_KEYSTORE_DEBUG_PATH: "./godot_only/debug.keystore"
+          GODOT_ANDROID_KEYSTORE_DEBUG_USER: "androiddebugkey"
+          GODOT_ANDROID_KEYSTORE_DEBUG_PASSWORD: "android"
         run: |
           cd godsvg
           mkdir -p build/android
