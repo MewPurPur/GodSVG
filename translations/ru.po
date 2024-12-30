@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GodSVG\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2024-12-02 18:16+0200\n"
+"PO-Revision-Date: 2024-12-30 11:19+0200\n"
 "Last-Translator: volkov <volkovissocool@gmail.com>\n"
 "Language-Team: \n"
 "Language: ru\n"
@@ -42,9 +42,8 @@ msgid "OK"
 msgstr "Хорошо"
 
 #: src/autoload/HandlerGUI.gd
-#, fuzzy
 msgid "Export SVG"
-msgstr "Импортировать SVG"
+msgstr "Экспортировать SVG"
 
 #: src/autoload/HandlerGUI.gd src/ui_parts/export_menu.gd
 #: src/utils/TranslationUtils.gd
@@ -56,6 +55,8 @@ msgid ""
 "The graphic can only be exported as SVG because its size is not defined. Do "
 "you want to proceed?"
 msgstr ""
+"Изображение можно экспортировать только как SVG, поскольку его размеры не "
+"заданы. Желаете продолжить?"
 
 #: src/autoload/Indications.gd
 msgid "View In List"
@@ -312,7 +313,7 @@ msgstr "Новый элемент"
 
 #: src/ui_parts/export_menu.gd
 msgid "Dimensions"
-msgstr ""
+msgstr "Размеры"
 
 #: src/ui_parts/export_menu.gd
 msgid "Size"
@@ -340,15 +341,16 @@ msgstr "Масштаб"
 
 #: src/ui_parts/export_menu.gd
 msgid "Width"
-msgstr ""
+msgstr "Ширина"
 
 #: src/ui_parts/export_menu.gd
 msgid "Height"
-msgstr ""
+msgstr "Высота"
 
 #: src/ui_parts/export_menu.gd
 msgid "Preview image size is limited to {dimensions}"
 msgstr ""
+"Размер предварительного просмотра изображения ограничен до {dimensions}"
 
 #: src/ui_parts/global_menu.gd src/ui_parts/settings_menu.gd
 msgid "File"
@@ -433,7 +435,7 @@ msgstr "Папка с таким именем уже существует."
 
 #: src/ui_parts/good_file_dialog.gd
 msgid "Failed to create a folder."
-msgstr "Не удалось создать папку"
+msgstr "Не удалось создать папку."
 
 #: src/ui_parts/good_file_dialog.gd
 msgid "Open"
@@ -636,23 +638,20 @@ msgid "New palette from XML"
 msgstr "Новая палитра из XML"
 
 #: src/ui_parts/settings_menu.gd
-#, fuzzy
 msgid "Editor formatter"
-msgstr "Редактор форматтера"
+msgstr "Форматер редактора"
 
 #: src/ui_parts/settings_menu.gd
-#, fuzzy
 msgid "Export formatter"
-msgstr "Экспортовать форматер"
+msgstr "Форматер экспорта"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Help"
 msgstr "Помощь"
 
 #: src/ui_parts/settings_menu.gd
-#, fuzzy
 msgid "Reset all to default"
-msgstr "Восстановить значение по умолчанию"
+msgstr "Восстановить по умолчанию"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Preset"
