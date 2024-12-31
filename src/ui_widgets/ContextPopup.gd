@@ -178,11 +178,11 @@ max_height := -1.0, separator_indices := PackedInt32Array()) -> void:
 			separator.theme_type_variation = "SmallHSeparator"
 			main_container.add_child(separator)
 		main_container.add_child(_setup_button(buttons[idx], align_left))
-		if min_width > 0:
-			custom_minimum_size.x = min_width
-		if max_height > 0 and max_height < get_minimum_size().y:
-			custom_minimum_size.y = max_height
-			main_container.get_parent().vertical_scroll_mode = ScrollContainer.SCROLL_MODE_AUTO
+	if min_width > 0:
+		custom_minimum_size.x = min_width
+	if max_height > 0 and max_height < get_minimum_size().y:
+		custom_minimum_size.y = max_height
+		main_container.get_parent().vertical_scroll_mode = ScrollContainer.SCROLL_MODE_AUTO
 
 
 func setup_with_title(buttons: Array[Button], top_title: String, align_left := false,
