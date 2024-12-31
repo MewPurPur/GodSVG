@@ -162,7 +162,7 @@ func _on_more_options_pressed() -> void:
 		separator_indices = PackedInt32Array([2, 4])
 	
 	var more_popup := ContextPopup.new()
-	more_popup.setup(buttons_arr, true, -1, separator_indices)
+	more_popup.setup(buttons_arr, true, -1, -1, separator_indices)
 	HandlerGUI.popup_under_rect_center(more_popup, more_button.get_global_rect(),
 			get_viewport())
 
