@@ -1,0 +1,237 @@
+[gd_scene load_steps=4 format=3 uid="uid://cnay1l0u6a5tw"]
+
+[ext_resource type="Script" path="res://src/ui_parts/shortcut_panel_config.gd" id="1_eg1f5"]
+[ext_resource type="PackedScene" uid="uid://dbu1lvajypafb" path="res://src/ui_widgets/dropdown.tscn" id="2_a3h7n"]
+[ext_resource type="Texture2D" uid="uid://dw7ho4df0uh4p" path="res://visual/icons/Clear.svg" id="3_xgsmb"]
+
+[node name="ShortcutPanelConfig" type="PanelContainer"]
+custom_minimum_size = Vector2(450, 300)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -225.0
+offset_top = -150.0
+offset_right = 225.0
+offset_bottom = 150.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_type_variation = &"OverlayPanel"
+script = ExtResource("1_eg1f5")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Title" type="Label" parent="VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Configure Shortcut Panel"
+horizontal_alignment = 1
+
+[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_type_variation = &"SpaciousPanel"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/PanelContainer"]
+layout_mode = 2
+theme_override_constants/separation = 30
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/PanelContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 20
+
+[node name="spacer" type="Control" parent="VBoxContainer/PanelContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="SlotContainer" type="VBoxContainer" parent="VBoxContainer/PanelContainer/HBoxContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="slot0" type="HBoxContainer" parent="VBoxContainer/PanelContainer/HBoxContainer/VBoxContainer/SlotContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="icon" type="Button" parent="VBoxContainer/PanelContainer/HBoxContainer/VBoxContainer/SlotContainer/slot0"]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_constants/h_separation = 4
+icon_alignment = 1
+expand_icon = true
+
+[node name="Dropdown" parent="VBoxContainer/PanelContainer/HBoxContainer/VBoxContainer/SlotContainer/slot0" instance=ExtResource("2_a3h7n")]
+custom_minimum_size = Vector2(100, 30)
+layout_mode = 2
+popup_panel_height = 400.0
+align_left = true
+
+[node name="ResetButton" type="Button" parent="VBoxContainer/PanelContainer/HBoxContainer/VBoxContainer/SlotContainer/slot0"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 4
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_type_variation = &"FlatButton"
+icon = ExtResource("3_xgsmb")
+
+[node name="slot1" type="HBoxContainer" parent="VBoxContainer/PanelContainer/HBoxContainer/VBoxContainer/SlotContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="icon" type="Button" parent="VBoxContainer/PanelContainer/HBoxContainer/VBoxContainer/SlotContainer/slot1"]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_constants/h_separation = 4
+icon_alignment = 1
+expand_icon = true
+
+[node name="Dropdown" parent="VBoxContainer/PanelContainer/HBoxContainer/VBoxContainer/SlotContainer/slot1" instance=ExtResource("2_a3h7n")]
+custom_minimum_size = Vector2(100, 30)
+layout_mode = 2
+popup_panel_height = 400.0
+align_left = true
+
+[node name="ResetButton" type="Button" parent="VBoxContainer/PanelContainer/HBoxContainer/VBoxContainer/SlotContainer/slot1"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 4
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_type_variation = &"FlatButton"
+icon = ExtResource("3_xgsmb")
+
+[node name="slot2" type="HBoxContainer" parent="VBoxContainer/PanelContainer/HBoxContainer/VBoxContainer/SlotContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="icon" type="Button" parent="VBoxContainer/PanelContainer/HBoxContainer/VBoxContainer/SlotContainer/slot2"]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_constants/h_separation = 4
+icon_alignment = 1
+expand_icon = true
+
+[node name="Dropdown" parent="VBoxContainer/PanelContainer/HBoxContainer/VBoxContainer/SlotContainer/slot2" instance=ExtResource("2_a3h7n")]
+custom_minimum_size = Vector2(100, 30)
+layout_mode = 2
+popup_panel_height = 400.0
+align_left = true
+
+[node name="ResetButton" type="Button" parent="VBoxContainer/PanelContainer/HBoxContainer/VBoxContainer/SlotContainer/slot2"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 4
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_type_variation = &"FlatButton"
+icon = ExtResource("3_xgsmb")
+
+[node name="slot3" type="HBoxContainer" parent="VBoxContainer/PanelContainer/HBoxContainer/VBoxContainer/SlotContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="icon" type="Button" parent="VBoxContainer/PanelContainer/HBoxContainer/VBoxContainer/SlotContainer/slot3"]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_constants/h_separation = 4
+icon_alignment = 1
+expand_icon = true
+
+[node name="Dropdown" parent="VBoxContainer/PanelContainer/HBoxContainer/VBoxContainer/SlotContainer/slot3" instance=ExtResource("2_a3h7n")]
+custom_minimum_size = Vector2(100, 30)
+layout_mode = 2
+popup_panel_height = 400.0
+align_left = true
+
+[node name="ResetButton" type="Button" parent="VBoxContainer/PanelContainer/HBoxContainer/VBoxContainer/SlotContainer/slot3"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 4
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_type_variation = &"FlatButton"
+icon = ExtResource("3_xgsmb")
+
+[node name="slot4" type="HBoxContainer" parent="VBoxContainer/PanelContainer/HBoxContainer/VBoxContainer/SlotContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="icon" type="Button" parent="VBoxContainer/PanelContainer/HBoxContainer/VBoxContainer/SlotContainer/slot4"]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_constants/h_separation = 4
+icon_alignment = 1
+expand_icon = true
+
+[node name="Dropdown" parent="VBoxContainer/PanelContainer/HBoxContainer/VBoxContainer/SlotContainer/slot4" instance=ExtResource("2_a3h7n")]
+custom_minimum_size = Vector2(100, 30)
+layout_mode = 2
+popup_panel_height = 400.0
+align_left = true
+
+[node name="ResetButton" type="Button" parent="VBoxContainer/PanelContainer/HBoxContainer/VBoxContainer/SlotContainer/slot4"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 4
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_type_variation = &"FlatButton"
+icon = ExtResource("3_xgsmb")
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="VBoxContainer/PanelContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="spacer" type="Control" parent="VBoxContainer/PanelContainer/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+
+[node name="VerticalPanel" type="CheckBox" parent="VBoxContainer/PanelContainer/HBoxContainer/VBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+focus_mode = 0
+disabled = true
+text = "Switch to vertical panel"
+
+[node name="LockPanelPosition" type="CheckBox" parent="VBoxContainer/PanelContainer/HBoxContainer/VBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+focus_mode = 0
+disabled = true
+text = "Lock panel position"
+
+[node name="CloseButton" type="Button" parent="VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+mouse_default_cursor_shape = 2
+
+[connection signal="pressed" from="VBoxContainer/CloseButton" to="." method="_on_close_button_pressed"]

@@ -799,6 +799,22 @@ msgstr "Veranderd the schaal van de visuele gebruikersinterface."
 msgid "Scales the user interface based on the screen size."
 msgstr "Schaalt de gebruikersinterface gebaseerd op the schermgrootte."
 
+#: src/ui_parts/shortcut_panel_settings.gd
+msgid "Configure Shortcut Panel"
+msgstr ""
+
+#: src/ui_parts/shortcut_panel_settings.gd
+msgid "Switch to vertical panel"
+msgstr ""
+
+#: src/ui_parts/shortcut_panel_settings.gd
+msgid "Lock panel position"
+msgstr ""
+
+#: src/ui_parts/shortcut_panel_settings.gd
+msgid "This shortcut is already assigned to another slot. Please choose a different one."
+msgstr ""
+
 #: src/ui_parts/update_menu.gd
 msgid "Include prereleases"
 msgstr "Voorpublicaties erbijtrekken"

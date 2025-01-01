@@ -79,3 +79,11 @@ const CURRENT_VERSION = 1
 @export var palettes: Array[ColorPalette] = []
 @export var editor_formatter: Formatter = null
 @export var export_formatter: Formatter = null
+
+# Shortcut Panel
+@export var active_shortcuts: Dictionary = {
+	0: "undo",
+	1: "redo",
+}
+@export var vertical_panel := false
+@export var lock_panel_position := false

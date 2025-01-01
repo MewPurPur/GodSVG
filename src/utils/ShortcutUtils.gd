@@ -102,6 +102,29 @@ static func fn(shortcut: String) -> Callable:
 		"toggle_snap": return Callable()
 		_: return Callable()
 
+static func get_shortcut_icon(shortcut: String) -> CompressedTexture2D:
+	match shortcut:
+		"import": return load("res://visual/icons/Import.svg")
+		"export": return load("res://visual/icons/Export.svg")
+		"save": return load("res://visual/icons/Save.svg")
+		"copy_svg_text": return load("res://visual/icons/Copy.svg")
+		"clear_svg", "clear_file_path": return load("res://visual/icons/Clear.svg")
+		"reset_svg", "zoom_reset": return load("res://visual/icons/Reload.svg")
+		"open_svg": return load("res://visual/icons/OpenFile.svg")
+		"undo": return load("res://visual/icons/Undo.svg")
+		"redo": return load("res://visual/icons/Redo.svg")
+		"duplicate": return load("res://visual/icons/Duplicate.svg")
+		"move_up": return load("res://visual/icons/MoveUp.svg")
+		"move_down": return load("res://visual/icons/MoveDown.svg")
+		"delete": return load("res://visual/icons/Delete.svg")
+		"find": return load("res://visual/icons/Search.svg")
+		"zoom_in": return load("res://visual/icons/Plus.svg")
+		"zoom_out": return load("res://visual/icons/Minus.svg")
+		"debug": return load("res://visual/icons/Debug.svg")
+		"toggle_snap": return load("res://visual/icons/Snap.svg")
+		"open_settings": return load("res://visual/icons/Gear.svg")
+		_: return load("res://visual/icons/Placeholder.svg")
+
 static func get_shortcuts(category: String) -> PackedStringArray:
 	return _shortcut_categories_dict[category].keys()
 

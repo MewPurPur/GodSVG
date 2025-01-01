@@ -4,9 +4,11 @@ extends HBoxContainer
 @onready var line_edit: BetterLineEdit = $LineEdit
 
 @export var values: PackedStringArray
+@export var disabled_values: PackedStringArray
 @export var restricted := true
 ## If set to a value greater than 0, the popup will have a fixed height, and scrolling will activate if the content exceeds it.
 @export var popup_panel_height := -1.0
+@export var align_left := false
 
 signal value_changed(new_value: String)
 var _value := ""
@@ -36,11 +38,11 @@ func _ready() -> void:
 func _on_button_pressed() -> void:
 	var btn_arr: Array[Button] = []
 	for val in values:
-		btn_arr.append(ContextPopup.create_button(val, _on_value_chosen.bind(val),
-				val == _value))
+		var disabled: bool = disabled_values.has(val) or (val == _value)
+		btn_arr.append(ContextPopup.create_button(val, _on_value_chosen.bind(val), disabled))
 	
 	var value_picker := ContextPopup.new()
-	value_picker.setup(btn_arr, false, size.x, popup_panel_height)
+	value_picker.setup(btn_arr, align_left, size.x, popup_panel_height)
 	HandlerGUI.popup_under_rect(value_picker, line_edit.get_global_rect(), get_viewport())
 
 func _on_value_chosen(new_value: String) -> void:
