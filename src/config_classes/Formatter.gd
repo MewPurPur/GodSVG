@@ -170,13 +170,15 @@ func _get_setting_names() -> PackedStringArray:
 
 @export var number_remove_leading_zero := true:
 	set(new_value):
-		number_remove_leading_zero = new_value
-		emit_changed()
+		if number_remove_leading_zero != new_value:
+			number_remove_leading_zero = new_value
+			emit_changed()
 
 @export var number_use_exponent_if_shorter := true:
 	set(new_value):
-		number_use_exponent_if_shorter = new_value
-		emit_changed()
+		if number_use_exponent_if_shorter != new_value:
+			number_use_exponent_if_shorter = new_value
+			emit_changed()
 
 @export var color_use_named_colors := NamedColorUse.WHEN_SHORTER:
 	set(new_value):
@@ -192,43 +194,51 @@ func _get_setting_names() -> PackedStringArray:
 
 @export var color_capital_hex := false:
 	set(new_value):
-		color_capital_hex = new_value
-		emit_changed()
+		if color_capital_hex != new_value:
+			color_capital_hex = new_value
+			emit_changed()
 
 @export var pathdata_compress_numbers := true:
 	set(new_value):
-		pathdata_compress_numbers = new_value
-		emit_changed()
+		if pathdata_compress_numbers != new_value:
+			pathdata_compress_numbers = new_value
+			emit_changed()
 
 @export var pathdata_minimize_spacing := true:
 	set(new_value):
-		pathdata_minimize_spacing = new_value
-		emit_changed()
+		if pathdata_minimize_spacing != new_value:
+			pathdata_minimize_spacing = new_value
+			emit_changed()
 
 @export var pathdata_remove_spacing_after_flags := true:
 	set(new_value):
-		pathdata_remove_spacing_after_flags = new_value
-		emit_changed()
+		if pathdata_remove_spacing_after_flags != new_value:
+			pathdata_remove_spacing_after_flags = new_value
+			emit_changed()
 
 @export var pathdata_remove_consecutive_commands := true:
 	set(new_value):
-		pathdata_remove_consecutive_commands = new_value
-		emit_changed()
+		if pathdata_remove_consecutive_commands != new_value:
+			pathdata_remove_consecutive_commands = new_value
+			emit_changed()
 
 @export var transform_list_compress_numbers := true:
 	set(new_value):
-		transform_list_compress_numbers = new_value
-		emit_changed()
+		if transform_list_compress_numbers != new_value:
+			transform_list_compress_numbers = new_value
+			emit_changed()
 
 @export var transform_list_minimize_spacing := true:
 	set(new_value):
-		transform_list_minimize_spacing = new_value
-		emit_changed()
+		if transform_list_minimize_spacing != new_value:
+			transform_list_minimize_spacing = new_value
+			emit_changed()
 
 @export var transform_list_remove_unnecessary_params := true:
 	set(new_value):
-		transform_list_remove_unnecessary_params = new_value
-		emit_changed()
+		if transform_list_remove_unnecessary_params != new_value:
+			transform_list_remove_unnecessary_params = new_value
+			emit_changed()
 
 
 func _init(new_preset := Preset.COMPACT) -> void:
