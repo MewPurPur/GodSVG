@@ -341,7 +341,7 @@ func _on_hsv_pressed() -> void:
 
 func change_slider_mode(new_slider_mode: SliderMode) -> void:
 	slider_mode = new_slider_mode
-	Configs.modify_setting("color_picker_slider_mode", new_slider_mode)
+	Configs.savedata.color_picker_slider_mode = new_slider_mode
 
 
 # Gray out the start color rect if it's not actually a color.

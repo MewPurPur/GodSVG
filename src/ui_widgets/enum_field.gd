@@ -73,7 +73,7 @@ func _on_text_submitted(new_text: String) -> void:
 
 
 func _on_text_changed(new_text: String) -> void:
-	font_color = Utils.get_validity_color(
+	font_color = Configs.savedata.get_validity_color(
 			not new_text in DB.attribute_enum_values[attribute_name])
 
 func resync() -> void:

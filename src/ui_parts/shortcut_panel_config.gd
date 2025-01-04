@@ -11,9 +11,12 @@ func _ready() -> void:
 	%LockPanelPosition.text = Translator.translate("Lock panel position")
 	%CloseButton.text = Translator.translate("Close")
 	%CloseButton.grab_focus()
-	%VerticalPanel.button_pressed = Configs.savedata.vertical_panel
-	%LockPanelPosition.button_pressed = Configs.savedata.lock_panel_position
 	setup_shortcut_slots()
+	# TODO Implement these properly when more configs are implemented.
+	%VerticalPanel.queue_free()
+	%LockPanelPosition.queue_free()
+	#%VerticalPanel.button_pressed = Configs.savedata.vertical_panel
+	#%LockPanelPosition.button_pressed = Configs.savedata.lock_panel_position
 
 func setup_shortcut_slots() -> void:
 	for i in range(slots.size()):
@@ -33,8 +36,8 @@ func setup_shortcut_slots() -> void:
 	for slot_dropdown in slots:
 		slot_dropdown.values.append_array(shortcuts)
 	
-	for i in Configs.savedata.active_shortcuts:
-		var s: String = Configs.savedata.active_shortcuts[i]
+	for i in Configs.savedata.get_shortcut_panel_presented_shortcuts():
+		var s: String = Configs.savedata.get_shortcut_panel_presented_shortcut(i)
 		slots[i].set_value(TranslationUtils.get_shortcut_description(s))
 
 
@@ -62,9 +65,6 @@ func update_popup_options() -> void:
 
 
 func _on_close_button_pressed() -> void:
-	Configs.modify_setting("active_shortcuts", selected_shortcuts, true)
-	Configs.modify_setting("vertical_panel", %VerticalPanel.button_pressed, true)
-	Configs.modify_setting("lock_panel_position", %LockPanelPosition.button_pressed, true)
-	Configs.save()
+	Configs.savedata.set_shortcut_panel_presented_shortcuts(selected_shortcuts)
 	HandlerGUI.shortcut_panel.update()
 	get_parent().queue_free()

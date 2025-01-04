@@ -5,7 +5,7 @@ const gear_icon = preload("res://visual/icons/GearOutlined.svg")
 
 const ColorSwatch = preload("res://src/ui_widgets/color_swatch.tscn")
 
-var color_palette: ColorPalette
+var palette: ColorPalette
 var idx := -1  # Index inside the palette.
 
 var proposed_drop_data: Array = []  # Used to sync with drag-and-dropping information.
@@ -14,17 +14,17 @@ var surface := RenderingServer.canvas_item_create()
 func _ready() -> void:
 	RenderingServer.canvas_item_set_parent(surface, get_canvas_item())
 	RenderingServer.canvas_item_set_z_index(surface, 1)
-	# _make_custom_tooltip() requires some text to work.
+	# TODO This is no logner needed in 4.4
 	tooltip_text = "lmofa"  # _make_custom_tooltip() requires some text to work.
 
 func _exit_tree() -> void:
 	RenderingServer.free_rid(surface)
 
 func _draw() -> void:
-	if idx >= color_palette.colors.size():
+	if idx >= palette.get_color_count():
 		return
 	
-	var color := color_palette.colors[idx]
+	var color := palette.get_color(idx)
 	var parsed_color := ColorParser.text_to_color(color)
 	var bounds := Vector2(2, 2)
 	var inside_rect := Rect2(bounds, size - bounds * 2)
@@ -34,7 +34,7 @@ func _draw() -> void:
 		draw_rect(inside_rect, parsed_color)
 	
 	RenderingServer.canvas_item_clear(surface)
-	if proposed_drop_data.size() != 2 or proposed_drop_data[0] != color_palette:
+	if proposed_drop_data.size() != 2 or proposed_drop_data[0] != palette:
 		# Gear indicator.
 		if is_hovered():
 			gear_icon.draw(get_canvas_item(), (size - gear_icon.get_size()) / 2)
@@ -61,21 +61,29 @@ func _make_custom_tooltip(_for_text: String) -> Object:
 	rtl.bbcode_enabled = true
 	rtl.add_theme_font_override("mono_font", ThemeUtils.mono_font)
 	# Set up the text.
-	var color_name := color_palette.color_names[idx]
+	var color_name := palette.get_color_name(idx)
 	if not color_name.is_empty():
 		rtl.add_text(color_name)
 		rtl.newline()
 	rtl.push_mono()
-	rtl.add_text(color_palette.colors[idx])
+	rtl.add_text(palette.get_color(idx))
 	return rtl
 
 var is_dragging := false
 
+class DropData extends RefCounted:
+	var palette: ColorPalette
+	var index: int
+	
+	func _init(new_palette: ColorPalette, new_index: int) -> void:
+		palette = new_palette
+		index = new_index
+
 func _get_drag_data(_at_position: Vector2) -> Variant:
-	var data: Array = [color_palette, idx]
+	var data := DropData.new(palette, idx)
 	# Set up a preview.
 	var preview := ColorSwatch.instantiate()
-	preview.color_palette = color_palette
+	preview.palette = palette
 	preview.idx = idx
 	preview.modulate = Color(1, 1, 1, 0.85)
 	set_drag_preview(preview)
@@ -92,8 +100,8 @@ func _notification(what: int) -> void:
 
 # For configuration swatches.
 func change_color_name(new_name: String) -> void:
-	color_palette.modify_color_name(idx, new_name)
+	palette.modify_color_name(idx, new_name)
 
 func change_color(new_color: String) -> void:
-	color_palette.modify_color(idx, new_color)
+	palette.modify_color(idx, new_color)
 	queue_redraw()

@@ -261,6 +261,8 @@ func duplicate(include_children := true) -> Element:
 	var new_element: Element
 	if type == ElementUnrecognized:
 		new_element = ElementUnrecognized.new(self.name)
+	elif type == ElementRoot:
+		new_element = ElementRoot.new(self.formatter)
 	else:
 		new_element = type.new()
 	

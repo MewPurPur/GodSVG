@@ -60,20 +60,19 @@ func update_palettes(search_text := "") -> void:
 				elif element is ElementRadialGradient:
 					reserved_color_names.append("Radial gradient")
 					reserved_colors.append("url(#%s)" % element.get_attribute_value("id"))
-	var reserved_color_palette := ColorPalette.new()
-	reserved_color_palette.colors = reserved_colors
-	reserved_color_palette.color_names = reserved_color_names
+	var reserved_palette := ColorPalette.new()
+	reserved_palette.setup(reserved_colors, reserved_color_names)
 	
-	var displayed_palettes: Array[ColorPalette] = [reserved_color_palette]
-	for palette in Configs.savedata.palettes:
-		if Configs.is_palette_valid(palette):
+	var displayed_palettes: Array[ColorPalette] = [reserved_palette]
+	for palette in Configs.savedata.get_palettes():
+		if Configs.savedata.is_palette_valid(palette):
 			displayed_palettes.append(palette)
 	
 	for palette in displayed_palettes:
 		var indices_to_show := PackedInt32Array()
-		for i in palette.colors.size():
+		for i in palette.get_color_count():
 			if search_text.is_empty() or\
-			search_text.is_subsequence_ofn(palette.color_names[i]):
+			search_text.is_subsequence_ofn(palette.get_color_name(i)):
 				indices_to_show.append(i)
 		
 		if indices_to_show.is_empty():
@@ -92,8 +91,8 @@ func update_palettes(search_text := "") -> void:
 		swatch_container.add_theme_constant_override("h_separation", 3)
 		for i in indices_to_show:
 			var swatch := ColorSwatch.instantiate()
-			var color_to_show := palette.colors[i]
-			swatch.color_palette = palette
+			var color_to_show := palette.get_color(i)
+			swatch.palette = palette
 			swatch.idx = i
 			swatch.pressed.connect(pick_palette_color.bind(color_to_show))
 			swatch_container.add_child(swatch)

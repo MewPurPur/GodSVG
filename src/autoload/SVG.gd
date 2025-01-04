@@ -27,9 +27,12 @@ var _update_pending := false
 var _save_pending := false
 
 var text := ""
-var root_element := ElementRoot.new()
+var root_element: ElementRoot
 
 var UR := UndoRedo.new()
+
+func _enter_tree() -> void:
+	root_element = ElementRoot.new(Configs.savedata.editor_formatter)
 
 func _ready() -> void:
 	UR.version_changed.connect(_on_undo_redo)
