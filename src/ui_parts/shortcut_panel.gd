@@ -27,7 +27,7 @@ func update() -> void:
 		child.queue_free()
 	
 	for i in range(5):
-		var shortcut: String = Configs.savedata.active_shortcuts.get(i, "")
+		var shortcut := Configs.savedata.get_shortcut_panel_presented_shortcut(i)
 		if not shortcut.is_empty():
 			add_new_shortcut(shortcut)
 	panel_container.reset_size()

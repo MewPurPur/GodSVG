@@ -33,10 +33,10 @@ func check_shortcuts_validity() -> void:
 	var events := InputMap.action_get_events(action)
 	for i in events.size():
 		var shortcut_btn := shortcut_container.get_child(i)
-		if not Configs.is_shortcut_valid(events[i]):
+		if not Configs.savedata.is_shortcut_valid(events[i]):
 			var error_color := Color(Configs.savedata.basic_color_error, 0.8)
 			shortcut_btn.add_theme_color_override("font_disabled_color", error_color)
-			var conflicts := Configs.get_actions_with_shortcut(events[i])
+			var conflicts := Configs.savedata.get_actions_with_shortcut(events[i])
 			var action_pos := conflicts.find(action)
 			if action_pos != -1:
 				conflicts.remove_at(action_pos)

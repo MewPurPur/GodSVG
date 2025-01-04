@@ -1,12 +1,14 @@
 extends PanelContainer
 
+const ColorSwatchType = preload("res://src/ui_widgets/color_swatch_config.gd")
+
 const ColorSwatch = preload("res://src/ui_widgets/color_swatch_config.tscn")
 const ConfigurePopup = preload("res://src/ui_widgets/configure_color_popup.tscn")
 const plus_icon = preload("res://visual/icons/Plus.svg")
 
 signal layout_changed
 
-var current_palette: ColorPalette
+var palette: ColorPalette
 var currently_edited_idx := -1
 
 @onready var palette_button: Button = $MainContainer/HBoxContainer/PaletteButton
@@ -29,10 +31,10 @@ func setup_theme() -> void:
 
 
 # Used to setup a palette for this element.
-func assign_palette(palette: ColorPalette) -> void:
-	current_palette = palette
-	current_palette.layout_changed.connect(rebuild_colors)
-	current_palette.layout_changed.connect(display_warnings)
+func assign_palette(new_palette: ColorPalette) -> void:
+	palette = new_palette
+	palette.layout_changed.connect(rebuild_colors)
+	palette.layout_changed.connect(display_warnings)
 	rebuild_colors()
 	display_warnings()
 
@@ -51,11 +53,11 @@ func rebuild_colors() -> void:
 	for child in colors_container.get_children():
 		child.queue_free()
 	
-	set_label_text(current_palette.title)
+	set_label_text(palette.title)
 	
-	for i in current_palette.colors.size():
+	for i in palette.get_color_count():
 		var swatch := ColorSwatch.instantiate()
-		swatch.color_palette = current_palette
+		swatch.palette = palette
 		swatch.idx = i
 		swatch.pressed.connect(popup_configure_color.bind(swatch))
 		colors_container.add_child(swatch)
@@ -81,11 +83,11 @@ func rebuild_colors() -> void:
 
 func display_warnings() -> void:
 	var warnings := PackedStringArray()
-	if current_palette.title.is_empty():
+	if palette.title.is_empty():
 		warnings.append(Translator.translate("Unnamed palettes won't be shown."))
-	elif not Configs.is_palette_valid(current_palette):
+	elif not Configs.savedata.is_palette_valid(palette):
 		warnings.append(Translator.translate("Multiple palettes can't have the same name."))
-	if not current_palette.has_unique_definitions():
+	if not palette.has_unique_definitions():
 		warnings.append(Translator.translate("This palette has identically defined colors."))
 	warning_sign.visible = not warnings.is_empty()
 	warning_sign.tooltip_text = "\n".join(warnings)
@@ -93,7 +95,7 @@ func display_warnings() -> void:
 
 func popup_configure_color(swatch: Button) -> void:
 	var configure_popup := ConfigurePopup.instantiate()
-	configure_popup.color_palette = swatch.color_palette
+	configure_popup.palette = swatch.palette
 	configure_popup.idx = swatch.idx
 	configure_popup.color_deletion_requested.connect(remove_color.bind(swatch.idx))
 	HandlerGUI.popup_under_rect_center(configure_popup, swatch.get_global_rect(),
@@ -106,7 +108,7 @@ func popup_configure_color(swatch: Button) -> void:
 func popup_edit_name() -> void:
 	palette_button.hide()
 	name_edit.show()
-	name_edit.text = current_palette.title
+	name_edit.text = palette.title
 	name_edit.grab_focus()
 	name_edit.caret_column = name_edit.text.length()
 
@@ -117,15 +119,15 @@ func hide_name_edit() -> void:
 # Update text color to red if the title won't work (because it's a duplicate).
 func _on_name_edit_text_changed(new_text: String) -> void:
 	for theme_color in ["font_color", "font_hover_color"]:
-		name_edit.add_theme_color_override(theme_color, Utils.get_validity_color(
-				false, new_text != current_palette.title and\
-				not Configs.is_palette_title_unused(new_text)))
+		name_edit.add_theme_color_override(theme_color,
+				Configs.savedata.get_validity_color(false, new_text != palette.title and\
+				not Configs.savedata.is_palette_title_unused(new_text)))
 
 func _on_name_edit_text_submitted(new_title: String) -> void:
 	new_title = new_title.strip_edges()
-	if new_title != current_palette.title:
-		Configs.rename_palette(find_palette_index(), new_title)
-		set_label_text(current_palette.title)
+	if new_title != palette.title:
+		Configs.savedata.rename_palette(find_palette_index(), new_title)
+		set_label_text(palette.title)
 		layout_changed.emit()
 	hide_name_edit()
 
@@ -133,13 +135,13 @@ func _on_name_edit_text_change_canceled() -> void:
 	hide_name_edit()
 
 func popup_add_color() -> void:
-	currently_edited_idx = current_palette.colors.size()
-	current_palette.add_color()
+	currently_edited_idx = palette.get_color_count()
+	palette.add_new_color()
 	display_warnings()
 
 func remove_color(idx: int) -> void:
 	currently_edited_idx = -1
-	current_palette.remove_color(idx)
+	palette.remove_color(idx)
 	display_warnings()
 
 func set_label_text(new_text: String) -> void:
@@ -148,12 +150,12 @@ func set_label_text(new_text: String) -> void:
 	else:
 		palette_button.text = new_text
 	palette_button.begin_bulk_theme_override()
-	if current_palette.title.is_empty():
+	if palette.title.is_empty():
 		for theme_name in ["font_color", "font_hover_color", "font_pressed_color"]:
 			palette_button.add_theme_color_override(theme_name,
 					ThemeUtils.common_subtle_text_color)
 	else:
-		if not Configs.is_palette_valid(current_palette):
+		if not Configs.savedata.is_palette_valid(palette):
 			for theme_name in ["font_color", "font_hover_color", "font_pressed_color"]:
 				palette_button.add_theme_color_override(theme_name,
 						Configs.savedata.basic_color_error)
@@ -163,37 +165,37 @@ func set_label_text(new_text: String) -> void:
 	palette_button.end_bulk_theme_override()
 
 func delete() -> void:
-	Configs.delete_palette(find_palette_index())
+	Configs.savedata.delete_palette(find_palette_index())
 	layout_changed.emit()
 
 func move_up() -> void:
-	Configs.move_palette_up(find_palette_index())
+	Configs.savedata.move_palette_up(find_palette_index())
 	layout_changed.emit()
 
 func move_down() -> void:
-	Configs.move_palette_down(find_palette_index())
+	Configs.savedata.move_palette_down(find_palette_index())
 	layout_changed.emit()
 
 func paste_palette() -> void:
 	var pasted_palettes := ColorPalette.text_to_palettes(Utils.get_clipboard_web_safe())
 	if pasted_palettes.is_empty():
 		return
-	Configs.replace_palette(find_palette_index(), pasted_palettes[0])
+	Configs.savedata.replace_palette(find_palette_index(), pasted_palettes[0])
 	layout_changed.emit()  # Emit it in any case, since the palette is a new object.
 
 func open_palette_options() -> void:
 	var btn_arr: Array[Button] = []
 	btn_arr.append(ContextPopup.create_button("Pure",
 			apply_preset.bind(ColorPalette.Preset.PURE),
-			current_palette.is_same_as_preset(ColorPalette.Preset.PURE),
+			palette.is_same_as_preset(ColorPalette.Preset.PURE),
 			load("res://visual/icons/PresetPure.svg")))
 	btn_arr.append(ContextPopup.create_button("Grayscale",
 			apply_preset.bind(ColorPalette.Preset.GRAYSCALE),
-			current_palette.is_same_as_preset(ColorPalette.Preset.GRAYSCALE),
+			palette.is_same_as_preset(ColorPalette.Preset.GRAYSCALE),
 			load("res://visual/icons/PresetGrayscale.svg")))
 	btn_arr.append(ContextPopup.create_button("Empty",
 			apply_preset.bind(ColorPalette.Preset.EMPTY),
-			current_palette.is_same_as_preset(ColorPalette.Preset.EMPTY),
+			palette.is_same_as_preset(ColorPalette.Preset.EMPTY),
 			load("res://visual/icons/Clear.svg")))
 	
 	var context_popup := ContextPopup.new()
@@ -202,12 +204,12 @@ func open_palette_options() -> void:
 			get_viewport())
 
 func apply_preset(preset: ColorPalette.Preset) -> void:
-	Configs.palette_apply_preset(find_palette_index(), preset)
+	Configs.savedata.get_palette(find_palette_index()).apply_preset(preset)
 
 
 func find_palette_index() -> int:
-	for idx in Configs.savedata.palettes.size():
-		if Configs.savedata.palettes[idx] == current_palette:
+	for idx in Configs.savedata.get_palette_count():
+		if Configs.savedata.get_palette(idx) == palette:
 			return idx
 	return -1
 
@@ -219,11 +221,11 @@ func _on_palette_button_pressed() -> void:
 	if palette_idx >= 1:
 		btn_arr.append(ContextPopup.create_button(Translator.translate("Move Up"),
 				move_up, false, load("res://visual/icons/MoveUp.svg")))
-	if palette_idx < Configs.savedata.palettes.size() - 1:
+	if palette_idx < Configs.savedata.get_palette_count() - 1:
 		btn_arr.append(ContextPopup.create_button(Translator.translate("Move Down"),
 				move_down, false, load("res://visual/icons/MoveDown.svg")))
 	btn_arr.append(ContextPopup.create_button(Translator.translate("Copy as XML"),
-			DisplayServer.clipboard_set.bind(Configs.savedata.palettes[palette_idx].\
+			DisplayServer.clipboard_set.bind(Configs.savedata.get_palette(palette_idx).\
 			to_text()), false, load("res://visual/icons/Copy.svg")))
 	btn_arr.append(ContextPopup.create_button(Translator.translate("Paste XML"),
 			paste_palette, !ColorPalette.is_valid_palette(Utils.get_clipboard_web_safe()),
@@ -253,10 +255,8 @@ func _can_drop_data(_at_position: Vector2, data: Variant) -> bool:
 	var buffer := 6
 	var pos := colors_container.get_local_mouse_position()
 	
-	if not (typeof(data) == TYPE_ARRAY and data.size() == 2 and\
-	typeof(data[0]) == TYPE_OBJECT and data[0] is ColorPalette and\
-	typeof(data[1]) == TYPE_INT) or\
-	not Rect2(Vector2.ZERO, colors_container.size).grow(buffer).has_point(pos):
+	if not (data is ColorSwatchType.DropData and\
+	Rect2(Vector2.ZERO, colors_container.size).grow(buffer).has_point(pos)):
 		clear_proposed_drop()
 		return false
 	else:
@@ -275,24 +275,23 @@ func _can_drop_data(_at_position: Vector2, data: Variant) -> bool:
 
 	proposed_drop_idx = new_idx
 	for swatch in get_swatches():
-		swatch.proposed_drop_data = [current_palette, new_idx]
+		swatch.proposed_drop_data = [palette, new_idx]
 		swatch.queue_redraw()
-	return data[0] != current_palette or (data[0] == current_palette and\
-			data[1] != new_idx and data[1] != new_idx - 1)
+	return data.palette != palette or (data.palette == palette and\
+			data.index != new_idx and data.index != new_idx - 1)
 
 func _drop_data(_at_position: Vector2, data: Variant) -> void:
 	if proposed_drop_idx == -1:
 		return
 	
-	if data[0] == current_palette:
+	if data.palette == palette:
 		currently_edited_idx = -1
-		current_palette.move_color(data[1], proposed_drop_idx)
+		palette.move_color(data.index, proposed_drop_idx)
 	else:
 		currently_edited_idx = -1
-		current_palette.colors.insert(proposed_drop_idx, data[0].colors[data[1]])
-		current_palette.color_names.insert(proposed_drop_idx, data[0].color_names[data[1]])
-		current_palette.emit_changed()
-		data[0].remove_color(data[1])
+		palette.insert_color(proposed_drop_idx, data.palette.get_color(data.index),
+				data.palette.get_color_name(data.index))
+		data.palette.remove_color(data.index)
 
 
 func clear_proposed_drop() -> void:

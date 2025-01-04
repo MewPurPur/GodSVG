@@ -32,8 +32,8 @@ func _ready() -> void:
 	tabs.get_child(0).button_pressed = true
 	Configs.theme_changed.connect(setup_theming)
 	setup_theming()
-	Configs.savedata.editor_formatter.changed.connect(show_formatter.bind("editor"))
-	Configs.savedata.export_formatter.changed.connect(show_formatter.bind("export"))
+	Configs.savedata.editor_formatter.changed_deferred.connect(show_formatter.bind("editor"))
+	Configs.savedata.export_formatter.changed_deferred.connect(show_formatter.bind("export"))
 
 func setup_theming() -> void:
 	var stylebox := get_theme_stylebox("panel").duplicate()
@@ -110,7 +110,7 @@ func setup_content() -> void:
 			var vbox := VBoxContainer.new()
 			vbox.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 			content_container.add_child(vbox)
-			rebuild_color_palettes()
+			rebuild_palettes()
 		"shortcuts":
 			advice_panel.hide()
 			var vbox := VBoxContainer.new()
@@ -285,10 +285,7 @@ func add_color_edit(text: String, enable_alpha := true) -> Control:
 func setup_frame(frame: Control) -> void:
 	var bind := current_setup_setting
 	frame.getter = current_setup_resource.get.bind(bind)
-	if current_setup_resource == Configs.savedata:
-		frame.setter = func(p): Configs.modify_setting(bind, p)
-	else:
-		frame.setter = func(p): current_setup_resource.set(bind, p)
+	frame.setter = func(p): current_setup_resource.set(bind, p)
 	frame.default = current_setup_resource.get_setting_default(current_setup_setting)
 	frame.mouse_entered.connect(show_advice.bind(current_setup_setting))
 	frame.mouse_exited.connect(hide_advice.bind(current_setup_setting))
@@ -379,7 +376,7 @@ func _on_language_pressed() -> void:
 	HandlerGUI.popup_under_rect_center(lang_popup, lang_button.get_global_rect(), get_viewport())
 
 func _on_language_chosen(locale: String) -> void:
-	Configs.modify_setting("language", locale)
+	Configs.savedata.language = locale
 	update_language_button()
 
 func update_language_button() -> void:
@@ -420,19 +417,19 @@ func _shared_add_palettes_logic(palettes: Array[ColorPalette]) -> void:
 		_shared_add_palette_logic(palettes[0])
 
 func _shared_add_palette_logic(palette: ColorPalette) -> void:
-	Configs.add_new_palette(palette)
-	rebuild_color_palettes()
+	Configs.savedata.add_palette(palette)
+	rebuild_palettes()
 
 
-func rebuild_color_palettes() -> void:
+func rebuild_palettes() -> void:
 	var palette_container := content_container.get_child(-1)
 	for palette_config in palette_container.get_children():
 		palette_config.queue_free()
-	for palette in Configs.savedata.palettes:
+	for palette in Configs.savedata.get_palettes():
 		var palette_config := PaletteConfigWidget.instantiate()
 		palette_container.add_child(palette_config)
 		palette_config.assign_palette(palette)
-		palette_config.layout_changed.connect(rebuild_color_palettes)
+		palette_config.layout_changed.connect(rebuild_palettes)
 	
 	# Add the buttons for adding a new palette.
 	var spacer := Control.new()

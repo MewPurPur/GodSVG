@@ -4,7 +4,7 @@ msgstr ""
 "Project-Id-Version: GodSVG\n"
 "POT-Creation-Date: \n"
 "PO-Revision-Date: 2024-12-30 11:19+0200\n"
-"Last-Translator: volkov <volkovissocool@gmail.com>\n"
+"Last-Translator: volkov\n"
 "Language-Team: \n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
@@ -15,7 +15,7 @@ msgstr ""
 
 msgid "translation-credits"
 msgstr ""
-"volkov <volkovissocool@gmail.com>, Gallifreyan <gallifreyan@protonmail.ch>"
+"volkov, Gallifreyan <gallifreyan@protonmail.ch>"
 
 #: src/autoload/HandlerGUI.gd
 msgid "Quit GodSVG"

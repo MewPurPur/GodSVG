@@ -1,7 +1,5 @@
 # A resource for the color palettes that are listed in the color picker.
-class_name Formatter extends Resource
-
-var _suppress_sync := false
+class_name Formatter extends ConfigResource
 
 enum Preset {COMPACT, PRETTY}
 enum ShorthandTags {ALWAYS, ALL_EXCEPT_CONTAINERS, NEVER}
@@ -89,11 +87,8 @@ func get_setting_default(setting: String) -> Variant:
 	return null
 
 func reset_to_default() -> void:
-	_suppress_sync = true
 	for setting in _get_setting_names():
 		set(setting, get_setting_default(setting))
-	_suppress_sync = false
-	_svg_sync()
 
 func is_everything_default() -> bool:
 	for setting in _get_setting_names():
@@ -105,19 +100,21 @@ func _get_setting_names() -> PackedStringArray:
 	var arr := PackedStringArray()
 	for p in get_property_list():
 		if p.usage & PROPERTY_USAGE_SCRIPT_VARIABLE and p.usage & PROPERTY_USAGE_STORAGE:
-			if p.name != "preset":
+			if get_setting_default(p.name) != null:
 				arr.append(p.name)
 	return arr
+
+func _init(new_preset := Preset.COMPACT) -> void:
+	preset = new_preset
+	reset_to_default()
+	super()
 
 
 @export var preset := Preset.COMPACT:
 	set(new_value):
 		if preset != new_value:
 			preset = new_value
-			# Changing the preset doesn't need to sync the SVG.
-			_suppress_sync = true
 			emit_changed()
-			_suppress_sync = false
 
 
 @export var xml_keep_comments := false:
@@ -239,20 +236,3 @@ func _get_setting_names() -> PackedStringArray:
 		if transform_list_remove_unnecessary_params != new_value:
 			transform_list_remove_unnecessary_params = new_value
 			emit_changed()
-
-
-func _init(new_preset := Preset.COMPACT) -> void:
-	preset = new_preset
-	reset_to_default()
-	# Connects to the _on_changed function once all initial file loading is done.
-	# This way the config is saved only once on launch.
-	changed.connect(func(): changed.connect(_on_changed), CONNECT_DEFERRED | CONNECT_ONE_SHOT)
-
-func _on_changed() -> void:
-	if not _suppress_sync:
-		_svg_sync()
-	Configs.save()
-
-func _svg_sync() -> void:
-	if self == Configs.savedata.editor_formatter:
-		SVG.sync_elements()

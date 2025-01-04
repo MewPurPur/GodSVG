@@ -127,7 +127,7 @@ func delete_shortcut(idx: int) -> void:
 	sync()
 
 func update_shortcut() -> void:
-	Configs.modify_shortcut(action, events)
+	Configs.savedata.action_modify_shortcuts(action, events)
 
 func _input(event: InputEvent) -> void:
 	if not (listening_idx >= 0 and event is InputEventKey):
@@ -191,10 +191,10 @@ func set_shortcut_button_text(button: Button, new_text: String) -> void:
 func check_shortcuts_validity() -> void:
 	for i in events.size():
 		var shortcut_btn := shortcut_buttons[i]
-		if not Configs.is_shortcut_valid(events[i]):
+		if not Configs.savedata.is_shortcut_valid(events[i]):
 			setup_shortcut_button_font_colors(shortcut_btn,
 					Configs.savedata.basic_color_error)
-			var conflicts := Configs.get_actions_with_shortcut(events[i])
+			var conflicts := Configs.savedata.get_actions_with_shortcut(events[i])
 			var action_pos := conflicts.find(action)
 			if action_pos != -1:
 				conflicts.remove_at(action_pos)

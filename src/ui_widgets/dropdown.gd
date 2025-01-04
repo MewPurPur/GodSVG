@@ -60,4 +60,4 @@ func _on_text_submitted(new_text: String) -> void:
 func _on_text_changed(new_text: String) -> void:
 	if restricted:
 		line_edit.add_theme_color_override("font_color",
-				Utils.get_validity_color(not new_text in values))
+				Configs.savedata.get_validity_color(not new_text in values))
