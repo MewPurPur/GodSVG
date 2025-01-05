@@ -8,6 +8,8 @@ func _can_drop_data(_at_position: Vector2, data: Variant) -> bool:
 	for xid in data:
 		if XIDUtils.is_parent(xid, Indications.proposed_drop_xid):
 			return false
+	if Indications.proposed_drop_xid.is_empty():
+		return false
 	return true
 
 # Runs when you drop the XIDs.

@@ -9,6 +9,7 @@ static func get_shortcut_description(action_name: String) -> String:
 		"copy_svg_text": return Translator.translate("Copy all text")
 		"reset_svg": return Translator.translate("Reset SVG")
 		"clear_svg": return Translator.translate("Clear SVG")
+		"open_svg": return Translator.translate("Open SVG file")
 		"clear_file_path": return Translator.translate("Clear saving path")
 		"undo": return Translator.translate("Undo")
 		"redo": return Translator.translate("Redo")

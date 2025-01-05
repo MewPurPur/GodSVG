@@ -398,7 +398,7 @@ msgid "Select an image"
 msgstr "Избери изображение"
 
 #: src/ui_parts/good_file_dialog.gd src/ui_parts/settings_menu.gd
-#: src/ui_parts/update_menu.gd
+#: src/ui_parts/shortcut_panel_config.gd src/ui_parts/update_menu.gd
 msgid "Close"
 msgstr "Затвори"
 
@@ -787,21 +787,25 @@ msgstr "Увеличава мащаба на потребителския инт
 msgid "Scales the user interface based on the screen size."
 msgstr "Променя размера на потребителския интерфейс според размера на екрана."
 
-#: src/ui_parts/shortcut_panel_settings.gd
+#: src/ui_parts/shortcut_panel_config.gd
 msgid "Configure Shortcut Panel"
-msgstr ""
+msgstr "Настройки на панела с бързи клавиши"
 
-#: src/ui_parts/shortcut_panel_settings.gd
-msgid "Switch to vertical panel"
-msgstr ""
+#: src/ui_parts/shortcut_panel_config.gd
+msgid "Layout"
+msgstr "Оформление"
 
-#: src/ui_parts/shortcut_panel_settings.gd
-msgid "Lock panel position"
-msgstr ""
+#: src/ui_parts/shortcut_panel_config.gd=
+msgid "Horizontal strip"
+msgstr "Хоризонтална лента"
 
-#: src/ui_parts/shortcut_panel_settings.gd
-msgid "This shortcut is already assigned to another slot. Please choose a different one."
-msgstr ""
+#: src/ui_parts/shortcut_panel_config.gd
+msgid "Horizontal with two rows"
+msgstr "Хоризонтален с два реда"
+
+#: src/ui_parts/shortcut_panel_config.gd
+msgid "Vertical strip"
+msgstr "Вертикална лента"
 
 #: src/ui_parts/update_menu.gd
 msgid "Include prereleases"
@@ -980,6 +984,10 @@ msgstr "Файлът не можа да бъде отворен."
 #: src/utils/FileUtils.gd
 msgid "Check if the file still exists in the selected file path."
 msgstr "Проверете дали файлът все още съществува на избраното място."
+
+#: src/utils/TranslationUtils.gd
+msgid "Open SVG file"
+msgstr "Отвори SVG файла"
 
 #: src/utils/TranslationUtils.gd
 msgid "Select all elements"

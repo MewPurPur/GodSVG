@@ -109,6 +109,7 @@ static func get_shortcut_icon(shortcut: String) -> CompressedTexture2D:
 		"save": return load("res://visual/icons/Save.svg")
 		"copy_svg_text": return load("res://visual/icons/Copy.svg")
 		"clear_svg", "clear_file_path": return load("res://visual/icons/Clear.svg")
+		"optimize": return load("res://visual/icons/Compress.svg")
 		"reset_svg", "zoom_reset": return load("res://visual/icons/Reload.svg")
 		"open_svg": return load("res://visual/icons/OpenFile.svg")
 		"undo": return load("res://visual/icons/Undo.svg")

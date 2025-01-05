@@ -1,70 +1,88 @@
 extends PanelContainer
 
-@onready var slots = [%slot0/Dropdown, %slot1/Dropdown, %slot2/Dropdown, %slot3/Dropdown, %slot4/Dropdown]
+const clear_icon = preload("res://visual/icons/Clear.svg")
 
-var shortcuts_dict: Dictionary # shortcut_description: shortcut_name
-var selected_shortcuts: Dictionary # slot: shortcut_name
+const Dropdown = preload("res://src/ui_widgets/dropdown.tscn")
+const DropdownType = preload("res://src/ui_widgets/dropdown.gd")
+const ShortcutPanel = preload("res://src/ui_parts/shortcut_panel.gd")
+
+@onready var close_button: Button = $VBoxContainer/CloseButton
+@onready var slot_container: VBoxContainer = %SlotContainer
+@onready var layout_dropdown: HBoxContainer = %LayoutDropdown
 
 func _ready() -> void:
+	close_button.pressed.connect(queue_free)
+	close_button.text = Translator.translate("Close")
 	%Title.text = Translator.translate("Configure Shortcut Panel")
-	%VerticalPanel.text = Translator.translate("Switch to vertical panel")
-	%LockPanelPosition.text = Translator.translate("Lock panel position")
-	%CloseButton.text = Translator.translate("Close")
-	%CloseButton.grab_focus()
-	setup_shortcut_slots()
-	# TODO Implement these properly when more configs are implemented.
-	%VerticalPanel.queue_free()
-	%LockPanelPosition.queue_free()
-	#%VerticalPanel.button_pressed = Configs.savedata.vertical_panel
-	#%LockPanelPosition.button_pressed = Configs.savedata.lock_panel_position
+	%LayoutLabel.text = Translator.translate("Layout")
+	layout_dropdown.values = [Translator.translate("Horizontal strip"),
+			Translator.translate("Horizontal with two rows"),
+			Translator.translate("Vertical strip")]
+	layout_dropdown.set_value(Configs.savedata.shortcut_panel_layout)
+	layout_dropdown.value_changed.connect(_on_layout_dropdown_value_changed)
+	update_shortcut_slots()
 
-func setup_shortcut_slots() -> void:
-	for i in range(slots.size()):
-		slots[i].value_changed.connect(_on_shortcut_selected.bind(i))
-		%SlotContainer.get_node("slot"+str(i)+"/ResetButton").pressed.connect(clear_slot.bind(i))
+func update_shortcut_slots() -> void:
+	var shortcut_texts := {}  # Dictionary{String: String}
+	for shortcut in ShortcutUtils.get_all_shortcuts():
+		shortcut_texts[shortcut] = TranslationUtils.get_shortcut_description(shortcut)
 	
-	# Collect all shortcuts
-	var shortcuts: Array[String]
-	for s_name in ShortcutUtils.get_all_shortcuts():
-		var events := InputMap.action_get_events(s_name)
-		if not events.is_empty():
-			var s_description: String = TranslationUtils.get_shortcut_description(s_name)
-			shortcuts_dict[s_description] = s_name # For later fetching the shortcut name using its description
-			shortcuts.append(s_description)
+	for child in slot_container.get_children():
+		child.queue_free()
 	
-	# Append shortcuts to each dropdown
-	for slot_dropdown in slots:
-		slot_dropdown.values.append_array(shortcuts)
-	
-	for i in Configs.savedata.get_shortcut_panel_presented_shortcuts():
-		var s: String = Configs.savedata.get_shortcut_panel_presented_shortcut(i)
-		slots[i].set_value(TranslationUtils.get_shortcut_description(s))
+	for i in range(SaveData.SHORTCUT_PANEL_MAX_SLOTS):
+		var current_shortcut := Configs.savedata.get_shortcut_panel_slot(i)
+		
+		var hbox := HBoxContainer.new()
+		slot_container.add_child(hbox)
+		
+		var icon_presentation := PanelContainer.new()
+		icon_presentation.custom_minimum_size = Vector2(28, 28)
+		if not current_shortcut.is_empty():
+			var icon := TextureRect.new()
+			icon.stretch_mode = TextureRect.STRETCH_KEEP_CENTERED
+			icon.texture = ShortcutUtils.get_shortcut_icon(current_shortcut)
+			icon_presentation.add_child(icon)
+		hbox.add_child(icon_presentation)
+		
+		var dropdown := Dropdown.instantiate()
+		dropdown.custom_minimum_size = Vector2(100, 28)
+		dropdown.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		dropdown.align_left = true
+		dropdown.value_text_map = shortcut_texts
+		dropdown.values = ShortcutUtils.get_all_shortcuts()
+		dropdown.disabled_values = Configs.savedata.get_shortcut_panel_slots().values()
+		dropdown.set_value(current_shortcut, false)
+		dropdown.value_changed.connect(_on_dropdown_value_changed.bind(i))
+		hbox.add_child(dropdown)
+		
+		if current_shortcut.is_empty():
+			var spacer := Control.new()
+			spacer.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+			spacer.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+			spacer.custom_minimum_size = Vector2(28, 28)
+			hbox.add_child(spacer)
+		else:
+			var clear_button := Button.new()
+			clear_button.theme_type_variation = "FlatButton"
+			clear_button.icon = clear_icon
+			clear_button.focus_mode = Control.FOCUS_NONE
+			clear_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+			clear_button.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+			clear_button.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+			clear_button.custom_minimum_size = Vector2(28, 28)
+			clear_button.icon_alignment = HORIZONTAL_ALIGNMENT_CENTER
+			clear_button.pressed.connect(_on_clear_button_pressed.bind(i))
+			hbox.add_child(clear_button)
 
 
-func _on_shortcut_selected(s_description: String, slot: int) -> void:
-	var s_name: String = shortcuts_dict[s_description]
-	selected_shortcuts[slot] = s_name
-	update_popup_options()
-	%SlotContainer.get_node("slot"+str(slot)+"/ResetButton").show()
-	%SlotContainer.get_node("slot"+str(slot)+"/icon").icon = ShortcutUtils.get_shortcut_icon(s_name)
+func _on_dropdown_value_changed(shortcut: String, slot: int) -> void:
+	Configs.savedata.set_shortcut_panel_slot(slot, shortcut)
+	update_shortcut_slots()
 
-func clear_slot(slot: int) ->void:
-	selected_shortcuts.erase(slot)
-	slots[slot].set_value("", false)
-	update_popup_options()
-	%SlotContainer.get_node("slot"+str(slot)+"/icon").icon = null
-	%SlotContainer.get_node("slot"+str(slot)+"/ResetButton").hide()
+func _on_clear_button_pressed(slot: int) -> void:
+	Configs.savedata.erase_shortcut_panel_slot(slot)
+	update_shortcut_slots()
 
-func update_popup_options() -> void:
-	var disabled_values: PackedStringArray
-	for s_name in selected_shortcuts.values():
-		disabled_values.append(TranslationUtils.get_shortcut_description(s_name))
-	
-	for slot_index in range(5):
-		slots[slot_index].disabled_values = disabled_values
-
-
-func _on_close_button_pressed() -> void:
-	Configs.savedata.set_shortcut_panel_presented_shortcuts(selected_shortcuts)
-	HandlerGUI.shortcut_panel.update()
-	get_parent().queue_free()
+func _on_layout_dropdown_value_changed(new_value: ShortcutPanel.Layout) -> void:
+	Configs.savedata.shortcut_panel_layout = new_value

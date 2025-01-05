@@ -96,9 +96,10 @@ static func mouse_filter_pass_non_drag_events(event: InputEvent) -> Control.Mous
 # when Godot doesn't want to do so automatically.
 static func throw_mouse_motion_event() -> void:
 	var mouse_motion_event := InputEventMouseMotion.new()
-	var root: Node = Engine.get_main_loop().root
+	var root: Window = Engine.get_main_loop().root
+	# Must multiply by the final transform because the InputEvent is not yet parsed.
 	mouse_motion_event.position = root.get_mouse_position() * root.get_final_transform()
-	Input.call_deferred("parse_input_event", mouse_motion_event)
+	Input.parse_input_event.call_deferred(mouse_motion_event)
 
 
 static func generate_gradient(element: Element) -> Gradient:

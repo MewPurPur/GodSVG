@@ -14,8 +14,7 @@ msgstr ""
 "X-Generator: Poedit 3.5\n"
 
 msgid "translation-credits"
-msgstr ""
-"volkov, Gallifreyan <gallifreyan@protonmail.ch>"
+msgstr "volkov, Gallifreyan <gallifreyan@protonmail.ch>"
 
 #: src/autoload/HandlerGUI.gd
 msgid "Quit GodSVG"
@@ -401,7 +400,7 @@ msgid "Select an image"
 msgstr "Выбрать изображение"
 
 #: src/ui_parts/good_file_dialog.gd src/ui_parts/settings_menu.gd
-#: src/ui_parts/update_menu.gd
+#: src/ui_parts/shortcut_panel_config.gd src/ui_parts/update_menu.gd
 msgid "Close"
 msgstr "Закрыть"
 
@@ -792,21 +791,28 @@ msgstr "Изменить масштаб пользовательского ин�
 msgid "Scales the user interface based on the screen size."
 msgstr "Масштабировать интерфейс пользователя в зависимости от размера экрана."
 
-#: src/ui_parts/shortcut_panel_settings.gd
+#: src/ui_parts/shortcut_panel_config.gd
 msgid "Configure Shortcut Panel"
 msgstr ""
 
-#: src/ui_parts/shortcut_panel_settings.gd
-msgid "Switch to vertical panel"
+#: src/ui_parts/shortcut_panel_config.gd
+msgid "Layout"
 msgstr ""
 
-#: src/ui_parts/shortcut_panel_settings.gd
-msgid "Lock panel position"
-msgstr ""
+#: src/ui_parts/shortcut_panel_config.gd
+#, fuzzy
+msgid "Horizontal strip"
+msgstr "Горизонтальная линия до"
 
-#: src/ui_parts/shortcut_panel_settings.gd
-msgid "This shortcut is already assigned to another slot. Please choose a different one."
-msgstr ""
+#: src/ui_parts/shortcut_panel_config.gd
+#, fuzzy
+msgid "Horizontal with two rows"
+msgstr "Горизонтальная линия до"
+
+#: src/ui_parts/shortcut_panel_config.gd
+#, fuzzy
+msgid "Vertical strip"
+msgstr "Вертикальная линия до"
 
 #: src/ui_parts/update_menu.gd
 msgid "Include prereleases"
@@ -985,6 +991,11 @@ msgstr "Файл невозможно открыть."
 #: src/utils/FileUtils.gd
 msgid "Check if the file still exists in the selected file path."
 msgstr "Проверить, если файл все еще существует по выбранному пути."
+
+#: src/utils/TranslationUtils.gd
+#, fuzzy
+msgid "Open SVG file"
+msgstr "Открыть файл"
 
 #: src/utils/TranslationUtils.gd
 msgid "Select all elements"

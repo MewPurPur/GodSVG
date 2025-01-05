@@ -1,6 +1,7 @@
 class_name SaveData extends ConfigResource
 
 const GoodColorPicker = preload("res://src/ui_widgets/good_color_picker.gd")
+const ShortcutPanel = preload("res://src/ui_parts/shortcut_panel.gd")
 
 var _palette_validities := {}
 var _shortcut_validities := {}
@@ -485,29 +486,45 @@ func set_palettes(new_palettes: Array[ColorPalette]) -> void:
 			export_formatter.changed.connect(emit_changed)
 
 
-const SHORTCUT_PANEL_MAX_PRESENTED_SHORTCUTS = 5
-@export var _shortcut_panel_presented_shortcuts := {}:  # Dictionary{int: String}
+const SHORTCUT_PANEL_MAX_SLOTS = 6
+@export var _shortcut_panel_slots := {}:  # Dictionary{int: String}
 	set(new_value):
-		if _shortcut_panel_presented_shortcuts != new_value:
-			_shortcut_panel_presented_shortcuts = new_value
-			_validate_shortcut_panel_presented_shortcuts()
+		if _shortcut_panel_slots != new_value:
+			_shortcut_panel_slots = new_value
+			# Validation
+			for key in _shortcut_panel_slots:
+				if key < 0 or key >= SHORTCUT_PANEL_MAX_SLOTS or\
+				not _shortcut_panel_slots[key] in ShortcutUtils.get_all_shortcuts():
+					_shortcut_panel_slots.erase(key)
 			emit_changed()
 
-# Remove invalid shortcuts.
-func _validate_shortcut_panel_presented_shortcuts() -> void:
-	for key in _shortcut_panel_presented_shortcuts:
-		if key < 0 or key >= SHORTCUT_PANEL_MAX_PRESENTED_SHORTCUTS or\
-		not _shortcut_panel_presented_shortcuts[key] in ShortcutUtils.get_all_shortcuts():
-			_shortcut_panel_presented_shortcuts.erase(key)
+func get_shortcut_panel_slots() -> Dictionary:
+	return _shortcut_panel_slots
 
-func get_shortcut_panel_presented_shortcuts() -> Dictionary:
-	return _shortcut_panel_presented_shortcuts
+func get_shortcut_panel_slot(idx: int) -> String:
+	return _shortcut_panel_slots.get(idx, "")
 
-func get_shortcut_panel_presented_shortcut(idx: int) -> String:
-	return _shortcut_panel_presented_shortcuts.get(idx, "")
+func set_shortcut_panel_slot(slot: int, shortcut: String) -> void:
+	if _shortcut_panel_slots.has(slot) and _shortcut_panel_slots[slot] == shortcut:
+		return
+	_shortcut_panel_slots[slot] = shortcut
+	emit_changed()
+	Configs.shortcut_panel_changed.emit()
 
-func set_shortcut_panel_presented_shortcuts(shortcuts: Dictionary) -> void:
-	_shortcut_panel_presented_shortcuts = shortcuts
+func erase_shortcut_panel_slot(slot: int) -> void:
+	if not _shortcut_panel_slots.has(slot):
+		return
+	_shortcut_panel_slots.erase(slot)
+	emit_changed()
+	Configs.shortcut_panel_changed.emit()
+
+
+@export var shortcut_panel_layout := ShortcutPanel.Layout.HORIZONTAL_STRIP:
+	set(new_value):
+		if shortcut_panel_layout != new_value:
+			shortcut_panel_layout = new_value
+			emit_changed()
+			Configs.shortcut_panel_changed.emit()
 
 
 # Utility
