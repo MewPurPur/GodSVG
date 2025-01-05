@@ -65,11 +65,13 @@ const CURRENT_VERSION = 1
 
 @export var language := "":
 	set(new_value):
+		if not language in TranslationServer.get_loaded_locales():
+			new_value = "en"
 		if language != new_value:
 			language = new_value
 			emit_changed()
 			Configs.change_locale.call_deferred()
-			Configs.language_changed.emit()
+			Configs.language_changed.emit.call_deferred()
 
 # Theming
 @export var highlighting_symbol_color := Color("abc9ff"):
@@ -224,15 +226,29 @@ const CURRENT_VERSION = 1
 			emit_changed()
 			Configs.update_window_title.call_deferred()
 
+const HANDLE_SIZE_MIN = 0.5
+const HANDLE_SIZE_MAX = 4.0
 @export var handle_size := 1.0:
 	set(new_value):
+		# Validation
+		new_value = clampf(new_value, HANDLE_SIZE_MIN, HANDLE_SIZE_MAX)
+		if is_nan(new_value):
+			new_value = get_setting_default("handle_size")
+		# Main part
 		if handle_size != new_value:
 			handle_size = new_value
 			emit_changed()
 			Configs.handle_visuals_changed.emit()
 
+const UI_SCALE_MIN = 0.5
+const UI_SCALE_MAX = 5.0
 @export var ui_scale := 1.0:
 	set(new_value):
+		# Validation
+		new_value = clampf(new_value, UI_SCALE_MIN, UI_SCALE_MAX)
+		if is_nan(new_value):
+			new_value = get_setting_default("ui_scale")
+		# Main part
 		if ui_scale != new_value:
 			ui_scale = new_value
 			emit_changed()
@@ -247,8 +263,14 @@ const CURRENT_VERSION = 1
 
 
 # Session
+const MAX_SNAP = 16384
 @export var snap := -0.5:  # Negative when disabled.
 	set(new_value):
+		# Validation
+		new_value = clampf(new_value, -MAX_SNAP, MAX_SNAP)
+		if is_nan(new_value):
+			new_value = -0.5
+		# Main part
 		if snap != new_value:
 			snap = new_value
 			emit_changed()
@@ -256,6 +278,10 @@ const CURRENT_VERSION = 1
 
 @export var color_picker_slider_mode := GoodColorPicker.SliderMode.RGB:
 	set(new_value):
+		# Validation
+		if new_value < 0 || new_value >= GoodColorPicker.SliderMode.size():
+			new_value = GoodColorPicker.SliderMode.RGB
+		# Main part
 		if color_picker_slider_mode != new_value:
 			color_picker_slider_mode = new_value
 			emit_changed()
@@ -279,6 +305,17 @@ const CURRENT_VERSION = 1
 			emit_changed()
 			Configs.update_window_title.call_deferred()
 			Configs.file_path_changed.emit()
+
+@export var shortcut_panel_layout := ShortcutPanel.Layout.HORIZONTAL_STRIP:
+	set(new_value):
+		# Validation
+		if new_value < 0 || new_value >= ShortcutPanel.Layout.size():
+			new_value = ShortcutPanel.Layout.HORIZONTAL_STRIP
+		# Main part
+		if shortcut_panel_layout != new_value:
+			shortcut_panel_layout = new_value
+			emit_changed()
+			Configs.shortcut_panel_changed.emit()
 
 
 const MAX_RECENT_DIRS = 5
@@ -489,13 +526,14 @@ func set_palettes(new_palettes: Array[ColorPalette]) -> void:
 const SHORTCUT_PANEL_MAX_SLOTS = 6
 @export var _shortcut_panel_slots := {}:  # Dictionary{int: String}
 	set(new_value):
+		# Validation
+		for key in new_value:
+			if key < 0 or key >= SHORTCUT_PANEL_MAX_SLOTS or\
+			not new_value[key] in ShortcutUtils.get_all_shortcuts():
+				new_value.erase(key)
+		# Main part
 		if _shortcut_panel_slots != new_value:
 			_shortcut_panel_slots = new_value
-			# Validation
-			for key in _shortcut_panel_slots:
-				if key < 0 or key >= SHORTCUT_PANEL_MAX_SLOTS or\
-				not _shortcut_panel_slots[key] in ShortcutUtils.get_all_shortcuts():
-					_shortcut_panel_slots.erase(key)
 			emit_changed()
 
 func get_shortcut_panel_slots() -> Dictionary:
@@ -517,14 +555,6 @@ func erase_shortcut_panel_slot(slot: int) -> void:
 	_shortcut_panel_slots.erase(slot)
 	emit_changed()
 	Configs.shortcut_panel_changed.emit()
-
-
-@export var shortcut_panel_layout := ShortcutPanel.Layout.HORIZONTAL_STRIP:
-	set(new_value):
-		if shortcut_panel_layout != new_value:
-			shortcut_panel_layout = new_value
-			emit_changed()
-			Configs.shortcut_panel_changed.emit()
 
 
 # Utility

@@ -65,6 +65,7 @@ func add_tab(tab_name: String, tab_text: String, button_group: ButtonGroup) -> v
 	tabs.add_child(tab)
 
 func setup_everything() -> void:
+	update_language_button()
 	setup_tabs()
 	setup_content()
 	update_close_button()
@@ -213,12 +214,14 @@ func setup_content() -> void:
 					"If turned off, the window title will remain simply \"GodSVG\" regardless of the current file."))
 			current_setup_setting = "handle_size"
 			add_number_dropdown(Translator.translate("Handle size"),
-					[0.75, 1.0, 1.25, 1.5, 1.75, 2.0, 2.5, 3.0], false, false, 0.5, 4.0)
+					[0.75, 1.0, 1.25, 1.5, 1.75, 2.0, 2.5, 3.0], false, false,
+					SaveData.HANDLE_SIZE_MIN, SaveData.HANDLE_SIZE_MAX)
 			add_advice(Translator.translate(
 					"Changes the visual size and grabbing area of handles."))
 			current_setup_setting = "ui_scale"
 			add_number_dropdown(Translator.translate("UI scale"),
-					[0.75, 1.0, 1.25, 1.5, 1.75, 2.0, 2.5, 3.0, 4.0], false, false, 0.5, 5.0)
+					[0.75, 1.0, 1.25, 1.5, 1.75, 2.0, 2.5, 3.0, 4.0], false, false,
+					SaveData.UI_SCALE_MIN, SaveData.UI_SCALE_MAX)
 			add_advice(Translator.translate(
 					"Changes the scale of the visual user interface."))
 			current_setup_setting = "auto_ui_scale"
@@ -377,7 +380,6 @@ func _on_language_pressed() -> void:
 
 func _on_language_chosen(locale: String) -> void:
 	Configs.savedata.language = locale
-	update_language_button()
 
 func update_language_button() -> void:
 	lang_button.text = Translator.translate("Language") + ": " +\
@@ -522,8 +524,9 @@ func show_formatter(category: String) -> void:
 			not current_setup_resource.xml_pretty_formatting)
 	current_setup_setting = "xml_indentation_spaces"
 	add_number_dropdown(Translator.translate("Number of indentation spaces"),
-			[2, 3, 4, 6, 8], true, false, 0, 16,
-			not current_setup_resource.xml_pretty_formatting)
+			[2, 3, 4, 6, 8], true, false, Formatter.INDENTS_MIN, Formatter.INDENTS_MAX,
+			not current_setup_resource.xml_pretty_formatting and\
+			current_setup_resource.xml_indentation_use_spaces)
 	
 	add_section(Translator.translate("Numbers"))
 	current_setup_setting = "number_remove_leading_zero"

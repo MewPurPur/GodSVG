@@ -137,6 +137,10 @@ func _init(new_preset := Preset.COMPACT) -> void:
 
 @export var xml_shorthand_tags := ShorthandTags.ALWAYS:
 	set(new_value):
+		# Validation
+		if new_value < 0 || new_value >= ShorthandTags.size():
+			new_value = get_setting_default("xml_shorthand_tags")
+		# Main part
 		if xml_shorthand_tags != new_value:
 			xml_shorthand_tags = new_value
 			emit_changed()
@@ -159,8 +163,13 @@ func _init(new_preset := Preset.COMPACT) -> void:
 			xml_indentation_use_spaces = new_value
 			emit_changed()
 
+const INDENTS_MIN = 0
+const INDENTS_MAX = 16
 @export var xml_indentation_spaces := 2:
 	set(new_value):
+		new_value = clampf(new_value, INDENTS_MIN, INDENTS_MAX)
+		if is_nan(new_value):
+			new_value = get_setting_default("xml_indentation_spaces")
 		if xml_indentation_spaces != new_value:
 			xml_indentation_spaces = new_value
 			emit_changed()
@@ -179,12 +188,20 @@ func _init(new_preset := Preset.COMPACT) -> void:
 
 @export var color_use_named_colors := NamedColorUse.WHEN_SHORTER:
 	set(new_value):
+		# Validation
+		if new_value < 0 || new_value >= NamedColorUse.size():
+			new_value = get_setting_default("color_use_named_colors")
+		# Main part
 		if color_use_named_colors != new_value:
 			color_use_named_colors = new_value
 			emit_changed()
 
 @export var color_primary_syntax := PrimaryColorSyntax.THREE_OR_SIX_DIGIT_HEX:
 	set(new_value):
+		# Validation
+		if new_value < 0 || new_value >= PrimaryColorSyntax.size():
+			new_value = get_setting_default("color_primary_syntax")
+		# Main part
 		if color_primary_syntax != new_value:
 			color_primary_syntax = new_value
 			emit_changed()
