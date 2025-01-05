@@ -1,53 +1,6 @@
-[gd_scene load_steps=4 format=3 uid="uid://jf1wq6xy617n"]
+[gd_scene load_steps=2 format=3 uid="uid://jf1wq6xy617n"]
 
 [ext_resource type="Script" path="res://src/ui_parts/shortcut_panel.gd" id="1_bdakw"]
-[ext_resource type="Texture2D" uid="uid://gxcy17tjtyfv" path="res://visual/icons/DotPattern.svg" id="2_8txvx"]
-[ext_resource type="Texture2D" uid="uid://cve7gc2dc3fc" path="res://visual/icons/config.svg" id="3_u8o0x"]
 
-[node name="ShortcutPanel" type="VBoxContainer"]
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = -44.5
-offset_top = -145.0
-offset_right = 44.5
-offset_bottom = -95.0
-grow_horizontal = 2
-grow_vertical = 0
+[node name="ShortcutPanel" type="PanelContainer"]
 script = ExtResource("1_bdakw")
-
-[node name="PanelContainer" type="PanelContainer" parent="."]
-custom_minimum_size = Vector2(0, 50)
-layout_mode = 2
-theme_type_variation = &"DarkPanel"
-
-[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer"]
-layout_mode = 2
-theme_override_constants/separation = 8
-alignment = 1
-
-[node name="DragHandle" type="TextureRect" parent="PanelContainer/HBoxContainer"]
-custom_minimum_size = Vector2(35, 0)
-layout_mode = 2
-mouse_default_cursor_shape = 6
-texture = ExtResource("2_8txvx")
-stretch_mode = 3
-
-[node name="Config" type="Button" parent="PanelContainer/HBoxContainer"]
-custom_minimum_size = Vector2(30, 30)
-layout_mode = 2
-size_flags_vertical = 4
-focus_mode = 0
-mouse_default_cursor_shape = 2
-theme_type_variation = &"TranslucentButton"
-theme_override_constants/h_separation = 4
-icon = ExtResource("3_u8o0x")
-icon_alignment = 1
-
-[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/HBoxContainer"]
-layout_mode = 2
-theme_override_constants/separation = 8
-
-[connection signal="pressed" from="PanelContainer/HBoxContainer/Config" to="." method="_on_panel_settings_pressed"]

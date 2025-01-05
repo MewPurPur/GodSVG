@@ -19,6 +19,8 @@ signal shortcuts_changed
 signal basic_colors_changed
 @warning_ignore("unused_signal")
 signal handle_visuals_changed
+@warning_ignore("unused_signal")
+signal shortcut_panel_changed
 
 const savedata_path = "user://savedata.tres"
 var savedata: SaveData:

@@ -396,7 +396,7 @@ msgid "Select an image"
 msgstr ""
 
 #: src/ui_parts/good_file_dialog.gd src/ui_parts/settings_menu.gd
-#: src/ui_parts/update_menu.gd
+#: src/ui_parts/shortcut_panel_config.gd src/ui_parts/update_menu.gd
 msgid "Close"
 msgstr ""
 
@@ -776,20 +776,24 @@ msgstr ""
 msgid "Scales the user interface based on the screen size."
 msgstr ""
 
-#: src/ui_parts/shortcut_panel_settings.gd
+#: src/ui_parts/shortcut_panel_config.gd
 msgid "Configure Shortcut Panel"
 msgstr ""
 
-#: src/ui_parts/shortcut_panel_settings.gd
-msgid "Switch to vertical panel"
+#: src/ui_parts/shortcut_panel_config.gd
+msgid "Layout"
 msgstr ""
 
-#: src/ui_parts/shortcut_panel_settings.gd
-msgid "Lock panel position"
+#: src/ui_parts/shortcut_panel_config.gd
+msgid "Horizontal strip"
 msgstr ""
 
-#: src/ui_parts/shortcut_panel_settings.gd
-msgid "This shortcut is already assigned to another slot. Please choose a different one."
+#: src/ui_parts/shortcut_panel_config.gd
+msgid "Horizontal with two rows"
+msgstr ""
+
+#: src/ui_parts/shortcut_panel_config.gd
+msgid "Vertical strip"
 msgstr ""
 
 #: src/ui_parts/update_menu.gd
@@ -968,6 +972,10 @@ msgstr ""
 
 #: src/utils/FileUtils.gd
 msgid "Check if the file still exists in the selected file path."
+msgstr ""
+
+#: src/utils/TranslationUtils.gd
+msgid "Open SVG file"
 msgstr ""
 
 #: src/utils/TranslationUtils.gd

@@ -78,7 +78,7 @@ func _update() -> void:
 	if not _update_pending:
 		return
 	_update_pending = false
-	set_text(SVGParser.root_to_text(root_element))
+	set_text(SVGParser.root_to_text(root_element, Configs.savedata.editor_formatter))
 
 func _save() -> void:
 	if not _save_pending:
@@ -152,4 +152,4 @@ func optimize() -> void:
 	SVG.queue_save()
 
 func get_export_text() -> String:
-	return SVGParser.root_to_text(root_element)
+	return SVGParser.root_to_text(root_element, Configs.savedata.export_formatter)

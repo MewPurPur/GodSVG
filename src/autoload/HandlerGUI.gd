@@ -15,7 +15,7 @@ var ShortcutPanelScene = load("res://src/ui_parts/shortcut_panel.tscn")
 var menu_stack: Array[ColorRect]
 var popup_stack: Array[Control]
 
-var shortcut_panel: VBoxContainer
+var shortcut_panel: PanelContainer
 
 func _enter_tree() -> void:
 	var window := get_window()
@@ -28,7 +28,7 @@ func _ready() -> void:
 	await get_tree().process_frame  # Helps make things more consistent.
 	update_ui_scale()
 	
-	if OS.get_name() == "Android":
+	if OS.get_name() != "Android":
 		shortcut_panel = ShortcutPanelScene.instantiate()
 		get_tree().root.add_child(shortcut_panel)
 

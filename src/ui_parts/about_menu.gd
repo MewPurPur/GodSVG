@@ -83,7 +83,7 @@ func _ready() -> void:
 			credits[i] = credits[i].strip_edges()
 		
 		var label := Label.new()
-		label.text = TranslationServer.get_locale_name(lang) + " (%s):" % lang
+		label.text = TranslationServer.get_locale_name(lang) + " (%s):" % lang.to_upper()
 		translations_list.add_child(label)
 		var list := PanelGrid.new()
 		list.stylebox = authors_list.stylebox

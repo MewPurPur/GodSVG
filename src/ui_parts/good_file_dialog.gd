@@ -159,8 +159,7 @@ func set_dir(dir: String) -> void:
 	# Rebuild the system dirs, as we may now need to highlight the current one.
 	drives_list.clear()
 	for drive in system_dirs_to_show:
-		var drive_path: String =  system_dir_paths[drive] if\
-				system_dir_paths.has(drive) else OS.get_system_dir(drive)
+		var drive_path: String = system_dir_paths.get(drive, OS.get_system_dir(drive))
 		var drive_name := drive_path.get_file()
 		if drive_name.is_empty():
 			continue

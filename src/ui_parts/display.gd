@@ -213,7 +213,7 @@ func _on_snap_button_toggled(toggled_on: bool) -> void:
 			else -absf(Configs.savedata.snap)
 
 func _on_snap_number_edit_value_changed(new_value: float) -> void:
-	Configs.snap = new_value * signf(Configs.savedata.snap)
+	Configs.savedata.snap = new_value * signf(Configs.savedata.snap)
 
 # The strings here are intentionally not localized.
 func update_debug() -> void:

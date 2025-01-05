@@ -399,7 +399,7 @@ msgid "Select an image"
 msgstr "Обрати зображення"
 
 #: src/ui_parts/good_file_dialog.gd src/ui_parts/settings_menu.gd
-#: src/ui_parts/update_menu.gd
+#: src/ui_parts/shortcut_panel_config.gd src/ui_parts/update_menu.gd
 msgid "Close"
 msgstr "Закрити"
 
@@ -795,21 +795,28 @@ msgstr "Змінити масштаб інтерфейсу користувач�
 msgid "Scales the user interface based on the screen size."
 msgstr "Масштабувати інтерфейс користувача в залежності від розміру екрану."
 
-#: src/ui_parts/shortcut_panel_settings.gd
+#: src/ui_parts/shortcut_panel_config.gd
 msgid "Configure Shortcut Panel"
 msgstr ""
 
-#: src/ui_parts/shortcut_panel_settings.gd
-msgid "Switch to vertical panel"
+#: src/ui_parts/shortcut_panel_config.gd
+msgid "Layout"
 msgstr ""
 
-#: src/ui_parts/shortcut_panel_settings.gd
-msgid "Lock panel position"
-msgstr ""
+#: src/ui_parts/shortcut_panel_config.gd
+#, fuzzy
+msgid "Horizontal strip"
+msgstr "Горизонтальна лінія до"
 
-#: src/ui_parts/shortcut_panel_settings.gd
-msgid "This shortcut is already assigned to another slot. Please choose a different one."
-msgstr ""
+#: src/ui_parts/shortcut_panel_config.gd
+#, fuzzy
+msgid "Horizontal with two rows"
+msgstr "Горизонтальна лінія до"
+
+#: src/ui_parts/shortcut_panel_config.gd
+#, fuzzy
+msgid "Vertical strip"
+msgstr "Вертикальна лінія до"
 
 #: src/ui_parts/update_menu.gd
 msgid "Include prereleases"
@@ -988,6 +995,11 @@ msgstr "Цей файл неможливо відкрити."
 #: src/utils/FileUtils.gd
 msgid "Check if the file still exists in the selected file path."
 msgstr "Перевірити, чи файл все щє існує по обраному шляху."
+
+#: src/utils/TranslationUtils.gd
+#, fuzzy
+msgid "Open SVG file"
+msgstr "Відкрити файл"
 
 #: src/utils/TranslationUtils.gd
 msgid "Select all elements"

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://gxcy17tjtyfv"
-path="res://.godot/imported/DotPattern.svg-cbea1cc6d807d0549983a0a2c86b1b1b.ctex"
+uid="uid://bjo2bdb1cgusy"
+path="res://.godot/imported/DotPatternSegment.svg-49e63108d16131894df25789f083ec6c.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://visual/icons/DotPattern.svg"
-dest_files=["res://.godot/imported/DotPattern.svg-cbea1cc6d807d0549983a0a2c86b1b1b.ctex"]
+source_file="res://visual/icons/DotPatternSegment.svg"
+dest_files=["res://.godot/imported/DotPatternSegment.svg-49e63108d16131894df25789f083ec6c.ctex"]
 
 [params]
 

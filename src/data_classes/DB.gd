@@ -145,10 +145,7 @@ const attribute_color_url_allowed = ["fill", "stroke"]
 
 
 static func get_recognized_attributes(element_name: String) -> Array:
-	if recognized_attributes.has(element_name):
-		return recognized_attributes[element_name]
-	else:
-		return []
+	return recognized_attributes.get(element_name, [])
 
 static func is_attribute_recognized(element_name: String, attribute_name: String) -> bool:
 	return recognized_attributes.has(element_name) and\
@@ -167,17 +164,14 @@ static func get_valid_parents(child_name: String) -> PackedStringArray:
 	return valid_parents
 
 static func get_element_icon(element_name: String) -> Texture2D:
-	return element_icons[element_name] if element_icons.has(element_name) else\
-			unrecognized_xnode_icon
+	return element_icons.get(element_name, unrecognized_xnode_icon)
 
 static func get_xnode_icon(xnode_type: BasicXNode.NodeType) -> Texture2D:
-	return xnode_icons[xnode_type] if xnode_icons.has(xnode_type) else\
-			unrecognized_xnode_icon
+	return xnode_icons.get(xnode_type, unrecognized_xnode_icon)
 
 
 static func get_attribute_type(attribute_name: String) -> AttributeType:
-	return attribute_types[attribute_name] if attribute_types.has(attribute_name)\
-			else AttributeType.UNKNOWN
+	return attribute_types.get(attribute_name, AttributeType.UNKNOWN)
 
 static func get_attribute_default_percentage_handling(
 attribute_name: String) -> PercentageHandling:

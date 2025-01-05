@@ -398,7 +398,7 @@ msgid "Select an image"
 msgstr "Sélectionner une image"
 
 #: src/ui_parts/good_file_dialog.gd src/ui_parts/settings_menu.gd
-#: src/ui_parts/update_menu.gd
+#: src/ui_parts/shortcut_panel_config.gd src/ui_parts/update_menu.gd
 msgid "Close"
 msgstr "Fermer"
 
@@ -758,17 +758,17 @@ msgid ""
 "If turned on, scrolling will pan the view. To zoom, hold CTRL while "
 "scrolling."
 msgstr ""
-"Si activé, défiler fera balayer la vue. Pour zoomer, maintenez CTRL "
-"en défilant."
+"Si activé, défiler fera balayer la vue. Pour zoomer, maintenez CTRL en "
+"défilant."
 
 #: src/ui_parts/settings_menu.gd
 msgid ""
 "If turned on, uses your operating system's native file dialog. If turned "
 "off, uses GodSVG's built-in file dialog."
 msgstr ""
-"Si activé, utilise la boîte de dialogue de fichiers native de votre "
-"système d'exploitation. Si désactivé, utilise la boîte de dialogue intégrée "
-"de GodSVG."
+"Si activé, utilise la boîte de dialogue de fichiers native de votre système "
+"d'exploitation. Si désactivé, utilise la boîte de dialogue intégrée de "
+"GodSVG."
 
 #: src/ui_parts/settings_menu.gd
 msgid ""
@@ -789,6 +789,29 @@ msgstr "Change l'échelle de l'interface utilisateur visuelle."
 #: src/ui_parts/settings_menu.gd
 msgid "Scales the user interface based on the screen size."
 msgstr "Redimensionne l'interface utilisateur selon la taille de l'écran."
+
+#: src/ui_parts/shortcut_panel_config.gd
+msgid "Configure Shortcut Panel"
+msgstr ""
+
+#: src/ui_parts/shortcut_panel_config.gd
+msgid "Layout"
+msgstr ""
+
+#: src/ui_parts/shortcut_panel_config.gd
+#, fuzzy
+msgid "Horizontal strip"
+msgstr "Ligne horizontale vers"
+
+#: src/ui_parts/shortcut_panel_config.gd
+#, fuzzy
+msgid "Horizontal with two rows"
+msgstr "Ligne horizontale vers"
+
+#: src/ui_parts/shortcut_panel_config.gd
+#, fuzzy
+msgid "Vertical strip"
+msgstr "Ligne verticale vers"
 
 #: src/ui_parts/update_menu.gd
 msgid "Include prereleases"
@@ -969,6 +992,11 @@ msgid "Check if the file still exists in the selected file path."
 msgstr "Vérifiez si le fichier existe encore au chemin selectionné."
 
 #: src/utils/TranslationUtils.gd
+#, fuzzy
+msgid "Open SVG file"
+msgstr "Ouvrir le fichier"
+
+#: src/utils/TranslationUtils.gd
 msgid "Select all elements"
 msgstr "Sélectionner tous les éléments"
 
@@ -1093,9 +1121,11 @@ msgid ""
 "The file extension {extension} is unsupported for this operation. Only "
 "{extension_list} files are supported."
 msgstr ""
-"L'extension de fichier {extension} n'est pas supportée pour cette "
-"opération. Seuls les fichiers {extension_list} sont supportés."
+"L'extension de fichier {extension} n'est pas supportée pour cette opération. "
+"Seuls les fichiers {extension_list} sont supportés."
 
 #: src/utils/TranslationUtils.gd
 msgid "The file extension is empty. Only {extension_list} files are supported."
-msgstr "L'extension de fichier est vide. Seuls les fichiers {extension_list} sont supportés."
+msgstr ""
+"L'extension de fichier est vide. Seuls les fichiers {extension_list} sont "
+"supportés."

@@ -671,6 +671,9 @@ var should_deselect_all := false
 
 func _unhandled_input(event: InputEvent) -> void:
 	if not visible:
+		hovered_handle = null
+		Indications.clear_hovered()
+		Indications.clear_inner_hovered()
 		return
 	
 	# Set the nearest handle as hovered, if any handles are within range.
