@@ -167,7 +167,7 @@ const INDENTS_MIN = 0
 const INDENTS_MAX = 16
 @export var xml_indentation_spaces := 2:
 	set(new_value):
-		new_value = clampf(new_value, INDENTS_MIN, INDENTS_MAX)
+		new_value = clampi(new_value, INDENTS_MIN, INDENTS_MAX)
 		if is_nan(new_value):
 			new_value = get_setting_default("xml_indentation_spaces")
 		if xml_indentation_spaces != new_value:
