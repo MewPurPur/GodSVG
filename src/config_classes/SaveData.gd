@@ -549,6 +549,11 @@ func set_shortcut_panel_slot(slot: int, shortcut: String) -> void:
 	emit_changed()
 	Configs.shortcut_panel_changed.emit()
 
+func set_shortcut_panel_slots(slots: Dictionary) -> void:
+	_shortcut_panel_slots = slots
+	emit_changed()
+	Configs.shortcut_panel_changed.emit()
+
 func erase_shortcut_panel_slot(slot: int) -> void:
 	if not _shortcut_panel_slots.has(slot):
 		return

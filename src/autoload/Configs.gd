@@ -78,7 +78,7 @@ func reset_settings() -> void:
 	savedata = SaveData.new()
 	savedata.reset_to_default()
 	savedata.language = "en"
-	savedata.set_shortcut_panel_presented_shortcuts({ 0: "undo", 1: "redo" })
+	savedata.set_shortcut_panel_slots({ 0: "undo", 1: "redo" })
 	savedata.set_palettes([ColorPalette.new("Pure", ColorPalette.Preset.PURE)])
 	save()
 
