@@ -821,6 +821,11 @@ func _on_handle_added() -> void:
 		return
 	
 	update_handles()
+	if SVG.root_element.get_xnode(Indications.semi_selected_xid).get_attribute("d").\
+	get_commands()[Indications.inner_selections[0]].command_char in "Zz":
+		SVG.queue_save()
+		return
+	
 	for handle in handles:
 		if handle is PathHandle and handle.element.xid == Indications.semi_selected_xid and\
 		handle.command_index == Indications.inner_selections[0]:
