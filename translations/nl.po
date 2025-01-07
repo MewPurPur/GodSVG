@@ -1055,15 +1055,13 @@ msgstr "Gerasterd SVG weergeven"
 msgid "Toggle snapping"
 msgstr "Knappen omschakelen"
 
-#: I will continue from here later - jas31415
-
 #: src/utils/TranslationUtils.gd
 msgid "Show reference image"
 msgstr "Referentie afbeelding weergeven"
 
 #: src/utils/TranslationUtils.gd
 msgid "Overlay reference image"
-msgstr "Referentie beeld overlappen"
+msgstr "Referentie afbeelding overlappen"
 
 #: src/utils/TranslationUtils.gd
 msgid "View debug information"
@@ -1075,7 +1073,7 @@ msgstr "Open Instellingenmenu"
 
 #: src/utils/TranslationUtils.gd
 msgid "Open About menu"
-msgstr "Open het menu Over"
+msgstr "Open het Betreffende menu "
 
 #: src/utils/TranslationUtils.gd
 msgid "Open Donate menu"
@@ -1091,11 +1089,11 @@ msgstr "Open GodSVG website"
 
 #: src/utils/TranslationUtils.gd
 msgid "Quit the application"
-msgstr "Applicatie sluiten"
+msgstr "Applicatie afsluiten"
 
 #: src/utils/TranslationUtils.gd
 msgid "Move to"
-msgstr "Beweeg naar"
+msgstr "Verplaats naar"
 
 #: src/utils/TranslationUtils.gd
 msgid "Line to"
@@ -1103,11 +1101,11 @@ msgstr "Lijn naar"
 
 #: src/utils/TranslationUtils.gd
 msgid "Horizontal Line to"
-msgstr "Horizontaal lijn naar"
+msgstr "Horizontale lijn naar"
 
 #: src/utils/TranslationUtils.gd
 msgid "Vertical Line to"
-msgstr "Vertikaal lijn naar"
+msgstr "Vertikale lijn naar"
 
 #: src/utils/TranslationUtils.gd
 msgid "Close Path"
@@ -1115,7 +1113,7 @@ msgstr "Pad sluiten"
 
 #: src/utils/TranslationUtils.gd
 msgid "Elliptical Arc to"
-msgstr "Elliptische boog naar"
+msgstr "Elliptische Boog naar"
 
 #: src/utils/TranslationUtils.gd
 msgid "Quadratic Bezier to"
@@ -1123,7 +1121,7 @@ msgstr "Kwadratische Bézier naar"
 
 #: src/utils/TranslationUtils.gd
 msgid "Shorthand Quadratic Bezier to"
-msgstr "Korte kwadratische Bézier naar"
+msgstr "Afgekorte Kwadratische Bézier naar"
 
 #: src/utils/TranslationUtils.gd
 msgid "Cubic Bezier to"
@@ -1131,7 +1129,7 @@ msgstr "Kubieke Bézier naar"
 
 #: src/utils/TranslationUtils.gd
 msgid "Shorthand Cubic Bezier to"
-msgstr "Korte Kubieke Bézier naar"
+msgstr "Afgekorte Kubieke Bézier naar"
 
 #: src/utils/TranslationUtils.gd
 #, fuzzy
@@ -1139,29 +1137,29 @@ msgid ""
 "The file extension {extension} is unsupported for this operation. Only "
 "{extension_list} files are supported."
 msgstr ""
-"\"{passed_extension}\" is een niet-ondersteund bestandsextensie. Alleen "
-"\"svg\" bestanden zijn ondersteund."
+"Deze operatie is niet ondersteund voor de bestandsextensie {extension}."
+"Alleen {extension_list} bestanden zijn ondersteund."
 
 #: src/utils/TranslationUtils.gd
 #, fuzzy
 msgid "The file extension is empty. Only {extension_list} files are supported."
 msgstr ""
-"Deze bestandsextensie is leeg. Alleen \"svg\" bestanden zijn ondersteund."
+"Deze bestandsextensie is leeg. Alleen {extension_list} bestanden zijn ondersteund."
 
 #~ msgid "Invalid"
 #~ msgstr "Ongeldig"
 
 #~ msgid "Final size"
-#~ msgstr "Laatste Maat"
+#~ msgstr "Finale maat"
 
 #~ msgid ""
 #~ "The file couldn't be opened.\n"
 #~ "Try checking the file path, ensure that the file is not deleted, or "
 #~ "choose a different file."
 #~ msgstr ""
-#~ "De Bestand kon niet geopend worden.\n"
+#~ "Het bestand kon niet geopend worden.\n"
 #~ "Probeer the bestandspad te controleren, zorg ervoor dat de bestand niet "
 #~ "verwijdert is, of kies een ander bestand uit."
 
 #~ msgid "Enable snap"
-#~ msgstr "Snap inschakelen"
+#~ msgstr "Knappen inschakelen"
