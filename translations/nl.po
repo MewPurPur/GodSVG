@@ -628,7 +628,7 @@ msgstr "XML Plakken"
 
 #: src/ui_parts/settings_menu.gd
 msgid "New palette"
-msgstr "Nieuw element"
+msgstr "Nieuw palette"
 
 #: src/ui_parts/settings_menu.gd
 msgid "New palette from XML"
