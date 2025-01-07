@@ -40,7 +40,6 @@ msgid "OK"
 msgstr "OK"
 
 #: src/autoload/HandlerGUI.gd
-#, fuzzy
 msgid "Export SVG"
 msgstr "Exporteer SVG"
 
@@ -123,7 +122,6 @@ msgid "6-digit hex"
 msgstr "6-cijferige hex"
 
 #: src/data_classes/BasicXNode.gd
-#, fuzzy
 msgid "Comment"
 msgstr "Commentaar"
 
@@ -224,7 +222,6 @@ msgid "Save SVG"
 msgstr "SVG opslaan"
 
 #: src/ui_parts/code_editor.gd
-#, fuzzy
 msgid "Open file"
 msgstr "Open bestand"
 
@@ -393,7 +390,6 @@ msgid "Select an SVG"
 msgstr "Kies een SVG uit"
 
 #: src/ui_parts/good_file_dialog.gd
-#, fuzzy
 msgid "Select an XML file"
 msgstr "Kies een XML bestand uit"
 
@@ -435,7 +431,6 @@ msgid "A folder with this name already exists."
 msgstr "Een map met deze naam bestaat al."
 
 #: src/ui_parts/good_file_dialog.gd
-#, fuzzy
 msgid "Failed to create a folder."
 msgstr "Aanmaken van een nieuwe map mislukt."
 
@@ -624,7 +619,6 @@ msgid "Language"
 msgstr "Taal"
 
 #: src/ui_parts/settings_menu.gd
-#, fuzzy
 msgid "Import XML"
 msgstr "Importeren"
 
@@ -633,22 +627,18 @@ msgid "Paste XML"
 msgstr "XML Plakken"
 
 #: src/ui_parts/settings_menu.gd
-#, fuzzy
 msgid "New palette"
 msgstr "Nieuw element"
 
 #: src/ui_parts/settings_menu.gd
-#, fuzzy
 msgid "New palette from XML"
 msgstr "Nieuw element"
 
 #: src/ui_parts/settings_menu.gd
-#, fuzzy
 msgid "Editor formatter"
 msgstr "Editor-formatter"
 
 #: src/ui_parts/settings_menu.gd
-#, fuzzy
 msgid "Export formatter"
 msgstr "Exportformatter"
 
@@ -657,22 +647,18 @@ msgid "Help"
 msgstr "Help"
 
 #: src/ui_parts/settings_menu.gd
-#, fuzzy
 msgid "Reset all to default"
 msgstr "Reset allen naar standaard"
 
 #: src/ui_parts/settings_menu.gd
-#, fuzzy
 msgid "Preset"
 msgstr "Voorinstelling"
 
 #: src/ui_parts/settings_menu.gd
-#, fuzzy
 msgid "Keep comments"
 msgstr "Houdt commentaar bij"
 
 #: src/ui_parts/settings_menu.gd
-#, fuzzy
 msgid "Keep unrecognized XML structures"
 msgstr "Houdt onherkende XML structuren bij"
 
@@ -789,7 +775,6 @@ msgstr ""
 "achteloos van het huidige bestand."
 
 #: src/ui_parts/settings_menu.gd
-#, fuzzy
 msgid "Changes the visual size and grabbing area of Handles."
 msgstr "Verandert de visuele grootte en grijpgebied van Handvaten."
 
@@ -810,17 +795,14 @@ msgid "Layout"
 msgstr "Indeling"
 
 #: src/ui_parts/shortcut_panel_config.gd
-#, fuzzy
 msgid "Horizontal strip"
 msgstr "Horizontale lijn"
 
 #: src/ui_parts/shortcut_panel_config.gd
-#, fuzzy
 msgid "Horizontal with two rows"
 msgstr "Horizontale lijn met twee rijen"
 
 #: src/ui_parts/shortcut_panel_config.gd
-#, fuzzy
 msgid "Vertical strip"
 msgstr "Vertikale lijn"
 
@@ -923,7 +905,6 @@ msgid "Copy as XML"
 msgstr "Als XML kopiëren"
 
 #: src/ui_widgets/palette_config.gd
-#, fuzzy
 msgid "Apply Preset"
 msgstr "Voorinstelling toepassen"
 
@@ -984,7 +965,6 @@ msgid "GodSVG doesn’t recognize this attribute"
 msgstr "GodSVG herkent dit attribuut niet"
 
 #: src/utils/FileUtils.gd
-#, fuzzy
 msgid "Save the .\"{format}\" file"
 msgstr "Bewaar het .\"{extension}\" bestand"
 
@@ -993,7 +973,6 @@ msgid "Load an image file"
 msgstr "Laad een afbeeldingsbestand"
 
 #: src/utils/FileUtils.gd
-#, fuzzy
 msgid "Import a {extension} file"
 msgstr "Importeer een {extension} bestand"
 
@@ -1006,7 +985,6 @@ msgid "Check if the file still exists in the selected file path."
 msgstr "Kijk na of het bestand nog steeds bestaat in het gekozen bestandspad"
 
 #: src/utils/TranslationUtils.gd
-#, fuzzy
 msgid "Open SVG file"
 msgstr "Open SVG bestand"
 
@@ -1051,7 +1029,6 @@ msgid "Show rasterized SVG"
 msgstr "Gerasterd SVG weergeven"
 
 #: src/utils/TranslationUtils.gd
-#, fuzzy
 msgid "Toggle snapping"
 msgstr "Knappen omschakelen"
 
@@ -1073,7 +1050,7 @@ msgstr "Open Instellingenmenu"
 
 #: src/utils/TranslationUtils.gd
 msgid "Open About menu"
-msgstr "Open het Betreffende menu "
+msgstr "Open het Betreffende menu"
 
 #: src/utils/TranslationUtils.gd
 msgid "Open Donate menu"
@@ -1132,7 +1109,6 @@ msgid "Shorthand Cubic Bezier to"
 msgstr "Afgekorte Kubieke Bézier naar"
 
 #: src/utils/TranslationUtils.gd
-#, fuzzy
 msgid ""
 "The file extension {extension} is unsupported for this operation. Only "
 "{extension_list} files are supported."
@@ -1141,7 +1117,6 @@ msgstr ""
 "Alleen {extension_list} bestanden zijn ondersteund."
 
 #: src/utils/TranslationUtils.gd
-#, fuzzy
 msgid "The file extension is empty. Only {extension_list} files are supported."
 msgstr ""
 "Deze bestandsextensie is leeg. Alleen {extension_list} bestanden zijn ondersteund."
