@@ -5,5 +5,4 @@
 [node name="EyedropperPopup" type="TextureRect"]
 texture_filter = 1
 expand_mode = 1
-stretch_mode = 2
 script = ExtResource("1_qjmw3")

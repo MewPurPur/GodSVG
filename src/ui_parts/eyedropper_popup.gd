@@ -14,6 +14,7 @@ func _enter_tree() -> void:
 	DisplayServer.mouse_set_mode(DisplayServer.MOUSE_MODE_HIDDEN)
 	await RenderingServer.frame_post_draw
 	texture = ImageTexture.create_from_image(get_viewport().get_texture().get_image())
+	size = HandlerGUI.get_window_content_size()
 
 
 func _exit_tree() -> void:
@@ -32,10 +33,9 @@ func _draw() -> void:
 		return
 	
 	var pos := get_global_mouse_position()
-	var viewport_width := texture.get_width()
-	var viewport_height := texture.get_height()
+	var texture_pos := get_global_mouse_position() * get_window().get_final_transform()
 	
-	if pos.x < 0 or pos.x >= viewport_width or pos.y < 0 or pos.y >= viewport_height:
+	if pos.x < 0 or pos.x >= size.x or pos.y < 0 or pos.y >= size.y:
 		return
 	
 	# Yes, draw it pixel by pixel.
@@ -43,8 +43,8 @@ func _draw() -> void:
 	var frsq := FRAME_RADIUS * FRAME_RADIUS
 	for x in range(ceili(-FRAME_RADIUS / 7.0), ceili(FRAME_RADIUS / 7.0)):
 		for y in range(ceili(-FRAME_RADIUS / 7.0), ceili(FRAME_RADIUS / 7.0)):
-			if pos.x + x < 0 or pos.x + x > viewport_width or pos.y + y < 0 or\
-			pos.y + y > viewport_height:
+			if texture_pos.x + x < 0 or texture_pos.x + x >= texture.get_width() or\
+			texture_pos.y + y < 0 or texture_pos.y + y >= texture.get_height():
 				continue
 			
 			var l := (x - 0.5) * PIXEL_SIZE - 0.5
@@ -64,11 +64,11 @@ func _draw() -> void:
 			
 			if left < right and top < bottom:
 				draw_rect(Rect2(Vector2(left, top), Vector2(right - left, bottom - top)),
-						texture_image.get_pixelv(pos + Vector2(x, y)))
+						texture_image.get_pixelv(texture_pos + Vector2(x, y)))
 	
 	var grid_points := PackedVector2Array()
 	for i in range(ceili(-FRAME_RADIUS / 7.0), ceili(FRAME_RADIUS / 7.0)):
-		var grid_coord := (i - 0.5) * PIXEL_SIZE + 0.5
+		var grid_coord := (i - 0.5) * PIXEL_SIZE - 0.5
 		var offset := sqrt((FRAME_RADIUS + 1) ** 2 - grid_coord * grid_coord)
 		grid_points.append(pos + Vector2(grid_coord, -offset))
 		grid_points.append(pos + Vector2(grid_coord, offset))
@@ -89,8 +89,8 @@ func _draw() -> void:
 	var stylebox_height := 25
 	var stylebox_vertical_offset := FRAME_RADIUS
 	var stylebox_corner := Vector2(clampf(pos.x - FRAME_RADIUS, 0.0,
-			viewport_width - stylebox_width), pos.y + (stylebox_vertical_offset if\
-			(pos.y + stylebox_vertical_offset + stylebox_height <= viewport_height) else\
+			size.x - stylebox_width), pos.y + (stylebox_vertical_offset if\
+			(pos.y + stylebox_vertical_offset + stylebox_height <= size.y) else\
 			-stylebox_vertical_offset - stylebox_height))
 	
 	var stylebox := StyleBoxFlat.new()
@@ -98,7 +98,7 @@ func _draw() -> void:
 	stylebox.bg_color = theme_color
 	stylebox.draw(ci, Rect2(stylebox_corner, Vector2(stylebox_width, stylebox_height)))
 	
-	color = texture_image.get_pixelv(pos)
+	color = texture_image.get_pixelv(texture_pos)
 	ThemeUtils.mono_font.draw_string(ci, stylebox_corner + Vector2(26, 19), "#" +\
 			color.to_html(false), HORIZONTAL_ALIGNMENT_LEFT, -1, 16, Color.BLACK)
 	draw_rect(Rect2(stylebox_corner + Vector2(5, 5), Vector2(15, 15)), color)
