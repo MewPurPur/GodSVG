@@ -3,10 +3,12 @@ class_name AttributeTransformList extends Attribute
 
 var _transform_list: Array[Transform] = []
 var _final_transform := Transform2D.IDENTITY
+var _final_precise_transform := PackedFloat64Array([1.0, 0.0, 0.0, 1.0, 0.0, 0.0])
 
 func _sync() -> void:
 	_transform_list = text_to_transform_list(get_value())
 	_final_transform = compute_final_transform(_transform_list)
+	_final_precise_transform = compute_final_precise_transform(_transform_list)
 
 func sync_after_transforms_change() -> void:
 	set_value(transform_list_to_text(_transform_list))
@@ -17,6 +19,7 @@ func format(text: String) -> String:
 func set_transform_list(new_transform_list: Array[Transform]) -> void:
 	_transform_list = new_transform_list
 	_final_transform = compute_final_transform(new_transform_list)
+	_final_precise_transform = compute_final_precise_transform(new_transform_list)
 	set_value(transform_list_to_text(new_transform_list))
 
 func set_transform_property(idx: int, property: String, new_value: float) -> void:
@@ -36,12 +39,24 @@ func get_transform(idx: int) -> Transform:
 func get_final_transform() -> Transform2D:
 	return _final_transform
 
+func get_final_precise_transform() -> PackedFloat64Array:
+	return _final_precise_transform
+
 
 static func compute_final_transform(transform_list: Array[Transform]) -> Transform2D:
 	var final_transform := Transform2D.IDENTITY
 	for t in transform_list:
 		final_transform *= t.compute_transform()
 	return final_transform
+
+static func compute_final_precise_transform(
+transform_list: Array[Transform]) -> PackedFloat64Array:
+	var final_transform := PackedFloat64Array([1.0, 0.0, 0.0, 1.0, 0.0, 0.0])
+	for t in transform_list:
+		final_transform = Utils64Bit.transforms_mult(final_transform,
+				t.compute_precise_transform())
+	return final_transform
+
 
 func delete_transform(idx: int) -> void:
 	_transform_list.remove_at(idx)

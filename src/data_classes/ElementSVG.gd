@@ -9,6 +9,7 @@ var height: float
 var normalized_diagonal: float
 var viewbox: Rect2
 var canvas_transform: Transform2D
+var canvas_precise_transform: PackedFloat64Array
 
 const name = "svg"
 const possible_conversions = []
@@ -37,6 +38,7 @@ func update_cache() -> void:
 		normalized_diagonal = Vector2(width, height).length() / sqrt(2)
 		viewbox = Rect2(0, 0, 0, 0)
 		canvas_transform = Transform2D.IDENTITY
+		canvas_precise_transform = PackedFloat64Array([1.0, 0.0, 0.0, 1.0, 0.0, 0.0])
 		return
 	
 	# From now on we're sure the input is valid. Cache width and height.
@@ -69,12 +71,21 @@ func update_cache() -> void:
 		canvas_transform = Transform2D(0.0, Vector2(width_ratio, width_ratio), 0.0,
 				-viewbox.position * width_ratio +\
 				Vector2(0, (height - width_ratio * viewbox.size.y) / 2))
+		
+		canvas_precise_transform = PackedFloat64Array([
+				width_ratio, 0.0, 0.0, width_ratio, -viewbox.position.x * width_ratio,
+				-viewbox.position.y * width_ratio + (height - width_ratio * viewbox.size.y) / 2.0])
 	else:
 		canvas_transform = Transform2D(0.0, Vector2(height_ratio, height_ratio), 0.0,
 				-viewbox.position * height_ratio +\
 				Vector2((width - height_ratio * viewbox.size.x) / 2, 0))
+		
+		canvas_precise_transform = PackedFloat64Array([
+				height_ratio, 0.0, 0.0, height_ratio, -viewbox.position.x * height_ratio +\
+				(width - height_ratio * viewbox.size.x) / 2, -viewbox.position.y * height_ratio])
 	if not canvas_transform.is_finite():
 		canvas_transform = Transform2D.IDENTITY
+		canvas_precise_transform = PackedFloat64Array([1.0, 0.0, 0.0, 1.0, 0.0, 0.0])
 	normalized_diagonal = Vector2(width, height).length() / sqrt(2)
 
 
@@ -85,7 +96,8 @@ func world_to_canvas(pos: Vector2) -> Vector2:
 	return canvas_transform.affine_inverse() * pos
 
 func world_to_canvas_64_bit(pos: PackedFloat64Array) -> PackedFloat64Array:
-	return Utils.transform_vector2_mult_64_bit(canvas_transform.affine_inverse(), pos)
+	return Utils64Bit.transform_vector_mult(Utils64Bit.get_transform_affine_inverse(
+			canvas_precise_transform), pos)
 
 func get_size() -> Vector2:
 	return Vector2(width, height)

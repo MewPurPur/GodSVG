@@ -19,6 +19,9 @@ class TransformMatrix extends Transform:
 	
 	func compute_transform() -> Transform2D:
 		return Transform2D(Vector2(x1, x2), Vector2(y1, y2), Vector2(o1, o2))
+	
+	func compute_precise_transform() -> PackedFloat64Array:
+		return PackedFloat64Array([x1, x2, y1, y2, o1, o2])
 
 class TransformTranslate extends Transform:
 	var x: float
@@ -30,6 +33,9 @@ class TransformTranslate extends Transform:
 	
 	func compute_transform() -> Transform2D:
 		return Transform2D(Vector2.RIGHT, Vector2.DOWN, Vector2(x, y))
+	
+	func compute_precise_transform() -> PackedFloat64Array:
+		return PackedFloat64Array([1.0, 0.0, 0.0, 1.0, x, y])
 
 class TransformRotate extends Transform:
 	var deg: float
@@ -44,6 +50,14 @@ class TransformRotate extends Transform:
 	func compute_transform() -> Transform2D:
 		var pt := Vector2(x, y)
 		return Transform2D.IDENTITY.translated(-pt).rotated(deg_to_rad(deg)).translated(pt)
+	
+	func compute_precise_transform() -> PackedFloat64Array:
+		var rad := deg_to_rad(deg)
+		var cos_val := cos(rad)
+		var sin_val := sin(rad)
+		var ox := x - x * cos_val + y * sin_val
+		var oy := y - x * sin_val - y * cos_val
+		return PackedFloat64Array([cos_val, sin_val, -sin_val, cos_val, ox, oy])
 
 class TransformScale extends Transform:
 	var x: float
@@ -55,6 +69,9 @@ class TransformScale extends Transform:
 	
 	func compute_transform() -> Transform2D:
 		return Transform2D(Vector2.RIGHT * x, Vector2.DOWN * y, Vector2.ZERO)
+	
+	func compute_precise_transform() -> PackedFloat64Array:
+		return PackedFloat64Array([x, 0, 0, y, 0, 0])
 
 class TransformSkewX extends Transform:
 	var x: float
@@ -64,6 +81,10 @@ class TransformSkewX extends Transform:
 	
 	func compute_transform() -> Transform2D:
 		return Transform2D(Vector2.RIGHT, Vector2(tan(deg_to_rad(x)), 1), Vector2.ZERO)
+	
+	func compute_precise_transform() -> PackedFloat64Array:
+		return PackedFloat64Array([1.0, 0.0, tan(deg_to_rad(x)), 1.0, 0.0, 0.0])
+
 
 class TransformSkewY extends Transform:
 	var y: float
@@ -73,3 +94,6 @@ class TransformSkewY extends Transform:
 	
 	func compute_transform() -> Transform2D:
 		return Transform2D(Vector2(1, tan(deg_to_rad(y))), Vector2.DOWN, Vector2.ZERO)
+	
+	func compute_precise_transform() -> PackedFloat64Array:
+		return PackedFloat64Array([1.0, tan(deg_to_rad(y)), 0.0, 1.0, 0.0, 0.0])
