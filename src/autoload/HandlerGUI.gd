@@ -131,7 +131,7 @@ func remove_all_popups() -> void:
 func popup_under_rect(popup: Control, rect: Rect2, vp: Viewport) -> void:
 	add_popup(popup)
 	var screen_transform := vp.get_screen_transform()
-	var screen_h := vp.get_visible_rect().size.y / screen_transform.get_scale().y
+	var screen_h := vp.get_visible_rect().size.y
 	var popup_pos := Vector2(rect.position.x, 0)
 	# Popup below if there's enough space or we're in the bottom half of the screen.
 	if rect.position.y + rect.size.y + popup.size.y < screen_h or\
@@ -376,7 +376,3 @@ func throw_mouse_motion_event() -> void:
 	# Must multiply by the final transform because the InputEvent is not yet parsed.
 	mm_event.position = window.get_mouse_position() * window.get_final_transform()
 	Input.parse_input_event.call_deferred(mm_event)
-
-func get_window_content_size() -> Vector2:
-	var window := get_window()
-	return Vector2(window.size) * window.get_final_transform().affine_inverse()

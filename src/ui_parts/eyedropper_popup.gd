@@ -14,7 +14,7 @@ func _enter_tree() -> void:
 	DisplayServer.mouse_set_mode(DisplayServer.MOUSE_MODE_HIDDEN)
 	await RenderingServer.frame_post_draw
 	texture = ImageTexture.create_from_image(get_viewport().get_texture().get_image())
-	size = HandlerGUI.get_window_content_size()
+	size = get_window().get_visible_rect().size
 
 
 func _exit_tree() -> void:
