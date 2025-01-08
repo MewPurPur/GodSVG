@@ -85,12 +85,12 @@ func _remove_control(overlay_ref: ColorRect = null) -> void:
 		menu_stack[matching_idx - 1].show()
 	if is_instance_valid(overlay_ref):
 		overlay_ref.queue_free()
-	Utils.throw_mouse_motion_event()
+	throw_mouse_motion_event()
 
 func remove_all_menus() -> void:
 	while not menu_stack.is_empty():
 		menu_stack.pop_back().queue_free()
-	Utils.throw_mouse_motion_event()
+	throw_mouse_motion_event()
 
 
 func add_popup(new_popup: Control) -> void:
@@ -119,12 +119,12 @@ func remove_popup(overlay_ref: Control = null) -> void:
 	overlay_ref = popup_stack.pop_back()
 	if is_instance_valid(overlay_ref):
 		overlay_ref.queue_free()
-	Utils.throw_mouse_motion_event()
+	throw_mouse_motion_event()
 
 func remove_all_popups() -> void:
 	while not popup_stack.is_empty():
 		popup_stack.pop_back().queue_free()
-	Utils.throw_mouse_motion_event()
+	throw_mouse_motion_event()
 
 
 # Should usually be the global rect of a control.
@@ -364,3 +364,19 @@ func _calculate_auto_scale() -> float:
 		# Use an intermediate scale to handle this situation.
 		return 1.5
 	return 1.0
+
+
+# Helpers
+
+# Used to trigger a mouse motion event, which can be used to update some things,
+# when Godot doesn't want to do so automatically.
+func throw_mouse_motion_event() -> void:
+	var mm_event := InputEventMouseMotion.new()
+	var window := get_window()
+	# Must multiply by the final transform because the InputEvent is not yet parsed.
+	mm_event.position = window.get_mouse_position() * window.get_final_transform()
+	Input.parse_input_event.call_deferred(mm_event)
+
+func get_window_content_size() -> Vector2:
+	var window := get_window()
+	return Vector2(window.size) * window.get_final_transform().affine_inverse()

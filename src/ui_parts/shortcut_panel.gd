@@ -150,5 +150,4 @@ func sync_relative_position() -> void:
 
 
 func get_usable_area_size() -> Vector2:
-	var window := get_window()
-	return Vector2(window.size) * window.get_final_transform().affine_inverse() - size
+	return HandlerGUI.get_window_content_size() - size

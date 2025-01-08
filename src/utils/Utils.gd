@@ -92,15 +92,6 @@ static func mouse_filter_pass_non_drag_events(event: InputEvent) -> Control.Mous
 	return Control.MOUSE_FILTER_STOP if event is InputEventMouseMotion and\
 			event.button_mask == MOUSE_BUTTON_MASK_LEFT else Control.MOUSE_FILTER_PASS
 
-# Used to trigger a mouse motion event, which can be used to update some things,
-# when Godot doesn't want to do so automatically.
-static func throw_mouse_motion_event() -> void:
-	var mouse_motion_event := InputEventMouseMotion.new()
-	var root: Window = Engine.get_main_loop().root
-	# Must multiply by the final transform because the InputEvent is not yet parsed.
-	mouse_motion_event.position = root.get_mouse_position() * root.get_final_transform()
-	Input.parse_input_event.call_deferred(mouse_motion_event)
-
 
 static func generate_gradient(element: Element) -> Gradient:
 	if not (element is ElementLinearGradient or element is ElementRadialGradient):

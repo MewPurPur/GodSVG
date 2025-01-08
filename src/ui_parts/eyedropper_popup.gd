@@ -2,7 +2,10 @@ extends TextureRect
 
 signal color_picked(color: Color)
 
-const grid_color = Color(0.5, 0.5, 0.5, 0.35)
+const GRID_COLOR = Color(0.5, 0.5, 0.5, 0.35)
+const PIXEL_SIZE = 7
+const FRAME_RADIUS = 50
+const FRAME_WIDTH = 5
 
 var color: Color
 var ci := get_canvas_item()
@@ -37,29 +40,63 @@ func _draw() -> void:
 	
 	# Yes, draw it pixel by pixel.
 	var texture_image := texture.get_image()
-	for x in range(-7, 8):
-		for y in range(-7, 8):
-			if Vector2(x, y).length_squared() < 58 and pos.x + x >= 0 and\
-			pos.x + x < viewport_width and pos.y + y >= 0 and pos.y + y < viewport_height:
-				draw_rect(Rect2(pos + Vector2(x, y) * 7 - Vector2(3, 3), Vector2(7, 7)),
+	var frsq := FRAME_RADIUS * FRAME_RADIUS
+	for x in range(ceili(-FRAME_RADIUS / 7.0), ceili(FRAME_RADIUS / 7.0)):
+		for y in range(ceili(-FRAME_RADIUS / 7.0), ceili(FRAME_RADIUS / 7.0)):
+			if pos.x + x < 0 or pos.x + x > viewport_width or pos.y + y < 0 or\
+			pos.y + y > viewport_height:
+				continue
+			
+			var l := (x - 0.5) * PIXEL_SIZE - 0.5
+			var r := l + PIXEL_SIZE
+			var t := (y - 0.5) * PIXEL_SIZE - 0.5
+			var b := t + PIXEL_SIZE
+			
+			var max_horizontal := maxf(sqrt(frsq - t * t), sqrt(frsq - b * b))
+			var max_vertical := maxf(sqrt(frsq - l * l), sqrt(frsq - r * r))
+			if is_nan(max_horizontal) and is_nan(max_vertical):
+				continue
+			
+			var left = clampf(pos.x + l, pos.x - max_horizontal, pos.x + max_horizontal)
+			var right = clampf(pos.x + r, pos.x - max_horizontal, pos.x + max_horizontal)
+			var top = clampf(pos.y + t, pos.y - max_vertical, pos.y + max_vertical)
+			var bottom = clampf(pos.y + b, pos.y - max_vertical, pos.y + max_vertical)
+			
+			if left < right and top < bottom:
+				draw_rect(Rect2(Vector2(left, top), Vector2(right - left, bottom - top)),
 						texture_image.get_pixelv(pos + Vector2(x, y)))
+	
+	var grid_points := PackedVector2Array()
+	for i in range(ceili(-FRAME_RADIUS / 7.0), ceili(FRAME_RADIUS / 7.0)):
+		var grid_coord := (i - 0.5) * PIXEL_SIZE + 0.5
+		var offset := sqrt((FRAME_RADIUS + 1) ** 2 - grid_coord * grid_coord)
+		grid_points.append(pos + Vector2(grid_coord, -offset))
+		grid_points.append(pos + Vector2(grid_coord, offset))
+		grid_points.append(pos + Vector2(-offset, grid_coord))
+		grid_points.append(pos + Vector2(offset, grid_coord))
+	draw_multiline(grid_points, GRID_COLOR)
 	
 	var theme_color := Color(0.9, 0.9, 0.9)
 	
-	for i in range(-45, 50, 7):
-		var offset := sqrt(2604 - i * i)
-		draw_line(pos + Vector2(i, -offset), pos + Vector2(i, offset), grid_color)
-		draw_line(pos + Vector2(-offset, i), pos + Vector2(offset, i), grid_color)
-	draw_circle(pos, 52, theme_color, false, 6.0, true)
-	draw_rect(Rect2(pos - Vector2(3, 3), Vector2(7, 7)), Color.WHITE, false, 1.0)
-	draw_rect(Rect2(pos - Vector2(4, 4), Vector2(9, 9)), Color.BLACK, false, 1.0)
+	draw_circle(pos, FRAME_RADIUS + FRAME_WIDTH / 2.0, theme_color, false, FRAME_WIDTH,
+			true)
+	draw_rect(Rect2(pos - Vector2(1, 1) * (PIXEL_SIZE / 2.0 - 0.5),
+			Vector2(1, 1) * PIXEL_SIZE), Color.WHITE, false, 1.0)
+	draw_rect(Rect2(pos - Vector2(1, 1) * (PIXEL_SIZE / 2.0 + 0.5),
+			Vector2(1, 1) * (PIXEL_SIZE + 2)), Color.BLACK, false, 1.0)
 	
-	var stylebox_corner := Vector2(clampf(pos.x - 51, 0.0, viewport_width - 103),
-			pos.y + (50 if (pos.y + 75 <= viewport_height) else -75))
+	var stylebox_width := FRAME_RADIUS * 2
+	var stylebox_height := 25
+	var stylebox_vertical_offset := FRAME_RADIUS
+	var stylebox_corner := Vector2(clampf(pos.x - FRAME_RADIUS, 0.0,
+			viewport_width - stylebox_width), pos.y + (stylebox_vertical_offset if\
+			(pos.y + stylebox_vertical_offset + stylebox_height <= viewport_height) else\
+			-stylebox_vertical_offset - stylebox_height))
+	
 	var stylebox := StyleBoxFlat.new()
 	stylebox.set_corner_radius_all(4)
 	stylebox.bg_color = theme_color
-	stylebox.draw(ci, Rect2(stylebox_corner, Vector2(103, 25)))
+	stylebox.draw(ci, Rect2(stylebox_corner, Vector2(stylebox_width, stylebox_height)))
 	
 	color = texture_image.get_pixelv(pos)
 	ThemeUtils.mono_font.draw_string(ci, stylebox_corner + Vector2(26, 19), "#" +\

@@ -57,6 +57,10 @@ func _ready() -> void:
 			"Preview image size is limited to {dimensions}").format(
 			{"dimensions": get_dimensions_text(dimensions * scaling_factor, true)})
 	
+	if Utils.get_file_name(Configs.savedata.current_file_path).is_empty():
+		file_title.add_theme_color_override("font_color", ThemeUtils.common_subtle_text_color)
+		file_title.text = Translator.translate("Unnamed")
+	
 	final_size_label.text = Translator.translate("Size") + ": " +\
 			String.humanize_size(SVG.get_export_text().length())
 	%TitleLabel.text = Translator.translate("Export Configuration")
@@ -141,8 +145,10 @@ func update() -> void:
 	size_container.visible = export_data.format in ["png", "jpg", "jpeg", "webp"]
 	
 	final_size_label.visible = (export_data.format == "svg")
-	file_title.text = Utils.get_file_name(Configs.savedata.current_file_path) + "." +\
-			export_data.format
+	
+	var file_path := Utils.get_file_name(Configs.savedata.current_file_path)
+	if not file_path.is_empty():
+		file_title.text = file_path + "." + export_data.format
 	
 	# Display the texture and the warning for inaccurate previews.
 	if export_data.format == "svg":
