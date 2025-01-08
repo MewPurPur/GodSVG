@@ -118,7 +118,7 @@ func sync(new_value: String) -> void:
 		add_move_button.queue_free()
 	# Rebuild the path commands.
 	commands_container.custom_minimum_size.y = cmd_count * STRIP_HEIGHT
-	Utils.throw_mouse_motion_event()
+	HandlerGUI.throw_mouse_motion_event()
 	if hovered_idx >= cmd_count:
 		activate_hovered(-1)
 	reactivate_hovered()

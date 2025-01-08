@@ -90,6 +90,6 @@ func _on_button_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and\
 	event.is_pressed():
 		accept_event()
-		Utils.throw_mouse_motion_event()
+		HandlerGUI.throw_mouse_motion_event()
 	else:
 		temp_button.mouse_filter = Utils.mouse_filter_pass_non_drag_events(event)
