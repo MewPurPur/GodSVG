@@ -280,7 +280,7 @@ func update_ui_scale() -> void:
 	var final_scale := minf(Configs.savedata.ui_scale * _calculate_auto_scale(), max_scale)
 	var resize_factor := final_scale / old_scale_factor
 	
-	if OS.get_name() != "Android":
+	if not OS.get_name() in ["Android", "Web"]:
 		# TODO Check later if this workaround is still necessary for Windows.
 		if OS.get_name() != "Windows" or window.mode == Window.MODE_WINDOWED:
 			# The window's minimum size can mess with the size change, so we set it to zero.
