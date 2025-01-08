@@ -150,4 +150,4 @@ func sync_relative_position() -> void:
 
 
 func get_usable_area_size() -> Vector2:
-	return HandlerGUI.get_window_content_size() - size
+	return get_window().get_visible_rect().size - size
