@@ -1,4 +1,4 @@
-# A <stop/> element.
+# A <stop> element.
 class_name ElementStop extends Element
 
 const name = "stop"

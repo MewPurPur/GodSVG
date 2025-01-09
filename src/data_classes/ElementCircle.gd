@@ -1,4 +1,4 @@
-# A <circle/> element.
+# A <circle> element.
 class_name ElementCircle extends Element
 
 const name = "circle"

@@ -1,3 +1,4 @@
+# A <linearGradient> element.
 class_name ElementLinearGradient extends Element
 
 const name = "linearGradient"

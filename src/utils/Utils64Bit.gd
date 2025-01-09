@@ -3,6 +3,13 @@
 # and this class implements the necessary functionality to make them work.
 class_name Utils64Bit extends RefCounted
 
+static func get_vector(vector: PackedFloat64Array) -> Vector2:
+	return Vector2(vector[0], vector[1])
+
+static func get_transform(transform: PackedFloat64Array) -> Transform2D:
+	return Transform2D(Vector2(transform[0], transform[1]),
+			Vector2(transform[2], transform[3]), Vector2(transform[4], transform[5]))
+
 # Vector2 * Transform2D
 static func transform_vector_mult(transform: PackedFloat64Array,
 vector: PackedFloat64Array) -> PackedFloat64Array:

@@ -1,4 +1,4 @@
-# A <rect/> element.
+# A <rect> element.
 class_name ElementRect extends Element
 
 const name = "rect"
