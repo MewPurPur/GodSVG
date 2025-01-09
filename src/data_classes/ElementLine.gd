@@ -1,4 +1,4 @@
-# A <line/> element.
+# A <line> element.
 class_name ElementLine extends Element
 
 const name = "line"

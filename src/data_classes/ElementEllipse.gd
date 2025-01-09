@@ -1,4 +1,4 @@
-# An <ellipse/> element.
+# An <ellipse> element.
 class_name ElementEllipse extends Element
 
 const name = "ellipse"

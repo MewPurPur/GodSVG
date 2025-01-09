@@ -1,3 +1,4 @@
+# A <radialGradient> element.
 class_name ElementRadialGradient extends Element
 
 const name = "radialGradient"

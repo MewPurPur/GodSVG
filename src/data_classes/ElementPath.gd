@@ -1,4 +1,4 @@
-# A <path/> element.
+# A <path> element.
 class_name ElementPath extends Element
 
 const name = "path"

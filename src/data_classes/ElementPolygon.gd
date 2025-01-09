@@ -1,4 +1,4 @@
-# A <polygon/> element.
+# A <polygon> element.
 class_name ElementPolygon extends Element
 
 const name = "polygon"
