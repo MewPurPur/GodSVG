@@ -215,6 +215,13 @@ func get_attribute_final_transform(attribute_name: String) -> Transform2D:
 			has_attribute(attribute_name) else new_default_attribute(attribute_name)
 	return attrib.get_final_transform()
 
+func get_attribute_final_precise_transform(attribute_name: String) -> PackedFloat64Array:
+	if DB.get_attribute_type(attribute_name) != DB.AttributeType.TRANSFORM_LIST:
+		push_error("Attribute not the correct type.")
+	var attrib: AttributeTransformList = _attributes[attribute_name] if\
+			has_attribute(attribute_name) else new_default_attribute(attribute_name)
+	return attrib.get_final_precise_transform()
+
 
 func set_attribute(attribute_name: String, value: Variant) -> void:
 	var attrib: Attribute
@@ -328,6 +335,15 @@ func get_transform() -> Transform2D:
 		result *= parent.get_transform()
 	if has_attribute("transform"):
 		result *= get_attribute_final_transform("transform")
+	return result
+
+func get_precise_transform() -> PackedFloat64Array:
+	var result := PackedFloat64Array([1.0, 0.0, 0.0, 1.0, 0.0, 0.0])
+	if is_parent_g():
+		result = Utils64Bit.transforms_mult(result, parent.get_precise_transform())
+	if has_attribute("transform"):
+		result = Utils64Bit.transforms_mult(result,
+				get_attribute_final_precise_transform("transform"))
 	return result
 
 func new_attribute(name: String, value := "") -> Attribute:

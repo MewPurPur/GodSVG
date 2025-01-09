@@ -705,8 +705,8 @@ func _unhandled_input(event: InputEvent) -> void:
 		if is_instance_valid(dragged_handle):
 			# Move the handle that's being dragged.
 			var event_pos := get_event_pos(event)
-			var new_pos := Utils.transform_vector2_mult_64_bit(
-					dragged_handle.transform.affine_inverse(),
+			var new_pos := Utils64Bit.transform_vector_mult(
+					Utils64Bit.get_transform_affine_inverse(dragged_handle.precise_transform),
 					SVG.root_element.world_to_canvas_64_bit(event_pos))
 			dragged_handle.set_pos(new_pos)
 			was_handle_moved = true
@@ -744,8 +744,8 @@ func _unhandled_input(event: InputEvent) -> void:
 					Indications.normal_select(dragged_xid, inner_idx)
 			elif is_instance_valid(dragged_handle) and event.is_released():
 				if was_handle_moved:
-					var new_pos := Utils.transform_vector2_mult_64_bit(
-							dragged_handle.transform.affine_inverse(),
+					var new_pos := Utils64Bit.transform_vector_mult(
+							Utils64Bit.get_transform_affine_inverse(dragged_handle.precise_transform),
 							SVG.root_element.world_to_canvas_64_bit(event_pos))
 					dragged_handle.set_pos(new_pos)
 					SVG.queue_save()
@@ -833,8 +833,8 @@ func _on_handle_added() -> void:
 			dragged_handle = handle
 			# Move the handle that's being dragged.
 			var mouse_pos := apply_snap(get_global_mouse_position())
-			var new_pos := Utils.transform_vector2_mult_64_bit(
-					dragged_handle.transform.affine_inverse(),
+			var new_pos := Utils64Bit.transform_vector_mult(
+					Utils64Bit.get_transform_affine_inverse(dragged_handle.precise_transform),
 					SVG.root_element.world_to_canvas_64_bit(mouse_pos))
 			dragged_handle.set_pos(new_pos)
 			was_handle_moved = true
