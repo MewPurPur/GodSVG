@@ -4,13 +4,13 @@ class_name AttributeColor extends Attribute
 # No direct color representation for this attribute type. There are too many quirks.
 
 func set_value(new_value: String) -> void:
-	super(new_value if ColorParser.is_valid(new_value,
+	super(new_value if ColorParser.is_valid(new_value, false, true,
 			name in DB.attribute_color_url_allowed) else "")
 
 func format(text: String) -> String:
 	text = text.strip_edges()
 	
-	if text.is_empty() or text in special_colors:
+	if text.is_empty() or text in ["none", "currentColor"]:
 		return text
 	elif ColorParser.is_valid_url(text):
 		return "url(" + text.substr(4, text.length() - 5).strip_edges() + ")"
@@ -19,8 +19,8 @@ func format(text: String) -> String:
 	# First make sure we have a 6-digit hex.
 	if ColorParser.is_valid_rgb(text) or ColorParser.is_valid_hsl(text):
 		text = "#" + ColorParser.text_to_color(text).to_html(false)
-	if text in named_colors:
-		text = named_colors[text]
+	if text in get_named_colors():
+		text = get_named_colors()[text]
 	if ColorParser.is_valid_hex(text) and text.length() == 4:
 		text = "#" + text[1] + text[1] + text[2] + text[2] + text[3] + text[3]
 	
@@ -43,11 +43,11 @@ func format(text: String) -> String:
 		if ColorParser.is_valid_hex(hex) and hex.length() == 4:
 			hex = "#" + hex[1] + hex[1] + hex[2] + hex[2] + hex[3] + hex[3]
 		
-		if hex in AttributeColor.named_colors.values():
+		if hex in AttributeColor.get_named_colors().values():
 			if named_colors_usage == Formatter.NamedColorUse.ALWAYS:
-				text = AttributeColor.named_colors.find_key(hex)
+				text = AttributeColor.get_named_colors().find_key(hex)
 			else:
-				var named_color_text: String = AttributeColor.named_colors.find_key(hex)
+				var named_color_text: String = AttributeColor.get_named_colors().find_key(hex)
 				if named_color_text.length() < text.length() or\
 				(named_colors_usage == Formatter.NamedColorUse.WHEN_SHORTER_OR_EQUAL and\
 				named_color_text.length() == text.length()):
@@ -55,9 +55,15 @@ func format(text: String) -> String:
 	return text
 
 
-const special_colors = ["transparent", "none", "currentColor"]
+static func get_named_colors(include_alpha := false) -> Dictionary:
+	if include_alpha:
+		var extended_named_colors := _named_colors.duplicate()
+		extended_named_colors["transparent"] = "#00000000"
+		return extended_named_colors
+	else:
+		return _named_colors
 
-const named_colors = {  # Dictionary{String: String}
+const _named_colors = {  # Dictionary{String: String}
 	"aliceblue": "#f0f8ff",
 	"antiquewhite": "#faebd7",
 	"aqua": "#00ffff",

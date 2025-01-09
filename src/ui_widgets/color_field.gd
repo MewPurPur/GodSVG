@@ -44,10 +44,9 @@ func _ready() -> void:
 	text_change_canceled.connect(sync_to_attribute)
 	pressed.connect(_on_pressed)
 	button_gui_input.connect(_on_button_gui_input)
-	# If URL is allowed, we need to always check if the gradient has changed.
-	if cached_allow_url:
-		element.root.any_attribute_changed.connect(_on_svg_changed.unbind(1))
-		element.root.xnode_layout_changed.connect(_on_svg_changed)
+	# URLs and currentColor require to always listen for changes to the SVG.
+	element.root.any_attribute_changed.connect(_on_svg_changed.unbind(1))
+	element.root.xnode_layout_changed.connect(_on_svg_changed)
 	tooltip_text = attribute_name
 	setup_placeholder()
 
@@ -66,15 +65,18 @@ func sync_to_attribute() -> void:
 
 # Redraw in case the gradient might have changed.
 func _on_svg_changed() -> void:
-	if ColorParser.is_valid_url(element.get_attribute_value(attribute_name, false)):
+	if ColorParser.is_valid_url(element.get_attribute_value(attribute_name, false)) and\
+	cached_allow_url:
 		update_gradient_texture()
+		queue_redraw()
+	elif element.get_attribute_value(attribute_name, true) == "currentColor":
 		queue_redraw()
 
 func _on_pressed() -> void:
 	color_popup = ColorPopup.instantiate()
 	color_popup.current_value = element.get_attribute_value(attribute_name, true)
 	color_popup.effective_color = ColorParser.text_to_color(
-			element.get_attribute_value(attribute_name, false))
+			element.get_attribute_true_color(attribute_name))
 	color_popup.show_url = cached_allow_url
 	color_popup.color_picked.connect(_on_color_picked)
 	HandlerGUI.popup_under_rect(color_popup, get_global_rect(), get_viewport())
@@ -116,7 +118,8 @@ func _draw() -> void:
 		var stylebox := StyleBoxFlat.new()
 		stylebox.corner_radius_top_right = r
 		stylebox.corner_radius_bottom_right = r
-		stylebox.bg_color = ColorParser.text_to_color(color_value, Color.TRANSPARENT)
+		stylebox.bg_color = ColorParser.text_to_color(
+				element.get_attribute_true_color(attribute_name), Color.TRANSPARENT)
 		stylebox.draw(ci, Rect2(h_offset, 1, BUTTON_WIDTH - 1, size.y - 2))
 	# Draw the button border.
 	if is_instance_valid(temp_button) and temp_button.button_pressed:
@@ -134,7 +137,8 @@ func _on_color_picked(new_color: String, close_picker: bool) -> void:
 		color_popup.queue_free()
 
 func is_valid(color_text: String) -> bool:
-	return ColorParser.is_valid(ColorParser.add_hash_if_hex(color_text), cached_allow_url)
+	return ColorParser.is_valid(ColorParser.add_hash_if_hex(color_text), false, true,
+			cached_allow_url)
 
 
 func _on_text_changed(new_text: String) -> void:

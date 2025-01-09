@@ -46,6 +46,7 @@ func _get_own_default(attribute_name: String) -> String:
 		"stroke-width": return "1"
 		"stroke-linecap": return "butt"
 		"stroke-linejoin": return "miter"
+		"color": return "black"
 		_: return ""
 
 
