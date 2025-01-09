@@ -7,9 +7,13 @@ static func add_hash_if_hex(color: String) -> String:
 		color = "#" + color
 	return color
 
-static func is_valid(color: String, allow_alpha := false, allow_url := true) -> bool:
+static func is_valid(color: String, allow_alpha := false, allow_element_context := false,
+allow_url := true) -> bool:
+	if not allow_element_context:
+		allow_url = false
 	return is_valid_hex(color, allow_alpha) or is_valid_rgb(color, allow_alpha) or\
-			is_valid_hsl(color, allow_alpha) or is_valid_named(color, allow_alpha) or\
+			is_valid_hsl(color, allow_alpha) or\
+			is_valid_named(color, allow_alpha, allow_element_context) or\
 			(allow_url and is_valid_url(color))
 
 static func is_valid_hex(color: String, allow_alpha := false) -> bool:
@@ -85,15 +89,16 @@ static func _hsl_check(stripped_color: String) -> bool:
 	return _is_valid_number(channels[0]) and _is_valid_percentage(channels[1]) and\
 			_is_valid_percentage(channels[2])
 
-static func is_valid_named(color: String, enable_alpha := false) -> bool:
+static func is_valid_named(color: String, allow_alpha := false,
+allow_element_context := false) -> bool:
 	color = color.strip_edges()
-	if AttributeColor.named_colors.has(color):
+	if AttributeColor.get_named_colors(allow_alpha).has(color):
 		return true
-	
-	var checked_arr := AttributeColor.special_colors.duplicate()
-	if not enable_alpha:
-		checked_arr.erase("transparent")
-	return color in checked_arr
+	elif color == "none":
+		return true
+	elif allow_element_context and color == "currentColor":
+		return true
+	return false
 
 static func is_valid_url(color: String) -> bool:
 	color = color.strip_edges()
@@ -109,15 +114,11 @@ static func _get_url_id(stripped_color: String) -> String:
 static func text_to_color(color: String, backup := Color.BLACK,
 allow_alpha := false) -> Color:
 	color = color.strip_edges()
-	if is_valid_named(color):
+	if is_valid_named(color, allow_alpha):
 		if color == "none":
 			return Color(0, 0, 0, 0)
-		elif color == "transparent":
-			return Color(0, 0, 0, 0) if allow_alpha else backup
-		elif color == "currentColor":
-			return backup
 		else:
-			return Color(AttributeColor.named_colors[color])
+			return Color(AttributeColor.get_named_colors(allow_alpha)[color])
 	elif is_valid_rgb(color, allow_alpha):
 		var inside_brackets := color.substr(4, color.length() - 5)
 		var args := inside_brackets.split(",", false)
@@ -163,11 +164,10 @@ allow_alpha := false) -> Color:
 static func are_colors_same(col1: String, col2: String) -> bool:
 	col1 = col1.strip_edges()
 	col2 = col2.strip_edges()
-	# Ensure that the two colors aren't the same,
-	# but of a type that can't be represented as hex.
+	# Handle color keywords that can't be represented as hex.
 	if col1 == col2:
 		return true
-	elif col1 in AttributeColor.special_colors or col2 in AttributeColor.special_colors:
+	elif col1 == "none" or col2 == "none":
 		return false
 	else:
 		var is_col1_url := is_valid_url(col1)
@@ -185,8 +185,8 @@ static func are_colors_same(col1: String, col2: String) -> bool:
 			col = text_to_color(col).to_html(false)
 		elif is_valid_hex(col) and col.length() == 4:
 			col = col[1] + col[1] + col[2] + col[2] + col[3] + col[3]
-		elif is_valid_named(col):
-			col = AttributeColor.named_colors[col]
+		elif is_valid_named(col, true):
+			col = AttributeColor.get_named_colors()[col]
 		col = col.trim_prefix("#")
 		# End of conversion logic.
 		if i == 0:

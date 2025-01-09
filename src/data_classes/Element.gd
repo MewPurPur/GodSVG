@@ -173,6 +173,16 @@ func get_attribute_num(attribute_name: String) -> float:
 				DB.PercentageHandling.NORMALIZED: return svg.normalized_diagonal * num
 	return num
 
+func get_attribute_true_color(attribute_name: String) -> String:
+	if DB.get_attribute_type(attribute_name) != DB.AttributeType.COLOR:
+		push_error("Attribute not the correct type.")
+	var attrib: AttributeColor = _attributes[attribute_name] if\
+			has_attribute(attribute_name) else new_default_attribute(attribute_name)
+	var attrib_value := attrib.get_value()
+	if attrib_value == "currentColor":
+		return get_default("color")
+	return attrib_value
+
 func is_attribute_percentage(attribute_name: String) -> bool:
 	if DB.get_attribute_type(attribute_name) != DB.AttributeType.NUMERIC:
 		push_error("Attribute not the correct type.")
@@ -207,13 +217,6 @@ func get_attribute_transforms(attribute_name: String) -> Array[Transform]:
 	var attrib: AttributeTransformList = _attributes[attribute_name] if\
 			has_attribute(attribute_name) else new_default_attribute(attribute_name)
 	return attrib.get_transform_list()
-
-func get_attribute_final_transform(attribute_name: String) -> Transform2D:
-	if DB.get_attribute_type(attribute_name) != DB.AttributeType.TRANSFORM_LIST:
-		push_error("Attribute not the correct type.")
-	var attrib: AttributeTransformList = _attributes[attribute_name] if\
-			has_attribute(attribute_name) else new_default_attribute(attribute_name)
-	return attrib.get_final_transform()
 
 func get_attribute_final_precise_transform(attribute_name: String) -> PackedFloat64Array:
 	if DB.get_attribute_type(attribute_name) != DB.AttributeType.TRANSFORM_LIST:
@@ -329,13 +332,6 @@ func user_setup(_what = null) -> void:
 func is_parent_g() -> bool:
 	return parent != null and parent is ElementG
 
-func get_transform() -> Transform2D:
-	var result := Transform2D.IDENTITY
-	if is_parent_g():
-		result *= parent.get_transform()
-	if has_attribute("transform"):
-		result *= get_attribute_final_transform("transform")
-	return result
 
 func get_precise_transform() -> PackedFloat64Array:
 	var result := PackedFloat64Array([1.0, 0.0, 0.0, 1.0, 0.0, 0.0])
@@ -345,6 +341,9 @@ func get_precise_transform() -> PackedFloat64Array:
 		result = Utils64Bit.transforms_mult(result,
 				get_attribute_final_precise_transform("transform"))
 	return result
+
+func get_transform() -> Transform2D:
+	return Utils64Bit.get_transform(get_precise_transform())
 
 func new_attribute(name: String, value := "") -> Attribute:
 	var attrib := _create_attribute(name, value)

@@ -2,15 +2,7 @@
 class_name AttributeTransformList extends Attribute
 
 var _transform_list: Array[Transform] = []
-
-# Automatically updated with the precise transform.
-var _final_transform := Transform2D.IDENTITY
-
-var _final_precise_transform := PackedFloat64Array([1.0, 0.0, 0.0, 1.0, 0.0, 0.0]):
-	set(new_value):
-		_final_precise_transform = new_value
-		_final_transform = Utils64Bit.get_transform(_final_precise_transform)
-
+var _final_precise_transform := PackedFloat64Array([1.0, 0.0, 0.0, 1.0, 0.0, 0.0])
 
 func _sync() -> void:
 	_transform_list = text_to_transform_list(get_value())
@@ -40,9 +32,6 @@ func get_transform_count() -> int:
 
 func get_transform(idx: int) -> Transform:
 	return _transform_list[idx]
-
-func get_final_transform() -> Transform2D:
-	return _final_transform
 
 func get_final_precise_transform() -> PackedFloat64Array:
 	return _final_precise_transform

@@ -129,25 +129,25 @@ func delete_transform(idx: int) -> void:
 	UR.commit_action()
 
 func _on_apply_matrix_pressed() -> void:
-	var final_transform := attribute_ref.get_final_transform()
+	var final_transform := attribute_ref.get_final_precise_transform()
 	UR.create_action("")
 	UR.add_do_method(attribute_ref.set_transform_list.bind([
-			Transform.TransformMatrix.new(final_transform.x.x, final_transform.x.y,
-			final_transform.y.x, final_transform.y.y, final_transform.origin.x,
-			final_transform.origin.y)] as Array[Transform]))
+			Transform.TransformMatrix.new(final_transform[0], final_transform[1],
+			final_transform[2], final_transform[3], final_transform[4],
+			final_transform[5])] as Array[Transform]))
 	UR.add_do_method(rebuild)
 	UR.add_undo_method(attribute_ref.set_transform_list.bind(get_transform_list()))
 	UR.add_undo_method(rebuild)
 	UR.commit_action()
 
 func update_final_transform() -> void:
-	var final_transform := attribute_ref.get_final_transform()
-	x1_edit.set_value(final_transform[0].x)
-	x2_edit.set_value(final_transform[0].y)
-	y1_edit.set_value(final_transform[1].x)
-	y2_edit.set_value(final_transform[1].y)
-	o1_edit.set_value(final_transform[2].x)
-	o2_edit.set_value(final_transform[2].y)
+	var final_transform := attribute_ref.get_final_precise_transform()
+	x1_edit.set_value(final_transform[0])
+	x2_edit.set_value(final_transform[1])
+	y1_edit.set_value(final_transform[2])
+	y2_edit.set_value(final_transform[3])
+	o1_edit.set_value(final_transform[4])
+	o2_edit.set_value(final_transform[5])
 
 
 func popup_transform_actions(idx: int, control: Control) -> void:

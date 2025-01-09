@@ -75,7 +75,7 @@ const valid_children = {  # Dictionary{String: Array[String]}
 }
 
 const propagated_attributes = ["fill", "fill-opacity", "stroke", "stroke-opacity",
-		"stroke-width", "stroke-linecap", "stroke-linejoin"]
+		"stroke-width", "stroke-linecap", "stroke-linejoin", "color"]
 
 const attribute_types = {
 	"viewBox": AttributeType.LIST,
@@ -100,6 +100,7 @@ const attribute_types = {
 	"stroke-width": AttributeType.NUMERIC,
 	"stroke-linecap": AttributeType.ENUM,
 	"stroke-linejoin": AttributeType.ENUM,
+	"color": AttributeType.COLOR,
 	"d": AttributeType.PATHDATA,
 	"points": AttributeType.LIST,
 	"transform": AttributeType.TRANSFORM_LIST,
