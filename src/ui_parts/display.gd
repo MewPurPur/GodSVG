@@ -144,7 +144,7 @@ func _on_more_options_pressed() -> void:
 				load("res://assets/icons/OpenFolder.svg")))
 	
 	var about_btn := ContextPopup.create_button(Translator.translate("About…"),
-			ShortcutUtils.fn("about_info"), false, load("res://visual/icon.png"),
+			ShortcutUtils.fn("about_info"), false, load("res://assets/logos/icon.png"),
 			"about_info")
 	about_btn.expand_icon = true
 	buttons_arr.append(about_btn)
