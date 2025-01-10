@@ -2,10 +2,10 @@ extends VBoxContainer
 
 const EyedropperPopup = preload("res://src/ui_parts/eyedropper_popup.tscn")
 
-const handle_texture = preload("res://visual/icons/BWHandle.svg")
-const slider_arrow = preload("res://visual/icons/SliderArrow.svg")
-const side_slider_arrow = preload("res://visual/icons/SideSliderArrow.svg")
-const bg_pattern = preload("res://visual/icons/backgrounds/CheckerboardMini.svg")
+const handle_texture = preload("res://assets/icons/BWHandle.svg")
+const slider_arrow = preload("res://assets/icons/SliderArrow.svg")
+const side_slider_arrow = preload("res://assets/icons/SideSliderArrow.svg")
+const bg_pattern = preload("res://assets/icons/backgrounds/CheckerboardMini.svg")
 
 var alpha_enabled := false
 var is_none_keyword_available := false
@@ -324,11 +324,11 @@ func _on_keyword_button_pressed() -> void:
 	if is_none_keyword_available:
 		btn_arr.append(ContextPopup.create_button("none",
 				set_to_keyword.bind("none"), color == "none",
-				load("res://visual/icons/NoneColor.svg")))
+				load("res://assets/icons/NoneColor.svg")))
 	if is_current_color_keyword_available:
 		btn_arr.append(ContextPopup.create_button("currentColor",
 				set_to_keyword.bind("currentColor"), color == "currentColor",
-				load("res://visual/icons/Paste.svg")))
+				load("res://assets/icons/Paste.svg")))
 	
 	for btn in btn_arr:
 		btn.add_theme_font_override("font", ThemeUtils.mono_font)

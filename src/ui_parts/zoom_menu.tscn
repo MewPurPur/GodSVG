@@ -1,8 +1,8 @@
 [gd_scene load_steps=10 format=3 uid="uid://oltvrf01xrxl"]
 
-[ext_resource type="Texture2D" uid="uid://c2h5snkvemm4p" path="res://visual/icons/Minus.svg" id="1_8ggy2"]
+[ext_resource type="Texture2D" uid="uid://c2h5snkvemm4p" path="res://assets/icons/Minus.svg" id="1_8ggy2"]
 [ext_resource type="Script" path="res://src/ui_parts/zoom_menu.gd" id="1_18ab8"]
-[ext_resource type="Texture2D" uid="uid://eif2ioi0mw17" path="res://visual/icons/Plus.svg" id="2_284x5"]
+[ext_resource type="Texture2D" uid="uid://eif2ioi0mw17" path="res://assets/icons/Plus.svg" id="2_284x5"]
 
 [sub_resource type="InputEventAction" id="InputEventAction_mnex0"]
 action = &"zoom_out"

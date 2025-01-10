@@ -4,8 +4,8 @@ enum Layout {HORIZONTAL_STRIP, HORIZONTAL_TWO_ROWS, VERTICAL_STRIP}
 
 const ShortcutPanelConfig = preload("res://src/ui_parts/shortcut_panel_config.tscn")
 
-const dot_pattern = preload("res://visual/icons/DotPatternSegment.svg")
-const config_icon = preload("res://visual/icons/Config.svg")
+const dot_pattern = preload("res://assets/icons/DotPatternSegment.svg")
+const config_icon = preload("res://assets/icons/Config.svg")
 
 # Where on the dotted pattern the dragging started.
 var drag_offset := Vector2.ZERO

@@ -23,8 +23,8 @@ signal focused
 const MiniNumberField = preload("mini_number_field.tscn")
 const FlagField = preload("flag_field.tscn")
 
-const more_icon = preload("res://visual/icons/SmallMore.svg")
-const plus_icon = preload("res://visual/icons/Plus.svg")
+const more_icon = preload("res://assets/icons/SmallMore.svg")
+const plus_icon = preload("res://assets/icons/Plus.svg")
 
 var mini_line_edit_stylebox := get_theme_stylebox("normal", "MiniLineEdit")
 var mini_line_edit_font_size := get_theme_font_size("font_size", "MiniLineEdit")

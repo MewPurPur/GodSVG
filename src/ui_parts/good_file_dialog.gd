@@ -7,9 +7,9 @@ const AlertDialog = preload("res://src/ui_parts/alert_dialog.tscn")
 
 signal file_selected(path: String)
 
-const folder_icon = preload("res://visual/icons/Folder.svg")
-const broken_file_icon = preload("res://visual/icons/FileBroken.svg")
-const text_file_icon = preload("res://visual/icons/TextFile.svg")
+const folder_icon = preload("res://assets/icons/Folder.svg")
+const broken_file_icon = preload("res://assets/icons/FileBroken.svg")
+const text_file_icon = preload("res://assets/icons/TextFile.svg")
 
 const system_dirs_to_show = [OS.SYSTEM_DIR_DESKTOP, OS.SYSTEM_DIR_DOCUMENTS,
 		OS.SYSTEM_DIR_DOWNLOADS, OS.SYSTEM_DIR_MOVIES, OS.SYSTEM_DIR_MUSIC,
@@ -309,10 +309,10 @@ func open_dir_context(dir: String) -> void:
 	var context_popup := ContextPopup.new()
 	var btn_arr: Array[Button] = [
 		ContextPopup.create_button(Translator.translate("Open"),
-				enter_dir.bind(dir), false, load("res://visual/icons/OpenFolder.svg"),
+				enter_dir.bind(dir), false, load("res://assets/icons/OpenFolder.svg"),
 				"ui_accept"),
 		ContextPopup.create_button(Translator.translate("Copy path"),
-				copy_path, false, load("res://visual/icons/Copy.svg"))]
+				copy_path, false, load("res://assets/icons/Copy.svg"))]
 	context_popup.setup(btn_arr, true)
 	var vp := get_viewport()
 	HandlerGUI.popup_under_pos(context_popup, vp.get_mouse_position(), vp)
@@ -321,9 +321,9 @@ func open_file_context(file: String) -> void:
 	focus_file(file)
 	var btn_arr: Array[Button] = [
 		ContextPopup.create_button(special_button.text,
-				select_file, false, load("res://visual/icons/OpenFile.svg"), "ui_accept"),
+				select_file, false, load("res://assets/icons/OpenFile.svg"), "ui_accept"),
 		ContextPopup.create_button(Translator.translate("Copy path"),
-				copy_path, false, load("res://visual/icons/Copy.svg"))]
+				copy_path, false, load("res://assets/icons/Copy.svg"))]
 	var context_popup := ContextPopup.new()
 	context_popup.setup(btn_arr, true)
 	var vp := get_viewport()
@@ -341,7 +341,7 @@ func _on_file_list_empty_clicked(_at_position: Vector2, mouse_button_index: int)
 		var context_popup := ContextPopup.new()
 		var btn_arr: Array[Button] = [
 			ContextPopup.create_button(Translator.translate("Create new folder"),
-					create_folder, false, load("res://visual/icons/CreateFolder.svg"))]
+					create_folder, false, load("res://assets/icons/CreateFolder.svg"))]
 		context_popup.setup(btn_arr, true)
 		var vp := get_viewport()
 		HandlerGUI.popup_under_pos(context_popup, vp.get_mouse_position(), vp)
@@ -427,17 +427,17 @@ var system_dir_paths := {}
 
 func get_drive_icon(path: String) -> Texture2D:
 	if path == system_dir_paths[OS.SYSTEM_DIR_DESKTOP]:
-		return load("res://visual/icons/DirDesktop.svg")
+		return load("res://assets/icons/DirDesktop.svg")
 	elif path == system_dir_paths[OS.SYSTEM_DIR_DOCUMENTS]:
-		return load("res://visual/icons/DirDocuments.svg")
+		return load("res://assets/icons/DirDocuments.svg")
 	elif path == system_dir_paths[OS.SYSTEM_DIR_DOWNLOADS]:
-		return load("res://visual/icons/DirDownloads.svg")
+		return load("res://assets/icons/DirDownloads.svg")
 	elif path == system_dir_paths[OS.SYSTEM_DIR_MOVIES]:
-		return load("res://visual/icons/DirMovies.svg")
+		return load("res://assets/icons/DirMovies.svg")
 	elif path == system_dir_paths[OS.SYSTEM_DIR_MUSIC]:
-		return load("res://visual/icons/DirMusic.svg")
+		return load("res://assets/icons/DirMusic.svg")
 	elif path == system_dir_paths[OS.SYSTEM_DIR_PICTURES]:
-		return load("res://visual/icons/DirPictures.svg")
+		return load("res://assets/icons/DirPictures.svg")
 	else:
 		return folder_icon
 

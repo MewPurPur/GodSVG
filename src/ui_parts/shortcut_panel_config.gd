@@ -1,6 +1,6 @@
 extends PanelContainer
 
-const clear_icon = preload("res://visual/icons/Clear.svg")
+const clear_icon = preload("res://assets/icons/Clear.svg")
 
 const Dropdown = preload("res://src/ui_widgets/dropdown.tscn")
 const DropdownType = preload("res://src/ui_widgets/dropdown.gd")

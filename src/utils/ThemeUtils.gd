@@ -1,8 +1,8 @@
 class_name ThemeUtils extends RefCounted
 
-const regular_font = preload("res://visual/fonts/Font.ttf")
-const bold_font = preload("res://visual/fonts/FontBold.ttf")
-const mono_font = preload("res://visual/fonts/FontMono.ttf")
+const regular_font = preload("res://assets/fonts/Font.ttf")
+const bold_font = preload("res://assets/fonts/FontBold.ttf")
+const mono_font = preload("res://assets/fonts/FontMono.ttf")
 
 const focus_color = Color("66ccffcc")
 const common_panel_inner_color = Color("191926")
@@ -934,4 +934,4 @@ static func _setup_tooltip(theme: Theme) -> void:
 
 
 static func _icon(name: String) -> Texture2D:
-	return load("res://visual/icons/theme/" + name + ".svg")
+	return load("res://assets/icons/theme/" + name + ".svg")

@@ -3,7 +3,7 @@ extends LineEditButton
 
 const ColorPopup = preload("res://src/ui_widgets/color_popup.tscn")
 const ColorPickerPopup = preload("res://src/ui_widgets/color_picker_popup.tscn")
-const checkerboard = preload("res://visual/icons/backgrounds/ColorButtonBG.svg")
+const checkerboard = preload("res://assets/icons/backgrounds/ColorButtonBG.svg")
 
 @onready var color_picker: Control
 

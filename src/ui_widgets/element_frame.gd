@@ -1,6 +1,6 @@
 extends VTitledPanel
 
-const warning_icon = preload("res://visual/icons/Warning.svg")
+const warning_icon = preload("res://assets/icons/Warning.svg")
 
 const element_content_types = {
 	"path": preload("res://src/ui_widgets/element_content_path.tscn"),

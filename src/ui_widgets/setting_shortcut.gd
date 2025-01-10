@@ -1,6 +1,6 @@
 extends PanelContainer
 
-const delete_icon := preload("res://visual/icons/Delete.svg")
+const delete_icon := preload("res://assets/icons/Delete.svg")
 
 @onready var label: Label = %MainContainer/Label
 @onready var reset_button: Button = %MainContainer/HBoxContainer/ResetButton

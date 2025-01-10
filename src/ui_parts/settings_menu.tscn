@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://1rylg17uwltw"]
 
 [ext_resource type="Script" path="res://src/ui_parts/settings_menu.gd" id="1_1gf4m"]
-[ext_resource type="Texture2D" uid="uid://c528knojuxbw6" path="res://visual/icons/Languages.svg" id="2_ndyp7"]
+[ext_resource type="Texture2D" uid="uid://c528knojuxbw6" path="res://assets/icons/Languages.svg" id="2_ndyp7"]
 
 [node name="SettingsMenu" type="PanelContainer"]
 custom_minimum_size = Vector2(640, 400)

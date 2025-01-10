@@ -1,9 +1,9 @@
 [gd_scene load_steps=5 format=3 uid="uid://dhydn476cr0pv"]
 
 [ext_resource type="Script" path="res://src/ui_parts/donate_menu.gd" id="1_yjfkr"]
-[ext_resource type="Texture2D" uid="uid://ccc0q21h8owg1" path="res://visual/icons/foreign_logos/GithubLogo.svg" id="2_3gj3j"]
-[ext_resource type="Texture2D" uid="uid://dcn1rq4e0p2jt" path="res://visual/icons/foreign_logos/KoFiLogo.svg" id="3_5q1ti"]
-[ext_resource type="Texture2D" uid="uid://dq1muwo84c6yv" path="res://visual/icons/foreign_logos/PatreonLogo.svg" id="4_0irlu"]
+[ext_resource type="Texture2D" uid="uid://ccc0q21h8owg1" path="res://assets/icons/foreign_logos/GithubLogo.svg" id="2_3gj3j"]
+[ext_resource type="Texture2D" uid="uid://dcn1rq4e0p2jt" path="res://assets/icons/foreign_logos/KoFiLogo.svg" id="3_5q1ti"]
+[ext_resource type="Texture2D" uid="uid://dq1muwo84c6yv" path="res://assets/icons/foreign_logos/PatreonLogo.svg" id="4_0irlu"]
 
 [node name="DonateMenu" type="PanelContainer"]
 custom_minimum_size = Vector2(300, 240)

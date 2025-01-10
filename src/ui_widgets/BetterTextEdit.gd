@@ -133,26 +133,26 @@ func _gui_input(event: InputEvent) -> void:
 			if editable:
 				btn_arr.append(ContextPopup.create_button(
 						Translator.translate("Undo"), undo,
-						!has_undo(), load("res://visual/icons/Undo.svg"), "ui_undo"))
+						!has_undo(), load("res://assets/icons/Undo.svg"), "ui_undo"))
 				btn_arr.append(ContextPopup.create_button(
 						Translator.translate("Redo"), redo,
-						!has_redo(), load("res://visual/icons/Redo.svg"), "ui_redo"))
+						!has_redo(), load("res://assets/icons/Redo.svg"), "ui_redo"))
 				if DisplayServer.has_feature(DisplayServer.FEATURE_CLIPBOARD):
 					separator_arr = PackedInt32Array([2])
 					btn_arr.append(ContextPopup.create_button(
 							Translator.translate("Cut"), cut,
-							text.is_empty(), load("res://visual/icons/Cut.svg"), "ui_cut"))
+							text.is_empty(), load("res://assets/icons/Cut.svg"), "ui_cut"))
 					btn_arr.append(ContextPopup.create_button(
 							Translator.translate("Copy"), copy,
-							text.is_empty(), load("res://visual/icons/Copy.svg"), "ui_copy"))
+							text.is_empty(), load("res://assets/icons/Copy.svg"), "ui_copy"))
 					btn_arr.append(ContextPopup.create_button(
 							Translator.translate("Paste"), paste,
 							!Utils.has_clipboard_web_safe(),
-							load("res://visual/icons/Paste.svg"), "ui_paste"))
+							load("res://assets/icons/Paste.svg"), "ui_paste"))
 			else:
 				btn_arr.append(ContextPopup.create_button(
 						Translator.translate("Copy"), copy,
-						text.is_empty(), load("res://visual/icons/Copy.svg"), "ui_copy"))
+						text.is_empty(), load("res://assets/icons/Copy.svg"), "ui_copy"))
 			
 			var context_popup := ContextPopup.new()
 			context_popup.setup(btn_arr, true, -1, -1, separator_arr)
