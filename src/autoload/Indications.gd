@@ -527,10 +527,10 @@ func get_selection_context(popup_method: Callable, context: Context) -> ContextP
 			btn_arr.append(ContextPopup.create_button(
 					Translator.translate("View In List"),
 					view_in_list.bind(selected_xids[0]), false,
-					load("res://visual/icons/ViewInList.svg")))
+					load("res://assets/icons/ViewInList.svg")))
 
 		btn_arr.append(ContextPopup.create_button(Translator.translate("Duplicate"),
-				duplicate_selected, false, load("res://visual/icons/Duplicate.svg"),
+				duplicate_selected, false, load("res://assets/icons/Duplicate.svg"),
 				"duplicate"))
 		
 		var xnode := SVG.root_element.get_xnode(selected_xids[0])
@@ -539,21 +539,21 @@ func get_selection_context(popup_method: Callable, context: Context) -> ContextP
 			btn_arr.append(ContextPopup.create_button(
 					Translator.translate("Convert To"),
 					popup_convert_to_context.bind(popup_method), false,
-					load("res://visual/icons/Reload.svg")))
+					load("res://assets/icons/Reload.svg")))
 		
 		if can_move_up:
 			btn_arr.append(ContextPopup.create_button(
 					Translator.translate("Move Up"),
 					move_up_selected, false,
-					load("res://visual/icons/MoveUp.svg"), "move_up"))
+					load("res://assets/icons/MoveUp.svg"), "move_up"))
 		if can_move_down:
 			btn_arr.append(ContextPopup.create_button(
 					Translator.translate("Move Down"),
 					move_down_selected, false,
-					load("res://visual/icons/MoveDown.svg"), "move_down"))
+					load("res://assets/icons/MoveDown.svg"), "move_down"))
 		
 		btn_arr.append(ContextPopup.create_button(Translator.translate("Delete"),
-				delete_selected, false, load("res://visual/icons/Delete.svg"), "delete"))
+				delete_selected, false, load("res://assets/icons/Delete.svg"), "delete"))
 	
 	elif not inner_selections.is_empty() and not semi_selected_xid.is_empty():
 		var element_ref := SVG.root_element.get_xnode(semi_selected_xid)
@@ -562,29 +562,29 @@ func get_selection_context(popup_method: Callable, context: Context) -> ContextP
 			btn_arr.append(ContextPopup.create_button(
 					Translator.translate("View In List"),
 					view_in_list.bind(semi_selected_xid), false,
-					load("res://visual/icons/ViewInList.svg")))
+					load("res://assets/icons/ViewInList.svg")))
 		match element_ref.name:
 			"path":
 				if inner_selections.size() == 1:
 					btn_arr.append(ContextPopup.create_button(
 							Translator.translate("Insert After"),
 							popup_insert_command_after_context.bind(popup_method), false,
-							load("res://visual/icons/Plus.svg")))
+							load("res://assets/icons/Plus.svg")))
 					if inner_selections[0] != 0 or\
 					element_ref.get_attribute("d").get_command(0).command_char != "M":
 						btn_arr.append(ContextPopup.create_button(
 								Translator.translate("Convert To"),
 								popup_convert_to_context.bind(popup_method), false,
-								load("res://visual/icons/Reload.svg")))
+								load("res://assets/icons/Reload.svg")))
 			"polygon", "polyline":
 				if inner_selections.size() == 1:
 					btn_arr.append(ContextPopup.create_button(
 							Translator.translate("Insert After"),
 							insert_point_after_selection, false,
-							load("res://visual/icons/Plus.svg")))
+							load("res://assets/icons/Plus.svg")))
 		
 		btn_arr.append(ContextPopup.create_button(Translator.translate("Delete"),
-				delete_selected, false, load("res://visual/icons/Delete.svg"), "delete"))
+				delete_selected, false, load("res://assets/icons/Delete.svg"), "delete"))
 	
 	var element_context := ContextPopup.new()
 	element_context.setup(btn_arr, true)

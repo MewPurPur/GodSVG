@@ -103,7 +103,7 @@ func _on_reference_pressed() -> void:
 	var btn_arr: Array[Button] = [
 		ContextPopup.create_button(Translator.translate("Load reference image"),
 			FileUtils.open_image_import_dialog.bind(finish_reference_import), false,
-			load("res://visual/icons/Reference.svg"), "load_reference"),
+			load("res://assets/icons/Reference.svg"), "load_reference"),
 		ContextPopup.create_checkbox(Translator.translate("Show reference"),
 			toggle_reference_image, reference_texture.visible, "view_show_reference"),
 		ContextPopup.create_checkbox(Translator.translate("Overlay reference"),
@@ -136,12 +136,12 @@ func _on_more_options_pressed() -> void:
 	var buttons_arr: Array[Button] = []
 	buttons_arr.append(ContextPopup.create_button(Translator.translate(
 			"Check for updates"), ShortcutUtils.fn("check_updates"), false,
-			load("res://visual/icons/Reload.svg"), "check_updates"))
+			load("res://assets/icons/Reload.svg"), "check_updates"))
 	
 	if can_show_savedata_folder:
 		buttons_arr.append(ContextPopup.create_button(Translator.translate(
 				"View savedata"), open_savedata_folder , false,
-				load("res://visual/icons/OpenFolder.svg")))
+				load("res://assets/icons/OpenFolder.svg")))
 	
 	var about_btn := ContextPopup.create_button(Translator.translate("About…"),
 			ShortcutUtils.fn("about_info"), false, load("res://visual/icon.png"),
@@ -150,13 +150,13 @@ func _on_more_options_pressed() -> void:
 	buttons_arr.append(about_btn)
 	buttons_arr.append(ContextPopup.create_button(Translator.translate(
 			"Donate…"), ShortcutUtils.fn("about_donate"), false,
-			load("res://visual/icons/Heart.svg"), "about_donate"))
+			load("res://assets/icons/Heart.svg"), "about_donate"))
 	buttons_arr.append(ContextPopup.create_button(Translator.translate(
 			"GodSVG repository"), ShortcutUtils.fn("about_repo"), false,
-			load("res://visual/icons/Link.svg"), "about_repo"))
+			load("res://assets/icons/Link.svg"), "about_repo"))
 	buttons_arr.append(ContextPopup.create_button(Translator.translate(
 			"GodSVG website"), ShortcutUtils.fn("about_website"), false,
-			load("res://visual/icons/Link.svg"), "about_website"))
+			load("res://assets/icons/Link.svg"), "about_website"))
 	var separator_indices := PackedInt32Array([1, 3])
 	if can_show_savedata_folder:
 		separator_indices = PackedInt32Array([2, 4])

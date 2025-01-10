@@ -4,7 +4,7 @@ extends LineEditButton
 var element: Element
 var attribute_name: String  # May propagate.
 
-const reload_icon = preload("res://visual/icons/Reload.svg")
+const reload_icon = preload("res://assets/icons/Reload.svg")
 
 func set_value(new_value: String, save := false) -> void:
 	sync(new_value)

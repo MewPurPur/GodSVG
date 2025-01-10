@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://d2da0thyq5rq8"]
 
 [ext_resource type="Script" path="res://src/ui_widgets/enum_field.gd" id="1_1jqoy"]
-[ext_resource type="Texture2D" uid="uid://coda6chhcatal" path="res://visual/icons/Arrow.svg" id="3_vhd8v"]
+[ext_resource type="Texture2D" uid="uid://coda6chhcatal" path="res://assets/icons/Arrow.svg" id="3_vhd8v"]
 
 [node name="EnumField" type="Control"]
 custom_minimum_size = Vector2(75, 0)

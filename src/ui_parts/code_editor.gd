@@ -158,18 +158,18 @@ func _on_svg_code_edit_focus_entered() -> void:
 func _on_file_button_pressed() -> void:
 	var btn_array: Array[Button] = []
 	btn_array.append(ContextPopup.create_button(Translator.translate("Save SVG"),
-			FileUtils.save_svg, false, load("res://visual/icons/Save.svg"), "save"))
+			FileUtils.save_svg, false, load("res://assets/icons/Save.svg"), "save"))
 	btn_array.append(ContextPopup.create_button(Translator.translate("Open file"),
 			ShortcutUtils.fn("open_svg"),
 			not FileAccess.file_exists(Configs.savedata.current_file_path),
-			load("res://visual/icons/OpenFile.svg"), "open_svg"))
+			load("res://assets/icons/OpenFile.svg"), "open_svg"))
 	btn_array.append(ContextPopup.create_button(Translator.translate("Reset SVG"),
 			ShortcutUtils.fn("reset_svg"),
 			FileUtils.compare_svg_to_disk_contents() != FileUtils.FileState.DIFFERENT,
-			load("res://visual/icons/Reload.svg"), "reset_svg"))
+			load("res://assets/icons/Reload.svg"), "reset_svg"))
 	btn_array.append(ContextPopup.create_button(
 			Translator.translate("Clear saving path"),
-			ShortcutUtils.fn("clear_file_path"), false, load("res://visual/icons/Clear.svg"),
+			ShortcutUtils.fn("clear_file_path"), false, load("res://assets/icons/Clear.svg"),
 			"clear_file_path"))
 	var context_popup := ContextPopup.new()
 	context_popup.setup(btn_array, true, file_button.size.x)
@@ -179,7 +179,7 @@ func _on_file_button_pressed() -> void:
 func _on_size_button_pressed() -> void:
 	var btn_array: Array[Button] = [
 		ContextPopup.create_button(Translator.translate("Optimize"),
-				ShortcutUtils.fn("optimize"), false, load("res://visual/icons/Compress.svg"),
+				ShortcutUtils.fn("optimize"), false, load("res://assets/icons/Compress.svg"),
 				"optimize")]
 	var context_popup := ContextPopup.new()
 	context_popup.setup(btn_array, true)
@@ -191,10 +191,10 @@ func _on_options_button_pressed() -> void:
 	var btn_array: Array[Button] = []
 	btn_array.append(ContextPopup.create_button(
 			Translator.translate("Copy all text"), ShortcutUtils.fn("copy_svg_text"),
-			false, load("res://visual/icons/Copy.svg"), "copy_svg_text"))
+			false, load("res://assets/icons/Copy.svg"), "copy_svg_text"))
 	btn_array.append(ContextPopup.create_button(
 			Translator.translate("Clear SVG"), ShortcutUtils.fn("clear_svg"),
-			SVG.text == SVG.DEFAULT, load("res://visual/icons/Clear.svg"), "clear_svg"))
+			SVG.text == SVG.DEFAULT, load("res://assets/icons/Clear.svg"), "clear_svg"))
 	var context_popup := ContextPopup.new()
 	context_popup.setup(btn_array, true)
 	HandlerGUI.popup_under_rect_center(context_popup, options_button.get_global_rect(),

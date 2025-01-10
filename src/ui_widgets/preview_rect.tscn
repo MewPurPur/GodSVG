@@ -2,8 +2,8 @@
 
 [ext_resource type="Script" path="res://src/ui_widgets/preview_rect.gd" id="1_n2xbu"]
 [ext_resource type="Shader" path="res://src/shaders/zoom_shader.gdshader" id="2_qrqjp"]
-[ext_resource type="Texture2D" uid="uid://c68og6bsqt0lb" path="res://visual/icons/backgrounds/Checkerboard.svg" id="3_tuqha"]
-[ext_resource type="Texture2D" uid="uid://crx4kcj4o01bs" path="res://visual/icons/SmallQuestionMark.svg" id="4_g76n0"]
+[ext_resource type="Texture2D" uid="uid://c68og6bsqt0lb" path="res://assets/icons/backgrounds/Checkerboard.svg" id="3_tuqha"]
+[ext_resource type="Texture2D" uid="uid://crx4kcj4o01bs" path="res://assets/icons/SmallQuestionMark.svg" id="4_g76n0"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_y7eee"]
 shader = ExtResource("2_qrqjp")

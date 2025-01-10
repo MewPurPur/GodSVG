@@ -4,7 +4,7 @@ const ColorSwatchType = preload("res://src/ui_widgets/color_swatch_config.gd")
 
 const ColorSwatch = preload("res://src/ui_widgets/color_swatch_config.tscn")
 const ConfigurePopup = preload("res://src/ui_widgets/configure_color_popup.tscn")
-const plus_icon = preload("res://visual/icons/Plus.svg")
+const plus_icon = preload("res://assets/icons/Plus.svg")
 
 signal layout_changed
 
@@ -188,15 +188,15 @@ func open_palette_options() -> void:
 	btn_arr.append(ContextPopup.create_button("Pure",
 			apply_preset.bind(ColorPalette.Preset.PURE),
 			palette.is_same_as_preset(ColorPalette.Preset.PURE),
-			load("res://visual/icons/PresetPure.svg")))
+			load("res://assets/icons/PresetPure.svg")))
 	btn_arr.append(ContextPopup.create_button("Grayscale",
 			apply_preset.bind(ColorPalette.Preset.GRAYSCALE),
 			palette.is_same_as_preset(ColorPalette.Preset.GRAYSCALE),
-			load("res://visual/icons/PresetGrayscale.svg")))
+			load("res://assets/icons/PresetGrayscale.svg")))
 	btn_arr.append(ContextPopup.create_button("Empty",
 			apply_preset.bind(ColorPalette.Preset.EMPTY),
 			palette.is_same_as_preset(ColorPalette.Preset.EMPTY),
-			load("res://visual/icons/Clear.svg")))
+			load("res://assets/icons/Clear.svg")))
 	
 	var context_popup := ContextPopup.new()
 	context_popup.setup(btn_arr, true)
@@ -217,23 +217,23 @@ func _on_palette_button_pressed() -> void:
 	var palette_idx := find_palette_index()
 	var btn_arr: Array[Button] = []
 	btn_arr.append(ContextPopup.create_button(Translator.translate("Rename"),
-			popup_edit_name, false, load("res://visual/icons/Rename.svg")))
+			popup_edit_name, false, load("res://assets/icons/Rename.svg")))
 	if palette_idx >= 1:
 		btn_arr.append(ContextPopup.create_button(Translator.translate("Move Up"),
-				move_up, false, load("res://visual/icons/MoveUp.svg")))
+				move_up, false, load("res://assets/icons/MoveUp.svg")))
 	if palette_idx < Configs.savedata.get_palette_count() - 1:
 		btn_arr.append(ContextPopup.create_button(Translator.translate("Move Down"),
-				move_down, false, load("res://visual/icons/MoveDown.svg")))
+				move_down, false, load("res://assets/icons/MoveDown.svg")))
 	btn_arr.append(ContextPopup.create_button(Translator.translate("Copy as XML"),
 			DisplayServer.clipboard_set.bind(Configs.savedata.get_palette(palette_idx).\
-			to_text()), false, load("res://visual/icons/Copy.svg")))
+			to_text()), false, load("res://assets/icons/Copy.svg")))
 	btn_arr.append(ContextPopup.create_button(Translator.translate("Paste XML"),
 			paste_palette, !ColorPalette.is_valid_palette(Utils.get_clipboard_web_safe()),
-			load("res://visual/icons/Paste.svg")))
+			load("res://assets/icons/Paste.svg")))
 	btn_arr.append(ContextPopup.create_button(Translator.translate("Apply Preset"),
-			open_palette_options, false, load("res://visual/icons/Import.svg")))
+			open_palette_options, false, load("res://assets/icons/Import.svg")))
 	btn_arr.append(ContextPopup.create_button(Translator.translate("Delete"),
-			delete, false, load("res://visual/icons/Delete.svg")))
+			delete, false, load("res://assets/icons/Delete.svg")))
 	
 	var context_popup := ContextPopup.new()
 	context_popup.setup(btn_arr, true)

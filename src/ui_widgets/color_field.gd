@@ -14,7 +14,7 @@ var cached_allow_none: bool
 var cached_allow_current_color: bool
 
 const ColorPopup = preload("res://src/ui_widgets/color_popup.tscn")
-const checkerboard = preload("res://visual/icons/backgrounds/ColorButtonBG.svg")
+const checkerboard = preload("res://assets/icons/backgrounds/ColorButtonBG.svg")
 
 @onready var color_popup: Control
 

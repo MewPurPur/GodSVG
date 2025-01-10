@@ -2,7 +2,7 @@ extends Button
 
 const bounds = Vector2(2, 2)
 
-const checkerboard = preload("res://visual/icons/backgrounds/Checkerboard.svg")
+const checkerboard = preload("res://assets/icons/backgrounds/Checkerboard.svg")
 
 var color: String
 var color_name: String

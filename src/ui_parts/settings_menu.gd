@@ -6,9 +6,9 @@ const ShortcutShowcaseWidget = preload("res://src/ui_widgets/presented_shortcut.
 const SettingFrame = preload("res://src/ui_widgets/setting_frame.tscn")
 const ProfileFrame = preload("res://src/ui_widgets/profile_frame.tscn")
 
-const plus_icon = preload("res://visual/icons/Plus.svg")
-const import_icon = preload("res://visual/icons/Import.svg")
-const reset_icon = preload("res://visual/icons/Reload.svg")
+const plus_icon = preload("res://assets/icons/Plus.svg")
+const import_icon = preload("res://assets/icons/Import.svg")
+const reset_icon = preload("res://assets/icons/Reload.svg")
 
 @onready var lang_button: Button = $VBoxContainer/Language
 @onready var content_container: ScrollContainer = %ContentContainer
@@ -391,10 +391,10 @@ func update_language_button() -> void:
 func _popup_xml_palette_options(palette_xml_button: Button) -> void:
 	var btn_arr: Array[Button] = []
 	btn_arr.append(ContextPopup.create_button(Translator.translate("Import XML"),
-			add_imported_palette, false, load("res://visual/icons/Import.svg")))
+			add_imported_palette, false, load("res://assets/icons/Import.svg")))
 	btn_arr.append(ContextPopup.create_button(Translator.translate("Paste XML"),
 			add_pasted_palette, !ColorPalette.is_valid_palette(Utils.get_clipboard_web_safe()),
-			load("res://visual/icons/Paste.svg")))
+			load("res://assets/icons/Paste.svg")))
 	
 	var context_popup := ContextPopup.new()
 	context_popup.setup(btn_arr, true)
