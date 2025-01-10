@@ -313,6 +313,11 @@ msgstr "Nieuw element"
 msgid "Dimensions"
 msgstr "Afmetingen"
 
+#: src/ui_parts/export_menu.gd src/ui_widgets/configure_color_popup.gd
+#: src/ui_widgets/palette_config.gd
+msgid "Unnamed"
+msgstr "Onbenoemd"
+
 #: src/ui_parts/export_menu.gd
 msgid "Size"
 msgstr "Maat"
@@ -447,8 +452,8 @@ msgid ""
 "A file named \"{file_name}\" already exists. Replacing will overwrite its "
 "contents!"
 msgstr ""
-"Er bestaat al een bestand genaamt \"{file_name}\". Deze vervangen zal zijn inhoud "
-"aanpassen!"
+"Er bestaat al een bestand genaamt \"{file_name}\". Deze vervangen zal zijn "
+"inhoud aanpassen!"
 
 #: src/ui_parts/handles_manager.gd
 msgid "New shape"
@@ -755,16 +760,17 @@ msgid ""
 "If turned on, scrolling will pan the view. To zoom, hold CTRL while "
 "scrolling."
 msgstr ""
-"Als ingeschakeld, scrollen zal het weergave verschuiven. Om te zoomen,"
-"houd CTRL ingedrukt tijdens scrollen."
+"Als ingeschakeld, scrollen zal het weergave verschuiven. Om te zoomen,houd "
+"CTRL ingedrukt tijdens scrollen."
 
 #: src/ui_parts/settings_menu.gd
 msgid ""
 "If turned on, uses your operating system's native file dialog. If turned "
 "off, uses GodSVG's built-in file dialog."
 msgstr ""
-"Waneer ingeschakeld, gebruikt jouw besturingssysteem's inheemse bestandendialoog. "
-"Wanneer uitgeschakeld, gebruikt GodSVG's ingebouwde bestandendialoog."
+"Waneer ingeschakeld, gebruikt jouw besturingssysteem's inheemse "
+"bestandendialoog. Wanneer uitgeschakeld, gebruikt GodSVG's ingebouwde "
+"bestandendialoog."
 
 #: src/ui_parts/settings_menu.gd
 msgid ""
@@ -775,7 +781,8 @@ msgstr ""
 "achteloos van het huidige bestand."
 
 #: src/ui_parts/settings_menu.gd
-msgid "Changes the visual size and grabbing area of Handles."
+#, fuzzy
+msgid "Changes the visual size and grabbing area of handles."
 msgstr "Verandert de visuele grootte en grijpgebied van Handvaten."
 
 #: src/ui_parts/settings_menu.gd
@@ -872,17 +879,14 @@ msgstr "Kleurnaam bewerken"
 msgid "Delete color"
 msgstr "Kleur verwijderen"
 
-#: src/ui_widgets/configure_color_popup.gd src/ui_widgets/palette_config.gd
-msgid "Unnamed"
-msgstr "Onbenoemd"
+#: src/ui_widgets/good_color_picker.gd
+#, fuzzy
+msgid "Color keywords"
+msgstr "Kleurenplukker"
 
 #: src/ui_widgets/good_color_picker.gd
-msgid "Enable the color"
-msgstr "De kleur inschakelen"
-
-#: src/ui_widgets/good_color_picker.gd
-msgid "Disable the color"
-msgstr "De kleur uitzetten"
+msgid "Eyedropper"
+msgstr ""
 
 #: src/ui_widgets/palette_config.gd
 msgid "Unnamed palettes won't be shown."
@@ -1118,7 +1122,15 @@ msgstr ""
 
 #: src/utils/TranslationUtils.gd
 msgid "The file extension is empty. Only {extension_list} files are supported."
-msgstr "Deze bestandsextensie is leeg. Alleen {extension_list} bestanden zijn ondersteund."
+msgstr ""
+"Deze bestandsextensie is leeg. Alleen {extension_list} bestanden zijn "
+"ondersteund."
+
+#~ msgid "Enable the color"
+#~ msgstr "De kleur inschakelen"
+
+#~ msgid "Disable the color"
+#~ msgstr "De kleur uitzetten"
 
 #~ msgid "Invalid"
 #~ msgstr "Ongeldig"

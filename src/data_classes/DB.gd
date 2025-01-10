@@ -146,6 +146,7 @@ const attribute_number_range = {
 
 const attribute_color_url_allowed = ["fill", "stroke"]
 const attribute_color_none_allowed = ["fill", "stroke"]
+const attribute_color_current_color_allowed = ["fill", "stroke", "stop-color"]
 
 
 static func get_recognized_attributes(element_name: String) -> Array:

@@ -7,14 +7,13 @@ static func add_hash_if_hex(color: String) -> String:
 		color = "#" + color
 	return color
 
-static func is_valid(color: String, allow_alpha := false, allow_element_context := false,
-allow_url := true, allow_none := true) -> bool:
-	if not allow_element_context:
-		allow_url = false
-		allow_none = false
+static func is_valid(color: String, allow_alpha := false, allow_url := false,
+allow_none := false, allow_current_color := false) -> bool:
+	color = color.strip_edges()
 	return is_valid_hex(color, allow_alpha) or is_valid_rgb(color, allow_alpha) or\
-			is_valid_hsl(color, allow_alpha) or is_valid_named(color, allow_alpha,
-			allow_element_context, allow_none) or (allow_url and is_valid_url(color))
+			is_valid_hsl(color, allow_alpha) or is_valid_named(color, allow_alpha) or\
+			(allow_url and is_valid_url(color)) or (allow_none and color == "none") or\
+			(allow_current_color and color == "currentColor")
 
 static func is_valid_hex(color: String, allow_alpha := false) -> bool:
 	color = color.strip_edges()
@@ -89,16 +88,8 @@ static func _hsl_check(stripped_color: String) -> bool:
 	return _is_valid_number(channels[0]) and _is_valid_percentage(channels[1]) and\
 			_is_valid_percentage(channels[2])
 
-static func is_valid_named(color: String, allow_alpha := false,
-allow_element_context := false, allow_none := false) -> bool:
-	color = color.strip_edges()
-	if AttributeColor.get_named_colors(allow_alpha).has(color):
-		return true
-	elif allow_none and color == "none":
-		return true
-	elif allow_element_context and color == "currentColor":
-		return true
-	return false
+static func is_valid_named(color: String, allow_alpha := false) -> bool:
+	return AttributeColor.get_named_colors(allow_alpha).has(color.strip_edges())
 
 static func is_valid_url(color: String) -> bool:
 	color = color.strip_edges()
@@ -115,10 +106,10 @@ static func text_to_color(color: String, backup := Color.BLACK,
 allow_alpha := false) -> Color:
 	color = color.strip_edges()
 	if is_valid_named(color, allow_alpha):
-		if color == "none":
-			return Color(0, 0, 0, 0)
-		else:
-			return Color(AttributeColor.get_named_colors(allow_alpha)[color])
+		return Color(AttributeColor.get_named_colors(allow_alpha)[color])
+	elif color == "none":
+		return Color(0, 0, 0, 0)
+	
 	elif is_valid_rgb(color, allow_alpha):
 		var inside_brackets := color.substr(4, color.length() - 5)
 		var args := inside_brackets.split(",", false)
@@ -167,7 +158,8 @@ static func are_colors_same(col1: String, col2: String) -> bool:
 	# Handle color keywords that can't be represented as hex.
 	if col1 == col2:
 		return true
-	elif col1 == "none" or col2 == "none":
+	elif col1 == "none" or col2 == "none" or col1 == "currentColor" or\
+	col2 == "currentColor":
 		return false
 	else:
 		var is_col1_url := is_valid_url(col1)

@@ -23,13 +23,32 @@ signal layout_changed
 			title = new_value
 			emit_changed()
 
-@export var _colors: PackedStringArray
-@export var _color_names: PackedStringArray
+@export var _colors: PackedStringArray:
+	set(new_value):
+		if _colors != new_value:
+			_colors = new_value
+			_validate()
+			emit_changed()
+
+@export var _color_names: PackedStringArray:
+	set(new_value):
+		if _color_names != new_value:
+			_color_names = new_value
+			_validate()
+			emit_changed()
+
 
 func _init(new_title := "", new_preset := Preset.EMPTY) -> void:
 	title = new_title
 	apply_preset(new_preset)
 	super()
+
+
+func get_colors() -> PackedStringArray:
+	return _colors
+
+func get_color_names() -> PackedStringArray:
+	return _color_names
 
 func get_color(idx: int) -> String:
 	return _colors[idx]
@@ -121,10 +140,10 @@ func to_text() -> String:
 	return text + "</palette>"
 
 func _validate() -> void:
-	if _color_names.size() > _colors.size():
-		_color_names.resize(_colors.size())
-	elif _color_names.size() < _colors.size():
-		_colors.resize(_color_names.size())
+	for i in range(_colors.size() - 1, -1, -1):
+		if not ColorParser.is_valid(_colors[i]):
+			_colors[i] = "#000"
+	_color_names.resize(_colors.size())
 
 
 static func text_to_palettes(text: String) -> Array[ColorPalette]:

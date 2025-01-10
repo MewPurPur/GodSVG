@@ -314,6 +314,11 @@ msgstr "Новий елемент"
 msgid "Dimensions"
 msgstr "Розміри"
 
+#: src/ui_parts/export_menu.gd src/ui_widgets/configure_color_popup.gd
+#: src/ui_widgets/palette_config.gd
+msgid "Unnamed"
+msgstr "Без назви"
+
 #: src/ui_parts/export_menu.gd
 msgid "Size"
 msgstr "Розмір"
@@ -884,17 +889,14 @@ msgstr "Редагувати назву кольору"
 msgid "Delete color"
 msgstr "Видалити колір"
 
-#: src/ui_widgets/configure_color_popup.gd src/ui_widgets/palette_config.gd
-msgid "Unnamed"
-msgstr "Без назви"
+#: src/ui_widgets/good_color_picker.gd
+#, fuzzy
+msgid "Color keywords"
+msgstr "Кольорова піпетка"
 
 #: src/ui_widgets/good_color_picker.gd
-msgid "Enable the color"
-msgstr "Активувати колір"
-
-#: src/ui_widgets/good_color_picker.gd
-msgid "Disable the color"
-msgstr "Деактивувати колір"
+msgid "Eyedropper"
+msgstr ""
 
 #: src/ui_widgets/palette_config.gd
 msgid "Unnamed palettes won't be shown."
@@ -1133,6 +1135,12 @@ msgstr ""
 #: src/utils/TranslationUtils.gd
 msgid "The file extension is empty. Only {extension_list} files are supported."
 msgstr "Розширення файлу порожнє. Тільки {extension_list} файли підтримуються."
+
+#~ msgid "Enable the color"
+#~ msgstr "Активувати колір"
+
+#~ msgid "Disable the color"
+#~ msgstr "Деактивувати колір"
 
 #~ msgid "Invalid"
 #~ msgstr "Неправильно"
