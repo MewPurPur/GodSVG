@@ -32,8 +32,10 @@ const xnode_icons = {
 
 const recognized_attributes = {  # Dictionary{String: Array[String]}
 	# TODO this is just propagated_attributes, but it ruins the const because of Godot bug.
+	# TODO Add "color" to "g" when we're ready.
 	"svg": ["xmlns", "x", "y", "width", "height", "viewBox", "fill", "fill-opacity",
-			"stroke", "stroke-opacity", "stroke-width", "stroke-linecap", "stroke-linejoin"],
+			"stroke", "stroke-opacity", "stroke-width", "stroke-linecap", "stroke-linejoin",
+			"color"],
 	"g": ["transform", "opacity", "fill", "fill-opacity", "stroke", "stroke-opacity",
 			"stroke-width", "stroke-linecap", "stroke-linejoin"],
 	"linearGradient": ["id", "gradientTransform", "gradientUnits", "spreadMethod",
@@ -143,6 +145,7 @@ const attribute_number_range = {
 }
 
 const attribute_color_url_allowed = ["fill", "stroke"]
+const attribute_color_none_allowed = ["fill", "stroke"]
 
 
 static func get_recognized_attributes(element_name: String) -> Array:

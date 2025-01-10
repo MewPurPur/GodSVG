@@ -9,6 +9,7 @@ var idx := -1  # Index inside the palette.
 
 var ci := get_canvas_item()
 var gradient_texture: GradientTexture2D
+var element: Element
 
 func _ready() -> void:
 	tooltip_text = "lmofa"  # TODO: _make_custom_tooltip() requires some text to work.
@@ -31,6 +32,9 @@ func _draw() -> void:
 			gradient_texture.draw_rect(ci, inside_rect, false)
 	else:
 		var parsed_color := ColorParser.text_to_color(color)
+		if color == "currentColor" and is_instance_valid(element):
+			parsed_color = element.get_default("color")
+		
 		if parsed_color.a != 1 or color == "none":
 			checkerboard.draw_rect(ci, inside_rect, false)
 		if color != "none" and parsed_color.a != 0:

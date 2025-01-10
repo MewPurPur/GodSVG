@@ -8,7 +8,8 @@ const side_slider_arrow = preload("res://visual/icons/SideSliderArrow.svg")
 const bg_pattern = preload("res://visual/icons/backgrounds/CheckerboardMini.svg")
 
 var alpha_enabled := false
-var show_disable_color := true
+var is_none_keyword_available := false
+var is_current_color_keyword_available := false
 
 var UR := UndoRedo.new()
 
@@ -40,7 +41,7 @@ var slider_mode: SliderMode:
 @onready var hsv_button: Button = $SliderContainer/ColorSpaceContainer/HSV
 @onready var start_color_rect: Control = %ColorsDisplay/StartColorRect
 @onready var color_rect: Control = %ColorsDisplay/ColorRect
-@onready var none_button: Button = $ColorContainer/NoneButton
+@onready var keyword_button: Button = $ColorContainer/KeywordButton
 @onready var reset_color_button: Button = %ColorsDisplay/ColorRect/ResetColorButton
 @onready var center: Vector2 = color_wheel_drawn.get_rect().get_center()
 
@@ -99,6 +100,13 @@ func setup_color(new_color: String, default_color: Color) -> void:
 	slider_mode = Configs.savedata.color_picker_slider_mode
 	update()
 
+# Workaround to set up these values after ready.
+func update_keyword_button() -> void:
+	if is_none_keyword_available or is_current_color_keyword_available:
+		keyword_button.tooltip_text = Translator.translate("Color keywords")
+		keyword_button.pressed.connect(_on_keyword_button_pressed)
+		keyword_button.show()
+
 func _ready() -> void:
 	# Set up signals.
 	widgets_arr[0].gui_input.connect(parse_slider_input.bind(0, true))
@@ -107,8 +115,7 @@ func _ready() -> void:
 	if alpha_enabled:
 		alpha_slider.visible = alpha_enabled
 		widgets_arr[4].gui_input.connect(parse_slider_input.bind(4))
-	if show_disable_color:
-		none_button.show()
+	update_keyword_button()
 	# Set up the rest.
 	RenderingServer.canvas_item_set_parent(color_wheel_surface,
 			color_wheel_drawn.get_canvas_item())
@@ -156,11 +163,6 @@ func update() -> void:
 		tracks_arr[i].material.set_shader_parameter("base_color", display_color)
 	if alpha_enabled:
 		tracks_arr[4].material.set_shader_parameter("base_color", display_color)
-	# Setup the "none" button.
-	var is_none := (color == "none")
-	none_button.button_pressed = is_none
-	none_button.tooltip_text = Translator.translate("Enable the color") if is_none\
-			else Translator.translate("Disable the color")
 	# Redraw widgets, color indicators, color wheel.
 	color_rect.queue_redraw()
 	start_color_rect.queue_redraw()
@@ -314,14 +316,30 @@ func _slider_set_text(field: BetterLineEdit, number: float) -> void:
 	field.text = String.num_uint64(roundi(number))
 
 
-func _on_none_button_pressed() -> void:
+func _on_keyword_button_pressed() -> void:
+	var btn_arr: Array[Button] = []
+	if is_none_keyword_available:
+		btn_arr.append(ContextPopup.create_button("none",
+				set_to_keyword.bind("none"), color == "none",
+				load("res://visual/icons/NoneColor.svg")))
+	if is_current_color_keyword_available:
+		btn_arr.append(ContextPopup.create_button("currentColor",
+				set_to_keyword.bind("currentColor"), color == "currentColor",
+				load("res://visual/icons/Paste.svg")))
+	
+	var context_popup := ContextPopup.new()
+	context_popup.setup(btn_arr, true)
+	HandlerGUI.popup_under_rect(context_popup, keyword_button.get_global_rect(),
+			get_viewport())
+
+func set_to_keyword(keyword: String) -> void:
 	UR.create_action("")
-	if color.strip_edges() == "none":
+	if color.strip_edges() == keyword:
 		UR.add_do_method(set_color.bind(backup_color, backup_display_color))
 		UR.add_undo_method(set_color.bind(color, display_color))
 	else:
 		backup()
-		UR.add_do_method(set_color.bind("none", display_color))
+		UR.add_do_method(set_color.bind(keyword, display_color))
 		UR.add_undo_method(set_color.bind(color, display_color))
 	UR.commit_action()
 

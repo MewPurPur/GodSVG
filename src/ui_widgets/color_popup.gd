@@ -7,9 +7,13 @@ const ColorSwatchType = preload("res://src/ui_widgets/color_swatch.gd")
 const ColorSwatch = preload("res://src/ui_widgets/color_swatch.tscn")
 
 signal color_picked(new_color: String, final: bool)
+var is_none_keyword_available := false
 var current_value: String
 var effective_color: Color
 var show_url: bool
+
+var is_current_color_interesting := false
+var element: Element
 
 var palette_mode := true
 
@@ -25,6 +29,9 @@ var _palettes_pending_update := false  # Palettes will update when visible.
 var swatches_list: Array[ColorSwatchType] = []  # Updated manually.
 
 func _ready() -> void:
+	color_picker.is_none_keyword_available = is_none_keyword_available
+	color_picker.is_current_color_keyword_available = true
+	color_picker.update_keyword_button()
 	# Setup the switch mode button.
 	switch_mode_button.pressed.connect(_on_switch_mode_button_pressed)
 	_palettes_pending_update = true
@@ -49,8 +56,14 @@ func update_palettes(search_text := "") -> void:
 	for child in palettes_content_container.get_children():
 		child.queue_free()
 	search_field.placeholder_text = Translator.translate("Search color")
-	var reserved_colors := PackedStringArray(["none"])
-	var reserved_color_names := PackedStringArray(["No color"])
+	var reserved_colors := PackedStringArray()
+	var reserved_color_names := PackedStringArray()
+	if is_none_keyword_available:
+		reserved_colors.append("none")
+		reserved_color_names.append("No color")
+	if is_current_color_interesting:
+		reserved_colors.append("currentColor")
+		reserved_color_names.append("Current color")
 	if show_url:
 		for element in SVG.root_element.get_all_element_descendants():
 			if element.has_attribute("id"):
@@ -94,6 +107,7 @@ func update_palettes(search_text := "") -> void:
 			var color_to_show := palette.get_color(i)
 			swatch.palette = palette
 			swatch.idx = i
+			swatch.element = element
 			swatch.pressed.connect(pick_palette_color.bind(color_to_show))
 			swatch_container.add_child(swatch)
 			swatches_list.append(swatch)
