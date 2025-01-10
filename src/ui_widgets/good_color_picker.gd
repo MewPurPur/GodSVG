@@ -43,6 +43,7 @@ var slider_mode: SliderMode:
 @onready var color_rect: Control = %ColorsDisplay/ColorRect
 @onready var keyword_button: Button = $ColorContainer/KeywordButton
 @onready var reset_color_button: Button = %ColorsDisplay/ColorRect/ResetColorButton
+@onready var eyedropper_button: Button = $ColorContainer/EyedropperButton
 @onready var center: Vector2 = color_wheel_drawn.get_rect().get_center()
 
 var color_wheel_surface := RenderingServer.canvas_item_create()
@@ -116,6 +117,8 @@ func _ready() -> void:
 		alpha_slider.visible = alpha_enabled
 		widgets_arr[4].gui_input.connect(parse_slider_input.bind(4))
 	update_keyword_button()
+	eyedropper_button.pressed.connect(_on_eyedropper_pressed)
+	eyedropper_button.tooltip_text = Translator.translate("Eyedropper")
 	# Set up the rest.
 	RenderingServer.canvas_item_set_parent(color_wheel_surface,
 			color_wheel_drawn.get_canvas_item())
@@ -326,6 +329,9 @@ func _on_keyword_button_pressed() -> void:
 		btn_arr.append(ContextPopup.create_button("currentColor",
 				set_to_keyword.bind("currentColor"), color == "currentColor",
 				load("res://visual/icons/Paste.svg")))
+	
+	for btn in btn_arr:
+		btn.add_theme_font_override("font", ThemeUtils.mono_font)
 	
 	var context_popup := ContextPopup.new()
 	context_popup.setup(btn_arr, true)

@@ -7,9 +7,11 @@ var attribute_name: String:  # May propagate.
 		attribute_name = new_value
 		cached_allow_url = attribute_name in DB.attribute_color_url_allowed
 		cached_allow_none = attribute_name in DB.attribute_color_none_allowed
+		cached_allow_current_color = attribute_name in DB.attribute_color_current_color_allowed
 
 var cached_allow_url: bool
 var cached_allow_none: bool
+var cached_allow_current_color: bool
 
 const ColorPopup = preload("res://src/ui_widgets/color_popup.tscn")
 const checkerboard = preload("res://visual/icons/backgrounds/ColorButtonBG.svg")
@@ -82,8 +84,9 @@ func _on_pressed() -> void:
 	color_popup.show_url = cached_allow_url
 	# If it's a color attribute, or there's no color attribute children of this element,
 	# mark the current color keyword as uninteresting (won't be shown in palettes).
-	if attribute_name == "color":
-		color_popup.is_current_color_interesting = false
+	if not cached_allow_current_color:
+		color_popup.current_color_availability =\
+				color_popup.CurrentColorAvailability.UNAVAILABLE
 	else:
 		var has_color_attribute_parent := false
 		for element_depth in range(0, element.xid.size()):
@@ -92,8 +95,11 @@ func _on_pressed() -> void:
 			if SVG.root_element.get_xnode(checked_xid).has_attribute("color"):
 				has_color_attribute_parent = true
 				break
-		color_popup.is_current_color_interesting = has_color_attribute_parent
-	color_popup.element = element
+		color_popup.current_color_availability =\
+				color_popup.CurrentColorAvailability.INTERESTING if\
+				has_color_attribute_parent else\
+				color_popup.CurrentColorAvailability.UNINTERESTING
+	color_popup.current_color = element.get_default("color")
 	color_popup.is_none_keyword_available = cached_allow_none
 	color_popup.color_picked.connect(_on_color_picked)
 	HandlerGUI.popup_under_rect(color_popup, get_global_rect(), get_viewport())
@@ -154,13 +160,12 @@ func _on_color_picked(new_color: String, close_picker: bool) -> void:
 		color_popup.queue_free()
 
 func is_valid(color_text: String) -> bool:
-	return ColorParser.is_valid(ColorParser.add_hash_if_hex(color_text), false, true,
-			cached_allow_url, cached_allow_none)
+	return ColorParser.is_valid(ColorParser.add_hash_if_hex(color_text), false,
+			cached_allow_url, cached_allow_none, cached_allow_current_color)
 
 
 func _on_text_changed(new_text: String) -> void:
-	font_color = Configs.savedata.get_validity_color(!is_valid(new_text),
-			new_text == "currentColor" and attribute_name == "color")
+	font_color = Configs.savedata.get_validity_color(!is_valid(new_text))
 
 func resync() -> void:
 	sync(text)

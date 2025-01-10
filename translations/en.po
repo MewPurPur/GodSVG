@@ -311,6 +311,11 @@ msgstr ""
 msgid "Dimensions"
 msgstr ""
 
+#: src/ui_parts/export_menu.gd src/ui_widgets/configure_color_popup.gd
+#: src/ui_widgets/palette_config.gd
+msgid "Unnamed"
+msgstr ""
+
 #: src/ui_parts/export_menu.gd
 msgid "Size"
 msgstr ""
@@ -862,16 +867,12 @@ msgstr ""
 msgid "Delete color"
 msgstr ""
 
-#: src/ui_widgets/configure_color_popup.gd src/ui_widgets/palette_config.gd
-msgid "Unnamed"
+#: src/ui_widgets/good_color_picker.gd
+msgid "Color keywords"
 msgstr ""
 
 #: src/ui_widgets/good_color_picker.gd
-msgid "Enable the color"
-msgstr ""
-
-#: src/ui_widgets/good_color_picker.gd
-msgid "Disable the color"
+msgid "Eyedropper"
 msgstr ""
 
 #: src/ui_widgets/palette_config.gd

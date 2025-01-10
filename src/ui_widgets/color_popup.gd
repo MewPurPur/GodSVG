@@ -1,6 +1,21 @@
 # A popup for picking a color.
 extends PanelContainer
 
+# Useful here, because it avoids the ColorPalette validation.
+class MockPalette extends RefCounted:
+	var title: String
+	var colors: PackedStringArray
+	var color_names: PackedStringArray
+	
+	func _init(new_title: String, new_colors: PackedStringArray,
+	new_color_names: PackedStringArray):
+		title = new_title
+		colors = new_colors
+		color_names = new_color_names
+
+# If the currentColor keyword is available, but uninteresting, don't show it.
+enum CurrentColorAvailability {UNAVAILABLE, UNINTERESTING, INTERESTING}
+
 const GoodColorPickerType = preload("res://src/ui_widgets/good_color_picker.gd")
 const ColorSwatchType = preload("res://src/ui_widgets/color_swatch.gd")
 
@@ -12,8 +27,8 @@ var current_value: String
 var effective_color: Color
 var show_url: bool
 
-var is_current_color_interesting := false
-var element: Element
+var current_color_availability := CurrentColorAvailability.UNAVAILABLE
+var current_color := Color.BLACK
 
 var palette_mode := true
 
@@ -30,7 +45,8 @@ var swatches_list: Array[ColorSwatchType] = []  # Updated manually.
 
 func _ready() -> void:
 	color_picker.is_none_keyword_available = is_none_keyword_available
-	color_picker.is_current_color_keyword_available = true
+	color_picker.is_current_color_keyword_available =\
+			(current_color_availability != CurrentColorAvailability.UNAVAILABLE)
 	color_picker.update_keyword_button()
 	# Setup the switch mode button.
 	switch_mode_button.pressed.connect(_on_switch_mode_button_pressed)
@@ -61,7 +77,7 @@ func update_palettes(search_text := "") -> void:
 	if is_none_keyword_available:
 		reserved_colors.append("none")
 		reserved_color_names.append("No color")
-	if is_current_color_interesting:
+	if current_color_availability == CurrentColorAvailability.INTERESTING:
 		reserved_colors.append("currentColor")
 		reserved_color_names.append("Current color")
 	if show_url:
@@ -73,19 +89,19 @@ func update_palettes(search_text := "") -> void:
 				elif element is ElementRadialGradient:
 					reserved_color_names.append("Radial gradient")
 					reserved_colors.append("url(#%s)" % element.get_attribute_value("id"))
-	var reserved_palette := ColorPalette.new()
-	reserved_palette.setup(reserved_colors, reserved_color_names)
 	
-	var displayed_palettes: Array[ColorPalette] = [reserved_palette]
+	var reserved_palette := MockPalette.new("", reserved_colors, reserved_color_names)
+	var displayed_palettes: Array[MockPalette] = [reserved_palette]
 	for palette in Configs.savedata.get_palettes():
 		if Configs.savedata.is_palette_valid(palette):
-			displayed_palettes.append(palette)
+			displayed_palettes.append(MockPalette.new(palette.title, palette.get_colors(),
+					palette.get_color_names()))
 	
 	for palette in displayed_palettes:
 		var indices_to_show := PackedInt32Array()
-		for i in palette.get_color_count():
+		for i in palette.colors.size():
 			if search_text.is_empty() or\
-			search_text.is_subsequence_ofn(palette.get_color_name(i)):
+			search_text.is_subsequence_ofn(palette.color_names[i]):
 				indices_to_show.append(i)
 		
 		if indices_to_show.is_empty():
@@ -104,10 +120,10 @@ func update_palettes(search_text := "") -> void:
 		swatch_container.add_theme_constant_override("h_separation", 3)
 		for i in indices_to_show:
 			var swatch := ColorSwatch.instantiate()
-			var color_to_show := palette.get_color(i)
-			swatch.palette = palette
-			swatch.idx = i
-			swatch.element = element
+			var color_to_show := palette.colors[i]
+			swatch.color = color_to_show
+			swatch.color_name = palette.color_names[i]
+			swatch.current_color = current_color
 			swatch.pressed.connect(pick_palette_color.bind(color_to_show))
 			swatch_container.add_child(swatch)
 			swatches_list.append(swatch)

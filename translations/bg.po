@@ -313,6 +313,11 @@ msgstr "Добави елемент"
 msgid "Dimensions"
 msgstr "Измерения"
 
+#: src/ui_parts/export_menu.gd src/ui_widgets/configure_color_popup.gd
+#: src/ui_widgets/palette_config.gd
+msgid "Unnamed"
+msgstr "Неименуван"
+
 #: src/ui_parts/export_menu.gd
 msgid "Size"
 msgstr "Размер"
@@ -795,7 +800,7 @@ msgstr "Настройки на панела с бързи клавиши"
 msgid "Layout"
 msgstr "Оформление"
 
-#: src/ui_parts/shortcut_panel_config.gd=
+#: src/ui_parts/shortcut_panel_config.gd
 msgid "Horizontal strip"
 msgstr "Хоризонтална лента"
 
@@ -873,17 +878,13 @@ msgstr "Промени името на цвета"
 msgid "Delete color"
 msgstr "Изтрий цвета"
 
-#: src/ui_widgets/configure_color_popup.gd src/ui_widgets/palette_config.gd
-msgid "Unnamed"
-msgstr "Неименуван"
+#: src/ui_widgets/good_color_picker.gd
+msgid "Color keywords"
+msgstr "Ключови цветове"
 
 #: src/ui_widgets/good_color_picker.gd
-msgid "Enable the color"
-msgstr "Включи цвета"
-
-#: src/ui_widgets/good_color_picker.gd
-msgid "Disable the color"
-msgstr "Изключи цвета"
+msgid "Eyedropper"
+msgstr "Пипета"
 
 #: src/ui_widgets/palette_config.gd
 msgid "Unnamed palettes won't be shown."
@@ -1120,3 +1121,9 @@ msgstr ""
 #: src/utils/TranslationUtils.gd
 msgid "The file extension is empty. Only {extension_list} files are supported."
 msgstr "Форматът е празен. Единствено {extension_list} файловете са подържани."
+
+#~ msgid "Enable the color"
+#~ msgstr "Включи цвета"
+
+#~ msgid "Disable the color"
+#~ msgstr "Изключи цвета"

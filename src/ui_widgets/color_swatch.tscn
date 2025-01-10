@@ -1,4 +1,4 @@
-[gd_scene load_steps=2 format=3 uid="uid://cpvtf3kaa2ltr"]
+[gd_scene load_steps=2 format=3 uid="uid://bujllg1bqlub6"]
 
 [ext_resource type="Script" path="res://src/ui_widgets/color_swatch.gd" id="1_2b2yq"]
 

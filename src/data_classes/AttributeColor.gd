@@ -4,9 +4,9 @@ class_name AttributeColor extends Attribute
 # No direct color representation for this attribute type. There are too many quirks.
 
 func set_value(new_value: String) -> void:
-	super(new_value if ColorParser.is_valid(new_value, false, true,
-			name in DB.attribute_color_url_allowed,
-			name in DB.attribute_color_none_allowed) else "")
+	super(new_value if ColorParser.is_valid(new_value, false,
+			name in DB.attribute_color_url_allowed, name in DB.attribute_color_none_allowed,
+			name in DB.attribute_color_current_color_allowed) else "")
 
 func format(text: String) -> String:
 	text = text.strip_edges()
