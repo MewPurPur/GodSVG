@@ -315,7 +315,9 @@ jobs:
         run: |
           cd godsvg
           mkdir -p build/web
-          godot --headless --export-release "Web" build/web/index.html
+          godot --headless --export-release "Web" build/web/GodSVG.html
+          cd build/web
+          mv GodSVG.html index.html
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
