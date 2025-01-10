@@ -8,13 +8,13 @@ static func add_hash_if_hex(color: String) -> String:
 	return color
 
 static func is_valid(color: String, allow_alpha := false, allow_element_context := false,
-allow_url := true) -> bool:
+allow_url := true, allow_none := true) -> bool:
 	if not allow_element_context:
 		allow_url = false
+		allow_none = false
 	return is_valid_hex(color, allow_alpha) or is_valid_rgb(color, allow_alpha) or\
-			is_valid_hsl(color, allow_alpha) or\
-			is_valid_named(color, allow_alpha, allow_element_context) or\
-			(allow_url and is_valid_url(color))
+			is_valid_hsl(color, allow_alpha) or is_valid_named(color, allow_alpha,
+			allow_element_context, allow_none) or (allow_url and is_valid_url(color))
 
 static func is_valid_hex(color: String, allow_alpha := false) -> bool:
 	color = color.strip_edges()
@@ -90,11 +90,11 @@ static func _hsl_check(stripped_color: String) -> bool:
 			_is_valid_percentage(channels[2])
 
 static func is_valid_named(color: String, allow_alpha := false,
-allow_element_context := false) -> bool:
+allow_element_context := false, allow_none := false) -> bool:
 	color = color.strip_edges()
 	if AttributeColor.get_named_colors(allow_alpha).has(color):
 		return true
-	elif color == "none":
+	elif allow_none and color == "none":
 		return true
 	elif allow_element_context and color == "currentColor":
 		return true

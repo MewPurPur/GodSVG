@@ -53,7 +53,7 @@ func insert_color(idx: int, color: String, color_name: String) -> void:
 	layout_changed.emit()
 
 func add_new_color() -> void:
-	_colors.append("none")
+	_colors.append("black")
 	_color_names.append("")
 	emit_changed()
 	layout_changed.emit()
