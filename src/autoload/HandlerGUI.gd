@@ -34,7 +34,8 @@ func _ready() -> void:
 
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_WM_ABOUT:
-		open_about()
+		# TODO Keep track of #101410.
+		open_about.call_deferred()
 
 # Drag-and-drop of files.
 func _on_files_dropped(files: PackedStringArray) -> void:
@@ -273,19 +274,21 @@ func update_ui_scale() -> void:
 	# How much can the default size be increased before it takes all usable screen space.
 	var max_expansion := Vector2(usable_screen_size) / Vector2(window_default_size)
 	var max_scale := snappedf(minf(max_expansion.x, max_expansion.y) - 0.125, 0.25)
-	if OS.get_name() == "Android":
-		# This is a temporary fix for smaller UI scale on Android.
-		# TODO Update this logic after moving to Godot 4.4
-		max_scale *= 1.5
-	var final_scale := minf(Configs.savedata.ui_scale * _calculate_auto_scale(), max_scale)
-	var resize_factor := final_scale / old_scale_factor
+	var min_scale := snappedf(max_scale / 2.0 - 0.125, 0.25)
 	
+	var final_scale := Configs.savedata.ui_scale
+	if Configs.savedata.auto_ui_scale:
+		var aspect_ratio := float(usable_screen_size.x) / usable_screen_size.y
+		# The wider the screen, the bigger the automatically chosen UI scale.
+		final_scale *= snappedf(max_scale * clampf(aspect_ratio * 0.375, 0.6, 0.8), 0.25)
+	final_scale = clampf(final_scale, min_scale, max_scale)
+	
+	var resize_factor := final_scale / old_scale_factor
 	if not OS.get_name() in ["Android", "Web"]:
-		# TODO Check later if this workaround is still necessary for Windows.
-		if OS.get_name() != "Windows" or window.mode == Window.MODE_WINDOWED:
+		if window.mode == Window.MODE_WINDOWED:
 			# The window's minimum size can mess with the size change, so we set it to zero.
 			window.min_size = Vector2i.ZERO
-			window.size *= resize_factor
+			window.size = window_default_size * resize_factor
 		window.min_size = window_default_size * final_scale
 	window.content_scale_factor = final_scale
 
@@ -323,47 +326,6 @@ func open_export() -> void:
 		confirm_dialog.setup(Translator.translate("Export SVG"), Translator.translate(
 				"The graphic can only be exported as SVG because its size is not defined. Do you want to proceed?"),
 				Translator.translate("Export"), FileUtils.open_export_dialog.bind(svg_export_data))
-
-
-func _calculate_auto_scale() -> float:
-	if not Configs.savedata.auto_ui_scale:
-		return 1.0
-	
-	# Credit: Godots (MIT, by MakovWait and contributors)
-	
-	var screen := DisplayServer.window_get_current_screen()
-	if DisplayServer.screen_get_size(screen) == Vector2i():
-		return 1.0
-	
-	# Use the smallest dimension to use a correct display scale on portrait displays.
-	var smallest_dimension := mini(DisplayServer.screen_get_size(screen).x,
-			DisplayServer.screen_get_size(screen).y)
-	
-	var dpi :=  DisplayServer.screen_get_dpi(screen)
-	if dpi != 72:
-		if dpi < 72:
-			return 0.75
-		elif dpi <= 96:
-			return 1.0
-		elif dpi <= 120:
-			return 1.25
-		elif dpi <= 160:
-			return 1.5
-		elif dpi <= 200:
-			return 2.0
-		elif dpi <= 240:
-			return 2.5
-		elif dpi <= 320:
-			return 3.0
-		elif dpi <= 480:
-			return 4.0
-		else:  # dpi > 480
-			return 5.0
-	elif smallest_dimension >= 1700:
-		# Likely a hiDPI display, but we aren't certain due to the returned DPI.
-		# Use an intermediate scale to handle this situation.
-		return 1.5
-	return 1.0
 
 
 # Helpers

@@ -100,7 +100,7 @@ func _setup_menu_items() -> void:
 	_add_action(appl_rid, "open_settings")
 	_add_icon_item(help_rid, "open_settings", load("res://assets/icons/Gear.svg"))
 	_add_icon_item(help_rid, "about_repo", load("res://assets/icons/Link.svg"))
-	_add_icon_item(help_rid, "about_info", load("res://visual/icon.svg"))
+	_add_icon_item(help_rid, "about_info", load("res://assets/logos/icon.svg"))
 	_add_icon_item(help_rid, "about_donate", load("res://assets/icons/Heart.svg"))
 	_add_icon_item(help_rid, "about_website", load("res://assets/icons/Link.svg"))
 	_add_icon_item(help_rid, "check_updates", load("res://assets/icons/Reload.svg"))
