@@ -419,7 +419,7 @@ func add_pasted_palette() -> void:
 func add_imported_palette() -> void:
 	FileUtils.open_xml_import_dialog(_on_import_palette_finished)
 
-func _on_import_palette_finished(file_text: String, _file_name: String) -> void:
+func _on_import_palette_finished(file_text: String) -> void:
 	_shared_add_palettes_logic(ColorPalette.text_to_palettes(file_text))
 
 func _shared_add_palettes_logic(palettes: Array[ColorPalette]) -> void:
