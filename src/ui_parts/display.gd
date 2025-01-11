@@ -192,9 +192,9 @@ func toggle_reference_overlay() -> void:
 	else:
 		viewport.move_child(reference_texture, 0)
 
-func finish_reference_import(data: Variant, path: String) -> void:
+func finish_reference_import(data: Variant, file_path: String) -> void:
 	var img := Image.new()
-	match path.get_extension().to_lower():
+	match file_path.get_extension().to_lower():
 		"svg": img.load_svg_from_string(data)
 		"png": img.load_png_from_buffer(data)
 		"jpg", "jpeg": img.load_jpg_from_buffer(data)

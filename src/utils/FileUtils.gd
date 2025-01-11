@@ -156,17 +156,17 @@ allowed_extensions: PackedStringArray) -> Error:
 		alert_dialog.setup(error)
 		return ERR_FILE_CANT_OPEN
 	
-	var file_name := file_path.get_file()
-	if file_extension in ["svg", "xml"]:
-		completion_callback.call(file.get_as_text(), file_name)
-	else:
-		completion_callback.call(file.get_buffer(file.get_length()), file_name)
+	# The XML callbacks happen to not need the file path.
+	match file_extension:
+		"svg": completion_callback.call(file.get_as_text(), file_path)
+		"xml": completion_callback.call(file.get_as_text())
+		_: completion_callback.call(file.get_buffer(file.get_length()), file_path)
 	return OK
 
 
-static func _apply_svg(data: Variant, file_name: String) -> Error:
+static func _apply_svg(data: Variant, file_path: String) -> Error:
 	var warning_panel := ImportWarningMenu.instantiate()
-	warning_panel.imported.connect(_finish_svg_import.bind(data, file_name))
+	warning_panel.imported.connect(_finish_svg_import.bind(data, file_path))
 	warning_panel.set_svg(data)
 	HandlerGUI.add_menu(warning_panel)
 	return OK
