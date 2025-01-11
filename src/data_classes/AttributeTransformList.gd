@@ -170,7 +170,7 @@ static func text_to_transform_list(text: String) -> Array[Transform]:
 						else:
 							comma_exhausted = true
 							number_proceed = false
-					"e":
+					"e", "E":
 						if passed_decimal_point:
 							return []
 						else:

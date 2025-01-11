@@ -354,7 +354,7 @@ static func pathdata_to_arrays(text: String) -> Array[Array]:
 							else:
 								comma_exhausted = true
 								number_proceed = false
-						"e":
+						"e", "E":
 							if passed_decimal_point:
 								return new_commands
 							else:
