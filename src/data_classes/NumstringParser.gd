@@ -39,6 +39,27 @@ func numstr_arr_to_text(numstr_arr: PackedStringArray) -> String:
 static func evaluate(text: String) -> float:
 	text = text.strip_edges()
 	text = text.trim_prefix("+")  # Expression can't handle unary plus.
+	
+	# Expression can't handle exponents with capital E. This contrived logic replaces
+	# valid capital E exponents with a lowercase E.
+	var exponent := ""
+	while text.right(1) in ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]:
+		exponent = text.right(1) + exponent
+		text = text.left(-1)
+	if text.is_empty():
+		text = exponent
+	else:
+		if text.right(1) in ["-", "+"]:
+			exponent = text.right(1) + exponent
+			text = text.left(-1)
+		if text.is_empty():
+			text = exponent
+		else:
+			if text.right(1) == "E":
+				text = text.left(-1) + "e" + exponent
+			else:
+				text = text + exponent
+	
 	var expr := Expression.new()
 	var err := expr.parse(text.replace(",", "."))
 	if err == OK:
