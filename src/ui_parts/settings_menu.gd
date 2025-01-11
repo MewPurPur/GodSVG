@@ -310,17 +310,25 @@ func hide_advice(setting: String) -> void:
 
 
 func _on_language_pressed() -> void:
+	var strings_count := TranslationServer.get_translation_object("en").get_message_count()
+	
 	var btn_arr: Array[Button] = []
 	for lang in TranslationServer.get_loaded_locales():
 		# Translation percentages.
+		# TODO Godot drove me insane here. So Translation.get_translated_message() gets
+		# all the translations, even the fuzzied ones that aren't used... whuh?
+		# So I tried to use Translation.get_message_list(), and it gets the messages
+		# for all the translations... except the fuzzied ones for some reason? WHAT?!
+		# We solve this by finding the number of fuzzied strings by subtracting the
+		# message count of English messages by the message count of the locale.
 		if lang != "en":
 			var translation_obj := TranslationServer.get_translation_object(lang)
-			var translated_count := 0
-			for msg in translation_obj.get_translated_message_list():
+			var fuzzied_count := strings_count - translation_obj.get_message_count()
+			var translated_count := -fuzzied_count
+			for msg in translation_obj.get_message_list():
 				if not msg.is_empty():
 					translated_count += 1
-			var percentage := String.num(translated_count * 100.0 /\
-					translation_obj.get_message_count(), 1) + "%"
+			var percentage := String.num(translated_count * 100.0 / strings_count, 1) + "%"
 			
 			var is_current_locale := lang == TranslationServer.get_locale()
 			var new_btn := ContextPopup.create_button(
