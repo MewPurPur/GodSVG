@@ -38,6 +38,7 @@ func _ready() -> void:
 	title_bar.draw.connect(_on_title_bar_draw)
 	mouse_entered.connect(_on_mouse_entered)
 	mouse_exited.connect(_on_mouse_exited)
+	element.ancestor_attribute_changed.connect(title_bar.queue_redraw.unbind(1))
 	element.descendant_attribute_changed.connect(title_bar.queue_redraw.unbind(1))
 	element.attribute_changed.connect(title_bar.queue_redraw.unbind(1))
 	determine_selection_highlight()

@@ -27,16 +27,22 @@ func get_config_warnings() -> PackedStringArray:
 	var first_stop_opacity := -1.0
 	var is_solid_color := true
 	for child in get_children():
-		if child is ElementStop:
-			if first_stop_color.is_empty():
-				first_stop_color = child.get_attribute_value("stop-color")
-				first_stop_opacity = maxf(0.0, child.get_attribute_num("stop-opacity"))
-			elif is_solid_color and not (ColorParser.are_colors_same(first_stop_color,
-			child.get_attribute_value("stop-color")) and\
-			first_stop_opacity == child.get_attribute_num("stop-opacity")) and\
-			not (first_stop_opacity == 0 and child.get_attribute_num("stop-opacity") <= 0):
-				is_solid_color = false
-				break
+		if not child is ElementStop:
+			continue
+		
+		var stop_opacity: float = maxf(child.get_attribute_num("stop-opacity"), 0.0)
+		var stop_color: String = child.get_attribute_value("stop-color")
+		if stop_color.strip_edges() == "currentColor":
+			stop_color = child.get_attribute_value("color")
+		
+		if first_stop_color.is_empty():
+			first_stop_opacity = stop_opacity
+			first_stop_color = stop_color
+		elif is_solid_color and not (ColorParser.are_colors_same(first_stop_color,
+		stop_color) and first_stop_opacity == stop_opacity) and\
+		not (first_stop_opacity == 0 and stop_opacity <= 0):
+			is_solid_color = false
+			break
 	
 	if first_stop_color.is_empty():
 		warnings.append(Translator.translate("No <stop> elements under this gradient."))
