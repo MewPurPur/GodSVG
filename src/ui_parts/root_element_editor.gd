@@ -41,7 +41,7 @@ func _ready() -> void:
 
 func _on_any_attribute_changed(xid: PackedInt32Array) -> void:
 	if xid.is_empty():
-		update_attributes()
+		update_editable()
 
 
 func update_attributes() -> void:
@@ -69,17 +69,17 @@ func update_attributes() -> void:
 			unknown_container.get_child(0).add_child(input_field)
 	if not has_unrecognized_attributes and is_instance_valid(unknown_container):
 		unknown_container.queue_free()
-	
+	update_editable()
+
+
+func update_editable() -> void:
 	width_edit.set_value(SVG.root_element.width, false)
 	height_edit.set_value(SVG.root_element.height, false)
 	viewbox_edit_x.set_value(SVG.root_element.viewbox.position.x, false)
 	viewbox_edit_y.set_value(SVG.root_element.viewbox.position.y, false)
 	viewbox_edit_w.set_value(SVG.root_element.viewbox.size.x, false)
 	viewbox_edit_h.set_value(SVG.root_element.viewbox.size.y, false)
-	update_editable()
-
-
-func update_editable() -> void:
+	
 	var is_width_valid := SVG.root_element.has_attribute("width")
 	var is_height_valid := SVG.root_element.has_attribute("height")
 	var is_viewbox_valid: bool = SVG.root_element.has_attribute("viewBox") and\
