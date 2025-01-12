@@ -123,7 +123,7 @@ func update_layout() -> void:
 				button.icon = ShortcutUtils.get_shortcut_icon(shortcut)
 				button.icon_alignment = HORIZONTAL_ALIGNMENT_CENTER
 				buttons_container.add_child(button)
-				button.pressed.connect(simulate_key_press.bind(shortcut))
+				button.pressed.connect(Input.action_press.bind(shortcut))
 		margin_container.add_child(buttons_container)
 	reset_size()
 
@@ -133,14 +133,6 @@ func _on_drag_handle_gui_input(event: InputEvent) -> void:
 			drag_offset = event.position if event.is_pressed() else Vector2.ZERO
 		elif event is InputEventMouseMotion:
 			set_position_absolute(event.global_position - drag_offset)
-
-func simulate_key_press(action_name: String) -> void:
-	var events := InputMap.action_get_events(action_name)
-	for event in events:
-		if event is InputEventKey:
-			event.pressed = true
-			Input.parse_input_event(event)
-			return
 
 func _on_config_button_pressed() -> void:
 	HandlerGUI.add_menu(ShortcutPanelConfig.instantiate())
