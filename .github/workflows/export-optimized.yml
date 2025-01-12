@@ -44,23 +44,19 @@ jobs:
           mv ./Godot_v${GODOT_VERSION}-${GODOT_RELEASE}_linux.x86_64 ~/godot-editor/godot
           echo "~/godot-editor" >> $GITHUB_PATH
 
-      - if: ${{ steps.cache-template.outputs.cache-hit != 'true' }}
-        name: Install dependencies
+      - name: Install dependencies
         run: sudo apt install -y scons python3 libwayland-dev
 
-      - if: ${{ steps.cache-template.outputs.cache-hit != 'true' }}
-        name: Clone Godot repository
+      - name: Clone Godot repository
         run: git clone $GODOT_REPO godot
 
-      - if: ${{ steps.cache-template.outputs.cache-hit != 'true' }}
-        name: Checkout specific commit
+      - name: Checkout specific commit
         run: |
           cd godot
           git fetch
           git checkout $GODOT_COMMIT_HASH
 
-      - if: ${{ steps.cache-template.outputs.cache-hit != 'true' }}
-        name: Build Godot template for Linux
+      - name: Build Godot template for Linux
         run: |
           cd godot
           scons p=linuxbsd arch=x86_64 ${BUILD_OPTIONS}
@@ -74,7 +70,6 @@ jobs:
 
       - name: Export project
         run: |
-          ls -l
           cd godsvg
           mkdir -p build
           godot --headless --export-release "${{ env.PLATFORM }}" build/GodSVG.x86_64
