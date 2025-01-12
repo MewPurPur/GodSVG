@@ -23,7 +23,8 @@ env:
 jobs:
   build-linux:
     name: Export GodSVG for Linux
-    runs-on: ubuntu-latest
+    # Stay one LTS before latest to increase portability of Linux artifacts.
+    runs-on: ubuntu-22.04
     env:
       PLATFORM: "Linux"
     steps:
@@ -74,7 +75,6 @@ jobs:
 
       - name: Export project
         run: |
-          ls -l
           cd godsvg
           mkdir -p build
           godot --headless --export-release "${{ env.PLATFORM }}" build/GodSVG.x86_64
