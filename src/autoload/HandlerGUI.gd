@@ -278,9 +278,12 @@ func update_ui_scale() -> void:
 	
 	var final_scale := Configs.savedata.ui_scale
 	if Configs.savedata.auto_ui_scale:
-		var aspect_ratio := float(usable_screen_size.x) / usable_screen_size.y
 		# The wider the screen, the bigger the automatically chosen UI scale.
-		final_scale *= snappedf(max_scale * clampf(aspect_ratio * 0.375, 0.6, 0.8), 0.25)
+		var aspect_ratio := float(usable_screen_size.x) / usable_screen_size.y
+		var auto_scale := max_scale * clampf(aspect_ratio * 0.375, 0.6, 0.8)
+		if OS.get_name() == "Android":
+			auto_scale *= 1.1  # Default to giving mobile a bit more space.
+		final_scale = snappedf(final_scale * auto_scale, 0.25)
 	final_scale = clampf(final_scale, min_scale, max_scale)
 	
 	var resize_factor := final_scale / old_scale_factor
@@ -288,7 +291,9 @@ func update_ui_scale() -> void:
 		if window.mode == Window.MODE_WINDOWED:
 			# The window's minimum size can mess with the size change, so we set it to zero.
 			window.min_size = Vector2i.ZERO
-			window.size = window_default_size * resize_factor
+			window.size = Vector2i(mini(int(window.size.x * resize_factor),
+					usable_screen_size.x), mini(int(window.size.y * resize_factor),
+					usable_screen_size.y))
 		window.min_size = window_default_size * final_scale
 	window.content_scale_factor = final_scale
 
