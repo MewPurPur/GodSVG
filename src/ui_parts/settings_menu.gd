@@ -21,7 +21,7 @@ var focused_tab := ""
 var current_setup_setting := ""
 var current_setup_resource: Resource
 var setting_container: VBoxContainer
-var advice := {}  # String: String
+var advice: Dictionary[String, String] = {}
 
 func _ready() -> void:
 	close_button.pressed.connect(queue_free)
@@ -328,9 +328,10 @@ func _on_language_pressed() -> void:
 			for msg in translation_obj.get_message_list():
 				if not msg.is_empty():
 					translated_count += 1
-			var percentage := String.num(translated_count * 100.0 / strings_count, 1) + "%"
+			var percentage :=\
+					Utils.num_simple(translated_count * 100.0 / strings_count, 1) + "%"
 			
-			var is_current_locale := lang == TranslationServer.get_locale()
+			var is_current_locale := (lang == TranslationServer.get_locale())
 			var new_btn := ContextPopup.create_button(
 					TranslationServer.get_locale_name(lang) + " (" + lang.to_upper() + ")",
 					Callable(), is_current_locale)
@@ -401,7 +402,7 @@ func _popup_xml_palette_options(palette_xml_button: Button) -> void:
 	btn_arr.append(ContextPopup.create_button(Translator.translate("Import XML"),
 			add_imported_palette, false, load("res://assets/icons/Import.svg")))
 	btn_arr.append(ContextPopup.create_button(Translator.translate("Paste XML"),
-			add_pasted_palette, !ColorPalette.is_valid_palette(Utils.get_clipboard_web_safe()),
+			add_pasted_palette, !Palette.is_valid_palette(Utils.get_clipboard_web_safe()),
 			load("res://assets/icons/Paste.svg")))
 	
 	var context_popup := ContextPopup.new()
@@ -411,22 +412,22 @@ func _popup_xml_palette_options(palette_xml_button: Button) -> void:
 
 
 func add_empty_palette() -> void:
-	_shared_add_palette_logic(ColorPalette.new())
+	_shared_add_palette_logic(Palette.new())
 
 func add_pasted_palette() -> void:
-	_shared_add_palettes_logic(ColorPalette.text_to_palettes(Utils.get_clipboard_web_safe()))
+	_shared_add_palettes_logic(Palette.text_to_palettes(Utils.get_clipboard_web_safe()))
 
 func add_imported_palette() -> void:
 	FileUtils.open_xml_import_dialog(_on_import_palette_finished)
 
 func _on_import_palette_finished(file_text: String) -> void:
-	_shared_add_palettes_logic(ColorPalette.text_to_palettes(file_text))
+	_shared_add_palettes_logic(Palette.text_to_palettes(file_text))
 
-func _shared_add_palettes_logic(palettes: Array[ColorPalette]) -> void:
+func _shared_add_palettes_logic(palettes: Array[Palette]) -> void:
 	if not palettes.is_empty():
 		_shared_add_palette_logic(palettes[0])
 
-func _shared_add_palette_logic(palette: ColorPalette) -> void:
+func _shared_add_palette_logic(palette: Palette) -> void:
 	Configs.savedata.add_palette(palette)
 	rebuild_palettes()
 
@@ -467,8 +468,8 @@ func rebuild_palettes() -> void:
 	xml_palette_button.pressed.connect(_popup_xml_palette_options.bind(xml_palette_button))
 
 
-var shortcut_tab_names := ["file", "edit", "view", "tool", "help"]
-var formatter_tab_names := ["editor", "export"]
+var shortcut_tab_names := PackedStringArray(["file", "edit", "view", "tool", "help"])
+var formatter_tab_names := PackedStringArray(["editor", "export"])
 
 func get_translated_formatter_tab(tab_idx: String) -> String:
 	match tab_idx:

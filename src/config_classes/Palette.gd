@@ -1,9 +1,9 @@
 # A resource for the color palettes that are listed in the color picker.
-class_name ColorPalette extends ConfigResource
+class_name Palette extends ConfigResource
 
 enum Preset {EMPTY, PURE, GRAYSCALE}
 
-var presets = {
+var _presets: Dictionary[Preset, Array] = {
 	Preset.EMPTY: [PackedStringArray(), PackedStringArray()],
 	Preset.PURE: [PackedStringArray(["#fff", "#000", "#f00", "#0f0", "#00f", "#ff0",
 			"#f0f", "#0ff"]), PackedStringArray(["White", "Black", "Red", "Green", "Blue",
@@ -109,16 +109,16 @@ func modify_color_name(idx: int, new_color_name: String) -> void:
 
 func apply_preset(new_preset: Preset) -> void:
 	if not is_same_as_preset(new_preset):
-		_colors = presets[new_preset][0].duplicate()
-		_color_names = presets[new_preset][1].duplicate()
+		_colors = _presets[new_preset][0].duplicate()
+		_color_names = _presets[new_preset][1].duplicate()
 		emit_changed()
 		layout_changed.emit()
 
 func is_same_as_preset(preset: Preset) -> bool:
-	return _colors == presets[preset][0] and _color_names == presets[preset][1]
+	return _colors == _presets[preset][0] and _color_names == _presets[preset][1]
 
 func has_unique_definitions() -> bool:
-	var dict := {}
+	var dict: Dictionary[Color, Array] = {}
 	for i in _color_names.size():
 		var color := ColorParser.text_to_color(_colors[i])
 		if dict.has(color) and dict[color].has(_color_names[i]):
@@ -146,13 +146,13 @@ func _validate() -> void:
 	_color_names.resize(_colors.size())
 
 
-static func text_to_palettes(text: String) -> Array[ColorPalette]:
+static func text_to_palettes(text: String) -> Array[Palette]:
 	var parser := XMLParser.new()
 	parser.open_buffer(text.to_utf8_buffer())
 	var parsed_title: String
 	var parsed_colors := PackedStringArray()
 	var parsed_color_names := PackedStringArray()
-	var palettes: Array[ColorPalette] = []
+	var palettes: Array[Palette] = []
 	while parser.read() == OK:
 		match parser.get_node_type():
 			XMLParser.NODE_ELEMENT:
@@ -167,7 +167,7 @@ static func text_to_palettes(text: String) -> Array[ColorPalette]:
 						parsed_colors.append(col_str)
 			XMLParser.NODE_ELEMENT_END:
 				if parser.get_node_name() == "palette":
-					var new_palette := ColorPalette.new(parsed_title)
+					var new_palette := Palette.new(parsed_title)
 					new_palette.setup(parsed_colors, parsed_color_names)
 					parsed_colors.clear()
 					parsed_color_names.clear()

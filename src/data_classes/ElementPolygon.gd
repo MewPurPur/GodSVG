@@ -2,7 +2,7 @@
 class_name ElementPolygon extends Element
 
 const name = "polygon"
-const possible_conversions = ["path", "rect"]
+const possible_conversions: Array[String] = ["path", "rect"]
 
 func user_setup(precise_pos := PackedFloat64Array([0.0, 0.0])) -> void:
 	if precise_pos != PackedFloat64Array([0.0, 0.0]):

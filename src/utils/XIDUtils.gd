@@ -4,10 +4,9 @@ class_name XIDUtils extends RefCounted
 static func compare(xid1: PackedInt32Array, xid2: PackedInt32Array) -> bool:
 	var smaller_xid_size := mini(xid1.size(), xid2.size())
 	for i in smaller_xid_size:
-		if xid1[i] < xid2[i]:
-			return true
-		elif xid1[i] > xid2[i]:
-			return false
+		if xid1[i] == xid2[i]:
+			continue
+		return xid1[i] < xid2[i]
 	return xid1.size() > smaller_xid_size
 
 static func compare_reverse(xid1: PackedInt32Array, xid2: PackedInt32Array) -> bool:
@@ -26,16 +25,25 @@ static func is_parent(parent: PackedInt32Array, child: PackedInt32Array) -> bool
 			return false
 	return true
 
-static func is_parent_or_self(parent: PackedInt32Array,
-child: PackedInt32Array) -> bool:
-	return is_parent(parent, child) or parent == child
+static func is_parent_or_self(parent: PackedInt32Array, child: PackedInt32Array) -> bool:
+	if parent.is_empty():
+		return false
+	var parent_size := parent.size()
+	if parent_size > child.size():
+		return false
+	
+	for i in parent_size:
+		if parent[i] != child[i]:
+			return false
+	return true
+
 
 static func get_parent_xid(xid: PackedInt32Array) -> PackedInt32Array:
 	var parent_xid := xid.duplicate()
 	parent_xid.resize(xid.size() - 1)
 	return parent_xid
 
-static func are_siblings(xid1: PackedInt32Array, xid2: PackedInt32Array) -> bool:
+static func are_siblings_or_same(xid1: PackedInt32Array, xid2: PackedInt32Array) -> bool:
 	if xid1.size() != xid2.size():
 		return false
 	for i in xid1.size() - 1:

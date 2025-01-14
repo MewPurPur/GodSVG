@@ -8,7 +8,7 @@ const plus_icon = preload("res://assets/icons/Plus.svg")
 
 signal layout_changed
 
-var palette: ColorPalette
+var palette: Palette
 var currently_edited_idx := -1
 
 @onready var palette_button: Button = $MainContainer/HBoxContainer/PaletteButton
@@ -31,7 +31,7 @@ func setup_theme() -> void:
 
 
 # Used to setup a palette for this element.
-func assign_palette(new_palette: ColorPalette) -> void:
+func assign_palette(new_palette: Palette) -> void:
 	palette = new_palette
 	palette.layout_changed.connect(rebuild_colors)
 	palette.layout_changed.connect(display_warnings)
@@ -177,7 +177,7 @@ func move_down() -> void:
 	layout_changed.emit()
 
 func paste_palette() -> void:
-	var pasted_palettes := ColorPalette.text_to_palettes(Utils.get_clipboard_web_safe())
+	var pasted_palettes := Palette.text_to_palettes(Utils.get_clipboard_web_safe())
 	if pasted_palettes.is_empty():
 		return
 	Configs.savedata.replace_palette(find_palette_index(), pasted_palettes[0])
@@ -186,16 +186,16 @@ func paste_palette() -> void:
 func open_palette_options() -> void:
 	var btn_arr: Array[Button] = []
 	btn_arr.append(ContextPopup.create_button("Pure",
-			apply_preset.bind(ColorPalette.Preset.PURE),
-			palette.is_same_as_preset(ColorPalette.Preset.PURE),
+			apply_preset.bind(Palette.Preset.PURE),
+			palette.is_same_as_preset(Palette.Preset.PURE),
 			load("res://assets/icons/PresetPure.svg")))
 	btn_arr.append(ContextPopup.create_button("Grayscale",
-			apply_preset.bind(ColorPalette.Preset.GRAYSCALE),
-			palette.is_same_as_preset(ColorPalette.Preset.GRAYSCALE),
+			apply_preset.bind(Palette.Preset.GRAYSCALE),
+			palette.is_same_as_preset(Palette.Preset.GRAYSCALE),
 			load("res://assets/icons/PresetGrayscale.svg")))
 	btn_arr.append(ContextPopup.create_button("Empty",
-			apply_preset.bind(ColorPalette.Preset.EMPTY),
-			palette.is_same_as_preset(ColorPalette.Preset.EMPTY),
+			apply_preset.bind(Palette.Preset.EMPTY),
+			palette.is_same_as_preset(Palette.Preset.EMPTY),
 			load("res://assets/icons/Clear.svg")))
 	
 	var context_popup := ContextPopup.new()
@@ -203,7 +203,7 @@ func open_palette_options() -> void:
 	HandlerGUI.popup_under_rect_center(context_popup, palette_button.get_global_rect(),
 			get_viewport())
 
-func apply_preset(preset: ColorPalette.Preset) -> void:
+func apply_preset(preset: Palette.Preset) -> void:
 	Configs.savedata.get_palette(find_palette_index()).apply_preset(preset)
 
 
@@ -228,7 +228,7 @@ func _on_palette_button_pressed() -> void:
 			DisplayServer.clipboard_set.bind(Configs.savedata.get_palette(palette_idx).\
 			to_text()), false, load("res://assets/icons/Copy.svg")))
 	btn_arr.append(ContextPopup.create_button(Translator.translate("Paste XML"),
-			paste_palette, !ColorPalette.is_valid_palette(Utils.get_clipboard_web_safe()),
+			paste_palette, !Palette.is_valid_palette(Utils.get_clipboard_web_safe()),
 			load("res://assets/icons/Paste.svg")))
 	btn_arr.append(ContextPopup.create_button(Translator.translate("Apply Preset"),
 			open_palette_options, false, load("res://assets/icons/Import.svg")))
@@ -275,7 +275,7 @@ func _can_drop_data(_at_position: Vector2, data: Variant) -> bool:
 
 	proposed_drop_idx = new_idx
 	for swatch in get_swatches():
-		swatch.proposed_drop_data = [palette, new_idx]
+		swatch.proposed_drop_data = ColorSwatchType.DropData.new(palette, new_idx)
 		swatch.queue_redraw()
 	return data.palette != palette or (data.palette == palette and\
 			data.index != new_idx and data.index != new_idx - 1)
@@ -297,5 +297,5 @@ func _drop_data(_at_position: Vector2, data: Variant) -> void:
 func clear_proposed_drop() -> void:
 	proposed_drop_idx = -1
 	for swatch in get_swatches():
-		swatch.proposed_drop_data.clear()
+		swatch.proposed_drop_data = null
 		swatch.queue_redraw()

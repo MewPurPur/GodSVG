@@ -2,7 +2,7 @@ extends VTitledPanel
 
 const warning_icon = preload("res://assets/icons/Warning.svg")
 
-const element_content_types = {
+const element_content_types: Dictionary[String, PackedScene] = {
 	"path": preload("res://src/ui_widgets/element_content_path.tscn"),
 	"polygon": preload("res://src/ui_widgets/element_content_polyshape.tscn"),
 	"polyline": preload("res://src/ui_widgets/element_content_polyshape.tscn"),

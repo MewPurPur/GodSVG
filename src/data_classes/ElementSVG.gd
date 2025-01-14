@@ -16,7 +16,7 @@ var canvas_precise_transform: PackedFloat64Array:
 		canvas_transform = Utils64Bit.get_transform(canvas_precise_transform)
 
 const name = "svg"
-const possible_conversions = []
+const possible_conversions: Array[String] = []
 
 func _init() -> void:
 	attribute_changed.connect(_conditional_update_cache)

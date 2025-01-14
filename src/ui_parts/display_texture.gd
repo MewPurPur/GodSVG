@@ -50,6 +50,5 @@ func _update() -> void:
 	var err := img.load_svg_from_string(svg_text, image_zoom)
 	if err == OK:
 		position = display_rect.position
-		# TODO check if deferred is still needed.
 		set_deferred("size", display_rect.size)
 		texture = ImageTexture.create_from_image(img)

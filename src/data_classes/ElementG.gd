@@ -2,7 +2,7 @@
 class_name ElementG extends Element
 
 const name = "g"
-const possible_conversions = []
+const possible_conversions: Array[String] = []
 
 func _get_own_default(attribute_name: String) -> String:
 	match attribute_name:

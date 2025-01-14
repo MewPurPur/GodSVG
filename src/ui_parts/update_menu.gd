@@ -8,7 +8,7 @@ extends PanelContainer
 @onready var close_button: Button = $VBoxContainer/CloseButton
 
 var current_version: String = ProjectSettings.get_setting("application/config/version")
-var results := {}  # Dictionary{String: String}  version: [url, is_prerelease]
+var results: Dictionary[String, Array] = {}  # version: [url, is_prerelease]
 
 func _ready() -> void:
 	http.request_completed.connect(_on_request_completed)
@@ -99,7 +99,7 @@ func display_results() -> void:
 	else:
 		status_label.text = Translator.translate("New versions") + ":"
 		for version in results:
-			var result: Array = results[version]
+			var result := results[version]
 			if prereleases_checkbox.button_pressed or result[1] == false:
 				if OS.has_feature("web"):
 					status_label.text += "\n%s" % version

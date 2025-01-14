@@ -6,7 +6,7 @@ const NumberEditType = preload("res://src/ui_widgets/number_edit.gd")
 const MiniNumberField = preload("res://src/ui_widgets/mini_number_field.tscn")
 const TransformEditor = preload("res://src/ui_widgets/transform_editor.tscn")
 
-const icons_dict := {
+const _icons_dict: Dictionary[String, Texture2D] = {
 	"matrix": preload("res://assets/icons/Matrix.svg"),
 	"translate": preload("res://assets/icons/Translate.svg"),
 	"rotate": preload("res://assets/icons/Rotate.svg"),
@@ -86,7 +86,7 @@ func rebuild() -> void:
 		elif t is Transform.TransformSkewY:
 			fields = [create_mini_number_field(i, "y")]
 		t_editor.setup(t, fields)
-		t_editor.transform_button.icon = icons_dict[t_editor.type]
+		t_editor.transform_button.icon = _icons_dict[t_editor.type]
 		t_editor.transform_button.pressed.connect(
 				popup_transform_actions.bind(i, t_editor.transform_button))
 		i += 1
@@ -170,7 +170,7 @@ func popup_new_transform_context(idx: int, control: Control) -> void:
 	var btn_array: Array[Button] = []
 	for transform in ["matrix", "translate", "rotate", "scale", "skewX", "skewY"]:
 		var btn := ContextPopup.create_button(transform,
-				insert_transform.bind(idx, transform), false, icons_dict[transform])
+				insert_transform.bind(idx, transform), false, _icons_dict[transform])
 		btn.add_theme_font_override("font", ThemeUtils.mono_font)
 		btn_array.append(btn)
 	

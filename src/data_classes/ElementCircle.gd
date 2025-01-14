@@ -2,7 +2,7 @@
 class_name ElementCircle extends Element
 
 const name = "circle"
-const possible_conversions = ["ellipse", "rect", "path"]
+const possible_conversions: Array[String] = ["ellipse", "rect", "path"]
 
 func user_setup(precise_pos := PackedFloat64Array([0.0, 0.0])) -> void:
 	set_attribute("r", 1.0)

@@ -1,7 +1,7 @@
 # A popup for picking a color.
 extends PanelContainer
 
-# Useful here, because it avoids the ColorPalette validation.
+# Useful here, because it avoids the Palette validation.
 class MockPalette extends RefCounted:
 	var title: String
 	var colors: PackedStringArray

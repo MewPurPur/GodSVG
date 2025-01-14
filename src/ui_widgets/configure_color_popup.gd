@@ -8,7 +8,7 @@ signal color_deletion_requested
 @onready var delete_button: Button = %ConfigureContainer/BottomContainer/DeleteButton
 @onready var label_container: HBoxContainer = %LabelContainer
 
-var palette: ColorPalette
+var palette: Palette
 var idx: int
 
 func _ready() -> void:

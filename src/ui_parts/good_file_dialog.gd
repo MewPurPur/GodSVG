@@ -11,9 +11,9 @@ const folder_icon = preload("res://assets/icons/Folder.svg")
 const broken_file_icon = preload("res://assets/icons/FileBroken.svg")
 const text_file_icon = preload("res://assets/icons/TextFile.svg")
 
-const system_dirs_to_show = [OS.SYSTEM_DIR_DESKTOP, OS.SYSTEM_DIR_DOCUMENTS,
-		OS.SYSTEM_DIR_DOWNLOADS, OS.SYSTEM_DIR_MOVIES, OS.SYSTEM_DIR_MUSIC,
-		OS.SYSTEM_DIR_PICTURES]
+const system_dirs_to_show: Array[OS.SystemDir] = [OS.SYSTEM_DIR_DESKTOP,
+		OS.SYSTEM_DIR_DOCUMENTS, OS.SYSTEM_DIR_DOWNLOADS, OS.SYSTEM_DIR_MOVIES,
+		OS.SYSTEM_DIR_MUSIC, OS.SYSTEM_DIR_PICTURES]
 
 enum FileMode {SELECT, SAVE}
 var mode: FileMode
@@ -423,7 +423,7 @@ func _init() -> void:
 	OS.SYSTEM_DIR_PICTURES, OS.SYSTEM_DIR_RINGTONES]:
 		system_dir_paths[enum_value] = OS.get_system_dir(enum_value)
 
-var system_dir_paths := {}
+var system_dir_paths: Dictionary[OS.SystemDir, String] = {}
 
 func get_drive_icon(path: String) -> Texture2D:
 	if path == system_dir_paths[OS.SYSTEM_DIR_DESKTOP]:

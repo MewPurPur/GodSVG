@@ -181,9 +181,9 @@ func _get_keycode_for_events(input_events: Array[InputEvent]) -> Key:
 
 func _on_svg_changed() -> void:
 	NativeMenu.set_item_disabled(file_rid, file_clear_svg_idx, SVG.text == SVG.DEFAULT)
-	var empty_path := Configs.savedata.current_file_path.is_empty()
-	NativeMenu.set_item_disabled(file_rid, file_clear_association_idx, empty_path)
-	NativeMenu.set_item_disabled(file_rid, file_reset_svg_idx, empty_path)
+	var is_path_empty := Configs.savedata.current_file_path.is_empty()
+	NativeMenu.set_item_disabled(file_rid, file_clear_association_idx, is_path_empty)
+	NativeMenu.set_item_disabled(file_rid, file_reset_svg_idx, is_path_empty)
 
 
 func _on_display_view_settings_updated(show_grid: bool, show_handles: bool, rasterized_svg: bool) -> void:

@@ -27,7 +27,7 @@ Note that if you're on MacOS, you need to [disable Gatekeeper](https://disable-g
 
 Link to the web build: https://godsvg.com/editor
 
-To run the latest unreleased version, you can download Godot from https://godotengine.org (development is currently happening in v4.3). After getting the repository files on your machine, you must open Godot, click on the "Import" button, and import the `project.godot` folder. If there are a lot of errors as some people have reported, it's Godot's fault. Try closing and opening the project a few times, changing small things on the code that errors out, etc. until the errors hopefully clear.
+To run the latest unreleased version, you can download Godot from https://godotengine.org (development is currently happening in v4.4.dev7). After getting the repository files on your machine, you must open Godot, click on the "Import" button, and import the `project.godot` folder. If there are a lot of errors as some people have reported, it's Godot's fault. Try closing and opening the project a few times, changing small things on the code that errors out, etc. until the errors hopefully clear.
 
 ## How to use it
 

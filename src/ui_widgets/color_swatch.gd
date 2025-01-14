@@ -13,7 +13,7 @@ var gradient_texture: GradientTexture2D
 var current_color := Color.BLACK
 
 func _ready() -> void:
-	tooltip_text = "lmofa"  # TODO: _make_custom_tooltip() requires some text to work.
+	tooltip_text = "lmofa"  # TODO: Remove this when #101550 is fixed.
 	# TODO remove this when #25296 is fixed.
 	if ColorParser.is_valid_url(color):
 		var id := color.substr(5, color.length() - 6)

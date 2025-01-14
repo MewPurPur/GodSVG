@@ -13,9 +13,9 @@ config_version=5
 config/name="GodSVG"
 config/version="1.0-alpha7"
 config/tags=PackedStringArray("project")
-run/main_scene="res://src/ui_parts/main_scene.tscn"
+run/main_scene="res://src/ui_parts/editor_scene.tscn"
 config/use_custom_user_dir=true
-config/features=PackedStringArray("4.3")
+config/features=PackedStringArray("4.4")
 run/low_processor_mode=true
 boot_splash/bg_color=Color(0.1065, 0.1181, 0.15, 1)
 boot_splash/image="res://assets/logos/splash.png"
@@ -326,6 +326,11 @@ pointing/android/enable_pan_and_scale_gestures=true
 [internationalization]
 
 locale/translations=PackedStringArray("res://assets/translations/bg.po", "res://assets/translations/de.po", "res://assets/translations/en.po", "res://assets/translations/fr.po", "res://assets/translations/nl.po", "res://assets/translations/ru.po", "res://assets/translations/uk.po", "res://assets/translations/zh.po")
+
+[physics]
+
+2d/physics_engine="Dummy"
+3d/physics_engine="Dummy"
 
 [rendering]
 

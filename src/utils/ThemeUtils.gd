@@ -42,6 +42,7 @@ const translucent_button_color_pressed = Color("ddeeff44")
 const translucent_button_color_disabled = Color("05060755")
 const flat_button_color_hover = Color("ddeeff11")
 const flat_button_color_pressed = Color("ddeeff33")
+const flat_button_color_hovered_pressed = Color("ddeeff41")  # hover.blend(pressed)
 const flat_button_color_disabled = Color("05060744")
 
 const dark_panel_color = Color("11111a")
@@ -564,7 +565,6 @@ static func _setup_itemlist(theme: Theme) -> void:
 	theme.set_color("font_hovered", "ItemList", Color.WHITE)
 	theme.set_color("font_selected", "ItemList", Color.WHITE)
 	theme.set_color("guide_color", "ItemList", Color.TRANSPARENT)
-	#theme.set_constant("v_separation", "ItemList", 0)
 	theme.set_constant("icon_margin", "ItemList", 4)
 	
 	var empty_stylebox := StyleBoxEmpty.new()
@@ -586,6 +586,11 @@ static func _setup_itemlist(theme: Theme) -> void:
 	selected_item_stylebox.bg_color = flat_button_color_pressed
 	theme.set_stylebox("selected", "ItemList", selected_item_stylebox)
 	theme.set_stylebox("selected_focus", "ItemList", selected_item_stylebox)
+	
+	var hovered_selected_item_stylebox := item_stylebox.duplicate()
+	hovered_selected_item_stylebox.bg_color = flat_button_color_hovered_pressed
+	theme.set_stylebox("hovered_selected", "ItemList", hovered_selected_item_stylebox)
+	theme.set_stylebox("hovered_selected_focus", "ItemList", hovered_selected_item_stylebox)
 
 static func _setup_lineedit(theme: Theme) -> void:
 	theme.add_type("LineEdit")

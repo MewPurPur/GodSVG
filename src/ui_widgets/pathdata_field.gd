@@ -143,14 +143,13 @@ func _on_add_move_button_pressed() -> void:
 func _on_selections_or_hover_changed() -> void:
 	var new_selections: Array[int] = []
 	if Indications.semi_selected_xid == element.xid:
-		new_selections = Indications.inner_selections
+		new_selections = Indications.inner_selections.duplicate()
 	var new_hovered := -1
 	if Indications.semi_hovered_xid == element.xid:
 		new_hovered = Indications.inner_hovered
 	# Only redraw if selections or hovered changed.
 	if new_selections != current_selections:
-		# TODO Figure out why the fuck must I duplicate it.
-		current_selections = new_selections.duplicate()
+		current_selections = new_selections
 		commands_container.queue_redraw()
 	if new_hovered != current_hovered:
 		current_hovered = new_hovered

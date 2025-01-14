@@ -1,21 +1,12 @@
 # This script manages contour drawing and handles.
 extends Control
 
-var normal_handle_textures: Dictionary
-var hovered_handle_textures: Dictionary
-var selected_handle_textures: Dictionary
-var hovered_selected_handle_textures: Dictionary
+var normal_handle_textures: Dictionary[Handle.Display, Texture2D]
+var hovered_handle_textures: Dictionary[Handle.Display, Texture2D]
+var selected_handle_textures: Dictionary[Handle.Display, Texture2D]
+var hovered_selected_handle_textures: Dictionary[Handle.Display, Texture2D]
 
 const stroke_shader = preload("res://src/shaders/animated_stroke.gdshader")
-
-const handles_svg_dict = {
-	Handle.Display.BIG: """<svg width="%s" height="%s"
-			xmlns="http://www.w3.org/2000/svg"><circle cx="%s" cy="%s" r="%s"
-			fill="%s" stroke="%s" stroke-width="%s"/></svg>""",
-	Handle.Display.SMALL: """<svg width="%s" height="%s"
-		xmlns="http://www.w3.org/2000/svg"><circle cx="%s" cy="%s" r="%s"
-		fill="%s" stroke="%s" stroke-width="%s"/></svg>""",
-}
 
 const DEFAULT_GRAB_DISTANCE_SQUARED := 81.0
 const CONTOUR_WIDTH = 1.0
@@ -51,7 +42,7 @@ func render_handle_textures() -> void:
 	var s := Configs.savedata.handle_size  # Shorthand
 	var img := Image.new()
 	
-	var handles_dict := {
+	var handles_dict: Dictionary[Handle.Display, String] = {
 		Handle.Display.BIG: """<svg width="%s" height="%s"
 				xmlns="http://www.w3.org/2000/svg"><circle cx="%s" cy="%s" r="%s"
 				fill="%s" stroke="%s" stroke-width="%s"/></svg>""" % [s * 10, s * 10,
@@ -63,7 +54,7 @@ func render_handle_textures() -> void:
 	}
 	
 	for handle_type in [Handle.Display.BIG, Handle.Display.SMALL]:
-		var handle_type_svg: String = handles_dict[handle_type]
+		var handle_type_svg := handles_dict[handle_type]
 		img.load_svg_from_string(handle_type_svg % [inside_str, normal_str])
 		img.fix_alpha_edges()
 		normal_handle_textures[handle_type] = ImageTexture.create_from_image(img)
@@ -641,7 +632,7 @@ func _draw() -> void:
 
 func draw_objects_of_type(color: Color, polylines: Array[PackedVector2Array],
 multiline: PackedVector2Array, handles_array: Array[Handle],
-handle_texture_array: Dictionary) -> void:
+handle_texture_dictionary: Dictionary[Handle.Display, Texture2D]) -> void:
 	for polyline in polylines:
 		var color_array := PackedColorArray()
 		color_array.resize(polyline.size())
@@ -659,7 +650,7 @@ handle_texture_array: Dictionary) -> void:
 		RenderingServer.canvas_item_add_multiline(surface, multiline,
 				color_array, TANGENT_WIDTH, true)
 	for handle in handles_array:
-		var texture: Texture2D = handle_texture_array[handle.display_mode]
+		var texture := handle_texture_dictionary[handle.display_mode]
 		texture.draw(surface, SVG.root_element.canvas_to_world(
 				handle.transform * handle.pos) * Indications.zoom - texture.get_size() / 2)
 

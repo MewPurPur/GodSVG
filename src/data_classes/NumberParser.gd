@@ -8,7 +8,7 @@ static func num_to_text(number: float, formatter: Formatter) -> String:
 	if number == -0.0:
 		number = absf(number)
 	
-	var numstr := String.num(number, Utils.MAX_NUMERIC_PRECISION)
+	var numstr := Utils.num_simple(number, Utils.MAX_NUMERIC_PRECISION)
 	
 	if formatter.number_use_exponent_if_shorter:
 		if numstr.ends_with("000"):

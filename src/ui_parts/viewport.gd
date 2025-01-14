@@ -64,7 +64,6 @@ func _unhandled_input(event: InputEvent) -> void:
 	
 	if event is InputEventMouseMotion and\
 	event.button_mask & (MOUSE_BUTTON_MASK_LEFT | MOUSE_BUTTON_MASK_MIDDLE):
-		
 		# Zooming with Ctrl + MMB.
 		if event.ctrl_pressed and event.button_mask == MOUSE_BUTTON_MASK_MIDDLE:
 			if _zoom_to == Vector2.ZERO:  # Set zoom position if starting action.
@@ -73,7 +72,8 @@ func _unhandled_input(event: InputEvent) -> void:
 				(1 if Configs.savedata.invert_zoom else -1) *\
 				(wrap_mouse(event.relative).y if Configs.savedata.wrap_mouse else\
 				event.relative.y) / 128.0), _zoom_to)
-		# Panning with LMB or MMB.
+		# Panning with LMB or MMB. This gives a reliable way to adjust the view
+		# without dragging the things on it.
 		else:
 			set_view(view.position - (wrap_mouse(event.relative) if\
 					Configs.savedata.wrap_mouse else event.relative) / Indications.zoom)
@@ -92,7 +92,7 @@ func _unhandled_input(event: InputEvent) -> void:
 	elif event is InputEventMouseButton and event.is_pressed():
 		var move_vec := Vector2.ZERO
 		var zoom_dir := 0
-		var mouse_offset := get_mouse_position() / (size * 1.0)
+		
 		# Zooming with scrolling.
 		if (not event.ctrl_pressed and not event.shift_pressed and\
 		not Configs.savedata.use_ctrl_for_zoom) or\
@@ -102,6 +102,7 @@ func _unhandled_input(event: InputEvent) -> void:
 				MOUSE_BUTTON_WHEEL_DOWN when Configs.savedata.invert_zoom: zoom_dir = 1
 				MOUSE_BUTTON_WHEEL_UP: zoom_dir = 1
 				MOUSE_BUTTON_WHEEL_DOWN: zoom_dir = -1
+				_: return
 		# Inverted panning with Shift + scrolling.
 		elif event.shift_pressed:
 			match event.button_index:
@@ -109,6 +110,7 @@ func _unhandled_input(event: InputEvent) -> void:
 				MOUSE_BUTTON_WHEEL_DOWN: move_vec = Vector2.RIGHT
 				MOUSE_BUTTON_WHEEL_LEFT: move_vec = Vector2.UP
 				MOUSE_BUTTON_WHEEL_RIGHT: move_vec = Vector2.DOWN
+				_: return
 		# Panning with scrolling.
 		else:
 			match event.button_index:
@@ -116,7 +118,9 @@ func _unhandled_input(event: InputEvent) -> void:
 				MOUSE_BUTTON_WHEEL_DOWN: move_vec = Vector2.DOWN
 				MOUSE_BUTTON_WHEEL_LEFT: move_vec = Vector2.LEFT
 				MOUSE_BUTTON_WHEEL_RIGHT: move_vec = Vector2.RIGHT
+				_: return
 		
+		var mouse_offset := get_mouse_position() / Vector2(size)
 		# Apply scroll data from above.
 		var factor: float = event.factor
 		if factor == roundf(factor):  # Detects if precise factor is unsuported.
