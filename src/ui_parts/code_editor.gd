@@ -122,7 +122,6 @@ func update_size_button() -> void:
 		size_button.disabled = false
 		size_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 		update_size_button_colors()
-		
 	else:
 		size_button.disabled = true
 		size_button.mouse_default_cursor_shape = Control.CURSOR_ARROW
@@ -144,8 +143,7 @@ func update_file_button() -> void:
 
 
 func _on_svg_code_edit_text_changed() -> void:
-	SVG.set_text(code_edit.text)
-	SVG.sync_elements()
+	SVG.apply_svg_text(code_edit.text, false)
 
 func _on_svg_code_edit_focus_exited() -> void:
 	SVG.queue_save()

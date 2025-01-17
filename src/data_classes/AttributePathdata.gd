@@ -156,10 +156,10 @@ func insert_command(idx: int, cmd_char: String, vec := Vector2.ZERO) -> void:
 	sync_after_commands_change()
 
 
-func _convert_command(idx: int, cmd_char: String) -> bool:
+func _convert_command(idx: int, cmd_char: String) -> void:
 	var old_cmd := get_command(idx)
 	if old_cmd.command_char == cmd_char:
-		return false
+		return
 	
 	var cmd_absolute_char := cmd_char.to_upper()
 	var new_cmd: PathCommand = PathCommand.translation_dict[cmd_absolute_char].new()
@@ -202,22 +202,16 @@ func _convert_command(idx: int, cmd_char: String) -> bool:
 	_commands.insert(idx, new_cmd)
 	if relative:
 		_commands[idx].toggle_relative()
-	return true
 
 func convert_command(idx: int, cmd_char: String) -> void:
-	var conversion_made := _convert_command(idx, cmd_char)
-	if conversion_made:
-		sync_after_commands_change()
+	_convert_command(idx, cmd_char)
+	sync_after_commands_change()
 
 func convert_commands_optimized(indices: PackedInt32Array,
 cmd_chars: PackedStringArray) -> void:
-	var conversions_made := false
 	for i in indices.size():
-		var conversion_made := _convert_command(indices[i], cmd_chars[i])
-		if conversion_made:
-			conversions_made = true
-	if conversions_made:
-		sync_after_commands_change()
+		_convert_command(indices[i], cmd_chars[i])
+	sync_after_commands_change()
 
 
 func delete_commands(indices: Array[int]) -> void:
