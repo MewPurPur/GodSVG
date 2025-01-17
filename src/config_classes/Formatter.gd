@@ -7,7 +7,7 @@ enum NamedColorUse {ALWAYS, WHEN_SHORTER_OR_EQUAL, WHEN_SHORTER, NEVER}
 enum PrimaryColorSyntax {THREE_OR_SIX_DIGIT_HEX, SIX_DIGIT_HEX, RGB}
 
 # Elements that don't make sense without child elements.
-const container_elements = ["svg", "g", "linearGradient", "radialGradient"]
+const container_elements: Array[String] = ["svg", "g", "linearGradient", "radialGradient"]
 
 
 static func get_preset_enum_text(enum_value: Preset) -> String:

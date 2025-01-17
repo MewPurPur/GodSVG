@@ -2,7 +2,7 @@
 class_name ElementLinearGradient extends Element
 
 const name = "linearGradient"
-const possible_conversions = []
+const possible_conversions: Array[String] = []
 
 func _get_own_default(attribute_name: String) -> String:
 	match attribute_name:
@@ -31,7 +31,7 @@ func get_config_warnings() -> PackedStringArray:
 		if not child is ElementStop:
 			continue
 		
-		var stop_opacity: float = maxf(child.get_attribute_num("stop-opacity"), 0.0)
+		var stop_opacity := maxf(child.get_attribute_num("stop-opacity"), 0.0)
 		var stop_color: String = child.get_attribute_value("stop-color")
 		if stop_color.strip_edges() == "currentColor":
 			stop_color = child.get_attribute_value("color")

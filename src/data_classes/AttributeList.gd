@@ -49,7 +49,7 @@ func insert_element(idx: int, value: float) -> void:
 
 static func text_to_list(string: String) -> PackedFloat64Array:
 	var nums_parsed := PackedFloat64Array()
-	var current_num_string: String = ""
+	var current_num_string := ""
 	var comma_exhausted := false
 	var pos := 0
 	while pos < string.length():

@@ -5,14 +5,14 @@ var compress_numbers: bool
 var minimize_spacing: bool
 
 static func basic_num_to_text(num: float, is_angle := false) -> String:
-	var text := String.num(num, Utils.MAX_ANGLE_PRECISION if is_angle\
+	var text := Utils.num_simple(num, Utils.MAX_ANGLE_PRECISION if is_angle\
 			else Utils.MAX_NUMERIC_PRECISION)
 	if text == "-0":
 		text = "0"
 	return text
 
 func num_to_text(num: float, is_angle := false) -> String:
-	var text := String.num(num, Utils.MAX_ANGLE_PRECISION if is_angle\
+	var text := Utils.num_simple(num, Utils.MAX_ANGLE_PRECISION if is_angle\
 			else Utils.MAX_NUMERIC_PRECISION)
 	if compress_numbers:
 		if text.begins_with("0."):

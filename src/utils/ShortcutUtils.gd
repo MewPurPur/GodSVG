@@ -1,7 +1,7 @@
 class_name ShortcutUtils extends RefCounted
 
 # The bool after each action is for whether the shortcut can be modified.
-const _shortcut_categories_dict = {
+const _shortcut_categories_dict: Dictionary[String, Dictionary] = {
 	"file": {
 		"import": true,
 		"export": true,

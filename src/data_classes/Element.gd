@@ -6,7 +6,7 @@ signal ancestor_attribute_changed(name: String)
 signal descendant_attribute_changed(name: String)
 
 var _child_elements: Array[XNode]
-var _attributes: Dictionary  # Dictionary{String: Attribute}
+var _attributes: Dictionary[String, Attribute]
 
 func _init() -> void:
 	attribute_changed.connect(_on_attribute_changed)

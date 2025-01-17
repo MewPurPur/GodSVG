@@ -164,7 +164,6 @@ func _draw() -> void:
 				Vector2(size.x - BUTTON_WIDTH, size.y), sb.border_color, 2)
 		# The default overrun behavior couldn't be changed for the simplest draw methods.
 		var text_obj := TextLine.new()
-		text_obj.ellipsis_char = "a"  # TODO: #98841 will address the need for this.
 		text_obj.text_overrun_behavior = TextServer.OVERRUN_TRIM_CHAR
 		text_obj.width = size.x - BUTTON_WIDTH - horizontal_margin_width
 		text_obj.add_string(placeholder_text if text.is_empty() else text, _get_font(),

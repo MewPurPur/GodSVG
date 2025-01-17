@@ -1,10 +1,10 @@
 [gd_scene load_steps=6 format=3 uid="uid://ce6j54x27pom"]
 
-[ext_resource type="PackedScene" uid="uid://cr1fdlmbknnko" path="res://src/ui_parts/code_editor.tscn" id="1_0jgh3"]
-[ext_resource type="Texture2D" uid="uid://co75w07yqmcro" path="res://assets/icons/theme/SplitGrabber2.svg" id="1_7y812"]
-[ext_resource type="PackedScene" uid="uid://ccynisiuyn5qn" path="res://src/ui_parts/inspector.tscn" id="1_afxvd"]
-[ext_resource type="Script" path="res://src/ui_parts/main_scene.gd" id="1_c0fkj"]
-[ext_resource type="PackedScene" uid="uid://bvrncl7e6yn5b" path="res://src/ui_parts/display.tscn" id="3_qbqbs"]
+[ext_resource type="Script" uid="uid://b14gd6s3wl4us" path="res://src/ui_parts/editor_scene.gd" id="1_78d5d"]
+[ext_resource type="Texture2D" uid="uid://co75w07yqmcro" path="res://assets/icons/theme/SplitGrabber2.svg" id="2_852uu"]
+[ext_resource type="PackedScene" uid="uid://cr1fdlmbknnko" path="res://src/ui_parts/code_editor.tscn" id="3_5ris2"]
+[ext_resource type="PackedScene" uid="uid://ccynisiuyn5qn" path="res://src/ui_parts/inspector.tscn" id="4_podmt"]
+[ext_resource type="PackedScene" uid="uid://bvrncl7e6yn5b" path="res://src/ui_parts/display.tscn" id="5_4vrq4"]
 
 [node name="MainScene" type="HBoxContainer"]
 anchors_preset = 15
@@ -12,7 +12,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_c0fkj")
+script = ExtResource("1_78d5d")
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
 custom_minimum_size = Vector2(360, 0)
@@ -23,7 +23,7 @@ size_flags_horizontal = 3
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 6
-theme_override_icons/grabber = ExtResource("1_7y812")
+theme_override_icons/grabber = ExtResource("2_852uu")
 split_offset = -122
 
 [node name="MarginContainer" type="MarginContainer" parent="PanelContainer/HSplitContainer"]
@@ -38,13 +38,13 @@ layout_mode = 2
 theme_override_constants/separation = 10
 split_offset = -400
 
-[node name="CodeEditor" parent="PanelContainer/HSplitContainer/MarginContainer/MainContainer" instance=ExtResource("1_0jgh3")]
+[node name="CodeEditor" parent="PanelContainer/HSplitContainer/MarginContainer/MainContainer" instance=ExtResource("3_5ris2")]
 layout_mode = 2
 
-[node name="Inspector" parent="PanelContainer/HSplitContainer/MarginContainer/MainContainer" instance=ExtResource("1_afxvd")]
+[node name="Inspector" parent="PanelContainer/HSplitContainer/MarginContainer/MainContainer" instance=ExtResource("4_podmt")]
 layout_mode = 2
 
-[node name="Display" parent="PanelContainer/HSplitContainer" instance=ExtResource("3_qbqbs")]
+[node name="Display" parent="PanelContainer/HSplitContainer" instance=ExtResource("5_4vrq4")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3

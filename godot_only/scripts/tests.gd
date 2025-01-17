@@ -11,7 +11,7 @@ func _run() -> void:
 
 
 func pathdata_tests(print_success := false) -> bool:
-	var tests := {
+	var tests: Dictionary[String, Array] = {
 	"Jerky": [],
 	"M 3s 6 h 6 v 3 z": [],
 	"M 3 s6 h 6 v 3 z": [],

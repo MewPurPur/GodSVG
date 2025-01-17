@@ -1,14 +1,13 @@
 # A dropdown with multiple options, not tied to any attribute.
 extends HBoxContainer
 
-@onready var line_edit: BetterLineEdit = $LineEdit
-
 @export var values: PackedStringArray
 @export var disabled_values: PackedStringArray
 @export var restricted := true
 @export var align_left := false  # The alignment of the popup options' text.
+@export var value_text_map: Dictionary[String, String] = {}
 
-@export var value_text_map := {}  # Dictionary{String: String}
+@onready var line_edit: BetterLineEdit = $LineEdit
 
 signal value_changed(new_value: String)
 var _value := ""

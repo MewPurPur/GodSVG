@@ -5,10 +5,10 @@ enum PercentageHandling {FRACTION, HORIZONTAL, VERTICAL, NORMALIZED}
 enum NumberRange {ARBITRARY, POSITIVE, UNIT}
 
 
-const recognized_elements = ["svg", "g", "circle", "ellipse", "rect", "path", "line",
-		"polyline", "polygon", "stop", "linearGradient", "radialGradient"]
+const recognized_elements: Array[String] = ["svg", "g", "circle", "ellipse", "rect",
+		"path", "line", "polyline", "polygon", "stop", "linearGradient", "radialGradient"]
 
-const element_icons = {
+const _element_icons: Dictionary[String, Texture2D] = {
 	"circle": preload("res://assets/icons/element/circle.svg"),
 	"ellipse": preload("res://assets/icons/element/ellipse.svg"),
 	"rect": preload("res://assets/icons/element/rect.svg"),
@@ -22,15 +22,15 @@ const element_icons = {
 	"radialGradient": preload("res://assets/icons/element/radialGradient.svg"),
 	"stop": preload("res://assets/icons/element/stop.svg"),
 }
-const unrecognized_xnode_icon = preload("res://assets/icons/element/unrecognized.svg")
+const _unrecognized_xnode_icon = preload("res://assets/icons/element/unrecognized.svg")
 
-const xnode_icons = {
+const _xnode_icons: Dictionary[BasicXNode.NodeType, Texture2D] = {
 	BasicXNode.NodeType.COMMENT: preload("res://assets/icons/element/xmlnodeComment.svg"),
 	BasicXNode.NodeType.TEXT: preload("res://assets/icons/element/xmlnodeText.svg"),
 	BasicXNode.NodeType.CDATA: preload("res://assets/icons/element/xmlnodeCDATA.svg"),
 }
 
-const recognized_attributes = {  # Dictionary{String: Array[String]}
+const recognized_attributes: Dictionary[String, Array] = {
 	# TODO this is just propagated_attributes, but it ruins the const because of Godot bug.
 	# TODO Add "color" to "g" when we're ready.
 	"svg": ["xmlns", "x", "y", "width", "height", "viewBox", "fill", "fill-opacity",
@@ -59,7 +59,7 @@ const recognized_attributes = {  # Dictionary{String: Array[String]}
 	"stop": ["offset", "stop-color", "stop-opacity"],
 }
 
-const valid_children = {  # Dictionary{String: Array[String]}
+const _valid_children: Dictionary[String, Array] = {
 	"svg": ["svg", "path", "circle", "ellipse", "rect", "line", "polygon", "polyline",
 			"g", "linearGradient", "radialGradient"],
 	"g": ["svg", "path", "circle", "ellipse", "rect", "line", "polygon", "polyline",
@@ -76,10 +76,10 @@ const valid_children = {  # Dictionary{String: Array[String]}
 	"stop": [],
 }
 
-const propagated_attributes = ["fill", "fill-opacity", "stroke", "stroke-opacity",
-		"stroke-width", "stroke-linecap", "stroke-linejoin", "color"]
+const propagated_attributes: Array[String] = ["fill", "fill-opacity", "stroke",
+		"stroke-opacity", "stroke-width", "stroke-linecap", "stroke-linejoin", "color"]
 
-const attribute_types = {
+const _attribute_types: Dictionary[String, AttributeType] = {
 	"viewBox": AttributeType.LIST,
 	"width": AttributeType.NUMERIC,
 	"height": AttributeType.NUMERIC,
@@ -115,14 +115,14 @@ const attribute_types = {
 	"spreadMethod": AttributeType.ENUM,
 }
 
-const attribute_enum_values = {
+const attribute_enum_values: Dictionary[String, Array] = {
 	"stroke-linecap": ["butt", "round", "square"],
 	"stroke-linejoin": ["miter", "round", "bevel"],
 	"gradientUnits": ["userSpaceOnUse", "objectBoundingBox"],
 	"spreadMethod": ["pad", "reflect", "repeat"],
 }
 
-const attribute_number_range = {
+const attribute_number_range: Dictionary[String, NumberRange] = {
 	"width": NumberRange.POSITIVE,
 	"height": NumberRange.POSITIVE,
 	"x": NumberRange.ARBITRARY,
@@ -144,9 +144,10 @@ const attribute_number_range = {
 	"stop-opacity": NumberRange.UNIT,
 }
 
-const attribute_color_url_allowed = ["fill", "stroke"]
-const attribute_color_none_allowed = ["fill", "stroke"]
-const attribute_color_current_color_allowed = ["fill", "stroke", "stop-color"]
+const attribute_color_url_allowed: Array[String] = ["fill", "stroke"]
+const attribute_color_none_allowed: Array[String] = ["fill", "stroke"]
+const attribute_color_current_color_allowed: Array[String] = ["fill", "stroke",
+		"stop-color"]
 
 
 static func get_recognized_attributes(element_name: String) -> Array:
@@ -159,24 +160,24 @@ static func is_attribute_recognized(element_name: String, attribute_name: String
 static func is_child_element_valid(parent_name: String, child_name: String) -> bool:
 	if not parent_name in recognized_elements or not child_name in recognized_elements:
 		return true
-	return child_name in valid_children[parent_name]
+	return child_name in _valid_children[parent_name]
 
 static func get_valid_parents(child_name: String) -> PackedStringArray:
 	var valid_parents := PackedStringArray()
-	for parent_name in valid_children.keys():
-		if child_name in valid_children[parent_name]:
+	for parent_name in _valid_children.keys():
+		if child_name in _valid_children[parent_name]:
 			valid_parents.append(parent_name)
 	return valid_parents
 
 static func get_element_icon(element_name: String) -> Texture2D:
-	return element_icons.get(element_name, unrecognized_xnode_icon)
+	return _element_icons.get(element_name, _unrecognized_xnode_icon)
 
 static func get_xnode_icon(xnode_type: BasicXNode.NodeType) -> Texture2D:
-	return xnode_icons.get(xnode_type, unrecognized_xnode_icon)
+	return _xnode_icons.get(xnode_type, _unrecognized_xnode_icon)
 
 
 static func get_attribute_type(attribute_name: String) -> AttributeType:
-	return attribute_types.get(attribute_name, AttributeType.UNKNOWN)
+	return _attribute_types.get(attribute_name, AttributeType.UNKNOWN)
 
 static func get_attribute_default_percentage_handling(
 attribute_name: String) -> PercentageHandling:

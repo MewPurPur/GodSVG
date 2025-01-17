@@ -3,8 +3,8 @@ class_name SaveData extends ConfigResource
 const GoodColorPicker = preload("res://src/ui_widgets/good_color_picker.gd")
 const ShortcutPanel = preload("res://src/ui_parts/shortcut_panel.gd")
 
-var _palette_validities := {}
-var _shortcut_validities := {}
+var _palette_validities: Dictionary[String, bool] = {}
+var _shortcut_validities: Dictionary[Key, bool] = {}
 
 # Most settings don't need a default.
 func get_setting_default(setting: String) -> Variant:
@@ -363,7 +363,7 @@ func add_recent_dir(dir: String) -> void:
 	_recent_dirs = PackedStringArray([dir]) + _recent_dirs
 
 
-@export var _shortcuts := {}:
+@export var _shortcuts: Dictionary[String, Array] = {}:
 	set(new_value):
 		if _shortcuts != new_value:
 			_shortcuts = new_value
@@ -427,7 +427,7 @@ func get_actions_with_shortcut(shortcut: InputEvent) -> PackedStringArray:
 	return actions_with_shortcut
 
 
-@export var _palettes: Array[ColorPalette] = []:
+@export var _palettes: Array[Palette] = []:
 	set(new_value):
 		if _palettes != new_value:
 			_palettes = new_value
@@ -443,7 +443,7 @@ func _update_palette_validities() -> void:
 		if not palette.title.is_empty():
 			_palette_validities[palette.title] = not palette.title in _palette_validities
 
-func is_palette_valid(checked_palette: ColorPalette) -> bool:
+func is_palette_valid(checked_palette: Palette) -> bool:
 	if checked_palette.title.is_empty():
 		return false
 	if not checked_palette.title in _palette_validities:
@@ -456,7 +456,7 @@ func is_palette_title_unused(checked_title: String) -> bool:
 			return false
 	return true
 
-func add_palette(new_palette: ColorPalette) -> void:
+func add_palette(new_palette: Palette) -> void:
 	_palettes.append(new_palette)
 	new_palette.changed.connect(emit_changed)
 	_update_palette_validities()
@@ -476,7 +476,7 @@ func rename_palette(idx: int, new_name: String) -> void:
 	_update_palette_validities()
 	emit_changed()
 
-func replace_palette(idx: int, new_palette: ColorPalette) -> void:
+func replace_palette(idx: int, new_palette: Palette) -> void:
 	if _palettes.size() <= idx:
 		return
 	_palettes[idx] = new_palette
@@ -484,25 +484,25 @@ func replace_palette(idx: int, new_palette: ColorPalette) -> void:
 	emit_changed()
 
 func move_palette_up(idx: int) -> void:
-	var palette: ColorPalette = _palettes.pop_at(idx)
+	var palette: Palette = _palettes.pop_at(idx)
 	_palettes.insert(idx - 1, palette)
 	emit_changed()
 
 func move_palette_down(idx: int) -> void:
-	var palette: ColorPalette = _palettes.pop_at(idx)
+	var palette: Palette = _palettes.pop_at(idx)
 	_palettes.insert(idx + 1, palette)
 	emit_changed()
 
-func get_palettes() -> Array[ColorPalette]:
+func get_palettes() -> Array[Palette]:
 	return _palettes
 
 func get_palette_count() -> int:
 	return _palettes.size()
 
-func get_palette(idx: int) -> ColorPalette:
+func get_palette(idx: int) -> Palette:
 	return _palettes[idx]
 
-func set_palettes(new_palettes: Array[ColorPalette]) -> void:
+func set_palettes(new_palettes: Array[Palette]) -> void:
 	_palettes = new_palettes
 	emit_changed()
 
@@ -524,7 +524,7 @@ func set_palettes(new_palettes: Array[ColorPalette]) -> void:
 
 
 const SHORTCUT_PANEL_MAX_SLOTS = 6
-@export var _shortcut_panel_slots := {}:  # Dictionary{int: String}
+@export var _shortcut_panel_slots: Dictionary[int, String] = {}:
 	set(new_value):
 		# Validation
 		for key in new_value:
@@ -549,7 +549,7 @@ func set_shortcut_panel_slot(slot: int, shortcut: String) -> void:
 	emit_changed()
 	Configs.shortcut_panel_changed.emit()
 
-func set_shortcut_panel_slots(slots: Dictionary) -> void:
+func set_shortcut_panel_slots(slots: Dictionary[int, String]) -> void:
 	_shortcut_panel_slots = slots
 	emit_changed()
 	Configs.shortcut_panel_changed.emit()

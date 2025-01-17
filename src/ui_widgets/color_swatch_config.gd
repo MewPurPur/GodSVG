@@ -5,17 +5,16 @@ const gear_icon = preload("res://assets/icons/GearOutlined.svg")
 
 const ColorSwatch = preload("res://src/ui_widgets/color_swatch.tscn")
 
-var palette: ColorPalette
+var palette: Palette
 var idx := -1  # Index inside the palette.
 
-var proposed_drop_data: Array = []  # Used to sync with drag-and-dropping information.
+var proposed_drop_data: DropData  # Used to sync with drag-and-dropping information.
 var surface := RenderingServer.canvas_item_create()
 
 func _ready() -> void:
+	tooltip_text = "lmofa"  # TODO: Remove this when #101550 is fixed.
 	RenderingServer.canvas_item_set_parent(surface, get_canvas_item())
 	RenderingServer.canvas_item_set_z_index(surface, 1)
-	# TODO This is no logner needed in 4.4
-	tooltip_text = "lmofa"  # _make_custom_tooltip() requires some text to work.
 
 func _exit_tree() -> void:
 	RenderingServer.free_rid(surface)
@@ -34,13 +33,13 @@ func _draw() -> void:
 		draw_rect(inside_rect, parsed_color)
 	
 	RenderingServer.canvas_item_clear(surface)
-	if proposed_drop_data.size() != 2 or proposed_drop_data[0] != palette:
+	if not is_instance_valid(proposed_drop_data) or proposed_drop_data.palette != palette:
 		# Gear indicator.
 		if is_hovered():
 			gear_icon.draw(get_canvas_item(), (size - gear_icon.get_size()) / 2)
 		return
 	
-	var drop_idx: int = proposed_drop_data[1]
+	var drop_idx := proposed_drop_data.index
 	# Draw the drag-and-drop indicator.
 	var drop_sb := StyleBoxFlat.new()
 	drop_sb.draw_center = false
@@ -72,10 +71,10 @@ func _make_custom_tooltip(_for_text: String) -> Object:
 var is_dragging := false
 
 class DropData extends RefCounted:
-	var palette: ColorPalette
+	var palette: Palette
 	var index: int
 	
-	func _init(new_palette: ColorPalette, new_index: int) -> void:
+	func _init(new_palette: Palette, new_index: int) -> void:
 		palette = new_palette
 		index = new_index
 
@@ -93,7 +92,7 @@ func _get_drag_data(_at_position: Vector2) -> Variant:
 
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_DRAG_END:
-		proposed_drop_data.clear()
+		proposed_drop_data = null
 		modulate = Color(1, 1, 1)
 		queue_redraw()
 

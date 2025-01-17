@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://e73b7lssdp6m"]
 
-[ext_resource type="Script" path="res://src/ui_widgets/color_swatch_config.gd" id="1_u3awj"]
+[ext_resource type="Script" uid="uid://b5cscj6y8oi2h" path="res://src/ui_widgets/color_swatch_config.gd" id="1_u3awj"]
 
 [node name="ColorSwatchConfig" type="Button"]
 custom_minimum_size = Vector2(22, 22)

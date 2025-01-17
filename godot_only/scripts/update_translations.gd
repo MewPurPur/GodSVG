@@ -16,7 +16,7 @@ msgstr \"\"
 \"X-Generator: Poedit 3.4.2\\n\"\n"""
 
 # Don't have a better solution than handling all these different whitespace variations...
-var delimiters := {}
+var delimiters: Dictionary[String, String] = {}
 func populate_delimiters() -> void:
 	for method in ["translate"]:
 		for quote in ["'", '"', '"""']:
@@ -57,8 +57,8 @@ func search_directory(dir: String) -> void:
 	
 	for file_name in DirAccess.get_files_at(dir):
 		var file_text := FileAccess.get_file_as_string(dir.path_join(file_name))
-		for start_delim: String in delimiters:
-			var end_delim: String = delimiters[start_delim]
+		for start_delim in delimiters:
+			var end_delim := delimiters[start_delim]
 			var cursor := 0
 			while true:
 				cursor = file_text.find(start_delim, cursor)
@@ -66,7 +66,6 @@ func search_directory(dir: String) -> void:
 					break
 				
 				var string_start := cursor + start_delim.length()
-				var old_cursor := cursor
 				cursor = file_text.find(end_delim, cursor)
 				
 				var msgid := file_text.substr(string_start, cursor - string_start)
@@ -99,7 +98,7 @@ func update_translations() -> void:
 		
 		var args := PackedStringArray(["--update", "--quiet", "--verbose", "--backup=off",
 				ProjectSettings.globalize_path("translations").path_join(file), location])
-		var output := []
+		var output: Array = []
 		var result := OS.execute("msgmerge", args, output, true)
 		if not result == -1:
 			if file == "GodSVG.pot":

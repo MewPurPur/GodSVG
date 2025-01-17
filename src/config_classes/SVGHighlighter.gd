@@ -25,7 +25,7 @@ func _get_line_syntax_highlighting(line: int) -> Dictionary:
 	if svg_text.is_empty():
 		return {}
 	
-	var color_map := {}  # Dictionary{int: Dictionary{String: Color}}
+	var color_map: Dictionary[int, Dictionary] = {}
 	var parser := XMLParser.new()
 	parser.open_buffer(svg_text.to_utf8_buffer())
 	while parser.read() == OK:

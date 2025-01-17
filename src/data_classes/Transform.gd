@@ -22,6 +22,9 @@ class TransformMatrix extends Transform:
 	
 	func compute_precise_transform() -> PackedFloat64Array:
 		return PackedFloat64Array([x1, x2, y1, y2, o1, o2])
+	
+	func is_redundant() -> bool:
+		return x1 == 1.0 and x2 == 0.0 and y1 == 0.0 and y2 == 1.0 and o1 == 0.0 and o2 == 0.0
 
 class TransformTranslate extends Transform:
 	var x: float
@@ -36,6 +39,9 @@ class TransformTranslate extends Transform:
 	
 	func compute_precise_transform() -> PackedFloat64Array:
 		return PackedFloat64Array([1.0, 0.0, 0.0, 1.0, x, y])
+	
+	func is_redundant() -> bool:
+		return x == 0.0 and y == 0.0
 
 class TransformRotate extends Transform:
 	var deg: float
@@ -58,6 +64,9 @@ class TransformRotate extends Transform:
 		var ox := x - x * cos_val + y * sin_val
 		var oy := y - x * sin_val - y * cos_val
 		return PackedFloat64Array([cos_val, sin_val, -sin_val, cos_val, ox, oy])
+	
+	func is_redundant() -> bool:
+		return fmod(deg, 360.0) == 0.0
 
 class TransformScale extends Transform:
 	var x: float
@@ -72,6 +81,9 @@ class TransformScale extends Transform:
 	
 	func compute_precise_transform() -> PackedFloat64Array:
 		return PackedFloat64Array([x, 0, 0, y, 0, 0])
+	
+	func is_redundant() -> bool:
+		return x == 1.0 and y == 1.0
 
 class TransformSkewX extends Transform:
 	var x: float
@@ -84,6 +96,9 @@ class TransformSkewX extends Transform:
 	
 	func compute_precise_transform() -> PackedFloat64Array:
 		return PackedFloat64Array([1.0, 0.0, tan(deg_to_rad(x)), 1.0, 0.0, 0.0])
+	
+	func is_redundant() -> bool:
+		return x == 0.0
 
 
 class TransformSkewY extends Transform:
@@ -97,3 +112,6 @@ class TransformSkewY extends Transform:
 	
 	func compute_precise_transform() -> PackedFloat64Array:
 		return PackedFloat64Array([1.0, tan(deg_to_rad(y)), 0.0, 1.0, 0.0, 0.0])
+	
+	func is_redundant() -> bool:
+		return y == 0.0

@@ -171,7 +171,8 @@ func update() -> void:
 
 func get_dimensions_text(sides: Vector2, integer := false) -> String:
 	var precision := 0 if integer else 2
-	return String.num(sides.x, precision) + "×" + String.num(sides.y, precision)
+	return "%s×%s" % [Utils.num_simple(sides.x, precision),
+			Utils.num_simple(sides.y, precision)]
 
 
 func _input(event: InputEvent) -> void:

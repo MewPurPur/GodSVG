@@ -26,6 +26,7 @@ func _init() -> void:
 	mouse_exited.connect(_on_base_class_mouse_exited)
 	text_submitted.connect(release_focus.unbind(1))
 	Configs.theme_changed.connect(update_theme)
+	update_theme()
 
 func update_theme() -> void:
 	if editable:
@@ -63,7 +64,7 @@ func _on_base_class_mouse_exited() -> void:
 
 
 func _draw() -> void:
-	if editable and _hovered and has_theme_stylebox("hover"):
+	if _hovered and editable and has_theme_stylebox("hover"):
 		draw_style_box(get_theme_stylebox("hover"), Rect2(Vector2.ZERO, size))
 
 func _make_custom_tooltip(for_text: String) -> Object:

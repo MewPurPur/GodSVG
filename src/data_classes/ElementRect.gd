@@ -2,7 +2,7 @@
 class_name ElementRect extends Element
 
 const name = "rect"
-const possible_conversions = ["circle", "ellipse", "polygon", "path"]
+const possible_conversions: Array[String] = ["circle", "ellipse", "polygon", "path"]
 
 func user_setup(precise_pos := PackedFloat64Array([0.0, 0.0])) -> void:
 	set_attribute("width", 1.0)

@@ -2,7 +2,7 @@
 class_name ElementLine extends Element
 
 const name = "line"
-const possible_conversions = ["path", "polyline"]
+const possible_conversions: Array[String] = ["path", "polyline"]
 
 func user_setup(precise_pos := PackedFloat64Array([0.0, 0.0])) -> void:
 	if precise_pos != PackedFloat64Array([0.0, 0.0]):

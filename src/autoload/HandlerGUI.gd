@@ -1,14 +1,14 @@
 extends Node
 
 # Not a good idea to preload scenes inside a singleton.
-var AlertDialog = load("res://src/ui_parts/alert_dialog.tscn")
-var ConfirmDialog = load("res://src/ui_parts/confirm_dialog.tscn")
-var SettingsMenu = load("res://src/ui_parts/settings_menu.tscn")
-var AboutMenu = load("res://src/ui_parts/about_menu.tscn")
-var DonateMenu = load("res://src/ui_parts/donate_menu.tscn")
-var UpdateMenu = load("res://src/ui_parts/update_menu.tscn")
-var ExportMenu = load("res://src/ui_parts/export_menu.tscn")
-var ShortcutPanelScene = load("res://src/ui_parts/shortcut_panel.tscn")
+const AlertDialog = preload("res://src/ui_parts/alert_dialog.tscn")
+const ConfirmDialog = preload("res://src/ui_parts/confirm_dialog.tscn")
+const SettingsMenu = preload("res://src/ui_parts/settings_menu.tscn")
+const AboutMenu = preload("res://src/ui_parts/about_menu.tscn")
+const DonateMenu = preload("res://src/ui_parts/donate_menu.tscn")
+const UpdateMenu = preload("res://src/ui_parts/update_menu.tscn")
+const ExportMenu = preload("res://src/ui_parts/export_menu.tscn")
+const ShortcutPanelScene = preload("res://src/ui_parts/shortcut_panel.tscn")
 
 # Menus should be added with add_menu() and removed by being freed.
 # To add them as modals that don't hide the previous one, use add_dialog().

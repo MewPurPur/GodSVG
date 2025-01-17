@@ -64,7 +64,7 @@ static func get_named_colors(include_alpha := false) -> Dictionary:
 	else:
 		return _named_colors
 
-const _named_colors = {  # Dictionary{String: String}
+const _named_colors: Dictionary[String, String] = {
 	"aliceblue": "#f0f8ff",
 	"antiquewhite": "#faebd7",
 	"aqua": "#00ffff",

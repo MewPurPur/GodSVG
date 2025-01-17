@@ -1,14 +1,14 @@
 # A native class that represents a path command and its parameters.
 class_name PathCommand extends RefCounted
 
-const translation_dict := {
+const translation_dict: Dictionary[String, GDScript] = {
 	"M": MoveCommand, "L": LineCommand, "H": HorizontalLineCommand,
 	"V": VerticalLineCommand, "Z": CloseCommand, "A": EllipticalArcCommand,
 	"Q": QuadraticBezierCommand, "T": ShorthandQuadraticBezierCommand,
 	"C": CubicBezierCommand, "S": ShorthandCubicBezierCommand
 }
 
-const arg_count_dict := {  # Dictionary{String: int}
+const arg_count_dict: Dictionary[String, int] = {
 	"M": 2, "L": 2, "H": 1, "V": 1, "Z": 0, "A": 7, "Q": 4, "T": 2, "C": 6, "S": 4
 }
 

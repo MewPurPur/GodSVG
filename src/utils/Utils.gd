@@ -6,6 +6,9 @@ const MAX_ANGLE_PRECISION = 4
 enum InteractionType {NONE = 0, HOVERED = 1, SELECTED = 2, HOVERED_SELECTED = 3}
 
 
+static func num_simple(number: float, decimals := -1) -> String:
+	return String.num(number, decimals).trim_suffix(".0")
+
 static func is_string_upper(string: String) -> bool:
 	return string.to_upper() == string
 

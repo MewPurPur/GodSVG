@@ -1,6 +1,6 @@
 class_name ImageExportData extends RefCounted
 
-const web_formats = {  # Dictionary{String: String}
+const web_formats: Dictionary[String, String] = {
 	"svg": "image/svg+xml",
 	"png": "image/png",
 	"jpg": "image/jpeg",

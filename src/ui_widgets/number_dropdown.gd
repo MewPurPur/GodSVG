@@ -38,10 +38,8 @@ func _on_button_pressed() -> void:
 
 
 func to_str(num: float) -> String:
-	var ret := String.num(num)
-	if not (is_integer or "." in ret):
-		ret += ".0"
-	return ret
+	# Right now, all the places this is used benefit from showing "1" as "1.0".
+	return String.num(num, 0 if is_integer else Utils.MAX_NUMERIC_PRECISION)
 
 func _on_text_submitted(new_text: String) -> void:
 	if (restricted and new_text.to_float() in values) or not restricted:

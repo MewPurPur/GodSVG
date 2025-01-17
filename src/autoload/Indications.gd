@@ -2,9 +2,9 @@
 extends Node
 
 # Not a good idea to preload scenes inside a singleton.
-var PathCommandPopup = load("res://src/ui_widgets/path_popup.tscn")
+const PathCommandPopup = preload("res://src/ui_widgets/path_popup.tscn")
 
-const path_actions_dict := {
+const path_actions_dict: Dictionary[String, String] = {
 	"move_absolute": "M", "move_relative": "m",
 	"line_absolute": "L", "line_relative": "l",
 	"horizontal_line_absolute": "H", "horizontal_line_relative": "h",
@@ -403,7 +403,7 @@ func respond_to_key_input(event: InputEventKey) -> void:
 				for action_name in path_actions_dict.keys():
 					if ShortcutUtils.is_action_pressed(event, action_name):
 						var path_cmd_count := path_attrib.get_command_count()
-						var path_cmd_char: String = path_actions_dict[action_name]
+						var path_cmd_char := path_actions_dict[action_name]
 						# Z after a Z is syntactically invalid.
 						if (path_cmd_count == 0 and not path_cmd_char in "Mm") or\
 						(path_cmd_char in "Zz" and path_cmd_count > 0 and\
@@ -422,7 +422,7 @@ func respond_to_key_input(event: InputEventKey) -> void:
 		if element_ref.name == "path":
 			if ShortcutUtils.is_action_pressed(event, action_name):
 				var path_attrib: AttributePathdata = element_ref.get_attribute("d")
-				var path_cmd_char: String = path_actions_dict[action_name]
+				var path_cmd_char := path_actions_dict[action_name]
 				var last_selection: int = inner_selections.max()
 				# Z after a Z is syntactically invalid.
 				if path_attrib.get_command(last_selection) is PathCommand.CloseCommand and\
@@ -507,7 +507,7 @@ func get_selection_context(popup_method: Callable, context: Context) -> ContextP
 		var can_move_down := true
 		var can_move_up := true
 		for base_xid in filtered_xids:
-			if not XIDUtils.are_siblings(base_xid, filtered_xids[0]):
+			if not XIDUtils.are_siblings_or_same(base_xid, filtered_xids[0]):
 				can_move_down = false
 				can_move_up = false
 				break

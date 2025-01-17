@@ -23,7 +23,7 @@ func _ready() -> void:
 	update_shortcut_slots()
 
 func update_shortcut_slots() -> void:
-	var shortcut_texts := {}  # Dictionary{String: String}
+	var shortcut_texts: Dictionary[String, String] = {}  # action: action_description
 	for shortcut in ShortcutUtils.get_all_shortcuts():
 		shortcut_texts[shortcut] = TranslationUtils.get_shortcut_description(shortcut)
 	

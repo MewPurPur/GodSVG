@@ -2,7 +2,7 @@
 class_name ElementPath extends Element
 
 const name = "path"
-const possible_conversions = []
+const possible_conversions: Array[String] = []
 
 func user_setup(precise_pos := PackedFloat64Array([0.0, 0.0])) -> void:
 	if precise_pos != PackedFloat64Array([0.0, 0.0]):

@@ -30,7 +30,7 @@ static func save_svg() -> void:
 static func open_export_dialog(export_data: ImageExportData) -> void:
 	OS.request_permissions()
 	if OS.has_feature("web"):
-		var web_format_name: String = ImageExportData.web_formats[export_data.format]
+		var web_format_name := ImageExportData.web_formats[export_data.format]
 		if export_data.format == "svg":
 			_web_save(export_data.svg_to_buffer(), web_format_name)
 		else:

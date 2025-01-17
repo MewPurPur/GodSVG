@@ -15,7 +15,6 @@ func _ready() -> void:
 	SVG.xnode_layout_changed.connect(full_rebuild)
 	SVG.changed_unknown.connect(full_rebuild)
 	add_button.pressed.connect(_on_add_button_pressed)
-	full_rebuild()
 
 
 func update_theme() -> void:
