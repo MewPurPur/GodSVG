@@ -237,23 +237,20 @@ func optimize(not_applied := false) -> bool:
 					return true
 				replace_xnode(element.xid, element.get_replacement("path"))
 			"path":
-				var pathdata: AttributePathdata = element.get_attribute("d")
-				# Simplify A rotation to 0 degrees for circular arcs.
-				for cmd_idx in pathdata.get_command_count():
-					var command := pathdata.get_command(cmd_idx)
-					var cmd_char := command.command_char
-					if cmd_char in "Aa" and command.rx == command.ry and command.rot != 0:
-						if not_applied:
-							return true
-						pathdata.set_command_property(cmd_idx, "rot", 0)
-				
 				# Replace L with H or V when possible.
 				var conversion_indices := PackedInt32Array()
 				var conversion_cmd_chars := PackedStringArray()
 				
+				var pathdata: AttributePathdata = element.get_attribute("d")
 				for cmd_idx in pathdata.get_command_count():
 					var command := pathdata.get_command(cmd_idx)
 					var cmd_char := command.command_char
+					
+					# Simplify A rotation to 0 degrees for circular arcs.
+					if cmd_char in "Aa" and command.rx == command.ry and command.rot != 0.0:
+						if not_applied:
+							return true
+						pathdata.set_command_property(cmd_idx, "rot", 0.0)
 					
 					if cmd_char == "l":
 						if command.x == 0:

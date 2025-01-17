@@ -87,34 +87,6 @@ static func mouse_filter_pass_non_drag_events(event: InputEvent) -> Control.Mous
 			event.button_mask == MOUSE_BUTTON_MASK_LEFT else Control.MOUSE_FILTER_PASS
 
 
-static func generate_gradient(element: Element) -> Gradient:
-	if not (element is ElementLinearGradient or element is ElementRadialGradient):
-		return null
-	
-	var gradient := Gradient.new()
-	gradient.remove_point(0)
-	
-	var current_offset := 0.0
-	var is_gradient_empty := true
-	
-	for child in element.get_children():
-		if not child is ElementStop:
-			continue
-		
-		current_offset = clamp(child.get_attribute_num("offset"), current_offset, 1.0)
-		gradient.add_point(current_offset,
-				Color(ColorParser.text_to_color(child.get_attribute_value("stop-color")),
-				child.get_attribute_num("stop-opacity")))
-		if is_gradient_empty:
-			is_gradient_empty = false
-			gradient.remove_point(0)
-	
-	if is_gradient_empty:
-		gradient.set_color(0, Color.TRANSPARENT)
-	
-	return gradient
-
-
 static func has_clipboard_web_safe() -> bool:
 	if OS.has_feature("web"):
 		return false
