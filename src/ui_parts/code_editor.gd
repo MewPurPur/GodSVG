@@ -15,8 +15,6 @@ func _ready() -> void:
 	Configs.theme_changed.connect(setup_theme)
 	SVG.parsing_finished.connect(update_error)
 	Configs.highlighting_colors_changed.connect(update_syntax_highlighter)
-	auto_update_text()
-	update_size_button()
 	update_file_button()
 	setup_theme()
 	update_syntax_highlighter()

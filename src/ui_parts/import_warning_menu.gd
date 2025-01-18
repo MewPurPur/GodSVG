@@ -17,14 +17,15 @@ func _ready() -> void:
 	# Convert forward and backward to show how GodSVG would display the given SVG.
 	var imported_text_parse_result := SVGParser.text_to_root(imported_text,
 			Configs.savedata.editor_formatter)
-	var preview_text := SVGParser.root_to_text(imported_text_parse_result.svg,
-			Configs.savedata.editor_formatter)
-	var preview_parse_result := SVGParser.text_to_root(preview_text,
-			Configs.savedata.editor_formatter)
-	var preview := preview_parse_result.svg
-	if is_instance_valid(preview):
-		texture_preview.setup_svg(SVGParser.root_to_text(preview,
-				Configs.savedata.editor_formatter), preview.get_size())
+	if is_instance_valid(imported_text_parse_result.svg):
+		var preview_text := SVGParser.root_to_text(imported_text_parse_result.svg,
+				Configs.savedata.editor_formatter)
+		var preview_parse_result := SVGParser.text_to_root(preview_text,
+				Configs.savedata.editor_formatter)
+		var preview := preview_parse_result.svg
+		if is_instance_valid(preview):
+			texture_preview.setup_svg(SVGParser.root_to_text(preview,
+					Configs.savedata.editor_formatter), preview.get_size())
 	
 	if imported_text_parse_result.error != SVGParser.ParseError.OK:
 		texture_preview.hide()

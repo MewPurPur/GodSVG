@@ -8,7 +8,7 @@ const TransformPopup = preload("res://src/ui_widgets/transform_popup.tscn")
 
 func set_value(new_value: String, save := false) -> void:
 	element.set_attribute(attribute_name, new_value)
-	sync(element.get_attribute(attribute_name).get_value())
+	sync(element.get_attribute_value(attribute_name, true))
 	if save:
 		SVG.queue_save()
 

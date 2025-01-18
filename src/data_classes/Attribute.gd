@@ -9,6 +9,9 @@ var formatter: Formatter
 var _value: String
 
 func set_value(new_value: String) -> void:
+	# Formatting can be expensive, so do this cheap check first.
+	if new_value == _value:
+		return
 	var proposed_new_value := format(new_value)
 	if proposed_new_value != _value:
 		_value = proposed_new_value
