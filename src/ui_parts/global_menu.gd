@@ -45,6 +45,7 @@ func _enter_tree() -> void:
 	_generate_main_menus()
 	_setup_menu_items()
 	SVG.changed.connect(_on_svg_changed)
+	Configs.file_path_changed.connect(_on_file_path_changed)
 
 
 func _reset_menus() -> void:
@@ -116,6 +117,7 @@ func _setup_menu_items() -> void:
 	file_clear_association_idx = _add_action(file_rid, "clear_file_path")
 	file_reset_svg_idx = _add_action(file_rid, "reset_svg")
 	_on_svg_changed()
+	_on_file_path_changed()
 	# Edit and Tool menus.
 	_add_many_actions(edit_rid, ShortcutUtils.get_shortcuts("edit"))
 	_add_many_actions(tool_rid, ShortcutUtils.get_shortcuts("tool"))
@@ -181,16 +183,17 @@ func _get_keycode_for_events(input_events: Array[InputEvent]) -> Key:
 
 func _on_svg_changed() -> void:
 	NativeMenu.set_item_disabled(file_rid, file_clear_svg_idx, SVG.text == SVG.DEFAULT)
-	var is_path_empty := Configs.savedata.current_file_path.is_empty()
-	NativeMenu.set_item_disabled(file_rid, file_clear_association_idx, is_path_empty)
-	NativeMenu.set_item_disabled(file_rid, file_reset_svg_idx, is_path_empty)
+	NativeMenu.set_item_disabled(file_rid, file_reset_svg_idx,
+			FileUtils.compare_svg_to_disk_contents() == FileUtils.FileState.DIFFERENT)
 
+func _on_file_path_changed() -> void:
+	NativeMenu.set_item_disabled(file_rid, file_clear_association_idx,
+			Configs.savedata.current_file_path.is_empty())
 
 func _on_display_view_settings_updated(show_grid: bool, show_handles: bool, rasterized_svg: bool) -> void:
 	NativeMenu.set_item_checked(view_rid, view_show_grid_idx, show_grid)
 	NativeMenu.set_item_checked(view_rid, view_show_handles_idx, show_handles)
 	NativeMenu.set_item_checked(view_rid, view_rasterized_svg_idx, rasterized_svg)
-
 
 func _on_display_snap_settings_updated(snap_enabled: bool, snap_amount: float) -> void:
 	NativeMenu.set_item_checked(snap_rid, snap_enable_idx, snap_enabled)

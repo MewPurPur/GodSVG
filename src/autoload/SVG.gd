@@ -35,7 +35,6 @@ func _enter_tree() -> void:
 	root_element = ElementRoot.new(Configs.savedata.editor_formatter)
 
 func _ready() -> void:
-	UR.version_changed.connect(_on_undo_redo)
 	changed_unknown.connect(queue_update)
 	xnode_layout_changed.connect(queue_update)
 	any_attribute_changed.connect(queue_update.unbind(1))
@@ -65,7 +64,7 @@ func _ready() -> void:
 func _exit_tree() -> void:
 	UR.free()
 
-
+# Syncs text to the elements.
 func queue_update() -> void:
 	_update.call_deferred()
 	_update_pending = true
@@ -78,7 +77,8 @@ func _update() -> void:
 	if not _update_pending:
 		return
 	_update_pending = false
-	set_text(SVGParser.root_to_text(root_element, Configs.savedata.editor_formatter))
+	text = SVGParser.root_to_text(root_element, Configs.savedata.editor_formatter)
+	changed.emit()
 
 func _save() -> void:
 	if not _save_pending:
@@ -90,8 +90,8 @@ func _save() -> void:
 	UR.create_action("")
 	UR.add_do_property(Configs, "svg_text", text)
 	UR.add_undo_property(Configs, "svg_text", saved_text)
-	UR.add_do_property(self, "text", text)
-	UR.add_undo_property(self, "text", saved_text)
+	UR.add_do_method(apply_svg_text.bind(text, false))
+	UR.add_undo_method(apply_svg_text.bind(saved_text, false))
 	UR.commit_action()
 
 
@@ -124,28 +124,20 @@ func _update_current_size() -> void:
 		resized.emit()
 
 
-func set_text(new_text: String) -> void:
-	text = new_text
-	changed.emit()
-
-
 func undo() -> void:
 	if UR.has_undo():
 		UR.undo()
-		sync_elements()
 
 func redo() -> void:
 	if UR.has_redo():
 		UR.redo()
-		sync_elements()
 
-func _on_undo_redo() -> void:
-	Configs.svg_text = text
 
-func apply_svg_text(svg_text: String) -> void:
-	set_text(svg_text)
-	queue_save()
+func apply_svg_text(new_text: String, save := true) -> void:
+	text = new_text
 	sync_elements()
+	if save:
+		queue_save()
 
 func optimize() -> void:
 	SVG.root_element.optimize()

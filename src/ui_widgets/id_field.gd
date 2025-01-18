@@ -34,7 +34,7 @@ func sync_to_attribute() -> void:
 func _on_text_submitted(new_text: String) -> void:
 	if new_text.is_empty() or\
 	AttributeID.get_validity(new_text) != AttributeID.ValidityLevel.INVALID:
-		set_value(new_text)
+		set_value(new_text, true)
 	else:
 		sync_to_attribute()
 
