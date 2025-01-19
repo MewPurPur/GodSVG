@@ -26,6 +26,11 @@ var _current_size := Vector2.ZERO
 var _update_pending := false
 var _save_pending := false
 
+# "unstable_text" is the current state, which might have errors (i.e., while using the
+# code editor). "text" is the last state without errors.
+# These both differ from "Configs.svg_text" which is the state as saved to file,
+# which doesn't happen while dragging handles or typing in the code editor for example.
+var unstable_text := ""
 var text := ""
 var root_element: ElementRoot
 
@@ -84,21 +89,27 @@ func _save() -> void:
 	if not _save_pending:
 		return
 	_save_pending = false
+	
+	unstable_text = ""
 	var saved_text := Configs.svg_text
 	if saved_text == text:
 		return
 	UR.create_action("")
 	UR.add_do_property(Configs, "svg_text", text)
 	UR.add_undo_property(Configs, "svg_text", saved_text)
-	UR.add_do_method(apply_svg_text.bind(text, false))
-	UR.add_undo_method(apply_svg_text.bind(saved_text, false))
+	UR.add_do_property(self, "text", text)
+	UR.add_undo_property(self, "text", saved_text)
 	UR.commit_action()
 
 
 func sync_elements() -> void:
-	var svg_parse_result := SVGParser.text_to_root(text, Configs.savedata.editor_formatter)
+	var text_to_parse := text if unstable_text.is_empty() else unstable_text
+	var svg_parse_result := SVGParser.text_to_root(text_to_parse,
+			Configs.savedata.editor_formatter)
 	parsing_finished.emit(svg_parse_result.error)
 	if svg_parse_result.error == SVGParser.ParseError.OK:
+		text = unstable_text
+		unstable_text = ""
 		root_element = svg_parse_result.svg
 		root_element.any_attribute_changed.connect(any_attribute_changed.emit)
 		root_element.xnodes_added.connect(xnodes_added.emit)
@@ -127,14 +138,16 @@ func _update_current_size() -> void:
 func undo() -> void:
 	if UR.has_undo():
 		UR.undo()
+		SVG.sync_elements()
 
 func redo() -> void:
 	if UR.has_redo():
 		UR.redo()
+		SVG.sync_elements()
 
 
 func apply_svg_text(new_text: String, save := true) -> void:
-	text = new_text
+	unstable_text = new_text
 	sync_elements()
 	if save:
 		queue_save()
