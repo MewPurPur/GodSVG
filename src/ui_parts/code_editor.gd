@@ -146,6 +146,7 @@ func _on_svg_code_edit_text_changed() -> void:
 func _on_svg_code_edit_focus_exited() -> void:
 	SVG.queue_save()
 	code_edit.text = SVG.text
+	update_error(SVGParser.ParseError.OK)
 
 func _on_svg_code_edit_focus_entered() -> void:
 	Indications.clear_all_selections()

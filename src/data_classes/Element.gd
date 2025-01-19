@@ -203,14 +203,15 @@ func get_attribute_final_precise_transform(attribute_name: String) -> PackedFloa
 
 
 func set_attribute(attribute_name: String, value: Variant) -> void:
+	var value_type := typeof(value)
+	
 	var has_attrib := has_attribute(attribute_name)
-	if not has_attrib and value.is_empty():
+	if not has_attrib and value_type == TYPE_STRING and value.is_empty():
 		return
 	
 	var attrib := _attributes[attribute_name] if has_attrib else\
 			new_attribute(attribute_name)
 	
-	var value_type := typeof(value)
 	
 	if value_type == TYPE_STRING:
 		attrib.set_value(value)
