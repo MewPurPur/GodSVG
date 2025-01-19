@@ -57,12 +57,13 @@ make_attributes_absolute := false) -> String:
 			if already_exists:
 				continue
 			
-			if element.is_attribute_percentage(attrib_name):
+			if element.get_attribute_unit(attrib_name) == AttributeNumeric.Unit.PERCENT:
 				attribute_array.append(element._create_attribute(attrib_name))
 		# Turn percentages into numbers.
 		for attrib_idx in attribute_array.size():
 			var attrib: Attribute = attribute_array[attrib_idx]
-			if attrib is AttributeNumeric and element.is_attribute_percentage(attrib.name):
+			if attrib is AttributeNumeric and\
+			element.get_attribute_unit(attrib.name) == AttributeNumeric.Unit.PERCENT:
 				var new_attrib := element._create_attribute(attrib.name)
 				new_attrib.set_num(element.get_attribute_num(attrib.name))
 				attribute_array[attrib_idx] = new_attrib

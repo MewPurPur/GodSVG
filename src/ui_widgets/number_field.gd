@@ -2,30 +2,21 @@
 extends BetterLineEdit
 
 var element: Element
-var attribute_name: String:  # May propagate.
-	set(new_value):
-		attribute_name = new_value
-		if DB.attribute_number_range[attribute_name] == DB.NumberRange.ARBITRARY:
-			cached_min_value = -INF
-			cached_max_value = INF
-		else:
-			cached_min_value = 0.0
-			cached_max_value = INF
-
-var cached_min_value: float
-var cached_max_value: float
+var attribute_name: String
 
 func set_value(new_value: String, save := false) -> void:
 	if not new_value.is_empty():
 		new_value = new_value.strip_edges()
-		if not AttributeNumeric.text_check_percentage(new_value):
+		if AttributeNumeric.text_get_unit(new_value) != AttributeNumeric.Unit.NONE:
 			var numeric_value := NumstringParser.evaluate(new_value)
 			# Validate the value.
 			if !is_finite(numeric_value):
 				sync_to_attribute()
 				return
 			
-			numeric_value = clampf(numeric_value, cached_min_value, cached_max_value)
+			if element.get_number_type(attribute_name) in [DB.NumberType.POSITIVE_VERTICAL,
+			DB.NumberType.POSITIVE_HORIZONTAL, DB.NumberType.POSITIVE_NORMALIZED]:
+				numeric_value = absf(numeric_value)
 			new_value = element.get_attribute(attribute_name).num_to_text(numeric_value)
 		sync(new_value)
 	element.set_attribute(attribute_name, new_value)

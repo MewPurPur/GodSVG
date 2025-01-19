@@ -19,10 +19,7 @@ func set_value(new_value: String, save := false) -> void:
 				sync_to_attribute()
 				return
 			
-			if numeric_value > MAX_VALUE:
-				numeric_value = MAX_VALUE
-			elif numeric_value < MIN_VALUE:
-				numeric_value = MIN_VALUE
+			numeric_value = clampf(numeric_value, MIN_VALUE, MAX_VALUE)
 			new_value = element.get_attribute(attribute_name).num_to_text(numeric_value)
 	
 	sync(new_value)

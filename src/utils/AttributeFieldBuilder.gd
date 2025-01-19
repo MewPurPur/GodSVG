@@ -8,17 +8,17 @@ const EnumField = preload("res://src/ui_widgets/enum_field.tscn")
 const IdField = preload("res://src/ui_widgets/id_field.tscn")
 const UnrecognizedField = preload("res://src/ui_widgets/unrecognized_field.tscn")
 
-static func create(attribute: String, element: Element) -> Control:
-	match DB.get_attribute_type(attribute):
+static func create(attribute_name: String, element: Element) -> Control:
+	match DB.get_attribute_type(attribute_name):
 		DB.AttributeType.ID: return _generate_no_name(IdField, element)
-		DB.AttributeType.TRANSFORM_LIST: return _generate(TransformField, element, attribute)
-		DB.AttributeType.COLOR: return _generate(ColorField, element, attribute)
-		DB.AttributeType.ENUM: return _generate(EnumField, element, attribute)
+		DB.AttributeType.TRANSFORM_LIST: return _generate(TransformField, element, attribute_name)
+		DB.AttributeType.COLOR: return _generate(ColorField, element, attribute_name)
+		DB.AttributeType.ENUM: return _generate(EnumField, element, attribute_name)
 		DB.AttributeType.NUMERIC:
-			match DB.attribute_number_range[attribute]:
-				DB.NumberRange.UNIT: return _generate(NumberSlider, element, attribute)
-				_: return _generate(NumberField, element, attribute)
-		_: return _generate(UnrecognizedField, element, attribute)
+			match DB.get_attribute_default_number_type(attribute_name):
+				DB.NumberType.FRACTION: return _generate(NumberSlider, element, attribute_name)
+				_: return _generate(NumberField, element, attribute_name)
+		_: return _generate(UnrecognizedField, element, attribute_name)
 
 static func _generate(widget: PackedScene, element: Element, attribute: String) -> Control:
 	var widget_instance := widget.instantiate()

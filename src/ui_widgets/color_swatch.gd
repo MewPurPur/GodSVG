@@ -18,7 +18,7 @@ func _ready() -> void:
 	if ColorParser.is_valid_url(color):
 		var id := color.substr(5, color.length() - 6)
 		var gradient_element := SVG.root_element.get_element_by_id(id)
-		if DB.is_element_gradient(gradient_element):
+		if GradientUtils.is_element_gradient(gradient_element):
 			gradient_texture = gradient_element.generate_texture()
 
 func _draw() -> void:

@@ -1,7 +1,7 @@
 class_name GradientUtils extends RefCounted
 
 static func generate_gradient(element: Element) -> Gradient:
-	if not (element is ElementLinearGradient or element is ElementRadialGradient):
+	if not is_element_gradient(element):
 		return null
 	
 	var gradient := Gradient.new()
@@ -29,7 +29,7 @@ static func generate_gradient(element: Element) -> Gradient:
 
 
 static func get_gradient_warnings(element: Element) -> PackedStringArray:
-	if not (element is ElementLinearGradient or element is ElementRadialGradient):
+	if not is_element_gradient(element):
 		return PackedStringArray()
 	
 	var warnings := PackedStringArray()
@@ -64,3 +64,9 @@ static func get_gradient_warnings(element: Element) -> PackedStringArray:
 		warnings.append(Translator.translate("This gradient is a solid color."))
 	
 	return warnings
+
+
+static func is_element_gradient(checked_element: Element) -> bool:
+	return is_instance_valid(checked_element) and\
+			(checked_element is ElementLinearGradient or\
+			checked_element is ElementRadialGradient)

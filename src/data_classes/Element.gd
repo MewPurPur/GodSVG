@@ -165,28 +165,34 @@ func get_attribute_num(attribute_name: String) -> float:
 			has_attribute(attribute_name) else\
 			AttributeNumeric.text_to_num(get_default(attribute_name))
 	# Possibly adjust for percentage.
-	if is_attribute_percentage(attribute_name):
-		var percentage_handling := get_percentage_handling(attribute_name)
-		if percentage_handling == DB.PercentageHandling.FRACTION:
+	if get_attribute_unit(attribute_name) == AttributeNumeric.Unit.PERCENT:
+		var number_type := get_number_type(attribute_name)
+		if number_type == DB.NumberType.FRACTION:
 			return num
 		elif root == self:
 			# TODO Implement this properly.
-			match percentage_handling:
-				DB.PercentageHandling.HORIZONTAL: return 1024 * num
-				DB.PercentageHandling.VERTICAL: return 1024 * num
-				DB.PercentageHandling.NORMALIZED: return 1024 * num
+			match number_type:
+				DB.NumberType.ANY_HORIZONTAL, DB.NumberType.POSITIVE_HORIZONTAL:
+					return 1024 * num
+				DB.NumberType.ANY_VERTICAL, DB.NumberType.POSITIVE_VERTICAL:
+					return 1024 * num
+				DB.NumberType.ANY_NORMALIZED, DB.NumberType.POSITIVE_NORMALIZED:
+					return 1024 * num
 		else:
-			match percentage_handling:
-				DB.PercentageHandling.HORIZONTAL: return svg.width * num
-				DB.PercentageHandling.VERTICAL: return svg.height * num
-				DB.PercentageHandling.NORMALIZED: return svg.normalized_diagonal * num
+			match number_type:
+				DB.NumberType.ANY_HORIZONTAL, DB.NumberType.POSITIVE_HORIZONTAL:
+					return svg.width * num
+				DB.NumberType.ANY_VERTICAL, DB.NumberType.POSITIVE_VERTICAL:
+					return svg.height * num
+				DB.NumberType.ANY_NORMALIZED, DB.NumberType.POSITIVE_NORMALIZED:
+					return svg.normalized_diagonal * num
 	return num
 
-func is_attribute_percentage(attribute_name: String) -> bool:
+func get_attribute_unit(attribute_name: String) -> AttributeNumeric.Unit:
 	if DB.get_attribute_type(attribute_name) != DB.AttributeType.NUMERIC:
 		push_error("Attribute not the correct type.")
-	return _attributes[attribute_name].is_percentage() if has_attribute(attribute_name) else\
-			AttributeNumeric.text_check_percentage(get_default(attribute_name))
+	return _attributes[attribute_name].get_unit() if has_attribute(attribute_name) else\
+			AttributeNumeric.text_get_unit(get_default(attribute_name))
 
 func get_attribute_list(attribute_name: String) -> PackedFloat64Array:
 	if DB.get_attribute_type(attribute_name) != DB.AttributeType.LIST:
@@ -274,7 +280,7 @@ func apply_to(element: Element, dropped_attributes: PackedStringArray) -> void:
 # Converts a percentage numeric attribute to absolute.
 # TODO this is no longer used, but might become useful again in the future.
 func make_attribute_absolute(attribute_name: String) -> void:
-	if is_attribute_percentage(attribute_name):
+	if get_attribute_unit(attribute_name) == AttributeNumeric.Unit.PERCENT:
 		var new_attrib := new_attribute(attribute_name)
 		new_attrib.set_num(get_attribute_num(attribute_name))
 		_attributes[attribute_name] = new_attrib
@@ -284,8 +290,8 @@ func make_attribute_absolute(attribute_name: String) -> void:
 func _get_own_default(_attribute_name: String) -> String:
 	return ""
 
-func get_percentage_handling(attribute_name: String) -> DB.PercentageHandling:
-	return DB.get_attribute_default_percentage_handling(attribute_name)
+func get_number_type(attribute_name: String) -> DB.NumberType:
+	return DB.get_attribute_default_number_type(attribute_name)
 
 func can_replace(_new_element: String) -> bool:
 	return false

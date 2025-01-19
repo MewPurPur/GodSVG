@@ -1,8 +1,8 @@
 class_name DB extends RefCounted
 
 enum AttributeType {NUMERIC, COLOR, LIST, PATHDATA, ENUM, TRANSFORM_LIST, ID, UNKNOWN}
-enum PercentageHandling {FRACTION, HORIZONTAL, VERTICAL, NORMALIZED}
-enum NumberRange {ARBITRARY, POSITIVE, UNIT}
+enum NumberType {POSITIVE_HORIZONTAL, POSITIVE_VERTICAL, POSITIVE_NORMALIZED,
+		ANY_HORIZONTAL, ANY_VERTICAL, ANY_NORMALIZED, FRACTION, POSITIVE_UNITLESS, NONE}
 
 
 const recognized_elements: Array[String] = ["svg", "g", "circle", "ellipse", "rect",
@@ -122,28 +122,6 @@ const attribute_enum_values: Dictionary[String, Array] = {
 	"spreadMethod": ["pad", "reflect", "repeat"],
 }
 
-const attribute_number_range: Dictionary[String, NumberRange] = {
-	"width": NumberRange.POSITIVE,
-	"height": NumberRange.POSITIVE,
-	"x": NumberRange.ARBITRARY,
-	"y": NumberRange.ARBITRARY,
-	"x1": NumberRange.ARBITRARY,
-	"y1": NumberRange.ARBITRARY,
-	"x2": NumberRange.ARBITRARY,
-	"y2": NumberRange.ARBITRARY,
-	"cx": NumberRange.ARBITRARY,
-	"cy": NumberRange.ARBITRARY,
-	"r": NumberRange.POSITIVE,
-	"rx": NumberRange.POSITIVE,
-	"ry": NumberRange.POSITIVE,
-	"opacity": NumberRange.UNIT,
-	"fill-opacity": NumberRange.UNIT,
-	"stroke-opacity": NumberRange.UNIT,
-	"stroke-width": NumberRange.POSITIVE,
-	"offset": NumberRange.UNIT,
-	"stop-opacity": NumberRange.UNIT,
-}
-
 const attribute_color_url_allowed: Array[String] = ["fill", "stroke"]
 const attribute_color_none_allowed: Array[String] = ["fill", "stroke"]
 const attribute_color_current_color_allowed: Array[String] = ["fill", "stroke",
@@ -179,24 +157,32 @@ static func get_xnode_icon(xnode_type: BasicXNode.NodeType) -> Texture2D:
 static func get_attribute_type(attribute_name: String) -> AttributeType:
 	return _attribute_types.get(attribute_name, AttributeType.UNKNOWN)
 
-static func get_attribute_default_percentage_handling(
-attribute_name: String) -> PercentageHandling:
+static func get_attribute_default_number_type(attribute_name: String) -> NumberType:
 	match attribute_name:
-		"width": return PercentageHandling.HORIZONTAL
-		"height": return PercentageHandling.VERTICAL
-		"x": return PercentageHandling.HORIZONTAL
-		"y": return PercentageHandling.VERTICAL
-		"rx": return PercentageHandling.HORIZONTAL
-		"ry": return PercentageHandling.VERTICAL
-		"stroke-width": return PercentageHandling.NORMALIZED
-		"x1": return PercentageHandling.HORIZONTAL
-		"y1": return PercentageHandling.VERTICAL
-		"x2": return PercentageHandling.HORIZONTAL
-		"y2": return PercentageHandling.VERTICAL
-		"cx": return PercentageHandling.HORIZONTAL
-		"cy": return PercentageHandling.VERTICAL
-		"r": return PercentageHandling.NORMALIZED
-		_: return PercentageHandling.FRACTION
+		"width": return NumberType.POSITIVE_HORIZONTAL
+		"height": return NumberType.POSITIVE_VERTICAL
+		"x": return NumberType.ANY_HORIZONTAL
+		"x1": return NumberType.ANY_HORIZONTAL
+		"x2": return NumberType.ANY_HORIZONTAL
+		"y": return NumberType.ANY_VERTICAL
+		"y1": return NumberType.ANY_VERTICAL
+		"y2": return NumberType.ANY_VERTICAL
+		"cx": return NumberType.ANY_HORIZONTAL
+		"cy": return NumberType.ANY_VERTICAL
+		"rx": return NumberType.ANY_HORIZONTAL
+		"ry": return NumberType.ANY_VERTICAL
+		"r": return NumberType.POSITIVE_NORMALIZED
+		"stroke-width": return NumberType.POSITIVE_NORMALIZED
+		"stroke-dashoffset": return NumberType.ANY_NORMALIZED
+		"stroke-miterlimit": return NumberType.POSITIVE_UNITLESS
+		"fx": return NumberType.ANY_HORIZONTAL
+		"fy": return NumberType.ANY_VERTICAL
+		"opacity": return NumberType.FRACTION
+		"fill-opacity": return NumberType.FRACTION
+		"stroke-opacity": return NumberType.FRACTION
+		"offset": return NumberType.FRACTION
+		"stop-opacity": return NumberType.FRACTION
+	return NumberType.NONE
 
 
 static func element_with_setup(name: String, user_setup_value = null) -> Element:
@@ -233,8 +219,3 @@ static func attribute(name: String, formatter: Formatter, value: String) -> Attr
 		DB.AttributeType.TRANSFORM_LIST: return AttributeTransformList.new(name, formatter, value)
 		DB.AttributeType.ID: return AttributeID.new(name, formatter, value)
 		_: return Attribute.new(name, formatter, value)
-
-
-static func is_element_gradient(checked_element: Element) -> bool:
-	return checked_element != null and (checked_element is ElementLinearGradient or\
-			checked_element is ElementRadialGradient)

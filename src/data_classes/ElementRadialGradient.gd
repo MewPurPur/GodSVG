@@ -11,10 +11,10 @@ func _get_own_default(attribute_name: String) -> String:
 		"spreadMethod": return "pad"
 		_: return ""
 
-func get_percentage_handling(attribute_name: String) -> DB.PercentageHandling:
+func get_number_type(attribute_name: String) -> DB.NumberType:
 	if get_attribute_value("gradientUnits") == "objectBoundingBox" and\
 	attribute_name in ["cx", "cy", "r"]:
-		return DB.PercentageHandling.FRACTION
+		return DB.NumberType.FRACTION
 	else:
 		return super(attribute_name)
 
