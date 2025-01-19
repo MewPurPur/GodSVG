@@ -167,6 +167,7 @@ func _on_mouse_exited() -> void:
 
 
 func determine_selection_highlight() -> void:
+	print("?")
 	var is_selected := element.xid in Indications.selected_xids
 	var is_hovered := Indications.hovered_xid == element.xid
 	
