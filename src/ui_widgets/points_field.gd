@@ -46,7 +46,7 @@ func set_value(new_value: String, save := false) -> void:
 	element.set_attribute(attribute_name, new_value)
 	sync(element.get_attribute_value(attribute_name, true))
 	if save:
-		SVG.queue_save()
+		State.queue_svg_save()
 
 func sync_to_attribute() -> void:
 	set_value(element.get_attribute_value(attribute_name))
@@ -64,8 +64,8 @@ func setup() -> void:
 	points_container.draw.connect(points_draw)
 	points_container.gui_input.connect(_on_points_gui_input)
 	points_container.mouse_exited.connect(_on_points_mouse_exited)
-	Indications.hover_changed.connect(_on_selections_or_hover_changed)
-	Indications.selection_changed.connect(_on_selections_or_hover_changed)
+	State.hover_changed.connect(_on_selections_or_hover_changed)
+	State.selection_changed.connect(_on_selections_or_hover_changed)
 	# So, the reason we need this is quite complicated. We need to know
 	# the current_selections and current_hovered at the time this widget is created.
 	# This is because the widget can sometimes be created before they are cleared
@@ -120,28 +120,28 @@ func update_point_x_coordinate(new_value: float, idx: int) -> void:
 	var list := element.get_attribute_list(attribute_name)
 	list[idx * 2] = new_value
 	element.get_attribute(attribute_name).set_list(list)
-	SVG.queue_save()
+	State.queue_svg_save()
 
 func update_point_y_coordinate(new_value: float, idx: int) -> void:
 	var list := element.get_attribute_list(attribute_name)
 	list[idx * 2 + 1] = new_value
 	element.get_attribute(attribute_name).set_list(list)
-	SVG.queue_save()
+	State.queue_svg_save()
 
 func _on_add_move_button_pressed() -> void:
 	element.get_attribute(attribute_name).set_list(PackedFloat64Array([0.0, 0.0]))
-	SVG.queue_save()
+	State.queue_svg_save()
 
 
 # Points editor orchestration.
 
 func _on_selections_or_hover_changed() -> void:
 	var new_selections: Array[int] = []
-	if Indications.semi_selected_xid == element.xid:
-		new_selections = Indications.inner_selections.duplicate()
+	if State.semi_selected_xid == element.xid:
+		new_selections = State.inner_selections.duplicate()
 	var new_hovered := -1
-	if Indications.semi_hovered_xid == element.xid:
-		new_hovered = Indications.inner_hovered
+	if State.semi_hovered_xid == element.xid:
+		new_hovered = State.inner_hovered
 	# Only redraw if selections or hovered changed.
 	if new_selections != current_selections:
 		current_selections = new_selections
@@ -151,10 +151,10 @@ func _on_selections_or_hover_changed() -> void:
 		points_container.queue_redraw()
 
 func _on_points_mouse_exited() -> void:
-	var cmd_idx := Indications.inner_hovered
-	if Indications.semi_hovered_xid == element.xid:
+	var cmd_idx := State.inner_hovered
+	if State.semi_hovered_xid == element.xid:
 		activate_hovered(-1)
-	Indications.remove_hovered(element.xid, cmd_idx)
+	State.remove_hovered(element.xid, cmd_idx)
 
 
 # Prevents buttons from selecting a whole subpath when double-clicked.
@@ -178,38 +178,37 @@ func _on_points_gui_input(event: InputEvent) -> void:
 	
 	if event is InputEventMouseMotion and event.button_mask == 0:
 		if cmd_idx >= 0:
-			Indications.set_hovered(element.xid, cmd_idx)
+			State.set_hovered(element.xid, cmd_idx)
 		else:
-			Indications.remove_hovered(element.xid, cmd_idx)
+			State.remove_hovered(element.xid, cmd_idx)
 		activate_hovered(cmd_idx)
 	elif event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_LEFT:
 			if event.is_pressed():
 				if event.double_click:
-					Indications.normal_select(element.xid, 0)
-					Indications.shift_select(element.xid,
+					State.normal_select(element.xid, 0)
+					State.shift_select(element.xid,
 							element.get_attribute(attribute_name).get_list_size() / 2)
 				elif event.is_command_or_control_pressed():
-					Indications.ctrl_select(element.xid, cmd_idx)
+					State.ctrl_select(element.xid, cmd_idx)
 				elif event.shift_pressed:
-					Indications.shift_select(element.xid, cmd_idx)
+					State.shift_select(element.xid, cmd_idx)
 				else:
-					Indications.normal_select(element.xid, cmd_idx)
+					State.normal_select(element.xid, cmd_idx)
 			elif event.is_released() and not event.shift_pressed and\
 			not event.is_command_or_control_pressed() and not event.double_click and\
-			Indications.inner_selections.size() > 1 and\
-			cmd_idx in Indications.inner_selections:
-				Indications.normal_select(element.xid, cmd_idx)
+			State.inner_selections.size() > 1 and cmd_idx in State.inner_selections:
+				State.normal_select(element.xid, cmd_idx)
 		elif event.button_index == MOUSE_BUTTON_RIGHT and event.is_pressed():
-			if Indications.semi_selected_xid != element.xid or\
-			not cmd_idx in Indications.inner_selections:
-				Indications.normal_select(element.xid, cmd_idx)
+			if State.semi_selected_xid != element.xid or\
+			not cmd_idx in State.inner_selections:
+				State.normal_select(element.xid, cmd_idx)
 			# Popup the actions.
 			var viewport := get_viewport()
 			var popup_pos := viewport.get_mouse_position()
-			HandlerGUI.popup_under_pos(Indications.get_selection_context(
-					HandlerGUI.popup_under_pos.bind(popup_pos, viewport),
-					Indications.Context.LIST), popup_pos, viewport)
+			HandlerGUI.popup_under_pos(State.get_selection_context(
+					HandlerGUI.popup_under_pos.bind(popup_pos, viewport), State.Context.LIST),
+					popup_pos, viewport)
 
 
 func points_draw() -> void:
@@ -217,8 +216,8 @@ func points_draw() -> void:
 	for i: int in element.get_attribute(attribute_name).get_list_size() / 2:
 		var v_offset := STRIP_HEIGHT * i
 		# Draw the background hover or selection stylebox.
-		var hovered := Indications.is_hovered(element.xid, i)
-		var selected := Indications.is_selected(element.xid, i)
+		var hovered := State.is_hovered(element.xid, i)
+		var selected := State.is_selected(element.xid, i)
 		if selected or hovered:
 			var stylebox := StyleBoxFlat.new()
 			stylebox.set_corner_radius_all(3)
@@ -342,16 +341,16 @@ func setup_point_controls(idx: int) -> Control:
 
 func numfield(cmd_idx: int) -> BetterLineEdit:
 	var new_field := MiniNumberField.instantiate()
-	new_field.focus_entered.connect(Indications.normal_select.bind(element.xid, cmd_idx))
+	new_field.focus_entered.connect(State.normal_select.bind(element.xid, cmd_idx))
 	return new_field
 
 
 func _on_action_button_pressed(action_button_ref: Button) -> void:
 	# Update the selection immediately, since if this point is
 	# in a multi-selection, only the mouse button release would change the selection.
-	Indications.normal_select(element.xid, hovered_idx)
+	State.normal_select(element.xid, hovered_idx)
 	var viewport := get_viewport()
 	var action_button_rect := action_button_ref.get_global_rect()
-	HandlerGUI.popup_under_rect_center(Indications.get_selection_context(
+	HandlerGUI.popup_under_rect_center(State.get_selection_context(
 			HandlerGUI.popup_under_rect_center.bind(action_button_rect, viewport),
-			Indications.Context.LIST), action_button_rect, viewport)
+			State.Context.LIST), action_button_rect, viewport)

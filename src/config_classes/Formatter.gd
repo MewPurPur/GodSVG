@@ -1,4 +1,4 @@
-# A resource for the color palettes that are listed in the color picker.
+# A resource used to determine how to structure the XML and represent attributes.
 class_name Formatter extends ConfigResource
 
 enum Preset {COMPACT, PRETTY}

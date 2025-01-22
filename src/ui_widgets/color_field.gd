@@ -30,7 +30,7 @@ func set_value(new_value: String, save := false) -> void:
 	sync(element.get_attribute(attribute_name).format(new_value))
 	element.set_attribute(attribute_name, new_value)
 	if save:
-		SVG.queue_save()
+		State.queue_svg_save()
 
 func setup_placeholder() -> void:
 	placeholder_text = element.get_default(attribute_name).trim_prefix("#")
@@ -92,7 +92,7 @@ func _on_pressed() -> void:
 		for element_depth in range(0, element.xid.size()):
 			var checked_xid := element.xid.duplicate()
 			checked_xid.resize(element_depth)
-			if SVG.root_element.get_xnode(checked_xid).has_attribute("color"):
+			if State.root_element.get_xnode(checked_xid).has_attribute("color"):
 				has_color_attribute_parent = true
 				break
 		color_popup.current_color_availability =\
@@ -114,7 +114,7 @@ func _draw() -> void:
 	var color_value := element.get_attribute_value(attribute_name, false)
 	if cached_allow_url and ColorParser.is_valid_url(color_value):
 		var id := color_value.substr(5, color_value.length() - 6)
-		var gradient_element := SVG.root_element.get_element_by_id(id)
+		var gradient_element := State.root_element.get_element_by_id(id)
 		if DB.is_element_gradient(gradient_element):
 			# Complex drawing logic, because StyleBoxTexture isn't advanced enough.
 			var points := PackedVector2Array()
@@ -184,7 +184,7 @@ func update_gradient_texture() -> void:
 	var color_value := element.get_attribute_value(attribute_name, false)
 	if ColorParser.is_valid_url(color_value):
 		var id := color_value.substr(5, color_value.length() - 6)
-		var gradient_element := SVG.root_element.get_element_by_id(id)
+		var gradient_element := State.root_element.get_element_by_id(id)
 		if DB.is_element_gradient(gradient_element):
 			gradient_texture = gradient_element.generate_texture()
 	else:

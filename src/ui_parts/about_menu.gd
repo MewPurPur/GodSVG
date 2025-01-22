@@ -94,6 +94,7 @@ func _ready() -> void:
 		translations_list.add_child(list)
 	
 	close_button.pressed.connect(queue_free)
+	close_button.text = Translator.translate("Close")
 	
 	%ProjectFounder/Label.text = Translator.translate("Project Founder and Manager")
 	%Developers/Label.text = Translator.translate("Developers")

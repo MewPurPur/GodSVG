@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://dhydn476cr0pv"]
 
-[ext_resource type="Script" path="res://src/ui_parts/donate_menu.gd" id="1_yjfkr"]
+[ext_resource type="Script" uid="uid://pj5ax4gste0l" path="res://src/ui_parts/donate_menu.gd" id="1_yjfkr"]
 [ext_resource type="Texture2D" uid="uid://ccc0q21h8owg1" path="res://assets/icons/foreign_logos/GithubLogo.svg" id="2_3gj3j"]
 [ext_resource type="Texture2D" uid="uid://dcn1rq4e0p2jt" path="res://assets/icons/foreign_logos/KoFiLogo.svg" id="3_5q1ti"]
 [ext_resource type="Texture2D" uid="uid://dq1muwo84c6yv" path="res://assets/icons/foreign_logos/PatreonLogo.svg" id="4_0irlu"]
@@ -25,7 +25,7 @@ script = ExtResource("1_yjfkr")
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="Label" type="Label" parent="VBoxContainer"]
+[node name="TitleLabel" type="Label" parent="VBoxContainer"]
 layout_mode = 2
 text = "Links to donation platforms"
 horizontal_alignment = 1
@@ -88,7 +88,6 @@ size_flags_horizontal = 4
 size_flags_vertical = 8
 focus_mode = 0
 mouse_default_cursor_shape = 2
-text = "Close"
 
 [connection signal="mouse_exited" from="VBoxContainer/VBoxContainer/MarginContainer" to="." method="_on_link_mouse_exited"]
 [connection signal="mouse_entered" from="VBoxContainer/VBoxContainer/MarginContainer/HBoxContainer/GithubLink" to="." method="_on_github_link_mouse_entered"]

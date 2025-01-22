@@ -17,15 +17,15 @@ var surface := RenderingServer.canvas_item_create()  # Used for drawing the numb
 
 func _ready() -> void:
 	RenderingServer.canvas_item_set_parent(surface, ci)
-	SVG.resized.connect(queue_redraw)
-	Indications.zoom_changed.connect(change_zoom)
-	Indications.zoom_changed.connect(queue_redraw)
+	State.svg_resized.connect(queue_redraw)
+	State.zoom_changed.connect(change_zoom)
+	State.zoom_changed.connect(queue_redraw)
 
 func exit_tree() -> void:
 	RenderingServer.free_rid(surface)
 
 func change_zoom() -> void:
-	zoom = Indications.zoom
+	zoom = State.zoom
 
 
 func update() -> void:
@@ -37,7 +37,7 @@ func update() -> void:
 
 # Don't ask me to explain this.
 func _draw() -> void:
-	var grid_size: Vector2 = Indications.viewport_size * 1.0 / zoom
+	var grid_size: Vector2 = State.viewport_size * 1.0 / zoom
 	RenderingServer.canvas_item_add_line(ci,
 			Vector2(-position.x, 0), Vector2(-position.x, grid_size.y), axis_line_color)
 	RenderingServer.canvas_item_add_line(ci,

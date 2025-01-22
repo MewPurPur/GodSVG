@@ -5,6 +5,9 @@ const MAX_IMAGE_DIMENSION = 512
 @onready var checkerboard: TextureRect = $Checkerboard
 @onready var texture_preview: TextureRect = $Checkerboard/TexturePreview
 
+func setup_svg_without_dimensions(svg_text: String) -> void:
+	setup_svg(svg_text, SVGParser.text_to_root(svg_text, Formatter.new()).svg.get_size())
+
 func setup_svg(svg_text: String, dimensions: Vector2) -> void:
 	var scaling_factor := size.x / maxf(dimensions.x, dimensions.y)
 	var img := Image.new()
@@ -22,7 +25,7 @@ func setup_image(config: ImageExportData, full_scale := false) -> void:
 		final_image_config.format = config.format
 		final_image_config.lossy = config.lossy
 		final_image_config.quality = config.quality
-		var svg_size := SVG.root_element.get_size()
+		var svg_size := State.root_element.get_size()
 		final_image_config.upscale_amount = minf(config.upscale_amount,
 				MAX_IMAGE_DIMENSION / maxf(svg_size.x, svg_size.y))
 	

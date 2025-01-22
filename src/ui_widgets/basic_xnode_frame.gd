@@ -11,9 +11,9 @@ var surface := RenderingServer.canvas_item_create()  # Used for the drop indicat
 func _ready() -> void:
 	RenderingServer.canvas_item_set_parent(surface, get_canvas_item())
 	RenderingServer.canvas_item_set_z_index(surface, 1)
-	Indications.selection_changed.connect(determine_selection_highlight)
-	Indications.hover_changed.connect(determine_selection_highlight)
-	Indications.proposed_drop_changed.connect(queue_redraw)
+	State.selection_changed.connect(determine_selection_highlight)
+	State.hover_changed.connect(determine_selection_highlight)
+	State.proposed_drop_changed.connect(queue_redraw)
 	title_bar.draw.connect(_on_title_bar_draw)
 	mouse_exited.connect(_on_mouse_exited)
 	determine_selection_highlight()
@@ -27,11 +27,11 @@ func _exit_tree() -> void:
 
 # Logic for dragging.
 func _get_drag_data(_at_position: Vector2) -> Variant:
-	if Indications.selected_xids.is_empty():
+	if State.selected_xids.is_empty():
 		return null
 	
 	var data: Array[PackedInt32Array] = XIDUtils.filter_descendants(
-			Indications.selected_xids.duplicate(true))
+			State.selected_xids.duplicate(true))
 	set_drag_preview(XNodeChildrenBuilder.generate_drag_preview(data))
 	return data
 
@@ -43,51 +43,51 @@ func _notification(what: int) -> void:
 func _on_title_button_pressed() -> void:
 	# Update the selection immediately, since if this xnode editor is
 	# in a multi-selection, only the mouse button release would change the selection.
-	Indications.normal_select(xnode.xid)
+	State.normal_select(xnode.xid)
 	var viewport := get_viewport()
 	var rect := title_bar.get_global_rect()
-	HandlerGUI.popup_under_rect_center(Indications.get_selection_context(
-			HandlerGUI.popup_under_rect_center.bind(rect, viewport),
-			Indications.Context.LIST), rect, viewport)
+	HandlerGUI.popup_under_rect_center(State.get_selection_context(
+			HandlerGUI.popup_under_rect_center.bind(rect, viewport), State.Context.LIST),
+			rect, viewport)
 
 
 func _gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion and event.button_mask == 0:
-		if Indications.semi_hovered_xid != xnode.xid and\
-		not XIDUtils.is_parent(xnode.xid, Indications.hovered_xid):
-			Indications.set_hovered(xnode.xid)
+		if State.semi_hovered_xid != xnode.xid and\
+		not XIDUtils.is_parent(xnode.xid, State.hovered_xid):
+			State.set_hovered(xnode.xid)
 	elif event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_LEFT:
 			if event.is_pressed():
 				if event.shift_pressed:
-					Indications.shift_select(xnode.xid)
+					State.shift_select(xnode.xid)
 				elif event.is_command_or_control_pressed():
-					Indications.ctrl_select(xnode.xid)
-				elif not xnode.xid in Indications.selected_xids:
-					Indications.normal_select(xnode.xid)
+					State.ctrl_select(xnode.xid)
+				elif not xnode.xid in State.selected_xids:
+					State.normal_select(xnode.xid)
 			elif event.is_released() and not event.shift_pressed and\
 			not event.is_command_or_control_pressed() and\
-			Indications.selected_xids.size() > 1 and xnode.xid in Indications.selected_xids:
-				Indications.normal_select(xnode.xid)
+			State.selected_xids.size() > 1 and xnode.xid in State.selected_xids:
+				State.normal_select(xnode.xid)
 			accept_event()
 		elif event.button_index == MOUSE_BUTTON_RIGHT and event.is_pressed():
-			if not xnode.xid in Indications.selected_xids:
-				Indications.normal_select(xnode.xid)
+			if not xnode.xid in State.selected_xids:
+				State.normal_select(xnode.xid)
 			var viewport := get_viewport()
 			var popup_pos := viewport.get_mouse_position()
-			HandlerGUI.popup_under_pos(Indications.get_selection_context(
-					HandlerGUI.popup_under_pos.bind(popup_pos, viewport),
-					Indications.Context.LIST), popup_pos, viewport)
+			HandlerGUI.popup_under_pos(State.get_selection_context(
+					HandlerGUI.popup_under_pos.bind(popup_pos, viewport), State.Context.LIST),
+					popup_pos, viewport)
 			accept_event()
 
 func _on_mouse_exited() -> void:
-	Indications.remove_hovered(xnode.xid)
+	State.remove_hovered(xnode.xid)
 	determine_selection_highlight()
 
 
 func determine_selection_highlight() -> void:
-	var is_selected := xnode.xid in Indications.selected_xids
-	var is_hovered := Indications.hovered_xid == xnode.xid
+	var is_selected := xnode.xid in State.selected_xids
+	var is_hovered := State.hovered_xid == xnode.xid
 	
 	if is_selected:
 		if is_hovered:
@@ -118,21 +118,21 @@ func _draw() -> void:
 	RenderingServer.canvas_item_clear(surface)
 	
 	# There's only stuff to draw if there are drag-and-drop actions.
-	if Indications.proposed_drop_xid.is_empty():
+	if State.proposed_drop_xid.is_empty():
 		return
 	
-	for selected_xid in Indications.selected_xids:
+	for selected_xid in State.selected_xids:
 		if XIDUtils.is_parent_or_self(selected_xid, xnode.xid):
 			return
 	
 	var parent_xid := XIDUtils.get_parent_xid(xnode.xid)
 	# Draw the indicator of drag and drop actions.
 	var drop_sb := StyleBoxFlat.new()
-	var drop_xid := Indications.proposed_drop_xid
+	var drop_xid := State.proposed_drop_xid
 	
 	var drop_element := xnode.root.get_xnode(XIDUtils.get_parent_xid(drop_xid))
 	var are_all_children_valid := true
-	for xid in Indications.selected_xids:
+	for xid in State.selected_xids:
 		var selected_xnode := xnode.root.get_xnode(xid)
 		if not selected_xnode.is_element():
 			continue

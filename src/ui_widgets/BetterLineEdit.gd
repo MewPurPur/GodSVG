@@ -51,6 +51,7 @@ func _on_base_class_focus_entered() -> void:
 
 func _on_base_class_focus_exited() -> void:
 	first_click = false
+	deselect()
 	if Input.is_action_pressed("ui_cancel"):
 		text = text_before_focus
 		text_change_canceled.emit()

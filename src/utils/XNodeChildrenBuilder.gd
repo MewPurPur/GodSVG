@@ -20,16 +20,16 @@ static func generate_drag_preview(xids: Array[PackedInt32Array], ) -> Control:
 	var xnode_container := VBoxContainer.new()
 	for data_idx in range(xids.size() - 1, -1, -1):
 		var drag_xid := xids[data_idx]
-		var drag_xnode := SVG.root_element.get_xnode(drag_xid)
+		var drag_xnode := State.root_element.get_xnode(drag_xid)
 		if drag_xnode is Element:
 			var preview := ElementFrame.instantiate()
-			preview.element = SVG.root_element.get_xnode(drag_xid)
+			preview.element = State.root_element.get_xnode(drag_xid)
 			preview.custom_minimum_size.x = 360.0
 			preview.z_index = 2
 			xnode_container.add_child(preview)
 		elif drag_xnode is BasicXNode:
 			var preview := BasicXNodeFrame.instantiate()
-			preview.xnode = SVG.root_element.get_xnode(drag_xid)
+			preview.xnode = State.root_element.get_xnode(drag_xid)
 			preview.custom_minimum_size.x = 360.0
 			preview.z_index = 2
 			xnode_container.add_child(preview)

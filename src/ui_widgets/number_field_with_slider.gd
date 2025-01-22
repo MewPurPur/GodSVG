@@ -28,7 +28,7 @@ func set_value(new_value: String, save := false) -> void:
 	sync(new_value)
 	element.set_attribute(attribute_name, new_value)
 	if save:
-		SVG.queue_save()
+		State.queue_svg_save()
 
 func set_num(new_number: float, save := false) -> void:
 	set_value(element.get_attribute(attribute_name).num_to_text(new_number), save)

@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://c0x44loihhyyo"]
 
 [ext_resource type="FontFile" uid="uid://dc0w4sx0h0fui" path="res://assets/fonts/FontBold.ttf" id="1_3yrpq"]
-[ext_resource type="Script" path="res://src/ui_parts/alert_dialog.gd" id="1_qntyo"]
+[ext_resource type="Script" uid="uid://dlsd0uctldklk" path="res://src/ui_widgets/alert_dialog.gd" id="1_qntyo"]
 
 [node name="AlertDialog" type="PanelContainer"]
 anchors_preset = 8

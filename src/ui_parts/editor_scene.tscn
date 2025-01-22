@@ -1,12 +1,13 @@
-[gd_scene load_steps=6 format=3 uid="uid://ce6j54x27pom"]
+[gd_scene load_steps=7 format=3 uid="uid://ce6j54x27pom"]
 
 [ext_resource type="Script" uid="uid://b14gd6s3wl4us" path="res://src/ui_parts/editor_scene.gd" id="1_78d5d"]
 [ext_resource type="Texture2D" uid="uid://co75w07yqmcro" path="res://assets/icons/theme/SplitGrabber2.svg" id="2_852uu"]
-[ext_resource type="PackedScene" uid="uid://cr1fdlmbknnko" path="res://src/ui_parts/code_editor.tscn" id="3_5ris2"]
+[ext_resource type="PackedScene" uid="uid://cr1fdlmbknnko" path="res://src/ui_widgets/code_editor.tscn" id="3_5ris2"]
+[ext_resource type="PackedScene" uid="uid://cxmrx6t4jkhyj" path="res://src/ui_parts/global_actions.tscn" id="3_852uu"]
 [ext_resource type="PackedScene" uid="uid://ccynisiuyn5qn" path="res://src/ui_parts/inspector.tscn" id="4_podmt"]
 [ext_resource type="PackedScene" uid="uid://bvrncl7e6yn5b" path="res://src/ui_parts/display.tscn" id="5_4vrq4"]
 
-[node name="MainScene" type="HBoxContainer"]
+[node name="EditorScene" type="HBoxContainer"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -33,18 +34,29 @@ theme_override_constants/margin_top = 6
 theme_override_constants/margin_right = 0
 theme_override_constants/margin_bottom = 6
 
-[node name="MainContainer" type="VSplitContainer" parent="PanelContainer/HSplitContainer/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/HSplitContainer/MarginContainer"]
 layout_mode = 2
+
+[node name="GlobalActions" parent="PanelContainer/HSplitContainer/MarginContainer/VBoxContainer" instance=ExtResource("3_852uu")]
+layout_mode = 2
+
+[node name="MainContainer" type="VSplitContainer" parent="PanelContainer/HSplitContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
 theme_override_constants/separation = 10
 split_offset = -400
 
-[node name="CodeEditor" parent="PanelContainer/HSplitContainer/MarginContainer/MainContainer" instance=ExtResource("3_5ris2")]
+[node name="CodeEditor" parent="PanelContainer/HSplitContainer/MarginContainer/VBoxContainer/MainContainer" instance=ExtResource("3_5ris2")]
 layout_mode = 2
 
-[node name="Inspector" parent="PanelContainer/HSplitContainer/MarginContainer/MainContainer" instance=ExtResource("4_podmt")]
+[node name="Inspector" parent="PanelContainer/HSplitContainer/MarginContainer/VBoxContainer/MainContainer" instance=ExtResource("4_podmt")]
 layout_mode = 2
 
-[node name="Display" parent="PanelContainer/HSplitContainer" instance=ExtResource("5_4vrq4")]
+[node name="MarginContainer2" type="MarginContainer" parent="PanelContainer/HSplitContainer"]
+layout_mode = 2
+theme_override_constants/margin_top = 6
+
+[node name="Display" parent="PanelContainer/HSplitContainer/MarginContainer2" instance=ExtResource("5_4vrq4")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3

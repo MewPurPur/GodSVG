@@ -86,13 +86,13 @@ func _ready() -> void:
 	c.material = stroke_material
 	add_child(c, false, InternalMode.INTERNAL_MODE_BACK)
 	
-	SVG.any_attribute_changed.connect(sync_handles)
-	SVG.xnode_layout_changed.connect(queue_update_handles)
-	SVG.changed_unknown.connect(queue_update_handles)
-	Indications.selection_changed.connect(queue_redraw)
-	Indications.hover_changed.connect(queue_redraw)
-	Indications.zoom_changed.connect(queue_redraw)
-	Indications.handle_added.connect(_on_handle_added)
+	State.any_attribute_changed.connect(sync_handles)
+	State.xnode_layout_changed.connect(queue_update_handles)
+	State.svg_unknown_change.connect(queue_update_handles)
+	State.selection_changed.connect(queue_redraw)
+	State.hover_changed.connect(queue_redraw)
+	State.zoom_changed.connect(queue_redraw)
+	State.handle_added.connect(_on_handle_added)
 	queue_update_handles()
 
 
@@ -106,7 +106,7 @@ func update_handles() -> void:
 	
 	_handles_update_pending = false
 	handles.clear()
-	for element in SVG.root_element.get_all_element_descendants():
+	for element in State.root_element.get_all_element_descendants():
 		match element.name:
 			"circle":
 				handles.append(XYHandle.new(element, "cx", "cy"))
@@ -131,7 +131,7 @@ func update_handles() -> void:
 	queue_redraw()
 
 func sync_handles(xid: PackedInt32Array) -> void:
-	var element := SVG.root_element.get_xnode(xid)
+	var element := State.root_element.get_xnode(xid)
 	if not (element is ElementPath or element is ElementPolygon or element is ElementPolyline):
 		queue_redraw()
 		return
@@ -183,10 +183,10 @@ func _draw() -> void:
 	var hovered_multiline := PackedVector2Array()
 	var hovered_selected_multiline := PackedVector2Array()
 	
-	for element: Element in SVG.root_element.get_all_element_descendants():
+	for element: Element in State.root_element.get_all_element_descendants():
 		# Determine if the element is hovered/selected or has a hovered/selected parent.
-		var element_hovered := Indications.is_hovered(element.xid, -1, true)
-		var element_selected := Indications.is_selected(element.xid, -1, true)
+		var element_hovered := State.is_hovered(element.xid, -1, true)
+		var element_selected := State.is_selected(element.xid, -1, true)
 		
 		match element.name:
 			"circle":
@@ -334,10 +334,10 @@ func _draw() -> void:
 				var current_mode := Utils.InteractionType.NONE
 				for idx in range(1, point_list.size()):
 					current_mode = Utils.InteractionType.NONE
-					if Indications.is_hovered(element.xid, idx, true):
+					if State.is_hovered(element.xid, idx, true):
 						@warning_ignore("int_as_enum_without_cast")
 						current_mode += Utils.InteractionType.HOVERED
-					if Indications.is_selected(element.xid, idx, true):
+					if State.is_selected(element.xid, idx, true):
 						@warning_ignore("int_as_enum_without_cast")
 						current_mode += Utils.InteractionType.SELECTED
 					
@@ -355,10 +355,10 @@ func _draw() -> void:
 				
 				if element.name == "polygon" and point_list.size() > 2:
 					current_mode = Utils.InteractionType.NONE
-					if Indications.is_hovered(element.xid, 0, true):
+					if State.is_hovered(element.xid, 0, true):
 						@warning_ignore("int_as_enum_without_cast")
 						current_mode += Utils.InteractionType.HOVERED
-					if Indications.is_selected(element.xid, 0, true):
+					if State.is_selected(element.xid, 0, true):
 						@warning_ignore("int_as_enum_without_cast")
 						current_mode += Utils.InteractionType.SELECTED
 					
@@ -390,10 +390,10 @@ func _draw() -> void:
 					var relative := cmd.relative
 					
 					current_mode = Utils.InteractionType.NONE
-					if Indications.is_hovered(element.xid, cmd_idx, true):
+					if State.is_hovered(element.xid, cmd_idx, true):
 						@warning_ignore("int_as_enum_without_cast")
 						current_mode += Utils.InteractionType.HOVERED
-					if Indications.is_selected(element.xid, cmd_idx, true):
+					if State.is_selected(element.xid, cmd_idx, true):
 						@warning_ignore("int_as_enum_without_cast")
 						current_mode += Utils.InteractionType.SELECTED
 					
@@ -580,9 +580,9 @@ func _draw() -> void:
 							hovered_selected_polylines.append(points)
 							hovered_selected_multiline += tangent_points
 	
-	draw_set_transform_matrix(SVG.root_element.canvas_transform)
+	draw_set_transform_matrix(State.root_element.canvas_transform)
 	RenderingServer.canvas_item_set_transform(surface, Transform2D(0.0,
-			Vector2(1, 1) / Indications.zoom, 0.0, Vector2.ZERO))
+			Vector2(1, 1) / State.zoom, 0.0, Vector2.ZERO))
 	
 	# First gather all handles in 4 categories, to then draw them in the right order.
 	var normal_handles: Array[Handle] = []
@@ -595,8 +595,8 @@ func _draw() -> void:
 			inner_idx = handle.command_index
 		elif handle is PolyHandle:
 			inner_idx = handle.point_index
-		var is_hovered := Indications.is_hovered(handle.element.xid, inner_idx, true)
-		var is_selected := Indications.is_selected(handle.element.xid, inner_idx, true)
+		var is_hovered := State.is_hovered(handle.element.xid, inner_idx, true)
+		var is_selected := State.is_selected(handle.element.xid, inner_idx, true)
 		
 		if is_hovered and is_selected:
 			hovered_selected_handles.append(handle)
@@ -620,15 +620,15 @@ func _draw() -> void:
 			hovered_selected_multiline, hovered_selected_handles,
 			hovered_selected_handle_textures)
 	
-	for xid in Indications.selected_xids:
-		var xnode := SVG.root_element.get_xnode(xid)
+	for xid in State.selected_xids:
+		var xnode := State.root_element.get_xnode(xid)
 		if xnode.is_element() and DB.is_attribute_recognized(xnode.name, "transform"):
 			var bounding_box: Rect2 = xnode.get_bounding_box()
 			if bounding_box.has_area():
 				RenderingServer.canvas_item_add_set_transform(selections_surface,
-						xnode.get_transform() * SVG.root_element.canvas_transform)
+						xnode.get_transform() * State.root_element.canvas_transform)
 				RenderingServer.canvas_item_add_rect(selections_surface,
-						bounding_box.grow(4.0 / Indications.zoom), Color.WHITE)
+						bounding_box.grow(4.0 / State.zoom), Color.WHITE)
 
 func draw_objects_of_type(color: Color, polylines: Array[PackedVector2Array],
 multiline: PackedVector2Array, handles_array: Array[Handle],
@@ -638,12 +638,12 @@ handle_texture_dictionary: Dictionary[Handle.Display, Texture2D]) -> void:
 		color_array.resize(polyline.size())
 		color_array.fill(color)
 		for idx in polyline.size():
-			polyline[idx] = SVG.root_element.canvas_to_world(polyline[idx]) * Indications.zoom
+			polyline[idx] = State.root_element.canvas_to_world(polyline[idx]) * State.zoom
 		RenderingServer.canvas_item_add_polyline(surface, polyline,
 				color_array, CONTOUR_WIDTH, true)
 	if not multiline.is_empty():
 		for idx in multiline.size():
-			multiline[idx] = SVG.root_element.canvas_to_world(multiline[idx]) * Indications.zoom
+			multiline[idx] = State.root_element.canvas_to_world(multiline[idx]) * State.zoom
 		var color_array := PackedColorArray()
 		color_array.resize(int(multiline.size() / 2.0))
 		color_array.fill(Color(color, TANGENT_ALPHA))
@@ -651,8 +651,8 @@ handle_texture_dictionary: Dictionary[Handle.Display, Texture2D]) -> void:
 				color_array, TANGENT_WIDTH, true)
 	for handle in handles_array:
 		var texture := handle_texture_dictionary[handle.display_mode]
-		texture.draw(surface, SVG.root_element.canvas_to_world(
-				handle.transform * handle.pos) * Indications.zoom - texture.get_size() / 2)
+		texture.draw(surface, State.root_element.canvas_to_world(
+				handle.transform * handle.pos) * State.zoom - texture.get_size() / 2)
 
 
 var dragged_handle: Handle = null
@@ -663,8 +663,7 @@ var should_deselect_all := false
 func _unhandled_input(event: InputEvent) -> void:
 	if not visible:
 		hovered_handle = null
-		Indications.clear_hovered()
-		Indications.clear_inner_hovered()
+		State.clear_all_hovered()
 		return
 	
 	# Set the nearest handle as hovered, if any handles are within range.
@@ -672,20 +671,19 @@ func _unhandled_input(event: InputEvent) -> void:
 	event.button_mask == 0) or (event is InputEventMouseButton and\
 	(event.button_index in [MOUSE_BUTTON_LEFT, MOUSE_BUTTON_RIGHT, MOUSE_BUTTON_WHEEL_DOWN,
 	MOUSE_BUTTON_WHEEL_UP, MOUSE_BUTTON_WHEEL_LEFT, MOUSE_BUTTON_WHEEL_RIGHT])):
-		var nearest_handle := find_nearest_handle(event.position / Indications.zoom +\
+		var nearest_handle := find_nearest_handle(event.position / State.zoom +\
 				get_parent().view.position)
 		if is_instance_valid(nearest_handle):
 			hovered_handle = nearest_handle
 			if hovered_handle is PathHandle:
-				Indications.set_hovered(hovered_handle.element.xid, hovered_handle.command_index)
+				State.set_hovered(hovered_handle.element.xid, hovered_handle.command_index)
 			elif hovered_handle is PolyHandle:
-				Indications.set_hovered(hovered_handle.element.xid, hovered_handle.point_index)
+				State.set_hovered(hovered_handle.element.xid, hovered_handle.point_index)
 			else:
-				Indications.set_hovered(hovered_handle.element.xid)
+				State.set_hovered(hovered_handle.element.xid)
 		else:
 			hovered_handle = null
-			Indications.clear_hovered()
-			Indications.clear_inner_hovered()
+			State.clear_all_hovered()
 	
 	if event is InputEventMouseMotion:
 		# Allow moving view while dragging handle.
@@ -698,7 +696,7 @@ func _unhandled_input(event: InputEvent) -> void:
 			var event_pos := get_event_pos(event)
 			var new_pos := Utils64Bit.transform_vector_mult(
 					Utils64Bit.get_transform_affine_inverse(dragged_handle.precise_transform),
-					SVG.root_element.world_to_canvas_64_bit(event_pos))
+					State.root_element.world_to_canvas_64_bit(event_pos))
 			dragged_handle.set_pos(new_pos)
 			was_handle_moved = true
 			accept_event()
@@ -721,37 +719,37 @@ func _unhandled_input(event: InputEvent) -> void:
 					if dragged_handle is PathHandle:
 						var subpath_range: Vector2i =\
 								dragged_handle.element.get_attribute("d").get_subpath(inner_idx)
-						Indications.normal_select(dragged_xid, subpath_range.x)
-						Indications.shift_select(dragged_xid, subpath_range.y)
+						State.normal_select(dragged_xid, subpath_range.x)
+						State.shift_select(dragged_xid, subpath_range.y)
 					elif dragged_handle is PolyHandle:
-						Indications.normal_select(dragged_xid, 0)
-						Indications.shift_select(dragged_xid,
+						State.normal_select(dragged_xid, 0)
+						State.shift_select(dragged_xid,
 								dragged_handle.element.get_attribute("points").get_list_size() / 2)
 				elif event.is_command_or_control_pressed():
-					Indications.ctrl_select(dragged_xid, inner_idx)
+					State.ctrl_select(dragged_xid, inner_idx)
 				elif event.shift_pressed:
-					Indications.shift_select(dragged_xid, inner_idx)
+					State.shift_select(dragged_xid, inner_idx)
 				else:
-					Indications.normal_select(dragged_xid, inner_idx)
+					State.normal_select(dragged_xid, inner_idx)
 			elif is_instance_valid(dragged_handle) and event.is_released():
 				if was_handle_moved:
 					var new_pos := Utils64Bit.transform_vector_mult(
 							Utils64Bit.get_transform_affine_inverse(dragged_handle.precise_transform),
-							SVG.root_element.world_to_canvas_64_bit(event_pos))
+							State.root_element.world_to_canvas_64_bit(event_pos))
 					dragged_handle.set_pos(new_pos)
-					SVG.queue_save()
+					State.queue_svg_save()
 					was_handle_moved = false
 				dragged_handle = null
 			elif !is_instance_valid(hovered_handle) and event.is_pressed():
 				should_deselect_all = true
 			elif !is_instance_valid(hovered_handle) and event.is_released() and should_deselect_all:
 				dragged_handle = null
-				Indications.clear_all_selections()
+				State.clear_all_selections()
 		elif event.button_index == MOUSE_BUTTON_RIGHT and event.is_pressed():
 			var vp := get_viewport()
 			var popup_pos := vp.get_mouse_position()
 			if !is_instance_valid(hovered_handle):
-				Indications.clear_all_selections()
+				State.clear_all_selections()
 				var vec2_pos := Vector2(event_pos[0], event_pos[1])
 				HandlerGUI.popup_under_pos(create_element_context(vec2_pos), popup_pos, vp)
 			else:
@@ -762,22 +760,22 @@ func _unhandled_input(event: InputEvent) -> void:
 				if hovered_handle is PolyHandle:
 					inner_idx = hovered_handle.point_index
 				
-				if (Indications.semi_selected_xid != hovered_xid or\
-				not inner_idx in Indications.inner_selections) and\
-				not hovered_xid in Indications.selected_xids:
-					Indications.normal_select(hovered_xid, inner_idx)
-				HandlerGUI.popup_under_pos(Indications.get_selection_context(
+				if (State.semi_selected_xid != hovered_xid or\
+				not inner_idx in State.inner_selections) and\
+				not hovered_xid in State.selected_xids:
+					State.normal_select(hovered_xid, inner_idx)
+				HandlerGUI.popup_under_pos(State.get_selection_context(
 						HandlerGUI.popup_under_pos.bind(popup_pos, vp),
-						Indications.Context.VIEWPORT), popup_pos, vp)
+						State.Context.VIEWPORT), popup_pos, vp)
 
 func find_nearest_handle(event_pos: Vector2) -> Handle:
 	var nearest_handle: Handle = null
 	var nearest_dist_squared := DEFAULT_GRAB_DISTANCE_SQUARED *\
 			(Configs.savedata.handle_size * Configs.savedata.handle_size) /\
-			(Indications.zoom * Indications.zoom)
+			(State.zoom * State.zoom)
 	for handle in handles:
 		var dist_to_handle_squared := event_pos.distance_squared_to(
-					SVG.root_element.canvas_to_world(handle.transform * handle.pos))
+					State.root_element.canvas_to_world(handle.transform * handle.pos))
 		if dist_to_handle_squared < nearest_dist_squared:
 			nearest_dist_squared = dist_to_handle_squared
 			nearest_handle = handle
@@ -785,10 +783,10 @@ func find_nearest_handle(event_pos: Vector2) -> Handle:
 
 # Two 64-bit coordinates instead of a Vector2.
 func get_event_pos(event: InputEvent) -> PackedFloat64Array:
-	return apply_snap(event.position / Indications.zoom + get_parent().view.position)
+	return apply_snap(event.position / State.zoom + get_parent().view.position)
 
 func apply_snap(pos: Vector2) -> PackedFloat64Array:
-	var precision_snap := 0.1 ** maxi(ceili(-log(1.0 / Indications.zoom) / log(10)), 0)
+	var precision_snap := 0.1 ** maxi(ceili(-log(1.0 / State.zoom) / log(10)), 0)
 	var configured_snap := absf(Configs.savedata.snap)
 	var snap_size: float  # To be used for the snap.
 	
@@ -805,28 +803,28 @@ func apply_snap(pos: Vector2) -> PackedFloat64Array:
 
 func _on_handle_added() -> void:
 	if not get_viewport_rect().has_point(get_viewport().get_mouse_position()):
-		if not Indications.semi_selected_xid.is_empty():
-			SVG.root_element.get_xnode(Indications.semi_selected_xid).get_attribute("d").\
+		if not State.semi_selected_xid.is_empty():
+			State.root_element.get_xnode(State.semi_selected_xid).get_attribute("d").\
 					sync_after_commands_change()
-			SVG.queue_save()
+			State.queue_svg_save()
 		return
 	
 	update_handles()
-	if SVG.root_element.get_xnode(Indications.semi_selected_xid).get_attribute("d").\
-	get_commands()[Indications.inner_selections[0]].command_char in "Zz":
-		SVG.queue_save()
+	if State.root_element.get_xnode(State.semi_selected_xid).get_attribute("d").\
+	get_commands()[State.inner_selections[0]].command_char in "Zz":
+		State.queue_svg_save()
 		return
 	
 	for handle in handles:
-		if handle is PathHandle and handle.element.xid == Indications.semi_selected_xid and\
-		handle.command_index == Indications.inner_selections[0]:
-			Indications.set_hovered(handle.element.xid, handle.command_index)
+		if handle is PathHandle and handle.element.xid == State.semi_selected_xid and\
+		handle.command_index == State.inner_selections[0]:
+			State.set_hovered(handle.element.xid, handle.command_index)
 			dragged_handle = handle
 			# Move the handle that's being dragged.
 			var mouse_pos := apply_snap(get_global_mouse_position())
 			var new_pos := Utils64Bit.transform_vector_mult(
 					Utils64Bit.get_transform_affine_inverse(dragged_handle.precise_transform),
-					SVG.root_element.world_to_canvas_64_bit(mouse_pos))
+					State.root_element.world_to_canvas_64_bit(mouse_pos))
 			dragged_handle.set_pos(new_pos)
 			was_handle_moved = true
 			return
@@ -846,6 +844,6 @@ func create_element_context(pos: Vector2) -> ContextPopup:
 	return element_context
 
 func add_shape_at_pos(element_name: String, pos: Vector2) -> void:
-	SVG.root_element.add_xnode(DB.element_with_setup(element_name, apply_snap(pos)),
-			PackedInt32Array([SVG.root_element.get_child_count()]))
-	SVG.queue_save()
+	State.root_element.add_xnode(DB.element_with_setup(element_name, apply_snap(pos)),
+			PackedInt32Array([State.root_element.get_child_count()]))
+	State.queue_svg_save()

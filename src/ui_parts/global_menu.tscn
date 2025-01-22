@@ -1,6 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://dqrvfi76ak512"]
-
-[ext_resource type="Script" path="res://src/ui_parts/global_menu.gd" id="1_rns86"]
-
-[node name="GlobalMenu" type="Node"]
-script = ExtResource("1_rns86")

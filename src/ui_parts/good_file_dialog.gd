@@ -1,9 +1,9 @@
 # A fallback file dialog, always used if the native file dialog is not available.
 extends PanelContainer
 
-const ChooseNameDialog = preload("res://src/ui_parts/choose_name_dialog.tscn")
-const ConfirmDialog = preload("res://src/ui_parts/confirm_dialog.tscn")
-const AlertDialog = preload("res://src/ui_parts/alert_dialog.tscn")
+const ChooseNameDialog = preload("res://src/ui_widgets/choose_name_dialog.tscn")
+const ConfirmDialog = preload("res://src/ui_widgets/confirm_dialog.tscn")
+const AlertDialog = preload("res://src/ui_widgets/alert_dialog.tscn")
 
 signal file_selected(path: String)
 
@@ -245,8 +245,9 @@ func _setup_file_images() -> void:
 					if !is_instance_valid(img) or img.is_empty():
 						file_list.set_item_icon(item_idx, broken_file_icon)
 					else:
-						img.load_svg_from_buffer(svg_buffer,
-								item_height / maxf(img.get_width(), img.get_height()))
+						var factor := item_height / maxf(img.get_width(), img.get_height())
+						if not is_equal_approx(factor, 1.0):
+							img.load_svg_from_buffer(svg_buffer, factor)
 						file_list.set_item_icon(item_idx, ImageTexture.create_from_image(img))
 				_:
 					var img := Image.load_from_file(current_dir.path_join(file))
@@ -441,11 +442,11 @@ func get_drive_icon(path: String) -> Texture2D:
 	else:
 		return folder_icon
 
-func _input(event: InputEvent) -> void:
+func _unhandled_input(event: InputEvent) -> void:
 	if ShortcutUtils.is_action_pressed(event, "find"):
 		search_button.button_pressed = true
 		accept_event()
-	elif Input.is_action_pressed("ui_accept"):
+	elif event.is_action_pressed("ui_accept"):
 		var selected_item_indices := file_list.get_selected_items()
 		if not selected_item_indices.is_empty():
 			call_activation_callback(file_list.get_item_metadata(selected_item_indices[0]))

@@ -16,7 +16,7 @@ const _icons_dict: Dictionary[String, Texture2D] = {
 }
 
 var attribute_ref: AttributeTransformList
-var UR := UndoRedo.new()
+var undo_redo := UndoRedo.new()
 
 @onready var x1_edit: NumberEditType = %FinalMatrix/X1
 @onready var x2_edit: NumberEditType = %FinalMatrix/X2
@@ -36,8 +36,8 @@ func _ready() -> void:
 	update_translation()
 
 func _exit_tree() -> void:
-	SVG.queue_save()
-	UR.free()
+	State.queue_svg_save()
+	undo_redo.free()
 
 func update_translation() -> void:
 	apply_matrix.tooltip_text = Translator.translate("Apply the matrix")
@@ -105,40 +105,40 @@ func create_mini_number_field(idx: int, property: String) -> BetterLineEdit:
 
 
 func update_value(new_value: float, idx: int, property: String) -> void:
-	UR.create_action("")
-	UR.add_do_method(attribute_ref.set_transform_property.bind(idx, property, new_value))
-	UR.add_do_method(rebuild)
-	UR.add_undo_method(attribute_ref.set_transform_list.bind(get_transform_list()))
-	UR.add_undo_method(rebuild)
-	UR.commit_action()
+	undo_redo.create_action("")
+	undo_redo.add_do_method(attribute_ref.set_transform_property.bind(idx, property, new_value))
+	undo_redo.add_do_method(rebuild)
+	undo_redo.add_undo_method(attribute_ref.set_transform_list.bind(get_transform_list()))
+	undo_redo.add_undo_method(rebuild)
+	undo_redo.commit_action()
 
 func insert_transform(idx: int, transform_type: String) -> void:
-	UR.create_action("")
-	UR.add_do_method(attribute_ref.insert_transform.bind(idx, transform_type))
-	UR.add_do_method(rebuild)
-	UR.add_undo_method(attribute_ref.set_transform_list.bind(get_transform_list()))
-	UR.add_undo_method(rebuild)
-	UR.commit_action()
+	undo_redo.create_action("")
+	undo_redo.add_do_method(attribute_ref.insert_transform.bind(idx, transform_type))
+	undo_redo.add_do_method(rebuild)
+	undo_redo.add_undo_method(attribute_ref.set_transform_list.bind(get_transform_list()))
+	undo_redo.add_undo_method(rebuild)
+	undo_redo.commit_action()
 
 func delete_transform(idx: int) -> void:
-	UR.create_action("")
-	UR.add_do_method(attribute_ref.delete_transform.bind(idx))
-	UR.add_do_method(rebuild)
-	UR.add_undo_method(attribute_ref.set_transform_list.bind(get_transform_list()))
-	UR.add_undo_method(rebuild)
-	UR.commit_action()
+	undo_redo.create_action("")
+	undo_redo.add_do_method(attribute_ref.delete_transform.bind(idx))
+	undo_redo.add_do_method(rebuild)
+	undo_redo.add_undo_method(attribute_ref.set_transform_list.bind(get_transform_list()))
+	undo_redo.add_undo_method(rebuild)
+	undo_redo.commit_action()
 
 func _on_apply_matrix_pressed() -> void:
 	var final_transform := attribute_ref.get_final_precise_transform()
-	UR.create_action("")
-	UR.add_do_method(attribute_ref.set_transform_list.bind([
+	undo_redo.create_action("")
+	undo_redo.add_do_method(attribute_ref.set_transform_list.bind([
 			Transform.TransformMatrix.new(final_transform[0], final_transform[1],
 			final_transform[2], final_transform[3], final_transform[4],
 			final_transform[5])] as Array[Transform]))
-	UR.add_do_method(rebuild)
-	UR.add_undo_method(attribute_ref.set_transform_list.bind(get_transform_list()))
-	UR.add_undo_method(rebuild)
-	UR.commit_action()
+	undo_redo.add_do_method(rebuild)
+	undo_redo.add_undo_method(attribute_ref.set_transform_list.bind(get_transform_list()))
+	undo_redo.add_undo_method(rebuild)
+	undo_redo.commit_action()
 
 func update_final_transform() -> void:
 	var final_transform := attribute_ref.get_final_precise_transform()
@@ -183,11 +183,11 @@ func popup_new_transform_context(idx: int, control: Control) -> void:
 
 func _unhandled_input(event: InputEvent) -> void:
 	if ShortcutUtils.is_action_pressed(event, "redo"):
-		if UR.has_redo():
-			UR.redo()
+		if undo_redo.has_redo():
+			undo_redo.redo()
 	elif ShortcutUtils.is_action_pressed(event, "undo"):
-		if UR.has_undo():
-			UR.undo()
+		if undo_redo.has_undo():
+			undo_redo.undo()
 
 
 # So I have to rebuild this in its entirety to keep the references safe or something...

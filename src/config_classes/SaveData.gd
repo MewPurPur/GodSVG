@@ -65,8 +65,6 @@ const CURRENT_VERSION = 1
 
 @export var language := "":
 	set(new_value):
-		if not language in TranslationServer.get_loaded_locales():
-			new_value = "en"
 		if language != new_value:
 			language = new_value
 			emit_changed()
@@ -224,7 +222,7 @@ const CURRENT_VERSION = 1
 		if use_filename_for_window_title != new_value:
 			use_filename_for_window_title = new_value
 			emit_changed()
-			Configs.update_window_title.call_deferred()
+			HandlerGUI.update_window_title.call_deferred()
 
 const HANDLE_SIZE_MIN = 0.5
 const HANDLE_SIZE_MAX = 4.0
@@ -298,14 +296,6 @@ const MAX_SNAP = 16384
 			file_dialog_show_hidden = new_value
 			emit_changed()
 
-@export var current_file_path := "":
-	set(new_value):
-		if current_file_path != new_value:
-			current_file_path = new_value
-			emit_changed()
-			Configs.update_window_title.call_deferred()
-			Configs.file_path_changed.emit()
-
 @export var shortcut_panel_layout := ShortcutPanel.Layout.HORIZONTAL_STRIP:
 	set(new_value):
 		# Validation
@@ -335,7 +325,7 @@ func _validate_recent_dirs() -> void:
 	# Remove non-existent dirs.
 	for i in range(unique_dirs.size() - 1, -1, -1):
 		if not DirAccess.dir_exists_absolute(unique_dirs[i]):
-			_recent_dirs.remove_at(i)
+			unique_dirs.remove_at(i)
 	# Remove dirs above the maximum.
 	if unique_dirs.size() > MAX_RECENT_DIRS:
 		unique_dirs.resize(MAX_RECENT_DIRS)
@@ -344,13 +334,6 @@ func _validate_recent_dirs() -> void:
 func get_recent_dirs() -> PackedStringArray:
 	_validate_recent_dirs()
 	return _recent_dirs
-
-func get_last_dir() -> String:
-	_validate_recent_dirs()
-	if _recent_dirs.is_empty() or not DirAccess.dir_exists_absolute(_recent_dirs[0]):
-		return OS.get_system_dir(OS.SYSTEM_DIR_PICTURES)
-	else:
-		return _recent_dirs[0]
 
 func add_recent_dir(dir: String) -> void:
 	_validate_recent_dirs()
@@ -368,7 +351,10 @@ func add_recent_dir(dir: String) -> void:
 		if _shortcuts != new_value:
 			_shortcuts = new_value
 			for action in _shortcuts:
-				_action_sync_inputmap(action)
+				if InputMap.has_action(action):
+					_action_sync_inputmap(action)
+				else:
+					_shortcuts.erase(action)
 			update_shortcut_validities()
 			emit_changed()
 			Configs.shortcuts_changed.emit()
@@ -480,6 +466,7 @@ func replace_palette(idx: int, new_palette: Palette) -> void:
 	if _palettes.size() <= idx:
 		return
 	_palettes[idx] = new_palette
+	new_palette.changed.connect(emit_changed)
 	_update_palette_validities()
 	emit_changed()
 
@@ -513,7 +500,7 @@ func set_palettes(new_palettes: Array[Palette]) -> void:
 			editor_formatter = new_value
 			emit_changed()
 			editor_formatter.changed.connect(emit_changed)
-			editor_formatter.changed_deferred.connect(SVG.sync_elements)
+			editor_formatter.changed_deferred.connect(State.sync_elements)
 
 @export var export_formatter: Formatter = null:
 	set(new_value):
@@ -562,8 +549,192 @@ func erase_shortcut_panel_slot(slot: int) -> void:
 	Configs.shortcut_panel_changed.emit()
 
 
+const MAX_TABS = 5
+@export var _tabs: Array[TabData] = []:
+	set(new_value):
+		# Validation
+		var used_ids := PackedInt32Array()
+		for idx in range(new_value.size() - 1, -1, -1):
+			var tab = new_value[idx]
+			if not is_instance_valid(tab) or tab.id in used_ids:
+				new_value.remove_at(idx)
+			else:
+				used_ids.append(tab.id)
+		
+		if new_value.size() > MAX_TABS:
+			new_value.resize(MAX_TABS)
+		# Main part
+		if _tabs != new_value:
+			_tabs = new_value
+			if _active_tab_index >= _tabs.size():
+				set_active_tab_index(0)
+			
+			for tab in _tabs:
+				tab.changed.connect(emit_changed)
+				tab.file_path_changed.connect(_on_tab_file_path_changed.bind(tab.id))
+			emit_changed()
+			if _tabs.is_empty():
+				_add_new_tab()
+
+@export var _active_tab_index := 0:
+	set(new_value):
+		# Validation
+		if _tabs.is_empty():
+			_add_new_tab()
+		
+		new_value = clampi(new_value, 0, _tabs.size() - 1)
+		if is_nan(new_value):
+			new_value = 0
+		# Main part
+		if _active_tab_index != new_value:
+			_active_tab_index = new_value
+			emit_changed()
+
+func _on_tab_file_path_changed(id: int):
+	if id == _tabs[_active_tab_index].id:
+		Configs.active_tab_file_path_changed.emit()
+
+func has_tabs() -> bool:
+	return not _tabs.is_empty()
+
+func get_tab_count() -> int:
+	return _tabs.size()
+
+func get_tab(idx: int) -> TabData:
+	return _tabs[idx] if (idx < _tabs.size() and idx >= 0) else null
+
+func get_active_tab() -> TabData:
+	return get_tab(_active_tab_index)
+
+func get_tabs() -> Array[TabData]:
+	return _tabs
+
+
+func get_active_tab_index() -> int:
+	return _active_tab_index
+
+func set_active_tab_index(new_index: int) -> void:
+	if _active_tab_index == new_index:
+		return
+	
+	if new_index >= _tabs.size() or new_index < 0:
+		return
+	
+	if _active_tab_index >= 0 and _active_tab_index < _tabs.size():
+		_tabs[_active_tab_index].deactivate()
+	var old_id := _tabs[_active_tab_index].id
+	_active_tab_index = new_index
+	_tabs[_active_tab_index].activate()
+	if old_id != _tabs[_active_tab_index].id:
+		Configs.active_tab_changed.emit()
+
+func _add_new_tab() -> void:
+	if _tabs.size() >= MAX_TABS:
+		return
+	
+	var used_ids := PackedInt32Array()
+	for tab in _tabs:
+		used_ids.append(tab.id)
+	var new_id := 1
+	while true:
+		if not new_id in used_ids:
+			var new_tab := TabData.new(new_id)
+			new_tab.is_new = true
+			new_tab.changed.connect(emit_changed)
+			new_tab.file_path_changed.connect(_on_tab_file_path_changed.bind(new_id))
+			_tabs.append(new_tab)
+			return
+		new_id += 1
+
+func add_empty_tab() -> void:
+	_add_new_tab()
+	emit_changed()
+	Configs.tabs_changed.emit()
+	set_active_tab_index(_tabs.size() - 1)
+
+# Adds a new path with the given path, unless something with the path already exists.
+func add_tab_with_path(new_file_path: String) -> void:
+	for idx in _tabs.size():
+		if _tabs[idx].svg_file_path == new_file_path:
+			set_active_tab_index(idx)
+			return
+	_add_new_tab()
+	_tabs[-1].svg_file_path = new_file_path
+	emit_changed()
+	Configs.tabs_changed.emit()
+	set_active_tab_index(_tabs.size() - 1)
+
+func remove_tabs(indices: PackedInt32Array) -> void:
+	# Validate the passed indices.
+	var indices_to_remove := PackedInt32Array()
+	for idx in indices:
+		if idx >= 0 and idx < _tabs.size() and not idx in indices_to_remove:
+			indices_to_remove.append(idx)
+	
+	if indices_to_remove.is_empty():
+		return
+	
+	var new_active_tab_index := _active_tab_index
+	# For each index, remove the tab. If there are no tabs in the end, add one.
+	for idx in range(_tabs.size() - 1, -1, -1):
+		if idx in indices_to_remove:
+			_tabs.remove_at(idx)
+			if idx < _active_tab_index:
+				new_active_tab_index -= 1
+	
+	# Clear unnecessary files.
+	var used_file_paths := PackedStringArray()
+	for tab in _tabs:
+		used_file_paths.append(tab.get_edited_file_path())
+	
+	for file_name in DirAccess.get_files_at(TabData.EDITED_FILES_DIR):
+		var full_path := TabData.EDITED_FILES_DIR.path_join(file_name)
+		if not full_path in used_file_paths:
+			DirAccess.remove_absolute(TabData.EDITED_FILES_DIR.path_join(file_name))
+	
+	if _tabs.is_empty():
+		_add_new_tab()
+	
+	emit_changed()
+	Configs.tabs_changed.emit()
+	var has_tab_changed := (_active_tab_index in indices_to_remove)
+	_active_tab_index = clampi(new_active_tab_index, 0, _tabs.size() - 1)
+	_tabs[_active_tab_index].activate()
+	if has_tab_changed:
+		Configs.active_tab_changed.emit()
+
+func remove_active_tab() -> void:
+	remove_tabs(PackedInt32Array([_active_tab_index]))
+
+func move_tab(old_idx: int, new_idx: int) -> void:
+	if old_idx == new_idx or old_idx < 0 or old_idx > get_tab_count() or\
+	new_idx < 0 or new_idx > get_tab_count():
+		return
+	
+	var tab: TabData = _tabs.pop_at(old_idx)
+	var adjusted_index := (new_idx - 1) if (old_idx < new_idx) else new_idx
+	_tabs.insert(adjusted_index, tab)
+	emit_changed()
+	set_active_tab_index(adjusted_index)
+	Configs.tabs_changed.emit()
+
+
 # Utility
 
 func get_validity_color(error_condition: bool, warning_condition := false) -> Color:
 	return basic_color_error if error_condition else\
 			basic_color_warning if warning_condition else basic_color_valid
+
+func get_active_tab_dir() -> String:
+	var tab := get_active_tab()
+	if tab.svg_file_path.is_empty():
+		return get_last_dir()
+	else:
+		return tab.svg_file_path.get_base_dir()
+
+func get_last_dir() -> String:
+	_validate_recent_dirs()
+	if _recent_dirs.is_empty() or not DirAccess.dir_exists_absolute(_recent_dirs[0]):
+		return OS.get_system_dir(OS.SYSTEM_DIR_PICTURES)
+	else:
+		return _recent_dirs[0]

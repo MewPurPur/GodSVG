@@ -4,6 +4,7 @@ extends PanelContainer
 @onready var close_button: Button = $VBoxContainer/CloseButton
 
 func _ready() -> void:
+	close_button.text = Translator.translate("Cancel")
 	close_button.pressed.connect(queue_free)
 	reset_clarifications()
 

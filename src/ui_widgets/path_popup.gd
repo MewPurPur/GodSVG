@@ -9,6 +9,7 @@ signal path_command_picked(new_command: String)
 @onready var top_margin: MarginContainer = $VBoxContainer/MarginContainer
 
 func _ready() -> void:
+	relative_toggle.text = Translator.translate("Relative")
 	relative_toggle.toggled.connect(_on_relative_toggle_toggled)
 	relative_toggle.button_pressed = Configs.savedata.path_command_relative
 	for command_button in command_container.get_children():

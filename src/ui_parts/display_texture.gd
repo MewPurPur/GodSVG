@@ -10,14 +10,14 @@ var rasterized := false:
 	set(new_value):
 		if new_value != rasterized:
 			rasterized = new_value
-			if Indications.zoom != 1.0:
+			if State.zoom != 1.0:
 				queue_update()
 
 var _update_pending := false
 
 func _ready() -> void:
-	SVG.changed.connect(queue_update)
-	Indications.zoom_changed.connect(queue_update)
+	State.svg_changed.connect(queue_update)
+	State.zoom_changed.connect(queue_update)
 	queue_update()
 
 
@@ -31,7 +31,7 @@ func _update() -> void:
 	
 	_update_pending = false
 	
-	var image_zoom := 1.0 if rasterized and Indications.zoom > 1.0 else Indications.zoom
+	var image_zoom := 1.0 if rasterized and State.zoom > 1.0 else State.zoom
 	var pixel_size := 1 / image_zoom
 	
 	# Translate to canvas coords.
@@ -40,12 +40,12 @@ func _update() -> void:
 	display_rect.position.x = maxf(display_rect.position.x, 0.0)
 	display_rect.position.y = maxf(display_rect.position.y, 0.0)
 	display_rect.size = display_rect.size.snapped(Vector2(pixel_size, pixel_size))
-	display_rect.end.x = minf(display_rect.end.x, ceili(SVG.root_element.width))
-	display_rect.end.y = minf(display_rect.end.y, ceili(SVG.root_element.height))
+	display_rect.end.x = minf(display_rect.end.x, ceili(State.root_element.width))
+	display_rect.end.y = minf(display_rect.end.y, ceili(State.root_element.height))
 	
-	var svg_text := SVGParser.root_cutout_to_text(SVG.root_element, display_rect.size.x,
-			display_rect.size.y, Rect2(SVG.root_element.world_to_canvas(display_rect.position),
-			display_rect.size / SVG.root_element.canvas_transform.get_scale()))
+	var svg_text := SVGParser.root_cutout_to_text(State.root_element, display_rect.size.x,
+			display_rect.size.y, Rect2(State.root_element.world_to_canvas(display_rect.position),
+			display_rect.size / State.root_element.canvas_transform.get_scale()))
 	var img := Image.new()
 	var err := img.load_svg_from_string(svg_text, image_zoom)
 	if err == OK:

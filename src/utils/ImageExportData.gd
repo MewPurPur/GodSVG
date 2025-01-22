@@ -36,7 +36,7 @@ var lossy := false:
 
 
 func svg_to_buffer() -> PackedByteArray:
-	return SVG.get_export_text().to_utf8_buffer()
+	return State.get_export_text().to_utf8_buffer()
 
 func image_to_buffer(image: Image) -> PackedByteArray:
 	match format:
@@ -47,7 +47,7 @@ func image_to_buffer(image: Image) -> PackedByteArray:
 
 
 func generate_image() -> Image:
-	var export_svg := SVG.root_element.duplicate()
+	var export_svg := State.root_element.duplicate()
 	if export_svg.get_attribute_list("viewBox").is_empty():
 		export_svg.set_attribute("viewBox",
 				PackedFloat64Array([0.0, 0.0, export_svg.width, export_svg.height]))
