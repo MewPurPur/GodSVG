@@ -48,24 +48,20 @@ size_flags_vertical = 3
 layout_mode = 2
 theme_override_constants/separation = 0
 
-[node name="MarginContainer" type="MarginContainer" parent="ViewportPanel/VBoxContainer"]
+[node name="Toolbar" type="PanelContainer" parent="ViewportPanel/VBoxContainer"]
 layout_mode = 2
-theme_override_constants/margin_left = 4
-theme_override_constants/margin_top = 4
-theme_override_constants/margin_right = 4
-theme_override_constants/margin_bottom = 4
 
-[node name="ViewportOptions" type="HBoxContainer" parent="ViewportPanel/VBoxContainer/MarginContainer"]
+[node name="ViewportOptions" type="HBoxContainer" parent="ViewportPanel/VBoxContainer/Toolbar"]
 layout_mode = 2
 alignment = 2
 
-[node name="LeftMenu" type="HBoxContainer" parent="ViewportPanel/VBoxContainer/MarginContainer/ViewportOptions"]
+[node name="LeftMenu" type="HBoxContainer" parent="ViewportPanel/VBoxContainer/Toolbar/ViewportOptions"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 2
 theme_override_constants/separation = 5
 
-[node name="Visuals" type="Button" parent="ViewportPanel/VBoxContainer/MarginContainer/ViewportOptions/LeftMenu"]
+[node name="Visuals" type="Button" parent="ViewportPanel/VBoxContainer/Toolbar/ViewportOptions/LeftMenu"]
 layout_mode = 2
 size_flags_horizontal = 2
 focus_mode = 0
@@ -74,7 +70,7 @@ theme_type_variation = &"IconButton"
 icon = ExtResource("4_n3qjt")
 icon_alignment = 1
 
-[node name="Reference" type="Button" parent="ViewportPanel/VBoxContainer/MarginContainer/ViewportOptions/LeftMenu"]
+[node name="Reference" type="Button" parent="ViewportPanel/VBoxContainer/Toolbar/ViewportOptions/LeftMenu"]
 layout_mode = 2
 size_flags_horizontal = 2
 focus_mode = 0
@@ -83,11 +79,11 @@ theme_type_variation = &"IconButton"
 icon = ExtResource("4_2hiq7")
 icon_alignment = 1
 
-[node name="Snapping" type="HBoxContainer" parent="ViewportPanel/VBoxContainer/MarginContainer/ViewportOptions/LeftMenu"]
+[node name="Snapping" type="HBoxContainer" parent="ViewportPanel/VBoxContainer/Toolbar/ViewportOptions/LeftMenu"]
 layout_mode = 2
 theme_override_constants/separation = 0
 
-[node name="SnapButton" type="Button" parent="ViewportPanel/VBoxContainer/MarginContainer/ViewportOptions/LeftMenu/Snapping"]
+[node name="SnapButton" type="Button" parent="ViewportPanel/VBoxContainer/Toolbar/ViewportOptions/LeftMenu/Snapping"]
 layout_mode = 2
 focus_mode = 0
 mouse_default_cursor_shape = 2
@@ -97,7 +93,7 @@ icon = ExtResource("5_1k2cq")
 script = ExtResource("6_3v3ve")
 hover_pressed_stylebox = SubResource("StyleBoxFlat_eujxa")
 
-[node name="SnapNumberEdit" parent="ViewportPanel/VBoxContainer/MarginContainer/ViewportOptions/LeftMenu/Snapping" instance=ExtResource("7_wrrfr")]
+[node name="SnapNumberEdit" parent="ViewportPanel/VBoxContainer/Toolbar/ViewportOptions/LeftMenu/Snapping" instance=ExtResource("7_wrrfr")]
 custom_minimum_size = Vector2(48, 22)
 layout_mode = 2
 theme_type_variation = &"LeftConnectedLineEdit"
@@ -106,7 +102,7 @@ editable = false
 min_value = 0.001
 allow_lower = false
 
-[node name="ZoomMenu" parent="ViewportPanel/VBoxContainer/MarginContainer/ViewportOptions" instance=ExtResource("8_xtdmn")]
+[node name="ZoomMenu" parent="ViewportPanel/VBoxContainer/Toolbar/ViewportOptions" instance=ExtResource("8_xtdmn")]
 unique_name_in_owner = true
 layout_mode = 2
 
@@ -121,7 +117,7 @@ unique_name_in_owner = true
 disable_3d = true
 handle_input_locally = false
 gui_snap_controls_to_pixels = false
-size = Vector2i(1040, 587)
+size = Vector2i(1040, 595)
 size_2d_override_stretch = true
 render_target_update_mode = 4
 script = ExtResource("9_4xrk7")
@@ -197,10 +193,10 @@ theme_override_constants/outline_size = 4
 theme_override_font_sizes/font_size = 14
 horizontal_alignment = 2
 
-[connection signal="pressed" from="ViewportPanel/VBoxContainer/MarginContainer/ViewportOptions/LeftMenu/Visuals" to="." method="_on_visuals_button_pressed"]
-[connection signal="pressed" from="ViewportPanel/VBoxContainer/MarginContainer/ViewportOptions/LeftMenu/Reference" to="." method="_on_reference_pressed"]
-[connection signal="toggled" from="ViewportPanel/VBoxContainer/MarginContainer/ViewportOptions/LeftMenu/Snapping/SnapButton" to="." method="_on_snap_button_toggled"]
-[connection signal="value_changed" from="ViewportPanel/VBoxContainer/MarginContainer/ViewportOptions/LeftMenu/Snapping/SnapNumberEdit" to="." method="_on_snap_number_edit_value_changed"]
-[connection signal="zoom_changed" from="ViewportPanel/VBoxContainer/MarginContainer/ViewportOptions/ZoomMenu" to="ViewportPanel/VBoxContainer/ViewportContainer/Viewport" method="_on_zoom_changed"]
-[connection signal="zoom_reset_pressed" from="ViewportPanel/VBoxContainer/MarginContainer/ViewportOptions/ZoomMenu" to="ViewportPanel/VBoxContainer/ViewportContainer/Viewport" method="center_frame"]
+[connection signal="pressed" from="ViewportPanel/VBoxContainer/Toolbar/ViewportOptions/LeftMenu/Visuals" to="." method="_on_visuals_button_pressed"]
+[connection signal="pressed" from="ViewportPanel/VBoxContainer/Toolbar/ViewportOptions/LeftMenu/Reference" to="." method="_on_reference_pressed"]
+[connection signal="toggled" from="ViewportPanel/VBoxContainer/Toolbar/ViewportOptions/LeftMenu/Snapping/SnapButton" to="." method="_on_snap_button_toggled"]
+[connection signal="value_changed" from="ViewportPanel/VBoxContainer/Toolbar/ViewportOptions/LeftMenu/Snapping/SnapNumberEdit" to="." method="_on_snap_number_edit_value_changed"]
+[connection signal="zoom_changed" from="ViewportPanel/VBoxContainer/Toolbar/ViewportOptions/ZoomMenu" to="ViewportPanel/VBoxContainer/ViewportContainer/Viewport" method="_on_zoom_changed"]
+[connection signal="zoom_reset_pressed" from="ViewportPanel/VBoxContainer/Toolbar/ViewportOptions/ZoomMenu" to="ViewportPanel/VBoxContainer/ViewportContainer/Viewport" method="center_frame"]
 [connection signal="size_changed" from="ViewportPanel/VBoxContainer/ViewportContainer/Viewport" to="ViewportPanel/VBoxContainer/ViewportContainer/Viewport" method="_on_size_changed"]

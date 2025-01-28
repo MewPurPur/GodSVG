@@ -91,7 +91,7 @@ func _gui_input(event: InputEvent) -> void:
 			if hovered_idx == -1:
 				btn_arr.append(ContextPopup.create_button(Translator.translate("Create tab"),
 						Configs.savedata.add_empty_tab, false,
-						load("res://assets/icons/CreateTab.svg"), "close_tab"))
+						load("res://assets/icons/CreateTab.svg"), "new_tab"))
 			else:
 				btn_arr.append(ContextPopup.create_button(Translator.translate("Close tab"),
 						close_tab.bind(hovered_idx), false, null, "close_tab"))
@@ -107,8 +107,16 @@ func _gui_input(event: InputEvent) -> void:
 						Translator.translate("Close tabs to the right"),
 						close_tabs_to_right.bind(hovered_idx),
 						hovered_idx == Configs.savedata.get_tab_count() - 1, null))
+				btn_arr.append(ContextPopup.create_button(Translator.translate("Open externally"),
+						ShortcutUtils.fn("open_externally"),
+						not FileAccess.file_exists(Configs.savedata.get_active_tab().svg_file_path),
+						load("res://assets/icons/OpenFile.svg"), "open_externally"))
+				btn_arr.append(ContextPopup.create_button(Translator.translate("Show in File Manager"),
+						ShortcutUtils.fn("open_in_folder"),
+						not FileAccess.file_exists(Configs.savedata.get_active_tab().svg_file_path),
+						load("res://assets/icons/OpenFolder.svg"), "open_in_folder"))
 			var tab_popup := ContextPopup.new()
-			tab_popup.setup(btn_arr, true)
+			tab_popup.setup(btn_arr, true, -1, -1, PackedInt32Array([4]))
 			
 			if hovered_idx != -1:
 				var tab_global_rect := get_tab_rect(hovered_idx)
@@ -197,7 +205,7 @@ func activate() -> void:
 	add_button.position = add_rect.position
 	add_button.size = add_rect.size
 	add_button.mouse_filter = Control.MOUSE_FILTER_PASS
-	add_button.tooltip_text = Translator.translate("Add new tab")
+	add_button.tooltip_text = Translator.translate("Create a new tab")
 	add_child(add_button)
 	active_controls.append(add_button)
 	add_button.pressed.connect(Configs.savedata.add_empty_tab)

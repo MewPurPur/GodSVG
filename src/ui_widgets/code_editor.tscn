@@ -1,7 +1,6 @@
-[gd_scene load_steps=8 format=3 uid="uid://cr1fdlmbknnko"]
+[gd_scene load_steps=7 format=3 uid="uid://cr1fdlmbknnko"]
 
 [ext_resource type="Script" uid="uid://c3q5dvxm6ro1m" path="res://src/ui_widgets/code_editor.gd" id="1_nffk0"]
-[ext_resource type="FontFile" uid="uid://dc0w4sx0h0fui" path="res://assets/fonts/FontBold.ttf" id="2_hl52o"]
 [ext_resource type="FontFile" uid="uid://depydd16jq777" path="res://assets/fonts/FontMono.ttf" id="2_p4nol"]
 [ext_resource type="Texture2D" uid="uid://dthdjf4v2vlvg" path="res://assets/icons/CodeOptions.svg" id="4_sos04"]
 [ext_resource type="Script" uid="uid://dh5mir6i27u4u" path="res://src/ui_widgets/BetterTextEdit.gd" id="8_ser4i"]
@@ -44,23 +43,6 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_q56qh")
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="SizeButton" type="Button" parent="PanelContainer/CodeButtons"]
-unique_name_in_owner = true
-layout_mode = 2
-focus_mode = 0
-mouse_default_cursor_shape = 2
-theme_type_variation = &"TranslucentButton"
-theme_override_fonts/font = ExtResource("2_hl52o")
-
-[node name="FileButton" type="Button" parent="PanelContainer/CodeButtons"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 2
-focus_mode = 0
-mouse_default_cursor_shape = 2
-theme_type_variation = &"FlatButton"
-text_overrun_behavior = 3
-
 [node name="MetaActions" type="HBoxContainer" parent="PanelContainer/CodeButtons"]
 unique_name_in_owner = true
 layout_mode = 2
@@ -100,8 +82,6 @@ theme_override_fonts/normal_font = ExtResource("2_p4nol")
 theme_override_font_sizes/normal_font_size = 14
 fit_content = true
 
-[connection signal="pressed" from="PanelContainer/CodeButtons/SizeButton" to="." method="_on_size_button_pressed"]
-[connection signal="pressed" from="PanelContainer/CodeButtons/FileButton" to="." method="_on_file_button_pressed"]
 [connection signal="pressed" from="PanelContainer/CodeButtons/MetaActions/OptionsButton" to="." method="_on_options_button_pressed"]
 [connection signal="focus_entered" from="ScriptEditor/SVGCodeEdit" to="." method="_on_svg_code_edit_focus_entered"]
 [connection signal="focus_exited" from="ScriptEditor/SVGCodeEdit" to="." method="_on_svg_code_edit_focus_exited"]

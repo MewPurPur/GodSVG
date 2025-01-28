@@ -209,7 +209,7 @@ static func open_svg(file_path: String) -> void:
 	OS.shell_open(file_path)
 
 static func open_svg_folder(file_path: String) -> void:
-	OS.shell_open(file_path.get_base_dir())
+	OS.shell_show_in_file_manager(file_path)
 
 
 # Web stuff.

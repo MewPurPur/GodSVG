@@ -2,6 +2,8 @@
 @tool
 extends EditorScript
 
+const TRANSLATIONS_DIR = "assets/translations"
+
 const HEADER = """#, fuzzy
 msgid \"\"
 msgstr \"\"
@@ -82,28 +84,28 @@ func search_directory(dir: String) -> void:
 
 
 func update_translations() -> void:
-	var location := ProjectSettings.globalize_path("translations/GodSVG.pot")
+	var location := ProjectSettings.globalize_path(TRANSLATIONS_DIR + "/GodSVG.pot")
 	var fa := FileAccess.open(location, FileAccess.WRITE)
 	fa.store_string(HEADER)
 	
 	for msg in messages:
 		fa.store_string(msg.to_string())
 	fa = null
-	print("Created translations/GodSVG.pot with %d strings" % (messages.size() + 1))
+	print("Created " + TRANSLATIONS_DIR + "/GodSVG.pot with %d strings" % (messages.size() + 1))
 	
-	var files := DirAccess.get_files_at(ProjectSettings.globalize_path("translations"))
+	var files := DirAccess.get_files_at(ProjectSettings.globalize_path(TRANSLATIONS_DIR))
 	for file in files:
 		if not (file.get_extension() == "po" or file == "GodSVG.pot"):
 			continue
 		
 		var args := PackedStringArray(["--update", "--quiet", "--verbose", "--backup=off",
-				ProjectSettings.globalize_path("translations").path_join(file), location])
+				ProjectSettings.globalize_path(TRANSLATIONS_DIR).path_join(file), location])
 		var output: Array = []
 		var result := OS.execute("msgmerge", args, output, true)
 		if not result == -1:
 			if file == "GodSVG.pot":
 				continue
 			elif not output.is_empty():
-				print("Updated translations/%s: %s" % [file, output[0].rstrip("\n")])
+				print("Updated " + TRANSLATIONS_DIR + "/%s: %s" % [file, output[0].rstrip("\n")])
 			else:
-				print("Updated translations%s" % file)
+				print("Updated " + TRANSLATIONS_DIR + "%s" % file)
