@@ -1,12 +1,14 @@
 **The official GNU gettext manual can be found [here](https://www.gnu.org/software/gettext/manual/html_node/index.html)**
 
-# The po format
-You can familiarize yourself with the po format [here](https://www.gnu.org/software/gettext/manual/html_node/PO-Files.html).
+# Files to translate
+Most of the strings for a language are inside its respective po file. You can read more about this format [here](https://www.gnu.org/software/gettext/manual/html_node/PO-Files.html).
+
+Outside of this folder, there is the [assets/GodSVG.desktop](https://github.com/MewPurPur/GodSVG/blob/main/assets/GodSVG.desktop) file which has a few fields that can be internationalized.
 
 # For programmers
-New translatable strings must be within GDScript files, inside a `TranslationServer.translate()` method or its plural version.
+New translatable strings must be within GDScript files, inside a `Translator.translate()` method. If they are part of a persistent UI, they must also respond to the `Configs.language_changed` signal.
 
-To include or update strings, open godot_only/update_translations.gd in the Godot editor and follow the comment on top.
+To include or update strings, open godot_only/scripts/update_translations.gd in the Godot editor and follow the comment on top.
 
 >[!IMPORTANT]
 >To run the above script, you must install [gettext tools](https://www.gnu.org/software/gettext/). It's preinstalled on most Linux distributions and Git Bash on Windows.
