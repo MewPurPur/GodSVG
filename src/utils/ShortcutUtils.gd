@@ -13,7 +13,8 @@ const _shortcut_categories_dict: Dictionary[String, Dictionary] = {
 		"optimize": true,
 		"copy_svg_text": true,
 		"reset_svg": true,
-		"open_svg": true,
+		"open_externally": true,
+		"open_in_folder": true,
 	},
 	"edit": {
 		"undo": true,
@@ -89,7 +90,9 @@ static func fn(shortcut: String) -> Callable:
 		"copy_svg_text": return DisplayServer.clipboard_set.bind(State.svg_text)
 		"optimize": return State.optimize
 		"reset_svg": return FileUtils.reset_svg
-		"open_svg": return FileUtils.open_svg.bind(
+		"open_externally": return FileUtils.open_svg.bind(
+				Configs.savedata.get_active_tab().svg_file_path)
+		"open_in_folder": return FileUtils.open_svg_folder.bind(
 				Configs.savedata.get_active_tab().svg_file_path)
 		"redo": return Configs.savedata.get_active_tab().redo
 		"undo": return Configs.savedata.get_active_tab().undo
@@ -117,7 +120,8 @@ static func get_shortcut_icon(shortcut: String) -> CompressedTexture2D:
 		"copy_svg_text": return load("res://assets/icons/Copy.svg")
 		"optimize": return load("res://assets/icons/Compress.svg")
 		"reset_svg", "zoom_reset": return load("res://assets/icons/Reload.svg")
-		"open_svg": return load("res://assets/icons/OpenFile.svg")
+		"open_externally": return load("res://assets/icons/OpenFile.svg")
+		"open_in_folder": return load("res://assets/icons/OpenFolder.svg")
 		"undo": return load("res://assets/icons/Undo.svg")
 		"redo": return load("res://assets/icons/Redo.svg")
 		"duplicate": return load("res://assets/icons/Duplicate.svg")

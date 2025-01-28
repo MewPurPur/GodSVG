@@ -86,7 +86,11 @@ reset_svg={
 "deadzone": 0.2,
 "events": []
 }
-open_svg={
+open_externally={
+"deadzone": 0.2,
+"events": []
+}
+open_in_folder={
 "deadzone": 0.2,
 "events": []
 }

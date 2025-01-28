@@ -21,6 +21,7 @@ const ConfirmDialog := preload("res://src/ui_widgets/confirm_dialog.tscn")
 @onready var debug_container: MarginContainer = $ViewportPanel/DebugMargins
 @onready var debug_label: Label = %DebugContainer/DebugLabel
 @onready var input_debug_label: Label = %DebugContainer/InputDebugLabel
+@onready var toolbar: PanelContainer = $ViewportPanel/VBoxContainer/Toolbar
 
 var reference_overlay := false
 
@@ -68,6 +69,11 @@ func update_translations() -> void:
 			"Snap size")
 
 func update_theme() -> void:
+	var toolbar_stylebox := StyleBoxFlat.new()
+	toolbar_stylebox.bg_color = ThemeUtils.overlay_panel_inner_color.lerp(Color.WHITE, 0.01)
+	toolbar_stylebox.set_content_margin_all(4)
+	toolbar.add_theme_stylebox_override("panel", toolbar_stylebox)
+	
 	var frame := StyleBoxFlat.new()
 	frame.draw_center = false
 	frame.border_width_left = 2

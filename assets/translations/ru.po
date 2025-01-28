@@ -36,7 +36,7 @@ msgstr "Проверить обновления?"
 msgid "This requires GodSVG to connect to the internet."
 msgstr "Для этого необходимо подключение к Интернету."
 
-#: src/autoload/HandlerGUI.gd src/ui_parts/alert_dialog.gd
+#: src/autoload/HandlerGUI.gd src/ui_widgets/alert_dialog.gd
 msgid "OK"
 msgstr "Хорошо"
 
@@ -45,7 +45,7 @@ msgid "Export SVG"
 msgstr "Экспортировать SVG"
 
 #: src/autoload/HandlerGUI.gd src/ui_parts/export_menu.gd
-#: src/utils/TranslationUtils.gd
+#: src/ui_parts/global_actions.gd src/utils/TranslationUtils.gd
 msgid "Export"
 msgstr "Экспортовать"
 
@@ -57,34 +57,58 @@ msgstr ""
 "Изображение можно экспортировать только как SVG, поскольку его размеры не "
 "заданы. Желаете продолжить?"
 
-#: src/autoload/Indications.gd
+#: src/autoload/State.gd src/ui_parts/good_file_dialog.gd
+#: src/ui_widgets/alert_dialog.gd
+msgid "Alert!"
+msgstr "Внимание!"
+
+#: src/autoload/State.gd src/ui_parts/tab_bar.gd src/utils/TranslationUtils.gd
+#, fuzzy
+msgid "Close tab"
+msgstr "Закрыть путь"
+
+#: src/autoload/State.gd
+msgid "Restore"
+msgstr ""
+
+#: src/autoload/State.gd
 msgid "View In List"
 msgstr "Просмотреть в списке"
 
-#: src/autoload/Indications.gd
+#: src/autoload/State.gd
 msgid "Duplicate"
 msgstr "Дублировать"
 
-#: src/autoload/Indications.gd
+#: src/autoload/State.gd
 msgid "Convert To"
 msgstr "Конвертировать в"
 
-#: src/autoload/Indications.gd src/ui_widgets/palette_config.gd
+#: src/autoload/State.gd src/ui_widgets/palette_config.gd
 msgid "Move Up"
 msgstr "Подвинуть вверх"
 
-#: src/autoload/Indications.gd src/ui_widgets/palette_config.gd
+#: src/autoload/State.gd src/ui_widgets/palette_config.gd
 msgid "Move Down"
 msgstr "Подвинуть вниз"
 
-#: src/autoload/Indications.gd src/ui_widgets/palette_config.gd
+#: src/autoload/State.gd src/ui_widgets/palette_config.gd
 #: src/ui_widgets/setting_shortcut.gd src/ui_widgets/transform_popup.gd
 msgid "Delete"
 msgstr "Удалить"
 
-#: src/autoload/Indications.gd src/ui_widgets/transform_popup.gd
+#: src/autoload/State.gd src/ui_widgets/transform_popup.gd
 msgid "Insert After"
 msgstr "Вставить после"
+
+#: src/autoload/State.gd
+msgid "The last edited state of this tab could not be found."
+msgstr ""
+
+#: src/autoload/State.gd
+msgid ""
+"The tab is bound to the file path {file_path}. Do you want to restore from "
+"this path?"
+msgstr ""
 
 #: src/config_classes/Formatter.gd
 msgid "Compact"
@@ -122,6 +146,10 @@ msgstr "3 или 6 цифровое шестандацитиричное зна�
 msgid "6-digit hex"
 msgstr "6 цифровое шестандцатяричное значение"
 
+#: src/config_classes/TabData.gd
+msgid "Unsaved"
+msgstr ""
+
 #: src/data_classes/BasicXNode.gd
 msgid "Comment"
 msgstr "Комментарий"
@@ -142,18 +170,15 @@ msgstr "В этой групе нет элементов."
 msgid "This group has only one element."
 msgstr "В этой группе только один элемент."
 
-#: src/data_classes/ElementLinearGradient.gd
-#: src/data_classes/ElementRadialGradient.gd
+#: src/data_classes/GradientUtils.gd
 msgid "No \"id\" attribute defined."
 msgstr "Атрибут \"id\" не определен."
 
-#: src/data_classes/ElementLinearGradient.gd
-#: src/data_classes/ElementRadialGradient.gd
+#: src/data_classes/GradientUtils.gd
 msgid "No <stop> elements under this gradient."
 msgstr "Нет <stop> елементов под этим градиентом."
 
-#: src/data_classes/ElementLinearGradient.gd
-#: src/data_classes/ElementRadialGradient.gd
+#: src/data_classes/GradientUtils.gd
 msgid "This gradient is a solid color."
 msgstr "Этот градиент это обычный цвет."
 
@@ -164,6 +189,12 @@ msgstr "Не является описанием SVG."
 #: src/data_classes/SVGParser.gd
 msgid "Improper nesting."
 msgstr "Неправильное вложение."
+
+#: src/ui_parts/about_menu.gd src/ui_parts/good_file_dialog.gd
+#: src/ui_parts/settings_menu.gd src/ui_parts/shortcut_panel_config.gd
+#: src/ui_parts/update_menu.gd
+msgid "Close"
+msgstr "Закрыть"
 
 #: src/ui_parts/about_menu.gd
 msgid "Project Founder and Manager"
@@ -205,51 +236,6 @@ msgstr "Компоненты Godot от третьих лиц"
 msgid "Third-party licenses"
 msgstr "Лицензии третьих лиц"
 
-#: src/ui_parts/alert_dialog.gd src/ui_parts/good_file_dialog.gd
-msgid "Alert!"
-msgstr "Внимание!"
-
-#: src/ui_parts/choose_name_dialog.gd src/ui_parts/confirm_dialog.gd
-#: src/ui_parts/export_menu.gd src/ui_parts/import_warning_menu.gd
-msgid "Cancel"
-msgstr "Отменить"
-
-#: src/ui_parts/choose_name_dialog.gd
-msgid "Create"
-msgstr "Создать"
-
-#: src/ui_parts/code_editor.gd src/ui_parts/good_file_dialog.gd
-msgid "Save SVG"
-msgstr "Сохранить SVG"
-
-#: src/ui_parts/code_editor.gd
-msgid "Open file"
-msgstr "Открыть файл"
-
-#: src/ui_parts/code_editor.gd src/utils/TranslationUtils.gd
-msgid "Reset SVG"
-msgstr "Сбросить SVG"
-
-#: src/ui_parts/code_editor.gd src/utils/TranslationUtils.gd
-msgid "Clear saving path"
-msgstr "Очистить путь сохранения"
-
-#: src/ui_parts/code_editor.gd src/utils/TranslationUtils.gd
-msgid "Optimize"
-msgstr "Оптимизировать"
-
-#: src/ui_parts/code_editor.gd src/utils/TranslationUtils.gd
-msgid "Copy all text"
-msgstr "Скопировать весь текст"
-
-#: src/ui_parts/code_editor.gd src/utils/TranslationUtils.gd
-msgid "Clear SVG"
-msgstr "Очистить SVG"
-
-#: src/ui_parts/display.gd
-msgid "Settings"
-msgstr "Настройки"
-
 #: src/ui_parts/display.gd
 msgid "Visuals"
 msgstr "Внешний вид"
@@ -279,32 +265,14 @@ msgid "Rasterized SVG"
 msgstr "Растеризовать SVG"
 
 #: src/ui_parts/display.gd
-msgid "About…"
-msgstr "Про программу…"
-
-#: src/ui_parts/display.gd
 msgid "Snap size"
 msgstr "Размер привязки"
 
-#: src/ui_parts/display.gd src/utils/TranslationUtils.gd
-msgid "Check for updates"
-msgstr "Проверить обновления"
-
-#: src/ui_parts/display.gd
-msgid "Donate…"
-msgstr "Сделать пожертвование…"
-
-#: src/ui_parts/display.gd
-msgid "GodSVG repository"
-msgstr "Репозиторий GodSVG"
-
-#: src/ui_parts/display.gd
-msgid "GodSVG website"
-msgstr "Веб-сайт GodSVG"
-
-#: src/ui_parts/display.gd
-msgid "View savedata"
-msgstr "Просмотреть даные сохранения"
+#: src/ui_parts/donate_menu.gd src/ui_parts/export_menu.gd
+#: src/ui_parts/import_warning_menu.gd src/ui_widgets/choose_name_dialog.gd
+#: src/ui_widgets/confirm_dialog.gd
+msgid "Cancel"
+msgstr "Отменить"
 
 #: src/ui_parts/element_container.gd
 msgid "New element"
@@ -313,11 +281,6 @@ msgstr "Новый элемент"
 #: src/ui_parts/export_menu.gd
 msgid "Dimensions"
 msgstr "Размеры"
-
-#: src/ui_parts/export_menu.gd src/ui_widgets/configure_color_popup.gd
-#: src/ui_widgets/palette_config.gd
-msgid "Unnamed"
-msgstr "Без названия"
 
 #: src/ui_parts/export_menu.gd
 msgid "Size"
@@ -356,25 +319,58 @@ msgid "Preview image size is limited to {dimensions}"
 msgstr ""
 "Размер предварительного просмотра изображения ограничен до {dimensions}"
 
-#: src/ui_parts/global_menu.gd src/ui_parts/settings_menu.gd
-msgid "File"
-msgstr "Файл"
+#: src/ui_parts/global_actions.gd src/ui_parts/import_warning_menu.gd
+#: src/utils/TranslationUtils.gd
+msgid "Import"
+msgstr "Импортировать"
 
-#: src/ui_parts/global_menu.gd src/ui_parts/settings_menu.gd
-msgid "Edit"
-msgstr "Редактировать"
+#: src/ui_parts/global_actions.gd
+msgid "Settings"
+msgstr "Настройки"
 
-#: src/ui_parts/global_menu.gd src/ui_parts/settings_menu.gd
-msgid "Tool"
-msgstr "Инструмент"
+#: src/ui_parts/global_actions.gd src/utils/TranslationUtils.gd
+msgid "Optimize"
+msgstr "Оптимизировать"
 
-#: src/ui_parts/global_menu.gd src/ui_parts/settings_menu.gd
-msgid "View"
-msgstr "Просмотр"
+#: src/ui_parts/global_actions.gd src/ui_parts/good_file_dialog.gd
+msgid "Save SVG"
+msgstr "Сохранить SVG"
 
-#: src/ui_parts/global_menu.gd
-msgid "Snap"
-msgstr "Привязка"
+#: src/ui_parts/global_actions.gd src/utils/TranslationUtils.gd
+msgid "Reset SVG"
+msgstr "Сбросить SVG"
+
+#: src/ui_parts/global_actions.gd src/ui_parts/tab_bar.gd
+msgid "Open externally"
+msgstr ""
+
+#: src/ui_parts/global_actions.gd src/ui_parts/tab_bar.gd
+msgid "Show in File Manager"
+msgstr ""
+
+#: src/ui_parts/global_actions.gd
+msgid "About…"
+msgstr "Про программу…"
+
+#: src/ui_parts/global_actions.gd src/utils/TranslationUtils.gd
+msgid "Check for updates"
+msgstr "Проверить обновления"
+
+#: src/ui_parts/global_actions.gd
+msgid "Donate…"
+msgstr "Сделать пожертвование…"
+
+#: src/ui_parts/global_actions.gd
+msgid "GodSVG repository"
+msgstr "Репозиторий GodSVG"
+
+#: src/ui_parts/global_actions.gd
+msgid "GodSVG website"
+msgstr "Веб-сайт GodSVG"
+
+#: src/ui_parts/global_actions.gd
+msgid "View savedata"
+msgstr "Просмотреть даные сохранения"
 
 #: src/ui_parts/good_file_dialog.gd
 msgid "Go to parent folder"
@@ -403,11 +399,6 @@ msgstr "Выбрать XML файл"
 #: src/ui_parts/good_file_dialog.gd
 msgid "Select an image"
 msgstr "Выбрать изображение"
-
-#: src/ui_parts/good_file_dialog.gd src/ui_parts/settings_menu.gd
-#: src/ui_parts/shortcut_panel_config.gd src/ui_parts/update_menu.gd
-msgid "Close"
-msgstr "Закрыть"
 
 #: src/ui_parts/good_file_dialog.gd
 msgid "Select"
@@ -465,10 +456,6 @@ msgstr "Новая привязка"
 msgid "Import Problems"
 msgstr "Проблемы с импортированием"
 
-#: src/ui_parts/import_warning_menu.gd src/utils/TranslationUtils.gd
-msgid "Import"
-msgstr "Импортировать"
-
 #: src/ui_parts/import_warning_menu.gd
 msgid "Unrecognized element"
 msgstr "Неизвестный элемент"
@@ -484,6 +471,26 @@ msgstr "Синтаксическая ошибка"
 #: src/ui_parts/inspector.gd
 msgid "Add element"
 msgstr "Добавить элемент"
+
+#: src/ui_parts/mac_menu.gd src/ui_parts/settings_menu.gd
+msgid "File"
+msgstr "Файл"
+
+#: src/ui_parts/mac_menu.gd src/ui_parts/settings_menu.gd
+msgid "Edit"
+msgstr "Редактировать"
+
+#: src/ui_parts/mac_menu.gd src/ui_parts/settings_menu.gd
+msgid "Tool"
+msgstr "Инструмент"
+
+#: src/ui_parts/mac_menu.gd src/ui_parts/settings_menu.gd
+msgid "View"
+msgstr "Просмотр"
+
+#: src/ui_parts/mac_menu.gd
+msgid "Snap"
+msgstr "Привязка"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Formatting"
@@ -819,6 +826,33 @@ msgstr "Горизонтальная линия до"
 msgid "Vertical strip"
 msgstr "Вертикальная линия до"
 
+#: src/ui_parts/tab_bar.gd
+#, fuzzy
+msgid "Create tab"
+msgstr "Создать"
+
+#: src/ui_parts/tab_bar.gd
+#, fuzzy
+msgid "Close all other tabs"
+msgstr "Скопировать весь текст"
+
+#: src/ui_parts/tab_bar.gd
+msgid "Close tabs to the left"
+msgstr ""
+
+#: src/ui_parts/tab_bar.gd
+msgid "Close tabs to the right"
+msgstr ""
+
+#: src/ui_parts/tab_bar.gd src/utils/TranslationUtils.gd
+#, fuzzy
+msgid "Create a new tab"
+msgstr "Создать новую папку"
+
+#: src/ui_parts/tab_bar.gd
+msgid "This SVG is not bound to a location on the computer yet."
+msgstr ""
+
 #: src/ui_parts/update_menu.gd
 msgid "Include prereleases"
 msgstr "Включить пре-релизы"
@@ -847,6 +881,18 @@ msgstr "Установлена последняя версия GodSVG."
 msgid "New versions"
 msgstr "Новые версии"
 
+#: src/ui_parts/zoom_menu.gd src/utils/TranslationUtils.gd
+msgid "Zoom out"
+msgstr "Отдалить масштаб"
+
+#: src/ui_parts/zoom_menu.gd src/utils/TranslationUtils.gd
+msgid "Zoom in"
+msgstr "Приблизить масштаб"
+
+#: src/ui_parts/zoom_menu.gd src/utils/TranslationUtils.gd
+msgid "Zoom reset"
+msgstr "Сбросить масштаб"
+
 #: src/ui_widgets/BetterLineEdit.gd src/ui_widgets/BetterTextEdit.gd
 #: src/utils/TranslationUtils.gd
 msgid "Undo"
@@ -869,6 +915,14 @@ msgstr "Скопировать"
 msgid "Paste"
 msgstr "Вставить"
 
+#: src/ui_widgets/choose_name_dialog.gd
+msgid "Create"
+msgstr "Создать"
+
+#: src/ui_widgets/code_editor.gd src/utils/TranslationUtils.gd
+msgid "Copy all text"
+msgstr "Скопировать весь текст"
+
 #: src/ui_widgets/color_popup.gd
 msgid "Search color"
 msgstr "Искать цвет"
@@ -884,6 +938,10 @@ msgstr "Редактировать название цвета"
 #: src/ui_widgets/configure_color_popup.gd
 msgid "Delete color"
 msgstr "Удалить цвет"
+
+#: src/ui_widgets/configure_color_popup.gd src/ui_widgets/palette_config.gd
+msgid "Unnamed"
+msgstr "Без названия"
 
 #: src/ui_widgets/good_color_picker.gd
 #, fuzzy
@@ -918,6 +976,11 @@ msgstr "Скопировать как XML"
 msgid "Apply Preset"
 msgstr "Принять пресет"
 
+#: src/ui_widgets/path_popup.gd src/ui_widgets/pathdata_field.gd
+#: src/utils/TranslationUtils.gd
+msgid "Relative"
+msgstr "Относительно"
+
 #: src/ui_widgets/pathdata_field.gd
 msgid "No path data"
 msgstr "Нет данных пути"
@@ -925,10 +988,6 @@ msgstr "Нет данных пути"
 #: src/ui_widgets/pathdata_field.gd src/utils/TranslationUtils.gd
 msgid "Absolute"
 msgstr "Абсолютно"
-
-#: src/ui_widgets/pathdata_field.gd src/utils/TranslationUtils.gd
-msgid "Relative"
-msgstr "Относительно"
 
 #: src/ui_widgets/points_field.gd
 msgid "No points"
@@ -994,46 +1053,58 @@ msgstr "Файл невозможно открыть."
 msgid "Check if the file still exists in the selected file path."
 msgstr "Проверить, если файл все еще существует по выбранному пути."
 
+#: src/utils/FileUtils.gd
+msgid "The imported file is already being edited inside GodSVG."
+msgstr ""
+
+#: src/utils/FileUtils.gd
+msgid "If you want to apply the unsaved file state, use \"Reset SVG\" instead."
+msgstr ""
+
+#: src/utils/TranslationUtils.gd
+msgid "Select the next tab"
+msgstr ""
+
+#: src/utils/TranslationUtils.gd
+msgid "Select the previous tab"
+msgstr ""
+
 #: src/utils/TranslationUtils.gd
 #, fuzzy
-msgid "Open SVG file"
-msgstr "Открыть файл"
+msgid "Open SVG externally"
+msgstr "Открыть репозиторий GodSVG"
 
 #: src/utils/TranslationUtils.gd
-msgid "Select all elements"
-msgstr "Выбрать все элементы"
+msgid "Show SVG in File Manager"
+msgstr ""
 
 #: src/utils/TranslationUtils.gd
-msgid "Duplicate the selected elements"
-msgstr "Дублировать выбранные элементы"
+#, fuzzy
+msgid "Select all"
+msgstr "Выбрать"
+
+#: src/utils/TranslationUtils.gd
+#, fuzzy
+msgid "Duplicate the selection"
+msgstr "Удалить все выбранные теги"
 
 #: src/utils/TranslationUtils.gd
 msgid "Delete the selection"
 msgstr "Удалить все выбранные теги"
 
 #: src/utils/TranslationUtils.gd
-msgid "Move the selected elements up"
+#, fuzzy
+msgid "Move the selection up"
 msgstr "Подвинуть вверх все выбранные теги"
 
 #: src/utils/TranslationUtils.gd
-msgid "Move the selected elements down"
+#, fuzzy
+msgid "Move the selection down"
 msgstr "Подвинуть вниз все выбранные элементы"
 
 #: src/utils/TranslationUtils.gd
 msgid "Find"
 msgstr "Найти"
-
-#: src/utils/TranslationUtils.gd
-msgid "Zoom in"
-msgstr "Приблизить масштаб"
-
-#: src/utils/TranslationUtils.gd
-msgid "Zoom out"
-msgstr "Отдалить масштаб"
-
-#: src/utils/TranslationUtils.gd
-msgid "Zoom reset"
-msgstr "Сбросить масштаб"
 
 #: src/utils/TranslationUtils.gd
 msgid "Show rasterized SVG"
@@ -1131,6 +1202,29 @@ msgstr ""
 msgid "The file extension is empty. Only {extension_list} files are supported."
 msgstr "Расширение файла пустое. Поддерживаются только {extension_list} файлы."
 
+#, fuzzy
+#~ msgid "Add new tab"
+#~ msgstr "Добавить новый тег"
+
+#~ msgid "Open file"
+#~ msgstr "Открыть файл"
+
+#~ msgid "Clear saving path"
+#~ msgstr "Очистить путь сохранения"
+
+#~ msgid "Clear SVG"
+#~ msgstr "Очистить SVG"
+
+#, fuzzy
+#~ msgid "Open SVG file"
+#~ msgstr "Открыть файл"
+
+#~ msgid "Select all elements"
+#~ msgstr "Выбрать все элементы"
+
+#~ msgid "Duplicate the selected elements"
+#~ msgstr "Дублировать выбранные элементы"
+
 #~ msgid "Enable the color"
 #~ msgstr "Активировать цвет"
 
@@ -1193,9 +1287,6 @@ msgstr "Расширение файла пустое. Поддерживаютс
 
 #~ msgid "New tag"
 #~ msgstr "Новый тег"
-
-#~ msgid "Add new tag"
-#~ msgstr "Добавить новый тег"
 
 #~ msgid "Paths"
 #~ msgstr "Пути"
