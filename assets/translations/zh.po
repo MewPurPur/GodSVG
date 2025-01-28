@@ -69,7 +69,7 @@ msgid "Restore"
 msgstr ""
 
 #: src/autoload/State.gd
-msgid "View In List"
+msgid "View in List"
 msgstr "在列表中查看"
 
 #: src/autoload/State.gd

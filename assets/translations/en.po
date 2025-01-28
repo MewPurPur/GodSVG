@@ -68,7 +68,7 @@ msgid "Restore"
 msgstr ""
 
 #: src/autoload/State.gd
-msgid "View In List"
+msgid "View in List"
 msgstr ""
 
 #: src/autoload/State.gd

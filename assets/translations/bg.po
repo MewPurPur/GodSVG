@@ -70,7 +70,7 @@ msgid "Restore"
 msgstr "Възстанови"
 
 #: src/autoload/State.gd
-msgid "View In List"
+msgid "View in List"
 msgstr "Виж в Списъка"
 
 #: src/autoload/State.gd
@@ -106,7 +106,9 @@ msgstr "Последното състояние на този раздел не 
 msgid ""
 "The tab is bound to the file path {file_path}. Do you want to restore from "
 "this path?"
-msgstr "Този раздел е свързан с пътеката {file_path}. Искаш ли да го възстановиш от тази пътека?"
+msgstr ""
+"Този раздел е свързан с пътеката {file_path}. Искаш ли да го възстановиш от "
+"тази пътека?"
 
 #: src/config_classes/Formatter.gd
 msgid "Compact"
@@ -1047,7 +1049,9 @@ msgstr "Импортираният файл вече се редактира в 
 
 #: src/utils/FileUtils.gd
 msgid "If you want to apply the unsaved file state, use \"Reset SVG\" instead."
-msgstr "Ако искаш да приложиш незаписаното състояние на файла, използвай \"Reset SVG\"."
+msgstr ""
+"Ако искаш да приложиш незаписаното състояние на файла, използвай \"Reset "
+"SVG\"."
 
 #: src/utils/TranslationUtils.gd
 msgid "Select the next tab"

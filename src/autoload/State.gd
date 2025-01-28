@@ -699,8 +699,7 @@ func get_selection_context(popup_method: Callable, context: Context) -> ContextP
 				if not can_move_down and base_xid[-1] < parent_child_count - filtered_count:
 					can_move_down = true
 		if context == Context.VIEWPORT:
-			btn_arr.append(ContextPopup.create_button(
-					Translator.translate("View In List"),
+			btn_arr.append(ContextPopup.create_button(Translator.translate("View in List"),
 					view_in_list.bind(selected_xids[0]), false,
 					load("res://assets/icons/ViewInList.svg")))
 
@@ -734,8 +733,7 @@ func get_selection_context(popup_method: Callable, context: Context) -> ContextP
 		var element_ref := root_element.get_xnode(semi_selected_xid)
 		
 		if context == Context.VIEWPORT:
-			btn_arr.append(ContextPopup.create_button(
-					Translator.translate("View In List"),
+			btn_arr.append(ContextPopup.create_button(Translator.translate("View in List"),
 					view_in_list.bind(semi_selected_xid), false,
 					load("res://assets/icons/ViewInList.svg")))
 		match element_ref.name:
