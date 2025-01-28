@@ -39,13 +39,13 @@ func _ready() -> void:
 	lossless_checkbox.toggled.connect(_on_lossless_check_box_toggled)
 	format_dropdown.value_changed.connect(_on_dropdown_value_changed)
 	
-	dimensions = SVG.root_element.get_size()
+	dimensions = State.root_element.get_size()
 	var bigger_dimension := maxf(dimensions.x, dimensions.y)
 	scale_edit.min_value = 1 / minf(dimensions.x, dimensions.y)
 	scale_edit.max_value = 16384 / bigger_dimension
 	
 	# Update dimensions label.
-	dimensions = SVG.root_element.get_size()
+	dimensions = State.root_element.get_size()
 	dimensions_label.text = Translator.translate("Dimensions") + ": " +\
 			get_dimensions_text(dimensions)
 	update()
@@ -57,12 +57,12 @@ func _ready() -> void:
 			"Preview image size is limited to {dimensions}").format(
 			{"dimensions": get_dimensions_text(dimensions * scaling_factor, true)})
 	
-	if Utils.get_file_name(Configs.savedata.current_file_path).is_empty():
+	if Configs.savedata.get_active_tab().svg_file_path.is_empty():
 		file_title.add_theme_color_override("font_color", ThemeUtils.common_subtle_text_color)
-		file_title.text = Translator.translate("Unnamed")
+		file_title.text = Configs.savedata.get_active_tab().get_presented_name()
 	
 	final_size_label.text = Translator.translate("Size") + ": " +\
-			String.humanize_size(SVG.get_export_text().length())
+			String.humanize_size(State.get_export_text().length())
 	%TitleLabel.text = Translator.translate("Export Configuration")
 	%FormatHBox/Label.text = Translator.translate("Format") + ":"
 	%LosslessCheckBox.text = Translator.translate("Lossless")
@@ -146,13 +146,13 @@ func update() -> void:
 	
 	final_size_label.visible = (export_data.format == "svg")
 	
-	var file_path := Utils.get_file_name(Configs.savedata.current_file_path)
-	if not file_path.is_empty():
-		file_title.text = file_path + "." + export_data.format
+	var file_name := Utils.get_file_name(Configs.savedata.get_active_tab().svg_file_path)
+	if not file_name.is_empty():
+		file_title.text = file_name + "." + export_data.format
 	
 	# Display the texture and the warning for inaccurate previews.
 	if export_data.format == "svg":
-		texture_preview.setup_svg(SVG.get_export_text(), dimensions)
+		texture_preview.setup_svg(State.get_export_text(), dimensions)
 	else:
 		texture_preview.setup_image(export_data)
 		# Sync width, height, and scale without affecting the upscale amount.

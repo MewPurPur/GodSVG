@@ -1,0 +1,51 @@
+[gd_scene load_steps=6 format=3 uid="uid://cxmrx6t4jkhyj"]
+
+[ext_resource type="Script" uid="uid://cgbgw4ok5jxk5" path="res://src/ui_parts/global_actions.gd" id="1_x4rqo"]
+[ext_resource type="Texture2D" uid="uid://ccbta5q43jobk" path="res://assets/icons/More.svg" id="2_71075"]
+[ext_resource type="Texture2D" uid="uid://6ymbl3jqersp" path="res://assets/icons/Import.svg" id="2_giwu1"]
+[ext_resource type="Texture2D" uid="uid://d0uvwj0t44n6v" path="res://assets/icons/Export.svg" id="3_4ckhj"]
+[ext_resource type="Texture2D" uid="uid://ckkkgof1hcbld" path="res://assets/icons/Gear.svg" id="3_xl5uh"]
+
+[node name="GlobalActions" type="HBoxContainer"]
+offset_right = 52.0
+offset_bottom = 24.0
+script = ExtResource("1_x4rqo")
+
+[node name="LeftSide" type="HBoxContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 2
+
+[node name="MoreOptions" type="Button" parent="LeftSide"]
+layout_mode = 2
+size_flags_horizontal = 2
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_type_variation = &"IconButton"
+icon = ExtResource("2_71075")
+icon_alignment = 1
+
+[node name="SettingsButton" type="Button" parent="LeftSide"]
+layout_mode = 2
+size_flags_horizontal = 2
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_type_variation = &"IconButton"
+icon = ExtResource("3_xl5uh")
+icon_alignment = 1
+
+[node name="RightSide" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="ImportButton" type="Button" parent="RightSide"]
+layout_mode = 2
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_type_variation = &"IconButton"
+icon = ExtResource("2_giwu1")
+
+[node name="ExportButton" type="Button" parent="RightSide"]
+layout_mode = 2
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_type_variation = &"IconButton"
+icon = ExtResource("3_4ckhj")

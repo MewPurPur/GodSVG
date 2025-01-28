@@ -6,10 +6,12 @@ const _shortcut_categories_dict: Dictionary[String, Dictionary] = {
 		"import": true,
 		"export": true,
 		"save": true,
+		"close_tab": true,
+		"new_tab": true,
+		"select_next_tab": true,
+		"select_previous_tab": true,
 		"optimize": true,
 		"copy_svg_text": true,
-		"clear_svg": true,
-		"clear_file_path": true,
 		"reset_svg": true,
 		"open_svg": true,
 	},
@@ -78,21 +80,25 @@ static func fn(shortcut: String) -> Callable:
 		"save": return FileUtils.save_svg
 		"export": return HandlerGUI.open_export
 		"import": return FileUtils.open_svg_import_dialog
-		"copy_svg_text": return DisplayServer.clipboard_set.bind(SVG.text)
-		"clear_svg": return SVG.apply_svg_text.bind(SVG.DEFAULT)
-		"optimize": return SVG.optimize
-		"clear_file_path": return Configs.savedata.set.bind("current_file_path", "")
-		"reset_svg": return FileUtils.apply_svg_from_path.bind(
-				Configs.savedata.current_file_path)
-		"open_svg": return FileUtils.open_svg.bind(Configs.savedata.current_file_path)
-		"redo": return SVG.redo
-		"undo": return SVG.undo
-		"ui_cancel": return Indications.clear_all_selections
-		"delete": return Indications.delete_selected
-		"move_up": return Indications.move_up_selected
-		"move_down": return Indications.move_down_selected
-		"duplicate": return Indications.duplicate_selected
-		"select_all": return Indications.select_all
+		"close_tab": return Configs.savedata.remove_active_tab
+		"new_tab": return Configs.savedata.add_empty_tab
+		"select_next_tab": return func(): Configs.savedata.set_active_tab_index(posmod(
+				Configs.savedata.get_active_tab_index() + 1, Configs.savedata.get_tab_count()))
+		"select_previous_tab": return func(): Configs.savedata.set_active_tab_index(posmod(
+				Configs.savedata.get_active_tab_index() - 1, Configs.savedata.get_tab_count()))
+		"copy_svg_text": return DisplayServer.clipboard_set.bind(State.svg_text)
+		"optimize": return State.optimize
+		"reset_svg": return FileUtils.reset_svg
+		"open_svg": return FileUtils.open_svg.bind(
+				Configs.savedata.get_active_tab().svg_file_path)
+		"redo": return Configs.savedata.get_active_tab().redo
+		"undo": return Configs.savedata.get_active_tab().undo
+		"ui_cancel": return State.clear_all_selections
+		"delete": return State.delete_selected
+		"move_up": return State.move_up_selected
+		"move_down": return State.move_down_selected
+		"duplicate": return State.duplicate_selected
+		"select_all": return State.select_all
 		"about_info": return HandlerGUI.open_about
 		"about_donate": return HandlerGUI.open_donate
 		"about_repo": return OS.shell_open.bind("https://github.com/MewPurPur/GodSVG")
@@ -107,8 +113,8 @@ static func get_shortcut_icon(shortcut: String) -> CompressedTexture2D:
 		"import": return load("res://assets/icons/Import.svg")
 		"export": return load("res://assets/icons/Export.svg")
 		"save": return load("res://assets/icons/Save.svg")
+		"new_tab": return load("res://assets/icons/CreateTab.svg")
 		"copy_svg_text": return load("res://assets/icons/Copy.svg")
-		"clear_svg", "clear_file_path": return load("res://assets/icons/Clear.svg")
 		"optimize": return load("res://assets/icons/Compress.svg")
 		"reset_svg", "zoom_reset": return load("res://assets/icons/Reload.svg")
 		"open_svg": return load("res://assets/icons/OpenFile.svg")

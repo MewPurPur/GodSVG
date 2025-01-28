@@ -5,19 +5,25 @@ enum FileState {SAME, DIFFERENT, DOES_NOT_EXIST}
 
 const GoodFileDialogType = preload("res://src/ui_parts/good_file_dialog.gd")
 
-const AlertDialog = preload("res://src/ui_parts/alert_dialog.tscn")
+const AlertDialog = preload("res://src/ui_widgets/alert_dialog.tscn")
 const ImportWarningMenu = preload("res://src/ui_parts/import_warning_menu.tscn")
 const GoodFileDialog = preload("res://src/ui_parts/good_file_dialog.tscn")
+
+static func reset_svg() -> void:
+	var file_path := Configs.savedata.get_active_tab().svg_file_path
+	if FileAccess.file_exists(file_path):
+		State.apply_svg_text(FileAccess.get_file_as_string(file_path))
 
 static func apply_svg_from_path(path: String) -> void:
 	_finish_file_import(path, _apply_svg, PackedStringArray(["svg"]))
 
 static func compare_svg_to_disk_contents() -> FileState:
-	var content := FileAccess.get_file_as_string(Configs.savedata.current_file_path)
+	var content := FileAccess.get_file_as_string(
+			Configs.savedata.get_active_tab().svg_file_path)
 	if content.is_empty():
 		return FileState.DOES_NOT_EXIST
 	# Check if importing the file's text into GodSVG would change the current SVG text.
-	if SVG.text == SVGParser.root_to_text(SVGParser.text_to_root(content,
+	if State.svg_text == SVGParser.root_to_text(SVGParser.text_to_root(content,
 	Configs.savedata.editor_formatter).svg, Configs.savedata.editor_formatter):
 		return FileState.SAME
 	else:
@@ -45,14 +51,14 @@ static func open_export_dialog(export_data: ImageExportData) -> void:
 			
 			DisplayServer.file_dialog_show(
 					Translator.translate("Save the .\"{format}\" file").format(
-					{"format": export_data.format}), Configs.savedata.get_last_dir(),
-					Utils.get_file_name(Configs.savedata.current_file_path) + "." +\
-					export_data.format, false, DisplayServer.FILE_DIALOG_MODE_SAVE_FILE,
+					{"format": export_data.format}), Configs.savedata.get_active_tab_dir(),
+					Utils.get_file_name(Configs.savedata.get_active_tab().svg_file_path) +\
+					"." + export_data.format, false, DisplayServer.FILE_DIALOG_MODE_SAVE_FILE,
 					PackedStringArray(["*." + export_data.format]), native_callback)
 		else:
 			var export_dialog := GoodFileDialog.instantiate()
-			export_dialog.setup(Configs.savedata.get_last_dir(),
-					Utils.get_file_name(Configs.savedata.current_file_path),
+			export_dialog.setup(Configs.savedata.get_active_tab_dir(),
+					Utils.get_file_name(Configs.savedata.get_active_tab().svg_file_path),
 					GoodFileDialogType.FileMode.SAVE, PackedStringArray([export_data.format]))
 			HandlerGUI.add_menu(export_dialog)
 			export_dialog.file_selected.connect(func(path): _finish_export(path, export_data))
@@ -70,8 +76,8 @@ static func _finish_export(file_path: String, export_data: ImageExportData) -> v
 		_:
 			# When saving SVG, also modify the file path to associate it
 			# with the graphic being edited.
-			Configs.savedata.current_file_path = file_path
-			FileAccess.open(file_path, FileAccess.WRITE).store_string(SVG.get_export_text())
+			Configs.savedata.get_active_tab().svg_file_path = file_path
+			FileAccess.open(file_path, FileAccess.WRITE).store_string(State.get_export_text())
 	HandlerGUI.remove_all_menus()
 
 
@@ -164,21 +170,46 @@ allowed_extensions: PackedStringArray) -> Error:
 	return OK
 
 
-static func _apply_svg(data: Variant, file_path: String) -> Error:
-	var warning_panel := ImportWarningMenu.instantiate()
-	warning_panel.imported.connect(_finish_svg_import.bind(data, file_path))
-	warning_panel.set_svg(data)
-	HandlerGUI.add_menu(warning_panel)
-	return OK
+static func _apply_svg(data: Variant, file_path: String) -> void:
+	var tab_exists := false
+	for tab in Configs.savedata.get_tabs():
+		if tab.svg_file_path == file_path:
+			tab_exists = true
+			break
+	
+	if tab_exists:
+		Configs.savedata.add_tab_with_path(file_path)
+		var alert_message := Translator.translate(
+				"The imported file is already being edited inside GodSVG.")
+		if compare_svg_to_disk_contents() == FileState.DIFFERENT:
+			alert_message += "\n\n" + Translator.translate(
+					"If you want to apply the unsaved file state, use \"Reset SVG\" instead.")
+		var alert_dialog := AlertDialog.instantiate()
+		HandlerGUI.add_menu(alert_dialog)
+		alert_dialog.setup(alert_message)
+	else:
+		State.transient_tab_path = file_path
+		var warning_panel := ImportWarningMenu.instantiate()
+		warning_panel.canceled.connect(_on_import_panel_canceled)
+		warning_panel.imported.connect(_on_import_panel_accepted.bind(file_path, data))
+		warning_panel.set_svg(data)
+		HandlerGUI.add_menu(warning_panel)
 
-static func _finish_svg_import(svg_text: String, file_path: String) -> void:
-	Configs.savedata.current_file_path = file_path
-	SVG.apply_svg_text(svg_text)
+static func _on_import_panel_canceled() -> void:
+	State.transient_tab_path = ""
+
+static func _on_import_panel_accepted(file_path: String, svg_text: String) -> void:
+	State.transient_tab_path = ""
+	Configs.savedata.add_tab_with_path(file_path)
+	Configs.savedata.get_active_tab().setup_svg_text(svg_text)
+	State.sync_elements()
 
 
 static func open_svg(file_path: String) -> void:
-	if file_path.get_extension() == "svg":
-		OS.shell_open(file_path)
+	OS.shell_open(file_path)
+
+static func open_svg_folder(file_path: String) -> void:
+	OS.shell_open(file_path.get_base_dir())
 
 
 # Web stuff.
@@ -202,7 +233,7 @@ completion_callback: Callable) -> void:
 	
 	_change_callback = JavaScriptBridge.create_callback(_web_on_file_selected)
 	input.addEventListener("change", _change_callback)
-	_cancel_callback = JavaScriptBridge.create_callback(_web_on_file_dialog_cancelled)
+	_cancel_callback = JavaScriptBridge.create_callback(_web_on_file_dialog_canceled)
 	input.addEventListener("cancel", _cancel_callback)
 	
 	input.click()  # Open file dialog.
@@ -236,7 +267,7 @@ static func _web_on_file_selected(args: Array) -> void:
 	var file: JavaScriptObject = event.target.files[0]
 	JavaScriptBridge.eval("window.godsvgFileName = '" + file.name + "';", true)
 	
-	# Store the callback reference to prevent garbage collection.
+	# Store the callback to prevent garbage collection.
 	var reader: JavaScriptObject = JavaScriptBridge.create_object("FileReader")
 	_file_load_callback = JavaScriptBridge.create_callback(_web_on_file_loaded)
 	reader.onloadend = _file_load_callback
@@ -265,12 +296,12 @@ static func _web_on_file_loaded(args: Array) -> void:
 		# For binary files, the ArrayBuffer gets handled.
 		JavaScriptBridge.eval("window.godsvgFileData = new Uint8Array(event.target.result);", true)
 
-static func _web_on_file_dialog_cancelled(_args: Array) -> void:
+static func _web_on_file_dialog_canceled(_args: Array) -> void:
 	JavaScriptBridge.eval("window.godsvgDialogClosed = true;", true)
 
 
 static func _web_save(buffer: PackedByteArray, format_name: String) -> void:
-	var file_name := Utils.get_file_name(Configs.savedata.current_file_path)
+	var file_name := Utils.get_file_name(Configs.savedata.get_active_tab().svg_file_path)
 	if file_name.is_empty():
 		file_name = "export"
 	JavaScriptBridge.download_buffer(buffer, file_name, format_name)

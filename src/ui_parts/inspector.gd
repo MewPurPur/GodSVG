@@ -12,8 +12,8 @@ func _ready() -> void:
 	Configs.language_changed.connect(update_translation)
 	update_theme()
 	update_translation()
-	SVG.xnode_layout_changed.connect(full_rebuild)
-	SVG.changed_unknown.connect(full_rebuild)
+	State.xnode_layout_changed.connect(full_rebuild)
+	State.svg_unknown_change.connect(full_rebuild)
 	add_button.pressed.connect(_on_add_button_pressed)
 
 
@@ -29,7 +29,7 @@ func update_translation() -> void:
 func full_rebuild() -> void:
 	for node in xnodes_container.get_children():
 		node.queue_free()
-	for xnode_editor in XNodeChildrenBuilder.create(SVG.root_element):
+	for xnode_editor in XNodeChildrenBuilder.create(State.root_element):
 		xnodes_container.add_child(xnode_editor)
 
 func add_element(element_name: String) -> void:
@@ -38,9 +38,9 @@ func add_element(element_name: String) -> void:
 	if element_name in ["linearGradient", "radialGradient", "stop"]:
 		loc = PackedInt32Array([0])
 	else:
-		loc = PackedInt32Array([SVG.root_element.get_child_count()])
-	SVG.root_element.add_xnode(new_element, loc)
-	SVG.queue_save()
+		loc = PackedInt32Array([State.root_element.get_child_count()])
+	State.root_element.add_xnode(new_element, loc)
+	State.queue_svg_save()
 
 
 func _on_add_button_pressed() -> void:

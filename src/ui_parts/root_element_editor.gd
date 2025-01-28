@@ -26,8 +26,8 @@ const NumberEditType = preload("res://src/ui_widgets/number_edit.gd")
 @onready var unknown_container: MarginContainer
 
 func _ready() -> void:
-	SVG.any_attribute_changed.connect(_on_any_attribute_changed)
-	SVG.changed_unknown.connect(update_attributes)
+	State.any_attribute_changed.connect(_on_any_attribute_changed)
+	State.svg_unknown_change.connect(update_attributes)
 	update_attributes()
 	width_edit.value_changed.connect(_on_width_edit_value_changed)
 	height_edit.value_changed.connect(_on_height_edit_value_changed)
@@ -50,7 +50,7 @@ func update_attributes() -> void:
 		for child in unknown_container.get_children():
 			child.queue_free()
 	var has_unrecognized_attributes := false
-	for attribute in SVG.root_element.get_all_attributes():
+	for attribute in State.root_element.get_all_attributes():
 		# TODO separate unrecognized attributes from global defaults.
 		if not attribute.name in ["width", "height", "viewBox", "xmlns"]:
 			if not has_unrecognized_attributes:
@@ -65,7 +65,7 @@ func update_attributes() -> void:
 				add_child(unknown_container)
 				move_child(unknown_container, 0)
 			
-			var input_field := AttributeFieldBuilder.create(attribute.name, SVG.root_element)
+			var input_field := AttributeFieldBuilder.create(attribute.name, State.root_element)
 			unknown_container.get_child(0).add_child(input_field)
 	if not has_unrecognized_attributes and is_instance_valid(unknown_container):
 		unknown_container.queue_free()
@@ -73,17 +73,17 @@ func update_attributes() -> void:
 
 
 func update_editable() -> void:
-	width_edit.set_value(SVG.root_element.width, false)
-	height_edit.set_value(SVG.root_element.height, false)
-	viewbox_edit_x.set_value(SVG.root_element.viewbox.position.x, false)
-	viewbox_edit_y.set_value(SVG.root_element.viewbox.position.y, false)
-	viewbox_edit_w.set_value(SVG.root_element.viewbox.size.x, false)
-	viewbox_edit_h.set_value(SVG.root_element.viewbox.size.y, false)
+	width_edit.set_value(State.root_element.width, false)
+	height_edit.set_value(State.root_element.height, false)
+	viewbox_edit_x.set_value(State.root_element.viewbox.position.x, false)
+	viewbox_edit_y.set_value(State.root_element.viewbox.position.y, false)
+	viewbox_edit_w.set_value(State.root_element.viewbox.size.x, false)
+	viewbox_edit_h.set_value(State.root_element.viewbox.size.y, false)
 	
-	var is_width_valid := SVG.root_element.has_attribute("width")
-	var is_height_valid := SVG.root_element.has_attribute("height")
-	var is_viewbox_valid: bool = SVG.root_element.has_attribute("viewBox") and\
-			SVG.root_element.get_attribute("viewBox").get_list_size() >= 4
+	var is_width_valid := State.root_element.has_attribute("width")
+	var is_height_valid := State.root_element.has_attribute("height")
+	var is_viewbox_valid: bool = State.root_element.has_attribute("viewBox") and\
+			State.root_element.get_attribute("viewBox").get_list_size() >= 4
 	
 	width_button.set_pressed_no_signal(is_width_valid)
 	height_button.set_pressed_no_signal(is_height_valid)
@@ -98,78 +98,78 @@ func update_editable() -> void:
 
 
 func _on_width_edit_value_changed(new_value: float) -> void:
-	if is_finite(new_value) and SVG.root_element.get_attribute_num("width") != new_value:
-		SVG.root_element.width = new_value
-		SVG.root_element.set_attribute("width", new_value)
+	if is_finite(new_value) and State.root_element.get_attribute_num("width") != new_value:
+		State.root_element.width = new_value
+		State.root_element.set_attribute("width", new_value)
 	else:
-		SVG.root_element.set_attribute("width", SVG.root_element.width)
-	SVG.queue_save()
+		State.root_element.set_attribute("width", State.root_element.width)
+	State.queue_svg_save()
 
 func _on_height_edit_value_changed(new_value: float) -> void:
-	if is_finite(new_value) and SVG.root_element.get_attribute_num("height") != new_value:
-		SVG.root_element.height = new_value
-		SVG.root_element.set_attribute("height", new_value)
+	if is_finite(new_value) and State.root_element.get_attribute_num("height") != new_value:
+		State.root_element.height = new_value
+		State.root_element.set_attribute("height", new_value)
 	else:
-		SVG.root_element.set_attribute("height", SVG.root_element.height)
-	SVG.queue_save()
+		State.root_element.set_attribute("height", State.root_element.height)
+	State.queue_svg_save()
 
 func _on_viewbox_edit_x_value_changed(new_value: float) -> void:
-	if SVG.root_element.has_attribute("viewBox"):
-		SVG.root_element.viewbox.position.x = new_value
-		SVG.root_element.get_attribute("viewBox").set_list_element(0, new_value)
-		SVG.queue_save()
+	if State.root_element.has_attribute("viewBox"):
+		State.root_element.viewbox.position.x = new_value
+		State.root_element.get_attribute("viewBox").set_list_element(0, new_value)
+		State.queue_svg_save()
 
 func _on_viewbox_edit_y_value_changed(new_value: float) -> void:
-	if SVG.root_element.has_attribute("viewBox"):
-		SVG.root_element.viewbox.position.y = new_value
-		SVG.root_element.get_attribute("viewBox").set_list_element(1, new_value)
-		SVG.queue_save()
+	if State.root_element.has_attribute("viewBox"):
+		State.root_element.viewbox.position.y = new_value
+		State.root_element.get_attribute("viewBox").set_list_element(1, new_value)
+		State.queue_svg_save()
 
 func _on_viewbox_edit_w_value_changed(new_value: float) -> void:
-	if SVG.root_element.has_attribute("viewBox") and\
-	SVG.root_element.get_attribute("viewBox").get_list_element(2) != new_value:
-		SVG.root_element.viewbox.size.x = new_value
-		SVG.root_element.get_attribute("viewBox").set_list_element(2, new_value)
-		SVG.queue_save()
+	if State.root_element.has_attribute("viewBox") and\
+	State.root_element.get_attribute("viewBox").get_list_element(2) != new_value:
+		State.root_element.viewbox.size.x = new_value
+		State.root_element.get_attribute("viewBox").set_list_element(2, new_value)
+		State.queue_svg_save()
 
 func _on_viewbox_edit_h_value_changed(new_value: float) -> void:
-	if SVG.root_element.has_attribute("viewBox") and\
-	SVG.root_element.get_attribute("viewBox").get_list_element(3) != new_value:
-		SVG.root_element.viewbox.size.y = new_value
-		SVG.root_element.get_attribute("viewBox").set_list_element(3, new_value)
-		SVG.queue_save()
+	if State.root_element.has_attribute("viewBox") and\
+	State.root_element.get_attribute("viewBox").get_list_element(3) != new_value:
+		State.root_element.viewbox.size.y = new_value
+		State.root_element.get_attribute("viewBox").set_list_element(3, new_value)
+		State.queue_svg_save()
 
 func _on_width_button_toggled(toggled_on: bool) -> void:
 	if toggled_on:
-		SVG.root_element.set_attribute("width", SVG.root_element.width)
-		SVG.queue_save()
+		State.root_element.set_attribute("width", State.root_element.width)
+		State.queue_svg_save()
 	else:
-		if SVG.root_element.get_attribute("viewBox").get_list_size() == 4:
-			SVG.root_element.set_attribute("width", "")
-			SVG.queue_save()
+		if State.root_element.get_attribute("viewBox").get_list_size() == 4:
+			State.root_element.set_attribute("width", "")
+			State.queue_svg_save()
 		else:
 			width_button.set_pressed_no_signal(true)
 
 func _on_height_button_toggled(toggled_on: bool) -> void:
 	if toggled_on:
-		SVG.root_element.set_attribute("height", SVG.root_element.height)
-		SVG.queue_save()
+		State.root_element.set_attribute("height", State.root_element.height)
+		State.queue_svg_save()
 	else:
-		if SVG.root_element.get_attribute("viewBox").get_list_size() == 4:
-			SVG.root_element.set_attribute("height", "")
-			SVG.queue_save()
+		if State.root_element.get_attribute("viewBox").get_list_size() == 4:
+			State.root_element.set_attribute("height", "")
+			State.queue_svg_save()
 		else:
 			height_button.set_pressed_no_signal(true)
 
 func _on_viewbox_button_toggled(toggled_on: bool) -> void:
 	if toggled_on:
-		SVG.root_element.set_attribute("viewBox",
-				ListParser.rect_to_list(SVG.root_element.viewbox))
-		SVG.queue_save()
+		State.root_element.set_attribute("viewBox",
+				ListParser.rect_to_list(State.root_element.viewbox))
+		State.queue_svg_save()
 	else:
-		if SVG.root_element.has_attribute("width") and\
-		SVG.root_element.has_attribute("height"):
-			SVG.root_element.set_attribute("viewBox", "")
-			SVG.queue_save()
+		if State.root_element.has_attribute("width") and\
+		State.root_element.has_attribute("height"):
+			State.root_element.set_attribute("viewBox", "")
+			State.queue_svg_save()
 		else:
 			viewbox_button.set_pressed_no_signal(true)

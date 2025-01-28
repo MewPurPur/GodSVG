@@ -1,6 +1,6 @@
 extends HBoxContainer
 
-const MacMenu = preload("res://src/ui_parts/global_menu.tscn")
+const MacMenu = preload("res://src/ui_parts/mac_menu.tscn")
 
 @onready var panel_container: PanelContainer = $PanelContainer
 

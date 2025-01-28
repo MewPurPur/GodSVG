@@ -81,7 +81,7 @@ func update_palettes(search_text := "") -> void:
 		reserved_colors.append("currentColor")
 		reserved_color_names.append("Current color")
 	if show_url:
-		for element in SVG.root_element.get_all_element_descendants():
+		for element in State.root_element.get_all_element_descendants():
 			if element.has_attribute("id"):
 				if element is ElementLinearGradient:
 					reserved_color_names.append("Linear gradient")

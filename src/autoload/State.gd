@@ -1,8 +1,10 @@
-# This singleton handles temporary editor information like zoom level and selections.
+# This singleton handles information that's session-wide, but not saved.
 extends Node
 
-# Not a good idea to preload scenes inside a singleton.
+const OptionsDialog = preload("res://src/ui_widgets/options_dialog.tscn")
 const PathCommandPopup = preload("res://src/ui_widgets/path_popup.tscn")
+
+const DEFAULT_SVG = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"></svg>'
 
 const path_actions_dict: Dictionary[String, String] = {
 	"move_absolute": "M", "move_relative": "m",
@@ -16,6 +18,180 @@ const path_actions_dict: Dictionary[String, String] = {
 	"quadratic_bezier_absolute": "Q", "quadratic_bezier_relative": "q",
 	"shorthand_quadratic_bezier_absolute": "T", "shorthand_quadratic_bezier_relative": "t"
 }
+
+
+signal svg_unknown_change
+signal svg_resized
+
+# These signals copy the ones in ElementRoot.
+# ElementRoot is not persistent, while these signals can be connected to reliably.
+signal any_attribute_changed(xid: PackedInt32Array)
+signal xnodes_added(xids: Array[PackedInt32Array])
+signal xnodes_deleted(xids: Array[PackedInt32Array])
+signal xnodes_moved_in_parent(parent_xid: PackedInt32Array, old_indices: Array[int])
+signal xnodes_moved_to(xids: Array[PackedInt32Array], location: PackedInt32Array)
+signal xnode_layout_changed  # Emitted together with any of the above 4.
+signal basic_xnode_text_changed
+signal basic_xnode_rendered_text_changed
+
+signal parsing_finished(error_id: SVGParser.ParseError)
+signal svg_changed  # Should only connect to persistent parts of the UI.
+
+var _svg_current_size := Vector2.ZERO
+
+var _update_pending := false
+
+# "unstable_text" is the current state, which might have errors (i.e., while using the
+# code editor). "text" is the last state without errors.
+# These both differ from "Configs.svg_text" which is the state as saved to file,
+# which doesn't happen while dragging handles or typing in the code editor for example.
+var unstable_svg_text := ""
+var svg_text := ""
+var root_element: ElementRoot
+
+# Temporary unsaved tab, set to the file path string when importing an SVG.
+var transient_tab_path := "":
+	set(new_value):
+		if transient_tab_path != new_value:
+			transient_tab_path = new_value
+			Configs.tabs_changed.emit()
+			Configs.active_tab_file_path_changed.emit()
+			setup_from_tab()
+
+func _enter_tree() -> void:
+	root_element = ElementRoot.new(Configs.savedata.editor_formatter)
+	
+	get_window().mouse_exited.connect(clear_all_hovered)
+	
+	xnodes_added.connect(_on_xnodes_added)
+	xnodes_deleted.connect(_on_xnodes_deleted)
+	xnodes_moved_in_parent.connect(_on_xnodes_moved_in_parent)
+	xnodes_moved_to.connect(_on_xnodes_moved_to)
+	svg_unknown_change.connect(clear_all_selections)
+	
+	svg_unknown_change.connect(queue_update)
+	xnode_layout_changed.connect(queue_update)
+	any_attribute_changed.connect(queue_update.unbind(1))
+	basic_xnode_text_changed.connect(queue_update)
+	basic_xnode_rendered_text_changed.connect(queue_update)
+	
+	Configs.active_tab_changed.connect(setup_from_tab)
+	setup_from_tab.call_deferred()  # Let everything load before emitting signals.
+	
+	var cmdline_args := OS.get_cmdline_args()
+	if not (OS.is_debug_build() and not OS.has_feature("template")) and\
+	cmdline_args.size() >= 1:
+		await get_tree().ready  # Ensures we can add warning panels.
+		FileUtils.apply_svg_from_path(cmdline_args[0])
+
+
+func setup_from_tab() -> void:
+	var active_tab := Configs.savedata.get_active_tab()
+	var new_text := active_tab.get_svg_text()
+	
+	if not transient_tab_path.is_empty():
+		apply_svg_text(DEFAULT_SVG, false)
+		return
+	
+	if not new_text.is_empty():
+		apply_svg_text(new_text)
+		return
+	
+	if not active_tab.is_new and not FileAccess.file_exists(active_tab.get_edited_file_path()):
+		var user_facing_path := active_tab.svg_file_path
+		var message := Translator.translate(
+				"The last edited state of this tab could not be found.")
+		
+		var options_dialog := OptionsDialog.instantiate()
+		HandlerGUI.add_dialog(options_dialog)
+		if user_facing_path.is_empty() or not FileAccess.file_exists(user_facing_path):
+			options_dialog.setup(Translator.translate("Alert!"), message)
+			options_dialog.add_option(Translator.translate("Close tab"),
+					Configs.savedata.remove_active_tab)
+		else:
+			options_dialog.setup(Translator.translate("Alert!"),
+					message + "\n\n" + Translator.translate(
+					"The tab is bound to the file path {file_path}. Do you want to restore from this path?").\
+					format({"file_path": user_facing_path}))
+			options_dialog.add_option(Translator.translate("Close tab"),
+					Configs.savedata.remove_active_tab)
+			options_dialog.add_option(Translator.translate("Restore"),
+					FileUtils.reset_svg, true)
+		apply_svg_text(DEFAULT_SVG, false)
+		return
+	
+	active_tab.setup_svg_text(DEFAULT_SVG)
+	sync_elements()
+
+
+# Syncs text to the elements.
+func queue_update() -> void:
+	_update.call_deferred()
+	_update_pending = true
+
+func _update() -> void:
+	if not _update_pending:
+		return
+	_update_pending = false
+	svg_text = SVGParser.root_to_text(root_element, Configs.savedata.editor_formatter)
+	svg_changed.emit()
+
+# Ensure the save happens after the update.
+func queue_svg_save() -> void:
+	_svg_save.call_deferred()
+
+func _svg_save() -> void:
+	unstable_svg_text = ""
+	Configs.savedata.get_active_tab().set_svg_text(svg_text)
+
+
+func sync_elements() -> void:
+	var text_to_parse := svg_text if unstable_svg_text.is_empty() else unstable_svg_text
+	var svg_parse_result := SVGParser.text_to_root(text_to_parse,
+			Configs.savedata.editor_formatter)
+	parsing_finished.emit(svg_parse_result.error)
+	if svg_parse_result.error == SVGParser.ParseError.OK:
+		svg_text = unstable_svg_text
+		unstable_svg_text = ""
+		root_element = svg_parse_result.svg
+		root_element.any_attribute_changed.connect(any_attribute_changed.emit)
+		root_element.xnodes_added.connect(xnodes_added.emit)
+		root_element.xnodes_deleted.connect(xnodes_deleted.emit)
+		root_element.xnodes_moved_in_parent.connect(xnodes_moved_in_parent.emit)
+		root_element.xnodes_moved_to.connect(xnodes_moved_to.emit)
+		root_element.xnode_layout_changed.connect(xnode_layout_changed.emit)
+		root_element.attribute_changed.connect(_on_root_attribute_changed)
+		root_element.basic_xnode_text_changed.connect(basic_xnode_text_changed.emit)
+		root_element.basic_xnode_rendered_text_changed.connect(
+				basic_xnode_rendered_text_changed.emit)
+		svg_unknown_change.emit()
+		_update_svg_current_size()
+
+
+func _on_root_attribute_changed(attribute_name: String) -> void:
+	if attribute_name in ["width", "height", "viewBox"]:
+		_update_svg_current_size()
+
+func _update_svg_current_size() -> void:
+	if _svg_current_size != root_element.get_size():
+		_svg_current_size = root_element.get_size()
+		svg_resized.emit()
+
+
+func apply_svg_text(new_text: String, save := true) -> void:
+	unstable_svg_text = new_text
+	sync_elements()
+	if save:
+		queue_svg_save()
+
+func optimize() -> void:
+	root_element.optimize()
+	queue_svg_save()
+
+func get_export_text() -> String:
+	return SVGParser.root_to_text(root_element, Configs.savedata.export_formatter)
+
+
 
 signal hover_changed
 signal selection_changed
@@ -62,14 +238,6 @@ func set_viewport_size(new_value: Vector2i) -> void:
 	if viewport_size != new_value:
 		viewport_size = new_value
 		viewport_size_changed.emit()
-
-
-func _ready() -> void:
-	SVG.xnodes_added.connect(_on_xnodes_added)
-	SVG.xnodes_deleted.connect(_on_xnodes_deleted)
-	SVG.xnodes_moved_in_parent.connect(_on_xnodes_moved_in_parent)
-	SVG.xnodes_moved_to.connect(_on_xnodes_moved_to)
-	SVG.changed_unknown.connect(clear_all_selections)
 
 
 # Override the selected elements with a single new selected element.
@@ -196,7 +364,7 @@ func shift_select(xid: PackedInt32Array, inner_idx := -1) -> void:
 # Select all elements.
 func select_all() -> void:
 	_clear_inner_selection_no_signal()
-	var xnode_list: Array[XNode] = SVG.root_element.get_all_xnode_descendants()
+	var xnode_list: Array[XNode] = root_element.get_all_xnode_descendants()
 	var xid_list: Array = xnode_list.map(func(xnode): return xnode.xid)
 	# The order might not be the same, so ensure like this.
 	if XIDUtils.are_xid_lists_same(xid_list, selected_xids):
@@ -281,6 +449,13 @@ func clear_hovered() -> void:
 # Clear the inner hover.
 func clear_inner_hovered() -> void:
 	if inner_hovered != -1:
+		inner_hovered = -1
+		semi_hovered_xid.clear()
+		hover_changed.emit()
+
+func clear_all_hovered() -> void:
+	if not hovered_xid.is_empty() or inner_hovered != -1:
+		hovered_xid.clear()
 		inner_hovered = -1
 		semi_hovered_xid.clear()
 		hover_changed.emit()
@@ -397,7 +572,7 @@ func respond_to_key_input(event: InputEventKey) -> void:
 	if inner_selections.is_empty() or event.is_command_or_control_pressed():
 		# If a single path element is selected, add the new command at the end.
 		if selected_xids.size() == 1:
-			var xnode_ref := SVG.root_element.get_xnode(selected_xids[0])
+			var xnode_ref := root_element.get_xnode(selected_xids[0])
 			if xnode_ref is ElementPath:
 				var path_attrib: AttributePathdata = xnode_ref.get_attribute("d")
 				for action_name in path_actions_dict.keys():
@@ -418,7 +593,7 @@ func respond_to_key_input(event: InputEventKey) -> void:
 		return
 	# If path commands are selected, insert after the last one.
 	for action_name in path_actions_dict.keys():
-		var element_ref := SVG.root_element.get_xnode(semi_selected_xid)
+		var element_ref := root_element.get_xnode(semi_selected_xid)
 		if element_ref.name == "path":
 			if ShortcutUtils.is_action_pressed(event, action_name):
 				var path_attrib: AttributePathdata = element_ref.get_attribute("d")
@@ -438,12 +613,12 @@ func respond_to_key_input(event: InputEventKey) -> void:
 
 func delete_selected() -> void:
 	if not selected_xids.is_empty():
-		SVG.root_element.delete_xnodes(selected_xids)
-		SVG.queue_save()
+		root_element.delete_xnodes(selected_xids)
+		queue_svg_save()
 	elif not inner_selections.is_empty() and not semi_selected_xid.is_empty():
 		inner_selections.sort()
 		inner_selections.reverse()
-		var element_ref := SVG.root_element.get_xnode(semi_selected_xid)
+		var element_ref := root_element.get_xnode(semi_selected_xid)
 		match element_ref.name:
 			"path": element_ref.get_attribute("d").delete_commands(inner_selections)
 			"polygon", "polyline":
@@ -454,15 +629,15 @@ func delete_selected() -> void:
 				element_ref.get_attribute("points").delete_elements(indices_to_delete)
 		clear_inner_selection()
 		clear_inner_hovered()
-		SVG.queue_save()
+		queue_svg_save()
 
 func move_up_selected() -> void:
-	SVG.root_element.move_xnodes_in_parent(selected_xids, false)
-	SVG.queue_save()
+	root_element.move_xnodes_in_parent(selected_xids, false)
+	queue_svg_save()
 
 func move_down_selected() -> void:
-	SVG.root_element.move_xnodes_in_parent(selected_xids, true)
-	SVG.queue_save()
+	root_element.move_xnodes_in_parent(selected_xids, true)
+	queue_svg_save()
 
 func view_in_list(xid: PackedInt32Array) -> void:
 	if xid.is_empty():
@@ -470,11 +645,11 @@ func view_in_list(xid: PackedInt32Array) -> void:
 	requested_scroll_to_element_editor.emit(xid)
 
 func duplicate_selected() -> void:
-	SVG.root_element.duplicate_xnodes(selected_xids)
-	SVG.queue_save()
+	root_element.duplicate_xnodes(selected_xids)
+	queue_svg_save()
 
 func insert_path_command_after_selection(new_command: String) -> void:
-	var path_attrib: AttributePathdata = SVG.root_element.get_xnode(
+	var path_attrib: AttributePathdata = root_element.get_xnode(
 			semi_selected_xid).get_attribute("d")
 	var last_selection: int = inner_selections.max()
 	# Z after a Z is syntactically invalid.
@@ -483,15 +658,15 @@ func insert_path_command_after_selection(new_command: String) -> void:
 		return
 	path_attrib.insert_command(last_selection + 1, new_command)
 	normal_select(semi_selected_xid, last_selection + 1)
-	SVG.queue_save()
+	queue_svg_save()
 
 func insert_point_after_selection() -> void:
-	var element_ref: Element = SVG.root_element.get_xnode(semi_selected_xid)
+	var element_ref: Element = root_element.get_xnode(semi_selected_xid)
 	var last_selection_next: int = inner_selections.max() + 1
 	element_ref.get_attribute("points").insert_element(last_selection_next * 2, 0.0)
 	element_ref.get_attribute("points").insert_element(last_selection_next * 2, 0.0)
 	normal_select(semi_selected_xid, last_selection_next)
-	SVG.queue_save()
+	queue_svg_save()
 
 
 enum Context {
@@ -517,7 +692,7 @@ func get_selection_context(popup_method: Callable, context: Context) -> ContextP
 			can_move_up = false
 			var parent_xid := XIDUtils.get_parent_xid(filtered_xids[0])
 			var filtered_count := filtered_xids.size()
-			var parent_child_count: int = SVG.root_element.get_xnode(parent_xid).get_child_count()
+			var parent_child_count: int = root_element.get_xnode(parent_xid).get_child_count()
 			for base_xid in filtered_xids:
 				if not can_move_up and base_xid[-1] >= filtered_count:
 					can_move_up = true
@@ -533,7 +708,7 @@ func get_selection_context(popup_method: Callable, context: Context) -> ContextP
 				duplicate_selected, false, load("res://assets/icons/Duplicate.svg"),
 				"duplicate"))
 		
-		var xnode := SVG.root_element.get_xnode(selected_xids[0])
+		var xnode := root_element.get_xnode(selected_xids[0])
 		if (selected_xids.size() == 1 and not xnode.is_element()) or\
 		(xnode.is_element() and not xnode.possible_conversions.is_empty()):
 			btn_arr.append(ContextPopup.create_button(
@@ -556,7 +731,7 @@ func get_selection_context(popup_method: Callable, context: Context) -> ContextP
 				delete_selected, false, load("res://assets/icons/Delete.svg"), "delete"))
 	
 	elif not inner_selections.is_empty() and not semi_selected_xid.is_empty():
-		var element_ref := SVG.root_element.get_xnode(semi_selected_xid)
+		var element_ref := root_element.get_xnode(semi_selected_xid)
 		
 		if context == Context.VIEWPORT:
 			btn_arr.append(ContextPopup.create_button(
@@ -594,7 +769,7 @@ func popup_convert_to_context(popup_method: Callable) -> void:
 	# The "Convert To" context popup.
 	if not selected_xids.is_empty():
 		var btn_arr: Array[Button] = []
-		var xnode := SVG.root_element.get_xnode(selected_xids[0])
+		var xnode := root_element.get_xnode(selected_xids[0])
 		if not xnode.is_element():
 			for xnode_type in xnode.get_possible_conversions():
 				var btn := ContextPopup.create_button(BasicXNode.get_type_string(xnode_type),
@@ -613,8 +788,8 @@ func popup_convert_to_context(popup_method: Callable) -> void:
 		context_popup.setup(btn_arr, true)
 		popup_method.call(context_popup)
 	elif not inner_selections.is_empty() and not semi_selected_xid.is_empty():
-		var path_attrib: AttributePathdata =\
-				SVG.root_element.get_xnode(semi_selected_xid).get_attribute("d")
+		var path_attrib: AttributePathdata = root_element.get_xnode(
+				semi_selected_xid).get_attribute("d")
 		var selection_idx: int = inner_selections.max()
 		var cmd_char := path_attrib.get_command(selection_idx).command_char
 		
@@ -637,8 +812,8 @@ func popup_convert_to_context(popup_method: Callable) -> void:
 		command_picker.path_command_picked.connect(convert_selected_command_to)
 
 func popup_insert_command_after_context(popup_method: Callable) -> void:
-	var path_attrib: AttributePathdata =\
-			SVG.root_element.get_xnode(semi_selected_xid).get_attribute("d")
+	var path_attrib: AttributePathdata = root_element.get_xnode(
+			semi_selected_xid).get_attribute("d")
 	var selection_idx: int = inner_selections.max()
 	var cmd_char := path_attrib.get_command(selection_idx).command_char
 	
@@ -664,17 +839,17 @@ func popup_insert_command_after_context(popup_method: Callable) -> void:
 
 func convert_selected_element_to(element_name: String) -> void:
 	var xid := selected_xids[0]
-	SVG.root_element.replace_xnode(xid,
-			SVG.root_element.get_xnode(xid).get_replacement(element_name))
-	SVG.queue_save()
+	root_element.replace_xnode(xid,
+			root_element.get_xnode(xid).get_replacement(element_name))
+	queue_svg_save()
 
 func convert_selected_xnode_to(xnode_type: BasicXNode.NodeType) -> void:
 	var xid := selected_xids[0]
-	SVG.root_element.replace_xnode(xid,
-			SVG.root_element.get_xnode(xid).get_replacement(xnode_type))
-	SVG.queue_save()
+	root_element.replace_xnode(xid,
+			root_element.get_xnode(xid).get_replacement(xnode_type))
+	queue_svg_save()
 
 func convert_selected_command_to(cmd_type: String) -> void:
-	SVG.root_element.get_xnode(semi_selected_xid).get_attribute("d").convert_command(
+	root_element.get_xnode(semi_selected_xid).get_attribute("d").convert_command(
 			inner_selections[0], cmd_type)
-	SVG.queue_save()
+	queue_svg_save()

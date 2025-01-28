@@ -17,4 +17,3 @@ func setup(title: String, message: String, action_text: String, action: Callable
 	action_button.text = action_text
 	action_button.pressed.connect(action)
 	action_button.grab_focus()
-	label.custom_minimum_size.x = 300.0

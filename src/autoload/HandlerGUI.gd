@@ -1,8 +1,8 @@
 extends Node
 
 # Not a good idea to preload scenes inside a singleton.
-const AlertDialog = preload("res://src/ui_parts/alert_dialog.tscn")
-const ConfirmDialog = preload("res://src/ui_parts/confirm_dialog.tscn")
+const AlertDialog = preload("res://src/ui_widgets/alert_dialog.tscn")
+const ConfirmDialog = preload("res://src/ui_widgets/confirm_dialog.tscn")
 const SettingsMenu = preload("res://src/ui_parts/settings_menu.tscn")
 const AboutMenu = preload("res://src/ui_parts/about_menu.tscn")
 const DonateMenu = preload("res://src/ui_parts/donate_menu.tscn")
@@ -24,6 +24,10 @@ func _enter_tree() -> void:
 	window.size_changed.connect(remove_all_popups)
 
 func _ready() -> void:
+	Configs.active_tab_changed.connect(update_window_title)
+	Configs.active_tab_file_path_changed.connect(update_window_title)
+	update_window_title()
+	
 	Configs.ui_scale_changed.connect(update_ui_scale)
 	await get_tree().process_frame  # Helps make things more consistent.
 	update_ui_scale()
@@ -54,7 +58,7 @@ func add_dialog(new_dialog: Control) -> void:
 	_add_control(new_dialog)
 
 func _add_control(new_control: Control) -> void:
-	# FIXME subpar workaround to drag & drop not able to be cancelled manually.
+	# FIXME subpar workaround to drag & drop not able to be canceled manually.
 	get_tree().root.propagate_notification(NOTIFICATION_DRAG_END)
 	remove_all_popups()
 	
@@ -224,8 +228,8 @@ func _input(event: InputEvent) -> void:
 		return
 	
 	# Global actions that should happen regardless of the context.
-	for action in ["import", "export", "save", "copy_svg_text", "clear_svg", "optimize",
-	"clear_file_path", "reset_svg"]:
+	for action in ["import", "export", "save", "close_tab", "new_tab", "select_next_tab",
+	"select_previous_tab", "copy_svg_text", "optimize", "reset_svg"]:
 		if ShortcutUtils.is_action_pressed(event, action):
 			get_viewport().set_input_as_handled()
 			ShortcutUtils.fn_call(action)
@@ -252,7 +256,7 @@ func _unhandled_input(event: InputEvent) -> void:
 			ShortcutUtils.fn_call(action)
 			return
 	if event is InputEventKey:
-		Indications.respond_to_key_input(event)
+		State.respond_to_key_input(event)
 
 
 func update_ui_scale() -> void:
@@ -320,8 +324,8 @@ func open_donate() -> void:
 	add_menu(DonateMenu.instantiate())
 
 func open_export() -> void:
-	var width := SVG.root_element.width
-	var height := SVG.root_element.height
+	var width := State.root_element.width
+	var height := State.root_element.height
 	if is_finite(width) and is_finite(height) and width > 0.0 and height > 0.0:
 		add_menu(ExportMenu.instantiate())
 	else:
@@ -331,6 +335,15 @@ func open_export() -> void:
 		confirm_dialog.setup(Translator.translate("Export SVG"), Translator.translate(
 				"The graphic can only be exported as SVG because its size is not defined. Do you want to proceed?"),
 				Translator.translate("Export"), FileUtils.open_export_dialog.bind(svg_export_data))
+
+
+func update_window_title() -> void:
+	if Configs.savedata.use_filename_for_window_title and\
+	not Configs.savedata.get_active_tab().svg_file_path.is_empty():
+		get_window().title = Configs.savedata.get_active_tab().get_presented_name() +\
+				" - GodSVG"
+	else:
+		get_window().title = "GodSVG"
 
 
 # Helpers

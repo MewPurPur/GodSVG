@@ -7,7 +7,7 @@ const NumberEditType = preload("res://src/ui_widgets/number_edit.gd")
 const BetterToggleButtonType = preload("res://src/ui_widgets/BetterToggleButton.gd")
 
 const NumberField = preload("res://src/ui_widgets/number_field.tscn")
-const ConfirmDialog := preload("res://src/ui_parts/confirm_dialog.tscn")
+const ConfirmDialog := preload("res://src/ui_widgets/confirm_dialog.tscn")
 
 @onready var viewport: SubViewport = %Viewport
 @onready var controls: Control = %Viewport/Controls
@@ -15,10 +15,8 @@ const ConfirmDialog := preload("res://src/ui_parts/confirm_dialog.tscn")
 @onready var reference_texture = %Viewport/ReferenceTexture
 @onready var reference_button = %LeftMenu/Reference
 @onready var visuals_button: Button = %LeftMenu/Visuals
-@onready var more_button: Button = %LeftMenu/MoreOptions
 @onready var snapper: NumberEditType = %LeftMenu/Snapping/SnapNumberEdit
 @onready var snap_button: BetterToggleButtonType = %LeftMenu/Snapping/SnapButton
-@onready var panel_container: PanelContainer = $PanelContainer
 @onready var viewport_panel: PanelContainer = $ViewportPanel
 @onready var debug_container: MarginContainer = $ViewportPanel/DebugMargins
 @onready var debug_label: Label = %DebugContainer/DebugLabel
@@ -30,6 +28,7 @@ func _ready() -> void:
 	Configs.language_changed.connect(update_translations)
 	Configs.snap_changed.connect(update_snap_config)
 	Configs.theme_changed.connect(update_theme)
+	Configs.active_tab_changed.connect(update_reference_image)
 	update_translations()
 	update_theme()
 	update_snap_config()
@@ -62,7 +61,6 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func update_translations() -> void:
-	%LeftMenu/Settings.tooltip_text = Translator.translate("Settings")
 	%LeftMenu/Visuals.tooltip_text = Translator.translate("Visuals")
 	%LeftMenu/Snapping/SnapButton.tooltip_text =\
 			TranslationUtils.get_shortcut_description("toggle_snap")
@@ -70,10 +68,6 @@ func update_translations() -> void:
 			"Snap size")
 
 func update_theme() -> void:
-	var stylebox := StyleBoxFlat.new()
-	stylebox.bg_color = ThemeUtils.overlay_panel_inner_color
-	stylebox.set_content_margin_all(6)
-	panel_container.add_theme_stylebox_override("panel", stylebox)
 	var frame := StyleBoxFlat.new()
 	frame.draw_center = false
 	frame.border_width_left = 2
@@ -91,12 +85,8 @@ func update_snap_config() -> void:
 	snapper.set_value(absf(snap_config))
 	snap_settings_updated.emit(snap_enabled, absf(snap_config))
 
-
-func _on_settings_pressed() -> void:
-	ShortcutUtils.fn_call("open_settings")
-
-func open_savedata_folder() -> void:
-	OS.shell_show_in_file_manager(ProjectSettings.globalize_path("user://"))
+func update_reference_image() -> void:
+	apply_reference(Configs.savedata.get_active_tab().reference_image)
 
 
 func _on_reference_pressed() -> void:
@@ -128,42 +118,6 @@ func _on_visuals_button_pressed() -> void:
 	var visuals_popup := ContextPopup.new()
 	visuals_popup.setup(btn_arr, true)
 	HandlerGUI.popup_under_rect_center(visuals_popup, visuals_button.get_global_rect(),
-			get_viewport())
-
-func _on_more_options_pressed() -> void:
-	var can_show_savedata_folder := DisplayServer.has_feature(
-				DisplayServer.FEATURE_NATIVE_DIALOG_FILE)
-	var buttons_arr: Array[Button] = []
-	buttons_arr.append(ContextPopup.create_button(Translator.translate(
-			"Check for updates"), ShortcutUtils.fn("check_updates"), false,
-			load("res://assets/icons/Reload.svg"), "check_updates"))
-	
-	if can_show_savedata_folder:
-		buttons_arr.append(ContextPopup.create_button(Translator.translate(
-				"View savedata"), open_savedata_folder , false,
-				load("res://assets/icons/OpenFolder.svg")))
-	
-	var about_btn := ContextPopup.create_button(Translator.translate("About…"),
-			ShortcutUtils.fn("about_info"), false, load("res://assets/logos/icon.png"),
-			"about_info")
-	about_btn.expand_icon = true
-	buttons_arr.append(about_btn)
-	buttons_arr.append(ContextPopup.create_button(Translator.translate(
-			"Donate…"), ShortcutUtils.fn("about_donate"), false,
-			load("res://assets/icons/Heart.svg"), "about_donate"))
-	buttons_arr.append(ContextPopup.create_button(Translator.translate(
-			"GodSVG repository"), ShortcutUtils.fn("about_repo"), false,
-			load("res://assets/icons/Link.svg"), "about_repo"))
-	buttons_arr.append(ContextPopup.create_button(Translator.translate(
-			"GodSVG website"), ShortcutUtils.fn("about_website"), false,
-			load("res://assets/icons/Link.svg"), "about_website"))
-	var separator_indices := PackedInt32Array([1, 3])
-	if can_show_savedata_folder:
-		separator_indices = PackedInt32Array([2, 4])
-	
-	var more_popup := ContextPopup.new()
-	more_popup.setup(buttons_arr, true, -1, -1, separator_indices)
-	HandlerGUI.popup_under_rect_center(more_popup, more_button.get_global_rect(),
 			get_viewport())
 
 
@@ -199,8 +153,16 @@ func finish_reference_import(data: Variant, file_path: String) -> void:
 		"png": img.load_png_from_buffer(data)
 		"jpg", "jpeg": img.load_jpg_from_buffer(data)
 		"webp": img.load_webp_from_buffer(data)
-	reference_texture.texture = ImageTexture.create_from_image(img)
-	reference_texture.show()
+	var image_texture := ImageTexture.create_from_image(img)
+	Configs.savedata.get_active_tab().reference_image = image_texture
+	apply_reference(image_texture)
+
+func apply_reference(reference: Texture2D) ->  void:
+	if is_instance_valid(reference):
+		reference_texture.texture = reference
+		reference_texture.show()
+	else:
+		reference_texture.hide()
 
 func toggle_snap() -> void:
 	snap_button.button_pressed = not snap_button.button_pressed
@@ -218,12 +180,12 @@ func _on_snap_number_edit_value_changed(new_value: float) -> void:
 # The strings here are intentionally not localized.
 func update_debug() -> void:
 	var debug_text := ""
-	debug_text += "FPS: %s\n" % Performance.get_monitor(Performance.TIME_FPS)
+	debug_text += "FPS: %d\n" % Performance.get_monitor(Performance.TIME_FPS)
 	debug_text += "Static Mem: %s\n" % String.humanize_size(int(Performance.get_monitor(
 			Performance.MEMORY_STATIC)))
-	debug_text += "Nodes: %s\n" % Performance.get_monitor(Performance.OBJECT_NODE_COUNT)
-	debug_text += "Stray nodes: %s\n" % Performance.get_monitor(Performance.OBJECT_ORPHAN_NODE_COUNT)
-	debug_text += "Objects: %s\n" % Performance.get_monitor(Performance.OBJECT_COUNT)
+	debug_text += "Nodes: %d\n" % Performance.get_monitor(Performance.OBJECT_NODE_COUNT)
+	debug_text += "Stray nodes: %d\n" % Performance.get_monitor(Performance.OBJECT_ORPHAN_NODE_COUNT)
+	debug_text += "Objects: %d\n" % Performance.get_monitor(Performance.OBJECT_COUNT)
 	debug_label.text = debug_text
 	# Set up the next update if the container is still visible.
 	if debug_container.visible:

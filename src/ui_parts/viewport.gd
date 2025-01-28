@@ -18,22 +18,22 @@ var _zoom_to: Vector2
 
 func _ready() -> void:
 	zoom_menu.zoom_changed.connect(view.update.unbind(2))
-	SVG.resized.connect(resize)
-	Indications.viewport_size_changed.connect(adjust_view)
+	State.svg_resized.connect(resize)
+	State.viewport_size_changed.connect(adjust_view)
 	resize()
 	await get_tree().process_frame
 	zoom_menu.zoom_reset()
 
 # Top left corner.
 func set_view(new_position: Vector2) -> void:
-	var scaled_size := size / Indications.zoom
+	var scaled_size := size / State.zoom
 	view.position = new_position.clamp(Vector2(view.limit_left, view.limit_top),
 			Vector2(view.limit_right, view.limit_bottom) - scaled_size)
 	
 	var stripped_left := maxf(view.position.x, 0.0)
 	var stripped_top := maxf(view.position.y, 0.0)
-	var stripped_right := minf(view.position.x + scaled_size.x, SVG.root_element.width)
-	var stripped_bottom := minf(view.position.y + scaled_size.y, SVG.root_element.height)
+	var stripped_right := minf(view.position.x + scaled_size.x, State.root_element.width)
+	var stripped_bottom := minf(view.position.y + scaled_size.y, State.root_element.height)
 	display_texture.view_rect = Rect2(stripped_left, stripped_top,
 			stripped_right - stripped_left, stripped_bottom - stripped_top)
 	view.update()
@@ -41,25 +41,25 @@ func set_view(new_position: Vector2) -> void:
 
 # Adjust the SVG dimensions.
 func resize() -> void:
-	if SVG.root_element.get_size().is_finite():
-		display.size = SVG.root_element.get_size()
-		reference_texture.size = SVG.root_element.get_size()
+	if State.root_element.get_size().is_finite():
+		display.size = State.root_element.get_size()
+		reference_texture.size = State.root_element.get_size()
 	zoom_menu.zoom_reset()
 
 func center_frame() -> void:
 	var available_size := size * ZOOM_RESET_BUFFER
-	var w_ratio := available_size.x / SVG.root_element.width
-	var h_ratio := available_size.y / SVG.root_element.height
+	var w_ratio := available_size.x / State.root_element.width
+	var h_ratio := available_size.y / State.root_element.height
 	if is_finite(w_ratio) and is_finite(h_ratio):
 		zoom_menu.set_zoom(nearest_po2(ceili(minf(w_ratio, h_ratio) * 32)) / 64.0)
 	else:
 		zoom_menu.set_zoom(1.0)
 	adjust_view()
-	set_view((SVG.root_element.get_size() - size / Indications.zoom) / 2)
+	set_view((State.root_element.get_size() - size / State.zoom) / 2)
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if Indications.get_viewport().gui_is_dragging():
+	if State.get_viewport().gui_is_dragging():
 		return
 	
 	if event is InputEventMouseMotion and\
@@ -68,7 +68,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		if event.ctrl_pressed and event.button_mask == MOUSE_BUTTON_MASK_MIDDLE:
 			if _zoom_to == Vector2.ZERO:  # Set zoom position if starting action.
 				_zoom_to = get_mouse_position() / (size * 1.0)
-			zoom_menu.set_zoom(Indications.zoom * (1.0 +\
+			zoom_menu.set_zoom(State.zoom * (1.0 +\
 				(1 if Configs.savedata.invert_zoom else -1) *\
 				(wrap_mouse(event.relative).y if Configs.savedata.wrap_mouse else\
 				event.relative.y) / 128.0), _zoom_to)
@@ -76,18 +76,18 @@ func _unhandled_input(event: InputEvent) -> void:
 		# without dragging the things on it.
 		else:
 			set_view(view.position - (wrap_mouse(event.relative) if\
-					Configs.savedata.wrap_mouse else event.relative) / Indications.zoom)
+					Configs.savedata.wrap_mouse else event.relative) / State.zoom)
 	
 	elif event is InputEventPanGesture and not DisplayServer.get_name() == "Android":
 		# Zooming with Ctrl + touch?
 		if event.ctrl_pressed:
-			zoom_menu.set_zoom(Indications.zoom * (1 + event.delta.y / 2))
+			zoom_menu.set_zoom(State.zoom * (1 + event.delta.y / 2))
 		# Panning with touch.
 		else:
-			set_view(view.position + event.delta * 32 / Indications.zoom)
+			set_view(view.position + event.delta * 32 / State.zoom)
 	# Zooming with touch.
 	elif event is InputEventMagnifyGesture:
-		zoom_menu.set_zoom(Indications.zoom * event.factor)
+		zoom_menu.set_zoom(State.zoom * event.factor)
 	# Actions with scrolling.
 	elif event is InputEventMouseButton and event.is_pressed():
 		var move_vec := Vector2.ZERO
@@ -130,7 +130,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		elif zoom_dir == -1:
 			zoom_menu.zoom_out(factor, mouse_offset)
 		
-		set_view(view.position + move_vec * factor / Indications.zoom * 32)
+		set_view(view.position + move_vec * factor / State.zoom * 32)
 	
 	else:
 		if not event.is_echo():
@@ -138,33 +138,33 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func _on_zoom_changed(new_zoom_level: float, offset: Vector2) -> void:
-	Indications.set_zoom(new_zoom_level)
+	State.set_zoom(new_zoom_level)
 	adjust_view(offset)
 	display.material.set_shader_parameter("uv_scale",
-			nearest_po2(int(Indications.zoom * 32.0)) / 32.0)
+			nearest_po2(int(State.zoom * 32.0)) / 32.0)
 
-var last_size_adjusted := size / Indications.zoom
+var last_size_adjusted := size / State.zoom
 
 func adjust_view(offset := Vector2(0.5, 0.5)) -> void:
 	var old_size := last_size_adjusted
-	last_size_adjusted = size / Indications.zoom
+	last_size_adjusted = size / State.zoom
 	
-	var svg_w := SVG.root_element.width if\
-			SVG.root_element.has_attribute("width") else 16384.0
-	var svg_h := SVG.root_element.height if\
-			SVG.root_element.has_attribute("height") else 16384.0
+	var svg_w := State.root_element.width if\
+			State.root_element.has_attribute("width") else 16384.0
+	var svg_h := State.root_element.height if\
+			State.root_element.has_attribute("height") else 16384.0
 	
-	var zoomed_size := BUFFER_VIEW_SPACE * size / Indications.zoom
+	var zoomed_size := BUFFER_VIEW_SPACE * size / State.zoom
 	view.limit_left = -zoomed_size.x
 	view.limit_right = zoomed_size.x + svg_w
 	view.limit_top = -zoomed_size.y
 	view.limit_bottom = zoomed_size.y + svg_h
 	set_view(Vector2(lerpf(view.position.x, view.position.x + old_size.x -\
-			size.x / Indications.zoom, offset.x), lerpf(view.position.y,
-			view.position.y + old_size.y - size.y / Indications.zoom, offset.y)))
+			size.x / State.zoom, offset.x), lerpf(view.position.y,
+			view.position.y + old_size.y - size.y / State.zoom, offset.y)))
 
 func _on_size_changed() -> void:
-	Indications.set_viewport_size(size)
+	State.set_viewport_size(size)
 
 func wrap_mouse(relative: Vector2) -> Vector2:
 	var view_rect := get_visible_rect().grow(-1.0)

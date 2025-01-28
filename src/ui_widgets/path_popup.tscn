@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://bvnheiqqay5ke"]
 
-[ext_resource type="Script" path="res://src/ui_widgets/path_popup.gd" id="1_j10aq"]
+[ext_resource type="Script" uid="uid://l4ongcnemxuq" path="res://src/ui_widgets/path_popup.gd" id="1_j10aq"]
 [ext_resource type="PackedScene" uid="uid://co2btefrqrm0e" path="res://src/ui_widgets/path_command_button.tscn" id="2_1jd8y"]
 
 [node name="PathCommandPopup" type="PanelContainer"]
@@ -28,7 +28,6 @@ layout_mode = 2
 size_flags_horizontal = 8
 focus_mode = 0
 mouse_default_cursor_shape = 2
-text = "Relative"
 flat = true
 alignment = 2
 

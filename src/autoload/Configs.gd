@@ -2,8 +2,6 @@
 extends Node
 
 @warning_ignore("unused_signal")
-signal file_path_changed
-@warning_ignore("unused_signal")
 signal highlighting_colors_changed
 @warning_ignore("unused_signal")
 signal snap_changed
@@ -21,6 +19,12 @@ signal basic_colors_changed
 signal handle_visuals_changed
 @warning_ignore("unused_signal")
 signal shortcut_panel_changed
+@warning_ignore("unused_signal")
+signal active_tab_file_path_changed
+@warning_ignore("unused_signal")
+signal active_tab_changed
+@warning_ignore("unused_signal")
+signal tabs_changed
 
 const savedata_path = "user://savedata.tres"
 var savedata: SaveData:
@@ -30,13 +34,6 @@ var savedata: SaveData:
 			savedata.validate()
 			savedata.changed_deferred.connect(save)
 
-var svg_text := "":
-	set(new_value):
-		if new_value != svg_text:
-			svg_text = new_value
-			FileAccess.open(svg_path, FileAccess.WRITE).store_string(svg_text)
-
-const svg_path = "user://save.svg"
 
 func save() -> void:
 	ResourceSaver.save(savedata, savedata_path)
@@ -50,9 +47,7 @@ func _enter_tree() -> void:
 		if InputMap.has_action(action):
 			default_shortcuts[action] = InputMap.action_get_events(action)
 	load_config()
-	load_svg_text()
 	ThemeUtils.generate_and_apply_theme()
-	update_window_title()
 
 
 func load_config() -> void:
@@ -65,14 +60,10 @@ func load_config() -> void:
 		reset_settings()
 		return
 	
-	update_window_title()
+	savedata.get_active_tab().activate()
 	change_background_color()
 	change_locale()
 
-func load_svg_text() -> void:
-	var fa := FileAccess.open(svg_path, FileAccess.READ)
-	if fa != null:
-		svg_text = fa.get_as_text()
 
 func reset_settings() -> void:
 	savedata = SaveData.new()
@@ -80,6 +71,7 @@ func reset_settings() -> void:
 	savedata.language = "en"
 	savedata.set_shortcut_panel_slots({ 0: "undo", 1: "redo" })
 	savedata.set_palettes([Palette.new("Pure", Palette.Preset.PURE)])
+	savedata.add_empty_tab()
 	save()
 
 
@@ -98,14 +90,11 @@ func generate_highlighter() -> SVGHighlighter:
 
 # Global effects from settings. Some of them should also be used on launch.
 
-func update_window_title() -> void:
-	if savedata.use_filename_for_window_title and !savedata.current_file_path.is_empty():
-		get_window().title = savedata.current_file_path.get_file() + " - GodSVG"
-	else:
-		get_window().title = "GodSVG"
-
 func change_background_color() -> void:
 	RenderingServer.set_default_clear_color(savedata.background_color)
 
 func change_locale() -> void:
-	TranslationServer.set_locale(savedata.language)
+	if not savedata.language in TranslationServer.get_loaded_locales():
+		savedata.language = "en"
+	else:
+		TranslationServer.set_locale(savedata.language)

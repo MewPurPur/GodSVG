@@ -1,11 +1,11 @@
 [gd_scene load_steps=8 format=3 uid="uid://mhfp37lr7q4f"]
 
-[ext_resource type="Script" path="res://src/ui_parts/about_menu.gd" id="1_xxltt"]
+[ext_resource type="Script" uid="uid://ys8g367cpqc2" path="res://src/ui_parts/about_menu.gd" id="1_xxltt"]
 [ext_resource type="Texture2D" uid="uid://barsurula6j8n" path="res://assets/logos/icon.svg" id="2_t7fbd"]
 [ext_resource type="FontFile" uid="uid://depydd16jq777" path="res://assets/fonts/FontMono.ttf" id="3_e8i1t"]
 [ext_resource type="FontFile" uid="uid://dc0w4sx0h0fui" path="res://assets/fonts/FontBold.ttf" id="4_n6gp0"]
 [ext_resource type="Texture2D" uid="uid://cgxpm1e3v0i3v" path="res://assets/icons/Link.svg" id="6_hbk78"]
-[ext_resource type="Script" path="res://src/ui_widgets/GridDrawingControl.gd" id="7_nvctb"]
+[ext_resource type="Script" uid="uid://ci44864moadn" path="res://src/ui_widgets/GridDrawingControl.gd" id="7_nvctb"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jtvwe"]
 content_margin_left = 6.0

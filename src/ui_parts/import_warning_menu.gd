@@ -1,6 +1,7 @@
 extends PanelContainer
 
 signal imported
+signal canceled
 
 @onready var warnings_label: RichTextLabel = %WarningsLabel
 @onready var texture_preview: CenterContainer = %TexturePreview
@@ -13,6 +14,8 @@ var imported_text := ""
 func _ready() -> void:
 	imported.connect(queue_free)
 	ok_button.pressed.connect(imported.emit)
+	canceled.connect(queue_free)
+	cancel_button.pressed.connect(canceled.emit)
 	
 	# Convert forward and backward to show how GodSVG would display the given SVG.
 	var imported_text_parse_result := SVGParser.text_to_root(imported_text,
@@ -45,7 +48,6 @@ func _ready() -> void:
 			for warning in svg_warnings:
 				warnings_label.text += warning + "\n"
 	ok_button.grab_focus()
-	cancel_button.pressed.connect(queue_free)
 	$VBoxContainer/Title.text = Translator.translate("Import Problems")
 	ok_button.text = Translator.translate("Import")
 	cancel_button.text = Translator.translate("Cancel")

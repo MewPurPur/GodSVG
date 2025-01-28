@@ -100,6 +100,7 @@ func setup_content() -> void:
 				btn.text = get_translated_formatter_tab(tab_idx)
 				btn.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 				btn.focus_mode = Control.FOCUS_NONE
+				btn.action_mode = BaseButton.ACTION_MODE_BUTTON_PRESS
 				categories.add_child(btn)
 			vbox.add_child(categories)
 			create_setting_container()
@@ -128,6 +129,7 @@ func setup_content() -> void:
 				btn.text = get_translated_shortcut_tab(tab_idx)
 				btn.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 				btn.focus_mode = Control.FOCUS_NONE
+				btn.action_mode = BaseButton.ACTION_MODE_BUTTON_PRESS
 				categories.add_child(btn)
 			vbox.add_child(categories)
 			var shortcuts := VBoxContainer.new()

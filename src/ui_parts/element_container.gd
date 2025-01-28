@@ -9,10 +9,10 @@ const autoscroll_speed = 1500.0
 @onready var covering_rect: Control = $MoveToOverlay
 
 func _ready():
-	Indications.requested_scroll_to_element_editor.connect(scroll_to_view_element_editor)
+	State.requested_scroll_to_element_editor.connect(scroll_to_view_element_editor)
 
 func _process(delta: float) -> void:
-	if Indications.proposed_drop_xid.is_empty():
+	if State.proposed_drop_xid.is_empty():
 		return
 	
 	# Autoscroll when the dragged object is near the edge of the screen.
@@ -39,10 +39,10 @@ func update_proposed_xid() -> void:
 	var prev_xid := PackedInt32Array([-1])
 	var prev_y := -INF
 	# Keep track of the first element editor whose end is after y_pos.
-	var next_xid := PackedInt32Array([SVG.root_element.get_child_count()])
+	var next_xid := PackedInt32Array([State.root_element.get_child_count()])
 	var next_y := INF
 	
-	for xnode in SVG.root_element.get_all_xnode_descendants():
+	for xnode in State.root_element.get_all_xnode_descendants():
 		var xnode_rect := get_xnode_editor_rect(xnode.xid)
 		var xnode_start := xnode_rect.position.y
 		var xnode_end := xnode_rect.end.y
@@ -60,17 +60,17 @@ func update_proposed_xid() -> void:
 				in_top_buffer = true
 	# Set the proposed drop XID based on what the previous and next element editors are.
 	if in_top_buffer:
-		Indications.set_proposed_drop_xid(prev_xid)
+		State.set_proposed_drop_xid(prev_xid)
 	elif in_bottom_buffer:
-		Indications.set_proposed_drop_xid(XIDUtils.get_parent_xid(next_xid) +\
+		State.set_proposed_drop_xid(XIDUtils.get_parent_xid(next_xid) +\
 				PackedInt32Array([next_xid[-1] + 1]))
-	elif next_xid[0] >= SVG.root_element.get_child_count():
-		Indications.set_proposed_drop_xid(next_xid)
+	elif next_xid[0] >= State.root_element.get_child_count():
+		State.set_proposed_drop_xid(next_xid)
 	elif XIDUtils.is_parent_or_self(prev_xid, next_xid):
 		for i in range(prev_xid.size(), next_xid.size()):
 			if next_xid[i] != 0:
 				return
-		Indications.set_proposed_drop_xid(prev_xid + PackedInt32Array([0]))
+		State.set_proposed_drop_xid(prev_xid + PackedInt32Array([0]))
 
 
 var dragged_xnode_editors: Array[Control] = []
@@ -79,7 +79,7 @@ func _notification(what: int) -> void:
 	if is_inside_tree() and HandlerGUI.menu_stack.is_empty():
 		if what == NOTIFICATION_DRAG_BEGIN:
 			covering_rect.show()
-			for selected_xid in Indications.selected_xids:
+			for selected_xid in State.selected_xids:
 				var xnode_editor := get_xnode_editor(selected_xid)
 				dragged_xnode_editors.append(xnode_editor)
 				xnode_editor.modulate.a = 0.55
@@ -89,18 +89,18 @@ func _notification(what: int) -> void:
 			for xnode_editor in dragged_xnode_editors:
 				xnode_editor.modulate.a = 1.0
 			dragged_xnode_editors.clear()
-			Indications.clear_proposed_drop_xid()
+			State.clear_proposed_drop_xid()
 
 func _gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_LEFT and event.is_pressed() and\
 		not (event.ctrl_pressed or event.shift_pressed):
-			Indications.clear_all_selections()
+			State.clear_all_selections()
 		elif event.button_index == MOUSE_BUTTON_RIGHT and event.is_pressed():
 			# Find where the new element should be added.
 			var location := 0
 			var y_pos := get_local_mouse_position().y + scroll_container.scroll_vertical
-			while location < SVG.root_element.get_child_count() and\
+			while location < State.root_element.get_child_count() and\
 			get_xnode_editor_rect(PackedInt32Array([location])).end.y < y_pos:
 				location += 1
 			# Create the context popup.
@@ -122,9 +122,9 @@ func _gui_input(event: InputEvent) -> void:
 			HandlerGUI.popup_under_pos(add_popup, vp.get_mouse_position(), vp)
 
 func add_element(element_name: String, element_idx: int) -> void:
-	SVG.root_element.add_xnode(DB.element_with_setup(element_name),
+	State.root_element.add_xnode(DB.element_with_setup(element_name),
 			PackedInt32Array([element_idx]))
-	SVG.queue_save()
+	State.queue_svg_save()
 
 func get_xnode_editor(xid: PackedInt32Array) -> Control:
 	if xid.is_empty():
