@@ -5,6 +5,7 @@ static func get_shortcut_description(action_name: String) -> String:
 		"export": return Translator.translate("Export")
 		"import": return Translator.translate("Import")
 		"save": return Translator.translate("Save")
+		"save_as": return Translator.translate("Save as")
 		"close_tab": return Translator.translate("Close tab")
 		"new_tab": return Translator.translate("Create a new tab")
 		"select_next_tab": return Translator.translate("Select the next tab")
