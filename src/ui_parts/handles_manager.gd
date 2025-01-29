@@ -760,10 +760,11 @@ func _unhandled_input(event: InputEvent) -> void:
 				if hovered_handle is PolyHandle:
 					inner_idx = hovered_handle.point_index
 				
-				if (State.semi_selected_xid != hovered_xid or\
-				not inner_idx in State.inner_selections) and\
-				not hovered_xid in State.selected_xids:
+				if not (State.semi_selected_xid == hovered_xid and\
+				inner_idx in State.inner_selections) and\
+				not (inner_idx == -1 and hovered_xid in State.selected_xids):
 					State.normal_select(hovered_xid, inner_idx)
+				
 				HandlerGUI.popup_under_pos(State.get_selection_context(
 						HandlerGUI.popup_under_pos.bind(popup_pos, vp),
 						State.Context.VIEWPORT), popup_pos, vp)
@@ -844,6 +845,6 @@ func create_element_context(pos: Vector2) -> ContextPopup:
 	return element_context
 
 func add_shape_at_pos(element_name: String, pos: Vector2) -> void:
-	State.root_element.add_xnode(DB.element_with_setup(element_name, apply_snap(pos)),
+	State.root_element.add_xnode(DB.element_with_setup(element_name, [apply_snap(pos)]),
 			PackedInt32Array([State.root_element.get_child_count()]))
 	State.queue_svg_save()

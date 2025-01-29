@@ -75,14 +75,19 @@ func get_replacement(new_element: String) -> Element:
 
 
 func simplify() -> void:
-	var list_points := ListParser.list_to_points(get_attribute_list("points"))
-	var new_list_points := PackedVector2Array()
-	new_list_points.append(list_points[0])
-	for idx in range(1, list_points.size() - 1):
-		var prev_point := list_points[idx - 1]
-		var current_point := list_points[idx]
-		if not is_equal_approx(prev_point.angle_to_point(current_point),
-		prev_point.angle_to_point(list_points[idx + 1])):
-			new_list_points.append(current_point)
-	new_list_points.append(list_points[-1])
-	get_attribute("points").set_points(new_list_points)
+	var list := get_attribute_list("points")
+	var new_list_points := PackedFloat64Array()
+	
+	new_list_points.append(list[0])
+	new_list_points.append(list[1])
+	@warning_ignore("integer_division")
+	for idx in range(1, list.size() / 2 - 1):
+		var prev_point := Vector2(list[idx * 2 - 2], list[idx * 2 - 1])
+		if not is_equal_approx(prev_point.angle_to_point(
+		Vector2(list[idx * 2], list[idx * 2 + 1])), prev_point.angle_to_point(
+		Vector2(list[idx * 2 + 2], list[idx * 2 + 3]))):
+			new_list_points.append(list[idx * 2])
+			new_list_points.append(list[idx * 2 + 1])
+	new_list_points.append(list[-2])
+	new_list_points.append(list[-1])
+	get_attribute("points").set_list(new_list_points)

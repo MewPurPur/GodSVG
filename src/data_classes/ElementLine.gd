@@ -24,10 +24,9 @@ func get_replacement(new_element: String) -> Element:
 	match new_element:
 		"polyline":
 			dropped_attributes = PackedStringArray(["x1", "y1", "x2", "y2", "points"])
-			var points := PackedVector2Array([
-					Vector2(get_attribute_num("x1"), get_attribute_num("y1")),
-					Vector2(get_attribute_num("x2"), get_attribute_num("y2"))])
-			element.get_attribute("points").set_points(points)
+			var points := PackedFloat64Array([get_attribute_num("x1"),
+					get_attribute_num("y1"), get_attribute_num("x2"), get_attribute_num("y2")])
+			element.get_attribute("points").set_list(points)
 		"path":
 			element = ElementPath.new()
 			dropped_attributes = PackedStringArray(["x1", "y1", "x2", "y2", "d"])

@@ -33,7 +33,7 @@ func full_rebuild() -> void:
 		xnodes_container.add_child(xnode_editor)
 
 func add_element(element_name: String) -> void:
-	var new_element := DB.element_with_setup(element_name)
+	var new_element := DB.element_with_setup(element_name, [])
 	var loc: PackedInt32Array
 	if element_name in ["linearGradient", "radialGradient", "stop"]:
 		loc = PackedInt32Array([0])

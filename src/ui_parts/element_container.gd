@@ -122,7 +122,7 @@ func _gui_input(event: InputEvent) -> void:
 			HandlerGUI.popup_under_pos(add_popup, vp.get_mouse_position(), vp)
 
 func add_element(element_name: String, element_idx: int) -> void:
-	State.root_element.add_xnode(DB.element_with_setup(element_name),
+	State.root_element.add_xnode(DB.element_with_setup(element_name, []),
 			PackedInt32Array([element_idx]))
 	State.queue_svg_save()
 
@@ -135,16 +135,23 @@ func get_xnode_editor(xid: PackedInt32Array) -> Control:
 		xnode_editor = xnode_editor.child_xnodes_container.get_child(xid[i])
 	return xnode_editor
 
-func get_xnode_editor_rect(xid: PackedInt32Array) -> Rect2:
+func get_xnode_editor_rect(xid: PackedInt32Array, inner_index := -1) -> Rect2:
 	var xnode_editor := get_xnode_editor(xid)
 	if not is_instance_valid(xnode_editor):
 		return Rect2()
 	
 	# Position relative to the element container.
-	return Rect2(xnode_editor.global_position - scroll_container.global_position +\
-			Vector2(0, scroll_container.scroll_vertical), xnode_editor.size)
+	var xid_position := Vector2(xnode_editor.global_position -\
+			scroll_container.global_position) + Vector2(0, scroll_container.scroll_vertical)
+	
+	if inner_index == -1:
+		return Rect2(xid_position, xnode_editor.size)
+	else:
+		var inner_rect: Rect2 = xnode_editor.get_inner_rect(inner_index) if\
+				State.root_element.get_xnode(xid).is_element() else Rect2()
+		return Rect2(xid_position + inner_rect.position, inner_rect.size)
 
 # This function assumes there exists a element editor for the corresponding XID.
-func scroll_to_view_element_editor(xid: PackedInt32Array) -> void:
-	scroll_container.get_v_scroll_bar().value = get_xnode_editor_rect(xid).position.y -\
-			scroll_container.size.y / 5
+func scroll_to_view_element_editor(xid: PackedInt32Array, inner_idx := -1) -> void:
+	scroll_container.get_v_scroll_bar().value =\
+			get_xnode_editor_rect(xid, inner_idx).position.y - scroll_container.size.y / 5
