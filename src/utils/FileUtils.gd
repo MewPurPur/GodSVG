@@ -31,6 +31,13 @@ static func compare_svg_to_disk_contents() -> FileState:
 
 
 static func save_svg() -> void:
+	var file_path := Configs.savedata.get_active_tab().svg_file_path
+	if not file_path.is_empty() and FileAccess.file_exists(file_path):
+		FileAccess.open(file_path, FileAccess.WRITE).store_string(State.get_export_text())
+	else:
+		save_svg_as()
+
+static func save_svg_as() -> void:
 	open_export_dialog(ImageExportData.new())
 
 static func open_export_dialog(export_data: ImageExportData) -> void:

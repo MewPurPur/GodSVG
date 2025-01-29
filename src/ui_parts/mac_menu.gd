@@ -106,6 +106,7 @@ func _setup_menu_items() -> void:
 	_add_action(file_rid, "import")
 	_add_action(file_rid, "export")
 	_add_action(file_rid, "save")
+	_add_action(file_rid, "save_as")
 	NativeMenu.add_separator(file_rid)
 	_add_action(file_rid, "copy_svg_text")
 	file_optimize_idx = _add_action(file_rid, "optimize")

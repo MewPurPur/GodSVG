@@ -6,6 +6,7 @@ const _shortcut_categories_dict: Dictionary[String, Dictionary] = {
 		"import": true,
 		"export": true,
 		"save": true,
+		"save_as": true,
 		"close_tab": true,
 		"new_tab": true,
 		"select_next_tab": true,
@@ -79,6 +80,7 @@ static func fn_call(shortcut: String) -> void:
 static func fn(shortcut: String) -> Callable:
 	match shortcut:
 		"save": return FileUtils.save_svg
+		"save_as": return FileUtils.save_svg_as
 		"export": return HandlerGUI.open_export
 		"import": return FileUtils.open_svg_import_dialog
 		"close_tab": return Configs.savedata.remove_active_tab
@@ -116,6 +118,7 @@ static func get_shortcut_icon(shortcut: String) -> CompressedTexture2D:
 		"import": return load("res://assets/icons/Import.svg")
 		"export": return load("res://assets/icons/Export.svg")
 		"save": return load("res://assets/icons/Save.svg")
+		"save_as": return load("res://assets/icons/Save.svg")
 		"new_tab": return load("res://assets/icons/CreateTab.svg")
 		"copy_svg_text": return load("res://assets/icons/Copy.svg")
 		"optimize": return load("res://assets/icons/Compress.svg")

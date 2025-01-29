@@ -53,6 +53,8 @@ func _on_file_button_pressed() -> void:
 	var btn_array: Array[Button] = []
 	btn_array.append(ContextPopup.create_button(Translator.translate("Save SVG"),
 			FileUtils.save_svg, false, load("res://assets/icons/Save.svg"), "save"))
+	btn_array.append(ContextPopup.create_button(Translator.translate("Save SVG as…"),
+			FileUtils.save_svg_as, false, load("res://assets/icons/Save.svg"), "save_as"))
 	btn_array.append(ContextPopup.create_button(Translator.translate("Reset SVG"),
 			ShortcutUtils.fn("reset_svg"),
 			FileUtils.compare_svg_to_disk_contents() != FileUtils.FileState.DIFFERENT,
@@ -83,10 +85,19 @@ func _on_more_options_pressed() -> void:
 				"View savedata"), open_savedata_folder , false,
 				load("res://assets/icons/OpenFolder.svg")))
 	
+	var antialias_fraction := 0.25
+	var final_size := 16
+	var first_resizing_size := final_size / antialias_fraction
+	var logo_path := "res://assets/logos/icon.svg"
+	var about_image := Image.load_from_file(logo_path)
+	var factor := minf(first_resizing_size / about_image.get_width(),
+			first_resizing_size / about_image.get_height())
+	about_image.load_svg_from_buffer(FileAccess.get_file_as_bytes(logo_path), factor)
+	about_image.resize(final_size, final_size, Image.INTERPOLATE_LANCZOS)
+	
 	var about_btn := ContextPopup.create_button(Translator.translate("About…"),
-			ShortcutUtils.fn("about_info"), false, load("res://assets/logos/icon.png"),
-			"about_info")
-	about_btn.expand_icon = true
+			ShortcutUtils.fn("about_info"), false,
+			ImageTexture.create_from_image(about_image), "about_info")
 	buttons_arr.append(about_btn)
 	buttons_arr.append(ContextPopup.create_button(Translator.translate(
 			"Donate…"), ShortcutUtils.fn("about_donate"), false,
