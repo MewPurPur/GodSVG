@@ -208,8 +208,9 @@ func _input(event: InputEvent) -> void:
 			event.double_click = true
 			last_mouse_click_double = false
 	
-	# Stuff that should replace the existing overlays.
-	for action in ["about_info", "about_donate", "check_updates", "open_settings"]:
+	# Stuff that should replace the existing overlays, or that opens separate windows.
+	for action in ["about_info", "about_donate", "check_updates", "open_settings",
+	"open_externally", "open_in_folder"]:
 		if ShortcutUtils.is_action_pressed(event, action):
 			remove_all_menus()
 			get_viewport().set_input_as_handled()
@@ -228,8 +229,8 @@ func _input(event: InputEvent) -> void:
 		return
 	
 	# Global actions that should happen regardless of the context.
-	for action in ["import", "export", "save", "close_tab", "new_tab", "select_next_tab",
-	"select_previous_tab", "copy_svg_text", "optimize", "reset_svg"]:
+	for action in ["import", "export", "save", "save_as", "close_tab", "new_tab",
+	"select_next_tab", "select_previous_tab", "copy_svg_text", "optimize", "reset_svg"]:
 		if ShortcutUtils.is_action_pressed(event, action):
 			get_viewport().set_input_as_handled()
 			ShortcutUtils.fn_call(action)
