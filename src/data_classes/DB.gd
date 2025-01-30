@@ -199,12 +199,9 @@ attribute_name: String) -> PercentageHandling:
 		_: return PercentageHandling.FRACTION
 
 
-static func element_with_setup(name: String, user_setup_value = null) -> Element:
+static func element_with_setup(name: String, user_setup_values: Array) -> Element:
 	var new_element := element(name)
-	if user_setup_value != null:
-		new_element.user_setup(user_setup_value)
-	else:
-		new_element.user_setup()
+	new_element.user_setup.callv(user_setup_values)
 	return new_element
 
 static func element(name: String) -> Element:

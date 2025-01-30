@@ -83,6 +83,11 @@ func setup() -> void:
 	update_translation()
 
 
+func get_inner_rect(index: int) -> Rect2:
+	return Rect2(commands_container.position + Vector2(0, STRIP_HEIGHT * index),
+			Vector2(commands_container.size.x, STRIP_HEIGHT))
+
+
 func _on_element_attribute_changed(attribute_changed: String) -> void:
 	if attribute_name == attribute_changed:
 		sync_to_attribute()
@@ -373,7 +378,7 @@ func setup_path_command_controls(idx: int) -> Control:
 	relative_button.add_theme_font_override("font", ThemeUtils.mono_font)
 	relative_button.add_theme_font_size_override("font_size", 13)
 	relative_button.add_theme_color_override("font_color", Color(1, 1, 1))
-	# Disabled styleboxes aren unused, but must be set for the correct content margins.
+	# Disabled styleboxes are unused, but must be set for the correct content margins.
 	if is_absolute:
 		relative_button.add_theme_stylebox_override("disabled", absolute_button_normal)
 		relative_button.add_theme_stylebox_override("normal", absolute_button_normal)

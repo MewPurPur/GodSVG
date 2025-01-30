@@ -197,7 +197,7 @@ signal hover_changed
 signal selection_changed
 signal proposed_drop_changed
 
-signal requested_scroll_to_element_editor(xid: PackedInt32Array)
+signal requested_scroll_to_element_editor(xid: PackedInt32Array, inner_idx: int)
 
 # The viewport listens for this signal to put you in handle-placing mode.
 signal handle_added
@@ -639,10 +639,10 @@ func move_down_selected() -> void:
 	root_element.move_xnodes_in_parent(selected_xids, true)
 	queue_svg_save()
 
-func view_in_list(xid: PackedInt32Array) -> void:
+func view_in_list(xid: PackedInt32Array, inner_index := -1) -> void:
 	if xid.is_empty():
 		return
-	requested_scroll_to_element_editor.emit(xid)
+	requested_scroll_to_element_editor.emit(xid, inner_index)
 
 func duplicate_selected() -> void:
 	root_element.duplicate_xnodes(selected_xids)
@@ -669,10 +669,7 @@ func insert_point_after_selection() -> void:
 	queue_svg_save()
 
 
-enum Context {
-	VIEWPORT,
-	LIST,
-}
+enum Context {VIEWPORT, LIST}
 
 func get_selection_context(popup_method: Callable, context: Context) -> ContextPopup:
 	var btn_arr: Array[Button] = []
@@ -733,8 +730,12 @@ func get_selection_context(popup_method: Callable, context: Context) -> ContextP
 		var element_ref := root_element.get_xnode(semi_selected_xid)
 		
 		if context == Context.VIEWPORT:
+			var inner_idx := inner_selections[0]
+			for idx in inner_selections:
+				if idx < inner_idx:
+					inner_idx = idx
 			btn_arr.append(ContextPopup.create_button(Translator.translate("View in List"),
-					view_in_list.bind(semi_selected_xid), false,
+					view_in_list.bind(semi_selected_xid, inner_idx), false,
 					load("res://assets/icons/ViewInList.svg")))
 		match element_ref.name:
 			"path":

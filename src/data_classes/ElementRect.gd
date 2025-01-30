@@ -55,11 +55,9 @@ func get_replacement(new_element: String) -> Element:
 		"polygon":
 			dropped_attributes = PackedStringArray(["x", "y", "width", "height", "rx", "ry",
 					"points"])
-			var points := PackedVector2Array([Vector2(x_num, y_num),
-					Vector2(x_num + width_num, y_num),
-					Vector2(x_num + width_num, y_num + height_num),
-					Vector2(x_num, y_num + height_num)])
-			element.get_attribute("points").set_points(points)
+			var points := PackedFloat64Array([x_num, y_num, x_num + width_num, y_num,
+					x_num + width_num, y_num + height_num, x_num, y_num + height_num])
+			element.get_attribute("points").set_list(points)
 		"path":
 			dropped_attributes = PackedStringArray(["x", "y", "width", "height", "rx", "ry",
 					"d"])

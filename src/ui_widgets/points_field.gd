@@ -74,6 +74,11 @@ func setup() -> void:
 	update_translation()
 
 
+func get_inner_rect(index: int) -> Rect2:
+	return Rect2(points_container.position + Vector2(0, STRIP_HEIGHT * index),
+			Vector2(points_container.size.x, STRIP_HEIGHT))
+
+
 func _on_element_attribute_changed(attribute_changed: String) -> void:
 	if attribute_name == attribute_changed:
 		sync_to_attribute()
