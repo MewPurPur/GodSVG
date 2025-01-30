@@ -14,6 +14,8 @@ var zoom: float
 var ci := get_canvas_item()
 var surface := RenderingServer.canvas_item_create()  # Used for drawing the numbers.
 
+var unsnapped_position: Vector2
+
 
 func _ready() -> void:
 	RenderingServer.canvas_item_set_parent(surface, ci)
@@ -29,7 +31,7 @@ func change_zoom() -> void:
 
 
 func update() -> void:
-	position = position.snapped(Vector2(1, 1) / zoom)
+	position = unsnapped_position.snapped(Vector2(1, 1) / zoom)
 	get_viewport().canvas_transform = Transform2D(0.0, Vector2(zoom, zoom),
 			0.0, -position * zoom)
 	queue_redraw()
@@ -37,7 +39,7 @@ func update() -> void:
 
 # Don't ask me to explain this.
 func _draw() -> void:
-	var grid_size: Vector2 = State.viewport_size * 1.0 / zoom
+	var grid_size := Vector2(State.viewport_size) / zoom
 	RenderingServer.canvas_item_add_line(ci,
 			Vector2(-position.x, 0), Vector2(-position.x, grid_size.y), axis_line_color)
 	RenderingServer.canvas_item_add_line(ci,
