@@ -243,6 +243,9 @@ func get_drop_index_at(pos: Vector2) -> int:
 	return Configs.savedata.get_tab_count()
 
 func _get_drag_data(at_position: Vector2) -> Variant:
+	var tab_index_at_position := get_tab_index_at(at_position)
+	if tab_index_at_position == -1:
+		return
 	# Roughly mimics the tab drawing.
 	var preview := Panel.new()
 	preview.modulate = Color(1, 1, 1, 0.85)
@@ -258,7 +261,7 @@ func _get_drag_data(at_position: Vector2) -> Variant:
 	label.size.x = TAB_WIDTH - 8
 	
 	set_drag_preview(preview)
-	return TabDropData.new(get_tab_index_at(at_position))
+	return TabDropData.new(tab_index_at_position)
 
 func _can_drop_data(at_position: Vector2, data: Variant) -> bool:
 	if not data is TabDropData:

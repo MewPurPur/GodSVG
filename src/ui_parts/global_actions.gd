@@ -11,6 +11,7 @@ func update_translations() -> void:
 	import_button.tooltip_text = Translator.translate("Import")
 	export_button.tooltip_text = Translator.translate("Export")
 	settings_button.tooltip_text = Translator.translate("Settings")
+	update_file_button()
 
 func _ready() -> void:
 	Configs.language_changed.connect(update_translations)

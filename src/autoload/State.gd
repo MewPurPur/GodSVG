@@ -830,7 +830,7 @@ func popup_insert_command_after_context(popup_method: Callable) -> void:
 		"C", "S": warned_commands = PackedStringArray(["T"])
 		"Q", "T": warned_commands = PackedStringArray(["S"])
 	
-	if disable_z or (path_attrib.get_command_count() > selection_idx and\
+	if disable_z or (path_attrib.get_command_count() > selection_idx + 1 and\
 	path_attrib.get_command(selection_idx + 1).command_char.to_upper() == "Z"):
 		disabled_commands = PackedStringArray(["Z"])
 	

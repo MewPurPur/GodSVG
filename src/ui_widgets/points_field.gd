@@ -114,7 +114,8 @@ func sync(new_value: String) -> void:
 		add_move_button.queue_free()
 	# Rebuild the points.
 	points_container.custom_minimum_size.y = points_count * STRIP_HEIGHT
-	HandlerGUI.throw_mouse_motion_event()
+	if get_rect().has_point(get_local_mouse_position()):
+		HandlerGUI.throw_mouse_motion_event()
 	if hovered_idx >= points_count:
 		activate_hovered(-1)
 	reactivate_hovered()
