@@ -27,6 +27,7 @@ func get_replacement(new_element: String) -> Element:
 			var points := PackedFloat64Array([get_attribute_num("x1"),
 					get_attribute_num("y1"), get_attribute_num("x2"), get_attribute_num("y2")])
 			element.get_attribute("points").set_list(points)
+			element.set_attribute("fill", "none")
 		"path":
 			element = ElementPath.new()
 			dropped_attributes = PackedStringArray(["x1", "y1", "x2", "y2", "d"])
