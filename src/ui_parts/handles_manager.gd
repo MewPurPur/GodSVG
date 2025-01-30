@@ -143,6 +143,8 @@ func sync_handles(xid: PackedInt32Array) -> void:
 	handles = new_handles
 	handles += generate_path_handles(element)
 	handles += generate_polyhandles(element)
+	# Pretend the mouse was moved to update the hovering.
+	HandlerGUI.throw_mouse_motion_event()
 	queue_redraw()
 
 func generate_path_handles(element: Element) -> Array[Handle]:

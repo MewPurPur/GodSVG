@@ -12,7 +12,7 @@ func _init(new_element: Element, command_idx: int, x_name: String, y_name: Strin
 	command_index = command_idx
 	x_param = x_name
 	y_param = y_name
-	element.attribute_changed.connect(sync.unbind(1))
+	element.attribute_changed.connect(_on_attribute_changed)
 	element.ancestor_attribute_changed.connect(sync.unbind(1))
 	sync()
 
@@ -26,7 +26,6 @@ func set_pos(new_pos: PackedFloat64Array) -> void:
 		path_attribute.set_command_property(command_index, x_param, new_pos[0])
 		path_attribute.set_command_property(command_index, y_param, new_pos[1])
 		sync()
-
 
 func sync() -> void:
 	if command_index >= element.get_attribute(pathdata_name).get_command_count():
@@ -46,3 +45,8 @@ func sync() -> void:
 	else:
 		precise_pos[1] = command.start_y
 	super()
+
+
+func _on_attribute_changed(name: String) -> void:
+	if name in [pathdata_name, "transform"]:
+		sync()
