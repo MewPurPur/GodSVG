@@ -629,8 +629,10 @@ func _draw() -> void:
 			if bounding_box.has_area():
 				RenderingServer.canvas_item_add_set_transform(selections_surface,
 						xnode.get_transform() * State.root_element.canvas_transform)
+				var grow_amount := 4.0 / State.zoom
+				grow_amount /= State.root_element.canvas_transform.get_scale().x
 				RenderingServer.canvas_item_add_rect(selections_surface,
-						bounding_box.grow(4.0 / State.zoom), Color.WHITE)
+						bounding_box.grow(grow_amount), Color.WHITE)
 
 func draw_objects_of_type(color: Color, polylines: Array[PackedVector2Array],
 multiline: PackedVector2Array, handles_array: Array[Handle],
@@ -752,8 +754,8 @@ func _unhandled_input(event: InputEvent) -> void:
 			var popup_pos := vp.get_mouse_position()
 			if !is_instance_valid(hovered_handle):
 				State.clear_all_selections()
-				var vec2_pos := Vector2(event_pos[0], event_pos[1])
-				HandlerGUI.popup_under_pos(create_element_context(vec2_pos), popup_pos, vp)
+				HandlerGUI.popup_under_pos(create_element_context(
+						State.root_element.world_to_canvas_64_bit(event_pos)), popup_pos, vp)
 			else:
 				var hovered_xid := hovered_handle.element.xid
 				var inner_idx := -1
@@ -833,20 +835,19 @@ func _on_handle_added() -> void:
 			return
 
 # Creates a popup for adding a shape at a position.
-func create_element_context(pos: Vector2) -> ContextPopup:
+func create_element_context(precise_pos: PackedFloat64Array) -> ContextPopup:
 	var btn_array: Array[Button] = []
 	for shape in ["path", "circle", "ellipse", "rect", "line", "polygon", "polyline"]:
 		var btn := ContextPopup.create_button(shape,
-				add_shape_at_pos.bind(shape, pos), false, DB.get_element_icon(shape))
+				add_shape_at_pos.bind(shape, precise_pos), false, DB.get_element_icon(shape))
 		btn.add_theme_font_override("font", ThemeUtils.mono_font)
 		btn_array.append(btn)
 	var element_context := ContextPopup.new()
-	var separation_indices: Array[int] = [1, 4]
 	element_context.setup_with_title(btn_array, Translator.translate("New shape"),
-			true, -1, -1, separation_indices)
+			true, -1, -1, PackedInt32Array([1, 4]))
 	return element_context
 
-func add_shape_at_pos(element_name: String, pos: Vector2) -> void:
-	State.root_element.add_xnode(DB.element_with_setup(element_name, [apply_snap(pos)]),
+func add_shape_at_pos(element_name: String, precise_pos: PackedFloat64Array) -> void:
+	State.root_element.add_xnode(DB.element_with_setup(element_name, [precise_pos]),
 			PackedInt32Array([State.root_element.get_child_count()]))
 	State.queue_svg_save()
