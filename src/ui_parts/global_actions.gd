@@ -89,11 +89,12 @@ func _on_more_options_pressed() -> void:
 	var antialias_fraction := 0.25
 	var final_size := 16
 	var first_resizing_size := final_size / antialias_fraction
-	var logo_path := "res://assets/logos/icon.svg"
-	var about_image := Image.load_from_file(logo_path)
+	var svg_buffer := FileAccess.get_file_as_bytes("res://assets/logos/icon.svg")
+	var about_image := Image.new()
+	about_image.load_svg_from_buffer(svg_buffer)
 	var factor := minf(first_resizing_size / about_image.get_width(),
 			first_resizing_size / about_image.get_height())
-	about_image.load_svg_from_buffer(FileAccess.get_file_as_bytes(logo_path), factor)
+	about_image.load_svg_from_buffer(svg_buffer, factor)
 	about_image.resize(final_size, final_size, Image.INTERPOLATE_LANCZOS)
 	
 	var about_btn := ContextPopup.create_button(Translator.translate("About…"),
