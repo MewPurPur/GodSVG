@@ -80,9 +80,9 @@ func _draw() -> void:
 	
 	draw_circle(pos, FRAME_RADIUS + FRAME_WIDTH / 2.0, theme_color, false, FRAME_WIDTH,
 			true)
-	draw_rect(Rect2(pos - Vector2(1, 1) * (PIXEL_SIZE / 2.0 - 0.5),
-			Vector2(1, 1) * PIXEL_SIZE), Color.WHITE, false, 1.0)
 	draw_rect(Rect2(pos - Vector2(1, 1) * (PIXEL_SIZE / 2.0 + 0.5),
+			Vector2(1, 1) * PIXEL_SIZE), Color.WHITE, false, 1.0)
+	draw_rect(Rect2(pos - Vector2(1, 1) * (PIXEL_SIZE / 2.0 + 1.5),
 			Vector2(1, 1) * (PIXEL_SIZE + 2)), Color.BLACK, false, 1.0)
 	
 	var stylebox_width := FRAME_RADIUS * 2

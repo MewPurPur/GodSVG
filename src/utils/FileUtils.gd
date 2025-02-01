@@ -45,7 +45,7 @@ static func open_export_dialog(export_data: ImageExportData) -> void:
 	if OS.has_feature("web"):
 		var web_format_name := ImageExportData.web_formats[export_data.format]
 		if export_data.format == "svg":
-			_web_save(export_data.svg_to_buffer(), web_format_name)
+			_web_save(ImageExportData.svg_to_buffer(), web_format_name)
 		else:
 			var img := export_data.generate_image()
 			_web_save(export_data.image_to_buffer(img), web_format_name)
@@ -70,6 +70,29 @@ static func open_export_dialog(export_data: ImageExportData) -> void:
 			HandlerGUI.add_menu(export_dialog)
 			export_dialog.file_selected.connect(func(path): _finish_export(path, export_data))
 
+static func open_xml_export_dialog(xml: String, file_name: String) -> void:
+	OS.request_permissions()
+	if OS.has_feature("web"):
+		_web_save(xml.to_utf8_buffer(), "application/xml")
+	else:
+		if _is_native_preferred():
+			var native_callback :=\
+					func(has_selected: bool, files: PackedStringArray, _filter_idx: int):
+						if has_selected:
+							_finish_xml_export(files[0], xml)
+			
+			DisplayServer.file_dialog_show(
+					Translator.translate("Save the .\"{format}\" file").format(
+					{"format": "xml"}), Configs.savedata.get_last_dir(),
+					file_name + ".xml", false, DisplayServer.FILE_DIALOG_MODE_SAVE_FILE,
+					PackedStringArray(["*.xml"]), native_callback)
+		else:
+			var export_dialog := GoodFileDialog.instantiate()
+			export_dialog.setup(Configs.savedata.get_last_dir(),
+					file_name, GoodFileDialogType.FileMode.SAVE, PackedStringArray(["xml"]))
+			HandlerGUI.add_menu(export_dialog)
+			export_dialog.file_selected.connect(func(path): _finish_xml_export(path, xml))
+
 static func _finish_export(file_path: String, export_data: ImageExportData) -> void:
 	if file_path.get_extension().is_empty():
 		file_path += "." + export_data.format
@@ -85,6 +108,14 @@ static func _finish_export(file_path: String, export_data: ImageExportData) -> v
 			# with the graphic being edited.
 			Configs.savedata.get_active_tab().svg_file_path = file_path
 			FileAccess.open(file_path, FileAccess.WRITE).store_string(State.get_export_text())
+	HandlerGUI.remove_all_menus()
+
+static func _finish_xml_export(file_path: String, xml: String) -> void:
+	if file_path.get_extension().is_empty():
+		file_path += ".xml"
+	
+	Configs.savedata.add_recent_dir(file_path.get_base_dir())
+	FileAccess.open(file_path, FileAccess.WRITE).store_string(xml)
 	HandlerGUI.remove_all_menus()
 
 

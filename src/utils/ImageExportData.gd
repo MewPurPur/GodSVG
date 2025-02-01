@@ -35,7 +35,7 @@ var lossy := false:
 			changed.emit()
 
 
-func svg_to_buffer() -> PackedByteArray:
+static func svg_to_buffer() -> PackedByteArray:
 	return State.get_export_text().to_utf8_buffer()
 
 func image_to_buffer(image: Image) -> PackedByteArray:
