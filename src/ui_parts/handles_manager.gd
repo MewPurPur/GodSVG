@@ -628,11 +628,13 @@ func _draw() -> void:
 			var bounding_box: Rect2 = xnode.get_bounding_box()
 			if bounding_box.has_area():
 				RenderingServer.canvas_item_add_set_transform(selections_surface,
-						xnode.get_transform() * State.root_element.canvas_transform)
-				var grow_amount := 4.0 / State.zoom
-				grow_amount /= State.root_element.canvas_transform.get_scale().x
+						State.root_element.canvas_transform * xnode.get_transform())
+				var grow_amount := Vector2(4, 4) / State.zoom
+				grow_amount /= State.root_element.canvas_transform.get_scale()
+				grow_amount /= xnode.get_transform().get_scale()
 				RenderingServer.canvas_item_add_rect(selections_surface,
-						bounding_box.grow(grow_amount), Color.WHITE)
+						bounding_box.grow_individual(grow_amount.x, grow_amount.y,
+						grow_amount.x, grow_amount.y), Color.WHITE)
 
 func draw_objects_of_type(color: Color, polylines: Array[PackedVector2Array],
 multiline: PackedVector2Array, handles_array: Array[Handle],
