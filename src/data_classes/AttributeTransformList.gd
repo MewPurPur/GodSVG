@@ -11,8 +11,8 @@ func _sync() -> void:
 func sync_after_transforms_change() -> void:
 	set_value(transform_list_to_text(_transform_list))
 
-func format(text: String) -> String:
-	return transform_list_to_text(text_to_transform_list(text))
+func _format(text: String, formatter: Formatter) -> String:
+	return transform_list_to_text(text_to_transform_list(text), formatter)
 
 func set_transform_list(new_transform_list: Array[Transform]) -> void:
 	_transform_list = new_transform_list
@@ -61,7 +61,8 @@ func insert_transform(idx: int, type: String) -> void:
 	sync_after_transforms_change()
 
 
-func transform_list_to_text(transform_list: Array[Transform]) -> String:
+func transform_list_to_text(transform_list: Array[Transform],
+formatter := Configs.savedata.editor_formatter) -> String:
 	var output := ""
 	var num_parser := NumstringParser.new()
 	num_parser.compress_numbers = formatter.transform_list_compress_numbers

@@ -3,28 +3,31 @@ class_name SVGParser extends RefCounted
 # For rendering only a section of the SVG.
 static func root_cutout_to_text(root_element: ElementRoot, custom_width: float,
 custom_height: float, custom_viewbox: Rect2) -> String:
-	var blank_formatter := Formatter.new()
-	blank_formatter.xml_shorthand_tags = Formatter.ShorthandTags.ALL_EXCEPT_CONTAINERS
 	var new_root_element: ElementRoot = root_element.duplicate(false)
-	
 	new_root_element.set_attribute("viewBox", ListParser.rect_to_list(custom_viewbox))
 	new_root_element.set_attribute("width", custom_width)
 	new_root_element.set_attribute("height", custom_height)
-	var text := _xnode_to_text(new_root_element, blank_formatter)
+	var text := _xnode_to_editor_text(new_root_element)
 	text = text.strip_edges(false, true).left(-6)  # Remove the </svg> at the end.)
 	for child_idx in root_element.get_child_count():
-		text += _xnode_to_text(root_element.get_xnode(PackedInt32Array([child_idx])),
-				blank_formatter, true)
+		text += _xnode_to_editor_text(
+				root_element.get_xnode(PackedInt32Array([child_idx])), true)
 	return text + "</svg>"
 
-static func root_to_text(root_element: ElementRoot, formatter: Formatter) -> String:
-	var text := _xnode_to_text(root_element, formatter).trim_suffix('\n')
-	if formatter.xml_add_trailing_newline:
+static func root_to_editor_text(root_element: ElementRoot) -> String:
+	var text := _xnode_to_editor_text(root_element).trim_suffix('\n')
+	if Configs.savedata.editor_formatter.xml_add_trailing_newline:
 		text += "\n"
 	return text
 
-static func _xnode_to_text(xnode: XNode, formatter: Formatter,
-make_attributes_absolute := false) -> String:
+static func root_to_export_text(root_element: ElementRoot) -> String:
+	var text := _xnode_to_export_text(root_element).trim_suffix('\n')
+	if Configs.savedata.export_formatter.xml_add_trailing_newline:
+		text += "\n"
+	return text
+
+static func _xnode_to_editor_text(xnode: XNode, make_attributes_absolute := false) -> String:
+	var formatter := Configs.savedata.editor_formatter
 	var text := ""
 	if formatter.xml_pretty_formatting:
 		if formatter.xml_indentation_use_spaces:
@@ -46,7 +49,7 @@ make_attributes_absolute := false) -> String:
 	if make_attributes_absolute:
 		# Add known default value attributes if they are percentage-based.
 		for attrib_name in DB.get_recognized_attributes(element.name):
-			if DB.get_attribute_type(attrib_name) != DB.AttributeType.NUMERIC:
+			if element.get_percentage_handling(attrib_name) == DB.PercentageHandling.FRACTION:
 				continue
 			
 			var already_exists := false
@@ -88,7 +91,55 @@ make_attributes_absolute := false) -> String:
 		if formatter.xml_pretty_formatting:
 			text += '\n'
 		for child in element.get_children():
-			text += _xnode_to_text(child, formatter, make_attributes_absolute)
+			text += _xnode_to_editor_text(child, make_attributes_absolute)
+		if formatter.xml_pretty_formatting:
+			text += '\t'.repeat(element.xid.size())
+		text += '</%s>' % element.name
+		if formatter.xml_pretty_formatting:
+			text += '\n'
+	return text
+
+static func _xnode_to_export_text(xnode: XNode) -> String:
+	var formatter := Configs.savedata.export_formatter
+	var text := ""
+	if formatter.xml_pretty_formatting:
+		if formatter.xml_indentation_use_spaces:
+			text = ' '.repeat(xnode.xid.size() * formatter.xml_indentation_spaces)
+		else:
+			text = '\t'.repeat(xnode.xid.size())
+	
+	if not xnode.is_element():
+		match xnode.get_type():
+			BasicXNode.NodeType.COMMENT: text += "<!--%s-->" % xnode.get_text()
+			BasicXNode.NodeType.CDATA: text += "<![CDATA[%s]]>" % xnode.get_text()
+			_: text += xnode.get_text()
+		if formatter.xml_pretty_formatting:
+			text += "\n"
+		return text
+	
+	var element := xnode as Element
+	text += '<' + element.name
+	for attribute: Attribute in element.get_all_attributes():
+		var value := attribute.get_export_value()
+		
+		if not '"' in value:
+			text += ' %s="%s"' % [attribute.name, value]
+		else:
+			text += " %s='%s'" % [attribute.name, value]
+	
+	if not element.has_children() and (formatter.xml_shorthand_tags ==\
+	Formatter.ShorthandTags.ALWAYS or (formatter.xml_shorthand_tags ==\
+	Formatter.ShorthandTags.ALL_EXCEPT_CONTAINERS and\
+	not element.name in Formatter.container_elements)):
+		text += ' />' if formatter.xml_shorthand_tags_space_out_slash else '/>'
+		if formatter.xml_pretty_formatting:
+			text += '\n'
+	else:
+		text += '>'
+		if formatter.xml_pretty_formatting:
+			text += '\n'
+		for child in element.get_children():
+			text += _xnode_to_export_text(child)
 		if formatter.xml_pretty_formatting:
 			text += '\t'.repeat(element.xid.size())
 		text += '</%s>' % element.name
@@ -115,11 +166,12 @@ static func get_error_string(parse_error: ParseError) -> String:
 			return Translator.translate("Improper nesting.")
 		_: return ""
 
-static func text_to_root(text: String, formatter: Formatter) -> ParseResult:
+# The root always uses the editor formatter.
+static func text_to_root(text: String) -> ParseResult:
 	if text.is_empty():
 		return ParseResult.new(ParseError.ERR_NOT_SVG)
 	
-	var root_element := ElementRoot.new(formatter)
+	var root_element := ElementRoot.new()
 	var parser := XMLParser.new()
 	parser.open_buffer(text.to_utf8_buffer())
 	var unclosed_element_stack: Array[Element] = []
@@ -178,7 +230,7 @@ static func text_to_root(text: String, formatter: Formatter) -> ParseResult:
 						break
 			
 			XMLParser.NODE_COMMENT:
-				if formatter.xml_keep_comments:
+				if Configs.savedata.editor_formatter.xml_keep_comments:
 					unclosed_element_stack.back().insert_child(-1,
 							BasicXNode.new(BasicXNode.NodeType.COMMENT, parser.get_node_name()))
 			XMLParser.NODE_TEXT:
@@ -190,7 +242,7 @@ static func text_to_root(text: String, formatter: Formatter) -> ParseResult:
 				unclosed_element_stack.back().insert_child(-1,
 						BasicXNode.new(BasicXNode.NodeType.CDATA, parser.get_node_name()))
 			_:
-				if formatter.xml_keep_unrecognized:
+				if Configs.savedata.editor_formatter.xml_keep_unrecognized:
 					unclosed_element_stack.back().insert_child(-1,
 							BasicXNode.new(BasicXNode.NodeType.UNKNOWN, parser.get_node_name()))
 	

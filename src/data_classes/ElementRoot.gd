@@ -7,20 +7,17 @@ signal xnodes_added(xids: Array[PackedInt32Array])
 signal xnodes_deleted(xids: Array[PackedInt32Array])
 signal xnodes_moved_in_parent(parent_xid: PackedInt32Array, old_indices: Array[int])
 signal xnodes_moved_to(xids: Array[PackedInt32Array], location: PackedInt32Array)
-signal xnode_layout_changed  # Emitted together with any of the above 4.
+signal xnode_layout_changed  # Emitted together with any of the above four.
 
 @warning_ignore("unused_signal")
 signal basic_xnode_text_changed(xid: PackedInt32Array)
 @warning_ignore("unused_signal")
 signal basic_xnode_rendered_text_changed(xid: PackedInt32Array)
 
-var formatter: Formatter
-
-func _init(new_formatter: Formatter) -> void:
+func _init() -> void:
 	super()
 	xid = PackedInt32Array()
 	root = self
-	formatter = new_formatter
 
 func get_xnode(loc: PackedInt32Array) -> XNode:
 	var current_element: XNode = self

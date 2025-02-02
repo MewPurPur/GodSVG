@@ -47,7 +47,7 @@ var _update_pending := false
 # which doesn't happen while dragging handles or typing in the code editor for example.
 var unstable_svg_text := ""
 var svg_text := ""
-var root_element: ElementRoot
+var root_element := ElementRoot.new()
 
 # Temporary unsaved tab, set to the file path string when importing an SVG.
 var transient_tab_path := "":
@@ -59,8 +59,6 @@ var transient_tab_path := "":
 			setup_from_tab()
 
 func _enter_tree() -> void:
-	root_element = ElementRoot.new(Configs.savedata.editor_formatter)
-	
 	get_window().mouse_exited.connect(clear_all_hovered)
 	
 	xnodes_added.connect(_on_xnodes_added)
@@ -133,7 +131,7 @@ func _update() -> void:
 	if not _update_pending:
 		return
 	_update_pending = false
-	svg_text = SVGParser.root_to_text(root_element, Configs.savedata.editor_formatter)
+	svg_text = SVGParser.root_to_editor_text(root_element)
 	svg_changed.emit()
 
 # Ensure the save happens after the update.
@@ -147,8 +145,7 @@ func _svg_save() -> void:
 
 func sync_elements() -> void:
 	var text_to_parse := svg_text if unstable_svg_text.is_empty() else unstable_svg_text
-	var svg_parse_result := SVGParser.text_to_root(text_to_parse,
-			Configs.savedata.editor_formatter)
+	var svg_parse_result := SVGParser.text_to_root(text_to_parse)
 	parsing_finished.emit(svg_parse_result.error)
 	if svg_parse_result.error == SVGParser.ParseError.OK:
 		svg_text = unstable_svg_text
@@ -189,8 +186,7 @@ func optimize() -> void:
 	queue_svg_save()
 
 func get_export_text() -> String:
-	return SVGParser.root_to_text(root_element, Configs.savedata.export_formatter)
-
+	return SVGParser.root_to_export_text(root_element)
 
 
 signal hover_changed

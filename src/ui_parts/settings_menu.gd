@@ -536,8 +536,8 @@ func show_formatter(category: String) -> void:
 	current_setup_setting = "xml_indentation_spaces"
 	add_number_dropdown(Translator.translate("Number of indentation spaces"),
 			[2, 3, 4, 6, 8], true, false, Formatter.INDENTS_MIN, Formatter.INDENTS_MAX,
-			not current_setup_resource.xml_pretty_formatting and\
-			current_setup_resource.xml_indentation_use_spaces)
+			not (current_setup_resource.xml_pretty_formatting and\
+			current_setup_resource.xml_indentation_use_spaces))
 	
 	add_section(Translator.translate("Numbers"))
 	current_setup_setting = "number_remove_leading_zero"

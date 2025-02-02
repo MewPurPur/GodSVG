@@ -7,8 +7,8 @@ func _sync() -> void:
 	_commands = parse_pathdata(get_value())
 	locate_start_points()
 
-func format(text: String) -> String:
-	return path_commands_to_text(parse_pathdata(text))
+func _format(text: String, formatter: Formatter) -> String:
+	return path_commands_to_text(parse_pathdata(text), formatter)
 
 
 func get_commands() -> Array[PathCommand]:
@@ -405,7 +405,8 @@ static func path_commands_from_parsed_data(data: Array[Array]) -> Array[PathComm
 	return cmds
 
 
-func path_commands_to_text(commands_arr: Array[PathCommand]) -> String:
+func path_commands_to_text(commands_arr: Array[PathCommand],
+formatter := Configs.savedata.editor_formatter) -> String:
 	var output := ""
 	var num_parser := NumstringParser.new()
 	num_parser.compress_numbers = formatter.pathdata_compress_numbers

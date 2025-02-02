@@ -6,8 +6,8 @@ var _list: PackedFloat64Array
 func _sync() -> void:
 	_list = text_to_list(get_value())
 
-func format(text: String) -> String:
-	return list_to_text(text_to_list(text))
+func _format(text: String, formatter: Formatter) -> String:
+	return list_to_text(text_to_list(text), formatter)
 
 
 func set_list(new_list: PackedFloat64Array) -> void:
@@ -81,7 +81,8 @@ static func text_to_list(string: String) -> PackedFloat64Array:
 	
 	return nums_parsed
 
-func list_to_text(list: PackedFloat64Array) -> String:
+func list_to_text(list: PackedFloat64Array,
+formatter := Configs.savedata.editor_formatter) -> String:
 	var params := PackedStringArray()
 	for element in list:
 		# It's fine to use this parser, AttributeList is just a list of numbers.

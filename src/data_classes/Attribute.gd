@@ -5,7 +5,6 @@ class_name Attribute extends RefCounted
 signal value_changed
 
 var name: String
-var formatter: Formatter
 var _value: String
 
 func set_value(new_value: String) -> void:
@@ -25,9 +24,14 @@ func _sync() -> void:
 	pass
 
 func format(text: String) -> String:
+	return _format(text, Configs.savedata.editor_formatter)
+
+func get_export_value() -> String:
+	return _format(_value, Configs.savedata.export_formatter)
+
+func _format(text: String, _formatter: Formatter) -> String:
 	return text
 
-func _init(new_name: String, new_formatter: Formatter, init_value := "") -> void:
+func _init(new_name: String, init_value := "") -> void:
 	name = new_name
-	formatter = new_formatter
 	set_value(init_value)

@@ -202,21 +202,19 @@ func get_attribute_final_precise_transform(attribute_name: String) -> PackedFloa
 	return attrib.get_final_precise_transform()
 
 
-func set_attribute(attribute_name: String, value: Variant) -> void:
+func set_attribute(attrib_name: String, value: Variant) -> void:
 	var value_type := typeof(value)
 	
-	var has_attrib := has_attribute(attribute_name)
+	var has_attrib := has_attribute(attrib_name)
 	if not has_attrib and value_type == TYPE_STRING and value.is_empty():
 		return
 	
-	var attrib := _attributes[attribute_name] if has_attrib else\
-			new_attribute(attribute_name)
-	
+	var attrib := _attributes[attrib_name] if has_attrib else new_attribute(attrib_name)
 	
 	if value_type == TYPE_STRING:
 		attrib.set_value(value)
 	else:
-		match DB.get_attribute_type(attribute_name):
+		match DB.get_attribute_type(attrib_name):
 			DB.AttributeType.NUMERIC:
 				if value_type in [TYPE_FLOAT, TYPE_INT]: attrib.set_num(value)
 				else: push_error("Invalid value set to attribute.")
@@ -249,13 +247,8 @@ func duplicate(include_children := true) -> Element:
 	var new_element: Element
 	if type == ElementUnrecognized:
 		new_element = ElementUnrecognized.new(self.name)
-	elif type == ElementRoot:
-		new_element = ElementRoot.new(self.formatter)
 	else:
 		new_element = type.new()
-	
-	if type == ElementRoot:
-		new_element.formatter = self.formatter
 	
 	for attribute in _attributes:
 		new_element.set_attribute(attribute, get_attribute_value(attribute))
@@ -274,11 +267,11 @@ func apply_to(element: Element, dropped_attributes: PackedStringArray) -> void:
 
 # Converts a percentage numeric attribute to absolute.
 # TODO this is no longer used, but might become useful again in the future.
-func make_attribute_absolute(attribute_name: String) -> void:
-	if is_attribute_percentage(attribute_name):
-		var new_attrib := new_attribute(attribute_name)
-		new_attrib.set_num(get_attribute_num(attribute_name))
-		_attributes[attribute_name] = new_attrib
+func make_attribute_absolute(attrib_name: String) -> void:
+	if is_attribute_percentage(attrib_name):
+		var new_attrib := new_attribute(attrib_name)
+		new_attrib.set_num(get_attribute_num(attrib_name))
+		_attributes[attrib_name] = new_attrib
 
 
 # To be overridden in extending classes.
@@ -332,9 +325,4 @@ func new_default_attribute(name: String) -> Attribute:
 	return _create_attribute(name, get_default(name))
 
 func _create_attribute(name: String, value := "") -> Attribute:
-	if root != null:
-		return DB.attribute(name, root.formatter, value)
-	elif root == self:
-		return DB.attribute(name, self.formatter, value)
-	else:
-		return DB.attribute(name, Formatter.new(), value)
+	return DB.attribute(name, value)
