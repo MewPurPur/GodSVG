@@ -331,6 +331,10 @@ msgstr ""
 msgid "Save SVG"
 msgstr ""
 
+#: src/ui_parts/global_actions.gd
+msgid "Save SVG as…"
+msgstr ""
+
 #: src/ui_parts/global_actions.gd src/utils/TranslationUtils.gd
 msgid "Reset SVG"
 msgstr ""
@@ -629,7 +633,7 @@ msgstr ""
 msgid "Import XML"
 msgstr ""
 
-#: src/ui_parts/settings_menu.gd src/ui_widgets/palette_config.gd
+#: src/ui_parts/settings_menu.gd
 msgid "Paste XML"
 msgstr ""
 
@@ -946,11 +950,15 @@ msgid "Rename"
 msgstr ""
 
 #: src/ui_widgets/palette_config.gd
+msgid "Apply Preset"
+msgstr ""
+
+#: src/ui_widgets/palette_config.gd
 msgid "Copy as XML"
 msgstr ""
 
 #: src/ui_widgets/palette_config.gd
-msgid "Apply Preset"
+msgid "Save as XML"
 msgstr ""
 
 #: src/ui_widgets/path_popup.gd src/ui_widgets/pathdata_field.gd
@@ -1036,6 +1044,10 @@ msgstr ""
 
 #: src/utils/FileUtils.gd
 msgid "If you want to apply the unsaved file state, use \"Reset SVG\" instead."
+msgstr ""
+
+#: src/utils/TranslationUtils.gd
+msgid "Save as"
 msgstr ""
 
 #: src/utils/TranslationUtils.gd
