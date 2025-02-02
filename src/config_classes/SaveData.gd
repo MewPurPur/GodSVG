@@ -54,6 +54,8 @@ func validate() -> void:
 		editor_formatter = Formatter.new(Formatter.Preset.PRETTY)
 	if not is_instance_valid(export_formatter):
 		export_formatter = Formatter.new(Formatter.Preset.COMPACT)
+	if _active_tab_index >= _tabs.size() or _active_tab_index < 0:
+		_active_tab_index = _active_tab_index  # Run the setter.
 
 
 const CURRENT_VERSION = 1

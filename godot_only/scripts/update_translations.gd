@@ -14,8 +14,7 @@ msgstr \"\"
 \"Language-Team: \\n\"
 \"MIME-Version: 1.0\\n\"
 \"Content-Type: text/plain; charset=UTF-8\\n\"
-\"Content-Transfer-Encoding: 8bit\\n\"
-\"X-Generator: Poedit 3.4.2\\n\"\n"""
+\"Content-Transfer-Encoding: 8bit\\n\"\n"""
 
 # Don't have a better solution than handling all these different whitespace variations...
 var delimiters: Dictionary[String, String] = {}
