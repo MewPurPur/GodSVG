@@ -21,7 +21,7 @@
 
 ## How to get it
 
-Download the version you want from [the list of GodSVG releases](https://github.com/MewPurPur/GodSVG/releases). If you have issues with the download, look for a TROUBLESHOOTING.txt file. 
+Download the version you want from [the list of GodSVG releases](https://github.com/MewPurPur/GodSVG/releases). If you have issues with the download, look for a TROUBLESHOOTING.txt file.
 
 Link to the web editor: https://godsvg.com/editor
 
