@@ -335,6 +335,11 @@ msgstr "Оптимізувати"
 msgid "Save SVG"
 msgstr "Зберегти SVG"
 
+#: src/ui_parts/global_actions.gd
+#, fuzzy
+msgid "Save SVG as…"
+msgstr "Зберегти SVG"
+
 #: src/ui_parts/global_actions.gd src/utils/TranslationUtils.gd
 msgid "Reset SVG"
 msgstr "Скинути SVG"
@@ -635,7 +640,7 @@ msgstr "Мова"
 msgid "Import XML"
 msgstr "Імпортувати XML"
 
-#: src/ui_parts/settings_menu.gd src/ui_widgets/palette_config.gd
+#: src/ui_parts/settings_menu.gd
 msgid "Paste XML"
 msgstr "Вставити XML"
 
@@ -973,12 +978,17 @@ msgid "Rename"
 msgstr "Перейменувати"
 
 #: src/ui_widgets/palette_config.gd
+msgid "Apply Preset"
+msgstr "Застосувати пресет"
+
+#: src/ui_widgets/palette_config.gd
 msgid "Copy as XML"
 msgstr "Скопіювати як XML"
 
 #: src/ui_widgets/palette_config.gd
-msgid "Apply Preset"
-msgstr "Застосувати пресет"
+#, fuzzy
+msgid "Save as XML"
+msgstr "Скопіювати як XML"
 
 #: src/ui_widgets/path_popup.gd src/ui_widgets/pathdata_field.gd
 #: src/utils/TranslationUtils.gd
@@ -1064,6 +1074,11 @@ msgstr ""
 #: src/utils/FileUtils.gd
 msgid "If you want to apply the unsaved file state, use \"Reset SVG\" instead."
 msgstr ""
+
+#: src/utils/TranslationUtils.gd
+#, fuzzy
+msgid "Save as"
+msgstr "Зберегти"
 
 #: src/utils/TranslationUtils.gd
 msgid "Select the next tab"
