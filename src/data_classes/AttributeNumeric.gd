@@ -20,14 +20,14 @@ func is_percentage() -> bool:
 	return _percentage
 
 
-func format(text: String) -> String:
+func _format(text: String, formatter: Formatter) -> String:
 	var num := text_to_num(text)
 	if text_check_percentage(text):
-		return num_to_text(num * 100.0) + "%"
+		return num_to_text(num * 100.0, formatter) + "%"
 	else:
-		return num_to_text(num)
+		return num_to_text(num, formatter)
 
-func num_to_text(number: float) -> String:
+func num_to_text(number: float, formatter := Configs.savedata.editor_formatter) -> String:
 	return NumberParser.num_to_text(number, formatter)
 
 static func text_to_num(text: String) -> float:

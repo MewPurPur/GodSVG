@@ -8,7 +8,7 @@ func set_value(new_value: String) -> void:
 			name in DB.attribute_color_url_allowed, name in DB.attribute_color_none_allowed,
 			name in DB.attribute_color_current_color_allowed) else "")
 
-func format(text: String) -> String:
+func _format(text: String, formatter: Formatter) -> String:
 	text = text.strip_edges()
 	
 	if text.is_empty() or text in ["none", "currentColor"]:

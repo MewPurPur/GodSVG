@@ -23,8 +23,7 @@ static func compare_svg_to_disk_contents() -> FileState:
 	if content.is_empty():
 		return FileState.DOES_NOT_EXIST
 	# Check if importing the file's text into GodSVG would change the current SVG text.
-	if State.svg_text == SVGParser.root_to_text(SVGParser.text_to_root(content,
-	Configs.savedata.editor_formatter).svg, Configs.savedata.editor_formatter):
+	if State.svg_text == SVGParser.root_to_editor_text(SVGParser.text_to_root(content).svg):
 		return FileState.SAME
 	else:
 		return FileState.DIFFERENT
