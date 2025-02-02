@@ -18,7 +18,19 @@ env:
   GODOT_COMMIT_HASH: d33da79d3
   PROJECT_NAME: GodSVG
   GODOT_REPO: https://github.com/godotengine/godot.git
-  BUILD_OPTIONS: target=template_release lto=full production=yes deprecated=no minizip=no brotli=no vulkan=no openxr=no use_volk=no disable_3d=yes modules_enabled_by_default=no module_freetype_enabled=yes module_gdscript_enabled=yes module_svg_enabled=yes module_jpg_enabled=yes module_text_server_adv_enabled=yes graphite=no module_webp_enabled=yes
+
+  # Build options shared for all platforms (TODO document more of these)
+
+  # Networking:
+
+  # ENet is a networking library used for low-latency, peer-to-peer communication.
+  # Wslay is a WebSocket library used for real-time, bidirectional communication between a client and server.
+  # miniUPnP is used for Universal Plug and Play (UPnP), which is often used for automatic port forwarding in peer-to-peer applications.
+  # mbedTLS is a library for SSL/TLS encryption, which is used for secure communication over HTTPS.
+  # At the moment, GodSVG only performs HTTP requests to Github, so I'd assume we would have: "builtin_enet=no builtin_wslay=no builtin_miniupnpc=no."
+  # However, "builtin_enet=no" caused issues compiling for some platforms, so I removed it.
+
+  BUILD_OPTIONS: target=template_release lto=full production=yes deprecated=no minizip=no brotli=no vulkan=no openxr=no use_volk=no disable_3d=yes builtin_wslay=no builtin_miniupnpc=no modules_enabled_by_default=no module_freetype_enabled=yes module_gdscript_enabled=yes module_svg_enabled=yes module_jpg_enabled=yes module_text_server_adv_enabled=yes graphite=no module_webp_enabled=yes
 
 jobs:
   build-linux:
