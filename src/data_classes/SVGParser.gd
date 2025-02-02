@@ -8,7 +8,7 @@ custom_height: float, custom_viewbox: Rect2) -> String:
 	new_root_element.set_attribute("width", custom_width)
 	new_root_element.set_attribute("height", custom_height)
 	var text := _xnode_to_editor_text(new_root_element)
-	text = text.strip_edges(false, true).left(-6)  # Remove the </svg> at the end.)
+	text = text.left(maxi(text.find("/>"), text.find("</svg>"))) + ">"
 	for child_idx in root_element.get_child_count():
 		text += _xnode_to_editor_text(
 				root_element.get_xnode(PackedInt32Array([child_idx])), true)
