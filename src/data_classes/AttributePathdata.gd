@@ -254,7 +254,7 @@ static func pathdata_to_arrays(text: String) -> Array[Array]:
 		@warning_ignore("shadowed_global_identifier")
 		var char := text[idx]
 		# Stop parsing if we've hit a character that's not allowed.
-		if not char in "MmLlHhVvAaQqTtCcSsZz0123456789-+e., \n\t\r":
+		if not char in "MmLlHhVvAaQqTtCcSsZz0123456789-+Ee., \n\t\r":
 			return new_commands
 		# Logic for finding out what the next command is going to be.
 		if args_left == 0:
@@ -351,7 +351,8 @@ static func pathdata_to_arrays(text: String) -> Array[Array]:
 								start_idx += 1
 								end_idx += 1
 								continue
-							if not text.substr(start_idx, idx - start_idx).is_valid_float():
+							if not Utils.is_valid_float_fixed(
+							text.substr(start_idx, idx - start_idx)):
 								return new_commands
 							number_proceed = false
 						",":
@@ -368,8 +369,8 @@ static func pathdata_to_arrays(text: String) -> Array[Array]:
 								idx += 1
 								exponent_just_passed = true
 						_:
-							if args_left >= 1 and\
-							not text.substr(start_idx, end_idx - start_idx).is_valid_float():
+							if args_left >= 1 and not Utils.is_valid_float_fixed(
+							text.substr(start_idx, end_idx - start_idx)):
 								return new_commands
 							else:
 								idx -= 1

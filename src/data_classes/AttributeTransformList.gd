@@ -162,7 +162,8 @@ static func text_to_transform_list(text: String) -> Array[Transform]:
 							start_idx += 1
 							end_idx += 1
 							continue
-						if not transform_params.substr(start_idx, idx - start_idx).is_valid_float():
+						if not Utils.is_valid_float_fixed(transform_params.substr(
+						start_idx, idx - start_idx)):
 							return []
 						number_proceed = false
 					",":
@@ -179,8 +180,8 @@ static func text_to_transform_list(text: String) -> Array[Transform]:
 							idx += 1
 							exponent_just_passed = true
 					_:
-						if not transform_params.substr(start_idx,
-						end_idx - start_idx).is_valid_float():
+						if not Utils.is_valid_float_fixed(
+						transform_params.substr(start_idx, end_idx - start_idx)):
 							return []
 						else:
 							idx -= 1
