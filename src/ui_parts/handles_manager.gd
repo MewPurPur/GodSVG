@@ -817,14 +817,15 @@ func _on_handle_added() -> void:
 		return
 	
 	update_handles()
+	var first_inner_selection := State.inner_selections[0]
 	if State.root_element.get_xnode(State.semi_selected_xid).get_attribute("d").\
-	get_commands()[State.inner_selections[0]].command_char in "Zz":
+	get_commands()[first_inner_selection].command_char in "Zz":
 		State.queue_svg_save()
 		return
 	
 	for handle in handles:
 		if handle is PathHandle and handle.element.xid == State.semi_selected_xid and\
-		handle.command_index == State.inner_selections[0]:
+		handle.command_index == first_inner_selection:
 			State.set_hovered(handle.element.xid, handle.command_index)
 			dragged_handle = handle
 			# Move the handle that's being dragged.

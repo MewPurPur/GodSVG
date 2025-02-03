@@ -255,6 +255,7 @@ func normal_select(xid: PackedInt32Array, inner_idx := -1) -> void:
 	else:
 		var old_inner_selections := inner_selections.duplicate()
 		var old_semi_selected_xid := semi_selected_xid.duplicate()
+		xid = xid.duplicate()
 		_clear_selection_no_signal()
 		
 		if semi_selected_xid == xid and\
