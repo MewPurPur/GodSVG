@@ -586,7 +586,6 @@ func respond_to_key_input(event: InputEventKey) -> void:
 						normal_select(selected_xids[0], path_cmd_count)
 						handle_added.emit()
 						break
-				
 		return
 	# If path commands are selected, insert after the last one.
 	for action_name in path_actions_dict.keys():
@@ -597,8 +596,10 @@ func respond_to_key_input(event: InputEventKey) -> void:
 				var path_cmd_char := path_actions_dict[action_name]
 				var last_selection: int = inner_selections.max()
 				# Z after a Z is syntactically invalid.
-				if path_attrib.get_command(last_selection) is PathCommand.CloseCommand and\
-				path_cmd_char in "Zz":
+				if path_cmd_char in "Zz" and (path_attrib.get_command(last_selection) is\
+				PathCommand.CloseCommand or (path_attrib.get_command_count() >\
+				last_selection + 1 and path_attrib.get_command(last_selection + 1) is\
+				PathCommand.CloseCommand)):
 					return
 				path_attrib.insert_command(last_selection + 1, path_cmd_char, Vector2.ZERO)
 				normal_select(semi_selected_xid, last_selection + 1)
