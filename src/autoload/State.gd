@@ -191,7 +191,6 @@ func get_export_text() -> String:
 
 signal hover_changed
 signal selection_changed
-signal proposed_drop_changed
 
 signal requested_scroll_to_element_editor(xid: PackedInt32Array, inner_idx: int)
 
@@ -216,7 +215,26 @@ var inner_selections: Array[int] = []
 var inner_selection_pivot := -1
 
 # When dragging elements in the inspector.
+var is_xnode_selection_dragged := false
 var proposed_drop_xid := PackedInt32Array()
+
+signal xnode_dragging_state_changed
+signal proposed_drop_changed
+
+func set_selection_dragged(new_value: bool) -> void:
+	if is_xnode_selection_dragged != new_value:
+		is_xnode_selection_dragged = new_value
+		xnode_dragging_state_changed.emit()
+
+func set_proposed_drop_xid(xid: PackedInt32Array) -> void:
+	if proposed_drop_xid != xid:
+		proposed_drop_xid = xid.duplicate()
+		proposed_drop_changed.emit()
+
+func clear_proposed_drop_xid() -> void:
+	if not proposed_drop_xid.is_empty():
+		proposed_drop_xid.clear()
+		proposed_drop_changed.emit()
 
 
 signal zoom_changed
@@ -513,17 +531,6 @@ func is_selected(xid: PackedInt32Array, inner_idx := -1, propagate := false) -> 
 			return xid in selected_xids
 		else:
 			return semi_selected_xid == xid and inner_idx in inner_selections
-
-
-func set_proposed_drop_xid(xid: PackedInt32Array) -> void:
-	if proposed_drop_xid != xid:
-		proposed_drop_xid = xid.duplicate()
-		proposed_drop_changed.emit()
-
-func clear_proposed_drop_xid() -> void:
-	if not proposed_drop_xid.is_empty():
-		proposed_drop_xid.clear()
-		proposed_drop_changed.emit()
 
 
 func _on_xnodes_added(xids: Array[PackedInt32Array]) -> void:
