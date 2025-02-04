@@ -14,6 +14,7 @@ func _ready() -> void:
 	State.selection_changed.connect(determine_selection_highlight)
 	State.hover_changed.connect(determine_selection_highlight)
 	State.proposed_drop_changed.connect(queue_redraw)
+	State.xnode_dragging_state_changed.connect(_on_xnodes_dragging_state_changed)
 	title_bar.draw.connect(_on_title_bar_draw)
 	mouse_exited.connect(_on_mouse_exited)
 	determine_selection_highlight()
@@ -35,9 +36,9 @@ func _get_drag_data(_at_position: Vector2) -> Variant:
 	set_drag_preview(XNodeChildrenBuilder.generate_drag_preview(data))
 	return data
 
-func _notification(what: int) -> void:
-	if what == NOTIFICATION_DRAG_END:
-		modulate = Color(1, 1, 1)
+func _on_xnodes_dragging_state_changed() -> void:
+	modulate.a = 0.55 if (State.is_xnode_selection_dragged and\
+			xnode.xid in State.selected_xids) else 1.0
 
 
 func _on_title_button_pressed() -> void:
