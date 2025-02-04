@@ -33,16 +33,26 @@ var snap_4_idx: int
 
 
 func _enter_tree() -> void:
-	Configs.language_changed.connect(_reset_menus)
-	Configs.shortcuts_changed.connect(_reset_menu_items)
-	# Included menus.
+	# Included menus
 	global_rid = NativeMenu.get_system_menu(NativeMenu.MAIN_MENU_ID)
 	appl_rid = NativeMenu.get_system_menu(NativeMenu.APPLICATION_MENU_ID)
 	help_rid = NativeMenu.get_system_menu(NativeMenu.HELP_MENU_ID)
-	# Custom menus.
+	# Custom menus
 	_generate_main_menus()
 	_setup_menu_items()
+	# Updates
+	Configs.language_changed.connect(_reset_menus)
+	Configs.shortcuts_changed.connect(_setup_menu_items)
+	Configs.snap_changed.connect(_on_snap_changed)
+	_on_snap_changed()
+	State.view_rasterized_changed.connect(_on_view_rasterized_changed)
+	_on_view_rasterized_changed()
+	State.show_grid_changed.connect(_on_show_grid_changed)
+	_on_show_grid_changed()
+	State.show_handles_changed.connect(_on_show_handles_changed)
+	_on_show_handles_changed()
 	State.svg_changed.connect(_on_svg_changed)
+	_on_svg_changed()
 
 
 func _reset_menus() -> void:
@@ -79,10 +89,6 @@ func _generate_main_menus() -> void:
 			Translator.translate("Snap"), snap_rid)
 
 
-func _reset_menu_items() -> void:
-	_setup_menu_items()
-
-
 func _clear_menu_items() -> void:
 	NativeMenu.clear(appl_rid)
 	NativeMenu.clear(help_rid)
@@ -112,7 +118,6 @@ func _setup_menu_items() -> void:
 	file_optimize_idx = _add_action(file_rid, "optimize")
 	NativeMenu.add_separator(file_rid)
 	file_reset_svg_idx = _add_action(file_rid, "reset_svg")
-	_on_svg_changed()
 	# Edit and Tool menus.
 	_add_many_actions(edit_rid, ShortcutUtils.get_shortcuts("edit"))
 	_add_many_actions(tool_rid, ShortcutUtils.get_shortcuts("tool"))
@@ -120,7 +125,6 @@ func _setup_menu_items() -> void:
 	view_show_grid_idx = _add_check_item(view_rid, "view_show_grid")
 	view_show_handles_idx = _add_check_item(view_rid, "view_show_handles")
 	view_rasterized_svg_idx = _add_check_item(view_rid, "view_rasterized_svg")
-	_on_display_view_settings_updated(true, true, false)
 	NativeMenu.add_separator(view_rid)
 	_add_action(view_rid, "zoom_in")
 	_add_action(view_rid, "zoom_out")
@@ -180,13 +184,18 @@ func _on_svg_changed() -> void:
 	NativeMenu.set_item_disabled(file_rid, file_reset_svg_idx,
 			FileUtils.compare_svg_to_disk_contents() == FileUtils.FileState.DIFFERENT)
 
-func _on_display_view_settings_updated(show_grid: bool, show_handles: bool, rasterized_svg: bool) -> void:
-	NativeMenu.set_item_checked(view_rid, view_show_grid_idx, show_grid)
-	NativeMenu.set_item_checked(view_rid, view_show_handles_idx, show_handles)
-	NativeMenu.set_item_checked(view_rid, view_rasterized_svg_idx, rasterized_svg)
+func _on_view_rasterized_changed() -> void:
+	NativeMenu.set_item_checked(view_rid, view_rasterized_svg_idx, State.rasterized_svg)
 
-func _on_display_snap_settings_updated(snap_enabled: bool, snap_amount: float) -> void:
-	NativeMenu.set_item_checked(snap_rid, snap_enable_idx, snap_enabled)
+func _on_show_grid_changed() -> void:
+	NativeMenu.set_item_checked(view_rid, view_show_grid_idx, State.show_grid)
+
+func _on_show_handles_changed() -> void:
+	NativeMenu.set_item_checked(view_rid, view_show_handles_idx, State.show_handles)
+
+func _on_snap_changed() -> void:
+	var snap_amount := absf(Configs.savedata.snap)
+	NativeMenu.set_item_checked(snap_rid, snap_enable_idx, Configs.savedata.snap > 0)
 	NativeMenu.set_item_checked(snap_rid, snap_0125_idx, is_equal_approx(snap_amount, 0.125))
 	NativeMenu.set_item_checked(snap_rid, snap_025_idx, is_equal_approx(snap_amount, 0.25))
 	NativeMenu.set_item_checked(snap_rid, snap_05_idx, is_equal_approx(snap_amount, 0.5))
@@ -194,9 +203,8 @@ func _on_display_snap_settings_updated(snap_enabled: bool, snap_amount: float) -
 	NativeMenu.set_item_checked(snap_rid, snap_2_idx, is_equal_approx(snap_amount, 2))
 	NativeMenu.set_item_checked(snap_rid, snap_4_idx, is_equal_approx(snap_amount, 4))
 
-
-func _set_snap(tag: float) -> void:
-	%Display.set_snap_amount(tag)
+func _set_snap(amount: float) -> void:
+	Configs.savedata.snap = amount
 
 
 func _action_call(tag: StringName) -> void:

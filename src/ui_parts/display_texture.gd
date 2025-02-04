@@ -6,19 +6,17 @@ var view_rect := Rect2():
 			view_rect = new_value
 			queue_update()
 
-var rasterized := false:
-	set(new_value):
-		if new_value != rasterized:
-			rasterized = new_value
-			if State.zoom != 1.0:
-				queue_update()
-
 var _update_pending := false
 
 func _ready() -> void:
 	State.svg_changed.connect(queue_update)
 	State.zoom_changed.connect(queue_update)
+	State.view_rasterized_changed.connect(_on_view_rasterized_changed)
 	queue_update()
+
+func _on_view_rasterized_changed() -> void:
+	if State.zoom != 1.0:
+		queue_update()
 
 
 func queue_update() -> void:
@@ -31,7 +29,7 @@ func _update() -> void:
 	
 	_update_pending = false
 	
-	var image_zoom := 1.0 if rasterized and State.zoom > 1.0 else State.zoom
+	var image_zoom := 1.0 if State.view_rasterized and State.zoom > 1.0 else State.zoom
 	var pixel_size := 1 / image_zoom
 	
 	# Translate to canvas coords.

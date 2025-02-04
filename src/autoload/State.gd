@@ -236,6 +236,30 @@ func set_viewport_size(new_value: Vector2i) -> void:
 		viewport_size_changed.emit()
 
 
+var view_rasterized := false
+var show_grid := true
+var show_handles := true
+
+signal view_rasterized_changed
+signal show_grid_changed
+signal show_handles_changed
+
+func set_view_rasterized(new_value: bool) -> void:
+	if view_rasterized != new_value:
+		view_rasterized = new_value
+		view_rasterized_changed.emit()
+
+func set_show_grid(new_value: bool) -> void:
+	if show_grid != new_value:
+		show_grid = new_value
+		show_grid_changed.emit()
+
+func set_show_handles(new_value: bool) -> void:
+	if show_handles != new_value:
+		show_handles = new_value
+		show_handles_changed.emit()
+
+
 # Override the selected elements with a single new selected element.
 # If inner_idx is given, this will be an inner selection.
 func normal_select(xid: PackedInt32Array, inner_idx := -1) -> void:

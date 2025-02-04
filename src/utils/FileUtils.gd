@@ -58,13 +58,12 @@ static func open_export_dialog(export_data: ImageExportData) -> void:
 			DisplayServer.file_dialog_show(
 					Translator.translate("Save the .\"{format}\" file").format(
 					{"format": export_data.format}), Configs.savedata.get_active_tab_dir(),
-					Utils.get_file_name(Configs.savedata.get_active_tab().svg_file_path) +\
-					"." + export_data.format, false, DisplayServer.FILE_DIALOG_MODE_SAVE_FILE,
+					_choose_file_name() + "." + export_data.format, false,
+					DisplayServer.FILE_DIALOG_MODE_SAVE_FILE,
 					PackedStringArray(["*." + export_data.format]), native_callback)
 		else:
 			var export_dialog := GoodFileDialog.instantiate()
-			export_dialog.setup(Configs.savedata.get_active_tab_dir(),
-					Utils.get_file_name(Configs.savedata.get_active_tab().svg_file_path),
+			export_dialog.setup(Configs.savedata.get_active_tab_dir(), _choose_file_name(),
 					GoodFileDialogType.FileMode.SAVE, PackedStringArray([export_data.format]))
 			HandlerGUI.add_menu(export_dialog)
 			export_dialog.file_selected.connect(func(path): _finish_export(path, export_data))
@@ -121,6 +120,9 @@ static func _finish_xml_export(file_path: String, xml: String) -> void:
 static func _is_native_preferred() -> bool:
 	return DisplayServer.has_feature(DisplayServer.FEATURE_NATIVE_DIALOG_FILE) and\
 			Configs.savedata.use_native_file_dialog
+
+static func _choose_file_name() -> String:
+	return Utils.get_file_name(Configs.savedata.get_active_tab().svg_file_path)
 
 
 # No need for completion callback here yet.
