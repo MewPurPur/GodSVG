@@ -1,8 +1,5 @@
 extends VBoxContainer
 
-signal view_settings_updated(show_grid: bool, show_handles: bool, rasterized_svg: bool)
-signal snap_settings_updated(snap_enabled: bool, snap_amount: float)
-
 const NumberEditType = preload("res://src/ui_widgets/number_edit.gd")
 const BetterToggleButtonType = preload("res://src/ui_widgets/BetterToggleButton.gd")
 
@@ -10,8 +7,6 @@ const NumberField = preload("res://src/ui_widgets/number_field.tscn")
 const ConfirmDialog := preload("res://src/ui_widgets/confirm_dialog.tscn")
 
 @onready var viewport: SubViewport = %Viewport
-@onready var controls: Control = %Viewport/Controls
-@onready var grid_visuals: Control = %Viewport/Camera
 @onready var reference_texture = %Viewport/ReferenceTexture
 @onready var reference_button = %LeftMenu/Reference
 @onready var visuals_button: Button = %LeftMenu/Visuals
@@ -34,8 +29,6 @@ func _ready() -> void:
 	update_theme()
 	update_snap_config()
 	get_window().window_input.connect(_update_input_debug)
-	view_settings_updated.emit(grid_visuals.visible, controls.visible,
-			viewport.display_texture.rasterized)
 
 func _unhandled_input(event: InputEvent) -> void:
 	if Input.is_action_pressed("debug"):
@@ -89,7 +82,6 @@ func update_snap_config() -> void:
 	snap_button.button_pressed = snap_enabled
 	snapper.editable = snap_enabled
 	snapper.set_value(absf(snap_config))
-	snap_settings_updated.emit(snap_enabled, absf(snap_config))
 
 func update_reference_image() -> void:
 	apply_reference(Configs.savedata.get_active_tab().reference_image)
@@ -114,12 +106,11 @@ func _on_reference_pressed() -> void:
 func _on_visuals_button_pressed() -> void:
 	var btn_arr: Array[Button] = [
 		ContextPopup.create_checkbox(Translator.translate("Show grid"),
-				toggle_grid_visuals, grid_visuals.visible, "view_show_grid"),
+				toggle_grid_visuals, State.show_grid, "view_show_grid"),
 		ContextPopup.create_checkbox(Translator.translate("Show handles"),
-				toggle_handles_visuals, controls.visible, "view_show_handles"),
+				toggle_handles_visuals, State.show_handles, "view_show_handles"),
 		ContextPopup.create_checkbox(Translator.translate("Rasterized SVG"),
-				toggle_rasterization, viewport.display_texture.rasterized,
-				"view_rasterized_svg")]
+				toggle_rasterization, State.view_rasterized, "view_rasterized_svg")]
 	
 	var visuals_popup := ContextPopup.new()
 	visuals_popup.setup(btn_arr, true)
@@ -128,19 +119,13 @@ func _on_visuals_button_pressed() -> void:
 
 
 func toggle_grid_visuals() -> void:
-	grid_visuals.visible = not grid_visuals.visible
-	view_settings_updated.emit(grid_visuals.visible, controls.visible,
-			viewport.display_texture.rasterized)
+	State.set_show_grid(not State.show_grid)
 
 func toggle_handles_visuals() -> void:
-	controls.visible = not controls.visible
-	view_settings_updated.emit(grid_visuals.visible, controls.visible,
-			viewport.display_texture.rasterized)
+	State.set_show_handles(not State.show_handles)
 
 func toggle_rasterization() -> void:
-	viewport.display_texture.rasterized = not viewport.display_texture.rasterized
-	view_settings_updated.emit(grid_visuals.visible, controls.visible,
-			viewport.display_texture.rasterized)
+	State.set_view_rasterized(not State.view_rasterized)
 
 func toggle_reference_image() -> void:
 	reference_texture.visible = not reference_texture.visible

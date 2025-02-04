@@ -93,8 +93,12 @@ func _ready() -> void:
 	State.hover_changed.connect(queue_redraw)
 	State.zoom_changed.connect(queue_redraw)
 	State.handle_added.connect(_on_handle_added)
+	State.show_handles_changed.connect(toggle_visibility)
 	queue_update_handles()
 
+
+func toggle_visibility() -> void:
+	visible = not visible
 
 func queue_update_handles() -> void:
 	update_handles.call_deferred()
