@@ -16,7 +16,7 @@ static func create(element: Element) -> Array[Control]:
 			arr.append(xnode_editor)
 	return arr
 
-static func generate_drag_preview(xids: Array[PackedInt32Array], ) -> Control:
+static func generate_drag_preview(xids: Array[PackedInt32Array]) -> Control:
 	var xnode_container := VBoxContainer.new()
 	for data_idx in range(xids.size() - 1, -1, -1):
 		var drag_xid := xids[data_idx]
