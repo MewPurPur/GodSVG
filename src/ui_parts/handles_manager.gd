@@ -672,15 +672,15 @@ var should_deselect_all := false
 
 func _unhandled_input(event: InputEvent) -> void:
 	if not visible:
+		dragged_handle = null
 		hovered_handle = null
 		State.clear_all_hovered()
-		return
 	
 	# Set the nearest handle as hovered, if any handles are within range.
-	if (event is InputEventMouseMotion and !is_instance_valid(dragged_handle) and\
+	if visible and ((event is InputEventMouseMotion and !is_instance_valid(dragged_handle) and\
 	event.button_mask == 0) or (event is InputEventMouseButton and\
 	(event.button_index in [MOUSE_BUTTON_LEFT, MOUSE_BUTTON_RIGHT, MOUSE_BUTTON_WHEEL_DOWN,
-	MOUSE_BUTTON_WHEEL_UP, MOUSE_BUTTON_WHEEL_LEFT, MOUSE_BUTTON_WHEEL_RIGHT])):
+	MOUSE_BUTTON_WHEEL_UP, MOUSE_BUTTON_WHEEL_LEFT, MOUSE_BUTTON_WHEEL_RIGHT]))):
 		var nearest_handle := find_nearest_handle(event.position / State.zoom +\
 				get_parent().view.position)
 		if is_instance_valid(nearest_handle):
@@ -695,7 +695,7 @@ func _unhandled_input(event: InputEvent) -> void:
 			hovered_handle = null
 			State.clear_all_hovered()
 	
-	if event is InputEventMouseMotion:
+	if visible and event is InputEventMouseMotion:
 		# Allow moving view while dragging handle.
 		if event.button_mask & MOUSE_BUTTON_MASK_MIDDLE:
 			return
@@ -715,7 +715,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		
 		if event.button_index == MOUSE_BUTTON_LEFT:
 			# React to LMB actions.
-			if is_instance_valid(hovered_handle) and event.is_pressed():
+			if visible and is_instance_valid(hovered_handle) and event.is_pressed():
 				dragged_handle = hovered_handle
 				var inner_idx := -1
 				var dragged_xid := dragged_handle.element.xid
@@ -741,7 +741,7 @@ func _unhandled_input(event: InputEvent) -> void:
 					State.shift_select(dragged_xid, inner_idx)
 				else:
 					State.normal_select(dragged_xid, inner_idx)
-			elif is_instance_valid(dragged_handle) and event.is_released():
+			elif visible and is_instance_valid(dragged_handle) and event.is_released():
 				if was_handle_moved:
 					var new_pos := Utils64Bit.transform_vector_mult(
 							Utils64Bit.get_transform_affine_inverse(dragged_handle.precise_transform),
@@ -762,7 +762,7 @@ func _unhandled_input(event: InputEvent) -> void:
 				State.clear_all_selections()
 				HandlerGUI.popup_under_pos(create_element_context(
 						State.root_element.world_to_canvas_64_bit(event_pos)), popup_pos, vp)
-			else:
+			elif visible:
 				var hovered_xid := hovered_handle.element.xid
 				var inner_idx := -1
 				if hovered_handle is PathHandle:
