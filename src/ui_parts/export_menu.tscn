@@ -1,7 +1,7 @@
 [gd_scene load_steps=8 format=3 uid="uid://c13dadqbljqlu"]
 
-[ext_resource type="Script" path="res://src/ui_parts/export_menu.gd" id="1_objnb"]
-[ext_resource type="Script" path="res://src/ui_widgets/HTitledPanel.gd" id="2_07m68"]
+[ext_resource type="Script" uid="uid://bouo2y3v0gy4a" path="res://src/ui_parts/export_menu.gd" id="1_objnb"]
+[ext_resource type="Script" uid="uid://chk5g6lh7jc14" path="res://src/ui_widgets/HTitledPanel.gd" id="2_07m68"]
 [ext_resource type="PackedScene" uid="uid://xh26qa68xed4" path="res://src/ui_widgets/preview_rect.tscn" id="2_ewk0a"]
 [ext_resource type="Texture2D" uid="uid://v0lqyuvo50yq" path="res://assets/icons/Info.svg" id="2_rk3rd"]
 [ext_resource type="FontFile" uid="uid://clpf84p1lfwlp" path="res://assets/fonts/Font.ttf" id="5_s3e6m"]
@@ -185,7 +185,6 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(47, 22)
 layout_mode = 2
 size_flags_vertical = 4
-initial_value = 1.0
 allow_lower = false
 allow_higher = false
 
@@ -210,7 +209,6 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(47, 22)
 layout_mode = 2
 max_value = 16384.0
-initial_value = 1.0
 allow_lower = false
 allow_higher = false
 is_float = false
@@ -229,7 +227,6 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(47, 22)
 layout_mode = 2
 max_value = 16384.0
-initial_value = 1.0
 allow_lower = false
 allow_higher = false
 is_float = false

@@ -1,9 +1,21 @@
 # A number editor, not tied to any attribute.
 extends BetterLineEdit
 
-@export var min_value := 0.0
-@export var max_value := 1.0
-@export var initial_value := 0.5
+@export var min_value := 0.0:
+	set(new_value):
+		if min_value != new_value:
+			min_value = new_value
+			if _value < min_value:
+				set_value(min_value)
+
+@export var max_value := 1.0:
+	set(new_value):
+		if max_value != new_value:
+			max_value = new_value
+			if _value > max_value:
+				set_value(max_value)
+
+@export var initial_value := 1.0
 @export var allow_lower := true
 @export var allow_higher := true
 @export var is_float := true
