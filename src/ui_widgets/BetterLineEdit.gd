@@ -85,7 +85,8 @@ func _input(event: InputEvent) -> void:
 	if not has_focus():
 		return
 	
-	if event is InputEventMouseButton:
+	if event is InputEventMouseButton and (event.button_index in [MOUSE_BUTTON_LEFT,
+	MOUSE_BUTTON_RIGHT, MOUSE_BUTTON_MIDDLE]):
 		if event.is_pressed() and not get_global_rect().has_point(event.position) and\
 		popup_level == HandlerGUI.popup_stack.size():
 			release_focus()
