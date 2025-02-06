@@ -123,13 +123,11 @@ func _setup() -> void:
 	temp_line_edit.focus_entered.connect(_on_underlying_control_focused)
 	temp_line_edit.focus_exited.connect(_on_underlying_control_unfocused)
 	add_child(temp_line_edit)
-	temp_button = Button.new()
+	temp_button = Utils.make_standard_button()
 	temp_button.show_behind_parent = true  # Lets the icon draw in front.
 	temp_button.custom_minimum_size = Vector2(BUTTON_WIDTH, 22)
 	temp_button.position.x = size.x - BUTTON_WIDTH
-	temp_button.focus_mode = Control.FOCUS_NONE
 	temp_button.mouse_filter = Control.MOUSE_FILTER_PASS
-	temp_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	if button_visuals:
 		temp_button.theme_type_variation = "LeftConnectedButton"
 	else:

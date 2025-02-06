@@ -68,13 +68,11 @@ func rebuild_colors() -> void:
 			if is_instance_valid(swatch):
 				swatch.pressed.emit()
 	# Add the add button.
-	var fake_swatch := Button.new()
+	var fake_swatch := Utils.make_standard_button()
 	fake_swatch.theme_type_variation = "Swatch"
 	fake_swatch.icon = plus_icon
 	fake_swatch.icon_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	fake_swatch.focus_mode = Control.FOCUS_NONE
 	fake_swatch.mouse_filter = Control.MOUSE_FILTER_PASS
-	fake_swatch.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	var color_swatch_ref := ColorSwatch.instantiate()
 	fake_swatch.custom_minimum_size = color_swatch_ref.custom_minimum_size
 	color_swatch_ref.queue_free()

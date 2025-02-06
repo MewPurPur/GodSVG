@@ -99,3 +99,12 @@ static func get_clipboard_web_safe() -> String:
 	if OS.has_feature("web"):
 		return ""
 	return DisplayServer.clipboard_get()
+
+
+static func make_standard_button(disabled := false) -> Button:
+	var new_button := Button.new()
+	new_button.focus_mode = Control.FOCUS_NONE
+	new_button.disabled = disabled
+	if not disabled:
+		new_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+	return new_button

@@ -79,11 +79,9 @@ func update_layout() -> void:
 	drag_handle.add_child(drag_texture)
 	main_container.add_child(drag_handle)
 	
-	var config_button := Button.new()
+	var config_button := Utils.make_standard_button()
 	config_button.theme_type_variation = "TranslucentButton"
 	config_button.icon = config_icon
-	config_button.focus_mode = Control.FOCUS_NONE
-	config_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	config_button.mouse_filter = Control.MOUSE_FILTER_PASS
 	config_button.custom_minimum_size = Vector2(30, 30)
 	config_button.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
@@ -113,9 +111,7 @@ func update_layout() -> void:
 		for i in range(SaveData.SHORTCUT_PANEL_MAX_SLOTS):
 			var shortcut := Configs.savedata.get_shortcut_panel_slot(i)
 			if not shortcut.is_empty():
-				var button := Button.new()
-				button.focus_mode = Control.FOCUS_NONE
-				button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+				var button := Utils.make_standard_button()
 				button.mouse_filter = Control.MOUSE_FILTER_PASS
 				button.custom_minimum_size = Vector2(30, 30)
 				button.size_flags_horizontal = Control.SIZE_SHRINK_CENTER

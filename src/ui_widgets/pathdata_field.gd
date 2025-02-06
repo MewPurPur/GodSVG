@@ -110,12 +110,10 @@ func sync(new_value: String) -> void:
 	# A plus button for adding a move command if empty.
 	var cmd_count: int = element.get_attribute(attribute_name).get_command_count()
 	if cmd_count == 0 and not is_instance_valid(add_move_button):
-		add_move_button = Button.new()
+		add_move_button = Utils.make_standard_button()
 		add_move_button.icon = plus_icon
 		add_move_button.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
 		add_move_button.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
-		add_move_button.focus_mode = Control.FOCUS_NONE
-		add_move_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 		add_move_button.theme_type_variation = "FlatButton"
 		add_child(add_move_button)
 		add_move_button.pressed.connect(_on_add_move_button_pressed)
@@ -371,10 +369,8 @@ func setup_path_command_controls(idx: int) -> Control:
 	container.mouse_filter = Control.MOUSE_FILTER_PASS
 	commands_container.add_child(container)
 	# Setup the relative button.
-	var relative_button := Button.new()
-	relative_button.focus_mode = Control.FOCUS_NONE
+	var relative_button := Utils.make_standard_button()
 	relative_button.mouse_filter = Control.MOUSE_FILTER_PASS
-	relative_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	relative_button.begin_bulk_theme_override()
 	relative_button.add_theme_font_override("font", ThemeUtils.mono_font)
 	relative_button.add_theme_font_size_override("font_size", 13)
@@ -402,12 +398,10 @@ func setup_path_command_controls(idx: int) -> Control:
 	relative_button.position = Vector2(3, 2)
 	relative_button.size = Vector2(STRIP_HEIGHT - 4, STRIP_HEIGHT - 4)
 	# Setup the action button.
-	var action_button := Button.new()
+	var action_button := Utils.make_standard_button()
 	action_button.icon = more_icon
 	action_button.theme_type_variation = "FlatButton"
-	action_button.focus_mode = Control.FOCUS_NONE
 	action_button.mouse_filter = Control.MOUSE_FILTER_PASS
-	action_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	container.add_child(action_button)
 	action_button.pressed.connect(_on_action_button_pressed.bind(action_button))
 	action_button.gui_input.connect(_eat_double_clicks.bind(action_button))

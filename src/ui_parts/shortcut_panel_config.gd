@@ -63,11 +63,9 @@ func update_shortcut_slots() -> void:
 			spacer.custom_minimum_size = Vector2(28, 28)
 			hbox.add_child(spacer)
 		else:
-			var clear_button := Button.new()
+			var clear_button := Utils.make_standard_button()
 			clear_button.theme_type_variation = "FlatButton"
 			clear_button.icon = clear_icon
-			clear_button.focus_mode = Control.FOCUS_NONE
-			clear_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 			clear_button.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 			clear_button.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 			clear_button.custom_minimum_size = Vector2(28, 28)

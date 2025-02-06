@@ -93,13 +93,11 @@ func setup_content() -> void:
 			var categories := HFlowContainer.new()
 			var button_group := ButtonGroup.new()
 			for tab_idx in formatter_tab_names:
-				var btn := Button.new()
+				var btn := Utils.make_standard_button()
 				btn.toggle_mode = true
 				btn.button_group = button_group
 				btn.pressed.connect(show_formatter.bind(tab_idx))
 				btn.text = get_translated_formatter_tab(tab_idx)
-				btn.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-				btn.focus_mode = Control.FOCUS_NONE
 				btn.action_mode = BaseButton.ACTION_MODE_BUTTON_PRESS
 				categories.add_child(btn)
 			vbox.add_child(categories)
@@ -122,13 +120,11 @@ func setup_content() -> void:
 			var categories := HFlowContainer.new()
 			var button_group := ButtonGroup.new()
 			for tab_idx in shortcut_tab_names:
-				var btn := Button.new()
+				var btn := Utils.make_standard_button()
 				btn.toggle_mode = true
 				btn.button_group = button_group
 				btn.pressed.connect(show_shortcuts.bind(tab_idx))
 				btn.text = get_translated_shortcut_tab(tab_idx)
-				btn.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-				btn.focus_mode = Control.FOCUS_NONE
 				btn.action_mode = BaseButton.ACTION_MODE_BUTTON_PRESS
 				categories.add_child(btn)
 			vbox.add_child(categories)
@@ -451,21 +447,17 @@ func rebuild_palettes() -> void:
 	hbox.alignment = BoxContainer.ALIGNMENT_CENTER
 	palette_container.add_child(hbox)
 	
-	var add_palette_button := Button.new()
+	var add_palette_button := Utils.make_standard_button()
 	add_palette_button.theme_type_variation = "TranslucentButton"
 	add_palette_button.icon = plus_icon
 	add_palette_button.text = Translator.translate("New palette")
-	add_palette_button.focus_mode = Control.FOCUS_NONE
-	add_palette_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	add_palette_button.pressed.connect(add_empty_palette)
 	hbox.add_child(add_palette_button)
 	
-	var xml_palette_button := Button.new()
+	var xml_palette_button := Utils.make_standard_button()
 	xml_palette_button.theme_type_variation = "TranslucentButton"
 	xml_palette_button.icon = import_icon
 	xml_palette_button.text = Translator.translate("New palette from XML")
-	xml_palette_button.focus_mode = Control.FOCUS_NONE
-	xml_palette_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	hbox.add_child(xml_palette_button)
 	xml_palette_button.pressed.connect(_popup_xml_palette_options.bind(xml_palette_button))
 
@@ -497,14 +489,10 @@ func show_formatter(category: String) -> void:
 		"editor": current_setup_resource = Configs.savedata.editor_formatter
 		"export": current_setup_resource = Configs.savedata.export_formatter
 	
-	var button := Button.new()
+	var button := Utils.make_standard_button(current_setup_resource.is_everything_default())
 	button.theme_type_variation = "TranslucentButton"
 	button.text = Translator.translate("Reset all to default")
 	button.icon = reset_icon
-	button.focus_mode = Control.FOCUS_NONE
-	button.disabled = current_setup_resource.is_everything_default()
-	button.mouse_default_cursor_shape = Control.CURSOR_ARROW if\
-			button.disabled else Control.CURSOR_POINTING_HAND
 	setting_container.add_child(button)
 	button.pressed.connect(current_setup_resource.reset_to_default)
 	

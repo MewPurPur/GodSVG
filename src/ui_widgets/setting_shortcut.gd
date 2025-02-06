@@ -46,7 +46,7 @@ func sync() -> void:
 		button.queue_free()
 	# Create new ones.
 	for i in 3:
-		var new_btn := Button.new()
+		var new_btn := Utils.make_standard_button()
 		shortcut_container.add_child.call_deferred(new_btn)
 		shortcut_buttons.append(new_btn)
 		new_btn.theme_type_variation = "TranslucentButton"
@@ -60,8 +60,6 @@ func sync() -> void:
 		new_btn.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		new_btn.custom_minimum_size = Vector2(116, 24)
 		
-		new_btn.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-		new_btn.focus_mode = Control.FOCUS_NONE
 		if i < events.size():
 			set_shortcut_button_text(new_btn, events[i].as_text_keycode())
 			new_btn.pressed.connect(enter_listening_mode.bind(i, true))
@@ -104,11 +102,9 @@ func enter_listening_mode(idx: int, show_delete_button := false) -> void:
 	# Add optional delete button.
 	if show_delete_button:
 		btn.icon = delete_icon
-		var delete_btn := Button.new()
+		var delete_btn := Utils.make_standard_button()
 		delete_btn.theme_type_variation = "FlatButton"
 		delete_btn.tooltip_text = Translator.translate("Delete")
-		delete_btn.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-		delete_btn.focus_mode = Control.FOCUS_NONE
 		# Position the delete button around the delte icon. Seems like the simplest way
 		# to set up something that looks like a delete button, without needing to make
 		# complex node hierarchies.

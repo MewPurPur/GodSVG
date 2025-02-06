@@ -13,7 +13,7 @@ func setup(new_action: String) -> void:
 		button.queue_free()
 	# Create new ones.
 	for i in events.size():
-		var new_btn := Button.new()
+		var new_btn := Utils.make_standard_button(true)
 		new_btn.custom_minimum_size = Vector2(160, 24)
 		new_btn.size_flags_horizontal = Control.SIZE_FILL
 		new_btn.theme_type_variation = "TranslucentButton"
@@ -21,9 +21,6 @@ func setup(new_action: String) -> void:
 		shortcut_stylebox.content_margin_top = 0
 		shortcut_stylebox.content_margin_bottom = 0
 		new_btn.add_theme_stylebox_override("disabled", shortcut_stylebox)
-		
-		new_btn.focus_mode = Control.FOCUS_NONE
-		new_btn.disabled = true
 		new_btn.text = events[i].as_text_keycode()
 		shortcut_container.add_child(new_btn)
 	Configs.shortcuts_changed.connect(check_shortcuts_validity)

@@ -139,9 +139,7 @@ func _on_mouse_entered() -> void:
 	var title_width := ThemeUtils.mono_font.get_string_size(element.name,
 			HORIZONTAL_ALIGNMENT_LEFT, 180, 12).x
 	# Add button.
-	var title_button := Button.new()
-	title_button.focus_mode = Control.FOCUS_NONE
-	title_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+	var title_button := Utils.make_standard_button()
 	title_button.mouse_filter = Control.MOUSE_FILTER_PASS
 	title_button.theme_type_variation = "FlatButton"
 	title_button.position = Vector2(half_bar_width - title_width / 2 -\
