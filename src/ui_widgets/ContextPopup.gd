@@ -1,6 +1,8 @@
 class_name ContextPopup extends PanelContainer
 ## Standard popup for actions with methods for easy setup.
 
+const arrow = preload("res://assets/icons/PopupArrow.svg")
+
 func _init() -> void:
 	mouse_filter = Control.MOUSE_FILTER_STOP
 
