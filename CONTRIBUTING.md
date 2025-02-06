@@ -29,7 +29,7 @@ After submitting your pull request, I (MewPurPur) will review your changes and m
 
 ## Translation
 
-Editing translations is explained [here](translations/README.md)
+Editing translations is explained [here](assets/translations/README.md)
 
 ## Code guidelines
 
