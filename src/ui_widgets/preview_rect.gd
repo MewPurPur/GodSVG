@@ -16,18 +16,14 @@ func setup_svg(svg_text: String, dimensions: Vector2) -> void:
 		img.fix_alpha_edges()
 		_set_image(img)
 
-func setup_image(config: ImageExportData, full_scale := false) -> void:
-	var final_image_config: ImageExportData
-	if full_scale:
-		final_image_config = config
-	else:
-		final_image_config = ImageExportData.new()
-		final_image_config.format = config.format
-		final_image_config.lossy = config.lossy
-		final_image_config.quality = config.quality
-		var svg_size := State.root_element.get_size()
-		final_image_config.upscale_amount = minf(config.upscale_amount,
-				MAX_IMAGE_DIMENSION / maxf(svg_size.x, svg_size.y))
+func setup_image(config: ImageExportData) -> void:
+	var final_image_config := ImageExportData.new()
+	final_image_config.format = config.format
+	final_image_config.lossy = config.lossy
+	final_image_config.quality = config.quality
+	var svg_size := State.root_element.get_size()
+	final_image_config.upscale_amount = minf(config.upscale_amount,
+			MAX_IMAGE_DIMENSION / maxf(svg_size.x, svg_size.y))
 	
 	var buffer := final_image_config.image_to_buffer(final_image_config.generate_image())
 	var image := Image.new()
@@ -36,6 +32,8 @@ func setup_image(config: ImageExportData, full_scale := false) -> void:
 		"jpg", "jpeg": image.load_jpg_from_buffer(buffer)
 		"webp": image.load_webp_from_buffer(buffer)
 	
+	if image.get_width() > size.x or image.get_height() > size.y:
+		image.resize(minf(size.x, image.get_width()), minf(size.y, image.get_height()))
 	var factor := size.x / maxf(image.get_width(), image.get_height())
 	var interp := Image.INTERPOLATE_NEAREST if factor >= 3 else Image.INTERPOLATE_BILINEAR
 	image.resize(int(image.get_width() * factor), int(image.get_height() * factor), interp)

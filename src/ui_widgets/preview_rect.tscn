@@ -1,13 +1,12 @@
-[gd_scene load_steps=6 format=3 uid="uid://xh26qa68xed4"]
+[gd_scene load_steps=5 format=3 uid="uid://xh26qa68xed4"]
 
-[ext_resource type="Script" path="res://src/ui_widgets/preview_rect.gd" id="1_n2xbu"]
-[ext_resource type="Shader" path="res://src/shaders/zoom_shader.gdshader" id="2_qrqjp"]
+[ext_resource type="Script" uid="uid://cx43kir18is86" path="res://src/ui_widgets/preview_rect.gd" id="1_n2xbu"]
+[ext_resource type="Shader" uid="uid://i2y5pyhcgra2" path="res://src/shaders/zoom_shader.gdshader" id="2_qrqjp"]
 [ext_resource type="Texture2D" uid="uid://c68og6bsqt0lb" path="res://assets/icons/backgrounds/Checkerboard.svg" id="3_tuqha"]
-[ext_resource type="Texture2D" uid="uid://crx4kcj4o01bs" path="res://assets/icons/SmallQuestionMark.svg" id="4_g76n0"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_y7eee"]
 shader = ExtResource("2_qrqjp")
-shader_parameter/uv_scale = 2.0
+shader_parameter/uv_scale = 1.6
 
 [node name="PreviewRect" type="CenterContainer"]
 custom_minimum_size = Vector2(128, 128)
@@ -27,6 +26,5 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("4_g76n0")
 expand_mode = 2
 stretch_mode = 5

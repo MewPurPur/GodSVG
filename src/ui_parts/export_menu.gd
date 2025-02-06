@@ -41,6 +41,7 @@ func _ready() -> void:
 	
 	dimensions = State.root_element.get_size()
 	var bigger_dimension := maxf(dimensions.x, dimensions.y)
+	
 	scale_edit.min_value = 1 / minf(dimensions.x, dimensions.y)
 	scale_edit.max_value = 16384 / bigger_dimension
 	
@@ -55,7 +56,9 @@ func _ready() -> void:
 	var scaling_factor: float = texture_preview.MAX_IMAGE_DIMENSION / bigger_dimension
 	info_tooltip.tooltip_text = Translator.translate(
 			"Preview image size is limited to {dimensions}").format(
-			{"dimensions": get_dimensions_text(dimensions * scaling_factor, true)})
+			{"dimensions": get_dimensions_text(Vector2(
+					maxf(dimensions.x * scaling_factor, 1.0),
+					maxf(dimensions.y * scaling_factor, 1.0)), true)})
 	
 	if Configs.savedata.get_active_tab().svg_file_path.is_empty():
 		file_title.add_theme_color_override("font_color", ThemeUtils.common_subtle_text_color)
