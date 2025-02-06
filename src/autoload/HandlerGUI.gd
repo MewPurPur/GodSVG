@@ -327,15 +327,31 @@ func open_donate() -> void:
 func open_export() -> void:
 	var width := State.root_element.width
 	var height := State.root_element.height
-	if is_finite(width) and is_finite(height) and width > 0.0 and height > 0.0:
-		add_menu(ExportMenu.instantiate())
+	
+	var dimensions_valid := (is_finite(width) and is_finite(height) and\
+			width > 0.0 and height > 0.0)
+	var dimensions_too_different := false
+	
+	if dimensions_valid:
+		dimensions_too_different = (1 / minf(width, height) > 16384 / maxf(width, height))
+		if not dimensions_too_different:
+			add_menu(ExportMenu.instantiate())
+			return
+	
+	var message: String
+	if dimensions_too_different:
+		message = Translator.translate(
+				"The graphic can be exported only as SVG because its dimensions are too different.")
 	else:
-		var confirm_dialog = ConfirmDialog.instantiate()
-		add_menu(confirm_dialog)
-		var svg_export_data := ImageExportData.new()
-		confirm_dialog.setup(Translator.translate("Export SVG"), Translator.translate(
-				"The graphic can only be exported as SVG because its size is not defined. Do you want to proceed?"),
-				Translator.translate("Export"), FileUtils.open_export_dialog.bind(svg_export_data))
+		message = Translator.translate(
+				"The graphic can be exported only as SVG because its size is not defined.")
+	message += "\n\n" + Translator.translate("Do you want to proceed?")
+	
+	var confirm_dialog = ConfirmDialog.instantiate()
+	add_menu(confirm_dialog)
+	var svg_export_data := ImageExportData.new()
+	confirm_dialog.setup(Translator.translate("Export SVG"), message,
+			Translator.translate("Export"), FileUtils.open_export_dialog.bind(svg_export_data))
 
 
 func update_window_title() -> void:
