@@ -55,7 +55,7 @@ var transient_tab_path := "":
 		if transient_tab_path != new_value:
 			transient_tab_path = new_value
 			Configs.tabs_changed.emit()
-			Configs.active_tab_file_path_changed.emit()
+			Configs.active_tab_name_changed.emit()
 			setup_from_tab()
 
 func _enter_tree() -> void:
