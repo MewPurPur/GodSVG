@@ -81,7 +81,8 @@ func _gui_input(event: InputEvent) -> void:
 		if event.button_index in [MOUSE_BUTTON_LEFT, MOUSE_BUTTON_RIGHT]:
 			var hovered_idx := get_hovered_index()
 			if hovered_idx != -1:
-				Configs.savedata.set_active_tab_index(hovered_idx)
+				# Give time for deferred callbacks that might change the active SVG.
+				Configs.savedata.set_active_tab_index.call_deferred(hovered_idx)
 			
 			if event.button_index == MOUSE_BUTTON_LEFT:
 				return
