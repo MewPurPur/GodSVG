@@ -8,7 +8,7 @@ static func text_check_is_root_empty(text: String) -> bool:
 	var parser := XMLParser.new()
 	parser.open_buffer(text.to_utf8_buffer())
 	
-	# Remove everything before the first SVG tag.
+	# Ignore everything before the first svg tag.
 	var describes_svg := false
 	
 	# Parse the first svg tag that's encountered.
@@ -28,11 +28,9 @@ static func text_check_is_root_empty(text: String) -> bool:
 	if not describes_svg:
 		return false
 	
-	# Parse everything until the SVG closing tag.
 	if parser.read() == OK:
 		if parser.get_node_type() == XMLParser.NODE_ELEMENT_END:
 			return parser.get_node_name() == "svg"
-		return false
 	return false
 
 # For rendering only a section of the SVG.
@@ -211,7 +209,7 @@ static func text_to_root(text: String) -> ParseResult:
 	parser.open_buffer(text.to_utf8_buffer())
 	var unclosed_element_stack: Array[Element] = []
 	
-	# Remove everything before the first SVG tag.
+	# Ignore everything before the first SVG tag.
 	var describes_svg := false
 	
 	# Parse the first svg tag that's encountered.
