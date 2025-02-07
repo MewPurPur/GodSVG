@@ -2,7 +2,7 @@
 @tool
 extends EditorScript
 
-const TRANSLATIONS_DIR = "assets/translations"
+const TRANSLATIONS_DIR = "translations"
 
 const HEADER = """#, fuzzy
 msgid \"\"

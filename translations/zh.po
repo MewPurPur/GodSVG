@@ -32,12 +32,19 @@ msgid "Check for updates?"
 msgstr "检查更新？"
 
 #: src/autoload/HandlerGUI.gd
-msgid "This requires GodSVG to connect to the internet."
-msgstr "这需要 GodSVG 连接互联网。"
+msgid ""
+"This will connect to github.com to compare version numbers. No other data is "
+"collected or transmitted."
+msgstr ""
 
 #: src/autoload/HandlerGUI.gd src/ui_widgets/alert_dialog.gd
 msgid "OK"
 msgstr "确定"
+
+#: src/autoload/HandlerGUI.gd
+#, fuzzy
+msgid "Do you want to proceed?"
+msgstr "您确定要退出 GodSVG 吗？"
 
 #: src/autoload/HandlerGUI.gd
 msgid "Export SVG"
@@ -49,9 +56,16 @@ msgid "Export"
 msgstr "导出"
 
 #: src/autoload/HandlerGUI.gd
+#, fuzzy
 msgid ""
-"The graphic can only be exported as SVG because its size is not defined. Do "
-"you want to proceed?"
+"The graphic can be exported only as SVG because its dimensions are too "
+"different in magnitude."
+msgstr "此图像只能以 SVG 格式导出，因为其大小未定义。您确定要继续吗？"
+
+#: src/autoload/HandlerGUI.gd
+#, fuzzy
+msgid ""
+"The graphic can be exported only as SVG because its size is not defined."
 msgstr "此图像只能以 SVG 格式导出，因为其大小未定义。您确定要继续吗？"
 
 #: src/autoload/State.gd src/ui_parts/good_file_dialog.gd
@@ -142,6 +156,10 @@ msgstr "3 位或 6 位十六进制"
 #: src/config_classes/Formatter.gd
 msgid "6-digit hex"
 msgstr "6 位十六进制"
+
+#: src/config_classes/TabData.gd
+msgid "Empty"
+msgstr ""
 
 #: src/config_classes/TabData.gd
 msgid "Unsaved"
@@ -1205,6 +1223,9 @@ msgstr ""
 #: src/utils/TranslationUtils.gd
 msgid "The file extension is empty. Only {extension_list} files are supported."
 msgstr "文件扩展名为空。只有 {extension_list} 内的文件受支持。"
+
+#~ msgid "This requires GodSVG to connect to the internet."
+#~ msgstr "这需要 GodSVG 连接互联网。"
 
 #, fuzzy
 #~ msgid "Add new tab"

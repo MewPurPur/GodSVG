@@ -6,65 +6,81 @@ msgstr ""
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
-"Language: fr\n"
+"Language: nl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.4.2\n"
+"X-Generator: Poedit 3.4.4\n"
 
 msgid "translation-credits"
-msgstr "thatoddshade <thatoddshade@proton.me>"
+msgstr "Racer911dash1, jas31415"
 
 #: src/autoload/HandlerGUI.gd
 msgid "Quit GodSVG"
-msgstr "Quitter GodSVG"
+msgstr "GodSVG afsluiten"
 
 #: src/autoload/HandlerGUI.gd
 msgid "Do you want to quit GodSVG?"
-msgstr "Voulez-vous quitter GodSVG ?"
+msgstr "Wil je GodSVG afsluiten?"
 
 #: src/autoload/HandlerGUI.gd
 msgid "Quit"
-msgstr "Quitter"
+msgstr "Afluiten"
 
 #: src/autoload/HandlerGUI.gd
 msgid "Check for updates?"
-msgstr "Vérifier les mises à jour ?"
+msgstr "Voor updates controleren?"
 
 #: src/autoload/HandlerGUI.gd
-msgid "This requires GodSVG to connect to the internet."
-msgstr "Ceci nécessite que GodSVG se connecte à Internet."
+msgid ""
+"This will connect to github.com to compare version numbers. No other data is "
+"collected or transmitted."
+msgstr ""
 
 #: src/autoload/HandlerGUI.gd src/ui_widgets/alert_dialog.gd
 msgid "OK"
 msgstr "OK"
 
 #: src/autoload/HandlerGUI.gd
+#, fuzzy
+msgid "Do you want to proceed?"
+msgstr "Wil je GodSVG afsluiten?"
+
+#: src/autoload/HandlerGUI.gd
 msgid "Export SVG"
-msgstr "Exporter en SVG"
+msgstr "Exporteer SVG"
 
 #: src/autoload/HandlerGUI.gd src/ui_parts/export_menu.gd
 #: src/ui_parts/global_actions.gd src/utils/TranslationUtils.gd
 msgid "Export"
-msgstr "Exporter"
+msgstr "Exporteren"
 
 #: src/autoload/HandlerGUI.gd
+#, fuzzy
 msgid ""
-"The graphic can only be exported as SVG because its size is not defined. Do "
-"you want to proceed?"
+"The graphic can be exported only as SVG because its dimensions are too "
+"different in magnitude."
 msgstr ""
-"Le graphique ne peut être exporté qu'en SVG car sa taille n'est pas définie. "
-"Voulez-vous continuer?"
+"Het beeld kan alleen maar als SVG geëxporteerd worden want zijn maat is niet "
+"gedefiniëerd. Wil je verder gaan?"
+
+#: src/autoload/HandlerGUI.gd
+#, fuzzy
+msgid ""
+"The graphic can be exported only as SVG because its size is not defined."
+msgstr ""
+"Het beeld kan alleen maar als SVG geëxporteerd worden want zijn maat is niet "
+"gedefiniëerd. Wil je verder gaan?"
 
 #: src/autoload/State.gd src/ui_parts/good_file_dialog.gd
 #: src/ui_widgets/alert_dialog.gd
 msgid "Alert!"
-msgstr "Alerte !"
+msgstr "Aandacht!"
 
 #: src/autoload/State.gd src/ui_parts/tab_bar.gd src/utils/TranslationUtils.gd
 #, fuzzy
 msgid "Close tab"
-msgstr "Fermer le chemin"
+msgstr "Pad sluiten"
 
 #: src/autoload/State.gd
 msgid "Restore"
@@ -72,32 +88,32 @@ msgstr ""
 
 #: src/autoload/State.gd
 msgid "View in List"
-msgstr "Voir en liste"
+msgstr "Bekijken In Lijst"
 
 #: src/autoload/State.gd
 msgid "Duplicate"
-msgstr "Dupliquer"
+msgstr "Dupliceren"
 
 #: src/autoload/State.gd
 msgid "Convert To"
-msgstr "Convertir en"
+msgstr "Omzetten Naar"
 
 #: src/autoload/State.gd src/ui_widgets/palette_config.gd
 msgid "Move Up"
-msgstr "Remonter"
+msgstr "Naar Boven"
 
 #: src/autoload/State.gd src/ui_widgets/palette_config.gd
 msgid "Move Down"
-msgstr "Descendre"
+msgstr "Naar Onder"
 
 #: src/autoload/State.gd src/ui_widgets/palette_config.gd
 #: src/ui_widgets/setting_shortcut.gd src/ui_widgets/transform_popup.gd
 msgid "Delete"
-msgstr "Supprimer"
+msgstr "Verwijderen"
 
 #: src/autoload/State.gd src/ui_widgets/transform_popup.gd
 msgid "Insert After"
-msgstr "Insérer après"
+msgstr "Erna Invoegen"
 
 #: src/autoload/State.gd
 msgid "The last edited state of this tab could not be found."
@@ -115,35 +131,39 @@ msgstr "Compact"
 
 #: src/config_classes/Formatter.gd
 msgid "Pretty"
-msgstr "Élégant"
+msgstr "Mooi"
 
 #: src/config_classes/Formatter.gd
 msgid "Always"
-msgstr "Toujours"
+msgstr "Altijd"
 
 #: src/config_classes/Formatter.gd
 msgid "All except containers"
-msgstr "Tout sauf les conteneurs"
+msgstr "Alles behalve containers"
 
 #: src/config_classes/Formatter.gd
 msgid "Never"
-msgstr "Jamais"
+msgstr "Nooit"
 
 #: src/config_classes/Formatter.gd
 msgid "When shorter or equal"
-msgstr "Quand plus court ou équivalent"
+msgstr "Als korter of gelijk"
 
 #: src/config_classes/Formatter.gd
 msgid "When shorter"
-msgstr "Quand plus court"
+msgstr "Als korter"
 
 #: src/config_classes/Formatter.gd
 msgid "3-digit or 6-digit hex"
-msgstr "Héxadécimal de 3 ou 6 chiffres"
+msgstr "3-cijferig of 6-cijferige hex"
 
 #: src/config_classes/Formatter.gd
 msgid "6-digit hex"
-msgstr "Héxadécimal de 6 chiffres"
+msgstr "6-cijferige hex"
+
+#: src/config_classes/TabData.gd
+msgid "Empty"
+msgstr ""
 
 #: src/config_classes/TabData.gd
 msgid "Unsaved"
@@ -151,61 +171,61 @@ msgstr ""
 
 #: src/data_classes/BasicXNode.gd
 msgid "Comment"
-msgstr "Commentaire"
+msgstr "Commentaar"
 
 #: src/data_classes/BasicXNode.gd
 msgid "Text"
-msgstr "Texte"
+msgstr "Tekst"
 
 #: src/data_classes/Element.gd
 msgid "{element} must be inside {allowed} to have any effect."
-msgstr "{element} doit être à l'intérieur de {allowed} pour avoir un effet."
+msgstr "{element} moet aanwezig zijn in {allowed} om enig effect te hebben."
 
 #: src/data_classes/ElementG.gd
 msgid "This group has no elements."
-msgstr "Ce groupe n'a aucun élément."
+msgstr "Deze groep bevat geen elementen."
 
 #: src/data_classes/ElementG.gd
 msgid "This group has only one element."
-msgstr "Ce groupe n'a qu'un seul élément."
+msgstr "Deze groep bevat maar één element."
 
 #: src/data_classes/GradientUtils.gd
 msgid "No \"id\" attribute defined."
-msgstr "Aucun attribut « id » défini."
+msgstr "Geen \"id\" attribuut gedefineerd."
 
 #: src/data_classes/GradientUtils.gd
 msgid "No <stop> elements under this gradient."
-msgstr "Aucun élément <stop> en dessous de ce dégradé."
+msgstr "Geen <stop> elementen onder deze kleurovergang."
 
 #: src/data_classes/GradientUtils.gd
 msgid "This gradient is a solid color."
-msgstr "Ce dégradé est une couleur solide."
+msgstr "Deze kleurovergang is een vaste kleur."
 
 #: src/data_classes/SVGParser.gd
 msgid "Doesn’t describe an SVG."
-msgstr "Ne décrit pas un SVG."
+msgstr "Beschrijft geen SVG."
 
 #: src/data_classes/SVGParser.gd
 msgid "Improper nesting."
-msgstr "Formatage incorrect."
+msgstr "Onjuiste nesting."
 
 #: src/ui_parts/about_menu.gd src/ui_parts/good_file_dialog.gd
 #: src/ui_parts/settings_menu.gd src/ui_parts/shortcut_panel_config.gd
 #: src/ui_parts/update_menu.gd
 msgid "Close"
-msgstr "Fermer"
+msgstr "Afluiten"
 
 #: src/ui_parts/about_menu.gd
 msgid "Project Founder and Manager"
-msgstr "Fondateur et gestionnaire du projet"
+msgstr "Projectoprichter en Manager"
 
 #: src/ui_parts/about_menu.gd
 msgid "Developers"
-msgstr "Développeurs"
+msgstr "Ontwikkelaars"
 
 #: src/ui_parts/about_menu.gd
 msgid "Translators"
-msgstr "Traducteurs"
+msgstr "Vertalers"
 
 #: src/ui_parts/about_menu.gd
 msgid "Donors"
@@ -213,11 +233,11 @@ msgstr "Donateurs"
 
 #: src/ui_parts/about_menu.gd
 msgid "Golden donors"
-msgstr "Donateurs Or"
+msgstr "Gouden Donatuers"
 
 #: src/ui_parts/about_menu.gd
 msgid "Diamond donors"
-msgstr "Donateurs Diamant"
+msgstr "Diamanten Donateurs"
 
 #: src/ui_parts/about_menu.gd
 msgid "Authors"
@@ -225,123 +245,123 @@ msgstr "Auteurs"
 
 #: src/ui_parts/about_menu.gd
 msgid "License"
-msgstr "Licence"
+msgstr "Licentie"
 
 #: src/ui_parts/about_menu.gd
 msgid "Godot third-party components"
-msgstr "Composants Godot tiers"
+msgstr "Godot derde partij componenten"
 
 #: src/ui_parts/about_menu.gd
 msgid "Third-party licenses"
-msgstr "Licences tierces"
+msgstr "Derde partij Licenties"
 
 #: src/ui_parts/display.gd
 msgid "Visuals"
-msgstr "Visuels"
+msgstr "Visuelen"
 
 #: src/ui_parts/display.gd src/utils/TranslationUtils.gd
 msgid "Load reference image"
-msgstr "Charger une image de référence"
+msgstr "Referentiebeeld inladen"
 
 #: src/ui_parts/display.gd
 msgid "Show reference"
-msgstr "Montrer la référence"
+msgstr "Referentie weergeven"
 
 #: src/ui_parts/display.gd
 msgid "Overlay reference"
-msgstr "Superposer la référence"
+msgstr "Referentie overlappen"
 
 #: src/ui_parts/display.gd src/utils/TranslationUtils.gd
 msgid "Show grid"
-msgstr "Afficher la grille"
+msgstr "Raster weergeven"
 
 #: src/ui_parts/display.gd src/utils/TranslationUtils.gd
 msgid "Show handles"
-msgstr "Montrer les poignées"
+msgstr "Handvaten weergeven"
 
 #: src/ui_parts/display.gd
 msgid "Rasterized SVG"
-msgstr "Rastériser le SVG"
+msgstr "Gerasterd SVG"
 
 #: src/ui_parts/display.gd
 msgid "Snap size"
-msgstr "Taille d'aimantation"
+msgstr "Maat inknappen"
 
 #: src/ui_parts/donate_menu.gd src/ui_parts/export_menu.gd
 #: src/ui_parts/import_warning_menu.gd src/ui_widgets/choose_name_dialog.gd
 #: src/ui_widgets/confirm_dialog.gd
 msgid "Cancel"
-msgstr "Annuler"
+msgstr "Annuleren"
 
 #: src/ui_parts/element_container.gd
 msgid "New element"
-msgstr "Nouvel élément"
+msgstr "Nieuw element"
 
 #: src/ui_parts/export_menu.gd
 msgid "Dimensions"
-msgstr "Dimensions"
+msgstr "Afmetingen"
 
 #: src/ui_parts/export_menu.gd
 msgid "Size"
-msgstr "Taille"
+msgstr "Maat"
 
 #: src/ui_parts/export_menu.gd
 msgid "Export Configuration"
-msgstr "Exporter la configuration"
+msgstr "Export Configuratie"
 
 #: src/ui_parts/export_menu.gd
 msgid "Format"
-msgstr "Format"
+msgstr "Formaat"
 
 #: src/ui_parts/export_menu.gd
 msgid "Lossless"
-msgstr "Sans perte"
+msgstr "Verliesvrij"
 
 #: src/ui_parts/export_menu.gd
 msgid "Quality"
-msgstr "Qualité"
+msgstr "Kwaliteit"
 
 #: src/ui_parts/export_menu.gd
 msgid "Scale"
-msgstr "Échelle"
+msgstr "Schaal"
 
 #: src/ui_parts/export_menu.gd
 msgid "Width"
-msgstr "Largeur"
+msgstr "Breedte"
 
 #: src/ui_parts/export_menu.gd
 msgid "Height"
-msgstr "Hauteur"
+msgstr "Hoogte"
 
 #: src/ui_parts/export_menu.gd
 msgid "Preview image size is limited to {dimensions}"
-msgstr "La taille de l'image de prévisualisation est limitée à {dimensions}"
+msgstr "Voorbeeldafbeelding maat is beperkt tot {dimensions}"
 
 #: src/ui_parts/global_actions.gd src/ui_parts/import_warning_menu.gd
 #: src/utils/TranslationUtils.gd
 msgid "Import"
-msgstr "Importer"
+msgstr "Importeren"
 
 #: src/ui_parts/global_actions.gd
 msgid "Settings"
-msgstr "Paramètres"
+msgstr "Instellingen"
 
 #: src/ui_parts/global_actions.gd src/utils/TranslationUtils.gd
 msgid "Optimize"
-msgstr "Optimiser"
+msgstr "Optimaliseren"
 
 #: src/ui_parts/global_actions.gd src/ui_parts/good_file_dialog.gd
 msgid "Save SVG"
-msgstr "Sauvegarder le SVG"
+msgstr "SVG opslaan"
 
 #: src/ui_parts/global_actions.gd
 #, fuzzy
 msgid "Save SVG as…"
-msgstr "Sauvegarder le SVG"
+msgstr "SVG opslaan"
 
 #: src/ui_parts/global_actions.gd src/utils/TranslationUtils.gd
 msgid "Reset SVG"
-msgstr "Rénitialiser le SVG"
+msgstr "SVG Resetten"
 
 #: src/ui_parts/global_actions.gd src/ui_parts/tab_bar.gd
 msgid "Open externally"
@@ -353,492 +373,487 @@ msgstr ""
 
 #: src/ui_parts/global_actions.gd
 msgid "About…"
-msgstr "À propos…"
+msgstr "Betreffende…"
 
 #: src/ui_parts/global_actions.gd src/utils/TranslationUtils.gd
 msgid "Check for updates"
-msgstr "Vérifier les mises à jour"
+msgstr "Nakijken voor updates"
 
 #: src/ui_parts/global_actions.gd
 msgid "Donate…"
-msgstr "Faire un don…"
+msgstr "Doneren…"
 
 #: src/ui_parts/global_actions.gd
 msgid "GodSVG repository"
-msgstr "Dépôt de GodSVG"
+msgstr "GodSVG opslagplaats"
 
 #: src/ui_parts/global_actions.gd
 msgid "GodSVG website"
-msgstr "Site web de GodSVG"
+msgstr "GodSVG website"
 
 #: src/ui_parts/global_actions.gd
 msgid "View savedata"
-msgstr "Voir les données de sauvegarde"
+msgstr "Bekijk opslaggegevens"
 
 #: src/ui_parts/good_file_dialog.gd
 msgid "Go to parent folder"
-msgstr "Aller au dossier parent"
+msgstr "Ga naar bovenliggende map"
 
 #: src/ui_parts/good_file_dialog.gd
 msgid "Refresh files"
-msgstr "Actualiser les fichiers"
+msgstr "Bestanden vernieuwen"
 
 #: src/ui_parts/good_file_dialog.gd
 msgid "Toggle the visibility of hidden files"
-msgstr "Activer/Désactiver la visibilité des fichiers cachés"
+msgstr "De zichtbaarheit van verborgen bestanden omschakelen"
 
 #: src/ui_parts/good_file_dialog.gd
 msgid "Search files"
-msgstr "Rechercher des fichiers"
+msgstr "Bestanden zoeken"
 
 #: src/ui_parts/good_file_dialog.gd
 msgid "Select an SVG"
-msgstr "Sélectionner un SVG"
+msgstr "Kies een SVG uit"
 
 #: src/ui_parts/good_file_dialog.gd
 msgid "Select an XML file"
-msgstr "Sélectionner un fichier XML"
+msgstr "Kies een XML bestand uit"
 
 #: src/ui_parts/good_file_dialog.gd
 msgid "Select an image"
-msgstr "Sélectionner une image"
+msgstr "Kies een afbeedling"
 
 #: src/ui_parts/good_file_dialog.gd
 msgid "Select"
-msgstr "Sélectionner"
+msgstr "Selecteren"
 
 #: src/ui_parts/good_file_dialog.gd src/utils/TranslationUtils.gd
 msgid "Save"
-msgstr "Enregistrer"
+msgstr "Opslaan"
 
 #: src/ui_parts/good_file_dialog.gd
 msgid "Path"
-msgstr "Chemin"
+msgstr "Pad"
 
 #: src/ui_parts/good_file_dialog.gd
 msgid "Replace"
-msgstr "Remplacer"
+msgstr "Vervangen"
 
 #: src/ui_parts/good_file_dialog.gd
 msgid "Create new folder"
-msgstr "Créer un nouveau dossier"
+msgstr "Nieuwe map creëren"
 
 #: src/ui_parts/good_file_dialog.gd
 msgid "Invalid name for a folder."
-msgstr "Nom invalide pour un dossier."
+msgstr "Ongeldige naam voor een map."
 
 #: src/ui_parts/good_file_dialog.gd
 msgid "A folder with this name already exists."
-msgstr "Un dossier avec ce nom existe déjà."
+msgstr "Een map met deze naam bestaat al."
 
 #: src/ui_parts/good_file_dialog.gd
 msgid "Failed to create a folder."
-msgstr "Échec de création de dossier."
+msgstr "Aanmaken van een nieuwe map mislukt."
 
 #: src/ui_parts/good_file_dialog.gd
 msgid "Open"
-msgstr "Ouvrir"
+msgstr "Openen"
 
 #: src/ui_parts/good_file_dialog.gd
 msgid "Copy path"
-msgstr "Copier le chemin"
+msgstr "Pad kopiëren"
 
 #: src/ui_parts/good_file_dialog.gd
 msgid ""
 "A file named \"{file_name}\" already exists. Replacing will overwrite its "
 "contents!"
 msgstr ""
-"Un fichier nommé « {file_name} » existe déjà. Le remplacer écrasera son "
-"contenu !"
+"Er bestaat al een bestand genaamt \"{file_name}\". Deze vervangen zal zijn "
+"inhoud aanpassen!"
 
 #: src/ui_parts/handles_manager.gd
 msgid "New shape"
-msgstr "Nouvelle forme"
+msgstr "Nieuwe vorm"
 
 #: src/ui_parts/import_warning_menu.gd
 msgid "Import Problems"
-msgstr "Importer des problèmes"
+msgstr "Importproblemen"
 
 #: src/ui_parts/import_warning_menu.gd
 msgid "Unrecognized element"
-msgstr "Élément non reconnu"
+msgstr "Onherkende element"
 
 #: src/ui_parts/import_warning_menu.gd
 msgid "Unrecognized attribute"
-msgstr "Attribut non reconnu"
+msgstr "Onherkende attribuut"
 
 #: src/ui_parts/import_warning_menu.gd
 msgid "Syntax error"
-msgstr "Erreur de syntaxe"
+msgstr "Syntaxfout"
 
 #: src/ui_parts/inspector.gd
 msgid "Add element"
-msgstr "Ajouter un élément"
+msgstr "Element toevoegen"
 
 #: src/ui_parts/mac_menu.gd src/ui_parts/settings_menu.gd
 msgid "File"
-msgstr "Fichier"
+msgstr "Bestand"
 
 #: src/ui_parts/mac_menu.gd src/ui_parts/settings_menu.gd
 msgid "Edit"
-msgstr "Édition"
+msgstr "Bewerken"
 
 #: src/ui_parts/mac_menu.gd src/ui_parts/settings_menu.gd
 msgid "Tool"
-msgstr "Outil"
+msgstr "Gereedschap"
 
 #: src/ui_parts/mac_menu.gd src/ui_parts/settings_menu.gd
 msgid "View"
-msgstr "Affichage"
+msgstr "Zicht"
 
 #: src/ui_parts/mac_menu.gd
 msgid "Snap"
-msgstr "Aimanter"
+msgstr "Knappen"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Formatting"
-msgstr "Formatage"
+msgstr "Formattering"
 
 #: src/ui_parts/settings_menu.gd src/ui_widgets/color_popup.gd
 msgid "Palettes"
-msgstr "Palettes"
+msgstr "Paletten"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Shortcuts"
-msgstr "Raccourcis"
+msgstr "Snelkoppelingen"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Theming"
-msgstr "Thèmes"
+msgstr "Thematiek"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Other"
-msgstr "Autre"
+msgstr "Overige"
 
 #: src/ui_parts/settings_menu.gd
 msgid "SVG Text colors"
-msgstr "Couleurs de texte SVG"
+msgstr "SVG tekstkleuren"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Symbol color"
-msgstr "Couleur de symbole"
+msgstr "Symboolkleur"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Element color"
-msgstr "Couleur d'élément"
+msgstr "Elementkleur"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Attribute color"
-msgstr "Couleur d'attribut"
+msgstr "Attribuutkleur"
 
 #: src/ui_parts/settings_menu.gd
 msgid "String color"
-msgstr "Couleur de chaîne de caractères"
+msgstr "Stringkleur"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Comment color"
-msgstr "Couleur de commentaire"
+msgstr "Commentaarkleur"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Text color"
-msgstr "Couleur de texte"
+msgstr "Textkleur"
 
 #: src/ui_parts/settings_menu.gd
 msgid "CDATA color"
-msgstr "Couleur de CDATA"
+msgstr "CDATA-kleur"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Error color"
-msgstr "Couleur d'erreur"
+msgstr "Fout-kleur"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Handle colors"
-msgstr "Couleurs des poignées"
+msgstr "Handvatkleuren"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Inside color"
-msgstr "Couleur d'intérieur"
+msgstr "Binnenkantkleuren"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Normal color"
-msgstr "Couleur d'élément normal"
+msgstr "Normale kleur"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Hovered color"
-msgstr "Couleur d'élément survolé"
+msgstr "Zweefde kleur"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Selected color"
-msgstr "Couleur d'élément selectionné"
+msgstr "Gekozen kleur"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Hovered selected color"
-msgstr "Couleur d'élément selectionné survolé"
+msgstr "Zweefde gekozen kleur"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Basic colors"
-msgstr "Couleurs basiques"
+msgstr "Basiskleuren"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Background color"
-msgstr "Couleur d'arrière-plan"
+msgstr "Achtergrondskleur"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Valid color"
-msgstr "Couleur valide"
+msgstr "Geldige kleur"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Warning color"
-msgstr "Couleur d'avertissement"
+msgstr "Waarschuwingskleur"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Input"
-msgstr "Entrée"
+msgstr "Invoer"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Invert zoom direction"
-msgstr "Inverser la direction du zoom"
+msgstr "inzoomrichting tegenstellen"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Wrap mouse"
-msgstr ""
-"Déplacer la souris d'un bout à l'autre de l'écran lorsque le bord est atteint"
+msgstr "Wikkel muis"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Use CTRL for zooming"
-msgstr "Utiliser CTRL pour zoomer"
+msgstr "Gebruik CTRL om in te zoomen"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Miscellaneous"
-msgstr "Divers"
+msgstr "Overige"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Use native file dialog"
-msgstr "Utiliser la boîte de dialogue de fichiers native"
+msgstr "Gebruik inheemse bestandendialoog"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Sync window title to file name"
-msgstr "Synchroniser le titre de la fenêtre au titre du fichier"
+msgstr "Synchroniseer venstertitel naar bestandsnaam"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Handle size"
-msgstr "Taille des poignées"
+msgstr "Handvat maat"
 
 #: src/ui_parts/settings_menu.gd
 msgid "UI scale"
-msgstr "Échelle de l'interface"
+msgstr "Gebruiksinterface maat"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Auto UI scale"
-msgstr "Échelle de l'interface automatique"
+msgstr "Automatische gebruikersinterface maat"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Language"
-msgstr "Langue"
+msgstr "Taal"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Import XML"
-msgstr "Importer un fichier XML"
+msgstr "XML Importeren"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Paste XML"
-msgstr "Coller du XML"
+msgstr "XML Plakken"
 
 #: src/ui_parts/settings_menu.gd
 msgid "New palette"
-msgstr "Nouvelle palette"
+msgstr "Nieuw palette"
 
 #: src/ui_parts/settings_menu.gd
 msgid "New palette from XML"
-msgstr "Nouvelle palette depuis du XML"
+msgstr "Nieuwe palette uit XML"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Editor formatter"
-msgstr "Formateur de l'éditeur"
+msgstr "Editor-formatter"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Export formatter"
-msgstr "Exporter le formateur"
+msgstr "Exportformatter"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Help"
-msgstr "Aide"
+msgstr "Help"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Reset all to default"
-msgstr "Tout rénitialiser par défaut"
+msgstr "Reset allen naar standaard"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Preset"
-msgstr "Préréglage"
+msgstr "Voorinstelling"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Keep comments"
-msgstr "Garder les commentaires"
+msgstr "Houdt commentaar bij"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Keep unrecognized XML structures"
-msgstr "Conserver les structures XML non reconnues"
+msgstr "Houdt onherkende XML structuren bij"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Add trailing newline"
-msgstr "Ajouter un saut de ligne final"
+msgstr "Voeg achterliggende nieuwe regel toe"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Use shorthand tag syntax"
-msgstr "Utiliser la syntaxe de balise raccourcie"
+msgstr "Gebruik afgekorte tag syntax"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Space out the slash of shorthand tags"
-msgstr "Espacer le slash des balises raccourcies"
+msgstr "Scheidt de schuine streep af van afgekorte tags"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Use pretty formatting"
-msgstr "Utiliser le formatage élégant"
+msgstr "Gebruik mooie formattering"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Use spaces instead of tabs"
-msgstr "Utiliser des espaces plutôt que des tabulations"
+msgstr "Gebruik spaties in plaats van tabs"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Number of indentation spaces"
-msgstr "Nombre d'espaces par indentation"
+msgstr "Aantal inspringingsspaties"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Numbers"
-msgstr "Nombres"
+msgstr "Nummers"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Remove leading zero"
-msgstr "Retirer le zéro initial"
+msgstr "Verwijder voorafgande nul"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Use exponential when shorter"
-msgstr "Noter en exponentiel si c'est plus court"
+msgstr "Gebruik exponentieel als korter"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Colors"
-msgstr "Couleurs"
+msgstr "Kleuren"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Use named colors"
-msgstr "Utiliser des couleurs nommées"
+msgstr "Gebruik genoemde kleuren"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Primary syntax"
-msgstr "Syntaxe primaire"
+msgstr "Primaire syntax"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Capitalize hexadecimal letters"
-msgstr "Mettre en majuscule les lettres des nombres héxadécimaux"
+msgstr "Kapitaliseer hexadecimale letters"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Pathdata"
-msgstr "Données de chemin"
+msgstr "Padgegevens"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Compress numbers"
-msgstr "Compresser les nombres"
+msgstr "Nummers samendrukken"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Minimize spacing"
-msgstr "Minimiser l'espacement"
+msgstr "Minimaliseer afstand"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Remove spacing after flags"
-msgstr "Retirer l'espacement après les marqueurs"
+msgstr "Verwijder afstand na vlaggen"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Remove consecutive commands"
-msgstr "Retirer les commandes consécutives"
+msgstr "Verwijder opeenvolgende opdrachten"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Transform lists"
-msgstr "Transformer les listes"
+msgstr "Transformeer lijsten"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Remove unnecessary parameters"
-msgstr "Retirer les paramètres inutiles"
+msgstr "Verwijder onnodige parameters"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Swaps zoom in and zoom out with the mouse wheel."
-msgstr "Échanger le zoom avant et le zoom arrière par molette de souris."
+msgstr "Wisselt in- en uitzoemen met de muiswiel."
 
 #: src/ui_parts/settings_menu.gd
 msgid "Wraps the mouse cursor around when panning the viewport."
-msgstr ""
-"Déplace le pointeur de souris d'un bout à l'autre de l'écran lorsque le bord "
-"est atteint lors d'un balayage."
+msgstr "Wikkelt de muiscursor rond tijdens het verschuiven van de kijkvenster."
 
 #: src/ui_parts/settings_menu.gd
 msgid ""
 "If turned on, scrolling will pan the view. To zoom, hold CTRL while "
 "scrolling."
 msgstr ""
-"Si activé, défiler fera balayer la vue. Pour zoomer, maintenez CTRL en "
-"défilant."
+"Als ingeschakeld, scrollen zal het weergave verschuiven. Om te zoomen,houd "
+"CTRL ingedrukt tijdens scrollen."
 
 #: src/ui_parts/settings_menu.gd
 msgid ""
 "If turned on, uses your operating system's native file dialog. If turned "
 "off, uses GodSVG's built-in file dialog."
 msgstr ""
-"Si activé, utilise la boîte de dialogue de fichiers native de votre système "
-"d'exploitation. Si désactivé, utilise la boîte de dialogue intégrée de "
-"GodSVG."
+"Waneer ingeschakeld, gebruikt jouw besturingssysteem's inheemse "
+"bestandendialoog. Wanneer uitgeschakeld, gebruikt GodSVG's ingebouwde "
+"bestandendialoog."
 
 #: src/ui_parts/settings_menu.gd
 msgid ""
 "If turned off, the window title will remain simply \"GodSVG\" regardless of "
 "the current file."
 msgstr ""
-"Si désactivé, le titre de la fenêtre restera simplement \"GodSVG\" quel que "
-"soit le fichier actuel."
+"Als dit uitgeschakelt is, blijft de venstertitel simpelweg \"GodSVG\" "
+"achteloos van het huidige bestand."
 
 #: src/ui_parts/settings_menu.gd
+#, fuzzy
 msgid "Changes the visual size and grabbing area of handles."
-msgstr "Change la taille visuelle et la zone de saisie des poignées"
+msgstr "Verandert de visuele grootte en grijpgebied van Handvaten."
 
 #: src/ui_parts/settings_menu.gd
 msgid "Changes the scale of the visual user interface."
-msgstr "Change l'échelle de l'interface utilisateur visuelle."
+msgstr "Verandert the schaal van de visuele gebruikersinterface."
 
 #: src/ui_parts/settings_menu.gd
 msgid "Scales the user interface based on the screen size."
-msgstr "Redimensionne l'interface utilisateur selon la taille de l'écran."
+msgstr "Schaalt de gebruikersinterface gebaseerd op the schermgrootte."
 
 #: src/ui_parts/shortcut_panel_config.gd
 msgid "Configure Shortcut Panel"
-msgstr ""
+msgstr "Configureer Snelkoppelingspaneel"
 
 #: src/ui_parts/shortcut_panel_config.gd
 msgid "Layout"
-msgstr ""
+msgstr "Indeling"
 
 #: src/ui_parts/shortcut_panel_config.gd
-#, fuzzy
 msgid "Horizontal strip"
-msgstr "Ligne horizontale vers"
+msgstr "Horizontale lijn"
 
 #: src/ui_parts/shortcut_panel_config.gd
-#, fuzzy
 msgid "Horizontal with two rows"
-msgstr "Ligne horizontale vers"
+msgstr "Horizontaal met twee rijen"
 
 #: src/ui_parts/shortcut_panel_config.gd
-#, fuzzy
 msgid "Vertical strip"
-msgstr "Ligne verticale vers"
+msgstr "Vertikale lijn"
 
 #: src/ui_parts/tab_bar.gd
 #, fuzzy
 msgid "Create tab"
-msgstr "Créer"
+msgstr "Creëren"
 
 #: src/ui_parts/tab_bar.gd
 #, fuzzy
 msgid "Close all other tabs"
-msgstr "Copier tout le texte"
+msgstr "Kopiëer alle tekst"
 
 #: src/ui_parts/tab_bar.gd
 msgid "Close tabs to the left"
@@ -851,7 +866,7 @@ msgstr ""
 #: src/ui_parts/tab_bar.gd src/utils/TranslationUtils.gd
 #, fuzzy
 msgid "Create a new tab"
-msgstr "Créer un nouveau dossier"
+msgstr "Nieuwe map creëren"
 
 #: src/ui_parts/tab_bar.gd
 msgid "This SVG is not bound to a location on the computer yet."
@@ -859,98 +874,98 @@ msgstr ""
 
 #: src/ui_parts/update_menu.gd
 msgid "Include prereleases"
-msgstr "Inclure les versions préliminaires"
+msgstr "Voorpublicaties includen"
 
 #: src/ui_parts/update_menu.gd
 msgid "Retry"
-msgstr "Réessayer"
+msgstr "Opnieuw proberen"
 
 #: src/ui_parts/update_menu.gd
 msgid "Current Version"
-msgstr "Version actuelle"
+msgstr "Huidige versie"
 
 #: src/ui_parts/update_menu.gd
 msgid "Retrieving information..."
-msgstr "Récupération d'information…"
+msgstr "Informatie aan het ophalen..."
 
 #: src/ui_parts/update_menu.gd
 msgid "Update check failed"
-msgstr "Échec de la vérification de mise à jour"
+msgstr "Updatecontrole mislukt"
 
 #: src/ui_parts/update_menu.gd
 msgid "GodSVG is up-to-date."
-msgstr "GodSVG est à jour."
+msgstr "GodSVG is up-to-date."
 
 #: src/ui_parts/update_menu.gd
 msgid "New versions"
-msgstr "Nouvelles versions"
+msgstr "Nieuwe versies"
 
 #: src/ui_parts/zoom_menu.gd src/utils/TranslationUtils.gd
 msgid "Zoom out"
-msgstr "Zoom arrière"
+msgstr "Uitzoomen"
 
 #: src/ui_parts/zoom_menu.gd src/utils/TranslationUtils.gd
 msgid "Zoom in"
-msgstr "Zoom avant"
+msgstr "Inzoomen"
 
 #: src/ui_parts/zoom_menu.gd src/utils/TranslationUtils.gd
 msgid "Zoom reset"
-msgstr "Rénitialisation de zoom"
+msgstr "Zoom resetten"
 
 #: src/ui_widgets/BetterLineEdit.gd src/ui_widgets/BetterTextEdit.gd
 #: src/utils/TranslationUtils.gd
 msgid "Undo"
-msgstr "Annuler"
+msgstr "Ongedaan maken"
 
 #: src/ui_widgets/BetterLineEdit.gd src/ui_widgets/BetterTextEdit.gd
 #: src/utils/TranslationUtils.gd
 msgid "Redo"
-msgstr "Rétablir"
+msgstr "Opnieuw doen"
 
 #: src/ui_widgets/BetterLineEdit.gd src/ui_widgets/BetterTextEdit.gd
 msgid "Cut"
-msgstr "Couper"
+msgstr "Knippen"
 
 #: src/ui_widgets/BetterLineEdit.gd src/ui_widgets/BetterTextEdit.gd
 msgid "Copy"
-msgstr "Copier"
+msgstr "Kopiëren"
 
 #: src/ui_widgets/BetterLineEdit.gd src/ui_widgets/BetterTextEdit.gd
 msgid "Paste"
-msgstr "Coller"
+msgstr "Plakken"
 
 #: src/ui_widgets/choose_name_dialog.gd
 msgid "Create"
-msgstr "Créer"
+msgstr "Creëren"
 
 #: src/ui_widgets/code_editor.gd src/utils/TranslationUtils.gd
 msgid "Copy all text"
-msgstr "Copier tout le texte"
+msgstr "Kopiëer alle tekst"
 
 #: src/ui_widgets/color_popup.gd
 msgid "Search color"
-msgstr "Rechercher la couleur"
+msgstr "Zoekkleur"
 
 #: src/ui_widgets/color_popup.gd
 msgid "Color Picker"
-msgstr "Pipette"
+msgstr "Kleurenplukker"
 
 #: src/ui_widgets/configure_color_popup.gd
 msgid "Edit color name"
-msgstr "Éditer le nom de la couleur"
+msgstr "Kleurnaam bewerken"
 
 #: src/ui_widgets/configure_color_popup.gd
 msgid "Delete color"
-msgstr "Supprimer la couleur"
+msgstr "Kleur verwijderen"
 
 #: src/ui_widgets/configure_color_popup.gd src/ui_widgets/palette_config.gd
 msgid "Unnamed"
-msgstr "Sans nom"
+msgstr "Onbenoemd"
 
 #: src/ui_widgets/good_color_picker.gd
 #, fuzzy
 msgid "Color keywords"
-msgstr "Pipette"
+msgstr "Kleurenplukker"
 
 #: src/ui_widgets/good_color_picker.gd
 msgid "Eyedropper"
@@ -958,109 +973,109 @@ msgstr ""
 
 #: src/ui_widgets/palette_config.gd
 msgid "Unnamed palettes won't be shown."
-msgstr "Les palettes sans nom ne seront pas montrées."
+msgstr "Onbenoemde paletten zullen niet laten zien worden."
 
 #: src/ui_widgets/palette_config.gd
 msgid "Multiple palettes can't have the same name."
-msgstr "Plusieurs palettes ne peuvent pas avoir le même nom."
+msgstr "Meerdere paletten kunnen niet dezelfde naam hebben."
 
 #: src/ui_widgets/palette_config.gd
 msgid "This palette has identically defined colors."
-msgstr "Cette palette a des couleurs définies identiquement."
+msgstr "Dit palette heeft identiek gedefinieerde kleuren."
 
 #: src/ui_widgets/palette_config.gd
 msgid "Rename"
-msgstr "Renommer"
+msgstr "Hernoemen"
 
 #: src/ui_widgets/palette_config.gd
 msgid "Apply Preset"
-msgstr "Appliquer le préréglage"
+msgstr "Voorinstelling toepassen"
 
 #: src/ui_widgets/palette_config.gd
 msgid "Copy as XML"
-msgstr "Copier en tant que XML"
+msgstr "Als XML kopiëren"
 
 #: src/ui_widgets/palette_config.gd
 #, fuzzy
 msgid "Save as XML"
-msgstr "Copier en tant que XML"
+msgstr "Als XML kopiëren"
 
 #: src/ui_widgets/path_popup.gd src/ui_widgets/pathdata_field.gd
 #: src/utils/TranslationUtils.gd
 msgid "Relative"
-msgstr "Relatif"
+msgstr "Relatief"
 
 #: src/ui_widgets/pathdata_field.gd
 msgid "No path data"
-msgstr "Aucune donnée de chemin"
+msgstr "Geen padgegevens"
 
 #: src/ui_widgets/pathdata_field.gd src/utils/TranslationUtils.gd
 msgid "Absolute"
-msgstr "Absolu"
+msgstr "Absoluut"
 
 #: src/ui_widgets/points_field.gd
 msgid "No points"
-msgstr "Aucun point"
+msgstr "Geen punten"
 
 #: src/ui_widgets/presented_shortcut.gd src/ui_widgets/setting_shortcut.gd
 msgid "Also used by"
-msgstr "Aussi utilisé par"
+msgstr "Ook gebruikt door"
 
 #: src/ui_widgets/setting_frame.gd src/ui_widgets/setting_shortcut.gd
 msgid "Reset to default"
-msgstr "Rénitialiser par défaut"
+msgstr "Reset naar standaard"
 
 #: src/ui_widgets/setting_shortcut.gd
 msgid "Unused"
-msgstr "Inutilisé"
+msgstr "Ongebruikt"
 
 #: src/ui_widgets/setting_shortcut.gd
 msgid "Add shortcut"
-msgstr "Ajouter un raccourci"
+msgstr "Snelkoppeling toevoegen"
 
 #: src/ui_widgets/setting_shortcut.gd
 msgid "Press keys…"
-msgstr "Appuyez sur les touches…"
+msgstr "Druk op toetsen…"
 
 #: src/ui_widgets/transform_field.gd
 msgid "No transforms"
-msgstr "Aucune transformation"
+msgstr "Geen transformaties"
 
 #: src/ui_widgets/transform_popup.gd
 msgid "Apply the matrix"
-msgstr "Appliquer la matrice"
+msgstr "Matrix toepassen"
 
 #: src/ui_widgets/transform_popup.gd
 msgid "Insert Before"
-msgstr "Insérer avant"
+msgstr "Ervoor Bijvoegen"
 
 #: src/ui_widgets/transform_popup.gd
 msgid "New transform"
-msgstr "Nouvelle transformation"
+msgstr "Nieuwe transformatie"
 
 #: src/ui_widgets/unrecognized_field.gd
 msgid "GodSVG doesn’t recognize this attribute"
-msgstr "GodSVG ne reconnaît pas cet attribut"
+msgstr "GodSVG herkent deze attribuut niet"
 
 #: src/utils/FileUtils.gd
 msgid "Save the .\"{format}\" file"
-msgstr "Enregistrer le fichier .\"{format}\""
+msgstr "Bewaar het .\"{format}\" bestand"
 
 #: src/utils/FileUtils.gd
 msgid "Load an image file"
-msgstr "Charger un fichier image"
+msgstr "Laad een afbeeldingsbestand"
 
 #: src/utils/FileUtils.gd
 msgid "Import a {extension} file"
-msgstr "Importer un fichier {extension}"
+msgstr "Importeer een {extension} bestand"
 
 #: src/utils/FileUtils.gd
 msgid "The file couldn't be opened."
-msgstr "Le fichier n'a pas pu être ouvert."
+msgstr "Het bestand kon niet worden geopend."
 
 #: src/utils/FileUtils.gd
 msgid "Check if the file still exists in the selected file path."
-msgstr "Vérifiez si le fichier existe encore au chemin selectionné."
+msgstr "Kijk na of het bestand nog steeds bestaat in het gekozen bestandspad"
 
 #: src/utils/FileUtils.gd
 msgid "The imported file is already being edited inside GodSVG."
@@ -1073,7 +1088,7 @@ msgstr ""
 #: src/utils/TranslationUtils.gd
 #, fuzzy
 msgid "Save as"
-msgstr "Enregistrer"
+msgstr "Opslaan"
 
 #: src/utils/TranslationUtils.gd
 msgid "Select the next tab"
@@ -1086,7 +1101,7 @@ msgstr ""
 #: src/utils/TranslationUtils.gd
 #, fuzzy
 msgid "Open SVG externally"
-msgstr "Ouvrir le dépôt de GodSVG"
+msgstr "Open GodSVG opslagplaats"
 
 #: src/utils/TranslationUtils.gd
 msgid "Show SVG in File Manager"
@@ -1095,150 +1110,170 @@ msgstr ""
 #: src/utils/TranslationUtils.gd
 #, fuzzy
 msgid "Select all"
-msgstr "Sélectionner"
+msgstr "Selecteren"
 
 #: src/utils/TranslationUtils.gd
 #, fuzzy
 msgid "Duplicate the selection"
-msgstr "Supprimer les éléments sélectionnés"
+msgstr "Verwijder de selectie"
 
 #: src/utils/TranslationUtils.gd
 msgid "Delete the selection"
-msgstr "Supprimer les éléments sélectionnés"
+msgstr "Verwijder de selectie"
 
 #: src/utils/TranslationUtils.gd
 #, fuzzy
 msgid "Move the selection up"
-msgstr "Remonter les éléments sélectionnés"
+msgstr "Beweeg the gekozen elementen omhoog"
 
 #: src/utils/TranslationUtils.gd
 #, fuzzy
 msgid "Move the selection down"
-msgstr "Descendre les éléments sélectionnés"
+msgstr "Beweeg the gekozen elementen omlaag"
 
 #: src/utils/TranslationUtils.gd
 msgid "Find"
-msgstr "Rechercher"
+msgstr "Vind"
 
 #: src/utils/TranslationUtils.gd
 msgid "Show rasterized SVG"
-msgstr "Montrer le SVG rastérisé"
+msgstr "Gerasterd SVG weergeven"
 
 #: src/utils/TranslationUtils.gd
 msgid "Toggle snapping"
-msgstr "Activer/Désactiver l'aimantation"
+msgstr "Knappen omschakelen"
 
 #: src/utils/TranslationUtils.gd
 msgid "Show reference image"
-msgstr "Montrer l'image de référence"
+msgstr "Referentie afbeelding weergeven"
 
 #: src/utils/TranslationUtils.gd
 msgid "Overlay reference image"
-msgstr "Superposer l'image de référence"
+msgstr "Referentie afbeelding overlappen"
 
 #: src/utils/TranslationUtils.gd
 msgid "View debug information"
-msgstr "Voir les informations de déboggage"
+msgstr "Bekijk debug informatie"
 
 #: src/utils/TranslationUtils.gd
 msgid "Open Settings menu"
-msgstr "Ouvrir le menu des paramètres"
+msgstr "Open Instellingenmenu"
 
 #: src/utils/TranslationUtils.gd
 msgid "Open About menu"
-msgstr "Ouvrir le menu À propos"
+msgstr "Open het Betreffende menu"
 
 #: src/utils/TranslationUtils.gd
 msgid "Open Donate menu"
-msgstr "Ouvrir le menu Faire un don"
+msgstr "Open Doneermenu"
 
 #: src/utils/TranslationUtils.gd
 msgid "Open GodSVG repository"
-msgstr "Ouvrir le dépôt de GodSVG"
+msgstr "Open GodSVG opslagplaats"
 
 #: src/utils/TranslationUtils.gd
 msgid "Open GodSVG website"
-msgstr "Ouvrir le site web de GodSVG"
+msgstr "Open GodSVG website"
 
 #: src/utils/TranslationUtils.gd
 msgid "Quit the application"
-msgstr "Quitter l'application"
+msgstr "Applicatie afsluiten"
 
 #: src/utils/TranslationUtils.gd
 msgid "Move to"
-msgstr "Déplacer vers"
+msgstr "Verplaats naar"
 
 #: src/utils/TranslationUtils.gd
 msgid "Line to"
-msgstr "Ligne vers"
+msgstr "Lijn naar"
 
 #: src/utils/TranslationUtils.gd
 msgid "Horizontal Line to"
-msgstr "Ligne horizontale vers"
+msgstr "Horizontale lijn naar"
 
 #: src/utils/TranslationUtils.gd
 msgid "Vertical Line to"
-msgstr "Ligne verticale vers"
+msgstr "Vertikale lijn naar"
 
 #: src/utils/TranslationUtils.gd
 msgid "Close Path"
-msgstr "Fermer le chemin"
+msgstr "Pad sluiten"
 
 #: src/utils/TranslationUtils.gd
 msgid "Elliptical Arc to"
-msgstr "Arc elliptique vers"
+msgstr "Elliptische Boog naar"
 
 #: src/utils/TranslationUtils.gd
 msgid "Quadratic Bezier to"
-msgstr "Courbe de Bézier quadratique vers"
+msgstr "Kwadratische Bézier naar"
 
 #: src/utils/TranslationUtils.gd
 msgid "Shorthand Quadratic Bezier to"
-msgstr "Courbe de Bézier quadratique raccourcie vers"
+msgstr "Afgekorte Kwadratische Bézier naar"
 
 #: src/utils/TranslationUtils.gd
 msgid "Cubic Bezier to"
-msgstr "Courbe de Bézier cubique vers"
+msgstr "Kubieke Bézier naar"
 
 #: src/utils/TranslationUtils.gd
 msgid "Shorthand Cubic Bezier to"
-msgstr "Courbe de Bézier cubique raccourcie vers"
+msgstr "Afgekorte Kubieke Bézier naar"
 
 #: src/utils/TranslationUtils.gd
 msgid ""
 "The file extension {extension} is unsupported for this operation. Only "
 "{extension_list} files are supported."
 msgstr ""
-"L'extension de fichier {extension} n'est pas supportée pour cette opération. "
-"Seuls les fichiers {extension_list} sont supportés."
+"Deze operatie is niet ondersteund voor de bestandsextensie {extension}."
+"Alleen {extension_list} bestanden zijn ondersteund."
 
 #: src/utils/TranslationUtils.gd
 msgid "The file extension is empty. Only {extension_list} files are supported."
 msgstr ""
-"L'extension de fichier est vide. Seuls les fichiers {extension_list} sont "
-"supportés."
+"Deze bestandsextensie is leeg. Alleen {extension_list} bestanden zijn "
+"ondersteund."
+
+#~ msgid "This requires GodSVG to connect to the internet."
+#~ msgstr "Hiervoor moet GodSVG verbinding maken met het internet."
 
 #~ msgid "Open file"
-#~ msgstr "Ouvrir le fichier"
+#~ msgstr "Open bestand"
 
 #~ msgid "Clear saving path"
-#~ msgstr "Vider le chemin d'enregistrement"
+#~ msgstr "Ontruim opslagpad"
 
 #~ msgid "Clear SVG"
-#~ msgstr "Vider le SVG"
+#~ msgstr "SVG ontruimen"
 
-#, fuzzy
 #~ msgid "Open SVG file"
-#~ msgstr "Ouvrir le fichier"
+#~ msgstr "Open SVG bestand"
 
 #~ msgid "Select all elements"
-#~ msgstr "Sélectionner tous les éléments"
+#~ msgstr "Selecteer alle elementen"
 
 #~ msgid "Duplicate the selected elements"
-#~ msgstr "Dupliquer les éléments sélectionnés"
+#~ msgstr "Dupliceer de gekozen elementen"
 
 #~ msgid "Enable the color"
-#~ msgstr "Activer la couleur"
+#~ msgstr "De kleur inschakelen"
 
 #~ msgid "Disable the color"
-#~ msgstr "Désactiver la couleur"
+#~ msgstr "De kleur uitzetten"
+
+#~ msgid "Invalid"
+#~ msgstr "Ongeldig"
+
+#~ msgid "Final size"
+#~ msgstr "Finale maat"
+
+#~ msgid ""
+#~ "The file couldn't be opened.\n"
+#~ "Try checking the file path, ensure that the file is not deleted, or "
+#~ "choose a different file."
+#~ msgstr ""
+#~ "Het bestand kon niet geopend worden.\n"
+#~ "Probeer the bestandspad te controleren, zorg ervoor dat de bestand niet "
+#~ "verwijdert is, of kies een ander bestand uit."
+
+#~ msgid "Enable snap"
+#~ msgstr "Knappen inschakelen"

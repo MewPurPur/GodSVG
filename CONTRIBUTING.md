@@ -2,7 +2,7 @@
 
 Your contribution is always appreciated!
 
-Contributions don't need to be perfect, but they must move GodSVG in the right direction. If you are planning to implement a feature or overhaul a system, it's important to write a proposal and discuss your ideas. I will try to quickly accept or decline them. Please do understand that PRs with a large maintenance cost may be under high scrutiny because of their long-term responsibility, even in the absence of the original contributor.
+Contributions don't need to be perfect, but they must move GodSVG in the right direction. If you are planning to implement a feature or overhaul a system, it's important to write a proposal and discuss your ideas first. I will try to be quick with accepting or declining them. Please do understand that PRs with a large maintenance cost may be under high scrutiny because of their long-term responsibility, even in the absence of the original contributor.
 
 ## Setup
 
@@ -19,8 +19,8 @@ Look through the list of issues to see if your contribution would resolve any of
 1. Fork the repository.
 2. Create a new branch: `git checkout -b implement-gradients`
 3. Make your modifications, add them with `git add .`
-4. Commit your changes: `git commit -m "Implement linear gradients"`
-5. Push to the branch: `git push origin implement-gradients`
+4. Commit your changes: `git commit -m "Implement the mask element"`
+5. Push to the branch: `git push origin implement-masks`
 6. Create a new pull request with a clear and informative title and describe your changes.
 
 This is the preferred workflow, but tidiness is not as important as work being done, so feel free to do something different you may be comfortable with.
@@ -29,7 +29,7 @@ After submitting your pull request, I (MewPurPur) will review your changes and m
 
 ## Translation
 
-Editing translations is explained [here](assets/translations/README.md)
+Editing translations is explained [here](translations/README.md)
 
 ## Code guidelines
 
@@ -37,16 +37,16 @@ To document some quirks of our code that we've decided on:
 
 - StringNames are avoided when possible. We do this because it makes the codebase simpler, although if something is actually shown to be performance-critical, it can be reconsidered.
 - Nodes may only be exported if their runtime structure isn't known.
-- Translating is done via `TranslationServer.translate()` rather than `tr()`. We've decided to stick to this everywhere because `tr()` doesn't work in static contexts.
+- Strings are always translated with `Translator.translate()`, not `tr()`.
 
 ## Code style
 
 For scripts, only GDScript code is allowed. Follow the [GDScript style guide](https://docs.godotengine.org/en/stable/tutorials/scripting/gdscript/gdscript_styleguide.html). Most of its rules are enforced here. Additionally:
 
-- Static typing is predominantly used.
-- Comments are normally written like sentences with punctuation.
-- Two spaces are used to separate code and inline comments.
+- Static typing is used as much as possible.
+- Comments are typically written like sentences with punctuation.
+- Two spaces are used to separate inline comments and code.
 - For empty lines in the middle of indented blocks, the scope's indentation is kept.
 - Class names use `class_name X extends Y` syntax.
 
-Don't make pull requests for code style changes without discussing them first (unless it's for corrections to abide by the ones described here). Pull requests may also get production tweaks to fix their style before being merged.
+Don't make pull requests for code style changes without discussing them first (unless it's for corrections to abide by the ones described here). The same generally applies to making style changes unrelated to a PR's main goal. Pull requests may also get production tweaks to tweak their style before being merged.
