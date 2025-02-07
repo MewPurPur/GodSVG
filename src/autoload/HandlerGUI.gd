@@ -307,7 +307,7 @@ func open_update_checker() -> void:
 	var confirmation_dialog = ConfirmDialog.instantiate()
 	add_menu(confirmation_dialog)
 	confirmation_dialog.setup(Translator.translate("Check for updates?"),
-			Translator.translate("This requires GodSVG to connect to the internet."),
+			Translator.translate("This will connect to github.com to compare version numbers. No other data is collected or transmitted."),
 			Translator.translate("OK"), _list_updates)
 
 func _list_updates() -> void:
