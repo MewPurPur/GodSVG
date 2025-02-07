@@ -110,10 +110,10 @@ func _gui_input(event: InputEvent) -> void:
 		var separator_arr: Array[int] = []
 		if editable:
 			btn_arr.append(ContextPopup.create_button(Translator.translate("Undo"),
-					menu_option.bind(LineEdit.MENU_UNDO), false,
+					menu_option.bind(LineEdit.MENU_UNDO), not has_undo(),
 					load("res://assets/icons/Undo.svg"), "ui_undo"))
 			btn_arr.append(ContextPopup.create_button(Translator.translate("Redo"),
-					menu_option.bind(LineEdit.MENU_REDO), false,
+					menu_option.bind(LineEdit.MENU_REDO), not has_redo(),
 					load("res://assets/icons/Redo.svg"), "ui_redo"))
 			if DisplayServer.has_feature(DisplayServer.FEATURE_CLIPBOARD):
 				separator_arr = [2]
