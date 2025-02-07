@@ -43,7 +43,7 @@ func _save_svg_text() -> void:
 	FileAccess.open(get_edited_file_path(), FileAccess.WRITE).store_string(_svg_text)
 	
 	if svg_file_path.is_empty():
-		sync()
+		_sync()
 
 func setup_svg_text(new_text: String) -> void:
 	_svg_text = new_text
@@ -60,17 +60,18 @@ func get_svg_text() -> String:
 		if svg_file_path != new_value:
 			svg_file_path = new_value
 			emit_changed()
-			sync()
+			_sync()
 
 @export var id := -1:
 	set(new_value):
 		if id != new_value:
 			id = new_value
 			emit_changed()
-			sync()
+			_sync()
 
 func _init(new_id := -1) -> void:
 	id = new_id
+	Configs.language_changed.connect(_on_language_changed)
 	super()
 
 func get_edited_file_path() -> String:
@@ -92,7 +93,12 @@ func redo() -> void:
 		undo_redo.redo()
 		State.sync_elements()
 
-func sync() -> void:
+
+func _on_language_changed() -> void:
+	if svg_file_path.is_empty():
+		_sync()
+
+func _sync() -> void:
 	if not svg_file_path.is_empty():
 		presented_name = svg_file_path.get_file()
 		is_empty_and_unsaved = false
