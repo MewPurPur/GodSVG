@@ -57,7 +57,3 @@ shortcut = SubResource("Shortcut_y6ouu")
 shortcut_in_tooltip = false
 icon = ExtResource("2_284x5")
 icon_alignment = 1
-
-[connection signal="pressed" from="ZoomOut" to="." method="zoom_out"]
-[connection signal="pressed" from="ZoomReset" to="." method="zoom_reset"]
-[connection signal="pressed" from="ZoomIn" to="." method="zoom_in"]

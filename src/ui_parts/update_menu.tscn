@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://dtyn8imbyo2rg"]
 
-[ext_resource type="Script" path="res://src/ui_parts/update_menu.gd" id="1_up0ed"]
+[ext_resource type="Script" uid="uid://c6ca4ckjyrxg3" path="res://src/ui_parts/update_menu.gd" id="1_up0ed"]
 
 [node name="UpdateMenu" type="PanelContainer"]
 custom_minimum_size = Vector2(300, 160)

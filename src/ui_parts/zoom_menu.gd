@@ -19,6 +19,9 @@ func update_translation() -> void:
 	zoom_reset_button.tooltip_text = Translator.translate("Zoom reset")
 
 func _ready() -> void:
+	zoom_out_button.pressed.connect(zoom_out)
+	zoom_in_button.pressed.connect(zoom_in)
+	zoom_reset_button.pressed.connect(zoom_reset)
 	Configs.language_changed.connect(update_translation)
 	update_translation()
 
