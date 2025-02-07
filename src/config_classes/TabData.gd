@@ -3,9 +3,17 @@ class_name TabData extends ConfigResource
 
 const EDITED_FILES_DIR = "user://edited"
 
-signal file_path_changed
+signal name_changed
+var presented_name: String:
+	set(new_value):
+		if presented_name != new_value:
+			presented_name = new_value
+			name_changed.emit()
+
+var active := false
 
 var is_new := false
+var is_empty_and_unsaved := false
 var undo_redo: UndoRedo
 var reference_image: Texture2D
 
@@ -33,6 +41,9 @@ func _save_svg_text() -> void:
 	if not FileAccess.file_exists(get_edited_file_path()):
 		DirAccess.make_dir_recursive_absolute(get_edited_file_path().get_base_dir())
 	FileAccess.open(get_edited_file_path(), FileAccess.WRITE).store_string(_svg_text)
+	
+	if svg_file_path.is_empty():
+		sync()
 
 func setup_svg_text(new_text: String) -> void:
 	_svg_text = new_text
@@ -49,13 +60,14 @@ func get_svg_text() -> String:
 		if svg_file_path != new_value:
 			svg_file_path = new_value
 			emit_changed()
-			file_path_changed.emit()
+			sync()
 
 @export var id := -1:
 	set(new_value):
 		if id != new_value:
 			id = new_value
 			emit_changed()
+			sync()
 
 func _init(new_id := -1) -> void:
 	id = new_id
@@ -80,13 +92,25 @@ func redo() -> void:
 		undo_redo.redo()
 		State.sync_elements()
 
-func get_presented_name() -> String:
-	return svg_file_path.get_file() if not svg_file_path.is_empty() else\
-			"[ %s ]" % Translator.translate("Unsaved")
+func sync() -> void:
+	if not svg_file_path.is_empty():
+		presented_name = svg_file_path.get_file()
+		is_empty_and_unsaved = false
+	elif SVGParser.text_check_is_root_empty(get_true_svg_text()):
+		is_empty_and_unsaved = true
+		presented_name = "[ %s ]" % Translator.translate("Empty")
+	else:
+		is_empty_and_unsaved = false
+		presented_name = "[ %s ]" % Translator.translate("Unsaved")
 
 
 func activate() -> void:
+	active = true
 	_svg_text = FileAccess.get_file_as_string(get_edited_file_path())
 
 func deactivate() -> void:
+	active = false
 	_svg_text = ""
+
+func get_true_svg_text() -> String:
+	return _svg_text if active else FileAccess.get_file_as_string(get_edited_file_path())

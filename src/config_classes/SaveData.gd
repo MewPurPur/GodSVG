@@ -573,7 +573,7 @@ const MAX_TABS = 5
 			
 			for tab in _tabs:
 				tab.changed.connect(emit_changed)
-				tab.file_path_changed.connect(_on_tab_file_path_changed.bind(tab.id))
+				tab.name_changed.connect(_on_tab_name_changed.bind(tab.id))
 			emit_changed()
 			if _tabs.is_empty():
 				_add_new_tab()
@@ -592,9 +592,9 @@ const MAX_TABS = 5
 			_active_tab_index = new_value
 			emit_changed()
 
-func _on_tab_file_path_changed(id: int):
+func _on_tab_name_changed(id: int):
 	if id == _tabs[_active_tab_index].id:
-		Configs.active_tab_file_path_changed.emit()
+		Configs.active_tab_name_changed.emit()
 
 func has_tabs() -> bool:
 	return not _tabs.is_empty()
@@ -643,7 +643,7 @@ func _add_new_tab() -> void:
 			var new_tab := TabData.new(new_id)
 			new_tab.is_new = true
 			new_tab.changed.connect(emit_changed)
-			new_tab.file_path_changed.connect(_on_tab_file_path_changed.bind(new_id))
+			new_tab.name_changed.connect(_on_tab_name_changed.bind(new_id))
 			_tabs.append(new_tab)
 			return
 		new_id += 1

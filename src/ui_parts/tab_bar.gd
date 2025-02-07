@@ -15,7 +15,7 @@ var proposed_drop_idx := -1:
 			queue_redraw()
 
 func _ready() -> void:
-	Configs.active_tab_file_path_changed.connect(queue_redraw)
+	Configs.active_tab_name_changed.connect(queue_redraw)
 	Configs.active_tab_changed.connect(activate)
 	Configs.tabs_changed.connect(activate)
 	Configs.language_changed.connect(queue_redraw)
@@ -37,7 +37,7 @@ func _draw() -> void:
 			break
 		
 		var current_tab_name := State.transient_tab_path.get_file() if\
-				drawing_transient_tab else Configs.savedata.get_tab(tab_index).get_presented_name()
+				drawing_transient_tab else Configs.savedata.get_tab(tab_index).presented_name
 		
 		var rect := get_tab_rect(tab_index)
 		var text_line := TextLine.new()

@@ -20,7 +20,7 @@ signal handle_visuals_changed
 @warning_ignore("unused_signal")
 signal shortcut_panel_changed
 @warning_ignore("unused_signal")
-signal active_tab_file_path_changed
+signal active_tab_name_changed
 @warning_ignore("unused_signal")
 signal active_tab_changed
 @warning_ignore("unused_signal")

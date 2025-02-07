@@ -18,7 +18,7 @@ func _ready() -> void:
 	update_translations()
 	
 	State.svg_changed.connect(update_size_button)
-	Configs.active_tab_file_path_changed.connect(update_file_button)
+	Configs.active_tab_name_changed.connect(update_file_button)
 	Configs.active_tab_changed.connect(update_file_button)
 	Configs.basic_colors_changed.connect(update_size_button_colors)
 	update_file_button()
@@ -147,7 +147,7 @@ func update_size_button_colors() -> void:
 func update_file_button() -> void:
 	var file_name := State.transient_tab_path.get_file() if\
 			not State.transient_tab_path.is_empty() else\
-			Configs.savedata.get_active_tab().get_presented_name()
+			Configs.savedata.get_active_tab().presented_name
 	file_button.text = file_name
 	file_button.tooltip_text = file_name
 	Utils.set_max_text_width(file_button, 140.0, 12.0)

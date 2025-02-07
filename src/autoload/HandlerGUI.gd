@@ -25,7 +25,7 @@ func _enter_tree() -> void:
 
 func _ready() -> void:
 	Configs.active_tab_changed.connect(update_window_title)
-	Configs.active_tab_file_path_changed.connect(update_window_title)
+	Configs.active_tab_name_changed.connect(update_window_title)
 	update_window_title()
 	
 	Configs.ui_scale_changed.connect(update_ui_scale)
@@ -357,8 +357,7 @@ func open_export() -> void:
 func update_window_title() -> void:
 	if Configs.savedata.use_filename_for_window_title and\
 	not Configs.savedata.get_active_tab().svg_file_path.is_empty():
-		get_window().title = Configs.savedata.get_active_tab().get_presented_name() +\
-				" - GodSVG"
+		get_window().title = Configs.savedata.get_active_tab().presented_name + " - GodSVG"
 	else:
 		get_window().title = "GodSVG"
 
