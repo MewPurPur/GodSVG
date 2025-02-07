@@ -135,10 +135,10 @@ func _gui_input(event: InputEvent) -> void:
 			if editable:
 				btn_arr.append(ContextPopup.create_button(
 						Translator.translate("Undo"), undo,
-						!has_undo(), load("res://assets/icons/Undo.svg"), "ui_undo"))
+						not has_undo(), load("res://assets/icons/Undo.svg"), "ui_undo"))
 				btn_arr.append(ContextPopup.create_button(
 						Translator.translate("Redo"), redo,
-						!has_redo(), load("res://assets/icons/Redo.svg"), "ui_redo"))
+						not has_redo(), load("res://assets/icons/Redo.svg"), "ui_redo"))
 				if DisplayServer.has_feature(DisplayServer.FEATURE_CLIPBOARD):
 					separator_arr = PackedInt32Array([2])
 					btn_arr.append(ContextPopup.create_button(
