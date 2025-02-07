@@ -346,7 +346,7 @@ pointing/android/enable_pan_and_scale_gestures=true
 [internationalization]
 
 rendering/root_node_auto_translate=false
-locale/translations=PackedStringArray("res://assets/translations/bg.po", "res://assets/translations/de.po", "res://assets/translations/en.po", "res://assets/translations/fr.po", "res://assets/translations/nl.po", "res://assets/translations/ru.po", "res://assets/translations/uk.po", "res://assets/translations/zh.po")
+locale/translations=PackedStringArray("res://translations/bg.po", "res://translations/de.po", "res://translations/en.po", "res://translations/fr.po", "res://translations/nl.po", "res://translations/ru.po", "res://translations/uk.po", "res://translations/zh.po")
 
 [physics]
 
