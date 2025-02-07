@@ -1,8 +1,8 @@
 [gd_scene load_steps=5 format=3 uid="uid://bp1iblavfxjvu"]
 
-[ext_resource type="Script" path="res://src/ui_widgets/enum_dropdown.gd" id="1_fmykh"]
+[ext_resource type="Script" uid="uid://cmywc1vb0rw8y" path="res://src/ui_widgets/enum_dropdown.gd" id="1_fmykh"]
 [ext_resource type="FontFile" uid="uid://clpf84p1lfwlp" path="res://assets/fonts/Font.ttf" id="2_qeova"]
-[ext_resource type="Script" path="res://src/ui_widgets/BetterLineEdit.gd" id="3_w88iq"]
+[ext_resource type="Script" uid="uid://1hox6gd5pxku" path="res://src/ui_widgets/BetterLineEdit.gd" id="3_w88iq"]
 [ext_resource type="Texture2D" uid="uid://coda6chhcatal" path="res://assets/icons/Arrow.svg" id="4_tk7o3"]
 
 [node name="EnumDropdown" type="HBoxContainer"]

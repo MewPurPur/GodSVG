@@ -5,10 +5,6 @@ const MAX_ANGLE_PRECISION = 4
 
 enum InteractionType {NONE = 0, HOVERED = 1, SELECTED = 2, HOVERED_SELECTED = 3}
 
-# TODO Keep track of #102363.
-static func is_valid_float_fixed(string: String) -> bool:
-	return string.replace("E", "e").is_valid_float()
-
 static func num_simple(number: float, decimals := -1) -> String:
 	return String.num(number, decimals).trim_suffix(".0")
 

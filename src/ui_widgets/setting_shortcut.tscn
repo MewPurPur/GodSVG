@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://b7fw7bodu5fbb"]
 
-[ext_resource type="Script" path="res://src/ui_widgets/setting_shortcut.gd" id="1_4c8oc"]
+[ext_resource type="Script" uid="uid://civujbqn2um1u" path="res://src/ui_widgets/setting_shortcut.gd" id="1_4c8oc"]
 [ext_resource type="Texture2D" uid="uid://cvh3kwbucf2n1" path="res://assets/icons/Reload.svg" id="2_n8e0s"]
 
 [node name="SettingShortcut" type="PanelContainer"]

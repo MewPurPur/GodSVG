@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://6tbfb2t0tyfh"]
 
-[ext_resource type="Script" path="res://src/ui_widgets/id_field.gd" id="1_dqgkn"]
+[ext_resource type="Script" uid="uid://dla17p5hsn7e1" path="res://src/ui_widgets/id_field.gd" id="1_dqgkn"]
 
 [node name="IdField" type="LineEdit"]
 custom_minimum_size = Vector2(54, 22)

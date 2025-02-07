@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://bethkcrbf0tf7"]
 
-[ext_resource type="Script" path="res://src/ui_widgets/element_content_radial_gradient.gd" id="1_le714"]
+[ext_resource type="Script" uid="uid://1mmtphi577im" path="res://src/ui_widgets/element_content_radial_gradient.gd" id="1_le714"]
 
 [node name="ElementContentRadialGradient" type="VBoxContainer"]
 offset_right = 40.0

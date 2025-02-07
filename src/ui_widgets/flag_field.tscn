@@ -1,7 +1,7 @@
 [gd_scene load_steps=7 format=3 uid="uid://br8g7w38jguh4"]
 
 [ext_resource type="FontFile" uid="uid://depydd16jq777" path="res://assets/fonts/FontMono.ttf" id="1_p8s8y"]
-[ext_resource type="Script" path="res://src/ui_widgets/flag_field.gd" id="2_0bhg4"]
+[ext_resource type="Script" uid="uid://ndfvlxytvcm8" path="res://src/ui_widgets/flag_field.gd" id="2_0bhg4"]
 
 [sub_resource type="FontVariation" id="FontVariation_46ud6"]
 base_font = ExtResource("1_p8s8y")

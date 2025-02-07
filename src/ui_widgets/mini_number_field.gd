@@ -9,6 +9,9 @@ var _value := NAN  # Must not be updated directly.
 
 var default := NAN  # Setting to an empty value would bring you back to the default.
 
+func _ready() -> void:
+	text_submitted.connect(_on_text_submitted)
+
 func set_value(new_value: float, no_signal := false) -> void:
 	if not is_finite(new_value):
 		text = NumstringParser.basic_num_to_text(_value)
