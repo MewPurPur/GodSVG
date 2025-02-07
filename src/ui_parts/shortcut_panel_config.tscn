@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://cnay1l0u6a5tw"]
 
-[ext_resource type="Script" path="res://src/ui_parts/shortcut_panel_config.gd" id="1_eg1f5"]
+[ext_resource type="Script" uid="uid://cnmsf3h1qq3q6" path="res://src/ui_parts/shortcut_panel_config.gd" id="1_eg1f5"]
 [ext_resource type="PackedScene" uid="uid://bp1iblavfxjvu" path="res://src/ui_widgets/enum_dropdown.tscn" id="2_pru61"]
 
 [node name="ShortcutPanelConfig" type="PanelContainer"]

@@ -98,7 +98,6 @@ custom_minimum_size = Vector2(48, 22)
 layout_mode = 2
 theme_type_variation = &"LeftConnectedLineEdit"
 max_length = 20
-editable = false
 min_value = 0.001
 allow_lower = false
 
