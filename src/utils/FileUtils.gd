@@ -226,18 +226,42 @@ static func _apply_svg(data: Variant, file_path: String) -> void:
 		var alert_dialog := AlertDialog.instantiate()
 		HandlerGUI.add_menu(alert_dialog)
 		alert_dialog.setup(alert_message)
+		return
+	
+	var warning_panel := ImportWarningMenu.instantiate()
+	
+	if Configs.savedata.get_active_tab().is_empty_and_unsaved:
+		var tab_index := Configs.savedata.get_active_tab_index()
+		Configs.savedata.remove_tabs(PackedInt32Array([tab_index]))
+		Configs.savedata.add_tab_with_path(file_path)
+		Configs.savedata.move_tab(Configs.savedata.get_tab_count() - 1, tab_index)
+		warning_panel.canceled.connect(_on_import_panel_canceled_empty_tab_scenario)
+		warning_panel.imported.connect(_on_import_panel_accepted_empty_tab_scenario.bind(
+				data))
 	else:
 		State.transient_tab_path = file_path
-		var warning_panel := ImportWarningMenu.instantiate()
-		warning_panel.canceled.connect(_on_import_panel_canceled)
-		warning_panel.imported.connect(_on_import_panel_accepted.bind(file_path, data))
-		warning_panel.set_svg(data)
-		HandlerGUI.add_menu(warning_panel)
+		warning_panel.canceled.connect(_on_import_panel_canceled_transient_scenario)
+		warning_panel.imported.connect(_on_import_panel_accepted_transient_scenario.bind(
+				file_path, data))
+	
+	warning_panel.set_svg(data)
+	HandlerGUI.add_menu(warning_panel)
 
-static func _on_import_panel_canceled() -> void:
+static func _on_import_panel_canceled_empty_tab_scenario() -> void:
+	var tab_index := Configs.savedata.get_active_tab_index()
+	Configs.savedata.remove_tabs(PackedInt32Array([tab_index]))
+	Configs.savedata.add_empty_tab()
+	Configs.savedata.move_tab(Configs.savedata.get_tab_count() - 1, tab_index)
+
+static func _on_import_panel_accepted_empty_tab_scenario(svg_text: String) -> void:
+	Configs.savedata.get_active_tab().setup_svg_text(svg_text)
+	State.sync_elements()
+
+static func _on_import_panel_canceled_transient_scenario() -> void:
 	State.transient_tab_path = ""
 
-static func _on_import_panel_accepted(file_path: String, svg_text: String) -> void:
+static func _on_import_panel_accepted_transient_scenario(
+file_path: String, svg_text: String) -> void:
 	State.transient_tab_path = ""
 	Configs.savedata.add_tab_with_path(file_path)
 	Configs.savedata.get_active_tab().setup_svg_text(svg_text)
