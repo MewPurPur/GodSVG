@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://cm3uphorskcix"]
 
-[ext_resource type="Script" path="res://src/ui_widgets/mini_number_field.gd" id="1_ggi5v"]
+[ext_resource type="Script" uid="uid://dcnkg4irpqdl" path="res://src/ui_widgets/mini_number_field.gd" id="1_ggi5v"]
 
 [node name="MiniNumberField" type="LineEdit"]
 custom_minimum_size = Vector2(0, 18)
@@ -10,5 +10,3 @@ mouse_filter = 1
 theme_type_variation = &"MiniLineEdit"
 script = ExtResource("1_ggi5v")
 mono_font_tooltip = true
-
-[connection signal="text_submitted" from="." to="." method="_on_text_submitted"]

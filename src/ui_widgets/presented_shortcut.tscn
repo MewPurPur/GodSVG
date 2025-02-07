@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://owphyjtiueai"]
 
-[ext_resource type="Script" path="res://src/ui_widgets/presented_shortcut.gd" id="1_mfl8k"]
+[ext_resource type="Script" uid="uid://beewlny6guury" path="res://src/ui_widgets/presented_shortcut.gd" id="1_mfl8k"]
 
 [node name="PresentedShortcut" type="PanelContainer"]
 offset_right = 172.0

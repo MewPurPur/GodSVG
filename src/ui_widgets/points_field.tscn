@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://b2gchy70px8jt"]
 
-[ext_resource type="Script" path="res://src/ui_widgets/points_field.gd" id="1_pnk5w"]
-[ext_resource type="Script" path="res://src/ui_widgets/BetterLineEdit.gd" id="2_4uivs"]
+[ext_resource type="Script" uid="uid://bey3843fto5dc" path="res://src/ui_widgets/points_field.gd" id="1_pnk5w"]
+[ext_resource type="Script" uid="uid://1hox6gd5pxku" path="res://src/ui_widgets/BetterLineEdit.gd" id="2_4uivs"]
 
 [node name="PointsField" type="VBoxContainer"]
 offset_right = 358.0
