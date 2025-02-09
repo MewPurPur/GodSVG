@@ -151,6 +151,7 @@ func set_dir(dir: String) -> void:
 		return
 	
 	file_list.clear()
+	file_list.get_v_scroll_bar().value = 0
 	# Basic setup.
 	unfocus_file()
 	current_dir = dir

@@ -185,7 +185,7 @@ func _on_svg_changed() -> void:
 			FileUtils.compare_svg_to_disk_contents() == FileUtils.FileState.DIFFERENT)
 
 func _on_view_rasterized_changed() -> void:
-	NativeMenu.set_item_checked(view_rid, view_rasterized_svg_idx, State.rasterized_svg)
+	NativeMenu.set_item_checked(view_rid, view_rasterized_svg_idx, State.view_rasterized)
 
 func _on_show_grid_changed() -> void:
 	NativeMenu.set_item_checked(view_rid, view_show_grid_idx, State.show_grid)
