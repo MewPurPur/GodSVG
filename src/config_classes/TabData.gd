@@ -100,6 +100,9 @@ func _on_language_changed() -> void:
 
 func _sync() -> void:
 	if not svg_file_path.is_empty():
+		# The extension is included in the presented name too.
+		# It's always in the end anyway so it can't hide useless info.
+		# And also, it prevents ".svg" from being presented as an empty string.
 		presented_name = svg_file_path.get_file()
 		is_empty_and_unsaved = false
 	elif SVGParser.text_check_is_root_empty(get_true_svg_text()):

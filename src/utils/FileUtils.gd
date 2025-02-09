@@ -228,9 +228,10 @@ static func _apply_svg(data: Variant, file_path: String) -> void:
 		alert_dialog.setup(alert_message)
 		return
 	
-	var warning_panel := ImportWarningMenu.instantiate()
-	
+	# If the active tab is empty, replace it. Otherwise make it a new transient tab.
+	# If there are already too many tabs, do nothing.
 	if Configs.savedata.get_active_tab().is_empty_and_unsaved:
+		var warning_panel := ImportWarningMenu.instantiate()
 		var tab_index := Configs.savedata.get_active_tab_index()
 		Configs.savedata.remove_tabs(PackedInt32Array([tab_index]))
 		Configs.savedata.add_tab_with_path(file_path)
@@ -238,14 +239,16 @@ static func _apply_svg(data: Variant, file_path: String) -> void:
 		warning_panel.canceled.connect(_on_import_panel_canceled_empty_tab_scenario)
 		warning_panel.imported.connect(_on_import_panel_accepted_empty_tab_scenario.bind(
 				data))
-	else:
+		warning_panel.set_svg(data)
+		HandlerGUI.add_menu(warning_panel)
+	elif Configs.savedata.get_tab_count() < SaveData.MAX_TABS:
+		var warning_panel := ImportWarningMenu.instantiate()
 		State.transient_tab_path = file_path
 		warning_panel.canceled.connect(_on_import_panel_canceled_transient_scenario)
 		warning_panel.imported.connect(_on_import_panel_accepted_transient_scenario.bind(
 				file_path, data))
-	
-	warning_panel.set_svg(data)
-	HandlerGUI.add_menu(warning_panel)
+		warning_panel.set_svg(data)
+		HandlerGUI.add_menu(warning_panel)
 
 static func _on_import_panel_canceled_empty_tab_scenario() -> void:
 	var tab_index := Configs.savedata.get_active_tab_index()

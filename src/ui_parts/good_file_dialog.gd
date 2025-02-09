@@ -223,7 +223,8 @@ func set_file(file: String) -> void:
 		file += "." + extensions[0]
 	file_list.ensure_current_is_visible()
 	current_file = file
-	file_field.text = current_file
+	if not file.is_empty():
+		file_field.text = file
 
 # For optimization, only generate the visible files' images.
 func _setup_file_images() -> void:

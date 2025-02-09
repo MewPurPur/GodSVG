@@ -551,7 +551,7 @@ func erase_shortcut_panel_slot(slot: int) -> void:
 	Configs.shortcut_panel_changed.emit()
 
 
-const MAX_TABS = 5
+const MAX_TABS = 50
 @export var _tabs: Array[TabData] = []:
 	set(new_value):
 		# Validation

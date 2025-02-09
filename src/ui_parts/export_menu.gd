@@ -62,7 +62,7 @@ func _ready() -> void:
 	
 	if Configs.savedata.get_active_tab().svg_file_path.is_empty():
 		file_title.add_theme_color_override("font_color", ThemeUtils.common_subtle_text_color)
-		file_title.text = Configs.savedata.get_active_tab().get_presented_name()
+		file_title.text = Configs.savedata.get_active_tab().presented_name
 	
 	final_size_label.text = Translator.translate("Size") + ": " +\
 			String.humanize_size(State.get_export_text().length())

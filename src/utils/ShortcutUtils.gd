@@ -77,6 +77,7 @@ static func fn_call(shortcut: String) -> void:
 	fn(shortcut).call()
 
 # The methods that should be called if these shortcuts aren't handled.
+# Should bind only constants, otherwise the binds can get outdated before being used.
 static func fn(shortcut: String) -> Callable:
 	match shortcut:
 		"save": return FileUtils.save_svg
@@ -92,9 +93,9 @@ static func fn(shortcut: String) -> Callable:
 		"copy_svg_text": return DisplayServer.clipboard_set.bind(State.svg_text)
 		"optimize": return State.optimize
 		"reset_svg": return FileUtils.reset_svg
-		"open_externally": return FileUtils.open_svg.bind(
+		"open_externally": return func(): FileUtils.open_svg(
 				Configs.savedata.get_active_tab().svg_file_path)
-		"open_in_folder": return FileUtils.open_svg_folder.bind(
+		"open_in_folder": return func(): FileUtils.open_svg_folder(
 				Configs.savedata.get_active_tab().svg_file_path)
 		"redo": return Configs.savedata.get_active_tab().redo
 		"undo": return Configs.savedata.get_active_tab().undo
