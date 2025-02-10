@@ -93,6 +93,9 @@ func _remove_control(overlay_ref: ColorRect = null) -> void:
 	throw_mouse_motion_event()
 
 func remove_all_menus() -> void:
+	if menu_stack.is_empty():
+		return
+	
 	while not menu_stack.is_empty():
 		menu_stack.pop_back().queue_free()
 	throw_mouse_motion_event()
@@ -127,6 +130,9 @@ func remove_popup(overlay_ref: Control = null) -> void:
 	throw_mouse_motion_event()
 
 func remove_all_popups() -> void:
+	if popup_stack.is_empty():
+		return
+	
 	while not popup_stack.is_empty():
 		popup_stack.pop_back().queue_free()
 	throw_mouse_motion_event()
