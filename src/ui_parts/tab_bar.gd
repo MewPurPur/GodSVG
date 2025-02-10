@@ -46,6 +46,7 @@ func _draw() -> void:
 	draw_style_box(background_stylebox, get_rect())
 	
 	var has_transient_tab := not State.transient_tab_path.is_empty()
+	var mouse_pos := get_local_mouse_position()
 	
 	for tab_index in Configs.savedata.get_tab_count() + 1:
 		var drawing_transient_tab := (tab_index == Configs.savedata.get_tab_count())
@@ -58,7 +59,6 @@ func _draw() -> void:
 		
 		var current_tab_name := State.transient_tab_path.get_file() if\
 				drawing_transient_tab else Configs.savedata.get_tab(tab_index).presented_name
-		
 		if (has_transient_tab and drawing_transient_tab) or\
 		(not has_transient_tab and tab_index == Configs.savedata.get_active_tab_index()):
 			draw_style_box(get_theme_stylebox("tab_selected", "TabContainer"), rect)
@@ -75,7 +75,7 @@ func _draw() -> void:
 				draw_texture_rect(close_icon, Rect2(close_rect.position +\
 						(close_rect.size - close_icon_size) / 2.0, close_icon_size), false)
 		else:
-			var is_hovered := rect.has_point(get_local_mouse_position())
+			var is_hovered := rect.has_point(mouse_pos)
 			var tab_style := "tab_hovered" if is_hovered else "tab_unselected"
 			var text_color := ThemeUtils.common_text_color if is_hovered else\
 					(ThemeUtils.common_subtle_text_color + ThemeUtils.common_text_color) / 2
@@ -105,7 +105,7 @@ func _draw() -> void:
 			var line_x := scroll_backwards_rect.end.x + 1
 			draw_line(Vector2(line_x, 0), Vector2(line_x, size.y),
 					ThemeUtils.common_panel_border_color)
-			if scroll_backwards_rect.has_point(get_local_mouse_position()):
+			if scroll_backwards_rect.has_point(mouse_pos):
 				var stylebox_theme := "pressed" if\
 						Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT) else "hover"
 				get_theme_stylebox(stylebox_theme, "FlatButton").draw(ci,
@@ -124,7 +124,7 @@ func _draw() -> void:
 			var line_x := scroll_forwards_rect.position.x
 			draw_line(Vector2(line_x, 0), Vector2(line_x, size.y),
 					ThemeUtils.common_panel_border_color)
-			if scroll_forwards_rect.has_point(get_local_mouse_position()):
+			if scroll_forwards_rect.has_point(mouse_pos):
 				var stylebox_theme := "pressed" if\
 						Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT) else "hover"
 				get_theme_stylebox(stylebox_theme, "FlatButton").draw(ci, scroll_forwards_rect)
@@ -235,7 +235,6 @@ func _process(_delta: float) -> void:
 		return
 	
 	var scroll_backwards_area_rect := get_scroll_backwards_area_rect()
-	
 	if ((scrolling_backwards and scroll_backwards_area_rect.has_point(mouse_pos)) or\
 	(is_dragging and mouse_pos.x < scroll_backwards_area_rect.size.x)) and\
 	scroll_backwards_area_rect.has_area():
@@ -311,10 +310,10 @@ func get_tab_rect(idx: int) -> Rect2:
 	var tab_width := clampf((size.x - add_button_width - scroll_backwards_button_width -\
 			scroll_forwards_button_width) / get_proper_tab_count(),
 			MIN_TAB_WIDTH, DEFAULT_TAB_WIDTH)
-	var tab_start := clampf(tab_width * idx - current_scroll + left_limit,
-			left_limit, right_limit)
-	var tab_end := clampf(tab_width * (idx + 1) - current_scroll + left_limit,
-			left_limit, right_limit)
+	var unclamped_tab_start := tab_width * idx - current_scroll + left_limit
+	var tab_start := clampf(unclamped_tab_start, left_limit, right_limit)
+	var tab_end := clampf(unclamped_tab_start + tab_width, left_limit, right_limit)
+	
 	if tab_end <= tab_start:
 		return Rect2()
 	return Rect2(tab_start, 0, tab_end - tab_start, size.y)
@@ -336,10 +335,11 @@ func get_add_button_rect() -> Rect2:
 	return Rect2(minf(DEFAULT_TAB_WIDTH * tab_count, size.x - size.y), 0, size.y, size.y)
 
 func get_scroll_forwards_area_rect() -> Rect2:
-	if size.x - get_add_button_rect().size.x > get_proper_tab_count() * MIN_TAB_WIDTH:
+	var add_button_width := get_add_button_rect().size.x
+	if size.x - add_button_width > get_proper_tab_count() * MIN_TAB_WIDTH:
 		return Rect2()
 	var width := size.y / 1.5
-	return Rect2(size.x - get_add_button_rect().size.x - width, 0, width, size.y)
+	return Rect2(size.x - add_button_width - width, 0, width, size.y)
 
 func is_scroll_forwards_disabled() -> bool:
 	return current_scroll >= get_scroll_limit()
