@@ -48,7 +48,7 @@ func _draw() -> void:
 	var has_transient_tab := not State.transient_tab_path.is_empty()
 	
 	for tab_index in Configs.savedata.get_tab_count() + 1:
-		var drawing_transient_tab := tab_index == Configs.savedata.get_tab_count()
+		var drawing_transient_tab := (tab_index == Configs.savedata.get_tab_count())
 		if drawing_transient_tab and not has_transient_tab:
 			break
 		
@@ -59,14 +59,15 @@ func _draw() -> void:
 		var current_tab_name := State.transient_tab_path.get_file() if\
 				drawing_transient_tab else Configs.savedata.get_tab(tab_index).presented_name
 		
-		var text_line := TextLine.new()
-		text_line.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
-		text_line.add_string(current_tab_name, ThemeUtils.regular_font, 13)
 		if (has_transient_tab and drawing_transient_tab) or\
 		(not has_transient_tab and tab_index == Configs.savedata.get_active_tab_index()):
 			draw_style_box(get_theme_stylebox("tab_selected", "TabContainer"), rect)
-			text_line.width = rect.size.x - size.y
-			if text_line.width > 0:
+			var text_line_width := rect.size.x - size.y
+			if text_line_width > 0:
+				var text_line := TextLine.new()
+				text_line.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+				text_line.add_string(current_tab_name, ThemeUtils.regular_font, 13)
+				text_line.width = text_line_width
 				text_line.draw(ci, rect.position + Vector2(4, 3))
 			var close_rect := get_close_button_rect()
 			if close_rect.has_area():
@@ -80,8 +81,12 @@ func _draw() -> void:
 					(ThemeUtils.common_subtle_text_color + ThemeUtils.common_text_color) / 2
 			draw_style_box(get_theme_stylebox(tab_style, "TabContainer"), rect)
 			
-			text_line.width = rect.size.x - 8
-			if text_line.width > 0:
+			var text_line_width := rect.size.x - 8
+			if text_line_width > 0:
+				var text_line := TextLine.new()
+				text_line.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+				text_line.add_string(current_tab_name, ThemeUtils.regular_font, 13)
+				text_line.width = text_line_width
 				text_line.draw(ci, rect.position + Vector2(4, 3), text_color)
 	
 	var add_button_rect := get_add_button_rect()
@@ -116,7 +121,7 @@ func _draw() -> void:
 		if is_scroll_forwards_disabled():
 			icon_modulate = get_theme_color("icon_disabled_color", "Button")
 		else:
-			var line_x := scroll_forwards_rect.position.x - 1
+			var line_x := scroll_forwards_rect.position.x
 			draw_line(Vector2(line_x, 0), Vector2(line_x, size.y),
 					ThemeUtils.common_panel_border_color)
 			if scroll_forwards_rect.has_point(get_local_mouse_position()):
