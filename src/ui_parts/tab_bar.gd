@@ -16,7 +16,7 @@ var scrolling_backwards := false
 var scrolling_forwards := false
 var active_controls: Array[Control] = []
 
-var is_dragging := false
+# Processing is enabled only when dragging.
 var proposed_drop_idx := -1:
 	set(new_value):
 		if proposed_drop_idx != new_value:
@@ -36,6 +36,7 @@ func _ready() -> void:
 	Configs.language_changed.connect(queue_redraw)
 	mouse_entered.connect(_on_mouse_entered)
 	mouse_exited.connect(_on_mouse_exited)
+	set_process(false)
 
 func _draw() -> void:
 	var background_stylebox: StyleBoxFlat =\
@@ -225,18 +226,19 @@ func _gui_input(event: InputEvent) -> void:
 			scrolling_backwards = false
 			scrolling_forwards = false
 
+# Autoscroll when the dragged tab is hovered beyond the tabs area.
 func _process(_delta: float) -> void:
 	var mouse_pos := get_local_mouse_position()
 	var scroll_forwards_area_rect := get_scroll_forwards_area_rect()
 	if ((scrolling_forwards and scroll_forwards_area_rect.has_point(mouse_pos)) or\
-	(is_dragging and mouse_pos.x > size.x - get_add_button_rect().size.x -\
+	(mouse_pos.x > size.x - get_add_button_rect().size.x -\
 	scroll_forwards_area_rect.size.x)) and scroll_forwards_area_rect.has_area():
 		scroll_forwards()
 		return
 	
 	var scroll_backwards_area_rect := get_scroll_backwards_area_rect()
 	if ((scrolling_backwards and scroll_backwards_area_rect.has_point(mouse_pos)) or\
-	(is_dragging and mouse_pos.x < scroll_backwards_area_rect.size.x)) and\
+	(mouse_pos.x < scroll_backwards_area_rect.size.x)) and\
 	scroll_backwards_area_rect.has_area():
 		scroll_backwards()
 		return
@@ -461,7 +463,7 @@ func get_drop_index_at(pos: Vector2) -> int:
 		if not tab_rect.has_area() or tab_width * (idx + 0.5) - current_scroll +\
 		scroll_backwards_button_width > pos.x:
 			return idx
-	return -1
+	return Configs.savedata.get_tab_count()
 
 func _get_drag_data(at_position: Vector2) -> Variant:
 	var tab_index_at_position := get_tab_index_at(at_position)
@@ -484,7 +486,7 @@ func _get_drag_data(at_position: Vector2) -> Variant:
 	label.size.x = tab_width - 8
 	
 	set_drag_preview(preview)
-	is_dragging = true
+	set_process(true)
 	return TabDropData.new(tab_index_at_position)
 
 func _can_drop_data(at_position: Vector2, data: Variant) -> bool:
@@ -502,10 +504,10 @@ func _can_drop_data(at_position: Vector2, data: Variant) -> bool:
 func _drop_data(at_position: Vector2, data: Variant) -> void:
 	if not data is TabDropData:
 		return
-	is_dragging = false
+	set_process(false)
 	Configs.savedata.move_tab(data.index, get_drop_index_at(at_position))
 
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_DRAG_END:
-		is_dragging = false
+		set_process(false)
 		proposed_drop_idx = -1

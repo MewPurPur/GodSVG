@@ -10,6 +10,11 @@ const autoscroll_speed = 1500.0
 
 func _ready():
 	State.requested_scroll_to_element_editor.connect(scroll_to_view_element_editor)
+	set_dragging(false)
+
+func set_dragging(new_state: bool) -> void:
+	covering_rect.visible = new_state
+	set_process(new_state)
 
 func _process(delta: float) -> void:
 	if State.proposed_drop_xid.is_empty():
@@ -76,10 +81,10 @@ func update_proposed_xid() -> void:
 func _notification(what: int) -> void:
 	if is_inside_tree() and HandlerGUI.menu_stack.is_empty():
 		if what == NOTIFICATION_DRAG_BEGIN:
-				covering_rect.show()
-				update_proposed_xid()
+			set_dragging(true)
+			update_proposed_xid()
 		elif what == NOTIFICATION_DRAG_END:
-			covering_rect.hide()
+			set_dragging(false)
 			State.set_selection_dragged(false)
 			State.clear_proposed_drop_xid()
 
