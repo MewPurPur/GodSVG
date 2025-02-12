@@ -1,10 +1,8 @@
-[gd_scene load_steps=8 format=3 uid="uid://mhfp37lr7q4f"]
+[gd_scene load_steps=6 format=3 uid="uid://mhfp37lr7q4f"]
 
 [ext_resource type="Script" uid="uid://ys8g367cpqc2" path="res://src/ui_parts/about_menu.gd" id="1_xxltt"]
 [ext_resource type="Texture2D" uid="uid://barsurula6j8n" path="res://assets/logos/icon.svg" id="2_t7fbd"]
 [ext_resource type="FontFile" uid="uid://depydd16jq777" path="res://assets/fonts/FontMono.ttf" id="3_e8i1t"]
-[ext_resource type="FontFile" uid="uid://dc0w4sx0h0fui" path="res://assets/fonts/FontBold.ttf" id="4_n6gp0"]
-[ext_resource type="Texture2D" uid="uid://cgxpm1e3v0i3v" path="res://assets/icons/Link.svg" id="6_hbk78"]
 [ext_resource type="Script" uid="uid://ci44864moadn" path="res://src/ui_widgets/GridDrawingControl.gd" id="7_nvctb"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jtvwe"]
@@ -20,7 +18,7 @@ border_width_bottom = 1
 border_color = Color(0.301961, 0.301961, 0.4, 1)
 
 [node name="AboutMenu" type="PanelContainer"]
-custom_minimum_size = Vector2(512, 408)
+custom_minimum_size = Vector2(580, 420)
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -252,9 +250,10 @@ size_flags_vertical = 3
 metadata/_tab_index = 2
 
 [node name="LicenseLabel" type="Label" parent="VBoxContainer/TabContainer/License"]
+unique_name_in_owner = true
 layout_mode = 2
 theme_override_fonts/font = ExtResource("3_e8i1t")
-theme_override_font_sizes/font_size = 10
+theme_override_font_sizes/font_size = 11
 text = "MIT License
 
 Copyright (c) 2023 MewPurPur
@@ -283,188 +282,42 @@ visible = false
 layout_mode = 2
 metadata/_tab_index = 3
 
-[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/TabContainer/Third-party Licenses"]
+[node name="ThirdParties" type="VBoxContainer" parent="VBoxContainer/TabContainer/Third-party Licenses"]
 layout_mode = 2
-size_flags_horizontal = 3
-theme_override_constants/separation = 20
-alignment = 1
+theme_override_constants/separation = 18
 
-[node name="ThirdParties" type="VBoxContainer" parent="VBoxContainer/TabContainer/Third-party Licenses/VBoxContainer"]
-layout_mode = 2
-theme_override_constants/separation = 12
-
-[node name="Godot" type="VBoxContainer" parent="VBoxContainer/TabContainer/Third-party Licenses/VBoxContainer/ThirdParties"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="VBoxContainer/TabContainer/Third-party Licenses/VBoxContainer/ThirdParties/Godot"]
-layout_mode = 2
-theme_override_fonts/font = ExtResource("4_n6gp0")
-text = "Godot Engine"
-horizontal_alignment = 1
-
-[node name="License" type="Label" parent="VBoxContainer/TabContainer/Third-party Licenses/VBoxContainer/ThirdParties/Godot"]
-layout_mode = 2
-theme_override_fonts/font = ExtResource("3_e8i1t")
-theme_override_font_sizes/font_size = 12
-text = "License: Expat"
-horizontal_alignment = 1
-
-[node name="Components" type="Button" parent="VBoxContainer/TabContainer/Third-party Licenses/VBoxContainer/ThirdParties/Godot"]
+[node name="GodSVGParts" type="VBoxContainer" parent="VBoxContainer/TabContainer/Third-party Licenses/ThirdParties"]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_horizontal = 4
-focus_mode = 0
-mouse_default_cursor_shape = 2
-theme_override_font_sizes/font_size = 12
-icon = ExtResource("6_hbk78")
+theme_override_constants/separation = 8
 
-[node name="NotoSans" type="VBoxContainer" parent="VBoxContainer/TabContainer/Third-party Licenses/VBoxContainer/ThirdParties"]
+[node name="Label" type="Label" parent="VBoxContainer/TabContainer/Third-party Licenses/ThirdParties/GodSVGParts"]
 layout_mode = 2
-theme_override_constants/separation = 3
-
-[node name="Label" type="Label" parent="VBoxContainer/TabContainer/Third-party Licenses/VBoxContainer/ThirdParties/NotoSans"]
-layout_mode = 2
-theme_override_fonts/font = ExtResource("4_n6gp0")
-text = "Noto Sans font"
+theme_override_font_sizes/font_size = 17
+text = "GodSVG parts"
 horizontal_alignment = 1
 
-[node name="Copy" type="Label" parent="VBoxContainer/TabContainer/Third-party Licenses/VBoxContainer/ThirdParties/NotoSans"]
+[node name="GodotParts" type="VBoxContainer" parent="VBoxContainer/TabContainer/Third-party Licenses/ThirdParties"]
+unique_name_in_owner = true
 layout_mode = 2
-theme_override_font_sizes/font_size = 12
-text = "© 2012, Google Inc."
+theme_override_constants/separation = 8
+
+[node name="Label" type="Label" parent="VBoxContainer/TabContainer/Third-party Licenses/ThirdParties/GodotParts"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 17
+text = "Godot parts"
 horizontal_alignment = 1
 
-[node name="Files" type="Label" parent="VBoxContainer/TabContainer/Third-party Licenses/VBoxContainer/ThirdParties/NotoSans"]
-layout_mode = 2
-theme_override_fonts/font = ExtResource("3_e8i1t")
-theme_override_font_sizes/font_size = 12
-text = "res://visual/fonts/Font.ttf
-res://visual/fonts/FontBold.ttf"
-horizontal_alignment = 1
-
-[node name="License" type="Label" parent="VBoxContainer/TabContainer/Third-party Licenses/VBoxContainer/ThirdParties/NotoSans"]
-layout_mode = 2
-theme_override_fonts/font = ExtResource("3_e8i1t")
-theme_override_font_sizes/font_size = 12
-text = "License: OFL-1.1"
-horizontal_alignment = 1
-
-[node name="JetbrainsMono" type="VBoxContainer" parent="VBoxContainer/TabContainer/Third-party Licenses/VBoxContainer/ThirdParties"]
-layout_mode = 2
-theme_override_constants/separation = 3
-
-[node name="Label" type="Label" parent="VBoxContainer/TabContainer/Third-party Licenses/VBoxContainer/ThirdParties/JetbrainsMono"]
-layout_mode = 2
-theme_override_fonts/font = ExtResource("4_n6gp0")
-text = "JetBrains Mono font"
-horizontal_alignment = 1
-
-[node name="Copy" type="Label" parent="VBoxContainer/TabContainer/Third-party Licenses/VBoxContainer/ThirdParties/JetbrainsMono"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 12
-text = "© 2020, JetBrains s.r.o"
-horizontal_alignment = 1
-
-[node name="File" type="Label" parent="VBoxContainer/TabContainer/Third-party Licenses/VBoxContainer/ThirdParties/JetbrainsMono"]
-layout_mode = 2
-theme_override_fonts/font = ExtResource("3_e8i1t")
-theme_override_font_sizes/font_size = 12
-text = "res://visual/fonts/FontMono.ttf"
-horizontal_alignment = 1
-
-[node name="License" type="Label" parent="VBoxContainer/TabContainer/Third-party Licenses/VBoxContainer/ThirdParties/JetbrainsMono"]
-layout_mode = 2
-theme_override_fonts/font = ExtResource("3_e8i1t")
-theme_override_font_sizes/font_size = 12
-text = "License: OFL-1.1"
-horizontal_alignment = 1
-
-[node name="LicenseTexts" type="VBoxContainer" parent="VBoxContainer/TabContainer/Third-party Licenses/VBoxContainer"]
+[node name="LicenseTexts" type="VBoxContainer" parent="VBoxContainer/TabContainer/Third-party Licenses/ThirdParties"]
+unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 12
 
-[node name="Expat" type="VBoxContainer" parent="VBoxContainer/TabContainer/Third-party Licenses/VBoxContainer/LicenseTexts"]
+[node name="Label" type="Label" parent="VBoxContainer/TabContainer/Third-party Licenses/ThirdParties/LicenseTexts"]
 layout_mode = 2
-theme_override_constants/separation = 5
-
-[node name="Title" type="Label" parent="VBoxContainer/TabContainer/Third-party Licenses/VBoxContainer/LicenseTexts/Expat"]
-layout_mode = 2
-theme_override_fonts/font = ExtResource("4_n6gp0")
-text = "Expat license text"
+theme_override_font_sizes/font_size = 17
+text = "License texts"
 horizontal_alignment = 1
-
-[node name="Text" type="Label" parent="VBoxContainer/TabContainer/Third-party Licenses/VBoxContainer/LicenseTexts/Expat"]
-layout_mode = 2
-theme_override_fonts/font = ExtResource("3_e8i1t")
-theme_override_font_sizes/font_size = 10
-text = "Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the \"Software\"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE."
-
-[node name="OFL" type="VBoxContainer" parent="VBoxContainer/TabContainer/Third-party Licenses/VBoxContainer/LicenseTexts"]
-layout_mode = 2
-theme_override_constants/separation = 5
-
-[node name="Title" type="Label" parent="VBoxContainer/TabContainer/Third-party Licenses/VBoxContainer/LicenseTexts/OFL"]
-layout_mode = 2
-theme_override_fonts/font = ExtResource("4_n6gp0")
-text = "OFL-1.1 license text"
-horizontal_alignment = 1
-
-[node name="Text" type="Label" parent="VBoxContainer/TabContainer/Third-party Licenses/VBoxContainer/LicenseTexts/OFL"]
-layout_mode = 2
-theme_override_fonts/font = ExtResource("3_e8i1t")
-theme_override_font_sizes/font_size = 10
-text = "PREAMBLE
-
-The goals of the Open Font License (OFL) are to stimulate worldwide development of collaborative font projects, to support the font creation efforts of academic and linguistic communities, and to provide a free and open framework in which fonts may be shared and improved in partnership with others.
-
-The OFL allows the licensed fonts to be used, studied, modified and redistributed freely as long as they are not sold by themselves. The fonts, including any derivative works, can be bundled, embedded, redistributed and/or sold with any software provided that any reserved names are not used by derivative works. The fonts and derivatives, however, cannot be released under any other type of license. The requirement for fonts to remain under this license does not apply to any document created using the fonts or their derivatives.
-
-DEFINITIONS
-
-\"Font Software\" refers to the set of files released by the Copyright Holder(s) under this license and clearly marked as such. This may include source files, build scripts and documentation.
-
-\"Reserved Font Name\" refers to any names specified as such after the copyright statement(s).
-
-\"Original Version\" refers to the collection of Font Software components as distributed by the Copyright Holder(s).
-
-\"Modified Version\" refers to any derivative made by adding to, deleting, or substituting — in part or in whole — any of the components of the Original Version, by changing formats or by porting the Font Software to a new environment.
-
-\"Author\" refers to any designer, engineer, programmer, technical writer or other person who contributed to the Font Software.
-
-PERMISSION & CONDITIONS
-
-Permission is hereby granted, free of charge, to any person obtaining a copy of the Font Software, to use, study, copy, merge, embed, modify, redistribute, and sell modified and unmodified copies of the Font Software, subject to the following conditions:
-
-    1) Neither the Font Software nor any of its individual components, in Original or Modified Versions, may be sold by itself.
-    2) Original or Modified Versions of the Font Software may be bundled, redistributed and/or sold with any software, provided that each copy contains the above copyright notice and this license. These can be included either as stand-alone text files, human-readable headers or in the appropriate machine-readable metadata fields within text or binary files as long as those fields can be easily viewed by the user.
-    3) No Modified Version of the Font Software may use the Reserved Font Name(s) unless explicit written permission is granted by the corresponding Copyright Holder. This restriction only applies to the primary font name as presented to the users.
-    4) The name(s) of the Copyright Holder(s) or the Author(s) of the Font Software shall not be used to promote, endorse or advertise any Modified Version, except to acknowledge the contribution(s) of the Copyright Holder(s) and the Author(s) or with their explicit written permission.
-    5) The Font Software, modified or unmodified, in part or in whole, must be distributed entirely under this license, and must not be distributed under any other license. The requirement for fonts to remain under this license does not apply to any document created using the Font Software.
-
-TERMINATION
-
-This license becomes null and void if any of the above conditions are not met.
-
-DISCLAIMER
-
-THE FONT SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO ANY WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF COPYRIGHT, PATENT, TRADEMARK, OR OTHER RIGHT. IN NO EVENT SHALL THE COPYRIGHT HOLDER BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, INCLUDING ANY GENERAL, SPECIAL, INDIRECT, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF THE USE OR INABILITY TO USE THE FONT SOFTWARE OR FROM OTHER DEALINGS IN THE FONT SOFTWARE."
-autowrap_mode = 3
 
 [node name="CloseButton" type="Button" parent="VBoxContainer"]
 layout_mode = 2
@@ -473,5 +326,3 @@ size_flags_vertical = 8
 focus_mode = 0
 mouse_default_cursor_shape = 2
 text = "Close"
-
-[connection signal="pressed" from="VBoxContainer/TabContainer/Third-party Licenses/VBoxContainer/ThirdParties/Godot/Components" to="." method="_on_components_pressed"]
