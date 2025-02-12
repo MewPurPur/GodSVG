@@ -824,6 +824,7 @@ func _on_handle_added() -> void:
 	var first_inner_selection := State.inner_selections[0]
 	if State.root_element.get_xnode(State.semi_selected_xid).get_attribute("d").\
 	get_commands()[first_inner_selection].command_char in "Zz":
+		dragged_handle = null
 		State.queue_svg_save()
 		return
 	
