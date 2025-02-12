@@ -5,6 +5,9 @@ class_name PanelGrid extends GridContainer
 @export var dim_last_item := false
 
 func setup() -> void:
+	for child in get_children():
+		child.queue_free()
+	
 	for item_idx in items.size():
 		var item := items[item_idx]
 		var panel_container := PanelContainer.new()

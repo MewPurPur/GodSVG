@@ -695,13 +695,13 @@ func _unhandled_input(event: InputEvent) -> void:
 			hovered_handle = null
 			State.clear_all_hovered()
 	
-	if visible and event is InputEventMouseMotion:
+	if event is InputEventMouseMotion:
 		# Allow moving view while dragging handle.
 		if event.button_mask & MOUSE_BUTTON_MASK_MIDDLE:
 			return
 		
 		should_deselect_all = false
-		if is_instance_valid(dragged_handle):
+		if visible and is_instance_valid(dragged_handle):
 			# Move the handle that's being dragged.
 			var event_pos := get_event_pos(event)
 			var new_pos := Utils64Bit.transform_vector_mult(
