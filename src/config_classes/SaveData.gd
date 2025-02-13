@@ -28,7 +28,7 @@ func get_setting_default(setting: String) -> Variant:
 		"basic_color_warning": return Color("ee5")
 		
 		"invert_zoom": return false
-		"wrap_mouse": return false
+		"wraparound_panning": return false
 		"use_ctrl_for_zoom": return true
 		"use_native_file_dialog": return true
 		"use_filename_for_window_title": return true
@@ -201,10 +201,10 @@ const CURRENT_VERSION = 1
 			invert_zoom = new_value
 			emit_changed()
 
-@export var wrap_mouse := false:
+@export var wraparound_panning := false:
 	set(new_value):
-		if wrap_mouse != new_value:
-			wrap_mouse = new_value
+		if wraparound_panning != new_value:
+			wraparound_panning = new_value
 			emit_changed()
 
 @export var use_ctrl_for_zoom := true:
