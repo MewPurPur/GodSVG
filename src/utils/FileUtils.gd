@@ -233,8 +233,8 @@ static func _apply_svg(data: Variant, file_path: String) -> void:
 	if Configs.savedata.get_active_tab().is_empty_and_unsaved:
 		var warning_panel := ImportWarningMenu.instantiate()
 		var tab_index := Configs.savedata.get_active_tab_index()
-		Configs.savedata.remove_tabs(PackedInt32Array([tab_index]))
 		Configs.savedata.add_tab_with_path(file_path)
+		Configs.savedata.remove_tabs(PackedInt32Array([tab_index]))
 		Configs.savedata.move_tab(Configs.savedata.get_tab_count() - 1, tab_index)
 		warning_panel.canceled.connect(_on_import_panel_canceled_empty_tab_scenario)
 		warning_panel.imported.connect(_on_import_panel_accepted_empty_tab_scenario.bind(
@@ -252,8 +252,8 @@ static func _apply_svg(data: Variant, file_path: String) -> void:
 
 static func _on_import_panel_canceled_empty_tab_scenario() -> void:
 	var tab_index := Configs.savedata.get_active_tab_index()
-	Configs.savedata.remove_tabs(PackedInt32Array([tab_index]))
 	Configs.savedata.add_empty_tab()
+	Configs.savedata.remove_tabs(PackedInt32Array([tab_index]))
 	Configs.savedata.move_tab(Configs.savedata.get_tab_count() - 1, tab_index)
 
 static func _on_import_panel_accepted_empty_tab_scenario(svg_text: String) -> void:
