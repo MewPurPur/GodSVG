@@ -73,13 +73,13 @@ func _unhandled_input(event: InputEvent) -> void:
 				_zoom_to = get_mouse_position() / Vector2(size)
 			zoom_menu.set_zoom(State.zoom * (1.0 +\
 				(1 if Configs.savedata.invert_zoom else -1) *\
-				(wrap_mouse(event.relative).y if Configs.savedata.wrap_mouse else\
+				(wrap_mouse(event.relative).y if Configs.savedata.wraparound_panning else\
 				event.relative.y) / 128.0), _zoom_to)
 		# Panning with LMB or MMB. This gives a reliable way to adjust the view
 		# without dragging the things on it.
 		else:
 			set_view(view.unsnapped_position - (wrap_mouse(event.relative) if\
-					Configs.savedata.wrap_mouse else event.relative) / State.zoom)
+					Configs.savedata.wraparound_panning else event.relative) / State.zoom)
 	
 	elif event is InputEventPanGesture and not DisplayServer.get_name() == "Android":
 		# Zooming with Ctrl + touch?

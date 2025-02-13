@@ -33,6 +33,7 @@ var ci := get_canvas_item()
 func permanent_disable_checkbox(checkbox_state: bool) -> void:
 	disabled = true
 	widget.set_pressed_no_signal(checkbox_state)
+	widget.text = "On" if checkbox_state else "Off"
 
 func setup_checkbox() -> void:
 	widget = CheckBox.new()

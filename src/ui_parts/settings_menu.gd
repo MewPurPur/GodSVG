@@ -194,11 +194,11 @@ func setup_content() -> void:
 			current_setup_setting = "invert_zoom"
 			add_checkbox(Translator.translate("Invert zoom direction"))
 			add_advice(Translator.translate(
-					"Swaps zoom in and zoom out with the mouse wheel."))
-			current_setup_setting = "wrap_mouse"
-			var wrap_mouse := add_checkbox(Translator.translate("Wrap mouse"))
+					"Swaps the scroll directions for zooming in and zooming out."))
+			current_setup_setting = "wraparound_panning"
+			var wraparound_panning := add_checkbox(Translator.translate("Wrap-around panning"))
 			add_advice(Translator.translate(
-					"Wraps the mouse cursor around when panning the viewport."))
+					"Warps the cursor to the opposite side whenever it reaches a viewport boundary while panning."))
 			current_setup_setting = "use_ctrl_for_zoom"
 			add_checkbox(Translator.translate("Use CTRL for zooming"))
 			add_advice(Translator.translate(
@@ -225,7 +225,7 @@ func setup_content() -> void:
 					[0.75, 1.0, 1.25, 1.5, 1.75, 2.0, 2.5, 3.0, 4.0], false, false,
 					SaveData.UI_SCALE_MIN, SaveData.UI_SCALE_MAX)
 			add_advice(Translator.translate(
-					"Changes the scale of the visual user interface."))
+					"Changes the scale factor for the interface."))
 			current_setup_setting = "auto_ui_scale"
 			add_checkbox(Translator.translate("Auto UI scale"))
 			add_advice(Translator.translate(
@@ -233,7 +233,7 @@ func setup_content() -> void:
 			
 			# Disable mouse wrap if not available.
 			if not DisplayServer.has_feature(DisplayServer.FEATURE_MOUSE_WARP):
-				wrap_mouse.permanent_disable_checkbox(false)
+				wraparound_panning.permanent_disable_checkbox(false)
 			# Disable fallback file dialog on web, and native file dialog if not available.
 			if OS.has_feature("web"):
 				use_native_file_dialog.permanent_disable_checkbox(true)
