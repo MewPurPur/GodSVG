@@ -62,32 +62,56 @@ func get_replacement(new_element: String) -> Element:
 			dropped_attributes = PackedStringArray(["x", "y", "width", "height", "rx", "ry",
 					"d"])
 			var commands: Array[PathCommand] = []
-			if get_rx() == 0 and get_ry() == 0:
+			var rx := get_rx()
+			var ry := get_ry()
+			
+			if rx == 0 and ry == 0:
 				commands.append(PathCommand.MoveCommand.new(x_num, y_num, true))
 				commands.append(PathCommand.HorizontalLineCommand.new(width_num, true))
 				commands.append(PathCommand.VerticalLineCommand.new(height_num, true))
 				commands.append(PathCommand.HorizontalLineCommand.new(-width_num, true))
 				commands.append(PathCommand.CloseCommand.new(true))
 			else:
-				var w := width_num - get_rx() * 2
-				var h := height_num - get_ry() * 2
+				var w := width_num - rx * 2
+				var h := height_num - ry * 2
 				
-				commands.append(PathCommand.MoveCommand.new(x_num, y_num + get_ry(), true))
-				commands.append(PathCommand.EllipticalArcCommand.new(
-						get_rx(), get_ry(), 0, 0, 1, get_rx(), -get_ry(), true))
-				if w > 0.0:
+				if w > 0.0 and h > 0.0:
+					commands.append(PathCommand.MoveCommand.new(x_num, y_num + ry, true))
+					commands.append(PathCommand.EllipticalArcCommand.new(
+							rx, ry, 0, 0, 1, rx, -ry, true))
 					commands.append(PathCommand.HorizontalLineCommand.new(w, true))
-				commands.append(PathCommand.EllipticalArcCommand.new(
-						get_rx(), get_ry(), 0, 0, 1, get_rx(), get_ry(), true))
-				if h > 0.0:
+					commands.append(PathCommand.EllipticalArcCommand.new(
+							rx, ry, 0, 0, 1, rx, ry, true))
 					commands.append(PathCommand.VerticalLineCommand.new(h, true))
-				commands.append(PathCommand.EllipticalArcCommand.new(
-						get_rx(), get_ry(), 0, 0, 1, -get_rx(), get_ry(), true))
-				if w > 0.0:
+					commands.append(PathCommand.EllipticalArcCommand.new(
+							rx, ry, 0, 0, 1, -rx, ry, true))
 					commands.append(PathCommand.HorizontalLineCommand.new(-w, true))
-				commands.append(PathCommand.EllipticalArcCommand.new(
-						get_rx(), get_ry(), 0, 0, 1, -get_rx(), -get_ry(), true))
-				commands.append(PathCommand.CloseCommand.new(true))
+					commands.append(PathCommand.EllipticalArcCommand.new(
+							rx, ry, 0, 0, 1, -rx, -ry, true))
+					commands.append(PathCommand.CloseCommand.new(true))
+				elif w > 0.0:
+					commands.append(PathCommand.MoveCommand.new(x_num + rx + w, y_num, true))
+					commands.append(PathCommand.EllipticalArcCommand.new(
+							rx, ry, 0, 0, 1, 0, height_num, true))
+					commands.append(PathCommand.HorizontalLineCommand.new(-w, true))
+					commands.append(PathCommand.EllipticalArcCommand.new(
+							rx, ry, 0, 0, 1, 0, -height_num, true))
+					commands.append(PathCommand.CloseCommand.new(true))
+				elif h > 0.0:
+					commands.append(PathCommand.MoveCommand.new(x_num, y_num + ry, true))
+					commands.append(PathCommand.EllipticalArcCommand.new(
+							rx, ry, 0, 0, 1, width_num, 0, true))
+					commands.append(PathCommand.VerticalLineCommand.new(h, true))
+					commands.append(PathCommand.EllipticalArcCommand.new(
+							rx, ry, 0, 0, 1, -width_num, 0, true))
+					commands.append(PathCommand.CloseCommand.new(true))
+				else:
+					commands.append(PathCommand.MoveCommand.new(x_num + rx, y_num, true))
+					commands.append(PathCommand.EllipticalArcCommand.new(
+							rx, ry, 0, 0, 1, 0, height_num, true))
+					commands.append(PathCommand.EllipticalArcCommand.new(
+							rx, ry, 0, 0, 1, 0, -height_num, true))
+					commands.append(PathCommand.CloseCommand.new(true))
 			element.set_attribute("d", commands)
 	apply_to(element, dropped_attributes)
 	return element
