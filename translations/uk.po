@@ -4,7 +4,7 @@ msgstr ""
 "Project-Id-Version: GodSVG\n"
 "POT-Creation-Date: \n"
 "PO-Revision-Date: \n"
-"Last-Translator: volkov\n"
+"Last-Translator: \n"
 "Language-Team: \n"
 "Language: uk\n"
 "MIME-Version: 1.0\n"
@@ -36,15 +36,16 @@ msgid ""
 "This will connect to github.com to compare version numbers. No other data is "
 "collected or transmitted."
 msgstr ""
+"Це потребує з'єднання з github.com, щоб порівняти цифри версії. Жодна інша "
+"інформація не збирається і не передається."
 
 #: src/autoload/HandlerGUI.gd src/ui_widgets/alert_dialog.gd
 msgid "OK"
 msgstr "Добре"
 
 #: src/autoload/HandlerGUI.gd
-#, fuzzy
 msgid "Do you want to proceed?"
-msgstr "Ви дійсно бажаєте вийти із GodSVG?"
+msgstr "Ви дійсно бажаєте продовжити?"
 
 #: src/autoload/HandlerGUI.gd
 msgid "Export SVG"
@@ -56,21 +57,19 @@ msgid "Export"
 msgstr "Експортувати"
 
 #: src/autoload/HandlerGUI.gd
-#, fuzzy
 msgid ""
 "The graphic can be exported only as SVG because its proportions are too "
 "extreme."
 msgstr ""
-"Зображення можна експортувати тільки як SVG, оскільки його розміри не "
-"задані. Бажаєте продовжити?"
+"Це зображення може бути експортоване тільки як SVG, оскільки його пропорції "
+"занадто екстремальні."
 
 #: src/autoload/HandlerGUI.gd
-#, fuzzy
 msgid ""
 "The graphic can be exported only as SVG because its size is not defined."
 msgstr ""
-"Зображення можна експортувати тільки як SVG, оскільки його розміри не "
-"задані. Бажаєте продовжити?"
+"Це зображення може бути експортоване тільки як SVG, оскільки його розмір не "
+"завданий."
 
 #: src/autoload/State.gd src/ui_parts/good_file_dialog.gd
 #: src/ui_widgets/alert_dialog.gd
@@ -78,13 +77,12 @@ msgid "Alert!"
 msgstr "Увага!"
 
 #: src/autoload/State.gd src/ui_parts/tab_bar.gd src/utils/TranslationUtils.gd
-#, fuzzy
 msgid "Close tab"
-msgstr "Закрити шлях"
+msgstr "Закрити вкладку"
 
 #: src/autoload/State.gd
 msgid "Restore"
-msgstr ""
+msgstr "Відновити"
 
 #: src/autoload/State.gd
 msgid "View in List"
@@ -117,13 +115,15 @@ msgstr "Вставити після"
 
 #: src/autoload/State.gd
 msgid "The last edited state of this tab could not be found."
-msgstr ""
+msgstr "Останній редагований стан цієї вкладки не може бути знайдено."
 
 #: src/autoload/State.gd
 msgid ""
-"The tab is bound to the file path {file_path}. Do you want to restore the "
-"SVG from this path?"
+"The tab is bound to the file path {file_path}. Do you want to restore from "
+"this path?"
 msgstr ""
+"Ця вкладка пов'язана з шляхом до файлу {file_path}. Бажаєте відновити з "
+"цього шляху?"
 
 #: src/config_classes/Formatter.gd
 msgid "Compact"
@@ -163,11 +163,11 @@ msgstr "6 значне шістнадцятирічне число"
 
 #: src/config_classes/TabData.gd
 msgid "Empty"
-msgstr ""
+msgstr "Порожньо"
 
 #: src/config_classes/TabData.gd
 msgid "Unsaved"
-msgstr ""
+msgstr "Не збережено"
 
 #: src/data_classes/BasicXNode.gd
 msgid "Comment"
@@ -352,9 +352,8 @@ msgid "Save SVG"
 msgstr "Зберегти SVG"
 
 #: src/ui_parts/global_actions.gd
-#, fuzzy
 msgid "Save SVG as…"
-msgstr "Зберегти SVG"
+msgstr "Зберегти SVG як…"
 
 #: src/ui_parts/global_actions.gd src/utils/TranslationUtils.gd
 msgid "Reset SVG"
@@ -362,11 +361,11 @@ msgstr "Скинути SVG"
 
 #: src/ui_parts/global_actions.gd src/ui_parts/tab_bar.gd
 msgid "Open externally"
-msgstr ""
+msgstr "Відкрити у зовнішній програмі"
 
 #: src/ui_parts/global_actions.gd src/ui_parts/tab_bar.gd
 msgid "Show in File Manager"
-msgstr ""
+msgstr "Показати у файловому менеджері"
 
 #: src/ui_parts/global_actions.gd
 msgid "About…"
@@ -618,7 +617,7 @@ msgstr "Інвертувати напрямок масштабування"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Wrap-around panning"
-msgstr ""
+msgstr "Захопити курсор при гортанні"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Use CTRL for zooming"
@@ -783,12 +782,15 @@ msgstr "Видалити необов'язкові параметри"
 #: src/ui_parts/settings_menu.gd
 msgid "Swaps the scroll directions for zooming in and zooming out."
 msgstr ""
+"Міняє напрям гортання при масштабуванні."
 
 #: src/ui_parts/settings_menu.gd
 msgid ""
 "Warps the cursor to the opposite side whenever it reaches a viewport "
 "boundary while panning."
 msgstr ""
+"Курсор буде телепортуватися від одного краю до протилежного при пересуванні "
+"вікна перегляду."
 
 #: src/ui_parts/settings_menu.gd
 msgid ""
@@ -820,72 +822,64 @@ msgid "Changes the visual size and grabbing area of handles."
 msgstr "Змінює візуальний розмір та область захоплення для ручок."
 
 #: src/ui_parts/settings_menu.gd
-#, fuzzy
 msgid "Changes the scale factor for the interface."
 msgstr "Змінити масштаб інтерфейсу користувача."
 
 #: src/ui_parts/settings_menu.gd
-#, fuzzy
 msgid "Scales the interface automatically based on the screen size."
-msgstr "Масштабувати інтерфейс користувача в залежності від розміру екрану."
+msgstr "Автоматично масштабувати інтерфейс користувача в залежності від розміру екрану."
 
 #: src/ui_parts/shortcut_panel_config.gd
 msgid "Configure Shortcut Panel"
-msgstr ""
+msgstr "Налаштувати у панелі клавіатурних скорочень"
 
 #: src/ui_parts/shortcut_panel_config.gd
 msgid "Layout"
-msgstr ""
+msgstr "Макет"
 
 #: src/ui_parts/shortcut_panel_config.gd
-#, fuzzy
 msgid "Horizontal strip"
-msgstr "Горизонтальна лінія до"
+msgstr "Горизонтальна смужка"
 
 #: src/ui_parts/shortcut_panel_config.gd
-#, fuzzy
 msgid "Horizontal with two rows"
-msgstr "Горизонтальна лінія до"
+msgstr "Горизонтальна з двома рядками"
 
 #: src/ui_parts/shortcut_panel_config.gd
-#, fuzzy
 msgid "Vertical strip"
-msgstr "Вертикальна лінія до"
+msgstr "Вертикальна смужка"
 
 #: src/ui_parts/tab_bar.gd
-#, fuzzy
 msgid "Create tab"
-msgstr "Створити"
+msgstr "Створити вкладку"
 
 #: src/ui_parts/tab_bar.gd
-#, fuzzy
 msgid "Close all other tabs"
-msgstr "Скопіювати весь текст"
+msgstr "Закрити усі інші вкладки"
 
 #: src/ui_parts/tab_bar.gd
 msgid "Close tabs to the left"
-msgstr ""
+msgstr "Закрити усі вкладки зліва"
 
 #: src/ui_parts/tab_bar.gd
 msgid "Close tabs to the right"
-msgstr ""
+msgstr "Закрити усі вкладки справа"
 
 #: src/ui_parts/tab_bar.gd src/utils/TranslationUtils.gd
-#, fuzzy
 msgid "Create a new tab"
-msgstr "Створити нову теку"
+msgstr "Створити нову вкладку"
 
 #: src/ui_parts/tab_bar.gd
 msgid "Scroll backwards"
-msgstr ""
+msgstr "Гортати назад"
 
 #: src/ui_parts/tab_bar.gd
 msgid "Scroll forwards"
-msgstr ""
+msgstr "Гортати вперед"
 
 #: src/ui_parts/tab_bar.gd
 msgid "This SVG is not bound to a file location yet."
-msgstr ""
+msgstr "Це SVG зображення поки що не пов'язано з розташуванням файла."
 
 #: src/ui_parts/update_menu.gd
 msgid "Include prereleases"
@@ -978,13 +972,12 @@ msgid "Unnamed"
 msgstr "Без назви"
 
 #: src/ui_widgets/good_color_picker.gd
-#, fuzzy
 msgid "Color keywords"
-msgstr "Кольорова піпетка"
+msgstr "Ключові слова кольорів"
 
 #: src/ui_widgets/good_color_picker.gd
 msgid "Eyedropper"
-msgstr ""
+msgstr "Піпетка"
 
 #: src/ui_widgets/palette_config.gd
 msgid "Unnamed palettes won't be shown."
@@ -1011,9 +1004,8 @@ msgid "Copy as XML"
 msgstr "Скопіювати як XML"
 
 #: src/ui_widgets/palette_config.gd
-#, fuzzy
 msgid "Save as XML"
-msgstr "Скопіювати як XML"
+msgstr "Зберегти як XML"
 
 #: src/ui_widgets/path_popup.gd src/ui_widgets/pathdata_field.gd
 #: src/utils/TranslationUtils.gd
@@ -1094,57 +1086,53 @@ msgstr "Перевірити, чи файл все щє існує по обра
 
 #: src/utils/FileUtils.gd
 msgid "The imported file is already being edited inside GodSVG."
-msgstr ""
+msgstr "Імпортований файл вже редагується в GodSVG."
 
 #: src/utils/FileUtils.gd
 msgid "If you want to apply the unsaved file state, use \"Reset SVG\" instead."
 msgstr ""
+"Якщо ви бажаєте застосувати не збережений стан файлу, використайте \"Скинути "
+"SVG\"."
 
 #: src/utils/TranslationUtils.gd
-#, fuzzy
 msgid "Save as"
-msgstr "Зберегти"
+msgstr "Зберегти як"
 
 #: src/utils/TranslationUtils.gd
 msgid "Select the next tab"
-msgstr ""
+msgstr "Обрати наступну вкладку"
 
 #: src/utils/TranslationUtils.gd
 msgid "Select the previous tab"
-msgstr ""
+msgstr "Обрати попередню вкладку"
 
 #: src/utils/TranslationUtils.gd
-#, fuzzy
 msgid "Open SVG externally"
-msgstr "Відкрити репозиторій GodSVG"
+msgstr "Відкрити SVG у зовнішній програмі"
 
 #: src/utils/TranslationUtils.gd
 msgid "Show SVG in File Manager"
-msgstr ""
+msgstr "Показати SVG у файловому менеджері"
 
 #: src/utils/TranslationUtils.gd
-#, fuzzy
 msgid "Select all"
-msgstr "Обрати"
+msgstr "Обрати усе"
 
 #: src/utils/TranslationUtils.gd
-#, fuzzy
 msgid "Duplicate the selection"
-msgstr "Видалити усі обрані теги"
+msgstr "Продублювати обране"
 
 #: src/utils/TranslationUtils.gd
 msgid "Delete the selection"
 msgstr "Видалити усі обрані теги"
 
 #: src/utils/TranslationUtils.gd
-#, fuzzy
 msgid "Move the selection up"
-msgstr "Пересунути всі обрані елементи вгору"
+msgstr "Пересунути обране вгору"
 
 #: src/utils/TranslationUtils.gd
-#, fuzzy
 msgid "Move the selection down"
-msgstr "Пересунути всі обрані елементи вниз"
+msgstr "Пересунути обране вниз"
 
 #: src/utils/TranslationUtils.gd
 msgid "Find"
@@ -1246,135 +1234,3 @@ msgstr ""
 #: src/utils/TranslationUtils.gd
 msgid "The file extension is empty. Only {extension_list} files are supported."
 msgstr "Розширення файлу порожнє. Тільки {extension_list} файли підтримуються."
-
-#~ msgid "Godot third-party components"
-#~ msgstr "Компоненти Godot від третіх сторін"
-
-#~ msgid "Wrap mouse"
-#~ msgstr "Захопити мишу"
-
-#~ msgid "Swaps zoom in and zoom out with the mouse wheel."
-#~ msgstr ""
-#~ "Міняє місцями збільшення і зменшення масштабування через коліщатко миші."
-
-#~ msgid "Wraps the mouse cursor around when panning the viewport."
-#~ msgstr ""
-#~ "Курсор буде телепортуватися від одного краю до протилежного при "
-#~ "пересуванні вікна перегляду."
-
-#~ msgid "This requires GodSVG to connect to the internet."
-#~ msgstr "Ця опція потребує інтернет-з'єднання."
-
-#, fuzzy
-#~ msgid "Add new tab"
-#~ msgstr "Додати новий тег"
-
-#~ msgid "Open file"
-#~ msgstr "Відкрити файл"
-
-#~ msgid "Clear saving path"
-#~ msgstr "Очистити шлях збереження"
-
-#~ msgid "Clear SVG"
-#~ msgstr "Очистити SVG"
-
-#, fuzzy
-#~ msgid "Open SVG file"
-#~ msgstr "Відкрити файл"
-
-#~ msgid "Select all elements"
-#~ msgstr "Обрати всі елементи"
-
-#~ msgid "Duplicate the selected elements"
-#~ msgstr "Дублювати обрані елементи"
-
-#~ msgid "Enable the color"
-#~ msgstr "Активувати колір"
-
-#~ msgid "Disable the color"
-#~ msgstr "Деактивувати колір"
-
-#~ msgid "Invalid"
-#~ msgstr "Неправильно"
-
-#~ msgid "Final size"
-#~ msgstr "Фінальний розмір"
-
-#~ msgid ""
-#~ "The file couldn't be opened.\n"
-#~ "Try checking the file path, ensure that the file is not deleted, or "
-#~ "choose a different file."
-#~ msgstr ""
-#~ "Неможливо відкрити файл.\n"
-#~ "Спробуйте перевірити шлях до файлу, впевніться що файл не видалений або "
-#~ "оберіть інший файл."
-
-#~ msgid "Enable snap"
-#~ msgstr "Активувати прилипання"
-
-#~ msgid "General"
-#~ msgstr "Загальні"
-
-#~ msgid "Any changes will apply immediately."
-#~ msgstr "Будь-які зміни будуть застосовані одразу."
-
-#~ msgid "Enable autoformatting"
-#~ msgstr "Активувати автоформатування"
-
-#~ msgid "Number precision digits"
-#~ msgstr "Кількість цифр точності чисел"
-
-#~ msgid "Angle precision digits"
-#~ msgstr "Кількість цифр точності кутів"
-
-#~ msgid "Remove zero padding"
-#~ msgstr "Видалити заповнюючи нулі"
-
-#~ msgid "Convert rgb format to hex"
-#~ msgstr "Конвертувати rgb формат у hex"
-
-#~ msgid "Convert named colors to hex"
-#~ msgstr "Конвертувати кольори з назвами у hex"
-
-#~ msgid "Use shorthand hex code"
-#~ msgstr "Використовувати скорочені hex коди"
-
-#~ msgid "Edit palette name"
-#~ msgstr "Редагувати назву палітри"
-
-#~ msgid "Import SVG"
-#~ msgstr "Імпортувати SVG"
-
-#~ msgid "Tag color"
-#~ msgstr "Колір тегу"
-
-#~ msgid "New tag"
-#~ msgstr "Новий тег"
-
-#~ msgid "Paths"
-#~ msgstr "Шляхи"
-
-#~ msgid "Remove"
-#~ msgstr "Видалити"
-
-#~ msgid "Unknown tag"
-#~ msgstr "Невідомий тег"
-
-#~ msgid "Documentation…"
-#~ msgstr "Документація…"
-
-#~ msgid "Couple/Decouple"
-#~ msgstr "З’єднати/Роз’єднати"
-
-#~ msgid "Add color"
-#~ msgstr "Додати колір"
-
-#~ msgid "Remove plus sign"
-#~ msgstr "Видалити знак плюс"
-
-#~ msgid "Default value opacity"
-#~ msgstr "Стандартне значення непрозорості"
-
-#, fuzzy
-#~ msgid "Clear association"
-#~ msgstr "Видалити асоціацію"
