@@ -35,7 +35,9 @@ msgstr "Провери за ъпдейти?"
 msgid ""
 "This will connect to github.com to compare version numbers. No other data is "
 "collected or transmitted."
-msgstr "Това ще се свърже с github.com за да сравни числата на версиите. Не се събират или изпращат никакви други данни."
+msgstr ""
+"Това ще се свърже с github.com за да сравни числата на версиите. Не се "
+"събират или изпращат никакви други данни."
 
 #: src/autoload/HandlerGUI.gd src/ui_widgets/alert_dialog.gd
 msgid "OK"
@@ -56,16 +58,18 @@ msgstr "Експортирай"
 
 #: src/autoload/HandlerGUI.gd
 msgid ""
-"The graphic can be exported only as SVG because its dimensions are too "
-"different in magnitude."
+"The graphic can be exported only as SVG because its proportions are too "
+"extreme."
 msgstr ""
-"Графиката може да бъде експортирана само като SVG защото широчината и височината са твърде различни."
+"Графиката може да бъде експортирана само като SVG защото височината и "
+"широчината са твърде различни."
 
 #: src/autoload/HandlerGUI.gd
 msgid ""
 "The graphic can be exported only as SVG because its size is not defined."
 msgstr ""
-"Графиката може да бъде експортирана само като SVG защото размерът не е определен."
+"Графиката може да бъде експортирана само като SVG защото размерът не е "
+"определен."
 
 #: src/autoload/State.gd src/ui_parts/good_file_dialog.gd
 #: src/ui_widgets/alert_dialog.gd
@@ -115,11 +119,11 @@ msgstr "Последното състояние на този раздел не 
 
 #: src/autoload/State.gd
 msgid ""
-"The tab is bound to the file path {file_path}. Do you want to restore from "
-"this path?"
+"The tab is bound to the file path {file_path}. Do you want to restore the "
+"SVG from this path?"
 msgstr ""
-"Този раздел е свързан с пътеката {file_path}. Искаш ли да го възстановиш от "
-"тази пътека?"
+"Този раздел е свързан с пътеката {file_path}. Искаш ли да го възстановиш SVG-"
+"то от тази пътека?"
 
 #: src/config_classes/Formatter.gd
 msgid "Compact"
@@ -212,6 +216,22 @@ msgid "Close"
 msgstr "Затвори"
 
 #: src/ui_parts/about_menu.gd
+msgid "Authors"
+msgstr "Автори"
+
+#: src/ui_parts/about_menu.gd
+msgid "Donors"
+msgstr "Дарители"
+
+#: src/ui_parts/about_menu.gd
+msgid "License"
+msgstr "Лиценз"
+
+#: src/ui_parts/about_menu.gd
+msgid "Third-party licenses"
+msgstr "Лицензи от трети партии"
+
+#: src/ui_parts/about_menu.gd
 msgid "Project Founder and Manager"
 msgstr "Основател и мениджър на проекта"
 
@@ -224,32 +244,12 @@ msgid "Translators"
 msgstr "Преводачи"
 
 #: src/ui_parts/about_menu.gd
-msgid "Donors"
-msgstr "Дарители"
-
-#: src/ui_parts/about_menu.gd
 msgid "Golden donors"
 msgstr "Златни дарители"
 
 #: src/ui_parts/about_menu.gd
 msgid "Diamond donors"
 msgstr "Диамантени дарители"
-
-#: src/ui_parts/about_menu.gd
-msgid "Authors"
-msgstr "Автори"
-
-#: src/ui_parts/about_menu.gd
-msgid "License"
-msgstr "Лиценз"
-
-#: src/ui_parts/about_menu.gd
-msgid "Godot third-party components"
-msgstr "Компоненти в Godot от трети лица"
-
-#: src/ui_parts/about_menu.gd
-msgid "Third-party licenses"
-msgstr "Лицензи от трети партии"
 
 #: src/ui_parts/display.gd
 msgid "Visuals"
@@ -615,7 +615,7 @@ msgid "Invert zoom direction"
 msgstr "Обърни посоката на увеличение"
 
 #: src/ui_parts/settings_menu.gd
-msgid "Wrap mouse"
+msgid "Wrap-around panning"
 msgstr "Превъртане на курсора"
 
 #: src/ui_parts/settings_menu.gd
@@ -775,12 +775,14 @@ msgid "Remove unnecessary parameters"
 msgstr "Премахни ненужните параметри"
 
 #: src/ui_parts/settings_menu.gd
-msgid "Swaps zoom in and zoom out with the mouse wheel."
-msgstr "Разменя увеличението и намалянето с колелцето на мишката."
+msgid "Swaps the scroll directions for zooming in and zooming out."
+msgstr "Разменя посоките на влачене за намаляване и увеличаване"
 
 #: src/ui_parts/settings_menu.gd
-msgid "Wraps the mouse cursor around when panning the viewport."
-msgstr "Превърта курсора когато той достигне краищата на екрана."
+msgid ""
+"Warps the cursor to the opposite side whenever it reaches a viewport "
+"boundary while panning."
+msgstr "Превърта курсора когато той достигне краищата на екрана докато влачи гледката."
 
 #: src/ui_parts/settings_menu.gd
 msgid ""
@@ -788,7 +790,7 @@ msgid ""
 "scrolling."
 msgstr ""
 "Когато е включено, влаченето ще премести гледката. За увеличение, натисни "
-"CTRL докато влачиш"
+"CTRL докато влачиш."
 
 #: src/ui_parts/settings_menu.gd
 msgid ""
@@ -812,12 +814,12 @@ msgid "Changes the visual size and grabbing area of handles."
 msgstr "Увеличава размера и площта в която дръжките могат да бъдат хванати."
 
 #: src/ui_parts/settings_menu.gd
-msgid "Changes the scale of the visual user interface."
-msgstr "Увеличава мащаба на потребителския интерфейс."
+msgid "Changes the scale factor for the interface."
+msgstr "Увеличава мащаба на интерфейса."
 
 #: src/ui_parts/settings_menu.gd
-msgid "Scales the user interface based on the screen size."
-msgstr "Променя размера на потребителския интерфейс според размера на екрана."
+msgid "Scales the interface automatically based on the screen size."
+msgstr "Автоматично променя мащаба на интерфейса според размера на екрана."
 
 #: src/ui_parts/shortcut_panel_config.gd
 msgid "Configure Shortcut Panel"
@@ -860,7 +862,16 @@ msgid "Create a new tab"
 msgstr "Създай нов раздел"
 
 #: src/ui_parts/tab_bar.gd
-msgid "This SVG is not bound to a location on the computer yet."
+msgid "Scroll backwards"
+msgstr "Превърти назад"
+
+#: src/ui_parts/tab_bar.gd
+msgid "Scroll forwards"
+msgstr "Превърти напред"
+
+#: src/ui_parts/tab_bar.gd
+#, fuzzy
+msgid "This SVG is not bound to a file location yet."
 msgstr "Това SVG не е свързано с местоположение на компютъра."
 
 #: src/ui_parts/update_menu.gd
@@ -1073,7 +1084,8 @@ msgstr "Импортираният файл вече се редактира в 
 #: src/utils/FileUtils.gd
 msgid "If you want to apply the unsaved file state, use \"Reset SVG\" instead."
 msgstr ""
-"Ако искаш да приложиш незаписаното състояние на файла, използвай \"Рестартирай SVG-то\"."
+"Ако искаш да приложиш незаписаното състояние на файла, използвай "
+"\"Рестартирай SVG-то\"."
 
 #: src/utils/TranslationUtils.gd
 msgid "Save as"

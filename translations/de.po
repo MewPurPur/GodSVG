@@ -57,8 +57,8 @@ msgstr "Exportieren"
 
 #: src/autoload/HandlerGUI.gd
 msgid ""
-"The graphic can be exported only as SVG because its dimensions are too "
-"different in magnitude."
+"The graphic can be exported only as SVG because its proportions are too "
+"extreme."
 msgstr ""
 
 #: src/autoload/HandlerGUI.gd
@@ -115,8 +115,8 @@ msgstr ""
 
 #: src/autoload/State.gd
 msgid ""
-"The tab is bound to the file path {file_path}. Do you want to restore from "
-"this path?"
+"The tab is bound to the file path {file_path}. Do you want to restore the "
+"SVG from this path?"
 msgstr ""
 
 #: src/config_classes/Formatter.gd
@@ -211,6 +211,22 @@ msgid "Close"
 msgstr "Schließen"
 
 #: src/ui_parts/about_menu.gd
+msgid "Authors"
+msgstr "Autoren"
+
+#: src/ui_parts/about_menu.gd
+msgid "Donors"
+msgstr "Spender"
+
+#: src/ui_parts/about_menu.gd
+msgid "License"
+msgstr "Lizenz"
+
+#: src/ui_parts/about_menu.gd
+msgid "Third-party licenses"
+msgstr "Drittanbieter-Lizenzen"
+
+#: src/ui_parts/about_menu.gd
 msgid "Project Founder and Manager"
 msgstr "Projektgründer und Manager"
 
@@ -223,32 +239,12 @@ msgid "Translators"
 msgstr "Übersetzer"
 
 #: src/ui_parts/about_menu.gd
-msgid "Donors"
-msgstr "Spender"
-
-#: src/ui_parts/about_menu.gd
 msgid "Golden donors"
 msgstr "Gold-Spender"
 
 #: src/ui_parts/about_menu.gd
 msgid "Diamond donors"
 msgstr "Diamant-Spender"
-
-#: src/ui_parts/about_menu.gd
-msgid "Authors"
-msgstr "Autoren"
-
-#: src/ui_parts/about_menu.gd
-msgid "License"
-msgstr "Lizenz"
-
-#: src/ui_parts/about_menu.gd
-msgid "Godot third-party components"
-msgstr "Godot Drittanbieter-Komponente"
-
-#: src/ui_parts/about_menu.gd
-msgid "Third-party licenses"
-msgstr "Drittanbieter-Lizenzen"
 
 #: src/ui_parts/display.gd
 msgid "Visuals"
@@ -615,8 +611,8 @@ msgid "Invert zoom direction"
 msgstr "Zoomrichtung umkehren"
 
 #: src/ui_parts/settings_menu.gd
-msgid "Wrap mouse"
-msgstr "Maus einschließen"
+msgid "Wrap-around panning"
+msgstr ""
 
 #: src/ui_parts/settings_menu.gd
 msgid "Use CTRL for zooming"
@@ -778,12 +774,14 @@ msgid "Remove unnecessary parameters"
 msgstr "Unnötige Parameter entfernen"
 
 #: src/ui_parts/settings_menu.gd
-msgid "Swaps zoom in and zoom out with the mouse wheel."
-msgstr "Vertauscht Hinein- und Herauszoomen mit dem Mausrad."
+msgid "Swaps the scroll directions for zooming in and zooming out."
+msgstr ""
 
 #: src/ui_parts/settings_menu.gd
-msgid "Wraps the mouse cursor around when panning the viewport."
-msgstr "Schließt die Maus beim bewegen innerhalb des Fensters ein."
+msgid ""
+"Warps the cursor to the opposite side whenever it reaches a viewport "
+"boundary while panning."
+msgstr ""
 
 #: src/ui_parts/settings_menu.gd
 msgid ""
@@ -815,11 +813,13 @@ msgid "Changes the visual size and grabbing area of handles."
 msgstr "Erhöht die visuelle Größe und den Interaktionsbereich von Griffen."
 
 #: src/ui_parts/settings_menu.gd
-msgid "Changes the scale of the visual user interface."
+#, fuzzy
+msgid "Changes the scale factor for the interface."
 msgstr "Verändert die Skalierung der Benutzeroberfläche."
 
 #: src/ui_parts/settings_menu.gd
-msgid "Scales the user interface based on the screen size."
+#, fuzzy
+msgid "Scales the interface automatically based on the screen size."
 msgstr "Skaliert die Benutzeroberfläche basierend auf der Bildschirmgröße."
 
 #: src/ui_parts/shortcut_panel_config.gd
@@ -869,7 +869,15 @@ msgid "Create a new tab"
 msgstr "Neuen Ordner erstellen"
 
 #: src/ui_parts/tab_bar.gd
-msgid "This SVG is not bound to a location on the computer yet."
+msgid "Scroll backwards"
+msgstr ""
+
+#: src/ui_parts/tab_bar.gd
+msgid "Scroll forwards"
+msgstr ""
+
+#: src/ui_parts/tab_bar.gd
+msgid "This SVG is not bound to a file location yet."
 msgstr ""
 
 #: src/ui_parts/update_menu.gd
@@ -1232,6 +1240,18 @@ msgid "The file extension is empty. Only {extension_list} files are supported."
 msgstr ""
 "Die Dateierweiterung ist leer. Nur {extension_list} Dateien werden "
 "unterstützt."
+
+#~ msgid "Godot third-party components"
+#~ msgstr "Godot Drittanbieter-Komponente"
+
+#~ msgid "Wrap mouse"
+#~ msgstr "Maus einschließen"
+
+#~ msgid "Swaps zoom in and zoom out with the mouse wheel."
+#~ msgstr "Vertauscht Hinein- und Herauszoomen mit dem Mausrad."
+
+#~ msgid "Wraps the mouse cursor around when panning the viewport."
+#~ msgstr "Schließt die Maus beim bewegen innerhalb des Fensters ein."
 
 #~ msgid "This requires GodSVG to connect to the internet."
 #~ msgstr "Hierfür muss sich GodSVG mit dem Internet verbinden."

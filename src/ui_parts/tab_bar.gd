@@ -420,8 +420,7 @@ func _get_tooltip(at_position: Vector2) -> String:
 	
 	var current_tab := Configs.savedata.get_tab(hovered_tab_idx)
 	if current_tab.svg_file_path.is_empty():
-		return Translator.translate(
-				"This SVG is not bound to a location on the computer yet.")
+		return Translator.translate("This SVG is not bound to a file location yet.")
 	return current_tab.svg_file_path
 
 

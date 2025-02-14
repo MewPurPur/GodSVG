@@ -109,7 +109,7 @@ func setup_from_tab() -> void:
 		else:
 			options_dialog.setup(Translator.translate("Alert!"),
 					message + "\n\n" + Translator.translate(
-					"The tab is bound to the file path {file_path}. Do you want to restore from this path?").\
+					"The tab is bound to the file path {file_path}. Do you want to restore the SVG from this path?").\
 					format({"file_path": user_facing_path}))
 			options_dialog.add_option(Translator.translate("Close tab"),
 					Configs.savedata.remove_active_tab)

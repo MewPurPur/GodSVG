@@ -229,7 +229,7 @@ func setup_content() -> void:
 			current_setup_setting = "auto_ui_scale"
 			add_checkbox(Translator.translate("Auto UI scale"))
 			add_advice(Translator.translate(
-					"Scales the user interface based on the screen size."))
+					"Scales the interface automatically based on the screen size."))
 			
 			# Disable mouse wrap if not available.
 			if not DisplayServer.has_feature(DisplayServer.FEATURE_MOUSE_WARP):

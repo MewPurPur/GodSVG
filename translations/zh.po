@@ -58,8 +58,8 @@ msgstr "导出"
 #: src/autoload/HandlerGUI.gd
 #, fuzzy
 msgid ""
-"The graphic can be exported only as SVG because its dimensions are too "
-"different in magnitude."
+"The graphic can be exported only as SVG because its proportions are too "
+"extreme."
 msgstr "此图像只能以 SVG 格式导出，因为其大小未定义。您确定要继续吗？"
 
 #: src/autoload/HandlerGUI.gd
@@ -117,8 +117,8 @@ msgstr ""
 
 #: src/autoload/State.gd
 msgid ""
-"The tab is bound to the file path {file_path}. Do you want to restore from "
-"this path?"
+"The tab is bound to the file path {file_path}. Do you want to restore the "
+"SVG from this path?"
 msgstr ""
 
 #: src/config_classes/Formatter.gd
@@ -212,6 +212,22 @@ msgid "Close"
 msgstr "关闭"
 
 #: src/ui_parts/about_menu.gd
+msgid "Authors"
+msgstr "作者"
+
+#: src/ui_parts/about_menu.gd
+msgid "Donors"
+msgstr "捐赠者"
+
+#: src/ui_parts/about_menu.gd
+msgid "License"
+msgstr "协议"
+
+#: src/ui_parts/about_menu.gd
+msgid "Third-party licenses"
+msgstr "第三方协议"
+
+#: src/ui_parts/about_menu.gd
 msgid "Project Founder and Manager"
 msgstr "项目创立者与管理者"
 
@@ -224,32 +240,12 @@ msgid "Translators"
 msgstr "翻译者"
 
 #: src/ui_parts/about_menu.gd
-msgid "Donors"
-msgstr "捐赠者"
-
-#: src/ui_parts/about_menu.gd
 msgid "Golden donors"
 msgstr "金牌捐赠者"
 
 #: src/ui_parts/about_menu.gd
 msgid "Diamond donors"
 msgstr "钻石捐赠者"
-
-#: src/ui_parts/about_menu.gd
-msgid "Authors"
-msgstr "作者"
-
-#: src/ui_parts/about_menu.gd
-msgid "License"
-msgstr "协议"
-
-#: src/ui_parts/about_menu.gd
-msgid "Godot third-party components"
-msgstr "Godot 第三方组件"
-
-#: src/ui_parts/about_menu.gd
-msgid "Third-party licenses"
-msgstr "第三方协议"
 
 #: src/ui_parts/display.gd
 msgid "Visuals"
@@ -614,8 +610,8 @@ msgid "Invert zoom direction"
 msgstr "反转缩放方向"
 
 #: src/ui_parts/settings_menu.gd
-msgid "Wrap mouse"
-msgstr "连续拖拽"
+msgid "Wrap-around panning"
+msgstr ""
 
 #: src/ui_parts/settings_menu.gd
 msgid "Use CTRL for zooming"
@@ -777,12 +773,14 @@ msgid "Remove unnecessary parameters"
 msgstr "移除不必要的参数"
 
 #: src/ui_parts/settings_menu.gd
-msgid "Swaps zoom in and zoom out with the mouse wheel."
-msgstr "反转鼠标滚轮缩放控制。"
+msgid "Swaps the scroll directions for zooming in and zooming out."
+msgstr ""
 
 #: src/ui_parts/settings_menu.gd
-msgid "Wraps the mouse cursor around when panning the viewport."
-msgstr "拖拽视图时使鼠标保持连续运动。"
+msgid ""
+"Warps the cursor to the opposite side whenever it reaches a viewport "
+"boundary while panning."
+msgstr ""
 
 #: src/ui_parts/settings_menu.gd
 msgid ""
@@ -809,11 +807,13 @@ msgid "Changes the visual size and grabbing area of handles."
 msgstr "改变拖拽框的视觉和操作区域大小。"
 
 #: src/ui_parts/settings_menu.gd
-msgid "Changes the scale of the visual user interface."
+#, fuzzy
+msgid "Changes the scale factor for the interface."
 msgstr "改变用户界面的缩放尺寸。"
 
 #: src/ui_parts/settings_menu.gd
-msgid "Scales the user interface based on the screen size."
+#, fuzzy
+msgid "Scales the interface automatically based on the screen size."
 msgstr "根据屏幕大小缩放用户界面。"
 
 #: src/ui_parts/shortcut_panel_config.gd
@@ -863,7 +863,15 @@ msgid "Create a new tab"
 msgstr "新建文件夹"
 
 #: src/ui_parts/tab_bar.gd
-msgid "This SVG is not bound to a location on the computer yet."
+msgid "Scroll backwards"
+msgstr ""
+
+#: src/ui_parts/tab_bar.gd
+msgid "Scroll forwards"
+msgstr ""
+
+#: src/ui_parts/tab_bar.gd
+msgid "This SVG is not bound to a file location yet."
 msgstr ""
 
 #: src/ui_parts/update_menu.gd
@@ -1223,6 +1231,18 @@ msgstr ""
 #: src/utils/TranslationUtils.gd
 msgid "The file extension is empty. Only {extension_list} files are supported."
 msgstr "文件扩展名为空。只有 {extension_list} 内的文件受支持。"
+
+#~ msgid "Godot third-party components"
+#~ msgstr "Godot 第三方组件"
+
+#~ msgid "Wrap mouse"
+#~ msgstr "连续拖拽"
+
+#~ msgid "Swaps zoom in and zoom out with the mouse wheel."
+#~ msgstr "反转鼠标滚轮缩放控制。"
+
+#~ msgid "Wraps the mouse cursor around when panning the viewport."
+#~ msgstr "拖拽视图时使鼠标保持连续运动。"
 
 #~ msgid "This requires GodSVG to connect to the internet."
 #~ msgstr "这需要 GodSVG 连接互联网。"

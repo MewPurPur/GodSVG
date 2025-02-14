@@ -56,8 +56,8 @@ msgstr ""
 
 #: src/autoload/HandlerGUI.gd
 msgid ""
-"The graphic can be exported only as SVG because its dimensions are too "
-"different in magnitude."
+"The graphic can be exported only as SVG because its proportions are too "
+"extreme."
 msgstr ""
 
 #: src/autoload/HandlerGUI.gd
@@ -113,8 +113,8 @@ msgstr ""
 
 #: src/autoload/State.gd
 msgid ""
-"The tab is bound to the file path {file_path}. Do you want to restore from "
-"this path?"
+"The tab is bound to the file path {file_path}. Do you want to restore the "
+"SVG from this path?"
 msgstr ""
 
 #: src/config_classes/Formatter.gd
@@ -208,6 +208,22 @@ msgid "Close"
 msgstr ""
 
 #: src/ui_parts/about_menu.gd
+msgid "Authors"
+msgstr ""
+
+#: src/ui_parts/about_menu.gd
+msgid "Donors"
+msgstr ""
+
+#: src/ui_parts/about_menu.gd
+msgid "License"
+msgstr ""
+
+#: src/ui_parts/about_menu.gd
+msgid "Third-party licenses"
+msgstr ""
+
+#: src/ui_parts/about_menu.gd
 msgid "Project Founder and Manager"
 msgstr ""
 
@@ -220,31 +236,11 @@ msgid "Translators"
 msgstr ""
 
 #: src/ui_parts/about_menu.gd
-msgid "Donors"
-msgstr ""
-
-#: src/ui_parts/about_menu.gd
 msgid "Golden donors"
 msgstr ""
 
 #: src/ui_parts/about_menu.gd
 msgid "Diamond donors"
-msgstr ""
-
-#: src/ui_parts/about_menu.gd
-msgid "Authors"
-msgstr ""
-
-#: src/ui_parts/about_menu.gd
-msgid "License"
-msgstr ""
-
-#: src/ui_parts/about_menu.gd
-msgid "Godot third-party components"
-msgstr ""
-
-#: src/ui_parts/about_menu.gd
-msgid "Third-party licenses"
 msgstr ""
 
 #: src/ui_parts/display.gd
@@ -609,7 +605,7 @@ msgid "Invert zoom direction"
 msgstr ""
 
 #: src/ui_parts/settings_menu.gd
-msgid "Wrap mouse"
+msgid "Wrap-around panning"
 msgstr ""
 
 #: src/ui_parts/settings_menu.gd
@@ -769,11 +765,13 @@ msgid "Remove unnecessary parameters"
 msgstr ""
 
 #: src/ui_parts/settings_menu.gd
-msgid "Swaps zoom in and zoom out with the mouse wheel."
+msgid "Swaps the scroll directions for zooming in and zooming out."
 msgstr ""
 
 #: src/ui_parts/settings_menu.gd
-msgid "Wraps the mouse cursor around when panning the viewport."
+msgid ""
+"Warps the cursor to the opposite side whenever it reaches a viewport "
+"boundary while panning."
 msgstr ""
 
 #: src/ui_parts/settings_menu.gd
@@ -799,11 +797,11 @@ msgid "Changes the visual size and grabbing area of handles."
 msgstr ""
 
 #: src/ui_parts/settings_menu.gd
-msgid "Changes the scale of the visual user interface."
+msgid "Changes the scale factor for the interface."
 msgstr ""
 
 #: src/ui_parts/settings_menu.gd
-msgid "Scales the user interface based on the screen size."
+msgid "Scales the interface automatically based on the screen size."
 msgstr ""
 
 #: src/ui_parts/shortcut_panel_config.gd
@@ -847,7 +845,15 @@ msgid "Create a new tab"
 msgstr ""
 
 #: src/ui_parts/tab_bar.gd
-msgid "This SVG is not bound to a location on the computer yet."
+msgid "Scroll backwards"
+msgstr ""
+
+#: src/ui_parts/tab_bar.gd
+msgid "Scroll forwards"
+msgstr ""
+
+#: src/ui_parts/tab_bar.gd
+msgid "This SVG is not bound to a file location yet."
 msgstr ""
 
 #: src/ui_parts/update_menu.gd

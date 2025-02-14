@@ -59,8 +59,8 @@ msgstr "Экспортовать"
 #: src/autoload/HandlerGUI.gd
 #, fuzzy
 msgid ""
-"The graphic can be exported only as SVG because its dimensions are too "
-"different in magnitude."
+"The graphic can be exported only as SVG because its proportions are too "
+"extreme."
 msgstr ""
 "Изображение можно экспортировать только как SVG, поскольку его размеры не "
 "заданы. Желаете продолжить?"
@@ -122,8 +122,8 @@ msgstr ""
 
 #: src/autoload/State.gd
 msgid ""
-"The tab is bound to the file path {file_path}. Do you want to restore from "
-"this path?"
+"The tab is bound to the file path {file_path}. Do you want to restore the "
+"SVG from this path?"
 msgstr ""
 
 #: src/config_classes/Formatter.gd
@@ -217,6 +217,22 @@ msgid "Close"
 msgstr "Закрыть"
 
 #: src/ui_parts/about_menu.gd
+msgid "Authors"
+msgstr "Авторы"
+
+#: src/ui_parts/about_menu.gd
+msgid "Donors"
+msgstr "Благотворители"
+
+#: src/ui_parts/about_menu.gd
+msgid "License"
+msgstr "Лицензия"
+
+#: src/ui_parts/about_menu.gd
+msgid "Third-party licenses"
+msgstr "Лицензии третьих лиц"
+
+#: src/ui_parts/about_menu.gd
 msgid "Project Founder and Manager"
 msgstr "Основатель и руководитель проекта"
 
@@ -229,32 +245,12 @@ msgid "Translators"
 msgstr "Переводчики"
 
 #: src/ui_parts/about_menu.gd
-msgid "Donors"
-msgstr "Благотворители"
-
-#: src/ui_parts/about_menu.gd
 msgid "Golden donors"
 msgstr "Золотые благотворители"
 
 #: src/ui_parts/about_menu.gd
 msgid "Diamond donors"
 msgstr "Алмазные благотворители"
-
-#: src/ui_parts/about_menu.gd
-msgid "Authors"
-msgstr "Авторы"
-
-#: src/ui_parts/about_menu.gd
-msgid "License"
-msgstr "Лицензия"
-
-#: src/ui_parts/about_menu.gd
-msgid "Godot third-party components"
-msgstr "Компоненты Godot от третьих лиц"
-
-#: src/ui_parts/about_menu.gd
-msgid "Third-party licenses"
-msgstr "Лицензии третьих лиц"
 
 #: src/ui_parts/display.gd
 msgid "Visuals"
@@ -622,8 +618,8 @@ msgid "Invert zoom direction"
 msgstr "Инвертировать направление масштабирования"
 
 #: src/ui_parts/settings_menu.gd
-msgid "Wrap mouse"
-msgstr "Захватить мышу"
+msgid "Wrap-around panning"
+msgstr ""
 
 #: src/ui_parts/settings_menu.gd
 msgid "Use CTRL for zooming"
@@ -782,14 +778,14 @@ msgid "Remove unnecessary parameters"
 msgstr "Удалить ненужные параметры"
 
 #: src/ui_parts/settings_menu.gd
-msgid "Swaps zoom in and zoom out with the mouse wheel."
-msgstr "Поменяет местами увеличение и уменьшение масштаба через колесико мыши."
+msgid "Swaps the scroll directions for zooming in and zooming out."
+msgstr ""
 
 #: src/ui_parts/settings_menu.gd
-msgid "Wraps the mouse cursor around when panning the viewport."
+msgid ""
+"Warps the cursor to the opposite side whenever it reaches a viewport "
+"boundary while panning."
 msgstr ""
-"Курсор будет телепортироваться от одного до противоположного края при "
-"передвижении окна просмотра."
 
 #: src/ui_parts/settings_menu.gd
 msgid ""
@@ -821,11 +817,13 @@ msgid "Changes the visual size and grabbing area of handles."
 msgstr "Изменит визуальный размер и область захвата ручек редактирования."
 
 #: src/ui_parts/settings_menu.gd
-msgid "Changes the scale of the visual user interface."
+#, fuzzy
+msgid "Changes the scale factor for the interface."
 msgstr "Изменить масштаб пользовательского интерфейса."
 
 #: src/ui_parts/settings_menu.gd
-msgid "Scales the user interface based on the screen size."
+#, fuzzy
+msgid "Scales the interface automatically based on the screen size."
 msgstr "Масштабировать интерфейс пользователя в зависимости от размера экрана."
 
 #: src/ui_parts/shortcut_panel_config.gd
@@ -875,7 +873,15 @@ msgid "Create a new tab"
 msgstr "Создать новую папку"
 
 #: src/ui_parts/tab_bar.gd
-msgid "This SVG is not bound to a location on the computer yet."
+msgid "Scroll backwards"
+msgstr ""
+
+#: src/ui_parts/tab_bar.gd
+msgid "Scroll forwards"
+msgstr ""
+
+#: src/ui_parts/tab_bar.gd
+msgid "This SVG is not bound to a file location yet."
 msgstr ""
 
 #: src/ui_parts/update_menu.gd
@@ -1236,6 +1242,21 @@ msgstr ""
 #: src/utils/TranslationUtils.gd
 msgid "The file extension is empty. Only {extension_list} files are supported."
 msgstr "Расширение файла пустое. Поддерживаются только {extension_list} файлы."
+
+#~ msgid "Godot third-party components"
+#~ msgstr "Компоненты Godot от третьих лиц"
+
+#~ msgid "Wrap mouse"
+#~ msgstr "Захватить мышу"
+
+#~ msgid "Swaps zoom in and zoom out with the mouse wheel."
+#~ msgstr ""
+#~ "Поменяет местами увеличение и уменьшение масштаба через колесико мыши."
+
+#~ msgid "Wraps the mouse cursor around when panning the viewport."
+#~ msgstr ""
+#~ "Курсор будет телепортироваться от одного до противоположного края при "
+#~ "передвижении окна просмотра."
 
 #~ msgid "This requires GodSVG to connect to the internet."
 #~ msgstr "Для этого необходимо подключение к Интернету."
