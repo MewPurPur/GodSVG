@@ -169,16 +169,13 @@ func _on_tab_changed(idx: int) -> void:
 				name_label.text = copyright_info["name"]
 				vbox.add_child(name_label)
 				
-				var parts_vbox := VBoxContainer.new()
-				parts_vbox.add_theme_constant_override("separation", 8)
+				var label := Label.new()
+				label.add_theme_font_size_override("font_size", 11)
 				for part in copyright_info["parts"]:
-					var label := Label.new()
-					label.add_theme_font_size_override("font_size", 11)
 					if part.has("files"):
 						label.text += "Files:\n- %s\n" % "\n- ".join(part["files"])
 					label.text += "© %s\nLicense: %s" % ["\n© ".join(part["copyright"]), part["license"]]
-					parts_vbox.add_child(label)
-				vbox.add_child(parts_vbox)
+				vbox.add_child(label)
 				%GodSVGParts.add_child(vbox)
 			
 			for copyright_info in godot_copyright_info:
@@ -188,16 +185,13 @@ func _on_tab_changed(idx: int) -> void:
 				name_label.text = copyright_info["name"]
 				vbox.add_child(name_label)
 				
-				var parts_vbox := VBoxContainer.new()
-				parts_vbox.add_theme_constant_override("separation", 8)
+				var label := Label.new()
+				label.add_theme_font_size_override("font_size", 11)
 				for part in copyright_info["parts"]:
-					var label := Label.new()
-					label.add_theme_font_size_override("font_size", 11)
 					if part.has("files"):
 						label.text += "Files:\n- %s\n" % "\n- ".join(part["files"])
 					label.text += "© %s\nLicense: %s" % ["\n© ".join(part["copyright"]), part["license"]]
-					parts_vbox.add_child(label)
-				vbox.add_child(parts_vbox)
+				vbox.add_child(label)
 				%GodotParts.add_child(vbox)
 			
 			for license_name in licenses_dict:
