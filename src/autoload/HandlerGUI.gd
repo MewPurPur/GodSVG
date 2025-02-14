@@ -347,7 +347,7 @@ func open_export() -> void:
 	var message: String
 	if dimensions_too_different:
 		message = Translator.translate(
-				"The graphic can be exported only as SVG because its dimensions are too different in magnitude.")
+				"The graphic can be exported only as SVG because its proportions are too extreme.")
 	else:
 		message = Translator.translate(
 				"The graphic can be exported only as SVG because its size is not defined.")
