@@ -27,10 +27,13 @@ func set_value(new_value: String, save := false) -> void:
 			
 			numeric_value = clampf(numeric_value, cached_min_value, cached_max_value)
 			new_value = element.get_attribute(attribute_name).num_to_text(numeric_value)
-		sync(new_value)
 	element.set_attribute(attribute_name, new_value)
+	sync_to_attribute()
 	if save:
 		State.queue_svg_save()
+
+func sync_to_attribute() -> void:
+	sync(element.get_attribute_value(attribute_name))
 
 func setup_placeholder() -> void:
 	placeholder_text = element.get_default(attribute_name)
@@ -60,9 +63,6 @@ func _on_element_ancestor_attribute_changed(attribute_changed: String) -> void:
 
 func _on_focus_entered() -> void:
 	remove_theme_color_override("font_color")
-
-func sync_to_attribute() -> void:
-	sync(element.get_attribute_value(attribute_name))
 
 func resync() -> void:
 	sync(text)

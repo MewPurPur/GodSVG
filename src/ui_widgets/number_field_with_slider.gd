@@ -25,13 +25,16 @@ func set_value(new_value: String, save := false) -> void:
 				numeric_value = MIN_VALUE
 			new_value = element.get_attribute(attribute_name).num_to_text(numeric_value)
 	
-	sync(new_value)
 	element.set_attribute(attribute_name, new_value)
+	sync_to_attribute()
 	if save:
 		State.queue_svg_save()
 
 func set_num(new_number: float, save := false) -> void:
 	set_value(element.get_attribute(attribute_name).num_to_text(new_number), save)
+
+func sync_to_attribute() -> void:
+	sync(element.get_attribute_value(attribute_name))
 
 func setup_placeholder() -> void:
 	placeholder_text = element.get_default(attribute_name)
@@ -59,9 +62,6 @@ func _on_element_ancestor_attribute_changed(attribute_changed: String) -> void:
 	if attribute_name == attribute_changed:
 		setup_placeholder()
 		resync()
-
-func sync_to_attribute() -> void:
-	set_value(element.get_attribute_value(attribute_name))
 
 func resync() -> void:
 	sync(text)
