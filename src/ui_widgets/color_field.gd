@@ -32,6 +32,9 @@ func set_value(new_value: String, save := false) -> void:
 	if save:
 		State.queue_svg_save()
 
+func sync_to_attribute() -> void:
+	set_value(element.get_attribute_value(attribute_name))
+
 func setup_placeholder() -> void:
 	placeholder_text = element.get_default(attribute_name).trim_prefix("#")
 
@@ -64,21 +67,18 @@ func _on_element_ancestor_attribute_changed(attribute_changed: String) -> void:
 		setup_placeholder()
 		resync()
 
-func sync_to_attribute() -> void:
-	set_value(element.get_attribute_value(attribute_name, true))
-
 # Redraw in case the gradient might have changed.
 func _on_svg_changed() -> void:
 	if cached_allow_url and\
-	ColorParser.is_valid_url(element.get_attribute_value(attribute_name, false)):
+	ColorParser.is_valid_url(element.get_implied_attribute_value(attribute_name)):
 		update_gradient_texture()
 		queue_redraw()
-	elif element.get_attribute_value(attribute_name, true) == "currentColor":
+	elif element.get_attribute_value(attribute_name) == "currentColor":
 		queue_redraw()
 
 func _on_pressed() -> void:
 	color_popup = ColorPopup.instantiate()
-	color_popup.current_value = element.get_attribute_value(attribute_name, true)
+	color_popup.current_value = element.get_attribute_value(attribute_name)
 	color_popup.effective_color = ColorParser.text_to_color(
 			element.get_attribute_true_color(attribute_name))
 	color_popup.show_url = cached_allow_url
@@ -111,7 +111,7 @@ func _draw() -> void:
 	checkerboard.draw(ci, Vector2(h_offset, 1))
 	# Draw the color or gradient.
 	var drawn := false
-	var color_value := element.get_attribute_value(attribute_name, false)
+	var color_value := element.get_implied_attribute_value(attribute_name)
 	if cached_allow_url and ColorParser.is_valid_url(color_value):
 		var id := color_value.substr(5, color_value.length() - 6)
 		var gradient_element := State.root_element.get_element_by_id(id)
@@ -181,7 +181,7 @@ func sync(new_value: String) -> void:
 
 # TODO remove this method when #94584 is fixed.
 func update_gradient_texture() -> void:
-	var color_value := element.get_attribute_value(attribute_name, false)
+	var color_value := element.get_implied_attribute_value(attribute_name)
 	if ColorParser.is_valid_url(color_value):
 		var id := color_value.substr(5, color_value.length() - 6)
 		var gradient_element := State.root_element.get_element_by_id(id)

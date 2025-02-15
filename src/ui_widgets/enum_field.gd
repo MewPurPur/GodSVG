@@ -13,7 +13,7 @@ func set_value(new_value: String, save := false) -> void:
 		State.queue_svg_save()
 
 func sync_to_attribute() -> void:
-	set_value(element.get_attribute_value(attribute_name, true))
+	set_value(element.get_attribute_value(attribute_name))
 
 func setup_placeholder() -> void:
 	placeholder_text = element.get_default(attribute_name)
@@ -49,14 +49,14 @@ func _on_pressed() -> void:
 	var btn_arr: Array[Button] = []
 	# Add a default.
 	var reset_btn := ContextPopup.create_button("", set_value.bind("", true),
-			element.get_attribute_value(attribute_name, true).is_empty(), reload_icon)
+			element.get_attribute_value(attribute_name).is_empty(), reload_icon)
 	reset_btn.icon_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	btn_arr.append(reset_btn)
 	# Add a button for each enum value.
 	for enum_constant in DB.attribute_enum_values[attribute_name]:
 		var btn := ContextPopup.create_button(enum_constant,
 				set_value.bind(enum_constant, true),
-				enum_constant == element.get_attribute_value(attribute_name, true))
+				enum_constant == element.get_attribute_value(attribute_name))
 		if enum_constant == element.get_default(attribute_name):
 			btn.add_theme_font_override("font", ThemeUtils.bold_font)
 		btn_arr.append(btn)

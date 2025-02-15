@@ -61,7 +61,7 @@ func _on_element_ancestor_attribute_changed(attribute_changed: String) -> void:
 		resync()
 
 func sync_to_attribute() -> void:
-	set_value(element.get_attribute_value(attribute_name, true))
+	set_value(element.get_attribute_value(attribute_name))
 
 func resync() -> void:
 	sync(text)
