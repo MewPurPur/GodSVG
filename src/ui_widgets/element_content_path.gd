@@ -14,6 +14,5 @@ func _ready() -> void:
 		if attribute == "d":
 			continue
 		var input_field := AttributeFieldBuilder.create(attribute, element)
-		# Focused signal for pathdata attribute.
 		input_field.focus_entered.connect(State.normal_select.bind(element.xid))
 		attribute_container.add_child(input_field)
