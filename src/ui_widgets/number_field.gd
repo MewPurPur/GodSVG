@@ -51,7 +51,7 @@ func _ready() -> void:
 
 func _on_element_attribute_changed(attribute_changed: String) -> void:
 	if attribute_name == attribute_changed:
-		set_value(element.get_attribute_value(attribute_name, true))
+		set_value(element.get_attribute_value(attribute_name))
 
 func _on_element_ancestor_attribute_changed(attribute_changed: String) -> void:
 	if attribute_name == attribute_changed:
@@ -62,7 +62,7 @@ func _on_focus_entered() -> void:
 	remove_theme_color_override("font_color")
 
 func sync_to_attribute() -> void:
-	sync(element.get_attribute_value(attribute_name, true))
+	sync(element.get_attribute_value(attribute_name))
 
 func resync() -> void:
 	sync(text)

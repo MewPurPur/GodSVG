@@ -5,10 +5,13 @@ var element: Element
 const attribute_name = "id"  # Never propagates.
 
 func set_value(new_value: String, save := false) -> void:
-	sync(new_value)
 	element.set_attribute(attribute_name, new_value)
+	sync_to_attribute()
 	if save:
 		State.queue_svg_save()
+
+func sync_to_attribute() -> void:
+	sync(element.get_attribute_value(attribute_name))
 
 
 func _ready() -> void:
@@ -27,9 +30,6 @@ func _on_element_attribute_changed(attribute_changed: String) -> void:
 
 func _on_focus_entered() -> void:
 	remove_theme_color_override("font_color")
-
-func sync_to_attribute() -> void:
-	set_value(element.get_attribute_value(attribute_name, true))
 
 func _on_text_submitted(new_text: String) -> void:
 	if new_text.is_empty() or\

@@ -8,9 +8,12 @@ const TransformPopup = preload("res://src/ui_widgets/transform_popup.tscn")
 
 func set_value(new_value: String, save := false) -> void:
 	element.set_attribute(attribute_name, new_value)
-	sync(element.get_attribute_value(attribute_name, true))
+	sync_to_attribute()
 	if save:
 		State.queue_svg_save()
+
+func sync_to_attribute() -> void:
+	sync(element.get_attribute_value(attribute_name))
 
 
 func _ready() -> void:
@@ -44,9 +47,6 @@ func _on_pressed() -> void:
 	var transform_popup := TransformPopup.instantiate()
 	transform_popup.attribute_ref = element.get_attribute(attribute_name)
 	HandlerGUI.popup_under_rect(transform_popup, get_global_rect(), get_viewport())
-
-func sync_to_attribute() -> void:
-	set_value(element.get_attribute_value(attribute_name, true))
 
 
 func _on_button_gui_input(event: InputEvent) -> void:

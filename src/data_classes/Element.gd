@@ -141,19 +141,21 @@ func get_attribute(attribute_name: String) -> Attribute:
 	return new_attribute(attribute_name)
 
 
-# "real" determines if we want the true value or fallback on defaults.
-func get_attribute_value(attribute_name: String, real := false) -> String:
+func get_attribute_value(attribute_name: String) -> String:
 	if has_attribute(attribute_name):
 		return _attributes[attribute_name].get_value()
-	if real:
-		return ""
+	return ""
+
+func get_implied_attribute_value(attribute_name: String) -> String:
+	if has_attribute(attribute_name):
+		return _attributes[attribute_name].get_value()
 	return get_default(attribute_name)
 
 
 func get_attribute_true_color(attribute_name: String) -> String:
 	if DB.get_attribute_type(attribute_name) != DB.AttributeType.COLOR:
 		push_error("Attribute not the correct type.")
-	var attrib_value := get_attribute_value(attribute_name)
+	var attrib_value := get_implied_attribute_value(attribute_name)
 	if attrib_value == "currentColor":
 		return get_default("color")
 	return attrib_value
@@ -233,9 +235,9 @@ func set_attribute(attrib_name: String, value: Variant) -> void:
 func get_default(attribute_name: String) -> String:
 	if attribute_name in DB.propagated_attributes:
 		if is_parent_g():
-			return parent.get_attribute_value(attribute_name)
+			return parent.get_implied_attribute_value(attribute_name)
 		elif svg != null:
-			return svg.get_attribute_value(attribute_name)
+			return svg.get_implied_attribute_value(attribute_name)
 	return _get_own_default(attribute_name)
 
 func get_all_attributes() -> Array:
@@ -250,8 +252,8 @@ func duplicate(include_children := true) -> Element:
 	else:
 		new_element = type.new()
 	
-	for attribute in _attributes:
-		new_element.set_attribute(attribute, get_attribute_value(attribute))
+	for attribute_name in _attributes:
+		new_element.set_attribute(attribute_name, _attributes[attribute_name].get_value())
 	
 	if include_children:
 		for i in get_child_count():
@@ -263,7 +265,7 @@ func apply_to(element: Element, dropped_attributes: PackedStringArray) -> void:
 	element._child_elements = _child_elements
 	for attribute_name in _attributes:
 		if not attribute_name in dropped_attributes:
-			element.set_attribute(attribute_name, get_attribute_value(attribute_name))
+			element.set_attribute(attribute_name, _attributes[attribute_name].get_value())
 
 # Converts a percentage numeric attribute to absolute.
 # TODO this is no longer used, but might become useful again in the future.
