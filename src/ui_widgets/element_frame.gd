@@ -57,7 +57,9 @@ func _ready() -> void:
 			unknown_container = HFlowContainer.new()
 			main_container.add_child(unknown_container)
 			main_container.move_child(unknown_container, 0)
-		unknown_container.add_child(AttributeFieldBuilder.create(attribute.name, element))
+		var unknown_field := AttributeFieldBuilder.create(attribute.name, element)
+		unknown_field.focus_entered.connect(State.normal_select.bind(element.xid))
+		unknown_container.add_child(unknown_field)
 	
 	var element_content: Control
 	if element.name in element_content_types:
@@ -169,18 +171,25 @@ func _on_mouse_exited() -> void:
 
 
 func get_inner_rect(idx: int) -> Rect2:
-	if element is ElementPath:
-		var inner_rect: Rect2 = main_container.get_child(0).path_field.get_inner_rect(idx)
-		inner_rect.position += main_container.position
-		inner_rect.position += main_container.get_child(0).position
-		inner_rect.position += main_container.get_child(0).path_field.position
-		return inner_rect
-	elif element is ElementPolygon or element is ElementPolyline:
-		var inner_rect: Rect2 = main_container.get_child(0).points_field.get_inner_rect(idx)
-		inner_rect.position += main_container.position
-		inner_rect.position += main_container.get_child(0).position
-		inner_rect.position += main_container.get_child(0).points_field.position
-		return inner_rect
+	if element is ElementPath or element is ElementPolygon or element is ElementPolyline:
+		var attributes_container := main_container.get_child(0)
+		for attribute in element.get_all_attributes():
+			if not DB.is_attribute_recognized(element.name, attribute.name):
+				attributes_container = main_container.get_child(1)
+				break
+		
+		if element is ElementPath:
+			var inner_rect: Rect2 = attributes_container.path_field.get_inner_rect(idx)
+			inner_rect.position += main_container.position
+			inner_rect.position += attributes_container.position
+			inner_rect.position += attributes_container.path_field.position
+			return inner_rect
+		elif element is ElementPolygon or element is ElementPolyline:
+			var inner_rect: Rect2 = main_container.get_child(0).points_field.get_inner_rect(idx)
+			inner_rect.position += main_container.position
+			inner_rect.position += main_container.get_child(0).position
+			inner_rect.position += main_container.get_child(0).points_field.position
+			return inner_rect
 	return Rect2()
 
 func determine_selection_highlight() -> void:
