@@ -52,23 +52,20 @@ var add_move_button: Control
 
 func set_value(new_value: String, save := false) -> void:
 	element.set_attribute(attribute_name, new_value)
-	sync_to_attribute()
+	sync()
 	if save:
 		State.queue_svg_save()
-
-func sync_to_attribute() -> void:
-	sync(element.get_attribute_value(attribute_name))
 
 
 func setup() -> void:
 	Configs.language_changed.connect(update_translation)
-	sync_to_attribute()
+	sync()
 	element.attribute_changed.connect(_on_element_attribute_changed)
 	line_edit.tooltip_text = attribute_name
 	line_edit.text_submitted.connect(set_value.bind(true))
 	line_edit.text_changed.connect(setup_font)
 	line_edit.text_change_canceled.connect(func(): setup_font(line_edit.text))
-	line_edit.text_change_canceled.connect(sync_to_attribute)
+	line_edit.text_change_canceled.connect(sync)
 	line_edit.focus_entered.connect(_on_line_edit_focus_entered)
 	commands_container.draw.connect(_commands_draw)
 	commands_container.gui_input.connect(_on_commands_gui_input)
@@ -90,7 +87,7 @@ func get_inner_rect(index: int) -> Rect2:
 
 func _on_element_attribute_changed(attribute_changed: String) -> void:
 	if attribute_name == attribute_changed:
-		sync_to_attribute()
+		sync()
 
 func update_translation() -> void:
 	line_edit.placeholder_text = Translator.translate("No path data")
@@ -104,7 +101,14 @@ func setup_font(new_text: String) -> void:
 	else:
 		line_edit.remove_theme_font_override("font")
 
-func sync(new_value: String) -> void:
+var last_synced_value := " "  # Invalid initial string.
+
+func sync() -> void:
+	var new_value := element.get_attribute_value(attribute_name)
+	if last_synced_value == new_value:
+		return
+	last_synced_value = new_value
+	
 	line_edit.text = new_value
 	setup_font(new_value)
 	# A plus button for adding a move command if empty.
