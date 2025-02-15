@@ -24,31 +24,28 @@ func set_value(new_value: String, save := false) -> void:
 	if not new_value.is_empty():
 		# Validate the value.
 		if not is_valid(new_value):
-			sync_to_attribute()
+			sync()
 			return
 	new_value = ColorParser.add_hash_if_hex(new_value)
 	element.set_attribute(attribute_name, new_value)
-	sync_to_attribute()
+	sync()
 	if save:
 		State.queue_svg_save()
-
-func sync_to_attribute() -> void:
-	sync(element.get_attribute_value(attribute_name))
 
 func setup_placeholder() -> void:
 	placeholder_text = element.get_default(attribute_name).trim_prefix("#")
 
 
 func _ready() -> void:
-	Configs.basic_colors_changed.connect(resync)
-	sync_to_attribute()
+	Configs.basic_colors_changed.connect(sync)
+	sync()
 	element.attribute_changed.connect(_on_element_attribute_changed)
 	if attribute_name in DB.propagated_attributes:
 		element.ancestor_attribute_changed.connect(_on_element_ancestor_attribute_changed)
 	text_submitted.connect(set_value.bind(true))
 	focus_entered.connect(reset_font_color)
 	text_changed.connect(_on_text_changed)
-	text_change_canceled.connect(sync_to_attribute)
+	text_change_canceled.connect(sync)
 	pressed.connect(_on_pressed)
 	button_gui_input.connect(_on_button_gui_input)
 	# URLs and currentColor require to always listen for changes to the SVG.
@@ -60,12 +57,12 @@ func _ready() -> void:
 
 func _on_element_attribute_changed(attribute_changed: String) -> void:
 	if attribute_name == attribute_changed:
-		sync_to_attribute()
+		sync()
 
 func _on_element_ancestor_attribute_changed(attribute_changed: String) -> void:
 	if attribute_name == attribute_changed:
 		setup_placeholder()
-		resync()
+		sync()
 
 # Redraw in case the gradient might have changed.
 func _on_svg_changed() -> void:
@@ -167,10 +164,8 @@ func is_valid(color_text: String) -> bool:
 func _on_text_changed(new_text: String) -> void:
 	font_color = Configs.savedata.get_validity_color(!is_valid(new_text))
 
-func resync() -> void:
-	sync(text)
-
-func sync(new_value: String) -> void:
+func sync() -> void:
+	var new_value := element.get_attribute_value(attribute_name)
 	reset_font_color()
 	if ColorParser.add_hash_if_hex(new_value) == element.get_default(attribute_name):
 		font_color = Configs.savedata.basic_color_warning

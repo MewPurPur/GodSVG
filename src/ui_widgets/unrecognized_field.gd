@@ -6,22 +6,19 @@ var attribute_name: String  # Assume it doesn't propagate.
 
 func set_value(new_value: String, save := false) -> void:
 	element.set_attribute(attribute_name, new_value)
-	sync_to_attribute()
+	sync()
 	if save:
 		State.queue_svg_save()
-
-func sync_to_attribute() -> void:
-	sync(element.get_attribute_value(attribute_name))
 
 
 func _ready() -> void:
 	Configs.language_changed.connect(update_translation)
-	sync_to_attribute()
+	sync()
 	update_translation()
 	text_submitted.connect(set_value.bind(true))
 
-func sync(new_value: String) -> void:
-	text = new_value
+func sync() -> void:
+	text = element.get_attribute_value(attribute_name)
 
 func update_translation() -> void:
 	tooltip_text = attribute_name + "\n(%s)" %\

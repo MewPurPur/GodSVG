@@ -16,7 +16,7 @@ func set_value(new_value: String, save := false) -> void:
 			var numeric_value := NumstringParser.evaluate(new_value)
 			# Validate the value.
 			if !is_finite(numeric_value):
-				sync_to_attribute()
+				sync()
 				return
 			
 			if numeric_value > MAX_VALUE:
@@ -26,29 +26,26 @@ func set_value(new_value: String, save := false) -> void:
 			new_value = element.get_attribute(attribute_name).num_to_text(numeric_value)
 	
 	element.set_attribute(attribute_name, new_value)
-	sync_to_attribute()
+	sync()
 	if save:
 		State.queue_svg_save()
 
 func set_num(new_number: float, save := false) -> void:
 	set_value(element.get_attribute(attribute_name).num_to_text(new_number), save)
 
-func sync_to_attribute() -> void:
-	sync(element.get_attribute_value(attribute_name))
-
 func setup_placeholder() -> void:
 	placeholder_text = element.get_default(attribute_name)
 
 
 func _ready() -> void:
-	Configs.basic_colors_changed.connect(resync)
-	sync_to_attribute()
+	Configs.basic_colors_changed.connect(sync)
+	sync()
 	element.attribute_changed.connect(_on_element_attribute_changed)
 	if attribute_name in DB.propagated_attributes:
 		element.ancestor_attribute_changed.connect(_on_element_ancestor_attribute_changed)
 	text_submitted.connect(set_value.bind(true))
 	focus_entered.connect(reset_font_color)
-	text_change_canceled.connect(sync_to_attribute)
+	text_change_canceled.connect(sync)
 	button_gui_input.connect(_on_slider_gui_input)
 	tooltip_text = attribute_name
 	setup_placeholder()
@@ -56,17 +53,15 @@ func _ready() -> void:
 
 func _on_element_attribute_changed(attribute_changed: String) -> void:
 	if attribute_name == attribute_changed:
-		sync_to_attribute()
+		sync()
 
 func _on_element_ancestor_attribute_changed(attribute_changed: String) -> void:
 	if attribute_name == attribute_changed:
 		setup_placeholder()
-		resync()
+		sync()
 
-func resync() -> void:
-	sync(text)
-
-func sync(new_value: String) -> void:
+func sync() -> void:
+	var new_value := element.get_attribute_value(attribute_name)
 	text = new_value
 	reset_font_color()
 	if new_value == element.get_default(attribute_name):

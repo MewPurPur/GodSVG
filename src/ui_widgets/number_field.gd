@@ -22,32 +22,29 @@ func set_value(new_value: String, save := false) -> void:
 			var numeric_value := NumstringParser.evaluate(new_value)
 			# Validate the value.
 			if !is_finite(numeric_value):
-				sync_to_attribute()
+				sync()
 				return
 			
 			numeric_value = clampf(numeric_value, cached_min_value, cached_max_value)
 			new_value = element.get_attribute(attribute_name).num_to_text(numeric_value)
 	element.set_attribute(attribute_name, new_value)
-	sync_to_attribute()
+	sync()
 	if save:
 		State.queue_svg_save()
-
-func sync_to_attribute() -> void:
-	sync(element.get_attribute_value(attribute_name))
 
 func setup_placeholder() -> void:
 	placeholder_text = element.get_default(attribute_name)
 
 
 func _ready() -> void:
-	Configs.basic_colors_changed.connect(resync)
-	sync_to_attribute()
+	Configs.basic_colors_changed.connect(sync)
+	sync()
 	element.attribute_changed.connect(_on_element_attribute_changed)
 	if attribute_name in DB.propagated_attributes:
 		element.ancestor_attribute_changed.connect(_on_element_ancestor_attribute_changed)
 	tooltip_text = attribute_name
 	text_submitted.connect(set_value.bind(true))
-	text_change_canceled.connect(sync_to_attribute)
+	text_change_canceled.connect(sync)
 	focus_entered.connect(_on_focus_entered)
 	setup_placeholder()
 
@@ -59,15 +56,13 @@ func _on_element_attribute_changed(attribute_changed: String) -> void:
 func _on_element_ancestor_attribute_changed(attribute_changed: String) -> void:
 	if attribute_name == attribute_changed:
 		setup_placeholder()
-		resync()
+		sync()
 
 func _on_focus_entered() -> void:
 	remove_theme_color_override("font_color")
 
-func resync() -> void:
-	sync(text)
-
-func sync(new_value: String) -> void:
+func sync() -> void:
+	var new_value := element.get_attribute_value(attribute_name)
 	text = new_value
 	remove_theme_color_override("font_color")
 	if new_value == element.get_default(attribute_name):
