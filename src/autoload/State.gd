@@ -532,6 +532,21 @@ func is_selected(xid: PackedInt32Array, inner_idx := -1, propagate := false) -> 
 		else:
 			return semi_selected_xid == xid and inner_idx in inner_selections
 
+# Returns whether the selection matches a subpath.
+func is_selection_subpath() -> bool:
+	if semi_selected_xid.is_empty() or inner_selections.is_empty():
+		return false
+
+	var element_ref := root_element.get_xnode(semi_selected_xid)
+	if not element_ref is ElementPath:
+		return false
+
+	var subpath: Vector2i = element_ref.get_attribute("d").get_subpath(inner_selections[0])
+	for i in range(subpath.x, subpath.y):
+		if not i in inner_selections:
+			return false
+	return true
+
 
 func _on_xnodes_added(xids: Array[PackedInt32Array]) -> void:
 	selected_xids = xids.duplicate()
@@ -661,11 +676,20 @@ func delete_selected() -> void:
 		queue_svg_save()
 
 func move_up_selected() -> void:
-	root_element.move_xnodes_in_parent(selected_xids, false)
-	queue_svg_save()
+	_move_selected(false)
 
 func move_down_selected() -> void:
-	root_element.move_xnodes_in_parent(selected_xids, true)
+	_move_selected(true)
+
+func _move_selected(down: bool) -> void:
+	if not selected_xids.is_empty():
+		root_element.move_xnodes_in_parent(selected_xids, down)
+	elif not semi_selected_xid.is_empty():
+		var xnode := root_element.get_xnode(semi_selected_xid)
+		if not xnode is ElementPath:
+			return
+		# TODO
+		#xnode.get_attribute("d").move_subpath(inner_selections[0], down)
 	queue_svg_save()
 
 func view_in_list(xid: PackedInt32Array, inner_index := -1) -> void:
@@ -779,6 +803,20 @@ func get_selection_context(popup_method: Callable, context: Context) -> ContextP
 								Translator.translate("Convert To"),
 								popup_convert_to_context.bind(popup_method), false,
 								load("res://assets/icons/Reload.svg")))
+				if is_selection_subpath():
+					# TODO
+					var can_move_up := false
+					var can_move_down := false
+					if can_move_up:
+						btn_arr.append(ContextPopup.create_button(
+								Translator.translate("Move Subpath Up"),
+								move_up_selected, false,
+								load("res://visual/icons/MoveUp.svg"), "move_up"))
+					if can_move_down:
+						btn_arr.append(ContextPopup.create_button(
+								Translator.translate("Move Subpath Down"),
+								move_down_selected, false,
+								load("res://visual/icons/MoveDown.svg"), "move_down"))
 			"polygon", "polyline":
 				if inner_selections.size() == 1:
 					btn_arr.append(ContextPopup.create_button(
