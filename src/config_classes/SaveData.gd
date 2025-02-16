@@ -640,13 +640,13 @@ func _add_new_tab() -> void:
 	var new_id := 1
 	while true:
 		if not new_id in used_ids:
-			var new_tab := TabData.new(new_id)
-			new_tab.is_new = true
-			new_tab.changed.connect(emit_changed)
-			new_tab.name_changed.connect(_on_tab_name_changed.bind(new_id))
-			_tabs.append(new_tab)
-			return
+			break
 		new_id += 1
+	var new_tab := TabData.new(new_id)
+	new_tab.fully_loaded = false
+	new_tab.changed.connect(emit_changed)
+	new_tab.name_changed.connect(_on_tab_name_changed.bind(new_id))
+	_tabs.append(new_tab)
 
 func add_empty_tab() -> void:
 	_add_new_tab()
