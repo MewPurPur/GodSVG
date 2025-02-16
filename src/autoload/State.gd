@@ -4,8 +4,6 @@ extends Node
 const OptionsDialog = preload("res://src/ui_widgets/options_dialog.tscn")
 const PathCommandPopup = preload("res://src/ui_widgets/path_popup.tscn")
 
-const DEFAULT_SVG = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"></svg>'
-
 const path_actions_dict: Dictionary[String, String] = {
 	"move_absolute": "M", "move_relative": "m",
 	"line_absolute": "L", "line_relative": "l",
@@ -43,8 +41,11 @@ var _update_pending := false
 
 # "unstable_text" is the current state, which might have errors (i.e., while using the
 # code editor). "text" is the last state without errors.
-# These both differ from "Configs.svg_text" which is the state as saved to file,
+# These both differ from the TabData svg_text, which is the state as saved to file,
 # which doesn't happen while dragging handles or typing in the code editor for example.
+# "last_saved_svg_text" is a variable set temporarily when a save is requested, so that
+# any changes made between the request and the deferred sync don't go in the undo stack.
+var last_saved_svg_text := ""
 var unstable_svg_text := ""
 var svg_text := ""
 var root_element := ElementRoot.new()
@@ -88,14 +89,14 @@ func setup_from_tab() -> void:
 	var new_text := active_tab.get_svg_text()
 	
 	if not transient_tab_path.is_empty():
-		apply_svg_text(DEFAULT_SVG, false)
+		apply_svg_text(TabData.DEFAULT_SVG, false)
 		return
 	
 	if not new_text.is_empty():
 		apply_svg_text(new_text)
 		return
 	
-	if not active_tab.is_new and not FileAccess.file_exists(active_tab.get_edited_file_path()):
+	if active_tab.fully_loaded and not FileAccess.file_exists(active_tab.get_edited_file_path()):
 		var user_facing_path := active_tab.svg_file_path
 		var message := Translator.translate(
 				"The last edited state of this tab could not be found.")
@@ -115,10 +116,10 @@ func setup_from_tab() -> void:
 					Configs.savedata.remove_active_tab)
 			options_dialog.add_option(Translator.translate("Restore"),
 					FileUtils.reset_svg, true)
-		apply_svg_text(DEFAULT_SVG, false)
+		apply_svg_text(TabData.DEFAULT_SVG, false)
 		return
 	
-	active_tab.setup_svg_text(DEFAULT_SVG)
+	active_tab.setup_svg_text(TabData.DEFAULT_SVG)
 	sync_elements()
 
 
@@ -134,13 +135,17 @@ func _update() -> void:
 	svg_text = SVGParser.root_to_editor_text(root_element)
 	svg_changed.emit()
 
+
 # Ensure the save happens after the update.
 func queue_svg_save() -> void:
+	_update()
+	last_saved_svg_text = svg_text
 	_svg_save.call_deferred()
 
 func _svg_save() -> void:
 	unstable_svg_text = ""
-	Configs.savedata.get_active_tab().set_svg_text(svg_text)
+	Configs.savedata.get_active_tab().set_svg_text(last_saved_svg_text)
+	last_saved_svg_text = ""
 
 
 func sync_elements() -> void:

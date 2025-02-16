@@ -230,7 +230,7 @@ static func _apply_svg(data: Variant, file_path: String) -> void:
 	
 	# If the active tab is empty, replace it. Otherwise make it a new transient tab.
 	# If there are already too many tabs, do nothing.
-	if Configs.savedata.get_active_tab().is_empty_and_unsaved:
+	if Configs.savedata.get_active_tab().empty_unsaved:
 		var warning_panel := ImportWarningMenu.instantiate()
 		var tab_index := Configs.savedata.get_active_tab_index()
 		Configs.savedata.add_tab_with_path(file_path)

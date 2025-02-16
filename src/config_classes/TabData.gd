@@ -1,6 +1,7 @@
 # A resource that keeps track of the tabs.
 class_name TabData extends ConfigResource
 
+const DEFAULT_SVG = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"></svg>'
 const EDITED_FILES_DIR = "user://edited"
 
 signal name_changed
@@ -12,8 +13,8 @@ var presented_name: String:
 
 var active := false
 
-var is_new := false
-var is_empty_and_unsaved := false
+var fully_loaded := true
+var empty_unsaved := false
 var undo_redo: UndoRedo
 var reference_image: Texture2D
 
@@ -49,7 +50,7 @@ func setup_svg_text(new_text: String) -> void:
 	_svg_text = new_text
 	State.svg_text = new_text
 	_save_svg_text()
-	is_new = false
+	fully_loaded = true
 
 func get_svg_text() -> String:
 	return _svg_text
@@ -104,12 +105,12 @@ func _sync() -> void:
 		# It's always in the end anyway so it can't hide useless info.
 		# And also, it prevents ".svg" from being presented as an empty string.
 		presented_name = svg_file_path.get_file()
-		is_empty_and_unsaved = false
+		empty_unsaved = false
 	elif SVGParser.text_check_is_root_empty(get_true_svg_text()):
-		is_empty_and_unsaved = true
+		empty_unsaved = true
 		presented_name = "[ %s ]" % Translator.translate("Empty")
 	else:
-		is_empty_and_unsaved = false
+		empty_unsaved = false
 		presented_name = "[ %s ]" % Translator.translate("Unsaved")
 
 
