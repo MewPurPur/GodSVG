@@ -305,6 +305,11 @@ func add_advice(text: String) -> void:
 func show_advice(setting: String) -> void:
 	if advice.has(setting):
 		advice_label.text = advice[setting]
+		var advice_font_size := 13
+		advice_label.add_theme_font_size_override("font_size", advice_font_size)
+		while advice_label.get_line_count() > 2:
+			advice_font_size -= 1
+			advice_label.add_theme_font_size_override("font_size", advice_font_size)
 
 func hide_advice(setting: String) -> void:
 	if advice.has(setting) and advice_label.text == advice[setting]:
