@@ -330,11 +330,8 @@ func _on_language_pressed() -> void:
 		# message count of English messages by the message count of the locale.
 		if lang != "en":
 			var translation_obj := TranslationServer.get_translation_object(lang)
-			var fuzzied_count := strings_count - translation_obj.get_message_count()
-			var translated_count := -fuzzied_count
-			for msg in translation_obj.get_message_list():
-				if not msg.is_empty():
-					translated_count += 1
+			var translated_count := 2 * translation_obj.get_message_count() -\
+					strings_count - translation_obj.get_message_list().count("")
 			var percentage :=\
 					Utils.num_simple(translated_count * 100.0 / strings_count, 1) + "%"
 			
