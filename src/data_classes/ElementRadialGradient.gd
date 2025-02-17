@@ -12,7 +12,7 @@ func _get_own_default(attribute_name: String) -> String:
 		_: return ""
 
 func get_percentage_handling(attribute_name: String) -> DB.PercentageHandling:
-	if get_attribute_value("gradientUnits") == "objectBoundingBox" and\
+	if get_attribute_value("gradientUnits") in ["objectBoundingBox", ""] and\
 	attribute_name in ["cx", "cy", "r"]:
 		return DB.PercentageHandling.FRACTION
 	else:

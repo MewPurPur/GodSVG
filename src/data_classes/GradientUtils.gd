@@ -16,8 +16,9 @@ static func generate_gradient(element: Element) -> Gradient:
 		
 		current_offset = clamp(child.get_attribute_num("offset"), current_offset, 1.0)
 		gradient.add_point(current_offset,
-				Color(ColorParser.text_to_color(child.get_attribute_value("stop-color")),
+				Color(ColorParser.text_to_color(child.get_attribute_true_color("stop-color")),
 				child.get_attribute_num("stop-opacity")))
+		
 		if is_gradient_empty:
 			is_gradient_empty = false
 			gradient.remove_point(0)

@@ -814,12 +814,12 @@ func get_selection_context(popup_method: Callable, context: Context) -> ContextP
 					var can_move_down := false
 					if can_move_up:
 						btn_arr.append(ContextPopup.create_button(
-								Translator.translate("Move Subpath Up"),
+								Translator.translate("Move Up"), # Change to "Move Subpath Up"
 								move_up_selected, false,
 								load("res://visual/icons/MoveUp.svg"), "move_up"))
 					if can_move_down:
 						btn_arr.append(ContextPopup.create_button(
-								Translator.translate("Move Subpath Down"),
+								Translator.translate("Move Down"), # Change to "Move Subpath Down"
 								move_down_selected, false,
 								load("res://visual/icons/MoveDown.svg"), "move_down"))
 			"polygon", "polyline":
