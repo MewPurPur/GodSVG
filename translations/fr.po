@@ -1243,9 +1243,6 @@ msgstr ""
 "L'extension de fichier est vide. Seuls les fichiers {extension_list} sont "
 "supportés."
 
-#~ msgid "Godot third-party components"
-#~ msgstr "Composants Godot tiers"
-
 #~ msgid "Wrap mouse"
 #~ msgstr ""
 #~ "Déplacer la souris d'un bout à l'autre de l'écran lorsque le bord est "

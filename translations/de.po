@@ -1241,9 +1241,6 @@ msgstr ""
 "Die Dateierweiterung ist leer. Nur {extension_list} Dateien werden "
 "unterstützt."
 
-#~ msgid "Godot third-party components"
-#~ msgstr "Godot Drittanbieter-Komponente"
-
 #~ msgid "Wrap mouse"
 #~ msgstr "Maus einschließen"
 

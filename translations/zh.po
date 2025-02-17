@@ -1232,9 +1232,6 @@ msgstr ""
 msgid "The file extension is empty. Only {extension_list} files are supported."
 msgstr "文件扩展名为空。只有 {extension_list} 内的文件受支持。"
 
-#~ msgid "Godot third-party components"
-#~ msgstr "Godot 第三方组件"
-
 #~ msgid "Wrap mouse"
 #~ msgstr "连续拖拽"
 

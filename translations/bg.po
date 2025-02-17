@@ -870,7 +870,6 @@ msgid "Scroll forwards"
 msgstr "Превърти напред"
 
 #: src/ui_parts/tab_bar.gd
-#, fuzzy
 msgid "This SVG is not bound to a file location yet."
 msgstr "Това SVG не е свързано с местоположение на компютъра."
 
