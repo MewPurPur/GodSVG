@@ -9,6 +9,8 @@ func setup_svg_without_dimensions(svg_text: String) -> void:
 	setup_svg(svg_text, SVGParser.text_to_root(svg_text).svg.get_size())
 
 func setup_svg(svg_text: String, dimensions: Vector2) -> void:
+	if not is_node_ready():
+		await ready
 	var scaling_factor := size.x / maxf(dimensions.x, dimensions.y)
 	var img := Image.new()
 	var err := img.load_svg_from_string(svg_text, scaling_factor)
@@ -43,3 +45,11 @@ func _set_image(image: Image) -> void:
 	var image_texture := ImageTexture.create_from_image(image)
 	texture_preview.texture = image_texture
 	checkerboard.custom_minimum_size = image_texture.get_size()
+	checkerboard.material.set_shader_parameter("uv_scale",
+			256 / maxf(image_texture.get_width(), image_texture.get_height()))
+
+func shrink_to_fit(true_minimum_width: float, true_minimum_height: float) -> void:
+	if not is_node_ready():
+		await ready
+	custom_minimum_size.x = maxf(checkerboard.custom_minimum_size.x, true_minimum_width)
+	custom_minimum_size.y = maxf(checkerboard.custom_minimum_size.y, true_minimum_height)

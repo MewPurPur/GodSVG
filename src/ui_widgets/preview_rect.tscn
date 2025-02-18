@@ -6,10 +6,9 @@
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_y7eee"]
 shader = ExtResource("2_qrqjp")
-shader_parameter/uv_scale = 1.6
+shader_parameter/uv_scale = 1.0
 
 [node name="PreviewRect" type="CenterContainer"]
-custom_minimum_size = Vector2(128, 128)
 script = ExtResource("1_n2xbu")
 
 [node name="Checkerboard" type="TextureRect" parent="."]

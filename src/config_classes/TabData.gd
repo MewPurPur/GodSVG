@@ -76,7 +76,10 @@ func _init(new_id := -1) -> void:
 	super()
 
 func get_edited_file_path() -> String:
-	return "%s/save%d.svg" % [EDITED_FILES_DIR, id]
+	return get_edited_file_path_for_id(id)
+
+static func get_edited_file_path_for_id(checked_id: int) -> String:
+	return "%s/save%d.svg" % [EDITED_FILES_DIR, checked_id]
 
 
 func _notification(what: int) -> void:
