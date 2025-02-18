@@ -81,6 +81,19 @@ func get_edited_file_path() -> String:
 static func get_edited_file_path_for_id(checked_id: int) -> String:
 	return "%s/save%d.svg" % [EDITED_FILES_DIR, checked_id]
 
+# Method for showing the file path without stuff like "/home/mewpurpur/".
+# This information is pretty much always unnecessary clutter.
+func get_presented_svg_file_path() -> String:
+	var home_dir: String
+	if OS.get_name() == "Windows":
+		home_dir = OS.get_environment("USERPROFILE")
+	else:
+		home_dir = OS.get_environment("HOME")
+	
+	if svg_file_path.begins_with(home_dir):
+		return svg_file_path.trim_prefix(home_dir).trim_prefix("/").trim_prefix("\\")
+	return svg_file_path
+
 
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_PREDELETE:

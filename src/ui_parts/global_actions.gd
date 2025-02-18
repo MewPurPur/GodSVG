@@ -5,7 +5,7 @@ extends HBoxContainer
 @onready var more_options: Button = $LeftSide/MoreOptions
 @onready var settings_button: Button = $LeftSide/SettingsButton
 @onready var size_button: Button = $RightSide/SizeButton
-@onready var file_button: Button = $RightSide/FileButton
+@onready var file_button: Button = $RightSide/CurrentFileButton
 
 func update_translations() -> void:
 	import_button.tooltip_text = Translator.translate("Import")
@@ -15,12 +15,8 @@ func update_translations() -> void:
 func _ready() -> void:
 	Configs.language_changed.connect(update_translations)
 	update_translations()
-	
 	State.svg_changed.connect(update_size_button)
-	Configs.active_tab_name_changed.connect(update_file_button)
-	Configs.active_tab_changed.connect(update_file_button)
 	Configs.basic_colors_changed.connect(update_size_button_colors)
-	update_file_button()
 	
 	# Fix the size button sizing.
 	size_button.begin_bulk_theme_override()
@@ -35,7 +31,6 @@ func _ready() -> void:
 	export_button.pressed.connect(ShortcutUtils.fn("export"))
 	more_options.pressed.connect(_on_more_options_pressed)
 	size_button.pressed.connect(_on_size_button_pressed)
-	file_button.pressed.connect(_on_file_button_pressed)
 	settings_button.pressed.connect(ShortcutUtils.fn_call.bind("open_settings"))
 
 
@@ -47,29 +42,6 @@ func _on_size_button_pressed() -> void:
 	var context_popup := ContextPopup.new()
 	context_popup.setup(btn_array, true)
 	HandlerGUI.popup_under_rect_center(context_popup, size_button.get_global_rect(),
-			get_viewport())
-
-func _on_file_button_pressed() -> void:
-	var btn_array: Array[Button] = []
-	btn_array.append(ContextPopup.create_button(Translator.translate("Save SVG"),
-			FileUtils.save_svg, false, load("res://assets/icons/Save.svg"), "save"))
-	btn_array.append(ContextPopup.create_button(Translator.translate("Save SVG as…"),
-			FileUtils.save_svg_as, false, load("res://assets/icons/Save.svg"), "save_as"))
-	btn_array.append(ContextPopup.create_button(Translator.translate("Reset SVG"),
-			ShortcutUtils.fn("reset_svg"),
-			FileUtils.compare_svg_to_disk_contents() != FileUtils.FileState.DIFFERENT,
-			load("res://assets/icons/Reload.svg"), "reset_svg"))
-	btn_array.append(ContextPopup.create_button(Translator.translate("Open externally"),
-			ShortcutUtils.fn("open_externally"),
-			not FileAccess.file_exists(Configs.savedata.get_active_tab().svg_file_path),
-			load("res://assets/icons/OpenFile.svg"), "open_externally"))
-	btn_array.append(ContextPopup.create_button(Translator.translate("Show in File Manager"),
-			ShortcutUtils.fn("open_in_folder"),
-			not FileAccess.file_exists(Configs.savedata.get_active_tab().svg_file_path),
-			load("res://assets/icons/OpenFolder.svg"), "open_in_folder"))
-	var context_popup := ContextPopup.new()
-	context_popup.setup(btn_array, true, file_button.size.x, -1, PackedInt32Array([2]))
-	HandlerGUI.popup_under_rect_center(context_popup, file_button.get_global_rect(),
 			get_viewport())
 
 func _on_more_options_pressed() -> void:
@@ -142,11 +114,3 @@ func update_size_button_colors() -> void:
 		size_button.add_theme_color_override(theming,
 				Configs.savedata.basic_color_warning.lerp(Color.WHITE, 0.5))
 	size_button.end_bulk_theme_override()
-
-func update_file_button() -> void:
-	var file_name := State.transient_tab_path.get_file() if\
-			not State.transient_tab_path.is_empty() else\
-			Configs.savedata.get_active_tab().presented_name
-	file_button.text = file_name
-	file_button.tooltip_text = file_name
-	Utils.set_max_text_width(file_button, 140.0, 12.0)
