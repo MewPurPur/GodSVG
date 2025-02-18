@@ -1,5 +1,7 @@
 extends Control
 
+const PreviewRect = preload("res://src/ui_widgets/preview_rect.tscn")
+
 const plus_icon = preload("res://assets/icons/Plus.svg")
 const close_icon = preload("res://assets/icons/Close.svg")
 const scroll_forwards_icon = preload("res://assets/icons/ScrollForwards.svg")
@@ -421,7 +423,53 @@ func _get_tooltip(at_position: Vector2) -> String:
 	var current_tab := Configs.savedata.get_tab(hovered_tab_idx)
 	if current_tab.svg_file_path.is_empty():
 		return Translator.translate("This SVG is not bound to a file location yet.")
-	return current_tab.svg_file_path
+	# We have to pass some metadata to the tooltip.
+	# Since "*" isn't valid in filepaths, we use it as a delimiter.
+	elif hovered_tab_idx == Configs.savedata.get_active_tab_index():
+		return "%s*hovered" % current_tab.svg_file_path
+	
+	return "%s*%d" % [current_tab.svg_file_path, current_tab.id]
+
+func _make_custom_tooltip(for_text: String) -> Object:
+	var asterisk_pos := for_text.find("*")
+	if asterisk_pos == -1:
+		return null
+	
+	var path := for_text.left(asterisk_pos)
+	var label := Label.new()
+	label.add_theme_font_override("font", ThemeUtils.mono_font)
+	label.add_theme_font_size_override("font_size", 12)
+	label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	label.custom_minimum_size.x = 192
+	label.text = path
+	
+	var metadata := for_text.right(-asterisk_pos - 1)
+	if metadata == "hovered":
+		return label
+	
+	var id := metadata.to_int()
+	var margin_container := MarginContainer.new()
+	var tooltip_panel_stylebox := get_theme_stylebox("panel", "TooltipPanel")
+	margin_container.begin_bulk_theme_override()
+	margin_container.add_theme_constant_override("margin_top",
+			int(8 - tooltip_panel_stylebox.content_margin_top))
+	margin_container.add_theme_constant_override("margin_bottom",
+			int(8 - tooltip_panel_stylebox.content_margin_bottom))
+	margin_container.add_theme_constant_override("margin_left",
+			int(8 - tooltip_panel_stylebox.content_margin_left))
+	margin_container.end_bulk_theme_override()
+	var hbox := HBoxContainer.new()
+	hbox.add_theme_constant_override("separation", 8)
+	var preview_rect := PreviewRect.instantiate()
+	hbox.add_child(preview_rect)
+	preview_rect.custom_minimum_size = Vector2(96, 96)
+	preview_rect.size = Vector2.ZERO
+	preview_rect.setup_svg_without_dimensions(FileAccess.get_file_as_string(
+			TabData.get_edited_file_path_for_id(id)))
+	preview_rect.shrink_to_fit(16, 16)
+	hbox.add_child(label)
+	margin_container.add_child(hbox)
+	return margin_container
 
 
 func get_tab_index_at(pos: Vector2) -> int:
