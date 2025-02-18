@@ -1241,9 +1241,6 @@ msgstr ""
 "Deze bestandsextensie is leeg. Alleen {extension_list} bestanden zijn "
 "ondersteund."
 
-#~ msgid "Godot third-party components"
-#~ msgstr "Godot derde partij componenten"
-
 #~ msgid "Wrap mouse"
 #~ msgstr "Wikkel muis"
 
