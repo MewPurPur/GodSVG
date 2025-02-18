@@ -404,7 +404,6 @@ func activate() -> void:
 		add_child(add_button)
 		active_controls.append(add_button)
 		add_button.pressed.connect(Configs.savedata.add_empty_tab)
-	
 
 
 func _get_tooltip(at_position: Vector2) -> String:
@@ -426,9 +425,9 @@ func _get_tooltip(at_position: Vector2) -> String:
 	# We have to pass some metadata to the tooltip.
 	# Since "*" isn't valid in filepaths, we use it as a delimiter.
 	elif hovered_tab_idx == Configs.savedata.get_active_tab_index():
-		return "%s*hovered" % current_tab.svg_file_path
+		return "%s*hovered" % current_tab.get_presented_svg_file_path()
 	
-	return "%s*%d" % [current_tab.svg_file_path, current_tab.id]
+	return "%s*%d" % [current_tab.get_presented_svg_file_path(), current_tab.id]
 
 func _make_custom_tooltip(for_text: String) -> Object:
 	var asterisk_pos := for_text.find("*")
@@ -440,8 +439,8 @@ func _make_custom_tooltip(for_text: String) -> Object:
 	label.add_theme_font_override("font", ThemeUtils.mono_font)
 	label.add_theme_font_size_override("font_size", 12)
 	label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	label.custom_minimum_size.x = 192
 	label.text = path
+	Utils.set_max_text_width(label, 192.0, 4.0)
 	
 	var metadata := for_text.right(-asterisk_pos - 1)
 	if metadata == "hovered":
