@@ -265,8 +265,8 @@ static func _on_import_panel_canceled_transient_scenario() -> void:
 
 static func _on_import_panel_accepted_transient_scenario(
 file_path: String, svg_text: String) -> void:
-	State.transient_tab_path = ""
 	Configs.savedata.add_tab_with_path(file_path)
+	State.transient_tab_path = ""
 	Configs.savedata.get_active_tab().setup_svg_text(svg_text)
 	State.sync_elements()
 
