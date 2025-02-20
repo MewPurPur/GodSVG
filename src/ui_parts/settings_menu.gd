@@ -396,8 +396,8 @@ func _on_language_pressed() -> void:
 			
 			btn_arr.append(ret_button)
 		else:
-			var new_btn := ContextPopup.create_button("%s (EN)" %\
-					TranslationServer.get_locale_name(locale), Callable(), is_current_locale)
+			var new_btn := ContextPopup.create_button("English (EN)",
+					_on_language_chosen.bind(locale), is_current_locale)
 			btn_arr.append(new_btn)
 	
 	var lang_popup := ContextPopup.new()
