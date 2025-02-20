@@ -50,8 +50,8 @@ func _on_tab_changed(idx: int) -> void:
 			authors_list.setup()
 			
 			# There can be multiple translators for a single locale.
-			for lang in TranslationServer.get_loaded_locales():
-				var credits := TranslationServer.get_translation_object(lang).get_message(
+			for locale in TranslationServer.get_loaded_locales():
+				var credits := TranslationServer.get_translation_object(locale).get_message(
 						"translation-credits").split(",", false)
 				if credits.is_empty():
 					continue
@@ -60,7 +60,7 @@ func _on_tab_changed(idx: int) -> void:
 					credits[i] = credits[i].strip_edges()
 				
 				var label := Label.new()
-				label.text = TranslationServer.get_locale_name(lang) + " (%s):" % lang.to_upper()
+				label.text = TranslationUtils.get_locale_display(locale)
 				translations_list.add_child(label)
 				var list := PanelGrid.new()
 				list.stylebox = authors_list.stylebox

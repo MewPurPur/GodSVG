@@ -337,22 +337,8 @@ func _on_language_pressed() -> void:
 			var percentage :=\
 					Utils.num_simple(translated_count * 100.0 / strings_count, 1) + "%"
 			
-			var locale_name: String
-			match locale:
-				"pt_BR": locale_name = "Brazilian Portuguese"
-				"zh_CN": locale_name = "Simplified Chinese"
-				_: locale_name = TranslationServer.get_locale_name(locale)
-			
-			var locale_string: String
-			if "_" in locale:
-				var underscore_pos := locale.find("_")
-				locale_string = locale.left(underscore_pos) + "-" +\
-						locale.right(-underscore_pos - 1).to_upper()
-			else:
-				locale_string = locale.to_upper()
-			
 			var new_btn := ContextPopup.create_button(
-					"%s (%s)" % [locale_name, locale_string], Callable(), is_current_locale)
+					TranslationUtils.get_locale_display(locale), Callable(), is_current_locale)
 			
 			var ret_button := Button.new()
 			ret_button.theme_type_variation = "ContextButton"
@@ -396,7 +382,8 @@ func _on_language_pressed() -> void:
 			
 			btn_arr.append(ret_button)
 		else:
-			var new_btn := ContextPopup.create_button("English (EN)",
+			var new_btn := ContextPopup.create_button(
+					TranslationUtils.get_locale_display(locale),
 					_on_language_chosen.bind(locale), is_current_locale)
 			btn_arr.append(new_btn)
 	
