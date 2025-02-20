@@ -36,7 +36,7 @@ icon: Texture2D = null, shortcut := "") -> Button:
 							main_button.get_theme_stylebox("normal", "ContextButton"))
 				var internal_hbox := HBoxContainer.new()
 				main_button.mouse_filter = Control.MOUSE_FILTER_IGNORE  # Unpressable.
-				internal_hbox.add_theme_constant_override("separation", 6)
+				internal_hbox.add_theme_constant_override("separation", 12)
 				main_button.add_theme_color_override("icon_normal_color",
 						ret_button.get_theme_color("icon_normal_color", "ContextButton"))
 				var label_margin := MarginContainer.new()
@@ -107,7 +107,7 @@ start_pressed: bool, shortcut := "") -> CheckBox:
 							checkbox.get_theme_stylebox("normal", "ContextButton"))
 				var internal_hbox := HBoxContainer.new()
 				checkbox.mouse_filter = Control.MOUSE_FILTER_IGNORE  # Unpressable.
-				internal_hbox.add_theme_constant_override("separation", 6)
+				internal_hbox.add_theme_constant_override("separation", 12)
 				checkbox.add_theme_color_override("icon_normal_color",
 						ret_button.get_theme_color("icon_normal_color", "ContextButton"))
 				var label_margin := MarginContainer.new()

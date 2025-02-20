@@ -320,7 +320,9 @@ func _on_language_pressed() -> void:
 	var strings_count := TranslationServer.get_translation_object("en").get_message_count()
 	
 	var btn_arr: Array[Button] = []
-	for lang in TranslationServer.get_loaded_locales():
+	for locale in TranslationServer.get_loaded_locales():
+		var is_current_locale := (locale == TranslationServer.get_locale())
+		
 		# Translation percentages.
 		# TODO Godot drove me insane here. So Translation.get_translated_message() gets
 		# all the translations, even the fuzzied ones that aren't used... whuh?
@@ -328,17 +330,29 @@ func _on_language_pressed() -> void:
 		# for all the translations... except the fuzzied ones for some reason? WHAT?!
 		# We solve this by finding the number of fuzzied strings by subtracting the
 		# message count of English messages by the message count of the locale.
-		if lang != "en":
-			var translation_obj := TranslationServer.get_translation_object(lang)
+		if locale != "en":
+			var translation_obj := TranslationServer.get_translation_object(locale)
 			var translated_count := 2 * translation_obj.get_message_count() -\
 					strings_count - translation_obj.get_message_list().count("")
 			var percentage :=\
 					Utils.num_simple(translated_count * 100.0 / strings_count, 1) + "%"
 			
-			var is_current_locale := (lang == TranslationServer.get_locale())
+			var locale_name: String
+			match locale:
+				"pt_BR": locale_name = "Brazilian Portuguese"
+				"zh_CN": locale_name = "Simplified Chinese"
+				_: locale_name = TranslationServer.get_locale_name(locale)
+			
+			var locale_string: String
+			if "_" in locale:
+				var underscore_pos := locale.find("_")
+				locale_string = locale.left(underscore_pos) + "-" +\
+						locale.right(-underscore_pos - 1).to_upper()
+			else:
+				locale_string = locale.to_upper()
+			
 			var new_btn := ContextPopup.create_button(
-					TranslationServer.get_locale_name(lang) + " (" + lang.to_upper() + ")",
-					Callable(), is_current_locale)
+					"%s (%s)" % [locale_name, locale_string], Callable(), is_current_locale)
 			
 			var ret_button := Button.new()
 			ret_button.theme_type_variation = "ContextButton"
@@ -353,7 +367,7 @@ func _on_language_pressed() -> void:
 						new_btn.get_theme_stylebox("normal", "ContextButton"))
 			var internal_hbox := HBoxContainer.new()
 			new_btn.mouse_filter = Control.MOUSE_FILTER_IGNORE  # Unpressable.
-			internal_hbox.add_theme_constant_override("separation", 6)
+			internal_hbox.add_theme_constant_override("separation", 12)
 			new_btn.add_theme_color_override("icon_normal_color",
 					ret_button.get_theme_color("icon_normal_color", "ContextButton"))
 			var label_margin := MarginContainer.new()
@@ -377,19 +391,19 @@ func _on_language_pressed() -> void:
 			label_margin.add_child(label)
 			internal_hbox.add_child(label_margin)
 			ret_button.add_child(internal_hbox)
-			ret_button.pressed.connect(_on_language_chosen.bind(lang))
+			ret_button.pressed.connect(_on_language_chosen.bind(locale))
 			ret_button.pressed.connect(HandlerGUI.remove_popup)
 			
 			btn_arr.append(ret_button)
 		else:
-			var new_btn := ContextPopup.create_button(
-					TranslationServer.get_locale_name(lang) + " (" + lang.to_upper() + ")",
-					_on_language_chosen.bind(lang), lang == TranslationServer.get_locale())
+			var new_btn := ContextPopup.create_button("%s (EN)" %\
+					TranslationServer.get_locale_name(locale), Callable(), is_current_locale)
 			btn_arr.append(new_btn)
 	
 	var lang_popup := ContextPopup.new()
 	lang_popup.setup(btn_arr, true)
-	HandlerGUI.popup_under_rect_center(lang_popup, lang_button.get_global_rect(), get_viewport())
+	HandlerGUI.popup_under_rect_center(lang_popup, lang_button.get_global_rect(),
+			get_viewport())
 
 func _on_language_chosen(locale: String) -> void:
 	Configs.savedata.language = locale
