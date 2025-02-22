@@ -849,7 +849,7 @@ msgid "This SVG is not bound to a file location yet."
 msgstr ""
 
 #: src/ui_parts/update_menu.gd
-msgid "Include prereleases"
+msgid "Show prereleases"
 msgstr ""
 
 #: src/ui_parts/update_menu.gd

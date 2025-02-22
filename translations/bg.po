@@ -867,9 +867,9 @@ msgstr "Превърти напред"
 msgid "This SVG is not bound to a file location yet."
 msgstr "Това SVG не е свързано с местоположение на компютъра."
 
-#: src/ui_parts/update_menu.gd
-msgid "Include prereleases"
-msgstr "Включи предварителните издания"
+#: src/ui_parts/update_menu.gd=
+msgid "Show prereleases"
+msgstr "Покажи предварителните издания"
 
 #: src/ui_parts/update_menu.gd
 msgid "Retry"

@@ -871,7 +871,8 @@ msgid "This SVG is not bound to a file location yet."
 msgstr "Das SVG ist noch nicht an einen Dateiort gebunden."
 
 #: src/ui_parts/update_menu.gd
-msgid "Include prereleases"
+#, fuzzy
+msgid "Show prereleases"
 msgstr "Vorabversionen miteinbeziehen"
 
 #: src/ui_parts/update_menu.gd
