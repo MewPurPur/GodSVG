@@ -6,7 +6,7 @@ var type := Type.NONE
 signal value_changed
 
 const ColorEdit = preload("res://src/ui_widgets/color_edit.tscn")
-const Dropdown = preload("res://src/ui_widgets/enum_dropdown.tscn")
+const Dropdown = preload("res://src/ui_widgets/dropdown.tscn")
 const NumberDropdown = preload("res://src/ui_widgets/number_dropdown.tscn")
 
 var getter: Callable
@@ -56,9 +56,12 @@ func setup_color(enable_alpha: bool) -> void:
 	type = Type.COLOR
 	panel_width = 114 if enable_alpha else 100
 
-func setup_dropdown(values: PackedStringArray) -> void:
+# TODO Typed Dictionary wonkiness
+func setup_dropdown(values: Array[Variant],
+value_text_map: Dictionary) -> void:  # Dictionary[Variant, String]
 	widget = Dropdown.instantiate()
 	widget.values = values
+	widget.value_text_map = value_text_map
 	add_child(widget)
 	widget.value_changed.connect(_dropdown_modification)
 	type = Type.DROPDOWN

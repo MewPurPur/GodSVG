@@ -2,6 +2,13 @@ extends PanelContainer
 
 enum Layout {HORIZONTAL_STRIP, HORIZONTAL_TWO_ROWS, VERTICAL_STRIP}
 
+static func get_preset_value_text_map() -> Dictionary:
+	return {
+		Layout.HORIZONTAL_STRIP: Translator.translate("Horizontal strip"),
+		Layout.VERTICAL_STRIP: Translator.translate("Vertical strip"),
+		Layout.HORIZONTAL_TWO_ROWS: Translator.translate("Horizontal with two rows"),
+	}
+
 const ShortcutPanelConfig = preload("res://src/ui_parts/shortcut_panel_config.tscn")
 
 const dot_pattern = preload("res://assets/icons/DotPatternSegment.svg")

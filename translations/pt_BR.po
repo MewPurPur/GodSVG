@@ -252,6 +252,26 @@ msgstr "Doadores ouro"
 msgid "Diamond donors"
 msgstr "Doadores diamante"
 
+#: src/ui_parts/current_file_button.gd src/ui_parts/good_file_dialog.gd
+msgid "Save SVG"
+msgstr "Salvar SVG"
+
+#: src/ui_parts/current_file_button.gd
+msgid "Save SVG as…"
+msgstr "Salvar SVG como…"
+
+#: src/ui_parts/current_file_button.gd src/utils/TranslationUtils.gd
+msgid "Reset SVG"
+msgstr "Redefinir SVG"
+
+#: src/ui_parts/current_file_button.gd src/ui_parts/tab_bar.gd
+msgid "Open externally"
+msgstr "Abrir externalmente"
+
+#: src/ui_parts/current_file_button.gd src/ui_parts/tab_bar.gd
+msgid "Show in File Manager"
+msgstr "Mostrar no gerenciador de arquivos"
+
 #: src/ui_parts/display.gd
 msgid "Visuals"
 msgstr "Visuais"
@@ -347,26 +367,6 @@ msgstr "Configurações"
 #: src/ui_parts/global_actions.gd src/utils/TranslationUtils.gd
 msgid "Optimize"
 msgstr "Otimizar"
-
-#: src/ui_parts/global_actions.gd src/ui_parts/good_file_dialog.gd
-msgid "Save SVG"
-msgstr "Salvar SVG"
-
-#: src/ui_parts/global_actions.gd
-msgid "Save SVG as…"
-msgstr "Salvar SVG como…"
-
-#: src/ui_parts/global_actions.gd src/utils/TranslationUtils.gd
-msgid "Reset SVG"
-msgstr "Redefinir SVG"
-
-#: src/ui_parts/global_actions.gd src/ui_parts/tab_bar.gd
-msgid "Open externally"
-msgstr "Abrir externalmente"
-
-#: src/ui_parts/global_actions.gd src/ui_parts/tab_bar.gd
-msgid "Show in File Manager"
-msgstr "Mostrar no gerenciador de arquivos"
 
 #: src/ui_parts/global_actions.gd
 msgid "About…"
@@ -645,8 +645,8 @@ msgid "UI scale"
 msgstr "Escala da interface"
 
 #: src/ui_parts/settings_menu.gd
-msgid "Auto UI scale"
-msgstr "Escala de interface automárica"
+msgid "Changes the scale factor for the interface."
+msgstr "Muda o fator de escala da interfaçe."
 
 #: src/ui_parts/settings_menu.gd
 msgid "Language"
@@ -816,13 +816,17 @@ msgstr ""
 msgid "Changes the visual size and grabbing area of handles."
 msgstr "Muda o tamanho e a área de agarramento das alças."
 
-#: src/ui_parts/settings_menu.gd
-msgid "Changes the scale factor for the interface."
-msgstr "Muda o fator de escala da interfaçe."
+#: src/ui_parts/shortcut_panel.gd
+msgid "Horizontal strip"
+msgstr "Faixa horizontal"
 
-#: src/ui_parts/settings_menu.gd
-msgid "Scales the interface automatically based on the screen size."
-msgstr "Escalona a interface automaticamente baseado no tamanho da tela."
+#: src/ui_parts/shortcut_panel.gd
+msgid "Vertical strip"
+msgstr "Faixa vertical"
+
+#: src/ui_parts/shortcut_panel.gd
+msgid "Horizontal with two rows"
+msgstr "Horizontal com duas linhas"
 
 #: src/ui_parts/shortcut_panel_config.gd
 msgid "Configure Shortcut Panel"
@@ -831,18 +835,6 @@ msgstr "Configurar Painel de Atalhos"
 #: src/ui_parts/shortcut_panel_config.gd
 msgid "Layout"
 msgstr "Layout"
-
-#: src/ui_parts/shortcut_panel_config.gd
-msgid "Horizontal strip"
-msgstr "Faixa horizontal"
-
-#: src/ui_parts/shortcut_panel_config.gd
-msgid "Horizontal with two rows"
-msgstr "Horizontal com duas linhas"
-
-#: src/ui_parts/shortcut_panel_config.gd
-msgid "Vertical strip"
-msgstr "Faixa vertical"
 
 #: src/ui_parts/tab_bar.gd
 msgid "Create tab"
@@ -1231,3 +1223,9 @@ msgid "The file extension is empty. Only {extension_list} files are supported."
 msgstr ""
 "A extensão de arquivo está vazia. Somente arquivos {extension_list} são "
 "suportados."
+
+#~ msgid "Auto UI scale"
+#~ msgstr "Escala de interface automárica"
+
+#~ msgid "Scales the interface automatically based on the screen size."
+#~ msgstr "Escalona a interface automaticamente baseado no tamanho da tela."

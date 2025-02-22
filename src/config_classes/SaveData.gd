@@ -33,8 +33,8 @@ func get_setting_default(setting: String) -> Variant:
 		"use_native_file_dialog": return true
 		"use_filename_for_window_title": return true
 		"handle_size": return 1.0 if OS.get_name() != "Android" else 2.0
-		"ui_scale": return 1.0
-		"auto_ui_scale": return true
+		"ui_scale": return ScalingApproach.AUTO
+		"custom_ui_scale": return true
 	return null
 
 func reset_to_default() -> void:
@@ -240,24 +240,16 @@ const HANDLE_SIZE_MAX = 4.0
 			emit_changed()
 			Configs.handle_visuals_changed.emit()
 
-const UI_SCALE_MIN = 0.5
-const UI_SCALE_MAX = 5.0
-@export var ui_scale := 1.0:
+enum ScalingApproach {AUTO, CONSTANT_075, CONSTANT_100, CONSTANT_125, CONSTANT_150,
+		CONSTANT_175, CONSTANT_200, CONSTANT_300, CONSTANT_400, MAX}
+@export var ui_scale := ScalingApproach.AUTO:
 	set(new_value):
 		# Validation
-		new_value = clampf(new_value, UI_SCALE_MIN, UI_SCALE_MAX)
-		if is_nan(new_value):
-			new_value = get_setting_default("ui_scale")
+		if not (new_value >= 0 and new_value < ScalingApproach.size()):
+			new_value = ScalingApproach.AUTO
 		# Main part
 		if ui_scale != new_value:
 			ui_scale = new_value
-			emit_changed()
-			Configs.ui_scale_changed.emit()
-
-@export var auto_ui_scale := true:
-	set(new_value):
-		if auto_ui_scale != new_value:
-			auto_ui_scale = new_value
 			emit_changed()
 			Configs.ui_scale_changed.emit()
 
@@ -279,7 +271,7 @@ const MAX_SNAP = 16384
 @export var color_picker_slider_mode := GoodColorPicker.SliderMode.RGB:
 	set(new_value):
 		# Validation
-		if new_value < 0 || new_value >= GoodColorPicker.SliderMode.size():
+		if not (new_value >= 0 and new_value < GoodColorPicker.SliderMode.size()):
 			new_value = GoodColorPicker.SliderMode.RGB
 		# Main part
 		if color_picker_slider_mode != new_value:
@@ -297,17 +289,6 @@ const MAX_SNAP = 16384
 		if file_dialog_show_hidden != new_value:
 			file_dialog_show_hidden = new_value
 			emit_changed()
-
-@export var shortcut_panel_layout := ShortcutPanel.Layout.HORIZONTAL_STRIP:
-	set(new_value):
-		# Validation
-		if new_value < 0 || new_value >= ShortcutPanel.Layout.size():
-			new_value = ShortcutPanel.Layout.HORIZONTAL_STRIP
-		# Main part
-		if shortcut_panel_layout != new_value:
-			shortcut_panel_layout = new_value
-			emit_changed()
-			Configs.shortcut_panel_changed.emit()
 
 
 const MAX_RECENT_DIRS = 5
@@ -511,6 +492,17 @@ func set_palettes(new_palettes: Array[Palette]) -> void:
 			emit_changed()
 			export_formatter.changed.connect(emit_changed)
 
+
+@export var shortcut_panel_layout := ShortcutPanel.Layout.HORIZONTAL_STRIP:
+	set(new_value):
+		# Validation
+		if not (new_value >= 0 and new_value < ShortcutPanel.Layout.size()):
+			new_value = ShortcutPanel.Layout.HORIZONTAL_STRIP
+		# Main part
+		if shortcut_panel_layout != new_value:
+			shortcut_panel_layout = new_value
+			emit_changed()
+			Configs.shortcut_panel_changed.emit()
 
 const SHORTCUT_PANEL_MAX_SLOTS = 6
 @export var _shortcut_panel_slots: Dictionary[int, String] = {}:

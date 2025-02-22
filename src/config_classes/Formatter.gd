@@ -9,54 +9,46 @@ enum PrimaryColorSyntax {THREE_OR_SIX_DIGIT_HEX, SIX_DIGIT_HEX, RGB}
 # Elements that don't make sense without child elements.
 const container_elements: Array[String] = ["svg", "g", "linearGradient", "radialGradient"]
 
+# TODO Typed Dictionary wonkiness  Dictionary[Preset, String]
+static func get_preset_value_text_map() -> Dictionary:
+	return {
+		Preset.COMPACT: Translator.translate("Compact"),
+		Preset.PRETTY: Translator.translate("Pretty"),
+	}
 
-static func get_preset_enum_text(enum_value: Preset) -> String:
-	match enum_value:
-		Preset.COMPACT: return Translator.translate("Compact")
-		Preset.PRETTY: return Translator.translate("Pretty")
-	return ""
+# TODO Typed Dictionary wonkiness  Dictionary[ShorthandTags, String]
+static func get_shorthand_tags_value_text_map() -> Dictionary:
+	return {
+		ShorthandTags.ALWAYS: Translator.translate("Always"),
+		ShorthandTags.ALL_EXCEPT_CONTAINERS: Translator.translate("All except containers"),
+		ShorthandTags.NEVER: Translator.translate("Never"),
+	}
 
-static func get_shorthand_tags_enum_text(enum_value: ShorthandTags) -> String:
-	match enum_value:
-		ShorthandTags.ALWAYS: return Translator.translate("Always")
-		ShorthandTags.ALL_EXCEPT_CONTAINERS:
-			return Translator.translate("All except containers")
-		ShorthandTags.NEVER: return Translator.translate("Never")
-	return ""
+# TODO Typed Dictionary wonkiness  Dictionary[NamedColorUse, String]
+static func get_named_color_use_value_text_map() -> Dictionary:
+	return {
+		NamedColorUse.ALWAYS: Translator.translate("Always"),
+		NamedColorUse.WHEN_SHORTER_OR_EQUAL: Translator.translate("When shorter or equal"),
+		NamedColorUse.WHEN_SHORTER: Translator.translate("When shorter"),
+		NamedColorUse.NEVER: Translator.translate("Never"),
+	}
 
-static func get_named_color_use_enum_text(enum_value: NamedColorUse) -> String:
-	match enum_value:
-		NamedColorUse.ALWAYS: return Translator.translate("Always")
-		NamedColorUse.WHEN_SHORTER_OR_EQUAL:
-			return Translator.translate("When shorter or equal")
-		NamedColorUse.WHEN_SHORTER: return Translator.translate("When shorter")
-		NamedColorUse.NEVER: return Translator.translate("Never")
-	return ""
+# TODO Typed Dictionary wonkiness  Dictionary[PrimaryColorSyntax, String]
+static func get_primary_color_syntax_value_text_map() -> Dictionary:
+	return {
+		PrimaryColorSyntax.THREE_OR_SIX_DIGIT_HEX: Translator.translate("3-digit or 6-digit hex"),
+		PrimaryColorSyntax.SIX_DIGIT_HEX: Translator.translate("6-digit hex"),
+		PrimaryColorSyntax.RGB: "RGB",
+	}
 
-static func get_primary_color_syntax_enum_text(enum_value: PrimaryColorSyntax) -> String:
-	match enum_value:
-		PrimaryColorSyntax.THREE_OR_SIX_DIGIT_HEX:
-			return Translator.translate("3-digit or 6-digit hex")
-		PrimaryColorSyntax.SIX_DIGIT_HEX: return Translator.translate("6-digit hex")
-		PrimaryColorSyntax.RGB: return "RGB"
-	return ""
-
-static func get_enum_texts(property: String) -> PackedStringArray:
-	var values := PackedStringArray()
+# TODO Typed Dictionary wonkiness  Dictionary[Variant, String]
+static func get_enum_value_text_map(property: String) -> Dictionary:
 	match property:
-		"preset":
-			for key in Preset.keys():
-				values.append(get_preset_enum_text(Preset[key]))
-		"xml_shorthand_tags":
-			for key in ShorthandTags.keys():
-				values.append(get_shorthand_tags_enum_text(ShorthandTags[key]))
-		"color_use_named_colors":
-			for key in NamedColorUse.keys():
-				values.append(get_named_color_use_enum_text(NamedColorUse[key]))
-		"color_primary_syntax":
-			for key in PrimaryColorSyntax.keys():
-				values.append(get_primary_color_syntax_enum_text(PrimaryColorSyntax[key]))
-	return values
+		"preset": return get_preset_value_text_map()
+		"xml_shorthand_tags": return get_shorthand_tags_value_text_map()
+		"color_use_named_colors": return get_named_color_use_value_text_map()
+		"color_primary_syntax": return get_primary_color_syntax_value_text_map()
+	return {}
 
 
 func get_setting_default(setting: String) -> Variant:

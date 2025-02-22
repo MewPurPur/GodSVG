@@ -4,7 +4,6 @@ extends Control
 signal value_changed
 
 const Dropdown = preload("res://src/ui_widgets/dropdown.tscn")
-const EnumDropdown = preload("res://src/ui_widgets/enum_dropdown.tscn")
 
 var getter: Callable
 var setter: Callable
@@ -15,8 +14,10 @@ var dropdown: Control
 
 var is_hovered := false
 
-func setup_dropdown(enum_mode := false) -> void:
-	dropdown = EnumDropdown.instantiate() if enum_mode else Dropdown.instantiate()
+func setup_dropdown(values: Array, value_text_map: Dictionary) -> void:
+	dropdown = Dropdown.instantiate()
+	dropdown.values = values
+	dropdown.set("value_text_map", value_text_map)  # TODO Typed dictionary wonkiness
 
 func _ready() -> void:
 	add_child(dropdown)

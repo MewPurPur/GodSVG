@@ -251,6 +251,26 @@ msgstr "Златни дарители"
 msgid "Diamond donors"
 msgstr "Диамантени дарители"
 
+#: src/ui_parts/current_file_button.gd src/ui_parts/good_file_dialog.gd
+msgid "Save SVG"
+msgstr "Запиши SVG-то"
+
+#: src/ui_parts/current_file_button.gd
+msgid "Save SVG as…"
+msgstr "Запиши SVG-то като…"
+
+#: src/ui_parts/current_file_button.gd src/utils/TranslationUtils.gd
+msgid "Reset SVG"
+msgstr "Рестартирай SVG-то"
+
+#: src/ui_parts/current_file_button.gd src/ui_parts/tab_bar.gd
+msgid "Open externally"
+msgstr "Отвори с външно приложение"
+
+#: src/ui_parts/current_file_button.gd src/ui_parts/tab_bar.gd
+msgid "Show in File Manager"
+msgstr "Покажи във Файловия мениджър"
+
 #: src/ui_parts/display.gd
 msgid "Visuals"
 msgstr "Графики"
@@ -345,26 +365,6 @@ msgstr "Настройки"
 #: src/ui_parts/global_actions.gd src/utils/TranslationUtils.gd
 msgid "Optimize"
 msgstr "Оптимизирай"
-
-#: src/ui_parts/global_actions.gd src/ui_parts/good_file_dialog.gd
-msgid "Save SVG"
-msgstr "Запиши SVG-то"
-
-#: src/ui_parts/global_actions.gd
-msgid "Save SVG as…"
-msgstr "Запиши SVG-то като…"
-
-#: src/ui_parts/global_actions.gd src/utils/TranslationUtils.gd
-msgid "Reset SVG"
-msgstr "Рестартирай SVG-то"
-
-#: src/ui_parts/global_actions.gd src/ui_parts/tab_bar.gd
-msgid "Open externally"
-msgstr "Отвори с външно приложение"
-
-#: src/ui_parts/global_actions.gd src/ui_parts/tab_bar.gd
-msgid "Show in File Manager"
-msgstr "Покажи във Файловия мениджър"
 
 #: src/ui_parts/global_actions.gd
 msgid "About…"
@@ -643,8 +643,8 @@ msgid "UI scale"
 msgstr "Мащаб на интерфейса"
 
 #: src/ui_parts/settings_menu.gd
-msgid "Auto UI scale"
-msgstr "Автоматичен мащаб"
+msgid "Changes the scale factor for the interface."
+msgstr "Увеличава мащаба на интерфейса."
 
 #: src/ui_parts/settings_menu.gd
 msgid "Language"
@@ -782,7 +782,9 @@ msgstr "Разменя посоките на влачене за намаляв�
 msgid ""
 "Warps the cursor to the opposite side whenever it reaches a viewport "
 "boundary while panning."
-msgstr "Превърта курсора когато той достигне краищата на екрана докато влачи гледката."
+msgstr ""
+"Превърта курсора когато той достигне краищата на екрана докато влачи "
+"гледката."
 
 #: src/ui_parts/settings_menu.gd
 msgid ""
@@ -813,13 +815,17 @@ msgstr ""
 msgid "Changes the visual size and grabbing area of handles."
 msgstr "Увеличава размера и площта в която дръжките могат да бъдат хванати."
 
-#: src/ui_parts/settings_menu.gd
-msgid "Changes the scale factor for the interface."
-msgstr "Увеличава мащаба на интерфейса."
+#: src/ui_parts/shortcut_panel.gd
+msgid "Horizontal strip"
+msgstr "Хоризонтална лента"
 
-#: src/ui_parts/settings_menu.gd
-msgid "Scales the interface automatically based on the screen size."
-msgstr "Автоматично променя мащаба на интерфейса според размера на екрана."
+#: src/ui_parts/shortcut_panel.gd
+msgid "Vertical strip"
+msgstr "Вертикална лента"
+
+#: src/ui_parts/shortcut_panel.gd
+msgid "Horizontal with two rows"
+msgstr "Хоризонтален с два реда"
 
 #: src/ui_parts/shortcut_panel_config.gd
 msgid "Configure Shortcut Panel"
@@ -828,18 +834,6 @@ msgstr "Настройки на панела с бързи клавиши"
 #: src/ui_parts/shortcut_panel_config.gd
 msgid "Layout"
 msgstr "Оформление"
-
-#: src/ui_parts/shortcut_panel_config.gd
-msgid "Horizontal strip"
-msgstr "Хоризонтална лента"
-
-#: src/ui_parts/shortcut_panel_config.gd
-msgid "Horizontal with two rows"
-msgstr "Хоризонтален с два реда"
-
-#: src/ui_parts/shortcut_panel_config.gd
-msgid "Vertical strip"
-msgstr "Вертикална лента"
 
 #: src/ui_parts/tab_bar.gd
 msgid "Create tab"

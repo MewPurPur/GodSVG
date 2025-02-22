@@ -221,15 +221,42 @@ func setup_content() -> void:
 			add_advice(Translator.translate(
 					"Changes the visual size and grabbing area of handles."))
 			current_setup_setting = "ui_scale"
-			add_number_dropdown(Translator.translate("UI scale"),
-					[0.75, 1.0, 1.25, 1.5, 1.75, 2.0, 2.5, 3.0, 4.0], false, false,
-					SaveData.UI_SCALE_MIN, SaveData.UI_SCALE_MAX)
-			add_advice(Translator.translate(
-					"Changes the scale factor for the interface."))
-			current_setup_setting = "auto_ui_scale"
-			add_checkbox(Translator.translate("Auto UI scale"))
-			add_advice(Translator.translate(
-					"Scales the interface automatically based on the screen size."))
+			
+			var min_ui_scale := HandlerGUI.get_min_ui_scale()
+			var max_ui_scale := HandlerGUI.get_max_ui_scale()
+			var dropdown_values := [SaveData.ScalingApproach.AUTO]
+			if min_ui_scale <= 0.75 and 0.75 <= max_ui_scale:
+				dropdown_values.append(SaveData.ScalingApproach.CONSTANT_075)
+			if min_ui_scale <= 1.0 and 1.0 <= max_ui_scale:
+				dropdown_values.append(SaveData.ScalingApproach.CONSTANT_100)
+			if min_ui_scale <= 1.25 and 1.25 <= max_ui_scale:
+				dropdown_values.append(SaveData.ScalingApproach.CONSTANT_125)
+			if min_ui_scale <= 1.5 and 1.5 <= max_ui_scale:
+				dropdown_values.append(SaveData.ScalingApproach.CONSTANT_150)
+			if min_ui_scale <= 1.75 and 1.75 <= max_ui_scale:
+				dropdown_values.append(SaveData.ScalingApproach.CONSTANT_175)
+			if min_ui_scale <= 2.0 and 2.0 <= max_ui_scale:
+				dropdown_values.append(SaveData.ScalingApproach.CONSTANT_200)
+			if min_ui_scale <= 3.0 and 3.0 <= max_ui_scale:
+				dropdown_values.append(SaveData.ScalingApproach.CONSTANT_300)
+			if min_ui_scale <= 4.0 and 4.0 <= max_ui_scale:
+				dropdown_values.append(SaveData.ScalingApproach.CONSTANT_400)
+			dropdown_values.append(SaveData.ScalingApproach.MAX)
+			# Dictionary[SaveData.ScalingApproach, String]
+			var dropdown_map: Dictionary = {
+				SaveData.ScalingApproach.AUTO: "Auto (%d%%)" % (HandlerGUI.get_auto_ui_scale() * 100),
+				SaveData.ScalingApproach.CONSTANT_075: "75%",
+				SaveData.ScalingApproach.CONSTANT_100: "100%",
+				SaveData.ScalingApproach.CONSTANT_125: "125%",
+				SaveData.ScalingApproach.CONSTANT_150: "150%",
+				SaveData.ScalingApproach.CONSTANT_175: "175%",
+				SaveData.ScalingApproach.CONSTANT_200: "200%",
+				SaveData.ScalingApproach.CONSTANT_300: "300%",
+				SaveData.ScalingApproach.CONSTANT_400: "400%",
+				SaveData.ScalingApproach.MAX: "Max (%d%%)" % (max_ui_scale * 100),
+			}
+			add_dropdown(Translator.translate("UI scale"), dropdown_values, dropdown_map)
+			add_advice(Translator.translate("Changes the scale factor for the interface."))
 			
 			# Disable mouse wrap if not available.
 			if not DisplayServer.has_feature(DisplayServer.FEATURE_MOUSE_WARP):
@@ -261,11 +288,13 @@ func add_checkbox(text: String, dim_text := false) -> Control:
 	add_frame(frame)
 	return frame
 
-func add_dropdown(text: String) -> Control:
+# TODO Typed Dictionary wonkiness
+func add_dropdown(text: String, values: Array[Variant],
+value_text_map: Dictionary) -> Control:  # Dictionary[Variant, String]
 	var frame := SettingFrame.instantiate()
 	frame.text = text
 	setup_frame(frame)
-	frame.setup_dropdown(current_setup_resource.get_enum_texts(current_setup_setting))
+	frame.setup_dropdown(values, value_text_map)
 	add_frame(frame)
 	return frame
 
@@ -513,11 +542,11 @@ func show_formatter(category: String) -> void:
 	
 	# The preset field shouldn't have a reset button or a section, so set it up manually.
 	var frame := ProfileFrame.instantiate()
-	frame.setup_dropdown(true)
+	frame.setup_dropdown(range(Formatter.Preset.size()),
+			Formatter.get_preset_value_text_map())
 	frame.getter = current_setup_resource.get.bind("preset")
 	frame.setter = func(p): current_setup_resource.set("preset", p)
 	frame.text = Translator.translate("Preset")
-	frame.dropdown.values = Formatter.get_enum_texts("preset")
 	setting_container.add_child(frame)
 	
 	add_section("XML")
@@ -528,7 +557,9 @@ func show_formatter(category: String) -> void:
 	current_setup_setting = "xml_add_trailing_newline"
 	add_checkbox(Translator.translate("Add trailing newline"))
 	current_setup_setting = "xml_shorthand_tags"
-	add_dropdown(Translator.translate("Use shorthand tag syntax"))
+	add_dropdown(Translator.translate("Use shorthand tag syntax"),
+			range(Formatter.ShorthandTags.size()),
+			Formatter.get_shorthand_tags_value_text_map())
 	current_setup_setting = "xml_shorthand_tags_space_out_slash"
 	add_checkbox(Translator.translate("Space out the slash of shorthand tags"))
 	current_setup_setting = "xml_pretty_formatting"
@@ -550,9 +581,13 @@ func show_formatter(category: String) -> void:
 	
 	add_section(Translator.translate("Colors"))
 	current_setup_setting = "color_use_named_colors"
-	add_dropdown(Translator.translate("Use named colors"))
+	add_dropdown(Translator.translate("Use named colors"),
+			range(Formatter.NamedColorUse.size()),
+			Formatter.get_named_color_use_value_text_map())
 	current_setup_setting = "color_primary_syntax"
-	add_dropdown(Translator.translate("Primary syntax"))
+	add_dropdown(Translator.translate("Primary syntax"),
+			range(Formatter.PrimaryColorSyntax.size()),
+			Formatter.get_primary_color_syntax_value_text_map())
 	current_setup_setting = "color_capital_hex"
 	add_checkbox(Translator.translate("Capitalize hexadecimal letters"),
 			current_setup_resource.color_primary_syntax == Formatter.PrimaryColorSyntax.RGB)
