@@ -15,9 +15,8 @@ func _ready() -> void:
 	close_button.text = Translator.translate("Close")
 	%Title.text = Translator.translate("Configure Shortcut Panel")
 	%LayoutLabel.text = Translator.translate("Layout")
-	layout_dropdown.values = [Translator.translate("Horizontal strip"),
-			Translator.translate("Horizontal with two rows"),
-			Translator.translate("Vertical strip")]
+	layout_dropdown.values = range(ShortcutPanel.Layout.size())
+	layout_dropdown.value_text_map = ShortcutPanel.get_preset_value_text_map()
 	layout_dropdown.set_value(Configs.savedata.shortcut_panel_layout)
 	layout_dropdown.value_changed.connect(_on_layout_dropdown_value_changed)
 	update_shortcut_slots()

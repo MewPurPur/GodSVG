@@ -242,6 +242,26 @@ msgstr ""
 msgid "Diamond donors"
 msgstr ""
 
+#: src/ui_parts/current_file_button.gd src/ui_parts/good_file_dialog.gd
+msgid "Save SVG"
+msgstr ""
+
+#: src/ui_parts/current_file_button.gd
+msgid "Save SVG as…"
+msgstr ""
+
+#: src/ui_parts/current_file_button.gd src/utils/TranslationUtils.gd
+msgid "Reset SVG"
+msgstr ""
+
+#: src/ui_parts/current_file_button.gd src/ui_parts/tab_bar.gd
+msgid "Open externally"
+msgstr ""
+
+#: src/ui_parts/current_file_button.gd src/ui_parts/tab_bar.gd
+msgid "Show in File Manager"
+msgstr ""
+
 #: src/ui_parts/display.gd
 msgid "Visuals"
 msgstr ""
@@ -335,26 +355,6 @@ msgstr ""
 
 #: src/ui_parts/global_actions.gd src/utils/TranslationUtils.gd
 msgid "Optimize"
-msgstr ""
-
-#: src/ui_parts/global_actions.gd src/ui_parts/good_file_dialog.gd
-msgid "Save SVG"
-msgstr ""
-
-#: src/ui_parts/global_actions.gd
-msgid "Save SVG as…"
-msgstr ""
-
-#: src/ui_parts/global_actions.gd src/utils/TranslationUtils.gd
-msgid "Reset SVG"
-msgstr ""
-
-#: src/ui_parts/global_actions.gd src/ui_parts/tab_bar.gd
-msgid "Open externally"
-msgstr ""
-
-#: src/ui_parts/global_actions.gd src/ui_parts/tab_bar.gd
-msgid "Show in File Manager"
 msgstr ""
 
 #: src/ui_parts/global_actions.gd
@@ -632,7 +632,7 @@ msgid "UI scale"
 msgstr ""
 
 #: src/ui_parts/settings_menu.gd
-msgid "Auto UI scale"
+msgid "Changes the scale factor for the interface."
 msgstr ""
 
 #: src/ui_parts/settings_menu.gd
@@ -795,12 +795,16 @@ msgstr ""
 msgid "Changes the visual size and grabbing area of handles."
 msgstr ""
 
-#: src/ui_parts/settings_menu.gd
-msgid "Changes the scale factor for the interface."
+#: src/ui_parts/shortcut_panel.gd
+msgid "Horizontal strip"
 msgstr ""
 
-#: src/ui_parts/settings_menu.gd
-msgid "Scales the interface automatically based on the screen size."
+#: src/ui_parts/shortcut_panel.gd
+msgid "Vertical strip"
+msgstr ""
+
+#: src/ui_parts/shortcut_panel.gd
+msgid "Horizontal with two rows"
 msgstr ""
 
 #: src/ui_parts/shortcut_panel_config.gd
@@ -809,18 +813,6 @@ msgstr ""
 
 #: src/ui_parts/shortcut_panel_config.gd
 msgid "Layout"
-msgstr ""
-
-#: src/ui_parts/shortcut_panel_config.gd
-msgid "Horizontal strip"
-msgstr ""
-
-#: src/ui_parts/shortcut_panel_config.gd
-msgid "Horizontal with two rows"
-msgstr ""
-
-#: src/ui_parts/shortcut_panel_config.gd
-msgid "Vertical strip"
 msgstr ""
 
 #: src/ui_parts/tab_bar.gd

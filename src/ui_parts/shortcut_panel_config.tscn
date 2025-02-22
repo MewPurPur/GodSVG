@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://cnay1l0u6a5tw"]
 
 [ext_resource type="Script" uid="uid://cnmsf3h1qq3q6" path="res://src/ui_parts/shortcut_panel_config.gd" id="1_eg1f5"]
-[ext_resource type="PackedScene" uid="uid://bp1iblavfxjvu" path="res://src/ui_widgets/enum_dropdown.tscn" id="2_pru61"]
+[ext_resource type="PackedScene" uid="uid://dbu1lvajypafb" path="res://src/ui_widgets/dropdown.tscn" id="2_4egw5"]
 
 [node name="ShortcutPanelConfig" type="PanelContainer"]
 custom_minimum_size = Vector2(460, 300)
@@ -57,12 +57,11 @@ unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 13
 
-[node name="LayoutDropdown" parent="VBoxContainer/PanelContainer/HBoxContainer/ConfigContainer/LayoutBox" instance=ExtResource("2_pru61")]
+[node name="LayoutDropdown2" parent="VBoxContainer/PanelContainer/HBoxContainer/ConfigContainer/LayoutBox" instance=ExtResource("2_4egw5")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
-values = PackedStringArray()
 
 [node name="CloseButton" type="Button" parent="VBoxContainer"]
 unique_name_in_owner = true

@@ -118,9 +118,10 @@ msgid "The last edited state of this tab could not be found."
 msgstr "Останній редагований стан цієї вкладки не може бути знайдено."
 
 #: src/autoload/State.gd
+#, fuzzy
 msgid ""
-"The tab is bound to the file path {file_path}. Do you want to restore from "
-"this path?"
+"The tab is bound to the file path {file_path}. Do you want to restore the "
+"SVG from this path?"
 msgstr ""
 "Ця вкладка пов'язана з шляхом до файлу {file_path}. Бажаєте відновити з "
 "цього шляху?"
@@ -251,6 +252,26 @@ msgstr "Золоті благодійники"
 msgid "Diamond donors"
 msgstr "Діамантові благодійники"
 
+#: src/ui_parts/current_file_button.gd src/ui_parts/good_file_dialog.gd
+msgid "Save SVG"
+msgstr "Зберегти SVG"
+
+#: src/ui_parts/current_file_button.gd
+msgid "Save SVG as…"
+msgstr "Зберегти SVG як…"
+
+#: src/ui_parts/current_file_button.gd src/utils/TranslationUtils.gd
+msgid "Reset SVG"
+msgstr "Скинути SVG"
+
+#: src/ui_parts/current_file_button.gd src/ui_parts/tab_bar.gd
+msgid "Open externally"
+msgstr "Відкрити у зовнішній програмі"
+
+#: src/ui_parts/current_file_button.gd src/ui_parts/tab_bar.gd
+msgid "Show in File Manager"
+msgstr "Показати у файловому менеджері"
+
 #: src/ui_parts/display.gd
 msgid "Visuals"
 msgstr "Зовнішній вигляд"
@@ -346,26 +367,6 @@ msgstr "Налаштування"
 #: src/ui_parts/global_actions.gd src/utils/TranslationUtils.gd
 msgid "Optimize"
 msgstr "Оптимізувати"
-
-#: src/ui_parts/global_actions.gd src/ui_parts/good_file_dialog.gd
-msgid "Save SVG"
-msgstr "Зберегти SVG"
-
-#: src/ui_parts/global_actions.gd
-msgid "Save SVG as…"
-msgstr "Зберегти SVG як…"
-
-#: src/ui_parts/global_actions.gd src/utils/TranslationUtils.gd
-msgid "Reset SVG"
-msgstr "Скинути SVG"
-
-#: src/ui_parts/global_actions.gd src/ui_parts/tab_bar.gd
-msgid "Open externally"
-msgstr "Відкрити у зовнішній програмі"
-
-#: src/ui_parts/global_actions.gd src/ui_parts/tab_bar.gd
-msgid "Show in File Manager"
-msgstr "Показати у файловому менеджері"
 
 #: src/ui_parts/global_actions.gd
 msgid "About…"
@@ -644,8 +645,8 @@ msgid "UI scale"
 msgstr "Масштаб інтерфейсу"
 
 #: src/ui_parts/settings_menu.gd
-msgid "Auto UI scale"
-msgstr "Автоматичний масштаб інтерфейсу"
+msgid "Changes the scale factor for the interface."
+msgstr "Змінити масштаб інтерфейсу користувача."
 
 #: src/ui_parts/settings_menu.gd
 msgid "Language"
@@ -781,8 +782,7 @@ msgstr "Видалити необов'язкові параметри"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Swaps the scroll directions for zooming in and zooming out."
-msgstr ""
-"Міняє напрям гортання при масштабуванні."
+msgstr "Міняє напрям гортання при масштабуванні."
 
 #: src/ui_parts/settings_menu.gd
 msgid ""
@@ -821,13 +821,17 @@ msgstr ""
 msgid "Changes the visual size and grabbing area of handles."
 msgstr "Змінює візуальний розмір та область захоплення для ручок."
 
-#: src/ui_parts/settings_menu.gd
-msgid "Changes the scale factor for the interface."
-msgstr "Змінити масштаб інтерфейсу користувача."
+#: src/ui_parts/shortcut_panel.gd
+msgid "Horizontal strip"
+msgstr "Горизонтальна смужка"
 
-#: src/ui_parts/settings_menu.gd
-msgid "Scales the interface automatically based on the screen size."
-msgstr "Автоматично масштабувати інтерфейс користувача в залежності від розміру екрану."
+#: src/ui_parts/shortcut_panel.gd
+msgid "Vertical strip"
+msgstr "Вертикальна смужка"
+
+#: src/ui_parts/shortcut_panel.gd
+msgid "Horizontal with two rows"
+msgstr "Горизонтальна з двома рядками"
 
 #: src/ui_parts/shortcut_panel_config.gd
 msgid "Configure Shortcut Panel"
@@ -836,18 +840,6 @@ msgstr "Налаштувати у панелі клавіатурних скор
 #: src/ui_parts/shortcut_panel_config.gd
 msgid "Layout"
 msgstr "Макет"
-
-#: src/ui_parts/shortcut_panel_config.gd
-msgid "Horizontal strip"
-msgstr "Горизонтальна смужка"
-
-#: src/ui_parts/shortcut_panel_config.gd
-msgid "Horizontal with two rows"
-msgstr "Горизонтальна з двома рядками"
-
-#: src/ui_parts/shortcut_panel_config.gd
-msgid "Vertical strip"
-msgstr "Вертикальна смужка"
 
 #: src/ui_parts/tab_bar.gd
 msgid "Create tab"
@@ -1234,3 +1226,11 @@ msgstr ""
 #: src/utils/TranslationUtils.gd
 msgid "The file extension is empty. Only {extension_list} files are supported."
 msgstr "Розширення файлу порожнє. Тільки {extension_list} файли підтримуються."
+
+#~ msgid "Auto UI scale"
+#~ msgstr "Автоматичний масштаб інтерфейсу"
+
+#~ msgid "Scales the interface automatically based on the screen size."
+#~ msgstr ""
+#~ "Автоматично масштабувати інтерфейс користувача в залежності від розміру "
+#~ "екрану."

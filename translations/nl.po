@@ -251,6 +251,27 @@ msgstr "Gouden Donatuers"
 msgid "Diamond donors"
 msgstr "Diamanten Donateurs"
 
+#: src/ui_parts/current_file_button.gd src/ui_parts/good_file_dialog.gd
+msgid "Save SVG"
+msgstr "SVG opslaan"
+
+#: src/ui_parts/current_file_button.gd
+#, fuzzy
+msgid "Save SVG as…"
+msgstr "SVG opslaan"
+
+#: src/ui_parts/current_file_button.gd src/utils/TranslationUtils.gd
+msgid "Reset SVG"
+msgstr "SVG Resetten"
+
+#: src/ui_parts/current_file_button.gd src/ui_parts/tab_bar.gd
+msgid "Open externally"
+msgstr ""
+
+#: src/ui_parts/current_file_button.gd src/ui_parts/tab_bar.gd
+msgid "Show in File Manager"
+msgstr ""
+
 #: src/ui_parts/display.gd
 msgid "Visuals"
 msgstr "Visuelen"
@@ -345,27 +366,6 @@ msgstr "Instellingen"
 #: src/ui_parts/global_actions.gd src/utils/TranslationUtils.gd
 msgid "Optimize"
 msgstr "Optimaliseren"
-
-#: src/ui_parts/global_actions.gd src/ui_parts/good_file_dialog.gd
-msgid "Save SVG"
-msgstr "SVG opslaan"
-
-#: src/ui_parts/global_actions.gd
-#, fuzzy
-msgid "Save SVG as…"
-msgstr "SVG opslaan"
-
-#: src/ui_parts/global_actions.gd src/utils/TranslationUtils.gd
-msgid "Reset SVG"
-msgstr "SVG Resetten"
-
-#: src/ui_parts/global_actions.gd src/ui_parts/tab_bar.gd
-msgid "Open externally"
-msgstr ""
-
-#: src/ui_parts/global_actions.gd src/ui_parts/tab_bar.gd
-msgid "Show in File Manager"
-msgstr ""
 
 #: src/ui_parts/global_actions.gd
 msgid "About…"
@@ -644,8 +644,9 @@ msgid "UI scale"
 msgstr "Gebruiksinterface maat"
 
 #: src/ui_parts/settings_menu.gd
-msgid "Auto UI scale"
-msgstr "Automatische gebruikersinterface maat"
+#, fuzzy
+msgid "Changes the scale factor for the interface."
+msgstr "Verandert the schaal van de visuele gebruikersinterface."
 
 #: src/ui_parts/settings_menu.gd
 msgid "Language"
@@ -815,15 +816,17 @@ msgstr ""
 msgid "Changes the visual size and grabbing area of handles."
 msgstr "Verandert de visuele grootte en grijpgebied van Handvaten."
 
-#: src/ui_parts/settings_menu.gd
-#, fuzzy
-msgid "Changes the scale factor for the interface."
-msgstr "Verandert the schaal van de visuele gebruikersinterface."
+#: src/ui_parts/shortcut_panel.gd
+msgid "Horizontal strip"
+msgstr "Horizontale lijn"
 
-#: src/ui_parts/settings_menu.gd
-#, fuzzy
-msgid "Scales the interface automatically based on the screen size."
-msgstr "Schaalt de gebruikersinterface gebaseerd op the schermgrootte."
+#: src/ui_parts/shortcut_panel.gd
+msgid "Vertical strip"
+msgstr "Vertikale lijn"
+
+#: src/ui_parts/shortcut_panel.gd
+msgid "Horizontal with two rows"
+msgstr "Horizontaal met twee rijen"
 
 #: src/ui_parts/shortcut_panel_config.gd
 msgid "Configure Shortcut Panel"
@@ -832,18 +835,6 @@ msgstr "Configureer Snelkoppelingspaneel"
 #: src/ui_parts/shortcut_panel_config.gd
 msgid "Layout"
 msgstr "Indeling"
-
-#: src/ui_parts/shortcut_panel_config.gd
-msgid "Horizontal strip"
-msgstr "Horizontale lijn"
-
-#: src/ui_parts/shortcut_panel_config.gd
-msgid "Horizontal with two rows"
-msgstr "Horizontaal met twee rijen"
-
-#: src/ui_parts/shortcut_panel_config.gd
-msgid "Vertical strip"
-msgstr "Vertikale lijn"
 
 #: src/ui_parts/tab_bar.gd
 #, fuzzy
@@ -1240,6 +1231,13 @@ msgid "The file extension is empty. Only {extension_list} files are supported."
 msgstr ""
 "Deze bestandsextensie is leeg. Alleen {extension_list} bestanden zijn "
 "ondersteund."
+
+#~ msgid "Auto UI scale"
+#~ msgstr "Automatische gebruikersinterface maat"
+
+#, fuzzy
+#~ msgid "Scales the interface automatically based on the screen size."
+#~ msgstr "Schaalt de gebruikersinterface gebaseerd op the schermgrootte."
 
 #~ msgid "Wrap mouse"
 #~ msgstr "Wikkel muis"

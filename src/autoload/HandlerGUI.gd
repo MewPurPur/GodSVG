@@ -266,35 +266,69 @@ func _unhandled_input(event: InputEvent) -> void:
 		State.respond_to_key_input(event)
 
 
+func get_window_default_size() -> Vector2i:
+	return Vector2i(ProjectSettings.get_setting("display/window/size/viewport_width"),
+			ProjectSettings.get_setting("display/window/size/viewport_height"))
+
+func get_usable_rect() -> Vector2i:
+	var window := get_window()
+	return Vector2i(DisplayServer.screen_get_usable_rect(
+			DisplayServer.window_get_current_screen()).size -\
+			window.get_size_with_decorations() + window.size)
+
+func get_max_ui_scale() -> float:
+	var usable_screen_size := get_usable_rect()
+	var window_default_size := get_window_default_size()
+	# How much can the default size be increased before it takes all usable screen space.
+	var max_expansion := Vector2(usable_screen_size) / Vector2(window_default_size)
+	return minf(snappedf(minf(max_expansion.x, max_expansion.y) - 0.025, 0.05), 4.0)
+
+func get_min_ui_scale() -> float:
+	return maxf(snappedf(get_max_ui_scale() / 2.0 - 0.125, 0.25), 0.75)
+
+func get_auto_ui_scale() -> float:
+	# Usable rect might not be reliable on web, so attempt to use devicePixelRatio.
+	if OS.get_name() == "Web":
+		var pixel_ratio: float = JavaScriptBridge.eval("window.devicePixelRatio || 1", true)
+		if is_finite(pixel_ratio):
+			return snappedf(pixel_ratio, 0.25)
+	
+	var screen_size := get_usable_rect()
+	if screen_size.x == 0 or screen_size.y == 0:
+		return 1.0
+	
+	# The wider the screen, the bigger the automatically chosen UI scale.
+	var aspect_ratio := screen_size.aspect()
+	var auto_scale := get_max_ui_scale() * clampf(aspect_ratio * 0.375, 0.6, 0.8)
+	if OS.get_name() == "Android":
+		auto_scale *= 1.1  # Default to giving mobile a bit more space.
+	return snappedf(auto_scale, 0.25)
+
+
 func update_ui_scale() -> void:
 	var window := get_window()
 	if not window.is_node_ready():
 		await window.ready
+	
 	var old_scale_factor := window.content_scale_factor
+	var window_default_size := get_window_default_size()
+	var usable_screen_size := get_usable_rect()
+	var max_scale := get_max_ui_scale()
+	var min_scale := get_min_ui_scale()
 	
-	# Get window size without the decorations.
-	var usable_screen_size := Vector2i(DisplayServer.screen_get_usable_rect(
-			DisplayServer.window_get_current_screen()).size -\
-			window.get_size_with_decorations() + window.size)
-	
-	# Presumably the default size would always be enough for the contents.
-	var window_default_size := Vector2i(
-			ProjectSettings.get_setting("display/window/size/viewport_width"),
-			ProjectSettings.get_setting("display/window/size/viewport_height"))
-	
-	# How much can the default size be increased before it takes all usable screen space.
-	var max_expansion := Vector2(usable_screen_size) / Vector2(window_default_size)
-	var max_scale := snappedf(minf(max_expansion.x, max_expansion.y) - 0.125, 0.25)
-	var min_scale := snappedf(max_scale / 2.0 - 0.125, 0.25)
-	
-	var final_scale := Configs.savedata.ui_scale
-	if Configs.savedata.auto_ui_scale:
-		# The wider the screen, the bigger the automatically chosen UI scale.
-		var aspect_ratio := float(usable_screen_size.x) / usable_screen_size.y
-		var auto_scale := max_scale * clampf(aspect_ratio * 0.375, 0.6, 0.8)
-		if OS.get_name() == "Android":
-			auto_scale *= 1.1  # Default to giving mobile a bit more space.
-		final_scale = snappedf(final_scale * auto_scale, 0.25)
+	var ui_scaling_approach := Configs.savedata.ui_scale
+	var final_scale: float
+	match ui_scaling_approach:
+		SaveData.ScalingApproach.AUTO: final_scale = get_auto_ui_scale()
+		SaveData.ScalingApproach.CONSTANT_075: final_scale = 0.75
+		SaveData.ScalingApproach.CONSTANT_100: final_scale = 1.0
+		SaveData.ScalingApproach.CONSTANT_125: final_scale = 1.25
+		SaveData.ScalingApproach.CONSTANT_150: final_scale = 1.50
+		SaveData.ScalingApproach.CONSTANT_175: final_scale = 1.75
+		SaveData.ScalingApproach.CONSTANT_200: final_scale = 2.0
+		SaveData.ScalingApproach.CONSTANT_300: final_scale = 3.0
+		SaveData.ScalingApproach.CONSTANT_400: final_scale = 4.0
+		SaveData.ScalingApproach.MAX: final_scale = max_scale
 	final_scale = clampf(final_scale, min_scale, max_scale)
 	
 	var resize_factor := final_scale / old_scale_factor
