@@ -5,11 +5,7 @@ extends VBoxContainer
 var element: Element
 
 func _ready() -> void:
-	var offset_input_field := AttributeFieldBuilder.create("offset", element)
-	attribute_container.add_child(offset_input_field)
-	
-	var color_input_field := AttributeFieldBuilder.create("stop-color", element)
-	attribute_container.add_child(color_input_field)
-	
-	var opacity_input_field := AttributeFieldBuilder.create("stop-opacity", element)
-	attribute_container.add_child(opacity_input_field)
+	for attrib_name in ["offset", "stop-color", "stop-opacity"]:
+		var input_field := AttributeFieldBuilder.create(attrib_name, element)
+		input_field.focus_entered.connect(State.normal_select.bind(element.xid))
+		attribute_container.add_child(input_field)
