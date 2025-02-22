@@ -31,8 +31,9 @@ theme_override_constants/separation = 8
 layout_mode = 2
 horizontal_alignment = 1
 
-[node name="IncludePrereleases" type="CheckBox" parent="VBoxContainer"]
+[node name="IncludePrereleases" type="CheckButton" parent="VBoxContainer"]
 layout_mode = 2
+size_flags_horizontal = 8
 focus_mode = 0
 mouse_default_cursor_shape = 2
 disabled = true
