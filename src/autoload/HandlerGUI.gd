@@ -281,7 +281,7 @@ func get_max_ui_scale() -> float:
 	var window_default_size := get_window_default_size()
 	# How much can the default size be increased before it takes all usable screen space.
 	var max_expansion := Vector2(usable_screen_size) / Vector2(window_default_size)
-	return minf(snappedf(minf(max_expansion.x, max_expansion.y) - 0.025, 0.05), 4.0)
+	return clampf(snappedf(minf(max_expansion.x, max_expansion.y) - 0.025, 0.05), 0.75, 4.0)
 
 func get_min_ui_scale() -> float:
 	return maxf(snappedf(get_max_ui_scale() / 2.0 - 0.125, 0.25), 0.75)
@@ -302,7 +302,7 @@ func get_auto_ui_scale() -> float:
 	var auto_scale := get_max_ui_scale() * clampf(aspect_ratio * 0.375, 0.6, 0.8)
 	if OS.get_name() == "Android":
 		auto_scale *= 1.1  # Default to giving mobile a bit more space.
-	return snappedf(auto_scale, 0.25)
+	return clampf(snappedf(auto_scale, 0.25), get_min_ui_scale(), get_max_ui_scale())
 
 
 func update_ui_scale() -> void:
@@ -331,9 +331,9 @@ func update_ui_scale() -> void:
 		SaveData.ScalingApproach.MAX: final_scale = max_scale
 	final_scale = clampf(final_scale, min_scale, max_scale)
 	
-	var resize_factor := final_scale / old_scale_factor
 	if not OS.get_name() in ["Android", "Web"]:
 		if window.mode == Window.MODE_WINDOWED:
+			var resize_factor := final_scale / old_scale_factor
 			# The window's minimum size can mess with the size change, so we set it to zero.
 			window.min_size = Vector2i.ZERO
 			window.size = Vector2i(mini(int(window.size.x * resize_factor),
