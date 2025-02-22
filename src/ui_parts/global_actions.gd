@@ -57,9 +57,11 @@ func _on_more_options_pressed() -> void:
 				"View savedata"), open_savedata_folder , false,
 				load("res://assets/icons/OpenFolder.svg")))
 	
-	buttons_arr.append(ContextPopup.create_button(Translator.translate("About…"),
+	var about_btn := ContextPopup.create_button(Translator.translate("About…"),
 			ShortcutUtils.fn("about_info"), false,
-			load("res://assets/logos/icon.svg"), "about_info"))
+			load("res://assets/logos/icon.svg"), "about_info")
+	about_btn.expand_icon = true
+	buttons_arr.append(about_btn)
 	buttons_arr.append(ContextPopup.create_button(Translator.translate(
 			"Donate…"), ShortcutUtils.fn("about_donate"), false,
 			load("res://assets/icons/Heart.svg"), "about_donate"))
