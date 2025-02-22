@@ -133,7 +133,7 @@ msgstr "Kompakt"
 
 #: src/config_classes/Formatter.gd
 msgid "Pretty"
-msgstr "Hübsch"
+msgstr "Schön"
 
 #: src/config_classes/Formatter.gd
 msgid "Always"
@@ -260,7 +260,7 @@ msgstr "SVG speichern"
 
 #: src/ui_parts/current_file_button.gd
 msgid "Save SVG as…"
-msgstr "SVG speichern als..."
+msgstr "SVG speichern als…"
 
 #: src/ui_parts/current_file_button.gd src/utils/TranslationUtils.gd
 msgid "Reset SVG"
@@ -527,7 +527,7 @@ msgstr "Tastenkombinationen"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Theming"
-msgstr "Thematisierung"
+msgstr "Farbschema"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Other"
@@ -551,7 +551,7 @@ msgstr "Attributfarbe"
 
 #: src/ui_parts/settings_menu.gd
 msgid "String color"
-msgstr "Stringfarbe"
+msgstr "Zeichenkettenfarbe"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Comment color"
@@ -731,7 +731,7 @@ msgstr "Führende Null entfernen"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Use exponential when shorter"
-msgstr "Exponentialschreibweise benutzen falls kürzer"
+msgstr "Exponentialschreibweise benutzen wenn kürzer"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Colors"
@@ -1169,7 +1169,7 @@ msgstr "GodSVG-Webseite öffnen"
 
 #: src/utils/TranslationUtils.gd
 msgid "Quit the application"
-msgstr "Applikation verlassen"
+msgstr "Anwendung verlassen"
 
 #: src/utils/TranslationUtils.gd
 msgid "Move to"
