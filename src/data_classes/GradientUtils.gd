@@ -46,9 +46,7 @@ static func get_gradient_warnings(element: Element) -> PackedStringArray:
 			continue
 		
 		var stop_opacity := maxf(child.get_attribute_num("stop-opacity"), 0.0)
-		var stop_color: String = child.get_attribute_value("stop-color")
-		if stop_color.strip_edges() == "currentColor":
-			stop_color = child.get_attribute_value("color")
+		var stop_color: String = child.get_attribute_true_color("stop-color")
 		
 		if first_stop_color.is_empty():
 			first_stop_opacity = stop_opacity
