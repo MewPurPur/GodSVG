@@ -57,21 +57,9 @@ func _on_more_options_pressed() -> void:
 				"View savedata"), open_savedata_folder , false,
 				load("res://assets/icons/OpenFolder.svg")))
 	
-	var antialias_fraction := 0.25
-	var final_size := 16
-	var first_resizing_size := final_size / antialias_fraction
-	var svg_buffer := FileAccess.get_file_as_bytes("res://assets/logos/icon.svg")
-	var about_image := Image.new()
-	about_image.load_svg_from_buffer(svg_buffer)
-	var factor := minf(first_resizing_size / about_image.get_width(),
-			first_resizing_size / about_image.get_height())
-	about_image.load_svg_from_buffer(svg_buffer, factor)
-	about_image.resize(final_size, final_size, Image.INTERPOLATE_LANCZOS)
-	
-	var about_btn := ContextPopup.create_button(Translator.translate("About…"),
+	buttons_arr.append(ContextPopup.create_button(Translator.translate("About…"),
 			ShortcutUtils.fn("about_info"), false,
-			ImageTexture.create_from_image(about_image), "about_info")
-	buttons_arr.append(about_btn)
+			load("res://assets/logos/icon.svg"), "about_info"))
 	buttons_arr.append(ContextPopup.create_button(Translator.translate(
 			"Donate…"), ShortcutUtils.fn("about_donate"), false,
 			load("res://assets/icons/Heart.svg"), "about_donate"))
