@@ -85,6 +85,7 @@ func resync(new_transform: Transform) -> void:
 	setup_field_defaults_and_colors()
 
 func setup_field_defaults_and_colors() -> void:
+	update_title_font_color()
 	match type:
 		"translate":
 			_fields[1].default = 0
@@ -105,3 +106,10 @@ func determine_field_font_color(field: BetterLineEdit, omit: bool) -> void:
 
 func reset_field_color(field: BetterLineEdit) -> void:
 	field.remove_theme_color_override("font_color")
+
+func update_title_font_color() -> void:
+	if transform.is_redundant():
+		transform_button.add_theme_color_override("font_color",
+				Color(transform_button.get_theme_color("font_color"), 2/3.0))
+	else:
+		transform_button.remove_theme_color_override("font_color")
