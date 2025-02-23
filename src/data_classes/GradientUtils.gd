@@ -38,28 +38,42 @@ static func get_gradient_warnings(element: Element) -> PackedStringArray:
 	if not element.has_attribute("id"):
 		warnings.append(Translator.translate("No \"id\" attribute defined."))
 	
-	var first_stop_color := ""
-	var first_stop_opacity := -1.0
-	var is_solid_color := true
+	var prev_offset := -1.0
+	var initial_color := ""
+	var initial_opacity := -1.0
+	var has_effective_transition := false
+	
 	for child in element.get_children():
 		if not child is ElementStop:
 			continue
 		
-		var stop_opacity := maxf(child.get_attribute_num("stop-opacity"), 0.0)
+		var stop_offset := clampf(child.get_attribute_num("offset"), 0.0, 1.0)
+		var stop_opacity := clampf(child.get_attribute_num("stop-opacity"), 0.0, 1.0)
 		var stop_color: String = child.get_attribute_true_color("stop-color")
 		
-		if first_stop_color.is_empty():
-			first_stop_opacity = stop_opacity
-			first_stop_color = stop_color
-		elif is_solid_color and not (ColorParser.are_colors_same(first_stop_color,
-		stop_color) and first_stop_opacity == stop_opacity) and\
-		not (first_stop_opacity == 0 and stop_opacity <= 0):
-			is_solid_color = false
+		if initial_color.is_empty():
+			prev_offset = stop_offset
+			initial_color = stop_color
+			initial_opacity = stop_opacity
+			continue
+		
+		# Different color from the initial one (which, even at offset 0, still always
+		# has effect on the stroke). Mark it for having the potential to begin an
+		# effective transition if the next stop offset is greater.
+		has_effective_transition = not (ColorParser.are_colors_same(
+				initial_color, stop_color) and initial_opacity == stop_opacity) and\
+				(initial_opacity != 0 or stop_opacity > 0)
+		
+		if has_effective_transition and stop_offset > prev_offset:
 			break
+		
+		prev_offset = stop_offset
 	
-	if first_stop_color.is_empty():
+	if initial_color.is_empty():
 		warnings.append(Translator.translate("No <stop> elements under this gradient."))
-	elif is_solid_color:
+	elif not has_effective_transition:
+		# A potential effective transition being last would still mean it's a real
+		# transition. Even at offset 1, it would still have an effect on the stroke.
 		warnings.append(Translator.translate("This gradient is a solid color."))
 	
 	return warnings
