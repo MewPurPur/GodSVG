@@ -1082,7 +1082,7 @@ msgid "The imported file is already being edited inside GodSVG."
 msgstr ""
 
 #: src/utils/FileUtils.gd
-msgid "If you want to apply the unsaved file state, use \"Reset SVG\" instead."
+msgid "If you want to revert your edits since the last save, use {reset_svg}."
 msgstr ""
 
 #: src/utils/TranslationUtils.gd

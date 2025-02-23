@@ -1080,10 +1080,8 @@ msgid "The imported file is already being edited inside GodSVG."
 msgstr "Импортированый файл уже редактируется внутри GodSVG."
 
 #: src/utils/FileUtils.gd
-msgid "If you want to apply the unsaved file state, use \"Reset SVG\" instead."
+msgid "If you want to revert your edits since the last save, use {reset_svg}."
 msgstr ""
-"Если вы хотите применить не сохраненное состояние файла, используйте "
-"\"Скинуть SVG\"."
 
 #: src/utils/TranslationUtils.gd
 msgid "Save as"
@@ -1224,6 +1222,12 @@ msgstr ""
 #: src/utils/TranslationUtils.gd
 msgid "The file extension is empty. Only {extension_list} files are supported."
 msgstr "Расширение файла пустое. Поддерживаются только {extension_list} файлы."
+
+#~ msgid ""
+#~ "If you want to apply the unsaved file state, use \"Reset SVG\" instead."
+#~ msgstr ""
+#~ "Если вы хотите применить не сохраненное состояние файла, используйте "
+#~ "\"Скинуть SVG\"."
 
 #~ msgid "Auto UI scale"
 #~ msgstr "Автоматический маштаб интерфейса пользователя"

@@ -1076,12 +1076,9 @@ msgstr "Verificar se o arquivo ainda existe no local de arquivo selecionado."
 msgid "The imported file is already being edited inside GodSVG."
 msgstr "O arquivo importado já está sendo editado dentro do GodSVG."
 
-# Wonky translation but source is alwo wonky
 #: src/utils/FileUtils.gd
-msgid "If you want to apply the unsaved file state, use \"Reset SVG\" instead."
+msgid "If you want to revert your edits since the last save, use {reset_svg}."
 msgstr ""
-"Se você deseja aplicar o estado de arquivo não salvo, utilize \"Redefinir "
-"SVG\"."
 
 #: src/utils/TranslationUtils.gd
 msgid "Save as"
@@ -1224,6 +1221,13 @@ msgid "The file extension is empty. Only {extension_list} files are supported."
 msgstr ""
 "A extensão de arquivo está vazia. Somente arquivos {extension_list} são "
 "suportados."
+
+# Wonky translation but source is alwo wonky
+#~ msgid ""
+#~ "If you want to apply the unsaved file state, use \"Reset SVG\" instead."
+#~ msgstr ""
+#~ "Se você deseja aplicar o estado de arquivo não salvo, utilize \"Redefinir "
+#~ "SVG\"."
 
 #~ msgid "Auto UI scale"
 #~ msgstr "Escala de interface automárica"

@@ -867,7 +867,7 @@ msgstr "Превърти напред"
 msgid "This SVG is not bound to a file location yet."
 msgstr "Това SVG не е свързано с местоположение на компютъра."
 
-#: src/ui_parts/update_menu.gd=
+#: src/ui_parts/update_menu.gd
 msgid "Show prereleases"
 msgstr "Покажи предварителните издания"
 
@@ -1075,10 +1075,8 @@ msgid "The imported file is already being edited inside GodSVG."
 msgstr "Импортираният файл вече се редактира в GodSVG."
 
 #: src/utils/FileUtils.gd
-msgid "If you want to apply the unsaved file state, use \"Reset SVG\" instead."
-msgstr ""
-"Ако искаш да приложиш незаписаното състояние на файла, използвай "
-"\"Рестартирай SVG-то\"."
+msgid "If you want to revert your edits since the last save, use {reset_svg}."
+msgstr "Ако искаш да премахнеш промените след последното запазване, използвай {reset_svg}."
 
 #: src/utils/TranslationUtils.gd
 msgid "Save as"
