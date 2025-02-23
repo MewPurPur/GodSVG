@@ -222,7 +222,9 @@ static func _apply_svg(data: Variant, file_path: String) -> void:
 				"The imported file is already being edited inside GodSVG.")
 		if compare_svg_to_disk_contents() == FileState.DIFFERENT:
 			alert_message += "\n\n" + Translator.translate(
-					"If you want to apply the unsaved file state, use \"Reset SVG\" instead.")
+					"If you want to revert your edits since the last save, use {reset_svg}.").format(
+					{"reset_svg": TranslationUtils.get_shortcut_description("reset_svg")})
+		
 		var alert_dialog := AlertDialog.instantiate()
 		HandlerGUI.add_menu(alert_dialog)
 		alert_dialog.setup(alert_message)
