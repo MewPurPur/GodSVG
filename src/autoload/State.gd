@@ -243,6 +243,8 @@ func clear_proposed_drop_xid() -> void:
 
 
 signal zoom_changed
+@warning_ignore("unused_signal")
+signal view_changed
 signal viewport_size_changed
 
 var zoom := 0.0
