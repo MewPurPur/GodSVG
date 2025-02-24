@@ -35,7 +35,11 @@ func toggle_visibility() -> void:
 
 
 func update() -> void:
-	position = unsnapped_position.snapped(Vector2(1, 1) / zoom)
+	var new_position := unsnapped_position.snapped(Vector2(1, 1) / zoom)
+	if position != new_position:
+		position = unsnapped_position.snapped(Vector2(1, 1) / zoom)
+		State.view_changed.emit()
+	
 	get_viewport().canvas_transform = Transform2D(0.0, Vector2(zoom, zoom),
 			0.0, -position * zoom)
 	queue_redraw()

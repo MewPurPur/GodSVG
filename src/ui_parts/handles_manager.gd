@@ -94,11 +94,13 @@ func _ready() -> void:
 	State.zoom_changed.connect(queue_redraw)
 	State.handle_added.connect(_on_handle_added)
 	State.show_handles_changed.connect(toggle_visibility)
+	State.view_changed.connect(HandlerGUI.throw_mouse_motion_event)
 	queue_update_handles()
 
 
 func toggle_visibility() -> void:
 	visible = not visible
+	HandlerGUI.throw_mouse_motion_event()
 
 func queue_update_handles() -> void:
 	update_handles.call_deferred()
@@ -674,13 +676,16 @@ func _unhandled_input(event: InputEvent) -> void:
 	if not visible:
 		dragged_handle = null
 		hovered_handle = null
-		State.clear_all_hovered()
+		# Mouse events on the viewport clear hovered, but other events don't.
+		if ((event is InputEventMouseMotion and event.button_mask == 0) or\
+		(event is InputEventMouseButton and (event.button_index in [MOUSE_BUTTON_LEFT,
+		MOUSE_BUTTON_RIGHT]))):
+			State.clear_all_hovered()
 	
 	# Set the nearest handle as hovered, if any handles are within range.
 	if visible and ((event is InputEventMouseMotion and !is_instance_valid(dragged_handle) and\
 	event.button_mask == 0) or (event is InputEventMouseButton and\
-	(event.button_index in [MOUSE_BUTTON_LEFT, MOUSE_BUTTON_RIGHT, MOUSE_BUTTON_WHEEL_DOWN,
-	MOUSE_BUTTON_WHEEL_UP, MOUSE_BUTTON_WHEEL_LEFT, MOUSE_BUTTON_WHEEL_RIGHT]))):
+	(event.button_index in [MOUSE_BUTTON_LEFT, MOUSE_BUTTON_RIGHT]))):
 		var nearest_handle := find_nearest_handle(event.position / State.zoom +\
 				get_parent().view.position)
 		if is_instance_valid(nearest_handle):
