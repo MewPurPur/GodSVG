@@ -1,21 +1,9 @@
-[gd_scene load_steps=6 format=3 uid="uid://mhfp37lr7q4f"]
+[gd_scene load_steps=5 format=3 uid="uid://mhfp37lr7q4f"]
 
 [ext_resource type="Script" uid="uid://ys8g367cpqc2" path="res://src/ui_parts/about_menu.gd" id="1_xxltt"]
 [ext_resource type="Texture2D" uid="uid://barsurula6j8n" path="res://assets/logos/icon.svg" id="2_t7fbd"]
 [ext_resource type="FontFile" uid="uid://depydd16jq777" path="res://assets/fonts/FontMono.ttf" id="3_e8i1t"]
-[ext_resource type="Script" uid="uid://ci44864moadn" path="res://src/ui_widgets/GridDrawingControl.gd" id="7_nvctb"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jtvwe"]
-content_margin_left = 6.0
-content_margin_top = 1.0
-content_margin_right = 6.0
-content_margin_bottom = 1.0
-bg_color = Color(0.196078, 0.196078, 0.301961, 1)
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-border_color = Color(0.301961, 0.301961, 0.4, 1)
+[ext_resource type="Script" uid="uid://ci44864moadn" path="res://src/ui_widgets/PanelGrid.gd" id="7_nvctb"]
 
 [node name="AboutMenu" type="PanelContainer"]
 custom_minimum_size = Vector2(580, 420)
@@ -83,38 +71,28 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 16
 horizontal_alignment = 1
 
-[node name="Developers" type="VBoxContainer" parent="VBoxContainer/TabContainer/Authors/VBoxContainer"]
+[node name="DevelopersLabel" type="Label" parent="VBoxContainer/TabContainer/Authors/VBoxContainer"]
 unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_constants/separation = 6
-
-[node name="Label" type="Label" parent="VBoxContainer/TabContainer/Authors/VBoxContainer/Developers"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 16
 horizontal_alignment = 1
 
-[node name="List" type="GridContainer" parent="VBoxContainer/TabContainer/Authors/VBoxContainer/Developers"]
+[node name="DevelopersList" type="Control" parent="VBoxContainer/TabContainer/Authors/VBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
-theme_override_constants/h_separation = -1
-theme_override_constants/v_separation = -1
-columns = 2
 script = ExtResource("7_nvctb")
-stylebox = SubResource("StyleBoxFlat_jtvwe")
+columns = 2
 
-[node name="Translations" type="VBoxContainer" parent="VBoxContainer/TabContainer/Authors/VBoxContainer"]
+[node name="TranslatorsLabel" type="Label" parent="VBoxContainer/TabContainer/Authors/VBoxContainer"]
 unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_constants/separation = 6
-
-[node name="Label" type="Label" parent="VBoxContainer/TabContainer/Authors/VBoxContainer/Translations"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 16
 horizontal_alignment = 1
 
-[node name="List" type="VBoxContainer" parent="VBoxContainer/TabContainer/Authors/VBoxContainer/Translations"]
+[node name="TranslatorsVBox" type="VBoxContainer" parent="VBoxContainer/TabContainer/Authors/VBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
+theme_override_constants/separation = 6
 
 [node name="Donors" type="ScrollContainer" parent="VBoxContainer/TabContainer"]
 visible = false
@@ -137,13 +115,11 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 16
 horizontal_alignment = 1
 
-[node name="List" type="GridContainer" parent="VBoxContainer/TabContainer/Donors/VBoxContainer/DiamondDonors"]
+[node name="List" type="Control" parent="VBoxContainer/TabContainer/Donors/VBoxContainer/DiamondDonors"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_constants/h_separation = -1
-theme_override_constants/v_separation = -1
 script = ExtResource("7_nvctb")
-stylebox = SubResource("StyleBoxFlat_jtvwe")
+columns = 2
 
 [node name="GoldenDonors" type="VBoxContainer" parent="VBoxContainer/TabContainer/Donors/VBoxContainer"]
 unique_name_in_owner = true
@@ -156,13 +132,10 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 16
 horizontal_alignment = 1
 
-[node name="List" type="GridContainer" parent="VBoxContainer/TabContainer/Donors/VBoxContainer/GoldenDonors"]
+[node name="List" type="Control" parent="VBoxContainer/TabContainer/Donors/VBoxContainer/GoldenDonors"]
 layout_mode = 2
-theme_override_constants/h_separation = -1
-theme_override_constants/v_separation = -1
-columns = 2
 script = ExtResource("7_nvctb")
-stylebox = SubResource("StyleBoxFlat_jtvwe")
+columns = 2
 
 [node name="Donors" type="VBoxContainer" parent="VBoxContainer/TabContainer/Donors/VBoxContainer"]
 unique_name_in_owner = true
@@ -175,12 +148,10 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 16
 horizontal_alignment = 1
 
-[node name="List" type="GridContainer" parent="VBoxContainer/TabContainer/Donors/VBoxContainer/Donors"]
+[node name="List" type="Control" parent="VBoxContainer/TabContainer/Donors/VBoxContainer/Donors"]
 layout_mode = 2
-theme_override_constants/h_separation = -1
-theme_override_constants/v_separation = -1
 script = ExtResource("7_nvctb")
-stylebox = SubResource("StyleBoxFlat_jtvwe")
+columns = 2
 
 [node name="PastDiamondDonors" type="VBoxContainer" parent="VBoxContainer/TabContainer/Donors/VBoxContainer"]
 unique_name_in_owner = true
@@ -194,12 +165,10 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 16
 horizontal_alignment = 1
 
-[node name="List" type="GridContainer" parent="VBoxContainer/TabContainer/Donors/VBoxContainer/PastDiamondDonors"]
+[node name="List" type="Control" parent="VBoxContainer/TabContainer/Donors/VBoxContainer/PastDiamondDonors"]
 layout_mode = 2
-theme_override_constants/h_separation = -1
-theme_override_constants/v_separation = -1
 script = ExtResource("7_nvctb")
-stylebox = SubResource("StyleBoxFlat_jtvwe")
+columns = 2
 
 [node name="PastGoldenDonors" type="VBoxContainer" parent="VBoxContainer/TabContainer/Donors/VBoxContainer"]
 unique_name_in_owner = true
@@ -213,13 +182,10 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 16
 horizontal_alignment = 1
 
-[node name="List" type="GridContainer" parent="VBoxContainer/TabContainer/Donors/VBoxContainer/PastGoldenDonors"]
+[node name="List" type="Control" parent="VBoxContainer/TabContainer/Donors/VBoxContainer/PastGoldenDonors"]
 layout_mode = 2
-theme_override_constants/h_separation = -1
-theme_override_constants/v_separation = -1
-columns = 2
 script = ExtResource("7_nvctb")
-stylebox = SubResource("StyleBoxFlat_jtvwe")
+columns = 2
 
 [node name="PastDonors" type="VBoxContainer" parent="VBoxContainer/TabContainer/Donors/VBoxContainer"]
 unique_name_in_owner = true
@@ -233,12 +199,10 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 16
 horizontal_alignment = 1
 
-[node name="List" type="GridContainer" parent="VBoxContainer/TabContainer/Donors/VBoxContainer/PastDonors"]
+[node name="List" type="Control" parent="VBoxContainer/TabContainer/Donors/VBoxContainer/PastDonors"]
 layout_mode = 2
-theme_override_constants/h_separation = -1
-theme_override_constants/v_separation = -1
 script = ExtResource("7_nvctb")
-stylebox = SubResource("StyleBoxFlat_jtvwe")
+columns = 2
 
 [node name="License" type="ScrollContainer" parent="VBoxContainer/TabContainer"]
 visible = false
