@@ -43,7 +43,6 @@ custom_minimum_size = Vector2(58, 0)
 layout_mode = 2
 focus_mode = 0
 mouse_default_cursor_shape = 2
-theme_override_font_sizes/font_size = 13
 shortcut = SubResource("Shortcut_4v7wx")
 shortcut_in_tooltip = false
 text = "100%"

@@ -31,7 +31,6 @@ layout_mode = 2
 [node name="ColorLabel" type="Label" parent="ConfigureContainer/TopContainer/LabelContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_font_sizes/font_size = 13
 horizontal_alignment = 1
 
 [node name="EditButton" type="Button" parent="ConfigureContainer/TopContainer/LabelContainer"]

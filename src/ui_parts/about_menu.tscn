@@ -77,22 +77,11 @@ layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 8
 
-[node name="ProjectFounder" type="VBoxContainer" parent="VBoxContainer/TabContainer/Authors/VBoxContainer"]
+[node name="ProjectFounderLabel" type="Label" parent="VBoxContainer/TabContainer/Authors/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_horizontal = 3
-theme_override_constants/separation = 6
-
-[node name="Label" type="Label" parent="VBoxContainer/TabContainer/Authors/VBoxContainer/ProjectFounder"]
-layout_mode = 2
+theme_override_font_sizes/font_size = 16
 horizontal_alignment = 1
-
-[node name="List" type="GridContainer" parent="VBoxContainer/TabContainer/Authors/VBoxContainer/ProjectFounder"]
-layout_mode = 2
-theme_override_constants/h_separation = -1
-theme_override_constants/v_separation = -1
-script = ExtResource("7_nvctb")
-stylebox = SubResource("StyleBoxFlat_jtvwe")
 
 [node name="Developers" type="VBoxContainer" parent="VBoxContainer/TabContainer/Authors/VBoxContainer"]
 unique_name_in_owner = true
@@ -102,6 +91,7 @@ theme_override_constants/separation = 6
 
 [node name="Label" type="Label" parent="VBoxContainer/TabContainer/Authors/VBoxContainer/Developers"]
 layout_mode = 2
+theme_override_font_sizes/font_size = 16
 horizontal_alignment = 1
 
 [node name="List" type="GridContainer" parent="VBoxContainer/TabContainer/Authors/VBoxContainer/Developers"]
@@ -120,6 +110,7 @@ theme_override_constants/separation = 6
 
 [node name="Label" type="Label" parent="VBoxContainer/TabContainer/Authors/VBoxContainer/Translations"]
 layout_mode = 2
+theme_override_font_sizes/font_size = 16
 horizontal_alignment = 1
 
 [node name="List" type="VBoxContainer" parent="VBoxContainer/TabContainer/Authors/VBoxContainer/Translations"]
@@ -143,6 +134,7 @@ theme_override_constants/separation = 6
 
 [node name="Label" type="Label" parent="VBoxContainer/TabContainer/Donors/VBoxContainer/DiamondDonors"]
 layout_mode = 2
+theme_override_font_sizes/font_size = 16
 horizontal_alignment = 1
 
 [node name="List" type="GridContainer" parent="VBoxContainer/TabContainer/Donors/VBoxContainer/DiamondDonors"]
@@ -161,6 +153,7 @@ theme_override_constants/separation = 6
 
 [node name="Label" type="Label" parent="VBoxContainer/TabContainer/Donors/VBoxContainer/GoldenDonors"]
 layout_mode = 2
+theme_override_font_sizes/font_size = 16
 horizontal_alignment = 1
 
 [node name="List" type="GridContainer" parent="VBoxContainer/TabContainer/Donors/VBoxContainer/GoldenDonors"]
@@ -179,6 +172,7 @@ theme_override_constants/separation = 6
 
 [node name="Label" type="Label" parent="VBoxContainer/TabContainer/Donors/VBoxContainer/Donors"]
 layout_mode = 2
+theme_override_font_sizes/font_size = 16
 horizontal_alignment = 1
 
 [node name="List" type="GridContainer" parent="VBoxContainer/TabContainer/Donors/VBoxContainer/Donors"]
@@ -197,6 +191,7 @@ theme_override_constants/separation = 6
 
 [node name="Label" type="Label" parent="VBoxContainer/TabContainer/Donors/VBoxContainer/PastDiamondDonors"]
 layout_mode = 2
+theme_override_font_sizes/font_size = 16
 horizontal_alignment = 1
 
 [node name="List" type="GridContainer" parent="VBoxContainer/TabContainer/Donors/VBoxContainer/PastDiamondDonors"]
@@ -215,6 +210,7 @@ theme_override_constants/separation = 6
 
 [node name="Label" type="Label" parent="VBoxContainer/TabContainer/Donors/VBoxContainer/PastGoldenDonors"]
 layout_mode = 2
+theme_override_font_sizes/font_size = 16
 horizontal_alignment = 1
 
 [node name="List" type="GridContainer" parent="VBoxContainer/TabContainer/Donors/VBoxContainer/PastGoldenDonors"]
@@ -234,6 +230,7 @@ theme_override_constants/separation = 6
 
 [node name="Label" type="Label" parent="VBoxContainer/TabContainer/Donors/VBoxContainer/PastDonors"]
 layout_mode = 2
+theme_override_font_sizes/font_size = 16
 horizontal_alignment = 1
 
 [node name="List" type="GridContainer" parent="VBoxContainer/TabContainer/Donors/VBoxContainer/PastDonors"]
@@ -254,28 +251,6 @@ unique_name_in_owner = true
 layout_mode = 2
 theme_override_fonts/font = ExtResource("3_e8i1t")
 theme_override_font_sizes/font_size = 11
-text = "MIT License
-
-Copyright (c) 2023 MewPurPur
-Copyright (c) 2023-present GodSVG contributors
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the \"Software\"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE."
 
 [node name="Third-party Licenses" type="ScrollContainer" parent="VBoxContainer/TabContainer"]
 visible = false
@@ -293,7 +268,7 @@ theme_override_constants/separation = 8
 
 [node name="Label" type="Label" parent="VBoxContainer/TabContainer/Third-party Licenses/ThirdParties/GodSVGParts"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 17
+theme_override_font_sizes/font_size = 16
 text = "GodSVG parts"
 horizontal_alignment = 1
 
@@ -304,7 +279,7 @@ theme_override_constants/separation = 8
 
 [node name="Label" type="Label" parent="VBoxContainer/TabContainer/Third-party Licenses/ThirdParties/GodotParts"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 17
+theme_override_font_sizes/font_size = 16
 text = "Godot parts"
 horizontal_alignment = 1
 
@@ -315,7 +290,7 @@ theme_override_constants/separation = 12
 
 [node name="Label" type="Label" parent="VBoxContainer/TabContainer/Third-party Licenses/ThirdParties/LicenseTexts"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 17
+theme_override_font_sizes/font_size = 16
 text = "License texts"
 horizontal_alignment = 1
 

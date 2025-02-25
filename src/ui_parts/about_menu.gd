@@ -4,8 +4,6 @@ const app_info_json = preload("res://app_info.json")
 
 @onready var close_button: Button = $VBoxContainer/CloseButton
 @onready var translations_list: VBoxContainer = %Translations/List
-
-@onready var project_founder_list: PanelGrid = %ProjectFounder/List
 @onready var authors_list: PanelGrid = %Developers/List
 
 @onready var donors_vbox: VBoxContainer = %Donors
@@ -39,13 +37,13 @@ func _ready() -> void:
 func _on_tab_changed(idx: int) -> void:
 	match idx:
 		0:
-			%ProjectFounder/Label.text = Translator.translate("Project Founder and Manager")
+			var app_info: Dictionary = app_info_json.data
+			
+			%ProjectFounderLabel.text = Translator.translate("Project Founder and Manager") +\
+					": " + app_info.project_founder_and_manager
 			%Developers/Label.text = Translator.translate("Developers")
 			%Translations/Label.text = Translator.translate("Translators")
 			
-			var app_info: Dictionary = app_info_json.data
-			project_founder_list.items = app_info.project_founder_and_manager
-			project_founder_list.setup()
 			authors_list.items = app_info.authors
 			authors_list.setup()
 			
@@ -174,7 +172,8 @@ func _on_tab_changed(idx: int) -> void:
 				for part in copyright_info["parts"]:
 					if part.has("files"):
 						label.text += "Files:\n- %s\n" % "\n- ".join(part["files"])
-					label.text += "© %s\nLicense: %s" % ["\n© ".join(part["copyright"]), part["license"]]
+					label.text += "© %s\nLicense: %s" % ["\n© ".join(
+							part["copyright"]), part["license"]]
 				vbox.add_child(label)
 				%GodSVGParts.add_child(vbox)
 			
@@ -190,7 +189,8 @@ func _on_tab_changed(idx: int) -> void:
 				for part in copyright_info["parts"]:
 					if part.has("files"):
 						label.text += "Files:\n- %s\n" % "\n- ".join(part["files"])
-					label.text += "© %s\nLicense: %s" % ["\n© ".join(part["copyright"]), part["license"]]
+					label.text += "© %s\nLicense: %s" % ["\n© ".join(
+							part["copyright"]), part["license"]]
 				vbox.add_child(label)
 				%GodotParts.add_child(vbox)
 			

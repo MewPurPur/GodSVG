@@ -50,9 +50,6 @@ func _draw() -> void:
 
 func _make_custom_tooltip(for_text: String) -> Object:
 	var label := Label.new()
-	label.begin_bulk_theme_override()
 	label.add_theme_font_override("font", ThemeUtils.mono_font)
-	label.add_theme_font_size_override("font_size", 13)
-	label.end_bulk_theme_override()
 	label.text = for_text
 	return label
