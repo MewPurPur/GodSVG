@@ -3,12 +3,9 @@ extends PanelContainer
 const app_info_json = preload("res://app_info.json")
 
 @onready var close_button: Button = $VBoxContainer/CloseButton
-@onready var translations_list: VBoxContainer = %Translations/List
-@onready var authors_list: PanelGrid = %Developers/List
+@onready var translators_vbox: VBoxContainer = %TranslatorsVBox
+@onready var developers_list: PanelGrid = %DevelopersList
 
-@onready var donors_vbox: VBoxContainer = %Donors
-@onready var golden_donors_vbox: VBoxContainer = %GoldenDonors
-@onready var diamond_donors_vbox: VBoxContainer = %DiamondDonors
 @onready var donors_list: PanelGrid = %Donors/List
 @onready var golden_donors_list: PanelGrid = %GoldenDonors/List
 @onready var diamond_donors_list: PanelGrid = %DiamondDonors/List
@@ -41,11 +38,10 @@ func _on_tab_changed(idx: int) -> void:
 			
 			%ProjectFounderLabel.text = Translator.translate("Project Founder and Manager") +\
 					": " + app_info.project_founder_and_manager
-			%Developers/Label.text = Translator.translate("Developers")
-			%Translations/Label.text = Translator.translate("Translators")
+			%DevelopersLabel.text = Translator.translate("Developers")
+			%TranslatorsLabel.text = Translator.translate("Translators")
 			
-			authors_list.items = app_info.authors
-			authors_list.setup()
+			developers_list.items = app_info.authors
 			
 			# There can be multiple translators for a single locale.
 			for locale in TranslationServer.get_loaded_locales():
@@ -58,15 +54,12 @@ func _on_tab_changed(idx: int) -> void:
 					credits[i] = credits[i].strip_edges()
 				
 				var label := Label.new()
-				label.text = TranslationUtils.get_locale_display(locale)
-				translations_list.add_child(label)
+				label.text = " " + TranslationUtils.get_locale_display(locale)
+				translators_vbox.add_child(label)
 				var list := PanelGrid.new()
-				list.stylebox = authors_list.stylebox
-				list.add_theme_constant_override("h_separation", -1)
-				list.add_theme_constant_override("v_separation", -1)
+				list.columns = 1
 				list.items = credits
-				list.setup()
-				translations_list.add_child(list)
+				translators_vbox.add_child(list)
 		1:
 			%Donors/Label.text = Translator.translate("Donors")
 			%GoldenDonors/Label.text = Translator.translate("Golden donors")
@@ -76,49 +69,43 @@ func _on_tab_changed(idx: int) -> void:
 			# Once the past donors lists start filling up, they will never unfill,
 			# so no need to bother with logic, we can just unhide it manually.
 			if app_info.donors.is_empty() and app_info.anonymous_donors == 0:
-				donors_vbox.hide()
+				%Donors.hide()
 			else:
 				donors_list.items = app_info.donors
 				if app_info.anonymous_donors != 0:
 					donors_list.dim_last_item = true
 					donors_list.items.append("%d anonymous" % app_info.anonymous_donors)
-				donors_list.setup()
 			
 			if app_info.golden_donors.is_empty() and app_info.anonymous_golden_donors == 0:
-				golden_donors_vbox.hide()
+				%GoldenDonors.hide()
 			else:
 				golden_donors_list.items = app_info.golden_donors
 				if app_info.anonymous_golden_donors != 0:
 					golden_donors_list.dim_last_item = true
 					golden_donors_list.items.append("%d anonymous" % app_info.anonymous_golden_donors)
-				golden_donors_list.setup()
 			
 			if app_info.diamond_donors.is_empty() and app_info.anonymous_diamond_donors == 0:
-				diamond_donors_vbox.hide()
+				%DiamondDonors.hide()
 			else:
 				diamond_donors_list.items = app_info.diamond_donors
 				if app_info.anonymous_diamond_donors != 0:
 					diamond_donors_list.dim_last_item = true
 					diamond_donors_list.items.append("%d anonymous" % app_info.anonymous_diamond_donors)
-				diamond_donors_list.setup()
 			
 			past_donors_list.items = app_info.past_donors
 			if app_info.past_anonymous_donors != 0:
 				past_donors_list.dim_last_item = true
 				past_donors_list.items.append("%d anonymous" % app_info.past_anonymous_donors)
-			past_donors_list.setup()
 			
 			past_golden_donors_list.items = app_info.past_golden_donors
 			if app_info.past_anonymous_golden_donors != 0:
 				past_golden_donors_list.dim_last_item = true
 				past_golden_donors_list.items.append("%d anonymous" % app_info.past_anonymous_golden_donors)
-			past_golden_donors_list.setup()
 			
 			past_donors_list.items = app_info.past_diamond_donors
 			if app_info.past_anonymous_diamond_donors != 0:
 				past_diamond_donors_list.dim_last_item = true
 				past_diamond_donors_list.items.append("%d anonymous" % app_info.past_anonymous_diamond_donors)
-			past_diamond_donors_list.setup()
 		2:
 			# This part doesn't need to be translated.
 			var licenses_dict := Engine.get_license_info()
