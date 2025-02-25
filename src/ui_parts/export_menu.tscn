@@ -115,6 +115,16 @@ theme_override_font_sizes/font_size = 12
 [node name="Dropdown" parent="MarginContainer/VBoxContainer/TitledPanel/VBoxContainer/CenterContainer/VBoxContainer/FormatHBox" instance=ExtResource("5_y6ex0")]
 layout_mode = 2
 values = ["svg", "png", "jpeg", "webp"]
+aliases = {
+"JPEG": "jpeg",
+"JPG": "jpg",
+"PNG": "png",
+"SVG": "svg",
+"WEBP": "webp",
+"WebP": "webp",
+"jpg": "jpeg"
+}
+editing_enabled = true
 
 [node name="FinalSizeLabel" type="Label" parent="MarginContainer/VBoxContainer/TitledPanel/VBoxContainer/CenterContainer/VBoxContainer"]
 unique_name_in_owner = true

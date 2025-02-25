@@ -71,7 +71,8 @@ func _draw() -> void:
 				text_line.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 				text_line.add_string(current_tab_name, ThemeUtils.regular_font, 13)
 				text_line.width = text_line_width
-				text_line.draw(ci, rect.position + Vector2(4, 3))
+				text_line.draw(ci, rect.position + Vector2(4, 3),
+						get_theme_color("font_selected_color", "TabContainer"))
 			var close_rect := get_close_button_rect()
 			if close_rect.has_area():
 				var close_icon_size := close_icon.get_size()
@@ -84,8 +85,8 @@ func _draw() -> void:
 			
 			var text_line_width := rect.size.x - 8
 			if text_line_width > 0:
-				var text_color := ThemeUtils.common_highlighted_text_color if is_hovered else\
-						ThemeUtils.common_text_color
+				var text_color := get_theme_color("font_hovered_color" if is_hovered else\
+						"font_unselected_color", "TabContainer")
 				
 				var text_line := TextLine.new()
 				text_line.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS

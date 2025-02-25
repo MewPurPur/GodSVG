@@ -61,6 +61,7 @@ func setup_dropdown(values: Array[Variant],
 value_text_map: Dictionary) -> void:  # Dictionary[Variant, String]
 	widget = Dropdown.instantiate()
 	widget.values = values
+	widget.restricted = true
 	widget.value_text_map = value_text_map
 	add_child(widget)
 	widget.value_changed.connect(_dropdown_modification)
@@ -169,7 +170,7 @@ func _draw() -> void:
 	if disabled:
 		color = ThemeUtils.common_subtle_text_color
 	elif dim_text:
-		color = ThemeUtils.common_dim_text_color
+		color = ThemeUtils.common_dimmer_text_color
 	
 	var non_panel_width := size.x - panel_width
 	var text_obj := TextLine.new()

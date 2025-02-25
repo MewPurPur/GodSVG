@@ -48,7 +48,7 @@ func setup_theming() -> void:
 func adjust_right_margin() -> void:
 	var scrollbar := scroll_container.get_v_scroll_bar()
 	content_container.add_theme_constant_override("margin_right",
-			2 if scrollbar.visible else 2 + scrollbar.size.x)
+			2 if scrollbar.visible else int(2 + scrollbar.size.x))
 
 func setup_tabs() -> void:
 	for tab in tabs.get_children():

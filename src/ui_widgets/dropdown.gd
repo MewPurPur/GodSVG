@@ -2,8 +2,10 @@
 extends HBoxContainer
 
 @export var values: Array[Variant]
-@export var disabled_values: Array[Variant]
+@export var disabled_values: Array[Variant]  # References values.
+@export var aliases: Dictionary = {}  # References values.
 @export var restricted := true
+@export var editing_enabled := false
 @export var align_left := false  # The alignment of the popup options' text.
 # TODO Typed Dictionary wonkiness
 @export var value_text_map: Dictionary = {}  # Dictionary[Variant, String]
@@ -22,6 +24,8 @@ func set_value(new_value: Variant, emit_changed := true) -> void:
 		_sync_line_edit()
 
 func _ready() -> void:
+	if not editing_enabled:
+		line_edit.editable = false
 	line_edit.text_changed.connect(_on_text_changed)
 	line_edit.text_submitted.connect(_on_text_submitted)
 	_sync_line_edit()
@@ -45,6 +49,9 @@ func _on_button_pressed() -> void:
 
 
 func _on_text_submitted(new_text: String) -> void:
+	if new_text in aliases:
+		new_text = aliases[new_text]
+	
 	if (restricted and new_text in values) or not restricted:
 		set_value(new_text)
 	else:
@@ -53,6 +60,8 @@ func _on_text_submitted(new_text: String) -> void:
 
 func _on_text_changed(new_text: String) -> void:
 	if restricted:
+		if new_text in aliases:
+			new_text = aliases[new_text]
 		line_edit.add_theme_color_override("font_color",
 				Configs.savedata.get_validity_color(not new_text in values))
 
