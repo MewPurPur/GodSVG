@@ -52,11 +52,18 @@ size_flags_horizontal = 3
 mouse_filter = 1
 theme_type_variation = &"SideBarContent"
 
-[node name="ContentContainer" type="ScrollContainer" parent="VBoxContainer/HBoxContainer/PanelContainer"]
+[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer/HBoxContainer/PanelContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 120)
 layout_mode = 2
 horizontal_scroll_mode = 0
+
+[node name="ContentContainer" type="MarginContainer" parent="VBoxContainer/HBoxContainer/PanelContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 2
+theme_override_constants/margin_bottom = 4
 
 [node name="AdvicePanel" type="PanelContainer" parent="VBoxContainer"]
 custom_minimum_size = Vector2(0, 45)

@@ -169,7 +169,7 @@ func _draw() -> void:
 	if disabled:
 		color = ThemeUtils.common_subtle_text_color
 	elif dim_text:
-		color = color.lerp(ThemeUtils.common_subtle_text_color, 0.75)
+		color = ThemeUtils.common_dim_text_color
 	
 	var non_panel_width := size.x - panel_width
 	var text_obj := TextLine.new()

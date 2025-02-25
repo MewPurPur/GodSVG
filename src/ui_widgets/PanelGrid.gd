@@ -6,8 +6,8 @@ const inner_color = Color("#32324d")
 const border_color = Color("#4d4d66")
 const border_width = 1
 const side_spacing = 6
-const top_spacing = 1
-const bottom_spacing = 1
+const top_spacing = 2
+const bottom_spacing = 2
 
 @export var columns: int
 @export var items: PackedStringArray
@@ -29,6 +29,7 @@ func _draw() -> void:
 	
 	custom_minimum_size.y = box_height * ceili(item_count / float(effective_columns))
 	
+	@warning_ignore("integer_division")
 	RenderingServer.canvas_item_add_rect(ci, Rect2(0, 0, size.x,
 			box_height * (item_count / effective_columns)), inner_color)
 	
@@ -42,7 +43,7 @@ func _draw() -> void:
 				RenderingServer.canvas_item_add_rect(ci,
 						Rect2(pos_x, pos_y, box_width, box_height), inner_color)
 			if dim_last_item:
-				text_color = text_color.lerp(ThemeUtils.common_subtle_text_color, 0.75)
+				text_color = ThemeUtils.common_dim_text_color
 		
 		# Sigh...
 		if is_zero_approx(pos_x):
