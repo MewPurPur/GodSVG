@@ -37,6 +37,7 @@ func _on_link_mouse_exited() -> void:
 
 
 func show_description(title: String, pros: PackedStringArray, cons := PackedStringArray()) -> void:
+	clarifications.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
 	clarifications.clear()
 	clarifications.push_bold()
 	clarifications.add_text(title + ":")
@@ -51,4 +52,5 @@ func show_description(title: String, pros: PackedStringArray, cons := PackedStri
 func reset_clarifications() -> void:
 	clarifications.clear()
 	clarifications.push_color(ThemeUtils.common_subtle_text_color)
+	clarifications.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	clarifications.add_text("\nHover a platform for details.")

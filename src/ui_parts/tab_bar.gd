@@ -80,12 +80,13 @@ func _draw() -> void:
 		else:
 			var is_hovered := rect.has_point(mouse_pos)
 			var tab_style := "tab_hovered" if is_hovered else "tab_unselected"
-			var text_color := ThemeUtils.common_text_color if is_hovered else\
-					(ThemeUtils.common_subtle_text_color + ThemeUtils.common_text_color) / 2
 			draw_style_box(get_theme_stylebox(tab_style, "TabContainer"), rect)
 			
 			var text_line_width := rect.size.x - 8
 			if text_line_width > 0:
+				var text_color := ThemeUtils.common_highlighted_text_color if is_hovered else\
+						ThemeUtils.common_text_color
+				
 				var text_line := TextLine.new()
 				text_line.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 				text_line.add_string(current_tab_name, ThemeUtils.regular_font, 13)

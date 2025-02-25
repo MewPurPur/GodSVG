@@ -165,11 +165,11 @@ func _draw() -> void:
 	if is_hovered:
 		get_theme_stylebox("hover", "FlatButton").draw(ci, Rect2(Vector2.ZERO, size))
 	
-	var color := Color(1, 1, 1, 0.9)
+	var color := ThemeUtils.common_text_color
 	if disabled:
 		color = ThemeUtils.common_subtle_text_color
 	elif dim_text:
-		color = Color(1, 1, 1, 0.5)
+		color = color.lerp(ThemeUtils.common_subtle_text_color, 0.75)
 	
 	var non_panel_width := size.x - panel_width
 	var text_obj := TextLine.new()

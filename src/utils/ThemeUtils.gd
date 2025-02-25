@@ -10,7 +10,9 @@ const common_panel_border_color = Color("414159")
 const common_caret_color = Color("ddeeffdd")
 const common_selection_color = Color("668cff66")
 const common_disabled_selection_color = Color("aaaaaa66")
-const common_text_color = Color("ddeeff")
+const common_editable_text_color = Color("ddeeff")
+const common_text_color = Color("ffffffe0")
+const common_highlighted_text_color = Color("ffffff")
 const common_subtle_text_color = Color("ffffff55")
 const common_inner_color_disabled = Color("0e0e12")
 const common_border_color_disabled = Color("1e1f24")
@@ -195,6 +197,12 @@ static func _setup_panelcontainer(theme: Theme) -> void:
 static func _setup_button(theme: Theme) -> void:
 	theme.add_type("Button")
 	theme.set_constant("h_separation", "Button", 6)
+	theme.set_color("font_color", "Button", common_text_color)
+	theme.set_color("font_disabled_color", "Button", common_subtle_text_color)
+	theme.set_color("font_focus_color", "Button", common_highlighted_text_color)
+	theme.set_color("font_hover_color", "Button", common_highlighted_text_color)
+	theme.set_color("font_pressed_color", "Button", common_highlighted_text_color)
+	theme.set_color("font_hover_pressed_color", "Button", common_highlighted_text_color)
 	var button_stylebox := StyleBoxFlat.new()
 	button_stylebox.set_corner_radius_all(5)
 	button_stylebox.set_border_width_all(2)
@@ -525,6 +533,12 @@ static func _setup_button(theme: Theme) -> void:
 
 static func _setup_checkbox(theme: Theme) -> void:
 	theme.add_type("CheckBox")
+	theme.set_color("font_color", "CheckBox", common_text_color)
+	theme.set_color("font_disabled_color", "CheckBox", common_subtle_text_color)
+	theme.set_color("font_focus_color", "CheckBox", common_highlighted_text_color)
+	theme.set_color("font_hover_color", "CheckBox", common_highlighted_text_color)
+	theme.set_color("font_pressed_color", "CheckBox", common_highlighted_text_color)
+	theme.set_color("font_hover_pressed_color", "CheckBox", common_highlighted_text_color)
 	theme.set_icon("checked", "CheckBox", _icon("GuiBoxChecked"))
 	theme.set_icon("checked_disabled", "CheckBox", _icon("GuiBoxCheckedDisabled"))
 	theme.set_icon("unchecked", "CheckBox", _icon("GuiBoxUnchecked"))
@@ -556,6 +570,12 @@ static func _setup_checkbox(theme: Theme) -> void:
 
 static func _setup_checkbutton(theme: Theme) -> void:
 	theme.add_type("CheckButton")
+	theme.set_color("font_color", "CheckButton", common_text_color)
+	theme.set_color("font_disabled_color", "CheckButton", common_subtle_text_color)
+	theme.set_color("font_focus_color", "CheckButton", common_highlighted_text_color)
+	theme.set_color("font_hover_color", "CheckButton", common_highlighted_text_color)
+	theme.set_color("font_pressed_color", "CheckButton", common_highlighted_text_color)
+	theme.set_color("font_hover_pressed_color", "CheckButton", common_highlighted_text_color)
 	theme.set_icon("checked", "CheckButton", _icon("GuiToggleChecked"))
 	theme.set_icon("unchecked", "CheckButton", _icon("GuiToggleUnchecked"))
 
@@ -595,7 +615,7 @@ static func _setup_itemlist(theme: Theme) -> void:
 static func _setup_lineedit(theme: Theme) -> void:
 	theme.add_type("LineEdit")
 	theme.set_color("caret_color", "LineEdit", common_caret_color)
-	theme.set_color("font_color", "LineEdit", common_text_color)
+	theme.set_color("font_color", "LineEdit", common_editable_text_color)
 	theme.set_color("font_placeholder_color", "LineEdit", common_subtle_text_color)
 	theme.set_color("selection_color", "LineEdit", common_selection_color)
 	theme.set_color("disabled_selection_color", "LineEdit", common_disabled_selection_color)
@@ -705,7 +725,7 @@ static func _setup_lineedit(theme: Theme) -> void:
 	theme.set_stylebox("focus", "RightConnectedLineEdit", right_connected_focus_stylebox)
 	
 	theme.add_type("MiniLineEdit")
-	theme.set_color("font_color", "MiniLineEdit", common_text_color)
+	theme.set_color("font_color", "MiniLineEdit", common_editable_text_color)
 	theme.set_type_variation("MiniLineEdit", "LineEdit")
 	theme.set_font_size("font_size", "MiniLineEdit", 10)
 	theme.set_font("font", "MiniLineEdit", mono_font)
