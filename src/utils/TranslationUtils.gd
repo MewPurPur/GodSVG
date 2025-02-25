@@ -6,14 +6,14 @@ static func _get_locale_name(locale: String) -> String:
 		"zh_CN": return "Simplified Chinese"
 	return TranslationServer.get_locale_name(locale)
 
-static func _get_locale_string(locale: String) -> String:
+static func get_locale_string(locale: String) -> String:
 	if not "_" in locale:
 		return locale.to_upper()
 	var separator_pos := locale.find("_")
 	return locale.left(separator_pos) + "-" + locale.right(-separator_pos - 1).to_upper()
 
 static func get_locale_display(locale: String) -> String:
-	return "%s (%s)" % [_get_locale_name(locale), _get_locale_string(locale)]
+	return "%s (%s)" % [_get_locale_name(locale), get_locale_string(locale)]
 
 
 static func get_shortcut_description(action_name: String) -> String:

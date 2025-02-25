@@ -272,6 +272,7 @@ func add_section(section_name: String) -> void:
 	var vbox := VBoxContainer.new()
 	vbox.add_theme_constant_override("separation", 0)
 	var label := Label.new()
+	label.add_theme_font_size_override("font_size", 15)
 	label.text = section_name
 	vbox.add_child(label)
 	var spacer := Control.new()
@@ -426,7 +427,7 @@ func _on_language_chosen(locale: String) -> void:
 
 func update_language_button() -> void:
 	lang_button.text = Translator.translate("Language") + ": " +\
-			TranslationServer.get_locale().to_upper()
+			TranslationUtils.get_locale_string(TranslationServer.get_locale())
 
 
 # Palette tab helpers.
