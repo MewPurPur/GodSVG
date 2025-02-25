@@ -11,7 +11,8 @@ const import_icon = preload("res://assets/icons/Import.svg")
 const reset_icon = preload("res://assets/icons/Reload.svg")
 
 @onready var lang_button: Button = $VBoxContainer/Language
-@onready var content_container: ScrollContainer = %ContentContainer
+@onready var scroll_container: ScrollContainer = %ScrollContainer
+@onready var content_container: MarginContainer = %ScrollContainer/ContentContainer
 @onready var tabs: VBoxContainer = %Tabs
 @onready var close_button: Button = $VBoxContainer/CloseButton
 @onready var advice_panel: PanelContainer = $VBoxContainer/AdvicePanel
@@ -26,6 +27,10 @@ var advice: Dictionary[String, String] = {}
 func _ready() -> void:
 	close_button.pressed.connect(queue_free)
 	Configs.language_changed.connect(setup_everything)
+	
+	scroll_container.get_v_scroll_bar().visibility_changed.connect(adjust_right_margin)
+	adjust_right_margin()
+	
 	update_language_button()
 	update_close_button()
 	setup_tabs()
@@ -39,6 +44,11 @@ func setup_theming() -> void:
 	var stylebox := get_theme_stylebox("panel").duplicate()
 	stylebox.content_margin_top += 4.0
 	add_theme_stylebox_override("panel", stylebox)
+
+func adjust_right_margin() -> void:
+	var scrollbar := scroll_container.get_v_scroll_bar()
+	content_container.add_theme_constant_override("margin_right",
+			2 if scrollbar.visible else 2 + scrollbar.size.x)
 
 func setup_tabs() -> void:
 	for tab in tabs.get_children():
@@ -79,7 +89,7 @@ func _on_tab_toggled(toggled_on: bool, tab_name: String) -> void:
 		setup_content()
 
 func setup_content() -> void:
-	content_container.scroll_vertical = 0
+	scroll_container.scroll_vertical = 0
 	for child in content_container.get_children():
 		child.queue_free()
 	
@@ -91,6 +101,7 @@ func setup_content() -> void:
 			vbox.add_theme_constant_override("separation", 6)
 			content_container.add_child(vbox)
 			var categories := HFlowContainer.new()
+			categories.alignment = FlowContainer.ALIGNMENT_CENTER
 			var button_group := ButtonGroup.new()
 			for tab_idx in formatter_tab_names:
 				var btn := Button.new()

@@ -11,11 +11,13 @@ const common_caret_color = Color("ddeeffdd")
 const common_selection_color = Color("668cff66")
 const common_disabled_selection_color = Color("aaaaaa66")
 const common_editable_text_color = Color("ddeeff")
-const common_text_color = Color("ffffffe0")
-const common_highlighted_text_color = Color("ffffff")
-const common_subtle_text_color = Color("ffffff55")
 const common_inner_color_disabled = Color("0e0e12")
 const common_border_color_disabled = Color("1e1f24")
+
+const common_text_color = Color("ffffffdd")
+const common_highlighted_text_color = Color("ffffff")
+const common_dim_text_color = Color("ffffff88")
+const common_subtle_text_color = Color("ffffff55")
 
 const common_button_inner_color_normal = Color("1c1e38")
 const common_button_border_color_normal = Color("313859")
@@ -189,9 +191,9 @@ static func _setup_panelcontainer(theme: Theme) -> void:
 	panel_stylebox.corner_radius_top_right = 5
 	panel_stylebox.corner_radius_bottom_right = 5
 	panel_stylebox.content_margin_left = 14
-	panel_stylebox.content_margin_right = 14
-	panel_stylebox.content_margin_bottom = 12
-	panel_stylebox.content_margin_top = 11
+	panel_stylebox.content_margin_right = 2
+	panel_stylebox.content_margin_bottom = 2
+	panel_stylebox.content_margin_top = 2
 	theme.set_stylebox("panel", "SideBarContent", panel_stylebox)
 
 static func _setup_button(theme: Theme) -> void:
@@ -847,6 +849,9 @@ static func _setup_label(theme: Theme) -> void:
 
 static func _setup_tabcontainer(theme: Theme) -> void:
 	theme.add_type("TabContainer")
+	theme.set_color("font_unselected_color", "TabContainer", common_dim_text_color)
+	theme.set_color("font_hovered_color", "TabContainer", common_highlighted_text_color)
+	theme.set_color("font_selected_color", "TabContainer", common_highlighted_text_color)
 	theme.set_constant("side_margin", "TabContainer", 0)
 	theme.set_font_size("font_size", "TabContainer", 14)
 	
@@ -859,9 +864,9 @@ static func _setup_tabcontainer(theme: Theme) -> void:
 	panel_stylebox.corner_radius_bottom_right = 5
 	panel_stylebox.corner_radius_bottom_left = 5
 	panel_stylebox.content_margin_left = 8
-	panel_stylebox.content_margin_right = 8
-	panel_stylebox.content_margin_bottom = 6
-	panel_stylebox.content_margin_top = 5
+	panel_stylebox.content_margin_right = 2
+	panel_stylebox.content_margin_bottom = 2
+	panel_stylebox.content_margin_top = 0
 	theme.set_stylebox("panel", "TabContainer", panel_stylebox)
 	
 	var tab_disabled_stylebox := StyleBoxEmpty.new()
