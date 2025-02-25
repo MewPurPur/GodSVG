@@ -381,7 +381,6 @@ func setup_path_command_controls(idx: int) -> Control:
 	relative_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	relative_button.begin_bulk_theme_override()
 	relative_button.add_theme_font_override("font", ThemeUtils.mono_font)
-	relative_button.add_theme_font_size_override("font_size", 13)
 	relative_button.add_theme_color_override("font_color", Color(1, 1, 1))
 	# Disabled styleboxes are unused, but must be set for the correct content margins.
 	if is_absolute:

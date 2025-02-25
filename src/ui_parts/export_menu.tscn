@@ -63,7 +63,6 @@ custom_minimum_size = Vector2(132, 20)
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0.866667, 0.866667, 0.866667, 1)
-theme_override_font_sizes/font_size = 13
 horizontal_alignment = 1
 vertical_alignment = 1
 text_overrun_behavior = 3
@@ -115,7 +114,7 @@ theme_override_font_sizes/font_size = 12
 
 [node name="Dropdown" parent="MarginContainer/VBoxContainer/TitledPanel/VBoxContainer/CenterContainer/VBoxContainer/FormatHBox" instance=ExtResource("5_y6ex0")]
 layout_mode = 2
-values = PackedStringArray("svg", "png", "jpg", "webp")
+values = ["svg", "png", "jpeg", "webp"]
 
 [node name="FinalSizeLabel" type="Label" parent="MarginContainer/VBoxContainer/TitledPanel/VBoxContainer/CenterContainer/VBoxContainer"]
 unique_name_in_owner = true

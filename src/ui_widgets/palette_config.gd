@@ -234,7 +234,7 @@ func _on_palette_button_pressed() -> void:
 	btn_arr.append(ContextPopup.create_button(Translator.translate("Copy as XML"),
 			copy_palette.bind(palette_idx), false, load("res://assets/icons/Copy.svg")))
 	btn_arr.append(ContextPopup.create_button(Translator.translate("Save as XML"),
-			save_palette.bind(palette_idx), false, load("res://assets/icons/Paste.svg")))
+			save_palette.bind(palette_idx), false, load("res://assets/icons/Export.svg")))
 	
 	var context_popup := ContextPopup.new()
 	context_popup.setup(btn_arr, true, -1, -1, PackedInt32Array([separator_idx]))

@@ -55,7 +55,6 @@ size_flags_vertical = 4
 [node name="LayoutLabel" type="Label" parent="VBoxContainer/PanelContainer/HBoxContainer/ConfigContainer/LayoutBox"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_font_sizes/font_size = 13
 
 [node name="LayoutDropdown2" parent="VBoxContainer/PanelContainer/HBoxContainer/ConfigContainer/LayoutBox" instance=ExtResource("2_4egw5")]
 unique_name_in_owner = true

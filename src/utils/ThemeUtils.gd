@@ -820,7 +820,6 @@ static func _setup_separator(theme: Theme) -> void:
 
 static func _setup_label(theme: Theme) -> void:
 	theme.add_type("Label")
-	theme.set_font_size("font_size", "Label", 15)
 	
 	theme.add_type("RichTextLabel")
 	theme.set_color("selection_color", "RichTextLabel", common_selection_color)

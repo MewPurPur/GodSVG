@@ -525,7 +525,6 @@ func _get_drag_data(at_position: Vector2) -> Variant:
 			get_theme_stylebox("tab_selected", "TabContainer"))
 	var label := Label.new()
 	label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
-	label.add_theme_font_size_override("font_size", 13)
 	label.text = Configs.savedata.get_active_tab().presented_name
 	preview.add_child(label)
 	label.position = Vector2(4, 3)
