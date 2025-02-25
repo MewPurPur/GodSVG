@@ -16,7 +16,8 @@ const common_border_color_disabled = Color("1e1f24")
 
 const common_text_color = Color("ffffffdd")
 const common_highlighted_text_color = Color("ffffff")
-const common_dim_text_color = Color("ffffff88")
+const common_dim_text_color = Color("ffffffbb")
+const common_dimmer_text_color = Color("ffffff77")
 const common_subtle_text_color = Color("ffffff55")
 
 const common_button_inner_color_normal = Color("1c1e38")
@@ -490,6 +491,10 @@ static func _setup_button(theme: Theme) -> void:
 	
 	theme.add_type("SideTab")
 	theme.set_type_variation("SideTab", "Button")
+	theme.set_color("font_color", "SideTab", common_dim_text_color)
+	theme.set_color("font_hover_color", "SideTab", common_highlighted_text_color)
+	theme.set_color("font_pressed_color", "SideTab", common_highlighted_text_color)
+	theme.set_color("font_hover_pressed_color", "SideTab", common_highlighted_text_color)
 	
 	var normal_sidetab_stylebox := StyleBoxFlat.new()
 	normal_sidetab_stylebox.bg_color = normal_tab_color
