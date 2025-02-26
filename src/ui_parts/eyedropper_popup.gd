@@ -57,10 +57,10 @@ func _draw() -> void:
 			if is_nan(max_horizontal) and is_nan(max_vertical):
 				continue
 			
-			var left = clampf(pos.x + l, pos.x - max_horizontal, pos.x + max_horizontal)
-			var right = clampf(pos.x + r, pos.x - max_horizontal, pos.x + max_horizontal)
-			var top = clampf(pos.y + t, pos.y - max_vertical, pos.y + max_vertical)
-			var bottom = clampf(pos.y + b, pos.y - max_vertical, pos.y + max_vertical)
+			var left := clampf(pos.x + l, pos.x - max_horizontal, pos.x + max_horizontal)
+			var right := clampf(pos.x + r, pos.x - max_horizontal, pos.x + max_horizontal)
+			var top := clampf(pos.y + t, pos.y - max_vertical, pos.y + max_vertical)
+			var bottom := clampf(pos.y + b, pos.y - max_vertical, pos.y + max_vertical)
 			
 			if left < right and top < bottom:
 				draw_rect(Rect2(Vector2(left, top), Vector2(right - left, bottom - top)),

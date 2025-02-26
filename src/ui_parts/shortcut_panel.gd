@@ -9,7 +9,7 @@ static func get_preset_value_text_map() -> Dictionary:
 		Layout.HORIZONTAL_TWO_ROWS: Translator.translate("Horizontal with two rows"),
 	}
 
-const ShortcutPanelConfig = preload("res://src/ui_parts/shortcut_panel_config.tscn")
+const ShortcutPanelConfigScene = preload("res://src/ui_parts/shortcut_panel_config.tscn")
 
 const dot_pattern = preload("res://assets/icons/DotPatternSegment.svg")
 const config_icon = preload("res://assets/icons/Config.svg")
@@ -150,7 +150,7 @@ func simulate_key_press(action_name: String) -> void:
 			return
 
 func _on_config_button_pressed() -> void:
-	HandlerGUI.add_menu(ShortcutPanelConfig.instantiate())
+	HandlerGUI.add_menu(ShortcutPanelConfigScene.instantiate())
 
 func sync_relative_position() -> void:
 	set_position_relative(position_window_relative)

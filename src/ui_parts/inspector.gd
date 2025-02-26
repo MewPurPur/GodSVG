@@ -1,8 +1,5 @@
 extends VTitledPanel
 
-const ElementFrame = preload("res://src/ui_widgets/element_frame.tscn")
-const BasicXNodeFrame = preload("res://src/ui_widgets/basic_xnode_frame.tscn")
-
 @onready var xnodes_container: VBoxContainer = %RootChildren
 @onready var add_button: Button = $ActionContainer/AddButton
 

@@ -4,7 +4,7 @@ extends LineEditButton
 var element: Element
 var attribute_name: String  # Never propagates.
 
-const TransformPopup = preload("res://src/ui_widgets/transform_popup.tscn")
+const TransformPopupScene = preload("res://src/ui_widgets/transform_popup.tscn")
 
 func set_value(new_value: String, save := false) -> void:
 	element.set_attribute(attribute_name, new_value)
@@ -41,7 +41,7 @@ func sync() -> void:
 	text = element.get_attribute_value(attribute_name)
 
 func _on_pressed() -> void:
-	var transform_popup := TransformPopup.instantiate()
+	var transform_popup := TransformPopupScene.instantiate()
 	transform_popup.attribute_ref = element.get_attribute(attribute_name)
 	HandlerGUI.popup_under_rect(transform_popup, get_global_rect(), get_viewport())
 

@@ -23,7 +23,7 @@ func _ready() -> void:
 func setup(title: String, action: Callable, error_callable := Callable(),
 warning_callable := Callable()) -> void:
 	title_label.text = title
-	action_button.pressed.connect(func(): action.call(name_edit.text))
+	action_button.pressed.connect(func() -> void: action.call(name_edit.text))
 	name_edit.grab_focus()
 	name_edit.custom_minimum_size.x = 300.0
 	warning_callback = warning_callable

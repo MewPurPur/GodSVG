@@ -75,16 +75,16 @@ func get_bounding_box() -> Rect2:
 				var b := 6 * j - 6 * i
 				var c := 3 * i
 				
-				var sol_x = solve_quadratic(a.x, b.x, c.x)
+				var sol_x := _solve_quadratic(a.x, b.x, c.x)
 				for sol in sol_x:
-					if sol != null and sol > 0 and sol < 1:
+					if sol > 0 and sol < 1:
 						var pt := Utils.cubic_bezier_point(cp1.x, cp2.x, cp3.x, cp4.x, sol)
 						min_x = minf(pt, min_x)
 						max_x = maxf(pt, max_x)
 				
-				var sol_y = solve_quadratic(a.y, b.y, c.y)
+				var sol_y := _solve_quadratic(a.y, b.y, c.y)
 				for sol in sol_y:
-					if sol != null and sol > 0 and sol < 1:
+					if sol > 0 and sol < 1:
 						var pt := Utils.cubic_bezier_point(cp1.y, cp2.y, cp3.y, cp4.y, sol)
 						min_y = minf(pt, min_y)
 						max_y = maxf(pt, max_y)
@@ -181,12 +181,12 @@ func get_bounding_box() -> Rect2:
 	return Rect2(min_x, min_y, max_x - min_x, max_y - min_y)
 
 
-static func solve_quadratic(a: float, b: float, c: float) -> Array:
+func _solve_quadratic(a: float, b: float, c: float) -> Array[float]:
 	if a == 0:
 		return [-c/b]
 	
-	var D = sqrt(b * b - 4 * a * c)
+	var D := sqrt(b * b - 4 * a * c)
 	if is_nan(D):
-		return [null, null]
+		return []
 	else:
 		return [(-b + D) / (2 * a), (-b - D) / (2 * a)]

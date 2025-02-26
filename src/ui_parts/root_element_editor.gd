@@ -1,28 +1,20 @@
 extends VBoxContainer
 
+const NumberEdit = preload("res://src/ui_widgets/number_edit.gd")
+
 # So, about this editor. Width and height don't have default values, so they use NAN and
 # use NumberEdit, rather than NumberField. Viewbox is a list and it also doesn't have a
 # default value, so it uses 4 NumberEdits.
 
-const UnrecognizedField = preload("res://src/ui_widgets/unrecognized_field.tscn")
-const ColorField = preload("res://src/ui_widgets/color_field.tscn")
-const NumberField = preload("res://src/ui_widgets/number_field.tscn")
-const NumberSlider = preload("res://src/ui_widgets/number_field_with_slider.tscn")
-const IDField = preload("res://src/ui_widgets/id_field.tscn")
-const EnumField = preload("res://src/ui_widgets/enum_field.tscn")
-const TransformField = preload("res://src/ui_widgets/transform_field.tscn")
-
-const NumberEditType = preload("res://src/ui_widgets/number_edit.gd")
-
 @onready var width_button: Button = %Size/Width/WidthButton
 @onready var height_button: Button = %Size/Height/HeightButton
 @onready var viewbox_button: Button = %Viewbox/ViewboxButton
-@onready var width_edit: NumberEditType = %Size/Width/WidthEdit
-@onready var height_edit: NumberEditType = %Size/Height/HeightEdit
-@onready var viewbox_edit_x: NumberEditType = %Viewbox/Rect/ViewboxEditX
-@onready var viewbox_edit_y: NumberEditType = %Viewbox/Rect/ViewboxEditY
-@onready var viewbox_edit_w: NumberEditType = %Viewbox/Rect/ViewboxEditW
-@onready var viewbox_edit_h: NumberEditType = %Viewbox/Rect/ViewboxEditH
+@onready var width_edit: NumberEdit = %Size/Width/WidthEdit
+@onready var height_edit: NumberEdit = %Size/Height/HeightEdit
+@onready var viewbox_edit_x: NumberEdit = %Viewbox/Rect/ViewboxEditX
+@onready var viewbox_edit_y: NumberEdit = %Viewbox/Rect/ViewboxEditY
+@onready var viewbox_edit_w: NumberEdit = %Viewbox/Rect/ViewboxEditW
+@onready var viewbox_edit_h: NumberEdit = %Viewbox/Rect/ViewboxEditH
 @onready var unknown_container: MarginContainer
 
 func _ready() -> void:

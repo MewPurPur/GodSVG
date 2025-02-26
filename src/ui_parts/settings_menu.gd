@@ -1,10 +1,10 @@
 extends PanelContainer
 
-const PaletteConfigWidget = preload("res://src/ui_widgets/palette_config.tscn")
-const ShortcutConfigWidget = preload("res://src/ui_widgets/setting_shortcut.tscn")
-const ShortcutShowcaseWidget = preload("res://src/ui_widgets/presented_shortcut.tscn")
-const SettingFrame = preload("res://src/ui_widgets/setting_frame.tscn")
-const ProfileFrame = preload("res://src/ui_widgets/profile_frame.tscn")
+const PaletteConfigWidgetScene = preload("res://src/ui_widgets/palette_config.tscn")
+const ShortcutConfigWidgetScene = preload("res://src/ui_widgets/setting_shortcut.tscn")
+const ShortcutShowcaseWidgetScene = preload("res://src/ui_widgets/presented_shortcut.tscn")
+const SettingFrameScene = preload("res://src/ui_widgets/setting_frame.tscn")
+const ProfileFrameScene = preload("res://src/ui_widgets/profile_frame.tscn")
 
 const plus_icon = preload("res://assets/icons/Plus.svg")
 const import_icon = preload("res://assets/icons/Import.svg")
@@ -292,7 +292,7 @@ func add_section(section_name: String) -> void:
 	setting_container.add_child(vbox)
 
 func add_checkbox(text: String, dim_text := false) -> Control:
-	var frame := SettingFrame.instantiate()
+	var frame := SettingFrameScene.instantiate()
 	frame.dim_text = dim_text
 	frame.text = text
 	setup_frame(frame)
@@ -303,7 +303,7 @@ func add_checkbox(text: String, dim_text := false) -> Control:
 # TODO Typed Dictionary wonkiness
 func add_dropdown(text: String, values: Array[Variant],
 value_text_map: Dictionary) -> Control:  # Dictionary[Variant, String]
-	var frame := SettingFrame.instantiate()
+	var frame := SettingFrameScene.instantiate()
 	frame.text = text
 	setup_frame(frame)
 	frame.setup_dropdown(values, value_text_map)
@@ -312,7 +312,7 @@ value_text_map: Dictionary) -> Control:  # Dictionary[Variant, String]
 
 func add_number_dropdown(text: String, values: Array[float], is_integer := false,
 restricted := true, min_value := -INF, max_value := INF, dim_text := false) -> Control:
-	var frame := SettingFrame.instantiate()
+	var frame := SettingFrameScene.instantiate()
 	frame.dim_text = dim_text
 	frame.text = text
 	setup_frame(frame)
@@ -321,7 +321,7 @@ restricted := true, min_value := -INF, max_value := INF, dim_text := false) -> C
 	return frame
 
 func add_color_edit(text: String, enable_alpha := true) -> Control:
-	var frame := SettingFrame.instantiate()
+	var frame := SettingFrameScene.instantiate()
 	frame.text = text
 	setup_frame(frame)
 	frame.setup_color(enable_alpha)
@@ -331,7 +331,7 @@ func add_color_edit(text: String, enable_alpha := true) -> Control:
 func setup_frame(frame: Control) -> void:
 	var bind := current_setup_setting
 	frame.getter = current_setup_resource.get.bind(bind)
-	frame.setter = func(p): current_setup_resource.set(bind, p)
+	frame.setter = func(p: Variant) -> void: current_setup_resource.set(bind, p)
 	frame.default = current_setup_resource.get_setting_default(current_setup_setting)
 	frame.mouse_entered.connect(show_advice.bind(current_setup_setting))
 	frame.mouse_exited.connect(hide_advice.bind(current_setup_setting))
@@ -483,7 +483,7 @@ func rebuild_palettes() -> void:
 	for palette_config in palette_container.get_children():
 		palette_config.queue_free()
 	for palette in Configs.savedata.get_palettes():
-		var palette_config := PaletteConfigWidget.instantiate()
+		var palette_config := PaletteConfigWidgetScene.instantiate()
 		palette_container.add_child(palette_config)
 		palette_config.assign_palette(palette)
 		palette_config.layout_changed.connect(rebuild_palettes)
@@ -553,11 +553,11 @@ func show_formatter(category: String) -> void:
 	button.pressed.connect(current_setup_resource.reset_to_default)
 	
 	# The preset field shouldn't have a reset button or a section, so set it up manually.
-	var frame := ProfileFrame.instantiate()
+	var frame := ProfileFrameScene.instantiate()
 	frame.setup_dropdown(range(Formatter.Preset.size()),
 			Formatter.get_preset_value_text_map())
 	frame.getter = current_setup_resource.get.bind("preset")
-	frame.setter = func(p): current_setup_resource.set("preset", p)
+	frame.setter = func(p: Variant) -> void: current_setup_resource.set("preset", p)
 	frame.text = Translator.translate("Preset")
 	setting_container.add_child(frame)
 	
@@ -629,9 +629,9 @@ func show_shortcuts(category: String) -> void:
 		child.queue_free()
 	
 	for action in ShortcutUtils.get_shortcuts(category):
-		var shortcut_config := ShortcutConfigWidget.instantiate() if\
+		var shortcut_config := ShortcutConfigWidgetScene.instantiate() if\
 				ShortcutUtils.is_shortcut_modifiable(action) else\
-				ShortcutShowcaseWidget.instantiate()
+				ShortcutShowcaseWidgetScene.instantiate()
 		
 		shortcuts_container.add_child(shortcut_config)
 		shortcut_config.label.text = TranslationUtils.get_shortcut_description(action)

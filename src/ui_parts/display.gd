@@ -1,17 +1,13 @@
 extends VBoxContainer
 
-const NumberEditType = preload("res://src/ui_widgets/number_edit.gd")
-const BetterToggleButtonType = preload("res://src/ui_widgets/BetterToggleButton.gd")
-
-const NumberField = preload("res://src/ui_widgets/number_field.tscn")
-const ConfirmDialog := preload("res://src/ui_widgets/confirm_dialog.tscn")
+const NumberEdit = preload("res://src/ui_widgets/number_edit.gd")
 
 @onready var viewport: SubViewport = %Viewport
-@onready var reference_texture = %Viewport/ReferenceTexture
-@onready var reference_button = %LeftMenu/Reference
+@onready var reference_texture: TextureRect = %Viewport/ReferenceTexture
+@onready var reference_button: Button = %LeftMenu/Reference
 @onready var visuals_button: Button = %LeftMenu/Visuals
-@onready var snapper: NumberEditType = %LeftMenu/Snapping/SnapNumberEdit
-@onready var snap_button: BetterToggleButtonType = %LeftMenu/Snapping/SnapButton
+@onready var snapper: NumberEdit = %LeftMenu/Snapping/SnapNumberEdit
+@onready var snap_button: BetterToggleButton = %LeftMenu/Snapping/SnapButton
 @onready var viewport_panel: PanelContainer = $ViewportPanel
 @onready var debug_container: MarginContainer = $ViewportPanel/DebugMargins
 @onready var debug_label: Label = %DebugContainer/DebugLabel

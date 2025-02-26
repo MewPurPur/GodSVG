@@ -27,21 +27,33 @@ func toggle_relative() -> void:
 	if relative:
 		relative = false
 		command_char = command_char.to_upper()
-		for property in ["x", "x1", "x2"]:
-			if property in self:
-				set(property, start_x + get(property))
-		for property in ["y", "y1", "y2"]:
-			if property in self:
-				set(property, start_y + get(property))
+		if "x" in self:
+			self.x += start_x
+		if "x1" in self:
+			self.x1 += start_x
+		if "x2" in self:
+			self.x2 += start_x
+		if "y" in self:
+			self.y += start_y
+		if "y1" in self:
+			self.y1 += start_y
+		if "y2" in self:
+			self.y2 += start_y
 	else:
 		relative = true
 		command_char = command_char.to_lower()
-		for property in ["x", "x1", "x2"]:
-			if property in self:
-				set(property, get(property) - start_x)
-		for property in ["y", "y1", "y2"]:
-			if property in self:
-				set(property, get(property) - start_y)
+		if "x" in self:
+			self.x -= start_x
+		if "x1" in self:
+			self.x1 -= start_x
+		if "x2" in self:
+			self.x2 -= start_x
+		if "y" in self:
+			self.y -= start_y
+		if "y1" in self:
+			self.y1 -= start_y
+		if "y2" in self:
+			self.y2 -= start_y
 
 
 class MoveCommand extends PathCommand:

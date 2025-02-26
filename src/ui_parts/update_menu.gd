@@ -41,7 +41,7 @@ _headers: PackedStringArray, body: PackedByteArray) -> void:
 				display_error_message("Response code %d" % response_code)
 				return
 			
-			var json = JSON.parse_string(body.get_string_from_utf8())
+			var json: Variant = JSON.parse_string(body.get_string_from_utf8())
 			if json == null:
 				display_error_message("Failed to decode JSON")
 				return

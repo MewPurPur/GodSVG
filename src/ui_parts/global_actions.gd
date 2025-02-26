@@ -5,7 +5,6 @@ extends HBoxContainer
 @onready var more_options: Button = $LeftSide/MoreOptions
 @onready var settings_button: Button = $LeftSide/SettingsButton
 @onready var size_button: Button = $RightSide/SizeButton
-@onready var file_button: Button = $RightSide/CurrentFileButton
 
 func update_translations() -> void:
 	import_button.tooltip_text = Translator.translate("Import")

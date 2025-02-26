@@ -1,14 +1,15 @@
 extends PanelContainer
 
+const Dropdown = preload("res://src/ui_widgets/dropdown.gd")
+const ShortcutPanel = preload("res://src/ui_parts/shortcut_panel.gd")
+
 const clear_icon = preload("res://assets/icons/Clear.svg")
 
-const Dropdown = preload("res://src/ui_widgets/dropdown.tscn")
-const DropdownType = preload("res://src/ui_widgets/dropdown.gd")
-const ShortcutPanel = preload("res://src/ui_parts/shortcut_panel.gd")
+const DropdownScene = preload("res://src/ui_widgets/dropdown.tscn")
 
 @onready var close_button: Button = $VBoxContainer/CloseButton
 @onready var slot_container: VBoxContainer = %SlotContainer
-@onready var layout_dropdown: HBoxContainer = %LayoutDropdown
+@onready var layout_dropdown: Dropdown = %LayoutDropdown
 
 func _ready() -> void:
 	close_button.pressed.connect(queue_free)
@@ -44,7 +45,7 @@ func update_shortcut_slots() -> void:
 			icon_presentation.add_child(icon)
 		hbox.add_child(icon_presentation)
 		
-		var dropdown := Dropdown.instantiate()
+		var dropdown := DropdownScene.instantiate()
 		dropdown.custom_minimum_size = Vector2(100, 28)
 		dropdown.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		dropdown.align_left = true

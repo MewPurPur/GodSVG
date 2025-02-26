@@ -8,7 +8,7 @@ const autoscroll_speed = 1500.0
 @onready var xnodes: VBoxContainer = %RootChildren
 @onready var covering_rect: Control = $MoveToOverlay
 
-func _ready():
+func _ready() -> void:
 	State.requested_scroll_to_element_editor.connect(scroll_to_view_element_editor)
 	set_dragging(false)
 

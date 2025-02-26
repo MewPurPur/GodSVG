@@ -1,8 +1,8 @@
 # This singleton handles information that's session-wide, but not saved.
 extends Node
 
-const OptionsDialog = preload("res://src/ui_widgets/options_dialog.tscn")
-const PathCommandPopup = preload("res://src/ui_widgets/path_popup.tscn")
+const OptionsDialogScene = preload("res://src/ui_widgets/options_dialog.tscn")
+const PathCommandPopupScene = preload("res://src/ui_widgets/path_popup.tscn")
 
 const path_actions_dict: Dictionary[String, String] = {
 	"move_absolute": "M", "move_relative": "m",
@@ -101,7 +101,7 @@ func setup_from_tab() -> void:
 		var message := Translator.translate(
 				"The last edited state of this tab could not be found.")
 		
-		var options_dialog := OptionsDialog.instantiate()
+		var options_dialog := OptionsDialogScene.instantiate()
 		HandlerGUI.add_dialog(options_dialog)
 		if user_facing_path.is_empty() or not FileAccess.file_exists(user_facing_path):
 			options_dialog.setup(Translator.translate("Alert!"), message)
@@ -411,7 +411,8 @@ func shift_select(xid: PackedInt32Array, inner_idx := -1) -> void:
 func select_all() -> void:
 	_clear_inner_selection_no_signal()
 	var xnode_list: Array[XNode] = root_element.get_all_xnode_descendants()
-	var xid_list: Array = xnode_list.map(func(xnode): return xnode.xid)
+	var xid_list: Array = xnode_list.map(
+			func(xnode: XNode) -> PackedInt32Array: return xnode.xid)
 	# The order might not be the same, so ensure like this.
 	if XIDUtils.are_xid_lists_same(xid_list, selected_xids):
 		return
@@ -866,7 +867,7 @@ func popup_convert_to_context(popup_method: Callable) -> void:
 		var selection_idx: int = inner_selections.max()
 		var cmd_char := path_attrib.get_command(selection_idx).command_char
 		
-		var command_picker = PathCommandPopup.instantiate()
+		var command_picker := PathCommandPopupScene.instantiate()
 		popup_method.call(command_picker)
 		command_picker.force_relativity(Utils.is_string_lower(cmd_char))
 		
@@ -890,7 +891,7 @@ func popup_insert_command_after_context(popup_method: Callable) -> void:
 	var selection_idx: int = inner_selections.max()
 	var cmd_char := path_attrib.get_command(selection_idx).command_char
 	
-	var command_picker = PathCommandPopup.instantiate()
+	var command_picker := PathCommandPopupScene.instantiate()
 	popup_method.call(command_picker)
 	command_picker.path_command_picked.connect(insert_path_command_after_selection)
 	# Disable invalid commands. Z is syntactically invalid, so disallow it even harder.

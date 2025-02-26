@@ -1,6 +1,8 @@
 # An editor to be tied to a color attribute.
 extends LineEditButton
 
+const ColorPopup = preload("res://src/ui_widgets/color_popup.gd")
+
 var element: Element
 var attribute_name: String:  # May propagate.
 	set(new_value):
@@ -13,10 +15,10 @@ var cached_allow_url: bool
 var cached_allow_none: bool
 var cached_allow_current_color: bool
 
-const ColorPopup = preload("res://src/ui_widgets/color_popup.tscn")
+const ColorPopupScene = preload("res://src/ui_widgets/color_popup.tscn")
 const checkerboard = preload("res://assets/icons/backgrounds/ColorButtonBG.svg")
 
-@onready var color_popup: Control
+@onready var color_popup: ColorPopup
 
 var gradient_texture: GradientTexture2D
 
@@ -74,7 +76,7 @@ func _on_svg_changed() -> void:
 		queue_redraw()
 
 func _on_pressed() -> void:
-	color_popup = ColorPopup.instantiate()
+	color_popup = ColorPopupScene.instantiate()
 	color_popup.current_value = element.get_attribute_value(attribute_name)
 	color_popup.effective_color = ColorParser.text_to_color(
 			element.get_attribute_true_color(attribute_name))
