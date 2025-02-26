@@ -1,7 +1,7 @@
 extends PanelContainer
 
-const NumberEditType = preload("res://src/ui_widgets/number_edit.gd")
-const DropdownType = preload("res://src/ui_widgets/dropdown.gd")
+const NumberEdit = preload("res://src/ui_widgets/number_edit.gd")
+const Dropdown = preload("res://src/ui_widgets/dropdown.gd")
 
 var UR := UndoRedo.new()
 var export_data := ImageExportData.new()
@@ -10,14 +10,14 @@ var dimensions := Vector2.ZERO
 @onready var dimensions_label: Label = %DimensionsLabel
 @onready var texture_preview: CenterContainer = %TexturePreview
 @onready var format_hbox: HBoxContainer = %FormatHBox
-@onready var format_dropdown: DropdownType = %FormatHBox/Dropdown
+@onready var format_dropdown: Dropdown = %FormatHBox/Dropdown
 @onready var final_size_label: Label = %FinalSizeLabel
-@onready var scale_edit: NumberEditType = %Scale
-@onready var width_edit: NumberEditType = %Width
-@onready var height_edit: NumberEditType = %Height
+@onready var scale_edit: NumberEdit = %Scale
+@onready var width_edit: NumberEdit = %Width
+@onready var height_edit: NumberEdit = %Height
 @onready var size_container: CenterContainer = %SizeContainer
 @onready var lossless_checkbox: CheckBox = %LosslessCheckBox
-@onready var quality_edit: NumberEditType = %Quality
+@onready var quality_edit: NumberEdit = %Quality
 @onready var quality_hbox: HBoxContainer = %QualityHBox
 @onready var cancel_button: Button = %ButtonContainer/CancelButton
 @onready var export_button: Button = %ButtonContainer/ExportButton

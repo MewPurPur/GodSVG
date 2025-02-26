@@ -86,16 +86,18 @@ static func fn(shortcut: String) -> Callable:
 		"import": return FileUtils.open_svg_import_dialog
 		"close_tab": return Configs.savedata.remove_active_tab
 		"new_tab": return Configs.savedata.add_empty_tab
-		"select_next_tab": return func(): Configs.savedata.set_active_tab_index(posmod(
-				Configs.savedata.get_active_tab_index() + 1, Configs.savedata.get_tab_count()))
-		"select_previous_tab": return func(): Configs.savedata.set_active_tab_index(posmod(
-				Configs.savedata.get_active_tab_index() - 1, Configs.savedata.get_tab_count()))
+		"select_next_tab": return func() -> void: Configs.savedata.set_active_tab_index(
+				posmod(Configs.savedata.get_active_tab_index() + 1,
+				Configs.savedata.get_tab_count()))
+		"select_previous_tab": return func() -> void: Configs.savedata.set_active_tab_index(
+				posmod(Configs.savedata.get_active_tab_index() - 1,
+				Configs.savedata.get_tab_count()))
 		"copy_svg_text": return DisplayServer.clipboard_set.bind(State.svg_text)
 		"optimize": return State.optimize
 		"reset_svg": return FileUtils.reset_svg
-		"open_externally": return func(): FileUtils.open_svg(
+		"open_externally": return func() -> void: FileUtils.open_svg(
 				Configs.savedata.get_active_tab().svg_file_path)
-		"open_in_folder": return func(): FileUtils.open_svg_folder(
+		"open_in_folder": return func() -> void: FileUtils.open_svg_folder(
 				Configs.savedata.get_active_tab().svg_file_path)
 		"redo": return Configs.savedata.get_active_tab().redo
 		"undo": return Configs.savedata.get_active_tab().undo

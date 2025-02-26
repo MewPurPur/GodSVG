@@ -13,7 +13,7 @@ const STRIP_HEIGHT = 22.0
 
 signal focused
 
-const MiniNumberField = preload("mini_number_field.tscn")
+const MiniNumberFieldScene = preload("mini_number_field.tscn")
 
 const more_icon = preload("res://assets/icons/SmallMore.svg")
 const plus_icon = preload("res://assets/icons/Plus.svg")
@@ -56,7 +56,7 @@ func setup() -> void:
 	line_edit.tooltip_text = attribute_name
 	line_edit.text_submitted.connect(set_value.bind(true))
 	line_edit.text_changed.connect(setup_font)
-	line_edit.text_change_canceled.connect(func(): setup_font(line_edit.text))
+	line_edit.text_change_canceled.connect(func() -> void: setup_font(line_edit.text))
 	line_edit.focus_entered.connect(_on_line_edit_focus_entered)
 	points_container.draw.connect(points_draw)
 	points_container.gui_input.connect(_on_points_gui_input)
@@ -350,7 +350,7 @@ func setup_point_controls(idx: int) -> Control:
 
 
 func numfield(cmd_idx: int) -> BetterLineEdit:
-	var new_field := MiniNumberField.instantiate()
+	var new_field := MiniNumberFieldScene.instantiate()
 	new_field.focus_entered.connect(State.normal_select.bind(element.xid, cmd_idx))
 	return new_field
 

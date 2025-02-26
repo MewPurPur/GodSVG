@@ -1,6 +1,9 @@
 # A popup for picking a color.
 extends PanelContainer
 
+const GoodColorPicker = preload("res://src/ui_widgets/good_color_picker.gd")
+const ColorSwatch = preload("res://src/ui_widgets/color_swatch.gd")
+
 # Useful here, because it avoids the Palette validation.
 class MockPalette extends RefCounted:
 	var title: String
@@ -16,10 +19,7 @@ class MockPalette extends RefCounted:
 # If the currentColor keyword is available, but uninteresting, don't show it.
 enum CurrentColorAvailability {UNAVAILABLE, UNINTERESTING, INTERESTING}
 
-const GoodColorPickerType = preload("res://src/ui_widgets/good_color_picker.gd")
-const ColorSwatchType = preload("res://src/ui_widgets/color_swatch.gd")
-
-const ColorSwatch = preload("res://src/ui_widgets/color_swatch.tscn")
+const ColorSwatchScene = preload("res://src/ui_widgets/color_swatch.tscn")
 
 signal color_picked(new_color: String, final: bool)
 var is_none_keyword_available := false
@@ -38,10 +38,10 @@ var _palettes_pending_update := false  # Palettes will update when visible.
 @onready var palettes_content_container: VBoxContainer = %PalettesContent
 @onready var search_field: BetterLineEdit = %SearchBox/SearchField
 @onready var color_picker_content: VBoxContainer = %Content/ColorPicker
-@onready var color_picker: GoodColorPickerType = %Content/ColorPicker
+@onready var color_picker: GoodColorPicker = %Content/ColorPicker
 @onready var switch_mode_button: Button = $MainContainer/SwitchMode
 
-var swatches_list: Array[ColorSwatchType] = []  # Updated manually.
+var swatches_list: Array[ColorSwatch] = []  # Updated manually.
 
 func _ready() -> void:
 	color_picker.is_none_keyword_available = is_none_keyword_available
@@ -119,7 +119,7 @@ func update_palettes(search_text := "") -> void:
 		var swatch_container := HFlowContainer.new()
 		swatch_container.add_theme_constant_override("h_separation", 3)
 		for i in indices_to_show:
-			var swatch := ColorSwatch.instantiate()
+			var swatch := ColorSwatchScene.instantiate()
 			var color_to_show := palette.colors[i]
 			swatch.color = color_to_show
 			swatch.color_name = palette.color_names[i]

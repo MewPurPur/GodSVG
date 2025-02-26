@@ -1,10 +1,10 @@
 # A popup for editing a transform list.
 extends PanelContainer
 
-const NumberEditType = preload("res://src/ui_widgets/number_edit.gd")
+const NumberEdit = preload("res://src/ui_widgets/number_edit.gd")
 
-const MiniNumberField = preload("res://src/ui_widgets/mini_number_field.tscn")
-const TransformEditor = preload("res://src/ui_widgets/transform_editor.tscn")
+const MiniNumberFieldScene = preload("res://src/ui_widgets/mini_number_field.tscn")
+const TransformEditorScene = preload("res://src/ui_widgets/transform_editor.tscn")
 
 const _icons_dict: Dictionary[String, Texture2D] = {
 	"matrix": preload("res://assets/icons/Matrix.svg"),
@@ -18,12 +18,12 @@ const _icons_dict: Dictionary[String, Texture2D] = {
 var attribute_ref: AttributeTransformList
 var undo_redo := UndoRedo.new()
 
-@onready var x1_edit: NumberEditType = %FinalMatrix/X1
-@onready var x2_edit: NumberEditType = %FinalMatrix/X2
-@onready var y1_edit: NumberEditType = %FinalMatrix/Y1
-@onready var y2_edit: NumberEditType = %FinalMatrix/Y2
-@onready var o1_edit: NumberEditType = %FinalMatrix/O1
-@onready var o2_edit: NumberEditType = %FinalMatrix/O2
+@onready var x1_edit: NumberEdit = %FinalMatrix/X1
+@onready var x2_edit: NumberEdit = %FinalMatrix/X2
+@onready var y1_edit: NumberEdit = %FinalMatrix/Y1
+@onready var y2_edit: NumberEdit = %FinalMatrix/Y2
+@onready var o1_edit: NumberEdit = %FinalMatrix/O1
+@onready var o2_edit: NumberEdit = %FinalMatrix/O2
 @onready var transform_list: VBoxContainer = %TransformList
 @onready var add_button: Button = %AddButton
 @onready var apply_matrix: Button = %ApplyMatrix
@@ -66,7 +66,7 @@ func rebuild() -> void:
 			child.queue_free()
 	while i < transform_count:
 		var t := attribute_ref.get_transform(i)
-		var t_editor := TransformEditor.instantiate()
+		var t_editor := TransformEditorScene.instantiate()
 		transform_list.add_child(t_editor)
 		var fields: Array[BetterLineEdit]
 		# Setup fields.
@@ -97,7 +97,7 @@ func rebuild() -> void:
 
 
 func create_mini_number_field(idx: int, property: String) -> BetterLineEdit:
-	var field := MiniNumberField.instantiate()
+	var field := MiniNumberFieldScene.instantiate()
 	field.custom_minimum_size.x = 44
 	field.tooltip_text = property
 	field.value_changed.connect(update_value.bind(idx, property))

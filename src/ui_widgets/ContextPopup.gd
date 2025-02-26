@@ -132,7 +132,7 @@ start_pressed: bool, shortcut := "") -> CheckBox:
 				internal_hbox.add_child(label_margin)
 				ret_button.add_child(internal_hbox)
 				ret_button.pressed.connect(
-						func(): checkbox.button_pressed = not checkbox.button_pressed)
+						func() -> void: checkbox.button_pressed = not checkbox.button_pressed)
 				
 				var shortcut_obj := Shortcut.new()
 				var action_obj := InputEventAction.new()

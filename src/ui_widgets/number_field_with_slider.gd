@@ -85,6 +85,7 @@ var slider_dragged := false:
 				remove_child(temp_button)
 				add_child(temp_button)
 
+
 var slider_hovered := false:
 	set(new_value):
 		if slider_hovered != new_value:
@@ -128,9 +129,9 @@ func _on_slider_gui_input(event: InputEvent) -> void:
 	else:
 		temp_button.mouse_filter = Utils.mouse_filter_pass_non_drag_events(event)
 	
+	if event is InputEventMouseMotion and event.button_mask == 0:
+		slider_hovered = true
 	if not slider_dragged:
-		if event is InputEventMouseMotion and event.button_mask == 0:
-			slider_hovered = true
 		if Utils.is_event_drag_start(event):
 			slider_dragged = true
 			initial_slider_value = element.get_attribute_num(attribute_name)

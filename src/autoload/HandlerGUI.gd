@@ -1,12 +1,12 @@
 extends Node
 
-const AlertDialog = preload("res://src/ui_widgets/alert_dialog.tscn")
-const ConfirmDialog = preload("res://src/ui_widgets/confirm_dialog.tscn")
-const SettingsMenu = preload("res://src/ui_parts/settings_menu.tscn")
-const AboutMenu = preload("res://src/ui_parts/about_menu.tscn")
-const DonateMenu = preload("res://src/ui_parts/donate_menu.tscn")
-const UpdateMenu = preload("res://src/ui_parts/update_menu.tscn")
-const ExportMenu = preload("res://src/ui_parts/export_menu.tscn")
+const AlertDialogScene = preload("res://src/ui_widgets/alert_dialog.tscn")
+const ConfirmDialogScene = preload("res://src/ui_widgets/confirm_dialog.tscn")
+const SettingsMenuScene = preload("res://src/ui_parts/settings_menu.tscn")
+const AboutMenuScene = preload("res://src/ui_parts/about_menu.tscn")
+const DonateMenuScene = preload("res://src/ui_parts/donate_menu.tscn")
+const UpdateMenuScene = preload("res://src/ui_parts/update_menu.tscn")
+const ExportMenuScene = preload("res://src/ui_parts/export_menu.tscn")
 const ShortcutPanelScene = preload("res://src/ui_parts/shortcut_panel.tscn")
 
 # Menus should be added with add_menu() and removed by being freed.
@@ -61,7 +61,7 @@ func _add_control(new_control: Control) -> void:
 	get_tree().root.propagate_notification(NOTIFICATION_DRAG_END)
 	remove_all_popups()
 	
-	var overlay_ref = ColorRect.new()
+	var overlay_ref := ColorRect.new()
 	overlay_ref.color = Color(0, 0, 0, 0.4)
 	overlay_ref.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	menu_stack.append(overlay_ref)
@@ -197,7 +197,7 @@ var last_mouse_click_double := false
 func _input(event: InputEvent) -> void:
 	if ShortcutUtils.is_action_pressed(event, "quit"):
 		remove_all_menus()
-		var confirm_dialog = ConfirmDialog.instantiate()
+		var confirm_dialog := ConfirmDialogScene.instantiate()
 		add_menu(confirm_dialog)
 		confirm_dialog.setup(Translator.translate("Quit GodSVG"),
 				Translator.translate("Do you want to quit GodSVG?"),
@@ -343,7 +343,7 @@ func update_ui_scale() -> void:
 
 
 func open_update_checker() -> void:
-	var confirmation_dialog = ConfirmDialog.instantiate()
+	var confirmation_dialog := ConfirmDialogScene.instantiate()
 	add_menu(confirmation_dialog)
 	confirmation_dialog.setup(Translator.translate("Check for updates?"),
 			Translator.translate("This will connect to github.com to compare version numbers. No other data is collected or transmitted."),
@@ -351,17 +351,17 @@ func open_update_checker() -> void:
 
 func _list_updates() -> void:
 	remove_all_menus()
-	var update_menu_instance = UpdateMenu.instantiate()
+	var update_menu_instance := UpdateMenuScene.instantiate()
 	add_menu(update_menu_instance)
 
 func open_settings() -> void:
-	add_menu(SettingsMenu.instantiate())
+	add_menu(SettingsMenuScene.instantiate())
 
 func open_about() -> void:
-	add_menu(AboutMenu.instantiate())
+	add_menu(AboutMenuScene.instantiate())
 
 func open_donate() -> void:
-	add_menu(DonateMenu.instantiate())
+	add_menu(DonateMenuScene.instantiate())
 
 func open_export() -> void:
 	var width := State.root_element.width
@@ -374,7 +374,7 @@ func open_export() -> void:
 	if dimensions_valid:
 		dimensions_too_different = (1 / minf(width, height) > 16384 / maxf(width, height))
 		if not dimensions_too_different:
-			add_menu(ExportMenu.instantiate())
+			add_menu(ExportMenuScene.instantiate())
 			return
 	
 	var message: String
@@ -386,7 +386,7 @@ func open_export() -> void:
 				"The graphic can be exported only as SVG because its size is not defined.")
 	message += "\n\n" + Translator.translate("Do you want to proceed?")
 	
-	var confirm_dialog = ConfirmDialog.instantiate()
+	var confirm_dialog := ConfirmDialogScene.instantiate()
 	add_menu(confirm_dialog)
 	var svg_export_data := ImageExportData.new()
 	confirm_dialog.setup(Translator.translate("Export SVG"), message,

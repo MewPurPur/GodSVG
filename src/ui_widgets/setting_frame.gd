@@ -5,9 +5,9 @@ var type := Type.NONE
 
 signal value_changed
 
-const ColorEdit = preload("res://src/ui_widgets/color_edit.tscn")
-const Dropdown = preload("res://src/ui_widgets/dropdown.tscn")
-const NumberDropdown = preload("res://src/ui_widgets/number_dropdown.tscn")
+const ColorEditScene = preload("res://src/ui_widgets/color_edit.tscn")
+const DropdownScene = preload("res://src/ui_widgets/dropdown.tscn")
+const NumberDropdownScene = preload("res://src/ui_widgets/number_dropdown.tscn")
 
 var getter: Callable
 var setter: Callable
@@ -47,7 +47,7 @@ func setup_checkbox() -> void:
 	panel_width = 76
 
 func setup_color(enable_alpha: bool) -> void:
-	widget = ColorEdit.instantiate()
+	widget = ColorEditScene.instantiate()
 	widget.enable_alpha = enable_alpha
 	widget.enable_palettes = false
 	widget.value = getter.call().to_html(enable_alpha)
@@ -59,7 +59,7 @@ func setup_color(enable_alpha: bool) -> void:
 # TODO Typed Dictionary wonkiness
 func setup_dropdown(values: Array[Variant],
 value_text_map: Dictionary) -> void:  # Dictionary[Variant, String]
-	widget = Dropdown.instantiate()
+	widget = DropdownScene.instantiate()
 	widget.values = values
 	widget.restricted = true
 	widget.value_text_map = value_text_map
@@ -70,7 +70,7 @@ value_text_map: Dictionary) -> void:  # Dictionary[Variant, String]
 
 func setup_number_dropdown(values: Array[float], is_integer: bool, restricted: bool,
 min_value: float, max_value: float) -> void:
-	widget = NumberDropdown.instantiate()
+	widget = NumberDropdownScene.instantiate()
 	widget.values = values
 	widget.is_integer = is_integer
 	widget.restricted = restricted

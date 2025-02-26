@@ -1,9 +1,9 @@
 extends PanelContainer
 
-const ColorSwatchType = preload("res://src/ui_widgets/color_swatch_config.gd")
+const ColorSwatch = preload("res://src/ui_widgets/color_swatch_config.gd")
 
-const ColorSwatch = preload("res://src/ui_widgets/color_swatch_config.tscn")
-const ConfigurePopup = preload("res://src/ui_widgets/configure_color_popup.tscn")
+const ColorSwatchScene = preload("res://src/ui_widgets/color_swatch_config.tscn")
+const ConfigurePopupScene = preload("res://src/ui_widgets/configure_color_popup.tscn")
 const plus_icon = preload("res://assets/icons/Plus.svg")
 
 signal layout_changed
@@ -56,7 +56,7 @@ func rebuild_colors() -> void:
 	set_label_text(palette.title)
 	
 	for i in palette.get_color_count():
-		var swatch := ColorSwatch.instantiate()
+		var swatch := ColorSwatchScene.instantiate()
 		swatch.palette = palette
 		swatch.idx = i
 		swatch.pressed.connect(popup_configure_color.bind(swatch))
@@ -75,7 +75,7 @@ func rebuild_colors() -> void:
 	fake_swatch.focus_mode = Control.FOCUS_NONE
 	fake_swatch.mouse_filter = Control.MOUSE_FILTER_PASS
 	fake_swatch.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-	var color_swatch_ref := ColorSwatch.instantiate()
+	var color_swatch_ref := ColorSwatchScene.instantiate()
 	fake_swatch.custom_minimum_size = color_swatch_ref.custom_minimum_size
 	color_swatch_ref.queue_free()
 	fake_swatch.pressed.connect(popup_add_color)
@@ -94,7 +94,7 @@ func display_warnings() -> void:
 
 
 func popup_configure_color(swatch: Button) -> void:
-	var configure_popup := ConfigurePopup.instantiate()
+	var configure_popup := ConfigurePopupScene.instantiate()
 	configure_popup.palette = swatch.palette
 	configure_popup.idx = swatch.idx
 	configure_popup.color_deletion_requested.connect(remove_color.bind(swatch.idx))
@@ -118,10 +118,12 @@ func hide_name_edit() -> void:
 
 # Update text color to red if the title won't work (because it's a duplicate).
 func _on_name_edit_text_changed(new_text: String) -> void:
+	name_edit.begin_bulk_theme_override()
 	for theme_color in ["font_color", "font_hover_color"]:
 		name_edit.add_theme_color_override(theme_color,
 				Configs.savedata.get_validity_color(false, new_text != palette.title and\
 				not Configs.savedata.is_palette_title_unused(new_text)))
+	name_edit.end_bulk_theme_override()
 
 func _on_name_edit_text_submitted(new_title: String) -> void:
 	new_title = new_title.strip_edges()
@@ -256,7 +258,7 @@ func _can_drop_data(_at_position: Vector2, data: Variant) -> bool:
 	var buffer := 6
 	var pos := colors_container.get_local_mouse_position()
 	
-	if not (data is ColorSwatchType.DropData and\
+	if not (data is ColorSwatch.DropData and\
 	Rect2(Vector2.ZERO, colors_container.size).grow(buffer).has_point(pos)):
 		clear_proposed_drop()
 		return false
@@ -276,7 +278,7 @@ func _can_drop_data(_at_position: Vector2, data: Variant) -> bool:
 
 	proposed_drop_idx = new_idx
 	for swatch in get_swatches():
-		swatch.proposed_drop_data = ColorSwatchType.DropData.new(palette, new_idx)
+		swatch.proposed_drop_data = ColorSwatch.DropData.new(palette, new_idx)
 		swatch.queue_redraw()
 	return data.palette != palette or (data.palette == palette and\
 			data.index != new_idx and data.index != new_idx - 1)

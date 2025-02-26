@@ -32,12 +32,9 @@ func _format(text: String, formatter: Formatter) -> String:
 			text[1] == text[2] and text[3] == text[4] and text[5] == text[6]:
 				text = "#" + text[1] + text[3] + text[5]
 		Formatter.PrimaryColorSyntax.RGB:
-			var new_text := "rgb("
-			for i in [1, 3, 5]:
-				new_text += String.num_uint64(text.substr(i, 2).hex_to_int())
-				if i != 5:
-					new_text += ", "
-			text = new_text + ")"
+			text = "rgb(" + String.num_uint64(text.substr(1, 2).hex_to_int()) +\
+					", " + String.num_uint64(text.substr(3, 2).hex_to_int()) +\
+					", " + String.num_uint64(text.substr(5, 2).hex_to_int()) + ")"
 	
 	if named_colors_usage != Formatter.NamedColorUse.NEVER:
 		var hex := text.to_lower()

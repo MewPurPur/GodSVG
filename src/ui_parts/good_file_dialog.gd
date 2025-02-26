@@ -1,9 +1,9 @@
 # A fallback file dialog, always used if the native file dialog is not available.
 extends PanelContainer
 
-const ChooseNameDialog = preload("res://src/ui_widgets/choose_name_dialog.tscn")
-const ConfirmDialog = preload("res://src/ui_widgets/confirm_dialog.tscn")
-const AlertDialog = preload("res://src/ui_widgets/alert_dialog.tscn")
+const ChooseNameDialogScene = preload("res://src/ui_widgets/choose_name_dialog.tscn")
+const ConfirmDialogScene = preload("res://src/ui_widgets/confirm_dialog.tscn")
+const AlertDialogScene = preload("res://src/ui_widgets/alert_dialog.tscn")
 
 signal file_selected(path: String)
 
@@ -261,7 +261,7 @@ func _setup_file_images() -> void:
 
 func select_file() -> void:
 	if mode == FileMode.SAVE and FileAccess.file_exists(current_dir.path_join(current_file)):
-		var confirm_dialog := ConfirmDialog.instantiate()
+		var confirm_dialog := ConfirmDialogScene.instantiate()
 		HandlerGUI.add_dialog(confirm_dialog)
 		confirm_dialog.setup(Translator.translate("Alert!"), Translator.translate(
 				"A file named \"{file_name}\" already exists. Replacing will overwrite its contents!").format(
@@ -280,7 +280,7 @@ func copy_path() -> void:
 	DisplayServer.clipboard_set(current_dir.path_join(current_file))
 
 func create_folder() -> void:
-	var create_folder_dialog := ChooseNameDialog.instantiate()
+	var create_folder_dialog := ChooseNameDialogScene.instantiate()
 	HandlerGUI.add_dialog(create_folder_dialog)
 	create_folder_dialog.setup(Translator.translate("Create new folder"),
 			_on_create_folder_finished, _create_folder_error)
@@ -303,7 +303,7 @@ func _on_create_folder_finished(text: String) -> void:
 	if err == OK:
 		refresh_dir()
 	else:
-		var alert_dialog := AlertDialog.instantiate()
+		var alert_dialog := AlertDialogScene.instantiate()
 		HandlerGUI.add_dialog(alert_dialog)
 		alert_dialog.setup(Translator.translate("Failed to create a folder."))
 

@@ -16,7 +16,8 @@ const element_content_types: Dictionary[String, PackedScene] = {
 	"linearGradient": preload("res://src/ui_widgets/element_content_linear_gradient.tscn"),
 	"radialGradient": preload("res://src/ui_widgets/element_content_radial_gradient.tscn"),
 }
-const ElementContentUnrecognized = preload("res://src/ui_widgets/element_content_unrecognized.tscn")
+const ElementContentUnrecognizedScene =\
+		preload("res://src/ui_widgets/element_content_unrecognized.tscn")
 
 @onready var main_container: VBoxContainer = $MainContainer
 @onready var title_bar: Control = $TitleBar
@@ -65,7 +66,7 @@ func _ready() -> void:
 	if element.name in element_content_types:
 		element_content = element_content_types[element.name].instantiate()
 	else:
-		element_content = ElementContentUnrecognized.instantiate()
+		element_content = ElementContentUnrecognizedScene.instantiate()
 	element_content.element = element
 	main_container.add_child(element_content)
 	

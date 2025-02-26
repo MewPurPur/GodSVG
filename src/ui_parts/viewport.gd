@@ -1,6 +1,9 @@
 extends SubViewport
 
-const ZoomMenuType = preload("res://src/ui_parts/zoom_menu.gd")
+const ZoomMenu = preload("res://src/ui_parts/zoom_menu.gd")
+const Camera = preload("res://src/ui_widgets/camera.gd")
+const HandlesManager = preload("res://src/ui_parts/handles_manager.gd")
+const DisplayTexture = preload("res://src/ui_parts/display_texture.gd")
 
 const BUFFER_VIEW_SPACE = 0.8
 const ZOOM_RESET_BUFFER = 0.875
@@ -9,11 +12,11 @@ const ZOOM_RESET_BUFFER = 0.875
 var _zoom_to: Vector2
 
 @onready var display: TextureRect = $Checkerboard
-@onready var view: Control = $Camera
-@onready var controls: Control = $Controls
-@onready var display_texture: TextureRect = $Checkerboard/DisplayTexture
-@onready var reference_texture = $ReferenceTexture
-@onready var zoom_menu: ZoomMenuType = %ZoomMenu
+@onready var view: Camera = $Camera
+@onready var controls: HandlesManager = $Controls
+@onready var display_texture: DisplayTexture = $Checkerboard/DisplayTexture
+@onready var reference_texture: TextureRect = $ReferenceTexture
+@onready var zoom_menu: ZoomMenu = %ZoomMenu
 
 
 func _ready() -> void:

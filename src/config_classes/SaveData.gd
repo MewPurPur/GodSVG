@@ -549,7 +549,7 @@ const MAX_TABS = 50
 		# Validation
 		var used_ids := PackedInt32Array()
 		for idx in range(new_value.size() - 1, -1, -1):
-			var tab = new_value[idx]
+			var tab := new_value[idx]
 			if not is_instance_valid(tab) or tab.id in used_ids:
 				new_value.remove_at(idx)
 			else:
@@ -584,7 +584,7 @@ const MAX_TABS = 50
 			_active_tab_index = new_value
 			emit_changed()
 
-func _on_tab_name_changed(id: int):
+func _on_tab_name_changed(id: int) -> void:
 	if id == _tabs[_active_tab_index].id:
 		Configs.active_tab_name_changed.emit()
 

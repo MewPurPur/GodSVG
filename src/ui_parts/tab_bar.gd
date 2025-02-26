@@ -1,6 +1,6 @@
 extends Control
 
-const PreviewRect = preload("res://src/ui_widgets/preview_rect.tscn")
+const PreviewRectScene = preload("res://src/ui_widgets/preview_rect.tscn")
 
 const plus_icon = preload("res://assets/icons/Plus.svg")
 const close_icon = preload("res://assets/icons/Close.svg")
@@ -461,7 +461,7 @@ func _make_custom_tooltip(for_text: String) -> Object:
 	margin_container.end_bulk_theme_override()
 	var hbox := HBoxContainer.new()
 	hbox.add_theme_constant_override("separation", 8)
-	var preview_rect := PreviewRect.instantiate()
+	var preview_rect := PreviewRectScene.instantiate()
 	hbox.add_child(preview_rect)
 	preview_rect.custom_minimum_size = Vector2(96, 96)
 	preview_rect.size = Vector2.ZERO
@@ -540,7 +540,7 @@ func _can_drop_data(at_position: Vector2, data: Variant) -> bool:
 	if not data is TabDropData:
 		proposed_drop_idx = -1
 		return false
-	var current_drop_idx = get_drop_index_at(at_position)
+	var current_drop_idx := get_drop_index_at(at_position)
 	if current_drop_idx in [data.index, data.index + 1]:
 		proposed_drop_idx = -1
 		return false

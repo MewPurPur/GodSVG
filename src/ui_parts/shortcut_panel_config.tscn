@@ -56,7 +56,7 @@ size_flags_vertical = 4
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="LayoutDropdown2" parent="VBoxContainer/PanelContainer/HBoxContainer/ConfigContainer/LayoutBox" instance=ExtResource("2_4egw5")]
+[node name="LayoutDropdown" parent="VBoxContainer/PanelContainer/HBoxContainer/ConfigContainer/LayoutBox" instance=ExtResource("2_4egw5")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3

@@ -1,6 +1,6 @@
 extends VBoxContainer
 
-const EyedropperPopup = preload("res://src/ui_parts/eyedropper_popup.tscn")
+const EyedropperPopupScene = preload("res://src/ui_parts/eyedropper_popup.tscn")
 
 const handle_texture = preload("res://assets/icons/BWHandle.svg")
 const slider_arrow = preload("res://assets/icons/SliderArrow.svg")
@@ -478,6 +478,6 @@ func _input(event: InputEvent) -> void:
 
 
 func _on_eyedropper_pressed() -> void:
-	var eyedropper_popup := EyedropperPopup.instantiate()
+	var eyedropper_popup := EyedropperPopupScene.instantiate()
 	eyedropper_popup.color_picked.connect(register_visual_change.bind(false))
 	HandlerGUI.add_popup(eyedropper_popup)

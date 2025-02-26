@@ -1,6 +1,6 @@
 extends PanelContainer
 
-const GoodColorPicker = preload("res://src/ui_widgets/good_color_picker.tscn")
+const GoodColorPickerScene = preload("res://src/ui_widgets/good_color_picker.tscn")
 
 @onready var margin_container: MarginContainer = $MarginContainer
 
@@ -12,7 +12,7 @@ var current_value: String
 var effective_color: Color
 
 func _ready() -> void:
-	var color_picker := GoodColorPicker.instantiate()
+	var color_picker := GoodColorPickerScene.instantiate()
 	color_picker.alpha_enabled = enable_alpha
 	color_picker.is_none_keyword_available = is_none_keyword_available
 	color_picker.is_current_color_keyword_available = is_current_color_keyword_available

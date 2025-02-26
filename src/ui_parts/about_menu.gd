@@ -123,7 +123,7 @@ func _on_tab_changed(idx: int) -> void:
 					godot_engine_copyright = dict
 					break
 			
-			var godsvg_copyright_info := [
+			var godsvg_copyright_info: Array[Dictionary] = [
 				godot_engine_copyright,
 				{
 					"name": "Noto Sans font",
