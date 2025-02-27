@@ -20,7 +20,7 @@ func _ready() -> void:
 	Configs.language_changed.connect(update_translations)
 	Configs.snap_changed.connect(update_snap_config)
 	Configs.theme_changed.connect(update_theme)
-	Configs.active_tab_changed.connect(update_reference_image)
+	Configs.active_tab_changed.connect(sync_reference_image)
 	update_translations()
 	update_theme()
 	update_snap_config()
@@ -78,9 +78,6 @@ func update_snap_config() -> void:
 	snap_button.button_pressed = snap_enabled
 	snapper.editable = snap_enabled
 	snapper.set_value(absf(snap_config))
-
-func update_reference_image() -> void:
-	apply_reference(Configs.savedata.get_active_tab().reference_image)
 
 
 func _on_reference_pressed() -> void:
@@ -142,13 +139,15 @@ func finish_reference_import(data: Variant, file_path: String) -> void:
 		"webp": img.load_webp_from_buffer(data)
 	var image_texture := ImageTexture.create_from_image(img)
 	Configs.savedata.get_active_tab().reference_image = image_texture
-	apply_reference(image_texture)
+	sync_reference_image()
 
-func apply_reference(reference: Texture2D) ->  void:
+func sync_reference_image() ->  void:
+	var reference := Configs.savedata.get_active_tab().reference_image
 	if is_instance_valid(reference):
 		reference_texture.texture = reference
 		reference_texture.show()
 	else:
+		reference_texture.texture = null
 		reference_texture.hide()
 
 func toggle_snap() -> void:
