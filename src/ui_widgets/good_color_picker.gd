@@ -11,7 +11,7 @@ var alpha_enabled := false
 var is_none_keyword_available := false
 var is_current_color_keyword_available := false
 
-var UR := UndoRedo.new()
+var undo_redo := UndoRedoRef.new()
 
 enum SliderMode {RGB, HSV}
 var slider_mode: SliderMode:
@@ -125,7 +125,6 @@ func _ready() -> void:
 
 func _exit_tree() -> void:
 	RenderingServer.free_rid(color_wheel_surface)
-	UR.free()
 
 func register_visual_change(new_color: Color, use_backup := true) -> void:
 	if use_backup and new_color == backup_display_color:
@@ -133,13 +132,13 @@ func register_visual_change(new_color: Color, use_backup := true) -> void:
 	elif not use_backup and new_color == display_color:
 		return
 	
-	UR.create_action("")
-	UR.add_do_method(set_color.bind(hex(new_color), new_color))
+	undo_redo.create_action("")
+	undo_redo.add_do_method(set_color.bind(hex(new_color), new_color))
 	if use_backup:
-		UR.add_undo_method(set_color.bind(backup_color, backup_display_color))
+		undo_redo.add_undo_method(set_color.bind(backup_color, backup_display_color))
 	else:
-		UR.add_undo_method(set_color.bind(color, display_color))
-	UR.commit_action()
+		undo_redo.add_undo_method(set_color.bind(color, display_color))
+	undo_redo.commit_action()
 
 
 func set_color(new_color: String, new_display_color: Color) -> void:
@@ -339,22 +338,22 @@ func _on_keyword_button_pressed() -> void:
 			get_viewport())
 
 func set_to_keyword(keyword: String) -> void:
-	UR.create_action("")
+	undo_redo.create_action("")
 	if color.strip_edges() == keyword:
-		UR.add_do_method(set_color.bind(backup_color, backup_display_color))
-		UR.add_undo_method(set_color.bind(color, display_color))
+		undo_redo.add_do_method(set_color.bind(backup_color, backup_display_color))
+		undo_redo.add_undo_method(set_color.bind(color, display_color))
 	else:
 		backup()
-		UR.add_do_method(set_color.bind(keyword, display_color))
-		UR.add_undo_method(set_color.bind(color, display_color))
-	UR.commit_action()
+		undo_redo.add_do_method(set_color.bind(keyword, display_color))
+		undo_redo.add_undo_method(set_color.bind(color, display_color))
+	undo_redo.commit_action()
 
 func _on_reset_color_button_pressed() -> void:
 	reset_color_button.disabled = true
-	UR.create_action("")
-	UR.add_do_method(set_color.bind(starting_color, starting_display_color))
-	UR.add_undo_method(set_color.bind(color, display_color))
-	UR.commit_action()
+	undo_redo.create_action("")
+	undo_redo.add_do_method(set_color.bind(starting_color, starting_display_color))
+	undo_redo.add_undo_method(set_color.bind(color, display_color))
+	undo_redo.commit_action()
 
 
 func _on_rgb_pressed() -> void:
@@ -468,12 +467,12 @@ func _input(event: InputEvent) -> void:
 		return
 	
 	if ShortcutUtils.is_action_pressed(event, "redo"):
-		if UR.has_redo():
-			UR.redo()
+		if undo_redo.has_redo():
+			undo_redo.redo()
 		accept_event()
 	elif ShortcutUtils.is_action_pressed(event, "undo"):
-		if UR.has_undo():
-			UR.undo()
+		if undo_redo.has_undo():
+			undo_redo.undo()
 		accept_event()
 
 

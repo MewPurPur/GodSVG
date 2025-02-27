@@ -3,7 +3,7 @@ extends PanelContainer
 const NumberEdit = preload("res://src/ui_widgets/number_edit.gd")
 const Dropdown = preload("res://src/ui_widgets/dropdown.gd")
 
-var UR := UndoRedo.new()
+var undo_redo := UndoRedoRef.new()
 var export_data := ImageExportData.new()
 var dimensions := Vector2.ZERO
 
@@ -26,8 +26,6 @@ var dimensions := Vector2.ZERO
 @onready var quality_related_container: HBoxContainer = %QualityRelatedContainer
 @onready var titled_panel: HTitledPanel = %TitledPanel
 
-func _exit_tree() -> void:
-	UR.free()
 
 func _ready() -> void:
 	cancel_button.pressed.connect(queue_free)
@@ -92,51 +90,51 @@ func _on_export_button_pressed() -> void:
 
 func _on_dropdown_value_changed(new_value: String) -> void:
 	var current_format := export_data.format
-	UR.create_action("")
-	UR.add_do_property(export_data, "format", new_value)
-	UR.add_undo_property(export_data, "format", current_format)
-	UR.commit_action()
+	undo_redo.create_action("")
+	undo_redo.add_do_property(export_data, "format", new_value)
+	undo_redo.add_undo_property(export_data, "format", current_format)
+	undo_redo.commit_action()
 
 func _on_lossless_check_box_toggled(toggled_on: bool) -> void:
 	var current_lossy := export_data.lossy
-	UR.create_action("")
-	UR.add_do_property(export_data, "lossy", not toggled_on)
-	UR.add_undo_property(export_data, "lossy", current_lossy)
-	UR.commit_action()
+	undo_redo.create_action("")
+	undo_redo.add_do_property(export_data, "lossy", not toggled_on)
+	undo_redo.add_undo_property(export_data, "lossy", current_lossy)
+	undo_redo.commit_action()
 
 func _on_quality_value_changed(new_value: float) -> void:
 	var current_quality := export_data.quality
-	UR.create_action("")
-	UR.add_do_property(export_data, "quality", new_value / 100)
-	UR.add_undo_property(export_data, "quality", current_quality)
-	UR.commit_action()
+	undo_redo.create_action("")
+	undo_redo.add_do_property(export_data, "quality", new_value / 100)
+	undo_redo.add_undo_property(export_data, "quality", current_quality)
+	undo_redo.commit_action()
 
 func _on_scale_edit_value_changed(new_value: float) -> void:
 	if new_value == export_data.upscale_amount:
 		return
 	var current_upscale_amount := export_data.upscale_amount
-	UR.create_action("")
-	UR.add_do_property(export_data, "upscale_amount", new_value)
-	UR.add_undo_property(export_data, "upscale_amount", current_upscale_amount)
-	UR.commit_action()
+	undo_redo.create_action("")
+	undo_redo.add_do_property(export_data, "upscale_amount", new_value)
+	undo_redo.add_undo_property(export_data, "upscale_amount", current_upscale_amount)
+	undo_redo.commit_action()
 
 func _on_width_edit_value_changed(new_value: float) -> void:
 	if roundi(dimensions.x * export_data.upscale_amount) == roundi(new_value):
 		return
 	var current_upscale_amount := export_data.upscale_amount
-	UR.create_action("")
-	UR.add_do_property(export_data, "upscale_amount", new_value / dimensions.x)
-	UR.add_undo_property(export_data, "upscale_amount", current_upscale_amount)
-	UR.commit_action()
+	undo_redo.create_action("")
+	undo_redo.add_do_property(export_data, "upscale_amount", new_value / dimensions.x)
+	undo_redo.add_undo_property(export_data, "upscale_amount", current_upscale_amount)
+	undo_redo.commit_action()
 
 func _on_height_edit_value_changed(new_value: float) -> void:
 	if roundi(dimensions.y * export_data.upscale_amount) == roundi(new_value):
 		return
 	var current_upscale_amount := export_data.upscale_amount
-	UR.create_action("")
-	UR.add_do_property(export_data, "upscale_amount", new_value / dimensions.y)
-	UR.add_undo_property(export_data, "upscale_amount", current_upscale_amount)
-	UR.commit_action()
+	undo_redo.create_action("")
+	undo_redo.add_do_property(export_data, "upscale_amount", new_value / dimensions.y)
+	undo_redo.add_undo_property(export_data, "upscale_amount", current_upscale_amount)
+	undo_redo.commit_action()
 
 # Everything gets updated at once when export config changes for simplicity.
 func update() -> void:
@@ -183,10 +181,10 @@ func _input(event: InputEvent) -> void:
 		return
 	
 	if ShortcutUtils.is_action_pressed(event, "redo"):
-		if UR.has_redo():
-			UR.redo()
+		if undo_redo.has_redo():
+			undo_redo.redo()
 		accept_event()
 	elif ShortcutUtils.is_action_pressed(event, "undo"):
-		if UR.has_undo():
-			UR.undo()
+		if undo_redo.has_undo():
+			undo_redo.undo()
 		accept_event()
