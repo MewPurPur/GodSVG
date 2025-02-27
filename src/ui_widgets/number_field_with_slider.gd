@@ -71,7 +71,7 @@ func sync() -> void:
 
 # Slider
 
-var initial_slider_value: float
+var initial_slider_value: String
 var slider_dragged := false:
 	set(new_value):
 		if slider_dragged != new_value:
@@ -134,7 +134,7 @@ func _on_slider_gui_input(event: InputEvent) -> void:
 	if not slider_dragged:
 		if Utils.is_event_drag_start(event):
 			slider_dragged = true
-			initial_slider_value = element.get_attribute_num(attribute_name)
+			initial_slider_value = element.get_attribute_value(attribute_name)
 			set_num(get_slider_value_at_y(event.position.y))
 	else:
 		if Utils.is_event_drag(event):
@@ -142,13 +142,14 @@ func _on_slider_gui_input(event: InputEvent) -> void:
 		elif Utils.is_event_drag_end(event):
 			slider_dragged = false
 			var final_slider_value := get_slider_value_at_y(event.position.y)
-			if initial_slider_value != final_slider_value:
+			if initial_slider_value !=\
+			element.get_attribute(attribute_name).num_to_text(final_slider_value):
 				set_num(final_slider_value, true)
 
 func _unhandled_input(event: InputEvent) -> void:
 	if slider_dragged and Utils.is_event_drag_cancel(event):
 		slider_dragged = false
-		set_num(initial_slider_value)
+		set_value(initial_slider_value)
 		accept_event()
 
 func get_slider_value_at_y(y_coord: float) -> float:
