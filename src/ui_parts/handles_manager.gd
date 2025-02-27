@@ -739,7 +739,7 @@ func _unhandled_input(event: InputEvent) -> void:
 					elif dragged_handle is PolyHandle:
 						State.normal_select(dragged_xid, 0)
 						State.shift_select(dragged_xid,
-								dragged_handle.element.get_attribute("points").get_list_size() / 2)
+								dragged_handle.element.get_attribute("points").get_list_size() / 2 - 1)
 				elif event.is_command_or_control_pressed():
 					State.ctrl_select(dragged_xid, inner_idx)
 				elif event.shift_pressed:
