@@ -198,7 +198,7 @@ func _on_points_gui_input(event: InputEvent) -> void:
 				if event.double_click:
 					State.normal_select(element.xid, 0)
 					State.shift_select(element.xid,
-							element.get_attribute(attribute_name).get_list_size() / 2)
+							element.get_attribute(attribute_name).get_list_size() / 2 - 1)
 				elif event.is_command_or_control_pressed():
 					State.ctrl_select(element.xid, cmd_idx)
 				elif event.shift_pressed:
