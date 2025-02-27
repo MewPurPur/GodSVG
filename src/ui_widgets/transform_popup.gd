@@ -16,7 +16,7 @@ const _icons_dict: Dictionary[String, Texture2D] = {
 }
 
 var attribute_ref: AttributeTransformList
-var undo_redo := UndoRedo.new()
+var undo_redo := UndoRedoRef.new()
 
 @onready var x1_edit: NumberEdit = %FinalMatrix/X1
 @onready var x2_edit: NumberEdit = %FinalMatrix/X2
@@ -37,7 +37,6 @@ func _ready() -> void:
 
 func _exit_tree() -> void:
 	State.queue_svg_save()
-	undo_redo.free()
 
 func update_translation() -> void:
 	apply_matrix.tooltip_text = Translator.translate("Apply the matrix")

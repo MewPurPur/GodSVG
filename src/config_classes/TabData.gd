@@ -15,7 +15,7 @@ var active := false
 
 var fully_loaded := true
 var empty_unsaved := false
-var undo_redo: UndoRedo
+var undo_redo: UndoRedoRef
 var reference_image: Texture2D
 
 # This variable represents the saved state of the SVG. Intermediate operations such as
@@ -27,7 +27,7 @@ func set_svg_text(new_text: String) -> void:
 		return
 	
 	if not is_instance_valid(undo_redo):
-		undo_redo = UndoRedo.new()
+		undo_redo = UndoRedoRef.new()
 	var old_value := _svg_text
 	undo_redo.create_action("")
 	undo_redo.add_do_property(self, "_svg_text", new_text)
@@ -94,11 +94,6 @@ func get_presented_svg_file_path() -> String:
 		return svg_file_path.trim_prefix(home_dir).trim_prefix("/").trim_prefix("\\")
 	return svg_file_path
 
-
-func _notification(what: int) -> void:
-	if what == NOTIFICATION_PREDELETE:
-		if is_instance_valid(undo_redo):
-			undo_redo.free()
 
 func undo() -> void:
 	if is_instance_valid(undo_redo) and undo_redo.has_undo():
