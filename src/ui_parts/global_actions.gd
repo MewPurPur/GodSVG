@@ -19,7 +19,7 @@ func _ready() -> void:
 	
 	# Fix the size button sizing.
 	size_button.begin_bulk_theme_override()
-	const CONST_ARR: PackedStringArray = ["normal", "focus", "hover"]
+	const CONST_ARR: PackedStringArray = ["normal", "focus", "hover", "disabled"]
 	for theme_type in CONST_ARR:
 		var stylebox := size_button.get_theme_stylebox(theme_type).duplicate()
 		stylebox.content_margin_bottom = 0
