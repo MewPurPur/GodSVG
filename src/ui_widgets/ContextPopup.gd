@@ -31,9 +31,14 @@ icon: Texture2D = null, shortcut := "") -> Button:
 					ret_button.disabled = true
 				else:
 					ret_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-				for theme_item in ["normal", "hover", "pressed", "disabled"]:
-					main_button.add_theme_stylebox_override(theme_item,
+				
+				const CONST_ARR: PackedStringArray = ["normal", "hover", "pressed", "disabled"]
+				main_button.begin_bulk_theme_override()
+				for theme_type in CONST_ARR:
+					main_button.add_theme_stylebox_override(theme_type,
 							main_button.get_theme_stylebox("normal", "ContextButton"))
+				main_button.end_bulk_theme_override()
+				
 				var internal_hbox := HBoxContainer.new()
 				main_button.mouse_filter = Control.MOUSE_FILTER_IGNORE  # Unpressable.
 				internal_hbox.add_theme_constant_override("separation", 12)
@@ -102,9 +107,14 @@ start_pressed: bool, shortcut := "") -> CheckBox:
 				ret_button.focus_mode = Control.FOCUS_NONE
 				ret_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 				ret_button.shortcut_in_tooltip = false
-				for theme_stylebox in ["normal", "pressed"]:
-					checkbox.add_theme_stylebox_override(theme_stylebox,
+				
+				checkbox.begin_bulk_theme_override()
+				const CONST_ARR: PackedStringArray = ["normal", "pressed"]
+				for theme_type in CONST_ARR:
+					checkbox.add_theme_stylebox_override(theme_type,
 							checkbox.get_theme_stylebox("normal", "ContextButton"))
+				checkbox.end_bulk_theme_override()
+				
 				var internal_hbox := HBoxContainer.new()
 				checkbox.mouse_filter = Control.MOUSE_FILTER_IGNORE  # Unpressable.
 				internal_hbox.add_theme_constant_override("separation", 12)

@@ -251,6 +251,10 @@ msgstr "Златни дарители"
 msgid "Diamond donors"
 msgstr "Диамантени дарители"
 
+#: src/ui_parts/code_editor.gd src/utils/TranslationUtils.gd
+msgid "Copy all text"
+msgstr "Копирай всичкия текст"
+
 #: src/ui_parts/current_file_button.gd src/ui_parts/good_file_dialog.gd
 msgid "Save SVG"
 msgstr "Запиши SVG-то"
@@ -933,10 +937,6 @@ msgstr "Постави"
 msgid "Create"
 msgstr "Създай"
 
-#: src/ui_widgets/code_editor.gd src/utils/TranslationUtils.gd
-msgid "Copy all text"
-msgstr "Копирай всичкия текст"
-
 #: src/ui_widgets/color_popup.gd
 msgid "Search color"
 msgstr "Търсене на цвят"
@@ -1076,7 +1076,9 @@ msgstr "Импортираният файл вече се редактира в 
 
 #: src/utils/FileUtils.gd
 msgid "If you want to revert your edits since the last save, use {reset_svg}."
-msgstr "Ако искаш да премахнеш промените след последното запазване, използвай {reset_svg}."
+msgstr ""
+"Ако искаш да премахнеш промените след последното запазване, използвай "
+"{reset_svg}."
 
 #: src/utils/TranslationUtils.gd
 msgid "Save as"

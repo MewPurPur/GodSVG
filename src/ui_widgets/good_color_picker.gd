@@ -18,7 +18,8 @@ var slider_mode: SliderMode:
 	set(new_mode):
 		slider_mode = new_mode
 		var disabled_button := hsv_button if new_mode == SliderMode.HSV else rgb_button
-		for btn in [hsv_button, rgb_button]:
+		var arr: Array[Button] = [hsv_button, rgb_button]
+		for btn in arr:
 			btn.disabled = (btn == disabled_button)
 			btn.mouse_default_cursor_shape = Control.CURSOR_ARROW if\
 					btn == disabled_button else Control.CURSOR_POINTING_HAND
@@ -111,8 +112,9 @@ func update_keyword_button() -> void:
 func _ready() -> void:
 	# Set up signals.
 	widgets_arr[0].gui_input.connect(parse_slider_input.bind(0, true))
-	for i in [1, 2, 3]:
-		widgets_arr[i].gui_input.connect(parse_slider_input.bind(i))
+	widgets_arr[1].gui_input.connect(parse_slider_input.bind(1))
+	widgets_arr[2].gui_input.connect(parse_slider_input.bind(2))
+	widgets_arr[3].gui_input.connect(parse_slider_input.bind(3))
 	if alpha_enabled:
 		alpha_slider.visible = alpha_enabled
 		widgets_arr[4].gui_input.connect(parse_slider_input.bind(4))
@@ -161,8 +163,9 @@ func update() -> void:
 	tracks_arr[0].material.set_shader_parameter("v", display_color.v)
 	tracks_arr[0].material.set_shader_parameter("base_color",
 			Color.from_hsv(display_color.h, display_color.s, 1.0))
-	for i in [1, 2, 3]:
-		tracks_arr[i].material.set_shader_parameter("base_color", display_color)
+	tracks_arr[1].material.set_shader_parameter("base_color", display_color)
+	tracks_arr[2].material.set_shader_parameter("base_color", display_color)
+	tracks_arr[3].material.set_shader_parameter("base_color", display_color)
 	if alpha_enabled:
 		tracks_arr[4].material.set_shader_parameter("base_color", display_color)
 	# Redraw widgets, color indicators, color wheel.
@@ -416,8 +419,10 @@ func _on_track_resized() -> void:
 		queue_redraw_widgets()
 
 func queue_redraw_widgets() -> void:
-	for i in [0, 1, 2, 3]:
-		widgets_arr[i].queue_redraw()
+	widgets_arr[0].queue_redraw()
+	widgets_arr[1].queue_redraw()
+	widgets_arr[2].queue_redraw()
+	widgets_arr[3].queue_redraw()
 	if alpha_enabled:
 		widgets_arr[4].queue_redraw()
 

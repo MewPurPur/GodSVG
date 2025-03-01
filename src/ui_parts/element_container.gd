@@ -102,8 +102,10 @@ func _gui_input(event: InputEvent) -> void:
 				location += 1
 			# Create the context popup.
 			var btn_array: Array[Button] = []
-			for element_name in ["path", "circle", "ellipse", "rect", "line", "polygon",
-			"polyline", "g", "linearGradient", "radialGradient", "stop"]:
+			const CONST_ARR: PackedStringArray = ["path", "circle", "ellipse", "rect",
+					"line", "polygon", "polyline", "g", "linearGradient", "radialGradient",
+					"stop"]
+			for element_name in CONST_ARR:
 				var btn := ContextPopup.create_button(element_name,
 						add_element.bind(element_name, location), false,
 						DB.get_element_icon(element_name))

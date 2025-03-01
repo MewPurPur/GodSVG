@@ -167,9 +167,11 @@ func popup_transform_actions(idx: int, control: Control) -> void:
 
 func popup_new_transform_context(idx: int, control: Control) -> void:
 	var btn_array: Array[Button] = []
-	for transform in ["matrix", "translate", "rotate", "scale", "skewX", "skewY"]:
-		var btn := ContextPopup.create_button(transform,
-				insert_transform.bind(idx, transform), false, _icons_dict[transform])
+	const CONST_ARR: PackedStringArray = ["matrix", "translate", "rotate", "scale",
+			"skewX", "skewY"]
+	for transform_type in CONST_ARR:
+		var btn := ContextPopup.create_button(transform_type,
+				insert_transform.bind(idx, transform_type), false, _icons_dict[transform_type])
 		btn.add_theme_font_override("font", ThemeUtils.mono_font)
 		btn_array.append(btn)
 	

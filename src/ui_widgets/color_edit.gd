@@ -18,22 +18,22 @@ var value: String:
 			if new_value != value:
 				value = new_value
 				value_changed.emit(value)
-		sync(value)
+		sync()
 
 
 func _ready() -> void:
-	text_submitted.connect(func(x): value = x)
+	text_submitted.connect(func(x: String) -> void: value = x)
 	pressed.connect(_on_pressed)
 	text_changed.connect(_on_text_changed)
-	text_change_canceled.connect(func(): sync(value))
+	text_change_canceled.connect(sync)
 	button_gui_input.connect(queue_redraw.unbind(1))
 	if enable_alpha:
 		custom_minimum_size.x += 14.0
-	sync(value)
+	sync()
 
 
-func sync(new_value: String) -> void:
-	text = new_value.trim_prefix("#")
+func sync() -> void:
+	text = value.trim_prefix("#")
 	reset_font_color()
 	queue_redraw()
 

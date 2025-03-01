@@ -251,6 +251,10 @@ msgstr "Gouden Donatuers"
 msgid "Diamond donors"
 msgstr "Diamanten Donateurs"
 
+#: src/ui_parts/code_editor.gd src/utils/TranslationUtils.gd
+msgid "Copy all text"
+msgstr "Kopiëer alle tekst"
+
 #: src/ui_parts/current_file_button.gd src/ui_parts/good_file_dialog.gd
 msgid "Save SVG"
 msgstr "SVG opslaan"
@@ -937,10 +941,6 @@ msgstr "Plakken"
 #: src/ui_widgets/choose_name_dialog.gd
 msgid "Create"
 msgstr "Creëren"
-
-#: src/ui_widgets/code_editor.gd src/utils/TranslationUtils.gd
-msgid "Copy all text"
-msgstr "Kopiëer alle tekst"
 
 #: src/ui_widgets/color_popup.gd
 msgid "Search color"

@@ -252,6 +252,10 @@ msgstr "Doadores ouro"
 msgid "Diamond donors"
 msgstr "Doadores diamante"
 
+#: src/ui_parts/code_editor.gd src/utils/TranslationUtils.gd
+msgid "Copy all text"
+msgstr "Copiar todo texto"
+
 #: src/ui_parts/current_file_button.gd src/ui_parts/good_file_dialog.gd
 msgid "Save SVG"
 msgstr "Salvar SVG"
@@ -934,10 +938,6 @@ msgstr "Colar"
 #: src/ui_widgets/choose_name_dialog.gd
 msgid "Create"
 msgstr "Criar"
-
-#: src/ui_widgets/code_editor.gd src/utils/TranslationUtils.gd
-msgid "Copy all text"
-msgstr "Copiar todo texto"
 
 #: src/ui_widgets/color_popup.gd
 msgid "Search color"

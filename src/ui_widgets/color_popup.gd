@@ -11,7 +11,7 @@ class MockPalette extends RefCounted:
 	var color_names: PackedStringArray
 	
 	func _init(new_title: String, new_colors: PackedStringArray,
-	new_color_names: PackedStringArray):
+	new_color_names: PackedStringArray) -> void:
 		title = new_title
 		colors = new_colors
 		color_names = new_color_names
@@ -53,7 +53,8 @@ func _ready() -> void:
 	_palettes_pending_update = true
 	setup_content()
 	
-	for theme_type in ["normal", "hover", "pressed"]:
+	const CONST_ARR: PackedStringArray = ["normal", "hover", "pressed"]
+	for theme_type in CONST_ARR:
 		var sb: StyleBoxFlat = switch_mode_button.get_theme_stylebox(theme_type,
 				"TranslucentButton").duplicate()
 		sb.corner_radius_top_left = 0

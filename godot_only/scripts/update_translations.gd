@@ -32,17 +32,14 @@ class Message:
 	# The files this message is in are added as comments. The lines aren't
 	# kept track of, as they don't provide useful context and change frequently.
 	var files := PackedStringArray()
-	var msgid := String()
+	var msgid := ""
 	
 	func _init(p_msgid: String, p_files: PackedStringArray):
 		msgid = p_msgid
 		files = p_files.duplicate()
 	
 	func _to_string() -> String:
-		var ret := "\n"
-		for file in files:
-			ret += "#: %s\n" % file
-		return ret + 'msgid "%s"\nmsgstr ""\n' % msgid
+		return "\n#: " + "\n#: ".join(files) + '\nmsgid "%s"\nmsgstr ""\n' % msgid
 
 
 func _run() -> void:
