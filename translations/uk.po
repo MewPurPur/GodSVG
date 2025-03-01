@@ -252,6 +252,10 @@ msgstr "Золоті благодійники"
 msgid "Diamond donors"
 msgstr "Діамантові благодійники"
 
+#: src/ui_parts/code_editor.gd src/utils/TranslationUtils.gd
+msgid "Copy all text"
+msgstr "Скопіювати весь текст"
+
 #: src/ui_parts/current_file_button.gd src/ui_parts/good_file_dialog.gd
 msgid "Save SVG"
 msgstr "Зберегти SVG"
@@ -939,10 +943,6 @@ msgstr "Вставити"
 #: src/ui_widgets/choose_name_dialog.gd
 msgid "Create"
 msgstr "Створити"
-
-#: src/ui_widgets/code_editor.gd src/utils/TranslationUtils.gd
-msgid "Copy all text"
-msgstr "Скопіювати весь текст"
 
 #: src/ui_widgets/color_popup.gd
 msgid "Search color"

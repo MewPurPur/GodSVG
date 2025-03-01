@@ -53,7 +53,8 @@ func render_handle_textures() -> void:
 			s * 4, s * 4, s * 2.4, "%s", "%s", s * 1.2],
 	}
 	
-	for handle_type in [Handle.Display.BIG, Handle.Display.SMALL]:
+	const CONST_ARR: Array[Handle.Display] = [Handle.Display.BIG, Handle.Display.SMALL]
+	for handle_type in CONST_ARR:
 		var handle_type_svg := handles_dict[handle_type]
 		img.load_svg_from_string(handle_type_svg % [inside_str, normal_str])
 		img.fix_alpha_edges()
@@ -174,7 +175,7 @@ func generate_path_handles(element: Element) -> Array[Handle]:
 
 func generate_polyhandles(element: Element) -> Array[Handle]:
 	var polyhandles: Array[Handle] = []
-	for idx in element.get_attribute("points").get_list_size() / 2:
+	for idx: int in element.get_attribute("points").get_list_size() / 2:
 		polyhandles.append(PolyHandle.new(element, idx))
 	return polyhandles
 
@@ -850,7 +851,9 @@ func _on_handle_added() -> void:
 # Creates a popup for adding a shape at a position.
 func create_element_context(precise_pos: PackedFloat64Array) -> ContextPopup:
 	var btn_array: Array[Button] = []
-	for shape in ["path", "circle", "ellipse", "rect", "line", "polygon", "polyline"]:
+	const CONST_ARR: PackedStringArray = ["path", "circle", "ellipse", "rect", "line",
+			"polygon", "polyline"]
+	for shape in CONST_ARR:
 		var btn := ContextPopup.create_button(shape,
 				add_shape_at_pos.bind(shape, precise_pos), false, DB.get_element_icon(shape))
 		btn.add_theme_font_override("font", ThemeUtils.mono_font)

@@ -19,11 +19,12 @@ func _ready() -> void:
 	
 	# Fix the size button sizing.
 	size_button.begin_bulk_theme_override()
-	for theming in ["normal", "hover", "pressed", "disabled"]:
-		var stylebox := size_button.get_theme_stylebox(theming).duplicate()
+	const CONST_ARR: PackedStringArray = ["normal", "focus", "hover"]
+	for theme_type in CONST_ARR:
+		var stylebox := size_button.get_theme_stylebox(theme_type).duplicate()
 		stylebox.content_margin_bottom = 0
 		stylebox.content_margin_top = 0
-		size_button.add_theme_stylebox_override(theming, stylebox)
+		size_button.add_theme_stylebox_override(theme_type, stylebox)
 	size_button.end_bulk_theme_override()
 	
 	import_button.pressed.connect(ShortcutUtils.fn("import"))
@@ -99,7 +100,9 @@ func update_size_button() -> void:
 
 func update_size_button_colors() -> void:
 	size_button.begin_bulk_theme_override()
-	for theming in ["font_color", "font_hover_color", "font_pressed_color"]:
-		size_button.add_theme_color_override(theming,
+	const CONST_ARR: PackedStringArray = ["font_color", "font_hover_color",
+			"font_pressed_color"]
+	for theme_type in CONST_ARR:
+		size_button.add_theme_color_override(theme_type,
 				Configs.savedata.basic_color_warning.lerp(Color.WHITE, 0.5))
 	size_button.end_bulk_theme_override()

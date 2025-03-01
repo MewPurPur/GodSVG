@@ -389,9 +389,15 @@ func _on_language_pressed() -> void:
 				ret_button.disabled = true
 			else:
 				ret_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-			for theme_item in ["normal", "hover", "pressed", "disabled"]:
-				new_btn.add_theme_stylebox_override(theme_item,
+			
+			new_btn.begin_bulk_theme_override()
+			
+			const CONST_ARR: PackedStringArray = ["normal", "hover", "pressed", "disabled"]
+			for theme_type in CONST_ARR:
+				new_btn.add_theme_stylebox_override(theme_type,
 						new_btn.get_theme_stylebox("normal", "ContextButton"))
+			new_btn.end_bulk_theme_override()
+			
 			var internal_hbox := HBoxContainer.new()
 			new_btn.mouse_filter = Control.MOUSE_FILTER_IGNORE  # Unpressable.
 			internal_hbox.add_theme_constant_override("separation", 12)

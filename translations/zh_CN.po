@@ -247,6 +247,10 @@ msgstr "金牌捐赠者"
 msgid "Diamond donors"
 msgstr "钻石捐赠者"
 
+#: src/ui_parts/code_editor.gd src/utils/TranslationUtils.gd
+msgid "Copy all text"
+msgstr "复制所有文本"
+
 #: src/ui_parts/current_file_button.gd src/ui_parts/good_file_dialog.gd
 msgid "Save SVG"
 msgstr "保存 SVG"
@@ -931,10 +935,6 @@ msgstr "粘贴"
 #: src/ui_widgets/choose_name_dialog.gd
 msgid "Create"
 msgstr "创建"
-
-#: src/ui_widgets/code_editor.gd src/utils/TranslationUtils.gd
-msgid "Copy all text"
-msgstr "复制所有文本"
 
 #: src/ui_widgets/color_popup.gd
 msgid "Search color"

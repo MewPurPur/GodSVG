@@ -214,8 +214,9 @@ func _input(event: InputEvent) -> void:
 			last_mouse_click_double = false
 	
 	# Stuff that should replace the existing overlays, or that opens separate windows.
-	for action in ["about_info", "about_donate", "check_updates", "open_settings",
-	"open_externally", "open_in_folder"]:
+	const CONST_ARR_1: PackedStringArray = ["about_info", "about_donate", "check_updates",
+			"open_settings", "open_externally", "open_in_folder"]
+	for action in CONST_ARR_1:
 		if ShortcutUtils.is_action_pressed(event, action):
 			remove_all_menus()
 			get_viewport().set_input_as_handled()
@@ -223,7 +224,8 @@ func _input(event: InputEvent) -> void:
 			return
 	
 	# Stuff that links externally.
-	for action in ["about_repo", "about_website"]:
+	const CONST_ARR_2: PackedStringArray = ["about_repo", "about_website"]
+	for action in CONST_ARR_2:
 		if ShortcutUtils.is_action_pressed(event, action):
 			get_viewport().set_input_as_handled()
 			ShortcutUtils.fn_call(action)
@@ -234,8 +236,10 @@ func _input(event: InputEvent) -> void:
 		return
 	
 	# Global actions that should happen regardless of the context.
-	for action in ["import", "export", "save", "save_as", "close_tab", "new_tab",
-	"select_next_tab", "select_previous_tab", "copy_svg_text", "optimize", "reset_svg"]:
+	const CONST_ARR_3: PackedStringArray = ["import", "export", "save", "save_as",
+			"close_tab", "new_tab", "select_next_tab", "select_previous_tab",
+			"copy_svg_text", "optimize", "reset_svg"]
+	for action in CONST_ARR_3:
 		if ShortcutUtils.is_action_pressed(event, action):
 			get_viewport().set_input_as_handled()
 			ShortcutUtils.fn_call(action)
@@ -255,8 +259,9 @@ func _unhandled_input(event: InputEvent) -> void:
 	get_viewport().gui_is_dragging():
 		return
 	
-	for action in ["redo", "undo", "ui_cancel", "delete", "move_up", "move_down",
-	"duplicate", "select_all"]:
+	const CONST_ARR: PackedStringArray = ["redo", "undo", "ui_cancel", "delete", "move_up",
+			"move_down", "duplicate", "select_all"]
+	for action in CONST_ARR:
 		if ShortcutUtils.is_action_pressed(event, action):
 			get_viewport().set_input_as_handled()
 			ShortcutUtils.fn_call(action)

@@ -254,6 +254,10 @@ msgstr "Gold-Spender"
 msgid "Diamond donors"
 msgstr "Diamant-Spender"
 
+#: src/ui_parts/code_editor.gd src/utils/TranslationUtils.gd
+msgid "Copy all text"
+msgstr "Text kopieren"
+
 #: src/ui_parts/current_file_button.gd src/ui_parts/good_file_dialog.gd
 msgid "Save SVG"
 msgstr "SVG speichern"
@@ -936,10 +940,6 @@ msgstr "Einfügen"
 #: src/ui_widgets/choose_name_dialog.gd
 msgid "Create"
 msgstr "Erstellen"
-
-#: src/ui_widgets/code_editor.gd src/utils/TranslationUtils.gd
-msgid "Copy all text"
-msgstr "Text kopieren"
 
 #: src/ui_widgets/color_popup.gd
 msgid "Search color"

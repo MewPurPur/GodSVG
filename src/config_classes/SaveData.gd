@@ -374,14 +374,14 @@ func update_shortcut_validities() -> void:
 			# If the key already exists, set validity to false, otherwise set to true.
 			_shortcut_validities[shortcut_id] = not shortcut_id in _shortcut_validities
 
-func is_shortcut_valid(shortcut: InputEvent) -> bool:
-	var shortcut_id = shortcut.get_keycode_with_modifiers()
+func is_shortcut_valid(shortcut: InputEventKey) -> bool:
+	var shortcut_id := shortcut.get_keycode_with_modifiers()
 	if not shortcut_id in _shortcut_validities:
 		return true
 	return _shortcut_validities[shortcut_id]
 
-func get_actions_with_shortcut(shortcut: InputEvent) -> PackedStringArray:
-	var shortcut_id = shortcut.get_keycode_with_modifiers()
+func get_actions_with_shortcut(shortcut: InputEventKey) -> PackedStringArray:
+	var shortcut_id := shortcut.get_keycode_with_modifiers()
 	if not shortcut_id in _shortcut_validities:
 		return PackedStringArray()
 	elif _shortcut_validities[shortcut_id]:

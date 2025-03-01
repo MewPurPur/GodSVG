@@ -254,6 +254,10 @@ msgstr "Золотые благотворители"
 msgid "Diamond donors"
 msgstr "Алмазные благотворители"
 
+#: src/ui_parts/code_editor.gd src/utils/TranslationUtils.gd
+msgid "Copy all text"
+msgstr "Скопировать весь текст"
+
 #: src/ui_parts/current_file_button.gd src/ui_parts/good_file_dialog.gd
 msgid "Save SVG"
 msgstr "Сохранить SVG"
@@ -937,10 +941,6 @@ msgstr "Вставить"
 #: src/ui_widgets/choose_name_dialog.gd
 msgid "Create"
 msgstr "Создать"
-
-#: src/ui_widgets/code_editor.gd src/utils/TranslationUtils.gd
-msgid "Copy all text"
-msgstr "Скопировать весь текст"
 
 #: src/ui_widgets/color_popup.gd
 msgid "Search color"

@@ -166,7 +166,7 @@ func get_bounding_box() -> Rect2:
 				var rot_h := tan(rot)
 				var extreme1 := atan2(-r.y * rot_h, r.x)
 				var extreme2 := atan2(r.y, r.x * rot_h)
-				for angle in [extreme1, extreme2, PI + extreme1, PI + extreme2]:
+				for angle: float in [extreme1, extreme2, PI + extreme1, PI + extreme2]:
 					if (angle < theta1 or angle > theta1 + delta_theta) and\
 					(angle + TAU < theta1 or angle + TAU > theta1 + delta_theta):
 						continue

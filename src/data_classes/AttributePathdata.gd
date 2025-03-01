@@ -166,7 +166,9 @@ func _convert_command(idx: int, cmd_char: String) -> bool:
 	
 	var cmd_absolute_char := cmd_char.to_upper()
 	var new_cmd: PathCommand = PathCommand.translation_dict[cmd_absolute_char].new()
-	for property in ["x", "y", "x1", "y1", "x2", "y2"]:
+	
+	const CONST_ARR: PackedStringArray = ["x", "y", "x1", "y1", "x2", "y2"]
+	for property in CONST_ARR:
 		if property in old_cmd and property in new_cmd:
 			new_cmd[property] = old_cmd[property]
 	

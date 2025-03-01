@@ -140,7 +140,7 @@ func _setup_menu_items() -> void:
 	snap_4_idx = NativeMenu.add_radio_check_item(snap_rid, "4", _set_snap, _set_snap, 4)
 
 
-func _add_many_actions(menu_rid: RID, actions: Array) -> void:
+func _add_many_actions(menu_rid: RID, actions: PackedStringArray) -> void:
 	for action in actions:
 		_add_action(menu_rid, action)
 
