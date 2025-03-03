@@ -84,7 +84,7 @@ static func fn(shortcut: String) -> Callable:
 		"save_as": return FileUtils.save_svg_as
 		"export": return HandlerGUI.open_export
 		"import": return FileUtils.open_svg_import_dialog
-		"close_tab": return Configs.savedata.remove_active_tab
+		"close_tab": return FileUtils.close_tabs.bind(Configs.savedata.get_active_tab_index())
 		"new_tab": return Configs.savedata.add_empty_tab
 		"select_next_tab": return func() -> void: Configs.savedata.set_active_tab_index(
 				posmod(Configs.savedata.get_active_tab_index() + 1,

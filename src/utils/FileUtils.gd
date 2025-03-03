@@ -2,10 +2,12 @@
 class_name FileUtils extends RefCounted
 
 enum FileState {SAME, DIFFERENT, DOES_NOT_EXIST}
+enum TabCloseMode {SINGLE, TO_LEFT, TO_RIGHT, ALL_OTHERS}
 
 const GoodFileDialog = preload("res://src/ui_parts/good_file_dialog.gd")
 
 const AlertDialogScene = preload("res://src/ui_widgets/alert_dialog.tscn")
+const OptionsDialogScene = preload("res://src/ui_widgets/options_dialog.tscn")
 const ImportWarningMenuScene = preload("res://src/ui_parts/import_warning_menu.tscn")
 const GoodFileDialogScene = preload("res://src/ui_parts/good_file_dialog.tscn")
 
@@ -30,9 +32,10 @@ static func compare_svg_to_disk_contents() -> FileState:
 
 
 static func save_svg() -> void:
-	var file_path := Configs.savedata.get_active_tab().svg_file_path
+	var active_tab := Configs.savedata.get_active_tab()
+	var file_path := active_tab.svg_file_path
 	if not file_path.is_empty() and FileAccess.file_exists(file_path):
-		FileAccess.open(file_path, FileAccess.WRITE).store_string(State.get_export_text())
+		active_tab.save_to_bound_path()
 	else:
 		save_svg_as()
 
@@ -106,8 +109,9 @@ static func _finish_export(file_path: String, export_data: ImageExportData) -> v
 		_:
 			# When saving SVG, also modify the file path to associate it
 			# with the graphic being edited.
-			Configs.savedata.get_active_tab().svg_file_path = file_path
-			FileAccess.open(file_path, FileAccess.WRITE).store_string(State.get_export_text())
+			var active_tab := Configs.savedata.get_active_tab()
+			active_tab.svg_file_path = file_path
+			active_tab.save_to_bound_path()
 	HandlerGUI.remove_all_menus()
 
 static func _finish_xml_export(file_path: String, xml: String) -> void:
@@ -240,7 +244,7 @@ static func _apply_svg(data: Variant, file_path: String) -> void:
 		var warning_panel := ImportWarningMenuScene.instantiate()
 		var tab_index := Configs.savedata.get_active_tab_index()
 		Configs.savedata.add_tab_with_path(file_path)
-		Configs.savedata.remove_tabs(PackedInt32Array([tab_index]))
+		Configs.savedata.remove_tab(tab_index)
 		Configs.savedata.move_tab(Configs.savedata.get_tab_count() - 1, tab_index)
 		warning_panel.canceled.connect(_on_import_panel_canceled_empty_tab_scenario)
 		warning_panel.imported.connect(_on_import_panel_accepted_empty_tab_scenario.bind(
@@ -259,7 +263,7 @@ static func _apply_svg(data: Variant, file_path: String) -> void:
 static func _on_import_panel_canceled_empty_tab_scenario() -> void:
 	var tab_index := Configs.savedata.get_active_tab_index()
 	Configs.savedata.add_empty_tab()
-	Configs.savedata.remove_tabs(PackedInt32Array([tab_index]))
+	Configs.savedata.remove_tab(tab_index)
 	Configs.savedata.move_tab(Configs.savedata.get_tab_count() - 1, tab_index)
 
 static func _on_import_panel_accepted_empty_tab_scenario(svg_text: String) -> void:
@@ -282,6 +286,58 @@ static func open_svg(file_path: String) -> void:
 
 static func open_svg_folder(file_path: String) -> void:
 	OS.shell_show_in_file_manager(file_path)
+
+
+static func close_tabs(initial_idx: int, tab_close_mode := TabCloseMode.SINGLE) -> void:
+	var indices: Array[int] = []
+	match tab_close_mode:
+		TabCloseMode.SINGLE:
+			indices = [initial_idx]
+		TabCloseMode.TO_LEFT:
+			for i in range(initial_idx - 1, -1, -1):
+				indices.append(i)
+		TabCloseMode.TO_RIGHT:
+			for i in Configs.savedata.get_tab_count() - initial_idx - 1:
+				indices.append(initial_idx + 1)
+		TabCloseMode.ALL_OTHERS:
+			for i in initial_idx:
+				indices.append(0)
+			for i in Configs.savedata.get_tab_count() - initial_idx - 1:
+				indices.append(1)
+	_close_tabs_internal(indices)
+
+static func _close_tabs_internal(indices: Array[int]) -> void:
+	if indices.is_empty():
+		return
+	
+	var idx: int = indices.pop_front()
+	if idx < 0 or idx >= Configs.savedata.get_tab_count():
+		return
+	
+	var tab := Configs.savedata.get_tab(idx)
+	
+	var dont_save_callback := func() -> void:
+			Configs.savedata.remove_tab(idx)
+			_close_tabs_internal(indices.duplicate())
+	
+	if tab.marked_unsaved or (tab.svg_file_path.is_empty() and not tab.empty_unsaved):
+		
+		var save_callback := func() -> void:
+				save_svg()
+				dont_save_callback.call()
+		
+		Configs.savedata.set_active_tab_index(idx)
+		var options_dialog := OptionsDialogScene.instantiate()
+		HandlerGUI.add_dialog(options_dialog)
+		options_dialog.setup(Translator.translate("Save the changes?"), Translator.translate(
+				"Do you want to save the changes made to {file_name}?").format({"file_name":
+				Configs.savedata.get_active_tab().presented_name}) + "\n\n" +\
+				Translator.translate("Your changes will be lost if you don't save them."))
+		options_dialog.add_option(Translator.translate("Don't save"), dont_save_callback)
+		options_dialog.add_cancel_option()
+		options_dialog.add_option(Translator.translate("Save"), save_callback, true)
+	else:
+		dont_save_callback.call()
 
 
 # Web stuff.

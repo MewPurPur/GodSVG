@@ -18,3 +18,12 @@ func add_option(action_text: String, action: Callable, focused := false) -> void
 	options_container.add_child(button)
 	if focused:
 		button.grab_focus()
+
+# For simplicity's sake.
+func add_cancel_option() -> void:
+	var button := Button.new()
+	button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+	button.text = Translator.translate("Cancel")
+	button.size_flags_horizontal = Control.SIZE_EXPAND | Control.SIZE_SHRINK_CENTER
+	button.pressed.connect(queue_free)
+	options_container.add_child(button)

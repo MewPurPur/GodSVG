@@ -565,7 +565,7 @@ const MAX_TABS = 50
 			
 			for tab in _tabs:
 				tab.changed.connect(emit_changed)
-				tab.name_changed.connect(_on_tab_name_changed.bind(tab.id))
+				tab.status_changed.connect(_on_tab_status_changed.bind(tab.id))
 			emit_changed()
 			if _tabs.is_empty():
 				_add_new_tab()
@@ -584,9 +584,10 @@ const MAX_TABS = 50
 			_active_tab_index = new_value
 			emit_changed()
 
-func _on_tab_name_changed(id: int) -> void:
+func _on_tab_status_changed(id: int) -> void:
 	if id == _tabs[_active_tab_index].id:
-		Configs.active_tab_name_changed.emit()
+		Configs.active_tab_status_changed.emit()
+	Configs.tabs_changed.emit()
 
 func has_tabs() -> bool:
 	return not _tabs.is_empty()
@@ -637,7 +638,7 @@ func _add_new_tab() -> void:
 	var new_tab := TabData.new(new_id)
 	new_tab.fully_loaded = false
 	new_tab.changed.connect(emit_changed)
-	new_tab.name_changed.connect(_on_tab_name_changed.bind(new_id))
+	new_tab.status_changed.connect(_on_tab_status_changed.bind(new_id))
 	_tabs.append(new_tab)
 
 func add_empty_tab() -> void:
@@ -658,23 +659,15 @@ func add_tab_with_path(new_file_path: String) -> void:
 	Configs.tabs_changed.emit()
 	set_active_tab_index(_tabs.size() - 1)
 
-func remove_tabs(indices: PackedInt32Array) -> void:
-	# Validate the passed indices.
-	var indices_to_remove := PackedInt32Array()
-	for idx in indices:
-		if idx >= 0 and idx < _tabs.size() and not idx in indices_to_remove:
-			indices_to_remove.append(idx)
-	
-	if indices_to_remove.is_empty():
+func remove_tab(idx: int) -> void:
+	if idx < 0 or idx >= _tabs.size():
 		return
 	
 	var new_active_tab_index := _active_tab_index
-	# For each index, remove the tab. If there are no tabs in the end, add one.
-	for idx in range(_tabs.size() - 1, -1, -1):
-		if idx in indices_to_remove:
-			_tabs.remove_at(idx)
-			if idx < _active_tab_index:
-				new_active_tab_index -= 1
+	# If there are no tabs in the end, add one.
+	_tabs.remove_at(idx)
+	if idx < _active_tab_index:
+		new_active_tab_index -= 1
 	
 	# Clear unnecessary files.
 	var used_file_paths := PackedStringArray()
@@ -691,14 +684,14 @@ func remove_tabs(indices: PackedInt32Array) -> void:
 	
 	emit_changed()
 	Configs.tabs_changed.emit()
-	var has_tab_changed := (_active_tab_index in indices_to_remove)
+	var has_tab_changed := (_active_tab_index == idx)
 	_active_tab_index = clampi(new_active_tab_index, 0, _tabs.size() - 1)
 	_tabs[_active_tab_index].activate()
 	if has_tab_changed:
 		Configs.active_tab_changed.emit()
 
 func remove_active_tab() -> void:
-	remove_tabs(PackedInt32Array([_active_tab_index]))
+	remove_tab(_active_tab_index)
 
 func move_tab(old_idx: int, new_idx: int) -> void:
 	if old_idx == new_idx or old_idx < 0 or old_idx > get_tab_count() or\

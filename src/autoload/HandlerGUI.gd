@@ -24,7 +24,7 @@ func _enter_tree() -> void:
 
 func _ready() -> void:
 	Configs.active_tab_changed.connect(update_window_title)
-	Configs.active_tab_name_changed.connect(update_window_title)
+	Configs.active_tab_status_changed.connect(update_window_title)
 	update_window_title()
 	
 	Configs.ui_scale_changed.connect(update_ui_scale)

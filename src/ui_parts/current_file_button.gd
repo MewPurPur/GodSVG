@@ -1,7 +1,7 @@
 extends Button
 
 func _ready() -> void:
-	Configs.active_tab_name_changed.connect(update_file_button)
+	Configs.active_tab_status_changed.connect(update_file_button)
 	Configs.active_tab_changed.connect(update_file_button)
 	pressed.connect(_on_file_button_pressed)
 	update_file_button()

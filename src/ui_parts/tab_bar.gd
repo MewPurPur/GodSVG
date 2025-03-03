@@ -29,7 +29,6 @@ func _exit_tree() -> void:
 	RenderingServer.free_rid(ci)
 
 func _ready() -> void:
-	Configs.active_tab_name_changed.connect(queue_redraw)
 	Configs.active_tab_changed.connect(activate)
 	Configs.tabs_changed.connect(activate)
 	Configs.active_tab_changed.connect(scroll_to_active)
@@ -62,6 +61,9 @@ func _draw() -> void:
 		
 		var current_tab_name := State.transient_tab_path.get_file() if\
 				drawing_transient_tab else Configs.savedata.get_tab(tab_index).presented_name
+		if Configs.savedata.get_tab(tab_index).marked_unsaved:
+			current_tab_name = "* " + current_tab_name
+		
 		if (has_transient_tab and drawing_transient_tab) or\
 		(not has_transient_tab and tab_index == Configs.savedata.get_active_tab_index()):
 			draw_style_box(get_theme_stylebox("tab_selected", "TabContainer"), rect)
@@ -192,20 +194,23 @@ func _gui_input(event: InputEvent) -> void:
 					var new_active_tab := Configs.savedata.get_tab(hovered_idx)
 					
 					btn_arr.append(ContextPopup.create_button(
-							Translator.translate("Close tab"), close_tab.bind(hovered_idx),
-							false, null, "close_tab"))
+							Translator.translate("Close tab"),
+							FileUtils.close_tabs.bind(hovered_idx), false, null, "close_tab"))
 					# TODO Unify into "Close multiple tabs"
 					btn_arr.append(ContextPopup.create_button(
 							Translator.translate("Close all other tabs"),
-							close_other_tabs.bind(hovered_idx),
-							Configs.savedata.get_tab_count() == 1, null))
+							FileUtils.close_tabs.bind(hovered_idx,
+							FileUtils.TabCloseMode.ALL_OTHERS),
+							Configs.savedata.get_tab_count() < 2))
 					btn_arr.append(ContextPopup.create_button(
 							Translator.translate("Close tabs to the left"),
-							close_tabs_to_left.bind(hovered_idx), hovered_idx == 0, null))
+							FileUtils.close_tabs.bind(hovered_idx,
+							FileUtils.TabCloseMode.TO_LEFT), hovered_idx == 0))
 					btn_arr.append(ContextPopup.create_button(
 							Translator.translate("Close tabs to the right"),
-							close_tabs_to_right.bind(hovered_idx),
-							hovered_idx == Configs.savedata.get_tab_count() - 1, null))
+							FileUtils.close_tabs.bind(hovered_idx,
+							FileUtils.TabCloseMode.TO_RIGHT),
+							hovered_idx == Configs.savedata.get_tab_count() - 1))
 					btn_arr.append(ContextPopup.create_button(
 							Translator.translate("Open externally"),
 							ShortcutUtils.fn("open_externally"),
@@ -246,21 +251,6 @@ func _process(_delta: float) -> void:
 	scroll_backwards_area_rect.has_area():
 		scroll_backwards()
 		return
-
-
-func close_tab(idx: int) -> void:
-	Configs.savedata.remove_tabs(PackedInt32Array([idx]))
-
-func close_other_tabs(idx: int) -> void:
-	Configs.savedata.remove_tabs(PackedInt32Array(range(0, idx) +\
-			range(idx + 1, Configs.savedata.get_tab_count())))
-
-func close_tabs_to_left(idx: int) -> void:
-	Configs.savedata.remove_tabs(PackedInt32Array(range(0, idx)))
-
-func close_tabs_to_right(idx: int) -> void:
-	Configs.savedata.remove_tabs(PackedInt32Array(
-			range(idx + 1, Configs.savedata.get_tab_count())))
 
 
 func _on_mouse_entered() -> void:
@@ -392,7 +382,9 @@ func activate() -> void:
 		close_button.mouse_filter = Control.MOUSE_FILTER_PASS
 		add_child(close_button)
 		active_controls.append(close_button)
-		close_button.pressed.connect(Configs.savedata.remove_active_tab)
+		close_button.pressed.connect(func() -> void:
+				FileUtils.close_tabs(Configs.savedata.get_active_tab_index())
+		)
 	
 	var add_rect := get_add_button_rect()
 	if add_rect.has_area():

@@ -4,12 +4,18 @@ class_name TabData extends ConfigResource
 const DEFAULT_SVG = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"></svg>'
 const EDITED_FILES_DIR = "user://edited"
 
-signal name_changed
+signal status_changed
 var presented_name: String:
 	set(new_value):
 		if presented_name != new_value:
 			presented_name = new_value
-			name_changed.emit()
+			status_changed.emit()
+
+var marked_unsaved := false:
+	set(new_value):
+		if marked_unsaved != new_value:
+			marked_unsaved = new_value
+			status_changed.emit()
 
 var active := false
 
@@ -39,12 +45,26 @@ func set_svg_text(new_text: String) -> void:
 	undo_redo.commit_action()
 
 func _save_svg_text() -> void:
-	if not FileAccess.file_exists(get_edited_file_path()):
-		DirAccess.make_dir_recursive_absolute(get_edited_file_path().get_base_dir())
-	FileAccess.open(get_edited_file_path(), FileAccess.WRITE).store_string(_svg_text)
+	var edited_file_path := get_edited_file_path()
+	if not FileAccess.file_exists(edited_file_path):
+		DirAccess.make_dir_recursive_absolute(edited_file_path.get_base_dir())
 	
-	if svg_file_path.is_empty():
-		_sync()
+	if active:
+		FileAccess.open(edited_file_path, FileAccess.WRITE).store_string(_svg_text)
+	else:
+		var edited_text_parse_result := SVGParser.text_to_root(
+				FileAccess.get_file_as_string(get_edited_file_path()))
+		
+		if is_instance_valid(edited_text_parse_result.svg):
+			FileAccess.open(edited_file_path, FileAccess.WRITE).store_string(
+					SVGParser.root_to_export_text(edited_text_parse_result.svg))
+	_sync()
+
+func save_to_bound_path() -> void:
+	if Configs.savedata.get_active_tab() != self:
+		return
+	FileAccess.open(svg_file_path, FileAccess.WRITE).store_string(State.get_export_text())
+	_sync()
 
 func setup_svg_text(new_text: String) -> void:
 	_svg_text = new_text
@@ -61,19 +81,23 @@ func get_svg_text() -> String:
 		if svg_file_path != new_value:
 			svg_file_path = new_value
 			emit_changed()
-			_sync()
+			_sync.call_deferred()
 
 @export var id := -1:
 	set(new_value):
 		if id != new_value:
 			id = new_value
 			emit_changed()
-			_sync()
+			_sync.call_deferred()
 
 func _init(new_id := -1) -> void:
 	id = new_id
 	Configs.language_changed.connect(_on_language_changed)
 	super()
+	_connect_to_export_formatter_change.call_deferred()
+
+func _connect_to_export_formatter_change() -> void:
+	Configs.savedata.export_formatter.changed.connect(_save_svg_text)
 
 func get_edited_file_path() -> String:
 	return get_edited_file_path_for_id(id)
@@ -117,11 +141,22 @@ func _sync() -> void:
 		# And also, it prevents ".svg" from being presented as an empty string.
 		presented_name = svg_file_path.get_file()
 		empty_unsaved = false
+		
+		var edited_text_parse_result := SVGParser.text_to_root(
+				FileAccess.get_file_as_string(get_edited_file_path()))
+		
+		if is_instance_valid(edited_text_parse_result.svg):
+			marked_unsaved = FileAccess.get_file_as_string(svg_file_path) !=\
+					SVGParser.root_to_export_text(edited_text_parse_result.svg)
+		else:
+			marked_unsaved = true
 	elif SVGParser.text_check_is_root_empty(get_true_svg_text()):
 		empty_unsaved = true
+		marked_unsaved = false
 		presented_name = "[ %s ]" % Translator.translate("Empty")
 	else:
 		empty_unsaved = false
+		marked_unsaved = false
 		presented_name = "[ %s ]" % Translator.translate("Unsaved")
 
 
