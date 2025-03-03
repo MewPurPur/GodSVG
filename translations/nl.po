@@ -310,7 +310,7 @@ msgstr "Maat inknappen"
 
 #: src/ui_parts/donate_menu.gd src/ui_parts/export_menu.gd
 #: src/ui_parts/import_warning_menu.gd src/ui_widgets/choose_name_dialog.gd
-#: src/ui_widgets/confirm_dialog.gd
+#: src/ui_widgets/confirm_dialog.gd src/ui_widgets/options_dialog.gd
 msgid "Cancel"
 msgstr "Annuleren"
 
@@ -427,7 +427,8 @@ msgstr "Kies een afbeedling"
 msgid "Select"
 msgstr "Selecteren"
 
-#: src/ui_parts/good_file_dialog.gd src/utils/TranslationUtils.gd
+#: src/ui_parts/good_file_dialog.gd src/utils/FileUtils.gd
+#: src/utils/TranslationUtils.gd
 msgid "Save"
 msgstr "Opslaan"
 
@@ -845,19 +846,6 @@ msgstr "Indeling"
 msgid "Create tab"
 msgstr "Creëren"
 
-#: src/ui_parts/tab_bar.gd
-#, fuzzy
-msgid "Close all other tabs"
-msgstr "Kopiëer alle tekst"
-
-#: src/ui_parts/tab_bar.gd
-msgid "Close tabs to the left"
-msgstr ""
-
-#: src/ui_parts/tab_bar.gd
-msgid "Close tabs to the right"
-msgstr ""
-
 #: src/ui_parts/tab_bar.gd src/utils/TranslationUtils.gd
 #, fuzzy
 msgid "Create a new tab"
@@ -1078,6 +1066,28 @@ msgid "Check if the file still exists in the selected file path."
 msgstr "Kijk na of het bestand nog steeds bestaat in het gekozen bestandspad"
 
 #: src/utils/FileUtils.gd
+#, fuzzy
+msgid "Save the file?"
+msgstr "Bewaar het .\"{format}\" bestand"
+
+#: src/utils/FileUtils.gd
+#, fuzzy
+msgid "Do you want to save this file?"
+msgstr "Wil je GodSVG afsluiten?"
+
+#: src/utils/FileUtils.gd
+msgid "Save the changes?"
+msgstr ""
+
+#: src/utils/FileUtils.gd
+msgid "Your changes will be lost if you don't save them."
+msgstr ""
+
+#: src/utils/FileUtils.gd
+msgid "Don't save"
+msgstr ""
+
+#: src/utils/FileUtils.gd
 msgid "The imported file is already being edited inside GodSVG."
 msgstr ""
 
@@ -1085,10 +1095,27 @@ msgstr ""
 msgid "If you want to revert your edits since the last save, use {reset_svg}."
 msgstr ""
 
+#: src/utils/FileUtils.gd
+msgid "Do you want to save the changes made to {file_name}?"
+msgstr ""
+
 #: src/utils/TranslationUtils.gd
 #, fuzzy
 msgid "Save as"
 msgstr "Opslaan"
+
+#: src/utils/TranslationUtils.gd
+msgid "Close tabs to the left"
+msgstr ""
+
+#: src/utils/TranslationUtils.gd
+msgid "Close tabs to the right"
+msgstr ""
+
+#: src/utils/TranslationUtils.gd
+#, fuzzy
+msgid "Close all other tabs"
+msgstr "Kopiëer alle tekst"
 
 #: src/utils/TranslationUtils.gd
 msgid "Select the next tab"

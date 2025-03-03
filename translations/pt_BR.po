@@ -310,7 +310,7 @@ msgstr "Tamanho de encaixe"
 
 #: src/ui_parts/donate_menu.gd src/ui_parts/export_menu.gd
 #: src/ui_parts/import_warning_menu.gd src/ui_widgets/choose_name_dialog.gd
-#: src/ui_widgets/confirm_dialog.gd
+#: src/ui_widgets/confirm_dialog.gd src/ui_widgets/options_dialog.gd
 msgid "Cancel"
 msgstr "Cancelar"
 
@@ -428,7 +428,8 @@ msgstr "Selecionar uma imagem"
 msgid "Select"
 msgstr "Selecionar"
 
-#: src/ui_parts/good_file_dialog.gd src/utils/TranslationUtils.gd
+#: src/ui_parts/good_file_dialog.gd src/utils/FileUtils.gd
+#: src/utils/TranslationUtils.gd
 msgid "Save"
 msgstr "Salvar"
 
@@ -844,18 +845,6 @@ msgstr "Layout"
 msgid "Create tab"
 msgstr "Criar aba"
 
-#: src/ui_parts/tab_bar.gd
-msgid "Close all other tabs"
-msgstr "Fechar todas as outras abas"
-
-#: src/ui_parts/tab_bar.gd
-msgid "Close tabs to the left"
-msgstr "Fechar abas à esquerda"
-
-#: src/ui_parts/tab_bar.gd
-msgid "Close tabs to the right"
-msgstr "Fechar abas à direita"
-
 #: src/ui_parts/tab_bar.gd src/utils/TranslationUtils.gd
 msgid "Create a new tab"
 msgstr "Criar nova aba"
@@ -1073,6 +1062,28 @@ msgid "Check if the file still exists in the selected file path."
 msgstr "Verificar se o arquivo ainda existe no local de arquivo selecionado."
 
 #: src/utils/FileUtils.gd
+#, fuzzy
+msgid "Save the file?"
+msgstr "Salvar o arquivo .\"{format}\""
+
+#: src/utils/FileUtils.gd
+#, fuzzy
+msgid "Do you want to save this file?"
+msgstr "Você deseja prosseguir?"
+
+#: src/utils/FileUtils.gd
+msgid "Save the changes?"
+msgstr ""
+
+#: src/utils/FileUtils.gd
+msgid "Your changes will be lost if you don't save them."
+msgstr ""
+
+#: src/utils/FileUtils.gd
+msgid "Don't save"
+msgstr ""
+
+#: src/utils/FileUtils.gd
 msgid "The imported file is already being edited inside GodSVG."
 msgstr "O arquivo importado já está sendo editado dentro do GodSVG."
 
@@ -1080,9 +1091,25 @@ msgstr "O arquivo importado já está sendo editado dentro do GodSVG."
 msgid "If you want to revert your edits since the last save, use {reset_svg}."
 msgstr ""
 
+#: src/utils/FileUtils.gd
+msgid "Do you want to save the changes made to {file_name}?"
+msgstr ""
+
 #: src/utils/TranslationUtils.gd
 msgid "Save as"
 msgstr "Salvar como"
+
+#: src/utils/TranslationUtils.gd
+msgid "Close tabs to the left"
+msgstr "Fechar abas à esquerda"
+
+#: src/utils/TranslationUtils.gd
+msgid "Close tabs to the right"
+msgstr "Fechar abas à direita"
+
+#: src/utils/TranslationUtils.gd
+msgid "Close all other tabs"
+msgstr "Fechar todas as outras abas"
 
 #: src/utils/TranslationUtils.gd
 msgid "Select the next tab"

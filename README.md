@@ -25,7 +25,7 @@ Download the version you want from [the list of GodSVG releases](https://github.
 
 Link to the web editor: https://godsvg.com/editor
 
-To run the latest unreleased version, you can download Godot from https://godotengine.org (development is currently happening in v4.4.rc1). After getting the repository files on your machine, you must open Godot, click on the "Import" button, and import the `project.godot` folder. If there are a lot of errors as some people have reported, it's Godot's fault. Try closing and opening the project a few times, changing small things on the code that errors out, etc. until the errors hopefully clear.
+To run the latest unreleased version, you can download Godot from https://godotengine.org (development is currently happening in v4.4). After getting the repository files on your machine, you must open Godot, click on the "Import" button, and import the `project.godot` folder. If there are a lot of errors as some people have reported, it's Godot's fault. Try closing and opening the project a few times, changing small things on the code that errors out, etc. until the errors hopefully clear.
 
 ## How to use it
 

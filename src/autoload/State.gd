@@ -56,7 +56,7 @@ var transient_tab_path := "":
 		if transient_tab_path != new_value:
 			transient_tab_path = new_value
 			Configs.tabs_changed.emit()
-			Configs.active_tab_name_changed.emit()
+			Configs.active_tab_status_changed.emit()
 			setup_from_tab()
 
 func _enter_tree() -> void:
@@ -96,7 +96,8 @@ func setup_from_tab() -> void:
 		apply_svg_text(new_text)
 		return
 	
-	if active_tab.fully_loaded and not FileAccess.file_exists(active_tab.get_edited_file_path()):
+	if active_tab.fully_loaded and not active_tab.empty_unsaved and\
+	FileAccess.file_exists(active_tab.get_edited_file_path()):
 		var user_facing_path := active_tab.svg_file_path
 		var message := Translator.translate(
 				"The last edited state of this tab could not be found.")
@@ -119,7 +120,7 @@ func setup_from_tab() -> void:
 		apply_svg_text(TabData.DEFAULT_SVG, false)
 		return
 	
-	active_tab.setup_svg_text(TabData.DEFAULT_SVG)
+	active_tab.setup_svg_text(TabData.DEFAULT_SVG, active_tab.svg_file_path.is_empty())
 	sync_elements()
 
 

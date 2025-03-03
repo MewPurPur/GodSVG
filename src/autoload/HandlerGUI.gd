@@ -24,7 +24,7 @@ func _enter_tree() -> void:
 
 func _ready() -> void:
 	Configs.active_tab_changed.connect(update_window_title)
-	Configs.active_tab_name_changed.connect(update_window_title)
+	Configs.active_tab_status_changed.connect(update_window_title)
 	update_window_title()
 	
 	Configs.ui_scale_changed.connect(update_ui_scale)
@@ -237,8 +237,9 @@ func _input(event: InputEvent) -> void:
 	
 	# Global actions that should happen regardless of the context.
 	const CONST_ARR_3: PackedStringArray = ["import", "export", "save", "save_as",
-			"close_tab", "new_tab", "select_next_tab", "select_previous_tab",
-			"copy_svg_text", "optimize", "reset_svg"]
+			"close_tab", "close_tabs_to_left", "close_tabs_to_right", "close_all_other_tabs",
+			"new_tab", "select_next_tab", "select_previous_tab", "copy_svg_text", "optimize",
+			"reset_svg"]
 	for action in CONST_ARR_3:
 		if ShortcutUtils.is_action_pressed(event, action):
 			get_viewport().set_input_as_handled()
