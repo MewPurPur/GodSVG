@@ -312,7 +312,7 @@ msgstr "Rastergröße"
 
 #: src/ui_parts/donate_menu.gd src/ui_parts/export_menu.gd
 #: src/ui_parts/import_warning_menu.gd src/ui_widgets/choose_name_dialog.gd
-#: src/ui_widgets/confirm_dialog.gd
+#: src/ui_widgets/confirm_dialog.gd src/ui_widgets/options_dialog.gd
 msgid "Cancel"
 msgstr "Abbrechen"
 
@@ -429,7 +429,8 @@ msgstr "Bild auswählen"
 msgid "Select"
 msgstr "Auswählen"
 
-#: src/ui_parts/good_file_dialog.gd src/utils/TranslationUtils.gd
+#: src/ui_parts/good_file_dialog.gd src/utils/FileUtils.gd
+#: src/utils/TranslationUtils.gd
 msgid "Save"
 msgstr "Speichern"
 
@@ -846,18 +847,6 @@ msgstr "Layout"
 msgid "Create tab"
 msgstr "Registerkarte erstellen"
 
-#: src/ui_parts/tab_bar.gd
-msgid "Close all other tabs"
-msgstr "Alle anderen Registerkarten schließen"
-
-#: src/ui_parts/tab_bar.gd
-msgid "Close tabs to the left"
-msgstr "Alle Registerkarten links schließen"
-
-#: src/ui_parts/tab_bar.gd
-msgid "Close tabs to the right"
-msgstr "Alle Registerkarten rechts schließen"
-
 #: src/ui_parts/tab_bar.gd src/utils/TranslationUtils.gd
 msgid "Create a new tab"
 msgstr "Neue Registerkarte erstellen"
@@ -1075,6 +1064,28 @@ msgid "Check if the file still exists in the selected file path."
 msgstr "Prüfen, ob die Datei im ausgewählten Dateipfad noch existiert."
 
 #: src/utils/FileUtils.gd
+#, fuzzy
+msgid "Save the file?"
+msgstr "Die .\"{format}\" Datei speichern"
+
+#: src/utils/FileUtils.gd
+#, fuzzy
+msgid "Do you want to save this file?"
+msgstr "Möchten Sie fortfahren?"
+
+#: src/utils/FileUtils.gd
+msgid "Save the changes?"
+msgstr ""
+
+#: src/utils/FileUtils.gd
+msgid "Your changes will be lost if you don't save them."
+msgstr ""
+
+#: src/utils/FileUtils.gd
+msgid "Don't save"
+msgstr ""
+
+#: src/utils/FileUtils.gd
 msgid "The imported file is already being edited inside GodSVG."
 msgstr "Die importierte Datei wird bereits in GodSVG bearbeitet."
 
@@ -1082,9 +1093,25 @@ msgstr "Die importierte Datei wird bereits in GodSVG bearbeitet."
 msgid "If you want to revert your edits since the last save, use {reset_svg}."
 msgstr ""
 
+#: src/utils/FileUtils.gd
+msgid "Do you want to save the changes made to {file_name}?"
+msgstr ""
+
 #: src/utils/TranslationUtils.gd
 msgid "Save as"
 msgstr "Speichern als"
+
+#: src/utils/TranslationUtils.gd
+msgid "Close tabs to the left"
+msgstr "Alle Registerkarten links schließen"
+
+#: src/utils/TranslationUtils.gd
+msgid "Close tabs to the right"
+msgstr "Alle Registerkarten rechts schließen"
+
+#: src/utils/TranslationUtils.gd
+msgid "Close all other tabs"
+msgstr "Alle anderen Registerkarten schließen"
 
 #: src/utils/TranslationUtils.gd
 msgid "Select the next tab"

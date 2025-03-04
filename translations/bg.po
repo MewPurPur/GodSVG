@@ -309,7 +309,7 @@ msgstr "Размер на захващането"
 
 #: src/ui_parts/donate_menu.gd src/ui_parts/export_menu.gd
 #: src/ui_parts/import_warning_menu.gd src/ui_widgets/choose_name_dialog.gd
-#: src/ui_widgets/confirm_dialog.gd
+#: src/ui_widgets/confirm_dialog.gd src/ui_widgets/options_dialog.gd
 msgid "Cancel"
 msgstr "Отказ"
 
@@ -426,7 +426,8 @@ msgstr "Избери изображение"
 msgid "Select"
 msgstr "Избери"
 
-#: src/ui_parts/good_file_dialog.gd src/utils/TranslationUtils.gd
+#: src/ui_parts/good_file_dialog.gd src/utils/FileUtils.gd
+#: src/utils/TranslationUtils.gd
 msgid "Save"
 msgstr "Запиши"
 
@@ -843,18 +844,6 @@ msgstr "Оформление"
 msgid "Create tab"
 msgstr "Създай раздел"
 
-#: src/ui_parts/tab_bar.gd
-msgid "Close all other tabs"
-msgstr "Затвори другите раздели"
-
-#: src/ui_parts/tab_bar.gd
-msgid "Close tabs to the left"
-msgstr "Затвори разделите отляво"
-
-#: src/ui_parts/tab_bar.gd
-msgid "Close tabs to the right"
-msgstr "Затвори разделите отдясно"
-
 #: src/ui_parts/tab_bar.gd src/utils/TranslationUtils.gd
 msgid "Create a new tab"
 msgstr "Създай нов раздел"
@@ -991,7 +980,7 @@ msgstr "Копирай като XML"
 
 #: src/ui_widgets/palette_config.gd
 msgid "Save as XML"
-msgstr "Запази като XML"
+msgstr "Запиши като XML"
 
 #: src/ui_widgets/path_popup.gd src/ui_widgets/pathdata_field.gd
 #: src/utils/TranslationUtils.gd
@@ -1071,18 +1060,54 @@ msgid "Check if the file still exists in the selected file path."
 msgstr "Проверете дали файлът все още съществува на избраното място."
 
 #: src/utils/FileUtils.gd
+msgid "Save the file?"
+msgstr "Записване на файла?"
+
+#: src/utils/FileUtils.gd
+msgid "Do you want to save this file?"
+msgstr "Искаш ли да запишеш този файл?"
+
+#: src/utils/FileUtils.gd
+msgid "Save the changes?"
+msgstr "Записване на промените?"
+
+#: src/utils/FileUtils.gd
+msgid "Your changes will be lost if you don't save them."
+msgstr "Промените ще бъдат изгубени ако не ги запишеш."
+
+#: src/utils/FileUtils.gd
+msgid "Don't save"
+msgstr "Не записвай"
+
+#: src/utils/FileUtils.gd
 msgid "The imported file is already being edited inside GodSVG."
 msgstr "Импортираният файл вече се редактира в GodSVG."
 
 #: src/utils/FileUtils.gd
 msgid "If you want to revert your edits since the last save, use {reset_svg}."
 msgstr ""
-"Ако искаш да премахнеш промените след последното запазване, използвай "
+"Ако искаш да премахнеш промените след последното записване, използвай "
 "{reset_svg}."
+
+#: src/utils/FileUtils.gd
+msgid "Do you want to save the changes made to {file_name}?"
+msgstr "Искаш ли да запишеш промените върху {file_name}?"
 
 #: src/utils/TranslationUtils.gd
 msgid "Save as"
 msgstr "Запиши като"
+
+#: src/utils/TranslationUtils.gd
+msgid "Close tabs to the left"
+msgstr "Затвори разделите отляво"
+
+#: src/utils/TranslationUtils.gd
+msgid "Close tabs to the right"
+msgstr "Затвори разделите отдясно"
+
+#: src/utils/TranslationUtils.gd
+msgid "Close all other tabs"
+msgstr "Затвори другите раздели"
 
 #: src/utils/TranslationUtils.gd
 msgid "Select the next tab"

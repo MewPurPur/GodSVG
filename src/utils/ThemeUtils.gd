@@ -855,7 +855,7 @@ static func _setup_label(theme: Theme) -> void:
 static func _setup_tabcontainer(theme: Theme) -> void:
 	theme.add_type("TabContainer")
 	theme.set_color("font_unselected_color", "TabContainer", common_dim_text_color)
-	theme.set_color("font_hovered_color", "TabContainer", common_highlighted_text_color)
+	theme.set_color("font_hovered_color", "TabContainer", common_text_color)
 	theme.set_color("font_selected_color", "TabContainer", common_highlighted_text_color)
 	theme.set_constant("side_margin", "TabContainer", 0)
 	theme.set_font_size("font_size", "TabContainer", 14)

@@ -306,7 +306,7 @@ msgstr "吸附大小"
 
 #: src/ui_parts/donate_menu.gd src/ui_parts/export_menu.gd
 #: src/ui_parts/import_warning_menu.gd src/ui_widgets/choose_name_dialog.gd
-#: src/ui_widgets/confirm_dialog.gd
+#: src/ui_widgets/confirm_dialog.gd src/ui_widgets/options_dialog.gd
 msgid "Cancel"
 msgstr "取消"
 
@@ -423,7 +423,8 @@ msgstr "选择图像"
 msgid "Select"
 msgstr "选择"
 
-#: src/ui_parts/good_file_dialog.gd src/utils/TranslationUtils.gd
+#: src/ui_parts/good_file_dialog.gd src/utils/FileUtils.gd
+#: src/utils/TranslationUtils.gd
 msgid "Save"
 msgstr "保存"
 
@@ -839,19 +840,6 @@ msgstr ""
 msgid "Create tab"
 msgstr "创建"
 
-#: src/ui_parts/tab_bar.gd
-#, fuzzy
-msgid "Close all other tabs"
-msgstr "复制所有文本"
-
-#: src/ui_parts/tab_bar.gd
-msgid "Close tabs to the left"
-msgstr ""
-
-#: src/ui_parts/tab_bar.gd
-msgid "Close tabs to the right"
-msgstr ""
-
 #: src/ui_parts/tab_bar.gd src/utils/TranslationUtils.gd
 #, fuzzy
 msgid "Create a new tab"
@@ -1072,6 +1060,28 @@ msgid "Check if the file still exists in the selected file path."
 msgstr "检查文件是否还存在于选中的路径。"
 
 #: src/utils/FileUtils.gd
+#, fuzzy
+msgid "Save the file?"
+msgstr "保存 .\"{format}\" 文件"
+
+#: src/utils/FileUtils.gd
+#, fuzzy
+msgid "Do you want to save this file?"
+msgstr "您确定要退出 GodSVG 吗？"
+
+#: src/utils/FileUtils.gd
+msgid "Save the changes?"
+msgstr ""
+
+#: src/utils/FileUtils.gd
+msgid "Your changes will be lost if you don't save them."
+msgstr ""
+
+#: src/utils/FileUtils.gd
+msgid "Don't save"
+msgstr ""
+
+#: src/utils/FileUtils.gd
 msgid "The imported file is already being edited inside GodSVG."
 msgstr ""
 
@@ -1079,10 +1089,27 @@ msgstr ""
 msgid "If you want to revert your edits since the last save, use {reset_svg}."
 msgstr ""
 
+#: src/utils/FileUtils.gd
+msgid "Do you want to save the changes made to {file_name}?"
+msgstr ""
+
 #: src/utils/TranslationUtils.gd
 #, fuzzy
 msgid "Save as"
 msgstr "保存"
+
+#: src/utils/TranslationUtils.gd
+msgid "Close tabs to the left"
+msgstr ""
+
+#: src/utils/TranslationUtils.gd
+msgid "Close tabs to the right"
+msgstr ""
+
+#: src/utils/TranslationUtils.gd
+#, fuzzy
+msgid "Close all other tabs"
+msgstr "复制所有文本"
 
 #: src/utils/TranslationUtils.gd
 msgid "Select the next tab"

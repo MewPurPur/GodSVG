@@ -11,7 +11,7 @@ env:
   # Which godot version to use for exporting.
   GODOT_VERSION: 4.4
   # Which godot release to use for exporting. (stable/rc/beta/alpha)
-  GODOT_RELEASE: beta4
+  GODOT_RELEASE: stable
   # Used in the editor config file name. Do not change this for patch releases.
   GODOT_FEATURE_VERSION: 4.4
   # Commit hash
