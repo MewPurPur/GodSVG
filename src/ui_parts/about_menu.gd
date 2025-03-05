@@ -113,6 +113,26 @@ func _on_tab_changed(idx: int) -> void:
 			%LicenseLabel.text = "MIT License\n\nCopyright (c) 2023 MewPurPur\n" +\
 			"Copyright (c) 2023-present GodSVG contributors\n\n" + licenses_dict["Expat"]
 		3:
+			for child in %GodSVGParts.get_children():
+				child.queue_free()
+			for child in %GodotParts.get_children():
+				child.queue_free()
+			for child in %LicenseTexts.get_children():
+				child.queue_free()
+			
+			var godsvg_parts_label := Label.new()
+			godsvg_parts_label.text = "GodSVG parts"
+			var godot_parts_label := Label.new()
+			godot_parts_label.text = "Godot parts"
+			var license_texts_label := Label.new()
+			license_texts_label.text = "License texts"
+			for label: Label in [godsvg_parts_label, godot_parts_label, license_texts_label]:
+				label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+				label.add_theme_font_size_override("font_size", 16)
+			%GodSVGParts.add_child(godsvg_parts_label)
+			%GodotParts.add_child(godot_parts_label)
+			%LicenseTexts.add_child(license_texts_label)
+			
 			# This part doesn't need to be translated.
 			var licenses_dict := Engine.get_license_info()
 			var godot_copyright_info := Engine.get_copyright_info()

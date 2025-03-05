@@ -258,33 +258,15 @@ unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="Label" type="Label" parent="VBoxContainer/TabContainer/Third-party Licenses/MarginContainer/ThirdParties/GodSVGParts"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 16
-text = "GodSVG parts"
-horizontal_alignment = 1
-
 [node name="GodotParts" type="VBoxContainer" parent="VBoxContainer/TabContainer/Third-party Licenses/MarginContainer/ThirdParties"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="Label" type="Label" parent="VBoxContainer/TabContainer/Third-party Licenses/MarginContainer/ThirdParties/GodotParts"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 16
-text = "Godot parts"
-horizontal_alignment = 1
-
 [node name="LicenseTexts" type="VBoxContainer" parent="VBoxContainer/TabContainer/Third-party Licenses/MarginContainer/ThirdParties"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 12
-
-[node name="Label" type="Label" parent="VBoxContainer/TabContainer/Third-party Licenses/MarginContainer/ThirdParties/LicenseTexts"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 16
-text = "License texts"
-horizontal_alignment = 1
 
 [node name="CloseButton" type="Button" parent="VBoxContainer"]
 layout_mode = 2
