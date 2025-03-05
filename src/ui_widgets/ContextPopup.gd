@@ -18,9 +18,14 @@ icon: Texture2D = null, shortcut := "") -> Button:
 	if not shortcut.is_empty():
 		if not InputMap.has_action(shortcut):
 			push_error("Non-existent shortcut was passed to ContextPopup.create_button().")
-		elif InputMap.has_action(shortcut):
+		else:
 			var events := InputMap.action_get_events(shortcut)
-			if not events.is_empty():
+			var showcased_event: InputEventKey
+			for event in events:
+				if Configs.savedata.is_shortcut_valid(event):
+					showcased_event = event
+			
+			if is_instance_valid(showcased_event):
 				# Add button with a shortcut.
 				var ret_button := Button.new()
 				ret_button.theme_type_variation = "ContextButton"
@@ -48,7 +53,7 @@ icon: Texture2D = null, shortcut := "") -> Button:
 				label_margin.add_theme_constant_override("margin_right",
 						int(ret_button.get_theme_stylebox("normal").content_margin_right))
 				var label := Label.new()
-				label.text = events[0].as_text_keycode()
+				label.text = showcased_event.as_text_keycode()
 				label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 				var shortcut_text_color := ThemeUtils.common_subtle_text_color
 				if disabled:
@@ -98,9 +103,14 @@ start_pressed: bool, shortcut := "") -> CheckBox:
 	if not shortcut.is_empty():
 		if not InputMap.has_action(shortcut):
 			push_error("Non-existent shortcut was passed to ContextPopup.create_checkbox().")
-		elif InputMap.has_action(shortcut):
+		else:
 			var events := InputMap.action_get_events(shortcut)
-			if not events.is_empty():
+			var showcased_event: InputEventKey
+			for event in events:
+				if Configs.savedata.is_shortcut_valid(event):
+					showcased_event = event
+			
+			if is_instance_valid(showcased_event):
 				# Add button with a shortcut.
 				var ret_button := Button.new()
 				ret_button.theme_type_variation = "ContextButton"
@@ -124,7 +134,7 @@ start_pressed: bool, shortcut := "") -> CheckBox:
 				label_margin.add_theme_constant_override("margin_right",
 						int(ret_button.get_theme_stylebox("normal").content_margin_right))
 				var label := Label.new()
-				label.text = events[0].as_text_keycode()
+				label.text = showcased_event.as_text_keycode()
 				label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 				var shortcut_text_color := ThemeUtils.common_subtle_text_color
 				#if disabled:
