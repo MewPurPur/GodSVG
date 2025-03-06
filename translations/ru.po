@@ -37,7 +37,7 @@ msgid ""
 "This will connect to github.com to compare version numbers. No other data is "
 "collected or transmitted."
 msgstr ""
-"Это требует соединения с github.com, чтобы сравнить цифру версии. Никакие "
+"Требуется подключение к github.com, чтобы сравнить номер версии. Никакие "
 "другие данные не собираются и не передаются."
 
 #: src/autoload/HandlerGUI.gd src/ui_widgets/alert_dialog.gd
@@ -46,7 +46,7 @@ msgstr "Хорошо"
 
 #: src/autoload/HandlerGUI.gd
 msgid "Do you want to proceed?"
-msgstr "Вы хотите продолжить?"
+msgstr "Продолжить?"
 
 #: src/autoload/HandlerGUI.gd
 msgid "Export SVG"
@@ -117,15 +117,14 @@ msgstr "Вставить после"
 
 #: src/autoload/State.gd
 msgid "The last edited state of this tab could not be found."
-msgstr "Последнее редактированное состояние этой вкладки не возможно найти."
+msgstr "Последнее редактированное состояние этой вкладки невозможно найти."
 
 #: src/autoload/State.gd
-#, fuzzy
 msgid ""
 "The tab is bound to the file path {file_path}. Do you want to restore the "
 "SVG from this path?"
 msgstr ""
-"Вкладка связана с путем к файлу {file_path}. Вы желаете восстановить из "
+"Вкладка связана с путем к файлу {file_path}. Вы желаете восстановить SVG из "
 "этого пути?"
 
 #: src/config_classes/Formatter.gd
@@ -194,15 +193,15 @@ msgstr "В этой группе только один элемент."
 
 #: src/data_classes/GradientUtils.gd
 msgid "No \"id\" attribute defined."
-msgstr "Атрибут \"id\" не определен."
+msgstr "Атрибут \"id\" не задан."
 
 #: src/data_classes/GradientUtils.gd
 msgid "No <stop> elements under this gradient."
-msgstr "Нет <stop> елементов под этим градиентом."
+msgstr "Нет <stop> элемента в этом градиенте."
 
 #: src/data_classes/GradientUtils.gd
 msgid "This gradient is a solid color."
-msgstr "Этот градиент это обычный цвет."
+msgstr "Этот градиент описывает сплошной цвет."
 
 #: src/data_classes/SVGParser.gd
 msgid "Doesn’t describe an SVG."
@@ -272,7 +271,7 @@ msgstr "Сбросить SVG"
 
 #: src/ui_parts/current_file_button.gd src/ui_parts/tab_bar.gd
 msgid "Open externally"
-msgstr "Открыть в внешней программе"
+msgstr "Открыть во внешней программе"
 
 #: src/ui_parts/current_file_button.gd src/ui_parts/tab_bar.gd
 msgid "Show in File Manager"
@@ -625,7 +624,7 @@ msgstr "Инвертировать направление масштабиров
 
 #: src/ui_parts/settings_menu.gd
 msgid "Wrap-around panning"
-msgstr "Захват кусора при прокрутке"
+msgstr "Захват курсора при прокрутке"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Use CTRL for zooming"
@@ -689,7 +688,7 @@ msgstr "Помощь"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Reset all to default"
-msgstr "Восстановить по умолчанию"
+msgstr "Восстановить значения по умолчанию"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Preset"
@@ -701,7 +700,7 @@ msgstr "Сохранять коментарии"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Keep unrecognized XML structures"
-msgstr "Сохранять не распознанные XML"
+msgstr "Сохранять нераспознанные XML"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Add trailing newline"
@@ -737,7 +736,7 @@ msgstr "Удалить начальный ноль"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Use exponential when shorter"
-msgstr "Использовать экспоненту когда короткий"
+msgstr "Использовать экспоненту когда короче"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Colors"
@@ -792,8 +791,8 @@ msgid ""
 "Warps the cursor to the opposite side whenever it reaches a viewport "
 "boundary while panning."
 msgstr ""
-"Курсор будет телепортироваться от одного до противоположного края при "
-"передвижении окна просмотра."
+"Курсор будет телепортироваться от одного до противоположного края на границе "
+"окна просмотра."
 
 #: src/ui_parts/settings_menu.gd
 msgid ""
@@ -865,7 +864,6 @@ msgid "This SVG is not bound to a file location yet."
 msgstr "Это SVG изображение еще не связано с расположением файла."
 
 #: src/ui_parts/update_menu.gd
-#, fuzzy
 msgid "Show prereleases"
 msgstr "Показывать тестовые сборки"
 
@@ -883,7 +881,7 @@ msgstr "Загрузка информации..."
 
 #: src/ui_parts/update_menu.gd
 msgid "Update check failed"
-msgstr "Не удалось проверит обновления"
+msgstr "Не удалось проверить обновления"
 
 #: src/ui_parts/update_menu.gd
 msgid "GodSVG is up-to-date."
@@ -895,11 +893,11 @@ msgstr "Новые версии"
 
 #: src/ui_parts/zoom_menu.gd src/utils/TranslationUtils.gd
 msgid "Zoom out"
-msgstr "Отдалить масштаб"
+msgstr "Уменьшить масштаб"
 
 #: src/ui_parts/zoom_menu.gd src/utils/TranslationUtils.gd
 msgid "Zoom in"
-msgstr "Приблизить масштаб"
+msgstr "Увеличить масштаб"
 
 #: src/ui_parts/zoom_menu.gd src/utils/TranslationUtils.gd
 msgid "Zoom reset"
@@ -969,7 +967,7 @@ msgstr "Несколько палитр не могут иметь одно и �
 
 #: src/ui_widgets/palette_config.gd
 msgid "This palette has identically defined colors."
-msgstr "Эти палитры имеют идентичные цвета."
+msgstr "В этой палитре имеются цвета с идентичными названиями."
 
 #: src/ui_widgets/palette_config.gd
 msgid "Rename"
@@ -977,7 +975,7 @@ msgstr "Переименовать"
 
 #: src/ui_widgets/palette_config.gd
 msgid "Apply Preset"
-msgstr "Принять пресет"
+msgstr "Применить пресет"
 
 #: src/ui_widgets/palette_config.gd
 msgid "Copy as XML"
@@ -1034,7 +1032,7 @@ msgstr "Применить матрицу"
 
 #: src/ui_widgets/transform_popup.gd
 msgid "Insert Before"
-msgstr "Вставить после"
+msgstr "Вставить до"
 
 #: src/ui_widgets/transform_popup.gd
 msgid "New transform"
@@ -1062,41 +1060,41 @@ msgstr "Файл невозможно открыть."
 
 #: src/utils/FileUtils.gd
 msgid "Check if the file still exists in the selected file path."
-msgstr "Проверить, если файл все еще существует по выбранному пути."
+msgstr "Проверьте, что файл все еще существует по выбранному пути."
 
 #: src/utils/FileUtils.gd
-#, fuzzy
 msgid "Save the file?"
-msgstr "Сохранить .\"{format}\" файл"
+msgstr "Сохранить файл?"
 
 #: src/utils/FileUtils.gd
-#, fuzzy
 msgid "Do you want to save this file?"
-msgstr "Вы хотите продолжить?"
+msgstr "Вы хотите сохранить этот файл?"
 
 #: src/utils/FileUtils.gd
 msgid "Save the changes?"
-msgstr ""
+msgstr "Сохранить изменения?"
 
 #: src/utils/FileUtils.gd
 msgid "Your changes will be lost if you don't save them."
-msgstr ""
+msgstr "Ваши изменения будут утеряны если вы их не сохраните."
 
 #: src/utils/FileUtils.gd
 msgid "Don't save"
-msgstr ""
+msgstr "Не сохранять"
 
 #: src/utils/FileUtils.gd
 msgid "The imported file is already being edited inside GodSVG."
-msgstr "Импортированый файл уже редактируется внутри GodSVG."
+msgstr "Импортированный файл уже редактируется в GodSVG."
 
 #: src/utils/FileUtils.gd
 msgid "If you want to revert your edits since the last save, use {reset_svg}."
 msgstr ""
+"Если вы хотите отменить внесенные после после сохранения изменения, "
+"воспользуйтесь {reset_svg}."
 
 #: src/utils/FileUtils.gd
 msgid "Do you want to save the changes made to {file_name}?"
-msgstr ""
+msgstr "Сохранить изменения в {file_name}?"
 
 #: src/utils/TranslationUtils.gd
 msgid "Save as"
@@ -1144,11 +1142,11 @@ msgstr "Удалить все выбранные теги"
 
 #: src/utils/TranslationUtils.gd
 msgid "Move the selection up"
-msgstr "Подвинуть вверх выбранное"
+msgstr "Подвинуть выбранное вверх"
 
 #: src/utils/TranslationUtils.gd
 msgid "Move the selection down"
-msgstr "Подвинуть вниз выбранное"
+msgstr "Подвинуть выбранное вниз"
 
 #: src/utils/TranslationUtils.gd
 msgid "Find"
@@ -1156,7 +1154,7 @@ msgstr "Найти"
 
 #: src/utils/TranslationUtils.gd
 msgid "Show rasterized SVG"
-msgstr "Показать растеризованый SVG"
+msgstr "Показать растеризованный SVG"
 
 #: src/utils/TranslationUtils.gd
 msgid "Toggle snapping"
