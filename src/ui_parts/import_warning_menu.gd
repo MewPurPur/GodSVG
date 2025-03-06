@@ -19,9 +19,12 @@ func _exit_tree() -> void:
 	else:
 		canceled.emit()
 
+func finish_import() -> void:
+	import_success = true
+	queue_free()
+
 func _ready() -> void:
-	imported.connect(queue_free)
-	ok_button.pressed.connect(imported.emit)
+	ok_button.pressed.connect(finish_import)
 	cancel_button.pressed.connect(queue_free)
 	
 	# Convert forward and backward to show how GodSVG would display the given SVG.
@@ -45,7 +48,7 @@ func _ready() -> void:
 	else:
 		var svg_warnings := get_svg_warnings(imported_text_parse_result.svg)
 		if svg_warnings.is_empty():
-			import_success = true
+			finish_import()
 		else:
 			warnings_label.add_theme_color_override("default_color",
 					Configs.savedata.basic_color_warning)
