@@ -19,13 +19,15 @@
 
 ![usage](https://github.com/user-attachments/assets/51171c0c-cd88-4b69-b1a1-495b3f45f5bf)
 
-## Downloads and community links
+## Downloads and links
 
 Download the version you want from [the list of GodSVG releases](https://github.com/MewPurPur/GodSVG/releases). If you have issues with the download, look for a TROUBLESHOOTING.txt file.
 
 Link to the web editor: https://godsvg.com/editor
 
-To run the latest unreleased version, you can download Godot from https://godotengine.org (development is currently happening in v4.4). After getting the repository files on your machine, you must open Godot, click on the "Import" button, and import the `project.godot` folder. Another way is to open a recent commit and download its artifacts (Checks > export-optimized > Summary > Artifacts).
+To run the latest unreleased version, you can download Godot from https://godotengine.org (development is currently happening in v4.4). After getting the repository files on your machine, you must open Godot, click on the "Import" button, and import the `project.godot` folder.
+
+Another way to run the latest dev build is to open a recent commit and download its artifacts (Checks > export-optimized > Summary > Artifacts).
 
 To report bugs or propose features, use Github's issue form. For more casual discussion around the tool or contributing to it, find me on [GodSVG's Discord](https://discord.gg/R8pM6vXWTY). All of these official communities are actively moderated.
 
@@ -35,9 +37,9 @@ Documentation for GodSVG is likely eventually going to be built-in. Meanwhile, t
 
 GodSVG is something between an SVG editor and an assisted code editor for SVG files. SVGs are a text-based format, and to understand how to be efficient with the tool, it would really help to first familiarize with the SVG basics (Check out [the first few tutorials here](https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Introduction)).
 
-To add new shapes, press the "+ Add new element" button, right-click inside the viewport, or right-click inside the elements list. You can then select your shape from the dropdown. After your shape is added, you can drag its handles in the viewport to change its geometry, or modify the attributes in the inspector to change its other properties, like fill and stroke. You can also always modify the SVG code directly.
+To add new elements (shape, group, gradient...), press the "+ Add new element" button, right-click inside the viewport to add shapes, or right-click inside the elements list. You can then select from the dropdown. You can manipulate the geometry of shapes in the viewport, or in the elements list where you can also change its other properties, like fill and stroke. You can also always modify the SVG code directly.
 
-In the inspector, you can hover each element's fields to see which attribute they represent. You may select elements in the viewport on the right or the inspector on the left, and right-click to do operations on them such as deleting or moving them. You can also find and configure all available shortcuts in the Settings menu.
+In the inspector, you can hover each element's fields to see which attribute they represent. You may select elements in the viewport on the right or the elements list on the left, and right-click to do operations on them such as deleting or moving them. You can also find and configure all available shortcuts in the Settings menu.
 
 Pathdata attributes have a more complex editor that allows for selecting individual path commands with a lot of similarities to elements. You can right-click the path command and click "Insert After", then pick the one you want. If you're used to SVG paths, you can also use the M, L, H, V, Z, A, Q, T, C, S keys to insert a new path command after a selected one; pressing Shift will also make the new command absolute instead of relative.
 
