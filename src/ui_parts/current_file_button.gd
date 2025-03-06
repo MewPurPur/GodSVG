@@ -7,11 +7,15 @@ func _ready() -> void:
 	update_file_button()
 
 func _make_custom_tooltip(_for_text: String) -> Object:
+	var file_path := Configs.savedata.get_active_tab().get_presented_svg_file_path()
+	if file_path.is_empty():
+		return null
+	
 	var label := Label.new()
 	label.add_theme_font_override("font", ThemeUtils.mono_font)
 	label.add_theme_font_size_override("font_size", 12)
 	label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	label.text = Configs.savedata.get_active_tab().get_presented_svg_file_path()
+	label.text = file_path
 	Utils.set_max_text_width(label, 192.0, 4.0)
 	return label
 
@@ -39,9 +43,7 @@ func _on_file_button_pressed() -> void:
 	HandlerGUI.popup_under_rect_center(context_popup, get_global_rect(), get_viewport())
 
 func update_file_button() -> void:
-	var file_name := State.transient_tab_path.get_file() if\
-			not State.transient_tab_path.is_empty() else\
+	var transient_tab_path := State.transient_tab_path
+	text = transient_tab_path.get_file() if not transient_tab_path.is_empty() else\
 			Configs.savedata.get_active_tab().presented_name
-	text = file_name
-	tooltip_text = file_name
 	Utils.set_max_text_width(self, 140.0, 12.0)

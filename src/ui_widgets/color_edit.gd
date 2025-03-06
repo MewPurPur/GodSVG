@@ -48,7 +48,7 @@ func _on_pressed() -> void:
 
 func _on_text_changed(new_text: String) -> void:
 	font_color = Configs.savedata.get_validity_color(
-			ColorParser.is_valid(ColorParser.add_hash_if_hex(new_text), enable_alpha))
+			not ColorParser.is_valid(ColorParser.add_hash_if_hex(new_text), enable_alpha))
 
 func _draw() -> void:
 	super()
