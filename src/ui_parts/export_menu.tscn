@@ -35,6 +35,7 @@ theme_override_constants/separation = 8
 [node name="TitleLabel" type="Label" parent="MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
+theme_override_font_sizes/font_size = 15
 horizontal_alignment = 1
 
 [node name="TitledPanel" type="Container" parent="MarginContainer/VBoxContainer"]
