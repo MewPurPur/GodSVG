@@ -29,6 +29,7 @@ theme_override_constants/separation = 8
 
 [node name="CurrentVersionLabel" type="Label" parent="VBoxContainer"]
 layout_mode = 2
+theme_override_font_sizes/font_size = 15
 horizontal_alignment = 1
 
 [node name="IncludePrereleases" type="CheckButton" parent="VBoxContainer"]

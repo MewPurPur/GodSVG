@@ -23,60 +23,64 @@ script = ExtResource("1_yjfkr")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 2
-theme_override_constants/separation = 8
+theme_override_constants/separation = 4
 
 [node name="TitleLabel" type="Label" parent="VBoxContainer"]
 layout_mode = 2
+theme_override_font_sizes/font_size = 15
 text = "Links to donation platforms"
 horizontal_alignment = 1
 
-[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer"]
-layout_mode = 2
-size_flags_vertical = 3
-theme_override_constants/separation = 8
-
-[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 0
-theme_override_constants/margin_left = 8
-theme_override_constants/margin_top = 8
-theme_override_constants/margin_right = 8
-theme_override_constants/margin_bottom = 8
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/VBoxContainer/MarginContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/MarginContainer"]
 layout_mode = 2
 theme_override_constants/separation = 12
 alignment = 1
 
-[node name="GithubLink" type="Button" parent="VBoxContainer/VBoxContainer/MarginContainer/HBoxContainer"]
+[node name="GithubLink" type="Button" parent="VBoxContainer/MarginContainer/HBoxContainer"]
 custom_minimum_size = Vector2(64, 64)
 layout_mode = 2
 focus_mode = 0
+mouse_filter = 1
 mouse_default_cursor_shape = 2
 theme_type_variation = &"TranslucentButton"
 icon = ExtResource("2_3gj3j")
 expand_icon = true
 
-[node name="KoFiLink" type="Button" parent="VBoxContainer/VBoxContainer/MarginContainer/HBoxContainer"]
+[node name="KoFiLink" type="Button" parent="VBoxContainer/MarginContainer/HBoxContainer"]
 custom_minimum_size = Vector2(64, 64)
 layout_mode = 2
 focus_mode = 0
+mouse_filter = 1
 mouse_default_cursor_shape = 2
 theme_type_variation = &"TranslucentButton"
 icon = ExtResource("3_5q1ti")
 expand_icon = true
 
-[node name="PatreonLink" type="Button" parent="VBoxContainer/VBoxContainer/MarginContainer/HBoxContainer"]
+[node name="PatreonLink" type="Button" parent="VBoxContainer/MarginContainer/HBoxContainer"]
 custom_minimum_size = Vector2(64, 64)
 layout_mode = 2
 focus_mode = 0
+mouse_filter = 1
 mouse_default_cursor_shape = 2
 theme_type_variation = &"TranslucentButton"
 icon = ExtResource("4_0irlu")
 expand_icon = true
 
-[node name="Clarifications" type="RichTextLabel" parent="VBoxContainer/VBoxContainer"]
+[node name="MarginContainer2" type="MarginContainer" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 4
+
+[node name="Clarifications" type="RichTextLabel" parent="VBoxContainer/MarginContainer2"]
 unique_name_in_owner = true
 layout_mode = 2
 bbcode_enabled = true
@@ -85,14 +89,6 @@ fit_content = true
 [node name="CloseButton" type="Button" parent="VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
-size_flags_vertical = 8
+size_flags_vertical = 10
 focus_mode = 0
 mouse_default_cursor_shape = 2
-
-[connection signal="mouse_exited" from="VBoxContainer/VBoxContainer/MarginContainer" to="." method="_on_link_mouse_exited"]
-[connection signal="mouse_entered" from="VBoxContainer/VBoxContainer/MarginContainer/HBoxContainer/GithubLink" to="." method="_on_github_link_mouse_entered"]
-[connection signal="pressed" from="VBoxContainer/VBoxContainer/MarginContainer/HBoxContainer/GithubLink" to="." method="_on_github_link_pressed"]
-[connection signal="mouse_entered" from="VBoxContainer/VBoxContainer/MarginContainer/HBoxContainer/KoFiLink" to="." method="_on_ko_fi_link_mouse_entered"]
-[connection signal="pressed" from="VBoxContainer/VBoxContainer/MarginContainer/HBoxContainer/KoFiLink" to="." method="_on_ko_fi_link_pressed"]
-[connection signal="mouse_entered" from="VBoxContainer/VBoxContainer/MarginContainer/HBoxContainer/PatreonLink" to="." method="_on_patreon_link_mouse_entered"]
-[connection signal="pressed" from="VBoxContainer/VBoxContainer/MarginContainer/HBoxContainer/PatreonLink" to="." method="_on_patreon_link_pressed"]
