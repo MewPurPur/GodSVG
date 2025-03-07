@@ -1,6 +1,8 @@
 # A resource that keeps track of the tabs.
 class_name TabData extends ConfigResource
 
+var _sync_pending := false
+
 const DEFAULT_SVG = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"></svg>'
 const EDITED_FILES_DIR = "user://edited"
 
@@ -58,13 +60,13 @@ func _save_svg_text() -> void:
 		if is_instance_valid(edited_text_parse_result.svg):
 			FileAccess.open(edited_file_path, FileAccess.WRITE).store_string(
 					SVGParser.root_to_export_text(edited_text_parse_result.svg))
-	_sync()
+	queue_sync()
 
 func save_to_bound_path() -> void:
 	if Configs.savedata.get_active_tab() != self:
 		return
 	FileAccess.open(svg_file_path, FileAccess.WRITE).store_string(State.get_export_text())
-	_sync()
+	queue_sync()
 
 func setup_svg_text(new_text: String, fully_load := true) -> void:
 	_svg_text = new_text
@@ -82,14 +84,14 @@ func get_svg_text() -> String:
 		if svg_file_path != new_value:
 			svg_file_path = new_value
 			emit_changed()
-			_sync.call_deferred()
+			queue_sync()
 
 @export var id := -1:
 	set(new_value):
 		if id != new_value:
 			id = new_value
 			emit_changed()
-			_sync.call_deferred()
+			queue_sync()
 
 func _init(new_id := -1) -> void:
 	id = new_id
@@ -133,9 +135,17 @@ func redo() -> void:
 
 func _on_language_changed() -> void:
 	if svg_file_path.is_empty():
-		_sync()
+		queue_sync()
+
+func queue_sync() -> void:
+	_sync.call_deferred()
+	_sync_pending = true
 
 func _sync() -> void:
+	if not _sync_pending:
+		return
+	_sync_pending = false
+	
 	if not svg_file_path.is_empty():
 		# The extension is included in the presented name too.
 		# It's always in the end anyway so it can't hide useless info.
