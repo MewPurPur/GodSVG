@@ -30,6 +30,13 @@ func _ready() -> void:
 	width_button.toggled.connect(_on_width_button_toggled)
 	height_button.toggled.connect(_on_height_button_toggled)
 	viewbox_button.toggled.connect(_on_viewbox_button_toggled)
+	
+	for control: Control in [width_edit, height_edit,
+	viewbox_edit_x, viewbox_edit_y, viewbox_edit_w, viewbox_edit_h]:
+		control.focus_entered.connect(State.clear_all_selections)
+	
+	for button: Button in [width_button, height_button, viewbox_button]:
+		button.pressed.connect(State.clear_all_selections)
 
 func _on_any_attribute_changed(xid: PackedInt32Array) -> void:
 	if xid.is_empty():
@@ -50,14 +57,17 @@ func update_attributes() -> void:
 				if is_instance_valid(unknown_container):
 					unknown_container.queue_free()
 				unknown_container = MarginContainer.new()
+				unknown_container.begin_bulk_theme_override()
 				unknown_container.add_theme_constant_override("margin_left", 4)
 				unknown_container.add_theme_constant_override("margin_right", 4)
+				unknown_container.end_bulk_theme_override()
 				var unknown_container_child := HFlowContainer.new()
 				unknown_container.add_child(unknown_container_child)
 				add_child(unknown_container)
 				move_child(unknown_container, 0)
 			
 			var input_field := AttributeFieldBuilder.create(attribute.name, State.root_element)
+			input_field.focus_entered.connect(State.clear_all_selections)
 			unknown_container.get_child(0).add_child(input_field)
 	if not has_unrecognized_attributes and is_instance_valid(unknown_container):
 		unknown_container.queue_free()
