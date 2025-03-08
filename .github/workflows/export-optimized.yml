@@ -125,7 +125,8 @@ jobs:
           echo 'export/windows/wine = "/usr/bin/wine64"' >> ~/.config/godot/editor_settings-${GODOT_FEATURE_VERSION}.tres
           echo 'export/windows/rcedit = "/home/runner/.local/share/rcedit/rcedit-x64.exe"' >> ~/.config/godot/editor_settings-${GODOT_FEATURE_VERSION}.tres
 
-      - name: Download ANGLE Static Libraries
+      - if: ${{ steps.cache-template.outputs.cache-hit != 'true' }}
+        name: Download ANGLE Static Libraries
         run: |
           mkdir -p ~/angle
           cd ~/angle
