@@ -96,8 +96,8 @@ func get_svg_text() -> String:
 func _init(new_id := -1) -> void:
 	id = new_id
 	Configs.language_changed.connect(_on_language_changed)
-	super()
 	_connect_to_export_formatter_change.call_deferred()
+	super()
 
 func _connect_to_export_formatter_change() -> void:
 	Configs.savedata.export_formatter.changed.connect(_save_svg_text)

@@ -635,10 +635,17 @@ func _add_new_tab() -> void:
 		if not new_id in used_ids:
 			break
 		new_id += 1
+	
 	var new_tab := TabData.new(new_id)
 	new_tab.fully_loaded = false
 	new_tab.changed.connect(emit_changed)
 	new_tab.status_changed.connect(_on_tab_status_changed.bind(new_id))
+	
+	# Clear file path for the new tab.
+	var new_tab_path := new_tab.get_edited_file_path()
+	if FileAccess.file_exists(new_tab_path):
+		DirAccess.remove_absolute(new_tab_path)
+	
 	_tabs.append(new_tab)
 
 func add_empty_tab() -> void:

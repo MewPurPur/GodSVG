@@ -57,7 +57,6 @@ static func root_to_export_text(root_element: ElementRoot) -> String:
 	var text := _xnode_to_export_text(root_element).trim_suffix('\n')
 	if Configs.savedata.export_formatter.xml_add_trailing_newline:
 		text += "\n"
-	print_stack()
 	return text
 
 static func _xnode_to_editor_text(xnode: XNode, make_attributes_absolute := false) -> String:
