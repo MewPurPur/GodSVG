@@ -123,12 +123,12 @@ allow_alpha := false) -> Color:
 		var g := a1.to_int() if _is_valid_number(a1) else int(a1.left(-1).to_float() * 2.55)
 		var b := a2.to_int() if _is_valid_number(a2) else int(a2.left(-1).to_float() * 2.55)
 		if args.size() == 3:
-			return Color8(clampi(r, 0, 255), clampi(g, 0, 255), clampi(b, 0, 255))
+			return Color.from_rgba8(clampi(r, 0, 255), clampi(g, 0, 255), clampi(b, 0, 255))
 		else:
 			var a3 := args[3].strip_edges()
 			var a := int(a3.to_float() * 255) if _is_valid_number(a3) else\
 					int(a3.left(-1).to_float() * 2.55)
-			return Color8(clampi(r, 0, 255), clampi(g, 0, 255), clampi(b, 0, 255),
+			return Color.from_rgba8(clampi(r, 0, 255), clampi(g, 0, 255), clampi(b, 0, 255),
 					clampi(a, 0, 255))
 	elif is_valid_hsl(color, allow_alpha):
 		var inside_brackets := color.substr(4, color.length() - 5)
@@ -140,12 +140,12 @@ allow_alpha := false) -> Color:
 		var s := clampf(int(args[1].strip_edges().left(-1).to_float()) * 0.01, 0.0, 1.0)
 		var l := clampf(int(args[2].strip_edges().left(-1).to_float()) * 0.01, 0.0, 1.0)
 		if args.size() == 3:
-			return Color8(hsl_get_r(h, s, l), hsl_get_g(h, s, l), hsl_get_b(h, s, l))
+			return Color.from_rgba8(hsl_get_r(h, s, l), hsl_get_g(h, s, l), hsl_get_b(h, s, l))
 		else:
 			var a3 := args[3].strip_edges()
 			var a := int(a3.to_float() * 255) if _is_valid_number(a3) else\
 					int(a3.left(-1).to_float() * 2.55)
-			return Color8(hsl_get_r(h, s, l), hsl_get_g(h, s, l), hsl_get_b(h, s, l),
+			return Color.from_rgba8(hsl_get_r(h, s, l), hsl_get_g(h, s, l), hsl_get_b(h, s, l),
 					clampi(a, 0, 255))
 	elif is_valid_hex(color, allow_alpha):
 		return Color.from_string(color, backup)
