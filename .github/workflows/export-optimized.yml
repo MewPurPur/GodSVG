@@ -17,7 +17,7 @@ env:
   # Commit hash
   GODOT_COMMIT_HASH: 93d2706930
   PROJECT_NAME: GodSVG
-  BUILD_OPTIONS: target=template_release lto=full production=yes deprecated=no minizip=no brotli=no vulkan=no openxr=no use_volk=no disable_3d=yes modules_enabled_by_default=no module_freetype_enabled=yes module_gdscript_enabled=yes module_svg_enabled=yes module_jpg_enabled=yes module_text_server_adv_enabled=yes graphite=no module_webp_enabled=yes
+  BUILD_OPTIONS: target=template_release lto=full production=yes deprecated=no minizip=no brotli=no vulkan=no openxr=no use_volk=no disable_3d=yes modules_enabled_by_default=no module_freetype_enabled=yes module_gdscript_enabled=yes module_svg_enabled=yes module_jpg_enabled=yes module_text_server_adv_enabled=yes graphite=no module_webp_enabled=yes build_profile=../godsvg/.github/disabled_classes.build
   # Links
   GODOT_REPO: https://github.com/godotengine/godot.git
   ANGLE_DOWNLOAD_BASE_URL: https://github.com/godotengine/godot-angle-static/releases/download/chromium%2F6601.2/godot-angle-static
@@ -62,6 +62,11 @@ jobs:
           git fetch
           git checkout $GODOT_COMMIT_HASH
 
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          path: godsvg
+
       - if: ${{ steps.cache-template.outputs.cache-hit != 'true' }}
         name: Build Godot template for Linux
         run: |
@@ -69,11 +74,6 @@ jobs:
           scons p=linuxbsd arch=x86_64 ${BUILD_OPTIONS}
           mkdir -p ~/.local/share/godot/export_templates/${GODOT_VERSION}.${GODOT_RELEASE}/
           mv ./bin/godot.linuxbsd.template_release.x86_64 ~/.local/share/godot/export_templates/${GODOT_VERSION}.${GODOT_RELEASE}/linux_release.x86_64
-
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          path: godsvg
 
       - name: Export project
         run: |
@@ -144,6 +144,11 @@ jobs:
           git fetch
           git checkout $GODOT_COMMIT_HASH
 
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          path: godsvg
+
       - if: ${{ steps.cache-template.outputs.cache-hit != 'true' }}
         name: Build Godot template for Windows
         run: |
@@ -151,11 +156,6 @@ jobs:
           scons p=windows ${BUILD_OPTIONS} angle_libs=~/angle module_astcenc_enabled=yes
           mkdir -p ~/.local/share/godot/export_templates/${GODOT_VERSION}.${GODOT_RELEASE}/
           mv ./bin/godot.windows.template_release.x86_64.exe ~/.local/share/godot/export_templates/${GODOT_VERSION}.${GODOT_RELEASE}/windows_release_x86_64.exe
-
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          path: godsvg
 
       - name: Export project
         run: |
@@ -201,6 +201,11 @@ jobs:
         name: Clone Godot repository
         run: git clone $GODOT_REPO godot
 
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          path: godsvg
+
       - if: ${{ steps.cache-template.outputs.cache-hit != 'true' }}
         name: Checkout specific commit
         run: |
@@ -239,11 +244,6 @@ jobs:
           zip -q -9 -r macos.zip macos_template.app;
           mkdir -p "/Users/runner/Library/Application Support/Godot/export_templates/${GODOT_VERSION}.${GODOT_RELEASE}"
           mv macos.zip "/Users/runner/Library/Application Support/Godot/export_templates/${GODOT_VERSION}.${GODOT_RELEASE}"
-
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          path: godsvg
 
       - name: Export project
         run: |
@@ -307,6 +307,11 @@ jobs:
           git fetch
           git checkout $GODOT_COMMIT_HASH
 
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          path: godsvg
+
       - if: ${{ steps.cache-template.outputs.cache-hit != 'true' }}
         name: Build Godot template for Web
         run: |
@@ -315,11 +320,6 @@ jobs:
           scons p=web arch=wasm32 ${BUILD_OPTIONS} threads=no
           mkdir -p ~/.local/share/godot/export_templates/${GODOT_VERSION}.${GODOT_RELEASE}/
           mv ./bin/godot.web.template_release.wasm32.nothreads.zip ~/.local/share/godot/export_templates/${GODOT_VERSION}.${GODOT_RELEASE}/web_nothreads_release.zip
-
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          path: godsvg
 
       - name: Export project
         run: |
@@ -389,6 +389,11 @@ jobs:
           git fetch
           git checkout $GODOT_COMMIT_HASH
 
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          path: godsvg
+
       - if: ${{ steps.cache-template.outputs.cache-hit != 'true' }}
         name: Build Godot template for Android
         run: |
@@ -406,11 +411,6 @@ jobs:
           mkdir -p ~/.local/share/godot/export_templates/${GODOT_VERSION}.${GODOT_RELEASE}/
           mv ./bin/android_debug.apk ~/.local/share/godot/export_templates/${GODOT_VERSION}.${GODOT_RELEASE}/android_release.apk
           mv ./bin/android_source.zip ~/.local/share/godot/export_templates/${GODOT_VERSION}.${GODOT_RELEASE}/android_source.zip
-
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          path: godsvg
 
       - name: Export debug project
         env:

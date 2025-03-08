@@ -11,6 +11,8 @@ while IFS= read -rd '' f; do
     # Exclude some types of files.
     if [[ "$f" == *"svg" ]]; then
         continue
+    elif [[ "$f" == *"build" ]]; then
+        continue
     fi
     # Ensure that files are UTF-8 formatted.
     recode UTF-8 "$f" 2> /dev/null
