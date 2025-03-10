@@ -15,7 +15,7 @@ env:
   # Used in the editor config file name. Do not change this for patch releases.
   GODOT_FEATURE_VERSION: 4.4
   # Commit hash
-  GODOT_COMMIT_HASH: 93d2706930
+  GODOT_COMMIT_HASH: 4c311cbee68c0b66ff8ebb8b0defdd9979dd2a41
   PROJECT_NAME: GodSVG
   BUILD_OPTIONS: target=template_release lto=full production=yes deprecated=no minizip=no brotli=no vulkan=no openxr=no use_volk=no disable_3d=yes modules_enabled_by_default=no module_freetype_enabled=yes module_gdscript_enabled=yes module_svg_enabled=yes module_jpg_enabled=yes module_text_server_adv_enabled=yes graphite=no module_webp_enabled=yes build_profile=../godsvg/.github/disabled_classes.build
   # Links
@@ -113,16 +113,19 @@ jobs:
           echo "~/godot-editor" >> $GITHUB_PATH
 
       - if: ${{ steps.cache-template.outputs.cache-hit != 'true' }}
-        name: Install dependencies
+        name: Install build dependencies
         run: |
           sudo apt install -y scons python3
           sudo apt install -y g++-mingw-w64-x86-64-posix
+
+      - name: Install export dependencies
+        run: |
           sudo apt install -y --fix-missing wine64
           wget -q https://github.com/electron/rcedit/releases/download/v2.0.0/rcedit-x64.exe
           mkdir -p ~/.local/share/rcedit
           mv rcedit-x64.exe ~/.local/share/rcedit
           godot --headless --quit
-          echo 'export/windows/wine = "/usr/bin/wine64"' >> ~/.config/godot/editor_settings-${GODOT_FEATURE_VERSION}.tres
+          echo 'export/windows/wine = "/usr/lib/wine/wine64"' >> ~/.config/godot/editor_settings-${GODOT_FEATURE_VERSION}.tres
           echo 'export/windows/rcedit = "/home/runner/.local/share/rcedit/rcedit-x64.exe"' >> ~/.config/godot/editor_settings-${GODOT_FEATURE_VERSION}.tres
 
       - if: ${{ steps.cache-template.outputs.cache-hit != 'true' }}
