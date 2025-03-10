@@ -2,13 +2,14 @@ extends PanelContainer
 
 const NumberEdit = preload("res://src/ui_widgets/number_edit.gd")
 const Dropdown = preload("res://src/ui_widgets/dropdown.gd")
+const PreviewRect = preload("res://src/ui_widgets/preview_rect.gd")
 
 var undo_redo := UndoRedoRef.new()
 var export_data := ImageExportData.new()
 var dimensions := Vector2.ZERO
 
 @onready var dimensions_label: Label = %DimensionsLabel
-@onready var texture_preview: CenterContainer = %TexturePreview
+@onready var texture_preview: PreviewRect = %TexturePreview
 @onready var format_hbox: HBoxContainer = %FormatHBox
 @onready var format_dropdown: Dropdown = %FormatHBox/Dropdown
 @onready var final_size_label: Label = %FinalSizeLabel
