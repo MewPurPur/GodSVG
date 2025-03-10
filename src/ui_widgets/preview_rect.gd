@@ -34,10 +34,10 @@ func setup_image(config: ImageExportData) -> void:
 		"jpg", "jpeg": image.load_jpg_from_buffer(buffer)
 		"webp": image.load_webp_from_buffer(buffer)
 	
-	var image_width := mini(int(size.x), image.get_width())
-	var image_height := mini(int(size.y), image.get_height())
-	var factor := size.x / maxf(image_width, image_height)
-	image.resize(int(image_width * factor), int(image_height * factor),
+	var factor := minf(size.x / image.get_width(), size.y / image.get_height())
+	var final_width := maxi(int(image.get_width() * factor), 1)
+	var final_height := maxi(int(image.get_height() * factor), 1)
+	image.resize(final_width, final_height,
 			Image.INTERPOLATE_NEAREST if factor >= 2 else Image.INTERPOLATE_BILINEAR)
 	_set_image(image)
 

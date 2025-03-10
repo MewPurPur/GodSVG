@@ -282,7 +282,8 @@ func scroll_forwards() -> void:
 	set_scroll(current_scroll + 5.0)
 
 func scroll_to_active() -> void:
-	var idx := Configs.savedata.get_active_tab_index()
+	var idx := Configs.savedata.get_active_tab_index() if\
+			State.transient_tab_path.is_empty() else Configs.savedata.get_tab_count()
 	set_scroll(clampf(current_scroll, MIN_TAB_WIDTH * (idx + 1) -\
 			size.x + get_add_button_rect().size.x + get_scroll_forwards_area_rect().size.x +\
 			get_scroll_backwards_area_rect().size.x, MIN_TAB_WIDTH * idx))
