@@ -372,8 +372,7 @@ func get_scroll_limit() -> float:
 			MIN_TAB_WIDTH, DEFAULT_TAB_WIDTH) * get_proper_tab_count() - available_area
 
 func get_hovered_index() -> int:
-	var mouse_pos := get_local_mouse_position()
-	return get_tab_index_at(mouse_pos)
+	return get_tab_index_at(get_local_mouse_position())
 
 
 func activate() -> void:
