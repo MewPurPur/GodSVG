@@ -527,6 +527,10 @@ msgid "Theming"
 msgstr "主题"
 
 #: src/ui_parts/settings_menu.gd
+msgid "Tab bar"
+msgstr ""
+
+#: src/ui_parts/settings_menu.gd
 msgid "Other"
 msgstr "其他"
 
@@ -605,6 +609,10 @@ msgstr "正常颜色"
 #: src/ui_parts/settings_menu.gd
 msgid "Warning color"
 msgstr "警告颜色"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Close tabs with middle mouse button"
+msgstr ""
 
 #: src/ui_parts/settings_menu.gd
 msgid "Input"

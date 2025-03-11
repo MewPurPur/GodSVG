@@ -240,8 +240,8 @@ func _gui_input(event: InputEvent) -> void:
 					HandlerGUI.popup_under_pos(tab_popup, get_global_mouse_position(),
 							get_viewport())
 		elif event.button_index == MOUSE_BUTTON_MIDDLE:
-			var hovered_idx := get_hovered_index()
-			FileUtils.close_tabs(hovered_idx)
+			if Configs.savedata.tab_mmb_close:
+				FileUtils.close_tabs(get_hovered_index())
 		elif event.button_index == MOUSE_BUTTON_LEFT and event.is_released():
 			scrolling_backwards = false
 			scrolling_forwards = false

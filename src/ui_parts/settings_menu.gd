@@ -58,6 +58,7 @@ func setup_tabs() -> void:
 	add_tab("palettes", Translator.translate("Palettes"), button_group)
 	add_tab("shortcuts", Translator.translate("Shortcuts"), button_group)
 	add_tab("theming", Translator.translate("Theming"), button_group)
+	add_tab("tab_bar", Translator.translate("Tab bar"), button_group)
 	add_tab("other", Translator.translate("Other"), button_group)
 
 func add_tab(tab_name: String, tab_text: String, button_group: ButtonGroup) -> void:
@@ -195,6 +196,15 @@ func setup_content() -> void:
 			add_color_edit(Translator.translate("Error color"))
 			current_setup_setting = "basic_color_warning"
 			add_color_edit(Translator.translate("Warning color"))
+		"tab_bar":
+			advice_panel.hide()
+			create_setting_container()
+			content_container.add_child(setting_container)
+			current_setup_resource = Configs.savedata
+			
+			add_section(Translator.translate("lmofa"))
+			current_setup_setting = "tab_mmb_close"
+			add_checkbox(Translator.translate("Close tabs with middle mouse button"))
 		"other":
 			advice_panel.show()
 			create_setting_container()

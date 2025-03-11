@@ -534,6 +534,10 @@ msgid "Theming"
 msgstr "Temas"
 
 #: src/ui_parts/settings_menu.gd
+msgid "Tab bar"
+msgstr ""
+
+#: src/ui_parts/settings_menu.gd
 msgid "Other"
 msgstr "Outro"
 
@@ -612,6 +616,10 @@ msgstr "Cor válida"
 #: src/ui_parts/settings_menu.gd
 msgid "Warning color"
 msgstr "Cor de aviso"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Close tabs with middle mouse button"
+msgstr ""
 
 #: src/ui_parts/settings_menu.gd
 msgid "Input"
