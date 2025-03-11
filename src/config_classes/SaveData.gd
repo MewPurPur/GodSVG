@@ -27,6 +27,10 @@ func get_setting_default(setting: String) -> Variant:
 		"basic_color_error": return Color("f99")
 		"basic_color_warning": return Color("ee5")
 		
+		# Tab bar
+		"tab_mmb_close": return true
+		
+		# Other
 		"invert_zoom": return false
 		"wraparound_panning": return false
 		"use_ctrl_for_zoom": return true
@@ -192,6 +196,14 @@ const CURRENT_VERSION = 1
 			basic_color_warning = new_value
 			emit_changed()
 			Configs.basic_colors_changed.emit()
+
+
+# Tab bar
+@export var tab_mmb_close := true:
+	set(new_value):
+		if tab_mmb_close != new_value:
+			tab_mmb_close = new_value
+			emit_changed()
 
 
 # Other

@@ -239,6 +239,9 @@ func _gui_input(event: InputEvent) -> void:
 				else:
 					HandlerGUI.popup_under_pos(tab_popup, get_global_mouse_position(),
 							get_viewport())
+		elif event.button_index == MOUSE_BUTTON_MIDDLE:
+			if Configs.savedata.tab_mmb_close:
+				FileUtils.close_tabs(get_hovered_index())
 		elif event.button_index == MOUSE_BUTTON_LEFT and event.is_released():
 			scrolling_backwards = false
 			scrolling_forwards = false
@@ -369,14 +372,7 @@ func get_scroll_limit() -> float:
 			MIN_TAB_WIDTH, DEFAULT_TAB_WIDTH) * get_proper_tab_count() - available_area
 
 func get_hovered_index() -> int:
-	var mouse_pos := get_local_mouse_position()
-	if get_close_button_rect().has_point(mouse_pos):
-		return -1
-	
-	for idx in Configs.savedata.get_tab_count():
-		if get_tab_rect(idx).has_point(mouse_pos):
-			return idx
-	return -1
+	return get_tab_index_at(get_local_mouse_position())
 
 
 func activate() -> void:

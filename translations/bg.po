@@ -532,6 +532,10 @@ msgid "Theming"
 msgstr "Гама"
 
 #: src/ui_parts/settings_menu.gd
+msgid "Tab bar"
+msgstr ""
+
+#: src/ui_parts/settings_menu.gd
 msgid "Other"
 msgstr "Други"
 
@@ -610,6 +614,10 @@ msgstr "Цвят на валидният текст"
 #: src/ui_parts/settings_menu.gd
 msgid "Warning color"
 msgstr "Цвят на предупрежденията"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Close tabs with middle mouse button"
+msgstr ""
 
 #: src/ui_parts/settings_menu.gd
 msgid "Input"
