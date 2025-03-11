@@ -372,13 +372,7 @@ func get_scroll_limit() -> float:
 
 func get_hovered_index() -> int:
 	var mouse_pos := get_local_mouse_position()
-	if get_close_button_rect().has_point(mouse_pos):
-		return -1
-	
-	for idx in Configs.savedata.get_tab_count():
-		if get_tab_rect(idx).has_point(mouse_pos):
-			return idx
-	return -1
+	return get_tab_index_at(mouse_pos)
 
 
 func activate() -> void:
