@@ -121,7 +121,7 @@ msgid ""
 "The tab is bound to the file path {file_path}. Do you want to restore the "
 "SVG from this path?"
 msgstr ""
-"L'onglet est lié au chemin d'accès {file_path}. Voulez-vous restaurer leSVG "
+"L'onglet est lié au chemin d'accès {file_path}. Voulez-vous restaurer le SVG "
 "à partir de ce chemin ?"
 
 #: src/config_classes/Formatter.gd
