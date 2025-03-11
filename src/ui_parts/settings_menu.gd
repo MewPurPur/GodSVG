@@ -202,7 +202,7 @@ func setup_content() -> void:
 			content_container.add_child(setting_container)
 			current_setup_resource = Configs.savedata
 			
-			add_section(Translator.translate("lmofa"))
+			add_section(Translator.translate("Input"))
 			current_setup_setting = "tab_mmb_close"
 			add_checkbox(Translator.translate("Close tabs with middle mouse button"))
 		"other":
