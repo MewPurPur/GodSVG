@@ -160,13 +160,13 @@ func _gui_input(event: InputEvent) -> void:
 	
 	queue_redraw()
 	if event is InputEventMouseButton:
+		var hovered_idx := get_hovered_index()
 		if event.is_pressed():
 			if event.button_index in [MOUSE_BUTTON_WHEEL_UP, MOUSE_BUTTON_WHEEL_LEFT]:
 				scroll_backwards()
 			if event.button_index in [MOUSE_BUTTON_WHEEL_DOWN, MOUSE_BUTTON_WHEEL_RIGHT]:
 				scroll_forwards()
 			elif event.button_index in [MOUSE_BUTTON_LEFT, MOUSE_BUTTON_RIGHT]:
-				var hovered_idx := get_hovered_index()
 				if hovered_idx != -1:
 					if hovered_idx == Configs.savedata.get_active_tab_index():
 						scroll_to_active()
@@ -239,6 +239,8 @@ func _gui_input(event: InputEvent) -> void:
 				else:
 					HandlerGUI.popup_under_pos(tab_popup, get_global_mouse_position(),
 							get_viewport())
+		elif event.button_index == MOUSE_BUTTON_MIDDLE:
+			FileUtils.close_tabs(hovered_idx)
 		elif event.button_index == MOUSE_BUTTON_LEFT and event.is_released():
 			scrolling_backwards = false
 			scrolling_forwards = false
