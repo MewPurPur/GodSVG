@@ -335,9 +335,11 @@ static func _close_tabs_internal(indices: Array[int]) -> void:
 			_close_tabs_internal(indices.duplicate())
 	
 	if tab.marked_unsaved or (tab.svg_file_path.is_empty() and not tab.empty_unsaved):
-		var save_callback := func() -> void:
-				_save_svg_with_custom_final_callback(dont_save_callback)
+		var final_callback := func() -> void:
+				dont_save_callback.call()
 				HandlerGUI.remove_all_menus()
+		
+		var save_callback := _save_svg_with_custom_final_callback.bind(final_callback)
 		
 		Configs.savedata.set_active_tab_index(idx)
 		
