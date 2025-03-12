@@ -36,6 +36,8 @@ static func _save_svg_with_custom_final_callback(final_callback: Callable) -> vo
 	var file_path := active_tab.svg_file_path
 	if not file_path.is_empty() and FileAccess.file_exists(file_path):
 		active_tab.save_to_bound_path()
+		if final_callback.is_valid():
+			final_callback.call()
 	else:
 		_save_svg_as_with_custom_final_callback(final_callback)
 
@@ -332,16 +334,12 @@ static func _close_tabs_internal(indices: Array[int]) -> void:
 	
 	var dont_save_callback := func() -> void:
 			Configs.savedata.remove_tab(idx)
+			HandlerGUI.remove_all_menus()
 			_close_tabs_internal(indices.duplicate())
 	
 	if tab.marked_unsaved or (tab.svg_file_path.is_empty() and not tab.empty_unsaved):
-		var final_callback := func() -> void:
-				dont_save_callback.call()
-				HandlerGUI.remove_all_menus()
-		
-		var save_callback := _save_svg_with_custom_final_callback.bind(final_callback)
-		
 		Configs.savedata.set_active_tab_index(idx)
+		var save_callback := _save_svg_with_custom_final_callback.bind(dont_save_callback)
 		
 		var title := ""
 		var message := ""
