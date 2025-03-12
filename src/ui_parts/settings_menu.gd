@@ -384,7 +384,7 @@ func _on_language_pressed() -> void:
 		if locale != "en":
 			var translation_obj := TranslationServer.get_translation_object(locale)
 			var translated_count := 2 * translation_obj.get_message_count() -\
-					strings_count - translation_obj.get_message_list().count("")
+					strings_count - translation_obj.get_translated_message_list().count("")
 			var percentage :=\
 					Utils.num_simple(translated_count * 100.0 / strings_count, 1) + "%"
 			

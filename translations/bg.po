@@ -533,7 +533,7 @@ msgstr "Гама"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Tab bar"
-msgstr ""
+msgstr "Лента с раздели"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Other"
@@ -617,7 +617,7 @@ msgstr "Цвят на предупрежденията"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Close tabs with middle mouse button"
-msgstr ""
+msgstr "Затваряне на раздели със средното копче на мишката"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Input"
