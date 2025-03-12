@@ -9,9 +9,9 @@ extends VBoxContainer
 
 func _ready() -> void:
 	Configs.theme_changed.connect(setup_theme)
+	setup_theme()
 	State.parsing_finished.connect(update_error)
 	Configs.highlighting_colors_changed.connect(update_syntax_highlighter)
-	setup_theme()
 	update_syntax_highlighter()
 	code_edit.clear_undo_history()
 	State.svg_changed.connect(auto_update_text)
@@ -26,18 +26,12 @@ func update_error(err_id: SVGParser.ParseError) -> void:
 	if err_id == SVGParser.ParseError.OK:
 		if error_bar.visible:
 			error_bar.hide()
-			var error_bar_real_height := error_bar.size.y - 2
-			code_edit.custom_minimum_size.y += error_bar_real_height
-			code_edit.size.y += error_bar_real_height
 			setup_theme()
 	else:
 		# When the error is shown, the code editor's theme is changed to match up.
 		if not error_bar.visible:
 			error_bar.show()
 			error_label.text = SVGParser.get_error_string(err_id)
-			var error_bar_real_height := error_bar.size.y - 2
-			code_edit.custom_minimum_size.y -= error_bar_real_height
-			code_edit.size.y -= error_bar_real_height
 			setup_theme()
 
 func setup_theme() -> void:
