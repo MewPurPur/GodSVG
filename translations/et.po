@@ -41,7 +41,7 @@ msgstr ""
 
 #: src/autoload/HandlerGUI.gd src/ui_widgets/alert_dialog.gd
 msgid "OK"
-msgstr "Ok"
+msgstr "Okei"
 
 #: src/autoload/HandlerGUI.gd
 msgid "Do you want to proceed?"
@@ -61,11 +61,14 @@ msgid ""
 "The graphic can be exported only as SVG because its proportions are too "
 "extreme."
 msgstr ""
+"Graafika saab eksportida ainult SVG-na, sest selle proportsioonid on liiga "
+"ekstreemsed."
 
 #: src/autoload/HandlerGUI.gd
 msgid ""
 "The graphic can be exported only as SVG because its size is not defined."
 msgstr ""
+"Graafika saab eksportida ainult SVG-na, sest selle suurus pole defineeritud."
 
 #: src/autoload/State.gd src/ui_parts/good_file_dialog.gd
 #: src/ui_widgets/alert_dialog.gd
@@ -127,7 +130,7 @@ msgstr "Kompaktne"
 
 #: src/config_classes/Formatter.gd
 msgid "Pretty"
-msgstr "Ilusta"
+msgstr "Ilus"
 
 #: src/config_classes/Formatter.gd
 msgid "Always"
@@ -135,7 +138,7 @@ msgstr "Alati"
 
 #: src/config_classes/Formatter.gd
 msgid "All except containers"
-msgstr ""
+msgstr "Kõik, v.a. konteinerid"
 
 #: src/config_classes/Formatter.gd
 msgid "Never"
@@ -151,11 +154,11 @@ msgstr "Kui on lühem"
 
 #: src/config_classes/Formatter.gd
 msgid "3-digit or 6-digit hex"
-msgstr ""
+msgstr "3- või 6-kohaline hex"
 
 #: src/config_classes/Formatter.gd
 msgid "6-digit hex"
-msgstr ""
+msgstr "6-kohaline hex"
 
 #: src/config_classes/TabData.gd
 msgid "Empty"
@@ -179,23 +182,23 @@ msgstr "{element} peab olema {allowed} sees, et sellel oleks mõju."
 
 #: src/data_classes/ElementG.gd
 msgid "This group has no elements."
-msgstr ""
+msgstr "Gruppis pole ühtegi elementi."
 
 #: src/data_classes/ElementG.gd
 msgid "This group has only one element."
-msgstr ""
+msgstr "Gruppis on ainult üks element."
 
 #: src/data_classes/GradientUtils.gd
 msgid "No \"id\" attribute defined."
-msgstr ""
+msgstr "\"id\" atribuut pole defineeritud."
 
 #: src/data_classes/GradientUtils.gd
 msgid "No <stop> elements under this gradient."
-msgstr ""
+msgstr "Gradiendis puuduvad <stop> elemendid."
 
 #: src/data_classes/GradientUtils.gd
 msgid "This gradient is a solid color."
-msgstr ""
+msgstr "Gradient on ühevärviline."
 
 #: src/data_classes/SVGParser.gd
 msgid "Doesn’t describe an SVG."
@@ -203,7 +206,7 @@ msgstr "Ei kirjelda SVGd."
 
 #: src/data_classes/SVGParser.gd
 msgid "Improper nesting."
-msgstr ""
+msgstr "Vigane pesitsus."
 
 #: src/ui_parts/about_menu.gd src/ui_parts/good_file_dialog.gd
 #: src/ui_parts/settings_menu.gd src/ui_parts/shortcut_panel_config.gd
@@ -537,79 +540,79 @@ msgstr "Muu"
 
 #: src/ui_parts/settings_menu.gd
 msgid "SVG Text colors"
-msgstr ""
+msgstr "SVG teksti värvid"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Symbol color"
-msgstr ""
+msgstr "Sümboli värv"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Element color"
-msgstr ""
+msgstr "Elemendi värv"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Attribute color"
-msgstr ""
+msgstr "Atribuudi värv"
 
 #: src/ui_parts/settings_menu.gd
 msgid "String color"
-msgstr ""
+msgstr "Sõne värv"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Comment color"
-msgstr ""
+msgstr "Kommentaari värv"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Text color"
-msgstr ""
+msgstr "Teksti värv"
 
 #: src/ui_parts/settings_menu.gd
 msgid "CDATA color"
-msgstr ""
+msgstr "CDATA värv"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Error color"
-msgstr ""
+msgstr "Errori värv"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Handle colors"
-msgstr ""
+msgstr "Pideme värv"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Inside color"
-msgstr ""
+msgstr "Seesmine värv"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Normal color"
-msgstr ""
+msgstr "Tavaline värv"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Hovered color"
-msgstr ""
+msgstr "Esiletõstetud värv"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Selected color"
-msgstr ""
+msgstr "Valiku värv"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Hovered selected color"
-msgstr ""
+msgstr "Esiletõstetud valiku värv"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Basic colors"
-msgstr ""
+msgstr "Alusvärvid"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Background color"
-msgstr ""
+msgstr "Tausta värv"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Valid color"
-msgstr ""
+msgstr "Kehtiva värv"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Warning color"
-msgstr ""
+msgstr "Hoiatuse värv"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Close tabs with middle mouse button"
@@ -677,11 +680,11 @@ msgstr "Uus palett XML-ist"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Editor formatter"
-msgstr "Redaktori vormindaja"
+msgstr "Redaktori vormindus"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Export formatter"
-msgstr "Ekspordi vormindaja"
+msgstr "Ekspordi vormindus"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Help"
@@ -721,7 +724,7 @@ msgstr "Kasuta ilusat vormindust"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Use spaces instead of tabs"
-msgstr "Kasuta tühikuid tab-i asemel."
+msgstr "Kasuta tühikuid tab-i asemel"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Number of indentation spaces"
@@ -749,50 +752,50 @@ msgstr "Kasuta nimedega värve"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Primary syntax"
-msgstr ""
+msgstr "Esmane süntaks"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Capitalize hexadecimal letters"
-msgstr ""
+msgstr "Kasuta heksadetsimaalnumbrites suurtähti"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Pathdata"
-msgstr ""
+msgstr "Path andmed"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Compress numbers"
-msgstr ""
+msgstr "Tihenda numbrid"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Minimize spacing"
-msgstr ""
+msgstr "Minimeeri vahed"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Remove spacing after flags"
-msgstr ""
+msgstr "Eemalda tühikud omaduste (flags) järelt"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Remove consecutive commands"
-msgstr ""
+msgstr "Eemalda järjestikused samasugused käsud"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Transform lists"
-msgstr "Teisendusnimekiri"
+msgstr "Teisendused"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Remove unnecessary parameters"
-msgstr ""
+msgstr "Eemalda ebavajalikud parameetrid"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Swaps the scroll directions for zooming in and zooming out."
-msgstr "Vahteab kerimissuunad suurendamiseks ja vähendamiseks."
+msgstr "Vahetab kerimissuunad suurendamiseks ja vähendamiseks ümber."
 
 #: src/ui_parts/settings_menu.gd
 msgid ""
 "Warps the cursor to the opposite side whenever it reaches a viewport "
 "boundary while panning."
 msgstr ""
-"Viib kursori akna vastaspoolele kui see jõuab vaate liigutamise ajal selle "
+"Viib kursori akna vastaspoolele, kui see jõuab vaate liigutamise ajal selle "
 "servani, et see liikumist ei takistaks."
 
 #: src/ui_parts/settings_menu.gd
@@ -808,7 +811,7 @@ msgid ""
 "If turned on, uses your operating system's native file dialog. If turned "
 "off, uses GodSVG's built-in file dialog."
 msgstr ""
-"Sisselülitamisel kasutab süsteemi vaike failidialoogi. Väljalülitamisel "
+"Sisselülitamisel kasutab süsteemi vaikefailidialoogi. Väljalülitamisel "
 "GodSVG sisseehitatud failidialoogi."
 
 #: src/ui_parts/settings_menu.gd
@@ -824,15 +827,15 @@ msgstr "Muudab pidemete nähtavat ja interaktiivse ala suurust."
 
 #: src/ui_parts/shortcut_panel.gd
 msgid "Horizontal strip"
-msgstr ""
+msgstr "Horisontaalne riba"
 
 #: src/ui_parts/shortcut_panel.gd
 msgid "Vertical strip"
-msgstr ""
+msgstr "Vertikaalne riba"
 
 #: src/ui_parts/shortcut_panel.gd
 msgid "Horizontal with two rows"
-msgstr ""
+msgstr "Horisontaalne riba kahe reaga"
 
 #: src/ui_parts/shortcut_panel_config.gd
 msgid "Configure Shortcut Panel"
@@ -954,7 +957,7 @@ msgstr "Värvi võtmesõnad"
 
 #: src/ui_widgets/good_color_picker.gd
 msgid "Eyedropper"
-msgstr ""
+msgstr "Värvipipett"
 
 #: src/ui_widgets/palette_config.gd
 msgid "Unnamed palettes won't be shown."
@@ -1197,43 +1200,43 @@ msgstr "Sulge rakendus"
 
 #: src/utils/TranslationUtils.gd
 msgid "Move to"
-msgstr ""
+msgstr "Liigu"
 
 #: src/utils/TranslationUtils.gd
 msgid "Line to"
-msgstr ""
+msgstr "Joon"
 
 #: src/utils/TranslationUtils.gd
 msgid "Horizontal Line to"
-msgstr ""
+msgstr "Horisontaalne joon"
 
 #: src/utils/TranslationUtils.gd
 msgid "Vertical Line to"
-msgstr ""
+msgstr "Vertikaalne joon"
 
 #: src/utils/TranslationUtils.gd
 msgid "Close Path"
-msgstr ""
+msgstr "Sulge path"
 
 #: src/utils/TranslationUtils.gd
 msgid "Elliptical Arc to"
-msgstr ""
+msgstr "Elliptiline kaar"
 
 #: src/utils/TranslationUtils.gd
 msgid "Quadratic Bezier to"
-msgstr ""
+msgstr "Kvadratiline Bezier"
 
 #: src/utils/TranslationUtils.gd
 msgid "Shorthand Quadratic Bezier to"
-msgstr ""
+msgstr "Lihtne kvadratiline Bezier"
 
 #: src/utils/TranslationUtils.gd
 msgid "Cubic Bezier to"
-msgstr ""
+msgstr "Kuubiline Bezier"
 
 #: src/utils/TranslationUtils.gd
 msgid "Shorthand Cubic Bezier to"
-msgstr ""
+msgstr "Lihtne kuubiline Bezier"
 
 #: src/utils/TranslationUtils.gd
 msgid ""
