@@ -182,11 +182,11 @@ msgstr "{element} peab olema {allowed} sees, et sellel oleks mõju."
 
 #: src/data_classes/ElementG.gd
 msgid "This group has no elements."
-msgstr "Gruppis pole ühtegi elementi."
+msgstr "Grupis pole ühtegi elementi."
 
 #: src/data_classes/ElementG.gd
 msgid "This group has only one element."
-msgstr "Gruppis on ainult üks element."
+msgstr "Grupis on ainult üks element."
 
 #: src/data_classes/GradientUtils.gd
 msgid "No \"id\" attribute defined."
