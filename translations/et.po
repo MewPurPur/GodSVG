@@ -379,7 +379,7 @@ msgstr "Otsi uuendusi"
 
 #: src/ui_parts/global_actions.gd
 msgid "Donate…"
-msgstr "Anneta.…"
+msgstr "Anneta…"
 
 #: src/ui_parts/global_actions.gd
 msgid "GodSVG repository"
