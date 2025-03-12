@@ -1,43 +1,18 @@
-[gd_scene load_steps=7 format=3 uid="uid://cr1fdlmbknnko"]
+[gd_scene load_steps=5 format=3 uid="uid://cr1fdlmbknnko"]
 
 [ext_resource type="Script" uid="uid://c3q5dvxm6ro1m" path="res://src/ui_parts/code_editor.gd" id="1_nffk0"]
 [ext_resource type="FontFile" uid="uid://depydd16jq777" path="res://assets/fonts/FontMono.ttf" id="2_p4nol"]
 [ext_resource type="Texture2D" uid="uid://dthdjf4v2vlvg" path="res://assets/icons/CodeOptions.svg" id="4_sos04"]
 [ext_resource type="Script" uid="uid://dh5mir6i27u4u" path="res://src/ui_widgets/BetterTextEdit.gd" id="8_ser4i"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_q56qh"]
-content_margin_left = 8.0
-content_margin_top = 3.0
-content_margin_right = 6.0
-content_margin_bottom = 1.0
-bg_color = Color(0.0975, 0.0975, 0.15, 1)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_color = Color(0.152941, 0.152941, 0.2, 1)
-corner_radius_top_left = 5
-corner_radius_top_right = 5
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_k0een"]
-content_margin_left = 10.0
-content_margin_right = 8.0
-bg_color = Color(0.0975, 0.0975, 0.15, 1)
-border_width_left = 2
-border_width_top = 1
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.1875, 0.1875, 0.25, 1)
-corner_radius_bottom_right = 5
-corner_radius_bottom_left = 5
-
 [node name="CodeEditor" type="VBoxContainer"]
+custom_minimum_size = Vector2(0, 120)
 size_flags_vertical = 3
 theme_override_constants/separation = 0
 script = ExtResource("1_nffk0")
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_q56qh")
 
 [node name="CodeButtons" type="HBoxContainer" parent="PanelContainer"]
 layout_mode = 2
@@ -63,7 +38,6 @@ size_flags_vertical = 3
 theme_override_constants/separation = -2
 
 [node name="SVGCodeEdit" type="TextEdit" parent="ScriptEditor"]
-custom_minimum_size = Vector2(0, 96)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -72,7 +46,6 @@ script = ExtResource("8_ser4i")
 [node name="ErrorBar" type="PanelContainer" parent="ScriptEditor"]
 visible = false
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_k0een")
 
 [node name="Label" type="RichTextLabel" parent="ScriptEditor/ErrorBar"]
 custom_minimum_size = Vector2(0, 20)
