@@ -174,7 +174,7 @@ msgstr "Kommentaar"
 
 #: src/data_classes/BasicXNode.gd
 msgid "Text"
-msgstr "Teksts"
+msgstr "Tekst"
 
 #: src/data_classes/Element.gd
 msgid "{element} must be inside {allowed} to have any effect."
