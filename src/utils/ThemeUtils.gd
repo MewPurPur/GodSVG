@@ -199,7 +199,7 @@ static func _setup_panelcontainer(theme: Theme) -> void:
 
 static func _setup_button(theme: Theme) -> void:
 	theme.add_type("Button")
-	theme.set_constant("h_separation", "Button", 6)
+	theme.set_constant("h_separation", "Button", 5)
 	theme.set_color("font_color", "Button", common_text_color)
 	theme.set_color("font_disabled_color", "Button", common_subtle_text_color)
 	theme.set_color("font_focus_color", "Button", common_highlighted_text_color)
@@ -540,6 +540,8 @@ static func _setup_button(theme: Theme) -> void:
 
 static func _setup_checkbox(theme: Theme) -> void:
 	theme.add_type("CheckBox")
+	theme.set_constant("h_separation", "CheckBox", 5)
+	theme.set_color("font_color", "CheckBox", common_text_color)
 	theme.set_color("font_color", "CheckBox", common_text_color)
 	theme.set_color("font_disabled_color", "CheckBox", common_subtle_text_color)
 	theme.set_color("font_focus_color", "CheckBox", common_highlighted_text_color)
@@ -555,14 +557,14 @@ static func _setup_checkbox(theme: Theme) -> void:
 	checkbox_stylebox.set_corner_radius_all(4)
 	checkbox_stylebox.content_margin_bottom = 2.0
 	checkbox_stylebox.content_margin_top = 2.0
-	checkbox_stylebox.content_margin_left = 4.0
-	checkbox_stylebox.content_margin_right = 4.0
+	checkbox_stylebox.content_margin_left = 3.0
+	checkbox_stylebox.content_margin_right = 3.0
 	
 	var empty_checkbox_stylebox := StyleBoxEmpty.new()
 	empty_checkbox_stylebox.content_margin_bottom = 2.0
 	empty_checkbox_stylebox.content_margin_top = 2.0
-	empty_checkbox_stylebox.content_margin_left = 4.0
-	empty_checkbox_stylebox.content_margin_right = 4.0
+	empty_checkbox_stylebox.content_margin_left = 3.0
+	empty_checkbox_stylebox.content_margin_right = 3.0
 	theme.set_stylebox("normal", "CheckBox", empty_checkbox_stylebox)
 	theme.set_stylebox("pressed", "CheckBox", empty_checkbox_stylebox)
 	

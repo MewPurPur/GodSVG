@@ -17,7 +17,6 @@ var cached_max_value: float
 
 func set_value(new_value: String, save := false) -> void:
 	if not new_value.is_empty():
-		new_value = new_value.strip_edges()
 		if not AttributeNumeric.text_check_percentage(new_value):
 			var numeric_value := NumstringParser.evaluate(new_value)
 			# Validate the value.
