@@ -29,7 +29,7 @@ To run the latest unreleased version, you can download Godot from https://godote
 
 Another way to run the latest dev build is to open a recent commit and download its artifacts (Checks > export-optimized > Summary > Artifacts).
 
-To report bugs or propose features, use Github's issue form. For more casual discussion around the tool or contributing to it, find me on [GodSVG's Discord](https://discord.gg/R8pM6vXWTY). All of these official communities are actively moderated.
+To report bugs or propose features, look through the Github issue to see if it's already been proposed, and if not, [create a new one](https://github.com/MewPurPur/GodSVG/issues/new/choose). For more casual discussion around the tool or contributing to it, find me on [GodSVG's Discord](https://discord.gg/R8pM6vXWTY). All of these official communities are actively moderated.
 
 ## How to use it
 
