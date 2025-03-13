@@ -9,11 +9,11 @@ static func add_hash_if_hex(color: String) -> String:
 
 static func is_valid(color: String, allow_alpha := false, allow_url := false,
 allow_none := false, allow_current_color := false) -> bool:
-	color = color.strip_edges()
 	return is_valid_hex(color, allow_alpha) or is_valid_rgb(color, allow_alpha) or\
 			is_valid_hsl(color, allow_alpha) or is_valid_named(color, allow_alpha) or\
-			(allow_url and is_valid_url(color)) or (allow_none and color == "none") or\
-			(allow_current_color and color == "currentColor")
+			(allow_url and is_valid_url(color)) or (allow_none and\
+			color.strip_edges() == "none") or (allow_current_color and\
+			color.strip_edges() == "currentColor")
 
 static func is_valid_hex(color: String, allow_alpha := false) -> bool:
 	color = color.strip_edges()
@@ -116,16 +116,16 @@ allow_alpha := false) -> Color:
 		if not (args.size() == 3 or (args.size() == 4 and allow_alpha)):
 			return backup
 		
-		var a0 := args[0].strip_edges()
-		var a1 := args[1].strip_edges()
-		var a2 := args[2].strip_edges()
+		var a0 := args[0].strip_edges(false, true)
+		var a1 := args[1].strip_edges(false, true)
+		var a2 := args[2].strip_edges(false, true)
 		var r := a0.to_int() if _is_valid_number(a0) else int(a0.left(-1).to_float() * 2.55)
 		var g := a1.to_int() if _is_valid_number(a1) else int(a1.left(-1).to_float() * 2.55)
 		var b := a2.to_int() if _is_valid_number(a2) else int(a2.left(-1).to_float() * 2.55)
 		if args.size() == 3:
 			return Color.from_rgba8(clampi(r, 0, 255), clampi(g, 0, 255), clampi(b, 0, 255))
 		else:
-			var a3 := args[3].strip_edges()
+			var a3 := args[3].strip_edges(false, true)
 			var a := int(a3.to_float() * 255) if _is_valid_number(a3) else\
 					int(a3.left(-1).to_float() * 2.55)
 			return Color.from_rgba8(clampi(r, 0, 255), clampi(g, 0, 255), clampi(b, 0, 255),
@@ -136,13 +136,13 @@ allow_alpha := false) -> Color:
 		if not (args.size() == 3 or (args.size() == 4 and allow_alpha)):
 			return backup
 		
-		var h := posmod(args[0].strip_edges().to_int(), 360)
-		var s := clampf(int(args[1].strip_edges().left(-1).to_float()) * 0.01, 0.0, 1.0)
-		var l := clampf(int(args[2].strip_edges().left(-1).to_float()) * 0.01, 0.0, 1.0)
+		var h := posmod(args[0].to_int(), 360)
+		var s := clampf(int(args[1].strip_edges(false, true).left(-1).to_float()) * 0.01, 0.0, 1.0)
+		var l := clampf(int(args[2].strip_edges(false, true).left(-1).to_float()) * 0.01, 0.0, 1.0)
 		if args.size() == 3:
 			return Color.from_rgba8(hsl_get_r(h, s, l), hsl_get_g(h, s, l), hsl_get_b(h, s, l))
 		else:
-			var a3 := args[3].strip_edges()
+			var a3 := args[3].strip_edges(false, true)
 			var a := int(a3.to_float() * 255) if _is_valid_number(a3) else\
 					int(a3.left(-1).to_float() * 2.55)
 			return Color.from_rgba8(hsl_get_r(h, s, l), hsl_get_g(h, s, l), hsl_get_b(h, s, l),

@@ -31,7 +31,7 @@ func num_to_text(number: float, formatter := Configs.savedata.editor_formatter) 
 	return NumberParser.num_to_text(number, formatter)
 
 static func text_to_num(text: String) -> float:
-	text = text.strip_edges()
+	text = text.strip_edges(false, true)
 	if text.is_empty():
 		return NAN
 	if text.ends_with("%"):
@@ -39,5 +39,4 @@ static func text_to_num(text: String) -> float:
 	return text.to_float()
 
 static func text_check_percentage(text: String) -> bool:
-	# Only the right side needs to be stripped to check for %.
 	return text.strip_edges(false, true).ends_with("%")
