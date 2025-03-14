@@ -364,10 +364,20 @@ func action_get_shortcuts(action: String) -> Array[InputEvent]:
 		return Configs.default_shortcuts[action]
 
 func action_modify_shortcuts(action: String, new_events: Array[InputEvent]) -> void:
-	if new_events != Configs.default_shortcuts[action]:
-		_shortcuts[action] = new_events
+	var are_new_events_default := true
+	if new_events.size() != Configs.default_shortcuts[action].size():
+		are_new_events_default = false
 	else:
+		for i in new_events.size():
+			if not new_events[i].is_match(Configs.default_shortcuts[action][i]):
+				are_new_events_default = false
+				break
+	
+	if are_new_events_default:
 		_shortcuts.erase(action)
+	else:
+		_shortcuts[action] = new_events
+	
 	_action_sync_inputmap(action)
 	update_shortcut_validities()
 	emit_changed()

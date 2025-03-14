@@ -161,10 +161,20 @@ func _input(event: InputEvent) -> void:
 		accept_event()
 	elif event.is_released():
 		if pending_event.keycode & KEY_MODIFIER_MASK == 0:
+			# Makes sure the saved event is clean.
+			var saved_event := InputEventKey.new()
+			saved_event.device = -1
+			saved_event.command_or_control_autoremap = (pending_event.ctrl_pressed or\
+					pending_event.meta_pressed)
+			saved_event.keycode = pending_event.keycode
+			saved_event.unicode = pending_event.unicode
+			saved_event.alt_pressed = pending_event.alt_pressed
+			saved_event.shift_pressed = pending_event.shift_pressed
+			
 			if listening_idx < events.size():
-				events[listening_idx] = pending_event
+				events[listening_idx] = saved_event
 			else:
-				events.append(pending_event)
+				events.append(saved_event)
 		update_shortcut()
 		sync()
 		pending_event = null
@@ -195,11 +205,12 @@ func set_shortcut_button_text(button: Button, new_text: String) -> void:
 
 func check_shortcuts_validity() -> void:
 	for i in events.size():
+		var event := events[i]
 		var shortcut_btn := shortcut_buttons[i]
-		if not Configs.savedata.is_shortcut_valid(events[i]):
+		if not Configs.savedata.is_shortcut_valid(event):
 			setup_shortcut_button_font_colors(shortcut_btn,
 					Configs.savedata.basic_color_error)
-			var conflicts := Configs.savedata.get_actions_with_shortcut(events[i])
+			var conflicts := Configs.savedata.get_actions_with_shortcut(event)
 			var action_pos := conflicts.find(action)
 			if action_pos != -1:
 				conflicts.remove_at(action_pos)
@@ -211,10 +222,20 @@ func check_shortcuts_validity() -> void:
 			shortcut_btn.tooltip_text = Translator.translate("Also used by") +\
 					":\n" + "\n".join(conflicts)
 		else:
-			shortcut_btn.begin_bulk_theme_override()
-			shortcut_btn.remove_theme_color_override("font_color")
-			shortcut_btn.remove_theme_color_override("font_focus_color")
-			shortcut_btn.remove_theme_color_override("font_hover_color")
-			shortcut_btn.remove_theme_color_override("font_pressed_color")
-			shortcut_btn.end_bulk_theme_override()
-			shortcut_btn.tooltip_text = ""
+			var already_used := false
+			for ii in events.size():
+				if ii != i and event.is_match(events[ii]):
+					already_used = true
+					break
+			
+			if already_used:
+				setup_shortcut_button_font_colors(shortcut_btn,
+						Configs.savedata.basic_color_warning)
+			else:
+				shortcut_btn.begin_bulk_theme_override()
+				shortcut_btn.remove_theme_color_override("font_color")
+				shortcut_btn.remove_theme_color_override("font_focus_color")
+				shortcut_btn.remove_theme_color_override("font_hover_color")
+				shortcut_btn.remove_theme_color_override("font_pressed_color")
+				shortcut_btn.end_bulk_theme_override()
+				shortcut_btn.tooltip_text = ""
