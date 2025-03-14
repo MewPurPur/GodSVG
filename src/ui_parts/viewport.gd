@@ -22,6 +22,7 @@ var _zoom_to: Vector2
 func _ready() -> void:
 	zoom_menu.zoom_changed.connect(view.update.unbind(2))
 	State.svg_resized.connect(resize)
+	Configs.active_tab_changed.connect(zoom_menu.zoom_reset)
 	State.viewport_size_changed.connect(adjust_view)
 	resize()
 	await get_tree().process_frame
