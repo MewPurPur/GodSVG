@@ -53,12 +53,14 @@ static func save_svg_as() -> void:
 static func open_export_dialog(export_data: ImageExportData, final_callback := Callable()) -> void:
 	OS.request_permissions()
 	if OS.has_feature("web"):
-		var web_format_name := ImageExportData.web_formats[export_data.format]
+		var buffer: PackedByteArray
 		if export_data.format == "svg":
-			_web_save(ImageExportData.svg_to_buffer(), web_format_name)
+			buffer = ImageExportData.svg_to_buffer()
 		else:
-			var img := export_data.generate_image()
-			_web_save(export_data.image_to_buffer(img), web_format_name)
+			buffer = export_data.image_to_buffer(export_data.generate_image())
+		_web_save(buffer, ImageExportData.web_formats[export_data.format])
+		if final_callback.is_valid():
+			final_callback.call()
 	else:
 		if _is_native_preferred():
 			var native_callback :=\
