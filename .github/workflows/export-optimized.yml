@@ -406,7 +406,7 @@ jobs:
           mv ./bin/android_debug.apk ~/.local/share/godot/export_templates/${GODOT_VERSION}.${GODOT_RELEASE}/android_debug.apk
           mv ./bin/android_source.zip ~/.local/share/godot/export_templates/${GODOT_VERSION}.${GODOT_RELEASE}/android_source.zip
 
-      - if: ${{ steps.cache-template.outputs.cache-hit != 'true' && github.event_name == 'workflow_dispatch' }}
+      - if: ${{ steps.cache-template.outputs.cache-hit != 'true' }}
         name: Build Godot release template for Android
         run: |
           cd godot
