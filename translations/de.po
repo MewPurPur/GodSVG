@@ -1284,9 +1284,8 @@ msgstr ""
 #~ msgid "This requires GodSVG to connect to the internet."
 #~ msgstr "Hierfür muss sich GodSVG mit dem Internet verbinden."
 
-#, fuzzy
 #~ msgid "Add new tab"
-#~ msgstr "Neues Element hinzufügen"
+#~ msgstr "Neuen Tab hinzufügen"
 
 #~ msgid "Open file"
 #~ msgstr "Datei öffnen"
@@ -1297,9 +1296,8 @@ msgstr ""
 #~ msgid "Clear SVG"
 #~ msgstr "SVG zurücksetzen"
 
-#, fuzzy
 #~ msgid "Open SVG file"
-#~ msgstr "Datei öffnen"
+#~ msgstr "SVG-Datei öffnen"
 
 #~ msgid "Select all elements"
 #~ msgstr "Alle Elemente auswählen"
@@ -1364,9 +1362,8 @@ msgstr ""
 #~ msgid "Tag color"
 #~ msgstr "Tagfarbe"
 
-#, fuzzy
 #~ msgid "New tag"
-#~ msgstr "Neues Element hinzufügen"
+#~ msgstr "Neuer Tag"
 
 #~ msgid "Paths"
 #~ msgstr "Pfade"
@@ -1374,9 +1371,8 @@ msgstr ""
 #~ msgid "Remove"
 #~ msgstr "Entfernen"
 
-#, fuzzy
 #~ msgid "Unknown tag"
-#~ msgstr "Unbekanntes Element"
+#~ msgstr "Unbekannter Tag"
 
 #~ msgid "Documentation…"
 #~ msgstr "Dokumentation…"
@@ -1393,6 +1389,5 @@ msgstr ""
 #~ msgid "Default value opacity"
 #~ msgstr "Standardwertopazität"
 
-#, fuzzy
 #~ msgid "Clear association"
 #~ msgstr "Dateizuordnung entfernen"
