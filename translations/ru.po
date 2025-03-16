@@ -536,7 +536,7 @@ msgstr "Тема"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Tab bar"
-msgstr ""
+msgstr "Вкладки"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Other"
@@ -620,7 +620,7 @@ msgstr "Цвет предупреждения"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Close tabs with middle mouse button"
-msgstr ""
+msgstr "Закрывать вкладки средней клавишей мыши"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Input"
