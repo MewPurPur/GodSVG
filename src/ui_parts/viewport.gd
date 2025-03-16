@@ -141,7 +141,9 @@ func _unhandled_input(event: InputEvent) -> void:
 	
 	else:
 		if not event.is_echo():
-			_zoom_to = Vector2.ZERO  # Reset Ctrl + MMB zoom position if released.
+			# Filter out fake mouse movement events.
+			if not (event is InputEventMouseMotion and event.relative == Vector2.ZERO):
+				_zoom_to = Vector2.ZERO  # Reset Ctrl + MMB zoom position if released.
 
 
 func _on_zoom_changed(new_zoom_level: float, offset: Vector2) -> void:
