@@ -207,12 +207,6 @@ allowed_extensions: PackedStringArray) -> Error:
 	
 	Configs.savedata.add_recent_dir(file_path.get_base_dir())
 	
-	if file_extension == "tscn":
-		# I asked kiisu about why he wrote this special case. He said:
-		# "I think when running from the editor it would give the specific scene
-		# run as first argument",
-		# TODO understand what he meant and if it's still relevant.
-		return ERR_FILE_CANT_OPEN
 	if not file_extension in allowed_extensions:
 		error = TranslationUtils.get_bad_extension_alert_text(file_extension,
 				allowed_extensions)
