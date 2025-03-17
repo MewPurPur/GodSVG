@@ -204,9 +204,9 @@ allowed_extensions: PackedStringArray) -> Error:
 	var file := FileAccess.open(file_path, FileAccess.READ)
 	var error := ""
 	var file_extension := file_path.get_extension()
-
+	
 	Configs.savedata.add_recent_dir(file_path.get_base_dir())
-
+	
 	if not file_extension in allowed_extensions:
 		error = TranslationUtils.get_bad_extension_alert_text(file_extension,
 				allowed_extensions)
