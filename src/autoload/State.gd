@@ -77,27 +77,23 @@ func _enter_tree() -> void:
 	Configs.active_tab_changed.connect(setup_from_tab)
 	setup_from_tab.call_deferred()  # Let everything load before emitting signals.
 	
-	#region Loading SVGs from CLI
 	var cmdline_args := OS.get_cmdline_args()
 	
-	# The first argument passed is always a path to the scene file when in-editor
+	# The first argument passed is always a path to the scene file when in-editor.
 	if (OS.is_debug_build() and not OS.has_feature("template")) and cmdline_args.size() >= 1:
 		cmdline_args.remove_at(0)
 	
-	# Ensure we can add warning panels by waiting until everything has loaded, then load the SVGs
 	if cmdline_args.size() >= 1:
-		await get_tree().process_frame  # SAFETY: Godot readies all nodes before the next frame
+		# Need to wait a frame so the import warnings panel can be added.
+		await get_tree().process_frame
 		
-		# Temporarily caching an array of tabs from last session, improves recursion performance
-		var tab_paths := PackedStringArray()
+		var used_tab_paths := PackedStringArray()
 		for tab in Configs.savedata.get_tabs():
-			tab_paths.append(tab.svg_file_path)
+			used_tab_paths.append(tab.svg_file_path)
 		
 		for path in cmdline_args:
-			if path.get_extension() != "svg": continue
-			if path not in tab_paths:
+			if path.get_extension() == "svg" and not path in used_tab_paths:
 				FileUtils.apply_svg_from_path(path)
-	#endregion
 
 func setup_from_tab() -> void:
 	var active_tab := Configs.savedata.get_active_tab()
