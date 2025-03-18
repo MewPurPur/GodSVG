@@ -25,9 +25,6 @@ var proposed_drop_idx := -1:
 			proposed_drop_idx = new_value
 			queue_redraw()
 
-func _exit_tree() -> void:
-	RenderingServer.free_rid(ci)
-
 func _ready() -> void:
 	Configs.active_tab_changed.connect(activate)
 	Configs.tabs_changed.connect(activate)
