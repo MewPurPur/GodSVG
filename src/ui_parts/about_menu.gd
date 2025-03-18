@@ -108,10 +108,9 @@ func _on_tab_changed(idx: int) -> void:
 				past_diamond_donors_list.items.append("%d anonymous" % app_info.past_anonymous_diamond_donors)
 		2:
 			# This part doesn't need to be translated.
-			var licenses_dict := Engine.get_license_info()
-			
 			%LicenseLabel.text = "MIT License\n\nCopyright (c) 2023 MewPurPur\n" +\
-			"Copyright (c) 2023-present GodSVG contributors\n\n" + licenses_dict["Expat"]
+					"Copyright (c) 2023-present GodSVG contributors\n\n" +\
+					Engine.get_license_info()["Expat"]
 		3:
 			for child in %GodSVGParts.get_children():
 				child.queue_free()
@@ -120,12 +119,13 @@ func _on_tab_changed(idx: int) -> void:
 			for child in %LicenseTexts.get_children():
 				child.queue_free()
 			
+			# This part doesn't need to be translated.
 			var godsvg_parts_label := Label.new()
-			godsvg_parts_label.text = "GodSVG parts"
+			godsvg_parts_label.text = "GodSVG components"
 			var godot_parts_label := Label.new()
-			godot_parts_label.text = "Godot parts"
+			godot_parts_label.text = "Godot components"
 			var license_texts_label := Label.new()
-			license_texts_label.text = "License texts"
+			license_texts_label.text = "Licenses"
 			for label: Label in [godsvg_parts_label, godot_parts_label, license_texts_label]:
 				label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 				label.add_theme_font_size_override("font_size", 16)
@@ -133,8 +133,6 @@ func _on_tab_changed(idx: int) -> void:
 			%GodotParts.add_child(godot_parts_label)
 			%LicenseTexts.add_child(license_texts_label)
 			
-			# This part doesn't need to be translated.
-			var licenses_dict := Engine.get_license_info()
 			var godot_copyright_info := Engine.get_copyright_info()
 			var godot_engine_copyright: Dictionary
 			for dict in godot_copyright_info:
@@ -168,12 +166,6 @@ func _on_tab_changed(idx: int) -> void:
 			]
 			
 			for copyright_info in godsvg_copyright_info:
-				var vbox := VBoxContainer.new()
-				var name_label := Label.new()
-				name_label.add_theme_font_size_override("font_size", 14)
-				name_label.text = copyright_info["name"]
-				vbox.add_child(name_label)
-				
 				var label := Label.new()
 				label.add_theme_font_size_override("font_size", 11)
 				for part in copyright_info["parts"]:
@@ -181,16 +173,43 @@ func _on_tab_changed(idx: int) -> void:
 						label.text += "Files:\n- %s\n" % "\n- ".join(part["files"])
 					label.text += "© %s\nLicense: %s" % ["\n© ".join(
 							part["copyright"]), part["license"]]
+				var vbox := VBoxContainer.new()
+				var name_label := Label.new()
+				name_label.add_theme_font_size_override("font_size", 14)
+				name_label.text = copyright_info["name"]
+				vbox.add_child(name_label)
 				vbox.add_child(label)
 				%GodSVGParts.add_child(vbox)
 			
+			# Clean up Godot's copyright info from some stripped modules
+			# to show more relevant components and load the UI faster.
+			var used_licenses: PackedStringArray
+			const unused_module_paths: PackedStringArray = ["modules/betsy",
+					"modules/godot_physics_2d", "modules/godot_physics_3d",
+					"modules/jolt_physics", "modules/lightmapper_rd", "thirdparty/brotli",
+					"thirdparty/cvtt", "thirdparty/basis_universal", "thirdparty/d3d12",
+					"thirdparty/etcpak", "thirdparty/graphite", "thirdparty/meshoptimizer",
+					"thirdparty/minimp3", "thirdparty/minizip", "thirdparty/openxr",
+					"thirdparty/tinyexr", "thirdparty/vhacd", "thirdparty/volk",
+					"thirdparty/vulkan", "thirdparty/xatlas"]
+			for copyright_info_idx in range(godot_copyright_info.size() - 1, -1, -1):
+				var copyright_info: Dictionary = godot_copyright_info[copyright_info_idx]
+				for part_idx in range(copyright_info["parts"].size() -1, -1, -1):
+					var part: Dictionary = copyright_info["parts"][part_idx]
+					if part.has("files"):
+						for i in range(part["files"].size() - 1, -1, -1):
+							for module_path in unused_module_paths:
+								if module_path in part["files"][i]:
+									part["files"].remove_at(i)
+									break
+						if part["files"].is_empty():
+							godot_copyright_info.erase(copyright_info)
+						else:
+							var used_license: String = part["license"]
+							if not used_license in used_licenses:
+								used_licenses.append(used_license)
+			
 			for copyright_info in godot_copyright_info:
-				var vbox := VBoxContainer.new()
-				var name_label := Label.new()
-				name_label.add_theme_font_size_override("font_size", 14)
-				name_label.text = copyright_info["name"]
-				vbox.add_child(name_label)
-				
 				var label := Label.new()
 				label.add_theme_font_size_override("font_size", 11)
 				for part in copyright_info["parts"]:
@@ -198,10 +217,18 @@ func _on_tab_changed(idx: int) -> void:
 						label.text += "Files:\n- %s\n" % "\n- ".join(part["files"])
 					label.text += "© %s\nLicense: %s" % ["\n© ".join(
 							part["copyright"]), part["license"]]
+				var vbox := VBoxContainer.new()
+				var name_label := Label.new()
+				name_label.add_theme_font_size_override("font_size", 14)
+				name_label.text = copyright_info["name"]
+				vbox.add_child(name_label)
 				vbox.add_child(label)
 				%GodotParts.add_child(vbox)
 			
+			var licenses_dict := Engine.get_license_info()
 			for license_name in licenses_dict:
+				if not license_name in used_licenses:
+					continue
 				var license_vbox := VBoxContainer.new()
 				var license_title := Label.new()
 				license_title.text = license_name
