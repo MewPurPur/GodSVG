@@ -28,6 +28,7 @@ func _exit_tree() -> void:
 	RenderingServer.free_rid(surface)
 	RenderingServer.free_rid(selections_surface)
 
+# Generate the procedural handle textures.
 func render_handle_textures() -> void:
 	normal_color = Configs.savedata.handle_color
 	hovered_color = Configs.savedata.handle_hovered_color

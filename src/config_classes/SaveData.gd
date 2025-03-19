@@ -23,6 +23,7 @@ func get_setting_default(setting: String) -> Variant:
 		"handle_selected_color": return Color("46f")
 		"handle_hovered_selected_color": return Color("f44")
 		"background_color": return Color(0.12, 0.132, 0.2, 1)
+		"grid_color": return Color(0.5, 0.5, 0.5)
 		"basic_color_valid": return Color("9f9")
 		"basic_color_error": return Color("f99")
 		"basic_color_warning": return Color("ee5")
@@ -175,6 +176,13 @@ const CURRENT_VERSION = 1
 			background_color = new_value
 			emit_changed()
 			Configs.change_background_color.call_deferred()
+
+@export var grid_color := Color(0.5, 0.5, 0.5):
+	set(new_value):
+		if grid_color != new_value:
+			grid_color = new_value
+			emit_changed()
+			Configs.grid_color_changed.emit()
 
 @export var basic_color_valid := Color("9f9"):
 	set(new_value):

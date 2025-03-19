@@ -190,6 +190,8 @@ func setup_content() -> void:
 			add_section(Translator.translate("Basic colors"))
 			current_setup_setting = "background_color"
 			add_color_edit(Translator.translate("Background color"), false)
+			current_setup_setting = "grid_color"
+			add_color_edit(Translator.translate("Grid color"), false)
 			current_setup_setting = "basic_color_valid"
 			add_color_edit(Translator.translate("Valid color"))
 			current_setup_setting = "basic_color_error"
