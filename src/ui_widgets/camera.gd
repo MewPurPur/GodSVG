@@ -1,9 +1,10 @@
 extends Control
 
-const axis_line_color = Color(0.5, 0.5, 0.5, 0.75)
-const major_grid_color = Color(0.5, 0.5, 0.5, 0.35)
-const minor_grid_color = Color(0.5, 0.5, 0.5, 0.15)
 const ticks_interval = 4
+
+var axis_line_color: Color
+var major_grid_color: Color
+var minor_grid_color: Color
 
 var limit_left := 0.0
 var limit_right := 0.0
@@ -18,6 +19,8 @@ var unsnapped_position: Vector2
 
 
 func _ready() -> void:
+	Configs.grid_color_changed.connect(setup_grid_color)
+	setup_grid_color()
 	RenderingServer.canvas_item_set_parent(surface, ci)
 	State.svg_resized.connect(queue_redraw)
 	State.zoom_changed.connect(change_zoom)
@@ -117,3 +120,10 @@ func _draw() -> void:
 		draw_multiline(major_points, major_grid_color)
 	if not minor_points.is_empty():
 		draw_multiline(minor_points, minor_grid_color)
+
+
+func setup_grid_color() -> void:
+	axis_line_color = Color(Configs.savedata.grid_color, 0.75)
+	major_grid_color = Color(Configs.savedata.grid_color, 0.35)
+	minor_grid_color = Color(Configs.savedata.grid_color, 0.15)
+	queue_redraw()

@@ -43,6 +43,9 @@ func _on_tab_changed(idx: int) -> void:
 			
 			developers_list.items = app_info.authors
 			
+			for child in translators_vbox.get_children():
+				child.queue_free()
+			
 			# There can be multiple translators for a single locale.
 			for locale in TranslationServer.get_loaded_locales():
 				var credits := TranslationServer.get_translation_object(locale).get_message(
@@ -231,6 +234,7 @@ func _on_tab_changed(idx: int) -> void:
 					continue
 				var license_vbox := VBoxContainer.new()
 				var license_title := Label.new()
+				license_title.add_theme_font_size_override("font_size", 14)
 				license_title.text = license_name
 				license_vbox.add_child(license_title)
 				var license_text := Label.new()
