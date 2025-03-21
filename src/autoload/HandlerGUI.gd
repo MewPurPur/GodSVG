@@ -197,14 +197,6 @@ func _parse_popup_overlay_event(event: InputEvent) -> void:
 var last_mouse_click_double := false
 
 func _input(event: InputEvent) -> void:
-	if ShortcutUtils.is_action_pressed(event, "quit"):
-		remove_all_menus()
-		var confirm_dialog := ConfirmDialogScene.instantiate()
-		add_menu(confirm_dialog)
-		confirm_dialog.setup(Translator.translate("Quit GodSVG"),
-				Translator.translate("Do you want to quit GodSVG?"),
-				Translator.translate("Quit"), get_tree().quit)
-	
 	# So, it turns out that when you double click, only the press will count as such.
 	# I don't like that, and it causes problems! So mark the release as double_click too.
 	# TODO Godot PR #92582 fixes this.
@@ -216,8 +208,8 @@ func _input(event: InputEvent) -> void:
 			last_mouse_click_double = false
 	
 	# Stuff that should replace the existing overlays, or that opens separate windows.
-	const CONST_ARR_1: PackedStringArray = ["about_info", "about_donate", "check_updates",
-			"open_settings", "open_externally", "open_in_folder"]
+	const CONST_ARR_1: PackedStringArray = ["quit", "about_info", "about_donate",
+			"check_updates", "open_settings", "open_externally", "open_in_folder"]
 	for action in CONST_ARR_1:
 		if ShortcutUtils.is_action_pressed(event, action):
 			remove_all_menus()
@@ -349,6 +341,13 @@ func update_ui_scale() -> void:
 		window.min_size = window_default_size * final_scale
 	window.content_scale_factor = final_scale
 
+
+func prompt_quit() -> void:
+	var confirm_dialog := ConfirmDialogScene.instantiate()
+	add_menu(confirm_dialog)
+	confirm_dialog.setup(Translator.translate("Quit GodSVG"),
+			Translator.translate("Do you want to quit GodSVG?"),
+			Translator.translate("Quit"), get_tree().quit)
 
 func open_update_checker() -> void:
 	var confirmation_dialog := ConfirmDialogScene.instantiate()
