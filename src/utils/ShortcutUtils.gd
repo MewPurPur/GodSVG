@@ -122,6 +122,7 @@ static func fn(shortcut: String) -> Callable:
 		"about_repo": return OS.shell_open.bind("https://github.com/MewPurPur/GodSVG")
 		"about_website": return OS.shell_open.bind("https://godsvg.com")
 		"check_updates": return HandlerGUI.open_update_checker
+		"quit": return HandlerGUI.prompt_quit
 		"open_settings": return HandlerGUI.open_settings
 		"toggle_snap": return Callable()
 		_: return Callable()
@@ -149,6 +150,7 @@ static func get_shortcut_icon(shortcut: String) -> CompressedTexture2D:
 		"zoom_out": return load("res://assets/icons/Minus.svg")
 		"debug": return load("res://assets/icons/Debug.svg")
 		"toggle_snap": return load("res://assets/icons/Snap.svg")
+		"quit": return load("res://assets/icons/Quit.svg")
 		"open_settings": return load("res://assets/icons/Gear.svg")
 		_: return load("res://assets/icons/Placeholder.svg")
 
