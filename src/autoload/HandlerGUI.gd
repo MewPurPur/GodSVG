@@ -31,7 +31,7 @@ func _ready() -> void:
 	await get_tree().process_frame  # Helps make things more consistent.
 	update_ui_scale()
 	
-	if OS.get_name() == "Android":
+	if OS.get_name() != "Android":
 		shortcut_panel = ShortcutPanelScene.instantiate()
 		get_tree().root.add_child(shortcut_panel)
 

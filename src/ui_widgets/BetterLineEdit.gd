@@ -106,27 +106,21 @@ func _gui_input(event: InputEvent) -> void:
 		var btn_arr: Array[Button] = []
 		var separator_arr: Array[int] = []
 		if editable:
-			btn_arr.append(ContextPopup.create_button(Translator.translate("Undo"),
-					menu_option.bind(LineEdit.MENU_UNDO), not has_undo(),
-					load("res://assets/icons/Undo.svg"), "ui_undo"))
-			btn_arr.append(ContextPopup.create_button(Translator.translate("Redo"),
-					menu_option.bind(LineEdit.MENU_REDO), not has_redo(),
-					load("res://assets/icons/Redo.svg"), "ui_redo"))
+			btn_arr.append(ContextPopup.create_shortcut_button("ui_undo",
+					not has_undo(), Translator.translate("Undo")))
+			btn_arr.append(ContextPopup.create_shortcut_button("ui_redo",
+					not has_redo(), Translator.translate("Redo")))
 			if DisplayServer.has_feature(DisplayServer.FEATURE_CLIPBOARD):
 				separator_arr = [2]
-				btn_arr.append(ContextPopup.create_button(Translator.translate("Cut"),
-						menu_option.bind(LineEdit.MENU_CUT), text.is_empty(),
-						load("res://assets/icons/Cut.svg"), "ui_cut"))
-				btn_arr.append(ContextPopup.create_button(Translator.translate("Copy"),
-						menu_option.bind(LineEdit.MENU_COPY), text.is_empty(),
-						load("res://assets/icons/Copy.svg"), "ui_copy"))
-				btn_arr.append(ContextPopup.create_button(Translator.translate("Paste"),
-						menu_option.bind(LineEdit.MENU_PASTE), !Utils.has_clipboard_web_safe(),
-						load("res://assets/icons/Paste.svg"), "ui_paste"))
+				btn_arr.append(ContextPopup.create_shortcut_button("ui_cut",
+						text.is_empty(), Translator.translate("Cut")))
+				btn_arr.append(ContextPopup.create_shortcut_button("ui_copy",
+						text.is_empty(), Translator.translate("Copy")))
+				btn_arr.append(ContextPopup.create_shortcut_button("ui_paste",
+						Utils.has_clipboard_web_safe(), Translator.translate("Paste")))
 		else:
-			btn_arr.append(ContextPopup.create_button( Translator.translate("Copy"),
-					menu_option.bind(LineEdit.MENU_COPY), text.is_empty(),
-					load("res://assets/icons/Copy.svg"), "ui_copy"))
+			btn_arr.append(ContextPopup.create_shortcut_button("ui_copy",
+					text.is_empty(), Translator.translate("Copy")))
 		
 		var vp := get_viewport()
 		var context_popup := ContextPopup.new()
@@ -136,3 +130,15 @@ func _gui_input(event: InputEvent) -> void:
 		# Wow, no way to find out the column of a given click? Okay...
 		# TODO Make it so LineEdit caret automatically moves to the clicked position
 		# to finish the right-click logic.
+
+func _custom_input(event: InputEvent) -> void:
+	if event.is_action_pressed("ui_undo"):
+		menu_option(MenuItems.MENU_UNDO)
+	elif event.is_action_pressed("ui_redo"):
+		menu_option(MenuItems.MENU_REDO)
+	elif event.is_action_pressed("ui_copy"):
+		menu_option(MenuItems.MENU_COPY)
+	elif event.is_action_pressed("ui_cut"):
+		menu_option(MenuItems.MENU_CUT)
+	elif event.is_action_pressed("ui_paste"):
+		menu_option(MenuItems.MENU_PASTE)
