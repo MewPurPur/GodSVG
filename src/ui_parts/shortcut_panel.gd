@@ -129,6 +129,7 @@ func update_layout() -> void:
 				button.custom_minimum_size = Vector2(30, 30)
 				button.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 				button.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+				button.expand_icon = true
 				button.icon = ShortcutUtils.get_shortcut_icon(shortcut)
 				button.icon_alignment = HORIZONTAL_ALIGNMENT_CENTER
 				buttons_container.add_child(button)

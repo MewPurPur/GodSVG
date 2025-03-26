@@ -129,18 +129,19 @@ static func fn(shortcut: String) -> Callable:
 
 static func get_shortcut_icon(shortcut: String) -> CompressedTexture2D:
 	match shortcut:
+		"ui_cut": return load("res://assets/icons/Cut.svg")
+		"ui_paste": return load("res://assets/icons/Paste.svg")
 		"import": return load("res://assets/icons/Import.svg")
 		"export": return load("res://assets/icons/Export.svg")
-		"save": return load("res://assets/icons/Save.svg")
-		"save_as": return load("res://assets/icons/Save.svg")
+		"save", "save_as": return load("res://assets/icons/Save.svg")
 		"new_tab": return load("res://assets/icons/CreateTab.svg")
-		"copy_svg_text": return load("res://assets/icons/Copy.svg")
+		"copy_svg_text", "ui_copy": return load("res://assets/icons/Copy.svg")
 		"optimize": return load("res://assets/icons/Compress.svg")
-		"reset_svg", "zoom_reset": return load("res://assets/icons/Reload.svg")
+		"reset_svg", "zoom_reset", "check_updates": return load("res://assets/icons/Reload.svg")
 		"open_externally": return load("res://assets/icons/OpenFile.svg")
 		"open_in_folder": return load("res://assets/icons/OpenFolder.svg")
-		"undo": return load("res://assets/icons/Undo.svg")
-		"redo": return load("res://assets/icons/Redo.svg")
+		"undo", "ui_undo": return load("res://assets/icons/Undo.svg")
+		"redo", "ui_redo": return load("res://assets/icons/Redo.svg")
 		"duplicate": return load("res://assets/icons/Duplicate.svg")
 		"move_up": return load("res://assets/icons/MoveUp.svg")
 		"move_down": return load("res://assets/icons/MoveDown.svg")
@@ -152,6 +153,9 @@ static func get_shortcut_icon(shortcut: String) -> CompressedTexture2D:
 		"toggle_snap": return load("res://assets/icons/Snap.svg")
 		"quit": return load("res://assets/icons/Quit.svg")
 		"open_settings": return load("res://assets/icons/Gear.svg")
+		"about_donate": return load("res://assets/icons/Heart.svg")
+		"about_repo": return load("res://assets/icons/Link.svg")
+		"about_website": return load("res://assets/icons/Link.svg")
 		_: return load("res://assets/icons/Placeholder.svg")
 
 static func get_shortcuts(category: String) -> PackedStringArray:

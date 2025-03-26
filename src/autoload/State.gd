@@ -773,32 +773,26 @@ func get_selection_context(popup_method: Callable, context: Context) -> ContextP
 					view_in_list.bind(selected_xids[0]), false,
 					load("res://assets/icons/ViewInList.svg")))
 
-		btn_arr.append(ContextPopup.create_button(Translator.translate("Duplicate"),
-				duplicate_selected, false, load("res://assets/icons/Duplicate.svg"),
-				"duplicate"))
+		btn_arr.append(ContextPopup.create_shortcut_button("duplicate", false,
+				Translator.translate("Duplicate")))
 		
 		var xnode := root_element.get_xnode(selected_xids[0])
 		if selected_xids.size() == 1 and ((not xnode.is_element() and\
 		xnode.get_type() != BasicXNode.NodeType.UNKNOWN) or (xnode.is_element() and\
 		not xnode.possible_conversions.is_empty())):
-			btn_arr.append(ContextPopup.create_button(
-					Translator.translate("Convert To"),
+			btn_arr.append(ContextPopup.create_button(Translator.translate("Convert To"),
 					popup_convert_to_context.bind(popup_method), false,
 					load("res://assets/icons/Reload.svg")))
 		
 		if can_move_up:
-			btn_arr.append(ContextPopup.create_button(
-					Translator.translate("Move Up"),
-					move_up_selected, false,
-					load("res://assets/icons/MoveUp.svg"), "move_up"))
+			btn_arr.append(ContextPopup.create_shortcut_button("move_up", false,
+					Translator.translate("Move Up")))
 		if can_move_down:
-			btn_arr.append(ContextPopup.create_button(
-					Translator.translate("Move Down"),
-					move_down_selected, false,
-					load("res://assets/icons/MoveDown.svg"), "move_down"))
+			btn_arr.append(ContextPopup.create_shortcut_button("move_down", false,
+					Translator.translate("Move Down")))
 		
-		btn_arr.append(ContextPopup.create_button(Translator.translate("Delete"),
-				delete_selected, false, load("res://assets/icons/Delete.svg"), "delete"))
+		btn_arr.append(ContextPopup.create_shortcut_button("delete", false,
+				Translator.translate("Delete")))
 	
 	elif not inner_selections.is_empty() and not semi_selected_xid.is_empty():
 		var element_ref := root_element.get_xnode(semi_selected_xid)
@@ -829,15 +823,13 @@ func get_selection_context(popup_method: Callable, context: Context) -> ContextP
 					var can_move_up := false
 					var can_move_down := false
 					if can_move_up:
-						btn_arr.append(ContextPopup.create_button(
-								Translator.translate("Move Up"), # Change to "Move Subpath Up"
-								move_up_selected, false,
-								load("res://visual/icons/MoveUp.svg"), "move_up"))
+						# Change to "Move Subpath Up"
+						btn_arr.append(ContextPopup.create_shortcut_button(
+								"move_up", false, Translator.translate("Move Up")))
 					if can_move_down:
-						btn_arr.append(ContextPopup.create_button(
-								Translator.translate("Move Down"), # Change to "Move Subpath Down"
-								move_down_selected, false,
-								load("res://visual/icons/MoveDown.svg"), "move_down"))
+						# Change to "Move Subpath Down"
+						btn_arr.append(ContextPopup.create_shortcut_button(
+								"move_down", false, Translator.translate("Move Down")))
 			"polygon", "polyline":
 				if inner_selections.size() == 1:
 					btn_arr.append(ContextPopup.create_button(
@@ -845,8 +837,8 @@ func get_selection_context(popup_method: Callable, context: Context) -> ContextP
 							insert_point_after_selection, false,
 							load("res://assets/icons/Plus.svg")))
 		
-		btn_arr.append(ContextPopup.create_button(Translator.translate("Delete"),
-				delete_selected, false, load("res://assets/icons/Delete.svg"), "delete"))
+		btn_arr.append(ContextPopup.create_shortcut_button("delete", false,
+				Translator.translate("Delete")))
 	
 	var element_context := ContextPopup.new()
 	element_context.setup(btn_arr, true)

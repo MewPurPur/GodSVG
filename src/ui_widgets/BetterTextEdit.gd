@@ -133,28 +133,21 @@ func _gui_input(event: InputEvent) -> void:
 			var btn_arr: Array[Button] = []
 			var separator_arr := PackedInt32Array()
 			if editable:
-				btn_arr.append(ContextPopup.create_button(
-						Translator.translate("Undo"), undo,
-						not has_undo(), load("res://assets/icons/Undo.svg"), "ui_undo"))
-				btn_arr.append(ContextPopup.create_button(
-						Translator.translate("Redo"), redo,
-						not has_redo(), load("res://assets/icons/Redo.svg"), "ui_redo"))
+				btn_arr.append(ContextPopup.create_shortcut_button("ui_undo",
+						not has_undo(), Translator.translate("Undo")))
+				btn_arr.append(ContextPopup.create_shortcut_button("ui_redo",
+						not has_redo(), Translator.translate("Redo")))
 				if DisplayServer.has_feature(DisplayServer.FEATURE_CLIPBOARD):
 					separator_arr = PackedInt32Array([2])
-					btn_arr.append(ContextPopup.create_button(
-							Translator.translate("Cut"), cut,
-							text.is_empty(), load("res://assets/icons/Cut.svg"), "ui_cut"))
-					btn_arr.append(ContextPopup.create_button(
-							Translator.translate("Copy"), copy,
-							text.is_empty(), load("res://assets/icons/Copy.svg"), "ui_copy"))
-					btn_arr.append(ContextPopup.create_button(
-							Translator.translate("Paste"), paste,
-							!Utils.has_clipboard_web_safe(),
-							load("res://assets/icons/Paste.svg"), "ui_paste"))
+					btn_arr.append(ContextPopup.create_shortcut_button("ui_cut",
+							text.is_empty(), Translator.translate("Cut")))
+					btn_arr.append(ContextPopup.create_shortcut_button("ui_copy",
+							text.is_empty(), Translator.translate("Copy")))
+					btn_arr.append(ContextPopup.create_shortcut_button("ui_paste",
+					not Utils.has_clipboard_web_safe(), Translator.translate("Paste")))
 			else:
-				btn_arr.append(ContextPopup.create_button(
-						Translator.translate("Copy"), copy,
-						text.is_empty(), load("res://assets/icons/Copy.svg"), "ui_copy"))
+				btn_arr.append(ContextPopup.create_shortcut_button("ui_copy",
+						text.is_empty(), Translator.translate("Copy")))
 			
 			var context_popup := ContextPopup.new()
 			context_popup.setup(btn_arr, true, -1, -1, separator_arr)
