@@ -118,6 +118,11 @@ func _input(event: InputEvent) -> void:
 		release_focus()
 
 func _gui_input(event: InputEvent) -> void:
+	if event.is_action_pressed("select_all"):
+		select_all()
+		accept_event()
+		return
+	
 	if event.is_action_pressed("ui_cancel"):
 		release_focus()
 		return

@@ -95,6 +95,15 @@ func _input(event: InputEvent) -> void:
 		select_all()
 
 func _gui_input(event: InputEvent) -> void:
+	if event.is_action_pressed("select_all"):
+		menu_option(MENU_SELECT_ALL)
+		accept_event()
+		return
+	
+	if event.is_action_pressed("ui_cancel"):
+		release_focus()
+		return
+	
 	mouse_filter = Utils.mouse_filter_pass_non_drag_events(event)
 	
 	if event is InputEventMouseMotion and event.button_mask == 0:
