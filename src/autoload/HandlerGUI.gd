@@ -254,8 +254,8 @@ func _unhandled_input(event: InputEvent) -> void:
 	get_viewport().gui_is_dragging():
 		return
 	
-	const CONST_ARR: PackedStringArray = ["redo", "undo", "ui_cancel", "delete", "move_up",
-			"move_down", "duplicate", "select_all"]
+	const CONST_ARR: PackedStringArray = ["ui_redo", "ui_undo", "ui_cancel", "delete",
+			"move_up", "move_down", "duplicate", "select_all"]
 	for action in CONST_ARR:
 		if ShortcutUtils.is_action_pressed(event, action):
 			get_viewport().set_input_as_handled()
