@@ -21,8 +21,11 @@ const _shortcut_categories_dict: Dictionary[String, Dictionary] = {
 		"open_in_folder": true,
 	},
 	"edit": {
-		"undo": true,
-		"redo": true,
+		"ui_undo": true,
+		"ui_redo": true,
+		"ui_copy": true,
+		"ui_paste": true,
+		"ui_cut": true,
 		"select_all": true,
 		"duplicate": true,
 		"move_up": true,
@@ -109,8 +112,8 @@ static func fn(shortcut: String) -> Callable:
 				Configs.savedata.get_active_tab().svg_file_path)
 		"open_in_folder": return func() -> void: FileUtils.open_svg_folder(
 				Configs.savedata.get_active_tab().svg_file_path)
-		"redo": return Configs.savedata.get_active_tab().redo
-		"undo": return Configs.savedata.get_active_tab().undo
+		"ui_undo": return Configs.savedata.get_active_tab().undo
+		"ui_redo": return Configs.savedata.get_active_tab().redo
 		"ui_cancel": return State.clear_all_selections
 		"delete": return State.delete_selected
 		"move_up": return State.move_up_selected
@@ -129,8 +132,8 @@ static func fn(shortcut: String) -> Callable:
 
 static func get_shortcut_icon(shortcut: String) -> CompressedTexture2D:
 	match shortcut:
-		"ui_cut": return load("res://assets/icons/Cut.svg")
 		"ui_paste": return load("res://assets/icons/Paste.svg")
+		"ui_cut": return load("res://assets/icons/Cut.svg")
 		"import": return load("res://assets/icons/Import.svg")
 		"export": return load("res://assets/icons/Export.svg")
 		"save", "save_as": return load("res://assets/icons/Save.svg")
@@ -140,8 +143,8 @@ static func get_shortcut_icon(shortcut: String) -> CompressedTexture2D:
 		"reset_svg", "zoom_reset", "check_updates": return load("res://assets/icons/Reload.svg")
 		"open_externally": return load("res://assets/icons/OpenFile.svg")
 		"open_in_folder": return load("res://assets/icons/OpenFolder.svg")
-		"undo", "ui_undo": return load("res://assets/icons/Undo.svg")
-		"redo", "ui_redo": return load("res://assets/icons/Redo.svg")
+		"ui_undo": return load("res://assets/icons/Undo.svg")
+		"ui_redo": return load("res://assets/icons/Redo.svg")
 		"duplicate": return load("res://assets/icons/Duplicate.svg")
 		"move_up": return load("res://assets/icons/MoveUp.svg")
 		"move_down": return load("res://assets/icons/MoveDown.svg")

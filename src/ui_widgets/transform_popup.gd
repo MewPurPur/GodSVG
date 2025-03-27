@@ -183,10 +183,10 @@ func popup_new_transform_context(idx: int, control: Control) -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if ShortcutUtils.is_action_pressed(event, "redo"):
+	if ShortcutUtils.is_action_pressed(event, "ui_redo"):
 		if undo_redo.has_redo():
 			undo_redo.redo()
-	elif ShortcutUtils.is_action_pressed(event, "undo"):
+	elif ShortcutUtils.is_action_pressed(event, "ui_undo"):
 		if undo_redo.has_undo():
 			undo_redo.undo()
 
@@ -196,8 +196,7 @@ func get_transform_list() -> Array[Transform]:
 	var t_list: Array[Transform] = []
 	for t in attribute_ref.get_transform_list():
 		if t is Transform.TransformMatrix:
-			t_list.append(Transform.TransformMatrix.new(
-					t.x1, t.x2, t.y1, t.y2, t.o1, t.o2))
+			t_list.append(Transform.TransformMatrix.new(t.x1, t.x2, t.y1, t.y2, t.o1, t.o2))
 		elif t is Transform.TransformTranslate:
 			t_list.append(Transform.TransformTranslate.new(t.x, t.y))
 		elif t is Transform.TransformRotate:
