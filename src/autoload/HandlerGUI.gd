@@ -254,15 +254,54 @@ func _unhandled_input(event: InputEvent) -> void:
 	get_viewport().gui_is_dragging():
 		return
 	
-	const CONST_ARR: PackedStringArray = ["ui_redo", "ui_undo", "ui_cancel", "delete",
+	const CONST_ARR: PackedStringArray = ["ui_undo", "ui_redo", "ui_cancel", "delete",
 			"move_up", "move_down", "duplicate", "select_all"]
 	for action in CONST_ARR:
 		if ShortcutUtils.is_action_pressed(event, action):
 			get_viewport().set_input_as_handled()
 			ShortcutUtils.fn_call(action)
 			return
-	if event is InputEventKey:
-		State.respond_to_key_input(event)
+	
+	if ShortcutUtils.is_action_pressed(event, "move_absolute"):
+		State.respond_to_key_input("M")
+	elif ShortcutUtils.is_action_pressed(event, "move_relative"):
+		State.respond_to_key_input("m")
+	elif ShortcutUtils.is_action_pressed(event, "line_absolute"):
+		State.respond_to_key_input("L")
+	elif ShortcutUtils.is_action_pressed(event, "line_relative"):
+		State.respond_to_key_input("l")
+	elif ShortcutUtils.is_action_pressed(event, "horizontal_line_absolute"):
+		State.respond_to_key_input("H")
+	elif ShortcutUtils.is_action_pressed(event, "horizontal_line_relative"):
+		State.respond_to_key_input("h")
+	elif ShortcutUtils.is_action_pressed(event, "vertical_line_absolute"):
+		State.respond_to_key_input("V")
+	elif ShortcutUtils.is_action_pressed(event, "vertical_line_relative"):
+		State.respond_to_key_input("v")
+	elif ShortcutUtils.is_action_pressed(event, "close_path_absolute"):
+		State.respond_to_key_input("Z")
+	elif ShortcutUtils.is_action_pressed(event, "close_path_relative"):
+		State.respond_to_key_input("z")
+	elif ShortcutUtils.is_action_pressed(event, "elliptical_arc_absolute"):
+		State.respond_to_key_input("A")
+	elif ShortcutUtils.is_action_pressed(event, "elliptical_arc_relative"):
+		State.respond_to_key_input("a")
+	elif ShortcutUtils.is_action_pressed(event, "cubic_bezier_absolute"):
+		State.respond_to_key_input("C")
+	elif ShortcutUtils.is_action_pressed(event, "cubic_bezier_relative"):
+		State.respond_to_key_input("c")
+	elif ShortcutUtils.is_action_pressed(event, "shorthand_cubic_bezier_absolute"):
+		State.respond_to_key_input("S")
+	elif ShortcutUtils.is_action_pressed(event, "shorthand_cubic_bezier_relative"):
+		State.respond_to_key_input("s")
+	elif ShortcutUtils.is_action_pressed(event, "quadratic_bezier_absolute"):
+		State.respond_to_key_input("Q")
+	elif ShortcutUtils.is_action_pressed(event, "quadratic_bezier_relative"):
+		State.respond_to_key_input("q")
+	elif ShortcutUtils.is_action_pressed(event, "shorthand_quadratic_bezier_absolute"):
+		State.respond_to_key_input("T")
+	elif ShortcutUtils.is_action_pressed(event, "shorthand_quadratic_bezier_relative"):
+		State.respond_to_key_input("t")
 
 
 func get_window_default_size() -> Vector2i:

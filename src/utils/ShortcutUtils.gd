@@ -181,4 +181,5 @@ static func is_action_pressed(event: InputEvent, action: String) -> bool:
 	# is the correct one... But it should be handled gracefully.
 	if event is InputEventAction:
 		event = InputMap.action_get_events(event.action)[event.event_index]
-	return event.is_action_pressed(action) and Configs.savedata.is_shortcut_valid(event)
+	return event.is_action_pressed(action, false, true) and\
+			Configs.savedata.is_shortcut_valid(event)

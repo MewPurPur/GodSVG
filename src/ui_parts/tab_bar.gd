@@ -422,7 +422,7 @@ func _get_tooltip(at_position: Vector2) -> String:
 	# We have to pass some metadata to the tooltip.
 	# Since "*" isn't valid in filepaths, we use it as a delimiter.
 	elif hovered_tab_idx == Configs.savedata.get_active_tab_index():
-		return "%s*hovered" % current_tab.get_presented_svg_file_path()
+		return "%s*active" % current_tab.get_presented_svg_file_path()
 	
 	return "%s*%d" % [current_tab.get_presented_svg_file_path(), current_tab.id]
 
@@ -439,8 +439,9 @@ func _make_custom_tooltip(for_text: String) -> Object:
 	label.text = path
 	Utils.set_max_text_width(label, 192.0, 4.0)
 	
+	# If the tab is active, no need for an SVG preview.
 	var metadata := for_text.right(-asterisk_pos - 1)
-	if metadata == "hovered":
+	if metadata == "active":
 		return label
 	
 	var id := metadata.to_int()

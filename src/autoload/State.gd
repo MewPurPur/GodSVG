@@ -4,19 +4,6 @@ extends Node
 const OptionsDialogScene = preload("res://src/ui_widgets/options_dialog.tscn")
 const PathCommandPopupScene = preload("res://src/ui_widgets/path_popup.tscn")
 
-const path_actions_dict: Dictionary[String, String] = {
-	"move_absolute": "M", "move_relative": "m",
-	"line_absolute": "L", "line_relative": "l",
-	"horizontal_line_absolute": "H", "horizontal_line_relative": "h",
-	"vertical_line_absolute": "V", "vertical_line_relative": "v",
-	"close_path_absolute": "Z", "close_path_relative": "z",
-	"elliptical_arc_absolute": "A", "elliptical_arc_relative": "a",
-	"cubic_bezier_absolute": "C", "cubic_bezier_relative": "c",
-	"shorthand_cubic_bezier_absolute": "S", "shorthand_cubic_bezier_relative": "s",
-	"quadratic_bezier_absolute": "Q", "quadratic_bezier_relative": "q",
-	"shorthand_quadratic_bezier_absolute": "T", "shorthand_quadratic_bezier_relative": "t"
-}
-
 
 signal svg_unknown_change
 signal svg_resized
@@ -630,47 +617,39 @@ func _on_xnodes_moved_to(xids: Array[PackedInt32Array], location: PackedInt32Arr
 		selection_changed.emit()
 
 
-func respond_to_key_input(event: InputEventKey) -> void:
-	# Path commands using keys.
-	if inner_selections.is_empty() or event.is_command_or_control_pressed():
+# Path commands using keys.
+func respond_to_key_input(path_cmd_char: String) -> void:
+	if inner_selections.is_empty():
 		# If a single path element is selected, add the new command at the end.
 		if selected_xids.size() == 1:
 			var xnode_ref := root_element.get_xnode(selected_xids[0])
 			if xnode_ref is ElementPath:
 				var path_attrib: AttributePathdata = xnode_ref.get_attribute("d")
-				for action_name in path_actions_dict.keys():
-					if ShortcutUtils.is_action_pressed(event, action_name):
-						var path_cmd_count := path_attrib.get_command_count()
-						var path_cmd_char := path_actions_dict[action_name]
-						# Z after a Z is syntactically invalid.
-						if (path_cmd_count == 0 and not path_cmd_char in "Mm") or\
-						(path_cmd_char in "Zz" and path_cmd_count > 0 and\
-						path_attrib.get_command(path_cmd_count - 1) is\
-						PathCommand.CloseCommand):
-							return
-						path_attrib.insert_command(path_cmd_count, path_cmd_char, Vector2.ZERO)
-						normal_select(selected_xids[0], path_cmd_count)
-						handle_added.emit()
-						break
-		return
-	# If path commands are selected, insert after the last one.
-	for action_name in path_actions_dict.keys():
-		var element_ref := root_element.get_xnode(semi_selected_xid)
-		if element_ref.name == "path":
-			if ShortcutUtils.is_action_pressed(event, action_name):
-				var path_attrib: AttributePathdata = element_ref.get_attribute("d")
-				var path_cmd_char := path_actions_dict[action_name]
-				var last_selection: int = inner_selections.max()
+				var path_cmd_count := path_attrib.get_command_count()
 				# Z after a Z is syntactically invalid.
-				if path_cmd_char in "Zz" and (path_attrib.get_command(last_selection) is\
-				PathCommand.CloseCommand or (path_attrib.get_command_count() >\
-				last_selection + 1 and path_attrib.get_command(last_selection + 1) is\
-				PathCommand.CloseCommand)):
+				if (path_cmd_count == 0 and not path_cmd_char in "Mm") or\
+				(path_cmd_char in "Zz" and path_cmd_count > 0 and\
+				path_attrib.get_command(path_cmd_count - 1) is\
+				PathCommand.CloseCommand):
 					return
-				path_attrib.insert_command(last_selection + 1, path_cmd_char, Vector2.ZERO)
-				normal_select(semi_selected_xid, last_selection + 1)
+				path_attrib.insert_command(path_cmd_count, path_cmd_char, Vector2.ZERO)
+				normal_select(selected_xids[0], path_cmd_count)
 				handle_added.emit()
-				break
+	else:
+		# If path commands are selected, insert after the last one.
+		var xnode_ref := root_element.get_xnode(semi_selected_xid)
+		if xnode_ref is ElementPath:
+			var path_attrib: AttributePathdata = xnode_ref.get_attribute("d")
+			var last_selection: int = inner_selections.max()
+			# Z after a Z is syntactically invalid.
+			if path_cmd_char in "Zz" and (path_attrib.get_command(last_selection) is\
+			PathCommand.CloseCommand or (path_attrib.get_command_count() >\
+			last_selection + 1 and path_attrib.get_command(last_selection + 1) is\
+			PathCommand.CloseCommand)):
+				return
+			path_attrib.insert_command(last_selection + 1, path_cmd_char, Vector2.ZERO)
+			normal_select(semi_selected_xid, last_selection + 1)
+			handle_added.emit()
 
 
 # Operations on selected elements.
