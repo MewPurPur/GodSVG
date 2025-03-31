@@ -629,8 +629,7 @@ func respond_to_key_input(path_cmd_char: String) -> void:
 				# Z after a Z is syntactically invalid.
 				if (path_cmd_count == 0 and not path_cmd_char in "Mm") or\
 				(path_cmd_char in "Zz" and path_cmd_count > 0 and\
-				path_attrib.get_command(path_cmd_count - 1) is\
-				PathCommand.CloseCommand):
+				path_attrib.get_command(path_cmd_count - 1) is PathCommand.CloseCommand):
 					return
 				path_attrib.insert_command(path_cmd_count, path_cmd_char, Vector2.ZERO)
 				normal_select(selected_xids[0], path_cmd_count)

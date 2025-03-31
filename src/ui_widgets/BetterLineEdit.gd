@@ -95,7 +95,7 @@ func _input(event: InputEvent) -> void:
 		select_all()
 
 func _gui_input(event: InputEvent) -> void:
-	if event.is_action_pressed("select_all"):
+	if ShortcutUtils.is_action_pressed(event, "select_all"):
 		menu_option(MENU_SELECT_ALL)
 		accept_event()
 		return
