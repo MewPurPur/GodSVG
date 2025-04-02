@@ -36,15 +36,16 @@ msgid ""
 "This will connect to github.com to compare version numbers. No other data is "
 "collected or transmitted."
 msgstr ""
+"Dit zal een verbinding maken naar github.com om de versienummers te vergelijken. "
+"Er wordt geen andere data verzameld of verzonden."
 
 #: src/autoload/HandlerGUI.gd src/ui_widgets/alert_dialog.gd
 msgid "OK"
 msgstr "OK"
 
 #: src/autoload/HandlerGUI.gd
-#, fuzzy
 msgid "Do you want to proceed?"
-msgstr "Wil je GodSVG afsluiten?"
+msgstr "Wil je voortgaan?"
 
 #: src/autoload/HandlerGUI.gd
 msgid "Export SVG"
@@ -56,21 +57,19 @@ msgid "Export"
 msgstr "Exporteren"
 
 #: src/autoload/HandlerGUI.gd
-#, fuzzy
 msgid ""
 "The graphic can be exported only as SVG because its proportions are too "
 "extreme."
 msgstr ""
-"Het beeld kan alleen maar als SVG geëxporteerd worden want zijn maat is niet "
-"gedefiniëerd. Wil je verder gaan?"
+"De afbeelding kan alleen maar als SVG geëxporteerd worden door zijn extreme "
+"verhoudingen."
 
 #: src/autoload/HandlerGUI.gd
-#, fuzzy
 msgid ""
 "The graphic can be exported only as SVG because its size is not defined."
 msgstr ""
-"Het beeld kan alleen maar als SVG geëxporteerd worden want zijn maat is niet "
-"gedefiniëerd. Wil je verder gaan?"
+"De afbeelding kan alleen maar als SVG geëxporteerd worden want zijn maat is niet "
+"gedefiniëerd."
 
 #: src/autoload/State.gd src/ui_parts/good_file_dialog.gd
 #: src/ui_widgets/alert_dialog.gd
@@ -78,13 +77,12 @@ msgid "Alert!"
 msgstr "Aandacht!"
 
 #: src/autoload/State.gd src/ui_parts/tab_bar.gd src/utils/TranslationUtils.gd
-#, fuzzy
 msgid "Close tab"
-msgstr "Pad sluiten"
+msgstr "Tabblad sluiten"
 
 #: src/autoload/State.gd
 msgid "Restore"
-msgstr ""
+msgstr "Herstel"
 
 #: src/autoload/State.gd
 msgid "View in List"
@@ -117,13 +115,15 @@ msgstr "Erna Invoegen"
 
 #: src/autoload/State.gd
 msgid "The last edited state of this tab could not be found."
-msgstr ""
+msgstr "De laatst aangepaste stand van dit tabblad kon niet gevonden worden."
 
 #: src/autoload/State.gd
 msgid ""
 "The tab is bound to the file path {file_path}. Do you want to restore the "
 "SVG from this path?"
 msgstr ""
+"Het tablad is gebonden aan het bestandspad {file_path}. Wil je de SVG "
+"herstellen vanuit dit pad?"
 
 #: src/config_classes/Formatter.gd
 msgid "Compact"
@@ -163,11 +163,11 @@ msgstr "6-cijferige hex"
 
 #: src/config_classes/TabData.gd
 msgid "Empty"
-msgstr ""
+msgstr "Leeg"
 
 #: src/config_classes/TabData.gd
 msgid "Unsaved"
-msgstr ""
+msgstr "Niet opgeslagen"
 
 #: src/data_classes/BasicXNode.gd
 msgid "Comment"
@@ -260,9 +260,8 @@ msgid "Save SVG"
 msgstr "SVG opslaan"
 
 #: src/ui_parts/current_file_button.gd
-#, fuzzy
 msgid "Save SVG as…"
-msgstr "SVG opslaan"
+msgstr "SVG opslaan als…"
 
 #: src/ui_parts/current_file_button.gd src/utils/TranslationUtils.gd
 msgid "Reset SVG"
@@ -270,11 +269,11 @@ msgstr "SVG Resetten"
 
 #: src/ui_parts/current_file_button.gd src/ui_parts/tab_bar.gd
 msgid "Open externally"
-msgstr ""
+msgstr "Extern openen"
 
 #: src/ui_parts/current_file_button.gd src/ui_parts/tab_bar.gd
 msgid "Show in File Manager"
-msgstr ""
+msgstr "Laat zien in Bestandsenverkenner"
 
 #: src/ui_parts/display.gd
 msgid "Visuals"
@@ -534,7 +533,7 @@ msgstr "Thematiek"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Tab bar"
-msgstr ""
+msgstr "Tabladbalk"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Other"
@@ -618,7 +617,7 @@ msgstr "Waarschuwingskleur"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Close tabs with middle mouse button"
-msgstr ""
+msgstr "Sluit tabbladen met de middelste muisknop"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Input"
@@ -630,7 +629,7 @@ msgstr "inzoomrichting tegenstellen"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Wrap-around panning"
-msgstr ""
+msgstr "Omwikkeld rondkijken"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Use CTRL for zooming"
@@ -657,9 +656,8 @@ msgid "UI scale"
 msgstr "Gebruiksinterface maat"
 
 #: src/ui_parts/settings_menu.gd
-#, fuzzy
 msgid "Changes the scale factor for the interface."
-msgstr "Verandert the schaal van de visuele gebruikersinterface."
+msgstr "Verandert het maat-factor van de gebruikersinterface."
 
 #: src/ui_parts/settings_menu.gd
 msgid "Language"
@@ -791,13 +789,15 @@ msgstr "Verwijder onnodige parameters"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Swaps the scroll directions for zooming in and zooming out."
-msgstr ""
+msgstr "Verwisselt de scroll richtingen voor inzoomen en uitzoomen."
 
 #: src/ui_parts/settings_menu.gd
 msgid ""
 "Warps the cursor to the opposite side whenever it reaches a viewport "
 "boundary while panning."
 msgstr ""
+"Verplaatst de cursur naar de overkant wanneer het buiten de viewport "
+"gaat tijdens het rondkijken."
 
 #: src/ui_parts/settings_menu.gd
 msgid ""
@@ -825,9 +825,8 @@ msgstr ""
 "achteloos van het huidige bestand."
 
 #: src/ui_parts/settings_menu.gd
-#, fuzzy
 msgid "Changes the visual size and grabbing area of handles."
-msgstr "Verandert de visuele grootte en grijpgebied van Handvaten."
+msgstr "verandert de visuele grootte en grijpgebieden van handvaten."
 
 #: src/ui_parts/shortcut_panel.gd
 msgid "Horizontal strip"
@@ -850,31 +849,28 @@ msgid "Layout"
 msgstr "Indeling"
 
 #: src/ui_parts/tab_bar.gd
-#, fuzzy
 msgid "Create tab"
-msgstr "Creëren"
+msgstr "Tabblad creëren"
 
 #: src/ui_parts/tab_bar.gd src/utils/TranslationUtils.gd
-#, fuzzy
 msgid "Create a new tab"
-msgstr "Nieuwe map creëren"
+msgstr "Een nieuw tabblad creëren"
 
 #: src/ui_parts/tab_bar.gd
 msgid "Scroll backwards"
-msgstr ""
+msgstr "Scroll achteruit"
 
 #: src/ui_parts/tab_bar.gd
 msgid "Scroll forwards"
-msgstr ""
+msgstr "Scroll vooruit"
 
 #: src/ui_parts/tab_bar.gd
 msgid "This SVG is not bound to a file location yet."
-msgstr ""
+msgstr "Deze SVG is nog niet gebonden aan een bestandslocatie."
 
 #: src/ui_parts/update_menu.gd
-#, fuzzy
 msgid "Show prereleases"
-msgstr "Voorpublicaties includen"
+msgstr "Laat prereleases zien"
 
 #: src/ui_parts/update_menu.gd
 msgid "Retry"
@@ -958,14 +954,13 @@ msgstr "Kleur verwijderen"
 msgid "Unnamed"
 msgstr "Onbenoemd"
 
-#: src/ui_widgets/good_color_picker.gd
-#, fuzzy
+#: src/ui_widgets/good_color_picker.gd-
 msgid "Color keywords"
-msgstr "Kleurenplukker"
+msgstr "kleur trefwoorden"
 
 #: src/ui_widgets/good_color_picker.gd
 msgid "Eyedropper"
-msgstr ""
+msgstr "Druppelaar"
 
 #: src/ui_widgets/palette_config.gd
 msgid "Unnamed palettes won't be shown."
@@ -992,9 +987,8 @@ msgid "Copy as XML"
 msgstr "Als XML kopiëren"
 
 #: src/ui_widgets/palette_config.gd
-#, fuzzy
 msgid "Save as XML"
-msgstr "Als XML kopiëren"
+msgstr "Als XML opslaan"
 
 #: src/ui_widgets/path_popup.gd src/ui_widgets/pathdata_field.gd
 #: src/utils/TranslationUtils.gd
@@ -1074,97 +1068,90 @@ msgid "Check if the file still exists in the selected file path."
 msgstr "Kijk na of het bestand nog steeds bestaat in het gekozen bestandspad"
 
 #: src/utils/FileUtils.gd
-#, fuzzy
 msgid "Save the file?"
-msgstr "Bewaar het .\"{format}\" bestand"
+msgstr "sla het bestand op?"
 
 #: src/utils/FileUtils.gd
-#, fuzzy
 msgid "Do you want to save this file?"
-msgstr "Wil je GodSVG afsluiten?"
+msgstr "Wil je dit bestand opslaan?"
 
 #: src/utils/FileUtils.gd
 msgid "Save the changes?"
-msgstr ""
+msgstr "sla de aanpassingen op?"
 
 #: src/utils/FileUtils.gd
 msgid "Your changes will be lost if you don't save them."
-msgstr ""
+msgstr "Uw aanpassingen zullen verdwijnen als u ze niet opslaat."
 
 #: src/utils/FileUtils.gd
 msgid "Don't save"
-msgstr ""
+msgstr "Niet opslaan."
 
 #: src/utils/FileUtils.gd
 msgid "The imported file is already being edited inside GodSVG."
-msgstr ""
+msgstr "Het geïmporteerde bestand is al geöpend in GodSVG"
 
 #: src/utils/FileUtils.gd
 msgid "If you want to revert your edits since the last save, use {reset_svg}."
 msgstr ""
+"Als u uw aanpassingen van de vorige opslag wilt ongedaanmaken, gebruik "
+"{reset_svg}"
 
 #: src/utils/FileUtils.gd
 msgid "Do you want to save the changes made to {file_name}?"
-msgstr ""
+msgstr "Wilt u de aanpassingen opslaan als {file_name}?"
 
 #: src/utils/TranslationUtils.gd
-#, fuzzy
 msgid "Save as"
-msgstr "Opslaan"
+msgstr "Opslaan als"
 
 #: src/utils/TranslationUtils.gd
 msgid "Close tabs to the left"
-msgstr ""
+msgstr "Sluit linker tabbladen"
 
 #: src/utils/TranslationUtils.gd
 msgid "Close tabs to the right"
-msgstr ""
+msgstr "Sluit rechter tabbladen"
 
 #: src/utils/TranslationUtils.gd
-#, fuzzy
 msgid "Close all other tabs"
 msgstr "Kopiëer alle tekst"
 
 #: src/utils/TranslationUtils.gd
 msgid "Select the next tab"
-msgstr ""
+msgstr "Selecteer het volgende tabblad"
 
 #: src/utils/TranslationUtils.gd
 msgid "Select the previous tab"
-msgstr ""
+msgstr "Selecteer het vorige tabblad"
 
 #: src/utils/TranslationUtils.gd
-#, fuzzy
 msgid "Open SVG externally"
-msgstr "Open GodSVG opslagplaats"
+msgstr "SVG extern openen"
 
 #: src/utils/TranslationUtils.gd
 msgid "Show SVG in File Manager"
-msgstr ""
+msgstr "Laat SVG zien in Bestandsverkenner"
 
 #: src/utils/TranslationUtils.gd
-#, fuzzy
 msgid "Select all"
-msgstr "Selecteren"
+msgstr "Alles selecteren"
 
 #: src/utils/TranslationUtils.gd
-#, fuzzy
 msgid "Duplicate the selection"
-msgstr "Verwijder de selectie"
+msgstr "Dupliceer de selectie"
 
 #: src/utils/TranslationUtils.gd
 msgid "Delete the selection"
 msgstr "Verwijder de selectie"
 
 #: src/utils/TranslationUtils.gd
-#, fuzzy
 msgid "Move the selection up"
-msgstr "Beweeg the gekozen elementen omhoog"
+msgstr "Beweeg de selectie omhoog"
 
 #: src/utils/TranslationUtils.gd
-#, fuzzy
 msgid "Move the selection down"
-msgstr "Beweeg the gekozen elementen omlaag"
+msgstr "Beweeg de selectie omlaag"
 
 #: src/utils/TranslationUtils.gd
 msgid "Find"
