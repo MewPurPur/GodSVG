@@ -21,13 +21,13 @@
 
 ## Downloads and links
 
-Download the version you want from [the list of GodSVG releases](https://github.com/MewPurPur/GodSVG/releases). If you have issues with the download, look for a TROUBLESHOOTING.txt file.
+Download the version you want from [the list of GodSVG releases](https://github.com/MewPurPur/GodSVG/releases).
 
 Link to the web editor: https://godsvg.com/editor
 
 To run the latest unreleased version, you can download Godot from https://godotengine.org (development is currently happening in v4.4.1). After getting the repository files on your machine, you must open Godot, click on the "Import" button, and import the `project.godot` folder.
 
-Another way to run the latest dev build is to open a recent commit and download its artifacts (Checks > export-optimized > Summary > Artifacts).
+Another way to run the latest dev build is to open a recent commit and download its artifacts (Checks > export-optimized > Summary > Artifacts). You need to log into Github for that.
 
 To report bugs or propose features, look through the Github issue to see if it's already been discussed, and if not, [create a new issue](https://github.com/MewPurPur/GodSVG/issues/new/choose).
 
