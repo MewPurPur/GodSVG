@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://beukt3a23d5ug" path="res://src/ui_parts/root_element_editor.gd" id="1_xgyg0"]
 [ext_resource type="FontFile" uid="uid://depydd16jq777" path="res://assets/fonts/FontMono.ttf" id="2_fm5sa"]
 [ext_resource type="PackedScene" uid="uid://dad7fkhmsooc6" path="res://src/ui_widgets/number_edit.tscn" id="3_1gu7n"]
-[ext_resource type="Script" uid="uid://ynx3s1jc6bwq" path="res://src/ui_widgets/BetterToggleButton.gd" id="4_7r848"]
+[ext_resource type="Script" uid="uid://ynx3s1jc6bwq" path="res://src/ui_widgets/BetterButton.gd" id="4_7r848"]
 
 [node name="RootElementEditor" type="VBoxContainer"]
 offset_right = 452.0

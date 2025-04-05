@@ -6,9 +6,9 @@ const NumberEdit = preload("res://src/ui_widgets/number_edit.gd")
 # use NumberEdit, rather than NumberField. Viewbox is a list and it also doesn't have a
 # default value, so it uses 4 NumberEdits.
 
-@onready var width_button: Button = %Size/Width/WidthButton
-@onready var height_button: Button = %Size/Height/HeightButton
-@onready var viewbox_button: Button = %Viewbox/ViewboxButton
+@onready var width_button: BetterButton = %Size/Width/WidthButton
+@onready var height_button: BetterButton = %Size/Height/HeightButton
+@onready var viewbox_button: BetterButton = %Viewbox/ViewboxButton
 @onready var width_edit: NumberEdit = %Size/Width/WidthEdit
 @onready var height_edit: NumberEdit = %Size/Height/HeightEdit
 @onready var viewbox_edit_x: NumberEdit = %Viewbox/Rect/ViewboxEditX

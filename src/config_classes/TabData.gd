@@ -7,6 +7,8 @@ const DEFAULT_SVG = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="
 const EDITED_FILES_DIR = "user://edited"
 
 signal status_changed
+signal reference_changed
+
 var presented_name: String:
 	set(new_value):
 		if presented_name != new_value:
@@ -19,12 +21,18 @@ var marked_unsaved := false:
 			marked_unsaved = new_value
 			status_changed.emit()
 
+var reference_image: Texture2D:
+	set(new_value):
+		if reference_image != new_value:
+			reference_image = new_value
+			reference_changed.emit()
+
+
 var active := false
 
 var fully_loaded := true
 var empty_unsaved := false
 var undo_redo: UndoRedoRef
-var reference_image: Texture2D
 
 # This variable represents the saved state of the SVG. Intermediate operations such as
 # dragging a handle or editing the code shouldn't affect this variable.

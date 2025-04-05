@@ -1,26 +1,9 @@
-[gd_scene load_steps=10 format=3 uid="uid://oltvrf01xrxl"]
+[gd_scene load_steps=5 format=3 uid="uid://oltvrf01xrxl"]
 
 [ext_resource type="Texture2D" uid="uid://c2h5snkvemm4p" path="res://assets/icons/Minus.svg" id="1_8ggy2"]
 [ext_resource type="Script" uid="uid://dj2q7wnto3uqp" path="res://src/ui_parts/zoom_menu.gd" id="1_18ab8"]
 [ext_resource type="Texture2D" uid="uid://eif2ioi0mw17" path="res://assets/icons/Plus.svg" id="2_284x5"]
-
-[sub_resource type="InputEventAction" id="InputEventAction_mnex0"]
-action = &"zoom_out"
-
-[sub_resource type="Shortcut" id="Shortcut_ntgv0"]
-events = [SubResource("InputEventAction_mnex0")]
-
-[sub_resource type="InputEventAction" id="InputEventAction_20462"]
-action = &"zoom_reset"
-
-[sub_resource type="Shortcut" id="Shortcut_4v7wx"]
-events = [SubResource("InputEventAction_20462")]
-
-[sub_resource type="InputEventAction" id="InputEventAction_kt076"]
-action = &"zoom_in"
-
-[sub_resource type="Shortcut" id="Shortcut_y6ouu"]
-events = [SubResource("InputEventAction_kt076")]
+[ext_resource type="Script" uid="uid://ynx3s1jc6bwq" path="res://src/ui_widgets/BetterButton.gd" id="3_vgfv3"]
 
 [node name="ZoomMenu" type="HBoxContainer"]
 offset_right = 114.0
@@ -33,26 +16,26 @@ layout_mode = 2
 focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_type_variation = &"IconButton"
-shortcut = SubResource("Shortcut_ntgv0")
-shortcut_in_tooltip = false
 icon = ExtResource("1_8ggy2")
 icon_alignment = 1
+script = ExtResource("3_vgfv3")
+action = "zoom_out"
 
 [node name="ZoomReset" type="Button" parent="."]
 custom_minimum_size = Vector2(58, 0)
 layout_mode = 2
 focus_mode = 0
 mouse_default_cursor_shape = 2
-shortcut = SubResource("Shortcut_4v7wx")
-shortcut_in_tooltip = false
 text = "100%"
+script = ExtResource("3_vgfv3")
+action = "zoom_reset"
 
 [node name="ZoomIn" type="Button" parent="."]
 layout_mode = 2
 focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_type_variation = &"IconButton"
-shortcut = SubResource("Shortcut_y6ouu")
-shortcut_in_tooltip = false
 icon = ExtResource("2_284x5")
 icon_alignment = 1
+script = ExtResource("3_vgfv3")
+action = "zoom_in"

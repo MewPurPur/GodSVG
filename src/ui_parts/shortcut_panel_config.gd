@@ -24,7 +24,7 @@ func _ready() -> void:
 
 func update_shortcut_slots() -> void:
 	var shortcut_texts: Dictionary[String, String] = {}  # action: action_description
-	for shortcut in ShortcutUtils.get_all_shortcuts():
+	for shortcut in ShortcutUtils.get_all_actions():
 		shortcut_texts[shortcut] = TranslationUtils.get_shortcut_description(shortcut)
 	
 	for child in slot_container.get_children():
@@ -50,7 +50,7 @@ func update_shortcut_slots() -> void:
 		dropdown.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		dropdown.align_left = true
 		dropdown.value_text_map = shortcut_texts
-		dropdown.values = ShortcutUtils.get_all_shortcuts()
+		dropdown.values = ShortcutUtils.get_all_actions()
 		dropdown.disabled_values = Configs.savedata.get_shortcut_panel_slots().values()
 		dropdown.set_value(current_shortcut, false)
 		dropdown.value_changed.connect(_on_dropdown_value_changed.bind(i))

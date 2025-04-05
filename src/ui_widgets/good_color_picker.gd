@@ -49,7 +49,7 @@ var slider_mode: SliderMode:
 
 var color_wheel_surface := RenderingServer.canvas_item_create()
 
-# 0 is the side slider, 1-3 are the remaining sliders.
+# 0 is the side slider, 1-3 are the remaining sliders, 4 is the alpha slider.
 var sliders_dragged: Array[bool] = [false, false, false, false, false]
 # Tracks are the color rects of the sliders.
 @onready var tracks_arr: Array[ColorRect] = [
@@ -464,6 +464,16 @@ func update_color_button() -> void:
 		reset_color_button.end_bulk_theme_override()
 
 func hex(col: Color) -> String:
+	# Removing the saturation and hue clamping fixes hex conversion in edge cases.
+	# e.g., H = 0.0001, S = 0.0001, V = 0.5 --> Color(0.5, 0.4999, 0.4999) --> "807f7f".
+	if col.s < 0.001:
+		col.s = 0.0
+	
+	if col.h < 0.001:
+		col.h = 0.0
+	elif col.h > 0.999:
+		col.h = 1.0
+	
 	return col.to_html(alpha_enabled and col.a != 1.0)
 
 

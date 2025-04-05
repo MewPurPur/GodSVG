@@ -206,60 +206,113 @@ func _input(event: InputEvent) -> void:
 		elif last_mouse_click_double and event.is_released():
 			event.double_click = true
 			last_mouse_click_double = false
+
+
+func _unhandled_input(event: InputEvent) -> void:
+	# Clear popups or overlays.
+	if ShortcutUtils.is_action_pressed(event, "ui_cancel"):
+		if not popup_stack.is_empty():
+			get_viewport().set_input_as_handled()
+			remove_popup()
+			return
+		elif not menu_stack.is_empty():
+			get_viewport().set_input_as_handled()
+			_remove_control()
+			return
 	
-	# Stuff that should replace the existing overlays, or that opens separate windows.
 	const CONST_ARR_1: PackedStringArray = ["quit", "about_info", "about_donate",
-			"check_updates", "open_settings", "open_externally", "open_in_folder"]
+			"check_updates", "open_settings", "about_repo", "about_website",
+			"open_externally", "open_in_folder"]
 	for action in CONST_ARR_1:
 		if ShortcutUtils.is_action_pressed(event, action):
-			remove_all_menus()
-			get_viewport().set_input_as_handled()
-			ShortcutUtils.fn_call(action)
+			match action:
+				"quit": prompt_quit()
+				"about_info": open_about()
+				"about_donate": open_donate()
+				"check_updates": open_update_checker()
+				"open_settings": open_settings()
+				"about_repo": OS.shell_open("https://github.com/MewPurPur/GodSVG")
+				"about_website": OS.shell_open("https://godsvg.com")
+				"open_externally": FileUtils.open_svg(
+						Configs.savedata.get_active_tab().svg_file_path)
+				"open_in_folder": FileUtils.open_svg_folder(
+						Configs.savedata.get_active_tab().svg_file_path)
 			return
 	
-	# Stuff that links externally.
-	const CONST_ARR_2: PackedStringArray = ["about_repo", "about_website"]
+	# Stop the logic below from running if there's menu overlays.
+	if not menu_stack.is_empty():
+		return
+	
+	# Global actions that should still work when there are popups but no menus.
+	const CONST_ARR_2: PackedStringArray = ["view_show_grid", "view_show_handles",
+			"view_rasterized_svg", "view_show_reference", "view_overlay_reference",
+			"load_reference", "toggle_snap"]
 	for action in CONST_ARR_2:
 		if ShortcutUtils.is_action_pressed(event, action):
-			get_viewport().set_input_as_handled()
-			ShortcutUtils.fn_call(action)
-			return
+			match action:
+				"view_show_grid": State.toggle_show_grid()
+				"view_show_handles": State.toggle_show_handles()
+				"view_rasterized_svg": State.toggle_view_rasterized()
+				"view_show_reference": State.toggle_show_reference()
+				"view_overlay_reference": State.toggle_overlay_reference()
+				"load_reference": FileUtils.open_image_import_dialog()
+				"toggle_snap": Configs.savedata.snap *= -1
 	
-	# Stop the logic below from running if there's overlays.
-	if not popup_stack.is_empty() or not menu_stack.is_empty():
+	if not popup_stack.is_empty():
 		return
 	
 	# Global actions that should happen regardless of the context.
 	const CONST_ARR_3: PackedStringArray = ["import", "export", "save", "save_as",
 			"close_tab", "close_tabs_to_left", "close_tabs_to_right", "close_all_other_tabs",
 			"new_tab", "select_next_tab", "select_previous_tab", "copy_svg_text", "optimize",
-			"reset_svg"]
+			"reset_svg", "debug"]
 	for action in CONST_ARR_3:
 		if ShortcutUtils.is_action_pressed(event, action):
-			get_viewport().set_input_as_handled()
-			ShortcutUtils.fn_call(action)
-
-func _unhandled_input(event: InputEvent) -> void:
-	# Clear popups or overlays.
-	if not popup_stack.is_empty() and event.is_action_pressed("ui_cancel"):
-		get_viewport().set_input_as_handled()
-		remove_popup()
-		return
-	elif not menu_stack.is_empty() and event.is_action_pressed("ui_cancel"):
-		get_viewport().set_input_as_handled()
-		_remove_control()
+			match action:
+				"import": FileUtils.open_svg_import_dialog()
+				"export": open_export()
+				"save": FileUtils.save_svg()
+				"save_as": FileUtils.save_svg_as()
+				"close_tab": FileUtils.close_tabs(Configs.savedata.get_active_tab_index())
+				"close_tabs_to_left": FileUtils.close_tabs(
+						Configs.savedata.get_active_tab_index(),
+						FileUtils.TabCloseMode.TO_LEFT)
+				"close_tabs_to_right": FileUtils.close_tabs(
+						Configs.savedata.get_active_tab_index(),
+						FileUtils.TabCloseMode.TO_RIGHT)
+				"close_all_other_tabs": FileUtils.close_tabs(
+						Configs.savedata.get_active_tab_index(),
+						FileUtils.TabCloseMode.ALL_OTHERS)
+				"new_tab": Configs.savedata.add_empty_tab()
+				"select_next_tab": Configs.savedata.set_active_tab_index(
+						posmod(Configs.savedata.get_active_tab_index() + 1,
+						Configs.savedata.get_tab_count()))
+				"select_previous_tab": Configs.savedata.set_active_tab_index(
+						posmod(Configs.savedata.get_active_tab_index() - 1,
+						Configs.savedata.get_tab_count()))
+				"copy_svg_text": DisplayServer.clipboard_set(State.svg_text)
+				"optimize": State.optimize()
+				"reset_svg": FileUtils.reset_svg()
+				"debug": State.toggle_show_debug()
+			return
+	
+	# Stop the logic below from running while GUI dragging is going on.
+	if get_viewport().gui_is_dragging():
 		return
 	
-	if not popup_stack.is_empty() or not menu_stack.is_empty() or\
-	get_viewport().gui_is_dragging():
-		return
-	
-	const CONST_ARR: PackedStringArray = ["ui_undo", "ui_redo", "ui_cancel", "delete",
+	const CONST_ARR_4: PackedStringArray = ["ui_undo", "ui_redo", "ui_cancel", "delete",
 			"move_up", "move_down", "duplicate", "select_all"]
-	for action in CONST_ARR:
+	for action in CONST_ARR_4:
 		if ShortcutUtils.is_action_pressed(event, action):
-			get_viewport().set_input_as_handled()
-			ShortcutUtils.fn_call(action)
+			match action:
+				"ui_undo": Configs.savedata.get_active_tab().undo()
+				"ui_redo": Configs.savedata.get_active_tab().redo()
+				"ui_cancel": State.clear_all_selections()
+				"delete": State.delete_selected()
+				"move_up": State.move_up_selected()
+				"move_down": State.move_down_selected()
+				"duplicate": State.duplicate_selected()
+				"select_all": State.select_all()
 			return
 	
 	if ShortcutUtils.is_action_pressed(event, "move_absolute"):
@@ -382,6 +435,7 @@ func update_ui_scale() -> void:
 
 
 func prompt_quit() -> void:
+	remove_all_menus()
 	var confirm_dialog := ConfirmDialogScene.instantiate()
 	add_menu(confirm_dialog)
 	confirm_dialog.setup(Translator.translate("Quit GodSVG"),
@@ -389,6 +443,7 @@ func prompt_quit() -> void:
 			Translator.translate("Quit"), get_tree().quit)
 
 func open_update_checker() -> void:
+	remove_all_menus()
 	var confirmation_dialog := ConfirmDialogScene.instantiate()
 	add_menu(confirmation_dialog)
 	confirmation_dialog.setup(Translator.translate("Check for updates?"),
@@ -401,15 +456,19 @@ func _list_updates() -> void:
 	add_menu(update_menu_instance)
 
 func open_settings() -> void:
+	remove_all_menus()
 	add_menu(SettingsMenuScene.instantiate())
 
 func open_about() -> void:
+	remove_all_menus()
 	add_menu(AboutMenuScene.instantiate())
 
 func open_donate() -> void:
+	remove_all_menus()
 	add_menu(DonateMenuScene.instantiate())
 
 func open_export() -> void:
+	remove_all_menus()
 	var width := State.root_element.width
 	var height := State.root_element.height
 	
@@ -457,3 +516,28 @@ func throw_mouse_motion_event() -> void:
 	# Must multiply by the final transform because the InputEvent is not yet parsed.
 	mm_event.position = window.get_mouse_position() * window.get_final_transform()
 	Input.parse_input_event.call_deferred(mm_event)
+
+# Trigger a shortcut automatically.
+func throw_action_event(action: String) -> void:
+	var events := InputMap.action_get_events(action)
+	for event in events:
+		if ShortcutUtils.is_shortcut_valid(event, action):
+			# Pressed keys.
+			var press_key_event := event.duplicate()
+			press_key_event.pressed = true
+			Input.parse_input_event(press_key_event)
+			# Released keys.
+			var release_key_event := press_key_event.duplicate()
+			release_key_event.pressed = false
+			Input.parse_input_event(release_key_event)
+			return
+	
+	# Pressed action.
+	var press_action_event := InputEventAction.new()
+	press_action_event.action = action
+	press_action_event.pressed = true
+	Input.parse_input_event.call_deferred(press_action_event)
+	# Released action.
+	var release_action_event := InputEventAction.new()
+	release_action_event.action = action
+	Input.parse_input_event.call_deferred(release_action_event)

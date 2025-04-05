@@ -7,79 +7,104 @@ func _init() -> void:
 	mouse_filter = Control.MOUSE_FILTER_STOP
 
 
+static func create_shortcut_button(action: String, disabled := false,
+custom_text := "", custom_icon: Texture2D = null) -> Button:
+	if not InputMap.has_action(action):
+		push_error("Non-existent shortcut was passed.")
+		return
+	
+	if custom_text.is_empty():
+		custom_text = TranslationUtils.get_shortcut_description(action, true)
+	if not is_instance_valid(custom_icon):
+		custom_icon = ShortcutUtils.get_shortcut_icon(action)
+	var btn := create_button(custom_text, HandlerGUI.throw_action_event.bind(action),
+			disabled, custom_icon, ShortcutUtils.get_action_showcase_text(action))
+	
+	var shortcut_events := ShortcutUtils.get_action_all_valid_shortcuts(action)
+	if not shortcut_events.is_empty():
+		var shortcut_obj := Shortcut.new()
+		shortcut_obj.events = shortcut_events
+		btn.shortcut = shortcut_obj
+		btn.shortcut_feedback = false
+	
+	return btn
+
+static func create_shortcut_button_without_icon(action: String, disabled := false,
+custom_text := "") -> Button:
+	if not InputMap.has_action(action):
+		push_error("Non-existent shortcut was passed.")
+		return
+	
+	if custom_text.is_empty():
+		custom_text = TranslationUtils.get_shortcut_description(action, true)
+	var btn := create_button(custom_text, HandlerGUI.throw_action_event.bind(action),
+			disabled, null, ShortcutUtils.get_action_showcase_text(action))
+	
+	var shortcut_events := ShortcutUtils.get_action_all_valid_shortcuts(action)
+	if not shortcut_events.is_empty():
+		var shortcut_obj := Shortcut.new()
+		shortcut_obj.events = shortcut_events
+		btn.shortcut = shortcut_obj
+		btn.shortcut_feedback = false
+	
+	return btn
+
 static func create_button(text: String, press_callback: Callable, disabled := false,
-icon: Texture2D = null, shortcut := "") -> Button:
+icon: Texture2D = null, dim_text := "") -> Button:
 	# Create main button.
 	var main_button := Button.new()
 	main_button.text = text
 	if is_instance_valid(icon):
 		main_button.icon = icon
-	
-	if not shortcut.is_empty():
-		if not InputMap.has_action(shortcut):
-			push_error("Non-existent shortcut was passed to ContextPopup.create_button().")
+
+	if not dim_text.is_empty():
+		# Add button with dim text.
+		var ret_button := Button.new()
+		ret_button.theme_type_variation = "ContextButton"
+		ret_button.focus_mode = Control.FOCUS_NONE
+		ret_button.shortcut_in_tooltip = false
+		if disabled:
+			main_button.disabled = true
+			ret_button.disabled = true
 		else:
-			var events := InputMap.action_get_events(shortcut)
-			var showcased_event: InputEventKey
-			for event in events:
-				if Configs.savedata.is_shortcut_valid(event):
-					showcased_event = event
-			
-			if is_instance_valid(showcased_event):
-				# Add button with a shortcut.
-				var ret_button := Button.new()
-				ret_button.theme_type_variation = "ContextButton"
-				ret_button.focus_mode = Control.FOCUS_NONE
-				ret_button.shortcut_in_tooltip = false
-				if disabled:
-					main_button.disabled = true
-					ret_button.disabled = true
-				else:
-					ret_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-				
-				const CONST_ARR: PackedStringArray = ["normal", "hover", "pressed", "disabled"]
-				main_button.begin_bulk_theme_override()
-				for theme_type in CONST_ARR:
-					main_button.add_theme_stylebox_override(theme_type,
-							main_button.get_theme_stylebox("normal", "ContextButton"))
-				main_button.end_bulk_theme_override()
-				
-				var internal_hbox := HBoxContainer.new()
-				main_button.mouse_filter = Control.MOUSE_FILTER_IGNORE  # Unpressable.
-				internal_hbox.add_theme_constant_override("separation", 12)
-				main_button.add_theme_color_override("icon_normal_color",
-						ret_button.get_theme_color("icon_normal_color", "ContextButton"))
-				var label_margin := MarginContainer.new()
-				label_margin.add_theme_constant_override("margin_right",
-						int(ret_button.get_theme_stylebox("normal").content_margin_right))
-				var label := Label.new()
-				label.text = showcased_event.as_text_keycode()
-				label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
-				var shortcut_text_color := ThemeUtils.common_subtle_text_color
-				if disabled:
-					shortcut_text_color.a *= 0.75
-				label.add_theme_color_override("font_color", shortcut_text_color)
-				label.add_theme_font_size_override("font_size",
-						main_button.get_theme_font_size("font_size"))
-				
-				ret_button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-				internal_hbox.set_anchors_and_offsets_preset(Control.PRESET_TOP_WIDE)
-				label_margin.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-				label.size_flags_horizontal = Control.SIZE_FILL
-				internal_hbox.add_child(main_button)
-				label_margin.add_child(label)
-				internal_hbox.add_child(label_margin)
-				ret_button.add_child(internal_hbox)
-				ret_button.pressed.connect(press_callback)
-				ret_button.pressed.connect(HandlerGUI.remove_popup)
-				
-				var shortcut_obj := Shortcut.new()
-				var action_obj := InputEventAction.new()
-				action_obj.action = shortcut
-				shortcut_obj.events.append(action_obj)
-				ret_button.shortcut = shortcut_obj
-				ret_button.shortcut_feedback = false
-				return ret_button
+			ret_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+		
+		const CONST_ARR: PackedStringArray = ["normal", "hover", "pressed", "disabled"]
+		main_button.begin_bulk_theme_override()
+		for theme_type in CONST_ARR:
+			main_button.add_theme_stylebox_override(theme_type,
+					main_button.get_theme_stylebox("normal", "ContextButton"))
+		main_button.end_bulk_theme_override()
+		
+		var internal_hbox := HBoxContainer.new()
+		main_button.mouse_filter = Control.MOUSE_FILTER_IGNORE  # Unpressable.
+		internal_hbox.add_theme_constant_override("separation", 12)
+		main_button.add_theme_color_override("icon_normal_color",
+				ret_button.get_theme_color("icon_normal_color", "ContextButton"))
+		var label_margin := MarginContainer.new()
+		label_margin.add_theme_constant_override("margin_right",
+				int(ret_button.get_theme_stylebox("normal").content_margin_right))
+		var label := Label.new()
+		label.text = dim_text
+		label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+		var shortcut_text_color := ThemeUtils.common_subtle_text_color
+		if disabled:
+			shortcut_text_color.a *= 0.75
+		label.add_theme_color_override("font_color", shortcut_text_color)
+		label.add_theme_font_size_override("font_size",
+				main_button.get_theme_font_size("font_size"))
+		
+		ret_button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		internal_hbox.set_anchors_and_offsets_preset(Control.PRESET_TOP_WIDE)
+		label_margin.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		label.size_flags_horizontal = Control.SIZE_FILL
+		internal_hbox.add_child(main_button)
+		label_margin.add_child(label)
+		internal_hbox.add_child(label_margin)
+		ret_button.add_child(internal_hbox)
+		ret_button.pressed.connect(press_callback)
+		ret_button.pressed.connect(HandlerGUI.remove_popup)
+		return ret_button
 	# Finish setting up the main button and return it if there's no shortcut.
 	main_button.theme_type_variation = "ContextButton"
 	main_button.focus_mode = Control.FOCUS_NONE
@@ -92,75 +117,71 @@ icon: Texture2D = null, shortcut := "") -> Button:
 	main_button.pressed.connect(HandlerGUI.remove_popup)
 	return main_button
 
+
+static func create_shortcut_checkbox(action: String, start_pressed: bool,
+custom_text := "") -> CheckBox:
+	if not InputMap.has_action(action):
+		push_error("Non-existent shortcut was passed.")
+		return
+	
+	if custom_text.is_empty():
+		custom_text = TranslationUtils.get_shortcut_description(action, true)
+	
+	return create_checkbox(custom_text, HandlerGUI.throw_action_event.bind(action),
+			start_pressed, ShortcutUtils.get_action_showcase_text(action))
+
 static func create_checkbox(text: String, toggle_action: Callable,
-start_pressed: bool, shortcut := "") -> CheckBox:
+start_pressed: bool, dim_text := "") -> CheckBox:
 	# Create main checkbox.
 	var checkbox := CheckBox.new()
 	checkbox.text = text
 	checkbox.button_pressed = start_pressed
 	checkbox.toggled.connect(toggle_action.unbind(1))
 	
-	if not shortcut.is_empty():
-		if not InputMap.has_action(shortcut):
-			push_error("Non-existent shortcut was passed to ContextPopup.create_checkbox().")
-		else:
-			var events := InputMap.action_get_events(shortcut)
-			var showcased_event: InputEventKey
-			for event in events:
-				if Configs.savedata.is_shortcut_valid(event):
-					showcased_event = event
-			
-			if is_instance_valid(showcased_event):
-				# Add button with a shortcut.
-				var ret_button := Button.new()
-				ret_button.theme_type_variation = "ContextButton"
-				ret_button.focus_mode = Control.FOCUS_NONE
-				ret_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-				ret_button.shortcut_in_tooltip = false
-				
-				checkbox.begin_bulk_theme_override()
-				const CONST_ARR: PackedStringArray = ["normal", "pressed"]
-				for theme_type in CONST_ARR:
-					checkbox.add_theme_stylebox_override(theme_type,
-							checkbox.get_theme_stylebox("normal", "ContextButton"))
-				checkbox.end_bulk_theme_override()
-				
-				var internal_hbox := HBoxContainer.new()
-				checkbox.mouse_filter = Control.MOUSE_FILTER_IGNORE  # Unpressable.
-				internal_hbox.add_theme_constant_override("separation", 12)
-				checkbox.add_theme_color_override("icon_normal_color",
-						ret_button.get_theme_color("icon_normal_color", "ContextButton"))
-				var label_margin := MarginContainer.new()
-				label_margin.add_theme_constant_override("margin_right",
-						int(ret_button.get_theme_stylebox("normal").content_margin_right))
-				var label := Label.new()
-				label.text = showcased_event.as_text_keycode()
-				label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
-				var shortcut_text_color := ThemeUtils.common_subtle_text_color
-				#if disabled:
-					#shortcut_text_color.a *= 0.75
-				label.add_theme_color_override("font_color", shortcut_text_color)
-				label.add_theme_font_size_override("font_size",
-						checkbox.get_theme_font_size("font_size"))
-				
-				ret_button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-				internal_hbox.set_anchors_and_offsets_preset(Control.PRESET_TOP_WIDE)
-				label_margin.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-				label.size_flags_horizontal = Control.SIZE_FILL
-				internal_hbox.add_child(checkbox)
-				label_margin.add_child(label)
-				internal_hbox.add_child(label_margin)
-				ret_button.add_child(internal_hbox)
-				ret_button.pressed.connect(
-						func() -> void: checkbox.button_pressed = not checkbox.button_pressed)
-				
-				var shortcut_obj := Shortcut.new()
-				var action_obj := InputEventAction.new()
-				action_obj.action = shortcut
-				shortcut_obj.events.append(action_obj)
-				ret_button.shortcut = shortcut_obj
-				ret_button.shortcut_feedback = false
-				return ret_button
+	if not dim_text.is_empty():
+		# Add button with dim text.
+		var ret_button := Button.new()
+		ret_button.theme_type_variation = "ContextButton"
+		ret_button.focus_mode = Control.FOCUS_NONE
+		ret_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+		ret_button.shortcut_in_tooltip = false
+		
+		checkbox.begin_bulk_theme_override()
+		const CONST_ARR: PackedStringArray = ["normal", "pressed"]
+		for theme_type in CONST_ARR:
+			checkbox.add_theme_stylebox_override(theme_type,
+					checkbox.get_theme_stylebox("normal", "ContextButton"))
+		checkbox.end_bulk_theme_override()
+		
+		var internal_hbox := HBoxContainer.new()
+		checkbox.mouse_filter = Control.MOUSE_FILTER_IGNORE  # Unpressable.
+		internal_hbox.add_theme_constant_override("separation", 12)
+		checkbox.add_theme_color_override("icon_normal_color",
+				ret_button.get_theme_color("icon_normal_color", "ContextButton"))
+		var label_margin := MarginContainer.new()
+		label_margin.add_theme_constant_override("margin_right",
+				int(ret_button.get_theme_stylebox("normal").content_margin_right))
+		var label := Label.new()
+		label.text = dim_text
+		label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+		var shortcut_text_color := ThemeUtils.common_subtle_text_color
+		#if disabled:
+			#shortcut_text_color.a *= 0.75
+		label.add_theme_color_override("font_color", shortcut_text_color)
+		label.add_theme_font_size_override("font_size",
+				checkbox.get_theme_font_size("font_size"))
+		
+		ret_button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		internal_hbox.set_anchors_and_offsets_preset(Control.PRESET_TOP_WIDE)
+		label_margin.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		label.size_flags_horizontal = Control.SIZE_FILL
+		internal_hbox.add_child(checkbox)
+		label_margin.add_child(label)
+		internal_hbox.add_child(label_margin)
+		ret_button.add_child(internal_hbox)
+		ret_button.pressed.connect(
+				func() -> void: checkbox.button_pressed = not checkbox.button_pressed)
+		return ret_button
 	# Finish setting up the checkbox and return it if there's no shortcut.
 	checkbox.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	checkbox.focus_mode = Control.FOCUS_NONE
@@ -216,38 +237,38 @@ min_width := -1.0, max_height := -1.0, separator_indices := PackedInt32Array()) 
 	# Add the buttons.
 	if buttons.is_empty():
 		return
-	else:
-		# Setup the title.
-		var title_container := PanelContainer.new()
-		var stylebox := StyleBoxFlat.new()
-		stylebox.bg_color = Color("0003")
-		stylebox.content_margin_bottom = 3
-		stylebox.content_margin_left = 8
-		stylebox.content_margin_right = 8
-		stylebox.border_width_bottom = 2
-		stylebox.border_color = ThemeUtils.common_panel_border_color
-		title_container.add_theme_stylebox_override("panel", stylebox)
-		var title_label := Label.new()
-		title_label.text = top_title
-		title_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-		title_label.begin_bulk_theme_override()
-		title_label.add_theme_color_override("font_color", Color("def"))
-		title_label.add_theme_font_size_override("font_size", 14)
-		title_label.end_bulk_theme_override()
-		title_container.add_child(title_label)
-		main_container.add_child(title_container)
-		# Continue with regular setup logic.
-		for idx in buttons.size():
-			if idx in separator_indices:
-				var separator := HSeparator.new()
-				separator.theme_type_variation = "SmallHSeparator"
-				main_container.add_child(separator)
-			main_container.add_child(_setup_button(buttons[idx], align_left))
-		if min_width > 0:
-			custom_minimum_size.x = min_width
-		if max_height > 0 and max_height < get_minimum_size().y:
-			custom_minimum_size.y = max_height
-			main_container.get_parent().vertical_scroll_mode = ScrollContainer.SCROLL_MODE_AUTO
+	
+	# Setup the title.
+	var title_container := PanelContainer.new()
+	var stylebox := StyleBoxFlat.new()
+	stylebox.bg_color = Color("0003")
+	stylebox.content_margin_bottom = 3
+	stylebox.content_margin_left = 8
+	stylebox.content_margin_right = 8
+	stylebox.border_width_bottom = 2
+	stylebox.border_color = ThemeUtils.common_panel_border_color
+	title_container.add_theme_stylebox_override("panel", stylebox)
+	var title_label := Label.new()
+	title_label.text = top_title
+	title_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	title_label.begin_bulk_theme_override()
+	title_label.add_theme_color_override("font_color", Color("def"))
+	title_label.add_theme_font_size_override("font_size", 14)
+	title_label.end_bulk_theme_override()
+	title_container.add_child(title_label)
+	main_container.add_child(title_container)
+	# Continue with regular setup logic.
+	for idx in buttons.size():
+		if idx in separator_indices:
+			var separator := HSeparator.new()
+			separator.theme_type_variation = "SmallHSeparator"
+			main_container.add_child(separator)
+		main_container.add_child(_setup_button(buttons[idx], align_left))
+	if min_width > 0:
+		custom_minimum_size.x = min_width
+	if max_height > 0 and max_height < get_minimum_size().y:
+		custom_minimum_size.y = max_height
+		main_container.get_parent().vertical_scroll_mode = ScrollContainer.SCROLL_MODE_AUTO
 
 
 # Helper.

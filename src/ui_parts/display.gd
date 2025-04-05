@@ -7,7 +7,7 @@ const NumberEdit = preload("res://src/ui_widgets/number_edit.gd")
 @onready var reference_button: Button = %LeftMenu/Reference
 @onready var visuals_button: Button = %LeftMenu/Visuals
 @onready var snapper: NumberEdit = %LeftMenu/Snapping/SnapNumberEdit
-@onready var snap_button: BetterToggleButton = %LeftMenu/Snapping/SnapButton
+@onready var snap_button: BetterButton = %LeftMenu/Snapping/SnapButton
 @onready var viewport_panel: PanelContainer = $ViewportPanel
 @onready var debug_container: MarginContainer = $ViewportPanel/DebugMargins
 @onready var debug_label: Label = %DebugContainer/DebugLabel
@@ -21,41 +21,19 @@ func _ready() -> void:
 	Configs.snap_changed.connect(update_snap_config)
 	Configs.theme_changed.connect(update_theme)
 	Configs.active_tab_changed.connect(sync_reference_image)
+	Configs.active_tab_reference_changed.connect(sync_reference_image)
+	State.show_reference_changed.connect(_on_show_reference_updated)
+	State.overlay_reference_changed.connect(_on_overlay_reference_updated)
+	State.show_debug_changed.connect(_on_show_debug_changed)
 	update_translations()
 	update_theme()
 	update_snap_config()
 	get_window().window_input.connect(_update_input_debug)
 
-func _unhandled_input(event: InputEvent) -> void:
-	if Input.is_action_pressed("debug"):
-		if debug_container.visible:
-			debug_container.hide()
-		else:
-			debug_container.show()
-			update_debug()
-			input_debug_label.text = ""
-	elif ShortcutUtils.is_action_pressed(event, "load_reference"):
-		FileUtils.open_image_import_dialog(finish_reference_import)
-	elif ShortcutUtils.is_action_pressed(event, "view_show_grid"):
-		toggle_grid_visuals()
-	elif ShortcutUtils.is_action_pressed(event, "view_show_handles"):
-		toggle_handles_visuals()
-	elif ShortcutUtils.is_action_pressed(event, "view_rasterized_svg"):
-		toggle_rasterization()
-	elif ShortcutUtils.is_action_pressed(event, "view_show_reference"):
-		toggle_reference_image()
-	elif ShortcutUtils.is_action_pressed(event, "view_overlay_reference"):
-		toggle_reference_overlay()
-	elif ShortcutUtils.is_action_pressed(event, "toggle_snap"):
-		toggle_snap()
-
 
 func update_translations() -> void:
 	%LeftMenu/Visuals.tooltip_text = Translator.translate("Visuals")
-	%LeftMenu/Snapping/SnapButton.tooltip_text =\
-			TranslationUtils.get_shortcut_description("toggle_snap")
-	%LeftMenu/Snapping/SnapNumberEdit.tooltip_text = Translator.translate(
-			"Snap size")
+	%LeftMenu/Snapping/SnapNumberEdit.tooltip_text = Translator.translate("Snap size")
 
 func update_theme() -> void:
 	var toolbar_stylebox := StyleBoxFlat.new()
@@ -82,13 +60,9 @@ func update_snap_config() -> void:
 
 func _on_reference_pressed() -> void:
 	var btn_arr: Array[Button] = [
-		ContextPopup.create_button(Translator.translate("Load reference image"),
-			FileUtils.open_image_import_dialog.bind(finish_reference_import), false,
-			load("res://assets/icons/Reference.svg"), "load_reference"),
-		ContextPopup.create_checkbox(Translator.translate("Show reference"),
-			toggle_reference_image, reference_texture.visible, "view_show_reference"),
-		ContextPopup.create_checkbox(Translator.translate("Overlay reference"),
-			toggle_reference_overlay, reference_overlay, "view_overlay_reference")
+		ContextPopup.create_shortcut_button("load_reference"),
+		ContextPopup.create_shortcut_checkbox("view_show_reference", reference_texture.visible),
+		ContextPopup.create_shortcut_checkbox("view_overlay_reference", reference_overlay)
 	]
 	
 	var reference_popup := ContextPopup.new()
@@ -98,12 +72,10 @@ func _on_reference_pressed() -> void:
 
 func _on_visuals_button_pressed() -> void:
 	var btn_arr: Array[Button] = [
-		ContextPopup.create_checkbox(Translator.translate("Show grid"),
-				toggle_grid_visuals, State.show_grid, "view_show_grid"),
-		ContextPopup.create_checkbox(Translator.translate("Show handles"),
-				toggle_handles_visuals, State.show_handles, "view_show_handles"),
-		ContextPopup.create_checkbox(Translator.translate("Rasterized SVG"),
-				toggle_rasterization, State.view_rasterized, "view_rasterized_svg")]
+		ContextPopup.create_shortcut_checkbox("view_show_grid", State.show_grid),
+		ContextPopup.create_shortcut_checkbox("view_show_handles", State.show_handles),
+		ContextPopup.create_shortcut_checkbox("view_rasterized_svg", State.view_rasterized)
+	]
 	
 	var visuals_popup := ContextPopup.new()
 	visuals_popup.setup(btn_arr, true)
@@ -111,35 +83,14 @@ func _on_visuals_button_pressed() -> void:
 			get_viewport())
 
 
-func toggle_grid_visuals() -> void:
-	State.set_show_grid(not State.show_grid)
+func _on_show_reference_updated() -> void:
+	reference_texture.visible = State.show_reference
 
-func toggle_handles_visuals() -> void:
-	State.set_show_handles(not State.show_handles)
-
-func toggle_rasterization() -> void:
-	State.set_view_rasterized(not State.view_rasterized)
-
-func toggle_reference_image() -> void:
-	reference_texture.visible = not reference_texture.visible
-
-func toggle_reference_overlay() -> void:
-	reference_overlay = not reference_overlay
-	if reference_overlay:
+func _on_overlay_reference_updated() -> void:
+	if State.overlay_reference:
 		viewport.move_child(reference_texture, viewport.get_child_count() - 1)
 	else:
 		viewport.move_child(reference_texture, 0)
-
-func finish_reference_import(data: Variant, file_path: String) -> void:
-	var img := Image.new()
-	match file_path.get_extension().to_lower():
-		"svg": img.load_svg_from_string(data)
-		"png": img.load_png_from_buffer(data)
-		"jpg", "jpeg": img.load_jpg_from_buffer(data)
-		"webp": img.load_webp_from_buffer(data)
-	var image_texture := ImageTexture.create_from_image(img)
-	Configs.savedata.get_active_tab().reference_image = image_texture
-	sync_reference_image()
 
 func sync_reference_image() ->  void:
 	var reference := Configs.savedata.get_active_tab().reference_image
@@ -150,18 +101,21 @@ func sync_reference_image() ->  void:
 		reference_texture.texture = null
 		reference_texture.hide()
 
-func toggle_snap() -> void:
-	snap_button.button_pressed = not snap_button.button_pressed
-
-func set_snap_amount(snap_value: float) -> void:
-	snapper.set_value(snap_value)
-
 func _on_snap_button_toggled(toggled_on: bool) -> void:
 	Configs.savedata.snap = absf(Configs.savedata.snap) if toggled_on\
 			else -absf(Configs.savedata.snap)
 
 func _on_snap_number_edit_value_changed(new_value: float) -> void:
 	Configs.savedata.snap = new_value * signf(Configs.savedata.snap)
+
+
+func _on_show_debug_changed() -> void:
+	if State.show_debug:
+		debug_container.show()
+		update_debug()
+		input_debug_label.text = ""
+	else:
+		debug_container.hide()
 
 # The strings here are intentionally not localized.
 func update_debug() -> void:

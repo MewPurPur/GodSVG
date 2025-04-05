@@ -190,42 +190,26 @@ func _gui_input(event: InputEvent) -> void:
 				var btn_arr: Array[Button] = []
 				
 				if hovered_idx == -1:
-					btn_arr.append(ContextPopup.create_button(
-							Translator.translate("Create tab"), Configs.savedata.add_empty_tab,
-							false, load("res://assets/icons/CreateTab.svg"), "new_tab"))
+					btn_arr.append(ContextPopup.create_shortcut_button("new_tab"))
 				else:
 					var new_active_tab := Configs.savedata.get_tab(hovered_idx)
+					var file_absent := not FileAccess.file_exists(new_active_tab.svg_file_path)
+					var tab_count := Configs.savedata.get_tab_count()
 					
-					btn_arr.append(ContextPopup.create_button(
-							Translator.translate("Close tab"),
-							FileUtils.close_tabs.bind(hovered_idx), false, null, "close_tab"))
+					btn_arr.append(ContextPopup.create_shortcut_button_without_icon(
+							"close_tab"))
 					# TODO Unify into "Close multiple tabs"
-					btn_arr.append(ContextPopup.create_button(
-							TranslationUtils.get_shortcut_description("close_all_other_tabs"),
-							FileUtils.close_tabs.bind(hovered_idx,
-							FileUtils.TabCloseMode.ALL_OTHERS),
-							Configs.savedata.get_tab_count() < 2, null, "close_all_other_tabs"))
-					btn_arr.append(ContextPopup.create_button(
-							TranslationUtils.get_shortcut_description("close_tabs_to_left"),
-							FileUtils.close_tabs.bind(hovered_idx,
-							FileUtils.TabCloseMode.TO_LEFT),
-							hovered_idx == 0, null, "close_tabs_to_left"))
-					btn_arr.append(ContextPopup.create_button(
-							TranslationUtils.get_shortcut_description("close_tabs_to_right"),
-							FileUtils.close_tabs.bind(hovered_idx,
-							FileUtils.TabCloseMode.TO_RIGHT),
-							hovered_idx == Configs.savedata.get_tab_count() - 1,
-							null, "close_tabs_to_right"))
-					btn_arr.append(ContextPopup.create_button(
-							Translator.translate("Open externally"),
-							ShortcutUtils.fn("open_externally"),
-							not FileAccess.file_exists(new_active_tab.svg_file_path),
-							load("res://assets/icons/OpenFile.svg"), "open_externally"))
-					btn_arr.append(ContextPopup.create_button(
-							Translator.translate("Show in File Manager"),
-							ShortcutUtils.fn("open_in_folder"),
-							not FileAccess.file_exists(new_active_tab.svg_file_path),
-							load("res://assets/icons/OpenFolder.svg"), "open_in_folder"))
+					btn_arr.append(ContextPopup.create_shortcut_button_without_icon(
+							"close_all_other_tabs", tab_count < 2))
+					btn_arr.append(ContextPopup.create_shortcut_button_without_icon(
+							"close_tabs_to_left", hovered_idx == 0))
+					btn_arr.append(ContextPopup.create_shortcut_button_without_icon(
+							"close_tabs_to_right", hovered_idx == tab_count - 1))
+							
+					btn_arr.append(ContextPopup.create_shortcut_button("open_externally",
+							file_absent))
+					btn_arr.append(ContextPopup.create_shortcut_button("open_in_folder",
+							file_absent))
 				var tab_popup := ContextPopup.new()
 				tab_popup.setup(btn_arr, true, -1, -1, PackedInt32Array([4]))
 				
