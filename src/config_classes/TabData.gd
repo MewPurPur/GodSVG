@@ -173,7 +173,8 @@ func _sync() -> void:
 			else:
 				marked_unsaved = true
 	
-	elif SVGParser.text_check_is_root_empty(get_true_svg_text()):
+	elif not FileAccess.file_exists(get_edited_file_path()) or\
+	SVGParser.text_check_is_root_empty(get_true_svg_text()):
 		empty_unsaved = true
 		marked_unsaved = false
 		presented_name = "[ %s ]" % Translator.translate("Empty")
