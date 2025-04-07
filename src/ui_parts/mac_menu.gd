@@ -146,37 +146,26 @@ func _add_many_actions(menu_rid: RID, actions: PackedStringArray) -> void:
 
 
 func _add_action(menu_rid: RID, action_name: StringName) -> int:
-	var display_name := _get_action_display_name(action_name)
-	var key := _get_keycode_for_events(InputMap.action_get_events(action_name))
-	return NativeMenu.add_item(menu_rid, display_name, _action_call, _action_call, action_name, key)
-
+	return NativeMenu.add_item(menu_rid,
+			TranslationUtils.get_shortcut_description(action_name),
+			HandlerGUI.throw_action_event, HandlerGUI.throw_action_event, action_name,
+			_get_action_keycode(action_name))
 
 func _add_check_item(menu_rid: RID, action_name: StringName) -> int:
-	var display_name := _get_action_display_name(action_name)
-	return NativeMenu.add_check_item(menu_rid, display_name, _action_call, _action_call, action_name)
-
+	return NativeMenu.add_check_item(menu_rid,
+			TranslationUtils.get_shortcut_description(action_name),
+			HandlerGUI.throw_action_event, HandlerGUI.throw_action_event, action_name)
 
 func _add_icon_item(menu_rid: RID, action_name: StringName, icon: Texture2D) -> int:
-	var display_name := _get_action_display_name(action_name)
-	return NativeMenu.add_icon_item(menu_rid, icon, display_name, _action_call, _action_call, action_name)
+	return NativeMenu.add_icon_item(menu_rid,
+			icon, TranslationUtils.get_shortcut_description(action_name),
+			HandlerGUI.throw_action_event, HandlerGUI.throw_action_event, action_name)
 
 
-func _get_action_display_name(action_name: StringName) -> String:
-	var display_name := TranslationUtils.get_shortcut_description(action_name)
-	if display_name.is_empty():
-		display_name = action_name.capitalize().replace("Svg", "SVG")
-	return display_name
-
-
-func _get_keycode_for_events(input_events: Array[InputEvent]) -> Key:
-	for input_event in input_events:
-		if input_event is InputEventKey:
-			var key: Key = input_event.get_keycode_with_modifiers()
-			if key != KEY_NONE:
-				return key
-			key = input_event.get_physical_keycode_with_modifiers()
-			if key != KEY_NONE:
-				return key
+func _get_action_keycode(action: String) -> Key:
+	var shortcut := ShortcutUtils.get_action_first_valid_shortcut(action)
+	if is_instance_valid(shortcut):
+		return shortcut.get_keycode_with_modifiers()
 	return KEY_NONE
 
 
@@ -205,10 +194,3 @@ func _on_snap_changed() -> void:
 
 func _set_snap(amount: float) -> void:
 	Configs.savedata.snap = amount
-
-
-func _action_call(tag: StringName) -> void:
-	var a := InputEventAction.new()
-	a.action = tag
-	a.pressed = true
-	Input.parse_input_event(a)

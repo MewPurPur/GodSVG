@@ -125,18 +125,24 @@ static func is_action_modifiable(shortcut: String) -> bool:
 			return _action_categories_dict[category][shortcut]
 	return false
 
-static func get_action_showcase_text(action := "") -> String:
-	for event in InputMap.action_get_events(action):
-		if Configs.savedata.is_shortcut_valid(event):
-			return event.as_text_keycode()
+static func get_action_showcase_text(action: String) -> String:
+	var shortcut := get_action_first_valid_shortcut(action)
+	if is_instance_valid(shortcut):
+		return shortcut.as_text_keycode()
 	return ""
 
 static func get_action_all_valid_shortcuts(action: String) -> Array[InputEventKey]:
 	var shortcuts: Array[InputEventKey] = []
 	for event in InputMap.action_get_events(action):
-		if Configs.savedata.is_shortcut_valid(event):
+		if event is InputEventKey and is_shortcut_valid(event, action):
 			shortcuts.append(event.duplicate())
 	return shortcuts
+
+static func get_action_first_valid_shortcut(action: String) -> InputEventKey:
+	for event in InputMap.action_get_events(action):
+		if event is InputEventKey and is_shortcut_valid(event, action):
+			return event
+	return null
 
 static func is_shortcut_valid(shortcut: InputEventKey, action: String) -> bool:
 	return not is_action_modifiable(action) or Configs.savedata.is_shortcut_valid(shortcut)
