@@ -49,5 +49,5 @@ func has_redo() -> bool:
 
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_PREDELETE:
-		if _undo_redo:
+		if is_instance_valid(_undo_redo):
 			_undo_redo.free()

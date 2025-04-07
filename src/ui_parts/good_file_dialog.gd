@@ -311,9 +311,8 @@ func _on_create_folder_finished(text: String) -> void:
 func open_dir_context(dir: String) -> void:
 	var context_popup := ContextPopup.new()
 	var btn_arr: Array[Button] = [
-		ContextPopup.create_button(Translator.translate("Open"),
-				enter_dir.bind(dir), false, load("res://assets/icons/OpenFolder.svg"),
-				"ui_accept"),
+		ContextPopup.create_shortcut_button("ui_accept", false,
+				Translator.translate("Open"), load("res://assets/icons/OpenFolder.svg")),
 		ContextPopup.create_button(Translator.translate("Copy path"),
 				DisplayServer.clipboard_set.bind(dir), false,
 				load("res://assets/icons/Copy.svg"))]
@@ -324,8 +323,8 @@ func open_dir_context(dir: String) -> void:
 func open_file_context(file: String) -> void:
 	focus_file(file)
 	var btn_arr: Array[Button] = [
-		ContextPopup.create_button(special_button.text,
-				select_file, false, load("res://assets/icons/OpenFile.svg"), "ui_accept"),
+		ContextPopup.create_shortcut_button("ui_accept", false, special_button.text,
+				load("res://assets/icons/OpenFile.svg")),
 		ContextPopup.create_button(Translator.translate("Copy path"),
 				copy_file_path, false, load("res://assets/icons/Copy.svg"))]
 	var context_popup := ContextPopup.new()

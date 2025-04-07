@@ -24,6 +24,8 @@ signal shortcut_panel_changed
 @warning_ignore("unused_signal")
 signal active_tab_status_changed
 @warning_ignore("unused_signal")
+signal active_tab_reference_changed
+@warning_ignore("unused_signal")
 signal active_tab_changed
 @warning_ignore("unused_signal")
 signal tabs_changed
@@ -45,7 +47,7 @@ var default_shortcuts: Dictionary[String, Array] = {}
 
 func _enter_tree() -> void:
 	# Fill up the default shortcuts dictionary before the shortcuts are loaded.
-	for action in ShortcutUtils.get_all_shortcuts():
+	for action in ShortcutUtils.get_all_actions():
 		if InputMap.has_action(action):
 			default_shortcuts[action] = InputMap.action_get_events(action)
 	load_config()

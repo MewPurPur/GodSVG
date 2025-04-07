@@ -13,25 +13,16 @@ signal zoom_reset_pressed
 var _zoom_level: float
 
 
-func update_translation() -> void:
-	zoom_out_button.tooltip_text = Translator.translate("Zoom out")
-	zoom_in_button.tooltip_text = Translator.translate("Zoom in")
-	zoom_reset_button.tooltip_text = Translator.translate("Zoom reset")
-
-func _ready() -> void:
-	zoom_out_button.pressed.connect(zoom_out)
-	zoom_in_button.pressed.connect(zoom_in)
-	zoom_reset_button.pressed.connect(zoom_reset)
-	Configs.language_changed.connect(update_translation)
-	update_translation()
-
 func _unhandled_input(event: InputEvent) -> void:
 	if ShortcutUtils.is_action_pressed(event, "zoom_in"):
 		zoom_in()
+		accept_event()
 	elif ShortcutUtils.is_action_pressed(event, "zoom_out"):
 		zoom_out()
+		accept_event()
 	elif ShortcutUtils.is_action_pressed(event, "zoom_reset"):
 		zoom_reset()
+		accept_event()
 
 
 func set_zoom(new_value: float, offset := Vector2(0.5, 0.5)) -> void:

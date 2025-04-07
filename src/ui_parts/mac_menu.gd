@@ -119,8 +119,8 @@ func _setup_menu_items() -> void:
 	NativeMenu.add_separator(file_rid)
 	file_reset_svg_idx = _add_action(file_rid, "reset_svg")
 	# Edit and Tool menus.
-	_add_many_actions(edit_rid, ShortcutUtils.get_shortcuts("edit"))
-	_add_many_actions(tool_rid, ShortcutUtils.get_shortcuts("tool"))
+	_add_many_actions(edit_rid, ShortcutUtils.get_actions("edit"))
+	_add_many_actions(tool_rid, ShortcutUtils.get_actions("tool"))
 	# View menu.
 	view_show_grid_idx = _add_check_item(view_rid, "view_show_grid")
 	view_show_handles_idx = _add_check_item(view_rid, "view_show_handles")

@@ -104,9 +104,7 @@ func _on_svg_code_edit_focus_entered() -> void:
 
 func _on_options_button_pressed() -> void:
 	var btn_array: Array[Button] = []
-	btn_array.append(ContextPopup.create_button(
-			Translator.translate("Copy all text"), ShortcutUtils.fn("copy_svg_text"),
-			false, load("res://assets/icons/Copy.svg"), "copy_svg_text"))
+	btn_array.append(ContextPopup.create_shortcut_button("copy_svg_text"))
 	var context_popup := ContextPopup.new()
 	context_popup.setup(btn_array, true)
 	HandlerGUI.popup_under_rect_center(context_popup, options_button.get_global_rect(),

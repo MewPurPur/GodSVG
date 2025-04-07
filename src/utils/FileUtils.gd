@@ -140,6 +140,16 @@ static func _finish_xml_export(file_path: String, xml: String) -> void:
 	FileAccess.open(file_path, FileAccess.WRITE).store_string(xml)
 	HandlerGUI.remove_all_menus()
 
+static func _finish_reference_load(data: Variant, file_path: String) -> void:
+	var img := Image.new()
+	match file_path.get_extension().to_lower():
+		"svg": img.load_svg_from_string(data)
+		"png": img.load_png_from_buffer(data)
+		"jpg", "jpeg": img.load_jpg_from_buffer(data)
+		"webp": img.load_webp_from_buffer(data)
+	var image_texture := ImageTexture.create_from_image(img)
+	Configs.savedata.get_active_tab().reference_image = image_texture
+
 
 static func _is_native_preferred() -> bool:
 	return DisplayServer.has_feature(DisplayServer.FEATURE_NATIVE_DIALOG_FILE) and\
@@ -153,9 +163,9 @@ static func _choose_file_name() -> String:
 static func open_svg_import_dialog() -> void:
 	_open_import_dialog(PackedStringArray(["svg"]), _apply_svg)
 
-static func open_image_import_dialog(completion_callback: Callable) -> void:
+static func open_image_import_dialog() -> void:
 	_open_import_dialog(PackedStringArray(["png", "jpg", "jpeg", "webp", "svg"]),
-			completion_callback, Translator.translate("Load an image file"))
+			_finish_reference_load, Translator.translate("Load an image file"))
 
 static func open_xml_import_dialog(completion_callback: Callable) -> void:
 	_open_import_dialog(PackedStringArray(["xml"]), completion_callback)

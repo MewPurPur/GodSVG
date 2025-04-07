@@ -21,22 +21,15 @@ func _make_custom_tooltip(_for_text: String) -> Object:
 
 func _on_file_button_pressed() -> void:
 	var btn_array: Array[Button] = []
-	btn_array.append(ContextPopup.create_button(Translator.translate("Save SVG"),
-			FileUtils.save_svg, false, load("res://assets/icons/Save.svg"), "save"))
-	btn_array.append(ContextPopup.create_button(Translator.translate("Save SVG as…"),
-			FileUtils.save_svg_as, false, load("res://assets/icons/Save.svg"), "save_as"))
-	btn_array.append(ContextPopup.create_button(Translator.translate("Reset SVG"),
-			ShortcutUtils.fn("reset_svg"),
-			FileUtils.compare_svg_to_disk_contents() != FileUtils.FileState.DIFFERENT,
-			load("res://assets/icons/Reload.svg"), "reset_svg"))
-	btn_array.append(ContextPopup.create_button(Translator.translate("Open externally"),
-			ShortcutUtils.fn("open_externally"),
-			not FileAccess.file_exists(Configs.savedata.get_active_tab().svg_file_path),
-			load("res://assets/icons/OpenFile.svg"), "open_externally"))
-	btn_array.append(ContextPopup.create_button(Translator.translate("Show in File Manager"),
-			ShortcutUtils.fn("open_in_folder"),
-			not FileAccess.file_exists(Configs.savedata.get_active_tab().svg_file_path),
-			load("res://assets/icons/OpenFolder.svg"), "open_in_folder"))
+	btn_array.append(ContextPopup.create_shortcut_button("save"))
+	btn_array.append(ContextPopup.create_shortcut_button("save_as", false,
+			Translator.translate("Save SVG as…")))
+	btn_array.append(ContextPopup.create_shortcut_button("reset_svg",
+			FileUtils.compare_svg_to_disk_contents() != FileUtils.FileState.DIFFERENT))
+	btn_array.append(ContextPopup.create_shortcut_button("open_externally",
+			not FileAccess.file_exists(Configs.savedata.get_active_tab().svg_file_path)))
+	btn_array.append(ContextPopup.create_shortcut_button("open_in_folder",
+			not FileAccess.file_exists(Configs.savedata.get_active_tab().svg_file_path)))
 	
 	var context_popup := ContextPopup.new()
 	context_popup.setup(btn_array, true, size.x, -1, PackedInt32Array([2]))

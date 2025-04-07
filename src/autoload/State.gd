@@ -263,25 +263,40 @@ func set_viewport_size(new_value: Vector2i) -> void:
 var view_rasterized := false
 var show_grid := true
 var show_handles := true
+var show_reference := false
+var overlay_reference := false
+var show_debug := false
 
 signal view_rasterized_changed
 signal show_grid_changed
 signal show_handles_changed
+signal show_reference_changed
+signal overlay_reference_changed
+signal show_debug_changed
 
-func set_view_rasterized(new_value: bool) -> void:
-	if view_rasterized != new_value:
-		view_rasterized = new_value
-		view_rasterized_changed.emit()
+func toggle_view_rasterized() -> void:
+	view_rasterized = not view_rasterized
+	view_rasterized_changed.emit()
 
-func set_show_grid(new_value: bool) -> void:
-	if show_grid != new_value:
-		show_grid = new_value
-		show_grid_changed.emit()
+func toggle_show_grid() -> void:
+	show_grid = not show_grid
+	show_grid_changed.emit()
 
-func set_show_handles(new_value: bool) -> void:
-	if show_handles != new_value:
-		show_handles = new_value
-		show_handles_changed.emit()
+func toggle_show_handles() -> void:
+	show_handles = not show_handles
+	show_handles_changed.emit()
+
+func toggle_show_reference() -> void:
+	show_reference = not show_reference
+	show_reference_changed.emit()
+
+func toggle_overlay_reference() -> void:
+	overlay_reference = not overlay_reference
+	overlay_reference_changed.emit()
+
+func toggle_show_debug() -> void:
+	show_debug = not show_debug
+	show_debug_changed.emit()
 
 
 # Override the selected elements with a single new selected element.
@@ -629,8 +644,7 @@ func respond_to_key_input(path_cmd_char: String) -> void:
 				# Z after a Z is syntactically invalid.
 				if (path_cmd_count == 0 and not path_cmd_char in "Mm") or\
 				(path_cmd_char in "Zz" and path_cmd_count > 0 and\
-				path_attrib.get_command(path_cmd_count - 1) is\
-				PathCommand.CloseCommand):
+				path_attrib.get_command(path_cmd_count - 1) is PathCommand.CloseCommand):
 					return
 				path_attrib.insert_command(path_cmd_count, path_cmd_char, Vector2.ZERO)
 				normal_select(selected_xids[0], path_cmd_count)
@@ -751,10 +765,8 @@ func get_selection_context(popup_method: Callable, context: Context) -> ContextP
 			btn_arr.append(ContextPopup.create_button(Translator.translate("View in List"),
 					view_in_list.bind(selected_xids[0]), false,
 					load("res://assets/icons/ViewInList.svg")))
-
-		btn_arr.append(ContextPopup.create_button(Translator.translate("Duplicate"),
-				duplicate_selected, false, load("res://assets/icons/Duplicate.svg"),
-				"duplicate"))
+		
+		btn_arr.append(ContextPopup.create_shortcut_button("duplicate"))
 		
 		var xnode := root_element.get_xnode(selected_xids[0])
 		if selected_xids.size() == 1 and ((not xnode.is_element() and\
@@ -766,18 +778,11 @@ func get_selection_context(popup_method: Callable, context: Context) -> ContextP
 					load("res://assets/icons/Reload.svg")))
 		
 		if can_move_up:
-			btn_arr.append(ContextPopup.create_button(
-					Translator.translate("Move Up"),
-					move_up_selected, false,
-					load("res://assets/icons/MoveUp.svg"), "move_up"))
+			btn_arr.append(ContextPopup.create_shortcut_button("move_up"))
 		if can_move_down:
-			btn_arr.append(ContextPopup.create_button(
-					Translator.translate("Move Down"),
-					move_down_selected, false,
-					load("res://assets/icons/MoveDown.svg"), "move_down"))
+			btn_arr.append(ContextPopup.create_shortcut_button("move_down"))
 		
-		btn_arr.append(ContextPopup.create_button(Translator.translate("Delete"),
-				delete_selected, false, load("res://assets/icons/Delete.svg"), "delete"))
+		btn_arr.append(ContextPopup.create_shortcut_button("delete"))
 	
 	elif not inner_selections.is_empty() and not semi_selected_xid.is_empty():
 		var element_ref := root_element.get_xnode(semi_selected_xid)
@@ -808,24 +813,18 @@ func get_selection_context(popup_method: Callable, context: Context) -> ContextP
 					var can_move_up := false
 					var can_move_down := false
 					if can_move_up:
-						btn_arr.append(ContextPopup.create_button(
-								Translator.translate("Move Up"), # Change to "Move Subpath Up"
-								move_up_selected, false,
-								load("res://visual/icons/MoveUp.svg"), "move_up"))
+						btn_arr.append(ContextPopup.create_shortcut_button("move_up"))
+						# , "Move Subpath Up"
 					if can_move_down:
-						btn_arr.append(ContextPopup.create_button(
-								Translator.translate("Move Down"), # Change to "Move Subpath Down"
-								move_down_selected, false,
-								load("res://visual/icons/MoveDown.svg"), "move_down"))
+						btn_arr.append(ContextPopup.create_shortcut_button("move_down"))
+						# , "Move Subpath Down"
 			"polygon", "polyline":
 				if inner_selections.size() == 1:
 					btn_arr.append(ContextPopup.create_button(
-							Translator.translate("Insert After"),
-							insert_point_after_selection, false,
-							load("res://assets/icons/Plus.svg")))
+							Translator.translate("Insert After"), insert_point_after_selection,
+							false, load("res://assets/icons/Plus.svg")))
 		
-		btn_arr.append(ContextPopup.create_button(Translator.translate("Delete"),
-				delete_selected, false, load("res://assets/icons/Delete.svg"), "delete"))
+		btn_arr.append(ContextPopup.create_shortcut_button("delete"))
 	
 	var element_context := ContextPopup.new()
 	element_context.setup(btn_arr, true)

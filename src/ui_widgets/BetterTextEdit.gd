@@ -12,6 +12,10 @@ var _is_caret_queued_for_redraw := false
 var _hovered := false
 
 func _init() -> void:
+	# Solves an issue where Ctrl+S would type an "s" and handle the input.
+	# We want anything with Ctrl to not be handled, but other keys to still be handled.
+	set_process_unhandled_key_input(false)
+	
 	context_menu_enabled = false
 	wrap_mode = TextEdit.LINE_WRAPPING_BOUNDARY
 	scroll_smooth = true
@@ -132,29 +136,25 @@ func _gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion and event.button_mask == 0:
 		_hovered = true
 		queue_redraw()
-	if event is InputEventMouseButton:
+	elif event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_RIGHT and event.is_pressed():
 			grab_focus()
 			var btn_arr: Array[Button] = []
 			var separator_arr := PackedInt32Array()
+			
+			var is_text_empty := text.is_empty()
+			
 			if editable:
-				btn_arr.append(ContextPopup.create_button(Translator.translate("Undo"),
-						undo, not has_undo(), load("res://assets/icons/Undo.svg"), "ui_undo"))
-				btn_arr.append(ContextPopup.create_button(Translator.translate("Redo"),
-						redo, not has_redo(), load("res://assets/icons/Redo.svg"), "ui_redo"))
+				btn_arr.append(ContextPopup.create_shortcut_button("ui_undo", not has_undo()))
+				btn_arr.append(ContextPopup.create_shortcut_button("ui_redo", not has_redo()))
 				if DisplayServer.has_feature(DisplayServer.FEATURE_CLIPBOARD):
 					separator_arr = PackedInt32Array([2])
-					btn_arr.append(ContextPopup.create_button(Translator.translate("Cut"),
-							cut, text.is_empty(), load("res://assets/icons/Cut.svg"), "ui_cut"))
-					btn_arr.append(ContextPopup.create_button(Translator.translate("Copy"),
-							copy, text.is_empty(),
-							load("res://assets/icons/Copy.svg"), "ui_copy"))
-					btn_arr.append(ContextPopup.create_button(Translator.translate("Paste"),
-							paste, !Utils.has_clipboard_web_safe(),
-							load("res://assets/icons/Paste.svg"), "ui_paste"))
+					btn_arr.append(ContextPopup.create_shortcut_button("ui_cut", is_text_empty))
+					btn_arr.append(ContextPopup.create_shortcut_button("ui_copy", is_text_empty))
+					btn_arr.append(ContextPopup.create_shortcut_button("ui_paste",
+							not Utils.has_clipboard_web_safe()))
 			else:
-				btn_arr.append(ContextPopup.create_button(Translator.translate("Copy"),
-						copy, text.is_empty(), load("res://assets/icons/Copy.svg"), "ui_copy"))
+				btn_arr.append(ContextPopup.create_shortcut_button("ui_copy", is_text_empty))
 			
 			var context_popup := ContextPopup.new()
 			context_popup.setup(btn_arr, true, -1, -1, separator_arr)

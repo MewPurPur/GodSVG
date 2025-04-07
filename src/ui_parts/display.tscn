@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://iglrqrqyg4kn" path="res://assets/icons/Reference.svg" id="4_2hiq7"]
 [ext_resource type="Texture2D" uid="uid://kkxyv1gyrjgj" path="res://assets/icons/Visuals.svg" id="4_n3qjt"]
 [ext_resource type="Texture2D" uid="uid://buire51l0mifg" path="res://assets/icons/Snap.svg" id="5_1k2cq"]
-[ext_resource type="Script" uid="uid://ynx3s1jc6bwq" path="res://src/ui_widgets/BetterToggleButton.gd" id="6_3v3ve"]
+[ext_resource type="Script" uid="uid://ynx3s1jc6bwq" path="res://src/ui_widgets/BetterButton.gd" id="6_3v3ve"]
 [ext_resource type="PackedScene" uid="uid://dad7fkhmsooc6" path="res://src/ui_widgets/number_edit.tscn" id="7_wrrfr"]
 [ext_resource type="PackedScene" uid="uid://oltvrf01xrxl" path="res://src/ui_parts/zoom_menu.tscn" id="8_xtdmn"]
 [ext_resource type="Script" uid="uid://b6pmlbnl76wmm" path="res://src/ui_parts/viewport.gd" id="9_4xrk7"]
@@ -92,6 +92,7 @@ toggle_mode = true
 icon = ExtResource("5_1k2cq")
 script = ExtResource("6_3v3ve")
 hover_pressed_stylebox = SubResource("StyleBoxFlat_eujxa")
+action = "toggle_snap"
 
 [node name="SnapNumberEdit" parent="ViewportPanel/VBoxContainer/Toolbar/ViewportOptions/LeftMenu/Snapping" instance=ExtResource("7_wrrfr")]
 custom_minimum_size = Vector2(48, 22)
@@ -116,7 +117,7 @@ unique_name_in_owner = true
 disable_3d = true
 handle_input_locally = false
 gui_snap_controls_to_pixels = false
-size = Vector2i(1040, 595)
+size = Vector2i(450, 2)
 size_2d_override_stretch = true
 render_target_update_mode = 4
 script = ExtResource("9_4xrk7")

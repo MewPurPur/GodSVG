@@ -1,7 +1,7 @@
 class_name ShortcutUtils extends RefCounted
 
-# The bool after each action is for whether the shortcut can be modified.
-const _shortcut_categories_dict: Dictionary[String, Dictionary] = {
+# The bool after each action is for whether the action can be modified.
+const _action_categories_dict: Dictionary[String, Dictionary] = {
 	"file": {
 		"import": true,
 		"export": true,
@@ -79,57 +79,6 @@ const _shortcut_categories_dict: Dictionary[String, Dictionary] = {
 	}
 }
 
-static func fn_call(shortcut: String) -> void:
-	fn(shortcut).call()
-
-# The methods that should be called if these shortcuts aren't handled.
-# Should bind only constants, otherwise the binds can get outdated before being used.
-static func fn(shortcut: String) -> Callable:
-	match shortcut:
-		"save": return FileUtils.save_svg
-		"save_as": return FileUtils.save_svg_as
-		"export": return HandlerGUI.open_export
-		"import": return FileUtils.open_svg_import_dialog
-		"close_tab": return FileUtils.close_tabs.bind(
-				Configs.savedata.get_active_tab_index())
-		"close_tabs_to_left": return FileUtils.close_tabs.bind(
-				Configs.savedata.get_active_tab_index(), FileUtils.TabCloseMode.TO_LEFT)
-		"close_tabs_to_right": return FileUtils.close_tabs.bind(
-				Configs.savedata.get_active_tab_index(), FileUtils.TabCloseMode.TO_RIGHT)
-		"close_all_other_tabs": return FileUtils.close_tabs.bind(
-				Configs.savedata.get_active_tab_index(), FileUtils.TabCloseMode.ALL_OTHERS)
-		"new_tab": return Configs.savedata.add_empty_tab
-		"select_next_tab": return func() -> void: Configs.savedata.set_active_tab_index(
-				posmod(Configs.savedata.get_active_tab_index() + 1,
-				Configs.savedata.get_tab_count()))
-		"select_previous_tab": return func() -> void: Configs.savedata.set_active_tab_index(
-				posmod(Configs.savedata.get_active_tab_index() - 1,
-				Configs.savedata.get_tab_count()))
-		"copy_svg_text": return DisplayServer.clipboard_set.bind(State.svg_text)
-		"optimize": return State.optimize
-		"reset_svg": return FileUtils.reset_svg
-		"open_externally": return func() -> void: FileUtils.open_svg(
-				Configs.savedata.get_active_tab().svg_file_path)
-		"open_in_folder": return func() -> void: FileUtils.open_svg_folder(
-				Configs.savedata.get_active_tab().svg_file_path)
-		"ui_undo": return Configs.savedata.get_active_tab().undo
-		"ui_redo": return Configs.savedata.get_active_tab().redo
-		"ui_cancel": return State.clear_all_selections
-		"delete": return State.delete_selected
-		"move_up": return State.move_up_selected
-		"move_down": return State.move_down_selected
-		"duplicate": return State.duplicate_selected
-		"select_all": return State.select_all
-		"about_info": return HandlerGUI.open_about
-		"about_donate": return HandlerGUI.open_donate
-		"about_repo": return OS.shell_open.bind("https://github.com/MewPurPur/GodSVG")
-		"about_website": return OS.shell_open.bind("https://godsvg.com")
-		"check_updates": return HandlerGUI.open_update_checker
-		"quit": return HandlerGUI.prompt_quit
-		"open_settings": return HandlerGUI.open_settings
-		"toggle_snap": return Callable()
-		_: return Callable()
-
 static func get_shortcut_icon(shortcut: String) -> CompressedTexture2D:
 	match shortcut:
 		"ui_paste": return load("res://assets/icons/Paste.svg")
@@ -158,28 +107,47 @@ static func get_shortcut_icon(shortcut: String) -> CompressedTexture2D:
 		"open_settings": return load("res://assets/icons/Gear.svg")
 		"about_donate": return load("res://assets/icons/Heart.svg")
 		"about_repo", "about_website": return load("res://assets/icons/Link.svg")
+		"load_reference": return load("res://assets/icons/Reference.svg")
 		_: return load("res://assets/icons/Placeholder.svg")
 
-static func get_shortcuts(category: String) -> PackedStringArray:
-	return _shortcut_categories_dict[category].keys()
+static func get_actions(category: String) -> PackedStringArray:
+	return _action_categories_dict[category].keys()
 
-static func get_all_shortcuts() -> PackedStringArray:
+static func get_all_actions() -> PackedStringArray:
 	var shortcuts := PackedStringArray()
-	for category in _shortcut_categories_dict:
-		shortcuts += get_shortcuts(category)
+	for category in _action_categories_dict:
+		shortcuts += get_actions(category)
 	return shortcuts
 
-static func is_shortcut_modifiable(shortcut: String) -> bool:
-	for category in _shortcut_categories_dict:
-		if _shortcut_categories_dict[category].has(shortcut):
-			return _shortcut_categories_dict[category][shortcut]
+static func is_action_modifiable(shortcut: String) -> bool:
+	for category in _action_categories_dict:
+		if _action_categories_dict[category].has(shortcut):
+			return _action_categories_dict[category][shortcut]
 	return false
+
+static func get_action_showcase_text(action := "") -> String:
+	for event in InputMap.action_get_events(action):
+		if Configs.savedata.is_shortcut_valid(event):
+			return event.as_text_keycode()
+	return ""
+
+static func get_action_all_valid_shortcuts(action: String) -> Array[InputEventKey]:
+	var shortcuts: Array[InputEventKey] = []
+	for event in InputMap.action_get_events(action):
+		if Configs.savedata.is_shortcut_valid(event):
+			shortcuts.append(event.duplicate())
+	return shortcuts
+
+static func is_shortcut_valid(shortcut: InputEventKey, action: String) -> bool:
+	return not is_action_modifiable(action) or Configs.savedata.is_shortcut_valid(shortcut)
 
 static func is_action_pressed(event: InputEvent, action: String) -> bool:
 	# TODO Sometimes MacOS gives us an InputEventAction here.
 	# This doesn't happen on my Linux laptop. I don't know which platform's behavior
 	# is the correct one... But it should be handled gracefully.
 	if event is InputEventAction:
+		if event.event_index == -1:
+			# The action has no associated shortcut, so we don't need to check validity.
+			return event.pressed and event.action == action
 		event = InputMap.action_get_events(event.action)[event.event_index]
-	return event.is_action_pressed(action, false, true) and\
-			Configs.savedata.is_shortcut_valid(event)
+	return event.is_action_pressed(action, false, true) and is_shortcut_valid(event, action)

@@ -1,19 +1,9 @@
 extends HBoxContainer
 
-@onready var import_button: Button = $RightSide/ImportButton
-@onready var export_button: Button = $RightSide/ExportButton
 @onready var more_options: Button = $LeftSide/MoreOptions
-@onready var settings_button: Button = $LeftSide/SettingsButton
 @onready var size_button: Button = $RightSide/SizeButton
 
-func update_translations() -> void:
-	import_button.tooltip_text = Translator.translate("Import")
-	export_button.tooltip_text = Translator.translate("Export")
-	settings_button.tooltip_text = Translator.translate("Settings")
-
 func _ready() -> void:
-	Configs.language_changed.connect(update_translations)
-	update_translations()
 	State.svg_changed.connect(update_size_button)
 	Configs.basic_colors_changed.connect(update_size_button_colors)
 	
@@ -27,18 +17,13 @@ func _ready() -> void:
 		size_button.add_theme_stylebox_override(theme_type, stylebox)
 	size_button.end_bulk_theme_override()
 	
-	import_button.pressed.connect(ShortcutUtils.fn("import"))
-	export_button.pressed.connect(ShortcutUtils.fn("export"))
 	more_options.pressed.connect(_on_more_options_pressed)
 	size_button.pressed.connect(_on_size_button_pressed)
-	settings_button.pressed.connect(ShortcutUtils.fn_call.bind("open_settings"))
 
 
 func _on_size_button_pressed() -> void:
 	var btn_array: Array[Button] = [
-		ContextPopup.create_button(Translator.translate("Optimize"),
-				ShortcutUtils.fn("optimize"), false, load("res://assets/icons/Compress.svg"),
-				"optimize")]
+		ContextPopup.create_shortcut_button("optimize")]
 	var context_popup := ContextPopup.new()
 	context_popup.setup(btn_array, true)
 	HandlerGUI.popup_under_rect_center(context_popup, size_button.get_global_rect(),
@@ -48,29 +33,20 @@ func _on_more_options_pressed() -> void:
 	var can_show_savedata_folder := DisplayServer.has_feature(
 				DisplayServer.FEATURE_NATIVE_DIALOG_FILE)
 	var buttons_arr: Array[Button] = []
-	buttons_arr.append(ContextPopup.create_button(Translator.translate(
-			"Check for updates"), ShortcutUtils.fn("check_updates"), false,
-			load("res://assets/icons/Reload.svg"), "check_updates"))
+	buttons_arr.append(ContextPopup.create_shortcut_button("check_updates"))
 	
 	if can_show_savedata_folder:
 		buttons_arr.append(ContextPopup.create_button(Translator.translate(
 				"View savedata"), open_savedata_folder , false,
 				load("res://assets/icons/OpenFolder.svg")))
 	
-	var about_btn := ContextPopup.create_button(Translator.translate("About…"),
-			ShortcutUtils.fn("about_info"), false,
-			load("res://assets/logos/icon.svg"), "about_info")
+	var about_btn := ContextPopup.create_shortcut_button("about_info", false, "",
+			load("res://assets/logos/icon.svg"))
 	about_btn.expand_icon = true
 	buttons_arr.append(about_btn)
-	buttons_arr.append(ContextPopup.create_button(Translator.translate(
-			"Donate…"), ShortcutUtils.fn("about_donate"), false,
-			load("res://assets/icons/Heart.svg"), "about_donate"))
-	buttons_arr.append(ContextPopup.create_button(Translator.translate(
-			"GodSVG repository"), ShortcutUtils.fn("about_repo"), false,
-			load("res://assets/icons/Link.svg"), "about_repo"))
-	buttons_arr.append(ContextPopup.create_button(Translator.translate(
-			"GodSVG website"), ShortcutUtils.fn("about_website"), false,
-			load("res://assets/icons/Link.svg"), "about_website"))
+	buttons_arr.append(ContextPopup.create_shortcut_button("about_donate"))
+	buttons_arr.append(ContextPopup.create_shortcut_button("about_repo"))
+	buttons_arr.append(ContextPopup.create_shortcut_button("about_website"))
 	var separator_indices := PackedInt32Array([1, 3])
 	if can_show_savedata_folder:
 		separator_indices = PackedInt32Array([2, 4])
