@@ -17,11 +17,11 @@
 - **Real-time code:** As you manipulate elements in the UI, code is instantly generated and can be edited.
 - **Optimized SVGs:** The generated SVG files are small and efficient, and there are many options to assist with optimization.
 
-![usage](https://github.com/user-attachments/assets/51171c0c-cd88-4b69-b1a1-495b3f45f5bf)
+![image](https://github.com/user-attachments/assets/d40e4de8-12ba-483b-ac41-878047c8e4f7)
 
 ## Downloads and links
 
-Download the version you want from [the list of GodSVG releases](https://github.com/MewPurPur/GodSVG/releases).
+Download the version you want from [the list of GodSVG releases](https://github.com/MewPurPur/GodSVG/releases). Android versions are currently experimental. For MacOS, you'll have to [disable Gatekeeper](https://disable-gatekeeper.github.io/), as I don't have the time or money to deal with Apple's gatekeeping.
 
 Link to the web editor: https://godsvg.com/editor
 
