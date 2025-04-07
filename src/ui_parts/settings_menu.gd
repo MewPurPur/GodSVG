@@ -260,6 +260,8 @@ func setup_content() -> void:
 				dropdown_values.append(SaveData.ScalingApproach.CONSTANT_175)
 			if min_ui_scale <= 2.0 and 2.0 <= max_ui_scale:
 				dropdown_values.append(SaveData.ScalingApproach.CONSTANT_200)
+			if min_ui_scale <= 2.5 and 2.5 <= max_ui_scale:
+				dropdown_values.append(SaveData.ScalingApproach.CONSTANT_250)
 			if min_ui_scale <= 3.0 and 3.0 <= max_ui_scale:
 				dropdown_values.append(SaveData.ScalingApproach.CONSTANT_300)
 			if min_ui_scale <= 4.0 and 4.0 <= max_ui_scale:
@@ -274,6 +276,7 @@ func setup_content() -> void:
 				SaveData.ScalingApproach.CONSTANT_150: "150%",
 				SaveData.ScalingApproach.CONSTANT_175: "175%",
 				SaveData.ScalingApproach.CONSTANT_200: "200%",
+				SaveData.ScalingApproach.CONSTANT_250: "250%",
 				SaveData.ScalingApproach.CONSTANT_300: "300%",
 				SaveData.ScalingApproach.CONSTANT_400: "400%",
 				SaveData.ScalingApproach.MAX: "Max (%d%%)" % (max_ui_scale * 100),

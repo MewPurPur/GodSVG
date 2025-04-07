@@ -417,6 +417,7 @@ func update_ui_scale() -> void:
 		SaveData.ScalingApproach.CONSTANT_150: final_scale = 1.50
 		SaveData.ScalingApproach.CONSTANT_175: final_scale = 1.75
 		SaveData.ScalingApproach.CONSTANT_200: final_scale = 2.0
+		SaveData.ScalingApproach.CONSTANT_250: final_scale = 2.5
 		SaveData.ScalingApproach.CONSTANT_300: final_scale = 3.0
 		SaveData.ScalingApproach.CONSTANT_400: final_scale = 4.0
 		SaveData.ScalingApproach.MAX: final_scale = max_scale

@@ -261,7 +261,7 @@ const HANDLE_SIZE_MAX = 4.0
 			Configs.handle_visuals_changed.emit()
 
 enum ScalingApproach {AUTO, CONSTANT_075, CONSTANT_100, CONSTANT_125, CONSTANT_150,
-		CONSTANT_175, CONSTANT_200, CONSTANT_300, CONSTANT_400, MAX}
+		CONSTANT_175, CONSTANT_200, CONSTANT_250, CONSTANT_300, CONSTANT_400, MAX}
 @export var ui_scale := ScalingApproach.AUTO:
 	set(new_value):
 		# Validation
