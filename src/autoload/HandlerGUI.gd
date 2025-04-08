@@ -220,10 +220,7 @@ func _unhandled_input(event: InputEvent) -> void:
 			_remove_control()
 			return
 	
-	const CONST_ARR_1: PackedStringArray = ["quit", "about_info", "about_donate",
-			"check_updates", "open_settings", "about_repo", "about_website",
-			"open_externally", "open_in_folder"]
-	for action in CONST_ARR_1:
+	for action in ShortcutUtils.UNIVERSAL_ACTIONS:
 		if ShortcutUtils.is_action_pressed(event, action):
 			match action:
 				"quit": prompt_quit()
@@ -243,11 +240,7 @@ func _unhandled_input(event: InputEvent) -> void:
 	if not menu_stack.is_empty():
 		return
 	
-	# Global actions that should still work when there are popups but no menus.
-	const CONST_ARR_2: PackedStringArray = ["view_show_grid", "view_show_handles",
-			"view_rasterized_svg", "view_show_reference", "view_overlay_reference",
-			"load_reference", "toggle_snap"]
-	for action in CONST_ARR_2:
+	for action in ShortcutUtils.EFFECT_ACTIONS:
 		if ShortcutUtils.is_action_pressed(event, action):
 			match action:
 				"view_show_grid": State.toggle_show_grid()
@@ -262,11 +255,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		return
 	
 	# Global actions that should happen regardless of the context.
-	const CONST_ARR_3: PackedStringArray = ["import", "export", "save", "save_as",
-			"close_tab", "close_tabs_to_left", "close_tabs_to_right", "close_all_other_tabs",
-			"new_tab", "select_next_tab", "select_previous_tab", "copy_svg_text", "optimize",
-			"reset_svg", "debug"]
-	for action in CONST_ARR_3:
+	for action in ShortcutUtils.EDITOR_ACTIONS:
 		if ShortcutUtils.is_action_pressed(event, action):
 			match action:
 				"import": FileUtils.open_svg_import_dialog()
@@ -300,9 +289,7 @@ func _unhandled_input(event: InputEvent) -> void:
 	if get_viewport().gui_is_dragging():
 		return
 	
-	const CONST_ARR_4: PackedStringArray = ["ui_undo", "ui_redo", "ui_cancel", "delete",
-			"move_up", "move_down", "duplicate", "select_all"]
-	for action in CONST_ARR_4:
+	for action in ShortcutUtils.PRISTINE_ACTIONS:
 		if ShortcutUtils.is_action_pressed(event, action):
 			match action:
 				"ui_undo": Configs.savedata.get_active_tab().undo()
