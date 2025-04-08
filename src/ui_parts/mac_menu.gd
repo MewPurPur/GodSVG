@@ -20,6 +20,9 @@ var view_idx: int
 var view_show_grid_idx: int
 var view_show_handles_idx: int
 var view_rasterized_svg_idx: int
+var view_show_reference_idx: int
+var view_overlay_reference_idx: int
+var view_show_debug_idx: int
 
 var snap_rid: RID
 var snap_idx: int
@@ -42,7 +45,8 @@ func _enter_tree() -> void:
 	_setup_menu_items()
 	# Updates
 	Configs.language_changed.connect(_reset_menus)
-	Configs.shortcuts_changed.connect(_setup_menu_items)
+	Configs.shortcuts_changed.connect(_reset_menus)
+	# For now only keep check items up to date. Disabling things reliably is complicated.
 	Configs.snap_changed.connect(_on_snap_changed)
 	_on_snap_changed()
 	State.view_rasterized_changed.connect(_on_view_rasterized_changed)
@@ -51,12 +55,12 @@ func _enter_tree() -> void:
 	_on_show_grid_changed()
 	State.show_handles_changed.connect(_on_show_handles_changed)
 	_on_show_handles_changed()
-	State.svg_changed.connect(_on_svg_changed)
-	_on_svg_changed()
+	State.show_reference_changed.connect(_on_show_reference_changed)
+	State.overlay_reference_changed.connect(_on_overlay_reference_changed)
+	State.show_debug_changed.connect(_on_show_debug_changed)
 
 
 func _reset_menus() -> void:
-	_clear_menu_items()
 	NativeMenu.remove_item(global_rid, snap_idx)
 	NativeMenu.remove_item(global_rid, view_idx)
 	NativeMenu.remove_item(global_rid, tool_idx)
@@ -100,35 +104,36 @@ func _clear_menu_items() -> void:
 
 
 func _setup_menu_items() -> void:
-	# Included App and Help menus.
-	_add_action(appl_rid, "open_settings")
-	_add_icon_item(help_rid, "open_settings", load("res://assets/icons/Gear.svg"))
-	_add_icon_item(help_rid, "about_repo", load("res://assets/icons/Link.svg"))
-	_add_icon_item(help_rid, "about_info", load("res://assets/logos/icon.svg"))
-	_add_icon_item(help_rid, "about_donate", load("res://assets/icons/Heart.svg"))
-	_add_icon_item(help_rid, "about_website", load("res://assets/icons/Link.svg"))
-	_add_icon_item(help_rid, "check_updates", load("res://assets/icons/Reload.svg"))
+	_clear_menu_items()
+	_add_item(appl_rid, "open_settings")
+	# Help menu.
+	_add_icon_item(help_rid, "open_settings")
+	_add_icon_item(help_rid, "about_repo")
+	_add_icon_item(help_rid, "about_info")
+	_add_icon_item(help_rid, "about_donate")
+	_add_icon_item(help_rid, "about_website")
+	_add_icon_item(help_rid, "check_updates")
 	# File menu.
-	_add_action(file_rid, "import")
-	_add_action(file_rid, "export")
-	_add_action(file_rid, "save")
-	_add_action(file_rid, "save_as")
+	_add_many_items(file_rid, PackedStringArray(["import", "export", "save", "save_as"]))
 	NativeMenu.add_separator(file_rid)
-	_add_action(file_rid, "copy_svg_text")
-	file_optimize_idx = _add_action(file_rid, "optimize")
+	_add_item(file_rid, "copy_svg_text")
+	file_optimize_idx = _add_item(file_rid, "optimize")
 	NativeMenu.add_separator(file_rid)
-	file_reset_svg_idx = _add_action(file_rid, "reset_svg")
+	file_reset_svg_idx = _add_item(file_rid, "reset_svg")
 	# Edit and Tool menus.
-	_add_many_actions(edit_rid, ShortcutUtils.get_actions("edit"))
-	_add_many_actions(tool_rid, ShortcutUtils.get_actions("tool"))
+	_add_many_items(edit_rid, ShortcutUtils.get_actions("edit"))
+	_add_many_items(tool_rid, ShortcutUtils.get_actions("tool"))
 	# View menu.
 	view_show_grid_idx = _add_check_item(view_rid, "view_show_grid")
 	view_show_handles_idx = _add_check_item(view_rid, "view_show_handles")
 	view_rasterized_svg_idx = _add_check_item(view_rid, "view_rasterized_svg")
 	NativeMenu.add_separator(view_rid)
-	_add_action(view_rid, "zoom_in")
-	_add_action(view_rid, "zoom_out")
-	_add_action(view_rid, "zoom_reset")
+	view_show_reference_idx = _add_item(view_rid, "load_reference")
+	view_show_reference_idx = _add_check_item(view_rid, "view_show_reference")
+	view_overlay_reference_idx = _add_check_item(view_rid, "view_overlay_reference")
+	view_show_debug_idx = _add_check_item(view_rid, "view_show_debug")
+	NativeMenu.add_separator(view_rid)
+	_add_many_items(view_rid, PackedStringArray(["zoom_in", "zoom_out", "zoom_reset"]))
 	# Snap menu.
 	snap_enable_idx = _add_check_item(snap_rid, "toggle_snap")
 	NativeMenu.add_separator(snap_rid)
@@ -140,25 +145,29 @@ func _setup_menu_items() -> void:
 	snap_4_idx = NativeMenu.add_radio_check_item(snap_rid, "4", _set_snap, _set_snap, 4)
 
 
-func _add_many_actions(menu_rid: RID, actions: PackedStringArray) -> void:
-	for action in actions:
-		_add_action(menu_rid, action)
-
-
-func _add_action(menu_rid: RID, action_name: StringName) -> int:
+func _add_item(menu_rid: RID, action_name: String) -> int:
 	return NativeMenu.add_item(menu_rid,
 			TranslationUtils.get_shortcut_description(action_name),
 			HandlerGUI.throw_action_event, HandlerGUI.throw_action_event, action_name,
 			_get_action_keycode(action_name))
 
-func _add_check_item(menu_rid: RID, action_name: StringName) -> int:
+func _add_many_items(menu_rid: RID, actions: PackedStringArray) -> void:
+	for action in actions:
+		_add_item(menu_rid, action)
+
+func _add_check_item(menu_rid: RID, action_name: String) -> int:
 	return NativeMenu.add_check_item(menu_rid,
 			TranslationUtils.get_shortcut_description(action_name),
 			HandlerGUI.throw_action_event, HandlerGUI.throw_action_event, action_name)
 
-func _add_icon_item(menu_rid: RID, action_name: StringName, icon: Texture2D) -> int:
+func _add_many_icon_items(menu_rid: RID, actions: PackedStringArray) -> void:
+	for action in actions:
+		_add_icon_item(menu_rid, action)
+
+func _add_icon_item(menu_rid: RID, action_name: String) -> int:
 	return NativeMenu.add_icon_item(menu_rid,
-			icon, TranslationUtils.get_shortcut_description(action_name),
+			ShortcutUtils.get_shortcut_icon(action_name),
+			TranslationUtils.get_shortcut_description(action_name),
 			HandlerGUI.throw_action_event, HandlerGUI.throw_action_event, action_name)
 
 
@@ -169,10 +178,6 @@ func _get_action_keycode(action: String) -> Key:
 	return KEY_NONE
 
 
-func _on_svg_changed() -> void:
-	NativeMenu.set_item_disabled(file_rid, file_reset_svg_idx,
-			FileUtils.compare_svg_to_disk_contents() == FileUtils.FileState.DIFFERENT)
-
 func _on_view_rasterized_changed() -> void:
 	NativeMenu.set_item_checked(view_rid, view_rasterized_svg_idx, State.view_rasterized)
 
@@ -181,6 +186,16 @@ func _on_show_grid_changed() -> void:
 
 func _on_show_handles_changed() -> void:
 	NativeMenu.set_item_checked(view_rid, view_show_handles_idx, State.show_handles)
+
+func _on_show_reference_changed() -> void:
+	NativeMenu.set_item_checked(view_rid, view_show_reference_idx, State.show_reference)
+
+func _on_overlay_reference_changed() -> void:
+	NativeMenu.set_item_checked(view_rid, view_overlay_reference_idx, State.overlay_reference)
+
+func _on_show_debug_changed() -> void:
+	NativeMenu.set_item_checked(view_rid, view_show_debug_idx, State.show_debug)
+
 
 func _on_snap_changed() -> void:
 	var snap_amount := absf(Configs.savedata.snap)
