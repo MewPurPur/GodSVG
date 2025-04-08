@@ -48,16 +48,21 @@ func _enter_tree() -> void:
 	Configs.shortcuts_changed.connect(_reset_menus)
 	# For now only keep check items up to date. Disabling things reliably is complicated.
 	Configs.snap_changed.connect(_on_snap_changed)
-	_on_snap_changed()
 	State.view_rasterized_changed.connect(_on_view_rasterized_changed)
-	_on_view_rasterized_changed()
 	State.show_grid_changed.connect(_on_show_grid_changed)
-	_on_show_grid_changed()
 	State.show_handles_changed.connect(_on_show_handles_changed)
-	_on_show_handles_changed()
 	State.show_reference_changed.connect(_on_show_reference_changed)
 	State.overlay_reference_changed.connect(_on_overlay_reference_changed)
 	State.show_debug_changed.connect(_on_show_debug_changed)
+	# Updating checked items didn't work without the await.
+	await get_tree().process_frame
+	_on_snap_changed()
+	_on_view_rasterized_changed()
+	_on_show_grid_changed()
+	_on_show_handles_changed()
+	_on_show_reference_changed()
+	_on_overlay_reference_changed()
+	_on_show_debug_changed()
 
 
 func _reset_menus() -> void:
