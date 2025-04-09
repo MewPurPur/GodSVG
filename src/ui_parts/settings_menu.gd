@@ -606,7 +606,7 @@ func show_shortcuts(category: String) -> void:
 				ShortcutShowcaseWidgetScene.instantiate()
 		
 		shortcuts_container.add_child(shortcut_config)
-		shortcut_config.label.text = TranslationUtils.get_shortcut_description(action)
+		shortcut_config.label.text = TranslationUtils.get_action_description(action)
 		shortcut_config.setup(action)
 
 func create_setting_container() -> void:

@@ -14,9 +14,9 @@ custom_text := "", custom_icon: Texture2D = null) -> Button:
 		return
 	
 	if custom_text.is_empty():
-		custom_text = TranslationUtils.get_shortcut_description(action, true)
+		custom_text = TranslationUtils.get_action_description(action, true)
 	if not is_instance_valid(custom_icon):
-		custom_icon = ShortcutUtils.get_shortcut_icon(action)
+		custom_icon = ShortcutUtils.get_action_icon(action)
 	var btn := create_button(custom_text, HandlerGUI.throw_action_event.bind(action),
 			disabled, custom_icon, ShortcutUtils.get_action_showcase_text(action))
 	
@@ -36,7 +36,7 @@ custom_text := "") -> Button:
 		return
 	
 	if custom_text.is_empty():
-		custom_text = TranslationUtils.get_shortcut_description(action, true)
+		custom_text = TranslationUtils.get_action_description(action, true)
 	var btn := create_button(custom_text, HandlerGUI.throw_action_event.bind(action),
 			disabled, null, ShortcutUtils.get_action_showcase_text(action))
 	
@@ -125,7 +125,7 @@ custom_text := "") -> CheckBox:
 		return
 	
 	if custom_text.is_empty():
-		custom_text = TranslationUtils.get_shortcut_description(action, true)
+		custom_text = TranslationUtils.get_action_description(action, true)
 	
 	return create_checkbox(custom_text, HandlerGUI.throw_action_event.bind(action),
 			start_pressed, ShortcutUtils.get_action_showcase_text(action))

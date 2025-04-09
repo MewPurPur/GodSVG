@@ -129,7 +129,7 @@ func update_layout() -> void:
 				button.custom_minimum_size = Vector2(30, 30)
 				button.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 				button.size_flags_vertical = Control.SIZE_SHRINK_CENTER
-				button.icon = ShortcutUtils.get_shortcut_icon(shortcut)
+				button.icon = ShortcutUtils.get_action_icon(shortcut)
 				button.icon_alignment = HORIZONTAL_ALIGNMENT_CENTER
 				buttons_container.add_child(button)
 				button.pressed.connect(simulate_key_press.bind(shortcut))

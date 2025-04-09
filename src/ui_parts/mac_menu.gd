@@ -152,7 +152,7 @@ func _setup_menu_items() -> void:
 
 func _add_item(menu_rid: RID, action_name: String) -> int:
 	return NativeMenu.add_item(menu_rid,
-			TranslationUtils.get_shortcut_description(action_name),
+			TranslationUtils.get_action_description(action_name),
 			HandlerGUI.throw_action_event, HandlerGUI.throw_action_event, action_name,
 			_get_action_keycode(action_name))
 
@@ -162,7 +162,7 @@ func _add_many_items(menu_rid: RID, actions: PackedStringArray) -> void:
 
 func _add_check_item(menu_rid: RID, action_name: String) -> int:
 	return NativeMenu.add_check_item(menu_rid,
-			TranslationUtils.get_shortcut_description(action_name),
+			TranslationUtils.get_action_description(action_name),
 			HandlerGUI.throw_action_event, HandlerGUI.throw_action_event, action_name)
 
 func _add_many_icon_items(menu_rid: RID, actions: PackedStringArray) -> void:
@@ -171,8 +171,8 @@ func _add_many_icon_items(menu_rid: RID, actions: PackedStringArray) -> void:
 
 func _add_icon_item(menu_rid: RID, action_name: String) -> int:
 	return NativeMenu.add_icon_item(menu_rid,
-			ShortcutUtils.get_shortcut_icon(action_name),
-			TranslationUtils.get_shortcut_description(action_name),
+			ShortcutUtils.get_action_icon(action_name),
+			TranslationUtils.get_action_description(action_name),
 			HandlerGUI.throw_action_event, HandlerGUI.throw_action_event, action_name)
 
 

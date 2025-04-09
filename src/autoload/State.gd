@@ -527,13 +527,13 @@ func is_hovered(xid: PackedInt32Array, inner_idx := -1, propagate := false) -> b
 		if inner_idx == -1:
 			return XIDUtils.is_parent_or_self(hovered_xid, xid)
 		else:
-			return XIDUtils.is_parent_or_self(hovered_xid, xid) or\
-					(semi_hovered_xid == xid and inner_hovered == inner_idx)
+			return (inner_hovered == inner_idx and semi_hovered_xid == xid) or\
+					XIDUtils.is_parent_or_self(hovered_xid, xid)
 	else:
 		if inner_idx == -1:
 			return hovered_xid == xid
 		else:
-			return semi_hovered_xid == xid and inner_hovered == inner_idx
+			return inner_hovered == inner_idx and semi_hovered_xid == xid
 
 # Returns whether the given element or inner editor is selected.
 func is_selected(xid: PackedInt32Array, inner_idx := -1, propagate := false) -> bool:

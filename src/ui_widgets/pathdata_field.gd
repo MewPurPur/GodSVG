@@ -395,10 +395,8 @@ func setup_path_command_controls(idx: int) -> Control:
 		relative_button.add_theme_stylebox_override("pressed", relative_button_pressed)
 	relative_button.end_bulk_theme_override()
 	relative_button.text = cmd_char
-	relative_button.tooltip_text = "%s (%s)" %\
-			[TranslationUtils.get_command_description(cmd_char),
-			Translator.translate("Absolute") if is_absolute\
-			else Translator.translate("Relative")]
+	relative_button.tooltip_text =\
+			TranslationUtils.get_path_command_description(cmd_char)
 	container.add_child(relative_button)
 	relative_button.pressed.connect(_on_relative_button_pressed)
 	relative_button.gui_input.connect(_eat_double_clicks.bind(relative_button))

@@ -100,8 +100,8 @@ const _action_categories_dict: Dictionary[String, Dictionary] = {
 	}
 }
 
-static func get_shortcut_icon(shortcut: String) -> CompressedTexture2D:
-	match shortcut:
+static func get_action_icon(action: String) -> Texture2D:
+	match action:
 		"ui_paste": return load("res://assets/icons/Paste.svg")
 		"ui_cut": return load("res://assets/icons/Cut.svg")
 		"import": return load("res://assets/icons/Import.svg")
@@ -136,12 +136,12 @@ static func get_actions(category: String) -> PackedStringArray:
 
 static func get_all_actions() -> PackedStringArray:
 	var shortcuts := PackedStringArray()
-	for category in _action_categories_dict:
+	for category in _action_categories_dict.keys():
 		shortcuts += get_actions(category)
 	return shortcuts
 
 static func is_action_modifiable(shortcut: String) -> bool:
-	for category in _action_categories_dict:
+	for category in _action_categories_dict.keys():
 		if _action_categories_dict[category].has(shortcut):
 			return _action_categories_dict[category][shortcut]
 	return false

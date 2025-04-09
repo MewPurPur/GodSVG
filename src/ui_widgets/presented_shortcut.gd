@@ -41,7 +41,7 @@ func check_shortcuts_validity() -> void:
 			if action_pos != -1:
 				conflicts.remove_at(action_pos)
 			for ii in conflicts.size():
-				conflicts[ii] = TranslationUtils.get_shortcut_description(conflicts[ii])
+				conflicts[ii] = TranslationUtils.get_action_description(conflicts[ii])
 			if conflicts.size() > 8:
 				conflicts.resize(8)
 				conflicts.append("...")
