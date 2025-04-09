@@ -253,7 +253,7 @@ static func _apply_svg(data: Variant, file_path: String) -> void:
 		if compare_svg_to_disk_contents() == FileState.DIFFERENT:
 			alert_message += "\n\n" + Translator.translate(
 					"If you want to revert your edits since the last save, use {reset_svg}.").format(
-					{"reset_svg": TranslationUtils.get_shortcut_description("reset_svg")})
+					{"reset_svg": TranslationUtils.get_action_description("reset_svg")})
 		
 		var alert_dialog := AlertDialogScene.instantiate()
 		HandlerGUI.add_menu(alert_dialog)

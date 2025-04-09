@@ -25,7 +25,7 @@ func _ready() -> void:
 func update_shortcut_slots() -> void:
 	var shortcut_texts: Dictionary[String, String] = {}  # action: action_description
 	for shortcut in ShortcutUtils.get_all_actions():
-		shortcut_texts[shortcut] = TranslationUtils.get_shortcut_description(shortcut)
+		shortcut_texts[shortcut] = TranslationUtils.get_action_description(shortcut)
 	
 	for child in slot_container.get_children():
 		child.queue_free()
@@ -41,7 +41,7 @@ func update_shortcut_slots() -> void:
 		if not current_shortcut.is_empty():
 			var icon := TextureRect.new()
 			icon.stretch_mode = TextureRect.STRETCH_KEEP_CENTERED
-			icon.texture = ShortcutUtils.get_shortcut_icon(current_shortcut)
+			icon.texture = ShortcutUtils.get_action_icon(current_shortcut)
 			icon_presentation.add_child(icon)
 		hbox.add_child(icon_presentation)
 		

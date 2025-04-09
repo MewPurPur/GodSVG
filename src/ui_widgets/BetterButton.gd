@@ -56,7 +56,7 @@ func _make_custom_tooltip(_for_text: String) -> Object:
 			get_theme_font_size("font_size", "TooltipLabel"))
 	main_label.add_theme_color_override("font_color",
 			get_theme_color("font_color", "TooltipLabel"))
-	main_label.text = TranslationUtils.get_shortcut_description(action, true)
+	main_label.text = TranslationUtils.get_action_description(action, true)
 	
 	if action_showcase_text.is_empty():
 		return main_label
