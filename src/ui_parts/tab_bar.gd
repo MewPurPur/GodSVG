@@ -401,11 +401,9 @@ func _get_tooltip(at_position: Vector2) -> String:
 		return ""
 	
 	var current_tab := Configs.savedata.get_tab(hovered_tab_idx)
-	if current_tab.svg_file_path.is_empty():
-		return Translator.translate("This SVG is not bound to a file location yet.")
 	# We have to pass some metadata to the tooltip.
 	# Since "*" isn't valid in filepaths, we use it as a delimiter.
-	elif hovered_tab_idx == Configs.savedata.get_active_tab_index():
+	if hovered_tab_idx == Configs.savedata.get_active_tab_index():
 		return "%s*active" % current_tab.get_presented_svg_file_path()
 	
 	return "%s*%d" % [current_tab.get_presented_svg_file_path(), current_tab.id]
@@ -415,12 +413,15 @@ func _make_custom_tooltip(for_text: String) -> Object:
 	if asterisk_pos == -1:
 		return null
 	
+	var current_tab := Configs.savedata.get_tab(get_hovered_index())
+	var is_saved := not current_tab.svg_file_path.is_empty()
+	
 	var path := for_text.left(asterisk_pos)
 	var label := Label.new()
-	label.add_theme_font_override("font", ThemeUtils.mono_font)
+	label.add_theme_font_override("font", ThemeUtils.mono_font if is_saved else ThemeUtils.regular_font)
 	label.add_theme_font_size_override("font_size", 12)
 	label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	label.text = path
+	label.text = path if is_saved else Translator.translate("This SVG is not bound to a file location yet.")
 	Utils.set_max_text_width(label, 192.0, 4.0)
 	
 	# If the tab is active, no need for an SVG preview.
