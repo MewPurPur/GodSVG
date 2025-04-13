@@ -79,7 +79,9 @@ func update_proposed_xid() -> void:
 
 
 func _notification(what: int) -> void:
-	if is_inside_tree() and HandlerGUI.menu_stack.is_empty():
+	# TODO This stuff easily passes through on unrelated drag & drops. What to do?!
+	if is_inside_tree() and visible and HandlerGUI.menu_stack.is_empty() and\
+	HandlerGUI.popup_stack.is_empty():
 		if what == NOTIFICATION_DRAG_BEGIN:
 			set_dragging(true)
 			update_proposed_xid()

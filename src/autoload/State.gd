@@ -735,9 +735,7 @@ func insert_point_after_selection() -> void:
 	queue_svg_save()
 
 
-enum Context {VIEWPORT, LIST}
-
-func get_selection_context(popup_method: Callable, context: Context) -> ContextPopup:
+func get_selection_context(popup_method: Callable, context: Utils.LayoutPart) -> ContextPopup:
 	var btn_arr: Array[Button] = []
 	
 	if not selected_xids.is_empty():
@@ -761,10 +759,10 @@ func get_selection_context(popup_method: Callable, context: Context) -> ContextP
 					can_move_up = true
 				if not can_move_down and base_xid[-1] < parent_child_count - filtered_count:
 					can_move_down = true
-		if context == Context.VIEWPORT:
-			btn_arr.append(ContextPopup.create_button(Translator.translate("View in List"),
+		if context == Utils.LayoutPart.VIEWPORT:
+			btn_arr.append(ContextPopup.create_button(Translator.translate("View in Inspector"),
 					view_in_list.bind(selected_xids[0]), false,
-					load("res://assets/icons/ViewInList.svg")))
+					load("res://assets/icons/Inspector.svg")))
 		
 		btn_arr.append(ContextPopup.create_shortcut_button("duplicate"))
 		
@@ -787,14 +785,14 @@ func get_selection_context(popup_method: Callable, context: Context) -> ContextP
 	elif not inner_selections.is_empty() and not semi_selected_xid.is_empty():
 		var element_ref := root_element.get_xnode(semi_selected_xid)
 		
-		if context == Context.VIEWPORT:
+		if context == Utils.LayoutPart.VIEWPORT:
 			var inner_idx := inner_selections[0]
 			for idx in inner_selections:
 				if idx < inner_idx:
 					inner_idx = idx
-			btn_arr.append(ContextPopup.create_button(Translator.translate("View in List"),
+			btn_arr.append(ContextPopup.create_button(Translator.translate("View in Inspector"),
 					view_in_list.bind(semi_selected_xid, inner_idx), false,
-					load("res://assets/icons/ViewInList.svg")))
+					load("res://assets/icons/Inspector.svg")))
 		match element_ref.name:
 			"path":
 				if inner_selections.size() == 1:

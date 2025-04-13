@@ -164,7 +164,7 @@ static func is_child_element_valid(parent_name: String, child_name: String) -> b
 
 static func get_valid_parents(child_name: String) -> PackedStringArray:
 	var valid_parents := PackedStringArray()
-	for parent_name in _valid_children.keys():
+	for parent_name in _valid_children:
 		if child_name in _valid_children[parent_name]:
 			valid_parents.append(parent_name)
 	return valid_parents

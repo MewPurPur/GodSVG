@@ -4,7 +4,6 @@ extends VBoxContainer
 @onready var code_edit: TextEdit = $ScriptEditor/SVGCodeEdit
 @onready var error_bar: PanelContainer = $ScriptEditor/ErrorBar
 @onready var error_label: RichTextLabel = $ScriptEditor/ErrorBar/Label
-
 @onready var options_button: Button = %MetaActions/OptionsButton
 
 func _ready() -> void:
@@ -15,6 +14,7 @@ func _ready() -> void:
 	update_syntax_highlighter()
 	code_edit.clear_undo_history()
 	State.svg_changed.connect(auto_update_text)
+	auto_update_text()
 
 
 func auto_update_text() -> void:

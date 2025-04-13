@@ -136,12 +136,12 @@ static func get_actions(category: String) -> PackedStringArray:
 
 static func get_all_actions() -> PackedStringArray:
 	var shortcuts := PackedStringArray()
-	for category in _action_categories_dict.keys():
+	for category in _action_categories_dict:
 		shortcuts += get_actions(category)
 	return shortcuts
 
 static func is_action_modifiable(shortcut: String) -> bool:
-	for category in _action_categories_dict.keys():
+	for category in _action_categories_dict:
 		if _action_categories_dict[category].has(shortcut):
 			return _action_categories_dict[category][shortcut]
 	return false

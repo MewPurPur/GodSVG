@@ -1,6 +1,6 @@
 extends SubViewport
 
-const ZoomMenu = preload("res://src/ui_parts/zoom_menu.gd")
+const ZoomMenu = preload("res://src/ui_widgets/zoom_menu.gd")
 const Camera = preload("res://src/ui_widgets/camera.gd")
 const HandlesManager = preload("res://src/ui_parts/handles_manager.gd")
 const DisplayTexture = preload("res://src/ui_parts/display_texture.gd")

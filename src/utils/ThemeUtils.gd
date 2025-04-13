@@ -425,6 +425,7 @@ static func _setup_button(theme: Theme) -> void:
 	theme.set_color("icon_normal_color", "FlatButton", icon_normal_color)
 	theme.set_color("icon_hover_color", "FlatButton", icon_hover_color)
 	theme.set_color("icon_pressed_color", "FlatButton", icon_pressed_color)
+	theme.set_color("icon_hover_pressed_color", "FlatButton", icon_pressed_color)
 	var flat_button_stylebox := StyleBoxFlat.new()
 	flat_button_stylebox.set_corner_radius_all(3)
 	flat_button_stylebox.set_content_margin_all(2)
