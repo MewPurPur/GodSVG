@@ -96,7 +96,7 @@ func _ready() -> void:
 	State.zoom_changed.connect(queue_redraw)
 	State.handle_added.connect(_on_handle_added)
 	State.show_handles_changed.connect(toggle_visibility)
-	State.view_changed.connect(HandlerGUI.throw_mouse_motion_event)
+	State.view_changed.connect(_on_view_changed)
 	queue_update_handles()
 
 
@@ -784,7 +784,7 @@ func _unhandled_input(event: InputEvent) -> void:
 				
 				HandlerGUI.popup_under_pos(State.get_selection_context(
 						HandlerGUI.popup_under_pos.bind(popup_pos, vp),
-						State.Context.VIEWPORT), popup_pos, vp)
+						Utils.LayoutPart.VIEWPORT), popup_pos, vp)
 
 func find_nearest_handle(event_pos: Vector2) -> Handle:
 	var nearest_handle: Handle = null
@@ -818,6 +818,9 @@ func apply_snap(pos: Vector2) -> PackedFloat64Array:
 	
 	return PackedFloat64Array([snappedf(pos.x, snap_size), snappedf(pos.y, snap_size)])
 
+
+func _on_view_changed() -> void:
+	HandlerGUI.throw_mouse_motion_event()
 
 func _on_handle_added() -> void:
 	if not get_viewport_rect().has_point(get_viewport().get_mouse_position()):

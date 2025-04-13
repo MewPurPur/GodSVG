@@ -183,7 +183,7 @@ static func _xnode_to_export_text(xnode: XNode) -> String:
 
 enum ParseError {OK, ERR_NOT_SVG, ERR_IMPROPER_NESTING}
 
-class ParseResult extends RefCounted:
+class ParseResult:
 	var error: SVGParser.ParseError
 	var svg: ElementRoot
 	

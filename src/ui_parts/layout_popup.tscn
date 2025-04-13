@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://bygxen40wv4nr"]
+
+[ext_resource type="Script" uid="uid://tyh2836jivui" path="res://src/ui_parts/layout_popup.gd" id="1_1fo7n"]
+
+[node name="LayoutPopup" type="Control"]
+custom_minimum_size = Vector2(168, 168)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 168.0
+offset_bottom = 168.0
+script = ExtResource("1_1fo7n")

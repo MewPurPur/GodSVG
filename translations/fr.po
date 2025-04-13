@@ -52,7 +52,7 @@ msgid "Export SVG"
 msgstr "Exporter le SVG"
 
 #: src/autoload/HandlerGUI.gd src/ui_parts/export_menu.gd
-#: src/ui_parts/global_actions.gd src/utils/TranslationUtils.gd
+#: src/utils/TranslationUtils.gd
 msgid "Export"
 msgstr "Exporter"
 
@@ -75,7 +75,7 @@ msgstr ""
 msgid "Alert!"
 msgstr "Alerte !"
 
-#: src/autoload/State.gd src/ui_parts/tab_bar.gd src/utils/TranslationUtils.gd
+#: src/autoload/State.gd src/utils/TranslationUtils.gd
 msgid "Close tab"
 msgstr "Fermer l'onglet"
 
@@ -84,29 +84,13 @@ msgid "Restore"
 msgstr "Restaurer"
 
 #: src/autoload/State.gd
-msgid "View in List"
+#, fuzzy
+msgid "View in Inspector"
 msgstr "Voir en liste"
-
-#: src/autoload/State.gd
-msgid "Duplicate"
-msgstr "Dupliquer"
 
 #: src/autoload/State.gd
 msgid "Convert To"
 msgstr "Convertir en"
-
-#: src/autoload/State.gd src/ui_widgets/palette_config.gd
-msgid "Move Up"
-msgstr "Remonter"
-
-#: src/autoload/State.gd src/ui_widgets/palette_config.gd
-msgid "Move Down"
-msgstr "Descendre"
-
-#: src/autoload/State.gd src/ui_widgets/palette_config.gd
-#: src/ui_widgets/setting_shortcut.gd src/ui_widgets/transform_popup.gd
-msgid "Delete"
-msgstr "Supprimer"
 
 #: src/autoload/State.gd src/ui_widgets/transform_popup.gd
 msgid "Insert After"
@@ -250,57 +234,13 @@ msgstr "Donateurs Or"
 msgid "Diamond donors"
 msgstr "Donateurs Diamant"
 
-#: src/ui_parts/code_editor.gd src/utils/TranslationUtils.gd
-msgid "Copy all text"
-msgstr "Copier tout le texte"
-
-#: src/ui_parts/current_file_button.gd src/ui_parts/good_file_dialog.gd
-msgid "Save SVG"
-msgstr "Sauvegarder le SVG"
-
 #: src/ui_parts/current_file_button.gd
 msgid "Save SVG as…"
 msgstr "Sauvegarder le SVG sous…"
 
-#: src/ui_parts/current_file_button.gd src/utils/TranslationUtils.gd
-msgid "Reset SVG"
-msgstr "Rénitialiser le SVG"
-
-#: src/ui_parts/current_file_button.gd src/ui_parts/tab_bar.gd
-msgid "Open externally"
-msgstr "Ouvrir externement"
-
-#: src/ui_parts/current_file_button.gd src/ui_parts/tab_bar.gd
-msgid "Show in File Manager"
-msgstr "Afficher dans l'explorateur de fichiers"
-
 #: src/ui_parts/display.gd
 msgid "Visuals"
 msgstr "Vue"
-
-#: src/ui_parts/display.gd src/utils/TranslationUtils.gd
-msgid "Load reference image"
-msgstr "Charger une image de référence"
-
-#: src/ui_parts/display.gd
-msgid "Show reference"
-msgstr "Montrer la référence"
-
-#: src/ui_parts/display.gd
-msgid "Overlay reference"
-msgstr "Superposer la référence"
-
-#: src/ui_parts/display.gd src/utils/TranslationUtils.gd
-msgid "Show grid"
-msgstr "Afficher la grille"
-
-#: src/ui_parts/display.gd src/utils/TranslationUtils.gd
-msgid "Show handles"
-msgstr "Montrer les poignées"
-
-#: src/ui_parts/display.gd
-msgid "Rasterized SVG"
-msgstr "Rastériser le SVG"
 
 #: src/ui_parts/display.gd
 msgid "Snap size"
@@ -356,38 +296,9 @@ msgstr "Hauteur"
 msgid "Preview image size is limited to {dimensions}"
 msgstr "La taille de l'image de prévisualisation est limitée à {dimensions}"
 
-#: src/ui_parts/global_actions.gd src/ui_parts/import_warning_menu.gd
-#: src/utils/TranslationUtils.gd
-msgid "Import"
-msgstr "Importer"
-
-#: src/ui_parts/global_actions.gd
-msgid "Settings"
-msgstr "Paramètres"
-
-#: src/ui_parts/global_actions.gd src/utils/TranslationUtils.gd
-msgid "Optimize"
-msgstr "Optimiser"
-
-#: src/ui_parts/global_actions.gd
-msgid "About…"
-msgstr "À propos…"
-
-#: src/ui_parts/global_actions.gd src/utils/TranslationUtils.gd
-msgid "Check for updates"
-msgstr "Vérifier les mises à jour"
-
-#: src/ui_parts/global_actions.gd
-msgid "Donate…"
-msgstr "Faire un don…"
-
-#: src/ui_parts/global_actions.gd
-msgid "GodSVG repository"
-msgstr "Dépôt de GodSVG"
-
-#: src/ui_parts/global_actions.gd
-msgid "GodSVG website"
-msgstr "Site web de GodSVG"
+#: src/ui_parts/global_actions.gd src/ui_parts/shortcut_panel_config.gd
+msgid "Layout"
+msgstr "Disposition"
 
 #: src/ui_parts/global_actions.gd
 msgid "View savedata"
@@ -409,6 +320,10 @@ msgstr "Activer/Désactiver la visibilité des fichiers cachés"
 msgid "Search files"
 msgstr "Rechercher des fichiers"
 
+#: src/ui_parts/good_file_dialog.gd src/utils/TranslationUtils.gd
+msgid "Save SVG"
+msgstr "Sauvegarder le SVG"
+
 #: src/ui_parts/good_file_dialog.gd
 msgid "Select an SVG"
 msgstr "Sélectionner un SVG"
@@ -426,7 +341,6 @@ msgid "Select"
 msgstr "Sélectionner"
 
 #: src/ui_parts/good_file_dialog.gd src/utils/FileUtils.gd
-#: src/utils/TranslationUtils.gd
 msgid "Save"
 msgstr "Enregistrer"
 
@@ -478,6 +392,10 @@ msgstr "Nouvelle forme"
 msgid "Import Problems"
 msgstr "Importer des problèmes"
 
+#: src/ui_parts/import_warning_menu.gd src/utils/TranslationUtils.gd
+msgid "Import"
+msgstr "Importer"
+
 #: src/ui_parts/import_warning_menu.gd
 msgid "Unrecognized element"
 msgstr "Élément non reconnu"
@@ -493,6 +411,14 @@ msgstr "Erreur de syntaxe"
 #: src/ui_parts/inspector.gd
 msgid "Add element"
 msgstr "Ajouter un élément"
+
+#: src/ui_parts/layout_popup.gd
+msgid "Excluded"
+msgstr ""
+
+#: src/ui_parts/layout_popup.gd
+msgid "Drag and drop to change the layout"
+msgstr ""
 
 #: src/ui_parts/mac_menu.gd src/ui_parts/settings_menu.gd
 msgid "File"
@@ -607,6 +533,11 @@ msgid "Background color"
 msgstr "Couleur d'arrière-plan"
 
 #: src/ui_parts/settings_menu.gd
+#, fuzzy
+msgid "Grid color"
+msgstr "Couleur valide"
+
+#: src/ui_parts/settings_menu.gd
 msgid "Valid color"
 msgstr "Couleur valide"
 
@@ -615,12 +546,12 @@ msgid "Warning color"
 msgstr "Couleur d'avertissement"
 
 #: src/ui_parts/settings_menu.gd
-msgid "Close tabs with middle mouse button"
-msgstr ""
-
-#: src/ui_parts/settings_menu.gd
 msgid "Input"
 msgstr "Entrée"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Close tabs with middle mouse button"
+msgstr ""
 
 #: src/ui_parts/settings_menu.gd
 msgid "Invert zoom direction"
@@ -844,14 +775,6 @@ msgstr "Horizontal avec deux rangées"
 msgid "Configure Shortcut Panel"
 msgstr "Configurer le panneau de raccourcis"
 
-#: src/ui_parts/shortcut_panel_config.gd
-msgid "Layout"
-msgstr "Disposition"
-
-#: src/ui_parts/tab_bar.gd
-msgid "Create tab"
-msgstr "Créer un onglet"
-
 #: src/ui_parts/tab_bar.gd src/utils/TranslationUtils.gd
 msgid "Create a new tab"
 msgstr "Créer un nouvel onglet"
@@ -895,40 +818,6 @@ msgstr "GodSVG est à jour."
 #: src/ui_parts/update_menu.gd
 msgid "New versions"
 msgstr "Nouvelles versions"
-
-#: src/ui_parts/zoom_menu.gd src/utils/TranslationUtils.gd
-msgid "Zoom out"
-msgstr "Zoom arrière"
-
-#: src/ui_parts/zoom_menu.gd src/utils/TranslationUtils.gd
-msgid "Zoom in"
-msgstr "Zoom avant"
-
-#: src/ui_parts/zoom_menu.gd src/utils/TranslationUtils.gd
-msgid "Zoom reset"
-msgstr "Rénitialiser le zoom"
-
-#: src/ui_widgets/BetterLineEdit.gd src/ui_widgets/BetterTextEdit.gd
-#: src/utils/TranslationUtils.gd
-msgid "Undo"
-msgstr "Annuler"
-
-#: src/ui_widgets/BetterLineEdit.gd src/ui_widgets/BetterTextEdit.gd
-#: src/utils/TranslationUtils.gd
-msgid "Redo"
-msgstr "Rétablir"
-
-#: src/ui_widgets/BetterLineEdit.gd src/ui_widgets/BetterTextEdit.gd
-msgid "Cut"
-msgstr "Couper"
-
-#: src/ui_widgets/BetterLineEdit.gd src/ui_widgets/BetterTextEdit.gd
-msgid "Copy"
-msgstr "Copier"
-
-#: src/ui_widgets/BetterLineEdit.gd src/ui_widgets/BetterTextEdit.gd
-msgid "Paste"
-msgstr "Coller"
 
 #: src/ui_widgets/choose_name_dialog.gd
 msgid "Create"
@@ -979,8 +868,21 @@ msgid "Rename"
 msgstr "Renommer"
 
 #: src/ui_widgets/palette_config.gd
+msgid "Move Up"
+msgstr "Remonter"
+
+#: src/ui_widgets/palette_config.gd
+msgid "Move Down"
+msgstr "Descendre"
+
+#: src/ui_widgets/palette_config.gd
 msgid "Apply Preset"
 msgstr "Appliquer un préréglage"
+
+#: src/ui_widgets/palette_config.gd src/ui_widgets/setting_shortcut.gd
+#: src/ui_widgets/transform_popup.gd src/utils/TranslationUtils.gd
+msgid "Delete"
+msgstr "Supprimer"
 
 #: src/ui_widgets/palette_config.gd
 msgid "Copy as XML"
@@ -990,18 +892,13 @@ msgstr "Copier en tant que XML"
 msgid "Save as XML"
 msgstr "Enregistrer en tant que XML"
 
-#: src/ui_widgets/path_popup.gd src/ui_widgets/pathdata_field.gd
-#: src/utils/TranslationUtils.gd
+#: src/ui_widgets/path_popup.gd src/utils/TranslationUtils.gd
 msgid "Relative"
 msgstr "Relatif"
 
 #: src/ui_widgets/pathdata_field.gd
 msgid "No path data"
 msgstr "Aucune donnée de chemin"
-
-#: src/ui_widgets/pathdata_field.gd src/utils/TranslationUtils.gd
-msgid "Absolute"
-msgstr "Absolu"
 
 #: src/ui_widgets/points_field.gd
 msgid "No points"
@@ -1102,8 +999,9 @@ msgid "Do you want to save the changes made to {file_name}?"
 msgstr "Voulez-vous enregistrer les modifications de {file_name} ?"
 
 #: src/utils/TranslationUtils.gd
-msgid "Save as"
-msgstr "Enregistrer sous"
+#, fuzzy
+msgid "Save SVG as"
+msgstr "Sauvegarder le SVG sous…"
 
 #: src/utils/TranslationUtils.gd
 msgid "Close tabs to the left"
@@ -1118,6 +1016,10 @@ msgid "Close all other tabs"
 msgstr "Fermer les autres onglets"
 
 #: src/utils/TranslationUtils.gd
+msgid "Create tab"
+msgstr "Créer un onglet"
+
+#: src/utils/TranslationUtils.gd
 msgid "Select the next tab"
 msgstr "Sélectionner l'onglet suivant"
 
@@ -1126,16 +1028,70 @@ msgid "Select the previous tab"
 msgstr "Sélectionner l'onglet précédent"
 
 #: src/utils/TranslationUtils.gd
+msgid "Optimize"
+msgstr "Optimiser"
+
+#: src/utils/TranslationUtils.gd
+#, fuzzy
+msgid "Optimize SVG"
+msgstr "Optimiser"
+
+#: src/utils/TranslationUtils.gd
+msgid "Copy all text"
+msgstr "Copier tout le texte"
+
+#: src/utils/TranslationUtils.gd
+#, fuzzy
+msgid "Copy the SVG text"
+msgstr "Copier tout le texte"
+
+#: src/utils/TranslationUtils.gd
+msgid "Reset SVG"
+msgstr "Rénitialiser le SVG"
+
+#: src/utils/TranslationUtils.gd
+msgid "Open externally"
+msgstr "Ouvrir externement"
+
+#: src/utils/TranslationUtils.gd
 msgid "Open SVG externally"
 msgstr "Ouvrir le SVG externement"
+
+#: src/utils/TranslationUtils.gd
+msgid "Show in File Manager"
+msgstr "Afficher dans l'explorateur de fichiers"
 
 #: src/utils/TranslationUtils.gd
 msgid "Show SVG in File Manager"
 msgstr "Montrer le SVG dans l'explorateur de fichiers"
 
 #: src/utils/TranslationUtils.gd
+msgid "Undo"
+msgstr "Annuler"
+
+#: src/utils/TranslationUtils.gd
+msgid "Redo"
+msgstr "Rétablir"
+
+#: src/utils/TranslationUtils.gd
+msgid "Copy"
+msgstr "Copier"
+
+#: src/utils/TranslationUtils.gd
+msgid "Paste"
+msgstr "Coller"
+
+#: src/utils/TranslationUtils.gd
+msgid "Cut"
+msgstr "Couper"
+
+#: src/utils/TranslationUtils.gd
 msgid "Select all"
 msgstr "Tout sélectionner"
+
+#: src/utils/TranslationUtils.gd
+msgid "Duplicate"
+msgstr "Dupliquer"
 
 #: src/utils/TranslationUtils.gd
 msgid "Duplicate the selection"
@@ -1146,8 +1102,18 @@ msgid "Delete the selection"
 msgstr "Supprimer les éléments sélectionnés"
 
 #: src/utils/TranslationUtils.gd
+#, fuzzy
+msgid "Move up"
+msgstr "Remonter"
+
+#: src/utils/TranslationUtils.gd
 msgid "Move the selection up"
 msgstr "Remonter les éléments sélectionnés"
+
+#: src/utils/TranslationUtils.gd
+#, fuzzy
+msgid "Move down"
+msgstr "Descendre"
 
 #: src/utils/TranslationUtils.gd
 msgid "Move the selection down"
@@ -1158,12 +1124,36 @@ msgid "Find"
 msgstr "Rechercher"
 
 #: src/utils/TranslationUtils.gd
+msgid "Zoom in"
+msgstr "Zoom avant"
+
+#: src/utils/TranslationUtils.gd
+msgid "Zoom out"
+msgstr "Zoom arrière"
+
+#: src/utils/TranslationUtils.gd
+msgid "Zoom reset"
+msgstr "Rénitialiser le zoom"
+
+#: src/utils/TranslationUtils.gd
+msgid "Show grid"
+msgstr "Afficher la grille"
+
+#: src/utils/TranslationUtils.gd
+msgid "Show handles"
+msgstr "Montrer les poignées"
+
+#: src/utils/TranslationUtils.gd
 msgid "Show rasterized SVG"
 msgstr "Montrer le SVG rastérisé"
 
 #: src/utils/TranslationUtils.gd
 msgid "Toggle snapping"
 msgstr "Activer/Désactiver l'aimantation"
+
+#: src/utils/TranslationUtils.gd
+msgid "Load reference image"
+msgstr "Charger une image de référence"
 
 #: src/utils/TranslationUtils.gd
 msgid "Show reference image"
@@ -1178,24 +1168,48 @@ msgid "View debug information"
 msgstr "Voir les informations de déboggage"
 
 #: src/utils/TranslationUtils.gd
+msgid "Settings"
+msgstr "Paramètres"
+
+#: src/utils/TranslationUtils.gd
 msgid "Open Settings menu"
 msgstr "Ouvrir le menu des paramètres"
+
+#: src/utils/TranslationUtils.gd
+msgid "About…"
+msgstr "À propos…"
 
 #: src/utils/TranslationUtils.gd
 msgid "Open About menu"
 msgstr "Ouvrir le menu « À propos »"
 
 #: src/utils/TranslationUtils.gd
+msgid "Donate…"
+msgstr "Faire un don…"
+
+#: src/utils/TranslationUtils.gd
 msgid "Open Donate menu"
 msgstr "Ouvrir le menu « Faire un don »"
+
+#: src/utils/TranslationUtils.gd
+msgid "GodSVG repository"
+msgstr "Dépôt de GodSVG"
 
 #: src/utils/TranslationUtils.gd
 msgid "Open GodSVG repository"
 msgstr "Ouvrir le dépôt de GodSVG"
 
 #: src/utils/TranslationUtils.gd
+msgid "GodSVG website"
+msgstr "Site web de GodSVG"
+
+#: src/utils/TranslationUtils.gd
 msgid "Open GodSVG website"
 msgstr "Ouvrir le site web de GodSVG"
+
+#: src/utils/TranslationUtils.gd
+msgid "Check for updates"
+msgstr "Vérifier les mises à jour"
 
 #: src/utils/TranslationUtils.gd
 msgid "Quit the application"
@@ -1242,6 +1256,23 @@ msgid "Shorthand Cubic Bezier to"
 msgstr "Courbe de Bézier cubique raccourcie vers"
 
 #: src/utils/TranslationUtils.gd
+msgid "Absolute"
+msgstr "Absolu"
+
+#: src/utils/TranslationUtils.gd
+msgid "Code editor"
+msgstr ""
+
+#: src/utils/TranslationUtils.gd
+msgid "Inspector"
+msgstr ""
+
+#: src/utils/TranslationUtils.gd
+#, fuzzy
+msgid "Viewport"
+msgstr "Affichage"
+
+#: src/utils/TranslationUtils.gd
 msgid ""
 "The file extension {extension} is unsupported for this operation. Only "
 "{extension_list} files are supported."
@@ -1254,6 +1285,18 @@ msgid "The file extension is empty. Only {extension_list} files are supported."
 msgstr ""
 "L'extension de fichier est vide. Seuls les fichiers {extension_list} sont "
 "supportés."
+
+#~ msgid "Show reference"
+#~ msgstr "Montrer la référence"
+
+#~ msgid "Overlay reference"
+#~ msgstr "Superposer la référence"
+
+#~ msgid "Rasterized SVG"
+#~ msgstr "Rastériser le SVG"
+
+#~ msgid "Save as"
+#~ msgstr "Enregistrer sous"
 
 #~ msgid "Auto UI scale"
 #~ msgstr "Échelle de l'interface automatique"

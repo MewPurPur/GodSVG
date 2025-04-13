@@ -7,7 +7,6 @@
 [ext_resource type="Script" uid="uid://b04padjc3w1s8" path="res://src/ui_parts/move_to_overlay.gd" id="5_otlmf"]
 
 [node name="Inspector" type="Container"]
-custom_minimum_size = Vector2(408, 0)
 anchors_preset = 9
 anchor_bottom = 1.0
 offset_right = 460.0

@@ -49,3 +49,4 @@ func check_shortcuts_validity() -> void:
 					":\n" + "\n".join(conflicts)
 		else:
 			shortcut_btn.remove_theme_color_override("font_disabled_color")
+			shortcut_btn.tooltip_text = ""
