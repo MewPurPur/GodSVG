@@ -1,11 +1,22 @@
 extends HBoxContainer
 
+const LayoutPopup = preload("res://src/ui_parts/layout_popup.gd")
+
+const LayoutPopupScene = preload("res://src/ui_parts/layout_popup.tscn")
+
 @onready var more_options: Button = $LeftSide/MoreOptions
 @onready var size_button: Button = $RightSide/SizeButton
+@onready var layout_button: Button = $LeftSide/LayoutButton
+
+func update_translation() -> void:
+	layout_button.tooltip_text = Translator.translate("Layout")
 
 func _ready() -> void:
 	State.svg_changed.connect(update_size_button)
+	update_size_button()
 	Configs.basic_colors_changed.connect(update_size_button_colors)
+	Configs.language_changed.connect(update_translation)
+	update_translation()
 	
 	# Fix the size button sizing.
 	size_button.begin_bulk_theme_override()
@@ -19,6 +30,7 @@ func _ready() -> void:
 	
 	more_options.pressed.connect(_on_more_options_pressed)
 	size_button.pressed.connect(_on_size_button_pressed)
+	layout_button.pressed.connect(_on_layout_button_pressed)
 
 
 func _on_size_button_pressed() -> void:
@@ -82,3 +94,8 @@ func update_size_button_colors() -> void:
 		size_button.add_theme_color_override(theme_type,
 				Configs.savedata.basic_color_warning.lerp(Color.WHITE, 0.5))
 	size_button.end_bulk_theme_override()
+
+func _on_layout_button_pressed() -> void:
+	var layout_popup := LayoutPopupScene.instantiate()
+	HandlerGUI.popup_under_rect_center(layout_popup, layout_button.get_global_rect(),
+			get_viewport())

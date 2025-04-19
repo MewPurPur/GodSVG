@@ -31,7 +31,7 @@ func pathdata_tests(print_success := false) -> bool:
 	}
 	
 	var tests_passed := true
-	for test in tests.keys():
+	for test in tests:
 		var result := AttributePathdata.pathdata_to_arrays(test)
 		var expected: Array = tests[test]
 		if result != expected:

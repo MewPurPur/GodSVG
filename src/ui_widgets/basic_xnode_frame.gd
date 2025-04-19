@@ -48,8 +48,8 @@ func _on_title_button_pressed() -> void:
 	var viewport := get_viewport()
 	var rect := title_bar.get_global_rect()
 	HandlerGUI.popup_under_rect_center(State.get_selection_context(
-			HandlerGUI.popup_under_rect_center.bind(rect, viewport), State.Context.LIST),
-			rect, viewport)
+			HandlerGUI.popup_under_rect_center.bind(rect, viewport),
+			Utils.LayoutPart.INSPECTOR), rect, viewport)
 
 
 func _gui_input(event: InputEvent) -> void:
@@ -77,8 +77,8 @@ func _gui_input(event: InputEvent) -> void:
 			var viewport := get_viewport()
 			var popup_pos := viewport.get_mouse_position()
 			HandlerGUI.popup_under_pos(State.get_selection_context(
-					HandlerGUI.popup_under_pos.bind(popup_pos, viewport), State.Context.LIST),
-					popup_pos, viewport)
+					HandlerGUI.popup_under_pos.bind(popup_pos, viewport),
+					Utils.LayoutPart.INSPECTOR), popup_pos, viewport)
 			accept_event()
 
 func _on_mouse_exited() -> void:

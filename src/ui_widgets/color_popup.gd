@@ -5,7 +5,7 @@ const GoodColorPicker = preload("res://src/ui_widgets/good_color_picker.gd")
 const ColorSwatch = preload("res://src/ui_widgets/color_swatch.gd")
 
 # Useful here, because it avoids the Palette validation.
-class MockPalette extends RefCounted:
+class MockPalette:
 	var title: String
 	var colors: PackedStringArray
 	var color_names: PackedStringArray
