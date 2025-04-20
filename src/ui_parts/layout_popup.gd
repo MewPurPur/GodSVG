@@ -237,6 +237,8 @@ func _can_drop_data(at_position: Vector2, data: Variant) -> bool:
 	
 	var top_left_parts := Configs.savedata.get_layout_parts(SaveData.LayoutLocation.TOP_LEFT)
 	var bottom_left_parts := Configs.savedata.get_layout_parts(SaveData.LayoutLocation.BOTTOM_LEFT)
+	var is_dragged_part_the_only_top_left := (top_left_parts == [dragged_data.layout_part])
+	var is_dragged_part_the_only_bottom_left := (bottom_left_parts == [dragged_data.layout_part])
 	
 	for section in section_areas:
 		var section_area := section_areas[section]
@@ -245,12 +247,13 @@ func _can_drop_data(at_position: Vector2, data: Variant) -> bool:
 		
 		proposed_drop_location_pivot = section
 		
+		
 		if at_position.y < lerpf(section_area.position.y, section_area.end.y, 0.25) and\
 		((section == SaveData.LayoutLocation.TOP_LEFT and\
-		top_left_parts != [dragged_data.layout_part] and (bottom_left_parts.is_empty() or\
-		bottom_left_parts == [dragged_data.layout_part])) or\
+		not is_dragged_part_the_only_top_left and (bottom_left_parts.is_empty() or\
+		is_dragged_part_the_only_bottom_left)) or\
 		(section == SaveData.LayoutLocation.BOTTOM_LEFT and top_left_parts.is_empty() and\
-		bottom_left_parts != [dragged_data.layout_part])):
+		not is_dragged_part_the_only_top_left)):
 			# Hovering over the top side of the section, when one of the following is true:
 			# Case 1: The section is top left, and there's either nothing on the bottom left,
 			# or the only thing on the bottom left is the dragged layout part.
@@ -260,16 +263,16 @@ func _can_drop_data(at_position: Vector2, data: Variant) -> bool:
 			proposed_drop_idx = -1
 		elif at_position.y > lerpf(section_area.position.y, section_area.end.y, 0.75) and\
 		((section == SaveData.LayoutLocation.BOTTOM_LEFT and\
-		bottom_left_parts != [dragged_data.layout_part] and (top_left_parts.is_empty() or\
-		top_left_parts == [dragged_data.layout_part])) or\
+		not is_dragged_part_the_only_bottom_left and (top_left_parts.is_empty() or\
+		is_dragged_part_the_only_top_left)) or\
 		(section == SaveData.LayoutLocation.TOP_LEFT and bottom_left_parts.is_empty() and\
-		top_left_parts != [dragged_data.layout_part])):
+		not is_dragged_part_the_only_bottom_left)):
 			# Same logic as the previous big condition, but top and bottom are flipped.
 			proposed_drop_location_direction = DropDirection.BELOW
 			proposed_drop_idx = -1
 		elif not (section == SaveData.LayoutLocation.EXCLUDED and\
-		((top_left_parts == [dragged_data.layout_part] and bottom_left_parts.is_empty()) or\
-		(bottom_left_parts == [dragged_data.layout_part] and top_left_parts.is_empty()))):
+		((is_dragged_part_the_only_top_left and bottom_left_parts.is_empty()) or\
+		(is_dragged_part_the_only_bottom_left and top_left_parts.is_empty()))):
 			# Ensure we're not dragging the last layout part into excluded.
 			proposed_drop_location_direction = DropDirection.INSIDE
 			var layout_parts_count := Configs.savedata.get_layout_parts(section).size()
