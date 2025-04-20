@@ -25,6 +25,11 @@ func _get_line_syntax_highlighting(line: int) -> Dictionary:
 	if svg_text.is_empty():
 		return {}
 	
+	# We only return a color map, so this should deal with non-ASCII.
+	for i in svg_text.length():
+		if svg_text.unicode_at(i) >= 256:
+			svg_text[i] = "a"
+	
 	var color_map: Dictionary[int, Dictionary] = {}
 	var parser := XMLParser.new()
 	parser.open_buffer(svg_text.to_utf8_buffer())
