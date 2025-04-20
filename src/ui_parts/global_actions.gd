@@ -54,7 +54,6 @@ func _on_more_options_pressed() -> void:
 	
 	var about_btn := ContextPopup.create_shortcut_button("about_info", false, "",
 			load("res://assets/logos/icon.svg"))
-	about_btn.expand_icon = true
 	buttons_arr.append(about_btn)
 	buttons_arr.append(ContextPopup.create_shortcut_button("about_donate"))
 	buttons_arr.append(ContextPopup.create_shortcut_button("about_repo"))

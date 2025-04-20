@@ -55,6 +55,7 @@ icon: Texture2D = null, dim_text := "") -> Button:
 	var main_button := Button.new()
 	main_button.text = text
 	if is_instance_valid(icon):
+		main_button.add_theme_constant_override("icon_max_width", 16)
 		main_button.icon = icon
 
 	if not dim_text.is_empty():
