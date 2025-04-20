@@ -5,8 +5,9 @@ static func text_check_is_root_empty(text: String) -> bool:
 	if text.is_empty():
 		return false
 	
+	var buffer := text.to_utf8_buffer()
 	var parser := XMLParser.new()
-	parser.open_buffer(text.to_utf8_buffer())
+	parser.open_buffer(buffer)
 	
 	# Ignore everything before the first svg tag.
 	var describes_svg := false
@@ -20,8 +21,8 @@ static func text_check_is_root_empty(text: String) -> bool:
 		describes_svg = true
 		
 		var node_offset := parser.get_node_offset()
-		var closure_pos := text.find("/>", node_offset)
-		if closure_pos != -1 and closure_pos <= text.find(">", node_offset):
+		var closure_pos := _find_closure_string_in_utf8_buffer(buffer, node_offset)
+		if closure_pos != -1 and closure_pos <= buffer.find(">".unicode_at(0), node_offset):
 			return true
 		break
 	
@@ -204,9 +205,10 @@ static func text_to_root(text: String) -> ParseResult:
 	if text.is_empty():
 		return ParseResult.new(ParseError.ERR_NOT_SVG)
 	
+	var buffer := text.to_utf8_buffer()
 	var root_element := ElementRoot.new()
 	var parser := XMLParser.new()
-	parser.open_buffer(text.to_utf8_buffer())
+	parser.open_buffer(buffer)
 	var unclosed_element_stack: Array[Element] = []
 	
 	# Ignore everything before the first SVG tag.
@@ -225,8 +227,9 @@ static func text_to_root(text: String) -> ParseResult:
 					parser.get_attribute_value(i))
 		
 		var node_offset := parser.get_node_offset()
-		var closure_pos := text.find("/>", node_offset)
-		if closure_pos == -1 or closure_pos > text.find(">", node_offset):
+		
+		var closure_pos := _find_closure_string_in_utf8_buffer(buffer, node_offset)
+		if closure_pos == -1 or closure_pos > buffer.find(">".unicode_at(0), node_offset):
 			unclosed_element_stack.append(root_element)
 			break
 		else:
@@ -242,14 +245,14 @@ static func text_to_root(text: String) -> ParseResult:
 				var element := DB.element(parser.get_node_name())
 				# Check if we're entering or exiting the element.
 				var node_offset := parser.get_node_offset()
-				var closure_pos := text.find("/>", node_offset)
+				var closure_pos := _find_closure_string_in_utf8_buffer(buffer, node_offset)
 				
 				unclosed_element_stack.back().insert_child(-1, element)
 				for i in parser.get_attribute_count():
 					element.set_attribute(parser.get_attribute_name(i),
 							parser.get_attribute_value(i))
 				
-				if closure_pos == -1 or closure_pos > text.find(">", node_offset):
+				if closure_pos == -1 or closure_pos > buffer.find(">".unicode_at(0), node_offset):
 					unclosed_element_stack.append(element)
 			
 			XMLParser.NODE_ELEMENT_END:
@@ -283,3 +286,15 @@ static func text_to_root(text: String) -> ParseResult:
 		return ParseResult.new(ParseError.ERR_IMPROPER_NESTING)
 	
 	return ParseResult.new(ParseError.OK, root_element)
+
+
+# Helper to find "/>" strings inside a buffer.
+static func _find_closure_string_in_utf8_buffer(buffer: PackedByteArray, offset: int) -> int:
+	while true:
+		offset = buffer.find("/".unicode_at(0), offset)
+		if offset == -1:
+			return -1
+		elif buffer[offset + 1] == ">".unicode_at(0):
+			return offset
+		offset += 1
+	return -1
