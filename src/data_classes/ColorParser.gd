@@ -111,7 +111,8 @@ allow_alpha := false) -> Color:
 		return Color(0, 0, 0, 0)
 	
 	elif is_valid_rgb(color, allow_alpha):
-		var inside_brackets := color.substr(4, color.length() - 5)
+		var args_start_pos := color.find("(") + 1
+		var inside_brackets := color.substr(args_start_pos, color.length() - args_start_pos - 1)
 		var args := inside_brackets.split(",", false)
 		if not (args.size() == 3 or (args.size() == 4 and allow_alpha)):
 			return backup
@@ -131,7 +132,8 @@ allow_alpha := false) -> Color:
 			return Color.from_rgba8(clampi(r, 0, 255), clampi(g, 0, 255), clampi(b, 0, 255),
 					clampi(a, 0, 255))
 	elif is_valid_hsl(color, allow_alpha):
-		var inside_brackets := color.substr(4, color.length() - 5)
+		var args_start_pos := color.find("(") + 1
+		var inside_brackets := color.substr(args_start_pos, color.length() - args_start_pos - 1)
 		var args := inside_brackets.split(",", false)
 		if not (args.size() == 3 or (args.size() == 4 and allow_alpha)):
 			return backup
