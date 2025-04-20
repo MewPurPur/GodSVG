@@ -8,7 +8,7 @@ const ColorSwatchScene = preload("res://src/ui_widgets/color_swatch.tscn")
 var palette: Palette
 var idx := -1  # Index inside the palette.
 
-var proposed_drop_data: DropData  # Used to sync with drag-and-dropping information.
+var proposed_drop_data: DragData  # Used to sync with drag-and-dropping information.
 var surface := RenderingServer.canvas_item_create()
 
 func _ready() -> void:
@@ -70,7 +70,7 @@ func _make_custom_tooltip(_for_text: String) -> Object:
 
 var is_dragging := false
 
-class DropData extends RefCounted:
+class DragData:
 	var palette: Palette
 	var index: int
 	
@@ -79,7 +79,7 @@ class DropData extends RefCounted:
 		index = new_index
 
 func _get_drag_data(_at_position: Vector2) -> Variant:
-	var data := DropData.new(palette, idx)
+	var data := DragData.new(palette, idx)
 	# Set up a preview.
 	var preview := ColorSwatchScene.instantiate()
 	preview.color = palette.get_color(idx)

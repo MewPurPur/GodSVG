@@ -124,6 +124,14 @@ omit_relativity := false) -> String:
 		return description + " (" + Translator.translate("Absolute") + ")"
 
 
+static func get_layout_part_name(layout_part: Utils.LayoutPart) -> String:
+	match layout_part:
+		Utils.LayoutPart.CODE_EDITOR: return Translator.translate("Code editor")
+		Utils.LayoutPart.INSPECTOR: return Translator.translate("Inspector")
+		Utils.LayoutPart.VIEWPORT: return Translator.translate("Viewport")
+		_: return ""
+
+
 static func get_bad_extension_alert_text(extension: String,
 allowed_extensions: PackedStringArray) -> String:
 	var extension_list := ", ".join(allowed_extensions)

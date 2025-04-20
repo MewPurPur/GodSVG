@@ -61,6 +61,14 @@ func validate() -> void:
 		export_formatter = Formatter.new(Formatter.Preset.COMPACT)
 	if _active_tab_index >= _tabs.size() or _active_tab_index < 0:
 		_active_tab_index = _active_tab_index  # Run the setter.
+	
+	# End of the method, would need to be rewritten if more things need validation.
+	for location in [LayoutLocation.TOP_LEFT, LayoutLocation.BOTTOM_LEFT]:
+		if _layout.has(location) and not _layout[location].is_empty():
+			return
+	_layout = {
+		LayoutLocation.TOP_LEFT: [Utils.LayoutPart.CODE_EDITOR, Utils.LayoutPart.INSPECTOR]
+	}
 
 
 const CURRENT_VERSION = 1
@@ -251,9 +259,10 @@ const HANDLE_SIZE_MAX = 4.0
 @export var handle_size := 1.0:
 	set(new_value):
 		# Validation
-		new_value = clampf(new_value, HANDLE_SIZE_MIN, HANDLE_SIZE_MAX)
 		if is_nan(new_value):
 			new_value = get_setting_default("handle_size")
+		else:
+			new_value = clampf(new_value, HANDLE_SIZE_MIN, HANDLE_SIZE_MAX)
 		# Main part
 		if handle_size != new_value:
 			handle_size = new_value
@@ -279,9 +288,10 @@ const MAX_SNAP = 16384
 @export var snap := -0.5:  # Negative when disabled.
 	set(new_value):
 		# Validation
-		new_value = clampf(new_value, -MAX_SNAP, MAX_SNAP)
 		if is_nan(new_value):
 			new_value = -0.5
+		else:
+			new_value = clampf(new_value, -MAX_SNAP, MAX_SNAP)
 		# Main part
 		if snap != new_value:
 			snap = new_value
@@ -607,9 +617,10 @@ const MAX_TABS = 50
 		if _tabs.is_empty():
 			_add_new_tab()
 		
-		new_value = clampi(new_value, 0, _tabs.size() - 1)
 		if is_nan(new_value):
 			new_value = 0
+		else:
+			new_value = clampi(new_value, 0, _tabs.size() - 1)
 		# Main part
 		if _active_tab_index != new_value:
 			_active_tab_index = new_value
@@ -748,6 +759,102 @@ func move_tab(old_idx: int, new_idx: int) -> void:
 	emit_changed()
 	set_active_tab_index(adjusted_index)
 	Configs.tabs_changed.emit()
+
+
+enum LayoutLocation {NONE, EXCLUDED, TOP_LEFT, BOTTOM_LEFT}
+
+@export var _layout: Dictionary[LayoutLocation, Array]:  # Array[Utils.LayoutPart]
+	set(new_value):
+		# Validation
+		for key in new_value:
+			# Ensure keys correspond to layout locations.
+			if key < 0 or key >= LayoutLocation.size() or key == LayoutLocation.NONE:
+				new_value.erase(key)
+			else:
+				# Ensure arrays correspond to layout parts.
+				var arr := new_value[key]
+				for i in range(arr.size() - 1, -1, -1):
+					if not arr[i] is Utils.LayoutPart or arr[i] < 0 or\
+					arr[i] >= Utils.LayoutPart.size():
+						arr.remove_at(i)
+		# Ensure non-duplicate layout parts and no empty arrays.
+		var used_layout_parts: Array[Utils.LayoutPart] = []
+		for location in LayoutLocation.size():
+			if new_value.has(location):
+				var arr := new_value[location]
+				for i in range(arr.size() - 1, -1, -1):
+					if arr[i] in used_layout_parts:
+						arr.remove_at(i)
+					else:
+						used_layout_parts.append(arr[i])
+				if arr.is_empty():
+					new_value.erase(location)
+		# Put all layout parts that aren't listed in excluded.
+		used_layout_parts += [Utils.LayoutPart.NONE, Utils.LayoutPart.VIEWPORT]
+		for part in Utils.LayoutPart.size():
+			if not part in used_layout_parts:
+				if not new_value.has(LayoutLocation.EXCLUDED):
+					new_value[LayoutLocation.EXCLUDED] = []
+				new_value[LayoutLocation.EXCLUDED].append(part)
+		# Main part
+		if _layout != new_value:
+			_layout = new_value
+			emit_changed()
+
+func set_layout_parts(location: LayoutLocation, parts: Array[Utils.LayoutPart],
+notify_layout_changed := true) -> void:
+	if (_layout.has(location) and parts == _layout[location]) or\
+	(not _layout.has(location) and parts.is_empty()):
+		return
+	
+	if parts.is_empty():
+		_layout.erase(location)
+	else:
+		_layout[location] = parts
+	emit_changed()
+	if notify_layout_changed:
+		Configs.layout_changed.emit()
+
+func get_layout_parts(location: LayoutLocation) -> Array[Utils.LayoutPart]:
+	if _layout.has(location):
+		var output: Array[Utils.LayoutPart] = []
+		output.assign(_layout[location])
+		return output
+	else:
+		return []
+
+func get_layout_part_location(part: Utils.LayoutPart) -> LayoutLocation:
+	for location in _layout:
+		if _layout[location].has(part):
+			return location
+	return LayoutLocation.NONE
+
+func get_layout_part_index(part: Utils.LayoutPart) -> int:
+	for location in _layout:
+		if _layout[location].has(part):
+			return _layout[location].find(part)
+	return -1
+
+
+@export var horizontal_splitter_offset := -180:
+	set(new_value):
+		# Validation
+		if is_nan(new_value):
+			new_value = 0
+		# Main part
+		if horizontal_splitter_offset != new_value:
+			horizontal_splitter_offset = new_value
+			emit_changed()
+
+@export var left_vertical_splitter_offset := -240:
+	set(new_value):
+		# Validation
+		if is_nan(new_value):
+			new_value = 0
+		# Main part
+		if left_vertical_splitter_offset != new_value:
+			left_vertical_splitter_offset = new_value
+			emit_changed()
 
 
 # Utility

@@ -52,7 +52,7 @@ msgid "Export SVG"
 msgstr "Експортувати SVG"
 
 #: src/autoload/HandlerGUI.gd src/ui_parts/export_menu.gd
-#: src/ui_parts/global_actions.gd src/utils/TranslationUtils.gd
+#: src/utils/TranslationUtils.gd
 msgid "Export"
 msgstr "Експортувати"
 
@@ -76,7 +76,7 @@ msgstr ""
 msgid "Alert!"
 msgstr "Увага!"
 
-#: src/autoload/State.gd src/ui_parts/tab_bar.gd src/utils/TranslationUtils.gd
+#: src/autoload/State.gd src/utils/TranslationUtils.gd
 msgid "Close tab"
 msgstr "Закрити вкладку"
 
@@ -85,29 +85,13 @@ msgid "Restore"
 msgstr "Відновити"
 
 #: src/autoload/State.gd
-msgid "View in List"
+#, fuzzy
+msgid "View in Inspector"
 msgstr "Переглянути списком"
-
-#: src/autoload/State.gd
-msgid "Duplicate"
-msgstr "Дублювати"
 
 #: src/autoload/State.gd
 msgid "Convert To"
 msgstr "Конвертувати в"
-
-#: src/autoload/State.gd src/ui_widgets/palette_config.gd
-msgid "Move Up"
-msgstr "Пересунути вгору"
-
-#: src/autoload/State.gd src/ui_widgets/palette_config.gd
-msgid "Move Down"
-msgstr "Пересунути вниз"
-
-#: src/autoload/State.gd src/ui_widgets/palette_config.gd
-#: src/ui_widgets/setting_shortcut.gd src/ui_widgets/transform_popup.gd
-msgid "Delete"
-msgstr "Видалити"
 
 #: src/autoload/State.gd src/ui_widgets/transform_popup.gd
 msgid "Insert After"
@@ -252,58 +236,13 @@ msgstr "Золоті благодійники"
 msgid "Diamond donors"
 msgstr "Діамантові благодійники"
 
-#: src/ui_parts/code_editor.gd src/utils/TranslationUtils.gd
-msgid "Copy all text"
-msgstr "Скопіювати весь текст"
-
-#: src/ui_parts/current_file_button.gd src/ui_parts/good_file_dialog.gd
-msgid "Save SVG"
-msgstr "Зберегти SVG"
-
 #: src/ui_parts/current_file_button.gd
 msgid "Save SVG as…"
 msgstr "Зберегти SVG як…"
 
-#: src/ui_parts/current_file_button.gd src/utils/TranslationUtils.gd
-msgid "Reset SVG"
-msgstr "Скинути SVG"
-
-#: src/ui_parts/current_file_button.gd src/ui_parts/tab_bar.gd
-msgid "Open externally"
-msgstr "Відкрити у зовнішній програмі"
-
-#: src/ui_parts/current_file_button.gd src/ui_parts/tab_bar.gd
-msgid "Show in File Manager"
-msgstr "Показати у файловому менеджері"
-
 #: src/ui_parts/display.gd
 msgid "Visuals"
 msgstr "Зовнішній вигляд"
-
-#: src/ui_parts/display.gd src/utils/TranslationUtils.gd
-msgid "Load reference image"
-msgstr "Завантажити еталонне зображення"
-
-#: src/ui_parts/display.gd
-msgid "Show reference"
-msgstr "Показати еталонне зображення"
-
-# Мабуть
-#: src/ui_parts/display.gd
-msgid "Overlay reference"
-msgstr "Накласти еталонне зображення"
-
-#: src/ui_parts/display.gd src/utils/TranslationUtils.gd
-msgid "Show grid"
-msgstr "Показати ґратку"
-
-#: src/ui_parts/display.gd src/utils/TranslationUtils.gd
-msgid "Show handles"
-msgstr "Показати ручки редагування"
-
-#: src/ui_parts/display.gd
-msgid "Rasterized SVG"
-msgstr "Растеризувати SVG"
 
 #: src/ui_parts/display.gd
 msgid "Snap size"
@@ -359,38 +298,9 @@ msgstr "Висота"
 msgid "Preview image size is limited to {dimensions}"
 msgstr "Розмір попереднього перегляду зображення обмежено до {dimensions}"
 
-#: src/ui_parts/global_actions.gd src/ui_parts/import_warning_menu.gd
-#: src/utils/TranslationUtils.gd
-msgid "Import"
-msgstr "Імпортувати"
-
-#: src/ui_parts/global_actions.gd
-msgid "Settings"
-msgstr "Налаштування"
-
-#: src/ui_parts/global_actions.gd src/utils/TranslationUtils.gd
-msgid "Optimize"
-msgstr "Оптимізувати"
-
-#: src/ui_parts/global_actions.gd
-msgid "About…"
-msgstr "Про додаток…"
-
-#: src/ui_parts/global_actions.gd src/utils/TranslationUtils.gd
-msgid "Check for updates"
-msgstr "Перевірити оновлення"
-
-#: src/ui_parts/global_actions.gd
-msgid "Donate…"
-msgstr "Зробити пожертвування…"
-
-#: src/ui_parts/global_actions.gd
-msgid "GodSVG repository"
-msgstr "Репозиторій GodSVG"
-
-#: src/ui_parts/global_actions.gd
-msgid "GodSVG website"
-msgstr "Веб-сайт GodSVG"
+#: src/ui_parts/global_actions.gd src/ui_parts/shortcut_panel_config.gd
+msgid "Layout"
+msgstr "Макет"
 
 #: src/ui_parts/global_actions.gd
 msgid "View savedata"
@@ -412,6 +322,10 @@ msgstr "Перемикнути видимість прихованих файл�
 msgid "Search files"
 msgstr "Пошук файлів"
 
+#: src/ui_parts/good_file_dialog.gd src/utils/TranslationUtils.gd
+msgid "Save SVG"
+msgstr "Зберегти SVG"
+
 #: src/ui_parts/good_file_dialog.gd
 msgid "Select an SVG"
 msgstr "Обрати SVG"
@@ -429,7 +343,6 @@ msgid "Select"
 msgstr "Обрати"
 
 #: src/ui_parts/good_file_dialog.gd src/utils/FileUtils.gd
-#: src/utils/TranslationUtils.gd
 msgid "Save"
 msgstr "Зберегти"
 
@@ -481,6 +394,10 @@ msgstr "Нова форма"
 msgid "Import Problems"
 msgstr "Проблема з імпортуванням"
 
+#: src/ui_parts/import_warning_menu.gd src/utils/TranslationUtils.gd
+msgid "Import"
+msgstr "Імпортувати"
+
 #: src/ui_parts/import_warning_menu.gd
 msgid "Unrecognized element"
 msgstr "Невідомий елемент"
@@ -496,6 +413,14 @@ msgstr "Синтаксична помилка"
 #: src/ui_parts/inspector.gd
 msgid "Add element"
 msgstr "Додати елемент"
+
+#: src/ui_parts/layout_popup.gd
+msgid "Excluded"
+msgstr ""
+
+#: src/ui_parts/layout_popup.gd
+msgid "Drag and drop to change the layout"
+msgstr ""
 
 #: src/ui_parts/mac_menu.gd src/ui_parts/settings_menu.gd
 msgid "File"
@@ -610,6 +535,11 @@ msgid "Background color"
 msgstr "Колір фону"
 
 #: src/ui_parts/settings_menu.gd
+#, fuzzy
+msgid "Grid color"
+msgstr "Колір валідності"
+
+#: src/ui_parts/settings_menu.gd
 msgid "Valid color"
 msgstr "Колір валідності"
 
@@ -618,12 +548,12 @@ msgid "Warning color"
 msgstr "Колір попередження"
 
 #: src/ui_parts/settings_menu.gd
-msgid "Close tabs with middle mouse button"
-msgstr ""
-
-#: src/ui_parts/settings_menu.gd
 msgid "Input"
 msgstr "Пристрої вводу"
+
+#: src/ui_parts/settings_menu.gd
+msgid "Close tabs with middle mouse button"
+msgstr ""
 
 #: src/ui_parts/settings_menu.gd
 msgid "Invert zoom direction"
@@ -850,14 +780,6 @@ msgstr "Горизонтальна з двома рядками"
 msgid "Configure Shortcut Panel"
 msgstr "Налаштувати у панелі клавіатурних скорочень"
 
-#: src/ui_parts/shortcut_panel_config.gd
-msgid "Layout"
-msgstr "Макет"
-
-#: src/ui_parts/tab_bar.gd
-msgid "Create tab"
-msgstr "Створити вкладку"
-
 #: src/ui_parts/tab_bar.gd src/utils/TranslationUtils.gd
 msgid "Create a new tab"
 msgstr "Створити нову вкладку"
@@ -902,40 +824,6 @@ msgstr "GodSVG оновлено до останньої версії."
 #: src/ui_parts/update_menu.gd
 msgid "New versions"
 msgstr "Нові версії"
-
-#: src/ui_parts/zoom_menu.gd src/utils/TranslationUtils.gd
-msgid "Zoom out"
-msgstr "Зменшити масштаб"
-
-#: src/ui_parts/zoom_menu.gd src/utils/TranslationUtils.gd
-msgid "Zoom in"
-msgstr "Збільшити масштаб"
-
-#: src/ui_parts/zoom_menu.gd src/utils/TranslationUtils.gd
-msgid "Zoom reset"
-msgstr "Скинути масштаб"
-
-#: src/ui_widgets/BetterLineEdit.gd src/ui_widgets/BetterTextEdit.gd
-#: src/utils/TranslationUtils.gd
-msgid "Undo"
-msgstr "Скасувати"
-
-#: src/ui_widgets/BetterLineEdit.gd src/ui_widgets/BetterTextEdit.gd
-#: src/utils/TranslationUtils.gd
-msgid "Redo"
-msgstr "Повернути"
-
-#: src/ui_widgets/BetterLineEdit.gd src/ui_widgets/BetterTextEdit.gd
-msgid "Cut"
-msgstr "Вирізати"
-
-#: src/ui_widgets/BetterLineEdit.gd src/ui_widgets/BetterTextEdit.gd
-msgid "Copy"
-msgstr "Скопіювати"
-
-#: src/ui_widgets/BetterLineEdit.gd src/ui_widgets/BetterTextEdit.gd
-msgid "Paste"
-msgstr "Вставити"
 
 #: src/ui_widgets/choose_name_dialog.gd
 msgid "Create"
@@ -986,8 +874,21 @@ msgid "Rename"
 msgstr "Перейменувати"
 
 #: src/ui_widgets/palette_config.gd
+msgid "Move Up"
+msgstr "Пересунути вгору"
+
+#: src/ui_widgets/palette_config.gd
+msgid "Move Down"
+msgstr "Пересунути вниз"
+
+#: src/ui_widgets/palette_config.gd
 msgid "Apply Preset"
 msgstr "Застосувати пресет"
+
+#: src/ui_widgets/palette_config.gd src/ui_widgets/setting_shortcut.gd
+#: src/ui_widgets/transform_popup.gd src/utils/TranslationUtils.gd
+msgid "Delete"
+msgstr "Видалити"
 
 #: src/ui_widgets/palette_config.gd
 msgid "Copy as XML"
@@ -997,18 +898,13 @@ msgstr "Скопіювати як XML"
 msgid "Save as XML"
 msgstr "Зберегти як XML"
 
-#: src/ui_widgets/path_popup.gd src/ui_widgets/pathdata_field.gd
-#: src/utils/TranslationUtils.gd
+#: src/ui_widgets/path_popup.gd src/utils/TranslationUtils.gd
 msgid "Relative"
 msgstr "Відносно"
 
 #: src/ui_widgets/pathdata_field.gd
 msgid "No path data"
 msgstr "Немає даних шляху"
-
-#: src/ui_widgets/pathdata_field.gd src/utils/TranslationUtils.gd
-msgid "Absolute"
-msgstr "Абсолютно"
 
 #: src/ui_widgets/points_field.gd
 msgid "No points"
@@ -1109,8 +1005,9 @@ msgid "Do you want to save the changes made to {file_name}?"
 msgstr ""
 
 #: src/utils/TranslationUtils.gd
-msgid "Save as"
-msgstr "Зберегти як"
+#, fuzzy
+msgid "Save SVG as"
+msgstr "Зберегти SVG як…"
 
 #: src/utils/TranslationUtils.gd
 msgid "Close tabs to the left"
@@ -1125,6 +1022,10 @@ msgid "Close all other tabs"
 msgstr "Закрити усі інші вкладки"
 
 #: src/utils/TranslationUtils.gd
+msgid "Create tab"
+msgstr "Створити вкладку"
+
+#: src/utils/TranslationUtils.gd
 msgid "Select the next tab"
 msgstr "Обрати наступну вкладку"
 
@@ -1133,16 +1034,70 @@ msgid "Select the previous tab"
 msgstr "Обрати попередню вкладку"
 
 #: src/utils/TranslationUtils.gd
+msgid "Optimize"
+msgstr "Оптимізувати"
+
+#: src/utils/TranslationUtils.gd
+#, fuzzy
+msgid "Optimize SVG"
+msgstr "Оптимізувати"
+
+#: src/utils/TranslationUtils.gd
+msgid "Copy all text"
+msgstr "Скопіювати весь текст"
+
+#: src/utils/TranslationUtils.gd
+#, fuzzy
+msgid "Copy the SVG text"
+msgstr "Скопіювати весь текст"
+
+#: src/utils/TranslationUtils.gd
+msgid "Reset SVG"
+msgstr "Скинути SVG"
+
+#: src/utils/TranslationUtils.gd
+msgid "Open externally"
+msgstr "Відкрити у зовнішній програмі"
+
+#: src/utils/TranslationUtils.gd
 msgid "Open SVG externally"
 msgstr "Відкрити SVG у зовнішній програмі"
+
+#: src/utils/TranslationUtils.gd
+msgid "Show in File Manager"
+msgstr "Показати у файловому менеджері"
 
 #: src/utils/TranslationUtils.gd
 msgid "Show SVG in File Manager"
 msgstr "Показати SVG у файловому менеджері"
 
 #: src/utils/TranslationUtils.gd
+msgid "Undo"
+msgstr "Скасувати"
+
+#: src/utils/TranslationUtils.gd
+msgid "Redo"
+msgstr "Повернути"
+
+#: src/utils/TranslationUtils.gd
+msgid "Copy"
+msgstr "Скопіювати"
+
+#: src/utils/TranslationUtils.gd
+msgid "Paste"
+msgstr "Вставити"
+
+#: src/utils/TranslationUtils.gd
+msgid "Cut"
+msgstr "Вирізати"
+
+#: src/utils/TranslationUtils.gd
 msgid "Select all"
 msgstr "Обрати усе"
+
+#: src/utils/TranslationUtils.gd
+msgid "Duplicate"
+msgstr "Дублювати"
 
 #: src/utils/TranslationUtils.gd
 msgid "Duplicate the selection"
@@ -1153,8 +1108,18 @@ msgid "Delete the selection"
 msgstr "Видалити усі обрані теги"
 
 #: src/utils/TranslationUtils.gd
+#, fuzzy
+msgid "Move up"
+msgstr "Пересунути вгору"
+
+#: src/utils/TranslationUtils.gd
 msgid "Move the selection up"
 msgstr "Пересунути обране вгору"
+
+#: src/utils/TranslationUtils.gd
+#, fuzzy
+msgid "Move down"
+msgstr "Пересунути вниз"
 
 #: src/utils/TranslationUtils.gd
 msgid "Move the selection down"
@@ -1165,12 +1130,36 @@ msgid "Find"
 msgstr "Знайти"
 
 #: src/utils/TranslationUtils.gd
+msgid "Zoom in"
+msgstr "Збільшити масштаб"
+
+#: src/utils/TranslationUtils.gd
+msgid "Zoom out"
+msgstr "Зменшити масштаб"
+
+#: src/utils/TranslationUtils.gd
+msgid "Zoom reset"
+msgstr "Скинути масштаб"
+
+#: src/utils/TranslationUtils.gd
+msgid "Show grid"
+msgstr "Показати ґратку"
+
+#: src/utils/TranslationUtils.gd
+msgid "Show handles"
+msgstr "Показати ручки редагування"
+
+#: src/utils/TranslationUtils.gd
 msgid "Show rasterized SVG"
 msgstr "Показати растеризуваний SVG"
 
 #: src/utils/TranslationUtils.gd
 msgid "Toggle snapping"
 msgstr "Перемикнути прилипання"
+
+#: src/utils/TranslationUtils.gd
+msgid "Load reference image"
+msgstr "Завантажити еталонне зображення"
 
 # Нехай "reference image" буде "еталонне зображення", мені так гугл сказав
 #: src/utils/TranslationUtils.gd
@@ -1186,24 +1175,48 @@ msgid "View debug information"
 msgstr "Переглянути інформацію про відладку"
 
 #: src/utils/TranslationUtils.gd
+msgid "Settings"
+msgstr "Налаштування"
+
+#: src/utils/TranslationUtils.gd
 msgid "Open Settings menu"
 msgstr "Відкрити меню налаштувань"
+
+#: src/utils/TranslationUtils.gd
+msgid "About…"
+msgstr "Про додаток…"
 
 #: src/utils/TranslationUtils.gd
 msgid "Open About menu"
 msgstr "Відкрити меню \"Про додаток\""
 
 #: src/utils/TranslationUtils.gd
+msgid "Donate…"
+msgstr "Зробити пожертвування…"
+
+#: src/utils/TranslationUtils.gd
 msgid "Open Donate menu"
 msgstr "Відкрити меню благодійників"
+
+#: src/utils/TranslationUtils.gd
+msgid "GodSVG repository"
+msgstr "Репозиторій GodSVG"
 
 #: src/utils/TranslationUtils.gd
 msgid "Open GodSVG repository"
 msgstr "Відкрити репозиторій GodSVG"
 
 #: src/utils/TranslationUtils.gd
+msgid "GodSVG website"
+msgstr "Веб-сайт GodSVG"
+
+#: src/utils/TranslationUtils.gd
 msgid "Open GodSVG website"
 msgstr "Відкрити веб-сайт GodSVG"
+
+#: src/utils/TranslationUtils.gd
+msgid "Check for updates"
+msgstr "Перевірити оновлення"
 
 #: src/utils/TranslationUtils.gd
 msgid "Quit the application"
@@ -1250,6 +1263,23 @@ msgid "Shorthand Cubic Bezier to"
 msgstr "Скорочена кубічна Безьє до"
 
 #: src/utils/TranslationUtils.gd
+msgid "Absolute"
+msgstr "Абсолютно"
+
+#: src/utils/TranslationUtils.gd
+msgid "Code editor"
+msgstr ""
+
+#: src/utils/TranslationUtils.gd
+msgid "Inspector"
+msgstr ""
+
+#: src/utils/TranslationUtils.gd
+#, fuzzy
+msgid "Viewport"
+msgstr "Перегляд"
+
+#: src/utils/TranslationUtils.gd
 msgid ""
 "The file extension {extension} is unsupported for this operation. Only "
 "{extension_list} files are supported."
@@ -1260,6 +1290,19 @@ msgstr ""
 #: src/utils/TranslationUtils.gd
 msgid "The file extension is empty. Only {extension_list} files are supported."
 msgstr "Розширення файлу порожнє. Тільки {extension_list} файли підтримуються."
+
+#~ msgid "Show reference"
+#~ msgstr "Показати еталонне зображення"
+
+# Мабуть
+#~ msgid "Overlay reference"
+#~ msgstr "Накласти еталонне зображення"
+
+#~ msgid "Rasterized SVG"
+#~ msgstr "Растеризувати SVG"
+
+#~ msgid "Save as"
+#~ msgstr "Зберегти як"
 
 #~ msgid ""
 #~ "If you want to apply the unsaved file state, use \"Reset SVG\" instead."

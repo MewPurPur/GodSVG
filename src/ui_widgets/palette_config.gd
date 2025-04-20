@@ -261,7 +261,7 @@ func _can_drop_data(_at_position: Vector2, data: Variant) -> bool:
 	var buffer := 6
 	var pos := colors_container.get_local_mouse_position()
 	
-	if not (data is ColorSwatch.DropData and\
+	if not (data is ColorSwatch.DragData and\
 	Rect2(Vector2.ZERO, colors_container.size).grow(buffer).has_point(pos)):
 		clear_proposed_drop()
 		return false
@@ -281,7 +281,7 @@ func _can_drop_data(_at_position: Vector2, data: Variant) -> bool:
 
 	proposed_drop_idx = new_idx
 	for swatch in get_swatches():
-		swatch.proposed_drop_data = ColorSwatch.DropData.new(palette, new_idx)
+		swatch.proposed_drop_data = ColorSwatch.DragData.new(palette, new_idx)
 		swatch.queue_redraw()
 	return data.palette != palette or (data.palette == palette and\
 			data.index != new_idx and data.index != new_idx - 1)
