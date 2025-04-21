@@ -108,15 +108,16 @@ func _ready() -> void:
 	search_field.placeholder_text = Translator.translate("Search files")
 	
 	if mode != FileMode.SELECT:
-		title_label.text = Translator.translate("Save SVG")
+		title_label.text = Translator.translate("Save the {format} file").format(
+				{"format": Utils.get_extension_readable_name(extensions[0])})
 		extension_label.text = "." + extensions[0]
 	else:
-		if extensions.size() == 1 and extensions[0] == "svg":
-			title_label.text = Translator.translate("Select an SVG")
-		elif extensions.size() == 1 and extensions[0] == "xml":
-			title_label.text = Translator.translate("Select an XML file")
-		else:
+		if extensions.size() > 1:
 			title_label.text = Translator.translate("Select an image")
+		else:
+			# "an" because this can currently only show for SVG and XML files.
+			title_label.text = Translator.translate("Select an {format} file").format(
+					{"format": Utils.get_extension_readable_name(extensions[0])})
 	
 	close_button.text = Translator.translate("Close")
 	special_button.text = Translator.translate("Select") if\
