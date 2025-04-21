@@ -89,8 +89,13 @@ func update_layout() -> void:
 		for i in layout_parts.size():
 			var part := layout_parts[i]
 			var btn := Button.new()
+			# Make the text update when the language changes.
+			var set_btn_text_func := func() -> void:
+					btn.text = TranslationUtils.get_layout_part_name(part)
+			Configs.language_changed.connect(set_btn_text_func)
+			set_btn_text_func.call()
+			# Set up other button properties.
 			btn.toggle_mode = true
-			btn.text = TranslationUtils.get_layout_part_name(part)
 			btn.icon = Utils.get_layout_part_icon(part)
 			btn.theme_type_variation = "FlatButton"
 			btn.focus_mode = Control.FOCUS_NONE
