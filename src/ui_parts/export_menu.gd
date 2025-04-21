@@ -168,8 +168,9 @@ func update() -> void:
 		lossless_checkbox.set_pressed_no_signal(not export_data.lossy)
 	format_dropdown.set_value(export_data.format, false)
 	
-	info_tooltip.visible = (export_data.format != "svg" and export_data.upscale_amount *\
-			maxf(dimensions.x, dimensions.y) > texture_preview.MAX_IMAGE_DIMENSION)
+	info_tooltip.visible = (export_data.format != "svg" and\
+			roundi(export_data.upscale_amount * maxf(dimensions.x, dimensions.y)) >\
+			texture_preview.MAX_IMAGE_DIMENSION)
 
 func get_dimensions_text(sides: Vector2, integer := false) -> String:
 	var precision := 0 if integer else 2
