@@ -325,20 +325,6 @@ msgid "Search files"
 msgstr "Datei suchen"
 
 #: src/ui_parts/good_file_dialog.gd
-#, fuzzy
-msgid "Save the {format} file"
-msgstr "Die .\"{format}\" Datei speichern"
-
-#: src/ui_parts/good_file_dialog.gd
-msgid "Select an image"
-msgstr "Bild auswählen"
-
-#: src/ui_parts/good_file_dialog.gd
-#, fuzzy
-msgid "Select an {format} file"
-msgstr "XML Datei auswählen"
-
-#: src/ui_parts/good_file_dialog.gd
 msgid "Select"
 msgstr "Auswählen"
 
@@ -946,18 +932,6 @@ msgid "GodSVG doesn’t recognize this attribute"
 msgstr "GodSVG erkennt diese Attribute nicht"
 
 #: src/utils/FileUtils.gd
-msgid "Save the .\"{format}\" file"
-msgstr "Die .\"{format}\" Datei speichern"
-
-#: src/utils/FileUtils.gd
-msgid "Load an image file"
-msgstr "Bilddatei laden"
-
-#: src/utils/FileUtils.gd
-msgid "Import a {extension} file"
-msgstr "{extension}-Datei importieren"
-
-#: src/utils/FileUtils.gd
 msgid "The file couldn't be opened."
 msgstr "Die Datei konnte nicht geöffnet werden."
 
@@ -1278,6 +1252,20 @@ msgid "Viewport"
 msgstr "Ansicht"
 
 #: src/utils/TranslationUtils.gd
+msgid "Select an image"
+msgstr "Bild auswählen"
+
+#: src/utils/TranslationUtils.gd
+#, fuzzy
+msgid "Select an {format} file"
+msgstr "XML Datei auswählen"
+
+#: src/utils/TranslationUtils.gd
+#, fuzzy
+msgid "Save the {format} file"
+msgstr "Die .\"{format}\" Datei speichern"
+
+#: src/utils/TranslationUtils.gd
 msgid ""
 "The file extension {extension} is unsupported for this operation. Only "
 "{extension_list} files are supported."
@@ -1290,6 +1278,15 @@ msgid "The file extension is empty. Only {extension_list} files are supported."
 msgstr ""
 "Die Dateierweiterung ist leer. Nur {extension_list} Dateien werden "
 "unterstützt."
+
+#~ msgid "Save the .\"{format}\" file"
+#~ msgstr "Die .\"{format}\" Datei speichern"
+
+#~ msgid "Load an image file"
+#~ msgstr "Bilddatei laden"
+
+#~ msgid "Import a {extension} file"
+#~ msgstr "{extension}-Datei importieren"
 
 #~ msgid "Select an SVG"
 #~ msgstr "SVG auswählen"

@@ -142,3 +142,25 @@ allowed_extensions: PackedStringArray) -> String:
 	return Translator.translate(
 			"The file extension {extension} is unsupported for this operation. Only {extension_list} files are supported.").format(
 			{"extension": '".' + extension + '"', "extension_list": extension_list})
+
+static func get_file_dialog_select_mode_title_text(extensions: PackedStringArray) -> String:
+	if extensions.size() > 1:
+		return Translator.translate("Select an image")
+	else:
+		# "an" because this can currently only show for SVG and XML files.
+		return Translator.translate("Select an {format} file").format(
+				{"format": get_extension_readable_name(extensions[0])})
+
+static func get_file_dialog_save_mode_title_text(extension: String) -> String:
+	return Translator.translate("Save the {format} file").format(
+			{"format": get_extension_readable_name(extension)})
+
+static func get_extension_readable_name(extension: String) -> String:
+	match extension:
+		"svg": return "SVG"
+		"png": return "PNG"
+		"webp": return "WebP"
+		"jpeg": return "JPEG"
+		"jpg": return "JPG"
+		"xml": return "XML"
+		_: return extension

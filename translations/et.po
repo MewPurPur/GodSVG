@@ -321,20 +321,6 @@ msgid "Search files"
 msgstr "Otsi faile"
 
 #: src/ui_parts/good_file_dialog.gd
-#, fuzzy
-msgid "Save the {format} file"
-msgstr "Salvesta .\"{format}\" fail"
-
-#: src/ui_parts/good_file_dialog.gd
-msgid "Select an image"
-msgstr "Vali pilt"
-
-#: src/ui_parts/good_file_dialog.gd
-#, fuzzy
-msgid "Select an {format} file"
-msgstr "Vali XML fail"
-
-#: src/ui_parts/good_file_dialog.gd
 msgid "Select"
 msgstr "Vali"
 
@@ -940,18 +926,6 @@ msgid "GodSVG doesn’t recognize this attribute"
 msgstr "GodSVG ei tunne seda atribuuti"
 
 #: src/utils/FileUtils.gd
-msgid "Save the .\"{format}\" file"
-msgstr "Salvesta .\"{format}\" fail"
-
-#: src/utils/FileUtils.gd
-msgid "Load an image file"
-msgstr "Ava pildifail"
-
-#: src/utils/FileUtils.gd
-msgid "Import a {extension} file"
-msgstr "Impordi {extension} fail"
-
-#: src/utils/FileUtils.gd
 msgid "The file couldn't be opened."
 msgstr "Faili avamine ebaõnnestus."
 
@@ -1272,6 +1246,20 @@ msgid "Viewport"
 msgstr "Vaade"
 
 #: src/utils/TranslationUtils.gd
+msgid "Select an image"
+msgstr "Vali pilt"
+
+#: src/utils/TranslationUtils.gd
+#, fuzzy
+msgid "Select an {format} file"
+msgstr "Vali XML fail"
+
+#: src/utils/TranslationUtils.gd
+#, fuzzy
+msgid "Save the {format} file"
+msgstr "Salvesta .\"{format}\" fail"
+
+#: src/utils/TranslationUtils.gd
 msgid ""
 "The file extension {extension} is unsupported for this operation. Only "
 "{extension_list} files are supported."
@@ -1282,6 +1270,15 @@ msgstr ""
 #: src/utils/TranslationUtils.gd
 msgid "The file extension is empty. Only {extension_list} files are supported."
 msgstr "Faililaiend on tühi. Ainult {extension_list} on toetatud."
+
+#~ msgid "Save the .\"{format}\" file"
+#~ msgstr "Salvesta .\"{format}\" fail"
+
+#~ msgid "Load an image file"
+#~ msgstr "Ava pildifail"
+
+#~ msgid "Import a {extension} file"
+#~ msgstr "Impordi {extension} fail"
 
 #~ msgid "Select an SVG"
 #~ msgstr "Vali SVG"

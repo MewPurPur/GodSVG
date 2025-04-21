@@ -325,20 +325,6 @@ msgid "Search files"
 msgstr "Искать файлы"
 
 #: src/ui_parts/good_file_dialog.gd
-#, fuzzy
-msgid "Save the {format} file"
-msgstr "Сохранить .\"{format}\" файл"
-
-#: src/ui_parts/good_file_dialog.gd
-msgid "Select an image"
-msgstr "Выбрать изображение"
-
-#: src/ui_parts/good_file_dialog.gd
-#, fuzzy
-msgid "Select an {format} file"
-msgstr "Выбрать XML файл"
-
-#: src/ui_parts/good_file_dialog.gd
 msgid "Select"
 msgstr "Выбрать"
 
@@ -946,18 +932,6 @@ msgid "GodSVG doesn’t recognize this attribute"
 msgstr "GodSVG не может распознать этот атрибут"
 
 #: src/utils/FileUtils.gd
-msgid "Save the .\"{format}\" file"
-msgstr "Сохранить .\"{format}\" файл"
-
-#: src/utils/FileUtils.gd
-msgid "Load an image file"
-msgstr "Загрузить изображение"
-
-#: src/utils/FileUtils.gd
-msgid "Import a {extension} file"
-msgstr "Импортировать {extension} файл"
-
-#: src/utils/FileUtils.gd
 msgid "The file couldn't be opened."
 msgstr "Файл невозможно открыть."
 
@@ -1278,6 +1252,20 @@ msgid "Viewport"
 msgstr "Просмотр"
 
 #: src/utils/TranslationUtils.gd
+msgid "Select an image"
+msgstr "Выбрать изображение"
+
+#: src/utils/TranslationUtils.gd
+#, fuzzy
+msgid "Select an {format} file"
+msgstr "Выбрать XML файл"
+
+#: src/utils/TranslationUtils.gd
+#, fuzzy
+msgid "Save the {format} file"
+msgstr "Сохранить .\"{format}\" файл"
+
+#: src/utils/TranslationUtils.gd
 msgid ""
 "The file extension {extension} is unsupported for this operation. Only "
 "{extension_list} files are supported."
@@ -1288,6 +1276,15 @@ msgstr ""
 #: src/utils/TranslationUtils.gd
 msgid "The file extension is empty. Only {extension_list} files are supported."
 msgstr "Расширение файла пустое. Поддерживаются только {extension_list} файлы."
+
+#~ msgid "Save the .\"{format}\" file"
+#~ msgstr "Сохранить .\"{format}\" файл"
+
+#~ msgid "Load an image file"
+#~ msgstr "Загрузить изображение"
+
+#~ msgid "Import a {extension} file"
+#~ msgstr "Импортировать {extension} файл"
 
 #~ msgid "Select an SVG"
 #~ msgstr "Выбрать SVG"

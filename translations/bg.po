@@ -321,18 +321,6 @@ msgid "Search files"
 msgstr "Търсене из файловете"
 
 #: src/ui_parts/good_file_dialog.gd
-msgid "Save the {format} file"
-msgstr "Запази {format} файла."
-
-#: src/ui_parts/good_file_dialog.gd
-msgid "Select an image"
-msgstr "Избери изображение"
-
-#: src/ui_parts/good_file_dialog.gd
-msgid "Select an {format} file"
-msgstr "Избери {format} файл"
-
-#: src/ui_parts/good_file_dialog.gd
 msgid "Select"
 msgstr "Избери"
 
@@ -939,18 +927,6 @@ msgid "GodSVG doesn’t recognize this attribute"
 msgstr "GodSVG не разпознава този атрибут"
 
 #: src/utils/FileUtils.gd
-msgid "Save the .\"{format}\" file"
-msgstr "Запази .\"{format}\" файла."
-
-#: src/utils/FileUtils.gd
-msgid "Load an image file"
-msgstr "Зареди изображение"
-
-#: src/utils/FileUtils.gd
-msgid "Import a {extension} file"
-msgstr "Импортирай {extension} файл"
-
-#: src/utils/FileUtils.gd
 msgid "The file couldn't be opened."
 msgstr "Файлът не можа да бъде отворен."
 
@@ -1263,6 +1239,18 @@ msgstr "Инспектор"
 #: src/utils/TranslationUtils.gd
 msgid "Viewport"
 msgstr "Гледка"
+
+#: src/utils/TranslationUtils.gd
+msgid "Select an image"
+msgstr "Избери изображение"
+
+#: src/utils/TranslationUtils.gd
+msgid "Select an {format} file"
+msgstr "Избери {format} файл"
+
+#: src/utils/TranslationUtils.gd
+msgid "Save the {format} file"
+msgstr "Запази {format} файла."
 
 #: src/utils/TranslationUtils.gd
 msgid ""

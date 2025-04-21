@@ -71,8 +71,8 @@ static func open_export_dialog(export_data: ImageExportData, final_callback := C
 								final_callback.call()
 			
 			DisplayServer.file_dialog_show(
-					Translator.translate("Save the .\"{format}\" file").format(
-					{"format": export_data.format}), Configs.savedata.get_active_tab_dir(),
+					TranslationUtils.get_file_dialog_save_mode_title_text(export_data.format),
+					Configs.savedata.get_active_tab_dir(),
 					_choose_file_name() + "." + export_data.format, false,
 					DisplayServer.FILE_DIALOG_MODE_SAVE_FILE,
 					PackedStringArray(["*." + export_data.format]), native_callback)
@@ -101,8 +101,8 @@ static func open_xml_export_dialog(xml: String, file_name: String) -> void:
 							_finish_xml_export(files[0], xml)
 			
 			DisplayServer.file_dialog_show(
-					Translator.translate("Save the .\"{format}\" file").format(
-					{"format": "xml"}), Configs.savedata.get_last_dir(),
+					TranslationUtils.get_file_dialog_save_mode_title_text("xml"),
+					Configs.savedata.get_last_dir(),
 					file_name + ".xml", false, DisplayServer.FILE_DIALOG_MODE_SAVE_FILE,
 					PackedStringArray(["*.xml"]), native_callback)
 		else:
@@ -165,7 +165,7 @@ static func open_svg_import_dialog() -> void:
 
 static func open_image_import_dialog() -> void:
 	_open_import_dialog(PackedStringArray(["png", "jpg", "jpeg", "webp", "svg"]),
-			_finish_reference_load, Translator.translate("Load an image file"))
+			_finish_reference_load)
 
 static func open_xml_import_dialog(completion_callback: Callable) -> void:
 	_open_import_dialog(PackedStringArray(["xml"]), completion_callback)
@@ -173,15 +173,11 @@ static func open_xml_import_dialog(completion_callback: Callable) -> void:
 
 # On web, the completion callback can't use the full file path,
 static func _open_import_dialog(extensions: PackedStringArray,
-completion_callback: Callable, native_dialog_title := "") -> void:
+completion_callback: Callable) -> void:
 	OS.request_permissions()
 	var extensions_with_dots := PackedStringArray()
 	for extension in extensions:
 		extensions_with_dots.append("." + extension)
-	
-	if native_dialog_title.is_empty():
-		native_dialog_title = Translator.translate("Import a {extension} file").format(
-				{"extension": " / ".join(extensions_with_dots)})
 	
 	if OS.has_feature("web"):
 		_web_load_file(extensions, completion_callback)
@@ -196,7 +192,8 @@ completion_callback: Callable, native_dialog_title := "") -> void:
 						if has_selected:
 							_finish_file_import(files[0], completion_callback, extensions)
 			
-			DisplayServer.file_dialog_show(native_dialog_title,
+			DisplayServer.file_dialog_show(
+					TranslationUtils.get_file_dialog_select_mode_title_text(extensions),
 					Configs.savedata.get_last_dir(), "", false,
 					DisplayServer.FILE_DIALOG_MODE_OPEN_FILE, filters, native_callback)
 		else:
