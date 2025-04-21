@@ -321,20 +321,6 @@ msgid "Search files"
 msgstr "Rechercher des fichiers"
 
 #: src/ui_parts/good_file_dialog.gd
-#, fuzzy
-msgid "Save the {format} file"
-msgstr "Enregistrer le fichier .\"{format}\""
-
-#: src/ui_parts/good_file_dialog.gd
-msgid "Select an image"
-msgstr "Sélectionner une image"
-
-#: src/ui_parts/good_file_dialog.gd
-#, fuzzy
-msgid "Select an {format} file"
-msgstr "Sélectionner un fichier XML"
-
-#: src/ui_parts/good_file_dialog.gd
 msgid "Select"
 msgstr "Sélectionner"
 
@@ -943,18 +929,6 @@ msgid "GodSVG doesn’t recognize this attribute"
 msgstr "GodSVG ne reconnaît pas cet attribut"
 
 #: src/utils/FileUtils.gd
-msgid "Save the .\"{format}\" file"
-msgstr "Enregistrer le fichier .\"{format}\""
-
-#: src/utils/FileUtils.gd
-msgid "Load an image file"
-msgstr "Charger un fichier image"
-
-#: src/utils/FileUtils.gd
-msgid "Import a {extension} file"
-msgstr "Importer un fichier {extension}"
-
-#: src/utils/FileUtils.gd
 msgid "The file couldn't be opened."
 msgstr "Le fichier n'a pas pu être ouvert."
 
@@ -1275,6 +1249,20 @@ msgid "Viewport"
 msgstr "Affichage"
 
 #: src/utils/TranslationUtils.gd
+msgid "Select an image"
+msgstr "Sélectionner une image"
+
+#: src/utils/TranslationUtils.gd
+#, fuzzy
+msgid "Select an {format} file"
+msgstr "Sélectionner un fichier XML"
+
+#: src/utils/TranslationUtils.gd
+#, fuzzy
+msgid "Save the {format} file"
+msgstr "Enregistrer le fichier .\"{format}\""
+
+#: src/utils/TranslationUtils.gd
 msgid ""
 "The file extension {extension} is unsupported for this operation. Only "
 "{extension_list} files are supported."
@@ -1287,6 +1275,15 @@ msgid "The file extension is empty. Only {extension_list} files are supported."
 msgstr ""
 "L'extension de fichier est vide. Seuls les fichiers {extension_list} sont "
 "supportés."
+
+#~ msgid "Save the .\"{format}\" file"
+#~ msgstr "Enregistrer le fichier .\"{format}\""
+
+#~ msgid "Load an image file"
+#~ msgstr "Charger un fichier image"
+
+#~ msgid "Import a {extension} file"
+#~ msgstr "Importer un fichier {extension}"
 
 #~ msgid "Select an SVG"
 #~ msgstr "Sélectionner un SVG"

@@ -324,20 +324,6 @@ msgid "Search files"
 msgstr "Procurar arquivos"
 
 #: src/ui_parts/good_file_dialog.gd
-#, fuzzy
-msgid "Save the {format} file"
-msgstr "Salvar o arquivo .\"{format}\""
-
-#: src/ui_parts/good_file_dialog.gd
-msgid "Select an image"
-msgstr "Selecionar uma imagem"
-
-#: src/ui_parts/good_file_dialog.gd
-#, fuzzy
-msgid "Select an {format} file"
-msgstr "Selecionar um arquivo XML"
-
-#: src/ui_parts/good_file_dialog.gd
 msgid "Select"
 msgstr "Selecionar"
 
@@ -945,18 +931,6 @@ msgid "GodSVG doesn’t recognize this attribute"
 msgstr "O GodSVG não reconhece este atributo"
 
 #: src/utils/FileUtils.gd
-msgid "Save the .\"{format}\" file"
-msgstr "Salvar o arquivo .\"{format}\""
-
-#: src/utils/FileUtils.gd
-msgid "Load an image file"
-msgstr "Carregar um arquivo de imagem"
-
-#: src/utils/FileUtils.gd
-msgid "Import a {extension} file"
-msgstr "Importar um arquivo {extension}"
-
-#: src/utils/FileUtils.gd
 msgid "The file couldn't be opened."
 msgstr "Este arquivo não pode ser aberto."
 
@@ -1277,6 +1251,20 @@ msgid "Viewport"
 msgstr "Visualizar"
 
 #: src/utils/TranslationUtils.gd
+msgid "Select an image"
+msgstr "Selecionar uma imagem"
+
+#: src/utils/TranslationUtils.gd
+#, fuzzy
+msgid "Select an {format} file"
+msgstr "Selecionar um arquivo XML"
+
+#: src/utils/TranslationUtils.gd
+#, fuzzy
+msgid "Save the {format} file"
+msgstr "Salvar o arquivo .\"{format}\""
+
+#: src/utils/TranslationUtils.gd
 msgid ""
 "The file extension {extension} is unsupported for this operation. Only "
 "{extension_list} files are supported."
@@ -1289,6 +1277,15 @@ msgid "The file extension is empty. Only {extension_list} files are supported."
 msgstr ""
 "A extensão de arquivo está vazia. Somente arquivos {extension_list} são "
 "suportados."
+
+#~ msgid "Save the .\"{format}\" file"
+#~ msgstr "Salvar o arquivo .\"{format}\""
+
+#~ msgid "Load an image file"
+#~ msgstr "Carregar um arquivo de imagem"
+
+#~ msgid "Import a {extension} file"
+#~ msgstr "Importar um arquivo {extension}"
 
 #~ msgid "Select an SVG"
 #~ msgstr "Selecionar um SVG"

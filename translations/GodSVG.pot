@@ -312,18 +312,6 @@ msgid "Search files"
 msgstr ""
 
 #: src/ui_parts/good_file_dialog.gd
-msgid "Save the {format} file"
-msgstr ""
-
-#: src/ui_parts/good_file_dialog.gd
-msgid "Select an image"
-msgstr ""
-
-#: src/ui_parts/good_file_dialog.gd
-msgid "Select an {format} file"
-msgstr ""
-
-#: src/ui_parts/good_file_dialog.gd
 msgid "Select"
 msgstr ""
 
@@ -919,18 +907,6 @@ msgid "GodSVG doesn’t recognize this attribute"
 msgstr ""
 
 #: src/utils/FileUtils.gd
-msgid "Save the .\"{format}\" file"
-msgstr ""
-
-#: src/utils/FileUtils.gd
-msgid "Load an image file"
-msgstr ""
-
-#: src/utils/FileUtils.gd
-msgid "Import a {extension} file"
-msgstr ""
-
-#: src/utils/FileUtils.gd
 msgid "The file couldn't be opened."
 msgstr ""
 
@@ -1240,6 +1216,18 @@ msgstr ""
 
 #: src/utils/TranslationUtils.gd
 msgid "Viewport"
+msgstr ""
+
+#: src/utils/TranslationUtils.gd
+msgid "Select an image"
+msgstr ""
+
+#: src/utils/TranslationUtils.gd
+msgid "Select an {format} file"
+msgstr ""
+
+#: src/utils/TranslationUtils.gd
+msgid "Save the {format} file"
 msgstr ""
 
 #: src/utils/TranslationUtils.gd
