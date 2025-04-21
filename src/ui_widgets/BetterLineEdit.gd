@@ -106,6 +106,7 @@ func _gui_input(event: InputEvent) -> void:
 	
 	if event.is_action_pressed("ui_cancel"):
 		release_focus()
+		accept_event()
 		return
 	
 	mouse_filter = Utils.mouse_filter_pass_non_drag_events(event)
