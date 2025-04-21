@@ -320,21 +320,19 @@ msgstr "Activer/Désactiver la visibilité des fichiers cachés"
 msgid "Search files"
 msgstr "Rechercher des fichiers"
 
-#: src/ui_parts/good_file_dialog.gd src/utils/TranslationUtils.gd
-msgid "Save SVG"
-msgstr "Sauvegarder le SVG"
-
 #: src/ui_parts/good_file_dialog.gd
-msgid "Select an SVG"
-msgstr "Sélectionner un SVG"
-
-#: src/ui_parts/good_file_dialog.gd
-msgid "Select an XML file"
-msgstr "Sélectionner un fichier XML"
+#, fuzzy
+msgid "Save the {format} file"
+msgstr "Enregistrer le fichier .\"{format}\""
 
 #: src/ui_parts/good_file_dialog.gd
 msgid "Select an image"
 msgstr "Sélectionner une image"
+
+#: src/ui_parts/good_file_dialog.gd
+#, fuzzy
+msgid "Select an {format} file"
+msgstr "Sélectionner un fichier XML"
 
 #: src/ui_parts/good_file_dialog.gd
 msgid "Select"
@@ -999,6 +997,10 @@ msgid "Do you want to save the changes made to {file_name}?"
 msgstr "Voulez-vous enregistrer les modifications de {file_name} ?"
 
 #: src/utils/TranslationUtils.gd
+msgid "Save SVG"
+msgstr "Sauvegarder le SVG"
+
+#: src/utils/TranslationUtils.gd
 #, fuzzy
 msgid "Save SVG as"
 msgstr "Sauvegarder le SVG sous…"
@@ -1285,6 +1287,9 @@ msgid "The file extension is empty. Only {extension_list} files are supported."
 msgstr ""
 "L'extension de fichier est vide. Seuls les fichiers {extension_list} sont "
 "supportés."
+
+#~ msgid "Select an SVG"
+#~ msgstr "Sélectionner un SVG"
 
 #~ msgid "Show reference"
 #~ msgstr "Montrer la référence"

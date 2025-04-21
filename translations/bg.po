@@ -320,21 +320,17 @@ msgstr "Превключи видимостта на скритите файло
 msgid "Search files"
 msgstr "Търсене из файловете"
 
-#: src/ui_parts/good_file_dialog.gd src/utils/TranslationUtils.gd
-msgid "Save SVG"
-msgstr "Запиши SVG-то"
-
 #: src/ui_parts/good_file_dialog.gd
-msgid "Select an SVG"
-msgstr "Избери SVG"
-
-#: src/ui_parts/good_file_dialog.gd
-msgid "Select an XML file"
-msgstr "Избери XML файл"
+msgid "Save the {format} file"
+msgstr "Запази {format} файла."
 
 #: src/ui_parts/good_file_dialog.gd
 msgid "Select an image"
 msgstr "Избери изображение"
+
+#: src/ui_parts/good_file_dialog.gd
+msgid "Select an {format} file"
+msgstr "Избери {format} файл"
 
 #: src/ui_parts/good_file_dialog.gd
 msgid "Select"
@@ -997,6 +993,10 @@ msgid "Do you want to save the changes made to {file_name}?"
 msgstr "Искаш ли да запишеш промените върху {file_name}?"
 
 #: src/utils/TranslationUtils.gd
+msgid "Save SVG"
+msgstr "Запиши SVG-то"
+
+#: src/utils/TranslationUtils.gd
 msgid "Save SVG as"
 msgstr "Запиши SVG-то като"
 
@@ -1275,15 +1275,3 @@ msgstr ""
 #: src/utils/TranslationUtils.gd
 msgid "The file extension is empty. Only {extension_list} files are supported."
 msgstr "Форматът е празен. Единствено {extension_list} файловете са подържани."
-
-#~ msgid "Show reference"
-#~ msgstr "Покажни справочното изображение"
-
-#~ msgid "Overlay reference"
-#~ msgstr "Насложи справочното изображение"
-
-#~ msgid "Rasterized SVG"
-#~ msgstr "Растеризирай SVG"
-
-#~ msgid "Save as"
-#~ msgstr "Запиши като"

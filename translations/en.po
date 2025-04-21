@@ -312,20 +312,16 @@ msgstr ""
 msgid "Search files"
 msgstr ""
 
-#: src/ui_parts/good_file_dialog.gd src/utils/TranslationUtils.gd
-msgid "Save SVG"
-msgstr ""
-
 #: src/ui_parts/good_file_dialog.gd
-msgid "Select an SVG"
-msgstr ""
-
-#: src/ui_parts/good_file_dialog.gd
-msgid "Select an XML file"
+msgid "Save the {format} file"
 msgstr ""
 
 #: src/ui_parts/good_file_dialog.gd
 msgid "Select an image"
+msgstr ""
+
+#: src/ui_parts/good_file_dialog.gd
+msgid "Select an {format} file"
 msgstr ""
 
 #: src/ui_parts/good_file_dialog.gd
@@ -973,6 +969,10 @@ msgstr ""
 
 #: src/utils/FileUtils.gd
 msgid "Do you want to save the changes made to {file_name}?"
+msgstr ""
+
+#: src/utils/TranslationUtils.gd
+msgid "Save SVG"
 msgstr ""
 
 #: src/utils/TranslationUtils.gd

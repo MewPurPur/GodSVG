@@ -107,3 +107,14 @@ static func get_clipboard_web_safe() -> String:
 	if OS.has_feature("web"):
 		return ""
 	return DisplayServer.clipboard_get()
+
+
+static func get_extension_readable_name(extension: String) -> String:
+	match extension:
+		"svg": return "SVG"
+		"png": return "PNG"
+		"webp": return "WebP"
+		"jpeg": return "JPEG"
+		"jpg": return "JPG"
+		"xml": return "XML"
+		_: return extension
