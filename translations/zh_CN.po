@@ -392,6 +392,7 @@ msgstr "语法错误"
 msgid "Add element"
 msgstr "添加元素"
 
+#. This is plural
 #: src/ui_parts/layout_popup.gd
 msgid "Excluded"
 msgstr ""
@@ -472,6 +473,7 @@ msgstr "注释颜色"
 msgid "Text color"
 msgstr "文本颜色"
 
+#. CDATA shouldn't be translated. It's a type of XML section.
 #: src/ui_parts/settings_menu.gd
 msgid "CDATA color"
 msgstr "CDATA 颜色"
@@ -480,6 +482,7 @@ msgstr "CDATA 颜色"
 msgid "Error color"
 msgstr "错误颜色"
 
+#. Refers to the colors of the draggable handles.
 #: src/ui_parts/settings_menu.gd
 msgid "Handle colors"
 msgstr "拖拽框颜色"
@@ -557,6 +560,7 @@ msgstr "使用系统自带文件选择窗口"
 msgid "Sync window title to file name"
 msgstr "同步窗口标题为文件名"
 
+#. Refers to the size of the draggable handles.
 #: src/ui_parts/settings_menu.gd
 msgid "Handle size"
 msgstr "拖拽框大小"
@@ -590,11 +594,13 @@ msgstr "新建调色盘"
 msgid "New palette from XML"
 msgstr "从 XML 创建新调色盘"
 
+#. Refers to the formatter used for GodSVG's code editor.
 #: src/ui_parts/settings_menu.gd
 #, fuzzy
 msgid "Editor formatter"
 msgstr "编辑器格式"
 
+#. Refers to the formatter used when exporting.
 #: src/ui_parts/settings_menu.gd
 #, fuzzy
 msgid "Export formatter"
@@ -1256,6 +1262,7 @@ msgstr ""
 msgid "Inspector"
 msgstr ""
 
+#. The viewport is the area where the graphic is displayed. In similar applications, it's often called the canvas.
 #: src/utils/TranslationUtils.gd
 #, fuzzy
 msgid "Viewport"

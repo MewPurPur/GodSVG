@@ -396,6 +396,7 @@ msgstr "Erreur de syntaxe"
 msgid "Add element"
 msgstr "Ajouter un élément"
 
+#. This is plural
 #: src/ui_parts/layout_popup.gd
 msgid "Excluded"
 msgstr ""
@@ -476,6 +477,7 @@ msgstr "Couleur de commentaire"
 msgid "Text color"
 msgstr "Couleur de texte"
 
+#. CDATA shouldn't be translated. It's a type of XML section.
 #: src/ui_parts/settings_menu.gd
 msgid "CDATA color"
 msgstr "Couleur de CDATA"
@@ -484,6 +486,7 @@ msgstr "Couleur de CDATA"
 msgid "Error color"
 msgstr "Couleur d'erreur"
 
+#. Refers to the colors of the draggable handles.
 #: src/ui_parts/settings_menu.gd
 msgid "Handle colors"
 msgstr "Couleurs des poignées"
@@ -561,6 +564,7 @@ msgstr "Utiliser la boîte de dialogue de fichiers native"
 msgid "Sync window title to file name"
 msgstr "Synchroniser le titre de la fenêtre au nom du fichier"
 
+#. Refers to the size of the draggable handles.
 #: src/ui_parts/settings_menu.gd
 msgid "Handle size"
 msgstr "Taille des poignées"
@@ -593,10 +597,12 @@ msgstr "Nouvelle palette"
 msgid "New palette from XML"
 msgstr "Nouvelle palette depuis du XML"
 
+#. Refers to the formatter used for GodSVG's code editor.
 #: src/ui_parts/settings_menu.gd
 msgid "Editor formatter"
 msgstr "Formateur de l'éditeur"
 
+#. Refers to the formatter used when exporting.
 #: src/ui_parts/settings_menu.gd
 msgid "Export formatter"
 msgstr "Formateur d'exportation"
@@ -1250,6 +1256,7 @@ msgstr ""
 msgid "Inspector"
 msgstr ""
 
+#. The viewport is the area where the graphic is displayed. In similar applications, it's often called the canvas.
 #: src/utils/TranslationUtils.gd
 #, fuzzy
 msgid "Viewport"
