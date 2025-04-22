@@ -706,6 +706,12 @@ msgid "Remove unnecessary parameters"
 msgstr "Удалить ненужные параметры"
 
 #: src/ui_parts/settings_menu.gd
+msgid ""
+"If turned on, clicking on a tab with the middle mouse button closes the tab. "
+"If turned off, it focuses the tab instead."
+msgstr ""
+
+#: src/ui_parts/settings_menu.gd
 msgid "Swaps the scroll directions for zooming in and zooming out."
 msgstr "Поменяет местами направление прокрутки при масштабировании."
 
@@ -718,9 +724,9 @@ msgstr ""
 "окна просмотра."
 
 #: src/ui_parts/settings_menu.gd
+#, fuzzy
 msgid ""
-"If turned on, scrolling will pan the view. To zoom, hold CTRL while "
-"scrolling."
+"If turned on, scrolling pans the view. To zoom, hold CTRL while scrolling."
 msgstr ""
 "Если включено, прокрутка будет перемещать окно просмотра. Чтобы "
 "масштабировать зажмите CTRL при прокручивании."
@@ -735,9 +741,10 @@ msgstr ""
 "использоваться встроенный файловый диалог."
 
 #: src/ui_parts/settings_menu.gd
+#, fuzzy
 msgid ""
-"If turned off, the window title will remain simply \"GodSVG\" regardless of "
-"the current file."
+"If turned off, the window title remains as \"GodSVG\" without including the "
+"current file."
 msgstr ""
 "Если выключено, заголовок окна будет просто \"GodSVG\" независимо от "
 "текущего файла."

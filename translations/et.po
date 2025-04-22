@@ -702,6 +702,12 @@ msgid "Remove unnecessary parameters"
 msgstr "Eemalda ebavajalikud parameetrid"
 
 #: src/ui_parts/settings_menu.gd
+msgid ""
+"If turned on, clicking on a tab with the middle mouse button closes the tab. "
+"If turned off, it focuses the tab instead."
+msgstr ""
+
+#: src/ui_parts/settings_menu.gd
 msgid "Swaps the scroll directions for zooming in and zooming out."
 msgstr "Vahetab kerimissuunad suurendamiseks ja vähendamiseks ümber."
 
@@ -714,9 +720,9 @@ msgstr ""
 "servani, et see liikumist ei takistaks."
 
 #: src/ui_parts/settings_menu.gd
+#, fuzzy
 msgid ""
-"If turned on, scrolling will pan the view. To zoom, hold CTRL while "
-"scrolling."
+"If turned on, scrolling pans the view. To zoom, hold CTRL while scrolling."
 msgstr ""
 "Sisselülitamisel kerimine liigutab vaadet. Suurendamiseks hoia CTRL klahvi "
 "kerimise ajal."
@@ -730,9 +736,10 @@ msgstr ""
 "GodSVG sisseehitatud failidialoogi."
 
 #: src/ui_parts/settings_menu.gd
+#, fuzzy
 msgid ""
-"If turned off, the window title will remain simply \"GodSVG\" regardless of "
-"the current file."
+"If turned off, the window title remains as \"GodSVG\" without including the "
+"current file."
 msgstr ""
 "Väljalülitamisel jääb akna nimieks \"GodSVG\" sõltumata avatud failist."
 

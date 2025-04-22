@@ -705,6 +705,12 @@ msgid "Remove unnecessary parameters"
 msgstr "Remover parâmetros desnecessários"
 
 #: src/ui_parts/settings_menu.gd
+msgid ""
+"If turned on, clicking on a tab with the middle mouse button closes the tab. "
+"If turned off, it focuses the tab instead."
+msgstr ""
+
+#: src/ui_parts/settings_menu.gd
 msgid "Swaps the scroll directions for zooming in and zooming out."
 msgstr "Troca as direções de rolagem para aumentar e diminuir o zoom."
 
@@ -717,9 +723,9 @@ msgstr ""
 "viewport quando movimentando a visualização."
 
 #: src/ui_parts/settings_menu.gd
+#, fuzzy
 msgid ""
-"If turned on, scrolling will pan the view. To zoom, hold CTRL while "
-"scrolling."
+"If turned on, scrolling pans the view. To zoom, hold CTRL while scrolling."
 msgstr ""
 "Se habilitado, a rolagem do mouse irá movimentar a tela. Para realizar o "
 "zoom, pressione CTRL enquanto rola."
@@ -733,9 +739,10 @@ msgstr ""
 "desabilitado, usa o diálogo de arquivo embutido no GodSVG."
 
 #: src/ui_parts/settings_menu.gd
+#, fuzzy
 msgid ""
-"If turned off, the window title will remain simply \"GodSVG\" regardless of "
-"the current file."
+"If turned off, the window title remains as \"GodSVG\" without including the "
+"current file."
 msgstr ""
 "Se desabilitado, o título da janela permanecerá como \"GodSVG\" independente "
 "do arquivo aberto."
