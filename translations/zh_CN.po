@@ -702,6 +702,12 @@ msgid "Remove unnecessary parameters"
 msgstr "移除不必要的参数"
 
 #: src/ui_parts/settings_menu.gd
+msgid ""
+"If turned on, clicking on a tab with the middle mouse button closes the tab. "
+"If turned off, it focuses the tab instead."
+msgstr ""
+
+#: src/ui_parts/settings_menu.gd
 msgid "Swaps the scroll directions for zooming in and zooming out."
 msgstr ""
 
@@ -712,9 +718,9 @@ msgid ""
 msgstr ""
 
 #: src/ui_parts/settings_menu.gd
+#, fuzzy
 msgid ""
-"If turned on, scrolling will pan the view. To zoom, hold CTRL while "
-"scrolling."
+"If turned on, scrolling pans the view. To zoom, hold CTRL while scrolling."
 msgstr "如果启用，滚动鼠标滚轮将移动视图。按住 CTRL 并滚动滚轮以缩放。"
 
 #: src/ui_parts/settings_menu.gd
@@ -726,9 +732,10 @@ msgstr ""
 "择窗口。"
 
 #: src/ui_parts/settings_menu.gd
+#, fuzzy
 msgid ""
-"If turned off, the window title will remain simply \"GodSVG\" regardless of "
-"the current file."
+"If turned off, the window title remains as \"GodSVG\" without including the "
+"current file."
 msgstr "如果禁用，不论当前打开的文件是什么，窗口标题都将固定为 “GodSVG”。"
 
 #: src/ui_parts/settings_menu.gd

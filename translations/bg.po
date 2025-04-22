@@ -701,6 +701,12 @@ msgid "Remove unnecessary parameters"
 msgstr "Премахни ненужните параметри"
 
 #: src/ui_parts/settings_menu.gd
+msgid ""
+"If turned on, clicking on a tab with the middle mouse button closes the tab. "
+"If turned off, it focuses the tab instead."
+msgstr "Когато е включено, натискането на раздел със средното копче на мишката затваря раздела. Ако е изключено, средното копче фокусира раздела."
+
+#: src/ui_parts/settings_menu.gd
 msgid "Swaps the scroll directions for zooming in and zooming out."
 msgstr "Разменя посоките на влачене за намаляване и увеличаване"
 
@@ -714,11 +720,9 @@ msgstr ""
 
 #: src/ui_parts/settings_menu.gd
 msgid ""
-"If turned on, scrolling will pan the view. To zoom, hold CTRL while "
-"scrolling."
+"If turned on, scrolling pans the view. To zoom, hold CTRL while scrolling."
 msgstr ""
-"Когато е включено, влаченето ще премести гледката. За увеличение, натисни "
-"CTRL докато влачиш."
+"Когато е включено, влаченето премества гледката. За увеличение, натисни CTRL докато влачиш."
 
 #: src/ui_parts/settings_menu.gd
 msgid ""
@@ -731,11 +735,9 @@ msgstr ""
 
 #: src/ui_parts/settings_menu.gd
 msgid ""
-"If turned off, the window title will remain simply \"GodSVG\" regardless of "
-"the current file."
-msgstr ""
-"Когато е изключено, името на прозореца ще остане \"GodSVG\". независимо от "
-"сегашния файл."
+"If turned off, the window title remains as \"GodSVG\" without including the "
+"current file."
+msgstr "Когато е изключено, името на прозореца остава \"GodSVG\" без да включва настоящия файл."
 
 #: src/ui_parts/settings_menu.gd
 msgid "Changes the visual size and grabbing area of handles."
@@ -1030,11 +1032,11 @@ msgstr "Отвори SVG с външно приложение"
 
 #: src/utils/TranslationUtils.gd
 msgid "Show in File Manager"
-msgstr "Покажи във Файловия мениджър"
+msgstr "Покажи във файловия мениджър"
 
 #: src/utils/TranslationUtils.gd
 msgid "Show SVG in File Manager"
-msgstr "Покажи SVG-то във Файловия мениджър"
+msgstr "Покажи SVG-то във файловия мениджър"
 
 #: src/utils/TranslationUtils.gd
 msgid "Undo"
@@ -1250,7 +1252,7 @@ msgstr "Избери {format} файл"
 
 #: src/utils/TranslationUtils.gd
 msgid "Save the {format} file"
-msgstr "Запази {format} файла."
+msgstr "Запази {format} файла"
 
 #: src/utils/TranslationUtils.gd
 msgid ""

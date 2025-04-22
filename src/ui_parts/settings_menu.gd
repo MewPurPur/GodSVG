@@ -199,7 +199,7 @@ func setup_content() -> void:
 			current_setup_setting = "basic_color_warning"
 			add_color_edit(Translator.translate("Warning color"))
 		"tab_bar":
-			advice_panel.hide()
+			advice_panel.show()
 			create_setting_container()
 			content_container.add_child(setting_container)
 			current_setup_resource = Configs.savedata
@@ -207,6 +207,8 @@ func setup_content() -> void:
 			add_section(Translator.translate("Input"))
 			current_setup_setting = "tab_mmb_close"
 			add_checkbox(Translator.translate("Close tabs with middle mouse button"))
+			add_advice(Translator.translate(
+					"If turned on, clicking on a tab with the middle mouse button closes the tab. If turned off, it focuses the tab instead."))
 		"other":
 			advice_panel.show()
 			create_setting_container()
@@ -225,7 +227,7 @@ func setup_content() -> void:
 			current_setup_setting = "use_ctrl_for_zoom"
 			add_checkbox(Translator.translate("Use CTRL for zooming"))
 			add_advice(Translator.translate(
-					"If turned on, scrolling will pan the view. To zoom, hold CTRL while scrolling."))
+					"If turned on, scrolling pans the view. To zoom, hold CTRL while scrolling."))
 			
 			add_section(Translator.translate("Miscellaneous"))
 			current_setup_setting = "use_native_file_dialog"
@@ -236,7 +238,7 @@ func setup_content() -> void:
 			current_setup_setting = "use_filename_for_window_title"
 			add_checkbox(Translator.translate("Sync window title to file name"))
 			add_advice(Translator.translate(
-					"If turned off, the window title will remain simply \"GodSVG\" regardless of the current file."))
+					"If turned off, the window title remains as \"GodSVG\" without including the current file."))
 			current_setup_setting = "handle_size"
 			add_number_dropdown(Translator.translate("Handle size"),
 					[0.75, 1.0, 1.25, 1.5, 1.75, 2.0, 2.5, 3.0], false, false,

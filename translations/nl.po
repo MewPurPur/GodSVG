@@ -703,6 +703,12 @@ msgid "Remove unnecessary parameters"
 msgstr "Verwijder onnodige parameters"
 
 #: src/ui_parts/settings_menu.gd
+msgid ""
+"If turned on, clicking on a tab with the middle mouse button closes the tab. "
+"If turned off, it focuses the tab instead."
+msgstr ""
+
+#: src/ui_parts/settings_menu.gd
 msgid "Swaps the scroll directions for zooming in and zooming out."
 msgstr "Verwisselt de scroll richtingen voor inzoomen en uitzoomen."
 
@@ -715,9 +721,9 @@ msgstr ""
 "tijdens het rondkijken."
 
 #: src/ui_parts/settings_menu.gd
+#, fuzzy
 msgid ""
-"If turned on, scrolling will pan the view. To zoom, hold CTRL while "
-"scrolling."
+"If turned on, scrolling pans the view. To zoom, hold CTRL while scrolling."
 msgstr ""
 "Als ingeschakeld, scrollen zal het weergave verschuiven. Om te zoomen,houd "
 "CTRL ingedrukt tijdens scrollen."
@@ -732,9 +738,10 @@ msgstr ""
 "bestandendialoog."
 
 #: src/ui_parts/settings_menu.gd
+#, fuzzy
 msgid ""
-"If turned off, the window title will remain simply \"GodSVG\" regardless of "
-"the current file."
+"If turned off, the window title remains as \"GodSVG\" without including the "
+"current file."
 msgstr ""
 "Als dit uitgeschakelt is, blijft de venstertitel simpelweg \"GodSVG\" "
 "achteloos van het huidige bestand."
