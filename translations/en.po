@@ -386,6 +386,7 @@ msgstr ""
 msgid "Add element"
 msgstr ""
 
+#. This is plural
 #: src/ui_parts/layout_popup.gd
 msgid "Excluded"
 msgstr ""
@@ -466,6 +467,7 @@ msgstr ""
 msgid "Text color"
 msgstr ""
 
+#. CDATA shouldn't be translated. It's a type of XML section.
 #: src/ui_parts/settings_menu.gd
 msgid "CDATA color"
 msgstr ""
@@ -474,6 +476,7 @@ msgstr ""
 msgid "Error color"
 msgstr ""
 
+#. Refers to the colors of the draggable handles.
 #: src/ui_parts/settings_menu.gd
 msgid "Handle colors"
 msgstr ""
@@ -550,6 +553,7 @@ msgstr ""
 msgid "Sync window title to file name"
 msgstr ""
 
+#. Refers to the size of the draggable handles.
 #: src/ui_parts/settings_menu.gd
 msgid "Handle size"
 msgstr ""
@@ -582,10 +586,12 @@ msgstr ""
 msgid "New palette from XML"
 msgstr ""
 
+#. Refers to the formatter used for GodSVG's code editor.
 #: src/ui_parts/settings_menu.gd
 msgid "Editor formatter"
 msgstr ""
 
+#. Refers to the formatter used when exporting.
 #: src/ui_parts/settings_menu.gd
 msgid "Export formatter"
 msgstr ""
@@ -1215,6 +1221,7 @@ msgstr ""
 msgid "Inspector"
 msgstr ""
 
+#. The viewport is the area where the graphic is displayed. In similar applications, it's often called the canvas.
 #: src/utils/TranslationUtils.gd
 msgid "Viewport"
 msgstr ""

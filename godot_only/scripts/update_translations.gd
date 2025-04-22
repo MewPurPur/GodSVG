@@ -2,6 +2,16 @@
 @tool
 extends EditorScript
 
+const COMMENTS_DICT = {
+	"Viewport": "The viewport is the area where the graphic is displayed. In similar applications, it's often called the canvas.",
+	"CDATA color": "CDATA shouldn't be translated. It's a type of XML section.",
+	"Editor formatter": "Refers to the formatter used for GodSVG's code editor.",
+	"Export formatter": "Refers to the formatter used when exporting.",
+	"Handle colors": "Refers to the colors of the draggable handles.",
+	"Handle size": "Refers to the size of the draggable handles.",
+	"Excluded": "This is plural",
+}
+
 const TRANSLATIONS_DIR = "translations"
 
 const HEADER = """#, fuzzy
@@ -80,11 +90,15 @@ func search_directory(dir: String) -> void:
 
 
 func update_translations() -> void:
+	var used_comments := PackedStringArray()
 	var location := ProjectSettings.globalize_path(TRANSLATIONS_DIR + "/GodSVG.pot")
 	var fa := FileAccess.open(location, FileAccess.WRITE)
 	fa.store_string(HEADER)
 	
 	for msg in messages:
+		if COMMENTS_DICT.has(msg.msgid):
+			fa.store_string("#. %s\n" % COMMENTS_DICT[msg.msgid])
+			used_comments.append(msg.msgid)
 		fa.store_string(msg.to_string())
 	fa = null
 	print("Created " + TRANSLATIONS_DIR + "/GodSVG.pot with %d strings" % (messages.size() + 1))
@@ -105,3 +119,7 @@ func update_translations() -> void:
 				print("Updated " + TRANSLATIONS_DIR + "/%s: %s" % [file, output[0].rstrip("\n")])
 			else:
 				print("Updated " + TRANSLATIONS_DIR + "%s" % file)
+	
+	for id in COMMENTS_DICT:
+		if not used_comments.has(id):
+			print_rich("[color=#f66]The \"%s\" string, which has a comment defined for it, wasn't encountered." % id)
