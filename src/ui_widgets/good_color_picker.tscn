@@ -325,8 +325,6 @@ script = ExtResource("6_aqyoh")
 [connection signal="draw" from="ColorContainer/ColorsDisplay/StartColorRect" to="." method="_on_start_color_rect_draw"]
 [connection signal="draw" from="ColorContainer/ColorsDisplay/ColorRect" to="." method="_on_color_rect_draw"]
 [connection signal="pressed" from="ColorContainer/ColorsDisplay/ColorRect/ResetColorButton" to="." method="_on_reset_color_button_pressed"]
-[connection signal="pressed" from="SliderContainer/ColorSpaceContainer/RGB" to="." method="_on_rgb_pressed"]
-[connection signal="pressed" from="SliderContainer/ColorSpaceContainer/HSV" to="." method="_on_hsv_pressed"]
 [connection signal="draw" from="SliderContainer/HBoxContainer/TracksContainer/Slider1/MarginContainer" to="." method="_on_slider1_draw"]
 [connection signal="resized" from="SliderContainer/HBoxContainer/TracksContainer/Slider1/MarginContainer/ColorTrack" to="." method="_on_track_resized"]
 [connection signal="text_submitted" from="SliderContainer/HBoxContainer/TracksContainer/Slider1/IntField" to="." method="_on_slider1_text_submitted"]

@@ -118,6 +118,10 @@ func _ready() -> void:
 	if alpha_enabled:
 		alpha_slider.visible = alpha_enabled
 		widgets_arr[4].gui_input.connect(parse_slider_input.bind(4))
+	
+	rgb_button.pressed.connect(change_slider_mode.bind(SliderMode.RGB))
+	hsv_button.pressed.connect(change_slider_mode.bind(SliderMode.HSV))
+	
 	update_keyword_button()
 	eyedropper_button.pressed.connect(_on_eyedropper_pressed)
 	eyedropper_button.tooltip_text = Translator.translate("Eyedropper")
@@ -359,12 +363,6 @@ func _on_reset_color_button_pressed() -> void:
 	undo_redo.commit_action()
 
 
-func _on_rgb_pressed() -> void:
-	change_slider_mode(SliderMode.RGB)
-
-func _on_hsv_pressed() -> void:
-	change_slider_mode(SliderMode.HSV)
-
 func change_slider_mode(new_slider_mode: SliderMode) -> void:
 	slider_mode = new_slider_mode
 	Configs.savedata.color_picker_slider_mode = new_slider_mode
@@ -477,7 +475,7 @@ func hex(col: Color) -> String:
 	return col.to_html(alpha_enabled and col.a != 1.0)
 
 
-func _input(event: InputEvent) -> void:
+func _unhandled_input(event: InputEvent) -> void:
 	if not visible:
 		return
 	
