@@ -15,23 +15,18 @@ msgstr ""
 msgid "translation-credits"
 msgstr "Kiisu-Master, Swarkin"
 
-#: src/autoload/HandlerGUI.gd
 msgid "Quit GodSVG"
 msgstr "GodSVG beenden"
 
-#: src/autoload/HandlerGUI.gd
 msgid "Do you want to quit GodSVG?"
 msgstr "Möchten Sie GodSVG beenden?"
 
-#: src/autoload/HandlerGUI.gd
 msgid "Quit"
 msgstr "Beenden"
 
-#: src/autoload/HandlerGUI.gd
 msgid "Check for updates?"
 msgstr "Nach Aktualisierungen suchen?"
 
-#: src/autoload/HandlerGUI.gd
 msgid ""
 "This will connect to github.com to compare version numbers. No other data is "
 "collected or transmitted."
@@ -39,24 +34,18 @@ msgstr ""
 "Dadurch wird eine Verbindung zu github.com hergestellt, um Versionsnummern "
 "zu vergleichen. Es werden keine weiteren Daten gesammelt oder übertragen."
 
-#: src/autoload/HandlerGUI.gd src/ui_widgets/alert_dialog.gd
 msgid "OK"
 msgstr "OK"
 
-#: src/autoload/HandlerGUI.gd
 msgid "Do you want to proceed?"
 msgstr "Möchten Sie fortfahren?"
 
-#: src/autoload/HandlerGUI.gd
 msgid "Export SVG"
 msgstr "SVG exportieren"
 
-#: src/autoload/HandlerGUI.gd src/ui_parts/export_menu.gd
-#: src/utils/TranslationUtils.gd
 msgid "Export"
 msgstr "Exportieren"
 
-#: src/autoload/HandlerGUI.gd
 msgid ""
 "The graphic can be exported only as SVG because its proportions are too "
 "extreme."
@@ -64,46 +53,36 @@ msgstr ""
 "Die Grafik kann nur als SVG exportiert werden, da ihre Proportionen zu "
 "extrem sind."
 
-#: src/autoload/HandlerGUI.gd
 msgid ""
 "The graphic can be exported only as SVG because its size is not defined."
 msgstr ""
 "Die Grafik kann nur als SVG exportiert werden, da ihre Größe nicht definiert "
 "ist."
 
-#: src/autoload/State.gd src/ui_parts/good_file_dialog.gd
-#: src/ui_widgets/alert_dialog.gd
 msgid "Alert!"
 msgstr "Achtung!"
 
-#: src/autoload/State.gd src/utils/TranslationUtils.gd
 msgid "Close tab"
 msgstr "Registerkarte schließen"
 
-#: src/autoload/State.gd
 msgid "Restore"
 msgstr "Wiederherstellen"
 
-#: src/autoload/State.gd
 #, fuzzy
 msgid "View in Inspector"
 msgstr "Als Liste ansehen"
 
-#: src/autoload/State.gd
 msgid "Convert To"
 msgstr "Konvertieren zu"
 
-#: src/autoload/State.gd src/ui_widgets/transform_popup.gd
 msgid "Insert After"
 msgstr "Danach einsetzen"
 
-#: src/autoload/State.gd
 msgid "The last edited state of this tab could not be found."
 msgstr ""
 "Der letzte Bearbeitungsstand dieser Registerkarte konnte nicht gefunden "
 "werden."
 
-#: src/autoload/State.gd
 msgid ""
 "The tab is bound to the file path {file_path}. Do you want to restore the "
 "SVG from this path?"
@@ -111,260 +90,193 @@ msgstr ""
 "Die Registerkarte ist an den Dateipfad {file_path} gebunden. Möchten Sie die "
 "SVG-Datei aus diesem Pfad wiederherstellen?"
 
-#: src/config_classes/Formatter.gd
 msgid "Compact"
 msgstr "Kompakt"
 
-#: src/config_classes/Formatter.gd
 msgid "Pretty"
 msgstr "Schön"
 
-#: src/config_classes/Formatter.gd
 msgid "Always"
 msgstr "Immer"
 
-#: src/config_classes/Formatter.gd
 msgid "All except containers"
 msgstr "Alle außer Behälter"
 
-#: src/config_classes/Formatter.gd
 msgid "Never"
 msgstr "Nie"
 
-#: src/config_classes/Formatter.gd
 msgid "When shorter or equal"
 msgstr "Wenn kürzer oder gleich"
 
-#: src/config_classes/Formatter.gd
 msgid "When shorter"
 msgstr "Wenn kürzer"
 
-#: src/config_classes/Formatter.gd
 msgid "3-digit or 6-digit hex"
 msgstr "3-stelligen oder 6-stelligen Hex"
 
-#: src/config_classes/Formatter.gd
 msgid "6-digit hex"
 msgstr "6-stelligen Hex"
 
-#: src/config_classes/TabData.gd
 msgid "Empty"
 msgstr "Leer"
 
-#: src/config_classes/TabData.gd
 msgid "Unsaved"
 msgstr "Ungespeichert"
 
-#: src/data_classes/BasicXNode.gd
 msgid "Comment"
 msgstr "Kommentar"
 
-#: src/data_classes/BasicXNode.gd
 msgid "Text"
 msgstr "Text"
 
-#: src/data_classes/Element.gd
 msgid "{element} must be inside {allowed} to have any effect."
 msgstr ""
 "{element} muss sich innerhalb {allowed} befinden, um einen Effekt zu haben."
 
-#: src/data_classes/ElementG.gd
 msgid "This group has no elements."
 msgstr "Diese Gruppe hat keine Elemente."
 
-#: src/data_classes/ElementG.gd
 msgid "This group has only one element."
 msgstr "Diese Gruppe hat nur ein Element."
 
-#: src/data_classes/GradientUtils.gd
 msgid "No \"id\" attribute defined."
 msgstr "Kein \"id\" Attribut definiert."
 
-#: src/data_classes/GradientUtils.gd
 msgid "No <stop> elements under this gradient."
 msgstr "Keine <stop> Elemente unter diesem Farbverlauf."
 
-#: src/data_classes/GradientUtils.gd
 msgid "This gradient is a solid color."
 msgstr "Dieser Farbverlauf ist einfarbig."
 
-#: src/data_classes/SVGParser.gd
 msgid "Doesn’t describe an SVG."
 msgstr "Beschreibt kein SVG."
 
-#: src/data_classes/SVGParser.gd
 msgid "Improper nesting."
 msgstr "Ungültige Formatierung."
 
-#: src/ui_parts/about_menu.gd src/ui_parts/good_file_dialog.gd
-#: src/ui_parts/settings_menu.gd src/ui_parts/shortcut_panel_config.gd
-#: src/ui_parts/update_menu.gd
 msgid "Close"
 msgstr "Schließen"
 
-#: src/ui_parts/about_menu.gd
 msgid "Authors"
 msgstr "Autoren"
 
-#: src/ui_parts/about_menu.gd
 msgid "Donors"
 msgstr "Spender"
 
-#: src/ui_parts/about_menu.gd
 msgid "License"
 msgstr "Lizenz"
 
-#: src/ui_parts/about_menu.gd
 msgid "Third-party licenses"
 msgstr "Drittanbieter-Lizenzen"
 
-#: src/ui_parts/about_menu.gd
 msgid "Project Founder and Manager"
 msgstr "Projektgründer und Manager"
 
-#: src/ui_parts/about_menu.gd
 msgid "Developers"
 msgstr "Entwickler"
 
-#: src/ui_parts/about_menu.gd
 msgid "Translators"
 msgstr "Übersetzer"
 
-#: src/ui_parts/about_menu.gd
 msgid "Golden donors"
 msgstr "Gold-Spender"
 
-#: src/ui_parts/about_menu.gd
 msgid "Diamond donors"
 msgstr "Diamant-Spender"
 
-#: src/ui_parts/current_file_button.gd
 msgid "Save SVG as…"
 msgstr "SVG speichern als…"
 
-#: src/ui_parts/display.gd
 msgid "Visuals"
 msgstr "Visuelles"
 
-#: src/ui_parts/display.gd
 msgid "Snap size"
 msgstr "Rastergröße"
 
-#: src/ui_parts/donate_menu.gd src/ui_parts/export_menu.gd
-#: src/ui_parts/import_warning_menu.gd src/ui_widgets/choose_name_dialog.gd
-#: src/ui_widgets/confirm_dialog.gd src/ui_widgets/options_dialog.gd
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: src/ui_parts/element_container.gd
 msgid "New element"
 msgstr "Neues Element"
 
-#: src/ui_parts/export_menu.gd
 msgid "Dimensions"
 msgstr "Dimensionen"
 
-#: src/ui_parts/export_menu.gd
 msgid "Size"
 msgstr "Größe"
 
-#: src/ui_parts/export_menu.gd
 msgid "Export Configuration"
 msgstr "Export-Konfiguration"
 
-#: src/ui_parts/export_menu.gd
 msgid "Format"
 msgstr "Format"
 
-#: src/ui_parts/export_menu.gd
 msgid "Lossless"
 msgstr "Verlustlos"
 
-#: src/ui_parts/export_menu.gd
 msgid "Quality"
 msgstr "Qualität"
 
-#: src/ui_parts/export_menu.gd
 msgid "Scale"
 msgstr "Skalieren"
 
-#: src/ui_parts/export_menu.gd
 msgid "Width"
 msgstr "Breite"
 
-#: src/ui_parts/export_menu.gd
 msgid "Height"
 msgstr "Höhe"
 
-#: src/ui_parts/export_menu.gd
 msgid "Preview image size is limited to {dimensions}"
 msgstr "Vorschaubildgröße ist auf {dimensions} limitiert."
 
-#: src/ui_parts/global_actions.gd src/ui_parts/shortcut_panel_config.gd
 msgid "Layout"
 msgstr "Layout"
 
-#: src/ui_parts/global_actions.gd
 msgid "View savedata"
 msgstr "Speicherdaten anzeigen"
 
-#: src/ui_parts/good_file_dialog.gd
 msgid "Go to parent folder"
 msgstr "Zum übergeordneten Ordner gehen"
 
-#: src/ui_parts/good_file_dialog.gd
 msgid "Refresh files"
 msgstr "Dateien aktualisieren"
 
-#: src/ui_parts/good_file_dialog.gd
 msgid "Toggle the visibility of hidden files"
 msgstr "Versteckte Dateien anzeigen"
 
-#: src/ui_parts/good_file_dialog.gd
 msgid "Search files"
 msgstr "Datei suchen"
 
-#: src/ui_parts/good_file_dialog.gd
 msgid "Select"
 msgstr "Auswählen"
 
-#: src/ui_parts/good_file_dialog.gd src/utils/FileUtils.gd
 msgid "Save"
 msgstr "Speichern"
 
-#: src/ui_parts/good_file_dialog.gd
 msgid "Path"
 msgstr "Pfad"
 
-#: src/ui_parts/good_file_dialog.gd
 msgid "Replace"
 msgstr "Ersetzen"
 
-#: src/ui_parts/good_file_dialog.gd
 msgid "Create new folder"
 msgstr "Neuen Ordner erstellen"
 
-#: src/ui_parts/good_file_dialog.gd
 msgid "Invalid name for a folder."
 msgstr "Ungültiger Ordnername."
 
-#: src/ui_parts/good_file_dialog.gd
 msgid "A folder with this name already exists."
 msgstr "Ein gleichnamiger Ordner existiert bereits."
 
-#: src/ui_parts/good_file_dialog.gd
 msgid "Failed to create a folder."
 msgstr "Ordner konnte nicht erstellt werden."
 
-#: src/ui_parts/good_file_dialog.gd
 msgid "Open"
 msgstr "Öffnen"
 
-#: src/ui_parts/good_file_dialog.gd
 msgid "Copy path"
 msgstr "Pfad kopieren"
 
-#: src/ui_parts/good_file_dialog.gd
 msgid ""
 "A file named \"{file_name}\" already exists. Replacing will overwrite its "
 "contents!"
@@ -372,356 +284,264 @@ msgstr ""
 "Eine Datei mit dem Namen \"{file_name}\" existiert bereits. Ersetzen wird "
 "den Inhalt überschreiben!"
 
-#: src/ui_parts/handles_manager.gd
 msgid "New shape"
 msgstr "Neue Form"
 
-#: src/ui_parts/import_warning_menu.gd
 msgid "Import Problems"
 msgstr "Probleme beim Importieren"
 
-#: src/ui_parts/import_warning_menu.gd src/utils/TranslationUtils.gd
 msgid "Import"
 msgstr "Importieren"
 
-#: src/ui_parts/import_warning_menu.gd
 msgid "Unrecognized element"
 msgstr "Unerkanntes Element"
 
-#: src/ui_parts/import_warning_menu.gd
 msgid "Unrecognized attribute"
 msgstr "Unerkanntes Attribut"
 
-#: src/ui_parts/import_warning_menu.gd
 msgid "Syntax error"
 msgstr "Syntaxfehler"
 
-#: src/ui_parts/inspector.gd
 msgid "Add element"
 msgstr "Element hinzufügen"
 
-#. This is plural
-#: src/ui_parts/layout_popup.gd
 msgid "Excluded"
 msgstr ""
 
-#: src/ui_parts/layout_popup.gd
 msgid "Drag and drop to change the layout"
 msgstr ""
 
-#: src/ui_parts/mac_menu.gd src/ui_parts/settings_menu.gd
 msgid "File"
 msgstr "Datei"
 
-#: src/ui_parts/mac_menu.gd src/ui_parts/settings_menu.gd
 msgid "Edit"
 msgstr "Bearbeiten"
 
-#: src/ui_parts/mac_menu.gd src/ui_parts/settings_menu.gd
 msgid "Tool"
 msgstr "Werkzeuge"
 
-#: src/ui_parts/mac_menu.gd src/ui_parts/settings_menu.gd
 msgid "View"
 msgstr "Ansicht"
 
-#: src/ui_parts/mac_menu.gd
 msgid "Snap"
 msgstr "Einrasten"
 
-#: src/ui_parts/settings_menu.gd
 msgid "Formatting"
 msgstr "Formatierung"
 
-#: src/ui_parts/settings_menu.gd src/ui_widgets/color_popup.gd
 msgid "Palettes"
 msgstr "Paletten"
 
-#: src/ui_parts/settings_menu.gd
 msgid "Shortcuts"
 msgstr "Tastenkombinationen"
 
-#: src/ui_parts/settings_menu.gd
 msgid "Theming"
 msgstr "Farbschema"
 
-#: src/ui_parts/settings_menu.gd
 msgid "Tab bar"
 msgstr ""
 
-#: src/ui_parts/settings_menu.gd
 msgid "Other"
 msgstr "Anderes"
 
-#: src/ui_parts/settings_menu.gd
 msgid "SVG Text colors"
 msgstr "SVG Textfarben"
 
-#: src/ui_parts/settings_menu.gd
 msgid "Symbol color"
 msgstr "Symbolfarbe"
 
-#: src/ui_parts/settings_menu.gd
 msgid "Element color"
 msgstr "Elementfarbe"
 
-#: src/ui_parts/settings_menu.gd
 msgid "Attribute color"
 msgstr "Attributfarbe"
 
-#: src/ui_parts/settings_menu.gd
 msgid "String color"
 msgstr "Zeichenkettenfarbe"
 
-#: src/ui_parts/settings_menu.gd
 msgid "Comment color"
 msgstr "Kommentarfarbe"
 
-#: src/ui_parts/settings_menu.gd
 msgid "Text color"
 msgstr "Textfarbe"
 
-#. CDATA shouldn't be translated. It's a type of XML section.
-#: src/ui_parts/settings_menu.gd
 msgid "CDATA color"
 msgstr "CDATA-Farbe"
 
-#: src/ui_parts/settings_menu.gd
 msgid "Error color"
 msgstr "Fehlerfarbe"
 
-#. Refers to the colors of the draggable handles.
-#: src/ui_parts/settings_menu.gd
 msgid "Handle colors"
 msgstr "Grifffarbe"
 
-#: src/ui_parts/settings_menu.gd
 msgid "Inside color"
 msgstr "Innenfarbe"
 
-#: src/ui_parts/settings_menu.gd
 msgid "Normal color"
 msgstr "Normalfarbe"
 
-#: src/ui_parts/settings_menu.gd
 msgid "Hovered color"
 msgstr "Farbe unter der Maus"
 
-#: src/ui_parts/settings_menu.gd
 msgid "Selected color"
 msgstr "Auswahlfarbe"
 
-#: src/ui_parts/settings_menu.gd
 msgid "Hovered selected color"
 msgstr "Ausgewählte Farbe unter der Maus"
 
-#: src/ui_parts/settings_menu.gd
 msgid "Basic colors"
 msgstr "Allgemeine Farben"
 
-#: src/ui_parts/settings_menu.gd
 msgid "Background color"
 msgstr "Hintergrundfarben"
 
-#: src/ui_parts/settings_menu.gd
 #, fuzzy
 msgid "Grid color"
 msgstr "Gültige Farbe"
 
-#: src/ui_parts/settings_menu.gd
 msgid "Valid color"
 msgstr "Gültige Farbe"
 
-#: src/ui_parts/settings_menu.gd
 msgid "Warning color"
 msgstr "Warnfarbe"
 
-#: src/ui_parts/settings_menu.gd
 msgid "Input"
 msgstr "Eingabe"
 
-#: src/ui_parts/settings_menu.gd
 msgid "Close tabs with middle mouse button"
 msgstr ""
 
-#: src/ui_parts/settings_menu.gd
 msgid "Invert zoom direction"
 msgstr "Zoomrichtung umkehren"
 
-#: src/ui_parts/settings_menu.gd
 msgid "Wrap-around panning"
 msgstr "Herumwickelndes Verschieben"
 
-#: src/ui_parts/settings_menu.gd
 msgid "Use CTRL for zooming"
 msgstr "Strg-Taste zum Zoomen benutzen"
 
-#: src/ui_parts/settings_menu.gd
 msgid "Miscellaneous"
 msgstr "Verschiedenes"
 
-#: src/ui_parts/settings_menu.gd
 msgid "Use native file dialog"
 msgstr "Nativen Dateidialog verwenden"
 
-#: src/ui_parts/settings_menu.gd
 msgid "Sync window title to file name"
 msgstr "Fenstertitel mit Dateinamen synchronisieren"
 
-#. Refers to the size of the draggable handles.
-#: src/ui_parts/settings_menu.gd
 msgid "Handle size"
 msgstr "Griffgröße"
 
-#: src/ui_parts/settings_menu.gd
 msgid "UI scale"
 msgstr "Benutzeroberflächenskalierung"
 
-#: src/ui_parts/settings_menu.gd
 msgid "Changes the scale factor for the interface."
 msgstr "Verändert den Skalierungsfaktor der Benutzeroberfläche."
 
-#: src/ui_parts/settings_menu.gd
 msgid "Language"
 msgstr "Sprache"
 
-#: src/ui_parts/settings_menu.gd
 msgid "Import XML"
 msgstr "XML importieren"
 
-#: src/ui_parts/settings_menu.gd
 msgid "Paste XML"
 msgstr "XML einfügen"
 
-#: src/ui_parts/settings_menu.gd
 msgid "New palette"
 msgstr "Neue Palette"
 
-#: src/ui_parts/settings_menu.gd
 msgid "New palette from XML"
 msgstr "Neue Palette aus XML"
 
-#. Refers to the formatter used for GodSVG's code editor.
-#: src/ui_parts/settings_menu.gd
 msgid "Editor formatter"
 msgstr "Editor-Formatierer"
 
-#. Refers to the formatter used when exporting.
-#: src/ui_parts/settings_menu.gd
 msgid "Export formatter"
 msgstr "Export-Formatierer"
 
-#: src/ui_parts/settings_menu.gd
 msgid "Help"
 msgstr "Hilfe"
 
-#: src/ui_parts/settings_menu.gd
 msgid "Reset all to default"
 msgstr "Alle auf Standardeinstellung zurücksetzen"
 
-#: src/ui_parts/settings_menu.gd
 msgid "Preset"
 msgstr "Voreinstellung"
 
-#: src/ui_parts/settings_menu.gd
 msgid "Keep comments"
 msgstr "Kommentare beibehalten"
 
-#: src/ui_parts/settings_menu.gd
 msgid "Keep unrecognized XML structures"
 msgstr "Unbekannte XML Strukturen beibehalten"
 
-#: src/ui_parts/settings_menu.gd
 msgid "Add trailing newline"
 msgstr "Nachfolgenden Zeilenumbruch hinzufügen"
 
-#: src/ui_parts/settings_menu.gd
 msgid "Use shorthand tag syntax"
 msgstr "Kurzbezeichnung für Tags verwenden"
 
-#: src/ui_parts/settings_menu.gd
 msgid "Space out the slash of shorthand tags"
 msgstr "Leerzeichen zu dem Schrägstrich bei abgekürzten Tags hinzufügen"
 
-#: src/ui_parts/settings_menu.gd
 msgid "Use pretty formatting"
 msgstr "Schöne Formatierung verwenden"
 
-#: src/ui_parts/settings_menu.gd
 msgid "Use spaces instead of tabs"
 msgstr "Leerzeichen anstatt Tabulatorzeichen verwenden"
 
-#: src/ui_parts/settings_menu.gd
 msgid "Number of indentation spaces"
 msgstr "Anzahl der Tabulationsleerzeichen"
 
-#: src/ui_parts/settings_menu.gd
 msgid "Numbers"
 msgstr "Nummern"
 
-#: src/ui_parts/settings_menu.gd
 msgid "Remove leading zero"
 msgstr "Führende Null entfernen"
 
-#: src/ui_parts/settings_menu.gd
 msgid "Use exponential when shorter"
 msgstr "Exponentialschreibweise benutzen wenn kürzer"
 
-#: src/ui_parts/settings_menu.gd
 msgid "Colors"
 msgstr "Farben"
 
-#: src/ui_parts/settings_menu.gd
 msgid "Use named colors"
 msgstr "Farben mit Namen verwenden"
 
-#: src/ui_parts/settings_menu.gd
 msgid "Primary syntax"
 msgstr "Primärsyntax"
 
-#: src/ui_parts/settings_menu.gd
 msgid "Capitalize hexadecimal letters"
 msgstr "Hexadezimale Buchstaben großschreiben"
 
-#: src/ui_parts/settings_menu.gd
 msgid "Pathdata"
 msgstr "Pfaddaten"
 
-#: src/ui_parts/settings_menu.gd
 msgid "Compress numbers"
 msgstr "Nummern komprimieren"
 
-#: src/ui_parts/settings_menu.gd
 msgid "Minimize spacing"
 msgstr "Leerplatz minimieren"
 
-#: src/ui_parts/settings_menu.gd
 msgid "Remove spacing after flags"
 msgstr "Leerplätze nach Eigenschaften (flag) entfernen"
 
-#: src/ui_parts/settings_menu.gd
 msgid "Remove consecutive commands"
 msgstr "Aufeinanderfolgende Befehle entfernen"
 
-#: src/ui_parts/settings_menu.gd
 msgid "Transform lists"
 msgstr "Transformationlisten"
 
-#: src/ui_parts/settings_menu.gd
 msgid "Remove unnecessary parameters"
 msgstr "Unnötige Parameter entfernen"
 
-#: src/ui_parts/settings_menu.gd
 msgid ""
 "If turned on, clicking on a tab with the middle mouse button closes the tab. "
 "If turned off, it focuses the tab instead."
 msgstr ""
 
-#: src/ui_parts/settings_menu.gd
 msgid "Swaps the scroll directions for zooming in and zooming out."
 msgstr "Tauscht die Scrollrichtung für das Rein- und Rauszoomen."
 
-#: src/ui_parts/settings_menu.gd
 msgid ""
 "Warps the cursor to the opposite side whenever it reaches a viewport "
 "boundary while panning."
@@ -729,7 +549,6 @@ msgstr ""
 "Teleportiert den Mauszeiger zur gegenüberliegenden Seite, soblald eine "
 "Bildschirmgrenze während des Verschiebens erreicht wird."
 
-#: src/ui_parts/settings_menu.gd
 #, fuzzy
 msgid ""
 "If turned on, scrolling pans the view. To zoom, hold CTRL while scrolling."
@@ -737,7 +556,6 @@ msgstr ""
 "Wenn diese Option aktiviert ist, wird durch Scrollen die Ansicht geschwenkt. "
 "Halten Sie zum Zoomen beim Scrollen die Strg-Taste gedrückt."
 
-#: src/ui_parts/settings_menu.gd
 msgid ""
 "If turned on, uses your operating system's native file dialog. If turned "
 "off, uses GodSVG's built-in file dialog."
@@ -746,7 +564,6 @@ msgstr ""
 "verwendet. Wenn diese Option deaktiviert ist, wird GodSVG's eingebauter "
 "Dateidialog verwendet."
 
-#: src/ui_parts/settings_menu.gd
 #, fuzzy
 msgid ""
 "If turned off, the window title remains as \"GodSVG\" without including the "
@@ -755,531 +572,400 @@ msgstr ""
 "Wenn diese Option deaktiviert ist, wird der Fenstertitel unabhängig von der "
 "aktuellen Datei \"GodSVG\" bleiben."
 
-#: src/ui_parts/settings_menu.gd
 msgid "Changes the visual size and grabbing area of handles."
 msgstr "Erhöht die visuelle Größe und den Interaktionsbereich von Griffen."
 
-#: src/ui_parts/shortcut_panel.gd
 msgid "Horizontal strip"
 msgstr "Horizontaler Streifen"
 
-#: src/ui_parts/shortcut_panel.gd
 msgid "Vertical strip"
 msgstr "Vertikaler Streifen"
 
-#: src/ui_parts/shortcut_panel.gd
 msgid "Horizontal with two rows"
 msgstr "Horizontal mit zwei Reihen"
 
-#: src/ui_parts/shortcut_panel_config.gd
 msgid "Configure Shortcut Panel"
 msgstr "Kurzbefehlsmenü anpassen"
 
-#: src/ui_parts/tab_bar.gd src/utils/TranslationUtils.gd
 msgid "Create a new tab"
 msgstr "Neue Registerkarte erstellen"
 
-#: src/ui_parts/tab_bar.gd
 msgid "Scroll backwards"
 msgstr "Nach hinten scrollen"
 
-#: src/ui_parts/tab_bar.gd
 msgid "Scroll forwards"
 msgstr "Nach vorne scrollen"
 
-#: src/ui_parts/tab_bar.gd
 msgid "This SVG is not bound to a file location yet."
 msgstr "Das SVG ist noch nicht an einen Dateiort gebunden."
 
-#: src/ui_parts/update_menu.gd
 msgid "Show prereleases"
 msgstr "Vorschauversionen anzeigen"
 
-#: src/ui_parts/update_menu.gd
 msgid "Retry"
 msgstr "Erneut versuchen"
 
-#: src/ui_parts/update_menu.gd
 msgid "Current Version"
 msgstr "Aktuelle Version"
 
-#: src/ui_parts/update_menu.gd
 msgid "Retrieving information..."
 msgstr "Abruf von Informationen..."
 
-#: src/ui_parts/update_menu.gd
 msgid "Update check failed"
 msgstr "Aktualisierungsprüfung fehlgeschlagen"
 
-#: src/ui_parts/update_menu.gd
 msgid "GodSVG is up-to-date."
 msgstr "GodSVG ist auf dem neuesten Stand."
 
-#: src/ui_parts/update_menu.gd
 msgid "New versions"
 msgstr "Neue Versionen"
 
-#: src/ui_widgets/choose_name_dialog.gd
 msgid "Create"
 msgstr "Erstellen"
 
-#: src/ui_widgets/color_popup.gd
 msgid "Search color"
 msgstr "Farbe suchen"
 
-#: src/ui_widgets/color_popup.gd
 msgid "Color Picker"
 msgstr "Farbauswahl"
 
-#: src/ui_widgets/configure_color_popup.gd
 msgid "Edit color name"
 msgstr "Farbnamen ändern"
 
-#: src/ui_widgets/configure_color_popup.gd
 msgid "Delete color"
 msgstr "Farbe löschen"
 
-#: src/ui_widgets/configure_color_popup.gd src/ui_widgets/palette_config.gd
 msgid "Unnamed"
 msgstr "Unbenannt"
 
-#: src/ui_widgets/good_color_picker.gd
 msgid "Color keywords"
 msgstr "Farbschlüsselwörter"
 
-#: src/ui_widgets/good_color_picker.gd
 msgid "Eyedropper"
 msgstr "Pipette"
 
-#: src/ui_widgets/palette_config.gd
 msgid "Unnamed palettes won't be shown."
 msgstr "Unbenannte Paletten werden nicht angezeigt."
 
-#: src/ui_widgets/palette_config.gd
 msgid "Multiple palettes can't have the same name."
 msgstr "Mehrere Paletten können nicht den gleichen Namen besitzen."
 
-#: src/ui_widgets/palette_config.gd
 msgid "This palette has identically defined colors."
 msgstr "Diese Palette hat identisch definierte Farben."
 
-#: src/ui_widgets/palette_config.gd
 msgid "Rename"
 msgstr "Umbenennen"
 
-#: src/ui_widgets/palette_config.gd
 msgid "Move Up"
 msgstr "Nach oben"
 
-#: src/ui_widgets/palette_config.gd
 msgid "Move Down"
 msgstr "Nach unten"
 
-#: src/ui_widgets/palette_config.gd
 msgid "Apply Preset"
 msgstr "Voreinstellung anwenden"
 
-#: src/ui_widgets/palette_config.gd src/ui_widgets/setting_shortcut.gd
-#: src/ui_widgets/transform_popup.gd src/utils/TranslationUtils.gd
 msgid "Delete"
 msgstr "Löschen"
 
-#: src/ui_widgets/palette_config.gd
 msgid "Copy as XML"
 msgstr "Kopieren als XML"
 
-#: src/ui_widgets/palette_config.gd
 msgid "Save as XML"
 msgstr "Speichern als XML"
 
-#: src/ui_widgets/path_popup.gd src/utils/TranslationUtils.gd
 msgid "Relative"
 msgstr "Relativ"
 
-#: src/ui_widgets/pathdata_field.gd
 msgid "No path data"
 msgstr "Keine Pfaddaten"
 
-#: src/ui_widgets/points_field.gd
 msgid "No points"
 msgstr "Keine Punkte"
 
-#: src/ui_widgets/presented_shortcut.gd src/ui_widgets/setting_shortcut.gd
 msgid "Also used by"
 msgstr "Auch genutzt von"
 
-#: src/ui_widgets/setting_frame.gd src/ui_widgets/setting_shortcut.gd
 msgid "Reset to default"
 msgstr "Zurücksetzen"
 
-#: src/ui_widgets/setting_shortcut.gd
 msgid "Unused"
 msgstr "Unbenutzt"
 
-#: src/ui_widgets/setting_shortcut.gd
 msgid "Add shortcut"
 msgstr "Tastenkombination hinzufügen"
 
-#: src/ui_widgets/setting_shortcut.gd
 msgid "Press keys…"
 msgstr "Drücke Tasten…"
 
-#: src/ui_widgets/transform_field.gd
 msgid "No transforms"
 msgstr "Keine Transformationen"
 
-#: src/ui_widgets/transform_popup.gd
 msgid "Apply the matrix"
 msgstr "Die Matrix anwenden"
 
-#: src/ui_widgets/transform_popup.gd
 msgid "Insert Before"
 msgstr "Davor einsetzen"
 
-#: src/ui_widgets/transform_popup.gd
 msgid "New transform"
 msgstr "Neue Transformation"
 
-#: src/ui_widgets/unrecognized_field.gd
 msgid "GodSVG doesn’t recognize this attribute"
 msgstr "GodSVG erkennt diese Attribute nicht"
 
-#: src/utils/FileUtils.gd
 msgid "The file couldn't be opened."
 msgstr "Die Datei konnte nicht geöffnet werden."
 
-#: src/utils/FileUtils.gd
 msgid "Check if the file still exists in the selected file path."
 msgstr "Prüfen, ob die Datei im ausgewählten Dateipfad noch existiert."
 
-#: src/utils/FileUtils.gd
 msgid "Save the file?"
 msgstr "Datei speichern?"
 
-#: src/utils/FileUtils.gd
 msgid "Do you want to save this file?"
 msgstr "Möchten Sie diese Datei speichern?"
 
-#: src/utils/FileUtils.gd
 msgid "Save the changes?"
 msgstr "Die Änderungen speichern?"
 
-#: src/utils/FileUtils.gd
 msgid "Your changes will be lost if you don't save them."
 msgstr "Ihre Änderungen gehen verloren, wenn sie nicht gespeichert werden."
 
-#: src/utils/FileUtils.gd
 msgid "Don't save"
 msgstr "Nicht speichern"
 
-#: src/utils/FileUtils.gd
 msgid "The imported file is already being edited inside GodSVG."
 msgstr "Die importierte Datei wird bereits in GodSVG bearbeitet."
 
-#: src/utils/FileUtils.gd
 msgid "If you want to revert your edits since the last save, use {reset_svg}."
 msgstr ""
 "Wenn Sie Ihre Änderungen seit dem letzten Speichern rückgängig machen "
 "wollen, verwenden Sie {reset_svg}."
 
-#: src/utils/FileUtils.gd
 msgid "Do you want to save the changes made to {file_name}?"
 msgstr "Möchten Sie die an {file_name} vorgenommenen Änderungen speichern?"
 
-#: src/utils/TranslationUtils.gd
 msgid "Save SVG"
 msgstr "SVG speichern"
 
-#: src/utils/TranslationUtils.gd
 #, fuzzy
 msgid "Save SVG as"
 msgstr "SVG speichern als…"
 
-#: src/utils/TranslationUtils.gd
 msgid "Close tabs to the left"
 msgstr "Alle Registerkarten links schließen"
 
-#: src/utils/TranslationUtils.gd
 msgid "Close tabs to the right"
 msgstr "Alle Registerkarten rechts schließen"
 
-#: src/utils/TranslationUtils.gd
 msgid "Close all other tabs"
 msgstr "Alle anderen Registerkarten schließen"
 
-#: src/utils/TranslationUtils.gd
 msgid "Create tab"
 msgstr "Registerkarte erstellen"
 
-#: src/utils/TranslationUtils.gd
 msgid "Select the next tab"
 msgstr "Nächsten Tab auswählen"
 
-#: src/utils/TranslationUtils.gd
 msgid "Select the previous tab"
 msgstr "Vorherigen Tab auswählen"
 
-#: src/utils/TranslationUtils.gd
 msgid "Optimize"
 msgstr "Optimieren"
 
-#: src/utils/TranslationUtils.gd
 #, fuzzy
 msgid "Optimize SVG"
 msgstr "Optimieren"
 
-#: src/utils/TranslationUtils.gd
 msgid "Copy all text"
 msgstr "Text kopieren"
 
-#: src/utils/TranslationUtils.gd
 #, fuzzy
 msgid "Copy the SVG text"
 msgstr "Text kopieren"
 
-#: src/utils/TranslationUtils.gd
 msgid "Reset SVG"
 msgstr "SVG zurücksetzen"
 
-#: src/utils/TranslationUtils.gd
 msgid "Open externally"
 msgstr "Extern öffnen"
 
-#: src/utils/TranslationUtils.gd
 msgid "Open SVG externally"
 msgstr "SVG extern öffnen"
 
-#: src/utils/TranslationUtils.gd
 msgid "Show in File Manager"
 msgstr "Im Dateisystem anzeigen"
 
-#: src/utils/TranslationUtils.gd
 msgid "Show SVG in File Manager"
 msgstr "SVG im Dateisystem anzeigen"
 
-#: src/utils/TranslationUtils.gd
 msgid "Undo"
 msgstr "Rückgängig"
 
-#: src/utils/TranslationUtils.gd
 msgid "Redo"
 msgstr "Wiederholen"
 
-#: src/utils/TranslationUtils.gd
 msgid "Copy"
 msgstr "Kopieren"
 
-#: src/utils/TranslationUtils.gd
 msgid "Paste"
 msgstr "Einfügen"
 
-#: src/utils/TranslationUtils.gd
 msgid "Cut"
 msgstr "Ausschneiden"
 
-#: src/utils/TranslationUtils.gd
 msgid "Select all"
 msgstr "Alle auswählen"
 
-#: src/utils/TranslationUtils.gd
 msgid "Duplicate"
 msgstr "Duplizieren"
 
-#: src/utils/TranslationUtils.gd
 msgid "Duplicate the selection"
 msgstr "Auswahl duplizieren"
 
-#: src/utils/TranslationUtils.gd
 msgid "Delete the selection"
 msgstr "Auswahl löschen"
 
-#: src/utils/TranslationUtils.gd
 #, fuzzy
 msgid "Move up"
 msgstr "Nach oben"
 
-#: src/utils/TranslationUtils.gd
 msgid "Move the selection up"
 msgstr "Auswahl nach oben verschieben"
 
-#: src/utils/TranslationUtils.gd
 #, fuzzy
 msgid "Move down"
 msgstr "Nach unten"
 
-#: src/utils/TranslationUtils.gd
 msgid "Move the selection down"
 msgstr "Auswahl nach unten verschieben"
 
-#: src/utils/TranslationUtils.gd
 msgid "Find"
 msgstr "Finden"
 
-#: src/utils/TranslationUtils.gd
 msgid "Zoom in"
 msgstr "Hineinzoomen"
 
-#: src/utils/TranslationUtils.gd
 msgid "Zoom out"
 msgstr "Herauszoomen"
 
-#: src/utils/TranslationUtils.gd
 msgid "Zoom reset"
 msgstr "Zoom zurücksetzen"
 
-#: src/utils/TranslationUtils.gd
 msgid "Show grid"
 msgstr "Raster anzeigen"
 
-#: src/utils/TranslationUtils.gd
 msgid "Show handles"
 msgstr "Griffe anzeigen"
 
-#: src/utils/TranslationUtils.gd
 msgid "Show rasterized SVG"
 msgstr "Rasterisiertes SVG anzeigen"
 
-#: src/utils/TranslationUtils.gd
 msgid "Toggle snapping"
 msgstr "Einrasten aktivieren"
 
-#: src/utils/TranslationUtils.gd
 msgid "Load reference image"
 msgstr "Referenzbild laden"
 
-#: src/utils/TranslationUtils.gd
 msgid "Show reference image"
 msgstr "Referenzbild anzeigen"
 
-#: src/utils/TranslationUtils.gd
 msgid "Overlay reference image"
 msgstr "Referenzbild überblenden"
 
-#: src/utils/TranslationUtils.gd
 msgid "View debug information"
 msgstr "Debuginformationen anzeigen"
 
-#: src/utils/TranslationUtils.gd
 msgid "Settings"
 msgstr "Einstellungen"
 
-#: src/utils/TranslationUtils.gd
 msgid "Open Settings menu"
 msgstr "Einstellungsmenü öffnen"
 
-#: src/utils/TranslationUtils.gd
 msgid "About…"
 msgstr "Über…"
 
-#: src/utils/TranslationUtils.gd
 msgid "Open About menu"
 msgstr "Infomenü anzeigen"
 
-#: src/utils/TranslationUtils.gd
 msgid "Donate…"
 msgstr "Spenden…"
 
-#: src/utils/TranslationUtils.gd
 msgid "Open Donate menu"
 msgstr "Spendemenü öffnen"
 
-#: src/utils/TranslationUtils.gd
 msgid "GodSVG repository"
 msgstr "GodSVG Repository"
 
-#: src/utils/TranslationUtils.gd
 msgid "Open GodSVG repository"
 msgstr "GodSVG-Repository öffnen"
 
-#: src/utils/TranslationUtils.gd
 msgid "GodSVG website"
 msgstr "GodSVG Webseite"
 
-#: src/utils/TranslationUtils.gd
 msgid "Open GodSVG website"
 msgstr "GodSVG-Webseite öffnen"
 
-#: src/utils/TranslationUtils.gd
 msgid "Check for updates"
 msgstr "Nach Aktualisierungen suchen"
 
-#: src/utils/TranslationUtils.gd
 msgid "Quit the application"
 msgstr "Anwendung verlassen"
 
-#: src/utils/TranslationUtils.gd
 msgid "Move to"
 msgstr "Bewege zu"
 
-#: src/utils/TranslationUtils.gd
 msgid "Line to"
 msgstr "Linie zu"
 
-#: src/utils/TranslationUtils.gd
 msgid "Horizontal Line to"
 msgstr "Horizontale Linie zu"
 
-#: src/utils/TranslationUtils.gd
 msgid "Vertical Line to"
 msgstr "Vertikale Linue zu"
 
-#: src/utils/TranslationUtils.gd
 msgid "Close Path"
 msgstr "Pfad schließen"
 
-#: src/utils/TranslationUtils.gd
 msgid "Elliptical Arc to"
 msgstr "Elliptischer Bogen zu"
 
-#: src/utils/TranslationUtils.gd
 msgid "Quadratic Bezier to"
 msgstr "Quadratischer Bezier zu"
 
-#: src/utils/TranslationUtils.gd
 msgid "Shorthand Quadratic Bezier to"
 msgstr "Kurzhand-Quadratischer Bezier zu"
 
-#: src/utils/TranslationUtils.gd
 msgid "Cubic Bezier to"
 msgstr "Kubischer Bezier to"
 
-#: src/utils/TranslationUtils.gd
 msgid "Shorthand Cubic Bezier to"
 msgstr "Kurzhand-Kubischer Bezier to"
 
-#: src/utils/TranslationUtils.gd
 msgid "Absolute"
 msgstr "Absolut"
 
-#: src/utils/TranslationUtils.gd
 msgid "Code editor"
 msgstr ""
 
-#: src/utils/TranslationUtils.gd
 msgid "Inspector"
 msgstr ""
 
-#. The viewport is the area where the graphic is displayed. In similar applications, it's often called the canvas.
-#: src/utils/TranslationUtils.gd
 #, fuzzy
 msgid "Viewport"
 msgstr "Ansicht"
 
-#: src/utils/TranslationUtils.gd
 msgid "Select an image"
 msgstr "Bild auswählen"
 
-#: src/utils/TranslationUtils.gd
 #, fuzzy
 msgid "Select an {format} file"
 msgstr "XML Datei auswählen"
 
-#: src/utils/TranslationUtils.gd
 #, fuzzy
 msgid "Save the {format} file"
 msgstr "Die .\"{format}\" Datei speichern"
 
-#: src/utils/TranslationUtils.gd
 msgid ""
 "The file extension {extension} is unsupported for this operation. Only "
 "{extension_list} files are supported."
@@ -1287,171 +973,7 @@ msgstr ""
 "Die Dateierweiterung \"{extension}\" ist für diese Operation nicht "
 "unterstützt. Nur {extension_list} Dateien werden unterstützt."
 
-#: src/utils/TranslationUtils.gd
 msgid "The file extension is empty. Only {extension_list} files are supported."
 msgstr ""
 "Die Dateierweiterung ist leer. Nur {extension_list} Dateien werden "
 "unterstützt."
-
-#~ msgid "Save the .\"{format}\" file"
-#~ msgstr "Die .\"{format}\" Datei speichern"
-
-#~ msgid "Load an image file"
-#~ msgstr "Bilddatei laden"
-
-#~ msgid "Import a {extension} file"
-#~ msgstr "{extension}-Datei importieren"
-
-#~ msgid "Select an SVG"
-#~ msgstr "SVG auswählen"
-
-#~ msgid "Show reference"
-#~ msgstr "Referenz anzeigen"
-
-#~ msgid "Overlay reference"
-#~ msgstr "Referenz überblenden"
-
-#~ msgid "Rasterized SVG"
-#~ msgstr "SVG rasterisieren"
-
-#~ msgid "Save as"
-#~ msgstr "Speichern als"
-
-#~ msgid ""
-#~ "If you want to apply the unsaved file state, use \"Reset SVG\" instead."
-#~ msgstr ""
-#~ "Wenn Sie den ungespeicherten Dateizustand anwenden möchten, benutzen sie "
-#~ "stattdessen \"SVG zurücksetzen\"."
-
-#~ msgid "Auto UI scale"
-#~ msgstr "Automatische Benutzeroberflächenskalierung"
-
-#~ msgid "Scales the interface automatically based on the screen size."
-#~ msgstr ""
-#~ "Skaliert die Benutzeroberfläche automatisch basierend auf der "
-#~ "Bildschirmgröße."
-
-#~ msgid "Wrap mouse"
-#~ msgstr "Maus einschließen"
-
-#~ msgid "Swaps zoom in and zoom out with the mouse wheel."
-#~ msgstr "Vertauscht Hinein- und Herauszoomen mit dem Mausrad."
-
-#~ msgid "Wraps the mouse cursor around when panning the viewport."
-#~ msgstr "Schließt die Maus beim bewegen innerhalb des Fensters ein."
-
-#~ msgid "This requires GodSVG to connect to the internet."
-#~ msgstr "Hierfür muss sich GodSVG mit dem Internet verbinden."
-
-#, fuzzy
-#~ msgid "Add new tab"
-#~ msgstr "Neues Element hinzufügen"
-
-#~ msgid "Open file"
-#~ msgstr "Datei öffnen"
-
-#~ msgid "Clear saving path"
-#~ msgstr "Speicherpfad löschen"
-
-#~ msgid "Clear SVG"
-#~ msgstr "SVG zurücksetzen"
-
-#, fuzzy
-#~ msgid "Open SVG file"
-#~ msgstr "Datei öffnen"
-
-#~ msgid "Select all elements"
-#~ msgstr "Alle Elemente auswählen"
-
-#~ msgid "Duplicate the selected elements"
-#~ msgstr "Ausgewählte Elemente duplizieren"
-
-#~ msgid "Enable the color"
-#~ msgstr "Farbe aktivieren"
-
-#~ msgid "Disable the color"
-#~ msgstr "Farbe deaktivieren"
-
-#~ msgid "Invalid"
-#~ msgstr "Ungültig"
-
-#~ msgid "Final size"
-#~ msgstr "Endgültige Größe"
-
-#~ msgid ""
-#~ "The file couldn't be opened.\n"
-#~ "Try checking the file path, ensure that the file is not deleted, or "
-#~ "choose a different file."
-#~ msgstr ""
-#~ "Die Datei konnte nicht geöffnet werden.\n"
-#~ "Überprüfe den Dateipfad, ob die Datei existiert, oder wähle eine andere "
-#~ "Datei."
-
-#~ msgid "Enable snap"
-#~ msgstr "Einrasten aktivieren"
-
-#~ msgid "General"
-#~ msgstr "Allgemein"
-
-#~ msgid "Any changes will apply immediately."
-#~ msgstr "Änderungen werden sofort wirksam."
-
-#~ msgid "Enable autoformatting"
-#~ msgstr "Autoformatierung einschalten"
-
-#~ msgid "Number precision digits"
-#~ msgstr "Zahlengenauigkeit"
-
-#~ msgid "Angle precision digits"
-#~ msgstr "Winkelgenauigkeit"
-
-#~ msgid "Remove zero padding"
-#~ msgstr "Nullenversatz entfernen"
-
-#~ msgid "Convert rgb format to hex"
-#~ msgstr "RGB zu HEX konvertieren"
-
-#~ msgid "Convert named colors to hex"
-#~ msgstr "Benannte Farben zu HEX konvertieren"
-
-#~ msgid "Use shorthand hex code"
-#~ msgstr "Verkürzten HEX-Code verwenden"
-
-#~ msgid "Edit palette name"
-#~ msgstr "Palettennamen ändern"
-
-#~ msgid "Tag color"
-#~ msgstr "Tagfarbe"
-
-#, fuzzy
-#~ msgid "New tag"
-#~ msgstr "Neues Element hinzufügen"
-
-#~ msgid "Paths"
-#~ msgstr "Pfade"
-
-#~ msgid "Remove"
-#~ msgstr "Entfernen"
-
-#, fuzzy
-#~ msgid "Unknown tag"
-#~ msgstr "Unbekanntes Element"
-
-#~ msgid "Documentation…"
-#~ msgstr "Dokumentation…"
-
-#~ msgid "Couple/Decouple"
-#~ msgstr "Koppeln/Entkoppeln"
-
-#~ msgid "Add color"
-#~ msgstr "Farbe hinzufügen"
-
-#~ msgid "Remove plus sign"
-#~ msgstr "Pluszeichen entfernen"
-
-#~ msgid "Default value opacity"
-#~ msgstr "Standardwertopazität"
-
-#, fuzzy
-#~ msgid "Clear association"
-#~ msgstr "Dateizuordnung entfernen"

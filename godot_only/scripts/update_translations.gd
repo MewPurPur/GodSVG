@@ -49,7 +49,7 @@ class Message:
 		files = p_files.duplicate()
 	
 	func _to_string() -> String:
-		return "\n#: " + "\n#: ".join(files) + '\nmsgid "%s"\nmsgstr ""\n' % msgid
+		return 'msgid "%s"\nmsgstr ""\n' % msgid
 
 
 func _run() -> void:
@@ -97,7 +97,6 @@ func update_translations() -> void:
 	
 	for msg in messages:
 		if COMMENTS_DICT.has(msg.msgid):
-			fa.store_string("#. %s\n" % COMMENTS_DICT[msg.msgid])
 			used_comments.append(msg.msgid)
 		fa.store_string(msg.to_string())
 	fa = null

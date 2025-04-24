@@ -15,23 +15,18 @@ msgstr ""
 msgid "translation-credits"
 msgstr "Kiisu-Master"
 
-#: src/autoload/HandlerGUI.gd
 msgid "Quit GodSVG"
 msgstr "Sulge GodSVG"
 
-#: src/autoload/HandlerGUI.gd
 msgid "Do you want to quit GodSVG?"
 msgstr "Kas te tahate sulgeda GodSVG?"
 
-#: src/autoload/HandlerGUI.gd
 msgid "Quit"
 msgstr "Sulge"
 
-#: src/autoload/HandlerGUI.gd
 msgid "Check for updates?"
 msgstr "Otsi uuendusi?"
 
-#: src/autoload/HandlerGUI.gd
 msgid ""
 "This will connect to github.com to compare version numbers. No other data is "
 "collected or transmitted."
@@ -39,24 +34,18 @@ msgstr ""
 "See ühendab github.com-i, et saada versioonide teabe. Muid andmeid ei koguta "
 "ega edastata."
 
-#: src/autoload/HandlerGUI.gd src/ui_widgets/alert_dialog.gd
 msgid "OK"
 msgstr "Okei"
 
-#: src/autoload/HandlerGUI.gd
 msgid "Do you want to proceed?"
 msgstr "Kas te tahate jätkata?"
 
-#: src/autoload/HandlerGUI.gd
 msgid "Export SVG"
 msgstr "Ekspordi SVG"
 
-#: src/autoload/HandlerGUI.gd src/ui_parts/export_menu.gd
-#: src/utils/TranslationUtils.gd
 msgid "Export"
 msgstr "Ekspordi"
 
-#: src/autoload/HandlerGUI.gd
 msgid ""
 "The graphic can be exported only as SVG because its proportions are too "
 "extreme."
@@ -64,43 +53,33 @@ msgstr ""
 "Graafika saab eksportida ainult SVG-na, sest selle proportsioonid on liiga "
 "ekstreemsed."
 
-#: src/autoload/HandlerGUI.gd
 msgid ""
 "The graphic can be exported only as SVG because its size is not defined."
 msgstr ""
 "Graafika saab eksportida ainult SVG-na, sest selle suurus pole defineeritud."
 
-#: src/autoload/State.gd src/ui_parts/good_file_dialog.gd
-#: src/ui_widgets/alert_dialog.gd
 msgid "Alert!"
 msgstr "Hoiatus!"
 
-#: src/autoload/State.gd src/utils/TranslationUtils.gd
 msgid "Close tab"
 msgstr "Sulge kaart"
 
-#: src/autoload/State.gd
 msgid "Restore"
 msgstr "Taasta"
 
-#: src/autoload/State.gd
 #, fuzzy
 msgid "View in Inspector"
 msgstr "Näita nimekirjas"
 
-#: src/autoload/State.gd
 msgid "Convert To"
 msgstr "Konverteeri"
 
-#: src/autoload/State.gd src/ui_widgets/transform_popup.gd
 msgid "Insert After"
 msgstr "Sisesta pärast"
 
-#: src/autoload/State.gd
 msgid "The last edited state of this tab could not be found."
 msgstr "Selle kaardi viimast seisu polnud võimalik leida."
 
-#: src/autoload/State.gd
 msgid ""
 "The tab is bound to the file path {file_path}. Do you want to restore the "
 "SVG from this path?"
@@ -108,259 +87,192 @@ msgstr ""
 "Kaart on seotud failiga asukohas {file_path}. Kas te soovite taastada SVG "
 "sellest failist?"
 
-#: src/config_classes/Formatter.gd
 msgid "Compact"
 msgstr "Kompaktne"
 
-#: src/config_classes/Formatter.gd
 msgid "Pretty"
 msgstr "Ilus"
 
-#: src/config_classes/Formatter.gd
 msgid "Always"
 msgstr "Alati"
 
-#: src/config_classes/Formatter.gd
 msgid "All except containers"
 msgstr "Kõik, v.a. konteinerid"
 
-#: src/config_classes/Formatter.gd
 msgid "Never"
 msgstr "Mitte kunagi"
 
-#: src/config_classes/Formatter.gd
 msgid "When shorter or equal"
 msgstr "Kui on lühem või võrdne"
 
-#: src/config_classes/Formatter.gd
 msgid "When shorter"
 msgstr "Kui on lühem"
 
-#: src/config_classes/Formatter.gd
 msgid "3-digit or 6-digit hex"
 msgstr "3- või 6-kohaline hex"
 
-#: src/config_classes/Formatter.gd
 msgid "6-digit hex"
 msgstr "6-kohaline hex"
 
-#: src/config_classes/TabData.gd
 msgid "Empty"
 msgstr "Tühi"
 
-#: src/config_classes/TabData.gd
 msgid "Unsaved"
 msgstr "Salvestamata"
 
-#: src/data_classes/BasicXNode.gd
 msgid "Comment"
 msgstr "Kommentaar"
 
-#: src/data_classes/BasicXNode.gd
 msgid "Text"
 msgstr "Tekst"
 
-#: src/data_classes/Element.gd
 msgid "{element} must be inside {allowed} to have any effect."
 msgstr "{element} peab olema {allowed} sees, et sellel oleks mõju."
 
-#: src/data_classes/ElementG.gd
 msgid "This group has no elements."
 msgstr "Grupis pole ühtegi elementi."
 
-#: src/data_classes/ElementG.gd
 msgid "This group has only one element."
 msgstr "Grupis on ainult üks element."
 
-#: src/data_classes/GradientUtils.gd
 msgid "No \"id\" attribute defined."
 msgstr "\"id\" atribuut pole defineeritud."
 
-#: src/data_classes/GradientUtils.gd
 msgid "No <stop> elements under this gradient."
 msgstr "Gradiendis puuduvad <stop> elemendid."
 
-#: src/data_classes/GradientUtils.gd
 msgid "This gradient is a solid color."
 msgstr "Gradient on ühevärviline."
 
-#: src/data_classes/SVGParser.gd
 msgid "Doesn’t describe an SVG."
 msgstr "Ei kirjelda SVGd."
 
-#: src/data_classes/SVGParser.gd
 msgid "Improper nesting."
 msgstr "Vigane pesitsus."
 
-#: src/ui_parts/about_menu.gd src/ui_parts/good_file_dialog.gd
-#: src/ui_parts/settings_menu.gd src/ui_parts/shortcut_panel_config.gd
-#: src/ui_parts/update_menu.gd
 msgid "Close"
 msgstr "Sulge"
 
-#: src/ui_parts/about_menu.gd
 msgid "Authors"
 msgstr "Autorid"
 
-#: src/ui_parts/about_menu.gd
 msgid "Donors"
 msgstr "Annetajad"
 
-#: src/ui_parts/about_menu.gd
 msgid "License"
 msgstr "Litsents"
 
-#: src/ui_parts/about_menu.gd
 msgid "Third-party licenses"
 msgstr "Kolmandad litsentsid"
 
-#: src/ui_parts/about_menu.gd
 msgid "Project Founder and Manager"
 msgstr "Projekti asutaja ja juht"
 
-#: src/ui_parts/about_menu.gd
 msgid "Developers"
 msgstr "Arendajad"
 
-#: src/ui_parts/about_menu.gd
 msgid "Translators"
 msgstr "Tõlkijad"
 
-#: src/ui_parts/about_menu.gd
 msgid "Golden donors"
 msgstr "Kuldsed annetajad"
 
-#: src/ui_parts/about_menu.gd
 msgid "Diamond donors"
 msgstr "Teemant annetajad"
 
-#: src/ui_parts/current_file_button.gd
 msgid "Save SVG as…"
 msgstr "Salvesta SVG kui…"
 
-#: src/ui_parts/display.gd
 msgid "Visuals"
 msgstr "Visuaalid"
 
-#: src/ui_parts/display.gd
 msgid "Snap size"
 msgstr "Joondamise mastaap"
 
-#: src/ui_parts/donate_menu.gd src/ui_parts/export_menu.gd
-#: src/ui_parts/import_warning_menu.gd src/ui_widgets/choose_name_dialog.gd
-#: src/ui_widgets/confirm_dialog.gd src/ui_widgets/options_dialog.gd
 msgid "Cancel"
 msgstr "Katkesta"
 
-#: src/ui_parts/element_container.gd
 msgid "New element"
 msgstr "Uus element"
 
-#: src/ui_parts/export_menu.gd
 msgid "Dimensions"
 msgstr "Dimensioonid"
 
-#: src/ui_parts/export_menu.gd
 msgid "Size"
 msgstr "Suurus"
 
-#: src/ui_parts/export_menu.gd
 msgid "Export Configuration"
 msgstr "Ekspordi konfiguratsioon"
 
-#: src/ui_parts/export_menu.gd
 msgid "Format"
 msgstr "Formaat"
 
-#: src/ui_parts/export_menu.gd
 msgid "Lossless"
 msgstr "Kadudeta"
 
-#: src/ui_parts/export_menu.gd
 msgid "Quality"
 msgstr "Kvaliteet"
 
-#: src/ui_parts/export_menu.gd
 msgid "Scale"
 msgstr "Skaala"
 
-#: src/ui_parts/export_menu.gd
 msgid "Width"
 msgstr "Laius"
 
-#: src/ui_parts/export_menu.gd
 msgid "Height"
 msgstr "Kõrgus"
 
-#: src/ui_parts/export_menu.gd
 msgid "Preview image size is limited to {dimensions}"
 msgstr "Eelvaade on piiratud suurusele {dimensions}"
 
-#: src/ui_parts/global_actions.gd src/ui_parts/shortcut_panel_config.gd
 msgid "Layout"
 msgstr "Paigutus"
 
-#: src/ui_parts/global_actions.gd
 msgid "View savedata"
 msgstr "Kuva savedata"
 
-#: src/ui_parts/good_file_dialog.gd
 msgid "Go to parent folder"
 msgstr "Mine taseme võrra üles"
 
-#: src/ui_parts/good_file_dialog.gd
 msgid "Refresh files"
 msgstr "Värskenda failinimekiri"
 
-#: src/ui_parts/good_file_dialog.gd
 msgid "Toggle the visibility of hidden files"
 msgstr "Lülita peidetud failide kuvamine sisse"
 
-#: src/ui_parts/good_file_dialog.gd
 msgid "Search files"
 msgstr "Otsi faile"
 
-#: src/ui_parts/good_file_dialog.gd
 msgid "Select"
 msgstr "Vali"
 
-#: src/ui_parts/good_file_dialog.gd src/utils/FileUtils.gd
 msgid "Save"
 msgstr "Salvesta"
 
-#: src/ui_parts/good_file_dialog.gd
 msgid "Path"
 msgstr "Asukoht"
 
-#: src/ui_parts/good_file_dialog.gd
 msgid "Replace"
 msgstr "Asenda"
 
-#: src/ui_parts/good_file_dialog.gd
 msgid "Create new folder"
 msgstr "Loo uus kaust"
 
-#: src/ui_parts/good_file_dialog.gd
 msgid "Invalid name for a folder."
 msgstr "Vigane kausta nimi."
 
-#: src/ui_parts/good_file_dialog.gd
 msgid "A folder with this name already exists."
 msgstr "Kaust selle nimega on juba olemas."
 
-#: src/ui_parts/good_file_dialog.gd
 msgid "Failed to create a folder."
 msgstr "Kausta loomine ebaõnnestus."
 
-#: src/ui_parts/good_file_dialog.gd
 msgid "Open"
 msgstr "Ava"
 
-#: src/ui_parts/good_file_dialog.gd
 msgid "Copy path"
 msgstr "Kopeeri asukoht"
 
-#: src/ui_parts/good_file_dialog.gd
 msgid ""
 "A file named \"{file_name}\" already exists. Replacing will overwrite its "
 "contents!"
@@ -368,356 +280,264 @@ msgstr ""
 "Fail nimega \"{file_name}\" on juba olemas, asendamine kirjutab selle sisu "
 "üle!"
 
-#: src/ui_parts/handles_manager.gd
 msgid "New shape"
 msgstr "Uus kujund"
 
-#: src/ui_parts/import_warning_menu.gd
 msgid "Import Problems"
 msgstr "Impordi probleemid"
 
-#: src/ui_parts/import_warning_menu.gd src/utils/TranslationUtils.gd
 msgid "Import"
 msgstr "Impordi"
 
-#: src/ui_parts/import_warning_menu.gd
 msgid "Unrecognized element"
 msgstr "Tundmatu element"
 
-#: src/ui_parts/import_warning_menu.gd
 msgid "Unrecognized attribute"
 msgstr "Tundmatu atribuut"
 
-#: src/ui_parts/import_warning_menu.gd
 msgid "Syntax error"
 msgstr "Süntaksiviga"
 
-#: src/ui_parts/inspector.gd
 msgid "Add element"
 msgstr "Lisa element"
 
-#. This is plural
-#: src/ui_parts/layout_popup.gd
 msgid "Excluded"
 msgstr ""
 
-#: src/ui_parts/layout_popup.gd
 msgid "Drag and drop to change the layout"
 msgstr ""
 
-#: src/ui_parts/mac_menu.gd src/ui_parts/settings_menu.gd
 msgid "File"
 msgstr "Fail"
 
-#: src/ui_parts/mac_menu.gd src/ui_parts/settings_menu.gd
 msgid "Edit"
 msgstr "Redigeeri"
 
-#: src/ui_parts/mac_menu.gd src/ui_parts/settings_menu.gd
 msgid "Tool"
 msgstr "Tööriist"
 
-#: src/ui_parts/mac_menu.gd src/ui_parts/settings_menu.gd
 msgid "View"
 msgstr "Vaade"
 
-#: src/ui_parts/mac_menu.gd
 msgid "Snap"
 msgstr "Joonda"
 
-#: src/ui_parts/settings_menu.gd
 msgid "Formatting"
 msgstr "Vorming"
 
-#: src/ui_parts/settings_menu.gd src/ui_widgets/color_popup.gd
 msgid "Palettes"
 msgstr "Värvipaletid"
 
-#: src/ui_parts/settings_menu.gd
 msgid "Shortcuts"
 msgstr "Otseklahvid"
 
-#: src/ui_parts/settings_menu.gd
 msgid "Theming"
 msgstr "Teema"
 
-#: src/ui_parts/settings_menu.gd
 msgid "Tab bar"
 msgstr "Kaardiriba"
 
-#: src/ui_parts/settings_menu.gd
 msgid "Other"
 msgstr "Muu"
 
-#: src/ui_parts/settings_menu.gd
 msgid "SVG Text colors"
 msgstr "SVG teksti värvid"
 
-#: src/ui_parts/settings_menu.gd
 msgid "Symbol color"
 msgstr "Sümboli värv"
 
-#: src/ui_parts/settings_menu.gd
 msgid "Element color"
 msgstr "Elemendi värv"
 
-#: src/ui_parts/settings_menu.gd
 msgid "Attribute color"
 msgstr "Atribuudi värv"
 
-#: src/ui_parts/settings_menu.gd
 msgid "String color"
 msgstr "Sõne värv"
 
-#: src/ui_parts/settings_menu.gd
 msgid "Comment color"
 msgstr "Kommentaari värv"
 
-#: src/ui_parts/settings_menu.gd
 msgid "Text color"
 msgstr "Teksti värv"
 
-#. CDATA shouldn't be translated. It's a type of XML section.
-#: src/ui_parts/settings_menu.gd
 msgid "CDATA color"
 msgstr "CDATA värv"
 
-#: src/ui_parts/settings_menu.gd
 msgid "Error color"
 msgstr "Errori värv"
 
-#. Refers to the colors of the draggable handles.
-#: src/ui_parts/settings_menu.gd
 msgid "Handle colors"
 msgstr "Pideme värv"
 
-#: src/ui_parts/settings_menu.gd
 msgid "Inside color"
 msgstr "Seesmine värv"
 
-#: src/ui_parts/settings_menu.gd
 msgid "Normal color"
 msgstr "Tavaline värv"
 
-#: src/ui_parts/settings_menu.gd
 msgid "Hovered color"
 msgstr "Esiletõstetud värv"
 
-#: src/ui_parts/settings_menu.gd
 msgid "Selected color"
 msgstr "Valiku värv"
 
-#: src/ui_parts/settings_menu.gd
 msgid "Hovered selected color"
 msgstr "Esiletõstetud valiku värv"
 
-#: src/ui_parts/settings_menu.gd
 msgid "Basic colors"
 msgstr "Alusvärvid"
 
-#: src/ui_parts/settings_menu.gd
 msgid "Background color"
 msgstr "Tausta värv"
 
-#: src/ui_parts/settings_menu.gd
 #, fuzzy
 msgid "Grid color"
 msgstr "Kehtiva värv"
 
-#: src/ui_parts/settings_menu.gd
 msgid "Valid color"
 msgstr "Kehtiva värv"
 
-#: src/ui_parts/settings_menu.gd
 msgid "Warning color"
 msgstr "Hoiatuse värv"
 
-#: src/ui_parts/settings_menu.gd
 msgid "Input"
 msgstr "Sisend"
 
-#: src/ui_parts/settings_menu.gd
 msgid "Close tabs with middle mouse button"
 msgstr "Sulge kaarte keskmise hiireklahviga"
 
-#: src/ui_parts/settings_menu.gd
 msgid "Invert zoom direction"
 msgstr "Inverteeri suurendussuund"
 
-#: src/ui_parts/settings_menu.gd
 msgid "Wrap-around panning"
 msgstr "Takistusteta vaate liigutamine"
 
-#: src/ui_parts/settings_menu.gd
 msgid "Use CTRL for zooming"
 msgstr "Kasuta CTRL klahvi suurendamiseks"
 
-#: src/ui_parts/settings_menu.gd
 msgid "Miscellaneous"
 msgstr "Mitmesugust"
 
-#: src/ui_parts/settings_menu.gd
 msgid "Use native file dialog"
 msgstr "Kasuta süsteemi failidialoogi"
 
-#: src/ui_parts/settings_menu.gd
 msgid "Sync window title to file name"
 msgstr "Sünkroniseeri akna tiitel avatud faili nimega"
 
-#. Refers to the size of the draggable handles.
-#: src/ui_parts/settings_menu.gd
 msgid "Handle size"
 msgstr "Pidemete suurus"
 
-#: src/ui_parts/settings_menu.gd
 msgid "UI scale"
 msgstr "Kasutajaliidese suurus"
 
-#: src/ui_parts/settings_menu.gd
 msgid "Changes the scale factor for the interface."
 msgstr "Muudab kasutajaliidese suurust."
 
-#: src/ui_parts/settings_menu.gd
 msgid "Language"
 msgstr "Keel"
 
-#: src/ui_parts/settings_menu.gd
 msgid "Import XML"
 msgstr "Impordi XML"
 
-#: src/ui_parts/settings_menu.gd
 msgid "Paste XML"
 msgstr "Kleebi XML"
 
-#: src/ui_parts/settings_menu.gd
 msgid "New palette"
 msgstr "Uus palett"
 
-#: src/ui_parts/settings_menu.gd
 msgid "New palette from XML"
 msgstr "Uus palett XML-ist"
 
-#. Refers to the formatter used for GodSVG's code editor.
-#: src/ui_parts/settings_menu.gd
 msgid "Editor formatter"
 msgstr "Redaktori vormindus"
 
-#. Refers to the formatter used when exporting.
-#: src/ui_parts/settings_menu.gd
 msgid "Export formatter"
 msgstr "Ekspordi vormindus"
 
-#: src/ui_parts/settings_menu.gd
 msgid "Help"
 msgstr "Abi"
 
-#: src/ui_parts/settings_menu.gd
 msgid "Reset all to default"
 msgstr "Lähtesta kõik vaikeväärtustele"
 
-#: src/ui_parts/settings_menu.gd
 msgid "Preset"
 msgstr "Eelseadistus"
 
-#: src/ui_parts/settings_menu.gd
 msgid "Keep comments"
 msgstr "Hoia kommentaarid alles"
 
-#: src/ui_parts/settings_menu.gd
 msgid "Keep unrecognized XML structures"
 msgstr "Hoia tundmatud XML struktuurid alles"
 
-#: src/ui_parts/settings_menu.gd
 msgid "Add trailing newline"
 msgstr "Lisa tühi rida lõppu"
 
-#: src/ui_parts/settings_menu.gd
 msgid "Use shorthand tag syntax"
 msgstr "Kasuta tag-i lühisüntaksit"
 
-#: src/ui_parts/settings_menu.gd
 msgid "Space out the slash of shorthand tags"
 msgstr "Lisa tühikuid tag-i lühisüntaksi kaldkriipsu juurde"
 
-#: src/ui_parts/settings_menu.gd
 msgid "Use pretty formatting"
 msgstr "Kasuta ilusat vormindust"
 
-#: src/ui_parts/settings_menu.gd
 msgid "Use spaces instead of tabs"
 msgstr "Kasuta tühikuid tab-i asemel"
 
-#: src/ui_parts/settings_menu.gd
 msgid "Number of indentation spaces"
 msgstr "Indenteerimise tühikute arv"
 
-#: src/ui_parts/settings_menu.gd
 msgid "Numbers"
 msgstr "Numbrid"
 
-#: src/ui_parts/settings_menu.gd
 msgid "Remove leading zero"
 msgstr "Eemalda üleliigsed nullid numbritest"
 
-#: src/ui_parts/settings_menu.gd
 msgid "Use exponential when shorter"
 msgstr "Kasuta eksponentvormindust kui see on lühem"
 
-#: src/ui_parts/settings_menu.gd
 msgid "Colors"
 msgstr "Värvid"
 
-#: src/ui_parts/settings_menu.gd
 msgid "Use named colors"
 msgstr "Kasuta nimedega värve"
 
-#: src/ui_parts/settings_menu.gd
 msgid "Primary syntax"
 msgstr "Esmane süntaks"
 
-#: src/ui_parts/settings_menu.gd
 msgid "Capitalize hexadecimal letters"
 msgstr "Kasuta heksadetsimaalnumbrites suurtähti"
 
-#: src/ui_parts/settings_menu.gd
 msgid "Pathdata"
 msgstr "Path andmed"
 
-#: src/ui_parts/settings_menu.gd
 msgid "Compress numbers"
 msgstr "Tihenda numbrid"
 
-#: src/ui_parts/settings_menu.gd
 msgid "Minimize spacing"
 msgstr "Minimeeri vahed"
 
-#: src/ui_parts/settings_menu.gd
 msgid "Remove spacing after flags"
 msgstr "Eemalda tühikud omaduste (flags) järelt"
 
-#: src/ui_parts/settings_menu.gd
 msgid "Remove consecutive commands"
 msgstr "Eemalda järjestikused samasugused käsud"
 
-#: src/ui_parts/settings_menu.gd
 msgid "Transform lists"
 msgstr "Teisendused"
 
-#: src/ui_parts/settings_menu.gd
 msgid "Remove unnecessary parameters"
 msgstr "Eemalda ebavajalikud parameetrid"
 
-#: src/ui_parts/settings_menu.gd
 msgid ""
 "If turned on, clicking on a tab with the middle mouse button closes the tab. "
 "If turned off, it focuses the tab instead."
 msgstr ""
 
-#: src/ui_parts/settings_menu.gd
 msgid "Swaps the scroll directions for zooming in and zooming out."
 msgstr "Vahetab kerimissuunad suurendamiseks ja vähendamiseks ümber."
 
-#: src/ui_parts/settings_menu.gd
 msgid ""
 "Warps the cursor to the opposite side whenever it reaches a viewport "
 "boundary while panning."
@@ -725,7 +545,6 @@ msgstr ""
 "Viib kursori akna vastaspoolele, kui see jõuab vaate liigutamise ajal selle "
 "servani, et see liikumist ei takistaks."
 
-#: src/ui_parts/settings_menu.gd
 #, fuzzy
 msgid ""
 "If turned on, scrolling pans the view. To zoom, hold CTRL while scrolling."
@@ -733,7 +552,6 @@ msgstr ""
 "Sisselülitamisel kerimine liigutab vaadet. Suurendamiseks hoia CTRL klahvi "
 "kerimise ajal."
 
-#: src/ui_parts/settings_menu.gd
 msgid ""
 "If turned on, uses your operating system's native file dialog. If turned "
 "off, uses GodSVG's built-in file dialog."
@@ -741,7 +559,6 @@ msgstr ""
 "Sisselülitamisel kasutab süsteemi vaikefailidialoogi. Väljalülitamisel "
 "GodSVG sisseehitatud failidialoogi."
 
-#: src/ui_parts/settings_menu.gd
 #, fuzzy
 msgid ""
 "If turned off, the window title remains as \"GodSVG\" without including the "
@@ -749,531 +566,400 @@ msgid ""
 msgstr ""
 "Väljalülitamisel jääb akna nimieks \"GodSVG\" sõltumata avatud failist."
 
-#: src/ui_parts/settings_menu.gd
 msgid "Changes the visual size and grabbing area of handles."
 msgstr "Muudab pidemete nähtavat ja interaktiivse ala suurust."
 
-#: src/ui_parts/shortcut_panel.gd
 msgid "Horizontal strip"
 msgstr "Horisontaalne riba"
 
-#: src/ui_parts/shortcut_panel.gd
 msgid "Vertical strip"
 msgstr "Vertikaalne riba"
 
-#: src/ui_parts/shortcut_panel.gd
 msgid "Horizontal with two rows"
 msgstr "Horisontaalne riba kahe reaga"
 
-#: src/ui_parts/shortcut_panel_config.gd
 msgid "Configure Shortcut Panel"
 msgstr "Konfigureeri otseklahvide paneeli"
 
-#: src/ui_parts/tab_bar.gd src/utils/TranslationUtils.gd
 msgid "Create a new tab"
 msgstr "Loo uus kaart"
 
-#: src/ui_parts/tab_bar.gd
 msgid "Scroll backwards"
 msgstr "Keri tagasi"
 
-#: src/ui_parts/tab_bar.gd
 msgid "Scroll forwards"
 msgstr "Keri edasi"
 
-#: src/ui_parts/tab_bar.gd
 msgid "This SVG is not bound to a file location yet."
 msgstr "See SVG ei ole veel seotud failiasukohaga."
 
-#: src/ui_parts/update_menu.gd
 msgid "Show prereleases"
 msgstr "Näita eelväljaandeid"
 
-#: src/ui_parts/update_menu.gd
 msgid "Retry"
 msgstr "Proovi uuesti"
 
-#: src/ui_parts/update_menu.gd
 msgid "Current Version"
 msgstr "Praegune versioon"
 
-#: src/ui_parts/update_menu.gd
 msgid "Retrieving information..."
 msgstr "Informatsiooni saamine..."
 
-#: src/ui_parts/update_menu.gd
 msgid "Update check failed"
 msgstr "Uuenduste otsimine ebaõnnestus"
 
-#: src/ui_parts/update_menu.gd
 msgid "GodSVG is up-to-date."
 msgstr "GodSVG on ajakohane."
 
-#: src/ui_parts/update_menu.gd
 msgid "New versions"
 msgstr "Uued versioonid"
 
-#: src/ui_widgets/choose_name_dialog.gd
 msgid "Create"
 msgstr "Loo"
 
-#: src/ui_widgets/color_popup.gd
 msgid "Search color"
 msgstr "Otsi värvi"
 
-#: src/ui_widgets/color_popup.gd
 msgid "Color Picker"
 msgstr "Värvivalija"
 
-#: src/ui_widgets/configure_color_popup.gd
 msgid "Edit color name"
 msgstr "Muuda värvi nime"
 
-#: src/ui_widgets/configure_color_popup.gd
 msgid "Delete color"
 msgstr "Kustuta värv"
 
-#: src/ui_widgets/configure_color_popup.gd src/ui_widgets/palette_config.gd
 msgid "Unnamed"
 msgstr "Nimetu"
 
-#: src/ui_widgets/good_color_picker.gd
 msgid "Color keywords"
 msgstr "Värvi võtmesõnad"
 
-#: src/ui_widgets/good_color_picker.gd
 msgid "Eyedropper"
 msgstr "Värvipipett"
 
-#: src/ui_widgets/palette_config.gd
 msgid "Unnamed palettes won't be shown."
 msgstr "Nimetuid värvipalette ei kuvata."
 
-#: src/ui_widgets/palette_config.gd
 msgid "Multiple palettes can't have the same name."
 msgstr "Mitmel värvipaletil ei saa olla sama nimi."
 
-#: src/ui_widgets/palette_config.gd
 msgid "This palette has identically defined colors."
 msgstr "Selles värvipalettis on sama värv juba olemas."
 
-#: src/ui_widgets/palette_config.gd
 msgid "Rename"
 msgstr "Nimeta ümber"
 
-#: src/ui_widgets/palette_config.gd
 msgid "Move Up"
 msgstr "Liiguta üles"
 
-#: src/ui_widgets/palette_config.gd
 msgid "Move Down"
 msgstr "Liiguta alla"
 
-#: src/ui_widgets/palette_config.gd
 msgid "Apply Preset"
 msgstr "Rakenda eelseadistus"
 
-#: src/ui_widgets/palette_config.gd src/ui_widgets/setting_shortcut.gd
-#: src/ui_widgets/transform_popup.gd src/utils/TranslationUtils.gd
 msgid "Delete"
 msgstr "Kustuta"
 
-#: src/ui_widgets/palette_config.gd
 msgid "Copy as XML"
 msgstr "Kopeeri kui XML"
 
-#: src/ui_widgets/palette_config.gd
 msgid "Save as XML"
 msgstr "Salvesta kui XML"
 
-#: src/ui_widgets/path_popup.gd src/utils/TranslationUtils.gd
 msgid "Relative"
 msgstr "Suhteline"
 
-#: src/ui_widgets/pathdata_field.gd
 msgid "No path data"
 msgstr "Puudub path andmed"
 
-#: src/ui_widgets/points_field.gd
 msgid "No points"
 msgstr "Puuduvad punktid"
 
-#: src/ui_widgets/presented_shortcut.gd src/ui_widgets/setting_shortcut.gd
 msgid "Also used by"
 msgstr "Seda kasutab ka"
 
-#: src/ui_widgets/setting_frame.gd src/ui_widgets/setting_shortcut.gd
 msgid "Reset to default"
 msgstr "Lähtesta vaikeväärtusele"
 
-#: src/ui_widgets/setting_shortcut.gd
 msgid "Unused"
 msgstr "Kasutamata"
 
-#: src/ui_widgets/setting_shortcut.gd
 msgid "Add shortcut"
 msgstr "Lisa otseklahv"
 
-#: src/ui_widgets/setting_shortcut.gd
 msgid "Press keys…"
 msgstr "Vajuta klahve…"
 
-#: src/ui_widgets/transform_field.gd
 msgid "No transforms"
 msgstr "Puudub teisendus"
 
-#: src/ui_widgets/transform_popup.gd
 msgid "Apply the matrix"
 msgstr "Rakenda maatriks"
 
-#: src/ui_widgets/transform_popup.gd
 msgid "Insert Before"
 msgstr "Sisesta enne"
 
-#: src/ui_widgets/transform_popup.gd
 msgid "New transform"
 msgstr "Uus teisendus"
 
-#: src/ui_widgets/unrecognized_field.gd
 msgid "GodSVG doesn’t recognize this attribute"
 msgstr "GodSVG ei tunne seda atribuuti"
 
-#: src/utils/FileUtils.gd
 msgid "The file couldn't be opened."
 msgstr "Faili avamine ebaõnnestus."
 
-#: src/utils/FileUtils.gd
 msgid "Check if the file still exists in the selected file path."
 msgstr "Kontrollige, kas fail asub veel valitud asukohas."
 
-#: src/utils/FileUtils.gd
 msgid "Save the file?"
 msgstr "Salvesta fail?"
 
-#: src/utils/FileUtils.gd
 msgid "Do you want to save this file?"
 msgstr "Kas te soovite salvestada selle faili?"
 
-#: src/utils/FileUtils.gd
 msgid "Save the changes?"
 msgstr "Salvesta muudatused?"
 
-#: src/utils/FileUtils.gd
 msgid "Your changes will be lost if you don't save them."
 msgstr "Muudatused lähevad kaotsi, kui need ei salvestata."
 
-#: src/utils/FileUtils.gd
 msgid "Don't save"
 msgstr "Ära salvesta"
 
-#: src/utils/FileUtils.gd
 msgid "The imported file is already being edited inside GodSVG."
 msgstr "Imporditud fail on juba avatud GodSVGs."
 
-#: src/utils/FileUtils.gd
 msgid "If you want to revert your edits since the last save, use {reset_svg}."
 msgstr ""
 "Kui te soovite taastada muudatused alates eelmise salvestamise hetkest, "
 "kasutage {reset_svg}-d."
 
-#: src/utils/FileUtils.gd
 msgid "Do you want to save the changes made to {file_name}?"
 msgstr "Kas soovite salvestada {file_name} kallal tehtud muudatused?"
 
-#: src/utils/TranslationUtils.gd
 msgid "Save SVG"
 msgstr "Salvesta SVG"
 
-#: src/utils/TranslationUtils.gd
 #, fuzzy
 msgid "Save SVG as"
 msgstr "Salvesta SVG kui…"
 
-#: src/utils/TranslationUtils.gd
 msgid "Close tabs to the left"
 msgstr "Sulge kaardid vasakul"
 
-#: src/utils/TranslationUtils.gd
 msgid "Close tabs to the right"
 msgstr "Sulge kaardid paremal"
 
-#: src/utils/TranslationUtils.gd
 msgid "Close all other tabs"
 msgstr "Sulge teised kaardid"
 
-#: src/utils/TranslationUtils.gd
 msgid "Create tab"
 msgstr "Uus kaart"
 
-#: src/utils/TranslationUtils.gd
 msgid "Select the next tab"
 msgstr "Vali järgmine kaart"
 
-#: src/utils/TranslationUtils.gd
 msgid "Select the previous tab"
 msgstr "Vali eelmine kaart"
 
-#: src/utils/TranslationUtils.gd
 msgid "Optimize"
 msgstr "Optimeeri"
 
-#: src/utils/TranslationUtils.gd
 #, fuzzy
 msgid "Optimize SVG"
 msgstr "Optimeeri"
 
-#: src/utils/TranslationUtils.gd
 msgid "Copy all text"
 msgstr "Kopeeri terve tekst"
 
-#: src/utils/TranslationUtils.gd
 #, fuzzy
 msgid "Copy the SVG text"
 msgstr "Kopeeri terve tekst"
 
-#: src/utils/TranslationUtils.gd
 msgid "Reset SVG"
 msgstr "Lähtesta SVG"
 
-#: src/utils/TranslationUtils.gd
 msgid "Open externally"
 msgstr "Ava väliselt"
 
-#: src/utils/TranslationUtils.gd
 msgid "Open SVG externally"
 msgstr "Ava SVG väliselt"
 
-#: src/utils/TranslationUtils.gd
 msgid "Show in File Manager"
 msgstr "Kuva failihalduris"
 
-#: src/utils/TranslationUtils.gd
 msgid "Show SVG in File Manager"
 msgstr "Kuva SVG failihalduris"
 
-#: src/utils/TranslationUtils.gd
 msgid "Undo"
 msgstr "Võta tagasi"
 
-#: src/utils/TranslationUtils.gd
 msgid "Redo"
 msgstr "Tee uuesti"
 
-#: src/utils/TranslationUtils.gd
 msgid "Copy"
 msgstr "Kopeeri"
 
-#: src/utils/TranslationUtils.gd
 msgid "Paste"
 msgstr "Kleebi"
 
-#: src/utils/TranslationUtils.gd
 msgid "Cut"
 msgstr "Lõika"
 
-#: src/utils/TranslationUtils.gd
 msgid "Select all"
 msgstr "Vali kõik"
 
-#: src/utils/TranslationUtils.gd
 msgid "Duplicate"
 msgstr "Dubleeri"
 
-#: src/utils/TranslationUtils.gd
 msgid "Duplicate the selection"
 msgstr "Dubleeri valik"
 
-#: src/utils/TranslationUtils.gd
 msgid "Delete the selection"
 msgstr "Kustuta valik"
 
-#: src/utils/TranslationUtils.gd
 #, fuzzy
 msgid "Move up"
 msgstr "Liiguta üles"
 
-#: src/utils/TranslationUtils.gd
 msgid "Move the selection up"
 msgstr "Liiguta valik üles"
 
-#: src/utils/TranslationUtils.gd
 #, fuzzy
 msgid "Move down"
 msgstr "Liiguta alla"
 
-#: src/utils/TranslationUtils.gd
 msgid "Move the selection down"
 msgstr "Liiguta valik alla"
 
-#: src/utils/TranslationUtils.gd
 msgid "Find"
 msgstr "Leia"
 
-#: src/utils/TranslationUtils.gd
 msgid "Zoom in"
 msgstr "Suurenda"
 
-#: src/utils/TranslationUtils.gd
 msgid "Zoom out"
 msgstr "Vähenda"
 
-#: src/utils/TranslationUtils.gd
 msgid "Zoom reset"
 msgstr "Taasta suurendus"
 
-#: src/utils/TranslationUtils.gd
 msgid "Show grid"
 msgstr "Kuva ruudustik"
 
-#: src/utils/TranslationUtils.gd
 msgid "Show handles"
 msgstr "Kuva pidemeid"
 
-#: src/utils/TranslationUtils.gd
 msgid "Show rasterized SVG"
 msgstr "Kuva rasterdatud SVG"
 
-#: src/utils/TranslationUtils.gd
 msgid "Toggle snapping"
 msgstr "Lülita joondamine sisse"
 
-#: src/utils/TranslationUtils.gd
 msgid "Load reference image"
 msgstr "Lae võrdluspilt"
 
-#: src/utils/TranslationUtils.gd
 msgid "Show reference image"
 msgstr "Kuva võrdluspilt"
 
-#: src/utils/TranslationUtils.gd
 msgid "Overlay reference image"
 msgstr "Kata võrdluspildiga üle"
 
-#: src/utils/TranslationUtils.gd
 msgid "View debug information"
 msgstr "Kuva silumisinformatsioon"
 
-#: src/utils/TranslationUtils.gd
 msgid "Settings"
 msgstr "Seaded"
 
-#: src/utils/TranslationUtils.gd
 msgid "Open Settings menu"
 msgstr "Ava seadete menüü"
 
-#: src/utils/TranslationUtils.gd
 msgid "About…"
 msgstr "Teave…"
 
-#: src/utils/TranslationUtils.gd
 msgid "Open About menu"
 msgstr "Ava teabe menüü"
 
-#: src/utils/TranslationUtils.gd
 msgid "Donate…"
 msgstr "Anneta…"
 
-#: src/utils/TranslationUtils.gd
 msgid "Open Donate menu"
 msgstr "Ava annetuste menüü"
 
-#: src/utils/TranslationUtils.gd
 msgid "GodSVG repository"
 msgstr "GodSVG repositoorium"
 
-#: src/utils/TranslationUtils.gd
 msgid "Open GodSVG repository"
 msgstr "Ava GodSVG repositoorium"
 
-#: src/utils/TranslationUtils.gd
 msgid "GodSVG website"
 msgstr "GodSVG veebileht"
 
-#: src/utils/TranslationUtils.gd
 msgid "Open GodSVG website"
 msgstr "Ava GodSVG veebileht"
 
-#: src/utils/TranslationUtils.gd
 msgid "Check for updates"
 msgstr "Otsi uuendusi"
 
-#: src/utils/TranslationUtils.gd
 msgid "Quit the application"
 msgstr "Sulge rakendus"
 
-#: src/utils/TranslationUtils.gd
 msgid "Move to"
 msgstr "Liigu"
 
-#: src/utils/TranslationUtils.gd
 msgid "Line to"
 msgstr "Joon"
 
-#: src/utils/TranslationUtils.gd
 msgid "Horizontal Line to"
 msgstr "Horisontaalne joon"
 
-#: src/utils/TranslationUtils.gd
 msgid "Vertical Line to"
 msgstr "Vertikaalne joon"
 
-#: src/utils/TranslationUtils.gd
 msgid "Close Path"
 msgstr "Sulge path"
 
-#: src/utils/TranslationUtils.gd
 msgid "Elliptical Arc to"
 msgstr "Elliptiline kaar"
 
-#: src/utils/TranslationUtils.gd
 msgid "Quadratic Bezier to"
 msgstr "Kvadratiline Bezier"
 
-#: src/utils/TranslationUtils.gd
 msgid "Shorthand Quadratic Bezier to"
 msgstr "Lihtne kvadratiline Bezier"
 
-#: src/utils/TranslationUtils.gd
 msgid "Cubic Bezier to"
 msgstr "Kuubiline Bezier"
 
-#: src/utils/TranslationUtils.gd
 msgid "Shorthand Cubic Bezier to"
 msgstr "Lihtne kuubiline Bezier"
 
-#: src/utils/TranslationUtils.gd
 msgid "Absolute"
 msgstr "Absoluutne"
 
-#: src/utils/TranslationUtils.gd
 msgid "Code editor"
 msgstr ""
 
-#: src/utils/TranslationUtils.gd
 msgid "Inspector"
 msgstr ""
 
-#. The viewport is the area where the graphic is displayed. In similar applications, it's often called the canvas.
-#: src/utils/TranslationUtils.gd
 #, fuzzy
 msgid "Viewport"
 msgstr "Vaade"
 
-#: src/utils/TranslationUtils.gd
 msgid "Select an image"
 msgstr "Vali pilt"
 
-#: src/utils/TranslationUtils.gd
 #, fuzzy
 msgid "Select an {format} file"
 msgstr "Vali XML fail"
 
-#: src/utils/TranslationUtils.gd
 #, fuzzy
 msgid "Save the {format} file"
 msgstr "Salvesta .\"{format}\" fail"
 
-#: src/utils/TranslationUtils.gd
 msgid ""
 "The file extension {extension} is unsupported for this operation. Only "
 "{extension_list} files are supported."
@@ -1281,30 +967,5 @@ msgstr ""
 "Faililaiend {extension} ei ole selle operatsiooni jaoks toetatud. Toetatud "
 "on {extension_list} failid."
 
-#: src/utils/TranslationUtils.gd
 msgid "The file extension is empty. Only {extension_list} files are supported."
 msgstr "Faililaiend on tühi. Ainult {extension_list} on toetatud."
-
-#~ msgid "Save the .\"{format}\" file"
-#~ msgstr "Salvesta .\"{format}\" fail"
-
-#~ msgid "Load an image file"
-#~ msgstr "Ava pildifail"
-
-#~ msgid "Import a {extension} file"
-#~ msgstr "Impordi {extension} fail"
-
-#~ msgid "Select an SVG"
-#~ msgstr "Vali SVG"
-
-#~ msgid "Show reference"
-#~ msgstr "Kuva võrdluspilti"
-
-#~ msgid "Overlay reference"
-#~ msgstr "Kata võrdluspildiga üle"
-
-#~ msgid "Rasterized SVG"
-#~ msgstr "Rasterdatud SVG"
-
-#~ msgid "Save as"
-#~ msgstr "Salvesta kui"
