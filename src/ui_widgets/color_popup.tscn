@@ -7,8 +7,8 @@
 
 [node name="ColorPopup" type="PanelContainer"]
 custom_minimum_size = Vector2(160, 0)
-offset_right = 218.0
-offset_bottom = 43.0
+offset_right = 214.0
+offset_bottom = 325.0
 script = ExtResource("1_t1mgf")
 
 [node name="MainContainer" type="VBoxContainer" parent="."]
@@ -24,7 +24,7 @@ theme_override_constants/margin_right = 8
 theme_override_constants/margin_bottom = 2
 
 [node name="Palettes" type="ScrollContainer" parent="MainContainer/Content"]
-custom_minimum_size = Vector2(0, 303)
+custom_minimum_size = Vector2(0, 305)
 layout_mode = 2
 horizontal_scroll_mode = 0
 
