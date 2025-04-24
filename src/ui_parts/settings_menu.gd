@@ -382,16 +382,10 @@ func _on_language_pressed() -> void:
 		var is_current_locale := (locale == TranslationServer.get_locale())
 		
 		# Translation percentages.
-		# TODO Godot drove me insane here. So Translation.get_translated_message() gets
-		# all the translations, even the fuzzied ones that aren't used... whuh?
-		# So I tried to use Translation.get_message_list(), and it gets the messages
-		# for all the translations... except the fuzzied ones for some reason? WHAT?!
-		# We solve this by finding the number of fuzzied strings by subtracting the
-		# message count of English messages by the message count of the locale.
 		if locale != "en":
 			var translation_obj := TranslationServer.get_translation_object(locale)
-			var translated_count := 2 * translation_obj.get_message_count() -\
-					strings_count - translation_obj.get_translated_message_list().count("")
+			var translated_count := translation_obj.get_message_count() -\
+					translation_obj.get_translated_message_list().count("")
 			
 			btn_arr.append(ContextPopup.create_button(
 					TranslationUtils.get_locale_display(locale),
