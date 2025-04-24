@@ -11,35 +11,21 @@ var alpha_enabled := false
 var is_none_keyword_available := false
 var is_current_color_keyword_available := false
 
+var color_space_button_group := ButtonGroup.new()
+
 var undo_redo := UndoRedoRef.new()
 
+signal slider_mode_changed
 enum SliderMode {RGB, HSV}
 var slider_mode: SliderMode:
-	set(new_mode):
-		slider_mode = new_mode
-		var disabled_button := hsv_button if new_mode == SliderMode.HSV else rgb_button
-		var arr: Array[Button] = [hsv_button, rgb_button]
-		for btn in arr:
-			btn.disabled = (btn == disabled_button)
-			btn.mouse_default_cursor_shape = Control.CURSOR_ARROW if\
-					btn == disabled_button else Control.CURSOR_POINTING_HAND
-		match slider_mode:
-			SliderMode.RGB:
-				tracks_arr[1].material.set_shader_parameter("interpolation", 1)
-				tracks_arr[2].material.set_shader_parameter("interpolation", 2)
-				tracks_arr[3].material.set_shader_parameter("interpolation", 3)
-			SliderMode.HSV:
-				tracks_arr[1].material.set_shader_parameter("interpolation", 4)
-				tracks_arr[2].material.set_shader_parameter("interpolation", 5)
-				tracks_arr[3].material.set_shader_parameter("interpolation", 6)
-		if alpha_enabled:
-			tracks_arr[4].material.set_shader_parameter("interpolation", 0)
-		update()
+	set(new_value):
+		if slider_mode != new_value:
+			slider_mode = new_value
+			slider_mode_changed.emit()
 
 @onready var color_wheel: MarginContainer = $ShapeContainer/ColorWheel
 @onready var color_wheel_drawn: ColorRect = $ShapeContainer/ColorWheel/ColorWheelDraw
-@onready var rgb_button: Button = $SliderContainer/ColorSpaceContainer/RGB
-@onready var hsv_button: Button = $SliderContainer/ColorSpaceContainer/HSV
+@onready var color_space_container: HBoxContainer = $SliderContainer/ColorSpaceContainer
 @onready var start_color_rect: Control = %ColorsDisplay/StartColorRect
 @onready var color_rect: Control = %ColorsDisplay/ColorRect
 @onready var keyword_button: Button = $ColorContainer/KeywordButton
@@ -102,7 +88,47 @@ func setup_color(new_color: String, default_color: Color) -> void:
 	slider_mode = Configs.savedata.color_picker_slider_mode
 	update()
 
-# Workaround to set up these values after ready.
+
+func add_color_space_buttons() -> void:
+	var normal_stylebox := StyleBoxFlat.new()
+	normal_stylebox.bg_color = ThemeUtils.translucent_button_color_normal
+	
+	var hover_stylebox := normal_stylebox.duplicate()
+	hover_stylebox.bg_color = ThemeUtils.translucent_button_color_hover
+	
+	var pressed_stylebox := StyleBoxFlat.new()
+	pressed_stylebox.bg_color = ThemeUtils.translucent_button_color_pressed
+	pressed_stylebox.border_width_top = 2
+	pressed_stylebox.content_margin_bottom = 2
+	pressed_stylebox.border_color = Color(ThemeUtils.common_editable_text_color, 0.7)
+	
+	for color_space: SliderMode in [SliderMode.RGB, SliderMode.HSV]:
+		var btn := Button.new()
+		btn.begin_bulk_theme_override()
+		btn.add_theme_constant_override("align_to_largest_stylebox", 0)
+		btn.add_theme_stylebox_override("normal", normal_stylebox)
+		btn.add_theme_stylebox_override("hover", hover_stylebox)
+		btn.add_theme_stylebox_override("pressed", pressed_stylebox)
+		btn.end_bulk_theme_override()
+		btn.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		btn.focus_mode = Control.FOCUS_NONE
+		btn.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+		btn.button_group = color_space_button_group
+		btn.toggle_mode = true
+		btn.action_mode = BaseButton.ACTION_MODE_BUTTON_PRESS
+		slider_mode_changed.connect(func() -> void:
+				btn.mouse_default_cursor_shape = Control.CURSOR_ARROW if\
+				slider_mode == color_space else Control.CURSOR_POINTING_HAND
+		)
+		if color_space == Configs.savedata.color_picker_slider_mode:
+			btn.button_pressed = true
+		btn.pressed.connect(change_slider_mode.bind(color_space))
+		match color_space:
+			SliderMode.RGB: btn.text = "RGB"
+			SliderMode.HSV: btn.text = "HSV"
+		color_space_container.add_child(btn)
+
+# Workaround to set this after ready from external places.
 func update_keyword_button() -> void:
 	if is_none_keyword_available or is_current_color_keyword_available:
 		keyword_button.tooltip_text = Translator.translate("Color keywords")
@@ -110,17 +136,17 @@ func update_keyword_button() -> void:
 		keyword_button.show()
 
 func _ready() -> void:
+	add_color_space_buttons()
 	# Set up signals.
 	widgets_arr[0].gui_input.connect(parse_slider_input.bind(0, true))
 	widgets_arr[1].gui_input.connect(parse_slider_input.bind(1))
 	widgets_arr[2].gui_input.connect(parse_slider_input.bind(2))
 	widgets_arr[3].gui_input.connect(parse_slider_input.bind(3))
+	slider_mode_changed.connect(_on_slider_mode_changed)
+	_on_slider_mode_changed()
 	if alpha_enabled:
 		alpha_slider.visible = alpha_enabled
 		widgets_arr[4].gui_input.connect(parse_slider_input.bind(4))
-	
-	rgb_button.pressed.connect(change_slider_mode.bind(SliderMode.RGB))
-	hsv_button.pressed.connect(change_slider_mode.bind(SliderMode.HSV))
 	
 	update_keyword_button()
 	eyedropper_button.pressed.connect(_on_eyedropper_pressed)
@@ -131,6 +157,22 @@ func _ready() -> void:
 
 func _exit_tree() -> void:
 	RenderingServer.free_rid(color_wheel_surface)
+
+
+func _on_slider_mode_changed() -> void:
+	match slider_mode:
+		SliderMode.RGB:
+			tracks_arr[1].material.set_shader_parameter("interpolation", 1)
+			tracks_arr[2].material.set_shader_parameter("interpolation", 2)
+			tracks_arr[3].material.set_shader_parameter("interpolation", 3)
+		SliderMode.HSV:
+			tracks_arr[1].material.set_shader_parameter("interpolation", 4)
+			tracks_arr[2].material.set_shader_parameter("interpolation", 5)
+			tracks_arr[3].material.set_shader_parameter("interpolation", 6)
+	if alpha_enabled:
+		tracks_arr[4].material.set_shader_parameter("interpolation", 0)
+	update()
+
 
 func register_visual_change(new_color: Color, use_backup := true) -> void:
 	if use_backup and new_color == backup_display_color:

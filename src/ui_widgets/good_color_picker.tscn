@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://b1eig44cov474"]
+[gd_scene load_steps=15 format=3 uid="uid://b1eig44cov474"]
 
 [ext_resource type="Script" uid="uid://bof1kkpsf7cmx" path="res://src/ui_widgets/good_color_picker.gd" id="1_0pc78"]
 [ext_resource type="Shader" uid="uid://dwop5cmg7i04p" path="res://src/shaders/color_wheel.gdshader" id="2_nf1uk"]
@@ -19,22 +19,6 @@ shader_parameter/base_color = Vector4(1, 1, 1, 1)
 shader_parameter/interpolation = 6
 shader_parameter/horizontal = false
 shader_parameter/inverted = true
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sndty"]
-bg_color = Color(0.866667, 0.933333, 1, 0.333333)
-border_width_top = 2
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cle8x"]
-content_margin_top = 1.0
-content_margin_bottom = 1.0
-bg_color = Color(0.866667, 0.933333, 1, 0.2)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mqx76"]
-content_margin_top = 1.0
-content_margin_bottom = 1.0
-bg_color = Color(0.866667, 0.933333, 1, 0.133333)
-
-[sub_resource type="ButtonGroup" id="ButtonGroup_w0iiw"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_fvg6q"]
 shader = ExtResource("5_acxpg")
@@ -162,34 +146,6 @@ theme_override_constants/separation = 8
 [node name="ColorSpaceContainer" type="HBoxContainer" parent="SliderContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
-
-[node name="RGB" type="Button" parent="SliderContainer/ColorSpaceContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-focus_mode = 0
-mouse_default_cursor_shape = 2
-theme_override_colors/font_disabled_color = Color(0.866667, 0.933333, 1, 1)
-theme_override_styles/disabled = SubResource("StyleBoxFlat_sndty")
-theme_override_styles/hover = SubResource("StyleBoxFlat_cle8x")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_sndty")
-theme_override_styles/normal = SubResource("StyleBoxFlat_mqx76")
-toggle_mode = true
-button_group = SubResource("ButtonGroup_w0iiw")
-text = "RGB"
-
-[node name="HSV" type="Button" parent="SliderContainer/ColorSpaceContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-focus_mode = 0
-mouse_default_cursor_shape = 2
-theme_override_colors/font_disabled_color = Color(0.866667, 0.933333, 1, 1)
-theme_override_styles/disabled = SubResource("StyleBoxFlat_sndty")
-theme_override_styles/hover = SubResource("StyleBoxFlat_cle8x")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_sndty")
-theme_override_styles/normal = SubResource("StyleBoxFlat_mqx76")
-toggle_mode = true
-button_group = SubResource("ButtonGroup_w0iiw")
-text = "HSV"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="SliderContainer"]
 layout_mode = 2
