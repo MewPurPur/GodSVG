@@ -10,7 +10,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.5\n"
+"X-Generator: Poedit 3.6\n"
 
 msgid "translation-credits"
 msgstr "volkov"
@@ -85,9 +85,8 @@ msgid "Restore"
 msgstr "Відновити"
 
 #: src/autoload/State.gd
-#, fuzzy
 msgid "View in Inspector"
-msgstr "Переглянути списком"
+msgstr "Переглянути в інспекторі"
 
 #: src/autoload/State.gd
 msgid "Convert To"
@@ -102,12 +101,11 @@ msgid "The last edited state of this tab could not be found."
 msgstr "Останній редагований стан цієї вкладки не може бути знайдено."
 
 #: src/autoload/State.gd
-#, fuzzy
 msgid ""
 "The tab is bound to the file path {file_path}. Do you want to restore the "
 "SVG from this path?"
 msgstr ""
-"Ця вкладка пов'язана з шляхом до файлу {file_path}. Бажаєте відновити з "
+"Ця вкладка пов'язана з шляхом до файлу {file_path}. Бажаєте відновити SVG з "
 "цього шляху?"
 
 #: src/config_classes/Formatter.gd
@@ -401,11 +399,11 @@ msgstr "Додати елемент"
 #. This is plural
 #: src/ui_parts/layout_popup.gd
 msgid "Excluded"
-msgstr ""
+msgstr "Виключені"
 
 #: src/ui_parts/layout_popup.gd
 msgid "Drag and drop to change the layout"
-msgstr ""
+msgstr "Перетягніть і опустіть, щоб змінити макет"
 
 #: src/ui_parts/mac_menu.gd src/ui_parts/settings_menu.gd
 msgid "File"
@@ -445,7 +443,7 @@ msgstr "Тема"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Tab bar"
-msgstr ""
+msgstr "Вкладка"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Other"
@@ -522,9 +520,8 @@ msgid "Background color"
 msgstr "Колір фону"
 
 #: src/ui_parts/settings_menu.gd
-#, fuzzy
 msgid "Grid color"
-msgstr "Колір валідності"
+msgstr "Колір ґратки"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Valid color"
@@ -540,7 +537,7 @@ msgstr "Пристрої вводу"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Close tabs with middle mouse button"
-msgstr ""
+msgstr "Закривати вкладки при натисканні середньої кнопки миші"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Invert zoom direction"
@@ -718,6 +715,8 @@ msgid ""
 "If turned on, clicking on a tab with the middle mouse button closes the tab. "
 "If turned off, it focuses the tab instead."
 msgstr ""
+"Якщо увімкнено - клацання на вкладку середньою кнопкою миші закриє її. Якщо "
+"вимкнено - фокус буде замінено на неї."
 
 #: src/ui_parts/settings_menu.gd
 msgid "Swaps the scroll directions for zooming in and zooming out."
@@ -732,11 +731,10 @@ msgstr ""
 "вікна перегляду."
 
 #: src/ui_parts/settings_menu.gd
-#, fuzzy
 msgid ""
 "If turned on, scrolling pans the view. To zoom, hold CTRL while scrolling."
 msgstr ""
-"Якщо увімкнено, гортання буде рухати вікно перегляду. Щоб масштабувати, "
+"Якщо увімкнено - гортання буде рухати вікно перегляду. Щоб масштабувати, "
 "затисніть CTRL доки гортаєте."
 
 #: src/ui_parts/settings_menu.gd
@@ -749,13 +747,12 @@ msgstr ""
 "використовуватися вбудований файловий діалог."
 
 #: src/ui_parts/settings_menu.gd
-#, fuzzy
 msgid ""
 "If turned off, the window title remains as \"GodSVG\" without including the "
 "current file."
 msgstr ""
-"Якщо вимкнено, заголовок вікна залишиться \"GodSVG\" незалежно від поточного "
-"файлу."
+"Якщо вимкнено - заголовок вікна залишиться як \"GodSVG\", не включаючи назву "
+"поточного файлу."
 
 #: src/ui_parts/settings_menu.gd
 msgid "Changes the visual size and grabbing area of handles."
@@ -794,9 +791,8 @@ msgid "This SVG is not bound to a file location yet."
 msgstr "Це SVG зображення поки що не пов'язано з розташуванням файла."
 
 #: src/ui_parts/update_menu.gd
-#, fuzzy
 msgid "Show prereleases"
-msgstr "Включати тестові версії"
+msgstr "Показати тестові версії"
 
 #: src/ui_parts/update_menu.gd
 msgid "Retry"
@@ -956,26 +952,24 @@ msgid "Check if the file still exists in the selected file path."
 msgstr "Перевірити, чи файл все щє існує по обраному шляху."
 
 #: src/utils/FileUtils.gd
-#, fuzzy
 msgid "Save the file?"
-msgstr "Зберегти .\"{format}\" файл"
+msgstr "Зберегти файл?"
 
 #: src/utils/FileUtils.gd
-#, fuzzy
 msgid "Do you want to save this file?"
-msgstr "Ви дійсно бажаєте продовжити?"
+msgstr "Ви бажаєте зберегти цей файл?"
 
 #: src/utils/FileUtils.gd
 msgid "Save the changes?"
-msgstr ""
+msgstr "Зберегти зміни?"
 
 #: src/utils/FileUtils.gd
 msgid "Your changes will be lost if you don't save them."
-msgstr ""
+msgstr "Ваші зміни буде втрачено, якщо ви не збережете їх."
 
 #: src/utils/FileUtils.gd
 msgid "Don't save"
-msgstr ""
+msgstr "Не зберігати"
 
 #: src/utils/FileUtils.gd
 msgid "The imported file is already being edited inside GodSVG."
@@ -984,19 +978,20 @@ msgstr "Імпортований файл вже редагується в GodSV
 #: src/utils/FileUtils.gd
 msgid "If you want to revert your edits since the last save, use {reset_svg}."
 msgstr ""
+"Якщо ви бажаєте повернути свої зміни з останнього збереження, використовуйте "
+"{reset_svg}."
 
 #: src/utils/FileUtils.gd
 msgid "Do you want to save the changes made to {file_name}?"
-msgstr ""
+msgstr "Чи бажаєте зберегти зміни в {file_name}?"
 
 #: src/utils/TranslationUtils.gd
 msgid "Save SVG"
 msgstr "Зберегти SVG"
 
 #: src/utils/TranslationUtils.gd
-#, fuzzy
 msgid "Save SVG as"
-msgstr "Зберегти SVG як…"
+msgstr "Зберегти SVG як"
 
 #: src/utils/TranslationUtils.gd
 msgid "Close tabs to the left"
@@ -1027,18 +1022,16 @@ msgid "Optimize"
 msgstr "Оптимізувати"
 
 #: src/utils/TranslationUtils.gd
-#, fuzzy
 msgid "Optimize SVG"
-msgstr "Оптимізувати"
+msgstr "Оптимізувати SVG"
 
 #: src/utils/TranslationUtils.gd
 msgid "Copy all text"
 msgstr "Скопіювати весь текст"
 
 #: src/utils/TranslationUtils.gd
-#, fuzzy
 msgid "Copy the SVG text"
-msgstr "Скопіювати весь текст"
+msgstr "Скопіювати SVG текст"
 
 #: src/utils/TranslationUtils.gd
 msgid "Reset SVG"
@@ -1097,7 +1090,6 @@ msgid "Delete the selection"
 msgstr "Видалити усі обрані теги"
 
 #: src/utils/TranslationUtils.gd
-#, fuzzy
 msgid "Move up"
 msgstr "Пересунути вгору"
 
@@ -1106,7 +1098,6 @@ msgid "Move the selection up"
 msgstr "Пересунути обране вгору"
 
 #: src/utils/TranslationUtils.gd
-#, fuzzy
 msgid "Move down"
 msgstr "Пересунути вниз"
 
@@ -1257,31 +1248,28 @@ msgstr "Абсолютно"
 
 #: src/utils/TranslationUtils.gd
 msgid "Code editor"
-msgstr ""
+msgstr "Редактор коду"
 
 #: src/utils/TranslationUtils.gd
 msgid "Inspector"
-msgstr ""
+msgstr "Інспектор"
 
 #. The viewport is the area where the graphic is displayed. In similar applications, it's often called the canvas.
 #: src/utils/TranslationUtils.gd
-#, fuzzy
 msgid "Viewport"
-msgstr "Перегляд"
+msgstr "Вікно перегляду"
 
 #: src/utils/TranslationUtils.gd
 msgid "Select an image"
 msgstr "Обрати зображення"
 
 #: src/utils/TranslationUtils.gd
-#, fuzzy
 msgid "Select an {format} file"
-msgstr "Обрати XML файл"
+msgstr "Обрати {format} файл"
 
 #: src/utils/TranslationUtils.gd
-#, fuzzy
 msgid "Save the {format} file"
-msgstr "Зберегти .\"{format}\" файл"
+msgstr "Зберегти {format} файл"
 
 #: src/utils/TranslationUtils.gd
 msgid ""
