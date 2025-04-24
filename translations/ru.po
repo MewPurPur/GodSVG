@@ -11,7 +11,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.5\n"
+"X-Generator: Poedit 3.6\n"
 
 msgid "translation-credits"
 msgstr "volkov, Gallifreyan <gallifreyan@protonmail.ch>"
@@ -58,7 +58,6 @@ msgid "Export"
 msgstr "Экспортовать"
 
 #: src/autoload/HandlerGUI.gd
-#, fuzzy
 msgid ""
 "The graphic can be exported only as SVG because its proportions are too "
 "extreme."
@@ -87,9 +86,8 @@ msgid "Restore"
 msgstr "Восстановить"
 
 #: src/autoload/State.gd
-#, fuzzy
 msgid "View in Inspector"
-msgstr "Просмотреть в списке"
+msgstr "Просмотреть в инспектор"
 
 #: src/autoload/State.gd
 msgid "Convert To"
@@ -403,11 +401,11 @@ msgstr "Добавить элемент"
 #. This is plural
 #: src/ui_parts/layout_popup.gd
 msgid "Excluded"
-msgstr ""
+msgstr "Исключены"
 
 #: src/ui_parts/layout_popup.gd
 msgid "Drag and drop to change the layout"
-msgstr ""
+msgstr "Перетягивайте, чтобы изменить макет"
 
 #: src/ui_parts/mac_menu.gd src/ui_parts/settings_menu.gd
 msgid "File"
@@ -524,9 +522,8 @@ msgid "Background color"
 msgstr "Цвет фона"
 
 #: src/ui_parts/settings_menu.gd
-#, fuzzy
 msgid "Grid color"
-msgstr "Цвет валидности"
+msgstr "Цвет сетки"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Valid color"
@@ -716,6 +713,8 @@ msgid ""
 "If turned on, clicking on a tab with the middle mouse button closes the tab. "
 "If turned off, it focuses the tab instead."
 msgstr ""
+"Если включено - нажатие на вкладку средней кнопкой мыши закроет ее. Если "
+"выключено - вкладка получит фокус."
 
 #: src/ui_parts/settings_menu.gd
 msgid "Swaps the scroll directions for zooming in and zooming out."
@@ -730,11 +729,10 @@ msgstr ""
 "окна просмотра."
 
 #: src/ui_parts/settings_menu.gd
-#, fuzzy
 msgid ""
 "If turned on, scrolling pans the view. To zoom, hold CTRL while scrolling."
 msgstr ""
-"Если включено, прокрутка будет перемещать окно просмотра. Чтобы "
+"Если включено - прокрутка будет перемещать окно просмотра. Чтобы "
 "масштабировать зажмите CTRL при прокручивании."
 
 #: src/ui_parts/settings_menu.gd
@@ -747,13 +745,12 @@ msgstr ""
 "использоваться встроенный файловый диалог."
 
 #: src/ui_parts/settings_menu.gd
-#, fuzzy
 msgid ""
 "If turned off, the window title remains as \"GodSVG\" without including the "
 "current file."
 msgstr ""
-"Если выключено, заголовок окна будет просто \"GodSVG\" независимо от "
-"текущего файла."
+"Если выключено - заголовок окна будет просто \"GodSVG\", не включая текущий "
+"файл."
 
 #: src/ui_parts/settings_menu.gd
 msgid "Changes the visual size and grabbing area of handles."
@@ -991,9 +988,8 @@ msgid "Save SVG"
 msgstr "Сохранить SVG"
 
 #: src/utils/TranslationUtils.gd
-#, fuzzy
 msgid "Save SVG as"
-msgstr "Сохранить SVG как…"
+msgstr "Сохранить SVG как"
 
 #: src/utils/TranslationUtils.gd
 msgid "Close tabs to the left"
@@ -1024,18 +1020,16 @@ msgid "Optimize"
 msgstr "Оптимизировать"
 
 #: src/utils/TranslationUtils.gd
-#, fuzzy
 msgid "Optimize SVG"
-msgstr "Оптимизировать"
+msgstr "Оптимизировать SVG"
 
 #: src/utils/TranslationUtils.gd
 msgid "Copy all text"
 msgstr "Скопировать весь текст"
 
 #: src/utils/TranslationUtils.gd
-#, fuzzy
 msgid "Copy the SVG text"
-msgstr "Скопировать весь текст"
+msgstr "Скопировать SVG текст"
 
 #: src/utils/TranslationUtils.gd
 msgid "Reset SVG"
@@ -1094,7 +1088,6 @@ msgid "Delete the selection"
 msgstr "Удалить все выбранные теги"
 
 #: src/utils/TranslationUtils.gd
-#, fuzzy
 msgid "Move up"
 msgstr "Подвинуть вверх"
 
@@ -1103,7 +1096,6 @@ msgid "Move the selection up"
 msgstr "Подвинуть выбранное вверх"
 
 #: src/utils/TranslationUtils.gd
-#, fuzzy
 msgid "Move down"
 msgstr "Подвинуть вниз"
 
@@ -1253,31 +1245,28 @@ msgstr "Абсолютно"
 
 #: src/utils/TranslationUtils.gd
 msgid "Code editor"
-msgstr ""
+msgstr "Редактор кода"
 
 #: src/utils/TranslationUtils.gd
 msgid "Inspector"
-msgstr ""
+msgstr "Инспектор"
 
 #. The viewport is the area where the graphic is displayed. In similar applications, it's often called the canvas.
 #: src/utils/TranslationUtils.gd
-#, fuzzy
 msgid "Viewport"
-msgstr "Просмотр"
+msgstr "Окно просмотра"
 
 #: src/utils/TranslationUtils.gd
 msgid "Select an image"
 msgstr "Выбрать изображение"
 
 #: src/utils/TranslationUtils.gd
-#, fuzzy
 msgid "Select an {format} file"
-msgstr "Выбрать XML файл"
+msgstr "Выбрать {format} файл"
 
 #: src/utils/TranslationUtils.gd
-#, fuzzy
 msgid "Save the {format} file"
-msgstr "Сохранить .\"{format}\" файл"
+msgstr "Сохранить {format} файл"
 
 #: src/utils/TranslationUtils.gd
 msgid ""
