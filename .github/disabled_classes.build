@@ -32,7 +32,6 @@
 		"ColorPickerButton",
 		"Compositor",
 		"CompositorEffect",
-		"CryptoKey",
 		"Curve3D",
 		"CurveTexture",
 		"CurveXYZTexture",
