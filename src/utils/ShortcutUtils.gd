@@ -1,9 +1,9 @@
 class_name ShortcutUtils extends RefCounted
 
 # Can be activated in all contexts.
-const UNIVERSAL_ACTIONS: PackedStringArray = ["quit", "about_info", "about_donate",
-		"check_updates", "open_settings", "about_repo", "about_website", "open_externally",
-		"open_in_folder"]
+const UNIVERSAL_ACTIONS: PackedStringArray = ["quit", "toggle_fullscreen", "about_info",
+		"about_donate", "check_updates", "open_settings", "about_repo", "about_website",
+		"open_externally", "open_in_folder"]
 
 # Requires there being no dialogs.
 const EFFECT_ACTIONS: PackedStringArray = ["view_show_grid", "view_show_handles",
@@ -58,6 +58,7 @@ const _action_categories_dict: Dictionary[String, Dictionary] = {
 		"zoom_in": true,
 		"zoom_out": true,
 		"zoom_reset": true,
+		"toggle_fullscreen": true,
 		"debug": false,
 		"view_show_grid": true,
 		"view_show_handles": true,
@@ -128,6 +129,7 @@ static func get_action_icon(action: String) -> Texture2D:
 		"open_settings": return load("res://assets/icons/Gear.svg")
 		"about_donate": return load("res://assets/icons/Heart.svg")
 		"about_repo", "about_website": return load("res://assets/icons/Link.svg")
+		"toggle_fullscreen": return load("res://assets/icons/Expand.svg")
 		"load_reference": return load("res://assets/icons/Reference.svg")
 		_: return load("res://assets/icons/Placeholder.svg")
 
