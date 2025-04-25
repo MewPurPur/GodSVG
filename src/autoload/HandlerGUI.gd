@@ -224,6 +224,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		if ShortcutUtils.is_action_pressed(event, action):
 			match action:
 				"quit": prompt_quit()
+				"toggle_fullscreen": toggle_fullscreen()
 				"about_info": open_about()
 				"about_donate": open_donate()
 				"check_updates": open_update_checker()
@@ -429,6 +430,31 @@ func prompt_quit() -> void:
 	confirm_dialog.setup(Translator.translate("Quit GodSVG"),
 			Translator.translate("Do you want to quit GodSVG?"),
 			Translator.translate("Quit"), get_tree().quit)
+
+
+var was_window_maximized: bool
+var window_old_rect: Rect2
+
+func toggle_fullscreen() -> void:
+	if DisplayServer.window_get_mode() != DisplayServer.WindowMode.WINDOW_MODE_FULLSCREEN:
+		if DisplayServer.window_get_mode() == DisplayServer.WindowMode.WINDOW_MODE_MAXIMIZED:
+			was_window_maximized = true
+		else:
+			was_window_maximized = false
+			window_old_rect = Rect2(DisplayServer.window_get_position(),
+					DisplayServer.window_get_size())
+		DisplayServer.window_set_mode(DisplayServer.WindowMode.WINDOW_MODE_FULLSCREEN)
+	else:
+		if was_window_maximized:
+			DisplayServer.window_set_mode(DisplayServer.WindowMode.WINDOW_MODE_MAXIMIZED)
+		else:
+			DisplayServer.window_set_mode(DisplayServer.WindowMode.WINDOW_MODE_WINDOWED)
+			DisplayServer.window_set_size(window_old_rect.size)
+			# TODO Without at least 3 frames of wait, on my laptop the window would
+			# sometimes go a little higher than before after setting its position.
+			for i in 3:
+				await get_tree().process_frame
+			DisplayServer.window_set_position(window_old_rect.position)
 
 func open_update_checker() -> void:
 	remove_all_menus()

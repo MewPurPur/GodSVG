@@ -97,6 +97,7 @@ static func get_action_description(action_name: String, for_button := false) -> 
 				for_button else Translator.translate("Open GodSVG website")
 		"check_updates": return Translator.translate("Check for updates")
 		"quit": return Translator.translate("Quit the application")
+		"toggle_fullscreen": return Translator.translate("Toggle fullscreen")
 		_: return action_name
 
 
