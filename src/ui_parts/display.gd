@@ -46,8 +46,8 @@ func update_theme() -> void:
 	frame.border_width_left = 2
 	frame.border_width_top = 2
 	frame.border_color = ThemeUtils.connected_button_border_color_pressed
-	frame.content_margin_left = 2
-	frame.content_margin_top = 2
+	frame.content_margin_left = 2.0
+	frame.content_margin_top = 2.0
 	viewport_panel.add_theme_stylebox_override("panel", frame)
 
 func update_snap_config() -> void:

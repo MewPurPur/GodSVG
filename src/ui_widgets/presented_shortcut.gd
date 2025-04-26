@@ -18,8 +18,8 @@ func setup(new_action: String) -> void:
 		new_btn.size_flags_horizontal = Control.SIZE_FILL
 		new_btn.theme_type_variation = "TranslucentButton"
 		var shortcut_stylebox := get_theme_stylebox("disabled", "TranslucentButton").duplicate()
-		shortcut_stylebox.content_margin_top = 0
-		shortcut_stylebox.content_margin_bottom = 0
+		shortcut_stylebox.content_margin_top = 0.0
+		shortcut_stylebox.content_margin_bottom = 0.0
 		new_btn.add_theme_stylebox_override("disabled", shortcut_stylebox)
 		
 		new_btn.focus_mode = Control.FOCUS_NONE

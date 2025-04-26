@@ -1,13 +1,13 @@
 # A color editor, not tied to any attribute.
 extends LineEditButton
 
-const ColorPopupScene = preload("res://src/ui_widgets/color_popup.tscn")
-const ColorPickerPopupScene = preload("res://src/ui_widgets/color_picker_popup.tscn")
+const ColorEditPopup = preload("res://src/ui_widgets/color_edit_popup.gd")
+
+const ColorEditPopupScene = preload("res://src/ui_widgets/color_edit_popup.tscn")
 const checkerboard = preload("res://assets/icons/backgrounds/ColorButtonBG.svg")
 
-@onready var color_picker: Control
+var color_picker: ColorEditPopup
 
-@export var enable_palettes := true
 @export var enable_alpha := false
 
 signal value_changed(new_value: String)
@@ -38,8 +38,7 @@ func sync() -> void:
 	queue_redraw()
 
 func _on_pressed() -> void:
-	color_picker = ColorPopupScene.instantiate() if enable_palettes\
-			else ColorPickerPopupScene.instantiate()
+	color_picker = ColorEditPopupScene.instantiate()
 	if enable_alpha:
 		color_picker.enable_alpha = true
 	color_picker.current_value = ColorParser.add_hash_if_hex(value)
@@ -67,7 +66,5 @@ func _draw() -> void:
 	else:
 		draw_button_border("normal")
 
-func _on_color_picked(new_color: String, close_picker: bool) -> void:
+func _on_color_picked(new_color: String) -> void:
 	value = new_color
-	if close_picker:
-		color_picker.queue_free()

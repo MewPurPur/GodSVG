@@ -1,7 +1,7 @@
-# Godot 4+ specific ignores
+# Godot-specific ignores
 .godot/
-.DS_Store
+.nomedia
 
-# Imported translations (automatically generated from CSV files)
-*.translation
+# Others
 .~lock.*
+.DS_Store

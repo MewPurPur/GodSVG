@@ -99,7 +99,7 @@ func add_color_space_buttons() -> void:
 	var pressed_stylebox := StyleBoxFlat.new()
 	pressed_stylebox.bg_color = ThemeUtils.translucent_button_color_pressed
 	pressed_stylebox.border_width_top = 2
-	pressed_stylebox.content_margin_bottom = 2
+	pressed_stylebox.content_margin_bottom = 2.0
 	pressed_stylebox.border_color = Color(ThemeUtils.common_editable_text_color, 0.7)
 	
 	for color_space: SliderMode in [SliderMode.RGB, SliderMode.HSV]:

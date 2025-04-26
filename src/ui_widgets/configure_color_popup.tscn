@@ -60,7 +60,6 @@ alignment = 1
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
-enable_palettes = false
 
 [node name="DeleteButton" type="Button" parent="ConfigureContainer/BottomContainer"]
 layout_mode = 2

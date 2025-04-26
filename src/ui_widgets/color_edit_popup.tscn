@@ -1,8 +1,8 @@
 [gd_scene load_steps=2 format=3 uid="uid://bs68u5annwepo"]
 
-[ext_resource type="Script" uid="uid://6epc6l4yo18d" path="res://src/ui_widgets/color_picker_popup.gd" id="1_wmbff"]
+[ext_resource type="Script" uid="uid://6epc6l4yo18d" path="res://src/ui_widgets/color_edit_popup.gd" id="1_wmbff"]
 
-[node name="ColorPickerPopup" type="PanelContainer"]
+[node name="ColorEditPopup" type="PanelContainer"]
 offset_right = 4.0
 offset_bottom = 4.0
 script = ExtResource("1_wmbff")
