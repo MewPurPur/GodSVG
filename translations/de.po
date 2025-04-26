@@ -10,7 +10,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.5\n"
+"X-Generator: Poedit 3.6\n"
 
 msgid "translation-credits"
 msgstr "Kiisu-Master, Swarkin"
@@ -85,9 +85,8 @@ msgid "Restore"
 msgstr "Wiederherstellen"
 
 #: src/autoload/State.gd
-#, fuzzy
 msgid "View in Inspector"
-msgstr "Als Liste ansehen"
+msgstr "Im Inspektor anzeigen"
 
 #: src/autoload/State.gd
 msgid "Convert To"
@@ -403,11 +402,11 @@ msgstr "Element hinzufügen"
 #. This is plural
 #: src/ui_parts/layout_popup.gd
 msgid "Excluded"
-msgstr ""
+msgstr "Ausgeschlossen"
 
 #: src/ui_parts/layout_popup.gd
 msgid "Drag and drop to change the layout"
-msgstr ""
+msgstr "Ziehen und Ablegen zum Ändern des Layouts"
 
 #: src/ui_parts/mac_menu.gd src/ui_parts/settings_menu.gd
 msgid "File"
@@ -433,7 +432,7 @@ msgstr "Einrasten"
 msgid "Formatting"
 msgstr "Formatierung"
 
-#: src/ui_parts/settings_menu.gd src/ui_widgets/color_field_popup.gd
+#: src/ui_parts/settings_menu.gd src/ui_widgets/color_popup.gd
 msgid "Palettes"
 msgstr "Paletten"
 
@@ -447,7 +446,7 @@ msgstr "Farbschema"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Tab bar"
-msgstr ""
+msgstr "Tableiste"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Other"
@@ -524,9 +523,8 @@ msgid "Background color"
 msgstr "Hintergrundfarben"
 
 #: src/ui_parts/settings_menu.gd
-#, fuzzy
 msgid "Grid color"
-msgstr "Gültige Farbe"
+msgstr "Rasterfarbe"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Valid color"
@@ -542,7 +540,7 @@ msgstr "Eingabe"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Close tabs with middle mouse button"
-msgstr ""
+msgstr "Registerkarten mit mittlerer Maustaste schließen"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Invert zoom direction"
@@ -716,6 +714,9 @@ msgid ""
 "If turned on, clicking on a tab with the middle mouse button closes the tab. "
 "If turned off, it focuses the tab instead."
 msgstr ""
+"Wenn diese Option aktiviert ist, wird die Registerkarte durch Anklicken mit "
+"der mittleren Maustaste geschlossen. Wenn diese Option ausgeschaltet ist, "
+"wird die Registerkarte stattdessen fokussiert."
 
 #: src/ui_parts/settings_menu.gd
 msgid "Swaps the scroll directions for zooming in and zooming out."
@@ -730,12 +731,11 @@ msgstr ""
 "Bildschirmgrenze während des Verschiebens erreicht wird."
 
 #: src/ui_parts/settings_menu.gd
-#, fuzzy
 msgid ""
 "If turned on, scrolling pans the view. To zoom, hold CTRL while scrolling."
 msgstr ""
-"Wenn diese Option aktiviert ist, wird durch Scrollen die Ansicht geschwenkt. "
-"Halten Sie zum Zoomen beim Scrollen die Strg-Taste gedrückt."
+"Wenn diese Option aktiviert ist, wird die Ansicht durch Scrollen verschoben. "
+"Um zu zoomen muss beim Scrollen die STRG-Taste gedrückt werden."
 
 #: src/ui_parts/settings_menu.gd
 msgid ""
@@ -747,13 +747,12 @@ msgstr ""
 "Dateidialog verwendet."
 
 #: src/ui_parts/settings_menu.gd
-#, fuzzy
 msgid ""
 "If turned off, the window title remains as \"GodSVG\" without including the "
 "current file."
 msgstr ""
-"Wenn diese Option deaktiviert ist, wird der Fenstertitel unabhängig von der "
-"aktuellen Datei \"GodSVG\" bleiben."
+"Wenn diese Option deaktiviert ist, bleibt der Fenstertitel \"GodSVG\", ohne "
+"die aktuelle Datei anzuzeigen."
 
 #: src/ui_parts/settings_menu.gd
 msgid "Changes the visual size and grabbing area of handles."
@@ -789,7 +788,7 @@ msgstr "Nach vorne scrollen"
 
 #: src/ui_parts/tab_bar.gd
 msgid "This SVG is not bound to a file location yet."
-msgstr "Das SVG ist noch nicht an einen Dateiort gebunden."
+msgstr "Dieses SVG ist noch nicht an einen Dateiort gebunden."
 
 #: src/ui_parts/update_menu.gd
 msgid "Show prereleases"
@@ -823,11 +822,11 @@ msgstr "Neue Versionen"
 msgid "Create"
 msgstr "Erstellen"
 
-#: src/ui_widgets/color_field_popup.gd
+#: src/ui_widgets/color_popup.gd
 msgid "Search color"
 msgstr "Farbe suchen"
 
-#: src/ui_widgets/color_field_popup.gd
+#: src/ui_widgets/color_popup.gd
 msgid "Color Picker"
 msgstr "Farbauswahl"
 
@@ -991,9 +990,8 @@ msgid "Save SVG"
 msgstr "SVG speichern"
 
 #: src/utils/TranslationUtils.gd
-#, fuzzy
 msgid "Save SVG as"
-msgstr "SVG speichern als…"
+msgstr "SVG speichern als"
 
 #: src/utils/TranslationUtils.gd
 msgid "Close tabs to the left"
@@ -1024,18 +1022,16 @@ msgid "Optimize"
 msgstr "Optimieren"
 
 #: src/utils/TranslationUtils.gd
-#, fuzzy
 msgid "Optimize SVG"
-msgstr "Optimieren"
+msgstr "SVG optimieren"
 
 #: src/utils/TranslationUtils.gd
 msgid "Copy all text"
 msgstr "Text kopieren"
 
 #: src/utils/TranslationUtils.gd
-#, fuzzy
 msgid "Copy the SVG text"
-msgstr "Text kopieren"
+msgstr "SVG-Text kopieren"
 
 #: src/utils/TranslationUtils.gd
 msgid "Reset SVG"
@@ -1094,18 +1090,16 @@ msgid "Delete the selection"
 msgstr "Auswahl löschen"
 
 #: src/utils/TranslationUtils.gd
-#, fuzzy
 msgid "Move up"
-msgstr "Nach oben"
+msgstr "Nach oben verschieben"
 
 #: src/utils/TranslationUtils.gd
 msgid "Move the selection up"
 msgstr "Auswahl nach oben verschieben"
 
 #: src/utils/TranslationUtils.gd
-#, fuzzy
 msgid "Move down"
-msgstr "Nach unten"
+msgstr "Nach unten verschieben"
 
 #: src/utils/TranslationUtils.gd
 msgid "Move the selection down"
@@ -1209,7 +1203,7 @@ msgstr "Anwendung verlassen"
 
 #: src/utils/TranslationUtils.gd
 msgid "Toggle fullscreen"
-msgstr ""
+msgstr "Vollbildmodus umschalten"
 
 #: src/utils/TranslationUtils.gd
 msgid "Move to"
@@ -1257,31 +1251,28 @@ msgstr "Absolut"
 
 #: src/utils/TranslationUtils.gd
 msgid "Code editor"
-msgstr ""
+msgstr "Code-Editor"
 
 #: src/utils/TranslationUtils.gd
 msgid "Inspector"
-msgstr ""
+msgstr "Inspektor"
 
 #. The viewport is the area where the graphic is displayed. In similar applications, it's often called the canvas.
 #: src/utils/TranslationUtils.gd
-#, fuzzy
 msgid "Viewport"
-msgstr "Ansicht"
+msgstr "Ansichtsfenster"
 
 #: src/utils/TranslationUtils.gd
 msgid "Select an image"
 msgstr "Bild auswählen"
 
 #: src/utils/TranslationUtils.gd
-#, fuzzy
 msgid "Select an {format} file"
-msgstr "XML Datei auswählen"
+msgstr "{format}-Datei auswählen"
 
 #: src/utils/TranslationUtils.gd
-#, fuzzy
 msgid "Save the {format} file"
-msgstr "Die .\"{format}\" Datei speichern"
+msgstr "Die {format}-Datei speichern"
 
 #: src/utils/TranslationUtils.gd
 msgid ""
