@@ -429,7 +429,7 @@ msgstr "Joonda"
 msgid "Formatting"
 msgstr "Vorming"
 
-#: src/ui_parts/settings_menu.gd src/ui_widgets/color_popup.gd
+#: src/ui_parts/settings_menu.gd src/ui_widgets/color_field_popup.gd
 msgid "Palettes"
 msgstr "Värvipaletid"
 
@@ -817,11 +817,11 @@ msgstr "Uued versioonid"
 msgid "Create"
 msgstr "Loo"
 
-#: src/ui_widgets/color_popup.gd
+#: src/ui_widgets/color_field_popup.gd
 msgid "Search color"
 msgstr "Otsi värvi"
 
-#: src/ui_widgets/color_popup.gd
+#: src/ui_widgets/color_field_popup.gd
 msgid "Color Picker"
 msgstr "Värvivalija"
 
@@ -1200,6 +1200,10 @@ msgstr "Otsi uuendusi"
 #: src/utils/TranslationUtils.gd
 msgid "Quit the application"
 msgstr "Sulge rakendus"
+
+#: src/utils/TranslationUtils.gd
+msgid "Toggle fullscreen"
+msgstr ""
 
 #: src/utils/TranslationUtils.gd
 msgid "Move to"

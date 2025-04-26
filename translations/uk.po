@@ -429,7 +429,7 @@ msgstr "Прилипання"
 msgid "Formatting"
 msgstr "Форматування"
 
-#: src/ui_parts/settings_menu.gd src/ui_widgets/color_popup.gd
+#: src/ui_parts/settings_menu.gd src/ui_widgets/color_field_popup.gd
 msgid "Palettes"
 msgstr "Палітри"
 
@@ -822,11 +822,11 @@ msgstr "Нові версії"
 msgid "Create"
 msgstr "Створити"
 
-#: src/ui_widgets/color_popup.gd
+#: src/ui_widgets/color_field_popup.gd
 msgid "Search color"
 msgstr "Шукати колір"
 
-#: src/ui_widgets/color_popup.gd
+#: src/ui_widgets/color_field_popup.gd
 msgid "Color Picker"
 msgstr "Кольорова піпетка"
 
@@ -1201,6 +1201,10 @@ msgstr "Перевірити оновлення"
 #: src/utils/TranslationUtils.gd
 msgid "Quit the application"
 msgstr "Вийти із додатку"
+
+#: src/utils/TranslationUtils.gd
+msgid "Toggle fullscreen"
+msgstr ""
 
 #: src/utils/TranslationUtils.gd
 msgid "Move to"

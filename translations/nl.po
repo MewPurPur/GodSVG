@@ -430,7 +430,7 @@ msgstr "Knappen"
 msgid "Formatting"
 msgstr "Formattering"
 
-#: src/ui_parts/settings_menu.gd src/ui_widgets/color_popup.gd
+#: src/ui_parts/settings_menu.gd src/ui_widgets/color_field_popup.gd
 msgid "Palettes"
 msgstr "Paletten"
 
@@ -820,11 +820,11 @@ msgstr "Nieuwe versies"
 msgid "Create"
 msgstr "Creëren"
 
-#: src/ui_widgets/color_popup.gd
+#: src/ui_widgets/color_field_popup.gd
 msgid "Search color"
 msgstr "Zoekkleur"
 
-#: src/ui_widgets/color_popup.gd
+#: src/ui_widgets/color_field_popup.gd
 msgid "Color Picker"
 msgstr "Kleurenplukker"
 
@@ -1203,6 +1203,10 @@ msgstr "Nakijken voor updates"
 #: src/utils/TranslationUtils.gd
 msgid "Quit the application"
 msgstr "Applicatie afsluiten"
+
+#: src/utils/TranslationUtils.gd
+msgid "Toggle fullscreen"
+msgstr ""
 
 #: src/utils/TranslationUtils.gd
 msgid "Move to"

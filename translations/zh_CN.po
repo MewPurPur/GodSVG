@@ -425,7 +425,7 @@ msgstr "吸附"
 msgid "Formatting"
 msgstr "格式化"
 
-#: src/ui_parts/settings_menu.gd src/ui_widgets/color_popup.gd
+#: src/ui_parts/settings_menu.gd src/ui_widgets/color_field_popup.gd
 msgid "Palettes"
 msgstr "调色盘"
 
@@ -817,11 +817,11 @@ msgstr "新版本"
 msgid "Create"
 msgstr "创建"
 
-#: src/ui_widgets/color_popup.gd
+#: src/ui_widgets/color_field_popup.gd
 msgid "Search color"
 msgstr "搜索颜色"
 
-#: src/ui_widgets/color_popup.gd
+#: src/ui_widgets/color_field_popup.gd
 msgid "Color Picker"
 msgstr "取色器"
 
@@ -1209,6 +1209,10 @@ msgstr "检查更新"
 #: src/utils/TranslationUtils.gd
 msgid "Quit the application"
 msgstr "退出程序"
+
+#: src/utils/TranslationUtils.gd
+msgid "Toggle fullscreen"
+msgstr ""
 
 #: src/utils/TranslationUtils.gd
 msgid "Move to"

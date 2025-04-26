@@ -431,7 +431,7 @@ msgstr "Привязка"
 msgid "Formatting"
 msgstr "Форматирование"
 
-#: src/ui_parts/settings_menu.gd src/ui_widgets/color_popup.gd
+#: src/ui_parts/settings_menu.gd src/ui_widgets/color_field_popup.gd
 msgid "Palettes"
 msgstr "Палитры"
 
@@ -820,11 +820,11 @@ msgstr "Новые версии"
 msgid "Create"
 msgstr "Создать"
 
-#: src/ui_widgets/color_popup.gd
+#: src/ui_widgets/color_field_popup.gd
 msgid "Search color"
 msgstr "Искать цвет"
 
-#: src/ui_widgets/color_popup.gd
+#: src/ui_widgets/color_field_popup.gd
 msgid "Color Picker"
 msgstr "Цветовая пипетка"
 
@@ -1198,6 +1198,10 @@ msgstr "Проверить обновления"
 #: src/utils/TranslationUtils.gd
 msgid "Quit the application"
 msgstr "Выйти из приложения"
+
+#: src/utils/TranslationUtils.gd
+msgid "Toggle fullscreen"
+msgstr ""
 
 #: src/utils/TranslationUtils.gd
 msgid "Move to"

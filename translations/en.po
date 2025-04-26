@@ -419,7 +419,7 @@ msgstr ""
 msgid "Formatting"
 msgstr ""
 
-#: src/ui_parts/settings_menu.gd src/ui_widgets/color_popup.gd
+#: src/ui_parts/settings_menu.gd src/ui_widgets/color_field_popup.gd
 msgid "Palettes"
 msgstr ""
 
@@ -797,11 +797,11 @@ msgstr ""
 msgid "Create"
 msgstr ""
 
-#: src/ui_widgets/color_popup.gd
+#: src/ui_widgets/color_field_popup.gd
 msgid "Search color"
 msgstr ""
 
-#: src/ui_widgets/color_popup.gd
+#: src/ui_widgets/color_field_popup.gd
 msgid "Color Picker"
 msgstr ""
 
@@ -1172,6 +1172,10 @@ msgstr ""
 
 #: src/utils/TranslationUtils.gd
 msgid "Quit the application"
+msgstr ""
+
+#: src/utils/TranslationUtils.gd
+msgid "Toggle fullscreen"
 msgstr ""
 
 #: src/utils/TranslationUtils.gd

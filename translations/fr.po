@@ -429,7 +429,7 @@ msgstr "Aimanter"
 msgid "Formatting"
 msgstr "Formatage"
 
-#: src/ui_parts/settings_menu.gd src/ui_widgets/color_popup.gd
+#: src/ui_parts/settings_menu.gd src/ui_widgets/color_field_popup.gd
 msgid "Palettes"
 msgstr "Palettes"
 
@@ -820,11 +820,11 @@ msgstr "Nouvelles versions"
 msgid "Create"
 msgstr "Créer"
 
-#: src/ui_widgets/color_popup.gd
+#: src/ui_widgets/color_field_popup.gd
 msgid "Search color"
 msgstr "Rechercher la couleur"
 
-#: src/ui_widgets/color_popup.gd
+#: src/ui_widgets/color_field_popup.gd
 msgid "Color Picker"
 msgstr "Pipette"
 
@@ -1203,6 +1203,10 @@ msgstr "Vérifier les mises à jour"
 #: src/utils/TranslationUtils.gd
 msgid "Quit the application"
 msgstr "Quitter l'application"
+
+#: src/utils/TranslationUtils.gd
+msgid "Toggle fullscreen"
+msgstr ""
 
 #: src/utils/TranslationUtils.gd
 msgid "Move to"

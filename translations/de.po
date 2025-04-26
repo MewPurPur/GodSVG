@@ -433,7 +433,7 @@ msgstr "Einrasten"
 msgid "Formatting"
 msgstr "Formatierung"
 
-#: src/ui_parts/settings_menu.gd src/ui_widgets/color_popup.gd
+#: src/ui_parts/settings_menu.gd src/ui_widgets/color_field_popup.gd
 msgid "Palettes"
 msgstr "Paletten"
 
@@ -823,11 +823,11 @@ msgstr "Neue Versionen"
 msgid "Create"
 msgstr "Erstellen"
 
-#: src/ui_widgets/color_popup.gd
+#: src/ui_widgets/color_field_popup.gd
 msgid "Search color"
 msgstr "Farbe suchen"
 
-#: src/ui_widgets/color_popup.gd
+#: src/ui_widgets/color_field_popup.gd
 msgid "Color Picker"
 msgstr "Farbauswahl"
 
@@ -1206,6 +1206,10 @@ msgstr "Nach Aktualisierungen suchen"
 #: src/utils/TranslationUtils.gd
 msgid "Quit the application"
 msgstr "Anwendung verlassen"
+
+#: src/utils/TranslationUtils.gd
+msgid "Toggle fullscreen"
+msgstr ""
 
 #: src/utils/TranslationUtils.gd
 msgid "Move to"
