@@ -73,18 +73,18 @@ func setup_theme() -> void:
 	top_stylebox.border_width_bottom = 0
 	top_stylebox.corner_radius_bottom_right = 0
 	top_stylebox.corner_radius_bottom_left = 0
-	top_stylebox.content_margin_left = 8
-	top_stylebox.content_margin_right = 6
-	top_stylebox.content_margin_top = 3
-	top_stylebox.content_margin_bottom = 1
+	top_stylebox.content_margin_left = 8.0
+	top_stylebox.content_margin_right = 6.0
+	top_stylebox.content_margin_top = 3.0
+	top_stylebox.content_margin_bottom = 1.0
 	panel_container.add_theme_stylebox_override("panel", top_stylebox)
 	# Set up the bottom panel.
 	var bottom_stylebox := panel_stylebox.duplicate()
 	bottom_stylebox.border_color = code_edit.get_theme_stylebox("normal").border_color
 	bottom_stylebox.corner_radius_top_right = 0
 	bottom_stylebox.corner_radius_top_left = 0
-	bottom_stylebox.content_margin_left = 10
-	bottom_stylebox.content_margin_right = 8
+	bottom_stylebox.content_margin_left = 10.0
+	bottom_stylebox.content_margin_right = 8.0
 	bottom_stylebox.content_margin_top = -1
 	bottom_stylebox.content_margin_bottom = -1
 	error_bar.add_theme_stylebox_override("panel", bottom_stylebox)

@@ -56,8 +56,8 @@ func sync() -> void:
 		for theme_type in CONST_ARR:
 			var shortcut_stylebox := get_theme_stylebox(theme_type,
 					"TranslucentButton").duplicate()
-			shortcut_stylebox.content_margin_top = 0
-			shortcut_stylebox.content_margin_bottom = 0
+			shortcut_stylebox.content_margin_top = 0.0
+			shortcut_stylebox.content_margin_bottom = 0.0
 			new_btn.add_theme_stylebox_override(theme_type, shortcut_stylebox)
 		new_btn.end_bulk_theme_override()
 		

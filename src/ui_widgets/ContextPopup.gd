@@ -243,9 +243,9 @@ min_width := -1.0, max_height := -1.0, separator_indices := PackedInt32Array()) 
 	var title_container := PanelContainer.new()
 	var stylebox := StyleBoxFlat.new()
 	stylebox.bg_color = Color("0003")
-	stylebox.content_margin_bottom = 3
-	stylebox.content_margin_left = 8
-	stylebox.content_margin_right = 8
+	stylebox.content_margin_bottom = 3.0
+	stylebox.content_margin_left = 8.0
+	stylebox.content_margin_right = 8.0
 	stylebox.border_width_bottom = 2
 	stylebox.border_color = ThemeUtils.common_panel_border_color
 	title_container.add_theme_stylebox_override("panel", stylebox)
@@ -283,8 +283,8 @@ func _common_initial_setup() -> VBoxContainer:
 	if OS.get_name() == "Android":
 		var scrollbar := scroll_container.get_v_scroll_bar()
 		var stylebox := scrollbar.get_theme_stylebox("scroll").duplicate()
-		stylebox.content_margin_left = 10
-		stylebox.content_margin_right = 10
+		stylebox.content_margin_left = 10.0
+		stylebox.content_margin_right = 10.0
 		scrollbar.add_theme_stylebox_override("scroll", stylebox)
 	
 	var main_container := VBoxContainer.new()

@@ -58,7 +58,7 @@ static func open_export_dialog(export_data: ImageExportData, final_callback := C
 			buffer = ImageExportData.svg_to_buffer()
 		else:
 			buffer = export_data.image_to_buffer(export_data.generate_image())
-		_web_save(buffer, ImageExportData.web_formats[export_data.format])
+		_web_save(buffer, ImageExportData.image_types_dict[export_data.format])
 		if final_callback.is_valid():
 			final_callback.call()
 	else:

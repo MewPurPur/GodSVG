@@ -23,8 +23,8 @@ func _ready() -> void:
 	const CONST_ARR: PackedStringArray = ["normal", "focus", "hover", "disabled"]
 	for theme_type in CONST_ARR:
 		var stylebox := size_button.get_theme_stylebox(theme_type).duplicate()
-		stylebox.content_margin_bottom = 0
-		stylebox.content_margin_top = 0
+		stylebox.content_margin_bottom = 0.0
+		stylebox.content_margin_top = 0.0
 		size_button.add_theme_stylebox_override(theme_type, stylebox)
 	size_button.end_bulk_theme_override()
 	

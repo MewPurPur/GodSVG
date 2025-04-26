@@ -1,7 +1,7 @@
 # An editor to be tied to a color attribute.
 extends LineEditButton
 
-const ColorPopup = preload("res://src/ui_widgets/color_popup.gd")
+const ColorFieldPopup = preload("res://src/ui_widgets/color_field_popup.gd")
 
 var element: Element
 var attribute_name: String:  # May propagate.
@@ -15,11 +15,10 @@ var cached_allow_url: bool
 var cached_allow_none: bool
 var cached_allow_current_color: bool
 
-const ColorPopupScene = preload("res://src/ui_widgets/color_popup.tscn")
+const ColorFieldPopupScene = preload("res://src/ui_widgets/color_field_popup.tscn")
 const checkerboard = preload("res://assets/icons/backgrounds/ColorButtonBG.svg")
 
-@onready var color_popup: ColorPopup
-
+var color_popup: ColorFieldPopup
 var gradient_texture: GradientTexture2D
 
 func set_value(new_value: String, save := false) -> void:
@@ -76,7 +75,7 @@ func _on_svg_changed() -> void:
 		queue_redraw()
 
 func _on_pressed() -> void:
-	color_popup = ColorPopupScene.instantiate()
+	color_popup = ColorFieldPopupScene.instantiate()
 	color_popup.current_value = element.get_attribute_value(attribute_name)
 	color_popup.effective_color = ColorParser.text_to_color(
 			element.get_attribute_true_color(attribute_name))
@@ -155,8 +154,6 @@ func _draw() -> void:
 
 func _on_color_picked(new_color: String, close_picker: bool) -> void:
 	set_value(new_color, close_picker)
-	if close_picker:
-		color_popup.queue_free()
 
 func is_valid(color_text: String) -> bool:
 	return ColorParser.is_valid(ColorParser.add_hash_if_hex(color_text), false,

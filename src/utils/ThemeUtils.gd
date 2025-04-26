@@ -453,16 +453,16 @@ static func _setup_button(theme: Theme) -> void:
 	theme.set_color("icon_pressed_color", "ContextButton", icon_hover_color)
 	var context_button_stylebox := StyleBoxFlat.new()
 	context_button_stylebox.set_corner_radius_all(3)
-	context_button_stylebox.content_margin_bottom = 2
-	context_button_stylebox.content_margin_top = 2
-	context_button_stylebox.content_margin_left = 3
-	context_button_stylebox.content_margin_right = 4
+	context_button_stylebox.content_margin_bottom = 2.0
+	context_button_stylebox.content_margin_top = 2.0
+	context_button_stylebox.content_margin_left = 3.0
+	context_button_stylebox.content_margin_right = 4.0
 	
 	var normal_context_button_stylebox := StyleBoxEmpty.new()
-	normal_context_button_stylebox.content_margin_bottom = 2
-	normal_context_button_stylebox.content_margin_top = 2
-	normal_context_button_stylebox.content_margin_left = 3
-	normal_context_button_stylebox.content_margin_right = 4
+	normal_context_button_stylebox.content_margin_bottom = 2.0
+	normal_context_button_stylebox.content_margin_top = 2.0
+	normal_context_button_stylebox.content_margin_left = 3.0
+	normal_context_button_stylebox.content_margin_right = 4.0
 	theme.set_stylebox("normal", "ContextButton", normal_context_button_stylebox)
 	
 	var hover_context_button_stylebox := context_button_stylebox.duplicate()
@@ -501,10 +501,10 @@ static func _setup_button(theme: Theme) -> void:
 	normal_sidetab_stylebox.bg_color = normal_tab_color
 	normal_sidetab_stylebox.corner_radius_top_left = 4
 	normal_sidetab_stylebox.corner_radius_bottom_left = 4
-	normal_sidetab_stylebox.content_margin_left = 6
-	normal_sidetab_stylebox.content_margin_right = 6
-	normal_sidetab_stylebox.content_margin_bottom = 3
-	normal_sidetab_stylebox.content_margin_top = 3
+	normal_sidetab_stylebox.content_margin_left = 6.0
+	normal_sidetab_stylebox.content_margin_right = 6.0
+	normal_sidetab_stylebox.content_margin_bottom = 3.0
+	normal_sidetab_stylebox.content_margin_top = 3.0
 	theme.set_stylebox("normal", "SideTab", normal_sidetab_stylebox)
 	
 	var hovered_sidetab_stylebox := normal_sidetab_stylebox.duplicate()
@@ -515,10 +515,10 @@ static func _setup_button(theme: Theme) -> void:
 	pressed_sidetab_stylebox.bg_color = selected_tab_color
 	pressed_sidetab_stylebox.border_color = selected_tab_border_color
 	pressed_sidetab_stylebox.border_width_left = 2
-	pressed_sidetab_stylebox.content_margin_left = 10
-	pressed_sidetab_stylebox.content_margin_right = 6
-	pressed_sidetab_stylebox.content_margin_bottom = 3
-	pressed_sidetab_stylebox.content_margin_top = 3
+	pressed_sidetab_stylebox.content_margin_left = 10.0
+	pressed_sidetab_stylebox.content_margin_right = 6.0
+	pressed_sidetab_stylebox.content_margin_bottom = 3.0
+	pressed_sidetab_stylebox.content_margin_top = 3.0
 	theme.set_stylebox("pressed", "SideTab", pressed_sidetab_stylebox)
 	
 	theme.add_type("Swatch")
@@ -803,8 +803,8 @@ static func _setup_scrollbar(theme: Theme) -> void:
 	
 	var h_scroll_stylebox := StyleBoxFlat.new()
 	h_scroll_stylebox.set_corner_radius_all(3)
-	h_scroll_stylebox.content_margin_top = 4
-	h_scroll_stylebox.content_margin_bottom = 4
+	h_scroll_stylebox.content_margin_top = 4.0
+	h_scroll_stylebox.content_margin_bottom = 4.0
 	h_scroll_stylebox.bg_color = scrollbar_background_color
 	theme.set_stylebox("scroll", "HScrollBar", h_scroll_stylebox)
 	
@@ -871,17 +871,17 @@ static func _setup_tabcontainer(theme: Theme) -> void:
 	panel_stylebox.border_width_bottom = 2
 	panel_stylebox.corner_radius_bottom_right = 5
 	panel_stylebox.corner_radius_bottom_left = 5
-	panel_stylebox.content_margin_left = 8
-	panel_stylebox.content_margin_right = 2
-	panel_stylebox.content_margin_bottom = 2
-	panel_stylebox.content_margin_top = 0
+	panel_stylebox.content_margin_left = 8.0
+	panel_stylebox.content_margin_right = 2.0
+	panel_stylebox.content_margin_bottom = 2.0
+	panel_stylebox.content_margin_top = 0.0
 	theme.set_stylebox("panel", "TabContainer", panel_stylebox)
 	
 	var tab_disabled_stylebox := StyleBoxEmpty.new()
-	tab_disabled_stylebox.content_margin_left = 12
-	tab_disabled_stylebox.content_margin_right = 12
-	tab_disabled_stylebox.content_margin_bottom = 3
-	tab_disabled_stylebox.content_margin_top = 3
+	tab_disabled_stylebox.content_margin_left = 12.0
+	tab_disabled_stylebox.content_margin_right = 12.0
+	tab_disabled_stylebox.content_margin_bottom = 3.0
+	tab_disabled_stylebox.content_margin_top = 3.0
 	theme.set_stylebox("tab_disabled", "TabContainer", tab_disabled_stylebox)
 	theme.set_stylebox("tab_focus", "TabContainer", StyleBoxEmpty.new())
 	
@@ -889,30 +889,30 @@ static func _setup_tabcontainer(theme: Theme) -> void:
 	tab_hover_stylebox.bg_color = hovered_tab_color
 	tab_hover_stylebox.corner_radius_top_left = 4
 	tab_hover_stylebox.corner_radius_top_right = 4
-	tab_hover_stylebox.content_margin_left = 12
-	tab_hover_stylebox.content_margin_right = 12
-	tab_hover_stylebox.content_margin_bottom = 3
-	tab_hover_stylebox.content_margin_top = 3
+	tab_hover_stylebox.content_margin_left = 12.0
+	tab_hover_stylebox.content_margin_right = 12.0
+	tab_hover_stylebox.content_margin_bottom = 3.0
+	tab_hover_stylebox.content_margin_top = 3.0
 	theme.set_stylebox("tab_hovered", "TabContainer", tab_hover_stylebox)
 	
 	var tab_selected_stylebox := StyleBoxFlat.new()
 	tab_selected_stylebox.bg_color = selected_tab_color
 	tab_selected_stylebox.border_color = selected_tab_border_color
 	tab_selected_stylebox.border_width_top = 2
-	tab_selected_stylebox.content_margin_left = 12
-	tab_selected_stylebox.content_margin_right = 12
-	tab_selected_stylebox.content_margin_bottom = 3
-	tab_selected_stylebox.content_margin_top = 3
+	tab_selected_stylebox.content_margin_left = 12.0
+	tab_selected_stylebox.content_margin_right = 12.0
+	tab_selected_stylebox.content_margin_bottom = 3.0
+	tab_selected_stylebox.content_margin_top = 3.0
 	theme.set_stylebox("tab_selected", "TabContainer", tab_selected_stylebox)
 	
 	var tab_unselected_stylebox := StyleBoxFlat.new()
 	tab_unselected_stylebox.bg_color = normal_tab_color
 	tab_unselected_stylebox.corner_radius_top_left = 4
 	tab_unselected_stylebox.corner_radius_top_right = 4
-	tab_unselected_stylebox.content_margin_left = 12
-	tab_unselected_stylebox.content_margin_right = 12
-	tab_unselected_stylebox.content_margin_bottom = 3
-	tab_unselected_stylebox.content_margin_top = 3
+	tab_unselected_stylebox.content_margin_left = 12.0
+	tab_unselected_stylebox.content_margin_right = 12.0
+	tab_unselected_stylebox.content_margin_bottom = 3.0
+	tab_unselected_stylebox.content_margin_top = 3.0
 	theme.set_stylebox("tab_unselected", "TabContainer", tab_unselected_stylebox)
 	
 	var tabbar_background_stylebox := StyleBoxFlat.new()
@@ -934,7 +934,7 @@ static func _setup_textedit(theme: Theme) -> void:
 	normal_stylebox.border_color = line_edit_normal_border_color
 	normal_stylebox.set_border_width_all(2)
 	normal_stylebox.set_corner_radius_all(5)
-	normal_stylebox.content_margin_left = 5
+	normal_stylebox.content_margin_left = 5.0
 	theme.set_stylebox("normal", "TextEdit", normal_stylebox)
 	
 	var focus_stylebox := StyleBoxFlat.new()
@@ -958,10 +958,10 @@ static func _setup_tooltip(theme: Theme) -> void:
 	stylebox.border_color = common_panel_border_color
 	stylebox.set_border_width_all(2)
 	stylebox.set_corner_radius_all(2)
-	stylebox.content_margin_left = 6
-	stylebox.content_margin_top = 1
-	stylebox.content_margin_right = 6
-	stylebox.content_margin_bottom = 3
+	stylebox.content_margin_left = 6.0
+	stylebox.content_margin_top = 1.0
+	stylebox.content_margin_right = 6.0
+	stylebox.content_margin_bottom = 3.0
 	theme.set_stylebox("panel", "TooltipPanel", stylebox)
 	
 	theme.add_type("TooltipLabel")

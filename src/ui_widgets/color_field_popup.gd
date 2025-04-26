@@ -61,8 +61,8 @@ func _ready() -> void:
 		sb.corner_radius_top_right = 0
 		sb.corner_radius_bottom_left = 4
 		sb.corner_radius_bottom_right = 4
-		sb.content_margin_bottom = 3
-		sb.content_margin_top = 3
+		sb.content_margin_bottom = 3.0
+		sb.content_margin_top = 3.0
 		switch_mode_button.add_theme_stylebox_override(theme_type, sb)
 	# Setup the rest.
 	update_color_picker()

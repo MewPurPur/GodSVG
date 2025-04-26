@@ -21,9 +21,9 @@ func setup_theme() -> void:
 	const CONST_ARR: PackedStringArray = ["normal", "hover", "pressed"]
 	for theme_type in CONST_ARR:
 		var stylebox := palette_button.get_theme_stylebox(theme_type).duplicate()
-		stylebox.content_margin_top -= 3
-		stylebox.content_margin_bottom -= 2
-		stylebox.content_margin_left += 1
+		stylebox.content_margin_top -= 3.0
+		stylebox.content_margin_bottom -= 2.0
+		stylebox.content_margin_left += 1.0
 		palette_button.add_theme_stylebox_override(theme_type, stylebox)
 	palette_button.end_bulk_theme_override()
 	var panel_stylebox := get_theme_stylebox("panel").duplicate()

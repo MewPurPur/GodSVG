@@ -96,7 +96,7 @@ func _ready() -> void:
 		file_container.hide()
 	
 	var extension_panel_stylebox := extension_panel.get_theme_stylebox("panel")
-	extension_panel_stylebox.content_margin_top -= 4
+	extension_panel_stylebox.content_margin_top -= 4.0
 	extension_panel.add_theme_stylebox_override("panel", extension_panel_stylebox)
 	if Configs.savedata.file_dialog_show_hidden:
 		show_hidden_button.set_pressed_no_signal(true)

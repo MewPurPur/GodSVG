@@ -49,7 +49,6 @@ func setup_checkbox() -> void:
 func setup_color(enable_alpha: bool) -> void:
 	widget = ColorEditScene.instantiate()
 	widget.enable_alpha = enable_alpha
-	widget.enable_palettes = false
 	widget.value = getter.call().to_html(enable_alpha)
 	add_child(widget)
 	widget.value_changed.connect(_color_modification.bind(enable_alpha))

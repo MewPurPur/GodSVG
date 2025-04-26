@@ -439,11 +439,11 @@ func _make_custom_tooltip(for_text: String) -> Object:
 	var tooltip_panel_stylebox := get_theme_stylebox("panel", "TooltipPanel")
 	margin_container.begin_bulk_theme_override()
 	margin_container.add_theme_constant_override("margin_top",
-			int(8 - tooltip_panel_stylebox.content_margin_top))
+			8 - int(tooltip_panel_stylebox.content_margin_top))
 	margin_container.add_theme_constant_override("margin_bottom",
-			int(8 - tooltip_panel_stylebox.content_margin_bottom))
+			8 - int(tooltip_panel_stylebox.content_margin_bottom))
 	margin_container.add_theme_constant_override("margin_left",
-			int(8 - tooltip_panel_stylebox.content_margin_left))
+			8 - int(tooltip_panel_stylebox.content_margin_left))
 	margin_container.end_bulk_theme_override()
 	var hbox := HBoxContainer.new()
 	hbox.add_theme_constant_override("separation", 8)
