@@ -429,7 +429,7 @@ msgstr "Захващане"
 msgid "Formatting"
 msgstr "Форматиране"
 
-#: src/ui_parts/settings_menu.gd src/ui_widgets/color_popup.gd
+#: src/ui_parts/settings_menu.gd src/ui_widgets/color_field_popup.gd
 msgid "Palettes"
 msgstr "Палети"
 
@@ -710,7 +710,9 @@ msgstr "Премахни ненужните параметри"
 msgid ""
 "If turned on, clicking on a tab with the middle mouse button closes the tab. "
 "If turned off, it focuses the tab instead."
-msgstr "Когато е включено, натискането на раздел със средното копче на мишката затваря раздела. Ако е изключено, средното копче фокусира раздела."
+msgstr ""
+"Когато е включено, натискането на раздел със средното копче на мишката "
+"затваря раздела. Ако е изключено, средното копче фокусира раздела."
 
 #: src/ui_parts/settings_menu.gd
 msgid "Swaps the scroll directions for zooming in and zooming out."
@@ -728,7 +730,8 @@ msgstr ""
 msgid ""
 "If turned on, scrolling pans the view. To zoom, hold CTRL while scrolling."
 msgstr ""
-"Когато е включено, влаченето премества гледката. За увеличение, натисни CTRL докато влачиш."
+"Когато е включено, влаченето премества гледката. За увеличение, натисни CTRL "
+"докато влачиш."
 
 #: src/ui_parts/settings_menu.gd
 msgid ""
@@ -743,7 +746,9 @@ msgstr ""
 msgid ""
 "If turned off, the window title remains as \"GodSVG\" without including the "
 "current file."
-msgstr "Когато е изключено, името на прозореца остава \"GodSVG\" без да включва настоящия файл."
+msgstr ""
+"Когато е изключено, името на прозореца остава \"GodSVG\" без да включва "
+"настоящия файл."
 
 #: src/ui_parts/settings_menu.gd
 msgid "Changes the visual size and grabbing area of handles."
@@ -813,11 +818,11 @@ msgstr "Нови версии"
 msgid "Create"
 msgstr "Създай"
 
-#: src/ui_widgets/color_popup.gd
+#: src/ui_widgets/color_field_popup.gd
 msgid "Search color"
 msgstr "Търсене на цвят"
 
-#: src/ui_widgets/color_popup.gd
+#: src/ui_widgets/color_field_popup.gd
 msgid "Color Picker"
 msgstr "Цветно колело"
 
@@ -1190,7 +1195,11 @@ msgstr "Провери за ъпдейти"
 
 #: src/utils/TranslationUtils.gd
 msgid "Quit the application"
-msgstr "Излез от апликацията"
+msgstr "Излизане от апликацията"
+
+#: src/utils/TranslationUtils.gd
+msgid "Toggle fullscreen"
+msgstr "Превключване на пълен екран"
 
 #: src/utils/TranslationUtils.gd
 msgid "Move to"
