@@ -349,6 +349,8 @@ toggle_fullscreen={
 
 pointing/android/enable_long_press_as_right_click=true
 pointing/android/enable_pan_and_scale_gestures=true
+pen_tablet/driver="dummy"
+pen_tablet/driver.windows="dummy"
 
 [internationalization]
 
