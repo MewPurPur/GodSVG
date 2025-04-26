@@ -29,7 +29,7 @@ env:
   # - text_server_adv: Currently unneeded, but needed for languages like Arabic.
   # - freetype: Something about font rendering.
   # build_proflie disables a lot of unused classes.
-  BUILD_OPTIONS: target=template_release lto=full production=yes deprecated=no minizip=no brotli=no vulkan=no openxr=no use_volk=no disable_3d=yes modules_enabled_by_default=no module_freetype_enabled=yes module_gdscript_enabled=yes module_svg_enabled=yes module_jpg_enabled=yes module_text_server_adv_enabled=yes graphite=no module_webp_enabled=yes build_profile=../godsvg/.github/disabled_classes.build
+  BUILD_OPTIONS: target=template_release lto=full production=yes deprecated=no minizip=no brotli=no vulkan=no openxr=no use_volk=no disable_3d=yes modules_enabled_by_default=no module_freetype_enabled=yes module_gdscript_enabled=yes module_svg_enabled=yes module_jpg_enabled=yes module_text_server_adv_enabled=yes graphite=no module_webp_enabled=yes module_mbedtls_enabled=yes build_profile=../godsvg/.github/disabled_classes.build
   # Links
   GODOT_REPO: https://github.com/godotengine/godot.git
   ANGLE_DOWNLOAD_BASE_URL: https://github.com/godotengine/godot-angle-static/releases/download/chromium%2F6601.2/godot-angle-static
