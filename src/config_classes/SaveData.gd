@@ -16,7 +16,7 @@ func get_setting_default(setting: String) -> Variant:
 		"highlighting_comment_color": return Color("cdcfd280")
 		"highlighting_text_color": return Color("cdcfeaac")
 		"highlighting_cdata_color": return Color("ffeda1ac")
-		"highlighting_error_color": return Color("ff866b")
+		"highlighting_error_color": return Color("ff5555")
 		"handle_inner_color": return Color("fff")
 		"handle_color": return Color("111")
 		"handle_hovered_color": return Color("aaa")
