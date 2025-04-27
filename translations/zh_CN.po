@@ -244,6 +244,11 @@ msgstr "显示"
 msgid "Snap size"
 msgstr "吸附大小"
 
+#: src/ui_parts/display.gd
+#, fuzzy
+msgid "Paste reference image"
+msgstr "加载参考图像"
+
 #: src/ui_parts/donate_menu.gd src/ui_parts/export_menu.gd
 #: src/ui_parts/import_warning_menu.gd src/ui_widgets/choose_name_dialog.gd
 #: src/ui_widgets/confirm_dialog.gd src/ui_widgets/options_dialog.gd

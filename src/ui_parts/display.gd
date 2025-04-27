@@ -61,6 +61,9 @@ func update_snap_config() -> void:
 func _on_reference_pressed() -> void:
 	var btn_arr: Array[Button] = [
 		ContextPopup.create_shortcut_button("load_reference"),
+		ContextPopup.create_button(Translator.translate("Paste reference image"),
+				paste_reference_image, not DisplayServer.clipboard_has_image(),
+				load("res://assets/icons/Paste.svg")),
 		ContextPopup.create_shortcut_checkbox("view_show_reference", reference_texture.visible),
 		ContextPopup.create_shortcut_checkbox("view_overlay_reference", reference_overlay)
 	]
@@ -69,6 +72,9 @@ func _on_reference_pressed() -> void:
 	reference_popup.setup(btn_arr, true)
 	HandlerGUI.popup_under_rect_center(reference_popup, reference_button.get_global_rect(),
 			get_viewport())
+
+func paste_reference_image() -> void:
+	FileUtils.load_reference_from_image(DisplayServer.clipboard_get_image())
 
 func _on_visuals_button_pressed() -> void:
 	var btn_arr: Array[Button] = [

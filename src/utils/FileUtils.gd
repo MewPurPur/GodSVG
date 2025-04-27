@@ -147,8 +147,10 @@ static func _finish_reference_load(data: Variant, file_path: String) -> void:
 		"png": img.load_png_from_buffer(data)
 		"jpg", "jpeg": img.load_jpg_from_buffer(data)
 		"webp": img.load_webp_from_buffer(data)
-	var image_texture := ImageTexture.create_from_image(img)
-	Configs.savedata.get_active_tab().reference_image = image_texture
+	load_reference_from_image(img)
+
+static func load_reference_from_image(img: Image) -> void:
+	Configs.savedata.get_active_tab().reference_image = ImageTexture.create_from_image(img)
 
 
 static func _is_native_preferred() -> bool:

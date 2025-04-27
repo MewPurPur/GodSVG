@@ -246,6 +246,11 @@ msgstr "Vue"
 msgid "Snap size"
 msgstr "Taille d'aimantation"
 
+#: src/ui_parts/display.gd
+#, fuzzy
+msgid "Paste reference image"
+msgstr "Charger une image de référence"
+
 #: src/ui_parts/donate_menu.gd src/ui_parts/export_menu.gd
 #: src/ui_parts/import_warning_menu.gd src/ui_widgets/choose_name_dialog.gd
 #: src/ui_widgets/confirm_dialog.gd src/ui_widgets/options_dialog.gd
