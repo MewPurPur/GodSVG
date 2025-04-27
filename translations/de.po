@@ -249,6 +249,11 @@ msgstr "Visuelles"
 msgid "Snap size"
 msgstr "Rastergröße"
 
+#: src/ui_parts/display.gd
+#, fuzzy
+msgid "Paste reference image"
+msgstr "Referenzbild laden"
+
 #: src/ui_parts/donate_menu.gd src/ui_parts/export_menu.gd
 #: src/ui_parts/import_warning_menu.gd src/ui_widgets/choose_name_dialog.gd
 #: src/ui_widgets/confirm_dialog.gd src/ui_widgets/options_dialog.gd
@@ -432,7 +437,7 @@ msgstr "Einrasten"
 msgid "Formatting"
 msgstr "Formatierung"
 
-#: src/ui_parts/settings_menu.gd src/ui_widgets/color_popup.gd
+#: src/ui_parts/settings_menu.gd src/ui_widgets/color_field_popup.gd
 msgid "Palettes"
 msgstr "Paletten"
 
@@ -822,11 +827,11 @@ msgstr "Neue Versionen"
 msgid "Create"
 msgstr "Erstellen"
 
-#: src/ui_widgets/color_popup.gd
+#: src/ui_widgets/color_field_popup.gd
 msgid "Search color"
 msgstr "Farbe suchen"
 
-#: src/ui_widgets/color_popup.gd
+#: src/ui_widgets/color_field_popup.gd
 msgid "Color Picker"
 msgstr "Farbauswahl"
 
