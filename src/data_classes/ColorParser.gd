@@ -99,7 +99,7 @@ static func is_valid_url(color: String) -> bool:
 
 static func _get_url_id(stripped_color: String) -> String:
 	return stripped_color.substr(4,
-			stripped_color.length() - 5).strip_edges().trim_prefix("#")
+			stripped_color.length() - 5).strip_edges().right(-1)
 
 # URL doesn't have a color interpretation, so it'll give the backup.
 static func text_to_color(color: String, backup := Color.BLACK,
@@ -109,7 +109,6 @@ allow_alpha := false) -> Color:
 		return Color(AttributeColor.get_named_colors(allow_alpha)[color])
 	elif color == "none":
 		return Color(0, 0, 0, 0)
-	
 	elif is_valid_rgb(color, allow_alpha):
 		var args_start_pos := color.find("(") + 1
 		var inside_brackets := color.substr(args_start_pos, color.length() - args_start_pos - 1)
@@ -215,4 +214,4 @@ static func hsl_get_b(h: int, s: float, l: float) -> int:
 static func decompose_hsl(n: int, h: int, s: float, l: float) -> int:
 	var k := fmod(n + h/30.0, 12)
 	var a := s * minf(l, 1 - l)
-	return int((l - a * maxf(-1, minf(minf(k - 3, 9 - k), 1))) * 255)
+	return roundi((l - a * maxf(-1, minf(minf(k - 3, 9 - k), 1))) * 255)
