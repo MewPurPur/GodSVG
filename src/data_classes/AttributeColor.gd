@@ -18,8 +18,27 @@ func _format(text: String, formatter: Formatter) -> String:
 	
 	var named_colors_usage := formatter.color_use_named_colors
 	# First make sure we have a 6-digit hex.
-	if ColorParser.is_valid_rgb(text) or ColorParser.is_valid_hsl(text):
-		text = "#" + ColorParser.text_to_color(text).to_html(false)
+	if ColorParser.is_valid_rgb(text):
+		var args_start_pos := text.find("(") + 1
+		var inside_brackets := text.substr(args_start_pos, text.length() - args_start_pos - 1)
+		var args := inside_brackets.split(",", false)
+		var r := String.num_uint64(args[0].strip_edges(false, true).to_int(), 16)
+		var g := String.num_uint64(args[1].strip_edges(false, true).to_int(), 16)
+		var b := String.num_uint64(args[2].strip_edges(false, true).to_int(), 16)
+		text = "#" + (r if r.length() == 2 else "0" + r) +\
+				(g if g.length() == 2 else "0" + g) + (b if b.length() == 2 else "0" + b)
+	elif ColorParser.is_valid_hsl(text):
+		var args_start_pos := text.find("(") + 1
+		var inside_brackets := text.substr(args_start_pos, text.length() - args_start_pos - 1)
+		var args := inside_brackets.split(",", false)
+		var h := posmod(args[0].to_int(), 360)
+		var s := clampf(int(args[1].strip_edges(false, true).left(-1).to_float()) * 0.01, 0.0, 1.0)
+		var l := clampf(int(args[2].strip_edges(false, true).left(-1).to_float()) * 0.01, 0.0, 1.0)
+		var r := String.num_uint64(ColorParser.hsl_get_r(h, s, l), 16)
+		var g := String.num_uint64(ColorParser.hsl_get_g(h, s, l), 16)
+		var b := String.num_uint64(ColorParser.hsl_get_b(h, s, l), 16)
+		text = "#" + (r if r.length() == 2 else "0" + r) +\
+				(g if g.length() == 2 else "0" + g) + (b if b.length() == 2 else "0" + b)
 	if text in get_named_colors():
 		text = get_named_colors()[text]
 	if ColorParser.is_valid_hex(text) and text.length() == 4:
