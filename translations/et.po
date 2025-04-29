@@ -1269,7 +1269,7 @@ msgstr "Vali {format} fail"
 
 #: src/utils/TranslationUtils.gd
 msgid "Save the {format} file"
-msgstr "Salvesta \"{format}\" fail"
+msgstr "Salvesta {format} fail"
 
 #: src/utils/TranslationUtils.gd
 msgid ""
