@@ -84,9 +84,8 @@ msgid "Restore"
 msgstr "Taasta"
 
 #: src/autoload/State.gd
-#, fuzzy
 msgid "View in Inspector"
-msgstr "Näita nimekirjas"
+msgstr "Näita inspektoris"
 
 #: src/autoload/State.gd
 msgid "Convert To"
@@ -247,9 +246,8 @@ msgid "Snap size"
 msgstr "Joondamise mastaap"
 
 #: src/ui_parts/display.gd
-#, fuzzy
 msgid "Paste reference image"
-msgstr "Lae võrdluspilt"
+msgstr "Kleebi võrdluspilt"
 
 #: src/ui_parts/donate_menu.gd src/ui_parts/export_menu.gd
 #: src/ui_parts/import_warning_menu.gd src/ui_widgets/choose_name_dialog.gd
@@ -404,11 +402,11 @@ msgstr "Lisa element"
 #. This is plural
 #: src/ui_parts/layout_popup.gd
 msgid "Excluded"
-msgstr ""
+msgstr "Peidetud"
 
 #: src/ui_parts/layout_popup.gd
 msgid "Drag and drop to change the layout"
-msgstr ""
+msgstr "Lohista, et muuta paigutust"
 
 #: src/ui_parts/mac_menu.gd src/ui_parts/settings_menu.gd
 msgid "File"
@@ -440,7 +438,7 @@ msgstr "Värvipaletid"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Shortcuts"
-msgstr "Otseklahvid"
+msgstr "Kiirklahvid"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Theming"
@@ -525,9 +523,8 @@ msgid "Background color"
 msgstr "Tausta värv"
 
 #: src/ui_parts/settings_menu.gd
-#, fuzzy
 msgid "Grid color"
-msgstr "Kehtiva värv"
+msgstr "Ruudustiku värv"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Valid color"
@@ -567,7 +564,7 @@ msgstr "Kasuta süsteemi failidialoogi"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Sync window title to file name"
-msgstr "Sünkroniseeri akna tiitel avatud faili nimega"
+msgstr "Sünkrooni akna tiitel avatud faili nimega"
 
 #. Refers to the size of the draggable handles.
 #: src/ui_parts/settings_menu.gd
@@ -717,6 +714,8 @@ msgid ""
 "If turned on, clicking on a tab with the middle mouse button closes the tab. "
 "If turned off, it focuses the tab instead."
 msgstr ""
+"Sisselülitamisel sulgeb keskmise hiireklahviga kaardile vajutamine selle. "
+"Väljalülitamisel fokuseeriks see selle."
 
 #: src/ui_parts/settings_menu.gd
 msgid "Swaps the scroll directions for zooming in and zooming out."
@@ -731,7 +730,6 @@ msgstr ""
 "servani, et see liikumist ei takistaks."
 
 #: src/ui_parts/settings_menu.gd
-#, fuzzy
 msgid ""
 "If turned on, scrolling pans the view. To zoom, hold CTRL while scrolling."
 msgstr ""
@@ -747,7 +745,6 @@ msgstr ""
 "GodSVG sisseehitatud failidialoogi."
 
 #: src/ui_parts/settings_menu.gd
-#, fuzzy
 msgid ""
 "If turned off, the window title remains as \"GodSVG\" without including the "
 "current file."
@@ -772,7 +769,7 @@ msgstr "Horisontaalne riba kahe reaga"
 
 #: src/ui_parts/shortcut_panel_config.gd
 msgid "Configure Shortcut Panel"
-msgstr "Konfigureeri otseklahvide paneeli"
+msgstr "Kiirklahvida seadistamise paneel"
 
 #: src/ui_parts/tab_bar.gd src/utils/TranslationUtils.gd
 msgid "Create a new tab"
@@ -917,7 +914,7 @@ msgstr "Kasutamata"
 
 #: src/ui_widgets/setting_shortcut.gd
 msgid "Add shortcut"
-msgstr "Lisa otseklahv"
+msgstr "Lisa kiirklahv"
 
 #: src/ui_widgets/setting_shortcut.gd
 msgid "Press keys…"
@@ -990,9 +987,8 @@ msgid "Save SVG"
 msgstr "Salvesta SVG"
 
 #: src/utils/TranslationUtils.gd
-#, fuzzy
 msgid "Save SVG as"
-msgstr "Salvesta SVG kui…"
+msgstr "Salvesta SVG kui"
 
 #: src/utils/TranslationUtils.gd
 msgid "Close tabs to the left"
@@ -1023,18 +1019,16 @@ msgid "Optimize"
 msgstr "Optimeeri"
 
 #: src/utils/TranslationUtils.gd
-#, fuzzy
 msgid "Optimize SVG"
-msgstr "Optimeeri"
+msgstr "Optimeeri SVG"
 
 #: src/utils/TranslationUtils.gd
 msgid "Copy all text"
 msgstr "Kopeeri terve tekst"
 
 #: src/utils/TranslationUtils.gd
-#, fuzzy
 msgid "Copy the SVG text"
-msgstr "Kopeeri terve tekst"
+msgstr "Kopeeri SVG tekst"
 
 #: src/utils/TranslationUtils.gd
 msgid "Reset SVG"
@@ -1093,7 +1087,6 @@ msgid "Delete the selection"
 msgstr "Kustuta valik"
 
 #: src/utils/TranslationUtils.gd
-#, fuzzy
 msgid "Move up"
 msgstr "Liiguta üles"
 
@@ -1102,7 +1095,6 @@ msgid "Move the selection up"
 msgstr "Liiguta valik üles"
 
 #: src/utils/TranslationUtils.gd
-#, fuzzy
 msgid "Move down"
 msgstr "Liiguta alla"
 
@@ -1208,7 +1200,7 @@ msgstr "Sulge rakendus"
 
 #: src/utils/TranslationUtils.gd
 msgid "Toggle fullscreen"
-msgstr ""
+msgstr "Täisekraan"
 
 #: src/utils/TranslationUtils.gd
 msgid "Move to"
@@ -1256,15 +1248,14 @@ msgstr "Absoluutne"
 
 #: src/utils/TranslationUtils.gd
 msgid "Code editor"
-msgstr ""
+msgstr "Koodiredaktor"
 
 #: src/utils/TranslationUtils.gd
 msgid "Inspector"
-msgstr ""
+msgstr "Inspektor"
 
 #. The viewport is the area where the graphic is displayed. In similar applications, it's often called the canvas.
 #: src/utils/TranslationUtils.gd
-#, fuzzy
 msgid "Viewport"
 msgstr "Vaade"
 
@@ -1273,14 +1264,12 @@ msgid "Select an image"
 msgstr "Vali pilt"
 
 #: src/utils/TranslationUtils.gd
-#, fuzzy
 msgid "Select an {format} file"
-msgstr "Vali XML fail"
+msgstr "Vali {format} fail"
 
 #: src/utils/TranslationUtils.gd
-#, fuzzy
 msgid "Save the {format} file"
-msgstr "Salvesta .\"{format}\" fail"
+msgstr "Salvesta {format} fail"
 
 #: src/utils/TranslationUtils.gd
 msgid ""
