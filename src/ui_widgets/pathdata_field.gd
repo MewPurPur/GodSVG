@@ -223,8 +223,8 @@ func _on_commands_gui_input(event: InputEvent) -> void:
 			var viewport := get_viewport()
 			var popup_pos := viewport.get_mouse_position()
 			HandlerGUI.popup_under_pos(State.get_selection_context(
-					HandlerGUI.popup_under_pos.bind(popup_pos, viewport), State.Context.LIST),
-					popup_pos, viewport)
+					HandlerGUI.popup_under_pos.bind(popup_pos, viewport),
+					Utils.LayoutPart.INSPECTOR), popup_pos, viewport)
 
 
 func _commands_draw() -> void:

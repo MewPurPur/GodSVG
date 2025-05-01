@@ -102,10 +102,11 @@ func update_layout() -> void:
 			btn.action_mode = BaseButton.ACTION_MODE_BUTTON_PRESS
 			btn.button_group = btn_group
 			for node_part in layout_nodes:
-				if node_part == part:
-					btn.pressed.connect(layout_nodes[node_part].show)
-				else:
-					btn.pressed.connect(layout_nodes[node_part].hide)
+				btn.toggled.connect(func(_toggled_on: bool) -> void:
+						layout_nodes[node_part].visible = (node_part == part))
+			if part == Utils.LayoutPart.INSPECTOR:
+				State.requested_scroll_to_selection.connect(
+						btn.set_pressed.bind(true).unbind(2))
 			buttons_hbox.add_child(btn)
 			if i == 0:
 				btn.button_pressed = true

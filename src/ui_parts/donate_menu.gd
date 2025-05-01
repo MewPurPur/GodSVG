@@ -14,8 +14,10 @@ var current_link := Link.NONE
 @onready var ko_fi_link: Button = %MarginContainer/HBoxContainer/KoFiLink
 @onready var patreon_link: Button = %MarginContainer/HBoxContainer/PatreonLink
 @onready var hbox: HBoxContainer = %MarginContainer/HBoxContainer
+@onready var title_label: Label = %TitleLabel
 
 func _ready() -> void:
+	title_label.text = Translator.translate("Links to donation platforms")
 	close_button.text = Translator.translate("Cancel")
 	close_button.pressed.connect(queue_free)
 	set_link(Link.NONE)

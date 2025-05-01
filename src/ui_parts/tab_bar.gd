@@ -423,10 +423,12 @@ func _make_custom_tooltip(for_text: String) -> Object:
 	
 	var path := for_text.left(asterisk_pos)
 	var label := Label.new()
-	label.add_theme_font_override("font", ThemeUtils.mono_font if is_saved else ThemeUtils.regular_font)
+	label.add_theme_font_override("font", ThemeUtils.mono_font if is_saved\
+			else ThemeUtils.regular_font)
 	label.add_theme_font_size_override("font_size", 12)
 	label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	label.text = path if is_saved else Translator.translate("This SVG is not bound to a file location yet.")
+	label.text = path if is_saved else\
+			Translator.translate("This SVG is not bound to a file location yet.")
 	Utils.set_max_text_width(label, 192.0, 4.0)
 	
 	# If the tab is active, no need for an SVG preview.
