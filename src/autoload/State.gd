@@ -196,7 +196,7 @@ func get_export_text() -> String:
 signal hover_changed
 signal selection_changed
 
-signal requested_scroll_to_element_editor(xid: PackedInt32Array, inner_idx: int)
+signal requested_scroll_to_selection(xid: PackedInt32Array, inner_idx: int)
 
 # The viewport listens for this signal to put you in handle-placing mode.
 signal handle_added
@@ -705,10 +705,10 @@ func _move_selected(down: bool) -> void:
 		#xnode.get_attribute("d").move_subpath(inner_selections[0], down)
 	queue_svg_save()
 
-func view_in_list(xid: PackedInt32Array, inner_index := -1) -> void:
+func view_in_inspector(xid: PackedInt32Array, inner_index := -1) -> void:
 	if xid.is_empty():
 		return
-	requested_scroll_to_element_editor.emit(xid, inner_index)
+	requested_scroll_to_selection.emit(xid, inner_index)
 
 func duplicate_selected() -> void:
 	root_element.duplicate_xnodes(selected_xids)
@@ -761,7 +761,7 @@ func get_selection_context(popup_method: Callable, context: Utils.LayoutPart) ->
 					can_move_down = true
 		if context == Utils.LayoutPart.VIEWPORT:
 			btn_arr.append(ContextPopup.create_button(Translator.translate("View in Inspector"),
-					view_in_list.bind(selected_xids[0]), false,
+					view_in_inspector.bind(selected_xids[0]), false,
 					load("res://assets/icons/Inspector.svg")))
 		
 		btn_arr.append(ContextPopup.create_shortcut_button("duplicate"))
@@ -791,7 +791,7 @@ func get_selection_context(popup_method: Callable, context: Utils.LayoutPart) ->
 				if idx < inner_idx:
 					inner_idx = idx
 			btn_arr.append(ContextPopup.create_button(Translator.translate("View in Inspector"),
-					view_in_list.bind(semi_selected_xid, inner_idx), false,
+					view_in_inspector.bind(semi_selected_xid, inner_idx), false,
 					load("res://assets/icons/Inspector.svg")))
 		match element_ref.name:
 			"path":

@@ -253,6 +253,10 @@ msgstr "Tamanho de encaixe"
 msgid "Paste reference image"
 msgstr "Carregar imagem de referência"
 
+#: src/ui_parts/donate_menu.gd
+msgid "Links to donation platforms"
+msgstr ""
+
 #: src/ui_parts/donate_menu.gd src/ui_parts/export_menu.gd
 #: src/ui_parts/import_warning_menu.gd src/ui_widgets/choose_name_dialog.gd
 #: src/ui_widgets/confirm_dialog.gd src/ui_widgets/options_dialog.gd
@@ -404,7 +408,7 @@ msgstr "Erro de sintaxe"
 msgid "Add element"
 msgstr "Adicionar elemento"
 
-#. This is plural
+#. Refers to the zero, one, or multiple UI parts to not be shown in the final layout. It's of plural cardinality.
 #: src/ui_parts/layout_popup.gd
 msgid "Excluded"
 msgstr ""

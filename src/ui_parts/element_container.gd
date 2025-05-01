@@ -9,7 +9,7 @@ const autoscroll_speed = 1500.0
 @onready var covering_rect: Control = $MoveToOverlay
 
 func _ready() -> void:
-	State.requested_scroll_to_element_editor.connect(scroll_to_view_element_editor)
+	State.requested_scroll_to_selection.connect(scroll_to_view_element_editor)
 	set_dragging(false)
 
 func set_dragging(new_state: bool) -> void:
@@ -133,24 +133,28 @@ func get_xnode_editor_rect(xid: PackedInt32Array, inner_index := -1) -> Rect2:
 		return Rect2()
 	
 	var xnode_editor: Control = xnodes.get_child(xid[0])
-	for i in range(1, xid.size()):
-		xnode_editor = xnode_editor.child_xnodes_container.get_child(xid[i])
-	
 	if not is_instance_valid(xnode_editor):
 		return Rect2()
-	
-	# Position relative to the element container.
-	var xid_position := Vector2(xnode_editor.global_position -\
-			scroll_container.global_position) + Vector2(0, scroll_container.scroll_vertical)
+	var xnode_pos := xnode_editor.position
+	for i in range(1, xid.size()):
+		xnode_pos += xnode_editor.get_xnodes_container_pos()
+		xnode_editor = xnode_editor.get_xnode_editor(xid[i])
+		if not is_instance_valid(xnode_editor):
+			return Rect2()
+		xnode_pos += xnode_editor.position
 	
 	if inner_index == -1:
-		return Rect2(xid_position, xnode_editor.size)
+		return Rect2(xnode_pos, xnode_editor.size)
 	else:
 		var inner_rect: Rect2 = xnode_editor.get_inner_rect(inner_index) if\
 				State.root_element.get_xnode(xid).is_element() else Rect2()
-		return Rect2(xid_position + inner_rect.position, inner_rect.size)
+		return Rect2(xnode_pos + inner_rect.position, inner_rect.size)
 
-# This function assumes there exists a element editor for the corresponding XID.
+# This function assumes there exists an element editor for the corresponding XID.
 func scroll_to_view_element_editor(xid: PackedInt32Array, inner_idx := -1) -> void:
+	# Await the layout shift if inspector was not visible until now, or was resized
+	# since last being visible.
+	# TODO The frame delay is quite noticable and that's sad. Look for another solution.
+	await get_tree().process_frame
 	scroll_container.get_v_scroll_bar().value =\
 			get_xnode_editor_rect(xid, inner_idx).position.y - scroll_container.size.y / 5

@@ -171,9 +171,16 @@ func _on_mouse_exited() -> void:
 	determine_selection_highlight()
 
 
+func get_xnode_editor(idx: int) -> Control:
+	return child_xnodes_container.get_child(idx)
+
+func get_xnodes_container_pos() -> Vector2:
+	return main_container.position + child_xnodes_container.position
+
 func get_inner_rect(idx: int) -> Rect2:
 	if element is ElementPath or element is ElementPolygon or element is ElementPolyline:
 		var attributes_container := main_container.get_child(0)
+		# If there are unrecognized attributes their container will be the first child.
 		for attribute in element.get_all_attributes():
 			if not DB.is_attribute_recognized(element.name, attribute.name):
 				attributes_container = main_container.get_child(1)

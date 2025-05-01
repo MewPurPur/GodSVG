@@ -26,9 +26,9 @@ layout_mode = 2
 theme_override_constants/separation = 4
 
 [node name="TitleLabel" type="Label" parent="VBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 15
-text = "Links to donation platforms"
 horizontal_alignment = 1
 
 [node name="MarginContainer" type="MarginContainer" parent="VBoxContainer"]
