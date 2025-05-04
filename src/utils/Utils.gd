@@ -107,3 +107,8 @@ static func get_clipboard_web_safe() -> String:
 	if OS.has_feature("web"):
 		return ""
 	return DisplayServer.clipboard_get()
+
+static func has_clipboard_image_web_safe() -> bool:
+	if OS.has_feature("web"):
+		return false
+	return DisplayServer.clipboard_has_image()

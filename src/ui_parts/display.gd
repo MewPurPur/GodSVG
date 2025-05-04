@@ -66,7 +66,7 @@ func _on_reference_pressed() -> void:
 	var btn_arr: Array[Button] = [
 		ContextPopup.create_shortcut_button("load_reference"),
 		ContextPopup.create_button(Translator.translate("Paste reference image"),
-				paste_reference_image, not DisplayServer.clipboard_has_image(),
+				paste_reference_image, not Utils.has_clipboard_image_web_safe(),
 				load("res://assets/icons/Paste.svg")),
 		ContextPopup.create_shortcut_checkbox("view_show_reference", reference_texture.visible),
 		ContextPopup.create_shortcut_checkbox("view_overlay_reference", reference_overlay)
