@@ -886,8 +886,12 @@ func popup_insert_command_after_context(popup_method: Callable) -> void:
 	# Disable invalid commands. Z is syntactically invalid, so disallow it even harder.
 	var warned_commands: PackedStringArray
 	var disabled_commands: PackedStringArray
+	# S commands are deliberately warned against in most cases, even though
+	# there is some sense in using them without a C or S command before them.
+	# Same for T commands in most cases, even though
+	# there is a notion of letting them determine the next shorthand quadratic curve.
 	match cmd_char.to_upper():
-		"M": warned_commands = PackedStringArray(["M", "Z", "T"])
+		"M": warned_commands = PackedStringArray(["M", "Z", "S", "T"])
 		"L", "H", "V", "A": warned_commands = PackedStringArray(["S", "T"])
 		"C", "S": warned_commands = PackedStringArray(["T"])
 		"Q", "T": warned_commands = PackedStringArray(["S"])
