@@ -792,12 +792,12 @@ msgid "This SVG is not bound to a file location yet."
 msgstr "See SVG ei ole veel seotud failiasukohaga."
 
 #: src/ui_parts/update_menu.gd
-msgid "Show prereleases"
-msgstr "Näita eelväljaandeid"
-
-#: src/ui_parts/update_menu.gd
 msgid "Retry"
 msgstr "Proovi uuesti"
+
+#: src/ui_parts/update_menu.gd
+msgid "Show prereleases"
+msgstr "Näita eelväljaandeid"
 
 #: src/ui_parts/update_menu.gd
 msgid "Current Version"
@@ -807,16 +807,23 @@ msgstr "Praegune versioon"
 msgid "Retrieving information..."
 msgstr "Informatsiooni saamine..."
 
+#. When checking for updates.
 #: src/ui_parts/update_menu.gd
 msgid "Update check failed"
 msgstr "Uuenduste otsimine ebaõnnestus"
+
+#: src/ui_parts/update_menu.gd
+#, fuzzy
+msgid "View all releases"
+msgstr "Näita eelväljaandeid"
 
 #: src/ui_parts/update_menu.gd
 msgid "GodSVG is up-to-date."
 msgstr "GodSVG on ajakohane."
 
 #: src/ui_parts/update_menu.gd
-msgid "New versions"
+#, fuzzy
+msgid "New versions available!"
 msgstr "Uued versioonid"
 
 #: src/ui_widgets/choose_name_dialog.gd

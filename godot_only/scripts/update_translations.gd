@@ -10,6 +10,7 @@ const COMMENTS_DICT = {
 	"Handle colors": "Refers to the colors of the draggable handles.",
 	"Handle size": "Refers to the size of the draggable handles.",
 	"Excluded": "Refers to the zero, one, or multiple UI parts to not be shown in the final layout. It's of plural cardinality.",
+	"Update check failed": "When checking for updates.",
 }
 
 const TRANSLATIONS_DIR = "translations"

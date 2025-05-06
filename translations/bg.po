@@ -795,12 +795,12 @@ msgid "This SVG is not bound to a file location yet."
 msgstr "Това SVG не е свързано с местоположение на компютъра."
 
 #: src/ui_parts/update_menu.gd
-msgid "Show prereleases"
-msgstr "Покажи предварителните издания"
-
-#: src/ui_parts/update_menu.gd
 msgid "Retry"
 msgstr "Опитай отново"
+
+#: src/ui_parts/update_menu.gd
+msgid "Show prereleases"
+msgstr "Покажи предварителните издания"
 
 #: src/ui_parts/update_menu.gd
 msgid "Current Version"
@@ -810,17 +810,22 @@ msgstr "Настояща версия"
 msgid "Retrieving information..."
 msgstr "Извлича се информацията..."
 
+#. When checking for updates.
 #: src/ui_parts/update_menu.gd
 msgid "Update check failed"
 msgstr "Грешка в проверката за ъпдейти"
+
+#: src/ui_parts/update_menu.gd
+msgid "View all releases"
+msgstr "Разгледай всички издания"
 
 #: src/ui_parts/update_menu.gd
 msgid "GodSVG is up-to-date."
 msgstr "GodSVG е актуален."
 
 #: src/ui_parts/update_menu.gd
-msgid "New versions"
-msgstr "Нови версии"
+msgid "New versions available!"
+msgstr "Налични са нови версии!"
 
 #: src/ui_widgets/choose_name_dialog.gd
 msgid "Create"

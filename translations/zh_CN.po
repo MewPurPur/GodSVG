@@ -794,13 +794,13 @@ msgid "This SVG is not bound to a file location yet."
 msgstr ""
 
 #: src/ui_parts/update_menu.gd
+msgid "Retry"
+msgstr "重试"
+
+#: src/ui_parts/update_menu.gd
 #, fuzzy
 msgid "Show prereleases"
 msgstr "包括预发布版本"
-
-#: src/ui_parts/update_menu.gd
-msgid "Retry"
-msgstr "重试"
 
 #: src/ui_parts/update_menu.gd
 msgid "Current Version"
@@ -810,16 +810,23 @@ msgstr "当前版本"
 msgid "Retrieving information..."
 msgstr "正在获取信息…"
 
+#. When checking for updates.
 #: src/ui_parts/update_menu.gd
 msgid "Update check failed"
 msgstr "更新检查失败"
+
+#: src/ui_parts/update_menu.gd
+#, fuzzy
+msgid "View all releases"
+msgstr "选择所有元素"
 
 #: src/ui_parts/update_menu.gd
 msgid "GodSVG is up-to-date."
 msgstr "GodSVG 是最新版本。"
 
 #: src/ui_parts/update_menu.gd
-msgid "New versions"
+#, fuzzy
+msgid "New versions available!"
 msgstr "新版本"
 
 #: src/ui_widgets/choose_name_dialog.gd
@@ -1366,9 +1373,6 @@ msgstr "文件扩展名为空。只有 {extension_list} 内的文件受支持。
 #, fuzzy
 #~ msgid "Open SVG file"
 #~ msgstr "打开文件"
-
-#~ msgid "Select all elements"
-#~ msgstr "选择所有元素"
 
 #~ msgid "Duplicate the selected elements"
 #~ msgstr "克隆选中的元素"
