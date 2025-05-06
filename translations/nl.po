@@ -798,12 +798,12 @@ msgid "This SVG is not bound to a file location yet."
 msgstr "Deze SVG is nog niet gebonden aan een bestandslocatie."
 
 #: src/ui_parts/update_menu.gd
-msgid "Show prereleases"
-msgstr "Laat prereleases zien"
-
-#: src/ui_parts/update_menu.gd
 msgid "Retry"
 msgstr "Opnieuw proberen"
+
+#: src/ui_parts/update_menu.gd
+msgid "Show prereleases"
+msgstr "Laat prereleases zien"
 
 #: src/ui_parts/update_menu.gd
 msgid "Current Version"
@@ -813,16 +813,23 @@ msgstr "Huidige versie"
 msgid "Retrieving information..."
 msgstr "Informatie aan het ophalen..."
 
+#. When checking for updates.
 #: src/ui_parts/update_menu.gd
 msgid "Update check failed"
 msgstr "Updatecontrole mislukt"
+
+#: src/ui_parts/update_menu.gd
+#, fuzzy
+msgid "View all releases"
+msgstr "Selecteer alle elementen"
 
 #: src/ui_parts/update_menu.gd
 msgid "GodSVG is up-to-date."
 msgstr "GodSVG is up-to-date."
 
 #: src/ui_parts/update_menu.gd
-msgid "New versions"
+#, fuzzy
+msgid "New versions available!"
 msgstr "Nieuwe versies"
 
 #: src/ui_widgets/choose_name_dialog.gd
@@ -1358,9 +1365,6 @@ msgstr ""
 
 #~ msgid "Open SVG file"
 #~ msgstr "Open SVG bestand"
-
-#~ msgid "Select all elements"
-#~ msgstr "Selecteer alle elementen"
 
 #~ msgid "Duplicate the selected elements"
 #~ msgstr "Dupliceer de gekozen elementen"

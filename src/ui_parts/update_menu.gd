@@ -1,10 +1,11 @@
 extends PanelContainer
 
 @onready var http: HTTPRequest = $HTTPRequest
-@onready var status_label: RichTextLabel = $VBoxContainer/Status
+@onready var status_label: Label = %OverStatusContainer/StatusLabel
+@onready var retry_button: Button = %OverStatusContainer/RetryButton
+@onready var results_label: RichTextLabel = %Results
 @onready var current_version_label: Label = $VBoxContainer/CurrentVersionLabel
-@onready var prereleases_checkbox: CheckButton = $VBoxContainer/IncludePrereleases
-@onready var retry_button: Button = $VBoxContainer/RetryButton
+@onready var prereleases_button: CheckButton = $VBoxContainer/IncludePrereleases
 @onready var close_button: Button = $VBoxContainer/CloseButton
 
 var current_version: String = ProjectSettings.get_setting("application/config/version")
@@ -12,14 +13,14 @@ var results: Dictionary[String, Array] = {}  # version: [url, is_prerelease]
 
 func _ready() -> void:
 	http.request_completed.connect(_on_request_completed)
-	retry_button.pressed.connect(_on_retry)
-	status_label.meta_clicked.connect(OS.shell_open)
+	retry_button.pressed.connect(request)
+	results_label.meta_clicked.connect(OS.shell_open)
 	close_button.pressed.connect(queue_free)
-	prereleases_checkbox.toggled.connect(display_results.unbind(1))
+	prereleases_button.toggled.connect(display_results.unbind(1))
 	
 	close_button.text = Translator.translate("Close")
-	prereleases_checkbox.text = Translator.translate("Show prereleases")
-	retry_button.text = Translator.translate("Retry")
+	retry_button.tooltip_text = Translator.translate("Retry")
+	prereleases_button.text = Translator.translate("Show prereleases")
 	current_version_label.text = Translator.translate("Current Version") + ": " +\
 			current_version
 	request()
@@ -53,9 +54,14 @@ _headers: PackedStringArray, body: PackedByteArray) -> void:
 							release["created_at"])
 					var is_prerelease: bool = release["prerelease"]
 					if is_prerelease:
-						prereleases_checkbox.disabled = false
-						prereleases_checkbox.set_pressed_no_signal(is_prerelease)
+						prereleases_button.disabled = false
+						prereleases_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+						prereleases_button.set_pressed_no_signal(is_prerelease)
 					break
+			
+			if current_timestamp == -1:
+				display_error_message("Unable to compare versions")
+				return
 			
 			for release: Dictionary in json:
 				var creation_time: String = release["created_at"]
@@ -75,17 +81,15 @@ _headers: PackedStringArray, body: PackedByteArray) -> void:
 
 
 func display_error_message(msg: String) -> void:
-	status_label.text = Translator.translate("Update check failed") + ": %s" % msg
+	status_label.text = Translator.translate("Update check failed")
+	results_label.text = "%s\n[url=https://github.com/MewPurPur/GodSVG/releases]%s[/url]" %\
+			[msg, Translator.translate("View all releases")]
 	retry_button.show()
-
-func _on_retry() -> void:
-	retry_button.hide()
-	request()
 
 func display_results() -> void:
 	# Check if there are results to be displayed.
 	var has_results := false
-	if prereleases_checkbox.button_pressed:
+	if prereleases_button.button_pressed:
 		has_results = not results.is_empty()
 	else:
 		for version in results:
@@ -93,15 +97,17 @@ func display_results() -> void:
 				has_results = true
 				break
 	# Set the text.
+	results_label.text = ""
 	if not has_results:
 		status_label.text = Translator.translate("GodSVG is up-to-date.")
 		return
 	else:
-		status_label.text = Translator.translate("New versions") + ":"
+		status_label.text = Translator.translate("New versions available!")
 		for version in results:
 			var result := results[version]
-			if prereleases_checkbox.button_pressed or result[1] == false:
+			if prereleases_button.button_pressed or result[1] == false:
 				if OS.has_feature("web"):
-					status_label.text += "\n%s" % version
+					results_label.text += version + "\n"
 				else:
-					status_label.text += "\n[url=%s]%s[/url]" % [result[0], version]
+					results_label.text += "[url=%s]%s[/url]\n" % [result[0], version]
+		results_label.text = results_label.text.strip_edges()

@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://dtyn8imbyo2rg"]
+[gd_scene load_steps=3 format=3 uid="uid://dtyn8imbyo2rg"]
 
 [ext_resource type="Script" uid="uid://c6ca4ckjyrxg3" path="res://src/ui_parts/update_menu.gd" id="1_up0ed"]
+[ext_resource type="Texture2D" uid="uid://cvh3kwbucf2n1" path="res://assets/icons/Reload.svg" id="2_x5og6"]
 
 [node name="UpdateMenu" type="PanelContainer"]
 custom_minimum_size = Vector2(300, 160)
@@ -36,24 +37,46 @@ horizontal_alignment = 1
 layout_mode = 2
 size_flags_horizontal = 8
 focus_mode = 0
-mouse_default_cursor_shape = 2
 disabled = true
 
-[node name="Status" type="RichTextLabel" parent="VBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 4
+
+[node name="OverStatusContainer" type="HBoxContainer" parent="VBoxContainer/VBoxContainer/MarginContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 24)
+layout_mode = 2
+
+[node name="StatusLabel" type="Label" parent="VBoxContainer/VBoxContainer/MarginContainer/OverStatusContainer"]
+layout_mode = 2
+
+[node name="RetryButton" type="Button" parent="VBoxContainer/VBoxContainer/MarginContainer/OverStatusContainer"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 10
+size_flags_vertical = 4
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_type_variation = &"IconButton"
+icon = ExtResource("2_x5og6")
+
+[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/VBoxContainer/PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 4
+
+[node name="Results" type="RichTextLabel" parent="VBoxContainer/VBoxContainer/PanelContainer/MarginContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 38)
 layout_mode = 2
 size_flags_vertical = 3
 bbcode_enabled = true
-fit_content = true
-scroll_active = false
-autowrap_mode = 0
-
-[node name="RetryButton" type="Button" parent="VBoxContainer"]
-visible = false
-layout_mode = 2
-size_flags_horizontal = 0
-size_flags_vertical = 0
-focus_mode = 0
-mouse_default_cursor_shape = 2
 
 [node name="CloseButton" type="Button" parent="VBoxContainer"]
 layout_mode = 2

@@ -774,11 +774,11 @@ msgid "This SVG is not bound to a file location yet."
 msgstr ""
 
 #: src/ui_parts/update_menu.gd
-msgid "Show prereleases"
+msgid "Retry"
 msgstr ""
 
 #: src/ui_parts/update_menu.gd
-msgid "Retry"
+msgid "Show prereleases"
 msgstr ""
 
 #: src/ui_parts/update_menu.gd
@@ -789,8 +789,13 @@ msgstr ""
 msgid "Retrieving information..."
 msgstr ""
 
+#. When checking for updates.
 #: src/ui_parts/update_menu.gd
 msgid "Update check failed"
+msgstr ""
+
+#: src/ui_parts/update_menu.gd
+msgid "View all releases"
 msgstr ""
 
 #: src/ui_parts/update_menu.gd
@@ -798,7 +803,7 @@ msgid "GodSVG is up-to-date."
 msgstr ""
 
 #: src/ui_parts/update_menu.gd
-msgid "New versions"
+msgid "New versions available!"
 msgstr ""
 
 #: src/ui_widgets/choose_name_dialog.gd

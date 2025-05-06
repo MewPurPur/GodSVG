@@ -798,12 +798,12 @@ msgid "This SVG is not bound to a file location yet."
 msgstr "Ce SVG n'est pas encore lié à un emplacement de fichier."
 
 #: src/ui_parts/update_menu.gd
-msgid "Show prereleases"
-msgstr "Inclure les versions préliminaires"
-
-#: src/ui_parts/update_menu.gd
 msgid "Retry"
 msgstr "Réessayer"
+
+#: src/ui_parts/update_menu.gd
+msgid "Show prereleases"
+msgstr "Inclure les versions préliminaires"
 
 #: src/ui_parts/update_menu.gd
 msgid "Current Version"
@@ -813,16 +813,23 @@ msgstr "Version actuelle"
 msgid "Retrieving information..."
 msgstr "Récupération d'information en cours…"
 
+#. When checking for updates.
 #: src/ui_parts/update_menu.gd
 msgid "Update check failed"
 msgstr "Échec de la vérification de mise à jour"
+
+#: src/ui_parts/update_menu.gd
+#, fuzzy
+msgid "View all releases"
+msgstr "Sélectionner tous les éléments"
 
 #: src/ui_parts/update_menu.gd
 msgid "GodSVG is up-to-date."
 msgstr "GodSVG est à jour."
 
 #: src/ui_parts/update_menu.gd
-msgid "New versions"
+#, fuzzy
+msgid "New versions available!"
 msgstr "Nouvelles versions"
 
 #: src/ui_widgets/choose_name_dialog.gd
@@ -1362,9 +1369,6 @@ msgstr ""
 #, fuzzy
 #~ msgid "Open SVG file"
 #~ msgstr "Ouvrir le fichier"
-
-#~ msgid "Select all elements"
-#~ msgstr "Sélectionner tous les éléments"
 
 #~ msgid "Duplicate the selected elements"
 #~ msgstr "Dupliquer les éléments sélectionnés"

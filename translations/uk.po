@@ -800,12 +800,12 @@ msgid "This SVG is not bound to a file location yet."
 msgstr "Це SVG зображення поки що не пов'язано з розташуванням файла."
 
 #: src/ui_parts/update_menu.gd
-msgid "Show prereleases"
-msgstr "Показати тестові версії"
-
-#: src/ui_parts/update_menu.gd
 msgid "Retry"
 msgstr "Спробувати ще раз"
+
+#: src/ui_parts/update_menu.gd
+msgid "Show prereleases"
+msgstr "Показати тестові версії"
 
 #: src/ui_parts/update_menu.gd
 msgid "Current Version"
@@ -815,16 +815,23 @@ msgstr "Поточна версія"
 msgid "Retrieving information..."
 msgstr "Отримуємо інформацію..."
 
+#. When checking for updates.
 #: src/ui_parts/update_menu.gd
 msgid "Update check failed"
 msgstr "Не вдалося перевірити оновлення"
+
+#: src/ui_parts/update_menu.gd
+#, fuzzy
+msgid "View all releases"
+msgstr "Показати тестові версії"
 
 #: src/ui_parts/update_menu.gd
 msgid "GodSVG is up-to-date."
 msgstr "GodSVG оновлено до останньої версії."
 
 #: src/ui_parts/update_menu.gd
-msgid "New versions"
+#, fuzzy
+msgid "New versions available!"
 msgstr "Нові версії"
 
 #: src/ui_widgets/choose_name_dialog.gd
