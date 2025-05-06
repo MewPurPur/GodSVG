@@ -4,6 +4,7 @@ extends PanelContainer
 @onready var status_label: Label = %OverStatusContainer/StatusLabel
 @onready var retry_button: Button = %OverStatusContainer/RetryButton
 @onready var results_label: RichTextLabel = %Results
+@onready var results_panel: PanelContainer = %ResultsPanel
 @onready var current_version_label: Label = $VBoxContainer/CurrentVersionLabel
 @onready var prereleases_button: CheckButton = $VBoxContainer/IncludePrereleases
 @onready var close_button: Button = $VBoxContainer/CloseButton
@@ -82,6 +83,7 @@ _headers: PackedStringArray, body: PackedByteArray) -> void:
 
 func display_error_message(msg: String) -> void:
 	status_label.text = Translator.translate("Update check failed")
+	results_panel.show()
 	results_label.text = "%s\n[url=https://github.com/MewPurPur/GodSVG/releases]%s[/url]" %\
 			[msg, Translator.translate("View all releases")]
 	retry_button.show()
@@ -100,6 +102,7 @@ func display_results() -> void:
 	results_label.text = ""
 	if not has_results:
 		status_label.text = Translator.translate("GodSVG is up-to-date.")
+		results_panel.hide()
 		return
 	else:
 		status_label.text = Translator.translate("New versions available!")
@@ -111,3 +114,4 @@ func display_results() -> void:
 				else:
 					results_label.text += "[url=%s]%s[/url]\n" % [result[0], version]
 		results_label.text = results_label.text.strip_edges()
+		results_panel.show()

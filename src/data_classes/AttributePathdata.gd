@@ -249,7 +249,7 @@ static func pathdata_to_arrays(text: String) -> Array[Array]:
 	var new_commands: Array[Array] = []
 	var curr_command := ""
 	var prev_command := ""
-	var nums: Array[float] = []
+	var nums: Array = []  # Not a float array because the arcs are ints.
 	var args_left := 0
 	var comma_exhausted := false  # Can ignore many whitespaces, but only one comma.
 	
@@ -366,12 +366,9 @@ static func pathdata_to_arrays(text: String) -> Array[Array]:
 								comma_exhausted = true
 								number_proceed = false
 						"e", "E":
-							if passed_decimal_point:
-								return new_commands
-							else:
-								end_idx += 1
-								idx += 1
-								exponent_just_passed = true
+							end_idx += 1
+							idx += 1
+							exponent_just_passed = true
 						_:
 							if args_left >= 1 and\
 							not text.substr(start_idx, end_idx - start_idx).is_valid_float():

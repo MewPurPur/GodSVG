@@ -34,16 +34,14 @@ theme_override_constants/h_separation = 4
 icon = ExtResource("3_vo6hf")
 
 [node name="ElementContainer" type="Control" parent="."]
-custom_minimum_size = Vector2(0, 240)
 layout_mode = 2
 size_flags_vertical = 3
 script = ExtResource("3_qeptj")
 
 [node name="ScrollContainer" type="ScrollContainer" parent="ElementContainer"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
+layout_mode = 2
+offset_right = 466.0
+offset_bottom = 240.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_vertical = 3
@@ -72,8 +70,8 @@ theme_override_constants/separation = 5
 
 [node name="MoveToOverlay" type="Control" parent="ElementContainer"]
 visible = false
-layout_mode = 1
-anchors_preset = 15
+layout_mode = 2
+anchors_preset = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2

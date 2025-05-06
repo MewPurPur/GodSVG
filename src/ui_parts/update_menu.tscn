@@ -64,14 +64,25 @@ mouse_default_cursor_shape = 2
 theme_type_variation = &"IconButton"
 icon = ExtResource("2_x5og6")
 
-[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer/VBoxContainer"]
+[node name="ResultsControl" type="Control" parent="VBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 44)
 layout_mode = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/VBoxContainer/PanelContainer"]
+[node name="ResultsPanel" type="PanelContainer" parent="VBoxContainer/VBoxContainer/ResultsControl"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/VBoxContainer/ResultsControl/ResultsPanel"]
 layout_mode = 2
 theme_override_constants/margin_left = 4
 
-[node name="Results" type="RichTextLabel" parent="VBoxContainer/VBoxContainer/PanelContainer/MarginContainer"]
+[node name="Results" type="RichTextLabel" parent="VBoxContainer/VBoxContainer/ResultsControl/ResultsPanel/MarginContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 38)
 layout_mode = 2
