@@ -173,12 +173,9 @@ static func text_to_transform_list(text: String) -> Array[Transform]:
 							comma_exhausted = true
 							number_proceed = false
 					"e", "E":
-						if passed_decimal_point:
-							return []
-						else:
-							end_idx += 1
-							idx += 1
-							exponent_just_passed = true
+						end_idx += 1
+						idx += 1
+						exponent_just_passed = true
 					_:
 						if not transform_params.substr(
 						start_idx, end_idx - start_idx).is_valid_float():
