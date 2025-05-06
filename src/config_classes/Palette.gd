@@ -182,8 +182,11 @@ static func is_valid_palette(text: String) -> bool:
 	var parser := XMLParser.new()
 	parser.open_buffer(text.to_utf8_buffer())
 	parser.read()
-	while parser.get_node_type() in [XMLParser.NODE_COMMENT, XMLParser.NODE_TEXT,
-	XMLParser.NODE_UNKNOWN]:
-		parser.read()
-	return parser.get_node_type() == XMLParser.NODE_ELEMENT and\
-			parser.get_node_name() == "palette"
+	while parser.read() == OK:
+		if parser.get_node_type() in [XMLParser.NODE_COMMENT, XMLParser.NODE_TEXT,
+		XMLParser.NODE_UNKNOWN]:
+			continue
+		
+		return parser.get_node_type() == XMLParser.NODE_ELEMENT and\
+				parser.get_node_name() == "palette"
+	return false
