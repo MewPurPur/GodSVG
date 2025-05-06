@@ -88,7 +88,12 @@ func _redraw_caret() -> void:
 		# Determine the end of the caret and draw it.
 		var caret_end := caret_pos
 		if is_overtype_mode_enabled():
-			caret_end.x += char_size.x
+			var char_width: float
+			if caret_column >= get_line(caret_line).length():
+				char_width = char_size.x
+			else:
+				char_width = get_rect_at_line_column(caret_line, caret_column + 1).size.x
+			caret_end.x += char_width
 		else:
 			caret_end.y -= char_size.y + 1
 		RenderingServer.canvas_item_add_line(_surface, caret_pos, caret_end, caret_color, 1)
