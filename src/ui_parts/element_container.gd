@@ -135,13 +135,13 @@ func get_xnode_editor_rect(xid: PackedInt32Array, inner_index := -1) -> Rect2:
 	var xnode_editor: Control = xnodes.get_child(xid[0])
 	if not is_instance_valid(xnode_editor):
 		return Rect2()
-	var xnode_pos := xnode_editor.position
 	for i in range(1, xid.size()):
-		xnode_pos += xnode_editor.get_xnodes_container_pos()
 		xnode_editor = xnode_editor.get_xnode_editor(xid[i])
 		if not is_instance_valid(xnode_editor):
 			return Rect2()
-		xnode_pos += xnode_editor.position
+	
+	var xnode_pos := Vector2(xnode_editor.global_position -\
+			scroll_container.global_position) + Vector2(0, scroll_container.scroll_vertical)
 	
 	if inner_index == -1:
 		return Rect2(xnode_pos, xnode_editor.size)
