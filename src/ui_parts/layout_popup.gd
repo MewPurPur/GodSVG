@@ -311,6 +311,12 @@ func clear_proposed_drop() -> void:
 # Tooltips
 
 func _get_tooltip(at_position: Vector2) -> String:
+	# TODO Hack for the viewport tooltip.
+	var half_width := size.x / 2.0 - PANEL_MARGIN
+	if Rect2(size.x / 2.0, PANEL_MARGIN, half_width, half_width * 1.25).\
+	grow(-BUFFER_SIZE).has_point(at_position):
+		return TranslationUtils.get_layout_part_name(Utils.LayoutPart.VIEWPORT)
+	
 	for layout_part in layout_part_areas:
 		if layout_part_areas[layout_part].grow(-BUFFER_SIZE).has_point(at_position):
 			return TranslationUtils.get_layout_part_name(layout_part)
@@ -324,11 +330,13 @@ func _make_custom_tooltip(for_text: String) -> Object:
 	vbox.add_theme_constant_override("separation", 2)
 	var main_label := Label.new()
 	main_label.text = for_text
-	var dim_label := Label.new()
-	dim_label.add_theme_color_override("font_color", ThemeUtils.common_dimmer_text_color)
-	dim_label.text = Translator.translate("Drag and drop to change the layout")
+	# TODO The condition is a hack for the viewport tooltip.
 	vbox.add_child(main_label)
-	vbox.add_child(dim_label)
+	if for_text != TranslationUtils.get_layout_part_name(Utils.LayoutPart.VIEWPORT):
+		var dim_label := Label.new()
+		dim_label.add_theme_color_override("font_color", ThemeUtils.common_dimmer_text_color)
+		dim_label.text = Translator.translate("Drag and drop to change the layout")
+		vbox.add_child(dim_label)
 	return vbox
 
 
