@@ -8,7 +8,7 @@ Contributions don't need to be perfect, but they must move GodSVG in the right d
 
 GodSVG is made in Godot using its GDScript language. Refer to the [README](https://github.com/MewPurPur/GodSVG?tab=readme-ov-file#how-to-get-it) on how to get GodSVG running.
 
-Git must be configured, then you can clone the repository to your local machine: `git clone git@github.com:MewPurPur/GodSVG.git`
+Git must be configured, then you can clone the repository to your local machine: `git clone https://github.com/MewPurPur/GodSVG.git`
 
 The documentation won't go into detail about how to use Git. Refer to outside resources if you are unfamiliar with it.
 
