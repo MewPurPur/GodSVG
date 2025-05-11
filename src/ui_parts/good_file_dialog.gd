@@ -442,7 +442,7 @@ func get_drive_icon(path: String) -> Texture2D:
 
 func _unhandled_input(event: InputEvent) -> void:
 	if ShortcutUtils.is_action_pressed(event, "find"):
-		search_button.button_pressed = true
+		search_button.button_pressed = not search_button.button_pressed
 		accept_event()
 	elif event.is_action_pressed("ui_accept"):
 		var selected_item_indices := file_list.get_selected_items()
