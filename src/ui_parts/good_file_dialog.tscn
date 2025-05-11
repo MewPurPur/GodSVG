@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://mp1nxm8i8tv8"]
+[gd_scene load_steps=9 format=3 uid="uid://mp1nxm8i8tv8"]
 
 [ext_resource type="Script" uid="uid://cdlrqylqsmc22" path="res://src/ui_parts/good_file_dialog.gd" id="1_awdto"]
 [ext_resource type="Script" uid="uid://1hox6gd5pxku" path="res://src/ui_widgets/BetterLineEdit.gd" id="2_52puw"]
@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://kkxyv1gyrjgj" path="res://assets/icons/Visuals.svg" id="5_2ggtv"]
 [ext_resource type="Texture2D" uid="uid://d4c7haflm8evm" path="res://assets/icons/Search.svg" id="6_otods"]
 [ext_resource type="FontFile" uid="uid://clpf84p1lfwlp" path="res://assets/fonts/Font.ttf" id="7_eeq17"]
+[ext_resource type="Script" uid="uid://ynx3s1jc6bwq" path="res://src/ui_widgets/BetterButton.gd" id="7_ejhg0"]
 
 [node name="GoodFileDialog" type="PanelContainer"]
 offset_right = 684.0
@@ -61,6 +62,9 @@ mouse_default_cursor_shape = 2
 theme_type_variation = &"IconButton"
 toggle_mode = true
 icon = ExtResource("6_otods")
+script = ExtResource("7_ejhg0")
+action = "find"
+metadata/_custom_type_script = "uid://ynx3s1jc6bwq"
 
 [node name="MainContainer" type="HBoxContainer" parent="VBoxContainer"]
 layout_mode = 2
