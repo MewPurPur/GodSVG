@@ -95,13 +95,15 @@ func _ready() -> void:
 	State.hover_changed.connect(queue_redraw)
 	State.zoom_changed.connect(queue_redraw)
 	State.handle_added.connect(_on_handle_added)
-	State.show_handles_changed.connect(toggle_visibility)
 	State.view_changed.connect(_on_view_changed)
 	queue_update_handles()
+	
+	State.show_handles_changed.connect(update_show_handles)
+	update_show_handles()
 
 
-func toggle_visibility() -> void:
-	visible = not visible
+func update_show_handles() -> void:
+	visible = State.show_handles
 	HandlerGUI.throw_mouse_motion_event()
 
 func queue_update_handles() -> void:
