@@ -25,7 +25,9 @@ func _ready() -> void:
 	State.svg_resized.connect(queue_redraw)
 	State.zoom_changed.connect(change_zoom)
 	State.zoom_changed.connect(queue_redraw)
-	State.show_grid_changed.connect(toggle_visibility)
+	
+	State.show_grid_changed.connect(update_show_grid)
+	update_show_grid()
 
 func exit_tree() -> void:
 	RenderingServer.free_rid(surface)
@@ -33,8 +35,8 @@ func exit_tree() -> void:
 func change_zoom() -> void:
 	zoom = State.zoom
 
-func toggle_visibility() -> void:
-	visible = not visible
+func update_show_grid() -> void:
+	visible = State.show_grid
 
 
 func update() -> void:
