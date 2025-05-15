@@ -18,12 +18,14 @@ static func copy_image(export_data: ImageExportData) -> ClipboardError:
 	match OS.get_name():
 		"Windows":
 			_save_temp_to_disk(export_data)
-			var e := OS.execute("powershell.exe", ["-Command", """
-					Add-Type -AssemblyName System.Windows.Forms;
-					$bmp = New-Object Drawing.Bitmap('%s');
-					[Windows.Forms.Clipboard]::SetImage($bmp)
-				""" % _get_temp_path(export_data)
-			])
+			var path := (_get_temp_path(export_data).replace('\\', '/'))
+			var ps_script := """
+				Add-Type -AssemblyName PresentationCore
+				$uri = [Uri]'file:///%s'
+				$img = [System.Windows.Media.Imaging.BitmapFrame]::Create($uri)
+				[System.Windows.Clipboard]::SetImage($img)
+			""" % path
+			var e := OS.execute("powershell.exe", ["-Command", ps_script])
 			_clean_temp(export_data)
 			return ClipboardError.new(ErrorType.FailedExecuting if e < 0 else ErrorType.Ok)
 		"Linux", "FreeBSD", "NetBSD", "OpenBSD", "BSD":
