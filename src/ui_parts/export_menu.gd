@@ -76,6 +76,7 @@ func _ready() -> void:
 	%HeightContainer/Label.text = Translator.translate("Height") + ":"
 	cancel_button.text = Translator.translate("Cancel")
 	export_button.text = Translator.translate("Export")
+	clipboard_button.tooltip_text = Translator.translate("Copy")
 	clipboard_button.disabled = not ClipboardUtils.is_supported(export_data.format)
 	
 	titled_panel.corner_radius_bottom_left = 0

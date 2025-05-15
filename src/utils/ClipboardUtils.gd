@@ -119,10 +119,10 @@ class ClipboardError:
 		extra = _extra
 		match type:
 			ErrorType.FailedExecuting:
-				message = tr("Failed executing '%s'" % extra)
+				message = Translator.translate("Failed executing '%s'" % extra)
 			ErrorType.NoClipboardUtil:
-				message = tr("Failed to find a clipboard util. Make sure you've installed one of the following:\n%s" % extra)
+				message = Translator.translate("Failed to find a clipboard util. Make sure you've installed one of the following:\n%s" % extra)
 			ErrorType.UnsupportedPlatform:
-				message = tr("Unsupported platform")
+				message = Translator.translate("Unsupported platform")
 			_:
-				message = tr("Unknown error")
+				message = Translator.translate("Unknown error")
