@@ -13,6 +13,7 @@ var dimensions := Vector2.ZERO
 @onready var format_hbox: HBoxContainer = %FormatHBox
 @onready var format_dropdown: Dropdown = %FormatHBox/Dropdown
 @onready var final_size_label: Label = %FinalSizeLabel
+@onready var clipboard_button: Button = %ClipboardButton
 @onready var scale_edit: NumberEdit = %Scale
 @onready var width_edit: NumberEdit = %Width
 @onready var height_edit: NumberEdit = %Height
@@ -31,6 +32,7 @@ var dimensions := Vector2.ZERO
 func _ready() -> void:
 	cancel_button.pressed.connect(queue_free)
 	export_button.pressed.connect(_on_export_button_pressed)
+	clipboard_button.pressed.connect(_on_clipboard_button_pressed)
 	scale_edit.value_changed.connect(_on_scale_edit_value_changed)
 	width_edit.value_changed.connect(_on_width_edit_value_changed)
 	height_edit.value_changed.connect(_on_height_edit_value_changed)
@@ -74,6 +76,7 @@ func _ready() -> void:
 	%HeightContainer/Label.text = Translator.translate("Height") + ":"
 	cancel_button.text = Translator.translate("Cancel")
 	export_button.text = Translator.translate("Export")
+	clipboard_button.disabled = not ClipboardUtils.is_supported(export_data.format)
 	
 	titled_panel.corner_radius_bottom_left = 0
 	titled_panel.corner_radius_bottom_right = 5
@@ -88,6 +91,9 @@ func _ready() -> void:
 
 func _on_export_button_pressed() -> void:
 	FileUtils.open_export_dialog(export_data)
+
+func _on_clipboard_button_pressed() -> void:
+	ClipboardUtils.copy_image(export_data)
 
 func _on_dropdown_value_changed(new_value: String) -> void:
 	var current_format := export_data.format
@@ -171,6 +177,8 @@ func update() -> void:
 	info_tooltip.visible = (export_data.format != "svg" and\
 			roundi(export_data.upscale_amount * maxf(dimensions.x, dimensions.y)) >\
 			texture_preview.MAX_IMAGE_DIMENSION)
+	
+	clipboard_button.disabled = not ClipboardUtils.is_supported(export_data.format)
 
 func get_dimensions_text(sides: Vector2, integer := false) -> String:
 	var precision := 0 if integer else 2
