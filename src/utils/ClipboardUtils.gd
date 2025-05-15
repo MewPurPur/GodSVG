@@ -10,24 +10,33 @@ static func is_supported(format: String) -> bool:
 ## Returns an object containing the error information, as well as an "OK" type.
 static func copy_image(export_data: ImageExportData) -> ClipboardError:
 	if not is_supported(export_data.format):
-		return ClipboardError.new(ErrorType.UnsupportedPlatform)
+		return ClipboardError.new(ErrorType.UnsupportedPlatform, [])
 	if export_data.format == "svg":
 		DisplayServer.clipboard_set(State.get_export_text())
-		return ClipboardError.new(ErrorType.Ok)
+		return ClipboardError.new(ErrorType.Ok, [])
 	var mime_type := ImageExportData.image_types_dict[export_data.format]
+	var cmd_output := []
 	match OS.get_name():
 		"Windows":
 			_save_temp_to_disk(export_data)
 			var path := (_get_temp_path(export_data).replace('\\', '/'))
-			var ps_script := """
-				Add-Type -AssemblyName PresentationCore
-				$uri = [Uri]'file:///%s'
-				$img = [System.Windows.Media.Imaging.BitmapFrame]::Create($uri)
-				[System.Windows.Clipboard]::SetImage($img)
-			""" % path
-			var e := OS.execute("powershell.exe", ["-Command", ps_script])
+			var ps_script := ""
+			if export_data.format == "webp":
+				ps_script = """
+					Add-Type -AssemblyName PresentationCore
+					$uri = [Uri]'file:///%s'
+					$img = [System.Windows.Media.Imaging.BitmapFrame]::Create($uri)
+					[System.Windows.Clipboard]::SetImage($img)
+				""" % path
+			else:  # PresentationCore does not appear to support transparency.
+				ps_script = """
+					Add-Type -AssemblyName System.Windows.Forms;
+					$bmp = New-Object Drawing.Bitmap('%s');
+					[Windows.Forms.Clipboard]::SetImage($bmp)
+				""" % path
+			var e := OS.execute("powershell.exe", ["-Command", ps_script], cmd_output, true)
 			_clean_temp(export_data)
-			return ClipboardError.new(ErrorType.FailedExecuting if e < 0 else ErrorType.Ok)
+			return ClipboardError.new(ErrorType.FailedExecuting if e < 0 else ErrorType.Ok, cmd_output)
 		"Linux", "FreeBSD", "NetBSD", "OpenBSD", "BSD":
 			# Finding out the display manager type.
 			var display_manager_arr := []
@@ -46,33 +55,50 @@ static func copy_image(export_data: ImageExportData) -> ClipboardError:
 					chosen_util = util
 					break
 			
-			# Copying the texture to the clipboard.
-			if chosen_util != "":
-				var exit_code := -2
-				_save_temp_to_disk(export_data)
-				match chosen_util:
-					"xclip":
-						exit_code = OS.execute("xclip", ["-selection", "clipboard", "-l", "1", "-quiet", "-t", mime_type, "-i", _get_temp_path(export_data)])
-					"wl-copy":
-						var cmd := "wl-copy -f -t %s < '%s'" % [mime_type, _get_temp_path(export_data)]
-						exit_code = OS.execute("bash", ["-c", cmd])
-				_clean_temp(export_data)
-				if exit_code != 0:
-					return ClipboardError.new(ErrorType.FailedExecuting, chosen_util + " " + str(exit_code))
-				else:
-					return ClipboardError.new(ErrorType.Ok)
+			# Trying every available clipboard util
+			var cmd := []
+			var exit_code := -99
+			_save_temp_to_disk(export_data)
+			for util in usable_utils:
+				if OS.execute("which", [util]) == 0:
+					match util:
+						"xclip":
+							cmd = ["xclip", "-selection", "clipboard", "-l", "1", "-quiet", "-t", mime_type, "-i", _get_temp_path(export_data)]
+							exit_code = OS.execute(cmd[0], cmd.slice(1, len(cmd)-1), cmd_output, true)
+						"wl-copy":
+							cmd = ["wl-copy -f -t %s < '%s'" % [mime_type, _get_temp_path(export_data)]]
+							var dict := OS.execute_with_pipe("bash", ["-c", "".join(cmd)], false)
+							if dict.is_empty():
+								return ClipboardError.new(ErrorType.FailedExecuting, cmd_output, " ".join(cmd))
+							var stdio: FileAccess = dict.stdio
+							cmd_output.append(stdio.get_pascal_string())
+							stdio.close()
+							var secs_waited := 0
+							while OS.is_process_running(dict.pid):
+								OS.delay_msec(1000)
+								secs_waited += 1
+								if secs_waited > 2:
+									OS.kill(dict.pid)
+									push_error("Timed out waiting for wl-copy")
+							exit_code = OS.get_process_exit_code(dict.pid)
+					if exit_code == 0:
+						_clean_temp(export_data)
+						return ClipboardError.new(ErrorType.Ok, cmd_output)
+			_clean_temp(export_data)
+			if exit_code == -99:
+				return ClipboardError.new(ErrorType.NoClipboardUtil, cmd_output, ", ".join(usable_utils))
 			else:
-				return ClipboardError.new(ErrorType.NoClipboardUtil, ", ".join(usable_utils))
+				return ClipboardError.new(ErrorType.FailedExecuting, cmd_output, " ".join(cmd))
 		"macOS":
 			#_save_temp_to_disk(export_data)
 			#var picture_type := export_data.format.to_upper()
-			#var e := OS.execute("osascript", ["-e", "set the clipboard to (read (POSIX file \"%s\") as %s picture)" % [_get_temp_path(export_data), picture_type]])
+			#var e := OS.execute("osascript", ["-e", "set the clipboard to (read (POSIX file \"%s\") as %s picture)" % [_get_temp_path(export_data), picture_type]], cmd_output, true)
 			#_clean_temp(export_data)
-			#return ClipboardError.new(ErrorType.FailedExecuting if e == -1 else ErrorType.Ok, "osascript")
-			return ClipboardError.new(ErrorType.UnsupportedPlatform)
+			#return ClipboardError.new(ErrorType.FailedExecuting if e == -1 else ErrorType.Ok, cmd_output, "osascript")
+			return ClipboardError.new(ErrorType.UnsupportedPlatform, cmd_output)
 		"Android":
 			# TODO: Implement "copy to clipboard" util for Android.
-			return ClipboardError.new(ErrorType.UnsupportedPlatform)
+			return ClipboardError.new(ErrorType.UnsupportedPlatform, cmd_output)
 		"Web":
 			JavaScriptBridge.eval("""
 				window.copyImageToClipboard = (data, mimeType) => {
@@ -88,9 +114,9 @@ static func copy_image(export_data: ImageExportData) -> ClipboardError:
 			for i in len(image_buf):
 				data[i] = image_buf[i]
 			JavaScriptBridge.get_interface("window").window.copyImageToClipboard(data, mime_type)
-			return ClipboardError.new(ErrorType.Ok)
+			return ClipboardError.new(ErrorType.Ok, cmd_output)
 		_:
-			return ClipboardError.new(ErrorType.UnsupportedPlatform)
+			return ClipboardError.new(ErrorType.UnsupportedPlatform, cmd_output)
 
 static func _save_temp_to_disk(export_data: ImageExportData) -> void:
 	var image_buf := export_data.image_to_buffer(export_data.generate_image())
@@ -99,7 +125,7 @@ static func _save_temp_to_disk(export_data: ImageExportData) -> void:
 	file.close()
 
 static func _clean_temp(export_data: ImageExportData) -> void:
-	pass#DirAccess.remove_absolute(_get_temp_path(export_data))
+	DirAccess.remove_absolute(_get_temp_path(export_data))
 
 static func _get_temp_path(export_data: ImageExportData) -> String:
 	return OS.get_temp_dir().path_join("godsvg_tmp_clipboard." + export_data.format)
@@ -115,15 +141,20 @@ enum ErrorType {
 class ClipboardError:
 	var type: ErrorType
 	var extra: String
+	var command_output: PackedStringArray
 	var message: String
-	func _init(_type: ErrorType, _extra: String = "") -> void:
+	func _init(_type: ErrorType, _cmd_out: PackedStringArray, _extra: String = "") -> void:
 		type = _type
 		extra = _extra
+		command_output = _cmd_out
 		match type:
 			ErrorType.FailedExecuting:
-				message = Translator.translate("Failed executing '%s'" % extra)
+				var cmd_out := '\n'.join(_cmd_out).strip_edges().replace("\n\n", '\n')
+				message = (Translator.translate("Failed executing \"%s\"") + "\n\n%s") % [extra, cmd_out]
+				if "xclip" in extra and "no authorization protocol" in cmd_out:
+					message += "\n\n" + Translator.translate("Consider installing 'wl-clipboard' if you're using Wayland.")
 			ErrorType.NoClipboardUtil:
-				message = Translator.translate("Failed to find a clipboard util. Make sure you've installed one of the following:\n%s" % extra)
+				message = Translator.translate("Failed to find a clipboard util.\nMake sure you've installed one of the following:\n%s" % extra)
 			ErrorType.UnsupportedPlatform:
 				message = Translator.translate("Unsupported platform")
 			_:

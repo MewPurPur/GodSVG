@@ -94,7 +94,11 @@ func _on_export_button_pressed() -> void:
 	FileUtils.open_export_dialog(export_data)
 
 func _on_clipboard_button_pressed() -> void:
-	ClipboardUtils.copy_image(export_data)
+	var error := ClipboardUtils.copy_image(export_data)
+	if error.type != ClipboardUtils.ErrorType.Ok:
+		var alert_dialog := HandlerGUI.AlertDialogScene.instantiate()
+		HandlerGUI.add_dialog(alert_dialog)
+		alert_dialog.setup(error.message)
 
 func _on_dropdown_value_changed(new_value: String) -> void:
 	var current_format := export_data.format
