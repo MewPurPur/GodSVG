@@ -47,13 +47,6 @@ static func copy_image(export_data: ImageExportData) -> ClipboardError:
 			const wayland_utils := ["xclip", "wl-copy"]
 			var usable_utils := (x11_utils if using_x11 else wayland_utils)
 			
-			# Finding out what system util is available.
-			var chosen_util := ""
-			for util in usable_utils:
-				if OS.execute("which", [util]) == 0:
-					chosen_util = util
-					break
-			
 			# Trying every available clipboard util
 			var cmd := []
 			var exit_code := -99
