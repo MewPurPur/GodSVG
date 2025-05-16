@@ -150,12 +150,12 @@ class ClipboardError:
 		match type:
 			ErrorType.FailedExecuting:
 				var cmd_out := '\n'.join(_cmd_out).strip_edges().replace("\n\n", '\n')
-				message = (Translator.translate("Failed executing \"%s\"") + "\n\n%s") % [extra, cmd_out]
+				message = "Failed executing \"%s\"\n\n%s" % [extra, cmd_out]
 				if "xclip" in extra and "no authorization protocol" in cmd_out:
-					message += "\n\n" + Translator.translate("Consider installing 'wl-clipboard' if you're using Wayland.")
+					message += "\n\nConsider installing 'wl-clipboard' if you're using Wayland."
 			ErrorType.NoClipboardUtil:
-				message = Translator.translate("Failed to find a clipboard util.\nMake sure you've installed one of the following:\n%s" % extra)
+				message = "Failed to find a clipboard util.\nMake sure you've installed one of the following:\n%s" % extra
 			ErrorType.UnsupportedPlatform:
-				message = Translator.translate("Unsupported platform")
+				message = "Unsupported platform"
 			_:
-				message = Translator.translate("Unknown error")
+				message = "Unknown error"
