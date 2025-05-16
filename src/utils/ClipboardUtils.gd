@@ -18,8 +18,7 @@ static func copy_image(export_data: ImageExportData) -> ClipboardError:
 	var cmd_output := []
 	match OS.get_name():
 		"Windows":
-			_save_temp_to_disk(export_data)
-			var path := (_get_temp_path(export_data).replace('\\', '/'))
+			var temp_path := _save_temp_to_disk(export_data)
 			var ps_script := ""
 			if export_data.format == "webp":
 				ps_script = """
@@ -27,15 +26,15 @@ static func copy_image(export_data: ImageExportData) -> ClipboardError:
 					$uri = [Uri]'file:///%s'
 					$img = [System.Windows.Media.Imaging.BitmapFrame]::Create($uri)
 					[System.Windows.Clipboard]::SetImage($img)
-				""" % path
+				""" % temp_path.replace('\\', '/')
 			else:  # PresentationCore does not appear to support transparency.
 				ps_script = """
 					Add-Type -AssemblyName System.Windows.Forms;
 					$bmp = New-Object Drawing.Bitmap('%s');
 					[Windows.Forms.Clipboard]::SetImage($bmp)
-				""" % path
+				""" % temp_path.replace('\\', '/')
 			var e := OS.execute("powershell.exe", ["-Command", ps_script], cmd_output, true)
-			_clean_temp(export_data)
+			_clean_temp(temp_path)
 			return ClipboardError.new(ErrorType.FailedExecuting if e < 0 else ErrorType.Ok, cmd_output)
 		"Linux", "FreeBSD", "NetBSD", "OpenBSD", "BSD":
 			# Finding out the display manager type.
@@ -58,15 +57,15 @@ static func copy_image(export_data: ImageExportData) -> ClipboardError:
 			# Trying every available clipboard util
 			var cmd := []
 			var exit_code := -99
-			_save_temp_to_disk(export_data)
+			var temp_path := _save_temp_to_disk(export_data)
 			for util in usable_utils:
 				if OS.execute("which", [util]) == 0:
 					match util:
 						"xclip":
-							cmd = ["xclip", "-selection", "clipboard", "-l", "1", "-quiet", "-t", mime_type, "-i", _get_temp_path(export_data)]
+							cmd = ["xclip", "-selection", "clipboard", "-l", "1", "-quiet", "-t", mime_type, "-i", temp_path]
 							exit_code = OS.execute(cmd[0], cmd.slice(1, len(cmd)-1), cmd_output, true)
 						"wl-copy":
-							cmd = ["wl-copy -f -t %s < '%s'" % [mime_type, _get_temp_path(export_data)]]
+							cmd = ["wl-copy -f -t %s < '%s'" % [mime_type, temp_path]]
 							var dict := OS.execute_with_pipe("bash", ["-c", "".join(cmd)], false)
 							if dict.is_empty():
 								return ClipboardError.new(ErrorType.FailedExecuting, cmd_output, " ".join(cmd))
@@ -82,9 +81,9 @@ static func copy_image(export_data: ImageExportData) -> ClipboardError:
 									push_error("Timed out waiting for wl-copy")
 							exit_code = OS.get_process_exit_code(dict.pid)
 					if exit_code == 0:
-						_clean_temp(export_data)
+						_clean_temp(temp_path)
 						return ClipboardError.new(ErrorType.Ok, cmd_output)
-			_clean_temp(export_data)
+			_clean_temp(temp_path)
 			if exit_code == -99:
 				return ClipboardError.new(ErrorType.NoClipboardUtil, cmd_output, ", ".join(usable_utils))
 			else:
@@ -118,17 +117,15 @@ static func copy_image(export_data: ImageExportData) -> ClipboardError:
 		_:
 			return ClipboardError.new(ErrorType.UnsupportedPlatform, cmd_output)
 
-static func _save_temp_to_disk(export_data: ImageExportData) -> void:
+static func _save_temp_to_disk(export_data: ImageExportData) -> String:
 	var image_buf := export_data.image_to_buffer(export_data.generate_image())
-	var file := FileAccess.open(_get_temp_path(export_data), FileAccess.WRITE)
+	var file := FileAccess.create_temp(FileAccess.ModeFlags.WRITE, "export", export_data.format, true)
 	file.store_buffer(image_buf)
 	file.close()
+	return file.get_path_absolute()
 
-static func _clean_temp(export_data: ImageExportData) -> void:
-	DirAccess.remove_absolute(_get_temp_path(export_data))
-
-static func _get_temp_path(export_data: ImageExportData) -> String:
-	return OS.get_temp_dir().path_join("godsvg_tmp_clipboard." + export_data.format)
+static func _clean_temp(temp_path: String) -> void:
+	DirAccess.remove_absolute(temp_path)
 
 enum ErrorType {
 	Ok,
