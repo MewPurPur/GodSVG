@@ -723,7 +723,7 @@ func remove_tab(idx: int) -> void:
 	if idx < _active_tab_index:
 		new_active_tab_index -= 1
 	
-	# Clear unnecessary files.
+	# Clear unnecessary files. This will clear the removed tab too.
 	var used_file_paths := PackedStringArray()
 	for tab in _tabs:
 		used_file_paths.append(tab.get_edited_file_path())
@@ -732,7 +732,7 @@ func remove_tab(idx: int) -> void:
 		for file_name in DirAccess.get_files_at(TabData.EDITED_FILES_DIR):
 			var full_path := TabData.EDITED_FILES_DIR.path_join(file_name)
 			if not full_path in used_file_paths:
-				DirAccess.remove_absolute(TabData.EDITED_FILES_DIR.path_join(file_name))
+				DirAccess.remove_absolute(full_path)
 	
 	if _tabs.is_empty():
 		_add_new_tab()
