@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="GodSVG"
-config/version="1.0-alpha8"
+config/version="1.0-alpha9"
 config/tags=PackedStringArray("project")
 run/main_scene="res://src/ui_parts/editor_scene.tscn"
 config/use_custom_user_dir=true
