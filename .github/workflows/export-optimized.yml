@@ -435,7 +435,7 @@ jobs:
         run: |
           cd godsvg
           mkdir -p build/android
-          godot --headless --export-debug "Android" build/android/GodSVG-debug.apk
+          godot --headless --export-debug "Android" build/android/GodSVG.Android.debug.apk
 
       - name: Export release project
         if: github.event_name == 'workflow_dispatch'
@@ -447,13 +447,13 @@ jobs:
           cd godsvg
           mkdir -p build/android
           echo "${{ secrets.KEYSTORE }}" | base64 -d > /tmp/release.keystore
-          godot --headless --export-release "Android" build/android/GodSVG.apk
+          godot --headless --export-release "Android" build/android/GodSVG.Android.apk
 
       - name: Upload debug artifact
         uses: actions/upload-artifact@v4
         with:
           name: ${{ env.PROJECT_NAME }}.debug.Android
-          path: godsvg/build/android/GodSVG-debug.apk
+          path: godsvg/build/android/GodSVG.Android.debug.apk
           if-no-files-found: error
           retention-days: 28
 
@@ -461,6 +461,6 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ${{ env.PROJECT_NAME }}.Android
-          path: godsvg/build/android/GodSVG.apk
+          path: godsvg/build/android/GodSVG.Android.apk
           if-no-files-found: ignore
           retention-days: 28
