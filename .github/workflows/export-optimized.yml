@@ -413,7 +413,8 @@ jobs:
         name: Build Godot template for Android
         run: |
           cd godot
-          scons p=android arch=arm64 generate_apk=yes swappy=no ${BUILD_OPTIONS} target=template_debug
+          scons p=android arch=arm32 swappy=no ${BUILD_OPTIONS} target=template_debug
+          scons p=android arch=arm64 swappy=no ${BUILD_OPTIONS} target=template_debug generate_apk=yes
           mkdir -p ~/.local/share/godot/export_templates/${GODOT_VERSION}.${GODOT_RELEASE}/
           mv ./bin/android_debug.apk ~/.local/share/godot/export_templates/${GODOT_VERSION}.${GODOT_RELEASE}/android_debug.apk
           mv ./bin/android_source.zip ~/.local/share/godot/export_templates/${GODOT_VERSION}.${GODOT_RELEASE}/android_source.zip
@@ -422,9 +423,10 @@ jobs:
         name: Build Godot release template for Android
         run: |
           cd godot
-          scons p=android arch=arm64 generate_apk=yes swappy=no ${BUILD_OPTIONS} target=template_release
+          scons p=android arch=arm32 swappy=no ${BUILD_OPTIONS} target=template_release
+          scons p=android arch=arm64 swappy=no ${BUILD_OPTIONS} target=template_release generate_apk=yes
           mkdir -p ~/.local/share/godot/export_templates/${GODOT_VERSION}.${GODOT_RELEASE}/
-          mv ./bin/android_debug.apk ~/.local/share/godot/export_templates/${GODOT_VERSION}.${GODOT_RELEASE}/android_release.apk
+          mv ./bin/android_release.apk ~/.local/share/godot/export_templates/${GODOT_VERSION}.${GODOT_RELEASE}/android_release.apk
           mv ./bin/android_source.zip ~/.local/share/godot/export_templates/${GODOT_VERSION}.${GODOT_RELEASE}/android_source.zip
 
       - name: Export debug project
