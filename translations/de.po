@@ -250,13 +250,12 @@ msgid "Snap size"
 msgstr "Rastergröße"
 
 #: src/ui_parts/display.gd
-#, fuzzy
 msgid "Paste reference image"
-msgstr "Referenzbild laden"
+msgstr "Referenzbild einfügen"
 
 #: src/ui_parts/donate_menu.gd
 msgid "Links to donation platforms"
-msgstr ""
+msgstr "Links zu Spendenplattformen"
 
 #: src/ui_parts/donate_menu.gd src/ui_parts/export_menu.gd
 #: src/ui_parts/import_warning_menu.gd src/ui_widgets/choose_name_dialog.gd
@@ -821,18 +820,16 @@ msgid "Update check failed"
 msgstr "Aktualisierungsprüfung fehlgeschlagen"
 
 #: src/ui_parts/update_menu.gd
-#, fuzzy
 msgid "View all releases"
-msgstr "Alle Elemente auswählen"
+msgstr "Alle Veröffentlichungen anzeigen"
 
 #: src/ui_parts/update_menu.gd
 msgid "GodSVG is up-to-date."
 msgstr "GodSVG ist auf dem neuesten Stand."
 
 #: src/ui_parts/update_menu.gd
-#, fuzzy
 msgid "New versions available!"
-msgstr "Neue Versionen"
+msgstr "Neue Versionen verfügbar!"
 
 #: src/ui_widgets/choose_name_dialog.gd
 msgid "Create"
