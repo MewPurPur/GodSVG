@@ -95,7 +95,7 @@ static func is_valid_url(color: String) -> bool:
 	color = color.strip_edges()
 	if not color.begins_with("url(") or not color.ends_with(")"):
 		return false
-	return AttributeID.get_validity(_get_url_id(color)) != AttributeID.ValidityLevel.INVALID
+	return AttributeID.get_validity(_get_url_id(color)) != Attribute.NameValidityLevel.INVALID
 
 static func _get_url_id(stripped_color: String) -> String:
 	return stripped_color.substr(4,

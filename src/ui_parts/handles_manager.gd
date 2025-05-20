@@ -132,6 +132,8 @@ func update_handles() -> void:
 			"line":
 				handles.append(XYHandle.new(element, "x1", "y1"))
 				handles.append(XYHandle.new(element, "x2", "y2"))
+			"use":
+				handles.append(XYHandle.new(element, "x", "y"))
 			"polygon", "polyline":
 				handles += generate_polyhandles(element)
 			"path":
