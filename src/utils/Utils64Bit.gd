@@ -78,3 +78,12 @@ b: PackedFloat64Array) -> PackedFloat64Array:
 	var ox := a_xx * b_ox + a_yx * b_oy + a_ox
 	var oy := a_xy * b_ox + a_yy * b_oy + a_oy
 	return PackedFloat64Array([xx, xy, yx, yy, ox, oy])
+
+# Vector2.project()
+static func vector_project(a: PackedFloat64Array, b: PackedFloat64Array) -> PackedFloat64Array:
+		var scalar: float = (dot(a, b) / dot(b, b))
+		return [b[0] * scalar, b[1] * scalar]
+
+# Vector2.dot()
+static func dot(a: PackedFloat64Array, b: PackedFloat64Array) -> float:
+	return a[0] * b[0] + a[1] * b[1]
