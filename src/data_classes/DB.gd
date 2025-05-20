@@ -1,12 +1,12 @@
 class_name DB extends RefCounted
 
-enum AttributeType {NUMERIC, COLOR, LIST, PATHDATA, ENUM, TRANSFORM_LIST, ID, UNKNOWN}
+enum AttributeType {NUMERIC, COLOR, LIST, PATHDATA, ENUM, TRANSFORM_LIST, ID, HREF, UNKNOWN}
 enum PercentageHandling {FRACTION, HORIZONTAL, VERTICAL, NORMALIZED}
 enum NumberRange {ARBITRARY, POSITIVE, UNIT}
 
 
 const recognized_elements: Array[String] = ["svg", "g", "circle", "ellipse", "rect",
-		"path", "line", "polyline", "polygon", "stop", "linearGradient", "radialGradient"]
+		"path", "line", "polyline", "polygon", "stop", "linearGradient", "radialGradient", "use"]
 
 const _element_icons: Dictionary[String, Texture2D] = {
 	"circle": preload("res://assets/icons/element/circle.svg"),
@@ -21,6 +21,7 @@ const _element_icons: Dictionary[String, Texture2D] = {
 	"linearGradient": preload("res://assets/icons/element/linearGradient.svg"),
 	"radialGradient": preload("res://assets/icons/element/radialGradient.svg"),
 	"stop": preload("res://assets/icons/element/stop.svg"),
+	"use": preload("res://assets/icons/element/unrecognized.svg"),
 }
 const _unrecognized_xnode_icon = preload("res://assets/icons/element/unrecognized.svg")
 
@@ -57,13 +58,14 @@ const recognized_attributes: Dictionary[String, Array] = {
 	"polyline": ["transform", "opacity", "fill", "fill-opacity", "stroke",
 			"stroke-opacity", "stroke-width", "stroke-linecap", "stroke-linejoin", "points"],
 	"stop": ["offset", "stop-color", "stop-opacity"],
+	"use": ["href", "transform", "x", "y"]
 }
 
 const _valid_children: Dictionary[String, Array] = {
 	"svg": ["svg", "path", "circle", "ellipse", "rect", "line", "polygon", "polyline",
-			"g", "linearGradient", "radialGradient"],
+			"g", "linearGradient", "radialGradient", "use"],
 	"g": ["svg", "path", "circle", "ellipse", "rect", "line", "polygon", "polyline",
-			"g", "linearGradient", "radialGradient"],
+			"g", "linearGradient", "radialGradient", "use"],
 	"linearGradient": ["stop"],
 	"radialGradient": ["stop"],
 	"circle": [],
@@ -74,6 +76,7 @@ const _valid_children: Dictionary[String, Array] = {
 	"polygon": [],
 	"polyline": [],
 	"stop": [],
+	"use": [],
 }
 
 const propagated_attributes: Array[String] = ["fill", "fill-opacity", "stroke",
@@ -113,6 +116,7 @@ const _attribute_types: Dictionary[String, AttributeType] = {
 	"gradientTransform": AttributeType.TRANSFORM_LIST,
 	"gradientUnits": AttributeType.ENUM,
 	"spreadMethod": AttributeType.ENUM,
+	"href": AttributeType.HREF,
 }
 
 const attribute_enum_values: Dictionary[String, Array] = {
@@ -218,6 +222,7 @@ static func element(name: String) -> Element:
 		"linearGradient": return ElementLinearGradient.new()
 		"radialGradient": return ElementRadialGradient.new()
 		"stop": return ElementStop.new()
+		"use": return ElementUse.new()
 		_: return ElementUnrecognized.new(name)
 
 static func attribute(name: String, value: String) -> Attribute:
@@ -229,6 +234,7 @@ static func attribute(name: String, value: String) -> Attribute:
 		DB.AttributeType.ENUM: return AttributeEnum.new(name, value)
 		DB.AttributeType.TRANSFORM_LIST: return AttributeTransformList.new(name, value)
 		DB.AttributeType.ID: return AttributeID.new(name, value)
+		DB.AttributeType.HREF: return AttributeHref.new(name, value)
 		_: return Attribute.new(name, value)
 
 

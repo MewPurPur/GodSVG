@@ -10,6 +10,7 @@ const element_content_types: Dictionary[String, PackedScene] = {
 	"ellipse": preload("res://src/ui_widgets/element_content_basic_shape.tscn"),
 	"rect": preload("res://src/ui_widgets/element_content_basic_shape.tscn"),
 	"line": preload("res://src/ui_widgets/element_content_basic_shape.tscn"),
+	"use": preload("res://src/ui_widgets/element_content_basic_shape.tscn"),
 	"stop": preload("res://src/ui_widgets/element_content_stop.tscn"),
 	"g": preload("res://src/ui_widgets/element_content_g.tscn"),
 	"svg": preload("res://src/ui_widgets/element_content_g.tscn"),
