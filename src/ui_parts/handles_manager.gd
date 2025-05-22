@@ -548,7 +548,7 @@ func _draw() -> void:
 								e1 = e2
 								t += PI/4
 							
-							if n != ceili(segments):
+							if n != ceili(segments) and not is_equal_approx(n, segments):
 								t = theta1 + delta_theta
 								var p2 := Utils.E(c, r, cosine, sine, t)
 								var e2 := Utils.Et(r, cosine, sine, t)
