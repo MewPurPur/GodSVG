@@ -528,7 +528,12 @@ func throw_mouse_motion_event() -> void:
 	var mm_event := InputEventMouseMotion.new()
 	var window := get_window()
 	# Must multiply by the final transform because the InputEvent is not yet parsed.
-	mm_event.position = window.get_mouse_position() * window.get_final_transform()
+	var mouse_position = window.get_mouse_position()
+	# On android, this sometimes returns 0.
+	if mouse_position == Vector2.ZERO:
+		return
+	
+	mm_event.position = mouse_position * window.get_final_transform()
 	Input.parse_input_event.call_deferred(mm_event)
 
 # Trigger a shortcut automatically.
