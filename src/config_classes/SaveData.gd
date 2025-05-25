@@ -67,7 +67,7 @@ func validate() -> void:
 		if _layout.has(location) and not _layout[location].is_empty():
 			return
 	_layout = {
-		LayoutLocation.TOP_LEFT: [Utils.LayoutPart.CODE_EDITOR, Utils.LayoutPart.INSPECTOR]
+		LayoutLocation.TOP_LEFT: [Utils.LayoutPart.INSPECTOR, Utils.LayoutPart.CODE_EDITOR]
 	}
 
 
@@ -83,7 +83,7 @@ const CURRENT_VERSION = 1
 		if language != new_value:
 			language = new_value
 			emit_changed()
-			Configs.change_locale.call_deferred()
+			Configs.sync_locale.call_deferred()
 			Configs.language_changed.emit.call_deferred()
 
 # Theming
@@ -183,7 +183,7 @@ const CURRENT_VERSION = 1
 		if background_color != new_value:
 			background_color = new_value
 			emit_changed()
-			Configs.change_background_color.call_deferred()
+			Configs.sync_background_color.call_deferred()
 
 @export var grid_color := Color(0.5, 0.5, 0.5):
 	set(new_value):

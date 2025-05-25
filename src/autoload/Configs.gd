@@ -66,9 +66,7 @@ func load_config() -> void:
 		reset_settings()
 		return
 	
-	savedata.get_active_tab().activate()
-	change_background_color()
-	change_locale()
+	post_load()
 
 
 func reset_settings() -> void:
@@ -78,6 +76,12 @@ func reset_settings() -> void:
 	savedata.set_shortcut_panel_slots({ 0: "ui_undo", 1: "ui_redo" })
 	savedata.set_palettes([Palette.new("Pure", Palette.Preset.PURE)])
 	save()
+	post_load()
+
+func post_load() -> void:
+	savedata.get_active_tab().activate()
+	sync_background_color()
+	sync_locale()
 
 
 func generate_highlighter() -> SVGHighlighter:
@@ -95,10 +99,10 @@ func generate_highlighter() -> SVGHighlighter:
 
 # Global effects from settings. Some of them should also be used on launch.
 
-func change_background_color() -> void:
+func sync_background_color() -> void:
 	RenderingServer.set_default_clear_color(savedata.background_color)
 
-func change_locale() -> void:
+func sync_locale() -> void:
 	if not savedata.language in TranslationServer.get_loaded_locales():
 		savedata.language = "en"
 	else:
