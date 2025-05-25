@@ -355,7 +355,7 @@ pen_tablet/driver.windows="dummy"
 [internationalization]
 
 rendering/root_node_auto_translate=false
-locale/translations=PackedStringArray("res://translations/bg.po", "res://translations/de.po", "res://translations/et.po", "res://translations/en.po", "res://translations/fr.po", "res://translations/nl.po", "res://translations/pt_BR.po", "res://translations/ru.po", "res://translations/uk.po", "res://translations/zh_CN.po")
+locale/translations=PackedStringArray("res://translations/bg.po", "res://translations/de.po", "res://translations/et.po", "res://translations/en.po", "res://translations/fr.po", "res://translations/nl.po", "res://translations/pt_BR.po", "res://translations/ru.po", "res://translations/uk.po", "res://translations/zh_CN.po", "res://translations/es.po")
 
 [physics]
 
@@ -366,3 +366,4 @@ locale/translations=PackedStringArray("res://translations/bg.po", "res://transla
 
 renderer/rendering_method="gl_compatibility"
 textures/vram_compression/import_etc2_astc=true
+environment/defaults/default_clear_color=Color(0.12, 0.132, 0.2, 1)
