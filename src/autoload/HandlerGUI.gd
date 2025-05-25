@@ -529,8 +529,9 @@ func throw_mouse_motion_event() -> void:
 	var window := get_window()
 	# Must multiply by the final transform because the InputEvent is not yet parsed.
 	var mouse_position = window.get_mouse_position()
-	# TODO This is a workaround because the returned mouse position is sometimes 0, likely a Godot issue.
-	# This has been reproduced on Android and on Web. Reproducing on web is especially easy with zoom at something like 110%.
+	# TODO This is a workaround because the returned mouse position is sometimes (0, 0),
+	# likely a Godot issue. This has been reproduced on Android and on Web.
+	# Reproducing on web is especially easy with zoom at something like 110% on Web.
 	if mouse_position == Vector2.ZERO:
 		return
 	
