@@ -360,7 +360,7 @@ func get_max_ui_scale() -> float:
 	var window_default_size := get_window_default_size()
 	# How much can the default size be increased before it takes all usable screen space.
 	var max_expansion := Vector2(usable_screen_size) / Vector2(window_default_size)
-	return clampf(snappedf(minf(max_expansion.x, max_expansion.y) - 0.025, 0.05), 0.75, 4.0)
+	return clampf(snappedf(minf(max_expansion.x, max_expansion.y) - 0.005, 0.01), 0.75, 4.0)
 
 func get_min_ui_scale() -> float:
 	return maxf(snappedf(get_max_ui_scale() / 2.0 - 0.125, 0.25), 0.75)
