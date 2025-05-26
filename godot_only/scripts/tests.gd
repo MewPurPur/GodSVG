@@ -5,12 +5,11 @@
 extends EditorScript
 
 func _run() -> void:
-	var pathdata_test_passed := pathdata_tests()
-	if pathdata_test_passed:
-		print("All tests passed!")
+	pathdata_tests()
+	transform_list_tests()
 
 
-func pathdata_tests(print_success := false) -> bool:
+func pathdata_tests() -> void:
 	const tests: Dictionary[String, Array] = {
 	"Jerky": [],
 	"M 3s 6 h 6 v 3 z": [],
@@ -31,13 +30,34 @@ func pathdata_tests(print_success := false) -> bool:
 	"M1 6.9e-1": [["M", 1.0, 0.69]],
 	}
 	
-	var tests_passed := true
 	for test in tests:
 		var result := AttributePathdata.pathdata_to_arrays(test)
 		var expected: Array = tests[test]
 		if result != expected:
-			tests_passed = false
 			print('"' + test + '" generated ' + str(result) + ', expected ' + str(expected))
-		elif print_success:
-			print('"' + test + '" generated ' + str(result) + ' (SUCCESS)')
-	return tests_passed
+
+func transform_list_tests() -> void:
+	var tests: Dictionary[String, Array] = {
+	"Jerky": [],
+	"matrix(1, 0, 0, 5, 0, 3)": [Transform.TransformMatrix.new(1, 0, 0, 5, 0, 3)],
+	"matrix(1 0 0 5 0 3)": [Transform.TransformMatrix.new(1, 0, 0, 5, 0, 3)],
+	}
+	
+	for test in tests:
+		var test_passed := true
+		var result := AttributeTransformList.text_to_transform_list(test)
+		var expected := tests[test]
+		if expected.size() != result.size():
+			test_passed = false
+		else:
+			for i in expected.size():
+				if expected[i] is Transform.TransformMatrix and\
+				(not result[i] is Transform.TransformMatrix or\
+				expected[i].x1 != result[i].x1 or expected[i].x2 != result[i].x2 or\
+				expected[i].y1 != result[i].y1 or expected[i].y2 != result[i].y2 or\
+				expected[i].o1 != result[i].o1 or expected[i].o2 != result[i].o2):
+					test_passed = false
+					break
+		
+		if not test_passed:
+			print('"' + test + '" generated ' + str(result))
