@@ -123,15 +123,15 @@ static func text_to_transform_list(text: String) -> Array[Transform]:
 			@warning_ignore("shadowed_global_identifier")
 			var char := transform_params[idx]
 			
-			if comma_exhausted and not char in " \n\t\r":
-				comma_exhausted = false
-			
 			var start_idx := idx
 			var end_idx := idx
 			var number_proceed := true
 			var passed_decimal_point := false
 			var exponent_just_passed := true
 			while number_proceed and idx < transform_params.length():
+				if comma_exhausted and not char in " \n\t\r":
+					comma_exhausted = false
+				
 				char = transform_params[idx]
 				match char:
 					"0", "1", "2", "3", "4", "5", "6", "7", "8", "9":
