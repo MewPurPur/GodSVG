@@ -60,6 +60,14 @@ func get_all_element_descendants() -> Array[Element]:
 			elements += child.get_all_element_descendants()
 	return elements
 
+func get_all_valid_element_descendants() -> Array[Element]:
+	var elements: Array[Element] = []
+	for child in get_children():
+		if child.is_element() and DB.is_child_element_valid(self.name, child.name):
+			elements.append(child)
+			elements += child.get_all_valid_element_descendants()
+	return elements
+
 # Gets the basic XML nodes too.
 func get_all_xnode_descendants() -> Array[XNode]:
 	var xnodes: Array[XNode] = []
