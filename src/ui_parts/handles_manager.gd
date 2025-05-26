@@ -269,7 +269,7 @@ func _draw() -> void:
 				var rx: float = element.get_rx()
 				var ry: float = element.get_ry()
 				var points := PackedVector2Array()
-				if rx == 0 and ry == 0:
+				if rx == 0 or ry == 0:
 					# Basic rectangle.
 					points = [Vector2(x, y), Vector2(x + rect_width, y),
 							Vector2(x + rect_width, y + rect_height),
