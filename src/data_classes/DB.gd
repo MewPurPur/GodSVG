@@ -6,7 +6,8 @@ enum NumberRange {ARBITRARY, POSITIVE, UNIT}
 
 
 const recognized_elements: Array[String] = ["svg", "g", "circle", "ellipse", "rect",
-		"path", "line", "polyline", "polygon", "stop", "linearGradient", "radialGradient", "use"]
+		"path", "line", "polyline", "polygon", "stop", "linearGradient", "radialGradient",
+		"use"]
 
 const _element_icons: Dictionary[String, Texture2D] = {
 	"circle": preload("res://assets/icons/element/circle.svg"),

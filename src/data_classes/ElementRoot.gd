@@ -28,7 +28,7 @@ func get_xnode(loc: PackedInt32Array) -> XNode:
 	return current_element
 
 func get_element_by_id(id: String) -> Element:
-	for element in get_all_element_descendants():
+	for element in get_all_valid_element_descendants():
 		if element.get_attribute_value("id") == id:
 			return element
 	return null

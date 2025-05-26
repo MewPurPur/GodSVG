@@ -116,7 +116,7 @@ func update_handles() -> void:
 	
 	_handles_update_pending = false
 	handles.clear()
-	for element in State.root_element.get_all_element_descendants():
+	for element in State.root_element.get_all_valid_element_descendants():
 		match element.name:
 			"circle":
 				handles.append(XYHandle.new(element, "cx", "cy"))
@@ -197,7 +197,7 @@ func _draw() -> void:
 	var hovered_multiline := PackedVector2Array()
 	var hovered_selected_multiline := PackedVector2Array()
 	
-	for element: Element in State.root_element.get_all_element_descendants():
+	for element: Element in State.root_element.get_all_valid_element_descendants():
 		# Determine if the element is hovered/selected or has a hovered/selected parent.
 		var element_hovered := State.is_hovered(element.xid, -1, true)
 		var element_selected := State.is_selected(element.xid, -1, true)
