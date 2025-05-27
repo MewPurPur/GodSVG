@@ -22,7 +22,7 @@ const _element_icons: Dictionary[String, Texture2D] = {
 	"linearGradient": preload("res://assets/icons/element/linearGradient.svg"),
 	"radialGradient": preload("res://assets/icons/element/radialGradient.svg"),
 	"stop": preload("res://assets/icons/element/stop.svg"),
-	"use": preload("res://assets/icons/element/unrecognized.svg"),
+	"use": preload("res://assets/icons/element/use.svg"),
 }
 const _unrecognized_xnode_icon = preload("res://assets/icons/element/unrecognized.svg")
 
