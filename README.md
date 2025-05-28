@@ -4,7 +4,7 @@
   <img src="godot_only/source_assets/splash.svg" width="480" alt="GodSVG logo">
 </p>
 
-**[GodSVG](https://godsvg.com) is an editor for Scalable Vector Graphics (SVG) files.** Unlike other editors, it represents the SVG code directly, doesn't add any metadata, and even lets you edit the SVG code in real time. GodSVG aims to be an editor for SVG code with low abstraction, producing clean and optimized files.
+**[GodSVG](https://godsvg.com) is a structured SVG editor.** Unlike other editors, GodSVG represents the SVG code directly, doesn't add any metadata, and even lets you edit the code in real time. It aims to be a structured SVG editor with low abstraction, producing clean, precise, optimized files.
 
 >[!IMPORTANT]
 >GodSVG is not officially released, it's currently in late alpha.
@@ -14,8 +14,8 @@
 ## Features
 
 - **Interactive SVG editing:** Modify individual elements of an SVG file using a user-friendly interface.
-- **Real-time code:** As you manipulate elements in the UI, code is instantly generated and can be edited.
-- **Optimized SVGs:** The generated SVG files are small and efficient, and there are many options to assist with optimization.
+- **Real-time code:** As you manipulate elements in the UI, code is instantly generated and can be edited. Generated code is human-readable, since no metadata is added.
+- **Optimized SVGs:** The generated SVG files are small and efficient, and GodSVG provides various options to assist with optimization.
 
 ![image](https://github.com/user-attachments/assets/d40e4de8-12ba-483b-ac41-878047c8e4f7)
 
