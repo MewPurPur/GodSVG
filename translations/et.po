@@ -71,7 +71,7 @@ msgstr ""
 "Graafika saab eksportida ainult SVG-na, sest selle suurus pole defineeritud."
 
 #: src/autoload/State.gd src/ui_parts/good_file_dialog.gd
-#: src/ui_widgets/alert_dialog.gd
+#: src/ui_widgets/alert_dialog.gd src/utils/FileUtils.gd
 msgid "Alert!"
 msgstr "Hoiatus!"
 
@@ -299,6 +299,10 @@ msgstr "Laius"
 msgid "Height"
 msgstr "Kõrgus"
 
+#: src/ui_parts/export_menu.gd src/utils/TranslationUtils.gd
+msgid "Copy"
+msgstr "Kopeeri"
+
 #: src/ui_parts/export_menu.gd
 msgid "Preview image size is limited to {dimensions}"
 msgstr "Eelvaade on piiratud suurusele {dimensions}"
@@ -327,13 +331,13 @@ msgstr "Lülita peidetud failide kuvamine sisse"
 msgid "Search files"
 msgstr "Otsi faile"
 
-#: src/ui_parts/good_file_dialog.gd
-msgid "Select"
-msgstr "Vali"
-
 #: src/ui_parts/good_file_dialog.gd src/utils/FileUtils.gd
 msgid "Save"
 msgstr "Salvesta"
+
+#: src/ui_parts/good_file_dialog.gd
+msgid "Select"
+msgstr "Vali"
 
 #: src/ui_parts/good_file_dialog.gd
 msgid "Path"
@@ -791,7 +795,7 @@ msgstr "Keri edasi"
 msgid "This SVG is not bound to a file location yet."
 msgstr "See SVG ei ole veel seotud failiasukohaga."
 
-#: src/ui_parts/update_menu.gd
+#: src/ui_parts/update_menu.gd src/utils/FileUtils.gd
 msgid "Retry"
 msgstr "Proovi uuesti"
 
@@ -952,12 +956,37 @@ msgid "GodSVG doesn’t recognize this attribute"
 msgstr "GodSVG ei tunne seda atribuuti"
 
 #: src/utils/FileUtils.gd
-msgid "The file couldn't be opened."
+msgid "The following files were discarded:"
+msgstr ""
+
+#: src/utils/FileUtils.gd
+msgid "{file_path} was discarded."
+msgstr ""
+
+#: src/utils/FileUtils.gd
+msgid "Discarded files"
+msgstr ""
+
+#: src/utils/FileUtils.gd
+msgid "Proceed"
+msgstr ""
+
+#: src/utils/FileUtils.gd
+#, fuzzy
+msgid "{file_path} couldn't be opened."
 msgstr "Faili avamine ebaõnnestus."
 
 #: src/utils/FileUtils.gd
 msgid "Check if the file still exists in the selected file path."
 msgstr "Kontrollige, kas fail asub veel valitud asukohas."
+
+#: src/utils/FileUtils.gd
+msgid "Proceed with importing the rest of the files?"
+msgstr ""
+
+#: src/utils/FileUtils.gd
+msgid "Proceed for all files that can't be opened"
+msgstr ""
 
 #: src/utils/FileUtils.gd
 msgid "Save the file?"
@@ -980,7 +1009,8 @@ msgid "Don't save"
 msgstr "Ära salvesta"
 
 #: src/utils/FileUtils.gd
-msgid "The imported file is already being edited inside GodSVG."
+#, fuzzy
+msgid "{file_path} is already being edited inside GodSVG."
 msgstr "Imporditud fail on juba avatud GodSVGs."
 
 #: src/utils/FileUtils.gd
@@ -1011,6 +1041,16 @@ msgstr "Sulge kaardid paremal"
 
 #: src/utils/TranslationUtils.gd
 msgid "Close all other tabs"
+msgstr "Sulge teised kaardid"
+
+#: src/utils/TranslationUtils.gd
+#, fuzzy
+msgid "Close empty tabs"
+msgstr "Sulge kaart"
+
+#: src/utils/TranslationUtils.gd
+#, fuzzy
+msgid "Close saved tabs"
 msgstr "Sulge teised kaardid"
 
 #: src/utils/TranslationUtils.gd
@@ -1068,10 +1108,6 @@ msgstr "Võta tagasi"
 #: src/utils/TranslationUtils.gd
 msgid "Redo"
 msgstr "Tee uuesti"
-
-#: src/utils/TranslationUtils.gd
-msgid "Copy"
-msgstr "Kopeeri"
 
 #: src/utils/TranslationUtils.gd
 msgid "Paste"
@@ -1271,6 +1307,11 @@ msgid "Viewport"
 msgstr "Vaade"
 
 #: src/utils/TranslationUtils.gd
+#, fuzzy
+msgid "Select {format} files"
+msgstr "Vali {format} fail"
+
+#: src/utils/TranslationUtils.gd
 msgid "Select an image"
 msgstr "Vali pilt"
 
@@ -1283,16 +1324,16 @@ msgid "Save the {format} file"
 msgstr "Salvesta {format} fail"
 
 #: src/utils/TranslationUtils.gd
-msgid ""
-"The file extension {extension} is unsupported for this operation. Only "
-"{extension_list} files are supported."
-msgstr ""
-"Faililaiend {extension} ei ole selle operatsiooni jaoks toetatud. Toetatud "
-"on {extension_list} failid."
-
-#: src/utils/TranslationUtils.gd
-msgid "The file extension is empty. Only {extension_list} files are supported."
+#, fuzzy
+msgid "Only {extension_list} files are supported for this operation."
 msgstr "Faililaiend on tühi. Ainult {extension_list} on toetatud."
+
+#~ msgid ""
+#~ "The file extension {extension} is unsupported for this operation. Only "
+#~ "{extension_list} files are supported."
+#~ msgstr ""
+#~ "Faililaiend {extension} ei ole selle operatsiooni jaoks toetatud. "
+#~ "Toetatud on {extension_list} failid."
 
 #~ msgid "Save the .\"{format}\" file"
 #~ msgstr "Salvesta .\"{format}\" fail"

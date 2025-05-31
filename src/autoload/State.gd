@@ -71,16 +71,9 @@ func _enter_tree() -> void:
 		cmdline_args.remove_at(0)
 	
 	if cmdline_args.size() >= 1:
-		# Need to wait a frame so the import warnings panel can be added.
+		# Need to wait a frame so the import warnings panel becomes available.
 		await get_tree().process_frame
-		
-		var used_tab_paths := PackedStringArray()
-		for tab in Configs.savedata.get_tabs():
-			used_tab_paths.append(tab.svg_file_path)
-		
-		for path in cmdline_args:
-			if path.get_extension() == "svg" and not path in used_tab_paths:
-				FileUtils.apply_svg_from_path(path)
+		FileUtils.apply_svgs_from_paths(cmdline_args)
 
 func setup_from_tab() -> void:
 	var active_tab := Configs.savedata.get_active_tab()

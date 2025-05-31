@@ -72,7 +72,7 @@ msgstr ""
 "ist."
 
 #: src/autoload/State.gd src/ui_parts/good_file_dialog.gd
-#: src/ui_widgets/alert_dialog.gd
+#: src/ui_widgets/alert_dialog.gd src/utils/FileUtils.gd
 msgid "Alert!"
 msgstr "Achtung!"
 
@@ -303,6 +303,10 @@ msgstr "Breite"
 msgid "Height"
 msgstr "Höhe"
 
+#: src/ui_parts/export_menu.gd src/utils/TranslationUtils.gd
+msgid "Copy"
+msgstr "Kopieren"
+
 #: src/ui_parts/export_menu.gd
 msgid "Preview image size is limited to {dimensions}"
 msgstr "Vorschaubildgröße ist auf {dimensions} limitiert."
@@ -331,13 +335,13 @@ msgstr "Versteckte Dateien anzeigen"
 msgid "Search files"
 msgstr "Datei suchen"
 
-#: src/ui_parts/good_file_dialog.gd
-msgid "Select"
-msgstr "Auswählen"
-
 #: src/ui_parts/good_file_dialog.gd src/utils/FileUtils.gd
 msgid "Save"
 msgstr "Speichern"
+
+#: src/ui_parts/good_file_dialog.gd
+msgid "Select"
+msgstr "Auswählen"
 
 #: src/ui_parts/good_file_dialog.gd
 msgid "Path"
@@ -798,7 +802,7 @@ msgstr "Nach vorne scrollen"
 msgid "This SVG is not bound to a file location yet."
 msgstr "Dieses SVG ist noch nicht an einen Dateiort gebunden."
 
-#: src/ui_parts/update_menu.gd
+#: src/ui_parts/update_menu.gd src/utils/FileUtils.gd
 msgid "Retry"
 msgstr "Erneut versuchen"
 
@@ -957,12 +961,37 @@ msgid "GodSVG doesn’t recognize this attribute"
 msgstr "GodSVG erkennt diese Attribute nicht"
 
 #: src/utils/FileUtils.gd
-msgid "The file couldn't be opened."
+msgid "The following files were discarded:"
+msgstr ""
+
+#: src/utils/FileUtils.gd
+msgid "{file_path} was discarded."
+msgstr ""
+
+#: src/utils/FileUtils.gd
+msgid "Discarded files"
+msgstr ""
+
+#: src/utils/FileUtils.gd
+msgid "Proceed"
+msgstr ""
+
+#: src/utils/FileUtils.gd
+#, fuzzy
+msgid "{file_path} couldn't be opened."
 msgstr "Die Datei konnte nicht geöffnet werden."
 
 #: src/utils/FileUtils.gd
 msgid "Check if the file still exists in the selected file path."
 msgstr "Prüfen, ob die Datei im ausgewählten Dateipfad noch existiert."
+
+#: src/utils/FileUtils.gd
+msgid "Proceed with importing the rest of the files?"
+msgstr ""
+
+#: src/utils/FileUtils.gd
+msgid "Proceed for all files that can't be opened"
+msgstr ""
 
 #: src/utils/FileUtils.gd
 msgid "Save the file?"
@@ -985,7 +1014,8 @@ msgid "Don't save"
 msgstr "Nicht speichern"
 
 #: src/utils/FileUtils.gd
-msgid "The imported file is already being edited inside GodSVG."
+#, fuzzy
+msgid "{file_path} is already being edited inside GodSVG."
 msgstr "Die importierte Datei wird bereits in GodSVG bearbeitet."
 
 #: src/utils/FileUtils.gd
@@ -1016,6 +1046,16 @@ msgstr "Alle Registerkarten rechts schließen"
 
 #: src/utils/TranslationUtils.gd
 msgid "Close all other tabs"
+msgstr "Alle anderen Registerkarten schließen"
+
+#: src/utils/TranslationUtils.gd
+#, fuzzy
+msgid "Close empty tabs"
+msgstr "Registerkarte schließen"
+
+#: src/utils/TranslationUtils.gd
+#, fuzzy
+msgid "Close saved tabs"
 msgstr "Alle anderen Registerkarten schließen"
 
 #: src/utils/TranslationUtils.gd
@@ -1073,10 +1113,6 @@ msgstr "Rückgängig"
 #: src/utils/TranslationUtils.gd
 msgid "Redo"
 msgstr "Wiederholen"
-
-#: src/utils/TranslationUtils.gd
-msgid "Copy"
-msgstr "Kopieren"
 
 #: src/utils/TranslationUtils.gd
 msgid "Paste"
@@ -1276,6 +1312,11 @@ msgid "Viewport"
 msgstr "Ansichtsfenster"
 
 #: src/utils/TranslationUtils.gd
+#, fuzzy
+msgid "Select {format} files"
+msgstr "{format}-Datei auswählen"
+
+#: src/utils/TranslationUtils.gd
 msgid "Select an image"
 msgstr "Bild auswählen"
 
@@ -1288,18 +1329,18 @@ msgid "Save the {format} file"
 msgstr "Die {format}-Datei speichern"
 
 #: src/utils/TranslationUtils.gd
-msgid ""
-"The file extension {extension} is unsupported for this operation. Only "
-"{extension_list} files are supported."
-msgstr ""
-"Die Dateierweiterung \"{extension}\" ist für diese Operation nicht "
-"unterstützt. Nur {extension_list} Dateien werden unterstützt."
-
-#: src/utils/TranslationUtils.gd
-msgid "The file extension is empty. Only {extension_list} files are supported."
+#, fuzzy
+msgid "Only {extension_list} files are supported for this operation."
 msgstr ""
 "Die Dateierweiterung ist leer. Nur {extension_list} Dateien werden "
 "unterstützt."
+
+#~ msgid ""
+#~ "The file extension {extension} is unsupported for this operation. Only "
+#~ "{extension_list} files are supported."
+#~ msgstr ""
+#~ "Die Dateierweiterung \"{extension}\" ist für diese Operation nicht "
+#~ "unterstützt. Nur {extension_list} Dateien werden unterstützt."
 
 #~ msgid "Save the .\"{format}\" file"
 #~ msgstr "Die .\"{format}\" Datei speichern"

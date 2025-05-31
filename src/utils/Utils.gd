@@ -29,6 +29,19 @@ static func is_string_lower(string: String) -> bool:
 static func get_file_name(string: String) -> String:
 	return string.get_file().trim_suffix("." + string.get_extension())
 
+# Method for showing the file path without stuff like "/home/mewpurpur/".
+# This information is pretty much always unnecessary clutter.
+static func simplify_file_path(file_path: String) -> String:
+	var home_dir: String
+	if OS.get_name() == "Windows":
+		home_dir = OS.get_environment("USERPROFILE")
+	else:
+		home_dir = OS.get_environment("HOME")
+	
+	if file_path.begins_with(home_dir):
+		return "~/" + file_path.trim_prefix(home_dir).trim_prefix("/").trim_prefix("\\")
+	return file_path
+
 
 # Resize the control to be resized automatically to its text width, up to a maximum.
 # The property name defaults account for most controls that may need to use this.

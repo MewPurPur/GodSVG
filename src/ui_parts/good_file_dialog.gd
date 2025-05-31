@@ -5,7 +5,8 @@ const ChooseNameDialogScene = preload("res://src/ui_widgets/choose_name_dialog.t
 const ConfirmDialogScene = preload("res://src/ui_widgets/confirm_dialog.tscn")
 const AlertDialogScene = preload("res://src/ui_widgets/alert_dialog.tscn")
 
-signal file_selected(path: String)
+# Full absolute file paths of all selected files.
+signal files_selected(paths: PackedStringArray)
 
 const folder_icon = preload("res://assets/icons/Folder.svg")
 const broken_file_icon = preload("res://assets/icons/FileBroken.svg")
@@ -15,16 +16,15 @@ const system_dirs_to_show: Array[OS.SystemDir] = [OS.SYSTEM_DIR_DESKTOP,
 		OS.SYSTEM_DIR_DOCUMENTS, OS.SYSTEM_DIR_DOWNLOADS, OS.SYSTEM_DIR_MOVIES,
 		OS.SYSTEM_DIR_MUSIC, OS.SYSTEM_DIR_PICTURES]
 
-enum FileMode {SELECT, SAVE}
+enum FileMode {SELECT, MULTI_SELECT, SAVE}
 var mode: FileMode
 
 var current_dir := ""
-var current_file := ""
-var default_file := ""  # The file you opened this dialog with.
 var extensions := PackedStringArray()
-
 var item_height := 16
 var search_text := ""
+
+var default_saved_file := ""  # The file you opened this dialog with.
 
 var dir_cursor: DirAccess
 
@@ -61,9 +61,20 @@ class Actions:
 		selection_callback = on_selection
 		right_click_callback = on_right_click
 
+
+# Queueing is necessary for this one because in Godot, "Enter" is hard-coded
+# to activate the selected items.
+var _activation_callback_pending := false
 func call_activation_callback(actions: Actions) -> void:
-	if is_instance_valid(actions) and actions.activation_callback.is_valid():
+	var actual_activation_callback := func() -> void:
+		if not _activation_callback_pending:
+			return
+		_activation_callback_pending = false
 		actions.activation_callback.call()
+	
+	if is_instance_valid(actions) and actions.activation_callback.is_valid():
+		actual_activation_callback.call_deferred()
+		_activation_callback_pending = true
 
 func call_selection_callback(actions: Actions) -> void:
 	if is_instance_valid(actions) and actions.selection_callback.is_valid():
@@ -77,23 +88,27 @@ func call_right_click_callback(actions: Actions) -> void:
 func setup(new_dir: String, new_file: String, new_mode: FileMode,
 new_extensions: PackedStringArray) -> void:
 	current_dir = new_dir
-	current_file = new_file
 	if new_mode == FileMode.SAVE:
-		default_file = new_file
+		default_saved_file = new_file
 	mode = new_mode
 	extensions = new_extensions
 
 
 func _ready() -> void:
 	# Signal connections.
+	folder_up_button.pressed.connect(_on_folder_up_button_pressed)
+	file_list.item_selected.connect(_on_file_list_item_selected)
+	file_list.multi_selected.connect(_on_file_list_item_multi_selected)
 	refresh_button.pressed.connect(refresh_dir)
 	close_button.pressed.connect(queue_free)
-	file_selected.connect(queue_free.unbind(1))
-	special_button.pressed.connect(select_file)
+	files_selected.connect(queue_free.unbind(1))
+	special_button.pressed.connect(select_files)
 	file_list.get_v_scroll_bar().value_changed.connect(_setup_file_images.unbind(1))
 	# Rest of setup.
-	if mode == FileMode.SELECT:
+	if mode != FileMode.SAVE:
 		file_container.hide()
+		if mode == FileMode.MULTI_SELECT:
+			file_list.select_mode = ItemList.SELECT_MULTI
 	
 	var extension_panel_stylebox := extension_panel.get_theme_stylebox("panel")
 	extension_panel_stylebox.content_margin_top -= 4.0
@@ -111,46 +126,45 @@ func _ready() -> void:
 		title_label.text = TranslationUtils.get_file_dialog_save_mode_title_text(extensions[0])
 		extension_label.text = "." + extensions[0]
 	else:
-		title_label.text = TranslationUtils.get_file_dialog_select_mode_title_text(extensions)
+		title_label.text = TranslationUtils.get_file_dialog_select_mode_title_text(
+				mode == FileMode.MULTI_SELECT, extensions)
 	
 	close_button.text = Translator.translate("Close")
-	special_button.text = Translator.translate("Select") if\
-			mode == FileMode.SELECT else Translator.translate("Save")
+	special_button.text = Translator.translate("Save") if\
+			mode == FileMode.SAVE else Translator.translate("Select")
 	path_label.text = Translator.translate("Path") + ":"
 	
 	# Should always be safe.
 	refresh_dir()
 	if mode == FileMode.SAVE:
-		set_file(current_file)
+		sync_file_field()
 		file_field.grab_focus()
 	else:
 		special_button.disabled = true
 		special_button.mouse_default_cursor_shape = Control.CURSOR_ARROW
 
 
-func enter_dir(dir: String) -> void:
-	if search_button.button_pressed:
-		search_button.button_pressed = false
-	set_dir(dir)
-
-func refresh_dir() -> void:
-	set_dir(current_dir)
-
 func file_sort(file1: String, file2: String) -> bool:
 	return file1.naturalnocasecmp_to(file2) == -1
 
-# This function requires a safe input.
-func set_dir(dir: String) -> void:
+func refresh_dir() -> void:
+	open_dir(current_dir)
+
+func open_dir(dir: String) -> void:
+	if dir != current_dir and search_button.button_pressed:
+		search_button.button_pressed = false
+	
 	dir_cursor = DirAccess.open(dir)
-	if !is_instance_valid(dir_cursor):
+	if not is_instance_valid(dir_cursor):
+		# TODO implement a fallback.
 		return
 	
 	file_list.clear()
 	file_list.get_v_scroll_bar().value = 0
 	# Basic setup.
-	unfocus_file()
 	current_dir = dir
-	path_field.text = current_dir
+	sync_to_selection()
+	sync_path_field()
 	dir_cursor.include_hidden = Configs.savedata.file_dialog_show_hidden
 	# Rebuild the system dirs, as we may now need to highlight the current one.
 	drives_list.clear()
@@ -162,7 +176,7 @@ func set_dir(dir: String) -> void:
 		
 		var item_idx := drives_list.add_item(drive_name, get_drive_icon(drive_path))
 		drives_list.set_item_metadata(item_idx,
-				Actions.new(Callable(), enter_dir.bind(drive_path)))
+				Actions.new(Callable(), open_dir.bind(drive_path)))
 		if current_dir == drive_path:
 			drives_list.select(item_idx)
 	drives_list.sort_items_by_text()
@@ -191,7 +205,7 @@ func set_dir(dir: String) -> void:
 		var item_idx := file_list.add_item(directory, folder_icon)
 		var dir_path := current_dir.path_join(directory)
 		file_list.set_item_metadata(item_idx, Actions.new(
-				enter_dir.bind(dir_path), unfocus_file, open_dir_context.bind(dir_path)))
+				open_dir.bind(dir_path), sync_to_selection, open_dir_context.bind(dir_path)))
 	
 	for file in files:
 		if not file.get_extension() in extensions or\
@@ -200,27 +214,28 @@ func set_dir(dir: String) -> void:
 		
 		var item_idx := file_list.add_item(file, null)
 		file_list.set_item_metadata(item_idx, Actions.new(
-				select_file, focus_file.bind(file), open_file_context.bind(file)))
+				select_files, sync_to_selection, open_file_context))
 	# If we don't await this stuff, sometimes the item_rect we get is all wrong.
 	await file_list.draw
 	await get_tree().process_frame
 	_setup_file_images()
 
-func set_file(file: String) -> void:
-	if mode == FileMode.SELECT:
-		if file.is_empty():
-			special_button.disabled = true
-			special_button.mouse_default_cursor_shape = Control.CURSOR_ARROW
-		else:
-			special_button.disabled = false
-			special_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-	if not file.is_empty() and not file.get_extension() in extensions and\
-	extensions.size() == 1:
-		file += "." + extensions[0]
-	file_list.ensure_current_is_visible()
-	current_file = file
-	if not file.is_empty():
-		file_field.text = file
+func sync_file_field() -> void:
+	file_field.text = add_extension_if_missing(get_save_name())
+
+func add_extension_if_missing(file_name: String) -> String:
+	if not file_name.is_empty() and not file_name.get_extension() in extensions and\
+	extensions.size() >= 1:
+		return file_name + "." + extensions[0]
+	else:
+		return file_name
+
+func get_save_name() -> String:
+	var selected_file_paths := get_selected_file_paths()
+	if selected_file_paths.is_empty() or selected_file_paths[0].get_extension().is_empty():
+		return default_saved_file
+	else:
+		return selected_file_paths[0].get_file()
 
 # For optimization, only generate the visible files' images.
 func _setup_file_images() -> void:
@@ -254,25 +269,53 @@ func _setup_file_images() -> void:
 						file_list.set_item_icon(item_idx, ImageTexture.create_from_image(img))
 
 
-func select_file() -> void:
-	if mode == FileMode.SAVE and FileAccess.file_exists(current_dir.path_join(current_file)):
-		var confirm_dialog := ConfirmDialogScene.instantiate()
-		HandlerGUI.add_dialog(confirm_dialog)
-		confirm_dialog.setup(Translator.translate("Alert!"), Translator.translate(
-				"A file named \"{file_name}\" already exists. Replacing will overwrite its contents!").format(
-				{"file_name": current_file}), Translator.translate("Replace"),
-				_on_replace_button_pressed)
+func select_files() -> void:
+	if mode == FileMode.SAVE:
+		var save_name := get_save_name()
+		if FileAccess.file_exists(current_dir.path_join(save_name)):
+			var confirm_dialog := ConfirmDialogScene.instantiate()
+			HandlerGUI.add_dialog(confirm_dialog)
+			confirm_dialog.setup(Translator.translate("Alert!"), Translator.translate(
+					"A file named \"{file_name}\" already exists. Replacing will overwrite its contents!").format(
+					{"file_name": save_name}), Translator.translate("Replace"),
+					files_selected.emit.bind(PackedStringArray([current_dir.path_join(save_name)])))
+		else:
+			files_selected.emit(PackedStringArray([current_dir.path_join(save_name)]))
 	else:
-		file_selected.emit(current_dir.path_join(current_file))
+		files_selected.emit(get_selected_file_paths())
 
-func focus_file(path: String) -> void:
-	set_file(path.get_file())
+func sync_to_selection() -> void:
+	file_list.ensure_current_is_visible()
+	if mode != FileMode.SAVE:
+		var paths := get_selected_file_paths()
+		if paths.is_empty():
+			set_special_button_enabled(false)
+		else:
+			var has_folders := false
+			for path in paths:
+				if path.get_extension().is_empty():
+					has_folders = true
+					break
+			set_special_button_enabled(not has_folders)
+	else:
+		sync_file_field()
 
-func unfocus_file() -> void:
-	set_file(default_file)
+func set_special_button_enabled(enabled: bool) -> void:
+	if enabled:
+		special_button.disabled = false
+		special_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+	else:
+		special_button.disabled = true
+		special_button.mouse_default_cursor_shape = Control.CURSOR_ARROW
+
+func get_selected_file_paths() -> PackedStringArray:
+	var selections := PackedStringArray()
+	for selected_idx in file_list.get_selected_items():
+		selections.append(current_dir.path_join(file_list.get_item_text(selected_idx)))
+	return selections
 
 func copy_file_path() -> void:
-	DisplayServer.clipboard_set(current_dir.path_join(current_file))
+	DisplayServer.clipboard_set(get_selected_file_paths()[0])
 
 func create_folder() -> void:
 	var create_folder_dialog := ChooseNameDialogScene.instantiate()
@@ -304,6 +347,9 @@ func _on_create_folder_finished(text: String) -> void:
 
 
 func open_dir_context(dir: String) -> void:
+	if get_selected_file_paths().size() > 1:
+		return
+	
 	var context_popup := ContextPopup.new()
 	var btn_arr: Array[Button] = [
 		ContextPopup.create_shortcut_button("ui_accept", false,
@@ -315,13 +361,22 @@ func open_dir_context(dir: String) -> void:
 	var vp := get_viewport()
 	HandlerGUI.popup_under_pos(context_popup, vp.get_mouse_position(), vp)
 
-func open_file_context(file: String) -> void:
-	focus_file(file)
+func open_file_context() -> void:
+	sync_to_selection()
+	var selected_file_paths := get_selected_file_paths()
+	if selected_file_paths.size() > 1:
+		# Return if any of the files is actually a folder.
+		for path in selected_file_paths:
+			if path.get_extension().is_empty():
+				return
+	
 	var btn_arr: Array[Button] = [
 		ContextPopup.create_shortcut_button("ui_accept", false, special_button.text,
-				load("res://assets/icons/OpenFile.svg")),
-		ContextPopup.create_button(Translator.translate("Copy path"),
-				copy_file_path, false, load("res://assets/icons/Copy.svg"))]
+				load("res://assets/icons/OpenFile.svg"))]
+	if selected_file_paths.size() == 1:
+		btn_arr.append(ContextPopup.create_button(Translator.translate("Copy path"),
+				copy_file_path, false, load("res://assets/icons/Copy.svg")))
+	
 	var context_popup := ContextPopup.new()
 	context_popup.setup(btn_arr, true)
 	var vp := get_viewport()
@@ -329,12 +384,12 @@ func open_file_context(file: String) -> void:
 
 
 func _on_folder_up_button_pressed() -> void:
-	set_dir(current_dir.get_base_dir())
+	open_dir(current_dir.get_base_dir())
 
 func _on_file_list_empty_clicked(_at_position: Vector2, mouse_button_index: int) -> void:
 	if mouse_button_index in [MOUSE_BUTTON_LEFT, MOUSE_BUTTON_MIDDLE, MOUSE_BUTTON_RIGHT]:
 		file_list.deselect_all()
-		unfocus_file()
+		sync_to_selection()
 	if mouse_button_index == MOUSE_BUTTON_RIGHT and mode == FileMode.SAVE:
 		var context_popup := ContextPopup.new()
 		var btn_arr: Array[Button] = [
@@ -349,6 +404,10 @@ func _on_file_list_item_activated(index: int) -> void:
 
 func _on_file_list_item_selected(index: int) -> void:
 	call_selection_callback(file_list.get_item_metadata(index))
+
+func _on_file_list_item_multi_selected(index: int, selected: bool) -> void:
+	if selected:
+		call_selection_callback(file_list.get_item_metadata(index))
 
 func _on_file_list_item_clicked(index: int, _at_position: Vector2,
 mouse_button_index: int) -> void:
@@ -375,16 +434,19 @@ func _on_search_button_toggled(toggled_on: bool) -> void:
 func _on_file_field_text_submitted(new_text: String) -> void:
 	file_field.remove_theme_color_override("font_color")
 	if new_text.is_valid_filename():
-		current_file = new_text
+		default_saved_file = new_text
 	else:
-		file_field.text = current_file
+		file_field.text = default_saved_file
 
 func _on_path_field_text_submitted(new_text: String) -> void:
 	dir_cursor = DirAccess.open(new_text)
 	if is_instance_valid(dir_cursor):
-		set_dir(new_text)
+		open_dir(new_text)
 	else:
-		path_field.text = current_dir
+		sync_path_field()
+
+func sync_path_field() -> void:
+	path_field.text = Utils.simplify_file_path(current_dir)
 
 func _on_search_field_text_changed(new_text: String) -> void:
 	search_text = new_text
@@ -394,23 +456,13 @@ func _on_search_field_text_change_canceled() -> void:
 	search_field.text = search_text
 
 func _on_file_field_text_changed(new_text: String) -> void:
-	var is_invalid_filename := not new_text.is_valid_filename()
-	if new_text.is_empty() or is_invalid_filename:
-		special_button.disabled = true
-		special_button.mouse_default_cursor_shape = Control.CURSOR_ARROW
-	else:
-		special_button.disabled = false
-		special_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-	
+	var is_valid_filename := new_text.is_valid_filename()
+	set_special_button_enabled(not new_text.is_empty() and is_valid_filename)
 	file_field.add_theme_color_override("font_color",
-			Configs.savedata.get_validity_color(is_invalid_filename))
+			Configs.savedata.get_validity_color(not is_valid_filename))
 
 func _on_file_field_text_change_canceled() -> void:
 	file_field.remove_theme_color_override("font_color")
-
-
-func _on_replace_button_pressed() -> void:
-	file_selected.emit(current_dir.path_join(current_file))
 
 
 # Helpers

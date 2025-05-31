@@ -583,7 +583,7 @@ func erase_shortcut_panel_slot(slot: int) -> void:
 	Configs.shortcut_panel_changed.emit()
 
 
-const MAX_TABS = 50
+const MAX_TABS = 4096
 @export var _tabs: Array[TabData] = []:
 	set(new_value):
 		# Validation
@@ -669,6 +669,7 @@ func set_active_tab_index(new_index: int) -> void:
 	if old_id != _tabs[_active_tab_index].id:
 		Configs.active_tab_changed.emit()
 
+# Basic operation that all tab adding methods call.
 func _add_new_tab() -> void:
 	if _tabs.size() >= MAX_TABS:
 		return
@@ -701,7 +702,8 @@ func add_empty_tab() -> void:
 	Configs.tabs_changed.emit()
 	set_active_tab_index(_tabs.size() - 1)
 
-# Adds a new path with the given path, unless something with the path already exists.
+# Adds a new path with the given path.
+# If a tab with the path already exists, it's set as the active tab instead.
 func add_tab_with_path(new_file_path: String) -> void:
 	for idx in _tabs.size():
 		if _tabs[idx].svg_file_path == new_file_path:

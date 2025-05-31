@@ -136,7 +136,6 @@ size_flags_horizontal = 6
 focus_mode = 0
 mouse_default_cursor_shape = 2
 
-[connection signal="pressed" from="VBoxContainer/TopBar/FolderUpButton" to="." method="_on_folder_up_button_pressed"]
 [connection signal="text_submitted" from="VBoxContainer/TopBar/PathField" to="." method="_on_path_field_text_submitted"]
 [connection signal="toggled" from="VBoxContainer/TopBar/ShowHiddenButton" to="." method="_on_show_hidden_button_toggled"]
 [connection signal="toggled" from="VBoxContainer/TopBar/SearchButton" to="." method="_on_search_button_toggled"]
@@ -146,7 +145,6 @@ mouse_default_cursor_shape = 2
 [connection signal="empty_clicked" from="VBoxContainer/MainContainer/FilePicker/VisualPicker/FileList" to="." method="_on_file_list_empty_clicked"]
 [connection signal="item_activated" from="VBoxContainer/MainContainer/FilePicker/VisualPicker/FileList" to="." method="_on_file_list_item_activated"]
 [connection signal="item_clicked" from="VBoxContainer/MainContainer/FilePicker/VisualPicker/FileList" to="." method="_on_file_list_item_clicked"]
-[connection signal="item_selected" from="VBoxContainer/MainContainer/FilePicker/VisualPicker/FileList" to="." method="_on_file_list_item_selected"]
 [connection signal="text_change_canceled" from="VBoxContainer/MainContainer/FilePicker/FileContainer/FileField" to="." method="_on_file_field_text_change_canceled"]
 [connection signal="text_changed" from="VBoxContainer/MainContainer/FilePicker/FileContainer/FileField" to="." method="_on_file_field_text_changed"]
 [connection signal="text_submitted" from="VBoxContainer/MainContainer/FilePicker/FileContainer/FileField" to="." method="_on_file_field_text_submitted"]

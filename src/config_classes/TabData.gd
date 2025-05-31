@@ -116,18 +116,9 @@ func get_edited_file_path() -> String:
 static func get_edited_file_path_for_id(checked_id: int) -> String:
 	return "%s/save%d.svg" % [EDITED_FILES_DIR, checked_id]
 
-# Method for showing the file path without stuff like "/home/mewpurpur/".
-# This information is pretty much always unnecessary clutter.
+
 func get_presented_svg_file_path() -> String:
-	var home_dir: String
-	if OS.get_name() == "Windows":
-		home_dir = OS.get_environment("USERPROFILE")
-	else:
-		home_dir = OS.get_environment("HOME")
-	
-	if svg_file_path.begins_with(home_dir):
-		return svg_file_path.trim_prefix(home_dir).trim_prefix("/").trim_prefix("\\")
-	return svg_file_path
+	return Utils.simplify_file_path(svg_file_path)
 
 
 func undo() -> void:
@@ -142,7 +133,7 @@ func redo() -> void:
 
 
 func _on_language_changed() -> void:
-	if svg_file_path.is_empty():
+	if not is_saved():
 		queue_sync()
 
 func queue_sync() -> void:
@@ -154,7 +145,7 @@ func _sync() -> void:
 		return
 	_sync_pending = false
 	
-	if not svg_file_path.is_empty():
+	if is_saved():
 		# The extension is included in the presented name too.
 		# It's always in the end anyway so it can't hide useless info.
 		# And also, it prevents ".svg" from being presented as an empty string.
@@ -194,3 +185,9 @@ func deactivate() -> void:
 
 func get_true_svg_text() -> String:
 	return _svg_text if active else FileAccess.get_file_as_string(get_edited_file_path())
+
+func is_empty() -> bool:
+	return empty_unsaved
+
+func is_saved() -> bool:
+	return not svg_file_path.is_empty()

@@ -43,7 +43,7 @@ func _notification(what: int) -> void:
 # Drag-and-drop of files.
 func _on_files_dropped(files: PackedStringArray) -> void:
 	if menu_stack.is_empty():
-		FileUtils.apply_svg_from_path(files[0])
+		FileUtils.apply_svgs_from_paths(files)
 
 
 func add_menu(new_menu: Control) -> void:
@@ -264,15 +264,21 @@ func _unhandled_input(event: InputEvent) -> void:
 				"save": FileUtils.save_svg()
 				"save_as": FileUtils.save_svg_as()
 				"close_tab": FileUtils.close_tabs(Configs.savedata.get_active_tab_index())
+				"close_all_other_tabs": FileUtils.close_tabs(
+						Configs.savedata.get_active_tab_index(),
+						FileUtils.TabCloseMode.ALL_OTHERS)
 				"close_tabs_to_left": FileUtils.close_tabs(
 						Configs.savedata.get_active_tab_index(),
 						FileUtils.TabCloseMode.TO_LEFT)
 				"close_tabs_to_right": FileUtils.close_tabs(
 						Configs.savedata.get_active_tab_index(),
 						FileUtils.TabCloseMode.TO_RIGHT)
-				"close_all_other_tabs": FileUtils.close_tabs(
+				"close_empty_tabs": FileUtils.close_tabs(
 						Configs.savedata.get_active_tab_index(),
-						FileUtils.TabCloseMode.ALL_OTHERS)
+						FileUtils.TabCloseMode.EMPTY)
+				"close_saved_tabs": FileUtils.close_tabs(
+						Configs.savedata.get_active_tab_index(),
+						FileUtils.TabCloseMode.SAVED)
 				"new_tab": Configs.savedata.add_empty_tab()
 				"select_next_tab": Configs.savedata.set_active_tab_index(
 						posmod(Configs.savedata.get_active_tab_index() + 1,
