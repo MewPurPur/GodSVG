@@ -69,7 +69,7 @@ msgid ""
 msgstr "此图像只能以 SVG 格式导出，因为其大小未定义。您确定要继续吗？"
 
 #: src/autoload/State.gd src/ui_parts/good_file_dialog.gd
-#: src/ui_widgets/alert_dialog.gd
+#: src/ui_widgets/alert_dialog.gd src/utils/FileUtils.gd
 msgid "Alert!"
 msgstr "警告！"
 
@@ -299,6 +299,10 @@ msgstr "宽度"
 msgid "Height"
 msgstr "高度"
 
+#: src/ui_parts/export_menu.gd src/utils/TranslationUtils.gd
+msgid "Copy"
+msgstr "复制"
+
 #: src/ui_parts/export_menu.gd
 msgid "Preview image size is limited to {dimensions}"
 msgstr "预览图像大小被限制到 {dimensions}"
@@ -327,13 +331,13 @@ msgstr "切换隐藏文件可见性"
 msgid "Search files"
 msgstr "搜索文件"
 
-#: src/ui_parts/good_file_dialog.gd
-msgid "Select"
-msgstr "选择"
-
 #: src/ui_parts/good_file_dialog.gd src/utils/FileUtils.gd
 msgid "Save"
 msgstr "保存"
+
+#: src/ui_parts/good_file_dialog.gd
+msgid "Select"
+msgstr "选择"
 
 #: src/ui_parts/good_file_dialog.gd
 msgid "Path"
@@ -793,7 +797,7 @@ msgstr ""
 msgid "This SVG is not bound to a file location yet."
 msgstr ""
 
-#: src/ui_parts/update_menu.gd
+#: src/ui_parts/update_menu.gd src/utils/FileUtils.gd
 msgid "Retry"
 msgstr "重试"
 
@@ -957,12 +961,37 @@ msgid "GodSVG doesn’t recognize this attribute"
 msgstr "GodSVG 无法识别该属性"
 
 #: src/utils/FileUtils.gd
-msgid "The file couldn't be opened."
+msgid "The following files were discarded:"
+msgstr ""
+
+#: src/utils/FileUtils.gd
+msgid "{file_path} was discarded."
+msgstr ""
+
+#: src/utils/FileUtils.gd
+msgid "Discarded files"
+msgstr ""
+
+#: src/utils/FileUtils.gd
+msgid "Proceed"
+msgstr ""
+
+#: src/utils/FileUtils.gd
+#, fuzzy
+msgid "{file_path} couldn't be opened."
 msgstr "无法打开文件。"
 
 #: src/utils/FileUtils.gd
 msgid "Check if the file still exists in the selected file path."
 msgstr "检查文件是否还存在于选中的路径。"
+
+#: src/utils/FileUtils.gd
+msgid "Proceed with importing the rest of the files?"
+msgstr ""
+
+#: src/utils/FileUtils.gd
+msgid "Proceed for all files that can't be opened"
+msgstr ""
 
 #: src/utils/FileUtils.gd
 #, fuzzy
@@ -987,7 +1016,7 @@ msgid "Don't save"
 msgstr ""
 
 #: src/utils/FileUtils.gd
-msgid "The imported file is already being edited inside GodSVG."
+msgid "{file_path} is already being edited inside GodSVG."
 msgstr ""
 
 #: src/utils/FileUtils.gd
@@ -1018,6 +1047,16 @@ msgstr ""
 #: src/utils/TranslationUtils.gd
 #, fuzzy
 msgid "Close all other tabs"
+msgstr "复制所有文本"
+
+#: src/utils/TranslationUtils.gd
+#, fuzzy
+msgid "Close empty tabs"
+msgstr "闭合路径"
+
+#: src/utils/TranslationUtils.gd
+#, fuzzy
+msgid "Close saved tabs"
 msgstr "复制所有文本"
 
 #: src/utils/TranslationUtils.gd
@@ -1079,10 +1118,6 @@ msgstr "撤销"
 #: src/utils/TranslationUtils.gd
 msgid "Redo"
 msgstr "恢复"
-
-#: src/utils/TranslationUtils.gd
-msgid "Copy"
-msgstr "复制"
 
 #: src/utils/TranslationUtils.gd
 msgid "Paste"
@@ -1289,6 +1324,11 @@ msgid "Viewport"
 msgstr "视图"
 
 #: src/utils/TranslationUtils.gd
+#, fuzzy
+msgid "Select {format} files"
+msgstr "选择 XML 文件"
+
+#: src/utils/TranslationUtils.gd
 msgid "Select an image"
 msgstr "选择图像"
 
@@ -1303,15 +1343,15 @@ msgid "Save the {format} file"
 msgstr "保存 .\"{format}\" 文件"
 
 #: src/utils/TranslationUtils.gd
-msgid ""
-"The file extension {extension} is unsupported for this operation. Only "
-"{extension_list} files are supported."
-msgstr ""
-"扩展名 {extension} 不支持此操作。只有 {extension_list} 内的文件受支持。"
-
-#: src/utils/TranslationUtils.gd
-msgid "The file extension is empty. Only {extension_list} files are supported."
+#, fuzzy
+msgid "Only {extension_list} files are supported for this operation."
 msgstr "文件扩展名为空。只有 {extension_list} 内的文件受支持。"
+
+#~ msgid ""
+#~ "The file extension {extension} is unsupported for this operation. Only "
+#~ "{extension_list} files are supported."
+#~ msgstr ""
+#~ "扩展名 {extension} 不支持此操作。只有 {extension_list} 内的文件受支持。"
 
 #~ msgid "Save the .\"{format}\" file"
 #~ msgstr "保存 .\"{format}\" 文件"

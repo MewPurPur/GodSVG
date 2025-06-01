@@ -72,7 +72,7 @@ msgstr ""
 "определен."
 
 #: src/autoload/State.gd src/ui_parts/good_file_dialog.gd
-#: src/ui_widgets/alert_dialog.gd
+#: src/ui_widgets/alert_dialog.gd src/utils/FileUtils.gd
 msgid "Alert!"
 msgstr "Предупреждение!"
 
@@ -300,6 +300,10 @@ msgstr "Широчина"
 msgid "Height"
 msgstr "Височина"
 
+#: src/ui_parts/export_menu.gd src/utils/TranslationUtils.gd
+msgid "Copy"
+msgstr "Копирай"
+
 #: src/ui_parts/export_menu.gd
 msgid "Preview image size is limited to {dimensions}"
 msgstr "Размерът на визуализацията е ограничен до {dimensions}"
@@ -328,13 +332,13 @@ msgstr "Превключи видимостта на скритите файло
 msgid "Search files"
 msgstr "Търсене из файловете"
 
-#: src/ui_parts/good_file_dialog.gd
-msgid "Select"
-msgstr "Избери"
-
 #: src/ui_parts/good_file_dialog.gd src/utils/FileUtils.gd
 msgid "Save"
 msgstr "Запиши"
+
+#: src/ui_parts/good_file_dialog.gd
+msgid "Select"
+msgstr "Избери"
 
 #: src/ui_parts/good_file_dialog.gd
 msgid "Path"
@@ -794,7 +798,7 @@ msgstr "Превърти напред"
 msgid "This SVG is not bound to a file location yet."
 msgstr "Това SVG не е свързано с местоположение на компютъра."
 
-#: src/ui_parts/update_menu.gd
+#: src/ui_parts/update_menu.gd src/utils/FileUtils.gd
 msgid "Retry"
 msgstr "Опитай отново"
 
@@ -953,12 +957,36 @@ msgid "GodSVG doesn’t recognize this attribute"
 msgstr "GodSVG не разпознава този атрибут"
 
 #: src/utils/FileUtils.gd
-msgid "The file couldn't be opened."
-msgstr "Файлът не можа да бъде отворен."
+msgid "The following files were discarded:"
+msgstr "Следните файлове бяха отхвърлени:"
+
+#: src/utils/FileUtils.gd
+msgid "{file_path} was discarded."
+msgstr "{file_path} бе отхвърлен."
+
+#: src/utils/FileUtils.gd
+msgid "Discarded files"
+msgstr "Отхвърлени файлове"
+
+#: src/utils/FileUtils.gd
+msgid "Proceed"
+msgstr "Продължи"
+
+#: src/utils/FileUtils.gd
+msgid "{file_path} couldn't be opened."
+msgstr "{file_path} не можа да бъде отворен."
 
 #: src/utils/FileUtils.gd
 msgid "Check if the file still exists in the selected file path."
 msgstr "Проверете дали файлът все още съществува на избраното място."
+
+#: src/utils/FileUtils.gd
+msgid "Proceed with importing the rest of the files?"
+msgstr "Продължи с импортирането на останалите файлове?"
+
+#: src/utils/FileUtils.gd
+msgid "Proceed for all files that can't be opened"
+msgstr "Продължи за всеки файл който не може да бъде отворен"
 
 #: src/utils/FileUtils.gd
 msgid "Save the file?"
@@ -981,8 +1009,8 @@ msgid "Don't save"
 msgstr "Не записвай"
 
 #: src/utils/FileUtils.gd
-msgid "The imported file is already being edited inside GodSVG."
-msgstr "Импортираният файл вече се редактира в GodSVG."
+msgid "{file_path} is already being edited inside GodSVG."
+msgstr "{file_path} вече се редактира в GodSVG."
 
 #: src/utils/FileUtils.gd
 msgid "If you want to revert your edits since the last save, use {reset_svg}."
@@ -1013,6 +1041,14 @@ msgstr "Затвори разделите отдясно"
 #: src/utils/TranslationUtils.gd
 msgid "Close all other tabs"
 msgstr "Затвори другите раздели"
+
+#: src/utils/TranslationUtils.gd
+msgid "Close empty tabs"
+msgstr "Затвори празните раздели"
+
+#: src/utils/TranslationUtils.gd
+msgid "Close saved tabs"
+msgstr "Затвори записаните раздели"
 
 #: src/utils/TranslationUtils.gd
 msgid "Create tab"
@@ -1069,10 +1105,6 @@ msgstr "Върни назад"
 #: src/utils/TranslationUtils.gd
 msgid "Redo"
 msgstr "Върни напред"
-
-#: src/utils/TranslationUtils.gd
-msgid "Copy"
-msgstr "Копирай"
 
 #: src/utils/TranslationUtils.gd
 msgid "Paste"
@@ -1272,6 +1304,10 @@ msgid "Viewport"
 msgstr "Гледка"
 
 #: src/utils/TranslationUtils.gd
+msgid "Select {format} files"
+msgstr "Избери {format} файлове"
+
+#: src/utils/TranslationUtils.gd
 msgid "Select an image"
 msgstr "Избери изображение"
 
@@ -1284,13 +1320,5 @@ msgid "Save the {format} file"
 msgstr "Запази {format} файла"
 
 #: src/utils/TranslationUtils.gd
-msgid ""
-"The file extension {extension} is unsupported for this operation. Only "
-"{extension_list} files are supported."
-msgstr ""
-"\"{extension}\" не е поддържан формат за тази операция. Единствено "
-"{extension_list} файловете са подържани."
-
-#: src/utils/TranslationUtils.gd
-msgid "The file extension is empty. Only {extension_list} files are supported."
-msgstr "Форматът е празен. Единствено {extension_list} файловете са подържани."
+msgid "Only {extension_list} files are supported for this operation."
+msgstr "Единствено {extension_list} файлове се поддържат от тази операция."

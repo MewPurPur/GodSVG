@@ -33,10 +33,33 @@ theme_override_font_sizes/font_size = 16
 horizontal_alignment = 1
 
 [node name="Label" type="RichTextLabel" parent="MainContainer/TextContainer"]
-custom_minimum_size = Vector2(300, 0)
+custom_minimum_size = Vector2(320, 0)
 layout_mode = 2
-theme_override_font_sizes/normal_font_size = 12
 fit_content = true
+
+[node name="ListPanel" type="PanelContainer" parent="MainContainer/TextContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="ListScrollContainer" type="ScrollContainer" parent="MainContainer/TextContainer/ListPanel"]
+custom_minimum_size = Vector2(0, 84)
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="MainContainer/TextContainer/ListPanel/ListScrollContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 4
+
+[node name="ListLabel" type="Label" parent="MainContainer/TextContainer/ListPanel/ListScrollContainer/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="CheckBox" type="CheckBox" parent="MainContainer/TextContainer"]
+visible = false
+layout_mode = 2
+focus_mode = 0
+mouse_default_cursor_shape = 2
 
 [node name="OptionsContainer" type="HBoxContainer" parent="MainContainer"]
 layout_mode = 2

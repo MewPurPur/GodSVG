@@ -98,10 +98,9 @@ func _draw() -> void:
 				text_line.draw(ci, rect.position + Vector2(4, 3), text_color)
 	
 	var add_button_rect := get_add_button_rect()
-	if add_button_rect.has_area():
-		var plus_icon_size := plus_icon.get_size()
-		draw_texture_rect(plus_icon, Rect2(add_button_rect.position +\
-				(add_button_rect.size - plus_icon_size) / 2.0, plus_icon_size), false)
+	var plus_icon_size := plus_icon.get_size()
+	draw_texture_rect(plus_icon, Rect2(add_button_rect.position +\
+			(add_button_rect.size - plus_icon_size) / 2.0, plus_icon_size), false)
 	
 	var scroll_backwards_rect := get_scroll_backwards_area_rect()
 	if scroll_backwards_rect.has_area():
@@ -198,6 +197,18 @@ func _gui_input(event: InputEvent) -> void:
 					var file_absent := not FileAccess.file_exists(new_active_tab.svg_file_path)
 					var tab_count := Configs.savedata.get_tab_count()
 					
+					var has_empty_tabs := false
+					for tab in Configs.savedata.get_tabs():
+						if tab.is_empty():
+							has_empty_tabs = true
+							break
+					
+					var has_saved_tabs := false
+					for tab in Configs.savedata.get_tabs():
+						if tab.is_saved():
+							has_saved_tabs = true
+							break
+					
 					btn_arr.append(ContextPopup.create_shortcut_button_without_icon(
 							"close_tab"))
 					# TODO Unify into "Close multiple tabs"
@@ -207,13 +218,17 @@ func _gui_input(event: InputEvent) -> void:
 							"close_tabs_to_left", hovered_idx == 0))
 					btn_arr.append(ContextPopup.create_shortcut_button_without_icon(
 							"close_tabs_to_right", hovered_idx == tab_count - 1))
-							
+					btn_arr.append(ContextPopup.create_shortcut_button_without_icon(
+							"close_empty_tabs", not has_empty_tabs))
+					btn_arr.append(ContextPopup.create_shortcut_button_without_icon(
+							"close_saved_tabs", not has_saved_tabs))
+					
 					btn_arr.append(ContextPopup.create_shortcut_button("open_externally",
 							file_absent))
 					btn_arr.append(ContextPopup.create_shortcut_button("open_in_folder",
 							file_absent))
 				var tab_popup := ContextPopup.new()
-				tab_popup.setup(btn_arr, true, -1, -1, PackedInt32Array([4]))
+				tab_popup.setup(btn_arr, true, -1, -1, PackedInt32Array([6]))
 				
 				if hovered_idx != -1:
 					var tab_global_rect := get_tab_rect(hovered_idx)
@@ -238,8 +253,8 @@ func _process(_delta: float) -> void:
 	var mouse_pos := get_local_mouse_position()
 	var scroll_forwards_area_rect := get_scroll_forwards_area_rect()
 	if ((scrolling_forwards and scroll_forwards_area_rect.has_point(mouse_pos)) or\
-	(mouse_pos.x > size.x - get_add_button_rect().size.x -\
-	scroll_forwards_area_rect.size.x)) and scroll_forwards_area_rect.has_area():
+	(mouse_pos.x > size.x - size.y - scroll_forwards_area_rect.size.x)) and\
+	scroll_forwards_area_rect.has_area():
 		scroll_forwards()
 		return
 	
@@ -273,9 +288,9 @@ func scroll_forwards() -> void:
 func scroll_to_active() -> void:
 	var idx := Configs.savedata.get_active_tab_index() if\
 			State.transient_tab_path.is_empty() else Configs.savedata.get_tab_count()
-	set_scroll(clampf(current_scroll, MIN_TAB_WIDTH * (idx + 1) -\
-			size.x + get_add_button_rect().size.x + get_scroll_forwards_area_rect().size.x +\
-			get_scroll_backwards_area_rect().size.x, MIN_TAB_WIDTH * idx))
+	set_scroll(clampf(current_scroll, MIN_TAB_WIDTH * (idx + 1) - size.x + size.y +\
+			get_scroll_forwards_area_rect().size.x + get_scroll_backwards_area_rect().size.x,
+			MIN_TAB_WIDTH * idx))
 
 func set_scroll(new_value: float) -> void:
 	if get_scroll_limit() < 0:
@@ -295,14 +310,13 @@ func get_proper_tab_count() -> int:
 
 func get_tab_rect(idx: int) -> Rect2:
 	# Things that can take space.
-	var add_button_width := get_add_button_rect().size.x
 	var scroll_backwards_button_width := get_scroll_backwards_area_rect().size.x
 	var scroll_forwards_button_width := get_scroll_forwards_area_rect().size.x
 	
 	var left_limit := scroll_backwards_button_width
-	var right_limit := size.x - add_button_width - scroll_forwards_button_width
+	var right_limit := size.x - size.y - scroll_forwards_button_width
 	
-	var tab_width := clampf((size.x - add_button_width - scroll_backwards_button_width -\
+	var tab_width := clampf((size.x - size.y - scroll_backwards_button_width -\
 			scroll_forwards_button_width) / get_proper_tab_count(),
 			MIN_TAB_WIDTH, DEFAULT_TAB_WIDTH)
 	var unclamped_tab_start := tab_width * idx - current_scroll + left_limit
@@ -324,23 +338,20 @@ func get_close_button_rect() -> Rect2:
 	return Rect2(left_coords, CLOSE_BUTTON_MARGIN, side, side)
 
 func get_add_button_rect() -> Rect2:
-	var tab_count := get_proper_tab_count()
-	if tab_count >= SaveData.MAX_TABS:
-		return Rect2()
-	return Rect2(minf(DEFAULT_TAB_WIDTH * tab_count, size.x - size.y), 0, size.y, size.y)
+	return Rect2(minf(DEFAULT_TAB_WIDTH * get_proper_tab_count(), size.x - size.y), 0,
+			size.y, size.y)
 
 func get_scroll_forwards_area_rect() -> Rect2:
-	var add_button_width := get_add_button_rect().size.x
-	if size.x - add_button_width > get_proper_tab_count() * MIN_TAB_WIDTH:
+	if size.x - size.y > get_proper_tab_count() * MIN_TAB_WIDTH:
 		return Rect2()
 	var width := size.y / 1.5
-	return Rect2(size.x - add_button_width - width, 0, width, size.y)
+	return Rect2(size.x - size.y - width, 0, width, size.y)
 
 func is_scroll_forwards_disabled() -> bool:
 	return current_scroll >= get_scroll_limit()
 
 func get_scroll_backwards_area_rect() -> Rect2:
-	if size.x - get_add_button_rect().size.x > get_proper_tab_count() * MIN_TAB_WIDTH:
+	if size.x - size.y > get_proper_tab_count() * MIN_TAB_WIDTH:
 		return Rect2()
 	return Rect2(0, 0, size.y / 1.5, size.y)
 
@@ -348,11 +359,10 @@ func is_scroll_backwards_disabled() -> bool:
 	return current_scroll <= 0.0
 
 func get_scroll_limit() -> float:
-	var add_button_width := get_add_button_rect().size.x
 	var scroll_backwards_button_width := get_scroll_backwards_area_rect().size.x
 	var scroll_forwards_button_width := get_scroll_forwards_area_rect().size.x
 	
-	var available_area := size.x - add_button_width - scroll_backwards_button_width -\
+	var available_area := size.x - size.y - scroll_backwards_button_width -\
 			scroll_forwards_button_width
 	return clampf(available_area / get_proper_tab_count(),
 			MIN_TAB_WIDTH, DEFAULT_TAB_WIDTH) * get_proper_tab_count() - available_area
@@ -379,17 +389,16 @@ func activate() -> void:
 		)
 	
 	var add_rect := get_add_button_rect()
-	if add_rect.has_area():
-		var add_button := Button.new()
-		add_button.theme_type_variation = "FlatButton"
-		add_button.focus_mode = Control.FOCUS_NONE
-		add_button.position = add_rect.position
-		add_button.size = add_rect.size
-		add_button.mouse_filter = Control.MOUSE_FILTER_PASS
-		add_button.tooltip_text = Translator.translate("Create a new tab")
-		add_child(add_button)
-		active_controls.append(add_button)
-		add_button.pressed.connect(Configs.savedata.add_empty_tab)
+	var add_button := Button.new()
+	add_button.theme_type_variation = "FlatButton"
+	add_button.focus_mode = Control.FOCUS_NONE
+	add_button.position = add_rect.position
+	add_button.size = add_rect.size
+	add_button.mouse_filter = Control.MOUSE_FILTER_PASS
+	add_button.tooltip_text = Translator.translate("Create a new tab")
+	add_child(add_button)
+	active_controls.append(add_button)
+	add_button.pressed.connect(Configs.savedata.add_empty_tab)
 
 
 func _get_tooltip(at_position: Vector2) -> String:
@@ -476,12 +485,11 @@ class TabDragData:
 		index = new_index
 
 func get_drop_index_at(pos: Vector2) -> int:
-	var add_button_width := get_add_button_rect().size.x
 	var scroll_backwards_button_width := get_scroll_backwards_area_rect().size.x
 	var scroll_forwards_button_width := get_scroll_forwards_area_rect().size.x
 	
 	if pos.x < scroll_backwards_button_width or\
-	pos.x > size.x - scroll_forwards_button_width - add_button_width:
+	pos.x > size.x - scroll_forwards_button_width - size.y:
 		return -1
 	
 	var first_tab_with_area := 0
@@ -490,7 +498,7 @@ func get_drop_index_at(pos: Vector2) -> int:
 			first_tab_with_area = idx
 			break
 	
-	var tab_width := clampf((size.x - add_button_width - scroll_backwards_button_width -\
+	var tab_width := clampf((size.x - size.y - scroll_backwards_button_width -\
 			scroll_forwards_button_width) / get_proper_tab_count(),
 			MIN_TAB_WIDTH, DEFAULT_TAB_WIDTH)
 	

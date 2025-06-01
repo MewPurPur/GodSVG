@@ -33,9 +33,8 @@ theme_override_font_sizes/font_size = 16
 horizontal_alignment = 1
 
 [node name="Label" type="RichTextLabel" parent="MainContainer/TextContainer"]
-custom_minimum_size = Vector2(300, 0)
+custom_minimum_size = Vector2(320, 0)
 layout_mode = 2
-theme_override_font_sizes/normal_font_size = 12
 fit_content = true
 
 [node name="ButtonContainer" type="HBoxContainer" parent="MainContainer"]

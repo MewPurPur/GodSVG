@@ -71,7 +71,7 @@ msgstr ""
 "El gráfico solo se puede exportar como SVG porque su tamaño no está definido."
 
 #: src/autoload/State.gd src/ui_parts/good_file_dialog.gd
-#: src/ui_widgets/alert_dialog.gd
+#: src/ui_widgets/alert_dialog.gd src/utils/FileUtils.gd
 msgid "Alert!"
 msgstr "¡Advertencia!"
 
@@ -299,6 +299,10 @@ msgstr "Ancho"
 msgid "Height"
 msgstr "Alto"
 
+#: src/ui_parts/export_menu.gd src/utils/TranslationUtils.gd
+msgid "Copy"
+msgstr "Copiar"
+
 #: src/ui_parts/export_menu.gd
 msgid "Preview image size is limited to {dimensions}"
 msgstr "El tamaño de la imagen de vista previa está limitado a {dimensions}"
@@ -327,13 +331,13 @@ msgstr "Alternar visibilidad de archivos ocultos"
 msgid "Search files"
 msgstr "Buscar archivos"
 
-#: src/ui_parts/good_file_dialog.gd
-msgid "Select"
-msgstr "Seleccionar"
-
 #: src/ui_parts/good_file_dialog.gd src/utils/FileUtils.gd
 msgid "Save"
 msgstr "Guardar"
+
+#: src/ui_parts/good_file_dialog.gd
+msgid "Select"
+msgstr "Seleccionar"
 
 #: src/ui_parts/good_file_dialog.gd
 msgid "Path"
@@ -794,7 +798,7 @@ msgstr "Desplazarse hacia adelante"
 msgid "This SVG is not bound to a file location yet."
 msgstr "Este SVG aún no está vinculado a una ubicación de archivo."
 
-#: src/ui_parts/update_menu.gd
+#: src/ui_parts/update_menu.gd src/utils/FileUtils.gd
 msgid "Retry"
 msgstr "Reintentar"
 
@@ -953,13 +957,38 @@ msgid "GodSVG doesn’t recognize this attribute"
 msgstr "GodSVG no reconoce este atributo"
 
 #: src/utils/FileUtils.gd
-msgid "The file couldn't be opened."
+msgid "The following files were discarded:"
+msgstr ""
+
+#: src/utils/FileUtils.gd
+msgid "{file_path} was discarded."
+msgstr ""
+
+#: src/utils/FileUtils.gd
+msgid "Discarded files"
+msgstr ""
+
+#: src/utils/FileUtils.gd
+msgid "Proceed"
+msgstr ""
+
+#: src/utils/FileUtils.gd
+#, fuzzy
+msgid "{file_path} couldn't be opened."
 msgstr "No se pudo abrir el archivo."
 
 #: src/utils/FileUtils.gd
 msgid "Check if the file still exists in the selected file path."
 msgstr ""
 "Compruebe si el archivo todavía existe en la ruta de archivo seleccionada."
+
+#: src/utils/FileUtils.gd
+msgid "Proceed with importing the rest of the files?"
+msgstr ""
+
+#: src/utils/FileUtils.gd
+msgid "Proceed for all files that can't be opened"
+msgstr ""
 
 #: src/utils/FileUtils.gd
 msgid "Save the file?"
@@ -982,7 +1011,8 @@ msgid "Don't save"
 msgstr "No guardar"
 
 #: src/utils/FileUtils.gd
-msgid "The imported file is already being edited inside GodSVG."
+#, fuzzy
+msgid "{file_path} is already being edited inside GodSVG."
 msgstr "El archivo importado ya se está editando dentro de GodSVG."
 
 #: src/utils/FileUtils.gd
@@ -1013,6 +1043,16 @@ msgstr "Cerrar pestañas a la derecha"
 
 #: src/utils/TranslationUtils.gd
 msgid "Close all other tabs"
+msgstr "Cerrar todas las demás pestañas"
+
+#: src/utils/TranslationUtils.gd
+#, fuzzy
+msgid "Close empty tabs"
+msgstr "Cerrar pestaña"
+
+#: src/utils/TranslationUtils.gd
+#, fuzzy
+msgid "Close saved tabs"
 msgstr "Cerrar todas las demás pestañas"
 
 #: src/utils/TranslationUtils.gd
@@ -1070,10 +1110,6 @@ msgstr "Deshacer"
 #: src/utils/TranslationUtils.gd
 msgid "Redo"
 msgstr "Rehacer"
-
-#: src/utils/TranslationUtils.gd
-msgid "Copy"
-msgstr "Copiar"
 
 #: src/utils/TranslationUtils.gd
 msgid "Paste"
@@ -1273,6 +1309,11 @@ msgid "Viewport"
 msgstr "Ventana gráfica"
 
 #: src/utils/TranslationUtils.gd
+#, fuzzy
+msgid "Select {format} files"
+msgstr "Selecciona un archivo {format}"
+
+#: src/utils/TranslationUtils.gd
 msgid "Select an image"
 msgstr "Selecciona una imagen"
 
@@ -1285,15 +1326,15 @@ msgid "Save the {format} file"
 msgstr "Guardar el archivo {format}"
 
 #: src/utils/TranslationUtils.gd
-msgid ""
-"The file extension {extension} is unsupported for this operation. Only "
-"{extension_list} files are supported."
-msgstr ""
-"La extensión de archivo {extension} no es compatible con esta operación. "
-"Solo se admiten los archivos {extension_list}."
-
-#: src/utils/TranslationUtils.gd
-msgid "The file extension is empty. Only {extension_list} files are supported."
+#, fuzzy
+msgid "Only {extension_list} files are supported for this operation."
 msgstr ""
 "La extensión del archivo está vacía. Solo se admiten los archivos "
 "{extension_list}."
+
+#~ msgid ""
+#~ "The file extension {extension} is unsupported for this operation. Only "
+#~ "{extension_list} files are supported."
+#~ msgstr ""
+#~ "La extensión de archivo {extension} no es compatible con esta operación. "
+#~ "Solo se admiten los archivos {extension_list}."

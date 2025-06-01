@@ -12,9 +12,9 @@ const EFFECT_ACTIONS: PackedStringArray = ["view_show_grid", "view_show_handles"
 
 # Requires there being no popups either.
 const EDITOR_ACTIONS: PackedStringArray = ["import", "export", "save", "save_as",
-		"close_tab", "close_tabs_to_left", "close_tabs_to_right", "close_all_other_tabs",
-		"new_tab", "select_next_tab", "select_previous_tab", "copy_svg_text", "optimize",
-		"reset_svg", "debug"]
+		"close_tab", "close_all_other_tabs", "close_tabs_to_left", "close_tabs_to_right",
+		"close_empty_tabs", "close_saved_tabs", "new_tab", "select_next_tab",
+		"select_previous_tab", "copy_svg_text", "optimize", "reset_svg", "debug"]
 
 # Requires no drag-and-drop actions ongoing.
 const PRISTINE_ACTIONS: PackedStringArray = ["ui_undo", "ui_redo", "ui_cancel", "delete",
@@ -29,9 +29,11 @@ const _action_categories_dict: Dictionary[String, Dictionary] = {
 		"save": true,
 		"save_as": true,
 		"close_tab": true,
+		"close_all_other_tabs": true,
 		"close_tabs_to_left": true,
 		"close_tabs_to_right": true,
-		"close_all_other_tabs": true,
+		"close_empty_tabs": true,
+		"close_saved_tabs": true,
 		"new_tab": true,
 		"select_next_tab": true,
 		"select_previous_tab": true,

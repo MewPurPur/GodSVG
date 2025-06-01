@@ -66,7 +66,7 @@ msgid ""
 msgstr ""
 
 #: src/autoload/State.gd src/ui_parts/good_file_dialog.gd
-#: src/ui_widgets/alert_dialog.gd
+#: src/ui_widgets/alert_dialog.gd src/utils/FileUtils.gd
 msgid "Alert!"
 msgstr ""
 
@@ -292,6 +292,10 @@ msgstr ""
 msgid "Height"
 msgstr ""
 
+#: src/ui_parts/export_menu.gd src/utils/TranslationUtils.gd
+msgid "Copy"
+msgstr ""
+
 #: src/ui_parts/export_menu.gd
 msgid "Preview image size is limited to {dimensions}"
 msgstr ""
@@ -320,12 +324,12 @@ msgstr ""
 msgid "Search files"
 msgstr ""
 
-#: src/ui_parts/good_file_dialog.gd
-msgid "Select"
-msgstr ""
-
 #: src/ui_parts/good_file_dialog.gd src/utils/FileUtils.gd
 msgid "Save"
+msgstr ""
+
+#: src/ui_parts/good_file_dialog.gd
+msgid "Select"
 msgstr ""
 
 #: src/ui_parts/good_file_dialog.gd
@@ -773,7 +777,7 @@ msgstr ""
 msgid "This SVG is not bound to a file location yet."
 msgstr ""
 
-#: src/ui_parts/update_menu.gd
+#: src/ui_parts/update_menu.gd src/utils/FileUtils.gd
 msgid "Retry"
 msgstr ""
 
@@ -932,11 +936,35 @@ msgid "GodSVG doesn’t recognize this attribute"
 msgstr ""
 
 #: src/utils/FileUtils.gd
-msgid "The file couldn't be opened."
+msgid "The following files were discarded:"
+msgstr ""
+
+#: src/utils/FileUtils.gd
+msgid "{file_path} was discarded."
+msgstr ""
+
+#: src/utils/FileUtils.gd
+msgid "Discarded files"
+msgstr ""
+
+#: src/utils/FileUtils.gd
+msgid "Proceed"
+msgstr ""
+
+#: src/utils/FileUtils.gd
+msgid "{file_path} couldn't be opened."
 msgstr ""
 
 #: src/utils/FileUtils.gd
 msgid "Check if the file still exists in the selected file path."
+msgstr ""
+
+#: src/utils/FileUtils.gd
+msgid "Proceed with importing the rest of the files?"
+msgstr ""
+
+#: src/utils/FileUtils.gd
+msgid "Proceed for all files that can't be opened"
 msgstr ""
 
 #: src/utils/FileUtils.gd
@@ -960,7 +988,7 @@ msgid "Don't save"
 msgstr ""
 
 #: src/utils/FileUtils.gd
-msgid "The imported file is already being edited inside GodSVG."
+msgid "{file_path} is already being edited inside GodSVG."
 msgstr ""
 
 #: src/utils/FileUtils.gd
@@ -989,6 +1017,14 @@ msgstr ""
 
 #: src/utils/TranslationUtils.gd
 msgid "Close all other tabs"
+msgstr ""
+
+#: src/utils/TranslationUtils.gd
+msgid "Close empty tabs"
+msgstr ""
+
+#: src/utils/TranslationUtils.gd
+msgid "Close saved tabs"
 msgstr ""
 
 #: src/utils/TranslationUtils.gd
@@ -1045,10 +1081,6 @@ msgstr ""
 
 #: src/utils/TranslationUtils.gd
 msgid "Redo"
-msgstr ""
-
-#: src/utils/TranslationUtils.gd
-msgid "Copy"
 msgstr ""
 
 #: src/utils/TranslationUtils.gd
@@ -1249,6 +1281,10 @@ msgid "Viewport"
 msgstr ""
 
 #: src/utils/TranslationUtils.gd
+msgid "Select {format} files"
+msgstr ""
+
+#: src/utils/TranslationUtils.gd
 msgid "Select an image"
 msgstr ""
 
@@ -1261,11 +1297,5 @@ msgid "Save the {format} file"
 msgstr ""
 
 #: src/utils/TranslationUtils.gd
-msgid ""
-"The file extension {extension} is unsupported for this operation. Only "
-"{extension_list} files are supported."
-msgstr ""
-
-#: src/utils/TranslationUtils.gd
-msgid "The file extension is empty. Only {extension_list} files are supported."
+msgid "Only {extension_list} files are supported for this operation."
 msgstr ""

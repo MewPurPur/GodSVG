@@ -26,6 +26,8 @@ static func get_action_description(action_name: String, for_button := false) -> 
 		"close_tabs_to_left": return Translator.translate("Close tabs to the left")
 		"close_tabs_to_right": return Translator.translate("Close tabs to the right")
 		"close_all_other_tabs": return Translator.translate("Close all other tabs")
+		"close_empty_tabs": return Translator.translate("Close empty tabs")
+		"close_saved_tabs": return Translator.translate("Close saved tabs")
 		"new_tab": return Translator.translate("Create tab") if\
 				for_button else Translator.translate("Create a new tab")
 		"select_next_tab": return Translator.translate("Select the next tab")
@@ -133,24 +135,27 @@ static func get_layout_part_name(layout_part: Utils.LayoutPart) -> String:
 		_: return ""
 
 
-static func get_bad_extension_alert_text(extension: String,
-allowed_extensions: PackedStringArray) -> String:
+static func get_extension_alert_text(allowed_extensions: PackedStringArray) -> String:
+	for i in allowed_extensions.size():
+		allowed_extensions[i] = get_extension_readable_name(allowed_extensions[i])
 	var extension_list := ", ".join(allowed_extensions)
-	if extension.is_empty():
-		return Translator.translate(
-				"The file extension is empty. Only {extension_list} files are supported.").format(
-				{"extension_list": extension_list})
 	return Translator.translate(
-			"The file extension {extension} is unsupported for this operation. Only {extension_list} files are supported.").format(
-			{"extension": '".' + extension + '"', "extension_list": extension_list})
+			"Only {extension_list} files are supported for this operation.").format(
+			{"extension_list": extension_list})
 
-static func get_file_dialog_select_mode_title_text(extensions: PackedStringArray) -> String:
-	if extensions.size() > 1:
-		return Translator.translate("Select an image")
+static func get_file_dialog_select_mode_title_text(multi_select: bool,
+extensions: PackedStringArray) -> String:
+	if multi_select:
+		return Translator.translate("Select {format} files").format(
+				{"format": get_extension_readable_name("svg")})
 	else:
-		# "an" because this can currently only show for SVG and XML files.
-		return Translator.translate("Select an {format} file").format(
-				{"format": get_extension_readable_name(extensions[0])})
+		if extensions.size() > 1:
+			# Multiple formats currently only show up for reference images.
+			return Translator.translate("Select an image")
+		else:
+			# "an" because this can currently only show for SVG and XML files.
+			return Translator.translate("Select an {format} file").format(
+					{"format": get_extension_readable_name(extensions[0])})
 
 static func get_file_dialog_save_mode_title_text(extension: String) -> String:
 	return Translator.translate("Save the {format} file").format(
