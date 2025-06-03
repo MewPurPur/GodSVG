@@ -86,7 +86,7 @@ msgstr "Restaurar"
 
 #: src/autoload/State.gd
 msgid "View in Inspector"
-msgstr "Ver no Inspector"
+msgstr "Ver no Inspetor"
 
 #: src/autoload/State.gd
 msgid "Convert To"
