@@ -84,7 +84,7 @@ func setup_from_tab() -> void:
 		return
 	
 	if not new_text.is_empty():
-		apply_svg_text(new_text)
+		apply_svg_text(new_text, false)
 		return
 	
 	if active_tab.fully_loaded and not active_tab.empty_unsaved and\
