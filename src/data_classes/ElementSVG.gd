@@ -1,9 +1,6 @@
 # An <svg> element.
 class_name ElementSVG extends Element
 
-# TODO Fix up the logic for handling x, y, and aspect ratio handling.
-#var x: float
-#var y: float
 var width: float
 var height: float
 var normalized_diagonal: float

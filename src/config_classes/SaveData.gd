@@ -715,6 +715,8 @@ func add_tab_with_path(new_file_path: String) -> void:
 	Configs.tabs_changed.emit()
 	set_active_tab_index(_tabs.size() - 1)
 
+# Note that a method for removing multiple tabs at once isn't straightforward,
+# since removed tabs can show dialogs asking the user if they should be saved.
 func remove_tab(idx: int) -> void:
 	if idx < 0 or idx >= _tabs.size():
 		return
