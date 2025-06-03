@@ -77,7 +77,7 @@ msgstr "Hoiatus!"
 
 #: src/autoload/State.gd src/utils/TranslationUtils.gd
 msgid "Close tab"
-msgstr "Sulge kaart"
+msgstr "Sulge vahekaart"
 
 #: src/autoload/State.gd
 msgid "Restore"
@@ -104,8 +104,8 @@ msgid ""
 "The tab is bound to the file path {file_path}. Do you want to restore the "
 "SVG from this path?"
 msgstr ""
-"Kaart on seotud failiga asukohas {file_path}. Kas te soovite taastada SVG "
-"sellest failist?"
+"See vahekaart on seotud failiga asukohas {file_path}. Kas te soovite "
+"taastada SVG sellest failist?"
 
 #: src/config_classes/Formatter.gd
 msgid "Compact"
@@ -251,7 +251,7 @@ msgstr "Kleebi võrdluspilt"
 
 #: src/ui_parts/donate_menu.gd
 msgid "Links to donation platforms"
-msgstr ""
+msgstr "Annetusplatvormide lingid"
 
 #: src/ui_parts/donate_menu.gd src/ui_parts/export_menu.gd
 #: src/ui_parts/import_warning_menu.gd src/ui_widgets/choose_name_dialog.gd
@@ -548,7 +548,7 @@ msgstr "Sisend"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Close tabs with middle mouse button"
-msgstr "Sulge kaarte keskmise hiireklahviga"
+msgstr "Sulge vahekaarte keskmise hiireklahviga"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Invert zoom direction"
@@ -781,7 +781,7 @@ msgstr "Kiirklahvida seadistamise paneel"
 
 #: src/ui_parts/tab_bar.gd src/utils/TranslationUtils.gd
 msgid "Create a new tab"
-msgstr "Loo uus kaart"
+msgstr "Loo uus vahekaart"
 
 #: src/ui_parts/tab_bar.gd
 msgid "Scroll backwards"
@@ -817,18 +817,16 @@ msgid "Update check failed"
 msgstr "Uuenduste otsimine ebaõnnestus"
 
 #: src/ui_parts/update_menu.gd
-#, fuzzy
 msgid "View all releases"
-msgstr "Näita eelväljaandeid"
+msgstr "Näita kõiki väljaandeid"
 
 #: src/ui_parts/update_menu.gd
 msgid "GodSVG is up-to-date."
 msgstr "GodSVG on ajakohane."
 
 #: src/ui_parts/update_menu.gd
-#, fuzzy
 msgid "New versions available!"
-msgstr "Uued versioonid"
+msgstr "Uuem versioon on saadaval!"
 
 #: src/ui_widgets/choose_name_dialog.gd
 msgid "Create"
@@ -957,24 +955,23 @@ msgstr "GodSVG ei tunne seda atribuuti"
 
 #: src/utils/FileUtils.gd
 msgid "The following files were discarded:"
-msgstr ""
+msgstr "Järgnevad failid hüljati:"
 
 #: src/utils/FileUtils.gd
 msgid "{file_path} was discarded."
-msgstr ""
+msgstr "{file_path} hüljati."
 
 #: src/utils/FileUtils.gd
 msgid "Discarded files"
-msgstr ""
+msgstr "Hüljatud failid"
 
 #: src/utils/FileUtils.gd
 msgid "Proceed"
-msgstr ""
+msgstr "Jätka"
 
 #: src/utils/FileUtils.gd
-#, fuzzy
 msgid "{file_path} couldn't be opened."
-msgstr "Faili avamine ebaõnnestus."
+msgstr "{file_path} ei saanud avada."
 
 #: src/utils/FileUtils.gd
 msgid "Check if the file still exists in the selected file path."
@@ -982,11 +979,11 @@ msgstr "Kontrollige, kas fail asub veel valitud asukohas."
 
 #: src/utils/FileUtils.gd
 msgid "Proceed with importing the rest of the files?"
-msgstr ""
+msgstr "Jätka ülejäänud failide importimisega?"
 
 #: src/utils/FileUtils.gd
 msgid "Proceed for all files that can't be opened"
-msgstr ""
+msgstr "Jätka kõikide failide jaoks, mida ei saa avada"
 
 #: src/utils/FileUtils.gd
 msgid "Save the file?"
@@ -1009,9 +1006,8 @@ msgid "Don't save"
 msgstr "Ära salvesta"
 
 #: src/utils/FileUtils.gd
-#, fuzzy
 msgid "{file_path} is already being edited inside GodSVG."
-msgstr "Imporditud fail on juba avatud GodSVGs."
+msgstr "{file_path} on juba avatud GodSVGs."
 
 #: src/utils/FileUtils.gd
 msgid "If you want to revert your edits since the last save, use {reset_svg}."
@@ -1044,26 +1040,24 @@ msgid "Close all other tabs"
 msgstr "Sulge teised kaardid"
 
 #: src/utils/TranslationUtils.gd
-#, fuzzy
 msgid "Close empty tabs"
-msgstr "Sulge kaart"
+msgstr "Sulge tühjad kaardid"
 
 #: src/utils/TranslationUtils.gd
-#, fuzzy
 msgid "Close saved tabs"
-msgstr "Sulge teised kaardid"
+msgstr "Sulge salvestatud kaardid"
 
 #: src/utils/TranslationUtils.gd
 msgid "Create tab"
-msgstr "Uus kaart"
+msgstr "Uus vahekaart"
 
 #: src/utils/TranslationUtils.gd
 msgid "Select the next tab"
-msgstr "Vali järgmine kaart"
+msgstr "Vali järgmine vahekaart"
 
 #: src/utils/TranslationUtils.gd
 msgid "Select the previous tab"
-msgstr "Vali eelmine kaart"
+msgstr "Vali eelmine vahekaart"
 
 #: src/utils/TranslationUtils.gd
 msgid "Optimize"
@@ -1307,9 +1301,8 @@ msgid "Viewport"
 msgstr "Vaade"
 
 #: src/utils/TranslationUtils.gd
-#, fuzzy
 msgid "Select {format} files"
-msgstr "Vali {format} fail"
+msgstr "Vali {format} faile"
 
 #: src/utils/TranslationUtils.gd
 msgid "Select an image"
@@ -1324,9 +1317,8 @@ msgid "Save the {format} file"
 msgstr "Salvesta {format} fail"
 
 #: src/utils/TranslationUtils.gd
-#, fuzzy
 msgid "Only {extension_list} files are supported for this operation."
-msgstr "Faililaiend on tühi. Ainult {extension_list} on toetatud."
+msgstr "Ainult {extension_list} failid on toetatud selle tehingu jaoks."
 
 #~ msgid ""
 #~ "The file extension {extension} is unsupported for this operation. Only "
