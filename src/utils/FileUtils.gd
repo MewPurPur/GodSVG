@@ -292,14 +292,18 @@ completion_callback: Callable, show_file_missing_alert := true) -> void:
 	# The XML callbacks currently happen to not need the file path.
 	# The SVG callback used currently can popup extra dialogs, so they need the callable.
 	match file_path.get_extension():
-		"svg": completion_callback.call(file.get_as_text(), file_path, proceed_callback,
-				file_paths.is_empty())
+		"svg":
+			if file_paths.is_empty():
+				completion_callback.call(file.get_as_text(), file_path)
+			else:
+				completion_callback.call(file.get_as_text(), file_path, proceed_callback,
+						file_paths.is_empty())
 		"xml": completion_callback.call(file.get_as_text())
 		_: completion_callback.call(file.get_buffer(file.get_length()), file_path)
 
 
-static func _apply_svg(data: Variant, file_path: String, proceed_callback: Callable,
-is_last_file: bool) -> void:
+static func _apply_svg(data: Variant, file_path: String, proceed_callback := Callable(),
+is_last_file := true) -> void:
 	var tab_exists := false
 	for tab in Configs.savedata.get_tabs():
 		if tab.svg_file_path == file_path:

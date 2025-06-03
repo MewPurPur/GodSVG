@@ -10,6 +10,7 @@ const scroll_backwards_icon = preload("res://assets/icons/ScrollBackwards.svg")
 const DEFAULT_TAB_WIDTH = 140.0
 const MIN_TAB_WIDTH = 70.0
 const CLOSE_BUTTON_MARGIN = 2
+const SCROLL_SPEED = 10.0
 
 var ci := get_canvas_item()
 
@@ -279,11 +280,11 @@ func cleanup() -> void:
 	queue_redraw()
 
 
-func scroll_backwards(factor: float = 1.0) -> void:
-	set_scroll(current_scroll - 16.0 * factor)
+func scroll_backwards(factor := 1.0) -> void:
+	set_scroll(current_scroll - SCROLL_SPEED * factor)
 
-func scroll_forwards(factor: float = 1.0) -> void:
-	set_scroll(current_scroll + 16.0 * factor)
+func scroll_forwards(factor := 1.0) -> void:
+	set_scroll(current_scroll + SCROLL_SPEED * factor)
 
 func scroll_to_active() -> void:
 	var idx := Configs.savedata.get_active_tab_index() if\
