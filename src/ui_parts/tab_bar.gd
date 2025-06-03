@@ -158,9 +158,9 @@ func _gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
 		if event.is_pressed():
 			if event.button_index in [MOUSE_BUTTON_WHEEL_UP, MOUSE_BUTTON_WHEEL_LEFT]:
-				scroll_backwards()
+				scroll_backwards(event.factor)
 			if event.button_index in [MOUSE_BUTTON_WHEEL_DOWN, MOUSE_BUTTON_WHEEL_RIGHT]:
-				scroll_forwards()
+				scroll_forwards(event.factor)
 			elif event.button_index in [MOUSE_BUTTON_LEFT, MOUSE_BUTTON_RIGHT]:
 				var hovered_idx := get_hovered_index()
 				if hovered_idx != -1:
@@ -279,11 +279,11 @@ func cleanup() -> void:
 	queue_redraw()
 
 
-func scroll_backwards() -> void:
-	set_scroll(current_scroll - 5.0)
+func scroll_backwards(factor: float = 1.0) -> void:
+	set_scroll(current_scroll - 16.0 * factor)
 
-func scroll_forwards() -> void:
-	set_scroll(current_scroll + 5.0)
+func scroll_forwards(factor: float = 1.0) -> void:
+	set_scroll(current_scroll + 16.0 * factor)
 
 func scroll_to_active() -> void:
 	var idx := Configs.savedata.get_active_tab_index() if\
