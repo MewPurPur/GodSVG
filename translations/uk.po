@@ -247,13 +247,12 @@ msgid "Snap size"
 msgstr "Розмір прилипання"
 
 #: src/ui_parts/display.gd
-#, fuzzy
 msgid "Paste reference image"
-msgstr "Завантажити еталонне зображення"
+msgstr "Вставити еталонне зображення"
 
 #: src/ui_parts/donate_menu.gd
 msgid "Links to donation platforms"
-msgstr ""
+msgstr "Посилання на платформи для пожертв"
 
 #: src/ui_parts/donate_menu.gd src/ui_parts/export_menu.gd
 #: src/ui_parts/import_warning_menu.gd src/ui_widgets/choose_name_dialog.gd
@@ -825,18 +824,16 @@ msgid "Update check failed"
 msgstr "Не вдалося перевірити оновлення"
 
 #: src/ui_parts/update_menu.gd
-#, fuzzy
 msgid "View all releases"
-msgstr "Показати тестові версії"
+msgstr "Показати усі версії"
 
 #: src/ui_parts/update_menu.gd
 msgid "GodSVG is up-to-date."
 msgstr "GodSVG оновлено до останньої версії."
 
 #: src/ui_parts/update_menu.gd
-#, fuzzy
 msgid "New versions available!"
-msgstr "Нові версії"
+msgstr "Доступна нова версія!"
 
 #: src/ui_widgets/choose_name_dialog.gd
 msgid "Create"
@@ -965,24 +962,23 @@ msgstr "GodSVG не може розпізнати цей атрибут"
 
 #: src/utils/FileUtils.gd
 msgid "The following files were discarded:"
-msgstr ""
+msgstr "Наступні файли були відкинуті:"
 
 #: src/utils/FileUtils.gd
 msgid "{file_path} was discarded."
-msgstr ""
+msgstr "{file_path} було відкинуто."
 
 #: src/utils/FileUtils.gd
 msgid "Discarded files"
-msgstr ""
+msgstr "Відкинуті файли"
 
 #: src/utils/FileUtils.gd
 msgid "Proceed"
-msgstr ""
+msgstr "Продовжити"
 
 #: src/utils/FileUtils.gd
-#, fuzzy
 msgid "{file_path} couldn't be opened."
-msgstr "Цей файл неможливо відкрити."
+msgstr "Файл {file_path} неможливо відкрити."
 
 #: src/utils/FileUtils.gd
 msgid "Check if the file still exists in the selected file path."
@@ -990,11 +986,11 @@ msgstr "Перевірити, чи файл все щє існує по обра
 
 #: src/utils/FileUtils.gd
 msgid "Proceed with importing the rest of the files?"
-msgstr ""
+msgstr "Продовжити імпортуючи інші файли?"
 
 #: src/utils/FileUtils.gd
 msgid "Proceed for all files that can't be opened"
-msgstr ""
+msgstr "Продовжити для усіх файлів, які неможливо відкрити"
 
 #: src/utils/FileUtils.gd
 msgid "Save the file?"
@@ -1017,9 +1013,8 @@ msgid "Don't save"
 msgstr "Не зберігати"
 
 #: src/utils/FileUtils.gd
-#, fuzzy
 msgid "{file_path} is already being edited inside GodSVG."
-msgstr "Імпортований файл вже редагується в GodSVG."
+msgstr "Файл {file_path} вже редагується в GodSVG."
 
 #: src/utils/FileUtils.gd
 msgid "If you want to revert your edits since the last save, use {reset_svg}."
@@ -1052,14 +1047,12 @@ msgid "Close all other tabs"
 msgstr "Закрити усі інші вкладки"
 
 #: src/utils/TranslationUtils.gd
-#, fuzzy
 msgid "Close empty tabs"
-msgstr "Закрити вкладку"
+msgstr "Закрити порожні вкладки"
 
 #: src/utils/TranslationUtils.gd
-#, fuzzy
 msgid "Close saved tabs"
-msgstr "Закрити усі інші вкладки"
+msgstr "Закрити збережені вкладки"
 
 #: src/utils/TranslationUtils.gd
 msgid "Create tab"
@@ -1256,7 +1249,7 @@ msgstr "Вийти із додатку"
 
 #: src/utils/TranslationUtils.gd
 msgid "Toggle fullscreen"
-msgstr ""
+msgstr "Перемикнути повноекранний режим"
 
 #: src/utils/TranslationUtils.gd
 msgid "Move to"
@@ -1316,9 +1309,8 @@ msgid "Viewport"
 msgstr "Вікно перегляду"
 
 #: src/utils/TranslationUtils.gd
-#, fuzzy
 msgid "Select {format} files"
-msgstr "Обрати {format} файл"
+msgstr "Обрати {format} файли"
 
 #: src/utils/TranslationUtils.gd
 msgid "Select an image"
@@ -1333,9 +1325,9 @@ msgid "Save the {format} file"
 msgstr "Зберегти {format} файл"
 
 #: src/utils/TranslationUtils.gd
-#, fuzzy
 msgid "Only {extension_list} files are supported for this operation."
-msgstr "Розширення файлу порожнє. Тільки {extension_list} файли підтримуються."
+msgstr ""
+"Тільки файли з розширеннями {extension_list} підтримуються для цієї операції."
 
 #~ msgid ""
 #~ "The file extension {extension} is unsupported for this operation. Only "
