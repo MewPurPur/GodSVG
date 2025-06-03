@@ -10,7 +10,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.5\n"
+"X-Generator: Poedit 3.6\n"
 
 msgid "translation-credits"
 msgstr "Felipe Sena Costa <felipe.sena.work.contact@gmail.com>"
@@ -85,9 +85,8 @@ msgid "Restore"
 msgstr "Restaurar"
 
 #: src/autoload/State.gd
-#, fuzzy
 msgid "View in Inspector"
-msgstr "Ver na Lista"
+msgstr "Ver no Inspector"
 
 #: src/autoload/State.gd
 msgid "Convert To"
@@ -249,13 +248,12 @@ msgid "Snap size"
 msgstr "Tamanho de encaixe"
 
 #: src/ui_parts/display.gd
-#, fuzzy
 msgid "Paste reference image"
 msgstr "Carregar imagem de referência"
 
 #: src/ui_parts/donate_menu.gd
 msgid "Links to donation platforms"
-msgstr ""
+msgstr "Links para plataforma de doação"
 
 #: src/ui_parts/donate_menu.gd src/ui_parts/export_menu.gd
 #: src/ui_parts/import_warning_menu.gd src/ui_widgets/choose_name_dialog.gd
@@ -415,11 +413,11 @@ msgstr "Adicionar elemento"
 #. Refers to the zero, one, or multiple UI parts to not be shown in the final layout. It's of plural cardinality.
 #: src/ui_parts/layout_popup.gd
 msgid "Excluded"
-msgstr ""
+msgstr "Excluídos"
 
 #: src/ui_parts/layout_popup.gd
 msgid "Drag and drop to change the layout"
-msgstr ""
+msgstr "Arraste e solte para modificar o layout"
 
 #: src/ui_parts/mac_menu.gd src/ui_parts/settings_menu.gd
 msgid "File"
@@ -459,7 +457,7 @@ msgstr "Temas"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Tab bar"
-msgstr ""
+msgstr "Barra de guias"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Other"
@@ -536,9 +534,8 @@ msgid "Background color"
 msgstr "Cor do plano de fundo"
 
 #: src/ui_parts/settings_menu.gd
-#, fuzzy
 msgid "Grid color"
-msgstr "Cor válida"
+msgstr "Cor da grade"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Valid color"
@@ -554,7 +551,7 @@ msgstr "Entrada"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Close tabs with middle mouse button"
-msgstr ""
+msgstr "Fechar guias com o botão do meio do mouse"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Invert zoom direction"
@@ -728,6 +725,8 @@ msgid ""
 "If turned on, clicking on a tab with the middle mouse button closes the tab. "
 "If turned off, it focuses the tab instead."
 msgstr ""
+"Se ligado, clicar em uma guia com o botão do meio do mouse fechará a guia. "
+"Se desligado, irá focar na guia."
 
 #: src/ui_parts/settings_menu.gd
 msgid "Swaps the scroll directions for zooming in and zooming out."
@@ -742,7 +741,6 @@ msgstr ""
 "viewport quando movimentando a visualização."
 
 #: src/ui_parts/settings_menu.gd
-#, fuzzy
 msgid ""
 "If turned on, scrolling pans the view. To zoom, hold CTRL while scrolling."
 msgstr ""
@@ -758,13 +756,12 @@ msgstr ""
 "desabilitado, usa o diálogo de arquivo embutido no GodSVG."
 
 #: src/ui_parts/settings_menu.gd
-#, fuzzy
 msgid ""
 "If turned off, the window title remains as \"GodSVG\" without including the "
 "current file."
 msgstr ""
-"Se desabilitado, o título da janela permanecerá como \"GodSVG\" independente "
-"do arquivo aberto."
+"Se desabilitado, o título da janela permanecerá como \"GodSVG\" sem incluir "
+"o nome do arquivo aberto."
 
 #: src/ui_parts/settings_menu.gd
 msgid "Changes the visual size and grabbing area of handles."
@@ -807,7 +804,6 @@ msgid "Retry"
 msgstr "Tentar novamente"
 
 #: src/ui_parts/update_menu.gd
-#, fuzzy
 msgid "Show prereleases"
 msgstr "Incluir pré-lançamentos"
 
@@ -825,18 +821,16 @@ msgid "Update check failed"
 msgstr "Verificação de atualização falhou"
 
 #: src/ui_parts/update_menu.gd
-#, fuzzy
 msgid "View all releases"
-msgstr "Incluir pré-lançamentos"
+msgstr "Ver todos os lançamentos"
 
 #: src/ui_parts/update_menu.gd
 msgid "GodSVG is up-to-date."
 msgstr "GodSVG está atualizado."
 
 #: src/ui_parts/update_menu.gd
-#, fuzzy
 msgid "New versions available!"
-msgstr "Novas versões"
+msgstr "Novas versões disponíveis!"
 
 #: src/ui_widgets/choose_name_dialog.gd
 msgid "Create"
@@ -965,24 +959,23 @@ msgstr "O GodSVG não reconhece este atributo"
 
 #: src/utils/FileUtils.gd
 msgid "The following files were discarded:"
-msgstr ""
+msgstr "Os seguintes arquivos foram descartados:"
 
 #: src/utils/FileUtils.gd
 msgid "{file_path} was discarded."
-msgstr ""
+msgstr "{file_path} foi descartado."
 
 #: src/utils/FileUtils.gd
 msgid "Discarded files"
-msgstr ""
+msgstr "Arquivos descartados"
 
 #: src/utils/FileUtils.gd
 msgid "Proceed"
-msgstr ""
+msgstr "Proceder"
 
 #: src/utils/FileUtils.gd
-#, fuzzy
 msgid "{file_path} couldn't be opened."
-msgstr "Este arquivo não pode ser aberto."
+msgstr "{file_path} não pode ser aberto."
 
 #: src/utils/FileUtils.gd
 msgid "Check if the file still exists in the selected file path."
@@ -990,55 +983,53 @@ msgstr "Verificar se o arquivo ainda existe no local de arquivo selecionado."
 
 #: src/utils/FileUtils.gd
 msgid "Proceed with importing the rest of the files?"
-msgstr ""
+msgstr "Prosseguir com a importação do restante dos arquivos?"
 
 #: src/utils/FileUtils.gd
 msgid "Proceed for all files that can't be opened"
-msgstr ""
+msgstr "Prosseguir para todos os arquivos que não podem ser abertos"
 
 #: src/utils/FileUtils.gd
-#, fuzzy
 msgid "Save the file?"
-msgstr "Salvar o arquivo .\"{format}\""
+msgstr "Salvar o arquivo?"
 
 #: src/utils/FileUtils.gd
-#, fuzzy
 msgid "Do you want to save this file?"
-msgstr "Você deseja prosseguir?"
+msgstr "Você deseja salvar este arquivo?"
 
 #: src/utils/FileUtils.gd
 msgid "Save the changes?"
-msgstr ""
+msgstr "Salvar as alterações?"
 
 #: src/utils/FileUtils.gd
 msgid "Your changes will be lost if you don't save them."
-msgstr ""
+msgstr "Suas alterações serão perdidas se você não as salvar."
 
 #: src/utils/FileUtils.gd
 msgid "Don't save"
-msgstr ""
+msgstr "Não salvar"
 
 #: src/utils/FileUtils.gd
-#, fuzzy
 msgid "{file_path} is already being edited inside GodSVG."
-msgstr "O arquivo importado já está sendo editado dentro do GodSVG."
+msgstr "{file_path} já está sendo editado dentro do GodSVG."
 
 #: src/utils/FileUtils.gd
 msgid "If you want to revert your edits since the last save, use {reset_svg}."
 msgstr ""
+"Se você deseja reverter as suas edições desde o último salvamento, use "
+"{reset_svg}."
 
 #: src/utils/FileUtils.gd
 msgid "Do you want to save the changes made to {file_name}?"
-msgstr ""
+msgstr "Você deseja salvar as alterações feitas em {file_name}?"
 
 #: src/utils/TranslationUtils.gd
 msgid "Save SVG"
 msgstr "Salvar SVG"
 
 #: src/utils/TranslationUtils.gd
-#, fuzzy
 msgid "Save SVG as"
-msgstr "Salvar SVG como…"
+msgstr "Salvar SVG como"
 
 #: src/utils/TranslationUtils.gd
 msgid "Close tabs to the left"
@@ -1053,14 +1044,12 @@ msgid "Close all other tabs"
 msgstr "Fechar todas as outras abas"
 
 #: src/utils/TranslationUtils.gd
-#, fuzzy
 msgid "Close empty tabs"
-msgstr "Fechar aba"
+msgstr "Fechar abas vazias"
 
 #: src/utils/TranslationUtils.gd
-#, fuzzy
 msgid "Close saved tabs"
-msgstr "Fechar todas as outras abas"
+msgstr "Fechar abas salvas"
 
 #: src/utils/TranslationUtils.gd
 msgid "Create tab"
@@ -1079,18 +1068,16 @@ msgid "Optimize"
 msgstr "Otimizar"
 
 #: src/utils/TranslationUtils.gd
-#, fuzzy
 msgid "Optimize SVG"
-msgstr "Otimizar"
+msgstr "Otimizar SVG"
 
 #: src/utils/TranslationUtils.gd
 msgid "Copy all text"
 msgstr "Copiar todo texto"
 
 #: src/utils/TranslationUtils.gd
-#, fuzzy
 msgid "Copy the SVG text"
-msgstr "Copiar todo texto"
+msgstr "Copiar todo texto do SVG"
 
 #: src/utils/TranslationUtils.gd
 msgid "Reset SVG"
@@ -1145,7 +1132,6 @@ msgid "Delete the selection"
 msgstr "Excluir a seleção"
 
 #: src/utils/TranslationUtils.gd
-#, fuzzy
 msgid "Move up"
 msgstr "Mover para acima"
 
@@ -1154,7 +1140,6 @@ msgid "Move the selection up"
 msgstr "Mover a seleção para cima"
 
 #: src/utils/TranslationUtils.gd
-#, fuzzy
 msgid "Move down"
 msgstr "Mover para abaixo"
 
@@ -1260,7 +1245,7 @@ msgstr "Fechar programa"
 
 #: src/utils/TranslationUtils.gd
 msgid "Toggle fullscreen"
-msgstr ""
+msgstr "Alternar tela cheia"
 
 #: src/utils/TranslationUtils.gd
 msgid "Move to"
@@ -1308,39 +1293,34 @@ msgstr "Absoluto"
 
 #: src/utils/TranslationUtils.gd
 msgid "Code editor"
-msgstr ""
+msgstr "Editor de código"
 
 #: src/utils/TranslationUtils.gd
 msgid "Inspector"
-msgstr ""
+msgstr "Inspetor"
 
 #. The viewport is the area where the graphic is displayed. In similar applications, it's often called the canvas.
 #: src/utils/TranslationUtils.gd
-#, fuzzy
 msgid "Viewport"
-msgstr "Visualizar"
+msgstr "Canvas"
 
 #: src/utils/TranslationUtils.gd
-#, fuzzy
 msgid "Select {format} files"
-msgstr "Selecionar um arquivo XML"
+msgstr "Selecionar arquivos do tipo {format}"
 
 #: src/utils/TranslationUtils.gd
 msgid "Select an image"
 msgstr "Selecionar uma imagem"
 
 #: src/utils/TranslationUtils.gd
-#, fuzzy
 msgid "Select an {format} file"
-msgstr "Selecionar um arquivo XML"
+msgstr "Selecionar um arquivo do tipo {format}"
 
 #: src/utils/TranslationUtils.gd
-#, fuzzy
 msgid "Save the {format} file"
-msgstr "Salvar o arquivo .\"{format}\""
+msgstr "Salvar o arquivo do tipo {format}"
 
 #: src/utils/TranslationUtils.gd
-#, fuzzy
 msgid "Only {extension_list} files are supported for this operation."
 msgstr ""
 "A extensão de arquivo está vazia. Somente arquivos {extension_list} são "
