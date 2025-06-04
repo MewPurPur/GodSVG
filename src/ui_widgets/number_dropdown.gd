@@ -20,7 +20,7 @@ func set_value(new_value: String) -> void:
 		proposed_num = roundi(proposed_num)
 	if not restricted and not proposed_num in values:
 		proposed_num = clampf(proposed_num, min_value, max_value)
-	if not is_equal_approx(current_num, proposed_num):
+	if not is_equal_approx(current_num, proposed_num) or _value.is_empty():
 		_value = to_str(proposed_num)
 		value_changed.emit(_value)
 	if is_instance_valid(line_edit):
