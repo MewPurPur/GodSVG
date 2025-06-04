@@ -196,6 +196,9 @@ func _draw() -> void:
 	var selected_multiline := PackedVector2Array()
 	var hovered_multiline := PackedVector2Array()
 	var hovered_selected_multiline := PackedVector2Array()
+	# Store bounding rects and the transforms needed for them.
+	var selection_transforms: Array[Transform2D] = []
+	var selection_rects: Array[Rect2] = []
 	
 	for element: Element in State.root_element.get_all_valid_element_descendants():
 		# Determine if the element is hovered/selected or has a hovered/selected parent.
@@ -231,6 +234,20 @@ func _draw() -> void:
 				else:
 					normal_polylines.append(points)
 					normal_multiline += extras
+				
+				if element_selected:
+					var bounding_box: Rect2 = element.get_bounding_box()
+					if bounding_box.has_area():
+						var element_transform := element.get_transform()
+						var canvas_transform := State.root_element.canvas_transform
+						var canvas_scale := canvas_transform.get_scale().x
+						var element_scale := element_transform.get_scale()
+						var grow_amount_unscaled := 4.0 / State.zoom / canvas_scale
+						var grow_amount_x := grow_amount_unscaled / element_scale.x
+						var grow_amount_y := grow_amount_unscaled / element_scale.y
+						selection_transforms.append(canvas_transform * element_transform)
+						selection_rects.append(bounding_box.grow_individual(grow_amount_x,
+								grow_amount_y, grow_amount_x, grow_amount_y))
 			
 			"ellipse":
 				var c := Vector2(element.get_attribute_num("cx"),
@@ -260,6 +277,20 @@ func _draw() -> void:
 				else:
 					normal_polylines.append(points)
 					normal_multiline += extras
+				
+				if element_selected:
+					var bounding_box: Rect2 = element.get_bounding_box()
+					if bounding_box.has_area():
+						var element_transform := element.get_transform()
+						var canvas_transform := State.root_element.canvas_transform
+						var canvas_scale := canvas_transform.get_scale().x
+						var element_scale := element_transform.get_scale()
+						var grow_amount_unscaled := 4.0 / State.zoom / canvas_scale
+						var grow_amount_x := grow_amount_unscaled / element_scale.x
+						var grow_amount_y := grow_amount_unscaled / element_scale.y
+						selection_transforms.append(canvas_transform * element_transform)
+						selection_rects.append(bounding_box.grow_individual(grow_amount_x,
+								grow_amount_y, grow_amount_x, grow_amount_y))
 			
 			"rect":
 				var x := element.get_attribute_num("x")
@@ -323,6 +354,20 @@ func _draw() -> void:
 				else:
 					normal_polylines.append(points)
 					normal_multiline += extras
+				
+				if element_selected:
+					var bounding_box: Rect2 = element.get_bounding_box()
+					if bounding_box.has_area():
+						var element_transform := element.get_transform()
+						var canvas_transform := State.root_element.canvas_transform
+						var canvas_scale := canvas_transform.get_scale().x
+						var element_scale := element_transform.get_scale()
+						var grow_amount_unscaled := 4.0 / State.zoom / canvas_scale
+						var grow_amount_x := grow_amount_unscaled / element_scale.x
+						var grow_amount_y := grow_amount_unscaled / element_scale.y
+						selection_transforms.append(canvas_transform * element_transform)
+						selection_rects.append(bounding_box.grow_individual(grow_amount_x,
+								grow_amount_y, grow_amount_x, grow_amount_y))
 			
 			"line":
 				var x1 := element.get_attribute_num("x1")
@@ -341,6 +386,20 @@ func _draw() -> void:
 					selected_polylines.append(points)
 				else:
 					normal_polylines.append(points)
+				
+				if element_selected:
+					var bounding_box: Rect2 = element.get_bounding_box()
+					if bounding_box.has_area():
+						var element_transform := element.get_transform()
+						var canvas_transform := State.root_element.canvas_transform
+						var canvas_scale := canvas_transform.get_scale().x
+						var element_scale := element_transform.get_scale()
+						var grow_amount_unscaled := 4.0 / State.zoom / canvas_scale
+						var grow_amount_x := grow_amount_unscaled / element_scale.x
+						var grow_amount_y := grow_amount_unscaled / element_scale.y
+						selection_transforms.append(canvas_transform * element_transform)
+						selection_rects.append(bounding_box.grow_individual(grow_amount_x,
+								grow_amount_y, grow_amount_x, grow_amount_y))
 			
 			"polygon", "polyline":
 				var point_list := ListParser.list_to_points(element.get_attribute_list("points"))
@@ -387,6 +446,20 @@ func _draw() -> void:
 							selected_polylines.append(points)
 						Utils.InteractionType.HOVERED_SELECTED:
 							hovered_selected_polylines.append(points)
+				
+				if element_selected:
+					var bounding_box: Rect2 = element.get_bounding_box()
+					if bounding_box.has_area():
+						var element_transform := element.get_transform()
+						var canvas_transform := State.root_element.canvas_transform
+						var canvas_scale := canvas_transform.get_scale().x
+						var element_scale := element_transform.get_scale()
+						var grow_amount_unscaled := 4.0 / State.zoom / canvas_scale
+						var grow_amount_x := grow_amount_unscaled / element_scale.x
+						var grow_amount_y := grow_amount_unscaled / element_scale.y
+						selection_transforms.append(canvas_transform * element_transform)
+						selection_rects.append(bounding_box.grow_individual(grow_amount_x,
+								grow_amount_y, grow_amount_x, grow_amount_y))
 			
 			"path":
 				var pathdata: AttributePathdata = element.get_attribute("d")
@@ -593,6 +666,20 @@ func _draw() -> void:
 						Utils.InteractionType.HOVERED_SELECTED:
 							hovered_selected_polylines.append(points)
 							hovered_selected_multiline += tangent_points
+				
+				if element_selected:
+					var bounding_box: Rect2 = element.get_bounding_box()
+					if bounding_box.has_area():
+						var element_transform := element.get_transform()
+						var canvas_transform := State.root_element.canvas_transform
+						var canvas_scale := canvas_transform.get_scale().x
+						var element_scale := element_transform.get_scale()
+						var grow_amount_unscaled := 4.0 / State.zoom / canvas_scale
+						var grow_amount_x := grow_amount_unscaled / element_scale.x
+						var grow_amount_y := grow_amount_unscaled / element_scale.y
+						selection_transforms.append(canvas_transform * element_transform)
+						selection_rects.append(bounding_box.grow_individual(grow_amount_x,
+								grow_amount_y, grow_amount_x, grow_amount_y))
 	
 	draw_set_transform_matrix(State.root_element.canvas_transform)
 	RenderingServer.canvas_item_set_transform(surface, Transform2D(0.0,
@@ -634,19 +721,11 @@ func _draw() -> void:
 			hovered_selected_multiline, hovered_selected_handles,
 			hovered_selected_handle_textures)
 	
-	for xid in State.selected_xids:
-		var xnode := State.root_element.get_xnode(xid)
-		if xnode.is_element() and DB.is_attribute_recognized(xnode.name, "transform"):
-			var bounding_box: Rect2 = xnode.get_bounding_box()
-			if bounding_box.has_area():
-				RenderingServer.canvas_item_add_set_transform(selections_surface,
-						State.root_element.canvas_transform * xnode.get_transform())
-				var grow_amount := Vector2(4, 4) / State.zoom
-				grow_amount /= State.root_element.canvas_transform.get_scale()
-				grow_amount /= xnode.get_transform().get_scale()
-				RenderingServer.canvas_item_add_rect(selections_surface,
-						bounding_box.grow_individual(grow_amount.x, grow_amount.y,
-						grow_amount.x, grow_amount.y), Color.WHITE)
+	for idx in selection_rects.size():
+		RenderingServer.canvas_item_add_set_transform(selections_surface,
+				selection_transforms[idx])
+		RenderingServer.canvas_item_add_rect(selections_surface, selection_rects[idx],
+				Color.WHITE)
 
 func draw_objects_of_type(color: Color, polylines: Array[PackedVector2Array],
 multiline: PackedVector2Array, handles_array: Array[Handle],
