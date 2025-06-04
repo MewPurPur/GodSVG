@@ -291,7 +291,7 @@ func setup_content() -> void:
 					[0, 30, 60, 120, 240], true, false,
 					SaveData.UI_MAX_FPS_MIN, SaveData.UI_MAX_FPS_MAX)
 			add_advice(Translator.translate(
-					"Limits the framerate of the user interface. If set to 0, the framerate will be unlimited"))
+					"Limits the framerate of the user interface. If set to 0, the framerate will be unlimited."))
 			
 			# Disable mouse wrap if not available.
 			if not DisplayServer.has_feature(DisplayServer.FEATURE_MOUSE_WARP):

@@ -283,7 +283,7 @@ enum ScalingApproach {AUTO, CONSTANT_075, CONSTANT_100, CONSTANT_125, CONSTANT_1
 			emit_changed()
 			Configs.ui_scale_changed.emit()
 
-const UI_MAX_FPS_MAX = 320
+const UI_MAX_FPS_MAX = 1337
 const UI_MAX_FPS_MIN = 0
 @export var ui_max_fps := 0:
 	set(new_value):
