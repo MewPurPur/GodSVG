@@ -39,6 +39,7 @@ func get_setting_default(setting: String) -> Variant:
 		"use_filename_for_window_title": return true
 		"handle_size": return 1.0 if OS.get_name() != "Android" else 2.0
 		"ui_scale": return ScalingApproach.AUTO
+		"ui_max_fps": return 0
 		"custom_ui_scale": return true
 	return null
 
@@ -281,6 +282,17 @@ enum ScalingApproach {AUTO, CONSTANT_075, CONSTANT_100, CONSTANT_125, CONSTANT_1
 			ui_scale = new_value
 			emit_changed()
 			Configs.ui_scale_changed.emit()
+
+const UI_MAX_FPS_MAX = 320
+const UI_MAX_FPS_MIN = 0
+@export var ui_max_fps := 0:
+	set(new_value):
+		if is_nan(new_value):
+			ui_max_fps = get_setting_default("ui_max_fps")
+		elif new_value != ui_max_fps:
+			ui_max_fps = clampi(new_value,UI_MAX_FPS_MIN, UI_MAX_FPS_MAX)
+			emit_changed()
+		Engine.max_fps = ui_max_fps
 
 
 # Session
