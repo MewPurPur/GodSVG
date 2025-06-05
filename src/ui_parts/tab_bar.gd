@@ -192,6 +192,10 @@ func _gui_input(event: InputEvent) -> void:
 				var btn_arr: Array[Button] = []
 				
 				if hovered_idx == -1:
+					if get_add_button_rect().has_point(event.position) or\
+					get_scroll_forwards_area_rect().has_point(event.position) or\
+					get_scroll_backwards_area_rect().has_point(event.position):
+						return
 					btn_arr.append(ContextPopup.create_shortcut_button("new_tab"))
 				else:
 					var new_active_tab := Configs.savedata.get_tab(hovered_idx)
