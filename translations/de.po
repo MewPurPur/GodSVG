@@ -962,24 +962,23 @@ msgstr "GodSVG erkennt diese Attribute nicht"
 
 #: src/utils/FileUtils.gd:
 msgid "The following files were discarded:"
-msgstr ""
+msgstr "Die folgenden Dateien wurden verworfen:"
 
 #: src/utils/FileUtils.gd:
 msgid "{file_path} was discarded."
-msgstr ""
+msgstr "{file_path} wurde verworfen."
 
 #: src/utils/FileUtils.gd:
 msgid "Discarded files"
-msgstr ""
+msgstr "Verworfene Dateien"
 
 #: src/utils/FileUtils.gd:
 msgid "Proceed"
-msgstr ""
+msgstr "Fortfahren"
 
 #: src/utils/FileUtils.gd:
-#, fuzzy
 msgid "{file_path} couldn't be opened."
-msgstr "Die Datei konnte nicht geöffnet werden."
+msgstr "{file_path} konnte nicht geöffnet werden."
 
 #: src/utils/FileUtils.gd:
 msgid "Check if the file still exists in the selected file path."
@@ -987,11 +986,11 @@ msgstr "Prüfen, ob die Datei im ausgewählten Dateipfad noch existiert."
 
 #: src/utils/FileUtils.gd:
 msgid "Proceed with importing the rest of the files?"
-msgstr ""
+msgstr "Mit dem Importieren der restlichen Dateien fortfahren?"
 
 #: src/utils/FileUtils.gd:
 msgid "Proceed for all files that can't be opened"
-msgstr ""
+msgstr "Fortfahren für alle Dateien, die nicht geöffnet werden können"
 
 #: src/utils/FileUtils.gd:
 msgid "Save the file?"
@@ -1014,9 +1013,8 @@ msgid "Don't save"
 msgstr "Nicht speichern"
 
 #: src/utils/FileUtils.gd:
-#, fuzzy
 msgid "{file_path} is already being edited inside GodSVG."
-msgstr "Die importierte Datei wird bereits in GodSVG bearbeitet."
+msgstr "{file_path} wird bereits in GodSVG bearbeitet."
 
 #: src/utils/FileUtils.gd:
 msgid "If you want to revert your edits since the last save, use {reset_svg}."
@@ -1049,14 +1047,12 @@ msgid "Close all other tabs"
 msgstr "Alle anderen Registerkarten schließen"
 
 #: src/utils/TranslationUtils.gd:
-#, fuzzy
 msgid "Close empty tabs"
-msgstr "Registerkarte schließen"
+msgstr "Leere Registerkarten schließen"
 
 #: src/utils/TranslationUtils.gd:
-#, fuzzy
 msgid "Close saved tabs"
-msgstr "Alle anderen Registerkarten schließen"
+msgstr "Gespeicherte Registerkarten schließen"
 
 #: src/utils/TranslationUtils.gd:
 msgid "Create tab"
@@ -1312,9 +1308,8 @@ msgid "Viewport"
 msgstr "Ansichtsfenster"
 
 #: src/utils/TranslationUtils.gd:
-#, fuzzy
 msgid "Select {format} files"
-msgstr "{format}-Datei auswählen"
+msgstr "{format}-Dateien auswählen"
 
 #: src/utils/TranslationUtils.gd:
 msgid "Select an image"
@@ -1329,11 +1324,8 @@ msgid "Save the {format} file"
 msgstr "Die {format}-Datei speichern"
 
 #: src/utils/TranslationUtils.gd:
-#, fuzzy
 msgid "Only {extension_list} files are supported for this operation."
-msgstr ""
-"Die Dateierweiterung ist leer. Nur {extension_list} Dateien werden "
-"unterstützt."
+msgstr "Nur {extension_list}-Dateien werden für diese Operation unterstützt."
 
 #~ msgid ""
 #~ "The file extension {extension} is unsupported for this operation. Only "
