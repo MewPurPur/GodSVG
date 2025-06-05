@@ -361,15 +361,14 @@ func get_usable_rect() -> Vector2i:
 			DisplayServer.window_get_current_screen()).size -\
 			window.get_size_with_decorations() + window.size)
 
-func get_max_ui_scale() -> float:
-	var usable_screen_size := get_usable_rect()
+func get_max_ui_scale(usable_screen_size: Vector2i) -> float:
 	var window_default_size := get_window_default_size()
 	# How much can the default size be increased before it takes all usable screen space.
 	var max_expansion := Vector2(usable_screen_size) / Vector2(window_default_size)
 	return clampf(snappedf(minf(max_expansion.x, max_expansion.y) - 0.005, 0.01), 0.75, 4.0)
 
-func get_min_ui_scale() -> float:
-	return maxf(snappedf(get_max_ui_scale() / 2.0 - 0.125, 0.25), 0.75)
+func get_min_ui_scale(usable_screen_size: Vector2i) -> float:
+	return maxf(snappedf(get_max_ui_scale(usable_screen_size) / 2.0 - 0.125, 0.25), 0.75)
 
 func get_auto_ui_scale() -> float:
 	# Usable rect might not be reliable on web, so attempt to use devicePixelRatio.
@@ -378,16 +377,17 @@ func get_auto_ui_scale() -> float:
 		if is_finite(pixel_ratio):
 			return snappedf(pixel_ratio, 0.25)
 	
-	var screen_size := get_usable_rect()
-	if screen_size.x == 0 or screen_size.y == 0:
+	var usable_screen_size := get_usable_rect()
+	if usable_screen_size.x == 0 or usable_screen_size.y == 0:
 		return 1.0
 	
 	# The wider the screen, the bigger the automatically chosen UI scale.
-	var aspect_ratio := screen_size.aspect()
-	var auto_scale := get_max_ui_scale() * clampf(aspect_ratio * 0.375, 0.6, 0.8)
+	var aspect_ratio := usable_screen_size.aspect()
+	var max_ui_scale := get_max_ui_scale(usable_screen_size)
+	var auto_scale := max_ui_scale * clampf(aspect_ratio * 0.375, 0.6, 0.8)
 	if OS.get_name() == "Android":
 		auto_scale *= 1.1  # Default to giving mobile a bit more space.
-	return clampf(snappedf(auto_scale, 0.25), get_min_ui_scale(), get_max_ui_scale())
+	return clampf(snappedf(auto_scale, 0.25), get_min_ui_scale(usable_screen_size), max_ui_scale)
 
 
 func update_ui_scale() -> void:
@@ -398,8 +398,8 @@ func update_ui_scale() -> void:
 	var old_scale_factor := window.content_scale_factor
 	var window_default_size := get_window_default_size()
 	var usable_screen_size := get_usable_rect()
-	var max_scale := get_max_ui_scale()
-	var min_scale := get_min_ui_scale()
+	var max_scale := get_max_ui_scale(usable_screen_size)
+	var min_scale := get_min_ui_scale(usable_screen_size)
 	
 	var ui_scaling_approach := Configs.savedata.ui_scale
 	var final_scale: float

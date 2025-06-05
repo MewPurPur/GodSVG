@@ -247,8 +247,9 @@ func setup_content() -> void:
 					"Changes the visual size and grabbing area of handles."))
 			current_setup_setting = "ui_scale"
 			
-			var min_ui_scale := HandlerGUI.get_min_ui_scale()
-			var max_ui_scale := HandlerGUI.get_max_ui_scale()
+			var usable_screen_size := HandlerGUI.get_usable_rect()
+			var min_ui_scale := HandlerGUI.get_min_ui_scale(usable_screen_size)
+			var max_ui_scale := HandlerGUI.get_max_ui_scale(usable_screen_size)
 			var dropdown_values := [SaveData.ScalingApproach.AUTO]
 			if min_ui_scale <= 0.75 and 0.75 <= max_ui_scale:
 				dropdown_values.append(SaveData.ScalingApproach.CONSTANT_075)
