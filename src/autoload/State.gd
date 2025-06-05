@@ -140,6 +140,10 @@ func _svg_save() -> void:
 	last_saved_svg_text = ""
 
 
+func sync_to_editor_formatter() -> void:
+	if not svg_text.is_empty():
+		sync_elements()
+
 func sync_elements() -> void:
 	var text_to_parse := svg_text if unstable_svg_text.is_empty() else unstable_svg_text
 	var svg_parse_result := SVGParser.text_to_root(text_to_parse)

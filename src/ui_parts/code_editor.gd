@@ -52,20 +52,22 @@ func setup_theme() -> void:
 	# Make it so the scrollbar doesn't overlap with the code editor's border.
 	var scrollbar := code_edit.get_v_scroll_bar()
 	scrollbar.begin_bulk_theme_override()
-	const CONST_ARR_2: PackedStringArray = ["normal", "focus", "hover"]
+	const CONST_ARR_2: PackedStringArray = ["grabber", "grabber_highlight", "grabber_pressed"]
 	for theme_type in CONST_ARR_2:
 		var stylebox := get_theme_stylebox(theme_type, "VScrollBar").duplicate()
+		# TODO No idea why I need to adjust it for the TextEdit, maybe a Godot issue.
 		stylebox.expand_margin_right = -2.0
+		stylebox.expand_margin_bottom = 2.0
 		scrollbar.add_theme_stylebox_override(theme_type, stylebox)
 	var bg_stylebox := get_theme_stylebox("scroll", "VScrollBar").duplicate()
 	bg_stylebox.expand_margin_right = -2.0
+	bg_stylebox.expand_margin_bottom = 2.0
 	bg_stylebox.content_margin_left += 1.0
 	bg_stylebox.content_margin_right += 1.0
 	scrollbar.add_theme_stylebox_override("scroll", bg_stylebox)
 	scrollbar.end_bulk_theme_override()
 	
-	error_label.add_theme_color_override("default_color",
-			Configs.savedata.basic_color_error)
+	error_label.add_theme_color_override("default_color", Configs.savedata.basic_color_error)
 	var panel_stylebox := get_theme_stylebox("panel", "PanelContainer")
 	# Set up the top panel.
 	var top_stylebox := panel_stylebox.duplicate()

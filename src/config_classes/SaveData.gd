@@ -523,7 +523,7 @@ func set_palettes(new_palettes: Array[Palette]) -> void:
 			editor_formatter = new_value
 			emit_changed()
 			editor_formatter.changed.connect(emit_changed)
-			editor_formatter.changed_deferred.connect(State.sync_elements)
+			editor_formatter.changed_deferred.connect(State.sync_to_editor_formatter)
 
 @export var export_formatter: Formatter = null:
 	set(new_value):
