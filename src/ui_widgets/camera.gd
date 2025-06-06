@@ -1,6 +1,7 @@
 extends Control
 
 const TICKS_INTERVAL = 4
+const TICK_DISTANCE = float(TICKS_INTERVAL)
 
 var axis_line_color: Color
 var major_grid_color: Color
@@ -41,7 +42,7 @@ func update_show_grid() -> void:
 func update() -> void:
 	var new_position := unsnapped_position.snapped(Vector2(1, 1) / zoom)
 	if position != new_position:
-		position = unsnapped_position.snapped(Vector2(1, 1) / zoom)
+		Utils.set_control_position_fixed(self, new_position)
 		State.view_changed.emit()
 	
 	get_viewport().canvas_transform = Transform2D(0.0, Vector2(zoom, zoom),
@@ -59,7 +60,6 @@ func _draw() -> void:
 	
 	var major_points := PackedVector2Array()
 	var minor_points := PackedVector2Array()
-	var tick_distance := float(TICKS_INTERVAL)
 	var draw_minor_lines := zoom >= 8.0
 	var mark_pixel_lines := zoom >= 128.0
 	@warning_ignore("integer_division")
@@ -71,10 +71,10 @@ func _draw() -> void:
 			Transform2D(0, Vector2(1, 1) / zoom, 0, Vector2.ZERO))
 	
 	var i := fmod(-position.x, 1.0)
-	var major_line_h_offset := fposmod(-position.x, tick_distance)
+	var major_line_h_offset := fposmod(-position.x, TICK_DISTANCE)
 	# Horizontal offset.
 	while i <= grid_size.x:
-		if major_line_h_offset != fposmod(i, tick_distance):
+		if major_line_h_offset != fposmod(i, TICK_DISTANCE):
 			if draw_minor_lines:
 				minor_points.append(Vector2(i, 0))
 				minor_points.append(Vector2(i, grid_size.y))
@@ -84,7 +84,7 @@ func _draw() -> void:
 							HORIZONTAL_ALIGNMENT_LEFT, -1, 14, axis_line_color)
 		else:
 			var coord := snappedi(i + position.x, TICKS_INTERVAL)
-			if int(coord / tick_distance) % rate == 0:
+			if int(coord / TICK_DISTANCE) % rate == 0:
 				major_points.append(Vector2(i, 0))
 				major_points.append(Vector2(i, grid_size.y))
 				ThemeUtils.regular_font.draw_string(surface, Vector2(i * zoom + 4, 14),
@@ -96,10 +96,10 @@ func _draw() -> void:
 		i += 1.0
 	
 	i = fmod(-position.y, 1.0)
-	var major_line_v_offset := fposmod(-position.y, tick_distance)
+	var major_line_v_offset := fposmod(-position.y, TICK_DISTANCE)
 	# Vertical offset.
 	while i < grid_size.y:
-		if major_line_v_offset != fposmod(i, tick_distance):
+		if major_line_v_offset != fposmod(i, TICK_DISTANCE):
 			if draw_minor_lines:
 				minor_points.append(Vector2(0, i))
 				minor_points.append(Vector2(grid_size.x, i))
@@ -109,7 +109,7 @@ func _draw() -> void:
 							HORIZONTAL_ALIGNMENT_LEFT, -1, 14, axis_line_color)
 		else:
 			var coord := snappedi(i + position.y, TICKS_INTERVAL)
-			if int(coord / tick_distance) % rate == 0:
+			if int(coord / TICK_DISTANCE) % rate == 0:
 				major_points.append(Vector2(0, i))
 				major_points.append(Vector2(grid_size.x, i))
 				ThemeUtils.regular_font.draw_string(surface, Vector2(4, i * zoom + 14),

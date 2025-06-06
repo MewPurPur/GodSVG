@@ -43,6 +43,7 @@ func _notification(what: int) -> void:
 # Drag-and-drop of files.
 func _on_files_dropped(files: PackedStringArray) -> void:
 	if menu_stack.is_empty():
+		get_window().grab_focus()
 		FileUtils.apply_svgs_from_paths(files)
 
 
