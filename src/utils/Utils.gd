@@ -53,6 +53,12 @@ font_size_property := "font_size") -> void:
 			HORIZONTAL_ALIGNMENT_FILL, -1,
 			control.get_theme_font_size(font_size_property)).x + buffer, max_width)
 
+# TODO This is a necessary workaround for a few situations,
+# because Godot declines position changes if they are too small.
+static func set_control_position_fixed(control: Control, new_position: Vector2) -> void:
+	control.position = Vector2(NAN, NAN)
+	control.position = new_position
+
 
 static func get_cubic_bezier_points(cp1: Vector2, cp2: Vector2, cp3: Vector2,
 cp4: Vector2) -> PackedVector2Array:

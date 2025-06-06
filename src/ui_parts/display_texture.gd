@@ -47,6 +47,6 @@ func _update() -> void:
 	var img := Image.new()
 	var err := img.load_svg_from_string(svg_text, image_zoom)
 	if err == OK:
-		position = display_rect.position
+		Utils.set_control_position_fixed(self, display_rect.position)
 		set_deferred("size", display_rect.size)
 		texture = ImageTexture.create_from_image(img)
