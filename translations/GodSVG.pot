@@ -939,7 +939,7 @@ msgid "The following files were discarded:"
 msgstr ""
 
 #: src/utils/FileUtils.gd:
-msgid "{file_path} was discarded."
+msgid "{file_name} was discarded."
 msgstr ""
 
 #: src/utils/FileUtils.gd:
@@ -951,7 +951,7 @@ msgid "Proceed"
 msgstr ""
 
 #: src/utils/FileUtils.gd:
-msgid "{file_path} couldn't be opened."
+msgid "{file_name} couldn't be opened."
 msgstr ""
 
 #: src/utils/FileUtils.gd:

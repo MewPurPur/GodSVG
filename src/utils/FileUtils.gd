@@ -7,6 +7,7 @@ enum TabCloseMode {SINGLE, ALL_OTHERS, TO_LEFT, TO_RIGHT, EMPTY, SAVED}
 const GoodFileDialog = preload("res://src/ui_parts/good_file_dialog.gd")
 
 const AlertDialogScene = preload("res://src/ui_widgets/alert_dialog.tscn")
+const ConfirmDialogScene = preload("res://src/ui_widgets/confirm_dialog.tscn")
 const OptionsDialogScene = preload("res://src/ui_widgets/options_dialog.tscn")
 const ImportWarningMenuScene = preload("res://src/ui_parts/import_warning_menu.tscn")
 const GoodFileDialogScene = preload("res://src/ui_parts/good_file_dialog.tscn")
@@ -19,13 +20,16 @@ static func reset_svg() -> void:
 static func apply_svgs_from_paths(paths: PackedStringArray) -> void:
 	_start_file_import_process(paths, _apply_svg, PackedStringArray(["svg"]))
 
-static func compare_svg_to_disk_contents() -> FileState:
-	var content := FileAccess.get_file_as_string(
-			Configs.savedata.get_active_tab().svg_file_path)
+static func compare_svg_to_disk_contents(idx := -1) -> FileState:
+	var tab := Configs.savedata.get_active_tab() if idx == -1 else Configs.savedata.get_tab(idx)
+	var content := FileAccess.get_file_as_string(tab.svg_file_path)
 	if content.is_empty():
 		return FileState.DOES_NOT_EXIST
 	# Check if importing the file's text into GodSVG would change the current SVG text.
-	if State.svg_text == SVGParser.root_to_editor_text(SVGParser.text_to_root(content).svg):
+	# Avoid the parsing if checking the active tab.
+	var state_svg_text := State.svg_text if idx == -1 else\
+			SVGParser.root_to_editor_text(SVGParser.text_to_root(tab.get_true_svg_text()).svg)
+	if state_svg_text == SVGParser.root_to_editor_text(SVGParser.text_to_root(content).svg):
 		return FileState.SAME
 	else:
 		return FileState.DIFFERENT
@@ -181,7 +185,7 @@ completion_callback: Callable, multi_select := false) -> void:
 		extensions_with_dots.append("." + extension)
 	
 	if OS.has_feature("web"):
-		_web_load_file(extensions, completion_callback)
+		_web_load_files(extensions, completion_callback, multi_select)
 	else:
 		if _is_native_preferred():
 			var filters := PackedStringArray()
@@ -209,6 +213,7 @@ completion_callback: Callable, multi_select := false) -> void:
 						_start_file_import_process(paths, completion_callback, extensions)
 			)
 
+# Preprocessing step where all files with wrong extensions are discarded.
 static func _start_file_import_process(file_paths: PackedStringArray,
 completion_callback: Callable, allowed_extensions: PackedStringArray) -> void:
 	var incorrect_extension_file_paths := PackedStringArray()
@@ -227,8 +232,8 @@ completion_callback: Callable, allowed_extensions: PackedStringArray) -> void:
 			error_text += Translator.translate("The following files were discarded:")
 			passed_list = incorrect_extension_file_paths
 		else:
-			error_text += Translator.translate("{file_path} was discarded.").format(
-					{"file_path": incorrect_extension_file_paths[0]})
+			error_text += Translator.translate("{file_name} was discarded.").format(
+					{"file_name": incorrect_extension_file_paths[0].get_file()})
 		
 		var options_dialog := OptionsDialogScene.instantiate()
 		HandlerGUI.add_dialog(options_dialog)
@@ -250,7 +255,7 @@ completion_callback: Callable, show_file_missing_alert := true) -> void:
 			show_file_missing_alert)
 	var retry_callback := _file_import_proceed.bind(preserved_file_paths,
 			completion_callback)
-	var file := FileAccess.open(file_path, FileAccess.READ)
+	var file := WebSafeFileAccess.open(file_path, FileAccess.READ)
 	
 	# If it's impossible to somehow import files from multiple dirs at the same time,
 	# this can be moved to the initial processing.
@@ -259,12 +264,12 @@ completion_callback: Callable, show_file_missing_alert := true) -> void:
 	# If the file alert is shown, the buttons decide what happens next, so we exit early
 	# to avoid any file operations. If the file alert is not shown, we should call
 	# proceed_callback automatically and still exit early.
-	if not is_instance_valid(file):
+	if not file.is_valid():
 		if show_file_missing_alert:
 			var options_dialog := OptionsDialogScene.instantiate()
 			HandlerGUI.add_dialog(options_dialog)
-			var error := Translator.translate("{file_path} couldn't be opened.").format(
-					{"file_path": Utils.simplify_file_path(file_path)})
+			var error := Translator.translate("{file_name} couldn't be opened.").format(
+					{"file_name": Utils.simplify_file_path(file_path).get_file()})
 			if not FileAccess.file_exists(file_path):
 				error += "\n" + Translator.translate("Check if the file still exists in the selected file path.")
 			if not file_paths.is_empty():
@@ -297,37 +302,38 @@ completion_callback: Callable, show_file_missing_alert := true) -> void:
 				completion_callback.call(file.get_as_text(), file_path)
 			else:
 				completion_callback.call(file.get_as_text(), file_path, proceed_callback,
-						file_paths.is_empty())
+						false)
 		"xml": completion_callback.call(file.get_as_text())
 		_: completion_callback.call(file.get_buffer(file.get_length()), file_path)
 
 
 static func _apply_svg(data: Variant, file_path: String, proceed_callback := Callable(),
 is_last_file := true) -> void:
-	var tab_exists := false
-	for tab in Configs.savedata.get_tabs():
-		if tab.svg_file_path == file_path:
-			tab_exists = true
+	var existing_tab_idx := -1
+	for tab_idx in Configs.savedata.get_tab_count():
+		if Configs.savedata.get_tab(tab_idx).svg_file_path == file_path:
+			existing_tab_idx = tab_idx
 			break
 	
-	if tab_exists:
+	if existing_tab_idx != -1:
 		Configs.savedata.add_tab_with_path(file_path)
 		var alert_message := Translator.translate(
 				"{file_path} is already being edited inside GodSVG.").format(
 					{"file_path": Utils.simplify_file_path(file_path)})
-		if compare_svg_to_disk_contents() == FileState.DIFFERENT:
+		if compare_svg_to_disk_contents(existing_tab_idx) == FileState.DIFFERENT:
 			alert_message += "\n\n" + Translator.translate(
 					"If you want to revert your edits since the last save, use {reset_svg}.").format(
 					{"reset_svg": TranslationUtils.get_action_description("reset_svg")})
 		
-		var options_dialog := OptionsDialogScene.instantiate()
-		HandlerGUI.add_menu(options_dialog)
-		options_dialog.setup(Translator.translate("Alert!"), alert_message)
 		if is_last_file:
-			options_dialog.add_option("OK")
+			var alert_dialog := AlertDialogScene.instantiate()
+			HandlerGUI.add_menu(alert_dialog)
+			alert_dialog.setup(alert_message)
 		else:
-			options_dialog.add_cancel_option()
-			options_dialog.add_option("Proceed", proceed_callback, true)
+			var confirm_dialog := ConfirmDialogScene.instantiate()
+			HandlerGUI.add_menu(confirm_dialog)
+			confirm_dialog.setup(Translator.translate("Alert!"), alert_message,
+					Translator.translate("Proceed"), proceed_callback)
 		return
 	
 	# If the active tab is empty, replace it. Otherwise make it a new transient tab.
@@ -457,10 +463,62 @@ static func _close_tabs_internal(indices: Array[int]) -> void:
 		dont_save_callback.call()
 
 
-# Web stuff.
+# Web-specific stuff from here on. The approach for importing multiple files at once
+# on web, where I can't access the user's file paths, is to populate _web_file_data_cache
+# with fake paths and data from the FileReader, and use the WebSafeFileAccess class which
+# normally acts like FileAccess, but on web it accesses that cache instead.
 
-static func _web_load_file(allowed_extensions: PackedStringArray,
-completion_callback: Callable) -> void:
+# Global variables... Otherwise the garbage collector ruins everything.
+static var _change_callback: JavaScriptObject
+static var _cancel_callback: JavaScriptObject
+static var _file_load_callbacks: Array[JavaScriptObject] = []
+
+static var _web_file_data_cache: Dictionary[String, Variant] = {}
+
+class WebSafeFileAccess:
+	var _file_access: FileAccess
+	var _cached_data: Variant
+	var _is_web_file: bool = false
+	
+	static func open(file_path: String, mode: int) -> WebSafeFileAccess:
+		var wrapper = WebSafeFileAccess.new()
+		if OS.has_feature("web") and FileUtils._web_file_data_cache.has(file_path):
+			wrapper._cached_data = FileUtils._web_file_data_cache[file_path]
+			wrapper._is_web_file = true
+		else:
+			wrapper._file_access = FileAccess.open(file_path, mode)
+		return wrapper
+	
+	func is_valid() -> bool:
+		if _is_web_file:
+			return _cached_data != null
+		else:
+			return is_instance_valid(_file_access)
+	
+	func get_as_text() -> String:
+		if _is_web_file:
+			return _cached_data as String
+		else:
+			return _file_access.get_as_text()
+	
+	func get_buffer(length: int) -> PackedByteArray:
+		if _is_web_file:
+			return _cached_data as PackedByteArray
+		else:
+			return _file_access.get_buffer(length)
+	
+	func get_length() -> int:
+		if _is_web_file:
+			if _cached_data is String:
+				return (_cached_data as String).length()
+			else:
+				return (_cached_data as PackedByteArray).size()
+		else:
+			return _file_access.get_length()
+
+
+static func _web_load_files(allowed_extensions: PackedStringArray,
+completion_callback: Callable, multi_select: bool) -> void:
 	var allowed_extensions_with_dots := PackedStringArray()
 	for allowed_extension in allowed_extensions:
 		allowed_extensions_with_dots.append("." + allowed_extension)
@@ -470,13 +528,19 @@ completion_callback: Callable) -> void:
 	var input: JavaScriptObject = document.createElement("INPUT")
 	input.type = "file"
 	input.accept = ",".join(allowed_extensions_with_dots)
+	if multi_select:
+		input.multiple = true
 	
-	# Clear previous data.
-	JavaScriptBridge.eval("window.godsvgFileName = '';", true)
-	JavaScriptBridge.eval("window.godsvgFileData = null;", true)
-	JavaScriptBridge.eval("window.godsvgDialogClosed = false;", true)
+	# Setup and clearing previous data.
+	_web_file_data_cache.clear()
+	var window = JavaScriptBridge.get_interface("window")
+	window.godsvgFileNames = JavaScriptBridge.create_object("Array")
+	window.godsvgFileDataArray = JavaScriptBridge.create_object("Array")
+	window.godsvgDialogClosed = false
+	window.godsvgFilesToProcess = 0
+	window.godsvgFilesProcessed = 0
 	
-	_change_callback = JavaScriptBridge.create_callback(_web_on_file_selected)
+	_change_callback = JavaScriptBridge.create_callback(_web_on_files_selected)
 	input.addEventListener("change", _change_callback)
 	_cancel_callback = JavaScriptBridge.create_callback(_web_on_file_dialog_canceled)
 	input.addEventListener("cancel", _cancel_callback)
@@ -484,64 +548,97 @@ completion_callback: Callable) -> void:
 	input.click()  # Open file dialog.
 	await Engine.get_main_loop().create_timer(0.5).timeout  # Wait for async JS.
 	
-	var file_data: Variant
+	# Wait for all files to be processed.
 	while true:
-		if JavaScriptBridge.eval("window.godsvgDialogClosed;", true):
+		if window.godsvgDialogClosed:
 			return
 		
-		file_data = JavaScriptBridge.eval("window.godsvgFileData;", true)
-		if file_data != null:
+		var files_to_process: int = window.godsvgFilesToProcess
+		var files_processed: int = window.godsvgFilesProcessed
+		
+		if files_to_process > 0 and files_processed >= files_to_process:
 			break
-		await Engine.get_main_loop().create_timer(0.5).timeout
-	var file_name: String = JavaScriptBridge.eval("window.godsvgFileName;", true)
-	var extension := file_name.get_extension().to_lower()
+		await Engine.get_main_loop().create_timer(0.1).timeout
 	
-	if not extension in allowed_extensions:
-		var alert_dialog := AlertDialogScene.instantiate()
-		HandlerGUI.add_dialog(alert_dialog)
-		alert_dialog.setup(TranslationUtils.get_extension_alert_text(allowed_extensions))
-	else:
-		completion_callback.call(file_data, file_name)
-
-static func _web_on_file_selected(args: Array) -> void:
-	var event: JavaScriptObject = args[0]
-	if event.target.files.length == 0:
+	# Process all loaded files.
+	var file_count: int = window.godsvgFileNames.length
+	if file_count == 0:
 		return
 	
-	var file: JavaScriptObject = event.target.files[0]
-	JavaScriptBridge.eval("window.godsvgFileName = '" + file.name + "';", true)
+	var file_names: Array = []
+	var file_data_array: Array = []
+	for i in file_count:
+		var file_name: String = window.godsvgFileNames[i]
+		var file_data: Variant = window.godsvgFileDataArray[i]
+		file_names.append(file_name)
+		file_data_array.append(file_data)
 	
-	# Store the callback to prevent garbage collection.
-	var reader: JavaScriptObject = JavaScriptBridge.create_object("FileReader")
-	_file_load_callback = JavaScriptBridge.create_callback(_web_on_file_loaded)
-	reader.onloadend = _file_load_callback
-	if file.name.get_extension().to_lower() in ["svg", "xml"]:
-		reader.readAsText(file)
-	else:
-		reader.readAsArrayBuffer(file)
+	# Store files in cache with fake paths and collect valid paths.
+	var fake_paths := PackedStringArray()
+	for i in file_names.size():
+		var fake_path: String = file_names[i]
+		_web_file_data_cache[fake_path] = file_data_array[i]
+		fake_paths.append(fake_path)
+	print(fake_paths)
+	_start_file_import_process(fake_paths, completion_callback, allowed_extensions)
 
-# Global variables... Otherwise the garbage collector ruins everything.
-static var _change_callback: JavaScriptObject
-static var _cancel_callback: JavaScriptObject
-static var _file_load_callback: JavaScriptObject
+static func _web_on_files_selected(args: Array) -> void:
+	var event: JavaScriptObject = args[0]
+	var files: JavaScriptObject = event.target.files
+	
+	if files.length == 0:
+		return
+	
+	# Set up tracking for multiple files.
+	var window = JavaScriptBridge.get_interface("window")
+	window.godsvgFilesToProcess = files.length
+	window.godsvgFilesProcessed = 0
+	
+	_file_load_callbacks.clear()
+	_file_load_callbacks.resize(files.length)
+	
+	# Process each file.
+	for i in range(files.length):
+		var file: JavaScriptObject = files.item(i)
+		
+		# Store the callback to prevent garbage collection.
+		var reader: JavaScriptObject = JavaScriptBridge.create_object("FileReader")
+		_file_load_callbacks[i] = JavaScriptBridge.create_callback(_web_on_file_loaded.bind(i))
+		reader.onloadend = _file_load_callbacks[i]
+		
+		window.godsvgFileNames[i] = file.name
+		
+		# Read file based on extension.
+		if file.name.get_extension().to_lower() in ["svg", "xml"]:
+			reader.readAsText(file)
+		else:
+			reader.readAsArrayBuffer(file)
 
-static func _web_on_file_loaded(args: Array) -> void:
+static func _web_on_file_loaded(args: Array, file_index: int) -> void:
 	var event: JavaScriptObject = args[0]
 	
 	var FileReader := JavaScriptBridge.get_interface("FileReader")
 	if event.target.readyState != FileReader.DONE:
 		return
 	
-	var file_name: String = JavaScriptBridge.eval("window.godsvgFileName;", true)
-	# Use proper string escaping for the file content.
+	var window = JavaScriptBridge.get_interface("window")
+	var file_name: String = window.godsvgFileNames[file_index]
+	
+	# Store file data based on type.
 	if file_name.get_extension().to_lower() in ["svg", "xml"]:
-		JavaScriptBridge.eval("window.godsvgFileData = `" + event.target.result + "`;", true)
+		# For text files, store directly
+		window.godsvgFileDataArray[file_index] = event.target.result
 	else:
-		# For binary files, the ArrayBuffer gets handled.
-		JavaScriptBridge.eval("window.godsvgFileData = new Uint8Array(event.target.result);", true)
+		# For binary files, convert ArrayBuffer to Uint8Array.
+		var Uint8Array = JavaScriptBridge.get_interface("Uint8Array")
+		window.godsvgFileDataArray[file_index] = Uint8Array.new(event.target.result)
+	
+	# Increment processed counter.
+	window.godsvgFilesProcessed += 1
 
 static func _web_on_file_dialog_canceled(_args: Array) -> void:
-	JavaScriptBridge.eval("window.godsvgDialogClosed = true;", true)
+	var window = JavaScriptBridge.get_interface("window")
+	window.godsvgDialogClosed = true
 
 
 static func _web_save(buffer: PackedByteArray, format_name: String) -> void:

@@ -961,8 +961,8 @@ msgid "The following files were discarded:"
 msgstr "Следните файлове бяха отхвърлени:"
 
 #: src/utils/FileUtils.gd:
-msgid "{file_path} was discarded."
-msgstr "{file_path} бе отхвърлен."
+msgid "{file_name} was discarded."
+msgstr "{file_name} бе отхвърлен."
 
 #: src/utils/FileUtils.gd:
 msgid "Discarded files"
@@ -973,8 +973,8 @@ msgid "Proceed"
 msgstr "Продължи"
 
 #: src/utils/FileUtils.gd:
-msgid "{file_path} couldn't be opened."
-msgstr "{file_path} не можа да бъде отворен."
+msgid "{file_name} couldn't be opened."
+msgstr "{file_name} не можа да бъде отворен."
 
 #: src/utils/FileUtils.gd:
 msgid "Check if the file still exists in the selected file path."
