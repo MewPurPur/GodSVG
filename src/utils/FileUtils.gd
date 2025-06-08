@@ -579,7 +579,6 @@ completion_callback: Callable, multi_select: bool) -> void:
 		var fake_path: String = file_names[i]
 		_web_file_data_cache[fake_path] = file_data_array[i]
 		fake_paths.append(fake_path)
-	print(fake_paths)
 	_start_file_import_process(fake_paths, completion_callback, allowed_extensions)
 
 static func _web_on_files_selected(args: Array) -> void:
