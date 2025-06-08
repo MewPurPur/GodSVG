@@ -8,19 +8,19 @@ on:
     branches: [ main ]
 
 env:
-  # Which godot version to use for exporting.
-  GODOT_VERSION: 4.4.1
+  # The major godot version (4.4.1/4.5).
+  GODOT_MAJOR_VERSION: 4.5
   # Which godot release to use for exporting. (stable/rc/beta/alpha)
-  GODOT_RELEASE: stable
-  # Used in the editor config file name. Do not change this for patch releases.
-  GODOT_FEATURE_VERSION: 4.4
+  GODOT_PATCH: dev5
   # Commit hash
-  GODOT_COMMIT_HASH: 49a5bc7b6
+  GODOT_COMMIT_HASH: 64b09905c
   PROJECT_NAME: GodSVG
   # deprecated=no disables deprecated Godot features, which exist for compat and we don't use.
   # vulkan=no, use_volk=no since we use Compatibility Renderer. TODO for 4.5 disable rendering_device too.
   # openxr=no since we don't use OpenXR. TODO 4.5 we can change this to just disable XR altogether.
   # disable_3d=yes since we don't use 3D features.
+  # disable_physics_2d=yes since we don't use physics.
+  # disable_navigation_2d=yes since we don't use navigation.
   # graphite=no I'm not sure why we have disabled, but it's a font-shaping engine.
   # All modules are disabled by default, except for the following:
   # - gdscript, svg: Obvious.
@@ -29,7 +29,7 @@ env:
   # - text_server_adv: Currently unneeded, but needed for languages like Arabic.
   # - freetype: Something about font rendering.
   # build_proflie disables a lot of unused classes.
-  BUILD_OPTIONS: target=template_release lto=full production=yes deprecated=no minizip=no brotli=no vulkan=no openxr=no use_volk=no disable_3d=yes modules_enabled_by_default=no module_freetype_enabled=yes module_gdscript_enabled=yes module_svg_enabled=yes module_jpg_enabled=yes module_text_server_adv_enabled=yes graphite=no module_webp_enabled=yes module_mbedtls_enabled=yes build_profile=../godsvg/.github/disabled_classes.build
+  BUILD_OPTIONS: target=template_release lto=full production=yes deprecated=no minizip=no brotli=no vulkan=no use_volk=no disable_3d=yes disable_physics_2d=yes disable_navigation_2d=yes modules_enabled_by_default=no module_freetype_enabled=yes module_gdscript_enabled=yes module_svg_enabled=yes module_jpg_enabled=yes module_text_server_adv_enabled=yes graphite=no module_webp_enabled=yes module_mbedtls_enabled=yes build_profile=../godsvg/.github/disabled_classes.build
   # Links
   GODOT_REPO: https://github.com/godotengine/godot.git
   ANGLE_DOWNLOAD_BASE_URL: https://github.com/godotengine/godot-angle-static/releases/download/chromium%2F6601.2/godot-angle-static
@@ -46,7 +46,7 @@ jobs:
         id: cache-template
         uses: actions/cache@v3
         with:
-          key: template-${{ env.PLATFORM }}-${{ env.GODOT_VERSION }}-${{ env.GODOT_RELEASE }}-${{ env.BUILD_OPTIONS }}
+          key: template-${{ env.PLATFORM }}-${{ env.GODOT_MAJOR_VERSION }}-${{ env.GODOT_PATCH }}-${{ env.BUILD_OPTIONS }}
           path: |
             ~/.local/share/godot/export_templates/
 
@@ -54,9 +54,9 @@ jobs:
         run: |
           mkdir -p ~/godot-editor
           cd ~/godot-editor
-          wget -q https://github.com/godotengine/godot-builds/releases/download/${GODOT_VERSION}-${GODOT_RELEASE}/Godot_v${GODOT_VERSION}-${GODOT_RELEASE}_linux.x86_64.zip
-          unzip Godot_v${GODOT_VERSION}-${GODOT_RELEASE}_linux.x86_64.zip
-          mv ./Godot_v${GODOT_VERSION}-${GODOT_RELEASE}_linux.x86_64 ~/godot-editor/godot
+          wget -q https://github.com/godotengine/godot-builds/releases/download/${GODOT_MAJOR_VERSION}-${GODOT_PATCH}/Godot_v${GODOT_MAJOR_VERSION}-${GODOT_PATCH}_linux.x86_64.zip
+          unzip Godot_v${GODOT_MAJOR_VERSION}-${GODOT_PATCH}_linux.x86_64.zip
+          mv ./Godot_v${GODOT_MAJOR_VERSION}-${GODOT_PATCH}_linux.x86_64 ~/godot-editor/godot
           echo "~/godot-editor" >> $GITHUB_PATH
 
       - if: ${{ steps.cache-template.outputs.cache-hit != 'true' }}
@@ -84,8 +84,8 @@ jobs:
         run: |
           cd godot
           scons p=linuxbsd arch=x86_64 ${BUILD_OPTIONS}
-          mkdir -p ~/.local/share/godot/export_templates/${GODOT_VERSION}.${GODOT_RELEASE}/
-          mv ./bin/godot.linuxbsd.template_release.x86_64 ~/.local/share/godot/export_templates/${GODOT_VERSION}.${GODOT_RELEASE}/linux_release.x86_64
+          mkdir -p ~/.local/share/godot/export_templates/${GODOT_MAJOR_VERSION}.${GODOT_PATCH}/
+          mv ./bin/godot.linuxbsd.template_release.x86_64 ~/.local/share/godot/export_templates/${GODOT_MAJOR_VERSION}.${GODOT_PATCH}/linux_release.x86_64
 
       - name: Export project
         run: |
@@ -111,7 +111,7 @@ jobs:
         id: cache-template
         uses: actions/cache@v3
         with:
-          key: template-${{ env.PLATFORM }}-${{ env.GODOT_VERSION }}-${{ env.GODOT_RELEASE }}-${{ env.BUILD_OPTIONS }}
+          key: template-${{ env.PLATFORM }}-${{ env.GODOT_MAJOR_VERSION }}-${{ env.GODOT_PATCH }}-${{ env.BUILD_OPTIONS }}
           path: |
             ~/.local/share/godot/export_templates/
 
@@ -119,9 +119,9 @@ jobs:
         run: |
           mkdir -p ~/godot-editor
           cd ~/godot-editor
-          wget -q https://github.com/godotengine/godot-builds/releases/download/${GODOT_VERSION}-${GODOT_RELEASE}/Godot_v${GODOT_VERSION}-${GODOT_RELEASE}_linux.x86_64.zip
-          unzip Godot_v${GODOT_VERSION}-${GODOT_RELEASE}_linux.x86_64.zip
-          mv ./Godot_v${GODOT_VERSION}-${GODOT_RELEASE}_linux.x86_64 ~/godot-editor/godot
+          wget -q https://github.com/godotengine/godot-builds/releases/download/${GODOT_MAJOR_VERSION}-${GODOT_PATCH}/Godot_v${GODOT_MAJOR_VERSION}-${GODOT_PATCH}_linux.x86_64.zip
+          unzip Godot_v${GODOT_MAJOR_VERSION}-${GODOT_PATCH}_linux.x86_64.zip
+          mv ./Godot_v${GODOT_MAJOR_VERSION}-${GODOT_PATCH}_linux.x86_64 ~/godot-editor/godot
           echo "~/godot-editor" >> $GITHUB_PATH
 
       - if: ${{ steps.cache-template.outputs.cache-hit != 'true' }}
@@ -139,8 +139,8 @@ jobs:
           mkdir -p ~/.local/share/rcedit
           mv rcedit-x64.exe ~/.local/share/rcedit
           godot --headless --quit
-          echo 'export/windows/wine = "/usr/lib/wine/wine64"' >> ~/.config/godot/editor_settings-${GODOT_FEATURE_VERSION}.tres
-          echo 'export/windows/rcedit = "/home/runner/.local/share/rcedit/rcedit-x64.exe"' >> ~/.config/godot/editor_settings-${GODOT_FEATURE_VERSION}.tres
+          echo 'export/windows/wine = "/usr/lib/wine/wine64"' >> ~/.config/godot/editor_settings-${GODOT_MAJOR_VERSION}.tres
+          echo 'export/windows/rcedit = "/home/runner/.local/share/rcedit/rcedit-x64.exe"' >> ~/.config/godot/editor_settings-${GODOT_MAJOR_VERSION}.tres
 
       - if: ${{ steps.cache-template.outputs.cache-hit != 'true' }}
         name: Download ANGLE Static Libraries
@@ -171,8 +171,8 @@ jobs:
         run: |
           cd godot
           scons p=windows ${BUILD_OPTIONS} angle_libs=~/angle module_astcenc_enabled=yes
-          mkdir -p ~/.local/share/godot/export_templates/${GODOT_VERSION}.${GODOT_RELEASE}/
-          mv ./bin/godot.windows.template_release.x86_64.exe ~/.local/share/godot/export_templates/${GODOT_VERSION}.${GODOT_RELEASE}/windows_release_x86_64.exe
+          mkdir -p ~/.local/share/godot/export_templates/${GODOT_MAJOR_VERSION}.${GODOT_PATCH}/
+          mv ./bin/godot.windows.template_release.x86_64.exe ~/.local/share/godot/export_templates/${GODOT_MAJOR_VERSION}.${GODOT_PATCH}/windows_release_x86_64.exe
 
       - name: Export project
         run: |
@@ -198,7 +198,7 @@ jobs:
         id: cache-template
         uses: actions/cache@v3
         with:
-          key: template-${{ env.PLATFORM }}-${{ env.GODOT_VERSION }}-${{ env.GODOT_RELEASE }}-${{ env.BUILD_OPTIONS }}
+          key: template-${{ env.PLATFORM }}-${{ env.GODOT_MAJOR_VERSION }}-${{ env.GODOT_PATCH }}-${{ env.BUILD_OPTIONS }}
           path: |
             /Users/runner/Library/Application Support/Godot/export_templates/
 
@@ -206,8 +206,8 @@ jobs:
         run: |
           mkdir -p ~/godot-editor
           cd ~/godot-editor
-          wget -q https://github.com/godotengine/godot-builds/releases/download/${GODOT_VERSION}-${GODOT_RELEASE}/Godot_v${GODOT_VERSION}-${GODOT_RELEASE}_macos.universal.zip
-          unzip -a Godot_v${GODOT_VERSION}-${GODOT_RELEASE}_macos.universal.zip
+          wget -q https://github.com/godotengine/godot-builds/releases/download/${GODOT_MAJOR_VERSION}-${GODOT_PATCH}/Godot_v${GODOT_MAJOR_VERSION}-${GODOT_PATCH}_macos.universal.zip
+          unzip -a Godot_v${GODOT_MAJOR_VERSION}-${GODOT_PATCH}_macos.universal.zip
           echo "~/godot-editor/Godot.app/Contents/MacOS" >> $GITHUB_PATH
 
       - if: ${{ steps.cache-template.outputs.cache-hit != 'true' }}
@@ -259,8 +259,8 @@ jobs:
           cp godot.macos.template_release.universal macos_template.app/Contents/MacOS/godot_macos_release.universal;
           chmod +x macos_template.app/Contents/MacOS/godot_macos*;
           zip -q -9 -r macos.zip macos_template.app;
-          mkdir -p "/Users/runner/Library/Application Support/Godot/export_templates/${GODOT_VERSION}.${GODOT_RELEASE}"
-          mv macos.zip "/Users/runner/Library/Application Support/Godot/export_templates/${GODOT_VERSION}.${GODOT_RELEASE}"
+          mkdir -p "/Users/runner/Library/Application Support/Godot/export_templates/${GODOT_MAJOR_VERSION}.${GODOT_PATCH}"
+          mv macos.zip "/Users/runner/Library/Application Support/Godot/export_templates/${GODOT_MAJOR_VERSION}.${GODOT_PATCH}"
 
       - name: Export project
         run: |
@@ -286,7 +286,7 @@ jobs:
         id: cache-template
         uses: actions/cache@v3
         with:
-          key: template-${{ env.PLATFORM }}-${{ env.GODOT_VERSION }}-${{ env.GODOT_RELEASE }}-${{ env.BUILD_OPTIONS }}
+          key: template-${{ env.PLATFORM }}-${{ env.GODOT_MAJOR_VERSION }}-${{ env.GODOT_PATCH }}-${{ env.BUILD_OPTIONS }}
           path: |
             ~/.local/share/godot/export_templates/
 
@@ -294,9 +294,9 @@ jobs:
         run: |
           mkdir -p ~/godot-editor
           cd ~/godot-editor
-          wget -q https://github.com/godotengine/godot-builds/releases/download/${GODOT_VERSION}-${GODOT_RELEASE}/Godot_v${GODOT_VERSION}-${GODOT_RELEASE}_linux.x86_64.zip
-          unzip Godot_v${GODOT_VERSION}-${GODOT_RELEASE}_linux.x86_64.zip
-          mv ./Godot_v${GODOT_VERSION}-${GODOT_RELEASE}_linux.x86_64 ~/godot-editor/godot
+          wget -q https://github.com/godotengine/godot-builds/releases/download/${GODOT_MAJOR_VERSION}-${GODOT_PATCH}/Godot_v${GODOT_MAJOR_VERSION}-${GODOT_PATCH}_linux.x86_64.zip
+          unzip Godot_v${GODOT_MAJOR_VERSION}-${GODOT_PATCH}_linux.x86_64.zip
+          mv ./Godot_v${GODOT_MAJOR_VERSION}-${GODOT_PATCH}_linux.x86_64 ~/godot-editor/godot
           echo "~/godot-editor" >> $GITHUB_PATH
 
       - if: ${{ steps.cache-template.outputs.cache-hit != 'true' }}
@@ -335,8 +335,8 @@ jobs:
           cd godot
           source ../emsdk/emsdk_env.sh
           scons p=web arch=wasm32 ${BUILD_OPTIONS} threads=no
-          mkdir -p ~/.local/share/godot/export_templates/${GODOT_VERSION}.${GODOT_RELEASE}/
-          mv ./bin/godot.web.template_release.wasm32.nothreads.zip ~/.local/share/godot/export_templates/${GODOT_VERSION}.${GODOT_RELEASE}/web_nothreads_release.zip
+          mkdir -p ~/.local/share/godot/export_templates/${GODOT_MAJOR_VERSION}.${GODOT_PATCH}/
+          mv ./bin/godot.web.template_release.wasm32.nothreads.zip ~/.local/share/godot/export_templates/${GODOT_MAJOR_VERSION}.${GODOT_PATCH}/web_nothreads_release.zip
 
       - name: Export project
         run: |
@@ -364,7 +364,7 @@ jobs:
         id: cache-template
         uses: actions/cache@v3
         with:
-          key: template-${{ env.PLATFORM }}-${{ env.GODOT_VERSION }}-${{ env.GODOT_RELEASE }}-${{ env.BUILD_OPTIONS }}
+          key: template-${{ env.PLATFORM }}-${{ env.GODOT_MAJOR_VERSION }}-${{ env.GODOT_PATCH }}-${{ env.BUILD_OPTIONS }}
           path: |
             ~/.local/share/godot/export_templates/
 
@@ -386,9 +386,9 @@ jobs:
         run: |
           mkdir -p ~/godot-editor
           cd ~/godot-editor
-          wget -q https://github.com/godotengine/godot-builds/releases/download/${GODOT_VERSION}-${GODOT_RELEASE}/Godot_v${GODOT_VERSION}-${GODOT_RELEASE}_linux.x86_64.zip
-          unzip Godot_v${GODOT_VERSION}-${GODOT_RELEASE}_linux.x86_64.zip
-          mv ./Godot_v${GODOT_VERSION}-${GODOT_RELEASE}_linux.x86_64 ~/godot-editor/godot
+          wget -q https://github.com/godotengine/godot-builds/releases/download/${GODOT_MAJOR_VERSION}-${GODOT_PATCH}/Godot_v${GODOT_MAJOR_VERSION}-${GODOT_PATCH}_linux.x86_64.zip
+          unzip Godot_v${GODOT_MAJOR_VERSION}-${GODOT_PATCH}_linux.x86_64.zip
+          mv ./Godot_v${GODOT_MAJOR_VERSION}-${GODOT_PATCH}_linux.x86_64 ~/godot-editor/godot
           echo "~/godot-editor" >> $GITHUB_PATH
 
       - if: ${{ steps.cache-template.outputs.cache-hit != 'true' }}
@@ -417,9 +417,9 @@ jobs:
           cd godot
           scons p=android arch=arm32 swappy=no ${BUILD_OPTIONS} target=template_debug
           scons p=android arch=arm64 swappy=no ${BUILD_OPTIONS} target=template_debug generate_apk=yes
-          mkdir -p ~/.local/share/godot/export_templates/${GODOT_VERSION}.${GODOT_RELEASE}/
-          mv ./bin/android_debug.apk ~/.local/share/godot/export_templates/${GODOT_VERSION}.${GODOT_RELEASE}/android_debug.apk
-          mv ./bin/android_source.zip ~/.local/share/godot/export_templates/${GODOT_VERSION}.${GODOT_RELEASE}/android_source.zip
+          mkdir -p ~/.local/share/godot/export_templates/${GODOT_MAJOR_VERSION}.${GODOT_PATCH}/
+          mv ./bin/android_debug.apk ~/.local/share/godot/export_templates/${GODOT_MAJOR_VERSION}.${GODOT_PATCH}/android_debug.apk
+          mv ./bin/android_source.zip ~/.local/share/godot/export_templates/${GODOT_MAJOR_VERSION}.${GODOT_PATCH}/android_source.zip
 
       - if: ${{ steps.cache-template.outputs.cache-hit != 'true' }}
         name: Build Godot release template for Android
@@ -427,9 +427,9 @@ jobs:
           cd godot
           scons p=android arch=arm32 swappy=no ${BUILD_OPTIONS} target=template_release
           scons p=android arch=arm64 swappy=no ${BUILD_OPTIONS} target=template_release generate_apk=yes
-          mkdir -p ~/.local/share/godot/export_templates/${GODOT_VERSION}.${GODOT_RELEASE}/
-          mv ./bin/android_release.apk ~/.local/share/godot/export_templates/${GODOT_VERSION}.${GODOT_RELEASE}/android_release.apk
-          mv ./bin/android_source.zip ~/.local/share/godot/export_templates/${GODOT_VERSION}.${GODOT_RELEASE}/android_source.zip
+          mkdir -p ~/.local/share/godot/export_templates/${GODOT_MAJOR_VERSION}.${GODOT_PATCH}/
+          mv ./bin/android_release.apk ~/.local/share/godot/export_templates/${GODOT_MAJOR_VERSION}.${GODOT_PATCH}/android_release.apk
+          mv ./bin/android_source.zip ~/.local/share/godot/export_templates/${GODOT_MAJOR_VERSION}.${GODOT_PATCH}/android_source.zip
 
       - name: Export debug project
         env:
