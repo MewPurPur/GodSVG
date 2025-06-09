@@ -8,19 +8,18 @@ on:
     branches: [ main ]
 
 env:
-  # Which godot version to use for exporting.
+  # Which godot version to use for exporting (e.g., 4.4.1, 4.5)
   GODOT_VERSION: 4.4.1
-  # Which godot release to use for exporting. (stable/rc/beta/alpha)
+  # Which godot release to use for exporting (e.g., stable, dev5, rc2)
   GODOT_RELEASE: stable
-  # Used in the editor config file name. Do not change this for patch releases.
+  # Used in the editor config file name (e.g., 4.4, 4.5, but NOT 4.4.1)
   GODOT_FEATURE_VERSION: 4.4
   # Commit hash
   GODOT_COMMIT_HASH: 49a5bc7b6
   PROJECT_NAME: GodSVG
   # deprecated=no disables deprecated Godot features, which exist for compat and we don't use.
   # vulkan=no, use_volk=no since we use Compatibility Renderer. TODO for 4.5 disable rendering_device too.
-  # openxr=no since we don't use OpenXR. TODO 4.5 we can change this to just disable XR altogether.
-  # disable_3d=yes since we don't use 3D features.
+  # disable_3d=yes since we don't use 3D features. This automatically disables 3D physics, 3D navigation, and XR.
   # graphite=no I'm not sure why we have disabled, but it's a font-shaping engine.
   # All modules are disabled by default, except for the following:
   # - gdscript, svg: Obvious.
@@ -29,7 +28,7 @@ env:
   # - text_server_adv: Currently unneeded, but needed for languages like Arabic.
   # - freetype: Something about font rendering.
   # build_proflie disables a lot of unused classes.
-  BUILD_OPTIONS: target=template_release lto=full production=yes deprecated=no minizip=no brotli=no vulkan=no openxr=no use_volk=no disable_3d=yes modules_enabled_by_default=no module_freetype_enabled=yes module_gdscript_enabled=yes module_svg_enabled=yes module_jpg_enabled=yes module_text_server_adv_enabled=yes graphite=no module_webp_enabled=yes module_mbedtls_enabled=yes build_profile=../godsvg/.github/disabled_classes.build
+  BUILD_OPTIONS: target=template_release lto=full production=yes deprecated=no minizip=no brotli=no vulkan=no use_volk=no disable_3d=yes modules_enabled_by_default=no module_freetype_enabled=yes module_gdscript_enabled=yes module_svg_enabled=yes module_jpg_enabled=yes module_text_server_adv_enabled=yes graphite=no module_webp_enabled=yes module_mbedtls_enabled=yes build_profile=../godsvg/.github/disabled_classes.build
   # Links
   GODOT_REPO: https://github.com/godotengine/godot.git
   ANGLE_DOWNLOAD_BASE_URL: https://github.com/godotengine/godot-angle-static/releases/download/chromium%2F6601.2/godot-angle-static
