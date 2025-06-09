@@ -17,8 +17,10 @@ static func reset_svg() -> void:
 	if FileAccess.file_exists(file_path):
 		State.apply_svg_text(FileAccess.get_file_as_string(file_path))
 
-static func apply_svgs_from_paths(paths: PackedStringArray) -> void:
-	_start_file_import_process(paths, _apply_svg, PackedStringArray(["svg"]))
+static func apply_svgs_from_paths(paths: PackedStringArray,
+show_incorrect_extension_errors := true) -> void:
+	_start_file_import_process(paths, _apply_svg, PackedStringArray(["svg"]),
+			show_incorrect_extension_errors)
 
 static func compare_svg_to_disk_contents(idx := -1) -> FileState:
 	var tab := Configs.savedata.get_active_tab() if idx == -1 else Configs.savedata.get_tab(idx)
@@ -215,16 +217,28 @@ completion_callback: Callable, multi_select := false) -> void:
 
 # Preprocessing step where all files with wrong extensions are discarded.
 static func _start_file_import_process(file_paths: PackedStringArray,
-completion_callback: Callable, allowed_extensions: PackedStringArray) -> void:
+completion_callback: Callable, allowed_extensions: PackedStringArray,
+show_incorrect_extension_errors := true) -> void:
+	if not show_incorrect_extension_errors:
+		for i in range(file_paths.size() - 1, -1, -1):
+			if not file_paths[i].get_extension() in allowed_extensions:
+				file_paths.remove_at(i)
+		if not file_paths.is_empty():
+			_file_import_proceed(file_paths, completion_callback)
+		return
+	
 	var incorrect_extension_file_paths := PackedStringArray()
 	for i in range(file_paths.size() - 1, -1, -1):
 		if not file_paths[i].get_extension() in allowed_extensions:
 			incorrect_extension_file_paths.append(Utils.simplify_file_path(file_paths[i]))
 			file_paths.remove_at(i)
 	
+	if file_paths.is_empty():
+		return
+	
 	var proceed_callback := _file_import_proceed.bind(file_paths, completion_callback)
 	
-	if not incorrect_extension_file_paths.is_empty():
+	if show_incorrect_extension_errors and not incorrect_extension_file_paths.is_empty():
 		var error_text := TranslationUtils.get_extension_alert_text(allowed_extensions) + "\n"
 		var passed_list := PackedStringArray()  # Only pass if there are more than two.
 		if incorrect_extension_file_paths.size() >= 2:
