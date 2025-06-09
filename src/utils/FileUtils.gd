@@ -38,7 +38,7 @@ static func compare_svg_to_disk_contents(idx := -1) -> FileState:
 static func _save_svg_with_custom_final_callback(final_callback: Callable) -> void:
 	var active_tab := Configs.savedata.get_active_tab()
 	var file_path := active_tab.svg_file_path
-	if not file_path.is_empty() and FileAccess.file_exists(file_path):
+	if (not file_path.is_empty() and FileAccess.file_exists(file_path)) or OS.has_feature("web"):
 		active_tab.save_to_bound_path()
 		if final_callback.is_valid():
 			final_callback.call()
@@ -62,7 +62,8 @@ static func open_export_dialog(export_data: ImageExportData, final_callback := C
 			buffer = ImageExportData.svg_to_buffer()
 		else:
 			buffer = export_data.image_to_buffer(export_data.generate_image())
-		_web_save(buffer, ImageExportData.image_types_dict[export_data.format])
+		
+		web_save(buffer, export_data.format, true, true)
 		if final_callback.is_valid():
 			final_callback.call()
 	else:
@@ -96,7 +97,7 @@ static func open_export_dialog(export_data: ImageExportData, final_callback := C
 static func open_xml_export_dialog(xml: String, file_name: String) -> void:
 	OS.request_permissions()
 	if OS.has_feature("web"):
-		_web_save(xml.to_utf8_buffer(), "application/xml")
+		web_quick_save(xml.to_utf8_buffer(), "xml")
 	else:
 		if _is_native_preferred():
 			var native_callback :=\
@@ -472,6 +473,7 @@ static func _close_tabs_internal(indices: Array[int]) -> void:
 static var _change_callback: JavaScriptObject
 static var _cancel_callback: JavaScriptObject
 static var _file_load_callbacks: Array[JavaScriptObject] = []
+static var _file_save_callback: JavaScriptObject
 
 static var _web_file_data_cache: Dictionary[String, Variant] = {}
 
@@ -639,9 +641,121 @@ static func _web_on_file_dialog_canceled(_args: Array) -> void:
 	var window = JavaScriptBridge.get_interface("window")
 	window.godsvgDialogClosed = true
 
+static func _web_on_file_saved(args: Array, currently_saving: int, quick_export: bool) -> void:
+	var file_handle: JavaScriptObject = args[0]
+	
+	if not quick_export:
+		# Finding out which tab this is; There's currently no "get_tab_from_id" on Configs.savedata.
+		var active_tab: TabData = null
+		for tab in Configs.savedata.get_tabs():
+			if tab.id == currently_saving:
+				active_tab = tab
+				break
+		if active_tab == null:
+			push_error("Unable to find tab %s by its ID" % currently_saving)
+			return
+		active_tab.svg_file_path = file_handle.name
+		active_tab.marked_unsaved = false
+		if file_handle != null:
+			active_tab.web_file_handle = file_handle
+	else:
+		HandlerGUI.remove_all_menus()
 
-static func _web_save(buffer: PackedByteArray, format_name: String) -> void:
-	var file_name := Utils.get_file_name(Configs.savedata.get_active_tab().svg_file_path)
+## Currently used for SVG exports on web.
+static func web_quick_save(buffer: PackedByteArray, format: String) -> void:
+	var active_tab := Configs.savedata.get_active_tab()
+	var file_name := Utils.get_file_name(active_tab.svg_file_path)
+	var format_type := ImageExportData.image_types_dict[format]
 	if file_name.is_empty():
-		file_name = "export"
-	JavaScriptBridge.download_buffer(buffer, file_name, format_name)
+		file_name = "export." + format
+	JavaScriptBridge.download_buffer(buffer, file_name, format_type)
+	
+## Currently used for saving on web. [br]
+## [param format]: The file format ("svg", etc) [br]
+## [param ignore_handles]: Doesn't write/read to existing file handles, makes new ones instead. [br]
+## [param quick_export]: Toggle on for exports
+static func web_save(buffer: PackedByteArray, format: String, ignore_handles: bool = false, quick_export: bool = false) -> void:
+	var window := JavaScriptBridge.get_interface("window")
+	
+	var active_tab := Configs.savedata.get_active_tab()
+	var file_path = active_tab.svg_file_path
+	if file_path.is_empty():
+		if not active_tab.presented_name.is_empty() and not quick_export:
+			file_path = active_tab.presented_name
+		else:
+			file_path = "export." + format
+	var file_name := Utils.get_file_name(file_path)
+	var format_type := ImageExportData.image_types_dict[format]
+	
+	# Currently, only Chromium-based browsers support the new file picker system.
+	if window["showSaveFilePicker"] == null:
+		JavaScriptBridge.download_buffer(buffer, file_name, format_type)
+		return
+	
+	# Creating our save function; Should probably be moved to the global context.
+	JavaScriptBridge.eval("""
+		window.godsvgSaveFile = function(id, buffer, onSave, existingHandle=null, quickExport=false, options={}) {
+			const writeFile = (fileHandle, buff) => {
+				return fileHandle.createWritable().then((writable) => {
+					writable.write(buff).then(() => {
+						onSave(fileHandle);
+						writable.close();
+					});
+				});
+			};
+			
+			if (existingHandle != null) {
+				writeFile(existingHandle, buffer);
+			} else {
+				window.showSaveFilePicker(options).then((fileHandle) => {
+					writeFile(fileHandle, buffer);
+				}).catch((err) => {
+					if ("SecurityError" in err) {
+						/*
+						TODO: Figure out what to do if the user saves without pressing something first.
+							Popping up a file save dialog without user input is disallowed due to
+							secure context mumbo jumbo.
+						*/
+						console.error("Failed to save file due to the secure web context.");
+					} else {
+						console.error(err);
+					}
+				});
+			}
+		}
+	""")
+	
+	# Options
+	var picker_options := {
+		"suggestedName": file_name + "." + format,
+		"startIn": "pictures",
+		"types": [
+			{
+				"description": "Scalable Vector Image" if format == "svg" else "Image",
+				"accept": {
+					format_type: ["." + format],
+				},
+			},
+		],
+		"excludeAcceptAllOption": true,
+		"multiple": false,
+	}
+	JavaScriptBridge.eval("""
+		window.godsvgSavePickerOptions = %s;
+	""" % JSON.stringify(picker_options))
+	
+	# Buffer
+	var array_buff = JavaScriptBridge.create_object("ArrayBuffer", buffer.size())
+	var buff = JavaScriptBridge.create_object("Uint8Array", array_buff)
+	for i in len(buffer):
+		buff[i] = buffer[i]
+	
+	# File handles
+	var file_handle: JavaScriptObject = null
+	if not ignore_handles and not quick_export:
+		file_handle = active_tab.web_file_handle
+	
+	# Saving
+	# (godsvgCurrentlySaving is required in order to not accidentally save to the wrong tab)
+	_file_save_callback = JavaScriptBridge.create_callback(_web_on_file_saved.bind(active_tab.id, quick_export))
+	window.godsvgSaveFile(active_tab.id, buff, _file_save_callback, file_handle, quick_export, window.godsvgSavePickerOptions)
