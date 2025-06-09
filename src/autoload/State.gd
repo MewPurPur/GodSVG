@@ -64,16 +64,15 @@ func _enter_tree() -> void:
 	Configs.active_tab_changed.connect(setup_from_tab)
 	setup_from_tab.call_deferred()  # Let everything load before emitting signals.
 	
-	var cmdline_args := OS.get_cmdline_args()
-	
-	# The first argument passed is always a path to the scene file when in-editor.
-	if (OS.is_debug_build() and not OS.has_feature("template")) and cmdline_args.size() >= 1:
-		cmdline_args.remove_at(0)
-	
-	if cmdline_args.size() >= 1:
-		# Need to wait a frame so the import warnings panel becomes available.
-		await get_tree().process_frame
-		FileUtils.apply_svgs_from_paths(cmdline_args)
+	if not OS.get_name() == "Android": # Android doesn't have a native terminal.
+		var cmdline_args := OS.get_cmdline_args()
+		# The first argument passed is always a path to the scene file when in-editor.
+		if (OS.is_debug_build() and not OS.has_feature("template")) and cmdline_args.size() >= 1:
+			cmdline_args.remove_at(0)
+		if cmdline_args.size() >= 1:
+			# Need to wait a frame so the import warnings panel becomes available.
+			await get_tree().process_frame
+			FileUtils.apply_svgs_from_paths(cmdline_args)
 
 func setup_from_tab() -> void:
 	var active_tab := Configs.savedata.get_active_tab()
