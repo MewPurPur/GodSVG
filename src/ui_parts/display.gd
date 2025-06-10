@@ -148,6 +148,8 @@ func _update_input_debug(event: InputEvent) -> void:
 	if debug_container.visible and event.is_pressed():
 		var new_text := input_debug_label.text
 		var event_text := event.as_text()
+		if event is InputEventMouse:
+			event_text += " " + str(event.position)
 		if event_text == last_event_text:
 			last_event_repeat_count += 1
 			new_text = new_text.left(new_text.rfind("\n", new_text.length() - 2) + 1)
