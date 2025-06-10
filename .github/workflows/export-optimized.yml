@@ -15,7 +15,7 @@ env:
   # Used in the editor config file name (e.g., 4.4, 4.5, but NOT 4.4.1)
   GODOT_FEATURE_VERSION: 4.5
   # Commit hash
-  GODOT_COMMIT_HASH: 64b09905c
+  GODOT_COMMIT_HASH: 97d1dd373faaa3ca45f283e7528b620691f35671
   PROJECT_NAME: GodSVG
   # deprecated=no disables deprecated Godot features, which exist for compat and we don't use.
   # vulkan=no, use_volk=no since we use Compatibility Renderer. TODO for 4.5 disable rendering_device too.
@@ -30,7 +30,7 @@ env:
   # - text_server_adv: Currently unneeded, but needed for languages like Arabic.
   # - freetype: Something about font rendering.
   # build_proflie disables a lot of unused classes.
-  BUILD_OPTIONS: target=template_release lto=full production=yes deprecated=no minizip=no brotli=no vulkan=no use_volk=no disable_3d=yes disable_physics_2d=yes disable_navigation_2d=yes modules_enabled_by_default=no module_freetype_enabled=yes module_gdscript_enabled=yes module_svg_enabled=yes module_jpg_enabled=yes module_text_server_adv_enabled=yes graphite=no module_webp_enabled=yes module_mbedtls_enabled=yes build_profile=../godsvg/.github/disabled_classes.build
+  BUILD_OPTIONS: target=template_release lto=full production=yes deprecated=no minizip=no brotli=no vulkan=no use_volk=no disable_3d=yes rendering_device=no forward_plus_renderer=no forward_mobile_renderer=no disable_physics_2d=yes disable_navigation_2d=yes modules_enabled_by_default=no module_freetype_enabled=yes module_gdscript_enabled=yes module_svg_enabled=yes module_jpg_enabled=yes module_text_server_adv_enabled=yes graphite=no module_webp_enabled=yes module_mbedtls_enabled=yes build_profile=../godsvg/.github/disabled_classes.build
   # Links
   GODOT_REPO: https://github.com/godotengine/godot.git
   ANGLE_DOWNLOAD_BASE_URL: https://github.com/godotengine/godot-angle-static/releases/download/chromium%2F6601.2/godot-angle-static
@@ -69,11 +69,12 @@ jobs:
         run: git clone $GODOT_REPO godot
 
       - if: ${{ steps.cache-template.outputs.cache-hit != 'true' }}
-        name: Checkout specific commit
+        name: Checkout PR branch
         run: |
           cd godot
-          git fetch
-          git checkout $GODOT_COMMIT_HASH
+          git remote add yeldhamdev https://github.com/YeldhamDev/godot.git
+          git fetch yeldhamdev build_disable_rd
+          git checkout yeldhamdev/build_disable_rd
 
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -156,11 +157,12 @@ jobs:
         run: git clone $GODOT_REPO godot
 
       - if: ${{ steps.cache-template.outputs.cache-hit != 'true' }}
-        name: Checkout specific commit
+        name: Checkout PR branch
         run: |
           cd godot
-          git fetch
-          git checkout $GODOT_COMMIT_HASH
+          git remote add yeldhamdev https://github.com/YeldhamDev/godot.git
+          git fetch yeldhamdev build_disable_rd
+          git checkout yeldhamdev/build_disable_rd
 
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -219,17 +221,18 @@ jobs:
         name: Clone Godot repository
         run: git clone $GODOT_REPO godot
 
+      - if: ${{ steps.cache-template.outputs.cache-hit != 'true' }}
+        name: Checkout PR branch
+        run: |
+          cd godot
+          git remote add yeldhamdev https://github.com/YeldhamDev/godot.git
+          git fetch yeldhamdev build_disable_rd
+          git checkout yeldhamdev/build_disable_rd
+
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
           path: godsvg
-
-      - if: ${{ steps.cache-template.outputs.cache-hit != 'true' }}
-        name: Checkout specific commit
-        run: |
-          cd godot
-          git fetch
-          git checkout $GODOT_COMMIT_HASH
 
       - if: ${{ steps.cache-template.outputs.cache-hit != 'true' }}
         name: Build Godot template for macOS (arm64 release)
@@ -319,11 +322,12 @@ jobs:
         run: git clone $GODOT_REPO godot
 
       - if: ${{ steps.cache-template.outputs.cache-hit != 'true' }}
-        name: Checkout specific commit
+        name: Checkout PR branch
         run: |
           cd godot
-          git fetch
-          git checkout $GODOT_COMMIT_HASH
+          git remote add yeldhamdev https://github.com/YeldhamDev/godot.git
+          git fetch yeldhamdev build_disable_rd
+          git checkout yeldhamdev/build_disable_rd
 
       - name: Checkout repository
         uses: actions/checkout@v4
