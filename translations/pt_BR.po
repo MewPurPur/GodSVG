@@ -587,8 +587,29 @@ msgid "UI scale"
 msgstr "Escala da interface"
 
 #: src/ui_parts/settings_menu.gd:
-msgid "Changes the scale factor for the interface."
+#, fuzzy
+msgid "Determines the scale factor for the interface."
 msgstr "Muda o fator de escala da interfaçe."
+
+#: src/ui_parts/settings_menu.gd:
+msgid "Uncapped framerate"
+msgstr ""
+
+#: src/ui_parts/settings_menu.gd:
+msgid ""
+"Determines if frames are rendered as fast as possible (may increase power "
+"consumption and heat)."
+msgstr ""
+
+#: src/ui_parts/settings_menu.gd:
+msgid "Custom maximum FPS"
+msgstr ""
+
+#: src/ui_parts/settings_menu.gd:
+msgid ""
+"If the framerate is capped, this value determines the maximum number of "
+"frames per second."
+msgstr ""
 
 #: src/ui_parts/settings_menu.gd:
 msgid "Language"
@@ -764,7 +785,8 @@ msgstr ""
 "o nome do arquivo aberto."
 
 #: src/ui_parts/settings_menu.gd:
-msgid "Changes the visual size and grabbing area of handles."
+#, fuzzy
+msgid "Determines the visual size and grabbing area of handles."
 msgstr "Muda o tamanho e a área de agarramento das alças."
 
 #: src/ui_parts/shortcut_panel.gd:
