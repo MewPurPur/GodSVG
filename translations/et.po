@@ -584,8 +584,29 @@ msgid "UI scale"
 msgstr "Kasutajaliidese suurus"
 
 #: src/ui_parts/settings_menu.gd:
-msgid "Changes the scale factor for the interface."
+#, fuzzy
+msgid "Determines the scale factor for the interface."
 msgstr "Muudab kasutajaliidese suurust."
+
+#: src/ui_parts/settings_menu.gd:
+msgid "Uncapped framerate"
+msgstr ""
+
+#: src/ui_parts/settings_menu.gd:
+msgid ""
+"Determines if frames are rendered as fast as possible (may increase power "
+"consumption and heat)."
+msgstr ""
+
+#: src/ui_parts/settings_menu.gd:
+msgid "Custom maximum FPS"
+msgstr ""
+
+#: src/ui_parts/settings_menu.gd:
+msgid ""
+"If the framerate is capped, this value determines the maximum number of "
+"frames per second."
+msgstr ""
 
 #: src/ui_parts/settings_menu.gd:
 msgid "Language"
@@ -760,7 +781,8 @@ msgstr ""
 "Väljalülitamisel jääb akna nimieks \"GodSVG\" sõltumata avatud failist."
 
 #: src/ui_parts/settings_menu.gd:
-msgid "Changes the visual size and grabbing area of handles."
+#, fuzzy
+msgid "Determines the visual size and grabbing area of handles."
 msgstr "Muudab pidemete nähtavat ja interaktiivse ala suurust."
 
 #: src/ui_parts/shortcut_panel.gd:

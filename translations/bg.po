@@ -585,8 +585,28 @@ msgid "UI scale"
 msgstr "Мащаб на интерфейса"
 
 #: src/ui_parts/settings_menu.gd:
-msgid "Changes the scale factor for the interface."
-msgstr "Увеличава мащаба на интерфейса."
+msgid "Determines the scale factor for the interface."
+msgstr "Определя мащаба на интерфейса."
+
+#: src/ui_parts/settings_menu.gd:
+msgid "Uncapped framerate"
+msgstr "Неограничени кадри в секунда"
+
+#: src/ui_parts/settings_menu.gd:
+msgid ""
+"Determines if frames are rendered as fast as possible (may increase power "
+"consumption and heat)."
+msgstr "Определя дали кадрите да се изобразяват възможно най-бързо (може да увеличи консумацията на енергия и отделянето на топлина)"
+
+#: src/ui_parts/settings_menu.gd:
+msgid "Custom maximum FPS"
+msgstr "Максимални кадри в секунда"
+
+#: src/ui_parts/settings_menu.gd:
+msgid ""
+"If the framerate is capped, this value determines the maximum number of "
+"frames per second."
+msgstr "Ако кадрите в секунда са ограничени, тази стойност определя максимума."
 
 #: src/ui_parts/settings_menu.gd:
 msgid "Language"
@@ -763,8 +783,8 @@ msgstr ""
 "настоящия файл."
 
 #: src/ui_parts/settings_menu.gd:
-msgid "Changes the visual size and grabbing area of handles."
-msgstr "Увеличава размера и площта в която дръжките могат да бъдат хванати."
+msgid "Determines the visual size and grabbing area of handles."
+msgstr "Определя размера на дръжките и площта в която те могат да бъдат хванати."
 
 #: src/ui_parts/shortcut_panel.gd:
 msgid "Horizontal strip"

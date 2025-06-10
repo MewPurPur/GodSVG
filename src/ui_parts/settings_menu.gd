@@ -37,8 +37,7 @@ func _ready() -> void:
 	tabs.get_child(0).button_pressed = true
 	Configs.theme_changed.connect(setup_theming)
 	setup_theming()
-	Configs.savedata.editor_formatter.changed_deferred.connect(show_formatter.bind("editor"))
-	Configs.savedata.export_formatter.changed_deferred.connect(show_formatter.bind("export"))
+	Configs.savedata.changed_deferred.connect(setup_content.bind(false))
 
 func setup_theming() -> void:
 	var stylebox := get_theme_stylebox("panel").duplicate()
@@ -89,8 +88,10 @@ func _on_tab_toggled(toggled_on: bool, tab_name: String) -> void:
 		focused_tab = tab_name
 		setup_content()
 
-func setup_content() -> void:
-	scroll_container.scroll_vertical = 0
+func setup_content(reset_scroll := true) -> void:
+	if reset_scroll:
+		scroll_container.scroll_vertical = 0
+	
 	for child in content_container.get_children():
 		child.queue_free()
 	
@@ -213,8 +214,8 @@ func setup_content() -> void:
 			advice_panel.show()
 			create_setting_container()
 			content_container.add_child(setting_container)
-			
 			current_setup_resource = Configs.savedata
+			
 			add_section(Translator.translate("Input"))
 			current_setup_setting = "invert_zoom"
 			add_checkbox(Translator.translate("Invert zoom direction"))
@@ -229,24 +230,8 @@ func setup_content() -> void:
 			add_advice(Translator.translate(
 					"If turned on, scrolling pans the view. To zoom, hold CTRL while scrolling."))
 			
-			add_section(Translator.translate("Miscellaneous"))
-			current_setup_setting = "use_native_file_dialog"
-			var use_native_file_dialog := add_checkbox(
-					Translator.translate("Use native file dialog"))
-			add_advice(Translator.translate(
-					"If turned on, uses your operating system's native file dialog. If turned off, uses GodSVG's built-in file dialog."))
-			current_setup_setting = "use_filename_for_window_title"
-			add_checkbox(Translator.translate("Sync window title to file name"))
-			add_advice(Translator.translate(
-					"If turned off, the window title remains as \"GodSVG\" without including the current file."))
-			current_setup_setting = "handle_size"
-			add_number_dropdown(Translator.translate("Handle size"),
-					[0.75, 1.0, 1.25, 1.5, 1.75, 2.0, 2.5, 3.0], false, false,
-					SaveData.HANDLE_SIZE_MIN, SaveData.HANDLE_SIZE_MAX)
-			add_advice(Translator.translate(
-					"Changes the visual size and grabbing area of handles."))
-			current_setup_setting = "ui_scale"
-			
+			add_section(Translator.translate("Display"))
+			# Prepare parameters for the UI scale setting.
 			var usable_screen_size := HandlerGUI.get_usable_rect()
 			var min_ui_scale := HandlerGUI.get_min_ui_scale(usable_screen_size)
 			var max_ui_scale := HandlerGUI.get_max_ui_scale(usable_screen_size)
@@ -284,15 +269,37 @@ func setup_content() -> void:
 				SaveData.ScalingApproach.CONSTANT_400: "400%",
 				SaveData.ScalingApproach.MAX: "Max (%d%%)" % (max_ui_scale * 100),
 			}
-			add_dropdown(Translator.translate("UI scale"), dropdown_values, dropdown_map)
-			add_advice(Translator.translate("Changes the scale factor for the interface."))
 			
-			current_setup_setting = "ui_max_fps"
-			add_number_dropdown(Translator.translate("Max FPS"),
-					[0, 30, 60, 120, 240], true, false,
-					SaveData.UI_MAX_FPS_MIN, SaveData.UI_MAX_FPS_MAX)
+			current_setup_setting = "ui_scale"
+			add_dropdown(Translator.translate("UI scale"), dropdown_values, dropdown_map)
+			add_advice(Translator.translate("Determines the scale factor for the interface."))
+			
+			current_setup_setting = "uncapped_framerate"
+			add_checkbox(Translator.translate("Uncapped framerate"))
+			add_advice(Translator.translate("Determines if frames are rendered as fast as possible (may increase power consumption and heat)."))
+			
+			current_setup_setting = "max_fps"
+			add_number_dropdown(Translator.translate("Custom maximum FPS"),
+					[30, 60, 90, 120, 144, 240, 360], true, false, SaveData.MAX_FPS_MIN,
+					SaveData.MAX_FPS_MAX, current_setup_resource.uncapped_framerate)
+			add_advice(Translator.translate("If the framerate is capped, this value determines the maximum number of frames per second."))
+			
+			add_section(Translator.translate("Miscellaneous"))
+			current_setup_setting = "use_native_file_dialog"
+			var use_native_file_dialog := add_checkbox(
+					Translator.translate("Use native file dialog"))
 			add_advice(Translator.translate(
-					"Limits the framerate of the user interface. If set to 0, the framerate will be unlimited."))
+					"If turned on, uses your operating system's native file dialog. If turned off, uses GodSVG's built-in file dialog."))
+			current_setup_setting = "use_filename_for_window_title"
+			add_checkbox(Translator.translate("Sync window title to file name"))
+			add_advice(Translator.translate(
+					"If turned off, the window title remains as \"GodSVG\" without including the current file."))
+			current_setup_setting = "handle_size"
+			add_number_dropdown(Translator.translate("Handle size"),
+					[0.75, 1.0, 1.25, 1.5, 1.75, 2.0, 2.5, 3.0], false, false,
+					SaveData.HANDLE_SIZE_MIN, SaveData.HANDLE_SIZE_MAX)
+			add_advice(Translator.translate(
+					"Determines the visual size and grabbing area of handles."))
 			
 			# Disable mouse wrap if not available.
 			if not DisplayServer.has_feature(DisplayServer.FEATURE_MOUSE_WARP):
@@ -302,6 +309,9 @@ func setup_content() -> void:
 				use_native_file_dialog.permanent_disable_checkbox(true)
 			elif not DisplayServer.has_feature(DisplayServer.FEATURE_NATIVE_DIALOG_FILE):
 				use_native_file_dialog.permanent_disable_checkbox(false)
+	
+	# Update hover.
+	HandlerGUI.throw_mouse_motion_event()
 
 
 func add_section(section_name: String) -> void:

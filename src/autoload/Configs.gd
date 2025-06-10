@@ -82,6 +82,7 @@ func post_load() -> void:
 	savedata.get_active_tab().activate()
 	sync_background_color()
 	sync_locale()
+	sync_max_fps()
 
 
 func generate_highlighter() -> SVGHighlighter:
@@ -107,3 +108,6 @@ func sync_locale() -> void:
 		savedata.language = "en"
 	else:
 		TranslationServer.set_locale(savedata.language)
+
+func sync_max_fps() -> void:
+	Engine.max_fps = 0 if savedata.uncapped_framerate else savedata.max_fps
