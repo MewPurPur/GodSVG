@@ -38,9 +38,8 @@ func get_setting_default(setting: String) -> Variant:
 		"use_native_file_dialog": return true
 		"use_filename_for_window_title": return true
 		"handle_size": return 1.0 if OS.get_name() != "Android" else 2.0
-		"scale": return ScalingApproach.AUTO
+		"ui_scale": return ScalingApproach.AUTO
 		"max_fps": return 0
-		"custom_scale": return true
 	return null
 
 func reset_to_default() -> void:
