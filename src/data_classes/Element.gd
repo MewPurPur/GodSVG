@@ -1,5 +1,6 @@
-# An SVG element, standalone (<element/>) or container (<element>...</element>).
-class_name Element extends XNode
+# An abstract class representing an element, either standalone (<element/>) or container
+# (<element>...</element>).
+abstract class_name Element extends XNode
 
 signal attribute_changed(name: String)
 signal ancestor_attribute_changed(name: String)

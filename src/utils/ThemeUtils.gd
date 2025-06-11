@@ -1,4 +1,4 @@
-class_name ThemeUtils extends RefCounted
+abstract class_name ThemeUtils
 
 const regular_font = preload("res://assets/fonts/Font.ttf")
 const bold_font = preload("res://assets/fonts/FontBold.ttf")

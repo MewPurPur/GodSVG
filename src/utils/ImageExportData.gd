@@ -1,4 +1,4 @@
-class_name ImageExportData extends RefCounted
+class_name ImageExportData
 
 const image_types_dict: Dictionary[String, String] = {
 	"svg": "image/svg+xml",

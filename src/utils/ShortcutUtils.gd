@@ -1,4 +1,4 @@
-class_name ShortcutUtils extends RefCounted
+abstract class_name ShortcutUtils
 
 # Can be activated in all contexts.
 const UNIVERSAL_ACTIONS: PackedStringArray = ["quit", "toggle_fullscreen", "about_info",

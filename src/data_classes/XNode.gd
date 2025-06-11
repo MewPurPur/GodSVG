@@ -1,5 +1,5 @@
 # Abstract base class for XML nodes.
-class_name XNode extends RefCounted
+abstract class_name XNode
 
 var xid: PackedInt32Array
 

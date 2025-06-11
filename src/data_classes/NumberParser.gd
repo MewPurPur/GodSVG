@@ -1,5 +1,5 @@
 # Common parser for AttributeNumeric and AttributeList
-class_name NumberParser extends RefCounted
+abstract class_name NumberParser
 
 static func num_to_text(number: float, formatter: Formatter) -> String:
 	if not is_finite(number):

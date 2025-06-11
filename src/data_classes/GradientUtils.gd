@@ -1,4 +1,4 @@
-class_name GradientUtils extends RefCounted
+abstract class_name GradientUtils
 
 static func generate_gradient(element: Element) -> Gradient:
 	if not (element is ElementLinearGradient or element is ElementRadialGradient):

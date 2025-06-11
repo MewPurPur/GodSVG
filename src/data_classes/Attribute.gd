@@ -1,6 +1,6 @@
 # Represents an attribute inside an element, i.e. <element attribute="value"/>.
 # If the Attribute's data type is known, one of the inheriting classes should be used.
-class_name Attribute extends RefCounted
+class_name Attribute
 
 signal value_changed
 

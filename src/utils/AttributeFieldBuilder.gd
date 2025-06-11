@@ -1,4 +1,4 @@
-class_name AttributeFieldBuilder
+abstract class_name AttributeFieldBuilder
 
 const TransformFieldScene = preload("res://src/ui_widgets/transform_field.tscn")
 const NumberFieldScene = preload("res://src/ui_widgets/number_field.tscn")

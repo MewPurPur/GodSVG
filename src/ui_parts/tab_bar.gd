@@ -484,7 +484,7 @@ func get_tab_index_at(pos: Vector2) -> int:
 	return -1
 
 
-class TabDragData:
+class DragData:
 	var index := -1
 	func _init(new_index: int) -> void:
 		index = new_index
@@ -535,10 +535,10 @@ func _get_drag_data(at_position: Vector2) -> Variant:
 	
 	set_drag_preview(preview)
 	set_process(true)
-	return TabDragData.new(tab_index_at_position)
+	return DragData.new(tab_index_at_position)
 
 func _can_drop_data(at_position: Vector2, data: Variant) -> bool:
-	if not data is TabDragData:
+	if not data is DragData:
 		proposed_drop_idx = -1
 		return false
 	var current_drop_idx := get_drop_index_at(at_position)
@@ -550,7 +550,7 @@ func _can_drop_data(at_position: Vector2, data: Variant) -> bool:
 		return true
 
 func _drop_data(at_position: Vector2, data: Variant) -> void:
-	if not data is TabDragData:
+	if not data is DragData:
 		return
 	set_process(false)
 	Configs.savedata.move_tab(data.index, get_drop_index_at(at_position))

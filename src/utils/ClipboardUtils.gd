@@ -1,5 +1,5 @@
 # This class adds support for copying images. Currently not supported by Godot.
-class_name ClipboardUtils extends RefCounted
+abstract class_name ClipboardUtils
 
 ## Returns true if this clipboard util is supported on the current platform.
 static func is_supported(format: String) -> bool:
