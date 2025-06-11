@@ -33,12 +33,8 @@ msgid "Check for updates?"
 msgstr "Проверить обновления?"
 
 #: src/autoload/HandlerGUI.gd:
-msgid ""
-"This will connect to github.com to compare version numbers. No other data is "
-"collected or transmitted."
-msgstr ""
-"Требуется подключение к github.com, чтобы сравнить номер версии. Никакие "
-"другие данные не собираются и не передаются."
+msgid "This will connect to github.com to compare version numbers. No other data is collected or transmitted."
+msgstr "Требуется подключение к github.com, чтобы сравнить номер версии. Никакие другие данные не собираются и не передаются."
 
 #: src/autoload/HandlerGUI.gd: src/ui_widgets/alert_dialog.gd:
 msgid "OK"
@@ -58,19 +54,12 @@ msgid "Export"
 msgstr "Экспортовать"
 
 #: src/autoload/HandlerGUI.gd:
-msgid ""
-"The graphic can be exported only as SVG because its proportions are too "
-"extreme."
-msgstr ""
-"Изображение можно экспортировать только как SVG, поскольку его пропорции "
-"слишком экстремальные."
+msgid "The graphic can be exported only as SVG because its proportions are too extreme."
+msgstr "Изображение можно экспортировать только как SVG, поскольку его пропорции слишком экстремальные."
 
 #: src/autoload/HandlerGUI.gd:
-msgid ""
-"The graphic can be exported only as SVG because its size is not defined."
-msgstr ""
-"Изображение можно экспортировать только как SVG, поскольку его размеры не "
-"заданы."
+msgid "The graphic can be exported only as SVG because its size is not defined."
+msgstr "Изображение можно экспортировать только как SVG, поскольку его размеры не заданы."
 
 #: src/autoload/State.gd: src/ui_parts/good_file_dialog.gd:
 #: src/ui_widgets/alert_dialog.gd: src/utils/FileUtils.gd:
@@ -102,12 +91,8 @@ msgid "The last edited state of this tab could not be found."
 msgstr "Последнее редактированное состояние этой вкладки невозможно найти."
 
 #: src/autoload/State.gd:
-msgid ""
-"The tab is bound to the file path {file_path}. Do you want to restore the "
-"SVG from this path?"
-msgstr ""
-"Вкладка связана с путем к файлу {file_path}. Вы желаете восстановить SVG из "
-"этого пути?"
+msgid "The tab is bound to the file path {file_path}. Do you want to restore the SVG from this path?"
+msgstr "Вкладка связана с путем к файлу {file_path}. Вы желаете восстановить SVG из этого пути?"
 
 #: src/config_classes/Formatter.gd:
 msgid "Compact"
@@ -215,6 +200,7 @@ msgstr "Лицензия"
 msgid "Third-party licenses"
 msgstr "Лицензии третьих лиц"
 
+#. If the language has different gendered versions, prefer the most neutral-sounding one, or feminine if none sound neutral.
 #: src/ui_parts/about_menu.gd:
 msgid "Project Founder and Manager"
 msgstr "Основатель и руководитель проекта"
@@ -307,8 +293,7 @@ msgstr "Скопировать"
 
 #: src/ui_parts/export_menu.gd:
 msgid "Preview image size is limited to {dimensions}"
-msgstr ""
-"Размер предварительного просмотра изображения ограничен до {dimensions}"
+msgstr "Размер предварительного просмотра изображения ограничен до {dimensions}"
 
 #: src/ui_parts/global_actions.gd: src/ui_parts/shortcut_panel_config.gd:
 msgid "Layout"
@@ -375,12 +360,8 @@ msgid "Copy path"
 msgstr "Скопировать путь"
 
 #: src/ui_parts/good_file_dialog.gd:
-msgid ""
-"A file named \"{file_name}\" already exists. Replacing will overwrite its "
-"contents!"
-msgstr ""
-"Файл с названием \"{file_name}\" уже существует. Его замена перезапишет его "
-"содержимое!"
+msgid "A file named \"{file_name}\" already exists. Replacing will overwrite its contents!"
+msgstr "Файл с названием \"{file_name}\" уже существует. Его замена перезапишет его содержимое!"
 
 #: src/ui_parts/handles_manager.gd:
 msgid "New shape"
@@ -566,21 +547,8 @@ msgid "Use CTRL for zooming"
 msgstr "Использовать CTRL для масштабирования"
 
 #: src/ui_parts/settings_menu.gd:
-msgid "Miscellaneous"
-msgstr "Разное"
-
-#: src/ui_parts/settings_menu.gd:
-msgid "Use native file dialog"
-msgstr "Использовать родной файловый диалог системы"
-
-#: src/ui_parts/settings_menu.gd:
-msgid "Sync window title to file name"
-msgstr "Синхронизировать заголовок окна с названием файла"
-
-#. Refers to the size of the draggable handles.
-#: src/ui_parts/settings_menu.gd:
-msgid "Handle size"
-msgstr "Размер ручек"
+msgid "Display"
+msgstr ""
 
 #: src/ui_parts/settings_menu.gd:
 msgid "UI scale"
@@ -596,9 +564,7 @@ msgid "Uncapped framerate"
 msgstr ""
 
 #: src/ui_parts/settings_menu.gd:
-msgid ""
-"Determines if frames are rendered as fast as possible (may increase power "
-"consumption and heat)."
+msgid "Determines if frames are rendered as fast as possible (may increase power consumption and heat)."
 msgstr ""
 
 #: src/ui_parts/settings_menu.gd:
@@ -606,10 +572,25 @@ msgid "Custom maximum FPS"
 msgstr ""
 
 #: src/ui_parts/settings_menu.gd:
-msgid ""
-"If the framerate is capped, this value determines the maximum number of "
-"frames per second."
+msgid "If the framerate is capped, this value determines the maximum number of frames per second."
 msgstr ""
+
+#: src/ui_parts/settings_menu.gd:
+msgid "Miscellaneous"
+msgstr "Разное"
+
+#: src/ui_parts/settings_menu.gd:
+msgid "Use native file dialog"
+msgstr "Использовать родной файловый диалог системы"
+
+#: src/ui_parts/settings_menu.gd:
+msgid "Sync window title to file name"
+msgstr "Синхронизировать заголовок окна с названием файла"
+
+#. Refers to the size of the draggable handles.
+#: src/ui_parts/settings_menu.gd:
+msgid "Handle size"
+msgstr "Размер ручек"
 
 #: src/ui_parts/settings_menu.gd:
 msgid "Language"
@@ -742,48 +723,28 @@ msgid "Remove unnecessary parameters"
 msgstr "Удалить ненужные параметры"
 
 #: src/ui_parts/settings_menu.gd:
-msgid ""
-"If turned on, clicking on a tab with the middle mouse button closes the tab. "
-"If turned off, it focuses the tab instead."
-msgstr ""
-"Если включено - нажатие на вкладку средней кнопкой мыши закроет ее. Если "
-"выключено - вкладка получит фокус."
+msgid "If turned on, clicking on a tab with the middle mouse button closes the tab. If turned off, it focuses the tab instead."
+msgstr "Если включено - нажатие на вкладку средней кнопкой мыши закроет ее. Если выключено - вкладка получит фокус."
 
 #: src/ui_parts/settings_menu.gd:
 msgid "Swaps the scroll directions for zooming in and zooming out."
 msgstr "Поменяет местами направление прокрутки при масштабировании."
 
 #: src/ui_parts/settings_menu.gd:
-msgid ""
-"Warps the cursor to the opposite side whenever it reaches a viewport "
-"boundary while panning."
-msgstr ""
-"Курсор будет телепортироваться от одного до противоположного края на границе "
-"окна просмотра."
+msgid "Warps the cursor to the opposite side whenever it reaches a viewport boundary while panning."
+msgstr "Курсор будет телепортироваться от одного до противоположного края на границе окна просмотра."
 
 #: src/ui_parts/settings_menu.gd:
-msgid ""
-"If turned on, scrolling pans the view. To zoom, hold CTRL while scrolling."
-msgstr ""
-"Если включено - прокрутка будет перемещать окно просмотра. Чтобы "
-"масштабировать зажмите CTRL при прокручивании."
+msgid "If turned on, scrolling pans the view. To zoom, hold CTRL while scrolling."
+msgstr "Если включено - прокрутка будет перемещать окно просмотра. Чтобы масштабировать зажмите CTRL при прокручивании."
 
 #: src/ui_parts/settings_menu.gd:
-msgid ""
-"If turned on, uses your operating system's native file dialog. If turned "
-"off, uses GodSVG's built-in file dialog."
-msgstr ""
-"Если включено, то будет использоваться родной файловый диалог вашей "
-"операционной системы для выбора файлов. Если выключено, то будет "
-"использоваться встроенный файловый диалог."
+msgid "If turned on, uses your operating system's native file dialog. If turned off, uses GodSVG's built-in file dialog."
+msgstr "Если включено, то будет использоваться родной файловый диалог вашей операционной системы для выбора файлов. Если выключено, то будет использоваться встроенный файловый диалог."
 
 #: src/ui_parts/settings_menu.gd:
-msgid ""
-"If turned off, the window title remains as \"GodSVG\" without including the "
-"current file."
-msgstr ""
-"Если выключено - заголовок окна будет просто \"GodSVG\", не включая текущий "
-"файл."
+msgid "If turned off, the window title remains as \"GodSVG\" without including the current file."
+msgstr "Если выключено - заголовок окна будет просто \"GodSVG\", не включая текущий файл."
 
 #: src/ui_parts/settings_menu.gd:
 #, fuzzy
@@ -1038,9 +999,7 @@ msgstr "Файл {file_path} уже редактируется внутри GodS
 
 #: src/utils/FileUtils.gd:
 msgid "If you want to revert your edits since the last save, use {reset_svg}."
-msgstr ""
-"Если вы хотите отменить внесенные после после сохранения изменения, "
-"воспользуйтесь {reset_svg}."
+msgstr "Если вы хотите отменить внесенные после после сохранения изменения, воспользуйтесь {reset_svg}."
 
 #: src/utils/FileUtils.gd:
 msgid "Do you want to save the changes made to {file_name}?"
@@ -1345,16 +1304,10 @@ msgstr "Сохранить {format} файл"
 
 #: src/utils/TranslationUtils.gd:
 msgid "Only {extension_list} files are supported for this operation."
-msgstr ""
-"Только файлы с расширениями {extension_list} поддерживаются для этой "
-"операции."
+msgstr "Только файлы с расширениями {extension_list} поддерживаются для этой операции."
 
-#~ msgid ""
-#~ "The file extension {extension} is unsupported for this operation. Only "
-#~ "{extension_list} files are supported."
-#~ msgstr ""
-#~ "Расширение файла {extension} не поддерживается для этой операции. Только "
-#~ "{extension_list} файлы поддерживаются."
+#~ msgid "The file extension {extension} is unsupported for this operation. Only {extension_list} files are supported."
+#~ msgstr "Расширение файла {extension} не поддерживается для этой операции. Только {extension_list} файлы поддерживаются."
 
 #~ msgid "Save the .\"{format}\" file"
 #~ msgstr "Сохранить .\"{format}\" файл"
@@ -1380,16 +1333,11 @@ msgstr ""
 #~ msgid "Save as"
 #~ msgstr "Сохранить как"
 
-#~ msgid ""
-#~ "If you want to apply the unsaved file state, use \"Reset SVG\" instead."
-#~ msgstr ""
-#~ "Если вы хотите применить не сохраненное состояние файла, используйте "
-#~ "\"Скинуть SVG\"."
+#~ msgid "If you want to apply the unsaved file state, use \"Reset SVG\" instead."
+#~ msgstr "Если вы хотите применить не сохраненное состояние файла, используйте \"Скинуть SVG\"."
 
 #~ msgid "Auto UI scale"
 #~ msgstr "Автоматический маштаб интерфейса пользователя"
 
 #~ msgid "Scales the interface automatically based on the screen size."
-#~ msgstr ""
-#~ "Автоматически масштабировать интерфейс пользователя в зависимости от "
-#~ "размера экрана."
+#~ msgstr "Автоматически масштабировать интерфейс пользователя в зависимости от размера экрана."

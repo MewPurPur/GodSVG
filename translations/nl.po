@@ -32,12 +32,8 @@ msgid "Check for updates?"
 msgstr "Voor updates controleren?"
 
 #: src/autoload/HandlerGUI.gd:
-msgid ""
-"This will connect to github.com to compare version numbers. No other data is "
-"collected or transmitted."
-msgstr ""
-"Dit zal een verbinding maken naar github.com om de versienummers te "
-"vergelijken. Er wordt geen andere data verzameld of verzonden."
+msgid "This will connect to github.com to compare version numbers. No other data is collected or transmitted."
+msgstr "Dit zal een verbinding maken naar github.com om de versienummers te vergelijken. Er wordt geen andere data verzameld of verzonden."
 
 #: src/autoload/HandlerGUI.gd: src/ui_widgets/alert_dialog.gd:
 msgid "OK"
@@ -57,19 +53,12 @@ msgid "Export"
 msgstr "Exporteren"
 
 #: src/autoload/HandlerGUI.gd:
-msgid ""
-"The graphic can be exported only as SVG because its proportions are too "
-"extreme."
-msgstr ""
-"De afbeelding kan alleen maar als SVG geëxporteerd worden door zijn extreme "
-"verhoudingen."
+msgid "The graphic can be exported only as SVG because its proportions are too extreme."
+msgstr "De afbeelding kan alleen maar als SVG geëxporteerd worden door zijn extreme verhoudingen."
 
 #: src/autoload/HandlerGUI.gd:
-msgid ""
-"The graphic can be exported only as SVG because its size is not defined."
-msgstr ""
-"De afbeelding kan alleen maar als SVG geëxporteerd worden want zijn maat is "
-"niet gedefiniëerd."
+msgid "The graphic can be exported only as SVG because its size is not defined."
+msgstr "De afbeelding kan alleen maar als SVG geëxporteerd worden want zijn maat is niet gedefiniëerd."
 
 #: src/autoload/State.gd: src/ui_parts/good_file_dialog.gd:
 #: src/ui_widgets/alert_dialog.gd: src/utils/FileUtils.gd:
@@ -102,12 +91,8 @@ msgid "The last edited state of this tab could not be found."
 msgstr "De laatst aangepaste stand van dit tabblad kon niet gevonden worden."
 
 #: src/autoload/State.gd:
-msgid ""
-"The tab is bound to the file path {file_path}. Do you want to restore the "
-"SVG from this path?"
-msgstr ""
-"Het tablad is gebonden aan het bestandspad {file_path}. Wil je de SVG "
-"herstellen vanuit dit pad?"
+msgid "The tab is bound to the file path {file_path}. Do you want to restore the SVG from this path?"
+msgstr "Het tablad is gebonden aan het bestandspad {file_path}. Wil je de SVG herstellen vanuit dit pad?"
 
 #: src/config_classes/Formatter.gd:
 msgid "Compact"
@@ -215,6 +200,7 @@ msgstr "Licentie"
 msgid "Third-party licenses"
 msgstr "Derde partij Licenties"
 
+#. If the language has different gendered versions, prefer the most neutral-sounding one, or feminine if none sound neutral.
 #: src/ui_parts/about_menu.gd:
 msgid "Project Founder and Manager"
 msgstr "Projectoprichter en Manager"
@@ -375,12 +361,8 @@ msgid "Copy path"
 msgstr "Pad kopiëren"
 
 #: src/ui_parts/good_file_dialog.gd:
-msgid ""
-"A file named \"{file_name}\" already exists. Replacing will overwrite its "
-"contents!"
-msgstr ""
-"Er bestaat al een bestand genaamt \"{file_name}\". Deze vervangen zal zijn "
-"inhoud aanpassen!"
+msgid "A file named \"{file_name}\" already exists. Replacing will overwrite its contents!"
+msgstr "Er bestaat al een bestand genaamt \"{file_name}\". Deze vervangen zal zijn inhoud aanpassen!"
 
 #: src/ui_parts/handles_manager.gd:
 msgid "New shape"
@@ -567,21 +549,8 @@ msgid "Use CTRL for zooming"
 msgstr "Gebruik CTRL om in te zoomen"
 
 #: src/ui_parts/settings_menu.gd:
-msgid "Miscellaneous"
-msgstr "Overige"
-
-#: src/ui_parts/settings_menu.gd:
-msgid "Use native file dialog"
-msgstr "Gebruik inheemse bestandendialoog"
-
-#: src/ui_parts/settings_menu.gd:
-msgid "Sync window title to file name"
-msgstr "Synchroniseer venstertitel naar bestandsnaam"
-
-#. Refers to the size of the draggable handles.
-#: src/ui_parts/settings_menu.gd:
-msgid "Handle size"
-msgstr "Handvat maat"
+msgid "Display"
+msgstr ""
 
 #: src/ui_parts/settings_menu.gd:
 msgid "UI scale"
@@ -597,9 +566,7 @@ msgid "Uncapped framerate"
 msgstr ""
 
 #: src/ui_parts/settings_menu.gd:
-msgid ""
-"Determines if frames are rendered as fast as possible (may increase power "
-"consumption and heat)."
+msgid "Determines if frames are rendered as fast as possible (may increase power consumption and heat)."
 msgstr ""
 
 #: src/ui_parts/settings_menu.gd:
@@ -607,10 +574,25 @@ msgid "Custom maximum FPS"
 msgstr ""
 
 #: src/ui_parts/settings_menu.gd:
-msgid ""
-"If the framerate is capped, this value determines the maximum number of "
-"frames per second."
+msgid "If the framerate is capped, this value determines the maximum number of frames per second."
 msgstr ""
+
+#: src/ui_parts/settings_menu.gd:
+msgid "Miscellaneous"
+msgstr "Overige"
+
+#: src/ui_parts/settings_menu.gd:
+msgid "Use native file dialog"
+msgstr "Gebruik inheemse bestandendialoog"
+
+#: src/ui_parts/settings_menu.gd:
+msgid "Sync window title to file name"
+msgstr "Synchroniseer venstertitel naar bestandsnaam"
+
+#. Refers to the size of the draggable handles.
+#: src/ui_parts/settings_menu.gd:
+msgid "Handle size"
+msgstr "Handvat maat"
 
 #: src/ui_parts/settings_menu.gd:
 msgid "Language"
@@ -743,9 +725,7 @@ msgid "Remove unnecessary parameters"
 msgstr "Verwijder onnodige parameters"
 
 #: src/ui_parts/settings_menu.gd:
-msgid ""
-"If turned on, clicking on a tab with the middle mouse button closes the tab. "
-"If turned off, it focuses the tab instead."
+msgid "If turned on, clicking on a tab with the middle mouse button closes the tab. If turned off, it focuses the tab instead."
 msgstr ""
 
 #: src/ui_parts/settings_menu.gd:
@@ -753,38 +733,22 @@ msgid "Swaps the scroll directions for zooming in and zooming out."
 msgstr "Verwisselt de scroll richtingen voor inzoomen en uitzoomen."
 
 #: src/ui_parts/settings_menu.gd:
-msgid ""
-"Warps the cursor to the opposite side whenever it reaches a viewport "
-"boundary while panning."
-msgstr ""
-"Verplaatst de cursur naar de overkant wanneer het buiten de viewport gaat "
-"tijdens het rondkijken."
+msgid "Warps the cursor to the opposite side whenever it reaches a viewport boundary while panning."
+msgstr "Verplaatst de cursur naar de overkant wanneer het buiten de viewport gaat tijdens het rondkijken."
 
 #: src/ui_parts/settings_menu.gd:
 #, fuzzy
-msgid ""
-"If turned on, scrolling pans the view. To zoom, hold CTRL while scrolling."
-msgstr ""
-"Als ingeschakeld, scrollen zal het weergave verschuiven. Om te zoomen,houd "
-"CTRL ingedrukt tijdens scrollen."
+msgid "If turned on, scrolling pans the view. To zoom, hold CTRL while scrolling."
+msgstr "Als ingeschakeld, scrollen zal het weergave verschuiven. Om te zoomen,houd CTRL ingedrukt tijdens scrollen."
 
 #: src/ui_parts/settings_menu.gd:
-msgid ""
-"If turned on, uses your operating system's native file dialog. If turned "
-"off, uses GodSVG's built-in file dialog."
-msgstr ""
-"Waneer ingeschakeld, gebruikt jouw besturingssysteem's inheemse "
-"bestandendialoog. Wanneer uitgeschakeld, gebruikt GodSVG's ingebouwde "
-"bestandendialoog."
+msgid "If turned on, uses your operating system's native file dialog. If turned off, uses GodSVG's built-in file dialog."
+msgstr "Waneer ingeschakeld, gebruikt jouw besturingssysteem's inheemse bestandendialoog. Wanneer uitgeschakeld, gebruikt GodSVG's ingebouwde bestandendialoog."
 
 #: src/ui_parts/settings_menu.gd:
 #, fuzzy
-msgid ""
-"If turned off, the window title remains as \"GodSVG\" without including the "
-"current file."
-msgstr ""
-"Als dit uitgeschakelt is, blijft de venstertitel simpelweg \"GodSVG\" "
-"achteloos van het huidige bestand."
+msgid "If turned off, the window title remains as \"GodSVG\" without including the current file."
+msgstr "Als dit uitgeschakelt is, blijft de venstertitel simpelweg \"GodSVG\" achteloos van het huidige bestand."
 
 #: src/ui_parts/settings_menu.gd:
 #, fuzzy
@@ -1043,9 +1007,7 @@ msgstr "Het geïmporteerde bestand is al geöpend in GodSVG"
 
 #: src/utils/FileUtils.gd:
 msgid "If you want to revert your edits since the last save, use {reset_svg}."
-msgstr ""
-"Als u uw aanpassingen van de vorige opslag wilt ongedaanmaken, gebruik "
-"{reset_svg}"
+msgstr "Als u uw aanpassingen van de vorige opslag wilt ongedaanmaken, gebruik {reset_svg}"
 
 #: src/utils/FileUtils.gd:
 msgid "Do you want to save the changes made to {file_name}?"
@@ -1362,16 +1324,10 @@ msgstr "Bewaar het .\"{format}\" bestand"
 #: src/utils/TranslationUtils.gd:
 #, fuzzy
 msgid "Only {extension_list} files are supported for this operation."
-msgstr ""
-"Deze bestandsextensie is leeg. Alleen {extension_list} bestanden zijn "
-"ondersteund."
+msgstr "Deze bestandsextensie is leeg. Alleen {extension_list} bestanden zijn ondersteund."
 
-#~ msgid ""
-#~ "The file extension {extension} is unsupported for this operation. Only "
-#~ "{extension_list} files are supported."
-#~ msgstr ""
-#~ "Deze operatie is niet ondersteund voor de bestandsextensie {extension}."
-#~ "Alleen {extension_list} bestanden zijn ondersteund."
+#~ msgid "The file extension {extension} is unsupported for this operation. Only {extension_list} files are supported."
+#~ msgstr "Deze operatie is niet ondersteund voor de bestandsextensie {extension}.Alleen {extension_list} bestanden zijn ondersteund."
 
 #~ msgid "Save the .\"{format}\" file"
 #~ msgstr "Bewaar het .\"{format}\" bestand"
@@ -1411,8 +1367,7 @@ msgstr ""
 #~ msgstr "Wisselt in- en uitzoemen met de muiswiel."
 
 #~ msgid "Wraps the mouse cursor around when panning the viewport."
-#~ msgstr ""
-#~ "Wikkelt de muiscursor rond tijdens het verschuiven van de kijkvenster."
+#~ msgstr "Wikkelt de muiscursor rond tijdens het verschuiven van de kijkvenster."
 
 #~ msgid "This requires GodSVG to connect to the internet."
 #~ msgstr "Hiervoor moet GodSVG verbinding maken met het internet."
@@ -1446,12 +1401,10 @@ msgstr ""
 
 #~ msgid ""
 #~ "The file couldn't be opened.\n"
-#~ "Try checking the file path, ensure that the file is not deleted, or "
-#~ "choose a different file."
+#~ "Try checking the file path, ensure that the file is not deleted, or choose a different file."
 #~ msgstr ""
 #~ "Het bestand kon niet geopend worden.\n"
-#~ "Probeer the bestandspad te controleren, zorg ervoor dat de bestand niet "
-#~ "verwijdert is, of kies een ander bestand uit."
+#~ "Probeer the bestandspad te controleren, zorg ervoor dat de bestand niet verwijdert is, of kies een ander bestand uit."
 
 #~ msgid "Enable snap"
 #~ msgstr "Knappen inschakelen"

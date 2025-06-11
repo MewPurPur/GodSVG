@@ -32,12 +32,8 @@ msgid "Check for updates?"
 msgstr "Провери за ъпдейти?"
 
 #: src/autoload/HandlerGUI.gd:
-msgid ""
-"This will connect to github.com to compare version numbers. No other data is "
-"collected or transmitted."
-msgstr ""
-"Това ще се свърже с github.com за да сравни числата на версиите. Не се "
-"събират или изпращат никакви други данни."
+msgid "This will connect to github.com to compare version numbers. No other data is collected or transmitted."
+msgstr "Това ще се свърже с github.com за да сравни числата на версиите. Не се събират или изпращат никакви други данни."
 
 #: src/autoload/HandlerGUI.gd: src/ui_widgets/alert_dialog.gd:
 msgid "OK"
@@ -57,19 +53,12 @@ msgid "Export"
 msgstr "Експортирай"
 
 #: src/autoload/HandlerGUI.gd:
-msgid ""
-"The graphic can be exported only as SVG because its proportions are too "
-"extreme."
-msgstr ""
-"Графиката може да бъде експортирана само като SVG защото височината и "
-"широчината са твърде различни."
+msgid "The graphic can be exported only as SVG because its proportions are too extreme."
+msgstr "Графиката може да бъде експортирана само като SVG защото височината и широчината са твърде различни."
 
 #: src/autoload/HandlerGUI.gd:
-msgid ""
-"The graphic can be exported only as SVG because its size is not defined."
-msgstr ""
-"Графиката може да бъде експортирана само като SVG защото размерът не е "
-"определен."
+msgid "The graphic can be exported only as SVG because its size is not defined."
+msgstr "Графиката може да бъде експортирана само като SVG защото размерът не е определен."
 
 #: src/autoload/State.gd: src/ui_parts/good_file_dialog.gd:
 #: src/ui_widgets/alert_dialog.gd: src/utils/FileUtils.gd:
@@ -101,12 +90,8 @@ msgid "The last edited state of this tab could not be found."
 msgstr "Последното състояние на този раздел не беше намерено."
 
 #: src/autoload/State.gd:
-msgid ""
-"The tab is bound to the file path {file_path}. Do you want to restore the "
-"SVG from this path?"
-msgstr ""
-"Този раздел е свързан с пътеката {file_path}. Искаш ли да го възстановиш SVG-"
-"то от тази пътека?"
+msgid "The tab is bound to the file path {file_path}. Do you want to restore the SVG from this path?"
+msgstr "Този раздел е свързан с пътеката {file_path}. Искаш ли да го възстановиш SVG-то от тази пътека?"
 
 #: src/config_classes/Formatter.gd:
 msgid "Compact"
@@ -214,6 +199,7 @@ msgstr "Лиценз"
 msgid "Third-party licenses"
 msgstr "Лицензи от трети партии"
 
+#. If the language has different gendered versions, prefer the most neutral-sounding one, or feminine if none sound neutral.
 #: src/ui_parts/about_menu.gd:
 msgid "Project Founder and Manager"
 msgstr "Основател и мениджър на проекта"
@@ -373,12 +359,8 @@ msgid "Copy path"
 msgstr "Копирай пътеката"
 
 #: src/ui_parts/good_file_dialog.gd:
-msgid ""
-"A file named \"{file_name}\" already exists. Replacing will overwrite its "
-"contents!"
-msgstr ""
-"Файл с името \"{file_name}\" вече съществува. Заместването ще пренапише "
-"неговото съдържание!"
+msgid "A file named \"{file_name}\" already exists. Replacing will overwrite its contents!"
+msgstr "Файл с името \"{file_name}\" вече съществува. Заместването ще пренапише неговото съдържание!"
 
 #: src/ui_parts/handles_manager.gd:
 msgid "New shape"
@@ -564,6 +546,34 @@ msgid "Use CTRL for zooming"
 msgstr "Използвай CTRL за увеличение"
 
 #: src/ui_parts/settings_menu.gd:
+msgid "Display"
+msgstr ""
+
+#: src/ui_parts/settings_menu.gd:
+msgid "UI scale"
+msgstr "Мащаб на интерфейса"
+
+#: src/ui_parts/settings_menu.gd:
+msgid "Determines the scale factor for the interface."
+msgstr "Определя мащаба на интерфейса."
+
+#: src/ui_parts/settings_menu.gd:
+msgid "Uncapped framerate"
+msgstr "Неограничени кадри в секунда"
+
+#: src/ui_parts/settings_menu.gd:
+msgid "Determines if frames are rendered as fast as possible (may increase power consumption and heat)."
+msgstr "Определя дали кадрите да се изобразяват възможно най-бързо (може да увеличи консумацията на енергия и отделянето на топлина)"
+
+#: src/ui_parts/settings_menu.gd:
+msgid "Custom maximum FPS"
+msgstr "Максимални кадри в секунда"
+
+#: src/ui_parts/settings_menu.gd:
+msgid "If the framerate is capped, this value determines the maximum number of frames per second."
+msgstr "Ако кадрите в секунда са ограничени, тази стойност определя максимума."
+
+#: src/ui_parts/settings_menu.gd:
 msgid "Miscellaneous"
 msgstr "Разни"
 
@@ -579,34 +589,6 @@ msgstr "Синхронизирай името на прозореца с фай�
 #: src/ui_parts/settings_menu.gd:
 msgid "Handle size"
 msgstr "Размер на дръжките"
-
-#: src/ui_parts/settings_menu.gd:
-msgid "UI scale"
-msgstr "Мащаб на интерфейса"
-
-#: src/ui_parts/settings_menu.gd:
-msgid "Determines the scale factor for the interface."
-msgstr "Определя мащаба на интерфейса."
-
-#: src/ui_parts/settings_menu.gd:
-msgid "Uncapped framerate"
-msgstr "Неограничени кадри в секунда"
-
-#: src/ui_parts/settings_menu.gd:
-msgid ""
-"Determines if frames are rendered as fast as possible (may increase power "
-"consumption and heat)."
-msgstr "Определя дали кадрите да се изобразяват възможно най-бързо (може да увеличи консумацията на енергия и отделянето на топлина)"
-
-#: src/ui_parts/settings_menu.gd:
-msgid "Custom maximum FPS"
-msgstr "Максимални кадри в секунда"
-
-#: src/ui_parts/settings_menu.gd:
-msgid ""
-"If the framerate is capped, this value determines the maximum number of "
-"frames per second."
-msgstr "Ако кадрите в секунда са ограничени, тази стойност определя максимума."
 
 #: src/ui_parts/settings_menu.gd:
 msgid "Language"
@@ -739,48 +721,28 @@ msgid "Remove unnecessary parameters"
 msgstr "Премахни ненужните параметри"
 
 #: src/ui_parts/settings_menu.gd:
-msgid ""
-"If turned on, clicking on a tab with the middle mouse button closes the tab. "
-"If turned off, it focuses the tab instead."
-msgstr ""
-"Когато е включено, натискането на раздел със средното копче на мишката "
-"затваря раздела. Ако е изключено, средното копче фокусира раздела."
+msgid "If turned on, clicking on a tab with the middle mouse button closes the tab. If turned off, it focuses the tab instead."
+msgstr "Когато е включено, натискането на раздел със средното копче на мишката затваря раздела. Ако е изключено, средното копче фокусира раздела."
 
 #: src/ui_parts/settings_menu.gd:
 msgid "Swaps the scroll directions for zooming in and zooming out."
 msgstr "Разменя посоките на влачене за намаляване и увеличаване"
 
 #: src/ui_parts/settings_menu.gd:
-msgid ""
-"Warps the cursor to the opposite side whenever it reaches a viewport "
-"boundary while panning."
-msgstr ""
-"Превърта курсора когато той достигне краищата на екрана докато влачи "
-"гледката."
+msgid "Warps the cursor to the opposite side whenever it reaches a viewport boundary while panning."
+msgstr "Превърта курсора когато той достигне краищата на екрана докато влачи гледката."
 
 #: src/ui_parts/settings_menu.gd:
-msgid ""
-"If turned on, scrolling pans the view. To zoom, hold CTRL while scrolling."
-msgstr ""
-"Когато е включено, влаченето премества гледката. За увеличение, натисни CTRL "
-"докато влачиш."
+msgid "If turned on, scrolling pans the view. To zoom, hold CTRL while scrolling."
+msgstr "Когато е включено, влаченето премества гледката. За увеличение, натисни CTRL докато влачиш."
 
 #: src/ui_parts/settings_menu.gd:
-msgid ""
-"If turned on, uses your operating system's native file dialog. If turned "
-"off, uses GodSVG's built-in file dialog."
-msgstr ""
-"Когато е включено, ще бъде използван файловият мениджър на твоята "
-"операционна система. Ако е изключено, използва вградения файлов мениджър на "
-"GodSVG."
+msgid "If turned on, uses your operating system's native file dialog. If turned off, uses GodSVG's built-in file dialog."
+msgstr "Когато е включено, ще бъде използван файловият мениджър на твоята операционна система. Ако е изключено, използва вградения файлов мениджър на GodSVG."
 
 #: src/ui_parts/settings_menu.gd:
-msgid ""
-"If turned off, the window title remains as \"GodSVG\" without including the "
-"current file."
-msgstr ""
-"Когато е изключено, името на прозореца остава \"GodSVG\" без да включва "
-"настоящия файл."
+msgid "If turned off, the window title remains as \"GodSVG\" without including the current file."
+msgstr "Когато е изключено, името на прозореца остава \"GodSVG\" без да включва настоящия файл."
 
 #: src/ui_parts/settings_menu.gd:
 msgid "Determines the visual size and grabbing area of handles."
@@ -1034,9 +996,7 @@ msgstr "{file_path} вече се редактира в GodSVG."
 
 #: src/utils/FileUtils.gd:
 msgid "If you want to revert your edits since the last save, use {reset_svg}."
-msgstr ""
-"Ако искаш да премахнеш промените след последното записване, използвай "
-"{reset_svg}."
+msgstr "Ако искаш да премахнеш промените след последното записване, използвай {reset_svg}."
 
 #: src/utils/FileUtils.gd:
 msgid "Do you want to save the changes made to {file_name}?"

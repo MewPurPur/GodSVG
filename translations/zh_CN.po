@@ -32,9 +32,7 @@ msgid "Check for updates?"
 msgstr "检查更新？"
 
 #: src/autoload/HandlerGUI.gd:
-msgid ""
-"This will connect to github.com to compare version numbers. No other data is "
-"collected or transmitted."
+msgid "This will connect to github.com to compare version numbers. No other data is collected or transmitted."
 msgstr ""
 
 #: src/autoload/HandlerGUI.gd: src/ui_widgets/alert_dialog.gd:
@@ -57,15 +55,12 @@ msgstr "导出"
 
 #: src/autoload/HandlerGUI.gd:
 #, fuzzy
-msgid ""
-"The graphic can be exported only as SVG because its proportions are too "
-"extreme."
+msgid "The graphic can be exported only as SVG because its proportions are too extreme."
 msgstr "此图像只能以 SVG 格式导出，因为其大小未定义。您确定要继续吗？"
 
 #: src/autoload/HandlerGUI.gd:
 #, fuzzy
-msgid ""
-"The graphic can be exported only as SVG because its size is not defined."
+msgid "The graphic can be exported only as SVG because its size is not defined."
 msgstr "此图像只能以 SVG 格式导出，因为其大小未定义。您确定要继续吗？"
 
 #: src/autoload/State.gd: src/ui_parts/good_file_dialog.gd:
@@ -100,9 +95,7 @@ msgid "The last edited state of this tab could not be found."
 msgstr ""
 
 #: src/autoload/State.gd:
-msgid ""
-"The tab is bound to the file path {file_path}. Do you want to restore the "
-"SVG from this path?"
+msgid "The tab is bound to the file path {file_path}. Do you want to restore the SVG from this path?"
 msgstr ""
 
 #: src/config_classes/Formatter.gd:
@@ -211,6 +204,7 @@ msgstr "协议"
 msgid "Third-party licenses"
 msgstr "第三方协议"
 
+#. If the language has different gendered versions, prefer the most neutral-sounding one, or feminine if none sound neutral.
 #: src/ui_parts/about_menu.gd:
 msgid "Project Founder and Manager"
 msgstr "项目创立者与管理者"
@@ -372,9 +366,7 @@ msgid "Copy path"
 msgstr "复制路径"
 
 #: src/ui_parts/good_file_dialog.gd:
-msgid ""
-"A file named \"{file_name}\" already exists. Replacing will overwrite its "
-"contents!"
+msgid "A file named \"{file_name}\" already exists. Replacing will overwrite its contents!"
 msgstr "文件 “{file_name}” 已经存在。替换操作将会覆写它的内容！"
 
 #: src/ui_parts/handles_manager.gd:
@@ -562,21 +554,8 @@ msgid "Use CTRL for zooming"
 msgstr "使用 CTRL 键缩放"
 
 #: src/ui_parts/settings_menu.gd:
-msgid "Miscellaneous"
-msgstr "杂项"
-
-#: src/ui_parts/settings_menu.gd:
-msgid "Use native file dialog"
-msgstr "使用系统自带文件选择窗口"
-
-#: src/ui_parts/settings_menu.gd:
-msgid "Sync window title to file name"
-msgstr "同步窗口标题为文件名"
-
-#. Refers to the size of the draggable handles.
-#: src/ui_parts/settings_menu.gd:
-msgid "Handle size"
-msgstr "拖拽框大小"
+msgid "Display"
+msgstr ""
 
 #: src/ui_parts/settings_menu.gd:
 msgid "UI scale"
@@ -592,9 +571,7 @@ msgid "Uncapped framerate"
 msgstr ""
 
 #: src/ui_parts/settings_menu.gd:
-msgid ""
-"Determines if frames are rendered as fast as possible (may increase power "
-"consumption and heat)."
+msgid "Determines if frames are rendered as fast as possible (may increase power consumption and heat)."
 msgstr ""
 
 #: src/ui_parts/settings_menu.gd:
@@ -602,10 +579,25 @@ msgid "Custom maximum FPS"
 msgstr ""
 
 #: src/ui_parts/settings_menu.gd:
-msgid ""
-"If the framerate is capped, this value determines the maximum number of "
-"frames per second."
+msgid "If the framerate is capped, this value determines the maximum number of frames per second."
 msgstr ""
+
+#: src/ui_parts/settings_menu.gd:
+msgid "Miscellaneous"
+msgstr "杂项"
+
+#: src/ui_parts/settings_menu.gd:
+msgid "Use native file dialog"
+msgstr "使用系统自带文件选择窗口"
+
+#: src/ui_parts/settings_menu.gd:
+msgid "Sync window title to file name"
+msgstr "同步窗口标题为文件名"
+
+#. Refers to the size of the draggable handles.
+#: src/ui_parts/settings_menu.gd:
+msgid "Handle size"
+msgstr "拖拽框大小"
 
 #: src/ui_parts/settings_menu.gd:
 msgid "Language"
@@ -741,9 +733,7 @@ msgid "Remove unnecessary parameters"
 msgstr "移除不必要的参数"
 
 #: src/ui_parts/settings_menu.gd:
-msgid ""
-"If turned on, clicking on a tab with the middle mouse button closes the tab. "
-"If turned off, it focuses the tab instead."
+msgid "If turned on, clicking on a tab with the middle mouse button closes the tab. If turned off, it focuses the tab instead."
 msgstr ""
 
 #: src/ui_parts/settings_menu.gd:
@@ -751,30 +741,21 @@ msgid "Swaps the scroll directions for zooming in and zooming out."
 msgstr ""
 
 #: src/ui_parts/settings_menu.gd:
-msgid ""
-"Warps the cursor to the opposite side whenever it reaches a viewport "
-"boundary while panning."
+msgid "Warps the cursor to the opposite side whenever it reaches a viewport boundary while panning."
 msgstr ""
 
 #: src/ui_parts/settings_menu.gd:
 #, fuzzy
-msgid ""
-"If turned on, scrolling pans the view. To zoom, hold CTRL while scrolling."
+msgid "If turned on, scrolling pans the view. To zoom, hold CTRL while scrolling."
 msgstr "如果启用，滚动鼠标滚轮将移动视图。按住 CTRL 并滚动滚轮以缩放。"
 
 #: src/ui_parts/settings_menu.gd:
-msgid ""
-"If turned on, uses your operating system's native file dialog. If turned "
-"off, uses GodSVG's built-in file dialog."
-msgstr ""
-"如果启用，将使用操作系统自带的文件选择窗口。反之，将使用 GodSVG 内置的文件选"
-"择窗口。"
+msgid "If turned on, uses your operating system's native file dialog. If turned off, uses GodSVG's built-in file dialog."
+msgstr "如果启用，将使用操作系统自带的文件选择窗口。反之，将使用 GodSVG 内置的文件选择窗口。"
 
 #: src/ui_parts/settings_menu.gd:
 #, fuzzy
-msgid ""
-"If turned off, the window title remains as \"GodSVG\" without including the "
-"current file."
+msgid "If turned off, the window title remains as \"GodSVG\" without including the current file."
 msgstr "如果禁用，不论当前打开的文件是什么，窗口标题都将固定为 “GodSVG”。"
 
 #: src/ui_parts/settings_menu.gd:
@@ -1368,11 +1349,8 @@ msgstr "保存 .\"{format}\" 文件"
 msgid "Only {extension_list} files are supported for this operation."
 msgstr "文件扩展名为空。只有 {extension_list} 内的文件受支持。"
 
-#~ msgid ""
-#~ "The file extension {extension} is unsupported for this operation. Only "
-#~ "{extension_list} files are supported."
-#~ msgstr ""
-#~ "扩展名 {extension} 不支持此操作。只有 {extension_list} 内的文件受支持。"
+#~ msgid "The file extension {extension} is unsupported for this operation. Only {extension_list} files are supported."
+#~ msgstr "扩展名 {extension} 不支持此操作。只有 {extension_list} 内的文件受支持。"
 
 #~ msgid "Save the .\"{format}\" file"
 #~ msgstr "保存 .\"{format}\" 文件"
@@ -1452,8 +1430,7 @@ msgstr "文件扩展名为空。只有 {extension_list} 内的文件受支持。
 
 #~ msgid ""
 #~ "The file couldn't be opened.\n"
-#~ "Try checking the file path, ensure that the file is not deleted, or "
-#~ "choose a different file."
+#~ "Try checking the file path, ensure that the file is not deleted, or choose a different file."
 #~ msgstr ""
 #~ "文件无法打开。\n"
 #~ "尝试检查路径，确保文件没有被删除，或选择一个不同的文件。"

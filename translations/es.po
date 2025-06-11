@@ -32,12 +32,8 @@ msgid "Check for updates?"
 msgstr "¿Buscar actualizaciones?"
 
 #: src/autoload/HandlerGUI.gd:
-msgid ""
-"This will connect to github.com to compare version numbers. No other data is "
-"collected or transmitted."
-msgstr ""
-"Esto se conectará a github.com para comparar los números de versión. No se "
-"recopilan ni transmiten otros datos."
+msgid "This will connect to github.com to compare version numbers. No other data is collected or transmitted."
+msgstr "Esto se conectará a github.com para comparar los números de versión. No se recopilan ni transmiten otros datos."
 
 #: src/autoload/HandlerGUI.gd: src/ui_widgets/alert_dialog.gd:
 msgid "OK"
@@ -57,18 +53,12 @@ msgid "Export"
 msgstr "Exportar"
 
 #: src/autoload/HandlerGUI.gd:
-msgid ""
-"The graphic can be exported only as SVG because its proportions are too "
-"extreme."
-msgstr ""
-"El gráfico solo se puede exportar como SVG porque sus proporciones son "
-"demasiado extremas."
+msgid "The graphic can be exported only as SVG because its proportions are too extreme."
+msgstr "El gráfico solo se puede exportar como SVG porque sus proporciones son demasiado extremas."
 
 #: src/autoload/HandlerGUI.gd:
-msgid ""
-"The graphic can be exported only as SVG because its size is not defined."
-msgstr ""
-"El gráfico solo se puede exportar como SVG porque su tamaño no está definido."
+msgid "The graphic can be exported only as SVG because its size is not defined."
+msgstr "El gráfico solo se puede exportar como SVG porque su tamaño no está definido."
 
 #: src/autoload/State.gd: src/ui_parts/good_file_dialog.gd:
 #: src/ui_widgets/alert_dialog.gd: src/utils/FileUtils.gd:
@@ -100,12 +90,8 @@ msgid "The last edited state of this tab could not be found."
 msgstr "No se pudo encontrar el último estado editado de esta pestaña."
 
 #: src/autoload/State.gd:
-msgid ""
-"The tab is bound to the file path {file_path}. Do you want to restore the "
-"SVG from this path?"
-msgstr ""
-"La pestaña está vinculada a la ruta del archivo {file_path}. ¿Quieres "
-"restaurar el SVG desde esta ruta?"
+msgid "The tab is bound to the file path {file_path}. Do you want to restore the SVG from this path?"
+msgstr "La pestaña está vinculada a la ruta del archivo {file_path}. ¿Quieres restaurar el SVG desde esta ruta?"
 
 #: src/config_classes/Formatter.gd:
 msgid "Compact"
@@ -213,6 +199,7 @@ msgstr "Licencia"
 msgid "Third-party licenses"
 msgstr "Licencias de terceros"
 
+#. If the language has different gendered versions, prefer the most neutral-sounding one, or feminine if none sound neutral.
 #: src/ui_parts/about_menu.gd:
 msgid "Project Founder and Manager"
 msgstr "Fundador y administrador del proyecto"
@@ -372,12 +359,8 @@ msgid "Copy path"
 msgstr "Copiar ruta"
 
 #: src/ui_parts/good_file_dialog.gd:
-msgid ""
-"A file named \"{file_name}\" already exists. Replacing will overwrite its "
-"contents!"
-msgstr ""
-"Ya existe un archivo llamado \"{file_name}\". ¡Reemplazarlo sobrescribirá su "
-"contenido!"
+msgid "A file named \"{file_name}\" already exists. Replacing will overwrite its contents!"
+msgstr "Ya existe un archivo llamado \"{file_name}\". ¡Reemplazarlo sobrescribirá su contenido!"
 
 #: src/ui_parts/handles_manager.gd:
 msgid "New shape"
@@ -563,21 +546,8 @@ msgid "Use CTRL for zooming"
 msgstr "Usar Ctrl para hacer zoom"
 
 #: src/ui_parts/settings_menu.gd:
-msgid "Miscellaneous"
-msgstr "Misceláneos"
-
-#: src/ui_parts/settings_menu.gd:
-msgid "Use native file dialog"
-msgstr "Usar diálogo de archivos nativo"
-
-#: src/ui_parts/settings_menu.gd:
-msgid "Sync window title to file name"
-msgstr "Sincronizar título de la ventana con el nombre del archivo"
-
-#. Refers to the size of the draggable handles.
-#: src/ui_parts/settings_menu.gd:
-msgid "Handle size"
-msgstr "Tamaño de los controladores"
+msgid "Display"
+msgstr ""
 
 #: src/ui_parts/settings_menu.gd:
 msgid "UI scale"
@@ -593,9 +563,7 @@ msgid "Uncapped framerate"
 msgstr ""
 
 #: src/ui_parts/settings_menu.gd:
-msgid ""
-"Determines if frames are rendered as fast as possible (may increase power "
-"consumption and heat)."
+msgid "Determines if frames are rendered as fast as possible (may increase power consumption and heat)."
 msgstr ""
 
 #: src/ui_parts/settings_menu.gd:
@@ -603,10 +571,25 @@ msgid "Custom maximum FPS"
 msgstr ""
 
 #: src/ui_parts/settings_menu.gd:
-msgid ""
-"If the framerate is capped, this value determines the maximum number of "
-"frames per second."
+msgid "If the framerate is capped, this value determines the maximum number of frames per second."
 msgstr ""
+
+#: src/ui_parts/settings_menu.gd:
+msgid "Miscellaneous"
+msgstr "Misceláneos"
+
+#: src/ui_parts/settings_menu.gd:
+msgid "Use native file dialog"
+msgstr "Usar diálogo de archivos nativo"
+
+#: src/ui_parts/settings_menu.gd:
+msgid "Sync window title to file name"
+msgstr "Sincronizar título de la ventana con el nombre del archivo"
+
+#. Refers to the size of the draggable handles.
+#: src/ui_parts/settings_menu.gd:
+msgid "Handle size"
+msgstr "Tamaño de los controladores"
 
 #: src/ui_parts/settings_menu.gd:
 msgid "Language"
@@ -739,49 +722,28 @@ msgid "Remove unnecessary parameters"
 msgstr "Eliminar parámetros innecesarios"
 
 #: src/ui_parts/settings_menu.gd:
-msgid ""
-"If turned on, clicking on a tab with the middle mouse button closes the tab. "
-"If turned off, it focuses the tab instead."
-msgstr ""
-"Si está activado, al hacer clic en una pestaña con el botón central del "
-"ratón, esta se cierra. Si está desactivado, se centra en la pestaña."
+msgid "If turned on, clicking on a tab with the middle mouse button closes the tab. If turned off, it focuses the tab instead."
+msgstr "Si está activado, al hacer clic en una pestaña con el botón central del ratón, esta se cierra. Si está desactivado, se centra en la pestaña."
 
 #: src/ui_parts/settings_menu.gd:
 msgid "Swaps the scroll directions for zooming in and zooming out."
 msgstr "Intercambia las direcciones de desplazamiento para acercar y alejar."
 
 #: src/ui_parts/settings_menu.gd:
-msgid ""
-"Warps the cursor to the opposite side whenever it reaches a viewport "
-"boundary while panning."
-msgstr ""
-"Mueve el cursor hacia el lado opuesto cada vez que alcanza el límite de la "
-"ventana gráfica mientras se desplaza."
+msgid "Warps the cursor to the opposite side whenever it reaches a viewport boundary while panning."
+msgstr "Mueve el cursor hacia el lado opuesto cada vez que alcanza el límite de la ventana gráfica mientras se desplaza."
 
 #: src/ui_parts/settings_menu.gd:
-msgid ""
-"If turned on, scrolling pans the view. To zoom, hold CTRL while scrolling."
-msgstr ""
-"Si está activado, el desplazamiento panorámico permite ver la vista "
-"panorámica. Para hacer zoom, mantén presionada la tecla Ctrl mientras te "
-"desplazas."
+msgid "If turned on, scrolling pans the view. To zoom, hold CTRL while scrolling."
+msgstr "Si está activado, el desplazamiento panorámico permite ver la vista panorámica. Para hacer zoom, mantén presionada la tecla Ctrl mientras te desplazas."
 
 #: src/ui_parts/settings_menu.gd:
-msgid ""
-"If turned on, uses your operating system's native file dialog. If turned "
-"off, uses GodSVG's built-in file dialog."
-msgstr ""
-"Si está activado, usa el cuadro de diálogo de archivos nativo de tu sistema "
-"operativo. Si está desactivado, usa el cuadro de diálogo de archivos "
-"integrado de GodSVG."
+msgid "If turned on, uses your operating system's native file dialog. If turned off, uses GodSVG's built-in file dialog."
+msgstr "Si está activado, usa el cuadro de diálogo de archivos nativo de tu sistema operativo. Si está desactivado, usa el cuadro de diálogo de archivos integrado de GodSVG."
 
 #: src/ui_parts/settings_menu.gd:
-msgid ""
-"If turned off, the window title remains as \"GodSVG\" without including the "
-"current file."
-msgstr ""
-"Si está desactivado, el título de la ventana permanece como \"GodSVG\" sin "
-"incluir el archivo actual."
+msgid "If turned off, the window title remains as \"GodSVG\" without including the current file."
+msgstr "Si está desactivado, el título de la ventana permanece como \"GodSVG\" sin incluir el archivo actual."
 
 #: src/ui_parts/settings_menu.gd:
 #, fuzzy
@@ -1001,8 +963,7 @@ msgstr "No se pudo abrir el archivo."
 
 #: src/utils/FileUtils.gd:
 msgid "Check if the file still exists in the selected file path."
-msgstr ""
-"Compruebe si el archivo todavía existe en la ruta de archivo seleccionada."
+msgstr "Compruebe si el archivo todavía existe en la ruta de archivo seleccionada."
 
 #: src/utils/FileUtils.gd:
 msgid "Proceed with importing the rest of the files?"
@@ -1039,9 +1000,7 @@ msgstr "El archivo importado ya se está editando dentro de GodSVG."
 
 #: src/utils/FileUtils.gd:
 msgid "If you want to revert your edits since the last save, use {reset_svg}."
-msgstr ""
-"Si deseas revertir las ediciones realizadas desde la última vez que se "
-"guardó, utiliza {reset_svg}."
+msgstr "Si deseas revertir las ediciones realizadas desde la última vez que se guardó, utiliza {reset_svg}."
 
 #: src/utils/FileUtils.gd:
 msgid "Do you want to save the changes made to {file_name}?"
@@ -1350,13 +1309,7 @@ msgstr "Guardar el archivo {format}"
 #: src/utils/TranslationUtils.gd:
 #, fuzzy
 msgid "Only {extension_list} files are supported for this operation."
-msgstr ""
-"La extensión del archivo está vacía. Solo se admiten los archivos "
-"{extension_list}."
+msgstr "La extensión del archivo está vacía. Solo se admiten los archivos {extension_list}."
 
-#~ msgid ""
-#~ "The file extension {extension} is unsupported for this operation. Only "
-#~ "{extension_list} files are supported."
-#~ msgstr ""
-#~ "La extensión de archivo {extension} no es compatible con esta operación. "
-#~ "Solo se admiten los archivos {extension_list}."
+#~ msgid "The file extension {extension} is unsupported for this operation. Only {extension_list} files are supported."
+#~ msgstr "La extensión de archivo {extension} no es compatible con esta operación. Solo se admiten los archivos {extension_list}."

@@ -11,6 +11,7 @@ const COMMENTS_DICT = {
 	"Handle size": "Refers to the size of the draggable handles.",
 	"Excluded": "Refers to the zero, one, or multiple UI parts to not be shown in the final layout. It's of plural cardinality.",
 	"Update check failed": "When checking for updates.",
+	"Project Founder and Manager": "If the language has different gendered versions, prefer the most neutral-sounding one, or feminine if none sound neutral."
 }
 
 const TRANSLATIONS_DIR = "translations"
@@ -92,28 +93,32 @@ func search_directory(dir: String) -> void:
 
 func update_translations() -> void:
 	var used_comments := PackedStringArray()
-	var location := ProjectSettings.globalize_path(TRANSLATIONS_DIR + "/GodSVG.pot")
-	var fa := FileAccess.open(location, FileAccess.WRITE)
-	fa.store_string(HEADER)
+	var folder_location := ProjectSettings.globalize_path(TRANSLATIONS_DIR)
+	var pot_location := folder_location.path_join("GodSVG.pot")
 	
+	var fa := FileAccess.open(pot_location, FileAccess.WRITE)
+	fa.store_string(HEADER)
 	for msg in messages:
 		if COMMENTS_DICT.has(msg.msgid):
 			fa.store_string("#. %s\n" % COMMENTS_DICT[msg.msgid])
 			used_comments.append(msg.msgid)
 		fa.store_string(msg.to_string())
 	fa = null
-	print("Created " + TRANSLATIONS_DIR + "/GodSVG.pot with %d strings" % (messages.size() + 1))
+	print("Created %s with %d strings" % [TRANSLATIONS_DIR.path_join("/GodSVG.pot"),
+			(messages.size() + 1)])
 	
-	var files := DirAccess.get_files_at(ProjectSettings.globalize_path(TRANSLATIONS_DIR))
-	for file in files:
+	for file in DirAccess.get_files_at(folder_location):
 		if not (file.get_extension() == "po" or file == "GodSVG.pot"):
 			continue
 		
 		var args := PackedStringArray(["--update", "--quiet", "--verbose", "--backup=off",
-				ProjectSettings.globalize_path(TRANSLATIONS_DIR).path_join(file), location])
+				folder_location.path_join(file), pot_location])
 		var output: Array = []
 		var result := OS.execute("msgmerge", args, output, true)
 		if not result == -1:
+			var po_location = folder_location.path_join(file)
+			args = PackedStringArray(["--no-wrap", po_location, "-o", po_location])
+			OS.execute("msgcat", args)
 			if file == "GodSVG.pot":
 				continue
 			elif not output.is_empty():

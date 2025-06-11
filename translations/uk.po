@@ -32,12 +32,8 @@ msgid "Check for updates?"
 msgstr "Перевірити оновлення?"
 
 #: src/autoload/HandlerGUI.gd:
-msgid ""
-"This will connect to github.com to compare version numbers. No other data is "
-"collected or transmitted."
-msgstr ""
-"Це потребує з'єднання з github.com, щоб порівняти цифри версії. Жодна інша "
-"інформація не збирається і не передається."
+msgid "This will connect to github.com to compare version numbers. No other data is collected or transmitted."
+msgstr "Це потребує з'єднання з github.com, щоб порівняти цифри версії. Жодна інша інформація не збирається і не передається."
 
 #: src/autoload/HandlerGUI.gd: src/ui_widgets/alert_dialog.gd:
 msgid "OK"
@@ -57,19 +53,12 @@ msgid "Export"
 msgstr "Експортувати"
 
 #: src/autoload/HandlerGUI.gd:
-msgid ""
-"The graphic can be exported only as SVG because its proportions are too "
-"extreme."
-msgstr ""
-"Це зображення може бути експортоване тільки як SVG, оскільки його пропорції "
-"занадто екстремальні."
+msgid "The graphic can be exported only as SVG because its proportions are too extreme."
+msgstr "Це зображення може бути експортоване тільки як SVG, оскільки його пропорції занадто екстремальні."
 
 #: src/autoload/HandlerGUI.gd:
-msgid ""
-"The graphic can be exported only as SVG because its size is not defined."
-msgstr ""
-"Це зображення може бути експортоване тільки як SVG, оскільки його розмір не "
-"завданий."
+msgid "The graphic can be exported only as SVG because its size is not defined."
+msgstr "Це зображення може бути експортоване тільки як SVG, оскільки його розмір не завданий."
 
 #: src/autoload/State.gd: src/ui_parts/good_file_dialog.gd:
 #: src/ui_widgets/alert_dialog.gd: src/utils/FileUtils.gd:
@@ -101,12 +90,8 @@ msgid "The last edited state of this tab could not be found."
 msgstr "Останній редагований стан цієї вкладки не може бути знайдено."
 
 #: src/autoload/State.gd:
-msgid ""
-"The tab is bound to the file path {file_path}. Do you want to restore the "
-"SVG from this path?"
-msgstr ""
-"Ця вкладка пов'язана з шляхом до файлу {file_path}. Бажаєте відновити SVG з "
-"цього шляху?"
+msgid "The tab is bound to the file path {file_path}. Do you want to restore the SVG from this path?"
+msgstr "Ця вкладка пов'язана з шляхом до файлу {file_path}. Бажаєте відновити SVG з цього шляху?"
 
 #: src/config_classes/Formatter.gd:
 msgid "Compact"
@@ -214,6 +199,7 @@ msgstr "Ліцензія"
 msgid "Third-party licenses"
 msgstr "Ліцензії третіх осіб"
 
+#. If the language has different gendered versions, prefer the most neutral-sounding one, or feminine if none sound neutral.
 #: src/ui_parts/about_menu.gd:
 msgid "Project Founder and Manager"
 msgstr "Засновник і керівник проекту"
@@ -373,12 +359,8 @@ msgid "Copy path"
 msgstr "Скопіювати шлях"
 
 #: src/ui_parts/good_file_dialog.gd:
-msgid ""
-"A file named \"{file_name}\" already exists. Replacing will overwrite its "
-"contents!"
-msgstr ""
-"Файл з назваою \"{file_name}\" вже існує. Його заміна призведе до перезапису "
-"його вмісту!"
+msgid "A file named \"{file_name}\" already exists. Replacing will overwrite its contents!"
+msgstr "Файл з назваою \"{file_name}\" вже існує. Його заміна призведе до перезапису його вмісту!"
 
 #: src/ui_parts/handles_manager.gd:
 msgid "New shape"
@@ -564,21 +546,8 @@ msgid "Use CTRL for zooming"
 msgstr "Використовувати CTRL для масштабування"
 
 #: src/ui_parts/settings_menu.gd:
-msgid "Miscellaneous"
-msgstr "Різне"
-
-#: src/ui_parts/settings_menu.gd:
-msgid "Use native file dialog"
-msgstr "Використовувати рідний файловий діалог"
-
-#: src/ui_parts/settings_menu.gd:
-msgid "Sync window title to file name"
-msgstr "Синхронізувати заголовок вікна з назвою поточного файлу"
-
-#. Refers to the size of the draggable handles.
-#: src/ui_parts/settings_menu.gd:
-msgid "Handle size"
-msgstr "Розмір ручок редагування"
+msgid "Display"
+msgstr ""
 
 #: src/ui_parts/settings_menu.gd:
 msgid "UI scale"
@@ -594,9 +563,7 @@ msgid "Uncapped framerate"
 msgstr ""
 
 #: src/ui_parts/settings_menu.gd:
-msgid ""
-"Determines if frames are rendered as fast as possible (may increase power "
-"consumption and heat)."
+msgid "Determines if frames are rendered as fast as possible (may increase power consumption and heat)."
 msgstr ""
 
 #: src/ui_parts/settings_menu.gd:
@@ -604,10 +571,25 @@ msgid "Custom maximum FPS"
 msgstr ""
 
 #: src/ui_parts/settings_menu.gd:
-msgid ""
-"If the framerate is capped, this value determines the maximum number of "
-"frames per second."
+msgid "If the framerate is capped, this value determines the maximum number of frames per second."
 msgstr ""
+
+#: src/ui_parts/settings_menu.gd:
+msgid "Miscellaneous"
+msgstr "Різне"
+
+#: src/ui_parts/settings_menu.gd:
+msgid "Use native file dialog"
+msgstr "Використовувати рідний файловий діалог"
+
+#: src/ui_parts/settings_menu.gd:
+msgid "Sync window title to file name"
+msgstr "Синхронізувати заголовок вікна з назвою поточного файлу"
+
+#. Refers to the size of the draggable handles.
+#: src/ui_parts/settings_menu.gd:
+msgid "Handle size"
+msgstr "Розмір ручок редагування"
 
 #: src/ui_parts/settings_menu.gd:
 msgid "Language"
@@ -744,48 +726,28 @@ msgid "Remove unnecessary parameters"
 msgstr "Видалити необов'язкові параметри"
 
 #: src/ui_parts/settings_menu.gd:
-msgid ""
-"If turned on, clicking on a tab with the middle mouse button closes the tab. "
-"If turned off, it focuses the tab instead."
-msgstr ""
-"Якщо увімкнено - клацання на вкладку середньою кнопкою миші закриє її. Якщо "
-"вимкнено - фокус буде замінено на неї."
+msgid "If turned on, clicking on a tab with the middle mouse button closes the tab. If turned off, it focuses the tab instead."
+msgstr "Якщо увімкнено - клацання на вкладку середньою кнопкою миші закриє її. Якщо вимкнено - фокус буде замінено на неї."
 
 #: src/ui_parts/settings_menu.gd:
 msgid "Swaps the scroll directions for zooming in and zooming out."
 msgstr "Міняє напрям гортання при масштабуванні."
 
 #: src/ui_parts/settings_menu.gd:
-msgid ""
-"Warps the cursor to the opposite side whenever it reaches a viewport "
-"boundary while panning."
-msgstr ""
-"Курсор буде телепортуватися від одного краю до протилежного при пересуванні "
-"вікна перегляду."
+msgid "Warps the cursor to the opposite side whenever it reaches a viewport boundary while panning."
+msgstr "Курсор буде телепортуватися від одного краю до протилежного при пересуванні вікна перегляду."
 
 #: src/ui_parts/settings_menu.gd:
-msgid ""
-"If turned on, scrolling pans the view. To zoom, hold CTRL while scrolling."
-msgstr ""
-"Якщо увімкнено - гортання буде рухати вікно перегляду. Щоб масштабувати, "
-"затисніть CTRL доки гортаєте."
+msgid "If turned on, scrolling pans the view. To zoom, hold CTRL while scrolling."
+msgstr "Якщо увімкнено - гортання буде рухати вікно перегляду. Щоб масштабувати, затисніть CTRL доки гортаєте."
 
 #: src/ui_parts/settings_menu.gd:
-msgid ""
-"If turned on, uses your operating system's native file dialog. If turned "
-"off, uses GodSVG's built-in file dialog."
-msgstr ""
-"Якщо увімкнено, то буде використовувати рідний файловий діалог вашої "
-"операційної системи для обирання файлів. Якщо вимкнено, то замість буде "
-"використовуватися вбудований файловий діалог."
+msgid "If turned on, uses your operating system's native file dialog. If turned off, uses GodSVG's built-in file dialog."
+msgstr "Якщо увімкнено, то буде використовувати рідний файловий діалог вашої операційної системи для обирання файлів. Якщо вимкнено, то замість буде використовуватися вбудований файловий діалог."
 
 #: src/ui_parts/settings_menu.gd:
-msgid ""
-"If turned off, the window title remains as \"GodSVG\" without including the "
-"current file."
-msgstr ""
-"Якщо вимкнено - заголовок вікна залишиться як \"GodSVG\", не включаючи назву "
-"поточного файлу."
+msgid "If turned off, the window title remains as \"GodSVG\" without including the current file."
+msgstr "Якщо вимкнено - заголовок вікна залишиться як \"GodSVG\", не включаючи назву поточного файлу."
 
 #: src/ui_parts/settings_menu.gd:
 #, fuzzy
@@ -1040,9 +1002,7 @@ msgstr "Файл {file_path} вже редагується в GodSVG."
 
 #: src/utils/FileUtils.gd:
 msgid "If you want to revert your edits since the last save, use {reset_svg}."
-msgstr ""
-"Якщо ви бажаєте повернути свої зміни з останнього збереження, використовуйте "
-"{reset_svg}."
+msgstr "Якщо ви бажаєте повернути свої зміни з останнього збереження, використовуйте {reset_svg}."
 
 #: src/utils/FileUtils.gd:
 msgid "Do you want to save the changes made to {file_name}?"
@@ -1348,15 +1308,10 @@ msgstr "Зберегти {format} файл"
 
 #: src/utils/TranslationUtils.gd:
 msgid "Only {extension_list} files are supported for this operation."
-msgstr ""
-"Тільки файли з розширеннями {extension_list} підтримуються для цієї операції."
+msgstr "Тільки файли з розширеннями {extension_list} підтримуються для цієї операції."
 
-#~ msgid ""
-#~ "The file extension {extension} is unsupported for this operation. Only "
-#~ "{extension_list} files are supported."
-#~ msgstr ""
-#~ "Розширення файлу {extension} не підтримується для цієї операції. Тільки "
-#~ "{extension_list} файли підтримуються."
+#~ msgid "The file extension {extension} is unsupported for this operation. Only {extension_list} files are supported."
+#~ msgstr "Розширення файлу {extension} не підтримується для цієї операції. Тільки {extension_list} файли підтримуються."
 
 #~ msgid "Save the .\"{format}\" file"
 #~ msgstr "Зберегти .\"{format}\" файл"
@@ -1383,16 +1338,11 @@ msgstr ""
 #~ msgid "Save as"
 #~ msgstr "Зберегти як"
 
-#~ msgid ""
-#~ "If you want to apply the unsaved file state, use \"Reset SVG\" instead."
-#~ msgstr ""
-#~ "Якщо ви бажаєте застосувати не збережений стан файлу, використайте "
-#~ "\"Скинути SVG\"."
+#~ msgid "If you want to apply the unsaved file state, use \"Reset SVG\" instead."
+#~ msgstr "Якщо ви бажаєте застосувати не збережений стан файлу, використайте \"Скинути SVG\"."
 
 #~ msgid "Auto UI scale"
 #~ msgstr "Автоматичний масштаб інтерфейсу"
 
 #~ msgid "Scales the interface automatically based on the screen size."
-#~ msgstr ""
-#~ "Автоматично масштабувати інтерфейс користувача в залежності від розміру "
-#~ "екрану."
+#~ msgstr "Автоматично масштабувати інтерфейс користувача в залежності від розміру екрану."
