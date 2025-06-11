@@ -44,9 +44,6 @@ func _update() -> void:
 	var svg_text := SVGParser.root_cutout_to_text(State.root_element, display_rect.size.x,
 			display_rect.size.y, Rect2(State.root_element.world_to_canvas(display_rect.position),
 			display_rect.size / State.root_element.canvas_transform.get_scale()))
-	var img := Image.new()
-	var err := img.load_svg_from_string(svg_text, image_zoom)
-	if err == OK:
-		Utils.set_control_position_fixed(self, display_rect.position)
-		set_deferred("size", display_rect.size)
-		texture = ImageTexture.create_from_image(img)
+	Utils.set_control_position_fixed(self, display_rect.position)
+	set_deferred("size", display_rect.size)
+	texture = SVGTexture.create_from_string(svg_text, image_zoom)
