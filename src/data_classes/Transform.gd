@@ -1,4 +1,4 @@
-class_name Transform extends RefCounted
+abstract class_name Transform
 
 class TransformMatrix extends Transform:
 	var x1: float

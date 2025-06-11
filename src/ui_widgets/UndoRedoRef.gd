@@ -2,7 +2,7 @@
 # I mean, every class you're expected to construct is a RefCounted. Objects are used
 # for sitting ducks like singletons and read-only stuff. Except UndoRedo, which is easy
 # memory leaks if you forget to free it.
-class_name UndoRedoRef extends RefCounted
+class_name UndoRedoRef
 
 signal version_changed
 

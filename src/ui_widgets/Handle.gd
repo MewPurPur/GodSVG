@@ -1,5 +1,5 @@
 # Base class for handles.
-class_name Handle extends RefCounted
+abstract class_name Handle
 
 enum Display {BIG, SMALL}
 var display_mode := Display.BIG

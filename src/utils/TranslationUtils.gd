@@ -1,4 +1,4 @@
-class_name TranslationUtils extends RefCounted
+abstract class_name TranslationUtils
 
 static func _get_locale_name(locale: String) -> String:
 	match locale:

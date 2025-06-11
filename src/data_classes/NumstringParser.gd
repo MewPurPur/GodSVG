@@ -1,5 +1,6 @@
 # A parser for compressed number arrays, used in TransformListParser and PathDataParser.
-class_name NumstringParser extends RefCounted
+# This parser has situational configuration options, so it isn't abstract.
+class_name NumstringParser
 
 var compress_numbers: bool
 var minimize_spacing: bool

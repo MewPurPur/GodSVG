@@ -1,5 +1,5 @@
 # A native class that represents a path command and its parameters.
-class_name PathCommand extends RefCounted
+abstract class_name PathCommand
 
 const translation_dict: Dictionary[String, GDScript] = {
 	"M": MoveCommand, "L": LineCommand, "H": HorizontalLineCommand,

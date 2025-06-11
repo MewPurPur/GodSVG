@@ -1,4 +1,4 @@
-class_name SVGParser extends RefCounted
+abstract class_name SVGParser
 
 # For checking if an SVG is empty. If the text errors out, it's as if the SVG is empty.
 static func text_check_is_root_empty(text: String) -> bool:

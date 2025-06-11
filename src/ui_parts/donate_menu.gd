@@ -64,7 +64,7 @@ func set_link(new_link: Link) -> void:
 	var cons: PackedStringArray
 	match new_link:
 		Link.GITHUB:
-			title = "Guthub Sponsors"
+			title = "Github Sponsors"
 			pros = PackedStringArray(["Low extra fees", "Can donate an arbitrary amount",
 					"Includes all perks"])
 			cons = PackedStringArray()

@@ -1,4 +1,4 @@
-class_name DB extends RefCounted
+abstract class_name DB
 
 enum AttributeType {NUMERIC, COLOR, LIST, PATHDATA, ENUM, TRANSFORM_LIST, ID, HREF, UNKNOWN}
 enum PercentageHandling {FRACTION, HORIZONTAL, VERTICAL, NORMALIZED}

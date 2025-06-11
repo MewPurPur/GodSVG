@@ -1,6 +1,6 @@
 # Titled panels have two children: The first is on top and it's the title,
 # the second one is on the bottom and it's the panel.
-class_name TitledPanel extends Container
+abstract class_name TitledPanel extends Container
 
 @export var border_width: int
 @export var corner_radius_top_left: int
