@@ -290,7 +290,7 @@ enum ScalingApproach {AUTO, CONSTANT_075, CONSTANT_100, CONSTANT_125, CONSTANT_1
 			emit_changed()
 			Configs.sync_max_fps.call_deferred()
 
-const MAX_FPS_MIN = 24
+const MAX_FPS_MIN = 12
 const MAX_FPS_MAX = 600
 @export var max_fps := 60:
 	set(new_value):
