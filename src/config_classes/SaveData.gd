@@ -17,11 +17,17 @@ func get_setting_default(setting: String) -> Variant:
 		"highlighting_text_color": return Color("cdcfeaac")
 		"highlighting_cdata_color": return Color("ffeda1ac")
 		"highlighting_error_color": return Color("ff5555")
+		"handle_size": return 1.0 if OS.get_name() != "Android" else 2.0
 		"handle_inner_color": return Color("fff")
 		"handle_color": return Color("111")
 		"handle_hovered_color": return Color("aaa")
 		"handle_selected_color": return Color("46f")
 		"handle_hovered_selected_color": return Color("f44")
+		"selection_rectangle_speed": return 30.0
+		"selection_rectangle_width": return 2.0
+		"selection_rectangle_dash_length": return 10.0
+		"selection_rectangle_color1": return Color("fffc")
+		"selection_rectangle_color2": return Color("000c")
 		"background_color": return Color(0.12, 0.132, 0.2, 1)
 		"grid_color": return Color(0.5, 0.5, 0.5)
 		"basic_color_valid": return Color("9f9")
@@ -37,7 +43,6 @@ func get_setting_default(setting: String) -> Variant:
 		"use_ctrl_for_zoom": return true
 		"use_native_file_dialog": return true
 		"use_filename_for_window_title": return true
-		"handle_size": return 1.0 if OS.get_name() != "Android" else 2.0
 		"ui_scale": return ScalingApproach.AUTO
 		"uncapped_framerate": return false
 		"max_fps": return 60
@@ -88,6 +93,7 @@ const CURRENT_VERSION = 1
 			Configs.language_changed.emit.call_deferred()
 
 # Theming
+
 @export var highlighting_symbol_color := Color("abc9ff"):
 	set(new_value):
 		if highlighting_symbol_color != new_value:
@@ -144,6 +150,21 @@ const CURRENT_VERSION = 1
 			emit_changed()
 			Configs.highlighting_colors_changed.emit()
 
+const HANDLE_SIZE_MIN = 0.5
+const HANDLE_SIZE_MAX = 4.0
+@export var handle_size := 1.0:
+	set(new_value):
+		# Validation
+		if is_nan(new_value):
+			new_value = get_setting_default("handle_size")
+		else:
+			new_value = clampf(new_value, HANDLE_SIZE_MIN, HANDLE_SIZE_MAX)
+		# Main part
+		if handle_size != new_value:
+			handle_size = new_value
+			emit_changed()
+			Configs.handle_visuals_changed.emit()
+
 @export var handle_inner_color := Color("fff"):
 	set(new_value):
 		if handle_inner_color != new_value:
@@ -178,6 +199,63 @@ const CURRENT_VERSION = 1
 			handle_hovered_selected_color = new_value
 			emit_changed()
 			Configs.handle_visuals_changed.emit()
+
+const MAX_SELECTION_RECTANGLE_SPEED = 600.0
+@export var selection_rectangle_speed := 30.0:
+	set(new_value):
+		# Validation
+		if is_nan(new_value):
+			new_value = get_setting_default("selection_rectangle_speed")
+		else:
+			new_value = clampf(new_value, -MAX_SELECTION_RECTANGLE_SPEED,
+					MAX_SELECTION_RECTANGLE_SPEED)
+		# Main part
+		if selection_rectangle_speed != new_value:
+			selection_rectangle_speed = new_value
+			emit_changed()
+			Configs.selection_rectangle_visuals_changed.emit()
+
+const MAX_SELECTION_RECTANGLE_WIDTH = 8.0
+@export var selection_rectangle_width := 2.0:
+	set(new_value):
+		# Validation
+		if is_nan(new_value):
+			new_value = get_setting_default("selection_rectangle_width")
+		else:
+			new_value = clampf(new_value, 1.0, MAX_SELECTION_RECTANGLE_WIDTH)
+		# Main part
+		if selection_rectangle_width != new_value:
+			selection_rectangle_width = new_value
+			emit_changed()
+			Configs.selection_rectangle_visuals_changed.emit()
+
+const MAX_SELECTION_RECTANGLE_DASH_LENGTH = 600.0
+@export var selection_rectangle_dash_length := 10.0:
+	set(new_value):
+		# Validation
+		if is_nan(new_value):
+			new_value = get_setting_default("selection_rectangle_dash_length")
+		else:
+			new_value = clampf(new_value, 1.0, MAX_SELECTION_RECTANGLE_DASH_LENGTH)
+		# Main part
+		if selection_rectangle_dash_length != new_value:
+			selection_rectangle_dash_length = new_value
+			emit_changed()
+			Configs.selection_rectangle_visuals_changed.emit()
+
+@export var selection_rectangle_color1 := Color("fffc"):
+	set(new_value):
+		if selection_rectangle_color1 != new_value:
+			selection_rectangle_color1 = new_value
+			emit_changed()
+			Configs.selection_rectangle_visuals_changed.emit()
+
+@export var selection_rectangle_color2 := Color("000c"):
+	set(new_value):
+		if selection_rectangle_color2 != new_value:
+			selection_rectangle_color2 = new_value
+			emit_changed()
+			Configs.selection_rectangle_visuals_changed.emit()
 
 @export var background_color := Color(0.12, 0.132, 0.2, 1):
 	set(new_value):
@@ -216,6 +294,7 @@ const CURRENT_VERSION = 1
 
 
 # Tab bar
+
 @export var tab_mmb_close := true:
 	set(new_value):
 		if tab_mmb_close != new_value:
@@ -224,6 +303,7 @@ const CURRENT_VERSION = 1
 
 
 # Other
+
 @export var invert_zoom := false:
 	set(new_value):
 		if invert_zoom != new_value:
@@ -254,21 +334,6 @@ const CURRENT_VERSION = 1
 			use_filename_for_window_title = new_value
 			emit_changed()
 			HandlerGUI.update_window_title.call_deferred()
-
-const HANDLE_SIZE_MIN = 0.5
-const HANDLE_SIZE_MAX = 4.0
-@export var handle_size := 1.0:
-	set(new_value):
-		# Validation
-		if is_nan(new_value):
-			new_value = get_setting_default("handle_size")
-		else:
-			new_value = clampf(new_value, HANDLE_SIZE_MIN, HANDLE_SIZE_MAX)
-		# Main part
-		if handle_size != new_value:
-			handle_size = new_value
-			emit_changed()
-			Configs.handle_visuals_changed.emit()
 
 enum ScalingApproach {AUTO, CONSTANT_075, CONSTANT_100, CONSTANT_125, CONSTANT_150,
 		CONSTANT_175, CONSTANT_200, CONSTANT_250, CONSTANT_300, CONSTANT_400, MAX}

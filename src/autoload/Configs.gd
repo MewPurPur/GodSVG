@@ -18,6 +18,8 @@ signal basic_colors_changed
 @warning_ignore("unused_signal")
 signal handle_visuals_changed
 @warning_ignore("unused_signal")
+signal selection_rectangle_visuals_changed
+@warning_ignore("unused_signal")
 signal grid_color_changed
 @warning_ignore("unused_signal")
 signal shortcut_panel_changed

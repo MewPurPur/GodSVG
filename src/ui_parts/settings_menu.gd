@@ -176,7 +176,11 @@ func setup_content(reset_scroll := true) -> void:
 			current_setup_setting = "highlighting_error_color"
 			add_color_edit(Translator.translate("Error color"))
 			
-			add_section(Translator.translate("Handle colors"))
+			add_section(Translator.translate("Handles"))
+			current_setup_setting = "handle_size"
+			add_number_dropdown(Translator.translate("Size"),
+					[0.75, 1.0, 1.25, 1.5, 1.75, 2.0, 2.5, 3.0], false, false,
+					SaveData.HANDLE_SIZE_MIN, SaveData.HANDLE_SIZE_MAX)
 			current_setup_setting = "handle_inner_color"
 			add_color_edit(Translator.translate("Inside color"), false)
 			current_setup_setting = "handle_color"
@@ -187,6 +191,25 @@ func setup_content(reset_scroll := true) -> void:
 			add_color_edit(Translator.translate("Selected color"), false)
 			current_setup_setting = "handle_hovered_selected_color"
 			add_color_edit(Translator.translate("Hovered selected color"), false)
+			
+			add_section(Translator.translate("Selection rectangle"))
+			current_setup_setting = "selection_rectangle_speed"
+			add_number_dropdown(Translator.translate("Speed"),
+					[0.0, 10.0, 20.0, 30.0, 50.0, 80.0, 130.0], false, false,
+					-SaveData.MAX_SELECTION_RECTANGLE_SPEED,
+					SaveData.MAX_SELECTION_RECTANGLE_SPEED)
+			current_setup_setting = "selection_rectangle_width"
+			add_number_dropdown(Translator.translate("Width"),
+					[1.0, 2.0, 3.0, 4.0], false, false, 1.0,
+					SaveData.MAX_SELECTION_RECTANGLE_WIDTH)
+			current_setup_setting = "selection_rectangle_dash_length"
+			add_number_dropdown(Translator.translate("Dash length"),
+					[5.0, 10.0, 15.0, 20.0], false, false, 1.0,
+					SaveData.MAX_SELECTION_RECTANGLE_DASH_LENGTH)
+			current_setup_setting = "selection_rectangle_color1"
+			add_color_edit(Translator.translate("Color {index}").format({"index": "1"}))
+			current_setup_setting = "selection_rectangle_color2"
+			add_color_edit(Translator.translate("Color {index}").format({"index": "2"}))
 			
 			add_section(Translator.translate("Basic colors"))
 			current_setup_setting = "background_color"
@@ -294,12 +317,6 @@ func setup_content(reset_scroll := true) -> void:
 			add_checkbox(Translator.translate("Sync window title to file name"))
 			add_advice(Translator.translate(
 					"If turned off, the window title remains as \"GodSVG\" without including the current file."))
-			current_setup_setting = "handle_size"
-			add_number_dropdown(Translator.translate("Handle size"),
-					[0.75, 1.0, 1.25, 1.5, 1.75, 2.0, 2.5, 3.0], false, false,
-					SaveData.HANDLE_SIZE_MIN, SaveData.HANDLE_SIZE_MAX)
-			add_advice(Translator.translate(
-					"Determines the visual size and grabbing area of handles."))
 			
 			# Disable mouse wrap if not available.
 			if not DisplayServer.has_feature(DisplayServer.FEATURE_MOUSE_WARP):
