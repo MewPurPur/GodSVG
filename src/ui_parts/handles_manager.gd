@@ -7,6 +7,7 @@ var selected_handle_textures: Dictionary[Handle.Display, Texture2D]
 var hovered_selected_handle_textures: Dictionary[Handle.Display, Texture2D]
 
 const stroke_shader = preload("res://src/shaders/animated_stroke.gdshader")
+const stroke_shader_static = preload("res://src/shaders/animated_stroke_static.gdshader")
 
 const DEFAULT_GRAB_DISTANCE_SQUARED := 81.0
 const CONTOUR_WIDTH = 1.0
@@ -22,6 +23,9 @@ var normal_color: Color
 var hovered_color: Color
 var selected_color: Color
 var hovered_selected_color: Color
+
+# FIXME this shouldn't be needed, but otherwise the shader doesn't want to work.
+@onready var animated_stroke_hacky_fix_node := Control.new()
 
 
 func _exit_tree() -> void:
@@ -69,24 +73,40 @@ func render_handle_textures() -> void:
 		img.load_svg_from_string(handle_type_svg % [inside_str, hovered_selected_str])
 		img.fix_alpha_edges()
 		hovered_selected_handle_textures[handle_type] = ImageTexture.create_from_image(img)
+	queue_redraw()
+
+func sync_selection_rectangle_shader() -> void:
+	var stroke_material := ShaderMaterial.new()
+	if is_zero_approx(Configs.savedata.selection_rectangle_speed):
+		stroke_material.shader = stroke_shader_static
+	else:
+		stroke_material.shader = stroke_shader
+		stroke_material.set_shader_parameter("ant_speed",
+				Configs.savedata.selection_rectangle_speed)
 	
+	stroke_material.set_shader_parameter("ant_color_1",
+			Configs.savedata.selection_rectangle_color1)
+	stroke_material.set_shader_parameter("ant_color_2",
+			Configs.savedata.selection_rectangle_color2)
+	stroke_material.set_shader_parameter("ant_width",
+			Configs.savedata.selection_rectangle_width)
+	stroke_material.set_shader_parameter("ant_length",
+			Configs.savedata.selection_rectangle_dash_length)
+	RenderingServer.canvas_item_set_material(selections_surface, stroke_material.get_rid())
+	animated_stroke_hacky_fix_node.material = stroke_material
+	# If the ant width was changed, the buffer must be updated.
 	queue_redraw()
 
 func _ready() -> void:
+	add_child(animated_stroke_hacky_fix_node, false, InternalMode.INTERNAL_MODE_BACK)
+	
 	Configs.handle_visuals_changed.connect(render_handle_textures)
 	render_handle_textures()
+	Configs.selection_rectangle_visuals_changed.connect(sync_selection_rectangle_shader)
+	sync_selection_rectangle_shader()
+	
 	RenderingServer.canvas_item_set_parent(surface, get_canvas_item())
 	RenderingServer.canvas_item_set_parent(selections_surface, get_canvas_item())
-	var stroke_material := ShaderMaterial.new()
-	stroke_material.shader = stroke_shader
-	stroke_material.set_shader_parameter("ant_color_1", Color(1, 1, 1, 0.8))
-	stroke_material.set_shader_parameter("ant_color_2", Color(0, 0, 0, 0.8))
-	RenderingServer.canvas_item_set_material(selections_surface, stroke_material.get_rid())
-	
-	# FIXME this shouldn't be needed, but otherwise the shader doesn't want to work.
-	var c := Control.new()
-	c.material = stroke_material
-	add_child(c, false, InternalMode.INTERNAL_MODE_BACK)
 	
 	State.any_attribute_changed.connect(sync_handles)
 	State.xnode_layout_changed.connect(queue_update_handles)
@@ -242,7 +262,8 @@ func _draw() -> void:
 						var canvas_transform := State.root_element.canvas_transform
 						var canvas_scale := canvas_transform.get_scale().x
 						var element_scale := element_transform.get_scale()
-						var grow_amount_unscaled := 4.0 / State.zoom / canvas_scale
+						var grow_amount_unscaled := (2.0 + Configs.savedata.selection_rectangle_width) /\
+								State.zoom / canvas_scale
 						var grow_amount_x := grow_amount_unscaled / element_scale.x
 						var grow_amount_y := grow_amount_unscaled / element_scale.y
 						selection_transforms.append(canvas_transform * element_transform)
@@ -285,7 +306,8 @@ func _draw() -> void:
 						var canvas_transform := State.root_element.canvas_transform
 						var canvas_scale := canvas_transform.get_scale().x
 						var element_scale := element_transform.get_scale()
-						var grow_amount_unscaled := 4.0 / State.zoom / canvas_scale
+						var grow_amount_unscaled := (2.0 + Configs.savedata.selection_rectangle_width) /\
+								State.zoom / canvas_scale
 						var grow_amount_x := grow_amount_unscaled / element_scale.x
 						var grow_amount_y := grow_amount_unscaled / element_scale.y
 						selection_transforms.append(canvas_transform * element_transform)
@@ -362,7 +384,8 @@ func _draw() -> void:
 						var canvas_transform := State.root_element.canvas_transform
 						var canvas_scale := canvas_transform.get_scale().x
 						var element_scale := element_transform.get_scale()
-						var grow_amount_unscaled := 4.0 / State.zoom / canvas_scale
+						var grow_amount_unscaled := (2.0 + Configs.savedata.selection_rectangle_width) /\
+								State.zoom / canvas_scale
 						var grow_amount_x := grow_amount_unscaled / element_scale.x
 						var grow_amount_y := grow_amount_unscaled / element_scale.y
 						selection_transforms.append(canvas_transform * element_transform)
@@ -394,7 +417,8 @@ func _draw() -> void:
 						var canvas_transform := State.root_element.canvas_transform
 						var canvas_scale := canvas_transform.get_scale().x
 						var element_scale := element_transform.get_scale()
-						var grow_amount_unscaled := 4.0 / State.zoom / canvas_scale
+						var grow_amount_unscaled := (2.0 + Configs.savedata.selection_rectangle_width) /\
+								State.zoom / canvas_scale
 						var grow_amount_x := grow_amount_unscaled / element_scale.x
 						var grow_amount_y := grow_amount_unscaled / element_scale.y
 						selection_transforms.append(canvas_transform * element_transform)
@@ -454,7 +478,8 @@ func _draw() -> void:
 						var canvas_transform := State.root_element.canvas_transform
 						var canvas_scale := canvas_transform.get_scale().x
 						var element_scale := element_transform.get_scale()
-						var grow_amount_unscaled := 4.0 / State.zoom / canvas_scale
+						var grow_amount_unscaled := (2.0 + Configs.savedata.selection_rectangle_width) /\
+								State.zoom / canvas_scale
 						var grow_amount_x := grow_amount_unscaled / element_scale.x
 						var grow_amount_y := grow_amount_unscaled / element_scale.y
 						selection_transforms.append(canvas_transform * element_transform)
@@ -674,7 +699,8 @@ func _draw() -> void:
 						var canvas_transform := State.root_element.canvas_transform
 						var canvas_scale := canvas_transform.get_scale().x
 						var element_scale := element_transform.get_scale()
-						var grow_amount_unscaled := 4.0 / State.zoom / canvas_scale
+						var grow_amount_unscaled := (2.0 + Configs.savedata.selection_rectangle_width) /\
+								State.zoom / canvas_scale
 						var grow_amount_x := grow_amount_unscaled / element_scale.x
 						var grow_amount_y := grow_amount_unscaled / element_scale.y
 						selection_transforms.append(canvas_transform * element_transform)

@@ -7,11 +7,13 @@ const COMMENTS_DICT = {
 	"CDATA color": "CDATA shouldn't be translated. It's a type of XML section.",
 	"Editor formatter": "Refers to the formatter used for GodSVG's code editor.",
 	"Export formatter": "Refers to the formatter used when exporting.",
-	"Handle colors": "Refers to the colors of the draggable handles.",
-	"Handle size": "Refers to the size of the draggable handles.",
+	"Handles": "Refers to the draggable gizmos.",
+	"Dash length": "Refers to the selection rectangle's animated dashed stroke",
 	"Excluded": "Refers to the zero, one, or multiple UI parts to not be shown in the final layout. It's of plural cardinality.",
 	"Update check failed": "When checking for updates.",
-	"Project Founder and Manager": "If the language has different gendered versions, prefer the most neutral-sounding one, or feminine if none sound neutral."
+	"Project Founder and Manager": "If the language has different gendered versions, prefer the most neutral-sounding one, i.e., the one used when you don't know the person's gender. If that's not possible, use feminine.",
+	"RGB": "If your language doesn't have a well-known 3-letter abbreviation, keep as \"RGB\".",
+	"HSV": "If your language doesn't have a well-known 3-letter abbreviation, keep as \"HSV\".",
 }
 
 const TRANSLATIONS_DIR = "translations"
