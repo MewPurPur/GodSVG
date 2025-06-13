@@ -547,32 +547,31 @@ msgstr "Usar Ctrl para hacer zoom"
 
 #: src/ui_parts/settings_menu.gd:
 msgid "Display"
-msgstr ""
+msgstr "Visualización"
 
 #: src/ui_parts/settings_menu.gd:
 msgid "UI scale"
 msgstr "Escala de la interfaz de usuario"
 
 #: src/ui_parts/settings_menu.gd:
-#, fuzzy
 msgid "Determines the scale factor for the interface."
-msgstr "Cambia el factor de escala de la interfaz."
+msgstr "Determina el factor de escala de la interfaz."
 
 #: src/ui_parts/settings_menu.gd:
 msgid "Uncapped framerate"
-msgstr ""
+msgstr "Velocidad ilimitada de fotogramas"
 
 #: src/ui_parts/settings_menu.gd:
 msgid "Determines if frames are rendered as fast as possible (may increase power consumption and heat)."
-msgstr ""
+msgstr "Determina si los fotogramas se procesan lo más rápido posible (puede aumentar el consumo de energía y el calor)."
 
 #: src/ui_parts/settings_menu.gd:
 msgid "Custom maximum FPS"
-msgstr ""
+msgstr "FPS máximos personalizados"
 
 #: src/ui_parts/settings_menu.gd:
 msgid "If the framerate is capped, this value determines the maximum number of frames per second."
-msgstr ""
+msgstr "Si la velocidad de fotogramas está limitada, este valor determina la cantidad máxima de fotogramas por segundo."
 
 #: src/ui_parts/settings_menu.gd:
 msgid "Miscellaneous"
@@ -746,9 +745,8 @@ msgid "If turned off, the window title remains as \"GodSVG\" without including t
 msgstr "Si está desactivado, el título de la ventana permanece como \"GodSVG\" sin incluir el archivo actual."
 
 #: src/ui_parts/settings_menu.gd:
-#, fuzzy
 msgid "Determines the visual size and grabbing area of handles."
-msgstr "Cambia el tamaño visual y el área de agarre de los controladores."
+msgstr "Determina el tamaño visual y el área de agarre de los controladores."
 
 #: src/ui_parts/shortcut_panel.gd:
 msgid "Horizontal strip"
@@ -942,24 +940,23 @@ msgstr "GodSVG no reconoce este atributo"
 
 #: src/utils/FileUtils.gd:
 msgid "The following files were discarded:"
-msgstr ""
+msgstr "Se descartaron los siguientes archivos:"
 
 #: src/utils/FileUtils.gd:
 msgid "{file_name} was discarded."
-msgstr ""
+msgstr "{file_name} fue descartado."
 
 #: src/utils/FileUtils.gd:
 msgid "Discarded files"
-msgstr ""
+msgstr "Archivos descartados"
 
 #: src/utils/FileUtils.gd:
 msgid "Proceed"
-msgstr ""
+msgstr "Continuar"
 
 #: src/utils/FileUtils.gd:
-#, fuzzy
 msgid "{file_name} couldn't be opened."
-msgstr "No se pudo abrir el archivo."
+msgstr "{file_name} no pudo ser abierto."
 
 #: src/utils/FileUtils.gd:
 msgid "Check if the file still exists in the selected file path."
@@ -967,11 +964,11 @@ msgstr "Compruebe si el archivo todavía existe en la ruta de archivo selecciona
 
 #: src/utils/FileUtils.gd:
 msgid "Proceed with importing the rest of the files?"
-msgstr ""
+msgstr "¿Continuar con la importación del resto de los archivos?"
 
 #: src/utils/FileUtils.gd:
 msgid "Proceed for all files that can't be opened"
-msgstr ""
+msgstr "Continuar para todos los archivos que no se pueden abrir"
 
 #: src/utils/FileUtils.gd:
 msgid "Save the file?"
@@ -994,9 +991,8 @@ msgid "Don't save"
 msgstr "No guardar"
 
 #: src/utils/FileUtils.gd:
-#, fuzzy
 msgid "{file_path} is already being edited inside GodSVG."
-msgstr "El archivo importado ya se está editando dentro de GodSVG."
+msgstr "{file_path} ya se está editando dentro de GodSVG."
 
 #: src/utils/FileUtils.gd:
 msgid "If you want to revert your edits since the last save, use {reset_svg}."
@@ -1027,14 +1023,12 @@ msgid "Close all other tabs"
 msgstr "Cerrar todas las demás pestañas"
 
 #: src/utils/TranslationUtils.gd:
-#, fuzzy
 msgid "Close empty tabs"
-msgstr "Cerrar pestaña"
+msgstr "Cerrar pestañas vacías"
 
 #: src/utils/TranslationUtils.gd:
-#, fuzzy
 msgid "Close saved tabs"
-msgstr "Cerrar todas las demás pestañas"
+msgstr "Cerrar pestañas guardadas"
 
 #: src/utils/TranslationUtils.gd:
 msgid "Create tab"
@@ -1290,9 +1284,8 @@ msgid "Viewport"
 msgstr "Ventana gráfica"
 
 #: src/utils/TranslationUtils.gd:
-#, fuzzy
 msgid "Select {format} files"
-msgstr "Selecciona un archivo {format}"
+msgstr "Selecciona archivos {format}"
 
 #: src/utils/TranslationUtils.gd:
 msgid "Select an image"
@@ -1307,9 +1300,8 @@ msgid "Save the {format} file"
 msgstr "Guardar el archivo {format}"
 
 #: src/utils/TranslationUtils.gd:
-#, fuzzy
 msgid "Only {extension_list} files are supported for this operation."
-msgstr "La extensión del archivo está vacía. Solo se admiten los archivos {extension_list}."
+msgstr "Solo se admiten archivos {extension_list} para esta operación."
 
 #~ msgid "The file extension {extension} is unsupported for this operation. Only {extension_list} files are supported."
 #~ msgstr "La extensión de archivo {extension} no es compatible con esta operación. Solo se admiten los archivos {extension_list}."
