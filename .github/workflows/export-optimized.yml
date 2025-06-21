@@ -126,22 +126,10 @@ jobs:
           echo "~/godot-editor" >> $GITHUB_PATH
 
       - if: ${{ steps.cache-template.outputs.cache-hit != 'true' }}
-        name: Install build dependencies
+        name: Install dependencies
         run: |
           sudo apt install -y scons python3
           sudo apt install -y g++-mingw-w64-x86-64-posix
-
-      - name: Install export dependencies
-        run: |
-          sudo apt update
-          sudo apt install -y --fix-broken
-          sudo apt install -y wine64 || sudo apt install -y --fix-missing wine64
-          wget -q https://github.com/electron/rcedit/releases/download/v2.0.0/rcedit-x64.exe
-          mkdir -p ~/.local/share/rcedit
-          mv rcedit-x64.exe ~/.local/share/rcedit
-          godot --headless --quit
-          echo 'export/windows/wine = "/usr/lib/wine/wine64"' >> ~/.config/godot/editor_settings-${GODOT_FEATURE_VERSION}.tres
-          echo 'export/windows/rcedit = "/home/runner/.local/share/rcedit/rcedit-x64.exe"' >> ~/.config/godot/editor_settings-${GODOT_FEATURE_VERSION}.tres
 
       - if: ${{ steps.cache-template.outputs.cache-hit != 'true' }}
         name: Download ANGLE Static Libraries
