@@ -22,6 +22,10 @@ expected: String) -> void:
 
 # This test is dependent on specifics of the Formatter and AttributePathdata classes.
 # But its logic would likely not change enough in the future to make the tests obsolete.
+# https://www.w3.org/TR/SVG11/paths.html#PathDataBNF
+# We have a difference in logic where we don't require starting with MoveTo
+# in order to make pathdata easier to edit.
+# ClosePath are also merged, so you don't end up with invalid syntax after commands are deleted.
 func pathdata_tests() -> void:
 	var spacious_formatter := Formatter.new()
 	spacious_formatter.pathdata_compress_numbers = false
@@ -29,12 +33,18 @@ func pathdata_tests() -> void:
 	spacious_formatter.pathdata_remove_consecutive_commands = false
 	spacious_formatter.pathdata_remove_spacing_after_flags = false
 	const tests: Dictionary[String, String] = {
+		"": "",
+		" \n\r\t": "",
 		"Jerky": "",
 		"M 3s 6 h 6 v 3 z": "",
 		"M 3 s6 h 6 v 3 z": "",
 		"M 3 .s6 h 6 v 3 z": "",
 		" 0 2": "",
-		"M 0 0": "M 0 0",
+		"M , 1 2": "",
+		"M1 2": "M 1 2",
+		"M 1 2,": "M 1 2",
+		"M 1 2, h 3": "M 1 2 h 3",
+		"M2..5": "M 2 0.5",
 		"q 1, 2  ,3 , 4 l 5 ,, 6": "q 1 2 3 4",
 		"M2 1 L3 4": "M 2 1 L 3 4",
 		"m2 0 3 4": "m 2 0 l 3 4",
@@ -54,6 +64,7 @@ func pathdata_tests() -> void:
 		"M4 1 2 - 4 4z": "M 4 1",
 		"M1 6.9E-1": "M 1 0.69",
 		" \tM\t1\t,\t2": "M 1 2",
+		"M 1 2 zZzz M 3 4": "M 1 2 z M 3 4",
 	}
 	
 	for test in tests:
@@ -63,20 +74,26 @@ func pathdata_tests() -> void:
 
 # This test is dependent on specifics of the Formatter and AttributeTransformList classes.
 # But its logic would likely not change enough in the future to make the tests obsolete.
+# https://www.w3.org/TR/SVG11/coords.html#TransformAttribute
 func transform_list_tests() -> void:
 	var spacious_formatter := Formatter.new()
 	spacious_formatter.transform_list_compress_numbers = false
 	spacious_formatter.transform_list_minimize_spacing = false
 	spacious_formatter.transform_list_remove_unnecessary_params = false
 	var tests: Dictionary[String, String] = {
+		"": "",
+		" \n\r\t": "",
 		"Jerky": "",
 		"matrix(1 0 0 5 0 3)": "matrix(1 0 0 5 0 3)",
-		"matrix(1, 0, 0, 5, 0, 3)": "matrix(1 0 0 5 0 3)",
+		"matrix(1, 0, 0 , 5, 0, 3)": "matrix(1 0 0 5 0 3)",
 		"\tmatrix (1. 0. 0. .5 0. 3.  )": "matrix(1 0 0 0.5 0 3)",
 		"translate(10.) scale(.5) rotate(7)": "translate(10 0) scale(0.5 0.5) rotate(7 0 0)",
-		"skewX(3), skewY(4)": "skewX(3) skewY(4)",
+		"skewX(3) , skewY(4)": "skewX(3) skewY(4)",
+		"skewX(3) , skewY(4 2)": "",
+		"skewX(3) ,, skewY(4)": "",
+		"scale(2,)": "",
 		"translate(,10)": "",
-		"matrix(1e2,0,0,1e-2,1.2E+1.4e1)": "matrix(100 0 0 0.01 12 4)",
+		"matrix(1e2,0,0,1e-2,1.2E+1.4e1)": "matrix(100 0 0 0.01 12 14)",
 		"matrix(1 0 0 1)": "",
 		"matrix(1.2 0 0 1 0 0 0)": "",
 	}
