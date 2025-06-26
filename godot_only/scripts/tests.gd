@@ -68,8 +68,7 @@ func pathdata_tests() -> void:
 	}
 	
 	for test in tests:
-		var pathdata := AttributePathdata.new("d")
-		var result := pathdata.path_commands_to_text(AttributePathdata.parse_pathdata(test), spacious_formatter)
+		var result := AttributePathdata.new("d")._format(test, spacious_formatter)
 		if result != tests[test]:
 			add_to_report("Pathdata parser", test, result, tests[test])
 
