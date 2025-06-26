@@ -8,6 +8,8 @@ signal descendant_attribute_changed(name: String)
 var _child_elements: Array[XNode]
 var _attributes: Dictionary[String, Attribute]
 
+var meta_collapsed: bool
+
 func _init() -> void:
 	attribute_changed.connect(_on_attribute_changed)
 	ancestor_attribute_changed.connect(_on_ancestor_attribute_changed)
