@@ -242,169 +242,115 @@ func toggle_relative_command(idx: int) -> void:
 
 
 static func parse_pathdata(text: String) -> Array[PathCommand]:
-	return path_commands_from_parsed_data(pathdata_to_arrays(text))
-
-# godot_only/tests.gd has a test for this.
-static func pathdata_to_arrays(text: String) -> Array[Array]:
-	var new_commands: Array[Array] = []
-	var curr_command := ""
-	var prev_command := ""
-	var nums: Array = []  # Not a float array because the arcs are ints.
-	var args_left := 0
-	var comma_exhausted := false  # Can ignore many whitespaces, but only one comma.
+	text = text.strip_edges()
+	var text_length := text.length()
 	
-	var idx := -1
-	while idx < text.length() - 1:
-		idx += 1
-		@warning_ignore("shadowed_global_identifier")
-		var char := text[idx]
-		# Stop parsing if we've hit a character that's not allowed.
-		if not char in "MmLlHhVvAaQqTtCcSsZz0123456789-+Ee., \n\t\r":
-			return new_commands
-		# Logic for finding out what the next command is going to be.
-		if args_left == 0:
-			match char:
-				"M", "m", "L", "l", "H", "h", "V", "v", "A", "a", "Q", "q", "T", "t",\
-				"C", "c", "S", "s", "Z", "z":
-					curr_command = char
-					args_left = PathCommand.arg_count_dict[curr_command.to_upper()]
-				" ", "\t", "\n", "\r": continue
-				"-", "+", ".", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9":
-					if prev_command.is_empty():
-						continue
-					
-					match prev_command:
-						"Z", "z":
-							return new_commands
-						"M", "m":
-							curr_command = "L" if prev_command == "M" else "l"
-							args_left = PathCommand.arg_count_dict[curr_command.to_upper()]
-						"L", "l", "H", "h", "V", "v", "A", "a", "Q", "q", "T", "t", "C", "c",\
-						"S", "s":
-							curr_command = prev_command
-							args_left = PathCommand.arg_count_dict[curr_command.to_upper()]
-					idx -= 1
-				_: return new_commands
-		# Logic for parsing new numbers until args_left == 0.
-		else:
-			if comma_exhausted and not char in " \n\t\r":
-				comma_exhausted = false
-			# Arc flags are represented by a single character.
-			if curr_command in "Aa" and (args_left == 4 or args_left == 3):
-				match char:
-					"0": nums.append(0)
-					"1": nums.append(1)
-					" ", "\n", "\t", "\r": continue
-					",":
-						if comma_exhausted:
-							return new_commands
-						else:
-							comma_exhausted = true
-							continue
-					_: return new_commands
-				if args_left == 3 and nums.size() == 5:
-					# The number parsing part doesn't account for whitespace at the start,
-					# so jump over the whitespace here.
-					while idx < text.length() - 1:
-						idx += 1
-						match text[idx]:
-							" ", "\n", "\t", "\r": continue
-							",":
-								if comma_exhausted:
-									return new_commands
-								else:
-									comma_exhausted = true
-									continue
-							_:
-								idx -= 1
-								break
-			else:
-				# Parse the number.
-				var start_idx := idx
-				var end_idx := idx
-				var number_proceed := true
-				var passed_decimal_point := false
-				var exponent_just_passed := true
-				while number_proceed and idx < text.length():
-					char = text[idx]
-					match char:
-						"0", "1", "2", "3", "4", "5", "6", "7", "8", "9":
-							idx += 1
-							end_idx += 1
-							if exponent_just_passed:
-								exponent_just_passed = false
-						"-", "+":
-							if end_idx == start_idx or exponent_just_passed:
-								end_idx += 1
-								idx += 1
-								if exponent_just_passed:
-									exponent_just_passed = false
-							else:
-								number_proceed = false
-								idx -= 1
-						".":
-							if not passed_decimal_point:
-								passed_decimal_point = true
-								end_idx += 1
-								idx += 1
-							else:
-								idx -= 1
-								number_proceed = false
-						" ", "\n", "\t", "\r":
-							if end_idx == start_idx:
-								idx += 1
-								start_idx += 1
-								end_idx += 1
-								continue
-							if not text.substr(start_idx, idx - start_idx).is_valid_float():
-								return new_commands
-							number_proceed = false
-						",":
-							if comma_exhausted:
-								return new_commands
-							else:
-								comma_exhausted = true
-								number_proceed = false
-						"e", "E":
-							end_idx += 1
-							idx += 1
-							exponent_just_passed = true
-						_:
-							if args_left >= 1 and\
-							not text.substr(start_idx, end_idx - start_idx).is_valid_float():
-								return new_commands
-							else:
-								idx -= 1
-								break
-				nums.append(text.substr(start_idx, end_idx - start_idx).to_float())
-			args_left -= 1
+	var commands: Array[PathCommand] = []
+	var idx := 0
+	var prev_command := ""
+	while idx < text_length:
+		while idx < text_length and text[idx] in " \t\n\r":
+			idx += 1
+		if idx >= text_length:
+			break
 		
-		# Wrap up the array.
-		if args_left == 0:
-			prev_command = curr_command
-			var finalized_arr: Array = [curr_command]
-			curr_command = ""
-			finalized_arr.append_array(nums)
-			nums.clear()
-			new_commands.append(finalized_arr)
-	return new_commands
-
-static func path_commands_from_parsed_data(data: Array[Array]) -> Array[PathCommand]:
-	var cmds: Array[PathCommand] = []
-	for a in data:
+		var current_char := text[idx]
+		var current_command := ""
+		if current_char in "MmLlHhVvAaQqTtCcSs":
+			current_command = current_char
+			idx += 1
+		elif current_char in "Zz":
+			idx += 1
+			if prev_command in "Zz":
+				continue
+			current_command = current_char
+		elif not prev_command.is_empty():
+			match prev_command:
+				"Z", "z": break
+				"M": current_command = "L"
+				"m": current_command = "l"
+				_: current_command = prev_command
+		else:
+			break
+		
+		var key := current_command.to_upper()
+		var arg_count := PathCommand.arg_count_dict[key]
+		var nums := []
+		
+		if key == "A":
+			var result := NumstringParser.text_to_number_arr(text, idx, 3)
+			if result.is_empty():
+				return commands
+			var arr: PackedFloat64Array = result[0]
+			idx = result[1]
+			for f in arr:
+				nums.append(f)
+			
+			# Handle flags.
+			for _i in 2:
+				@warning_ignore("confusable_local_declaration")
+				var comma_passed := false
+				while idx < text_length:
+					if text[idx] in " \t\n\r":
+						idx += 1
+					elif text[idx] == ",":
+						if comma_passed:
+							return commands
+						comma_passed = true
+						idx += 1
+					else:
+						break
+				if idx >= text_length or not text[idx] in "01":
+					return commands
+				else:
+					nums.append(text[idx].to_int())
+					idx += 1
+			
+			result = NumstringParser.text_to_number_arr(text, idx, 2, true)
+			if result.is_empty():
+				return commands
+			arr = result[0]
+			idx = result[1]
+			for f in arr:
+				nums.append(f)
+		elif arg_count > 0:
+			var result := NumstringParser.text_to_number_arr(text, idx, arg_count)
+			if result.is_empty():
+				return commands
+			
+			var arr: PackedFloat64Array = result[0]
+			idx = result[1]
+			for f in arr:
+				nums.append(f)
+		
+		var cmd_type := PathCommand.translation_dict[key]
+		var relative := Utils.is_string_lower(current_command)
 		var new_cmd: PathCommand
-		# The idx 0 element is the command char, the rest are the arguments.
-		var cmd_type: Script = PathCommand.translation_dict[a[0].to_upper()]
-		var relative := Utils.is_string_lower(a[0])
-		match a.size():
-			1: new_cmd = cmd_type.new(relative)
-			2: new_cmd = cmd_type.new(a[1], relative)
-			3: new_cmd = cmd_type.new(a[1], a[2], relative)
-			5: new_cmd = cmd_type.new(a[1], a[2], a[3], a[4], relative)
-			7: new_cmd = cmd_type.new(a[1], a[2], a[3], a[4], a[5], a[6], relative)
-			8: new_cmd = cmd_type.new(a[1], a[2], a[3], a[4], a[5], a[6], a[7], relative)
-		cmds.append(new_cmd)
-	return cmds
+		match arg_count:
+			0: new_cmd = cmd_type.new(relative)
+			1: new_cmd = cmd_type.new(nums[0], relative)
+			2: new_cmd = cmd_type.new(nums[0], nums[1], relative)
+			4: new_cmd = cmd_type.new(nums[0], nums[1], nums[2], nums[3], relative)
+			6: new_cmd = cmd_type.new(nums[0], nums[1], nums[2], nums[3], nums[4], nums[5], relative)
+			7: new_cmd = cmd_type.new(nums[0], nums[1], nums[2], nums[3], nums[4], nums[5], nums[6], relative)
+			8: new_cmd = cmd_type.new(nums[0], nums[1], nums[2], nums[3], nums[4], nums[5], nums[6], nums[7], relative)
+			_: continue
+		
+		commands.append(new_cmd)
+		prev_command = current_command
+		
+		var comma_passed := false
+		while idx < text_length:
+			if text[idx] in " \t\n\r":
+				idx += 1
+			elif text[idx] == ",":
+				if comma_passed:
+					return commands
+				comma_passed = true
+				idx += 1
+			else:
+				break
+	return commands
 
 
 func path_commands_to_text(commands_arr: Array[PathCommand],
