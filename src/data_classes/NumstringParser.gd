@@ -1,5 +1,6 @@
 # A parser for compressed number arrays, used in pathdata and transform lists.
 # Also for general utility around parsing numeric text.
+# This parser has situational configuration options, so it isn't abstract.
 class_name NumstringParser
 
 var compress_numbers: bool
