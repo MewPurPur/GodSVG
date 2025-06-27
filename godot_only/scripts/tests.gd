@@ -68,7 +68,8 @@ func pathdata_tests() -> void:
 	}
 	
 	for test in tests:
-		var result := AttributePathdata.new("d")._format(test, spacious_formatter)
+		var pathdata := AttributePathdata.new("d")
+		var result := pathdata.path_commands_to_text(AttributePathdata.parse_pathdata(test), spacious_formatter)
 		if result != tests[test]:
 			add_to_report("Pathdata parser", test, result, tests[test])
 
@@ -91,9 +92,11 @@ func transform_list_tests() -> void:
 		"skewX(3) , skewY(4)": "skewX(3) skewY(4)",
 		"skewX(3) , skewY(4 2)": "",
 		"skewX(3) ,, skewY(4)": "",
+		"skewX(3)skewY(4)": "",
 		"scale(2,)": "",
 		"translate(,10)": "",
-		"matrix(1e2,0,0,1e-2,1.2E+1.4e1)": "matrix(100 0 0 0.01 12 14)",
+		"scale(2, 2": "",
+		"matrix(1e2,0,0,1e-2,1.2E+1.4e1)": "matrix(100 0 0 0.01 12 4)",
 		"matrix(1 0 0 1)": "",
 		"matrix(1.2 0 0 1 0 0 0)": "",
 	}
