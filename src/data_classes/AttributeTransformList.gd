@@ -101,129 +101,81 @@ formatter := Configs.savedata.editor_formatter) -> String:
 
 static func text_to_transform_list(text: String) -> Array[Transform]:
 	text = text.strip_edges()
-	if text.is_empty():
+	if text.is_empty() or not text.ends_with(")"):
 		return []
 	
 	var output: Array[Transform] = []
 	var transforms := text.split(")", false)
-	for transform in transforms:
+	for idx in transforms.size():
+		var transform := transforms[idx]
 		var transform_info := transform.split("(")
 		if transform_info.size() != 2:
 			return []
 		
 		var transform_params := transform_info[1].strip_edges()
-		var nums: Array[float] = []
+		var transform_name := transform_info[0].strip_edges(false, true)
+		if transform_name.is_empty() or (idx > 0 and not transform_name[0] in ", \t\n\r"):
+			return []
 		
-		# Parse the numbers.
-		# TODO maybe this can be moved to NumstringParser.
-		var comma_exhausted := false  # Can ignore many whitespaces, but only one comma.
-		var idx := -1
-		while idx < transform_params.length() - 1:
-			idx += 1
-			@warning_ignore("shadowed_global_identifier")
-			var char := transform_params[idx]
-			
-			var start_idx := idx
-			var end_idx := idx
-			var number_proceed := true
-			var passed_decimal_point := false
-			var exponent_just_passed := true
-			while number_proceed and idx < transform_params.length():
-				if comma_exhausted and not char in " \n\t\r":
-					comma_exhausted = false
-				
-				char = transform_params[idx]
-				match char:
-					"0", "1", "2", "3", "4", "5", "6", "7", "8", "9":
-						idx += 1
-						end_idx += 1
-						if exponent_just_passed:
-							exponent_just_passed = false
-					"-", "+":
-						if end_idx == start_idx or exponent_just_passed:
-							end_idx += 1
-							idx += 1
-							if exponent_just_passed:
-								exponent_just_passed = false
-						else:
-							number_proceed = false
-							idx -= 1
-					".":
-						if not passed_decimal_point:
-							passed_decimal_point = true
-							end_idx += 1
-							idx += 1
-						else:
-							idx -= 1
-							number_proceed = false
-					" ", "\n", "\t", "\r":
-						if end_idx == start_idx:
-							idx += 1
-							start_idx += 1
-							end_idx += 1
-							continue
-						if not transform_params.substr(
-						start_idx, idx - start_idx).is_valid_float():
-							return []
-						number_proceed = false
-					",":
-						if comma_exhausted:
-							return []
-						else:
-							comma_exhausted = true
-							number_proceed = false
-					"e", "E":
-						end_idx += 1
-						idx += 1
-						exponent_just_passed = true
-					_:
-						if not transform_params.substr(
-						start_idx, end_idx - start_idx).is_valid_float():
-							return []
-						else:
-							idx -= 1
-							break
-			nums.append(transform_params.substr(start_idx, end_idx - start_idx).to_float())
-		
-		match transform_info[0].strip_edges():
+		match transform_name.strip_edges(true, false).trim_prefix(",").strip_edges(true, false):
 			"matrix":
-				if nums.size() == 6:
-					output.append(Transform.TransformMatrix.new(nums[0], nums[1],
-							nums[2], nums[3], nums[4], nums[5]))
-				else:
+				var result := NumstringParser.text_to_number_arr(transform_params, 0, 6)
+				if result.is_empty() or result[1] < transform_params.length():
 					return []
+				output.append(Transform.TransformMatrix.new(result[0][0], result[0][1],
+						result[0][2], result[0][3], result[0][4], result[0][5]))
 			"translate":
-				if nums.size() == 1:
-					output.append(Transform.TransformTranslate.new(nums[0], 0.0))
-				elif nums.size() == 2:
-					output.append(Transform.TransformTranslate.new(nums[0], nums[1]))
+				var result1 := NumstringParser.text_to_number_arr(transform_params, 0, 1)
+				if result1.is_empty():
+					return []
+				var result2 := NumstringParser.text_to_number_arr(transform_params, result1[1], 1, true)
+				if result2.is_empty():
+					if result1[1] >= transform_params.length():
+						output.append(Transform.TransformTranslate.new(result1[0][0], 0.0))
+					else:
+						return []
+				elif result2[1] >= transform_params.length():
+					output.append(Transform.TransformTranslate.new(result1[0][0], result2[0][0]))
 				else:
 					return []
 			"rotate":
-				if nums.size() == 1:
-					output.append(Transform.TransformRotate.new(nums[0], 0.0, 0.0))
-				elif nums.size() == 3:
-					output.append(Transform.TransformRotate.new(
-							nums[0], nums[1], nums[2]))
+				var result1 := NumstringParser.text_to_number_arr(transform_params, 0, 1)
+				if result1.is_empty():
+					return []
+				var result2 := NumstringParser.text_to_number_arr(transform_params, result1[1], 2, true)
+				if result2.is_empty():
+					if result1[1] >= transform_params.length():
+						output.append(Transform.TransformRotate.new(result1[0][0], 0.0, 0.0))
+					else:
+						return []
+				elif result2[1] >= transform_params.length():
+					output.append(Transform.TransformRotate.new(result1[0][0], result2[0][0], result2[0][1]))
 				else:
 					return []
 			"scale":
-				if nums.size() == 1:
-					output.append(Transform.TransformScale.new(nums[0], nums[0]))
-				elif nums.size() == 2:
-					output.append(Transform.TransformScale.new(nums[0], nums[1]))
+				var result1 := NumstringParser.text_to_number_arr(transform_params, 0, 1)
+				if result1.is_empty():
+					return []
+				var result2 := NumstringParser.text_to_number_arr(transform_params, result1[1], 1, true)
+				if result2.is_empty():
+					if result1[1] >= transform_params.length():
+						output.append(Transform.TransformScale.new(result1[0][0], result1[0][0]))
+					else:
+						return []
+				elif result2[1] >= transform_params.length():
+					output.append(Transform.TransformScale.new(result1[0][0], result2[0][0]))
 				else:
 					return []
 			"skewX":
-				if nums.size() == 1:
-					output.append(Transform.TransformSkewX.new(nums[0]))
-				else:
+				var result := NumstringParser.text_to_number_arr(transform_params, 0, 1)
+				if result.is_empty() or result[1] < transform_params.length():
 					return []
+				output.append(Transform.TransformSkewX.new(result[0][0]))
 			"skewY":
-				if nums.size() == 1:
-					output.append(Transform.TransformSkewY.new(nums[0]))
-				else:
+				var result := NumstringParser.text_to_number_arr(transform_params, 0, 1)
+				if result.is_empty() or result[1] < transform_params.length():
 					return []
+				output.append(Transform.TransformSkewY.new(result[0][0]))
 			_:
 				return []
 	
