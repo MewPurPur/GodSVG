@@ -77,6 +77,9 @@ func _ready() -> void:
 		main_container.add_child(child_xnodes_container)
 		for xnode_editor in XNodeChildrenBuilder.create(element):
 			child_xnodes_container.add_child(xnode_editor)
+	
+	for child in main_container.get_children():
+		child.visible = not element.meta_collapsed
 
 func _exit_tree() -> void:
 	RenderingServer.free_rid(surface)
@@ -106,6 +109,13 @@ func _on_title_button_pressed() -> void:
 	HandlerGUI.popup_under_rect_center(State.get_selection_context(
 			HandlerGUI.popup_under_rect_center.bind(rect, viewport),
 			Utils.LayoutPart.INSPECTOR), rect, viewport)
+
+
+func _on_collapse_button_pressed() -> void:
+	State.normal_select(element.xid)
+	element.meta_collapsed = not element.meta_collapsed
+	for child: Control in main_container.get_children():
+		child.visible = not element.meta_collapsed
 
 
 func _gui_input(event: InputEvent) -> void:
@@ -142,7 +152,17 @@ func _on_mouse_entered() -> void:
 	var half_bar_width := title_bar.size.x / 2
 	var title_width := ThemeUtils.mono_font.get_string_size(element.name,
 			HORIZONTAL_ALIGNMENT_LEFT, 180, 12).x
-	# Add button.
+	# Add collapse button
+	var collapse_button := Button.new()
+	collapse_button.focus_mode = Control.FOCUS_NONE
+	collapse_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+	collapse_button.mouse_filter = Control.MOUSE_FILTER_PASS
+	collapse_button.theme_type_variation = "FlatButton"
+	collapse_button.size = Vector2(title_bar.size.x, title_bar.size.y)
+	title_bar.add_child(collapse_button)
+	collapse_button.pressed.connect(_on_collapse_button_pressed)
+	mouse_exited.connect(collapse_button.queue_free)
+	# Add title button.
 	var title_button := Button.new()
 	title_button.focus_mode = Control.FOCUS_NONE
 	title_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
