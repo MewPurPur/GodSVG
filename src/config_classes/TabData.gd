@@ -33,6 +33,7 @@ var active := false
 var fully_loaded := true
 var empty_unsaved := false
 var undo_redo: UndoRedoRef
+var web_file_handle: JavaScriptObject = null
 
 # This variable represents the saved state of the SVG. Intermediate operations such as
 # dragging a handle or editing the code shouldn't affect this variable.
@@ -73,7 +74,11 @@ func _save_svg_text() -> void:
 func save_to_bound_path() -> void:
 	if Configs.savedata.get_active_tab() != self:
 		return
-	FileAccess.open(svg_file_path, FileAccess.WRITE).store_string(State.get_export_text())
+	var export_text := State.get_export_text()
+	if not OS.has_feature("web"):
+		FileAccess.open(svg_file_path, FileAccess.WRITE).store_string(export_text)
+	else:
+		FileUtils.web_save(export_text.to_utf8_buffer(), "svg")
 	queue_sync()
 
 func setup_svg_text(new_text: String, fully_load := true) -> void:
