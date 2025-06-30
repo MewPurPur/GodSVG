@@ -53,9 +53,9 @@ text_editor/completion/add_string_name_literals=false
 
 [filesystem]
 
+import/fbx2gltf/enabled=false
 import/blender/enabled=false
 import/fbx/enabled=false
-import/fbx2gltf/enabled=false
 
 [gui]
 

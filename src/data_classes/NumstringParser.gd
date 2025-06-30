@@ -79,7 +79,7 @@ enum NumberJumbleParseState {
 static func text_to_number_arr(text: String, current_index: int, expected_count: int,
 allow_starting_comma := false) -> Array:
 	var text_length := text.length()
-	if current_index >= text.length():
+	if current_index >= text_length:
 		return []
 	
 	var state := NumberJumbleParseState.OUTSIDE_NUMBER_COMMA_ALLOWED if \
