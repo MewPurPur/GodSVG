@@ -283,8 +283,7 @@ static func parse_pathdata(text: String) -> Array[PathCommand]:
 				return commands
 			var arr: PackedFloat64Array = result[0]
 			idx = result[1]
-			for f in arr:
-				nums.append(f)
+			nums.append_array(arr)
 			
 			# Handle flags.
 			for _i in 2:
@@ -311,8 +310,7 @@ static func parse_pathdata(text: String) -> Array[PathCommand]:
 				return commands
 			arr = result[0]
 			idx = result[1]
-			for f in arr:
-				nums.append(f)
+			nums.append_array(arr)
 		elif arg_count > 0:
 			var result := NumstringParser.text_to_number_arr(text, idx, arg_count)
 			if result.is_empty():
@@ -320,8 +318,7 @@ static func parse_pathdata(text: String) -> Array[PathCommand]:
 			
 			var arr: PackedFloat64Array = result[0]
 			idx = result[1]
-			for f in arr:
-				nums.append(f)
+			nums.append_array(arr)
 		
 		var cmd_type := PathCommand.translation_dict[key]
 		var relative := Utils.is_string_lower(current_command)
@@ -341,9 +338,10 @@ static func parse_pathdata(text: String) -> Array[PathCommand]:
 		
 		var comma_passed := false
 		while idx < text_length:
-			if text[idx] in " \t\n\r":
+			var c := text[idx]
+			if c in " \t\n\r":
 				idx += 1
-			elif text[idx] == ",":
+			elif c == ",":
 				if comma_passed:
 					return commands
 				comma_passed = true

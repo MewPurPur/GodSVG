@@ -15,6 +15,7 @@ func _run() -> void:
 		for report_line in report:
 			print_rich(report_line)
 
+
 func add_to_report(test_category: String, test: String, result: String,
 expected: String) -> void:
 	report.append('%s: [b]"%s"[/b] returned [b]"%s"[/b], expected [b]"%s"[/b]' %\
