@@ -76,6 +76,7 @@ enum NumberJumbleParseState {
 
 # Returns an array with a PackedFloat64Array and an int for the final current index.
 # Returns an empty array if there's a parsing error.
+# TODO In 4.5, I had to avoid the match keyword in this parser for performance: #75682.
 static func text_to_number_arr(text: String, current_index: int, expected_count: int,
 allow_starting_comma := false) -> Array:
 	var text_length := text.length()
@@ -92,181 +93,170 @@ allow_starting_comma := false) -> Array:
 			unrecognized_symbol = true
 		else:
 			var current_char := text[current_index]
-			match state:
-				NumberJumbleParseState.OUTSIDE_NUMBER_COMMA_FORBIDDEN:
-					match current_char:
-						" ", "\t", "\n", "\r":
-							pass
-						"0", "1", "2", "3", "4", "5", "6", "7", "8", "9":
-							state = NumberJumbleParseState.INSIDE_NUMBER
-							current_number_start_idx = current_index
-						"+", "-":
-							state = NumberJumbleParseState.DIRECTLY_AFTER_SIGN
-							current_number_start_idx = current_index
-						".":
-							state = NumberJumbleParseState.INSIDE_NUMBER_DIRECTLY_AFTER_LEADING_FLOATING_POINT
-							current_number_start_idx = current_index
-						_:
-							unrecognized_symbol = true
-				NumberJumbleParseState.OUTSIDE_NUMBER_COMMA_ALLOWED:
-					match current_char:
-						" ", "\t", "\n", "\r":
-							pass
-						",":
-							state = NumberJumbleParseState.OUTSIDE_NUMBER_COMMA_FORBIDDEN
-						"0", "1", "2", "3", "4", "5", "6", "7", "8", "9":
-							state = NumberJumbleParseState.INSIDE_NUMBER
-							current_number_start_idx = current_index
-						"+", "-":
-							state = NumberJumbleParseState.DIRECTLY_AFTER_SIGN
-							current_number_start_idx = current_index
-						".":
-							state = NumberJumbleParseState.INSIDE_NUMBER_DIRECTLY_AFTER_LEADING_FLOATING_POINT
-							current_number_start_idx = current_index
-						_:
-							unrecognized_symbol = true
-				NumberJumbleParseState.DIRECTLY_AFTER_SIGN:
-					match current_char:
-						"0", "1", "2", "3", "4", "5", "6", "7", "8", "9":
-							state = NumberJumbleParseState.INSIDE_NUMBER
-						".":
-							state = NumberJumbleParseState.INSIDE_NUMBER_DIRECTLY_AFTER_LEADING_FLOATING_POINT
-						_:
-							unrecognized_symbol = true
-				NumberJumbleParseState.INSIDE_NUMBER:
-					match current_char:
-						"0", "1", "2", "3", "4", "5", "6", "7", "8", "9":
-							pass
-						" ", "\t", "\n", "\r":
-							parsed_numbers.append(text.substr(current_number_start_idx,
-									current_index - current_number_start_idx).to_float())
-							state = NumberJumbleParseState.OUTSIDE_NUMBER_COMMA_ALLOWED
-							current_number_start_idx = -1
-						",":
-							parsed_numbers.append(text.substr(current_number_start_idx,
-									current_index - current_number_start_idx).to_float())
-							state = NumberJumbleParseState.OUTSIDE_NUMBER_COMMA_FORBIDDEN
-							current_number_start_idx = -1
-						"-", "+":
-							parsed_numbers.append(text.substr(current_number_start_idx,
-									current_index - current_number_start_idx).to_float())
-							state = NumberJumbleParseState.DIRECTLY_AFTER_SIGN
-							current_number_start_idx = current_index
-						".":
-							state = NumberJumbleParseState.INSIDE_NUMBER_DIRECTLY_AFTER_NON_LEADING_FLOATING_POINT
-						"e", "E":
-							state = NumberJumbleParseState.INSIDE_NUMBER_DIRECTLY_AFTER_EXPONENT
-						_:
-							unrecognized_symbol = true
-				NumberJumbleParseState.INSIDE_NUMBER_DIRECTLY_AFTER_NON_LEADING_FLOATING_POINT:
-					match current_char:
-						".":
-							parsed_numbers.append(text.substr(current_number_start_idx,
-									current_index - current_number_start_idx).to_float())
-							state = NumberJumbleParseState.INSIDE_NUMBER_DIRECTLY_AFTER_LEADING_FLOATING_POINT
-							current_number_start_idx = current_index
-						"-", "+":
-							parsed_numbers.append(text.substr(current_number_start_idx,
-									current_index - current_number_start_idx).to_float())
-							state = NumberJumbleParseState.DIRECTLY_AFTER_SIGN
-							current_number_start_idx = current_index
-						"0", "1", "2", "3", "4", "5", "6", "7", "8", "9":
-							state = NumberJumbleParseState.INSIDE_NUMBER_INDIRECTLY_AFTER_FLOATING_POINT
-						" ", "\t", "\n", "\r":
-							parsed_numbers.append(text.substr(current_number_start_idx,
-									current_index - current_number_start_idx).to_float())
-							state = NumberJumbleParseState.OUTSIDE_NUMBER_COMMA_ALLOWED
-							current_number_start_idx = -1
-						",":
-							parsed_numbers.append(text.substr(current_number_start_idx,
-									current_index - current_number_start_idx).to_float())
-							state = NumberJumbleParseState.OUTSIDE_NUMBER_COMMA_FORBIDDEN
-							current_number_start_idx = -1
-						"e", "E":
-							state = NumberJumbleParseState.INSIDE_NUMBER_DIRECTLY_AFTER_EXPONENT
-						_:
-							unrecognized_symbol = true
-				NumberJumbleParseState.INSIDE_NUMBER_DIRECTLY_AFTER_LEADING_FLOATING_POINT:
-					match current_char:
-						"0", "1", "2", "3", "4", "5", "6", "7", "8", "9":
-							state = NumberJumbleParseState.INSIDE_NUMBER_INDIRECTLY_AFTER_FLOATING_POINT
-						_:
-							unrecognized_symbol = true
-				NumberJumbleParseState.INSIDE_NUMBER_INDIRECTLY_AFTER_FLOATING_POINT:
-					match current_char:
-						"0", "1", "2", "3", "4", "5", "6", "7", "8", "9":
-							pass
-						".":
-							parsed_numbers.append(text.substr(current_number_start_idx,
-									current_index - current_number_start_idx).to_float())
-							state = NumberJumbleParseState.INSIDE_NUMBER_DIRECTLY_AFTER_LEADING_FLOATING_POINT
-							current_number_start_idx = current_index
-						" ", "\t", "\n", "\r":
-							parsed_numbers.append(text.substr(current_number_start_idx,
-									current_index - current_number_start_idx).to_float())
-							state = NumberJumbleParseState.OUTSIDE_NUMBER_COMMA_ALLOWED
-							current_number_start_idx = -1
-						",":
-							parsed_numbers.append(text.substr(current_number_start_idx,
-									current_index - current_number_start_idx).to_float())
-							state = NumberJumbleParseState.OUTSIDE_NUMBER_COMMA_FORBIDDEN
-							current_number_start_idx = -1
-						"-", "+":
-							parsed_numbers.append(text.substr(current_number_start_idx,
-									current_index - current_number_start_idx).to_float())
-							state = NumberJumbleParseState.DIRECTLY_AFTER_SIGN
-							current_number_start_idx = current_index
-						"e", "E":
-							state = NumberJumbleParseState.INSIDE_NUMBER_DIRECTLY_AFTER_EXPONENT
-						_:
-							unrecognized_symbol = true
-				NumberJumbleParseState.INSIDE_NUMBER_DIRECTLY_AFTER_EXPONENT:
-					match current_char:
-						"0", "1", "2", "3", "4", "5", "6", "7", "8", "9":
-							state = NumberJumbleParseState.INSIDE_NUMBER_INDIRECTLY_AFTER_EXPONENT
-						"-", "+":
-							state = NumberJumbleParseState.INSIDE_NUMBER_DIRECTLY_AFTER_EXPONENT_SIGN
-						_:
-							unrecognized_symbol = true
-				NumberJumbleParseState.INSIDE_NUMBER_DIRECTLY_AFTER_EXPONENT_SIGN:
-					match current_char:
-						"0", "1", "2", "3", "4", "5", "6", "7", "8", "9":
-							state = NumberJumbleParseState.INSIDE_NUMBER_INDIRECTLY_AFTER_EXPONENT
-						_:
-							unrecognized_symbol = true
-				NumberJumbleParseState.INSIDE_NUMBER_INDIRECTLY_AFTER_EXPONENT:
-					match current_char:
-						"0", "1", "2", "3", "4", "5", "6", "7", "8", "9":
-							pass
-						".":
-							parsed_numbers.append(text.substr(current_number_start_idx,
-									current_index - current_number_start_idx).to_float())
-							state = NumberJumbleParseState.INSIDE_NUMBER_DIRECTLY_AFTER_LEADING_FLOATING_POINT
-							current_number_start_idx = current_index
-						" ", "\t", "\n", "\r":
-							parsed_numbers.append(text.substr(current_number_start_idx,
-									current_index - current_number_start_idx).to_float())
-							state = NumberJumbleParseState.OUTSIDE_NUMBER_COMMA_ALLOWED
-							current_number_start_idx = -1
-						",":
-							parsed_numbers.append(text.substr(current_number_start_idx,
-									current_index - current_number_start_idx).to_float())
-							state = NumberJumbleParseState.OUTSIDE_NUMBER_COMMA_FORBIDDEN
-							current_number_start_idx = -1
-						"-", "+":
-							parsed_numbers.append(text.substr(current_number_start_idx,
-									current_index - current_number_start_idx).to_float())
-							state = NumberJumbleParseState.DIRECTLY_AFTER_SIGN
-							current_number_start_idx = current_index
-						_:
-							unrecognized_symbol = true
+			if state == NumberJumbleParseState.OUTSIDE_NUMBER_COMMA_FORBIDDEN:
+				if current_char in " \t\n\r":
+					pass
+				elif current_char in "1234567890":
+					state = NumberJumbleParseState.INSIDE_NUMBER
+					current_number_start_idx = current_index
+				elif current_char in "-+":
+					state = NumberJumbleParseState.DIRECTLY_AFTER_SIGN
+					current_number_start_idx = current_index
+				elif current_char == ".":
+					state = NumberJumbleParseState.INSIDE_NUMBER_DIRECTLY_AFTER_LEADING_FLOATING_POINT
+					current_number_start_idx = current_index
+				else:
+					unrecognized_symbol = true
+			elif state == NumberJumbleParseState.OUTSIDE_NUMBER_COMMA_ALLOWED:
+				if current_char in " \t\n\r":
+					pass
+				elif current_char == ",":
+					state = NumberJumbleParseState.OUTSIDE_NUMBER_COMMA_FORBIDDEN
+				elif current_char in "1234567890":
+					state = NumberJumbleParseState.INSIDE_NUMBER
+					current_number_start_idx = current_index
+				elif current_char in "-+":
+					state = NumberJumbleParseState.DIRECTLY_AFTER_SIGN
+					current_number_start_idx = current_index
+				elif current_char == ".":
+					state = NumberJumbleParseState.INSIDE_NUMBER_DIRECTLY_AFTER_LEADING_FLOATING_POINT
+					current_number_start_idx = current_index
+				else:
+					unrecognized_symbol = true
+			elif state == NumberJumbleParseState.DIRECTLY_AFTER_SIGN:
+				if current_char in "1234567890":
+					state = NumberJumbleParseState.INSIDE_NUMBER
+				elif current_char == ".":
+					state = NumberJumbleParseState.INSIDE_NUMBER_DIRECTLY_AFTER_LEADING_FLOATING_POINT
+				else:
+					unrecognized_symbol = true
+			elif state == NumberJumbleParseState.INSIDE_NUMBER:
+				if current_char in "1234567890":
+					pass
+				elif current_char in " \t\n\r":
+					parsed_numbers.append(text.substr(current_number_start_idx,
+							current_index - current_number_start_idx).to_float())
+					state = NumberJumbleParseState.OUTSIDE_NUMBER_COMMA_ALLOWED
+					current_number_start_idx = -1
+				elif current_char == ",":
+					parsed_numbers.append(text.substr(current_number_start_idx,
+							current_index - current_number_start_idx).to_float())
+					state = NumberJumbleParseState.OUTSIDE_NUMBER_COMMA_FORBIDDEN
+					current_number_start_idx = -1
+				elif current_char in "-+":
+					parsed_numbers.append(text.substr(current_number_start_idx,
+							current_index - current_number_start_idx).to_float())
+					state = NumberJumbleParseState.DIRECTLY_AFTER_SIGN
+					current_number_start_idx = current_index
+				elif current_char == ".":
+					state = NumberJumbleParseState.INSIDE_NUMBER_DIRECTLY_AFTER_NON_LEADING_FLOATING_POINT
+				elif current_char in "eE":
+					state = NumberJumbleParseState.INSIDE_NUMBER_DIRECTLY_AFTER_EXPONENT
+				else:
+					unrecognized_symbol = true
+			elif state == NumberJumbleParseState.INSIDE_NUMBER_DIRECTLY_AFTER_NON_LEADING_FLOATING_POINT:
+				if current_char == ".":
+					parsed_numbers.append(text.substr(current_number_start_idx,
+							current_index - current_number_start_idx).to_float())
+					state = NumberJumbleParseState.INSIDE_NUMBER_DIRECTLY_AFTER_LEADING_FLOATING_POINT
+					current_number_start_idx = current_index
+				elif current_char in "-+":
+					parsed_numbers.append(text.substr(current_number_start_idx,
+							current_index - current_number_start_idx).to_float())
+					state = NumberJumbleParseState.DIRECTLY_AFTER_SIGN
+					current_number_start_idx = current_index
+				elif current_char in "1234567890":
+					state = NumberJumbleParseState.INSIDE_NUMBER_INDIRECTLY_AFTER_FLOATING_POINT
+				elif current_char in " \t\n\r":
+					parsed_numbers.append(text.substr(current_number_start_idx,
+							current_index - current_number_start_idx).to_float())
+					state = NumberJumbleParseState.OUTSIDE_NUMBER_COMMA_ALLOWED
+					current_number_start_idx = -1
+				elif current_char == ",":
+					parsed_numbers.append(text.substr(current_number_start_idx,
+							current_index - current_number_start_idx).to_float())
+					state = NumberJumbleParseState.OUTSIDE_NUMBER_COMMA_FORBIDDEN
+					current_number_start_idx = -1
+				elif current_char == "eE":
+					state = NumberJumbleParseState.INSIDE_NUMBER_DIRECTLY_AFTER_EXPONENT
+				else:
+					unrecognized_symbol = true
+			elif state == NumberJumbleParseState.INSIDE_NUMBER_DIRECTLY_AFTER_LEADING_FLOATING_POINT:
+				if current_char in "1234567890":
+					state = NumberJumbleParseState.INSIDE_NUMBER_INDIRECTLY_AFTER_FLOATING_POINT
+				else:
+					unrecognized_symbol = true
+			elif state == NumberJumbleParseState.INSIDE_NUMBER_INDIRECTLY_AFTER_FLOATING_POINT:
+				if current_char in "1234567890":
+					pass
+				elif current_char == ".":
+					parsed_numbers.append(text.substr(current_number_start_idx,
+							current_index - current_number_start_idx).to_float())
+					state = NumberJumbleParseState.INSIDE_NUMBER_DIRECTLY_AFTER_LEADING_FLOATING_POINT
+					current_number_start_idx = current_index
+				elif current_char in " \t\n\r":
+					parsed_numbers.append(text.substr(current_number_start_idx,
+							current_index - current_number_start_idx).to_float())
+					state = NumberJumbleParseState.OUTSIDE_NUMBER_COMMA_ALLOWED
+					current_number_start_idx = -1
+				elif current_char == ",":
+					parsed_numbers.append(text.substr(current_number_start_idx,
+							current_index - current_number_start_idx).to_float())
+					state = NumberJumbleParseState.OUTSIDE_NUMBER_COMMA_FORBIDDEN
+					current_number_start_idx = -1
+				elif current_char in "-+":
+					parsed_numbers.append(text.substr(current_number_start_idx,
+							current_index - current_number_start_idx).to_float())
+					state = NumberJumbleParseState.DIRECTLY_AFTER_SIGN
+					current_number_start_idx = current_index
+				elif current_char in "eE":
+					state = NumberJumbleParseState.INSIDE_NUMBER_DIRECTLY_AFTER_EXPONENT
+				else:
+					unrecognized_symbol = true
+			elif state == NumberJumbleParseState.INSIDE_NUMBER_DIRECTLY_AFTER_EXPONENT:
+				if current_char in "1234567890":
+					state = NumberJumbleParseState.INSIDE_NUMBER_INDIRECTLY_AFTER_EXPONENT
+				elif current_char in "-+":
+					state = NumberJumbleParseState.INSIDE_NUMBER_DIRECTLY_AFTER_EXPONENT_SIGN
+				else:
+					unrecognized_symbol = true
+			elif state == NumberJumbleParseState.INSIDE_NUMBER_DIRECTLY_AFTER_EXPONENT_SIGN:
+				if current_char in "1234567890":
+					state = NumberJumbleParseState.INSIDE_NUMBER_INDIRECTLY_AFTER_EXPONENT
+				else:
+					unrecognized_symbol = true
+			elif state == NumberJumbleParseState.INSIDE_NUMBER_INDIRECTLY_AFTER_EXPONENT:
+				if current_char in "01234567890":
+					pass
+				elif current_char == ".":
+					parsed_numbers.append(text.substr(current_number_start_idx,
+							current_index - current_number_start_idx).to_float())
+					state = NumberJumbleParseState.INSIDE_NUMBER_DIRECTLY_AFTER_LEADING_FLOATING_POINT
+					current_number_start_idx = current_index
+				elif current_char in " \t\n\r":
+					parsed_numbers.append(text.substr(current_number_start_idx,
+							current_index - current_number_start_idx).to_float())
+					state = NumberJumbleParseState.OUTSIDE_NUMBER_COMMA_ALLOWED
+					current_number_start_idx = -1
+				elif current_char == ",":
+					parsed_numbers.append(text.substr(current_number_start_idx,
+							current_index - current_number_start_idx).to_float())
+					state = NumberJumbleParseState.OUTSIDE_NUMBER_COMMA_FORBIDDEN
+					current_number_start_idx = -1
+				elif current_char in "-+":
+					parsed_numbers.append(text.substr(current_number_start_idx,
+							current_index - current_number_start_idx).to_float())
+					state = NumberJumbleParseState.DIRECTLY_AFTER_SIGN
+					current_number_start_idx = current_index
+				else:
+					unrecognized_symbol = true
 		
 		if unrecognized_symbol:
 			if current_number_start_idx >= 0 and parsed_numbers.size() == expected_count - 1 and\
-			state != NumberJumbleParseState.DIRECTLY_AFTER_SIGN and\
-			state != NumberJumbleParseState.INSIDE_NUMBER_DIRECTLY_AFTER_EXPONENT and\
-			state != NumberJumbleParseState.INSIDE_NUMBER_DIRECTLY_AFTER_LEADING_FLOATING_POINT and\
-			state != NumberJumbleParseState.INSIDE_NUMBER_DIRECTLY_AFTER_EXPONENT_SIGN:
+			not state in [NumberJumbleParseState.DIRECTLY_AFTER_SIGN,
+			NumberJumbleParseState.INSIDE_NUMBER_DIRECTLY_AFTER_EXPONENT,
+			NumberJumbleParseState.INSIDE_NUMBER_DIRECTLY_AFTER_LEADING_FLOATING_POINT,
+			NumberJumbleParseState.INSIDE_NUMBER_DIRECTLY_AFTER_EXPONENT_SIGN]:
 				parsed_numbers.append(text.substr(current_number_start_idx,
 						current_index - current_number_start_idx).to_float())
 				return [parsed_numbers, current_index]
