@@ -13,7 +13,7 @@ var canvas_precise_transform: PackedFloat64Array:
 		canvas_transform = Utils64Bit.get_transform(canvas_precise_transform)
 
 const name = "svg"
-const possible_conversions: Array[String] = []
+const possible_conversions: PackedStringArray = []
 
 func _init() -> void:
 	canvas_precise_transform = PackedFloat64Array([1.0, 0.0, 0.0, 1.0, 0.0, 0.0])

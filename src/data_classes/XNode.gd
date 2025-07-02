@@ -1,5 +1,5 @@
 # Abstract base class for XML nodes.
-abstract class_name XNode
+@abstract class_name XNode
 
 var xid: PackedInt32Array
 

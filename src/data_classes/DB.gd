@@ -1,4 +1,4 @@
-abstract class_name DB
+@abstract class_name DB
 
 enum AttributeType {NUMERIC, COLOR, LIST, PATHDATA, ENUM, TRANSFORM_LIST, ID, HREF, UNKNOWN}
 enum PercentageHandling {FRACTION, HORIZONTAL, VERTICAL, NORMALIZED}
@@ -43,7 +43,7 @@ const recognized_attributes: Dictionary[String, Array] = {
 	"linearGradient": ["id", "gradientTransform", "gradientUnits", "spreadMethod",
 			"x1", "y1", "x2", "y2"],
 	"radialGradient": ["id", "gradientTransform", "gradientUnits", "spreadMethod",
-			"cx", "cy", "r"],
+			"cx", "cy", "r", "fx", "fy"],
 	"circle": ["transform", "opacity", "fill", "fill-opacity", "stroke", "stroke-opacity",
 			"stroke-width", "cx", "cy", "r"],
 	"ellipse": ["transform", "opacity", "fill", "fill-opacity", "stroke", "stroke-opacity",
@@ -98,6 +98,8 @@ const _attribute_types: Dictionary[String, AttributeType] = {
 	"r": AttributeType.NUMERIC,
 	"rx": AttributeType.NUMERIC,
 	"ry": AttributeType.NUMERIC,
+	"fx": AttributeType.NUMERIC,
+	"fy": AttributeType.NUMERIC,
 	"opacity": AttributeType.NUMERIC,
 	"fill": AttributeType.COLOR,
 	"fill-opacity": AttributeType.NUMERIC,
@@ -141,6 +143,8 @@ const attribute_number_range: Dictionary[String, NumberRange] = {
 	"r": NumberRange.POSITIVE,
 	"rx": NumberRange.POSITIVE,
 	"ry": NumberRange.POSITIVE,
+	"fx": NumberRange.ARBITRARY,
+	"fy": NumberRange.ARBITRARY,
 	"opacity": NumberRange.UNIT,
 	"fill-opacity": NumberRange.UNIT,
 	"stroke-opacity": NumberRange.UNIT,
@@ -200,6 +204,8 @@ attribute_name: String) -> PercentageHandling:
 		"y2": return PercentageHandling.VERTICAL
 		"cx": return PercentageHandling.HORIZONTAL
 		"cy": return PercentageHandling.VERTICAL
+		"fx": return PercentageHandling.HORIZONTAL
+		"fy": return PercentageHandling.VERTICAL
 		"r": return PercentageHandling.NORMALIZED
 		_: return PercentageHandling.FRACTION
 
@@ -237,8 +243,3 @@ static func attribute(name: String, value: String) -> Attribute:
 		DB.AttributeType.ID: return AttributeID.new(name, value)
 		DB.AttributeType.HREF: return AttributeHref.new(name, value)
 		_: return Attribute.new(name, value)
-
-
-static func is_element_gradient(checked_element: Element) -> bool:
-	return checked_element != null and (checked_element is ElementLinearGradient or\
-			checked_element is ElementRadialGradient)

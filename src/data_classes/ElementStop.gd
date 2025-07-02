@@ -2,7 +2,7 @@
 class_name ElementStop extends Element
 
 const name = "stop"
-const possible_conversions: Array[String] = []
+const possible_conversions: PackedStringArray = []
 
 func _get_own_default(attribute_name: String) -> String:
 	match attribute_name:

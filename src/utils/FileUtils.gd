@@ -1,5 +1,5 @@
 # This class has functionality for importing, exporting, and saving files.
-abstract class_name FileUtils
+@abstract class_name FileUtils
 
 enum FileState {SAME, DIFFERENT, DOES_NOT_EXIST}
 enum TabCloseMode {SINGLE, ALL_OTHERS, TO_LEFT, TO_RIGHT, EMPTY, SAVED}

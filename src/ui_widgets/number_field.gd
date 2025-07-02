@@ -41,6 +41,9 @@ func _ready() -> void:
 	element.attribute_changed.connect(_on_element_attribute_changed)
 	if attribute_name in DB.propagated_attributes:
 		element.ancestor_attribute_changed.connect(_on_element_ancestor_attribute_changed)
+	# These default attributes can change when cx and cy change.
+	if element is ElementRadialGradient and attribute_name in ["fx", "fy"]:
+		element.attribute_changed.connect(_on_element_other_attribute_changed)
 	tooltip_text = attribute_name
 	text_submitted.connect(set_value.bind(true))
 	text_change_canceled.connect(sync)
@@ -51,6 +54,12 @@ func _ready() -> void:
 func _on_element_attribute_changed(attribute_changed: String) -> void:
 	if attribute_name == attribute_changed:
 		set_value(element.get_attribute_value(attribute_name))
+
+func _on_element_other_attribute_changed(attribute_changed: String) -> void:
+	if (attribute_name == "fx" and attribute_changed == "cx") or\
+	(attribute_name == "fy" and attribute_changed == "cy"):
+		setup_placeholder()
+		sync()
 
 func _on_element_ancestor_attribute_changed(attribute_changed: String) -> void:
 	if attribute_name == attribute_changed:

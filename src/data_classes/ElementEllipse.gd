@@ -2,7 +2,7 @@
 class_name ElementEllipse extends Element
 
 const name = "ellipse"
-const possible_conversions: Array[String] = ["circle", "rect", "path"]
+const possible_conversions: PackedStringArray = ["circle", "rect", "path"]
 
 func user_setup(precise_pos := PackedFloat64Array([0.0, 0.0])) -> void:
 	set_attribute("rx", 1.0)

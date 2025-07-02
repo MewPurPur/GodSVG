@@ -1,4 +1,4 @@
-abstract class_name ColorParser
+@abstract class_name ColorParser
 
 
 static func add_hash_if_hex(color: String) -> String:
