@@ -12,8 +12,6 @@ const COMMENTS_DICT = {
 	"Excluded": "Refers to the zero, one, or multiple UI parts to not be shown in the final layout. It's of plural cardinality.",
 	"Update check failed": "When checking for updates.",
 	"Project Founder and Manager": "If the language has different gendered versions, prefer the most neutral-sounding one, i.e., the one used when you don't know the person's gender. If that's not possible, use feminine.",
-	"RGB": "If your language doesn't have a well-known 3-letter abbreviation, keep as \"RGB\".",
-	"HSV": "If your language doesn't have a well-known 3-letter abbreviation, keep as \"HSV\".",
 }
 
 const TRANSLATIONS_DIR = "translations"

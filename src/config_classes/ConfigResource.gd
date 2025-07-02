@@ -1,5 +1,5 @@
 # Implements a very useful signal.
-abstract class_name ConfigResource extends Resource
+@abstract class_name ConfigResource extends Resource
 
 signal changed_deferred
 

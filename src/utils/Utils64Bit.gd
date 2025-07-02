@@ -1,7 +1,7 @@
 # Vector2 and Transform2D aren't precise enough to have their numbers used directly
 # in the SVG, as they are 32-bit. GodSVG uses PackedFloat64Array to mock them
 # and this class implements the necessary functionality to make them work.
-abstract class_name Utils64Bit
+@abstract class_name Utils64Bit
 
 static func get_vector(vector: PackedFloat64Array) -> Vector2:
 	return Vector2(vector[0], vector[1])

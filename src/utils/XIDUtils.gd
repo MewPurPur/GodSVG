@@ -1,4 +1,4 @@
-abstract class_name XIDUtils
+@abstract class_name XIDUtils
 
 # [1] > [1, 2] > [1, 0] > [0]
 static func compare(xid1: PackedInt32Array, xid2: PackedInt32Array) -> bool:

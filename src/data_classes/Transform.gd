@@ -1,4 +1,4 @@
-abstract class_name Transform
+@abstract class_name Transform
 
 class TransformMatrix extends Transform:
 	var x1: float

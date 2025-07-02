@@ -8,7 +8,7 @@ var color: String
 var color_name: String
 
 var ci := get_canvas_item()
-var gradient_texture: GradientTexture2D
+var gradient_texture: SVGTexture
 
 var current_color := Color.BLACK
 
@@ -18,7 +18,7 @@ func _ready() -> void:
 	if ColorParser.is_valid_url(color):
 		var id := color.substr(5, color.length() - 6)
 		var gradient_element := State.root_element.get_element_by_id(id)
-		if DB.is_element_gradient(gradient_element):
+		if is_instance_valid(gradient_element) and gradient_element is ElementBaseGradient:
 			gradient_texture = gradient_element.generate_texture()
 
 func _draw() -> void:

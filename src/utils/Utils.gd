@@ -1,4 +1,4 @@
-abstract class_name Utils
+@abstract class_name Utils
 
 const MAX_NUMERIC_PRECISION = 6
 const MAX_ANGLE_PRECISION = 4

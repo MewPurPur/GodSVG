@@ -1,38 +1,24 @@
 # This singleton handles session data and settings.
 extends Node
 
-@warning_ignore("unused_signal")
+@warning_ignore_start("unused_signal")
 signal highlighting_colors_changed
-@warning_ignore("unused_signal")
 signal snap_changed
-@warning_ignore("unused_signal")
 signal language_changed
-@warning_ignore("unused_signal")
 signal ui_scale_changed
-@warning_ignore("unused_signal")
 signal theme_changed
-@warning_ignore("unused_signal")
 signal shortcuts_changed
-@warning_ignore("unused_signal")
 signal basic_colors_changed
-@warning_ignore("unused_signal")
 signal handle_visuals_changed
-@warning_ignore("unused_signal")
 signal selection_rectangle_visuals_changed
-@warning_ignore("unused_signal")
 signal grid_color_changed
-@warning_ignore("unused_signal")
 signal shortcut_panel_changed
-@warning_ignore("unused_signal")
 signal active_tab_status_changed
-@warning_ignore("unused_signal")
 signal active_tab_reference_changed
-@warning_ignore("unused_signal")
 signal active_tab_changed
-@warning_ignore("unused_signal")
 signal tabs_changed
-@warning_ignore("unused_signal")
 signal layout_changed
+@warning_ignore_restore("unused_signal")
 
 const savedata_path = "user://savedata.tres"
 var savedata: SaveData:

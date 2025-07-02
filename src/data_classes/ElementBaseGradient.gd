@@ -1,41 +1,12 @@
-abstract class_name GradientUtils
+@abstract class_name ElementBaseGradient extends Element
 
-static func generate_gradient(element: Element) -> Gradient:
-	if not (element is ElementLinearGradient or element is ElementRadialGradient):
-		return null
-	
-	var gradient := Gradient.new()
-	gradient.remove_point(0)
-	
-	var current_offset := 0.0
-	var is_gradient_empty := true
-	
-	for child in element.get_children():
-		if not child is ElementStop:
-			continue
-		
-		current_offset = clamp(child.get_attribute_num("offset"), current_offset, 1.0)
-		gradient.add_point(current_offset,
-				Color(ColorParser.text_to_color(child.get_attribute_true_color("stop-color")),
-				child.get_attribute_num("stop-opacity")))
-		
-		if is_gradient_empty:
-			is_gradient_empty = false
-			gradient.remove_point(0)
-	
-	if is_gradient_empty:
-		gradient.set_color(0, Color.TRANSPARENT)
-	
-	return gradient
+const possible_conversions: PackedStringArray = []
 
 
-static func get_gradient_warnings(element: Element) -> PackedStringArray:
-	if not (element is ElementLinearGradient or element is ElementRadialGradient):
-		return PackedStringArray()
+func get_config_warnings() -> PackedStringArray:
+	var warnings := super()
 	
-	var warnings := PackedStringArray()
-	
-	if not element.has_attribute("id"):
+	if not has_attribute("id"):
 		warnings.append(Translator.translate("No \"id\" attribute defined."))
 	
 	var prev_offset := -1.0
@@ -43,7 +14,7 @@ static func get_gradient_warnings(element: Element) -> PackedStringArray:
 	var initial_opacity := -1.0
 	var has_effective_transition := false
 	
-	for child in element.get_children():
+	for child in get_children():
 		if not child is ElementStop:
 			continue
 		
@@ -77,3 +48,6 @@ static func get_gradient_warnings(element: Element) -> PackedStringArray:
 		warnings.append(Translator.translate("This gradient is a solid color."))
 	
 	return warnings
+
+
+@abstract func generate_texture() -> SVGTexture

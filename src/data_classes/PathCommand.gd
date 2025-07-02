@@ -1,5 +1,5 @@
 # A native class that represents a path command and its parameters.
-abstract class_name PathCommand
+@abstract class_name PathCommand
 
 const translation_dict: Dictionary[String, GDScript] = {
 	"M": MoveCommand, "L": LineCommand, "H": HorizontalLineCommand,

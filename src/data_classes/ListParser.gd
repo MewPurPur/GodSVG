@@ -1,5 +1,5 @@
 # A parser to turn AttributeList's list into other useful things.
-abstract class_name ListParser
+@abstract class_name ListParser
 
 static func rect_to_list(rect: Rect2) -> PackedFloat64Array:
 	return PackedFloat64Array([rect.position.x, rect.position.y, rect.size.x, rect.size.y])

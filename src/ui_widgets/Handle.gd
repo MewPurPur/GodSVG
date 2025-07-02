@@ -1,5 +1,5 @@
 # Base class for handles.
-abstract class_name Handle
+@abstract class_name Handle
 
 enum Display {BIG, SMALL}
 var display_mode := Display.BIG
