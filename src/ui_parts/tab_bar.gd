@@ -418,24 +418,20 @@ func _get_tooltip(at_position: Vector2) -> String:
 			return Translator.translate("Scroll forwards")
 		
 		return ""
-	
-	var hovered_tab := Configs.savedata.get_tab(hovered_tab_idx)
-	# We have to pass some metadata to the tooltip.
-	# Since "*" isn't valid in filepaths, we use it as a delimiter.
-	if hovered_tab_idx == Configs.savedata.get_active_tab_index():
-		return "%s*active" % hovered_tab.get_presented_svg_file_path()
-	
-	return "%s*%d" % [hovered_tab.get_presented_svg_file_path(), hovered_tab.id]
+	else:
+		# Return tab index as metadata so _make_custom_tooltip can determine the tab
+		# even if the mouse moves.
+		return str(hovered_tab_idx)
 
 func _make_custom_tooltip(for_text: String) -> Object:
-	var asterisk_pos := for_text.find("*")
-	if asterisk_pos == -1:
+	if not for_text.is_valid_int():
 		return null
 	
-	var hovered_tab := Configs.savedata.get_tab(get_hovered_index())
+	var hovered_tab_idx := for_text.to_int()
+	var hovered_tab := Configs.savedata.get_tab(hovered_tab_idx)
 	var is_saved := not hovered_tab.svg_file_path.is_empty()
 	
-	var path := for_text.left(asterisk_pos)
+	var path := hovered_tab.get_presented_svg_file_path()
 	var label := Label.new()
 	label.add_theme_font_override("font", ThemeUtils.mono_font if is_saved\
 			else ThemeUtils.regular_font)
@@ -446,11 +442,9 @@ func _make_custom_tooltip(for_text: String) -> Object:
 	Utils.set_max_text_width(label, 192.0, 4.0)
 	
 	# If the tab is active or empty, no need for an SVG preview.
-	var metadata := for_text.right(-asterisk_pos - 1)
-	if metadata == "active" or hovered_tab.empty_unsaved:
+	if hovered_tab.empty_unsaved or hovered_tab_idx == Configs.savedata.get_active_tab_index():
 		return label
 	
-	var id := metadata.to_int()
 	var margin_container := MarginContainer.new()
 	var tooltip_panel_stylebox := get_theme_stylebox("panel", "TooltipPanel")
 	margin_container.begin_bulk_theme_override()
@@ -468,7 +462,7 @@ func _make_custom_tooltip(for_text: String) -> Object:
 	preview_rect.custom_minimum_size = Vector2(96, 96)
 	preview_rect.size = Vector2.ZERO
 	preview_rect.setup_svg_without_dimensions(FileAccess.get_file_as_string(
-			TabData.get_edited_file_path_for_id(id)))
+			hovered_tab.get_edited_file_path()))
 	preview_rect.shrink_to_fit(16, 16)
 	hbox.add_child(label)
 	margin_container.add_child(hbox)
