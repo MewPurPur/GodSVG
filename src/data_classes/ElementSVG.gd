@@ -3,8 +3,8 @@ class_name ElementSVG extends Element
 
 var width: float
 var height: float
-var normalized_diagonal: float
 var viewbox: Rect2
+var viewbox_normalized_diagonal: float
 
 var canvas_transform: Transform2D  # Automatically updated with the precise transform.
 var canvas_precise_transform: PackedFloat64Array:
@@ -37,8 +37,8 @@ func update_cache() -> void:
 	if not has_valid_viewbox and not (has_valid_width and has_valid_height):
 		width = get_attribute_num("width") if has_valid_width else 0.0
 		height = get_attribute_num("height") if has_valid_height else 0.0
-		normalized_diagonal = Vector2(width, height).length() / sqrt(2)
 		viewbox = Rect2(0, 0, 0, 0)
+		viewbox_normalized_diagonal = 0.0
 		canvas_precise_transform = PackedFloat64Array([1.0, 0.0, 0.0, 1.0, 0.0, 0.0])
 		return
 	
@@ -78,7 +78,7 @@ func update_cache() -> void:
 				(width - height_ratio * viewbox.size.x) / 2, -viewbox.position.y * height_ratio])
 	if not canvas_transform.is_finite():
 		canvas_precise_transform = PackedFloat64Array([1.0, 0.0, 0.0, 1.0, 0.0, 0.0])
-	normalized_diagonal = Vector2(width, height).length() / sqrt(2)
+	viewbox_normalized_diagonal = Vector2(viewbox.size.x, viewbox.size.y).length() / sqrt(2)
 
 
 func canvas_to_world(pos: Vector2) -> Vector2:
