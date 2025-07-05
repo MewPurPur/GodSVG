@@ -655,6 +655,7 @@ static func _web_on_file_saved(args: Array, currently_saving: int, quick_export:
 			push_error("Unable to find tab %s by its ID" % currently_saving)
 			return
 		active_tab.svg_file_path = file_handle.name
+		active_tab.empty_unsaved = false
 		active_tab.marked_unsaved = false
 		if file_handle != null:
 			active_tab.web_file_handle = file_handle
@@ -678,13 +679,7 @@ static func web_save(buffer: PackedByteArray, format: String, ignore_handles: bo
 	var window := JavaScriptBridge.get_interface("window")
 	
 	var active_tab := Configs.savedata.get_active_tab()
-	var file_path = active_tab.svg_file_path
-	if file_path.is_empty():
-		if not active_tab.presented_name.is_empty() and not quick_export:
-			file_path = active_tab.presented_name
-		else:
-			file_path = "export." + format
-	var file_name := Utils.get_file_name(file_path)
+	var file_name = active_tab.get_tab_name()
 	var format_type := ImageExportData.image_types_dict[format]
 	
 	# Currently, only Chromium-based browsers support the new file picker system.
@@ -727,7 +722,7 @@ static func web_save(buffer: PackedByteArray, format: String, ignore_handles: bo
 	
 	# Options
 	var picker_options := {
-		"suggestedName": file_name + "." + format,
+		"suggestedName": file_name,
 		"startIn": "pictures",
 		"types": [
 			{
