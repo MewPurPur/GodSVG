@@ -2,6 +2,8 @@
 class_name BetterLineEdit extends LineEdit
 ## A LineEdit with a few tweaks to make it nicer to use.
 
+var original_selection_color: Color
+
 ## Emitted when Esc is pressed to cancel the current text change.
 signal text_change_canceled
 
@@ -29,15 +31,15 @@ func _init() -> void:
 	focus_exited.connect(_on_base_class_focus_exited)
 	mouse_exited.connect(_on_base_class_mouse_exited)
 	text_submitted.connect(release_focus.unbind(1))
+	original_selection_color = get_theme_color("selection_color")
 	Configs.theme_changed.connect(update_theme)
 	update_theme()
 
 func update_theme() -> void:
 	if editable:
-		remove_theme_color_override("selection_color")
+		add_theme_color_override("selection_color", original_selection_color)
 	else:
-		add_theme_color_override("selection_color",
-				get_theme_color("disabled_selection_color"))
+		add_theme_color_override("selection_color", get_theme_color("disabled_selection_color"))
 
 var first_click := false
 var text_before_focus := ""

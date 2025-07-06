@@ -1,5 +1,8 @@
 class_name SaveData extends ConfigResource
 
+enum ThemePreset {DARK, LIGHT, BLACK}
+enum HighlighterPreset {DEFAULT_DARK, DEFAULT_LIGHT}
+
 const GoodColorPicker = preload("res://src/ui_widgets/good_color_picker.gd")
 const ShortcutPanel = preload("res://src/ui_parts/shortcut_panel.gd")
 
@@ -9,14 +12,64 @@ var _shortcut_validities: Dictionary[Key, bool] = {}
 # Most settings don't need a default.
 func get_setting_default(setting: String) -> Variant:
 	match setting:
-		"highlighting_symbol_color": return Color("abc9ff")
-		"highlighting_element_color": return Color("ff8ccc")
-		"highlighting_attribute_color": return Color("bce0ff")
-		"highlighting_string_color": return Color("a1ffe0")
-		"highlighting_comment_color": return Color("cdcfd280")
-		"highlighting_text_color": return Color("cdcfeaac")
-		"highlighting_cdata_color": return Color("ffeda1ac")
-		"highlighting_error_color": return Color("ff5555")
+		"base_color":
+			match theme_preset:
+				ThemePreset.DARK: return Color("10101d")
+				ThemePreset.LIGHT: return Color("e6e6ff")
+				ThemePreset.BLACK: return Color("000")
+		"accent_color":
+			match theme_preset:
+				ThemePreset.DARK: return Color("668cff")
+				ThemePreset.LIGHT: return Color("0830a6ff")
+				ThemePreset.BLACK: return Color("7c8dbf")
+		"highlighter_preset":
+			match theme_preset:
+				ThemePreset.DARK, ThemePreset.BLACK: return HighlighterPreset.DEFAULT_DARK
+				ThemePreset.LIGHT: return HighlighterPreset.DEFAULT_LIGHT
+		"highlighting_symbol_color":
+			match highlighter_preset:
+				HighlighterPreset.DEFAULT_DARK: return Color("abc9ff")
+				HighlighterPreset.DEFAULT_LIGHT: return Color("23488c")
+		"highlighting_element_color":
+			match highlighter_preset:
+				HighlighterPreset.DEFAULT_DARK: return Color("ff8ccc")
+				HighlighterPreset.DEFAULT_LIGHT: return Color("8c004b")
+		"highlighting_attribute_color":
+			match highlighter_preset:
+				HighlighterPreset.DEFAULT_DARK: return Color("bce0ff")
+				HighlighterPreset.DEFAULT_LIGHT: return Color("003666")
+		"highlighting_string_color":
+			match highlighter_preset:
+				HighlighterPreset.DEFAULT_DARK: return Color("a1ffe0")
+				HighlighterPreset.DEFAULT_LIGHT: return Color("006644")
+		"highlighting_comment_color":
+			match highlighter_preset:
+				HighlighterPreset.DEFAULT_DARK: return Color("d4d6d980")
+				HighlighterPreset.DEFAULT_LIGHT: return Color("3e3e4080")
+		"highlighting_text_color":
+			match highlighter_preset:
+				HighlighterPreset.DEFAULT_DARK: return Color("d5d7f2aa")
+				HighlighterPreset.DEFAULT_LIGHT: return Color("242433aa")
+		"highlighting_cdata_color":
+			match highlighter_preset:
+				HighlighterPreset.DEFAULT_DARK: return Color("ffeda1ac")
+				HighlighterPreset.DEFAULT_LIGHT: return Color("40360dac")
+		"highlighting_error_color":
+			match highlighter_preset:
+				HighlighterPreset.DEFAULT_DARK: return Color("f55")
+				HighlighterPreset.DEFAULT_LIGHT: return Color("cc0000")
+		"basic_color_valid":
+			match theme_preset:
+				ThemePreset.DARK,ThemePreset.BLACK: return Color("9f9")
+				ThemePreset.LIGHT: return Color("2b2")
+		"basic_color_error":
+			match theme_preset:
+				ThemePreset.DARK,ThemePreset.BLACK: return Color("f99")
+				ThemePreset.LIGHT: return Color("b22")
+		"basic_color_warning":
+			match theme_preset:
+				ThemePreset.DARK,ThemePreset.BLACK: return Color("ee5")
+				ThemePreset.LIGHT: return Color("991")
 		"handle_size": return 1.0 if OS.get_name() != "Android" else 2.0
 		"handle_inner_color": return Color("fff")
 		"handle_color": return Color("111")
@@ -28,11 +81,15 @@ func get_setting_default(setting: String) -> Variant:
 		"selection_rectangle_dash_length": return 10.0
 		"selection_rectangle_color1": return Color("fffc")
 		"selection_rectangle_color2": return Color("000c")
-		"background_color": return Color(0.12, 0.132, 0.2, 1)
-		"grid_color": return Color(0.5, 0.5, 0.5)
-		"basic_color_valid": return Color("9f9")
-		"basic_color_error": return Color("f99")
-		"basic_color_warning": return Color("ee5")
+		"canvas_color":
+			match theme_preset:
+				ThemePreset.DARK: return Color("1f2233")
+				ThemePreset.LIGHT: return Color("fff")
+				ThemePreset.BLACK: return Color("000")
+		"grid_color":
+			match theme_preset:
+				ThemePreset.DARK,ThemePreset.BLACK: return Color("808080")
+				ThemePreset.LIGHT: return Color("666")
 		
 		# Tab bar
 		"tab_mmb_close": return true
@@ -52,6 +109,15 @@ func reset_to_default() -> void:
 	for setting in _get_setting_names():
 		set(setting, get_setting_default(setting))
 
+func reset_theme_items_to_default() -> void:
+	for setting in theme_items:
+		set(setting, get_setting_default(setting))
+	reset_highlighting_items_to_default()
+
+func reset_highlighting_items_to_default() -> void:
+	for setting in highlighting_items:
+		set(setting, get_setting_default(setting))
+
 func _get_setting_names() -> PackedStringArray:
 	var arr := PackedStringArray()
 	for p in get_property_list():
@@ -59,6 +125,71 @@ func _get_setting_names() -> PackedStringArray:
 			if get_setting_default(p.name) != null:
 				arr.append(p.name)
 	return arr
+
+const theme_items: PackedStringArray = [
+	"base_color",
+	"accent_color",
+	"highlighter_preset",
+	"basic_color_valid",
+	"basic_color_error",
+	"basic_color_warning",
+	"handle_size",
+	"handle_inner_color",
+	"handle_color",
+	"handle_hovered_color",
+	"handle_selected_color",
+	"handle_hovered_selected_color",
+	"selection_rectangle_speed",
+	"selection_rectangle_width",
+	"selection_rectangle_dash_length",
+	"selection_rectangle_color1",
+	"selection_rectangle_color2",
+	"canvas_color",
+	"grid_color",
+]
+
+func is_theming_default() -> bool:
+	for setting in theme_items:
+		if get(setting) != get_setting_default(setting):
+			return false
+	return true
+
+# TODO Typed Dictionary wonkiness  Dictionary[ThemePreset, String]. This one was copied
+# from an earlier similar implementation, but I didn't bother to test if it's still
+# necessary because GodSVG was disheveled while I was implementing the feature.
+static func get_theme_preset_value_text_map() -> Dictionary:
+	return {
+		ThemePreset.DARK: Translator.translate("Dark"),
+		ThemePreset.LIGHT: Translator.translate("Light"),
+		ThemePreset.BLACK: Translator.translate("Black (OLED)"),
+	}
+
+const highlighting_items: PackedStringArray = [
+	"highlighting_symbol_color",
+	"highlighting_element_color",
+	"highlighting_attribute_color",
+	"highlighting_string_color",
+	"highlighting_comment_color",
+	"highlighting_text_color",
+	"highlighting_cdata_color",
+	"highlighting_error_color",
+]
+
+func is_highlighting_default() -> bool:
+	for setting in highlighting_items:
+		if get(setting) != get_setting_default(setting):
+			return false
+	return true
+
+# TODO Typed Dictionary wonkiness  Dictionary[ThemePreset, String]. This one was copied
+# from an earlier similar implementation, but I didn't bother to test if it's still
+# necessary because GodSVG was disheveled while I was implementing the feature.
+static func get_highlighter_preset_value_text_map() -> Dictionary:
+	return {
+		HighlighterPreset.DEFAULT_DARK: Translator.translate("Default Dark"),
+		HighlighterPreset.DEFAULT_LIGHT: Translator.translate("Default Light"),
+	}
+
 
 func validate() -> void:
 	if not is_instance_valid(editor_formatter):
@@ -89,10 +220,44 @@ const CURRENT_VERSION = 1
 		if language != new_value:
 			language = new_value
 			emit_changed()
-			Configs.sync_locale.call_deferred()
-			Configs.language_changed.emit.call_deferred()
+			external_call(Configs.sync_locale)
+			external_call(Configs.language_changed.emit)
+
 
 # Theming
+
+@export var theme_preset := ThemePreset.DARK:
+	set(new_value):
+		if theme_preset != new_value:
+			# Validation
+			if not (new_value >= 0 and new_value < ThemePreset.size()):
+				new_value = ThemePreset.DARK
+			theme_preset = new_value
+			emit_changed()
+
+@export var base_color := Color("10101d"):
+	set(new_value):
+		if base_color != new_value:
+			base_color = new_value
+			emit_changed()
+			external_call(Configs.sync_theme)
+
+@export var accent_color := Color("668cff"):
+	set(new_value):
+		if accent_color != new_value:
+			accent_color = new_value
+			emit_changed()
+			external_call(Configs.sync_theme)
+
+
+@export var highlighter_preset := HighlighterPreset.DEFAULT_DARK:
+	set(new_value):
+		if highlighter_preset != new_value:
+			# Validation
+			if not (new_value >= 0 and new_value < HighlighterPreset.size()):
+				new_value = HighlighterPreset.DEFAULT_DARK
+			highlighter_preset = new_value
+			emit_changed()
 
 @export var highlighting_symbol_color := Color("abc9ff"):
 	set(new_value):
@@ -149,6 +314,29 @@ const CURRENT_VERSION = 1
 			highlighting_error_color = new_value
 			emit_changed()
 			Configs.highlighting_colors_changed.emit()
+
+
+@export var basic_color_valid := Color("9f9"):
+	set(new_value):
+		if basic_color_valid != new_value:
+			basic_color_valid = new_value
+			emit_changed()
+			Configs.basic_colors_changed.emit()
+
+@export var basic_color_error := Color("f99"):
+	set(new_value):
+		if basic_color_error != new_value:
+			basic_color_error = new_value
+			emit_changed()
+			Configs.basic_colors_changed.emit()
+
+@export var basic_color_warning := Color("ee5"):
+	set(new_value):
+		if basic_color_warning != new_value:
+			basic_color_warning = new_value
+			emit_changed()
+			Configs.basic_colors_changed.emit()
+
 
 const HANDLE_SIZE_MIN = 0.5
 const HANDLE_SIZE_MAX = 4.0
@@ -257,12 +445,12 @@ const MAX_SELECTION_RECTANGLE_DASH_LENGTH = 600.0
 			emit_changed()
 			Configs.selection_rectangle_visuals_changed.emit()
 
-@export var background_color := Color(0.12, 0.132, 0.2, 1):
+@export var canvas_color := Color(0.12, 0.132, 0.2, 1):
 	set(new_value):
-		if background_color != new_value:
-			background_color = new_value
+		if canvas_color != new_value:
+			canvas_color = new_value
 			emit_changed()
-			Configs.sync_background_color.call_deferred()
+			external_call(Configs.sync_canvas_color)
 
 @export var grid_color := Color(0.5, 0.5, 0.5):
 	set(new_value):
@@ -270,27 +458,6 @@ const MAX_SELECTION_RECTANGLE_DASH_LENGTH = 600.0
 			grid_color = new_value
 			emit_changed()
 			Configs.grid_color_changed.emit()
-
-@export var basic_color_valid := Color("9f9"):
-	set(new_value):
-		if basic_color_valid != new_value:
-			basic_color_valid = new_value
-			emit_changed()
-			Configs.basic_colors_changed.emit()
-
-@export var basic_color_error := Color("f99"):
-	set(new_value):
-		if basic_color_error != new_value:
-			basic_color_error = new_value
-			emit_changed()
-			Configs.basic_colors_changed.emit()
-
-@export var basic_color_warning := Color("ee5"):
-	set(new_value):
-		if basic_color_warning != new_value:
-			basic_color_warning = new_value
-			emit_changed()
-			Configs.basic_colors_changed.emit()
 
 
 # Tab bar
@@ -333,7 +500,7 @@ const MAX_SELECTION_RECTANGLE_DASH_LENGTH = 600.0
 		if use_filename_for_window_title != new_value:
 			use_filename_for_window_title = new_value
 			emit_changed()
-			HandlerGUI.update_window_title.call_deferred()
+			external_call(HandlerGUI.update_window_title)
 
 enum ScalingApproach {AUTO, CONSTANT_075, CONSTANT_100, CONSTANT_125, CONSTANT_150,
 		CONSTANT_175, CONSTANT_200, CONSTANT_250, CONSTANT_300, CONSTANT_400, MAX}
@@ -353,7 +520,7 @@ enum ScalingApproach {AUTO, CONSTANT_075, CONSTANT_100, CONSTANT_125, CONSTANT_1
 		if uncapped_framerate != new_value:
 			uncapped_framerate = new_value
 			emit_changed()
-			Configs.sync_max_fps.call_deferred()
+			external_call(Configs.sync_max_fps)
 
 const MAX_FPS_MIN = 12
 const MAX_FPS_MAX = 600
@@ -367,10 +534,11 @@ const MAX_FPS_MAX = 600
 		if max_fps != new_value:
 			max_fps = new_value
 			emit_changed()
-			Configs.sync_max_fps.call_deferred()
+			external_call(Configs.sync_max_fps)
 
 
 # Session
+
 const MAX_SNAP = 16384
 @export var snap := -0.5:  # Negative when disabled.
 	set(new_value):

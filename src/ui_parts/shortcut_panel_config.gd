@@ -38,8 +38,13 @@ func update_shortcut_slots() -> void:
 		
 		var icon_presentation := PanelContainer.new()
 		icon_presentation.custom_minimum_size = Vector2(28, 28)
-		if not current_shortcut.is_empty():
+		if current_shortcut.is_empty():
+			var sb := icon_presentation.get_theme_stylebox("panel").duplicate()
+			sb.border_color.a *= 0.5
+			icon_presentation.add_theme_stylebox_override("panel", sb)
+		else:
 			var icon := TextureRect.new()
+			icon.modulate = ThemeUtils.tinted_contrast_color
 			icon.stretch_mode = TextureRect.STRETCH_KEEP_CENTERED
 			icon.texture = ShortcutUtils.get_action_icon(current_shortcut)
 			icon_presentation.add_child(icon)

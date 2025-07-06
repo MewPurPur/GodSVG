@@ -1,14 +1,16 @@
 # This is similar to SettingFrame, but specifically for dropdowns without a default value.
-extends Control
+extends MarginContainer
 
 const Dropdown = preload("res://src/ui_widgets/dropdown.gd")
 
 signal value_changed
+signal defaults_applied
 
 const DropdownScene = preload("res://src/ui_widgets/dropdown.tscn")
 
 var getter: Callable
 var setter: Callable
+var disabled_check_callback: Callable
 var text: String
 
 var ci := get_canvas_item()
@@ -16,22 +18,35 @@ var dropdown: Dropdown
 
 var is_hovered := false
 
+@onready var button: Button = $HBoxContainer/Button
+@onready var control: Control = $HBoxContainer/Control
+
 func setup_dropdown(values: Array, value_text_map: Dictionary) -> void:
 	dropdown = DropdownScene.instantiate()
 	dropdown.values = values
 	dropdown.value_text_map = value_text_map
 
 func _ready() -> void:
-	add_child(dropdown)
+	button.text = Translator.translate("Apply defaults")
+	control.add_child(dropdown)
 	dropdown.value_changed.connect(_dropdown_modification)
 	mouse_entered.connect(_on_mouse_entered)
 	mouse_exited.connect(_on_mouse_exited)
 	resized.connect(setup_size)
 	dropdown.set_value(getter.call())
-	setup_size()
+	button_update_disabled()
+	button.pressed.connect(defaults_applied.emit)
+	control.resized.connect(setup_size.call_deferred)
+	setup_size.call_deferred()
+
+func button_update_disabled() -> void:
+	var should_disable: bool = disabled_check_callback.call()
+	button.disabled = should_disable
+	button.mouse_default_cursor_shape = Control.CURSOR_ARROW if should_disable else\
+			Control.CURSOR_POINTING_HAND
 
 func setup_size() -> void:
-	dropdown.position = Vector2(size.x - 102, 3)
+	dropdown.position = Vector2(control.size.x - 102, 2)
 	dropdown.size = Vector2(98, 22)
 	queue_redraw()
 
@@ -53,5 +68,5 @@ func _on_mouse_exited() -> void:
 func _draw() -> void:
 	if is_hovered:
 		get_theme_stylebox("hover", "FlatButton").draw(ci, Rect2(Vector2.ZERO, size))
-	ThemeUtils.regular_font.draw_string(ci, Vector2(4, 18), text,
-			HORIZONTAL_ALIGNMENT_LEFT, -1, 13, Color(1, 1, 1, 0.9))
+	ThemeUtils.regular_font.draw_string(ci, Vector2(4, 20), text,
+			HORIZONTAL_ALIGNMENT_LEFT, -1, 13, ThemeUtils.text_color)

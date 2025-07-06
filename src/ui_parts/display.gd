@@ -41,7 +41,7 @@ func update_translations() -> void:
 
 func update_theme() -> void:
 	var toolbar_stylebox := StyleBoxFlat.new()
-	toolbar_stylebox.bg_color = ThemeUtils.overlay_panel_inner_color.lerp(Color.WHITE, 0.01)
+	toolbar_stylebox.bg_color = ThemeUtils.soft_base_color
 	toolbar_stylebox.set_content_margin_all(4)
 	toolbar.add_theme_stylebox_override("panel", toolbar_stylebox)
 	
@@ -49,7 +49,7 @@ func update_theme() -> void:
 	frame.draw_center = false
 	frame.border_width_left = 2
 	frame.border_width_top = 2
-	frame.border_color = ThemeUtils.connected_button_border_color_pressed
+	frame.border_color = ThemeUtils.selected_tab_color.lerp(ThemeUtils.max_contrast_color, 0.16)
 	frame.content_margin_left = 2.0
 	frame.content_margin_top = 2.0
 	viewport_panel.add_theme_stylebox_override("panel", frame)

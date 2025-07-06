@@ -63,6 +63,9 @@ focus_mode = 0
 mouse_filter = 1
 mouse_default_cursor_shape = 2
 theme_type_variation = &"TranslucentButton"
+theme_override_colors/icon_normal_color = Color(1, 1, 1, 1)
+theme_override_colors/icon_pressed_color = Color(1, 1, 1, 1)
+theme_override_colors/icon_hover_color = Color(1, 1, 1, 1)
 icon = ExtResource("3_5q1ti")
 expand_icon = true
 
@@ -73,6 +76,9 @@ focus_mode = 0
 mouse_filter = 1
 mouse_default_cursor_shape = 2
 theme_type_variation = &"TranslucentButton"
+theme_override_colors/icon_normal_color = Color(1, 1, 1, 1)
+theme_override_colors/icon_pressed_color = Color(1, 1, 1, 1)
+theme_override_colors/icon_hover_color = Color(1, 1, 1, 1)
 icon = ExtResource("4_0irlu")
 expand_icon = true
 

@@ -7,8 +7,8 @@ extends VBoxContainer
 @onready var options_button: Button = %MetaActions/OptionsButton
 
 func _ready() -> void:
-	Configs.theme_changed.connect(setup_theme)
-	setup_theme()
+	Configs.theme_changed.connect(update_theme)
+	update_theme()
 	State.parsing_finished.connect(update_error)
 	Configs.highlighting_colors_changed.connect(update_syntax_highlighter)
 	update_syntax_highlighter()
@@ -26,15 +26,15 @@ func update_error(err_id: SVGParser.ParseError) -> void:
 	if err_id == SVGParser.ParseError.OK:
 		if error_bar.visible:
 			error_bar.hide()
-			setup_theme()
+			update_theme()
 	else:
 		# When the error is shown, the code editor's theme is changed to match up.
 		if not error_bar.visible:
 			error_bar.show()
 			error_label.text = SVGParser.get_error_string(err_id)
-			setup_theme()
+			update_theme()
 
-func setup_theme() -> void:
+func update_theme() -> void:
 	# Set up the code edit.
 	code_edit.begin_bulk_theme_override()
 	const CONST_ARR_1: PackedStringArray = ["normal", "focus", "hover"]
@@ -43,6 +43,7 @@ func setup_theme() -> void:
 		stylebox.corner_radius_top_right = 0
 		stylebox.corner_radius_top_left = 0
 		stylebox.border_width_top = 2
+		stylebox.bg_color = ThemeUtils.line_edit_inner_color.lerp(ThemeUtils.extreme_theme_color, 0.1)
 		if error_bar.visible:
 			stylebox.corner_radius_bottom_right = 0
 			stylebox.corner_radius_bottom_left = 0
@@ -71,7 +72,7 @@ func setup_theme() -> void:
 	var panel_stylebox := get_theme_stylebox("panel", "PanelContainer")
 	# Set up the top panel.
 	var top_stylebox := panel_stylebox.duplicate()
-	top_stylebox.border_color = code_edit.get_theme_stylebox("normal").border_color
+	top_stylebox.border_color = ThemeUtils.subtle_panel_border_color
 	top_stylebox.border_width_bottom = 0
 	top_stylebox.corner_radius_bottom_right = 0
 	top_stylebox.corner_radius_bottom_left = 0
@@ -82,7 +83,7 @@ func setup_theme() -> void:
 	panel_container.add_theme_stylebox_override("panel", top_stylebox)
 	# Set up the bottom panel.
 	var bottom_stylebox := panel_stylebox.duplicate()
-	bottom_stylebox.border_color = code_edit.get_theme_stylebox("normal").border_color
+	bottom_stylebox.border_color = ThemeUtils.subtle_panel_border_color
 	bottom_stylebox.corner_radius_top_right = 0
 	bottom_stylebox.corner_radius_top_left = 0
 	bottom_stylebox.content_margin_left = 10.0

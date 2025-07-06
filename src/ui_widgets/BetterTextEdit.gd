@@ -2,8 +2,6 @@
 class_name BetterTextEdit extends TextEdit
 ## A TextEdit with some improvements.
 
-const caret_color = Color("defd")
-
 var _surface := RenderingServer.canvas_item_create()
 var _timer := Timer.new()
 
@@ -96,7 +94,8 @@ func _redraw_caret() -> void:
 			caret_end.x += char_width
 		else:
 			caret_end.y -= char_size.y + 1
-		RenderingServer.canvas_item_add_line(_surface, caret_pos, caret_end, caret_color, 1)
+		RenderingServer.canvas_item_add_line(_surface, caret_pos, caret_end,
+				ThemeUtils.caret_color, 1)
 
 var _blonk := true
 func blink() -> void:

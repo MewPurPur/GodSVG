@@ -16,7 +16,8 @@ var currently_edited_idx := -1
 @onready var colors_container: HFlowContainer = $MainContainer/ColorsContainer
 @onready var warning_sign: TextureRect = $WarningSign/TextureRect
 
-func setup_theme() -> void:
+func update_theme() -> void:
+	warning_sign.modulate = ThemeUtils.warning_icon_color
 	palette_button.begin_bulk_theme_override()
 	const CONST_ARR: PackedStringArray = ["normal", "hover", "pressed"]
 	for theme_type in CONST_ARR:
@@ -45,8 +46,8 @@ func _ready() -> void:
 	name_edit.text_changed.connect(_on_name_edit_text_changed)
 	name_edit.text_submitted.connect(_on_name_edit_text_submitted)
 	mouse_exited.connect(clear_proposed_drop)
-	Configs.theme_changed.connect(setup_theme)
-	setup_theme()
+	Configs.theme_changed.connect(update_theme)
+	update_theme()
 
 # Rebuilds the content of the colors container.
 func rebuild_colors() -> void:
@@ -162,7 +163,7 @@ func set_label_text(new_text: String) -> void:
 	if palette.title.is_empty():
 		for theme_type in CONST_ARR:
 			palette_button.add_theme_color_override(theme_type,
-					ThemeUtils.common_subtle_text_color)
+					ThemeUtils.subtle_text_color)
 	else:
 		if not Configs.savedata.is_palette_valid(palette):
 			for theme_type in CONST_ARR:

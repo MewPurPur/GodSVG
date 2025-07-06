@@ -88,7 +88,7 @@ icon: Texture2D = null, dim_text := "") -> Button:
 		var label := Label.new()
 		label.text = dim_text
 		label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
-		var shortcut_text_color := ThemeUtils.common_subtle_text_color
+		var shortcut_text_color := ThemeUtils.subtle_text_color
 		if disabled:
 			shortcut_text_color.a *= 0.75
 		label.add_theme_color_override("font_color", shortcut_text_color)
@@ -165,7 +165,7 @@ start_pressed: bool, dim_text := "") -> CheckBox:
 		var label := Label.new()
 		label.text = dim_text
 		label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
-		var shortcut_text_color := ThemeUtils.common_subtle_text_color
+		var shortcut_text_color := ThemeUtils.subtle_text_color
 		#if disabled:
 			#shortcut_text_color.a *= 0.75
 		label.add_theme_color_override("font_color", shortcut_text_color)
@@ -242,20 +242,18 @@ min_width := -1.0, max_height := -1.0, separator_indices := PackedInt32Array()) 
 	# Setup the title.
 	var title_container := PanelContainer.new()
 	var stylebox := StyleBoxFlat.new()
-	stylebox.bg_color = Color("0003")
+	stylebox.bg_color = Color(ThemeUtils.extreme_theme_color, 0.2)
 	stylebox.content_margin_bottom = 3.0
 	stylebox.content_margin_left = 8.0
 	stylebox.content_margin_right = 8.0
 	stylebox.border_width_bottom = 2
-	stylebox.border_color = ThemeUtils.common_panel_border_color
+	stylebox.border_color = ThemeUtils.basic_panel_border_color
 	title_container.add_theme_stylebox_override("panel", stylebox)
 	var title_label := Label.new()
 	title_label.text = top_title
 	title_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	title_label.begin_bulk_theme_override()
-	title_label.add_theme_color_override("font_color", Color("def"))
+	title_label.theme_type_variation = "TitleLabel"
 	title_label.add_theme_font_size_override("font_size", 14)
-	title_label.end_bulk_theme_override()
 	title_container.add_child(title_label)
 	main_container.add_child(title_container)
 	# Continue with regular setup logic.

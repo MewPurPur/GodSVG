@@ -103,11 +103,11 @@ func _draw() -> void:
 			MIN_VALUE) / MAX_VALUE
 	# Create a stylebox that'll occupy the exact amount of space.
 	var fill_stylebox := StyleBoxFlat.new()
-	fill_stylebox.bg_color = Color("def")
+	fill_stylebox.bg_color = ThemeUtils.tinted_contrast_color
 	if not slider_dragged and slider_hovered:
-		fill_stylebox.bg_color.a = 0.75
+		fill_stylebox.bg_color.a = 0.8
 	elif not slider_hovered:
-		fill_stylebox.bg_color.a = 0.5
+		fill_stylebox.bg_color.a = 0.6
 	fill_stylebox.draw(ci, Rect2(get_size().x - BUTTON_WIDTH,
 			get_size().y - 2 - fill_height, BUTTON_WIDTH - 2, fill_height))
 	if slider_dragged:

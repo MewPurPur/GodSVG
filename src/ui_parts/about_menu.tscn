@@ -41,10 +41,12 @@ layout_mode = 2
 [node name="VersionLabel" type="Label" parent="VBoxContainer/HBoxContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
+theme_type_variation = &"TitleLabel"
 theme_override_font_sizes/font_size = 16
 
 [node name="CopyLabel" type="Label" parent="VBoxContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
+theme_type_variation = &"TitleLabel"
 theme_override_constants/line_spacing = 0
 theme_override_font_sizes/font_size = 12
 text = "© 2023 MewPurPur
@@ -75,12 +77,14 @@ theme_override_constants/separation = 8
 [node name="ProjectFounderLabel" type="Label" parent="VBoxContainer/TabContainer/Authors/MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
+theme_type_variation = &"TitleLabel"
 theme_override_font_sizes/font_size = 16
 horizontal_alignment = 1
 
 [node name="DevelopersLabel" type="Label" parent="VBoxContainer/TabContainer/Authors/MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
+theme_type_variation = &"TitleLabel"
 theme_override_font_sizes/font_size = 16
 horizontal_alignment = 1
 
@@ -93,6 +97,7 @@ columns = 2
 [node name="TranslatorsLabel" type="Label" parent="VBoxContainer/TabContainer/Authors/MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
+theme_type_variation = &"TitleLabel"
 theme_override_font_sizes/font_size = 16
 horizontal_alignment = 1
 
@@ -126,6 +131,7 @@ theme_override_constants/separation = 6
 
 [node name="Label" type="Label" parent="VBoxContainer/TabContainer/Donors/MarginContainer/VBoxContainer/DiamondDonors"]
 layout_mode = 2
+theme_type_variation = &"TitleLabel"
 theme_override_font_sizes/font_size = 16
 horizontal_alignment = 1
 
@@ -143,6 +149,7 @@ theme_override_constants/separation = 6
 
 [node name="Label" type="Label" parent="VBoxContainer/TabContainer/Donors/MarginContainer/VBoxContainer/GoldenDonors"]
 layout_mode = 2
+theme_type_variation = &"TitleLabel"
 theme_override_font_sizes/font_size = 16
 horizontal_alignment = 1
 
@@ -159,6 +166,7 @@ theme_override_constants/separation = 6
 
 [node name="Label" type="Label" parent="VBoxContainer/TabContainer/Donors/MarginContainer/VBoxContainer/Donors"]
 layout_mode = 2
+theme_type_variation = &"TitleLabel"
 theme_override_font_sizes/font_size = 16
 horizontal_alignment = 1
 
@@ -176,6 +184,7 @@ theme_override_constants/separation = 6
 
 [node name="Label" type="Label" parent="VBoxContainer/TabContainer/Donors/MarginContainer/VBoxContainer/PastDiamondDonors"]
 layout_mode = 2
+theme_type_variation = &"TitleLabel"
 theme_override_font_sizes/font_size = 16
 horizontal_alignment = 1
 
@@ -193,6 +202,7 @@ theme_override_constants/separation = 6
 
 [node name="Label" type="Label" parent="VBoxContainer/TabContainer/Donors/MarginContainer/VBoxContainer/PastGoldenDonors"]
 layout_mode = 2
+theme_type_variation = &"TitleLabel"
 theme_override_font_sizes/font_size = 16
 horizontal_alignment = 1
 
@@ -210,6 +220,7 @@ theme_override_constants/separation = 6
 
 [node name="Label" type="Label" parent="VBoxContainer/TabContainer/Donors/MarginContainer/VBoxContainer/PastDonors"]
 layout_mode = 2
+theme_type_variation = &"TitleLabel"
 theme_override_font_sizes/font_size = 16
 horizontal_alignment = 1
 

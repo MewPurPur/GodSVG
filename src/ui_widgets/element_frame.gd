@@ -44,6 +44,7 @@ func _ready() -> void:
 	element.ancestor_attribute_changed.connect(title_bar.queue_redraw.unbind(1))
 	element.descendant_attribute_changed.connect(title_bar.queue_redraw.unbind(1))
 	element.attribute_changed.connect(title_bar.queue_redraw.unbind(1))
+	Configs.theme_changed.connect(determine_selection_highlight)
 	determine_selection_highlight()
 	title_bar.queue_redraw()
 	
@@ -222,6 +223,21 @@ func determine_selection_highlight() -> void:
 		title_color = Color.from_hsv(0.625, 0.45, 0.17)
 		border_color = Color.from_hsv(0.6, 0.5, 0.35)
 	
+	if not ThemeUtils.is_theme_dark:
+		color.s *= 0.2
+		color.v = lerpf(color.v, 1.0, 0.875)
+		title_color.s *= 0.2
+		title_color.v = lerpf(title_color.v, 1.0, 0.875)
+		border_color.v = lerpf(border_color.v, 1.0, 0.8)
+		if is_hovered:
+			color.s = lerpf(color.s, 1.0, 0.05)
+			title_color.s = lerpf(title_color.s, 1.0, 0.05)
+			border_color.v *= 0.9
+		if is_selected:
+			color.s = lerpf(color.s, 1.0, 0.15)
+			title_color.s = lerpf(title_color.s, 1.0, 0.15)
+			border_color.v *= 0.65
+	
 	var depth := element.xid.size() - 1
 	var depth_tint := depth * 0.12
 	if depth > 0:
@@ -282,14 +298,14 @@ func _on_title_bar_draw() -> void:
 			HORIZONTAL_ALIGNMENT_LEFT, 180, 12).x / 2
 	ThemeUtils.mono_font.draw_string(title_bar_ci, Vector2(half_bar_width -\
 			half_title_width + element_icon_size.x / 2, 15), element.name,
-			HORIZONTAL_ALIGNMENT_LEFT, 180, 12)
+			HORIZONTAL_ALIGNMENT_LEFT, 180, 12, ThemeUtils.editable_text_color)
 	element_icon.draw_rect(title_bar_ci, Rect2(Vector2(half_bar_width - half_title_width -\
-			element_icon_size.x + 6, 1).round(), element_icon_size), false)
+			element_icon_size.x + 6, 1).round(), element_icon_size), false, ThemeUtils.tinted_contrast_color)
 	
 	var element_warnings := element.get_config_warnings()
 	if not element_warnings.is_empty():
 		warning_icon.draw_rect(title_bar_ci, Rect2(Vector2(title_bar.size.x - 23, 2),
-				warning_icon.get_size()), false)
+				warning_icon.get_size()), false, ThemeUtils.warning_icon_color)
 
 # Block dragging from starting when pressing the title button.
 func _on_title_button_gui_input(event: InputEvent) -> void:

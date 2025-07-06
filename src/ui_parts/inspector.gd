@@ -17,8 +17,8 @@ func _ready() -> void:
 
 func update_theme() -> void:
 	color = Color.TRANSPARENT
-	border_color = ThemeUtils.common_panel_inner_color
-	title_color = Color(ThemeUtils.common_panel_inner_color, 0.4)
+	border_color = ThemeUtils.subtle_panel_border_color
+	title_color = ThemeUtils.basic_panel_inner_color
 
 func update_translation() -> void:
 	add_button.text = Translator.translate("Add element")

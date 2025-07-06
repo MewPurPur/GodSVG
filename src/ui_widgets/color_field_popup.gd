@@ -113,7 +113,7 @@ func update_palettes(search_text := "") -> void:
 		if not palette.title.is_empty():
 			var palette_label := Label.new()
 			palette_label.text = palette.title
-			palette_label.add_theme_font_size_override("font_size", 15)
+			palette_label.theme_type_variation = "TitleLabel"
 			palette_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 			palette_container.add_child(palette_label)
 		

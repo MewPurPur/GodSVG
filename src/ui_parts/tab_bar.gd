@@ -38,12 +38,7 @@ func _ready() -> void:
 	set_process(false)
 
 func _draw() -> void:
-	var background_stylebox: StyleBoxFlat =\
-			get_theme_stylebox("tab_unselected", "TabContainer").duplicate()
-	background_stylebox.corner_radius_top_left += 1
-	background_stylebox.corner_radius_top_right += 1
-	background_stylebox.bg_color = Color(ThemeUtils.common_panel_inner_color, 0.4)
-	draw_style_box(background_stylebox, get_rect())
+	get_theme_stylebox("tabbar_background", "TabContainer").draw(ci, get_rect())
 	
 	var has_transient_tab := not State.transient_tab_path.is_empty()
 	var mouse_pos := get_local_mouse_position()
@@ -74,14 +69,16 @@ func _draw() -> void:
 				var text_line := TextLine.new()
 				text_line.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 				text_line.add_string(current_tab_name, ThemeUtils.regular_font, 13)
-				text_line.width = text_line_width
+				text_line.width = text_line_width - 2
 				text_line.draw(ci, rect.position + Vector2(4, 3),
 						get_theme_color("font_selected_color", "TabContainer"))
-			var close_rect := get_close_button_rect()
-			if close_rect.has_area():
-				var close_icon_size := close_icon.get_size()
-				draw_texture_rect(close_icon, Rect2(close_rect.position +\
-						(close_rect.size - close_icon_size) / 2.0, close_icon_size), false)
+			if not drawing_transient_tab:
+				var close_rect := get_close_button_rect()
+				if close_rect.has_area():
+					var close_icon_size := close_icon.get_size()
+					draw_texture_rect(close_icon, Rect2(close_rect.position +\
+							(close_rect.size - close_icon_size) / 2.0, close_icon_size), false,
+							ThemeUtils.tinted_contrast_color)
 		else:
 			var is_hovered := rect.has_point(mouse_pos)
 			var tab_style := "tab_hovered" if is_hovered else "tab_unselected"
@@ -101,7 +98,8 @@ func _draw() -> void:
 	var add_button_rect := get_add_button_rect()
 	var plus_icon_size := plus_icon.get_size()
 	draw_texture_rect(plus_icon, Rect2(add_button_rect.position +\
-			(add_button_rect.size - plus_icon_size) / 2.0, plus_icon_size), false)
+			(add_button_rect.size - plus_icon_size) / 2.0, plus_icon_size), false,
+			ThemeUtils.tinted_contrast_color)
 	
 	var scroll_backwards_rect := get_scroll_backwards_area_rect()
 	if scroll_backwards_rect.has_area():
@@ -112,7 +110,7 @@ func _draw() -> void:
 		else:
 			var line_x := scroll_backwards_rect.end.x + 1
 			draw_line(Vector2(line_x, 0), Vector2(line_x, size.y),
-					ThemeUtils.common_panel_border_color)
+					ThemeUtils.basic_panel_border_color)
 			if scroll_backwards_rect.has_point(mouse_pos):
 				var stylebox_theme := "pressed" if\
 						Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT) else "hover"
@@ -131,7 +129,7 @@ func _draw() -> void:
 		else:
 			var line_x := scroll_forwards_rect.position.x
 			draw_line(Vector2(line_x, 0), Vector2(line_x, size.y),
-					ThemeUtils.common_panel_border_color)
+					ThemeUtils.basic_panel_border_color)
 			if scroll_forwards_rect.has_point(mouse_pos):
 				var stylebox_theme := "pressed" if\
 						Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT) else "hover"

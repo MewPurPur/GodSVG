@@ -17,6 +17,13 @@ var current_link := Link.NONE
 @onready var title_label: Label = %TitleLabel
 
 func _ready() -> void:
+	for button: Button in [github_link, ko_fi_link, patreon_link]:
+		button.begin_bulk_theme_override()
+		button.add_theme_color_override("icon_normal_color", Color.WHITE)
+		button.add_theme_color_override("icon_hover_color", Color.WHITE)
+		button.add_theme_color_override("icon_pressed_color", Color.WHITE)
+		button.end_bulk_theme_override()
+	
 	title_label.text = Translator.translate("Links to donation platforms")
 	close_button.text = Translator.translate("Cancel")
 	close_button.pressed.connect(queue_free)
@@ -54,7 +61,7 @@ func set_link(new_link: Link) -> void:
 	current_link = new_link
 	if new_link == Link.NONE:
 		clarifications.clear()
-		clarifications.push_color(ThemeUtils.common_subtle_text_color)
+		clarifications.push_color(ThemeUtils.subtle_text_color)
 		clarifications.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		clarifications.add_text("\nHover a platform for details.")
 		return

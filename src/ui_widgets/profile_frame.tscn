@@ -2,11 +2,29 @@
 
 [ext_resource type="Script" uid="uid://dfp0yap8evr57" path="res://src/ui_widgets/profile_frame.gd" id="1_urnhl"]
 
-[node name="ProfileFrame" type="Control"]
+[node name="ProfileFrame" type="MarginContainer"]
 custom_minimum_size = Vector2(0, 28)
-layout_mode = 3
 anchors_preset = 10
 anchor_right = 1.0
+offset_bottom = 28.0
 grow_horizontal = 2
-mouse_filter = 1
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_right = 2
+theme_override_constants/margin_bottom = 2
 script = ExtResource("1_urnhl")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Control" type="Control" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 1.5
+mouse_filter = 2
+
+[node name="Button" type="Button" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+mouse_filter = 1
+theme_type_variation = &"TranslucentButton"

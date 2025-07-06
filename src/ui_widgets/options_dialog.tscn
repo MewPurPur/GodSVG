@@ -1,7 +1,6 @@
-[gd_scene load_steps=3 format=3 uid="uid://rsf6f7pytv7u"]
+[gd_scene load_steps=2 format=3 uid="uid://rsf6f7pytv7u"]
 
 [ext_resource type="Script" uid="uid://vjqyfycqgf8h" path="res://src/ui_widgets/options_dialog.gd" id="1_shf74"]
-[ext_resource type="FontFile" uid="uid://dc0w4sx0h0fui" path="res://assets/fonts/FontBold.ttf" id="2_it3qh"]
 
 [node name="OptionsDialog" type="PanelContainer"]
 anchors_preset = 8
@@ -28,8 +27,7 @@ theme_override_constants/separation = 8
 
 [node name="Title" type="Label" parent="MainContainer/TextContainer"]
 layout_mode = 2
-theme_override_fonts/font = ExtResource("2_it3qh")
-theme_override_font_sizes/font_size = 16
+theme_type_variation = &"BoldTitleLabel"
 horizontal_alignment = 1
 
 [node name="Label" type="RichTextLabel" parent="MainContainer/TextContainer"]

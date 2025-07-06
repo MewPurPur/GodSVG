@@ -11,13 +11,6 @@ const attribute_name = "d"  # Never propagates.
 
 const STRIP_HEIGHT = 22.0
 
-@export var absolute_button_normal: StyleBoxFlat
-@export var absolute_button_hovered: StyleBoxFlat
-@export var absolute_button_pressed: StyleBoxFlat
-@export var relative_button_normal: StyleBoxFlat
-@export var relative_button_hovered: StyleBoxFlat
-@export var relative_button_pressed: StyleBoxFlat
-
 signal focused
 
 const MiniNumberFieldScene = preload("mini_number_field.tscn")
@@ -59,6 +52,9 @@ func set_value(new_value: String, save := false) -> void:
 
 func setup() -> void:
 	Configs.language_changed.connect(update_translation)
+	update_translation()
+	Configs.theme_changed.connect(update_theme)
+	update_theme()
 	sync()
 	element.attribute_changed.connect(_on_element_attribute_changed)
 	line_edit.tooltip_text = attribute_name
@@ -77,7 +73,6 @@ func setup() -> void:
 	# This is because the widget can sometimes be created before they are cleared
 	# from a past state of the SVG. So we trigger this method to update those.
 	_on_selections_or_hover_changed()
-	update_translation()
 
 
 func get_inner_rect(index: int) -> Rect2:
@@ -91,6 +86,12 @@ func _on_element_attribute_changed(attribute_changed: String) -> void:
 
 func update_translation() -> void:
 	line_edit.placeholder_text = Translator.translate("No path data")
+
+func update_theme() -> void:
+	mini_line_edit_stylebox = get_theme_stylebox("normal", "MiniLineEdit")
+	mini_line_edit_font_size = get_theme_font_size("font_size", "MiniLineEdit")
+	mini_line_edit_font_color = get_theme_color("font_color", "MiniLineEdit")
+	queue_redraw()
 
 func _on_line_edit_focus_entered() -> void:
 	focused.emit()
@@ -237,11 +238,10 @@ func _commands_draw() -> void:
 		if selected or hovered:
 			var stylebox := StyleBoxFlat.new()
 			stylebox.set_corner_radius_all(3)
-			if selected:
-				stylebox.bg_color = Color(0.7, 0.7, 1.0, 0.18) if hovered else\
-						Color(0.6, 0.6, 1.0, 0.16)
-			else:
-				stylebox.bg_color = Color(0.8, 0.8, 1.0, 0.05)
+			stylebox.bg_color = ThemeUtils.soft_pressed_overlay_color if selected else\
+					Color.TRANSPARENT
+			if hovered:
+				stylebox.bg_color = stylebox.bg_color.blend(Color(ThemeUtils.soft_hover_overlay_color))
 			stylebox.draw(ci, Rect2(Vector2(0, v_offset), Vector2(commands_container.size.x,
 					STRIP_HEIGHT)))
 		# Draw the child controls. They are going to be drawn, not added as a node unless
@@ -253,14 +253,14 @@ func _commands_draw() -> void:
 		var cmd_char := cmd.command_char
 		# Draw the action button.
 		more_icon.draw_rect(ci, Rect2(Vector2(commands_container.size.x - 19, 4 + v_offset),
-				Vector2(14, 14)), false, ThemeUtils.icon_normal_color)
+				Vector2(14, 14)), false, ThemeUtils.context_icon_normal_color)
 		# Draw the relative/absolute button.
-		var relative_stylebox := absolute_button_normal if\
-				Utils.is_string_upper(cmd_char) else relative_button_normal
+		var relative_stylebox := get_theme_stylebox("normal", "PathCommandAbsoluteButton") if\
+				Utils.is_string_upper(cmd_char) else get_theme_stylebox("normal", "PathCommandRelativeButton")
 		relative_stylebox.draw(ci, Rect2(Vector2(3, 2 + v_offset),
 				Vector2(18, STRIP_HEIGHT - 4)))
 		ThemeUtils.mono_font.draw_string(ci, Vector2(6, v_offset + STRIP_HEIGHT - 6),
-				cmd_char, HORIZONTAL_ALIGNMENT_CENTER, 12, 13)
+				cmd_char, HORIZONTAL_ALIGNMENT_CENTER, 12, 13, ThemeUtils.text_color)
 		# Draw the fields.
 		var rect := Rect2(Vector2(25, 2 + v_offset), Vector2(44, 18))
 		match cmd_char.to_upper():
@@ -379,24 +379,11 @@ func setup_path_command_controls(idx: int) -> Control:
 	relative_button.focus_mode = Control.FOCUS_NONE
 	relative_button.mouse_filter = Control.MOUSE_FILTER_PASS
 	relative_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-	relative_button.begin_bulk_theme_override()
 	relative_button.add_theme_font_override("font", ThemeUtils.mono_font)
-	relative_button.add_theme_color_override("font_color", Color(1, 1, 1))
-	# Disabled styleboxes are unused, but must be set for the correct content margins.
-	if is_absolute:
-		relative_button.add_theme_stylebox_override("disabled", absolute_button_normal)
-		relative_button.add_theme_stylebox_override("normal", absolute_button_normal)
-		relative_button.add_theme_stylebox_override("hover", absolute_button_hovered)
-		relative_button.add_theme_stylebox_override("pressed", absolute_button_pressed)
-	else:
-		relative_button.add_theme_stylebox_override("disabled", relative_button_normal)
-		relative_button.add_theme_stylebox_override("normal", relative_button_normal)
-		relative_button.add_theme_stylebox_override("hover", relative_button_hovered)
-		relative_button.add_theme_stylebox_override("pressed", relative_button_pressed)
-	relative_button.end_bulk_theme_override()
+	relative_button.theme_type_variation = "PathCommandAbsoluteButton" if is_absolute else\
+			"PathCommandRelativeButton"
 	relative_button.text = cmd_char
-	relative_button.tooltip_text =\
-			TranslationUtils.get_path_command_description(cmd_char)
+	relative_button.tooltip_text = TranslationUtils.get_path_command_description(cmd_char)
 	container.add_child(relative_button)
 	relative_button.pressed.connect(_on_relative_button_pressed)
 	relative_button.gui_input.connect(_eat_double_clicks.bind(relative_button))

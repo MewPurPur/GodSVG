@@ -30,6 +30,7 @@ var dimensions := Vector2.ZERO
 
 
 func _ready() -> void:
+	final_size_label.add_theme_color_override("font_color", ThemeUtils.subtle_text_color)
 	cancel_button.pressed.connect(queue_free)
 	export_button.pressed.connect(_on_export_button_pressed)
 	clipboard_button.pressed.connect(_on_clipboard_button_pressed)
@@ -62,7 +63,7 @@ func _ready() -> void:
 					maxf(dimensions.y * scaling_factor, 1.0)), true)})
 	
 	if Configs.savedata.get_active_tab().svg_file_path.is_empty():
-		file_title.add_theme_color_override("font_color", ThemeUtils.common_subtle_text_color)
+		file_title.add_theme_color_override("font_color", ThemeUtils.subtle_text_color)
 		file_title.text = Configs.savedata.get_active_tab().presented_name
 	
 	final_size_label.text = Translator.translate("Size") + ": " +\
@@ -83,8 +84,8 @@ func _ready() -> void:
 	titled_panel.corner_radius_bottom_right = 5
 	titled_panel.corner_radius_top_left = 5
 	titled_panel.corner_radius_top_right = 5
-	titled_panel.color = ThemeUtils.common_panel_inner_color
-	titled_panel.border_color = ThemeUtils.common_panel_border_color
+	titled_panel.color = ThemeUtils.basic_panel_inner_color
+	titled_panel.border_color = ThemeUtils.basic_panel_border_color
 	titled_panel.border_width = 2
 	titled_panel.title_margin = 2
 	titled_panel.panel_margin = 8

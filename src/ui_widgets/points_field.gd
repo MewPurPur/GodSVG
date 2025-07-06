@@ -51,6 +51,9 @@ func set_value(new_value: String, save := false) -> void:
 
 func setup() -> void:
 	Configs.language_changed.connect(update_translation)
+	update_translation()
+	Configs.theme_changed.connect(update_theme)
+	update_theme()
 	sync()
 	element.attribute_changed.connect(_on_element_attribute_changed)
 	line_edit.tooltip_text = attribute_name
@@ -68,7 +71,6 @@ func setup() -> void:
 	# This is because the widget can sometimes be created before they are cleared
 	# from a past state of the SVG. So we trigger this method to update those.
 	_on_selections_or_hover_changed()
-	update_translation()
 
 
 func get_inner_rect(index: int) -> Rect2:
@@ -82,6 +84,12 @@ func _on_element_attribute_changed(attribute_changed: String) -> void:
 
 func update_translation() -> void:
 	line_edit.placeholder_text = Translator.translate("No points")
+
+func update_theme() -> void:
+	mini_line_edit_stylebox = get_theme_stylebox("normal", "MiniLineEdit")
+	mini_line_edit_font_size = get_theme_font_size("font_size", "MiniLineEdit")
+	mini_line_edit_font_color = get_theme_color("font_color", "MiniLineEdit")
+	queue_redraw()
 
 func _on_line_edit_focus_entered() -> void:
 	focused.emit()
@@ -231,11 +239,10 @@ func points_draw() -> void:
 		if selected or hovered:
 			var stylebox := StyleBoxFlat.new()
 			stylebox.set_corner_radius_all(3)
-			if selected:
-				stylebox.bg_color = Color(0.7, 0.7, 1.0, 0.18) if hovered else\
-						Color(0.6, 0.6, 1.0, 0.16)
-			else:
-				stylebox.bg_color = Color(0.8, 0.8, 1.0, 0.05)
+			stylebox.bg_color = ThemeUtils.soft_pressed_overlay_color if selected else\
+					Color.TRANSPARENT
+			if hovered:
+				stylebox.bg_color = stylebox.bg_color.blend(Color(ThemeUtils.soft_hover_overlay_color))
 			stylebox.draw(ci, Rect2(Vector2(0, v_offset), Vector2(points_container.size.x,
 					STRIP_HEIGHT)))
 		# Draw the child controls. They are going to be drawn, not added as a node unless
@@ -247,7 +254,7 @@ func points_draw() -> void:
 		var point_y := element.get_attribute_list(attribute_name)[i * 2 + 1]
 		# Draw the action button.
 		more_icon.draw_rect(ci, Rect2(Vector2(points_container.size.x - 19, 4 + v_offset),
-				Vector2(14, 14)), false, ThemeUtils.icon_normal_color)
+				Vector2(14, 14)), false, ThemeUtils.tinted_contrast_color)
 		# Draw the fields.
 		draw_numfield(Rect2(Vector2(4, 2 + v_offset), Vector2(44, 18)), point_x)
 		draw_numfield(Rect2(Vector2(52, 2 + v_offset), Vector2(44, 18)), point_y)

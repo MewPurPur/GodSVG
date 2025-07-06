@@ -22,7 +22,7 @@ var drag_offset := Vector2.ZERO
 var position_window_relative: Vector2
 
 func update_theme() -> void:
-	var stylebox := get_theme_stylebox("panel", "DarkPanel").duplicate()
+	var stylebox := get_theme_stylebox("panel", "SubtleFlatPanel").duplicate()
 	stylebox.set_content_margin_all(0)
 	add_theme_stylebox_override("panel", stylebox)
 
@@ -65,6 +65,7 @@ func update_layout() -> void:
 	add_child(main_container)
 	
 	var drag_texture := TextureRect.new()
+	drag_texture.modulate = ThemeUtils.tinted_contrast_color
 	drag_texture.stretch_mode = TextureRect.STRETCH_TILE
 	drag_texture.texture = dot_pattern
 	match Configs.savedata.shortcut_panel_layout:

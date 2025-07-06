@@ -112,11 +112,10 @@ script = ExtResource("2_52puw")
 
 [node name="ExtensionPanel" type="PanelContainer" parent="VBoxContainer/MainContainer/FilePicker/FileContainer"]
 layout_mode = 2
-theme_type_variation = &"DarkPanel"
+theme_type_variation = &"ContrastFlatPanel"
 
 [node name="ExtensionLabel" type="Label" parent="VBoxContainer/MainContainer/FilePicker/FileContainer/ExtensionPanel"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.866667, 0.933333, 1, 0.533333)
 
 [node name="ButtonContainer" type="HBoxContainer" parent="VBoxContainer"]
 unique_name_in_owner = true

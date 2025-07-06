@@ -7,13 +7,6 @@ const HIGHLIGHT_TIME = 0.2
 var just_pressed := false
 var timer: SceneTreeTimer
 
-var _hovered := false
-
-## Overlaid on top when the Button is hovered while pressed.
-@export var hover_pressed_stylebox: StyleBox
-## Overlaid on top when the Button is hovered while pressed.
-@export var hover_pressed_font_color := Color.TRANSPARENT
-
 ## A shortcut that corresponds to the same action that this button does.
 @export var action := ""
 
@@ -21,28 +14,6 @@ var _hovered := false
 func _ready() -> void:
 	if not action.is_empty() and not toggle_mode:
 		pressed.connect(_on_pressed)
-	
-	mouse_entered.connect(_on_mouse_entered)
-	mouse_exited.connect(_on_mouse_exited)
-	add_theme_color_override("font_hover_color", get_theme_color(
-			"font_hover_color", "Button").blend(hover_pressed_font_color))
-
-func _on_mouse_entered() -> void:
-	_hovered = true
-	if not disabled and hover_pressed_font_color != Color.BLACK:
-		add_theme_color_override("font_pressed_color", get_theme_color(
-				"font_pressed_color", "Button").blend(hover_pressed_font_color))
-	queue_redraw()
-
-func _on_mouse_exited() -> void:
-	_hovered = false
-	remove_theme_color_override("font_pressed_color")
-	queue_redraw()
-
-func _draw() -> void:
-	if _hovered and not disabled and button_pressed and\
-	is_instance_valid(hover_pressed_stylebox):
-		draw_style_box(hover_pressed_stylebox, Rect2(Vector2.ZERO, size))
 
 
 func _make_custom_tooltip(_for_text: String) -> Object:
@@ -65,7 +36,7 @@ func _make_custom_tooltip(_for_text: String) -> Object:
 	shortcut_label.add_theme_font_size_override("font_size",
 			get_theme_font_size("font_size", "TooltipLabel"))
 	shortcut_label.add_theme_color_override("font_color",
-			ThemeUtils.common_subtle_text_color)
+			ThemeUtils.subtle_text_color)
 	shortcut_label.text = "(%s)" % action_showcase_text
 	
 	var hbox := HBoxContainer.new()
@@ -83,11 +54,12 @@ func _unhandled_input(event: InputEvent) -> void:
 	if action.is_empty() or toggle_mode:
 		return
 	
-	if not just_pressed and ShortcutUtils.is_action_pressed(event, action) and\
-	not is_instance_valid(timer):
+	if not just_pressed and ShortcutUtils.is_action_pressed(event, action):
 		add_theme_color_override("icon_normal_color", get_theme_color("icon_pressed_color"))
 		add_theme_color_override("icon_hover_color", get_theme_color("icon_pressed_color"))
 		add_theme_stylebox_override("normal", get_theme_stylebox("pressed"))
+		if is_instance_valid(timer):
+			timer.timeout.disconnect(end_highlight)
 		timer = get_tree().create_timer(HIGHLIGHT_TIME)
 		timer.timeout.connect(end_highlight)
 

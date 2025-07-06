@@ -17,7 +17,10 @@ func _ready() -> void:
 	State.xnode_dragging_state_changed.connect(_on_xnodes_dragging_state_changed)
 	title_bar.draw.connect(_on_title_bar_draw)
 	mouse_exited.connect(_on_mouse_exited)
+	Configs.theme_changed.connect(determine_selection_highlight)
 	determine_selection_highlight()
+	Configs.theme_changed.connect(set_default_font_color)
+	set_default_font_color()
 	title_bar.queue_redraw()
 	text_edit.text_set.connect(_on_text_modified)
 	text_edit.text_changed.connect(_on_text_modified)
@@ -86,6 +89,9 @@ func _on_mouse_exited() -> void:
 	determine_selection_highlight()
 
 
+func set_default_font_color() -> void:
+	text_edit.add_theme_color_override("font_color", ThemeUtils.editable_text_color)
+
 func determine_selection_highlight() -> void:
 	var is_selected := xnode.xid in State.selected_xids
 	var is_hovered := State.hovered_xid == xnode.xid
@@ -106,6 +112,21 @@ func determine_selection_highlight() -> void:
 		color = Color.from_hsv(0.625, 0.6, 0.16)
 		title_color = Color.from_hsv(0.625, 0.45, 0.17)
 		border_color = Color.from_hsv(0.6, 0.5, 0.35)
+	
+	if not ThemeUtils.is_theme_dark:
+		color.s *= 0.2
+		color.v = lerpf(color.v, 1.0, 0.875)
+		title_color.s *= 0.2
+		title_color.v = lerpf(title_color.v, 1.0, 0.875)
+		border_color.v = lerpf(border_color.v, 1.0, 0.8)
+		if is_hovered:
+			color.s = lerpf(color.s, 1.0, 0.05)
+			title_color.s = lerpf(title_color.s, 1.0, 0.05)
+			border_color.v *= 0.9
+		if is_selected:
+			color.s = lerpf(color.s, 1.0, 0.15)
+			title_color.s = lerpf(title_color.s, 1.0, 0.15)
+			border_color.v *= 0.65
 	
 	var depth := xnode.xid.size() - 1
 	var depth_tint := depth * 0.12
@@ -160,7 +181,7 @@ func _on_title_bar_draw() -> void:
 	var xnode_icon := DB.get_xnode_icon(xnode.get_type())
 	var xnode_icon_size := xnode_icon.get_size()
 	xnode_icon.draw_rect(title_bar_ci, Rect2(title_bar.size / 2 - xnode_icon_size / 2,
-			xnode_icon_size), false)
+			xnode_icon_size), false, ThemeUtils.tinted_contrast_color)
 
 func _on_text_modified() -> void:
 	# TODO figure out a way to make this work.
@@ -176,6 +197,6 @@ func _on_text_modified() -> void:
 	
 	if xnode.check_text_validity(text_edit.text):
 		xnode.set_text(text_edit.text)
-		text_edit.remove_theme_color_override("font_color")
+		set_default_font_color()
 	else:
 		text_edit.add_theme_color_override("font_color", Configs.savedata.basic_color_error)

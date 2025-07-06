@@ -14,24 +14,27 @@ func update_translation() -> void:
 func _ready() -> void:
 	State.svg_changed.connect(update_size_button)
 	update_size_button()
+	Configs.theme_changed.connect(update_theme)
 	Configs.basic_colors_changed.connect(update_size_button_colors)
+	update_theme()
 	Configs.language_changed.connect(update_translation)
 	update_translation()
-	
-	# Fix the size button sizing.
+	more_options.pressed.connect(_on_more_options_pressed)
+	size_button.pressed.connect(_on_size_button_pressed)
+	layout_button.pressed.connect(_on_layout_button_pressed)
+
+
+func update_theme() -> void:
 	size_button.begin_bulk_theme_override()
 	const CONST_ARR: PackedStringArray = ["normal", "focus", "hover", "disabled"]
 	for theme_type in CONST_ARR:
+		size_button.remove_theme_stylebox_override(theme_type)
 		var stylebox := size_button.get_theme_stylebox(theme_type).duplicate()
 		stylebox.content_margin_bottom = 0.0
 		stylebox.content_margin_top = 0.0
 		size_button.add_theme_stylebox_override(theme_type, stylebox)
 	size_button.end_bulk_theme_override()
-	
-	more_options.pressed.connect(_on_more_options_pressed)
-	size_button.pressed.connect(_on_size_button_pressed)
-	layout_button.pressed.connect(_on_layout_button_pressed)
-
+	update_size_button_colors()
 
 func _on_size_button_pressed() -> void:
 	var btn_array: Array[Button] = [
@@ -43,7 +46,7 @@ func _on_size_button_pressed() -> void:
 
 func _on_more_options_pressed() -> void:
 	var can_show_savedata_folder := DisplayServer.has_feature(
-				DisplayServer.FEATURE_NATIVE_DIALOG_FILE)
+				DisplayServer.FEATURE_NATIVE_DIALOG_FILE_EXTRA)
 	var buttons_arr: Array[Button] = []
 	buttons_arr.append(ContextPopup.create_shortcut_button("check_updates"))
 	
@@ -91,7 +94,7 @@ func update_size_button_colors() -> void:
 			"font_pressed_color"]
 	for theme_type in CONST_ARR:
 		size_button.add_theme_color_override(theme_type,
-				Configs.savedata.basic_color_warning.lerp(Color.WHITE, 0.5))
+				Configs.savedata.basic_color_warning.lerp(ThemeUtils.max_contrast_color, 0.4))
 	size_button.end_bulk_theme_override()
 
 func _on_layout_button_pressed() -> void:

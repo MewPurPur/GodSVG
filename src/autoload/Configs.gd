@@ -41,7 +41,6 @@ func _enter_tree() -> void:
 		if InputMap.has_action(action):
 			default_shortcuts[action] = InputMap.action_get_events(action)
 	load_config()
-	ThemeUtils.generate_and_apply_theme()
 
 
 func load_config() -> void:
@@ -68,9 +67,10 @@ func reset_settings() -> void:
 
 func post_load() -> void:
 	savedata.get_active_tab().activate()
-	sync_background_color()
+	sync_canvas_color()
 	sync_locale()
 	sync_max_fps()
+	sync_theme()
 
 
 func generate_highlighter() -> SVGHighlighter:
@@ -88,8 +88,8 @@ func generate_highlighter() -> SVGHighlighter:
 
 # Global effects from settings. Some of them should also be used on launch.
 
-func sync_background_color() -> void:
-	RenderingServer.set_default_clear_color(savedata.background_color)
+func sync_canvas_color() -> void:
+	RenderingServer.set_default_clear_color(savedata.canvas_color)
 
 func sync_locale() -> void:
 	if not savedata.language in TranslationServer.get_loaded_locales():
@@ -99,3 +99,7 @@ func sync_locale() -> void:
 
 func sync_max_fps() -> void:
 	Engine.max_fps = 0 if savedata.uncapped_framerate else savedata.max_fps
+
+func sync_theme() -> void:
+	ThemeUtils.generate_and_apply_theme()
+	theme_changed.emit()

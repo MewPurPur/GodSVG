@@ -110,9 +110,10 @@ func _ready() -> void:
 		if mode == FileMode.MULTI_SELECT:
 			file_list.select_mode = ItemList.SELECT_MULTI
 	
-	var extension_panel_stylebox := extension_panel.get_theme_stylebox("panel")
+	var extension_panel_stylebox := extension_panel.get_theme_stylebox("panel").duplicate()
 	extension_panel_stylebox.content_margin_top -= 4.0
 	extension_panel.add_theme_stylebox_override("panel", extension_panel_stylebox)
+	extension_label.add_theme_color_override("font_color", ThemeUtils.dim_text_color)
 	if Configs.savedata.file_dialog_show_hidden:
 		show_hidden_button.set_pressed_no_signal(true)
 	folder_up_button.tooltip_text = Translator.translate("Go to parent folder")
@@ -175,6 +176,7 @@ func open_dir(dir: String) -> void:
 			continue
 		
 		var item_idx := drives_list.add_item(drive_name, get_drive_icon(drive_path))
+		drives_list.set_item_icon_modulate(item_idx, ThemeUtils.tinted_contrast_color)
 		drives_list.set_item_metadata(item_idx,
 				Actions.new(Callable(), open_dir.bind(drive_path)))
 		if current_dir == drive_path:
