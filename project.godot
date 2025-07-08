@@ -40,7 +40,9 @@ window/size/viewport_width=1040
 window/size/viewport_height=650
 window/size/mode=2
 window/energy_saving/keep_screen_on=false
+display_server/driver.linuxbsd="wayland"
 mouse_cursor/tooltip_position_offset=Vector2(0, 10)
+window/size/mode.editor=0
 
 [editor_overrides]
 
@@ -382,6 +384,6 @@ locale/translations=PackedStringArray("res://translations/bg.po", "res://transla
 
 [rendering]
 
-renderer/rendering_method="gl_compatibility"
+renderer/rendering_method="mobile"
 textures/vram_compression/import_etc2_astc=true
 environment/defaults/default_clear_color=Color(0.12, 0.132, 0.2, 1)

@@ -27,10 +27,24 @@ var hovered_selected_color: Color
 # FIXME this shouldn't be needed, but otherwise the shader doesn't want to work.
 @onready var animated_stroke_hacky_fix_node := Control.new()
 
+# for eXtRa PeRfOrMaNcE this could be a circular buffer
+var draw_command_cache: Array[DrawCommandCache] = [null, null]
+var current_draw_command_cache_mutex := Mutex.new()
+
+var draw_thread := Thread.new()
+var draw_semaphore := Semaphore.new()
+var draw_data: Dictionary[String, Variant]
+var create_new_objs: bool
+
 
 func _exit_tree() -> void:
 	RenderingServer.free_rid(surface)
 	RenderingServer.free_rid(selections_surface)
+	draw_data = {
+		exit = true
+	}
+	draw_semaphore.post()
+	draw_thread.wait_to_finish()
 
 # Generate the procedural handle textures.
 func render_handle_textures() -> void:
@@ -73,7 +87,7 @@ func render_handle_textures() -> void:
 		img.load_svg_from_string(handle_type_svg % [inside_str, hovered_selected_str])
 		img.fix_alpha_edges()
 		hovered_selected_handle_textures[handle_type] = ImageTexture.create_from_image(img)
-	queue_redraw()
+	redraw()
 
 func sync_selection_rectangle_shader() -> void:
 	var stroke_material := ShaderMaterial.new()
@@ -95,7 +109,7 @@ func sync_selection_rectangle_shader() -> void:
 	RenderingServer.canvas_item_set_material(selections_surface, stroke_material.get_rid())
 	animated_stroke_hacky_fix_node.material = stroke_material
 	# If the ant width was changed, the buffer must be updated.
-	queue_redraw()
+	redraw()
 
 func _ready() -> void:
 	add_child(animated_stroke_hacky_fix_node, false, InternalMode.INTERNAL_MODE_BACK)
@@ -111,15 +125,24 @@ func _ready() -> void:
 	State.any_attribute_changed.connect(sync_handles)
 	State.xnode_layout_changed.connect(queue_update_handles)
 	State.svg_unknown_change.connect(queue_update_handles)
-	State.selection_changed.connect(queue_redraw)
-	State.hover_changed.connect(queue_redraw)
-	State.zoom_changed.connect(queue_redraw)
+	State.selection_changed.connect(redraw)
+	State.hover_changed.connect(redraw)
+	State.zoom_changed.connect(redraw)
 	State.handle_added.connect(_on_handle_added)
 	State.view_changed.connect(_on_view_changed)
 	queue_update_handles()
 	
 	State.show_handles_changed.connect(update_show_handles)
 	update_show_handles()
+	
+	draw_thread.start(_draw_thread)
+
+
+func _process(delta: float) -> void:
+	if draw_command_cache.size() > 2:
+		print("redrawing")
+		# eat draw commands
+		queue_redraw()
 
 
 func update_show_handles() -> void:
@@ -160,12 +183,12 @@ func update_handles() -> void:
 				handles += generate_path_handles(element)
 	# Pretend the mouse was moved to update the hovering.
 	HandlerGUI.throw_mouse_motion_event()
-	queue_redraw()
+	redraw()
 
 func sync_handles(xid: PackedInt32Array) -> void:
 	var element := State.root_element.get_xnode(xid)
 	if not (element is ElementPath or element is ElementPolygon or element is ElementPolyline):
-		queue_redraw()
+		redraw()
 		return
 	
 	var new_handles: Array[Handle] = []
@@ -177,7 +200,7 @@ func sync_handles(xid: PackedInt32Array) -> void:
 	handles += generate_polyhandles(element)
 	# Pretend the mouse was moved to update the hovering.
 	HandlerGUI.throw_mouse_motion_event()
-	queue_redraw()
+	redraw()
 
 func generate_path_handles(element: Element) -> Array[Handle]:
 	var data_attrib: AttributePathdata = element.get_attribute("d")
@@ -204,556 +227,574 @@ func generate_polyhandles(element: Element) -> Array[Handle]:
 		polyhandles.append(PolyHandle.new(element, idx))
 	return polyhandles
 
+func redraw(set_create_new_objs: bool = true) -> void:
+	# imagine this as a |=
+	create_new_objs = create_new_objs or set_create_new_objs
+	_create_objs.call_deferred()
+
 
 func _draw() -> void:
-	# Store contours of shapes.
-	var normal_polylines: Array[PackedVector2Array] = []
-	var selected_polylines: Array[PackedVector2Array] = []
-	var hovered_polylines: Array[PackedVector2Array] = []
-	var hovered_selected_polylines: Array[PackedVector2Array] = []
-	# Store abstract contours, e.g. tangents.
-	var normal_multiline := PackedVector2Array()
-	var selected_multiline := PackedVector2Array()
-	var hovered_multiline := PackedVector2Array()
-	var hovered_selected_multiline := PackedVector2Array()
-	# Store bounding rects and the transforms needed for them.
-	var selection_transforms: Array[Transform2D] = []
-	var selection_rects: Array[Rect2] = []
-	
-	for element: Element in State.root_element.get_all_valid_element_descendants():
-		# Determine if the element is hovered/selected or has a hovered/selected parent.
-		var element_hovered := State.is_hovered(element.xid, -1, true)
-		var element_selected := State.is_selected(element.xid, -1, true)
+	_draw_objects()
+
+
+func _create_objs() -> void:
+	if create_new_objs:
+		draw_data = {
+				"exit": false
+			}
+		draw_semaphore.post()
+	create_new_objs = false
+
+
+func _draw_thread() -> void:
+	while true:
+		draw_semaphore.wait()
+		if draw_data.exit:
+			return
+		# Store contours of shapes.
+		var normal_polylines: Array[PackedVector2Array] = []
+		var selected_polylines: Array[PackedVector2Array] = []
+		var hovered_polylines: Array[PackedVector2Array] = []
+		var hovered_selected_polylines: Array[PackedVector2Array] = []
+		# Store abstract contours, e.g. tangents.
+		var normal_multiline := PackedVector2Array()
+		var selected_multiline := PackedVector2Array()
+		var hovered_multiline := PackedVector2Array()
+		var hovered_selected_multiline := PackedVector2Array()
+		# Store bounding rects and the transforms needed for them.
+		var selection_transforms: Array[Transform2D] = []
+		var selection_rects: Array[Rect2] = []
 		
-		match element.name:
-			"circle":
-				var c := Vector2(element.get_attribute_num("cx"),
-						element.get_attribute_num("cy"))
-				var r := element.get_attribute_num("r")
-				
-				var points := PackedVector2Array()
-				points.resize(181)
-				for i in 180:
-					var d := i * TAU/180
-					points[i] = c + Vector2(cos(d), sin(d)) * r
-				points[180] = points[0]
-				var extras := PackedVector2Array([c, c + Vector2(r, 0)])
-				var final_transform := element.get_transform()
-				points = final_transform * points
-				extras = final_transform * extras
-				
-				if element_hovered and element_selected:
-					hovered_selected_polylines.append(points)
-					hovered_selected_multiline += extras
-				elif element_hovered:
-					hovered_polylines.append(points)
-					hovered_multiline += extras
-				elif element_selected:
-					selected_polylines.append(points)
-					selected_multiline += extras
-				else:
-					normal_polylines.append(points)
-					normal_multiline += extras
-				
-				if element_selected:
-					var bounding_box: Rect2 = element.get_bounding_box()
-					if bounding_box.has_area():
-						var element_transform := element.get_transform()
-						var canvas_transform := State.root_element.canvas_transform
-						var canvas_scale := canvas_transform.get_scale().x
-						var element_scale := element_transform.get_scale()
-						var grow_amount_unscaled := (2.0 + Configs.savedata.selection_rectangle_width) /\
-								State.zoom / canvas_scale
-						var grow_amount_x := grow_amount_unscaled / element_scale.x
-						var grow_amount_y := grow_amount_unscaled / element_scale.y
-						selection_transforms.append(canvas_transform * element_transform)
-						selection_rects.append(bounding_box.grow_individual(grow_amount_x,
-								grow_amount_y, grow_amount_x, grow_amount_y))
+		for element: Element in State.root_element.get_all_valid_element_descendants():
+			# Determine if the element is hovered/selected or has a hovered/selected parent.
+			var element_hovered := State.is_hovered(element.xid, -1, true)
+			var element_selected := State.is_selected(element.xid, -1, true)
 			
-			"ellipse":
-				var c := Vector2(element.get_attribute_num("cx"),
-						element.get_attribute_num("cy"))
-				# Squished circle.
-				var points := PackedVector2Array()
-				points.resize(181)
-				for i in 180:
-					var d := i * TAU/180
-					points[i] = c + Vector2(cos(d) * element.get_rx(), sin(d) * element.get_ry())
-				points[180] = points[0]
-				var extras := PackedVector2Array([
-						c, c + Vector2(element.get_rx(), 0), c, c + Vector2(0, element.get_ry())])
-				var final_transform := element.get_transform()
-				points = final_transform * points
-				extras = final_transform * extras
-				
-				if element_hovered and element_selected:
-					hovered_selected_polylines.append(points)
-					hovered_selected_multiline += extras
-				elif element_hovered:
-					hovered_polylines.append(points)
-					hovered_multiline += extras
-				elif element_selected:
-					selected_polylines.append(points)
-					selected_multiline += extras
-				else:
-					normal_polylines.append(points)
-					normal_multiline += extras
-				
-				if element_selected:
-					var bounding_box: Rect2 = element.get_bounding_box()
-					if bounding_box.has_area():
-						var element_transform := element.get_transform()
-						var canvas_transform := State.root_element.canvas_transform
-						var canvas_scale := canvas_transform.get_scale().x
-						var element_scale := element_transform.get_scale()
-						var grow_amount_unscaled := (2.0 + Configs.savedata.selection_rectangle_width) /\
-								State.zoom / canvas_scale
-						var grow_amount_x := grow_amount_unscaled / element_scale.x
-						var grow_amount_y := grow_amount_unscaled / element_scale.y
-						selection_transforms.append(canvas_transform * element_transform)
-						selection_rects.append(bounding_box.grow_individual(grow_amount_x,
-								grow_amount_y, grow_amount_x, grow_amount_y))
-			
-			"rect":
-				var x := element.get_attribute_num("x")
-				var y := element.get_attribute_num("y")
-				var rect_width := element.get_attribute_num("width")
-				var rect_height := element.get_attribute_num("height")
-				var rx: float = element.get_rx()
-				var ry: float = element.get_ry()
-				var points := PackedVector2Array()
-				if rx == 0 or ry == 0:
-					# Basic rectangle.
-					points = [Vector2(x, y), Vector2(x + rect_width, y),
-							Vector2(x + rect_width, y + rect_height),
-							Vector2(x, y + rect_height), Vector2(x, y)]
-				else:
-					if rx == 0:
-						rx = ry
-					elif ry == 0:
-						ry = rx
-					rx = minf(rx, rect_width / 2)
-					ry = minf(ry, rect_height / 2)
-					# Rounded rectangle.
-					points.resize(186)
-					points[0] = Vector2(x + rx, y)
-					points[1] = Vector2(x + rect_width - rx, y)
-					for i in range(135, 180):
-						var d := i * TAU/180
-						points[i - 133] = Vector2(x + rect_width - rx, y + ry) +\
-								Vector2(cos(d) * rx, sin(d) * ry)
-					points[47] =  Vector2(x + rect_width, y + rect_height - ry)
-					for i in range(0, 45):
-						var d := i * TAU/180
-						points[i + 48] = Vector2(x + rect_width - rx, y + rect_height - ry) +\
-								Vector2(cos(d) * rx, sin(d) * ry)
-					points[93] = Vector2(x + rx, y + rect_height)
-					for i in range(45, 90):
-						var d := i * TAU/180
-						points[i + 49] = Vector2(x + rx, y + rect_height - ry) +\
-								Vector2(cos(d) * rx, sin(d) * ry)
-					points[139] = Vector2(x, y + ry)
-					for i in range(90, 135):
-						var d := i * TAU/180
-						points[i + 50] = Vector2(x + rx, y + ry) +\
-								Vector2(cos(d) * rx, sin(d) * ry)
-					points[185] = points[0]
-				var extras := PackedVector2Array([Vector2(x, y), Vector2(x + rect_width, y),
-						Vector2(x, y), Vector2(x, y + rect_height)])
-				var final_transform := element.get_transform()
-				points = final_transform * points
-				extras = final_transform * extras
-				
-				if element_hovered and element_selected:
-					hovered_selected_polylines.append(points)
-					hovered_selected_multiline += extras
-				elif element_hovered:
-					hovered_polylines.append(points)
-					hovered_multiline += extras
-				elif element_selected:
-					selected_polylines.append(points)
-					selected_multiline += extras
-				else:
-					normal_polylines.append(points)
-					normal_multiline += extras
-				
-				if element_selected:
-					var bounding_box: Rect2 = element.get_bounding_box()
-					if bounding_box.has_area():
-						var element_transform := element.get_transform()
-						var canvas_transform := State.root_element.canvas_transform
-						var canvas_scale := canvas_transform.get_scale().x
-						var element_scale := element_transform.get_scale()
-						var grow_amount_unscaled := (2.0 + Configs.savedata.selection_rectangle_width) /\
-								State.zoom / canvas_scale
-						var grow_amount_x := grow_amount_unscaled / element_scale.x
-						var grow_amount_y := grow_amount_unscaled / element_scale.y
-						selection_transforms.append(canvas_transform * element_transform)
-						selection_rects.append(bounding_box.grow_individual(grow_amount_x,
-								grow_amount_y, grow_amount_x, grow_amount_y))
-			
-			"line":
-				var x1 := element.get_attribute_num("x1")
-				var y1 := element.get_attribute_num("y1")
-				var x2 := element.get_attribute_num("x2")
-				var y2 := element.get_attribute_num("y2")
-				
-				var points := PackedVector2Array([Vector2(x1, y1), Vector2(x2, y2)])
-				points = element.get_transform() * points
-				
-				if element_hovered and element_selected:
-					hovered_selected_polylines.append(points)
-				elif element_hovered:
-					hovered_polylines.append(points)
-				elif element_selected:
-					selected_polylines.append(points)
-				else:
-					normal_polylines.append(points)
-				
-				if element_selected:
-					var bounding_box: Rect2 = element.get_bounding_box()
-					if bounding_box.has_area():
-						var element_transform := element.get_transform()
-						var canvas_transform := State.root_element.canvas_transform
-						var canvas_scale := canvas_transform.get_scale().x
-						var element_scale := element_transform.get_scale()
-						var grow_amount_unscaled := (2.0 + Configs.savedata.selection_rectangle_width) /\
-								State.zoom / canvas_scale
-						var grow_amount_x := grow_amount_unscaled / element_scale.x
-						var grow_amount_y := grow_amount_unscaled / element_scale.y
-						selection_transforms.append(canvas_transform * element_transform)
-						selection_rects.append(bounding_box.grow_individual(grow_amount_x,
-								grow_amount_y, grow_amount_x, grow_amount_y))
-			
-			"polygon", "polyline":
-				var point_list := ListParser.list_to_points(element.get_attribute_list("points"))
-				
-				var current_mode := Utils.InteractionType.NONE
-				for idx in range(1, point_list.size()):
-					current_mode = Utils.InteractionType.NONE
-					if State.is_hovered(element.xid, idx, true):
-						@warning_ignore("int_as_enum_without_cast")
-						current_mode += Utils.InteractionType.HOVERED
-					if State.is_selected(element.xid, idx, true):
-						@warning_ignore("int_as_enum_without_cast")
-						current_mode += Utils.InteractionType.SELECTED
+			match element.name:
+				"circle":
+					var c := Vector2(element.get_attribute_num("cx"),
+							element.get_attribute_num("cy"))
+					var r := element.get_attribute_num("r")
 					
-					var points := PackedVector2Array([point_list[idx - 1], point_list[idx]])
-					points = element.get_transform() * points
-					match current_mode:
-						Utils.InteractionType.NONE:
-							normal_polylines.append(points)
-						Utils.InteractionType.HOVERED:
-							hovered_polylines.append(points)
-						Utils.InteractionType.SELECTED:
-							selected_polylines.append(points)
-						Utils.InteractionType.HOVERED_SELECTED:
-							hovered_selected_polylines.append(points)
-				
-				if element.name == "polygon" and point_list.size() > 2:
-					current_mode = Utils.InteractionType.NONE
-					if State.is_hovered(element.xid, 0, true):
-						@warning_ignore("int_as_enum_without_cast")
-						current_mode += Utils.InteractionType.HOVERED
-					if State.is_selected(element.xid, 0, true):
-						@warning_ignore("int_as_enum_without_cast")
-						current_mode += Utils.InteractionType.SELECTED
-					
-					var points := PackedVector2Array([point_list[-1], point_list[0]])
-					points = element.get_transform() * points
-					match current_mode:
-						Utils.InteractionType.NONE:
-							normal_polylines.append(points)
-						Utils.InteractionType.HOVERED:
-							hovered_polylines.append(points)
-						Utils.InteractionType.SELECTED:
-							selected_polylines.append(points)
-						Utils.InteractionType.HOVERED_SELECTED:
-							hovered_selected_polylines.append(points)
-				
-				if element_selected:
-					var bounding_box: Rect2 = element.get_bounding_box()
-					if bounding_box.has_area():
-						var element_transform := element.get_transform()
-						var canvas_transform := State.root_element.canvas_transform
-						var canvas_scale := canvas_transform.get_scale().x
-						var element_scale := element_transform.get_scale()
-						var grow_amount_unscaled := (2.0 + Configs.savedata.selection_rectangle_width) /\
-								State.zoom / canvas_scale
-						var grow_amount_x := grow_amount_unscaled / element_scale.x
-						var grow_amount_y := grow_amount_unscaled / element_scale.y
-						selection_transforms.append(canvas_transform * element_transform)
-						selection_rects.append(bounding_box.grow_individual(grow_amount_x,
-								grow_amount_y, grow_amount_x, grow_amount_y))
-			
-			"path":
-				var pathdata: AttributePathdata = element.get_attribute("d")
-				if pathdata.get_command_count() == 0 or\
-				not pathdata.get_command(0).command_char in "Mm":
-					continue  # Nothing to draw.
-				
-				var current_mode := Utils.InteractionType.NONE
-				
-				for cmd_idx in pathdata.get_command_count():
-					# Drawing logic.
 					var points := PackedVector2Array()
-					var tangent_points := PackedVector2Array()
-					var cmd := pathdata.get_command(cmd_idx)
-					var relative := cmd.relative
-					
-					current_mode = Utils.InteractionType.NONE
-					if State.is_hovered(element.xid, cmd_idx, true):
-						@warning_ignore("int_as_enum_without_cast")
-						current_mode += Utils.InteractionType.HOVERED
-					if State.is_selected(element.xid, cmd_idx, true):
-						@warning_ignore("int_as_enum_without_cast")
-						current_mode += Utils.InteractionType.SELECTED
-					
-					match cmd.command_char.to_upper():
-						"L":
-							# Line contour.
-							var v := Vector2(cmd.x, cmd.y)
-							var end := cmd.get_start_coords() + v if relative else v
-							points = PackedVector2Array([cmd.get_start_coords(), end])
-						"H":
-							# Horizontal line contour.
-							var v := Vector2(cmd.x, 0)
-							var end := cmd.get_start_coords() + v if\
-									relative else Vector2(v.x, cmd.start_y)
-							points = PackedVector2Array([cmd.get_start_coords(), end])
-						"V":
-							# Vertical line contour.
-							var v := Vector2(0, cmd.y)
-							var end := cmd.get_start_coords() + v if\
-									relative else Vector2(cmd.start_x, v.y)
-							points = PackedVector2Array([cmd.get_start_coords(), end])
-						"C":
-							# Cubic Bezier curve contour.
-							var v := Vector2(cmd.x, cmd.y)
-							var v1 := Vector2(cmd.x1, cmd.y1)
-							var v2 := Vector2(cmd.x2, cmd.y2)
-							var cp1 := cmd.get_start_coords()
-							var cp4 := cp1 + v if relative else v
-							var cp2 := v1 if relative else v1 - cp1
-							var cp3 := v2 - v
-							
-							points = Utils.get_cubic_bezier_points(cp1, cp2, cp3, cp4)
-							tangent_points.append_array(PackedVector2Array([cp1,
-									cp1 + cp2, cp1 + v2 if relative else v2, cp4]))
-						"S":
-							# Shorthand cubic Bezier curve contour.
-							if cmd_idx == 0:
-								break
-							
-							var v := Vector2(cmd.x, cmd.y)
-							var v1 := pathdata.get_implied_S_control(cmd_idx)
-							var v2 := Vector2(cmd.x2, cmd.y2)
-							
-							var cp1 := cmd.get_start_coords()
-							var cp4 := cp1 + v if relative else v
-							var cp2 := v1 if relative else v1 - cp1
-							var cp3 := v2 - v
-							
-							points = Utils.get_cubic_bezier_points(cp1, cp2, cp3, cp4)
-							tangent_points.append_array(PackedVector2Array([cp1,
-									cp1 + cp2, cp1 + v2 if relative else v2, cp4]))
-						"Q":
-							# Quadratic Bezier curve contour.
-							var v := Vector2(cmd.x, cmd.y)
-							var v1 := Vector2(cmd.x1, cmd.y1)
-							var cp1 := cmd.get_start_coords()
-							var cp2 := cp1 + v1 if relative else v1
-							var cp3 := cp1 + v if relative else v
-							
-							points = Utils.get_quadratic_bezier_points(cp1, cp2, cp3)
-							tangent_points.append_array(PackedVector2Array([cp1, cp2, cp2, cp3]))
-						"T":
-							# Shorthand quadratic Bezier curve contour.
-							var v := Vector2(cmd.x, cmd.y)
-							var v1 := pathdata.get_implied_T_control(cmd_idx)
-							
-							var cp1 := cmd.get_start_coords()
-							var cp2 := v1 + cp1 if relative else v1
-							var cp3 := cp1 + v if relative else v
-							
-							if is_nan(cp2.x) and is_nan(cp2.y):
-								points = PackedVector2Array([cp1, cp3])
-							else:
-								points = Utils.get_quadratic_bezier_points(cp1, cp2, cp3)
-								tangent_points.append_array(
-										PackedVector2Array([cp1, cp2, cp2, cp3]))
-						"A":
-							# Elliptical arc contour.
-							var start := cmd.get_start_coords()
-							var v := Vector2(cmd.x, cmd.y)
-							var end := start + v if relative else v
-							# Correct for out-of-range radii.
-							if start == end:
-								continue
-							elif cmd.rx == 0 or cmd.ry == 0:
-								points = PackedVector2Array([start, end])
-							
-							var r := Vector2(cmd.rx, cmd.ry).abs()
-							# Obtain center parametrization.
-							var rot := deg_to_rad(cmd.rot)
-							var cosine := cos(rot)
-							var sine := sin(rot)
-							var half := (start - end) / 2
-							var x1 := half.x * cosine + half.y * sine
-							var y1 := -half.x * sine + half.y * cosine
-							var r2 := Vector2(r.x * r.x, r.y * r.y)
-							var x12 := x1 * x1
-							var y12 := y1 * y1
-							var cr := x12 / r2.x + y12 / r2.y
-							if cr > 1:
-								cr = sqrt(cr)
-								r *= cr
-								r2 = Vector2(r.x * r.x, r.y * r.y)
-							
-							var dq := r2.x * y12 + r2.y * x12
-							var pq := (r2.x * r2.y - dq) / dq
-							var sc := sqrt(maxf(0, pq))
-							if cmd.large_arc_flag == cmd.sweep_flag:
-								sc = -sc
-							
-							var ct := Vector2(r.x * sc * y1 / r.y, -r.y * sc * x1 / r.x)
-							var c := Vector2(ct.x * cosine - ct.y * sine,
-									ct.x * sine + ct.y * cosine) + start.lerp(end, 0.5)
-							var tv := Vector2(x1 - ct.x, y1 - ct.y) / r
-							var theta1 := tv.angle()
-							var delta_theta := fposmod(tv.angle_to(
-									Vector2(-x1 - ct.x, -y1 - ct.y) / r), TAU)
-							if cmd.sweep_flag == 0:
-								theta1 += delta_theta
-								delta_theta = TAU - delta_theta
-							
-							# Now we have a center parametrization (r, c, theta1, delta_theta).
-							# We will approximate the elliptical arc with Bezier curves.
-							# Use the method described in https://www.blog.akhil.cc/ellipse
-							# (but with modifications because it wasn't working fully).
-							var segments := delta_theta * 4/PI
-							var n := floori(segments)
-							var p1 := Utils.E(c, r, cosine, sine, theta1)
-							var e1 := Utils.Et(r, cosine, sine, theta1)
-							var alpha := 0.26511478
-							var t := theta1 + PI/4
-							var cp: Array[PackedVector2Array] = []
-							for _i in n:
-								var p2 := Utils.E(c, r, cosine, sine, t)
-								var e2 := Utils.Et(r, cosine, sine, t)
-								cp.append(PackedVector2Array([p1, alpha * e1, -alpha * e2, p2]))
-								p1 = p2
-								e1 = e2
-								t += PI/4
-							
-							if n != ceili(segments) and not is_equal_approx(n, segments):
-								t = theta1 + delta_theta
-								var p2 := Utils.E(c, r, cosine, sine, t)
-								var e2 := Utils.Et(r, cosine, sine, t)
-								alpha *= fposmod(delta_theta, PI/4) / (PI/4)
-								cp.append(PackedVector2Array([p1, alpha * e1, -alpha * e2, p2]))
-							
-							for p in cp:
-								points += Utils.get_cubic_bezier_points(p[0], p[1], p[2], p[3])
-						"Z":
-							# Path closure contour.
-							var prev_M_idx := cmd_idx - 1
-							var prev_M_cmd := pathdata.get_command(prev_M_idx)
-							while prev_M_idx >= 0:
-								if prev_M_cmd.command_char in "Mm":
-									break
-								prev_M_idx -= 1
-								prev_M_cmd = pathdata.get_command(prev_M_idx)
-							if prev_M_idx == -1:
-								break
-							
-							var end := Vector2(prev_M_cmd.x, prev_M_cmd.y)
-							if prev_M_cmd.relative:
-								end += prev_M_cmd.get_start_coords()
-							
-							points = PackedVector2Array([cmd.get_start_coords(), end])
-						"M":
-							continue
-					
+					points.resize(181)
+					for i in 180:
+						var d := i * TAU/180
+						points[i] = c + Vector2(cos(d), sin(d)) * r
+					points[180] = points[0]
+					var extras := PackedVector2Array([c, c + Vector2(r, 0)])
 					var final_transform := element.get_transform()
 					points = final_transform * points
-					tangent_points = final_transform * tangent_points
-					match current_mode:
-						Utils.InteractionType.NONE:
-							normal_polylines.append(points)
-							normal_multiline += tangent_points
-						Utils.InteractionType.HOVERED:
-							hovered_polylines.append(points)
-							hovered_multiline += tangent_points
-						Utils.InteractionType.SELECTED:
-							selected_polylines.append(points)
-							selected_multiline += tangent_points
-						Utils.InteractionType.HOVERED_SELECTED:
-							hovered_selected_polylines.append(points)
-							hovered_selected_multiline += tangent_points
+					extras = final_transform * extras
+					
+					if element_hovered and element_selected:
+						hovered_selected_polylines.append(points)
+						hovered_selected_multiline += extras
+					elif element_hovered:
+						hovered_polylines.append(points)
+						hovered_multiline += extras
+					elif element_selected:
+						selected_polylines.append(points)
+						selected_multiline += extras
+					else:
+						normal_polylines.append(points)
+						normal_multiline += extras
+					
+					if element_selected:
+						var bounding_box: Rect2 = element.get_bounding_box()
+						if bounding_box.has_area():
+							var element_transform := element.get_transform()
+							var canvas_transform := State.root_element.canvas_transform
+							var canvas_scale := canvas_transform.get_scale().x
+							var element_scale := element_transform.get_scale()
+							var grow_amount_unscaled := (2.0 + Configs.savedata.selection_rectangle_width) /\
+									State.zoom / canvas_scale
+							var grow_amount_x := grow_amount_unscaled / element_scale.x
+							var grow_amount_y := grow_amount_unscaled / element_scale.y
+							selection_transforms.append(canvas_transform * element_transform)
+							selection_rects.append(bounding_box.grow_individual(grow_amount_x,
+									grow_amount_y, grow_amount_x, grow_amount_y))
 				
-				if element_selected:
-					var bounding_box: Rect2 = element.get_bounding_box()
-					if bounding_box.has_area():
-						var element_transform := element.get_transform()
-						var canvas_transform := State.root_element.canvas_transform
-						var canvas_scale := canvas_transform.get_scale().x
-						var element_scale := element_transform.get_scale()
-						var grow_amount_unscaled := (2.0 + Configs.savedata.selection_rectangle_width) /\
-								State.zoom / canvas_scale
-						var grow_amount_x := grow_amount_unscaled / element_scale.x
-						var grow_amount_y := grow_amount_unscaled / element_scale.y
-						selection_transforms.append(canvas_transform * element_transform)
-						selection_rects.append(bounding_box.grow_individual(grow_amount_x,
-								grow_amount_y, grow_amount_x, grow_amount_y))
-	
-	draw_set_transform_matrix(State.root_element.canvas_transform)
-	RenderingServer.canvas_item_set_transform(surface, Transform2D(0.0,
-			Vector2(1, 1) / State.zoom, 0.0, Vector2.ZERO))
-	
-	# First gather all handles in 4 categories, to then draw them in the right order.
-	var normal_handles: Array[Handle] = []
-	var selected_handles: Array[Handle] = []
-	var hovered_handles: Array[Handle] = []
-	var hovered_selected_handles: Array[Handle] = []
-	for handle in handles:
-		var inner_idx := -1
-		if handle is PathHandle:
-			inner_idx = handle.command_index
-		elif handle is PolyHandle:
-			inner_idx = handle.point_index
-		var is_hovered := State.is_hovered(handle.element.xid, inner_idx, true)
-		var is_selected := State.is_selected(handle.element.xid, inner_idx, true)
+				"ellipse":
+					var c := Vector2(element.get_attribute_num("cx"),
+							element.get_attribute_num("cy"))
+					# Squished circle.
+					var points := PackedVector2Array()
+					points.resize(181)
+					for i in 180:
+						var d := i * TAU/180
+						points[i] = c + Vector2(cos(d) * element.get_rx(), sin(d) * element.get_ry())
+					points[180] = points[0]
+					var extras := PackedVector2Array([
+							c, c + Vector2(element.get_rx(), 0), c, c + Vector2(0, element.get_ry())])
+					var final_transform := element.get_transform()
+					points = final_transform * points
+					extras = final_transform * extras
+					
+					if element_hovered and element_selected:
+						hovered_selected_polylines.append(points)
+						hovered_selected_multiline += extras
+					elif element_hovered:
+						hovered_polylines.append(points)
+						hovered_multiline += extras
+					elif element_selected:
+						selected_polylines.append(points)
+						selected_multiline += extras
+					else:
+						normal_polylines.append(points)
+						normal_multiline += extras
+					
+					if element_selected:
+						var bounding_box: Rect2 = element.get_bounding_box()
+						if bounding_box.has_area():
+							var element_transform := element.get_transform()
+							var canvas_transform := State.root_element.canvas_transform
+							var canvas_scale := canvas_transform.get_scale().x
+							var element_scale := element_transform.get_scale()
+							var grow_amount_unscaled := (2.0 + Configs.savedata.selection_rectangle_width) /\
+									State.zoom / canvas_scale
+							var grow_amount_x := grow_amount_unscaled / element_scale.x
+							var grow_amount_y := grow_amount_unscaled / element_scale.y
+							selection_transforms.append(canvas_transform * element_transform)
+							selection_rects.append(bounding_box.grow_individual(grow_amount_x,
+									grow_amount_y, grow_amount_x, grow_amount_y))
+				
+				"rect":
+					var x := element.get_attribute_num("x")
+					var y := element.get_attribute_num("y")
+					var rect_width := element.get_attribute_num("width")
+					var rect_height := element.get_attribute_num("height")
+					var rx: float = element.get_rx()
+					var ry: float = element.get_ry()
+					var points := PackedVector2Array()
+					if rx == 0 or ry == 0:
+						# Basic rectangle.
+						points = [Vector2(x, y), Vector2(x + rect_width, y),
+								Vector2(x + rect_width, y + rect_height),
+								Vector2(x, y + rect_height), Vector2(x, y)]
+					else:
+						if rx == 0:
+							rx = ry
+						elif ry == 0:
+							ry = rx
+						rx = minf(rx, rect_width / 2)
+						ry = minf(ry, rect_height / 2)
+						# Rounded rectangle.
+						points.resize(186)
+						points[0] = Vector2(x + rx, y)
+						points[1] = Vector2(x + rect_width - rx, y)
+						for i in range(135, 180):
+							var d := i * TAU/180
+							points[i - 133] = Vector2(x + rect_width - rx, y + ry) +\
+									Vector2(cos(d) * rx, sin(d) * ry)
+						points[47] =  Vector2(x + rect_width, y + rect_height - ry)
+						for i in range(0, 45):
+							var d := i * TAU/180
+							points[i + 48] = Vector2(x + rect_width - rx, y + rect_height - ry) +\
+									Vector2(cos(d) * rx, sin(d) * ry)
+						points[93] = Vector2(x + rx, y + rect_height)
+						for i in range(45, 90):
+							var d := i * TAU/180
+							points[i + 49] = Vector2(x + rx, y + rect_height - ry) +\
+									Vector2(cos(d) * rx, sin(d) * ry)
+						points[139] = Vector2(x, y + ry)
+						for i in range(90, 135):
+							var d := i * TAU/180
+							points[i + 50] = Vector2(x + rx, y + ry) +\
+									Vector2(cos(d) * rx, sin(d) * ry)
+						points[185] = points[0]
+					var extras := PackedVector2Array([Vector2(x, y), Vector2(x + rect_width, y),
+							Vector2(x, y), Vector2(x, y + rect_height)])
+					var final_transform := element.get_transform()
+					points = final_transform * points
+					extras = final_transform * extras
+					
+					if element_hovered and element_selected:
+						hovered_selected_polylines.append(points)
+						hovered_selected_multiline += extras
+					elif element_hovered:
+						hovered_polylines.append(points)
+						hovered_multiline += extras
+					elif element_selected:
+						selected_polylines.append(points)
+						selected_multiline += extras
+					else:
+						normal_polylines.append(points)
+						normal_multiline += extras
+					
+					if element_selected:
+						var bounding_box: Rect2 = element.get_bounding_box()
+						if bounding_box.has_area():
+							var element_transform := element.get_transform()
+							var canvas_transform := State.root_element.canvas_transform
+							var canvas_scale := canvas_transform.get_scale().x
+							var element_scale := element_transform.get_scale()
+							var grow_amount_unscaled := (2.0 + Configs.savedata.selection_rectangle_width) /\
+									State.zoom / canvas_scale
+							var grow_amount_x := grow_amount_unscaled / element_scale.x
+							var grow_amount_y := grow_amount_unscaled / element_scale.y
+							selection_transforms.append(canvas_transform * element_transform)
+							selection_rects.append(bounding_box.grow_individual(grow_amount_x,
+									grow_amount_y, grow_amount_x, grow_amount_y))
+				
+				"line":
+					var x1 := element.get_attribute_num("x1")
+					var y1 := element.get_attribute_num("y1")
+					var x2 := element.get_attribute_num("x2")
+					var y2 := element.get_attribute_num("y2")
+					
+					var points := PackedVector2Array([Vector2(x1, y1), Vector2(x2, y2)])
+					points = element.get_transform() * points
+					
+					if element_hovered and element_selected:
+						hovered_selected_polylines.append(points)
+					elif element_hovered:
+						hovered_polylines.append(points)
+					elif element_selected:
+						selected_polylines.append(points)
+					else:
+						normal_polylines.append(points)
+					
+					if element_selected:
+						var bounding_box: Rect2 = element.get_bounding_box()
+						if bounding_box.has_area():
+							var element_transform := element.get_transform()
+							var canvas_transform := State.root_element.canvas_transform
+							var canvas_scale := canvas_transform.get_scale().x
+							var element_scale := element_transform.get_scale()
+							var grow_amount_unscaled := (2.0 + Configs.savedata.selection_rectangle_width) /\
+									State.zoom / canvas_scale
+							var grow_amount_x := grow_amount_unscaled / element_scale.x
+							var grow_amount_y := grow_amount_unscaled / element_scale.y
+							selection_transforms.append(canvas_transform * element_transform)
+							selection_rects.append(bounding_box.grow_individual(grow_amount_x,
+									grow_amount_y, grow_amount_x, grow_amount_y))
+				
+				"polygon", "polyline":
+					var point_list := ListParser.list_to_points(element.get_attribute_list("points"))
+					
+					var current_mode := Utils.InteractionType.NONE
+					for idx in range(1, point_list.size()):
+						current_mode = Utils.InteractionType.NONE
+						if State.is_hovered(element.xid, idx, true):
+							@warning_ignore("int_as_enum_without_cast")
+							current_mode += Utils.InteractionType.HOVERED
+						if State.is_selected(element.xid, idx, true):
+							@warning_ignore("int_as_enum_without_cast")
+							current_mode += Utils.InteractionType.SELECTED
+						
+						var points := PackedVector2Array([point_list[idx - 1], point_list[idx]])
+						points = element.get_transform() * points
+						match current_mode:
+							Utils.InteractionType.NONE:
+								normal_polylines.append(points)
+							Utils.InteractionType.HOVERED:
+								hovered_polylines.append(points)
+							Utils.InteractionType.SELECTED:
+								selected_polylines.append(points)
+							Utils.InteractionType.HOVERED_SELECTED:
+								hovered_selected_polylines.append(points)
+					
+					if element.name == "polygon" and point_list.size() > 2:
+						current_mode = Utils.InteractionType.NONE
+						if State.is_hovered(element.xid, 0, true):
+							@warning_ignore("int_as_enum_without_cast")
+							current_mode += Utils.InteractionType.HOVERED
+						if State.is_selected(element.xid, 0, true):
+							@warning_ignore("int_as_enum_without_cast")
+							current_mode += Utils.InteractionType.SELECTED
+						
+						var points := PackedVector2Array([point_list[-1], point_list[0]])
+						points = element.get_transform() * points
+						match current_mode:
+							Utils.InteractionType.NONE:
+								normal_polylines.append(points)
+							Utils.InteractionType.HOVERED:
+								hovered_polylines.append(points)
+							Utils.InteractionType.SELECTED:
+								selected_polylines.append(points)
+							Utils.InteractionType.HOVERED_SELECTED:
+								hovered_selected_polylines.append(points)
+					
+					if element_selected:
+						var bounding_box: Rect2 = element.get_bounding_box()
+						if bounding_box.has_area():
+							var element_transform := element.get_transform()
+							var canvas_transform := State.root_element.canvas_transform
+							var canvas_scale := canvas_transform.get_scale().x
+							var element_scale := element_transform.get_scale()
+							var grow_amount_unscaled := (2.0 + Configs.savedata.selection_rectangle_width) /\
+									State.zoom / canvas_scale
+							var grow_amount_x := grow_amount_unscaled / element_scale.x
+							var grow_amount_y := grow_amount_unscaled / element_scale.y
+							selection_transforms.append(canvas_transform * element_transform)
+							selection_rects.append(bounding_box.grow_individual(grow_amount_x,
+									grow_amount_y, grow_amount_x, grow_amount_y))
+				
+				"path":
+					var pathdata: AttributePathdata = element.get_attribute("d")
+					if pathdata.get_command_count() == 0 or\
+					not pathdata.get_command(0).command_char in "Mm":
+						continue  # Nothing to draw.
+					
+					var current_mode := Utils.InteractionType.NONE
+					
+					for cmd_idx in pathdata.get_command_count():
+						# Drawing logic.
+						var points := PackedVector2Array()
+						var tangent_points := PackedVector2Array()
+						var cmd := pathdata.get_command(cmd_idx)
+						var relative := cmd.relative
+						
+						current_mode = Utils.InteractionType.NONE
+						if State.is_hovered(element.xid, cmd_idx, true):
+							@warning_ignore("int_as_enum_without_cast")
+							current_mode += Utils.InteractionType.HOVERED
+						if State.is_selected(element.xid, cmd_idx, true):
+							@warning_ignore("int_as_enum_without_cast")
+							current_mode += Utils.InteractionType.SELECTED
+						
+						match cmd.command_char.to_upper():
+							"L":
+								# Line contour.
+								var v := Vector2(cmd.x, cmd.y)
+								var end := cmd.get_start_coords() + v if relative else v
+								points = PackedVector2Array([cmd.get_start_coords(), end])
+							"H":
+								# Horizontal line contour.
+								var v := Vector2(cmd.x, 0)
+								var end := cmd.get_start_coords() + v if\
+										relative else Vector2(v.x, cmd.start_y)
+								points = PackedVector2Array([cmd.get_start_coords(), end])
+							"V":
+								# Vertical line contour.
+								var v := Vector2(0, cmd.y)
+								var end := cmd.get_start_coords() + v if\
+										relative else Vector2(cmd.start_x, v.y)
+								points = PackedVector2Array([cmd.get_start_coords(), end])
+							"C":
+								# Cubic Bezier curve contour.
+								var v := Vector2(cmd.x, cmd.y)
+								var v1 := Vector2(cmd.x1, cmd.y1)
+								var v2 := Vector2(cmd.x2, cmd.y2)
+								var cp1 := cmd.get_start_coords()
+								var cp4 := cp1 + v if relative else v
+								var cp2 := v1 if relative else v1 - cp1
+								var cp3 := v2 - v
+								
+								points = Utils.get_cubic_bezier_points(cp1, cp2, cp3, cp4)
+								tangent_points.append_array(PackedVector2Array([cp1,
+										cp1 + cp2, cp1 + v2 if relative else v2, cp4]))
+							"S":
+								# Shorthand cubic Bezier curve contour.
+								if cmd_idx == 0:
+									break
+								
+								var v := Vector2(cmd.x, cmd.y)
+								var v1 := pathdata.get_implied_S_control(cmd_idx)
+								var v2 := Vector2(cmd.x2, cmd.y2)
+								
+								var cp1 := cmd.get_start_coords()
+								var cp4 := cp1 + v if relative else v
+								var cp2 := v1 if relative else v1 - cp1
+								var cp3 := v2 - v
+								
+								points = Utils.get_cubic_bezier_points(cp1, cp2, cp3, cp4)
+								tangent_points.append_array(PackedVector2Array([cp1,
+										cp1 + cp2, cp1 + v2 if relative else v2, cp4]))
+							"Q":
+								# Quadratic Bezier curve contour.
+								var v := Vector2(cmd.x, cmd.y)
+								var v1 := Vector2(cmd.x1, cmd.y1)
+								var cp1 := cmd.get_start_coords()
+								var cp2 := cp1 + v1 if relative else v1
+								var cp3 := cp1 + v if relative else v
+								
+								points = Utils.get_quadratic_bezier_points(cp1, cp2, cp3)
+								tangent_points.append_array(PackedVector2Array([cp1, cp2, cp2, cp3]))
+							"T":
+								# Shorthand quadratic Bezier curve contour.
+								var v := Vector2(cmd.x, cmd.y)
+								var v1 := pathdata.get_implied_T_control(cmd_idx)
+								
+								var cp1 := cmd.get_start_coords()
+								var cp2 := v1 + cp1 if relative else v1
+								var cp3 := cp1 + v if relative else v
+								
+								if is_nan(cp2.x) and is_nan(cp2.y):
+									points = PackedVector2Array([cp1, cp3])
+								else:
+									points = Utils.get_quadratic_bezier_points(cp1, cp2, cp3)
+									tangent_points.append_array(
+											PackedVector2Array([cp1, cp2, cp2, cp3]))
+							"A":
+								# Elliptical arc contour.
+								var start := cmd.get_start_coords()
+								var v := Vector2(cmd.x, cmd.y)
+								var end := start + v if relative else v
+								# Correct for out-of-range radii.
+								if start == end:
+									continue
+								elif cmd.rx == 0 or cmd.ry == 0:
+									points = PackedVector2Array([start, end])
+								
+								var r := Vector2(cmd.rx, cmd.ry).abs()
+								# Obtain center parametrization.
+								var rot := deg_to_rad(cmd.rot)
+								var cosine := cos(rot)
+								var sine := sin(rot)
+								var half := (start - end) / 2
+								var x1 := half.x * cosine + half.y * sine
+								var y1 := -half.x * sine + half.y * cosine
+								var r2 := Vector2(r.x * r.x, r.y * r.y)
+								var x12 := x1 * x1
+								var y12 := y1 * y1
+								var cr := x12 / r2.x + y12 / r2.y
+								if cr > 1:
+									cr = sqrt(cr)
+									r *= cr
+									r2 = Vector2(r.x * r.x, r.y * r.y)
+								
+								var dq := r2.x * y12 + r2.y * x12
+								var pq := (r2.x * r2.y - dq) / dq
+								var sc := sqrt(maxf(0, pq))
+								if cmd.large_arc_flag == cmd.sweep_flag:
+									sc = -sc
+								
+								var ct := Vector2(r.x * sc * y1 / r.y, -r.y * sc * x1 / r.x)
+								var c := Vector2(ct.x * cosine - ct.y * sine,
+										ct.x * sine + ct.y * cosine) + start.lerp(end, 0.5)
+								var tv := Vector2(x1 - ct.x, y1 - ct.y) / r
+								var theta1 := tv.angle()
+								var delta_theta := fposmod(tv.angle_to(
+										Vector2(-x1 - ct.x, -y1 - ct.y) / r), TAU)
+								if cmd.sweep_flag == 0:
+									theta1 += delta_theta
+									delta_theta = TAU - delta_theta
+								
+								# Now we have a center parametrization (r, c, theta1, delta_theta).
+								# We will approximate the elliptical arc with Bezier curves.
+								# Use the method described in https://www.blog.akhil.cc/ellipse
+								# (but with modifications because it wasn't working fully).
+								var segments := delta_theta * 4/PI
+								var n := floori(segments)
+								var p1 := Utils.E(c, r, cosine, sine, theta1)
+								var e1 := Utils.Et(r, cosine, sine, theta1)
+								var alpha := 0.26511478
+								var t := theta1 + PI/4
+								var cp: Array[PackedVector2Array] = []
+								for _i in n:
+									var p2 := Utils.E(c, r, cosine, sine, t)
+									var e2 := Utils.Et(r, cosine, sine, t)
+									cp.append(PackedVector2Array([p1, alpha * e1, -alpha * e2, p2]))
+									p1 = p2
+									e1 = e2
+									t += PI/4
+								
+								if n != ceili(segments) and not is_equal_approx(n, segments):
+									t = theta1 + delta_theta
+									var p2 := Utils.E(c, r, cosine, sine, t)
+									var e2 := Utils.Et(r, cosine, sine, t)
+									alpha *= fposmod(delta_theta, PI/4) / (PI/4)
+									cp.append(PackedVector2Array([p1, alpha * e1, -alpha * e2, p2]))
+								
+								for p in cp:
+									points += Utils.get_cubic_bezier_points(p[0], p[1], p[2], p[3])
+							"Z":
+								# Path closure contour.
+								var prev_M_idx := cmd_idx - 1
+								var prev_M_cmd := pathdata.get_command(prev_M_idx)
+								while prev_M_idx >= 0:
+									if prev_M_cmd.command_char in "Mm":
+										break
+									prev_M_idx -= 1
+									prev_M_cmd = pathdata.get_command(prev_M_idx)
+								if prev_M_idx == -1:
+									break
+								
+								var end := Vector2(prev_M_cmd.x, prev_M_cmd.y)
+								if prev_M_cmd.relative:
+									end += prev_M_cmd.get_start_coords()
+								
+								points = PackedVector2Array([cmd.get_start_coords(), end])
+							"M":
+								continue
+						
+						var final_transform := element.get_transform()
+						points = final_transform * points
+						tangent_points = final_transform * tangent_points
+						match current_mode:
+							Utils.InteractionType.NONE:
+								normal_polylines.append(points)
+								normal_multiline += tangent_points
+							Utils.InteractionType.HOVERED:
+								hovered_polylines.append(points)
+								hovered_multiline += tangent_points
+							Utils.InteractionType.SELECTED:
+								selected_polylines.append(points)
+								selected_multiline += tangent_points
+							Utils.InteractionType.HOVERED_SELECTED:
+								hovered_selected_polylines.append(points)
+								hovered_selected_multiline += tangent_points
+					
+					if element_selected:
+						var bounding_box: Rect2 = element.get_bounding_box()
+						if bounding_box.has_area():
+							var element_transform := element.get_transform()
+							var canvas_transform := State.root_element.canvas_transform
+							var canvas_scale := canvas_transform.get_scale().x
+							var element_scale := element_transform.get_scale()
+							var grow_amount_unscaled := (2.0 + Configs.savedata.selection_rectangle_width) /\
+									State.zoom / canvas_scale
+							var grow_amount_x := grow_amount_unscaled / element_scale.x
+							var grow_amount_y := grow_amount_unscaled / element_scale.y
+							selection_transforms.append(canvas_transform * element_transform)
+							selection_rects.append(bounding_box.grow_individual(grow_amount_x,
+									grow_amount_y, grow_amount_x, grow_amount_y))
 		
-		if is_hovered and is_selected:
-			hovered_selected_handles.append(handle)
-		elif is_hovered:
-			hovered_handles.append(handle)
-		elif is_selected:
-			selected_handles.append(handle)
-		else:
-			normal_handles.append(handle)
-	
-	RenderingServer.canvas_item_clear(surface)
-	RenderingServer.canvas_item_clear(selections_surface)
-	
-	draw_objects_of_type(normal_color, normal_polylines,
-			normal_multiline, normal_handles, normal_handle_textures)
-	draw_objects_of_type(hovered_color, hovered_polylines,
-			hovered_multiline, hovered_handles, hovered_handle_textures)
-	draw_objects_of_type(selected_color, selected_polylines,
-			selected_multiline, selected_handles, selected_handle_textures)
-	draw_objects_of_type(hovered_selected_color, hovered_selected_polylines,
-			hovered_selected_multiline, hovered_selected_handles,
-			hovered_selected_handle_textures)
-	
-	for idx in selection_rects.size():
-		RenderingServer.canvas_item_add_set_transform(selections_surface,
-				selection_transforms[idx])
-		RenderingServer.canvas_item_add_rect(selections_surface, selection_rects[idx],
-				Color.WHITE)
+		
+		# First gather all handles in 4 categories, to then draw them in the right order.
+		var normal_handles: Array[Handle] = []
+		var selected_handles: Array[Handle] = []
+		var hovered_handles: Array[Handle] = []
+		var hovered_selected_handles: Array[Handle] = []
+		for handle in handles:
+			var inner_idx := -1
+			if handle is PathHandle:
+				inner_idx = handle.command_index
+			elif handle is PolyHandle:
+				inner_idx = handle.point_index
+			var is_hovered := State.is_hovered(handle.element.xid, inner_idx, true)
+			var is_selected := State.is_selected(handle.element.xid, inner_idx, true)
+			
+			if is_hovered and is_selected:
+				hovered_selected_handles.append(handle)
+			elif is_hovered:
+				hovered_handles.append(handle)
+			elif is_selected:
+				selected_handles.append(handle)
+			else:
+				normal_handles.append(handle)
+		
+		var cache := DrawCommandCache.new()
+		draw_objects_of_type(cache, normal_color, normal_polylines,
+				normal_multiline, normal_handles, normal_handle_textures)
+		draw_objects_of_type(cache, hovered_color, hovered_polylines,
+				hovered_multiline, hovered_handles, hovered_handle_textures)
+		draw_objects_of_type(cache, selected_color, selected_polylines,
+				selected_multiline, selected_handles, selected_handle_textures)
+		draw_objects_of_type(cache, hovered_selected_color, hovered_selected_polylines,
+				hovered_selected_multiline, hovered_selected_handles,
+				hovered_selected_handle_textures)
+		
+		for idx in selection_rects.size():
+			cache.add_selection(selection_rects[idx], selection_transforms[idx])
+		
+		current_draw_command_cache_mutex.lock()
+		draw_command_cache.append(cache)
+		current_draw_command_cache_mutex.unlock()
 
-func draw_objects_of_type(color: Color, polylines: Array[PackedVector2Array],
+func draw_objects_of_type(command_cache: DrawCommandCache, color: Color, polylines: Array[PackedVector2Array],
 multiline: PackedVector2Array, handles_array: Array[Handle],
 handle_texture_dictionary: Dictionary[Handle.Display, Texture2D]) -> void:
 	for polyline in polylines:
@@ -762,21 +803,63 @@ handle_texture_dictionary: Dictionary[Handle.Display, Texture2D]) -> void:
 		color_array.fill(color)
 		for idx in polyline.size():
 			polyline[idx] = State.root_element.canvas_to_world(polyline[idx]) * State.zoom
-		RenderingServer.canvas_item_add_polyline(surface, polyline,
-				color_array, CONTOUR_WIDTH, true)
+		command_cache.add_polyline(polyline, color_array)
 	if not multiline.is_empty():
 		for idx in multiline.size():
 			multiline[idx] = State.root_element.canvas_to_world(multiline[idx]) * State.zoom
 		var color_array := PackedColorArray()
 		color_array.resize(int(multiline.size() / 2.0))
 		color_array.fill(Color(color, TANGENT_ALPHA))
-		RenderingServer.canvas_item_add_multiline(surface, multiline,
-				color_array, TANGENT_WIDTH, true)
+		command_cache.add_multiline(multiline, color_array)
 	for handle in handles_array:
 		var texture := handle_texture_dictionary[handle.display_mode]
-		texture.draw(surface, State.root_element.canvas_to_world(
+		command_cache.add_texture(texture, State.root_element.canvas_to_world(
 				handle.transform * handle.pos) * State.zoom - texture.get_size() / 2)
 
+
+func _draw_objects() -> void:
+	current_draw_command_cache_mutex.lock()
+	if not _draw_cache():
+		# no cache commands to draw (e.g. first frame)
+		current_draw_command_cache_mutex.unlock()
+		return
+	while draw_command_cache.size() > 1:
+		draw_command_cache.pop_front()
+	RenderingServer.canvas_item_clear(surface)
+	RenderingServer.canvas_item_clear(selections_surface)
+	draw_set_transform_matrix(State.root_element.canvas_transform)
+	RenderingServer.canvas_item_set_transform(surface, Transform2D(0.0,
+			Vector2(1, 1) / State.zoom, 0.0, Vector2.ZERO))
+	var m_points := _draw_cache().multiline_points
+	var m_colors := _draw_cache().multiline_colors
+	var p_points := _draw_cache().polyline_points
+	var p_colors := _draw_cache().polyline_colors
+	var textures := _draw_cache().textures
+	var texture_positions := _draw_cache().texture_positions
+	var sel_rects := _draw_cache().selection_rects
+	var sel_rects_xforms := _draw_cache().selection_rects_xforms
+	for idx in p_points.size():
+		var p := p_points[idx]
+		var c := p_colors[idx]
+		RenderingServer.canvas_item_add_polyline(surface, p, c)
+	for idx in m_points.size():
+		var p := m_points[idx]
+		var c := m_colors[idx]
+		RenderingServer.canvas_item_add_multiline(surface, p, c)
+	for idx in textures.size():
+		var t := textures[idx]
+		var t_pos := texture_positions[idx]
+		t.draw(surface, t_pos)
+	for idx in sel_rects.size():
+		RenderingServer.canvas_item_add_set_transform(selections_surface,
+				sel_rects_xforms[idx])
+		RenderingServer.canvas_item_add_rect(selections_surface, sel_rects[idx],
+				Color.WHITE)
+	current_draw_command_cache_mutex.unlock()
+
+## Returns the currently active draw cache
+func _draw_cache() -> DrawCommandCache:
+	return draw_command_cache[draw_command_cache.size() - 1]
 
 var dragged_handle: Handle = null
 var hovered_handle: Handle = null
@@ -980,3 +1063,29 @@ func add_shape_at_pos(element_name: String, precise_pos: PackedFloat64Array) -> 
 	State.root_element.add_xnode(DB.element_with_setup(element_name, [precise_pos]),
 			PackedInt32Array([State.root_element.get_child_count()]))
 	State.queue_svg_save()
+
+class DrawCommandCache:
+	var polyline_points: Array[PackedVector2Array]
+	var polyline_colors: Array[PackedColorArray]
+	var multiline_points: Array[PackedVector2Array]
+	var multiline_colors: Array[PackedColorArray]
+	var textures: Array[Texture2D]
+	var texture_positions: PackedVector2Array
+	var selection_rects: Array[Rect2]
+	var selection_rects_xforms: Array[Transform2D]
+
+	func add_polyline(points: PackedVector2Array, colors: PackedColorArray):
+		polyline_points.append(points)
+		polyline_colors.append(colors)
+	
+	func add_multiline(points: PackedVector2Array, colors: PackedColorArray):
+		multiline_points.append(points)
+		multiline_colors.append(colors)
+	
+	func add_texture(texture: Texture2D, position: Vector2):
+		textures.append(texture)
+		texture_positions.append(position)
+	
+	func add_selection(rect: Rect2, xform: Transform2D):
+		selection_rects.append(rect)
+		selection_rects_xforms.append(xform)
