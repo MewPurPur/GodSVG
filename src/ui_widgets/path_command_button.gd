@@ -25,9 +25,9 @@ func set_warning(new_state := true) -> void:
 # Couldn't think of any way to get RichTextLabel to autoresize its font on one line.
 func _draw() -> void:
 	var text_obj := TextLine.new()
-	var text_color := Color(1, 1, 1)
+	var text_color := ThemeUtils.highlighted_text_color
 	if disabled:
-		text_color = Color(0.5, 0.5, 0.5)
+		text_color = ThemeUtils.dimmer_text_color
 	elif warned:
 		text_color = Configs.savedata.basic_color_warning
 	

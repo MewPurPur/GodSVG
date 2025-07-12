@@ -102,22 +102,40 @@ func remove_all_menus() -> void:
 	throw_mouse_motion_event()
 
 
-func add_popup(new_popup: Control) -> void:
+# The passed popup control may be added to a shadow panel. The shadow panel is
+# returned by the method if that's the case. Otherwise, the original panel is returned.
+func add_popup(new_popup: Control, add_shadow := true) -> Control:
 	var overlay_ref := Control.new()
 	overlay_ref.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	overlay_ref.gui_input.connect(_parse_popup_overlay_event)
 	popup_stack.append(overlay_ref)
 	get_tree().root.add_child(overlay_ref)
-	overlay_ref.add_child(new_popup)
-	if new_popup is PanelContainer:
-		var stylebox := new_popup.get_theme_stylebox("panel").duplicate()
-		stylebox.shadow_color = Color(0, 0, 0, 0.1)
-		stylebox.shadow_size = 8
-		new_popup.add_theme_stylebox_override("panel", stylebox)
-	
-	new_popup.reset_size()
-	new_popup.tree_exiting.connect(remove_popup.bind(overlay_ref))
-	throw_mouse_motion_event()
+	if add_shadow:
+		var shadow_container := PanelContainer.new()
+		var sb := StyleBoxFlat.new()
+		sb.bg_color = Color(0, 0, 0, 0.1)
+		sb.shadow_color = Color(0, 0, 0, 0.1)
+		sb.shadow_size = 8
+		if new_popup is PanelContainer:
+			var stylebox_wrapped := new_popup.get_theme_stylebox("panel")
+			sb.corner_radius_top_left = stylebox_wrapped.corner_radius_top_left
+			sb.corner_radius_bottom_left = stylebox_wrapped.corner_radius_bottom_left
+			sb.corner_radius_top_right = stylebox_wrapped.corner_radius_top_right
+			sb.corner_radius_bottom_right = stylebox_wrapped.corner_radius_bottom_right
+		new_popup.resized.connect(shadow_container.reset_size)
+		shadow_container.add_theme_stylebox_override("panel", sb)
+		shadow_container.add_child(new_popup)
+		overlay_ref.add_child(shadow_container)
+		shadow_container.reset_size()
+		new_popup.tree_exiting.connect(remove_popup.bind(overlay_ref))
+		throw_mouse_motion_event()
+		return shadow_container
+	else:
+		overlay_ref.add_child(new_popup)
+		new_popup.reset_size()
+		new_popup.tree_exiting.connect(remove_popup.bind(overlay_ref))
+		throw_mouse_motion_event()
+		return new_popup
 
 func remove_popup(overlay_ref: Control = null) -> void:
 	if popup_stack.is_empty():
@@ -142,41 +160,41 @@ func remove_all_popups() -> void:
 
 # Should usually be the global rect of a control.
 func popup_under_rect(popup: Control, rect: Rect2, vp: Viewport) -> void:
-	add_popup(popup)
+	var top_popup := add_popup(popup)
 	var screen_transform := vp.get_screen_transform()
 	var screen_h := vp.get_visible_rect().size.y
 	var popup_pos := Vector2(rect.position.x, 0)
 	# Popup below if there's enough space or we're in the bottom half of the screen.
-	if rect.position.y + rect.size.y + popup.size.y < screen_h or\
+	if rect.position.y + rect.size.y + top_popup.size.y < screen_h or\
 	rect.position.y + rect.size.y / 2 <= screen_h / 2.0:
 		popup_pos.y = rect.position.y + rect.size.y
 	else:
-		popup_pos.y = rect.position.y - popup.size.y
+		popup_pos.y = rect.position.y - top_popup.size.y
 	popup_pos += screen_transform.get_origin() / screen_transform.get_scale()
-	popup.position = popup_clamp_pos(popup, popup_pos, vp)
+	top_popup.position = popup_clamp_pos(top_popup, popup_pos, vp)
 
 # Should usually be the global rect of a control.
 func popup_under_rect_center(popup: Control, rect: Rect2, vp: Viewport) -> void:
-	add_popup(popup)
+	var top_popup := add_popup(popup)
 	var screen_transform := vp.get_screen_transform()
 	var screen_h := vp.get_visible_rect().size.y
-	var popup_pos := Vector2(rect.position.x - popup.size.x / 2.0 + rect.size.x / 2, 0)
+	var popup_pos := Vector2(rect.position.x - top_popup.size.x / 2.0 + rect.size.x / 2, 0)
 	# Popup below if there's enough space or we're in the bottom half of the screen.
-	if rect.position.y + rect.size.y + popup.size.y < screen_h or\
+	if rect.position.y + rect.size.y + top_popup.size.y < screen_h or\
 	rect.position.y + rect.size.y / 2 <= screen_h / 2.0:
 		popup_pos.y = rect.position.y + rect.size.y
 	else:
-		popup_pos.y = rect.position.y - popup.size.y
+		popup_pos.y = rect.position.y - top_popup.size.y
 	# Align horizontally and other things.
 	popup_pos += screen_transform.get_origin() / screen_transform.get_scale()
-	popup.position = popup_clamp_pos(popup, popup_pos, vp)
+	top_popup.position = popup_clamp_pos(top_popup, popup_pos, vp)
 
 # Should usually be the global position of the mouse.
 func popup_under_pos(popup: Control, pos: Vector2, vp: Viewport) -> void:
-	add_popup(popup)
+	var top_popup := add_popup(popup)
 	var screen_transform := vp.get_screen_transform()
 	pos += screen_transform.get_origin() / screen_transform.get_scale()
-	popup.position = popup_clamp_pos(popup, pos, vp)
+	top_popup.position = popup_clamp_pos(top_popup, pos, vp)
 
 # Helper.
 func popup_clamp_pos(popup: Control, attempt_pos: Vector2, vp: Viewport) -> Vector2:

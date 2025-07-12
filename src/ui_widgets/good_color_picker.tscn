@@ -126,8 +126,8 @@ grow_horizontal = 2
 grow_vertical = 2
 focus_mode = 0
 theme_type_variation = &"TextButton"
-theme_override_colors/icon_disabled_color = Color(0, 0, 0, 0)
 theme_override_colors/icon_normal_color = Color(0, 0, 0, 0)
+theme_override_colors/icon_disabled_color = Color(0, 0, 0, 0)
 icon = ExtResource("5_rh0xc")
 icon_alignment = 1
 

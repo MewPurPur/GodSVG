@@ -13,11 +13,11 @@ var error_color := Color("ff866b")
 var element_color := Color("ff8ccc"):
 	set(new_value):
 		element_color = new_value
-		unrecognized_element_color = Color(new_value, new_value.a * 2 / 3.0)
+		unrecognized_element_color = Color(new_value, new_value.a * 0.7)
 var attribute_color := Color("bce0ff"):
 	set(new_value):
 		attribute_color = new_value
-		unrecognized_attribute_color = Color(new_value, new_value.a * 2 / 3.0)
+		unrecognized_attribute_color = Color(new_value, new_value.a * 0.7)
 
 
 func _get_line_syntax_highlighting(line: int) -> Dictionary:

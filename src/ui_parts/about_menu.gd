@@ -131,7 +131,8 @@ func _on_tab_changed(idx: int) -> void:
 			license_texts_label.text = "Licenses"
 			for label: Label in [godsvg_parts_label, godot_parts_label, license_texts_label]:
 				label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-				label.add_theme_font_size_override("font_size", 16)
+				label.theme_type_variation = "TitleLabel"
+				label.add_theme_font_size_override("font_size", 17)
 			%GodSVGParts.add_child(godsvg_parts_label)
 			%GodotParts.add_child(godot_parts_label)
 			%LicenseTexts.add_child(license_texts_label)

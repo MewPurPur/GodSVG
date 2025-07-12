@@ -11,7 +11,7 @@ extends PanelContainer
 @onready var checkbox: CheckBox = $MainContainer/TextContainer/CheckBox
 
 func setup(title: String, message: String, list := PackedStringArray(),
-checkbox_text := "", ) -> void:
+checkbox_text := "") -> void:
 	label.text = message
 	title_label.text = title
 	if not list.is_empty():

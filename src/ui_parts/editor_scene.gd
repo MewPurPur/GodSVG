@@ -33,7 +33,7 @@ func update_layout() -> void:
 	# Set up the horizontal splitter.
 	var horizontal_splitter := HSplitContainer.new()
 	horizontal_splitter.size_flags_horizontal = Control.SIZE_FILL
-	horizontal_splitter.add_theme_constant_override("separation", 6)
+	horizontal_splitter.add_theme_constant_override("separation", 8)
 	horizontal_splitter.split_offset = Configs.savedata.horizontal_splitter_offset
 	horizontal_splitter.dragged.connect(_on_horizontal_splitter_dragged)
 	panel_container.add_child(horizontal_splitter)

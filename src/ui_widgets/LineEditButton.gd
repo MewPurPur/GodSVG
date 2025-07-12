@@ -174,7 +174,8 @@ func _draw() -> void:
 	if is_instance_valid(icon):
 		var icon_side := BUTTON_WIDTH - horizontal_margin_width + 2
 		icon.draw_rect(ci, Rect2(size.x - (BUTTON_WIDTH + 0.5 + icon_side) / 2,
-				(size.y - icon_side) / 2, icon_side, icon_side), false)
+				(size.y - icon_side) / 2, icon_side, icon_side), false,
+				get_theme_color("icon_normal_color", "LeftConnectedButton"))
 
 
 # Helpers

@@ -96,13 +96,14 @@ func _draw() -> void:
 	# Fixed viewport location for now.
 	var stylebox := StyleBoxFlat.new()
 	stylebox.set_corner_radius_all(4)
-	stylebox.bg_color = ThemeUtils.translucent_button_color_normal
+	stylebox.bg_color = ThemeUtils.hover_overlay_color
 	
 	var disabled_stylebox := stylebox.duplicate()
 	disabled_stylebox.bg_color = ThemeUtils.translucent_button_color_disabled
 	disabled_stylebox.draw(ci, right_rect.grow(-BUFFER_SIZE))
 	var viewport_icon := Utils.get_layout_part_icon(Utils.LayoutPart.VIEWPORT)
-	viewport_icon.draw(ci, right_rect.get_center() - viewport_icon.get_size() / 2)
+	viewport_icon.draw(ci, right_rect.get_center() - viewport_icon.get_size() / 2,
+			ThemeUtils.tinted_contrast_color)
 	
 	for layout_location in section_areas:
 		var area := section_areas[layout_location].grow(-BUFFER_SIZE)
@@ -134,7 +135,7 @@ func _draw() -> void:
 			disabled_stylebox.draw(ci, rect)
 		elif hovered_part == layout_part:
 			var hover_stylebox := stylebox.duplicate()
-			hover_stylebox.bg_color = ThemeUtils.translucent_button_color_hover
+			hover_stylebox.bg_color = ThemeUtils.strong_hover_overlay_color
 			hover_stylebox.draw(ci, rect)
 		else:
 			stylebox.draw(ci, rect)
@@ -157,11 +158,11 @@ func _draw() -> void:
 					drop_sb.border_width_right = 2
 					drop_sb.draw(ci, rect)
 			
-		icon.draw(ci, rect.get_center() - icon.get_size() / 2.0)
+		icon.draw(ci, rect.get_center() - icon.get_size() / 2.0, ThemeUtils.tinted_contrast_color)
 	
 	ThemeUtils.regular_font.draw_string(ci, Vector2(0, size.x * 0.75 - 5),
 			Translator.translate("Excluded") + ":", HORIZONTAL_ALIGNMENT_CENTER, size.x,
-			get_theme_font_size("font_size", "Label"))
+			get_theme_font_size("font_size", "Label"), ThemeUtils.text_color)
 
 
 # Drag and drop
@@ -334,7 +335,7 @@ func _make_custom_tooltip(for_text: String) -> Object:
 	vbox.add_child(main_label)
 	if for_text != TranslationUtils.get_layout_part_name(Utils.LayoutPart.VIEWPORT):
 		var dim_label := Label.new()
-		dim_label.add_theme_color_override("font_color", ThemeUtils.common_dimmer_text_color)
+		dim_label.add_theme_color_override("font_color", ThemeUtils.dimmer_text_color)
 		dim_label.text = Translator.translate("Drag and drop to change the layout")
 		vbox.add_child(dim_label)
 	return vbox

@@ -19,9 +19,11 @@ func _ready() -> void:
 	name_edit.text_submitted.connect(_on_name_edit_text_submitted)
 	name_edit.add_theme_font_override("font", ThemeUtils.regular_font)
 
-func _on_name_edit_text_submitted() -> void:
+func _on_name_edit_text_submitted(_text: String) -> void:
 	if not action_button.disabled:
 		action_button.grab_focus()
+	else:
+		cancel_button.grab_focus()
 
 # The error/warning callables should take the stripped text and return a string.
 func setup(title: String, action: Callable, error_callable := Callable(),

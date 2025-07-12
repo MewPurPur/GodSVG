@@ -20,7 +20,7 @@ const reset_icon = preload("res://assets/icons/Reload.svg")
 
 var focused_tab := ""
 var current_setup_setting := ""
-var current_setup_resource: Resource
+var current_setup_resource: ConfigResource
 var setting_container: VBoxContainer
 var advice: Dictionary[String, String] = {}
 
@@ -35,12 +35,11 @@ func _ready() -> void:
 	update_close_button()
 	setup_tabs()
 	tabs.get_child(0).button_pressed = true
-	Configs.theme_changed.connect(setup_theming)
-	setup_theming()
-	Configs.savedata.changed_deferred.connect(setup_content.bind(false))
+	Configs.theme_changed.connect(update_theme)
+	update_theme()
 
-func setup_theming() -> void:
-	var stylebox := get_theme_stylebox("panel").duplicate()
+func update_theme() -> void:
+	var stylebox := ThemeDB.get_default_theme().get_stylebox("panel", theme_type_variation).duplicate()
 	stylebox.content_margin_top += 4.0
 	add_theme_stylebox_override("panel", stylebox)
 
@@ -158,6 +157,25 @@ func setup_content(reset_scroll := true) -> void:
 			content_container.add_child(setting_container)
 			
 			current_setup_resource = Configs.savedata
+			
+			current_setup_setting = "theme_preset"
+			add_profile_picker(Translator.translate("Theme preset"),
+					current_setup_resource.reset_theme_items_to_default,
+					SaveData.ThemePreset.size(), SaveData.get_theme_preset_value_text_map(),
+					current_setup_resource.is_theming_default)
+			
+			add_section(Translator.translate("Primary theme colors"))
+			current_setup_setting = "base_color"
+			add_color_edit(Translator.translate("Base color"), false)
+			current_setup_setting = "accent_color"
+			add_color_edit(Translator.translate("Accent color"), false)
+			
+			current_setup_setting = "highlighter_preset"
+			add_profile_picker(Translator.translate("Highlighter preset"),
+					current_setup_resource.reset_highlighting_items_to_default,
+					SaveData.HighlighterPreset.size(),
+					SaveData.get_highlighter_preset_value_text_map(),
+					current_setup_resource.is_highlighting_default)
 			add_section(Translator.translate("SVG Text colors"))
 			current_setup_setting = "highlighting_symbol_color"
 			add_color_edit(Translator.translate("Symbol color"))
@@ -212,8 +230,8 @@ func setup_content(reset_scroll := true) -> void:
 			add_color_edit(Translator.translate("Color {index}").format({"index": "2"}))
 			
 			add_section(Translator.translate("Basic colors"))
-			current_setup_setting = "background_color"
-			add_color_edit(Translator.translate("Background color"), false)
+			current_setup_setting = "canvas_color"
+			add_color_edit(Translator.translate("Canvas color"), false)
 			current_setup_setting = "grid_color"
 			add_color_edit(Translator.translate("Grid color"), false)
 			current_setup_setting = "basic_color_valid"
@@ -336,12 +354,34 @@ func add_section(section_name: String) -> void:
 	vbox.add_theme_constant_override("separation", 0)
 	var label := Label.new()
 	label.add_theme_font_size_override("font_size", 15)
+	label.theme_type_variation = "TitleLabel"
 	label.text = section_name
 	vbox.add_child(label)
 	var spacer := Control.new()
 	spacer.custom_minimum_size.y = 2
 	vbox.add_child(spacer)
 	setting_container.add_child(vbox)
+
+func add_profile_picker(text: String, application_callback: Callable, profile_count: int,
+value_text_map: Dictionary, disabled_check_callback: Callable) -> void:
+	var bind := current_setup_setting
+	var frame := ProfileFrameScene.instantiate()
+	frame.setup_dropdown(range(profile_count), value_text_map)
+	frame.getter = current_setup_resource.get.bind(bind)
+	var resource_permanent_ref := current_setup_resource
+	frame.setter = func(p: Variant) -> void:
+			resource_permanent_ref.set(bind, p)
+	frame.text = text
+	frame.disabled_check_callback = disabled_check_callback
+	frame.value_changed.connect.call_deferred(setup_content.bind(false))
+	frame.defaults_applied.connect(application_callback)
+	frame.defaults_applied.connect(setup_content.bind(false))
+	setting_container.add_child(frame)
+	
+	resource_permanent_ref.changed_deferred.connect(frame.button_update_disabled)
+	frame.tree_exited.connect(resource_permanent_ref.changed_deferred.disconnect.bind(
+			frame.button_update_disabled), CONNECT_ONE_SHOT)
+	
 
 func add_checkbox(text: String, dim_text := false) -> Control:
 	var frame := SettingFrameScene.instantiate()
@@ -350,6 +390,10 @@ func add_checkbox(text: String, dim_text := false) -> Control:
 	setup_frame(frame)
 	frame.setup_checkbox()
 	add_frame(frame)
+	# Some checkboxes need to update the dimness of the text of other settings.
+	# There's nothing persistent in checkboxes, so it's safe to just rebuild the content
+	# for them, specifically.
+	frame.value_changed.connect(setup_content.bind(false))
 	return frame
 
 # TODO Typed Dictionary wonkiness
@@ -544,25 +588,10 @@ func show_formatter(category: String) -> void:
 		"editor": current_setup_resource = Configs.savedata.editor_formatter
 		"export": current_setup_resource = Configs.savedata.export_formatter
 	
-	var button := Button.new()
-	button.theme_type_variation = "TranslucentButton"
-	button.text = Translator.translate("Reset all to default")
-	button.icon = reset_icon
-	button.focus_mode = Control.FOCUS_NONE
-	button.disabled = current_setup_resource.is_everything_default()
-	button.mouse_default_cursor_shape = Control.CURSOR_ARROW if\
-			button.disabled else Control.CURSOR_POINTING_HAND
-	setting_container.add_child(button)
-	button.pressed.connect(current_setup_resource.reset_to_default)
-	
-	# The preset field shouldn't have a reset button or a section, so set it up manually.
-	var frame := ProfileFrameScene.instantiate()
-	frame.setup_dropdown(range(Formatter.Preset.size()),
-			Formatter.get_preset_value_text_map())
-	frame.getter = current_setup_resource.get.bind("preset")
-	frame.setter = func(p: Variant) -> void: current_setup_resource.set("preset", p)
-	frame.text = Translator.translate("Preset")
-	setting_container.add_child(frame)
+	current_setup_setting = "preset"
+	add_profile_picker(Translator.translate("Preset"),
+			current_setup_resource.reset_to_default, Formatter.Preset.size(),
+			Formatter.get_preset_value_text_map(), current_setup_resource.is_everything_default)
 	
 	add_section("XML")
 	current_setup_setting = "xml_keep_comments"

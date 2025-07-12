@@ -26,6 +26,7 @@ theme_override_constants/separation = 8
 [node name="Title" type="Label" parent="VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
+theme_type_variation = &"TitleLabel"
 horizontal_alignment = 1
 
 [node name="PanelContainer" type="PanelContainer" parent="VBoxContainer"]

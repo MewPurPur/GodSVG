@@ -43,4 +43,5 @@ func force_relativity(relative: bool) -> void:
 		else:
 			command_button.command_char = command_button.command_char.to_upper()
 			command_button.queue_redraw()
+	await get_tree().process_frame
 	reset_size()

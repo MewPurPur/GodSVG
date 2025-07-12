@@ -2,8 +2,6 @@
 class_name PanelGrid extends Control
 
 # Can be made into vars if necessary.
-const inner_color = Color("#32324d")
-const border_color = Color("#4d4d66")
 const border_width = 1
 const side_spacing = 6
 const top_spacing = 2
@@ -13,10 +11,14 @@ const bottom_spacing = 2
 @export var items: PackedStringArray
 @export var dim_last_item := false
 
+
 func _draw() -> void:
 	var item_count := items.size()
 	if item_count == 0:
 		return
+	
+	var inner_color := ThemeUtils.desaturated_color.lerp(ThemeUtils.extreme_theme_color, 0.75)
+	var border_color := ThemeUtils.desaturated_color.lerp(ThemeUtils.extreme_theme_color, 0.55)
 	
 	var effective_columns := clampi(columns, 1, item_count)
 	var text_color := get_theme_color("font_color", "Label")
@@ -43,7 +45,7 @@ func _draw() -> void:
 				RenderingServer.canvas_item_add_rect(ci,
 						Rect2(pos_x, pos_y, box_width, box_height), inner_color)
 			if dim_last_item:
-				text_color = ThemeUtils.common_dim_text_color
+				text_color = ThemeUtils.dim_text_color
 		
 		# Sigh...
 		if is_zero_approx(pos_x):
