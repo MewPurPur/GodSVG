@@ -161,9 +161,9 @@ func _on_selections_or_hover_changed() -> void:
 	if new_selections != current_selections:
 		current_selections = new_selections
 		commands_container.queue_redraw()
-	if new_hovered != current_hovered:
-		current_hovered = new_hovered
-		commands_container.queue_redraw()
+	#if new_hovered != current_hovered:
+		#current_hovered = new_hovered
+		#commands_container.queue_redraw()
 
 func _on_commands_mouse_exited() -> void:
 	var cmd_idx := State.inner_hovered
