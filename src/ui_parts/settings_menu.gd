@@ -170,13 +170,13 @@ func setup_content(reset_scroll := true) -> void:
 			current_setup_setting = "accent_color"
 			add_color_edit(Translator.translate("Accent color"), false)
 			
+			add_section(Translator.translate("SVG Text colors"))
 			current_setup_setting = "highlighter_preset"
 			add_profile_picker(Translator.translate("Highlighter preset"),
 					current_setup_resource.reset_highlighting_items_to_default,
 					SaveData.HighlighterPreset.size(),
 					SaveData.get_highlighter_preset_value_text_map(),
 					current_setup_resource.is_highlighting_default)
-			add_section(Translator.translate("SVG Text colors"))
 			current_setup_setting = "highlighting_symbol_color"
 			add_color_edit(Translator.translate("Symbol color"))
 			current_setup_setting = "highlighting_element_color"
@@ -376,7 +376,7 @@ value_text_map: Dictionary, disabled_check_callback: Callable) -> void:
 	frame.value_changed.connect.call_deferred(setup_content.bind(false))
 	frame.defaults_applied.connect(application_callback)
 	frame.defaults_applied.connect(setup_content.bind(false))
-	setting_container.add_child(frame)
+	add_frame(frame)
 	
 	resource_permanent_ref.changed_deferred.connect(frame.button_update_disabled)
 	frame.tree_exited.connect(resource_permanent_ref.changed_deferred.disconnect.bind(
@@ -433,7 +433,10 @@ func setup_frame(frame: Control) -> void:
 	frame.mouse_exited.connect(hide_advice.bind(current_setup_setting))
 
 func add_frame(frame: Control) -> void:
-	setting_container.get_child(-1).add_child(frame)
+	if setting_container.get_child_count() > 0:
+		setting_container.get_child(-1).add_child(frame)
+	else:
+		setting_container.add_child(frame)
 
 func add_advice(text: String) -> void:
 	advice[current_setup_setting] = text

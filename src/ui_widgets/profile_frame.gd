@@ -27,7 +27,8 @@ func setup_dropdown(values: Array, value_text_map: Dictionary) -> void:
 	dropdown.value_text_map = value_text_map
 
 func _ready() -> void:
-	button.text = Translator.translate("Apply defaults")
+	button.text = Translator.translate("Apply")
+	button.tooltip_text = Translator.translate("Apply all of this preset's defaults")
 	control.add_child(dropdown)
 	dropdown.value_changed.connect(_dropdown_modification)
 	mouse_entered.connect(_on_mouse_entered)

@@ -287,14 +287,14 @@ const CURRENT_VERSION = 1
 			emit_changed()
 			Configs.highlighting_colors_changed.emit()
 
-@export var highlighting_comment_color := Color("cdcfd280"):
+@export var highlighting_comment_color := Color("d4d6d980"):
 	set(new_value):
 		if highlighting_comment_color != new_value:
 			highlighting_comment_color = new_value
 			emit_changed()
 			Configs.highlighting_colors_changed.emit()
 
-@export var highlighting_text_color := Color("cdcfeaac"):
+@export var highlighting_text_color := Color("d5d7f2aa"):
 	set(new_value):
 		if highlighting_text_color != new_value:
 			highlighting_text_color = new_value
@@ -308,7 +308,7 @@ const CURRENT_VERSION = 1
 			emit_changed()
 			Configs.highlighting_colors_changed.emit()
 
-@export var highlighting_error_color := Color("ff866b"):
+@export var highlighting_error_color := Color("f55"):
 	set(new_value):
 		if highlighting_error_color != new_value:
 			highlighting_error_color = new_value
@@ -445,14 +445,14 @@ const MAX_SELECTION_RECTANGLE_DASH_LENGTH = 600.0
 			emit_changed()
 			Configs.selection_rectangle_visuals_changed.emit()
 
-@export var canvas_color := Color(0.12, 0.132, 0.2, 1):
+@export var canvas_color := Color("1f2233"):
 	set(new_value):
 		if canvas_color != new_value:
 			canvas_color = new_value
 			emit_changed()
 			external_call(Configs.sync_canvas_color)
 
-@export var grid_color := Color(0.5, 0.5, 0.5):
+@export var grid_color := Color("808080"):
 	set(new_value):
 		if grid_color != new_value:
 			grid_color = new_value

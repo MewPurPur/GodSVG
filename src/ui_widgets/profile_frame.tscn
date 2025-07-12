@@ -19,7 +19,7 @@ layout_mode = 2
 [node name="Control" type="Control" parent="HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
-size_flags_stretch_ratio = 1.5
+size_flags_stretch_ratio = 3.0
 mouse_filter = 2
 
 [node name="Button" type="Button" parent="HBoxContainer"]
