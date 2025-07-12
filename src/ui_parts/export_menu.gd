@@ -55,12 +55,13 @@ func _ready() -> void:
 	export_data.changed.connect(update)
 	
 	# Setup the warning for when the image is too big to have a preview.
-	var scaling_factor: float = texture_preview.MAX_IMAGE_DIMENSION / bigger_dimension
+	var scaling_factor := texture_preview.MAX_IMAGE_DIMENSION / bigger_dimension
 	info_tooltip.tooltip_text = Translator.translate(
 			"Preview image size is limited to {dimensions}").format(
 			{"dimensions": get_dimensions_text(Vector2(
 					maxf(dimensions.x * scaling_factor, 1.0),
 					maxf(dimensions.y * scaling_factor, 1.0)), true)})
+	info_tooltip.modulate = ThemeUtils.info_icon_color
 	
 	if Configs.savedata.get_active_tab().svg_file_path.is_empty():
 		file_title.add_theme_color_override("font_color", ThemeUtils.subtle_text_color)

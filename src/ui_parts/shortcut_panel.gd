@@ -16,6 +16,7 @@ const config_icon = preload("res://assets/icons/Config.svg")
 
 # Where on the dotted pattern the dragging started.
 var drag_offset := Vector2.ZERO
+var drag_texture_rect: TextureRect
 
 # This property is used to ensure that the panel stays in roughly the same position
 # on the window when it resizes.
@@ -25,6 +26,7 @@ func update_theme() -> void:
 	var stylebox := get_theme_stylebox("panel", "SubtleFlatPanel").duplicate()
 	stylebox.set_content_margin_all(0)
 	add_theme_stylebox_override("panel", stylebox)
+	drag_texture_rect.modulate = ThemeUtils.tinted_contrast_color
 
 func set_position_absolute(new_position: Vector2) -> void:
 	var usable_area_size := get_usable_area_size()
@@ -37,10 +39,10 @@ func set_position_relative(new_position: Vector2) -> void:
 	position = usable_area_size * position_window_relative
 
 func _ready() -> void:
-	Configs.theme_changed.connect(update_theme)
 	Configs.shortcut_panel_changed.connect(update_layout)
-	update_theme()
 	update_layout()
+	Configs.theme_changed.connect(update_theme)
+	update_theme()
 	# Positioning callbacks and logic.
 	get_window().size_changed.connect(sync_relative_position)
 	resized.connect(sync_relative_position)
@@ -64,17 +66,16 @@ func update_layout() -> void:
 	main_container.add_theme_constant_override("separation", 6)
 	add_child(main_container)
 	
-	var drag_texture := TextureRect.new()
-	drag_texture.modulate = ThemeUtils.tinted_contrast_color
-	drag_texture.stretch_mode = TextureRect.STRETCH_TILE
-	drag_texture.texture = dot_pattern
+	drag_texture_rect = TextureRect.new()
+	drag_texture_rect.stretch_mode = TextureRect.STRETCH_TILE
+	drag_texture_rect.texture = dot_pattern
 	match Configs.savedata.shortcut_panel_layout:
 		Layout.HORIZONTAL_STRIP:
-			drag_texture.custom_minimum_size = Vector2(16, 24)
+			drag_texture_rect.custom_minimum_size = Vector2(16, 24)
 		Layout.HORIZONTAL_TWO_ROWS:
-			drag_texture.custom_minimum_size = Vector2(16, 56)
+			drag_texture_rect.custom_minimum_size = Vector2(16, 56)
 		Layout.VERTICAL_STRIP:
-			drag_texture.custom_minimum_size = Vector2(24, 16)
+			drag_texture_rect.custom_minimum_size = Vector2(24, 16)
 	
 	var drag_handle := CenterContainer.new()
 	drag_handle.mouse_default_cursor_shape = Control.CURSOR_DRAG
@@ -84,7 +85,7 @@ func update_layout() -> void:
 		Layout.VERTICAL_STRIP:
 			drag_handle.custom_minimum_size.y = 30
 	drag_handle.gui_input.connect(_on_drag_handle_gui_input)
-	drag_handle.add_child(drag_texture)
+	drag_handle.add_child(drag_texture_rect)
 	main_container.add_child(drag_handle)
 	
 	var config_button := Button.new()

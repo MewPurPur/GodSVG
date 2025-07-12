@@ -15,6 +15,7 @@ static var gray_color: Color  # Light gray on dark theme, darker gray on light t
 static var black_or_white_counter_accent_color: Color
 
 static var warning_icon_color: Color
+static var info_icon_color: Color
 
 static var intermediate_color: Color  # Color of button borders, derived from the accent color.
 static var soft_intermediate_color: Color  # Color of button insides.
@@ -107,7 +108,8 @@ static func recalculate_colors() -> void:
 	black_or_white_counter_accent_color = Color("#000") if\
 			accent_color.get_luminance() > 0.69 else Color("fff")
 	
-	warning_icon_color = Color("fca") if is_theme_dark else Color("99592eff")
+	warning_icon_color = Color("fca") if is_theme_dark else Color("96592c")
+	info_icon_color = Color("acf") if is_theme_dark else Color("3a6ab0")
 	
 	intermediate_color = accent_color.lerp(extreme_theme_color, 0.6)
 	if is_theme_dark:
@@ -181,8 +183,8 @@ static func recalculate_colors() -> void:
 	scrollbar_pressed_color = intermediate_color.blend(Color(tinted_contrast_color.lerp(intense_accent_color, 0.2), 0.4))
 	
 	line_edit_focus_color = Color(accent_color, 0.4)
-	line_edit_inner_color = desaturated_color.lerp(extreme_theme_color, 0.75)
-	line_edit_normal_border_color = desaturated_color.lerp(extreme_theme_color, 0.425)
+	line_edit_inner_color = desaturated_color.lerp(extreme_theme_color, 0.74)
+	line_edit_normal_border_color = desaturated_color.lerp(extreme_theme_color, 0.42)
 	mini_line_edit_normal_border_color = desaturated_color.lerp(extreme_theme_color, 0.225)
 	line_edit_inner_color_disabled = desaturated_color.lerp(gray_color, 0.4).lerp(extreme_theme_color, 0.88)
 	line_edit_border_color_disabled = desaturated_color.lerp(gray_color, 0.4).lerp(extreme_theme_color, 0.68)
