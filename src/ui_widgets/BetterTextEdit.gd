@@ -75,7 +75,7 @@ func _redraw_caret() -> void:
 			caret_pos = glyph_end + Vector2(1, -2)
 			var line := get_line(caret_line)
 			# Workaround for indent_wrapped_lines.
-			if indent_wrapped_lines and get_line_wrap_index_at_column(caret_line, caret_column) >= 1:
+			if get_line_wrap_index_at_column(caret_line, caret_column) >= 1:
 				var i := 0
 				while true:
 					var c := line[i]
