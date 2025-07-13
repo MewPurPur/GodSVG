@@ -101,6 +101,7 @@ func get_setting_default(setting: String) -> Variant:
 		"use_native_file_dialog": return true
 		"use_filename_for_window_title": return true
 		"ui_scale": return ScalingApproach.AUTO
+		"vsync": return true
 		"uncapped_framerate": return false
 		"max_fps": return 60
 	return null
@@ -514,6 +515,13 @@ enum ScalingApproach {AUTO, CONSTANT_075, CONSTANT_100, CONSTANT_125, CONSTANT_1
 			ui_scale = new_value
 			emit_changed()
 			Configs.ui_scale_changed.emit()
+
+@export var vsync := true:
+	set(new_value):
+		if vsync != new_value:
+			vsync = new_value
+			emit_changed()
+			external_call(Configs.sync_vsync)
 
 @export var uncapped_framerate := false:
 	set(new_value):

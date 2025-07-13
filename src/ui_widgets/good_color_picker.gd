@@ -89,7 +89,10 @@ func setup_color(new_color: String, default_color: Color) -> void:
 	update()
 
 
-func add_color_space_buttons() -> void:
+func update_color_space_buttons() -> void:
+	for child in color_space_container.get_children():
+		child.queue_free()
+	
 	var normal_stylebox := StyleBoxFlat.new()
 	normal_stylebox.bg_color = ThemeUtils.hover_overlay_color
 	
@@ -109,6 +112,7 @@ func add_color_space_buttons() -> void:
 		btn.add_theme_stylebox_override("normal", normal_stylebox)
 		btn.add_theme_stylebox_override("hover", hover_stylebox)
 		btn.add_theme_stylebox_override("pressed", pressed_stylebox)
+		btn.add_theme_stylebox_override("hover_pressed", pressed_stylebox)
 		btn.end_bulk_theme_override()
 		btn.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		btn.focus_mode = Control.FOCUS_NONE
@@ -136,7 +140,8 @@ func update_keyword_button() -> void:
 		keyword_button.show()
 
 func _ready() -> void:
-	add_color_space_buttons()
+	Configs.theme_changed.connect(update_color_space_buttons)
+	update_color_space_buttons()
 	# Set up signals.
 	widgets_arr[0].gui_input.connect(parse_slider_input.bind(0, true))
 	widgets_arr[1].gui_input.connect(parse_slider_input.bind(1))

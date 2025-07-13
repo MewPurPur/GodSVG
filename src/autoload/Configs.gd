@@ -97,6 +97,10 @@ func sync_locale() -> void:
 	else:
 		TranslationServer.set_locale(savedata.language)
 
+func sync_vsync() -> void:
+	DisplayServer.window_set_vsync_mode(
+			DisplayServer.VSYNC_ENABLED if savedata.vsync else DisplayServer.VSYNC_DISABLED)
+
 func sync_max_fps() -> void:
 	Engine.max_fps = 0 if savedata.uncapped_framerate else savedata.max_fps
 
