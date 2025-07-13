@@ -129,6 +129,30 @@ msgstr "Hexadecimal de 3 dígitos ou 6 dígitos"
 msgid "6-digit hex"
 msgstr "Hexadecimal de 6 dígitos"
 
+#. Refers to a theme preset.
+#: src/config_classes/SaveData.gd:
+msgid "Dark"
+msgstr ""
+
+#. Refers to a theme preset.
+#: src/config_classes/SaveData.gd:
+#, fuzzy
+msgid "Light"
+msgstr "Altura"
+
+#. Refers to a theme preset.
+#: src/config_classes/SaveData.gd:
+msgid "Black (OLED)"
+msgstr ""
+
+#: src/config_classes/SaveData.gd:
+msgid "Default Dark"
+msgstr ""
+
+#: src/config_classes/SaveData.gd:
+msgid "Default Light"
+msgstr ""
+
 #: src/config_classes/TabData.gd:
 msgid "Empty"
 msgstr "Vazio"
@@ -150,6 +174,18 @@ msgstr "Texto"
 msgid "{element} must be inside {allowed} to have any effect."
 msgstr "{element} deve estar dentro de {allowed} para ter qualquer efeito."
 
+#: src/data_classes/ElementBaseGradient.gd:
+msgid "No \"id\" attribute defined."
+msgstr "Nenhum atributo \"id\" definido."
+
+#: src/data_classes/ElementBaseGradient.gd:
+msgid "No <stop> elements under this gradient."
+msgstr "Nenhum elemento <stop> sob / abaixo este gradiente."
+
+#: src/data_classes/ElementBaseGradient.gd:
+msgid "This gradient is a solid color."
+msgstr "Este gradiente é uma cor sólida."
+
 #: src/data_classes/ElementG.gd:
 msgid "This group has no elements."
 msgstr "Este grupo não possui elementos."
@@ -157,18 +193,6 @@ msgstr "Este grupo não possui elementos."
 #: src/data_classes/ElementG.gd:
 msgid "This group has only one element."
 msgstr "Este grupo possui apenas um elemento."
-
-#: src/data_classes/GradientUtils.gd:
-msgid "No \"id\" attribute defined."
-msgstr "Nenhum atributo \"id\" definido."
-
-#: src/data_classes/GradientUtils.gd:
-msgid "No <stop> elements under this gradient."
-msgstr "Nenhum elemento <stop> sob / abaixo este gradiente."
-
-#: src/data_classes/GradientUtils.gd:
-msgid "This gradient is a solid color."
-msgstr "Este gradiente é uma cor sólida."
 
 #: src/data_classes/SVGParser.gd:
 msgid "Doesn’t describe an SVG."
@@ -200,7 +224,7 @@ msgstr "Licença"
 msgid "Third-party licenses"
 msgstr "Licenças de terceiros"
 
-#. If the language has different gendered versions, prefer the most neutral-sounding one, or feminine if none sound neutral.
+#. If the language has different gendered versions, prefer the most neutral-sounding one, i.e., the one used when you don't know the person's gender. If that's not possible, use feminine.
 #: src/ui_parts/about_menu.gd:
 msgid "Project Founder and Manager"
 msgstr "Fundador e Gerente do Projeto"
@@ -255,7 +279,7 @@ msgstr "Novo elemento"
 msgid "Dimensions"
 msgstr "Dimensões"
 
-#: src/ui_parts/export_menu.gd:
+#: src/ui_parts/export_menu.gd: src/ui_parts/settings_menu.gd:
 msgid "Size"
 msgstr "Tamanho"
 
@@ -279,7 +303,7 @@ msgstr "Qualidade"
 msgid "Scale"
 msgstr "Escala"
 
-#: src/ui_parts/export_menu.gd:
+#: src/ui_parts/export_menu.gd: src/ui_parts/settings_menu.gd:
 msgid "Width"
 msgstr "Largura"
 
@@ -445,8 +469,31 @@ msgid "Other"
 msgstr "Outro"
 
 #: src/ui_parts/settings_menu.gd:
+#, fuzzy
+msgid "Theme preset"
+msgstr "Redefinir zoom"
+
+#: src/ui_parts/settings_menu.gd:
+msgid "Primary theme colors"
+msgstr ""
+
+#: src/ui_parts/settings_menu.gd:
+#, fuzzy
+msgid "Base color"
+msgstr "Cores básicas"
+
+#: src/ui_parts/settings_menu.gd:
+#, fuzzy
+msgid "Accent color"
+msgstr "Cor de texto"
+
+#: src/ui_parts/settings_menu.gd:
 msgid "SVG Text colors"
 msgstr "Cores de texto SVG"
+
+#: src/ui_parts/settings_menu.gd:
+msgid "Highlighter preset"
+msgstr ""
 
 #: src/ui_parts/settings_menu.gd:
 msgid "Symbol color"
@@ -481,10 +528,11 @@ msgstr "Cor de CDATA"
 msgid "Error color"
 msgstr "Cor de erro"
 
-#. Refers to the colors of the draggable handles.
+#. Refers to the draggable gizmos.
 #: src/ui_parts/settings_menu.gd:
-msgid "Handle colors"
-msgstr "Cor de alça"
+#, fuzzy
+msgid "Handles"
+msgstr "Tamanho de alça"
 
 #: src/ui_parts/settings_menu.gd:
 msgid "Inside color"
@@ -507,12 +555,32 @@ msgid "Hovered selected color"
 msgstr "Cor de pairado e selecionado"
 
 #: src/ui_parts/settings_menu.gd:
+#, fuzzy
+msgid "Selection rectangle"
+msgstr "Selecionar uma imagem"
+
+#: src/ui_parts/settings_menu.gd:
+msgid "Speed"
+msgstr ""
+
+#. Refers to the selection rectangle's animated dashed stroke.
+#: src/ui_parts/settings_menu.gd:
+msgid "Dash length"
+msgstr ""
+
+#: src/ui_parts/settings_menu.gd:
+#, fuzzy
+msgid "Color {index}"
+msgstr "Seletor de Cores"
+
+#: src/ui_parts/settings_menu.gd:
 msgid "Basic colors"
 msgstr "Cores básicas"
 
 #: src/ui_parts/settings_menu.gd:
-msgid "Background color"
-msgstr "Cor do plano de fundo"
+#, fuzzy
+msgid "Canvas color"
+msgstr "Cor interna"
 
 #: src/ui_parts/settings_menu.gd:
 msgid "Grid color"
@@ -535,16 +603,32 @@ msgid "Close tabs with middle mouse button"
 msgstr "Fechar guias com o botão do meio do mouse"
 
 #: src/ui_parts/settings_menu.gd:
+msgid "If turned on, clicking on a tab with the middle mouse button closes the tab. If turned off, it focuses the tab instead."
+msgstr "Se ligado, clicar em uma guia com o botão do meio do mouse fechará a guia. Se desligado, irá focar na guia."
+
+#: src/ui_parts/settings_menu.gd:
 msgid "Invert zoom direction"
 msgstr "Inverter direção do zoom"
+
+#: src/ui_parts/settings_menu.gd:
+msgid "Swaps the scroll directions for zooming in and zooming out."
+msgstr "Troca as direções de rolagem para aumentar e diminuir o zoom."
 
 #: src/ui_parts/settings_menu.gd:
 msgid "Wrap-around panning"
 msgstr "Movimentação envolvente"
 
 #: src/ui_parts/settings_menu.gd:
+msgid "Warps the cursor to the opposite side whenever it reaches a viewport boundary while panning."
+msgstr "Passa o cursor para o lado oposto da tela quando ele atinge uma borda da viewport quando movimentando a visualização."
+
+#: src/ui_parts/settings_menu.gd:
 msgid "Use CTRL for zooming"
 msgstr "Utilizar CTRL para zoom"
+
+#: src/ui_parts/settings_menu.gd:
+msgid "If turned on, scrolling pans the view. To zoom, hold CTRL while scrolling."
+msgstr "Se habilitado, a rolagem do mouse irá movimentar a tela. Para realizar o zoom, pressione CTRL enquanto rola."
 
 #: src/ui_parts/settings_menu.gd:
 msgid "Display"
@@ -559,20 +643,21 @@ msgstr "Escala da interface"
 msgid "Determines the scale factor for the interface."
 msgstr "Muda o fator de escala da interfaçe."
 
+#. Stands for "Vertical Synchronization".
 #: src/ui_parts/settings_menu.gd:
-msgid "Uncapped framerate"
+msgid "V-Sync"
 msgstr ""
 
 #: src/ui_parts/settings_menu.gd:
-msgid "Determines if frames are rendered as fast as possible (may increase power consumption and heat)."
+msgid "Synchronizes graphics rendering with display refresh rate to prevent screen tearing artifacts. May increase input lag slightly."
 msgstr ""
 
 #: src/ui_parts/settings_menu.gd:
-msgid "Custom maximum FPS"
+msgid "Maximum FPS"
 msgstr ""
 
 #: src/ui_parts/settings_menu.gd:
-msgid "If the framerate is capped, this value determines the maximum number of frames per second."
+msgid "Determines the maximum number of frames per second."
 msgstr ""
 
 #: src/ui_parts/settings_menu.gd:
@@ -584,13 +669,16 @@ msgid "Use native file dialog"
 msgstr "Utilizar diálogo de arquivos nativo"
 
 #: src/ui_parts/settings_menu.gd:
+msgid "If turned on, uses your operating system's native file dialog. If turned off, uses GodSVG's built-in file dialog."
+msgstr "Se habilitado, usa o diálogo de arquivo nativo do sistema operacional. Se desabilitado, usa o diálogo de arquivo embutido no GodSVG."
+
+#: src/ui_parts/settings_menu.gd:
 msgid "Sync window title to file name"
 msgstr "Sincronizar título de janela com o nome do arquivo"
 
-#. Refers to the size of the draggable handles.
 #: src/ui_parts/settings_menu.gd:
-msgid "Handle size"
-msgstr "Tamanho de alça"
+msgid "If turned off, the window title remains as \"GodSVG\" without including the current file."
+msgstr "Se desabilitado, o título da janela permanecerá como \"GodSVG\" sem incluir o nome do arquivo aberto."
 
 #: src/ui_parts/settings_menu.gd:
 msgid "Language"
@@ -625,10 +713,6 @@ msgstr "Formatador de exportação"
 #: src/ui_parts/settings_menu.gd:
 msgid "Help"
 msgstr "Ajuda"
-
-#: src/ui_parts/settings_menu.gd:
-msgid "Reset all to default"
-msgstr "Redefinir tudo para o padrão"
 
 #: src/ui_parts/settings_menu.gd:
 msgid "Preset"
@@ -722,35 +806,6 @@ msgstr "Transformar listas"
 msgid "Remove unnecessary parameters"
 msgstr "Remover parâmetros desnecessários"
 
-#: src/ui_parts/settings_menu.gd:
-msgid "If turned on, clicking on a tab with the middle mouse button closes the tab. If turned off, it focuses the tab instead."
-msgstr "Se ligado, clicar em uma guia com o botão do meio do mouse fechará a guia. Se desligado, irá focar na guia."
-
-#: src/ui_parts/settings_menu.gd:
-msgid "Swaps the scroll directions for zooming in and zooming out."
-msgstr "Troca as direções de rolagem para aumentar e diminuir o zoom."
-
-#: src/ui_parts/settings_menu.gd:
-msgid "Warps the cursor to the opposite side whenever it reaches a viewport boundary while panning."
-msgstr "Passa o cursor para o lado oposto da tela quando ele atinge uma borda da viewport quando movimentando a visualização."
-
-#: src/ui_parts/settings_menu.gd:
-msgid "If turned on, scrolling pans the view. To zoom, hold CTRL while scrolling."
-msgstr "Se habilitado, a rolagem do mouse irá movimentar a tela. Para realizar o zoom, pressione CTRL enquanto rola."
-
-#: src/ui_parts/settings_menu.gd:
-msgid "If turned on, uses your operating system's native file dialog. If turned off, uses GodSVG's built-in file dialog."
-msgstr "Se habilitado, usa o diálogo de arquivo nativo do sistema operacional. Se desabilitado, usa o diálogo de arquivo embutido no GodSVG."
-
-#: src/ui_parts/settings_menu.gd:
-msgid "If turned off, the window title remains as \"GodSVG\" without including the current file."
-msgstr "Se desabilitado, o título da janela permanecerá como \"GodSVG\" sem incluir o nome do arquivo aberto."
-
-#: src/ui_parts/settings_menu.gd:
-#, fuzzy
-msgid "Determines the visual size and grabbing area of handles."
-msgstr "Muda o tamanho e a área de agarramento das alças."
-
 #: src/ui_parts/shortcut_panel.gd:
 msgid "Horizontal strip"
 msgstr "Faixa horizontal"
@@ -840,6 +895,10 @@ msgstr "Remover cor"
 msgid "Unnamed"
 msgstr "Sem nome"
 
+#: src/ui_widgets/fps_limit_dropdown.gd: src/ui_widgets/setting_frame.gd:
+msgid "Unlimited"
+msgstr ""
+
 #: src/ui_widgets/good_color_picker.gd:
 msgid "Color keywords"
 msgstr "Palavras-chave de cor"
@@ -904,6 +963,14 @@ msgstr "Sem pontos"
 #: src/ui_widgets/presented_shortcut.gd: src/ui_widgets/setting_shortcut.gd:
 msgid "Also used by"
 msgstr "Também usado por"
+
+#: src/ui_widgets/profile_frame.gd:
+msgid "Apply"
+msgstr ""
+
+#: src/ui_widgets/profile_frame.gd:
+msgid "Apply all of this preset's defaults"
+msgstr ""
 
 #: src/ui_widgets/setting_frame.gd: src/ui_widgets/setting_shortcut.gd:
 msgid "Reset to default"
@@ -1305,6 +1372,19 @@ msgstr "Salvar o arquivo do tipo {format}"
 #: src/utils/TranslationUtils.gd:
 msgid "Only {extension_list} files are supported for this operation."
 msgstr "A extensão de arquivo está vazia. Somente arquivos {extension_list} são suportados."
+
+#~ msgid "Handle colors"
+#~ msgstr "Cor de alça"
+
+#~ msgid "Background color"
+#~ msgstr "Cor do plano de fundo"
+
+#~ msgid "Reset all to default"
+#~ msgstr "Redefinir tudo para o padrão"
+
+#, fuzzy
+#~ msgid "Determines the visual size and grabbing area of handles."
+#~ msgstr "Muda o tamanho e a área de agarramento das alças."
 
 #~ msgid "The file extension {extension} is unsupported for this operation. Only {extension_list} files are supported."
 #~ msgstr "A extensão de arquivo {extension} não é compatível com esta operação. Somente arquivos {extension_list} são suportados."

@@ -129,6 +129,30 @@ msgstr "3- või 6-kohaline hex"
 msgid "6-digit hex"
 msgstr "6-kohaline hex"
 
+#. Refers to a theme preset.
+#: src/config_classes/SaveData.gd:
+msgid "Dark"
+msgstr ""
+
+#. Refers to a theme preset.
+#: src/config_classes/SaveData.gd:
+#, fuzzy
+msgid "Light"
+msgstr "Kõrgus"
+
+#. Refers to a theme preset.
+#: src/config_classes/SaveData.gd:
+msgid "Black (OLED)"
+msgstr ""
+
+#: src/config_classes/SaveData.gd:
+msgid "Default Dark"
+msgstr ""
+
+#: src/config_classes/SaveData.gd:
+msgid "Default Light"
+msgstr ""
+
 #: src/config_classes/TabData.gd:
 msgid "Empty"
 msgstr "Tühi"
@@ -149,6 +173,18 @@ msgstr "Tekst"
 msgid "{element} must be inside {allowed} to have any effect."
 msgstr "{element} peab olema {allowed} sees, et sellel oleks mõju."
 
+#: src/data_classes/ElementBaseGradient.gd:
+msgid "No \"id\" attribute defined."
+msgstr "\"id\" atribuut pole defineeritud."
+
+#: src/data_classes/ElementBaseGradient.gd:
+msgid "No <stop> elements under this gradient."
+msgstr "Gradiendis puuduvad <stop> elemendid."
+
+#: src/data_classes/ElementBaseGradient.gd:
+msgid "This gradient is a solid color."
+msgstr "Gradient on ühevärviline."
+
 #: src/data_classes/ElementG.gd:
 msgid "This group has no elements."
 msgstr "Grupis pole ühtegi elementi."
@@ -156,18 +192,6 @@ msgstr "Grupis pole ühtegi elementi."
 #: src/data_classes/ElementG.gd:
 msgid "This group has only one element."
 msgstr "Grupis on ainult üks element."
-
-#: src/data_classes/GradientUtils.gd:
-msgid "No \"id\" attribute defined."
-msgstr "\"id\" atribuut pole defineeritud."
-
-#: src/data_classes/GradientUtils.gd:
-msgid "No <stop> elements under this gradient."
-msgstr "Gradiendis puuduvad <stop> elemendid."
-
-#: src/data_classes/GradientUtils.gd:
-msgid "This gradient is a solid color."
-msgstr "Gradient on ühevärviline."
 
 #: src/data_classes/SVGParser.gd:
 msgid "Doesn’t describe an SVG."
@@ -199,7 +223,7 @@ msgstr "Litsents"
 msgid "Third-party licenses"
 msgstr "Kolmandad litsentsid"
 
-#. If the language has different gendered versions, prefer the most neutral-sounding one, or feminine if none sound neutral.
+#. If the language has different gendered versions, prefer the most neutral-sounding one, i.e., the one used when you don't know the person's gender. If that's not possible, use feminine.
 #: src/ui_parts/about_menu.gd:
 msgid "Project Founder and Manager"
 msgstr "Projekti asutaja ja juht"
@@ -254,7 +278,7 @@ msgstr "Uus element"
 msgid "Dimensions"
 msgstr "Dimensioonid"
 
-#: src/ui_parts/export_menu.gd:
+#: src/ui_parts/export_menu.gd: src/ui_parts/settings_menu.gd:
 msgid "Size"
 msgstr "Suurus"
 
@@ -278,7 +302,7 @@ msgstr "Kvaliteet"
 msgid "Scale"
 msgstr "Skaala"
 
-#: src/ui_parts/export_menu.gd:
+#: src/ui_parts/export_menu.gd: src/ui_parts/settings_menu.gd:
 msgid "Width"
 msgstr "Laius"
 
@@ -444,8 +468,31 @@ msgid "Other"
 msgstr "Muu"
 
 #: src/ui_parts/settings_menu.gd:
+#, fuzzy
+msgid "Theme preset"
+msgstr "Taasta suurendus"
+
+#: src/ui_parts/settings_menu.gd:
+msgid "Primary theme colors"
+msgstr ""
+
+#: src/ui_parts/settings_menu.gd:
+#, fuzzy
+msgid "Base color"
+msgstr "Alusvärvid"
+
+#: src/ui_parts/settings_menu.gd:
+#, fuzzy
+msgid "Accent color"
+msgstr "Teksti värv"
+
+#: src/ui_parts/settings_menu.gd:
 msgid "SVG Text colors"
 msgstr "SVG teksti värvid"
+
+#: src/ui_parts/settings_menu.gd:
+msgid "Highlighter preset"
+msgstr ""
 
 #: src/ui_parts/settings_menu.gd:
 msgid "Symbol color"
@@ -480,10 +527,11 @@ msgstr "CDATA värv"
 msgid "Error color"
 msgstr "Errori värv"
 
-#. Refers to the colors of the draggable handles.
+#. Refers to the draggable gizmos.
 #: src/ui_parts/settings_menu.gd:
-msgid "Handle colors"
-msgstr "Pideme värv"
+#, fuzzy
+msgid "Handles"
+msgstr "Pidemete suurus"
 
 #: src/ui_parts/settings_menu.gd:
 msgid "Inside color"
@@ -506,12 +554,32 @@ msgid "Hovered selected color"
 msgstr "Esiletõstetud valiku värv"
 
 #: src/ui_parts/settings_menu.gd:
+#, fuzzy
+msgid "Selection rectangle"
+msgstr "Vali pilt"
+
+#: src/ui_parts/settings_menu.gd:
+msgid "Speed"
+msgstr ""
+
+#. Refers to the selection rectangle's animated dashed stroke.
+#: src/ui_parts/settings_menu.gd:
+msgid "Dash length"
+msgstr ""
+
+#: src/ui_parts/settings_menu.gd:
+#, fuzzy
+msgid "Color {index}"
+msgstr "Värvivalija"
+
+#: src/ui_parts/settings_menu.gd:
 msgid "Basic colors"
 msgstr "Alusvärvid"
 
 #: src/ui_parts/settings_menu.gd:
-msgid "Background color"
-msgstr "Tausta värv"
+#, fuzzy
+msgid "Canvas color"
+msgstr "Seesmine värv"
 
 #: src/ui_parts/settings_menu.gd:
 msgid "Grid color"
@@ -534,16 +602,32 @@ msgid "Close tabs with middle mouse button"
 msgstr "Sulge vahekaarte keskmise hiireklahviga"
 
 #: src/ui_parts/settings_menu.gd:
+msgid "If turned on, clicking on a tab with the middle mouse button closes the tab. If turned off, it focuses the tab instead."
+msgstr "Sisselülitamisel sulgeb keskmise hiireklahviga kaardile vajutamine selle. Väljalülitamisel fokuseeriks see selle."
+
+#: src/ui_parts/settings_menu.gd:
 msgid "Invert zoom direction"
 msgstr "Inverteeri suurendussuund"
+
+#: src/ui_parts/settings_menu.gd:
+msgid "Swaps the scroll directions for zooming in and zooming out."
+msgstr "Vahetab kerimissuunad suurendamiseks ja vähendamiseks ümber."
 
 #: src/ui_parts/settings_menu.gd:
 msgid "Wrap-around panning"
 msgstr "Takistusteta vaate liigutamine"
 
 #: src/ui_parts/settings_menu.gd:
+msgid "Warps the cursor to the opposite side whenever it reaches a viewport boundary while panning."
+msgstr "Viib kursori akna vastaspoolele, kui see jõuab vaate liigutamise ajal selle servani, et see liikumist ei takistaks."
+
+#: src/ui_parts/settings_menu.gd:
 msgid "Use CTRL for zooming"
 msgstr "Kasuta CTRL klahvi suurendamiseks"
+
+#: src/ui_parts/settings_menu.gd:
+msgid "If turned on, scrolling pans the view. To zoom, hold CTRL while scrolling."
+msgstr "Sisselülitamisel kerimine liigutab vaadet. Suurendamiseks hoia CTRL klahvi kerimise ajal."
 
 #: src/ui_parts/settings_menu.gd:
 msgid "Display"
@@ -558,20 +642,21 @@ msgstr "Kasutajaliidese suurus"
 msgid "Determines the scale factor for the interface."
 msgstr "Muudab kasutajaliidese suurust."
 
+#. Stands for "Vertical Synchronization".
 #: src/ui_parts/settings_menu.gd:
-msgid "Uncapped framerate"
+msgid "V-Sync"
 msgstr ""
 
 #: src/ui_parts/settings_menu.gd:
-msgid "Determines if frames are rendered as fast as possible (may increase power consumption and heat)."
+msgid "Synchronizes graphics rendering with display refresh rate to prevent screen tearing artifacts. May increase input lag slightly."
 msgstr ""
 
 #: src/ui_parts/settings_menu.gd:
-msgid "Custom maximum FPS"
+msgid "Maximum FPS"
 msgstr ""
 
 #: src/ui_parts/settings_menu.gd:
-msgid "If the framerate is capped, this value determines the maximum number of frames per second."
+msgid "Determines the maximum number of frames per second."
 msgstr ""
 
 #: src/ui_parts/settings_menu.gd:
@@ -583,13 +668,16 @@ msgid "Use native file dialog"
 msgstr "Kasuta süsteemi failidialoogi"
 
 #: src/ui_parts/settings_menu.gd:
+msgid "If turned on, uses your operating system's native file dialog. If turned off, uses GodSVG's built-in file dialog."
+msgstr "Sisselülitamisel kasutab süsteemi vaikefailidialoogi. Väljalülitamisel GodSVG sisseehitatud failidialoogi."
+
+#: src/ui_parts/settings_menu.gd:
 msgid "Sync window title to file name"
 msgstr "Sünkrooni akna tiitel avatud faili nimega"
 
-#. Refers to the size of the draggable handles.
 #: src/ui_parts/settings_menu.gd:
-msgid "Handle size"
-msgstr "Pidemete suurus"
+msgid "If turned off, the window title remains as \"GodSVG\" without including the current file."
+msgstr "Väljalülitamisel jääb akna nimieks \"GodSVG\" sõltumata avatud failist."
 
 #: src/ui_parts/settings_menu.gd:
 msgid "Language"
@@ -624,10 +712,6 @@ msgstr "Ekspordi vormindus"
 #: src/ui_parts/settings_menu.gd:
 msgid "Help"
 msgstr "Abi"
-
-#: src/ui_parts/settings_menu.gd:
-msgid "Reset all to default"
-msgstr "Lähtesta kõik vaikeväärtustele"
 
 #: src/ui_parts/settings_menu.gd:
 msgid "Preset"
@@ -721,35 +805,6 @@ msgstr "Teisendused"
 msgid "Remove unnecessary parameters"
 msgstr "Eemalda ebavajalikud parameetrid"
 
-#: src/ui_parts/settings_menu.gd:
-msgid "If turned on, clicking on a tab with the middle mouse button closes the tab. If turned off, it focuses the tab instead."
-msgstr "Sisselülitamisel sulgeb keskmise hiireklahviga kaardile vajutamine selle. Väljalülitamisel fokuseeriks see selle."
-
-#: src/ui_parts/settings_menu.gd:
-msgid "Swaps the scroll directions for zooming in and zooming out."
-msgstr "Vahetab kerimissuunad suurendamiseks ja vähendamiseks ümber."
-
-#: src/ui_parts/settings_menu.gd:
-msgid "Warps the cursor to the opposite side whenever it reaches a viewport boundary while panning."
-msgstr "Viib kursori akna vastaspoolele, kui see jõuab vaate liigutamise ajal selle servani, et see liikumist ei takistaks."
-
-#: src/ui_parts/settings_menu.gd:
-msgid "If turned on, scrolling pans the view. To zoom, hold CTRL while scrolling."
-msgstr "Sisselülitamisel kerimine liigutab vaadet. Suurendamiseks hoia CTRL klahvi kerimise ajal."
-
-#: src/ui_parts/settings_menu.gd:
-msgid "If turned on, uses your operating system's native file dialog. If turned off, uses GodSVG's built-in file dialog."
-msgstr "Sisselülitamisel kasutab süsteemi vaikefailidialoogi. Väljalülitamisel GodSVG sisseehitatud failidialoogi."
-
-#: src/ui_parts/settings_menu.gd:
-msgid "If turned off, the window title remains as \"GodSVG\" without including the current file."
-msgstr "Väljalülitamisel jääb akna nimieks \"GodSVG\" sõltumata avatud failist."
-
-#: src/ui_parts/settings_menu.gd:
-#, fuzzy
-msgid "Determines the visual size and grabbing area of handles."
-msgstr "Muudab pidemete nähtavat ja interaktiivse ala suurust."
-
 #: src/ui_parts/shortcut_panel.gd:
 msgid "Horizontal strip"
 msgstr "Horisontaalne riba"
@@ -839,6 +894,10 @@ msgstr "Kustuta värv"
 msgid "Unnamed"
 msgstr "Nimetu"
 
+#: src/ui_widgets/fps_limit_dropdown.gd: src/ui_widgets/setting_frame.gd:
+msgid "Unlimited"
+msgstr ""
+
 #: src/ui_widgets/good_color_picker.gd:
 msgid "Color keywords"
 msgstr "Värvi võtmesõnad"
@@ -903,6 +962,14 @@ msgstr "Puuduvad punktid"
 #: src/ui_widgets/presented_shortcut.gd: src/ui_widgets/setting_shortcut.gd:
 msgid "Also used by"
 msgstr "Seda kasutab ka"
+
+#: src/ui_widgets/profile_frame.gd:
+msgid "Apply"
+msgstr ""
+
+#: src/ui_widgets/profile_frame.gd:
+msgid "Apply all of this preset's defaults"
+msgstr ""
 
 #: src/ui_widgets/setting_frame.gd: src/ui_widgets/setting_shortcut.gd:
 msgid "Reset to default"
@@ -1304,6 +1371,19 @@ msgstr "Salvesta {format} fail"
 #: src/utils/TranslationUtils.gd:
 msgid "Only {extension_list} files are supported for this operation."
 msgstr "Ainult {extension_list} failid on toetatud selle tehingu jaoks."
+
+#~ msgid "Handle colors"
+#~ msgstr "Pideme värv"
+
+#~ msgid "Background color"
+#~ msgstr "Tausta värv"
+
+#~ msgid "Reset all to default"
+#~ msgstr "Lähtesta kõik vaikeväärtustele"
+
+#, fuzzy
+#~ msgid "Determines the visual size and grabbing area of handles."
+#~ msgstr "Muudab pidemete nähtavat ja interaktiivse ala suurust."
 
 #~ msgid "The file extension {extension} is unsupported for this operation. Only {extension_list} files are supported."
 #~ msgstr "Faililaiend {extension} ei ole selle operatsiooni jaoks toetatud. Toetatud on {extension_list} failid."

@@ -102,7 +102,7 @@ func sync_vsync() -> void:
 			DisplayServer.VSYNC_ENABLED if savedata.vsync else DisplayServer.VSYNC_DISABLED)
 
 func sync_max_fps() -> void:
-	Engine.max_fps = 0 if savedata.uncapped_framerate else savedata.max_fps
+	Engine.max_fps = savedata.max_fps
 
 func sync_theme() -> void:
 	ThemeUtils.generate_and_apply_theme()

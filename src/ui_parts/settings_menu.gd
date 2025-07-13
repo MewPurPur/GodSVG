@@ -315,16 +315,9 @@ func setup_content(reset_scroll := true) -> void:
 			add_checkbox(Translator.translate("V-Sync"))
 			add_advice(Translator.translate("Synchronizes graphics rendering with display refresh rate to prevent screen tearing artifacts. May increase input lag slightly."))
 			
-			current_setup_setting = "uncapped_framerate"
-			add_checkbox(Translator.translate("Uncapped framerate"),
-					current_setup_resource.vsync)
-			add_advice(Translator.translate("Determines if frames are rendered as fast as possible (may increase power consumption and heat)."))
-			
 			current_setup_setting = "max_fps"
-			add_number_dropdown(Translator.translate("Custom maximum FPS"),
-					[30, 60, 90, 120, 144, 240, 360], true, false, SaveData.MAX_FPS_MIN,
-					SaveData.MAX_FPS_MAX, current_setup_resource.uncapped_framerate)
-			add_advice(Translator.translate("If the framerate is capped, this value determines the maximum number of frames per second."))
+			add_fps_limit_dropdown(Translator.translate("Maximum FPS"))
+			add_advice(Translator.translate("Determines the maximum number of frames per second."))
 			
 			add_section(Translator.translate("Miscellaneous"))
 			current_setup_setting = "use_native_file_dialog"
@@ -411,6 +404,15 @@ restricted := true, min_value := -INF, max_value := INF, dim_text := false) -> C
 	frame.text = text
 	setup_frame(frame)
 	frame.setup_number_dropdown(values, is_integer, restricted, min_value, max_value)
+	add_frame(frame)
+	return frame
+
+func add_fps_limit_dropdown(text: String, dim_text := false) -> Control:
+	var frame := SettingFrameScene.instantiate()
+	frame.dim_text = dim_text
+	frame.text = text
+	setup_frame(frame)
+	frame.setup_fps_limit_dropdown()
 	add_frame(frame)
 	return frame
 

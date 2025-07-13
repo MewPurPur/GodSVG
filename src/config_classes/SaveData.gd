@@ -102,8 +102,7 @@ func get_setting_default(setting: String) -> Variant:
 		"use_filename_for_window_title": return true
 		"ui_scale": return ScalingApproach.AUTO
 		"vsync": return true
-		"uncapped_framerate": return false
-		"max_fps": return 60
+		"max_fps": return 0
 	return null
 
 func reset_to_default() -> void:
@@ -523,17 +522,11 @@ enum ScalingApproach {AUTO, CONSTANT_075, CONSTANT_100, CONSTANT_125, CONSTANT_1
 			emit_changed()
 			external_call(Configs.sync_vsync)
 
-@export var uncapped_framerate := false:
-	set(new_value):
-		if uncapped_framerate != new_value:
-			uncapped_framerate = new_value
-			emit_changed()
-			external_call(Configs.sync_max_fps)
-
 const MAX_FPS_MIN = 12
 const MAX_FPS_MAX = 600
-@export var max_fps := 60:
+@export var max_fps := 0:
 	set(new_value):
+		# Clamp unless it's 0 (unlimited).
 		if is_nan(new_value):
 			new_value = get_setting_default("max_fps")
 		elif new_value != 0:

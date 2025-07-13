@@ -129,6 +129,29 @@ msgstr "Хекс с 3 или 6 цифри"
 msgid "6-digit hex"
 msgstr "Хекс с 6 цифри"
 
+#. Refers to a theme preset.
+#: src/config_classes/SaveData.gd:
+msgid "Dark"
+msgstr "Тъмна"
+
+#. Refers to a theme preset.
+#: src/config_classes/SaveData.gd:
+msgid "Light"
+msgstr "Светла"
+
+#. Refers to a theme preset.
+#: src/config_classes/SaveData.gd:
+msgid "Black (OLED)"
+msgstr "Черна (OLED)"
+
+#: src/config_classes/SaveData.gd:
+msgid "Default Dark"
+msgstr "Тъмна по подразбиране"
+
+#: src/config_classes/SaveData.gd:
+msgid "Default Light"
+msgstr "Светла по подразбиране"
+
 #: src/config_classes/TabData.gd:
 msgid "Empty"
 msgstr "Празен"
@@ -149,6 +172,18 @@ msgstr "Текст"
 msgid "{element} must be inside {allowed} to have any effect."
 msgstr "{element} трябва да е във {allowed} за да има ефект."
 
+#: src/data_classes/ElementBaseGradient.gd:
+msgid "No \"id\" attribute defined."
+msgstr "Не е дефиниран \"id\" атрибут."
+
+#: src/data_classes/ElementBaseGradient.gd:
+msgid "No <stop> elements under this gradient."
+msgstr "Няма <stop> елемент под този градиент."
+
+#: src/data_classes/ElementBaseGradient.gd:
+msgid "This gradient is a solid color."
+msgstr "Този градиент е едноцветен."
+
 #: src/data_classes/ElementG.gd:
 msgid "This group has no elements."
 msgstr "Тази група няма елементи."
@@ -156,18 +191,6 @@ msgstr "Тази група няма елементи."
 #: src/data_classes/ElementG.gd:
 msgid "This group has only one element."
 msgstr "Тази група има само един елемент."
-
-#: src/data_classes/GradientUtils.gd:
-msgid "No \"id\" attribute defined."
-msgstr "Не е дефиниран \"id\" атрибут."
-
-#: src/data_classes/GradientUtils.gd:
-msgid "No <stop> elements under this gradient."
-msgstr "Няма <stop> елемент под този градиент."
-
-#: src/data_classes/GradientUtils.gd:
-msgid "This gradient is a solid color."
-msgstr "Този градиент е едноцветен."
 
 #: src/data_classes/SVGParser.gd:
 msgid "Doesn’t describe an SVG."
@@ -199,7 +222,7 @@ msgstr "Лиценз"
 msgid "Third-party licenses"
 msgstr "Лицензи от трети партии"
 
-#. If the language has different gendered versions, prefer the most neutral-sounding one, or feminine if none sound neutral.
+#. If the language has different gendered versions, prefer the most neutral-sounding one, i.e., the one used when you don't know the person's gender. If that's not possible, use feminine.
 #: src/ui_parts/about_menu.gd:
 msgid "Project Founder and Manager"
 msgstr "Основател и мениджър на проекта"
@@ -254,7 +277,7 @@ msgstr "Добави елемент"
 msgid "Dimensions"
 msgstr "Измерения"
 
-#: src/ui_parts/export_menu.gd:
+#: src/ui_parts/export_menu.gd: src/ui_parts/settings_menu.gd:
 msgid "Size"
 msgstr "Размер"
 
@@ -278,7 +301,7 @@ msgstr "Качество"
 msgid "Scale"
 msgstr "Мащаб"
 
-#: src/ui_parts/export_menu.gd:
+#: src/ui_parts/export_menu.gd: src/ui_parts/settings_menu.gd:
 msgid "Width"
 msgstr "Широчина"
 
@@ -444,8 +467,28 @@ msgid "Other"
 msgstr "Други"
 
 #: src/ui_parts/settings_menu.gd:
+msgid "Theme preset"
+msgstr "Шаблон на тема"
+
+#: src/ui_parts/settings_menu.gd:
+msgid "Primary theme colors"
+msgstr "Основни цветове на темата"
+
+#: src/ui_parts/settings_menu.gd:
+msgid "Base color"
+msgstr "Базов цвят"
+
+#: src/ui_parts/settings_menu.gd:
+msgid "Accent color"
+msgstr "Акцентен цвят"
+
+#: src/ui_parts/settings_menu.gd:
 msgid "SVG Text colors"
 msgstr "Цветове на SVG текста"
+
+#: src/ui_parts/settings_menu.gd:
+msgid "Highlighter preset"
+msgstr "Шаблон на синтаксово маркиране"
 
 #: src/ui_parts/settings_menu.gd:
 msgid "Symbol color"
@@ -480,10 +523,10 @@ msgstr "Цвят на CDATA"
 msgid "Error color"
 msgstr "Цвят на грешките"
 
-#. Refers to the colors of the draggable handles.
+#. Refers to the draggable gizmos.
 #: src/ui_parts/settings_menu.gd:
-msgid "Handle colors"
-msgstr "Цвят на дръжките"
+msgid "Handles"
+msgstr "Дръжки"
 
 #: src/ui_parts/settings_menu.gd:
 msgid "Inside color"
@@ -506,12 +549,29 @@ msgid "Hovered selected color"
 msgstr "Избран цвят под курсора"
 
 #: src/ui_parts/settings_menu.gd:
+msgid "Selection rectangle"
+msgstr "Правоъгълник за селекцията"
+
+#: src/ui_parts/settings_menu.gd:
+msgid "Speed"
+msgstr "Скорост"
+
+#. Refers to the selection rectangle's animated dashed stroke.
+#: src/ui_parts/settings_menu.gd:
+msgid "Dash length"
+msgstr "Дължина на чертичките"
+
+#: src/ui_parts/settings_menu.gd:
+msgid "Color {index}"
+msgstr "Цвят {index}"
+
+#: src/ui_parts/settings_menu.gd:
 msgid "Basic colors"
 msgstr "Основни цветове"
 
 #: src/ui_parts/settings_menu.gd:
-msgid "Background color"
-msgstr "Цвят на задния фон"
+msgid "Canvas color"
+msgstr "Цвят на платното"
 
 #: src/ui_parts/settings_menu.gd:
 msgid "Grid color"
@@ -534,20 +594,36 @@ msgid "Close tabs with middle mouse button"
 msgstr "Затваряне на раздели със средното копче на мишката"
 
 #: src/ui_parts/settings_menu.gd:
+msgid "If turned on, clicking on a tab with the middle mouse button closes the tab. If turned off, it focuses the tab instead."
+msgstr "Когато е включено, натискането на раздел със средното копче на мишката затваря раздела. Ако е изключено, средното копче фокусира раздела."
+
+#: src/ui_parts/settings_menu.gd:
 msgid "Invert zoom direction"
 msgstr "Обърни посоката на увеличение"
+
+#: src/ui_parts/settings_menu.gd:
+msgid "Swaps the scroll directions for zooming in and zooming out."
+msgstr "Разменя посоките на влачене за намаляване и увеличаване"
 
 #: src/ui_parts/settings_menu.gd:
 msgid "Wrap-around panning"
 msgstr "Превъртане на курсора"
 
 #: src/ui_parts/settings_menu.gd:
+msgid "Warps the cursor to the opposite side whenever it reaches a viewport boundary while panning."
+msgstr "Превърта курсора когато той достигне краищата на екрана докато влачи гледката."
+
+#: src/ui_parts/settings_menu.gd:
 msgid "Use CTRL for zooming"
 msgstr "Използвай CTRL за увеличение"
 
 #: src/ui_parts/settings_menu.gd:
+msgid "If turned on, scrolling pans the view. To zoom, hold CTRL while scrolling."
+msgstr "Когато е включено, влаченето премества гледката. За увеличение, натисни CTRL докато влачиш."
+
+#: src/ui_parts/settings_menu.gd:
 msgid "Display"
-msgstr ""
+msgstr "Дисплей"
 
 #: src/ui_parts/settings_menu.gd:
 msgid "UI scale"
@@ -557,21 +633,22 @@ msgstr "Мащаб на интерфейса"
 msgid "Determines the scale factor for the interface."
 msgstr "Определя мащаба на интерфейса."
 
+#. Stands for "Vertical Synchronization".
 #: src/ui_parts/settings_menu.gd:
-msgid "Uncapped framerate"
-msgstr "Неограничени кадри в секунда"
+msgid "V-Sync"
+msgstr "Вертикална синхронизация"
 
 #: src/ui_parts/settings_menu.gd:
-msgid "Determines if frames are rendered as fast as possible (may increase power consumption and heat)."
-msgstr "Определя дали кадрите да се изобразяват възможно най-бързо (може да увеличи консумацията на енергия и отделянето на топлина)"
+msgid "Synchronizes graphics rendering with display refresh rate to prevent screen tearing artifacts. May increase input lag slightly."
+msgstr "Синхронизира рендирането с честотата на опресняване на дисплея, за да предотврати артефакти от разкъсване на екранното изображение. Може леко да забави входните сигнали."
 
 #: src/ui_parts/settings_menu.gd:
-msgid "Custom maximum FPS"
+msgid "Maximum FPS"
 msgstr "Максимални кадри в секунда"
 
 #: src/ui_parts/settings_menu.gd:
-msgid "If the framerate is capped, this value determines the maximum number of frames per second."
-msgstr "Ако кадрите в секунда са ограничени, тази стойност определя максимума."
+msgid "Determines the maximum number of frames per second."
+msgstr "Определя максималния брой кадри в секунда."
 
 #: src/ui_parts/settings_menu.gd:
 msgid "Miscellaneous"
@@ -582,13 +659,16 @@ msgid "Use native file dialog"
 msgstr "Използвай местния файлов мениджър"
 
 #: src/ui_parts/settings_menu.gd:
+msgid "If turned on, uses your operating system's native file dialog. If turned off, uses GodSVG's built-in file dialog."
+msgstr "Когато е включено, ще бъде използван файловият мениджър на твоята операционна система. Ако е изключено, използва вградения файлов мениджър на GodSVG."
+
+#: src/ui_parts/settings_menu.gd:
 msgid "Sync window title to file name"
 msgstr "Синхронизирай името на прозореца с файла"
 
-#. Refers to the size of the draggable handles.
 #: src/ui_parts/settings_menu.gd:
-msgid "Handle size"
-msgstr "Размер на дръжките"
+msgid "If turned off, the window title remains as \"GodSVG\" without including the current file."
+msgstr "Когато е изключено, името на прозореца остава \"GodSVG\" без да включва настоящия файл."
 
 #: src/ui_parts/settings_menu.gd:
 msgid "Language"
@@ -623,10 +703,6 @@ msgstr "Форматировач за експортиране"
 #: src/ui_parts/settings_menu.gd:
 msgid "Help"
 msgstr "Помощ"
-
-#: src/ui_parts/settings_menu.gd:
-msgid "Reset all to default"
-msgstr "Възстанови всички до началната стойност"
 
 #: src/ui_parts/settings_menu.gd:
 msgid "Preset"
@@ -720,34 +796,6 @@ msgstr "Поредици от трансформации"
 msgid "Remove unnecessary parameters"
 msgstr "Премахни ненужните параметри"
 
-#: src/ui_parts/settings_menu.gd:
-msgid "If turned on, clicking on a tab with the middle mouse button closes the tab. If turned off, it focuses the tab instead."
-msgstr "Когато е включено, натискането на раздел със средното копче на мишката затваря раздела. Ако е изключено, средното копче фокусира раздела."
-
-#: src/ui_parts/settings_menu.gd:
-msgid "Swaps the scroll directions for zooming in and zooming out."
-msgstr "Разменя посоките на влачене за намаляване и увеличаване"
-
-#: src/ui_parts/settings_menu.gd:
-msgid "Warps the cursor to the opposite side whenever it reaches a viewport boundary while panning."
-msgstr "Превърта курсора когато той достигне краищата на екрана докато влачи гледката."
-
-#: src/ui_parts/settings_menu.gd:
-msgid "If turned on, scrolling pans the view. To zoom, hold CTRL while scrolling."
-msgstr "Когато е включено, влаченето премества гледката. За увеличение, натисни CTRL докато влачиш."
-
-#: src/ui_parts/settings_menu.gd:
-msgid "If turned on, uses your operating system's native file dialog. If turned off, uses GodSVG's built-in file dialog."
-msgstr "Когато е включено, ще бъде използван файловият мениджър на твоята операционна система. Ако е изключено, използва вградения файлов мениджър на GodSVG."
-
-#: src/ui_parts/settings_menu.gd:
-msgid "If turned off, the window title remains as \"GodSVG\" without including the current file."
-msgstr "Когато е изключено, името на прозореца остава \"GodSVG\" без да включва настоящия файл."
-
-#: src/ui_parts/settings_menu.gd:
-msgid "Determines the visual size and grabbing area of handles."
-msgstr "Определя размера на дръжките и площта в която те могат да бъдат хванати."
-
 #: src/ui_parts/shortcut_panel.gd:
 msgid "Horizontal strip"
 msgstr "Хоризонтална лента"
@@ -837,6 +885,10 @@ msgstr "Изтрий цвета"
 msgid "Unnamed"
 msgstr "Неименуван"
 
+#: src/ui_widgets/fps_limit_dropdown.gd: src/ui_widgets/setting_frame.gd:
+msgid "Unlimited"
+msgstr "Неограничено"
+
 #: src/ui_widgets/good_color_picker.gd:
 msgid "Color keywords"
 msgstr "Ключови цветове"
@@ -901,6 +953,14 @@ msgstr "Няма точки"
 #: src/ui_widgets/presented_shortcut.gd: src/ui_widgets/setting_shortcut.gd:
 msgid "Also used by"
 msgstr "Използва се също от..."
+
+#: src/ui_widgets/profile_frame.gd:
+msgid "Apply"
+msgstr "Приложи"
+
+#: src/ui_widgets/profile_frame.gd:
+msgid "Apply all of this preset's defaults"
+msgstr "Приложи всички настройки по подразбиране на този шаблон"
 
 #: src/ui_widgets/setting_frame.gd: src/ui_widgets/setting_shortcut.gd:
 msgid "Reset to default"

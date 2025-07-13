@@ -8,6 +8,7 @@ signal value_changed
 const ColorEditScene = preload("res://src/ui_widgets/color_edit.tscn")
 const DropdownScene = preload("res://src/ui_widgets/dropdown.tscn")
 const NumberDropdownScene = preload("res://src/ui_widgets/number_dropdown.tscn")
+const FpsLimitDropdownScene = preload("res://src/ui_widgets/fps_limit_dropdown.tscn")
 
 var getter: Callable
 var setter: Callable
@@ -80,6 +81,13 @@ min_value: float, max_value: float) -> void:
 	type = Type.NUMBER_DROPDOWN
 	panel_width = 100
 
+func setup_fps_limit_dropdown() -> void:
+	widget = FpsLimitDropdownScene.instantiate()
+	add_child(widget)
+	widget.value_changed.connect(_fps_limit_dropdown_modification)
+	type = Type.NUMBER_DROPDOWN
+	panel_width = 100
+
 func _ready() -> void:
 	widget.size = Vector2(panel_width - 32, 22)
 	mouse_entered.connect(_on_mouse_entered)
@@ -124,6 +132,22 @@ func _number_dropdown_modification(value: String) -> void:
 	else:
 		setter.call(actual_number)
 	post_modification()
+
+# TODO This was written very hastily, probably has a lot of redundancy.
+func _fps_limit_dropdown_modification(value: String) -> void:
+	var actual_number: int
+	if value == Translator.translate("Unlimited"):
+		actual_number = 0
+	else:
+		actual_number = roundi(NumstringParser.evaluate(value))
+	
+	if is_nan(actual_number) or actual_number == INF:
+		actual_number = 0
+	elif actual_number != 0:
+		actual_number = clampi(actual_number, widget.min_value, widget.max_value)
+	setter.call(actual_number)
+	post_modification()
+
 
 func post_modification() -> void:
 	update_widgets()

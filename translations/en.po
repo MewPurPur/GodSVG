@@ -129,6 +129,29 @@ msgstr ""
 msgid "6-digit hex"
 msgstr ""
 
+#. Refers to a theme preset.
+#: src/config_classes/SaveData.gd:
+msgid "Dark"
+msgstr ""
+
+#. Refers to a theme preset.
+#: src/config_classes/SaveData.gd:
+msgid "Light"
+msgstr ""
+
+#. Refers to a theme preset.
+#: src/config_classes/SaveData.gd:
+msgid "Black (OLED)"
+msgstr ""
+
+#: src/config_classes/SaveData.gd:
+msgid "Default Dark"
+msgstr ""
+
+#: src/config_classes/SaveData.gd:
+msgid "Default Light"
+msgstr ""
+
 #: src/config_classes/TabData.gd:
 msgid "Empty"
 msgstr ""
@@ -149,24 +172,24 @@ msgstr ""
 msgid "{element} must be inside {allowed} to have any effect."
 msgstr ""
 
+#: src/data_classes/ElementBaseGradient.gd:
+msgid "No \"id\" attribute defined."
+msgstr ""
+
+#: src/data_classes/ElementBaseGradient.gd:
+msgid "No <stop> elements under this gradient."
+msgstr ""
+
+#: src/data_classes/ElementBaseGradient.gd:
+msgid "This gradient is a solid color."
+msgstr ""
+
 #: src/data_classes/ElementG.gd:
 msgid "This group has no elements."
 msgstr ""
 
 #: src/data_classes/ElementG.gd:
 msgid "This group has only one element."
-msgstr ""
-
-#: src/data_classes/GradientUtils.gd:
-msgid "No \"id\" attribute defined."
-msgstr ""
-
-#: src/data_classes/GradientUtils.gd:
-msgid "No <stop> elements under this gradient."
-msgstr ""
-
-#: src/data_classes/GradientUtils.gd:
-msgid "This gradient is a solid color."
 msgstr ""
 
 #: src/data_classes/SVGParser.gd:
@@ -199,7 +222,7 @@ msgstr ""
 msgid "Third-party licenses"
 msgstr ""
 
-#. If the language has different gendered versions, prefer the most neutral-sounding one, or feminine if none sound neutral.
+#. If the language has different gendered versions, prefer the most neutral-sounding one, i.e., the one used when you don't know the person's gender. If that's not possible, use feminine.
 #: src/ui_parts/about_menu.gd:
 msgid "Project Founder and Manager"
 msgstr ""
@@ -254,7 +277,7 @@ msgstr ""
 msgid "Dimensions"
 msgstr ""
 
-#: src/ui_parts/export_menu.gd:
+#: src/ui_parts/export_menu.gd: src/ui_parts/settings_menu.gd:
 msgid "Size"
 msgstr ""
 
@@ -278,7 +301,7 @@ msgstr ""
 msgid "Scale"
 msgstr ""
 
-#: src/ui_parts/export_menu.gd:
+#: src/ui_parts/export_menu.gd: src/ui_parts/settings_menu.gd:
 msgid "Width"
 msgstr ""
 
@@ -444,7 +467,27 @@ msgid "Other"
 msgstr ""
 
 #: src/ui_parts/settings_menu.gd:
+msgid "Theme preset"
+msgstr ""
+
+#: src/ui_parts/settings_menu.gd:
+msgid "Primary theme colors"
+msgstr ""
+
+#: src/ui_parts/settings_menu.gd:
+msgid "Base color"
+msgstr ""
+
+#: src/ui_parts/settings_menu.gd:
+msgid "Accent color"
+msgstr ""
+
+#: src/ui_parts/settings_menu.gd:
 msgid "SVG Text colors"
+msgstr ""
+
+#: src/ui_parts/settings_menu.gd:
+msgid "Highlighter preset"
 msgstr ""
 
 #: src/ui_parts/settings_menu.gd:
@@ -480,9 +523,9 @@ msgstr ""
 msgid "Error color"
 msgstr ""
 
-#. Refers to the colors of the draggable handles.
+#. Refers to the draggable gizmos.
 #: src/ui_parts/settings_menu.gd:
-msgid "Handle colors"
+msgid "Handles"
 msgstr ""
 
 #: src/ui_parts/settings_menu.gd:
@@ -506,11 +549,28 @@ msgid "Hovered selected color"
 msgstr ""
 
 #: src/ui_parts/settings_menu.gd:
+msgid "Selection rectangle"
+msgstr ""
+
+#: src/ui_parts/settings_menu.gd:
+msgid "Speed"
+msgstr ""
+
+#. Refers to the selection rectangle's animated dashed stroke.
+#: src/ui_parts/settings_menu.gd:
+msgid "Dash length"
+msgstr ""
+
+#: src/ui_parts/settings_menu.gd:
+msgid "Color {index}"
+msgstr ""
+
+#: src/ui_parts/settings_menu.gd:
 msgid "Basic colors"
 msgstr ""
 
 #: src/ui_parts/settings_menu.gd:
-msgid "Background color"
+msgid "Canvas color"
 msgstr ""
 
 #: src/ui_parts/settings_menu.gd:
@@ -534,7 +594,15 @@ msgid "Close tabs with middle mouse button"
 msgstr ""
 
 #: src/ui_parts/settings_menu.gd:
+msgid "If turned on, clicking on a tab with the middle mouse button closes the tab. If turned off, it focuses the tab instead."
+msgstr ""
+
+#: src/ui_parts/settings_menu.gd:
 msgid "Invert zoom direction"
+msgstr ""
+
+#: src/ui_parts/settings_menu.gd:
+msgid "Swaps the scroll directions for zooming in and zooming out."
 msgstr ""
 
 #: src/ui_parts/settings_menu.gd:
@@ -542,7 +610,15 @@ msgid "Wrap-around panning"
 msgstr ""
 
 #: src/ui_parts/settings_menu.gd:
+msgid "Warps the cursor to the opposite side whenever it reaches a viewport boundary while panning."
+msgstr ""
+
+#: src/ui_parts/settings_menu.gd:
 msgid "Use CTRL for zooming"
+msgstr ""
+
+#: src/ui_parts/settings_menu.gd:
+msgid "If turned on, scrolling pans the view. To zoom, hold CTRL while scrolling."
 msgstr ""
 
 #: src/ui_parts/settings_menu.gd:
@@ -557,20 +633,21 @@ msgstr ""
 msgid "Determines the scale factor for the interface."
 msgstr ""
 
+#. Stands for "Vertical Synchronization".
 #: src/ui_parts/settings_menu.gd:
-msgid "Uncapped framerate"
+msgid "V-Sync"
 msgstr ""
 
 #: src/ui_parts/settings_menu.gd:
-msgid "Determines if frames are rendered as fast as possible (may increase power consumption and heat)."
+msgid "Synchronizes graphics rendering with display refresh rate to prevent screen tearing artifacts. May increase input lag slightly."
 msgstr ""
 
 #: src/ui_parts/settings_menu.gd:
-msgid "Custom maximum FPS"
+msgid "Maximum FPS"
 msgstr ""
 
 #: src/ui_parts/settings_menu.gd:
-msgid "If the framerate is capped, this value determines the maximum number of frames per second."
+msgid "Determines the maximum number of frames per second."
 msgstr ""
 
 #: src/ui_parts/settings_menu.gd:
@@ -582,12 +659,15 @@ msgid "Use native file dialog"
 msgstr ""
 
 #: src/ui_parts/settings_menu.gd:
+msgid "If turned on, uses your operating system's native file dialog. If turned off, uses GodSVG's built-in file dialog."
+msgstr ""
+
+#: src/ui_parts/settings_menu.gd:
 msgid "Sync window title to file name"
 msgstr ""
 
-#. Refers to the size of the draggable handles.
 #: src/ui_parts/settings_menu.gd:
-msgid "Handle size"
+msgid "If turned off, the window title remains as \"GodSVG\" without including the current file."
 msgstr ""
 
 #: src/ui_parts/settings_menu.gd:
@@ -622,10 +702,6 @@ msgstr ""
 
 #: src/ui_parts/settings_menu.gd:
 msgid "Help"
-msgstr ""
-
-#: src/ui_parts/settings_menu.gd:
-msgid "Reset all to default"
 msgstr ""
 
 #: src/ui_parts/settings_menu.gd:
@@ -720,34 +796,6 @@ msgstr ""
 msgid "Remove unnecessary parameters"
 msgstr ""
 
-#: src/ui_parts/settings_menu.gd:
-msgid "If turned on, clicking on a tab with the middle mouse button closes the tab. If turned off, it focuses the tab instead."
-msgstr ""
-
-#: src/ui_parts/settings_menu.gd:
-msgid "Swaps the scroll directions for zooming in and zooming out."
-msgstr ""
-
-#: src/ui_parts/settings_menu.gd:
-msgid "Warps the cursor to the opposite side whenever it reaches a viewport boundary while panning."
-msgstr ""
-
-#: src/ui_parts/settings_menu.gd:
-msgid "If turned on, scrolling pans the view. To zoom, hold CTRL while scrolling."
-msgstr ""
-
-#: src/ui_parts/settings_menu.gd:
-msgid "If turned on, uses your operating system's native file dialog. If turned off, uses GodSVG's built-in file dialog."
-msgstr ""
-
-#: src/ui_parts/settings_menu.gd:
-msgid "If turned off, the window title remains as \"GodSVG\" without including the current file."
-msgstr ""
-
-#: src/ui_parts/settings_menu.gd:
-msgid "Determines the visual size and grabbing area of handles."
-msgstr ""
-
 #: src/ui_parts/shortcut_panel.gd:
 msgid "Horizontal strip"
 msgstr ""
@@ -837,6 +885,10 @@ msgstr ""
 msgid "Unnamed"
 msgstr ""
 
+#: src/ui_widgets/fps_limit_dropdown.gd: src/ui_widgets/setting_frame.gd:
+msgid "Unlimited"
+msgstr ""
+
 #: src/ui_widgets/good_color_picker.gd:
 msgid "Color keywords"
 msgstr ""
@@ -900,6 +952,14 @@ msgstr ""
 
 #: src/ui_widgets/presented_shortcut.gd: src/ui_widgets/setting_shortcut.gd:
 msgid "Also used by"
+msgstr ""
+
+#: src/ui_widgets/profile_frame.gd:
+msgid "Apply"
+msgstr ""
+
+#: src/ui_widgets/profile_frame.gd:
+msgid "Apply all of this preset's defaults"
 msgstr ""
 
 #: src/ui_widgets/setting_frame.gd: src/ui_widgets/setting_shortcut.gd:
