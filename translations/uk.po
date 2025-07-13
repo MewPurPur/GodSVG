@@ -129,6 +129,30 @@ msgstr "3 або 6 значне шістнадцятирічне число"
 msgid "6-digit hex"
 msgstr "6 значне шістнадцятирічне число"
 
+#. Refers to a theme preset.
+#: src/config_classes/SaveData.gd:
+msgid "Dark"
+msgstr ""
+
+#. Refers to a theme preset.
+#: src/config_classes/SaveData.gd:
+#, fuzzy
+msgid "Light"
+msgstr "Висота"
+
+#. Refers to a theme preset.
+#: src/config_classes/SaveData.gd:
+msgid "Black (OLED)"
+msgstr ""
+
+#: src/config_classes/SaveData.gd:
+msgid "Default Dark"
+msgstr ""
+
+#: src/config_classes/SaveData.gd:
+msgid "Default Light"
+msgstr ""
+
 #: src/config_classes/TabData.gd:
 msgid "Empty"
 msgstr "Порожньо"
@@ -149,6 +173,18 @@ msgstr "Текст"
 msgid "{element} must be inside {allowed} to have any effect."
 msgstr "{element} повинен бути всередині {allowed} щоб зміни вступили в силу."
 
+#: src/data_classes/ElementBaseGradient.gd:
+msgid "No \"id\" attribute defined."
+msgstr "Не вказано \"id\" атрибуту."
+
+#: src/data_classes/ElementBaseGradient.gd:
+msgid "No <stop> elements under this gradient."
+msgstr "Немає <stop> елементів під цим градієнтом."
+
+#: src/data_classes/ElementBaseGradient.gd:
+msgid "This gradient is a solid color."
+msgstr "Цей градієнт це суцільний колір."
+
 #: src/data_classes/ElementG.gd:
 msgid "This group has no elements."
 msgstr "Ця група не має елементів."
@@ -156,18 +192,6 @@ msgstr "Ця група не має елементів."
 #: src/data_classes/ElementG.gd:
 msgid "This group has only one element."
 msgstr "Ця група має тільки один елемент."
-
-#: src/data_classes/GradientUtils.gd:
-msgid "No \"id\" attribute defined."
-msgstr "Не вказано \"id\" атрибуту."
-
-#: src/data_classes/GradientUtils.gd:
-msgid "No <stop> elements under this gradient."
-msgstr "Немає <stop> елементів під цим градієнтом."
-
-#: src/data_classes/GradientUtils.gd:
-msgid "This gradient is a solid color."
-msgstr "Цей градієнт це суцільний колір."
 
 #: src/data_classes/SVGParser.gd:
 msgid "Doesn’t describe an SVG."
@@ -199,7 +223,7 @@ msgstr "Ліцензія"
 msgid "Third-party licenses"
 msgstr "Ліцензії третіх осіб"
 
-#. If the language has different gendered versions, prefer the most neutral-sounding one, or feminine if none sound neutral.
+#. If the language has different gendered versions, prefer the most neutral-sounding one, i.e., the one used when you don't know the person's gender. If that's not possible, use feminine.
 #: src/ui_parts/about_menu.gd:
 msgid "Project Founder and Manager"
 msgstr "Засновник і керівник проекту"
@@ -254,7 +278,7 @@ msgstr "Новий елемент"
 msgid "Dimensions"
 msgstr "Розміри"
 
-#: src/ui_parts/export_menu.gd:
+#: src/ui_parts/export_menu.gd: src/ui_parts/settings_menu.gd:
 msgid "Size"
 msgstr "Розмір"
 
@@ -278,7 +302,7 @@ msgstr "Якість"
 msgid "Scale"
 msgstr "Масштаб"
 
-#: src/ui_parts/export_menu.gd:
+#: src/ui_parts/export_menu.gd: src/ui_parts/settings_menu.gd:
 msgid "Width"
 msgstr "Ширина"
 
@@ -444,8 +468,31 @@ msgid "Other"
 msgstr "Інше"
 
 #: src/ui_parts/settings_menu.gd:
+#, fuzzy
+msgid "Theme preset"
+msgstr "Скинути масштаб"
+
+#: src/ui_parts/settings_menu.gd:
+msgid "Primary theme colors"
+msgstr ""
+
+#: src/ui_parts/settings_menu.gd:
+#, fuzzy
+msgid "Base color"
+msgstr "Базовий колір"
+
+#: src/ui_parts/settings_menu.gd:
+#, fuzzy
+msgid "Accent color"
+msgstr "Колір тексту"
+
+#: src/ui_parts/settings_menu.gd:
 msgid "SVG Text colors"
 msgstr "Колір SVG тексту"
+
+#: src/ui_parts/settings_menu.gd:
+msgid "Highlighter preset"
+msgstr ""
 
 #: src/ui_parts/settings_menu.gd:
 msgid "Symbol color"
@@ -480,10 +527,11 @@ msgstr "Колір CDATA"
 msgid "Error color"
 msgstr "Колір помилки"
 
-#. Refers to the colors of the draggable handles.
+#. Refers to the draggable gizmos.
 #: src/ui_parts/settings_menu.gd:
-msgid "Handle colors"
-msgstr "Колір ручки редагування"
+#, fuzzy
+msgid "Handles"
+msgstr "Розмір ручок редагування"
 
 #: src/ui_parts/settings_menu.gd:
 msgid "Inside color"
@@ -506,12 +554,32 @@ msgid "Hovered selected color"
 msgstr "Колір наведено-виділеного"
 
 #: src/ui_parts/settings_menu.gd:
+#, fuzzy
+msgid "Selection rectangle"
+msgstr "Обрати зображення"
+
+#: src/ui_parts/settings_menu.gd:
+msgid "Speed"
+msgstr ""
+
+#. Refers to the selection rectangle's animated dashed stroke.
+#: src/ui_parts/settings_menu.gd:
+msgid "Dash length"
+msgstr ""
+
+#: src/ui_parts/settings_menu.gd:
+#, fuzzy
+msgid "Color {index}"
+msgstr "Кольорова піпетка"
+
+#: src/ui_parts/settings_menu.gd:
 msgid "Basic colors"
 msgstr "Базовий колір"
 
 #: src/ui_parts/settings_menu.gd:
-msgid "Background color"
-msgstr "Колір фону"
+#, fuzzy
+msgid "Canvas color"
+msgstr "Внутрішній колір"
 
 #: src/ui_parts/settings_menu.gd:
 msgid "Grid color"
@@ -534,16 +602,32 @@ msgid "Close tabs with middle mouse button"
 msgstr "Закривати вкладки при натисканні середньої кнопки миші"
 
 #: src/ui_parts/settings_menu.gd:
+msgid "If turned on, clicking on a tab with the middle mouse button closes the tab. If turned off, it focuses the tab instead."
+msgstr "Якщо увімкнено - клацання на вкладку середньою кнопкою миші закриє її. Якщо вимкнено - фокус буде замінено на неї."
+
+#: src/ui_parts/settings_menu.gd:
 msgid "Invert zoom direction"
 msgstr "Інвертувати напрямок масштабування"
+
+#: src/ui_parts/settings_menu.gd:
+msgid "Swaps the scroll directions for zooming in and zooming out."
+msgstr "Міняє напрям гортання при масштабуванні."
 
 #: src/ui_parts/settings_menu.gd:
 msgid "Wrap-around panning"
 msgstr "Захопити курсор при гортанні"
 
 #: src/ui_parts/settings_menu.gd:
+msgid "Warps the cursor to the opposite side whenever it reaches a viewport boundary while panning."
+msgstr "Курсор буде телепортуватися від одного краю до протилежного при пересуванні вікна перегляду."
+
+#: src/ui_parts/settings_menu.gd:
 msgid "Use CTRL for zooming"
 msgstr "Використовувати CTRL для масштабування"
+
+#: src/ui_parts/settings_menu.gd:
+msgid "If turned on, scrolling pans the view. To zoom, hold CTRL while scrolling."
+msgstr "Якщо увімкнено - гортання буде рухати вікно перегляду. Щоб масштабувати, затисніть CTRL доки гортаєте."
 
 #: src/ui_parts/settings_menu.gd:
 msgid "Display"
@@ -558,20 +642,21 @@ msgstr "Масштаб інтерфейсу"
 msgid "Determines the scale factor for the interface."
 msgstr "Змінити масштаб інтерфейсу користувача."
 
+#. Stands for "Vertical Synchronization".
 #: src/ui_parts/settings_menu.gd:
-msgid "Uncapped framerate"
+msgid "V-Sync"
 msgstr ""
 
 #: src/ui_parts/settings_menu.gd:
-msgid "Determines if frames are rendered as fast as possible (may increase power consumption and heat)."
+msgid "Synchronizes graphics rendering with display refresh rate to prevent screen tearing artifacts. May increase input lag slightly."
 msgstr ""
 
 #: src/ui_parts/settings_menu.gd:
-msgid "Custom maximum FPS"
+msgid "Maximum FPS"
 msgstr ""
 
 #: src/ui_parts/settings_menu.gd:
-msgid "If the framerate is capped, this value determines the maximum number of frames per second."
+msgid "Determines the maximum number of frames per second."
 msgstr ""
 
 #: src/ui_parts/settings_menu.gd:
@@ -583,13 +668,16 @@ msgid "Use native file dialog"
 msgstr "Використовувати рідний файловий діалог"
 
 #: src/ui_parts/settings_menu.gd:
+msgid "If turned on, uses your operating system's native file dialog. If turned off, uses GodSVG's built-in file dialog."
+msgstr "Якщо увімкнено, то буде використовувати рідний файловий діалог вашої операційної системи для обирання файлів. Якщо вимкнено, то замість буде використовуватися вбудований файловий діалог."
+
+#: src/ui_parts/settings_menu.gd:
 msgid "Sync window title to file name"
 msgstr "Синхронізувати заголовок вікна з назвою поточного файлу"
 
-#. Refers to the size of the draggable handles.
 #: src/ui_parts/settings_menu.gd:
-msgid "Handle size"
-msgstr "Розмір ручок редагування"
+msgid "If turned off, the window title remains as \"GodSVG\" without including the current file."
+msgstr "Якщо вимкнено - заголовок вікна залишиться як \"GodSVG\", не включаючи назву поточного файлу."
 
 #: src/ui_parts/settings_menu.gd:
 msgid "Language"
@@ -624,10 +712,6 @@ msgstr "Форматер експорту"
 #: src/ui_parts/settings_menu.gd:
 msgid "Help"
 msgstr "Допомога"
-
-#: src/ui_parts/settings_menu.gd:
-msgid "Reset all to default"
-msgstr "Скинути до замовчування"
 
 # не знаю
 #: src/ui_parts/settings_menu.gd:
@@ -725,35 +809,6 @@ msgstr "Список трансформацій"
 msgid "Remove unnecessary parameters"
 msgstr "Видалити необов'язкові параметри"
 
-#: src/ui_parts/settings_menu.gd:
-msgid "If turned on, clicking on a tab with the middle mouse button closes the tab. If turned off, it focuses the tab instead."
-msgstr "Якщо увімкнено - клацання на вкладку середньою кнопкою миші закриє її. Якщо вимкнено - фокус буде замінено на неї."
-
-#: src/ui_parts/settings_menu.gd:
-msgid "Swaps the scroll directions for zooming in and zooming out."
-msgstr "Міняє напрям гортання при масштабуванні."
-
-#: src/ui_parts/settings_menu.gd:
-msgid "Warps the cursor to the opposite side whenever it reaches a viewport boundary while panning."
-msgstr "Курсор буде телепортуватися від одного краю до протилежного при пересуванні вікна перегляду."
-
-#: src/ui_parts/settings_menu.gd:
-msgid "If turned on, scrolling pans the view. To zoom, hold CTRL while scrolling."
-msgstr "Якщо увімкнено - гортання буде рухати вікно перегляду. Щоб масштабувати, затисніть CTRL доки гортаєте."
-
-#: src/ui_parts/settings_menu.gd:
-msgid "If turned on, uses your operating system's native file dialog. If turned off, uses GodSVG's built-in file dialog."
-msgstr "Якщо увімкнено, то буде використовувати рідний файловий діалог вашої операційної системи для обирання файлів. Якщо вимкнено, то замість буде використовуватися вбудований файловий діалог."
-
-#: src/ui_parts/settings_menu.gd:
-msgid "If turned off, the window title remains as \"GodSVG\" without including the current file."
-msgstr "Якщо вимкнено - заголовок вікна залишиться як \"GodSVG\", не включаючи назву поточного файлу."
-
-#: src/ui_parts/settings_menu.gd:
-#, fuzzy
-msgid "Determines the visual size and grabbing area of handles."
-msgstr "Змінює візуальний розмір та область захоплення для ручок."
-
 #: src/ui_parts/shortcut_panel.gd:
 msgid "Horizontal strip"
 msgstr "Горизонтальна смужка"
@@ -843,6 +898,10 @@ msgstr "Видалити колір"
 msgid "Unnamed"
 msgstr "Без назви"
 
+#: src/ui_widgets/fps_limit_dropdown.gd: src/ui_widgets/setting_frame.gd:
+msgid "Unlimited"
+msgstr ""
+
 #: src/ui_widgets/good_color_picker.gd:
 msgid "Color keywords"
 msgstr "Ключові слова кольорів"
@@ -907,6 +966,14 @@ msgstr "Немає точок"
 #: src/ui_widgets/presented_shortcut.gd: src/ui_widgets/setting_shortcut.gd:
 msgid "Also used by"
 msgstr "Також використовується"
+
+#: src/ui_widgets/profile_frame.gd:
+msgid "Apply"
+msgstr ""
+
+#: src/ui_widgets/profile_frame.gd:
+msgid "Apply all of this preset's defaults"
+msgstr ""
 
 #: src/ui_widgets/setting_frame.gd: src/ui_widgets/setting_shortcut.gd:
 msgid "Reset to default"
@@ -1309,6 +1376,19 @@ msgstr "Зберегти {format} файл"
 #: src/utils/TranslationUtils.gd:
 msgid "Only {extension_list} files are supported for this operation."
 msgstr "Тільки файли з розширеннями {extension_list} підтримуються для цієї операції."
+
+#~ msgid "Handle colors"
+#~ msgstr "Колір ручки редагування"
+
+#~ msgid "Background color"
+#~ msgstr "Колір фону"
+
+#~ msgid "Reset all to default"
+#~ msgstr "Скинути до замовчування"
+
+#, fuzzy
+#~ msgid "Determines the visual size and grabbing area of handles."
+#~ msgstr "Змінює візуальний розмір та область захоплення для ручок."
 
 #~ msgid "The file extension {extension} is unsupported for this operation. Only {extension_list} files are supported."
 #~ msgstr "Розширення файлу {extension} не підтримується для цієї операції. Тільки {extension_list} файли підтримуються."

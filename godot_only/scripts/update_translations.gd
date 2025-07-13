@@ -8,11 +8,14 @@ const COMMENTS_DICT = {
 	"Editor formatter": "Refers to the formatter used for GodSVG's code editor.",
 	"Export formatter": "Refers to the formatter used when exporting.",
 	"Handles": "Refers to the draggable gizmos.",
-	"Dash length": "Refers to the selection rectangle's animated dashed stroke",
+	"Dash length": "Refers to the selection rectangle's animated dashed stroke.",
 	"Excluded": "Refers to the zero, one, or multiple UI parts to not be shown in the final layout. It's of plural cardinality.",
 	"Update check failed": "When checking for updates.",
 	"Project Founder and Manager": "If the language has different gendered versions, prefer the most neutral-sounding one, i.e., the one used when you don't know the person's gender. If that's not possible, use feminine.",
 	"V-Sync": "Stands for \"Vertical Synchronization\".",
+	"Dark": "Refers to a theme preset.",
+	"Light": "Refers to a theme preset.",
+	"Black (OLED)": "Refers to a theme preset.",
 }
 
 const TRANSLATIONS_DIR = "translations"

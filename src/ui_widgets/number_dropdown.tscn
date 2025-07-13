@@ -29,7 +29,3 @@ mouse_default_cursor_shape = 2
 theme_type_variation = &"LeftConnectedButton"
 icon = ExtResource("4_vet1k")
 expand_icon = true
-
-[connection signal="text_changed" from="LineEdit" to="." method="_on_text_changed"]
-[connection signal="text_submitted" from="LineEdit" to="." method="_on_text_submitted"]
-[connection signal="pressed" from="Button" to="." method="_on_button_pressed"]
