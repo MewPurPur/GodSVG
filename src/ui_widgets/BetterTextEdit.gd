@@ -73,11 +73,21 @@ func _redraw_caret() -> void:
 		else:
 			var glyph_end := Vector2(get_rect_at_line_column(caret_line, caret_column).end)
 			caret_pos = glyph_end + Vector2(1, -2)
-			# Workaround for ligatures.
 			var line := get_line(caret_line)
-			if caret_column < line.length() and line[caret_column] == '\t':
-				caret_pos = caret_pos
-			elif glyph_end.x > 0 and glyph_end.y > 0:
+			# Workaround for indent_wrapped_lines.
+			if indent_wrapped_lines and get_line_wrap_index_at_column(caret_line, caret_column) >= 1:
+				var i := 0
+				while true:
+					var c := line[i]
+					if c != '\t' and c != ' ':
+						break
+					
+					caret_pos.x += ThemeUtils.mono_font.get_char_size(ord(c),
+							get_theme_font_size("font_size")).x
+					i += 1
+			# Workaround for ligatures.
+			if (caret_column >= line.length() or line[caret_column] != '\t') and\
+			glyph_end.x > 0 and glyph_end.y > 0:
 				var chars_back := 0
 				while line.length() > caret_column + chars_back and glyph_end ==\
 				Vector2(get_rect_at_line_column(caret_line, caret_column + chars_back + 1).end):

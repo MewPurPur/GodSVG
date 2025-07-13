@@ -589,6 +589,7 @@ static func _setup_button(theme: Theme) -> void:
 	var pressed_flat_button_stylebox := flat_button_stylebox.duplicate()
 	pressed_flat_button_stylebox.bg_color = pressed_overlay_color
 	theme.set_stylebox("pressed", "FlatButton", pressed_flat_button_stylebox)
+	theme.set_stylebox("hover_pressed", "FlatButton", pressed_flat_button_stylebox)
 	
 	var disabled_flat_button_stylebox := flat_button_stylebox.duplicate()
 	disabled_flat_button_stylebox.bg_color = flat_button_color_disabled
