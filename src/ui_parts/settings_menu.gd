@@ -249,8 +249,7 @@ func setup_content(reset_scroll := true) -> void:
 			add_section(Translator.translate("Input"))
 			current_setup_setting = "tab_mmb_close"
 			add_checkbox(Translator.translate("Close tabs with middle mouse button"))
-			add_advice(Translator.translate(
-					"If turned on, clicking on a tab with the middle mouse button closes the tab. If turned off, it focuses the tab instead."))
+			add_advice(Translator.translate("If turned on, clicking on a tab with the middle mouse button closes the tab. If turned off, it focuses the tab instead."))
 		"other":
 			advice_panel.show()
 			create_setting_container()
@@ -260,16 +259,13 @@ func setup_content(reset_scroll := true) -> void:
 			add_section(Translator.translate("Input"))
 			current_setup_setting = "invert_zoom"
 			add_checkbox(Translator.translate("Invert zoom direction"))
-			add_advice(Translator.translate(
-					"Swaps the scroll directions for zooming in and zooming out."))
+			add_advice(Translator.translate("Swaps the scroll directions for zooming in and zooming out."))
 			current_setup_setting = "wraparound_panning"
 			var wraparound_panning := add_checkbox(Translator.translate("Wrap-around panning"))
-			add_advice(Translator.translate(
-					"Warps the cursor to the opposite side whenever it reaches a viewport boundary while panning."))
+			add_advice(Translator.translate("Warps the cursor to the opposite side whenever it reaches a viewport boundary while panning."))
 			current_setup_setting = "use_ctrl_for_zoom"
 			add_checkbox(Translator.translate("Use CTRL for zooming"))
-			add_advice(Translator.translate(
-					"If turned on, scrolling pans the view. To zoom, hold CTRL while scrolling."))
+			add_advice(Translator.translate("If turned on, scrolling pans the view. To zoom, hold CTRL while scrolling."))
 			
 			add_section(Translator.translate("Display"))
 			# Prepare parameters for the UI scale setting.
@@ -315,8 +311,13 @@ func setup_content(reset_scroll := true) -> void:
 			add_dropdown(Translator.translate("UI scale"), dropdown_values, dropdown_map)
 			add_advice(Translator.translate("Determines the scale factor for the interface."))
 			
+			current_setup_setting = "vsync"
+			add_checkbox(Translator.translate("V-Sync"))
+			add_advice(Translator.translate("Synchronizes graphics rendering with display refresh rate to prevent screen tearing artifacts. May increase input lag slightly."))
+			
 			current_setup_setting = "uncapped_framerate"
-			add_checkbox(Translator.translate("Uncapped framerate"))
+			add_checkbox(Translator.translate("Uncapped framerate"),
+					current_setup_resource.vsync)
 			add_advice(Translator.translate("Determines if frames are rendered as fast as possible (may increase power consumption and heat)."))
 			
 			current_setup_setting = "max_fps"
@@ -327,14 +328,11 @@ func setup_content(reset_scroll := true) -> void:
 			
 			add_section(Translator.translate("Miscellaneous"))
 			current_setup_setting = "use_native_file_dialog"
-			var use_native_file_dialog := add_checkbox(
-					Translator.translate("Use native file dialog"))
-			add_advice(Translator.translate(
-					"If turned on, uses your operating system's native file dialog. If turned off, uses GodSVG's built-in file dialog."))
+			var use_native_file_dialog := add_checkbox(Translator.translate("Use native file dialog"))
+			add_advice(Translator.translate("If turned on, uses your operating system's native file dialog. If turned off, uses GodSVG's built-in file dialog."))
 			current_setup_setting = "use_filename_for_window_title"
 			add_checkbox(Translator.translate("Sync window title to file name"))
-			add_advice(Translator.translate(
-					"If turned off, the window title remains as \"GodSVG\" without including the current file."))
+			add_advice(Translator.translate("If turned off, the window title remains as \"GodSVG\" without including the current file."))
 			
 			# Disable mouse wrap if not available.
 			if not DisplayServer.has_feature(DisplayServer.FEATURE_MOUSE_WARP):
