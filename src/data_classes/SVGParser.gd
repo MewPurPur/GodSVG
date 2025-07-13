@@ -127,7 +127,10 @@ static func _xnode_to_editor_text(xnode: XNode, make_attributes_absolute := fals
 		for child in element.get_children():
 			text += _xnode_to_editor_text(child, make_attributes_absolute)
 		if formatter.xml_pretty_formatting:
-			text += '\t'.repeat(element.xid.size())
+			if formatter.xml_indentation_use_spaces:
+				text += ' '.repeat(element.xid.size() * formatter.xml_indentation_spaces)
+			else:
+				text += '\t'.repeat(element.xid.size())
 		text += '</%s>' % element.name
 		if formatter.xml_pretty_formatting:
 			text += '\n'
