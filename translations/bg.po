@@ -471,6 +471,10 @@ msgid "Theme preset"
 msgstr "Шаблон на тема"
 
 #: src/ui_parts/settings_menu.gd:
+msgid "Determines the default values of theming-related settings, including the highlighter preset."
+msgstr "Определя стойностите по подразбиране на гамовите настройки, включително шаблона на синтаксовото маркиране."
+
+#: src/ui_parts/settings_menu.gd:
 msgid "Primary theme colors"
 msgstr "Основни цветове на темата"
 
@@ -489,6 +493,10 @@ msgstr "Цветове на SVG текста"
 #: src/ui_parts/settings_menu.gd:
 msgid "Highlighter preset"
 msgstr "Шаблон на синтаксово маркиране"
+
+#: src/ui_parts/settings_menu.gd:
+msgid "Determines the default values of SVG highlighter settings."
+msgstr "Определя стойностите по подразбиране на синтаксовото маркиране за SVG текста."
 
 #: src/ui_parts/settings_menu.gd:
 msgid "Symbol color"
@@ -707,6 +715,10 @@ msgstr "Помощ"
 #: src/ui_parts/settings_menu.gd:
 msgid "Preset"
 msgstr "Шаблон"
+
+#: src/ui_parts/settings_menu.gd:
+msgid "Determines the default values of the formatter configs."
+msgstr "Определя стойностите по подразбиране на настройките на форматировача."
 
 #: src/ui_parts/settings_menu.gd:
 msgid "Keep comments"

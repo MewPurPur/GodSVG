@@ -473,6 +473,10 @@ msgid "Theme preset"
 msgstr "Reestablecer el zoom"
 
 #: src/ui_parts/settings_menu.gd:
+msgid "Determines the default values of theming-related settings, including the highlighter preset."
+msgstr ""
+
+#: src/ui_parts/settings_menu.gd:
 msgid "Primary theme colors"
 msgstr ""
 
@@ -492,6 +496,10 @@ msgstr "Colores del texto de los SVG"
 
 #: src/ui_parts/settings_menu.gd:
 msgid "Highlighter preset"
+msgstr ""
+
+#: src/ui_parts/settings_menu.gd:
+msgid "Determines the default values of SVG highlighter settings."
 msgstr ""
 
 #: src/ui_parts/settings_menu.gd:
@@ -717,6 +725,11 @@ msgstr "Ayuda"
 #: src/ui_parts/settings_menu.gd:
 msgid "Preset"
 msgstr "Preajuste"
+
+#: src/ui_parts/settings_menu.gd:
+#, fuzzy
+msgid "Determines the default values of the formatter configs."
+msgstr "Si la velocidad de fotogramas está limitada, este valor determina la cantidad máxima de fotogramas por segundo."
 
 #: src/ui_parts/settings_menu.gd:
 msgid "Keep comments"

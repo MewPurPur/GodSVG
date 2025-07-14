@@ -474,6 +474,10 @@ msgid "Theme preset"
 msgstr "Redefinir zoom"
 
 #: src/ui_parts/settings_menu.gd:
+msgid "Determines the default values of theming-related settings, including the highlighter preset."
+msgstr ""
+
+#: src/ui_parts/settings_menu.gd:
 msgid "Primary theme colors"
 msgstr ""
 
@@ -493,6 +497,10 @@ msgstr "Cores de texto SVG"
 
 #: src/ui_parts/settings_menu.gd:
 msgid "Highlighter preset"
+msgstr ""
+
+#: src/ui_parts/settings_menu.gd:
+msgid "Determines the default values of SVG highlighter settings."
 msgstr ""
 
 #: src/ui_parts/settings_menu.gd:
@@ -717,6 +725,11 @@ msgstr "Ajuda"
 #: src/ui_parts/settings_menu.gd:
 msgid "Preset"
 msgstr "Predefinição"
+
+#: src/ui_parts/settings_menu.gd:
+#, fuzzy
+msgid "Determines the default values of the formatter configs."
+msgstr "Muda o fator de escala da interfaçe."
 
 #: src/ui_parts/settings_menu.gd:
 msgid "Keep comments"
