@@ -16,13 +16,23 @@ const reset_icon = preload("res://assets/icons/Reload.svg")
 @onready var tabs: VBoxContainer = %Tabs
 @onready var close_button: Button = $VBoxContainer/CloseButton
 @onready var advice_panel: PanelContainer = $VBoxContainer/AdvicePanel
-@onready var advice_label: Label = $VBoxContainer/AdvicePanel/AdviceLabel
 
 var focused_tab := ""
 var current_setup_setting := ""
 var current_setup_resource: ConfigResource
 var setting_container: VBoxContainer
-var advice: Dictionary[String, String] = {}
+
+class SettingTextShowcase:
+	var text: String
+	func _init(new_text: String) -> void:
+		text = new_text
+
+class SettingCodeShowcase:
+	var text: String
+	func _init(new_text: String) -> void:
+		text = new_text
+
+var advice: Dictionary[String, RefCounted] = {}
 
 func _ready() -> void:
 	close_button.pressed.connect(queue_free)
@@ -96,7 +106,7 @@ func setup_content(reset_scroll := true) -> void:
 	
 	match focused_tab:
 		"formatting":
-			advice_panel.hide()
+			advice_panel.show()
 			var vbox := VBoxContainer.new()
 			vbox.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 			vbox.add_theme_constant_override("separation", 6)
@@ -152,7 +162,7 @@ func setup_content(reset_scroll := true) -> void:
 			categories.get_child(0).button_pressed = true
 			categories.get_child(0).pressed.emit()
 		"theming":
-			advice_panel.hide()
+			advice_panel.show()
 			create_setting_container()
 			content_container.add_child(setting_container)
 			
@@ -163,6 +173,8 @@ func setup_content(reset_scroll := true) -> void:
 					current_setup_resource.reset_theme_items_to_default,
 					SaveData.ThemePreset.size(), SaveData.get_theme_preset_value_text_map(),
 					current_setup_resource.is_theming_default)
+			add_advice(SettingTextShowcase.new(
+					Translator.translate("Determines the default values of theming-related settings, including the highlighter preset.")))
 			
 			add_section(Translator.translate("Primary theme colors"))
 			current_setup_setting = "base_color"
@@ -177,22 +189,40 @@ func setup_content(reset_scroll := true) -> void:
 					SaveData.HighlighterPreset.size(),
 					SaveData.get_highlighter_preset_value_text_map(),
 					current_setup_resource.is_highlighting_default)
+			add_advice(SettingTextShowcase.new(
+					Translator.translate("Determines the default values of SVG highlighter settings.")))
 			current_setup_setting = "highlighting_symbol_color"
 			add_color_edit(Translator.translate("Symbol color"))
+			add_advice(SettingCodeShowcase.new(
+					"""<circle cx="6" cy="8" r="4" fill="gold" />"""))
 			current_setup_setting = "highlighting_element_color"
 			add_color_edit(Translator.translate("Element color"))
+			add_advice(SettingCodeShowcase.new(
+					"""<circle cx="6" cy="8" r="4" fill="gold" />"""))
 			current_setup_setting = "highlighting_attribute_color"
 			add_color_edit(Translator.translate("Attribute color"))
+			add_advice(SettingCodeShowcase.new(
+					"""<circle cx="6" cy="8" r="4" fill="gold" />"""))
 			current_setup_setting = "highlighting_string_color"
 			add_color_edit(Translator.translate("String color"))
+			add_advice(SettingCodeShowcase.new(
+					"""<circle cx="6" cy="8" r="4" fill="gold" />"""))
 			current_setup_setting = "highlighting_comment_color"
 			add_color_edit(Translator.translate("Comment color"))
+			add_advice(SettingCodeShowcase.new(
+					"""<!-- Comment --> <text> Basic text <![CDATA[ < > & " ' ]]> </text>"""))
 			current_setup_setting = "highlighting_text_color"
 			add_color_edit(Translator.translate("Text color"))
+			add_advice(SettingCodeShowcase.new(
+					"""<!-- Comment --> <text> Basic text <![CDATA[ < > & " ' ]]> </text>"""))
 			current_setup_setting = "highlighting_cdata_color"
 			add_color_edit(Translator.translate("CDATA color"))
+			add_advice(SettingCodeShowcase.new(
+					"""<!-- Comment --> <text> Basic text <![CDATA[ < > & " ' ]]> </text>"""))
 			current_setup_setting = "highlighting_error_color"
 			add_color_edit(Translator.translate("Error color"))
+			add_advice(SettingCodeShowcase.new(
+					"""<circle cx="6" cy="8" ==syntax error"""))
 			
 			add_section(Translator.translate("Handles"))
 			current_setup_setting = "handle_size"
@@ -249,7 +279,8 @@ func setup_content(reset_scroll := true) -> void:
 			add_section(Translator.translate("Input"))
 			current_setup_setting = "tab_mmb_close"
 			add_checkbox(Translator.translate("Close tabs with middle mouse button"))
-			add_advice(Translator.translate("If turned on, clicking on a tab with the middle mouse button closes the tab. If turned off, it focuses the tab instead."))
+			add_advice(SettingTextShowcase.new(
+					Translator.translate("If turned on, clicking on a tab with the middle mouse button closes the tab. If turned off, it focuses the tab instead.")))
 		"other":
 			advice_panel.show()
 			create_setting_container()
@@ -259,13 +290,16 @@ func setup_content(reset_scroll := true) -> void:
 			add_section(Translator.translate("Input"))
 			current_setup_setting = "invert_zoom"
 			add_checkbox(Translator.translate("Invert zoom direction"))
-			add_advice(Translator.translate("Swaps the scroll directions for zooming in and zooming out."))
+			add_advice(SettingTextShowcase.new(
+					Translator.translate("Swaps the scroll directions for zooming in and zooming out.")))
 			current_setup_setting = "wraparound_panning"
 			var wraparound_panning := add_checkbox(Translator.translate("Wrap-around panning"))
-			add_advice(Translator.translate("Warps the cursor to the opposite side whenever it reaches a viewport boundary while panning."))
+			add_advice(SettingTextShowcase.new(
+					Translator.translate("Warps the cursor to the opposite side whenever it reaches a viewport boundary while panning.")))
 			current_setup_setting = "use_ctrl_for_zoom"
 			add_checkbox(Translator.translate("Use CTRL for zooming"))
-			add_advice(Translator.translate("If turned on, scrolling pans the view. To zoom, hold CTRL while scrolling."))
+			add_advice(SettingTextShowcase.new(
+					Translator.translate("If turned on, scrolling pans the view. To zoom, hold CTRL while scrolling.")))
 			
 			add_section(Translator.translate("Display"))
 			# Prepare parameters for the UI scale setting.
@@ -309,23 +343,28 @@ func setup_content(reset_scroll := true) -> void:
 			
 			current_setup_setting = "ui_scale"
 			add_dropdown(Translator.translate("UI scale"), dropdown_values, dropdown_map)
-			add_advice(Translator.translate("Determines the scale factor for the interface."))
+			add_advice(SettingTextShowcase.new(
+					Translator.translate("Determines the scale factor for the interface.")))
 			
 			current_setup_setting = "vsync"
 			add_checkbox(Translator.translate("V-Sync"))
-			add_advice(Translator.translate("Synchronizes graphics rendering with display refresh rate to prevent screen tearing artifacts. May increase input lag slightly."))
+			add_advice(SettingTextShowcase.new(
+					Translator.translate("Synchronizes graphics rendering with display refresh rate to prevent screen tearing artifacts. May increase input lag slightly.")))
 			
 			current_setup_setting = "max_fps"
 			add_fps_limit_dropdown(Translator.translate("Maximum FPS"))
-			add_advice(Translator.translate("Determines the maximum number of frames per second."))
+			add_advice(SettingTextShowcase.new(
+					Translator.translate("Determines the maximum number of frames per second.")))
 			
 			add_section(Translator.translate("Miscellaneous"))
 			current_setup_setting = "use_native_file_dialog"
 			var use_native_file_dialog := add_checkbox(Translator.translate("Use native file dialog"))
-			add_advice(Translator.translate("If turned on, uses your operating system's native file dialog. If turned off, uses GodSVG's built-in file dialog."))
+			add_advice(SettingTextShowcase.new(
+					Translator.translate("If turned on, uses your operating system's native file dialog. If turned off, uses GodSVG's built-in file dialog.")))
 			current_setup_setting = "use_filename_for_window_title"
 			add_checkbox(Translator.translate("Sync window title to file name"))
-			add_advice(Translator.translate("If turned off, the window title remains as \"GodSVG\" without including the current file."))
+			add_advice(SettingTextShowcase.new(
+					Translator.translate("If turned off, the window title remains as \"GodSVG\" without including the current file.")))
 			
 			# Disable mouse wrap if not available.
 			if not DisplayServer.has_feature(DisplayServer.FEATURE_MOUSE_WARP):
@@ -362,6 +401,8 @@ value_text_map: Dictionary, disabled_check_callback: Callable) -> void:
 	var resource_permanent_ref := current_setup_resource
 	frame.setter = func(p: Variant) -> void:
 			resource_permanent_ref.set(bind, p)
+	frame.mouse_entered.connect(show_advice.bind(current_setup_setting))
+	frame.mouse_exited.connect(hide_advice.bind(current_setup_setting))
 	frame.text = text
 	frame.disabled_check_callback = disabled_check_callback
 	frame.value_changed.connect.call_deferred(setup_content.bind(false))
@@ -438,22 +479,54 @@ func add_frame(frame: Control) -> void:
 	else:
 		setting_container.add_child(frame)
 
-func add_advice(text: String) -> void:
-	advice[current_setup_setting] = text
 
+func add_advice(showcase: RefCounted) -> void:
+	advice[current_setup_setting] = showcase
 
 func show_advice(setting: String) -> void:
 	if advice.has(setting):
-		advice_label.text = advice[setting]
-		advice_label.remove_theme_font_size_override("font_size")
-		var advice_font_size := get_theme_font_size("font_size", "Label")
-		while advice_label.get_line_count() > 2:
-			advice_font_size -= 1
-			advice_label.add_theme_font_size_override("font_size", advice_font_size)
+		var showcase := advice[setting]
+		if showcase is SettingTextShowcase:
+			var margin_container := MarginContainer.new()
+			margin_container.add_theme_constant_override("margin_left", 6)
+			margin_container.add_theme_constant_override("margin_right", 6)
+			margin_container.add_theme_constant_override("margin_top", 2)
+			margin_container.add_theme_constant_override("margin_bottom", 4)
+			var label := Label.new()
+			label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+			label.size_flags_vertical = Control.SIZE_EXPAND_FILL
+			label.add_theme_constant_override("line_spacing", 2)
+			label.text = showcase.text
+			var advice_font_size := get_theme_font_size("font_size", "Label")
+			while label.get_line_count() > 2:
+				advice_font_size -= 1
+				label.add_theme_font_size_override("font_size", advice_font_size)
+			margin_container.add_child(label)
+			advice_panel.add_child(margin_container)
+		elif showcase is SettingCodeShowcase:
+			var code_preview := TextEdit.new()
+			code_preview.editable = false
+			var update_highlighter := func() -> void:
+					code_preview.syntax_highlighter = SVGHighlighter.new()
+			code_preview.add_theme_color_override("font_readonly_color", Color.WHITE)
+			
+			var text_edit_default_stylebox := code_preview.get_theme_stylebox("normal")
+			var empty_stylebox := StyleBoxEmpty.new()
+			empty_stylebox.content_margin_left = text_edit_default_stylebox.content_margin_left
+			empty_stylebox.content_margin_right = text_edit_default_stylebox.content_margin_right
+			empty_stylebox.content_margin_top = text_edit_default_stylebox.content_margin_top
+			empty_stylebox.content_margin_bottom = text_edit_default_stylebox.content_margin_bottom
+			code_preview.add_theme_stylebox_override("normal", empty_stylebox)
+			code_preview.add_theme_stylebox_override("read_only", empty_stylebox)
+			code_preview.text = showcase.text
+			Configs.highlighting_colors_changed.connect(update_highlighter)
+			update_highlighter.call()
+			advice_panel.add_child(code_preview)
 
 func hide_advice(setting: String) -> void:
-	if advice.has(setting) and advice_label.text == advice[setting]:
-		advice_label.text = ""
+	if advice.has(setting):
+		for child in advice_panel.get_children():
+			child.hide()
 
 
 func _on_language_pressed() -> void:
@@ -595,6 +668,8 @@ func show_formatter(category: String) -> void:
 	add_profile_picker(Translator.translate("Preset"),
 			current_setup_resource.reset_to_default, Formatter.Preset.size(),
 			Formatter.get_preset_value_text_map(), current_setup_resource.is_everything_default)
+	add_advice(SettingTextShowcase.new(
+					Translator.translate("Determines the default values of the formatter configs.")))
 	
 	add_section("XML")
 	current_setup_setting = "xml_keep_comments"

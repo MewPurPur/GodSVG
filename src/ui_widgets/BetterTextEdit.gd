@@ -60,8 +60,7 @@ func _redraw_caret() -> void:
 	if not has_focus():
 		return
 	
-	var char_size := ThemeUtils.mono_font.get_char_size(69,
-			get_theme_font_size("font_size"))
+	var char_size := ThemeUtils.mono_font.get_char_size(69, get_theme_font_size("font_size"))
 	for caret in get_caret_count():
 		var caret_pos := Vector2.ZERO
 		var caret_column := get_caret_column(caret)
@@ -79,11 +78,12 @@ func _redraw_caret() -> void:
 				var i := 0
 				while true:
 					var c := line[i]
-					if c != '\t' and c != ' ':
+					if c == ' ':
+						caret_pos.x += char_size.x
+					elif c == '\t':
+						caret_pos.x += char_size.x * get_tab_size()
+					else:
 						break
-					
-					caret_pos.x += ThemeUtils.mono_font.get_char_size(ord(c),
-							get_theme_font_size("font_size")).x
 					i += 1
 			# Workaround for ligatures.
 			if (caret_column >= line.length() or line[caret_column] != '\t') and\

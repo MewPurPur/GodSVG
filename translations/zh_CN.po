@@ -480,6 +480,10 @@ msgid "Theme preset"
 msgstr "重置缩放"
 
 #: src/ui_parts/settings_menu.gd:
+msgid "Determines the default values of theming-related settings, including the highlighter preset."
+msgstr ""
+
+#: src/ui_parts/settings_menu.gd:
 #, fuzzy
 msgid "Primary theme colors"
 msgstr "禁用该颜色"
@@ -500,6 +504,10 @@ msgstr "SVG 文本颜色"
 
 #: src/ui_parts/settings_menu.gd:
 msgid "Highlighter preset"
+msgstr ""
+
+#: src/ui_parts/settings_menu.gd:
+msgid "Determines the default values of SVG highlighter settings."
 msgstr ""
 
 #: src/ui_parts/settings_menu.gd:
@@ -729,6 +737,11 @@ msgstr "帮助"
 #: src/ui_parts/settings_menu.gd:
 msgid "Preset"
 msgstr "预设"
+
+#: src/ui_parts/settings_menu.gd:
+#, fuzzy
+msgid "Determines the default values of the formatter configs."
+msgstr "改变用户界面的缩放尺寸。"
 
 #: src/ui_parts/settings_menu.gd:
 msgid "Keep comments"

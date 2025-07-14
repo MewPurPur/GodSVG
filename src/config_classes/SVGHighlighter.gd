@@ -20,6 +20,16 @@ var attribute_color := Color("bce0ff"):
 		unrecognized_attribute_color = Color(new_value, new_value.a * 0.7)
 
 
+func _init() -> void:
+	symbol_color = Configs.savedata.highlighting_symbol_color
+	element_color = Configs.savedata.highlighting_element_color
+	attribute_color = Configs.savedata.highlighting_attribute_color
+	string_color = Configs.savedata.highlighting_string_color
+	comment_color = Configs.savedata.highlighting_comment_color
+	text_color = Configs.savedata.highlighting_text_color
+	cdata_color = Configs.savedata.highlighting_cdata_color
+	error_color = Configs.savedata.highlighting_error_color
+
 func _get_line_syntax_highlighting(line: int) -> Dictionary:
 	var svg_text := get_text_edit().get_line(line)
 	if svg_text.is_empty():

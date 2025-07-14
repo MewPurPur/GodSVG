@@ -66,15 +66,9 @@ theme_override_constants/margin_right = 2
 theme_override_constants/margin_bottom = 4
 
 [node name="AdvicePanel" type="PanelContainer" parent="VBoxContainer"]
-custom_minimum_size = Vector2(0, 45)
+custom_minimum_size = Vector2(0, 48)
 layout_mode = 2
 theme_type_variation = &"TextBox"
-
-[node name="AdviceLabel" type="Label" parent="VBoxContainer/AdvicePanel"]
-layout_mode = 2
-size_flags_vertical = 1
-theme_override_constants/line_spacing = 2
-autowrap_mode = 3
 
 [node name="CloseButton" type="Button" parent="VBoxContainer"]
 layout_mode = 2

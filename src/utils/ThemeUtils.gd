@@ -293,10 +293,6 @@ static func _setup_panelcontainer(theme: Theme) -> void:
 	var textbox_stylebox := StyleBoxFlat.new()
 	textbox_stylebox.set_corner_radius_all(2)
 	textbox_stylebox.set_border_width_all(2)
-	textbox_stylebox.content_margin_left = 6.0
-	textbox_stylebox.content_margin_right = 6.0
-	textbox_stylebox.content_margin_top = 2.0
-	textbox_stylebox.content_margin_bottom = 4.0
 	textbox_stylebox.bg_color = overlay_panel_inner_color.lerp(extreme_theme_color, 0.2)
 	textbox_stylebox.border_color = subtle_panel_border_color
 	theme.set_stylebox("panel", "TextBox", textbox_stylebox)
@@ -1200,6 +1196,7 @@ static func _setup_textedit(theme: Theme) -> void:
 	theme.add_type("TextEdit")
 	theme.set_color("caret_color", "TextEdit", Color.TRANSPARENT)
 	theme.set_color("selection_color", "TextEdit", selection_color)
+	theme.set_constant("line_spacing", "TextEdit", 3)
 	theme.set_font_size("font_size", "TextEdit", 12)
 	theme.set_font("font", "TextEdit", mono_font)
 	
@@ -1208,8 +1205,9 @@ static func _setup_textedit(theme: Theme) -> void:
 	normal_stylebox.border_color = line_edit_normal_border_color
 	normal_stylebox.set_border_width_all(2)
 	normal_stylebox.set_corner_radius_all(5)
-	normal_stylebox.content_margin_left = 5.0
+	normal_stylebox.content_margin_left = 6.0
 	theme.set_stylebox("normal", "TextEdit", normal_stylebox)
+	theme.set_stylebox("read_only", "TextEdit", normal_stylebox)
 	
 	var focus_stylebox := StyleBoxFlat.new()
 	focus_stylebox.draw_center = false

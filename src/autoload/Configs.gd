@@ -73,19 +73,6 @@ func post_load() -> void:
 	sync_theme()
 
 
-func generate_highlighter() -> SVGHighlighter:
-	var new_highlighter := SVGHighlighter.new()
-	new_highlighter.symbol_color = Configs.savedata.highlighting_symbol_color
-	new_highlighter.element_color = Configs.savedata.highlighting_element_color
-	new_highlighter.attribute_color = Configs.savedata.highlighting_attribute_color
-	new_highlighter.string_color = Configs.savedata.highlighting_string_color
-	new_highlighter.comment_color = Configs.savedata.highlighting_comment_color
-	new_highlighter.text_color = Configs.savedata.highlighting_text_color
-	new_highlighter.cdata_color = Configs.savedata.highlighting_cdata_color
-	new_highlighter.error_color = Configs.savedata.highlighting_error_color
-	return new_highlighter
-
-
 # Global effects from settings. Some of them should also be used on launch.
 
 func sync_canvas_color() -> void:

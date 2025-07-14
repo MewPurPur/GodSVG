@@ -470,6 +470,10 @@ msgid "Theme preset"
 msgstr ""
 
 #: src/ui_parts/settings_menu.gd:
+msgid "Determines the default values of theming-related settings, including the highlighter preset."
+msgstr ""
+
+#: src/ui_parts/settings_menu.gd:
 msgid "Primary theme colors"
 msgstr ""
 
@@ -487,6 +491,10 @@ msgstr ""
 
 #: src/ui_parts/settings_menu.gd:
 msgid "Highlighter preset"
+msgstr ""
+
+#: src/ui_parts/settings_menu.gd:
+msgid "Determines the default values of SVG highlighter settings."
 msgstr ""
 
 #: src/ui_parts/settings_menu.gd:
@@ -705,6 +713,10 @@ msgstr ""
 
 #: src/ui_parts/settings_menu.gd:
 msgid "Preset"
+msgstr ""
+
+#: src/ui_parts/settings_menu.gd:
+msgid "Determines the default values of the formatter configs."
 msgstr ""
 
 #: src/ui_parts/settings_menu.gd:

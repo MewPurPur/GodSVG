@@ -473,6 +473,10 @@ msgid "Theme preset"
 msgstr "Taasta suurendus"
 
 #: src/ui_parts/settings_menu.gd:
+msgid "Determines the default values of theming-related settings, including the highlighter preset."
+msgstr ""
+
+#: src/ui_parts/settings_menu.gd:
 msgid "Primary theme colors"
 msgstr ""
 
@@ -492,6 +496,10 @@ msgstr "SVG teksti värvid"
 
 #: src/ui_parts/settings_menu.gd:
 msgid "Highlighter preset"
+msgstr ""
+
+#: src/ui_parts/settings_menu.gd:
+msgid "Determines the default values of SVG highlighter settings."
 msgstr ""
 
 #: src/ui_parts/settings_menu.gd:
@@ -716,6 +724,11 @@ msgstr "Abi"
 #: src/ui_parts/settings_menu.gd:
 msgid "Preset"
 msgstr "Eelseadistus"
+
+#: src/ui_parts/settings_menu.gd:
+#, fuzzy
+msgid "Determines the default values of the formatter configs."
+msgstr "Muudab kasutajaliidese suurust."
 
 #: src/ui_parts/settings_menu.gd:
 msgid "Keep comments"

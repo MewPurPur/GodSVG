@@ -116,4 +116,4 @@ func _on_options_button_pressed() -> void:
 
 func update_syntax_highlighter() -> void:
 	if is_instance_valid(code_edit):
-		code_edit.syntax_highlighter = Configs.generate_highlighter()
+		code_edit.syntax_highlighter = SVGHighlighter.new()

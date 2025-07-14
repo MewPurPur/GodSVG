@@ -473,6 +473,10 @@ msgid "Theme preset"
 msgstr "Réinitialiser le zoom"
 
 #: src/ui_parts/settings_menu.gd:
+msgid "Determines the default values of theming-related settings, including the highlighter preset."
+msgstr ""
+
+#: src/ui_parts/settings_menu.gd:
 #, fuzzy
 msgid "Primary theme colors"
 msgstr "Désactiver la couleur"
@@ -493,6 +497,10 @@ msgstr "Couleurs de texte SVG"
 
 #: src/ui_parts/settings_menu.gd:
 msgid "Highlighter preset"
+msgstr ""
+
+#: src/ui_parts/settings_menu.gd:
+msgid "Determines the default values of SVG highlighter settings."
 msgstr ""
 
 #: src/ui_parts/settings_menu.gd:
@@ -718,6 +726,11 @@ msgstr "Aide"
 #: src/ui_parts/settings_menu.gd:
 msgid "Preset"
 msgstr "Préréglage"
+
+#: src/ui_parts/settings_menu.gd:
+#, fuzzy
+msgid "Determines the default values of the formatter configs."
+msgstr "Si le taux de rafraîchissement est limité, cette valeur déterminera le nombre maximum d'images par seconde."
 
 #: src/ui_parts/settings_menu.gd:
 msgid "Keep comments"
