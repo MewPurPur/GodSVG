@@ -756,11 +756,9 @@ func get_selection_context(popup_method: Callable, context: Utils.LayoutPart) ->
 		btn_arr.append(ContextPopup.create_shortcut_button("duplicate"))
 		
 		var xnode := root_element.get_xnode(selected_xids[0])
-		if selected_xids.size() == 1 and ((not xnode.is_element() and\
-		xnode.get_type() != BasicXNode.NodeType.UNKNOWN) or (xnode.is_element() and\
-		not xnode.possible_conversions.is_empty())):
-			btn_arr.append(ContextPopup.create_button(
-					Translator.translate("Convert To"),
+		if selected_xids.size() == 1 and (not xnode.is_element() or\
+		(xnode.is_element() and not xnode.possible_conversions.is_empty())):
+			btn_arr.append(ContextPopup.create_button(Translator.translate("Convert To"),
 					popup_convert_to_context.bind(popup_method), false,
 					load("res://assets/icons/Reload.svg")))
 		

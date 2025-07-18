@@ -53,7 +53,6 @@ static func get_enum_value_text_map(property: String) -> Dictionary:
 
 func get_setting_default(setting: String) -> Variant:
 	match setting:
-		"xml_keep_unrecognized": return false
 		"xml_add_trailing_newline": return false
 		"xml_indentation_use_spaces": return false
 		"xml_indentation_spaces": return 2
@@ -113,12 +112,6 @@ func _init(new_preset := Preset.COMPACT) -> void:
 	set(new_value):
 		if xml_keep_comments != new_value:
 			xml_keep_comments = new_value
-			emit_changed()
-
-@export var xml_keep_unrecognized := false:
-	set(new_value):
-		if xml_keep_unrecognized != new_value:
-			xml_keep_unrecognized = new_value
 			emit_changed()
 
 @export var xml_add_trailing_newline := false:
@@ -245,3 +238,10 @@ const INDENTS_MAX = 16
 		if transform_list_remove_unnecessary_params != new_value:
 			transform_list_remove_unnecessary_params = new_value
 			emit_changed()
+
+
+func get_indent_string() -> String:
+	if xml_indentation_use_spaces:
+		return " ".repeat(xml_indentation_spaces)
+	else:
+		return "\t"

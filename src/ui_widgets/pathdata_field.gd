@@ -189,7 +189,7 @@ func _on_commands_gui_input(event: InputEvent) -> void:
 	
 	var cmd_idx := -1
 	var event_pos: Vector2 = event.position
-	if Rect2(Vector2.ZERO, commands_container.get_size()).has_point(event_pos):
+	if Rect2(Vector2.ZERO, commands_container.size).has_point(event_pos):
 		cmd_idx = int(event_pos.y / STRIP_HEIGHT)
 	
 	if event is InputEventMouseMotion and event.button_mask == 0:
@@ -238,10 +238,12 @@ func _commands_draw() -> void:
 		if selected or hovered:
 			var stylebox := StyleBoxFlat.new()
 			stylebox.set_corner_radius_all(3)
-			stylebox.bg_color = ThemeUtils.soft_pressed_overlay_color if selected else\
-					Color.TRANSPARENT
-			if hovered:
-				stylebox.bg_color = stylebox.bg_color.blend(Color(ThemeUtils.soft_hover_overlay_color))
+			if hovered and selected:
+				stylebox.bg_color = ThemeUtils.soft_hover_pressed_overlay_color
+			elif selected:
+				stylebox.bg_color = ThemeUtils.soft_pressed_overlay_color
+			elif hovered:
+				stylebox.bg_color = ThemeUtils.soft_hover_overlay_color
 			stylebox.draw(ci, Rect2(Vector2(0, v_offset), Vector2(commands_container.size.x,
 					STRIP_HEIGHT)))
 		# Draw the child controls. They are going to be drawn, not added as a node unless

@@ -175,7 +175,7 @@ func _draw() -> void:
 	
 	drop_sb.draw_center = false
 	drop_sb.set_corner_radius_all(4)
-	drop_sb.draw(surface, Rect2(Vector2.ZERO, get_size()))
+	drop_sb.draw(surface, Rect2(Vector2.ZERO, size))
 
 func _on_title_bar_draw() -> void:
 	var xnode_icon := DB.get_xnode_icon(xnode.get_type())
@@ -184,17 +184,6 @@ func _on_title_bar_draw() -> void:
 			xnode_icon_size), false, ThemeUtils.tinted_contrast_color)
 
 func _on_text_modified() -> void:
-	# TODO figure out a way to make this work.
-	#if text_edit.get_line_count() >= 3 or (text_edit.get_line_count() == 2 and\
-	#text_edit.get_line_wrap_count(0) + text_edit.get_line_wrap_count(1) >= 1) or\
-	#(text_edit.get_line_count() == 1 and text_edit.get_line_wrap_count(0) >= 2):
-		#size.y = 36 + text_edit.get_line_height() * 2
-	#elif text_edit.get_line_count() >= 2 or (text_edit.get_line_count() == 1 and\
-	#text_edit.get_line_wrap_count(0) >= 1):
-		#size.y = 36 + text_edit.get_line_height()
-	#else:
-		#size.y = 36
-	
 	if xnode.check_text_validity(text_edit.text):
 		xnode.set_text(text_edit.text)
 		set_default_font_color()

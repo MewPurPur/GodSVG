@@ -6,7 +6,7 @@ var _list: PackedFloat64Array
 func _sync() -> void:
 	_list = text_to_list(get_value())
 
-func _format(text: String, formatter: Formatter) -> String:
+func format(text: String, formatter: Formatter) -> String:
 	return list_to_text(text_to_list(text), formatter)
 
 

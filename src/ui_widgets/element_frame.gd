@@ -288,7 +288,7 @@ func _draw() -> void:
 	
 	drop_sb.draw_center = false
 	drop_sb.set_corner_radius_all(4)
-	drop_sb.draw(surface, Rect2(Vector2.ZERO, get_size()))
+	drop_sb.draw(surface, Rect2(Vector2.ZERO, size))
 
 func _on_title_bar_draw() -> void:
 	var element_icon := DB.get_element_icon(element.name)

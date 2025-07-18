@@ -602,8 +602,8 @@ msgid "Close tabs with middle mouse button"
 msgstr "Затваряне на раздели със средното копче на мишката"
 
 #: src/ui_parts/settings_menu.gd:
-msgid "If turned on, clicking on a tab with the middle mouse button closes the tab. If turned off, it focuses the tab instead."
-msgstr "Когато е включено, натискането на раздел със средното копче на мишката затваря раздела. Ако е изключено, средното копче фокусира раздела."
+msgid "When enabled, clicking on a tab with the middle mouse button closes it instead of simply focusing it."
+msgstr "Когато е активирано, натискането на раздел със средното копче на мишката затваря раздела вместо просто да го фокусира."
 
 #: src/ui_parts/settings_menu.gd:
 msgid "Invert zoom direction"
@@ -618,16 +618,12 @@ msgid "Wrap-around panning"
 msgstr "Превъртане на курсора"
 
 #: src/ui_parts/settings_menu.gd:
-msgid "Warps the cursor to the opposite side whenever it reaches a viewport boundary while panning."
-msgstr "Превърта курсора когато той достигне краищата на екрана докато влачи гледката."
-
-#: src/ui_parts/settings_menu.gd:
 msgid "Use CTRL for zooming"
 msgstr "Използвай CTRL за увеличение"
 
 #: src/ui_parts/settings_menu.gd:
-msgid "If turned on, scrolling pans the view. To zoom, hold CTRL while scrolling."
-msgstr "Когато е включено, влаченето премества гледката. За увеличение, натисни CTRL докато влачиш."
+msgid "When enabled, scrolling pans the view instead of zooming in. To zoom, hold CTRL while scrolling."
+msgstr "Когато е активирано, влаченето премества гледката. За увеличение, задръж CTRL докато влачиш."
 
 #: src/ui_parts/settings_menu.gd:
 msgid "Display"
@@ -667,16 +663,12 @@ msgid "Use native file dialog"
 msgstr "Използвай местния файлов мениджър"
 
 #: src/ui_parts/settings_menu.gd:
-msgid "If turned on, uses your operating system's native file dialog. If turned off, uses GodSVG's built-in file dialog."
-msgstr "Когато е включено, ще бъде използван файловият мениджър на твоята операционна система. Ако е изключено, използва вградения файлов мениджър на GodSVG."
-
-#: src/ui_parts/settings_menu.gd:
 msgid "Sync window title to file name"
 msgstr "Синхронизирай името на прозореца с файла"
 
 #: src/ui_parts/settings_menu.gd:
-msgid "If turned off, the window title remains as \"GodSVG\" without including the current file."
-msgstr "Когато е изключено, името на прозореца остава \"GodSVG\" без да включва настоящия файл."
+msgid "When enabled, adds the current file name after the \"GodSVG\" window title."
+msgstr "Когато е включено, добавя името на настоящия файл след заглавието на прозореца \"GodSVG\"."
 
 #: src/ui_parts/settings_menu.gd:
 msgid "Language"
@@ -725,10 +717,6 @@ msgid "Keep comments"
 msgstr "Запази коментарите"
 
 #: src/ui_parts/settings_menu.gd:
-msgid "Keep unrecognized XML structures"
-msgstr "Запази непознатите XML структури"
-
-#: src/ui_parts/settings_menu.gd:
 msgid "Add trailing newline"
 msgstr "Добави нов ред накрая"
 
@@ -746,7 +734,7 @@ msgstr "Включи красивото форматиране"
 
 #: src/ui_parts/settings_menu.gd:
 msgid "Use spaces instead of tabs"
-msgstr "Използвай интервали вместо табулации"
+msgstr "Използвай интервали вместо табулатор"
 
 #: src/ui_parts/settings_menu.gd:
 msgid "Number of indentation spaces"
@@ -807,6 +795,26 @@ msgstr "Поредици от трансформации"
 #: src/ui_parts/settings_menu.gd:
 msgid "Remove unnecessary parameters"
 msgstr "Премахни ненужните параметри"
+
+#: src/ui_parts/settings_menu.gd:
+msgid "When enabled, uses several spaces instead of a single tab for indentation."
+msgstr "Когато е активирано, използва няколко интервала вместо един табулатор за отстъп."
+
+#: src/ui_parts/settings_menu.gd:
+msgid "Warps the cursor to the opposite side whenever it reaches a viewport boundary while panning."
+msgstr "Превърта курсора когато той достигне краищата на екрана докато влачи гледката."
+
+#: src/ui_parts/settings_menu.gd:
+msgid "When enabled, uses your operating system's native file dialog instead of GodSVG's built-in one."
+msgstr "Когато е активирано, ще бъде използван файловият мениджър на твоята операционна система вместо вградения файлов мениджър на GodSVG."
+
+#: src/ui_parts/settings_menu.gd:
+msgid "The setting has no effect in the current configuration."
+msgstr "Настройката няма ефект в текущата конфигурация."
+
+#: src/ui_parts/settings_menu.gd:
+msgid "The setting can't be changed on this platform."
+msgstr "Настройката не може да бъде променена на тази платформа."
 
 #: src/ui_parts/shortcut_panel.gd:
 msgid "Horizontal strip"

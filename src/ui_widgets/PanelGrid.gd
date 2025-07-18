@@ -17,8 +17,8 @@ func _draw() -> void:
 	if item_count == 0:
 		return
 	
-	var inner_color := ThemeUtils.desaturated_color.lerp(ThemeUtils.extreme_theme_color, 0.75)
-	var border_color := ThemeUtils.desaturated_color.lerp(ThemeUtils.extreme_theme_color, 0.55)
+	var inner_color := ThemeUtils.tab_container_panel_inner_color.lerp(ThemeUtils.desaturated_color, 0.35)
+	var border_color := ThemeUtils.tab_container_panel_inner_color.lerp(ThemeUtils.desaturated_color, 0.85)
 	
 	var effective_columns := clampi(columns, 1, item_count)
 	var text_color := get_theme_color("font_color", "Label")
@@ -45,14 +45,13 @@ func _draw() -> void:
 				RenderingServer.canvas_item_add_rect(ci,
 						Rect2(pos_x, pos_y, box_width, box_height), inner_color)
 			if dim_last_item:
-				text_color = ThemeUtils.dim_text_color
+				text_color = ThemeUtils.dimmer_text_color
 		
 		# Sigh...
 		if is_zero_approx(pos_x):
 			draw_rect(Rect2(1, pos_y, box_width - 1, box_height), border_color, false, 1.0)
 		else:
 			draw_rect(Rect2(pos_x, pos_y, box_width, box_height), border_color, false, 1.0)
-		
 		
 		text_font.draw_string(ci, Vector2(pos_x + side_spacing, pos_y + top_spacing +\
 				text_font_size), items[item_idx], HORIZONTAL_ALIGNMENT_LEFT, -1,

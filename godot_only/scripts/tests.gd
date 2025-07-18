@@ -15,11 +15,11 @@ func _run() -> void:
 		for report_line in report:
 			print_rich(report_line)
 
-
 func add_to_report(test_category: String, test: String, result: String,
 expected: String) -> void:
 	report.append('%s: [b]"%s"[/b] returned [b]"%s"[/b], expected [b]"%s"[/b]' %\
 			[test_category, test, result, expected])
+
 
 # This test is dependent on specifics of the Formatter and AttributePathdata classes.
 # But its logic would likely not change enough in the future to make the tests obsolete.
@@ -103,6 +103,6 @@ func transform_list_tests() -> void:
 	}
 	
 	for test in tests:
-		var result := AttributeTransformList.new("transform")._format(test, spacious_formatter)
+		var result := AttributeTransformList.new("transform").format(test, spacious_formatter)
 		if result != tests[test]:
 			add_to_report("Transform list parser", test, result, tests[test])

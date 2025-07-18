@@ -88,7 +88,7 @@ func _on_window_mouse_exited() -> void:
 # Drawing
 
 func _draw() -> void:
-	get_theme_stylebox("panel", "PanelContainer").draw(ci, Rect2(Vector2.ZERO, get_size()))
+	get_theme_stylebox("panel", "PanelContainer").draw(ci, Rect2(Vector2.ZERO, size))
 	
 	var half_width := size.x / 2.0 - PANEL_MARGIN
 	var right_rect := Rect2(size.x / 2.0, PANEL_MARGIN, half_width, half_width * 1.25)

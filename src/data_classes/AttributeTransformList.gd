@@ -11,7 +11,7 @@ func _sync() -> void:
 func sync_after_transforms_change() -> void:
 	set_value(transform_list_to_text(_transform_list))
 
-func _format(text: String, formatter: Formatter) -> String:
+func format(text: String, formatter: Formatter) -> String:
 	return transform_list_to_text(text_to_transform_list(text), formatter)
 
 func set_transform_list(new_transform_list: Array[Transform]) -> void:

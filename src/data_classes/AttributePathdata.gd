@@ -8,7 +8,7 @@ func _sync() -> void:
 	_commands = parse_pathdata(get_value())
 	parse_properties()
 
-func _format(text: String, formatter: Formatter) -> String:
+func format(text: String, formatter: Formatter) -> String:
 	return path_commands_to_text(parse_pathdata(text), formatter)
 
 

@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://c528knojuxbw6" path="res://assets/icons/Languages.svg" id="2_ndyp7"]
 
 [node name="SettingsMenu" type="PanelContainer"]
-custom_minimum_size = Vector2(640, 400)
+custom_minimum_size = Vector2(660, 420)
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -65,7 +65,7 @@ theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 2
 theme_override_constants/margin_bottom = 4
 
-[node name="AdvicePanel" type="PanelContainer" parent="VBoxContainer"]
+[node name="PreviewPanel" type="PanelContainer" parent="VBoxContainer"]
 custom_minimum_size = Vector2(0, 48)
 layout_mode = 2
 theme_type_variation = &"TextBox"

@@ -38,7 +38,7 @@ func populate_delimiters() -> void:
 	for method in ["translate"]:
 		for quote in ["'", '"', '"""']:
 			delimiters["Translator." + method + "(" + quote] = quote + ")"
-			for i in range(2, 8):
+			for i in range(2, 10):
 				delimiters["Translator." + method + "(\n" + "\t".repeat(i) + quote] = quote + ")"
 
 var messages: Array[Message] = [Message.new("translation-credits", PackedStringArray())]

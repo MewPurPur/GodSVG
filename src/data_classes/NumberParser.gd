@@ -15,16 +15,19 @@ static func num_to_text(number: float, formatter: Formatter) -> String:
 			var e := 3
 			while numstr[-e - 1] == "0":
 				e += 1
-			return String.num_int64(int(number / 10 ** e)) + "e" + String.num_int64(e)
-		elif numstr.begins_with("0.00"):
-			if not formatter.number_remove_leading_zero or numstr.begins_with("0.000"):
-				var e := 2
-				var r := 3 if numstr.begins_with("-") else 2
-				while e + r < numstr.length() and numstr[e + r] == "0":
+			return numstr.left(-e) + "e" + String.num_uint64(e)
+		else:
+			var numstr_abs := numstr.trim_prefix("-")
+			# Leading zeros aren't removed yet.
+			if numstr_abs.begins_with("0.00") and\
+			(not formatter.number_remove_leading_zero or numstr_abs.begins_with("0.000")):
+				var is_num_negative := numstr.begins_with("-")
+				var e := 3
+				while e + 1 < numstr.length() and numstr_abs[e + 1] == "0":
 					e += 1
-				var output := "-" if numstr.begins_with("-") else ""
-				return output + String.num_int64(numstr.right(e + r - 1).to_int()) +\
-						"e-" + String.num_int64(e + 1)
+				
+				var output := "-" if is_num_negative else ""
+				return output + numstr_abs.right(-e - 1) + "e-" + String.num_uint64(e)
 	
 	if formatter.number_remove_leading_zero and not is_zero_approx(fmod(number, 1)):
 		if numstr.begins_with("0"):

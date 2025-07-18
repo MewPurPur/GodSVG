@@ -611,7 +611,8 @@ msgid "Close tabs with middle mouse button"
 msgstr "Закрывать вкладки средней клавишей мыши"
 
 #: src/ui_parts/settings_menu.gd:
-msgid "If turned on, clicking on a tab with the middle mouse button closes the tab. If turned off, it focuses the tab instead."
+#, fuzzy
+msgid "When enabled, clicking on a tab with the middle mouse button closes it instead of simply focusing it."
 msgstr "Если включено - нажатие на вкладку средней кнопкой мыши закроет ее. Если выключено - вкладка получит фокус."
 
 #: src/ui_parts/settings_menu.gd:
@@ -627,15 +628,12 @@ msgid "Wrap-around panning"
 msgstr "Захват курсора при прокрутке"
 
 #: src/ui_parts/settings_menu.gd:
-msgid "Warps the cursor to the opposite side whenever it reaches a viewport boundary while panning."
-msgstr "Курсор будет телепортироваться от одного до противоположного края на границе окна просмотра."
-
-#: src/ui_parts/settings_menu.gd:
 msgid "Use CTRL for zooming"
 msgstr "Использовать CTRL для масштабирования"
 
 #: src/ui_parts/settings_menu.gd:
-msgid "If turned on, scrolling pans the view. To zoom, hold CTRL while scrolling."
+#, fuzzy
+msgid "When enabled, scrolling pans the view instead of zooming in. To zoom, hold CTRL while scrolling."
 msgstr "Если включено - прокрутка будет перемещать окно просмотра. Чтобы масштабировать зажмите CTRL при прокручивании."
 
 #: src/ui_parts/settings_menu.gd:
@@ -677,16 +675,12 @@ msgid "Use native file dialog"
 msgstr "Использовать родной файловый диалог системы"
 
 #: src/ui_parts/settings_menu.gd:
-msgid "If turned on, uses your operating system's native file dialog. If turned off, uses GodSVG's built-in file dialog."
-msgstr "Если включено, то будет использоваться родной файловый диалог вашей операционной системы для выбора файлов. Если выключено, то будет использоваться встроенный файловый диалог."
-
-#: src/ui_parts/settings_menu.gd:
 msgid "Sync window title to file name"
 msgstr "Синхронизировать заголовок окна с названием файла"
 
 #: src/ui_parts/settings_menu.gd:
-msgid "If turned off, the window title remains as \"GodSVG\" without including the current file."
-msgstr "Если выключено - заголовок окна будет просто \"GodSVG\", не включая текущий файл."
+msgid "When enabled, adds the current file name after the \"GodSVG\" window title."
+msgstr ""
 
 #: src/ui_parts/settings_menu.gd:
 msgid "Language"
@@ -734,10 +728,6 @@ msgstr "Изменить масштаб пользовательского ин�
 #: src/ui_parts/settings_menu.gd:
 msgid "Keep comments"
 msgstr "Сохранять коментарии"
-
-#: src/ui_parts/settings_menu.gd:
-msgid "Keep unrecognized XML structures"
-msgstr "Сохранять нераспознанные XML"
 
 #: src/ui_parts/settings_menu.gd:
 msgid "Add trailing newline"
@@ -818,6 +808,27 @@ msgstr "Список трансформаций"
 #: src/ui_parts/settings_menu.gd:
 msgid "Remove unnecessary parameters"
 msgstr "Удалить ненужные параметры"
+
+#: src/ui_parts/settings_menu.gd:
+msgid "When enabled, uses several spaces instead of a single tab for indentation."
+msgstr ""
+
+#: src/ui_parts/settings_menu.gd:
+msgid "Warps the cursor to the opposite side whenever it reaches a viewport boundary while panning."
+msgstr "Курсор будет телепортироваться от одного до противоположного края на границе окна просмотра."
+
+#: src/ui_parts/settings_menu.gd:
+#, fuzzy
+msgid "When enabled, uses your operating system's native file dialog instead of GodSVG's built-in one."
+msgstr "Если включено, то будет использоваться родной файловый диалог вашей операционной системы для выбора файлов. Если выключено, то будет использоваться встроенный файловый диалог."
+
+#: src/ui_parts/settings_menu.gd:
+msgid "The setting has no effect in the current configuration."
+msgstr ""
+
+#: src/ui_parts/settings_menu.gd:
+msgid "The setting can't be changed on this platform."
+msgstr ""
 
 #: src/ui_parts/shortcut_panel.gd:
 msgid "Horizontal strip"
@@ -1385,6 +1396,12 @@ msgstr "Сохранить {format} файл"
 #: src/utils/TranslationUtils.gd:
 msgid "Only {extension_list} files are supported for this operation."
 msgstr "Только файлы с расширениями {extension_list} поддерживаются для этой операции."
+
+#~ msgid "If turned off, the window title remains as \"GodSVG\" without including the current file."
+#~ msgstr "Если выключено - заголовок окна будет просто \"GodSVG\", не включая текущий файл."
+
+#~ msgid "Keep unrecognized XML structures"
+#~ msgstr "Сохранять нераспознанные XML"
 
 #~ msgid "Handle colors"
 #~ msgstr "Цвет ручки редактирования"

@@ -9,10 +9,10 @@ signal xnodes_moved_in_parent(parent_xid: PackedInt32Array, old_indices: Array[i
 signal xnodes_moved_to(xids: Array[PackedInt32Array], location: PackedInt32Array)
 signal xnode_layout_changed  # Emitted together with any of the above four.
 
-@warning_ignore("unused_signal")
+@warning_ignore_start("unused_signal")
 signal basic_xnode_text_changed(xid: PackedInt32Array)
-@warning_ignore("unused_signal")
 signal basic_xnode_rendered_text_changed(xid: PackedInt32Array)
+@warning_ignore_restore("unused_signal")
 
 func _init() -> void:
 	super()
@@ -196,8 +196,7 @@ func optimize(not_applied := false) -> bool:
 		if not xnode.is_element():
 			var basic_xnode: BasicXNode = xnode
 			var xids_to_remove: Array[PackedInt32Array] = []
-			if basic_xnode.get_type() in [BasicXNode.NodeType.COMMENT,
-			BasicXNode.NodeType.UNKNOWN]:
+			if basic_xnode.get_type() == BasicXNode.NodeType.COMMENT:
 				if not_applied:
 					return true
 				xids_to_remove.append(xnode.xid)
