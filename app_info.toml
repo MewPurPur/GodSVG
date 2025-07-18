@@ -1,0 +1,44 @@
+project_founder_and_manager = "MewPurPur"
+
+# A list of people who have made significant contributions to the GodSVG source code. Everyone with 4 commits or more is included.
+# Translators are credited in their dedicated translation files, not here.
+# Format: '<Github username>' by default, '<Real name> (<Github username>)' with consent.
+# In order for the list to not be too arbitrary, a minimum of 4 commits is required to be on it (I've made a few exceptions, explained with comments).
+# This file does not strictly reflect copyright ownership for GodSVG. Refer to the Git history to know which contributor wrote which part of the codebase.
+# Refer to https://github.com/MewPurPur/GodSVG/graphs/contributors for a complete list of everyone who has worked on the project.
+authors = [
+  "Aaron Franke (aaronfranke)",
+  "ajreckof",
+  "aladvs",  # Legacy / No commits, but helped with web exports in the early days.
+  "DevPoodle",  # Legacy
+  "FlooferLand",
+  "ilikefrogs101",  # Legacy
+  "Yordan Dolchinkov (Jordyfel)",  # Legacy
+  "Kiisu-Master",
+  "MewPurPur",
+  "Qainguin",
+  "Serem Titus (SeremTitus)",
+  "Swarkin",
+  "Anish Mishra (syntaxerror247)",
+  "thiagola92",  # Legacy
+  "Tom Blackwell (Volts-s)",  # Legacy / No commits, but iterated on GodSVG's logo.
+  "WeaverSong",  # Legacy
+]
+
+# Lists of the current and past monthly donors, who will have their generous deed immortalized in GodSVG's "About" menu on each update.
+donors = []
+anonymous_donors = 1
+golden_donors = []
+anonymous_golden_donors = 0
+
+diamond_donors = [
+  "Aaron Franke (aaronfranke)",
+]
+anonymous_diamond_donors = 0
+
+past_donors = []
+past_anonymous_donors = 0
+past_golden_donors = []
+past_anonymous_golden_donors = 0
+past_diamond_donors = []
+past_anonymous_diamond_donors = 0

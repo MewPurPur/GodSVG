@@ -619,7 +619,7 @@ msgid "Close tabs with middle mouse button"
 msgstr ""
 
 #: src/ui_parts/settings_menu.gd:
-msgid "If turned on, clicking on a tab with the middle mouse button closes the tab. If turned off, it focuses the tab instead."
+msgid "When enabled, clicking on a tab with the middle mouse button closes it instead of simply focusing it."
 msgstr ""
 
 #: src/ui_parts/settings_menu.gd:
@@ -635,16 +635,12 @@ msgid "Wrap-around panning"
 msgstr ""
 
 #: src/ui_parts/settings_menu.gd:
-msgid "Warps the cursor to the opposite side whenever it reaches a viewport boundary while panning."
-msgstr ""
-
-#: src/ui_parts/settings_menu.gd:
 msgid "Use CTRL for zooming"
 msgstr "使用 CTRL 键缩放"
 
 #: src/ui_parts/settings_menu.gd:
 #, fuzzy
-msgid "If turned on, scrolling pans the view. To zoom, hold CTRL while scrolling."
+msgid "When enabled, scrolling pans the view instead of zooming in. To zoom, hold CTRL while scrolling."
 msgstr "如果启用，滚动鼠标滚轮将移动视图。按住 CTRL 并滚动滚轮以缩放。"
 
 #: src/ui_parts/settings_menu.gd:
@@ -686,17 +682,12 @@ msgid "Use native file dialog"
 msgstr "使用系统自带文件选择窗口"
 
 #: src/ui_parts/settings_menu.gd:
-msgid "If turned on, uses your operating system's native file dialog. If turned off, uses GodSVG's built-in file dialog."
-msgstr "如果启用，将使用操作系统自带的文件选择窗口。反之，将使用 GodSVG 内置的文件选择窗口。"
-
-#: src/ui_parts/settings_menu.gd:
 msgid "Sync window title to file name"
 msgstr "同步窗口标题为文件名"
 
 #: src/ui_parts/settings_menu.gd:
-#, fuzzy
-msgid "If turned off, the window title remains as \"GodSVG\" without including the current file."
-msgstr "如果禁用，不论当前打开的文件是什么，窗口标题都将固定为 “GodSVG”。"
+msgid "When enabled, adds the current file name after the \"GodSVG\" window title."
+msgstr ""
 
 #: src/ui_parts/settings_menu.gd:
 msgid "Language"
@@ -746,10 +737,6 @@ msgstr "改变用户界面的缩放尺寸。"
 #: src/ui_parts/settings_menu.gd:
 msgid "Keep comments"
 msgstr "保留注释"
-
-#: src/ui_parts/settings_menu.gd:
-msgid "Keep unrecognized XML structures"
-msgstr "保留未知 XML 结构"
 
 #: src/ui_parts/settings_menu.gd:
 msgid "Add trailing newline"
@@ -830,6 +817,27 @@ msgstr "变换列表"
 #: src/ui_parts/settings_menu.gd:
 msgid "Remove unnecessary parameters"
 msgstr "移除不必要的参数"
+
+#: src/ui_parts/settings_menu.gd:
+msgid "When enabled, uses several spaces instead of a single tab for indentation."
+msgstr ""
+
+#: src/ui_parts/settings_menu.gd:
+msgid "Warps the cursor to the opposite side whenever it reaches a viewport boundary while panning."
+msgstr ""
+
+#: src/ui_parts/settings_menu.gd:
+#, fuzzy
+msgid "When enabled, uses your operating system's native file dialog instead of GodSVG's built-in one."
+msgstr "如果启用，将使用操作系统自带的文件选择窗口。反之，将使用 GodSVG 内置的文件选择窗口。"
+
+#: src/ui_parts/settings_menu.gd:
+msgid "The setting has no effect in the current configuration."
+msgstr ""
+
+#: src/ui_parts/settings_menu.gd:
+msgid "The setting can't be changed on this platform."
+msgstr ""
 
 #: src/ui_parts/shortcut_panel.gd:
 #, fuzzy
@@ -1428,6 +1436,13 @@ msgstr "保存 .\"{format}\" 文件"
 #, fuzzy
 msgid "Only {extension_list} files are supported for this operation."
 msgstr "文件扩展名为空。只有 {extension_list} 内的文件受支持。"
+
+#, fuzzy
+#~ msgid "If turned off, the window title remains as \"GodSVG\" without including the current file."
+#~ msgstr "如果禁用，不论当前打开的文件是什么，窗口标题都将固定为 “GodSVG”。"
+
+#~ msgid "Keep unrecognized XML structures"
+#~ msgstr "保留未知 XML 结构"
 
 #~ msgid "Handle colors"
 #~ msgstr "拖拽框颜色"

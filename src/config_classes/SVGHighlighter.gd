@@ -76,13 +76,13 @@ func _get_line_syntax_highlighting(line: int) -> Dictionary:
 							color_map[offset] = {"color": symbol_color}
 							break
 						else:
-							if not expecting_attribute_name:
+							if expecting_attribute_name and c != "=":
+								expecting_attribute_name = false
+								expecting_end = false
+								current_attribute_name += c
+							else:
 								color_map[offset] = {"color": error_color}
 								return color_map
-							else:
-								expecting_end = false
-								expecting_attribute_name = false
-								current_attribute_name += c
 					elif not current_attribute_name.is_empty():
 						if c in " \t\n\r":
 							color_map[offset - current_attribute_name.length()] = {"color":

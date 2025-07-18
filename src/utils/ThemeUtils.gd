@@ -84,6 +84,7 @@ static var scrollbar_pressed_color: Color
 static var line_edit_focus_color: Color
 static var line_edit_inner_color: Color
 static var line_edit_normal_border_color: Color
+static var mini_line_edit_inner_color: Color
 static var mini_line_edit_normal_border_color: Color
 static var line_edit_inner_color_disabled: Color
 static var line_edit_border_color_disabled: Color
@@ -126,14 +127,15 @@ static func recalculate_colors() -> void:
 	soft_base_color = base_color.lerp(max_contrast_color, 0.015 if is_theme_dark else 0.03)
 	softer_base_color = base_color.lerp(max_contrast_color, 0.04 if is_theme_dark else 0.08)
 	soft_accent_color = accent_color.lerp(extreme_theme_color, 0.1)
-	var intense_accent_color = accent_color.lerp(max_contrast_color, 0.1)
 	hover_overlay_color = Color(tinted_contrast_color, 0.08)
 	pressed_overlay_color = Color(tinted_contrast_color.lerp(soft_accent_color, 0.6), 0.24)
 	hover_pressed_overlay_color = hover_overlay_color.blend(pressed_overlay_color)
 	
 	soft_hover_overlay_color = Color(tinted_contrast_color, 0.06)
 	soft_pressed_overlay_color = Color(tinted_contrast_color.lerp(soft_accent_color, 0.4), 0.18)
-	soft_hover_pressed_overlay_color = soft_hover_overlay_color.blend(soft_pressed_overlay_color)
+	var softer_hover_overlay_color := soft_hover_overlay_color
+	softer_hover_overlay_color.a *= 0.5
+	soft_hover_pressed_overlay_color = softer_hover_overlay_color.blend(soft_pressed_overlay_color)
 	
 	strong_hover_overlay_color = Color(tinted_contrast_color, 0.12)
 	stronger_hover_overlay_color = Color(tinted_contrast_color, 0.16)
@@ -172,20 +174,22 @@ static func recalculate_colors() -> void:
 	context_icon_hover_color = tinted_contrast_color
 	context_icon_pressed_color = max_contrast_color
 	
-	translucent_button_color_disabled = Color(disabled_color, 0.2)
-	flat_button_color_disabled = Color(disabled_color, 0.15)
+	translucent_button_color_disabled = Color(disabled_color.lerp(extreme_theme_color, 0.4), 0.16)
+	flat_button_color_disabled = Color(disabled_color.lerp(extreme_theme_color, 0.4), 0.12)
 	
 	subtle_flat_panel_color = base_color
 	contrast_flat_panel_color = Color(tinted_contrast_color, 0.1)
 	overlay_panel_inner_color = base_color.lerp(extreme_theme_color, 0.1)
 	overlay_panel_subtler_inner_color = base_color.lerp(extreme_theme_color, 0.075)
 	
-	scrollbar_pressed_color = intermediate_color.blend(Color(tinted_contrast_color.lerp(intense_accent_color, 0.2), 0.4))
+	scrollbar_pressed_color = intermediate_color.blend(Color(tinted_contrast_color.lerp(
+			accent_color.lerp(max_contrast_color, 0.1), 0.2), 0.4))
 	
 	line_edit_focus_color = Color(accent_color, 0.4)
 	line_edit_inner_color = desaturated_color.lerp(extreme_theme_color, 0.74)
 	line_edit_normal_border_color = desaturated_color.lerp(extreme_theme_color, 0.42)
-	mini_line_edit_normal_border_color = desaturated_color.lerp(extreme_theme_color, 0.225)
+	mini_line_edit_inner_color = desaturated_color.lerp(extreme_theme_color, 0.78)
+	mini_line_edit_normal_border_color = desaturated_color.lerp(max_contrast_color, 0.04)
 	line_edit_inner_color_disabled = desaturated_color.lerp(gray_color, 0.4).lerp(extreme_theme_color, 0.88)
 	line_edit_border_color_disabled = desaturated_color.lerp(gray_color, 0.4).lerp(extreme_theme_color, 0.68)
 	
@@ -280,7 +284,7 @@ static func _setup_panelcontainer(theme: Theme) -> void:
 	var overlay_stylebox := StyleBoxFlat.new()
 	overlay_stylebox.set_corner_radius_all(2)
 	overlay_stylebox.set_border_width_all(2)
-	overlay_stylebox.content_margin_left = 8.0
+	overlay_stylebox.content_margin_left = 10.0
 	overlay_stylebox.content_margin_right = 10.0
 	overlay_stylebox.content_margin_top = 6.0
 	overlay_stylebox.content_margin_bottom = 10.0
@@ -1010,7 +1014,7 @@ static func _setup_lineedit(theme: Theme) -> void:
 	mini_stylebox.content_margin_bottom = 0.0
 	
 	var mini_stylebox_normal := mini_stylebox.duplicate()
-	mini_stylebox_normal.bg_color = line_edit_inner_color
+	mini_stylebox_normal.bg_color = mini_line_edit_inner_color
 	mini_stylebox_normal.border_color = mini_line_edit_normal_border_color
 	theme.set_stylebox("normal", "MiniLineEdit", mini_stylebox_normal)
 	
@@ -1031,7 +1035,7 @@ static func _setup_lineedit(theme: Theme) -> void:
 	theme.set_font("font", "GoodColorPickerLineEdit", mono_font)
 	var color_picker_line_edit_stylebox := StyleBoxFlat.new()
 	color_picker_line_edit_stylebox.set_corner_radius_all(2)
-	color_picker_line_edit_stylebox.bg_color = line_edit_inner_color
+	color_picker_line_edit_stylebox.bg_color = mini_line_edit_inner_color
 	theme.set_stylebox("normal", "GoodColorPickerLineEdit", color_picker_line_edit_stylebox)
 	var empty_stylebox := StyleBoxEmpty.new()
 	theme.set_stylebox("hover", "GoodColorPickerLineEdit", empty_stylebox)

@@ -20,7 +20,7 @@ func is_percentage() -> bool:
 	return _percentage
 
 
-func _format(text: String, formatter: Formatter) -> String:
+func format(text: String, formatter: Formatter) -> String:
 	var num := text_to_num(text)
 	if text_check_percentage(text):
 		return num_to_text(num * 100.0, formatter) + "%"

@@ -97,19 +97,18 @@ func _draw() -> void:
 	stylebox.corner_radius_top_right = 5
 	stylebox.corner_radius_bottom_right = 5
 	stylebox.bg_color = get_theme_stylebox("normal", "LineEdit").bg_color
-	stylebox.draw(ci, Rect2(get_size().x - BUTTON_WIDTH,
-			1, BUTTON_WIDTH - 2, get_size().y - 2))
-	var fill_height := (get_size().y - 4) * (element.get_attribute_num(attribute_name) -\
+	stylebox.draw(ci, Rect2(size.x - BUTTON_WIDTH, 1, BUTTON_WIDTH - 2, size.y - 2))
+	var fill_height := (size.y - 4) * (element.get_attribute_num(attribute_name) -\
 			MIN_VALUE) / MAX_VALUE
 	# Create a stylebox that'll occupy the exact amount of space.
 	var fill_stylebox := StyleBoxFlat.new()
 	fill_stylebox.bg_color = ThemeUtils.tinted_contrast_color
 	if not slider_dragged and slider_hovered:
-		fill_stylebox.bg_color.a = 0.8
+		fill_stylebox.bg_color.a = 0.65
 	elif not slider_hovered:
-		fill_stylebox.bg_color.a = 0.6
-	fill_stylebox.draw(ci, Rect2(get_size().x - BUTTON_WIDTH,
-			get_size().y - 2 - fill_height, BUTTON_WIDTH - 2, fill_height))
+		fill_stylebox.bg_color.a = 0.5
+	fill_stylebox.draw(ci, Rect2(size.x - BUTTON_WIDTH, size.y - 2 - fill_height,
+			BUTTON_WIDTH - 2, fill_height))
 	if slider_dragged:
 		draw_button_border("pressed")
 	elif slider_hovered:
@@ -153,7 +152,7 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func get_slider_value_at_y(y_coord: float) -> float:
 	return snappedf(lerpf(MAX_VALUE, MIN_VALUE,
-			(y_coord - 4) / (temp_button.get_size().y - 4)), SLIDER_STEP)
+			(y_coord - 4) / (temp_button.size.y - 4)), SLIDER_STEP)
 
 func _on_slider_mouse_exited() -> void:
 	slider_hovered = false

@@ -3,8 +3,8 @@ class_name BasicXNode extends XNode
 signal text_changed  # Any text change.
 signal rendered_text_changed  # Text changes that could affect the SVG.
 
-enum NodeType {COMMENT, TEXT, CDATA, UNKNOWN}
-var _type := NodeType.UNKNOWN
+enum NodeType {COMMENT, TEXT, CDATA}
+var _type: NodeType
 var _text := ""
 
 func set_text(new_text: String) -> void:

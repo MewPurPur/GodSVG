@@ -41,35 +41,46 @@ custom_height: float, custom_viewbox: Rect2) -> String:
 	new_root_element.set_attribute("viewBox", ListParser.rect_to_list(custom_viewbox))
 	new_root_element.set_attribute("width", custom_width)
 	new_root_element.set_attribute("height", custom_height)
-	var text := _xnode_to_editor_text(new_root_element)
+	var text := _xnode_to_text(new_root_element, Configs.savedata.editor_formatter)
 	text = text.left(maxi(text.find("/>"), text.find("</svg>"))) + ">"
 	for child_idx in root_element.get_child_count():
-		text += _xnode_to_editor_text(
-				root_element.get_xnode(PackedInt32Array([child_idx])), true)
+		text += _xnode_to_text(root_element.get_xnode(
+				PackedInt32Array([child_idx])), Configs.savedata.editor_formatter, true)
 	return text + "</svg>"
 
+
+static func root_children_to_text(root_element: ElementRoot, formatter: Formatter) -> String:
+	var text := ""
+	for child in root_element.get_children():
+		var new_text := _xnode_to_text(child, formatter)
+		var lines := new_text.split('\n')
+		for i in lines.size():
+			lines[i] = lines[i].trim_prefix(formatter.get_indent_string())
+		text += '\n'.join(lines)
+	return text.trim_suffix('\n')
+
 static func root_to_editor_text(root_element: ElementRoot) -> String:
-	var text := _xnode_to_editor_text(root_element).trim_suffix('\n')
-	if Configs.savedata.editor_formatter.xml_add_trailing_newline:
-		text += "\n"
-	return text
+	return root_to_text(root_element, Configs.savedata.editor_formatter)
 
 static func root_to_export_text(root_element: ElementRoot) -> String:
-	var text := _xnode_to_export_text(root_element).trim_suffix('\n')
-	if Configs.savedata.export_formatter.xml_add_trailing_newline:
+	return root_to_text(root_element, Configs.savedata.export_formatter)
+
+static func root_to_text(root_element: ElementRoot, formatter: Formatter) -> String:
+	var text := _xnode_to_text(root_element, formatter).trim_suffix('\n')
+	if formatter.xml_add_trailing_newline:
 		text += "\n"
 	return text
 
-static func _xnode_to_editor_text(xnode: XNode, make_attributes_absolute := false) -> String:
-	var formatter := Configs.savedata.editor_formatter
+static func _xnode_to_text(xnode: XNode, formatter: Formatter,
+make_attributes_absolute := false) -> String:
 	var text := ""
 	if formatter.xml_pretty_formatting:
-		if formatter.xml_indentation_use_spaces:
-			text = ' '.repeat(xnode.xid.size() * formatter.xml_indentation_spaces)
-		else:
-			text = '\t'.repeat(xnode.xid.size())
+		text = formatter.get_indent_string().repeat(xnode.xid.size())
 	
 	if not xnode.is_element():
+		if (not formatter.xml_keep_comments and xnode.get_type() == BasicXNode.NodeType.COMMENT):
+			return ""
+		
 		match xnode.get_type():
 			BasicXNode.NodeType.COMMENT: text += "<!--%s-->" % xnode.get_text()
 			BasicXNode.NodeType.CDATA: text += "<![CDATA[%s]]>" % xnode.get_text()
@@ -106,7 +117,7 @@ static func _xnode_to_editor_text(xnode: XNode, make_attributes_absolute := fals
 	
 	text += '<' + element.name
 	for attribute: Attribute in attribute_array:
-		var value := attribute.get_value()
+		var value := attribute.get_formatted_value(formatter)
 		
 		if not '"' in value:
 			text += ' %s="%s"' % [attribute.name, value]
@@ -125,60 +136,9 @@ static func _xnode_to_editor_text(xnode: XNode, make_attributes_absolute := fals
 		if formatter.xml_pretty_formatting:
 			text += '\n'
 		for child in element.get_children():
-			text += _xnode_to_editor_text(child, make_attributes_absolute)
+			text += _xnode_to_text(child, formatter, make_attributes_absolute)
 		if formatter.xml_pretty_formatting:
-			if formatter.xml_indentation_use_spaces:
-				text += ' '.repeat(element.xid.size() * formatter.xml_indentation_spaces)
-			else:
-				text += '\t'.repeat(element.xid.size())
-		text += '</%s>' % element.name
-		if formatter.xml_pretty_formatting:
-			text += '\n'
-	return text
-
-static func _xnode_to_export_text(xnode: XNode) -> String:
-	var formatter := Configs.savedata.export_formatter
-	var text := ""
-	if formatter.xml_pretty_formatting:
-		if formatter.xml_indentation_use_spaces:
-			text = ' '.repeat(xnode.xid.size() * formatter.xml_indentation_spaces)
-		else:
-			text = '\t'.repeat(xnode.xid.size())
-	
-	if not xnode.is_element():
-		match xnode.get_type():
-			BasicXNode.NodeType.COMMENT: text += "<!--%s-->" % xnode.get_text()
-			BasicXNode.NodeType.CDATA: text += "<![CDATA[%s]]>" % xnode.get_text()
-			_: text += xnode.get_text()
-		if formatter.xml_pretty_formatting:
-			text += "\n"
-		return text
-	
-	var element := xnode as Element
-	text += '<' + element.name
-	for attribute: Attribute in element.get_all_attributes():
-		var value := attribute.get_export_value()
-		
-		if not '"' in value:
-			text += ' %s="%s"' % [attribute.name, value]
-		else:
-			text += " %s='%s'" % [attribute.name, value]
-	
-	if not element.has_children() and (formatter.xml_shorthand_tags ==\
-	Formatter.ShorthandTags.ALWAYS or (formatter.xml_shorthand_tags ==\
-	Formatter.ShorthandTags.ALL_EXCEPT_CONTAINERS and\
-	not element.name in Formatter.container_elements)):
-		text += ' />' if formatter.xml_shorthand_tags_space_out_slash else '/>'
-		if formatter.xml_pretty_formatting:
-			text += '\n'
-	else:
-		text += '>'
-		if formatter.xml_pretty_formatting:
-			text += '\n'
-		for child in element.get_children():
-			text += _xnode_to_export_text(child)
-		if formatter.xml_pretty_formatting:
-			text += '\t'.repeat(element.xid.size())
+			text += formatter.get_indent_string().repeat(element.xid.size())
 		text += '</%s>' % element.name
 		if formatter.xml_pretty_formatting:
 			text += '\n'
@@ -280,10 +240,6 @@ static func text_to_root(text: String) -> ParseResult:
 			XMLParser.NODE_CDATA:
 				unclosed_element_stack.back().insert_child(-1,
 						BasicXNode.new(BasicXNode.NodeType.CDATA, parser.get_node_name()))
-			_:
-				if Configs.savedata.editor_formatter.xml_keep_unrecognized:
-					unclosed_element_stack.back().insert_child(-1,
-							BasicXNode.new(BasicXNode.NodeType.UNKNOWN, parser.get_node_name()))
 	
 	if not unclosed_element_stack.is_empty():
 		return ParseResult.new(ParseError.ERR_IMPROPER_NESTING)
