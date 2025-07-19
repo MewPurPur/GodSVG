@@ -527,7 +527,7 @@ const MAX_FPS_MAX = 600
 			emit_changed()
 			external_call(Configs.sync_max_fps)
 
-@export var keep_screen_on := true:
+@export var keep_screen_on := false:
 	set(new_value):
 		if keep_screen_on != new_value:
 			keep_screen_on = new_value

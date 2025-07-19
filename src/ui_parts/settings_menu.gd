@@ -65,9 +65,25 @@ func _ready() -> void:
 	update_language_button()
 	update_close_button()
 	setup_tabs()
-	tabs.get_child(0).button_pressed = true
+	press_tab(0)
 	Configs.theme_changed.connect(update_theme)
 	update_theme()
+
+func _unhandled_input(event: InputEvent) -> void:
+	var tab_count := tabs.get_child_count()
+	var focused_tab_idx: int
+	for i in tab_count:
+		if tabs.get_child(i).button_pressed:
+			focused_tab_idx = i
+			break
+	
+	if ShortcutUtils.is_action_pressed(event, "select_next_tab"):
+		press_tab((focused_tab_idx + 1) % tab_count)
+	elif ShortcutUtils.is_action_pressed(event, "select_previous_tab"):
+		press_tab((focused_tab_idx + tab_count - 1) % tab_count)
+
+func press_tab(index: int) -> void:
+	tabs.get_child(index).button_pressed = true
 
 func update_theme() -> void:
 	var stylebox := ThemeDB.get_default_theme().get_stylebox("panel", theme_type_variation).duplicate()
@@ -405,7 +421,6 @@ func setup_content(reset_scroll := true) -> void:
 				use_native_file_dialog.permanent_disable_checkbox(true)
 			elif use_native_file_dialog_forced_off:
 				use_native_file_dialog.permanent_disable_checkbox(false)
-			
 			
 			current_setup_setting = "use_filename_for_window_title"
 			add_checkbox(Translator.translate("Sync window title to file name"))

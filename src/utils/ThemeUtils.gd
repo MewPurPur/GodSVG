@@ -174,8 +174,8 @@ static func recalculate_colors() -> void:
 	context_icon_hover_color = tinted_contrast_color
 	context_icon_pressed_color = max_contrast_color
 	
-	translucent_button_color_disabled = Color(disabled_color.lerp(extreme_theme_color, 0.4), 0.16)
-	flat_button_color_disabled = Color(disabled_color.lerp(extreme_theme_color, 0.4), 0.12)
+	translucent_button_color_disabled = Color(disabled_color.lerp(extreme_theme_color, 0.4), 0.24)
+	flat_button_color_disabled = Color(disabled_color.lerp(extreme_theme_color, 0.4), 0.18)
 	
 	subtle_flat_panel_color = base_color
 	contrast_flat_panel_color = Color(tinted_contrast_color, 0.1)
@@ -547,8 +547,8 @@ static func _setup_button(theme: Theme) -> void:
 	theme.add_type("TranslucentButton")
 	theme.set_type_variation("TranslucentButton", "Button")
 	theme.set_color("icon_normal_color", "TranslucentButton", context_icon_normal_color)
-	theme.set_color("icon_hover_color", "TranslucentButton", context_icon_normal_color)
-	theme.set_color("icon_pressed_color", "TranslucentButton", context_icon_normal_color)
+	theme.set_color("icon_hover_color", "TranslucentButton", context_icon_hover_color)
+	theme.set_color("icon_pressed_color", "TranslucentButton", context_icon_pressed_color)
 	
 	var normal_translucent_button_stylebox := StyleBoxFlat.new()
 	normal_translucent_button_stylebox.set_corner_radius_all(5)
