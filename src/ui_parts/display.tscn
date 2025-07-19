@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://bvrncl7e6yn5b"]
+[gd_scene load_steps=16 format=3 uid="uid://bvrncl7e6yn5b"]
 
 [ext_resource type="Script" uid="uid://bxmb134e3sqpr" path="res://src/ui_parts/display.gd" id="1_oib5g"]
 [ext_resource type="Texture2D" uid="uid://iglrqrqyg4kn" path="res://assets/icons/Reference.svg" id="4_2hiq7"]
@@ -14,11 +14,6 @@
 [ext_resource type="Script" uid="uid://dtplje5mhdmrj" path="res://src/ui_parts/display_texture.gd" id="12_qi23s"]
 [ext_resource type="Script" uid="uid://csqewpxr21ywy" path="res://src/ui_parts/handles_manager.gd" id="13_lwhwy"]
 [ext_resource type="Script" uid="uid://cm5033meho5vr" path="res://src/ui_widgets/camera.gd" id="15_hevpa"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eujxa"]
-bg_color = Color(0.866667, 0.933333, 1, 0.133333)
-corner_radius_top_left = 5
-corner_radius_bottom_left = 5
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_kqplg"]
 shader = ExtResource("10_x7ybk")
@@ -91,7 +86,6 @@ theme_type_variation = &"RightConnectedButton"
 toggle_mode = true
 icon = ExtResource("5_1k2cq")
 script = ExtResource("6_3v3ve")
-hover_pressed_stylebox = SubResource("StyleBoxFlat_eujxa")
 action = "toggle_snap"
 
 [node name="SnapNumberEdit" parent="ViewportPanel/VBoxContainer/Toolbar/ViewportOptions/LeftMenu/Snapping" instance=ExtResource("7_wrrfr")]

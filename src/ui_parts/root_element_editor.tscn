@@ -36,7 +36,6 @@ theme_override_font_sizes/font_size = 12
 toggle_mode = true
 text = "width"
 script = ExtResource("4_7r848")
-hover_pressed_font_color = Color(1, 1, 1, 0.4)
 
 [node name="WidthEdit" parent="CenterContainer/Edits/Size/Width" instance=ExtResource("3_1gu7n")]
 custom_minimum_size = Vector2(48, 22)
@@ -57,7 +56,6 @@ theme_override_font_sizes/font_size = 12
 toggle_mode = true
 text = "height"
 script = ExtResource("4_7r848")
-hover_pressed_font_color = Color(1, 1, 1, 0.4)
 
 [node name="HeightEdit" parent="CenterContainer/Edits/Size/Height" instance=ExtResource("3_1gu7n")]
 custom_minimum_size = Vector2(48, 22)
@@ -79,7 +77,6 @@ theme_override_font_sizes/font_size = 12
 toggle_mode = true
 text = "viewBox"
 script = ExtResource("4_7r848")
-hover_pressed_font_color = Color(1, 1, 1, 0.4)
 
 [node name="Rect" type="HBoxContainer" parent="CenterContainer/Edits/Viewbox"]
 layout_mode = 2
