@@ -39,7 +39,6 @@ HandlerGUI="*res://src/autoload/HandlerGUI.gd"
 window/size/viewport_width=1040
 window/size/viewport_height=650
 window/size/mode=2
-window/energy_saving/keep_screen_on=false
 mouse_cursor/tooltip_position_offset=Vector2(0, 10)
 
 [editor_overrides]

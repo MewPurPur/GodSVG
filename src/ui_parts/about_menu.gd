@@ -29,6 +29,13 @@ func _ready() -> void:
 	tab_container.tab_changed.connect(_on_tab_changed)
 	_on_tab_changed(0)
 
+func _unhandled_input(event: InputEvent) -> void:
+	var tab_count := tab_container.get_tab_count()
+	if ShortcutUtils.is_action_pressed(event, "select_next_tab"):
+		tab_container.current_tab = (tab_container.current_tab + 1) % tab_count
+	elif ShortcutUtils.is_action_pressed(event, "select_previous_tab"):
+		tab_container.current_tab = (tab_container.current_tab + tab_count - 1) % tab_count
+
 func _on_tab_changed(idx: int) -> void:
 	match idx:
 		0:
