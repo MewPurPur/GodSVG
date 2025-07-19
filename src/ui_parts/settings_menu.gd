@@ -385,6 +385,11 @@ func setup_content(reset_scroll := true) -> void:
 			add_preview(SettingTextPreview.new(
 					Translator.translate("Determines the maximum number of frames per second.")))
 			
+			current_setup_setting = "keep_screen_on"
+			add_checkbox(Translator.translate("Keep Screen On"))
+			add_preview(SettingTextPreview.new(
+					Translator.translate("Keeps the screen on even after inactivity, so the screensaver does not take over.")))
+			
 			add_section(Translator.translate("Miscellaneous"))
 			current_setup_setting = "use_native_file_dialog"
 			var use_native_file_dialog := add_checkbox(Translator.translate("Use native file dialog"))
