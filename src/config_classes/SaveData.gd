@@ -68,7 +68,7 @@ func get_setting_default(setting: String) -> Variant:
 				ThemePreset.LIGHT: return Color("b22")
 		"basic_color_warning":
 			match theme_preset:
-				ThemePreset.DARK,ThemePreset.BLACK: return Color("ee5")
+				ThemePreset.DARK,ThemePreset.BLACK: return Color("ee6")
 				ThemePreset.LIGHT: return Color("991")
 		"handle_size": return 1.0 if OS.get_name() != "Android" else 2.0
 		"handle_inner_color": return Color("fff")
@@ -333,7 +333,7 @@ const CURRENT_VERSION = 1
 			emit_changed()
 			Configs.basic_colors_changed.emit()
 
-@export var basic_color_warning := Color("ee5"):
+@export var basic_color_warning := Color("ee6"):
 	set(new_value):
 		if basic_color_warning != new_value:
 			basic_color_warning = new_value

@@ -22,6 +22,13 @@ var current_setup_setting := ""
 var current_setup_resource: ConfigResource
 var setting_container: VBoxContainer
 
+class SettingBasicColorPreview:
+	var setting_bind: String
+	var text: String
+	func _init(new_setting_bind: String, new_text: String) -> void:
+		setting_bind = new_setting_bind
+		text = new_text
+
 class SettingTextPreview:
 	enum WarningType {NONE, NO_EFFECT_IN_CURRENT_CONFIGURATION, NOT_AVAILABLE_ON_PLATFORM}
 	var text: String
@@ -42,13 +49,11 @@ class SettingCodePreview:
 		text = new_text
 
 class SettingFormatterPreview:
-	var setting_bind: String
 	var resource_bind: Formatter
 	var root_element: ElementRoot
 	var show_only_children: bool
-	func _init(new_setting_bind: String, new_resource_bind: ConfigResource,
+	func _init(new_resource_bind: ConfigResource,
 	new_root_element: ElementRoot, new_show_only_children := false) -> void:
-		setting_bind = new_setting_bind
 		resource_bind = new_resource_bind
 		root_element = new_root_element
 		show_only_children = new_show_only_children
@@ -303,12 +308,22 @@ func setup_content(reset_scroll := true) -> void:
 			add_color_edit(Translator.translate("Canvas color"), false)
 			current_setup_setting = "grid_color"
 			add_color_edit(Translator.translate("Grid color"), false)
+			
 			current_setup_setting = "basic_color_valid"
 			add_color_edit(Translator.translate("Valid color"))
+			add_preview(SettingBasicColorPreview.new(current_setup_setting,
+					Translator.translate("Valid color")))
+			
 			current_setup_setting = "basic_color_error"
 			add_color_edit(Translator.translate("Error color"))
+			add_preview(SettingBasicColorPreview.new(current_setup_setting,
+					Translator.translate("Error color")))
+			
 			current_setup_setting = "basic_color_warning"
 			add_color_edit(Translator.translate("Warning color"))
+			add_preview(SettingBasicColorPreview.new(current_setup_setting,
+					Translator.translate("Warning color")))
+			
 		"tab_bar":
 			preview_panel.show()
 			create_setting_container()
@@ -542,6 +557,18 @@ func add_preview(preview: RefCounted) -> void:
 func show_preview(setting: String) -> void:
 	if previews.has(setting):
 		var preview := previews[setting]
+		if preview is SettingBasicColorPreview:
+			var label := Label.new()
+			label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+			var update_label_font_color := func() -> void:
+					label.add_theme_color_override("font_color",
+							Configs.savedata.get(preview.setting_bind))
+			Configs.basic_colors_changed.connect(update_label_font_color)
+			label.tree_exiting.connect(Configs.basic_colors_changed.disconnect.bind(
+					update_label_font_color), CONNECT_ONE_SHOT)
+			update_label_font_color.call()
+			label.text = preview.text
+			preview_panel.add_child(label)
 		if preview is SettingTextPreview:
 			var has_warning: bool = (preview.warning != preview.WarningType.NONE)
 			var margin_container := MarginContainer.new()
@@ -819,7 +846,7 @@ func show_formatter(category: String) -> void:
 	xml_keep_comments_circle_element.set_attribute("r", 4)
 	xml_keep_comments_circle_element.set_attribute("fill", "gold")
 	xml_keep_comments_root_element.insert_child(1, xml_keep_comments_circle_element)
-	add_preview(SettingFormatterPreview.new(current_setup_setting, current_setup_resource,
+	add_preview(SettingFormatterPreview.new(current_setup_resource,
 			xml_keep_comments_root_element, true))
 	
 	current_setup_setting = "xml_add_trailing_newline"
@@ -835,7 +862,7 @@ func show_formatter(category: String) -> void:
 	xml_add_trailing_newline_circle_element.set_attribute("fill", "gold")
 	xml_add_trailing_newline_root_element.insert_child(0,
 			xml_add_trailing_newline_circle_element)
-	add_preview(SettingFormatterPreview.new(current_setup_setting, current_setup_resource,
+	add_preview(SettingFormatterPreview.new(current_setup_resource,
 			xml_add_trailing_newline_root_element))
 	
 	current_setup_setting = "xml_shorthand_tags"
@@ -856,7 +883,7 @@ func show_formatter(category: String) -> void:
 	xml_shorthand_tags_circle_element.set_attribute("fill", "url(#a)")
 	xml_shorthand_tags_root_element.insert_child(0, xml_shorthand_tags_linear_gradient_element)
 	xml_shorthand_tags_root_element.insert_child(1, xml_shorthand_tags_circle_element)
-	add_preview(SettingFormatterPreview.new(current_setup_setting, current_setup_resource,
+	add_preview(SettingFormatterPreview.new(current_setup_resource,
 			xml_shorthand_tags_root_element, true))
 	
 	current_setup_setting = "xml_shorthand_tags_space_out_slash"
@@ -868,7 +895,7 @@ func show_formatter(category: String) -> void:
 	xml_shorthand_tags_space_out_slash_circle_element.set_attribute("r", 4)
 	xml_shorthand_tags_space_out_slash_root_element.insert_child(0,
 			xml_shorthand_tags_space_out_slash_circle_element)
-	add_preview(SettingFormatterPreview.new(current_setup_setting, current_setup_resource,
+	add_preview(SettingFormatterPreview.new(current_setup_resource,
 			xml_shorthand_tags_space_out_slash_root_element, true))
 	
 	current_setup_setting = "xml_pretty_formatting"
@@ -895,7 +922,7 @@ func show_formatter(category: String) -> void:
 	xml_pretty_formatting_circle_element.set_attribute("fill", "url(#a)")
 	xml_pretty_formatting_root_element.insert_child(0, xml_pretty_formatting_linear_gradient_element)
 	xml_pretty_formatting_root_element.insert_child(1, xml_pretty_formatting_circle_element)
-	add_preview(SettingFormatterPreview.new(current_setup_setting, current_setup_resource,
+	add_preview(SettingFormatterPreview.new(current_setup_resource,
 			xml_pretty_formatting_root_element))
 	
 	current_setup_setting = "xml_indentation_use_spaces"
@@ -921,7 +948,7 @@ func show_formatter(category: String) -> void:
 		xml_indentation_spaces_circle_element.set_attribute("fill", "gold")
 		xml_indentation_spaces_root_element.insert_child(0,
 				xml_indentation_spaces_circle_element)
-		add_preview(SettingFormatterPreview.new(current_setup_setting, current_setup_resource,
+		add_preview(SettingFormatterPreview.new(current_setup_resource,
 				xml_indentation_spaces_root_element, false))
 	else:
 		add_preview(SettingTextPreview.new("",
@@ -938,7 +965,7 @@ func show_formatter(category: String) -> void:
 	number_remove_leading_zero_circle_element.set_attribute("fill", "gold")
 	number_remove_leading_zero_root_element.insert_child(0,
 			number_remove_leading_zero_circle_element)
-	add_preview(SettingFormatterPreview.new(current_setup_setting, current_setup_resource,
+	add_preview(SettingFormatterPreview.new(current_setup_resource,
 			number_remove_leading_zero_root_element, true))
 	
 	current_setup_setting = "number_use_exponent_if_shorter"
@@ -951,7 +978,7 @@ func show_formatter(category: String) -> void:
 	number_use_exponent_if_shorter_circle_element.set_attribute("fill", "gold")
 	number_use_exponent_if_shorter_root_element.insert_child(0,
 			number_use_exponent_if_shorter_circle_element)
-	add_preview(SettingFormatterPreview.new(current_setup_setting, current_setup_resource,
+	add_preview(SettingFormatterPreview.new(current_setup_resource,
 			number_use_exponent_if_shorter_root_element, true))
 	
 	add_section(Translator.translate("Colors"))
@@ -973,7 +1000,7 @@ func show_formatter(category: String) -> void:
 	color_use_named_colors_circle_2.set_attribute("r", 2)
 	color_use_named_colors_circle_2.set_attribute("fill", "turquoise")
 	color_use_named_colors_root_element.insert_child(1, color_use_named_colors_circle_2)
-	add_preview(SettingFormatterPreview.new(current_setup_setting, current_setup_resource,
+	add_preview(SettingFormatterPreview.new(current_setup_resource,
 			color_use_named_colors_root_element, true))
 	
 	current_setup_setting = "color_primary_syntax"
@@ -988,7 +1015,7 @@ func show_formatter(category: String) -> void:
 	color_primary_syntax_circle_element.set_attribute("fill", "#d4b")
 	color_primary_syntax_circle_element.set_attribute("stroke", "#f4c4d3")
 	color_primary_syntax_root_element.insert_child(0, color_primary_syntax_circle_element)
-	add_preview(SettingFormatterPreview.new(current_setup_setting, current_setup_resource,
+	add_preview(SettingFormatterPreview.new(current_setup_resource,
 			color_primary_syntax_root_element, true))
 	
 	current_setup_setting = "color_capital_hex"
@@ -1002,8 +1029,8 @@ func show_formatter(category: String) -> void:
 		color_capital_hex_circle_element.set_attribute("r", 4)
 		color_capital_hex_circle_element.set_attribute("fill", "#decade")
 		color_capital_hex_root_element.insert_child(0, color_capital_hex_circle_element)
-		add_preview(SettingFormatterPreview.new(current_setup_setting,
-				current_setup_resource, color_capital_hex_root_element, true))
+		add_preview(SettingFormatterPreview.new(current_setup_resource,
+				color_capital_hex_root_element, true))
 	else:
 		add_preview(SettingTextPreview.new("",
 				SettingTextPreview.WarningType.NO_EFFECT_IN_CURRENT_CONFIGURATION))
@@ -1016,7 +1043,7 @@ func show_formatter(category: String) -> void:
 	pathdata_compress_numbers_path_element.set_attribute("d", "m 4 6.5 l 0.5 -0.8 v 2 z")
 	pathdata_compress_numbers_path_element.set_attribute("fill", "gold")
 	pathdata_compress_numbers_root_element.insert_child(0, pathdata_compress_numbers_path_element)
-	add_preview(SettingFormatterPreview.new(current_setup_setting, current_setup_resource,
+	add_preview(SettingFormatterPreview.new(current_setup_resource,
 			pathdata_compress_numbers_root_element, true))
 	
 	current_setup_setting = "pathdata_minimize_spacing"
@@ -1026,7 +1053,7 @@ func show_formatter(category: String) -> void:
 	pathdata_minimize_spacing_path_element.set_attribute("d", "m 4 6.5 l 0.5 -0.8 v 2 z")
 	pathdata_minimize_spacing_path_element.set_attribute("fill", "gold")
 	pathdata_minimize_spacing_root_element.insert_child(0, pathdata_minimize_spacing_path_element)
-	add_preview(SettingFormatterPreview.new(current_setup_setting, current_setup_resource,
+	add_preview(SettingFormatterPreview.new(current_setup_resource,
 			pathdata_minimize_spacing_root_element, true))
 	
 	current_setup_setting = "pathdata_remove_spacing_after_flags"
@@ -1036,7 +1063,7 @@ func show_formatter(category: String) -> void:
 	pathdata_remove_spacing_after_flags_path_element.set_attribute("d", "m 1 3.5 a 2 3 0 1 0 4 2 z")
 	pathdata_remove_spacing_after_flags_path_element.set_attribute("fill", "gold")
 	pathdata_remove_spacing_after_flags_root_element.insert_child(0, pathdata_remove_spacing_after_flags_path_element)
-	add_preview(SettingFormatterPreview.new(current_setup_setting, current_setup_resource,
+	add_preview(SettingFormatterPreview.new(current_setup_resource,
 			pathdata_remove_spacing_after_flags_root_element, true))
 	
 	current_setup_setting = "pathdata_remove_consecutive_commands"
@@ -1047,7 +1074,7 @@ func show_formatter(category: String) -> void:
 			"m 4 6.5 l -1 2 l 2.5 1 q 3.5 -1 2 -2 q -1.5 0.5 -1 -2 z")
 	pathdata_remove_consecutive_commands_path_element.set_attribute("fill", "gold")
 	pathdata_remove_consecutive_commands_root_element.insert_child(0, pathdata_remove_consecutive_commands_path_element)
-	add_preview(SettingFormatterPreview.new(current_setup_setting, current_setup_resource,
+	add_preview(SettingFormatterPreview.new(current_setup_resource,
 			pathdata_remove_consecutive_commands_root_element, true))
 	
 	add_section(Translator.translate("Transform lists"))
@@ -1060,7 +1087,7 @@ func show_formatter(category: String) -> void:
 	transform_list_compress_numbers_polygon_element.set_attribute("transform",
 			"rotate(7.5 -0.5 0.8)")
 	transform_list_compress_numbers_root_element.insert_child(0, transform_list_compress_numbers_polygon_element)
-	add_preview(SettingFormatterPreview.new(current_setup_setting, current_setup_resource,
+	add_preview(SettingFormatterPreview.new(current_setup_resource,
 			transform_list_compress_numbers_root_element, true))
 	
 	current_setup_setting = "transform_list_minimize_spacing"
@@ -1072,7 +1099,7 @@ func show_formatter(category: String) -> void:
 	transform_list_minimize_spacing_polygon_element.set_attribute("transform",
 			"rotate(7.5 -0.5 0.8)")
 	transform_list_minimize_spacing_root_element.insert_child(0, transform_list_minimize_spacing_polygon_element)
-	add_preview(SettingFormatterPreview.new(current_setup_setting, current_setup_resource,
+	add_preview(SettingFormatterPreview.new(current_setup_resource,
 			transform_list_minimize_spacing_root_element, true))
 	
 	current_setup_setting = "transform_list_remove_unnecessary_params"
@@ -1084,7 +1111,7 @@ func show_formatter(category: String) -> void:
 	transform_list_remove_unnecessary_params_polygon_element.set_attribute("transform",
 			"scale(2 2) translate(4 0) rotate(30 0 0)")
 	transform_list_remove_unnecessary_params_root_element.insert_child(0, transform_list_remove_unnecessary_params_polygon_element)
-	add_preview(SettingFormatterPreview.new(current_setup_setting, current_setup_resource,
+	add_preview(SettingFormatterPreview.new(current_setup_resource,
 			transform_list_remove_unnecessary_params_root_element, true))
 
 
