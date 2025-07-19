@@ -98,11 +98,12 @@ func get_setting_default(setting: String) -> Variant:
 		"invert_zoom": return false
 		"wraparound_panning": return false
 		"use_ctrl_for_zoom": return true
-		"use_native_file_dialog": return true
-		"use_filename_for_window_title": return true
 		"ui_scale": return ScalingApproach.AUTO
 		"vsync": return true
 		"max_fps": return 0
+		"keep_screen_on": return false
+		"use_native_file_dialog": return true
+		"use_filename_for_window_title": return true
 	return null
 
 func reset_to_default() -> void:
@@ -491,19 +492,6 @@ const MAX_SELECTION_RECTANGLE_DASH_LENGTH = 600.0
 			use_ctrl_for_zoom = new_value
 			emit_changed()
 
-@export var use_native_file_dialog := true:
-	set(new_value):
-		if use_native_file_dialog != new_value:
-			use_native_file_dialog = new_value
-			emit_changed()
-
-@export var use_filename_for_window_title := true:
-	set(new_value):
-		if use_filename_for_window_title != new_value:
-			use_filename_for_window_title = new_value
-			emit_changed()
-			external_call(HandlerGUI.update_window_title)
-
 enum ScalingApproach {AUTO, CONSTANT_075, CONSTANT_100, CONSTANT_125, CONSTANT_150,
 		CONSTANT_175, CONSTANT_200, CONSTANT_250, CONSTANT_300, CONSTANT_400, MAX}
 @export var ui_scale := ScalingApproach.AUTO:
@@ -538,6 +526,26 @@ const MAX_FPS_MAX = 600
 			max_fps = new_value
 			emit_changed()
 			external_call(Configs.sync_max_fps)
+
+@export var keep_screen_on := true:
+	set(new_value):
+		if keep_screen_on != new_value:
+			keep_screen_on = new_value
+			emit_changed()
+			external_call(Configs.sync_keep_screen_on)
+
+@export var use_native_file_dialog := true:
+	set(new_value):
+		if use_native_file_dialog != new_value:
+			use_native_file_dialog = new_value
+			emit_changed()
+
+@export var use_filename_for_window_title := true:
+	set(new_value):
+		if use_filename_for_window_title != new_value:
+			use_filename_for_window_title = new_value
+			emit_changed()
+			external_call(HandlerGUI.update_window_title)
 
 
 # Session

@@ -668,6 +668,14 @@ msgid "Determines the maximum number of frames per second."
 msgstr "Si le taux de rafraîchissement est limité, cette valeur déterminera le nombre maximum d'images par seconde."
 
 #: src/ui_parts/settings_menu.gd:
+msgid "Keep Screen On"
+msgstr ""
+
+#: src/ui_parts/settings_menu.gd:
+msgid "Keeps the screen on even after inactivity, so the screensaver does not take over."
+msgstr ""
+
+#: src/ui_parts/settings_menu.gd:
 msgid "Miscellaneous"
 msgstr "Divers"
 

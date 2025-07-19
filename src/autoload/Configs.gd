@@ -70,6 +70,7 @@ func post_load() -> void:
 	sync_canvas_color()
 	sync_locale()
 	sync_max_fps()
+	sync_keep_screen_on()
 	sync_theme()
 
 
@@ -90,6 +91,9 @@ func sync_vsync() -> void:
 
 func sync_max_fps() -> void:
 	Engine.max_fps = savedata.max_fps
+
+func sync_keep_screen_on() -> void:
+	DisplayServer.screen_set_keep_on(savedata.keep_screen_on)
 
 func sync_theme() -> void:
 	ThemeUtils.generate_and_apply_theme()

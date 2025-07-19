@@ -667,6 +667,14 @@ msgid "Determines the maximum number of frames per second."
 msgstr ""
 
 #: src/ui_parts/settings_menu.gd:
+msgid "Keep Screen On"
+msgstr ""
+
+#: src/ui_parts/settings_menu.gd:
+msgid "Keeps the screen on even after inactivity, so the screensaver does not take over."
+msgstr ""
+
+#: src/ui_parts/settings_menu.gd:
 msgid "Miscellaneous"
 msgstr "Verschiedenes"
 

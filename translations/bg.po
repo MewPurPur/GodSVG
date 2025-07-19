@@ -655,6 +655,14 @@ msgid "Determines the maximum number of frames per second."
 msgstr "Определя максималния брой кадри в секунда."
 
 #: src/ui_parts/settings_menu.gd:
+msgid "Keep Screen On"
+msgstr "Задръж екрана включен"
+
+#: src/ui_parts/settings_menu.gd:
+msgid "Keeps the screen on even after inactivity, so the screensaver does not take over."
+msgstr "Поддържа екрана включен дори при неактивност, така че скрийнсейвърът да не се включва."
+
+#: src/ui_parts/settings_menu.gd:
 msgid "Miscellaneous"
 msgstr "Разни"
 
