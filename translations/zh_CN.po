@@ -694,7 +694,7 @@ msgid "Sync window title to file name"
 msgstr "同步窗口标题为文件名"
 
 #: src/ui_parts/settings_menu.gd:
-msgid "When enabled, adds the current file name after the \"GodSVG\" window title."
+msgid "When enabled, adds the current file name before the \"GodSVG\" window title."
 msgstr ""
 
 #: src/ui_parts/settings_menu.gd:

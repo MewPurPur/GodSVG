@@ -675,8 +675,8 @@ msgid "Sync window title to file name"
 msgstr "Синхронизирай името на прозореца с файла"
 
 #: src/ui_parts/settings_menu.gd:
-msgid "When enabled, adds the current file name after the \"GodSVG\" window title."
-msgstr "Когато е включено, добавя името на настоящия файл след заглавието на прозореца \"GodSVG\"."
+msgid "When enabled, adds the current file name before the \"GodSVG\" window title."
+msgstr "Когато е включено, добавя името на настоящия файл пред заглавието на прозореца \"GodSVG\"."
 
 #: src/ui_parts/settings_menu.gd:
 msgid "Language"
