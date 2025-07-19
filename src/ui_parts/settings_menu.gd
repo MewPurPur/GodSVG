@@ -425,7 +425,7 @@ func setup_content(reset_scroll := true) -> void:
 			current_setup_setting = "use_filename_for_window_title"
 			add_checkbox(Translator.translate("Sync window title to file name"))
 			add_preview(SettingTextPreview.new(
-					Translator.translate("When enabled, adds the current file name after the \"GodSVG\" window title.")))
+					Translator.translate("When enabled, adds the current file name before the \"GodSVG\" window title.")))
 	
 	# Update hover.
 	HandlerGUI.throw_mouse_motion_event()
