@@ -9,11 +9,11 @@
 [ext_resource type="PackedScene" uid="uid://oltvrf01xrxl" path="res://src/ui_widgets/zoom_menu.tscn" id="8_xtdmn"]
 [ext_resource type="Script" uid="uid://b6pmlbnl76wmm" path="res://src/ui_parts/viewport.gd" id="9_4xrk7"]
 [ext_resource type="Script" uid="uid://rqrxhe8wa6fn" path="res://src/ui_parts/tab_bar.gd" id="9_rll1m"]
+[ext_resource type="Script" uid="uid://cbajqkgudfvh0" path="res://src/ui_parts/viewport_container.gd" id="9_ryr8t"]
 [ext_resource type="Shader" uid="uid://i2y5pyhcgra2" path="res://src/shaders/zoom_shader.gdshader" id="10_x7ybk"]
 [ext_resource type="Texture2D" uid="uid://c68og6bsqt0lb" path="res://assets/icons/backgrounds/Checkerboard.svg" id="11_1bm1s"]
 [ext_resource type="Script" uid="uid://dtplje5mhdmrj" path="res://src/ui_parts/display_texture.gd" id="12_qi23s"]
 [ext_resource type="Script" uid="uid://csqewpxr21ywy" path="res://src/ui_parts/handles_manager.gd" id="13_lwhwy"]
-[ext_resource type="Script" uid="uid://cm5033meho5vr" path="res://src/ui_widgets/camera.gd" id="15_hevpa"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_kqplg"]
 shader = ExtResource("10_x7ybk")
@@ -101,10 +101,12 @@ unique_name_in_owner = true
 layout_mode = 2
 
 [node name="ViewportContainer" type="SubViewportContainer" parent="ViewportPanel/VBoxContainer"]
+clip_contents = true
 custom_minimum_size = Vector2(450, 0)
 layout_mode = 2
 size_flags_vertical = 3
 stretch = true
+script = ExtResource("9_ryr8t")
 
 [node name="Viewport" type="SubViewport" parent="ViewportPanel/VBoxContainer/ViewportContainer"]
 unique_name_in_owner = true
@@ -147,12 +149,6 @@ layout_mode = 3
 anchors_preset = 0
 mouse_filter = 1
 script = ExtResource("13_lwhwy")
-
-[node name="Camera" type="Control" parent="ViewportPanel/VBoxContainer/ViewportContainer/Viewport"]
-layout_mode = 3
-anchors_preset = 0
-mouse_filter = 2
-script = ExtResource("15_hevpa")
 
 [node name="DebugMargins" type="MarginContainer" parent="ViewportPanel"]
 visible = false
