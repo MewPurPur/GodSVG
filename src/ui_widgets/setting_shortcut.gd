@@ -13,14 +13,14 @@ var events: Array[InputEvent] = []
 var listening_idx := -1
 var pending_event: InputEventKey
 
-func update_translation() -> void:
+func sync_localization() -> void:
 	reset_button.tooltip_text = Translator.translate("Reset to default")
 
 func _ready() -> void:
 	reset_button.pressed.connect(_on_reset_button_pressed)
-	Configs.language_changed.connect(update_translation)
+	Configs.language_changed.connect(sync_localization)
 	Configs.shortcuts_changed.connect(check_shortcuts_validity)
-	update_translation()
+	sync_localization()
 
 func setup(new_action: String) -> void:
 	action = new_action

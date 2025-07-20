@@ -5,22 +5,22 @@ extends VTitledPanel
 
 
 func _ready() -> void:
-	Configs.theme_changed.connect(update_theme)
-	Configs.language_changed.connect(update_translation)
-	update_theme()
-	update_translation()
+	Configs.theme_changed.connect(sync_theming)
+	Configs.language_changed.connect(sync_localization)
+	sync_theming()
+	sync_localization()
 	State.xnode_layout_changed.connect(full_rebuild)
 	State.svg_unknown_change.connect(full_rebuild)
 	full_rebuild()
 	add_button.pressed.connect(_on_add_button_pressed)
 
 
-func update_theme() -> void:
+func sync_theming() -> void:
 	color = Color.TRANSPARENT
 	border_color = ThemeUtils.subtle_panel_border_color
 	title_color = ThemeUtils.basic_panel_inner_color
 
-func update_translation() -> void:
+func sync_localization() -> void:
 	add_button.text = Translator.translate("Add element")
 
 

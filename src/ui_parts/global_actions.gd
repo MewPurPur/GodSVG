@@ -8,23 +8,23 @@ const LayoutPopupScene = preload("res://src/ui_parts/layout_popup.tscn")
 @onready var size_button: Button = $RightSide/SizeButton
 @onready var layout_button: Button = $LeftSide/LayoutButton
 
-func update_translation() -> void:
+func sync_localization() -> void:
 	layout_button.tooltip_text = Translator.translate("Layout")
 
 func _ready() -> void:
 	State.svg_changed.connect(update_size_button)
 	update_size_button()
-	Configs.theme_changed.connect(update_theme)
+	Configs.theme_changed.connect(sync_theming)
 	Configs.basic_colors_changed.connect(update_size_button_colors)
-	update_theme()
-	Configs.language_changed.connect(update_translation)
-	update_translation()
+	sync_theming()
+	Configs.language_changed.connect(sync_localization)
+	sync_localization()
 	more_options.pressed.connect(_on_more_options_pressed)
 	size_button.pressed.connect(_on_size_button_pressed)
 	layout_button.pressed.connect(_on_layout_button_pressed)
 
 
-func update_theme() -> void:
+func sync_theming() -> void:
 	size_button.begin_bulk_theme_override()
 	const CONST_ARR: PackedStringArray = ["normal", "focus", "hover", "disabled"]
 	for theme_type in CONST_ARR:

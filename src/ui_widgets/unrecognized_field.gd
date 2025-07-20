@@ -12,14 +12,14 @@ func set_value(new_value: String, save := false) -> void:
 
 
 func _ready() -> void:
-	Configs.language_changed.connect(update_translation)
+	Configs.language_changed.connect(sync_localization)
 	sync()
-	update_translation()
+	sync_localization()
 	text_submitted.connect(set_value.bind(true))
 
 func sync() -> void:
 	text = element.get_attribute_value(attribute_name)
 
-func update_translation() -> void:
+func sync_localization() -> void:
 	tooltip_text = attribute_name + "\n(%s)" %\
 			Translator.translate("GodSVG doesn’t recognize this attribute")

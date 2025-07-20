@@ -15,7 +15,7 @@ var _hovered := false
 func _set(property: StringName, value: Variant) -> bool:
 	if property == &"editable" and editable != value:
 		editable = value
-		update_theme()
+		sync_theming()
 		return true
 	return false
 
@@ -32,10 +32,10 @@ func _init() -> void:
 	mouse_exited.connect(_on_base_class_mouse_exited)
 	text_submitted.connect(release_focus.unbind(1))
 	original_selection_color = get_theme_color("selection_color")
-	Configs.theme_changed.connect(update_theme)
-	update_theme()
+	Configs.theme_changed.connect(sync_theming)
+	sync_theming()
 
-func update_theme() -> void:
+func sync_theming() -> void:
 	if editable:
 		add_theme_color_override("selection_color", original_selection_color)
 	else:

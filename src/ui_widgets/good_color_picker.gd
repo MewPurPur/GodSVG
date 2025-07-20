@@ -89,7 +89,7 @@ func setup_color(new_color: String, default_color: Color) -> void:
 	update()
 
 
-func update_color_space_buttons() -> void:
+func sync_color_space_buttons() -> void:
 	for child in color_space_container.get_children():
 		child.queue_free()
 	
@@ -140,8 +140,8 @@ func update_keyword_button() -> void:
 		keyword_button.show()
 
 func _ready() -> void:
-	Configs.theme_changed.connect(update_color_space_buttons)
-	update_color_space_buttons()
+	Configs.theme_changed.connect(sync_color_space_buttons)
+	sync_color_space_buttons()
 	# Set up signals.
 	widgets_arr[0].gui_input.connect(parse_slider_input.bind(0, true))
 	widgets_arr[1].gui_input.connect(parse_slider_input.bind(1))

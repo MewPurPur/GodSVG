@@ -29,16 +29,16 @@ var undo_redo := UndoRedoRef.new()
 @onready var apply_matrix: Button = %ApplyMatrix
 
 func _ready() -> void:
-	Configs.language_changed.connect(update_translation)
+	Configs.language_changed.connect(sync_localization)
 	add_button.pressed.connect(popup_new_transform_context.bind(0, add_button))
 	apply_matrix.pressed.connect(_on_apply_matrix_pressed)
 	rebuild()
-	update_translation()
+	sync_localization()
 
 func _exit_tree() -> void:
 	State.queue_svg_save()
 
-func update_translation() -> void:
+func sync_localization() -> void:
 	apply_matrix.tooltip_text = Translator.translate("Apply the matrix")
 
 func rebuild() -> void:

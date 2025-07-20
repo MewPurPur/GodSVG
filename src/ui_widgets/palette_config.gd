@@ -16,7 +16,7 @@ var currently_edited_idx := -1
 @onready var colors_container: HFlowContainer = $MainContainer/ColorsContainer
 @onready var warning_sign: TextureRect = $WarningSign/TextureRect
 
-func update_theme() -> void:
+func sync_theming() -> void:
 	warning_sign.modulate = ThemeUtils.warning_icon_color
 	palette_button.begin_bulk_theme_override()
 	const CONST_ARR: PackedStringArray = ["normal", "hover", "pressed"]
@@ -46,8 +46,8 @@ func _ready() -> void:
 	name_edit.text_changed.connect(_on_name_edit_text_changed)
 	name_edit.text_submitted.connect(_on_name_edit_text_submitted)
 	mouse_exited.connect(clear_proposed_drop)
-	Configs.theme_changed.connect(update_theme)
-	update_theme()
+	Configs.theme_changed.connect(sync_theming)
+	sync_theming()
 
 # Rebuilds the content of the colors container.
 func rebuild_colors() -> void:

@@ -27,8 +27,8 @@ func setup_dropdown(values: Array, value_text_map: Dictionary) -> void:
 	dropdown.value_text_map = value_text_map
 
 func _ready() -> void:
-	Configs.theme_changed.connect(update_theme)
-	update_theme()
+	Configs.theme_changed.connect(sync_theming)
+	sync_theming()
 	button.text = Translator.translate("Apply")
 	button.tooltip_text = Translator.translate("Apply all of this preset's defaults")
 	control.add_child(dropdown)
@@ -42,7 +42,7 @@ func _ready() -> void:
 	control.resized.connect(setup_size.call_deferred)
 	setup_size.call_deferred()
 
-func update_theme() -> void:
+func sync_theming() -> void:
 	const CONST_ARR: PackedStringArray = ["normal", "hover", "pressed", "disabled"]
 	for theme_style in CONST_ARR:
 		var theme_sb := get_theme_stylebox(theme_style, "TranslucentButton").duplicate()

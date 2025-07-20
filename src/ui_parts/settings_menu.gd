@@ -71,8 +71,8 @@ func _ready() -> void:
 	update_close_button()
 	setup_tabs()
 	press_tab(0)
-	Configs.theme_changed.connect(update_theme)
-	update_theme()
+	Configs.theme_changed.connect(sync_theming)
+	sync_theming()
 
 func _unhandled_input(event: InputEvent) -> void:
 	var tab_count := tabs.get_child_count()
@@ -90,7 +90,7 @@ func _unhandled_input(event: InputEvent) -> void:
 func press_tab(index: int) -> void:
 	tabs.get_child(index).button_pressed = true
 
-func update_theme() -> void:
+func sync_theming() -> void:
 	var stylebox := ThemeDB.get_default_theme().get_stylebox("panel", theme_type_variation).duplicate()
 	stylebox.content_margin_top += 4.0
 	add_theme_stylebox_override("panel", stylebox)

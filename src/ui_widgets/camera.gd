@@ -3,34 +3,24 @@ extends Control
 const TICKS_INTERVAL = 4
 const TICK_DISTANCE = float(TICKS_INTERVAL)
 
-var axis_line_color: Color
-var major_grid_color: Color
-var minor_grid_color: Color
-
-var limit_left := 0.0
-var limit_right := 0.0
-var limit_top := 0.0
-var limit_bottom := 0.0
+var ci := get_canvas_item()
+var grid_numbers_ci := RenderingServer.canvas_item_create()
 
 var zoom: float
-var ci := get_canvas_item()
-var surface := RenderingServer.canvas_item_create()  # Used for drawing the numbers.
-
 var unsnapped_position: Vector2
 
 
 func _ready() -> void:
-	Configs.grid_color_changed.connect(setup_grid_color)
-	setup_grid_color()
+	Configs.grid_color_changed.connect(queue_redraw)
 	State.show_grid_changed.connect(update_show_grid)
 	update_show_grid()
-	RenderingServer.canvas_item_set_parent(surface, ci)
+	RenderingServer.canvas_item_set_parent(grid_numbers_ci, ci)
 	State.svg_resized.connect(queue_redraw)
 	State.zoom_changed.connect(change_zoom)
 	State.zoom_changed.connect(queue_redraw)
 
 func exit_tree() -> void:
-	RenderingServer.free_rid(surface)
+	RenderingServer.free_rid(grid_numbers_ci)
 
 func change_zoom() -> void:
 	zoom = State.zoom
@@ -52,6 +42,10 @@ func update() -> void:
 
 # Don't ask me to explain this.
 func _draw() -> void:
+	var axis_line_color := Color(Configs.savedata.grid_color, 0.75)
+	var major_grid_color := Color(Configs.savedata.grid_color, 0.35)
+	var minor_grid_color := Color(Configs.savedata.grid_color, 0.15)
+	
 	var grid_size := Vector2(State.viewport_size) / zoom
 	RenderingServer.canvas_item_add_line(ci,
 			Vector2(-position.x, 0), Vector2(-position.x, grid_size.y), axis_line_color)
@@ -66,8 +60,8 @@ func _draw() -> void:
 	var rate := nearest_po2(roundi(maxf(128.0 / (TICKS_INTERVAL * zoom), 2.0))) / 2
 	
 	# The grid lines are always 1px wide, but the numbers need to be resized.
-	RenderingServer.canvas_item_clear(surface)
-	RenderingServer.canvas_item_set_transform(surface,
+	RenderingServer.canvas_item_clear(grid_numbers_ci)
+	RenderingServer.canvas_item_set_transform(grid_numbers_ci,
 			Transform2D(0, Vector2(1, 1) / zoom, 0, Vector2.ZERO))
 	
 	var i := fmod(-position.x, 1.0)
@@ -79,17 +73,17 @@ func _draw() -> void:
 				minor_points.append(Vector2(i, 0))
 				minor_points.append(Vector2(i, grid_size.y))
 				if mark_pixel_lines:
-					ThemeUtils.regular_font.draw_string(surface, Vector2(i * zoom + 4, 14),
-							String.num_int64(floori(i + position.x)),
+					ThemeUtils.regular_font.draw_string(grid_numbers_ci,
+							Vector2(i * zoom + 4, 14), String.num_int64(floori(i + position.x)),
 							HORIZONTAL_ALIGNMENT_LEFT, -1, 14, axis_line_color)
 		else:
 			var coord := snappedi(i + position.x, TICKS_INTERVAL)
 			if int(coord / TICK_DISTANCE) % rate == 0:
 				major_points.append(Vector2(i, 0))
 				major_points.append(Vector2(i, grid_size.y))
-				ThemeUtils.regular_font.draw_string(surface, Vector2(i * zoom + 4, 14),
-						String.num_int64(coord), HORIZONTAL_ALIGNMENT_LEFT, -1, 14,
-						axis_line_color)
+				ThemeUtils.regular_font.draw_string(grid_numbers_ci,
+						Vector2(i * zoom + 4, 14), String.num_int64(coord),
+						HORIZONTAL_ALIGNMENT_LEFT, -1, 14, axis_line_color)
 			elif coord % rate == 0:
 				minor_points.append(Vector2(i, 0))
 				minor_points.append(Vector2(i, grid_size.y))
@@ -104,17 +98,17 @@ func _draw() -> void:
 				minor_points.append(Vector2(0, i))
 				minor_points.append(Vector2(grid_size.x, i))
 				if mark_pixel_lines:
-					ThemeUtils.regular_font.draw_string(surface, Vector2(4, i * zoom + 14),
-							String.num_int64(floori(i + position.y)),
+					ThemeUtils.regular_font.draw_string(grid_numbers_ci,
+							Vector2(4, i * zoom + 14), String.num_int64(floori(i + position.y)),
 							HORIZONTAL_ALIGNMENT_LEFT, -1, 14, axis_line_color)
 		else:
 			var coord := snappedi(i + position.y, TICKS_INTERVAL)
 			if int(coord / TICK_DISTANCE) % rate == 0:
 				major_points.append(Vector2(0, i))
 				major_points.append(Vector2(grid_size.x, i))
-				ThemeUtils.regular_font.draw_string(surface, Vector2(4, i * zoom + 14),
-						String.num_int64(coord), HORIZONTAL_ALIGNMENT_LEFT, -1, 14,
-						axis_line_color)
+				ThemeUtils.regular_font.draw_string(grid_numbers_ci,
+						Vector2(4, i * zoom + 14), String.num_int64(coord),
+						HORIZONTAL_ALIGNMENT_LEFT, -1, 14, axis_line_color)
 			elif coord % rate == 0:
 				minor_points.append(Vector2(0, i))
 				minor_points.append(Vector2(grid_size.x, i))
@@ -124,10 +118,3 @@ func _draw() -> void:
 		draw_multiline(major_points, major_grid_color)
 	if not minor_points.is_empty():
 		draw_multiline(minor_points, minor_grid_color)
-
-
-func setup_grid_color() -> void:
-	axis_line_color = Color(Configs.savedata.grid_color, 0.75)
-	major_grid_color = Color(Configs.savedata.grid_color, 0.35)
-	minor_grid_color = Color(Configs.savedata.grid_color, 0.15)
-	queue_redraw()

@@ -7,8 +7,8 @@ extends VBoxContainer
 @onready var options_button: Button = %MetaActions/OptionsButton
 
 func _ready() -> void:
-	Configs.theme_changed.connect(update_theme)
-	update_theme()
+	Configs.theme_changed.connect(sync_theming)
+	sync_theming()
 	State.parsing_finished.connect(update_error)
 	Configs.highlighting_colors_changed.connect(update_syntax_highlighter)
 	update_syntax_highlighter()
@@ -26,15 +26,15 @@ func update_error(err_id: SVGParser.ParseError) -> void:
 	if err_id == SVGParser.ParseError.OK:
 		if error_bar.visible:
 			error_bar.hide()
-			update_theme()
+			sync_theming()
 	else:
 		# When the error is shown, the code editor's theme is changed to match up.
 		if not error_bar.visible:
 			error_bar.show()
 			error_label.text = SVGParser.get_error_string(err_id)
-			update_theme()
+			sync_theming()
 
-func update_theme() -> void:
+func sync_theming() -> void:
 	# Set up the code edit.
 	code_edit.begin_bulk_theme_override()
 	const CONST_ARR_1: PackedStringArray = ["normal", "focus", "hover"]
