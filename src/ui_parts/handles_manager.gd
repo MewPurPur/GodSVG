@@ -798,7 +798,7 @@ func _unhandled_input(event: InputEvent) -> void:
 	event.button_mask == 0) or (event is InputEventMouseButton and\
 	(event.button_index in [MOUSE_BUTTON_LEFT, MOUSE_BUTTON_RIGHT]))):
 		var nearest_handle := find_nearest_handle(event.position / State.zoom +\
-				get_parent().view.position)
+				get_parent().get_parent().camera_position)
 		if is_instance_valid(nearest_handle):
 			hovered_handle = nearest_handle
 			if hovered_handle is PathHandle:
@@ -910,7 +910,7 @@ func find_nearest_handle(event_pos: Vector2) -> Handle:
 
 # Two 64-bit coordinates instead of a Vector2.
 func get_event_pos(event: InputEvent) -> PackedFloat64Array:
-	return apply_snap(event.position / State.zoom + get_parent().view.position)
+	return apply_snap(event.position / State.zoom + get_parent().get_parent().camera_position)
 
 func apply_snap(pos: Vector2) -> PackedFloat64Array:
 	var precision_snap := 0.1 ** maxi(ceili(-log(1.0 / State.zoom) / log(10)), 0)
