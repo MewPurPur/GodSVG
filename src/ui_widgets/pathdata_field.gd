@@ -51,10 +51,10 @@ func set_value(new_value: String, save := false) -> void:
 
 
 func setup() -> void:
-	Configs.language_changed.connect(update_translation)
-	update_translation()
-	Configs.theme_changed.connect(update_theme)
-	update_theme()
+	Configs.language_changed.connect(sync_localization)
+	sync_localization()
+	Configs.theme_changed.connect(sync_theming)
+	sync_theming()
 	sync()
 	element.attribute_changed.connect(_on_element_attribute_changed)
 	line_edit.tooltip_text = attribute_name
@@ -84,10 +84,10 @@ func _on_element_attribute_changed(attribute_changed: String) -> void:
 	if attribute_name == attribute_changed:
 		sync()
 
-func update_translation() -> void:
+func sync_localization() -> void:
 	line_edit.placeholder_text = Translator.translate("No path data")
 
-func update_theme() -> void:
+func sync_theming() -> void:
 	mini_line_edit_stylebox = get_theme_stylebox("normal", "MiniLineEdit")
 	mini_line_edit_font_size = get_theme_font_size("font_size", "MiniLineEdit")
 	mini_line_edit_font_color = get_theme_color("font_color", "MiniLineEdit")

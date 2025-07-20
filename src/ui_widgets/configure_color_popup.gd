@@ -12,15 +12,15 @@ var palette: Palette
 var idx: int
 
 func _ready() -> void:
-	Configs.language_changed.connect(update_translation)
+	Configs.language_changed.connect(sync_localization)
 	set_label_text(palette.get_color_name(idx))
 	color_edit.value = palette.get_color(idx)
-	update_translation()
+	sync_localization()
 	color_name_edit.text_submitted.connect(_on_name_edit_text_submitted)
 	color_name_edit.text_change_canceled.connect(hide_name_edit)
 
 
-func update_translation() -> void:
+func sync_localization() -> void:
 	%LabelContainer/EditButton.tooltip_text =\
 			Translator.translate("Edit color name")
 	$ConfigureContainer/BottomContainer/DeleteButton.tooltip_text =\

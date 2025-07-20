@@ -17,9 +17,12 @@ const NumberEdit = preload("res://src/ui_widgets/number_edit.gd")
 var reference_overlay := false
 
 func _ready() -> void:
-	Configs.language_changed.connect(update_translations)
+	Configs.language_changed.connect(sync_localization)
+	sync_localization()
 	Configs.snap_changed.connect(update_snap_config)
-	Configs.theme_changed.connect(update_theme)
+	update_snap_config()
+	Configs.theme_changed.connect(sync_theming)
+	sync_theming()
 	Configs.active_tab_changed.connect(sync_reference_image)
 	Configs.active_tab_reference_changed.connect(sync_reference_image)
 	sync_reference_image()
@@ -29,17 +32,14 @@ func _ready() -> void:
 	_on_overlay_reference_updated()
 	State.show_debug_changed.connect(_on_show_debug_changed)
 	_on_show_debug_changed()
-	update_translations()
-	update_theme()
-	update_snap_config()
 	get_window().window_input.connect(_update_input_debug)
 
 
-func update_translations() -> void:
+func sync_localization() -> void:
 	%LeftMenu/Visuals.tooltip_text = Translator.translate("Visuals")
 	%LeftMenu/Snapping/SnapNumberEdit.tooltip_text = Translator.translate("Snap size")
 
-func update_theme() -> void:
+func sync_theming() -> void:
 	var toolbar_stylebox := StyleBoxFlat.new()
 	toolbar_stylebox.bg_color = ThemeUtils.soft_base_color
 	toolbar_stylebox.set_content_margin_all(4)

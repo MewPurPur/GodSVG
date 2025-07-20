@@ -11,6 +11,11 @@ const ZOOM_RESET_BUFFER = 0.875
 # Holds zoom position for Ctrl + MMB zooming.
 var _zoom_to: Vector2
 
+var limit_left := 0.0
+var limit_right := 0.0
+var limit_top := 0.0
+var limit_bottom := 0.0
+
 @onready var display: TextureRect = $Checkerboard
 @onready var view: Camera = $Camera
 @onready var controls: HandlesManager = $Controls
@@ -31,8 +36,8 @@ func _ready() -> void:
 # Top left corner.
 func set_view(new_position: Vector2) -> void:
 	var scaled_size := size / State.zoom
-	view.unsnapped_position = new_position.clamp(Vector2(view.limit_left, view.limit_top),
-			Vector2(view.limit_right, view.limit_bottom) - scaled_size)
+	view.unsnapped_position = new_position.clamp(Vector2(limit_left, limit_top),
+			Vector2(limit_right, limit_bottom) - scaled_size)
 	
 	var stripped_left := maxf(view.unsnapped_position.x, 0.0)
 	var stripped_top := maxf(view.unsnapped_position.y, 0.0)
@@ -164,10 +169,10 @@ func adjust_view(offset := Vector2(0.5, 0.5)) -> void:
 			State.root_element.has_attribute("height") else 16384.0
 	
 	var zoomed_size := BUFFER_VIEW_SPACE * size / State.zoom
-	view.limit_left = -zoomed_size.x
-	view.limit_right = zoomed_size.x + svg_w
-	view.limit_top = -zoomed_size.y
-	view.limit_bottom = zoomed_size.y + svg_h
+	limit_left = -zoomed_size.x
+	limit_right = zoomed_size.x + svg_w
+	limit_top = -zoomed_size.y
+	limit_bottom = zoomed_size.y + svg_h
 	
 	set_view(Vector2(lerpf(view.unsnapped_position.x, view.unsnapped_position.x +\
 			old_size.x - size.x / State.zoom, offset.x), lerpf(view.unsnapped_position.y,

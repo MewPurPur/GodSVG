@@ -22,7 +22,7 @@ var drag_texture_rect: TextureRect
 # on the window when it resizes.
 var position_window_relative: Vector2
 
-func update_theme() -> void:
+func sync_theming() -> void:
 	var stylebox := get_theme_stylebox("panel", "SubtleFlatPanel").duplicate()
 	stylebox.set_content_margin_all(0)
 	add_theme_stylebox_override("panel", stylebox)
@@ -41,8 +41,8 @@ func set_position_relative(new_position: Vector2) -> void:
 func _ready() -> void:
 	Configs.shortcut_panel_changed.connect(update_layout)
 	update_layout()
-	Configs.theme_changed.connect(update_theme)
-	update_theme()
+	Configs.theme_changed.connect(sync_theming)
+	sync_theming()
 	# Positioning callbacks and logic.
 	get_window().size_changed.connect(sync_relative_position)
 	resized.connect(sync_relative_position)
