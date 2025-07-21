@@ -230,18 +230,9 @@ func clear_proposed_drop_xid() -> void:
 		proposed_drop_changed.emit()
 
 
-signal zoom_changed
-@warning_ignore("unused_signal")
-signal view_changed
 signal viewport_size_changed
 
-var zoom := 0.0
 var viewport_size := Vector2i.ZERO
-
-func set_zoom(new_value: float) -> void:
-	if zoom != new_value:
-		zoom = new_value
-		zoom_changed.emit()
 
 func set_viewport_size(new_value: Vector2i) -> void:
 	if viewport_size != new_value:
@@ -249,39 +240,9 @@ func set_viewport_size(new_value: Vector2i) -> void:
 		viewport_size_changed.emit()
 
 
-var view_rasterized := false
-var show_grid := true
-var show_handles := true
-var show_reference := false
-var overlay_reference := false
 var show_debug := false
 
-signal view_rasterized_changed
-signal show_grid_changed
-signal show_handles_changed
-signal show_reference_changed
-signal overlay_reference_changed
 signal show_debug_changed
-
-func toggle_view_rasterized() -> void:
-	view_rasterized = not view_rasterized
-	view_rasterized_changed.emit()
-
-func toggle_show_grid() -> void:
-	show_grid = not show_grid
-	show_grid_changed.emit()
-
-func toggle_show_handles() -> void:
-	show_handles = not show_handles
-	show_handles_changed.emit()
-
-func toggle_show_reference() -> void:
-	show_reference = not show_reference
-	show_reference_changed.emit()
-
-func toggle_overlay_reference() -> void:
-	overlay_reference = not overlay_reference
-	overlay_reference_changed.emit()
 
 func toggle_show_debug() -> void:
 	show_debug = not show_debug

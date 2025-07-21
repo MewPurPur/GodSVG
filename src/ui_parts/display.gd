@@ -2,19 +2,24 @@ extends VBoxContainer
 
 const NumberEdit = preload("res://src/ui_widgets/number_edit.gd")
 
-@onready var viewport: SubViewport = %Viewport
-@onready var reference_texture: TextureRect = %Viewport/ReferenceTexture
+@onready var viewport_panel: PanelContainer = $ViewportPanel
+@onready var viewport: Canvas = %ViewportContainer
 @onready var reference_button: Button = %LeftMenu/Reference
 @onready var visuals_button: Button = %LeftMenu/Visuals
 @onready var snapper: NumberEdit = %LeftMenu/Snapping/SnapNumberEdit
 @onready var snap_button: BetterButton = %LeftMenu/Snapping/SnapButton
-@onready var viewport_panel: PanelContainer = $ViewportPanel
 @onready var debug_container: MarginContainer = $ViewportPanel/DebugMargins
 @onready var debug_label: Label = %DebugContainer/DebugLabel
 @onready var input_debug_label: Label = %DebugContainer/InputDebugLabel
 @onready var toolbar: PanelContainer = $ViewportPanel/VBoxContainer/Toolbar
 
-var reference_overlay := false
+func _enter_tree() -> void:
+	var shortcut_registrations := ShortcutRegistrationArray.new()
+	shortcut_registrations.add("view_show_reference", viewport.toggle_show_reference,
+			get_show_reference_toggle_state)
+	shortcut_registrations.add("view_overlay_reference", viewport.overlay_reference,
+			get_overlay_reference_toggle_state)
+	HandlerGUI.register_shortcuts(self, shortcut_registrations)
 
 func _ready() -> void:
 	Configs.language_changed.connect(sync_localization)
@@ -26,10 +31,6 @@ func _ready() -> void:
 	Configs.active_tab_changed.connect(sync_reference_image)
 	Configs.active_tab_reference_changed.connect(sync_reference_image)
 	sync_reference_image()
-	State.show_reference_changed.connect(_on_show_reference_updated)
-	_on_show_reference_updated()
-	State.overlay_reference_changed.connect(_on_overlay_reference_updated)
-	_on_overlay_reference_updated()
 	State.show_debug_changed.connect(_on_show_debug_changed)
 	_on_show_debug_changed()
 	get_window().window_input.connect(_update_input_debug)
@@ -68,8 +69,8 @@ func _on_reference_pressed() -> void:
 		ContextPopup.create_button(Translator.translate("Paste reference image"),
 				paste_reference_image, not Utils.has_clipboard_image_web_safe(),
 				load("res://assets/icons/Paste.svg")),
-		ContextPopup.create_shortcut_checkbox("view_show_reference", reference_texture.visible),
-		ContextPopup.create_shortcut_checkbox("view_overlay_reference", reference_overlay)
+		ContextPopup.create_shortcut_checkbox("view_show_reference", viewport.show_reference),
+		ContextPopup.create_shortcut_checkbox("view_overlay_reference", viewport.reference_overlay)
 	]
 	
 	var reference_popup := ContextPopup.new()
@@ -93,14 +94,12 @@ func _on_visuals_button_pressed() -> void:
 			get_viewport())
 
 
-func _on_show_reference_updated() -> void:
-	reference_texture.visible = State.show_reference
+func get_show_reference_toggle_state() -> bool:
+	return viewport.show_reference
 
-func _on_overlay_reference_updated() -> void:
-	if State.overlay_reference:
-		viewport.move_child(reference_texture, viewport.get_child_count() - 1)
-	else:
-		viewport.move_child(reference_texture, 0)
+func get_overlay_reference_toggle_state() -> bool:
+	return viewport.show_reference
+
 
 func sync_reference_image() ->  void:
 	var reference := Configs.savedata.get_active_tab().reference_image

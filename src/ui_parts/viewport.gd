@@ -19,11 +19,11 @@ var limit_bottom := 0.0
 @onready var view: SubViewportContainer = get_parent()
 @onready var controls: HandlesManager = $Controls
 @onready var display_texture: DisplayTexture = $Checkerboard/DisplayTexture
-@onready var reference_texture: TextureRect = $ReferenceTexture
 @onready var zoom_menu: ZoomMenu = %ZoomMenu
 
 
 func _ready() -> void:
+	size_changed.connect(_on_size_changed)
 	zoom_menu.zoom_changed.connect(view.update.unbind(2))
 	State.svg_resized.connect(resize)
 	Configs.active_tab_changed.connect(zoom_menu.zoom_reset)
@@ -54,7 +54,6 @@ func resize() -> void:
 	var root_element_size := State.root_element.get_size()
 	if root_element_size.is_finite():
 		display.size = root_element_size
-		reference_texture.size = root_element_size
 	zoom_menu.zoom_reset()
 
 func center_frame() -> void:
