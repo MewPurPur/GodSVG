@@ -219,8 +219,10 @@ func _gui_input(event: InputEvent) -> void:
 			HandlerGUI.popup_under_pos(context_popup, vp.get_mouse_position(), vp)
 			accept_event()
 			var click_pos := get_line_column_at_pos(event.position)
-			set_caret_line(click_pos.y, false)
-			set_caret_column(click_pos.x, false)
+			if get_selection_at_line_column(click_pos.y, click_pos.x) == -1:
+				deselect()
+				set_caret_line(click_pos.y, false)
+				set_caret_column(click_pos.x, false)
 	else:
 		# Set these inputs as handled, so the default UndoRedo doesn't eat them.
 		if ShortcutUtils.is_action_pressed(event, "ui_redo"):
