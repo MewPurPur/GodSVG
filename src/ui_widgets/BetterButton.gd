@@ -55,9 +55,12 @@ func _unhandled_input(event: InputEvent) -> void:
 		return
 	
 	if not just_pressed and ShortcutUtils.is_action_pressed(event, action):
+		begin_bulk_theme_override()
 		add_theme_color_override("icon_normal_color", get_theme_color("icon_pressed_color"))
 		add_theme_color_override("icon_hover_color", get_theme_color("icon_pressed_color"))
 		add_theme_stylebox_override("normal", get_theme_stylebox("pressed"))
+		add_theme_stylebox_override("hover", get_theme_stylebox("hover_pressed"))
+		end_bulk_theme_override()
 		if is_instance_valid(timer):
 			timer.timeout.disconnect(end_highlight)
 		timer = get_tree().create_timer(HIGHLIGHT_TIME)
@@ -67,4 +70,5 @@ func end_highlight() -> void:
 	remove_theme_color_override("icon_normal_color")
 	remove_theme_color_override("icon_hover_color")
 	remove_theme_stylebox_override("normal")
+	remove_theme_stylebox_override("hover")
 	timer = null

@@ -885,6 +885,7 @@ static func _setup_lineedit(theme: Theme) -> void:
 	theme.set_color("font_color", "LineEdit", editable_text_color)
 	theme.set_color("font_uneditable_color", "LineEdit", dimmer_text_color)
 	theme.set_color("font_placeholder_color", "LineEdit", subtle_text_color)
+	theme.set_color("font_selected_color", "LineEdit", highlighted_text_color)
 	theme.set_color("selection_color", "LineEdit", selection_color)
 	theme.set_color("disabled_selection_color", "LineEdit", disabled_selection_color)
 	theme.set_font_size("font_size", "LineEdit", 12)
