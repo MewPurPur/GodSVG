@@ -553,11 +553,11 @@ static func _setup_button(theme: Theme) -> void:
 	var normal_translucent_button_stylebox := StyleBoxFlat.new()
 	normal_translucent_button_stylebox.set_corner_radius_all(5)
 	normal_translucent_button_stylebox.set_content_margin_all(4)
-	normal_translucent_button_stylebox.bg_color = hover_overlay_color
+	normal_translucent_button_stylebox.bg_color = strong_hover_overlay_color
 	theme.set_stylebox("normal", "TranslucentButton", normal_translucent_button_stylebox)
 	
 	var hover_translucent_button_stylebox := normal_translucent_button_stylebox.duplicate()
-	hover_translucent_button_stylebox.bg_color = strong_hover_overlay_color
+	hover_translucent_button_stylebox.bg_color = stronger_hover_overlay_color
 	theme.set_stylebox("hover", "TranslucentButton", hover_translucent_button_stylebox)
 	
 	var pressed_translucent_button_stylebox := normal_translucent_button_stylebox.duplicate()
