@@ -35,6 +35,19 @@ For more casual discussion around the tool or contributing to it, find me on [Go
 
 All official communities are actively moderated.
 
+## Verify the APK signature
+
+Check if the release APK is signed with the correct certificate by comparing the following fingerprints:
+```
+SHA1: BC:78:C1:A1:90:B4:5E:5A:13:49:4C:07:22:2E:F5:0B:5D:88:5E:5B
+SHA256: 68:39:C3:D4:9B:74:DF:30:C5:0B:32:B8:81:04:05:A7:45:80:7B:D5:A8:0B:64:D1:9A:46:89:38:28:5A:DB:5D
+```
+
+You can use this command to display the certificate details, including the SHA-1 and SHA-256 fingerprints:
+```
+keytool -printcert -jarfile <APK-file>
+```
+
 ## How to use it
 
 Documentation for GodSVG is likely eventually going to be built-in. Meanwhile, the basics of using it will be outlined below.
