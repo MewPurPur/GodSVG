@@ -761,11 +761,10 @@ static func _setup_checkbox(theme: Theme) -> void:
 	theme.add_type("CheckBox")
 	theme.set_constant("h_separation", "CheckBox", 5)
 	theme.set_color("font_color", "CheckBox", text_color)
-	theme.set_color("font_color", "CheckBox", text_color)
 	theme.set_color("font_disabled_color", "CheckBox", subtle_text_color)
-	theme.set_color("font_focus_color", "CheckBox", highlighted_text_color)
+	theme.set_color("font_focus_color", "CheckBox", text_color)
 	theme.set_color("font_hover_color", "CheckBox", highlighted_text_color)
-	theme.set_color("font_pressed_color", "CheckBox", highlighted_text_color)
+	theme.set_color("font_pressed_color", "CheckBox", text_color)
 	theme.set_color("font_hover_pressed_color", "CheckBox", highlighted_text_color)
 	theme.set_icon("checked", "CheckBox",
 		SVGTexture.create_from_string("""
@@ -824,9 +823,9 @@ static func _setup_checkbutton(theme: Theme) -> void:
 	theme.add_type("CheckButton")
 	theme.set_color("font_color", "CheckButton", text_color)
 	theme.set_color("font_disabled_color", "CheckButton", subtle_text_color)
-	theme.set_color("font_focus_color", "CheckButton", highlighted_text_color)
+	theme.set_color("font_focus_color", "CheckButton", text_color)
 	theme.set_color("font_hover_color", "CheckButton", highlighted_text_color)
-	theme.set_color("font_pressed_color", "CheckButton", highlighted_text_color)
+	theme.set_color("font_pressed_color", "CheckButton", text_color)
 	theme.set_color("font_hover_pressed_color", "CheckButton", highlighted_text_color)
 	theme.set_icon("checked", "CheckButton",
 		SVGTexture.create_from_string("""
