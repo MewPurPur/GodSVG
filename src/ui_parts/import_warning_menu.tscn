@@ -25,7 +25,7 @@ theme_override_constants/separation = 12
 
 [node name="TitleLabel" type="Label" parent="VBoxContainer"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 15
+theme_type_variation = &"TitleLabel"
 horizontal_alignment = 1
 
 [node name="TextureContainer" type="HBoxContainer" parent="VBoxContainer"]

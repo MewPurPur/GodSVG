@@ -931,7 +931,7 @@ func show_formatter(category: String) -> void:
 	add_preview(SettingTextPreview.new(Translator.translate(
 			"When enabled, uses several spaces instead of a single tab for indentation."),
 			SettingTextPreview.get_no_effect_in_configuration_warning(
-			current_setup_resource.xml_pretty_formatting)))
+			not current_setup_resource.xml_pretty_formatting)))
 	
 	current_setup_setting = "xml_indentation_spaces"
 	add_number_dropdown(Translator.translate("Number of indentation spaces"),
