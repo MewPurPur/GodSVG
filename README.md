@@ -23,17 +23,26 @@
 
 Download the version you want from [the list of GodSVG releases](https://github.com/MewPurPur/GodSVG/releases). Android versions are currently experimental. For MacOS, you'll have to [disable Gatekeeper](https://disable-gatekeeper.github.io/), as I don't have the time or money to deal with Apple's gatekeeping.
 
-Link to the web editor: https://godsvg.com/editor
+To verify the APK signature of the experimental Android build, check if the release APK is signed with the correct certificate by comparing the following fingerprints:
+```
+SHA1: BC:78:C1:A1:90:B4:5E:5A:13:49:4C:07:22:2E:F5:0B:5D:88:5E:5B
+SHA256: 68:39:C3:D4:9B:74:DF:30:C5:0B:32:B8:81:04:05:A7:45:80:7B:D5:A8:0B:64:D1:9A:46:89:38:28:5A:DB:5D
+```
+
+You can use this command to display the certificate details, including the SHA-1 and SHA-256 fingerprints:
+```
+keytool -printcert -jarfile <APK-file>
+```
+
+GodSVG also runs on web - here's a link to the official web editor: https://godsvg.com/editor
 
 To run the latest unreleased version, you can download Godot from https://godotengine.org (development is currently happening in v4.5 beta 3). After getting the repository files on your machine, you must open Godot, click on the "Import" button, and import the `project.godot` folder.
 
-Another way to run the latest dev build is to open a recent commit and download its artifacts (Checks > export-optimized > Summary > Artifacts). You need to log into Github for that.
+Another way to run the latest dev build is to open a recent commit and download its artifacts (Checks > export-optimized > Summary > Artifacts). You must log into Github for that.
 
-To report bugs or propose features, look through the Github issue to see if it's already been discussed, and if not, [create a new issue](https://github.com/MewPurPur/GodSVG/issues/new/choose).
+To report bugs or propose features, look through the open Github issues to see if it's already been discussed, and if not, [create a new issue](https://github.com/MewPurPur/GodSVG/issues/new/choose).
 
-For more casual discussion around the tool or contributing to it, find me on [GodSVG's Discord](https://discord.gg/R8pM6vXWTY).
-
-All official communities are actively moderated.
+For more casual discussion around the tool or contributing to it, find me on [GodSVG's Discord](https://discord.gg/R8pM6vXWTY). All official communities are actively moderated.
 
 ## How to use it
 
