@@ -1,29 +1,4 @@
-extends SubViewportContainer
-
-const TICKS_INTERVAL = 4
-const TICK_DISTANCE = float(TICKS_INTERVAL)
-
-var ci := get_canvas_item()
-var grid_ci := RenderingServer.canvas_item_create()
-var grid_numbers_ci := RenderingServer.canvas_item_create()
-
-var camera_zoom: float
-var camera_position: Vector2
-var camera_unsnapped_position: Vector2
-
-
-func _ready() -> void:
-	Configs.grid_color_changed.connect(queue_redraw)
-	State.show_grid_changed.connect(update_show_grid)
-	update_show_grid()
-	RenderingServer.canvas_item_set_parent(grid_ci, ci)
-	RenderingServer.canvas_item_set_parent(grid_numbers_ci, ci)
-	State.svg_resized.connect(queue_redraw)
-	State.zoom_changed.connect(change_zoom)
-	State.zoom_changed.connect(queue_redraw)
-
-func exit_tree() -> void:
-	RenderingServer.free_rid(grid_numbers_ci)
+extends Canvas
 
 func change_zoom() -> void:
 	camera_zoom = State.zoom
@@ -64,13 +39,13 @@ func _draw() -> void:
 	var draw_minor_lines := (camera_zoom >= 8.0)
 	var mark_pixel_lines := (camera_zoom >= 128.0)
 	@warning_ignore("integer_division")
-	var rate := nearest_po2(roundi(maxf(128.0 / (TICKS_INTERVAL * camera_zoom), 2.0))) / 2
+	var rate := nearest_po2(roundi(maxf(128.0 / (GRID_TICKS_INTERVAL * camera_zoom), 2.0))) / 2
 	
 	var i := fmod(-camera_position.x, 1.0)
-	var major_line_h_offset := fposmod(-camera_position.x, TICK_DISTANCE)
+	var major_line_h_offset := fposmod(-camera_position.x, GRID_TICK_DISTANCE)
 	# Horizontal offset.
 	while i <= grid_size.x:
-		if major_line_h_offset != fposmod(i, TICK_DISTANCE):
+		if major_line_h_offset != fposmod(i, GRID_TICK_DISTANCE):
 			if draw_minor_lines:
 				minor_points.append(Vector2(i * camera_zoom, 0))
 				minor_points.append(Vector2(i * camera_zoom, grid_size.y * camera_zoom))
@@ -79,8 +54,8 @@ func _draw() -> void:
 							Vector2(i * camera_zoom + 4, 14), String.num_int64(floori(i + camera_position.x)),
 							HORIZONTAL_ALIGNMENT_LEFT, -1, 14, axis_line_color)
 		else:
-			var coord := snappedi(i + camera_position.x, TICKS_INTERVAL)
-			if int(coord / TICK_DISTANCE) % rate == 0:
+			var coord := snappedi(i + camera_position.x, GRID_TICKS_INTERVAL)
+			if int(coord / GRID_TICK_DISTANCE) % rate == 0:
 				major_points.append(Vector2(i * camera_zoom, 0))
 				major_points.append(Vector2(i * camera_zoom, grid_size.y * camera_zoom))
 				ThemeUtils.regular_font.draw_string(grid_numbers_ci,
@@ -92,10 +67,10 @@ func _draw() -> void:
 		i += 1.0
 	
 	i = fmod(-camera_position.y, 1.0)
-	var major_line_v_offset := fposmod(-camera_position.y, TICK_DISTANCE)
+	var major_line_v_offset := fposmod(-camera_position.y, GRID_TICK_DISTANCE)
 	# Vertical offset.
 	while i < grid_size.y:
-		if major_line_v_offset != fposmod(i, TICK_DISTANCE):
+		if major_line_v_offset != fposmod(i, GRID_TICK_DISTANCE):
 			if draw_minor_lines:
 				minor_points.append(Vector2(0, i * camera_zoom))
 				minor_points.append(Vector2(grid_size.x * camera_zoom, i * camera_zoom))
@@ -104,8 +79,8 @@ func _draw() -> void:
 							Vector2(4, i * camera_zoom + 14), String.num_int64(floori(i + camera_position.y)),
 							HORIZONTAL_ALIGNMENT_LEFT, -1, 14, axis_line_color)
 		else:
-			var coord := snappedi(i + camera_position.y, TICKS_INTERVAL)
-			if int(coord / TICK_DISTANCE) % rate == 0:
+			var coord := snappedi(i + camera_position.y, GRID_TICKS_INTERVAL)
+			if int(coord / GRID_TICK_DISTANCE) % rate == 0:
 				major_points.append(Vector2(0, i * camera_zoom))
 				major_points.append(Vector2(grid_size.x * camera_zoom, i * camera_zoom))
 				ThemeUtils.regular_font.draw_string(grid_numbers_ci,
