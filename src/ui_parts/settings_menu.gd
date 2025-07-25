@@ -17,7 +17,18 @@ const reset_icon = preload("res://assets/icons/Reload.svg")
 @onready var close_button: Button = $VBoxContainer/CloseButton
 @onready var preview_panel: PanelContainer = $VBoxContainer/PreviewPanel
 
-var focused_tab := ""
+enum TabIndex {FORMATTING, PALETTES, SHORTCUTS, THEMING, TAB_BAR, OTHER}
+
+var tab_localized_names: Dictionary[TabIndex, String] = {
+	TabIndex.FORMATTING: Translator.translate("Formatting"),
+	TabIndex.PALETTES: Translator.translate("Palettes"),
+	TabIndex.SHORTCUTS: Translator.translate("Shortcuts"),
+	TabIndex.THEMING: Translator.translate("Theming"),
+	TabIndex.TAB_BAR: Translator.translate("Tab bar"),
+	TabIndex.OTHER: Translator.translate("Other"),
+}
+
+var focused_tab_index := TabIndex.FORMATTING
 var current_setup_setting := ""
 var current_setup_resource: ConfigResource
 var setting_container: VBoxContainer
@@ -62,30 +73,21 @@ var previews: Dictionary[String, RefCounted] = {}
 
 func _ready() -> void:
 	close_button.pressed.connect(queue_free)
-	Configs.language_changed.connect(setup_everything)
-	
 	scroll_container.get_v_scroll_bar().visibility_changed.connect(adjust_right_margin)
 	adjust_right_margin()
 	
-	update_language_button()
-	update_close_button()
-	setup_tabs()
-	press_tab(0)
 	Configs.theme_changed.connect(sync_theming)
 	sync_theming()
+	Configs.language_changed.connect(sync_localization)
+	sync_localization()
+	press_tab(0)
 
 func _unhandled_input(event: InputEvent) -> void:
-	var tab_count := tabs.get_child_count()
-	var focused_tab_idx: int
-	for i in tab_count:
-		if tabs.get_child(i).button_pressed:
-			focused_tab_idx = i
-			break
-	
+	var tab_count := TabIndex.size()
 	if ShortcutUtils.is_action_pressed(event, "select_next_tab"):
-		press_tab((focused_tab_idx + 1) % tab_count)
+		press_tab((focused_tab_index + 1) % tab_count)
 	elif ShortcutUtils.is_action_pressed(event, "select_previous_tab"):
-		press_tab((focused_tab_idx + tab_count - 1) % tab_count)
+		press_tab((focused_tab_index + tab_count - 1) % tab_count)
 
 func press_tab(index: int) -> void:
 	tabs.get_child(index).button_pressed = true
@@ -94,6 +96,13 @@ func sync_theming() -> void:
 	var stylebox := ThemeDB.get_default_theme().get_stylebox("panel", theme_type_variation).duplicate()
 	stylebox.content_margin_top += 4.0
 	add_theme_stylebox_override("panel", stylebox)
+
+func sync_localization() -> void:
+	close_button.text = Translator.translate("Close")
+	lang_button.text = Translator.translate("Language") + ": " +\
+			TranslationUtils.get_locale_string(TranslationServer.get_locale())
+	setup_tabs()
+	setup_content(false)
 
 func adjust_right_margin() -> void:
 	var scrollbar := scroll_container.get_v_scroll_bar()
@@ -104,39 +113,24 @@ func setup_tabs() -> void:
 	for tab in tabs.get_children():
 		tab.queue_free()
 	var button_group := ButtonGroup.new()
-	add_tab("formatting", Translator.translate("Formatting"), button_group)
-	add_tab("palettes", Translator.translate("Palettes"), button_group)
-	add_tab("shortcuts", Translator.translate("Shortcuts"), button_group)
-	add_tab("theming", Translator.translate("Theming"), button_group)
-	add_tab("tab_bar", Translator.translate("Tab bar"), button_group)
-	add_tab("other", Translator.translate("Other"), button_group)
+	for tab_index in TabIndex.size():
+		var tab := Button.new()
+		tab.text = tab_localized_names[tab_index]
+		tab.alignment = HORIZONTAL_ALIGNMENT_LEFT
+		tab.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+		tab.toggle_mode = true
+		tab.action_mode = BaseButton.ACTION_MODE_BUTTON_PRESS
+		tab.focus_mode = Control.FOCUS_NONE
+		tab.theme_type_variation = "SideTab"
+		tab.toggled.connect(_on_tab_toggled.bind(tab_index))
+		tab.button_group = button_group
+		tab.button_pressed = (tab_index == focused_tab_index)
+		tabs.add_child(tab)
 
-func add_tab(tab_name: String, tab_text: String, button_group: ButtonGroup) -> void:
-	var tab := Button.new()
-	tab.text = tab_text
-	tab.alignment = HORIZONTAL_ALIGNMENT_LEFT
-	tab.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
-	tab.toggle_mode = true
-	tab.action_mode = BaseButton.ACTION_MODE_BUTTON_PRESS
-	tab.focus_mode = Control.FOCUS_NONE
-	tab.theme_type_variation = "SideTab"
-	tab.toggled.connect(_on_tab_toggled.bind(tab_name))
-	tab.button_group = button_group
-	tab.button_pressed = (tab_name == focused_tab)
-	tabs.add_child(tab)
 
-func setup_everything() -> void:
-	update_language_button()
-	setup_tabs()
-	setup_content(false)
-	update_close_button()
-
-func update_close_button() -> void:
-	close_button.text = Translator.translate("Close")
-
-func _on_tab_toggled(toggled_on: bool, tab_name: String) -> void:
-	if toggled_on and focused_tab != tab_name:
-		focused_tab = tab_name
+func _on_tab_toggled(toggled_on: bool, tab_index: TabIndex) -> void:
+	if toggled_on and focused_tab_index != tab_index:
+		focused_tab_index = tab_index
 		setup_content()
 
 func setup_content(reset_scroll := true) -> void:
@@ -146,8 +140,8 @@ func setup_content(reset_scroll := true) -> void:
 	for child in content_container.get_children():
 		child.queue_free()
 	
-	match focused_tab:
-		"formatting":
+	match focused_tab_index:
+		TabIndex.FORMATTING:
 			preview_panel.show()
 			var vbox := VBoxContainer.new()
 			vbox.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -173,13 +167,13 @@ func setup_content(reset_scroll := true) -> void:
 					1 if current_setup_resource == Configs.savedata.export_formatter else 0)
 			category_button.button_pressed = true
 			category_button.pressed.emit()
-		"palettes":
+		TabIndex.PALETTES:
 			preview_panel.hide()
 			var vbox := VBoxContainer.new()
 			vbox.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 			content_container.add_child(vbox)
 			rebuild_palettes()
-		"shortcuts":
+		TabIndex.SHORTCUTS:
 			preview_panel.hide()
 			var vbox := VBoxContainer.new()
 			vbox.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -205,7 +199,7 @@ func setup_content(reset_scroll := true) -> void:
 			vbox.add_child(shortcuts)
 			categories.get_child(0).button_pressed = true
 			categories.get_child(0).pressed.emit()
-		"theming":
+		TabIndex.THEMING:
 			preview_panel.show()
 			create_setting_container()
 			content_container.add_child(setting_container)
@@ -324,7 +318,7 @@ func setup_content(reset_scroll := true) -> void:
 			add_preview(SettingBasicColorPreview.new(current_setup_setting,
 					Translator.translate("Warning color")))
 			
-		"tab_bar":
+		TabIndex.TAB_BAR:
 			preview_panel.show()
 			create_setting_container()
 			content_container.add_child(setting_container)
@@ -335,7 +329,7 @@ func setup_content(reset_scroll := true) -> void:
 			add_checkbox(Translator.translate("Close tabs with middle mouse button"))
 			add_preview(SettingTextPreview.new(
 					Translator.translate("When enabled, clicking on a tab with the middle mouse button closes it instead of simply focusing it.")))
-		"other":
+		TabIndex.OTHER:
 			preview_panel.show()
 			create_setting_container()
 			content_container.add_child(setting_container)
@@ -720,10 +714,6 @@ func _on_language_pressed() -> void:
 
 func _on_language_chosen(locale: String) -> void:
 	Configs.savedata.language = locale
-
-func update_language_button() -> void:
-	lang_button.text = Translator.translate("Language") + ": " +\
-			TranslationUtils.get_locale_string(TranslationServer.get_locale())
 
 
 # Palette tab helpers.
