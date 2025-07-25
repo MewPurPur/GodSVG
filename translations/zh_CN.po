@@ -451,6 +451,11 @@ msgid "Snap"
 msgstr "吸附"
 
 #: src/ui_parts/settings_menu.gd:
+#, fuzzy
+msgid "Search setting"
+msgstr "设置"
+
+#: src/ui_parts/settings_menu.gd:
 msgid "Formatting"
 msgstr "格式化"
 

@@ -443,6 +443,10 @@ msgid "Snap"
 msgstr "Захващане"
 
 #: src/ui_parts/settings_menu.gd:
+msgid "Search setting"
+msgstr "Търсене на настройка"
+
+#: src/ui_parts/settings_menu.gd:
 msgid "Formatting"
 msgstr "Форматиране"
 

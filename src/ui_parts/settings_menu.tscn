@@ -1,7 +1,9 @@
-[gd_scene load_steps=3 format=3 uid="uid://1rylg17uwltw"]
+[gd_scene load_steps=5 format=3 uid="uid://1rylg17uwltw"]
 
 [ext_resource type="Script" uid="uid://1rjr3yrqwueu" path="res://src/ui_parts/settings_menu.gd" id="1_1gf4m"]
 [ext_resource type="Texture2D" uid="uid://c528knojuxbw6" path="res://assets/icons/Languages.svg" id="2_ndyp7"]
+[ext_resource type="Script" uid="uid://1hox6gd5pxku" path="res://src/ui_widgets/BetterLineEdit.gd" id="3_kjrrb"]
+[ext_resource type="FontFile" uid="uid://clpf84p1lfwlp" path="res://assets/fonts/Font.ttf" id="3_ug3fu"]
 
 [node name="SettingsMenu" type="PanelContainer"]
 custom_minimum_size = Vector2(660, 420)
@@ -23,42 +25,72 @@ script = ExtResource("1_1gf4m")
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="Language" type="Button" parent="VBoxContainer"]
+[node name="TopHBox" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 6
+alignment = 1
+
+[node name="Language" type="Button" parent="VBoxContainer/TopHBox"]
 layout_mode = 2
 size_flags_horizontal = 4
 focus_mode = 0
 mouse_default_cursor_shape = 2
 icon = ExtResource("2_ndyp7")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+[node name="SearchField" type="LineEdit" parent="VBoxContainer/TopHBox"]
+custom_minimum_size = Vector2(240, 0)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_ug3fu")
+script = ExtResource("3_kjrrb")
+metadata/_custom_type_script = "uid://1hox6gd5pxku"
+
+[node name="SearchResultsPanel" type="PanelContainer" parent="VBoxContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="SearchResultsScrollContainer" type="ScrollContainer" parent="VBoxContainer/SearchResultsPanel"]
+unique_name_in_owner = true
+layout_mode = 2
+horizontal_scroll_mode = 0
+
+[node name="ContentContainer" type="MarginContainer" parent="VBoxContainer/SearchResultsPanel/SearchResultsScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
+
+[node name="MainHBox" type="HBoxContainer" parent="VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/separation = 0
 
-[node name="ContentPicker" type="PanelContainer" parent="VBoxContainer/HBoxContainer"]
+[node name="ContentPicker" type="PanelContainer" parent="VBoxContainer/MainHBox"]
 custom_minimum_size = Vector2(160, 0)
 layout_mode = 2
 theme_type_variation = &"SideTabBar"
 
-[node name="Tabs" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/ContentPicker"]
+[node name="Tabs" type="VBoxContainer" parent="VBoxContainer/MainHBox/ContentPicker"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 0
 
-[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer/HBoxContainer"]
+[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer/MainHBox"]
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 1
 theme_type_variation = &"SideBarContent"
 
-[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer/HBoxContainer/PanelContainer"]
+[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer/MainHBox/PanelContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 120)
 layout_mode = 2
 horizontal_scroll_mode = 0
 
-[node name="ContentContainer" type="MarginContainer" parent="VBoxContainer/HBoxContainer/PanelContainer/ScrollContainer"]
+[node name="ContentContainer" type="MarginContainer" parent="VBoxContainer/MainHBox/PanelContainer/ScrollContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/margin_top = 10
@@ -77,4 +109,4 @@ size_flags_vertical = 8
 focus_mode = 0
 mouse_default_cursor_shape = 2
 
-[connection signal="pressed" from="VBoxContainer/Language" to="." method="_on_language_pressed"]
+[connection signal="pressed" from="VBoxContainer/TopHBox/Language" to="." method="_on_language_pressed"]

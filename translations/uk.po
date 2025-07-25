@@ -444,6 +444,11 @@ msgid "Snap"
 msgstr "Прилипання"
 
 #: src/ui_parts/settings_menu.gd:
+#, fuzzy
+msgid "Search setting"
+msgstr "Налаштування"
+
+#: src/ui_parts/settings_menu.gd:
 msgid "Formatting"
 msgstr "Форматування"
 

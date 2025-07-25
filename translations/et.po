@@ -444,6 +444,11 @@ msgid "Snap"
 msgstr "Joonda"
 
 #: src/ui_parts/settings_menu.gd:
+#, fuzzy
+msgid "Search setting"
+msgstr "Seaded"
+
+#: src/ui_parts/settings_menu.gd:
 msgid "Formatting"
 msgstr "Vorming"
 

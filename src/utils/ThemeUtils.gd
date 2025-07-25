@@ -1118,6 +1118,12 @@ static func _setup_label(theme: Theme) -> void:
 	theme.set_font_size("font_size", "TitleLabel", 15)
 	theme.set_color("font_color", "TitleLabel", highlighted_text_color)
 	
+	theme.add_type("BigTitleLabel")
+	theme.set_type_variation("BigTitleLabel", "Label")
+	theme.set_font_size("font_size", "BigTitleLabel", 16)
+	theme.set_font("font", "BigTitleLabel", bold_font)
+	theme.set_color("font_color", "BigTitleLabel", highlighted_text_color)
+	
 	theme.add_type("BoldTitleLabel")
 	theme.set_type_variation("BoldTitleLabel", "Label")
 	theme.set_font_size("font_size", "BoldTitleLabel", 16)

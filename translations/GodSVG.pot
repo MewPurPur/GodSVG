@@ -442,6 +442,10 @@ msgid "Snap"
 msgstr ""
 
 #: src/ui_parts/settings_menu.gd:
+msgid "Search setting"
+msgstr ""
+
+#: src/ui_parts/settings_menu.gd:
 msgid "Formatting"
 msgstr ""
 

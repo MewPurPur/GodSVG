@@ -10,17 +10,42 @@ const plus_icon = preload("res://assets/icons/Plus.svg")
 const import_icon = preload("res://assets/icons/Import.svg")
 const reset_icon = preload("res://assets/icons/Reload.svg")
 
-@onready var lang_button: Button = $VBoxContainer/Language
+enum Tab {FORMATTING, PALETTES, SHORTCUTS, THEMING, TAB_BAR, OTHER}
+
+var tab_localized_names: Dictionary[Tab, String] = {
+	Tab.FORMATTING: Translator.translate("Formatting"),
+	Tab.PALETTES: Translator.translate("Palettes"),
+	Tab.SHORTCUTS: Translator.translate("Shortcuts"),
+	Tab.THEMING: Translator.translate("Theming"),
+	Tab.TAB_BAR: Translator.translate("Tab bar"),
+	Tab.OTHER: Translator.translate("Other"),
+}
+
+enum FormatterTab {EDITOR, EXPORT}
+
+var formatter_tab_localized_names: Dictionary[FormatterTab, String] = {
+	FormatterTab.EDITOR: Translator.translate("Editor formatter"),
+	FormatterTab.EXPORT: Translator.translate("Export formatter"),
+}
+
+
+@onready var lang_button: Button = $VBoxContainer/TopHBox/Language
 @onready var scroll_container: ScrollContainer = %ScrollContainer
 @onready var content_container: MarginContainer = %ScrollContainer/ContentContainer
 @onready var tabs: VBoxContainer = %Tabs
 @onready var close_button: Button = $VBoxContainer/CloseButton
 @onready var preview_panel: PanelContainer = $VBoxContainer/PreviewPanel
+@onready var search_field: BetterLineEdit = $VBoxContainer/TopHBox/SearchField
+@onready var search_results_panel: PanelContainer = $VBoxContainer/SearchResultsPanel
+@onready var main_hbox: HBoxContainer = $VBoxContainer/MainHBox
+@onready var search_results_scroll_container: ScrollContainer = %SearchResultsScrollContainer
+@onready var search_results_content_container: MarginContainer = %SearchResultsScrollContainer/ContentContainer
 
-var focused_tab := ""
+var search_text := ""
+var focused_tab_index: Tab
 var current_setup_setting := ""
 var current_setup_resource: ConfigResource
-var setting_container: VBoxContainer
+var current_setup_container: VBoxContainer
 
 class SettingBasicColorPreview:
 	var setting_bind: String
@@ -60,32 +85,50 @@ class SettingFormatterPreview:
 
 var previews: Dictionary[String, RefCounted] = {}
 
+
 func _ready() -> void:
+	search_field.text_changed.connect(_on_search_field_text_changed)
 	close_button.pressed.connect(queue_free)
-	Configs.language_changed.connect(setup_everything)
-	
 	scroll_container.get_v_scroll_bar().visibility_changed.connect(adjust_right_margin)
 	adjust_right_margin()
 	
-	update_language_button()
-	update_close_button()
-	setup_tabs()
-	press_tab(0)
 	Configs.theme_changed.connect(sync_theming)
 	sync_theming()
+	Configs.language_changed.connect(sync_localization)
+	sync_localization()
+	press_tab(0)
 
 func _unhandled_input(event: InputEvent) -> void:
 	var tab_count := tabs.get_child_count()
-	var focused_tab_idx: int
+	var focused_tab_index_idx: int
 	for i in tab_count:
 		if tabs.get_child(i).button_pressed:
-			focused_tab_idx = i
+			focused_tab_index_idx = i
 			break
 	
 	if ShortcutUtils.is_action_pressed(event, "select_next_tab"):
-		press_tab((focused_tab_idx + 1) % tab_count)
+		press_tab((focused_tab_index_idx + 1) % tab_count)
 	elif ShortcutUtils.is_action_pressed(event, "select_previous_tab"):
-		press_tab((focused_tab_idx + tab_count - 1) % tab_count)
+		press_tab((focused_tab_index_idx + tab_count - 1) % tab_count)
+
+func sync_localization() -> void:
+	search_field.placeholder_text = Translator.translate("Search setting")
+	close_button.text = Translator.translate("Close")
+	lang_button.text = Translator.translate("Language") + ": " +\
+			TranslationUtils.get_locale_string(TranslationServer.get_locale())
+	setup_tabs()
+	setup_content(false)
+
+func _on_search_field_text_changed(new_text: String) -> void:
+	search_text = new_text
+	if new_text.is_empty():
+		search_results_panel.hide()
+		main_hbox.show()
+		setup_content()
+	if not new_text.is_empty():
+		search_results_panel.show()
+		main_hbox.hide()
+		setup_search_content()
 
 func press_tab(index: int) -> void:
 	tabs.get_child(index).button_pressed = true
@@ -104,64 +147,70 @@ func setup_tabs() -> void:
 	for tab in tabs.get_children():
 		tab.queue_free()
 	var button_group := ButtonGroup.new()
-	add_tab("formatting", Translator.translate("Formatting"), button_group)
-	add_tab("palettes", Translator.translate("Palettes"), button_group)
-	add_tab("shortcuts", Translator.translate("Shortcuts"), button_group)
-	add_tab("theming", Translator.translate("Theming"), button_group)
-	add_tab("tab_bar", Translator.translate("Tab bar"), button_group)
-	add_tab("other", Translator.translate("Other"), button_group)
+	add_tab(Tab.FORMATTING, button_group)
+	add_tab(Tab.PALETTES, button_group)
+	add_tab(Tab.SHORTCUTS, button_group)
+	add_tab(Tab.THEMING, button_group)
+	add_tab(Tab.TAB_BAR, button_group)
+	add_tab(Tab.OTHER, button_group)
 
-func add_tab(tab_name: String, tab_text: String, button_group: ButtonGroup) -> void:
+func add_tab(tab_idx: Tab, button_group: ButtonGroup) -> void:
 	var tab := Button.new()
-	tab.text = tab_text
+	tab.text = tab_localized_names[tab_idx]
 	tab.alignment = HORIZONTAL_ALIGNMENT_LEFT
 	tab.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	tab.toggle_mode = true
 	tab.action_mode = BaseButton.ACTION_MODE_BUTTON_PRESS
 	tab.focus_mode = Control.FOCUS_NONE
 	tab.theme_type_variation = "SideTab"
-	tab.toggled.connect(_on_tab_toggled.bind(tab_name))
+	tab.toggled.connect(_on_tab_toggled.bind(tab_idx))
 	tab.button_group = button_group
-	tab.button_pressed = (tab_name == focused_tab)
+	tab.button_pressed = (tab_idx == focused_tab_index)
 	tabs.add_child(tab)
 
-func setup_everything() -> void:
-	update_language_button()
-	setup_tabs()
-	setup_content(false)
-	update_close_button()
 
-func update_close_button() -> void:
-	close_button.text = Translator.translate("Close")
-
-func _on_tab_toggled(toggled_on: bool, tab_name: String) -> void:
-	if toggled_on and focused_tab != tab_name:
-		focused_tab = tab_name
+func _on_tab_toggled(toggled_on: bool, tab_index: Tab) -> void:
+	if toggled_on and focused_tab_index != tab_index:
+		focused_tab_index = tab_index
 		setup_content()
 
-func setup_content(reset_scroll := true) -> void:
-	if reset_scroll:
-		scroll_container.scroll_vertical = 0
-	
-	for child in content_container.get_children():
+func setup_search_content() -> void:
+	preview_panel.show()
+	scroll_container.scroll_vertical = 0
+	for child in search_results_content_container.get_children():
 		child.queue_free()
 	
-	match focused_tab:
-		"formatting":
-			preview_panel.show()
-			var vbox := VBoxContainer.new()
-			vbox.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-			vbox.add_theme_constant_override("separation", 6)
+	var vbox := create_standard_vbox()
+	search_results_content_container.add_child(vbox)
+	
+	for tab_idx in Tab.size():
+		var formatting_label := Label.new()
+		formatting_label.theme_type_variation = "BigTitleLabel"
+		formatting_label.text = tab_localized_names[tab_idx]
+		vbox.add_child(formatting_label)
+		vbox.add_child(get_settings_container(tab_idx))
+
+
+func create_standard_vbox() -> VBoxContainer:
+	var vbox := VBoxContainer.new()
+	vbox.add_theme_constant_override("separation", 6)
+	vbox.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	return vbox
+
+func get_settings_container(tab_index: int) -> VBoxContainer:
+	match tab_index:
+		Tab.FORMATTING:
+			current_setup_container = create_standard_vbox()
 			content_container.add_child(vbox)
 			var categories := HFlowContainer.new()
 			categories.alignment = FlowContainer.ALIGNMENT_CENTER
 			var button_group := ButtonGroup.new()
-			for tab_idx in formatter_tab_names:
+			for tab_idx in FormatterTab.size():
 				var btn := Button.new()
 				btn.toggle_mode = true
 				btn.button_group = button_group
 				btn.pressed.connect(show_formatter.bind(tab_idx))
-				btn.text = get_translated_formatter_tab(tab_idx)
+				btn.text = formatter_tab_localized_names[tab_idx]
 				btn.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 				btn.focus_mode = Control.FOCUS_NONE
 				btn.action_mode = BaseButton.ACTION_MODE_BUTTON_PRESS
@@ -173,43 +222,9 @@ func setup_content(reset_scroll := true) -> void:
 					1 if current_setup_resource == Configs.savedata.export_formatter else 0)
 			category_button.button_pressed = true
 			category_button.pressed.emit()
-		"palettes":
-			preview_panel.hide()
-			var vbox := VBoxContainer.new()
-			vbox.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-			content_container.add_child(vbox)
-			rebuild_palettes()
-		"shortcuts":
-			preview_panel.hide()
-			var vbox := VBoxContainer.new()
-			vbox.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-			vbox.add_theme_constant_override("separation", 6)
-			content_container.add_child(vbox)
-			var categories := HFlowContainer.new()
-			var button_group := ButtonGroup.new()
-			for tab_idx in shortcut_tab_names:
-				var btn := Button.new()
-				btn.toggle_mode = true
-				btn.button_group = button_group
-				btn.pressed.connect(show_shortcuts.bind(tab_idx))
-				btn.text = get_translated_shortcut_tab(tab_idx)
-				btn.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-				btn.focus_mode = Control.FOCUS_NONE
-				btn.action_mode = BaseButton.ACTION_MODE_BUTTON_PRESS
-				categories.add_child(btn)
-			vbox.add_child(categories)
-			var shortcuts := VBoxContainer.new()
-			shortcuts.add_theme_constant_override("separation", 3)
-			shortcuts.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-			shortcuts.size_flags_vertical = Control.SIZE_EXPAND_FILL
-			vbox.add_child(shortcuts)
-			categories.get_child(0).button_pressed = true
-			categories.get_child(0).pressed.emit()
-		"theming":
-			preview_panel.show()
-			create_setting_container()
-			content_container.add_child(setting_container)
-			
+			return vbox
+		Tab.THEMING:
+			var settings_container := create_standard_vbox()
 			current_setup_resource = Configs.savedata
 			
 			current_setup_setting = "theme_preset"
@@ -323,9 +338,8 @@ func setup_content(reset_scroll := true) -> void:
 			add_color_edit(Translator.translate("Warning color"))
 			add_preview(SettingBasicColorPreview.new(current_setup_setting,
 					Translator.translate("Warning color")))
-			
-		"tab_bar":
-			preview_panel.show()
+			return
+		Tab.TAB_BAR:
 			create_setting_container()
 			content_container.add_child(setting_container)
 			current_setup_resource = Configs.savedata
@@ -335,8 +349,7 @@ func setup_content(reset_scroll := true) -> void:
 			add_checkbox(Translator.translate("Close tabs with middle mouse button"))
 			add_preview(SettingTextPreview.new(
 					Translator.translate("When enabled, clicking on a tab with the middle mouse button closes it instead of simply focusing it.")))
-		"other":
-			preview_panel.show()
+		Tab.OTHER:
 			create_setting_container()
 			content_container.add_child(setting_container)
 			current_setup_resource = Configs.savedata
@@ -441,391 +454,63 @@ func setup_content(reset_scroll := true) -> void:
 			add_checkbox(Translator.translate("Sync window title to file name"))
 			add_preview(SettingTextPreview.new(
 					Translator.translate("When enabled, adds the current file name before the \"GodSVG\" window title.")))
+		_:
+			return VBoxContainer.new()
+
+func setup_content(reset_scroll := true) -> void:
+	if reset_scroll:
+		scroll_container.scroll_vertical = 0
+	
+	for child in content_container.get_children():
+		child.queue_free()
+	
+	preview_panel.visible = not focused_tab_index in [Tab.PALETTES, Tab.SHORTCUTS]
+	
+	match focused_tab_index:
+		Tab.PALETTES:
+			var vbox := VBoxContainer.new()
+			vbox.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+			content_container.add_child(vbox)
+			rebuild_palettes()
+		Tab.SHORTCUTS:
+			var vbox := VBoxContainer.new()
+			vbox.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+			vbox.add_theme_constant_override("separation", 6)
+			content_container.add_child(vbox)
+			var categories := HFlowContainer.new()
+			var button_group := ButtonGroup.new()
+			for category_idx in ShortcutUtils.ShortcutCategory.size():
+				var btn := Button.new()
+				btn.toggle_mode = true
+				btn.button_group = button_group
+				btn.pressed.connect(show_shortcuts.bind(category_idx))
+				btn.text = ShortcutUtils.shortcut_category_localized_names[category_idx]
+				btn.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+				btn.focus_mode = Control.FOCUS_NONE
+				btn.action_mode = BaseButton.ACTION_MODE_BUTTON_PRESS
+				categories.add_child(btn)
+			vbox.add_child(categories)
+			var shortcuts := VBoxContainer.new()
+			shortcuts.add_theme_constant_override("separation", 3)
+			shortcuts.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+			shortcuts.size_flags_vertical = Control.SIZE_EXPAND_FILL
+			vbox.add_child(shortcuts)
+			categories.get_child(0).button_pressed = true
+			categories.get_child(0).pressed.emit()
+		_:
+			get_settings_container(focused_tab_index)
 	
 	# Update hover.
 	HandlerGUI.throw_mouse_motion_event()
 
-
-func add_section(section_name: String) -> void:
-	var vbox := VBoxContainer.new()
-	vbox.add_theme_constant_override("separation", 0)
-	var label := Label.new()
-	label.add_theme_font_size_override("font_size", 15)
-	label.theme_type_variation = "TitleLabel"
-	label.text = section_name
-	vbox.add_child(label)
-	var spacer := Control.new()
-	spacer.custom_minimum_size.y = 2
-	vbox.add_child(spacer)
-	setting_container.add_child(vbox)
-
-func add_profile_picker(text: String, application_callback: Callable, profile_count: int,
-value_text_map: Dictionary, disabled_check_callback: Callable) -> void:
-	var bind := current_setup_setting
-	var frame := ProfileFrameScene.instantiate()
-	frame.setup_dropdown(range(profile_count), value_text_map)
-	frame.getter = current_setup_resource.get.bind(bind)
-	var resource_permanent_ref := current_setup_resource
-	frame.setter = func(p: Variant) -> void:
-			resource_permanent_ref.set(bind, p)
-	frame.mouse_entered.connect(show_preview.bind(current_setup_setting))
-	frame.mouse_exited.connect(hide_preview.bind(current_setup_setting))
-	frame.text = text
-	frame.disabled_check_callback = disabled_check_callback
-	frame.value_changed.connect.call_deferred(setup_content.bind(false))
-	frame.defaults_applied.connect(application_callback)
-	frame.defaults_applied.connect(setup_content.bind(false))
-	add_frame(frame)
-	
-	resource_permanent_ref.changed_deferred.connect(frame.button_update_disabled)
-	frame.tree_exited.connect(resource_permanent_ref.changed_deferred.disconnect.bind(
-			frame.button_update_disabled), CONNECT_ONE_SHOT)
-	
-
-func add_checkbox(text: String, dim_text := false) -> Control:
-	var frame := SettingFrameScene.instantiate()
-	frame.dim_text = dim_text
-	frame.text = text
-	setup_frame(frame)
-	frame.setup_checkbox()
-	add_frame(frame)
-	# Some checkboxes need to update the dimness of the text of other settings.
-	# There's no continuous editing with checkboxes, so it's safe to just rebuild
-	# the content for them.
-	frame.value_changed.connect(setup_content.bind(false))
-	return frame
-
-# TODO Typed Dictionary wonkiness
-func add_dropdown(text: String, values: Array[Variant],
-value_text_map: Dictionary) -> Control:  # Dictionary[Variant, String]
-	var frame := SettingFrameScene.instantiate()
-	frame.text = text
-	setup_frame(frame)
-	frame.setup_dropdown(values, value_text_map)
-	add_frame(frame)
-	# Some checkboxes need to update the dimness of the text of other settings.
-	# There's no continuous editing with checkboxes, so it's safe to just rebuild
-	# the content for them.
-	frame.value_changed.connect(setup_content.bind(false))
-	return frame
-
-func add_number_dropdown(text: String, values: Array[float], is_integer := false,
-restricted := true, min_value := -INF, max_value := INF, dim_text := false) -> Control:
-	var frame := SettingFrameScene.instantiate()
-	frame.dim_text = dim_text
-	frame.text = text
-	setup_frame(frame)
-	frame.setup_number_dropdown(values, is_integer, restricted, min_value, max_value)
-	add_frame(frame)
-	return frame
-
-func add_fps_limit_dropdown(text: String, dim_text := false) -> Control:
-	var frame := SettingFrameScene.instantiate()
-	frame.dim_text = dim_text
-	frame.text = text
-	setup_frame(frame)
-	frame.setup_fps_limit_dropdown()
-	add_frame(frame)
-	return frame
-
-func add_color_edit(text: String, enable_alpha := true) -> Control:
-	var frame := SettingFrameScene.instantiate()
-	frame.text = text
-	setup_frame(frame)
-	frame.setup_color(enable_alpha)
-	add_frame(frame)
-	return frame
-
-func setup_frame(frame: Control) -> void:
-	var bind := current_setup_setting
-	frame.getter = current_setup_resource.get.bind(bind)
-	frame.setter = func(p: Variant) -> void: current_setup_resource.set(bind, p)
-	frame.default = current_setup_resource.get_setting_default(current_setup_setting)
-	frame.mouse_entered.connect(show_preview.bind(current_setup_setting))
-	frame.mouse_exited.connect(hide_preview.bind(current_setup_setting))
-
-func add_frame(frame: Control) -> void:
-	if setting_container.get_child_count() > 0:
-		setting_container.get_child(-1).add_child(frame)
-	else:
-		setting_container.add_child(frame)
-
-
-func add_preview(preview: RefCounted) -> void:
-	previews[current_setup_setting] = preview
-
-func show_preview(setting: String) -> void:
-	if previews.has(setting):
-		var preview := previews[setting]
-		if preview is SettingBasicColorPreview:
-			var label := Label.new()
-			label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-			var update_label_font_color := func() -> void:
-					label.add_theme_color_override("font_color",
-							Configs.savedata.get(preview.setting_bind))
-			Configs.basic_colors_changed.connect(update_label_font_color)
-			label.tree_exiting.connect(Configs.basic_colors_changed.disconnect.bind(
-					update_label_font_color), CONNECT_ONE_SHOT)
-			update_label_font_color.call()
-			label.text = preview.text
-			preview_panel.add_child(label)
-		if preview is SettingTextPreview:
-			var has_warning: bool = (preview.warning != preview.WarningType.NONE)
-			var margin_container := MarginContainer.new()
-			margin_container.add_theme_constant_override("margin_left", 6)
-			margin_container.add_theme_constant_override("margin_right", 6)
-			margin_container.add_theme_constant_override("margin_top", 2)
-			margin_container.add_theme_constant_override("margin_bottom", 4)
-			var label := Label.new()
-			label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-			label.size_flags_vertical = Control.SIZE_EXPAND_FILL
-			label.add_theme_constant_override("line_spacing", 2)
-			label.text = preview.text
-			var preview_font_size := get_theme_font_size("font_size", "Label")
-			while label.get_line_count() >= (2 if has_warning else 3):
-				preview_font_size -= 1
-				label.add_theme_font_size_override("font_size", preview_font_size)
-			if has_warning:
-				var vbox := VBoxContainer.new()
-				vbox.add_theme_constant_override("separation", 2)
-				var no_effect_warning_label := Label.new()
-				no_effect_warning_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-				no_effect_warning_label.size_flags_vertical = Control.SIZE_EXPAND_FILL
-				no_effect_warning_label.add_theme_constant_override("line_spacing", 2)
-				no_effect_warning_label.add_theme_color_override("font_color",
-						Configs.savedata.basic_color_warning)
-				match preview.warning:
-					preview.WarningType.NO_EFFECT_IN_CURRENT_CONFIGURATION:
-						no_effect_warning_label.text = Translator.translate(
-								"The setting has no effect in the current configuration.")
-					preview.WarningType.NOT_AVAILABLE_ON_PLATFORM:
-						no_effect_warning_label.text = Translator.translate(
-								"The setting can't be changed on this platform.")
-					_:
-						no_effect_warning_label.text = ""
-				while no_effect_warning_label.get_line_count() >= 2:
-					preview_font_size -= 1
-					no_effect_warning_label.add_theme_font_size_override("font_size",
-							preview_font_size)
-					label.add_theme_font_size_override("font_size", preview_font_size)
-				if not preview.text.is_empty():
-					vbox.add_child(label)
-				vbox.add_child(no_effect_warning_label)
-				margin_container.add_child(vbox)
-			else:
-				margin_container.add_child(label)
-			preview_panel.add_child(margin_container)
-		elif preview is SettingCodePreview:
-			var code_preview := BetterTextEdit.new()
-			code_preview.editable = false
-			var update_highlighter := func() -> void:
-					code_preview.syntax_highlighter = SVGHighlighter.new()
-			code_preview.add_theme_color_override("font_readonly_color", Color.WHITE)
-			
-			var text_edit_default_stylebox := code_preview.get_theme_stylebox("normal")
-			var empty_stylebox := StyleBoxEmpty.new()
-			empty_stylebox.content_margin_left = text_edit_default_stylebox.content_margin_left
-			empty_stylebox.content_margin_right = text_edit_default_stylebox.content_margin_right
-			empty_stylebox.content_margin_top = text_edit_default_stylebox.content_margin_top
-			empty_stylebox.content_margin_bottom = text_edit_default_stylebox.content_margin_bottom
-			code_preview.add_theme_stylebox_override("normal", empty_stylebox)
-			code_preview.add_theme_stylebox_override("read_only", empty_stylebox)
-			code_preview.text = preview.text
-			Configs.highlighting_colors_changed.connect(update_highlighter)
-			code_preview.tree_exiting.connect(Configs.highlighting_colors_changed.disconnect.bind(
-					update_highlighter), CONNECT_ONE_SHOT)
-			update_highlighter.call()
-			preview_panel.add_child(code_preview)
-		elif preview is SettingFormatterPreview:
-			var code_preview := BetterTextEdit.new()
-			code_preview.editable = false
-			
-			var update_highlighter := func() -> void:
-					code_preview.syntax_highlighter = SVGHighlighter.new()
-			
-			var update_text := func() -> void:
-					if preview.show_only_children:
-						code_preview.text = SVGParser.root_children_to_text(
-								preview.root_element, preview.resource_bind)
-					else:
-						code_preview.text = SVGParser.root_to_text(
-								preview.root_element, preview.resource_bind)
-			
-			code_preview.add_theme_color_override("font_readonly_color", Color.WHITE)
-			var text_edit_default_stylebox := code_preview.get_theme_stylebox("normal")
-			var empty_stylebox := StyleBoxEmpty.new()
-			empty_stylebox.content_margin_left = text_edit_default_stylebox.content_margin_left
-			empty_stylebox.content_margin_right = text_edit_default_stylebox.content_margin_right
-			empty_stylebox.content_margin_top = text_edit_default_stylebox.content_margin_top
-			empty_stylebox.content_margin_bottom = text_edit_default_stylebox.content_margin_bottom
-			code_preview.add_theme_stylebox_override("normal", empty_stylebox)
-			code_preview.add_theme_stylebox_override("read_only", empty_stylebox)
-			Configs.highlighting_colors_changed.connect(update_highlighter)
-			code_preview.tree_exiting.connect(Configs.highlighting_colors_changed.disconnect.bind(
-					update_highlighter), CONNECT_ONE_SHOT)
-			update_highlighter.call()
-			preview.resource_bind.changed_deferred.connect(update_text)
-			code_preview.tree_exiting.connect(preview.resource_bind.changed_deferred.disconnect.bind(
-					update_text), CONNECT_ONE_SHOT)
-			update_text.call()
-			preview_panel.add_child(code_preview)
-			# TODO Impressively, all this is necessary for scrollbars to work.
-			# TextEdit is so damn janky.
-			code_preview.hide()
-			code_preview.show()
-			await get_tree().process_frame
-			await get_tree().process_frame
-			if is_instance_valid(code_preview) and\
-			not is_zero_approx(code_preview.get_v_scroll_bar().max_value):
-				var tw := code_preview.create_tween().set_loops()
-				tw.tween_interval(1.75)
-				tw.tween_property(code_preview.get_v_scroll_bar(), ^"value",
-						floorf(code_preview.get_v_scroll_bar().max_value -\
-						code_preview.get_visible_line_count()), 0.5)
-				tw.tween_interval(1.75)
-				tw.tween_property(code_preview.get_v_scroll_bar(), ^"value", 0.0, 0.5)
-
-func hide_preview(setting: String) -> void:
-	if previews.has(setting):
-		for child in preview_panel.get_children():
-			child.queue_free()
-
-
-func _on_language_pressed() -> void:
-	var strings_count := TranslationServer.get_translation_object("en").get_message_count()
-	
-	var btn_arr: Array[Button] = []
-	for locale in TranslationServer.get_loaded_locales():
-		var is_current_locale := (locale == TranslationServer.get_locale())
-		
-		# Translation percentages.
-		if locale != "en":
-			var translation_obj := TranslationServer.get_translation_object(locale)
-			var translated_count := translation_obj.get_message_count() -\
-					translation_obj.get_translated_message_list().count("")
-			
-			btn_arr.append(ContextPopup.create_button(
-					TranslationUtils.get_locale_display(locale),
-					_on_language_chosen.bind(locale), is_current_locale,
-					null, Utils.num_simple(translated_count * 100.0 / strings_count, 1) + "%"))
-		else:
-			btn_arr.append(ContextPopup.create_button(
-					TranslationUtils.get_locale_display(locale),
-					_on_language_chosen.bind(locale), is_current_locale))
-	
-	var lang_popup := ContextPopup.new()
-	lang_popup.setup(btn_arr, true)
-	HandlerGUI.popup_under_rect_center(lang_popup, lang_button.get_global_rect(),
-			get_viewport())
-
-func _on_language_chosen(locale: String) -> void:
-	Configs.savedata.language = locale
-
-func update_language_button() -> void:
-	lang_button.text = Translator.translate("Language") + ": " +\
-			TranslationUtils.get_locale_string(TranslationServer.get_locale())
-
-
-# Palette tab helpers.
-
-func _popup_xml_palette_options(palette_xml_button: Button) -> void:
-	var btn_arr: Array[Button] = []
-	btn_arr.append(ContextPopup.create_button(Translator.translate("Import XML"),
-			add_imported_palette, false, load("res://assets/icons/Import.svg")))
-	btn_arr.append(ContextPopup.create_button(Translator.translate("Paste XML"),
-			add_pasted_palette, !Palette.is_valid_palette(Utils.get_clipboard_web_safe()),
-			load("res://assets/icons/Paste.svg")))
-	
-	var context_popup := ContextPopup.new()
-	context_popup.setup(btn_arr, true)
-	HandlerGUI.popup_under_rect_center(context_popup, palette_xml_button.get_global_rect(),
-			get_viewport())
-
-
-func add_empty_palette() -> void:
-	_shared_add_palette_logic(Palette.new())
-
-func add_pasted_palette() -> void:
-	_shared_add_palettes_logic(Palette.text_to_palettes(Utils.get_clipboard_web_safe()))
-
-func add_imported_palette() -> void:
-	FileUtils.open_xml_import_dialog(_on_import_palette_finished)
-
-func _on_import_palette_finished(file_text: String) -> void:
-	_shared_add_palettes_logic(Palette.text_to_palettes(file_text))
-
-func _shared_add_palettes_logic(palettes: Array[Palette]) -> void:
-	if not palettes.is_empty():
-		_shared_add_palette_logic(palettes[0])
-
-func _shared_add_palette_logic(palette: Palette) -> void:
-	Configs.savedata.add_palette(palette)
-	rebuild_palettes()
-
-
-func rebuild_palettes() -> void:
-	var palette_container := content_container.get_child(-1)
-	for palette_config in palette_container.get_children():
-		palette_config.queue_free()
-	for palette in Configs.savedata.get_palettes():
-		var palette_config := PaletteConfigWidgetScene.instantiate()
-		palette_container.add_child(palette_config)
-		palette_config.assign_palette(palette)
-		palette_config.layout_changed.connect(rebuild_palettes)
-	
-	# Add the buttons for adding a new palette.
-	var spacer := Control.new()
-	palette_container.add_child(spacer)
-	var hbox := HBoxContainer.new()
-	hbox.alignment = BoxContainer.ALIGNMENT_CENTER
-	palette_container.add_child(hbox)
-	
-	var add_palette_button := Button.new()
-	add_palette_button.theme_type_variation = "TranslucentButton"
-	add_palette_button.icon = plus_icon
-	add_palette_button.text = Translator.translate("New palette")
-	add_palette_button.focus_mode = Control.FOCUS_NONE
-	add_palette_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-	add_palette_button.pressed.connect(add_empty_palette)
-	hbox.add_child(add_palette_button)
-	
-	var xml_palette_button := Button.new()
-	xml_palette_button.theme_type_variation = "TranslucentButton"
-	xml_palette_button.icon = import_icon
-	xml_palette_button.text = Translator.translate("New palette from XML")
-	xml_palette_button.focus_mode = Control.FOCUS_NONE
-	xml_palette_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-	hbox.add_child(xml_palette_button)
-	xml_palette_button.pressed.connect(_popup_xml_palette_options.bind(xml_palette_button))
-
-
-var shortcut_tab_names := PackedStringArray(["file", "edit", "view", "tool", "help"])
-var formatter_tab_names := PackedStringArray(["editor", "export"])
-
-func get_translated_formatter_tab(tab_idx: String) -> String:
-	match tab_idx:
-		"editor": return Translator.translate("Editor formatter")
-		"export": return Translator.translate("Export formatter")
-	return ""
-
-func get_translated_shortcut_tab(tab_idx: String) -> String:
-	match tab_idx:
-		"file": return Translator.translate("File")
-		"edit": return Translator.translate("Edit")
-		"view": return Translator.translate("View")
-		"tool": return Translator.translate("Tool")
-		"help": return Translator.translate("Help")
-	return ""
-
-
-func show_formatter(category: String) -> void:
+func show_formatter(formatter_tab: FormatterTab) -> void:
 	for child in setting_container.get_children():
 		setting_container.remove_child(child)
 		child.queue_free()
 	
-	match category:
-		"editor": current_setup_resource = Configs.savedata.editor_formatter
-		"export": current_setup_resource = Configs.savedata.export_formatter
+	match formatter_tab:
+		FormatterTab.EDITOR: current_setup_resource = Configs.savedata.editor_formatter
+		FormatterTab.EXPORT: current_setup_resource = Configs.savedata.export_formatter
 	
 	current_setup_setting = "preset"
 	add_profile_picker(Translator.translate("Preset"),
@@ -1115,12 +800,376 @@ func show_formatter(category: String) -> void:
 			transform_list_remove_unnecessary_params_root_element, true))
 
 
-func show_shortcuts(category: String) -> void:
+func is_setting_filtered_out(text: String) -> bool:
+	return not search_text.is_empty() and not (search_text.is_subsequence_ofn(text) or\
+			search_text.is_subsequence_ofn(current_setup_setting) or\
+			search_text.is_subsequence_ofn(current_setup_section))
+
+func add_section(section_name: String) -> void:
+	current_setup_section = section_name
+	var vbox := VBoxContainer.new()
+	vbox.add_theme_constant_override("separation", 0)
+	var label := Label.new()
+	label.add_theme_font_size_override("font_size", 15)
+	label.theme_type_variation = "TitleLabel"
+	label.text = section_name
+	vbox.add_child(label)
+	var spacer := Control.new()
+	spacer.custom_minimum_size.y = 2
+	vbox.add_child(spacer)
+	setting_container.add_child(vbox)
+
+func add_profile_picker(text: String, application_callback: Callable, profile_count: int,
+value_text_map: Dictionary, disabled_check_callback: Callable) -> void:
+	if is_setting_filtered_out(text):
+		return
+	var bind := current_setup_setting
+	var frame := ProfileFrameScene.instantiate()
+	frame.setup_dropdown(range(profile_count), value_text_map)
+	setup_frame(frame, true)
+	frame.text = text
+	frame.disabled_check_callback = disabled_check_callback
+	frame.value_changed.connect.call_deferred(setup_content.bind(false))
+	frame.defaults_applied.connect(application_callback)
+	var resource_permanent_ref := current_setup_resource
+	frame.defaults_applied.connect(setup_content.bind(false))
+	add_frame(frame)
+	
+	resource_permanent_ref.changed_deferred.connect(frame.button_update_disabled)
+	frame.tree_exited.connect(resource_permanent_ref.changed_deferred.disconnect.bind(
+			frame.button_update_disabled), CONNECT_ONE_SHOT)
+
+
+func add_checkbox(text: String, dim_text := false) -> Control:
+	if is_setting_filtered_out(text):
+		return
+	var frame := SettingFrameScene.instantiate()
+	frame.dim_text = dim_text
+	frame.text = text
+	setup_frame(frame)
+	frame.setup_checkbox()
+	add_frame(frame)
+	# Some checkboxes need to update the dimness of the text of other settings.
+	# There's no continuous editing with checkboxes, so it's safe to just rebuild
+	# the content for them.
+	frame.value_changed.connect(setup_content.bind(false))
+	return frame
+
+# TODO Typed Dictionary wonkiness
+func add_dropdown(text: String, values: Array[Variant],
+value_text_map: Dictionary) -> Control:  # Dictionary[Variant, String]
+	if is_setting_filtered_out(text):
+		return
+	var frame := SettingFrameScene.instantiate()
+	frame.text = text
+	setup_frame(frame)
+	frame.setup_dropdown(values, value_text_map)
+	add_frame(frame)
+	# Some dropdowns need to update the dimness of the text of other settings.
+	# There's no continuous editing with dropdowns, so it's safe to just rebuild
+	# the content for them.
+	frame.value_changed.connect(setup_content.bind(false))
+	return frame
+
+func add_number_dropdown(text: String, values: Array[float], is_integer := false,
+restricted := true, min_value := -INF, max_value := INF, dim_text := false) -> Control:
+	if is_setting_filtered_out(text):
+		return
+	var frame := SettingFrameScene.instantiate()
+	frame.dim_text = dim_text
+	frame.text = text
+	setup_frame(frame)
+	frame.setup_number_dropdown(values, is_integer, restricted, min_value, max_value)
+	add_frame(frame)
+	return frame
+
+func add_fps_limit_dropdown(text: String, dim_text := false) -> Control:
+	if is_setting_filtered_out(text):
+		return
+	var frame := SettingFrameScene.instantiate()
+	frame.dim_text = dim_text
+	frame.text = text
+	setup_frame(frame)
+	frame.setup_fps_limit_dropdown()
+	add_frame(frame)
+	return frame
+
+func add_color_edit(text: String, enable_alpha := true) -> Control:
+	if is_setting_filtered_out(text):
+		return
+	var frame := SettingFrameScene.instantiate()
+	frame.text = text
+	setup_frame(frame)
+	frame.setup_color(enable_alpha)
+	add_frame(frame)
+	return frame
+
+func setup_frame(frame: Control, is_profile_frame := false) -> void:
+	var bind := current_setup_setting
+	frame.getter = current_setup_resource.get.bind(bind)
+	frame.setter = func(p: Variant) -> void: current_setup_resource.set(bind, p)
+	if not is_profile_frame:
+		frame.default = current_setup_resource.get_setting_default(current_setup_setting)
+	frame.mouse_entered.connect(show_preview.bind(current_setup_setting))
+	frame.mouse_exited.connect(hide_preview.bind(current_setup_setting))
+
+func add_frame(frame: Control) -> void:
+	if setting_container.get_child_count() > 0:
+		setting_container.get_child(-1).add_child(frame)
+	else:
+		setting_container.add_child(frame)
+
+
+func add_preview(preview: RefCounted) -> void:
+	previews[current_setup_setting] = preview
+
+func show_preview(setting: String) -> void:
+	if previews.has(setting):
+		var preview := previews[setting]
+		if preview is SettingBasicColorPreview:
+			var label := Label.new()
+			label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+			var update_label_font_color := func() -> void:
+					label.add_theme_color_override("font_color",
+							Configs.savedata.get(preview.setting_bind))
+			Configs.basic_colors_changed.connect(update_label_font_color)
+			label.tree_exiting.connect(Configs.basic_colors_changed.disconnect.bind(
+					update_label_font_color), CONNECT_ONE_SHOT)
+			update_label_font_color.call()
+			label.text = preview.text
+			preview_panel.add_child(label)
+		if preview is SettingTextPreview:
+			var has_warning: bool = (preview.warning != preview.WarningType.NONE)
+			var margin_container := MarginContainer.new()
+			margin_container.add_theme_constant_override("margin_left", 6)
+			margin_container.add_theme_constant_override("margin_right", 6)
+			margin_container.add_theme_constant_override("margin_top", 2)
+			margin_container.add_theme_constant_override("margin_bottom", 4)
+			var label := Label.new()
+			label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+			label.size_flags_vertical = Control.SIZE_EXPAND_FILL
+			label.add_theme_constant_override("line_spacing", 2)
+			label.text = preview.text
+			var preview_font_size := get_theme_font_size("font_size", "Label")
+			while label.get_line_count() >= (2 if has_warning else 3):
+				preview_font_size -= 1
+				label.add_theme_font_size_override("font_size", preview_font_size)
+			if has_warning:
+				var vbox := VBoxContainer.new()
+				vbox.add_theme_constant_override("separation", 2)
+				var no_effect_warning_label := Label.new()
+				no_effect_warning_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+				no_effect_warning_label.size_flags_vertical = Control.SIZE_EXPAND_FILL
+				no_effect_warning_label.add_theme_constant_override("line_spacing", 2)
+				no_effect_warning_label.add_theme_color_override("font_color",
+						Configs.savedata.basic_color_warning)
+				match preview.warning:
+					preview.WarningType.NO_EFFECT_IN_CURRENT_CONFIGURATION:
+						no_effect_warning_label.text = Translator.translate(
+								"The setting has no effect in the current configuration.")
+					preview.WarningType.NOT_AVAILABLE_ON_PLATFORM:
+						no_effect_warning_label.text = Translator.translate(
+								"The setting can't be changed on this platform.")
+					_:
+						no_effect_warning_label.text = ""
+				while no_effect_warning_label.get_line_count() >= 2:
+					preview_font_size -= 1
+					no_effect_warning_label.add_theme_font_size_override("font_size",
+							preview_font_size)
+					label.add_theme_font_size_override("font_size", preview_font_size)
+				if not preview.text.is_empty():
+					vbox.add_child(label)
+				vbox.add_child(no_effect_warning_label)
+				margin_container.add_child(vbox)
+			else:
+				margin_container.add_child(label)
+			preview_panel.add_child(margin_container)
+		elif preview is SettingCodePreview:
+			var code_preview := BetterTextEdit.new()
+			code_preview.editable = false
+			var update_highlighter := func() -> void:
+					code_preview.syntax_highlighter = SVGHighlighter.new()
+			code_preview.add_theme_color_override("font_readonly_color", Color.WHITE)
+			
+			var text_edit_default_stylebox := code_preview.get_theme_stylebox("normal")
+			var empty_stylebox := StyleBoxEmpty.new()
+			empty_stylebox.content_margin_left = text_edit_default_stylebox.content_margin_left
+			empty_stylebox.content_margin_right = text_edit_default_stylebox.content_margin_right
+			empty_stylebox.content_margin_top = text_edit_default_stylebox.content_margin_top
+			empty_stylebox.content_margin_bottom = text_edit_default_stylebox.content_margin_bottom
+			code_preview.add_theme_stylebox_override("normal", empty_stylebox)
+			code_preview.add_theme_stylebox_override("read_only", empty_stylebox)
+			code_preview.text = preview.text
+			Configs.highlighting_colors_changed.connect(update_highlighter)
+			code_preview.tree_exiting.connect(Configs.highlighting_colors_changed.disconnect.bind(
+					update_highlighter), CONNECT_ONE_SHOT)
+			update_highlighter.call()
+			preview_panel.add_child(code_preview)
+		elif preview is SettingFormatterPreview:
+			var code_preview := BetterTextEdit.new()
+			code_preview.editable = false
+			
+			var update_highlighter := func() -> void:
+					code_preview.syntax_highlighter = SVGHighlighter.new()
+			
+			var update_text := func() -> void:
+					if preview.show_only_children:
+						code_preview.text = SVGParser.root_children_to_text(
+								preview.root_element, preview.resource_bind)
+					else:
+						code_preview.text = SVGParser.root_to_text(
+								preview.root_element, preview.resource_bind)
+			
+			code_preview.add_theme_color_override("font_readonly_color", Color.WHITE)
+			var text_edit_default_stylebox := code_preview.get_theme_stylebox("normal")
+			var empty_stylebox := StyleBoxEmpty.new()
+			empty_stylebox.content_margin_left = text_edit_default_stylebox.content_margin_left
+			empty_stylebox.content_margin_right = text_edit_default_stylebox.content_margin_right
+			empty_stylebox.content_margin_top = text_edit_default_stylebox.content_margin_top
+			empty_stylebox.content_margin_bottom = text_edit_default_stylebox.content_margin_bottom
+			code_preview.add_theme_stylebox_override("normal", empty_stylebox)
+			code_preview.add_theme_stylebox_override("read_only", empty_stylebox)
+			Configs.highlighting_colors_changed.connect(update_highlighter)
+			code_preview.tree_exiting.connect(Configs.highlighting_colors_changed.disconnect.bind(
+					update_highlighter), CONNECT_ONE_SHOT)
+			update_highlighter.call()
+			preview.resource_bind.changed_deferred.connect(update_text)
+			code_preview.tree_exiting.connect(preview.resource_bind.changed_deferred.disconnect.bind(
+					update_text), CONNECT_ONE_SHOT)
+			update_text.call()
+			preview_panel.add_child(code_preview)
+			# TODO Impressively, all this is necessary for scrollbars to work.
+			# TextEdit is so damn janky.
+			code_preview.hide()
+			code_preview.show()
+			await get_tree().process_frame
+			await get_tree().process_frame
+			if is_instance_valid(code_preview) and\
+			not is_zero_approx(code_preview.get_v_scroll_bar().max_value):
+				var tw := code_preview.create_tween().set_loops()
+				tw.tween_interval(1.75)
+				tw.tween_property(code_preview.get_v_scroll_bar(), ^"value",
+						floorf(code_preview.get_v_scroll_bar().max_value -\
+						code_preview.get_visible_line_count()), 0.5)
+				tw.tween_interval(1.75)
+				tw.tween_property(code_preview.get_v_scroll_bar(), ^"value", 0.0, 0.5)
+
+func hide_preview(setting: String) -> void:
+	if previews.has(setting):
+		for child in preview_panel.get_children():
+			child.queue_free()
+
+
+func _on_language_pressed() -> void:
+	var strings_count := TranslationServer.get_translation_object("en").get_message_count()
+	
+	var btn_arr: Array[Button] = []
+	for locale in TranslationServer.get_loaded_locales():
+		var is_current_locale := (locale == TranslationServer.get_locale())
+		
+		# Translation percentages.
+		if locale != "en":
+			var translation_obj := TranslationServer.get_translation_object(locale)
+			var translated_count := translation_obj.get_message_count() -\
+					translation_obj.get_translated_message_list().count("")
+			
+			btn_arr.append(ContextPopup.create_button(
+					TranslationUtils.get_locale_display(locale),
+					_on_language_chosen.bind(locale), is_current_locale,
+					null, Utils.num_simple(translated_count * 100.0 / strings_count, 1) + "%"))
+		else:
+			btn_arr.append(ContextPopup.create_button(
+					TranslationUtils.get_locale_display(locale),
+					_on_language_chosen.bind(locale), is_current_locale))
+	
+	var lang_popup := ContextPopup.new()
+	lang_popup.setup(btn_arr, true)
+	HandlerGUI.popup_under_rect_center(lang_popup, lang_button.get_global_rect(),
+			get_viewport())
+
+func _on_language_chosen(locale: String) -> void:
+	Configs.savedata.language = locale
+
+
+# Palette tab helpers.
+
+func _popup_xml_palette_options(palette_xml_button: Button) -> void:
+	var btn_arr: Array[Button] = []
+	btn_arr.append(ContextPopup.create_button(Translator.translate("Import XML"),
+			add_imported_palette, false, load("res://assets/icons/Import.svg")))
+	btn_arr.append(ContextPopup.create_button(Translator.translate("Paste XML"),
+			add_pasted_palette, !Palette.is_valid_palette(Utils.get_clipboard_web_safe()),
+			load("res://assets/icons/Paste.svg")))
+	
+	var context_popup := ContextPopup.new()
+	context_popup.setup(btn_arr, true)
+	HandlerGUI.popup_under_rect_center(context_popup, palette_xml_button.get_global_rect(),
+			get_viewport())
+
+
+func add_empty_palette() -> void:
+	_shared_add_palette_logic(Palette.new())
+
+func add_pasted_palette() -> void:
+	_shared_add_palettes_logic(Palette.text_to_palettes(Utils.get_clipboard_web_safe()))
+
+func add_imported_palette() -> void:
+	FileUtils.open_xml_import_dialog(_on_import_palette_finished)
+
+func _on_import_palette_finished(file_text: String) -> void:
+	_shared_add_palettes_logic(Palette.text_to_palettes(file_text))
+
+func _shared_add_palettes_logic(palettes: Array[Palette]) -> void:
+	if not palettes.is_empty():
+		_shared_add_palette_logic(palettes[0])
+
+func _shared_add_palette_logic(palette: Palette) -> void:
+	Configs.savedata.add_palette(palette)
+	rebuild_palettes()
+
+
+func rebuild_palettes() -> void:
+	var palette_container := content_container.get_child(-1)
+	for palette_config in palette_container.get_children():
+		palette_config.queue_free()
+	for palette in Configs.savedata.get_palettes():
+		var palette_config := PaletteConfigWidgetScene.instantiate()
+		palette_container.add_child(palette_config)
+		palette_config.assign_palette(palette)
+		palette_config.layout_changed.connect(rebuild_palettes)
+	
+	# Add the buttons for adding a new palette.
+	var spacer := Control.new()
+	palette_container.add_child(spacer)
+	var hbox := HBoxContainer.new()
+	hbox.alignment = BoxContainer.ALIGNMENT_CENTER
+	palette_container.add_child(hbox)
+	
+	var add_palette_button := Button.new()
+	add_palette_button.theme_type_variation = "TranslucentButton"
+	add_palette_button.icon = plus_icon
+	add_palette_button.text = Translator.translate("New palette")
+	add_palette_button.focus_mode = Control.FOCUS_NONE
+	add_palette_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+	add_palette_button.pressed.connect(add_empty_palette)
+	hbox.add_child(add_palette_button)
+	
+	var xml_palette_button := Button.new()
+	xml_palette_button.theme_type_variation = "TranslucentButton"
+	xml_palette_button.icon = import_icon
+	xml_palette_button.text = Translator.translate("New palette from XML")
+	xml_palette_button.focus_mode = Control.FOCUS_NONE
+	xml_palette_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+	hbox.add_child(xml_palette_button)
+	xml_palette_button.pressed.connect(_popup_xml_palette_options.bind(xml_palette_button))
+
+
+func show_shortcuts(shortcut_category: ShortcutUtils.ShortcutCategory) -> void:
 	var shortcuts_container := content_container.get_child(-1).get_child(-1)
 	for child in shortcuts_container.get_children():
 		child.queue_free()
 	
-	for action in ShortcutUtils.get_actions(category):
+	for action in ShortcutUtils.get_actions(shortcut_category):
 		var shortcut_config := ShortcutConfigWidgetScene.instantiate() if\
 				ShortcutUtils.is_action_modifiable(action) else\
 				ShortcutShowcaseWidgetScene.instantiate()
@@ -1128,8 +1177,3 @@ func show_shortcuts(category: String) -> void:
 		shortcuts_container.add_child(shortcut_config)
 		shortcut_config.label.text = TranslationUtils.get_action_description(action)
 		shortcut_config.setup(action)
-
-func create_setting_container() -> void:
-	setting_container = VBoxContainer.new()
-	setting_container.add_theme_constant_override("separation", 6)
-	setting_container.size_flags_horizontal = Control.SIZE_EXPAND_FILL

@@ -1,5 +1,16 @@
 @abstract class_name ShortcutUtils
 
+enum ShortcutCategory {FILE, EDIT, VIEW, TOOL, HELP}
+
+static var shortcut_category_localized_names: Dictionary[ShortcutCategory, String] = {
+	ShortcutCategory.FILE: Translator.translate("File"),
+	ShortcutCategory.EDIT: Translator.translate("Edit"),
+	ShortcutCategory.VIEW: Translator.translate("View"),
+	ShortcutCategory.TOOL: Translator.translate("Tool"),
+	ShortcutCategory.HELP: Translator.translate("Help"),
+}
+
+
 # Can be activated in all contexts.
 const UNIVERSAL_ACTIONS: PackedStringArray = ["quit", "toggle_fullscreen", "about_info",
 		"about_donate", "check_updates", "open_settings", "about_repo", "about_website",
@@ -22,8 +33,8 @@ const PRISTINE_ACTIONS: PackedStringArray = ["ui_undo", "ui_redo", "ui_cancel", 
 
 
 # The bool after each action is for whether the action can be modified.
-const _action_categories_dict: Dictionary[String, Dictionary] = {
-	"file": {
+const _action_categories_dict: Dictionary[ShortcutCategory, Dictionary] = {
+	ShortcutCategory.FILE: {
 		"import": true,
 		"export": true,
 		"save": true,
@@ -43,7 +54,7 @@ const _action_categories_dict: Dictionary[String, Dictionary] = {
 		"open_externally": true,
 		"open_in_folder": true,
 	},
-	"edit": {
+	ShortcutCategory.EDIT: {
 		"ui_undo": true,
 		"ui_redo": true,
 		"ui_copy": true,
@@ -56,7 +67,7 @@ const _action_categories_dict: Dictionary[String, Dictionary] = {
 		"delete": true,
 		"find": true,
 	},
-	"view": {
+	ShortcutCategory.VIEW: {
 		"zoom_in": true,
 		"zoom_out": true,
 		"zoom_reset": true,
@@ -69,7 +80,7 @@ const _action_categories_dict: Dictionary[String, Dictionary] = {
 		"view_show_reference": true,
 		"view_overlay_reference": true,
 	},
-	"tool": {
+	ShortcutCategory.TOOL: {
 		"toggle_snap": true,
 		"move_relative": false,
 		"move_absolute": false,
@@ -92,7 +103,7 @@ const _action_categories_dict: Dictionary[String, Dictionary] = {
 		"shorthand_cubic_bezier_relative": false,
 		"shorthand_cubic_bezier_absolute": false,
 	},
-	"help": {
+	ShortcutCategory.HELP: {
 		"quit": false,
 		"open_settings": true,
 		"about_info": true,
@@ -135,7 +146,7 @@ static func get_action_icon(action: String) -> Texture2D:
 		"load_reference": return load("res://assets/icons/Reference.svg")
 		_: return load("res://assets/icons/Placeholder.svg")
 
-static func get_actions(category: String) -> PackedStringArray:
+static func get_actions(category: ShortcutCategory) -> PackedStringArray:
 	return _action_categories_dict[category].keys()
 
 static func get_all_actions() -> PackedStringArray:

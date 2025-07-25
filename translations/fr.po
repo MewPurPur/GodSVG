@@ -444,6 +444,11 @@ msgid "Snap"
 msgstr "Aimanter"
 
 #: src/ui_parts/settings_menu.gd:
+#, fuzzy
+msgid "Search setting"
+msgstr "Paramètres"
+
+#: src/ui_parts/settings_menu.gd:
 msgid "Formatting"
 msgstr "Formatage"
 

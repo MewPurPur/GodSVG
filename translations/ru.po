@@ -445,6 +445,11 @@ msgid "Snap"
 msgstr "Привязка"
 
 #: src/ui_parts/settings_menu.gd:
+#, fuzzy
+msgid "Search setting"
+msgstr "Настройки"
+
+#: src/ui_parts/settings_menu.gd:
 msgid "Formatting"
 msgstr "Форматирование"
 
