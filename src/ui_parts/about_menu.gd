@@ -132,7 +132,7 @@ func _on_tab_changed(idx: int) -> void:
 			var godsvg_parts_label := Label.new()
 			godsvg_parts_label.text = "GodSVG components"
 			var godot_parts_label := Label.new()
-			godot_parts_label.text = "Godot components"
+			godot_parts_label.text = "Godot Engine components"
 			var license_texts_label := Label.new()
 			license_texts_label.text = "Licenses"
 			for label: Label in [godsvg_parts_label, godot_parts_label, license_texts_label]:

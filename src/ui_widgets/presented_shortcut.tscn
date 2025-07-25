@@ -21,7 +21,7 @@ theme_override_constants/separation = 6
 
 [node name="Label" type="Label" parent="MarginContainer/MainContainer"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 15
+theme_type_variation = &"TitleLabel"
 horizontal_alignment = 1
 
 [node name="ShortcutContainer" type="HBoxContainer" parent="MarginContainer/MainContainer"]
