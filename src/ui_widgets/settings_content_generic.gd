@@ -67,8 +67,12 @@ func _ready() -> void:
 			btn.button_group = button_group
 			btn.pressed.connect(_set_current_setup_resource_index.bind(idx))
 			btn.pressed.connect(setup_content)
-			btn.text = Translator.translate("Editor formatter") if\
-					current_setup_resource_index == 0 else Translator.translate("Export formatter")
+			var update_category_button_text := func() -> void:
+					btn.text = Translator.translate("Editor formatter") if\
+							current_setup_resource_index == 0 else\
+							Translator.translate("Export formatter")
+			Configs.language_changed.connect(update_category_button_text)
+			update_category_button_text.call()
 			btn.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 			btn.focus_mode = Control.FOCUS_NONE
 			btn.action_mode = BaseButton.ACTION_MODE_BUTTON_PRESS

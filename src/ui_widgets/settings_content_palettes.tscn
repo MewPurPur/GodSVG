@@ -1,0 +1,33 @@
+[gd_scene load_steps=4 format=3 uid="uid://b3xlygg7jbmb5"]
+
+[ext_resource type="Script" uid="uid://2gb2si1sw30b" path="res://src/ui_widgets/settings_content_palettes.gd" id="1_6ajas"]
+[ext_resource type="Texture2D" uid="uid://eif2ioi0mw17" path="res://assets/icons/Plus.svg" id="2_ywgeg"]
+[ext_resource type="Texture2D" uid="uid://6ymbl3jqersp" path="res://assets/icons/Import.svg" id="3_p0ru4"]
+
+[node name="SettingsContentPalettes" type="VBoxContainer"]
+offset_right = 40.0
+offset_bottom = 40.0
+theme_override_constants/separation = 8
+script = ExtResource("1_6ajas")
+
+[node name="PaletteContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="ButtonsContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 6
+alignment = 1
+
+[node name="AddButton" type="Button" parent="ButtonsContainer"]
+layout_mode = 2
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_type_variation = &"TranslucentButton"
+icon = ExtResource("2_ywgeg")
+
+[node name="ImportButton" type="Button" parent="ButtonsContainer"]
+layout_mode = 2
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_type_variation = &"TranslucentButton"
+icon = ExtResource("3_p0ru4")

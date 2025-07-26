@@ -1,0 +1,15 @@
+[gd_scene load_steps=2 format=3 uid="uid://ybvhb027yskm"]
+
+[ext_resource type="Script" uid="uid://orlxtok0bt6x" path="res://src/ui_widgets/settings_content_shortcuts.gd" id="1_wf8o4"]
+
+[node name="SettingsContentShortcuts" type="VBoxContainer"]
+offset_right = 40.0
+offset_bottom = 40.0
+theme_override_constants/separation = 6
+script = ExtResource("1_wf8o4")
+
+[node name="CategoriesContainer" type="HFlowContainer" parent="."]
+layout_mode = 2
+
+[node name="ShortcutsContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
