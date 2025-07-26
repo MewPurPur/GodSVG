@@ -394,6 +394,14 @@ func activate() -> void:
 	var add_rect := get_add_button_rect()
 	var add_button := Button.new()
 	add_button.theme_type_variation = "FlatButton"
+	add_button.begin_bulk_theme_override()
+	const CONST_ARR: PackedStringArray = ["hover", "pressed"]
+	for stylebox_theme in CONST_ARR:
+		var sb: StyleBoxFlat = add_button.get_theme_stylebox(stylebox_theme, "FlatButton").duplicate()
+		sb.corner_radius_bottom_left = 0
+		sb.corner_radius_bottom_right = 0
+		add_button.add_theme_stylebox_override(stylebox_theme, sb)
+	add_button.end_bulk_theme_override()
 	add_button.focus_mode = Control.FOCUS_NONE
 	add_button.position = add_rect.position
 	add_button.size = add_rect.size
