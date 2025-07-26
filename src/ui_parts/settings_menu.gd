@@ -457,24 +457,19 @@ func add_profile_picker(text: String, application_callback: Callable, profile_co
 value_text_map: Dictionary, disabled_check_callback: Callable) -> void:
 	var bind := current_setup_setting
 	var frame := ProfileFrameScene.instantiate()
-	frame.setup_dropdown(range(profile_count), value_text_map)
-	frame.getter = current_setup_resource.get.bind(bind)
-	var resource_permanent_ref := current_setup_resource
-	frame.setter = func(p: Variant) -> void:
-			resource_permanent_ref.set(bind, p)
-	frame.mouse_entered.connect(show_preview.bind(current_setup_setting))
-	frame.mouse_exited.connect(hide_preview.bind(current_setup_setting))
 	frame.text = text
+	setup_frame(frame, false)
+	frame.setup_dropdown(range(profile_count), value_text_map)
 	frame.disabled_check_callback = disabled_check_callback
 	frame.value_changed.connect.call_deferred(setup_content.bind(false))
 	frame.defaults_applied.connect(application_callback)
 	frame.defaults_applied.connect(setup_content.bind(false))
 	add_frame(frame)
 	
+	var resource_permanent_ref := current_setup_resource
 	resource_permanent_ref.changed_deferred.connect(frame.button_update_disabled)
 	frame.tree_exited.connect(resource_permanent_ref.changed_deferred.disconnect.bind(
 			frame.button_update_disabled), CONNECT_ONE_SHOT)
-	
 
 func add_checkbox(text: String, dim_text := false) -> Control:
 	var frame := SettingFrameScene.instantiate()
@@ -530,11 +525,12 @@ func add_color_edit(text: String, enable_alpha := true) -> Control:
 	add_frame(frame)
 	return frame
 
-func setup_frame(frame: Control) -> void:
+func setup_frame(frame: Control, has_defaults := true) -> void:
 	var bind := current_setup_setting
 	frame.getter = current_setup_resource.get.bind(bind)
 	frame.setter = func(p: Variant) -> void: current_setup_resource.set(bind, p)
-	frame.default = current_setup_resource.get_setting_default(current_setup_setting)
+	if has_defaults:
+		frame.default = current_setup_resource.get_setting_default(current_setup_setting)
 	frame.mouse_entered.connect(show_preview.bind(current_setup_setting))
 	frame.mouse_exited.connect(hide_preview.bind(current_setup_setting))
 
