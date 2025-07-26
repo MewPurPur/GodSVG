@@ -1,14 +1,8 @@
 extends PanelContainer
 
-const PaletteConfigWidgetScene = preload("res://src/ui_widgets/palette_config.tscn")
-const ShortcutConfigWidgetScene = preload("res://src/ui_widgets/setting_shortcut.tscn")
-const ShortcutShowcaseWidgetScene = preload("res://src/ui_widgets/presented_shortcut.tscn")
-
 const SettingsContentGeneric = preload("res://src/ui_widgets/settings_content_generic.tscn")
-
-const plus_icon = preload("res://assets/icons/Plus.svg")
-const import_icon = preload("res://assets/icons/Import.svg")
-const reset_icon = preload("res://assets/icons/Reload.svg")
+const SettingsContentPalettes = preload("res://src/ui_widgets/settings_content_palettes.tscn")
+const SettingsContentShortcuts = preload("res://src/ui_widgets/settings_content_shortcuts.tscn")
 
 @onready var lang_button: Button = $VBoxContainer/Language
 @onready var scroll_container: ScrollContainer = %ScrollContainer
@@ -19,19 +13,18 @@ const reset_icon = preload("res://assets/icons/Reload.svg")
 
 enum TabIndex {FORMATTING, PALETTES, SHORTCUTS, THEMING, TAB_BAR, OTHER}
 
-var tab_localized_names: Dictionary[TabIndex, String] = {
-	TabIndex.FORMATTING: Translator.translate("Formatting"),
-	TabIndex.PALETTES: Translator.translate("Palettes"),
-	TabIndex.SHORTCUTS: Translator.translate("Shortcuts"),
-	TabIndex.THEMING: Translator.translate("Theming"),
-	TabIndex.TAB_BAR: Translator.translate("Tab bar"),
-	TabIndex.OTHER: Translator.translate("Other"),
-}
+func get_tab_localized_name(tab_index: TabIndex) -> String:
+	match tab_index:
+		TabIndex.FORMATTING: return Translator.translate("Formatting")
+		TabIndex.PALETTES: return Translator.translate("Palettes")
+		TabIndex.SHORTCUTS: return Translator.translate("Shortcuts")
+		TabIndex.THEMING: return Translator.translate("Theming")
+		TabIndex.TAB_BAR: return Translator.translate("Tab bar")
+		TabIndex.OTHER: return Translator.translate("Other")
+	return ""
 
 @warning_ignore("int_as_enum_without_match")
-var focused_tab_index := -1 as TabIndex 
-
-var current_content: Control
+var focused_tab_index := -1 as TabIndex
 
 func _ready() -> void:
 	close_button.pressed.connect(queue_free)
@@ -76,7 +69,7 @@ func setup_tabs() -> void:
 	var button_group := ButtonGroup.new()
 	for tab_index in TabIndex.size():
 		var tab := Button.new()
-		tab.text = tab_localized_names[tab_index]
+		tab.text = get_tab_localized_name(tab_index)
 		tab.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		tab.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 		tab.toggle_mode = true
@@ -102,46 +95,22 @@ func setup_content() -> void:
 	match focused_tab_index:
 		TabIndex.FORMATTING:
 			preview_panel.show()
-			current_content = SettingsContentGeneric.instantiate()
+			var current_content := SettingsContentGeneric.instantiate()
 			current_content.setup([Configs.savedata.editor_formatter,
 					Configs.savedata.export_formatter] as Array[ConfigResource], focused_tab_index)
 			content_container.add_child(current_content)
 			current_content.preview_changed.connect(set_preview)
 		TabIndex.PALETTES:
 			preview_panel.hide()
-			var vbox := VBoxContainer.new()
-			vbox.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-			content_container.add_child(vbox)
-			rebuild_palettes()
+			var current_content := SettingsContentPalettes.instantiate()
+			content_container.add_child(current_content)
 		TabIndex.SHORTCUTS:
 			preview_panel.hide()
-			var vbox := VBoxContainer.new()
-			vbox.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-			vbox.add_theme_constant_override("separation", 6)
-			content_container.add_child(vbox)
-			var categories := HFlowContainer.new()
-			var button_group := ButtonGroup.new()
-			for tab_idx in shortcut_tab_names:
-				var btn := Button.new()
-				btn.toggle_mode = true
-				btn.button_group = button_group
-				btn.pressed.connect(show_shortcuts.bind(tab_idx))
-				btn.text = get_translated_shortcut_tab(tab_idx)
-				btn.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-				btn.focus_mode = Control.FOCUS_NONE
-				btn.action_mode = BaseButton.ACTION_MODE_BUTTON_PRESS
-				categories.add_child(btn)
-			vbox.add_child(categories)
-			var shortcuts := VBoxContainer.new()
-			shortcuts.add_theme_constant_override("separation", 3)
-			shortcuts.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-			shortcuts.size_flags_vertical = Control.SIZE_EXPAND_FILL
-			vbox.add_child(shortcuts)
-			categories.get_child(0).button_pressed = true
-			categories.get_child(0).pressed.emit()
+			var current_content := SettingsContentShortcuts.instantiate()
+			content_container.add_child(current_content)
 		TabIndex.THEMING, TabIndex.TAB_BAR, TabIndex.OTHER:
 			preview_panel.show()
-			current_content = SettingsContentGeneric.instantiate()
+			var current_content := SettingsContentGeneric.instantiate()
 			current_content.setup([Configs.savedata] as Array[ConfigResource], focused_tab_index)
 			content_container.add_child(current_content)
 			current_content.preview_changed.connect(set_preview)
@@ -184,103 +153,3 @@ func _on_language_pressed() -> void:
 
 func _on_language_chosen(locale: String) -> void:
 	Configs.savedata.language = locale
-
-
-# Palette tab helpers.
-
-func _popup_xml_palette_options(palette_xml_button: Button) -> void:
-	var btn_arr: Array[Button] = []
-	btn_arr.append(ContextPopup.create_button(Translator.translate("Import XML"),
-			add_imported_palette, false, load("res://assets/icons/Import.svg")))
-	btn_arr.append(ContextPopup.create_button(Translator.translate("Paste XML"),
-			add_pasted_palette, !Palette.is_valid_palette(Utils.get_clipboard_web_safe()),
-			load("res://assets/icons/Paste.svg")))
-	
-	var context_popup := ContextPopup.new()
-	context_popup.setup(btn_arr, true)
-	HandlerGUI.popup_under_rect_center(context_popup, palette_xml_button.get_global_rect(),
-			get_viewport())
-
-
-func add_empty_palette() -> void:
-	_shared_add_palette_logic(Palette.new())
-
-func add_pasted_palette() -> void:
-	_shared_add_palettes_logic(Palette.text_to_palettes(Utils.get_clipboard_web_safe()))
-
-func add_imported_palette() -> void:
-	FileUtils.open_xml_import_dialog(_on_import_palette_finished)
-
-func _on_import_palette_finished(file_text: String) -> void:
-	_shared_add_palettes_logic(Palette.text_to_palettes(file_text))
-
-func _shared_add_palettes_logic(palettes: Array[Palette]) -> void:
-	if not palettes.is_empty():
-		_shared_add_palette_logic(palettes[0])
-
-func _shared_add_palette_logic(palette: Palette) -> void:
-	Configs.savedata.add_palette(palette)
-	rebuild_palettes()
-
-
-func rebuild_palettes() -> void:
-	var palette_container := content_container.get_child(-1)
-	for palette_config in palette_container.get_children():
-		palette_config.queue_free()
-	for palette in Configs.savedata.get_palettes():
-		var palette_config := PaletteConfigWidgetScene.instantiate()
-		palette_container.add_child(palette_config)
-		palette_config.assign_palette(palette)
-		palette_config.layout_changed.connect(rebuild_palettes)
-	
-	# Add the buttons for adding a new palette.
-	var spacer := Control.new()
-	palette_container.add_child(spacer)
-	var hbox := HBoxContainer.new()
-	hbox.alignment = BoxContainer.ALIGNMENT_CENTER
-	palette_container.add_child(hbox)
-	
-	var add_palette_button := Button.new()
-	add_palette_button.theme_type_variation = "TranslucentButton"
-	add_palette_button.icon = plus_icon
-	add_palette_button.text = Translator.translate("New palette")
-	add_palette_button.focus_mode = Control.FOCUS_NONE
-	add_palette_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-	add_palette_button.pressed.connect(add_empty_palette)
-	hbox.add_child(add_palette_button)
-	
-	var xml_palette_button := Button.new()
-	xml_palette_button.theme_type_variation = "TranslucentButton"
-	xml_palette_button.icon = import_icon
-	xml_palette_button.text = Translator.translate("New palette from XML")
-	xml_palette_button.focus_mode = Control.FOCUS_NONE
-	xml_palette_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-	hbox.add_child(xml_palette_button)
-	xml_palette_button.pressed.connect(_popup_xml_palette_options.bind(xml_palette_button))
-
-
-var shortcut_tab_names := PackedStringArray(["file", "edit", "view", "tool", "help"])
-
-func get_translated_shortcut_tab(tab_idx: String) -> String:
-	match tab_idx:
-		"file": return Translator.translate("File")
-		"edit": return Translator.translate("Edit")
-		"view": return Translator.translate("View")
-		"tool": return Translator.translate("Tool")
-		"help": return Translator.translate("Help")
-	return ""
-
-
-func show_shortcuts(category: String) -> void:
-	var shortcuts_container := content_container.get_child(-1).get_child(-1)
-	for child in shortcuts_container.get_children():
-		child.queue_free()
-	
-	for action in ShortcutUtils.get_actions(category):
-		var shortcut_config := ShortcutConfigWidgetScene.instantiate() if\
-				ShortcutUtils.is_action_modifiable(action) else\
-				ShortcutShowcaseWidgetScene.instantiate()
-		
-		shortcuts_container.add_child(shortcut_config)
-		shortcut_config.label.text = TranslationUtils.get_action_description(action)
-		shortcut_config.setup(action)
