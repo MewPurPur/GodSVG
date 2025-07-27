@@ -104,21 +104,21 @@ func _on_clipboard_button_pressed() -> void:
 
 func _on_dropdown_value_changed(new_value: String) -> void:
 	var current_format := export_data.format
-	undo_redo.create_action("")
+	undo_redo.create_action()
 	undo_redo.add_do_property(export_data, "format", new_value)
 	undo_redo.add_undo_property(export_data, "format", current_format)
 	undo_redo.commit_action()
 
 func _on_lossless_check_box_toggled(toggled_on: bool) -> void:
 	var current_lossy := export_data.lossy
-	undo_redo.create_action("")
+	undo_redo.create_action()
 	undo_redo.add_do_property(export_data, "lossy", not toggled_on)
 	undo_redo.add_undo_property(export_data, "lossy", current_lossy)
 	undo_redo.commit_action()
 
 func _on_quality_value_changed(new_value: float) -> void:
 	var current_quality := export_data.quality
-	undo_redo.create_action("")
+	undo_redo.create_action()
 	undo_redo.add_do_property(export_data, "quality", new_value / 100)
 	undo_redo.add_undo_property(export_data, "quality", current_quality)
 	undo_redo.commit_action()
@@ -127,7 +127,7 @@ func _on_scale_edit_value_changed(new_value: float) -> void:
 	if new_value == export_data.upscale_amount:
 		return
 	var current_upscale_amount := export_data.upscale_amount
-	undo_redo.create_action("")
+	undo_redo.create_action()
 	undo_redo.add_do_property(export_data, "upscale_amount", new_value)
 	undo_redo.add_undo_property(export_data, "upscale_amount", current_upscale_amount)
 	undo_redo.commit_action()
@@ -136,7 +136,7 @@ func _on_width_edit_value_changed(new_value: float) -> void:
 	if roundi(dimensions.x * export_data.upscale_amount) == roundi(new_value):
 		return
 	var current_upscale_amount := export_data.upscale_amount
-	undo_redo.create_action("")
+	undo_redo.create_action()
 	undo_redo.add_do_property(export_data, "upscale_amount", new_value / dimensions.x)
 	undo_redo.add_undo_property(export_data, "upscale_amount", current_upscale_amount)
 	undo_redo.commit_action()
@@ -145,7 +145,7 @@ func _on_height_edit_value_changed(new_value: float) -> void:
 	if roundi(dimensions.y * export_data.upscale_amount) == roundi(new_value):
 		return
 	var current_upscale_amount := export_data.upscale_amount
-	undo_redo.create_action("")
+	undo_redo.create_action()
 	undo_redo.add_do_property(export_data, "upscale_amount", new_value / dimensions.y)
 	undo_redo.add_undo_property(export_data, "upscale_amount", current_upscale_amount)
 	undo_redo.commit_action()

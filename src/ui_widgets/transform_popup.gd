@@ -104,7 +104,7 @@ func create_mini_number_field(idx: int, property: String) -> BetterLineEdit:
 
 
 func update_value(new_value: float, idx: int, property: String) -> void:
-	undo_redo.create_action("")
+	undo_redo.create_action()
 	undo_redo.add_do_method(attribute_ref.set_transform_property.bind(idx, property, new_value))
 	undo_redo.add_do_method(rebuild)
 	undo_redo.add_undo_method(attribute_ref.set_transform_list.bind(get_transform_list()))
@@ -112,7 +112,7 @@ func update_value(new_value: float, idx: int, property: String) -> void:
 	undo_redo.commit_action()
 
 func insert_transform(idx: int, transform_type: String) -> void:
-	undo_redo.create_action("")
+	undo_redo.create_action()
 	undo_redo.add_do_method(attribute_ref.insert_transform.bind(idx, transform_type))
 	undo_redo.add_do_method(rebuild)
 	undo_redo.add_undo_method(attribute_ref.set_transform_list.bind(get_transform_list()))
@@ -120,7 +120,7 @@ func insert_transform(idx: int, transform_type: String) -> void:
 	undo_redo.commit_action()
 
 func delete_transform(idx: int) -> void:
-	undo_redo.create_action("")
+	undo_redo.create_action()
 	undo_redo.add_do_method(attribute_ref.delete_transform.bind(idx))
 	undo_redo.add_do_method(rebuild)
 	undo_redo.add_undo_method(attribute_ref.set_transform_list.bind(get_transform_list()))
@@ -129,7 +129,7 @@ func delete_transform(idx: int) -> void:
 
 func _on_apply_matrix_pressed() -> void:
 	var final_transform := attribute_ref.get_final_precise_transform()
-	undo_redo.create_action("")
+	undo_redo.create_action()
 	undo_redo.add_do_method(attribute_ref.set_transform_list.bind([
 			Transform.TransformMatrix.new(final_transform[0], final_transform[1],
 			final_transform[2], final_transform[3], final_transform[4],
