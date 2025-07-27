@@ -45,7 +45,7 @@ func set_svg_text(new_text: String) -> void:
 	if not is_instance_valid(undo_redo):
 		undo_redo = UndoRedoRef.new()
 	var old_value := _svg_text
-	undo_redo.create_action("")
+	undo_redo.create_action()
 	undo_redo.add_do_property(self, "_svg_text", new_text)
 	undo_redo.add_undo_property(self, "_svg_text", old_value)
 	undo_redo.add_do_property(State, "svg_text", new_text)

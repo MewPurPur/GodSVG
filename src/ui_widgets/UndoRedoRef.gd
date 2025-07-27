@@ -11,7 +11,7 @@ var _undo_redo := UndoRedo.new()
 func _init() -> void:
 	_undo_redo.version_changed.connect(version_changed.emit)
 
-func create_action(name: String) -> void:
+func create_action(name := "") -> void:
 	_undo_redo.create_action(name)
 
 func add_do_method(callable: Callable) -> void:
@@ -46,6 +46,9 @@ func has_undo() -> bool:
 
 func has_redo() -> bool:
 	return _undo_redo.has_redo()
+
+func clear_history() -> void:
+	_undo_redo.clear_history()
 
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_PREDELETE:

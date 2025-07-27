@@ -188,7 +188,7 @@ func register_visual_change(new_color: Color, use_backup := true) -> void:
 	new_color == (backup_display_color if use_backup else display_color):
 		return
 	
-	undo_redo.create_action("")
+	undo_redo.create_action()
 	undo_redo.add_do_method(set_color.bind(hex(new_color), new_color))
 	if use_backup:
 		undo_redo.add_undo_method(set_color.bind(backup_color, backup_display_color))
@@ -395,7 +395,7 @@ func _on_keyword_button_pressed() -> void:
 			get_viewport())
 
 func set_to_keyword(keyword: String) -> void:
-	undo_redo.create_action("")
+	undo_redo.create_action()
 	if color.strip_edges() == keyword:
 		undo_redo.add_do_method(set_color.bind(backup_color, backup_display_color))
 		undo_redo.add_undo_method(set_color.bind(color, display_color))
@@ -407,7 +407,7 @@ func set_to_keyword(keyword: String) -> void:
 
 func _on_reset_color_button_pressed() -> void:
 	reset_color_button.disabled = true
-	undo_redo.create_action("")
+	undo_redo.create_action()
 	undo_redo.add_do_method(set_color.bind(starting_color, starting_display_color))
 	undo_redo.add_undo_method(set_color.bind(color, display_color))
 	undo_redo.commit_action()
