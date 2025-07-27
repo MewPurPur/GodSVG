@@ -2,13 +2,14 @@ extends PanelContainer
 
 const delete_icon := preload("res://assets/icons/Delete.svg")
 
+signal shortcuts_modified(new_shortcuts: Array[InputEvent])
+
 @onready var label: Label = %MainContainer/Label
 @onready var reset_button: Button = %MainContainer/HBoxContainer/ResetButton
 @onready var shortcut_container: HBoxContainer = %ShortcutContainer
 @onready var shortcut_buttons: Array[Button] = []
 
 var action: String
-var events: Array[InputEvent] = []
 
 var listening_idx := -1
 var pending_event: InputEventKey
@@ -19,16 +20,16 @@ func sync_localization() -> void:
 func _ready() -> void:
 	reset_button.pressed.connect(_on_reset_button_pressed)
 	Configs.language_changed.connect(sync_localization)
-	Configs.shortcuts_changed.connect(check_shortcuts_validity)
+	Configs.shortcuts_changed.connect(sync)
 	sync_localization()
 
 func setup(new_action: String) -> void:
 	action = new_action
-	events = InputMap.action_get_events(action)
 	sync()
 
 # Syncs based on current events.
 func sync() -> void:
+	var events := InputMap.action_get_events(action)
 	# Show the reset button if any of the actions don't match.
 	var action_defaults: Array[InputEvent] = Configs.default_shortcuts[action]
 	if events.size() != action_defaults.size():
@@ -142,12 +143,9 @@ func cancel_listening() -> void:
 
 
 func delete_shortcut(idx: int) -> void:
-	events.remove_at(idx)
-	update_shortcut()
-	sync()
-
-func update_shortcut() -> void:
-	Configs.savedata.action_modify_shortcuts(action, events)
+	var new_events := InputMap.action_get_events(action)
+	new_events.remove_at(idx)
+	shortcuts_modified.emit(new_events)
 
 func _input(event: InputEvent) -> void:
 	if not (listening_idx >= 0 and event is InputEventKey):
@@ -186,20 +184,19 @@ func _input(event: InputEvent) -> void:
 			saved_event.alt_pressed = pending_event.alt_pressed
 			saved_event.shift_pressed = pending_event.shift_pressed
 			
-			if listening_idx < events.size():
-				events[listening_idx] = saved_event
+			var new_events := InputMap.action_get_events(action)
+			if listening_idx < new_events.size():
+				new_events[listening_idx] = saved_event
 			else:
-				events.append(saved_event)
-		update_shortcut()
-		sync()
+				new_events.append(saved_event)
+			shortcuts_modified.emit(new_events)
+		
 		pending_event = null
 		setup_shortcut_button_font_colors(shortcut_button, ThemeUtils.editable_text_color)
 		listening_idx = -1
 
 func _on_reset_button_pressed() -> void:
-	events = Configs.default_shortcuts[action].duplicate(true)
-	update_shortcut()
-	sync()
+	shortcuts_modified.emit(Configs.default_shortcuts[action])
 
 func setup_shortcut_button_font_colors(button: Button, color: Color) -> void:
 	var dim_color := Color(color, 0.8)
@@ -220,6 +217,7 @@ func set_shortcut_button_text(button: Button, new_text: String) -> void:
 	button.text = new_text
 
 func check_shortcuts_validity() -> void:
+	var events := InputMap.action_get_events(action)
 	for i in events.size():
 		var event := events[i]
 		var shortcut_btn := shortcut_buttons[i]

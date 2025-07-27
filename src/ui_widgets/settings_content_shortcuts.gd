@@ -8,6 +8,8 @@ const ShortcutShowcaseWidgetScene = preload("res://src/ui_widgets/presented_shor
 
 const shortcut_tab_names: PackedStringArray = ["file", "edit", "view", "tool", "help"]
 
+var undo_redo := UndoRedoRef.new()
+
 func get_translated_shortcut_tab(tab_idx: String) -> String:
 	match tab_idx:
 		"file": return Translator.translate("File")
@@ -35,16 +37,35 @@ func _ready() -> void:
 	categories_container.get_child(0).button_pressed = true
 	categories_container.get_child(0).pressed.emit()
 
+func _unhandled_input(event: InputEvent) -> void:
+	if ShortcutUtils.is_action_pressed(event, "ui_undo"):
+		undo_redo.undo()
+	elif ShortcutUtils.is_action_pressed(event, "ui_redo"):
+		undo_redo.redo()
+
 
 func show_shortcuts(category: String) -> void:
+	undo_redo.clear_history()
 	for child in shortcuts_container.get_children():
 		child.queue_free()
 	
 	for action in ShortcutUtils.get_actions(category):
-		var shortcut_config := ShortcutConfigWidgetScene.instantiate() if\
-				ShortcutUtils.is_action_modifiable(action) else\
-				ShortcutShowcaseWidgetScene.instantiate()
+		var shortcut_config: Control
+		if ShortcutUtils.is_action_modifiable(action):
+			shortcut_config = ShortcutConfigWidgetScene.instantiate()
+			shortcut_config.shortcuts_modified.connect(
+					func(new_shortcuts: Array[InputEvent]) -> void:
+						_on_shortcuts_modified(action, new_shortcuts))
+		else:
+			shortcut_config = ShortcutShowcaseWidgetScene.instantiate()
 		
 		shortcuts_container.add_child(shortcut_config)
 		shortcut_config.label.text = TranslationUtils.get_action_description(action)
 		shortcut_config.setup(action)
+
+func _on_shortcuts_modified(action: String, new_shortcuts: Array[InputEvent]) -> void:
+	undo_redo.create_action()
+	undo_redo.add_do_method(Configs.savedata.action_modify_shortcuts.bind(action, new_shortcuts))
+	undo_redo.add_undo_method(Configs.savedata.action_modify_shortcuts.bind(action,
+			Configs.savedata.action_get_shortcuts(action)))
+	undo_redo.commit_action()
