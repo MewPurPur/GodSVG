@@ -26,10 +26,10 @@ func sync_theming() -> void:
 		stylebox.content_margin_bottom -= 2.0
 		stylebox.content_margin_left += 1.0
 		palette_button.add_theme_stylebox_override(theme_type, stylebox)
-	palette_button.end_bulk_theme_override()
 	var panel_stylebox := get_theme_stylebox("panel").duplicate()
 	panel_stylebox.content_margin_top = panel_stylebox.content_margin_bottom
 	add_theme_stylebox_override("panel", panel_stylebox)
+	palette_button.end_bulk_theme_override()
 
 
 # Used to setup a palette for this element.

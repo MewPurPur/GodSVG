@@ -59,9 +59,8 @@ func show_shortcuts(category: String) -> void:
 		else:
 			shortcut_config = ShortcutShowcaseWidgetScene.instantiate()
 		
+		shortcut_config.action = action
 		shortcuts_container.add_child(shortcut_config)
-		shortcut_config.label.text = TranslationUtils.get_action_description(action)
-		shortcut_config.setup(action)
 
 func _on_shortcuts_modified(action: String, new_shortcuts: Array[InputEvent]) -> void:
 	undo_redo.create_action()

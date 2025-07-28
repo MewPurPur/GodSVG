@@ -193,15 +193,13 @@ func get_dimensions_text(sides: Vector2, integer := false) -> String:
 			Utils.num_simple(sides.y, precision)]
 
 
-func _input(event: InputEvent) -> void:
+func _unhandled_input(event: InputEvent) -> void:
 	if not visible:
 		return
 	
-	if ShortcutUtils.is_action_pressed(event, "ui_redo"):
-		if undo_redo.has_redo():
-			undo_redo.redo()
+	if ShortcutUtils.is_action_pressed(event, "ui_undo"):
+		undo_redo.undo()
 		accept_event()
-	elif ShortcutUtils.is_action_pressed(event, "ui_undo"):
-		if undo_redo.has_undo():
-			undo_redo.undo()
+	elif ShortcutUtils.is_action_pressed(event, "ui_redo"):
+		undo_redo.redo()
 		accept_event()
