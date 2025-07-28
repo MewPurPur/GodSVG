@@ -980,7 +980,7 @@ msgstr "Няма точки"
 
 #: src/ui_widgets/presented_shortcut.gd: src/ui_widgets/setting_shortcut.gd:
 msgid "Also used by"
-msgstr "Използва се също от..."
+msgstr "Използва се също от"
 
 #: src/ui_widgets/profile_frame.gd:
 msgid "Apply"

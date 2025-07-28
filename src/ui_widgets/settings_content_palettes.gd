@@ -6,6 +6,8 @@ const PaletteConfigWidgetScene = preload("res://src/ui_widgets/palette_config.ts
 @onready var add_button: Button = $ButtonsContainer/AddButton
 @onready var import_button: Button = $ButtonsContainer/ImportButton
 
+var undo_redo := UndoRedoRef.new()
+
 func _ready() -> void:
 	Configs.language_changed.connect(sync_localization)
 	sync_localization()

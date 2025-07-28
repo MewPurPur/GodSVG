@@ -184,12 +184,12 @@ func popup_new_transform_context(idx: int, control: Control) -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if ShortcutUtils.is_action_pressed(event, "ui_redo"):
-		if undo_redo.has_redo():
-			undo_redo.redo()
-	elif ShortcutUtils.is_action_pressed(event, "ui_undo"):
-		if undo_redo.has_undo():
-			undo_redo.undo()
+	if ShortcutUtils.is_action_pressed(event, "ui_undo"):
+		undo_redo.undo()
+		accept_event()
+	elif ShortcutUtils.is_action_pressed(event, "ui_redo"):
+		undo_redo.redo()
+		accept_event()
 
 
 # So I have to rebuild this in its entirety to keep the references safe or something...
