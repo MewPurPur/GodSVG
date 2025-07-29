@@ -4,6 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://cvh3kwbucf2n1" path="res://assets/icons/Reload.svg" id="2_n8e0s"]
 
 [node name="SettingShortcut" type="PanelContainer"]
+anchors_preset = -1
 offset_right = 172.0
 offset_bottom = 62.0
 mouse_filter = 1
