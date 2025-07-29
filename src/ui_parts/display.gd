@@ -49,7 +49,7 @@ func sync_theming() -> void:
 	frame.draw_center = false
 	frame.border_width_left = 2
 	frame.border_width_top = 2
-	frame.border_color = ThemeUtils.selected_tab_color.lerp(ThemeUtils.max_contrast_color, 0.16)
+	frame.border_color = ThemeUtils.overlay_panel_border_color
 	frame.content_margin_left = 2.0
 	frame.content_margin_top = 2.0
 	viewport_panel.add_theme_stylebox_override("panel", frame)

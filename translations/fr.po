@@ -278,7 +278,7 @@ msgstr "Nouvel élément"
 msgid "Dimensions"
 msgstr "Dimensions"
 
-#: src/ui_parts/export_menu.gd: src/ui_parts/settings_menu.gd:
+#: src/ui_parts/export_menu.gd: src/ui_widgets/settings_content_generic.gd:
 msgid "Size"
 msgstr "Taille"
 
@@ -302,7 +302,7 @@ msgstr "Qualité"
 msgid "Scale"
 msgstr "Échelle"
 
-#: src/ui_parts/export_menu.gd: src/ui_parts/settings_menu.gd:
+#: src/ui_parts/export_menu.gd: src/ui_widgets/settings_content_generic.gd:
 msgid "Width"
 msgstr "Largeur"
 
@@ -423,19 +423,19 @@ msgstr "Exclu(s)"
 msgid "Drag and drop to change the layout"
 msgstr "Glissez-déposez pour modifier la disposition"
 
-#: src/ui_parts/mac_menu.gd: src/ui_parts/settings_menu.gd:
+#: src/ui_parts/mac_menu.gd: src/ui_widgets/settings_content_shortcuts.gd:
 msgid "File"
 msgstr "Fichier"
 
-#: src/ui_parts/mac_menu.gd: src/ui_parts/settings_menu.gd:
+#: src/ui_parts/mac_menu.gd: src/ui_widgets/settings_content_shortcuts.gd:
 msgid "Edit"
 msgstr "Édition"
 
-#: src/ui_parts/mac_menu.gd: src/ui_parts/settings_menu.gd:
+#: src/ui_parts/mac_menu.gd: src/ui_widgets/settings_content_shortcuts.gd:
 msgid "Tool"
 msgstr "Outils"
 
-#: src/ui_parts/mac_menu.gd: src/ui_parts/settings_menu.gd:
+#: src/ui_parts/mac_menu.gd: src/ui_widgets/settings_content_shortcuts.gd:
 msgid "View"
 msgstr "Affichage"
 
@@ -468,376 +468,8 @@ msgid "Other"
 msgstr "Autre"
 
 #: src/ui_parts/settings_menu.gd:
-#, fuzzy
-msgid "Theme preset"
-msgstr "Réinitialiser le zoom"
-
-#: src/ui_parts/settings_menu.gd:
-msgid "Determines the default values of theming-related settings, including the highlighter preset."
-msgstr ""
-
-#: src/ui_parts/settings_menu.gd:
-#, fuzzy
-msgid "Primary theme colors"
-msgstr "Désactiver la couleur"
-
-#: src/ui_parts/settings_menu.gd:
-#, fuzzy
-msgid "Base color"
-msgstr "Couleurs basiques"
-
-#: src/ui_parts/settings_menu.gd:
-#, fuzzy
-msgid "Accent color"
-msgstr "Couleur de texte"
-
-#: src/ui_parts/settings_menu.gd:
-msgid "SVG Text colors"
-msgstr "Couleurs de texte SVG"
-
-#: src/ui_parts/settings_menu.gd:
-msgid "Highlighter preset"
-msgstr ""
-
-#: src/ui_parts/settings_menu.gd:
-msgid "Determines the default values of SVG highlighter settings."
-msgstr ""
-
-#: src/ui_parts/settings_menu.gd:
-msgid "Symbol color"
-msgstr "Couleur de symbole"
-
-#: src/ui_parts/settings_menu.gd:
-msgid "Element color"
-msgstr "Couleur d'élément"
-
-#: src/ui_parts/settings_menu.gd:
-msgid "Attribute color"
-msgstr "Couleur d'attribut"
-
-#: src/ui_parts/settings_menu.gd:
-msgid "String color"
-msgstr "Couleur de chaîne de caractères"
-
-#: src/ui_parts/settings_menu.gd:
-msgid "Comment color"
-msgstr "Couleur de commentaire"
-
-#: src/ui_parts/settings_menu.gd:
-msgid "Text color"
-msgstr "Couleur de texte"
-
-#. CDATA shouldn't be translated. It's a type of XML section.
-#: src/ui_parts/settings_menu.gd:
-msgid "CDATA color"
-msgstr "Couleur de CDATA"
-
-#: src/ui_parts/settings_menu.gd:
-msgid "Error color"
-msgstr "Couleur d'erreur"
-
-#. Refers to the draggable gizmos.
-#: src/ui_parts/settings_menu.gd:
-#, fuzzy
-msgid "Handles"
-msgstr "Taille des poignées"
-
-#: src/ui_parts/settings_menu.gd:
-msgid "Inside color"
-msgstr "Couleur d'intérieur"
-
-#: src/ui_parts/settings_menu.gd:
-msgid "Normal color"
-msgstr "Couleur d'élément normal"
-
-#: src/ui_parts/settings_menu.gd:
-msgid "Hovered color"
-msgstr "Couleur d'élément survolé"
-
-#: src/ui_parts/settings_menu.gd:
-msgid "Selected color"
-msgstr "Couleur d'élément selectionné"
-
-#: src/ui_parts/settings_menu.gd:
-msgid "Hovered selected color"
-msgstr "Couleur d'élément selectionné survolé"
-
-#: src/ui_parts/settings_menu.gd:
-#, fuzzy
-msgid "Selection rectangle"
-msgstr "Sélectionnez une image"
-
-#: src/ui_parts/settings_menu.gd:
-msgid "Speed"
-msgstr ""
-
-#. Refers to the selection rectangle's animated dashed stroke.
-#: src/ui_parts/settings_menu.gd:
-msgid "Dash length"
-msgstr ""
-
-#: src/ui_parts/settings_menu.gd:
-#, fuzzy
-msgid "Color {index}"
-msgstr "Pipette"
-
-#: src/ui_parts/settings_menu.gd:
-msgid "Basic colors"
-msgstr "Couleurs basiques"
-
-#: src/ui_parts/settings_menu.gd:
-#, fuzzy
-msgid "Canvas color"
-msgstr "Couleur d'intérieur"
-
-#: src/ui_parts/settings_menu.gd:
-msgid "Grid color"
-msgstr "Couleur de la grille"
-
-#: src/ui_parts/settings_menu.gd:
-msgid "Valid color"
-msgstr "Couleur valide"
-
-#: src/ui_parts/settings_menu.gd:
-msgid "Warning color"
-msgstr "Couleur d'avertissement"
-
-#: src/ui_parts/settings_menu.gd:
-msgid "Input"
-msgstr "Entrée"
-
-#: src/ui_parts/settings_menu.gd:
-msgid "Close tabs with middle mouse button"
-msgstr "Fermer les onglets avec la molette de la souris"
-
-#: src/ui_parts/settings_menu.gd:
-#, fuzzy
-msgid "When enabled, clicking on a tab with the middle mouse button closes it instead of simply focusing it."
-msgstr "Si activé, cliquer sur un onglet avec la molette de la souris fermera l'onglet. Si désactivé, cette action le rendra actif."
-
-#: src/ui_parts/settings_menu.gd:
-msgid "Invert zoom direction"
-msgstr "Inverser la direction du zoom"
-
-#: src/ui_parts/settings_menu.gd:
-msgid "Swaps the scroll directions for zooming in and zooming out."
-msgstr "Inverser les sens de défilement pour le zoom avant et le zoom arrière."
-
-#: src/ui_parts/settings_menu.gd:
-msgid "Wrap-around panning"
-msgstr "Défilement bouclé"
-
-#: src/ui_parts/settings_menu.gd:
-msgid "Use CTRL for zooming"
-msgstr "Utiliser CTRL pour zoomer"
-
-#: src/ui_parts/settings_menu.gd:
-#, fuzzy
-msgid "When enabled, scrolling pans the view instead of zooming in. To zoom, hold CTRL while scrolling."
-msgstr "Si activé, défiler fera balayer la vue. Pour zoomer, maintenez CTRL en défilant."
-
-#: src/ui_parts/settings_menu.gd:
-msgid "Display"
-msgstr ""
-
-#: src/ui_parts/settings_menu.gd:
-msgid "UI scale"
-msgstr "Échelle de l'interface"
-
-#: src/ui_parts/settings_menu.gd:
-msgid "Determines the scale factor for the interface."
-msgstr "Détermine le facteur d'échelle de l'interface."
-
-#. Stands for "Vertical Synchronization".
-#: src/ui_parts/settings_menu.gd:
-msgid "V-Sync"
-msgstr ""
-
-#: src/ui_parts/settings_menu.gd:
-msgid "Synchronizes graphics rendering with display refresh rate to prevent screen tearing artifacts. May increase input lag slightly."
-msgstr ""
-
-#: src/ui_parts/settings_menu.gd:
-#, fuzzy
-msgid "Maximum FPS"
-msgstr "Valeur d'IPS maximale personnalisée"
-
-#: src/ui_parts/settings_menu.gd:
-#, fuzzy
-msgid "Determines the maximum number of frames per second."
-msgstr "Si le taux de rafraîchissement est limité, cette valeur déterminera le nombre maximum d'images par seconde."
-
-#: src/ui_parts/settings_menu.gd:
-msgid "Keep Screen On"
-msgstr ""
-
-#: src/ui_parts/settings_menu.gd:
-msgid "Keeps the screen on even after inactivity, so the screensaver does not take over."
-msgstr ""
-
-#: src/ui_parts/settings_menu.gd:
-msgid "Miscellaneous"
-msgstr "Divers"
-
-#: src/ui_parts/settings_menu.gd:
-msgid "Use native file dialog"
-msgstr "Utiliser le sélecteur de fichiers natif"
-
-#: src/ui_parts/settings_menu.gd:
-msgid "Sync window title to file name"
-msgstr "Synchroniser le titre de la fenêtre avec le nom du fichier"
-
-#: src/ui_parts/settings_menu.gd:
-msgid "When enabled, adds the current file name before the \"GodSVG\" window title."
-msgstr ""
-
-#: src/ui_parts/settings_menu.gd:
 msgid "Language"
 msgstr "Langue"
-
-#: src/ui_parts/settings_menu.gd:
-msgid "Import XML"
-msgstr "Importer un fichier XML"
-
-#: src/ui_parts/settings_menu.gd:
-msgid "Paste XML"
-msgstr "Coller du XML"
-
-#: src/ui_parts/settings_menu.gd:
-msgid "New palette"
-msgstr "Nouvelle palette"
-
-#: src/ui_parts/settings_menu.gd:
-msgid "New palette from XML"
-msgstr "Nouvelle palette depuis du XML"
-
-#. Refers to the formatter used for GodSVG's code editor.
-#: src/ui_parts/settings_menu.gd:
-msgid "Editor formatter"
-msgstr "Formatage de l'éditeur"
-
-#. Refers to the formatter used when exporting.
-#: src/ui_parts/settings_menu.gd:
-msgid "Export formatter"
-msgstr "Formatage des fichiers exportés"
-
-#: src/ui_parts/settings_menu.gd:
-msgid "Help"
-msgstr "Aide"
-
-#: src/ui_parts/settings_menu.gd:
-msgid "Preset"
-msgstr "Préréglage"
-
-#: src/ui_parts/settings_menu.gd:
-#, fuzzy
-msgid "Determines the default values of the formatter configs."
-msgstr "Si le taux de rafraîchissement est limité, cette valeur déterminera le nombre maximum d'images par seconde."
-
-#: src/ui_parts/settings_menu.gd:
-msgid "Keep comments"
-msgstr "Garder les commentaires"
-
-#: src/ui_parts/settings_menu.gd:
-msgid "Add trailing newline"
-msgstr "Ajouter un saut de ligne final"
-
-#: src/ui_parts/settings_menu.gd:
-msgid "Use shorthand tag syntax"
-msgstr "Utiliser la syntaxe de balise raccourcie"
-
-#: src/ui_parts/settings_menu.gd:
-msgid "Space out the slash of shorthand tags"
-msgstr "Espacer le slash des balises raccourcies"
-
-#: src/ui_parts/settings_menu.gd:
-msgid "Use pretty formatting"
-msgstr "Utiliser le formatage élégant"
-
-#: src/ui_parts/settings_menu.gd:
-msgid "Use spaces instead of tabs"
-msgstr "Utiliser des espaces plutôt que des tabulations"
-
-#: src/ui_parts/settings_menu.gd:
-msgid "Number of indentation spaces"
-msgstr "Nombre d'espaces par indentation"
-
-#: src/ui_parts/settings_menu.gd:
-msgid "Numbers"
-msgstr "Nombres"
-
-#: src/ui_parts/settings_menu.gd:
-msgid "Remove leading zero"
-msgstr "Retirer le zéro initial"
-
-#: src/ui_parts/settings_menu.gd:
-msgid "Use exponential when shorter"
-msgstr "Noter en écriture scientifique si c'est plus court"
-
-#: src/ui_parts/settings_menu.gd:
-msgid "Colors"
-msgstr "Couleurs"
-
-#: src/ui_parts/settings_menu.gd:
-msgid "Use named colors"
-msgstr "Utiliser des couleurs nommées"
-
-#: src/ui_parts/settings_menu.gd:
-msgid "Primary syntax"
-msgstr "Syntaxe principale"
-
-#: src/ui_parts/settings_menu.gd:
-msgid "Capitalize hexadecimal letters"
-msgstr "Mettre en majuscule les nombres héxadécimaux"
-
-#: src/ui_parts/settings_menu.gd:
-msgid "Pathdata"
-msgstr "Données des chemins"
-
-#: src/ui_parts/settings_menu.gd:
-msgid "Compress numbers"
-msgstr "Compresser les nombres"
-
-#: src/ui_parts/settings_menu.gd:
-msgid "Minimize spacing"
-msgstr "Minimiser l'espacement"
-
-#: src/ui_parts/settings_menu.gd:
-msgid "Remove spacing after flags"
-msgstr "Retirer l'espacement après les marqueurs"
-
-#: src/ui_parts/settings_menu.gd:
-msgid "Remove consecutive commands"
-msgstr "Retirer les commandes consécutives"
-
-#: src/ui_parts/settings_menu.gd:
-msgid "Transform lists"
-msgstr "Transformer les listes"
-
-#: src/ui_parts/settings_menu.gd:
-msgid "Remove unnecessary parameters"
-msgstr "Retirer les paramètres inutiles"
-
-#: src/ui_parts/settings_menu.gd:
-msgid "When enabled, uses several spaces instead of a single tab for indentation."
-msgstr ""
-
-#: src/ui_parts/settings_menu.gd:
-msgid "Warps the cursor to the opposite side whenever it reaches a viewport boundary while panning."
-msgstr "Téléporte le curseur de l'autre côté de la vue à chaque fois qu'il en atteind la limite."
-
-#: src/ui_parts/settings_menu.gd:
-#, fuzzy
-msgid "When enabled, uses your operating system's native file dialog instead of GodSVG's built-in one."
-msgstr "Si activé, utilise le sélecteur de fichiers système. Si désactivé, utilise la boîte de dialogue intégrée de GodSVG."
-
-#: src/ui_parts/settings_menu.gd:
-msgid "The setting has no effect in the current configuration."
-msgstr ""
-
-#: src/ui_parts/settings_menu.gd:
-msgid "The setting can't be changed on this platform."
-msgstr ""
 
 #: src/ui_parts/shortcut_panel.gd:
 msgid "Horizontal strip"
@@ -1020,6 +652,374 @@ msgstr "Ajouter un raccourci"
 #: src/ui_widgets/setting_shortcut.gd:
 msgid "Press keys…"
 msgstr "Appuyez sur des touches…"
+
+#. Refers to the formatter used for GodSVG's code editor.
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "Editor formatter"
+msgstr "Formatage de l'éditeur"
+
+#. Refers to the formatter used when exporting.
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "Export formatter"
+msgstr "Formatage des fichiers exportés"
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "Preset"
+msgstr "Préréglage"
+
+#: src/ui_widgets/settings_content_generic.gd:
+#, fuzzy
+msgid "Determines the default values of the formatter configs."
+msgstr "Si le taux de rafraîchissement est limité, cette valeur déterminera le nombre maximum d'images par seconde."
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "Keep comments"
+msgstr "Garder les commentaires"
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "Add trailing newline"
+msgstr "Ajouter un saut de ligne final"
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "Use shorthand tag syntax"
+msgstr "Utiliser la syntaxe de balise raccourcie"
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "Space out the slash of shorthand tags"
+msgstr "Espacer le slash des balises raccourcies"
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "Use pretty formatting"
+msgstr "Utiliser le formatage élégant"
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "Use spaces instead of tabs"
+msgstr "Utiliser des espaces plutôt que des tabulations"
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "Number of indentation spaces"
+msgstr "Nombre d'espaces par indentation"
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "Numbers"
+msgstr "Nombres"
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "Remove leading zero"
+msgstr "Retirer le zéro initial"
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "Use exponential when shorter"
+msgstr "Noter en écriture scientifique si c'est plus court"
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "Colors"
+msgstr "Couleurs"
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "Use named colors"
+msgstr "Utiliser des couleurs nommées"
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "Primary syntax"
+msgstr "Syntaxe principale"
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "Capitalize hexadecimal letters"
+msgstr "Mettre en majuscule les nombres héxadécimaux"
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "Pathdata"
+msgstr "Données des chemins"
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "Compress numbers"
+msgstr "Compresser les nombres"
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "Minimize spacing"
+msgstr "Minimiser l'espacement"
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "Remove spacing after flags"
+msgstr "Retirer l'espacement après les marqueurs"
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "Remove consecutive commands"
+msgstr "Retirer les commandes consécutives"
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "Transform lists"
+msgstr "Transformer les listes"
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "Remove unnecessary parameters"
+msgstr "Retirer les paramètres inutiles"
+
+#: src/ui_widgets/settings_content_generic.gd:
+#, fuzzy
+msgid "Theme preset"
+msgstr "Réinitialiser le zoom"
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "Determines the default values of theming-related settings, including the highlighter preset."
+msgstr ""
+
+#: src/ui_widgets/settings_content_generic.gd:
+#, fuzzy
+msgid "Primary theme colors"
+msgstr "Désactiver la couleur"
+
+#: src/ui_widgets/settings_content_generic.gd:
+#, fuzzy
+msgid "Base color"
+msgstr "Couleurs basiques"
+
+#: src/ui_widgets/settings_content_generic.gd:
+#, fuzzy
+msgid "Accent color"
+msgstr "Couleur de texte"
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "SVG Text colors"
+msgstr "Couleurs de texte SVG"
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "Highlighter preset"
+msgstr ""
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "Determines the default values of SVG highlighter settings."
+msgstr ""
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "Symbol color"
+msgstr "Couleur de symbole"
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "Element color"
+msgstr "Couleur d'élément"
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "Attribute color"
+msgstr "Couleur d'attribut"
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "String color"
+msgstr "Couleur de chaîne de caractères"
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "Comment color"
+msgstr "Couleur de commentaire"
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "Text color"
+msgstr "Couleur de texte"
+
+#. CDATA shouldn't be translated. It's a type of XML section.
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "CDATA color"
+msgstr "Couleur de CDATA"
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "Error color"
+msgstr "Couleur d'erreur"
+
+#. Refers to the draggable gizmos.
+#: src/ui_widgets/settings_content_generic.gd:
+#, fuzzy
+msgid "Handles"
+msgstr "Taille des poignées"
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "Inside color"
+msgstr "Couleur d'intérieur"
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "Normal color"
+msgstr "Couleur d'élément normal"
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "Hovered color"
+msgstr "Couleur d'élément survolé"
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "Selected color"
+msgstr "Couleur d'élément selectionné"
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "Hovered selected color"
+msgstr "Couleur d'élément selectionné survolé"
+
+#: src/ui_widgets/settings_content_generic.gd:
+#, fuzzy
+msgid "Selection rectangle"
+msgstr "Sélectionnez une image"
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "Speed"
+msgstr ""
+
+#. Refers to the selection rectangle's animated dashed stroke.
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "Dash length"
+msgstr ""
+
+#: src/ui_widgets/settings_content_generic.gd:
+#, fuzzy
+msgid "Color {index}"
+msgstr "Pipette"
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "Basic colors"
+msgstr "Couleurs basiques"
+
+#: src/ui_widgets/settings_content_generic.gd:
+#, fuzzy
+msgid "Canvas color"
+msgstr "Couleur d'intérieur"
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "Grid color"
+msgstr "Couleur de la grille"
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "Valid color"
+msgstr "Couleur valide"
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "Warning color"
+msgstr "Couleur d'avertissement"
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "Input"
+msgstr "Entrée"
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "Close tabs with middle mouse button"
+msgstr "Fermer les onglets avec la molette de la souris"
+
+#: src/ui_widgets/settings_content_generic.gd:
+#, fuzzy
+msgid "When enabled, clicking on a tab with the middle mouse button closes it instead of simply focusing it."
+msgstr "Si activé, cliquer sur un onglet avec la molette de la souris fermera l'onglet. Si désactivé, cette action le rendra actif."
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "Invert zoom direction"
+msgstr "Inverser la direction du zoom"
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "Swaps the scroll directions for zooming in and zooming out."
+msgstr "Inverser les sens de défilement pour le zoom avant et le zoom arrière."
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "Wrap-around panning"
+msgstr "Défilement bouclé"
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "Use CTRL for zooming"
+msgstr "Utiliser CTRL pour zoomer"
+
+#: src/ui_widgets/settings_content_generic.gd:
+#, fuzzy
+msgid "When enabled, scrolling pans the view instead of zooming in. To zoom, hold CTRL while scrolling."
+msgstr "Si activé, défiler fera balayer la vue. Pour zoomer, maintenez CTRL en défilant."
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "Display"
+msgstr ""
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "UI scale"
+msgstr "Échelle de l'interface"
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "Determines the scale factor for the interface."
+msgstr "Détermine le facteur d'échelle de l'interface."
+
+#. Stands for "Vertical Synchronization".
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "V-Sync"
+msgstr ""
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "Synchronizes graphics rendering with display refresh rate to prevent screen tearing artifacts. May increase input lag slightly."
+msgstr ""
+
+#: src/ui_widgets/settings_content_generic.gd:
+#, fuzzy
+msgid "Maximum FPS"
+msgstr "Valeur d'IPS maximale personnalisée"
+
+#: src/ui_widgets/settings_content_generic.gd:
+#, fuzzy
+msgid "Determines the maximum number of frames per second."
+msgstr "Si le taux de rafraîchissement est limité, cette valeur déterminera le nombre maximum d'images par seconde."
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "Keep Screen On"
+msgstr ""
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "Keeps the screen on even after inactivity, so the screensaver does not take over."
+msgstr ""
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "Miscellaneous"
+msgstr "Divers"
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "Use native file dialog"
+msgstr "Utiliser le sélecteur de fichiers natif"
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "Sync window title to file name"
+msgstr "Synchroniser le titre de la fenêtre avec le nom du fichier"
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "When enabled, adds the current file name before the \"GodSVG\" window title."
+msgstr ""
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "When enabled, uses spaces instead of a single tab for indentation."
+msgstr ""
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "Warps the cursor to the opposite side whenever it reaches a viewport boundary while panning."
+msgstr "Téléporte le curseur de l'autre côté de la vue à chaque fois qu'il en atteind la limite."
+
+#: src/ui_widgets/settings_content_generic.gd:
+#, fuzzy
+msgid "When enabled, uses your operating system's native file dialog instead of GodSVG's built-in one."
+msgstr "Si activé, utilise le sélecteur de fichiers système. Si désactivé, utilise la boîte de dialogue intégrée de GodSVG."
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "The setting has no effect in the current configuration."
+msgstr ""
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "The setting can't be changed on this platform."
+msgstr ""
+
+#: src/ui_widgets/settings_content_palettes.gd:
+msgid "New palette"
+msgstr "Nouvelle palette"
+
+#: src/ui_widgets/settings_content_palettes.gd:
+msgid "New palette from XML"
+msgstr "Nouvelle palette depuis du XML"
+
+#: src/ui_widgets/settings_content_palettes.gd:
+msgid "Import XML"
+msgstr "Importer un fichier XML"
+
+#: src/ui_widgets/settings_content_palettes.gd:
+msgid "Paste XML"
+msgstr "Coller du XML"
+
+#: src/ui_widgets/settings_content_shortcuts.gd:
+msgid "Help"
+msgstr "Aide"
 
 #: src/ui_widgets/transform_field.gd:
 msgid "No transforms"
