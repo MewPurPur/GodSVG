@@ -77,7 +77,7 @@ static var flat_button_color_disabled: Color
 static var subtle_flat_panel_color: Color
 static var contrast_flat_panel_color: Color
 static var overlay_panel_inner_color: Color
-static var overlay_panel_subtler_inner_color: Color
+static var overlay_panel_border_color: Color
 
 static var scrollbar_pressed_color: Color
 
@@ -89,8 +89,6 @@ static var mini_line_edit_normal_border_color: Color
 static var line_edit_inner_color_disabled: Color
 static var line_edit_border_color_disabled: Color
 
-static var tab_container_panel_inner_color: Color
-static var tab_container_panel_border_color: Color
 static var selected_tab_color: Color
 static var selected_tab_border_color: Color
 
@@ -158,9 +156,11 @@ static func recalculate_colors() -> void:
 	subtle_text_color = Color(max_contrast_color, 0.375)
 	editable_text_color = tinted_contrast_color
 	
-	basic_panel_inner_color = base_color.lerp(max_contrast_color, 0.05)
-	basic_panel_border_color = desaturated_color
-	subtle_panel_border_color = basic_panel_border_color.lerp(basic_panel_inner_color, 0.64)
+	basic_panel_inner_color = softer_base_color
+	basic_panel_border_color = base_color.lerp(max_contrast_color, 0.24)
+	subtle_panel_border_color = basic_panel_border_color.lerp(basic_panel_inner_color, 0.4)
+	subtle_panel_border_color.s = lerpf(subtle_panel_border_color.s, 1.0, 0.2)
+	
 	caret_color = Color(tinted_contrast_color, 0.875)
 	selection_color = Color(accent_color, 0.375)
 	disabled_selection_color = Color(gray_color, 0.4)
@@ -180,7 +180,8 @@ static func recalculate_colors() -> void:
 	subtle_flat_panel_color = base_color
 	contrast_flat_panel_color = Color(tinted_contrast_color, 0.1)
 	overlay_panel_inner_color = base_color.lerp(extreme_theme_color, 0.1)
-	overlay_panel_subtler_inner_color = base_color.lerp(extreme_theme_color, 0.075)
+	overlay_panel_border_color = base_color.lerp(max_contrast_color, 0.32)
+	overlay_panel_border_color.s = lerpf(overlay_panel_border_color.s, 1.0, 0.2)
 	
 	scrollbar_pressed_color = intermediate_color.blend(Color(tinted_contrast_color.lerp(
 			accent_color.lerp(max_contrast_color, 0.1), 0.2), 0.4))
@@ -198,8 +199,6 @@ static func recalculate_colors() -> void:
 	connected_button_inner_color_pressed = line_edit_inner_color.lerp(common_button_inner_color_pressed, 0.8)
 	connected_button_border_color_pressed = line_edit_normal_border_color.lerp(common_button_border_color_pressed, 0.6)
 	
-	tab_container_panel_inner_color = base_color.lerp(intermediate_color, 0.15).lerp(extreme_theme_color, 0.02)
-	tab_container_panel_border_color = desaturated_color.lerp(extreme_theme_color, 0.4)
 	selected_tab_color = softer_intermediate_hover_color.lerp(accent_color, 0.2)
 	selected_tab_border_color = accent_color
 
@@ -289,7 +288,7 @@ static func _setup_panelcontainer(theme: Theme) -> void:
 	overlay_stylebox.content_margin_top = 6.0
 	overlay_stylebox.content_margin_bottom = 10.0
 	overlay_stylebox.bg_color = overlay_panel_inner_color
-	overlay_stylebox.border_color = intermediate_color
+	overlay_stylebox.border_color = overlay_panel_border_color
 	theme.set_stylebox("panel", "OverlayPanel", overlay_stylebox)
 	
 	theme.add_type("TextBox")
@@ -313,8 +312,8 @@ static func _setup_panelcontainer(theme: Theme) -> void:
 	theme.add_type("SideBarContent")
 	theme.set_type_variation("SideBarContent", "PanelContainer")
 	var panel_stylebox := StyleBoxFlat.new()
-	panel_stylebox.bg_color = tab_container_panel_inner_color
-	panel_stylebox.border_color = tab_container_panel_border_color
+	panel_stylebox.bg_color = soft_base_color.lerp(softer_base_color, 0.6)
+	panel_stylebox.border_color = subtle_panel_border_color
 	panel_stylebox.set_border_width_all(2)
 	panel_stylebox.corner_radius_top_right = 5
 	panel_stylebox.corner_radius_bottom_right = 5
@@ -1138,8 +1137,8 @@ static func _setup_tabcontainer(theme: Theme) -> void:
 	theme.set_font_size("font_size", "TabContainer", 14)
 	
 	var panel_stylebox := StyleBoxFlat.new()
-	panel_stylebox.bg_color = tab_container_panel_inner_color
-	panel_stylebox.border_color = tab_container_panel_border_color
+	panel_stylebox.bg_color = soft_base_color.lerp(softer_base_color, 0.5)
+	panel_stylebox.border_color = subtle_panel_border_color
 	panel_stylebox.border_width_left = 2
 	panel_stylebox.border_width_right = 2
 	panel_stylebox.border_width_bottom = 2

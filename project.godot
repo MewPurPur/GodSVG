@@ -43,12 +43,13 @@ mouse_cursor/tooltip_position_offset=Vector2(0, 10)
 
 [editor_overrides]
 
-text_editor/appearance/guidelines/line_length_guideline_soft_column=90
+text_editor/appearance/guidelines/line_length_guideline_soft_column=160
 text_editor/behavior/indent/type=0
 text_editor/behavior/files/trim_trailing_whitespace_on_save=false
 text_editor/completion/add_type_hints=true
 text_editor/completion/add_node_path_literals=true
 text_editor/completion/add_string_name_literals=false
+text_editor/appearance/guidelines/line_length_guideline_hard_column=160
 
 [filesystem]
 

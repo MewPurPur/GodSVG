@@ -17,8 +17,8 @@ func _draw() -> void:
 	if item_count == 0:
 		return
 	
-	var inner_color := ThemeUtils.tab_container_panel_inner_color.lerp(ThemeUtils.desaturated_color, 0.35)
-	var border_color := ThemeUtils.tab_container_panel_inner_color.lerp(ThemeUtils.desaturated_color, 0.85)
+	var inner_color := ThemeUtils.basic_panel_inner_color.lerp(ThemeUtils.desaturated_color, 0.35)
+	var border_color := ThemeUtils.basic_panel_inner_color.lerp(ThemeUtils.desaturated_color, 0.85)
 	
 	var effective_columns := clampi(columns, 1, item_count)
 	var text_color := get_theme_color("font_color", "Label")

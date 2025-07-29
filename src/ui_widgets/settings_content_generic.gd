@@ -216,7 +216,7 @@ func setup_formatting_content() -> void:
 	add_checkbox(Translator.translate("Use spaces instead of tabs"),
 			not current_setup_resource.xml_pretty_formatting)
 	add_preview(SettingTextPreview.new(Translator.translate(
-			"When enabled, uses several spaces instead of a single tab for indentation."),
+			"When enabled, uses spaces instead of a single tab for indentation."),
 			SettingTextPreview.get_no_effect_in_configuration_warning(
 			not current_setup_resource.xml_pretty_formatting)))
 	

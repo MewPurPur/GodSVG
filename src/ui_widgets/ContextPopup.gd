@@ -7,8 +7,7 @@ func _init() -> void:
 	mouse_filter = Control.MOUSE_FILTER_STOP
 
 
-static func create_shortcut_button(action: String, disabled := false,
-custom_text := "", custom_icon: Texture2D = null) -> Button:
+static func create_shortcut_button(action: String, disabled := false, custom_text := "", custom_icon: Texture2D = null) -> Button:
 	if not InputMap.has_action(action):
 		push_error("Non-existent shortcut was passed.")
 		return
@@ -25,12 +24,12 @@ custom_text := "", custom_icon: Texture2D = null) -> Button:
 		var shortcut_obj := Shortcut.new()
 		shortcut_obj.events = shortcut_events
 		btn.shortcut = shortcut_obj
+		btn.shortcut_in_tooltip = false
 		btn.shortcut_feedback = false
 	
 	return btn
 
-static func create_shortcut_button_without_icon(action: String, disabled := false,
-custom_text := "") -> Button:
+static func create_shortcut_button_without_icon(action: String, disabled := false, custom_text := "") -> Button:
 	if not InputMap.has_action(action):
 		push_error("Non-existent shortcut was passed.")
 		return
@@ -45,147 +44,92 @@ custom_text := "") -> Button:
 		var shortcut_obj := Shortcut.new()
 		shortcut_obj.events = shortcut_events
 		btn.shortcut = shortcut_obj
+		btn.shortcut_in_tooltip = false
 		btn.shortcut_feedback = false
 	
 	return btn
 
-static func create_button(text: String, press_callback: Callable, disabled := false,
-icon: Texture2D = null, dim_text := "") -> Button:
+static func create_button(text: String, press_callback: Callable, disabled := false, icon: Texture2D = null, dim_text := "") -> Button:
 	# Create main button.
 	var main_button := Button.new()
-	main_button.text = text
-	if is_instance_valid(icon):
-		main_button.add_theme_constant_override("icon_max_width", 16)
-		main_button.icon = icon
-
-	if not dim_text.is_empty():
-		# Add button with dim text.
-		var ret_button := Button.new()
-		ret_button.theme_type_variation = "ContextButton"
-		ret_button.focus_mode = Control.FOCUS_NONE
-		ret_button.shortcut_in_tooltip = false
-		if disabled:
-			main_button.disabled = true
-			ret_button.disabled = true
-		else:
-			ret_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-		
-		const CONST_ARR: PackedStringArray = ["normal", "hover", "pressed", "disabled"]
-		main_button.begin_bulk_theme_override()
-		for theme_type in CONST_ARR:
-			main_button.add_theme_stylebox_override(theme_type,
-					main_button.get_theme_stylebox("normal", "ContextButton"))
-		main_button.end_bulk_theme_override()
-		
-		var internal_hbox := HBoxContainer.new()
-		main_button.mouse_filter = Control.MOUSE_FILTER_IGNORE  # Unpressable.
-		internal_hbox.add_theme_constant_override("separation", 12)
-		main_button.add_theme_color_override("icon_normal_color",
-				ret_button.get_theme_color("icon_normal_color", "ContextButton"))
-		var label_margin := MarginContainer.new()
-		label_margin.add_theme_constant_override("margin_right",
-				int(ret_button.get_theme_stylebox("normal").content_margin_right))
-		var label := Label.new()
-		label.text = dim_text
-		label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
-		var shortcut_text_color := ThemeUtils.subtle_text_color
-		if disabled:
-			shortcut_text_color.a *= 0.75
-		label.add_theme_color_override("font_color", shortcut_text_color)
-		label.add_theme_font_size_override("font_size",
-				main_button.get_theme_font_size("font_size"))
-		
-		ret_button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		internal_hbox.set_anchors_and_offsets_preset(Control.PRESET_TOP_WIDE)
-		label_margin.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		label.size_flags_horizontal = Control.SIZE_FILL
-		internal_hbox.add_child(main_button)
-		label_margin.add_child(label)
-		internal_hbox.add_child(label_margin)
-		ret_button.add_child(internal_hbox)
-		ret_button.pressed.connect(press_callback)
-		ret_button.pressed.connect(HandlerGUI.remove_popup)
-		return ret_button
-	# Finish setting up the main button and return it if there's no shortcut.
 	main_button.theme_type_variation = "ContextButton"
 	main_button.focus_mode = Control.FOCUS_NONE
 	if disabled:
 		main_button.disabled = true
 	else:
 		main_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+	
+	main_button.text = text
+	if is_instance_valid(icon):
+		main_button.add_theme_constant_override("icon_max_width", 16)
+		main_button.icon = icon
+	
 	if press_callback.is_valid():
 		main_button.pressed.connect(press_callback)
 	main_button.pressed.connect(HandlerGUI.remove_popup)
+	
+	if not dim_text.is_empty():
+		var font := main_button.get_theme_font("font")
+		var font_size := main_button.get_theme_font_size("font_size")
+		var dim_text_width := font.get_string_size(dim_text, HORIZONTAL_ALIGNMENT_RIGHT, -1, font_size).x
+		
+		var shortcut_text_color := ThemeUtils.subtle_text_color
+		if disabled:
+			shortcut_text_color.a *= 0.75
+		
+		var CONST_ARR: PackedStringArray = ["normal", "hover", "pressed"]
+		for theme_style in CONST_ARR:
+			var sb := main_button.get_theme_stylebox(theme_style, "ContextButton").duplicate()
+			sb.content_margin_right += dim_text_width + 8
+			main_button.add_theme_stylebox_override(theme_style, sb)
+		
+		var on_main_button_draw := func() -> void:
+				var sb := ThemeDB.get_default_theme().get_stylebox("normal", "ContextButton")
+				font.draw_string(main_button.get_canvas_item(), Vector2(0, sb.content_margin_top + font.get_ascent(font_size)), dim_text,
+						HORIZONTAL_ALIGNMENT_RIGHT, main_button.size.x - sb.content_margin_right, font_size, shortcut_text_color)
+		main_button.draw.connect(on_main_button_draw)
+	
 	return main_button
 
 
-static func create_shortcut_checkbox(action: String, start_pressed: bool,
-custom_text := "") -> CheckBox:
+static func create_shortcut_checkbox(action: String, start_pressed: bool) -> CheckBox:
 	if not InputMap.has_action(action):
 		push_error("Non-existent shortcut was passed.")
 		return
 	
-	if custom_text.is_empty():
-		custom_text = TranslationUtils.get_action_description(action, true)
-	
-	return create_checkbox(custom_text, HandlerGUI.throw_action_event.bind(action),
+	return create_checkbox(TranslationUtils.get_action_description(action, true),
+			HandlerGUI.throw_action_event.bind(action),
 			start_pressed, ShortcutUtils.get_action_showcase_text(action))
 
 static func create_checkbox(text: String, toggle_action: Callable,
 start_pressed: bool, dim_text := "") -> CheckBox:
 	# Create main checkbox.
 	var checkbox := CheckBox.new()
+	checkbox.focus_mode = Control.FOCUS_NONE
+	checkbox.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+	
 	checkbox.text = text
 	checkbox.button_pressed = start_pressed
 	checkbox.toggled.connect(toggle_action.unbind(1))
 	
 	if not dim_text.is_empty():
-		# Add button with dim text.
-		var ret_button := Button.new()
-		ret_button.theme_type_variation = "ContextButton"
-		ret_button.focus_mode = Control.FOCUS_NONE
-		ret_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-		ret_button.shortcut_in_tooltip = false
-		
-		checkbox.begin_bulk_theme_override()
-		const CONST_ARR: PackedStringArray = ["normal", "pressed"]
-		for theme_type in CONST_ARR:
-			checkbox.add_theme_stylebox_override(theme_type,
-					checkbox.get_theme_stylebox("normal", "ContextButton"))
-		checkbox.end_bulk_theme_override()
-		
-		var internal_hbox := HBoxContainer.new()
-		checkbox.mouse_filter = Control.MOUSE_FILTER_IGNORE  # Unpressable.
-		internal_hbox.add_theme_constant_override("separation", 12)
-		checkbox.add_theme_color_override("icon_normal_color",
-				ret_button.get_theme_color("icon_normal_color", "ContextButton"))
-		var label_margin := MarginContainer.new()
-		label_margin.add_theme_constant_override("margin_right",
-				int(ret_button.get_theme_stylebox("normal").content_margin_right))
-		var label := Label.new()
-		label.text = dim_text
-		label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+		var font := checkbox.get_theme_font("font")
+		var font_size := checkbox.get_theme_font_size("font_size")
+		var dim_text_width := font.get_string_size(dim_text, HORIZONTAL_ALIGNMENT_RIGHT, -1, font_size).x
 		var shortcut_text_color := ThemeUtils.subtle_text_color
-		#if disabled:
-			#shortcut_text_color.a *= 0.75
-		label.add_theme_color_override("font_color", shortcut_text_color)
-		label.add_theme_font_size_override("font_size",
-				checkbox.get_theme_font_size("font_size"))
 		
-		ret_button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		internal_hbox.set_anchors_and_offsets_preset(Control.PRESET_TOP_WIDE)
-		label_margin.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		label.size_flags_horizontal = Control.SIZE_FILL
-		internal_hbox.add_child(checkbox)
-		label_margin.add_child(label)
-		internal_hbox.add_child(label_margin)
-		ret_button.add_child(internal_hbox)
-		ret_button.pressed.connect(
-				func() -> void: checkbox.button_pressed = not checkbox.button_pressed)
-		return ret_button
-	# Finish setting up the checkbox and return it if there's no shortcut.
-	checkbox.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-	checkbox.focus_mode = Control.FOCUS_NONE
+		var CONST_ARR: PackedStringArray = ["normal", "hover", "pressed"]
+		for theme_style in CONST_ARR:
+			var sb := checkbox.get_theme_stylebox(theme_style, "CheckBox").duplicate()
+			sb.content_margin_right += dim_text_width + 8
+			checkbox.add_theme_stylebox_override(theme_style, sb)
+		
+		var on_shortcut_draw := func() -> void:
+				var sb := ThemeDB.get_default_theme().get_stylebox("normal", "CheckBox")
+				font.draw_string(checkbox.get_canvas_item(), Vector2(0, sb.content_margin_top + font.get_ascent(font_size)), dim_text,
+						HORIZONTAL_ALIGNMENT_RIGHT, checkbox.size.x - sb.content_margin_right, font_size, shortcut_text_color)
+		checkbox.draw.connect(on_shortcut_draw)
+	
 	return checkbox
 
 func _setup_button(btn: Button, align_left: bool) -> Button:
