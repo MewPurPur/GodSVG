@@ -21,10 +21,8 @@ func _ready() -> void:
 
 
 func sync_localization() -> void:
-	%LabelContainer/EditButton.tooltip_text =\
-			Translator.translate("Edit color name")
-	$ConfigureContainer/BottomContainer/DeleteButton.tooltip_text =\
-			Translator.translate("Delete color")
+	%LabelContainer/EditButton.tooltip_text = Translator.translate("Edit color name")
+	$ConfigureContainer/BottomContainer/DeleteButton.tooltip_text = Translator.translate("Delete color")
 
 func _on_edit_button_pressed() -> void:
 	color_name_edit.text = palette.get_color_name(idx)

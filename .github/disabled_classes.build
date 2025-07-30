@@ -118,7 +118,6 @@
 		"RichTextEffect",
 		"SceneReplicationConfig",
 		"ScriptExtension",
-		"ShaderInclude",
 		"Shape2D",
 		"Shape3D",
 		"SkeletonModification2D",
