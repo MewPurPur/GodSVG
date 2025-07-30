@@ -4,6 +4,7 @@
 
 [node name="ColorSwatchConfig" type="Button"]
 custom_minimum_size = Vector2(22, 22)
+anchors_preset = -1
 offset_right = 20.0
 offset_bottom = 20.0
 focus_mode = 0

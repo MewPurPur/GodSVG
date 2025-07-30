@@ -600,9 +600,13 @@ func setup_other_content() -> void:
 			Translator.translate("Determines the maximum number of frames per second.")))
 	
 	current_setup_setting = "keep_screen_on"
-	add_checkbox(Translator.translate("Keep Screen On"))
-	add_preview(SettingTextPreview.new(
-			Translator.translate("Keeps the screen on even after inactivity, so the screensaver does not take over.")))
+	var keep_screen_on := add_checkbox(Translator.translate("Keep Screen On"))
+	var keep_screen_on_forced_off := OS.has_feature("web")
+	add_preview(SettingTextPreview.new(Translator.translate(
+			"Keeps the screen on even after inactivity, so the screensaver does not take over."),
+			SettingTextPreview.get_platform_availability_warning(keep_screen_on_forced_off)))
+	if keep_screen_on_forced_off:
+		keep_screen_on.permanent_disable_checkbox(false)
 	
 	add_section(Translator.translate("Miscellaneous"))
 	current_setup_setting = "use_native_file_dialog"
