@@ -41,6 +41,7 @@ theme_override_constants/separation = -2
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+indent_wrapped_lines = true
 script = ExtResource("8_ser4i")
 
 [node name="ErrorBar" type="PanelContainer" parent="ScriptEditor"]

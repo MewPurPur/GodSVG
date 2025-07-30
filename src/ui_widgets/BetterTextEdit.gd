@@ -95,7 +95,8 @@ func _redraw_caret() -> void:
 	if not has_focus():
 		return
 	
-	var char_size := ThemeUtils.mono_font.get_char_size(69, get_theme_font_size("font_size"))
+	var font_size := get_theme_font_size("font_size")
+	var char_size := ThemeUtils.mono_font.get_char_size(69, font_size)
 	for caret in get_caret_count():
 		var caret_pos := Vector2.ZERO
 		var caret_column := get_caret_column(caret)
@@ -108,18 +109,6 @@ func _redraw_caret() -> void:
 			var glyph_end := Vector2(get_rect_at_line_column(caret_line, caret_column).end)
 			caret_pos = Vector2(glyph_end.x + 1, glyph_end.y - 2)
 			var line := get_line(caret_line)
-			# Workaround for indent_wrapped_lines.
-			if get_line_wrap_index_at_column(caret_line, caret_column) >= 1:
-				var i := 0
-				while true:
-					var c := line[i]
-					if c == ' ':
-						caret_pos.x += char_size.x
-					elif c == '\t':
-						caret_pos.x += char_size.x * get_tab_size()
-					else:
-						break
-					i += 1
 			# Workaround for ligatures.
 			if (caret_column >= line.length() or line[caret_column] != '\t') and\
 			glyph_end.x > 0 and glyph_end.y > 0:
@@ -131,12 +120,14 @@ func _redraw_caret() -> void:
 		# Determine the end of the caret and draw it.
 		var caret_end := caret_pos
 		if is_overtype_mode_enabled():
-			var char_width: float
 			if caret_column >= get_line(caret_line).length():
-				char_width = char_size.x
+				caret_end.x += char_size.x
 			else:
-				char_width = get_rect_at_line_column(caret_line, caret_column + 1).size.x
-			caret_end.x += char_width
+				var caret_char := get_line(caret_line)[caret_column]
+				if caret_char == '\t':
+					caret_end.x += char_size.x * get_tab_size()
+				else:
+					caret_end.x += ThemeUtils.mono_font.get_char_size(ord(caret_char), font_size).x
 		else:
 			caret_end.y -= char_size.y + 1
 		RenderingServer.canvas_item_add_line(_surface, caret_pos, caret_end,
