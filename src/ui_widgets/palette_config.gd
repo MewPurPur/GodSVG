@@ -3,7 +3,7 @@ extends PanelContainer
 const ColorSwatch = preload("res://src/ui_widgets/color_swatch_config.gd")
 
 const ColorSwatchScene = preload("res://src/ui_widgets/color_swatch_config.tscn")
-const ConfigurePopupScene = preload("res://src/ui_widgets/configure_color_popup.tscn")
+const ColorConfigurationPopupScene = preload("res://src/ui_widgets/color_configuration_popup.tscn")
 const plus_icon = preload("res://assets/icons/Plus.svg")
 
 signal layout_changed
@@ -96,7 +96,7 @@ func display_warnings() -> void:
 
 
 func popup_configure_color(swatch: Button) -> void:
-	var configure_popup := ConfigurePopupScene.instantiate()
+	var configure_popup := ColorConfigurationPopupScene.instantiate()
 	configure_popup.palette = swatch.palette
 	configure_popup.idx = swatch.idx
 	configure_popup.color_deletion_requested.connect(remove_color.bind(swatch.idx))

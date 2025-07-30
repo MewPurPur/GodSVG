@@ -10,8 +10,6 @@ var _timer := Timer.new()
 
 var _is_caret_queued_for_redraw := false
 
-var _hovered := false
-
 func _init() -> void:
 	# Solves an issue where Ctrl+S would type an "s" and handle the input.
 	# We want anything with Ctrl to not be handled, but other keys to still be handled.
@@ -31,7 +29,7 @@ func _ready() -> void:
 	_timer.timeout.connect(blink)
 	get_v_scroll_bar().value_changed.connect(queue_redraw_caret.unbind(1))
 	get_h_scroll_bar().value_changed.connect(queue_redraw_caret.unbind(1))
-	mouse_exited.connect(_on_base_class_mouse_exited)
+	mouse_exited.connect(queue_redraw)
 	focus_entered.connect(_on_base_class_focus_entered)
 	focus_exited.connect(_on_base_class_focus_exited)
 	caret_changed.connect(queue_redraw_caret)
@@ -156,12 +154,8 @@ func _on_base_class_focus_exited() -> void:
 	_timer.stop()
 	RenderingServer.canvas_item_clear(_surface)
 
-func _on_base_class_mouse_exited() -> void:
-	_hovered = false
-	queue_redraw()
-
 func _draw() -> void:
-	if editable and _hovered and has_theme_stylebox("hover"):
+	if editable and get_viewport().gui_get_hovered_control() == self and has_theme_stylebox("hover"):
 		draw_style_box(get_theme_stylebox("hover"), Rect2(Vector2.ZERO, size))
 	
 	if get_gutter_count() == 1:
@@ -191,7 +185,6 @@ func _gui_input(event: InputEvent) -> void:
 	mouse_filter = Utils.mouse_filter_pass_non_drag_events(event)
 	
 	if event is InputEventMouseMotion and event.button_mask == 0:
-		_hovered = true
 		queue_redraw()
 	elif event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_RIGHT and event.is_pressed():
