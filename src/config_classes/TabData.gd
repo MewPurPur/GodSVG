@@ -33,6 +33,7 @@ var active := false
 var fully_loaded := true
 var empty_unsaved := false
 var undo_redo: UndoRedoRef
+var web_file_handle: JavaScriptObject = null
 
 # This variable represents the saved state of the SVG. Intermediate operations such as
 # dragging a handle or editing the code shouldn't affect this variable.
@@ -73,7 +74,11 @@ func _save_svg_text() -> void:
 func save_to_bound_path() -> void:
 	if Configs.savedata.get_active_tab() != self:
 		return
-	FileAccess.open(svg_file_path, FileAccess.WRITE).store_string(State.get_export_text())
+	var export_text := State.get_export_text()
+	if not OS.has_feature("web"):
+		FileAccess.open(svg_file_path, FileAccess.WRITE).store_string(export_text)
+	else:
+		FileUtils.web_save(export_text.to_utf8_buffer(), "svg")
 	queue_sync()
 
 func setup_svg_text(new_text: String, fully_load := true) -> void:
@@ -86,6 +91,18 @@ func setup_svg_text(new_text: String, fully_load := true) -> void:
 func get_svg_text() -> String:
 	return _svg_text
 
+## Gets the default name of the tab.
+## Should also be used to get the file name for save dialogs.
+func get_tab_name(styled := false) -> String:
+	var save_name := svg_file_path.get_file()
+	if save_name.is_empty():
+		var default := ""
+		if is_empty():
+			default = Translator.translate("Empty")
+		elif not is_saved():
+			default = Translator.translate("Unsaved")
+		return default if not styled else ("[ %s ]" % default)
+	return save_name
 
 @export var svg_file_path: String:
 	set(new_value):
@@ -144,14 +161,8 @@ func _sync() -> void:
 	if not _sync_pending:
 		return
 	_sync_pending = false
-	
 	if is_saved():
-		# The extension is included in the presented name too.
-		# It's always in the end anyway so it can't hide useless info.
-		# And also, it prevents ".svg" from being presented as an empty string.
-		presented_name = svg_file_path.get_file()
 		empty_unsaved = false
-		
 		if not fully_loaded:
 			marked_unsaved = false
 		else:
@@ -163,16 +174,14 @@ func _sync() -> void:
 						SVGParser.root_to_export_text(edited_text_parse_result.svg)
 			else:
 				marked_unsaved = true
-	
 	elif not FileAccess.file_exists(get_edited_file_path()) or\
 	SVGParser.text_check_is_root_empty(get_true_svg_text()):
 		empty_unsaved = true
 		marked_unsaved = false
-		presented_name = "[ %s ]" % Translator.translate("Empty")
 	else:
 		empty_unsaved = false
 		marked_unsaved = false
-		presented_name = "[ %s ]" % Translator.translate("Unsaved")
+	presented_name = get_tab_name(true)
 
 
 func activate() -> void:
