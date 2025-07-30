@@ -14,6 +14,12 @@ const ShortcutPanelScene = preload("res://src/ui_parts/shortcut_panel.tscn")
 var menu_stack: Array[ColorRect]
 var popup_stack: Array[Control]
 
+var registered_shortcuts: Dictionary[Control, ShortcutRegistrationArray] = {}
+
+func register_shortcuts(control: Control, registrations: ShortcutRegistrationArray) -> void:
+	registered_shortcuts[control] = registrations
+	control.tree_exiting.connect(func() -> void: registered_shortcuts.erase(control))
+
 var shortcut_panel: PanelContainer
 
 func _enter_tree() -> void:
