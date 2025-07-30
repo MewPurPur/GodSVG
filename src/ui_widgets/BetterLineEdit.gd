@@ -7,8 +7,6 @@ var original_selection_color: Color
 ## Emitted when Esc is pressed to cancel the current text change.
 signal text_change_canceled
 
-var _hovered := false
-
 ## When turned on, uses the mono font for the tooltip.
 @export var mono_font_tooltip := false
 
@@ -29,7 +27,7 @@ func _init() -> void:
 	caret_blink_interval = 0.6
 	focus_entered.connect(_on_base_class_focus_entered)
 	focus_exited.connect(_on_base_class_focus_exited)
-	mouse_exited.connect(_on_base_class_mouse_exited)
+	mouse_exited.connect(queue_redraw)
 	text_submitted.connect(release_focus.unbind(1))
 	original_selection_color = get_theme_color("selection_color")
 	Configs.theme_changed.connect(sync_theming)
@@ -65,13 +63,9 @@ func _on_base_class_focus_exited() -> void:
 		# If ui_accept is pressed, text_submitted gets emitted anyway.
 		text_submitted.emit(text)
 
-func _on_base_class_mouse_exited() -> void:
-	_hovered = false
-	queue_redraw()
-
 
 func _draw() -> void:
-	if _hovered and editable and has_theme_stylebox("hover"):
+	if editable and get_viewport().gui_get_hovered_control() == self and has_theme_stylebox("hover"):
 		draw_style_box(get_theme_stylebox("hover"), Rect2(Vector2.ZERO, size))
 
 func _make_custom_tooltip(for_text: String) -> Object:
@@ -114,10 +108,8 @@ func _gui_input(event: InputEvent) -> void:
 	mouse_filter = Utils.mouse_filter_pass_non_drag_events(event)
 	
 	if event is InputEventMouseMotion and event.button_mask == 0:
-		_hovered = true
 		queue_redraw()
-	elif event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and\
-	event.is_pressed():
+	elif event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.is_pressed():
 		grab_focus()
 		var btn_arr: Array[Button] = []
 		var separator_arr: Array[int] = []
