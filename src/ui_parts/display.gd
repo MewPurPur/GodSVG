@@ -14,8 +14,6 @@ const NumberEdit = preload("res://src/ui_widgets/number_edit.gd")
 @onready var input_debug_label: Label = %DebugContainer/InputDebugLabel
 @onready var toolbar: PanelContainer = $ViewportPanel/VBoxContainer/Toolbar
 
-var reference_overlay := false
-
 func _ready() -> void:
 	Configs.language_changed.connect(sync_localization)
 	sync_localization()
@@ -63,19 +61,19 @@ func update_snap_config() -> void:
 
 
 func _on_reference_pressed() -> void:
+	var has_reference := is_instance_valid(reference_texture.texture)
 	var btn_arr: Array[Button] = [
 		ContextPopup.create_shortcut_button("load_reference"),
 		ContextPopup.create_button(Translator.translate("Paste reference image"),
 				paste_reference_image, not Utils.has_clipboard_image_web_safe(),
 				load("res://assets/icons/Paste.svg")),
-		ContextPopup.create_shortcut_checkbox("view_show_reference", reference_texture.visible),
-		ContextPopup.create_shortcut_checkbox("view_overlay_reference", reference_overlay)
+		ContextPopup.create_shortcut_checkbox("view_show_reference", State.show_reference and has_reference, not has_reference),
+		ContextPopup.create_shortcut_checkbox("view_overlay_reference", State.overlay_reference and has_reference, not has_reference)
 	]
 	
 	var reference_popup := ContextPopup.new()
 	reference_popup.setup(btn_arr, true)
-	HandlerGUI.popup_under_rect_center(reference_popup, reference_button.get_global_rect(),
-			get_viewport())
+	HandlerGUI.popup_under_rect_center(reference_popup, reference_button.get_global_rect(), get_viewport())
 
 func paste_reference_image() -> void:
 	FileUtils.load_reference_from_image(DisplayServer.clipboard_get_image())
@@ -89,8 +87,7 @@ func _on_visuals_button_pressed() -> void:
 	
 	var visuals_popup := ContextPopup.new()
 	visuals_popup.setup(btn_arr, true)
-	HandlerGUI.popup_under_rect_center(visuals_popup, visuals_button.get_global_rect(),
-			get_viewport())
+	HandlerGUI.popup_under_rect_center(visuals_popup, visuals_button.get_global_rect(), get_viewport())
 
 
 func _on_show_reference_updated() -> void:

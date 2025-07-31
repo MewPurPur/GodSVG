@@ -100,8 +100,7 @@ func popup_configure_color(swatch: Button) -> void:
 	configure_popup.palette = swatch.palette
 	configure_popup.idx = swatch.idx
 	configure_popup.color_deletion_requested.connect(remove_color.bind(swatch.idx))
-	HandlerGUI.popup_under_rect_center(configure_popup, swatch.get_global_rect(),
-			get_viewport())
+	HandlerGUI.popup_under_rect_center(configure_popup, swatch.get_global_rect(), get_viewport())
 	configure_popup.color_edit.value_changed.connect(swatch.change_color)
 	configure_popup.color_edit.value_changed.connect(display_warnings.unbind(1))
 	configure_popup.color_name_edit.text_submitted.connect(swatch.change_color_name)
@@ -210,8 +209,7 @@ func open_palette_options() -> void:
 	
 	var context_popup := ContextPopup.new()
 	context_popup.setup(btn_arr, true)
-	HandlerGUI.popup_under_rect_center(context_popup, palette_button.get_global_rect(),
-			get_viewport())
+	HandlerGUI.popup_under_rect_center(context_popup, palette_button.get_global_rect(), get_viewport())
 
 func apply_preset(preset: Palette.Preset) -> void:
 	Configs.savedata.get_palette(find_palette_index()).apply_preset(preset)
@@ -248,8 +246,7 @@ func _on_palette_button_pressed() -> void:
 	
 	var context_popup := ContextPopup.new()
 	context_popup.setup(btn_arr, true, -1, -1, PackedInt32Array([separator_idx]))
-	HandlerGUI.popup_under_rect_center(context_popup, palette_button.get_global_rect(),
-			get_viewport())
+	HandlerGUI.popup_under_rect_center(context_popup, palette_button.get_global_rect(), get_viewport())
 
 
 # Drag and drop logic.

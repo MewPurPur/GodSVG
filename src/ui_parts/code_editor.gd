@@ -110,8 +110,7 @@ func _on_options_button_pressed() -> void:
 	btn_array.append(ContextPopup.create_shortcut_button("copy_svg_text"))
 	var context_popup := ContextPopup.new()
 	context_popup.setup(btn_array, true)
-	HandlerGUI.popup_under_rect_center(context_popup, options_button.get_global_rect(),
-			get_viewport())
+	HandlerGUI.popup_under_rect_center(context_popup, options_button.get_global_rect(), get_viewport())
 
 
 func update_syntax_highlighter() -> void:
