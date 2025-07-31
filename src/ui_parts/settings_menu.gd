@@ -148,8 +148,7 @@ func _on_language_pressed() -> void:
 	
 	var lang_popup := ContextPopup.new()
 	lang_popup.setup(btn_arr, true)
-	HandlerGUI.popup_under_rect_center(lang_popup, lang_button.get_global_rect(),
-			get_viewport())
+	HandlerGUI.popup_under_rect_center(lang_popup, lang_button.get_global_rect(), get_viewport())
 
 func _on_language_chosen(locale: String) -> void:
 	Configs.savedata.language = locale

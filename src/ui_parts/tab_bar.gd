@@ -238,8 +238,7 @@ func _gui_input(event: InputEvent) -> void:
 					tab_global_rect.position += get_global_rect().position
 					HandlerGUI.popup_under_rect(tab_popup, tab_global_rect, get_viewport())
 				else:
-					HandlerGUI.popup_under_pos(tab_popup, get_global_mouse_position(),
-							get_viewport())
+					HandlerGUI.popup_under_pos(tab_popup, get_global_mouse_position(), get_viewport())
 		elif event.button_index == MOUSE_BUTTON_MIDDLE:
 			if Configs.savedata.tab_mmb_close:
 				FileUtils.close_tabs(get_hovered_index())

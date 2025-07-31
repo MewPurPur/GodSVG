@@ -1,7 +1,7 @@
 extends Control
 
-# This popup is mainly just one node doing a lot of things. This helps with drag & drop
-# which can be defined only here. Buttons are used too, but just for graphics.
+# This is the configuration area of the layout popup, which is just one node doing a lot of things.
+# This helps with drag & drop which can be defined only here. Buttons are used too, but just for graphics.
 
 class DragData:
 	var layout_part: Utils.LayoutPart
@@ -15,7 +15,6 @@ class DragData:
 		idx = new_idx
 
 const PART_UI_SIZE = 30
-const PANEL_MARGIN = 4
 const BUFFER_SIZE = 2
 
 var ci := get_canvas_item()
@@ -88,10 +87,8 @@ func _on_window_mouse_exited() -> void:
 # Drawing
 
 func _draw() -> void:
-	get_theme_stylebox("panel", "PanelContainer").draw(ci, Rect2(Vector2.ZERO, size))
-	
-	var half_width := size.x / 2.0 - PANEL_MARGIN
-	var right_rect := Rect2(size.x / 2.0, PANEL_MARGIN, half_width, half_width * 1.25)
+	var half_width := size.x / 2.0
+	var right_rect := Rect2(half_width, 18, half_width, half_width * 1.25)
 	
 	# Fixed viewport location for now.
 	var stylebox := StyleBoxFlat.new()
@@ -102,8 +99,7 @@ func _draw() -> void:
 	disabled_stylebox.bg_color = ThemeUtils.translucent_button_color_disabled
 	disabled_stylebox.draw(ci, right_rect.grow(-BUFFER_SIZE))
 	var viewport_icon := Utils.get_layout_part_icon(Utils.LayoutPart.VIEWPORT)
-	viewport_icon.draw(ci, right_rect.get_center() - viewport_icon.get_size() / 2,
-			ThemeUtils.tinted_contrast_color)
+	viewport_icon.draw(ci, right_rect.get_center() - viewport_icon.get_size() / 2, ThemeUtils.tinted_contrast_color)
 	
 	for layout_location in section_areas:
 		var area := section_areas[layout_location].grow(-BUFFER_SIZE)
@@ -160,7 +156,11 @@ func _draw() -> void:
 			
 		icon.draw(ci, rect.get_center() - icon.get_size() / 2.0, ThemeUtils.tinted_contrast_color)
 	
-	ThemeUtils.regular_font.draw_string(ci, Vector2(0, size.x * 0.75 - 5),
+	ThemeUtils.regular_font.draw_string(ci, Vector2(0, 12),
+			Translator.translate("Layout") + ":", HORIZONTAL_ALIGNMENT_CENTER, size.x,
+			get_theme_font_size("font_size", "Label"), ThemeUtils.text_color)
+	
+	ThemeUtils.regular_font.draw_string(ci, Vector2(0, size.x * 0.625 + 33),
 			Translator.translate("Excluded") + ":", HORIZONTAL_ALIGNMENT_CENTER, size.x,
 			get_theme_font_size("font_size", "Label"), ThemeUtils.text_color)
 
@@ -192,8 +192,7 @@ func _drop_data(_at_position: Vector2, data: Variant) -> void:
 		var parts := Configs.savedata.get_layout_parts(proposed_drop_location_pivot)
 		# We're just rearranging tabs.
 		parts.remove_at(dragged_data.idx)
-		parts.insert(proposed_drop_idx if proposed_drop_idx <= dragged_data.idx else\
-				proposed_drop_idx - 1, dragged_data.layout_part)
+		parts.insert(proposed_drop_idx if proposed_drop_idx <= dragged_data.idx else proposed_drop_idx - 1, dragged_data.layout_part)
 		Configs.savedata.set_layout_parts(proposed_drop_location_pivot, parts)
 	else:
 		var old_parts := Configs.savedata.get_layout_parts(dragged_data.layout_location)
@@ -206,8 +205,7 @@ func _drop_data(_at_position: Vector2, data: Variant) -> void:
 				parts.insert(proposed_drop_idx, dragged_data.layout_part)
 				Configs.savedata.set_layout_parts(proposed_drop_location_pivot, parts)
 			DropDirection.BELOW:
-				var bottom_left_parts := Configs.savedata.get_layout_parts(
-						SaveData.LayoutLocation.BOTTOM_LEFT)
+				var bottom_left_parts := Configs.savedata.get_layout_parts(SaveData.LayoutLocation.BOTTOM_LEFT)
 				if not bottom_left_parts.is_empty():
 					# If everything is on the bottom, then move them to the top so the
 					# new dragged layout part can be on the bottom.
@@ -215,19 +213,14 @@ func _drop_data(_at_position: Vector2, data: Variant) -> void:
 					# to be valid, then the dragged part should be the only one on the top side.
 					# In either case, the stuff on the bottom should be moved to the top,
 					# and the dragged one should move to the bottom.
-					Configs.savedata.set_layout_parts(SaveData.LayoutLocation.TOP_LEFT,
-							bottom_left_parts, false)
-				Configs.savedata.set_layout_parts(SaveData.LayoutLocation.BOTTOM_LEFT,
-						[dragged_data.layout_part])
+					Configs.savedata.set_layout_parts(SaveData.LayoutLocation.TOP_LEFT, bottom_left_parts, false)
+				Configs.savedata.set_layout_parts(SaveData.LayoutLocation.BOTTOM_LEFT, [dragged_data.layout_part])
 			DropDirection.ABOVE:
 				# Same logic as above, but with top and bottom flipped.
-				var top_left_parts := Configs.savedata.get_layout_parts(
-						SaveData.LayoutLocation.TOP_LEFT)
+				var top_left_parts := Configs.savedata.get_layout_parts(SaveData.LayoutLocation.TOP_LEFT)
 				if not top_left_parts.is_empty():
-					Configs.savedata.set_layout_parts(SaveData.LayoutLocation.BOTTOM_LEFT,
-							top_left_parts, false)
-				Configs.savedata.set_layout_parts(SaveData.LayoutLocation.TOP_LEFT,
-						[dragged_data.layout_part])
+					Configs.savedata.set_layout_parts(SaveData.LayoutLocation.BOTTOM_LEFT, top_left_parts, false)
+				Configs.savedata.set_layout_parts(SaveData.LayoutLocation.TOP_LEFT, [dragged_data.layout_part])
 	
 	clear_proposed_drop()
 	update_areas()
@@ -248,13 +241,9 @@ func _can_drop_data(at_position: Vector2, data: Variant) -> bool:
 		
 		proposed_drop_location_pivot = section
 		
-		
-		if at_position.y < lerpf(section_area.position.y, section_area.end.y, 0.25) and\
-		((section == SaveData.LayoutLocation.TOP_LEFT and\
-		not is_dragged_part_the_only_top_left and (bottom_left_parts.is_empty() or\
-		is_dragged_part_the_only_bottom_left)) or\
-		(section == SaveData.LayoutLocation.BOTTOM_LEFT and top_left_parts.is_empty() and\
-		not is_dragged_part_the_only_top_left)):
+		if at_position.y < lerpf(section_area.position.y, section_area.end.y, 0.25) and ((section == SaveData.LayoutLocation.TOP_LEFT and\
+		not is_dragged_part_the_only_top_left and (bottom_left_parts.is_empty() or is_dragged_part_the_only_bottom_left)) or\
+		(section == SaveData.LayoutLocation.BOTTOM_LEFT and top_left_parts.is_empty() and not is_dragged_part_the_only_top_left)):
 			# Hovering over the top side of the section, when one of the following is true:
 			# Case 1: The section is top left, and there's either nothing on the bottom left,
 			# or the only thing on the bottom left is the dragged layout part.
@@ -262,39 +251,31 @@ func _can_drop_data(at_position: Vector2, data: Variant) -> bool:
 			# the dragged layout part is not the only thing on the bottom left.
 			proposed_drop_location_direction = DropDirection.ABOVE
 			proposed_drop_idx = -1
-		elif at_position.y > lerpf(section_area.position.y, section_area.end.y, 0.75) and\
-		((section == SaveData.LayoutLocation.BOTTOM_LEFT and\
-		not is_dragged_part_the_only_bottom_left and (top_left_parts.is_empty() or\
-		is_dragged_part_the_only_top_left)) or\
-		(section == SaveData.LayoutLocation.TOP_LEFT and bottom_left_parts.is_empty() and\
-		not is_dragged_part_the_only_bottom_left)):
+		elif at_position.y > lerpf(section_area.position.y, section_area.end.y, 0.75) and ((section == SaveData.LayoutLocation.BOTTOM_LEFT and\
+		not is_dragged_part_the_only_bottom_left and (top_left_parts.is_empty() or is_dragged_part_the_only_top_left)) or\
+		(section == SaveData.LayoutLocation.TOP_LEFT and bottom_left_parts.is_empty() and not is_dragged_part_the_only_bottom_left)):
 			# Same logic as the previous big condition, but top and bottom are flipped.
 			proposed_drop_location_direction = DropDirection.BELOW
 			proposed_drop_idx = -1
-		elif not (section == SaveData.LayoutLocation.EXCLUDED and\
-		((is_dragged_part_the_only_top_left and bottom_left_parts.is_empty()) or\
+		elif not (section == SaveData.LayoutLocation.EXCLUDED and ((is_dragged_part_the_only_top_left and bottom_left_parts.is_empty()) or\
 		(is_dragged_part_the_only_bottom_left and top_left_parts.is_empty()))):
 			# Ensure we're not dragging the last layout part into excluded.
 			proposed_drop_location_direction = DropDirection.INSIDE
 			var layout_parts_count := Configs.savedata.get_layout_parts(section).size()
 			if proposed_drop_location_pivot == SaveData.LayoutLocation.EXCLUDED:
-				proposed_drop_idx = clampi(roundi(at_position.x / (PART_UI_SIZE + 8)), 0,
-						layout_parts_count)
+				proposed_drop_idx = clampi(roundi(at_position.x / (PART_UI_SIZE + 8)), 0, layout_parts_count)
 			else:
-				proposed_drop_idx = clampi(roundi(((at_position.x -\
-						section_areas[section].get_center().x) / PART_UI_SIZE) +\
-						layout_parts_count / 2.0), 0, layout_parts_count)
+				proposed_drop_idx = clampi(roundi(((at_position.x - section_areas[section].get_center().x) / PART_UI_SIZE) + layout_parts_count / 2.0),
+						0, layout_parts_count)
 			
 			if proposed_drop_location_pivot == dragged_data.layout_location and\
-			(proposed_drop_idx == dragged_data.idx or\
-			proposed_drop_idx == dragged_data.idx + 1):
+			(proposed_drop_idx == dragged_data.idx or proposed_drop_idx == dragged_data.idx + 1):
 				proposed_drop_idx = -1
 		else:
 			clear_proposed_drop()
 			return false
 		
-		if proposed_drop_idx != -1 or\
-		proposed_drop_location_direction != DropDirection.INSIDE or\
+		if proposed_drop_idx != -1 or proposed_drop_location_direction != DropDirection.INSIDE or\
 		proposed_drop_location_pivot != dragged_data.layout_location:
 			return true
 		else:
@@ -313,9 +294,8 @@ func clear_proposed_drop() -> void:
 
 func _get_tooltip(at_position: Vector2) -> String:
 	# TODO Hack for the viewport tooltip.
-	var half_width := size.x / 2.0 - PANEL_MARGIN
-	if Rect2(size.x / 2.0, PANEL_MARGIN, half_width, half_width * 1.25).\
-	grow(-BUFFER_SIZE).has_point(at_position):
+	var half_width := size.x / 2.0
+	if Rect2(half_width, 18, half_width, half_width * 1.25).grow(-BUFFER_SIZE).has_point(at_position):
 		return TranslationUtils.get_layout_part_name(Utils.LayoutPart.VIEWPORT)
 	
 	for layout_part in layout_part_areas:
@@ -351,50 +331,40 @@ func update_areas() -> void:
 	var bottom_left := Configs.savedata.get_layout_parts(SaveData.LayoutLocation.BOTTOM_LEFT)
 	var excluded := Configs.savedata.get_layout_parts(SaveData.LayoutLocation.EXCLUDED)
 	
-	var width := size.x - PANEL_MARGIN * 2
-	var included_rect := Rect2(PANEL_MARGIN, PANEL_MARGIN, width, width / 1.6)
+	var included_rect_height := size.x * 0.625
+	var half_width := size.x / 2.0
+	var included_rect_half_height := included_rect_height / 2.0
+	var v_offset := 18.0
 	
 	section_areas.clear()
-	
-	section_areas[SaveData.LayoutLocation.EXCLUDED] =\
-			Rect2(PANEL_MARGIN, size.x * 0.75, 160, PART_UI_SIZE + 8)
+	section_areas[SaveData.LayoutLocation.EXCLUDED] = Rect2(0, v_offset * 2 + included_rect_height + 2, size.x, PART_UI_SIZE + 8)
 	
 	if not top_left.is_empty() and not bottom_left.is_empty():
-		section_areas[SaveData.LayoutLocation.TOP_LEFT] =\
-				Rect2(included_rect.position, included_rect.size * Vector2(0.5, 0.5))
-		section_areas[SaveData.LayoutLocation.BOTTOM_LEFT] =\
-				Rect2(included_rect.position + included_rect.size * Vector2(0.0, 0.5),
-				included_rect.size * Vector2(0.5, 0.5))
+		section_areas[SaveData.LayoutLocation.TOP_LEFT] = Rect2(0, v_offset, half_width, included_rect_half_height)
+		section_areas[SaveData.LayoutLocation.BOTTOM_LEFT] = Rect2(0, v_offset + included_rect_half_height, half_width, included_rect_half_height)
 	elif bottom_left.is_empty():
-		section_areas[SaveData.LayoutLocation.TOP_LEFT] =\
-				Rect2(included_rect.position, included_rect.size * Vector2(0.5, 1.0))
+		section_areas[SaveData.LayoutLocation.TOP_LEFT] = Rect2(0, v_offset, half_width, included_rect_height)
 	elif top_left.is_empty():
-		section_areas[SaveData.LayoutLocation.BOTTOM_LEFT] =\
-				Rect2(included_rect.position, included_rect.size * Vector2(0.5, 1.0))
+		section_areas[SaveData.LayoutLocation.BOTTOM_LEFT] = Rect2(0, v_offset, half_width, included_rect_height)
 	
 	if not top_left.is_empty():
 		var top_left_count := top_left.size()
-		var top_left_rect_center := section_areas[SaveData.LayoutLocation.TOP_LEFT].\
-				get_center()
+		var top_left_rect_center := section_areas[SaveData.LayoutLocation.TOP_LEFT].get_center()
 		for i in top_left_count:
-			layout_part_areas[top_left[i]] = Rect2(top_left_rect_center.x -\
-					PART_UI_SIZE * (top_left_count * 0.5 - i), top_left_rect_center.y -\
-					PART_UI_SIZE / 2.0, PART_UI_SIZE, PART_UI_SIZE)
+			layout_part_areas[top_left[i]] = Rect2(top_left_rect_center.x - PART_UI_SIZE * (top_left_count * 0.5 - i),
+					top_left_rect_center.y - PART_UI_SIZE / 2.0, PART_UI_SIZE, PART_UI_SIZE)
 	
 	if not bottom_left.is_empty():
 		var bottom_left_count := bottom_left.size()
-		var bottom_left_rect_center := section_areas[SaveData.LayoutLocation.BOTTOM_LEFT].\
-				get_center()
+		var bottom_left_rect_center := section_areas[SaveData.LayoutLocation.BOTTOM_LEFT].get_center()
 		for i in bottom_left_count:
-			layout_part_areas[bottom_left[i]] = Rect2(bottom_left_rect_center.x -\
-					PART_UI_SIZE * (bottom_left_count * 0.5 - i), bottom_left_rect_center.y -\
-					PART_UI_SIZE / 2.0, PART_UI_SIZE, PART_UI_SIZE)
+			layout_part_areas[bottom_left[i]] = Rect2(bottom_left_rect_center.x - PART_UI_SIZE * (bottom_left_count * 0.5 - i),
+					bottom_left_rect_center.y - PART_UI_SIZE / 2.0, PART_UI_SIZE, PART_UI_SIZE)
 	
 	var excluded_count := excluded.size()
 	for i in excluded_count:
 		var part := excluded[i]
-		var rect := Rect2(section_areas[SaveData.LayoutLocation.EXCLUDED].position +\
-				Vector2((PART_UI_SIZE + 4) * i, 0),
+		var rect := Rect2(section_areas[SaveData.LayoutLocation.EXCLUDED].position + Vector2((PART_UI_SIZE + 4) * i, 0),
 				Vector2(PART_UI_SIZE + 8, PART_UI_SIZE + 8)).grow(-4)
 		layout_part_areas[part] = rect
 	

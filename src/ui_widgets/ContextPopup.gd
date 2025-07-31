@@ -3,9 +3,6 @@ class_name ContextPopup extends PanelContainer
 
 const arrow = preload("res://assets/icons/PopupArrow.svg")
 
-func _init() -> void:
-	mouse_filter = Control.MOUSE_FILTER_STOP
-
 
 static func create_shortcut_button(action: String, disabled := false, custom_text := "", custom_icon: Texture2D = null) -> Button:
 	if not InputMap.has_action(action):
@@ -65,7 +62,7 @@ static func create_button(text: String, press_callback: Callable, disabled := fa
 		main_button.icon = icon
 	
 	if press_callback.is_valid():
-		main_button.pressed.connect(press_callback)
+		main_button.pressed.connect(press_callback, CONNECT_ONE_SHOT)
 	main_button.pressed.connect(HandlerGUI.remove_popup)
 	
 	if not dim_text.is_empty():
@@ -77,11 +74,13 @@ static func create_button(text: String, press_callback: Callable, disabled := fa
 		if disabled:
 			shortcut_text_color.a *= 0.75
 		
-		var CONST_ARR: PackedStringArray = ["normal", "hover", "pressed"]
+		main_button.begin_bulk_theme_override()
+		var CONST_ARR: PackedStringArray = ["normal", "hover", "pressed", "disabled"]
 		for theme_style in CONST_ARR:
 			var sb := main_button.get_theme_stylebox(theme_style, "ContextButton").duplicate()
 			sb.content_margin_right += dim_text_width + 8
 			main_button.add_theme_stylebox_override(theme_style, sb)
+		main_button.end_bulk_theme_override()
 		
 		var on_main_button_draw := func() -> void:
 				var sb := ThemeDB.get_default_theme().get_stylebox("normal", "ContextButton")
@@ -92,21 +91,23 @@ static func create_button(text: String, press_callback: Callable, disabled := fa
 	return main_button
 
 
-static func create_shortcut_checkbox(action: String, start_pressed: bool) -> CheckBox:
+static func create_shortcut_checkbox(action: String, start_pressed: bool, disabled := false) -> CheckBox:
 	if not InputMap.has_action(action):
 		push_error("Non-existent shortcut was passed.")
 		return
 	
 	return create_checkbox(TranslationUtils.get_action_description(action, true),
 			HandlerGUI.throw_action_event.bind(action),
-			start_pressed, ShortcutUtils.get_action_showcase_text(action))
+			start_pressed, disabled, ShortcutUtils.get_action_showcase_text(action))
 
-static func create_checkbox(text: String, toggle_action: Callable,
-start_pressed: bool, dim_text := "") -> CheckBox:
+static func create_checkbox(text: String, toggle_action: Callable, start_pressed: bool, disabled := false, dim_text := "") -> CheckBox:
 	# Create main checkbox.
 	var checkbox := CheckBox.new()
 	checkbox.focus_mode = Control.FOCUS_NONE
-	checkbox.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+	if disabled:
+		checkbox.disabled = true
+	else:
+		checkbox.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	
 	checkbox.text = text
 	checkbox.button_pressed = start_pressed
@@ -116,13 +117,18 @@ start_pressed: bool, dim_text := "") -> CheckBox:
 		var font := checkbox.get_theme_font("font")
 		var font_size := checkbox.get_theme_font_size("font_size")
 		var dim_text_width := font.get_string_size(dim_text, HORIZONTAL_ALIGNMENT_RIGHT, -1, font_size).x
-		var shortcut_text_color := ThemeUtils.subtle_text_color
 		
-		var CONST_ARR: PackedStringArray = ["normal", "hover", "pressed"]
+		var shortcut_text_color := ThemeUtils.subtle_text_color
+		if disabled:
+			shortcut_text_color.a *= 0.75
+		
+		checkbox.begin_bulk_theme_override()
+		var CONST_ARR: PackedStringArray = ["normal", "hover", "pressed", "disabled"]
 		for theme_style in CONST_ARR:
 			var sb := checkbox.get_theme_stylebox(theme_style, "CheckBox").duplicate()
 			sb.content_margin_right += dim_text_width + 8
 			checkbox.add_theme_stylebox_override(theme_style, sb)
+		checkbox.end_bulk_theme_override()
 		
 		var on_shortcut_draw := func() -> void:
 				var sb := ThemeDB.get_default_theme().get_stylebox("normal", "CheckBox")
@@ -136,8 +142,6 @@ func _setup_button(btn: Button, align_left: bool) -> Button:
 	if align_left:
 		btn.alignment = HORIZONTAL_ALIGNMENT_LEFT
 	btn.ready.connect(_order_signals.bind(btn))
-	if btn.get_child_count() == 1:
-		btn.get_child(0).resized.connect(_resize_button_around_child.bind(btn))
 	return btn
 
 # A hack to deal with situations where a popup is replaced by another.
@@ -147,11 +151,6 @@ func _order_signals(btn: Button) -> void:
 			btn.pressed.disconnect(connection.callable)
 			btn.pressed.connect(connection.callable, CONNECT_DEFERRED)
 	set_block_signals(true)
-
-# A hack for buttons that are wrapped around a control.
-func _resize_button_around_child(btn: Button) -> void:
-	var child: Control = btn.get_child(0)
-	btn.custom_minimum_size = child.size
 
 func setup(buttons: Array[Button], align_left := false, min_width := -1.0,
 max_height := -1.0, separator_indices := PackedInt32Array()) -> void:

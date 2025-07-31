@@ -39,8 +39,7 @@ func _popup_xml_palette_options(palette_xml_button: Button) -> void:
 	
 	var context_popup := ContextPopup.new()
 	context_popup.setup(btn_arr, true)
-	HandlerGUI.popup_under_rect_center(context_popup, palette_xml_button.get_global_rect(),
-			get_viewport())
+	HandlerGUI.popup_under_rect_center(context_popup, palette_xml_button.get_global_rect(), get_viewport())
 
 
 func add_empty_palette() -> void:

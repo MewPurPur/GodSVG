@@ -1,7 +1,5 @@
 extends HBoxContainer
 
-const LayoutPopup = preload("res://src/ui_parts/layout_popup.gd")
-
 const LayoutPopupScene = preload("res://src/ui_parts/layout_popup.tscn")
 
 @onready var more_options: Button = $LeftSide/MoreOptions
@@ -41,8 +39,7 @@ func _on_size_button_pressed() -> void:
 		ContextPopup.create_shortcut_button("optimize")]
 	var context_popup := ContextPopup.new()
 	context_popup.setup(btn_array, true)
-	HandlerGUI.popup_under_rect_center(context_popup, size_button.get_global_rect(),
-			get_viewport())
+	HandlerGUI.popup_under_rect_center(context_popup, size_button.get_global_rect(), get_viewport())
 
 func _on_more_options_pressed() -> void:
 	var can_show_savedata_folder := DisplayServer.has_feature(
@@ -67,8 +64,7 @@ func _on_more_options_pressed() -> void:
 	
 	var more_popup := ContextPopup.new()
 	more_popup.setup(buttons_arr, true, -1, -1, separator_indices)
-	HandlerGUI.popup_under_rect_center(more_popup, more_options.get_global_rect(),
-			get_viewport())
+	HandlerGUI.popup_under_rect_center(more_popup, more_options.get_global_rect(), get_viewport())
 
 
 func open_savedata_folder() -> void:
@@ -99,5 +95,4 @@ func update_size_button_colors() -> void:
 
 func _on_layout_button_pressed() -> void:
 	var layout_popup := LayoutPopupScene.instantiate()
-	HandlerGUI.popup_under_rect_center(layout_popup, layout_button.get_global_rect(),
-			get_viewport())
+	HandlerGUI.popup_under_rect_center(layout_popup, layout_button.get_global_rect(), get_viewport())

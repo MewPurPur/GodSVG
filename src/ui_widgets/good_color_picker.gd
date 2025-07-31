@@ -394,8 +394,7 @@ func _on_keyword_button_pressed() -> void:
 	
 	var context_popup := ContextPopup.new()
 	context_popup.setup(btn_arr, true)
-	HandlerGUI.popup_under_rect(context_popup, keyword_button.get_global_rect(),
-			get_viewport())
+	HandlerGUI.popup_under_rect(context_popup, keyword_button.get_global_rect(), get_viewport())
 
 func set_to_keyword(keyword: String) -> void:
 	undo_redo.create_action()

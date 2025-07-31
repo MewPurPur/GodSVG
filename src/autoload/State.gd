@@ -252,7 +252,7 @@ func set_viewport_size(new_value: Vector2i) -> void:
 var view_rasterized := false
 var show_grid := true
 var show_handles := true
-var show_reference := false
+var show_reference := true
 var overlay_reference := false
 var show_debug := false
 

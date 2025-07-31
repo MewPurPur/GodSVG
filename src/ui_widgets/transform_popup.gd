@@ -162,13 +162,11 @@ func popup_transform_actions(idx: int, control: Control) -> void:
 	
 	var context_popup := ContextPopup.new()
 	context_popup.setup(btn_array, true)
-	HandlerGUI.popup_under_rect_center(context_popup, control.get_global_rect(),
-			get_viewport())
+	HandlerGUI.popup_under_rect_center(context_popup, control.get_global_rect(), get_viewport())
 
 func popup_new_transform_context(idx: int, control: Control) -> void:
 	var btn_array: Array[Button] = []
-	const CONST_ARR: PackedStringArray = ["matrix", "translate", "rotate", "scale",
-			"skewX", "skewY"]
+	const CONST_ARR: PackedStringArray = ["matrix", "translate", "rotate", "scale", "skewX", "skewY"]
 	for transform_type in CONST_ARR:
 		var btn := ContextPopup.create_button(transform_type,
 				insert_transform.bind(idx, transform_type), false,
@@ -177,10 +175,8 @@ func popup_new_transform_context(idx: int, control: Control) -> void:
 		btn_array.append(btn)
 	
 	var transform_context := ContextPopup.new()
-	transform_context.setup_with_title(btn_array,
-			Translator.translate("New transform"), true)
-	HandlerGUI.popup_under_rect_center(transform_context, control.get_global_rect(),
-			get_viewport())
+	transform_context.setup_with_title(btn_array, Translator.translate("New transform"), true)
+	HandlerGUI.popup_under_rect_center(transform_context, control.get_global_rect(), get_viewport())
 
 
 func _unhandled_input(event: InputEvent) -> void:

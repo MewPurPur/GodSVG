@@ -73,6 +73,7 @@ static var context_icon_pressed_color: Color
 
 static var translucent_button_color_disabled: Color
 static var flat_button_color_disabled: Color
+static var context_button_color_disabled: Color
 
 static var subtle_flat_panel_color: Color
 static var contrast_flat_panel_color: Color
@@ -104,8 +105,7 @@ static func recalculate_colors() -> void:
 	extreme_theme_color = Color("#000") if is_theme_dark else Color("fff")
 	tinted_contrast_color = Color("#def") if is_theme_dark else Color("061728")
 	gray_color = Color("808080") if is_theme_dark else Color("666")
-	black_or_white_counter_accent_color = Color("#000") if\
-			accent_color.get_luminance() > 0.69 else Color("fff")
+	black_or_white_counter_accent_color = Color("#000") if accent_color.get_luminance() > 0.69 else Color("fff")
 	
 	warning_icon_color = Color("fca") if is_theme_dark else Color("96592c")
 	info_icon_color = Color("acf") if is_theme_dark else Color("3a6ab0")
@@ -138,16 +138,13 @@ static func recalculate_colors() -> void:
 	strong_hover_overlay_color = Color(tinted_contrast_color, 0.12)
 	stronger_hover_overlay_color = Color(tinted_contrast_color, 0.16)
 	
-	intermediate_hover_color = intermediate_color.blend(
-			hover_overlay_color if is_theme_dark else stronger_hover_overlay_color)
+	intermediate_hover_color = intermediate_color.blend(hover_overlay_color if is_theme_dark else stronger_hover_overlay_color)
 	soft_intermediate_color = intermediate_color.lerp(extreme_theme_color, 0.36)
-	soft_intermediate_hover_color = soft_intermediate_color.blend(
-			soft_hover_overlay_color if is_theme_dark else hover_overlay_color)
+	soft_intermediate_hover_color = soft_intermediate_color.blend(soft_hover_overlay_color if is_theme_dark else hover_overlay_color)
 	softer_intermediate_color = intermediate_color.lerp(extreme_theme_color, 0.44)
 	if not is_theme_dark:
 		softer_intermediate_color.s *= 0.8
-	softer_intermediate_hover_color = softer_intermediate_color.blend(
-			soft_hover_overlay_color if is_theme_dark else hover_overlay_color)
+	softer_intermediate_hover_color = softer_intermediate_color.blend(soft_hover_overlay_color if is_theme_dark else hover_overlay_color)
 	
 	text_color = Color(max_contrast_color, 0.875)
 	highlighted_text_color = Color(max_contrast_color)
@@ -176,6 +173,7 @@ static func recalculate_colors() -> void:
 	
 	translucent_button_color_disabled = Color(disabled_color.lerp(extreme_theme_color, 0.4), 0.24)
 	flat_button_color_disabled = Color(disabled_color.lerp(extreme_theme_color, 0.4), 0.18)
+	context_button_color_disabled = Color(Color.BLACK, maxf(0.16, 0.48 - color_difference(Color.BLACK, basic_panel_inner_color) * 2))
 	
 	subtle_flat_panel_color = base_color
 	contrast_flat_panel_color = Color(tinted_contrast_color, 0.1)
@@ -624,8 +622,7 @@ static func _setup_button(theme: Theme) -> void:
 	
 	var disabled_context_button_stylebox := context_button_stylebox.duplicate()
 	# Ensure enough contrast.
-	disabled_context_button_stylebox.bg_color = Color(Color.BLACK, maxf(0.16,
-			0.48 - color_difference(Color.BLACK, basic_panel_inner_color) * 2))
+	disabled_context_button_stylebox.bg_color = context_button_color_disabled
 	theme.set_stylebox("disabled", "ContextButton", disabled_context_button_stylebox)
 	
 	theme.add_type("PathCommandAbsoluteButton")
@@ -815,7 +812,7 @@ static func _setup_checkbox(theme: Theme) -> void:
 	theme.set_stylebox("hover_pressed", "CheckBox", hover_checkbox_stylebox)
 	
 	var disabled_checkbox_stylebox := checkbox_stylebox.duplicate()
-	disabled_checkbox_stylebox.bg_color = flat_button_color_disabled
+	disabled_checkbox_stylebox.bg_color = context_button_color_disabled
 	theme.set_stylebox("disabled", "CheckBox", disabled_checkbox_stylebox)
 
 static func _setup_checkbutton(theme: Theme) -> void:
