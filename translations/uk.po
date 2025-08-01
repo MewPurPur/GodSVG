@@ -4,7 +4,7 @@ msgstr ""
 "Project-Id-Version: GodSVG\n"
 "POT-Creation-Date: \n"
 "PO-Revision-Date: \n"
-"Last-Translator: \n"
+"Last-Translator: freeducks-debug <applesause454@gmail.com>\n"
 "Language-Team: \n"
 "Language: uk\n"
 "MIME-Version: 1.0\n"
@@ -13,7 +13,9 @@ msgstr ""
 "X-Generator: Poedit 3.6\n"
 
 msgid "translation-credits"
-msgstr "volkov"
+msgstr ""
+"volkov\n"
+"freeducks-debug"
 
 #: src/autoload/HandlerGUI.gd:
 msgid "Quit GodSVG"
@@ -32,8 +34,12 @@ msgid "Check for updates?"
 msgstr "Перевірити оновлення?"
 
 #: src/autoload/HandlerGUI.gd:
-msgid "This will connect to github.com to compare version numbers. No other data is collected or transmitted."
-msgstr "Це потребує з'єднання з github.com, щоб порівняти цифри версії. Жодна інша інформація не збирається і не передається."
+msgid ""
+"This will connect to github.com to compare version numbers. No other data is "
+"collected or transmitted."
+msgstr ""
+"Це потребує з'єднання з github.com, щоб порівняти цифри версії. Жодна інша "
+"інформація не збирається і не передається."
 
 #: src/autoload/HandlerGUI.gd: src/ui_widgets/alert_dialog.gd:
 msgid "OK"
@@ -53,12 +59,19 @@ msgid "Export"
 msgstr "Експортувати"
 
 #: src/autoload/HandlerGUI.gd:
-msgid "The graphic can be exported only as SVG because its proportions are too extreme."
-msgstr "Це зображення може бути експортоване тільки як SVG, оскільки його пропорції занадто екстремальні."
+msgid ""
+"The graphic can be exported only as SVG because its proportions are too "
+"extreme."
+msgstr ""
+"Це зображення може бути експортоване тільки як SVG, оскільки його пропорції "
+"занадто екстремальні."
 
 #: src/autoload/HandlerGUI.gd:
-msgid "The graphic can be exported only as SVG because its size is not defined."
-msgstr "Це зображення може бути експортоване тільки як SVG, оскільки його розмір не завданий."
+msgid ""
+"The graphic can be exported only as SVG because its size is not defined."
+msgstr ""
+"Це зображення може бути експортоване тільки як SVG, оскільки його розмір не "
+"завданий."
 
 #: src/autoload/State.gd: src/ui_parts/good_file_dialog.gd:
 #: src/ui_widgets/alert_dialog.gd: src/utils/FileUtils.gd:
@@ -90,8 +103,12 @@ msgid "The last edited state of this tab could not be found."
 msgstr "Останній редагований стан цієї вкладки не може бути знайдено."
 
 #: src/autoload/State.gd:
-msgid "The tab is bound to the file path {file_path}. Do you want to restore the SVG from this path?"
-msgstr "Ця вкладка пов'язана з шляхом до файлу {file_path}. Бажаєте відновити SVG з цього шляху?"
+msgid ""
+"The tab is bound to the file path {file_path}. Do you want to restore the "
+"SVG from this path?"
+msgstr ""
+"Ця вкладка пов'язана з шляхом до файлу {file_path}. Бажаєте відновити SVG з "
+"цього шляху?"
 
 #: src/config_classes/Formatter.gd:
 msgid "Compact"
@@ -132,26 +149,25 @@ msgstr "6 значне шістнадцятирічне число"
 #. Refers to a theme preset.
 #: src/config_classes/SaveData.gd:
 msgid "Dark"
-msgstr ""
+msgstr "Темна"
 
 #. Refers to a theme preset.
 #: src/config_classes/SaveData.gd:
-#, fuzzy
 msgid "Light"
-msgstr "Висота"
+msgstr "Світла"
 
 #. Refers to a theme preset.
 #: src/config_classes/SaveData.gd:
 msgid "Black (OLED)"
-msgstr ""
+msgstr "Темна (OLED)"
 
 #: src/config_classes/SaveData.gd:
 msgid "Default Dark"
-msgstr ""
+msgstr "Стандартна темна"
 
 #: src/config_classes/SaveData.gd:
 msgid "Default Light"
-msgstr ""
+msgstr "Стандартна світла"
 
 #: src/config_classes/TabData.gd:
 msgid "Empty"
@@ -383,8 +399,12 @@ msgid "Copy path"
 msgstr "Скопіювати шлях"
 
 #: src/ui_parts/good_file_dialog.gd:
-msgid "A file named \"{file_name}\" already exists. Replacing will overwrite its contents!"
-msgstr "Файл з назваою \"{file_name}\" вже існує. Його заміна призведе до перезапису його вмісту!"
+msgid ""
+"A file named \"{file_name}\" already exists. Replacing will overwrite its "
+"contents!"
+msgstr ""
+"Файл з назваою \"{file_name}\" вже існує. Його заміна призведе до перезапису "
+"його вмісту!"
 
 #: src/ui_parts/handles_manager.gd:
 msgid "New shape"
@@ -562,7 +582,7 @@ msgstr "Без назви"
 
 #: src/ui_widgets/fps_limit_dropdown.gd: src/ui_widgets/setting_frame.gd:
 msgid "Unlimited"
-msgstr ""
+msgstr "Без обмежень"
 
 #: src/ui_widgets/good_color_picker.gd:
 msgid "Color keywords"
@@ -631,11 +651,11 @@ msgstr "Також використовується"
 
 #: src/ui_widgets/profile_frame.gd:
 msgid "Apply"
-msgstr ""
+msgstr "Застосувати"
 
 #: src/ui_widgets/profile_frame.gd:
 msgid "Apply all of this preset's defaults"
-msgstr ""
+msgstr "Застосувати стандартні значення цього пресету"
 
 #: src/ui_widgets/setting_frame.gd: src/ui_widgets/setting_shortcut.gd:
 msgid "Reset to default"
@@ -669,9 +689,8 @@ msgid "Preset"
 msgstr "Пресет"
 
 #: src/ui_widgets/settings_content_generic.gd:
-#, fuzzy
 msgid "Determines the default values of the formatter configs."
-msgstr "Змінити масштаб інтерфейсу користувача."
+msgstr "Визначає стандартні значення конфігурації форматера."
 
 #: src/ui_widgets/settings_content_generic.gd:
 msgid "Keep comments"
@@ -761,27 +780,28 @@ msgid "Remove unnecessary parameters"
 msgstr "Видалити необов'язкові параметри"
 
 #: src/ui_widgets/settings_content_generic.gd:
-#, fuzzy
 msgid "Theme preset"
-msgstr "Скинути масштаб"
+msgstr "Тема додатку"
 
 #: src/ui_widgets/settings_content_generic.gd:
-msgid "Determines the default values of theming-related settings, including the highlighter preset."
+msgid ""
+"Determines the default values of theming-related settings, including the "
+"highlighter preset."
 msgstr ""
+"Визначає стандартні значення для налаштувань теми, включаючи налаштування "
+"підсвітки."
 
 #: src/ui_widgets/settings_content_generic.gd:
 msgid "Primary theme colors"
-msgstr ""
+msgstr "Головні кольори теми"
 
 #: src/ui_widgets/settings_content_generic.gd:
-#, fuzzy
 msgid "Base color"
 msgstr "Базовий колір"
 
 #: src/ui_widgets/settings_content_generic.gd:
-#, fuzzy
 msgid "Accent color"
-msgstr "Колір тексту"
+msgstr "Колір акценту"
 
 #: src/ui_widgets/settings_content_generic.gd:
 msgid "SVG Text colors"
@@ -789,11 +809,11 @@ msgstr "Колір SVG тексту"
 
 #: src/ui_widgets/settings_content_generic.gd:
 msgid "Highlighter preset"
-msgstr ""
+msgstr "Тема підсвітки"
 
 #: src/ui_widgets/settings_content_generic.gd:
 msgid "Determines the default values of SVG highlighter settings."
-msgstr ""
+msgstr "Визначає стандартні значення підсвітки SVG."
 
 #: src/ui_widgets/settings_content_generic.gd:
 msgid "Symbol color"
@@ -830,9 +850,8 @@ msgstr "Колір помилки"
 
 #. Refers to the draggable gizmos.
 #: src/ui_widgets/settings_content_generic.gd:
-#, fuzzy
 msgid "Handles"
-msgstr "Розмір ручок редагування"
+msgstr "Ручки редагування"
 
 #: src/ui_widgets/settings_content_generic.gd:
 msgid "Inside color"
@@ -855,32 +874,29 @@ msgid "Hovered selected color"
 msgstr "Колір наведено-виділеного"
 
 #: src/ui_widgets/settings_content_generic.gd:
-#, fuzzy
 msgid "Selection rectangle"
-msgstr "Обрати зображення"
+msgstr "Прямокутник вибору"
 
 #: src/ui_widgets/settings_content_generic.gd:
 msgid "Speed"
-msgstr ""
+msgstr "Швидкість"
 
 #. Refers to the selection rectangle's animated dashed stroke.
 #: src/ui_widgets/settings_content_generic.gd:
 msgid "Dash length"
-msgstr ""
+msgstr "Довжина лінії"
 
 #: src/ui_widgets/settings_content_generic.gd:
-#, fuzzy
 msgid "Color {index}"
-msgstr "Кольорова піпетка"
+msgstr "Колір {index}"
 
 #: src/ui_widgets/settings_content_generic.gd:
 msgid "Basic colors"
 msgstr "Базовий колір"
 
 #: src/ui_widgets/settings_content_generic.gd:
-#, fuzzy
 msgid "Canvas color"
-msgstr "Внутрішній колір"
+msgstr "Колір полотна"
 
 #: src/ui_widgets/settings_content_generic.gd:
 msgid "Grid color"
@@ -903,9 +919,12 @@ msgid "Close tabs with middle mouse button"
 msgstr "Закривати вкладки при натисканні середньої кнопки миші"
 
 #: src/ui_widgets/settings_content_generic.gd:
-#, fuzzy
-msgid "When enabled, clicking on a tab with the middle mouse button closes it instead of simply focusing it."
-msgstr "Якщо увімкнено - клацання на вкладку середньою кнопкою миші закриє її. Якщо вимкнено - фокус буде замінено на неї."
+msgid ""
+"When enabled, clicking on a tab with the middle mouse button closes it "
+"instead of simply focusing it."
+msgstr ""
+"Якщо увімкнено - клацання на вкладку середньою кнопкою миші закриє її, "
+"замість того, щоб фокусуватися на ній."
 
 #: src/ui_widgets/settings_content_generic.gd:
 msgid "Invert zoom direction"
@@ -924,47 +943,58 @@ msgid "Use CTRL for zooming"
 msgstr "Використовувати CTRL для масштабування"
 
 #: src/ui_widgets/settings_content_generic.gd:
-#, fuzzy
-msgid "When enabled, scrolling pans the view instead of zooming in. To zoom, hold CTRL while scrolling."
-msgstr "Якщо увімкнено - гортання буде рухати вікно перегляду. Щоб масштабувати, затисніть CTRL доки гортаєте."
+msgid ""
+"When enabled, scrolling pans the view instead of zooming in. To zoom, hold "
+"CTRL while scrolling."
+msgstr ""
+"Якщо увімкнено - гортання буде рухати вікно перегляду. Щоб масштабувати, "
+"затисніть CTRL доки гортаєте."
 
 #: src/ui_widgets/settings_content_generic.gd:
 msgid "Display"
-msgstr ""
+msgstr "Дисплей"
 
 #: src/ui_widgets/settings_content_generic.gd:
 msgid "UI scale"
 msgstr "Масштаб інтерфейсу"
 
 #: src/ui_widgets/settings_content_generic.gd:
-#, fuzzy
 msgid "Determines the scale factor for the interface."
-msgstr "Змінити масштаб інтерфейсу користувача."
+msgstr "Визначає множник масштабу інтерфейсу."
 
 #. Stands for "Vertical Synchronization".
 #: src/ui_widgets/settings_content_generic.gd:
 msgid "V-Sync"
-msgstr ""
+msgstr "Вертикальна синхроназація"
 
 #: src/ui_widgets/settings_content_generic.gd:
-msgid "Synchronizes graphics rendering with display refresh rate to prevent screen tearing artifacts. May increase input lag slightly."
+msgid ""
+"Synchronizes graphics rendering with display refresh rate to prevent screen "
+"tearing artifacts. May increase input lag slightly."
 msgstr ""
+"Синхронізує відображення графіки з частотою відновлення екрану, щоб "
+"запобігати артефактам відображення (на кшталт \"розриву\" екрана). Також "
+"може збільшити затримку натискань клавіатури або курсору."
 
 #: src/ui_widgets/settings_content_generic.gd:
 msgid "Maximum FPS"
-msgstr ""
+msgstr "Максимальна кількість кадрів на секунду"
 
 #: src/ui_widgets/settings_content_generic.gd:
 msgid "Determines the maximum number of frames per second."
-msgstr ""
+msgstr "Визначає максимальну кількість кадрів на секунду."
 
 #: src/ui_widgets/settings_content_generic.gd:
 msgid "Keep Screen On"
-msgstr ""
+msgstr "Тримати екран увімкненим"
 
 #: src/ui_widgets/settings_content_generic.gd:
-msgid "Keeps the screen on even after inactivity, so the screensaver does not take over."
+msgid ""
+"Keeps the screen on even after inactivity, so the screensaver does not take "
+"over."
 msgstr ""
+"Відкладати присипляння системи та/або екрану навіть після бездіяльності, "
+"завдяки чому зберігач екрану не буде запускатися."
 
 #: src/ui_widgets/settings_content_generic.gd:
 msgid "Miscellaneous"
@@ -979,29 +1009,39 @@ msgid "Sync window title to file name"
 msgstr "Синхронізувати заголовок вікна з назвою поточного файлу"
 
 #: src/ui_widgets/settings_content_generic.gd:
-msgid "When enabled, adds the current file name before the \"GodSVG\" window title."
+msgid ""
+"When enabled, adds the current file name before the \"GodSVG\" window title."
 msgstr ""
+"Коли активовано, додає назву поточного файлу перед \"GodSVG\" у заголовку "
+"вікна."
 
 #: src/ui_widgets/settings_content_generic.gd:
 msgid "When enabled, uses spaces instead of a single tab for indentation."
+msgstr "Коли активно, використовує пробіли замість одного tab-у для відступів."
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid ""
+"Warps the cursor to the opposite side whenever it reaches a viewport "
+"boundary while panning."
 msgstr ""
+"Курсор буде телепортуватися від одного краю до протилежного при пересуванні "
+"вікна перегляду."
 
 #: src/ui_widgets/settings_content_generic.gd:
-msgid "Warps the cursor to the opposite side whenever it reaches a viewport boundary while panning."
-msgstr "Курсор буде телепортуватися від одного краю до протилежного при пересуванні вікна перегляду."
-
-#: src/ui_widgets/settings_content_generic.gd:
-#, fuzzy
-msgid "When enabled, uses your operating system's native file dialog instead of GodSVG's built-in one."
-msgstr "Якщо увімкнено, то буде використовувати рідний файловий діалог вашої операційної системи для обирання файлів. Якщо вимкнено, то замість буде використовуватися вбудований файловий діалог."
+msgid ""
+"When enabled, uses your operating system's native file dialog instead of "
+"GodSVG's built-in one."
+msgstr ""
+"Якщо увімкнено, то буде використовувати рідний файловий діалог вашої "
+"операційної системи для обирання файлів замість вбудованого."
 
 #: src/ui_widgets/settings_content_generic.gd:
 msgid "The setting has no effect in the current configuration."
-msgstr ""
+msgstr "Це опція не має ефекту на поточну конфігурацію."
 
 #: src/ui_widgets/settings_content_generic.gd:
 msgid "The setting can't be changed on this platform."
-msgstr ""
+msgstr "Ця опція не може бути змінена на поточній платформі."
 
 #: src/ui_widgets/settings_content_palettes.gd:
 msgid "New palette"
@@ -1101,7 +1141,9 @@ msgstr "Файл {file_path} вже редагується в GodSVG."
 
 #: src/utils/FileUtils.gd:
 msgid "If you want to revert your edits since the last save, use {reset_svg}."
-msgstr "Якщо ви бажаєте повернути свої зміни з останнього збереження, використовуйте {reset_svg}."
+msgstr ""
+"Якщо ви бажаєте повернути свої зміни з останнього збереження, використовуйте "
+"{reset_svg}."
 
 #: src/utils/FileUtils.gd:
 msgid "Do you want to save the changes made to {file_name}?"
@@ -1407,10 +1449,15 @@ msgstr "Зберегти {format} файл"
 
 #: src/utils/TranslationUtils.gd:
 msgid "Only {extension_list} files are supported for this operation."
-msgstr "Тільки файли з розширеннями {extension_list} підтримуються для цієї операції."
+msgstr ""
+"Тільки файли з розширеннями {extension_list} підтримуються для цієї операції."
 
-#~ msgid "If turned off, the window title remains as \"GodSVG\" without including the current file."
-#~ msgstr "Якщо вимкнено - заголовок вікна залишиться як \"GodSVG\", не включаючи назву поточного файлу."
+#~ msgid ""
+#~ "If turned off, the window title remains as \"GodSVG\" without including "
+#~ "the current file."
+#~ msgstr ""
+#~ "Якщо вимкнено - заголовок вікна залишиться як \"GodSVG\", не включаючи "
+#~ "назву поточного файлу."
 
 #~ msgid "Keep unrecognized XML structures"
 #~ msgstr "Зберігати не розпізнані структури XML"
@@ -1428,8 +1475,12 @@ msgstr "Тільки файли з розширеннями {extension_list} п�
 #~ msgid "Determines the visual size and grabbing area of handles."
 #~ msgstr "Змінює візуальний розмір та область захоплення для ручок."
 
-#~ msgid "The file extension {extension} is unsupported for this operation. Only {extension_list} files are supported."
-#~ msgstr "Розширення файлу {extension} не підтримується для цієї операції. Тільки {extension_list} файли підтримуються."
+#~ msgid ""
+#~ "The file extension {extension} is unsupported for this operation. Only "
+#~ "{extension_list} files are supported."
+#~ msgstr ""
+#~ "Розширення файлу {extension} не підтримується для цієї операції. Тільки "
+#~ "{extension_list} файли підтримуються."
 
 #~ msgid "Save the .\"{format}\" file"
 #~ msgstr "Зберегти .\"{format}\" файл"
@@ -1456,11 +1507,16 @@ msgstr "Тільки файли з розширеннями {extension_list} п�
 #~ msgid "Save as"
 #~ msgstr "Зберегти як"
 
-#~ msgid "If you want to apply the unsaved file state, use \"Reset SVG\" instead."
-#~ msgstr "Якщо ви бажаєте застосувати не збережений стан файлу, використайте \"Скинути SVG\"."
+#~ msgid ""
+#~ "If you want to apply the unsaved file state, use \"Reset SVG\" instead."
+#~ msgstr ""
+#~ "Якщо ви бажаєте застосувати не збережений стан файлу, використайте "
+#~ "\"Скинути SVG\"."
 
 #~ msgid "Auto UI scale"
 #~ msgstr "Автоматичний масштаб інтерфейсу"
 
 #~ msgid "Scales the interface automatically based on the screen size."
-#~ msgstr "Автоматично масштабувати інтерфейс користувача в залежності від розміру екрану."
+#~ msgstr ""
+#~ "Автоматично масштабувати інтерфейс користувача в залежності від розміру "
+#~ "екрану."
