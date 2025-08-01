@@ -71,7 +71,6 @@ static var context_icon_normal_color: Color
 static var context_icon_hover_color: Color
 static var context_icon_pressed_color: Color
 
-static var translucent_button_color_disabled: Color
 static var flat_button_color_disabled: Color
 static var context_button_color_disabled: Color
 
@@ -156,7 +155,7 @@ static func recalculate_colors() -> void:
 	basic_panel_inner_color = softer_base_color
 	basic_panel_border_color = base_color.lerp(max_contrast_color, 0.24)
 	subtle_panel_border_color = basic_panel_border_color.lerp(basic_panel_inner_color, 0.4)
-	subtle_panel_border_color.s = lerpf(subtle_panel_border_color.s, 1.0, 0.2)
+	subtle_panel_border_color.s = minf(subtle_panel_border_color.s * 2.0, lerpf(subtle_panel_border_color.s, 1.0, 0.2))
 	
 	caret_color = Color(tinted_contrast_color, 0.875)
 	selection_color = Color(accent_color, 0.375)
@@ -171,7 +170,6 @@ static func recalculate_colors() -> void:
 	context_icon_hover_color = tinted_contrast_color
 	context_icon_pressed_color = max_contrast_color
 	
-	translucent_button_color_disabled = Color(disabled_color.lerp(extreme_theme_color, 0.4), 0.24)
 	flat_button_color_disabled = Color(disabled_color.lerp(extreme_theme_color, 0.4), 0.18)
 	context_button_color_disabled = Color(Color.BLACK, maxf(0.16, 0.48 - color_difference(Color.BLACK, basic_panel_inner_color) * 2))
 	
@@ -179,7 +177,7 @@ static func recalculate_colors() -> void:
 	contrast_flat_panel_color = Color(tinted_contrast_color, 0.1)
 	overlay_panel_inner_color = base_color.lerp(extreme_theme_color, 0.1)
 	overlay_panel_border_color = base_color.lerp(max_contrast_color, 0.32)
-	overlay_panel_border_color.s = lerpf(overlay_panel_border_color.s, 1.0, 0.2)
+	overlay_panel_border_color.s = minf(overlay_panel_border_color.s * 2.0, lerpf(overlay_panel_border_color.s, 1.0, 0.2))
 	
 	scrollbar_pressed_color = intermediate_color.blend(Color(tinted_contrast_color.lerp(
 			accent_color.lerp(max_contrast_color, 0.1), 0.2), 0.4))
@@ -562,7 +560,7 @@ static func _setup_button(theme: Theme) -> void:
 	theme.set_stylebox("pressed", "TranslucentButton", pressed_translucent_button_stylebox)
 	
 	var disabled_translucent_button_stylebox := normal_translucent_button_stylebox.duplicate()
-	disabled_translucent_button_stylebox.bg_color = translucent_button_color_disabled
+	disabled_translucent_button_stylebox.bg_color = context_button_color_disabled
 	theme.set_stylebox("disabled", "TranslucentButton", disabled_translucent_button_stylebox)
 	
 	theme.add_type("FlatButton")

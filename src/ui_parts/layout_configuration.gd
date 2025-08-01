@@ -96,7 +96,7 @@ func _draw() -> void:
 	stylebox.bg_color = ThemeUtils.hover_overlay_color
 	
 	var disabled_stylebox := stylebox.duplicate()
-	disabled_stylebox.bg_color = ThemeUtils.translucent_button_color_disabled
+	disabled_stylebox.bg_color = ThemeUtils.context_button_color_disabled
 	disabled_stylebox.draw(ci, right_rect.grow(-BUFFER_SIZE))
 	var viewport_icon := Utils.get_layout_part_icon(Utils.LayoutPart.VIEWPORT)
 	viewport_icon.draw(ci, right_rect.get_center() - viewport_icon.get_size() / 2, ThemeUtils.tinted_contrast_color)

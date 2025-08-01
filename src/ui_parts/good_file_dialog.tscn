@@ -10,6 +10,7 @@
 [ext_resource type="Script" uid="uid://ynx3s1jc6bwq" path="res://src/ui_widgets/BetterButton.gd" id="7_ejhg0"]
 
 [node name="GoodFileDialog" type="PanelContainer"]
+anchors_preset = -1
 offset_right = 684.0
 offset_bottom = 386.0
 theme_type_variation = &"OverlayPanel"
@@ -145,5 +146,4 @@ mouse_default_cursor_shape = 2
 [connection signal="item_activated" from="VBoxContainer/MainContainer/FilePicker/VisualPicker/FileList" to="." method="_on_file_list_item_activated"]
 [connection signal="item_clicked" from="VBoxContainer/MainContainer/FilePicker/VisualPicker/FileList" to="." method="_on_file_list_item_clicked"]
 [connection signal="text_change_canceled" from="VBoxContainer/MainContainer/FilePicker/FileContainer/FileField" to="." method="_on_file_field_text_change_canceled"]
-[connection signal="text_changed" from="VBoxContainer/MainContainer/FilePicker/FileContainer/FileField" to="." method="_on_file_field_text_changed"]
 [connection signal="text_submitted" from="VBoxContainer/MainContainer/FilePicker/FileContainer/FileField" to="." method="_on_file_field_text_submitted"]
