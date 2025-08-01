@@ -96,6 +96,7 @@ new_extensions: PackedStringArray) -> void:
 
 func _ready() -> void:
 	# Signal connections.
+	file_field.text_changed.connect(_on_file_field_text_changed)
 	folder_up_button.pressed.connect(_on_folder_up_button_pressed)
 	file_list.item_selected.connect(_on_file_list_item_selected)
 	file_list.multi_selected.connect(_on_file_list_item_multi_selected)
@@ -151,7 +152,10 @@ func file_sort(file1: String, file2: String) -> bool:
 func refresh_dir() -> void:
 	open_dir(current_dir)
 
-func open_dir(dir: String) -> void:
+func update_filtering() -> void:
+	open_dir(current_dir, true)
+
+func open_dir(dir: String, only_filtering_update := false) -> void:
 	if dir != current_dir and search_button.button_pressed:
 		search_button.button_pressed = false
 	
@@ -164,8 +168,11 @@ func open_dir(dir: String) -> void:
 	file_list.get_v_scroll_bar().value = 0
 	# Basic setup.
 	current_dir = dir
-	sync_to_selection()
-	sync_path_field()
+	
+	if not only_filtering_update:
+		sync_to_selection()
+		sync_path_field()
+	
 	dir_cursor.include_hidden = Configs.savedata.file_dialog_show_hidden
 	# Rebuild the system dirs, as we may now need to highlight the current one.
 	drives_list.clear()
@@ -287,19 +294,21 @@ func select_files() -> void:
 
 func sync_to_selection() -> void:
 	file_list.ensure_current_is_visible()
-	if mode != FileMode.SAVE:
-		var paths := get_selected_file_paths()
-		if paths.is_empty():
-			set_special_button_enabled(false)
-		else:
-			var has_folders := false
-			for path in paths:
-				if path.get_extension().is_empty():
-					has_folders = true
-					break
-			set_special_button_enabled(not has_folders)
-	else:
+	if mode == FileMode.SAVE:
 		sync_file_field()
+		return
+	
+	var paths := get_selected_file_paths()
+	if paths.is_empty():
+		set_special_button_enabled(false)
+		return
+	
+	var has_folders := false
+	for path in paths:
+		if path.get_extension().is_empty():
+			has_folders = true
+			break
+	set_special_button_enabled(not has_folders)
 
 func set_special_button_enabled(enabled: bool) -> void:
 	if enabled:
@@ -429,7 +438,7 @@ func _on_search_button_toggled(toggled_on: bool) -> void:
 	else:
 		search_field.hide()
 		search_field.clear()
-		refresh_dir()
+		update_filtering()
 
 
 func _on_file_field_text_submitted(new_text: String) -> void:
@@ -451,7 +460,7 @@ func sync_path_field() -> void:
 
 func _on_search_field_text_changed(new_text: String) -> void:
 	search_text = new_text
-	refresh_dir()
+	update_filtering()
 
 func _on_search_field_text_change_canceled() -> void:
 	search_field.text = search_text
@@ -461,6 +470,9 @@ func _on_file_field_text_changed(new_text: String) -> void:
 	set_special_button_enabled(not new_text.is_empty() and is_valid_filename)
 	file_field.add_theme_color_override("font_color",
 			Configs.savedata.get_validity_color(not is_valid_filename))
+	if search_button.button_pressed:
+		# Toggling search off will refresh the directory.
+		search_button.button_pressed = false
 
 func _on_file_field_text_change_canceled() -> void:
 	file_field.remove_theme_color_override("font_color")
