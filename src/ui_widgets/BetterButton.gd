@@ -9,6 +9,11 @@ var timer: SceneTreeTimer
 
 ## A shortcut that corresponds to the same action that this button does.
 @export var action := ""
+var shortcuts_bind: ShortcutsRegistration:
+	set(new_value):
+		shortcuts_bind = new_value
+		if is_instance_valid(shortcuts_bind):
+			shortcuts_bind.activated.connect(_on_shortcut_activated)
 
 
 func _ready() -> void:
@@ -46,21 +51,20 @@ func _on_pressed() -> void:
 	set_deferred("just_pressed", false)
 	HandlerGUI.throw_action_event(action)
 
-func _unhandled_input(event: InputEvent) -> void:
-	if action.is_empty() or toggle_mode:
+func _on_shortcut_activated(activated_action: String) -> void:
+	if activated_action != action or toggle_mode or just_pressed:
 		return
 	
-	if not just_pressed and ShortcutUtils.is_action_pressed(event, action):
-		begin_bulk_theme_override()
-		add_theme_color_override("icon_normal_color", get_theme_color("icon_pressed_color"))
-		add_theme_color_override("icon_hover_color", get_theme_color("icon_pressed_color"))
-		add_theme_stylebox_override("normal", get_theme_stylebox("pressed"))
-		add_theme_stylebox_override("hover", get_theme_stylebox("hover_pressed"))
-		end_bulk_theme_override()
-		if is_instance_valid(timer):
-			timer.timeout.disconnect(end_highlight)
-		timer = get_tree().create_timer(HIGHLIGHT_TIME)
-		timer.timeout.connect(end_highlight)
+	begin_bulk_theme_override()
+	add_theme_color_override("icon_normal_color", get_theme_color("icon_pressed_color"))
+	add_theme_color_override("icon_hover_color", get_theme_color("icon_pressed_color"))
+	add_theme_stylebox_override("normal", get_theme_stylebox("pressed"))
+	add_theme_stylebox_override("hover", get_theme_stylebox("hover_pressed"))
+	end_bulk_theme_override()
+	if is_instance_valid(timer):
+		timer.timeout.disconnect(end_highlight)
+	timer = get_tree().create_timer(HIGHLIGHT_TIME)
+	timer.timeout.connect(end_highlight)
 
 func end_highlight() -> void:
 	begin_bulk_theme_override()

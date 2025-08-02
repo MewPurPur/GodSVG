@@ -1,26 +1,5 @@
 @abstract class_name ShortcutUtils
 
-# Can be activated in all contexts.
-const UNIVERSAL_ACTIONS: PackedStringArray = ["quit", "toggle_fullscreen", "about_info",
-		"about_donate", "check_updates", "open_settings", "about_repo", "about_website",
-		"open_externally", "open_in_folder"]
-
-# Requires there being no dialogs.
-const EFFECT_ACTIONS: PackedStringArray = ["view_show_grid", "view_show_handles",
-		"view_rasterized_svg", "view_show_reference", "view_overlay_reference",
-		"load_reference", "toggle_snap"]
-
-# Requires there being no popups either.
-const EDITOR_ACTIONS: PackedStringArray = ["import", "export", "save", "save_as",
-		"close_tab", "close_all_other_tabs", "close_tabs_to_left", "close_tabs_to_right",
-		"close_empty_tabs", "close_saved_tabs", "new_tab", "select_next_tab",
-		"select_previous_tab", "copy_svg_text", "optimize", "reset_svg", "debug"]
-
-# Requires no drag-and-drop actions ongoing.
-const PRISTINE_ACTIONS: PackedStringArray = ["ui_undo", "ui_redo", "ui_cancel", "delete",
-		"move_up", "move_down", "duplicate", "select_all"]
-
-
 # The bool after each action is for whether the action can be modified.
 const _action_categories_dict: Dictionary[String, Dictionary] = {
 	"file": {

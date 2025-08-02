@@ -29,6 +29,11 @@ var undo_redo := UndoRedoRef.new()
 @onready var apply_matrix: Button = %ApplyMatrix
 
 func _ready() -> void:
+	var shortcuts := ShortcutsRegistration.new()
+	shortcuts.add_shortcut("ui_undo", undo_redo.undo)
+	shortcuts.add_shortcut("ui_redo", undo_redo.redo)
+	HandlerGUI.register_shortcuts(self, shortcuts)
+	
 	Configs.language_changed.connect(sync_localization)
 	add_button.pressed.connect(popup_new_transform_context.bind(0, add_button))
 	apply_matrix.pressed.connect(_on_apply_matrix_pressed)
@@ -177,15 +182,6 @@ func popup_new_transform_context(idx: int, control: Control) -> void:
 	var transform_context := ContextPopup.new()
 	transform_context.setup_with_title(btn_array, Translator.translate("New transform"), true)
 	HandlerGUI.popup_under_rect_center(transform_context, control.get_global_rect(), get_viewport())
-
-
-func _unhandled_input(event: InputEvent) -> void:
-	if ShortcutUtils.is_action_pressed(event, "ui_undo"):
-		undo_redo.undo()
-		accept_event()
-	elif ShortcutUtils.is_action_pressed(event, "ui_redo"):
-		undo_redo.redo()
-		accept_event()
 
 
 # So I have to rebuild this in its entirety to keep the references safe or something...

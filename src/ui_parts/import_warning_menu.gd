@@ -34,15 +34,13 @@ func _ready() -> void:
 		var preview_parse_result := SVGParser.text_to_root(preview_text)
 		var preview := preview_parse_result.svg
 		if is_instance_valid(preview):
-			texture_preview.setup_svg(SVGParser.root_to_editor_text(preview),
-					preview.get_size())
+			texture_preview.setup_svg(SVGParser.root_to_editor_text(preview), preview.get_size())
 	
 	if imported_text_parse_result.error != SVGParser.ParseError.OK:
 		texture_preview.hide()
 		margin_container.custom_minimum_size.y = 48
 		size.y = 0
-		warnings_label.add_theme_color_override("default_color",
-				Configs.savedata.basic_color_error)
+		warnings_label.add_theme_color_override("default_color", Configs.savedata.basic_color_error)
 		warnings_label.text = "[center]%s: %s" % [Translator.translate(
 				"Syntax error"), SVGParser.get_error_string(imported_text_parse_result.error)]
 	else:

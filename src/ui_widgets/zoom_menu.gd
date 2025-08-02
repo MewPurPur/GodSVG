@@ -6,23 +6,22 @@ const MAX_ZOOM = 512.0
 signal zoom_changed(zoom_level: float, offset: Vector2)
 signal zoom_reset_pressed
 
-@onready var zoom_out_button: Button = $ZoomOut
-@onready var zoom_in_button: Button = $ZoomIn
-@onready var zoom_reset_button: Button = $ZoomReset
+@onready var zoom_out_button: BetterButton = $ZoomOut
+@onready var zoom_in_button: BetterButton = $ZoomIn
+@onready var zoom_reset_button: BetterButton = $ZoomReset
 
 var _zoom_level: float
 
 
-func _unhandled_input(event: InputEvent) -> void:
-	if ShortcutUtils.is_action_pressed(event, "zoom_in"):
-		zoom_in()
-		accept_event()
-	elif ShortcutUtils.is_action_pressed(event, "zoom_out"):
-		zoom_out()
-		accept_event()
-	elif ShortcutUtils.is_action_pressed(event, "zoom_reset"):
-		zoom_reset()
-		accept_event()
+func _ready() -> void:
+	var shortcuts := ShortcutsRegistration.new()
+	shortcuts.add_shortcut("zoom_in", zoom_in)
+	shortcuts.add_shortcut("zoom_out", zoom_out)
+	shortcuts.add_shortcut("zoom_reset", zoom_reset)
+	HandlerGUI.register_shortcuts(self, shortcuts)
+	zoom_out_button.shortcuts_bind = shortcuts
+	zoom_in_button.shortcuts_bind = shortcuts
+	zoom_reset_button.shortcuts_bind = shortcuts
 
 
 func set_zoom(new_value: float, offset := Vector2(0.5, 0.5)) -> void:

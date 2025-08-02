@@ -150,9 +150,9 @@ func _unhandled_input(event: InputEvent) -> void:
 		set_value(initial_slider_value)
 		accept_event()
 
+
 func get_slider_value_at_y(y_coord: float) -> float:
-	return snappedf(lerpf(MAX_VALUE, MIN_VALUE,
-			(y_coord - 4) / (temp_button.size.y - 4)), SLIDER_STEP)
+	return snappedf(lerpf(MAX_VALUE, MIN_VALUE, (y_coord - 4) / (temp_button.size.y - 4)), SLIDER_STEP)
 
 func _on_slider_mouse_exited() -> void:
 	slider_hovered = false

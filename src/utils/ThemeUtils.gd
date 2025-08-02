@@ -177,7 +177,8 @@ static func recalculate_colors() -> void:
 	contrast_flat_panel_color = Color(tinted_contrast_color, 0.1)
 	overlay_panel_inner_color = base_color.lerp(extreme_theme_color, 0.1)
 	overlay_panel_border_color = base_color.lerp(max_contrast_color, 0.32)
-	overlay_panel_border_color.s = minf(overlay_panel_border_color.s * 2.0, lerpf(overlay_panel_border_color.s, 1.0, 0.2))
+	overlay_panel_border_color.s = minf(overlay_panel_border_color.s * 4.0, lerpf(overlay_panel_border_color.s, 1.0, 0.6))
+	overlay_panel_border_color.v = lerpf(overlay_panel_border_color.v, 1.0, 0.125)
 	
 	scrollbar_pressed_color = intermediate_color.blend(Color(tinted_contrast_color.lerp(
 			accent_color.lerp(max_contrast_color, 0.1), 0.2), 0.4))

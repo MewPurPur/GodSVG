@@ -7,6 +7,10 @@ extends VBoxContainer
 @onready var options_button: Button = %MetaActions/OptionsButton
 
 func _ready() -> void:
+	var shortcuts := ShortcutsRegistration.new()
+	shortcuts.add_shortcut("copy_svg_text", func() -> void: DisplayServer.clipboard_set(State.svg_text))
+	HandlerGUI.register_shortcuts(self, shortcuts)
+	
 	Configs.theme_changed.connect(sync_theming)
 	sync_theming()
 	State.parsing_finished.connect(update_error)

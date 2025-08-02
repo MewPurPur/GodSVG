@@ -16,7 +16,24 @@ var popup_stack: Array[Control]
 
 var shortcut_panel: PanelContainer
 
+var shortcut_registrations: Dictionary[Node, ShortcutsRegistration] = {}
+
 func _enter_tree() -> void:
+	var shortcuts := ShortcutsRegistration.new()
+	shortcuts.add_shortcut("quit", prompt_quit, ShortcutsRegistration.Behavior.PASS_THROUGH_ALL)
+	shortcuts.add_shortcut("toggle_fullscreen", toggle_fullscreen, ShortcutsRegistration.Behavior.PASS_THROUGH_ALL)
+	shortcuts.add_shortcut("about_info", open_about, ShortcutsRegistration.Behavior.PASS_THROUGH_ALL)
+	shortcuts.add_shortcut("about_donate", open_donate, ShortcutsRegistration.Behavior.PASS_THROUGH_ALL)
+	shortcuts.add_shortcut("check_updates", open_update_checker, ShortcutsRegistration.Behavior.PASS_THROUGH_ALL)
+	shortcuts.add_shortcut("open_settings", open_settings, ShortcutsRegistration.Behavior.PASS_THROUGH_ALL)
+	shortcuts.add_shortcut("about_repo", OS.shell_open.bind("https://github.com/MewPurPur/GodSVG"), ShortcutsRegistration.Behavior.PASS_THROUGH_ALL)
+	shortcuts.add_shortcut("about_website", OS.shell_open.bind("https://godsvg.com"), ShortcutsRegistration.Behavior.PASS_THROUGH_ALL)
+	shortcuts.add_shortcut("open_externally", func() -> void: FileUtils.open_svg(Configs.savedata.get_active_tab().svg_file_path),
+			ShortcutsRegistration.Behavior.PASS_THROUGH_ALL)
+	shortcuts.add_shortcut("open_in_folder", func() -> void: FileUtils.open_svg_folder(Configs.savedata.get_active_tab().svg_file_path),
+			ShortcutsRegistration.Behavior.PASS_THROUGH_ALL)
+	register_shortcuts(self, shortcuts)
+	
 	var window := get_window()
 	window.files_dropped.connect(_on_files_dropped)
 	window.dpi_changed.connect(update_ui_scale)
@@ -45,6 +62,11 @@ func _on_files_dropped(files: PackedStringArray) -> void:
 	if menu_stack.is_empty():
 		get_window().grab_focus()
 		FileUtils.apply_svgs_from_paths(files)
+
+
+func register_shortcuts(node: Node, registrations: ShortcutsRegistration) -> void:
+	shortcut_registrations[node] = registrations
+	node.tree_exiting.connect(func() -> void: shortcut_registrations.erase(node))
 
 
 func add_menu(new_menu: Control) -> void:
@@ -225,149 +247,59 @@ func _input(event: InputEvent) -> void:
 		elif last_mouse_click_double and event.is_released():
 			event.double_click = true
 			last_mouse_click_double = false
+	
+	# Prioritize clearing popups over letting controls receive ui_cancel.
+	if ShortcutUtils.is_action_pressed(event, "ui_cancel") and not popup_stack.is_empty():
+		get_viewport().set_input_as_handled()
+		remove_popup()
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	# Clear popups or overlays.
-	if ShortcutUtils.is_action_pressed(event, "ui_cancel"):
-		if not popup_stack.is_empty():
-			get_viewport().set_input_as_handled()
-			remove_popup()
-			return
-		elif not menu_stack.is_empty():
-			get_viewport().set_input_as_handled()
-			_remove_control()
-			return
-	
-	for action in ShortcutUtils.UNIVERSAL_ACTIONS:
-		if ShortcutUtils.is_action_pressed(event, action):
-			match action:
-				"quit": prompt_quit()
-				"toggle_fullscreen": toggle_fullscreen()
-				"about_info": open_about()
-				"about_donate": open_donate()
-				"check_updates": open_update_checker()
-				"open_settings": open_settings()
-				"about_repo": OS.shell_open("https://github.com/MewPurPur/GodSVG")
-				"about_website": OS.shell_open("https://godsvg.com")
-				"open_externally": FileUtils.open_svg(
-						Configs.savedata.get_active_tab().svg_file_path)
-				"open_in_folder": FileUtils.open_svg_folder(
-						Configs.savedata.get_active_tab().svg_file_path)
-			return
-	
-	# Stop the logic below from running if there's menu overlays.
-	if not menu_stack.is_empty():
+	if not (event is InputEventAction or event is InputEventKey):
 		return
 	
-	for action in ShortcutUtils.EFFECT_ACTIONS:
-		if ShortcutUtils.is_action_pressed(event, action):
-			match action:
-				"view_show_grid": State.toggle_show_grid()
-				"view_show_handles": State.toggle_show_handles()
-				"view_rasterized_svg": State.toggle_view_rasterized()
-				"view_show_reference": State.toggle_show_reference()
-				"view_overlay_reference": State.toggle_overlay_reference()
-				"load_reference": FileUtils.open_image_import_dialog()
-				"toggle_snap": Configs.savedata.snap *= -1
-	
-	if not popup_stack.is_empty():
+	if ShortcutUtils.is_action_pressed(event, "ui_cancel") and not menu_stack.is_empty():
+		get_viewport().set_input_as_handled()
+		_remove_control()
 		return
 	
-	# Global actions that should happen regardless of the context.
-	for action in ShortcutUtils.EDITOR_ACTIONS:
-		if ShortcutUtils.is_action_pressed(event, action):
-			match action:
-				"import": FileUtils.open_svg_import_dialog()
-				"export": open_export()
-				"save": FileUtils.save_svg()
-				"save_as": FileUtils.save_svg_as()
-				"close_tab": FileUtils.close_tabs(Configs.savedata.get_active_tab_index())
-				"close_all_other_tabs": FileUtils.close_tabs(
-						Configs.savedata.get_active_tab_index(),
-						FileUtils.TabCloseMode.ALL_OTHERS)
-				"close_tabs_to_left": FileUtils.close_tabs(
-						Configs.savedata.get_active_tab_index(),
-						FileUtils.TabCloseMode.TO_LEFT)
-				"close_tabs_to_right": FileUtils.close_tabs(
-						Configs.savedata.get_active_tab_index(),
-						FileUtils.TabCloseMode.TO_RIGHT)
-				"close_empty_tabs": FileUtils.close_tabs(
-						Configs.savedata.get_active_tab_index(),
-						FileUtils.TabCloseMode.EMPTY)
-				"close_saved_tabs": FileUtils.close_tabs(
-						Configs.savedata.get_active_tab_index(),
-						FileUtils.TabCloseMode.SAVED)
-				"new_tab": Configs.savedata.add_empty_tab()
-				"select_next_tab": Configs.savedata.set_active_tab_index(
-						posmod(Configs.savedata.get_active_tab_index() + 1,
-						Configs.savedata.get_tab_count()))
-				"select_previous_tab": Configs.savedata.set_active_tab_index(
-						posmod(Configs.savedata.get_active_tab_index() - 1,
-						Configs.savedata.get_tab_count()))
-				"copy_svg_text": DisplayServer.clipboard_set(State.svg_text)
-				"optimize": State.optimize()
-				"reset_svg": FileUtils.reset_svg()
-				"debug": State.toggle_show_debug()
-			return
-	
-	# Stop the logic below from running while GUI dragging is going on.
-	if get_viewport().gui_is_dragging():
-		return
-	
-	for action in ShortcutUtils.PRISTINE_ACTIONS:
-		if ShortcutUtils.is_action_pressed(event, action):
-			match action:
-				"ui_undo": Configs.savedata.get_active_tab().undo()
-				"ui_redo": Configs.savedata.get_active_tab().redo()
-				"ui_cancel": State.clear_all_selections()
-				"delete": State.delete_selected()
-				"move_up": State.move_up_selected()
-				"move_down": State.move_down_selected()
-				"duplicate": State.duplicate_selected()
-				"select_all": State.select_all()
-			return
-	
-	if ShortcutUtils.is_action_pressed(event, "move_absolute"):
-		State.respond_to_key_input("M")
-	elif ShortcutUtils.is_action_pressed(event, "move_relative"):
-		State.respond_to_key_input("m")
-	elif ShortcutUtils.is_action_pressed(event, "line_absolute"):
-		State.respond_to_key_input("L")
-	elif ShortcutUtils.is_action_pressed(event, "line_relative"):
-		State.respond_to_key_input("l")
-	elif ShortcutUtils.is_action_pressed(event, "horizontal_line_absolute"):
-		State.respond_to_key_input("H")
-	elif ShortcutUtils.is_action_pressed(event, "horizontal_line_relative"):
-		State.respond_to_key_input("h")
-	elif ShortcutUtils.is_action_pressed(event, "vertical_line_absolute"):
-		State.respond_to_key_input("V")
-	elif ShortcutUtils.is_action_pressed(event, "vertical_line_relative"):
-		State.respond_to_key_input("v")
-	elif ShortcutUtils.is_action_pressed(event, "close_path_absolute"):
-		State.respond_to_key_input("Z")
-	elif ShortcutUtils.is_action_pressed(event, "close_path_relative"):
-		State.respond_to_key_input("z")
-	elif ShortcutUtils.is_action_pressed(event, "elliptical_arc_absolute"):
-		State.respond_to_key_input("A")
-	elif ShortcutUtils.is_action_pressed(event, "elliptical_arc_relative"):
-		State.respond_to_key_input("a")
-	elif ShortcutUtils.is_action_pressed(event, "cubic_bezier_absolute"):
-		State.respond_to_key_input("C")
-	elif ShortcutUtils.is_action_pressed(event, "cubic_bezier_relative"):
-		State.respond_to_key_input("c")
-	elif ShortcutUtils.is_action_pressed(event, "shorthand_cubic_bezier_absolute"):
-		State.respond_to_key_input("S")
-	elif ShortcutUtils.is_action_pressed(event, "shorthand_cubic_bezier_relative"):
-		State.respond_to_key_input("s")
-	elif ShortcutUtils.is_action_pressed(event, "quadratic_bezier_absolute"):
-		State.respond_to_key_input("Q")
-	elif ShortcutUtils.is_action_pressed(event, "quadratic_bezier_relative"):
-		State.respond_to_key_input("q")
-	elif ShortcutUtils.is_action_pressed(event, "shorthand_quadratic_bezier_absolute"):
-		State.respond_to_key_input("T")
-	elif ShortcutUtils.is_action_pressed(event, "shorthand_quadratic_bezier_relative"):
-		State.respond_to_key_input("t")
+	for node in shortcut_registrations:
+		if node is CanvasItem and not node.visible:
+			continue
+		
+		var registrations := shortcut_registrations[node]
+		for idx in registrations.actions.size():
+			var action := registrations.actions[idx]
+			if ShortcutUtils.is_action_pressed(event, action):
+				var should_execute := false
+				var should_clear_popups := false
+				
+				match registrations.behaviors[idx]:
+					ShortcutsRegistration.Behavior.PASS_THROUGH_ALL:
+						should_execute = true
+					ShortcutsRegistration.Behavior.PASS_THROUGH_POPUPS:
+						if menu_stack.is_empty() or menu_stack[-1].is_ancestor_of(node):
+							should_execute = true
+							should_clear_popups = true
+					ShortcutsRegistration.Behavior.PASS_THROUGH_AND_PRESERVE_POPUPS:
+						if menu_stack.is_empty() or menu_stack[-1].is_ancestor_of(node):
+							should_execute = true
+					ShortcutsRegistration.Behavior.NO_PASSTHROUGH:
+						if (menu_stack.is_empty() and popup_stack.is_empty()) or (popup_stack.is_empty() and menu_stack[-1].is_ancestor_of(node)) or\
+						(not popup_stack.is_empty() and popup_stack[-1].is_ancestor_of(node)):
+							should_execute = true
+					ShortcutsRegistration.Behavior.STRICT_NO_PASSTHROUGH:
+						if not get_viewport().gui_is_dragging() and ((menu_stack.is_empty() and popup_stack.is_empty()) or (popup_stack.is_empty() and\
+						menu_stack[-1].is_ancestor_of(node)) or (not popup_stack.is_empty() and popup_stack[-1].is_ancestor_of(node))):
+							should_execute = true
+					
+				if should_execute:
+					registrations.activated.emit(action)
+					registrations.callbacks[idx].call()
+					if should_clear_popups:
+						remove_all_popups()
+					get_viewport().set_input_as_handled()
+					return
 
 
 func get_window_default_size() -> Vector2i:
