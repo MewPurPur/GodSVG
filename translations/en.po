@@ -12,6 +12,8 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 3.4.2\n"
 
+#. Translators (comma-separated): Name or alias, optionally followed by an email in angle brackets <email@example.com>.
+#. Used for credits. Adding yourself is optional. New entries go at the end. Don't remove or rearrange existing entries.
 msgid "translation-credits"
 msgstr ""
 
@@ -317,7 +319,8 @@ msgstr ""
 msgid "Preview image size is limited to {dimensions}"
 msgstr ""
 
-#: src/ui_parts/global_actions.gd: src/ui_parts/shortcut_panel_config.gd:
+#: src/ui_parts/global_actions.gd: src/ui_parts/layout_configuration.gd:
+#: src/ui_parts/shortcut_panel_config.gd:
 msgid "Layout"
 msgstr ""
 
@@ -414,11 +417,11 @@ msgid "Add element"
 msgstr ""
 
 #. Refers to the zero, one, or multiple UI parts to not be shown in the final layout. It's of plural cardinality.
-#: src/ui_parts/layout_popup.gd:
+#: src/ui_parts/layout_configuration.gd:
 msgid "Excluded"
 msgstr ""
 
-#: src/ui_parts/layout_popup.gd:
+#: src/ui_parts/layout_configuration.gd:
 msgid "Drag and drop to change the layout"
 msgstr ""
 
@@ -535,8 +538,25 @@ msgstr ""
 msgid "New versions available!"
 msgstr ""
 
+#: src/ui_widgets/PanelGrid.gd:
+msgid "Copy email"
+msgstr ""
+
 #: src/ui_widgets/choose_name_dialog.gd:
 msgid "Create"
+msgstr ""
+
+#: src/ui_widgets/color_configuration_popup.gd:
+msgid "Edit color name"
+msgstr ""
+
+#: src/ui_widgets/color_configuration_popup.gd:
+msgid "Delete color"
+msgstr ""
+
+#: src/ui_widgets/color_configuration_popup.gd:
+#: src/ui_widgets/palette_config.gd:
+msgid "Unnamed"
 msgstr ""
 
 #: src/ui_widgets/color_field_popup.gd:
@@ -545,18 +565,6 @@ msgstr ""
 
 #: src/ui_widgets/color_field_popup.gd:
 msgid "Color Picker"
-msgstr ""
-
-#: src/ui_widgets/configure_color_popup.gd:
-msgid "Edit color name"
-msgstr ""
-
-#: src/ui_widgets/configure_color_popup.gd:
-msgid "Delete color"
-msgstr ""
-
-#: src/ui_widgets/configure_color_popup.gd: src/ui_widgets/palette_config.gd:
-msgid "Unnamed"
 msgstr ""
 
 #: src/ui_widgets/fps_limit_dropdown.gd: src/ui_widgets/setting_frame.gd:
@@ -947,10 +955,6 @@ msgid "Keep Screen On"
 msgstr ""
 
 #: src/ui_widgets/settings_content_generic.gd:
-msgid "Keeps the screen on even after inactivity, so the screensaver does not take over."
-msgstr ""
-
-#: src/ui_widgets/settings_content_generic.gd:
 msgid "Miscellaneous"
 msgstr ""
 
@@ -972,6 +976,10 @@ msgstr ""
 
 #: src/ui_widgets/settings_content_generic.gd:
 msgid "Warps the cursor to the opposite side whenever it reaches a viewport boundary while panning."
+msgstr ""
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "Keeps the screen on even after inactivity, so the screensaver does not take over."
 msgstr ""
 
 #: src/ui_widgets/settings_content_generic.gd:
