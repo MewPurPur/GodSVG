@@ -127,8 +127,7 @@ func _ready() -> void:
 		show_hidden_button.set_pressed_no_signal(true)
 	folder_up_button.tooltip_text = Translator.translate("Go to parent folder")
 	refresh_button.tooltip_text = Translator.translate("Refresh files")
-	show_hidden_button.tooltip_text =\
-			Translator.translate("Toggle the visibility of hidden files")
+	show_hidden_button.tooltip_text = Translator.translate("Toggle the visibility of hidden files")
 	search_button.tooltip_text = Translator.translate("Search files")
 	search_field.placeholder_text = Translator.translate("Search files")
 	

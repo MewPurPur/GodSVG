@@ -135,8 +135,7 @@ func _get_line_syntax_highlighting(line: int) -> Dictionary:
 							return color_map
 					offset += 1
 				if not current_attribute_name.is_empty():
-					color_map[svg_text.length() - current_attribute_name.length() - 1] =\
-							{"color": get_attribute_color(element_name, current_attribute_name)}
+					color_map[svg_text.length() - current_attribute_name.length() - 1] = {"color": get_attribute_color(element_name, current_attribute_name)}
 			XMLParser.NODE_ELEMENT_END:
 				offset = svg_text.find("<", offset)
 				var element_name := parser.get_node_name()

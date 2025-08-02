@@ -188,7 +188,6 @@ func _get_font_color() -> Color:
 			else font_color
 
 func draw_button_border(theme_name: String) -> void:
-	var button_outline: StyleBoxFlat =\
-			get_theme_stylebox(theme_name, "LeftConnectedButton").duplicate()
+	var button_outline: StyleBoxFlat = get_theme_stylebox(theme_name, "LeftConnectedButton").duplicate()
 	button_outline.draw_center = false
 	button_outline.draw(ci, Rect2(size.x - BUTTON_WIDTH, 0, BUTTON_WIDTH, size.y))

@@ -187,8 +187,7 @@ func popup_under_rect(popup: Control, rect: Rect2, vp: Viewport) -> void:
 	var screen_h := vp.get_visible_rect().size.y
 	var popup_pos := Vector2(rect.position.x, 0)
 	# Popup below if there's enough space or we're in the bottom half of the screen.
-	if rect.position.y + rect.size.y + top_popup.size.y < screen_h or\
-	rect.position.y + rect.size.y / 2 <= screen_h / 2.0:
+	if rect.position.y + rect.size.y + top_popup.size.y < screen_h or rect.position.y + rect.size.y / 2 <= screen_h / 2.0:
 		popup_pos.y = rect.position.y + rect.size.y
 	else:
 		popup_pos.y = rect.position.y - top_popup.size.y
@@ -202,8 +201,7 @@ func popup_under_rect_center(popup: Control, rect: Rect2, vp: Viewport) -> void:
 	var screen_h := vp.get_visible_rect().size.y
 	var popup_pos := Vector2(rect.position.x - top_popup.size.x / 2.0 + rect.size.x / 2, 0)
 	# Popup below if there's enough space or we're in the bottom half of the screen.
-	if rect.position.y + rect.size.y + top_popup.size.y < screen_h or\
-	rect.position.y + rect.size.y / 2 <= screen_h / 2.0:
+	if rect.position.y + rect.size.y + top_popup.size.y < screen_h or rect.position.y + rect.size.y / 2 <= screen_h / 2.0:
 		popup_pos.y = rect.position.y + rect.size.y
 	else:
 		popup_pos.y = rect.position.y - top_popup.size.y
@@ -223,8 +221,7 @@ func popup_clamp_pos(popup: Control, attempt_pos: Vector2, vp: Viewport) -> Vect
 	var screen_transform := vp.get_screen_transform()
 	var vp_pos := screen_transform.get_origin() / screen_transform.get_scale()
 	for axis in 2:
-		attempt_pos[axis] = clampf(attempt_pos[axis], vp_pos[axis],
-				vp_pos[axis] + vp.get_visible_rect().size[axis] - popup.size[axis])
+		attempt_pos[axis] = clampf(attempt_pos[axis], vp_pos[axis], vp_pos[axis] + vp.get_visible_rect().size[axis] - popup.size[axis])
 	return attempt_pos
 
 
@@ -308,9 +305,7 @@ func get_window_default_size() -> Vector2i:
 
 func get_usable_rect() -> Vector2i:
 	var window := get_window()
-	return Vector2i(DisplayServer.screen_get_usable_rect(
-			DisplayServer.window_get_current_screen()).size -\
-			window.get_size_with_decorations() + window.size)
+	return Vector2i(DisplayServer.screen_get_usable_rect(DisplayServer.window_get_current_screen()).size - window.get_size_with_decorations() + window.size)
 
 func get_max_ui_scale(usable_screen_size: Vector2i) -> float:
 	var window_default_size := get_window_default_size()
@@ -445,8 +440,7 @@ func open_export() -> void:
 	var width := State.root_element.width
 	var height := State.root_element.height
 	
-	var dimensions_valid := (is_finite(width) and is_finite(height) and\
-			width > 0.0 and height > 0.0)
+	var dimensions_valid := (is_finite(width) and is_finite(height) and width > 0.0 and height > 0.0)
 	var dimensions_too_different := false
 	
 	if dimensions_valid:
@@ -472,8 +466,7 @@ func open_export() -> void:
 
 
 func update_window_title() -> void:
-	if Configs.savedata.use_filename_for_window_title and\
-	not Configs.savedata.get_active_tab().svg_file_path.is_empty():
+	if Configs.savedata.use_filename_for_window_title and not Configs.savedata.get_active_tab().svg_file_path.is_empty():
 		get_window().title = Configs.savedata.get_active_tab().presented_name + " - GodSVG"
 	else:
 		get_window().title = "GodSVG"
@@ -490,7 +483,7 @@ func throw_mouse_motion_event() -> void:
 	var mouse_position = window.get_mouse_position()
 	# TODO This is a workaround because the returned mouse position is sometimes (0, 0),
 	# likely a Godot issue. This has been reproduced on Android and on Web.
-	# Reproducing on web is especially easy with zoom at something like 110% on Web.
+	# Reproducing on web is especially easy with zoom at something like 110%.
 	if mouse_position == Vector2.ZERO:
 		return
 	

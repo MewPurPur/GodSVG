@@ -159,13 +159,11 @@ func _sync() -> void:
 					FileAccess.get_file_as_string(get_edited_file_path()))
 			
 			if is_instance_valid(edited_text_parse_result.svg):
-				marked_unsaved = FileAccess.get_file_as_string(svg_file_path) !=\
-						SVGParser.root_to_export_text(edited_text_parse_result.svg)
+				marked_unsaved = FileAccess.get_file_as_string(svg_file_path) != SVGParser.root_to_export_text(edited_text_parse_result.svg)
 			else:
 				marked_unsaved = true
 	
-	elif not FileAccess.file_exists(get_edited_file_path()) or\
-	SVGParser.text_check_is_root_empty(get_true_svg_text()):
+	elif not FileAccess.file_exists(get_edited_file_path()) or SVGParser.text_check_is_root_empty(get_true_svg_text()):
 		empty_unsaved = true
 		marked_unsaved = false
 		presented_name = "[ %s ]" % Translator.translate("Empty")

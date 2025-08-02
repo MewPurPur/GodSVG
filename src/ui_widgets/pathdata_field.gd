@@ -202,8 +202,7 @@ func _on_commands_gui_input(event: InputEvent) -> void:
 		if event.button_index == MOUSE_BUTTON_LEFT:
 			if event.is_pressed():
 				if event.double_click:
-					var subpath_range: Vector2i =\
-							element.get_attribute(attribute_name).get_subpath(cmd_idx)
+					var subpath_range: Vector2i = element.get_attribute(attribute_name).get_subpath(cmd_idx)
 					State.normal_select(element.xid, subpath_range.x)
 					State.shift_select(element.xid, subpath_range.y)
 				elif event.is_command_or_control_pressed():

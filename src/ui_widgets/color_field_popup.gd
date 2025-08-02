@@ -45,8 +45,7 @@ var swatches_list: Array[ColorSwatch] = []  # Updated manually.
 
 func _ready() -> void:
 	color_picker.is_none_keyword_available = is_none_keyword_available
-	color_picker.is_current_color_keyword_available =\
-			(current_color_availability != CurrentColorAvailability.UNAVAILABLE)
+	color_picker.is_current_color_keyword_available = (current_color_availability != CurrentColorAvailability.UNAVAILABLE)
 	color_picker.update_keyword_button()
 	# Setup the switch mode button.
 	switch_mode_button.pressed.connect(_on_switch_mode_button_pressed)

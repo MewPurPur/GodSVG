@@ -156,5 +156,4 @@ func scroll_to_view_element_editor(xid: PackedInt32Array, inner_idx := -1) -> vo
 	# since last being visible.
 	# TODO The frame delay is quite noticable and that's sad. Look for another solution.
 	await get_tree().process_frame
-	scroll_container.get_v_scroll_bar().value =\
-			get_xnode_editor_rect(xid, inner_idx).position.y - scroll_container.size.y / 5
+	scroll_container.get_v_scroll_bar().value = get_xnode_editor_rect(xid, inner_idx).position.y - scroll_container.size.y / 5

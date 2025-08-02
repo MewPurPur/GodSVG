@@ -113,8 +113,7 @@ func update_translations() -> void:
 			used_comments.append(msg.msgid)
 		fa.store_string(msg.to_string())
 	fa = null
-	print("Created %s with %d strings" % [TRANSLATIONS_DIR.path_join("/GodSVG.pot"),
-			(messages.size() + 1)])
+	print("Created %s with %d strings" % [TRANSLATIONS_DIR.path_join("/GodSVG.pot"), (messages.size() + 1)])
 	
 	for file in DirAccess.get_files_at(folder_location):
 		if not (file.get_extension() == "po" or file == "GodSVG.pot"):

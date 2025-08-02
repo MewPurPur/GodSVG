@@ -83,8 +83,7 @@ func _on_pressed() -> void:
 	# If it's a color attribute, or there's no color attribute children of this element,
 	# mark the current color keyword as uninteresting (won't be shown in palettes).
 	if not cached_allow_current_color:
-		color_popup.current_color_availability =\
-				color_popup.CurrentColorAvailability.UNAVAILABLE
+		color_popup.current_color_availability = color_popup.CurrentColorAvailability.UNAVAILABLE
 	else:
 		var has_color_attribute_parent := false
 		for element_depth in range(0, element.xid.size()):
@@ -93,10 +92,8 @@ func _on_pressed() -> void:
 			if State.root_element.get_xnode(checked_xid).has_attribute("color"):
 				has_color_attribute_parent = true
 				break
-		color_popup.current_color_availability =\
-				color_popup.CurrentColorAvailability.INTERESTING if\
-				has_color_attribute_parent else\
-				color_popup.CurrentColorAvailability.UNINTERESTING
+		color_popup.current_color_availability = color_popup.CurrentColorAvailability.INTERESTING if has_color_attribute_parent\
+				else color_popup.CurrentColorAvailability.UNINTERESTING
 	color_popup.current_color = element.get_default("color")
 	color_popup.is_none_keyword_available = cached_allow_none
 	color_popup.color_picked.connect(_on_color_picked)
