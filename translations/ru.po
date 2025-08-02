@@ -4,7 +4,7 @@ msgstr ""
 "Project-Id-Version: GodSVG\n"
 "POT-Creation-Date: \n"
 "PO-Revision-Date: \n"
-"Last-Translator: \n"
+"Last-Translator: freeducks-debug <applesause454@gmail.com>\n"
 "Language-Team: \n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
@@ -13,8 +13,10 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 3.6\n"
 
+#. Translators (comma-separated): Name or alias, optionally followed by an email in angle brackets <email@example.com>.
+#. Used for credits. Adding yourself is optional. New entries go at the end. Don't remove or rearrange existing entries.
 msgid "translation-credits"
-msgstr "volkov, Gallifreyan <gallifreyan@protonmail.ch>"
+msgstr "volkov, Gallifreyan <gallifreyan@protonmail.ch>, freeducks-debug"
 
 #: src/autoload/HandlerGUI.gd:
 msgid "Quit GodSVG"
@@ -133,26 +135,25 @@ msgstr "6 цифровое шестандцатяричное значение"
 #. Refers to a theme preset.
 #: src/config_classes/SaveData.gd:
 msgid "Dark"
-msgstr ""
+msgstr "Темная"
 
 #. Refers to a theme preset.
 #: src/config_classes/SaveData.gd:
-#, fuzzy
 msgid "Light"
-msgstr "Высота"
+msgstr "Светлая"
 
 #. Refers to a theme preset.
 #: src/config_classes/SaveData.gd:
 msgid "Black (OLED)"
-msgstr ""
+msgstr "Темная (OLED)"
 
 #: src/config_classes/SaveData.gd:
 msgid "Default Dark"
-msgstr ""
+msgstr "Стандартная темная"
 
 #: src/config_classes/SaveData.gd:
 msgid "Default Light"
-msgstr ""
+msgstr "Стандартная светлая"
 
 #: src/config_classes/TabData.gd:
 msgid "Empty"
@@ -319,7 +320,8 @@ msgstr "Скопировать"
 msgid "Preview image size is limited to {dimensions}"
 msgstr "Размер предварительного просмотра изображения ограничен до {dimensions}"
 
-#: src/ui_parts/global_actions.gd: src/ui_parts/shortcut_panel_config.gd:
+#: src/ui_parts/global_actions.gd: src/ui_parts/layout_configuration.gd:
+#: src/ui_parts/shortcut_panel_config.gd:
 msgid "Layout"
 msgstr "Макет"
 
@@ -416,11 +418,11 @@ msgid "Add element"
 msgstr "Добавить элемент"
 
 #. Refers to the zero, one, or multiple UI parts to not be shown in the final layout. It's of plural cardinality.
-#: src/ui_parts/layout_popup.gd:
+#: src/ui_parts/layout_configuration.gd:
 msgid "Excluded"
 msgstr "Исключены"
 
-#: src/ui_parts/layout_popup.gd:
+#: src/ui_parts/layout_configuration.gd:
 msgid "Drag and drop to change the layout"
 msgstr "Перетягивайте, чтобы изменить макет"
 
@@ -537,9 +539,26 @@ msgstr "Установлена последняя версия GodSVG."
 msgid "New versions available!"
 msgstr "Доступна новая версия!"
 
+#: src/ui_widgets/PanelGrid.gd:
+msgid "Copy email"
+msgstr "Скопировать электронную почту"
+
 #: src/ui_widgets/choose_name_dialog.gd:
 msgid "Create"
 msgstr "Создать"
+
+#: src/ui_widgets/color_configuration_popup.gd:
+msgid "Edit color name"
+msgstr "Редактировать название цвета"
+
+#: src/ui_widgets/color_configuration_popup.gd:
+msgid "Delete color"
+msgstr "Удалить цвет"
+
+#: src/ui_widgets/color_configuration_popup.gd:
+#: src/ui_widgets/palette_config.gd:
+msgid "Unnamed"
+msgstr "Без названия"
 
 #: src/ui_widgets/color_field_popup.gd:
 msgid "Search color"
@@ -549,21 +568,9 @@ msgstr "Искать цвет"
 msgid "Color Picker"
 msgstr "Цветовая пипетка"
 
-#: src/ui_widgets/configure_color_popup.gd:
-msgid "Edit color name"
-msgstr "Редактировать название цвета"
-
-#: src/ui_widgets/configure_color_popup.gd:
-msgid "Delete color"
-msgstr "Удалить цвет"
-
-#: src/ui_widgets/configure_color_popup.gd: src/ui_widgets/palette_config.gd:
-msgid "Unnamed"
-msgstr "Без названия"
-
 #: src/ui_widgets/fps_limit_dropdown.gd: src/ui_widgets/setting_frame.gd:
 msgid "Unlimited"
-msgstr ""
+msgstr "Без ограничений"
 
 #: src/ui_widgets/good_color_picker.gd:
 msgid "Color keywords"
@@ -632,11 +639,11 @@ msgstr "Так же используется"
 
 #: src/ui_widgets/profile_frame.gd:
 msgid "Apply"
-msgstr ""
+msgstr "Применить"
 
 #: src/ui_widgets/profile_frame.gd:
 msgid "Apply all of this preset's defaults"
-msgstr ""
+msgstr "Применить все стандартные значения этого пресета"
 
 #: src/ui_widgets/setting_frame.gd: src/ui_widgets/setting_shortcut.gd:
 msgid "Reset to default"
@@ -669,9 +676,8 @@ msgid "Preset"
 msgstr "Пресет"
 
 #: src/ui_widgets/settings_content_generic.gd:
-#, fuzzy
 msgid "Determines the default values of the formatter configs."
-msgstr "Изменить масштаб пользовательского интерфейса."
+msgstr "Определяет стандартные значения для настроек форматера."
 
 #: src/ui_widgets/settings_content_generic.gd:
 msgid "Keep comments"
@@ -758,27 +764,24 @@ msgid "Remove unnecessary parameters"
 msgstr "Удалить ненужные параметры"
 
 #: src/ui_widgets/settings_content_generic.gd:
-#, fuzzy
 msgid "Theme preset"
-msgstr "Сбросить масштаб"
+msgstr "Пресет темы"
 
 #: src/ui_widgets/settings_content_generic.gd:
 msgid "Determines the default values of theming-related settings, including the highlighter preset."
-msgstr ""
+msgstr "Определяет стандартные значения связанные с настройками темы, включая пресет подсветки."
 
 #: src/ui_widgets/settings_content_generic.gd:
 msgid "Primary theme colors"
-msgstr ""
+msgstr "Главные цвета темы"
 
 #: src/ui_widgets/settings_content_generic.gd:
-#, fuzzy
 msgid "Base color"
 msgstr "Базовый цвет"
 
 #: src/ui_widgets/settings_content_generic.gd:
-#, fuzzy
 msgid "Accent color"
-msgstr "Цвет текста"
+msgstr "Цвет акцента"
 
 #: src/ui_widgets/settings_content_generic.gd:
 msgid "SVG Text colors"
@@ -786,11 +789,11 @@ msgstr "Цвет SVG текста"
 
 #: src/ui_widgets/settings_content_generic.gd:
 msgid "Highlighter preset"
-msgstr ""
+msgstr "Пресет подсветки"
 
 #: src/ui_widgets/settings_content_generic.gd:
 msgid "Determines the default values of SVG highlighter settings."
-msgstr ""
+msgstr "Определяет стандартные значения настроек SVG подсветки."
 
 #: src/ui_widgets/settings_content_generic.gd:
 msgid "Symbol color"
@@ -827,9 +830,8 @@ msgstr "Цвет ошибки"
 
 #. Refers to the draggable gizmos.
 #: src/ui_widgets/settings_content_generic.gd:
-#, fuzzy
 msgid "Handles"
-msgstr "Размер ручек"
+msgstr "Ручки"
 
 #: src/ui_widgets/settings_content_generic.gd:
 msgid "Inside color"
@@ -852,32 +854,29 @@ msgid "Hovered selected color"
 msgstr "Цвет выделенного-наведенного"
 
 #: src/ui_widgets/settings_content_generic.gd:
-#, fuzzy
 msgid "Selection rectangle"
-msgstr "Выбрать изображение"
+msgstr "Прямоугольник выбора"
 
 #: src/ui_widgets/settings_content_generic.gd:
 msgid "Speed"
-msgstr ""
+msgstr "Скорость"
 
 #. Refers to the selection rectangle's animated dashed stroke.
 #: src/ui_widgets/settings_content_generic.gd:
 msgid "Dash length"
-msgstr ""
+msgstr "Длина линии"
 
 #: src/ui_widgets/settings_content_generic.gd:
-#, fuzzy
 msgid "Color {index}"
-msgstr "Цветовая пипетка"
+msgstr "Цвет {index}"
 
 #: src/ui_widgets/settings_content_generic.gd:
 msgid "Basic colors"
 msgstr "Базовый цвет"
 
 #: src/ui_widgets/settings_content_generic.gd:
-#, fuzzy
 msgid "Canvas color"
-msgstr "Внутренний цвет"
+msgstr "Цвет полотна"
 
 #: src/ui_widgets/settings_content_generic.gd:
 msgid "Grid color"
@@ -900,9 +899,8 @@ msgid "Close tabs with middle mouse button"
 msgstr "Закрывать вкладки средней клавишей мыши"
 
 #: src/ui_widgets/settings_content_generic.gd:
-#, fuzzy
 msgid "When enabled, clicking on a tab with the middle mouse button closes it instead of simply focusing it."
-msgstr "Если включено - нажатие на вкладку средней кнопкой мыши закроет ее. Если выключено - вкладка получит фокус."
+msgstr "Если включено - нажатие на вкладку средней кнопкой мыши закроет ее вместо переключения фокуса."
 
 #: src/ui_widgets/settings_content_generic.gd:
 msgid "Invert zoom direction"
@@ -921,47 +919,41 @@ msgid "Use CTRL for zooming"
 msgstr "Использовать CTRL для масштабирования"
 
 #: src/ui_widgets/settings_content_generic.gd:
-#, fuzzy
 msgid "When enabled, scrolling pans the view instead of zooming in. To zoom, hold CTRL while scrolling."
 msgstr "Если включено - прокрутка будет перемещать окно просмотра. Чтобы масштабировать зажмите CTRL при прокручивании."
 
 #: src/ui_widgets/settings_content_generic.gd:
 msgid "Display"
-msgstr ""
+msgstr "Отображение"
 
 #: src/ui_widgets/settings_content_generic.gd:
 msgid "UI scale"
 msgstr "Масштаб интерфейса"
 
 #: src/ui_widgets/settings_content_generic.gd:
-#, fuzzy
 msgid "Determines the scale factor for the interface."
-msgstr "Изменить масштаб пользовательского интерфейса."
+msgstr "Определяет множитель масштабирования интерфейса."
 
 #. Stands for "Vertical Synchronization".
 #: src/ui_widgets/settings_content_generic.gd:
 msgid "V-Sync"
-msgstr ""
+msgstr "Вертикальная синхронизация"
 
 #: src/ui_widgets/settings_content_generic.gd:
 msgid "Synchronizes graphics rendering with display refresh rate to prevent screen tearing artifacts. May increase input lag slightly."
-msgstr ""
+msgstr "Синхронизирует отображение графики с частотой обновления экрана, чтобы избегать артефактам (вроде \"разрыва\" картинки). Может увеличить задержку нажатий кнопок мыши и клавиатуры."
 
 #: src/ui_widgets/settings_content_generic.gd:
 msgid "Maximum FPS"
-msgstr ""
+msgstr "Максимальное количество кадров в секунду"
 
 #: src/ui_widgets/settings_content_generic.gd:
 msgid "Determines the maximum number of frames per second."
-msgstr ""
+msgstr "Определяет максимальное количество кадров в секунду."
 
 #: src/ui_widgets/settings_content_generic.gd:
 msgid "Keep Screen On"
-msgstr ""
-
-#: src/ui_widgets/settings_content_generic.gd:
-msgid "Keeps the screen on even after inactivity, so the screensaver does not take over."
-msgstr ""
+msgstr "Держать экран включенным"
 
 #: src/ui_widgets/settings_content_generic.gd:
 msgid "Miscellaneous"
@@ -977,28 +969,31 @@ msgstr "Синхронизировать заголовок окна с назв
 
 #: src/ui_widgets/settings_content_generic.gd:
 msgid "When enabled, adds the current file name before the \"GodSVG\" window title."
-msgstr ""
+msgstr "Когда активно, добавит текущий открытый файл перед \"GodSVG\" в заголовке окна."
 
 #: src/ui_widgets/settings_content_generic.gd:
 msgid "When enabled, uses spaces instead of a single tab for indentation."
-msgstr ""
+msgstr "Когда активно, использует пробелы вместо одного tab-а для отступов."
 
 #: src/ui_widgets/settings_content_generic.gd:
 msgid "Warps the cursor to the opposite side whenever it reaches a viewport boundary while panning."
 msgstr "Курсор будет телепортироваться от одного до противоположного края на границе окна просмотра."
 
 #: src/ui_widgets/settings_content_generic.gd:
-#, fuzzy
+msgid "Keeps the screen on even after inactivity, so the screensaver does not take over."
+msgstr "Будет удерживать экран активным, даже после бездействия, поэтому хранитель экрана не будет запускаться."
+
+#: src/ui_widgets/settings_content_generic.gd:
 msgid "When enabled, uses your operating system's native file dialog instead of GodSVG's built-in one."
-msgstr "Если включено, то будет использоваться родной файловый диалог вашей операционной системы для выбора файлов. Если выключено, то будет использоваться встроенный файловый диалог."
+msgstr "Если включено, то будет использоваться родной файловый диалог вашей операционной системы для выбора файлов вместо встроенного в GodSVG."
 
 #: src/ui_widgets/settings_content_generic.gd:
 msgid "The setting has no effect in the current configuration."
-msgstr ""
+msgstr "Эта опция не имеет эффекта на текущую конфигурацию."
 
 #: src/ui_widgets/settings_content_generic.gd:
 msgid "The setting can't be changed on this platform."
-msgstr ""
+msgstr "Эту опцию нельзя изменить на текущей платформе."
 
 #: src/ui_widgets/settings_content_palettes.gd:
 msgid "New palette"

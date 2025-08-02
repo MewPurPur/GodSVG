@@ -12,6 +12,8 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 3.6\n"
 
+#. Translators (comma-separated): Name or alias, optionally followed by an email in angle brackets <email@example.com>.
+#. Used for credits. Adding yourself is optional. New entries go at the end. Don't remove or rearrange existing entries.
 msgid "translation-credits"
 msgstr ""
 "volkov\n"
@@ -34,12 +36,8 @@ msgid "Check for updates?"
 msgstr "Перевірити оновлення?"
 
 #: src/autoload/HandlerGUI.gd:
-msgid ""
-"This will connect to github.com to compare version numbers. No other data is "
-"collected or transmitted."
-msgstr ""
-"Це потребує з'єднання з github.com, щоб порівняти цифри версії. Жодна інша "
-"інформація не збирається і не передається."
+msgid "This will connect to github.com to compare version numbers. No other data is collected or transmitted."
+msgstr "Це потребує з'єднання з github.com, щоб порівняти цифри версії. Жодна інша інформація не збирається і не передається."
 
 #: src/autoload/HandlerGUI.gd: src/ui_widgets/alert_dialog.gd:
 msgid "OK"
@@ -59,19 +57,12 @@ msgid "Export"
 msgstr "Експортувати"
 
 #: src/autoload/HandlerGUI.gd:
-msgid ""
-"The graphic can be exported only as SVG because its proportions are too "
-"extreme."
-msgstr ""
-"Це зображення може бути експортоване тільки як SVG, оскільки його пропорції "
-"занадто екстремальні."
+msgid "The graphic can be exported only as SVG because its proportions are too extreme."
+msgstr "Це зображення може бути експортоване тільки як SVG, оскільки його пропорції занадто екстремальні."
 
 #: src/autoload/HandlerGUI.gd:
-msgid ""
-"The graphic can be exported only as SVG because its size is not defined."
-msgstr ""
-"Це зображення може бути експортоване тільки як SVG, оскільки його розмір не "
-"завданий."
+msgid "The graphic can be exported only as SVG because its size is not defined."
+msgstr "Це зображення може бути експортоване тільки як SVG, оскільки його розмір не завданий."
 
 #: src/autoload/State.gd: src/ui_parts/good_file_dialog.gd:
 #: src/ui_widgets/alert_dialog.gd: src/utils/FileUtils.gd:
@@ -103,12 +94,8 @@ msgid "The last edited state of this tab could not be found."
 msgstr "Останній редагований стан цієї вкладки не може бути знайдено."
 
 #: src/autoload/State.gd:
-msgid ""
-"The tab is bound to the file path {file_path}. Do you want to restore the "
-"SVG from this path?"
-msgstr ""
-"Ця вкладка пов'язана з шляхом до файлу {file_path}. Бажаєте відновити SVG з "
-"цього шляху?"
+msgid "The tab is bound to the file path {file_path}. Do you want to restore the SVG from this path?"
+msgstr "Ця вкладка пов'язана з шляхом до файлу {file_path}. Бажаєте відновити SVG з цього шляху?"
 
 #: src/config_classes/Formatter.gd:
 msgid "Compact"
@@ -334,7 +321,8 @@ msgstr "Скопіювати"
 msgid "Preview image size is limited to {dimensions}"
 msgstr "Розмір попереднього перегляду зображення обмежено до {dimensions}"
 
-#: src/ui_parts/global_actions.gd: src/ui_parts/shortcut_panel_config.gd:
+#: src/ui_parts/global_actions.gd: src/ui_parts/layout_configuration.gd:
+#: src/ui_parts/shortcut_panel_config.gd:
 msgid "Layout"
 msgstr "Макет"
 
@@ -399,12 +387,8 @@ msgid "Copy path"
 msgstr "Скопіювати шлях"
 
 #: src/ui_parts/good_file_dialog.gd:
-msgid ""
-"A file named \"{file_name}\" already exists. Replacing will overwrite its "
-"contents!"
-msgstr ""
-"Файл з назваою \"{file_name}\" вже існує. Його заміна призведе до перезапису "
-"його вмісту!"
+msgid "A file named \"{file_name}\" already exists. Replacing will overwrite its contents!"
+msgstr "Файл з назваою \"{file_name}\" вже існує. Його заміна призведе до перезапису його вмісту!"
 
 #: src/ui_parts/handles_manager.gd:
 msgid "New shape"
@@ -435,11 +419,11 @@ msgid "Add element"
 msgstr "Додати елемент"
 
 #. Refers to the zero, one, or multiple UI parts to not be shown in the final layout. It's of plural cardinality.
-#: src/ui_parts/layout_popup.gd:
+#: src/ui_parts/layout_configuration.gd:
 msgid "Excluded"
 msgstr "Виключені"
 
-#: src/ui_parts/layout_popup.gd:
+#: src/ui_parts/layout_configuration.gd:
 msgid "Drag and drop to change the layout"
 msgstr "Перетягніть і опустіть, щоб змінити макет"
 
@@ -556,9 +540,26 @@ msgstr "GodSVG оновлено до останньої версії."
 msgid "New versions available!"
 msgstr "Доступна нова версія!"
 
+#: src/ui_widgets/PanelGrid.gd:
+msgid "Copy email"
+msgstr "Скопіювати електрону пошту"
+
 #: src/ui_widgets/choose_name_dialog.gd:
 msgid "Create"
 msgstr "Створити"
+
+#: src/ui_widgets/color_configuration_popup.gd:
+msgid "Edit color name"
+msgstr "Редагувати назву кольору"
+
+#: src/ui_widgets/color_configuration_popup.gd:
+msgid "Delete color"
+msgstr "Видалити колір"
+
+#: src/ui_widgets/color_configuration_popup.gd:
+#: src/ui_widgets/palette_config.gd:
+msgid "Unnamed"
+msgstr "Без назви"
 
 #: src/ui_widgets/color_field_popup.gd:
 msgid "Search color"
@@ -567,18 +568,6 @@ msgstr "Шукати колір"
 #: src/ui_widgets/color_field_popup.gd:
 msgid "Color Picker"
 msgstr "Кольорова піпетка"
-
-#: src/ui_widgets/configure_color_popup.gd:
-msgid "Edit color name"
-msgstr "Редагувати назву кольору"
-
-#: src/ui_widgets/configure_color_popup.gd:
-msgid "Delete color"
-msgstr "Видалити колір"
-
-#: src/ui_widgets/configure_color_popup.gd: src/ui_widgets/palette_config.gd:
-msgid "Unnamed"
-msgstr "Без назви"
 
 #: src/ui_widgets/fps_limit_dropdown.gd: src/ui_widgets/setting_frame.gd:
 msgid "Unlimited"
@@ -784,12 +773,8 @@ msgid "Theme preset"
 msgstr "Тема додатку"
 
 #: src/ui_widgets/settings_content_generic.gd:
-msgid ""
-"Determines the default values of theming-related settings, including the "
-"highlighter preset."
-msgstr ""
-"Визначає стандартні значення для налаштувань теми, включаючи налаштування "
-"підсвітки."
+msgid "Determines the default values of theming-related settings, including the highlighter preset."
+msgstr "Визначає стандартні значення для налаштувань теми, включаючи налаштування підсвітки."
 
 #: src/ui_widgets/settings_content_generic.gd:
 msgid "Primary theme colors"
@@ -919,12 +904,8 @@ msgid "Close tabs with middle mouse button"
 msgstr "Закривати вкладки при натисканні середньої кнопки миші"
 
 #: src/ui_widgets/settings_content_generic.gd:
-msgid ""
-"When enabled, clicking on a tab with the middle mouse button closes it "
-"instead of simply focusing it."
-msgstr ""
-"Якщо увімкнено - клацання на вкладку середньою кнопкою миші закриє її, "
-"замість того, щоб фокусуватися на ній."
+msgid "When enabled, clicking on a tab with the middle mouse button closes it instead of simply focusing it."
+msgstr "Якщо увімкнено - клацання на вкладку середньою кнопкою миші закриє її, замість того, щоб фокусуватися на ній."
 
 #: src/ui_widgets/settings_content_generic.gd:
 msgid "Invert zoom direction"
@@ -943,12 +924,8 @@ msgid "Use CTRL for zooming"
 msgstr "Використовувати CTRL для масштабування"
 
 #: src/ui_widgets/settings_content_generic.gd:
-msgid ""
-"When enabled, scrolling pans the view instead of zooming in. To zoom, hold "
-"CTRL while scrolling."
-msgstr ""
-"Якщо увімкнено - гортання буде рухати вікно перегляду. Щоб масштабувати, "
-"затисніть CTRL доки гортаєте."
+msgid "When enabled, scrolling pans the view instead of zooming in. To zoom, hold CTRL while scrolling."
+msgstr "Якщо увімкнено - гортання буде рухати вікно перегляду. Щоб масштабувати, затисніть CTRL доки гортаєте."
 
 #: src/ui_widgets/settings_content_generic.gd:
 msgid "Display"
@@ -968,13 +945,8 @@ msgid "V-Sync"
 msgstr "Вертикальна синхроназація"
 
 #: src/ui_widgets/settings_content_generic.gd:
-msgid ""
-"Synchronizes graphics rendering with display refresh rate to prevent screen "
-"tearing artifacts. May increase input lag slightly."
-msgstr ""
-"Синхронізує відображення графіки з частотою відновлення екрану, щоб "
-"запобігати артефактам відображення (на кшталт \"розриву\" екрана). Також "
-"може збільшити затримку натискань клавіатури або курсору."
+msgid "Synchronizes graphics rendering with display refresh rate to prevent screen tearing artifacts. May increase input lag slightly."
+msgstr "Синхронізує відображення графіки з частотою відновлення екрану, щоб запобігати артефактам відображення (на кшталт \"розриву\" екрана). Також може збільшити затримку натискань клавіатури або курсору."
 
 #: src/ui_widgets/settings_content_generic.gd:
 msgid "Maximum FPS"
@@ -989,14 +961,6 @@ msgid "Keep Screen On"
 msgstr "Тримати екран увімкненим"
 
 #: src/ui_widgets/settings_content_generic.gd:
-msgid ""
-"Keeps the screen on even after inactivity, so the screensaver does not take "
-"over."
-msgstr ""
-"Відкладати присипляння системи та/або екрану навіть після бездіяльності, "
-"завдяки чому зберігач екрану не буде запускатися."
-
-#: src/ui_widgets/settings_content_generic.gd:
 msgid "Miscellaneous"
 msgstr "Різне"
 
@@ -1009,31 +973,24 @@ msgid "Sync window title to file name"
 msgstr "Синхронізувати заголовок вікна з назвою поточного файлу"
 
 #: src/ui_widgets/settings_content_generic.gd:
-msgid ""
-"When enabled, adds the current file name before the \"GodSVG\" window title."
-msgstr ""
-"Коли активовано, додає назву поточного файлу перед \"GodSVG\" у заголовку "
-"вікна."
+msgid "When enabled, adds the current file name before the \"GodSVG\" window title."
+msgstr "Коли активовано, додає назву поточного файлу перед \"GodSVG\" у заголовку вікна."
 
 #: src/ui_widgets/settings_content_generic.gd:
 msgid "When enabled, uses spaces instead of a single tab for indentation."
 msgstr "Коли активно, використовує пробіли замість одного tab-у для відступів."
 
 #: src/ui_widgets/settings_content_generic.gd:
-msgid ""
-"Warps the cursor to the opposite side whenever it reaches a viewport "
-"boundary while panning."
-msgstr ""
-"Курсор буде телепортуватися від одного краю до протилежного при пересуванні "
-"вікна перегляду."
+msgid "Warps the cursor to the opposite side whenever it reaches a viewport boundary while panning."
+msgstr "Курсор буде телепортуватися від одного краю до протилежного при пересуванні вікна перегляду."
 
 #: src/ui_widgets/settings_content_generic.gd:
-msgid ""
-"When enabled, uses your operating system's native file dialog instead of "
-"GodSVG's built-in one."
-msgstr ""
-"Якщо увімкнено, то буде використовувати рідний файловий діалог вашої "
-"операційної системи для обирання файлів замість вбудованого."
+msgid "Keeps the screen on even after inactivity, so the screensaver does not take over."
+msgstr "Відкладати присипляння системи та/або екрану навіть після бездіяльності, завдяки чому зберігач екрану не буде запускатися."
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "When enabled, uses your operating system's native file dialog instead of GodSVG's built-in one."
+msgstr "Якщо увімкнено, то буде використовувати рідний файловий діалог вашої операційної системи для обирання файлів замість вбудованого."
 
 #: src/ui_widgets/settings_content_generic.gd:
 msgid "The setting has no effect in the current configuration."
@@ -1141,9 +1098,7 @@ msgstr "Файл {file_path} вже редагується в GodSVG."
 
 #: src/utils/FileUtils.gd:
 msgid "If you want to revert your edits since the last save, use {reset_svg}."
-msgstr ""
-"Якщо ви бажаєте повернути свої зміни з останнього збереження, використовуйте "
-"{reset_svg}."
+msgstr "Якщо ви бажаєте повернути свої зміни з останнього збереження, використовуйте {reset_svg}."
 
 #: src/utils/FileUtils.gd:
 msgid "Do you want to save the changes made to {file_name}?"
@@ -1449,15 +1404,10 @@ msgstr "Зберегти {format} файл"
 
 #: src/utils/TranslationUtils.gd:
 msgid "Only {extension_list} files are supported for this operation."
-msgstr ""
-"Тільки файли з розширеннями {extension_list} підтримуються для цієї операції."
+msgstr "Тільки файли з розширеннями {extension_list} підтримуються для цієї операції."
 
-#~ msgid ""
-#~ "If turned off, the window title remains as \"GodSVG\" without including "
-#~ "the current file."
-#~ msgstr ""
-#~ "Якщо вимкнено - заголовок вікна залишиться як \"GodSVG\", не включаючи "
-#~ "назву поточного файлу."
+#~ msgid "If turned off, the window title remains as \"GodSVG\" without including the current file."
+#~ msgstr "Якщо вимкнено - заголовок вікна залишиться як \"GodSVG\", не включаючи назву поточного файлу."
 
 #~ msgid "Keep unrecognized XML structures"
 #~ msgstr "Зберігати не розпізнані структури XML"
@@ -1475,12 +1425,8 @@ msgstr ""
 #~ msgid "Determines the visual size and grabbing area of handles."
 #~ msgstr "Змінює візуальний розмір та область захоплення для ручок."
 
-#~ msgid ""
-#~ "The file extension {extension} is unsupported for this operation. Only "
-#~ "{extension_list} files are supported."
-#~ msgstr ""
-#~ "Розширення файлу {extension} не підтримується для цієї операції. Тільки "
-#~ "{extension_list} файли підтримуються."
+#~ msgid "The file extension {extension} is unsupported for this operation. Only {extension_list} files are supported."
+#~ msgstr "Розширення файлу {extension} не підтримується для цієї операції. Тільки {extension_list} файли підтримуються."
 
 #~ msgid "Save the .\"{format}\" file"
 #~ msgstr "Зберегти .\"{format}\" файл"
@@ -1507,16 +1453,11 @@ msgstr ""
 #~ msgid "Save as"
 #~ msgstr "Зберегти як"
 
-#~ msgid ""
-#~ "If you want to apply the unsaved file state, use \"Reset SVG\" instead."
-#~ msgstr ""
-#~ "Якщо ви бажаєте застосувати не збережений стан файлу, використайте "
-#~ "\"Скинути SVG\"."
+#~ msgid "If you want to apply the unsaved file state, use \"Reset SVG\" instead."
+#~ msgstr "Якщо ви бажаєте застосувати не збережений стан файлу, використайте \"Скинути SVG\"."
 
 #~ msgid "Auto UI scale"
 #~ msgstr "Автоматичний масштаб інтерфейсу"
 
 #~ msgid "Scales the interface automatically based on the screen size."
-#~ msgstr ""
-#~ "Автоматично масштабувати інтерфейс користувача в залежності від розміру "
-#~ "екрану."
+#~ msgstr "Автоматично масштабувати інтерфейс користувача в залежності від розміру екрану."
