@@ -29,8 +29,7 @@ static func compare_svg_to_disk_contents(idx := -1) -> FileState:
 		return FileState.DOES_NOT_EXIST
 	# Check if importing the file's text into GodSVG would change the current SVG text.
 	# Avoid the parsing if checking the active tab.
-	var state_svg_text := State.svg_text if idx == -1 else\
-			SVGParser.root_to_editor_text(SVGParser.text_to_root(tab.get_true_svg_text()).svg)
+	var state_svg_text := State.svg_text if idx == -1 else SVGParser.root_to_editor_text(SVGParser.text_to_root(tab.get_true_svg_text()).svg)
 	if state_svg_text == SVGParser.root_to_editor_text(SVGParser.text_to_root(content).svg):
 		return FileState.SAME
 	else:
@@ -69,12 +68,11 @@ static func open_export_dialog(export_data: ImageExportData, final_callback := C
 			final_callback.call()
 	else:
 		if _is_native_preferred():
-			var native_callback :=\
-					func(has_selected: bool, files: PackedStringArray, _filter_idx: int) -> void:
-						if has_selected:
-							_finish_export(files[0], export_data)
-							if final_callback.is_valid():
-								final_callback.call()
+			var native_callback := func(has_selected: bool, files: PackedStringArray, _filter_idx: int) -> void:
+					if has_selected:
+						_finish_export(files[0], export_data)
+						if final_callback.is_valid():
+							final_callback.call()
 			
 			DisplayServer.file_dialog_show(
 					TranslationUtils.get_file_dialog_save_mode_title_text(export_data.format),
@@ -83,11 +81,10 @@ static func open_export_dialog(export_data: ImageExportData, final_callback := C
 					DisplayServer.FILE_DIALOG_MODE_SAVE_FILE,
 					PackedStringArray(["*." + export_data.format]), native_callback)
 		else:
-			var non_native_callback :=\
-					func(paths: PackedStringArray) -> void:
-						_finish_export(paths[0], export_data)
-						if final_callback.is_valid():
-							final_callback.call()
+			var non_native_callback := func(paths: PackedStringArray) -> void:
+					_finish_export(paths[0], export_data)
+					if final_callback.is_valid():
+						final_callback.call()
 			
 			var export_dialog := GoodFileDialogScene.instantiate()
 			export_dialog.setup(Configs.savedata.get_active_tab_dir(), _choose_file_name(),
@@ -101,10 +98,9 @@ static func open_xml_export_dialog(xml: String, file_name: String) -> void:
 		_web_save(xml.to_utf8_buffer(), "application/xml")
 	else:
 		if _is_native_preferred():
-			var native_callback :=\
-					func(has_selected: bool, files: PackedStringArray, _filter_idx: int) -> void:
-						if has_selected:
-							_finish_xml_export(files[0], xml)
+			var native_callback := func(has_selected: bool, files: PackedStringArray, _filter_idx: int) -> void:
+					if has_selected:
+						_finish_xml_export(files[0], xml)
 			
 			DisplayServer.file_dialog_show(
 					TranslationUtils.get_file_dialog_save_mode_title_text("xml"),
@@ -194,10 +190,9 @@ completion_callback: Callable, multi_select := false) -> void:
 			for extension in extensions_with_dots:
 				filters.append("*" + extension)
 			
-			var native_callback :=\
-					func(has_selected: bool, files: PackedStringArray, _filter_idx: int) -> void:
-						if has_selected:
-							_start_file_import_process(files, completion_callback, extensions)
+			var native_callback := func(has_selected: bool, files: PackedStringArray, _filter_idx: int) -> void:
+					if has_selected:
+						_start_file_import_process(files, completion_callback, extensions)
 			
 			DisplayServer.file_dialog_show(
 					TranslationUtils.get_file_dialog_select_mode_title_text(multi_select,

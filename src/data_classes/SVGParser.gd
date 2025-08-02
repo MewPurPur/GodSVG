@@ -124,10 +124,8 @@ make_attributes_absolute := false) -> String:
 		else:
 			text += " %s='%s'" % [attribute.name, value]
 	
-	if not element.has_children() and (formatter.xml_shorthand_tags ==\
-	Formatter.ShorthandTags.ALWAYS or (formatter.xml_shorthand_tags ==\
-	Formatter.ShorthandTags.ALL_EXCEPT_CONTAINERS and\
-	not element.name in Formatter.container_elements)):
+	if not element.has_children() and (formatter.xml_shorthand_tags == Formatter.ShorthandTags.ALWAYS or\
+	(formatter.xml_shorthand_tags == Formatter.ShorthandTags.ALL_EXCEPT_CONTAINERS and not element.name in Formatter.container_elements)):
 		text += ' />' if formatter.xml_shorthand_tags_space_out_slash else '/>'
 		if formatter.xml_pretty_formatting:
 			text += '\n'

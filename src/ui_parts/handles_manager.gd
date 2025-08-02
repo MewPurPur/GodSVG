@@ -843,8 +843,7 @@ func _unhandled_input(event: InputEvent) -> void:
 				if event.double_click and inner_idx != -1:
 					# Unselect the element, so then it's selected again in the subpath.
 					if dragged_handle is PathHandle:
-						var subpath_range: Vector2i =\
-								dragged_handle.element.get_attribute("d").get_subpath(inner_idx)
+						var subpath_range: Vector2i = dragged_handle.element.get_attribute("d").get_subpath(inner_idx)
 						State.normal_select(dragged_xid, subpath_range.x)
 						State.shift_select(dragged_xid, subpath_range.y)
 					elif dragged_handle is PolyHandle:
@@ -934,15 +933,13 @@ func _on_view_changed() -> void:
 func _on_handle_added() -> void:
 	if not get_viewport_rect().has_point(get_viewport().get_mouse_position()):
 		if not State.semi_selected_xid.is_empty():
-			State.root_element.get_xnode(State.semi_selected_xid).get_attribute("d").\
-					sync_after_commands_change()
+			State.root_element.get_xnode(State.semi_selected_xid).get_attribute("d").sync_after_commands_change()
 			State.queue_svg_save()
 		return
 	
 	update_handles()
 	var first_inner_selection := State.inner_selections[0]
-	if State.root_element.get_xnode(State.semi_selected_xid).get_attribute("d").\
-	get_commands()[first_inner_selection].command_char in "Zz":
+	if State.root_element.get_xnode(State.semi_selected_xid).get_attribute("d").get_commands()[first_inner_selection].command_char in "Zz":
 		dragged_handle = null
 		State.queue_svg_save()
 		return

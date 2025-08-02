@@ -32,8 +32,7 @@ func sync() -> void:
 		# Handle might have been removed.
 		return
 	
-	var command: PathCommand =\
-			element.get_attribute(pathdata_name).get_command(command_index)
+	var command: PathCommand = element.get_attribute(pathdata_name).get_command(command_index)
 	if x_param in command:
 		var command_x: float = command.get(x_param)
 		precise_pos[0] = command.start_x + command_x if command.relative else command_x

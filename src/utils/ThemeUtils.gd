@@ -154,6 +154,7 @@ static func recalculate_colors() -> void:
 	
 	basic_panel_inner_color = softer_base_color
 	basic_panel_border_color = base_color.lerp(max_contrast_color, 0.24)
+	basic_panel_border_color.s = minf(basic_panel_border_color.s * 2.0, lerpf(basic_panel_border_color.s, 1.0, 0.2))
 	subtle_panel_border_color = basic_panel_border_color.lerp(basic_panel_inner_color, 0.4)
 	subtle_panel_border_color.s = minf(subtle_panel_border_color.s * 2.0, lerpf(subtle_panel_border_color.s, 1.0, 0.2))
 	
@@ -642,54 +643,33 @@ static func _setup_button(theme: Theme) -> void:
 	theme.set_stylebox("disabled", "PathCommandAbsoluteButton",
 			path_command_absolute_button_stylebox_normal)
 
-	var path_command_absolute_button_stylebox_hover :=\
-			path_command_absolute_button_stylebox_normal.duplicate()
-	path_command_absolute_button_stylebox_hover.bg_color = Color("d9822b") if\
-			ThemeUtils.is_theme_dark else Color("f2c279")
-	path_command_absolute_button_stylebox_hover.border_color = Color("f2cb91") if\
-			ThemeUtils.is_theme_dark else Color("f29718")
-	theme.set_stylebox("hover", "PathCommandAbsoluteButton",
-			path_command_absolute_button_stylebox_hover)
+	var path_command_absolute_button_stylebox_hover := path_command_absolute_button_stylebox_normal.duplicate()
+	path_command_absolute_button_stylebox_hover.bg_color = Color("d9822b") if ThemeUtils.is_theme_dark else Color("f2c279")
+	path_command_absolute_button_stylebox_hover.border_color = Color("f2cb91") if ThemeUtils.is_theme_dark else Color("f29718")
+	theme.set_stylebox("hover", "PathCommandAbsoluteButton", path_command_absolute_button_stylebox_hover)
 
-	var path_command_absolute_button_stylebox_pressed :=\
-			path_command_absolute_button_stylebox_normal.duplicate()
-	path_command_absolute_button_stylebox_pressed.bg_color = Color("ffbf40") if\
-			ThemeUtils.is_theme_dark else Color("f2ae49")
-	path_command_absolute_button_stylebox_pressed.border_color = Color("ffecb3") if\
-			ThemeUtils.is_theme_dark else Color("e68600")
-	theme.set_stylebox("pressed", "PathCommandAbsoluteButton",
-			path_command_absolute_button_stylebox_pressed)
+	var path_command_absolute_button_stylebox_pressed := path_command_absolute_button_stylebox_normal.duplicate()
+	path_command_absolute_button_stylebox_pressed.bg_color = Color("ffbf40") if ThemeUtils.is_theme_dark else Color("f2ae49")
+	path_command_absolute_button_stylebox_pressed.border_color = Color("ffecb3") if ThemeUtils.is_theme_dark else Color("e68600")
+	theme.set_stylebox("pressed", "PathCommandAbsoluteButton", path_command_absolute_button_stylebox_pressed)
 
 	theme.add_type("PathCommandRelativeButton")
 	theme.set_type_variation("PathCommandRelativeButton", "Button")
-	var path_command_relative_button_stylebox_normal :=\
-			path_command_absolute_button_stylebox_normal.duplicate()
-	path_command_relative_button_stylebox_normal.bg_color = Color("a329cc") if\
-			ThemeUtils.is_theme_dark else Color("d291f2")
-	path_command_relative_button_stylebox_normal.border_color = Color("bd73e6") if\
-			ThemeUtils.is_theme_dark else Color("bb33ff")
-	theme.set_stylebox("normal", "PathCommandRelativeButton",
-			path_command_relative_button_stylebox_normal)
-	theme.set_stylebox("disabled", "PathCommandRelativeButton",
-			path_command_relative_button_stylebox_normal)
+	var path_command_relative_button_stylebox_normal := path_command_absolute_button_stylebox_normal.duplicate()
+	path_command_relative_button_stylebox_normal.bg_color = Color("a329cc") if ThemeUtils.is_theme_dark else Color("d291f2")
+	path_command_relative_button_stylebox_normal.border_color = Color("bd73e6") if ThemeUtils.is_theme_dark else Color("bb33ff")
+	theme.set_stylebox("normal", "PathCommandRelativeButton", path_command_relative_button_stylebox_normal)
+	theme.set_stylebox("disabled", "PathCommandRelativeButton", path_command_relative_button_stylebox_normal)
 
-	var path_command_relative_button_stylebox_hover :=\
-			path_command_absolute_button_stylebox_normal.duplicate()
-	path_command_relative_button_stylebox_hover.bg_color = Color("ad2bd9") if\
-			ThemeUtils.is_theme_dark else Color("ca79f2")
-	path_command_relative_button_stylebox_hover.border_color = Color("d291f2") if\
-			ThemeUtils.is_theme_dark else Color("aa18f2")
-	theme.set_stylebox("hover", "PathCommandRelativeButton",
-			path_command_relative_button_stylebox_hover)
+	var path_command_relative_button_stylebox_hover := path_command_absolute_button_stylebox_normal.duplicate()
+	path_command_relative_button_stylebox_hover.bg_color = Color("ad2bd9") if ThemeUtils.is_theme_dark else Color("ca79f2")
+	path_command_relative_button_stylebox_hover.border_color = Color("d291f2") if ThemeUtils.is_theme_dark else Color("aa18f2")
+	theme.set_stylebox("hover", "PathCommandRelativeButton", path_command_relative_button_stylebox_hover)
 
-	var path_command_relative_button_stylebox_pressed :=\
-			path_command_absolute_button_stylebox_normal.duplicate()
-	path_command_relative_button_stylebox_pressed.bg_color = Color("bf40ff") if\
-			ThemeUtils.is_theme_dark else Color("ba49f2")
-	path_command_relative_button_stylebox_pressed.border_color = Color("dfb3ff") if\
-			ThemeUtils.is_theme_dark else Color("9900e6")
-	theme.set_stylebox("pressed", "PathCommandRelativeButton",
-			path_command_relative_button_stylebox_pressed)
+	var path_command_relative_button_stylebox_pressed := path_command_absolute_button_stylebox_normal.duplicate()
+	path_command_relative_button_stylebox_pressed.bg_color = Color("bf40ff") if ThemeUtils.is_theme_dark else Color("ba49f2")
+	path_command_relative_button_stylebox_pressed.border_color = Color("dfb3ff") if ThemeUtils.is_theme_dark else Color("9900e6")
+	theme.set_stylebox("pressed", "PathCommandRelativeButton", path_command_relative_button_stylebox_pressed)
 	
 	theme.add_type("TextButton")
 	theme.set_type_variation("TextButton", "Button")

@@ -79,8 +79,7 @@ func setup_from_tab() -> void:
 		apply_svg_text(new_text, false)
 		return
 	
-	if active_tab.fully_loaded and not active_tab.empty_unsaved and\
-	FileAccess.file_exists(active_tab.get_edited_file_path()):
+	if active_tab.fully_loaded and not active_tab.empty_unsaved and FileAccess.file_exists(active_tab.get_edited_file_path()):
 		var user_facing_path := active_tab.svg_file_path
 		var message := Translator.translate(
 				"The last edited state of this tab could not be found.")
@@ -92,14 +91,10 @@ func setup_from_tab() -> void:
 			options_dialog.add_option(Translator.translate("Close tab"),
 					Configs.savedata.remove_active_tab)
 		else:
-			options_dialog.setup(Translator.translate("Alert!"),
-					message + "\n\n" + Translator.translate(
-					"The tab is bound to the file path {file_path}. Do you want to restore the SVG from this path?").\
-					format({"file_path": user_facing_path}))
-			options_dialog.add_option(Translator.translate("Close tab"),
-					Configs.savedata.remove_active_tab)
-			options_dialog.add_option(Translator.translate("Restore"),
-					FileUtils.reset_svg, true)
+			options_dialog.setup(Translator.translate("Alert!"), message + "\n\n" + Translator.translate(
+					"The tab is bound to the file path {file_path}. Do you want to restore the SVG from this path?").format({"file_path": user_facing_path}))
+			options_dialog.add_option(Translator.translate("Close tab"), Configs.savedata.remove_active_tab)
+			options_dialog.add_option(Translator.translate("Restore"), FileUtils.reset_svg, true)
 		apply_svg_text(TabData.DEFAULT_SVG, false)
 		return
 	
@@ -310,8 +305,7 @@ func normal_select(xid: PackedInt32Array, inner_idx := -1) -> void:
 		xid = xid.duplicate()
 		_clear_selection_no_signal()
 		
-		if semi_selected_xid == xid and\
-		inner_selections.size() == 1 and inner_selections[0] == inner_idx:
+		if semi_selected_xid == xid and inner_selections.size() == 1 and inner_selections[0] == inner_idx:
 			return
 		
 		semi_selected_xid = xid.duplicate()
@@ -516,8 +510,7 @@ func is_hovered(xid: PackedInt32Array, inner_idx := -1, propagate := false) -> b
 		if inner_idx == -1:
 			return XIDUtils.is_parent_or_self(hovered_xid, xid)
 		else:
-			return (inner_hovered == inner_idx and semi_hovered_xid == xid) or\
-					XIDUtils.is_parent_or_self(hovered_xid, xid)
+			return (inner_hovered == inner_idx and semi_hovered_xid == xid) or XIDUtils.is_parent_or_self(hovered_xid, xid)
 	else:
 		if inner_idx == -1:
 			return hovered_xid == xid
@@ -631,8 +624,7 @@ func respond_to_key_input(path_cmd_char: String) -> void:
 				var path_attrib: AttributePathdata = xnode_ref.get_attribute("d")
 				var path_cmd_count := path_attrib.get_command_count()
 				# Z after a Z is syntactically invalid.
-				if (path_cmd_count == 0 and not path_cmd_char in "Mm") or\
-				(path_cmd_char in "Zz" and path_cmd_count > 0 and\
+				if (path_cmd_count == 0 and not path_cmd_char in "Mm") or (path_cmd_char in "Zz" and path_cmd_count > 0 and\
 				path_attrib.get_command(path_cmd_count - 1) is PathCommand.CloseCommand):
 					return
 				path_attrib.insert_command(path_cmd_count, path_cmd_char, Vector2.ZERO)
@@ -645,10 +637,8 @@ func respond_to_key_input(path_cmd_char: String) -> void:
 			var path_attrib: AttributePathdata = xnode_ref.get_attribute("d")
 			var last_selection: int = inner_selections.max()
 			# Z after a Z is syntactically invalid.
-			if path_cmd_char in "Zz" and (path_attrib.get_command(last_selection) is\
-			PathCommand.CloseCommand or (path_attrib.get_command_count() >\
-			last_selection + 1 and path_attrib.get_command(last_selection + 1) is\
-			PathCommand.CloseCommand)):
+			if path_cmd_char in "Zz" and (path_attrib.get_command(last_selection) is PathCommand.CloseCommand or\
+			(path_attrib.get_command_count() > last_selection + 1 and path_attrib.get_command(last_selection + 1) is PathCommand.CloseCommand)):
 				return
 			path_attrib.insert_command(last_selection + 1, path_cmd_char, Vector2.ZERO)
 			normal_select(semi_selected_xid, last_selection + 1)
@@ -783,14 +773,11 @@ func get_selection_context(popup_method: Callable, context: Utils.LayoutPart) ->
 		match element_ref.name:
 			"path":
 				if inner_selections.size() == 1:
-					btn_arr.append(ContextPopup.create_button(
-							Translator.translate("Insert After"),
+					btn_arr.append(ContextPopup.create_button(Translator.translate("Insert After"),
 							popup_insert_command_after_context.bind(popup_method), false,
 							load("res://assets/icons/Plus.svg")))
-					if inner_selections[0] != 0 or\
-					element_ref.get_attribute("d").get_command(0).command_char != "M":
-						btn_arr.append(ContextPopup.create_button(
-								Translator.translate("Convert To"),
+					if inner_selections[0] != 0 or element_ref.get_attribute("d").get_command(0).command_char != "M":
+						btn_arr.append(ContextPopup.create_button(Translator.translate("Convert To"),
 								popup_convert_to_context.bind(popup_method), false,
 								load("res://assets/icons/Reload.svg")))
 				if is_selection_subpath():
@@ -853,8 +840,7 @@ func popup_convert_to_context(popup_method: Callable) -> void:
 			disabled_commands = PackedStringArray(["L", "H", "V", "A", "Z", "Q", "T", "C", "S"])
 		else:
 			disabled_commands = PackedStringArray([cmd_char.to_upper()])
-			if cmd_char_upper != "Z" and\
-			path_attrib.get_command_count() > selection_idx + 1 and\
+			if cmd_char_upper != "Z" and path_attrib.get_command_count() > selection_idx + 1 and\
 			path_attrib.get_command(selection_idx + 1).command_char.to_upper() == "Z":
 				disabled_commands.append("Z")
 		
