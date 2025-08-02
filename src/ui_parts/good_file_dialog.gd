@@ -95,6 +95,14 @@ new_extensions: PackedStringArray) -> void:
 
 
 func _ready() -> void:
+	var shortcuts := ShortcutsRegistration.new()
+	shortcuts.add_shortcut("find", func() -> void: search_button.button_pressed = not search_button.button_pressed)
+	shortcuts.add_shortcut("ui_accept", func() -> void:
+			var selected_item_indices := file_list.get_selected_items()
+			if not selected_item_indices.is_empty():
+				call_activation_callback(file_list.get_item_metadata(selected_item_indices[0])))
+	HandlerGUI.register_shortcuts(self, shortcuts)
+	
 	# Signal connections.
 	file_field.text_changed.connect(_on_file_field_text_changed)
 	folder_up_button.pressed.connect(_on_folder_up_button_pressed)
@@ -504,13 +512,3 @@ func get_drive_icon(path: String) -> Texture2D:
 		return load("res://assets/icons/DirPictures.svg")
 	else:
 		return folder_icon
-
-func _unhandled_input(event: InputEvent) -> void:
-	if ShortcutUtils.is_action_pressed(event, "find"):
-		search_button.button_pressed = not search_button.button_pressed
-		accept_event()
-	elif event.is_action_pressed("ui_accept"):
-		var selected_item_indices := file_list.get_selected_items()
-		if not selected_item_indices.is_empty():
-			call_activation_callback(file_list.get_item_metadata(selected_item_indices[0]))
-			accept_event()

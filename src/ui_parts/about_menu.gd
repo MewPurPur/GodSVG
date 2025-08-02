@@ -13,6 +13,11 @@ extends PanelContainer
 @onready var tab_container: TabContainer = $VBoxContainer/TabContainer
 
 func _ready() -> void:
+	var shortcuts := ShortcutsRegistration.new()
+	shortcuts.add_shortcut("select_next_tab", select_next_tab)
+	shortcuts.add_shortcut("select_previous_tab", select_previous_tab)
+	HandlerGUI.register_shortcuts(self, shortcuts)
+	
 	var stylebox := get_theme_stylebox("panel").duplicate()
 	stylebox.content_margin_top += 2.0
 	add_theme_stylebox_override("panel", stylebox)
@@ -29,12 +34,13 @@ func _ready() -> void:
 	tab_container.tab_changed.connect(_on_tab_changed)
 	_on_tab_changed(0)
 
-func _unhandled_input(event: InputEvent) -> void:
+
+func select_next_tab() -> void:
+	tab_container.current_tab = (tab_container.current_tab + 1) % tab_container.get_tab_count()
+
+func select_previous_tab() -> void:
 	var tab_count := tab_container.get_tab_count()
-	if ShortcutUtils.is_action_pressed(event, "select_next_tab"):
-		tab_container.current_tab = (tab_container.current_tab + 1) % tab_count
-	elif ShortcutUtils.is_action_pressed(event, "select_previous_tab"):
-		tab_container.current_tab = (tab_container.current_tab + tab_count - 1) % tab_count
+	tab_container.current_tab = (tab_container.current_tab + tab_count - 1) % tab_count
 
 func _on_tab_changed(idx: int) -> void:
 	match idx:

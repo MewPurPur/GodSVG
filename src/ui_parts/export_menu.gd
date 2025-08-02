@@ -30,6 +30,11 @@ var dimensions := Vector2.ZERO
 
 
 func _ready() -> void:
+	var shortcuts := ShortcutsRegistration.new()
+	shortcuts.add_shortcut("ui_undo", undo_redo.undo)
+	shortcuts.add_shortcut("ui_redo", undo_redo.redo)
+	HandlerGUI.register_shortcuts(self, shortcuts)
+	
 	final_size_label.add_theme_color_override("font_color", ThemeUtils.subtle_text_color)
 	cancel_button.pressed.connect(queue_free)
 	export_button.pressed.connect(_on_export_button_pressed)
@@ -189,17 +194,4 @@ func update() -> void:
 
 func get_dimensions_text(sides: Vector2, integer := false) -> String:
 	var precision := 0 if integer else 2
-	return "%s×%s" % [Utils.num_simple(sides.x, precision),
-			Utils.num_simple(sides.y, precision)]
-
-
-func _unhandled_input(event: InputEvent) -> void:
-	if not visible:
-		return
-	
-	if ShortcutUtils.is_action_pressed(event, "ui_undo"):
-		undo_redo.undo()
-		accept_event()
-	elif ShortcutUtils.is_action_pressed(event, "ui_redo"):
-		undo_redo.redo()
-		accept_event()
+	return "%s×%s" % [Utils.num_simple(sides.x, precision), Utils.num_simple(sides.y, precision)]

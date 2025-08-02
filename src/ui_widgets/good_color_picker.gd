@@ -143,6 +143,11 @@ func update_keyword_button() -> void:
 		keyword_button.show()
 
 func _ready() -> void:
+	var shortcuts := ShortcutsRegistration.new()
+	shortcuts.add_shortcut("ui_undo", undo_redo.undo)
+	shortcuts.add_shortcut("ui_redo", undo_redo.redo)
+	HandlerGUI.register_shortcuts(self, shortcuts)
+	
 	Configs.theme_changed.connect(sync_color_space_buttons)
 	sync_color_space_buttons()
 	# Set up signals.
@@ -218,8 +223,7 @@ func set_display_color(new_display_color: Color) -> void:
 func update() -> void:
 	# Adjust the shaders.
 	tracks_arr[0].material.set_shader_parameter("v", display_color.v)
-	tracks_arr[0].material.set_shader_parameter("base_color",
-			Color.from_hsv(display_color.h, display_color.s, 1.0))
+	tracks_arr[0].material.set_shader_parameter("base_color", Color.from_hsv(display_color.h, display_color.s, 1.0))
 	tracks_arr[1].material.set_shader_parameter("base_color", display_color)
 	tracks_arr[2].material.set_shader_parameter("base_color", display_color)
 	tracks_arr[3].material.set_shader_parameter("base_color", display_color)
@@ -255,11 +259,9 @@ func _on_color_wheel_gui_input(event: InputEvent) -> void:
 		backup()
 	var new_color := display_color
 	if Utils.is_event_drag(event) or is_event_drag_start:
-		var event_pos_on_wheel: Vector2 = event.position + color_wheel.position -\
-				color_wheel_drawn.position
+		var event_pos_on_wheel: Vector2 = event.position + color_wheel.position - color_wheel_drawn.position
 		new_color.h = fposmod(center.angle_to_point(event_pos_on_wheel), TAU) / TAU
-		new_color.s = minf(event_pos_on_wheel.distance_to(center) * 2 /\
-				color_wheel_drawn.size.x, 1.0)
+		new_color.s = minf(event_pos_on_wheel.distance_to(center) * 2 / color_wheel_drawn.size.x, 1.0)
 		set_display_color(new_color)
 	if Utils.is_event_drag_end(event):
 		register_visual_change(display_color)
@@ -527,18 +529,6 @@ func hex(col: Color) -> String:
 		col.h = 1.0
 	
 	return col.to_html(alpha_enabled and col.a != 1.0)
-
-
-func _unhandled_input(event: InputEvent) -> void:
-	if not visible:
-		return
-	
-	if ShortcutUtils.is_action_pressed(event, "ui_undo"):
-		undo_redo.undo()
-		accept_event()
-	elif ShortcutUtils.is_action_pressed(event, "ui_redo"):
-		undo_redo.redo()
-		accept_event()
 
 
 func _on_eyedropper_pressed() -> void:

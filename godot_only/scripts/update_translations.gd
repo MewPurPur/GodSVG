@@ -16,6 +16,7 @@ const COMMENTS_DICT = {
 	"Dark": "Refers to a theme preset.",
 	"Light": "Refers to a theme preset.",
 	"Black (OLED)": "Refers to a theme preset.",
+	"translation-credits": "Translators (comma-separated): Your preferred alias or real name, followed optionally by your email in angle brackets, e.g., <email@example.com>.\nThis list is used for credits, adding yourself to it is optional. New entries are added after all the existing ones. Do not remove or rearrange entries.",
 }
 
 const TRANSLATIONS_DIR = "translations"

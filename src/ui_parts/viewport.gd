@@ -153,8 +153,7 @@ func _unhandled_input(event: InputEvent) -> void:
 func _on_zoom_changed(new_zoom_level: float, offset: Vector2) -> void:
 	State.set_zoom(new_zoom_level)
 	adjust_view(offset)
-	display.material.set_shader_parameter("uv_scale",
-			nearest_po2(int(State.zoom * 32.0)) / 32.0)
+	display.material.set_shader_parameter("uv_scale", nearest_po2(int(State.zoom * 32.0)) / 32.0)
 
 var last_size_adjusted := size / State.zoom
 

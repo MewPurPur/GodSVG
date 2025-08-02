@@ -27,6 +27,11 @@ func get_tab_localized_name(tab_index: TabIndex) -> String:
 var focused_tab_index := -1 as TabIndex
 
 func _ready() -> void:
+	var shortcuts := ShortcutsRegistration.new()
+	shortcuts.add_shortcut("select_next_tab", select_next_tab)
+	shortcuts.add_shortcut("select_previous_tab", select_previous_tab)
+	HandlerGUI.register_shortcuts(self, shortcuts)
+	
 	close_button.pressed.connect(queue_free)
 	scroll_container.get_v_scroll_bar().visibility_changed.connect(adjust_right_margin)
 	adjust_right_margin()
@@ -37,12 +42,12 @@ func _ready() -> void:
 	sync_localization()
 	press_tab(0)
 
-func _unhandled_input(event: InputEvent) -> void:
+func select_next_tab() -> void:
+	press_tab((focused_tab_index + 1) % TabIndex.size())
+
+func select_previous_tab() -> void:
 	var tab_count := TabIndex.size()
-	if ShortcutUtils.is_action_pressed(event, "select_next_tab"):
-		press_tab((focused_tab_index + 1) % tab_count)
-	elif ShortcutUtils.is_action_pressed(event, "select_previous_tab"):
-		press_tab((focused_tab_index + tab_count - 1) % tab_count)
+	press_tab((focused_tab_index + tab_count - 1) % tab_count)
 
 func press_tab(index: int) -> void:
 	tabs.get_child(index).button_pressed = true

@@ -20,6 +20,11 @@ func get_translated_shortcut_tab(tab_idx: String) -> String:
 	return ""
 
 func _ready() -> void:
+	var shortcuts := ShortcutsRegistration.new()
+	shortcuts.add_shortcut("ui_undo", undo_redo.undo)
+	shortcuts.add_shortcut("ui_redo", undo_redo.redo)
+	HandlerGUI.register_shortcuts(self, shortcuts)
+	
 	var button_group := ButtonGroup.new()
 	for tab_idx in shortcut_tab_names:
 		var btn := Button.new()
@@ -36,12 +41,6 @@ func _ready() -> void:
 		categories_container.add_child(btn)
 	categories_container.get_child(0).button_pressed = true
 	categories_container.get_child(0).pressed.emit()
-
-func _unhandled_input(event: InputEvent) -> void:
-	if ShortcutUtils.is_action_pressed(event, "ui_undo"):
-		undo_redo.undo()
-	elif ShortcutUtils.is_action_pressed(event, "ui_redo"):
-		undo_redo.redo()
 
 
 func show_shortcuts(category: String) -> void:
