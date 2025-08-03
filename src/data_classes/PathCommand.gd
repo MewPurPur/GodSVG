@@ -2,15 +2,19 @@
 @abstract class_name PathCommand
 
 const translation_dict: Dictionary[String, GDScript] = {
-	"M": MoveCommand, "L": LineCommand, "H": HorizontalLineCommand,
-	"V": VerticalLineCommand, "Z": CloseCommand, "A": EllipticalArcCommand,
-	"Q": QuadraticBezierCommand, "T": ShorthandQuadraticBezierCommand,
-	"C": CubicBezierCommand, "S": ShorthandCubicBezierCommand
+	"M": MoveCommand,
+	"L": LineCommand,
+	"H": HorizontalLineCommand,
+	"V": VerticalLineCommand,
+	"Z": CloseCommand,
+	"A": EllipticalArcCommand,
+	"Q": QuadraticBezierCommand,
+	"T": ShorthandQuadraticBezierCommand,
+	"C": CubicBezierCommand,
+	"S": ShorthandCubicBezierCommand
 }
 
-const arg_count_dict: Dictionary[String, int] = {
-	"M": 2, "L": 2, "H": 1, "V": 1, "Z": 0, "A": 7, "Q": 4, "T": 2, "C": 6, "S": 4
-}
+const arg_count_dict: Dictionary[String, int] = { "M": 2, "L": 2, "H": 1, "V": 1, "Z": 0, "A": 7, "Q": 4, "T": 2, "C": 6, "S": 4 }
 
 var command_char := ""
 var relative := false
@@ -96,8 +100,7 @@ class EllipticalArcCommand extends PathCommand:
 	var sweep_flag: int
 	var x: float
 	var y: float
-	func _init(new_rx := 1.0, new_ry := 1.0, new_rot := 0.0, new_large_arc_flag := 0,
-	new_sweep_flag := 0, new_x := 0.0, new_y := 0.0, p_rel := false) -> void:
+	func _init(new_rx := 1.0, new_ry := 1.0, new_rot := 0.0, new_large_arc_flag := 0, new_sweep_flag := 0, new_x := 0.0, new_y := 0.0, p_rel := false) -> void:
 		relative = p_rel
 		command_char = "a" if p_rel else "A"
 		rx = new_rx
@@ -113,8 +116,7 @@ class QuadraticBezierCommand extends PathCommand:
 	var y1: float
 	var x: float
 	var y: float
-	func _init(new_x1 := 0.0, new_y1 := 0.0, new_x := 0.0, new_y := 0.0,
-	p_rel := false) -> void:
+	func _init(new_x1 := 0.0, new_y1 := 0.0, new_x := 0.0, new_y := 0.0, p_rel := false) -> void:
 		relative = p_rel
 		command_char = "q" if p_rel else "Q"
 		x1 = new_x1
@@ -138,8 +140,7 @@ class CubicBezierCommand extends PathCommand:
 	var y2: float
 	var x: float
 	var y: float
-	func _init(new_x1 := 0.0, new_y1 := 0.0, new_x2 := 0.0, new_y2 := 0.0,
-	new_x := 0.0, new_y := 0.0, p_rel := false) -> void:
+	func _init(new_x1 := 0.0, new_y1 := 0.0, new_x2 := 0.0, new_y2 := 0.0, new_x := 0.0, new_y := 0.0, p_rel := false) -> void:
 		relative = p_rel
 		command_char = "c" if p_rel else "C"
 		x1 = new_x1
@@ -154,8 +155,7 @@ class ShorthandCubicBezierCommand extends PathCommand:
 	var y2: float
 	var x: float
 	var y: float
-	func _init(new_x2 := 0.0, new_y2 := 0.0, new_x := 0.0, new_y := 0.0,
-	p_rel := false) -> void:
+	func _init(new_x2 := 0.0, new_y2 := 0.0, new_x := 0.0, new_y := 0.0, p_rel := false) -> void:
 		relative = p_rel
 		command_char = "s" if p_rel else "S"
 		x2 = new_x2

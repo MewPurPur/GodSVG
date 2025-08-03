@@ -78,17 +78,12 @@ func sync_selection_rectangle_shader() -> void:
 		stroke_material.shader = stroke_shader_static
 	else:
 		stroke_material.shader = stroke_shader
-		stroke_material.set_shader_parameter("ant_speed",
-				Configs.savedata.selection_rectangle_speed)
+		stroke_material.set_shader_parameter("ant_speed", Configs.savedata.selection_rectangle_speed)
 	
-	stroke_material.set_shader_parameter("ant_color_1",
-			Configs.savedata.selection_rectangle_color1)
-	stroke_material.set_shader_parameter("ant_color_2",
-			Configs.savedata.selection_rectangle_color2)
-	stroke_material.set_shader_parameter("ant_width",
-			Configs.savedata.selection_rectangle_width)
-	stroke_material.set_shader_parameter("ant_length",
-			Configs.savedata.selection_rectangle_dash_length)
+	stroke_material.set_shader_parameter("ant_color_1", Configs.savedata.selection_rectangle_color1)
+	stroke_material.set_shader_parameter("ant_color_2", Configs.savedata.selection_rectangle_color2)
+	stroke_material.set_shader_parameter("ant_width", Configs.savedata.selection_rectangle_width)
+	stroke_material.set_shader_parameter("ant_length", Configs.savedata.selection_rectangle_dash_length)
 	RenderingServer.canvas_item_set_material(selections_surface, stroke_material.get_rid())
 	animated_stroke_hacky_fix_node.material = stroke_material
 	# If the ant width was changed, the buffer must be updated.
@@ -224,8 +219,7 @@ func _draw() -> void:
 		
 		match element.name:
 			"circle":
-				var c := Vector2(element.get_attribute_num("cx"),
-						element.get_attribute_num("cy"))
+				var c := Vector2(element.get_attribute_num("cx"), element.get_attribute_num("cy"))
 				var r := element.get_attribute_num("r")
 				
 				var points := PackedVector2Array()
@@ -263,12 +257,10 @@ func _draw() -> void:
 						var grow_amount_x := grow_amount_unscaled / element_scale.x
 						var grow_amount_y := grow_amount_unscaled / element_scale.y
 						selection_transforms.append(canvas_transform * element_transform)
-						selection_rects.append(bounding_box.grow_individual(grow_amount_x,
-								grow_amount_y, grow_amount_x, grow_amount_y))
+						selection_rects.append(bounding_box.grow_individual(grow_amount_x, grow_amount_y, grow_amount_x, grow_amount_y))
 			
 			"ellipse":
-				var c := Vector2(element.get_attribute_num("cx"),
-						element.get_attribute_num("cy"))
+				var c := Vector2(element.get_attribute_num("cx"), element.get_attribute_num("cy"))
 				# Squished circle.
 				var points := PackedVector2Array()
 				points.resize(181)
@@ -276,8 +268,7 @@ func _draw() -> void:
 					var d := i * TAU/180
 					points[i] = c + Vector2(cos(d) * element.get_rx(), sin(d) * element.get_ry())
 				points[180] = points[0]
-				var extras := PackedVector2Array([
-						c, c + Vector2(element.get_rx(), 0), c, c + Vector2(0, element.get_ry())])
+				var extras := PackedVector2Array([c, c + Vector2(element.get_rx(), 0), c, c + Vector2(0, element.get_ry())])
 				var final_transform := element.get_transform()
 				points = final_transform * points
 				extras = final_transform * extras
@@ -306,8 +297,7 @@ func _draw() -> void:
 						var grow_amount_x := grow_amount_unscaled / element_scale.x
 						var grow_amount_y := grow_amount_unscaled / element_scale.y
 						selection_transforms.append(canvas_transform * element_transform)
-						selection_rects.append(bounding_box.grow_individual(grow_amount_x,
-								grow_amount_y, grow_amount_x, grow_amount_y))
+						selection_rects.append(bounding_box.grow_individual(grow_amount_x, grow_amount_y, grow_amount_x, grow_amount_y))
 			
 			"rect":
 				var x := element.get_attribute_num("x")
@@ -319,9 +309,7 @@ func _draw() -> void:
 				var points := PackedVector2Array()
 				if rx == 0 or ry == 0:
 					# Basic rectangle.
-					points = [Vector2(x, y), Vector2(x + rect_width, y),
-							Vector2(x + rect_width, y + rect_height),
-							Vector2(x, y + rect_height), Vector2(x, y)]
+					points = [Vector2(x, y), Vector2(x + rect_width, y), Vector2(x + rect_width, y + rect_height), Vector2(x, y + rect_height), Vector2(x, y)]
 				else:
 					if rx == 0:
 						rx = ry
@@ -378,8 +366,7 @@ func _draw() -> void:
 						var grow_amount_x := grow_amount_unscaled / element_scale.x
 						var grow_amount_y := grow_amount_unscaled / element_scale.y
 						selection_transforms.append(canvas_transform * element_transform)
-						selection_rects.append(bounding_box.grow_individual(grow_amount_x,
-								grow_amount_y, grow_amount_x, grow_amount_y))
+						selection_rects.append(bounding_box.grow_individual(grow_amount_x, grow_amount_y, grow_amount_x, grow_amount_y))
 			
 			"line":
 				var x1 := element.get_attribute_num("x1")
@@ -596,12 +583,10 @@ func _draw() -> void:
 								sc = -sc
 							
 							var ct := Vector2(r.x * sc * y1 / r.y, -r.y * sc * x1 / r.x)
-							var c := Vector2(ct.x * cosine - ct.y * sine,
-									ct.x * sine + ct.y * cosine) + start.lerp(end, 0.5)
+							var c := Vector2(ct.x * cosine - ct.y * sine, ct.x * sine + ct.y * cosine) + start.lerp(end, 0.5)
 							var tv := Vector2(x1 - ct.x, y1 - ct.y) / r
 							var theta1 := tv.angle()
-							var delta_theta := fposmod(tv.angle_to(
-									Vector2(-x1 - ct.x, -y1 - ct.y) / r), TAU)
+							var delta_theta := fposmod(tv.angle_to(Vector2(-x1 - ct.x, -y1 - ct.y) / r), TAU)
 							if cmd.sweep_flag == 0:
 								theta1 += delta_theta
 								delta_theta = TAU - delta_theta
@@ -713,21 +698,17 @@ func _draw() -> void:
 	RenderingServer.canvas_item_clear(surface)
 	RenderingServer.canvas_item_clear(selections_surface)
 	
-	draw_objects_of_type(normal_color, normal_polylines,
-			normal_multiline, normal_handles, normal_handle_textures)
-	draw_objects_of_type(hovered_color, hovered_polylines,
-			hovered_multiline, hovered_handles, hovered_handle_textures)
-	draw_objects_of_type(selected_color, selected_polylines,
-			selected_multiline, selected_handles, selected_handle_textures)
-	draw_objects_of_type(hovered_selected_color, hovered_selected_polylines,
-			hovered_selected_multiline, hovered_selected_handles,
+	draw_objects_of_interaction_type(normal_color, normal_polylines, normal_multiline, normal_handles, normal_handle_textures)
+	draw_objects_of_interaction_type(hovered_color, hovered_polylines, hovered_multiline, hovered_handles, hovered_handle_textures)
+	draw_objects_of_interaction_type(selected_color, selected_polylines, selected_multiline, selected_handles, selected_handle_textures)
+	draw_objects_of_interaction_type(hovered_selected_color, hovered_selected_polylines, hovered_selected_multiline, hovered_selected_handles,
 			hovered_selected_handle_textures)
 	
 	for idx in selection_rects.size():
 		RenderingServer.canvas_item_add_set_transform(selections_surface, selection_transforms[idx])
 		RenderingServer.canvas_item_add_rect(selections_surface, selection_rects[idx], Color.WHITE)
 
-func draw_objects_of_type(color: Color, polylines: Array[PackedVector2Array],
+func draw_objects_of_interaction_type(color: Color, polylines: Array[PackedVector2Array],
 multiline: PackedVector2Array, handles_array: Array[Handle],
 handle_texture_dictionary: Dictionary[Handle.Display, Texture2D]) -> void:
 	for polyline in polylines:
@@ -816,8 +797,7 @@ func _unhandled_input(event: InputEvent) -> void:
 						State.shift_select(dragged_xid, subpath_range.y)
 					elif dragged_handle is PolyHandle:
 						State.normal_select(dragged_xid, 0)
-						State.shift_select(dragged_xid,
-								dragged_handle.element.get_attribute("points").get_list_size() / 2 - 1)
+						State.shift_select(dragged_xid, dragged_handle.element.get_attribute("points").get_list_size() / 2 - 1)
 				elif event.is_command_or_control_pressed():
 					State.ctrl_select(dragged_xid, inner_idx)
 				elif event.shift_pressed:
@@ -857,9 +837,7 @@ func _unhandled_input(event: InputEvent) -> void:
 				not (inner_idx == -1 and hovered_xid in State.selected_xids):
 					State.normal_select(hovered_xid, inner_idx)
 				
-				HandlerGUI.popup_under_pos(State.get_selection_context(
-						HandlerGUI.popup_under_pos.bind(popup_pos, vp),
-						Utils.LayoutPart.VIEWPORT), popup_pos, vp)
+				HandlerGUI.popup_under_pos(State.get_selection_context(HandlerGUI.popup_under_pos.bind(popup_pos, vp), Utils.LayoutPart.VIEWPORT), popup_pos, vp)
 
 func find_nearest_handle(event_pos: Vector2) -> Handle:
 	var nearest_handle: Handle = null

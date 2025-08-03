@@ -7,8 +7,7 @@ var y_name: String
 var d_name: String
 var horizontal: bool
 
-func _init(new_element: Element, xref: String, yref: String, dref: String,
-p_horizontal: bool) -> void:
+func _init(new_element: Element, xref: String, yref: String, dref: String, p_horizontal: bool) -> void:
 	element = new_element
 	x_name = xref
 	y_name = yref

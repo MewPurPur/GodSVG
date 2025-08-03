@@ -7,12 +7,10 @@ static func get_vector(vector: PackedFloat64Array) -> Vector2:
 	return Vector2(vector[0], vector[1])
 
 static func get_transform(transform: PackedFloat64Array) -> Transform2D:
-	return Transform2D(Vector2(transform[0], transform[1]),
-			Vector2(transform[2], transform[3]), Vector2(transform[4], transform[5]))
+	return Transform2D(Vector2(transform[0], transform[1]), Vector2(transform[2], transform[3]), Vector2(transform[4], transform[5]))
 
 # Vector2 * Transform2D
-static func transform_vector_mult(transform: PackedFloat64Array,
-vector: PackedFloat64Array) -> PackedFloat64Array:
+static func transform_vector_mult(transform: PackedFloat64Array, vector: PackedFloat64Array) -> PackedFloat64Array:
 	var x := vector[0]
 	var y := vector[1]
 	var xx := transform[0]
@@ -32,8 +30,7 @@ static func get_transform_determinant(transform: PackedFloat64Array) -> float:
 	return xx * yy - xy * yx
 
 # Transform2D.affine_inverse()
-static func get_transform_affine_inverse(
-transform: PackedFloat64Array) -> PackedFloat64Array:
+static func get_transform_affine_inverse(transform: PackedFloat64Array) -> PackedFloat64Array:
 	var det := get_transform_determinant(transform)
 	if det == 0:
 		return PackedFloat64Array([NAN, NAN, NAN, NAN, NAN, NAN])
@@ -55,8 +52,7 @@ transform: PackedFloat64Array) -> PackedFloat64Array:
 	return PackedFloat64Array([new_xx, new_xy, new_yx, new_yy, new_ox, new_oy])
 
 # Transform2D * Transform2D
-static func transforms_mult(a: PackedFloat64Array,
-b: PackedFloat64Array) -> PackedFloat64Array:
+static func transforms_mult(a: PackedFloat64Array, b: PackedFloat64Array) -> PackedFloat64Array:
 	var a_xx := a[0]
 	var a_xy := a[1]
 	var a_yx := a[2]
@@ -79,11 +75,11 @@ b: PackedFloat64Array) -> PackedFloat64Array:
 	var oy := a_xy * b_ox + a_yy * b_oy + a_oy
 	return PackedFloat64Array([xx, xy, yx, yy, ox, oy])
 
-# Vector2.project()
+# Vector2.project(Vector2)
 static func vector_project(a: PackedFloat64Array, b: PackedFloat64Array) -> PackedFloat64Array:
-		var scalar: float = (dot(a, b) / dot(b, b))
-		return [b[0] * scalar, b[1] * scalar]
+	var scalar := dot(a, b) / dot(b, b)
+	return [b[0] * scalar, b[1] * scalar]
 
-# Vector2.dot()
+# Vector2.dot(Vector2)
 static func dot(a: PackedFloat64Array, b: PackedFloat64Array) -> float:
 	return a[0] * b[0] + a[1] * b[1]

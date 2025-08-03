@@ -119,8 +119,7 @@ func update_translations() -> void:
 		if not (file.get_extension() == "po" or file == "GodSVG.pot"):
 			continue
 		
-		var args := PackedStringArray(["--update", "--quiet", "--verbose", "--backup=off",
-				folder_location.path_join(file), pot_location])
+		var args := PackedStringArray(["--update", "--quiet", "--verbose", "--backup=off", folder_location.path_join(file), pot_location])
 		var output: Array = []
 		var result := OS.execute("msgmerge", args, output, true)
 		if not result == -1:

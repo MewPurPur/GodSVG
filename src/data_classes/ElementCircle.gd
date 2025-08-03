@@ -25,8 +25,7 @@ func get_replacement(new_element: String) -> Element:
 			element.set_attribute("rx", get_attribute_value("r"))
 			element.set_attribute("ry", get_attribute_value("r"))
 		"rect":
-			dropped_attributes = PackedStringArray(["r", "cx", "cy", "rx", "ry",
-					"width", "height"])
+			dropped_attributes = PackedStringArray(["r", "cx", "cy", "rx", "ry", "width", "height"])
 			element.set_attribute("x", get_attribute_num("cx") - get_attribute_num("r"))
 			element.set_attribute("y", get_attribute_num("cy") - get_attribute_num("r"))
 			element.set_attribute("width", get_attribute_num("r") * 2)
@@ -36,12 +35,9 @@ func get_replacement(new_element: String) -> Element:
 		"path":
 			dropped_attributes = PackedStringArray(["r", "cx", "cy", "d"])
 			var commands: Array[PathCommand] = []
-			commands.append(PathCommand.MoveCommand.new(get_attribute_num("cx"),
-					get_attribute_num("cy") - get_attribute_num("r"), true))
-			commands.append(PathCommand.EllipticalArcCommand.new(get_attribute_num("r"),
-					get_attribute_num("r"), 0, 0, 0, 0, get_attribute_num("r") * 2, true))
-			commands.append(PathCommand.EllipticalArcCommand.new(get_attribute_num("r"),
-					get_attribute_num("r"), 0, 0, 0, 0, -get_attribute_num("r") * 2, true))
+			commands.append(PathCommand.MoveCommand.new(get_attribute_num("cx"), get_attribute_num("cy") - get_attribute_num("r"), true))
+			commands.append(PathCommand.EllipticalArcCommand.new(get_attribute_num("r"), get_attribute_num("r"), 0, 0, 0, 0, get_attribute_num("r") * 2, true))
+			commands.append(PathCommand.EllipticalArcCommand.new(get_attribute_num("r"), get_attribute_num("r"), 0, 0, 0, 0, -get_attribute_num("r") * 2, true))
 			commands.append(PathCommand.CloseCommand.new(true))
 			element.set_attribute("d", commands)
 	apply_to(element, dropped_attributes)
@@ -57,5 +53,4 @@ func _get_own_default(attribute_name: String) -> String:
 
 func get_bounding_box() -> Rect2:
 	var d := get_attribute_num("r") * 2.0
-	return Rect2(get_attribute_num("cx") - get_attribute_num("r"),
-			get_attribute_num("cy") - get_attribute_num("r"), d, d)
+	return Rect2(get_attribute_num("cx") - get_attribute_num("r"), get_attribute_num("cy") - get_attribute_num("r"), d, d)

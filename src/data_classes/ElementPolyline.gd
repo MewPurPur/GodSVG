@@ -53,8 +53,7 @@ func get_replacement(new_element: String) -> Element:
 	var dropped_attributes: PackedStringArray
 	match new_element:
 		"line":
-			dropped_attributes = PackedStringArray(["points", "rx", "ry", "cx", "cy",
-					"width", "height", "fill", "fill-opacity", "stroke-linejoin"])
+			dropped_attributes = PackedStringArray(["points", "rx", "ry", "cx", "cy", "width", "height", "fill", "fill-opacity", "stroke-linejoin"])
 			simplify()
 			var list := get_attribute_list("points")
 			element.set_attribute("x1", list[0])
@@ -83,9 +82,8 @@ func simplify() -> void:
 	@warning_ignore("integer_division")
 	for idx in range(1, list.size() / 2 - 1):
 		var prev_point := Vector2(list[idx * 2 - 2], list[idx * 2 - 1])
-		if not is_equal_approx(prev_point.angle_to_point(
-		Vector2(list[idx * 2], list[idx * 2 + 1])), prev_point.angle_to_point(
-		Vector2(list[idx * 2 + 2], list[idx * 2 + 3]))):
+		if not is_equal_approx(prev_point.angle_to_point(Vector2(list[idx * 2], list[idx * 2 + 1])),
+		prev_point.angle_to_point(Vector2(list[idx * 2 + 2], list[idx * 2 + 3]))):
 			new_list_points.append(list[idx * 2])
 			new_list_points.append(list[idx * 2 + 1])
 	new_list_points.append(list[-2])
