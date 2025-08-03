@@ -160,16 +160,13 @@ func _draw() -> void:
 	var horizontal_margin_width := sb.content_margin_left + sb.content_margin_right
 	if not active:
 		sb.draw(ci, Rect2(Vector2.ZERO, size))
-		draw_line(Vector2(size.x - BUTTON_WIDTH, 0),
-				Vector2(size.x - BUTTON_WIDTH, size.y), sb.border_color, 2)
+		draw_line(Vector2(size.x - BUTTON_WIDTH, 0), Vector2(size.x - BUTTON_WIDTH, size.y), sb.border_color, 2)
 		# The default overrun behavior couldn't be changed for the simplest draw methods.
 		var text_obj := TextLine.new()
 		text_obj.text_overrun_behavior = TextServer.OVERRUN_TRIM_CHAR
 		text_obj.width = size.x - BUTTON_WIDTH - horizontal_margin_width
-		text_obj.add_string(placeholder_text if text.is_empty() else text, _get_font(),
-				get_theme_font_size("font_size", "LineEdit"))
-		text_obj.draw(ci, Vector2(5, 2), get_theme_color("font_placeholder_color",
-				"LineEdit") if text.is_empty() else _get_font_color())
+		text_obj.add_string(placeholder_text if text.is_empty() else text, _get_font(), get_theme_font_size("font_size", "LineEdit"))
+		text_obj.draw(ci, Vector2(5, 2), get_theme_color("font_placeholder_color", "LineEdit") if text.is_empty() else _get_font_color())
 	
 	if is_instance_valid(icon):
 		var icon_side := BUTTON_WIDTH - horizontal_margin_width + 2

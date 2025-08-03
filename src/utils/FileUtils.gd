@@ -19,8 +19,7 @@ static func reset_svg() -> void:
 
 static func apply_svgs_from_paths(paths: PackedStringArray,
 show_incorrect_extension_errors := true) -> void:
-	_start_file_import_process(paths, _apply_svg, PackedStringArray(["svg"]),
-			show_incorrect_extension_errors)
+	_start_file_import_process(paths, _apply_svg, PackedStringArray(["svg"]), show_incorrect_extension_errors)
 
 static func compare_svg_to_disk_contents(idx := -1) -> FileState:
 	var tab := Configs.savedata.get_active_tab() if idx == -1 else Configs.savedata.get_tab(idx)
@@ -109,11 +108,12 @@ static func open_xml_export_dialog(xml: String, file_name: String) -> void:
 					PackedStringArray(["*.xml"]), native_callback)
 		else:
 			var export_dialog := GoodFileDialogScene.instantiate()
-			export_dialog.setup(Configs.savedata.get_last_dir(),
-					file_name, GoodFileDialog.FileMode.SAVE, PackedStringArray(["xml"]))
+			export_dialog.setup(Configs.savedata.get_last_dir(), file_name, GoodFileDialog.FileMode.SAVE, PackedStringArray(["xml"]))
 			HandlerGUI.add_menu(export_dialog)
 			export_dialog.files_selected.connect(
-					func(paths: PackedStringArray) -> void: _finish_xml_export(paths[0], xml))
+				func(paths: PackedStringArray) -> void:
+					_finish_xml_export(paths[0], xml)
+			)
 
 static func _finish_export(file_path: String, export_data: ImageExportData) -> void:
 	if file_path.get_extension().is_empty():
@@ -166,16 +166,14 @@ static func open_svg_import_dialog() -> void:
 	_open_import_dialog(PackedStringArray(["svg"]), _apply_svg, true)
 
 static func open_image_import_dialog() -> void:
-	_open_import_dialog(PackedStringArray(["png", "jpg", "jpeg", "webp", "svg"]),
-			_finish_reference_load)
+	_open_import_dialog(PackedStringArray(["png", "jpg", "jpeg", "webp", "svg"]), _finish_reference_load)
 
 static func open_xml_import_dialog(completion_callback: Callable) -> void:
 	_open_import_dialog(PackedStringArray(["xml"]), completion_callback)
 
 
 # On web, the completion callback can't use the full file path.
-static func _open_import_dialog(extensions: PackedStringArray,
-completion_callback: Callable, multi_select := false) -> void:
+static func _open_import_dialog(extensions: PackedStringArray, completion_callback: Callable, multi_select := false) -> void:
 	OS.request_permissions()
 	var extensions_with_dots := PackedStringArray()
 	for extension in extensions:
@@ -207,9 +205,8 @@ completion_callback: Callable, multi_select := false) -> void:
 			)
 
 # Preprocessing step where all files with wrong extensions are discarded.
-static func _start_file_import_process(file_paths: PackedStringArray,
-completion_callback: Callable, allowed_extensions: PackedStringArray,
-show_incorrect_extension_errors := true) -> void:
+static func _start_file_import_process(file_paths: PackedStringArray, completion_callback: Callable,
+allowed_extensions: PackedStringArray, show_incorrect_extension_errors := true) -> void:
 	if not show_incorrect_extension_errors:
 		for i in range(file_paths.size() - 1, -1, -1):
 			if not file_paths[i].get_extension() in allowed_extensions:
@@ -251,8 +248,7 @@ show_incorrect_extension_errors := true) -> void:
 	
 	proceed_callback.call()
 
-static func _file_import_proceed(file_paths: PackedStringArray,
-completion_callback: Callable, show_file_missing_alert := true) -> void:
+static func _file_import_proceed(file_paths: PackedStringArray, completion_callback: Callable, show_file_missing_alert := true) -> void:
 	var file_path := file_paths[0]
 	var preserved_file_paths := file_paths.duplicate()
 	file_paths.remove_at(0)
@@ -312,8 +308,7 @@ completion_callback: Callable, show_file_missing_alert := true) -> void:
 		_: completion_callback.call(file.get_buffer(file.get_length()), file_path)
 
 
-static func _apply_svg(data: Variant, file_path: String, proceed_callback := Callable(),
-is_last_file := true) -> void:
+static func _apply_svg(data: Variant, file_path: String, proceed_callback := Callable(), is_last_file := true) -> void:
 	var existing_tab_idx := -1
 	for tab_idx in Configs.savedata.get_tab_count():
 		if Configs.savedata.get_tab(tab_idx).svg_file_path == file_path:
@@ -375,8 +370,7 @@ static func _on_import_panel_accepted_empty_tab_scenario(svg_text: String) -> vo
 static func _on_import_panel_canceled_transient_scenario() -> void:
 	State.transient_tab_path = ""
 
-static func _on_import_panel_accepted_transient_scenario(
-file_path: String, svg_text: String) -> void:
+static func _on_import_panel_accepted_transient_scenario(file_path: String, svg_text: String) -> void:
 	Configs.savedata.add_tab_with_path(file_path)
 	State.transient_tab_path = ""
 	Configs.savedata.get_active_tab().setup_svg_text(svg_text)

@@ -56,8 +56,7 @@ func get_replacement(new_element: String) -> Element:
 	var dropped_attributes: PackedStringArray
 	match new_element:
 		"rect":
-			dropped_attributes = PackedStringArray(["points", "rx", "ry", "cx", "cy",
-					"width", "height"])
+			dropped_attributes = PackedStringArray(["points", "rx", "ry", "cx", "cy", "width", "height"])
 			simplify()
 			var list: PackedFloat64Array = get_attribute_list("points")
 			var x1 := list[0]

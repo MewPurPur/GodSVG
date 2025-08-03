@@ -81,8 +81,7 @@ static func text_to_list(string: String) -> PackedFloat64Array:
 	
 	return nums_parsed
 
-func list_to_text(list: PackedFloat64Array,
-formatter := Configs.savedata.editor_formatter) -> String:
+func list_to_text(list: PackedFloat64Array, formatter := Configs.savedata.editor_formatter) -> String:
 	var params := PackedStringArray()
 	for element in list:
 		# It's fine to use this parser, AttributeList is just a list of numbers.

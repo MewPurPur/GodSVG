@@ -49,8 +49,7 @@ func image_to_buffer(image: Image) -> PackedByteArray:
 func generate_image() -> Image:
 	var export_svg := State.root_element.duplicate()
 	if export_svg.get_attribute_list("viewBox").is_empty():
-		export_svg.set_attribute("viewBox",
-				PackedFloat64Array([0.0, 0.0, export_svg.width, export_svg.height]))
+		export_svg.set_attribute("viewBox", PackedFloat64Array([0.0, 0.0, export_svg.width, export_svg.height]))
 	# First ensure there are dimensions.
 	# Otherwise changing one side could influence the other.
 	export_svg.set_attribute("width", export_svg.width)

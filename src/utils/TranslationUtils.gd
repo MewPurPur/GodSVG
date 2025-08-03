@@ -89,8 +89,7 @@ static func get_action_description(action_name: String, for_button := false) -> 
 		_: return action_name
 
 
-static func get_path_command_description(command_char: String,
-omit_relativity := false) -> String:
+static func get_path_command_description(command_char: String, omit_relativity := false) -> String:
 	var description: String
 	match command_char:
 		"M", "m": description = Translator.translate("Move to")
@@ -125,27 +124,21 @@ static func get_extension_alert_text(allowed_extensions: PackedStringArray) -> S
 	for i in allowed_extensions.size():
 		allowed_extensions[i] = get_extension_readable_name(allowed_extensions[i])
 	var extension_list := ", ".join(allowed_extensions)
-	return Translator.translate(
-			"Only {extension_list} files are supported for this operation.").format(
-			{"extension_list": extension_list})
+	return Translator.translate("Only {extension_list} files are supported for this operation.").format({"extension_list": extension_list})
 
-static func get_file_dialog_select_mode_title_text(multi_select: bool,
-extensions: PackedStringArray) -> String:
+static func get_file_dialog_select_mode_title_text(multi_select: bool, extensions: PackedStringArray) -> String:
 	if multi_select:
-		return Translator.translate("Select {format} files").format(
-				{"format": get_extension_readable_name("svg")})
+		return Translator.translate("Select {format} files").format({"format": get_extension_readable_name("svg")})
 	else:
 		if extensions.size() > 1:
 			# Multiple formats currently only show up for reference images.
 			return Translator.translate("Select an image")
 		else:
 			# "an" because this can currently only show for SVG and XML files.
-			return Translator.translate("Select an {format} file").format(
-					{"format": get_extension_readable_name(extensions[0])})
+			return Translator.translate("Select an {format} file").format({"format": get_extension_readable_name(extensions[0])})
 
 static func get_file_dialog_save_mode_title_text(extension: String) -> String:
-	return Translator.translate("Save the {format} file").format(
-			{"format": get_extension_readable_name(extension)})
+	return Translator.translate("Save the {format} file").format({"format": get_extension_readable_name(extension)})
 
 static func get_extension_readable_name(extension: String) -> String:
 	match extension:

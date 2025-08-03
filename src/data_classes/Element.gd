@@ -313,8 +313,7 @@ func get_precise_transform() -> PackedFloat64Array:
 	if is_parent_g():
 		result = Utils64Bit.transforms_mult(result, parent.get_precise_transform())
 	if has_attribute("transform"):
-		result = Utils64Bit.transforms_mult(result,
-				get_attribute_final_precise_transform("transform"))
+		result = Utils64Bit.transforms_mult(result, get_attribute_final_precise_transform("transform"))
 	return result
 
 func get_transform() -> Transform2D:

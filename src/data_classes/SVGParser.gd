@@ -34,8 +34,7 @@ static func text_check_is_root_empty(text: String) -> bool:
 	return false
 
 # For rendering only a section of the SVG.
-static func root_cutout_to_text(root_element: ElementRoot, custom_width: float,
-custom_height: float, custom_viewbox: Rect2) -> String:
+static func root_cutout_to_text(root_element: ElementRoot, custom_width: float, custom_height: float, custom_viewbox: Rect2) -> String:
 	var new_root_element: ElementRoot = root_element.duplicate(false)
 	new_root_element.set_attribute("viewBox", ListParser.rect_to_list(custom_viewbox))
 	new_root_element.set_attribute("width", custom_width)
@@ -43,8 +42,7 @@ custom_height: float, custom_viewbox: Rect2) -> String:
 	var text := _xnode_to_text(new_root_element, Configs.savedata.editor_formatter)
 	text = text.left(maxi(text.find("/>"), text.find("</svg>"))) + ">"
 	for child_idx in root_element.get_child_count():
-		text += _xnode_to_text(root_element.get_xnode(
-				PackedInt32Array([child_idx])), Configs.savedata.editor_formatter, true)
+		text += _xnode_to_text(root_element.get_xnode(PackedInt32Array([child_idx])), Configs.savedata.editor_formatter, true)
 	return text + "</svg>"
 
 

@@ -462,7 +462,7 @@ func get_drop_index_at(pos: Vector2) -> int:
 	var scroll_backwards_button_width := get_scroll_backwards_area_rect().size.x
 	var scroll_forwards_button_width := get_scroll_forwards_area_rect().size.x
 	
-	if pos.x < scroll_backwards_button_width or\ pos.x > size.x - scroll_forwards_button_width - size.y:
+	if pos.x < scroll_backwards_button_width or pos.x > size.x - scroll_forwards_button_width - size.y:
 		return -1
 	
 	var first_tab_with_area := 0
