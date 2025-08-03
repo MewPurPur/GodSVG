@@ -71,8 +71,7 @@ func _get_line_syntax_highlighting(line: int) -> Dictionary:
 					if expecting_end:
 						if c in " \t\n\r":
 							expecting_attribute_name = true
-						elif c == ">" or (c == "/" and offset < svg_text.length() - 1 and\
-						svg_text[offset + 1] == ">"):
+						elif c == ">" or (c == "/" and offset < svg_text.length() - 1 and svg_text[offset + 1] == ">"):
 							color_map[offset] = {"color": symbol_color}
 							break
 						else:
@@ -156,9 +155,7 @@ func _get_line_syntax_highlighting(line: int) -> Dictionary:
 
 # Helpers.
 func get_element_color(element_name: String) -> Color:
-	return element_color if element_name in DB.recognized_elements\
-			else unrecognized_element_color
+	return element_color if element_name in DB.recognized_elements else unrecognized_element_color
 
 func get_attribute_color(element_name: String, attribute_name: String) -> Color:
-	return attribute_color if DB.is_attribute_recognized(element_name,
-			attribute_name) else unrecognized_attribute_color
+	return attribute_color if DB.is_attribute_recognized(element_name, attribute_name) else unrecognized_attribute_color

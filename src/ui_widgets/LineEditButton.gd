@@ -173,9 +173,8 @@ func _draw() -> void:
 	
 	if is_instance_valid(icon):
 		var icon_side := BUTTON_WIDTH - horizontal_margin_width + 2
-		icon.draw_rect(ci, Rect2(size.x - (BUTTON_WIDTH + 0.5 + icon_side) / 2,
-				(size.y - icon_side) / 2, icon_side, icon_side), false,
-				get_theme_color("icon_normal_color", "LeftConnectedButton"))
+		icon.draw_rect(ci, Rect2(size.x - (BUTTON_WIDTH + 0.5 + icon_side) / 2, (size.y - icon_side) / 2,
+				icon_side, icon_side), false, get_theme_color("icon_normal_color", "LeftConnectedButton"))
 
 
 # Helpers
@@ -184,8 +183,7 @@ func _get_font() -> Font:
 	return ThemeUtils.mono_font if use_mono_font else ThemeUtils.regular_font
 
 func _get_font_color() -> Color:
-	return get_theme_color("font_color", "LineEdit") if font_color == Color.TRANSPARENT\
-			else font_color
+	return get_theme_color("font_color", "LineEdit") if font_color == Color.TRANSPARENT else font_color
 
 func draw_button_border(theme_name: String) -> void:
 	var button_outline: StyleBoxFlat = get_theme_stylebox(theme_name, "LeftConnectedButton").duplicate()

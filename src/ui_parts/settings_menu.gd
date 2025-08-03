@@ -59,8 +59,7 @@ func sync_theming() -> void:
 
 func sync_localization() -> void:
 	close_button.text = Translator.translate("Close")
-	lang_button.text = Translator.translate("Language") + ": " +\
-			TranslationUtils.get_locale_string(TranslationServer.get_locale())
+	lang_button.text = Translator.translate("Language") + ": " + TranslationUtils.get_locale_string(TranslationServer.get_locale())
 	setup_tabs()
 
 func adjust_right_margin() -> void:
@@ -139,8 +138,7 @@ func _on_language_pressed() -> void:
 		# Translation percentages.
 		if locale != "en":
 			var translation_obj := TranslationServer.get_translation_object(locale)
-			var translated_count := translation_obj.get_message_count() -\
-					translation_obj.get_translated_message_list().count("")
+			var translated_count := translation_obj.get_message_count() - translation_obj.get_translated_message_list().count("")
 			
 			btn_arr.append(ContextPopup.create_button(
 					TranslationUtils.get_locale_display(locale),

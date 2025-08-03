@@ -56,8 +56,7 @@ func _on_element_attribute_changed(attribute_changed: String) -> void:
 		set_value(element.get_attribute_value(attribute_name))
 
 func _on_element_other_attribute_changed(attribute_changed: String) -> void:
-	if (attribute_name == "fx" and attribute_changed == "cx") or\
-	(attribute_name == "fy" and attribute_changed == "cy"):
+	if (attribute_name == "fx" and attribute_changed == "cx") or (attribute_name == "fy" and attribute_changed == "cy"):
 		setup_placeholder()
 		sync()
 

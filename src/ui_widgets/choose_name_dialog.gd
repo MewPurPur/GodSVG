@@ -39,17 +39,13 @@ warning_callable := Callable()) -> void:
 func adapt_to_text(text: String) -> void:
 	var stripped_text := text.strip_edges()
 	# Set up error or warning text.
-	var error: String = error_callback.call(stripped_text) if\
-			error_callback.is_valid() else ""
-	var warning: String = warning_callback.call(stripped_text) if\
-			warning_callback.is_valid() else ""
+	var error: String = error_callback.call(stripped_text) if error_callback.is_valid() else ""
+	var warning: String = warning_callback.call(stripped_text) if warning_callback.is_valid() else ""
 	if not error.is_empty():
-		rich_text_label.add_theme_color_override("default_color",
-				Configs.savedata.basic_color_error)
+		rich_text_label.add_theme_color_override("default_color", Configs.savedata.basic_color_error)
 		rich_text_label.text = error
 	elif not warning.is_empty():
-		rich_text_label.add_theme_color_override("default_color",
-				Configs.savedata.basic_color_warning)
+		rich_text_label.add_theme_color_override("default_color", Configs.savedata.basic_color_warning)
 		rich_text_label.text = warning
 	else:
 		rich_text_label.text = ""
@@ -57,6 +53,5 @@ func adapt_to_text(text: String) -> void:
 	# Disable or enable the action button.
 	var can_do_action := not stripped_text.is_empty() and error.is_empty()
 	action_button.disabled = not can_do_action
-	action_button.mouse_default_cursor_shape = CURSOR_POINTING_HAND if\
-			can_do_action else CURSOR_ARROW
+	action_button.mouse_default_cursor_shape = CURSOR_POINTING_HAND if can_do_action else CURSOR_ARROW
 	action_button.focus_mode = FOCUS_ALL if can_do_action else FOCUS_NONE

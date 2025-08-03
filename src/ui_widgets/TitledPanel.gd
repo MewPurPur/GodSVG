@@ -23,10 +23,8 @@ func _get_minimum_size_common_logic(vertical: bool) -> Vector2:
 	var other_axis := 0 if vertical else 1
 	# The border width counts as part of both the title and the panel.
 	var output: Vector2
-	output[stack_axis] = title_minimum_size[stack_axis] + panel_minimum_size[stack_axis] +\
-			title_margin * 2 + panel_margin * 2 - border_width
-	output[other_axis] = maxf(title_minimum_size[other_axis] + title_margin * 2,
-			panel_minimum_size[other_axis] + panel_margin * 2)
+	output[stack_axis] = title_minimum_size[stack_axis] + panel_minimum_size[stack_axis] + title_margin * 2 + panel_margin * 2 - border_width
+	output[other_axis] = maxf(title_minimum_size[other_axis] + title_margin * 2, panel_minimum_size[other_axis] + panel_margin * 2)
 	return output
 
 
@@ -47,17 +45,14 @@ func _notification_common_logic(what: int, vertical: bool) -> void:
 		fit_child_in_rect(title, Rect2(Vector2(title_margin, title_margin), title_size))
 		
 		var panel_position: Vector2
-		panel_position[stack_axis] = title.size[stack_axis] + title_margin * 2 +\
-				panel_margin - border_width
+		panel_position[stack_axis] = title.size[stack_axis] + title_margin * 2 + panel_margin - border_width
 		panel_position[other_axis] = panel_margin
 		var panel_size: Vector2
-		panel_size[stack_axis] = size[stack_axis] - title_margin * 2 - panel_margin * 2 -\
-				title.size[stack_axis] + border_width
+		panel_size[stack_axis] = size[stack_axis] - title_margin * 2 - panel_margin * 2 - title.size[stack_axis] + border_width
 		panel_size[other_axis] = size[other_axis] - panel_margin * 2
 		fit_child_in_rect(panel, Rect2(panel_position, panel_size))
 	elif what == NOTIFICATION_DRAW:
-		var separator_pos: float = get_child(0).size[stack_axis] +\
-				title_margin * 2 - floor(border_width / 2.0)
+		var separator_pos: float = get_child(0).size[stack_axis] + title_margin * 2 - floor(border_width / 2.0)
 		if title_color.a > 0:
 			var title_stylebox := StyleBoxFlat.new()
 			title_stylebox.bg_color = title_color

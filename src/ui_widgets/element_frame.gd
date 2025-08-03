@@ -87,14 +87,12 @@ func _get_drag_data(_at_position: Vector2) -> Variant:
 		return null
 	
 	State.set_selection_dragged(true)
-	var data: Array[PackedInt32Array] = XIDUtils.filter_descendants(
-			State.selected_xids.duplicate(true))
+	var data: Array[PackedInt32Array] = XIDUtils.filter_descendants(State.selected_xids.duplicate(true))
 	set_drag_preview(XNodeChildrenBuilder.generate_drag_preview(data))
 	return data
 
 func _on_xnodes_dragging_state_changed() -> void:
-	modulate.a = 0.55 if (State.is_xnode_selection_dragged and\
-			element.xid in State.selected_xids) else 1.0
+	modulate.a = 0.55 if (State.is_xnode_selection_dragged and element.xid in State.selected_xids) else 1.0
 
 
 func _on_title_button_pressed() -> void:
@@ -103,15 +101,13 @@ func _on_title_button_pressed() -> void:
 	State.normal_select(element.xid)
 	var viewport := get_viewport()
 	var rect := title_bar.get_global_rect()
-	HandlerGUI.popup_under_rect_center(State.get_selection_context(
-			HandlerGUI.popup_under_rect_center.bind(rect, viewport),
+	HandlerGUI.popup_under_rect_center(State.get_selection_context(HandlerGUI.popup_under_rect_center.bind(rect, viewport),
 			Utils.LayoutPart.INSPECTOR), rect, viewport)
 
 
 func _gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion and event.button_mask == 0:
-		if State.semi_hovered_xid != element.xid and\
-		not XIDUtils.is_parent(element.xid, State.hovered_xid):
+		if State.semi_hovered_xid != element.xid and not XIDUtils.is_parent(element.xid, State.hovered_xid):
 			State.set_hovered(element.xid)
 	elif event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_LEFT:
@@ -122,8 +118,7 @@ func _gui_input(event: InputEvent) -> void:
 					State.ctrl_select(element.xid)
 				elif not element.xid in State.selected_xids:
 					State.normal_select(element.xid)
-			elif event.is_released() and not event.shift_pressed and\
-			not event.is_command_or_control_pressed() and\
+			elif event.is_released() and not event.shift_pressed and not event.is_command_or_control_pressed() and\
 			State.selected_xids.size() > 1 and element.xid in State.selected_xids:
 				State.normal_select(element.xid)
 			accept_event()
@@ -132,24 +127,21 @@ func _gui_input(event: InputEvent) -> void:
 				State.normal_select(element.xid)
 			var viewport := get_viewport()
 			var popup_pos := viewport.get_mouse_position()
-			HandlerGUI.popup_under_pos(State.get_selection_context(
-					HandlerGUI.popup_under_pos.bind(popup_pos, viewport),
+			HandlerGUI.popup_under_pos(State.get_selection_context(HandlerGUI.popup_under_pos.bind(popup_pos, viewport),
 					Utils.LayoutPart.INSPECTOR), popup_pos, viewport)
 			accept_event()
 
 func _on_mouse_entered() -> void:
 	var element_icon_size := DB.get_element_icon(element.name).get_size()
 	var half_bar_width := title_bar.size.x / 2
-	var title_width := ThemeUtils.mono_font.get_string_size(element.name,
-			HORIZONTAL_ALIGNMENT_LEFT, 180, 12).x
+	var title_width := ThemeUtils.mono_font.get_string_size(element.name, HORIZONTAL_ALIGNMENT_LEFT, 180, 12).x
 	# Add button.
 	var title_button := Button.new()
 	title_button.focus_mode = Control.FOCUS_NONE
 	title_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	title_button.mouse_filter = Control.MOUSE_FILTER_PASS
 	title_button.theme_type_variation = "FlatButton"
-	title_button.position = Vector2(half_bar_width - title_width / 2 -\
-			element_icon_size.x / 2 - 6, 0)
+	title_button.position = Vector2(half_bar_width - title_width / 2 - element_icon_size.x / 2 - 6, 0)
 	title_button.size = Vector2(title_width + 28, 20)
 	title_bar.add_child(title_button)
 	title_button.gui_input.connect(_on_title_button_gui_input)
@@ -293,18 +285,15 @@ func _on_title_bar_draw() -> void:
 	var element_icon := DB.get_element_icon(element.name)
 	var element_icon_size := element_icon.get_size()
 	var half_bar_width := title_bar.size.x / 2
-	var half_title_width := ThemeUtils.mono_font.get_string_size(element.name,
-			HORIZONTAL_ALIGNMENT_LEFT, 180, 12).x / 2
-	ThemeUtils.mono_font.draw_string(title_bar_ci, Vector2(half_bar_width -\
-			half_title_width + element_icon_size.x / 2, 15), element.name,
-			HORIZONTAL_ALIGNMENT_LEFT, 180, 12, ThemeUtils.editable_text_color)
-	element_icon.draw_rect(title_bar_ci, Rect2(Vector2(half_bar_width - half_title_width -\
-			element_icon_size.x + 6, 1).round(), element_icon_size), false, ThemeUtils.tinted_contrast_color)
+	var half_title_width := ThemeUtils.mono_font.get_string_size(element.name, HORIZONTAL_ALIGNMENT_LEFT, 180, 12).x / 2
+	ThemeUtils.mono_font.draw_string(title_bar_ci, Vector2(half_bar_width - half_title_width + element_icon_size.x / 2, 15),
+			element.name, HORIZONTAL_ALIGNMENT_LEFT, 180, 12, ThemeUtils.editable_text_color)
+	element_icon.draw_rect(title_bar_ci, Rect2(Vector2(half_bar_width - half_title_width - element_icon_size.x + 6, 1).round(), element_icon_size),
+			false, ThemeUtils.tinted_contrast_color)
 	
 	var element_warnings := element.get_config_warnings()
 	if not element_warnings.is_empty():
-		warning_icon.draw_rect(title_bar_ci, Rect2(Vector2(title_bar.size.x - 23, 2),
-				warning_icon.get_size()), false, ThemeUtils.warning_icon_color)
+		warning_icon.draw_rect(title_bar_ci, Rect2(Vector2(title_bar.size.x - 23, 2), warning_icon.get_size()), false, ThemeUtils.warning_icon_color)
 
 # Block dragging from starting when pressing the title button.
 func _on_title_button_gui_input(event: InputEvent) -> void:

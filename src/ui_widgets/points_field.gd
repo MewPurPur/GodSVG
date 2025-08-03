@@ -213,13 +213,11 @@ func _on_points_gui_input(event: InputEvent) -> void:
 					State.shift_select(element.xid, cmd_idx)
 				else:
 					State.normal_select(element.xid, cmd_idx)
-			elif event.is_released() and not event.shift_pressed and\
-			not event.is_command_or_control_pressed() and not event.double_click and\
-			State.inner_selections.size() > 1 and cmd_idx in State.inner_selections:
+			elif event.is_released() and not event.shift_pressed and not event.is_command_or_control_pressed() and\
+			not event.double_click and State.inner_selections.size() > 1 and cmd_idx in State.inner_selections:
 				State.normal_select(element.xid, cmd_idx)
 		elif event.button_index == MOUSE_BUTTON_RIGHT and event.is_pressed():
-			if State.semi_selected_xid != element.xid or\
-			not cmd_idx in State.inner_selections:
+			if State.semi_selected_xid != element.xid or not cmd_idx in State.inner_selections:
 				State.normal_select(element.xid, cmd_idx)
 			# Popup the actions.
 			var viewport := get_viewport()
@@ -263,14 +261,12 @@ func points_draw() -> void:
 
 func draw_numfield(rect: Rect2, num: float) -> void:
 	mini_line_edit_stylebox.draw(ci, rect)
-	ThemeUtils.mono_font.draw_string(ci, rect.position + Vector2(3, 13),
-			NumstringParser.basic_num_to_text(num), HORIZONTAL_ALIGNMENT_LEFT,
-			rect.size.x - 6, mini_line_edit_font_size, mini_line_edit_font_color)
+	ThemeUtils.mono_font.draw_string(ci, rect.position + Vector2(3, 13), NumstringParser.basic_num_to_text(num),
+			HORIZONTAL_ALIGNMENT_LEFT, rect.size.x - 6, mini_line_edit_font_size, mini_line_edit_font_color)
 
 
 func activate_hovered(idx: int) -> void:
-	if idx != hovered_idx and\
-	idx < element.get_attribute(attribute_name).get_list_size() / 2:
+	if idx != hovered_idx and idx < element.get_attribute(attribute_name).get_list_size() / 2:
 		activate_hovered_shared_logic(idx)
 
 func reactivate_hovered() -> void:

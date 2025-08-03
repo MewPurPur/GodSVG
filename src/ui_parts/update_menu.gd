@@ -22,15 +22,13 @@ func _ready() -> void:
 	close_button.text = Translator.translate("Close")
 	retry_button.tooltip_text = Translator.translate("Retry")
 	prereleases_button.text = Translator.translate("Show prereleases")
-	current_version_label.text = Translator.translate("Current Version") + ": " +\
-			current_version
+	current_version_label.text = Translator.translate("Current Version") + ": " + current_version
 	request()
 
 func request() -> void:
 	retry_button.hide()
 	status_label.text = Translator.translate("Retrieving information...")
-	var err := http.request("https://api.github.com/repos/MewPurPur/GodSVG/releases",
-			["User-Agent: MewPurPur/GodSVG"])
+	var err := http.request("https://api.github.com/repos/MewPurPur/GodSVG/releases", ["User-Agent: MewPurPur/GodSVG"])
 	if err != OK:
 		display_error_message(error_string(err))
 

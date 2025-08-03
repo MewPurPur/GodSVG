@@ -61,8 +61,7 @@ func _draw() -> void:
 			if current_tab.marked_unsaved:
 				current_tab_name = "* " + current_tab_name
 		
-		if (has_transient_tab and drawing_transient_tab) or\
-		(not has_transient_tab and tab_index == Configs.savedata.get_active_tab_index()):
+		if (has_transient_tab and drawing_transient_tab) or (not has_transient_tab and tab_index == Configs.savedata.get_active_tab_index()):
 			draw_style_box(get_theme_stylebox("tab_selected", "TabContainer"), rect)
 			var text_line_width := rect.size.x - size.y
 			if text_line_width > 0:
@@ -70,15 +69,13 @@ func _draw() -> void:
 				text_line.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 				text_line.add_string(current_tab_name, ThemeUtils.regular_font, 13)
 				text_line.width = text_line_width - 2
-				text_line.draw(ci, rect.position + Vector2(4, 3),
-						get_theme_color("font_selected_color", "TabContainer"))
+				text_line.draw(ci, rect.position + Vector2(4, 3), get_theme_color("font_selected_color", "TabContainer"))
 			if not drawing_transient_tab:
 				var close_rect := get_close_button_rect()
 				if close_rect.has_area():
 					var close_icon_size := close_icon.get_size()
-					draw_texture_rect(close_icon, Rect2(close_rect.position +\
-							(close_rect.size - close_icon_size) / 2.0, close_icon_size), false,
-							ThemeUtils.tinted_contrast_color)
+					draw_texture_rect(close_icon, Rect2(close_rect.position + (close_rect.size - close_icon_size) / 2.0, close_icon_size),
+							false, ThemeUtils.tinted_contrast_color)
 		else:
 			var is_hovered := rect.has_point(mouse_pos)
 			var tab_style := "tab_hovered" if is_hovered else "tab_unselected"
@@ -86,8 +83,7 @@ func _draw() -> void:
 			
 			var text_line_width := rect.size.x - 8
 			if text_line_width > 0:
-				var text_color := get_theme_color("font_hovered_color" if is_hovered else\
-						"font_unselected_color", "TabContainer")
+				var text_color := get_theme_color("font_hovered_color" if is_hovered else "font_unselected_color", "TabContainer")
 				
 				var text_line := TextLine.new()
 				text_line.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
@@ -97,9 +93,8 @@ func _draw() -> void:
 	
 	var add_button_rect := get_add_button_rect()
 	var plus_icon_size := plus_icon.get_size()
-	draw_texture_rect(plus_icon, Rect2(add_button_rect.position +\
-			(add_button_rect.size - plus_icon_size) / 2.0, plus_icon_size), false,
-			ThemeUtils.tinted_contrast_color)
+	draw_texture_rect(plus_icon, Rect2(add_button_rect.position + (add_button_rect.size - plus_icon_size) / 2.0, plus_icon_size),
+			false, ThemeUtils.tinted_contrast_color)
 	
 	var scroll_backwards_rect := get_scroll_backwards_area_rect()
 	if scroll_backwards_rect.has_area():
@@ -109,15 +104,11 @@ func _draw() -> void:
 			icon_modulate = get_theme_color("icon_disabled_color", "Button")
 		else:
 			var line_x := scroll_backwards_rect.end.x + 1
-			draw_line(Vector2(line_x, 0), Vector2(line_x, size.y),
-					ThemeUtils.basic_panel_border_color)
+			draw_line(Vector2(line_x, 0), Vector2(line_x, size.y), ThemeUtils.basic_panel_border_color)
 			if scroll_backwards_rect.has_point(mouse_pos):
-				var stylebox_theme := "pressed" if\
-						Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT) else "hover"
-				get_theme_stylebox(stylebox_theme, "FlatButton").draw(ci,
-						scroll_backwards_rect)
-		draw_texture_rect(scroll_backwards_icon, Rect2(scroll_backwards_rect.position +\
-				(scroll_backwards_rect.size - scroll_backwards_icon_size) / 2.0,
+				var stylebox_theme := "pressed" if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT) else "hover"
+				get_theme_stylebox(stylebox_theme, "FlatButton").draw(ci, scroll_backwards_rect)
+		draw_texture_rect(scroll_backwards_icon, Rect2(scroll_backwards_rect.position + (scroll_backwards_rect.size - scroll_backwards_icon_size) / 2.0,
 				scroll_backwards_icon_size), false, icon_modulate)
 	
 	var scroll_forwards_rect := get_scroll_forwards_area_rect()
@@ -131,11 +122,9 @@ func _draw() -> void:
 			draw_line(Vector2(line_x, 0), Vector2(line_x, size.y),
 					ThemeUtils.basic_panel_border_color)
 			if scroll_forwards_rect.has_point(mouse_pos):
-				var stylebox_theme := "pressed" if\
-						Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT) else "hover"
+				var stylebox_theme := "pressed" if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT) else "hover"
 				get_theme_stylebox(stylebox_theme, "FlatButton").draw(ci, scroll_forwards_rect)
-		draw_texture_rect(scroll_forwards_icon, Rect2(scroll_forwards_rect.position +\
-				(scroll_forwards_rect.size - scroll_forwards_icon_size) / 2.0,
+		draw_texture_rect(scroll_forwards_icon, Rect2(scroll_forwards_rect.position + (scroll_forwards_rect.size - scroll_forwards_icon_size) / 2.0,
 				scroll_forwards_icon_size), false, icon_modulate)
 	
 	if proposed_drop_idx != -1:
@@ -172,17 +161,13 @@ func _gui_input(event: InputEvent) -> void:
 						Configs.savedata.set_active_tab_index.call_deferred(hovered_idx)
 				if event.button_index == MOUSE_BUTTON_LEFT:
 					var scroll_backwards_area_rect := get_scroll_backwards_area_rect()
-					if scroll_backwards_area_rect.has_area() and\
-					scroll_backwards_area_rect.has_point(event.position) and\
-					not is_scroll_backwards_disabled():
+					if scroll_backwards_area_rect.has_area() and scroll_backwards_area_rect.has_point(event.position) and not is_scroll_backwards_disabled():
 						scrolling_backwards = true
 						set_process(true)
 						return
 					
 					var scroll_forwards_area_rect := get_scroll_forwards_area_rect()
-					if scroll_forwards_area_rect.has_area() and\
-					scroll_forwards_area_rect.has_point(event.position) and\
-					not is_scroll_forwards_disabled():
+					if scroll_forwards_area_rect.has_area() and scroll_forwards_area_rect.has_point(event.position) and not is_scroll_forwards_disabled():
 						scrolling_forwards = true
 						set_process(true)
 					return
@@ -190,8 +175,7 @@ func _gui_input(event: InputEvent) -> void:
 				var btn_arr: Array[Button] = []
 				
 				if hovered_idx == -1:
-					if get_add_button_rect().has_point(event.position) or\
-					get_scroll_forwards_area_rect().has_point(event.position) or\
+					if get_add_button_rect().has_point(event.position) or get_scroll_forwards_area_rect().has_point(event.position) or\
 					get_scroll_backwards_area_rect().has_point(event.position):
 						return
 					btn_arr.append(ContextPopup.create_shortcut_button("new_tab"))
@@ -255,15 +239,13 @@ func _process(_delta: float) -> void:
 	var mouse_pos := get_local_mouse_position()
 	var scroll_forwards_area_rect := get_scroll_forwards_area_rect()
 	if ((scrolling_forwards and scroll_forwards_area_rect.has_point(mouse_pos)) or\
-	(mouse_pos.x > size.x - size.y - scroll_forwards_area_rect.size.x)) and\
-	scroll_forwards_area_rect.has_area():
+	(mouse_pos.x > size.x - size.y - scroll_forwards_area_rect.size.x)) and scroll_forwards_area_rect.has_area():
 		scroll_forwards()
 		return
 	
 	var scroll_backwards_area_rect := get_scroll_backwards_area_rect()
 	if ((scrolling_backwards and scroll_backwards_area_rect.has_point(mouse_pos)) or\
-	(mouse_pos.x < scroll_backwards_area_rect.size.x)) and\
-	scroll_backwards_area_rect.has_area():
+	(mouse_pos.x < scroll_backwards_area_rect.size.x)) and scroll_backwards_area_rect.has_area():
 		scroll_backwards()
 		return
 
@@ -288,11 +270,9 @@ func scroll_forwards(factor := 1.0) -> void:
 	set_scroll(current_scroll + SCROLL_SPEED * factor)
 
 func scroll_to_active() -> void:
-	var idx := Configs.savedata.get_active_tab_index() if\
-			State.transient_tab_path.is_empty() else Configs.savedata.get_tab_count()
+	var idx := Configs.savedata.get_active_tab_index() if State.transient_tab_path.is_empty() else Configs.savedata.get_tab_count()
 	set_scroll(clampf(current_scroll, MIN_TAB_WIDTH * (idx + 1) - size.x + size.y +\
-			get_scroll_forwards_area_rect().size.x + get_scroll_backwards_area_rect().size.x,
-			MIN_TAB_WIDTH * idx))
+			get_scroll_forwards_area_rect().size.x + get_scroll_backwards_area_rect().size.x, MIN_TAB_WIDTH * idx))
 
 func set_scroll(new_value: float) -> void:
 	if get_scroll_limit() < 0:
@@ -318,8 +298,7 @@ func get_tab_rect(idx: int) -> Rect2:
 	var left_limit := scroll_backwards_button_width
 	var right_limit := size.x - size.y - scroll_forwards_button_width
 	
-	var tab_width := clampf((size.x - size.y - scroll_backwards_button_width -\
-			scroll_forwards_button_width) / get_proper_tab_count(),
+	var tab_width := clampf((size.x - size.y - scroll_backwards_button_width - scroll_forwards_button_width) / get_proper_tab_count(),
 			MIN_TAB_WIDTH, DEFAULT_TAB_WIDTH)
 	var unclamped_tab_start := tab_width * idx - current_scroll + left_limit
 	var tab_start := clampf(unclamped_tab_start, left_limit, right_limit)
@@ -330,12 +309,10 @@ func get_tab_rect(idx: int) -> Rect2:
 	return Rect2(tab_start, 0, tab_end - tab_start, size.y)
 
 func get_close_button_rect() -> Rect2:
-	var tab_rect := get_tab_rect(Configs.savedata.get_active_tab_index() if\
-			State.transient_tab_path.is_empty() else Configs.savedata.get_tab_count())
+	var tab_rect := get_tab_rect(Configs.savedata.get_active_tab_index() if State.transient_tab_path.is_empty() else Configs.savedata.get_tab_count())
 	var side := size.y - CLOSE_BUTTON_MARGIN * 2
 	var left_coords := tab_rect.position.x + tab_rect.size.x - CLOSE_BUTTON_MARGIN - side
-	if left_coords < get_scroll_backwards_area_rect().size.x or\
-	tab_rect.size.x < size.y - CLOSE_BUTTON_MARGIN:
+	if left_coords < get_scroll_backwards_area_rect().size.x or tab_rect.size.x < size.y - CLOSE_BUTTON_MARGIN:
 		return Rect2()
 	return Rect2(left_coords, CLOSE_BUTTON_MARGIN, side, side)
 
@@ -364,8 +341,7 @@ func get_scroll_limit() -> float:
 	var scroll_backwards_button_width := get_scroll_backwards_area_rect().size.x
 	var scroll_forwards_button_width := get_scroll_forwards_area_rect().size.x
 	
-	var available_area := size.x - size.y - scroll_backwards_button_width -\
-			scroll_forwards_button_width
+	var available_area := size.x - size.y - scroll_backwards_button_width - scroll_forwards_button_width
 	return clampf(available_area / get_proper_tab_count(),
 			MIN_TAB_WIDTH, DEFAULT_TAB_WIDTH) * get_proper_tab_count() - available_area
 
@@ -438,12 +414,10 @@ func _make_custom_tooltip(for_text: String) -> Object:
 	
 	var path := hovered_tab.get_presented_svg_file_path()
 	var label := Label.new()
-	label.add_theme_font_override("font", ThemeUtils.mono_font if is_saved\
-			else ThemeUtils.regular_font)
+	label.add_theme_font_override("font", ThemeUtils.mono_font if is_saved else ThemeUtils.regular_font)
 	label.add_theme_font_size_override("font_size", 12)
 	label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	label.text = path if is_saved else\
-			Translator.translate("This SVG is not bound to a file location yet.")
+	label.text = path if is_saved else Translator.translate("This SVG is not bound to a file location yet.")
 	Utils.set_max_text_width(label, 192.0, 4.0)
 	
 	# If the tab is active or empty, no need for an SVG preview.
@@ -453,12 +427,9 @@ func _make_custom_tooltip(for_text: String) -> Object:
 	var margin_container := MarginContainer.new()
 	var tooltip_panel_stylebox := get_theme_stylebox("panel", "TooltipPanel")
 	margin_container.begin_bulk_theme_override()
-	margin_container.add_theme_constant_override("margin_top",
-			8 - int(tooltip_panel_stylebox.content_margin_top))
-	margin_container.add_theme_constant_override("margin_bottom",
-			8 - int(tooltip_panel_stylebox.content_margin_bottom))
-	margin_container.add_theme_constant_override("margin_left",
-			8 - int(tooltip_panel_stylebox.content_margin_left))
+	margin_container.add_theme_constant_override("margin_top", 8 - int(tooltip_panel_stylebox.content_margin_top))
+	margin_container.add_theme_constant_override("margin_bottom", 8 - int(tooltip_panel_stylebox.content_margin_bottom))
+	margin_container.add_theme_constant_override("margin_left", 8 - int(tooltip_panel_stylebox.content_margin_left))
 	margin_container.end_bulk_theme_override()
 	var hbox := HBoxContainer.new()
 	hbox.add_theme_constant_override("separation", 8)
@@ -466,8 +437,7 @@ func _make_custom_tooltip(for_text: String) -> Object:
 	hbox.add_child(preview_rect)
 	preview_rect.custom_minimum_size = Vector2(96, 96)
 	preview_rect.size = Vector2.ZERO
-	preview_rect.setup_svg_without_dimensions(FileAccess.get_file_as_string(
-			hovered_tab.get_edited_file_path()))
+	preview_rect.setup_svg_without_dimensions(FileAccess.get_file_as_string(hovered_tab.get_edited_file_path()))
 	preview_rect.shrink_to_fit(16, 16)
 	hbox.add_child(label)
 	margin_container.add_child(hbox)
@@ -492,8 +462,7 @@ func get_drop_index_at(pos: Vector2) -> int:
 	var scroll_backwards_button_width := get_scroll_backwards_area_rect().size.x
 	var scroll_forwards_button_width := get_scroll_forwards_area_rect().size.x
 	
-	if pos.x < scroll_backwards_button_width or\
-	pos.x > size.x - scroll_forwards_button_width - size.y:
+	if pos.x < scroll_backwards_button_width or\ pos.x > size.x - scroll_forwards_button_width - size.y:
 		return -1
 	
 	var first_tab_with_area := 0
@@ -502,14 +471,12 @@ func get_drop_index_at(pos: Vector2) -> int:
 			first_tab_with_area = idx
 			break
 	
-	var tab_width := clampf((size.x - size.y - scroll_backwards_button_width -\
-			scroll_forwards_button_width) / get_proper_tab_count(),
+	var tab_width := clampf((size.x - size.y - scroll_backwards_button_width - scroll_forwards_button_width) / get_proper_tab_count(),
 			MIN_TAB_WIDTH, DEFAULT_TAB_WIDTH)
 	
 	for idx in range(first_tab_with_area, Configs.savedata.get_tab_count()):
 		var tab_rect := get_tab_rect(idx)
-		if not tab_rect.has_area() or tab_width * (idx + 0.5) - current_scroll +\
-		scroll_backwards_button_width > pos.x:
+		if not tab_rect.has_area() or tab_width * (idx + 0.5) - current_scroll + scroll_backwards_button_width > pos.x:
 			return idx
 	return Configs.savedata.get_tab_count()
 
@@ -523,8 +490,7 @@ func _get_drag_data(at_position: Vector2) -> Variant:
 	var preview := Panel.new()
 	preview.modulate = Color(1, 1, 1, 0.85)
 	preview.custom_minimum_size = Vector2(tab_width, size.y)
-	preview.add_theme_stylebox_override("panel",
-			get_theme_stylebox("tab_selected", "TabContainer"))
+	preview.add_theme_stylebox_override("panel", get_theme_stylebox("tab_selected", "TabContainer"))
 	var label := Label.new()
 	label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	label.text = Configs.savedata.get_active_tab().presented_name

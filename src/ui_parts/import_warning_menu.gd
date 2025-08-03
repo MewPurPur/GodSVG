@@ -71,13 +71,11 @@ func get_svg_warnings(root_element: ElementRoot) -> PackedStringArray:
 				unrecognized_elements.append(element.name)
 		else:
 			for attribute in element.get_all_attributes():
-				if not DB.is_attribute_recognized(element.name, attribute.name) and\
-				not attribute.name in unrecognized_attributes:
+				if not DB.is_attribute_recognized(element.name, attribute.name) and not attribute.name in unrecognized_attributes:
 					unrecognized_attributes.append(attribute.name)
 	var warnings := PackedStringArray()
 	for element in unrecognized_elements:
 		warnings.append("%s: %s" % [Translator.translate("Unrecognized element"), element])
 	for attribute in unrecognized_attributes:
-		warnings.append("%s: %s" % [Translator.translate("Unrecognized attribute"),
-				attribute])
+		warnings.append("%s: %s" % [Translator.translate("Unrecognized attribute"), attribute])
 	return warnings

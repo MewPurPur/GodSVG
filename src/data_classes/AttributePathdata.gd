@@ -36,10 +36,8 @@ func parse_properties() -> void:
 		
 		if command is PathCommand.MoveCommand:
 			subpath_start_indices.append(idx)
-			curr_subpath_start_x = command.start_x + command.x if\
-					command.relative else command.x
-			curr_subpath_start_y = command.start_y + command.y if\
-					command.relative else command.y
+			curr_subpath_start_x = command.start_x + command.x if command.relative else command.x
+			curr_subpath_start_y = command.start_y + command.y if command.relative else command.y
 		elif idx > 0 and _commands[idx - 1] is PathCommand.CloseCommand:
 			subpath_start_indices.append(idx)
 		elif command is PathCommand.CloseCommand:
@@ -86,8 +84,7 @@ func get_implied_S_control(cmd_idx: int) -> Vector2:
 	var v := Vector2.ZERO if cmd.relative else cmd.get_start_coords()
 	if prev_cmd.command_char in "CcSs":
 		var prev_control_pt := Vector2(prev_cmd.x2, prev_cmd.y2)
-		v = (cmd.get_start_coords() if\
-				cmd.relative else cmd.get_start_coords() * 2) - prev_control_pt
+		v = (cmd.get_start_coords() if cmd.relative else cmd.get_start_coords() * 2) - prev_control_pt
 		if prev_cmd.relative:
 			v -= prev_cmd.get_start_coords()
 	return v
@@ -107,12 +104,9 @@ func get_implied_T_control(idx: int) -> Vector2:
 	var prevQ_x: float = prevQ_cmd.x if "x" in prevQ_cmd else prevQ_cmd.start_x
 	var prevQ_y: float = prevQ_cmd.y if "y" in prevQ_cmd else prevQ_cmd.start_y
 	var prevQ_v := Vector2(prevQ_x, prevQ_y)
-	var prevQ_v1 := Vector2(prevQ_cmd.x1, prevQ_cmd.y1) if\
-			prevQ_cmd.command_char in "Qq" else prevQ_v
-	var prevQ_end := prevQ_cmd.get_start_coords() + prevQ_v if\
-			prevQ_cmd.relative else prevQ_v
-	var prevQ_control_pt := prevQ_cmd.get_start_coords() + prevQ_v1 if\
-			prevQ_cmd.relative else prevQ_v1
+	var prevQ_v1 := Vector2(prevQ_cmd.x1, prevQ_cmd.y1) if prevQ_cmd.command_char in "Qq" else prevQ_v
+	var prevQ_end := prevQ_cmd.get_start_coords() + prevQ_v if prevQ_cmd.relative else prevQ_v
+	var prevQ_control_pt := prevQ_cmd.get_start_coords() + prevQ_v1 if prevQ_cmd.relative else prevQ_v1
 	
 	var v := prevQ_end * 2 - prevQ_control_pt
 	for T_idx in range(prevQ_idx + 1, idx):
@@ -362,10 +356,8 @@ formatter := Configs.savedata.editor_formatter) -> String:
 	for i in commands_arr.size():
 		var cmd := commands_arr[i]
 		var cmd_char_capitalized := cmd.command_char.to_upper()
-		if not (formatter.pathdata_remove_consecutive_commands and\
-		((cmd_char_capitalized != "M" and last_command == cmd.command_char) or\
-		(last_command == "m" and cmd.command_char == "l") or\
-		(last_command == "M" and cmd.command_char == "L"))):
+		if not (formatter.pathdata_remove_consecutive_commands and ((cmd_char_capitalized != "M" and last_command == cmd.command_char) or\
+		(last_command == "m" and cmd.command_char == "l") or (last_command == "M" and cmd.command_char == "L"))):
 			output += cmd.command_char
 			if not formatter.pathdata_minimize_spacing:
 				output += " "
@@ -391,42 +383,33 @@ formatter := Configs.savedata.editor_formatter) -> String:
 				"V":
 					current_char = num_parser.num_to_text(cmd.y)[0]
 					prev_numstr = num_parser.num_to_text(+commands_arr[i - 1].y)
-			if not formatter.pathdata_minimize_spacing or not\
-			(("." in prev_numstr and current_char == ".") or current_char in "-+"):
+			if not formatter.pathdata_minimize_spacing or not (("." in prev_numstr and current_char == ".") or current_char in "-+"):
 				output += " "
 		
 		last_command = cmd.command_char
 		match cmd_char_capitalized:
 			"A":
-				output += num_parser.numstr_arr_to_text([num_parser.num_to_text(cmd.rx),
-						num_parser.num_to_text(cmd.ry), num_parser.num_to_text(cmd.rot, true)])
+				output += num_parser.numstr_arr_to_text([num_parser.num_to_text(cmd.rx), num_parser.num_to_text(cmd.ry), num_parser.num_to_text(cmd.rot, true)])
 				if formatter.pathdata_remove_spacing_after_flags:
-					output += (" 0" if cmd.large_arc_flag == 0 else " 1") +\
-							("0" if cmd.sweep_flag == 0 else "1")
+					output += (" 0" if cmd.large_arc_flag == 0 else " 1") + ("0" if cmd.sweep_flag == 0 else "1")
 				else:
 					output += " 0 " if cmd.large_arc_flag == 0 else " 1 "
 					if num_parser.num_to_text(cmd.x)[0] == "-":
 						output += "0" if cmd.sweep_flag == 0 else "1"
 					else:
 						output += "0 " if cmd.sweep_flag == 0 else "1 "
-				output += num_parser.numstr_arr_to_text([num_parser.num_to_text(cmd.x),
-						num_parser.num_to_text(cmd.y)])
+				output += num_parser.numstr_arr_to_text([num_parser.num_to_text(cmd.x), num_parser.num_to_text(cmd.y)])
 			"C":
-				output += num_parser.numstr_arr_to_text([num_parser.num_to_text(cmd.x1),
-						num_parser.num_to_text(cmd.y1), num_parser.num_to_text(cmd.x2),
-						num_parser.num_to_text(cmd.y2), num_parser.num_to_text(cmd.x),
-						num_parser.num_to_text(cmd.y)])
+				output += num_parser.numstr_arr_to_text([num_parser.num_to_text(cmd.x1), num_parser.num_to_text(cmd.y1),
+						num_parser.num_to_text(cmd.x2), num_parser.num_to_text(cmd.y2), num_parser.num_to_text(cmd.x), num_parser.num_to_text(cmd.y)])
 			"Q":
-				output += num_parser.numstr_arr_to_text([num_parser.num_to_text(cmd.x1),
-						num_parser.num_to_text(cmd.y1), num_parser.num_to_text(cmd.x),
-						num_parser.num_to_text(cmd.y)])
+				output += num_parser.numstr_arr_to_text([num_parser.num_to_text(cmd.x1), num_parser.num_to_text(cmd.y1),
+						num_parser.num_to_text(cmd.x), num_parser.num_to_text(cmd.y)])
 			"S":
-				output += num_parser.numstr_arr_to_text([num_parser.num_to_text(cmd.x2),
-						num_parser.num_to_text(cmd.y2), num_parser.num_to_text(cmd.x),
-						num_parser.num_to_text(cmd.y)])
+				output += num_parser.numstr_arr_to_text([num_parser.num_to_text(cmd.x2), num_parser.num_to_text(cmd.y2),
+						num_parser.num_to_text(cmd.x), num_parser.num_to_text(cmd.y)])
 			"L", "M", "T":
-				output += num_parser.numstr_arr_to_text([num_parser.num_to_text(cmd.x),
-						num_parser.num_to_text(cmd.y)])
+				output += num_parser.numstr_arr_to_text([num_parser.num_to_text(cmd.x), num_parser.num_to_text(cmd.y)])
 			"H":
 				output += num_parser.num_to_text(cmd.x)
 			"V":

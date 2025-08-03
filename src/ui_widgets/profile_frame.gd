@@ -53,8 +53,7 @@ func sync_theming() -> void:
 func button_update_disabled() -> void:
 	var should_disable: bool = disabled_check_callback.call()
 	button.disabled = should_disable
-	button.mouse_default_cursor_shape = Control.CURSOR_ARROW if should_disable else\
-			Control.CURSOR_POINTING_HAND
+	button.mouse_default_cursor_shape = Control.CURSOR_ARROW if should_disable else Control.CURSOR_POINTING_HAND
 
 func setup_size() -> void:
 	dropdown.position = Vector2(control.size.x - 102, 1)

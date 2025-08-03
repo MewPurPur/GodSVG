@@ -62,9 +62,7 @@ func update_buttons_appearance() -> void:
 	var is_min_zoom := _zoom_level < MIN_ZOOM or is_equal_approx(_zoom_level, MIN_ZOOM)
 	
 	zoom_in_button.disabled = is_max_zoom
-	zoom_in_button.mouse_default_cursor_shape = Control.CURSOR_ARROW if\
-			is_max_zoom else Control.CURSOR_POINTING_HAND
+	zoom_in_button.mouse_default_cursor_shape = Control.CURSOR_ARROW if is_max_zoom else Control.CURSOR_POINTING_HAND
 	
 	zoom_out_button.disabled = is_min_zoom
-	zoom_out_button.mouse_default_cursor_shape = Control.CURSOR_ARROW if\
-			is_min_zoom else Control.CURSOR_POINTING_HAND
+	zoom_out_button.mouse_default_cursor_shape = Control.CURSOR_ARROW if is_min_zoom else Control.CURSOR_POINTING_HAND

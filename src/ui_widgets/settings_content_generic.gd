@@ -68,8 +68,7 @@ func _ready() -> void:
 			btn.pressed.connect(_set_current_setup_resource_index.bind(idx))
 			btn.pressed.connect(setup_content)
 			var update_category_button_text := func() -> void:
-					btn.text = Translator.translate("Editor formatter") if current_setup_resource_index == 0\
-							else Translator.translate("Export formatter")
+					btn.text = Translator.translate("Editor formatter") if current_setup_resource_index == 0 else Translator.translate("Export formatter")
 			Configs.language_changed.connect(update_category_button_text)
 			update_category_button_text.call()
 			btn.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
@@ -848,7 +847,7 @@ func emit_preview_changed() -> void:
 		code_preview.tree_exiting.connect(preview.resource_bind.changed_deferred.disconnect.bind(
 				update_text), CONNECT_ONE_SHOT)
 		update_text.call()
-		# TODO Yes, all of this really is necessary for scrollbars to work.
+		# TODO Yes, all of this really is necessary for scrollbars to work. #109250
 		# The early signal is needed.
 		# The hiding and showing right away is needed.
 		# The two frames wait is needed.

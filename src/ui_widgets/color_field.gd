@@ -67,8 +67,7 @@ func _on_element_ancestor_attribute_changed(attribute_changed: String) -> void:
 
 # Redraw in case the gradient might have changed.
 func _on_svg_changed() -> void:
-	if cached_allow_url and\
-	ColorParser.is_valid_url(element.get_implied_attribute_value(attribute_name)):
+	if cached_allow_url and ColorParser.is_valid_url(element.get_implied_attribute_value(attribute_name)):
 		update_gradient_texture()
 		queue_redraw()
 	elif element.get_attribute_value(attribute_name) == "currentColor":
@@ -182,8 +181,7 @@ func update_gradient_texture() -> void:
 		gradient_texture = null
 
 func _on_button_gui_input(event: InputEvent) -> void:
-	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and\
-	event.is_pressed():
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.is_pressed():
 		accept_event()
 		HandlerGUI.throw_mouse_motion_event()
 	else:

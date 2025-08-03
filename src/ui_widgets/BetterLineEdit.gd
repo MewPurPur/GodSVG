@@ -45,8 +45,7 @@ var popup_level := -1  # Set when focused, as it can't be focused unless it's to
 
 func _on_base_class_focus_entered() -> void:
 	# Hack to check if focus entered was from a mouse click.
-	if get_global_rect().has_point(get_viewport().get_mouse_position()) and\
-	Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
+	if get_global_rect().has_point(get_viewport().get_mouse_position()) and Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
 		first_click = true
 	else:
 		select_all()
@@ -84,8 +83,7 @@ func _input(event: InputEvent) -> void:
 	
 	if event is InputEventMouseButton and (event.button_index in [MOUSE_BUTTON_LEFT,
 	MOUSE_BUTTON_RIGHT, MOUSE_BUTTON_MIDDLE]):
-		if event.is_pressed() and not get_global_rect().has_point(event.position) and\
-		popup_level == HandlerGUI.popup_stack.size():
+		if event.is_pressed() and not get_global_rect().has_point(event.position) and popup_level == HandlerGUI.popup_stack.size():
 			release_focus()
 		elif event.is_released() and first_click and not has_selection():
 			first_click = false

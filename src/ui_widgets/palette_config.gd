@@ -126,8 +126,7 @@ func _on_name_edit_text_changed(new_text: String) -> void:
 		# if the palette is currently invalid. If the new text is different,
 		# check if it's unused, i.e., would be a valid title.
 		name_edit.add_theme_color_override(theme_type,
-				Configs.savedata.get_validity_color(false, (new_text != palette.title and\
-				not Configs.savedata.is_palette_title_unused(new_text)) or\
+				Configs.savedata.get_validity_color(false, (new_text != palette.title and not Configs.savedata.is_palette_title_unused(new_text)) or\
 				(new_text == palette.title and Configs.savedata.is_palette_valid(palette))))
 	name_edit.end_bulk_theme_override()
 
@@ -263,8 +262,7 @@ func _can_drop_data(_at_position: Vector2, data: Variant) -> bool:
 	var buffer := 6
 	var pos := colors_container.get_local_mouse_position()
 	
-	if not (data is ColorSwatch.DragData and\
-	Rect2(Vector2.ZERO, colors_container.size).grow(buffer).has_point(pos)):
+	if not (data is ColorSwatch.DragData and Rect2(Vector2.ZERO, colors_container.size).grow(buffer).has_point(pos)):
 		clear_proposed_drop()
 		return false
 	else:
@@ -285,8 +283,7 @@ func _can_drop_data(_at_position: Vector2, data: Variant) -> bool:
 	for swatch in get_swatches():
 		swatch.proposed_drop_data = ColorSwatch.DragData.new(palette, new_idx)
 		swatch.queue_redraw()
-	return data.palette != palette or (data.palette == palette and\
-			data.index != new_idx and data.index != new_idx - 1)
+	return data.palette != palette or (data.palette == palette and data.index != new_idx and data.index != new_idx - 1)
 
 func _drop_data(_at_position: Vector2, data: Variant) -> void:
 	if proposed_drop_idx == -1:

@@ -25,8 +25,7 @@ func format(text: String, formatter: Formatter) -> String:
 		var r := String.num_uint64(args[0].strip_edges(false, true).to_int(), 16)
 		var g := String.num_uint64(args[1].strip_edges(false, true).to_int(), 16)
 		var b := String.num_uint64(args[2].strip_edges(false, true).to_int(), 16)
-		text = "#" + (r if r.length() == 2 else "0" + r) +\
-				(g if g.length() == 2 else "0" + g) + (b if b.length() == 2 else "0" + b)
+		text = "#" + (r if r.length() == 2 else "0" + r) + (g if g.length() == 2 else "0" + g) + (b if b.length() == 2 else "0" + b)
 	elif ColorParser.is_valid_hsl(text):
 		var args_start_pos := text.find("(") + 1
 		var inside_brackets := text.substr(args_start_pos, text.length() - args_start_pos - 1)
@@ -37,8 +36,7 @@ func format(text: String, formatter: Formatter) -> String:
 		var r := String.num_uint64(ColorParser.hsl_get_r(h, s, l), 16)
 		var g := String.num_uint64(ColorParser.hsl_get_g(h, s, l), 16)
 		var b := String.num_uint64(ColorParser.hsl_get_b(h, s, l), 16)
-		text = "#" + (r if r.length() == 2 else "0" + r) +\
-				(g if g.length() == 2 else "0" + g) + (b if b.length() == 2 else "0" + b)
+		text = "#" + (r if r.length() == 2 else "0" + r) + (g if g.length() == 2 else "0" + g) + (b if b.length() == 2 else "0" + b)
 	if text in get_named_colors():
 		text = get_named_colors()[text]
 	if ColorParser.is_valid_hex(text) and text.length() == 4:
@@ -51,9 +49,9 @@ func format(text: String, formatter: Formatter) -> String:
 			text[1] == text[2] and text[3] == text[4] and text[5] == text[6]:
 				text = "#" + text[1] + text[3] + text[5]
 		Formatter.PrimaryColorSyntax.RGB:
-			text = "rgb(" + String.num_uint64(text.substr(1, 2).hex_to_int()) +\
-					", " + String.num_uint64(text.substr(3, 2).hex_to_int()) +\
-					", " + String.num_uint64(text.substr(5, 2).hex_to_int()) + ")"
+			text = "rgb(" + String.num_uint64(text.substr(1, 2).hex_to_int()) + ", " +\
+					String.num_uint64(text.substr(3, 2).hex_to_int()) + ", " +\
+					String.num_uint64(text.substr(5, 2).hex_to_int()) + ")"
 	
 	if named_colors_usage != Formatter.NamedColorUse.NEVER:
 		var hex := text.to_lower()
@@ -66,8 +64,7 @@ func format(text: String, formatter: Formatter) -> String:
 			else:
 				var named_color_text: String = AttributeColor.get_named_colors().find_key(hex)
 				if named_color_text.length() < text.length() or\
-				(named_colors_usage == Formatter.NamedColorUse.WHEN_SHORTER_OR_EQUAL and\
-				named_color_text.length() == text.length()):
+				(named_colors_usage == Formatter.NamedColorUse.WHEN_SHORTER_OR_EQUAL and named_color_text.length() == text.length()):
 					text = named_color_text
 	return text
 

@@ -122,8 +122,7 @@ func sync_color_space_buttons() -> void:
 		btn.action_mode = BaseButton.ACTION_MODE_BUTTON_PRESS
 		
 		var on_slider_mode_changed := func() -> void:
-				btn.mouse_default_cursor_shape = Control.CURSOR_ARROW if\
-				slider_mode == color_space else Control.CURSOR_POINTING_HAND
+				btn.mouse_default_cursor_shape = Control.CURSOR_ARROW if slider_mode == color_space else Control.CURSOR_POINTING_HAND
 		
 		slider_mode_changed.connect(on_slider_mode_changed)
 		btn.tree_exiting.connect(slider_mode_changed.disconnect.bind(on_slider_mode_changed))
@@ -192,8 +191,7 @@ func _on_slider_mode_changed() -> void:
 func register_visual_change(new_color: Color, use_backup := true) -> void:
 	# Return early if the color didn't change. If the color is a keyword, all visual
 	# changes reset it to a normal color.
-	if not color in ["none", "currentColor"] and\
-	new_color == (backup_display_color if use_backup else display_color):
+	if not color in ["none", "currentColor"] and new_color == (backup_display_color if use_backup else display_color):
 		return
 	
 	undo_redo.create_action()
@@ -447,27 +445,23 @@ func _on_side_slider_draw() -> void:
 	if not sliders_dragged[0]:
 		arrow_modulate.a = 0.7
 	widgets_arr[0].draw_texture(side_slider_arrow, Vector2(0, tracks_arr[0].position.y +\
-			tracks_arr[0].size.y * (1 - display_color.v) -\
-			side_slider_arrow.get_height() / 2.0), arrow_modulate)
+			tracks_arr[0].size.y * (1 - display_color.v) - side_slider_arrow.get_height() / 2.0), arrow_modulate)
 
 func _draw() -> void:
 	RenderingServer.canvas_item_clear(color_wheel_surface)
 	# Draw the color wheel handle.
-	var point_pos := center + Vector2(center.x * cos(display_color.h * TAU),
-			center.y * sin(display_color.h * TAU)) * display_color.s
-	RenderingServer.canvas_item_add_texture_rect(color_wheel_surface, Rect2(point_pos -\
-			handle_texture.get_size() / 2, handle_texture.get_size()), handle_texture)
+	var handle_texture_size := handle_texture.get_size()
+	var point_pos := center + Vector2(center.x * cos(display_color.h * TAU), center.y * sin(display_color.h * TAU)) * display_color.s
+	RenderingServer.canvas_item_add_texture_rect(color_wheel_surface, Rect2(point_pos - handle_texture_size / 2, handle_texture_size), handle_texture)
 
 # Helper for drawing the horizontal sliders.
 func draw_hslider(idx: int, offset: float, chr: String) -> void:
 	var arrow_modulate := ThemeUtils.tinted_contrast_color
 	if not sliders_dragged[idx]:
 		arrow_modulate.a = 0.7
-	widgets_arr[idx].draw_texture(slider_arrow, Vector2(tracks_arr[idx].position.x +\
-			tracks_arr[idx].size.x * offset - slider_arrow.get_width() / 2.0,
+	widgets_arr[idx].draw_texture(slider_arrow, Vector2(tracks_arr[idx].position.x + tracks_arr[idx].size.x * offset - slider_arrow.get_width() / 2.0,
 			tracks_arr[idx].size.y), arrow_modulate)
-	widgets_arr[idx].draw_string(get_theme_default_font(), Vector2(-12, 11), chr,
-			HORIZONTAL_ALIGNMENT_CENTER, 12, 14, ThemeUtils.text_color)
+	widgets_arr[idx].draw_string(get_theme_default_font(), Vector2(-12, 11), chr, HORIZONTAL_ALIGNMENT_CENTER, 12, 14, ThemeUtils.text_color)
 
 # Make sure the arrows are redrawn when the tracks finish resizing.
 func _on_track_resized() -> void:

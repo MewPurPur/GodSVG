@@ -145,8 +145,7 @@ func move_xnodes_to(xids: Array[PackedInt32Array], location: PackedInt32Array) -
 		get_xnode(XIDUtils.get_parent_xid(location)).insert_child(location[-1], xnode)
 	# Check if this actually chagned the layout.
 	for id in xids_stored:
-		if not XIDUtils.are_siblings_or_same(id, location) or id[-1] < location[-1] or\
-		id[-1] >= location[-1] + xids_stored.size():
+		if not XIDUtils.are_siblings_or_same(id, location) or id[-1] < location[-1] or id[-1] >= location[-1] + xids_stored.size():
 			# If this condition is passed, then there was a layout change.
 			xnodes_moved_to.emit(xids, location)
 			xnode_layout_changed.emit()

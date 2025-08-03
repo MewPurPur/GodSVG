@@ -187,6 +187,5 @@ static func is_valid_palette(text: String) -> bool:
 		XMLParser.NODE_UNKNOWN]:
 			continue
 		
-		return parser.get_node_type() == XMLParser.NODE_ELEMENT and\
-				parser.get_node_name() == "palette"
+		return parser.get_node_type() == XMLParser.NODE_ELEMENT and parser.get_node_name() == "palette"
 	return false

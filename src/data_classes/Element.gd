@@ -101,8 +101,7 @@ func insert_child(idx: int, new_xnode: XNode) -> void:
 	
 	if new_xnode is Element:
 		for xnode_descendant in new_xnode.get_all_xnode_descendants():
-			xnode_descendant.svg = xnode_descendant if xnode_descendant is ElementSVG else\
-					xnode_descendant.parent.svg
+			xnode_descendant.svg = xnode_descendant if xnode_descendant is ElementSVG else xnode_descendant.parent.svg
 			xnode_descendant.root = root
 	
 	var new_xid := xid.duplicate()
@@ -171,9 +170,7 @@ func get_attribute_true_color(attribute_name: String) -> String:
 func get_attribute_num(attribute_name: String) -> float:
 	if DB.get_attribute_type(attribute_name) != DB.AttributeType.NUMERIC:
 		push_error("Attribute not the correct type.")
-	var num: float = _attributes[attribute_name].get_num() if\
-			has_attribute(attribute_name) else\
-			AttributeNumeric.text_to_num(get_default(attribute_name))
+	var num: float = _attributes[attribute_name].get_num() if has_attribute(attribute_name) else AttributeNumeric.text_to_num(get_default(attribute_name))
 	# Possibly adjust for percentage.
 	if is_attribute_percentage(attribute_name):
 		var percentage_handling := get_percentage_handling(attribute_name)
@@ -195,20 +192,17 @@ func get_attribute_num(attribute_name: String) -> float:
 func is_attribute_percentage(attribute_name: String) -> bool:
 	if DB.get_attribute_type(attribute_name) != DB.AttributeType.NUMERIC:
 		push_error("Attribute not the correct type.")
-	return _attributes[attribute_name].is_percentage() if has_attribute(attribute_name) else\
-			AttributeNumeric.text_check_percentage(get_default(attribute_name))
+	return _attributes[attribute_name].is_percentage() if has_attribute(attribute_name) else AttributeNumeric.text_check_percentage(get_default(attribute_name))
 
 func get_attribute_list(attribute_name: String) -> PackedFloat64Array:
 	if DB.get_attribute_type(attribute_name) != DB.AttributeType.LIST:
 		push_error("Attribute not the correct type.")
-	return _attributes[attribute_name].get_list() if has_attribute(attribute_name) else\
-			AttributeList.text_to_list(get_default(attribute_name))
+	return _attributes[attribute_name].get_list() if has_attribute(attribute_name) else AttributeList.text_to_list(get_default(attribute_name))
 
 func get_attribute_final_precise_transform(attribute_name: String) -> PackedFloat64Array:
 	if DB.get_attribute_type(attribute_name) != DB.AttributeType.TRANSFORM_LIST:
 		push_error("Attribute not the correct type.")
-	var attrib: AttributeTransformList = _attributes[attribute_name] if\
-			has_attribute(attribute_name) else new_default_attribute(attribute_name)
+	var attrib: AttributeTransformList = _attributes[attribute_name] if has_attribute(attribute_name) else new_default_attribute(attribute_name)
 	return attrib.get_final_precise_transform()
 
 

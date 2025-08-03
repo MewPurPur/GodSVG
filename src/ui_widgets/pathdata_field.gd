@@ -211,19 +211,16 @@ func _on_commands_gui_input(event: InputEvent) -> void:
 					State.shift_select(element.xid, cmd_idx)
 				else:
 					State.normal_select(element.xid, cmd_idx)
-			elif event.is_released() and not event.shift_pressed and\
-			not event.is_command_or_control_pressed() and not event.double_click and\
-			State.inner_selections.size() > 1 and cmd_idx in State.inner_selections:
+			elif event.is_released() and not event.shift_pressed and not event.is_command_or_control_pressed() and\
+			not event.double_click and State.inner_selections.size() > 1 and cmd_idx in State.inner_selections:
 				State.normal_select(element.xid, cmd_idx)
 		elif event.button_index == MOUSE_BUTTON_RIGHT and event.is_pressed():
-			if State.semi_selected_xid != element.xid or\
-			not cmd_idx in State.inner_selections:
+			if State.semi_selected_xid != element.xid or not cmd_idx in State.inner_selections:
 				State.normal_select(element.xid, cmd_idx)
 			# Popup the actions.
 			var viewport := get_viewport()
 			var popup_pos := viewport.get_mouse_position()
-			HandlerGUI.popup_under_pos(State.get_selection_context(
-					HandlerGUI.popup_under_pos.bind(popup_pos, viewport),
+			HandlerGUI.popup_under_pos(State.get_selection_context(HandlerGUI.popup_under_pos.bind(popup_pos, viewport),
 					Utils.LayoutPart.INSPECTOR), popup_pos, viewport)
 
 
@@ -253,15 +250,12 @@ func _commands_draw() -> void:
 		var cmd: PathCommand = element.get_attribute(attribute_name).get_command(i)
 		var cmd_char := cmd.command_char
 		# Draw the action button.
-		more_icon.draw_rect(ci, Rect2(Vector2(commands_container.size.x - 19, 4 + v_offset),
-				Vector2(14, 14)), false, ThemeUtils.context_icon_normal_color)
+		more_icon.draw_rect(ci, Rect2(Vector2(commands_container.size.x - 19, 4 + v_offset), Vector2(14, 14)), false, ThemeUtils.context_icon_normal_color)
 		# Draw the relative/absolute button.
-		var relative_stylebox := get_theme_stylebox("normal", "PathCommandAbsoluteButton") if\
-				Utils.is_string_upper(cmd_char) else get_theme_stylebox("normal", "PathCommandRelativeButton")
-		relative_stylebox.draw(ci, Rect2(Vector2(3, 2 + v_offset),
-				Vector2(18, STRIP_HEIGHT - 4)))
-		ThemeUtils.mono_font.draw_string(ci, Vector2(6, v_offset + STRIP_HEIGHT - 6),
-				cmd_char, HORIZONTAL_ALIGNMENT_CENTER, 12, 13, ThemeUtils.text_color)
+		var relative_stylebox := get_theme_stylebox("normal", "PathCommandAbsoluteButton") if Utils.is_string_upper(cmd_char)\
+				else get_theme_stylebox("normal", "PathCommandRelativeButton")
+		relative_stylebox.draw(ci, Rect2(Vector2(3, 2 + v_offset), Vector2(18, STRIP_HEIGHT - 4)))
+		ThemeUtils.mono_font.draw_string(ci, Vector2(6, v_offset + STRIP_HEIGHT - 6), cmd_char, HORIZONTAL_ALIGNMENT_CENTER, 12, 13, ThemeUtils.text_color)
 		# Draw the fields.
 		var rect := Rect2(Vector2(25, 2 + v_offset), Vector2(44, 18))
 		match cmd_char.to_upper():
@@ -277,27 +271,20 @@ func _commands_draw() -> void:
 				var flag_field := FlagFieldScene.instantiate()
 				var is_large_arc: bool = (cmd.large_arc_flag == 0)
 				var is_sweep: bool = (cmd.sweep_flag == 0)
-				flag_field.get_theme_stylebox("normal" if is_large_arc\
-						else "pressed").draw(ci, rect)
-				ThemeUtils.mono_font.draw_string(ci, rect.position + Vector2(5, 14),
-						String.num_uint64(cmd.large_arc_flag), HORIZONTAL_ALIGNMENT_LEFT,
-						rect.size.x, 14, flag_field.get_theme_color(
-								"font_color" if is_large_arc else "font_pressed_color"))
+				flag_field.get_theme_stylebox("normal" if is_large_arc else "pressed").draw(ci, rect)
+				ThemeUtils.mono_font.draw_string(ci, rect.position + Vector2(5, 14), String.num_uint64(cmd.large_arc_flag), HORIZONTAL_ALIGNMENT_LEFT,
+						rect.size.x, 14, flag_field.get_theme_color("font_color" if is_large_arc else "font_pressed_color"))
 				rect.position.x = rect.end.x + 4
-				flag_field.get_theme_stylebox("normal" if is_sweep
-						else "pressed").draw(ci, rect)
-				ThemeUtils.mono_font.draw_string(ci, rect.position + Vector2(5, 14),
-						String.num_uint64(cmd.sweep_flag), HORIZONTAL_ALIGNMENT_LEFT,
-						rect.size.x, 14, flag_field.get_theme_color("font_color" if is_sweep\
-						else "font_pressed_color"))
+				flag_field.get_theme_stylebox("normal" if is_sweep else "pressed").draw(ci, rect)
+				ThemeUtils.mono_font.draw_string(ci, rect.position + Vector2(5, 14), String.num_uint64(cmd.sweep_flag), HORIZONTAL_ALIGNMENT_LEFT,
+						rect.size.x, 14, flag_field.get_theme_color("font_color" if is_sweep else "font_pressed_color"))
 				flag_field.free()
 				rect.position.x = rect.end.x + 4
 				rect.size.x = 44
 				draw_numfield(rect, "x", cmd)
 				rect.position.x = rect.end.x + 3
 				draw_numfield(rect, "y", cmd)
-			"C": draw_numfield_arr(rect, [3, 4, 3, 4, 3], ["x1", "y1", "x2", "y2", "x", "y"],
-					cmd)
+			"C": draw_numfield_arr(rect, [3, 4, 3, 4, 3], ["x1", "y1", "x2", "y2", "x", "y"], cmd)
 			"Q": draw_numfield_arr(rect, [3, 4, 3], ["x1", "y1", "x", "y"], cmd)
 			"S": draw_numfield_arr(rect, [3, 4, 3], ["x2", "y2", "x", "y"], cmd)
 			"M", "L", "T": draw_numfield_arr(rect, [3], ["x", "y"], cmd)
@@ -308,8 +295,7 @@ func draw_numfield(rect: Rect2, property: String, path_command: PathCommand) -> 
 	mini_line_edit_stylebox.draw(ci, rect)
 	ThemeUtils.mono_font.draw_string(ci, rect.position + Vector2(3, 13),
 			NumstringParser.basic_num_to_text(path_command.get(property)),
-			HORIZONTAL_ALIGNMENT_LEFT, rect.size.x - 6,
-			mini_line_edit_font_size, mini_line_edit_font_color)
+			HORIZONTAL_ALIGNMENT_LEFT, rect.size.x - 6, mini_line_edit_font_size, mini_line_edit_font_color)
 
 func draw_numfield_arr(first_rect: Rect2, spacings: Array, names: PackedStringArray,
 path_command: PathCommand) -> void:
@@ -320,8 +306,7 @@ path_command: PathCommand) -> void:
 
 
 func activate_hovered(idx: int) -> void:
-	if idx != hovered_idx and\
-	idx < element.get_attribute(attribute_name).get_command_count():
+	if idx != hovered_idx and idx < element.get_attribute(attribute_name).get_command_count():
 		activate_hovered_shared_logic(idx)
 
 func reactivate_hovered() -> void:

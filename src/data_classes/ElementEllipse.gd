@@ -36,12 +36,9 @@ func get_replacement(new_element: String) -> Element:
 		"path":
 			dropped_attributes = PackedStringArray(["cx", "cy", "rx", "ry", "d"])
 			var commands: Array[PathCommand] = []
-			commands.append(PathCommand.MoveCommand.new(get_attribute_num("cx"),
-					get_attribute_num("cy") - get_ry(), true))
-			commands.append(PathCommand.EllipticalArcCommand.new(get_rx(), get_ry(), 0, 0, 0, 0,
-					get_ry() * 2, true))
-			commands.append(PathCommand.EllipticalArcCommand.new(get_rx(), get_ry(), 0, 0, 0, 0,
-					-get_ry() * 2, true))
+			commands.append(PathCommand.MoveCommand.new(get_attribute_num("cx"), get_attribute_num("cy") - get_ry(), true))
+			commands.append(PathCommand.EllipticalArcCommand.new(get_rx(), get_ry(), 0, 0, 0, 0, get_ry() * 2, true))
+			commands.append(PathCommand.EllipticalArcCommand.new(get_rx(), get_ry(), 0, 0, 0, 0, -get_ry() * 2, true))
 			commands.append(PathCommand.CloseCommand.new(true))
 			element.set_attribute("d", commands)
 	apply_to(element, dropped_attributes)
@@ -49,12 +46,10 @@ func get_replacement(new_element: String) -> Element:
 
 
 func get_rx() -> float:
-	return get_attribute_num("rx") if has_attribute("rx") else\
-			get_attribute_num("ry") if has_attribute("ry") else 0.0
+	return get_attribute_num("rx") if has_attribute("rx") else get_attribute_num("ry") if has_attribute("ry") else 0.0
 
 func get_ry() -> float:
-	return get_attribute_num("ry") if has_attribute("ry") else\
-			get_attribute_num("rx") if has_attribute("rx") else 0.0
+	return get_attribute_num("ry") if has_attribute("ry") else get_attribute_num("rx") if has_attribute("rx") else 0.0
 
 
 func _get_own_default(attribute_name: String) -> String:
@@ -66,5 +61,4 @@ func _get_own_default(attribute_name: String) -> String:
 		_: return ""
 
 func get_bounding_box() -> Rect2:
-	return Rect2(get_attribute_num("cx") - get_rx(),
-			get_attribute_num("cy") - get_ry(), get_rx() * 2, get_ry() * 2)
+	return Rect2(get_attribute_num("cx") - get_rx(), get_attribute_num("cy") - get_ry(), get_rx() * 2, get_ry() * 2)

@@ -63,89 +63,65 @@ class LineConstraint:
 	const valid_next_commands = ["c", "C", "q", "Q", "l", "L", "h", "H", "v", "V"]
 	const next_mode_support = ["c", "C", "s", "S", "q", "Q"]
 	
-	static func constrain(
-		path: AttributePathdata,
-		idx: int,
-		pos: PackedFloat64Array,
-		x_param: String,
-		y_param: String
-	) -> PackedFloat64Array:
-		var cmd:= path.get_command(idx)
+	static func constrain( path: AttributePathdata, idx: int, pos: PackedFloat64Array, x_param: String, y_param: String) -> PackedFloat64Array:
+		var cmd := path.get_command(idx)
 		
 		# Move everything to a local (translated) coordinate system with the new origin at the
 		# connection between the two commands.
 		
 		# Define a line using the connection between the 2 commands and whichever attribute we
-		# care about on the other end (opp for opposite). Use vector projection to transform
-		# the input.
-		var opp = PackedFloat64Array([0, 0])
+		# care about on the other end. Use vector projection to transform the input.
+		var opposite := PackedFloat64Array([0, 0])
 		var mode: Mode
 		
 		# Determine if using next or previous command.
-		if (
-			idx != 0 and
-			path.get_command(idx - 1).command_char in valid_prev_commands and
-			cmd.command_char in prev_mode_support and
-			# Setting a correct attribute
-			not ((cmd.command_char in ["c", "C", "q", "Q"]) and (x_param != "x1" or y_param != "y1"))
-		):
+		if idx != 0 and path.get_command(idx - 1).command_char in valid_prev_commands and\
+		cmd.command_char in prev_mode_support and not ((cmd.command_char in ["c", "C", "q", "Q"]) and\
+		(x_param != "x1" or y_param != "y1")):
 			mode = Mode.PREVIOUS
-		elif (
-			idx < path.get_command_count() - 1 and
-			path.get_command(idx + 1).command_char in valid_next_commands and
-			cmd.command_char in next_mode_support and
-			# Setting a correct attribute
-			not (
-				(cmd.command_char in ["c", "C", "s", "S"]) and (x_param != "x2" or y_param != "y2") or
-				(cmd.command_char in ["q", "Q"]) and (x_param != "x1" or y_param != "y1")
-			)
-		):
+		elif idx < path.get_command_count() - 1 and path.get_command(idx + 1).command_char in valid_next_commands and\
+		cmd.command_char in next_mode_support and not ((cmd.command_char in ["c", "C", "s", "S"]) and\
+		(x_param != "x2" or y_param != "y2") or (cmd.command_char in ["q", "Q"]) and (x_param != "x1" or y_param != "y1")):
 			mode = Mode.NEXT
 		else:
 			return pos
 		
 		# Get the other command and determine the translation offset.
-		var other:= (
-			path.get_command(idx - 1) if mode == Mode.PREVIOUS
-			else path.get_command(idx + 1)
-		)
-		var offset: PackedFloat64Array = (
-			[cmd.start_x, cmd.start_y] if mode == Mode.PREVIOUS
-			else [other.start_x, other.start_y]
-		)
+		var other:= path.get_command(idx - 1) if mode == Mode.PREVIOUS else path.get_command(idx + 1)
+		var offset: PackedFloat64Array = [cmd.start_x, cmd.start_y] if mode == Mode.PREVIOUS else [other.start_x, other.start_y]
 		
 		# Get the global coords of the opposite point.
 		match other.command_char:
 			"c", "C", "s", "S" when mode == Mode.PREVIOUS:
-				opp = [other.get("x2"), other.get("y2")]
+				opposite = [other.get("x2"), other.get("y2")]
 			"q", "Q" when mode == Mode.PREVIOUS:
-				opp = [other.get("x1"), other.get("y1")]
+				opposite = [other.get("x1"), other.get("y1")]
 			"l", "h", "v" when mode == Mode.PREVIOUS:
 				pass
 			"L", "H", "V" when mode == Mode.PREVIOUS:
-				opp = [other.start_x, other.start_y]
+				opposite = [other.start_x, other.start_y]
 			"c", "C", "q", "Q" when mode == Mode.NEXT:
-				opp = [other.get("x1"), other.get("y1")]
+				opposite = [other.get("x1"), other.get("y1")]
 			"l", "L" when mode == Mode.NEXT:
-				opp = [other.get("x"), other.get("y")]
+				opposite = [other.get("x"), other.get("y")]
 			"h" when mode == Mode.NEXT:
-				opp = [other.get("x"), 0.0]
+				opposite = [other.get("x"), 0.0]
 			"H" when mode == Mode.NEXT:
-				opp = [other.get("x"), other.start_y]
+				opposite = [other.get("x"), other.start_y]
 			"v" when mode == Mode.NEXT:
-				opp = [0.0, other.get("y")]
+				opposite = [0.0, other.get("y")]
 			"V" when mode == Mode.NEXT:
-				opp = [other.start_x, other.get("y")]
+				opposite = [other.start_x, other.get("y")]
 		if other.relative:
-			opp = [opp[0] + other.start_x, opp[1] + other.start_y]
+			opposite = [opposite[0] + other.start_x, opposite[1] + other.start_y]
 		
 		# Translate opposite point to local.
-		opp = [opp[0] - offset[0], opp[1] - offset[1]]
+		opposite = [opposite[0] - offset[0], opposite[1] - offset[1]]
 		
 		# Input to local.
 		pos = [pos[0] - offset[0], pos[1] - offset[1]]
 		
-		pos = Utils64Bit.vector_project(pos, opp)
+		pos = Utils64Bit.vector_project(pos, opposite)
 		
 		# Input back to global.
 		return [pos[0] + offset[0], pos[1] + offset[1]]

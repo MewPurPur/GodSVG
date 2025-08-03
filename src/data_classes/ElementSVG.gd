@@ -46,14 +46,12 @@ func update_cache() -> void:
 	if has_valid_width:
 		width = get_attribute_num("width")
 		if not has_valid_height:
-			height = width / get_attribute("viewBox").get_list_element(2) *\
-					get_attribute("viewBox").get_list_element(3)
+			height = width / get_attribute("viewBox").get_list_element(2) * get_attribute("viewBox").get_list_element(3)
 		else:
 			height = get_attribute_num("height")
 	elif has_valid_height:
 		height = get_attribute_num("height")
-		width = height / get_attribute("viewBox").get_list_element(3) *\
-				get_attribute("viewBox").get_list_element(2)
+		width = height / get_attribute("viewBox").get_list_element(3) * get_attribute("viewBox").get_list_element(2)
 	else:
 		width = get_attribute("viewBox").get_list_element(2)
 		height = get_attribute("viewBox").get_list_element(3)
@@ -69,12 +67,10 @@ func update_cache() -> void:
 	var width_ratio := width / viewbox.size.x
 	var height_ratio := height / viewbox.size.y
 	if width_ratio < height_ratio:
-		canvas_precise_transform = PackedFloat64Array([
-				width_ratio, 0.0, 0.0, width_ratio, -viewbox.position.x * width_ratio,
+		canvas_precise_transform = PackedFloat64Array([width_ratio, 0.0, 0.0, width_ratio, -viewbox.position.x * width_ratio,
 				-viewbox.position.y * width_ratio + (height - width_ratio * viewbox.size.y) / 2.0])
 	else:
-		canvas_precise_transform = PackedFloat64Array([
-				height_ratio, 0.0, 0.0, height_ratio, -viewbox.position.x * height_ratio +\
+		canvas_precise_transform = PackedFloat64Array([height_ratio, 0.0, 0.0, height_ratio, -viewbox.position.x * height_ratio +\
 				(width - height_ratio * viewbox.size.x) / 2, -viewbox.position.y * height_ratio])
 	if not canvas_transform.is_finite():
 		canvas_precise_transform = PackedFloat64Array([1.0, 0.0, 0.0, 1.0, 0.0, 0.0])
@@ -88,8 +84,7 @@ func world_to_canvas(pos: Vector2) -> Vector2:
 	return canvas_transform.affine_inverse() * pos
 
 func world_to_canvas_64_bit(pos: PackedFloat64Array) -> PackedFloat64Array:
-	return Utils64Bit.transform_vector_mult(Utils64Bit.get_transform_affine_inverse(
-			canvas_precise_transform), pos)
+	return Utils64Bit.transform_vector_mult(Utils64Bit.get_transform_affine_inverse(canvas_precise_transform), pos)
 
 func get_size() -> Vector2:
 	return Vector2(width, height)

@@ -9,17 +9,14 @@ static func add_hash_if_hex(color: String) -> String:
 
 static func is_valid(color: String, allow_alpha := false, allow_url := false,
 allow_none := false, allow_current_color := false) -> bool:
-	return is_valid_hex(color, allow_alpha) or is_valid_rgb(color, allow_alpha) or\
-			is_valid_hsl(color, allow_alpha) or is_valid_named(color, allow_alpha) or\
-			(allow_url and is_valid_url(color)) or (allow_none and\
-			color.strip_edges() == "none") or (allow_current_color and\
-			color.strip_edges() == "currentColor")
+	return is_valid_hex(color, allow_alpha) or is_valid_rgb(color, allow_alpha) or is_valid_hsl(color, allow_alpha) or is_valid_named(color, allow_alpha) or\
+			(allow_url and is_valid_url(color)) or (allow_none and color.strip_edges() == "none") or\
+			(allow_current_color and color.strip_edges() == "currentColor")
 
 static func is_valid_hex(color: String, allow_alpha := false) -> bool:
 	color = color.strip_edges()
 	if color.begins_with("#") and color.is_valid_html_color():
-		if color.length() == 4 or color.length() == 7 or (allow_alpha and\
-		(color.length() == 5 or color.length() == 9)):
+		if color.length() == 4 or color.length() == 7 or (allow_alpha and (color.length() == 5 or color.length() == 9)):
 			return true
 	return false
 
@@ -35,10 +32,8 @@ static func is_valid_rgb(color: String, allow_alpha := false) -> bool:
 		var channels := channels_str.split(",")
 		if channels.size() != 4:
 			return false
-		return _is_valid_number_or_percentage(channels[0]) and\
-				_is_valid_number_or_percentage(channels[1]) and\
-				_is_valid_number_or_percentage(channels[2]) and\
-				_is_valid_number_or_percentage(channels[3])
+		return _is_valid_number_or_percentage(channels[0]) and _is_valid_number_or_percentage(channels[1]) and\
+				_is_valid_number_or_percentage(channels[2]) and _is_valid_number_or_percentage(channels[3])
 	else:
 		return _rgb_check(color)
 
@@ -51,9 +46,7 @@ static func _rgb_check(stripped_color: String) -> bool:
 	if channels.size() != 3:
 		return false
 
-	return _is_valid_number_or_percentage(channels[0]) and\
-			_is_valid_number_or_percentage(channels[1]) and\
-			_is_valid_number_or_percentage(channels[2])
+	return _is_valid_number_or_percentage(channels[0]) and _is_valid_number_or_percentage(channels[1]) and _is_valid_number_or_percentage(channels[2])
 
 
 static func is_valid_hsl(color: String, allow_alpha := false) -> bool:
@@ -71,8 +64,7 @@ static func is_valid_hsl(color: String, allow_alpha := false) -> bool:
 			return false
 
 		return _is_valid_number(channels[0]) and _is_valid_percentage(channels[1]) and\
-				_is_valid_percentage(channels[2]) and\
-				_is_valid_number_or_percentage(channels[3])
+				_is_valid_percentage(channels[2]) and _is_valid_number_or_percentage(channels[3])
 	else:
 		return _hsl_check(color)
 
@@ -85,8 +77,7 @@ static func _hsl_check(stripped_color: String) -> bool:
 	if channels.size() != 3:
 		return false
 	
-	return _is_valid_number(channels[0]) and _is_valid_percentage(channels[1]) and\
-			_is_valid_percentage(channels[2])
+	return _is_valid_number(channels[0]) and _is_valid_percentage(channels[1]) and _is_valid_percentage(channels[2])
 
 static func is_valid_named(color: String, allow_alpha := false) -> bool:
 	return AttributeColor.get_named_colors(allow_alpha).has(color.strip_edges())
@@ -98,8 +89,7 @@ static func is_valid_url(color: String) -> bool:
 	return AttributeID.get_validity(_get_url_id(color)) != Attribute.NameValidityLevel.INVALID
 
 static func _get_url_id(stripped_color: String) -> String:
-	return stripped_color.substr(4,
-			stripped_color.length() - 5).strip_edges().right(-1)
+	return stripped_color.substr(4, stripped_color.length() - 5).strip_edges().right(-1)
 
 # URL doesn't have a color interpretation, so it'll give the backup.
 static func text_to_color(color: String, backup := Color.BLACK,
@@ -126,10 +116,8 @@ allow_alpha := false) -> Color:
 			return Color.from_rgba8(clampi(r, 0, 255), clampi(g, 0, 255), clampi(b, 0, 255))
 		else:
 			var a3 := args[3].strip_edges(false, true)
-			var a := int(a3.to_float() * 255) if _is_valid_number(a3) else\
-					int(a3.left(-1).to_float() * 2.55)
-			return Color.from_rgba8(clampi(r, 0, 255), clampi(g, 0, 255), clampi(b, 0, 255),
-					clampi(a, 0, 255))
+			var a := int(a3.to_float() * 255) if _is_valid_number(a3) else int(a3.left(-1).to_float() * 2.55)
+			return Color.from_rgba8(clampi(r, 0, 255), clampi(g, 0, 255), clampi(b, 0, 255), clampi(a, 0, 255))
 	elif is_valid_hsl(color, allow_alpha):
 		var args_start_pos := color.find("(") + 1
 		var inside_brackets := color.substr(args_start_pos, color.length() - args_start_pos - 1)
@@ -144,10 +132,8 @@ allow_alpha := false) -> Color:
 			return Color.from_rgba8(hsl_get_r(h, s, l), hsl_get_g(h, s, l), hsl_get_b(h, s, l))
 		else:
 			var a3 := args[3].strip_edges(false, true)
-			var a := int(a3.to_float() * 255) if _is_valid_number(a3) else\
-					int(a3.left(-1).to_float() * 2.55)
-			return Color.from_rgba8(hsl_get_r(h, s, l), hsl_get_g(h, s, l), hsl_get_b(h, s, l),
-					clampi(a, 0, 255))
+			var a := int(a3.to_float() * 255) if _is_valid_number(a3) else int(a3.left(-1).to_float() * 2.55)
+			return Color.from_rgba8(hsl_get_r(h, s, l), hsl_get_g(h, s, l), hsl_get_b(h, s, l), clampi(a, 0, 255))
 	elif is_valid_hex(color, allow_alpha):
 		return Color.from_string(color, backup)
 	else:
@@ -159,8 +145,7 @@ static func are_colors_same(col1: String, col2: String) -> bool:
 	# Handle color keywords that can't be represented as hex.
 	if col1 == col2:
 		return true
-	elif col1 == "none" or col2 == "none" or col1 == "currentColor" or\
-	col2 == "currentColor":
+	elif col1 == "none" or col2 == "none" or col1 == "currentColor" or col2 == "currentColor":
 		return false
 	else:
 		var is_col1_url := is_valid_url(col1)
@@ -191,8 +176,7 @@ static func are_colors_same(col1: String, col2: String) -> bool:
 # Helpers
 static func _is_valid_number_or_percentage(numstr: String) -> bool:
 	numstr = numstr.strip_edges()
-	return numstr.is_valid_float() or (not numstr.is_empty() and numstr[-1] == "%" and\
-			numstr.left(-1).is_valid_float())
+	return numstr.is_valid_float() or (not numstr.is_empty() and numstr[-1] == "%" and numstr.left(-1).is_valid_float())
 
 static func _is_valid_number(numstr: String) -> bool:
 	return numstr.strip_edges().is_valid_float()

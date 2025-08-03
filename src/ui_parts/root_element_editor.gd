@@ -84,8 +84,7 @@ func update_editable() -> void:
 	
 	var is_width_valid := State.root_element.has_attribute("width")
 	var is_height_valid := State.root_element.has_attribute("height")
-	var is_viewbox_valid: bool = State.root_element.has_attribute("viewBox") and\
-			State.root_element.get_attribute("viewBox").get_list_size() >= 4
+	var is_viewbox_valid: bool = State.root_element.has_attribute("viewBox") and State.root_element.get_attribute("viewBox").get_list_size() >= 4
 	
 	width_button.set_pressed_no_signal(is_width_valid)
 	height_button.set_pressed_no_signal(is_height_valid)
@@ -128,15 +127,13 @@ func _on_viewbox_edit_y_value_changed(new_value: float) -> void:
 		State.queue_svg_save()
 
 func _on_viewbox_edit_w_value_changed(new_value: float) -> void:
-	if State.root_element.has_attribute("viewBox") and\
-	State.root_element.get_attribute("viewBox").get_list_element(2) != new_value:
+	if State.root_element.has_attribute("viewBox") and State.root_element.get_attribute("viewBox").get_list_element(2) != new_value:
 		State.root_element.viewbox.size.x = new_value
 		State.root_element.get_attribute("viewBox").set_list_element(2, new_value)
 		State.queue_svg_save()
 
 func _on_viewbox_edit_h_value_changed(new_value: float) -> void:
-	if State.root_element.has_attribute("viewBox") and\
-	State.root_element.get_attribute("viewBox").get_list_element(3) != new_value:
+	if State.root_element.has_attribute("viewBox") and State.root_element.get_attribute("viewBox").get_list_element(3) != new_value:
 		State.root_element.viewbox.size.y = new_value
 		State.root_element.get_attribute("viewBox").set_list_element(3, new_value)
 		State.queue_svg_save()
@@ -169,8 +166,7 @@ func _on_viewbox_button_toggled(toggled_on: bool) -> void:
 				ListParser.rect_to_list(State.root_element.viewbox))
 		State.queue_svg_save()
 	else:
-		if State.root_element.has_attribute("width") and\
-		State.root_element.has_attribute("height"):
+		if State.root_element.has_attribute("width") and State.root_element.has_attribute("height"):
 			State.root_element.set_attribute("viewBox", "")
 			State.queue_svg_save()
 		else:

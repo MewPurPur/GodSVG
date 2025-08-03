@@ -804,8 +804,7 @@ const SHORTCUT_PANEL_MAX_SLOTS = 6
 	set(new_value):
 		# Validation
 		for key in new_value:
-			if key < 0 or key >= SHORTCUT_PANEL_MAX_SLOTS or\
-			not new_value[key] in ShortcutUtils.get_all_actions():
+			if key < 0 or key >= SHORTCUT_PANEL_MAX_SLOTS or not new_value[key] in ShortcutUtils.get_all_actions():
 				new_value.erase(key)
 		# Main part
 		if _shortcut_panel_slots != new_value:
@@ -1008,8 +1007,7 @@ func remove_active_tab() -> void:
 	remove_tab(_active_tab_index)
 
 func move_tab(old_idx: int, new_idx: int) -> void:
-	if old_idx == new_idx or old_idx < 0 or old_idx > get_tab_count() or\
-	new_idx < 0 or new_idx > get_tab_count():
+	if old_idx == new_idx or old_idx < 0 or old_idx > get_tab_count() or new_idx < 0 or new_idx > get_tab_count():
 		return
 	
 	var tab: TabData = _tabs.pop_at(old_idx)
@@ -1033,8 +1031,7 @@ enum LayoutLocation {NONE, EXCLUDED, TOP_LEFT, BOTTOM_LEFT}
 				# Ensure arrays correspond to layout parts.
 				var arr := new_value[key]
 				for i in range(arr.size() - 1, -1, -1):
-					if not arr[i] is Utils.LayoutPart or arr[i] < 0 or\
-					arr[i] >= Utils.LayoutPart.size():
+					if not arr[i] is Utils.LayoutPart or arr[i] < 0 or arr[i] >= Utils.LayoutPart.size():
 						arr.remove_at(i)
 		# Ensure non-duplicate layout parts and no empty arrays.
 		var used_layout_parts: Array[Utils.LayoutPart] = []
@@ -1062,8 +1059,7 @@ enum LayoutLocation {NONE, EXCLUDED, TOP_LEFT, BOTTOM_LEFT}
 
 func set_layout_parts(location: LayoutLocation, parts: Array[Utils.LayoutPart],
 notify_layout_changed := true) -> void:
-	if (_layout.has(location) and parts == _layout[location]) or\
-	(not _layout.has(location) and parts.is_empty()):
+	if (_layout.has(location) and parts == _layout[location]) or (not _layout.has(location) and parts.is_empty()):
 		return
 	
 	if parts.is_empty():
@@ -1119,8 +1115,7 @@ func get_layout_part_index(part: Utils.LayoutPart) -> int:
 # Utility
 
 func get_validity_color(error_condition: bool, warning_condition := false) -> Color:
-	return basic_color_error if error_condition else\
-			basic_color_warning if warning_condition else basic_color_valid
+	return basic_color_error if error_condition else basic_color_warning if warning_condition else basic_color_valid
 
 func get_active_tab_dir() -> String:
 	var tab := get_active_tab()
