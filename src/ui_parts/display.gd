@@ -109,8 +109,7 @@ func sync_reference_image() ->  void:
 		reference_texture.hide()
 
 func _on_snap_button_toggled(toggled_on: bool) -> void:
-	Configs.savedata.snap = absf(Configs.savedata.snap) if toggled_on\
-			else -absf(Configs.savedata.snap)
+	Configs.savedata.snap = absf(Configs.savedata.snap) if toggled_on else -absf(Configs.savedata.snap)
 
 func _on_snap_number_edit_value_changed(new_value: float) -> void:
 	Configs.savedata.snap = new_value * signf(Configs.savedata.snap)

@@ -634,14 +634,10 @@ static func _setup_button(theme: Theme) -> void:
 	path_command_absolute_button_stylebox_normal.content_margin_right = 5.0
 	path_command_absolute_button_stylebox_normal.content_margin_top = 0.0
 	path_command_absolute_button_stylebox_normal.content_margin_bottom = 0.0
-	path_command_absolute_button_stylebox_normal.bg_color = Color("cc7a29") if\
-			ThemeUtils.is_theme_dark else Color("f2cb91")
-	path_command_absolute_button_stylebox_normal.border_color = Color("e6ae5c") if\
-			ThemeUtils.is_theme_dark else Color("ffaa33")
-	theme.set_stylebox("normal", "PathCommandAbsoluteButton",
-			path_command_absolute_button_stylebox_normal)
-	theme.set_stylebox("disabled", "PathCommandAbsoluteButton",
-			path_command_absolute_button_stylebox_normal)
+	path_command_absolute_button_stylebox_normal.bg_color = Color("cc7a29") if ThemeUtils.is_theme_dark else Color("f2cb91")
+	path_command_absolute_button_stylebox_normal.border_color = Color("e6ae5c") if ThemeUtils.is_theme_dark else Color("ffaa33")
+	theme.set_stylebox("normal", "PathCommandAbsoluteButton", path_command_absolute_button_stylebox_normal)
+	theme.set_stylebox("disabled", "PathCommandAbsoluteButton", path_command_absolute_button_stylebox_normal)
 
 	var path_command_absolute_button_stylebox_hover := path_command_absolute_button_stylebox_normal.duplicate()
 	path_command_absolute_button_stylebox_hover.bg_color = Color("d9822b") if ThemeUtils.is_theme_dark else Color("f2c279")
@@ -746,16 +742,14 @@ static func _setup_checkbox(theme: Theme) -> void:
 		<svg width="16" height="16" xmlns="http://www.w3.org/2000/svg">
 			<rect x="1" y="1" rx="2.5" height="14" width="14" fill="#%s"/>
 			<path d="M11.5 3.7 5.9 9.3 4.2 7.6 2.7 9.1l3.2 3.2L13 5.2z" fill="#%s"/>
-		</svg>""" %\
-		[soft_accent_color.to_html(false), black_or_white_counter_accent_color.to_html(false)])
+		</svg>""" % [soft_accent_color.to_html(false), black_or_white_counter_accent_color.to_html(false)])
 	)
 	theme.set_icon("checked_disabled", "CheckBox",
 		SVGTexture.create_from_string("""
 		<svg width="16" height="16" xmlns="http://www.w3.org/2000/svg">
 			<rect x="1" y="1" rx="2.5" height="14" width="14" fill="#%s" opacity=".4"/>
 			<path d="M11.5 3.7 5.9 9.3 4.2 7.6 2.7 9.1l3.2 3.2L13 5.2z" fill="#%s" opacity=".4"/>
-		</svg>""" %\
-		[soft_accent_color.lerp(gray_color, 0.2).to_html(false), black_or_white_counter_accent_color.to_html(false)])
+		</svg>""" % [soft_accent_color.lerp(gray_color, 0.2).to_html(false), black_or_white_counter_accent_color.to_html(false)])
 	)
 	theme.set_icon("unchecked", "CheckBox",
 		SVGTexture.create_from_string("""
@@ -807,16 +801,14 @@ static func _setup_checkbutton(theme: Theme) -> void:
 		<svg width="32" height="16" xmlns="http://www.w3.org/2000/svg">
 			<rect height="14" width="30" rx="7" x="1" y="1" fill="#%s"/>
 			<circle cx="24" cy="8" r="5.5" fill="#%s"/>
-		</svg>""" %\
-		[soft_accent_color.to_html(false), black_or_white_counter_accent_color.to_html(false)])
+		</svg>""" % [soft_accent_color.to_html(false), black_or_white_counter_accent_color.to_html(false)])
 	)
 	theme.set_icon("unchecked", "CheckButton",
 		SVGTexture.create_from_string("""
 		<svg width="32" height="16" xmlns="http://www.w3.org/2000/svg">
 			<rect height="14" width="30" rx="7" x="1" y="1" fill="#%s"/>
 			<circle cx="8" cy="8" r="5.5" fill="#%s"/>
-		</svg>""" %\
-		[gray_color.to_html(false), black_or_white_counter_accent_color.to_html(false)])
+		</svg>""" % [gray_color.to_html(false), black_or_white_counter_accent_color.to_html(false)])
 	)
 
 static func _setup_itemlist(theme: Theme) -> void:
@@ -883,8 +875,7 @@ static func _setup_lineedit(theme: Theme) -> void:
 	
 	var hover_stylebox := stylebox.duplicate()
 	hover_stylebox.draw_center = false
-	hover_stylebox.border_color = strong_hover_overlay_color if is_theme_dark else\
-			stronger_hover_overlay_color
+	hover_stylebox.border_color = strong_hover_overlay_color if is_theme_dark else stronger_hover_overlay_color
 	theme.set_stylebox("hover", "LineEdit", hover_stylebox)
 	
 	var focus_stylebox := stylebox.duplicate()
@@ -922,8 +913,7 @@ static func _setup_lineedit(theme: Theme) -> void:
 	
 	var left_connected_hover_stylebox := left_connected_stylebox.duplicate()
 	left_connected_hover_stylebox.draw_center = false
-	left_connected_hover_stylebox.border_color = strong_hover_overlay_color if is_theme_dark else\
-			stronger_hover_overlay_color
+	left_connected_hover_stylebox.border_color = strong_hover_overlay_color if is_theme_dark else stronger_hover_overlay_color
 	theme.set_stylebox("hover", "LeftConnectedLineEdit", left_connected_hover_stylebox)
 	
 	var left_connected_focus_stylebox := left_connected_stylebox.duplicate()
@@ -961,8 +951,7 @@ static func _setup_lineedit(theme: Theme) -> void:
 	
 	var right_connected_hover_stylebox := right_connected_stylebox.duplicate()
 	right_connected_hover_stylebox.draw_center = false
-	right_connected_hover_stylebox.border_color = strong_hover_overlay_color if is_theme_dark else\
-			stronger_hover_overlay_color
+	right_connected_hover_stylebox.border_color = strong_hover_overlay_color if is_theme_dark else stronger_hover_overlay_color
 	theme.set_stylebox("hover", "RightConnectedLineEdit", right_connected_hover_stylebox)
 	
 	var right_connected_focus_stylebox := right_connected_stylebox.duplicate()
@@ -995,8 +984,7 @@ static func _setup_lineedit(theme: Theme) -> void:
 	
 	var mini_stylebox_hover := mini_stylebox.duplicate()
 	mini_stylebox_hover.draw_center = false
-	mini_stylebox_hover.border_color = strong_hover_overlay_color if is_theme_dark else\
-			stronger_hover_overlay_color
+	mini_stylebox_hover.border_color = strong_hover_overlay_color if is_theme_dark else stronger_hover_overlay_color
 	theme.set_stylebox("hover", "MiniLineEdit", mini_stylebox_hover)
 	
 	var mini_stylebox_pressed := mini_stylebox.duplicate()
@@ -1197,8 +1185,7 @@ static func _setup_textedit(theme: Theme) -> void:
 	
 	var hover_stylebox := StyleBoxFlat.new()
 	hover_stylebox.draw_center = false
-	hover_stylebox.border_color = strong_hover_overlay_color if is_theme_dark else\
-			stronger_hover_overlay_color
+	hover_stylebox.border_color = strong_hover_overlay_color if is_theme_dark else stronger_hover_overlay_color
 	hover_stylebox.set_border_width_all(2)
 	hover_stylebox.set_corner_radius_all(5)
 	theme.set_stylebox("hover", "TextEdit", hover_stylebox)

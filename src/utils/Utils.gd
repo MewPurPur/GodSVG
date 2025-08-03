@@ -99,22 +99,18 @@ static func is_event_drag(event: InputEvent) -> bool:
 	return event is InputEventMouseMotion and event.button_mask == MOUSE_BUTTON_LEFT
 
 static func is_event_drag_start(event: InputEvent) -> bool:
-	return event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and\
-			event.is_pressed()
+	return event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.is_pressed()
 
 static func is_event_drag_end(event: InputEvent) -> bool:
-	return event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and\
-			event.is_released()
+	return event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.is_released()
 
 static func is_event_drag_cancel(event: InputEvent) -> bool:
-	return event.is_action_pressed("ui_cancel") or\
-			event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT
+	return event.is_action_pressed("ui_cancel") or event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT
 
 
 # Used to somewhat prevent unwanted inputs from triggering XNode drag & drop.
 static func mouse_filter_pass_non_drag_events(event: InputEvent) -> Control.MouseFilter:
-	return Control.MOUSE_FILTER_STOP if event is InputEventMouseMotion and\
-			event.button_mask == MOUSE_BUTTON_MASK_LEFT else Control.MOUSE_FILTER_PASS
+	return Control.MOUSE_FILTER_STOP if event is InputEventMouseMotion and event.button_mask == MOUSE_BUTTON_MASK_LEFT else Control.MOUSE_FILTER_PASS
 
 
 static func has_clipboard_web_safe() -> bool:

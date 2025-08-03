@@ -54,8 +54,7 @@ func get_bounding_box() -> Rect2:
 			"C", "S":
 				# Cubic Bezier curve
 				var v := Vector2(cmd.x, cmd.y)
-				var v1 := Vector2(cmd.x1, cmd.y1) if cmd_char == "C" else\
-						pathdata.get_implied_S_control(cmd_idx)
+				var v1 := Vector2(cmd.x1, cmd.y1) if cmd_char == "C" else pathdata.get_implied_S_control(cmd_idx)
 				var v2 := Vector2(cmd.x2, cmd.y2)
 				var cp1 := cmd.get_start_coords()
 				var cp4 := cp1 + v if relative else v
@@ -91,8 +90,7 @@ func get_bounding_box() -> Rect2:
 			"Q", "T":
 				# Quadratic Bezier curve
 				var v := Vector2(cmd.x, cmd.y)
-				var v1 := Vector2(cmd.x1, cmd.y1) if cmd_char == "Q" else\
-						pathdata.get_implied_T_control(cmd_idx)
+				var v1 := Vector2(cmd.x1, cmd.y1) if cmd_char == "Q" else pathdata.get_implied_T_control(cmd_idx)
 				
 				var cp1 := cmd.get_start_coords()
 				var cp2 := cp1 + v1 if relative else v1
@@ -167,11 +165,9 @@ func get_bounding_box() -> Rect2:
 				var extreme1 := atan2(-r.y * rot_h, r.x)
 				var extreme2 := atan2(r.y, r.x * rot_h)
 				for angle: float in [extreme1, extreme2, PI + extreme1, PI + extreme2]:
-					if (angle < theta1 or angle > theta1 + delta_theta) and\
-					(angle + TAU < theta1 or angle + TAU > theta1 + delta_theta):
+					if (angle < theta1 or angle > theta1 + delta_theta) and (angle + TAU < theta1 or angle + TAU > theta1 + delta_theta):
 						continue
-					var extreme_point := Vector2(
-							c.x + r.x * cos(angle) * cosine - r.y * sin(angle) * sine,
+					var extreme_point := Vector2(c.x + r.x * cos(angle) * cosine - r.y * sin(angle) * sine,
 							c.y + r.x * cos(angle) * sine + r.y * sin(angle) * cosine)
 					min_x = minf(min_x, extreme_point.x)
 					min_y = minf(min_y, extreme_point.y)

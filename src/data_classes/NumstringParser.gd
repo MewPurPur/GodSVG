@@ -7,15 +7,13 @@ var compress_numbers: bool
 var minimize_spacing: bool
 
 static func basic_num_to_text(num: float, is_angle := false) -> String:
-	var text := Utils.num_simple(num, Utils.MAX_ANGLE_PRECISION if is_angle\
-			else Utils.MAX_NUMERIC_PRECISION)
+	var text := Utils.num_simple(num, Utils.MAX_ANGLE_PRECISION if is_angle else Utils.MAX_NUMERIC_PRECISION)
 	if text == "-0":
 		text = "0"
 	return text
 
 func num_to_text(num: float, is_angle := false) -> String:
-	var text := Utils.num_simple(num, Utils.MAX_ANGLE_PRECISION if is_angle\
-			else Utils.MAX_NUMERIC_PRECISION)
+	var text := Utils.num_simple(num, Utils.MAX_ANGLE_PRECISION if is_angle else Utils.MAX_NUMERIC_PRECISION)
 	if compress_numbers:
 		if text.begins_with("0."):
 			text = text.right(-1)
@@ -83,8 +81,7 @@ allow_starting_comma := false) -> Array:
 	if current_index >= text_length:
 		return []
 	
-	var state := NumberJumbleParseState.OUTSIDE_NUMBER_COMMA_ALLOWED if \
-			allow_starting_comma else NumberJumbleParseState.OUTSIDE_NUMBER_COMMA_FORBIDDEN
+	var state := NumberJumbleParseState.OUTSIDE_NUMBER_COMMA_ALLOWED if allow_starting_comma else NumberJumbleParseState.OUTSIDE_NUMBER_COMMA_FORBIDDEN
 	var current_number_start_idx := -1
 	var parsed_numbers := PackedFloat64Array()
 	while true:
@@ -253,12 +250,9 @@ allow_starting_comma := false) -> Array:
 		
 		if unrecognized_symbol:
 			if current_number_start_idx >= 0 and parsed_numbers.size() == expected_count - 1 and\
-			not state in [NumberJumbleParseState.DIRECTLY_AFTER_SIGN,
-			NumberJumbleParseState.INSIDE_NUMBER_DIRECTLY_AFTER_EXPONENT,
-			NumberJumbleParseState.INSIDE_NUMBER_DIRECTLY_AFTER_LEADING_FLOATING_POINT,
-			NumberJumbleParseState.INSIDE_NUMBER_DIRECTLY_AFTER_EXPONENT_SIGN]:
-				parsed_numbers.append(text.substr(current_number_start_idx,
-						current_index - current_number_start_idx).to_float())
+			not state in [NumberJumbleParseState.DIRECTLY_AFTER_SIGN, NumberJumbleParseState.INSIDE_NUMBER_DIRECTLY_AFTER_EXPONENT,
+			NumberJumbleParseState.INSIDE_NUMBER_DIRECTLY_AFTER_LEADING_FLOATING_POINT, NumberJumbleParseState.INSIDE_NUMBER_DIRECTLY_AFTER_EXPONENT_SIGN]:
+				parsed_numbers.append(text.substr(current_number_start_idx, current_index - current_number_start_idx).to_float())
 				return [parsed_numbers, current_index]
 			elif (current_number_start_idx < 0 and parsed_numbers.size() == expected_count):
 				return [parsed_numbers, current_index]

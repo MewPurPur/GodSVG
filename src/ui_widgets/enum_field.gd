@@ -83,8 +83,7 @@ func sync() -> void:
 
 
 func _on_button_gui_input(event: InputEvent) -> void:
-	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and\
-	event.is_pressed():
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.is_pressed():
 		accept_event()
 		HandlerGUI.throw_mouse_motion_event()
 	else:

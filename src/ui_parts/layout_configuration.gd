@@ -29,8 +29,7 @@ var hovered_part := Utils.LayoutPart.NONE:
 	set(new_value):
 		if hovered_part != new_value:
 			hovered_part = new_value
-			mouse_default_cursor_shape = CURSOR_ARROW if\
-					hovered_part == Utils.LayoutPart.NONE else CURSOR_POINTING_HAND
+			mouse_default_cursor_shape = CURSOR_ARROW if hovered_part == Utils.LayoutPart.NONE else CURSOR_POINTING_HAND
 			queue_redraw()
 
 var proposed_drop_location_pivot := SaveData.LayoutLocation.NONE:
@@ -136,16 +135,14 @@ func _draw() -> void:
 		else:
 			stylebox.draw(ci, rect)
 			if proposed_drop_idx >= 0:
-				if parts_in_proposed_drop.size() > proposed_drop_idx and\
-				parts_in_proposed_drop[proposed_drop_idx] == layout_part:
+				if parts_in_proposed_drop.size() > proposed_drop_idx and parts_in_proposed_drop[proposed_drop_idx] == layout_part:
 					var drop_sb := StyleBoxFlat.new()
 					drop_sb.set_corner_radius_all(5)
 					drop_sb.draw_center = false
 					drop_sb.border_color = Configs.savedata.basic_color_valid
 					drop_sb.border_width_left = 2
 					drop_sb.draw(ci, rect)
-				elif proposed_drop_idx >= 1 and\
-				parts_in_proposed_drop.size() > proposed_drop_idx - 1 and\
+				elif proposed_drop_idx >= 1 and parts_in_proposed_drop.size() > proposed_drop_idx - 1 and\
 				parts_in_proposed_drop[proposed_drop_idx - 1] == layout_part:
 					var drop_sb := StyleBoxFlat.new()
 					drop_sb.set_corner_radius_all(5)
@@ -187,8 +184,7 @@ func _drop_data(_at_position: Vector2, data: Variant) -> void:
 	if not data == dragged_data:
 		return
 	
-	if proposed_drop_location_direction == DropDirection.INSIDE and\
-	proposed_drop_location_pivot == dragged_data.layout_location:
+	if proposed_drop_location_direction == DropDirection.INSIDE and proposed_drop_location_pivot == dragged_data.layout_location:
 		var parts := Configs.savedata.get_layout_parts(proposed_drop_location_pivot)
 		# We're just rearranging tabs.
 		parts.remove_at(dragged_data.idx)

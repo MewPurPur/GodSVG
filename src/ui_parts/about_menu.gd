@@ -47,8 +47,7 @@ func _on_tab_changed(idx: int) -> void:
 		0:
 			var app_info := get_app_info()
 			
-			%ProjectFounderLabel.text = Translator.translate("Project Founder and Manager") +\
-					": " + app_info.project_founder_and_manager
+			%ProjectFounderLabel.text = Translator.translate("Project Founder and Manager") + ": " + app_info.project_founder_and_manager
 			%DevelopersLabel.text = Translator.translate("Developers")
 			%TranslatorsLabel.text = Translator.translate("Translators")
 			
@@ -59,8 +58,7 @@ func _on_tab_changed(idx: int) -> void:
 			
 			# There can be multiple translators for a single locale.
 			for locale in TranslationServer.get_loaded_locales():
-				var credits := TranslationServer.get_translation_object(locale).get_message(
-						"translation-credits").split(",", false)
+				var credits := TranslationServer.get_translation_object(locale).get_message("translation-credits").split(",", false)
 				if credits.is_empty():
 					continue
 				
@@ -300,8 +298,7 @@ func get_app_info() -> Dictionary[String, Variant]:
 			var arr := []
 			for elem in elements:
 				var v := elem.strip_edges()
-				if (v.begins_with('"') and v.ends_with('"')) or\
-				(v.begins_with("'") and v.ends_with("'")):
+				if (v.begins_with('"') and v.ends_with('"')) or (v.begins_with("'") and v.ends_with("'")):
 					arr.append(v.substr(1, v.length() - 2))
 				elif v.is_valid_int():
 					arr.append(v.to_int())
@@ -310,8 +307,7 @@ func get_app_info() -> Dictionary[String, Variant]:
 			result[key] = arr
 		
 		else:
-			if (raw_value.begins_with('"') and raw_value.ends_with('"')) or\
-			(raw_value.begins_with("'") and raw_value.ends_with("'")):
+			if (raw_value.begins_with('"') and raw_value.ends_with('"')) or (raw_value.begins_with("'") and raw_value.ends_with("'")):
 				result[key] = raw_value.substr(1, raw_value.length() - 2)
 			elif raw_value.is_valid_int():
 				result[key] = raw_value.to_int()

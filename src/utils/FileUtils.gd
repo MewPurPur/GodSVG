@@ -155,8 +155,7 @@ static func load_reference_from_image(img: Image) -> void:
 
 
 static func _is_native_preferred() -> bool:
-	return DisplayServer.has_feature(DisplayServer.FEATURE_NATIVE_DIALOG_FILE) and\
-			Configs.savedata.use_native_file_dialog
+	return DisplayServer.has_feature(DisplayServer.FEATURE_NATIVE_DIALOG_FILE) and Configs.savedata.use_native_file_dialog
 
 static func _choose_file_name() -> String:
 	return Utils.get_file_name(Configs.savedata.get_active_tab().svg_file_path)
@@ -195,15 +194,12 @@ completion_callback: Callable, multi_select := false) -> void:
 						_start_file_import_process(files, completion_callback, extensions)
 			
 			DisplayServer.file_dialog_show(
-					TranslationUtils.get_file_dialog_select_mode_title_text(multi_select,
-					extensions), Configs.savedata.get_last_dir(), "", false,
-					DisplayServer.FILE_DIALOG_MODE_OPEN_FILES if multi_select else\
-					DisplayServer.FILE_DIALOG_MODE_OPEN_FILE, filters, native_callback)
+					TranslationUtils.get_file_dialog_select_mode_title_text(multi_select, extensions), Configs.savedata.get_last_dir(), "", false,
+					DisplayServer.FILE_DIALOG_MODE_OPEN_FILES if multi_select else DisplayServer.FILE_DIALOG_MODE_OPEN_FILE, filters, native_callback)
 		else:
 			var import_dialog := GoodFileDialogScene.instantiate()
 			import_dialog.setup(Configs.savedata.get_last_dir(), "",
-					GoodFileDialog.FileMode.MULTI_SELECT if multi_select else\
-					GoodFileDialog.FileMode.SELECT, extensions)
+					GoodFileDialog.FileMode.MULTI_SELECT if multi_select else GoodFileDialog.FileMode.SELECT, extensions)
 			HandlerGUI.add_menu(import_dialog)
 			import_dialog.files_selected.connect(
 					func(paths: PackedStringArray) -> void:
@@ -453,9 +449,8 @@ static func _close_tabs_internal(indices: Array[int]) -> void:
 		else:
 			title = Translator.translate("Save the changes?")
 			message = Translator.translate(
-					"Do you want to save the changes made to {file_name}?").format(
-					{"file_name": Configs.savedata.get_active_tab().presented_name}) + "\n\n" +\
-					Translator.translate("Your changes will be lost if you don't save them.")
+					"Do you want to save the changes made to {file_name}?").format({"file_name": Configs.savedata.get_active_tab().presented_name}) +\
+					"\n\n" + Translator.translate("Your changes will be lost if you don't save them.")
 		
 		var options_dialog := OptionsDialogScene.instantiate()
 		HandlerGUI.add_menu(options_dialog)

@@ -73,21 +73,17 @@ func _unhandled_input(event: InputEvent) -> void:
 	if State.get_viewport().gui_is_dragging():
 		return
 	
-	if event is InputEventMouseMotion and\
-	event.button_mask & (MOUSE_BUTTON_MASK_LEFT | MOUSE_BUTTON_MASK_MIDDLE):
+	if event is InputEventMouseMotion and event.button_mask & (MOUSE_BUTTON_MASK_LEFT | MOUSE_BUTTON_MASK_MIDDLE):
 		# Zooming with Ctrl + MMB.
 		if event.ctrl_pressed and event.button_mask == MOUSE_BUTTON_MASK_MIDDLE:
 			if _zoom_to == Vector2.ZERO:  # Set zoom position if starting action.
 				_zoom_to = get_mouse_position() / Vector2(size)
-			zoom_menu.set_zoom(State.zoom * (1.0 +\
-				(1 if Configs.savedata.invert_zoom else -1) *\
-				(wrap_mouse(event.relative).y if Configs.savedata.wraparound_panning else\
-				event.relative.y) / 128.0), _zoom_to)
+			zoom_menu.set_zoom(State.zoom * (1.0 + (1 if Configs.savedata.invert_zoom else -1) *\
+					(wrap_mouse(event.relative).y if Configs.savedata.wraparound_panning else event.relative.y) / 128.0), _zoom_to)
 		# Panning with LMB or MMB. This gives a reliable way to adjust the view
 		# without dragging the things on it.
 		else:
-			set_view(view.camera_unsnapped_position - (wrap_mouse(event.relative) if\
-					Configs.savedata.wraparound_panning else event.relative) / State.zoom)
+			set_view(view.camera_unsnapped_position - (wrap_mouse(event.relative) if Configs.savedata.wraparound_panning else event.relative) / State.zoom)
 	
 	elif event is InputEventPanGesture and not DisplayServer.get_name() == "Android":
 		# Zooming with Ctrl + touch?
@@ -105,8 +101,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		var zoom_dir := 0
 		
 		# Zooming with scrolling.
-		if (not event.ctrl_pressed and not event.shift_pressed and\
-		not Configs.savedata.use_ctrl_for_zoom) or\
+		if (not event.ctrl_pressed and not event.shift_pressed and not Configs.savedata.use_ctrl_for_zoom) or\
 		(event.ctrl_pressed and Configs.savedata.use_ctrl_for_zoom):
 			match event.button_index:
 				MOUSE_BUTTON_WHEEL_UP when Configs.savedata.invert_zoom: zoom_dir = -1
@@ -161,10 +156,8 @@ func adjust_view(offset := Vector2(0.5, 0.5)) -> void:
 	var old_size := last_size_adjusted
 	last_size_adjusted = size / State.zoom
 	
-	var svg_w := State.root_element.width if\
-			State.root_element.has_attribute("width") else 16384.0
-	var svg_h := State.root_element.height if\
-			State.root_element.has_attribute("height") else 16384.0
+	var svg_w := State.root_element.width if State.root_element.has_attribute("width") else 16384.0
+	var svg_h := State.root_element.height if State.root_element.has_attribute("height") else 16384.0
 	
 	var zoomed_size := BUFFER_VIEW_SPACE * size / State.zoom
 	limit_left = -zoomed_size.x
@@ -172,9 +165,8 @@ func adjust_view(offset := Vector2(0.5, 0.5)) -> void:
 	limit_top = -zoomed_size.y
 	limit_bottom = zoomed_size.y + svg_h
 	
-	set_view(Vector2(lerpf(view.camera_unsnapped_position.x, view.camera_unsnapped_position.x +\
-			old_size.x - size.x / State.zoom, offset.x), lerpf(view.camera_unsnapped_position.y,
-			view.camera_unsnapped_position.y + old_size.y - size.y / State.zoom, offset.y)))
+	set_view(Vector2(lerpf(view.camera_unsnapped_position.x, view.camera_unsnapped_position.x + old_size.x - size.x / State.zoom, offset.x),
+			lerpf(view.camera_unsnapped_position.y, view.camera_unsnapped_position.y + old_size.y - size.y / State.zoom, offset.y)))
 
 func _on_size_changed() -> void:
 	State.set_viewport_size(size)
@@ -185,9 +177,7 @@ func wrap_mouse(relative: Vector2) -> Vector2:
 	var mouse_pos := get_mouse_position()
 	
 	if not view_rect.has_point(mouse_pos):
-		warp_mouse(Vector2(fposmod(mouse_pos.x, view_rect.size.x),
-				fposmod(mouse_pos.y, view_rect.size.y)))
+		warp_mouse(Vector2(fposmod(mouse_pos.x, view_rect.size.x), fposmod(mouse_pos.y, view_rect.size.y)))
 	
 	return Vector2(fmod(relative.x + signf(relative.x) * warp_margin.x, view_rect.size.x),
-			fmod(relative.y + signf(relative.y) * warp_margin.y, view_rect.size.y)) -\
-			relative.sign() * warp_margin
+			fmod(relative.y + signf(relative.y) * warp_margin.y, view_rect.size.y)) - relative.sign() * warp_margin

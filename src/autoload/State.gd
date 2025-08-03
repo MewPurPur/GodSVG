@@ -443,8 +443,7 @@ func _clear_inner_selection_no_signal() -> void:
 
 # Clear the selected elements or the inner selection.
 func clear_all_selections() -> void:
-	if not inner_selections.is_empty() or not semi_selected_xid.is_empty() or\
-	not selected_xids.is_empty():
+	if not inner_selections.is_empty() or not semi_selected_xid.is_empty() or not selected_xids.is_empty():
 		_clear_selection_no_signal()
 		_clear_inner_selection_no_signal()
 		selection_changed.emit()
@@ -698,8 +697,7 @@ func insert_path_command_after_selection(new_command: String) -> void:
 			semi_selected_xid).get_attribute("d")
 	var last_selection: int = inner_selections.max()
 	# Z after a Z is syntactically invalid.
-	if path_attrib.get_command(last_selection) is PathCommand.CloseCommand and\
-	new_command in "Zz":
+	if path_attrib.get_command(last_selection) is PathCommand.CloseCommand and new_command in "Zz":
 		return
 	path_attrib.insert_command(last_selection + 1, new_command)
 	normal_select(semi_selected_xid, last_selection + 1)
@@ -746,8 +744,7 @@ func get_selection_context(popup_method: Callable, context: Utils.LayoutPart) ->
 		btn_arr.append(ContextPopup.create_shortcut_button("duplicate"))
 		
 		var xnode := root_element.get_xnode(selected_xids[0])
-		if selected_xids.size() == 1 and (not xnode.is_element() or\
-		(xnode.is_element() and not xnode.possible_conversions.is_empty())):
+		if selected_xids.size() == 1 and (not xnode.is_element() or (xnode.is_element() and not xnode.possible_conversions.is_empty())):
 			btn_arr.append(ContextPopup.create_button(Translator.translate("Convert To"),
 					popup_convert_to_context.bind(popup_method), false,
 					load("res://assets/icons/Reload.svg")))
@@ -869,8 +866,7 @@ func popup_insert_command_after_context(popup_method: Callable) -> void:
 		"C", "S": warned_commands = PackedStringArray(["T"])
 		"Q", "T": warned_commands = PackedStringArray(["S"])
 	
-	if (cmd_char in "Zz") or (path_attrib.get_command_count() > selection_idx + 1 and\
-	path_attrib.get_command(selection_idx + 1).command_char.to_upper() == "Z"):
+	if (cmd_char in "Zz") or (path_attrib.get_command_count() > selection_idx + 1 and path_attrib.get_command(selection_idx + 1).command_char.to_upper() == "Z"):
 		disabled_commands = PackedStringArray(["Z"])
 	
 	command_picker.mark_invalid(warned_commands, disabled_commands)

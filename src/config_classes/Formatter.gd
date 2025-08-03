@@ -63,14 +63,12 @@ func get_setting_default(setting: String) -> Variant:
 		"color_capital_hex": return false
 		
 		"xml_keep_comments": return preset == Preset.PRETTY
-		"xml_shorthand_tags": return ShorthandTags.ALWAYS if\
-				preset == Preset.COMPACT else ShorthandTags.ALL_EXCEPT_CONTAINERS
+		"xml_shorthand_tags": return ShorthandTags.ALWAYS if preset == Preset.COMPACT else ShorthandTags.ALL_EXCEPT_CONTAINERS
 		"xml_shorthand_tags_space_out_slash": return preset == Preset.PRETTY
 		"xml_pretty_formatting": return preset == Preset.PRETTY
 		"number_remove_leading_zero": return preset == Preset.COMPACT
 		"number_use_exponent_if_shorter": return preset == Preset.COMPACT
-		"color_use_named_colors": return NamedColorUse.WHEN_SHORTER if\
-				preset == Preset.COMPACT else NamedColorUse.ALWAYS
+		"color_use_named_colors": return NamedColorUse.WHEN_SHORTER if preset == Preset.COMPACT else NamedColorUse.ALWAYS
 		"pathdata_remove_spacing_after_flags": return preset == Preset.COMPACT
 		"transform_list_compress_numbers": return preset == Preset.COMPACT
 		"transform_list_minimize_spacing": return preset == Preset.COMPACT

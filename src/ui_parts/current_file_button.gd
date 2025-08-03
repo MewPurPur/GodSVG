@@ -37,6 +37,5 @@ func _on_file_button_pressed() -> void:
 
 func update_file_button() -> void:
 	var transient_tab_path := State.transient_tab_path
-	text = transient_tab_path.get_file() if not transient_tab_path.is_empty() else\
-			Configs.savedata.get_active_tab().presented_name
+	text = transient_tab_path.get_file() if not transient_tab_path.is_empty() else Configs.savedata.get_active_tab().presented_name
 	Utils.set_max_text_width(self, 140.0, 12.0)

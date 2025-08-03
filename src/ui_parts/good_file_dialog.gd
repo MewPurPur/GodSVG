@@ -139,8 +139,7 @@ func _ready() -> void:
 				mode == FileMode.MULTI_SELECT, extensions)
 	
 	close_button.text = Translator.translate("Close")
-	special_button.text = Translator.translate("Save") if\
-			mode == FileMode.SAVE else Translator.translate("Select")
+	special_button.text = Translator.translate("Save") if mode == FileMode.SAVE else Translator.translate("Select")
 	path_label.text = Translator.translate("Path") + ":"
 	
 	# Should always be safe.
@@ -191,8 +190,7 @@ func open_dir(dir: String, only_filtering_update := false) -> void:
 		
 		var item_idx := drives_list.add_item(drive_name, get_drive_icon(drive_path))
 		drives_list.set_item_icon_modulate(item_idx, ThemeUtils.tinted_contrast_color)
-		drives_list.set_item_metadata(item_idx,
-				Actions.new(Callable(), open_dir.bind(drive_path)))
+		drives_list.set_item_metadata(item_idx, Actions.new(Callable(), open_dir.bind(drive_path)))
 		if current_dir == drive_path:
 			drives_list.select(item_idx)
 	drives_list.sort_items_by_text()
@@ -220,17 +218,14 @@ func open_dir(dir: String, only_filtering_update := false) -> void:
 			continue
 		var item_idx := file_list.add_item(directory, folder_icon)
 		var dir_path := current_dir.path_join(directory)
-		file_list.set_item_metadata(item_idx, Actions.new(
-				open_dir.bind(dir_path), sync_to_selection, open_dir_context.bind(dir_path)))
+		file_list.set_item_metadata(item_idx, Actions.new(open_dir.bind(dir_path), sync_to_selection, open_dir_context.bind(dir_path)))
 	
 	for file in files:
-		if not file.get_extension() in extensions or\
-		(not search_text.is_empty() and not search_text.is_subsequence_ofn(file)):
+		if not file.get_extension() in extensions or (not search_text.is_empty() and not search_text.is_subsequence_ofn(file)):
 			continue
 		
 		var item_idx := file_list.add_item(file, null)
-		file_list.set_item_metadata(item_idx, Actions.new(
-				select_files, sync_to_selection, open_file_context))
+		file_list.set_item_metadata(item_idx, Actions.new(select_files, sync_to_selection, open_file_context))
 	# If we don't await this stuff, sometimes the item_rect we get is all wrong.
 	await file_list.draw
 	await get_tree().process_frame
@@ -259,8 +254,7 @@ func _setup_file_images() -> void:
 	var visible_end := visible_start + file_list.size.y
 	for item_idx in file_list.item_count:
 		var file_rect := file_list.get_item_rect(item_idx)
-		if !is_instance_valid(file_list.get_item_icon(item_idx)) and\
-		file_rect.end.y > visible_start and file_rect.position.y < visible_end:
+		if !is_instance_valid(file_list.get_item_icon(item_idx)) and file_rect.end.y > visible_start and file_rect.position.y < visible_end:
 			var file := file_list.get_item_text(item_idx)
 			match file.get_extension():
 				"xml":
@@ -273,8 +267,7 @@ func _setup_file_images() -> void:
 					if !is_instance_valid(img) or img.is_empty():
 						file_list.set_item_icon(item_idx, broken_file_icon)
 					else:
-						var svg_texture := SVGTexture.create_from_string(svg_text,
-								minf(item_height / img.get_width(), item_height / img.get_height()))
+						var svg_texture := SVGTexture.create_from_string(svg_text, minf(item_height / img.get_width(), item_height / img.get_height()))
 						file_list.set_item_icon(item_idx, svg_texture)
 				_:
 					var img := Image.load_from_file(current_dir.path_join(file))
@@ -337,8 +330,7 @@ func copy_file_path() -> void:
 func create_folder() -> void:
 	var create_folder_dialog := ChooseNameDialogScene.instantiate()
 	HandlerGUI.add_dialog(create_folder_dialog)
-	create_folder_dialog.setup(Translator.translate("Create new folder"),
-			_on_create_folder_finished, _create_folder_error)
+	create_folder_dialog.setup(Translator.translate("Create new folder"), _on_create_folder_finished, _create_folder_error)
 
 func _create_folder_error(text: String) -> String:
 	if text.is_empty():

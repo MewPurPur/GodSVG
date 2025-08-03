@@ -54,26 +54,21 @@ func _ready() -> void:
 	
 	# Update dimensions label.
 	dimensions = State.root_element.get_size()
-	dimensions_label.text = Translator.translate("Dimensions") + ": " +\
-			get_dimensions_text(dimensions)
+	dimensions_label.text = Translator.translate("Dimensions") + ": " + get_dimensions_text(dimensions)
 	update()
 	export_data.changed.connect(update)
 	
 	# Setup the warning for when the image is too big to have a preview.
 	var scaling_factor := texture_preview.MAX_IMAGE_DIMENSION / bigger_dimension
-	info_tooltip.tooltip_text = Translator.translate(
-			"Preview image size is limited to {dimensions}").format(
-			{"dimensions": get_dimensions_text(Vector2(
-					maxf(dimensions.x * scaling_factor, 1.0),
-					maxf(dimensions.y * scaling_factor, 1.0)), true)})
+	info_tooltip.tooltip_text = Translator.translate("Preview image size is limited to {dimensions}").format(
+			{"dimensions": get_dimensions_text(Vector2(maxf(dimensions.x * scaling_factor, 1.0), maxf(dimensions.y * scaling_factor, 1.0)), true)})
 	info_tooltip.modulate = ThemeUtils.info_icon_color
 	
 	if Configs.savedata.get_active_tab().svg_file_path.is_empty():
 		file_title.add_theme_color_override("font_color", ThemeUtils.subtle_text_color)
 		file_title.text = Configs.savedata.get_active_tab().presented_name
 	
-	final_size_label.text = Translator.translate("Size") + ": " +\
-			String.humanize_size(State.get_export_text().length())
+	final_size_label.text = Translator.translate("Size") + ": " + String.humanize_size(State.get_export_text().length())
 	%TitleLabel.text = Translator.translate("Export Configuration")
 	%FormatHBox/Label.text = Translator.translate("Format") + ":"
 	%LosslessCheckBox.text = Translator.translate("Lossless")
@@ -159,8 +154,7 @@ func _on_height_edit_value_changed(new_value: float) -> void:
 func update() -> void:
 	# Determine which fields are visible.
 	quality_related_container.visible = export_data.format in ["jpg", "jpeg", "webp"]
-	quality_hbox.visible = export_data.format in ["jpg", "jpeg"] or\
-			export_data.format == "webp" and export_data.lossy
+	quality_hbox.visible = export_data.format in ["jpg", "jpeg"] or export_data.format == "webp" and export_data.lossy
 	lossless_checkbox.visible = (export_data.format == "webp")
 	size_container.visible = export_data.format in ["png", "jpg", "jpeg", "webp"]
 	
@@ -178,8 +172,7 @@ func update() -> void:
 		# Sync width, height, and scale without affecting the upscale amount.
 		width_edit.set_value(roundi(dimensions.x * export_data.upscale_amount), false)
 		height_edit.set_value(roundi(dimensions.y * export_data.upscale_amount), false)
-		if roundi(dimensions.x * scale_edit.get_value()) != width_edit.get_value() and\
-		roundi(dimensions.y * scale_edit.get_value()) != height_edit.get_value():
+		if roundi(dimensions.x * scale_edit.get_value()) != width_edit.get_value() and roundi(dimensions.y * scale_edit.get_value()) != height_edit.get_value():
 			scale_edit.set_value(export_data.upscale_amount, false)
 		# Sync all other widgets, so they are updated on changes from UndoRedo too.
 		quality_edit.set_value(export_data.quality * 100, false)
@@ -187,8 +180,7 @@ func update() -> void:
 	format_dropdown.set_value(export_data.format, false)
 	
 	info_tooltip.visible = (export_data.format != "svg" and\
-			roundi(export_data.upscale_amount * maxf(dimensions.x, dimensions.y)) >\
-			texture_preview.MAX_IMAGE_DIMENSION)
+			roundi(export_data.upscale_amount * maxf(dimensions.x, dimensions.y)) > texture_preview.MAX_IMAGE_DIMENSION)
 	
 	clipboard_button.disabled = not ClipboardUtils.is_supported(export_data.format)
 

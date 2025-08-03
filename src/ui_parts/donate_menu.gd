@@ -48,12 +48,12 @@ func _on_margin_container_gui_input(event: InputEvent) -> void:
 	
 	var hbox_pos := hbox.position
 	
-	if (current_link == Link.GITHUB and not Rect2(hbox_pos + github_link.position - Vector2(13, 13),
-	github_link.size + Vector2(26, 26)).has_point(event.position)) or\
-	(current_link == Link.KO_FI and not Rect2(hbox_pos + ko_fi_link.position - Vector2(13, 13),
-	ko_fi_link.size + Vector2(26, 26)).has_point(event.position)) or\
-	(current_link == Link.PATREON and not Rect2(hbox_pos + patreon_link.position - Vector2(13, 13),
-	patreon_link.size + Vector2(26, 26)).has_point(event.position)):
+	var padding := Vector2(13, 13)
+	var double_padding := padding * 2.0
+	
+	if (current_link == Link.GITHUB and not Rect2(hbox_pos + github_link.position - padding, github_link.size + double_padding).has_point(event.position)) or\
+	(current_link == Link.KO_FI and not Rect2(hbox_pos + ko_fi_link.position - padding, ko_fi_link.size + double_padding).has_point(event.position)) or\
+	(current_link == Link.PATREON and not Rect2(hbox_pos + patreon_link.position - padding, patreon_link.size + double_padding).has_point(event.position)):
 		set_link(Link.NONE)
 
 
@@ -72,8 +72,7 @@ func set_link(new_link: Link) -> void:
 	match new_link:
 		Link.GITHUB:
 			title = "Github Sponsors"
-			pros = PackedStringArray(["Low extra fees", "Can donate an arbitrary amount",
-					"Includes all perks"])
+			pros = PackedStringArray(["Low extra fees", "Can donate an arbitrary amount", "Includes all perks"])
 			cons = PackedStringArray()
 		Link.KO_FI:
 			title = "Ko-Fi"

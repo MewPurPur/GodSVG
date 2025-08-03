@@ -51,8 +51,7 @@ func update_proposed_xid() -> void:
 		var xnode_rect := get_xnode_editor_rect(xnode.xid)
 		var xnode_start := xnode_rect.position.y
 		var xnode_end := xnode_rect.end.y
-		var buffer := minf(xnode_rect.size.y / 3, 26) if xnode.is_element() else\
-				xnode_rect.size.y / 2 + 1
+		var buffer := minf(xnode_rect.size.y / 3, 26) if xnode.is_element() else xnode_rect.size.y / 2 + 1
 		if y_pos < xnode_end and xnode_end < next_y:
 			next_y = xnode_end
 			next_xid = xnode.xid
@@ -67,8 +66,7 @@ func update_proposed_xid() -> void:
 	if in_top_buffer:
 		State.set_proposed_drop_xid(prev_xid)
 	elif in_bottom_buffer:
-		State.set_proposed_drop_xid(XIDUtils.get_parent_xid(next_xid) +\
-				PackedInt32Array([next_xid[-1] + 1]))
+		State.set_proposed_drop_xid(XIDUtils.get_parent_xid(next_xid) + PackedInt32Array([next_xid[-1] + 1]))
 	elif next_xid[0] >= State.root_element.get_child_count():
 		State.set_proposed_drop_xid(next_xid)
 	elif XIDUtils.is_parent_or_self(prev_xid, next_xid):
@@ -80,8 +78,7 @@ func update_proposed_xid() -> void:
 
 func _notification(what: int) -> void:
 	# TODO This stuff easily passes through on unrelated drag & drops. What to do?!
-	if is_inside_tree() and visible and HandlerGUI.menu_stack.is_empty() and\
-	HandlerGUI.popup_stack.is_empty():
+	if is_inside_tree() and visible and HandlerGUI.menu_stack.is_empty() and HandlerGUI.popup_stack.is_empty():
 		if what == NOTIFICATION_DRAG_BEGIN:
 			set_dragging(true)
 			update_proposed_xid()
@@ -92,25 +89,20 @@ func _notification(what: int) -> void:
 
 func _gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
-		if event.button_index == MOUSE_BUTTON_LEFT and event.is_pressed() and\
-		not (event.ctrl_pressed or event.shift_pressed):
+		if event.button_index == MOUSE_BUTTON_LEFT and event.is_pressed() and not (event.ctrl_pressed or event.shift_pressed):
 			State.clear_all_selections()
 		elif event.button_index == MOUSE_BUTTON_RIGHT and event.is_pressed():
 			# Find where the new element should be added.
 			var location := 0
 			var y_pos := get_local_mouse_position().y + scroll_container.scroll_vertical
-			while location < State.root_element.get_child_count() and\
-			get_xnode_editor_rect(PackedInt32Array([location])).end.y < y_pos:
+			while location < State.root_element.get_child_count() and get_xnode_editor_rect(PackedInt32Array([location])).end.y < y_pos:
 				location += 1
 			# Create the context popup.
 			var btn_array: Array[Button] = []
-			const CONST_ARR: PackedStringArray = ["path", "circle", "ellipse", "rect",
-					"line", "polygon", "polyline", "g", "linearGradient", "radialGradient",
-					"stop"]
+			const CONST_ARR: PackedStringArray = ["path", "circle", "ellipse", "rect", "line", "polygon", "polyline",
+					"g", "linearGradient", "radialGradient", "stop"]
 			for element_name in CONST_ARR:
-				var btn := ContextPopup.create_button(element_name,
-						add_element.bind(element_name, location), false,
-						DB.get_element_icon(element_name))
+				var btn := ContextPopup.create_button(element_name, add_element.bind(element_name, location), false, DB.get_element_icon(element_name))
 				btn.add_theme_font_override("font", ThemeUtils.mono_font)
 				btn_array.append(btn)
 			
@@ -140,14 +132,12 @@ func get_xnode_editor_rect(xid: PackedInt32Array, inner_index := -1) -> Rect2:
 		if not is_instance_valid(xnode_editor):
 			return Rect2()
 	
-	var xnode_pos := Vector2(xnode_editor.global_position -\
-			scroll_container.global_position) + Vector2(0, scroll_container.scroll_vertical)
+	var xnode_pos := Vector2(xnode_editor.global_position - scroll_container.global_position) + Vector2(0, scroll_container.scroll_vertical)
 	
 	if inner_index == -1:
 		return Rect2(xnode_pos, xnode_editor.size)
 	else:
-		var inner_rect: Rect2 = xnode_editor.get_inner_rect(inner_index) if\
-				State.root_element.get_xnode(xid).is_element() else Rect2()
+		var inner_rect: Rect2 = xnode_editor.get_inner_rect(inner_index) if State.root_element.get_xnode(xid).is_element() else Rect2()
 		return Rect2(xnode_pos + inner_rect.position, inner_rect.size)
 
 # This function assumes there exists an element editor for the corresponding XID.

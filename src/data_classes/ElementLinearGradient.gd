@@ -12,8 +12,7 @@ func _get_own_default(attribute_name: String) -> String:
 		_: return ""
 
 func get_percentage_handling(attribute_name: String) -> DB.PercentageHandling:
-	if get_attribute_value("gradientUnits") in ["objectBoundingBox", ""] and\
-	attribute_name in ["x1", "y1", "x2", "y2"]:
+	if get_attribute_value("gradientUnits") in ["objectBoundingBox", ""] and attribute_name in ["x1", "y1", "x2", "y2"]:
 		return DB.PercentageHandling.FRACTION
 	else:
 		return super(attribute_name)
@@ -41,11 +40,10 @@ func generate_texture() -> SVGTexture:
 	
 	if has_attribute("gradientTransform"):
 		if is_user_space_on_use:
-			svg_texture_text += """gradientTransform="scale(%f %f) %s scale(%f %f)" """ %\
-					[scaling.x, scaling.y, get_attribute_value("gradientTransform"), 1/scaling.x, 1/scaling.y]
+			svg_texture_text += """gradientTransform="scale(%f %f) %s scale(%f %f)" """ % [scaling.x, scaling.y,
+					get_attribute_value("gradientTransform"), 1 / scaling.x, 1 / scaling.y]
 		else:
-			svg_texture_text += """gradientTransform="%s" """ %\
-					get_attribute_value("gradientTransform")
+			svg_texture_text += """gradientTransform="%s" """ % get_attribute_value("gradientTransform")
 	
 	for attrib in ["spreadMethod", "gradientUnits"]:
 		if has_attribute(attrib):

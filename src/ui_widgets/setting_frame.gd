@@ -167,8 +167,7 @@ func update_widgets() -> void:
 			var show_alpha: bool = widget.enable_alpha and setting_value.a != 1.0
 			var setting_str := setting_value.to_html(show_alpha)
 			widget.value = setting_str
-			reset_button.visible = (not disabled and\
-					getter.call().to_html() != default.to_html())
+			reset_button.visible = (not disabled and getter.call().to_html() != default.to_html())
 		Type.DROPDOWN:
 			widget.set_value(getter.call())
 			reset_button.visible = (not disabled and getter.call() != default)

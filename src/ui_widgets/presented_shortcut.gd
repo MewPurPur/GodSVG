@@ -54,8 +54,7 @@ func check_shortcuts_validity() -> void:
 			if conflicts.size() > 8:
 				conflicts.resize(8)
 				conflicts.append("...")
-			shortcut_btn.tooltip_text = Translator.translate("Also used by") +\
-					":\n" + "\n".join(conflicts)
+			shortcut_btn.tooltip_text = Translator.translate("Also used by") + ":\n" + "\n".join(conflicts)
 		else:
 			shortcut_btn.remove_theme_color_override("font_disabled_color")
 			shortcut_btn.tooltip_text = ""

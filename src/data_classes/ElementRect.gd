@@ -18,12 +18,10 @@ func can_replace(new_element: String) -> bool:
 		"polygon":
 			return get_rx() == 0 and get_ry() == 0
 		"ellipse":
-			return get_rx() >= get_attribute_num("width") / 2 and\
-					get_ry() >= get_attribute_num("height") / 2
+			return get_rx() >= get_attribute_num("width") / 2 and get_ry() >= get_attribute_num("height") / 2
 		"circle":
 			var side := get_attribute_num("width")
-			return get_attribute_num("height") == side and get_rx() >= side / 2 and\
-					get_ry() >= side / 2
+			return get_attribute_num("height") == side and get_rx() >= side / 2 and get_ry() >= side / 2
 	return false
 
 func get_replacement(new_element: String) -> Element:

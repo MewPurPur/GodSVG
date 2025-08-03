@@ -26,8 +26,7 @@ func set_pos(new_pos: PackedFloat64Array) -> void:
 		new_pos[0] = element.get_attribute_num(x_name)
 	
 	if precise_pos != new_pos:
-		element.set_attribute(d_name, absf(new_pos[0] - element.get_attribute_num(x_name)\
-				if horizontal else new_pos[1] - element.get_attribute_num(y_name)))
+		element.set_attribute(d_name, absf(new_pos[0] - element.get_attribute_num(x_name) if horizontal else new_pos[1] - element.get_attribute_num(y_name)))
 		sync()
 
 func sync() -> void:

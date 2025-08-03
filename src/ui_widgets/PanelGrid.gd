@@ -63,9 +63,8 @@ func _draw() -> void:
 				text_color = ThemeUtils.dimmer_text_color
 		
 		draw_rect(box_rect, border_color, false, 1.0)
-		text_font.draw_string(ci, Vector2(pos_x + side_spacing, pos_y + top_spacing +\
-				text_font_size), items[idx], HORIZONTAL_ALIGNMENT_LEFT, -1,
-				text_font_size, text_color)
+		text_font.draw_string(ci, Vector2(pos_x + side_spacing, pos_y + top_spacing + text_font_size),
+				items[idx], HORIZONTAL_ALIGNMENT_LEFT, -1, text_font_size, text_color)
 
 
 func _gui_input(event: InputEvent) -> void:

@@ -19,8 +19,7 @@ static func num_to_text(number: float, formatter: Formatter) -> String:
 		else:
 			var numstr_abs := numstr.trim_prefix("-")
 			# Leading zeros aren't removed yet.
-			if numstr_abs.begins_with("0.00") and\
-			(not formatter.number_remove_leading_zero or numstr_abs.begins_with("0.000")):
+			if numstr_abs.begins_with("0.00") and (not formatter.number_remove_leading_zero or numstr_abs.begins_with("0.000")):
 				var is_num_negative := numstr.begins_with("-")
 				var e := 3
 				while e + 1 < numstr.length() and numstr_abs[e + 1] == "0":

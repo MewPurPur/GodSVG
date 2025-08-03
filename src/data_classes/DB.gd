@@ -163,8 +163,7 @@ static func get_recognized_attributes(element_name: String) -> Array:
 	return recognized_attributes.get(element_name, [])
 
 static func is_attribute_recognized(element_name: String, attribute_name: String) -> bool:
-	return recognized_attributes.has(element_name) and\
-			attribute_name in recognized_attributes[element_name]
+	return recognized_attributes.has(element_name) and attribute_name in recognized_attributes[element_name]
 
 static func is_child_element_valid(parent_name: String, child_name: String) -> bool:
 	if not parent_name in recognized_elements or not child_name in recognized_elements:
