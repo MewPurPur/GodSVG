@@ -120,6 +120,7 @@ script = ExtResource("9_4xrk7")
 
 [node name="ReferenceTexture" type="TextureRect" parent="ViewportPanel/VBoxContainer/ViewportContainer/Viewport"]
 visible = false
+anchors_preset = -1
 offset_right = 128.0
 offset_bottom = 128.0
 expand_mode = 1
