@@ -6,7 +6,7 @@
 [ext_resource type="Shader" uid="uid://b5e666h18rkbo" path="res://src/shaders/slider_visuals.gdshader" id="5_acxpg"]
 [ext_resource type="Texture2D" uid="uid://cvh3kwbucf2n1" path="res://assets/icons/Reload.svg" id="5_rh0xc"]
 [ext_resource type="Script" uid="uid://1hox6gd5pxku" path="res://src/ui_widgets/BetterLineEdit.gd" id="6_aqyoh"]
-[ext_resource type="Texture2D" uid="uid://stpallv5q0rb" path="res://assets/icons/backgrounds/CheckerboardMini.svg" id="6_qq1j3"]
+[ext_resource type="Texture2D" uid="uid://stpallv5q0rb" path="res://assets/icons/CheckerboardMini.svg" id="6_qq1j3"]
 [ext_resource type="Texture2D" uid="uid://brff7fx0puj6" path="res://assets/icons/Eyedropper.svg" id="6_titg4"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_wl372"]

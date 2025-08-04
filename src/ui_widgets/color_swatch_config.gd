@@ -1,6 +1,6 @@
 extends Button
 
-const checkerboard = preload("res://assets/icons/backgrounds/Checkerboard.svg")
+const checkerboard = preload("res://assets/icons/Checkerboard.svg")
 const gear_icon = preload("res://assets/icons/GearOutlined.svg")
 
 const ColorSwatchScene = preload("res://src/ui_widgets/color_swatch.tscn")

@@ -16,7 +16,7 @@ var cached_allow_none: bool
 var cached_allow_current_color: bool
 
 const ColorFieldPopupScene = preload("res://src/ui_widgets/color_field_popup.tscn")
-const checkerboard = preload("res://assets/icons/backgrounds/ColorButtonBG.svg")
+const checkerboard = preload("res://assets/icons/CheckerboardColorButton.svg")
 
 var color_popup: ColorFieldPopup
 var gradient_texture: SVGTexture

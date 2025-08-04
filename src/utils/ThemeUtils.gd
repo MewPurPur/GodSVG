@@ -172,7 +172,8 @@ static func recalculate_colors() -> void:
 	context_icon_pressed_color = max_contrast_color
 	
 	flat_button_color_disabled = Color(disabled_color.lerp(extreme_theme_color, 0.4), 0.18)
-	context_button_color_disabled = Color(Color.BLACK, maxf(0.16, 0.48 - color_difference(Color.BLACK, basic_panel_inner_color) * 2))
+	context_button_color_disabled = Color(Color.BLACK, maxf(0.16, 0.48 - color_difference(Color.BLACK, basic_panel_inner_color) * 2)) if is_theme_dark\
+			else Color(Color.BLACK, 0.05)
 	
 	subtle_flat_panel_color = base_color
 	contrast_flat_panel_color = Color(tinted_contrast_color, 0.1)

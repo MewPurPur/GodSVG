@@ -11,7 +11,7 @@
 [ext_resource type="Script" uid="uid://rqrxhe8wa6fn" path="res://src/ui_parts/tab_bar.gd" id="9_rll1m"]
 [ext_resource type="Script" uid="uid://cbajqkgudfvh0" path="res://src/ui_parts/viewport_container.gd" id="9_ryr8t"]
 [ext_resource type="Shader" uid="uid://i2y5pyhcgra2" path="res://src/shaders/zoom_shader.gdshader" id="10_x7ybk"]
-[ext_resource type="Texture2D" uid="uid://c68og6bsqt0lb" path="res://assets/icons/backgrounds/Checkerboard.svg" id="11_1bm1s"]
+[ext_resource type="Texture2D" uid="uid://c68og6bsqt0lb" path="res://assets/icons/Checkerboard.svg" id="11_1bm1s"]
 [ext_resource type="Script" uid="uid://dtplje5mhdmrj" path="res://src/ui_parts/display_texture.gd" id="12_qi23s"]
 [ext_resource type="Script" uid="uid://csqewpxr21ywy" path="res://src/ui_parts/handles_manager.gd" id="13_lwhwy"]
 
