@@ -146,7 +146,7 @@ func is_theming_default() -> bool:
 			return false
 	return true
 
-# TODO Typed Dictionary wonkiness  Dictionary[ThemePreset, String]. This one was copied
+# TODO Typed Dictionary wonkiness Dictionary[ThemePreset, String]. This one was copied
 # from an earlier similar implementation, but I didn't bother to test if it's still
 # necessary because GodSVG was disheveled while I was implementing the feature.
 static func get_theme_preset_value_text_map() -> Dictionary:

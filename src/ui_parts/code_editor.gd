@@ -35,7 +35,7 @@ func update_error(err_id: SVGParser.ParseError) -> void:
 		# When the error is shown, the code editor's theme is changed to match up.
 		if not error_bar.visible:
 			error_bar.show()
-			error_label.text = SVGParser.get_error_string(err_id)
+			error_label.text = SVGParser.get_parsing_error_string(err_id)
 			sync_theming()
 
 func sync_theming() -> void:

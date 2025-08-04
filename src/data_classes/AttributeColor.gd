@@ -68,7 +68,7 @@ func format(text: String, formatter: Formatter) -> String:
 					text = named_color_text
 	return text
 
-
+## Source: https://www.w3.org/TR/SVG11/types.html#ColorKeywords
 static func get_named_colors(include_alpha := false) -> Dictionary:
 	if include_alpha:
 		var extended_named_colors := _named_colors.duplicate()

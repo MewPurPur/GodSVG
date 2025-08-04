@@ -41,7 +41,7 @@ func _update() -> void:
 	display_rect.end.x = minf(display_rect.end.x, ceili(State.root_element.width))
 	display_rect.end.y = minf(display_rect.end.y, ceili(State.root_element.height))
 	
-	var svg_text := SVGParser.root_cutout_to_text(State.root_element, display_rect.size.x,
+	var svg_text := SVGParser.root_cutout_to_markup(State.root_element, display_rect.size.x,
 			display_rect.size.y, Rect2(State.root_element.world_to_canvas(display_rect.position),
 			display_rect.size / State.root_element.canvas_transform.get_scale()))
 	Utils.set_control_position_fixed(self, display_rect.position)
