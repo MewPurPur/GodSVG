@@ -196,11 +196,11 @@ func open_palette_options() -> void:
 	btn_arr.append(ContextPopup.create_button("Pure",
 			apply_preset.bind(Palette.Preset.PURE),
 			palette.is_same_as_preset(Palette.Preset.PURE),
-			load("res://assets/icons/PresetPure.svg")))
+			load("res://assets/icons/PresetPure.svg"), true))
 	btn_arr.append(ContextPopup.create_button("Grayscale",
 			apply_preset.bind(Palette.Preset.GRAYSCALE),
 			palette.is_same_as_preset(Palette.Preset.GRAYSCALE),
-			load("res://assets/icons/PresetGrayscale.svg")))
+			load("res://assets/icons/PresetGrayscale.svg"), true))
 	btn_arr.append(ContextPopup.create_button("Empty",
 			apply_preset.bind(Palette.Preset.EMPTY),
 			palette.is_same_as_preset(Palette.Preset.EMPTY),

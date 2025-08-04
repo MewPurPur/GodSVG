@@ -143,7 +143,7 @@ func _on_language_pressed() -> void:
 			btn_arr.append(ContextPopup.create_button(
 					TranslationUtils.get_locale_display(locale),
 					_on_language_chosen.bind(locale), is_current_locale,
-					null, Utils.num_simple(translated_count * 100.0 / strings_count, 1) + "%"))
+					null, false, Utils.num_simple(translated_count * 100.0 / strings_count, 1) + "%"))
 		else:
 			btn_arr.append(ContextPopup.create_button(
 					TranslationUtils.get_locale_display(locale),

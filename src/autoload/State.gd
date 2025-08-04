@@ -789,9 +789,8 @@ func get_selection_context(popup_method: Callable, context: Utils.LayoutPart) ->
 						# , "Move Subpath Down"
 			"polygon", "polyline":
 				if inner_selections.size() == 1:
-					btn_arr.append(ContextPopup.create_button(
-							Translator.translate("Insert After"), insert_point_after_selection,
-							false, load("res://assets/icons/Plus.svg")))
+					btn_arr.append(ContextPopup.create_button(Translator.translate("Insert After"),
+							insert_point_after_selection, false, load("res://assets/icons/Plus.svg")))
 		
 		btn_arr.append(ContextPopup.create_shortcut_button("delete"))
 	
@@ -807,8 +806,7 @@ func popup_convert_to_context(popup_method: Callable) -> void:
 		if not xnode.is_element():
 			for xnode_type in xnode.get_possible_conversions():
 				var btn := ContextPopup.create_button(BasicXNode.get_type_string(xnode_type),
-						convert_selected_xnode_to.bind(xnode_type),
-						false, DB.get_xnode_icon(xnode_type))
+						convert_selected_xnode_to.bind(xnode_type), false, DB.get_xnode_icon(xnode_type))
 				btn.add_theme_font_override("font", ThemeUtils.mono_font)
 				btn_arr.append(btn)
 		else:

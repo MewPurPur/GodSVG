@@ -4,7 +4,7 @@ class_name ContextPopup extends PanelContainer
 const arrow = preload("res://assets/icons/PopupArrow.svg")
 
 
-static func create_shortcut_button(action: String, disabled := false, custom_text := "", custom_icon: Texture2D = null) -> Button:
+static func create_shortcut_button(action: String, disabled := false, custom_text := "", custom_icon: Texture2D = null, no_modulation := false) -> Button:
 	if not InputMap.has_action(action):
 		push_error("Non-existent shortcut was passed.")
 		return
@@ -14,7 +14,7 @@ static func create_shortcut_button(action: String, disabled := false, custom_tex
 	if not is_instance_valid(custom_icon):
 		custom_icon = ShortcutUtils.get_action_icon(action)
 	var btn := create_button(custom_text, HandlerGUI.throw_action_event.bind(action),
-			disabled, custom_icon, ShortcutUtils.get_action_showcase_text(action))
+			disabled, custom_icon, no_modulation, ShortcutUtils.get_action_showcase_text(action))
 	
 	var shortcut_events := ShortcutUtils.get_action_all_valid_shortcuts(action)
 	if not shortcut_events.is_empty():
@@ -34,7 +34,7 @@ static func create_shortcut_button_without_icon(action: String, disabled := fals
 	if custom_text.is_empty():
 		custom_text = TranslationUtils.get_action_description(action, true)
 	var btn := create_button(custom_text, HandlerGUI.throw_action_event.bind(action),
-			disabled, null, ShortcutUtils.get_action_showcase_text(action))
+			disabled, null, false, ShortcutUtils.get_action_showcase_text(action))
 	
 	var shortcut_events := ShortcutUtils.get_action_all_valid_shortcuts(action)
 	if not shortcut_events.is_empty():
@@ -46,7 +46,7 @@ static func create_shortcut_button_without_icon(action: String, disabled := fals
 	
 	return btn
 
-static func create_button(text: String, press_callback: Callable, disabled := false, icon: Texture2D = null, dim_text := "") -> Button:
+static func create_button(text: String, press_callback: Callable, disabled := false, icon: Texture2D = null, no_modulation := false, dim_text := "") -> Button:
 	# Create main button.
 	var main_button := Button.new()
 	main_button.theme_type_variation = "ContextButton"
@@ -60,6 +60,12 @@ static func create_button(text: String, press_callback: Callable, disabled := fa
 	if is_instance_valid(icon):
 		main_button.add_theme_constant_override("icon_max_width", 16)
 		main_button.icon = icon
+		if no_modulation:
+			main_button.begin_bulk_theme_override()
+			main_button.add_theme_color_override("icon_normal_color", Color(1, 1, 1, 0.875))
+			main_button.add_theme_color_override("icon_hover_color", Color(1, 1, 1, 1))
+			main_button.add_theme_color_override("icon_pressed_color", Color(1, 1, 1, 1))
+			main_button.end_bulk_theme_override()
 	
 	if press_callback.is_valid():
 		main_button.pressed.connect(press_callback, CONNECT_ONE_SHOT)

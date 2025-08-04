@@ -4,7 +4,7 @@ extends LineEditButton
 const ColorEditPopup = preload("res://src/ui_widgets/color_edit_popup.gd")
 
 const ColorEditPopupScene = preload("res://src/ui_widgets/color_edit_popup.tscn")
-const checkerboard = preload("res://assets/icons/backgrounds/ColorButtonBG.svg")
+const checkerboard = preload("res://assets/icons/CheckerboardColorButton.svg")
 
 var color_picker: ColorEditPopup
 
