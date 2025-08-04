@@ -57,6 +57,6 @@ func generate_image() -> Image:
 	export_svg.set_attribute("width", export_svg.width * upscale_amount)
 	export_svg.set_attribute("height", export_svg.height * upscale_amount)
 	var img := Image.new()
-	img.load_svg_from_string(SVGParser.root_to_export_text(export_svg))
+	img.load_svg_from_string(SVGParser.root_to_export_markup(export_svg))
 	img.fix_alpha_edges()  # See godot issue 82579.
 	return img

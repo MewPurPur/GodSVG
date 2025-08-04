@@ -111,7 +111,7 @@ func _update() -> void:
 	if not _update_pending:
 		return
 	_update_pending = false
-	svg_text = SVGParser.root_to_editor_text(root_element)
+	svg_text = SVGParser.root_to_editor_markup(root_element)
 	svg_changed.emit()
 
 
@@ -133,7 +133,7 @@ func sync_to_editor_formatter() -> void:
 
 func sync_elements() -> void:
 	var text_to_parse := svg_text if unstable_svg_text.is_empty() else unstable_svg_text
-	var svg_parse_result := SVGParser.text_to_root(text_to_parse)
+	var svg_parse_result := SVGParser.markup_to_root(text_to_parse)
 	parsing_finished.emit(svg_parse_result.error)
 	if svg_parse_result.error == SVGParser.ParseError.OK:
 		svg_text = unstable_svg_text
@@ -174,7 +174,7 @@ func optimize() -> void:
 	queue_svg_save()
 
 func get_export_text() -> String:
-	return SVGParser.root_to_export_text(root_element)
+	return SVGParser.root_to_export_markup(root_element)
 
 
 signal hover_changed

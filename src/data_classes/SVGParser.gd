@@ -1,11 +1,12 @@
+## Parser for SVG markup.
 @abstract class_name SVGParser
 
-## Checks if the text describes an SVG without child elements.
-static func text_check_is_root_empty(text: String) -> bool:
-	if text.is_empty():
+## Checks if the SVG markup describes an SVG element without child elements.
+static func markup_check_is_root_empty(markup: String) -> bool:
+	if markup.is_empty():
 		return false
 	
-	var buffer := text.to_utf8_buffer()
+	var buffer := markup.to_utf8_buffer()
 	var parser := XMLParser.new()
 	parser.open_buffer(buffer)
 	
@@ -27,65 +28,67 @@ static func text_check_is_root_empty(text: String) -> bool:
 	# If the SVG tag isn't immediately closed, then check if the next XML node is an </svg> element end.
 	return describes_svg and parser.read() == OK and parser.get_node_type() == XMLParser.NODE_ELEMENT_END and parser.get_node_name() == "svg"
 
-## Creates a new SVG with a custom viewport that shows only a rectangular section of the original.
-static func root_cutout_to_text(root_element: ElementRoot, custom_width: float, custom_height: float, custom_viewbox: Rect2) -> String:
-	# Build a new root element, set it up, and convert it to text.
+## Creates markup for an SVG that only represents a rectangular cutout of the original.
+static func root_cutout_to_markup(root_element: ElementRoot, custom_width: float, custom_height: float, custom_viewbox: Rect2) -> String:
+	# Build a new root element, set it up, and convert it to markup.
 	var new_root_element: ElementRoot = root_element.duplicate(false)
 	new_root_element.set_attribute("viewBox", ListParser.rect_to_list(custom_viewbox))
 	new_root_element.set_attribute("width", custom_width)
 	new_root_element.set_attribute("height", custom_height)
-	var text := _xnode_to_text(new_root_element, Configs.savedata.editor_formatter)
-	# Since we only converted a single root element to text, it would have closed.
-	# Remove the closure and add all the other elements' text before closing it manually.
-	text = text.left(maxi(text.find("/>"), text.find("</svg>"))) + ">"
+	var markup := _xnode_to_markup(new_root_element, Configs.savedata.editor_formatter)
+	# Since we only converted a single root element to markup, it would have closed.
+	# Remove the closure and add all the other elements' markup before closing it manually.
+	markup = markup.left(maxi(markup.find("/>"), markup.find("</svg>"))) + ">"
 	for child_idx in root_element.get_child_count():
-		text += _xnode_to_text(root_element.get_xnode(PackedInt32Array([child_idx])), Configs.savedata.editor_formatter, true)
-	return text + "</svg>"
+		markup += _xnode_to_markup(root_element.get_xnode(PackedInt32Array([child_idx])), Configs.savedata.editor_formatter, true)
+	return markup + "</svg>"
 
 
-## Converts the child elements of a root element into text, excluding the svg tag itself.
-static func root_children_to_text(root_element: ElementRoot, formatter: Formatter) -> String:
-	var text := ""
+## Converts the child elements of a root element into markup, excluding the root tag itself.
+static func root_children_to_markup(root_element: ElementRoot, formatter: Formatter) -> String:
+	var markup := ""
 	for child in root_element.get_children():
-		var new_text := _xnode_to_text(child, formatter)
+		var new_markup := _xnode_to_markup(child, formatter)
 		# Remove one level of indentation from each line to maintain proper formatting.
-		var lines := new_text.split('\n')
+		var lines := new_markup.split('\n')
 		for i in lines.size():
 			lines[i] = lines[i].trim_prefix(formatter.get_indent_string())
-		text += '\n'.join(lines)
-	return text.trim_suffix('\n')
+		markup += '\n'.join(lines)
+	return markup.trim_suffix('\n')
 
-static func root_to_editor_text(root_element: ElementRoot) -> String:
-	return root_to_text(root_element, Configs.savedata.editor_formatter)
+## Converts a root element into markup using the editor formatter.
+static func root_to_editor_markup(root_element: ElementRoot) -> String:
+	return root_to_markup(root_element, Configs.savedata.editor_formatter)
 
-static func root_to_export_text(root_element: ElementRoot) -> String:
-	return root_to_text(root_element, Configs.savedata.export_formatter)
+## Converts a root element into markup using the export formatter.
+static func root_to_export_markup(root_element: ElementRoot) -> String:
+	return root_to_markup(root_element, Configs.savedata.export_formatter)
 
-## Converts a root element into text using a specific formatter.
-static func root_to_text(root_element: ElementRoot, formatter: Formatter) -> String:
-	var text := _xnode_to_text(root_element, formatter).trim_suffix('\n')
+## Converts a root element into markup using an arbitrary formatter.
+static func root_to_markup(root_element: ElementRoot, formatter: Formatter) -> String:
+	var markup := _xnode_to_markup(root_element, formatter).trim_suffix('\n')
 	if formatter.xml_add_trailing_newline:
-		text += "\n"
-	return text
+		markup += "\n"
+	return markup
 
-## The main entry point for converting any XML node and its descendants into text.
-## If make_attributes_absolute is true, converts percentage-based attributes into absolute values so cutouts can be safely made.
-static func _xnode_to_text(xnode: XNode, formatter: Formatter, make_attributes_absolute := false) -> String:
-	var text := ""
+# The main entry point for converting any XML node and its descendants into markup.
+# If make_attributes_absolute is true, converts percentage-based attributes into absolute values so cutouts can be safely made.
+static func _xnode_to_markup(xnode: XNode, formatter: Formatter, make_attributes_absolute := false) -> String:
+	var markup := ""
 	if formatter.xml_pretty_formatting:
-		text = formatter.get_indent_string().repeat(xnode.xid.size())
+		markup = formatter.get_indent_string().repeat(xnode.xid.size())
 	
 	if not xnode.is_element():
 		if (not formatter.xml_keep_comments and xnode.get_type() == BasicXNode.NodeType.COMMENT):
 			return ""
 		
 		match xnode.get_type():
-			BasicXNode.NodeType.COMMENT: text += "<!--%s-->" % xnode.get_text()
-			BasicXNode.NodeType.CDATA: text += "<![CDATA[%s]]>" % xnode.get_text()
-			_: text += xnode.get_text()
+			BasicXNode.NodeType.COMMENT: markup += "<!--%s-->" % xnode.get_text()
+			BasicXNode.NodeType.CDATA: markup += "<![CDATA[%s]]>" % xnode.get_text()
+			_: markup += xnode.get_text()
 		if formatter.xml_pretty_formatting:
-			text += "\n"
-		return text
+			markup += "\n"
+		return markup
 	
 	var element := xnode as Element
 	var attribute_array := element.get_all_attributes()
@@ -113,32 +116,32 @@ static func _xnode_to_text(xnode: XNode, formatter: Formatter, make_attributes_a
 				new_attrib.set_num(element.get_attribute_num(attrib.name))
 				attribute_array[attrib_idx] = new_attrib
 	
-	text += '<' + element.name
+	markup += '<' + element.name
 	for attribute: Attribute in attribute_array:
 		var value := attribute.get_formatted_value(formatter)
 		
 		if not '"' in value:
-			text += ' %s="%s"' % [attribute.name, value]
+			markup += ' %s="%s"' % [attribute.name, value]
 		else:
-			text += " %s='%s'" % [attribute.name, value]
+			markup += " %s='%s'" % [attribute.name, value]
 	
 	if not element.has_children() and (formatter.xml_shorthand_tags == Formatter.ShorthandTags.ALWAYS or\
 	(formatter.xml_shorthand_tags == Formatter.ShorthandTags.ALL_EXCEPT_CONTAINERS and not element.name in Formatter.container_elements)):
-		text += ' />' if formatter.xml_shorthand_tags_space_out_slash else '/>'
+		markup += ' />' if formatter.xml_shorthand_tags_space_out_slash else '/>'
 		if formatter.xml_pretty_formatting:
-			text += '\n'
+			markup += '\n'
 	else:
-		text += '>'
+		markup += '>'
 		if formatter.xml_pretty_formatting:
-			text += '\n'
+			markup += '\n'
 		for child in element.get_children():
-			text += _xnode_to_text(child, formatter, make_attributes_absolute)
+			markup += _xnode_to_markup(child, formatter, make_attributes_absolute)
 		if formatter.xml_pretty_formatting:
-			text += formatter.get_indent_string().repeat(element.xid.size())
-		text += '</%s>' % element.name
+			markup += formatter.get_indent_string().repeat(element.xid.size())
+		markup += '</%s>' % element.name
 		if formatter.xml_pretty_formatting:
-			text += '\n'
-	return text
+			markup += '\n'
+	return markup
 
 
 enum ParseError {OK, ERR_NOT_SVG, ERR_IMPROPER_NESTING}
@@ -151,7 +154,8 @@ class ParseResult:
 		error = err_id
 		svg = result
 
-static func get_error_string(parse_error: ParseError) -> String:
+## Returns the human-readable text that should be shown to users to represent a ParseError.
+static func get_parsing_error_string(parse_error: ParseError) -> String:
 	match parse_error:
 		ParseError.ERR_NOT_SVG:
 			return Translator.translate("Doesn’t describe an SVG.")
@@ -161,11 +165,11 @@ static func get_error_string(parse_error: ParseError) -> String:
 
 ## The main entry point for converting SVG markup into the internal element tree structure.
 ## Returns a parse result, which contains either the ElementRoot or an error from an enum.
-static func text_to_root(text: String) -> ParseResult:
-	if text.is_empty():
+static func markup_to_root(markup: String) -> ParseResult:
+	if markup.is_empty():
 		return ParseResult.new(ParseError.ERR_NOT_SVG)
 	
-	var buffer := text.to_utf8_buffer()
+	var buffer := markup.to_utf8_buffer()
 	var root_element := ElementRoot.new()
 	var parser := XMLParser.new()
 	parser.open_buffer(buffer)

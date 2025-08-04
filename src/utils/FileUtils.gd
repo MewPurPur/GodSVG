@@ -28,8 +28,8 @@ static func compare_svg_to_disk_contents(idx := -1) -> FileState:
 		return FileState.DOES_NOT_EXIST
 	# Check if importing the file's text into GodSVG would change the current SVG text.
 	# Avoid the parsing if checking the active tab.
-	var state_svg_text := State.svg_text if idx == -1 else SVGParser.root_to_editor_text(SVGParser.text_to_root(tab.get_true_svg_text()).svg)
-	if state_svg_text == SVGParser.root_to_editor_text(SVGParser.text_to_root(content).svg):
+	var state_svg_text := State.svg_text if idx == -1 else SVGParser.root_to_editor_markup(SVGParser.markup_to_root(tab.get_true_svg_text()).svg)
+	if state_svg_text == SVGParser.root_to_editor_markup(SVGParser.markup_to_root(content).svg):
 		return FileState.SAME
 	else:
 		return FileState.DIFFERENT

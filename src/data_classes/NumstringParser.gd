@@ -1,17 +1,19 @@
-# A parser for compressed number arrays, used in pathdata and transform lists.
-# Also for general utility around parsing numeric text.
-# This parser has situational configuration options, so it isn't abstract.
+## Parser for numeric text, including the compressed number arrays used in pathdata and transform lists.
+## This parser has situational configuration options, so it's not abstract.
 class_name NumstringParser
 
 var compress_numbers: bool
 var minimize_spacing: bool
 
+## Converts a number into text for the individual fields representing path parameters.
+## Those aren't represent anything directly, so they are free to be made readable and not care about formatters.
 static func basic_num_to_text(num: float, is_angle := false) -> String:
 	var text := Utils.num_simple(num, Utils.MAX_ANGLE_PRECISION if is_angle else Utils.MAX_NUMERIC_PRECISION)
 	if text == "-0":
 		text = "0"
 	return text
 
+## Converts a number into text based on the parser configuration.
 func num_to_text(num: float, is_angle := false) -> String:
 	var text := Utils.num_simple(num, Utils.MAX_ANGLE_PRECISION if is_angle else Utils.MAX_NUMERIC_PRECISION)
 	if compress_numbers:
@@ -23,6 +25,7 @@ func num_to_text(num: float, is_angle := false) -> String:
 		text = "0"
 	return text
 
+## Combines an array of numeric strings based on the parser configuration.
 func numstr_arr_to_text(numstr_arr: PackedStringArray) -> String:
 	var output := ""
 	for i in numstr_arr.size() - 1:
@@ -34,18 +37,14 @@ func numstr_arr_to_text(numstr_arr: PackedStringArray) -> String:
 	return output + numstr_arr[-1]
 
 
-# This function evaluates expressions even if "," or ";" is used as a decimal separator.
+## Evaluates expressions, so that when the user types "-2.2 + 4" or "sqrt(2)" it can be evaluated by GodSVG.
+## Also works when "," is used as a decimal separator.
 static func evaluate(text: String) -> float:
 	text = text.strip_edges()
 	text = text.trim_prefix("+")  # Expression can't handle unary plus.
 	
 	var expr := Expression.new()
 	var err := expr.parse(text.replace(",", "."))
-	if err == OK:
-		var result: Variant = expr.execute()
-		if not expr.has_execute_failed() and typeof(result) in [TYPE_FLOAT, TYPE_INT]:
-			return result
-	err = expr.parse(text.replace(";", "."))
 	if err == OK:
 		var result: Variant = expr.execute()
 		if not expr.has_execute_failed() and typeof(result) in [TYPE_FLOAT, TYPE_INT]:
@@ -71,11 +70,9 @@ enum NumberJumbleParseState {
 	INSIDE_NUMBER_INDIRECTLY_AFTER_EXPONENT
 }
 
-# Returns an array with a PackedFloat64Array and an int for the final current index.
-# Returns an empty array if there's a parsing error.
+## Returns an array with a PackedFloat64Array and an int for the final current index. Returns an empty array if there's a parsing error.
 # TODO In 4.5, I had to avoid the match keyword in this parser for performance: #75682.
-static func text_to_number_arr(text: String, current_index: int, expected_count: int,
-allow_starting_comma := false) -> Array:
+static func text_to_number_arr(text: String, current_index: int, expected_count: int, allow_starting_comma := false) -> Array:
 	var text_length := text.length()
 	if current_index >= text_length:
 		return []

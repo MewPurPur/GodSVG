@@ -265,7 +265,7 @@ func _commands_draw() -> void:
 				rect.position.x = rect.end.x + 3
 				draw_numfield(rect, "ry", cmd)
 				rect.position.x = rect.end.x + 4
-				draw_numfield(rect, "rot", cmd)
+				draw_angle_numfield(rect, cmd)
 				rect.position.x = rect.end.x + 4
 				rect.size.x = 19
 				var flag_field := FlagFieldScene.instantiate()
@@ -290,6 +290,12 @@ func _commands_draw() -> void:
 			"M", "L", "T": draw_numfield_arr(rect, [3], ["x", "y"], cmd)
 			"H": draw_numfield(rect, "x", cmd)
 			"V": draw_numfield(rect, "y", cmd)
+
+func draw_angle_numfield(rect: Rect2, path_command: PathCommand) -> void:
+	mini_line_edit_stylebox.draw(ci, rect)
+	ThemeUtils.mono_font.draw_string(ci, rect.position + Vector2(3, 13),
+			NumstringParser.basic_num_to_text(path_command.get("rot"), true),
+			HORIZONTAL_ALIGNMENT_LEFT, rect.size.x - 6, mini_line_edit_font_size, mini_line_edit_font_color)
 
 func draw_numfield(rect: Rect2, property: String, path_command: PathCommand) -> void:
 	mini_line_edit_stylebox.draw(ci, rect)

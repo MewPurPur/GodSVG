@@ -14,9 +14,9 @@ func _ready() -> void:
 
 func set_value(new_value: float, no_signal := false) -> void:
 	if not is_finite(new_value):
-		text = NumstringParser.basic_num_to_text(_value)
+		text = NumstringParser.basic_num_to_text(_value, mode == Mode.ANGLE or mode == Mode.HALF_ANGLE)
 		return
-	text = NumstringParser.basic_num_to_text(new_value)
+	text = NumstringParser.basic_num_to_text(new_value, mode == Mode.ANGLE or mode == Mode.HALF_ANGLE)
 	if new_value != _value:
 		_value = new_value
 		if not no_signal:

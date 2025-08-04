@@ -62,12 +62,10 @@ func _save_svg_text() -> void:
 	if active:
 		FileAccess.open(edited_file_path, FileAccess.WRITE).store_string(_svg_text)
 	else:
-		var edited_text_parse_result := SVGParser.text_to_root(
-				FileAccess.get_file_as_string(get_edited_file_path()))
+		var edited_text_parse_result := SVGParser.markup_to_root(FileAccess.get_file_as_string(get_edited_file_path()))
 		
 		if is_instance_valid(edited_text_parse_result.svg):
-			FileAccess.open(edited_file_path, FileAccess.WRITE).store_string(
-					SVGParser.root_to_export_text(edited_text_parse_result.svg))
+			FileAccess.open(edited_file_path, FileAccess.WRITE).store_string(SVGParser.root_to_export_markup(edited_text_parse_result.svg))
 	queue_sync()
 
 func save_to_bound_path() -> void:
@@ -155,15 +153,15 @@ func _sync() -> void:
 		if not fully_loaded:
 			marked_unsaved = false
 		else:
-			var edited_text_parse_result := SVGParser.text_to_root(
+			var edited_text_parse_result := SVGParser.markup_to_root(
 					FileAccess.get_file_as_string(get_edited_file_path()))
 			
 			if is_instance_valid(edited_text_parse_result.svg):
-				marked_unsaved = FileAccess.get_file_as_string(svg_file_path) != SVGParser.root_to_export_text(edited_text_parse_result.svg)
+				marked_unsaved = FileAccess.get_file_as_string(svg_file_path) != SVGParser.root_to_export_markup(edited_text_parse_result.svg)
 			else:
 				marked_unsaved = true
 	
-	elif not FileAccess.file_exists(get_edited_file_path()) or SVGParser.text_check_is_root_empty(get_true_svg_text()):
+	elif not FileAccess.file_exists(get_edited_file_path()) or SVGParser.markup_check_is_root_empty(get_true_svg_text()):
 		empty_unsaved = true
 		marked_unsaved = false
 		presented_name = "[ %s ]" % Translator.translate("Empty")

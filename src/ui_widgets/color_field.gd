@@ -141,8 +141,7 @@ func _draw() -> void:
 	# Draw the button border.
 	if is_instance_valid(temp_button) and temp_button.button_pressed:
 		draw_button_border("pressed")
-	elif is_instance_valid(temp_button) and temp_button.get_global_rect().has_point(
-	get_viewport().get_mouse_position()):
+	elif is_instance_valid(temp_button) and temp_button.get_global_rect().has_point(get_viewport().get_mouse_position()):
 		draw_button_border("hover")
 	else:
 		draw_button_border("normal")
@@ -152,8 +151,7 @@ func _on_color_picked(new_color: String, close_picker: bool) -> void:
 	set_value(new_color, close_picker)
 
 func is_valid(color_text: String) -> bool:
-	return ColorParser.is_valid(ColorParser.add_hash_if_hex(color_text), false,
-			cached_allow_url, cached_allow_none, cached_allow_current_color)
+	return ColorParser.is_valid(ColorParser.add_hash_if_hex(color_text), false, cached_allow_url, cached_allow_none, cached_allow_current_color)
 
 
 func _on_text_changed(new_text: String) -> void:
