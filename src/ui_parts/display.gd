@@ -127,8 +127,7 @@ func _on_show_debug_changed() -> void:
 func update_debug() -> void:
 	var debug_text := ""
 	debug_text += "FPS: %d\n" % Performance.get_monitor(Performance.TIME_FPS)
-	debug_text += "Static Mem: %s\n" % String.humanize_size(int(Performance.get_monitor(
-			Performance.MEMORY_STATIC)))
+	debug_text += "Static Mem: %s\n" % String.humanize_size(int(Performance.get_monitor(Performance.MEMORY_STATIC)))
 	debug_text += "Nodes: %d\n" % Performance.get_monitor(Performance.OBJECT_NODE_COUNT)
 	debug_text += "Stray nodes: %d\n" % Performance.get_monitor(Performance.OBJECT_ORPHAN_NODE_COUNT)
 	debug_text += "Objects: %d\n" % Performance.get_monitor(Performance.OBJECT_COUNT)

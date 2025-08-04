@@ -1,6 +1,6 @@
 @abstract class_name SVGParser
 
-# For checking if an SVG is empty. If the text errors out, it's as if the SVG is empty.
+## Checks if the text describes an SVG without child elements.
 static func text_check_is_root_empty(text: String) -> bool:
 	if text.is_empty():
 		return false
@@ -18,38 +18,37 @@ static func text_check_is_root_empty(text: String) -> bool:
 			continue
 		
 		describes_svg = true
-		
 		var node_offset := parser.get_node_offset()
 		var closure_pos := _find_closure_string_in_utf8_buffer(buffer, node_offset)
 		if closure_pos != -1 and closure_pos <= buffer.find(ord(">"), node_offset):
-			return true
+			return true  # If the svg tag is immediately closed, i.e. <svg/>, then it's empty.
 		break
 	
-	if not describes_svg:
-		return false
-	
-	if parser.read() == OK:
-		if parser.get_node_type() == XMLParser.NODE_ELEMENT_END:
-			return parser.get_node_name() == "svg"
-	return false
+	# If the SVG tag isn't immediately closed, then check if the next XML node is an </svg> element end.
+	return describes_svg and parser.read() == OK and parser.get_node_type() == XMLParser.NODE_ELEMENT_END and parser.get_node_name() == "svg"
 
-# For rendering only a section of the SVG.
+## Creates a new SVG with a custom viewport that shows only a rectangular section of the original.
 static func root_cutout_to_text(root_element: ElementRoot, custom_width: float, custom_height: float, custom_viewbox: Rect2) -> String:
+	# Build a new root element, set it up, and convert it to text.
 	var new_root_element: ElementRoot = root_element.duplicate(false)
 	new_root_element.set_attribute("viewBox", ListParser.rect_to_list(custom_viewbox))
 	new_root_element.set_attribute("width", custom_width)
 	new_root_element.set_attribute("height", custom_height)
 	var text := _xnode_to_text(new_root_element, Configs.savedata.editor_formatter)
+	# Since we only converted a single root element to text, it would have closed.
+	# Remove the closure and add all the other elements' text before closing it manually.
 	text = text.left(maxi(text.find("/>"), text.find("</svg>"))) + ">"
 	for child_idx in root_element.get_child_count():
 		text += _xnode_to_text(root_element.get_xnode(PackedInt32Array([child_idx])), Configs.savedata.editor_formatter, true)
 	return text + "</svg>"
 
 
+## Converts the child elements of a root element into text, excluding the svg tag itself.
 static func root_children_to_text(root_element: ElementRoot, formatter: Formatter) -> String:
 	var text := ""
 	for child in root_element.get_children():
 		var new_text := _xnode_to_text(child, formatter)
+		# Remove one level of indentation from each line to maintain proper formatting.
 		var lines := new_text.split('\n')
 		for i in lines.size():
 			lines[i] = lines[i].trim_prefix(formatter.get_indent_string())
@@ -62,14 +61,16 @@ static func root_to_editor_text(root_element: ElementRoot) -> String:
 static func root_to_export_text(root_element: ElementRoot) -> String:
 	return root_to_text(root_element, Configs.savedata.export_formatter)
 
+## Converts a root element into text using a specific formatter.
 static func root_to_text(root_element: ElementRoot, formatter: Formatter) -> String:
 	var text := _xnode_to_text(root_element, formatter).trim_suffix('\n')
 	if formatter.xml_add_trailing_newline:
 		text += "\n"
 	return text
 
-static func _xnode_to_text(xnode: XNode, formatter: Formatter,
-make_attributes_absolute := false) -> String:
+## The main entry point for converting any XML node and its descendants into text.
+## If make_attributes_absolute is true, converts percentage-based attributes into absolute values so cutouts can be safely made.
+static func _xnode_to_text(xnode: XNode, formatter: Formatter, make_attributes_absolute := false) -> String:
 	var text := ""
 	if formatter.xml_pretty_formatting:
 		text = formatter.get_indent_string().repeat(xnode.xid.size())
@@ -158,7 +159,8 @@ static func get_error_string(parse_error: ParseError) -> String:
 			return Translator.translate("Improper nesting.")
 		_: return ""
 
-# The root always uses the editor formatter.
+## The main entry point for converting SVG markup into the internal element tree structure.
+## Returns a parse result, which contains either the ElementRoot or an error from an enum.
 static func text_to_root(text: String) -> ParseResult:
 	if text.is_empty():
 		return ParseResult.new(ParseError.ERR_NOT_SVG)
@@ -180,8 +182,7 @@ static func text_to_root(text: String) -> ParseResult:
 		describes_svg = true
 		
 		for i in parser.get_attribute_count():
-			root_element.set_attribute(parser.get_attribute_name(i),
-					parser.get_attribute_value(i))
+			root_element.set_attribute(parser.get_attribute_name(i), parser.get_attribute_value(i))
 		
 		var node_offset := parser.get_node_offset()
 		
