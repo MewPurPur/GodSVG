@@ -372,7 +372,7 @@ func slider3_update() -> void:
 	_slider_set_text(fields_arr[3], number)
 
 func slider4_update() -> void:
-	_slider_set_text(fields_arr[4],display_color.a * 100)
+	_slider_set_text(fields_arr[4], display_color.a * 100)
 
 func _slider_set_text(field: BetterLineEdit, number: float) -> void:
 	field.text = String.num_uint64(roundi(number))

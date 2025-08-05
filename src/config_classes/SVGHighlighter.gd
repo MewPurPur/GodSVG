@@ -1,4 +1,4 @@
-# A syntax highlighter for SVGs, allows for more flexibility than CodeHighlighter.
+## A syntax highlighter for SVGs, allows for more flexibility than CodeHighlighter.
 class_name SVGHighlighter extends SyntaxHighlighter
 
 var unrecognized_element_color: Color
