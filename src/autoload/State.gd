@@ -1,4 +1,4 @@
-# This singleton handles information that's session-wide, but not saved.
+## An autoload that handles information that's session-wide, but not saved.
 extends Node
 
 const OptionsDialogScene = preload("res://src/ui_widgets/options_dialog.tscn")

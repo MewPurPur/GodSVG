@@ -70,8 +70,8 @@ enum NumberJumbleParseState {
 	INSIDE_NUMBER_INDIRECTLY_AFTER_EXPONENT
 }
 
-## Returns an array with a PackedFloat64Array and an int for the final current index. Returns an empty array if there's a parsing error.
 # TODO In 4.5, I had to avoid the match keyword in this parser for performance: #75682.
+## Returns an array with a PackedFloat64Array and an int for the final current index. Returns an empty array if there's a parsing error.
 static func text_to_number_arr(text: String, current_index: int, expected_count: int, allow_starting_comma := false) -> Array:
 	var text_length := text.length()
 	if current_index >= text_length:

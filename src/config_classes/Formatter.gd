@@ -75,6 +75,7 @@ func get_setting_default(setting: String) -> Variant:
 		"transform_list_remove_unnecessary_params": return preset == Preset.COMPACT
 	return null
 
+## Resets all settings to their defaults based on the preset.
 func reset_to_default() -> void:
 	for setting in _get_setting_names():
 		set(setting, get_setting_default(setting))
