@@ -1,4 +1,4 @@
-# An attribute representing a list of transformations.
+## An attribute representing a list of transformations.
 class_name AttributeTransformList extends Attribute
 
 var _transform_list: Array[Transform] = []

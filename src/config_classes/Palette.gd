@@ -1,17 +1,14 @@
-# A resource for the color palettes that are listed in the color picker.
+## A resource for the color palettes that are listed in the color picker.
 class_name Palette extends ConfigResource
 
 enum Preset {EMPTY, PURE, GRAYSCALE}
 
 var _presets: Dictionary[Preset, Array] = {
 	Preset.EMPTY: [PackedStringArray(), PackedStringArray()],
-	Preset.PURE: [PackedStringArray(["#fff", "#000", "#f00", "#0f0", "#00f", "#ff0",
-			"#f0f", "#0ff"]), PackedStringArray(["White", "Black", "Red", "Green", "Blue",
-			"Yellow", "Magenta", "Cyan"])],
-	Preset.GRAYSCALE: [PackedStringArray(["#000", "#1a1a1a", "#333", "#4d4d4d", "#666",
-			"#808080", "#999", "#b3b3b3", "#ccc", "#e6e6e6", "#fff"]), PackedStringArray([
-			"Black", "10% Gray", "20% Gray", "30% Gray", "40% Gray", "50% Gray", "60% Gray",
-			"70% Gray", "80% Gray", "90% Gray", "White"])],
+	Preset.PURE: [PackedStringArray(["#fff", "#000", "#f00", "#0f0", "#00f", "#ff0", "#f0f", "#0ff"]),
+			PackedStringArray(["White", "Black", "Red", "Green", "Blue", "Yellow", "Magenta", "Cyan"])],
+	Preset.GRAYSCALE: [PackedStringArray(["#000", "#1a1a1a", "#333", "#4d4d4d", "#666", "#808080", "#999", "#b3b3b3", "#ccc", "#e6e6e6", "#fff"]),
+			PackedStringArray(["Black", "10% Gray", "20% Gray", "30% Gray", "40% Gray", "50% Gray", "60% Gray", "70% Gray", "80% Gray", "90% Gray", "White"])],
 }
 
 signal layout_changed
@@ -129,8 +126,8 @@ func has_unique_definitions() -> bool:
 			dict[color] = [_color_names[i]]
 	return true
 
-
-func to_text() -> String:
+## Returns the palette converted into equivalent markup.
+func get_as_markup() -> String:
 	var text := '<palette title="%s">\n' % title
 	for i in _colors.size():
 		text += '\t<color value="%s"' % _colors[i]

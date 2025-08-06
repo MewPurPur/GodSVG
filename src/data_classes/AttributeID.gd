@@ -1,4 +1,4 @@
-# An attribute representing an element's id
+## An attribute representing an element's ID.
 class_name AttributeID extends Attribute
 
 func set_value(new_value: String) -> void:
@@ -9,4 +9,4 @@ static func get_validity(id: String) -> NameValidityLevel:
 	if id.is_empty() or id[0] == "#":
 		return NameValidityLevel.INVALID
 	
-	return get_name_validity(id)
+	return get_id_validity(id)

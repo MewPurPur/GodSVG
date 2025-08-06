@@ -507,9 +507,9 @@ func clear_all_hovered() -> void:
 func is_hovered(xid: PackedInt32Array, inner_idx := -1, propagate := false) -> bool:
 	if propagate:
 		if inner_idx == -1:
-			return XIDUtils.is_parent_or_self(hovered_xid, xid)
+			return XIDUtils.is_ancestor_or_self(hovered_xid, xid)
 		else:
-			return (inner_hovered == inner_idx and semi_hovered_xid == xid) or XIDUtils.is_parent_or_self(hovered_xid, xid)
+			return (inner_hovered == inner_idx and semi_hovered_xid == xid) or XIDUtils.is_ancestor_or_self(hovered_xid, xid)
 	else:
 		if inner_idx == -1:
 			return hovered_xid == xid
@@ -521,12 +521,12 @@ func is_selected(xid: PackedInt32Array, inner_idx := -1, propagate := false) -> 
 	if propagate:
 		if inner_idx == -1:
 			for selected_xid in selected_xids:
-				if XIDUtils.is_parent_or_self(selected_xid, xid):
+				if XIDUtils.is_ancestor_or_self(selected_xid, xid):
 					return true
 			return false
 		else:
 			for selected_xid in selected_xids:
-				if XIDUtils.is_parent_or_self(selected_xid, xid):
+				if XIDUtils.is_ancestor_or_self(selected_xid, xid):
 					return true
 			return semi_selected_xid == xid and inner_idx in inner_selections
 	else:
@@ -562,7 +562,7 @@ func _on_xnodes_deleted(xids: Array[PackedInt32Array]) -> void:
 	for deleted_xid in xids:
 		for i in range(selected_xids.size() - 1, -1, -1):
 			var xid := selected_xids[i]
-			if XIDUtils.is_parent_or_self(deleted_xid, xid):
+			if XIDUtils.is_ancestor_or_self(deleted_xid, xid):
 				selected_xids.remove_at(i)
 	if not XIDUtils.are_xid_lists_same(old_selected_xids, selected_xids):
 		selection_changed.emit()
@@ -583,7 +583,7 @@ func _on_xnodes_moved_in_parent(parent_xid: PackedInt32Array, indices: Array[int
 		
 		# If the XID or a child of it is found, append it.
 		for xid in selected_xids:
-			if XIDUtils.is_parent_or_self(old_moved_xid, xid):
+			if XIDUtils.is_ancestor_or_self(old_moved_xid, xid):
 				var new_selected_xid := xid.duplicate()
 				new_selected_xid[parent_xid.size()] = index_idx
 				xids_to_unselect.append(xid)
@@ -602,7 +602,7 @@ func _on_xnodes_moved_to(xids: Array[PackedInt32Array], location: PackedInt32Arr
 	for moved_idx in xids.size():
 		var moved_xid := xids[moved_idx]
 		for xid in selected_xids:
-			if XIDUtils.is_parent_or_self(moved_xid, xid):
+			if XIDUtils.is_ancestor_or_self(moved_xid, xid):
 				var new_location := XIDUtils.get_parent_xid(location)
 				new_location.append(moved_idx + location[-1])
 				for ii in range(moved_xid.size(), xid.size()):

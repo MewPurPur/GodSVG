@@ -1,4 +1,4 @@
-# An attribute with only a set of meaningful values.
+## An attribute with only a set of meaningful values.
 class_name AttributeEnum extends Attribute
 
 func set_value(new_value: String) -> void:
