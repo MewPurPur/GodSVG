@@ -1,4 +1,4 @@
-# An attribute representing a number.
+## An attribute representing a number.
 class_name AttributeNumeric extends Attribute
 
 var _percentage := false

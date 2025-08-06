@@ -1,4 +1,4 @@
-# An attribute representing a list of numbers.
+## An attribute representing a list of numbers.
 class_name AttributeList extends Attribute
 
 var _list: PackedFloat64Array

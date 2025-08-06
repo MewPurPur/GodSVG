@@ -1,4 +1,4 @@
-# The "d" attribute of ElementPath.
+## The "d" attribute of ElementPath.
 class_name AttributePathdata extends Attribute
 
 var _commands: Array[PathCommand]

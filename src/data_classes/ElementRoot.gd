@@ -121,7 +121,7 @@ func move_xnodes_to(xids: Array[PackedInt32Array], location: PackedInt32Array) -
 	xids = XIDUtils.filter_descendants(xids)
 	# An element can't move deeper inside itself. Remove the descendants of the location.
 	for i in range(xids.size() - 1, -1, -1):
-		if XIDUtils.is_parent(xids[i], location):
+		if XIDUtils.is_ancestor(xids[i], location):
 			xids.remove_at(i)
 	
 	# Remove elements from their old locations.

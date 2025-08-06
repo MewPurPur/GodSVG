@@ -69,7 +69,7 @@ func update_proposed_xid() -> void:
 		State.set_proposed_drop_xid(XIDUtils.get_parent_xid(next_xid) + PackedInt32Array([next_xid[-1] + 1]))
 	elif next_xid[0] >= State.root_element.get_child_count():
 		State.set_proposed_drop_xid(next_xid)
-	elif XIDUtils.is_parent_or_self(prev_xid, next_xid):
+	elif XIDUtils.is_ancestor_or_self(prev_xid, next_xid):
 		for i in range(prev_xid.size(), next_xid.size()):
 			if next_xid[i] != 0:
 				return

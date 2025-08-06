@@ -185,11 +185,11 @@ func move_down() -> void:
 	layout_changed.emit()
 
 func copy_palette(palette_idx: int) -> void:
-	DisplayServer.clipboard_set(Configs.savedata.get_palette(palette_idx).to_text())
+	DisplayServer.clipboard_set(Configs.savedata.get_palette(palette_idx).get_as_markup())
 
 func save_palette(palette_idx: int) -> void:
 	var saved_palette := Configs.savedata.get_palette(palette_idx)
-	FileUtils.open_xml_export_dialog(saved_palette.to_text(), saved_palette.title)
+	FileUtils.open_xml_export_dialog(saved_palette.get_as_markup(), saved_palette.title)
 
 func open_palette_options() -> void:
 	var btn_arr: Array[Button] = []

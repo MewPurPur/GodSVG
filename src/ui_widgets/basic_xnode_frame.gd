@@ -55,7 +55,7 @@ func _on_title_button_pressed() -> void:
 
 func _gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion and event.button_mask == 0:
-		if State.semi_hovered_xid != xnode.xid and not XIDUtils.is_parent(xnode.xid, State.hovered_xid):
+		if State.semi_hovered_xid != xnode.xid and not XIDUtils.is_ancestor(xnode.xid, State.hovered_xid):
 			State.set_hovered(xnode.xid)
 	elif event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_LEFT:
@@ -139,7 +139,7 @@ func _draw() -> void:
 		return
 	
 	for selected_xid in State.selected_xids:
-		if XIDUtils.is_parent_or_self(selected_xid, xnode.xid):
+		if XIDUtils.is_ancestor_or_self(selected_xid, xnode.xid):
 			return
 	
 	var parent_xid := XIDUtils.get_parent_xid(xnode.xid)
