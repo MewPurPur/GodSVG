@@ -20,7 +20,7 @@ func _ready() -> void:
 	Configs.basic_colors_changed.connect(sync)
 	sync()
 	element.attribute_changed.connect(_on_element_attribute_changed)
-	if attribute_name in DB.propagated_attributes:
+	if attribute_name in DB.PROPAGATED_ATTRIBUTES:
 		element.ancestor_attribute_changed.connect(_on_element_ancestor_attribute_changed)
 	text_submitted.connect(_on_text_submitted)
 	focus_entered.connect(reset_font_color)
@@ -50,7 +50,7 @@ func _on_pressed() -> void:
 	reset_btn.icon_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	btn_arr.append(reset_btn)
 	# Add a button for each enum value.
-	for enum_constant in DB.attribute_enum_values[attribute_name]:
+	for enum_constant in DB.ATTRIBUTE_ENUM_VALUES[attribute_name]:
 		var btn := ContextPopup.create_button(enum_constant,
 				set_value.bind(enum_constant, true),
 				enum_constant == element.get_attribute_value(attribute_name))
@@ -63,7 +63,7 @@ func _on_pressed() -> void:
 
 
 func _on_text_submitted(new_text: String) -> void:
-	if new_text.is_empty() or new_text in DB.attribute_enum_values[attribute_name]:
+	if new_text.is_empty() or new_text in DB.ATTRIBUTE_ENUM_VALUES[attribute_name]:
 		set_value(new_text, true)
 	else:
 		sync()
@@ -71,7 +71,7 @@ func _on_text_submitted(new_text: String) -> void:
 
 func _on_text_changed(new_text: String) -> void:
 	font_color = Configs.savedata.get_validity_color(
-			not new_text in DB.attribute_enum_values[attribute_name])
+			not new_text in DB.ATTRIBUTE_ENUM_VALUES[attribute_name])
 
 
 func sync() -> void:

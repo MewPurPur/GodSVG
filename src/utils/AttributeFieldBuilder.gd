@@ -17,7 +17,7 @@ static func create(attribute: String, element: Element) -> Control:
 		DB.AttributeType.COLOR: return _generate(ColorFieldScene, element, attribute)
 		DB.AttributeType.ENUM: return _generate(EnumFieldScene, element, attribute)
 		DB.AttributeType.NUMERIC:
-			match DB.attribute_number_range[attribute]:
+			match DB.ATTRIBUTE_NUMBER_RANGE[attribute]:
 				DB.NumberRange.UNIT: return _generate(NumberSliderScene, element, attribute)
 				_: return _generate(NumberFieldScene, element, attribute)
 		_: return _generate(UnrecognizedFieldScene, element, attribute)

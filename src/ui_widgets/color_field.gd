@@ -7,9 +7,9 @@ var element: Element
 var attribute_name: String:  # May propagate.
 	set(new_value):
 		attribute_name = new_value
-		cached_allow_url = attribute_name in DB.attribute_color_url_allowed
-		cached_allow_none = attribute_name in DB.attribute_color_none_allowed
-		cached_allow_current_color = attribute_name in DB.attribute_color_current_color_allowed
+		cached_allow_url = attribute_name in DB.COLOR_ATTRIBUTES_WITH_URL_ALLOWED
+		cached_allow_none = attribute_name in DB.COLOR_ATTRIBUTES_WITH_NONE_ALLOWED
+		cached_allow_current_color = attribute_name in DB.COLOR_ATTRIBUTES_WITH_CURRENT_COLOR_ALLOWED
 
 var cached_allow_url: bool
 var cached_allow_none: bool
@@ -41,7 +41,7 @@ func _ready() -> void:
 	Configs.basic_colors_changed.connect(sync)
 	sync()
 	element.attribute_changed.connect(_on_element_attribute_changed)
-	if attribute_name in DB.propagated_attributes:
+	if attribute_name in DB.PROPAGATED_ATTRIBUTES:
 		element.ancestor_attribute_changed.connect(_on_element_ancestor_attribute_changed)
 	text_submitted.connect(set_value.bind(true))
 	focus_entered.connect(reset_font_color)

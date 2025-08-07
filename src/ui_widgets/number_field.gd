@@ -5,7 +5,7 @@ var element: Element
 var attribute_name: String:  # May propagate.
 	set(new_value):
 		attribute_name = new_value
-		if DB.attribute_number_range[attribute_name] == DB.NumberRange.ARBITRARY:
+		if DB.ATTRIBUTE_NUMBER_RANGE[attribute_name] == DB.NumberRange.ARBITRARY:
 			cached_min_value = -INF
 			cached_max_value = INF
 		else:
@@ -39,7 +39,7 @@ func _ready() -> void:
 	Configs.basic_colors_changed.connect(sync)
 	sync()
 	element.attribute_changed.connect(_on_element_attribute_changed)
-	if attribute_name in DB.propagated_attributes:
+	if attribute_name in DB.PROPAGATED_ATTRIBUTES:
 		element.ancestor_attribute_changed.connect(_on_element_ancestor_attribute_changed)
 	# These default attributes can change when cx and cy change.
 	if element is ElementRadialGradient and attribute_name in ["fx", "fy"]:
