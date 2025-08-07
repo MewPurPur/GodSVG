@@ -1,21 +1,27 @@
+## A utility class for handling localization.
 @abstract class_name TranslationUtils
 
+# Returns a human-readable name for the given locale.
+# Handles special cases for certain locales, falls back to TranslationServer for others.
 static func _get_locale_name(locale: String) -> String:
 	match locale:
 		"pt_BR": return "Brazilian Portuguese"
 		"zh_CN": return "Simplified Chinese"
 	return TranslationServer.get_locale_name(locale)
 
+## Converts a locale string to a language-REGION format.
 static func get_locale_string(locale: String) -> String:
 	if not "_" in locale:
 		return locale.to_upper()
 	var separator_pos := locale.find("_")
 	return locale.left(separator_pos) + "-" + locale.right(-separator_pos - 1).to_upper()
 
+## Returns a display-friendly locale string with both name and code, such as "Brazilian Portuguese (pt-BR)".
 static func get_locale_display(locale: String) -> String:
 	return "%s (%s)" % [_get_locale_name(locale), get_locale_string(locale)]
 
 
+## Returns the translated description for a given action. If for_button is true, uses a shorter description.
 static func get_action_description(action_name: String, for_button := false) -> String:
 	match action_name:
 		"export": return Translator.translate("Export")
@@ -88,7 +94,8 @@ static func get_action_description(action_name: String, for_button := false) -> 
 		"toggle_fullscreen": return Translator.translate("Toggle fullscreen")
 		_: return action_name
 
-
+## Returns a translated description for an SVG path command character.
+## If omit_relativity is true, doesn't append "(Relative)"/"(Absolute)" suffix.
 static func get_path_command_description(command_char: String, omit_relativity := false) -> String:
 	var description: String
 	match command_char:
@@ -111,7 +118,7 @@ static func get_path_command_description(command_char: String, omit_relativity :
 	else:
 		return description + " (" + Translator.translate("Absolute") + ")"
 
-
+## Returns the translated name for a layout part.
 static func get_layout_part_name(layout_part: Utils.LayoutPart) -> String:
 	match layout_part:
 		Utils.LayoutPart.CODE_EDITOR: return Translator.translate("Code editor")
@@ -119,28 +126,31 @@ static func get_layout_part_name(layout_part: Utils.LayoutPart) -> String:
 		Utils.LayoutPart.VIEWPORT: return Translator.translate("Viewport")
 		_: return ""
 
-
+## Generates an alert text for unsupported file extensions.
 static func get_extension_alert_text(allowed_extensions: PackedStringArray) -> String:
 	for i in allowed_extensions.size():
-		allowed_extensions[i] = get_extension_readable_name(allowed_extensions[i])
+		allowed_extensions[i] = _get_extension_readable_name(allowed_extensions[i])
 	var extension_list := ", ".join(allowed_extensions)
 	return Translator.translate("Only {extension_list} files are supported for this operation.").format({"extension_list": extension_list})
 
+## Generates title text for file selection dialogs.
 static func get_file_dialog_select_mode_title_text(multi_select: bool, extensions: PackedStringArray) -> String:
 	if multi_select:
-		return Translator.translate("Select {format} files").format({"format": get_extension_readable_name("svg")})
+		return Translator.translate("Select {format} files").format({"format": _get_extension_readable_name("svg")})
 	else:
 		if extensions.size() > 1:
 			# Multiple formats currently only show up for reference images.
 			return Translator.translate("Select an image")
 		else:
 			# "an" because this can currently only show for SVG and XML files.
-			return Translator.translate("Select an {format} file").format({"format": get_extension_readable_name(extensions[0])})
+			return Translator.translate("Select an {format} file").format({"format": _get_extension_readable_name(extensions[0])})
 
+## Generates title text for file save dialogs.
 static func get_file_dialog_save_mode_title_text(extension: String) -> String:
-	return Translator.translate("Save the {format} file").format({"format": get_extension_readable_name(extension)})
+	return Translator.translate("Save the {format} file").format({"format": _get_extension_readable_name(extension)})
 
-static func get_extension_readable_name(extension: String) -> String:
+# Converts a file extension to a human-readable format name.
+static func _get_extension_readable_name(extension: String) -> String:
 	match extension:
 		"svg": return "SVG"
 		"png": return "PNG"

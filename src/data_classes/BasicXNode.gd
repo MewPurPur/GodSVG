@@ -1,3 +1,4 @@
+## Any XML node that's not an element.
 class_name BasicXNode extends XNode
 
 signal text_changed  # Any text change.

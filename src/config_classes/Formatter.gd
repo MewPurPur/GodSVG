@@ -8,7 +8,7 @@ enum NamedColorUse {ALWAYS, WHEN_SHORTER_OR_EQUAL, WHEN_SHORTER, NEVER}
 enum PrimaryColorSyntax {THREE_OR_SIX_DIGIT_HEX, SIX_DIGIT_HEX, RGB}
 
 # Elements that don't make sense without child elements.
-const container_elements: Array[String] = ["svg", "g", "linearGradient", "radialGradient"]
+const CONTAINER_ELEMENTS: PackedStringArray = ["svg", "g", "linearGradient", "radialGradient"]
 
 # TODO Typed Dictionary wonkiness  Dictionary[Preset, String]
 static func get_preset_value_text_map() -> Dictionary:

@@ -2,4 +2,4 @@
 class_name AttributeEnum extends Attribute
 
 func set_value(new_value: String) -> void:
-	super(new_value if (new_value.is_empty() or new_value in DB.attribute_enum_values[name]) else "")
+	super(new_value if (new_value.is_empty() or new_value in DB.ATTRIBUTE_ENUM_VALUES[name]) else "")

@@ -1,5 +1,5 @@
-# A wrapper around basic TranslationServer methods. There is an update_translations script
-# which checks all Translator methods used across the codebase to collect their strings.
+## A wrapper around basic TranslationServer methods.
+## The update_translations.gd script collects strings from all Translator methods used across the codebase.
 @abstract class_name Translator
 
 static func translate(string: String) -> String:

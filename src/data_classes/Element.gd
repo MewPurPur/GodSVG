@@ -235,7 +235,7 @@ func set_attribute(attrib_name: String, value: Variant) -> void:
 				push_error("Invalid value set to attribute.")
 
 func get_default(attribute_name: String) -> String:
-	if attribute_name in DB.propagated_attributes:
+	if attribute_name in DB.PROPAGATED_ATTRIBUTES:
 		if is_parent_g():
 			return parent.get_implied_attribute_value(attribute_name)
 		elif svg != null:
