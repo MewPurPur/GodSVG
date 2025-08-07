@@ -43,6 +43,7 @@ icon = ExtResource("2_y6afs")
 
 [node name="NameEdit" type="LineEdit" parent="ConfigureContainer/TopContainer"]
 visible = false
+custom_minimum_size = Vector2(80, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4

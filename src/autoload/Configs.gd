@@ -43,35 +43,26 @@ func _enter_tree() -> void:
 	for action in ShortcutUtils.get_all_actions():
 		if InputMap.has_action(action):
 			default_shortcuts[action] = InputMap.action_get_events(action)
-	_load_config()
-
-
-## Sets savedata and syncs various things. Resets the savedata 
-func _load_config() -> void:
-	if not FileAccess.file_exists(_SAVEDATA_PATH):
-		_reset_config()
-		return
 	
-	savedata = ResourceLoader.load(_SAVEDATA_PATH)
-	if not is_instance_valid(savedata):
-		_reset_config()
-		return
+	var savedata_reset_needed := true
+	# Load savedata.
+	if FileAccess.file_exists(_SAVEDATA_PATH):
+		savedata = ResourceLoader.load(_SAVEDATA_PATH)
+		if is_instance_valid(savedata):
+			savedata_reset_needed = false
 	
-	post_load()
-
-# Resets settings to their defaults.
-func _reset_config() -> void:
-	savedata = SaveData.new()
-	savedata.reset_to_default()
-	savedata.language = "en"
-	savedata.set_shortcut_panel_slots({ 0: "ui_undo", 1: "ui_redo" })
-	savedata.set_palettes([Palette.new("Pure", Palette.Preset.PURE)])
-	save()
-	post_load()
-
-# TODO I'm not sure why I made it so syncing within the SaveData only starts when it's fully initialized.
-## Syncs various settings with their savedata value.
-func post_load() -> void:
+	# Build everything from scratch if the savedata didn't exist or was invalid.
+	# Reset settings to their defaults.
+	if savedata_reset_needed:
+		savedata = SaveData.new()
+		savedata.reset_to_default()
+		savedata.language = "en"
+		savedata.set_shortcut_panel_slots({ 0: "ui_undo", 1: "ui_redo" })
+		savedata.set_palettes([Palette.new("Pure", Palette.Preset.PURE)])
+		save()
+	
+	# Syncs various settings with their savedata value.
+	# TODO I'm not sure why I made it so syncing within the SaveData only starts when it's fully initialized.
 	savedata.get_active_tab().activate()
 	sync_canvas_color()
 	sync_locale()

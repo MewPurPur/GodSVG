@@ -1,4 +1,4 @@
-# A <g> element.
+## A <g> element.
 class_name ElementG extends Element
 
 const name = "g"

@@ -1,4 +1,4 @@
-# A <path> element.
+## A <path> element.
 class_name ElementPath extends Element
 
 const name = "path"
@@ -150,12 +150,10 @@ func get_bounding_box() -> Rect2:
 					sc = -sc
 				
 				var ct := Vector2(r.x * sc * y1 / r.y, -r.y * sc * x1 / r.x)
-				var c := Vector2(ct.x * cosine - ct.y * sine,
-						ct.x * sine + ct.y * cosine) + start.lerp(end, 0.5)
+				var c := Vector2(ct.x * cosine - ct.y * sine, ct.x * sine + ct.y * cosine) + start.lerp(end, 0.5)
 				var tv := Vector2(x1 - ct.x, y1 - ct.y) / r
 				var theta1 := tv.angle()
-				var delta_theta := fposmod(tv.angle_to(
-						Vector2(-x1 - ct.x, -y1 - ct.y) / r), TAU)
+				var delta_theta := fposmod(tv.angle_to(Vector2(-x1 - ct.x, -y1 - ct.y) / r), TAU)
 				if cmd.sweep_flag == 0:
 					theta1 += delta_theta
 					delta_theta = TAU - delta_theta
