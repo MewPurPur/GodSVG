@@ -1,4 +1,4 @@
-# A <polyline> element.
+## A <polyline> element.
 class_name ElementPolyline extends Element
 
 const name = "polyline"

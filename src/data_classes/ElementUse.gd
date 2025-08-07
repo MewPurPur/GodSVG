@@ -1,4 +1,4 @@
-# A <use> element.
+## A <use> element.
 class_name ElementUse extends Element
 
 const name = "use"

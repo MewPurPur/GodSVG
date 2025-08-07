@@ -58,7 +58,7 @@ static func are_siblings_or_same(xid1: PackedInt32Array, xid2: PackedInt32Array)
 			return false
 	return true
 
-## Filters out from the passed array of XIDs all of the ones that are descendants of another XID. 
+## Filters out from the passed array of XIDs all of the ones that are descendants of another XID.
 static func filter_descendants(xids: Array[PackedInt32Array]) -> Array[PackedInt32Array]:
 	var new_xids: Array[PackedInt32Array] = xids.duplicate()
 	new_xids.sort_custom(compare_reverse)

@@ -1,4 +1,4 @@
-# A <line> element.
+## A <line> element.
 class_name ElementLine extends Element
 
 const name = "line"
@@ -24,16 +24,15 @@ func get_replacement(new_element: String) -> Element:
 	match new_element:
 		"polyline":
 			dropped_attributes = PackedStringArray(["x1", "y1", "x2", "y2", "points"])
-			var points := PackedFloat64Array([get_attribute_num("x1"),
-					get_attribute_num("y1"), get_attribute_num("x2"), get_attribute_num("y2")])
+			var points := PackedFloat64Array([get_attribute_num("x1"), get_attribute_num("y1"),
+					get_attribute_num("x2"), get_attribute_num("y2")])
 			element.get_attribute("points").set_list(points)
 			element.set_attribute("fill", "none")
 		"path":
 			element = ElementPath.new()
 			dropped_attributes = PackedStringArray(["x1", "y1", "x2", "y2", "d"])
 			var commands: Array[PathCommand] = []
-			commands.append(PathCommand.MoveCommand.new(get_attribute_num("x1"),
-					get_attribute_num("y1"), true))
+			commands.append(PathCommand.MoveCommand.new(get_attribute_num("x1"), get_attribute_num("y1"), true))
 			commands.append(PathCommand.LineCommand.new(
 					get_attribute_num("x2") - get_attribute_num("x1"),
 					get_attribute_num("y2") - get_attribute_num("y1"), true))

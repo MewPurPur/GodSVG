@@ -1,3 +1,4 @@
+## An abstract class with common functionalities between linear and radial gradients.
 @abstract class_name ElementBaseGradient extends Element
 
 const possible_conversions: PackedStringArray = []
@@ -49,5 +50,5 @@ func get_config_warnings() -> PackedStringArray:
 	
 	return warnings
 
-
+## Generates a preview 64x64 texture of the gradient.
 @abstract func generate_texture() -> SVGTexture

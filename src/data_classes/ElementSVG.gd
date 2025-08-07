@@ -1,4 +1,4 @@
-# An <svg> element.
+## An <svg> element.
 class_name ElementSVG extends Element
 
 var width: float

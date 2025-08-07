@@ -1,4 +1,4 @@
-# An element that GodSVG doesn't recognize.
+## An element that GodSVG doesn't recognize.
 class_name ElementUnrecognized extends Element
 
 var name: String

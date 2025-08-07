@@ -73,7 +73,7 @@ func _on_files_dropped(files: PackedStringArray) -> void:
 		get_window().grab_focus()
 		FileUtils.apply_svgs_from_paths(files)
 
-## Registers the given set of shortcuts to the given node. 
+## Registers the given set of shortcuts to the given node.
 func register_shortcuts(node: Node, registrations: ShortcutsRegistration) -> void:
 	shortcut_registrations[node] = registrations
 	node.tree_exiting.connect(func() -> void: shortcut_registrations.erase(node))
