@@ -132,23 +132,22 @@ func _on_scale_edit_value_changed(new_value: float) -> void:
 	undo_redo.add_undo_property(export_data, "upscale_amount", current_upscale_amount)
 	undo_redo.commit_action()
 
+
 func _on_width_edit_value_changed(new_value: float) -> void:
-	if roundi(dimensions.x * export_data.upscale_amount) == roundi(new_value):
+	_dimension_component_change_common_logic(0, new_value)
+
+func _on_height_edit_value_changed(new_value: float) -> void:
+	_dimension_component_change_common_logic(1, new_value)
+
+func _dimension_component_change_common_logic(component_index: int, new_value: float) -> void:
+	if roundi(dimensions[component_index] * export_data.upscale_amount) == roundi(new_value):
 		return
 	var current_upscale_amount := export_data.upscale_amount
 	undo_redo.create_action()
-	undo_redo.add_do_property(export_data, "upscale_amount", new_value / dimensions.x)
+	undo_redo.add_do_property(export_data, "upscale_amount", new_value / dimensions[component_index])
 	undo_redo.add_undo_property(export_data, "upscale_amount", current_upscale_amount)
 	undo_redo.commit_action()
 
-func _on_height_edit_value_changed(new_value: float) -> void:
-	if roundi(dimensions.y * export_data.upscale_amount) == roundi(new_value):
-		return
-	var current_upscale_amount := export_data.upscale_amount
-	undo_redo.create_action()
-	undo_redo.add_do_property(export_data, "upscale_amount", new_value / dimensions.y)
-	undo_redo.add_undo_property(export_data, "upscale_amount", current_upscale_amount)
-	undo_redo.commit_action()
 
 # Everything gets updated at once when export config changes for simplicity.
 func update() -> void:

@@ -154,7 +154,7 @@ const COLOR_ATTRIBUTES_WITH_URL_ALLOWED: PackedStringArray = ["fill", "stroke"]
 const COLOR_ATTRIBUTES_WITH_NONE_ALLOWED: PackedStringArray = ["fill", "stroke"]
 const COLOR_ATTRIBUTES_WITH_CURRENT_COLOR_ALLOWED: PackedStringArray = ["fill", "stroke", "stop-color"]
 
-static func is_element_recognized(element_name: String) -> void:
+static func is_element_recognized(element_name: String) -> bool:
 	return _RECOGNIZED_ELEMENTS.has(element_name)
 
 ## Get all recognized attributes for a specific element.
