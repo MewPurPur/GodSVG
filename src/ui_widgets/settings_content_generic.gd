@@ -108,6 +108,7 @@ func setup_content() -> void:
 		SettingsMenu.TabIndex.THEMING: setup_theming_content()
 		SettingsMenu.TabIndex.TAB_BAR: setup_tab_bar_content()
 		SettingsMenu.TabIndex.OTHER: setup_other_content()
+	HandlerGUI.throw_mouse_motion_event()
 
 func setup_formatting_content() -> void:
 	var current_setup_resource: Formatter = _get_current_setup_resource()
