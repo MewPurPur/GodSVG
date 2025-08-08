@@ -35,17 +35,13 @@ func _ready() -> void:
 # Top left corner.
 func set_view(new_position: Vector2) -> void:
 	var scaled_size := size / State.zoom
-	view.camera_unsnapped_position = new_position.clamp(Vector2(limit_left, limit_top),
-			Vector2(limit_right, limit_bottom) - scaled_size)
+	view.camera_position = new_position.clamp(Vector2(limit_left, limit_top), Vector2(limit_right, limit_bottom) - scaled_size)
 	
-	var stripped_left := maxf(view.camera_unsnapped_position.x, 0.0)
-	var stripped_top := maxf(view.camera_unsnapped_position.y, 0.0)
-	var stripped_right := minf(view.camera_unsnapped_position.x + scaled_size.x,
-			State.root_element.width)
-	var stripped_bottom := minf(view.camera_unsnapped_position.y + scaled_size.y,
-			State.root_element.height)
-	display_texture.view_rect = Rect2(stripped_left, stripped_top,
-			stripped_right - stripped_left, stripped_bottom - stripped_top)
+	var stripped_left := maxf(view.camera_position.x, 0.0)
+	var stripped_top := maxf(view.camera_position.y, 0.0)
+	var stripped_right := minf(view.camera_position.x + scaled_size.x, State.root_element.width)
+	var stripped_bottom := minf(view.camera_position.y + scaled_size.y, State.root_element.height)
+	display_texture.view_rect = Rect2(stripped_left, stripped_top, stripped_right - stripped_left, stripped_bottom - stripped_top)
 	view.update()
 
 
@@ -80,10 +76,9 @@ func _unhandled_input(event: InputEvent) -> void:
 				_zoom_to = get_mouse_position() / Vector2(size)
 			zoom_menu.set_zoom(State.zoom * (1.0 + (1 if Configs.savedata.invert_zoom else -1) *\
 					(wrap_mouse(event.relative).y if Configs.savedata.wraparound_panning else event.relative.y) / 128.0), _zoom_to)
-		# Panning with LMB or MMB. This gives a reliable way to adjust the view
-		# without dragging the things on it.
+		# Panning with LMB or MMB. This gives a reliable way to adjust the view without dragging the things on it.
 		else:
-			set_view(view.camera_unsnapped_position - (wrap_mouse(event.relative) if Configs.savedata.wraparound_panning else event.relative) / State.zoom)
+			set_view(view.camera_position - (wrap_mouse(event.relative) if Configs.savedata.wraparound_panning else event.relative) / State.zoom)
 	
 	elif event is InputEventPanGesture and not DisplayServer.get_name() == "Android":
 		# Zooming with Ctrl + touch?
@@ -91,7 +86,7 @@ func _unhandled_input(event: InputEvent) -> void:
 			zoom_menu.set_zoom(State.zoom * (1 + event.delta.y / 2))
 		# Panning with touch.
 		else:
-			set_view(view.camera_unsnapped_position + event.delta * 32 / State.zoom)
+			set_view(view.camera_position + event.delta * 32 / State.zoom)
 	# Zooming with touch.
 	elif event is InputEventMagnifyGesture:
 		zoom_menu.set_zoom(State.zoom * event.factor)
@@ -136,7 +131,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		elif zoom_dir == -1:
 			zoom_menu.zoom_out(factor, mouse_offset)
 		
-		set_view(view.camera_unsnapped_position + move_vec * factor / State.zoom * 32)
+		set_view(view.camera_position + move_vec * factor / State.zoom * 32)
 	
 	else:
 		if not event.is_echo():
@@ -165,8 +160,8 @@ func adjust_view(offset := Vector2(0.5, 0.5)) -> void:
 	limit_top = -zoomed_size.y
 	limit_bottom = zoomed_size.y + svg_h
 	
-	set_view(Vector2(lerpf(view.camera_unsnapped_position.x, view.camera_unsnapped_position.x + old_size.x - size.x / State.zoom, offset.x),
-			lerpf(view.camera_unsnapped_position.y, view.camera_unsnapped_position.y + old_size.y - size.y / State.zoom, offset.y)))
+	set_view(Vector2(lerpf(view.camera_position.x, view.camera_position.x + old_size.x - size.x / State.zoom, offset.x),
+			lerpf(view.camera_position.y, view.camera_position.y + old_size.y - size.y / State.zoom, offset.y)))
 
 func _on_size_changed() -> void:
 	State.set_viewport_size(size)
