@@ -1,6 +1,5 @@
 extends SubViewport
 
-const ZoomMenu = preload("res://src/ui_widgets/zoom_menu.gd")
 const HandlesManager = preload("res://src/ui_parts/handles_manager.gd")
 const DisplayTexture = preload("res://src/ui_parts/display_texture.gd")
 
@@ -15,47 +14,27 @@ var limit_right := 0.0
 var limit_top := 0.0
 var limit_bottom := 0.0
 
-@onready var display: TextureRect = $Checkerboard
 @onready var view: SubViewportContainer = get_parent()
 @onready var controls: HandlesManager = $Controls
 @onready var display_texture: DisplayTexture = $Checkerboard/DisplayTexture
 @onready var reference_texture: TextureRect = $ReferenceTexture
-@onready var zoom_menu: ZoomMenu = %ZoomMenu
 
 
 func _ready() -> void:
-	zoom_menu.zoom_changed.connect(view.update.unbind(2))
-	State.svg_resized.connect(resize)
-	Configs.active_tab_changed.connect(zoom_menu.zoom_reset)
 	State.viewport_size_changed.connect(adjust_view)
-	resize()
-	await get_tree().process_frame
-	zoom_menu.zoom_reset()
 
 # Top left corner.
 func set_view(new_position: Vector2) -> void:
 	var scaled_size := size / State.zoom
-	view.camera_unsnapped_position = new_position.clamp(Vector2(limit_left, limit_top),
-			Vector2(limit_right, limit_bottom) - scaled_size)
+	view.camera_position = new_position.clamp(Vector2(limit_left, limit_top), Vector2(limit_right, limit_bottom) - scaled_size)
 	
-	var stripped_left := maxf(view.camera_unsnapped_position.x, 0.0)
-	var stripped_top := maxf(view.camera_unsnapped_position.y, 0.0)
-	var stripped_right := minf(view.camera_unsnapped_position.x + scaled_size.x,
-			State.root_element.width)
-	var stripped_bottom := minf(view.camera_unsnapped_position.y + scaled_size.y,
-			State.root_element.height)
-	display_texture.view_rect = Rect2(stripped_left, stripped_top,
-			stripped_right - stripped_left, stripped_bottom - stripped_top)
+	var stripped_left := maxf(view.camera_position.x, 0.0)
+	var stripped_top := maxf(view.camera_position.y, 0.0)
+	var stripped_right := minf(view.camera_position.x + scaled_size.x, State.root_element.width)
+	var stripped_bottom := minf(view.camera_position.y + scaled_size.y, State.root_element.height)
+	display_texture.view_rect = Rect2(stripped_left, stripped_top, stripped_right - stripped_left, stripped_bottom - stripped_top)
 	view.update()
 
-
-# Adjust the SVG dimensions.
-func resize() -> void:
-	var root_element_size := State.root_element.get_size()
-	if root_element_size.is_finite():
-		display.size = root_element_size
-		reference_texture.size = root_element_size
-	zoom_menu.zoom_reset()
 
 func center_frame() -> void:
 	var available_size := size * ZOOM_RESET_BUFFER
@@ -80,10 +59,9 @@ func _unhandled_input(event: InputEvent) -> void:
 				_zoom_to = get_mouse_position() / Vector2(size)
 			zoom_menu.set_zoom(State.zoom * (1.0 + (1 if Configs.savedata.invert_zoom else -1) *\
 					(wrap_mouse(event.relative).y if Configs.savedata.wraparound_panning else event.relative.y) / 128.0), _zoom_to)
-		# Panning with LMB or MMB. This gives a reliable way to adjust the view
-		# without dragging the things on it.
+		# Panning with LMB or MMB. This gives a reliable way to adjust the view without dragging the things on it.
 		else:
-			set_view(view.camera_unsnapped_position - (wrap_mouse(event.relative) if Configs.savedata.wraparound_panning else event.relative) / State.zoom)
+			set_view(view.camera_position - (wrap_mouse(event.relative) if Configs.savedata.wraparound_panning else event.relative) / State.zoom)
 	
 	elif event is InputEventPanGesture and not DisplayServer.get_name() == "Android":
 		# Zooming with Ctrl + touch?
@@ -91,7 +69,7 @@ func _unhandled_input(event: InputEvent) -> void:
 			zoom_menu.set_zoom(State.zoom * (1 + event.delta.y / 2))
 		# Panning with touch.
 		else:
-			set_view(view.camera_unsnapped_position + event.delta * 32 / State.zoom)
+			set_view(view.camera_position + event.delta * 32 / State.zoom)
 	# Zooming with touch.
 	elif event is InputEventMagnifyGesture:
 		zoom_menu.set_zoom(State.zoom * event.factor)
@@ -136,7 +114,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		elif zoom_dir == -1:
 			zoom_menu.zoom_out(factor, mouse_offset)
 		
-		set_view(view.camera_unsnapped_position + move_vec * factor / State.zoom * 32)
+		set_view(view.camera_position + move_vec * factor / State.zoom * 32)
 	
 	else:
 		if not event.is_echo():
@@ -165,8 +143,8 @@ func adjust_view(offset := Vector2(0.5, 0.5)) -> void:
 	limit_top = -zoomed_size.y
 	limit_bottom = zoomed_size.y + svg_h
 	
-	set_view(Vector2(lerpf(view.camera_unsnapped_position.x, view.camera_unsnapped_position.x + old_size.x - size.x / State.zoom, offset.x),
-			lerpf(view.camera_unsnapped_position.y, view.camera_unsnapped_position.y + old_size.y - size.y / State.zoom, offset.y)))
+	set_view(Vector2(lerpf(view.camera_position.x, view.camera_position.x + old_size.x - size.x / State.zoom, offset.x),
+			lerpf(view.camera_position.y, view.camera_position.y + old_size.y - size.y / State.zoom, offset.y)))
 
 func _on_size_changed() -> void:
 	State.set_viewport_size(size)

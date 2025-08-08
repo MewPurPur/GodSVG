@@ -27,6 +27,9 @@ var reference_image: Texture2D:
 			reference_image = new_value
 			reference_changed.emit()
 
+var camera_zoom: float
+var camera_position: Vector2
+
 
 var active := false
 

@@ -1,6 +1,7 @@
 extends VBoxContainer
 
 const NumberEdit = preload("res://src/ui_widgets/number_edit.gd")
+const ZoomMenu = preload("res://src/ui_widgets/zoom_menu.gd")
 
 @onready var viewport: SubViewport = %Viewport
 @onready var reference_texture: TextureRect = %Viewport/ReferenceTexture
@@ -13,8 +14,14 @@ const NumberEdit = preload("res://src/ui_widgets/number_edit.gd")
 @onready var debug_label: Label = %DebugContainer/DebugLabel
 @onready var input_debug_label: Label = %DebugContainer/InputDebugLabel
 @onready var toolbar: PanelContainer = $ViewportPanel/VBoxContainer/Toolbar
+@onready var zoom_menu: ZoomMenu = %ZoomMenu
+@onready var checkerboard: TextureRect = $Checkerboard
 
 func _ready() -> void:
+	Configs.active_tab_changed.connect(sync_camera)
+	
+	State.svg_resized.connect(_on_svg_resized)
+	_on_svg_resized()
 	Configs.language_changed.connect(sync_localization)
 	sync_localization()
 	Configs.snap_changed.connect(update_snap_config)
@@ -156,3 +163,15 @@ func _update_input_debug(event: InputEvent) -> void:
 			new_text = new_text.right(-new_text.find("\n") - 1)
 		new_text += event_text + "\n"
 		input_debug_label.text = new_text
+
+
+func _on_svg_resized() -> void:
+	var root_element_size := State.root_element.get_size()
+	if root_element_size.is_finite():
+		checkerboard.size = root_element_size
+		reference_texture.size = root_element_size
+	zoom_menu.zoom_reset()
+
+func sync_camera() -> void:
+	var active_tab := Configs.savedata.get_active_tab()
+	zoom_menu.set_zoom(active_tab.get_camera_zoom())
