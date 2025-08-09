@@ -51,8 +51,7 @@ func _enter_tree() -> void:
 	State.view_rasterized_changed.connect(_on_view_rasterized_changed)
 	State.show_grid_changed.connect(_on_show_grid_changed)
 	State.show_handles_changed.connect(_on_show_handles_changed)
-	State.show_reference_changed.connect(_on_show_reference_changed)
-	State.overlay_reference_changed.connect(_on_overlay_reference_changed)
+	Configs.active_tab_reference_changed.connect(_on_active_tab_reference_changed)
 	State.show_debug_changed.connect(_on_show_debug_changed)
 	# Updating checked items didn't work without the await.
 	await get_tree().process_frame
@@ -60,8 +59,7 @@ func _enter_tree() -> void:
 	_on_view_rasterized_changed()
 	_on_show_grid_changed()
 	_on_show_handles_changed()
-	_on_show_reference_changed()
-	_on_overlay_reference_changed()
+	_on_active_tab_reference_changed()
 	_on_show_debug_changed()
 
 
@@ -192,11 +190,11 @@ func _on_show_grid_changed() -> void:
 func _on_show_handles_changed() -> void:
 	NativeMenu.set_item_checked(view_rid, view_show_handles_idx, State.show_handles)
 
-func _on_show_reference_changed() -> void:
-	NativeMenu.set_item_checked(view_rid, view_show_reference_idx, State.show_reference)
-
-func _on_overlay_reference_changed() -> void:
-	NativeMenu.set_item_checked(view_rid, view_overlay_reference_idx, State.overlay_reference)
+func _on_active_tab_reference_changed() -> void:
+	var active_tab := Configs.savedata.get_active_tab()
+	var has_reference := is_instance_valid(active_tab.reference_image)
+	NativeMenu.set_item_checked(view_rid, view_show_reference_idx, has_reference and active_tab.show_reference)
+	NativeMenu.set_item_checked(view_rid, view_overlay_reference_idx, has_reference and active_tab.overlay_reference)
 
 func _on_show_debug_changed() -> void:
 	NativeMenu.set_item_checked(view_rid, view_show_debug_idx, State.show_debug)

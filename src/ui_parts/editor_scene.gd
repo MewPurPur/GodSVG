@@ -13,8 +13,12 @@ func _ready() -> void:
 	shortcuts.add_shortcut("view_show_grid", State.toggle_show_grid, ShortcutsRegistration.Behavior.PASS_THROUGH_AND_PRESERVE_POPUPS)
 	shortcuts.add_shortcut("view_show_handles", State.toggle_show_handles, ShortcutsRegistration.Behavior.PASS_THROUGH_AND_PRESERVE_POPUPS)
 	shortcuts.add_shortcut("view_rasterized_svg", State.toggle_view_rasterized, ShortcutsRegistration.Behavior.PASS_THROUGH_AND_PRESERVE_POPUPS)
-	shortcuts.add_shortcut("view_show_reference", State.toggle_show_reference, ShortcutsRegistration.Behavior.PASS_THROUGH_AND_PRESERVE_POPUPS)
-	shortcuts.add_shortcut("view_overlay_reference", State.toggle_overlay_reference, ShortcutsRegistration.Behavior.PASS_THROUGH_AND_PRESERVE_POPUPS)
+	shortcuts.add_shortcut("view_show_reference", func() -> void:
+			Configs.savedata.get_active_tab().show_reference = not Configs.savedata.get_active_tab().show_reference,
+			ShortcutsRegistration.Behavior.PASS_THROUGH_AND_PRESERVE_POPUPS)
+	shortcuts.add_shortcut("view_overlay_reference", func() -> void:
+			Configs.savedata.get_active_tab().overlay_reference = not Configs.savedata.get_active_tab().overlay_reference,
+			ShortcutsRegistration.Behavior.PASS_THROUGH_AND_PRESERVE_POPUPS)
 	shortcuts.add_shortcut("load_reference", FileUtils.open_image_import_dialog, ShortcutsRegistration.Behavior.PASS_THROUGH_POPUPS)
 	shortcuts.add_shortcut("toggle_snap", func() -> void: Configs.savedata.snap *= -1, ShortcutsRegistration.Behavior.PASS_THROUGH_AND_PRESERVE_POPUPS)
 	shortcuts.add_shortcut("import", FileUtils.open_svg_import_dialog, ShortcutsRegistration.Behavior.PASS_THROUGH_POPUPS)

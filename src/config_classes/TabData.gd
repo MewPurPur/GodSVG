@@ -27,6 +27,19 @@ var reference_image: Texture2D:
 			reference_image = new_value
 			reference_changed.emit()
 
+var overlay_reference := false:
+	set(new_value):
+		if overlay_reference != new_value:
+			overlay_reference = new_value
+			reference_changed.emit()
+
+var show_reference := true:
+	set(new_value):
+		if show_reference != new_value:
+			show_reference = new_value
+			reference_changed.emit()
+
+
 
 var active := false
 

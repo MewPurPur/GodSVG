@@ -3,7 +3,7 @@ extends VBoxContainer
 const NumberEdit = preload("res://src/ui_widgets/number_edit.gd")
 
 @onready var viewport: SubViewport = %Viewport
-@onready var reference_texture: TextureRect = %Viewport/ReferenceTexture
+@onready var viewport_container: SubViewportContainer = $ViewportPanel/VBoxContainer/ViewportContainer
 @onready var reference_button: Button = %LeftMenu/Reference
 @onready var visuals_button: Button = %LeftMenu/Visuals
 @onready var snapper: NumberEdit = %LeftMenu/Snapping/SnapNumberEdit
@@ -15,19 +15,13 @@ const NumberEdit = preload("res://src/ui_widgets/number_edit.gd")
 @onready var toolbar: PanelContainer = $ViewportPanel/VBoxContainer/Toolbar
 
 func _ready() -> void:
+	reference_button.pressed.connect(_on_reference_button_pressed)
 	Configs.language_changed.connect(sync_localization)
 	sync_localization()
 	Configs.snap_changed.connect(update_snap_config)
 	update_snap_config()
 	Configs.theme_changed.connect(sync_theming)
 	sync_theming()
-	Configs.active_tab_changed.connect(sync_reference_image)
-	Configs.active_tab_reference_changed.connect(sync_reference_image)
-	sync_reference_image()
-	State.show_reference_changed.connect(_on_show_reference_updated)
-	_on_show_reference_updated()
-	State.overlay_reference_changed.connect(_on_overlay_reference_updated)
-	_on_overlay_reference_updated()
 	State.show_debug_changed.connect(_on_show_debug_changed)
 	_on_show_debug_changed()
 	get_window().window_input.connect(_update_input_debug)
@@ -60,15 +54,17 @@ func update_snap_config() -> void:
 	snapper.set_value(absf(snap_config))
 
 
-func _on_reference_pressed() -> void:
-	var has_reference := is_instance_valid(reference_texture.texture)
+func _on_reference_button_pressed() -> void:
+	var active_tab := Configs.savedata.get_active_tab()
+	var has_reference := is_instance_valid(active_tab.reference_image)
 	var btn_arr: Array[Button] = [
 		ContextPopup.create_shortcut_button("load_reference"),
 		ContextPopup.create_button(Translator.translate("Paste reference image"),
-				paste_reference_image, not Utils.has_clipboard_image_web_safe(),
-				load("res://assets/icons/Paste.svg")),
-		ContextPopup.create_shortcut_checkbox("view_show_reference", State.show_reference and has_reference, not has_reference),
-		ContextPopup.create_shortcut_checkbox("view_overlay_reference", State.overlay_reference and has_reference, not has_reference)
+				paste_reference_image, not Utils.has_clipboard_image_web_safe(), load("res://assets/icons/Paste.svg")),
+		ContextPopup.create_button(Translator.translate("Clear reference image"),
+				clear_reference_image, not has_reference, load("res://assets/icons/Clear.svg")),
+		ContextPopup.create_shortcut_checkbox("view_show_reference", active_tab.show_reference and has_reference, not has_reference),
+		ContextPopup.create_shortcut_checkbox("view_overlay_reference", active_tab.overlay_reference and has_reference, not has_reference)
 	]
 	
 	var reference_popup := ContextPopup.new()
@@ -77,6 +73,9 @@ func _on_reference_pressed() -> void:
 
 func paste_reference_image() -> void:
 	FileUtils.load_reference_from_image(DisplayServer.clipboard_get_image())
+
+func clear_reference_image() -> void:
+	FileUtils.load_reference_from_image(null)
 
 func _on_visuals_button_pressed() -> void:
 	var btn_arr: Array[Button] = [
@@ -89,24 +88,6 @@ func _on_visuals_button_pressed() -> void:
 	visuals_popup.setup(btn_arr, true)
 	HandlerGUI.popup_under_rect_center(visuals_popup, visuals_button.get_global_rect(), get_viewport())
 
-
-func _on_show_reference_updated() -> void:
-	reference_texture.visible = State.show_reference
-
-func _on_overlay_reference_updated() -> void:
-	if State.overlay_reference:
-		viewport.move_child(reference_texture, viewport.get_child_count() - 1)
-	else:
-		viewport.move_child(reference_texture, 0)
-
-func sync_reference_image() ->  void:
-	var reference := Configs.savedata.get_active_tab().reference_image
-	if is_instance_valid(reference):
-		reference_texture.texture = reference
-		reference_texture.show()
-	else:
-		reference_texture.texture = null
-		reference_texture.hide()
 
 func _on_snap_button_toggled(toggled_on: bool) -> void:
 	Configs.savedata.snap = absf(Configs.savedata.snap) if toggled_on else -absf(Configs.savedata.snap)

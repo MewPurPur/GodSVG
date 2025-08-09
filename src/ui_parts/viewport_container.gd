@@ -11,8 +11,14 @@ var camera_zoom: float
 var camera_position: Vector2
 var camera_snapped_position: Vector2
 
+@onready var viewport: SubViewport = $Viewport
+@onready var checkerboard: TextureRect = $Viewport/Checkerboard
+
+var reference_texture_rect: TextureRect
 
 func _ready() -> void:
+	Configs.active_tab_changed.connect(sync_reference_image)
+	Configs.active_tab_reference_changed.connect(sync_reference_image)
 	Configs.grid_color_changed.connect(queue_redraw)
 	State.show_grid_changed.connect(update_show_grid)
 	update_show_grid()
@@ -23,6 +29,7 @@ func _ready() -> void:
 	State.zoom_changed.connect(queue_redraw)
 
 func exit_tree() -> void:
+	RenderingServer.free_rid(grid_ci)
 	RenderingServer.free_rid(grid_numbers_ci)
 
 func change_zoom() -> void:
@@ -32,6 +39,27 @@ func update_show_grid() -> void:
 	RenderingServer.canvas_item_set_visible(grid_ci, State.show_grid)
 	RenderingServer.canvas_item_set_visible(grid_numbers_ci, State.show_grid)
 
+
+func sync_reference_image() -> void:
+	var active_tab := Configs.savedata.get_active_tab()
+	if is_instance_valid(active_tab.reference_image):
+		if not is_instance_valid(reference_texture_rect):
+			reference_texture_rect = TextureRect.new()
+			reference_texture_rect.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+			reference_texture_rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+			reference_texture_rect.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
+			viewport.add_child(reference_texture_rect)
+			var _on_checkerboard_resized := func() -> void:
+					reference_texture_rect.size = checkerboard.size
+			checkerboard.resized.connect(_on_checkerboard_resized)
+			reference_texture_rect.tree_exited.connect(checkerboard.resized.disconnect.bind(_on_checkerboard_resized))
+			_on_checkerboard_resized.call()
+		
+		reference_texture_rect.texture = active_tab.reference_image
+		reference_texture_rect.visible = active_tab.show_reference
+		viewport.move_child(reference_texture_rect, -1 if active_tab.overlay_reference else 0)
+	elif is_instance_valid(reference_texture_rect):
+		reference_texture_rect.queue_free()
 
 func update() -> void:
 	var new_snapped_position := camera_position.snapped(Vector2(1, 1) / camera_zoom)

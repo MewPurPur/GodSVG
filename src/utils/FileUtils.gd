@@ -151,7 +151,10 @@ static func _finish_reference_load(data: Variant, file_path: String) -> void:
 	load_reference_from_image(img)
 
 static func load_reference_from_image(img: Image) -> void:
-	Configs.savedata.get_active_tab().reference_image = ImageTexture.create_from_image(img)
+	if is_instance_valid(img):
+		Configs.savedata.get_active_tab().reference_image = ImageTexture.create_from_image(img)
+	else:
+		Configs.savedata.get_active_tab().reference_image = null
 
 
 static func _is_native_preferred() -> bool:
