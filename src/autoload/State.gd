@@ -247,15 +247,11 @@ func set_viewport_size(new_value: Vector2i) -> void:
 var view_rasterized := false
 var show_grid := true
 var show_handles := true
-var show_reference := true
-var overlay_reference := false
 var show_debug := false
 
 signal view_rasterized_changed
 signal show_grid_changed
 signal show_handles_changed
-signal show_reference_changed
-signal overlay_reference_changed
 signal show_debug_changed
 
 func toggle_view_rasterized() -> void:
@@ -269,14 +265,6 @@ func toggle_show_grid() -> void:
 func toggle_show_handles() -> void:
 	show_handles = not show_handles
 	show_handles_changed.emit()
-
-func toggle_show_reference() -> void:
-	show_reference = not show_reference
-	show_reference_changed.emit()
-
-func toggle_overlay_reference() -> void:
-	overlay_reference = not overlay_reference
-	overlay_reference_changed.emit()
 
 func toggle_show_debug() -> void:
 	show_debug = not show_debug

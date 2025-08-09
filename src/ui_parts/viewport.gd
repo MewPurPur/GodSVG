@@ -15,11 +15,10 @@ var limit_right := 0.0
 var limit_top := 0.0
 var limit_bottom := 0.0
 
-@onready var display: TextureRect = $Checkerboard
+@onready var checkerboard: TextureRect = $Checkerboard
 @onready var view: SubViewportContainer = get_parent()
 @onready var controls: HandlesManager = $Controls
 @onready var display_texture: DisplayTexture = $Checkerboard/DisplayTexture
-@onready var reference_texture: TextureRect = $ReferenceTexture
 @onready var zoom_menu: ZoomMenu = %ZoomMenu
 
 
@@ -49,8 +48,7 @@ func set_view(new_position: Vector2) -> void:
 func resize() -> void:
 	var root_element_size := State.root_element.get_size()
 	if root_element_size.is_finite():
-		display.size = root_element_size
-		reference_texture.size = root_element_size
+		checkerboard.size = root_element_size
 	zoom_menu.zoom_reset()
 
 func center_frame() -> void:
@@ -143,7 +141,7 @@ func _unhandled_input(event: InputEvent) -> void:
 func _on_zoom_changed(new_zoom_level: float, offset: Vector2) -> void:
 	State.set_zoom(new_zoom_level)
 	adjust_view(offset)
-	display.material.set_shader_parameter("uv_scale", nearest_po2(int(State.zoom * 32.0)) / 32.0)
+	checkerboard.material.set_shader_parameter("uv_scale", nearest_po2(int(State.zoom * 32.0)) / 32.0)
 
 var last_size_adjusted := size / State.zoom
 
