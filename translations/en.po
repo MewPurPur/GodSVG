@@ -42,6 +42,14 @@ msgid "OK"
 msgstr ""
 
 #: src/autoload/HandlerGUI.gd:
+msgid "The graphic can be exported only as SVG because its proportions are too extreme."
+msgstr ""
+
+#: src/autoload/HandlerGUI.gd:
+msgid "The graphic can be exported only as SVG because its size is not defined."
+msgstr ""
+
+#: src/autoload/HandlerGUI.gd:
 msgid "Do you want to proceed?"
 msgstr ""
 
@@ -52,14 +60,6 @@ msgstr ""
 #: src/autoload/HandlerGUI.gd: src/ui_parts/export_menu.gd:
 #: src/utils/TranslationUtils.gd:
 msgid "Export"
-msgstr ""
-
-#: src/autoload/HandlerGUI.gd:
-msgid "The graphic can be exported only as SVG because its proportions are too extreme."
-msgstr ""
-
-#: src/autoload/HandlerGUI.gd:
-msgid "The graphic can be exported only as SVG because its size is not defined."
 msgstr ""
 
 #: src/autoload/State.gd: src/ui_parts/good_file_dialog.gd:
@@ -279,6 +279,10 @@ msgstr ""
 msgid "Dimensions"
 msgstr ""
 
+#: src/ui_parts/export_menu.gd:
+msgid "Preview image size is limited to {dimensions}"
+msgstr ""
+
 #: src/ui_parts/export_menu.gd: src/ui_widgets/settings_content_generic.gd:
 msgid "Size"
 msgstr ""
@@ -313,10 +317,6 @@ msgstr ""
 
 #: src/ui_parts/export_menu.gd: src/utils/TranslationUtils.gd:
 msgid "Copy"
-msgstr ""
-
-#: src/ui_parts/export_menu.gd:
-msgid "Preview image size is limited to {dimensions}"
 msgstr ""
 
 #: src/ui_parts/global_actions.gd: src/ui_parts/layout_configuration.gd:
@@ -393,6 +393,10 @@ msgid "New shape"
 msgstr ""
 
 #: src/ui_parts/import_warning_menu.gd:
+msgid "Syntax error"
+msgstr ""
+
+#: src/ui_parts/import_warning_menu.gd:
 msgid "Import Problems"
 msgstr ""
 
@@ -406,10 +410,6 @@ msgstr ""
 
 #: src/ui_parts/import_warning_menu.gd:
 msgid "Unrecognized attribute"
-msgstr ""
-
-#: src/ui_parts/import_warning_menu.gd:
-msgid "Syntax error"
 msgstr ""
 
 #: src/ui_parts/inspector.gd:
@@ -577,6 +577,10 @@ msgstr ""
 
 #: src/ui_widgets/good_color_picker.gd:
 msgid "Eyedropper"
+msgstr ""
+
+#: src/ui_widgets/palette_config.gd:
+msgid "Add new color"
 msgstr ""
 
 #: src/ui_widgets/palette_config.gd:
@@ -1380,6 +1384,10 @@ msgid "Viewport"
 msgstr ""
 
 #: src/utils/TranslationUtils.gd:
+msgid "Only {extension_list} files are supported for this operation."
+msgstr ""
+
+#: src/utils/TranslationUtils.gd:
 msgid "Select {format} files"
 msgstr ""
 
@@ -1393,8 +1401,4 @@ msgstr ""
 
 #: src/utils/TranslationUtils.gd:
 msgid "Save the {format} file"
-msgstr ""
-
-#: src/utils/TranslationUtils.gd:
-msgid "Only {extension_list} files are supported for this operation."
 msgstr ""

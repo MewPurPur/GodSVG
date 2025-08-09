@@ -42,6 +42,14 @@ msgid "OK"
 msgstr "Okei"
 
 #: src/autoload/HandlerGUI.gd:
+msgid "The graphic can be exported only as SVG because its proportions are too extreme."
+msgstr "Graafika saab eksportida ainult SVG-na, sest selle proportsioonid on liiga ekstreemsed."
+
+#: src/autoload/HandlerGUI.gd:
+msgid "The graphic can be exported only as SVG because its size is not defined."
+msgstr "Graafika saab eksportida ainult SVG-na, sest selle suurus pole defineeritud."
+
+#: src/autoload/HandlerGUI.gd:
 msgid "Do you want to proceed?"
 msgstr "Kas te tahate jätkata?"
 
@@ -53,14 +61,6 @@ msgstr "Ekspordi SVG"
 #: src/utils/TranslationUtils.gd:
 msgid "Export"
 msgstr "Ekspordi"
-
-#: src/autoload/HandlerGUI.gd:
-msgid "The graphic can be exported only as SVG because its proportions are too extreme."
-msgstr "Graafika saab eksportida ainult SVG-na, sest selle proportsioonid on liiga ekstreemsed."
-
-#: src/autoload/HandlerGUI.gd:
-msgid "The graphic can be exported only as SVG because its size is not defined."
-msgstr "Graafika saab eksportida ainult SVG-na, sest selle suurus pole defineeritud."
 
 #: src/autoload/State.gd: src/ui_parts/good_file_dialog.gd:
 #: src/ui_widgets/alert_dialog.gd: src/utils/FileUtils.gd:
@@ -280,6 +280,10 @@ msgstr "Uus element"
 msgid "Dimensions"
 msgstr "Dimensioonid"
 
+#: src/ui_parts/export_menu.gd:
+msgid "Preview image size is limited to {dimensions}"
+msgstr "Eelvaade on piiratud suurusele {dimensions}"
+
 #: src/ui_parts/export_menu.gd: src/ui_widgets/settings_content_generic.gd:
 msgid "Size"
 msgstr "Suurus"
@@ -315,10 +319,6 @@ msgstr "Kõrgus"
 #: src/ui_parts/export_menu.gd: src/utils/TranslationUtils.gd:
 msgid "Copy"
 msgstr "Kopeeri"
-
-#: src/ui_parts/export_menu.gd:
-msgid "Preview image size is limited to {dimensions}"
-msgstr "Eelvaade on piiratud suurusele {dimensions}"
 
 #: src/ui_parts/global_actions.gd: src/ui_parts/layout_configuration.gd:
 #: src/ui_parts/shortcut_panel_config.gd:
@@ -394,6 +394,10 @@ msgid "New shape"
 msgstr "Uus kujund"
 
 #: src/ui_parts/import_warning_menu.gd:
+msgid "Syntax error"
+msgstr "Süntaksiviga"
+
+#: src/ui_parts/import_warning_menu.gd:
 msgid "Import Problems"
 msgstr "Impordi probleemid"
 
@@ -408,10 +412,6 @@ msgstr "Tundmatu element"
 #: src/ui_parts/import_warning_menu.gd:
 msgid "Unrecognized attribute"
 msgstr "Tundmatu atribuut"
-
-#: src/ui_parts/import_warning_menu.gd:
-msgid "Syntax error"
-msgstr "Süntaksiviga"
 
 #: src/ui_parts/inspector.gd:
 msgid "Add element"
@@ -580,6 +580,11 @@ msgstr "Värvi võtmesõnad"
 #: src/ui_widgets/good_color_picker.gd:
 msgid "Eyedropper"
 msgstr "Värvipipett"
+
+#: src/ui_widgets/palette_config.gd:
+#, fuzzy
+msgid "Add new color"
+msgstr "Teksti värv"
 
 #: src/ui_widgets/palette_config.gd:
 msgid "Unnamed palettes won't be shown."
@@ -1394,6 +1399,10 @@ msgid "Viewport"
 msgstr "Vaade"
 
 #: src/utils/TranslationUtils.gd:
+msgid "Only {extension_list} files are supported for this operation."
+msgstr "Ainult {extension_list} failid on toetatud selle tehingu jaoks."
+
+#: src/utils/TranslationUtils.gd:
 msgid "Select {format} files"
 msgstr "Vali {format} faile"
 
@@ -1408,10 +1417,6 @@ msgstr "Vali {format} fail"
 #: src/utils/TranslationUtils.gd:
 msgid "Save the {format} file"
 msgstr "Salvesta {format} fail"
-
-#: src/utils/TranslationUtils.gd:
-msgid "Only {extension_list} files are supported for this operation."
-msgstr "Ainult {extension_list} failid on toetatud selle tehingu jaoks."
 
 #~ msgid "If turned off, the window title remains as \"GodSVG\" without including the current file."
 #~ msgstr "Väljalülitamisel jääb akna nimieks \"GodSVG\" sõltumata avatud failist."

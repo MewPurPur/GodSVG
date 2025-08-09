@@ -43,6 +43,14 @@ msgid "OK"
 msgstr "Хорошо"
 
 #: src/autoload/HandlerGUI.gd:
+msgid "The graphic can be exported only as SVG because its proportions are too extreme."
+msgstr "Изображение можно экспортировать только как SVG, поскольку его пропорции слишком экстремальные."
+
+#: src/autoload/HandlerGUI.gd:
+msgid "The graphic can be exported only as SVG because its size is not defined."
+msgstr "Изображение можно экспортировать только как SVG, поскольку его размеры не заданы."
+
+#: src/autoload/HandlerGUI.gd:
 msgid "Do you want to proceed?"
 msgstr "Продолжить?"
 
@@ -54,14 +62,6 @@ msgstr "Экспортировать SVG"
 #: src/utils/TranslationUtils.gd:
 msgid "Export"
 msgstr "Экспортовать"
-
-#: src/autoload/HandlerGUI.gd:
-msgid "The graphic can be exported only as SVG because its proportions are too extreme."
-msgstr "Изображение можно экспортировать только как SVG, поскольку его пропорции слишком экстремальные."
-
-#: src/autoload/HandlerGUI.gd:
-msgid "The graphic can be exported only as SVG because its size is not defined."
-msgstr "Изображение можно экспортировать только как SVG, поскольку его размеры не заданы."
 
 #: src/autoload/State.gd: src/ui_parts/good_file_dialog.gd:
 #: src/ui_widgets/alert_dialog.gd: src/utils/FileUtils.gd:
@@ -280,6 +280,10 @@ msgstr "Новый элемент"
 msgid "Dimensions"
 msgstr "Размеры"
 
+#: src/ui_parts/export_menu.gd:
+msgid "Preview image size is limited to {dimensions}"
+msgstr "Размер предварительного просмотра изображения ограничен до {dimensions}"
+
 #: src/ui_parts/export_menu.gd: src/ui_widgets/settings_content_generic.gd:
 msgid "Size"
 msgstr "Размер"
@@ -315,10 +319,6 @@ msgstr "Высота"
 #: src/ui_parts/export_menu.gd: src/utils/TranslationUtils.gd:
 msgid "Copy"
 msgstr "Скопировать"
-
-#: src/ui_parts/export_menu.gd:
-msgid "Preview image size is limited to {dimensions}"
-msgstr "Размер предварительного просмотра изображения ограничен до {dimensions}"
 
 #: src/ui_parts/global_actions.gd: src/ui_parts/layout_configuration.gd:
 #: src/ui_parts/shortcut_panel_config.gd:
@@ -394,6 +394,10 @@ msgid "New shape"
 msgstr "Новая привязка"
 
 #: src/ui_parts/import_warning_menu.gd:
+msgid "Syntax error"
+msgstr "Синтаксическая ошибка"
+
+#: src/ui_parts/import_warning_menu.gd:
 msgid "Import Problems"
 msgstr "Проблемы с импортированием"
 
@@ -408,10 +412,6 @@ msgstr "Неизвестный элемент"
 #: src/ui_parts/import_warning_menu.gd:
 msgid "Unrecognized attribute"
 msgstr "Неизвестный атрибут"
-
-#: src/ui_parts/import_warning_menu.gd:
-msgid "Syntax error"
-msgstr "Синтаксическая ошибка"
 
 #: src/ui_parts/inspector.gd:
 msgid "Add element"
@@ -579,6 +579,11 @@ msgstr "Ключевые слова цвета"
 #: src/ui_widgets/good_color_picker.gd:
 msgid "Eyedropper"
 msgstr "Пипетка"
+
+#: src/ui_widgets/palette_config.gd:
+#, fuzzy
+msgid "Add new color"
+msgstr "Цвет акцента"
 
 #: src/ui_widgets/palette_config.gd:
 msgid "Unnamed palettes won't be shown."
@@ -1381,6 +1386,10 @@ msgid "Viewport"
 msgstr "Окно просмотра"
 
 #: src/utils/TranslationUtils.gd:
+msgid "Only {extension_list} files are supported for this operation."
+msgstr "Только файлы с расширениями {extension_list} поддерживаются для этой операции."
+
+#: src/utils/TranslationUtils.gd:
 msgid "Select {format} files"
 msgstr "Выбрать {format} файлы"
 
@@ -1395,10 +1404,6 @@ msgstr "Выбрать {format} файл"
 #: src/utils/TranslationUtils.gd:
 msgid "Save the {format} file"
 msgstr "Сохранить {format} файл"
-
-#: src/utils/TranslationUtils.gd:
-msgid "Only {extension_list} files are supported for this operation."
-msgstr "Только файлы с расширениями {extension_list} поддерживаются для этой операции."
 
 #~ msgid "If turned off, the window title remains as \"GodSVG\" without including the current file."
 #~ msgstr "Если выключено - заголовок окна будет просто \"GodSVG\", не включая текущий файл."

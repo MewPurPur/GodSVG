@@ -76,16 +76,11 @@ func _ready() -> void:
 			btn.action_mode = BaseButton.ACTION_MODE_BUTTON_PRESS
 			categories.add_child(btn)
 		add_child(categories)
-		setting_container = VBoxContainer.new()
-		setting_container.add_theme_constant_override("separation", 6)
-		add_child(setting_container)
 		categories.get_child(0).button_pressed = true
-		setup_content()
-	else:
-		setting_container = VBoxContainer.new()
-		setting_container.add_theme_constant_override("separation", 6)
-		add_child(setting_container)
-		setup_content()
+	setting_container = VBoxContainer.new()
+	setting_container.add_theme_constant_override("separation", 6)
+	add_child(setting_container)
+	setup_content()
 
 func _get_current_setup_resource() -> ConfigResource:
 	return current_setup_resources[current_setup_resource_index]

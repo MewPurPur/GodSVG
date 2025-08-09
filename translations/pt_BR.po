@@ -42,6 +42,14 @@ msgid "OK"
 msgstr "OK"
 
 #: src/autoload/HandlerGUI.gd:
+msgid "The graphic can be exported only as SVG because its proportions are too extreme."
+msgstr "Esse gráfico pode ser exportado apenas como um SVG pois as suas proporções são extremas."
+
+#: src/autoload/HandlerGUI.gd:
+msgid "The graphic can be exported only as SVG because its size is not defined."
+msgstr "Esse gráfico pode ser exportado apenas como SVG pois o seu tamanho não foi definido."
+
+#: src/autoload/HandlerGUI.gd:
 msgid "Do you want to proceed?"
 msgstr "Você deseja prosseguir?"
 
@@ -53,14 +61,6 @@ msgstr "Exportar SVG"
 #: src/utils/TranslationUtils.gd:
 msgid "Export"
 msgstr "Exportar"
-
-#: src/autoload/HandlerGUI.gd:
-msgid "The graphic can be exported only as SVG because its proportions are too extreme."
-msgstr "Esse gráfico pode ser exportado apenas como um SVG pois as suas proporções são extremas."
-
-#: src/autoload/HandlerGUI.gd:
-msgid "The graphic can be exported only as SVG because its size is not defined."
-msgstr "Esse gráfico pode ser exportado apenas como SVG pois o seu tamanho não foi definido."
 
 #: src/autoload/State.gd: src/ui_parts/good_file_dialog.gd:
 #: src/ui_widgets/alert_dialog.gd: src/utils/FileUtils.gd:
@@ -281,6 +281,10 @@ msgstr "Novo elemento"
 msgid "Dimensions"
 msgstr "Dimensões"
 
+#: src/ui_parts/export_menu.gd:
+msgid "Preview image size is limited to {dimensions}"
+msgstr "O tamanho da visualização da prévia de imagem é limitado à {dimensions}"
+
 #: src/ui_parts/export_menu.gd: src/ui_widgets/settings_content_generic.gd:
 msgid "Size"
 msgstr "Tamanho"
@@ -316,10 +320,6 @@ msgstr "Altura"
 #: src/ui_parts/export_menu.gd: src/utils/TranslationUtils.gd:
 msgid "Copy"
 msgstr "Copiar"
-
-#: src/ui_parts/export_menu.gd:
-msgid "Preview image size is limited to {dimensions}"
-msgstr "O tamanho da visualização da prévia de imagem é limitado à {dimensions}"
 
 #: src/ui_parts/global_actions.gd: src/ui_parts/layout_configuration.gd:
 #: src/ui_parts/shortcut_panel_config.gd:
@@ -395,6 +395,10 @@ msgid "New shape"
 msgstr "Nova forma"
 
 #: src/ui_parts/import_warning_menu.gd:
+msgid "Syntax error"
+msgstr "Erro de sintaxe"
+
+#: src/ui_parts/import_warning_menu.gd:
 msgid "Import Problems"
 msgstr "Problemas de Importação"
 
@@ -409,10 +413,6 @@ msgstr "Elemento não reconhecido"
 #: src/ui_parts/import_warning_menu.gd:
 msgid "Unrecognized attribute"
 msgstr "Atributo não reconhecido"
-
-#: src/ui_parts/import_warning_menu.gd:
-msgid "Syntax error"
-msgstr "Erro de sintaxe"
 
 #: src/ui_parts/inspector.gd:
 msgid "Add element"
@@ -581,6 +581,11 @@ msgstr "Palavras-chave de cor"
 #: src/ui_widgets/good_color_picker.gd:
 msgid "Eyedropper"
 msgstr "Conta-gotas"
+
+#: src/ui_widgets/palette_config.gd:
+#, fuzzy
+msgid "Add new color"
+msgstr "Cor de texto"
 
 #: src/ui_widgets/palette_config.gd:
 msgid "Unnamed palettes won't be shown."
@@ -1395,6 +1400,10 @@ msgid "Viewport"
 msgstr "Canvas"
 
 #: src/utils/TranslationUtils.gd:
+msgid "Only {extension_list} files are supported for this operation."
+msgstr "A extensão de arquivo está vazia. Somente arquivos {extension_list} são suportados."
+
+#: src/utils/TranslationUtils.gd:
 msgid "Select {format} files"
 msgstr "Selecionar arquivos do tipo {format}"
 
@@ -1409,10 +1418,6 @@ msgstr "Selecionar um arquivo do tipo {format}"
 #: src/utils/TranslationUtils.gd:
 msgid "Save the {format} file"
 msgstr "Salvar o arquivo do tipo {format}"
-
-#: src/utils/TranslationUtils.gd:
-msgid "Only {extension_list} files are supported for this operation."
-msgstr "A extensão de arquivo está vazia. Somente arquivos {extension_list} são suportados."
 
 #~ msgid "If turned off, the window title remains as \"GodSVG\" without including the current file."
 #~ msgstr "Se desabilitado, o título da janela permanecerá como \"GodSVG\" sem incluir o nome do arquivo aberto."
