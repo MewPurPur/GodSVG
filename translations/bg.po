@@ -42,6 +42,14 @@ msgid "OK"
 msgstr "Добре"
 
 #: src/autoload/HandlerGUI.gd:
+msgid "The graphic can be exported only as SVG because its proportions are too extreme."
+msgstr "Графиката може да бъде експортирана само като SVG защото височината и широчината са твърде различни."
+
+#: src/autoload/HandlerGUI.gd:
+msgid "The graphic can be exported only as SVG because its size is not defined."
+msgstr "Графиката може да бъде експортирана само като SVG защото размерът не е определен."
+
+#: src/autoload/HandlerGUI.gd:
 msgid "Do you want to proceed?"
 msgstr "Искаш ли да продължиш?"
 
@@ -53,14 +61,6 @@ msgstr "Експортирай SVG-то"
 #: src/utils/TranslationUtils.gd:
 msgid "Export"
 msgstr "Експортирай"
-
-#: src/autoload/HandlerGUI.gd:
-msgid "The graphic can be exported only as SVG because its proportions are too extreme."
-msgstr "Графиката може да бъде експортирана само като SVG защото височината и широчината са твърде различни."
-
-#: src/autoload/HandlerGUI.gd:
-msgid "The graphic can be exported only as SVG because its size is not defined."
-msgstr "Графиката може да бъде експортирана само като SVG защото размерът не е определен."
 
 #: src/autoload/State.gd: src/ui_parts/good_file_dialog.gd:
 #: src/ui_widgets/alert_dialog.gd: src/utils/FileUtils.gd:
@@ -279,6 +279,10 @@ msgstr "Добави елемент"
 msgid "Dimensions"
 msgstr "Измерения"
 
+#: src/ui_parts/export_menu.gd:
+msgid "Preview image size is limited to {dimensions}"
+msgstr "Размерът на визуализацията е ограничен до {dimensions}"
+
 #: src/ui_parts/export_menu.gd: src/ui_widgets/settings_content_generic.gd:
 msgid "Size"
 msgstr "Размер"
@@ -314,10 +318,6 @@ msgstr "Височина"
 #: src/ui_parts/export_menu.gd: src/utils/TranslationUtils.gd:
 msgid "Copy"
 msgstr "Копирай"
-
-#: src/ui_parts/export_menu.gd:
-msgid "Preview image size is limited to {dimensions}"
-msgstr "Размерът на визуализацията е ограничен до {dimensions}"
 
 #: src/ui_parts/global_actions.gd: src/ui_parts/layout_configuration.gd:
 #: src/ui_parts/shortcut_panel_config.gd:
@@ -393,6 +393,10 @@ msgid "New shape"
 msgstr "Нова фигура"
 
 #: src/ui_parts/import_warning_menu.gd:
+msgid "Syntax error"
+msgstr "Синтактична грешка"
+
+#: src/ui_parts/import_warning_menu.gd:
 msgid "Import Problems"
 msgstr "Проблеми в импортирането"
 
@@ -407,10 +411,6 @@ msgstr "Непознат елемент"
 #: src/ui_parts/import_warning_menu.gd:
 msgid "Unrecognized attribute"
 msgstr "Непознат атрибут"
-
-#: src/ui_parts/import_warning_menu.gd:
-msgid "Syntax error"
-msgstr "Синтактична грешка"
 
 #: src/ui_parts/inspector.gd:
 msgid "Add element"
@@ -578,6 +578,10 @@ msgstr "Ключови цветове"
 #: src/ui_widgets/good_color_picker.gd:
 msgid "Eyedropper"
 msgstr "Пипета"
+
+#: src/ui_widgets/palette_config.gd:
+msgid "Add new color"
+msgstr "Добави нов цвят"
 
 #: src/ui_widgets/palette_config.gd:
 msgid "Unnamed palettes won't be shown."
@@ -1380,6 +1384,10 @@ msgid "Viewport"
 msgstr "Гледка"
 
 #: src/utils/TranslationUtils.gd:
+msgid "Only {extension_list} files are supported for this operation."
+msgstr "Единствено {extension_list} файлове се поддържат от тази операция."
+
+#: src/utils/TranslationUtils.gd:
 msgid "Select {format} files"
 msgstr "Избери {format} файлове"
 
@@ -1394,7 +1402,3 @@ msgstr "Избери {format} файл"
 #: src/utils/TranslationUtils.gd:
 msgid "Save the {format} file"
 msgstr "Запази {format} файла"
-
-#: src/utils/TranslationUtils.gd:
-msgid "Only {extension_list} files are supported for this operation."
-msgstr "Единствено {extension_list} файлове се поддържат от тази операция."

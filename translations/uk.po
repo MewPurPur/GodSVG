@@ -42,6 +42,14 @@ msgid "OK"
 msgstr "Добре"
 
 #: src/autoload/HandlerGUI.gd:
+msgid "The graphic can be exported only as SVG because its proportions are too extreme."
+msgstr "Це зображення може бути експортоване тільки як SVG, оскільки його пропорції занадто екстремальні."
+
+#: src/autoload/HandlerGUI.gd:
+msgid "The graphic can be exported only as SVG because its size is not defined."
+msgstr "Це зображення може бути експортоване тільки як SVG, оскільки його розмір не завданий."
+
+#: src/autoload/HandlerGUI.gd:
 msgid "Do you want to proceed?"
 msgstr "Ви дійсно бажаєте продовжити?"
 
@@ -53,14 +61,6 @@ msgstr "Експортувати SVG"
 #: src/utils/TranslationUtils.gd:
 msgid "Export"
 msgstr "Експортувати"
-
-#: src/autoload/HandlerGUI.gd:
-msgid "The graphic can be exported only as SVG because its proportions are too extreme."
-msgstr "Це зображення може бути експортоване тільки як SVG, оскільки його пропорції занадто екстремальні."
-
-#: src/autoload/HandlerGUI.gd:
-msgid "The graphic can be exported only as SVG because its size is not defined."
-msgstr "Це зображення може бути експортоване тільки як SVG, оскільки його розмір не завданий."
 
 #: src/autoload/State.gd: src/ui_parts/good_file_dialog.gd:
 #: src/ui_widgets/alert_dialog.gd: src/utils/FileUtils.gd:
@@ -279,6 +279,10 @@ msgstr "Новий елемент"
 msgid "Dimensions"
 msgstr "Розміри"
 
+#: src/ui_parts/export_menu.gd:
+msgid "Preview image size is limited to {dimensions}"
+msgstr "Розмір попереднього перегляду зображення обмежено до {dimensions}"
+
 #: src/ui_parts/export_menu.gd: src/ui_widgets/settings_content_generic.gd:
 msgid "Size"
 msgstr "Розмір"
@@ -314,10 +318,6 @@ msgstr "Висота"
 #: src/ui_parts/export_menu.gd: src/utils/TranslationUtils.gd:
 msgid "Copy"
 msgstr "Скопіювати"
-
-#: src/ui_parts/export_menu.gd:
-msgid "Preview image size is limited to {dimensions}"
-msgstr "Розмір попереднього перегляду зображення обмежено до {dimensions}"
 
 #: src/ui_parts/global_actions.gd: src/ui_parts/layout_configuration.gd:
 #: src/ui_parts/shortcut_panel_config.gd:
@@ -393,6 +393,10 @@ msgid "New shape"
 msgstr "Нова форма"
 
 #: src/ui_parts/import_warning_menu.gd:
+msgid "Syntax error"
+msgstr "Синтаксична помилка"
+
+#: src/ui_parts/import_warning_menu.gd:
 msgid "Import Problems"
 msgstr "Проблема з імпортуванням"
 
@@ -407,10 +411,6 @@ msgstr "Невідомий елемент"
 #: src/ui_parts/import_warning_menu.gd:
 msgid "Unrecognized attribute"
 msgstr "Невідомий атрибут"
-
-#: src/ui_parts/import_warning_menu.gd:
-msgid "Syntax error"
-msgstr "Синтаксична помилка"
 
 #: src/ui_parts/inspector.gd:
 msgid "Add element"
@@ -578,6 +578,11 @@ msgstr "Ключові слова кольорів"
 #: src/ui_widgets/good_color_picker.gd:
 msgid "Eyedropper"
 msgstr "Піпетка"
+
+#: src/ui_widgets/palette_config.gd:
+#, fuzzy
+msgid "Add new color"
+msgstr "Колір акценту"
 
 #: src/ui_widgets/palette_config.gd:
 msgid "Unnamed palettes won't be shown."
@@ -1385,6 +1390,10 @@ msgid "Viewport"
 msgstr "Вікно перегляду"
 
 #: src/utils/TranslationUtils.gd:
+msgid "Only {extension_list} files are supported for this operation."
+msgstr "Тільки файли з розширеннями {extension_list} підтримуються для цієї операції."
+
+#: src/utils/TranslationUtils.gd:
 msgid "Select {format} files"
 msgstr "Обрати {format} файли"
 
@@ -1399,10 +1408,6 @@ msgstr "Обрати {format} файл"
 #: src/utils/TranslationUtils.gd:
 msgid "Save the {format} file"
 msgstr "Зберегти {format} файл"
-
-#: src/utils/TranslationUtils.gd:
-msgid "Only {extension_list} files are supported for this operation."
-msgstr "Тільки файли з розширеннями {extension_list} підтримуються для цієї операції."
 
 #~ msgid "If turned off, the window title remains as \"GodSVG\" without including the current file."
 #~ msgstr "Якщо вимкнено - заголовок вікна залишиться як \"GodSVG\", не включаючи назву поточного файлу."
