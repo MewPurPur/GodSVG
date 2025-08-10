@@ -26,11 +26,10 @@ func _ready() -> void:
 	zoom_menu.zoom_changed.connect(_on_zoom_changed)
 	zoom_menu.zoom_reset_pressed.connect(center_frame)
 	zoom_menu.zoom_changed.connect(view.update.unbind(2))
-	size_changed.connect(_on_size_changed)
+	size_changed.connect(adjust_view)
 	State.svg_resized.connect(resize)
 	resize()
 	Configs.active_tab_changed.connect(zoom_menu.zoom_reset)
-	State.viewport_size_changed.connect(adjust_view)
 	await get_tree().process_frame
 	zoom_menu.zoom_reset()
 
@@ -163,9 +162,6 @@ func adjust_view(offset := Vector2(0.5, 0.5)) -> void:
 	
 	set_view(Vector2(lerpf(view.camera_position.x, view.camera_position.x + old_size.x - size.x / State.zoom, offset.x),
 			lerpf(view.camera_position.y, view.camera_position.y + old_size.y - size.y / State.zoom, offset.y)))
-
-func _on_size_changed() -> void:
-	State.set_viewport_size(size)
 
 func wrap_mouse(relative: Vector2) -> Vector2:
 	var view_rect := get_visible_rect().grow(-1.0)
