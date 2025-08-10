@@ -9,12 +9,24 @@ const NumberEdit = preload("res://src/ui_widgets/number_edit.gd")
 @onready var snapper: NumberEdit = %LeftMenu/Snapping/SnapNumberEdit
 @onready var snap_button: BetterButton = %LeftMenu/Snapping/SnapButton
 @onready var viewport_panel: PanelContainer = $ViewportPanel
-@onready var debug_container: MarginContainer = $ViewportPanel/DebugMargins
-@onready var debug_label: Label = %DebugContainer/DebugLabel
-@onready var input_debug_label: Label = %DebugContainer/InputDebugLabel
 @onready var toolbar: PanelContainer = $ViewportPanel/VBoxContainer/Toolbar
 
 func _ready() -> void:
+	var shortcuts := ShortcutsRegistration.new()
+	shortcuts.add_shortcut("view_show_grid", State.toggle_show_grid, ShortcutsRegistration.Behavior.PASS_THROUGH_AND_PRESERVE_POPUPS)
+	shortcuts.add_shortcut("view_show_handles", State.toggle_show_handles, ShortcutsRegistration.Behavior.PASS_THROUGH_AND_PRESERVE_POPUPS)
+	shortcuts.add_shortcut("view_rasterized_svg", State.toggle_view_rasterized, ShortcutsRegistration.Behavior.PASS_THROUGH_AND_PRESERVE_POPUPS)
+	shortcuts.add_shortcut("load_reference", FileUtils.open_image_import_dialog, ShortcutsRegistration.Behavior.PASS_THROUGH_POPUPS)
+	shortcuts.add_shortcut("view_show_reference", func() -> void:
+			Configs.savedata.get_active_tab().show_reference = not Configs.savedata.get_active_tab().show_reference,
+			ShortcutsRegistration.Behavior.PASS_THROUGH_AND_PRESERVE_POPUPS)
+	shortcuts.add_shortcut("view_overlay_reference", func() -> void:
+			Configs.savedata.get_active_tab().overlay_reference = not Configs.savedata.get_active_tab().overlay_reference,
+			ShortcutsRegistration.Behavior.PASS_THROUGH_AND_PRESERVE_POPUPS)
+	shortcuts.add_shortcut("toggle_snap", func() -> void: Configs.savedata.snap *= -1, ShortcutsRegistration.Behavior.PASS_THROUGH_AND_PRESERVE_POPUPS)
+	shortcuts.add_shortcut("debug", State.toggle_show_debug)
+	HandlerGUI.register_shortcuts(self, shortcuts)
+	
 	reference_button.pressed.connect(_on_reference_button_pressed)
 	Configs.language_changed.connect(sync_localization)
 	sync_localization()
@@ -22,9 +34,6 @@ func _ready() -> void:
 	update_snap_config()
 	Configs.theme_changed.connect(sync_theming)
 	sync_theming()
-	State.show_debug_changed.connect(_on_show_debug_changed)
-	_on_show_debug_changed()
-	get_window().window_input.connect(_update_input_debug)
 
 
 func sync_localization() -> void:
@@ -94,46 +103,3 @@ func _on_snap_button_toggled(toggled_on: bool) -> void:
 
 func _on_snap_number_edit_value_changed(new_value: float) -> void:
 	Configs.savedata.snap = new_value * signf(Configs.savedata.snap)
-
-
-func _on_show_debug_changed() -> void:
-	if State.show_debug:
-		debug_container.show()
-		update_debug()
-		input_debug_label.text = ""
-	else:
-		debug_container.hide()
-
-# The strings here are intentionally not localized.
-func update_debug() -> void:
-	var debug_text := ""
-	debug_text += "FPS: %d\n" % Performance.get_monitor(Performance.TIME_FPS)
-	debug_text += "Static Mem: %s\n" % String.humanize_size(int(Performance.get_monitor(Performance.MEMORY_STATIC)))
-	debug_text += "Nodes: %d\n" % Performance.get_monitor(Performance.OBJECT_NODE_COUNT)
-	debug_text += "Stray nodes: %d\n" % Performance.get_monitor(Performance.OBJECT_ORPHAN_NODE_COUNT)
-	debug_text += "Objects: %d\n" % Performance.get_monitor(Performance.OBJECT_COUNT)
-	debug_label.text = debug_text
-	# Set up the next update if the container is still visible.
-	if debug_container.visible:
-		get_tree().create_timer(1.0).timeout.connect(update_debug)
-
-var last_event_text := ""
-var last_event_repeat_count := 1
-
-func _update_input_debug(event: InputEvent) -> void:
-	if debug_container.visible and event.is_pressed():
-		var new_text := input_debug_label.text
-		var event_text := event.as_text()
-		if event is InputEventMouse:
-			event_text += " (" + String.num(event.position.x, 2) + ", " + String.num(event.position.y, 2) + ")"
-		if event_text == last_event_text:
-			last_event_repeat_count += 1
-			new_text = new_text.left(new_text.rfind("\n", new_text.length() - 2) + 1)
-			event_text += " (%d)" % last_event_repeat_count
-		else:
-			last_event_text = event_text
-			last_event_repeat_count = 1
-		if new_text.count("\n") >= 5:
-			new_text = new_text.right(-new_text.find("\n") - 1)
-		new_text += event_text + "\n"
-		input_debug_label.text = new_text

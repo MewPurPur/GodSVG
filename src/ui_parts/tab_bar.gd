@@ -27,6 +27,28 @@ var proposed_drop_idx := -1:
 			queue_redraw()
 
 func _ready() -> void:
+	var shortcuts := ShortcutsRegistration.new()
+	shortcuts.add_shortcut("close_tab", func() -> void: FileUtils.close_tabs(Configs.savedata.get_active_tab_index()),
+			ShortcutsRegistration.Behavior.PASS_THROUGH_POPUPS)
+	shortcuts.add_shortcut("close_all_other_tabs", func() -> void: FileUtils.close_tabs(Configs.savedata.get_active_tab_index(), FileUtils.TabCloseMode.ALL_OTHERS),
+			ShortcutsRegistration.Behavior.PASS_THROUGH_POPUPS)
+	shortcuts.add_shortcut("close_tabs_to_left", func() -> void: FileUtils.close_tabs(Configs.savedata.get_active_tab_index(), FileUtils.TabCloseMode.TO_LEFT),
+			ShortcutsRegistration.Behavior.PASS_THROUGH_POPUPS)
+	shortcuts.add_shortcut("close_tabs_to_right", func() -> void: FileUtils.close_tabs(Configs.savedata.get_active_tab_index(), FileUtils.TabCloseMode.TO_RIGHT),
+			ShortcutsRegistration.Behavior.PASS_THROUGH_POPUPS)
+	shortcuts.add_shortcut("close_empty_tabs", func() -> void: FileUtils.close_tabs(Configs.savedata.get_active_tab_index(), FileUtils.TabCloseMode.EMPTY),
+			ShortcutsRegistration.Behavior.PASS_THROUGH_POPUPS)
+	shortcuts.add_shortcut("close_saved_tabs", func() -> void: FileUtils.close_tabs(Configs.savedata.get_active_tab_index(), FileUtils.TabCloseMode.SAVED),
+			ShortcutsRegistration.Behavior.PASS_THROUGH_POPUPS)
+	shortcuts.add_shortcut("new_tab", Configs.savedata.add_empty_tab, ShortcutsRegistration.Behavior.PASS_THROUGH_POPUPS)
+	shortcuts.add_shortcut("select_next_tab",
+			func() -> void: Configs.savedata.set_active_tab_index(posmod(Configs.savedata.get_active_tab_index() + 1, Configs.savedata.get_tab_count())),
+			ShortcutsRegistration.Behavior.PASS_THROUGH_POPUPS)
+	shortcuts.add_shortcut("select_previous_tab",
+			func() -> void: Configs.savedata.set_active_tab_index(posmod(Configs.savedata.get_active_tab_index() - 1, Configs.savedata.get_tab_count())),
+			ShortcutsRegistration.Behavior.PASS_THROUGH_POPUPS)
+	HandlerGUI.register_shortcuts(self, shortcuts)
+	
 	Configs.active_tab_changed.connect(activate)
 	Configs.tabs_changed.connect(activate)
 	Configs.active_tab_changed.connect(scroll_to_active)
@@ -119,8 +141,7 @@ func _draw() -> void:
 			icon_modulate = get_theme_color("icon_disabled_color", "Button")
 		else:
 			var line_x := scroll_forwards_rect.position.x
-			draw_line(Vector2(line_x, 0), Vector2(line_x, size.y),
-					ThemeUtils.basic_panel_border_color)
+			draw_line(Vector2(line_x, 0), Vector2(line_x, size.y), ThemeUtils.basic_panel_border_color)
 			if scroll_forwards_rect.has_point(mouse_pos):
 				var stylebox_theme := "pressed" if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT) else "hover"
 				get_theme_stylebox(stylebox_theme, "FlatButton").draw(ci, scroll_forwards_rect)
@@ -134,8 +155,7 @@ func _draw() -> void:
 			x_pos = prev_tab_rect.end.x
 		else:
 			x_pos = get_tab_rect(proposed_drop_idx).position.x
-		draw_line(Vector2(x_pos, 0), Vector2(x_pos, size.y),
-				Configs.savedata.basic_color_valid, 4)
+		draw_line(Vector2(x_pos, 0), Vector2(x_pos, size.y), Configs.savedata.basic_color_valid, 4)
 
 
 func _gui_input(event: InputEvent) -> void:
@@ -196,24 +216,16 @@ func _gui_input(event: InputEvent) -> void:
 							has_saved_tabs = true
 							break
 					
-					btn_arr.append(ContextPopup.create_shortcut_button_without_icon(
-							"close_tab"))
+					btn_arr.append(ContextPopup.create_shortcut_button_without_icon("close_tab"))
 					# TODO Unify into "Close multiple tabs"
-					btn_arr.append(ContextPopup.create_shortcut_button_without_icon(
-							"close_all_other_tabs", tab_count < 2))
-					btn_arr.append(ContextPopup.create_shortcut_button_without_icon(
-							"close_tabs_to_left", hovered_idx == 0))
-					btn_arr.append(ContextPopup.create_shortcut_button_without_icon(
-							"close_tabs_to_right", hovered_idx == tab_count - 1))
-					btn_arr.append(ContextPopup.create_shortcut_button_without_icon(
-							"close_empty_tabs", not has_empty_tabs))
-					btn_arr.append(ContextPopup.create_shortcut_button_without_icon(
-							"close_saved_tabs", not has_saved_tabs))
+					btn_arr.append(ContextPopup.create_shortcut_button_without_icon("close_all_other_tabs", tab_count < 2))
+					btn_arr.append(ContextPopup.create_shortcut_button_without_icon("close_tabs_to_left", hovered_idx == 0))
+					btn_arr.append(ContextPopup.create_shortcut_button_without_icon("close_tabs_to_right", hovered_idx == tab_count - 1))
+					btn_arr.append(ContextPopup.create_shortcut_button_without_icon("close_empty_tabs", not has_empty_tabs))
+					btn_arr.append(ContextPopup.create_shortcut_button_without_icon("close_saved_tabs", not has_saved_tabs))
 					
-					btn_arr.append(ContextPopup.create_shortcut_button("open_externally",
-							file_absent))
-					btn_arr.append(ContextPopup.create_shortcut_button("open_in_folder",
-							file_absent))
+					btn_arr.append(ContextPopup.create_shortcut_button("open_externally", file_absent))
+					btn_arr.append(ContextPopup.create_shortcut_button("open_in_folder", file_absent))
 				var tab_popup := ContextPopup.new()
 				tab_popup.setup(btn_arr, true, -1, -1, PackedInt32Array([6]))
 				
