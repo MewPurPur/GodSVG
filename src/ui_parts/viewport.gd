@@ -23,14 +23,14 @@ var limit_bottom := 0.0
 
 
 func _ready() -> void:
-	size_changed.connect(_on_size_changed)
-	zoom_menu.zoom_changed.connect(view.update.unbind(2))
 	zoom_menu.zoom_changed.connect(_on_zoom_changed)
-	zoom_menu.zoom_changed.connect(center_frame)
+	zoom_menu.zoom_reset_pressed.connect(center_frame)
+	zoom_menu.zoom_changed.connect(view.update.unbind(2))
+	size_changed.connect(_on_size_changed)
 	State.svg_resized.connect(resize)
+	resize()
 	Configs.active_tab_changed.connect(zoom_menu.zoom_reset)
 	State.viewport_size_changed.connect(adjust_view)
-	resize()
 	await get_tree().process_frame
 	zoom_menu.zoom_reset()
 
