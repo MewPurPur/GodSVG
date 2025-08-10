@@ -1,9 +1,10 @@
+# A generic zoom widget.
 extends HBoxContainer
 
 const MIN_ZOOM = 0.125
 const MAX_ZOOM = 512.0
 
-signal zoom_changed(zoom_level: float, offset: Vector2)
+signal zoom_changed(zoom_level: float)
 signal zoom_reset_pressed
 
 @onready var zoom_out_button: BetterButton = $ZoomOut
@@ -15,38 +16,31 @@ var _zoom_level: float
 
 func _ready() -> void:
 	var shortcuts := ShortcutsRegistration.new()
-	shortcuts.add_shortcut("zoom_in", zoom_in)
-	shortcuts.add_shortcut("zoom_out", zoom_out)
-	shortcuts.add_shortcut("zoom_reset", zoom_reset)
+	shortcuts.add_shortcut("zoom_in", _zoom_in)
+	shortcuts.add_shortcut("zoom_out", _zoom_out)
+	shortcuts.add_shortcut("zoom_reset", zoom_reset_pressed.emit)
 	HandlerGUI.register_shortcuts(self, shortcuts)
 	zoom_out_button.shortcuts_bind = shortcuts
 	zoom_in_button.shortcuts_bind = shortcuts
 	zoom_reset_button.shortcuts_bind = shortcuts
 
 
-func set_zoom(new_value: float, offset := Vector2(0.5, 0.5)) -> void:
+func _set_zoom(new_value: float) -> void:
 	new_value = clampf(new_value, MIN_ZOOM, MAX_ZOOM)
 	if _zoom_level != new_value:
 		_zoom_level = new_value
-		zoom_changed.emit(_zoom_level, offset)
+		zoom_changed.emit(_zoom_level)
 		update_buttons_appearance()
 
-func zoom_out(factor := 1.0, offset := Vector2(0.5, 0.5)) -> void:
-	if factor == 1.0:
-		set_zoom(_zoom_level / sqrt(2), offset)
-	else:
-		set_zoom(_zoom_level / (factor + 1), offset)
+func _zoom_out() -> void:
+	_set_zoom(_zoom_level / sqrt(2))
 
-func zoom_in(factor := 1.0, offset := Vector2(0.5, 0.5)) -> void:
-	if factor == 1.0:
-		set_zoom(_zoom_level * sqrt(2), offset)
-	else:
-		set_zoom(_zoom_level * (factor + 1), offset)
+func _zoom_in() -> void:
+	_set_zoom(_zoom_level * sqrt(2))
 
-# This needs a custom implementation to whatever is listening to the signal.
-func zoom_reset() -> void:
-	zoom_reset_pressed.emit()
 
+func set_current_zoom(value: float) -> void:
+	_zoom_level = value
 
 func update_buttons_appearance() -> void:
 	if _zoom_level < 0.1:

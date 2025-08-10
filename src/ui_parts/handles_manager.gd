@@ -105,9 +105,9 @@ func _ready() -> void:
 	State.svg_unknown_change.connect(queue_update_handles)
 	State.selection_changed.connect(queue_redraw)
 	State.hover_changed.connect(queue_redraw)
-	State.zoom_changed.connect(queue_redraw)
+	Configs.active_tab_view_changed.connect(queue_redraw)
+	Configs.active_tab_view_changed.connect(HandlerGUI.throw_mouse_motion_event)
 	State.handle_added.connect(_on_handle_added)
-	State.view_changed.connect(_on_view_changed)
 	queue_update_handles()
 	
 	State.show_handles_changed.connect(update_show_handles)
@@ -253,7 +253,7 @@ func _draw() -> void:
 						var canvas_transform := State.root_element.canvas_transform
 						var canvas_scale := canvas_transform.get_scale().x
 						var element_scale := element_transform.get_scale()
-						var grow_amount_unscaled := (2.0 + Configs.savedata.selection_rectangle_width) / State.zoom / canvas_scale
+						var grow_amount_unscaled := (2.0 + Configs.savedata.selection_rectangle_width) / Configs.savedata.get_active_tab().camera_zoom / canvas_scale
 						var grow_amount_x := grow_amount_unscaled / element_scale.x
 						var grow_amount_y := grow_amount_unscaled / element_scale.y
 						selection_transforms.append(canvas_transform * element_transform)
@@ -293,7 +293,7 @@ func _draw() -> void:
 						var canvas_transform := State.root_element.canvas_transform
 						var canvas_scale := canvas_transform.get_scale().x
 						var element_scale := element_transform.get_scale()
-						var grow_amount_unscaled := (2.0 + Configs.savedata.selection_rectangle_width) / State.zoom / canvas_scale
+						var grow_amount_unscaled := (2.0 + Configs.savedata.selection_rectangle_width) / Configs.savedata.get_active_tab().camera_zoom / canvas_scale
 						var grow_amount_x := grow_amount_unscaled / element_scale.x
 						var grow_amount_y := grow_amount_unscaled / element_scale.y
 						selection_transforms.append(canvas_transform * element_transform)
@@ -362,7 +362,7 @@ func _draw() -> void:
 						var canvas_transform := State.root_element.canvas_transform
 						var canvas_scale := canvas_transform.get_scale().x
 						var element_scale := element_transform.get_scale()
-						var grow_amount_unscaled := (2.0 + Configs.savedata.selection_rectangle_width) / State.zoom / canvas_scale
+						var grow_amount_unscaled := (2.0 + Configs.savedata.selection_rectangle_width) / Configs.savedata.get_active_tab().camera_zoom / canvas_scale
 						var grow_amount_x := grow_amount_unscaled / element_scale.x
 						var grow_amount_y := grow_amount_unscaled / element_scale.y
 						selection_transforms.append(canvas_transform * element_transform)
@@ -393,7 +393,7 @@ func _draw() -> void:
 						var canvas_transform := State.root_element.canvas_transform
 						var canvas_scale := canvas_transform.get_scale().x
 						var element_scale := element_transform.get_scale()
-						var grow_amount_unscaled := (2.0 + Configs.savedata.selection_rectangle_width) / State.zoom / canvas_scale
+						var grow_amount_unscaled := (2.0 + Configs.savedata.selection_rectangle_width) / Configs.savedata.get_active_tab().camera_zoom / canvas_scale
 						var grow_amount_x := grow_amount_unscaled / element_scale.x
 						var grow_amount_y := grow_amount_unscaled / element_scale.y
 						selection_transforms.append(canvas_transform * element_transform)
@@ -452,7 +452,7 @@ func _draw() -> void:
 						var canvas_transform := State.root_element.canvas_transform
 						var canvas_scale := canvas_transform.get_scale().x
 						var element_scale := element_transform.get_scale()
-						var grow_amount_unscaled := (2.0 + Configs.savedata.selection_rectangle_width) / State.zoom / canvas_scale
+						var grow_amount_unscaled := (2.0 + Configs.savedata.selection_rectangle_width) / Configs.savedata.get_active_tab().camera_zoom / canvas_scale
 						var grow_amount_x := grow_amount_unscaled / element_scale.x
 						var grow_amount_y := grow_amount_unscaled / element_scale.y
 						selection_transforms.append(canvas_transform * element_transform)
@@ -663,14 +663,14 @@ func _draw() -> void:
 						var canvas_transform := State.root_element.canvas_transform
 						var canvas_scale := canvas_transform.get_scale().x
 						var element_scale := element_transform.get_scale()
-						var grow_amount_unscaled := (2.0 + Configs.savedata.selection_rectangle_width) / State.zoom / canvas_scale
+						var grow_amount_unscaled := (2.0 + Configs.savedata.selection_rectangle_width) / Configs.savedata.get_active_tab().camera_zoom / canvas_scale
 						var grow_amount_x := grow_amount_unscaled / element_scale.x
 						var grow_amount_y := grow_amount_unscaled / element_scale.y
 						selection_transforms.append(canvas_transform * element_transform)
 						selection_rects.append(bounding_box.grow_individual(grow_amount_x, grow_amount_y, grow_amount_x, grow_amount_y))
 	
 	draw_set_transform_matrix(State.root_element.canvas_transform)
-	RenderingServer.canvas_item_set_transform(surface, Transform2D(0.0, Vector2(1, 1) / State.zoom, 0.0, Vector2.ZERO))
+	RenderingServer.canvas_item_set_transform(surface, Transform2D(0.0, Vector2(1, 1) / Configs.savedata.get_active_tab().camera_zoom, 0.0, Vector2.ZERO))
 	
 	# First gather all handles in 4 categories, to then draw them in the right order.
 	var normal_handles: Array[Handle] = []
@@ -716,18 +716,19 @@ handle_texture_dictionary: Dictionary[Handle.Display, Texture2D]) -> void:
 		color_array.resize(polyline.size())
 		color_array.fill(color)
 		for idx in polyline.size():
-			polyline[idx] = State.root_element.canvas_to_world(polyline[idx]) * State.zoom
+			polyline[idx] = State.root_element.canvas_to_world(polyline[idx]) * Configs.savedata.get_active_tab().camera_zoom
 		RenderingServer.canvas_item_add_polyline(surface, polyline, color_array, CONTOUR_WIDTH, true)
 	if not multiline.is_empty():
 		for idx in multiline.size():
-			multiline[idx] = State.root_element.canvas_to_world(multiline[idx]) * State.zoom
+			multiline[idx] = State.root_element.canvas_to_world(multiline[idx]) * Configs.savedata.get_active_tab().camera_zoom
 		var color_array := PackedColorArray()
 		color_array.resize(int(multiline.size() / 2.0))
 		color_array.fill(Color(color, TANGENT_ALPHA))
 		RenderingServer.canvas_item_add_multiline(surface, multiline, color_array, TANGENT_WIDTH, true)
 	for handle in handles_array:
 		var texture := handle_texture_dictionary[handle.display_mode]
-		texture.draw(surface, State.root_element.canvas_to_world(handle.transform * handle.pos) * State.zoom - texture.get_size() / 2)
+		texture.draw(surface, State.root_element.canvas_to_world(
+				handle.transform * handle.pos) * Configs.savedata.get_active_tab().camera_zoom - texture.get_size() / 2)
 
 
 var dragged_handle: Handle = null
@@ -747,7 +748,7 @@ func _unhandled_input(event: InputEvent) -> void:
 	# Set the nearest handle as hovered, if any handles are within range.
 	if visible and ((event is InputEventMouseMotion and !is_instance_valid(dragged_handle) and event.button_mask == 0) or\
 	(event is InputEventMouseButton and (event.button_index in [MOUSE_BUTTON_LEFT, MOUSE_BUTTON_RIGHT]))):
-		var nearest_handle := find_nearest_handle(event.position / State.zoom + get_parent().get_parent().camera_position)
+		var nearest_handle := find_nearest_handle(event.position / Configs.savedata.get_active_tab().camera_zoom + get_parent().get_parent().get_camera_position())
 		if is_instance_valid(nearest_handle):
 			hovered_handle = nearest_handle
 			if hovered_handle is PathHandle:
@@ -841,7 +842,7 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func find_nearest_handle(event_pos: Vector2) -> Handle:
 	var nearest_handle: Handle = null
-	var nearest_dist_squared := DEFAULT_GRAB_DISTANCE_SQUARED * (Configs.savedata.handle_size * Configs.savedata.handle_size) / (State.zoom * State.zoom)
+	var nearest_dist_squared := DEFAULT_GRAB_DISTANCE_SQUARED * (Configs.savedata.handle_size / Configs.savedata.get_active_tab().camera_zoom) ** 2
 	for handle in handles:
 		var dist_to_handle_squared := event_pos.distance_squared_to(State.root_element.canvas_to_world(handle.transform * handle.pos))
 		if dist_to_handle_squared < nearest_dist_squared:
@@ -851,10 +852,10 @@ func find_nearest_handle(event_pos: Vector2) -> Handle:
 
 # Two 64-bit coordinates instead of a Vector2.
 func get_event_pos(event: InputEvent) -> PackedFloat64Array:
-	return apply_snap(event.position / State.zoom + get_parent().get_parent().camera_position)
+	return apply_snap(event.position / Configs.savedata.get_active_tab().camera_zoom + get_parent().get_parent().get_camera_position())
 
 func apply_snap(pos: Vector2) -> PackedFloat64Array:
-	var precision_snap := 0.1 ** maxi(ceili(-log(1.0 / State.zoom) / log(10)), 0)
+	var precision_snap := 0.1 ** maxi(ceili(-log(1.0 / Configs.savedata.get_active_tab().camera_zoom) / log(10)), 0)
 	var configured_snap := absf(Configs.savedata.snap)
 	var snap_size: float  # To be used for the snap.
 	
@@ -867,9 +868,6 @@ func apply_snap(pos: Vector2) -> PackedFloat64Array:
 	
 	return PackedFloat64Array([snappedf(pos.x, snap_size), snappedf(pos.y, snap_size)])
 
-
-func _on_view_changed() -> void:
-	HandlerGUI.throw_mouse_motion_event()
 
 func _on_handle_added() -> void:
 	if not get_viewport_rect().has_point(get_viewport().get_mouse_position()):

@@ -7,9 +7,17 @@ var ci := get_canvas_item()
 var grid_ci := RenderingServer.canvas_item_create()
 var grid_numbers_ci := RenderingServer.canvas_item_create()
 
-var camera_zoom: float
-var camera_position: Vector2
-var camera_snapped_position: Vector2
+var camera_zoom: float:
+	set(new_value):
+		if camera_zoom != new_value:
+			camera_zoom = new_value
+			sync_canvas_transform()
+
+var camera_center: Vector2:
+	set(new_value):
+		if camera_center != new_value:
+			camera_center = new_value
+			sync_canvas_transform()
 
 @onready var viewport: SubViewport = $Viewport
 @onready var checkerboard: TextureRect = $Viewport/Checkerboard
@@ -25,20 +33,24 @@ func _ready() -> void:
 	RenderingServer.canvas_item_set_parent(grid_ci, ci)
 	RenderingServer.canvas_item_set_parent(grid_numbers_ci, ci)
 	State.svg_resized.connect(queue_redraw)
-	State.zoom_changed.connect(change_zoom)
-	State.zoom_changed.connect(queue_redraw)
+	Configs.active_tab_view_changed.connect(sync_view)
 
-func exit_tree() -> void:
+func _exit_tree() -> void:
 	RenderingServer.free_rid(grid_ci)
 	RenderingServer.free_rid(grid_numbers_ci)
 
-func change_zoom() -> void:
-	camera_zoom = State.zoom
+func sync_view() -> void:
+	camera_center = Configs.savedata.get_active_tab().camera_center
+	camera_zoom = Configs.savedata.get_active_tab().camera_zoom
 
 func update_show_grid() -> void:
 	RenderingServer.canvas_item_set_visible(grid_ci, State.show_grid)
 	RenderingServer.canvas_item_set_visible(grid_numbers_ci, State.show_grid)
 
+
+func sync_canvas_transform() -> void:
+	viewport.canvas_transform = Transform2D(0.0, Vector2(camera_zoom, camera_zoom), 0.0, -get_camera_position() * camera_zoom)
+	queue_redraw()
 
 func sync_reference_image() -> void:
 	var active_tab := Configs.savedata.get_active_tab()
@@ -61,30 +73,22 @@ func sync_reference_image() -> void:
 	elif is_instance_valid(reference_texture_rect):
 		reference_texture_rect.queue_free()
 
-func update() -> void:
-	var new_snapped_position := camera_position.snapped(Vector2(1, 1) / camera_zoom)
-	if camera_snapped_position != new_snapped_position:
-		camera_snapped_position = new_snapped_position
-		State.view_changed.emit()
-	
-	get_child(0).canvas_transform = Transform2D(0.0, Vector2(camera_zoom, camera_zoom), 0.0, -camera_snapped_position * camera_zoom)
-	queue_redraw()
-
 
 # Don't ask me to explain this.
 func _draw() -> void:
 	RenderingServer.canvas_item_clear(grid_ci)
 	RenderingServer.canvas_item_clear(grid_numbers_ci)
 	
+	var camera_pos := get_camera_position()
 	var axis_line_color := Color(Configs.savedata.grid_color, 0.75)
 	var major_grid_color := Color(Configs.savedata.grid_color, 0.35)
 	var minor_grid_color := Color(Configs.savedata.grid_color, 0.15)
 	
 	var grid_size := Vector2(viewport.size) / camera_zoom
-	RenderingServer.canvas_item_add_line(grid_ci, Vector2(-camera_snapped_position.x * camera_zoom, 0),
-			Vector2(-camera_snapped_position.x * camera_zoom, grid_size.y * camera_zoom), axis_line_color)
-	RenderingServer.canvas_item_add_line(grid_ci, Vector2(0, -camera_snapped_position.y * camera_zoom),
-			Vector2(grid_size.x * camera_zoom, -camera_snapped_position.y * camera_zoom), axis_line_color)
+	RenderingServer.canvas_item_add_line(grid_ci, Vector2(-camera_pos.x * camera_zoom, 0),
+			Vector2(-camera_pos.x * camera_zoom, grid_size.y * camera_zoom), axis_line_color)
+	RenderingServer.canvas_item_add_line(grid_ci, Vector2(0, -camera_pos.y * camera_zoom),
+			Vector2(grid_size.x * camera_zoom, -camera_pos.y * camera_zoom), axis_line_color)
 	
 	var major_points := PackedVector2Array()
 	var minor_points := PackedVector2Array()
@@ -93,8 +97,8 @@ func _draw() -> void:
 	@warning_ignore("integer_division")
 	var rate := nearest_po2(roundi(maxf(128.0 / (TICKS_INTERVAL * camera_zoom), 2.0))) / 2
 	
-	var i := fmod(-camera_snapped_position.x, 1.0)
-	var major_line_h_offset := fposmod(-camera_snapped_position.x, TICK_DISTANCE)
+	var i := fmod(-camera_pos.x, 1.0)
+	var major_line_h_offset := fposmod(-camera_pos.x, TICK_DISTANCE)
 	# Horizontal offset.
 	while i <= grid_size.x:
 		if major_line_h_offset != fposmod(i, TICK_DISTANCE):
@@ -103,10 +107,10 @@ func _draw() -> void:
 				minor_points.append(Vector2(i * camera_zoom, grid_size.y * camera_zoom))
 				if mark_pixel_lines:
 					ThemeUtils.regular_font.draw_string(grid_numbers_ci,
-							Vector2(i * camera_zoom + 4, 14), String.num_int64(floori(i + camera_snapped_position.x)),
+							Vector2(i * camera_zoom + 4, 14), String.num_int64(floori(i + camera_pos.x)),
 							HORIZONTAL_ALIGNMENT_LEFT, -1, 14, axis_line_color)
 		else:
-			var coord := snappedi(i + camera_snapped_position.x, TICKS_INTERVAL)
+			var coord := snappedi(i + camera_pos.x, TICKS_INTERVAL)
 			if int(coord / TICK_DISTANCE) % rate == 0:
 				major_points.append(Vector2(i * camera_zoom, 0))
 				major_points.append(Vector2(i * camera_zoom, grid_size.y * camera_zoom))
@@ -118,8 +122,8 @@ func _draw() -> void:
 				minor_points.append(Vector2(i * camera_zoom, grid_size.y * camera_zoom))
 		i += 1.0
 	
-	i = fmod(-camera_snapped_position.y, 1.0)
-	var major_line_v_offset := fposmod(-camera_snapped_position.y, TICK_DISTANCE)
+	i = fmod(-camera_pos.y, 1.0)
+	var major_line_v_offset := fposmod(-camera_pos.y, TICK_DISTANCE)
 	# Vertical offset.
 	while i < grid_size.y:
 		if major_line_v_offset != fposmod(i, TICK_DISTANCE):
@@ -128,10 +132,10 @@ func _draw() -> void:
 				minor_points.append(Vector2(grid_size.x * camera_zoom, i * camera_zoom))
 				if mark_pixel_lines:
 					ThemeUtils.regular_font.draw_string(grid_numbers_ci,
-							Vector2(4, i * camera_zoom + 14), String.num_int64(floori(i + camera_snapped_position.y)),
+							Vector2(4, i * camera_zoom + 14), String.num_int64(floori(i + camera_pos.y)),
 							HORIZONTAL_ALIGNMENT_LEFT, -1, 14, axis_line_color)
 		else:
-			var coord := snappedi(i + camera_snapped_position.y, TICKS_INTERVAL)
+			var coord := snappedi(i + camera_pos.y, TICKS_INTERVAL)
 			if int(coord / TICK_DISTANCE) % rate == 0:
 				major_points.append(Vector2(0, i * camera_zoom))
 				major_points.append(Vector2(grid_size.x * camera_zoom, i * camera_zoom))
@@ -155,3 +159,7 @@ func _draw() -> void:
 		pca.resize(minor_points.size() / 2)
 		pca.fill(minor_grid_color)
 		RenderingServer.canvas_item_add_multiline(grid_ci, minor_points, pca)
+
+
+func get_camera_position() -> Vector2:
+	return (camera_center - viewport.size / 2.0).snapped(Vector2(1, 1) / camera_zoom)

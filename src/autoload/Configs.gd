@@ -15,6 +15,7 @@ signal grid_color_changed
 signal shortcut_panel_changed
 signal active_tab_status_changed
 signal active_tab_reference_changed
+signal active_tab_view_changed
 signal active_tab_changed
 signal tabs_changed
 signal layout_changed

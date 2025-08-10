@@ -8,6 +8,7 @@ const EDITED_FILES_DIR = "user://edited"
 
 signal status_changed
 signal reference_changed
+signal view_changed
 
 var presented_name: String:
 	set(new_value):
@@ -39,6 +40,18 @@ var show_reference := true:
 			show_reference = new_value
 			reference_changed.emit()
 
+
+var camera_center := Vector2.ZERO:
+	set(new_value):
+		if camera_center != new_value:
+			camera_center = new_value
+			view_changed.emit()
+
+var camera_zoom := 0.0:
+	set(new_value):
+		if camera_zoom != new_value:
+			camera_zoom = new_value
+			view_changed.emit()
 
 
 var active := false

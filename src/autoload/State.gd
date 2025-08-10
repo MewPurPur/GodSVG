@@ -225,18 +225,6 @@ func clear_proposed_drop_xid() -> void:
 		proposed_drop_changed.emit()
 
 
-signal zoom_changed
-@warning_ignore("unused_signal")
-signal view_changed
-
-var zoom := 0.0
-
-func set_zoom(new_value: float) -> void:
-	if zoom != new_value:
-		zoom = new_value
-		zoom_changed.emit()
-
-
 var view_rasterized := false
 var show_grid := true
 var show_handles := true
