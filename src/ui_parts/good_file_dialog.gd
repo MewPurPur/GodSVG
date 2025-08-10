@@ -12,9 +12,8 @@ const folder_icon = preload("res://assets/icons/Folder.svg")
 const broken_file_icon = preload("res://assets/icons/FileBroken.svg")
 const text_file_icon = preload("res://assets/icons/TextFile.svg")
 
-const system_dirs_to_show: Array[OS.SystemDir] = [OS.SYSTEM_DIR_DESKTOP,
-		OS.SYSTEM_DIR_DOCUMENTS, OS.SYSTEM_DIR_DOWNLOADS, OS.SYSTEM_DIR_MOVIES,
-		OS.SYSTEM_DIR_MUSIC, OS.SYSTEM_DIR_PICTURES]
+const system_dirs_to_show: Array[OS.SystemDir] = [OS.SYSTEM_DIR_DESKTOP, OS.SYSTEM_DIR_DOCUMENTS,
+		OS.SYSTEM_DIR_DOWNLOADS, OS.SYSTEM_DIR_MOVIES, OS.SYSTEM_DIR_MUSIC, OS.SYSTEM_DIR_PICTURES]
 
 enum FileMode {SELECT, MULTI_SELECT, SAVE}
 var mode: FileMode
@@ -62,8 +61,7 @@ class Actions:
 		right_click_callback = on_right_click
 
 
-# Queueing is necessary for this one because in Godot, "Enter" is hard-coded
-# to activate the selected items.
+# Queueing is necessary for this one because in Godot, "Enter" is hard-coded to activate the selected items.
 var _activation_callback_pending := false
 func call_activation_callback(actions: Actions) -> void:
 	var actual_activation_callback := func() -> void:
@@ -104,15 +102,28 @@ func _ready() -> void:
 	HandlerGUI.register_shortcuts(self, shortcuts)
 	
 	# Signal connections.
-	file_field.text_changed.connect(_on_file_field_text_changed)
-	folder_up_button.pressed.connect(_on_folder_up_button_pressed)
-	file_list.item_selected.connect(_on_file_list_item_selected)
-	file_list.multi_selected.connect(_on_file_list_item_multi_selected)
-	refresh_button.pressed.connect(refresh_dir)
 	close_button.pressed.connect(queue_free)
 	files_selected.connect(queue_free.unbind(1))
+	
+	file_field.text_changed.connect(_on_file_field_text_changed)
+	file_field.text_change_canceled.connect(_on_file_field_text_change_canceled)
+	file_field.text_submitted.connect(_on_file_field_text_submitted)
+	folder_up_button.pressed.connect(_on_folder_up_button_pressed)
+	file_list.empty_clicked.connect(_on_file_list_empty_clicked)
+	file_list.item_activated.connect(_on_file_list_item_activated)
+	file_list.item_clicked.connect(_on_file_list_item_clicked)
+	file_list.item_selected.connect(_on_file_list_item_selected)
+	file_list.multi_selected.connect(_on_file_list_item_multi_selected)
+	path_field.text_submitted.connect(_on_path_field_text_submitted)
+	show_hidden_button.toggled.connect(_on_show_hidden_button_toggled)
+	search_button.toggled.connect(_on_search_button_toggled)
+	drives_list.item_selected.connect(_on_drives_list_item_selected)
+	search_field.text_changed.connect(_on_search_field_text_changed)
+	search_field.text_change_canceled.connect(_on_search_field_text_change_canceled)
+	refresh_button.pressed.connect(refresh_dir)
 	special_button.pressed.connect(select_files)
 	file_list.get_v_scroll_bar().value_changed.connect(_setup_file_images.unbind(1))
+	
 	# Rest of setup.
 	if mode != FileMode.SAVE:
 		file_container.hide()
@@ -135,8 +146,7 @@ func _ready() -> void:
 		title_label.text = TranslationUtils.get_file_dialog_save_mode_title_text(extensions[0])
 		extension_label.text = "." + extensions[0]
 	else:
-		title_label.text = TranslationUtils.get_file_dialog_select_mode_title_text(
-				mode == FileMode.MULTI_SELECT, extensions)
+		title_label.text = TranslationUtils.get_file_dialog_select_mode_title_text(mode == FileMode.MULTI_SELECT, extensions)
 	
 	close_button.text = Translator.translate("Close")
 	special_button.text = Translator.translate("Save") if mode == FileMode.SAVE else Translator.translate("Select")

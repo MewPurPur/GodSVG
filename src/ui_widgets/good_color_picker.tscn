@@ -49,6 +49,7 @@ shader_parameter/horizontal = true
 shader_parameter/inverted = false
 
 [node name="GoodColorPicker" type="VBoxContainer"]
+anchors_preset = -1
 offset_right = 198.0
 offset_bottom = 344.0
 theme_override_constants/separation = 6
@@ -275,21 +276,3 @@ theme_type_variation = &"GoodColorPickerLineEdit"
 alignment = 1
 max_length = 3
 script = ExtResource("6_aqyoh")
-
-[connection signal="gui_input" from="ShapeContainer/ColorWheel" to="." method="_on_color_wheel_gui_input"]
-[connection signal="draw" from="ShapeContainer/SideSlider" to="." method="_on_side_slider_draw"]
-[connection signal="draw" from="ColorContainer/ColorsDisplay/StartColorRect" to="." method="_on_start_color_rect_draw"]
-[connection signal="draw" from="ColorContainer/ColorsDisplay/ColorRect" to="." method="_on_color_rect_draw"]
-[connection signal="pressed" from="ColorContainer/ColorsDisplay/ColorRect/ResetColorButton" to="." method="_on_reset_color_button_pressed"]
-[connection signal="draw" from="SliderContainer/HBoxContainer/TracksContainer/Slider1/MarginContainer" to="." method="_on_slider1_draw"]
-[connection signal="resized" from="SliderContainer/HBoxContainer/TracksContainer/Slider1/MarginContainer/ColorTrack" to="." method="_on_track_resized"]
-[connection signal="text_submitted" from="SliderContainer/HBoxContainer/TracksContainer/Slider1/IntField" to="." method="_on_slider1_text_submitted"]
-[connection signal="draw" from="SliderContainer/HBoxContainer/TracksContainer/Slider2/MarginContainer" to="." method="_on_slider2_draw"]
-[connection signal="resized" from="SliderContainer/HBoxContainer/TracksContainer/Slider2/MarginContainer/ColorTrack" to="." method="_on_track_resized"]
-[connection signal="text_submitted" from="SliderContainer/HBoxContainer/TracksContainer/Slider2/IntField" to="." method="_on_slider2_text_submitted"]
-[connection signal="draw" from="SliderContainer/HBoxContainer/TracksContainer/Slider3/MarginContainer" to="." method="_on_slider3_draw"]
-[connection signal="resized" from="SliderContainer/HBoxContainer/TracksContainer/Slider3/MarginContainer/ColorTrack" to="." method="_on_track_resized"]
-[connection signal="text_submitted" from="SliderContainer/HBoxContainer/TracksContainer/Slider3/IntField" to="." method="_on_slider3_text_submitted"]
-[connection signal="draw" from="SliderContainer/HBoxContainer/TracksContainer/Slider4/MarginContainer" to="." method="_on_slider4_draw"]
-[connection signal="resized" from="SliderContainer/HBoxContainer/TracksContainer/Slider4/MarginContainer/ColorTrack" to="." method="_on_track_resized"]
-[connection signal="text_submitted" from="SliderContainer/HBoxContainer/TracksContainer/Slider4/IntField" to="." method="_on_slider4_text_submitted"]

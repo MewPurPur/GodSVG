@@ -150,15 +150,33 @@ func _ready() -> void:
 	Configs.theme_changed.connect(sync_color_space_buttons)
 	sync_color_space_buttons()
 	# Set up signals.
+	color_wheel.gui_input.connect(_on_color_wheel_gui_input)
+	start_color_rect.draw.connect(_on_start_color_rect_draw)
+	color_rect.draw.connect(_on_color_rect_draw)
+	reset_color_button.pressed.connect(_on_reset_color_button_pressed)
+	
+	widgets_arr[0].draw.connect(_on_side_slider_draw)
+	widgets_arr[1].draw.connect(_on_slider1_draw)
+	widgets_arr[2].draw.connect(_on_slider2_draw)
+	widgets_arr[3].draw.connect(_on_slider3_draw)
 	widgets_arr[0].gui_input.connect(parse_slider_input.bind(0, true))
 	widgets_arr[1].gui_input.connect(parse_slider_input.bind(1))
 	widgets_arr[2].gui_input.connect(parse_slider_input.bind(2))
 	widgets_arr[3].gui_input.connect(parse_slider_input.bind(3))
+	tracks_arr[1].resized.connect(_on_track_resized)
+	tracks_arr[2].resized.connect(_on_track_resized)
+	tracks_arr[3].resized.connect(_on_track_resized)
+	fields_arr[1].text_submitted.connect(_on_slider1_text_submitted)
+	fields_arr[2].text_submitted.connect(_on_slider2_text_submitted)
+	fields_arr[3].text_submitted.connect(_on_slider3_text_submitted)
 	slider_mode_changed.connect(_on_slider_mode_changed)
 	_on_slider_mode_changed()
 	if alpha_enabled:
 		alpha_slider.visible = alpha_enabled
+		widgets_arr[4].draw.connect(_on_slider4_draw)
 		widgets_arr[4].gui_input.connect(parse_slider_input.bind(4))
+		tracks_arr[4].resized.connect(_on_track_resized)
+		fields_arr[4].text_submitted.connect(_on_slider4_text_submitted)
 	
 	update_keyword_button()
 	eyedropper_button.pressed.connect(_on_eyedropper_pressed)
@@ -381,13 +399,11 @@ func _slider_set_text(field: BetterLineEdit, number: float) -> void:
 func _on_keyword_button_pressed() -> void:
 	var btn_arr: Array[Button] = []
 	if is_none_keyword_available:
-		btn_arr.append(ContextPopup.create_button("none",
-				set_to_keyword.bind("none"), color == "none",
-				load("res://assets/icons/NoneColor.svg")))
+		btn_arr.append(ContextPopup.create_button("none", set_to_keyword.bind("none"),
+				color == "none", load("res://assets/icons/NoneColor.svg")))
 	if is_current_color_keyword_available:
-		btn_arr.append(ContextPopup.create_button("currentColor",
-				set_to_keyword.bind("currentColor"), color == "currentColor",
-				load("res://assets/icons/Paste.svg")))
+		btn_arr.append(ContextPopup.create_button("currentColor", set_to_keyword.bind("currentColor"),
+				color == "currentColor", load("res://assets/icons/Paste.svg")))
 	
 	for btn in btn_arr:
 		btn.add_theme_font_override("font", ThemeUtils.mono_font)
@@ -428,8 +444,7 @@ func _on_start_color_rect_draw() -> void:
 		var cross_color := Color(0.8, 0.8, 0.8)
 		start_color_rect.draw_rect(rect, Color(0.6, 0.6, 0.6))
 		start_color_rect.draw_line(Vector2.ZERO, rect_size, cross_color, 0.5, true)
-		start_color_rect.draw_line(Vector2(rect_size.x, 0), Vector2(0, rect_size.y),
-				cross_color, 0.5, true)
+		start_color_rect.draw_line(Vector2(rect_size.x, 0), Vector2(0, rect_size.y), cross_color, 0.5, true)
 	else:
 		start_color_rect.draw_texture_rect(bg_pattern, rect, true)
 		start_color_rect.draw_rect(rect, starting_display_color)

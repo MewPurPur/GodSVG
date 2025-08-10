@@ -5,7 +5,7 @@
 
 [node name="SettingsMenu" type="PanelContainer"]
 custom_minimum_size = Vector2(660, 420)
-anchors_preset = 8
+anchors_preset = -1
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -76,5 +76,3 @@ size_flags_horizontal = 4
 size_flags_vertical = 8
 focus_mode = 0
 mouse_default_cursor_shape = 2
-
-[connection signal="pressed" from="VBoxContainer/Language" to="." method="_on_language_pressed"]

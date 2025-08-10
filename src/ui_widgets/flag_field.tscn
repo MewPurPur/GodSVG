@@ -34,6 +34,7 @@ corner_radius_top_right = 3
 
 [node name="FlagField" type="Button"]
 custom_minimum_size = Vector2(0, 18)
+anchors_preset = -1
 offset_right = 19.0
 offset_bottom = 18.0
 focus_mode = 0
@@ -51,7 +52,3 @@ theme_override_styles/disabled = SubResource("StyleBoxEmpty_kfgda")
 toggle_mode = true
 text = "0"
 script = ExtResource("2_0bhg4")
-
-[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
-[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
-[connection signal="toggled" from="." to="." method="_on_toggled"]

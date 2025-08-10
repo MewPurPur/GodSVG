@@ -7,6 +7,7 @@
 
 [node name="Dropdown" type="HBoxContainer"]
 custom_minimum_size = Vector2(0, 22)
+anchors_preset = -1
 offset_right = 49.0
 offset_bottom = 22.0
 size_flags_horizontal = 0
@@ -31,5 +32,3 @@ mouse_default_cursor_shape = 2
 theme_type_variation = &"LeftConnectedButton"
 icon = ExtResource("2_4oygd")
 expand_icon = true
-
-[connection signal="pressed" from="Button" to="." method="_on_button_pressed"]

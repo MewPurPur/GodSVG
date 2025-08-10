@@ -14,7 +14,7 @@
 [ext_resource type="Texture2D" uid="uid://c68og6bsqt0lb" path="res://assets/icons/Checkerboard.svg" id="11_1bm1s"]
 [ext_resource type="Script" uid="uid://dtplje5mhdmrj" path="res://src/ui_parts/display_texture.gd" id="12_qi23s"]
 [ext_resource type="Script" uid="uid://csqewpxr21ywy" path="res://src/ui_parts/handles_manager.gd" id="13_lwhwy"]
-[ext_resource type="Script" uid="uid://mtwptdpc3cxs" path="res://src/ui_parts/debug_content.gd" id="15_ryr8t"]
+[ext_resource type="PackedScene" uid="uid://vrmbmt18wocm" path="res://src/ui_parts/debug_content.tscn" id="15_ryr8t"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_kqplg"]
 shader = ExtResource("10_x7ybk")
@@ -152,34 +152,5 @@ mouse_filter = 2
 theme_override_constants/margin_top = 36
 theme_override_constants/margin_right = 10
 
-[node name="DebugContent" type="VBoxContainer" parent="ViewportPanel/DebugMargins"]
-unique_name_in_owner = true
+[node name="DebugContent" parent="ViewportPanel/DebugMargins" instance=ExtResource("15_ryr8t")]
 layout_mode = 2
-mouse_filter = 2
-theme_override_constants/separation = -18
-script = ExtResource("15_ryr8t")
-
-[node name="DebugLabel" type="Label" parent="ViewportPanel/DebugMargins/DebugContent"]
-layout_mode = 2
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/line_spacing = 0
-theme_override_constants/outline_size = 4
-theme_override_font_sizes/font_size = 14
-horizontal_alignment = 2
-
-[node name="InputDebugLabel" type="Label" parent="ViewportPanel/DebugMargins/DebugContent"]
-layout_mode = 2
-theme_override_colors/font_color = Color(0.75, 0.75, 0.75, 1)
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/line_spacing = 0
-theme_override_constants/outline_size = 4
-theme_override_font_sizes/font_size = 14
-horizontal_alignment = 2
-
-[connection signal="pressed" from="ViewportPanel/VBoxContainer/Toolbar/ViewportOptions/LeftMenu/Visuals" to="." method="_on_visuals_button_pressed"]
-[connection signal="toggled" from="ViewportPanel/VBoxContainer/Toolbar/ViewportOptions/LeftMenu/Snapping/SnapButton" to="." method="_on_snap_button_toggled"]
-[connection signal="value_changed" from="ViewportPanel/VBoxContainer/Toolbar/ViewportOptions/LeftMenu/Snapping/SnapNumberEdit" to="." method="_on_snap_number_edit_value_changed"]
-[connection signal="zoom_changed" from="ViewportPanel/VBoxContainer/Toolbar/ViewportOptions/ZoomMenu" to="ViewportPanel/VBoxContainer/ViewportContainer/Viewport" method="_on_zoom_changed"]
-[connection signal="zoom_reset_pressed" from="ViewportPanel/VBoxContainer/Toolbar/ViewportOptions/ZoomMenu" to="ViewportPanel/VBoxContainer/ViewportContainer/Viewport" method="center_frame"]
-[connection signal="size_changed" from="ViewportPanel/VBoxContainer/ViewportContainer/Viewport" to="ViewportPanel/VBoxContainer/ViewportContainer/Viewport" method="_on_size_changed"]

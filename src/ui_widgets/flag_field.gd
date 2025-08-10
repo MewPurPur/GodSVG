@@ -21,6 +21,9 @@ func _on_toggled(is_state_pressed: bool) -> void:
 
 func _ready() -> void:
 	value_changed.connect(_on_value_changed)
+	toggled.connect(_on_toggled)
+	mouse_entered.connect(_on_mouse_entered)
+	mouse_exited.connect(_on_mouse_exited)
 	button_pressed = (get_value() == 1)
 	text = String.num_uint64(get_value())
 

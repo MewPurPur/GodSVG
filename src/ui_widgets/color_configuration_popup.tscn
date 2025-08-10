@@ -69,6 +69,3 @@ focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_type_variation = &"IconButton"
 icon = ExtResource("6_50dbg")
-
-[connection signal="pressed" from="ConfigureContainer/TopContainer/LabelContainer/EditButton" to="." method="_on_edit_button_pressed"]
-[connection signal="pressed" from="ConfigureContainer/BottomContainer/DeleteButton" to="." method="_on_delete_button_pressed"]
