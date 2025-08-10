@@ -80,7 +80,7 @@ func _draw() -> void:
 	var major_grid_color := Color(Configs.savedata.grid_color, 0.35)
 	var minor_grid_color := Color(Configs.savedata.grid_color, 0.15)
 	
-	var grid_size := Vector2(State.viewport_size) / camera_zoom
+	var grid_size := Vector2(viewport.size) / camera_zoom
 	RenderingServer.canvas_item_add_line(grid_ci, Vector2(-camera_snapped_position.x * camera_zoom, 0),
 			Vector2(-camera_snapped_position.x * camera_zoom, grid_size.y * camera_zoom), axis_line_color)
 	RenderingServer.canvas_item_add_line(grid_ci, Vector2(0, -camera_snapped_position.y * camera_zoom),
