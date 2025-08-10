@@ -10,43 +10,12 @@ const ViewportScene = preload("res://src/ui_parts/display.tscn")
 
 func _ready() -> void:
 	var shortcuts := ShortcutsRegistration.new()
-	shortcuts.add_shortcut("view_show_grid", State.toggle_show_grid, ShortcutsRegistration.Behavior.PASS_THROUGH_AND_PRESERVE_POPUPS)
-	shortcuts.add_shortcut("view_show_handles", State.toggle_show_handles, ShortcutsRegistration.Behavior.PASS_THROUGH_AND_PRESERVE_POPUPS)
-	shortcuts.add_shortcut("view_rasterized_svg", State.toggle_view_rasterized, ShortcutsRegistration.Behavior.PASS_THROUGH_AND_PRESERVE_POPUPS)
-	shortcuts.add_shortcut("view_show_reference", func() -> void:
-			Configs.savedata.get_active_tab().show_reference = not Configs.savedata.get_active_tab().show_reference,
-			ShortcutsRegistration.Behavior.PASS_THROUGH_AND_PRESERVE_POPUPS)
-	shortcuts.add_shortcut("view_overlay_reference", func() -> void:
-			Configs.savedata.get_active_tab().overlay_reference = not Configs.savedata.get_active_tab().overlay_reference,
-			ShortcutsRegistration.Behavior.PASS_THROUGH_AND_PRESERVE_POPUPS)
-	shortcuts.add_shortcut("load_reference", FileUtils.open_image_import_dialog, ShortcutsRegistration.Behavior.PASS_THROUGH_POPUPS)
-	shortcuts.add_shortcut("toggle_snap", func() -> void: Configs.savedata.snap *= -1, ShortcutsRegistration.Behavior.PASS_THROUGH_AND_PRESERVE_POPUPS)
 	shortcuts.add_shortcut("import", FileUtils.open_svg_import_dialog, ShortcutsRegistration.Behavior.PASS_THROUGH_POPUPS)
 	shortcuts.add_shortcut("export", HandlerGUI.open_export, ShortcutsRegistration.Behavior.PASS_THROUGH_POPUPS)
 	shortcuts.add_shortcut("save", FileUtils.save_svg, ShortcutsRegistration.Behavior.PASS_THROUGH_AND_PRESERVE_POPUPS)
 	shortcuts.add_shortcut("save_as", FileUtils.save_svg_as, ShortcutsRegistration.Behavior.PASS_THROUGH_POPUPS)
-	shortcuts.add_shortcut("close_tab", func() -> void: FileUtils.close_tabs(Configs.savedata.get_active_tab_index()),
-			ShortcutsRegistration.Behavior.PASS_THROUGH_POPUPS)
-	shortcuts.add_shortcut("close_all_other_tabs", func() -> void: FileUtils.close_tabs(Configs.savedata.get_active_tab_index(), FileUtils.TabCloseMode.ALL_OTHERS),
-			ShortcutsRegistration.Behavior.PASS_THROUGH_POPUPS)
-	shortcuts.add_shortcut("close_tabs_to_left", func() -> void: FileUtils.close_tabs(Configs.savedata.get_active_tab_index(), FileUtils.TabCloseMode.TO_LEFT),
-			ShortcutsRegistration.Behavior.PASS_THROUGH_POPUPS)
-	shortcuts.add_shortcut("close_tabs_to_right", func() -> void: FileUtils.close_tabs(Configs.savedata.get_active_tab_index(), FileUtils.TabCloseMode.TO_RIGHT),
-			ShortcutsRegistration.Behavior.PASS_THROUGH_POPUPS)
-	shortcuts.add_shortcut("close_empty_tabs", func() -> void: FileUtils.close_tabs(Configs.savedata.get_active_tab_index(), FileUtils.TabCloseMode.EMPTY),
-			ShortcutsRegistration.Behavior.PASS_THROUGH_POPUPS)
-	shortcuts.add_shortcut("close_saved_tabs", func() -> void: FileUtils.close_tabs(Configs.savedata.get_active_tab_index(), FileUtils.TabCloseMode.SAVED),
-			ShortcutsRegistration.Behavior.PASS_THROUGH_POPUPS)
-	shortcuts.add_shortcut("new_tab", Configs.savedata.add_empty_tab, ShortcutsRegistration.Behavior.PASS_THROUGH_POPUPS)
-	shortcuts.add_shortcut("select_next_tab",
-			func() -> void: Configs.savedata.set_active_tab_index(posmod(Configs.savedata.get_active_tab_index() + 1, Configs.savedata.get_tab_count())),
-			ShortcutsRegistration.Behavior.PASS_THROUGH_POPUPS)
-	shortcuts.add_shortcut("select_previous_tab",
-			func() -> void: Configs.savedata.set_active_tab_index(posmod(Configs.savedata.get_active_tab_index() - 1, Configs.savedata.get_tab_count())),
-			ShortcutsRegistration.Behavior.PASS_THROUGH_POPUPS)
 	shortcuts.add_shortcut("optimize", State.optimize, ShortcutsRegistration.Behavior.STRICT_NO_PASSTHROUGH)
 	shortcuts.add_shortcut("reset_svg", FileUtils.reset_svg, ShortcutsRegistration.Behavior.STRICT_NO_PASSTHROUGH)
-	shortcuts.add_shortcut("debug", State.toggle_show_debug)
 	shortcuts.add_shortcut("ui_undo", func() -> void: Configs.savedata.get_active_tab().undo(), ShortcutsRegistration.Behavior.STRICT_NO_PASSTHROUGH)
 	shortcuts.add_shortcut("ui_redo", func() -> void: Configs.savedata.get_active_tab().redo(), ShortcutsRegistration.Behavior.STRICT_NO_PASSTHROUGH)
 	shortcuts.add_shortcut("ui_cancel", State.clear_all_selections, ShortcutsRegistration.Behavior.STRICT_NO_PASSTHROUGH)
