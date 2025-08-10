@@ -11,6 +11,7 @@ extends HBoxContainer
 @export var value_text_map: Dictionary = {}  # Dictionary[Variant, String]
 
 @onready var line_edit: BetterLineEdit = $LineEdit
+@onready var button: Button = $Button
 
 signal value_changed(new_value: Variant)
 var _value: Variant
@@ -31,6 +32,7 @@ func _ready() -> void:
 		line_edit.gui_input.connect(_on_line_edit_gui_input)
 	line_edit.text_changed.connect(_on_text_changed)
 	line_edit.text_submitted.connect(_on_text_submitted)
+	button.pressed.connect(_on_button_pressed)
 	_sync_line_edit()
 	
 	var max_width := 0

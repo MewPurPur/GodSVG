@@ -44,6 +44,7 @@ var _palettes_pending_update := false  # Palettes will update when visible.
 var swatches_list: Array[ColorSwatch] = []  # Updated manually.
 
 func _ready() -> void:
+	color_picker.color_changed.connect(pick_color)
 	color_picker.is_none_keyword_available = is_none_keyword_available
 	color_picker.is_current_color_keyword_available = (current_color_availability != CurrentColorAvailability.UNAVAILABLE)
 	color_picker.update_keyword_button()
@@ -54,8 +55,7 @@ func _ready() -> void:
 	
 	const CONST_ARR: PackedStringArray = ["normal", "hover", "pressed"]
 	for theme_type in CONST_ARR:
-		var sb: StyleBoxFlat = switch_mode_button.get_theme_stylebox(theme_type,
-				"TranslucentButton").duplicate()
+		var sb: StyleBoxFlat = switch_mode_button.get_theme_stylebox(theme_type, "TranslucentButton").duplicate()
 		sb.corner_radius_top_left = 0
 		sb.corner_radius_top_right = 0
 		sb.corner_radius_bottom_left = 4

@@ -84,7 +84,7 @@ func _draw() -> void:
 				current_tab_name = "* " + current_tab_name
 		
 		if (has_transient_tab and drawing_transient_tab) or (not has_transient_tab and tab_index == Configs.savedata.get_active_tab_index()):
-			draw_style_box(get_theme_stylebox("tab_selected", "TabContainer"), rect)
+			get_theme_stylebox("tab_selected", "TabContainer").draw(ci, rect)
 			var text_line_width := rect.size.x - size.y
 			if text_line_width > 0:
 				var text_line := TextLine.new()
@@ -101,7 +101,7 @@ func _draw() -> void:
 		else:
 			var is_hovered := rect.has_point(mouse_pos)
 			var tab_style := "tab_hovered" if is_hovered else "tab_unselected"
-			draw_style_box(get_theme_stylebox(tab_style, "TabContainer"), rect)
+			get_theme_stylebox(tab_style, "TabContainer").draw(ci, rect)
 			
 			var text_line_width := rect.size.x - 8
 			if text_line_width > 0:
@@ -115,7 +115,7 @@ func _draw() -> void:
 	
 	var add_button_rect := get_add_button_rect()
 	var plus_icon_size := plus_icon.get_size()
-	draw_texture_rect(plus_icon, Rect2(add_button_rect.position + (add_button_rect.size - plus_icon_size) / 2.0, plus_icon_size),
+	plus_icon.draw_rect(ci, Rect2(add_button_rect.position + (add_button_rect.size - plus_icon_size) / 2.0, plus_icon_size),
 			false, ThemeUtils.tinted_contrast_color)
 	
 	var scroll_backwards_rect := get_scroll_backwards_area_rect()

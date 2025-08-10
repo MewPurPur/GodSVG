@@ -7,6 +7,7 @@
 
 [node name="ColorFieldPopup" type="PanelContainer"]
 custom_minimum_size = Vector2(160, 0)
+anchors_preset = -1
 offset_right = 214.0
 offset_bottom = 325.0
 script = ExtResource("1_xn1jy")
@@ -60,5 +61,3 @@ layout_mode = 2
 size_flags_horizontal = 3
 focus_mode = 0
 mouse_default_cursor_shape = 2
-
-[connection signal="color_changed" from="MainContainer/Content/ColorPicker" to="." method="pick_color"]

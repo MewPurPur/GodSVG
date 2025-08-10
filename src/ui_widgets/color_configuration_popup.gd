@@ -5,6 +5,7 @@ signal color_deletion_requested
 @onready var color_label: Label = %LabelContainer/ColorLabel
 @onready var color_name_edit: BetterLineEdit = %ConfigureContainer/TopContainer/NameEdit
 @onready var color_edit: LineEditButton = %ConfigureContainer/BottomContainer/ColorEdit
+@onready var edit_button: Button = $ConfigureContainer/TopContainer/LabelContainer/EditButton
 @onready var delete_button: Button = %ConfigureContainer/BottomContainer/DeleteButton
 @onready var label_container: HBoxContainer = %LabelContainer
 
@@ -18,6 +19,8 @@ func _ready() -> void:
 	sync_localization()
 	color_name_edit.text_submitted.connect(_on_name_edit_text_submitted)
 	color_name_edit.text_change_canceled.connect(hide_name_edit)
+	edit_button.pressed.connect(_on_edit_button_pressed)
+	delete_button.pressed.connect(_on_delete_button_pressed)
 
 
 func sync_localization() -> void:

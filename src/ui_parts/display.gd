@@ -28,6 +28,9 @@ func _ready() -> void:
 	HandlerGUI.register_shortcuts(self, shortcuts)
 	
 	reference_button.pressed.connect(_on_reference_button_pressed)
+	visuals_button.pressed.connect(_on_visuals_button_pressed)
+	snap_button.toggled.connect(_on_snap_button_toggled)
+	snapper.value_changed.connect(_on_snap_number_edit_value_changed)
 	Configs.language_changed.connect(sync_localization)
 	sync_localization()
 	Configs.snap_changed.connect(update_snap_config)

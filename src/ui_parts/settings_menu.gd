@@ -33,6 +33,7 @@ func _ready() -> void:
 	HandlerGUI.register_shortcuts(self, shortcuts)
 	
 	close_button.pressed.connect(queue_free)
+	lang_button.pressed.connect(_on_language_pressed)
 	scroll_container.get_v_scroll_bar().visibility_changed.connect(adjust_right_margin)
 	adjust_right_margin()
 	

@@ -54,8 +54,3 @@ layout_mode = 2
 theme_override_fonts/normal_font = ExtResource("2_p4nol")
 theme_override_font_sizes/normal_font_size = 14
 fit_content = true
-
-[connection signal="pressed" from="PanelContainer/CodeButtons/MetaActions/OptionsButton" to="." method="_on_options_button_pressed"]
-[connection signal="focus_entered" from="ScriptEditor/SVGCodeEdit" to="." method="_on_svg_code_edit_focus_entered"]
-[connection signal="focus_exited" from="ScriptEditor/SVGCodeEdit" to="." method="_on_svg_code_edit_focus_exited"]
-[connection signal="text_changed" from="ScriptEditor/SVGCodeEdit" to="." method="_on_svg_code_edit_text_changed"]
