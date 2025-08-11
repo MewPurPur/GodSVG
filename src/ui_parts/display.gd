@@ -1,15 +1,16 @@
 extends VBoxContainer
 
 const NumberEdit = preload("res://src/ui_widgets/number_edit.gd")
+const ZoomWidget = preload("res://src/ui_widgets/zoom_widget.gd")
 
-@onready var viewport: SubViewport = %Viewport
-@onready var viewport_container: SubViewportContainer = $ViewportPanel/VBoxContainer/ViewportContainer
+@onready var canvas: SubViewportContainer = $ViewportPanel/VBoxContainer/Canvas
 @onready var reference_button: Button = %LeftMenu/Reference
 @onready var visuals_button: Button = %LeftMenu/Visuals
 @onready var snapper: NumberEdit = %LeftMenu/Snapping/SnapNumberEdit
 @onready var snap_button: BetterButton = %LeftMenu/Snapping/SnapButton
 @onready var viewport_panel: PanelContainer = $ViewportPanel
 @onready var toolbar: PanelContainer = $ViewportPanel/VBoxContainer/Toolbar
+@onready var zoom_widget: ZoomWidget = %ZoomMenu
 
 func _ready() -> void:
 	var shortcuts := ShortcutsRegistration.new()
@@ -26,6 +27,12 @@ func _ready() -> void:
 	shortcuts.add_shortcut("toggle_snap", func() -> void: Configs.savedata.snap *= -1, ShortcutsRegistration.Behavior.PASS_THROUGH_AND_PRESERVE_POPUPS)
 	shortcuts.add_shortcut("debug", State.toggle_show_debug)
 	HandlerGUI.register_shortcuts(self, shortcuts)
+	
+	zoom_widget.setup_limits(Canvas.MIN_ZOOM, Canvas.MAX_ZOOM)
+	zoom_widget.zoom_in_pressed.connect(canvas.zoom_in)
+	zoom_widget.zoom_out_pressed.connect(canvas.zoom_out)
+	zoom_widget.zoom_reset_pressed.connect(canvas.center_frame)
+	State.zoom_changed.connect(func() -> void: zoom_widget.sync_to_value(State.zoom))
 	
 	reference_button.pressed.connect(_on_reference_button_pressed)
 	visuals_button.pressed.connect(_on_visuals_button_pressed)
@@ -65,6 +72,8 @@ func update_snap_config() -> void:
 	snapper.editable = snap_enabled
 	snapper.set_value(absf(snap_config))
 
+func _on_zoom_changed() -> void:
+	zoom_widget.sync_to_value(State.zoom)
 
 func _on_reference_button_pressed() -> void:
 	var active_tab := Configs.savedata.get_active_tab()
