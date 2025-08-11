@@ -1,20 +1,25 @@
-extends VBoxContainer
+extends MarginContainer
 
-@onready var debug_label: Label = $DebugLabel
-@onready var input_debug_label: Label = $InputDebugLabel
+@onready var debug_label: Label = $DebugContainer/DebugLabel
+@onready var input_debug_label: Label = $DebugContainer/InputDebugLabel
+@onready var debug_container: VBoxContainer = $DebugContainer
 
 func _ready() -> void:
-	State.show_debug_changed.connect(_on_show_debug_changed)
-	_on_show_debug_changed()
+	var shortcuts := ShortcutsRegistration.new()
+	shortcuts.add_shortcut("debug", toggle_debug_visibility)
+	HandlerGUI.register_shortcuts(self, shortcuts)
+	
+	set_debug_visibility(false)
 	get_window().window_input.connect(_update_input_debug)
 
-func _on_show_debug_changed() -> void:
-	if State.show_debug:
-		show()
-		update_debug()
+func toggle_debug_visibility() -> void:
+	set_debug_visibility(not debug_container.visible)
+
+func set_debug_visibility(visibility: bool) -> void:
+	debug_container.visible = visibility
+	if visible:
 		input_debug_label.text = ""
-	else:
-		hide()
+		update_debug()
 
 # The strings here are intentionally not localized.
 func update_debug() -> void:
