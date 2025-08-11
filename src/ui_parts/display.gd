@@ -25,7 +25,6 @@ func _ready() -> void:
 			Configs.savedata.get_active_tab().overlay_reference = not Configs.savedata.get_active_tab().overlay_reference,
 			ShortcutsRegistration.Behavior.PASS_THROUGH_AND_PRESERVE_POPUPS)
 	shortcuts.add_shortcut("toggle_snap", func() -> void: Configs.savedata.snap *= -1, ShortcutsRegistration.Behavior.PASS_THROUGH_AND_PRESERVE_POPUPS)
-	shortcuts.add_shortcut("debug", State.toggle_show_debug)
 	HandlerGUI.register_shortcuts(self, shortcuts)
 	
 	zoom_widget.setup_limits(Canvas.MIN_ZOOM, Canvas.MAX_ZOOM)

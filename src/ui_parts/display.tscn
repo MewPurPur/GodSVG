@@ -101,13 +101,5 @@ stretch = true
 script = ExtResource("9_ryr8t")
 metadata/_custom_type_script = "uid://8bxv5i60h8rb"
 
-[node name="DebugMargins" type="MarginContainer" parent="ViewportPanel"]
-layout_mode = 2
-size_flags_horizontal = 8
-size_flags_vertical = 0
-mouse_filter = 2
-theme_override_constants/margin_top = 36
-theme_override_constants/margin_right = 10
-
-[node name="DebugContent" parent="ViewportPanel/DebugMargins" instance=ExtResource("15_ryr8t")]
+[node name="DebugContent" parent="ViewportPanel" instance=ExtResource("15_ryr8t")]
 layout_mode = 2

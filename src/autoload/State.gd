@@ -240,12 +240,10 @@ func set_zoom(new_value: float) -> void:
 var view_rasterized := false
 var show_grid := true
 var show_handles := true
-var show_debug := false
 
 signal view_rasterized_changed
 signal show_grid_changed
 signal show_handles_changed
-signal show_debug_changed
 
 func toggle_view_rasterized() -> void:
 	view_rasterized = not view_rasterized
@@ -258,10 +256,6 @@ func toggle_show_grid() -> void:
 func toggle_show_handles() -> void:
 	show_handles = not show_handles
 	show_handles_changed.emit()
-
-func toggle_show_debug() -> void:
-	show_debug = not show_debug
-	show_debug_changed.emit()
 
 
 # Override the selected elements with a single new selected element.
