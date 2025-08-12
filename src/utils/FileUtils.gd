@@ -141,20 +141,14 @@ static func _finish_xml_export(file_path: String, xml: String) -> void:
 	Configs.savedata.add_recent_dir(file_path.get_base_dir())
 	FileAccess.open(file_path, FileAccess.WRITE).store_string(xml)
 
-static func _finish_reference_load(data: Variant, file_path: String) -> void:
+static func _finish_reference_load(data: Variant, file_path: String, final_callback: Callable) -> void:
 	var img := Image.new()
 	match file_path.get_extension().to_lower():
 		"svg": img.load_svg_from_string(data)
 		"png": img.load_png_from_buffer(data)
 		"jpg", "jpeg": img.load_jpg_from_buffer(data)
 		"webp": img.load_webp_from_buffer(data)
-	load_reference_from_image(img)
-
-static func load_reference_from_image(img: Image) -> void:
-	if is_instance_valid(img):
-		Configs.savedata.get_active_tab().reference_image = ImageTexture.create_from_image(img)
-	else:
-		Configs.savedata.get_active_tab().reference_image = null
+	final_callback.call(img)
 
 
 static func _is_native_preferred() -> bool:
@@ -168,8 +162,8 @@ static func _choose_file_name() -> String:
 static func open_svg_import_dialog() -> void:
 	_open_import_dialog(PackedStringArray(["svg"]), _apply_svg, true)
 
-static func open_image_import_dialog() -> void:
-	_open_import_dialog(PackedStringArray(["png", "jpg", "jpeg", "webp", "svg"]), _finish_reference_load)
+static func open_image_import_dialog(completion_callback: Callable) -> void:
+	_open_import_dialog(PackedStringArray(["png", "jpg", "jpeg", "webp", "svg"]), _finish_reference_load.bind(completion_callback))
 
 static func open_xml_import_dialog(completion_callback: Callable) -> void:
 	_open_import_dialog(PackedStringArray(["xml"]), completion_callback)
@@ -255,10 +249,8 @@ static func _file_import_proceed(file_paths: PackedStringArray, completion_callb
 	var file_path := file_paths[0]
 	var preserved_file_paths := file_paths.duplicate()
 	file_paths.remove_at(0)
-	var proceed_callback := _file_import_proceed.bind(file_paths, completion_callback,
-			show_file_missing_alert)
-	var retry_callback := _file_import_proceed.bind(preserved_file_paths,
-			completion_callback)
+	var proceed_callback := _file_import_proceed.bind(file_paths, completion_callback, show_file_missing_alert)
+	var retry_callback := _file_import_proceed.bind(preserved_file_paths, completion_callback)
 	var file := WebSafeFileAccess.open(file_path, FileAccess.READ)
 	
 	# If it's impossible to somehow import files from multiple dirs at the same time,
@@ -286,12 +278,10 @@ static func _file_import_proceed(file_paths: PackedStringArray, completion_callb
 						Translator.translate("Proceed for all files that can't be opened"))
 			
 			options_dialog.add_cancel_option()
-			options_dialog.add_option(Translator.translate("Retry"), retry_callback, false,
-					true, Callable(), true)
+			options_dialog.add_option(Translator.translate("Retry"), retry_callback, false, true, Callable(), true)
 			if not file_paths.is_empty():
-				options_dialog.add_option(Translator.translate("Proceed"), proceed_callback,
-						true, true, _file_import_proceed.bind(file_paths, completion_callback,
-						false), false, true)
+				options_dialog.add_option(Translator.translate("Proceed"), proceed_callback, true, true,
+						_file_import_proceed.bind(file_paths, completion_callback, false), false, true)
 			return
 		else:
 			if not file_paths.is_empty():
@@ -305,8 +295,7 @@ static func _file_import_proceed(file_paths: PackedStringArray, completion_callb
 			if file_paths.is_empty():
 				completion_callback.call(file.get_as_text(), file_path)
 			else:
-				completion_callback.call(file.get_as_text(), file_path, proceed_callback,
-						false)
+				completion_callback.call(file.get_as_text(), file_path, proceed_callback, false)
 		"xml": completion_callback.call(file.get_as_text())
 		_: completion_callback.call(file.get_buffer(file.get_length()), file_path)
 
@@ -347,13 +336,11 @@ static func _apply_svg(data: Variant, file_path: String, proceed_callback := Cal
 		Configs.savedata.remove_tab(tab_index)
 		Configs.savedata.move_tab(Configs.savedata.get_tab_count() - 1, tab_index)
 		warning_panel.canceled.connect(_on_import_panel_canceled_empty_tab_scenario)
-		warning_panel.imported.connect(_on_import_panel_accepted_empty_tab_scenario.bind(
-				data))
+		warning_panel.imported.connect(_on_import_panel_accepted_empty_tab_scenario.bind(data))
 	else:
 		State.transient_tab_path = file_path
 		warning_panel.canceled.connect(_on_import_panel_canceled_transient_scenario)
-		warning_panel.imported.connect(_on_import_panel_accepted_transient_scenario.bind(
-				file_path, data))
+		warning_panel.imported.connect(_on_import_panel_accepted_transient_scenario.bind(file_path, data))
 	if not is_last_file:
 		warning_panel.canceled.connect(proceed_callback)
 		warning_panel.imported.connect(proceed_callback)

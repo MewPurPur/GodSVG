@@ -126,7 +126,8 @@ func setup_content() -> void:
 func set_preview(node: Control) -> void:
 	for child in preview_panel.get_children():
 		child.queue_free()
-	preview_panel.add_child(node)
+	if is_instance_valid(node):
+		preview_panel.add_child(node)
 
 
 func _on_language_pressed() -> void:

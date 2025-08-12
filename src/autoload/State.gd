@@ -5,7 +5,6 @@ const OptionsDialogScene = preload("res://src/ui_widgets/options_dialog.tscn")
 const PathCommandPopupScene = preload("res://src/ui_widgets/path_popup.tscn")
 
 signal svg_unknown_change
-signal svg_resized
 
 # These signals copy the ones in ElementRoot.
 # ElementRoot is not persistent, while these signals can be connected to reliably.
@@ -20,8 +19,6 @@ signal basic_xnode_rendered_text_changed
 
 signal parsing_finished(error_id: SVGParser.ParseError)
 signal svg_changed  # Should only connect to persistent parts of the UI.
-
-var _svg_current_size := Vector2.ZERO
 
 var _update_pending := false
 
@@ -145,22 +142,9 @@ func sync_elements() -> void:
 		root_element.xnodes_moved_in_parent.connect(xnodes_moved_in_parent.emit)
 		root_element.xnodes_moved_to.connect(xnodes_moved_to.emit)
 		root_element.xnode_layout_changed.connect(xnode_layout_changed.emit)
-		root_element.attribute_changed.connect(_on_root_attribute_changed)
 		root_element.basic_xnode_text_changed.connect(basic_xnode_text_changed.emit)
-		root_element.basic_xnode_rendered_text_changed.connect(
-				basic_xnode_rendered_text_changed.emit)
+		root_element.basic_xnode_rendered_text_changed.connect(basic_xnode_rendered_text_changed.emit)
 		svg_unknown_change.emit()
-		_update_svg_current_size()
-
-
-func _on_root_attribute_changed(attribute_name: String) -> void:
-	if attribute_name in ["width", "height", "viewBox"]:
-		_update_svg_current_size()
-
-func _update_svg_current_size() -> void:
-	if _svg_current_size != root_element.get_size():
-		_svg_current_size = root_element.get_size()
-		svg_resized.emit()
 
 
 func apply_svg_text(new_text: String, save := true) -> void:
@@ -223,39 +207,6 @@ func clear_proposed_drop_xid() -> void:
 	if not proposed_drop_xid.is_empty():
 		proposed_drop_xid.clear()
 		proposed_drop_changed.emit()
-
-
-signal zoom_changed
-@warning_ignore("unused_signal")
-signal view_changed
-
-var zoom := 0.0
-
-func set_zoom(new_value: float) -> void:
-	if zoom != new_value:
-		zoom = new_value
-		zoom_changed.emit()
-
-
-var view_rasterized := false
-var show_grid := true
-var show_handles := true
-
-signal view_rasterized_changed
-signal show_grid_changed
-signal show_handles_changed
-
-func toggle_view_rasterized() -> void:
-	view_rasterized = not view_rasterized
-	view_rasterized_changed.emit()
-
-func toggle_show_grid() -> void:
-	show_grid = not show_grid
-	show_grid_changed.emit()
-
-func toggle_show_handles() -> void:
-	show_handles = not show_handles
-	show_handles_changed.emit()
 
 
 # Override the selected elements with a single new selected element.
@@ -481,34 +432,27 @@ func clear_all_hovered() -> void:
 # Returns whether the given element or inner editor is hovered.
 func is_hovered(xid: PackedInt32Array, inner_idx := -1, propagate := false) -> bool:
 	if propagate:
+		if XIDUtils.is_ancestor_or_self(hovered_xid, xid):
+			return true
 		if inner_idx == -1:
-			return XIDUtils.is_ancestor_or_self(hovered_xid, xid)
-		else:
-			return (inner_hovered == inner_idx and semi_hovered_xid == xid) or XIDUtils.is_ancestor_or_self(hovered_xid, xid)
-	else:
-		if inner_idx == -1:
-			return hovered_xid == xid
-		else:
-			return inner_hovered == inner_idx and semi_hovered_xid == xid
+			return false
+		return inner_hovered == inner_idx and semi_hovered_xid == xid
+	if inner_idx == -1:
+		return hovered_xid == xid
+	return inner_hovered == inner_idx and semi_hovered_xid == xid
 
 # Returns whether the given element or inner editor is selected.
 func is_selected(xid: PackedInt32Array, inner_idx := -1, propagate := false) -> bool:
 	if propagate:
+		for selected_xid in selected_xids:
+			if XIDUtils.is_ancestor_or_self(selected_xid, xid):
+				return true
 		if inner_idx == -1:
-			for selected_xid in selected_xids:
-				if XIDUtils.is_ancestor_or_self(selected_xid, xid):
-					return true
 			return false
-		else:
-			for selected_xid in selected_xids:
-				if XIDUtils.is_ancestor_or_self(selected_xid, xid):
-					return true
-			return semi_selected_xid == xid and inner_idx in inner_selections
-	else:
-		if inner_idx == -1:
-			return xid in selected_xids
-		else:
-			return semi_selected_xid == xid and inner_idx in inner_selections
+		return semi_selected_xid == xid and inner_idx in inner_selections
+	if inner_idx == -1:
+		return xid in selected_xids
+	return semi_selected_xid == xid and inner_idx in inner_selections
 
 # Returns whether the selection matches a subpath.
 func is_selection_subpath() -> bool:
@@ -529,6 +473,7 @@ func is_selection_subpath() -> bool:
 func _on_xnodes_added(xids: Array[PackedInt32Array]) -> void:
 	selected_xids = xids.duplicate()
 	selection_pivot_xid = xids[-1]
+	selection_changed.emit()
 
 # If selected elements were deleted, remove them from the list of selected elements.
 func _on_xnodes_deleted(xids: Array[PackedInt32Array]) -> void:
@@ -788,15 +733,14 @@ func popup_convert_to_context(popup_method: Callable) -> void:
 			for element_name in xnode.possible_conversions:
 				var btn := ContextPopup.create_button(element_name,
 						convert_selected_element_to.bind(element_name),
-						!xnode.can_replace(element_name), DB.get_element_icon(element_name))
+						not xnode.can_replace(element_name), DB.get_element_icon(element_name))
 				btn.add_theme_font_override("font", ThemeUtils.mono_font)
 				btn_arr.append(btn)
 		var context_popup := ContextPopup.new()
 		context_popup.setup(btn_arr, true)
 		popup_method.call(context_popup)
 	elif not inner_selections.is_empty() and not semi_selected_xid.is_empty():
-		var path_attrib: AttributePathdata = root_element.get_xnode(
-				semi_selected_xid).get_attribute("d")
+		var path_attrib: AttributePathdata = root_element.get_xnode(semi_selected_xid).get_attribute("d")
 		var selection_idx: int = inner_selections.max()
 		var cmd_char := path_attrib.get_command(selection_idx).command_char
 		
@@ -818,8 +762,7 @@ func popup_convert_to_context(popup_method: Callable) -> void:
 		command_picker.path_command_picked.connect(convert_selected_command_to)
 
 func popup_insert_command_after_context(popup_method: Callable) -> void:
-	var path_attrib: AttributePathdata = root_element.get_xnode(
-			semi_selected_xid).get_attribute("d")
+	var path_attrib: AttributePathdata = root_element.get_xnode(semi_selected_xid).get_attribute("d")
 	var selection_idx: int = inner_selections.max()
 	var cmd_char := path_attrib.get_command(selection_idx).command_char
 	
@@ -829,10 +772,8 @@ func popup_insert_command_after_context(popup_method: Callable) -> void:
 	# Disable invalid commands. Z is syntactically invalid, so disallow it even harder.
 	var warned_commands: PackedStringArray
 	var disabled_commands: PackedStringArray
-	# S commands are deliberately warned against in most cases, even though
-	# there is some sense in using them without a C or S command before them.
-	# Same for T commands in most cases, even though
-	# there is a notion of letting them determine the next shorthand quadratic curve.
+	# S commands are deliberately warned against in most cases, even though there is some sense in using them without a C or S command before them.
+	# Same for T commands in most cases, even though there is a notion of letting them determine the next shorthand quadratic curve.
 	match cmd_char.to_upper():
 		"M": warned_commands = PackedStringArray(["M", "Z", "S", "T"])
 		"L", "H", "V", "A": warned_commands = PackedStringArray(["S", "T"])
@@ -846,17 +787,14 @@ func popup_insert_command_after_context(popup_method: Callable) -> void:
 
 func convert_selected_element_to(element_name: String) -> void:
 	var xid := selected_xids[0]
-	root_element.replace_xnode(xid,
-			root_element.get_xnode(xid).get_replacement(element_name))
+	root_element.replace_xnode(xid, root_element.get_xnode(xid).get_replacement(element_name))
 	queue_svg_save()
 
 func convert_selected_xnode_to(xnode_type: BasicXNode.NodeType) -> void:
 	var xid := selected_xids[0]
-	root_element.replace_xnode(xid,
-			root_element.get_xnode(xid).get_replacement(xnode_type))
+	root_element.replace_xnode(xid, root_element.get_xnode(xid).get_replacement(xnode_type))
 	queue_svg_save()
 
 func convert_selected_command_to(cmd_type: String) -> void:
-	root_element.get_xnode(semi_selected_xid).get_attribute("d").convert_command(
-			inner_selections[0], cmd_type)
+	root_element.get_xnode(semi_selected_xid).get_attribute("d").convert_command(inner_selections[0], cmd_type)
 	queue_svg_save()

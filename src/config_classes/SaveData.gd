@@ -863,7 +863,6 @@ const MAX_TABS = 4096
 			for tab in _tabs:
 				tab.changed.connect(emit_changed)
 				tab.status_changed.connect(_on_tab_status_changed.bind(tab.id))
-				tab.reference_changed.connect(_on_tab_reference_changed.bind(tab.id))
 			emit_changed()
 			if _tabs.is_empty():
 				_add_new_tab()
@@ -887,10 +886,6 @@ func _on_tab_status_changed(id: int) -> void:
 	if id == _tabs[_active_tab_index].id:
 		Configs.active_tab_status_changed.emit()
 	Configs.tabs_changed.emit()
-
-func _on_tab_reference_changed(id: int) -> void:
-	if id == _tabs[_active_tab_index].id:
-		Configs.active_tab_reference_changed.emit()
 
 func has_tabs() -> bool:
 	return not _tabs.is_empty()
@@ -944,7 +939,6 @@ func _add_new_tab() -> void:
 	new_tab.fully_loaded = false
 	new_tab.changed.connect(emit_changed)
 	new_tab.status_changed.connect(_on_tab_status_changed.bind(new_id))
-	new_tab.reference_changed.connect(_on_tab_reference_changed.bind(new_id))
 	
 	# Clear file path for the new tab.
 	var new_tab_path := new_tab.get_edited_file_path()

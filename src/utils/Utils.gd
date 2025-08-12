@@ -32,12 +32,7 @@ static func get_file_name(string: String) -> String:
 # Method for showing the file path without stuff like "/home/mewpurpur/".
 # This information is pretty much always unnecessary clutter.
 static func simplify_file_path(file_path: String) -> String:
-	var home_dir: String
-	if OS.get_name() == "Windows":
-		home_dir = OS.get_environment("USERPROFILE")
-	else:
-		home_dir = OS.get_environment("HOME")
-	
+	var home_dir := OS.get_environment("USERPROFILE" if OS.get_name() == "Windows" else "HOME")
 	if file_path.begins_with(home_dir):
 		return "~/" + file_path.trim_prefix(home_dir).trim_prefix("/").trim_prefix("\\")
 	return file_path
@@ -64,8 +59,7 @@ static func get_cubic_bezier_points(cp1: Vector2, cp2: Vector2, cp3: Vector2, cp
 	return curve.tessellate(6, 1)
 
 static func get_quadratic_bezier_points(cp1: Vector2, cp2: Vector2, cp3: Vector2) -> PackedVector2Array:
-	return Utils.get_cubic_bezier_points(
-			cp1, 2/3.0 * (cp2 - cp1), 2/3.0 * (cp2 - cp3), cp3)
+	return Utils.get_cubic_bezier_points(cp1, 2/3.0 * (cp2 - cp1), 2/3.0 * (cp2 - cp3), cp3)
 
 # Calculate quadratic bezier point coordinate along an axis.
 static func quadratic_bezier_point(p0: float, p1: float, p2: float, t: float) -> float:

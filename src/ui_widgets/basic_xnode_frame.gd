@@ -88,44 +88,29 @@ func set_default_font_color() -> void:
 	text_edit.add_theme_color_override("font_color", ThemeUtils.editable_text_color)
 
 func determine_selection_highlight() -> void:
-	var is_selected := xnode.xid in State.selected_xids
-	var is_hovered := State.hovered_xid == xnode.xid
+	var is_selected := State.is_selected(xnode.xid)
+	var is_hovered := State.is_hovered(xnode.xid)
 	
 	if is_selected:
 		if is_hovered:
-			color = Color.from_hsv(0.625, 0.48, 0.27)
-			title_color = Color.from_hsv(0.625, 0.5, 0.38)
+			color = ThemeUtils.hover_selected_inspector_frame_inner_color
+			title_color = ThemeUtils.hover_selected_inspector_frame_title_color
 		else:
-			color = Color.from_hsv(0.625, 0.5, 0.25)
-			title_color = Color.from_hsv(0.625, 0.6, 0.35)
-		border_color = Color.from_hsv(0.6, 0.75, 0.75)
+			color = ThemeUtils.selected_inspector_frame_inner_color
+			title_color = ThemeUtils.selected_inspector_frame_title_color
+		border_color = ThemeUtils.active_inspector_frame_border_color
 	elif is_hovered:
-		color = Color.from_hsv(0.625, 0.57, 0.19)
-		title_color = Color.from_hsv(0.625, 0.4, 0.2)
-		border_color = Color.from_hsv(0.6, 0.55, 0.45)
+		color = ThemeUtils.hover_inspector_frame_inner_color
+		title_color = ThemeUtils.hover_inspector_frame_title_color
+		border_color = ThemeUtils.hover_inspector_frame_border_color
 	else:
-		color = Color.from_hsv(0.625, 0.6, 0.16)
-		title_color = Color.from_hsv(0.625, 0.45, 0.17)
-		border_color = Color.from_hsv(0.6, 0.5, 0.35)
-	
-	if not ThemeUtils.is_theme_dark:
-		color.s *= 0.2
-		color.v = lerpf(color.v, 1.0, 0.875)
-		title_color.s *= 0.2
-		title_color.v = lerpf(title_color.v, 1.0, 0.875)
-		border_color.v = lerpf(border_color.v, 1.0, 0.8)
-		if is_hovered:
-			color.s = lerpf(color.s, 1.0, 0.05)
-			title_color.s = lerpf(title_color.s, 1.0, 0.05)
-			border_color.v *= 0.9
-		if is_selected:
-			color.s = lerpf(color.s, 1.0, 0.15)
-			title_color.s = lerpf(title_color.s, 1.0, 0.15)
-			border_color.v *= 0.65
+		color = ThemeUtils.inspector_frame_inner_color
+		title_color = ThemeUtils.inspector_frame_title_color
+		border_color = ThemeUtils.inspector_frame_border_color
 	
 	var depth := xnode.xid.size() - 1
-	var depth_tint := depth * 0.12
 	if depth > 0:
+		var depth_tint := depth * 0.12
 		color.h += depth_tint
 		border_color.h += depth_tint
 		title_color.h += depth_tint
@@ -153,7 +138,7 @@ func _draw() -> void:
 		var selected_xnode := xnode.root.get_xnode(xid)
 		if not selected_xnode.is_element():
 			continue
-		if !DB.is_child_element_valid(drop_element.name, selected_xnode.name):
+		if not DB.is_child_element_valid(drop_element.name, selected_xnode.name):
 			are_all_children_valid = false
 			break
 	

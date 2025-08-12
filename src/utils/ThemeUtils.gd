@@ -17,6 +17,18 @@ static var black_or_white_counter_accent_color: Color
 static var warning_icon_color: Color
 static var info_icon_color: Color
 
+static var hover_selected_inspector_frame_inner_color: Color
+static var hover_selected_inspector_frame_title_color: Color
+static var selected_inspector_frame_inner_color: Color
+static var selected_inspector_frame_title_color: Color
+static var active_inspector_frame_border_color: Color
+static var hover_inspector_frame_inner_color: Color
+static var hover_inspector_frame_title_color: Color
+static var hover_inspector_frame_border_color: Color
+static var inspector_frame_inner_color: Color
+static var inspector_frame_title_color: Color
+static var inspector_frame_border_color: Color
+
 static var intermediate_color: Color  # Color of button borders, derived from the accent color.
 static var soft_intermediate_color: Color  # Color of button insides.
 static var softer_intermediate_color: Color  # Color of tabs.
@@ -108,6 +120,18 @@ static func recalculate_colors() -> void:
 	
 	warning_icon_color = Color("fca") if is_theme_dark else Color("96592c")
 	info_icon_color = Color("acf") if is_theme_dark else Color("3a6ab0")
+	
+	hover_selected_inspector_frame_inner_color = Color.from_hsv(0.625, 0.48, 0.27) if ThemeUtils.is_theme_dark else Color.from_hsv(0.625, 0.27, 0.925)
+	hover_selected_inspector_frame_title_color = hover_selected_inspector_frame_inner_color.lerp(max_contrast_color, 0.02)
+	selected_inspector_frame_inner_color = Color.from_hsv(0.625, 0.5, 0.25) if ThemeUtils.is_theme_dark else Color.from_hsv(0.625, 0.23, 0.925)
+	selected_inspector_frame_title_color = selected_inspector_frame_inner_color.lerp(max_contrast_color, 0.02)
+	active_inspector_frame_border_color = Color.from_hsv(0.6, 0.75, 0.8) if ThemeUtils.is_theme_dark else Color.from_hsv(0.6, 0.75, 0.625)
+	hover_inspector_frame_inner_color = Color.from_hsv(0.625, 0.57, 0.19) if ThemeUtils.is_theme_dark else Color.from_hsv(0.625, 0.16, 0.9)
+	hover_inspector_frame_title_color = hover_inspector_frame_inner_color.lerp(max_contrast_color, 0.02)
+	hover_inspector_frame_border_color = Color.from_hsv(0.6, 0.55, 0.45) if ThemeUtils.is_theme_dark else Color.from_hsv(0.6, 0.55, 0.8)
+	inspector_frame_inner_color = Color.from_hsv(0.625, 0.6, 0.16) if ThemeUtils.is_theme_dark else Color.from_hsv(0.625, 0.12, 0.9)
+	inspector_frame_title_color = inspector_frame_inner_color.lerp(max_contrast_color, 0.02)
+	inspector_frame_border_color = Color.from_hsv(0.6, 0.5, 0.35) if ThemeUtils.is_theme_dark else Color.from_hsv(0.6, 0.5, 0.875)
 	
 	intermediate_color = accent_color.lerp(extreme_theme_color, 0.6)
 	if is_theme_dark:

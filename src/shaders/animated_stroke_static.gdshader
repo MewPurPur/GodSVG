@@ -35,7 +35,7 @@ void fragment() {
 	
 	vec2 uv = UV;
 	vec2 fw = fwidth(uv);
-	float adjusted_ant_width = min(corrected_width, min(0.5 / fw.x, 0.5 / fw.y)) + 0.15;
+	float adjusted_ant_width = min(corrected_width, min(0.5 / fw.x, 0.5 / fw.y));
 	vec2 aw = fw * adjusted_ant_width;
 	
 	vec2 cond = (sign(abs(uv - 0.5) - 0.5 + aw) + 1.0) * 0.5 * ceil(((sign(uv.yx - aw.yx) + 1.0) * 0.5 * (sign(uv - 0.5) * vec2(0.5, -0.5) + 0.5) * 0.5 + (sign(1.0 - aw.yx - uv.yx) + 1.0) * 0.5 * (sign(uv - 0.5) * vec2(-0.5, 0.5)+ 0.5) * 0.5));

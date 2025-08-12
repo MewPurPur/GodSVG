@@ -25,7 +25,9 @@ var selected_color: Color
 var hovered_selected_color: Color
 
 # FIXME this shouldn't be needed, but otherwise the shader doesn't want to work.
-@onready var animated_stroke_hacky_fix_node := Control.new()
+var animated_stroke_hacky_fix_node := Control.new()
+
+var canvas: Canvas
 
 
 func _exit_tree() -> void:
@@ -105,17 +107,14 @@ func _ready() -> void:
 	State.svg_unknown_change.connect(queue_update_handles)
 	State.selection_changed.connect(queue_redraw)
 	State.hover_changed.connect(queue_redraw)
-	State.zoom_changed.connect(queue_redraw)
+	canvas.camera_zoom_changed.connect(queue_redraw)
 	State.handle_added.connect(_on_handle_added)
-	State.view_changed.connect(_on_view_changed)
 	queue_update_handles()
-	
-	State.show_handles_changed.connect(update_show_handles)
 	update_show_handles()
 
 
 func update_show_handles() -> void:
-	visible = State.show_handles
+	visible = canvas.show_handles
 	HandlerGUI.throw_mouse_motion_event()
 
 func queue_update_handles() -> void:
@@ -128,7 +127,7 @@ func update_handles() -> void:
 	
 	_handles_update_pending = false
 	handles.clear()
-	for element in State.root_element.get_all_valid_element_descendants():
+	for element in canvas.root_element.get_all_valid_element_descendants():
 		match element.name:
 			"circle":
 				handles.append(XYHandle.new(element, "cx", "cy"))
@@ -155,7 +154,7 @@ func update_handles() -> void:
 	queue_redraw()
 
 func sync_handles(xid: PackedInt32Array) -> void:
-	var element := State.root_element.get_xnode(xid)
+	var element := canvas.root_element.get_xnode(xid)
 	if not (element is ElementPath or element is ElementPolygon or element is ElementPolyline):
 		queue_redraw()
 		return
@@ -212,10 +211,10 @@ func _draw() -> void:
 	var selection_transforms: Array[Transform2D] = []
 	var selection_rects: Array[Rect2] = []
 	
-	for element: Element in State.root_element.get_all_valid_element_descendants():
+	for element: Element in canvas.root_element.get_all_valid_element_descendants():
 		# Determine if the element is hovered/selected or has a hovered/selected parent.
-		var element_hovered := State.is_hovered(element.xid, -1, true)
-		var element_selected := State.is_selected(element.xid, -1, true)
+		var element_hovered := canvas.is_hovered(element.xid, -1, true)
+		var element_selected := canvas.is_selected(element.xid, -1, true)
 		
 		match element.name:
 			"circle":
@@ -250,10 +249,10 @@ func _draw() -> void:
 					var bounding_box: Rect2 = element.get_bounding_box()
 					if bounding_box.has_area():
 						var element_transform := element.get_transform()
-						var canvas_transform := State.root_element.canvas_transform
+						var canvas_transform := canvas.root_element.canvas_transform
 						var canvas_scale := canvas_transform.get_scale().x
 						var element_scale := element_transform.get_scale()
-						var grow_amount_unscaled := (2.0 + Configs.savedata.selection_rectangle_width) / State.zoom / canvas_scale
+						var grow_amount_unscaled := (2.0 + Configs.savedata.selection_rectangle_width) / canvas.camera_zoom / canvas_scale
 						var grow_amount_x := grow_amount_unscaled / element_scale.x
 						var grow_amount_y := grow_amount_unscaled / element_scale.y
 						selection_transforms.append(canvas_transform * element_transform)
@@ -290,10 +289,10 @@ func _draw() -> void:
 					var bounding_box: Rect2 = element.get_bounding_box()
 					if bounding_box.has_area():
 						var element_transform := element.get_transform()
-						var canvas_transform := State.root_element.canvas_transform
+						var canvas_transform := canvas.root_element.canvas_transform
 						var canvas_scale := canvas_transform.get_scale().x
 						var element_scale := element_transform.get_scale()
-						var grow_amount_unscaled := (2.0 + Configs.savedata.selection_rectangle_width) / State.zoom / canvas_scale
+						var grow_amount_unscaled := (2.0 + Configs.savedata.selection_rectangle_width) / canvas.camera_zoom / canvas_scale
 						var grow_amount_x := grow_amount_unscaled / element_scale.x
 						var grow_amount_y := grow_amount_unscaled / element_scale.y
 						selection_transforms.append(canvas_transform * element_transform)
@@ -359,10 +358,10 @@ func _draw() -> void:
 					var bounding_box: Rect2 = element.get_bounding_box()
 					if bounding_box.has_area():
 						var element_transform := element.get_transform()
-						var canvas_transform := State.root_element.canvas_transform
+						var canvas_transform := canvas.root_element.canvas_transform
 						var canvas_scale := canvas_transform.get_scale().x
 						var element_scale := element_transform.get_scale()
-						var grow_amount_unscaled := (2.0 + Configs.savedata.selection_rectangle_width) / State.zoom / canvas_scale
+						var grow_amount_unscaled := (2.0 + Configs.savedata.selection_rectangle_width) / canvas.camera_zoom / canvas_scale
 						var grow_amount_x := grow_amount_unscaled / element_scale.x
 						var grow_amount_y := grow_amount_unscaled / element_scale.y
 						selection_transforms.append(canvas_transform * element_transform)
@@ -390,10 +389,10 @@ func _draw() -> void:
 					var bounding_box: Rect2 = element.get_bounding_box()
 					if bounding_box.has_area():
 						var element_transform := element.get_transform()
-						var canvas_transform := State.root_element.canvas_transform
+						var canvas_transform := canvas.root_element.canvas_transform
 						var canvas_scale := canvas_transform.get_scale().x
 						var element_scale := element_transform.get_scale()
-						var grow_amount_unscaled := (2.0 + Configs.savedata.selection_rectangle_width) / State.zoom / canvas_scale
+						var grow_amount_unscaled := (2.0 + Configs.savedata.selection_rectangle_width) / canvas.camera_zoom / canvas_scale
 						var grow_amount_x := grow_amount_unscaled / element_scale.x
 						var grow_amount_y := grow_amount_unscaled / element_scale.y
 						selection_transforms.append(canvas_transform * element_transform)
@@ -405,10 +404,10 @@ func _draw() -> void:
 				var current_mode := Utils.InteractionType.NONE
 				for idx in range(1, point_list.size()):
 					current_mode = Utils.InteractionType.NONE
-					if State.is_hovered(element.xid, idx, true):
+					if canvas.is_hovered(element.xid, idx, true):
 						@warning_ignore("int_as_enum_without_cast")
 						current_mode += Utils.InteractionType.HOVERED
-					if State.is_selected(element.xid, idx, true):
+					if canvas.is_selected(element.xid, idx, true):
 						@warning_ignore("int_as_enum_without_cast")
 						current_mode += Utils.InteractionType.SELECTED
 					
@@ -426,10 +425,10 @@ func _draw() -> void:
 				
 				if element.name == "polygon" and point_list.size() > 2:
 					current_mode = Utils.InteractionType.NONE
-					if State.is_hovered(element.xid, 0, true):
+					if canvas.is_hovered(element.xid, 0, true):
 						@warning_ignore("int_as_enum_without_cast")
 						current_mode += Utils.InteractionType.HOVERED
-					if State.is_selected(element.xid, 0, true):
+					if canvas.is_selected(element.xid, 0, true):
 						@warning_ignore("int_as_enum_without_cast")
 						current_mode += Utils.InteractionType.SELECTED
 					
@@ -449,10 +448,10 @@ func _draw() -> void:
 					var bounding_box: Rect2 = element.get_bounding_box()
 					if bounding_box.has_area():
 						var element_transform := element.get_transform()
-						var canvas_transform := State.root_element.canvas_transform
+						var canvas_transform := canvas.root_element.canvas_transform
 						var canvas_scale := canvas_transform.get_scale().x
 						var element_scale := element_transform.get_scale()
-						var grow_amount_unscaled := (2.0 + Configs.savedata.selection_rectangle_width) / State.zoom / canvas_scale
+						var grow_amount_unscaled := (2.0 + Configs.savedata.selection_rectangle_width) / canvas.camera_zoom / canvas_scale
 						var grow_amount_x := grow_amount_unscaled / element_scale.x
 						var grow_amount_y := grow_amount_unscaled / element_scale.y
 						selection_transforms.append(canvas_transform * element_transform)
@@ -473,10 +472,10 @@ func _draw() -> void:
 					var relative := cmd.relative
 					
 					current_mode = Utils.InteractionType.NONE
-					if State.is_hovered(element.xid, cmd_idx, true):
+					if canvas.is_hovered(element.xid, cmd_idx, true):
 						@warning_ignore("int_as_enum_without_cast")
 						current_mode += Utils.InteractionType.HOVERED
-					if State.is_selected(element.xid, cmd_idx, true):
+					if canvas.is_selected(element.xid, cmd_idx, true):
 						@warning_ignore("int_as_enum_without_cast")
 						current_mode += Utils.InteractionType.SELECTED
 					
@@ -660,17 +659,17 @@ func _draw() -> void:
 					var bounding_box: Rect2 = element.get_bounding_box()
 					if bounding_box.has_area():
 						var element_transform := element.get_transform()
-						var canvas_transform := State.root_element.canvas_transform
+						var canvas_transform := canvas.root_element.canvas_transform
 						var canvas_scale := canvas_transform.get_scale().x
 						var element_scale := element_transform.get_scale()
-						var grow_amount_unscaled := (2.0 + Configs.savedata.selection_rectangle_width) / State.zoom / canvas_scale
+						var grow_amount_unscaled := (2.0 + Configs.savedata.selection_rectangle_width) / canvas.camera_zoom / canvas_scale
 						var grow_amount_x := grow_amount_unscaled / element_scale.x
 						var grow_amount_y := grow_amount_unscaled / element_scale.y
 						selection_transforms.append(canvas_transform * element_transform)
 						selection_rects.append(bounding_box.grow_individual(grow_amount_x, grow_amount_y, grow_amount_x, grow_amount_y))
 	
-	draw_set_transform_matrix(State.root_element.canvas_transform)
-	RenderingServer.canvas_item_set_transform(surface, Transform2D(0.0, Vector2(1, 1) / State.zoom, 0.0, Vector2.ZERO))
+	draw_set_transform_matrix(canvas.root_element.canvas_transform)
+	RenderingServer.canvas_item_set_transform(surface, Transform2D(0.0, Vector2(1, 1) / canvas.camera_zoom, 0.0, Vector2.ZERO))
 	
 	# First gather all handles in 4 categories, to then draw them in the right order.
 	var normal_handles: Array[Handle] = []
@@ -683,8 +682,8 @@ func _draw() -> void:
 			inner_idx = handle.command_index
 		elif handle is PolyHandle:
 			inner_idx = handle.point_index
-		var is_hovered := State.is_hovered(handle.element.xid, inner_idx, true)
-		var is_selected := State.is_selected(handle.element.xid, inner_idx, true)
+		var is_hovered := canvas.is_hovered(handle.element.xid, inner_idx, true)
+		var is_selected := canvas.is_selected(handle.element.xid, inner_idx, true)
 		
 		if is_hovered and is_selected:
 			hovered_selected_handles.append(handle)
@@ -716,18 +715,18 @@ handle_texture_dictionary: Dictionary[Handle.Display, Texture2D]) -> void:
 		color_array.resize(polyline.size())
 		color_array.fill(color)
 		for idx in polyline.size():
-			polyline[idx] = State.root_element.canvas_to_world(polyline[idx]) * State.zoom
+			polyline[idx] = canvas.root_element.canvas_to_world(polyline[idx]) * canvas.camera_zoom
 		RenderingServer.canvas_item_add_polyline(surface, polyline, color_array, CONTOUR_WIDTH, true)
 	if not multiline.is_empty():
 		for idx in multiline.size():
-			multiline[idx] = State.root_element.canvas_to_world(multiline[idx]) * State.zoom
+			multiline[idx] = canvas.root_element.canvas_to_world(multiline[idx]) * canvas.camera_zoom
 		var color_array := PackedColorArray()
 		color_array.resize(int(multiline.size() / 2.0))
 		color_array.fill(Color(color, TANGENT_ALPHA))
 		RenderingServer.canvas_item_add_multiline(surface, multiline, color_array, TANGENT_WIDTH, true)
 	for handle in handles_array:
 		var texture := handle_texture_dictionary[handle.display_mode]
-		texture.draw(surface, State.root_element.canvas_to_world(handle.transform * handle.pos) * State.zoom - texture.get_size() / 2)
+		texture.draw(surface, canvas.root_element.canvas_to_world(handle.transform * handle.pos) * canvas.camera_zoom - texture.get_size() / 2)
 
 
 var dragged_handle: Handle = null
@@ -745,9 +744,9 @@ func _unhandled_input(event: InputEvent) -> void:
 			State.clear_all_hovered()
 	
 	# Set the nearest handle as hovered, if any handles are within range.
-	if visible and ((event is InputEventMouseMotion and !is_instance_valid(dragged_handle) and event.button_mask == 0) or\
+	if visible and ((event is InputEventMouseMotion and not is_instance_valid(dragged_handle) and event.button_mask == 0) or\
 	(event is InputEventMouseButton and (event.button_index in [MOUSE_BUTTON_LEFT, MOUSE_BUTTON_RIGHT]))):
-		var nearest_handle := find_nearest_handle(event.position / State.zoom + get_parent().get_parent().camera_position)
+		var nearest_handle := find_nearest_handle(event.position / canvas.camera_zoom + canvas.get_camera_position())
 		if is_instance_valid(nearest_handle):
 			hovered_handle = nearest_handle
 			if hovered_handle is PathHandle:
@@ -771,7 +770,7 @@ func _unhandled_input(event: InputEvent) -> void:
 			var event_pos := get_event_pos(event)
 			var new_pos := Utils64Bit.transform_vector_mult(
 					Utils64Bit.get_transform_affine_inverse(dragged_handle.precise_transform),
-					State.root_element.world_to_canvas_64_bit(event_pos))
+					canvas.root_element.world_to_canvas_64_bit(event_pos))
 			dragged_handle.set_pos(new_pos)
 			was_handle_moved = true
 			accept_event()
@@ -808,23 +807,23 @@ func _unhandled_input(event: InputEvent) -> void:
 				if was_handle_moved:
 					var new_pos := Utils64Bit.transform_vector_mult(
 							Utils64Bit.get_transform_affine_inverse(dragged_handle.precise_transform),
-							State.root_element.world_to_canvas_64_bit(event_pos))
+							canvas.root_element.world_to_canvas_64_bit(event_pos))
 					dragged_handle.set_pos(new_pos)
 					State.queue_svg_save()
 					was_handle_moved = false
 				dragged_handle = null
-			elif !is_instance_valid(hovered_handle) and event.is_pressed():
+			elif not is_instance_valid(hovered_handle) and event.is_pressed():
 				should_deselect_all = true
-			elif !is_instance_valid(hovered_handle) and event.is_released() and should_deselect_all:
+			elif not is_instance_valid(hovered_handle) and event.is_released() and should_deselect_all:
 				dragged_handle = null
 				State.clear_all_selections()
 		elif event.button_index == MOUSE_BUTTON_RIGHT and event.is_pressed():
 			var vp := get_viewport()
 			var popup_pos := vp.get_mouse_position()
-			if !is_instance_valid(hovered_handle):
+			if not is_instance_valid(hovered_handle):
 				State.clear_all_selections()
 				HandlerGUI.popup_under_pos(create_element_context(
-						State.root_element.world_to_canvas_64_bit(event_pos)), popup_pos, vp)
+						canvas.root_element.world_to_canvas_64_bit(event_pos)), popup_pos, vp)
 			elif visible:
 				var hovered_xid := hovered_handle.element.xid
 				var inner_idx := -1
@@ -841,9 +840,9 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func find_nearest_handle(event_pos: Vector2) -> Handle:
 	var nearest_handle: Handle = null
-	var nearest_dist_squared := DEFAULT_GRAB_DISTANCE_SQUARED * (Configs.savedata.handle_size * Configs.savedata.handle_size) / (State.zoom * State.zoom)
+	var nearest_dist_squared := DEFAULT_GRAB_DISTANCE_SQUARED * (Configs.savedata.handle_size / canvas.camera_zoom) ** 2
 	for handle in handles:
-		var dist_to_handle_squared := event_pos.distance_squared_to(State.root_element.canvas_to_world(handle.transform * handle.pos))
+		var dist_to_handle_squared := event_pos.distance_squared_to(canvas.root_element.canvas_to_world(handle.transform * handle.pos))
 		if dist_to_handle_squared < nearest_dist_squared:
 			nearest_dist_squared = dist_to_handle_squared
 			nearest_handle = handle
@@ -851,10 +850,10 @@ func find_nearest_handle(event_pos: Vector2) -> Handle:
 
 # Two 64-bit coordinates instead of a Vector2.
 func get_event_pos(event: InputEvent) -> PackedFloat64Array:
-	return apply_snap(event.position / State.zoom + get_parent().get_parent().camera_position)
+	return apply_snap(event.position / canvas.camera_zoom + canvas.get_camera_position())
 
 func apply_snap(pos: Vector2) -> PackedFloat64Array:
-	var precision_snap := 0.1 ** maxi(ceili(-log(1.0 / State.zoom) / log(10)), 0)
+	var precision_snap := 0.1 ** maxi(ceili(-log(1.0 / canvas.camera_zoom) / log(10)), 0)
 	var configured_snap := absf(Configs.savedata.snap)
 	var snap_size: float  # To be used for the snap.
 	
@@ -868,19 +867,16 @@ func apply_snap(pos: Vector2) -> PackedFloat64Array:
 	return PackedFloat64Array([snappedf(pos.x, snap_size), snappedf(pos.y, snap_size)])
 
 
-func _on_view_changed() -> void:
-	HandlerGUI.throw_mouse_motion_event()
-
 func _on_handle_added() -> void:
 	if not get_viewport_rect().has_point(get_viewport().get_mouse_position()):
 		if not State.semi_selected_xid.is_empty():
-			State.root_element.get_xnode(State.semi_selected_xid).get_attribute("d").sync_after_commands_change()
+			canvas.root_element.get_xnode(State.semi_selected_xid).get_attribute("d").sync_after_commands_change()
 			State.queue_svg_save()
 		return
 	
 	update_handles()
 	var first_inner_selection := State.inner_selections[0]
-	if State.root_element.get_xnode(State.semi_selected_xid).get_attribute("d").get_commands()[first_inner_selection].command_char in "Zz":
+	if canvas.root_element.get_xnode(State.semi_selected_xid).get_attribute("d").get_commands()[first_inner_selection].command_char in "Zz":
 		dragged_handle = null
 		State.queue_svg_save()
 		return
@@ -892,7 +888,7 @@ func _on_handle_added() -> void:
 			# Move the handle that's being dragged.
 			var mouse_pos := apply_snap(get_global_mouse_position())
 			var new_pos := Utils64Bit.transform_vector_mult(Utils64Bit.get_transform_affine_inverse(dragged_handle.precise_transform),
-					State.root_element.world_to_canvas_64_bit(mouse_pos))
+					canvas.root_element.world_to_canvas_64_bit(mouse_pos))
 			dragged_handle.set_pos(new_pos)
 			was_handle_moved = true
 			return
@@ -910,5 +906,5 @@ func create_element_context(precise_pos: PackedFloat64Array) -> ContextPopup:
 	return element_context
 
 func add_shape_at_pos(element_name: String, precise_pos: PackedFloat64Array) -> void:
-	State.root_element.add_xnode(DB.element_with_setup(element_name, [precise_pos]), PackedInt32Array([State.root_element.get_child_count()]))
+	canvas.root_element.add_xnode(DB.element_with_setup(element_name, [precise_pos]), PackedInt32Array([canvas.root_element.get_child_count()]))
 	State.queue_svg_save()

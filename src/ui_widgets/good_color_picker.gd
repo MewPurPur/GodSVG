@@ -480,7 +480,7 @@ func draw_hslider(idx: int, offset: float, chr: String) -> void:
 
 # Make sure the arrows are redrawn when the tracks finish resizing.
 func _on_track_resized() -> void:
-	if !widgets_arr.is_empty():
+	if not widgets_arr.is_empty():
 		queue_redraw_widgets()
 
 func queue_redraw_widgets() -> void:

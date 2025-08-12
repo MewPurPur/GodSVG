@@ -35,7 +35,7 @@ func sync_localization() -> void:
 	placeholder_text = Translator.translate("No transforms")
 
 func setup_font(new_text: String) -> void:
-	use_mono_font = !new_text.is_empty()
+	use_mono_font = not new_text.is_empty()
 
 func sync() -> void:
 	text = element.get_attribute_value(attribute_name)

@@ -7,7 +7,6 @@ const DEFAULT_SVG = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="
 const EDITED_FILES_DIR = "user://edited"
 
 signal status_changed
-signal reference_changed
 
 var presented_name: String:
 	set(new_value):
@@ -21,31 +20,16 @@ var marked_unsaved := false:
 			marked_unsaved = new_value
 			status_changed.emit()
 
-var reference_image: Texture2D:
-	set(new_value):
-		if reference_image != new_value:
-			reference_image = new_value
-			reference_changed.emit()
-
-var overlay_reference := false:
-	set(new_value):
-		if overlay_reference != new_value:
-			overlay_reference = new_value
-			reference_changed.emit()
-
-var show_reference := true:
-	set(new_value):
-		if show_reference != new_value:
-			show_reference = new_value
-			reference_changed.emit()
-
-
+var reference_image: Texture2D
+var overlay_reference := false
+var show_reference := true
+var undo_redo: UndoRedoRef
+var camera_center := Vector2(NAN, NAN)
+var camera_zoom := -1.0
 
 var active := false
-
 var fully_loaded := true
 var empty_unsaved := false
-var undo_redo: UndoRedoRef
 
 # This variable represents the saved state of the SVG. Intermediate operations such as
 # dragging a handle or editing the code shouldn't affect this variable.

@@ -155,7 +155,7 @@ func is_valid(color_text: String) -> bool:
 
 
 func _on_text_changed(new_text: String) -> void:
-	font_color = Configs.savedata.get_validity_color(!is_valid(new_text))
+	font_color = Configs.savedata.get_validity_color(not is_valid(new_text))
 
 func sync() -> void:
 	var new_value := element.get_attribute_value(attribute_name)

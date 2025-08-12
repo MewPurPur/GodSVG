@@ -34,7 +34,7 @@ func _popup_xml_palette_options(palette_xml_button: Button) -> void:
 	btn_arr.append(ContextPopup.create_button(Translator.translate("Import XML"),
 			add_imported_palette, false, load("res://assets/icons/Import.svg")))
 	btn_arr.append(ContextPopup.create_button(Translator.translate("Paste XML"),
-			add_pasted_palette, !Palette.is_valid_palette(Utils.get_clipboard_web_safe()),
+			add_pasted_palette, not Palette.is_valid_palette(Utils.get_clipboard_web_safe()),
 			load("res://assets/icons/Paste.svg")))
 	
 	var context_popup := ContextPopup.new()

@@ -309,8 +309,7 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func get_window_default_size() -> Vector2i:
-	return Vector2i(ProjectSettings.get_setting("display/window/size/viewport_width"),
-			ProjectSettings.get_setting("display/window/size/viewport_height"))
+	return Vector2i(ProjectSettings.get_setting("display/window/size/viewport_width"), ProjectSettings.get_setting("display/window/size/viewport_height"))
 
 func get_usable_rect() -> Vector2i:
 	var window := get_window()

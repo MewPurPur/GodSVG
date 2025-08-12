@@ -112,7 +112,7 @@ func _on_reset_button_pressed() -> void:
 	update_widgets()
 
 func _checkbox_modification() -> void:
-	setter.call(!getter.call())
+	setter.call(not getter.call())
 	post_modification()
 
 func _color_modification(value: String, enable_alpha: bool) -> void:
