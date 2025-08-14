@@ -264,7 +264,7 @@ func _setup_file_images() -> void:
 	var visible_end := visible_start + file_list.size.y
 	for item_idx in file_list.item_count:
 		var file_rect := file_list.get_item_rect(item_idx)
-		if !is_instance_valid(file_list.get_item_icon(item_idx)) and file_rect.end.y > visible_start and file_rect.position.y < visible_end:
+		if not is_instance_valid(file_list.get_item_icon(item_idx)) and file_rect.end.y > visible_start and file_rect.position.y < visible_end:
 			var file := file_list.get_item_text(item_idx)
 			match file.get_extension():
 				"xml":
@@ -274,14 +274,14 @@ func _setup_file_images() -> void:
 					var svg_text := FileAccess.get_file_as_string(current_dir.path_join(file))
 					var img := Image.new()
 					img.load_svg_from_string(svg_text)
-					if !is_instance_valid(img) or img.is_empty():
+					if not is_instance_valid(img) or img.is_empty():
 						file_list.set_item_icon(item_idx, broken_file_icon)
 					else:
 						var svg_texture := SVGTexture.create_from_string(svg_text, minf(item_height / img.get_width(), item_height / img.get_height()))
 						file_list.set_item_icon(item_idx, svg_texture)
 				_:
 					var img := Image.load_from_file(current_dir.path_join(file))
-					if !is_instance_valid(img) or img.is_empty():
+					if not is_instance_valid(img) or img.is_empty():
 						file_list.set_item_icon(item_idx, broken_file_icon)
 					else:
 						file_list.set_item_icon(item_idx, ImageTexture.create_from_image(img))
@@ -353,7 +353,7 @@ func _create_folder_error(text: String) -> String:
 
 func _on_create_folder_finished(text: String) -> void:
 	dir_cursor = DirAccess.open(current_dir)
-	if !is_instance_valid(dir_cursor):
+	if not is_instance_valid(dir_cursor):
 		return
 	
 	var err := dir_cursor.make_dir(text)

@@ -2,8 +2,9 @@ extends VBoxContainer
 
 const NumberEdit = preload("res://src/ui_widgets/number_edit.gd")
 const ZoomWidget = preload("res://src/ui_widgets/zoom_widget.gd")
+const MainCanvas = preload("res://src/ui_parts/main_canvas.gd")
 
-@onready var canvas: SubViewportContainer = $ViewportPanel/VBoxContainer/Canvas
+@onready var canvas: MainCanvas = $ViewportPanel/VBoxContainer/Canvas
 @onready var reference_button: Button = %LeftMenu/Reference
 @onready var visuals_button: Button = %LeftMenu/Visuals
 @onready var snapper: NumberEdit = %LeftMenu/Snapping/SnapNumberEdit
@@ -14,15 +15,11 @@ const ZoomWidget = preload("res://src/ui_widgets/zoom_widget.gd")
 
 func _ready() -> void:
 	var shortcuts := ShortcutsRegistration.new()
-	shortcuts.add_shortcut("view_show_grid", State.toggle_show_grid, ShortcutsRegistration.Behavior.PASS_THROUGH_AND_PRESERVE_POPUPS)
-	shortcuts.add_shortcut("view_show_handles", State.toggle_show_handles, ShortcutsRegistration.Behavior.PASS_THROUGH_AND_PRESERVE_POPUPS)
-	shortcuts.add_shortcut("view_rasterized_svg", State.toggle_view_rasterized, ShortcutsRegistration.Behavior.PASS_THROUGH_AND_PRESERVE_POPUPS)
-	shortcuts.add_shortcut("load_reference", FileUtils.open_image_import_dialog, ShortcutsRegistration.Behavior.PASS_THROUGH_POPUPS)
-	shortcuts.add_shortcut("view_show_reference", func() -> void:
-			Configs.savedata.get_active_tab().show_reference = not Configs.savedata.get_active_tab().show_reference,
+	shortcuts.add_shortcut("load_reference", FileUtils.open_image_import_dialog.bind(set_main_viewport_reference_image),
+			ShortcutsRegistration.Behavior.PASS_THROUGH_POPUPS)
+	shortcuts.add_shortcut("view_show_reference", func() -> void: canvas.show_reference = not canvas.show_reference,
 			ShortcutsRegistration.Behavior.PASS_THROUGH_AND_PRESERVE_POPUPS)
-	shortcuts.add_shortcut("view_overlay_reference", func() -> void:
-			Configs.savedata.get_active_tab().overlay_reference = not Configs.savedata.get_active_tab().overlay_reference,
+	shortcuts.add_shortcut("view_overlay_reference", func() -> void: canvas.overlay_reference = not canvas.overlay_reference,
 			ShortcutsRegistration.Behavior.PASS_THROUGH_AND_PRESERVE_POPUPS)
 	shortcuts.add_shortcut("toggle_snap", func() -> void: Configs.savedata.snap *= -1, ShortcutsRegistration.Behavior.PASS_THROUGH_AND_PRESERVE_POPUPS)
 	HandlerGUI.register_shortcuts(self, shortcuts)
@@ -31,7 +28,7 @@ func _ready() -> void:
 	zoom_widget.zoom_in_pressed.connect(canvas.zoom_in)
 	zoom_widget.zoom_out_pressed.connect(canvas.zoom_out)
 	zoom_widget.zoom_reset_pressed.connect(canvas.center_frame)
-	State.zoom_changed.connect(func() -> void: zoom_widget.sync_to_value(State.zoom))
+	canvas.camera_zoom_changed.connect(func() -> void: zoom_widget.sync_to_value(canvas.camera_zoom))
 	
 	reference_button.pressed.connect(_on_reference_button_pressed)
 	visuals_button.pressed.connect(_on_visuals_button_pressed)
@@ -71,9 +68,6 @@ func update_snap_config() -> void:
 	snapper.editable = snap_enabled
 	snapper.set_value(absf(snap_config))
 
-func _on_zoom_changed() -> void:
-	zoom_widget.sync_to_value(State.zoom)
-
 func _on_reference_button_pressed() -> void:
 	var active_tab := Configs.savedata.get_active_tab()
 	var has_reference := is_instance_valid(active_tab.reference_image)
@@ -92,16 +86,23 @@ func _on_reference_button_pressed() -> void:
 	HandlerGUI.popup_under_rect_center(reference_popup, reference_button.get_global_rect(), get_viewport())
 
 func paste_reference_image() -> void:
-	FileUtils.load_reference_from_image(DisplayServer.clipboard_get_image())
+	set_main_viewport_reference_image(DisplayServer.clipboard_get_image())
 
 func clear_reference_image() -> void:
-	FileUtils.load_reference_from_image(null)
+	set_main_viewport_reference_image(null)
+
+func set_main_viewport_reference_image(image: Image) -> void:
+	if is_instance_valid(image):
+		canvas.reference_image = ImageTexture.create_from_image(image)
+	else:
+		canvas.reference_image = null
+
 
 func _on_visuals_button_pressed() -> void:
 	var btn_arr: Array[Button] = [
-		ContextPopup.create_shortcut_checkbox("view_show_grid", State.show_grid),
-		ContextPopup.create_shortcut_checkbox("view_show_handles", State.show_handles),
-		ContextPopup.create_shortcut_checkbox("view_rasterized_svg", State.view_rasterized)
+		ContextPopup.create_shortcut_checkbox("view_show_grid", canvas.show_grid),
+		ContextPopup.create_shortcut_checkbox("view_show_handles", canvas.show_handles),
+		ContextPopup.create_shortcut_checkbox("view_rasterized_svg", canvas.view_rasterized)
 	]
 	
 	var visuals_popup := ContextPopup.new()

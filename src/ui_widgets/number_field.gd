@@ -20,7 +20,7 @@ func set_value(new_value: String, save := false) -> void:
 		if not AttributeNumeric.text_check_percentage(new_value):
 			var numeric_value := NumstringParser.evaluate(new_value)
 			# Validate the value.
-			if !is_finite(numeric_value):
+			if not is_finite(numeric_value):
 				sync()
 				return
 			

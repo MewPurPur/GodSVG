@@ -48,11 +48,22 @@ class SettingFormatterPreview:
 	var resource_bind: Formatter
 	var root_element: ElementRoot
 	var show_only_children: bool
-	func _init(new_resource_bind: ConfigResource,
-	new_root_element: ElementRoot, new_show_only_children := false) -> void:
+	func _init(new_resource_bind: ConfigResource, new_root_element: ElementRoot, new_show_only_children := false) -> void:
 		resource_bind = new_resource_bind
 		root_element = new_root_element
 		show_only_children = new_show_only_children
+
+class SettingCanvasPreview:
+	var root_element: ElementRoot
+	var hovered_xid: PackedInt32Array
+	var selected_xids: Array[PackedInt32Array]
+	var show_grid := false
+	func _init(new_root_element: ElementRoot, new_hovered_xid := PackedInt32Array(), new_selected_xids: Array[PackedInt32Array] = [],
+	new_show_grid := true) -> void:
+		root_element = new_root_element
+		hovered_xid = new_hovered_xid
+		selected_xids = new_selected_xids
+		show_grid = new_show_grid
 
 
 func _ready() -> void:
@@ -127,8 +138,7 @@ func setup_formatting_content() -> void:
 	xml_keep_comments_circle_element.set_attribute("r", 4)
 	xml_keep_comments_circle_element.set_attribute("fill", "gold")
 	xml_keep_comments_root_element.insert_child(1, xml_keep_comments_circle_element)
-	add_preview(SettingFormatterPreview.new(current_setup_resource,
-			xml_keep_comments_root_element, true))
+	add_preview(SettingFormatterPreview.new(current_setup_resource, xml_keep_comments_root_element, true))
 	
 	current_setup_setting = "xml_add_trailing_newline"
 	add_checkbox(Translator.translate("Add trailing newline"))
@@ -141,10 +151,8 @@ func setup_formatting_content() -> void:
 	xml_add_trailing_newline_circle_element.set_attribute("cy", 8)
 	xml_add_trailing_newline_circle_element.set_attribute("r", 4)
 	xml_add_trailing_newline_circle_element.set_attribute("fill", "gold")
-	xml_add_trailing_newline_root_element.insert_child(0,
-			xml_add_trailing_newline_circle_element)
-	add_preview(SettingFormatterPreview.new(current_setup_resource,
-			xml_add_trailing_newline_root_element))
+	xml_add_trailing_newline_root_element.insert_child(0, xml_add_trailing_newline_circle_element)
+	add_preview(SettingFormatterPreview.new(current_setup_resource, xml_add_trailing_newline_root_element))
 	
 	current_setup_setting = "xml_shorthand_tags"
 	add_dropdown(Translator.translate("Use shorthand tag syntax"),
@@ -164,8 +172,7 @@ func setup_formatting_content() -> void:
 	xml_shorthand_tags_circle_element.set_attribute("fill", "url(#a)")
 	xml_shorthand_tags_root_element.insert_child(0, xml_shorthand_tags_linear_gradient_element)
 	xml_shorthand_tags_root_element.insert_child(1, xml_shorthand_tags_circle_element)
-	add_preview(SettingFormatterPreview.new(current_setup_resource,
-			xml_shorthand_tags_root_element, true))
+	add_preview(SettingFormatterPreview.new(current_setup_resource, xml_shorthand_tags_root_element, true))
 	
 	current_setup_setting = "xml_shorthand_tags_space_out_slash"
 	add_checkbox(Translator.translate("Space out the slash of shorthand tags"))
@@ -174,10 +181,8 @@ func setup_formatting_content() -> void:
 	xml_shorthand_tags_space_out_slash_circle_element.set_attribute("cx", 6)
 	xml_shorthand_tags_space_out_slash_circle_element.set_attribute("cy", 8)
 	xml_shorthand_tags_space_out_slash_circle_element.set_attribute("r", 4)
-	xml_shorthand_tags_space_out_slash_root_element.insert_child(0,
-			xml_shorthand_tags_space_out_slash_circle_element)
-	add_preview(SettingFormatterPreview.new(current_setup_resource,
-			xml_shorthand_tags_space_out_slash_root_element, true))
+	xml_shorthand_tags_space_out_slash_root_element.insert_child(0, xml_shorthand_tags_space_out_slash_circle_element)
+	add_preview(SettingFormatterPreview.new(current_setup_resource, xml_shorthand_tags_space_out_slash_root_element, true))
 	
 	current_setup_setting = "xml_pretty_formatting"
 	add_checkbox(Translator.translate("Use pretty formatting"))
@@ -203,12 +208,10 @@ func setup_formatting_content() -> void:
 	xml_pretty_formatting_circle_element.set_attribute("fill", "url(#a)")
 	xml_pretty_formatting_root_element.insert_child(0, xml_pretty_formatting_linear_gradient_element)
 	xml_pretty_formatting_root_element.insert_child(1, xml_pretty_formatting_circle_element)
-	add_preview(SettingFormatterPreview.new(current_setup_resource,
-			xml_pretty_formatting_root_element))
+	add_preview(SettingFormatterPreview.new(current_setup_resource, xml_pretty_formatting_root_element))
 	
 	current_setup_setting = "xml_indentation_use_spaces"
-	add_checkbox(Translator.translate("Use spaces instead of tabs"),
-			not current_setup_resource.xml_pretty_formatting)
+	add_checkbox(Translator.translate("Use spaces instead of tabs"), not current_setup_resource.xml_pretty_formatting)
 	add_preview(SettingTextPreview.new(Translator.translate(
 			"When enabled, uses spaces instead of a single tab for indentation."),
 			SettingTextPreview.get_no_effect_in_configuration_warning(
@@ -225,10 +228,8 @@ func setup_formatting_content() -> void:
 		xml_indentation_spaces_circle_element.set_attribute("cy", 8)
 		xml_indentation_spaces_circle_element.set_attribute("r", 4)
 		xml_indentation_spaces_circle_element.set_attribute("fill", "gold")
-		xml_indentation_spaces_root_element.insert_child(0,
-				xml_indentation_spaces_circle_element)
-		add_preview(SettingFormatterPreview.new(current_setup_resource,
-				xml_indentation_spaces_root_element, false))
+		xml_indentation_spaces_root_element.insert_child(0, xml_indentation_spaces_circle_element)
+		add_preview(SettingFormatterPreview.new(current_setup_resource, xml_indentation_spaces_root_element, false))
 	else:
 		add_preview(SettingTextPreview.new("",
 				SettingTextPreview.WarningType.NO_EFFECT_IN_CURRENT_CONFIGURATION))
@@ -242,10 +243,8 @@ func setup_formatting_content() -> void:
 	number_remove_leading_zero_circle_element.set_attribute("cy", -0.8)
 	number_remove_leading_zero_circle_element.set_attribute("r", 1.6)
 	number_remove_leading_zero_circle_element.set_attribute("fill", "gold")
-	number_remove_leading_zero_root_element.insert_child(0,
-			number_remove_leading_zero_circle_element)
-	add_preview(SettingFormatterPreview.new(current_setup_resource,
-			number_remove_leading_zero_root_element, true))
+	number_remove_leading_zero_root_element.insert_child(0, number_remove_leading_zero_circle_element)
+	add_preview(SettingFormatterPreview.new(current_setup_resource, number_remove_leading_zero_root_element, true))
 	
 	current_setup_setting = "number_use_exponent_if_shorter"
 	add_checkbox(Translator.translate("Use exponential when shorter"))
@@ -255,10 +254,8 @@ func setup_formatting_content() -> void:
 	number_use_exponent_if_shorter_circle_element.set_attribute("cy", -0.005)
 	number_use_exponent_if_shorter_circle_element.set_attribute("r", 2000)
 	number_use_exponent_if_shorter_circle_element.set_attribute("fill", "gold")
-	number_use_exponent_if_shorter_root_element.insert_child(0,
-			number_use_exponent_if_shorter_circle_element)
-	add_preview(SettingFormatterPreview.new(current_setup_resource,
-			number_use_exponent_if_shorter_root_element, true))
+	number_use_exponent_if_shorter_root_element.insert_child(0, number_use_exponent_if_shorter_circle_element)
+	add_preview(SettingFormatterPreview.new(current_setup_resource, number_use_exponent_if_shorter_root_element, true))
 	
 	add_section(Translator.translate("Colors"))
 	current_setup_setting = "color_use_named_colors"
@@ -279,8 +276,7 @@ func setup_formatting_content() -> void:
 	color_use_named_colors_circle_2.set_attribute("r", 2)
 	color_use_named_colors_circle_2.set_attribute("fill", "turquoise")
 	color_use_named_colors_root_element.insert_child(1, color_use_named_colors_circle_2)
-	add_preview(SettingFormatterPreview.new(current_setup_resource,
-			color_use_named_colors_root_element, true))
+	add_preview(SettingFormatterPreview.new(current_setup_resource, color_use_named_colors_root_element, true))
 	
 	current_setup_setting = "color_primary_syntax"
 	add_dropdown(Translator.translate("Primary syntax"),
@@ -294,8 +290,7 @@ func setup_formatting_content() -> void:
 	color_primary_syntax_circle_element.set_attribute("fill", "#d4b")
 	color_primary_syntax_circle_element.set_attribute("stroke", "#f4c4d3")
 	color_primary_syntax_root_element.insert_child(0, color_primary_syntax_circle_element)
-	add_preview(SettingFormatterPreview.new(current_setup_resource,
-			color_primary_syntax_root_element, true))
+	add_preview(SettingFormatterPreview.new(current_setup_resource, color_primary_syntax_root_element, true))
 	
 	current_setup_setting = "color_capital_hex"
 	add_checkbox(Translator.translate("Capitalize hexadecimal letters"),
@@ -308,11 +303,9 @@ func setup_formatting_content() -> void:
 		color_capital_hex_circle_element.set_attribute("r", 4)
 		color_capital_hex_circle_element.set_attribute("fill", "#decade")
 		color_capital_hex_root_element.insert_child(0, color_capital_hex_circle_element)
-		add_preview(SettingFormatterPreview.new(current_setup_resource,
-				color_capital_hex_root_element, true))
+		add_preview(SettingFormatterPreview.new(current_setup_resource, color_capital_hex_root_element, true))
 	else:
-		add_preview(SettingTextPreview.new("",
-				SettingTextPreview.WarningType.NO_EFFECT_IN_CURRENT_CONFIGURATION))
+		add_preview(SettingTextPreview.new("", SettingTextPreview.WarningType.NO_EFFECT_IN_CURRENT_CONFIGURATION))
 	
 	add_section(Translator.translate("Pathdata"))
 	current_setup_setting = "pathdata_compress_numbers"
@@ -322,8 +315,7 @@ func setup_formatting_content() -> void:
 	pathdata_compress_numbers_path_element.set_attribute("d", "m 4 6.5 l 0.5 -0.8 v 2 z")
 	pathdata_compress_numbers_path_element.set_attribute("fill", "gold")
 	pathdata_compress_numbers_root_element.insert_child(0, pathdata_compress_numbers_path_element)
-	add_preview(SettingFormatterPreview.new(current_setup_resource,
-			pathdata_compress_numbers_root_element, true))
+	add_preview(SettingFormatterPreview.new(current_setup_resource, pathdata_compress_numbers_root_element, true))
 	
 	current_setup_setting = "pathdata_minimize_spacing"
 	add_checkbox(Translator.translate("Minimize spacing"))
@@ -332,8 +324,7 @@ func setup_formatting_content() -> void:
 	pathdata_minimize_spacing_path_element.set_attribute("d", "m 4 6.5 l 0.5 -0.8 v 2 z")
 	pathdata_minimize_spacing_path_element.set_attribute("fill", "gold")
 	pathdata_minimize_spacing_root_element.insert_child(0, pathdata_minimize_spacing_path_element)
-	add_preview(SettingFormatterPreview.new(current_setup_resource,
-			pathdata_minimize_spacing_root_element, true))
+	add_preview(SettingFormatterPreview.new(current_setup_resource, pathdata_minimize_spacing_root_element, true))
 	
 	current_setup_setting = "pathdata_remove_spacing_after_flags"
 	add_checkbox(Translator.translate("Remove spacing after flags"))
@@ -342,19 +333,16 @@ func setup_formatting_content() -> void:
 	pathdata_remove_spacing_after_flags_path_element.set_attribute("d", "m 1 3.5 a 2 3 0 1 0 4 2 z")
 	pathdata_remove_spacing_after_flags_path_element.set_attribute("fill", "gold")
 	pathdata_remove_spacing_after_flags_root_element.insert_child(0, pathdata_remove_spacing_after_flags_path_element)
-	add_preview(SettingFormatterPreview.new(current_setup_resource,
-			pathdata_remove_spacing_after_flags_root_element, true))
+	add_preview(SettingFormatterPreview.new(current_setup_resource, pathdata_remove_spacing_after_flags_root_element, true))
 	
 	current_setup_setting = "pathdata_remove_consecutive_commands"
 	add_checkbox(Translator.translate("Remove consecutive commands"))
 	var pathdata_remove_consecutive_commands_root_element := ElementRoot.new()
 	var pathdata_remove_consecutive_commands_path_element := ElementPath.new()
-	pathdata_remove_consecutive_commands_path_element.set_attribute("d",
-			"m 4 6.5 l -1 2 l 2.5 1 q 3.5 -1 2 -2 q -1.5 0.5 -1 -2 z")
+	pathdata_remove_consecutive_commands_path_element.set_attribute("d", "m 4 6.5 l -1 2 l 2.5 1 q 3.5 -1 2 -2 q -1.5 0.5 -1 -2 z")
 	pathdata_remove_consecutive_commands_path_element.set_attribute("fill", "gold")
 	pathdata_remove_consecutive_commands_root_element.insert_child(0, pathdata_remove_consecutive_commands_path_element)
-	add_preview(SettingFormatterPreview.new(current_setup_resource,
-			pathdata_remove_consecutive_commands_root_element, true))
+	add_preview(SettingFormatterPreview.new(current_setup_resource, pathdata_remove_consecutive_commands_root_element, true))
 	
 	add_section(Translator.translate("Transform lists"))
 	current_setup_setting = "transform_list_compress_numbers"
@@ -363,11 +351,9 @@ func setup_formatting_content() -> void:
 	var transform_list_compress_numbers_polygon_element := ElementPolygon.new()
 	transform_list_compress_numbers_polygon_element.set_attribute("points", "2 4 5 8 9 1")
 	transform_list_compress_numbers_polygon_element.set_attribute("fill", "gold")
-	transform_list_compress_numbers_polygon_element.set_attribute("transform",
-			"rotate(7.5 -0.5 0.8)")
+	transform_list_compress_numbers_polygon_element.set_attribute("transform", "rotate(7.5 -0.5 0.8)")
 	transform_list_compress_numbers_root_element.insert_child(0, transform_list_compress_numbers_polygon_element)
-	add_preview(SettingFormatterPreview.new(current_setup_resource,
-			transform_list_compress_numbers_root_element, true))
+	add_preview(SettingFormatterPreview.new(current_setup_resource, transform_list_compress_numbers_root_element, true))
 	
 	current_setup_setting = "transform_list_minimize_spacing"
 	add_checkbox(Translator.translate("Minimize spacing"))
@@ -375,11 +361,9 @@ func setup_formatting_content() -> void:
 	var transform_list_minimize_spacing_polygon_element := ElementPolygon.new()
 	transform_list_minimize_spacing_polygon_element.set_attribute("points", "2 4 5 8 9 1")
 	transform_list_minimize_spacing_polygon_element.set_attribute("fill", "gold")
-	transform_list_minimize_spacing_polygon_element.set_attribute("transform",
-			"rotate(7.5 -0.5 0.8)")
+	transform_list_minimize_spacing_polygon_element.set_attribute("transform", "rotate(7.5 -0.5 0.8)")
 	transform_list_minimize_spacing_root_element.insert_child(0, transform_list_minimize_spacing_polygon_element)
-	add_preview(SettingFormatterPreview.new(current_setup_resource,
-			transform_list_minimize_spacing_root_element, true))
+	add_preview(SettingFormatterPreview.new(current_setup_resource, transform_list_minimize_spacing_root_element, true))
 	
 	current_setup_setting = "transform_list_remove_unnecessary_params"
 	add_checkbox(Translator.translate("Remove unnecessary parameters"))
@@ -387,11 +371,9 @@ func setup_formatting_content() -> void:
 	var transform_list_remove_unnecessary_params_polygon_element := ElementPolygon.new()
 	transform_list_remove_unnecessary_params_polygon_element.set_attribute("points", "2 4 5 8 9 1")
 	transform_list_remove_unnecessary_params_polygon_element.set_attribute("fill", "gold")
-	transform_list_remove_unnecessary_params_polygon_element.set_attribute("transform",
-			"scale(2 2) translate(4 0) rotate(30 0 0)")
+	transform_list_remove_unnecessary_params_polygon_element.set_attribute("transform", "scale(2 2) translate(4 0) rotate(30 0 0)")
 	transform_list_remove_unnecessary_params_root_element.insert_child(0, transform_list_remove_unnecessary_params_polygon_element)
-	add_preview(SettingFormatterPreview.new(current_setup_resource,
-			transform_list_remove_unnecessary_params_root_element, true))
+	add_preview(SettingFormatterPreview.new(current_setup_resource, transform_list_remove_unnecessary_params_root_element, true))
 
 func setup_theming_content() -> void:
 	var current_setup_resource := Configs.savedata
@@ -401,14 +383,18 @@ func setup_theming_content() -> void:
 			current_setup_resource.reset_theme_items_to_default,
 			SaveData.ThemePreset.size(), SaveData.get_theme_preset_value_text_map(),
 			current_setup_resource.is_theming_default)
-	add_preview(SettingTextPreview.new(
-			Translator.translate("Determines the default values of theming-related settings, including the highlighter preset.")))
+	add_preview(SettingTextPreview.new(Translator.translate(
+			"Determines the default values of theming-related settings, including the highlighter preset.")))
 	
 	add_section(Translator.translate("Primary theme colors"))
 	current_setup_setting = "base_color"
 	add_color_edit(Translator.translate("Base color"), false)
 	current_setup_setting = "accent_color"
 	add_color_edit(Translator.translate("Accent color"), false)
+	
+	var basic_svg_text = """<circle cx="6" cy="8" r="4" fill="gold" />"""
+	var basic_svg_text_with_syntax_error = """<circle cx="6" cy="8" ==syntax error"""
+	var fancy_svg_text = """<!-- Comment --> <text> Basic text <![CDATA[ < > & " ' ]]> </text>"""
 	
 	add_section(Translator.translate("SVG Text colors"))
 	current_setup_setting = "highlighter_preset"
@@ -421,52 +407,82 @@ func setup_theming_content() -> void:
 			Translator.translate("Determines the default values of SVG highlighter settings.")))
 	current_setup_setting = "highlighting_symbol_color"
 	add_color_edit(Translator.translate("Symbol color"))
-	add_preview(SettingCodePreview.new(
-			"""<circle cx="6" cy="8" r="4" fill="gold" />"""))
+	add_preview(SettingCodePreview.new(basic_svg_text))
 	current_setup_setting = "highlighting_element_color"
 	add_color_edit(Translator.translate("Element color"))
-	add_preview(SettingCodePreview.new(
-			"""<circle cx="6" cy="8" r="4" fill="gold" />"""))
+	add_preview(SettingCodePreview.new(basic_svg_text))
 	current_setup_setting = "highlighting_attribute_color"
 	add_color_edit(Translator.translate("Attribute color"))
-	add_preview(SettingCodePreview.new(
-			"""<circle cx="6" cy="8" r="4" fill="gold" />"""))
+	add_preview(SettingCodePreview.new(basic_svg_text))
 	current_setup_setting = "highlighting_string_color"
 	add_color_edit(Translator.translate("String color"))
-	add_preview(SettingCodePreview.new(
-			"""<circle cx="6" cy="8" r="4" fill="gold" />"""))
+	add_preview(SettingCodePreview.new(basic_svg_text))
 	current_setup_setting = "highlighting_comment_color"
 	add_color_edit(Translator.translate("Comment color"))
-	add_preview(SettingCodePreview.new(
-			"""<!-- Comment --> <text> Basic text <![CDATA[ < > & " ' ]]> </text>"""))
+	add_preview(SettingCodePreview.new(fancy_svg_text))
 	current_setup_setting = "highlighting_text_color"
 	add_color_edit(Translator.translate("Text color"))
-	add_preview(SettingCodePreview.new(
-			"""<!-- Comment --> <text> Basic text <![CDATA[ < > & " ' ]]> </text>"""))
+	add_preview(SettingCodePreview.new(fancy_svg_text))
 	current_setup_setting = "highlighting_cdata_color"
 	add_color_edit(Translator.translate("CDATA color"))
-	add_preview(SettingCodePreview.new(
-			"""<!-- Comment --> <text> Basic text <![CDATA[ < > & " ' ]]> </text>"""))
+	add_preview(SettingCodePreview.new(fancy_svg_text))
 	current_setup_setting = "highlighting_error_color"
 	add_color_edit(Translator.translate("Error color"))
-	add_preview(SettingCodePreview.new(
-			"""<circle cx="6" cy="8" ==syntax error"""))
+	add_preview(SettingCodePreview.new(basic_svg_text_with_syntax_error))
+	
+	var empty_preview_root := ElementRoot.new()
+	empty_preview_root.set_attribute("width", 32)
+	empty_preview_root.set_attribute("height", 4)
+	
+	var handle_presentation_root := ElementRoot.new()
+	handle_presentation_root.set_attribute("width", 32)
+	handle_presentation_root.set_attribute("height", 4)
+	var handle_presentation_main_g := ElementG.new()
+	handle_presentation_main_g.set_attribute("fill", "none")
+	handle_presentation_root.insert_child(0, handle_presentation_main_g)
+	var handle_presentation_path_1 := ElementPath.new()
+	handle_presentation_path_1.set_attribute("d", "M1 1q4 0 6 2")
+	handle_presentation_main_g.insert_child(0, handle_presentation_path_1)
+	var handle_presentation_path_2 := ElementPath.new()
+	handle_presentation_path_2.set_attribute("d", "M17 1q4 0 6 2")
+	handle_presentation_main_g.insert_child(1, handle_presentation_path_2)
+	var handle_presentation_inner_g := ElementG.new()
+	handle_presentation_main_g.insert_child(2, handle_presentation_inner_g)
+	var handle_presentation_path_3 := ElementPath.new()
+	handle_presentation_path_3.set_attribute("d", "M9 1q4 0 6 2")
+	handle_presentation_inner_g.insert_child(0, handle_presentation_path_3)
+	var handle_presentation_path_4 := ElementPath.new()
+	handle_presentation_path_4.set_attribute("d", "M25 1q4 0 6 2")
+	handle_presentation_inner_g.insert_child(1, handle_presentation_path_4)
+	
+	var selection_rectangle_presentation_root := ElementRoot.new()
+	selection_rectangle_presentation_root.set_attribute("width", 32)
+	selection_rectangle_presentation_root.set_attribute("height", 4)
+	var selection_rectangle_presentation_path := ElementPath.new()
+	selection_rectangle_presentation_path.set_attribute("fill", "#f00")
+	selection_rectangle_presentation_path.set_attribute("d", "M1 1L25 3L31 2z")
+	selection_rectangle_presentation_root.insert_child(0, selection_rectangle_presentation_path)
 	
 	add_section(Translator.translate("Handles"))
 	current_setup_setting = "handle_size"
-	add_number_dropdown(Translator.translate("Size"),
-			[0.75, 1.0, 1.25, 1.5, 1.75, 2.0, 2.5, 3.0], false, false,
-			SaveData.HANDLE_SIZE_MIN, SaveData.HANDLE_SIZE_MAX)
+	add_number_dropdown(Translator.translate("Size"), [0.75, 1.0, 1.25, 1.5, 1.75, 2.0, 2.5, 3.0],
+			false, false, SaveData.HANDLE_SIZE_MIN, SaveData.HANDLE_SIZE_MAX)
+	add_preview(SettingCanvasPreview.new(handle_presentation_root, PackedInt32Array([0, 2]), [PackedInt32Array([0, 1]), PackedInt32Array([0, 2, 1])], false))
 	current_setup_setting = "handle_inner_color"
 	add_color_edit(Translator.translate("Inside color"), false)
+	add_preview(SettingCanvasPreview.new(handle_presentation_root, PackedInt32Array([0, 2]), [PackedInt32Array([0, 1]), PackedInt32Array([0, 2, 1])], false))
 	current_setup_setting = "handle_color"
 	add_color_edit(Translator.translate("Normal color"), false)
+	add_preview(SettingCanvasPreview.new(handle_presentation_root, PackedInt32Array([0, 2]), [PackedInt32Array([0, 1]), PackedInt32Array([0, 2, 1])], false))
 	current_setup_setting = "handle_hovered_color"
 	add_color_edit(Translator.translate("Hovered color"), false)
+	add_preview(SettingCanvasPreview.new(handle_presentation_root, PackedInt32Array([0, 2]), [PackedInt32Array([0, 1]), PackedInt32Array([0, 2, 1])], false))
 	current_setup_setting = "handle_selected_color"
 	add_color_edit(Translator.translate("Selected color"), false)
+	add_preview(SettingCanvasPreview.new(handle_presentation_root, PackedInt32Array([0, 2]), [PackedInt32Array([0, 1]), PackedInt32Array([0, 2, 1])], false))
 	current_setup_setting = "handle_hovered_selected_color"
 	add_color_edit(Translator.translate("Hovered selected color"), false)
+	add_preview(SettingCanvasPreview.new(handle_presentation_root, PackedInt32Array([0, 2]), [PackedInt32Array([0, 1]), PackedInt32Array([0, 2, 1])], false))
 	
 	add_section(Translator.translate("Selection rectangle"))
 	current_setup_setting = "selection_rectangle_speed"
@@ -474,39 +490,40 @@ func setup_theming_content() -> void:
 			[0.0, 10.0, 20.0, 30.0, 50.0, 80.0, 130.0], false, false,
 			-SaveData.MAX_SELECTION_RECTANGLE_SPEED,
 			SaveData.MAX_SELECTION_RECTANGLE_SPEED)
+	add_preview(SettingCanvasPreview.new(selection_rectangle_presentation_root, PackedInt32Array(), [PackedInt32Array([0])]))
 	current_setup_setting = "selection_rectangle_width"
 	add_number_dropdown(Translator.translate("Width"),
 			[1.0, 2.0, 3.0, 4.0], false, false, 1.0,
 			SaveData.MAX_SELECTION_RECTANGLE_WIDTH)
+	add_preview(SettingCanvasPreview.new(selection_rectangle_presentation_root, PackedInt32Array(), [PackedInt32Array([0])]))
 	current_setup_setting = "selection_rectangle_dash_length"
 	add_number_dropdown(Translator.translate("Dash length"),
 			[5.0, 10.0, 15.0, 20.0], false, false, 1.0,
 			SaveData.MAX_SELECTION_RECTANGLE_DASH_LENGTH)
+	add_preview(SettingCanvasPreview.new(selection_rectangle_presentation_root, PackedInt32Array(), [PackedInt32Array([0])]))
 	current_setup_setting = "selection_rectangle_color1"
 	add_color_edit(Translator.translate("Color {index}").format({"index": "1"}))
+	add_preview(SettingCanvasPreview.new(selection_rectangle_presentation_root, PackedInt32Array(), [PackedInt32Array([0])]))
 	current_setup_setting = "selection_rectangle_color2"
 	add_color_edit(Translator.translate("Color {index}").format({"index": "2"}))
+	add_preview(SettingCanvasPreview.new(selection_rectangle_presentation_root, PackedInt32Array(), [PackedInt32Array([0])]))
 	
 	add_section(Translator.translate("Basic colors"))
 	current_setup_setting = "canvas_color"
 	add_color_edit(Translator.translate("Canvas color"), false)
+	add_preview(SettingCanvasPreview.new(empty_preview_root))
 	current_setup_setting = "grid_color"
 	add_color_edit(Translator.translate("Grid color"), false)
-	
+	add_preview(SettingCanvasPreview.new(empty_preview_root))
 	current_setup_setting = "basic_color_valid"
 	add_color_edit(Translator.translate("Valid color"))
-	add_preview(SettingBasicColorPreview.new(current_setup_setting,
-			Translator.translate("Valid color")))
-	
+	add_preview(SettingBasicColorPreview.new(current_setup_setting, Translator.translate("Valid color")))
 	current_setup_setting = "basic_color_error"
 	add_color_edit(Translator.translate("Error color"))
-	add_preview(SettingBasicColorPreview.new(current_setup_setting,
-			Translator.translate("Error color")))
-	
+	add_preview(SettingBasicColorPreview.new(current_setup_setting, Translator.translate("Error color")))
 	current_setup_setting = "basic_color_warning"
 	add_color_edit(Translator.translate("Warning color"))
-	add_preview(SettingBasicColorPreview.new(current_setup_setting,
-			Translator.translate("Warning color")))
+	add_preview(SettingBasicColorPreview.new(current_setup_setting, Translator.translate("Warning color")))
 
 func setup_tab_bar_content() -> void:
 	add_section(Translator.translate("Input"))
@@ -672,8 +689,7 @@ value_text_map: Dictionary) -> Control:  # Dictionary[Variant, String]
 	frame.setup_dropdown(values, value_text_map)
 	add_frame(frame)
 	# Some checkboxes need to update the dimness of the text of other settings.
-	# There's no continuous editing with checkboxes, so it's safe to just rebuild
-	# the content for them.
+	# There's no continuous editing with checkboxes, so it's safe to just rebuild the content for them.
 	frame.value_changed.connect(setup_content)
 	return frame
 
@@ -735,7 +751,7 @@ func remove_preview(setting: String) -> void:
 
 func emit_preview_changed() -> void:
 	if current_previewed_setting.is_empty() or not previews.has(current_previewed_setting):
-		preview_changed.emit(Control.new())
+		preview_changed.emit(null)
 		return
 	
 	var preview := previews[current_previewed_setting]
@@ -836,12 +852,10 @@ func emit_preview_changed() -> void:
 		code_preview.add_theme_stylebox_override("normal", empty_stylebox)
 		code_preview.add_theme_stylebox_override("read_only", empty_stylebox)
 		Configs.highlighting_colors_changed.connect(update_highlighter)
-		code_preview.tree_exiting.connect(Configs.highlighting_colors_changed.disconnect.bind(
-				update_highlighter), CONNECT_ONE_SHOT)
+		code_preview.tree_exiting.connect(Configs.highlighting_colors_changed.disconnect.bind(update_highlighter), CONNECT_ONE_SHOT)
 		update_highlighter.call()
 		preview.resource_bind.changed_deferred.connect(update_text)
-		code_preview.tree_exiting.connect(preview.resource_bind.changed_deferred.disconnect.bind(
-				update_text), CONNECT_ONE_SHOT)
+		code_preview.tree_exiting.connect(preview.resource_bind.changed_deferred.disconnect.bind(update_text), CONNECT_ONE_SHOT)
 		update_text.call()
 		# TODO Yes, all of this really is necessary for scrollbars to work. #109250
 		# The early signal is needed.
@@ -861,3 +875,10 @@ func emit_preview_changed() -> void:
 				tw.tween_property(scrollbar, ^"value", floorf(scrollbar.max_value - code_preview.get_visible_line_count()), 0.5)
 				tw.tween_interval(1.75)
 				tw.tween_property(scrollbar, ^"value", 0.0, 0.5)
+	elif preview is SettingCanvasPreview:
+		var canvas := Canvas.new()
+		canvas.root_element = preview.root_element
+		canvas.hovered_xid = preview.hovered_xid
+		canvas.selected_xids = preview.selected_xids
+		canvas.show_grid = preview.show_grid
+		preview_changed.emit(canvas)
