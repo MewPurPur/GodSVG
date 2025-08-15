@@ -127,6 +127,7 @@ func _ready() -> void:
 	update_show_grid()
 	
 	resized.connect(sync_canvas_transform)
+	resized.connect(adjust_view)
 	resized.connect(center_frame)
 	for i in 2:
 		await get_tree().process_frame
