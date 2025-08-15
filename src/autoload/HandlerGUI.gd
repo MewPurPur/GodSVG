@@ -10,6 +10,8 @@ const UpdateMenuScene = preload("res://src/ui_parts/update_menu.tscn")
 const ExportMenuScene = preload("res://src/ui_parts/export_menu.tscn")
 const ShortcutPanelScene = preload("res://src/ui_parts/shortcut_panel.tscn")
 
+signal popups_cleared
+
 ## A stack of the current menus, dialogs in the foreground, center of the screen, that also darken the background for more focus.
 ## Menus should be added with add_menu(), which hides previous menus, or add_dialog() which doesn't hide previous menus.
 ## Menus are removed by being freed, which automatically removes them from the stack.
@@ -180,12 +182,16 @@ func remove_popup(overlay_ref: Control = null) -> void:
 	overlay_ref = popup_stack.pop_back()
 	if is_instance_valid(overlay_ref):
 		overlay_ref.queue_free()
+	
+	if popup_stack.is_empty():
+		popups_cleared.emit()
 	throw_mouse_motion_event()
 
 func remove_all_popups() -> void:
 	if not popup_stack.is_empty():
 		while not popup_stack.is_empty():
 			popup_stack.pop_back().queue_free()
+		popups_cleared.emit()
 		throw_mouse_motion_event()
 
 
@@ -236,8 +242,7 @@ func popup_clamp_pos(popup: Control, attempt_pos: Vector2, vp: Viewport) -> Vect
 
 func _parse_popup_overlay_event(event: InputEvent) -> void:
 	if not popup_stack.is_empty():
-		if event is InputEventMouseButton and event.button_index in [MOUSE_BUTTON_LEFT,
-		MOUSE_BUTTON_MIDDLE, MOUSE_BUTTON_RIGHT]:
+		if event is InputEventMouseButton and event.button_index in [MOUSE_BUTTON_LEFT, MOUSE_BUTTON_MIDDLE, MOUSE_BUTTON_RIGHT]:
 			remove_popup()
 	get_viewport().set_input_as_handled()
 

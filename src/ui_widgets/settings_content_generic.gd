@@ -459,7 +459,7 @@ func setup_theming_content() -> void:
 	selection_rectangle_presentation_root.set_attribute("width", 32)
 	selection_rectangle_presentation_root.set_attribute("height", 4)
 	var selection_rectangle_presentation_path := ElementPath.new()
-	selection_rectangle_presentation_path.set_attribute("fill", "#f00")
+	selection_rectangle_presentation_path.set_attribute("fill", "#def")
 	selection_rectangle_presentation_path.set_attribute("d", "M1 1L25 3L31 2z")
 	selection_rectangle_presentation_root.insert_child(0, selection_rectangle_presentation_path)
 	
@@ -728,7 +728,16 @@ func setup_frame(frame: Control, has_default := true) -> void:
 	if has_default:
 		frame.default = resource_ref.get_setting_default(current_setup_setting)
 	frame.mouse_entered.connect(set_preview.bind(current_setup_setting))
-	frame.mouse_exited.connect(remove_preview.bind(current_setup_setting))
+	# Remove the preview when one of the following happens:
+	# 1. The mouse exits the setting frame and there's no popup.
+	# 2. The popup after the mouse exited the setting frame (i.e. color picker or dropdown) has been cleared.
+	frame.mouse_exited.connect(
+		func() -> void:
+			if HandlerGUI.popup_stack.is_empty():
+				remove_preview(bind)
+			else:
+				HandlerGUI.popups_cleared.connect(remove_preview.bind(bind), CONNECT_ONE_SHOT)
+	)
 
 func add_frame(frame: Control) -> void:
 	if setting_container.get_child_count() > 0:
