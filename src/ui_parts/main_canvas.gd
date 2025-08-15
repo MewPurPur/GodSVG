@@ -46,7 +46,8 @@ func _ready() -> void:
 	center_frame()
 
 func _on_svg_resized() -> void:
-	root_element = State.root_element
+	if root_element != State.root_element:
+		root_element = State.root_element
 	sync_checkerboard()
 	center_frame()
 	queue_redraw()
@@ -62,6 +63,7 @@ func _on_svg_changed() -> void:
 	if root_element != State.root_element:
 		root_element = State.root_element
 		root_element.attribute_changed.connect(_on_root_element_attribute_changed)
+	
 	_current_svg_size = root_element.get_size()
 	queue_texture_update()
 	handles_manager.queue_update_handles()
