@@ -8,7 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://dad7fkhmsooc6" path="res://src/ui_widgets/number_edit.tscn" id="7_wrrfr"]
 [ext_resource type="PackedScene" uid="uid://oltvrf01xrxl" path="res://src/ui_widgets/zoom_widget.tscn" id="8_xtdmn"]
 [ext_resource type="Script" uid="uid://rqrxhe8wa6fn" path="res://src/ui_parts/tab_bar.gd" id="9_rll1m"]
-[ext_resource type="Script" uid="uid://cbajqkgudfvh0" path="res://src/ui_parts/main_canvas.gd" id="9_ryr8t"]
+[ext_resource type="Script" uid="uid://1da5k40m2tl2" path="res://src/ui_parts/main_canvas.gd" id="9_ryr8t"]
 [ext_resource type="PackedScene" uid="uid://vrmbmt18wocm" path="res://src/ui_parts/debug_content.tscn" id="15_ryr8t"]
 
 [node name="Display" type="VBoxContainer"]
