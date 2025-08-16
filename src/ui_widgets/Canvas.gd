@@ -202,17 +202,13 @@ func _texture_update() -> void:
 		_texture_update_dirty_inner = false
 		last_inner = ""
 	
-	var sw := Stopwatch.start(true, "a")
 	var svg_text := SVGParser.root_cutout_to_markup(root_element, display_rect.size.x,
 			display_rect.size.y, Rect2(root_element.world_to_canvas(display_rect.position),
 			display_rect.size / root_element.canvas_transform.get_scale()), last_inner)
-	sw.measure(true)
-	sw.name = "b"
 	last_inner = svg_text[1]
 	Utils.set_control_position_fixed(display_texture, display_rect.position)
 	display_texture.size = display_rect.size
 	display_texture.texture = SVGTexture.create_from_string(svg_text[0], image_zoom)
-	sw.measure()
 
 
 func sync_checkerboard() -> void:

@@ -41,11 +41,8 @@ static func root_cutout_to_markup(root_element: ElementRoot, custom_width: float
 	markup = markup.left(maxi(markup.find("/>"), markup.find("</svg>"))) + ">"
 	var inner := replace_inner
 	if not replace_inner:
-		print("not caching")
 		for child_idx in root_element.get_child_count():
 			inner += _xnode_to_markup(root_element.get_xnode(PackedInt32Array([child_idx])), Configs.savedata.editor_formatter, true)
-	else:
-		print("caching")
 	return [markup + inner + "</svg>", inner]
 
 
