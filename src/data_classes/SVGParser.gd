@@ -29,7 +29,10 @@ static func markup_check_is_root_empty(markup: String) -> bool:
 	return describes_svg and parser.read() == OK and parser.get_node_type() == XMLParser.NODE_ELEMENT_END and parser.get_node_name() == "svg"
 
 ## Creates markup for an SVG that only represents a rectangular cutout of the original.
-static func root_cutout_to_markup(root_element: ElementRoot, custom_width: float, custom_height: float, custom_viewbox: Rect2, replace_inner: String = "") -> PackedStringArray:
+## [br]
+## Returns an array like [code][markup, inner_markup][/code]. The inner markup can then be fed back into [param cached_inner_markup], assuming the inner
+## contents of [param root_element] haven't changed.
+static func root_cutout_to_markup(root_element: ElementRoot, custom_width: float, custom_height: float, custom_viewbox: Rect2, cached_inner_markup: String = "") -> PackedStringArray:
 	# Build a new root element, set it up, and convert it to markup.
 	var new_root_element: ElementRoot = root_element.duplicate(false)
 	new_root_element.set_attribute("viewBox", ListParser.rect_to_list(custom_viewbox))
@@ -39,11 +42,11 @@ static func root_cutout_to_markup(root_element: ElementRoot, custom_width: float
 	# Since we only converted a single root element to markup, it would have closed.
 	# Remove the closure and add all the other elements' markup before closing it manually.
 	markup = markup.left(maxi(markup.find("/>"), markup.find("</svg>"))) + ">"
-	var inner := replace_inner
-	if not replace_inner:
+	var inner_markup := cached_inner_markup
+	if not cached_inner_markup:
 		for child_idx in root_element.get_child_count():
-			inner += _xnode_to_markup(root_element.get_xnode(PackedInt32Array([child_idx])), Configs.savedata.editor_formatter, true)
-	return [markup + inner + "</svg>", inner]
+			inner_markup += _xnode_to_markup(root_element.get_xnode(PackedInt32Array([child_idx])), Configs.savedata.editor_formatter, true)
+	return [markup + inner_markup + "</svg>", inner_markup]
 
 
 ## Converts the child elements of a root element into markup, excluding the root tag itself.

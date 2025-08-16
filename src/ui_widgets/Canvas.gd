@@ -174,14 +174,15 @@ var texture_view_rect := Rect2():
 			queue_texture_update()
 
 var _texture_update_pending := false
-var _texture_update_dirty_inner := false
+var _texture_update_dirty_inner_markup := false
 
+## Use [param dirty_inner] if the inner markup has changed and needs to be restringified.
 func queue_texture_update(dirty_inner := false) -> void:
 	_texture_update.call_deferred()
 	_texture_update_pending = true
-	_texture_update_dirty_inner = _texture_update_dirty_inner or dirty_inner
+	_texture_update_dirty_inner_markup = _texture_update_dirty_inner_markup or dirty_inner
 
-var last_inner: String
+var last_inner_markup: String
 
 func _texture_update() -> void:
 	if not _texture_update_pending:
@@ -198,14 +199,14 @@ func _texture_update() -> void:
 	display_rect.size = display_rect.size.snapped(Vector2(pixel_size, pixel_size))
 	display_rect.end = display_rect.end.min(Vector2(ceili(root_element.width), ceili(root_element.height)))
 	
-	if _texture_update_dirty_inner:
-		_texture_update_dirty_inner = false
-		last_inner = ""
+	if _texture_update_dirty_inner_markup:
+		_texture_update_dirty_inner_markup = false
+		last_inner_markup = ""
 	
 	var svg_text := SVGParser.root_cutout_to_markup(root_element, display_rect.size.x,
 			display_rect.size.y, Rect2(root_element.world_to_canvas(display_rect.position),
-			display_rect.size / root_element.canvas_transform.get_scale()), last_inner)
-	last_inner = svg_text[1]
+			display_rect.size / root_element.canvas_transform.get_scale()), last_inner_markup)
+	last_inner_markup = svg_text[1]
 	Utils.set_control_position_fixed(display_texture, display_rect.position)
 	display_texture.size = display_rect.size
 	display_texture.texture = SVGTexture.create_from_string(svg_text[0], image_zoom)
