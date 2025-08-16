@@ -29,7 +29,7 @@ static func markup_check_is_root_empty(markup: String) -> bool:
 	return describes_svg and parser.read() == OK and parser.get_node_type() == XMLParser.NODE_ELEMENT_END and parser.get_node_name() == "svg"
 
 ## Creates markup for an SVG that only represents a rectangular cutout of the original.
-static func root_cutout_to_markup(root_element: ElementRoot, custom_width: float, custom_height: float, custom_viewbox: Rect2) -> String:
+static func root_cutout_to_markup(root_element: ElementRoot, custom_width: float, custom_height: float, custom_viewbox: Rect2, replace_inner: String = "") -> PackedStringArray:
 	# Build a new root element, set it up, and convert it to markup.
 	var new_root_element: ElementRoot = root_element.duplicate(false)
 	new_root_element.set_attribute("viewBox", ListParser.rect_to_list(custom_viewbox))
@@ -39,9 +39,14 @@ static func root_cutout_to_markup(root_element: ElementRoot, custom_width: float
 	# Since we only converted a single root element to markup, it would have closed.
 	# Remove the closure and add all the other elements' markup before closing it manually.
 	markup = markup.left(maxi(markup.find("/>"), markup.find("</svg>"))) + ">"
-	for child_idx in root_element.get_child_count():
-		markup += _xnode_to_markup(root_element.get_xnode(PackedInt32Array([child_idx])), Configs.savedata.editor_formatter, true)
-	return markup + "</svg>"
+	var inner := replace_inner
+	if not replace_inner:
+		print("not caching")
+		for child_idx in root_element.get_child_count():
+			inner += _xnode_to_markup(root_element.get_xnode(PackedInt32Array([child_idx])), Configs.savedata.editor_formatter, true)
+	else:
+		print("caching")
+	return [markup + inner + "</svg>", inner]
 
 
 ## Converts the child elements of a root element into markup, excluding the root tag itself.
