@@ -56,8 +56,8 @@ func _draw() -> void:
 	stylebox.corner_radius_bottom_right = 5
 	stylebox.bg_color = ColorParser.text_to_color(ColorParser.add_hash_if_hex(value),
 			Color(), enable_alpha)
-	draw_texture(checkerboard, Vector2(size.x - BUTTON_WIDTH, 1))
-	draw_style_box(stylebox, Rect2(size.x - BUTTON_WIDTH, 1, BUTTON_WIDTH - 1, size.y - 2))
+	draw_texture(checkerboard, Vector2(size.x - button_width, 1))
+	draw_style_box(stylebox, Rect2(size.x - button_width, 1, button_width - 1, size.y - 2))
 	if is_instance_valid(temp_button) and temp_button.button_pressed:
 		draw_button_border("pressed")
 	elif is_instance_valid(temp_button) and temp_button.get_global_rect().has_point(

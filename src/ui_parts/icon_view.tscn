@@ -1,0 +1,85 @@
+[gd_scene load_steps=6 format=3 uid="uid://ck1u5onyy0cdc"]
+
+[ext_resource type="Script" uid="uid://dpn15qyr7xsds" path="res://src/ui_parts/icon_view.gd" id="1_dyte2"]
+[ext_resource type="Texture2D" uid="uid://eif2ioi0mw17" path="res://assets/icons/Plus.svg" id="2_dyte2"]
+[ext_resource type="Texture2D" uid="uid://cvh3kwbucf2n1" path="res://assets/icons/Reload.svg" id="4_dyte2"]
+[ext_resource type="PackedScene" uid="uid://18urhivvngk" path="res://src/ui_widgets/icon_view_tile.tscn" id="4_gn3ji"]
+[ext_resource type="Texture2D" uid="uid://barsurula6j8n" path="res://assets/logos/icon.svg" id="4_rq20x"]
+
+[node name="IconView" type="Container"]
+anchors_preset = -1
+offset_bottom = 163.0
+size_flags_vertical = 3
+script = ExtResource("1_dyte2")
+border_width = 2
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_left = 5
+corner_radius_bottom_right = 5
+title_margin = 4
+panel_margin = 2
+metadata/_custom_type_script = "uid://ojo0537b6hcy"
+
+[node name="ActionContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="AddNewSizeButton" type="Button" parent="ActionContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+icon = ExtResource("2_dyte2")
+
+[node name="ResetButton" type="Button" parent="ActionContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+icon = ExtResource("4_dyte2")
+
+[node name="VSplitContainer" type="VSplitContainer" parent="."]
+layout_mode = 2
+split_offset = 250
+
+[node name="ScrollContainer" type="ScrollContainer" parent="VSplitContainer"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="VSplitContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 3
+theme_override_constants/margin_top = 3
+theme_override_constants/margin_right = 3
+theme_override_constants/margin_bottom = 3
+
+[node name="IconViewTileContainer" type="FlowContainer" parent="VSplitContainer/ScrollContainer/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="IconViewTile" parent="VSplitContainer/ScrollContainer/MarginContainer/IconViewTileContainer" instance=ExtResource("4_gn3ji")]
+layout_mode = 2
+
+[node name="ScaledPreview" type="HBoxContainer" parent="VSplitContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="Control" type="Control" parent="VSplitContainer/ScaledPreview"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="TextureRect" type="TextureRect" parent="VSplitContainer/ScaledPreview"]
+unique_name_in_owner = true
+texture_filter = 1
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+texture = ExtResource("4_rq20x")
+expand_mode = 3
+stretch_mode = 4
+
+[node name="Control2" type="Control" parent="VSplitContainer/ScaledPreview"]
+layout_mode = 2
+size_flags_horizontal = 3
