@@ -29,9 +29,8 @@ static func markup_check_is_root_empty(markup: String) -> bool:
 	return describes_svg and parser.read() == OK and parser.get_node_type() == XMLParser.NODE_ELEMENT_END and parser.get_node_name() == "svg"
 
 ## Creates markup for an SVG that only represents a rectangular cutout of the original.
-## [br]
-## Returns an array like [code][markup, inner_markup][/code]. The inner markup can then be fed back into [param cached_inner_markup], assuming the inner
-## contents of [param root_element] haven't changed.
+## Returns a [code][markup, inner_markup][/code] array. The inner markup can then be fed back into [param cached_inner_markup],
+## assuming the inner contents of [param root_element] haven't changed, for improved performance.
 static func root_cutout_to_markup(root_element: ElementRoot, custom_width: float, custom_height: float, custom_viewbox: Rect2, cached_inner_markup: String = "") -> PackedStringArray:
 	# Build a new root element, set it up, and convert it to markup.
 	var new_root_element: ElementRoot = root_element.duplicate(false)
