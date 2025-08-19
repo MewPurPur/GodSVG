@@ -4,6 +4,7 @@ extends PanelContainer
 signal selected
 signal remove_requested
 signal texture_changed
+signal texture_size_changed
 
 
 @onready var select_button: Button = %SelectButton
@@ -25,6 +26,7 @@ var texture_size: int:
 		if spin_box:
 			spin_box.set_value_no_signal(texture_size)
 		_update_texture()
+		texture_size_changed.emit()
 
 
 func _ready() -> void:
@@ -54,7 +56,3 @@ func _get_tex_scale(default_size: Vector2i) -> float:
 	var max_dim_size := texture_size as int
 	
 	return max_dim_size / float(default_size[default_size.max_axis_index()])
-
-
-func set_texture_size(new_size: int) -> void:
-	texture_size = new_size

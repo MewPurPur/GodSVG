@@ -540,9 +540,6 @@ const MAX_FPS_MAX = 600
 			external_call(HandlerGUI.update_window_title)
 
 
-@export var icon_view_sizes: PackedInt32Array
-
-
 # Session
 
 const MAX_SNAP = 16384
@@ -1109,6 +1106,12 @@ func get_layout_part_index(part: Utils.LayoutPart) -> int:
 		# Main part
 		if left_vertical_splitter_offset != new_value:
 			left_vertical_splitter_offset = new_value
+			emit_changed()
+
+@export var icon_view_sizes: PackedInt64Array = [16, 24, 32, 48, 64]:
+	set(new_value):
+		if icon_view_sizes != new_value:
+			icon_view_sizes = new_value
 			emit_changed()
 
 

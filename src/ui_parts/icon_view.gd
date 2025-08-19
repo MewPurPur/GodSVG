@@ -22,17 +22,26 @@ func _ready() -> void:
 	reset_button.pressed.connect(reset_tiles)
 	add_new_size_button.pressed.connect(_add_new_tile)
 	State.svg_changed.connect(update_tiles)
-	reset_tiles()
+	visibility_changed.connect(func(): if visible and needs_update: update_tiles())
+	load_tiles()
 	await get_tree().process_frame
 	update_tiles()
-	visibility_changed.connect(func(): if visible and needs_update: update_tiles())
+
+
+func load_tiles() -> void:
+	for child in icon_view_tile_container.get_children():
+		child.queue_free()
+	scaled_preview.hide()
+	for new_size in Configs.savedata.icon_view_sizes:
+		icon_view_tile_container.add_child(_create_new_tile(new_size))
+	update_tiles.call_deferred()
 
 
 func reset_tiles() -> void:
 	for child in icon_view_tile_container.get_children():
 		child.queue_free()
 	scaled_preview.hide()
-	for new_size in [16, 24, 32, 48, 64]:
+	for new_size in PackedInt64Array([16, 24, 32, 48, 64]):
 		icon_view_tile_container.add_child(_create_new_tile(new_size))
 	update_tiles.call_deferred()
 
@@ -44,8 +53,13 @@ func _add_new_tile() -> void:
 
 func _create_new_tile(new_size: int) -> Tile:
 	var tile := TileScene.instantiate()
-	tile.set_texture_size(new_size)
-	tile.remove_requested.connect(func(): tile.queue_free())
+	tile.texture_size = new_size
+	tile.remove_requested.connect(func():
+		# queue_free doesn't immediately remove the child?
+		icon_view_tile_container.remove_child(tile)
+		tile.queue_free()
+		_update_savedata()
+	)
 	tile.selected.connect(func():
 		selected_tile = tile.get_index()
 		texture_rect.texture = tile.texture
@@ -57,10 +71,12 @@ func _create_new_tile(new_size: int) -> Tile:
 			texture_rect.texture = tile.texture
 			_update_texture_rect_size()
 	)
+	tile.texture_size_changed.connect(_update_savedata)
 	return tile
 
 
 func update_tiles() -> void:
+	_update_savedata()
 	if not visible:
 		needs_update = true
 		return
@@ -83,3 +99,10 @@ func sync_theming() -> void:
 	color = Color.TRANSPARENT
 	border_color = ThemeUtils.subtle_panel_border_color
 	title_color = ThemeUtils.basic_panel_inner_color
+
+
+func _update_savedata() -> void:
+	var sizes: PackedInt64Array
+	for child: Tile in icon_view_tile_container.get_children():
+		sizes.append(child.texture_size)
+	Configs.savedata.icon_view_sizes = sizes
