@@ -113,19 +113,20 @@ func update_layout() -> void:
 func _create_part_box(layout_parts: Array[Utils.LayoutPart]) -> Control:
 	var vbox := VBoxContainer.new()
 	vbox.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	var layout_part_container := LayoutPartContainer.new()
+	layout_part_container.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	
 	var layout_nodes: Dictionary[Utils.LayoutPart, Node] = {}
 	for part in layout_parts:
 		var layout_node := create_layout_node(part)
 		layout_nodes[part] = layout_node
 		layout_node.hide()
-		vbox.add_child(layout_node)
+		layout_part_container.add_child(layout_node)
 	
 	if layout_parts.size() > 1:
 		var buttons_hbox := HBoxContainer.new()
 		buttons_hbox.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 		vbox.add_child(buttons_hbox)
-		vbox.move_child(buttons_hbox, 0)
 		var btn_group := ButtonGroup.new()
 		for i in layout_parts.size():
 			var part := layout_parts[i]
@@ -153,6 +154,8 @@ func _create_part_box(layout_parts: Array[Utils.LayoutPart]) -> Control:
 				layout_nodes[part].show()
 	else:
 		layout_nodes[layout_parts[0]].show()
+	
+	vbox.add_child(layout_part_container)
 	return vbox
 
 func _on_horizontal_splitter_dragged(offset: int) -> void:
@@ -169,3 +172,19 @@ func create_layout_node(layout_part: Utils.LayoutPart) -> Node:
 		Utils.LayoutPart.VIEWPORT: return ViewportScene.instantiate()
 		Utils.LayoutPart.ICON_VIEW: return IconViewScene.instantiate()
 		_: return Control.new()
+
+
+class LayoutPartContainer extends Container:
+	func _notification(what: int) -> void:
+		if what == NOTIFICATION_SORT_CHILDREN:
+			var child_rect := Rect2(Vector2.ZERO, size)
+			for child in get_children():
+				if child is Control:
+					fit_child_in_rect(child, child_rect)
+	
+	func _get_minimum_size() -> Vector2:
+		var max_size := Vector2()
+		for child in get_children():
+			if child is Control:
+				max_size = max_size.max(child.get_combined_minimum_size())
+		return max_size

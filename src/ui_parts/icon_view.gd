@@ -29,8 +29,7 @@ func _ready() -> void:
 
 
 func load_tiles() -> void:
-	for child in icon_view_tile_container.get_children():
-		child.queue_free()
+	_delete_tiles()
 	scaled_preview.hide()
 	for new_size in Configs.savedata.icon_view_sizes:
 		icon_view_tile_container.add_child(_create_new_tile(new_size))
@@ -38,8 +37,7 @@ func load_tiles() -> void:
 
 
 func reset_tiles() -> void:
-	for child in icon_view_tile_container.get_children():
-		child.queue_free()
+	_delete_tiles()
 	scaled_preview.hide()
 	for new_size in PackedInt64Array([16, 24, 32, 48, 64]):
 		icon_view_tile_container.add_child(_create_new_tile(new_size))
@@ -56,8 +54,7 @@ func _create_new_tile(new_size: int) -> Tile:
 	tile.texture_size = new_size
 	tile.remove_requested.connect(func():
 		# queue_free doesn't immediately remove the child?
-		icon_view_tile_container.remove_child(tile)
-		tile.queue_free()
+		_delete_tile(tile)
 		_update_savedata()
 	)
 	tile.selected.connect(func():
@@ -99,6 +96,17 @@ func sync_theming() -> void:
 	color = Color.TRANSPARENT
 	border_color = ThemeUtils.subtle_panel_border_color
 	title_color = ThemeUtils.basic_panel_inner_color
+
+
+func _delete_tiles() -> void:
+	for child in icon_view_tile_container.get_children():
+		icon_view_tile_container.remove_child(child)
+		child.queue_free()
+
+
+func _delete_tile(tile: Tile) -> void:
+	icon_view_tile_container.remove_child(tile)
+	tile.queue_free()
 
 
 func _update_savedata() -> void:

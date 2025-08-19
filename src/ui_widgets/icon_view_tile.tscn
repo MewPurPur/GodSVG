@@ -1,12 +1,12 @@
-[gd_scene load_steps=5 format=3 uid="uid://18urhivvngk"]
+[gd_scene load_steps=4 format=3 uid="uid://18urhivvngk"]
 
 [ext_resource type="Script" uid="uid://do0fpk0t0rt6" path="res://src/ui_widgets/icon_view_tile.gd" id="1_abkju"]
-[ext_resource type="Texture2D" uid="uid://barsurula6j8n" path="res://assets/logos/icon.svg" id="2_qe8f5"]
 [ext_resource type="Texture2D" uid="uid://cj5x2ti8150ja" path="res://assets/icons/Delete.svg" id="4_jtilr"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_le2pg"]
 
 [node name="IconViewTile" type="PanelContainer"]
+size_flags_horizontal = 3
 theme_override_styles/panel = SubResource("StyleBoxEmpty_le2pg")
 script = ExtResource("1_abkju")
 
@@ -35,7 +35,6 @@ mouse_filter = 2
 unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 2
-texture = ExtResource("2_qe8f5")
 stretch_mode = 2
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
@@ -44,6 +43,7 @@ mouse_filter = 2
 
 [node name="SpinBox" type="SpinBox" parent="MarginContainer/VBoxContainer/HBoxContainer"]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(120, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 min_value = 1.0
@@ -54,5 +54,8 @@ allow_greater = true
 [node name="RemoveButton" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
+tooltip_text = "Delete this icon preview"
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_type_variation = &"FlatButton"
 icon = ExtResource("4_jtilr")
-flat = true
