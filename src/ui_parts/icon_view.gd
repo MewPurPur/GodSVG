@@ -73,7 +73,10 @@ func update_tiles() -> void:
 
 
 func _update_texture_rect_size() -> void:
-	texture_rect.custom_minimum_size = texture_rect.texture.get_size() * 2
+	if not texture_rect.texture:
+		scaled_preview.hide()
+		return
+	texture_rect.custom_minimum_size = texture_rect.texture.get_size()
 
 
 func sync_theming() -> void:
