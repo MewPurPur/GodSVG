@@ -540,6 +540,9 @@ const MAX_FPS_MAX = 600
 			external_call(HandlerGUI.update_window_title)
 
 
+@export var icon_view_sizes: PackedInt32Array
+
+
 # Session
 
 const MAX_SNAP = 16384
