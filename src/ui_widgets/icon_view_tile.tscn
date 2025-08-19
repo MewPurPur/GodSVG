@@ -1,6 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://18urhivvngk"]
+[gd_scene load_steps=5 format=3 uid="uid://18urhivvngk"]
 
 [ext_resource type="Script" uid="uid://do0fpk0t0rt6" path="res://src/ui_widgets/icon_view_tile.gd" id="1_abkju"]
+[ext_resource type="PackedScene" uid="uid://dad7fkhmsooc6" path="res://src/ui_widgets/number_edit.tscn" id="2_le2pg"]
 [ext_resource type="Texture2D" uid="uid://cj5x2ti8150ja" path="res://assets/icons/Delete.svg" id="4_jtilr"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_le2pg"]
@@ -13,6 +14,8 @@ script = ExtResource("1_abkju")
 [node name="SelectButton" type="Button" parent="."]
 unique_name_in_owner = true
 layout_mode = 2
+focus_mode = 0
+mouse_default_cursor_shape = 2
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2
@@ -41,15 +44,18 @@ stretch_mode = 2
 layout_mode = 2
 mouse_filter = 2
 
-[node name="SpinBox" type="SpinBox" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="NumberEdit" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("2_le2pg")]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(120, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 min_value = 1.0
-value = 1.0
-rounded = true
-allow_greater = true
+allow_lower = false
+is_float = false
+
+[node name="ScaleLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "(2x)"
 
 [node name="RemoveButton" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer"]
 unique_name_in_owner = true
