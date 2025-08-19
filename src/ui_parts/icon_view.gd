@@ -10,10 +10,11 @@ const TileScene = preload("res://src/ui_widgets/icon_view_tile.tscn")
 @onready var reset_button: Button = %ResetButton
 @onready var texture_rect: TextureRect = %TextureRect
 @onready var scaled_preview: HBoxContainer = %ScaledPreview
+@onready var clear_button: Button = %ClearButton
 
 
 var needs_update := false
-var selected_tile: int = -1
+var selected_tile: Tile = null
 
 
 func _ready() -> void:
@@ -21,6 +22,7 @@ func _ready() -> void:
 	sync_theming()
 	reset_button.pressed.connect(reset_tiles)
 	add_new_size_button.pressed.connect(_add_new_tile)
+	clear_button.pressed.connect(reset_tiles.bind([]))
 	State.svg_changed.connect(update_tiles)
 	visibility_changed.connect(func(): if visible and needs_update: update_tiles())
 	load_tiles()
@@ -35,10 +37,10 @@ func load_tiles() -> void:
 	update_tiles.call_deferred()
 
 
-func reset_tiles() -> void:
+func reset_tiles(sizes: PackedInt64Array = [16, 24, 32, 48, 64]) -> void:
 	_delete_tiles()
 	scaled_preview.hide()
-	for new_size in PackedInt64Array([16, 24, 32, 48, 64]):
+	for new_size in sizes:
 		icon_view_tile_container.add_child(_create_new_tile(new_size))
 	update_tiles.call_deferred()
 
@@ -53,23 +55,20 @@ func _create_new_tile(new_size: int) -> Tile:
 	tile.texture_size = new_size
 	tile.remove_requested.connect(func():
 		# queue_free doesn't immediately remove the child?
-		if tile.get_index() == selected_tile:
-			selected_tile = -1
+		if selected_tile == tile:
+			selected_tile = null
 			scaled_preview.hide()
-		else:
-			if selected_tile > tile.get_index():
-				selected_tile -= 1
 		_delete_tile(tile)
 		_update_savedata()
 	)
 	tile.selected.connect(func():
-		selected_tile = tile.get_index()
+		selected_tile = tile
 		texture_rect.texture = tile.texture
 		scaled_preview.show()
 		_update_texture_rect_size()
 	)
 	tile.texture_changed.connect(func():
-		if tile.get_index() == selected_tile:
+		if selected_tile == tile:
 			texture_rect.texture = tile.texture
 			_update_texture_rect_size()
 	)
@@ -85,8 +84,8 @@ func update_tiles() -> void:
 	var svg_text := SVGParser.root_to_export_markup(State.root_element)
 	for child: Tile in icon_view_tile_container.get_children():
 		child.svg_markup = State.svg_text
-	if selected_tile >= 0 and selected_tile < icon_view_tile_container.get_child_count():
-		texture_rect.texture = icon_view_tile_container.get_child(selected_tile).texture
+	if selected_tile:
+		texture_rect.texture = selected_tile.texture
 		_update_texture_rect_size()
 
 
@@ -104,6 +103,7 @@ func sync_theming() -> void:
 
 
 func _delete_tiles() -> void:
+	selected_tile = null
 	for child in icon_view_tile_container.get_children():
 		icon_view_tile_container.remove_child(child)
 		child.queue_free()

@@ -1,7 +1,8 @@
-[gd_scene load_steps=6 format=3 uid="uid://ck1u5onyy0cdc"]
+[gd_scene load_steps=7 format=3 uid="uid://ck1u5onyy0cdc"]
 
 [ext_resource type="Script" uid="uid://dpn15qyr7xsds" path="res://src/ui_parts/icon_view.gd" id="1_dyte2"]
 [ext_resource type="Texture2D" uid="uid://eif2ioi0mw17" path="res://assets/icons/Plus.svg" id="2_dyte2"]
+[ext_resource type="Texture2D" uid="uid://dw7ho4df0uh4p" path="res://assets/icons/Clear.svg" id="4_6rnci"]
 [ext_resource type="Texture2D" uid="uid://cvh3kwbucf2n1" path="res://assets/icons/Reload.svg" id="4_dyte2"]
 [ext_resource type="PackedScene" uid="uid://18urhivvngk" path="res://src/ui_widgets/icon_view_tile.tscn" id="4_gn3ji"]
 [ext_resource type="Texture2D" uid="uid://barsurula6j8n" path="res://assets/logos/icon.svg" id="4_rq20x"]
@@ -34,6 +35,10 @@ mouse_default_cursor_shape = 2
 theme_type_variation = &"IconButton"
 icon = ExtResource("2_dyte2")
 
+[node name="Control" type="Control" parent="ActionContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
 [node name="ResetButton" type="Button" parent="ActionContainer"]
 unique_name_in_owner = true
 layout_mode = 2
@@ -45,7 +50,19 @@ mouse_default_cursor_shape = 2
 theme_type_variation = &"IconButton"
 icon = ExtResource("4_dyte2")
 
+[node name="ClearButton" type="Button" parent="ActionContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+tooltip_text = "Clear all icon sizes"
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_type_variation = &"IconButton"
+icon = ExtResource("4_6rnci")
+
 [node name="VSplitContainer" type="VSplitContainer" parent="."]
+custom_minimum_size = Vector2(0, 80)
 layout_mode = 2
 split_offset = 250
 
