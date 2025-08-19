@@ -50,6 +50,7 @@ func _update_texture() -> void:
 	texture_rect.texture = tex
 	texture_changed.emit()
 	texture = tex
+	spin_box.suffix = "(x%.1f)" % tex_size
 
 
 func _get_tex_scale(default_size: Vector2i) -> float:

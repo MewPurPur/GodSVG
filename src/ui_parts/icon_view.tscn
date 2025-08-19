@@ -28,6 +28,10 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
+tooltip_text = "Add a new icon preview"
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_type_variation = &"IconButton"
 icon = ExtResource("2_dyte2")
 
 [node name="ResetButton" type="Button" parent="ActionContainer"]
@@ -35,6 +39,10 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
+tooltip_text = "Reset the icon previews to the default sizes (16, 24, 32, 48, and 64)"
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_type_variation = &"IconButton"
 icon = ExtResource("4_dyte2")
 
 [node name="VSplitContainer" type="VSplitContainer" parent="."]
@@ -65,6 +73,7 @@ layout_mode = 2
 [node name="ScaledPreview" type="HBoxContainer" parent="VSplitContainer"]
 unique_name_in_owner = true
 visible = false
+custom_minimum_size = Vector2(0, 60)
 layout_mode = 2
 
 [node name="Control" type="Control" parent="VSplitContainer/ScaledPreview"]
@@ -77,7 +86,7 @@ texture_filter = 1
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 texture = ExtResource("4_rq20x")
-expand_mode = 3
+expand_mode = 2
 stretch_mode = 4
 
 [node name="Control2" type="Control" parent="VSplitContainer/ScaledPreview"]
