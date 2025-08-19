@@ -13,7 +13,7 @@ const TileScene = preload("res://src/ui_widgets/icon_view_tile.tscn")
 
 
 var needs_update := false
-var selected_tile: int
+var selected_tile: int = -1
 
 
 func _ready() -> void:
@@ -24,7 +24,6 @@ func _ready() -> void:
 	State.svg_changed.connect(update_tiles)
 	visibility_changed.connect(func(): if visible and needs_update: update_tiles())
 	load_tiles()
-	await get_tree().process_frame
 	update_tiles()
 
 
@@ -54,6 +53,12 @@ func _create_new_tile(new_size: int) -> Tile:
 	tile.texture_size = new_size
 	tile.remove_requested.connect(func():
 		# queue_free doesn't immediately remove the child?
+		if tile.get_index() == selected_tile:
+			selected_tile = -1
+			scaled_preview.hide()
+		else:
+			if selected_tile > tile.get_index():
+				selected_tile -= 1
 		_delete_tile(tile)
 		_update_savedata()
 	)
