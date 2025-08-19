@@ -1,10 +1,10 @@
 # This script manages contour drawing and handles.
 extends Control
 
-var normal_handle_textures: Dictionary[Handle.Display, Texture2D]
-var hovered_handle_textures: Dictionary[Handle.Display, Texture2D]
-var selected_handle_textures: Dictionary[Handle.Display, Texture2D]
-var hovered_selected_handle_textures: Dictionary[Handle.Display, Texture2D]
+var handle_textures: ImageTexture
+var atlas_textures: Dictionary[Utils.InteractionType, Dictionary] = {}
+var handle_size: float
+var half_handle_size: float
 
 const stroke_shader = preload("res://src/shaders/animated_stroke.gdshader")
 const stroke_shader_static = preload("res://src/shaders/animated_stroke_static.gdshader")
@@ -40,38 +40,38 @@ func render_handle_textures() -> void:
 	hovered_color = Configs.savedata.handle_hovered_color
 	selected_color = Configs.savedata.handle_selected_color
 	hovered_selected_color = Configs.savedata.handle_hovered_selected_color
-	var inside_str := "#" + Configs.savedata.handle_inner_color.to_html(false)
-	var normal_str := "#" + Configs.savedata.handle_color.to_html(false)
-	var hovered_str := "#" + Configs.savedata.handle_hovered_color.to_html(false)
-	var selected_str := "#" + Configs.savedata.handle_selected_color.to_html(false)
-	var hovered_selected_str := "#" + Configs.savedata.handle_hovered_selected_color.to_html(false)
-	var s := Configs.savedata.handle_size  # Shorthand
+	var inner_color_string := "#" + Configs.savedata.handle_inner_color.to_html(false)
+	
+	var outer_color_strings: PackedStringArray = [
+		"#" + Configs.savedata.handle_color.to_html(false),
+		"#" + Configs.savedata.handle_hovered_color.to_html(false),
+		"#" + Configs.savedata.handle_selected_color.to_html(false),
+		"#" + Configs.savedata.handle_hovered_selected_color.to_html(false),
+	]
+	
+	var atlas_svg_markup := """<svg width="20" height="40" xmlns="http://www.w3.org/2000/svg">"""
+	for i in outer_color_strings.size():
+		var outer_color_string := outer_color_strings[i]
+		atlas_svg_markup += """<circle cx="5" cy="%d" r="3.25" stroke-width="1.5" fill="%s" stroke="%s"/>""" % [5 + i * 10, inner_color_string, outer_color_string]
+		atlas_svg_markup += """<circle cx="15" cy="%d" r="2.4" stroke-width="1.2" fill="%s" stroke="%s"/>""" % [5 + i * 10, inner_color_string, outer_color_string]
+	atlas_svg_markup += "</svg>"
+	
 	var img := Image.new()
+	img.load_svg_from_string(atlas_svg_markup, Configs.savedata.handle_size)
+	img.fix_alpha_edges()
+	handle_textures = ImageTexture.create_from_image(img)
 	
-	var handles_dict: Dictionary[Handle.Display, String] = {
-		Handle.Display.BIG: """<svg width="%s" height="%s"
-				xmlns="http://www.w3.org/2000/svg"><circle cx="%s" cy="%s" r="%s"
-				fill="%s" stroke="%s" stroke-width="%s"/></svg>""" % [s * 10, s * 10, s * 5, s * 5, s * 3.25, "%s", "%s", s * 1.5],
-		Handle.Display.SMALL: """<svg width="%s" height="%s"
-			xmlns="http://www.w3.org/2000/svg"><circle cx="%s" cy="%s" r="%s"
-			fill="%s" stroke="%s" stroke-width="%s"/></svg>""" % [s * 8, s * 8, s * 4, s * 4, s * 2.4, "%s", "%s", s * 1.2],
-	}
-	
-	const CONST_ARR: Array[Handle.Display] = [Handle.Display.BIG, Handle.Display.SMALL]
-	for handle_type in CONST_ARR:
-		var handle_type_svg := handles_dict[handle_type]
-		img.load_svg_from_string(handle_type_svg % [inside_str, normal_str])
-		img.fix_alpha_edges()
-		normal_handle_textures[handle_type] = ImageTexture.create_from_image(img)
-		img.load_svg_from_string(handle_type_svg % [inside_str, hovered_str])
-		img.fix_alpha_edges()
-		hovered_handle_textures[handle_type] = ImageTexture.create_from_image(img)
-		img.load_svg_from_string(handle_type_svg % [inside_str, selected_str])
-		img.fix_alpha_edges()
-		selected_handle_textures[handle_type] = ImageTexture.create_from_image(img)
-		img.load_svg_from_string(handle_type_svg % [inside_str, hovered_selected_str])
-		img.fix_alpha_edges()
-		hovered_selected_handle_textures[handle_type] = ImageTexture.create_from_image(img)
+	handle_size = Configs.savedata.handle_size * 10.0
+	half_handle_size = handle_size / 2.0
+	atlas_textures.clear()
+	for i in Handle.Display.size():
+		for ii in Utils.InteractionType.size():
+			var atlas_texture := AtlasTexture.new()
+			atlas_texture.atlas = handle_textures
+			atlas_texture.region = Rect2(i * handle_size, ii * handle_size, handle_size, handle_size)
+			if not atlas_textures.has(ii):
+				atlas_textures[ii] = {}
+			atlas_textures[ii][i] = atlas_texture
 	queue_redraw()
 
 func sync_selection_rectangle_shader() -> void:
@@ -697,19 +697,18 @@ func _draw() -> void:
 	RenderingServer.canvas_item_clear(surface)
 	RenderingServer.canvas_item_clear(selections_surface)
 	
-	draw_objects_of_interaction_type(normal_color, normal_polylines, normal_multiline, normal_handles, normal_handle_textures)
-	draw_objects_of_interaction_type(hovered_color, hovered_polylines, hovered_multiline, hovered_handles, hovered_handle_textures)
-	draw_objects_of_interaction_type(selected_color, selected_polylines, selected_multiline, selected_handles, selected_handle_textures)
+	draw_objects_of_interaction_type(normal_color, normal_polylines, normal_multiline, normal_handles, atlas_textures[Utils.InteractionType.NONE])
+	draw_objects_of_interaction_type(hovered_color, hovered_polylines, hovered_multiline, hovered_handles, atlas_textures[Utils.InteractionType.HOVERED])
+	draw_objects_of_interaction_type(selected_color, selected_polylines, selected_multiline, selected_handles, atlas_textures[Utils.InteractionType.SELECTED])
 	draw_objects_of_interaction_type(hovered_selected_color, hovered_selected_polylines, hovered_selected_multiline, hovered_selected_handles,
-			hovered_selected_handle_textures)
+			atlas_textures[Utils.InteractionType.HOVERED_SELECTED])
 	
 	for idx in selection_rects.size():
 		RenderingServer.canvas_item_add_set_transform(selections_surface, selection_transforms[idx])
 		RenderingServer.canvas_item_add_rect(selections_surface, selection_rects[idx], Color.WHITE)
 
-func draw_objects_of_interaction_type(color: Color, polylines: Array[PackedVector2Array],
-multiline: PackedVector2Array, handles_array: Array[Handle],
-handle_texture_dictionary: Dictionary[Handle.Display, Texture2D]) -> void:
+func draw_objects_of_interaction_type(color: Color, polylines: Array[PackedVector2Array], multiline: PackedVector2Array,
+handles_array: Array[Handle], atlas_textures_dict: Dictionary) -> void:
 	for polyline in polylines:
 		var color_array := PackedColorArray()
 		color_array.resize(polyline.size())
@@ -725,8 +724,8 @@ handle_texture_dictionary: Dictionary[Handle.Display, Texture2D]) -> void:
 		color_array.fill(Color(color, TANGENT_ALPHA))
 		RenderingServer.canvas_item_add_multiline(surface, multiline, color_array, TANGENT_WIDTH, true)
 	for handle in handles_array:
-		var texture := handle_texture_dictionary[handle.display_mode]
-		texture.draw(surface, canvas.root_element.canvas_to_world(handle.transform * handle.pos) * canvas.camera_zoom - texture.get_size() / 2)
+		atlas_textures_dict[handle.display_mode].draw(surface,
+				canvas.root_element.canvas_to_world(handle.transform * handle.pos) * canvas.camera_zoom - Vector2(half_handle_size, half_handle_size))
 
 
 var dragged_handle: Handle = null

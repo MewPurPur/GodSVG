@@ -41,6 +41,7 @@ const _action_categories_dict: Dictionary[String, Dictionary] = {
 		"zoom_reset": true,
 		"toggle_fullscreen": true,
 		"debug": false,
+		"advanced_debug": false,
 		"view_show_grid": true,
 		"view_show_handles": true,
 		"view_rasterized_svg": true,
@@ -104,7 +105,7 @@ static func get_action_icon(action: String) -> Texture2D:
 		"find": return load("res://assets/icons/Search.svg")
 		"zoom_in": return load("res://assets/icons/Plus.svg")
 		"zoom_out": return load("res://assets/icons/Minus.svg")
-		"debug": return load("res://assets/icons/Debug.svg")
+		"debug", "advanced_debug": return load("res://assets/icons/Debug.svg")
 		"toggle_snap": return load("res://assets/icons/Snap.svg")
 		"quit": return load("res://assets/icons/Quit.svg")
 		"open_settings": return load("res://assets/icons/Gear.svg")

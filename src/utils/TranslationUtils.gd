@@ -64,6 +64,7 @@ static func get_action_description(action_name: String, for_button := false) -> 
 		"view_show_reference": return Translator.translate("Show reference image")
 		"view_overlay_reference": return Translator.translate("Overlay reference image")
 		"debug": return Translator.translate("View debug information")
+		"advanced_debug": return Translator.translate("View advanced debug information")
 		"move_relative": return get_path_command_description("m")
 		"move_absolute": return get_path_command_description("M")
 		"line_relative": return get_path_command_description("l")

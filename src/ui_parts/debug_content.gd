@@ -1,19 +1,28 @@
 extends MarginContainer
 
+var advanced_mode := false
+
 @onready var debug_label: Label = $DebugContainer/DebugLabel
 @onready var input_debug_label: Label = $DebugContainer/InputDebugLabel
 @onready var debug_container: VBoxContainer = $DebugContainer
 
 func _ready() -> void:
 	var shortcuts := ShortcutsRegistration.new()
-	shortcuts.add_shortcut("debug", toggle_debug_visibility)
+	shortcuts.add_shortcut("debug", toggle_debug)
+	shortcuts.add_shortcut("advanced_debug", toggle_debug.bind(true))
 	HandlerGUI.register_shortcuts(self, shortcuts)
 	
 	set_debug_visibility(false)
 	get_window().window_input.connect(_update_input_debug)
 
-func toggle_debug_visibility() -> void:
-	set_debug_visibility(not debug_container.visible)
+func toggle_debug(advanced := false) -> void:
+	if advanced and not advanced_mode:
+		advanced_mode = true
+		set_debug_visibility(true)
+	else:
+		if not advanced:
+			advanced_mode = false
+		set_debug_visibility(not debug_container.visible)
 
 func set_debug_visibility(visibility: bool) -> void:
 	debug_container.visible = visibility
@@ -26,9 +35,20 @@ func update_debug() -> void:
 	var debug_text := ""
 	debug_text += "FPS: %d\n" % Performance.get_monitor(Performance.TIME_FPS)
 	debug_text += "Static Mem: %s\n" % String.humanize_size(int(Performance.get_monitor(Performance.MEMORY_STATIC)))
+	
+	debug_text += "Objects: %d\n" % Performance.get_monitor(Performance.OBJECT_COUNT)
 	debug_text += "Nodes: %d\n" % Performance.get_monitor(Performance.OBJECT_NODE_COUNT)
 	debug_text += "Stray nodes: %d\n" % Performance.get_monitor(Performance.OBJECT_ORPHAN_NODE_COUNT)
-	debug_text += "Objects: %d\n" % Performance.get_monitor(Performance.OBJECT_COUNT)
+	
+	if advanced_mode:
+		debug_text += "Resources: %d\n" % Performance.get_monitor(Performance.OBJECT_RESOURCE_COUNT)
+		debug_text += "Total Objects Drawn: %d\n" % Performance.get_monitor(Performance.RENDER_TOTAL_OBJECTS_IN_FRAME)
+		debug_text += "Total Primitives Drawn: %d\n" % Performance.get_monitor(Performance.RENDER_TOTAL_PRIMITIVES_IN_FRAME)
+		debug_text += "Total Draw Calls: %d\n" % Performance.get_monitor(Performance.RENDER_TOTAL_DRAW_CALLS_IN_FRAME)
+		debug_text += "Video Mem: %s\n" % String.humanize_size(int(Performance.get_monitor(Performance.RENDER_VIDEO_MEM_USED)))
+		debug_text += "Texture Mem: %s\n" % String.humanize_size(int(Performance.get_monitor(Performance.RENDER_TEXTURE_MEM_USED)))
+		debug_text += "Buffer Mem: %s\n" % String.humanize_size(int(Performance.get_monitor(Performance.RENDER_BUFFER_MEM_USED)))
+	
 	debug_label.text = debug_text
 	# Set up the next update if the container is still visible.
 	if visible:
