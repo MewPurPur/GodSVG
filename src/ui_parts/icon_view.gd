@@ -12,6 +12,7 @@ const TileScene = preload("res://src/ui_widgets/icon_view_tile.tscn")
 @onready var scaled_preview: Control = %ScaledPreview
 @onready var clear_button: Button = %ClearButton
 @onready var size_label: Label = %SizeLabel
+@onready var split_container: SplitContainer = %SplitContainer
 
 
 var needs_update := false
@@ -26,6 +27,7 @@ func _ready() -> void:
 	clear_button.pressed.connect(reset_tiles.bind([]))
 	State.svg_changed.connect(update_tiles)
 	visibility_changed.connect(func(): if visible and needs_update: update_tiles())
+	split_container.resized.connect(func(): split_container.vertical = split_container.size.y * 2.0 > split_container.size.x)
 	load_tiles()
 	update_tiles()
 

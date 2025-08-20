@@ -1,10 +1,9 @@
-[gd_scene load_steps=6 format=3 uid="uid://ck1u5onyy0cdc"]
+[gd_scene load_steps=5 format=3 uid="uid://ck1u5onyy0cdc"]
 
 [ext_resource type="Script" uid="uid://dpn15qyr7xsds" path="res://src/ui_parts/icon_view.gd" id="1_dyte2"]
 [ext_resource type="Texture2D" uid="uid://eif2ioi0mw17" path="res://assets/icons/Plus.svg" id="2_dyte2"]
 [ext_resource type="Texture2D" uid="uid://dw7ho4df0uh4p" path="res://assets/icons/Clear.svg" id="4_6rnci"]
 [ext_resource type="Texture2D" uid="uid://cvh3kwbucf2n1" path="res://assets/icons/Reload.svg" id="4_dyte2"]
-[ext_resource type="Texture2D" uid="uid://barsurula6j8n" path="res://assets/logos/icon.svg" id="4_rq20x"]
 
 [node name="IconView" type="Container"]
 anchors_preset = -1
@@ -60,17 +59,19 @@ mouse_default_cursor_shape = 2
 theme_type_variation = &"IconButton"
 icon = ExtResource("4_6rnci")
 
-[node name="VSplitContainer" type="VSplitContainer" parent="."]
+[node name="SplitContainer" type="SplitContainer" parent="."]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 80)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 split_offset = 250
+vertical = true
 
-[node name="ScrollContainer" type="ScrollContainer" parent="VSplitContainer"]
+[node name="ScrollContainer" type="ScrollContainer" parent="SplitContainer"]
 layout_mode = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="VSplitContainer/ScrollContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="SplitContainer/ScrollContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -79,51 +80,54 @@ theme_override_constants/margin_top = 3
 theme_override_constants/margin_right = 3
 theme_override_constants/margin_bottom = 3
 
-[node name="IconViewTileContainer" type="FlowContainer" parent="VSplitContainer/ScrollContainer/MarginContainer"]
+[node name="IconViewTileContainer" type="FlowContainer" parent="SplitContainer/ScrollContainer/MarginContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="ScaledPreview" type="PanelContainer" parent="VSplitContainer"]
+[node name="ScaledPreview" type="PanelContainer" parent="SplitContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"OutlinedPanel"
 
-[node name="ScrollContainer" type="ScrollContainer" parent="VSplitContainer/ScaledPreview"]
+[node name="ScrollContainer" type="ScrollContainer" parent="SplitContainer/ScaledPreview"]
 custom_minimum_size = Vector2(0, 60)
 layout_mode = 2
 horizontal_scroll_mode = 4
 vertical_scroll_mode = 0
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VSplitContainer/ScaledPreview/ScrollContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="SplitContainer/ScaledPreview/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="SizeLabel" type="Label" parent="SplitContainer/ScaledPreview/ScrollContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="SplitContainer/ScaledPreview/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/separation = 0
 
-[node name="Control" type="Control" parent="VSplitContainer/ScaledPreview/ScrollContainer/HBoxContainer"]
+[node name="Control" type="Control" parent="SplitContainer/ScaledPreview/ScrollContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="TextureRect" type="TextureRect" parent="VSplitContainer/ScaledPreview/ScrollContainer/HBoxContainer"]
+[node name="TextureRect" type="TextureRect" parent="SplitContainer/ScaledPreview/ScrollContainer/VBoxContainer/HBoxContainer"]
 unique_name_in_owner = true
 texture_filter = 1
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 3
-texture = ExtResource("4_rq20x")
 expand_mode = 2
 stretch_mode = 4
 
-[node name="Control2" type="Control" parent="VSplitContainer/ScaledPreview/ScrollContainer/HBoxContainer"]
+[node name="Control2" type="Control" parent="SplitContainer/ScaledPreview/ScrollContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
-
-[node name="SizeLabel" type="Label" parent="VSplitContainer/ScaledPreview"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 0
-text = "hi"
