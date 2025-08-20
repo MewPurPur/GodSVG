@@ -9,8 +9,9 @@ const TileScene = preload("res://src/ui_widgets/icon_view_tile.tscn")
 @onready var add_new_size_button: Button = %AddNewSizeButton
 @onready var reset_button: Button = %ResetButton
 @onready var texture_rect: TextureRect = %TextureRect
-@onready var scaled_preview: HBoxContainer = %ScaledPreview
+@onready var scaled_preview: Control = %ScaledPreview
 @onready var clear_button: Button = %ClearButton
+@onready var size_label: Label = %SizeLabel
 
 
 var needs_update := false
@@ -54,7 +55,6 @@ func _create_new_tile(new_size: int) -> Tile:
 	var tile := TileScene.instantiate()
 	tile.texture_size = new_size
 	tile.remove_requested.connect(func():
-		# queue_free doesn't immediately remove the child?
 		if selected_tile == tile:
 			selected_tile = null
 			scaled_preview.hide()
@@ -94,6 +94,7 @@ func _update_texture_rect_size() -> void:
 		scaled_preview.hide()
 		return
 	texture_rect.custom_minimum_size = texture_rect.texture.get_size()
+	size_label.text = selected_tile.texture_size_string
 
 
 func sync_theming() -> void:
@@ -110,6 +111,7 @@ func _delete_tiles() -> void:
 
 
 func _delete_tile(tile: Tile) -> void:
+	# queue_free doesn't immediately remove the child?
 	icon_view_tile_container.remove_child(tile)
 	tile.queue_free()
 
