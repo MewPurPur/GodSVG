@@ -147,11 +147,10 @@ func _sync() -> void:
 		presented_name = svg_file_path.get_file()
 		empty_unsaved = false
 		
-		if not fully_loaded:
+		if not fully_loaded or OS.has_feature("web"):
 			marked_unsaved = false
 		else:
-			var edited_text_parse_result := SVGParser.markup_to_root(
-					FileAccess.get_file_as_string(get_edited_file_path()))
+			var edited_text_parse_result := SVGParser.markup_to_root(FileAccess.get_file_as_string(get_edited_file_path()))
 			
 			if is_instance_valid(edited_text_parse_result.svg):
 				marked_unsaved = FileAccess.get_file_as_string(svg_file_path) != SVGParser.root_to_export_markup(edited_text_parse_result.svg)

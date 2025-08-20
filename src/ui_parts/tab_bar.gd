@@ -412,8 +412,7 @@ func _get_tooltip(at_position: Vector2) -> String:
 		
 		return ""
 	else:
-		# Return tab index as metadata so _make_custom_tooltip can determine the tab
-		# even if the mouse moves.
+		# Return tab index as metadata so _make_custom_tooltip can determine the tab even if the mouse moves.
 		return String.num_int64(hovered_tab_idx)
 
 func _make_custom_tooltip(for_text: String) -> Object:
