@@ -31,6 +31,7 @@ var texture_size: int:
 			number_edit.set_value(value, false)
 		_update_texture()
 		texture_size_changed.emit()
+var texture_size_string: String
 
 
 func _ready() -> void:
@@ -55,6 +56,7 @@ func _update_texture() -> void:
 	texture = tex
 	texture_changed.emit()
 	scale_label.text = "(%.1fx)" % tex_size
+	texture_size_string = "%sx%s %s" % [tex.get_width(), tex.get_height(), scale_label.text]
 
 
 func _get_tex_scale(default_size: Vector2i) -> float:
