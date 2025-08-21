@@ -516,14 +516,15 @@ func update_color_button() -> void:
 		return
 	reset_color_button.disabled = false
 	reset_color_button.begin_bulk_theme_override()
-	if display_color.get_luminance() < 0.455:
+	
+	var accent_hue_color := Color.from_hsv(ThemeUtils.accent_color.h, 1.0, 1.0)
+	
+	if display_color.get_luminance() < 0.5:
 		reset_color_button.add_theme_color_override("icon_hover_color", Color.WHITE)
-		reset_color_button.add_theme_color_override("icon_pressed_color",
-				Color(0.5, 1, 1))
+		reset_color_button.add_theme_color_override("icon_pressed_color", accent_hue_color.lerp(Color.WHITE, 0.76))
 	else:
 		reset_color_button.add_theme_color_override("icon_hover_color", Color.BLACK)
-		reset_color_button.add_theme_color_override("icon_pressed_color",
-				Color(0, 0.5, 0.5))
+		reset_color_button.add_theme_color_override("icon_pressed_color", accent_hue_color.lerp(Color.BLACK, 0.64))
 	reset_color_button.end_bulk_theme_override()
 
 func hex(col: Color) -> String:

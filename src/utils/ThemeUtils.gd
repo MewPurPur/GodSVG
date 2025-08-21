@@ -110,7 +110,7 @@ static func color_difference(color1: Color, color2: Color) -> float:
 static func recalculate_colors() -> void:
 	base_color = Configs.savedata.base_color
 	accent_color = Configs.savedata.accent_color
-	is_theme_dark = (base_color.get_luminance() < 0.455)
+	is_theme_dark = (base_color.get_luminance() < 0.5)
 	
 	max_contrast_color = Color("#fff") if is_theme_dark else Color("000")
 	extreme_theme_color = Color("#000") if is_theme_dark else Color("fff")
