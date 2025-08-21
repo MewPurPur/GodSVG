@@ -1146,6 +1146,11 @@ func get_layout_part_index(part: Utils.LayoutPart) -> int:
 				real_sizes.append(size)
 			icon_view_sizes = real_sizes
 			emit_changed()
+@export var icon_view_bg_override := Color.TRANSPARENT:
+	set(new_value):
+		if icon_view_bg_override != new_value:
+			icon_view_bg_override = new_value
+			emit_changed()
 
 
 # Utility
