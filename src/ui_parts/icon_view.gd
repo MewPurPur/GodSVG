@@ -152,5 +152,5 @@ func _update_preview_bg(new_value: String) -> void:
 	else:
 		colored_sb.bg_color = new_color
 		scaled_preview.add_theme_stylebox_override("panel", colored_sb)
-		size_label.add_theme_color_override("font_color", Color.from_ok_hsl(0, 0, 1 - new_color.ok_hsl_l))
+		size_label.add_theme_color_override("font_color", new_color.srgb_to_linear().inverted().linear_to_srgb())
 	Configs.savedata.icon_view_bg_override = new_color
