@@ -3,6 +3,8 @@ extends VTitledPanel
 
 const Tile = preload("res://src/ui_widgets/icon_view_tile.gd")
 const TileScene = preload("res://src/ui_widgets/icon_view_tile.tscn")
+const ColorSwatch = preload("res://src/ui_widgets/color_swatch.gd")
+const ColorEdit = preload("res://src/ui_widgets/color_edit.gd")
 
 
 @onready var icon_view_tile_container: Control = %IconViewTileContainer
@@ -13,6 +15,10 @@ const TileScene = preload("res://src/ui_widgets/icon_view_tile.tscn")
 @onready var clear_button: Button = %ClearButton
 @onready var size_label: Label = %SizeLabel
 @onready var split_container: SplitContainer = %SplitContainer
+@onready var transparent_color_swatch: ColorSwatch = %TransparentColorSwatch
+@onready var black_color_swatch: ColorSwatch = %BlackColorSwatch
+@onready var white_color_swatch: ColorSwatch = %WhiteColorSwatch
+@onready var color_edit: ColorEdit = %ColorEdit
 
 
 var needs_update := false
@@ -20,6 +26,16 @@ var selected_tile: Tile = null
 
 
 func _ready() -> void:
+	transparent_color_swatch.color = "currentColor"
+	transparent_color_swatch.current_color = Color.TRANSPARENT
+	black_color_swatch.color = "currentColor"
+	black_color_swatch.current_color = Color.BLACK
+	white_color_swatch.color = "currentColor"
+	white_color_swatch.current_color = Color.WHITE
+	for swatch: ColorSwatch in [transparent_color_swatch, black_color_swatch, white_color_swatch]:
+		swatch.pressed.connect(func(): color_edit.value = swatch.current_color.to_html())
+	color_edit.value_changed.connect(_update_preview_bg)
+	color_edit.value = Configs.savedata.icon_view_bg_override.to_html()
 	Configs.theme_changed.connect(sync_theming)
 	sync_theming()
 	reset_button.pressed.connect(reset_tiles)
@@ -96,6 +112,8 @@ func _update_texture_rect_size() -> void:
 		scaled_preview.hide()
 		return
 	texture_rect.custom_minimum_size = texture_rect.texture.get_size()
+	texture_rect.size_flags_stretch_ratio = float(texture_rect.texture.get_width()) / float(texture_rect.texture.get_height())
+	#texture_rect.custom_minimum_size.x = texture_rect.size.y * float(texture_rect.texture.get_width()) / float(texture_rect.texture.get_height())
 	size_label.text = selected_tile.texture_size_string
 
 
@@ -123,3 +141,16 @@ func _update_savedata() -> void:
 	for child: Tile in icon_view_tile_container.get_children():
 		sizes.append(child.texture_size)
 	Configs.savedata.icon_view_sizes = sizes
+
+
+var colored_sb := StyleBoxFlat.new()
+func _update_preview_bg(new_value: String) -> void:
+	var new_color := Color.html(new_value)
+	if new_color == Color.TRANSPARENT:
+		scaled_preview.remove_theme_stylebox_override("panel")
+		size_label.remove_theme_color_override("font_color")
+	else:
+		colored_sb.bg_color = new_color
+		scaled_preview.add_theme_stylebox_override("panel", colored_sb)
+		size_label.add_theme_color_override("font_color", Color.from_ok_hsl(0, 0, 1 - new_color.ok_hsl_l))
+	Configs.savedata.icon_view_bg_override = new_color
