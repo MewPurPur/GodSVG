@@ -1,14 +1,14 @@
 [remap]
 
 importer="svg"
-type="SVGTexture"
+type="DPITexture"
 uid="uid://dq1muwo84c6yv"
-path="res://.godot/imported/PatreonLogo.svg-936c5e07b71ef46c2ce08ed38c6f3f4b.svgtex"
+path="res://.godot/imported/PatreonLogo.svg-936c5e07b71ef46c2ce08ed38c6f3f4b.dpitex"
 
 [deps]
 
 source_file="res://assets/icons/foreign_logos/PatreonLogo.svg"
-dest_files=["res://.godot/imported/PatreonLogo.svg-936c5e07b71ef46c2ce08ed38c6f3f4b.svgtex"]
+dest_files=["res://.godot/imported/PatreonLogo.svg-936c5e07b71ef46c2ce08ed38c6f3f4b.dpitex"]
 
 [params]
 

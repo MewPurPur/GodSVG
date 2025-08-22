@@ -209,7 +209,7 @@ func _texture_update() -> void:
 	last_inner_markup = svg_text[1]
 	Utils.set_control_position_fixed(display_texture, display_rect.position)
 	display_texture.size = display_rect.size
-	display_texture.texture = SVGTexture.create_from_string(svg_text[0], image_zoom)
+	display_texture.texture = DPITexture.create_from_string(svg_text[0], image_zoom)
 
 
 func sync_checkerboard() -> void:

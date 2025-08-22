@@ -1,14 +1,14 @@
 [remap]
 
 importer="svg"
-type="SVGTexture"
+type="DPITexture"
 uid="uid://oha0oauf4kup"
-path="res://.godot/imported/Inspector.svg-16dc105bb2fde5191bb55e4179b50443.svgtex"
+path="res://.godot/imported/Inspector.svg-16dc105bb2fde5191bb55e4179b50443.dpitex"
 
 [deps]
 
 source_file="res://assets/icons/Inspector.svg"
-dest_files=["res://.godot/imported/Inspector.svg-16dc105bb2fde5191bb55e4179b50443.svgtex"]
+dest_files=["res://.godot/imported/Inspector.svg-16dc105bb2fde5191bb55e4179b50443.dpitex"]
 
 [params]
 

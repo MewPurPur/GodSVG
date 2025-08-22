@@ -1,14 +1,14 @@
 [remap]
 
 importer="svg"
-type="SVGTexture"
+type="DPITexture"
 uid="uid://coda6chhcatal"
-path="res://.godot/imported/Arrow.svg-454f1a120b660e1c200a4fee4bc9d4e9.svgtex"
+path="res://.godot/imported/Arrow.svg-454f1a120b660e1c200a4fee4bc9d4e9.dpitex"
 
 [deps]
 
 source_file="res://assets/icons/Arrow.svg"
-dest_files=["res://.godot/imported/Arrow.svg-454f1a120b660e1c200a4fee4bc9d4e9.svgtex"]
+dest_files=["res://.godot/imported/Arrow.svg-454f1a120b660e1c200a4fee4bc9d4e9.dpitex"]
 
 [params]
 

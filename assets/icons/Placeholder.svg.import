@@ -1,14 +1,14 @@
 [remap]
 
 importer="svg"
-type="SVGTexture"
+type="DPITexture"
 uid="uid://b4fycrn6ejomu"
-path="res://.godot/imported/Placeholder.svg-9c0dcc2e6f90dd567f3e217a181e4e00.svgtex"
+path="res://.godot/imported/Placeholder.svg-9c0dcc2e6f90dd567f3e217a181e4e00.dpitex"
 
 [deps]
 
 source_file="res://assets/icons/Placeholder.svg"
-dest_files=["res://.godot/imported/Placeholder.svg-9c0dcc2e6f90dd567f3e217a181e4e00.svgtex"]
+dest_files=["res://.godot/imported/Placeholder.svg-9c0dcc2e6f90dd567f3e217a181e4e00.dpitex"]
 
 [params]
 

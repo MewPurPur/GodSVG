@@ -1,14 +1,14 @@
 [remap]
 
 importer="svg"
-type="SVGTexture"
+type="DPITexture"
 uid="uid://drl587rrnbwo3"
-path="res://.godot/imported/CodeEditor.svg-0e7e65ddead32356f4603181bf8c379c.svgtex"
+path="res://.godot/imported/CodeEditor.svg-0e7e65ddead32356f4603181bf8c379c.dpitex"
 
 [deps]
 
 source_file="res://assets/icons/CodeEditor.svg"
-dest_files=["res://.godot/imported/CodeEditor.svg-0e7e65ddead32356f4603181bf8c379c.svgtex"]
+dest_files=["res://.godot/imported/CodeEditor.svg-0e7e65ddead32356f4603181bf8c379c.dpitex"]
 
 [params]
 

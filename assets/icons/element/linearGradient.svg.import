@@ -1,14 +1,14 @@
 [remap]
 
 importer="svg"
-type="SVGTexture"
+type="DPITexture"
 uid="uid://ld6hoxtl7q6y"
-path="res://.godot/imported/linearGradient.svg-8506328381653c4530e74ebe8f871359.svgtex"
+path="res://.godot/imported/linearGradient.svg-8506328381653c4530e74ebe8f871359.dpitex"
 
 [deps]
 
 source_file="res://assets/icons/element/linearGradient.svg"
-dest_files=["res://.godot/imported/linearGradient.svg-8506328381653c4530e74ebe8f871359.svgtex"]
+dest_files=["res://.godot/imported/linearGradient.svg-8506328381653c4530e74ebe8f871359.dpitex"]
 
 [params]
 

@@ -1,14 +1,14 @@
 [remap]
 
 importer="svg"
-type="SVGTexture"
+type="DPITexture"
 uid="uid://mop8xvnp8qcv"
-path="res://.godot/imported/Rotate.svg-cf69348aedb12eed0517c4deb4d4a3d9.svgtex"
+path="res://.godot/imported/Rotate.svg-cf69348aedb12eed0517c4deb4d4a3d9.dpitex"
 
 [deps]
 
 source_file="res://assets/icons/Rotate.svg"
-dest_files=["res://.godot/imported/Rotate.svg-cf69348aedb12eed0517c4deb4d4a3d9.svgtex"]
+dest_files=["res://.godot/imported/Rotate.svg-cf69348aedb12eed0517c4deb4d4a3d9.dpitex"]
 
 [params]
 

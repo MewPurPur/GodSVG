@@ -51,4 +51,4 @@ func get_config_warnings() -> PackedStringArray:
 	return warnings
 
 ## Generates a preview 64x64 texture of the gradient.
-@abstract func generate_texture() -> SVGTexture
+@abstract func generate_texture() -> DPITexture

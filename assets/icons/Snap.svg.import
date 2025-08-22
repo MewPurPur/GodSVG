@@ -1,14 +1,14 @@
 [remap]
 
 importer="svg"
-type="SVGTexture"
+type="DPITexture"
 uid="uid://buire51l0mifg"
-path="res://.godot/imported/Snap.svg-29a77ee514cb049b624c9e02f460f90d.svgtex"
+path="res://.godot/imported/Snap.svg-29a77ee514cb049b624c9e02f460f90d.dpitex"
 
 [deps]
 
 source_file="res://assets/icons/Snap.svg"
-dest_files=["res://.godot/imported/Snap.svg-29a77ee514cb049b624c9e02f460f90d.svgtex"]
+dest_files=["res://.godot/imported/Snap.svg-29a77ee514cb049b624c9e02f460f90d.dpitex"]
 
 [params]
 

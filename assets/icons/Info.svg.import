@@ -1,14 +1,14 @@
 [remap]
 
 importer="svg"
-type="SVGTexture"
+type="DPITexture"
 uid="uid://v0lqyuvo50yq"
-path="res://.godot/imported/Info.svg-b6a970b105b815abf501807a06233c56.svgtex"
+path="res://.godot/imported/Info.svg-b6a970b105b815abf501807a06233c56.dpitex"
 
 [deps]
 
 source_file="res://assets/icons/Info.svg"
-dest_files=["res://.godot/imported/Info.svg-b6a970b105b815abf501807a06233c56.svgtex"]
+dest_files=["res://.godot/imported/Info.svg-b6a970b105b815abf501807a06233c56.dpitex"]
 
 [params]
 

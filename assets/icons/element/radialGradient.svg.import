@@ -1,14 +1,14 @@
 [remap]
 
 importer="svg"
-type="SVGTexture"
+type="DPITexture"
 uid="uid://m0bt2nyq6axl"
-path="res://.godot/imported/radialGradient.svg-9a92a6ab7242431f519efb0f151b16d3.svgtex"
+path="res://.godot/imported/radialGradient.svg-9a92a6ab7242431f519efb0f151b16d3.dpitex"
 
 [deps]
 
 source_file="res://assets/icons/element/radialGradient.svg"
-dest_files=["res://.godot/imported/radialGradient.svg-9a92a6ab7242431f519efb0f151b16d3.svgtex"]
+dest_files=["res://.godot/imported/radialGradient.svg-9a92a6ab7242431f519efb0f151b16d3.dpitex"]
 
 [params]
 

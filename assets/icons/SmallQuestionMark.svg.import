@@ -1,14 +1,14 @@
 [remap]
 
 importer="svg"
-type="SVGTexture"
+type="DPITexture"
 uid="uid://crx4kcj4o01bs"
-path="res://.godot/imported/SmallQuestionMark.svg-45851b1324383ed0de300bfbcf33768f.svgtex"
+path="res://.godot/imported/SmallQuestionMark.svg-45851b1324383ed0de300bfbcf33768f.dpitex"
 
 [deps]
 
 source_file="res://assets/icons/SmallQuestionMark.svg"
-dest_files=["res://.godot/imported/SmallQuestionMark.svg-45851b1324383ed0de300bfbcf33768f.svgtex"]
+dest_files=["res://.godot/imported/SmallQuestionMark.svg-45851b1324383ed0de300bfbcf33768f.dpitex"]
 
 [params]
 

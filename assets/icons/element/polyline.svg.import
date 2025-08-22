@@ -1,14 +1,14 @@
 [remap]
 
 importer="svg"
-type="SVGTexture"
+type="DPITexture"
 uid="uid://bmuevffyav7ev"
-path="res://.godot/imported/polyline.svg-2bbaec19007f0e891c2042cdc620cec8.svgtex"
+path="res://.godot/imported/polyline.svg-2bbaec19007f0e891c2042cdc620cec8.dpitex"
 
 [deps]
 
 source_file="res://assets/icons/element/polyline.svg"
-dest_files=["res://.godot/imported/polyline.svg-2bbaec19007f0e891c2042cdc620cec8.svgtex"]
+dest_files=["res://.godot/imported/polyline.svg-2bbaec19007f0e891c2042cdc620cec8.dpitex"]
 
 [params]
 

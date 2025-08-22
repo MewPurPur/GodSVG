@@ -1,14 +1,14 @@
 [remap]
 
 importer="svg"
-type="SVGTexture"
+type="DPITexture"
 uid="uid://b6mqp088ef65"
-path="res://.godot/imported/Layouts.svg-1c07a3528e532f1c03ca36a1edac552d.svgtex"
+path="res://.godot/imported/Layouts.svg-1c07a3528e532f1c03ca36a1edac552d.dpitex"
 
 [deps]
 
 source_file="res://assets/icons/Layouts.svg"
-dest_files=["res://.godot/imported/Layouts.svg-1c07a3528e532f1c03ca36a1edac552d.svgtex"]
+dest_files=["res://.godot/imported/Layouts.svg-1c07a3528e532f1c03ca36a1edac552d.dpitex"]
 
 [params]
 

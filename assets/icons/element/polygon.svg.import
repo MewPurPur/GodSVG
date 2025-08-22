@@ -1,14 +1,14 @@
 [remap]
 
 importer="svg"
-type="SVGTexture"
+type="DPITexture"
 uid="uid://g7je50vyh0l8"
-path="res://.godot/imported/polygon.svg-30f7ae5550207b78aaf4e1aa664e8a70.svgtex"
+path="res://.godot/imported/polygon.svg-30f7ae5550207b78aaf4e1aa664e8a70.dpitex"
 
 [deps]
 
 source_file="res://assets/icons/element/polygon.svg"
-dest_files=["res://.godot/imported/polygon.svg-30f7ae5550207b78aaf4e1aa664e8a70.svgtex"]
+dest_files=["res://.godot/imported/polygon.svg-30f7ae5550207b78aaf4e1aa664e8a70.dpitex"]
 
 [params]
 

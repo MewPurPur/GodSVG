@@ -1,14 +1,14 @@
 [remap]
 
 importer="svg"
-type="SVGTexture"
+type="DPITexture"
 uid="uid://c1atigsxatxdg"
-path="res://.godot/imported/ellipse.svg-f48ede7bc4d2db2cf368294bd6f65f65.svgtex"
+path="res://.godot/imported/ellipse.svg-f48ede7bc4d2db2cf368294bd6f65f65.dpitex"
 
 [deps]
 
 source_file="res://assets/icons/element/ellipse.svg"
-dest_files=["res://.godot/imported/ellipse.svg-f48ede7bc4d2db2cf368294bd6f65f65.svgtex"]
+dest_files=["res://.godot/imported/ellipse.svg-f48ede7bc4d2db2cf368294bd6f65f65.dpitex"]
 
 [params]
 

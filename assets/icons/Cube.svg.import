@@ -1,14 +1,14 @@
 [remap]
 
 importer="svg"
-type="SVGTexture"
+type="DPITexture"
 uid="uid://7vnn8bloi26s"
-path="res://.godot/imported/Cube.svg-e714e55d7ae8d48f4e15ef31cdfdb647.svgtex"
+path="res://.godot/imported/Cube.svg-e714e55d7ae8d48f4e15ef31cdfdb647.dpitex"
 
 [deps]
 
 source_file="res://assets/icons/Cube.svg"
-dest_files=["res://.godot/imported/Cube.svg-e714e55d7ae8d48f4e15ef31cdfdb647.svgtex"]
+dest_files=["res://.godot/imported/Cube.svg-e714e55d7ae8d48f4e15ef31cdfdb647.dpitex"]
 
 [params]
 

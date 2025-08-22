@@ -1,14 +1,14 @@
 [remap]
 
 importer="svg"
-type="SVGTexture"
+type="DPITexture"
 uid="uid://y0l74x73w0co"
-path="res://.godot/imported/CheckerboardColorButton.svg-a3714a8fc4a1322639155850c5bd0c5e.svgtex"
+path="res://.godot/imported/CheckerboardColorButton.svg-a3714a8fc4a1322639155850c5bd0c5e.dpitex"
 
 [deps]
 
 source_file="res://assets/icons/CheckerboardColorButton.svg"
-dest_files=["res://.godot/imported/CheckerboardColorButton.svg-a3714a8fc4a1322639155850c5bd0c5e.svgtex"]
+dest_files=["res://.godot/imported/CheckerboardColorButton.svg-a3714a8fc4a1322639155850c5bd0c5e.dpitex"]
 
 [params]
 

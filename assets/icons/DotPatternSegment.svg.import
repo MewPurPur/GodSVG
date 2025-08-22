@@ -1,14 +1,14 @@
 [remap]
 
 importer="svg"
-type="SVGTexture"
+type="DPITexture"
 uid="uid://bjo2bdb1cgusy"
-path="res://.godot/imported/DotPatternSegment.svg-014783b79e9ccf4aa6aad42fedc56aec.svgtex"
+path="res://.godot/imported/DotPatternSegment.svg-014783b79e9ccf4aa6aad42fedc56aec.dpitex"
 
 [deps]
 
 source_file="res://assets/icons/DotPatternSegment.svg"
-dest_files=["res://.godot/imported/DotPatternSegment.svg-014783b79e9ccf4aa6aad42fedc56aec.svgtex"]
+dest_files=["res://.godot/imported/DotPatternSegment.svg-014783b79e9ccf4aa6aad42fedc56aec.dpitex"]
 
 [params]
 

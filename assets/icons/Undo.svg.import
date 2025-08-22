@@ -1,14 +1,14 @@
 [remap]
 
 importer="svg"
-type="SVGTexture"
+type="DPITexture"
 uid="uid://dgwjiijcgblou"
-path="res://.godot/imported/Undo.svg-cf90b08882c5b785e9e31418171ad387.svgtex"
+path="res://.godot/imported/Undo.svg-cf90b08882c5b785e9e31418171ad387.dpitex"
 
 [deps]
 
 source_file="res://assets/icons/Undo.svg"
-dest_files=["res://.godot/imported/Undo.svg-cf90b08882c5b785e9e31418171ad387.svgtex"]
+dest_files=["res://.godot/imported/Undo.svg-cf90b08882c5b785e9e31418171ad387.dpitex"]
 
 [params]
 

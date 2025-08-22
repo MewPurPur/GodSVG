@@ -1,14 +1,14 @@
 [remap]
 
 importer="svg"
-type="SVGTexture"
+type="DPITexture"
 uid="uid://bpr1u3rvovpne"
-path="res://.godot/imported/xmlnodeComment.svg-e64e8cdac96d13dedef1f5b7f5fb6d44.svgtex"
+path="res://.godot/imported/xmlnodeComment.svg-e64e8cdac96d13dedef1f5b7f5fb6d44.dpitex"
 
 [deps]
 
 source_file="res://assets/icons/element/xmlnodeComment.svg"
-dest_files=["res://.godot/imported/xmlnodeComment.svg-e64e8cdac96d13dedef1f5b7f5fb6d44.svgtex"]
+dest_files=["res://.godot/imported/xmlnodeComment.svg-e64e8cdac96d13dedef1f5b7f5fb6d44.dpitex"]
 
 [params]
 

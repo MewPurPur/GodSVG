@@ -1,14 +1,14 @@
 [remap]
 
 importer="svg"
-type="SVGTexture"
+type="DPITexture"
 uid="uid://b2cpjg74rpkjs"
-path="res://.godot/imported/Scale.svg-e6ed2a774e150c90b08960eddeb56b79.svgtex"
+path="res://.godot/imported/Scale.svg-e6ed2a774e150c90b08960eddeb56b79.dpitex"
 
 [deps]
 
 source_file="res://assets/icons/Scale.svg"
-dest_files=["res://.godot/imported/Scale.svg-e6ed2a774e150c90b08960eddeb56b79.svgtex"]
+dest_files=["res://.godot/imported/Scale.svg-e6ed2a774e150c90b08960eddeb56b79.dpitex"]
 
 [params]
 

@@ -1,14 +1,14 @@
 [remap]
 
 importer="svg"
-type="SVGTexture"
+type="DPITexture"
 uid="uid://brff7fx0puj6"
-path="res://.godot/imported/Eyedropper.svg-22a2f037b51e69561fa914953a212e31.svgtex"
+path="res://.godot/imported/Eyedropper.svg-22a2f037b51e69561fa914953a212e31.dpitex"
 
 [deps]
 
 source_file="res://assets/icons/Eyedropper.svg"
-dest_files=["res://.godot/imported/Eyedropper.svg-22a2f037b51e69561fa914953a212e31.svgtex"]
+dest_files=["res://.godot/imported/Eyedropper.svg-22a2f037b51e69561fa914953a212e31.dpitex"]
 
 [params]
 

@@ -1,14 +1,14 @@
 [remap]
 
 importer="svg"
-type="SVGTexture"
+type="DPITexture"
 uid="uid://rrhdja8l17cn"
-path="res://.godot/imported/FolderUp.svg-7eb1d635a1955e89cf029a3e96626a9c.svgtex"
+path="res://.godot/imported/FolderUp.svg-7eb1d635a1955e89cf029a3e96626a9c.dpitex"
 
 [deps]
 
 source_file="res://assets/icons/FolderUp.svg"
-dest_files=["res://.godot/imported/FolderUp.svg-7eb1d635a1955e89cf029a3e96626a9c.svgtex"]
+dest_files=["res://.godot/imported/FolderUp.svg-7eb1d635a1955e89cf029a3e96626a9c.dpitex"]
 
 [params]
 

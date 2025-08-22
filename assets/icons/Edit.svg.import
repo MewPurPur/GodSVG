@@ -1,14 +1,14 @@
 [remap]
 
 importer="svg"
-type="SVGTexture"
+type="DPITexture"
 uid="uid://dr2erka82g6j4"
-path="res://.godot/imported/Edit.svg-40006b452883af7dafa16974b9dda14a.svgtex"
+path="res://.godot/imported/Edit.svg-40006b452883af7dafa16974b9dda14a.dpitex"
 
 [deps]
 
 source_file="res://assets/icons/Edit.svg"
-dest_files=["res://.godot/imported/Edit.svg-40006b452883af7dafa16974b9dda14a.svgtex"]
+dest_files=["res://.godot/imported/Edit.svg-40006b452883af7dafa16974b9dda14a.dpitex"]
 
 [params]
 

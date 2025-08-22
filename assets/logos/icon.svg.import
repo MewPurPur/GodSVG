@@ -1,14 +1,14 @@
 [remap]
 
 importer="svg"
-type="SVGTexture"
+type="DPITexture"
 uid="uid://barsurula6j8n"
-path="res://.godot/imported/icon.svg-6128c91ba220bf70fcc2a632eba0b81d.svgtex"
+path="res://.godot/imported/icon.svg-6128c91ba220bf70fcc2a632eba0b81d.dpitex"
 
 [deps]
 
 source_file="res://assets/logos/icon.svg"
-dest_files=["res://.godot/imported/icon.svg-6128c91ba220bf70fcc2a632eba0b81d.svgtex"]
+dest_files=["res://.godot/imported/icon.svg-6128c91ba220bf70fcc2a632eba0b81d.dpitex"]
 
 [params]
 

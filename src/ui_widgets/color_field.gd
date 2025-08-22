@@ -19,7 +19,7 @@ const ColorFieldPopupScene = preload("res://src/ui_widgets/color_field_popup.tsc
 const checkerboard = preload("res://assets/icons/CheckerboardColorButton.svg")
 
 var color_popup: ColorFieldPopup
-var gradient_texture: SVGTexture
+var gradient_texture: DPITexture
 
 func set_value(new_value: String, save := false) -> void:
 	if not new_value.is_empty():

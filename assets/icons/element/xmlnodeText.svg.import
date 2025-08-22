@@ -1,14 +1,14 @@
 [remap]
 
 importer="svg"
-type="SVGTexture"
+type="DPITexture"
 uid="uid://df4xrdgy2buli"
-path="res://.godot/imported/xmlnodeText.svg-1f05904b91e0239ca71b1204fe3661ac.svgtex"
+path="res://.godot/imported/xmlnodeText.svg-1f05904b91e0239ca71b1204fe3661ac.dpitex"
 
 [deps]
 
 source_file="res://assets/icons/element/xmlnodeText.svg"
-dest_files=["res://.godot/imported/xmlnodeText.svg-1f05904b91e0239ca71b1204fe3661ac.svgtex"]
+dest_files=["res://.godot/imported/xmlnodeText.svg-1f05904b91e0239ca71b1204fe3661ac.dpitex"]
 
 [params]
 

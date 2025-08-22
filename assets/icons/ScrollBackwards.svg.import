@@ -1,14 +1,14 @@
 [remap]
 
 importer="svg"
-type="SVGTexture"
+type="DPITexture"
 uid="uid://b6wvqmor1sq08"
-path="res://.godot/imported/ScrollBackwards.svg-1ff0ea66adb12029ac78f704d80e6248.svgtex"
+path="res://.godot/imported/ScrollBackwards.svg-1ff0ea66adb12029ac78f704d80e6248.dpitex"
 
 [deps]
 
 source_file="res://assets/icons/ScrollBackwards.svg"
-dest_files=["res://.godot/imported/ScrollBackwards.svg-1ff0ea66adb12029ac78f704d80e6248.svgtex"]
+dest_files=["res://.godot/imported/ScrollBackwards.svg-1ff0ea66adb12029ac78f704d80e6248.dpitex"]
 
 [params]
 
