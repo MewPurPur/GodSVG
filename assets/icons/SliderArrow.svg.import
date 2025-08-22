@@ -1,14 +1,14 @@
 [remap]
 
 importer="svg"
-type="SVGTexture"
+type="DPITexture"
 uid="uid://cnq1u5hrcqrho"
-path="res://.godot/imported/SliderArrow.svg-3255a7e763b23bacca933c954b6460e9.svgtex"
+path="res://.godot/imported/SliderArrow.svg-3255a7e763b23bacca933c954b6460e9.dpitex"
 
 [deps]
 
 source_file="res://assets/icons/SliderArrow.svg"
-dest_files=["res://.godot/imported/SliderArrow.svg-3255a7e763b23bacca933c954b6460e9.svgtex"]
+dest_files=["res://.godot/imported/SliderArrow.svg-3255a7e763b23bacca933c954b6460e9.dpitex"]
 
 [params]
 

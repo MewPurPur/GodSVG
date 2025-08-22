@@ -1,14 +1,14 @@
 [remap]
 
 importer="svg"
-type="SVGTexture"
+type="DPITexture"
 uid="uid://dbyjet4nt246k"
-path="res://.godot/imported/Warning.svg-1fa9c55d4ce2374a5650b357c6c25038.svgtex"
+path="res://.godot/imported/Warning.svg-1fa9c55d4ce2374a5650b357c6c25038.dpitex"
 
 [deps]
 
 source_file="res://assets/icons/Warning.svg"
-dest_files=["res://.godot/imported/Warning.svg-1fa9c55d4ce2374a5650b357c6c25038.svgtex"]
+dest_files=["res://.godot/imported/Warning.svg-1fa9c55d4ce2374a5650b357c6c25038.dpitex"]
 
 [params]
 

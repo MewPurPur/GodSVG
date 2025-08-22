@@ -1,14 +1,14 @@
 [remap]
 
 importer="svg"
-type="SVGTexture"
+type="DPITexture"
 uid="uid://cvh3kwbucf2n1"
-path="res://.godot/imported/Reload.svg-dc62252f416f3dae43a809a2b7e34a97.svgtex"
+path="res://.godot/imported/Reload.svg-dc62252f416f3dae43a809a2b7e34a97.dpitex"
 
 [deps]
 
 source_file="res://assets/icons/Reload.svg"
-dest_files=["res://.godot/imported/Reload.svg-dc62252f416f3dae43a809a2b7e34a97.svgtex"]
+dest_files=["res://.godot/imported/Reload.svg-dc62252f416f3dae43a809a2b7e34a97.dpitex"]
 
 [params]
 

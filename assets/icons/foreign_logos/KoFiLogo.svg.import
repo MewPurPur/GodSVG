@@ -1,14 +1,14 @@
 [remap]
 
 importer="svg"
-type="SVGTexture"
+type="DPITexture"
 uid="uid://dcn1rq4e0p2jt"
-path="res://.godot/imported/KoFiLogo.svg-c60c977b7417aae3dea96e2b4511aab1.svgtex"
+path="res://.godot/imported/KoFiLogo.svg-c60c977b7417aae3dea96e2b4511aab1.dpitex"
 
 [deps]
 
 source_file="res://assets/icons/foreign_logos/KoFiLogo.svg"
-dest_files=["res://.godot/imported/KoFiLogo.svg-c60c977b7417aae3dea96e2b4511aab1.svgtex"]
+dest_files=["res://.godot/imported/KoFiLogo.svg-c60c977b7417aae3dea96e2b4511aab1.dpitex"]
 
 [params]
 

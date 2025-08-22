@@ -1,14 +1,14 @@
 [remap]
 
 importer="svg"
-type="SVGTexture"
+type="DPITexture"
 uid="uid://c2h5snkvemm4p"
-path="res://.godot/imported/Minus.svg-ad675dfc85c1db1496d38b10f0c0cd89.svgtex"
+path="res://.godot/imported/Minus.svg-ad675dfc85c1db1496d38b10f0c0cd89.dpitex"
 
 [deps]
 
 source_file="res://assets/icons/Minus.svg"
-dest_files=["res://.godot/imported/Minus.svg-ad675dfc85c1db1496d38b10f0c0cd89.svgtex"]
+dest_files=["res://.godot/imported/Minus.svg-ad675dfc85c1db1496d38b10f0c0cd89.dpitex"]
 
 [params]
 

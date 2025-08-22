@@ -1,14 +1,14 @@
 [remap]
 
 importer="svg"
-type="SVGTexture"
+type="DPITexture"
 uid="uid://crtn52j7mlh11"
-path="res://.godot/imported/Matrix.svg-6cf1c1474bd06db6496e8f3cc865c4b5.svgtex"
+path="res://.godot/imported/Matrix.svg-6cf1c1474bd06db6496e8f3cc865c4b5.dpitex"
 
 [deps]
 
 source_file="res://assets/icons/Matrix.svg"
-dest_files=["res://.godot/imported/Matrix.svg-6cf1c1474bd06db6496e8f3cc865c4b5.svgtex"]
+dest_files=["res://.godot/imported/Matrix.svg-6cf1c1474bd06db6496e8f3cc865c4b5.dpitex"]
 
 [params]
 

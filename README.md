@@ -36,7 +36,7 @@ keytool -printcert -jarfile <APK-file>
 
 GodSVG also runs on web - here's a link to the official web editor: https://godsvg.com/editor
 
-To run the latest unreleased version, you can download Godot from https://godotengine.org (development is currently happening in v4.5 beta 5). After getting the repository files on your machine, you must open Godot, click on the "Import" button, and import the `project.godot` folder.
+To run the latest unreleased version, you can download Godot from https://godotengine.org (development is currently happening in v4.5 beta 6). After getting the repository files on your machine, you must open Godot, click on the "Import" button, and import the `project.godot` folder.
 
 Another way to run the latest dev build is to open a recent commit and download its artifacts (Checks > export-optimized > Summary > Artifacts). You must log into Github for that.
 

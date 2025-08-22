@@ -17,7 +17,7 @@ func get_percentage_handling(attribute_name: String) -> DB.PercentageHandling:
 	else:
 		return super(attribute_name)
 
-func generate_texture() -> SVGTexture:
+func generate_texture() -> DPITexture:
 	var svg_texture_text := """<svg width="64" height="64" xmlns="http://www.w3.org/2000/svg"><linearGradient id="a" """
 	
 	var scaling := Vector2(64.0, 64.0) / svg.get_size()
@@ -64,4 +64,4 @@ func generate_texture() -> SVGTexture:
 		svg_texture_text += "/>"
 	
 	svg_texture_text += """</linearGradient><rect fill="url(#a)" width="100%%" height="100%%"/></svg>"""
-	return SVGTexture.create_from_string(svg_texture_text)
+	return DPITexture.create_from_string(svg_texture_text)

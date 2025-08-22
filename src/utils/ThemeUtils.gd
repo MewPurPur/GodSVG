@@ -762,24 +762,24 @@ static func _setup_checkbox(theme: Theme) -> void:
 	theme.set_color("font_hover_color", "CheckBox", highlighted_text_color)
 	theme.set_color("font_pressed_color", "CheckBox", text_color)
 	theme.set_color("font_hover_pressed_color", "CheckBox", highlighted_text_color)
-	theme.set_icon("checked", "CheckBox", SVGTexture.create_from_string(
+	theme.set_icon("checked", "CheckBox", DPITexture.create_from_string(
 		"""<svg width="16" height="16" xmlns="http://www.w3.org/2000/svg">
 			<rect x="1" y="1" rx="2.5" height="14" width="14" fill="#%s"/>
 			<path d="M11.5 3.7 5.9 9.3 4.2 7.6 2.7 9.1l3.2 3.2L13 5.2z" fill="#%s"/>
 		</svg>""" % [soft_accent_color.to_html(false), black_or_white_counter_accent_color.to_html(false)])
 	)
-	theme.set_icon("checked_disabled", "CheckBox", SVGTexture.create_from_string(
+	theme.set_icon("checked_disabled", "CheckBox", DPITexture.create_from_string(
 		"""<svg width="16" height="16" xmlns="http://www.w3.org/2000/svg">
 			<rect x="1" y="1" rx="2.5" height="14" width="14" fill="#%s" opacity=".4"/>
 			<path d="M11.5 3.7 5.9 9.3 4.2 7.6 2.7 9.1l3.2 3.2L13 5.2z" fill="#%s" opacity=".4"/>
 		</svg>""" % [soft_accent_color.lerp(gray_color, 0.2).to_html(false), black_or_white_counter_accent_color.to_html(false)])
 	)
-	theme.set_icon("unchecked", "CheckBox", SVGTexture.create_from_string(
+	theme.set_icon("unchecked", "CheckBox", DPITexture.create_from_string(
 		"""<svg width="16" height="16" xmlns="http://www.w3.org/2000/svg">
 			<rect x="1" y="1" rx="2.5" height="14" width="14" fill="#%s" opacity=".6"/>
 		</svg>""" % gray_color.to_html(false))
 	)
-	theme.set_icon("unchecked_disabled", "CheckBox", SVGTexture.create_from_string(
+	theme.set_icon("unchecked_disabled", "CheckBox", DPITexture.create_from_string(
 		"""<svg height="16" width="16" xmlns="http://www.w3.org/2000/svg">
 			<rect x="1" y="1" rx="2.5" width="14" height="14" fill="#%s" opacity=".2"/>
 		</svg>""" % gray_color.to_html(false))
@@ -817,13 +817,13 @@ static func _setup_checkbutton(theme: Theme) -> void:
 	theme.set_color("font_hover_color", "CheckButton", highlighted_text_color)
 	theme.set_color("font_pressed_color", "CheckButton", text_color)
 	theme.set_color("font_hover_pressed_color", "CheckButton", highlighted_text_color)
-	theme.set_icon("checked", "CheckButton", SVGTexture.create_from_string(
+	theme.set_icon("checked", "CheckButton", DPITexture.create_from_string(
 		"""<svg width="32" height="16" xmlns="http://www.w3.org/2000/svg">
 			<rect height="14" width="30" rx="7" x="1" y="1" fill="#%s"/>
 			<circle cx="24" cy="8" r="5.5" fill="#%s"/>
 		</svg>""" % [soft_accent_color.to_html(false), black_or_white_counter_accent_color.to_html(false)])
 	)
-	theme.set_icon("unchecked", "CheckButton", SVGTexture.create_from_string(
+	theme.set_icon("unchecked", "CheckButton", DPITexture.create_from_string(
 		"""<svg width="32" height="16" xmlns="http://www.w3.org/2000/svg">
 			<rect height="14" width="30" rx="7" x="1" y="1" fill="#%s"/>
 			<circle cx="8" cy="8" r="5.5" fill="#%s"/>
@@ -1229,12 +1229,12 @@ static func _setup_tooltip(theme: Theme) -> void:
 
 static func _setup_splitcontainer(theme: Theme) -> void:
 	theme.add_type("SplitContainer")
-	theme.set_icon("grabber", "VSplitContainer", SVGTexture.create_from_string(
+	theme.set_icon("grabber", "VSplitContainer", DPITexture.create_from_string(
 		"""<svg width="32" height="4" xmlns="http://www.w3.org/2000/svg">
 			<path d="M1 1h30v2H1z" fill="#%s" opacity=".6"/>
 		</svg>""" % desaturated_color.to_html(false))
 	)
-	theme.set_icon("grabber", "HSplitContainer", SVGTexture.create_from_string(
+	theme.set_icon("grabber", "HSplitContainer", DPITexture.create_from_string(
 		"""<svg width="4" height="48" xmlns="http://www.w3.org/2000/svg">
 			<path d="M1 1v46h2V1z" fill="#%s" opacity=".6"/>
 		</svg>""" % desaturated_color.to_html(false))

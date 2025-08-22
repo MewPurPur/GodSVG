@@ -12,7 +12,6 @@
 		"AnimationNodeStateMachinePlayback",
 		"AnimationNodeStateMachineTransition",
 		"AspectRatioContainer",
-		"AtlasTexture",
 		"AudioBusLayout",
 		"AudioEffect",
 		"AudioStream",

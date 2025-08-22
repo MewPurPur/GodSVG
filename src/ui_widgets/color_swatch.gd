@@ -8,7 +8,7 @@ var color: String
 var color_name: String
 
 var ci := get_canvas_item()
-var gradient_texture: SVGTexture
+var gradient_texture: DPITexture
 
 var current_color := Color.BLACK
 

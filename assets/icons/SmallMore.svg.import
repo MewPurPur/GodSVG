@@ -1,14 +1,14 @@
 [remap]
 
 importer="svg"
-type="SVGTexture"
+type="DPITexture"
 uid="uid://cmepkbqde0jh0"
-path="res://.godot/imported/SmallMore.svg-498d9628e37505d7aed18d97a65e9a4f.svgtex"
+path="res://.godot/imported/SmallMore.svg-498d9628e37505d7aed18d97a65e9a4f.dpitex"
 
 [deps]
 
 source_file="res://assets/icons/SmallMore.svg"
-dest_files=["res://.godot/imported/SmallMore.svg-498d9628e37505d7aed18d97a65e9a4f.svgtex"]
+dest_files=["res://.godot/imported/SmallMore.svg-498d9628e37505d7aed18d97a65e9a4f.dpitex"]
 
 [params]
 

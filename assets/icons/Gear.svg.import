@@ -1,14 +1,14 @@
 [remap]
 
 importer="svg"
-type="SVGTexture"
+type="DPITexture"
 uid="uid://ckkkgof1hcbld"
-path="res://.godot/imported/Gear.svg-ca94d59e8c536d42f979019c85e0d8ba.svgtex"
+path="res://.godot/imported/Gear.svg-ca94d59e8c536d42f979019c85e0d8ba.dpitex"
 
 [deps]
 
 source_file="res://assets/icons/Gear.svg"
-dest_files=["res://.godot/imported/Gear.svg-ca94d59e8c536d42f979019c85e0d8ba.svgtex"]
+dest_files=["res://.godot/imported/Gear.svg-ca94d59e8c536d42f979019c85e0d8ba.dpitex"]
 
 [params]
 

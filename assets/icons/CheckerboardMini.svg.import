@@ -1,14 +1,14 @@
 [remap]
 
 importer="svg"
-type="SVGTexture"
+type="DPITexture"
 uid="uid://stpallv5q0rb"
-path="res://.godot/imported/CheckerboardMini.svg-0ea7540124897b15442aca32bc10cdbd.svgtex"
+path="res://.godot/imported/CheckerboardMini.svg-0ea7540124897b15442aca32bc10cdbd.dpitex"
 
 [deps]
 
 source_file="res://assets/icons/CheckerboardMini.svg"
-dest_files=["res://.godot/imported/CheckerboardMini.svg-0ea7540124897b15442aca32bc10cdbd.svgtex"]
+dest_files=["res://.godot/imported/CheckerboardMini.svg-0ea7540124897b15442aca32bc10cdbd.dpitex"]
 
 [params]
 

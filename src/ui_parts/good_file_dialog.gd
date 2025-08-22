@@ -277,7 +277,7 @@ func _setup_file_images() -> void:
 					if not is_instance_valid(img) or img.is_empty():
 						file_list.set_item_icon(item_idx, broken_file_icon)
 					else:
-						var svg_texture := SVGTexture.create_from_string(svg_text, minf(item_height / img.get_width(), item_height / img.get_height()))
+						var svg_texture := DPITexture.create_from_string(svg_text, minf(item_height / img.get_width(), item_height / img.get_height()))
 						file_list.set_item_icon(item_idx, svg_texture)
 				_:
 					var img := Image.load_from_file(current_dir.path_join(file))

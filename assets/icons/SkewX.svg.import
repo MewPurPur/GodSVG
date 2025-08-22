@@ -1,14 +1,14 @@
 [remap]
 
 importer="svg"
-type="SVGTexture"
+type="DPITexture"
 uid="uid://mkfxc0srhfek"
-path="res://.godot/imported/SkewX.svg-9d46edf162778638ca700ba521a7233e.svgtex"
+path="res://.godot/imported/SkewX.svg-9d46edf162778638ca700ba521a7233e.dpitex"
 
 [deps]
 
 source_file="res://assets/icons/SkewX.svg"
-dest_files=["res://.godot/imported/SkewX.svg-9d46edf162778638ca700ba521a7233e.svgtex"]
+dest_files=["res://.godot/imported/SkewX.svg-9d46edf162778638ca700ba521a7233e.dpitex"]
 
 [params]
 

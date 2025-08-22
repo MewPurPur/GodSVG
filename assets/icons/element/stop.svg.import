@@ -1,14 +1,14 @@
 [remap]
 
 importer="svg"
-type="SVGTexture"
+type="DPITexture"
 uid="uid://cpict35mitaab"
-path="res://.godot/imported/stop.svg-2d7bf5bf2ae7f3caeb19ddca64f29801.svgtex"
+path="res://.godot/imported/stop.svg-2d7bf5bf2ae7f3caeb19ddca64f29801.dpitex"
 
 [deps]
 
 source_file="res://assets/icons/element/stop.svg"
-dest_files=["res://.godot/imported/stop.svg-2d7bf5bf2ae7f3caeb19ddca64f29801.svgtex"]
+dest_files=["res://.godot/imported/stop.svg-2d7bf5bf2ae7f3caeb19ddca64f29801.dpitex"]
 
 [params]
 

@@ -1,14 +1,14 @@
 [remap]
 
 importer="svg"
-type="SVGTexture"
+type="DPITexture"
 uid="uid://ksx758sjihau"
-path="res://.godot/imported/BWHandle.svg-9588bc79a1c5a24e3ab185d58c8cacd6.svgtex"
+path="res://.godot/imported/BWHandle.svg-9588bc79a1c5a24e3ab185d58c8cacd6.dpitex"
 
 [deps]
 
 source_file="res://assets/icons/BWHandle.svg"
-dest_files=["res://.godot/imported/BWHandle.svg-9588bc79a1c5a24e3ab185d58c8cacd6.svgtex"]
+dest_files=["res://.godot/imported/BWHandle.svg-9588bc79a1c5a24e3ab185d58c8cacd6.dpitex"]
 
 [params]
 

@@ -1,14 +1,14 @@
 [remap]
 
 importer="svg"
-type="SVGTexture"
+type="DPITexture"
 uid="uid://crdbyje1tji4h"
-path="res://.godot/imported/PopupArrow.svg-4e1f1544d59b20621caa7c87d9004cd1.svgtex"
+path="res://.godot/imported/PopupArrow.svg-4e1f1544d59b20621caa7c87d9004cd1.dpitex"
 
 [deps]
 
 source_file="res://assets/icons/PopupArrow.svg"
-dest_files=["res://.godot/imported/PopupArrow.svg-4e1f1544d59b20621caa7c87d9004cd1.svgtex"]
+dest_files=["res://.godot/imported/PopupArrow.svg-4e1f1544d59b20621caa7c87d9004cd1.dpitex"]
 
 [params]
 

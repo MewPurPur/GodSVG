@@ -1,14 +1,14 @@
 [remap]
 
 importer="svg"
-type="SVGTexture"
+type="DPITexture"
 uid="uid://ccc0q21h8owg1"
-path="res://.godot/imported/GithubLogo.svg-87728d1afe1eb4558de9b480e244157b.svgtex"
+path="res://.godot/imported/GithubLogo.svg-87728d1afe1eb4558de9b480e244157b.dpitex"
 
 [deps]
 
 source_file="res://assets/icons/foreign_logos/GithubLogo.svg"
-dest_files=["res://.godot/imported/GithubLogo.svg-87728d1afe1eb4558de9b480e244157b.svgtex"]
+dest_files=["res://.godot/imported/GithubLogo.svg-87728d1afe1eb4558de9b480e244157b.dpitex"]
 
 [params]
 

@@ -1,14 +1,14 @@
 [remap]
 
 importer="svg"
-type="SVGTexture"
+type="DPITexture"
 uid="uid://i3nv3rexgpfx"
-path="res://.godot/imported/circle.svg-254daa85021abdd2364d2dd025bedc16.svgtex"
+path="res://.godot/imported/circle.svg-254daa85021abdd2364d2dd025bedc16.dpitex"
 
 [deps]
 
 source_file="res://assets/icons/element/circle.svg"
-dest_files=["res://.godot/imported/circle.svg-254daa85021abdd2364d2dd025bedc16.svgtex"]
+dest_files=["res://.godot/imported/circle.svg-254daa85021abdd2364d2dd025bedc16.dpitex"]
 
 [params]
 
