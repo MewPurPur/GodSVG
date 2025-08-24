@@ -1,14 +1,14 @@
 [remap]
 
 importer="svg"
-type="SVGTexture"
+type="DPITexture"
 uid="uid://bvm6h1qda67ys"
-path="res://.godot/imported/Heart.svg-0ab6963a35d0b59270531cd65b47ee68.svgtex"
+path="res://.godot/imported/Heart.svg-0ab6963a35d0b59270531cd65b47ee68.dpitex"
 
 [deps]
 
 source_file="res://assets/icons/Heart.svg"
-dest_files=["res://.godot/imported/Heart.svg-0ab6963a35d0b59270531cd65b47ee68.svgtex"]
+dest_files=["res://.godot/imported/Heart.svg-0ab6963a35d0b59270531cd65b47ee68.dpitex"]
 
 [params]
 

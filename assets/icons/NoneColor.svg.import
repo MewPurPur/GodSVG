@@ -1,14 +1,14 @@
 [remap]
 
 importer="svg"
-type="SVGTexture"
+type="DPITexture"
 uid="uid://d36qn2f7a0nok"
-path="res://.godot/imported/NoneColor.svg-e4f700f4b24e186abc5e7387ac1bab3a.svgtex"
+path="res://.godot/imported/NoneColor.svg-e4f700f4b24e186abc5e7387ac1bab3a.dpitex"
 
 [deps]
 
 source_file="res://assets/icons/NoneColor.svg"
-dest_files=["res://.godot/imported/NoneColor.svg-e4f700f4b24e186abc5e7387ac1bab3a.svgtex"]
+dest_files=["res://.godot/imported/NoneColor.svg-e4f700f4b24e186abc5e7387ac1bab3a.dpitex"]
 
 [params]
 

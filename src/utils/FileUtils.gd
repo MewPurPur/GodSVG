@@ -328,41 +328,24 @@ static func _apply_svg(data: Variant, file_path: String, proceed_callback := Cal
 					Translator.translate("Proceed"), proceed_callback)
 		return
 	
-	# If the active tab is empty, replace it. Otherwise make it a new transient tab.
+	# Make new tab only if the active tab isn't empty.
 	var warning_panel := ImportWarningMenuScene.instantiate()
-	if Configs.savedata.get_active_tab().empty_unsaved:
-		var tab_index := Configs.savedata.get_active_tab_index()
-		Configs.savedata.add_tab_with_path(file_path)
-		Configs.savedata.remove_tab(tab_index)
-		Configs.savedata.move_tab(Configs.savedata.get_tab_count() - 1, tab_index)
-		warning_panel.canceled.connect(_on_import_panel_canceled_empty_tab_scenario)
-		warning_panel.imported.connect(_on_import_panel_accepted_empty_tab_scenario.bind(data))
-	else:
-		State.transient_tab_path = file_path
-		warning_panel.canceled.connect(_on_import_panel_canceled_transient_scenario)
-		warning_panel.imported.connect(_on_import_panel_accepted_transient_scenario.bind(file_path, data))
+	warning_panel.imported.connect(_on_import_panel_accepted.bind(file_path, data, Configs.savedata.get_active_tab().empty_unsaved))
 	if not is_last_file:
 		warning_panel.canceled.connect(proceed_callback)
 		warning_panel.imported.connect(proceed_callback)
 	warning_panel.set_svg(data)
 	HandlerGUI.add_menu(warning_panel)
 
-static func _on_import_panel_canceled_empty_tab_scenario() -> void:
-	var tab_index := Configs.savedata.get_active_tab_index()
-	Configs.savedata.add_empty_tab()
-	Configs.savedata.remove_tab(tab_index)
-	Configs.savedata.move_tab(Configs.savedata.get_tab_count() - 1, tab_index)
-
-static func _on_import_panel_accepted_empty_tab_scenario(svg_text: String) -> void:
-	Configs.savedata.get_active_tab().setup_svg_text(svg_text)
-	State.sync_elements()
-
-static func _on_import_panel_canceled_transient_scenario() -> void:
-	State.transient_tab_path = ""
-
-static func _on_import_panel_accepted_transient_scenario(file_path: String, svg_text: String) -> void:
-	Configs.savedata.add_tab_with_path(file_path)
-	State.transient_tab_path = ""
+static func _on_import_panel_accepted(file_path: String, svg_text: String, empty_scenario: bool) -> void:
+	if empty_scenario:
+		# Get the tab index before adding new tab. Then move the new tab to that old index.
+		var tab_index := Configs.savedata.get_active_tab_index()
+		Configs.savedata.add_tab_with_path(file_path)
+		Configs.savedata.remove_tab(tab_index)
+		Configs.savedata.move_tab(Configs.savedata.get_tab_count() - 1, tab_index)
+	else:
+		Configs.savedata.add_tab_with_path(file_path)
 	Configs.savedata.get_active_tab().setup_svg_text(svg_text)
 	State.sync_elements()
 

@@ -1,14 +1,14 @@
 [remap]
 
 importer="svg"
-type="SVGTexture"
+type="DPITexture"
 uid="uid://c2ienefxrtut"
-path="res://.godot/imported/text.svg-61984c9e1264a1413aac57ad546d8800.svgtex"
+path="res://.godot/imported/text.svg-61984c9e1264a1413aac57ad546d8800.dpitex"
 
 [deps]
 
 source_file="res://assets/icons/element/text.svg"
-dest_files=["res://.godot/imported/text.svg-61984c9e1264a1413aac57ad546d8800.svgtex"]
+dest_files=["res://.godot/imported/text.svg-61984c9e1264a1413aac57ad546d8800.dpitex"]
 
 [params]
 

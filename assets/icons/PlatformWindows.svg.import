@@ -1,14 +1,14 @@
 [remap]
 
 importer="svg"
-type="SVGTexture"
+type="DPITexture"
 uid="uid://c0xmtbtcke0hx"
-path="res://.godot/imported/PlatformWindows.svg-d7704fc273c534bb6222a0f5b4001182.svgtex"
+path="res://.godot/imported/PlatformWindows.svg-d7704fc273c534bb6222a0f5b4001182.dpitex"
 
 [deps]
 
 source_file="res://assets/icons/PlatformWindows.svg"
-dest_files=["res://.godot/imported/PlatformWindows.svg-d7704fc273c534bb6222a0f5b4001182.svgtex"]
+dest_files=["res://.godot/imported/PlatformWindows.svg-d7704fc273c534bb6222a0f5b4001182.dpitex"]
 
 [params]
 

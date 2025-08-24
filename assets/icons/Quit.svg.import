@@ -1,14 +1,14 @@
 [remap]
 
 importer="svg"
-type="SVGTexture"
+type="DPITexture"
 uid="uid://cbkrorp0b7qgb"
-path="res://.godot/imported/Quit.svg-27ce495cfd421ac10bdab78eb7fc0164.svgtex"
+path="res://.godot/imported/Quit.svg-27ce495cfd421ac10bdab78eb7fc0164.dpitex"
 
 [deps]
 
 source_file="res://assets/icons/Quit.svg"
-dest_files=["res://.godot/imported/Quit.svg-27ce495cfd421ac10bdab78eb7fc0164.svgtex"]
+dest_files=["res://.godot/imported/Quit.svg-27ce495cfd421ac10bdab78eb7fc0164.dpitex"]
 
 [params]
 

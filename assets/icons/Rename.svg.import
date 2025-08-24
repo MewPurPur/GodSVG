@@ -1,14 +1,14 @@
 [remap]
 
 importer="svg"
-type="SVGTexture"
+type="DPITexture"
 uid="uid://bjajwlfhfgo38"
-path="res://.godot/imported/Rename.svg-1fe4ae6b401a2b2e6c18a5b851cbea12.svgtex"
+path="res://.godot/imported/Rename.svg-1fe4ae6b401a2b2e6c18a5b851cbea12.dpitex"
 
 [deps]
 
 source_file="res://assets/icons/Rename.svg"
-dest_files=["res://.godot/imported/Rename.svg-1fe4ae6b401a2b2e6c18a5b851cbea12.svgtex"]
+dest_files=["res://.godot/imported/Rename.svg-1fe4ae6b401a2b2e6c18a5b851cbea12.dpitex"]
 
 [params]
 

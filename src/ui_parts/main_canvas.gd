@@ -41,13 +41,11 @@ func _ready() -> void:
 	
 	Configs.active_tab_changed.connect(sync_reference_image)
 	Configs.active_tab_changed.connect(_on_svg_changed)
-	Configs.active_tab_changed.connect(sync_camera)
+	Configs.active_tab_changed.connect(sync_camera.call_deferred)
 	await get_tree().process_frame
 	center_frame()
 
 func _on_svg_resized() -> void:
-	if root_element != State.root_element:
-		root_element = State.root_element
 	sync_checkerboard()
 	center_frame()
 	queue_redraw()

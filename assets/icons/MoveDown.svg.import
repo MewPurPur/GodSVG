@@ -1,14 +1,14 @@
 [remap]
 
 importer="svg"
-type="SVGTexture"
+type="DPITexture"
 uid="uid://ciirlvjd2efd3"
-path="res://.godot/imported/MoveDown.svg-f1fb57bee54d2faca78973dd8c78186f.svgtex"
+path="res://.godot/imported/MoveDown.svg-f1fb57bee54d2faca78973dd8c78186f.dpitex"
 
 [deps]
 
 source_file="res://assets/icons/MoveDown.svg"
-dest_files=["res://.godot/imported/MoveDown.svg-f1fb57bee54d2faca78973dd8c78186f.svgtex"]
+dest_files=["res://.godot/imported/MoveDown.svg-f1fb57bee54d2faca78973dd8c78186f.dpitex"]
 
 [params]
 
