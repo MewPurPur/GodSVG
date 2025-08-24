@@ -1,14 +1,14 @@
 [remap]
 
 importer="svg"
-type="SVGTexture"
+type="DPITexture"
 uid="uid://x7hsvbn0k3i8"
-path="res://.godot/imported/Redo.svg-1cd6dd40037832a4dcd7098e88d1d853.svgtex"
+path="res://.godot/imported/Redo.svg-1cd6dd40037832a4dcd7098e88d1d853.dpitex"
 
 [deps]
 
 source_file="res://assets/icons/Redo.svg"
-dest_files=["res://.godot/imported/Redo.svg-1cd6dd40037832a4dcd7098e88d1d853.svgtex"]
+dest_files=["res://.godot/imported/Redo.svg-1cd6dd40037832a4dcd7098e88d1d853.dpitex"]
 
 [params]
 

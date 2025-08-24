@@ -1,14 +1,14 @@
 [remap]
 
 importer="svg"
-type="SVGTexture"
+type="DPITexture"
 uid="uid://yspvgvx4p5i7"
-path="res://.godot/imported/DirMusic.svg-a00acecf89df9970f2430b62ecb1c948.svgtex"
+path="res://.godot/imported/DirMusic.svg-a00acecf89df9970f2430b62ecb1c948.dpitex"
 
 [deps]
 
 source_file="res://assets/icons/DirMusic.svg"
-dest_files=["res://.godot/imported/DirMusic.svg-a00acecf89df9970f2430b62ecb1c948.svgtex"]
+dest_files=["res://.godot/imported/DirMusic.svg-a00acecf89df9970f2430b62ecb1c948.dpitex"]
 
 [params]
 

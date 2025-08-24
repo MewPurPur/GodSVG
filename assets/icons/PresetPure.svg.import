@@ -1,14 +1,14 @@
 [remap]
 
 importer="svg"
-type="SVGTexture"
+type="DPITexture"
 uid="uid://doonh5ev61dlb"
-path="res://.godot/imported/PresetPure.svg-7dd9763847a507207d95c81435faf89f.svgtex"
+path="res://.godot/imported/PresetPure.svg-7dd9763847a507207d95c81435faf89f.dpitex"
 
 [deps]
 
 source_file="res://assets/icons/PresetPure.svg"
-dest_files=["res://.godot/imported/PresetPure.svg-7dd9763847a507207d95c81435faf89f.svgtex"]
+dest_files=["res://.godot/imported/PresetPure.svg-7dd9763847a507207d95c81435faf89f.dpitex"]
 
 [params]
 

@@ -1,14 +1,14 @@
 [remap]
 
 importer="svg"
-type="SVGTexture"
+type="DPITexture"
 uid="uid://bg37vrltk5npr"
-path="res://.godot/imported/PlatformLinux.svg-2b9393fef43df6991d3292a35024aa68.svgtex"
+path="res://.godot/imported/PlatformLinux.svg-2b9393fef43df6991d3292a35024aa68.dpitex"
 
 [deps]
 
 source_file="res://assets/icons/PlatformLinux.svg"
-dest_files=["res://.godot/imported/PlatformLinux.svg-2b9393fef43df6991d3292a35024aa68.svgtex"]
+dest_files=["res://.godot/imported/PlatformLinux.svg-2b9393fef43df6991d3292a35024aa68.dpitex"]
 
 [params]
 

@@ -1,14 +1,14 @@
 [remap]
 
 importer="svg"
-type="SVGTexture"
+type="DPITexture"
 uid="uid://cq12fgmfrreh5"
-path="res://.godot/imported/mask.svg-28cbb8910d54bf756daeb08a25dbd973.svgtex"
+path="res://.godot/imported/mask.svg-28cbb8910d54bf756daeb08a25dbd973.dpitex"
 
 [deps]
 
 source_file="res://assets/icons/element/mask.svg"
-dest_files=["res://.godot/imported/mask.svg-28cbb8910d54bf756daeb08a25dbd973.svgtex"]
+dest_files=["res://.godot/imported/mask.svg-28cbb8910d54bf756daeb08a25dbd973.dpitex"]
 
 [params]
 

@@ -1,14 +1,14 @@
 [remap]
 
 importer="svg"
-type="SVGTexture"
+type="DPITexture"
 uid="uid://dgfyegqnsoqgd"
-path="res://.godot/imported/MoveUp.svg-2cc1a895a069a8144f501bfb0706c099.svgtex"
+path="res://.godot/imported/MoveUp.svg-2cc1a895a069a8144f501bfb0706c099.dpitex"
 
 [deps]
 
 source_file="res://assets/icons/MoveUp.svg"
-dest_files=["res://.godot/imported/MoveUp.svg-2cc1a895a069a8144f501bfb0706c099.svgtex"]
+dest_files=["res://.godot/imported/MoveUp.svg-2cc1a895a069a8144f501bfb0706c099.dpitex"]
 
 [params]
 

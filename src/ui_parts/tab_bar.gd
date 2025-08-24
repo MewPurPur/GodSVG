@@ -62,28 +62,21 @@ func _ready() -> void:
 func _draw() -> void:
 	get_theme_stylebox("tabbar_background", "TabContainer").draw(ci, get_rect())
 	
-	var has_transient_tab := not State.transient_tab_path.is_empty()
 	var mouse_pos := get_local_mouse_position()
 	
-	for tab_index in Configs.savedata.get_tab_count() + 1:
-		var drawing_transient_tab := (tab_index == Configs.savedata.get_tab_count())
-		if drawing_transient_tab and not has_transient_tab:
-			break
-		
+	for tab_index in Configs.savedata.get_tab_count():
 		var rect := get_tab_rect(tab_index)
 		if not rect.has_area():
 			continue
 		
 		var current_tab_name := ""
-		if drawing_transient_tab:
-			current_tab_name = State.transient_tab_path.get_file()
-		else:
-			var current_tab := Configs.savedata.get_tab(tab_index)
-			current_tab_name = current_tab.presented_name
-			if current_tab.marked_unsaved:
-				current_tab_name = "* " + current_tab_name
 		
-		if (has_transient_tab and drawing_transient_tab) or (not has_transient_tab and tab_index == Configs.savedata.get_active_tab_index()):
+		var current_tab := Configs.savedata.get_tab(tab_index)
+		current_tab_name = current_tab.presented_name
+		if current_tab.marked_unsaved:
+			current_tab_name = "* " + current_tab_name
+		
+		if tab_index == Configs.savedata.get_active_tab_index():
 			get_theme_stylebox("tab_selected", "TabContainer").draw(ci, rect)
 			var text_line_width := rect.size.x - size.y
 			if text_line_width > 0:
@@ -92,12 +85,12 @@ func _draw() -> void:
 				text_line.add_string(current_tab_name, ThemeUtils.regular_font, 13)
 				text_line.width = text_line_width - 2
 				text_line.draw(ci, rect.position + Vector2(4, 3), get_theme_color("font_selected_color", "TabContainer"))
-			if not drawing_transient_tab:
-				var close_rect := get_close_button_rect()
-				if close_rect.has_area():
-					var close_icon_size := close_icon.get_size()
-					draw_texture_rect(close_icon, Rect2(close_rect.position + (close_rect.size - close_icon_size) / 2.0, close_icon_size),
-							false, ThemeUtils.tinted_contrast_color)
+			
+			var close_rect := get_close_button_rect()
+			if close_rect.has_area():
+				var close_icon_size := close_icon.get_size()
+				draw_texture_rect(close_icon, Rect2(close_rect.position + (close_rect.size - close_icon_size) / 2.0, close_icon_size),
+						false, ThemeUtils.tinted_contrast_color)
 		else:
 			var is_hovered := rect.has_point(mouse_pos)
 			var tab_style := "tab_hovered" if is_hovered else "tab_unselected"
@@ -282,7 +275,7 @@ func scroll_forwards(factor := 1.0) -> void:
 	set_scroll(current_scroll + SCROLL_SPEED * factor)
 
 func scroll_to_active() -> void:
-	var idx := Configs.savedata.get_active_tab_index() if State.transient_tab_path.is_empty() else Configs.savedata.get_tab_count()
+	var idx := Configs.savedata.get_active_tab_index()
 	set_scroll(clampf(current_scroll, MIN_TAB_WIDTH * (idx + 1) - size.x + size.y +\
 			get_scroll_forwards_area_rect().size.x + get_scroll_backwards_area_rect().size.x, MIN_TAB_WIDTH * idx))
 
@@ -297,11 +290,6 @@ func set_scroll(new_value: float) -> void:
 		activate()
 
 
-func get_proper_tab_count() -> int:
-	if State.transient_tab_path.is_empty():
-		return Configs.savedata.get_tab_count()
-	return Configs.savedata.get_tab_count() + 1
-
 func get_tab_rect(idx: int) -> Rect2:
 	# Things that can take space.
 	var scroll_backwards_button_width := get_scroll_backwards_area_rect().size.x
@@ -310,7 +298,7 @@ func get_tab_rect(idx: int) -> Rect2:
 	var left_limit := scroll_backwards_button_width
 	var right_limit := size.x - size.y - scroll_forwards_button_width
 	
-	var tab_width := clampf((size.x - size.y - scroll_backwards_button_width - scroll_forwards_button_width) / get_proper_tab_count(),
+	var tab_width := clampf((size.x - size.y - scroll_backwards_button_width - scroll_forwards_button_width) / Configs.savedata.get_tab_count(),
 			MIN_TAB_WIDTH, DEFAULT_TAB_WIDTH)
 	var unclamped_tab_start := tab_width * idx - current_scroll + left_limit
 	var tab_start := clampf(unclamped_tab_start, left_limit, right_limit)
@@ -321,7 +309,7 @@ func get_tab_rect(idx: int) -> Rect2:
 	return Rect2(tab_start, 0, tab_end - tab_start, size.y)
 
 func get_close_button_rect() -> Rect2:
-	var tab_rect := get_tab_rect(Configs.savedata.get_active_tab_index() if State.transient_tab_path.is_empty() else Configs.savedata.get_tab_count())
+	var tab_rect := get_tab_rect(Configs.savedata.get_active_tab_index())
 	var side := size.y - CLOSE_BUTTON_MARGIN * 2
 	var left_coords := tab_rect.position.x + tab_rect.size.x - CLOSE_BUTTON_MARGIN - side
 	if left_coords < get_scroll_backwards_area_rect().size.x or tab_rect.size.x < size.y - CLOSE_BUTTON_MARGIN:
@@ -329,11 +317,11 @@ func get_close_button_rect() -> Rect2:
 	return Rect2(left_coords, CLOSE_BUTTON_MARGIN, side, side)
 
 func get_add_button_rect() -> Rect2:
-	return Rect2(minf(DEFAULT_TAB_WIDTH * get_proper_tab_count(), size.x - size.y), 0,
+	return Rect2(minf(DEFAULT_TAB_WIDTH * Configs.savedata.get_tab_count(), size.x - size.y), 0,
 			size.y, size.y)
 
 func get_scroll_forwards_area_rect() -> Rect2:
-	if size.x - size.y > get_proper_tab_count() * MIN_TAB_WIDTH:
+	if size.x - size.y > Configs.savedata.get_tab_count() * MIN_TAB_WIDTH:
 		return Rect2()
 	var width := size.y / 1.5
 	return Rect2(size.x - size.y - width, 0, width, size.y)
@@ -342,7 +330,7 @@ func is_scroll_forwards_disabled() -> bool:
 	return current_scroll >= get_scroll_limit()
 
 func get_scroll_backwards_area_rect() -> Rect2:
-	if size.x - size.y > get_proper_tab_count() * MIN_TAB_WIDTH:
+	if size.x - size.y > Configs.savedata.get_tab_count() * MIN_TAB_WIDTH:
 		return Rect2()
 	return Rect2(0, 0, size.y / 1.5, size.y)
 
@@ -354,8 +342,7 @@ func get_scroll_limit() -> float:
 	var scroll_forwards_button_width := get_scroll_forwards_area_rect().size.x
 	
 	var available_area := size.x - size.y - scroll_backwards_button_width - scroll_forwards_button_width
-	return clampf(available_area / get_proper_tab_count(),
-			MIN_TAB_WIDTH, DEFAULT_TAB_WIDTH) * get_proper_tab_count() - available_area
+	return clampf(available_area / Configs.savedata.get_tab_count(), MIN_TAB_WIDTH, DEFAULT_TAB_WIDTH) * Configs.savedata.get_tab_count() - available_area
 
 func get_hovered_index() -> int:
 	return get_tab_index_at(get_local_mouse_position())
@@ -482,7 +469,7 @@ func get_drop_index_at(pos: Vector2) -> int:
 			first_tab_with_area = idx
 			break
 	
-	var tab_width := clampf((size.x - size.y - scroll_backwards_button_width - scroll_forwards_button_width) / get_proper_tab_count(),
+	var tab_width := clampf((size.x - size.y - scroll_backwards_button_width - scroll_forwards_button_width) / Configs.savedata.get_tab_count(),
 			MIN_TAB_WIDTH, DEFAULT_TAB_WIDTH)
 	
 	for idx in range(first_tab_with_area, Configs.savedata.get_tab_count()):

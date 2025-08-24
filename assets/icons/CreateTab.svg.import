@@ -1,14 +1,14 @@
 [remap]
 
 importer="svg"
-type="SVGTexture"
+type="DPITexture"
 uid="uid://bnl24bflj771n"
-path="res://.godot/imported/CreateTab.svg-5a4a2c79f40bbfe654b40ae41510476b.svgtex"
+path="res://.godot/imported/CreateTab.svg-5a4a2c79f40bbfe654b40ae41510476b.dpitex"
 
 [deps]
 
 source_file="res://assets/icons/CreateTab.svg"
-dest_files=["res://.godot/imported/CreateTab.svg-5a4a2c79f40bbfe654b40ae41510476b.svgtex"]
+dest_files=["res://.godot/imported/CreateTab.svg-5a4a2c79f40bbfe654b40ae41510476b.dpitex"]
 
 [params]
 

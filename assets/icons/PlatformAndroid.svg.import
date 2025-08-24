@@ -1,14 +1,14 @@
 [remap]
 
 importer="svg"
-type="SVGTexture"
+type="DPITexture"
 uid="uid://bo5c20hy73tpr"
-path="res://.godot/imported/PlatformAndroid.svg-507e6984f29f635a4ac46090e9514435.svgtex"
+path="res://.godot/imported/PlatformAndroid.svg-507e6984f29f635a4ac46090e9514435.dpitex"
 
 [deps]
 
 source_file="res://assets/icons/PlatformAndroid.svg"
-dest_files=["res://.godot/imported/PlatformAndroid.svg-507e6984f29f635a4ac46090e9514435.svgtex"]
+dest_files=["res://.godot/imported/PlatformAndroid.svg-507e6984f29f635a4ac46090e9514435.dpitex"]
 
 [params]
 

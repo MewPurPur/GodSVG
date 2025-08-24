@@ -1,14 +1,14 @@
 [remap]
 
 importer="svg"
-type="SVGTexture"
+type="DPITexture"
 uid="uid://dv1aldaqix1bo"
-path="res://.godot/imported/PresetGrayscale.svg-bbea35708ad1c100df741b38f49d3124.svgtex"
+path="res://.godot/imported/PresetGrayscale.svg-bbea35708ad1c100df741b38f49d3124.dpitex"
 
 [deps]
 
 source_file="res://assets/icons/PresetGrayscale.svg"
-dest_files=["res://.godot/imported/PresetGrayscale.svg-bbea35708ad1c100df741b38f49d3124.svgtex"]
+dest_files=["res://.godot/imported/PresetGrayscale.svg-bbea35708ad1c100df741b38f49d3124.dpitex"]
 
 [params]
 

@@ -1,14 +1,14 @@
 [remap]
 
 importer="svg"
-type="SVGTexture"
+type="DPITexture"
 uid="uid://c5mof6sypo2j0"
-path="res://.godot/imported/PlatformMacOS.svg-eb55b56d762e1eeb8182c190d04b7895.svgtex"
+path="res://.godot/imported/PlatformMacOS.svg-eb55b56d762e1eeb8182c190d04b7895.dpitex"
 
 [deps]
 
 source_file="res://assets/icons/PlatformMacOS.svg"
-dest_files=["res://.godot/imported/PlatformMacOS.svg-eb55b56d762e1eeb8182c190d04b7895.svgtex"]
+dest_files=["res://.godot/imported/PlatformMacOS.svg-eb55b56d762e1eeb8182c190d04b7895.dpitex"]
 
 [params]
 

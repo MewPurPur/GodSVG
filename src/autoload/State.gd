@@ -33,15 +33,6 @@ var unstable_svg_text := ""
 var svg_text := ""
 var root_element := ElementRoot.new()
 
-# Temporary unsaved tab, set to the file path string when importing an SVG.
-var transient_tab_path := "":
-	set(new_value):
-		if transient_tab_path != new_value:
-			transient_tab_path = new_value
-			Configs.tabs_changed.emit()
-			Configs.active_tab_status_changed.emit()
-			setup_from_tab()
-
 func _enter_tree() -> void:
 	get_window().mouse_exited.connect(clear_all_hovered)
 	
@@ -68,25 +59,19 @@ func setup_from_tab() -> void:
 	var active_tab := Configs.savedata.get_active_tab()
 	var new_text := active_tab.get_svg_text()
 	
-	if not transient_tab_path.is_empty():
-		apply_svg_text(TabData.DEFAULT_SVG, false)
-		return
-	
 	if not new_text.is_empty():
 		apply_svg_text(new_text, false)
 		return
 	
 	if active_tab.fully_loaded and not active_tab.empty_unsaved and FileAccess.file_exists(active_tab.get_edited_file_path()):
 		var user_facing_path := active_tab.svg_file_path
-		var message := Translator.translate(
-				"The last edited state of this tab could not be found.")
+		var message := Translator.translate("The last edited state of this tab could not be found.")
 		
 		var options_dialog := OptionsDialogScene.instantiate()
 		HandlerGUI.add_dialog(options_dialog)
 		if user_facing_path.is_empty() or not FileAccess.file_exists(user_facing_path):
 			options_dialog.setup(Translator.translate("Alert!"), message)
-			options_dialog.add_option(Translator.translate("Close tab"),
-					Configs.savedata.remove_active_tab)
+			options_dialog.add_option(Translator.translate("Close tab"), Configs.savedata.remove_active_tab)
 		else:
 			options_dialog.setup(Translator.translate("Alert!"), message + "\n\n" + Translator.translate(
 					"The tab is bound to the file path {file_path}. Do you want to restore the SVG from this path?").format({"file_path": user_facing_path}))

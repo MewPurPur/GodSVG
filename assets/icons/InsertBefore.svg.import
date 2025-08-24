@@ -1,14 +1,14 @@
 [remap]
 
 importer="svg"
-type="SVGTexture"
+type="DPITexture"
 uid="uid://dav1phw6au0c1"
-path="res://.godot/imported/InsertBefore.svg-8dc67cab8823221d311f91e90cdd6e9b.svgtex"
+path="res://.godot/imported/InsertBefore.svg-8dc67cab8823221d311f91e90cdd6e9b.dpitex"
 
 [deps]
 
 source_file="res://assets/icons/InsertBefore.svg"
-dest_files=["res://.godot/imported/InsertBefore.svg-8dc67cab8823221d311f91e90cdd6e9b.svgtex"]
+dest_files=["res://.godot/imported/InsertBefore.svg-8dc67cab8823221d311f91e90cdd6e9b.dpitex"]
 
 [params]
 
