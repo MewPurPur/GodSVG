@@ -205,9 +205,10 @@ func _texture_update() -> void:
 	var svg_text := SVGParser.root_cutout_to_markup(root_element, display_rect.size,
 			Rect2(root_element.world_to_canvas(display_rect.position),
 			display_rect.size / root_element.canvas_transform.get_scale()), cached_inner_markup)
+	
 	Utils.set_control_position_fixed(display_texture, display_rect.position)
 	display_texture.size = display_rect.size
-	display_texture.texture = DPITexture.create_from_string(svg_text[0], image_zoom)
+	display_texture.texture = DPITexture.create_from_string(svg_text, image_zoom)
 
 
 func sync_checkerboard() -> void:
