@@ -29,24 +29,24 @@ static func markup_check_is_root_empty(markup: String) -> bool:
 	return describes_svg and parser.read() == OK and parser.get_node_type() == XMLParser.NODE_ELEMENT_END and parser.get_node_name() == "svg"
 
 ## Creates markup for an SVG that only represents a rectangular cutout of the original.
-## Returns a [code][markup, inner_markup][/code] array. The inner markup can then be fed back into [param cached_inner_markup],
-## assuming the inner contents of [param root_element] haven't changed, for improved performance.
-static func root_cutout_to_markup(root_element: ElementRoot, custom_width: float, custom_height: float, custom_viewbox: Rect2, cached_inner_markup: String = "") -> PackedStringArray:
+## inner_markup can be retrieved from the get_inner_markup_with_percentages_converted() method.
+static func root_cutout_to_markup(root_element: ElementRoot, custom_dimensions: Vector2, custom_viewbox: Rect2, inner_markup: String = "") -> String:
 	# Build a new root element, set it up, and convert it to markup.
 	var new_root_element: ElementRoot = root_element.duplicate(false)
 	new_root_element.set_attribute("viewBox", ListParser.rect_to_list(custom_viewbox))
-	new_root_element.set_attribute("width", custom_width)
-	new_root_element.set_attribute("height", custom_height)
-	var markup := _xnode_to_markup(new_root_element, Configs.savedata.editor_formatter)
+	new_root_element.set_attribute("width", custom_dimensions.x)
+	new_root_element.set_attribute("height", custom_dimensions.y)
+	var root_markup := _xnode_to_markup(new_root_element, Configs.savedata.editor_formatter)
 	# Since we only converted a single root element to markup, it would have closed.
-	# Remove the closure and add all the other elements' markup before closing it manually.
-	markup = markup.left(maxi(markup.find("/>"), markup.find("</svg>"))) + ">"
-	var inner_markup := cached_inner_markup
-	if not cached_inner_markup:
-		for child_idx in root_element.get_child_count():
-			inner_markup += _xnode_to_markup(root_element.get_xnode(PackedInt32Array([child_idx])), Configs.savedata.editor_formatter, true)
-	return [markup + inner_markup + "</svg>", inner_markup]
+	# Remove the closure, add the inner markup, then close it manually.
+	root_markup = root_markup.left(maxi(root_markup.find("/>"), root_markup.find("</svg>"))) + ">"
+	return root_markup + inner_markup + "</svg>"
 
+static func get_inner_markup_with_percentages_converted(root_element: ElementRoot) -> String:
+	var inner_markup := ""
+	for child_idx in root_element.get_child_count():
+		inner_markup += _xnode_to_markup(root_element.get_xnode(PackedInt32Array([child_idx])), Configs.savedata.editor_formatter, true)
+	return inner_markup
 
 ## Converts the child elements of a root element into markup, excluding the root tag itself.
 static func root_children_to_markup(root_element: ElementRoot, formatter: Formatter) -> String:
