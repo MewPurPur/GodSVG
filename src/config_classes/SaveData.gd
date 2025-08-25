@@ -73,7 +73,10 @@ func get_setting_default(setting: String) -> Variant:
 		"handle_size": return 1.0 if OS.get_name() != "Android" else 2.0
 		"handle_inner_color": return Color("fff")
 		"handle_color": return Color("111")
-		"handle_hovered_color": return Color("aaa")
+		"handle_hovered_color":
+			match theme_preset:
+				ThemePreset.DARK, ThemePreset.BLACK: return Color("aaa")
+				ThemePreset.LIGHT: return Color("808080")
 		"handle_selected_color": return Color("46f")
 		"handle_hovered_selected_color": return Color("f44")
 		"selection_rectangle_speed": return 30.0

@@ -36,10 +36,12 @@ static func root_cutout_to_markup(root_element: ElementRoot, custom_dimensions: 
 	new_root_element.set_attribute("viewBox", ListParser.rect_to_list(custom_viewbox))
 	new_root_element.set_attribute("width", custom_dimensions.x)
 	new_root_element.set_attribute("height", custom_dimensions.y)
-	var root_markup := _xnode_to_markup(new_root_element, Configs.savedata.editor_formatter)
-	# Since we only converted a single root element to markup, it would have closed.
-	# Remove the closure, add the inner markup, then close it manually.
-	root_markup = root_markup.left(maxi(root_markup.find("/>"), root_markup.find("</svg>"))) + ">"
+	
+	var root_markup := _xnode_to_markup(new_root_element, Configs.savedata.editor_formatter).strip_edges(false, true)
+	if root_markup.ends_with("/>"):
+		root_markup = root_markup.erase(root_markup.length() - 2)
+	else:
+		root_markup = root_markup.left(-6)
 	return root_markup + inner_markup + "</svg>"
 
 static func get_inner_markup_with_percentages_converted(root_element: ElementRoot) -> String:

@@ -770,8 +770,10 @@ static func _setup_checkbox(theme: Theme) -> void:
 	)
 	theme.set_icon("checked_disabled", "CheckBox", DPITexture.create_from_string(
 		"""<svg width="16" height="16" xmlns="http://www.w3.org/2000/svg">
-			<rect x="1" y="1" rx="2.5" height="14" width="14" fill="#%s" opacity=".4"/>
-			<path d="M11.5 3.7 5.9 9.3 4.2 7.6 2.7 9.1l3.2 3.2L13 5.2z" fill="#%s" opacity=".4"/>
+			<g opacity=".4">
+				<rect x="1" y="1" rx="2.5" height="14" width="14" fill="#%s"/>
+				<path d="M11.5 3.7 5.9 9.3 4.2 7.6 2.7 9.1l3.2 3.2L13 5.2z" fill="#%s"/>
+			</g>
 		</svg>""" % [soft_accent_color.lerp(gray_color, 0.2).to_html(false), black_or_white_counter_accent_color.to_html(false)])
 	)
 	theme.set_icon("unchecked", "CheckBox", DPITexture.create_from_string(
@@ -823,10 +825,24 @@ static func _setup_checkbutton(theme: Theme) -> void:
 			<circle cx="24" cy="8" r="5.5" fill="#%s"/>
 		</svg>""" % [soft_accent_color.to_html(false), black_or_white_counter_accent_color.to_html(false)])
 	)
+	theme.set_icon("checked_disabled", "CheckButton", DPITexture.create_from_string(
+		"""<svg width="32" height="16" xmlns="http://www.w3.org/2000/svg">
+			<g opacity=".6">
+				<rect height="14" width="30" rx="7" x="1" y="1" fill="#%s"/>
+				<circle cx="24" cy="8" r="5.5" fill="#%s"/>
+			</g>
+		</svg>""" % [soft_accent_color.lerp(gray_color, 0.2).to_html(false), black_or_white_counter_accent_color.to_html(false)])
+	)
 	theme.set_icon("unchecked", "CheckButton", DPITexture.create_from_string(
 		"""<svg width="32" height="16" xmlns="http://www.w3.org/2000/svg">
-			<rect height="14" width="30" rx="7" x="1" y="1" fill="#%s"/>
+			<rect height="14" width="30" rx="7" x="1" y="1" fill="#%s" opacity=".6"/>
 			<circle cx="8" cy="8" r="5.5" fill="#%s"/>
+		</svg>""" % [gray_color.to_html(false), black_or_white_counter_accent_color.to_html(false)])
+	)
+	theme.set_icon("unchecked_disabled", "CheckButton", DPITexture.create_from_string(
+		"""<svg width="32" height="16" xmlns="http://www.w3.org/2000/svg">
+			<rect height="14" width="30" rx="7" x="1" y="1" fill="#%s" opacity=".2"/>
+			<circle cx="8" cy="8" r="5.5" fill="#%s" opacity=".6"/>
 		</svg>""" % [gray_color.to_html(false), black_or_white_counter_accent_color.to_html(false)])
 	)
 
