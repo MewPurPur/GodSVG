@@ -174,15 +174,13 @@ var texture_view_rect := Rect2():
 			queue_texture_update()
 
 var _texture_update_pending := false
-var _texture_update_dirty_inner_markup := false
 
-## Use [param dirty_inner] if the inner markup has changed and needs to be restringified.
-func queue_texture_update(dirty_inner := false) -> void:
+func queue_texture_update() -> void:
 	_texture_update.call_deferred()
 	_texture_update_pending = true
-	_texture_update_dirty_inner_markup = _texture_update_dirty_inner_markup or dirty_inner
+	cached_inner_markup = ""
 
-var last_inner_markup: String
+var cached_inner_markup := ""
 
 func _texture_update() -> void:
 	if not _texture_update_pending:
@@ -199,14 +197,14 @@ func _texture_update() -> void:
 	display_rect.size = display_rect.size.snapped(Vector2(pixel_size, pixel_size))
 	display_rect.end = display_rect.end.min(Vector2(ceili(root_element.width), ceili(root_element.height)))
 	
-	if _texture_update_dirty_inner_markup:
-		_texture_update_dirty_inner_markup = false
-		last_inner_markup = ""
+	# This is for performance, so if there really isn't inner markup, it's an empty SVG.
+	# Empty SVG means no performance issues, so recalculation in this case is fine.
+	if cached_inner_markup.is_empty():
+		cached_inner_markup = SVGParser.get_inner_markup_with_percentages_converted(root_element)
 	
-	var svg_text := SVGParser.root_cutout_to_markup(root_element, display_rect.size.x,
-			display_rect.size.y, Rect2(root_element.world_to_canvas(display_rect.position),
-			display_rect.size / root_element.canvas_transform.get_scale()), last_inner_markup)
-	last_inner_markup = svg_text[1]
+	var svg_text := SVGParser.root_cutout_to_markup(root_element, display_rect.size,
+			Rect2(root_element.world_to_canvas(display_rect.position),
+			display_rect.size / root_element.canvas_transform.get_scale()), cached_inner_markup)
 	Utils.set_control_position_fixed(display_texture, display_rect.position)
 	display_texture.size = display_rect.size
 	display_texture.texture = DPITexture.create_from_string(svg_text[0], image_zoom)

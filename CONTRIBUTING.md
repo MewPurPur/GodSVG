@@ -31,22 +31,28 @@ After submitting your pull request, I (MewPurPur) will review your changes and m
 
 Editing translations is explained [here](translations/README.md)
 
-## Code guidelines
+## Code guidelines and style
 
-To document some quirks of our code that we've decided on:
+As usual, look around and try to copy the things you find in surrounding code.
 
-- StringNames are avoided when possible. We do this because it makes the codebase simpler, although if something is actually shown to be performance-critical, it can be reconsidered.
-- Nodes may only be exported if their runtime structure isn't known.
+Guidelines:
+
+- StringNames are avoided when possible.
+  - Rationale: This makes the codebase simpler, and StringNames aren't a universal optimization. I've heard of a lot of cases where they counterintuitively make performance worse, and I don't currently understand them well-enough to not fall into traps. If performance benefits for using StringName somewhere are arduously benchmarked, it can be considered.
+- We avoid exporting nodes, unless their runtime structure isn't known.
 - Strings are always translated with `Translator.translate()`, not `tr()`.
 
-## Code style
+Follow the [GDScript style guide](https://docs.godotengine.org/en/stable/tutorials/scripting/gdscript/gdscript_styleguide.html). Almost all this guide's rules are enforced here.
 
-For scripts, only GDScript code is allowed. Follow the [GDScript style guide](https://docs.godotengine.org/en/stable/tutorials/scripting/gdscript/gdscript_styleguide.html). Most of its rules are enforced here. Additionally:
+We have some additional style rules:
 
-- Static typing is used as much as possible.
+- Always use static typing. And if possible, use inferred typing, i.e., `var f := 4.0` instead of `var f: float = 4.0`
 - Comments are typically written like sentences with punctuation.
-- Two spaces are used to separate inline comments and code.
+- Inline comments are separated from the code by two spaces.
+- Documentation comments are written like normal comments, without modifiers like `[param]` or `[code]`.
+  - Rationale: The amount by which they improve the readability of the documentation isn't enough to outweigh how much worse they are when you look at them in code. I believe they aren't suitable in a project where only developers will be reading them.
 - For empty lines in the middle of indented blocks, the scope's indentation is kept.
+  - Rationale: I don't really know why this isn't conventional, I find that it just gets in the way when you want to add code where there were previously empty spaces.
 - Class names use `class_name X extends Y` syntax.
 
 Don't make pull requests for code style changes without discussing them first (unless it's for corrections to abide by the ones described here). The same generally applies to making style changes unrelated to a PR's main goal. Pull requests may also get production tweaks to tweak their style before being merged.

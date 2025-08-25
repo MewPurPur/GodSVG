@@ -63,7 +63,7 @@ func _on_svg_changed() -> void:
 		root_element.attribute_changed.connect(_on_root_element_attribute_changed)
 	
 	_current_svg_size = root_element.get_size()
-	queue_texture_update(true)
+	queue_texture_update()
 	handles_manager.queue_update_handles()
 
 func _on_hover_changed() -> void:
