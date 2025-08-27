@@ -53,7 +53,7 @@ func _on_svg_resized() -> void:
 var _current_svg_size: Vector2
 
 func _on_root_element_attribute_changed(attribute_name: String) -> void:
-	if attribute_name in ["width", "height", "viewBox"]:
+	if attribute_name in ["width", "height", "viewBox"] and _current_svg_size != root_element.get_size():
 		_current_svg_size = root_element.get_size()
 		_on_svg_resized()
 
@@ -62,7 +62,10 @@ func _on_svg_changed() -> void:
 		root_element = State.root_element
 		root_element.attribute_changed.connect(_on_root_element_attribute_changed)
 	
-	_current_svg_size = root_element.get_size()
+	if _current_svg_size != root_element.get_size():
+		_current_svg_size = root_element.get_size()
+		_on_svg_resized()
+	
 	queue_texture_update()
 	handles_manager.queue_update_handles()
 
