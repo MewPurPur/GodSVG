@@ -139,11 +139,12 @@ const THEME_ITEMS: PackedStringArray = [
 	"base_color",
 	"accent_color",
 	"highlighter_preset",
+	"handle_hovered_color",
+	"canvas_color",
+	"grid_color",
 	"basic_color_valid",
 	"basic_color_error",
 	"basic_color_warning",
-	"canvas_color",
-	"grid_color",
 ]
 
 func is_theming_default() -> bool:
