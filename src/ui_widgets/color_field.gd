@@ -100,7 +100,7 @@ func _on_pressed() -> void:
 
 func _draw() -> void:
 	super()
-	var h_offset := size.x - BUTTON_WIDTH
+	var h_offset := size.x - button_width
 	var r := 5
 	checkerboard.draw(ci, Vector2(h_offset, 1))
 	# Draw the color or gradient.
@@ -118,16 +118,16 @@ func _draw() -> void:
 			var initial_pts := PackedVector2Array([Vector2(0, 1), Vector2(0, size.y - 1)])
 			for deg in range(90, -1, -15):
 				var rad := deg_to_rad(deg)
-				initial_pts.append(Vector2(BUTTON_WIDTH - 1 - r + r * cos(rad),
+				initial_pts.append(Vector2(button_width - 1 - r + r * cos(rad),
 						size.y - 1 - r + r * sin(rad)))
 			for deg in range(0, -91, -15):
 				var rad := deg_to_rad(deg)
-				initial_pts.append(Vector2(BUTTON_WIDTH - 1 - r + r * cos(rad),
+				initial_pts.append(Vector2(button_width - 1 - r + r * cos(rad),
 						r + 1 + r * sin(rad)))
 			for pt in initial_pts:
 				points.append(pt + Vector2(h_offset, 0))
 				colors.append(Color.WHITE)
-				uvs.append(pt / Vector2(BUTTON_WIDTH - 1, size.y - 1))
+				uvs.append(pt / Vector2(button_width - 1, size.y - 1))
 			RenderingServer.canvas_item_add_polygon(ci, points, colors, uvs, gradient_texture)
 			drawn = true
 	
@@ -137,7 +137,7 @@ func _draw() -> void:
 		stylebox.corner_radius_bottom_right = r
 		stylebox.bg_color = ColorParser.text_to_color(
 				element.get_attribute_true_color(attribute_name), Color.TRANSPARENT)
-		stylebox.draw(ci, Rect2(h_offset, 1, BUTTON_WIDTH - 1, size.y - 2))
+		stylebox.draw(ci, Rect2(h_offset, 1, button_width - 1, size.y - 2))
 	# Draw the button border.
 	if is_instance_valid(temp_button) and temp_button.button_pressed:
 		draw_button_border("pressed")

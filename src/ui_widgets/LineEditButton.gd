@@ -5,8 +5,6 @@ class_name LineEditButton extends Control
 # A fake-out is drawn to avoid adding unnecessary nodes.
 # The real controls are only created when necessary, such as when hovered or focused.
 
-const BUTTON_WIDTH = 14.0
-
 signal pressed
 signal text_change_canceled
 signal text_changed
@@ -64,6 +62,11 @@ var temp_button: Button
 @export var icon: Texture2D
 @export var button_visuals := true
 @export var mono_font_tooltip := false
+@export var button_width := 14.0:
+	set(new_value):
+		if not is_equal_approx(new_value, button_width):
+			button_width = new_value
+			queue_redraw()
 
 var ci := get_canvas_item()
 
@@ -107,7 +110,7 @@ func _setup() -> void:
 		return
 	active = true
 	temp_line_edit = BetterLineEdit.new()
-	temp_line_edit.size = Vector2(size.x - BUTTON_WIDTH, 22)
+	temp_line_edit.size = Vector2(size.x - button_width, 22)
 	temp_line_edit.tooltip_text = tooltip_text
 	temp_line_edit.mono_font_tooltip = mono_font_tooltip
 	temp_line_edit.placeholder_text = placeholder_text
@@ -125,8 +128,8 @@ func _setup() -> void:
 	add_child(temp_line_edit)
 	temp_button = Button.new()
 	temp_button.show_behind_parent = true  # Lets the icon draw in front.
-	temp_button.custom_minimum_size = Vector2(BUTTON_WIDTH, 22)
-	temp_button.position.x = size.x - BUTTON_WIDTH
+	temp_button.custom_minimum_size = Vector2(button_width, 22)
+	temp_button.position.x = size.x - button_width
 	temp_button.focus_mode = Control.FOCUS_NONE
 	temp_button.mouse_filter = Control.MOUSE_FILTER_PASS
 	temp_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
@@ -160,17 +163,17 @@ func _draw() -> void:
 	var horizontal_margin_width := sb.content_margin_left + sb.content_margin_right
 	if not active:
 		sb.draw(ci, Rect2(Vector2.ZERO, size))
-		draw_line(Vector2(size.x - BUTTON_WIDTH, 0), Vector2(size.x - BUTTON_WIDTH, size.y), sb.border_color, 2)
+		draw_line(Vector2(size.x - button_width, 0), Vector2(size.x - button_width, size.y), sb.border_color, 2)
 		# The default overrun behavior couldn't be changed for the simplest draw methods.
 		var text_obj := TextLine.new()
 		text_obj.text_overrun_behavior = TextServer.OVERRUN_TRIM_CHAR
-		text_obj.width = size.x - BUTTON_WIDTH - horizontal_margin_width
+		text_obj.width = size.x - button_width - horizontal_margin_width
 		text_obj.add_string(placeholder_text if text.is_empty() else text, _get_font(), get_theme_font_size("font_size", "LineEdit"))
 		text_obj.draw(ci, Vector2(5, 2), get_theme_color("font_placeholder_color", "LineEdit") if text.is_empty() else _get_font_color())
 	
 	if is_instance_valid(icon):
-		var icon_side := BUTTON_WIDTH - horizontal_margin_width + 2
-		icon.draw_rect(ci, Rect2(size.x - (BUTTON_WIDTH + 0.5 + icon_side) / 2, (size.y - icon_side) / 2,
+		var icon_side := button_width - horizontal_margin_width + 2
+		icon.draw_rect(ci, Rect2(size.x - (button_width + 0.5 + icon_side) / 2, (size.y - icon_side) / 2,
 				icon_side, icon_side), false, get_theme_color("icon_normal_color", "LeftConnectedButton"))
 
 
@@ -185,4 +188,4 @@ func _get_font_color() -> Color:
 func draw_button_border(theme_name: String) -> void:
 	var button_outline: StyleBoxFlat = get_theme_stylebox(theme_name, "LeftConnectedButton").duplicate()
 	button_outline.draw_center = false
-	button_outline.draw(ci, Rect2(size.x - BUTTON_WIDTH, 0, BUTTON_WIDTH, size.y))
+	button_outline.draw(ci, Rect2(size.x - button_width, 0, button_width, size.y))
