@@ -548,6 +548,12 @@ func setup_other_content() -> void:
 	if wraparound_panning_forced_off:
 		wraparound_panning.permanent_disable_checkbox(false)
 	
+	current_setup_setting = "panning_speed"
+	add_number_dropdown(Translator.translate("Panning speed"), [5, 10, 20, 30, 50], true, false,
+			SaveData.PANNING_SPEED_MIN, SaveData.PANNING_SPEED_MAX)
+	add_preview(SettingTextPreview.new(
+			Translator.translate("Determines how much the view moves for scroll-based panning inputs.")))
+	
 	current_setup_setting = "use_ctrl_for_zoom"
 	add_checkbox(Translator.translate("Use CTRL for zooming"))
 	add_preview(SettingTextPreview.new(

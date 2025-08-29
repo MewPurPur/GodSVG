@@ -24,11 +24,9 @@ func _unhandled_input(event: InputEvent) -> void:
 	
 	elif event is InputEventPanGesture and DisplayServer.get_name() != "Android":
 		if event.ctrl_pressed:
-			# Zooming with Ctrl + touch?
-			canvas.set_zoom(canvas.camera_zoom * (1.0 + event.delta.y / 2.0))
+			canvas.set_zoom(canvas.camera_zoom * (1.0 + event.delta.y / 2.0))  # Zooming with Ctrl + touch?
 		else:
-			# Panning with touch.
-			canvas.set_view(canvas.camera_center + event.delta * 32.0 / canvas.camera_zoom)
+			execute_panning(event.delta)  # Panning with touch.
 	elif event is InputEventMagnifyGesture:
 		# Zooming with touch.
 		canvas.set_zoom(canvas.camera_zoom * event.factor)
@@ -73,10 +71,13 @@ func _unhandled_input(event: InputEvent) -> void:
 		elif zoom_direction == -1:
 			canvas.set_zoom(canvas.camera_zoom / multiplied_factor, mouse_offset)
 		
-		canvas.set_view(canvas.camera_center + move_vec * factor / canvas.camera_zoom * 32)
+		execute_panning(move_vec, factor)
 	
 	else:
 		if not event.is_echo():
 			# Filter out fake mouse movement events.
 			if not (event is InputEventMouseMotion and event.relative == Vector2.ZERO):
 				_zoom_to = Vector2.ZERO  # Reset Ctrl + MMB zoom position if released.
+
+func execute_panning(move_vector: Vector2, factor := 1.0) -> void:
+	canvas.set_view(canvas.camera_center + move_vector * factor * Configs.savedata.panning_speed / canvas.camera_zoom)
