@@ -100,6 +100,7 @@ func get_setting_default(setting: String) -> Variant:
 		# Other
 		"invert_zoom": return false
 		"wraparound_panning": return false
+		"panning_speed": return 20
 		"use_ctrl_for_zoom": return true
 		"ui_scale": return ScalingApproach.AUTO
 		"vsync": return true
@@ -480,6 +481,20 @@ const MAX_SELECTION_RECTANGLE_DASH_LENGTH = 600.0
 	set(new_value):
 		if wraparound_panning != new_value:
 			wraparound_panning = new_value
+			emit_changed()
+
+const PANNING_SPEED_MIN = 1
+const PANNING_SPEED_MAX = 400
+@export var panning_speed := 20:
+	set(new_value):
+		# Validation
+		if is_nan(new_value):
+			new_value = 20
+		else:
+			new_value = clampi(new_value, PANNING_SPEED_MIN, PANNING_SPEED_MAX)
+		# Main part
+		if panning_speed != new_value:
+			panning_speed = new_value
 			emit_changed()
 
 @export var use_ctrl_for_zoom := true:
