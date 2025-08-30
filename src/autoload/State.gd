@@ -6,13 +6,7 @@ const PathCommandPopupScene = preload("res://src/ui_widgets/path_popup.tscn")
 
 signal svg_unknown_change
 
-# These signals copy the ones in ElementRoot.
-# ElementRoot is not persistent, while these signals can be connected to reliably.
 signal any_attribute_changed(xid: PackedInt32Array)
-signal xnodes_added(xids: Array[PackedInt32Array])
-signal xnodes_deleted(xids: Array[PackedInt32Array])
-signal xnodes_moved_in_parent(parent_xid: PackedInt32Array, old_indices: Array[int])
-signal xnodes_moved_to(xids: Array[PackedInt32Array], location: PackedInt32Array)
 signal xnode_layout_changed  # Emitted together with any of the above 4.
 signal basic_xnode_text_changed
 signal basic_xnode_rendered_text_changed
@@ -22,8 +16,8 @@ signal svg_changed  # Should only connect to persistent parts of the UI.
 
 var _update_pending := false
 
-# "unstable_text" is the current state, which might have errors (i.e., while using the
-# code editor). "text" is the last state without errors.
+# "unstable_text" is the current state, which might have errors (i.e., while using the code editor).
+# "text" is the last state without errors, and is what the editor is synced to.
 # These both differ from the TabData svg_text, which is the state as saved to file,
 # which doesn't happen while dragging handles or typing in the code editor for example.
 # "last_saved_svg_text" is a variable set temporarily when a save is requested, so that
@@ -35,11 +29,6 @@ var root_element := ElementRoot.new()
 
 func _enter_tree() -> void:
 	get_window().mouse_exited.connect(clear_all_hovered)
-	
-	xnodes_added.connect(_on_xnodes_added)
-	xnodes_deleted.connect(_on_xnodes_deleted)
-	xnodes_moved_in_parent.connect(_on_xnodes_moved_in_parent)
-	xnodes_moved_to.connect(_on_xnodes_moved_to)
 	svg_unknown_change.connect(clear_all_selections)
 	
 	svg_unknown_change.connect(queue_update)
@@ -121,14 +110,20 @@ func sync_elements() -> void:
 		svg_text = unstable_svg_text
 		unstable_svg_text = ""
 		root_element = svg_parse_result.svg
+		root_element.xnodes_added.connect(_on_xnodes_added)
+		root_element.xnodes_deleted.connect(_on_xnodes_deleted)
+		root_element.xnodes_moved_in_parent.connect(_on_xnodes_moved_in_parent)
+		root_element.xnodes_moved_to.connect(_on_xnodes_moved_to)
+		
+		root_element.xnodes_added.connect(xnode_layout_changed.emit.unbind(1))
+		root_element.xnodes_deleted.connect(xnode_layout_changed.emit.unbind(1))
+		root_element.xnodes_moved_in_parent.connect(xnode_layout_changed.emit.unbind(2))
+		root_element.xnodes_moved_to.connect(xnode_layout_changed.emit.unbind(2))
+		root_element.miscellaneous_xnode_layout_change.connect(xnode_layout_changed.emit)
 		root_element.any_attribute_changed.connect(any_attribute_changed.emit)
-		root_element.xnodes_added.connect(xnodes_added.emit)
-		root_element.xnodes_deleted.connect(xnodes_deleted.emit)
-		root_element.xnodes_moved_in_parent.connect(xnodes_moved_in_parent.emit)
-		root_element.xnodes_moved_to.connect(xnodes_moved_to.emit)
-		root_element.xnode_layout_changed.connect(xnode_layout_changed.emit)
 		root_element.basic_xnode_text_changed.connect(basic_xnode_text_changed.emit)
 		root_element.basic_xnode_rendered_text_changed.connect(basic_xnode_rendered_text_changed.emit)
+		
 		svg_unknown_change.emit()
 
 

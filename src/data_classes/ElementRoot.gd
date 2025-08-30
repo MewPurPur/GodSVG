@@ -1,15 +1,16 @@
+## The <svg> element that's at the top level, not nested, thus orchestrating everything.
 class_name ElementRoot extends ElementSVG
 
-@warning_ignore("unused_signal")
-signal any_attribute_changed(xid: PackedInt32Array)
-
+# Connect these carefully for things that will persist after the ElementRoot changes.
+# The signals in State are synced with the current ElementRoot and are reliable.
 signal xnodes_added(xids: Array[PackedInt32Array])
 signal xnodes_deleted(xids: Array[PackedInt32Array])
 signal xnodes_moved_in_parent(parent_xid: PackedInt32Array, old_indices: Array[int])
 signal xnodes_moved_to(xids: Array[PackedInt32Array], location: PackedInt32Array)
-signal xnode_layout_changed  # Emitted together with any of the above four.
+signal miscellaneous_xnode_layout_change
 
 @warning_ignore_start("unused_signal")
+signal any_attribute_changed(xid: PackedInt32Array)
 signal basic_xnode_text_changed(xid: PackedInt32Array)
 signal basic_xnode_rendered_text_changed(xid: PackedInt32Array)
 @warning_ignore_restore("unused_signal")
@@ -51,7 +52,6 @@ func add_xnode(new_xnode: XNode, new_xid: PackedInt32Array) -> void:
 	get_xnode(XIDUtils.get_parent_xid(new_xid)).insert_child(new_xid[-1], new_xnode)
 	var new_xid_array: Array[PackedInt32Array] = [new_xid]
 	xnodes_added.emit(new_xid_array)
-	xnode_layout_changed.emit()
 
 func delete_xnodes(xids: Array[PackedInt32Array]) -> void:
 	if xids.is_empty():
@@ -61,9 +61,8 @@ func delete_xnodes(xids: Array[PackedInt32Array]) -> void:
 	for id in xids:
 		get_xnode(id).parent.remove_child(id[-1])
 	xnodes_deleted.emit(xids)
-	xnode_layout_changed.emit()
 
-# Moves elements up or down, not to an arbitrary position.
+## Moves elements up or down, not to an arbitrary position.
 func move_xnodes_in_parent(xids: Array[PackedInt32Array], down: bool) -> void:
 	if xids.is_empty():
 		return
@@ -113,10 +112,8 @@ func move_xnodes_in_parent(xids: Array[PackedInt32Array], down: bool) -> void:
 	# Check if indices were really changed after the operation.
 	if old_indices != range(old_indices.size()):
 		xnodes_moved_in_parent.emit(parent_xid, old_indices)
-		xnode_layout_changed.emit()
 
-# Moves elements to an arbitrary location.
-# The first moved element will now be at the location XID.
+## Moves elements to an arbitrary location. The first moved element will now be at the location XID.
 func move_xnodes_to(xids: Array[PackedInt32Array], location: PackedInt32Array) -> void:
 	xids = XIDUtils.filter_descendants(xids)
 	# An element can't move deeper inside itself. Remove the descendants of the location.
@@ -148,10 +145,9 @@ func move_xnodes_to(xids: Array[PackedInt32Array], location: PackedInt32Array) -
 		if not XIDUtils.are_siblings_or_same(id, location) or id[-1] < location[-1] or id[-1] >= location[-1] + xids_stored.size():
 			# If this condition is passed, then there was a layout change.
 			xnodes_moved_to.emit(xids, location)
-			xnode_layout_changed.emit()
 			return
 
-# Duplicates elements and puts them below.
+## Duplicates elements, placing each duplicate after the original.
 func duplicate_xnodes(xids: Array[PackedInt32Array]) -> void:
 	if xids.is_empty():
 		return
@@ -180,16 +176,15 @@ func duplicate_xnodes(xids: Array[PackedInt32Array]) -> void:
 		for xid_idx in range(added_xid_idx - added_to_last_parent , added_xid_idx):
 			xids_added[xid_idx][-1] += 1
 	xnodes_added.emit(xids_added)
-	xnode_layout_changed.emit()
 
 func replace_xnode(id: PackedInt32Array, new_xnode: XNode) -> void:
 	get_xnode(id).parent.replace_child(id[-1], new_xnode)
-	xnode_layout_changed.emit()
+	miscellaneous_xnode_layout_change.emit()
 
 
-# Optimizes the SVG text in more ways than what formatting attributes allows.
-# The return value is true if the SVG can be optimized, otherwise false.
-# If apply_changes is false, you'll only get the return value.
+## Optimizes the SVG text in ways that attribute formatting doesn't allow.
+## The return value is true if the SVG can be optimized, otherwise false.
+## If apply_changes is false, you'll only get the return value.
 func optimize(not_applied := false) -> bool:
 	for xnode in get_all_xnode_descendants():
 		if not xnode.is_element():
