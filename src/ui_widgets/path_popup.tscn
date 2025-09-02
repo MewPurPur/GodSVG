@@ -24,6 +24,7 @@ layout_mode = 2
 size_flags_horizontal = 8
 focus_mode = 0
 mouse_default_cursor_shape = 2
+action_mode = 0
 flat = true
 alignment = 2
 

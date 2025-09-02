@@ -21,13 +21,13 @@ func _ready() -> void:
 	Configs.highlighting_colors_changed.connect(update_syntax_highlighter)
 	update_syntax_highlighter()
 	code_edit.clear_undo_history()
-	State.svg_changed.connect(auto_update_text)
-	auto_update_text()
+	State.svg_changed.connect(sync_text_from_svg)
+	sync_text_from_svg()
 
 
-func auto_update_text() -> void:
+func sync_text_from_svg() -> void:
 	if not code_edit.has_focus():
-		code_edit.text = State.svg_text
+		code_edit.text = State.stable_editor_markup
 		code_edit.clear_undo_history()
 
 func update_error(err_id: SVGParser.ParseError) -> void:
@@ -35,12 +35,15 @@ func update_error(err_id: SVGParser.ParseError) -> void:
 		if error_bar.visible:
 			error_bar.hide()
 			sync_theming()
-	else:
-		# When the error is shown, the code editor's theme is changed to match up.
-		if not error_bar.visible:
-			error_bar.show()
-			error_label.text = SVGParser.get_parsing_error_string(err_id)
-			sync_theming()
+		return
+	# When the error is shown, the code editor's theme is changed to match up.
+	if not code_edit.has_focus():
+		code_edit.text = State.unstable_markup
+		code_edit.grab_focus()
+	if not error_bar.visible:
+		error_bar.show()
+		error_label.text = SVGParser.get_parsing_error_string(err_id)
+		sync_theming()
 
 func sync_theming() -> void:
 	# Set up the code edit.
@@ -102,15 +105,16 @@ func sync_theming() -> void:
 
 
 func _on_svg_code_edit_text_changed() -> void:
-	State.apply_svg_text(code_edit.text, false)
-
-func _on_svg_code_edit_focus_exited() -> void:
-	State.queue_svg_save()
-	code_edit.text = State.svg_text
-	update_error(SVGParser.ParseError.OK)
+	State.apply_markup(code_edit.text, true)
 
 func _on_svg_code_edit_focus_entered() -> void:
 	State.clear_all_selections()
+
+func _on_svg_code_edit_focus_exited() -> void:
+	State.queue_svg_save()
+	if not State.stable_editor_markup.is_empty():
+		code_edit.text = State.stable_editor_markup
+		update_error(SVGParser.ParseError.OK)
 
 
 func _on_options_button_pressed() -> void:

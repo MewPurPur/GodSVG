@@ -1,4 +1,4 @@
-# This class has functionality for importing, exporting, and saving files.
+## This class has functionality for importing, exporting, and saving files.
 @abstract class_name FileUtils
 
 enum FileState {SAME, DIFFERENT, DOES_NOT_EXIST}
@@ -15,10 +15,10 @@ const GoodFileDialogScene = preload("res://src/ui_parts/good_file_dialog.tscn")
 static func reset_svg() -> void:
 	var file_path := Configs.savedata.get_active_tab().svg_file_path
 	if FileAccess.file_exists(file_path):
-		State.apply_svg_text(FileAccess.get_file_as_string(file_path))
+		State.apply_markup(FileAccess.get_file_as_string(file_path), true)
+		State.queue_svg_save()
 
-static func apply_svgs_from_paths(paths: PackedStringArray,
-show_incorrect_extension_errors := true) -> void:
+static func apply_svgs_from_paths(paths: PackedStringArray, show_incorrect_extension_errors := true) -> void:
 	_start_file_import_process(paths, _apply_svg, PackedStringArray(["svg"]), show_incorrect_extension_errors)
 
 static func compare_svg_to_disk_contents(idx := -1) -> FileState:
@@ -26,13 +26,21 @@ static func compare_svg_to_disk_contents(idx := -1) -> FileState:
 	var content := FileAccess.get_file_as_string(tab.svg_file_path)
 	if content.is_empty():
 		return FileState.DOES_NOT_EXIST
-	# Check if importing the file's text into GodSVG would change the current SVG text.
+	# Check if importing the file's contents into GodSVG would change the current SVG markup.
 	# Avoid the parsing if checking the active tab.
-	var state_svg_text := State.svg_text if idx == -1 else SVGParser.root_to_editor_markup(SVGParser.markup_to_root(tab.get_true_svg_text()).svg)
-	if state_svg_text == SVGParser.root_to_editor_markup(SVGParser.markup_to_root(content).svg):
-		return FileState.SAME
+	var parse_result := SVGParser.markup_to_root(tab.get_true_svg_text())
+	if parse_result.error == SVGParser.ParseError.OK:
+		var state_svg_text := State.stable_editor_markup if idx == -1 else SVGParser.root_to_editor_markup(parse_result.svg)
+		if state_svg_text == SVGParser.root_to_editor_markup(SVGParser.markup_to_root(content).svg):
+			return FileState.SAME
+		else:
+			return FileState.DIFFERENT
 	else:
-		return FileState.DIFFERENT
+		var state_svg_text := State.unstable_markup if idx == -1 else tab.get_true_svg_text()
+		if state_svg_text == content:
+			return FileState.SAME
+		else:
+			return FileState.DIFFERENT
 
 
 static func _save_svg_with_custom_final_callback(final_callback: Callable) -> void:
@@ -346,8 +354,8 @@ static func _on_import_panel_accepted(file_path: String, svg_text: String, empty
 		Configs.savedata.move_tab(Configs.savedata.get_tab_count() - 1, tab_index)
 	else:
 		Configs.savedata.add_tab_with_path(file_path)
-	Configs.savedata.get_active_tab().setup_svg_text(svg_text)
-	State.sync_elements()
+	Configs.savedata.get_active_tab().set_initial_svg_text(svg_text)
+	State.setup_from_tab()
 
 
 static func open_svg(file_path: String) -> void:

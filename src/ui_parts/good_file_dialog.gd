@@ -98,7 +98,12 @@ func _ready() -> void:
 	shortcuts.add_shortcut("ui_accept", func() -> void:
 			var selected_item_indices := file_list.get_selected_items()
 			if not selected_item_indices.is_empty():
-				call_activation_callback(file_list.get_item_metadata(selected_item_indices[0])))
+				call_activation_callback(file_list.get_item_metadata(selected_item_indices[0]))
+	)
+	shortcuts.add_shortcut("open_in_folder", func() -> void:
+			var selected_paths := get_selected_file_paths()
+			OS.shell_show_in_file_manager(current_dir if selected_paths.is_empty() else selected_paths[0])
+	)
 	HandlerGUI.register_shortcuts(self, shortcuts)
 	
 	# Signal connections.
@@ -374,8 +379,9 @@ func open_dir_context(dir: String) -> void:
 		ContextPopup.create_shortcut_button("ui_accept", false,
 				Translator.translate("Open"), load("res://assets/icons/OpenFolder.svg")),
 		ContextPopup.create_button(Translator.translate("Copy path"),
-				DisplayServer.clipboard_set.bind(dir), false,
-				load("res://assets/icons/Copy.svg"))]
+				DisplayServer.clipboard_set.bind(dir), false, load("res://assets/icons/Copy.svg")),
+		ContextPopup.create_shortcut_button("open_in_folder", false),
+	]
 	context_popup.setup(btn_arr, true)
 	var vp := get_viewport()
 	HandlerGUI.popup_under_pos(context_popup, vp.get_mouse_position(), vp)
@@ -395,6 +401,7 @@ func open_file_context() -> void:
 	if selected_file_paths.size() == 1:
 		btn_arr.append(ContextPopup.create_button(Translator.translate("Copy path"),
 				copy_file_path, false, load("res://assets/icons/Copy.svg")))
+	btn_arr.append(ContextPopup.create_shortcut_button("open_in_folder", false))
 	
 	var context_popup := ContextPopup.new()
 	context_popup.setup(btn_arr, true)

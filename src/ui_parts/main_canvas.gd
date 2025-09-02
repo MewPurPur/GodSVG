@@ -26,46 +26,52 @@ var reference_texture_rect: TextureRect
 
 func _ready() -> void:
 	super()
-	camera_center_changed.connect(func() -> void: Configs.savedata.get_active_tab().camera_center = camera_center)
-	camera_zoom_changed.connect(func() -> void: Configs.savedata.get_active_tab().camera_zoom = camera_zoom)
+	camera_center_changed.connect(sync_camera_center_in_tab)
+	camera_zoom_changed.connect(sync_camera_zoom_in_tab)
 	var shortcuts := ShortcutsRegistration.new()
 	shortcuts.add_shortcut("view_show_grid", toggle_show_grid, ShortcutsRegistration.Behavior.PASS_THROUGH_AND_PRESERVE_POPUPS)
 	shortcuts.add_shortcut("view_show_handles", toggle_show_handles, ShortcutsRegistration.Behavior.PASS_THROUGH_AND_PRESERVE_POPUPS)
 	shortcuts.add_shortcut("view_rasterized_svg", toggle_view_rasterized, ShortcutsRegistration.Behavior.PASS_THROUGH_AND_PRESERVE_POPUPS)
 	HandlerGUI.register_shortcuts(self, shortcuts)
 	
-	State.svg_changed.connect(_on_svg_changed)
-	_on_svg_changed()
+	State.parsing_finished.connect(_on_parsing_finished)
+	State.svg_edited.connect(_on_svg_changed.bind(true))
+	State.svg_switched_to_another.connect(_on_svg_changed.bind(false))
 	State.hover_changed.connect(_on_hover_changed)
 	State.selection_changed.connect(_on_selection_changed)
 	
 	Configs.active_tab_changed.connect(sync_reference_image)
-	Configs.active_tab_changed.connect(_on_svg_changed)
 	Configs.active_tab_changed.connect(sync_camera.call_deferred)
 	await get_tree().process_frame
 	center_frame()
 
-func _on_svg_resized() -> void:
-	sync_checkerboard()
-	center_frame()
-	queue_redraw()
+func sync_camera_center_in_tab() -> void:
+	Configs.savedata.get_active_tab().camera_center = camera_center
+
+func sync_camera_zoom_in_tab() -> void:
+	Configs.savedata.get_active_tab().camera_zoom = camera_zoom
+
+func sync_svg_size() -> void:
+	if _current_svg_size != root_element.get_size():
+		_current_svg_size = root_element.get_size()
+		sync_checkerboard()
+		center_frame()
+		queue_redraw()
 
 var _current_svg_size: Vector2
 
 func _on_root_element_attribute_changed(attribute_name: String) -> void:
-	if attribute_name in ["width", "height", "viewBox"] and _current_svg_size != root_element.get_size():
-		_current_svg_size = root_element.get_size()
-		_on_svg_resized()
+	if attribute_name in ["width", "height", "viewBox"]:
+		sync_svg_size()
 
-func _on_svg_changed() -> void:
-	if root_element != State.root_element:
+func _on_parsing_finished(error: SVGParser.ParseError) -> void:
+	if error == SVGParser.ParseError.OK:
 		root_element = State.root_element
 		root_element.attribute_changed.connect(_on_root_element_attribute_changed)
-	
-	if _current_svg_size != root_element.get_size():
-		_current_svg_size = root_element.get_size()
-		_on_svg_resized()
-	
+
+func _on_svg_changed(is_edit: bool) -> void:
+	if is_edit:
+		sync_svg_size()
 	queue_texture_update()
 	handles_manager.queue_update_handles()
 
@@ -117,3 +123,6 @@ func sync_camera() -> void:
 		adjust_view()
 	else:
 		center_frame()
+		# Make sure to sync them in case they didn't change after the centering.
+		sync_camera_center_in_tab()
+		sync_camera_zoom_in_tab()

@@ -1,5 +1,5 @@
-class_name ContextPopup extends PanelContainer
 ## Standard popup for actions with methods for easy setup.
+class_name ContextPopup extends PanelContainer
 
 const arrow = preload("res://assets/icons/PopupArrow.svg")
 
@@ -116,6 +116,7 @@ static func create_checkbox(text: String, toggle_action: Callable, start_pressed
 		checkbox.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	
 	checkbox.text = text
+	checkbox.action_mode = BaseButton.ACTION_MODE_BUTTON_PRESS
 	checkbox.button_pressed = start_pressed
 	checkbox.toggled.connect(toggle_action.unbind(1))
 	

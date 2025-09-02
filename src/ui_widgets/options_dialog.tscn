@@ -58,6 +58,7 @@ visible = false
 layout_mode = 2
 focus_mode = 0
 mouse_default_cursor_shape = 2
+action_mode = 0
 
 [node name="OptionsContainer" type="HBoxContainer" parent="MainContainer"]
 layout_mode = 2

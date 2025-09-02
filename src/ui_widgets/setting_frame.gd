@@ -39,6 +39,7 @@ func permanent_disable_checkbox(checkbox_state: bool) -> void:
 func setup_checkbox() -> void:
 	widget = CheckBox.new()
 	widget.focus_mode = Control.FOCUS_NONE
+	widget.action_mode = BaseButton.ACTION_MODE_BUTTON_PRESS
 	widget.mouse_filter = Control.MOUSE_FILTER_PASS
 	widget.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	add_child(widget)
