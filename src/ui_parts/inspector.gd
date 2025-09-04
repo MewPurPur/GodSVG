@@ -11,6 +11,7 @@ func _ready() -> void:
 	sync_localization()
 	State.xnode_layout_changed.connect(full_rebuild)
 	State.svg_unknown_change.connect(full_rebuild)
+	State.svg_switched_to_another.connect(full_rebuild)
 	full_rebuild()
 	add_button.pressed.connect(_on_add_button_pressed)
 

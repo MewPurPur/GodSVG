@@ -1,4 +1,4 @@
-# A resource that keeps track of the tabs.
+## A resource that keeps track of a tab.
 class_name TabData extends ConfigResource
 
 var _sync_pending := false
@@ -28,7 +28,6 @@ var camera_center := Vector2(NAN, NAN)
 var camera_zoom := -1.0
 
 var active := false
-var fully_loaded := true
 var empty_unsaved := false
 
 # This variable represents the saved state of the SVG. Intermediate operations such as
@@ -61,7 +60,7 @@ func _save_svg_text() -> void:
 	else:
 		var edited_text_parse_result := SVGParser.markup_to_root(FileAccess.get_file_as_string(get_edited_file_path()))
 		
-		if is_instance_valid(edited_text_parse_result.svg):
+		if edited_text_parse_result.error == SVGParser.ParseError.OK:
 			FileAccess.open(edited_file_path, FileAccess.WRITE).store_string(SVGParser.root_to_export_markup(edited_text_parse_result.svg))
 	queue_sync()
 
@@ -71,12 +70,9 @@ func save_to_bound_path() -> void:
 	FileAccess.open(svg_file_path, FileAccess.WRITE).store_string(State.get_export_text())
 	queue_sync()
 
-func setup_svg_text(new_text: String, fully_load := true) -> void:
+func set_initial_svg_text(new_text: String) -> void:
 	_svg_text = new_text
-	State.svg_text = new_text
 	_save_svg_text()
-	if fully_load:
-		fully_loaded = true
 
 func get_svg_text() -> String:
 	return _svg_text
@@ -119,12 +115,12 @@ func get_presented_svg_file_path() -> String:
 func undo() -> void:
 	if is_instance_valid(undo_redo) and undo_redo.has_undo():
 		undo_redo.undo()
-		State.sync_elements()
+		State.apply_markup(get_svg_text(), true)
 
 func redo() -> void:
 	if is_instance_valid(undo_redo) and undo_redo.has_redo():
 		undo_redo.redo()
-		State.sync_elements()
+		State.apply_markup(get_svg_text(), true)
 
 
 func _on_language_changed() -> void:
@@ -141,13 +137,11 @@ func _sync() -> void:
 	_sync_pending = false
 	
 	if is_saved():
-		# The extension is included in the presented name too.
-		# It's always in the end anyway so it can't hide useless info.
-		# And also, it prevents ".svg" from being presented as an empty string.
+		# The extension is included in the presented name because it's always in the end and can't hide useless info.
 		presented_name = svg_file_path.get_file()
 		empty_unsaved = false
 		
-		if not fully_loaded or OS.has_feature("web"):
+		if OS.has_feature("web"):
 			marked_unsaved = false
 		else:
 			var edited_text_parse_result := SVGParser.markup_to_root(FileAccess.get_file_as_string(get_edited_file_path()))

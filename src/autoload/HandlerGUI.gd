@@ -274,43 +274,55 @@ func _unhandled_input(event: InputEvent) -> void:
 		_remove_control()
 		return
 	
-	for node in shortcut_registrations:
-		if node is CanvasItem and not node.visible:
-			continue
-		
-		var registrations := shortcut_registrations[node]
-		for idx in registrations.actions.size():
-			var action := registrations.actions[idx]
-			if ShortcutUtils.is_action_pressed(event, action):
-				var should_execute := false
-				var should_clear_popups := false
-				
-				match registrations.behaviors[idx]:
-					ShortcutsRegistration.Behavior.PASS_THROUGH_ALL:
-						should_execute = true
-					ShortcutsRegistration.Behavior.PASS_THROUGH_POPUPS:
-						if menu_stack.is_empty() or menu_stack[-1].is_ancestor_of(node):
-							should_execute = true
-							should_clear_popups = true
-					ShortcutsRegistration.Behavior.PASS_THROUGH_AND_PRESERVE_POPUPS:
-						if menu_stack.is_empty() or menu_stack[-1].is_ancestor_of(node):
-							should_execute = true
-					ShortcutsRegistration.Behavior.NO_PASSTHROUGH:
-						if (menu_stack.is_empty() and popup_stack.is_empty()) or (popup_stack.is_empty() and menu_stack[-1].is_ancestor_of(node)) or\
-						(not popup_stack.is_empty() and popup_stack[-1].is_ancestor_of(node)):
-							should_execute = true
-					ShortcutsRegistration.Behavior.STRICT_NO_PASSTHROUGH:
-						if not get_viewport().gui_is_dragging() and ((menu_stack.is_empty() and popup_stack.is_empty()) or (popup_stack.is_empty() and\
-						menu_stack[-1].is_ancestor_of(node)) or (not popup_stack.is_empty() and popup_stack[-1].is_ancestor_of(node))):
-							should_execute = true
+	var behavior_priority: Array[ShortcutsRegistration.Behavior] = [
+		ShortcutsRegistration.Behavior.STRICT_NO_PASSTHROUGH,
+		ShortcutsRegistration.Behavior.NO_PASSTHROUGH,
+		ShortcutsRegistration.Behavior.PASS_THROUGH_POPUPS,
+		ShortcutsRegistration.Behavior.PASS_THROUGH_AND_PRESERVE_POPUPS,
+		ShortcutsRegistration.Behavior.PASS_THROUGH_ALL
+	]
+	
+	for behavior in behavior_priority:
+		for node in shortcut_registrations:
+			if node is CanvasItem and not node.visible:
+				continue
+			
+			var registrations := shortcut_registrations[node]
+			for idx in registrations.actions.size():
+				if registrations.behaviors[idx] != behavior:
+					continue
 					
-				if should_execute:
-					registrations.activated.emit(action)
-					registrations.callbacks[idx].call()
-					if should_clear_popups:
-						remove_all_popups()
-					get_viewport().set_input_as_handled()
-					return
+				var action := registrations.actions[idx]
+				if ShortcutUtils.is_action_pressed(event, action):
+					var should_execute := false
+					var should_clear_popups := false
+					
+					match behavior:
+						ShortcutsRegistration.Behavior.PASS_THROUGH_ALL:
+							should_execute = true
+						ShortcutsRegistration.Behavior.PASS_THROUGH_POPUPS:
+							if menu_stack.is_empty() or menu_stack[-1].is_ancestor_of(node):
+								should_execute = true
+								should_clear_popups = true
+						ShortcutsRegistration.Behavior.PASS_THROUGH_AND_PRESERVE_POPUPS:
+							if menu_stack.is_empty() or menu_stack[-1].is_ancestor_of(node):
+								should_execute = true
+						ShortcutsRegistration.Behavior.NO_PASSTHROUGH:
+							if (menu_stack.is_empty() and popup_stack.is_empty()) or (popup_stack.is_empty() and menu_stack[-1].is_ancestor_of(node)) or\
+							(not popup_stack.is_empty() and popup_stack[-1].is_ancestor_of(node)):
+								should_execute = true
+						ShortcutsRegistration.Behavior.STRICT_NO_PASSTHROUGH:
+							if not get_viewport().gui_is_dragging() and ((menu_stack.is_empty() and popup_stack.is_empty()) or (popup_stack.is_empty() and\
+							menu_stack[-1].is_ancestor_of(node)) or (not popup_stack.is_empty() and popup_stack[-1].is_ancestor_of(node))):
+								should_execute = true
+					
+					if should_execute:
+						registrations.activated.emit(action)
+						registrations.callbacks[idx].call()
+						if should_clear_popups:
+							remove_all_popups()
+						get_viewport().set_input_as_handled()
+						return
 
 
 func get_window_default_size() -> Vector2i:

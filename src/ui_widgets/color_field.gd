@@ -50,8 +50,7 @@ func _ready() -> void:
 	pressed.connect(_on_pressed)
 	button_gui_input.connect(_on_button_gui_input)
 	# URLs and currentColor require to always listen for changes to the SVG.
-	State.any_attribute_changed.connect(_on_svg_changed.unbind(1))
-	State.xnode_layout_changed.connect(_on_svg_changed)
+	State.svg_edited.connect(_on_svg_modified)
 	tooltip_text = attribute_name
 	setup_placeholder()
 
@@ -66,7 +65,7 @@ func _on_element_ancestor_attribute_changed(attribute_changed: String) -> void:
 		sync()
 
 # Redraw in case the gradient might have changed.
-func _on_svg_changed() -> void:
+func _on_svg_modified() -> void:
 	if cached_allow_url and ColorParser.is_valid_url(element.get_implied_attribute_value(attribute_name)):
 		update_gradient_texture()
 		queue_redraw()

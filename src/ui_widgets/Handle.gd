@@ -1,4 +1,4 @@
-# Base class for handles.
+## Base class for handles.
 @abstract class_name Handle
 
 enum Display {BIG, SMALL}

@@ -19,7 +19,7 @@ const NumberEdit = preload("res://src/ui_widgets/number_edit.gd")
 
 func _ready() -> void:
 	State.any_attribute_changed.connect(_on_any_attribute_changed)
-	State.svg_unknown_change.connect(update_attributes)
+	State.svg_changed.connect(update_attributes)
 	update_attributes()
 	width_edit.value_changed.connect(_on_width_edit_value_changed)
 	height_edit.value_changed.connect(_on_height_edit_value_changed)

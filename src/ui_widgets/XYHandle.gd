@@ -1,4 +1,4 @@
-# A handle that binds to two numeric attributes.
+## A handle whose x and y coordinates bind to two numeric attributes.
 class_name XYHandle extends Handle
 
 var x_name: String

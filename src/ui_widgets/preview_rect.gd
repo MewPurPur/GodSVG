@@ -6,7 +6,11 @@ const MAX_IMAGE_DIMENSION = 512
 @onready var texture_preview: TextureRect = $Checkerboard/TexturePreview
 
 func setup_svg_without_dimensions(svg_text: String) -> void:
-	setup_svg(svg_text, SVGParser.markup_to_root(svg_text).svg.get_size())
+	var root := SVGParser.markup_to_root(svg_text).svg
+	if is_instance_valid(root):
+		setup_svg(svg_text, root.get_size())
+	else:
+		hide()
 
 func setup_svg(svg_text: String, dimensions: Vector2) -> void:
 	if not is_node_ready():

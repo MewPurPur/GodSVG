@@ -4,38 +4,38 @@ extends Node
 const OptionsDialogScene = preload("res://src/ui_widgets/options_dialog.tscn")
 const PathCommandPopupScene = preload("res://src/ui_widgets/path_popup.tscn")
 
-signal svg_unknown_change
-
 signal any_attribute_changed(xid: PackedInt32Array)
 signal xnode_layout_changed  # Emitted together with any of the above 4.
 signal basic_xnode_text_changed
 signal basic_xnode_rendered_text_changed
+signal svg_unknown_change
 
 signal parsing_finished(error_id: SVGParser.ParseError)
-signal svg_changed  # Should only connect to persistent parts of the UI.
+signal svg_edited
+signal svg_switched_to_another
+signal svg_changed
 
-var _update_pending := false
-
-# "unstable_text" is the current state, which might have errors (i.e., while using the code editor).
-# "text" is the last state without errors, and is what the editor is synced to.
+# "unstable_markup" is the current state, which might have errors (i.e., while using the code editor).
+# "stable_markup" is the last state without errors, and is what the editor is synced to.
 # These both differ from the TabData svg_text, which is the state as saved to file,
 # which doesn't happen while dragging handles or typing in the code editor for example.
-# "last_saved_svg_text" is a variable set temporarily when a save is requested, so that
-# any changes made between the request and the deferred sync don't go in the undo stack.
-var last_saved_svg_text := ""
-var unstable_svg_text := ""
-var svg_text := ""
+var unstable_markup := ""
+var stable_editor_markup := ""
+var stable_export_markup := ""
 var root_element := ElementRoot.new()
 
 func _enter_tree() -> void:
 	get_window().mouse_exited.connect(clear_all_hovered)
 	svg_unknown_change.connect(clear_all_selections)
 	
-	svg_unknown_change.connect(queue_update)
-	xnode_layout_changed.connect(queue_update)
-	any_attribute_changed.connect(queue_update.unbind(1))
-	basic_xnode_text_changed.connect(queue_update)
-	basic_xnode_rendered_text_changed.connect(queue_update)
+	xnode_layout_changed.connect(_on_svg_edited)
+	any_attribute_changed.connect(_on_svg_edited.unbind(1))
+	basic_xnode_text_changed.connect(_on_svg_edited)
+	basic_xnode_rendered_text_changed.connect(_on_svg_edited)
+	svg_unknown_change.connect(_on_svg_edited)
+	
+	svg_edited.connect(svg_changed.emit)
+	svg_switched_to_another.connect(svg_changed.emit)
 	
 	Configs.active_tab_changed.connect(setup_from_tab)
 	setup_from_tab.call_deferred()  # Let everything load before emitting signals.
@@ -44,72 +44,32 @@ func _enter_tree() -> void:
 	await get_tree().process_frame
 	FileUtils.apply_svgs_from_paths(OS.get_cmdline_args(), false)
 
-func setup_from_tab() -> void:
-	var active_tab := Configs.savedata.get_active_tab()
-	var new_text := active_tab.get_svg_text()
-	
-	if not new_text.is_empty():
-		apply_svg_text(new_text, false)
-		return
-	
-	if active_tab.fully_loaded and not active_tab.empty_unsaved and FileAccess.file_exists(active_tab.get_edited_file_path()):
-		var user_facing_path := active_tab.svg_file_path
-		var message := Translator.translate("The last edited state of this tab could not be found.")
-		
-		var options_dialog := OptionsDialogScene.instantiate()
-		HandlerGUI.add_dialog(options_dialog)
-		if user_facing_path.is_empty() or not FileAccess.file_exists(user_facing_path):
-			options_dialog.setup(Translator.translate("Alert!"), message)
-			options_dialog.add_option(Translator.translate("Close tab"), Configs.savedata.remove_active_tab)
-		else:
-			options_dialog.setup(Translator.translate("Alert!"), message + "\n\n" + Translator.translate(
-					"The tab is bound to the file path {file_path}. Do you want to restore the SVG from this path?").format({"file_path": user_facing_path}))
-			options_dialog.add_option(Translator.translate("Close tab"), Configs.savedata.remove_active_tab)
-			options_dialog.add_option(Translator.translate("Restore"), FileUtils.reset_svg, true)
-		apply_svg_text(TabData.DEFAULT_SVG, false)
-		return
-	
-	active_tab.setup_svg_text(TabData.DEFAULT_SVG, active_tab.svg_file_path.is_empty())
-	sync_elements()
 
+func _on_svg_edited() -> void:
+	stable_editor_markup = SVGParser.root_to_editor_markup(root_element)
+	stable_export_markup = SVGParser.root_to_export_markup(root_element)
+	svg_edited.emit()
 
-# Syncs text to the elements.
-func queue_update() -> void:
-	_update.call_deferred()
-	_update_pending = true
-
-func _update() -> void:
-	if not _update_pending:
-		return
-	_update_pending = false
-	svg_text = SVGParser.root_to_editor_markup(root_element)
-	svg_changed.emit()
-
-
-# Ensure the save happens after the update.
 func queue_svg_save() -> void:
-	_update()
-	last_saved_svg_text = svg_text
-	_svg_save.call_deferred()
-
-func _svg_save() -> void:
-	unstable_svg_text = ""
-	Configs.savedata.get_active_tab().set_svg_text(last_saved_svg_text)
-	last_saved_svg_text = ""
+	if stable_export_markup.is_empty():
+		Configs.savedata.get_active_tab().set_svg_text(unstable_markup)
+	else:
+		unstable_markup = ""
+		Configs.savedata.get_active_tab().set_svg_text(stable_export_markup)
 
 
-func sync_to_editor_formatter() -> void:
-	if not svg_text.is_empty():
-		sync_elements()
+func sync_stable_editor_markup() -> void:
+	if not stable_editor_markup.is_empty():
+		apply_markup(stable_editor_markup, true)
 
-func sync_elements() -> void:
-	var text_to_parse := svg_text if unstable_svg_text.is_empty() else unstable_svg_text
-	var svg_parse_result := SVGParser.markup_to_root(text_to_parse)
-	parsing_finished.emit(svg_parse_result.error)
+func apply_markup(markup: String, is_edit: bool) -> void:
+	var svg_parse_result := SVGParser.markup_to_root(markup)
 	if svg_parse_result.error == SVGParser.ParseError.OK:
-		svg_text = unstable_svg_text
-		unstable_svg_text = ""
 		root_element = svg_parse_result.svg
+		stable_editor_markup = SVGParser.root_to_editor_markup(root_element)
+		stable_export_markup = SVGParser.root_to_export_markup(root_element)
+		parsing_finished.emit(svg_parse_result.error)
+		
 		root_element.xnodes_added.connect(_on_xnodes_added)
 		root_element.xnodes_deleted.connect(_on_xnodes_deleted)
 		root_element.xnodes_moved_in_parent.connect(_on_xnodes_moved_in_parent)
@@ -124,14 +84,35 @@ func sync_elements() -> void:
 		root_element.basic_xnode_text_changed.connect(basic_xnode_text_changed.emit)
 		root_element.basic_xnode_rendered_text_changed.connect(basic_xnode_rendered_text_changed.emit)
 		
-		svg_unknown_change.emit()
+		(svg_unknown_change if is_edit else svg_switched_to_another).emit()
+	else:
+		unstable_markup = markup
+		parsing_finished.emit(svg_parse_result.error)
 
+func setup_from_tab() -> void:
+	var active_tab := Configs.savedata.get_active_tab()
+	var tab_text := active_tab.get_svg_text()
+	
+	if not tab_text.is_empty():
+		apply_markup(tab_text, false)
+		return
+	
+	apply_markup(TabData.DEFAULT_SVG, false)
+	if not active_tab.empty_unsaved and FileAccess.file_exists(active_tab.get_edited_file_path()):
+		var user_facing_path := active_tab.svg_file_path
+		var message := Translator.translate("The last edited state of this tab could not be found.")
+		
+		var options_dialog := OptionsDialogScene.instantiate()
+		HandlerGUI.add_dialog(options_dialog)
+		if user_facing_path.is_empty() or not FileAccess.file_exists(user_facing_path):
+			options_dialog.setup(Translator.translate("Alert!"), message)
+			options_dialog.add_option(Translator.translate("Close tab"), Configs.savedata.remove_active_tab)
+		else:
+			options_dialog.setup(Translator.translate("Alert!"), message + "\n\n" + Translator.translate(
+					"The tab is bound to the file path {file_path}. Do you want to restore the SVG from this path?").format({"file_path": user_facing_path}))
+			options_dialog.add_option(Translator.translate("Close tab"), Configs.savedata.remove_active_tab)
+			options_dialog.add_option(Translator.translate("Restore"), FileUtils.reset_svg, true)
 
-func apply_svg_text(new_text: String, save := true) -> void:
-	unstable_svg_text = new_text
-	sync_elements()
-	if save:
-		queue_svg_save()
 
 func optimize() -> void:
 	root_element.optimize()

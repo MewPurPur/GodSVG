@@ -800,7 +800,7 @@ func set_palettes(new_palettes: Array[Palette]) -> void:
 			editor_formatter = new_value
 			emit_changed()
 			editor_formatter.changed.connect(emit_changed)
-			editor_formatter.changed_deferred.connect(State.sync_to_editor_formatter)
+			editor_formatter.changed_deferred.connect(State.sync_stable_editor_markup)
 
 @export var export_formatter: Formatter = null:
 	set(new_value):
@@ -955,7 +955,6 @@ func _add_new_tab() -> void:
 		new_id += 1
 	
 	var new_tab := TabData.new(new_id)
-	new_tab.fully_loaded = false
 	new_tab.changed.connect(emit_changed)
 	new_tab.status_changed.connect(_on_tab_status_changed.bind(new_id))
 	

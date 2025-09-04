@@ -159,6 +159,7 @@ size_flags_horizontal = 0
 focus_mode = 0
 mouse_default_cursor_shape = 2
 button_pressed = true
+action_mode = 0
 
 [node name="QualityHBox" type="HBoxContainer" parent="MarginContainer/VBoxContainer/TitledPanel/VBoxContainer/CenterContainer/VBoxContainer/QualityRelatedContainer"]
 unique_name_in_owner = true
