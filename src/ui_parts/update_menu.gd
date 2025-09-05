@@ -49,8 +49,7 @@ _headers: PackedStringArray, body: PackedByteArray) -> void:
 			var current_timestamp := -1
 			for release: Dictionary in json:
 				if release["name"] == current_version:
-					current_timestamp = Time.get_unix_time_from_datetime_string(
-							release["created_at"])
+					current_timestamp = Time.get_unix_time_from_datetime_string(release["created_at"])
 					var is_prerelease: bool = release["prerelease"]
 					if is_prerelease:
 						prereleases_button.disabled = false
@@ -67,23 +66,21 @@ _headers: PackedStringArray, body: PackedByteArray) -> void:
 				var timestamp := Time.get_unix_time_from_datetime_string(creation_time)
 				if timestamp > current_timestamp:
 					results[release["name"]] = [release["html_url"], release["prerelease"]]
+			
+			display_results()
+		
 		http.RESULT_TIMEOUT:
 			display_error_message("Request timed out (%d sec)" % http.timeout)
-			return
 		http.RESULT_CANT_CONNECT, http.RESULT_CONNECTION_ERROR, http.RESULT_CANT_RESOLVE:
 			display_error_message("Connection failed")
-			return
 		_:
 			display_error_message("Error code %d" % http_result)
-			return
-	display_results()
 
 
 func display_error_message(msg: String) -> void:
 	status_label.text = Translator.translate("Update check failed")
 	results_panel.show()
-	results_label.text = "%s\n[url=https://github.com/MewPurPur/GodSVG/releases]%s[/url]" %\
-			[msg, Translator.translate("View all releases")]
+	results_label.text = msg + "\n[url=https://github.com/MewPurPur/GodSVG/releases]%s[/url]" % Translator.translate("View all releases")
 	retry_button.show()
 
 func display_results() -> void:

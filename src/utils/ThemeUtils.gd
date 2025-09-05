@@ -133,12 +133,19 @@ static func recalculate_colors() -> void:
 	inspector_frame_title_color = inspector_frame_inner_color.lerp(max_contrast_color, 0.02)
 	inspector_frame_border_color = Color.from_hsv(0.6, 0.5, 0.35) if ThemeUtils.is_theme_dark else Color.from_hsv(0.6, 0.5, 0.875)
 	
-	intermediate_color = accent_color.lerp(extreme_theme_color, 0.6)
+	intermediate_color = base_color
 	if is_theme_dark:
-		intermediate_color.s *= 0.8
+		intermediate_color.s *= 0.96
+		intermediate_color.v = 0.25 + 0.4 * sqrt(intermediate_color.v)
+		if is_zero_approx(base_color.s):
+			intermediate_color.h = accent_color.h
+		elif base_color.h <= 5/6.0 and base_color.h >= 1/6.0:
+			intermediate_color.h = move_toward(intermediate_color.h, 1/6.0, 0.05)
 	else:
-		intermediate_color.s = lerpf(intermediate_color.s, 1.0, minf(0.2, intermediate_color.s))
-		intermediate_color.v **= 0.75
+		intermediate_color.s = 0.3 + 0.4 * sqrt(intermediate_color.s)
+		intermediate_color.v *= 0.96
+		if is_zero_approx(base_color.s):
+			intermediate_color.h = accent_color.h
 	
 	desaturated_color = intermediate_color.lerp(gray_color, 0.3).lerp(extreme_theme_color, 0.08)
 	if not is_theme_dark:
