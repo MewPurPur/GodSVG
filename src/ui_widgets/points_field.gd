@@ -250,14 +250,11 @@ func points_draw() -> void:
 		if i == hovered_idx or i == focused_idx:
 			continue
 		
-		var point_x := element.get_attribute_list(attribute_name)[i * 2]
-		var point_y := element.get_attribute_list(attribute_name)[i * 2 + 1]
 		# Draw the action button.
-		more_icon.draw_rect(ci, Rect2(Vector2(points_container.size.x - 19, 4 + v_offset),
-				Vector2(14, 14)), false, ThemeUtils.tinted_contrast_color)
+		more_icon.draw(ci, Vector2(points_container.size.x - 19, 4 + v_offset), ThemeUtils.context_icon_normal_color)
 		# Draw the fields.
-		draw_numfield(Rect2(Vector2(4, 2 + v_offset), Vector2(44, 18)), point_x)
-		draw_numfield(Rect2(Vector2(52, 2 + v_offset), Vector2(44, 18)), point_y)
+		draw_numfield(Rect2(Vector2(4, 2 + v_offset), Vector2(44, 18)), element.get_attribute_list(attribute_name)[i * 2])
+		draw_numfield(Rect2(Vector2(52, 2 + v_offset), Vector2(44, 18)), element.get_attribute_list(attribute_name)[i * 2 + 1])
 
 func draw_numfield(rect: Rect2, num: float) -> void:
 	mini_line_edit_stylebox.draw(ci, rect)

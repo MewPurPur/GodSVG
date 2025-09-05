@@ -158,9 +158,7 @@ func _draw() -> void:
 
 func _on_title_bar_draw() -> void:
 	var xnode_icon := DB.get_xnode_icon(xnode.get_type())
-	var xnode_icon_size := xnode_icon.get_size()
-	xnode_icon.draw_rect(title_bar_ci, Rect2(title_bar.size / 2 - xnode_icon_size / 2,
-			xnode_icon_size), false, ThemeUtils.tinted_contrast_color)
+	xnode_icon.draw(title_bar_ci, title_bar.size / 2 - xnode_icon.get_size() / 2, ThemeUtils.tinted_contrast_color)
 
 func _on_text_modified() -> void:
 	if xnode.check_text_validity(text_edit.text):
