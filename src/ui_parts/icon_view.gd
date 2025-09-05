@@ -12,6 +12,7 @@ const ColorEdit = preload("res://src/ui_widgets/color_edit.gd")
 @onready var reset_button: Button = %ResetButton
 @onready var texture_rect: TextureRect = %TextureRect
 @onready var scaled_preview: Control = %ScaledPreview
+@onready var scaled_preview_panel: PanelContainer = %ScaledPreviewPanel
 @onready var clear_button: Button = %ClearButton
 @onready var size_label: Label = %SizeLabel
 @onready var split_container: SplitContainer = %SplitContainer
@@ -147,10 +148,8 @@ var colored_sb := StyleBoxFlat.new()
 func _update_preview_bg(new_value: String) -> void:
 	var new_color := Color.html(new_value)
 	if new_color == Color.TRANSPARENT:
-		scaled_preview.remove_theme_stylebox_override("panel")
-		size_label.remove_theme_color_override("font_color")
+		scaled_preview_panel.remove_theme_stylebox_override("panel")
 	else:
 		colored_sb.bg_color = new_color
-		scaled_preview.add_theme_stylebox_override("panel", colored_sb)
-		size_label.add_theme_color_override("font_color", new_color.srgb_to_linear().inverted().linear_to_srgb())
+		scaled_preview_panel.add_theme_stylebox_override("panel", colored_sb)
 	Configs.savedata.icon_view_bg_override = new_color
