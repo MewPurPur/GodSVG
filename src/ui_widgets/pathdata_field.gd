@@ -250,7 +250,7 @@ func _commands_draw() -> void:
 		var cmd: PathCommand = element.get_attribute(attribute_name).get_command(i)
 		var cmd_char := cmd.command_char
 		# Draw the action button.
-		more_icon.draw_rect(ci, Rect2(Vector2(commands_container.size.x - 19, 4 + v_offset), Vector2(14, 14)), false, ThemeUtils.context_icon_normal_color)
+		more_icon.draw(ci, Vector2(commands_container.size.x - 19, 4 + v_offset), ThemeUtils.context_icon_normal_color)
 		# Draw the relative/absolute button.
 		var relative_stylebox := get_theme_stylebox("normal", "PathCommandAbsoluteButton") if Utils.is_string_upper(cmd_char)\
 				else get_theme_stylebox("normal", "PathCommandRelativeButton")

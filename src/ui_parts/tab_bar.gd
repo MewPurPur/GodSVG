@@ -107,9 +107,7 @@ func _draw() -> void:
 				text_line.draw(ci, rect.position + Vector2(4, 3), text_color)
 	
 	var add_button_rect := get_add_button_rect()
-	var plus_icon_size := plus_icon.get_size()
-	plus_icon.draw_rect(ci, Rect2(add_button_rect.position + (add_button_rect.size - plus_icon_size) / 2.0, plus_icon_size),
-			false, ThemeUtils.tinted_contrast_color)
+	plus_icon.draw(ci, Vector2(add_button_rect.position + (add_button_rect.size - plus_icon.get_size()) / 2.0), ThemeUtils.tinted_contrast_color)
 	
 	var scroll_backwards_rect := get_scroll_backwards_area_rect()
 	if scroll_backwards_rect.has_area():

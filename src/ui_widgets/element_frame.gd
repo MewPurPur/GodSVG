@@ -272,12 +272,11 @@ func _on_title_bar_draw() -> void:
 	var half_title_width := ThemeUtils.mono_font.get_string_size(element.name, HORIZONTAL_ALIGNMENT_LEFT, 180, 12).x / 2
 	ThemeUtils.mono_font.draw_string(title_bar_ci, Vector2(half_bar_width - half_title_width + element_icon_size.x / 2, 15),
 			element.name, HORIZONTAL_ALIGNMENT_LEFT, 180, 12, ThemeUtils.editable_text_color)
-	element_icon.draw_rect(title_bar_ci, Rect2(Vector2(half_bar_width - half_title_width - element_icon_size.x + 6, 1).round(), element_icon_size),
-			false, ThemeUtils.tinted_contrast_color)
+	element_icon.draw(title_bar_ci, Vector2(half_bar_width - half_title_width - element_icon_size.x + 6, 1).round(), ThemeUtils.tinted_contrast_color)
 	
 	var element_warnings := element.get_config_warnings()
 	if not element_warnings.is_empty():
-		warning_icon.draw_rect(title_bar_ci, Rect2(Vector2(title_bar.size.x - 23, 2), warning_icon.get_size()), false, ThemeUtils.warning_icon_color)
+		warning_icon.draw(title_bar_ci, Vector2(title_bar.size.x - 23, 2), ThemeUtils.warning_icon_color)
 
 # Block dragging from starting when pressing the title button.
 func _on_title_button_gui_input(event: InputEvent) -> void:

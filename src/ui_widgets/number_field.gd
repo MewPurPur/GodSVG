@@ -5,15 +5,9 @@ var element: Element
 var attribute_name: String:  # May propagate.
 	set(new_value):
 		attribute_name = new_value
-		if DB.ATTRIBUTE_NUMBER_RANGE[attribute_name] == DB.NumberRange.ARBITRARY:
-			cached_min_value = -INF
-			cached_max_value = INF
-		else:
-			cached_min_value = 0.0
-			cached_max_value = INF
+		cached_min_value = -INF if DB.ATTRIBUTE_NUMBER_RANGE[attribute_name] == DB.NumberRange.ARBITRARY else 0.0
 
 var cached_min_value: float
-var cached_max_value: float
 
 func set_value(new_value: String, save := false) -> void:
 	if not new_value.is_empty():
@@ -24,7 +18,7 @@ func set_value(new_value: String, save := false) -> void:
 				sync()
 				return
 			
-			numeric_value = clampf(numeric_value, cached_min_value, cached_max_value)
+			numeric_value = maxf(numeric_value, cached_min_value)
 			new_value = element.get_attribute(attribute_name).num_to_text(numeric_value)
 	element.set_attribute(attribute_name, new_value)
 	sync()
