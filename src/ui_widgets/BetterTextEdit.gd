@@ -48,7 +48,7 @@ func recalibrate_line_gutter() -> void:
 	set_gutter_custom_draw(0, _line_number_draw_callback)
 	set_gutter_clickable(0, false)
 	var max_digits := floori(log(get_line_count()) / log(10) + 1.0)
-	_line_gutter_needed_space = int(max_digits * get_theme_font("font").get_char_size(69, get_theme_font_size("font_size")).x) + 11
+	_line_gutter_needed_space = int(max_digits * get_theme_font("font").get_char_size(69, get_theme_font_size("font_size")).x) + 12
 	set_gutter_width(0, _line_gutter_needed_space)
 
 func _line_number_draw_callback(line: int, _gutter: int, region: Rect2) -> void:

@@ -93,8 +93,7 @@ func _draw() -> void:
 						false, ThemeUtils.tinted_contrast_color)
 		else:
 			var is_hovered := rect.has_point(mouse_pos)
-			var tab_style := "tab_hovered" if is_hovered else "tab_unselected"
-			get_theme_stylebox(tab_style, "TabContainer").draw(ci, rect)
+			get_theme_stylebox("tab_hovered" if is_hovered else "tab_unselected", "TabContainer").draw(ci, rect)
 			
 			var text_line_width := rect.size.x - 8
 			if text_line_width > 0:
