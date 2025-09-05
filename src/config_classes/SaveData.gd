@@ -48,8 +48,8 @@ func get_setting_default(setting: String) -> Variant:
 				HighlighterPreset.DEFAULT_LIGHT: return Color("3e3e4080")
 		"highlighting_text_color":
 			match highlighter_preset:
-				HighlighterPreset.DEFAULT_DARK: return Color("d5d7f2aa")
-				HighlighterPreset.DEFAULT_LIGHT: return Color("242433aa")
+				HighlighterPreset.DEFAULT_DARK: return Color("d5d7f2ac")
+				HighlighterPreset.DEFAULT_LIGHT: return Color("242433ac")
 		"highlighting_cdata_color":
 			match highlighter_preset:
 				HighlighterPreset.DEFAULT_DARK: return Color("ffeda1ac")
@@ -294,7 +294,7 @@ const CURRENT_VERSION = 1
 			emit_changed()
 			Configs.highlighting_colors_changed.emit()
 
-@export var highlighting_text_color := Color("d5d7f2aa"):
+@export var highlighting_text_color := Color("d5d7f2ac"):
 	set(new_value):
 		if highlighting_text_color != new_value:
 			highlighting_text_color = new_value
