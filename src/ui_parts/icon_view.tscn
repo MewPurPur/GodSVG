@@ -113,29 +113,31 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="ScaledPreview" type="PanelContainer" parent="SplitContainer"]
+[node name="ScaledPreview" type="VBoxContainer" parent="SplitContainer"]
 unique_name_in_owner = true
-layout_mode = 2
-theme_type_variation = &"OutlinedPanel"
-
-[node name="VBoxContainer" type="VBoxContainer" parent="SplitContainer/ScaledPreview"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="SizeLabel" type="Label" parent="SplitContainer/ScaledPreview/VBoxContainer"]
+[node name="SizeLabel" type="Label" parent="SplitContainer/ScaledPreview"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 0
 
-[node name="HBoxContainer" type="HBoxContainer" parent="SplitContainer/ScaledPreview/VBoxContainer"]
+[node name="ScaledPreviewPanel" type="PanelContainer" parent="SplitContainer/ScaledPreview"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+theme_type_variation = &"OutlinedPanel"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="SplitContainer/ScaledPreview/ScaledPreviewPanel"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/separation = 0
 
-[node name="TextureRect" type="TextureRect" parent="SplitContainer/ScaledPreview/VBoxContainer/HBoxContainer"]
+[node name="TextureRect" type="TextureRect" parent="SplitContainer/ScaledPreview/ScaledPreviewPanel/HBoxContainer"]
 unique_name_in_owner = true
 texture_filter = 1
 custom_minimum_size = Vector2(0, 50)
