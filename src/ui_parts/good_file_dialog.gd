@@ -232,6 +232,7 @@ func open_dir(dir: String, only_filtering_update := false) -> void:
 		if not search_text.is_empty() and not search_text.is_subsequence_ofn(directory):
 			continue
 		var item_idx := file_list.add_item(directory, folder_icon)
+		file_list.set_item_icon_modulate(item_idx, ThemeUtils.folder_color)
 		var dir_path := current_dir.path_join(directory)
 		file_list.set_item_metadata(item_idx, Actions.new(open_dir.bind(dir_path), sync_to_selection, open_dir_context.bind(dir_path)))
 	
