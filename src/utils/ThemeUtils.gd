@@ -139,13 +139,17 @@ static func recalculate_colors() -> void:
 		intermediate_color.v = 0.25 + 0.4 * sqrt(intermediate_color.v)
 		if is_zero_approx(base_color.s):
 			intermediate_color.h = accent_color.h
-		elif base_color.h <= 5/6.0 and base_color.h >= 1/6.0:
+		elif base_color.h <= 5/6.0 and base_color.h > 1/6.0:
 			intermediate_color.h = move_toward(intermediate_color.h, 1/6.0, 0.05)
 	else:
 		intermediate_color.s = 0.3 + 0.4 * sqrt(intermediate_color.s)
-		intermediate_color.v *= 0.96
+		intermediate_color.v *= 0.92
 		if is_zero_approx(base_color.s):
-			intermediate_color.h = accent_color.h
+			if not is_zero_approx(accent_color.s):
+				intermediate_color.h = accent_color.h
+			else:
+				intermediate_color.s = 0
+				intermediate_color.v *= 0.9
 	
 	desaturated_color = intermediate_color.lerp(gray_color, 0.3).lerp(extreme_theme_color, 0.08)
 	if not is_theme_dark:
@@ -168,8 +172,8 @@ static func recalculate_colors() -> void:
 	strong_hover_overlay_color = Color(tinted_contrast_color, 0.12)
 	stronger_hover_overlay_color = Color(tinted_contrast_color, 0.16)
 	
-	intermediate_hover_color = intermediate_color.blend(hover_overlay_color if is_theme_dark else stronger_hover_overlay_color)
-	soft_intermediate_color = intermediate_color.lerp(extreme_theme_color, 0.36)
+	intermediate_hover_color = intermediate_color.blend(hover_overlay_color if is_theme_dark else strong_hover_overlay_color)
+	soft_intermediate_color = intermediate_color.lerp(extreme_theme_color, 0.36 if is_theme_dark else 0.48)
 	soft_intermediate_hover_color = soft_intermediate_color.blend(soft_hover_overlay_color if is_theme_dark else hover_overlay_color)
 	softer_intermediate_color = intermediate_color.lerp(extreme_theme_color, 0.44)
 	if not is_theme_dark:

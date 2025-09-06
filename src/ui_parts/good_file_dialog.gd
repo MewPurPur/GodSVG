@@ -102,7 +102,7 @@ func _ready() -> void:
 	)
 	shortcuts.add_shortcut("open_in_folder", func() -> void:
 			var selected_paths := get_selected_file_paths()
-			OS.shell_show_in_file_manager(current_dir if selected_paths.is_empty() else selected_paths[0])
+			OS.shell_show_in_file_manager(current_dir if selected_paths.is_empty() else selected_paths[0], false)
 	)
 	HandlerGUI.register_shortcuts(self, shortcuts)
 	

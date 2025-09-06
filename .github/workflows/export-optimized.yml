@@ -11,11 +11,11 @@ env:
   # Which godot version to use for exporting (e.g., 4.4.1, 4.5)
   GODOT_VERSION: 4.5
   # Which godot release to use for exporting (e.g., stable, dev5, rc2)
-  GODOT_RELEASE: beta6
+  GODOT_RELEASE: rc1
   # Used in the editor config file name (e.g., 4.4, 4.5, but NOT 4.4.1)
   GODOT_FEATURE_VERSION: 4.5
   # Commit hash
-  GODOT_COMMIT_HASH: d5ad0556a
+  GODOT_COMMIT_HASH: 6c9aa4c7d
   PROJECT_NAME: GodSVG
   # deprecated=no disables deprecated Godot features, which exist for compat and we don't use.
   # vulkan=no, use_volk=no since we use Compatibility Renderer. TODO for 4.5 disable rendering_device too.
