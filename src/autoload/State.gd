@@ -88,12 +88,16 @@ func apply_markup(markup: String, is_edit: bool) -> void:
 	else:
 		unstable_markup = markup
 		parsing_finished.emit(svg_parse_result.error)
+		if stable_editor_markup.is_empty():
+			(svg_unknown_change if is_edit else svg_switched_to_another).emit()
 
 func setup_from_tab() -> void:
 	var active_tab := Configs.savedata.get_active_tab()
 	var tab_text := active_tab.get_svg_text()
 	
 	if not tab_text.is_empty():
+		stable_editor_markup = ""
+		stable_export_markup = ""
 		apply_markup(tab_text, false)
 		return
 	
