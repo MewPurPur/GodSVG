@@ -59,9 +59,10 @@ func _save_svg_text() -> void:
 		FileAccess.open(edited_file_path, FileAccess.WRITE).store_string(_svg_text)
 	else:
 		var edited_text_parse_result := SVGParser.markup_to_root(FileAccess.get_file_as_string(get_edited_file_path()))
-		
 		if edited_text_parse_result.error == SVGParser.ParseError.OK:
 			FileAccess.open(edited_file_path, FileAccess.WRITE).store_string(SVGParser.root_to_export_markup(edited_text_parse_result.svg))
+		else:
+			FileAccess.open(edited_file_path, FileAccess.WRITE).store_string(_svg_text)
 	queue_sync()
 
 func save_to_bound_path() -> void:

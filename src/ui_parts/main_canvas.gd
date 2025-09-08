@@ -68,6 +68,8 @@ func _on_parsing_finished(error: SVGParser.ParseError) -> void:
 	if error == SVGParser.ParseError.OK:
 		root_element = State.root_element
 		root_element.attribute_changed.connect(_on_root_element_attribute_changed)
+	else:
+		root_element = ElementRoot.new()
 
 func _on_svg_changed(is_edit: bool) -> void:
 	if is_edit:

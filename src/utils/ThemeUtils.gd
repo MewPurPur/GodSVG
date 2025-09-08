@@ -219,8 +219,7 @@ static func recalculate_colors() -> void:
 	overlay_panel_border_color.s = minf(overlay_panel_border_color.s * 4.0, lerpf(overlay_panel_border_color.s, 1.0, 0.6))
 	overlay_panel_border_color.v = lerpf(overlay_panel_border_color.v, 1.0, 0.125)
 	
-	scrollbar_pressed_color = intermediate_color.blend(Color(tinted_contrast_color.lerp(
-			accent_color.lerp(max_contrast_color, 0.1), 0.2), 0.4))
+	scrollbar_pressed_color = intermediate_color.blend(Color(tinted_contrast_color.lerp(accent_color.lerp(max_contrast_color, 0.1), 0.2), 0.4))
 	
 	line_edit_focus_color = Color(accent_color, 0.4)
 	line_edit_inner_color = desaturated_color.lerp(extreme_theme_color, 0.74)
