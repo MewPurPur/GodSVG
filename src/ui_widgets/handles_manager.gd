@@ -127,7 +127,12 @@ func update_handles() -> void:
 	
 	_handles_update_pending = false
 	handles.clear()
-	for element in canvas.root_element.get_all_valid_element_descendants():
+	
+	var valid_root_element_descendants: Array[Element] = []
+	if is_instance_valid(canvas.root_element):
+		valid_root_element_descendants = canvas.root_element.get_all_valid_element_descendants()
+	
+	for element in valid_root_element_descendants:
 		match element.name:
 			"circle":
 				handles.append(XYHandle.new(element, "cx", "cy"))
@@ -197,6 +202,12 @@ func generate_polyhandles(element: Element) -> Array[Handle]:
 
 
 func _draw() -> void:
+	RenderingServer.canvas_item_clear(surface)
+	RenderingServer.canvas_item_clear(selections_surface)
+	
+	if not is_instance_valid(canvas.root_element):
+		return
+	
 	# Store contours of shapes.
 	var normal_polylines: Array[PackedVector2Array] = []
 	var selected_polylines: Array[PackedVector2Array] = []
@@ -693,9 +704,6 @@ func _draw() -> void:
 			selected_handles.append(handle)
 		else:
 			normal_handles.append(handle)
-	
-	RenderingServer.canvas_item_clear(surface)
-	RenderingServer.canvas_item_clear(selections_surface)
 	
 	draw_objects_of_interaction_type(normal_color, normal_polylines, normal_multiline, normal_handles, atlas_textures[Utils.InteractionType.NONE])
 	draw_objects_of_interaction_type(hovered_color, hovered_polylines, hovered_multiline, hovered_handles, atlas_textures[Utils.InteractionType.HOVERED])

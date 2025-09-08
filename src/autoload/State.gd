@@ -94,6 +94,8 @@ func setup_from_tab() -> void:
 	var tab_text := active_tab.get_svg_text()
 	
 	if not tab_text.is_empty():
+		stable_editor_markup = ""
+		stable_export_markup = ""
 		apply_markup(tab_text, false)
 		return
 	

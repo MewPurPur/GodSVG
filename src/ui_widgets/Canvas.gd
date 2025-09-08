@@ -152,8 +152,9 @@ func toggle_show_handles() -> void:
 	handles_manager.update_show_handles()
 
 func center_frame() -> void:
+	var root_element_size := root_element.get_size() if is_instance_valid(root_element) else Vector2.ZERO
 	var available_size := size * ZOOM_RESET_BUFFER
-	var ratio := available_size / root_element.get_size()
+	var ratio := available_size / root_element_size
 	if ratio.is_finite():
 		var new_zoom := nearest_po2(ceili(minf(ratio.x, ratio.y) * 32.0)) / 64.0
 		camera_zoom = new_zoom
@@ -161,7 +162,7 @@ func center_frame() -> void:
 		camera_zoom = 1.0
 	
 	adjust_view()
-	set_view(root_element.get_size() / 2.0)
+	set_view(root_element_size / 2.0)
 
 func sync_canvas_transform() -> void:
 	viewport.canvas_transform = Transform2D(0.0, Vector2(camera_zoom, camera_zoom), 0.0, -get_camera_position() * camera_zoom)
@@ -187,6 +188,12 @@ func _texture_update() -> void:
 		return
 	
 	_texture_update_pending = false
+	
+	if not is_instance_valid(root_element):
+		Utils.set_control_position_fixed(display_texture, Vector2.ZERO)
+		display_texture.size = Vector2.ZERO
+		display_texture.texture = null
+		return
 	
 	var image_zoom := 1.0 if view_rasterized and camera_zoom > 1.0 else camera_zoom
 	var pixel_size := 1 / image_zoom
@@ -325,6 +332,10 @@ func set_zoom(new_zoom: float, offset := Vector2(0.5, 0.5)) -> void:
 func set_view(new_center: Vector2) -> void:
 	camera_center = new_center.clamp(limit_top_left, limit_bottom_right)
 	
+	if not is_instance_valid(root_element):
+		texture_view_rect = Rect2()
+		return
+	
 	var stripped_left := maxf(camera_center.x - size.x / camera_zoom / 2.0, 0.0)
 	var stripped_top := maxf(camera_center.y - size.y / camera_zoom / 2.0, 0.0)
 	var stripped_right := minf(camera_center.x + size.x / camera_zoom / 2.0, root_element.width)
@@ -340,9 +351,13 @@ func adjust_view(offset := Vector2(0.5, 0.5)) -> void:
 	
 	var buffer_size := (BUFFER_VIEW_SPACE - 0.5) * size / camera_zoom
 	limit_top_left = -buffer_size
-	limit_bottom_right = buffer_size + Vector2(root_element.width if root_element.has_attribute("width") else 16384.0,
-			root_element.height if root_element.has_attribute("height") else 16384.0)
-	
+	if not is_instance_valid(root_element):
+		limit_bottom_right = buffer_size
+	else:
+		limit_bottom_right = buffer_size + Vector2(
+			root_element.width if root_element.has_attribute("width") else 16384.0,
+			root_element.height if root_element.has_attribute("height") else 16384.0
+		)
 	set_view(camera_center + (offset - Vector2(0.5, 0.5)) * (old_size - size / camera_zoom))
 
 
