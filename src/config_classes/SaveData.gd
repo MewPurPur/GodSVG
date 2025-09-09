@@ -597,6 +597,12 @@ const MAX_SNAP = 16384
 			file_dialog_show_hidden = new_value
 			emit_changed()
 
+@export var file_dialog_grid_mode := false:
+	set(new_value):
+		if file_dialog_grid_mode != new_value:
+			file_dialog_grid_mode = new_value
+			emit_changed()
+
 
 const MAX_RECENT_DIRS = 5
 @export var _recent_dirs := PackedStringArray():
@@ -971,8 +977,7 @@ func add_empty_tab() -> void:
 	Configs.tabs_changed.emit()
 	set_active_tab_index(_tabs.size() - 1)
 
-# Adds a new path with the given path.
-# If a tab with the path already exists, it's set as the active tab instead.
+## Adds a new path with the given path. If a tab with the path already exists, it's set as the active tab instead.
 func add_tab_with_path(new_file_path: String) -> void:
 	for idx in _tabs.size():
 		if _tabs[idx].svg_file_path == new_file_path:

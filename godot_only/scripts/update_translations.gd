@@ -16,7 +16,7 @@ const COMMENTS_DICT: Dictionary[String, String] = {
 	"Dark": "Refers to a theme preset.",
 	"Light": "Refers to a theme preset.",
 	"Black (OLED)": "Refers to a theme preset.",
-	"translation-credits": "Translators (comma-separated): Name or alias, optionally followed by an email in angle brackets <email@example.com>.\nUsed for credits. Adding yourself is optional. New entries go at the end. Don't remove or rearrange existing entries.",
+	"translation-credits": "Translators (comma-separated): Name or alias, optionally followed by an email in angle brackets <email@example.com>.\nAdding yourself is optional, new entries go at the end. This is used for the credits. Don't remove or rearrange existing entries.",
 }
 
 const TRANSLATIONS_DIR = "translations"
