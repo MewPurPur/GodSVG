@@ -27,6 +27,7 @@ var root_element := ElementRoot.new()
 func _enter_tree() -> void:
 	get_window().mouse_exited.connect(clear_all_hovered)
 	svg_unknown_change.connect(clear_all_selections)
+	svg_switched_to_another.connect(clear_all_selections)
 	
 	xnode_layout_changed.connect(_on_svg_edited)
 	any_attribute_changed.connect(_on_svg_edited.unbind(1))
@@ -89,7 +90,7 @@ func apply_markup(markup: String, is_edit: bool) -> void:
 		unstable_markup = markup
 		parsing_finished.emit(svg_parse_result.error)
 		if stable_editor_markup.is_empty():
-			(svg_unknown_change if is_edit else svg_switched_to_another).emit()
+			(svg_edited if is_edit else svg_switched_to_another).emit()
 
 func setup_from_tab() -> void:
 	var active_tab := Configs.savedata.get_active_tab()
@@ -123,7 +124,7 @@ func optimize() -> void:
 	queue_svg_save()
 
 func get_export_text() -> String:
-	return SVGParser.root_to_export_markup(root_element)
+	return unstable_markup if stable_export_markup.is_empty() else stable_export_markup
 
 
 signal hover_changed

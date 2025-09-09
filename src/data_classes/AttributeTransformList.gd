@@ -41,8 +41,7 @@ static func compute_final_precise_transform(
 transform_list: Array[Transform]) -> PackedFloat64Array:
 	var final_transform := PackedFloat64Array([1.0, 0.0, 0.0, 1.0, 0.0, 0.0])
 	for t in transform_list:
-		final_transform = Utils64Bit.transforms_mult(final_transform,
-				t.compute_precise_transform())
+		final_transform = Utils64Bit.transforms_mult(final_transform, t.compute_precise_transform())
 	return final_transform
 
 

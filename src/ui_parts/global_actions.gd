@@ -71,7 +71,7 @@ func open_savedata_folder() -> void:
 
 
 func update_size_button() -> void:
-	var svg_text_size := State.stable_export_markup.length()
+	var svg_text_size := State.get_export_text().length()
 	size_button.text = String.humanize_size(svg_text_size)
 	size_button.tooltip_text = String.num_uint64(svg_text_size) + " B"
 	if State.root_element.optimize(true):

@@ -121,16 +121,12 @@ func _on_tab_changed(idx: int) -> void:
 				past_diamond_donors_list.items.append("%d anonymous" % app_info.past_anonymous_diamond_donors)
 		2:
 			# This part doesn't need to be translated.
-			%LicenseLabel.text = "MIT License\n\nCopyright (c) 2023 MewPurPur\n" +\
-					"Copyright (c) 2023-present GodSVG contributors\n\n" +\
+			%LicenseLabel.text = "MIT License\n\nCopyright (c) 2023 MewPurPur\nCopyright (c) 2023-present GodSVG contributors\n\n" +\
 					Engine.get_license_info()["Expat"]
 		3:
-			for child in %GodSVGParts.get_children():
-				child.queue_free()
-			for child in %GodotParts.get_children():
-				child.queue_free()
-			for child in %LicenseTexts.get_children():
-				child.queue_free()
+			for control: Control in [%GodSVGParts, %GodotParts, %LicenseTexts]:
+				for child in control.get_children():
+					child.queue_free()
 			
 			# This part doesn't need to be translated.
 			var godsvg_parts_label := Label.new()
@@ -185,8 +181,7 @@ func _on_tab_changed(idx: int) -> void:
 				for part in copyright_info["parts"]:
 					if part.has("files"):
 						label.text += "Files:\n- %s\n" % "\n- ".join(part["files"])
-					label.text += "© %s\nLicense: %s" % ["\n© ".join(
-							part["copyright"]), part["license"]]
+					label.text += "© %s\nLicense: %s" % ["\n© ".join(part["copyright"]), part["license"]]
 				var vbox := VBoxContainer.new()
 				var name_label := Label.new()
 				name_label.add_theme_font_size_override("font_size", 14)
@@ -229,8 +224,7 @@ func _on_tab_changed(idx: int) -> void:
 				for part in copyright_info["parts"]:
 					if part.has("files"):
 						label.text += "Files:\n- %s\n" % "\n- ".join(part["files"])
-					label.text += "© %s\nLicense: %s" % ["\n© ".join(
-							part["copyright"]), part["license"]]
+					label.text += "© %s\nLicense: %s" % ["\n© ".join(part["copyright"]), part["license"]]
 				var vbox := VBoxContainer.new()
 				var name_label := Label.new()
 				name_label.add_theme_font_size_override("font_size", 14)

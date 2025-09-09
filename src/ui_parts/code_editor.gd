@@ -27,6 +27,9 @@ func _ready() -> void:
 
 func sync_text_from_svg() -> void:
 	if not code_edit.has_focus():
+		if error_bar.visible:
+			error_bar.hide()
+			sync_theming()
 		code_edit.text = State.stable_editor_markup
 		code_edit.clear_undo_history()
 

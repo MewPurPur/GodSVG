@@ -30,11 +30,15 @@ static func compare_svg_to_disk_contents(idx := -1) -> FileState:
 	# Avoid the parsing if checking the active tab.
 	var parse_result := SVGParser.markup_to_root(tab.get_true_svg_text())
 	if parse_result.error == SVGParser.ParseError.OK:
-		var state_svg_text := State.stable_editor_markup if idx == -1 else SVGParser.root_to_editor_markup(parse_result.svg)
-		if state_svg_text == SVGParser.root_to_editor_markup(SVGParser.markup_to_root(content).svg):
-			return FileState.SAME
-		else:
+		var content_parse_result := SVGParser.markup_to_root(content)
+		if content_parse_result.error != SVGParser.ParseError.OK:
 			return FileState.DIFFERENT
+		else:
+			var state_svg_text := State.stable_editor_markup if idx == -1 else SVGParser.root_to_editor_markup(parse_result.svg)
+			if state_svg_text == SVGParser.root_to_editor_markup(content_parse_result.svg):
+				return FileState.SAME
+			else:
+				return FileState.DIFFERENT
 	else:
 		var state_svg_text := State.unstable_markup if idx == -1 else tab.get_true_svg_text()
 		if state_svg_text == content:
