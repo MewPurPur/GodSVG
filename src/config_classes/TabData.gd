@@ -146,11 +146,10 @@ func _sync() -> void:
 			marked_unsaved = false
 		else:
 			var edited_text_parse_result := SVGParser.markup_to_root(FileAccess.get_file_as_string(get_edited_file_path()))
-			
-			if is_instance_valid(edited_text_parse_result.svg):
+			if edited_text_parse_result.error == SVGParser.ParseError.OK:
 				marked_unsaved = FileAccess.get_file_as_string(svg_file_path) != SVGParser.root_to_export_markup(edited_text_parse_result.svg)
 			else:
-				marked_unsaved = true
+				marked_unsaved = FileAccess.get_file_as_string(svg_file_path) != FileAccess.get_file_as_string(get_edited_file_path())
 	
 	elif not FileAccess.file_exists(get_edited_file_path()) or SVGParser.markup_check_is_root_empty(get_true_svg_text()):
 		empty_unsaved = true

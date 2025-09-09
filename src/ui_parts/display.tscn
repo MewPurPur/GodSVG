@@ -76,6 +76,7 @@ focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_type_variation = &"RightConnectedButton"
 toggle_mode = true
+action_mode = 0
 icon = ExtResource("5_1k2cq")
 script = ExtResource("6_3v3ve")
 action = "toggle_snap"
