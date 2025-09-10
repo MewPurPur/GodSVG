@@ -81,7 +81,7 @@ func _draw() -> void:
 			var text_line_width := rect.size.x - size.y
 			if text_line_width > 0:
 				var text_line := TextLine.new()
-				text_line.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+				text_line.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS_FORCE
 				text_line.add_string(current_tab_name, ThemeUtils.regular_font, 13)
 				text_line.width = text_line_width - 2
 				text_line.draw(ci, rect.position + Vector2(4, 3), get_theme_color("font_selected_color", "TabContainer"))

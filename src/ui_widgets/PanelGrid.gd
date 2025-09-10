@@ -41,13 +41,10 @@ func _draw() -> void:
 	custom_minimum_size.y = box_height * ceili(item_count / float(effective_columns))
 	
 	# One big filled rect for everything but the last row.
-	@warning_ignore("integer_division")
-	RenderingServer.canvas_item_add_rect(ci, Rect2(0, 0, size.x,
-			box_height * (item_count / effective_columns)), inner_color)
+	RenderingServer.canvas_item_add_rect(ci, Rect2(0, 0, size.x, box_height * (item_count / effective_columns)), inner_color)
 	
 	for idx in item_count:
 		var pos_x := (size.x / effective_columns) * (idx % effective_columns)
-		@warning_ignore("integer_division")
 		var pos_y := box_height * (idx / effective_columns)
 		
 		# Sigh...

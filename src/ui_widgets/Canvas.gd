@@ -242,7 +242,6 @@ func _draw() -> void:
 	var minor_points := PackedVector2Array()
 	var draw_minor_lines := (camera_zoom >= 8.0)
 	var mark_pixel_lines := (camera_zoom >= 128.0)
-	@warning_ignore("integer_division")
 	var rate := nearest_po2(roundi(maxf(128.0 / (TICKS_INTERVAL * camera_zoom), 2.0))) / 2
 	
 	var i := fmod(-snapped_pos.x, 1.0)
@@ -297,13 +296,11 @@ func _draw() -> void:
 	
 	if not major_points.is_empty():
 		var pca := PackedColorArray()
-		@warning_ignore("integer_division")
 		pca.resize(major_points.size() / 2)
 		pca.fill(major_grid_color)
 		RenderingServer.canvas_item_add_multiline(grid_ci, major_points, pca)
 	if not minor_points.is_empty():
 		var pca := PackedColorArray()
-		@warning_ignore("integer_division")
 		pca.resize(minor_points.size() / 2)
 		pca.fill(minor_grid_color)
 		RenderingServer.canvas_item_add_multiline(grid_ci, minor_points, pca)

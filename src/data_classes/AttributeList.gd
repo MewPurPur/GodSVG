@@ -53,11 +53,10 @@ static func text_to_list(string: String) -> PackedFloat64Array:
 	var comma_exhausted := false
 	var pos := 0
 	while pos < string.length():
-		@warning_ignore("shadowed_global_identifier")
-		var char := string[pos]
+		var current_char := string[pos]
 		match char:
 			"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "-", "+", ".", "e", "E":
-				current_num_string += char
+				current_num_string += current_char
 			" ":
 				if current_num_string.is_empty():
 					pos += 1

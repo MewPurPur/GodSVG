@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://mp1nxm8i8tv8"]
+[gd_scene load_steps=9 format=3 uid="uid://bf0tfj1eo5ap"]
 
 [ext_resource type="Script" uid="uid://cdlrqylqsmc22" path="res://src/ui_parts/good_file_dialog.gd" id="1_awdto"]
 [ext_resource type="Script" uid="uid://1hox6gd5pxku" path="res://src/ui_widgets/BetterLineEdit.gd" id="2_52puw"]

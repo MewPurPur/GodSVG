@@ -20,7 +20,6 @@ var mode: FileMode
 
 var current_dir := ""
 var extensions := PackedStringArray()
-var item_height := 16.0
 var search_text := ""
 
 var default_saved_file := ""  # The file you opened this dialog with.
@@ -241,6 +240,9 @@ func open_dir(dir: String, only_filtering_update := false) -> void:
 			continue
 		
 		var item_idx := file_list.add_item(file, null)
+		if "xml":
+			file_list.set_item_icon(item_idx, text_file_icon)
+			file_list.set_item_icon_modulate(item_idx, ThemeUtils.text_file_color)
 		file_list.set_item_metadata(item_idx, Actions.new(select_files, sync_to_selection, open_file_context))
 	# If we don't await this stuff, sometimes the item_rect we get is all wrong.
 	await file_list.draw
@@ -273,8 +275,6 @@ func _setup_file_images() -> void:
 		if not is_instance_valid(file_list.get_item_icon(item_idx)) and file_rect.end.y > visible_start and file_rect.position.y < visible_end:
 			var file := file_list.get_item_text(item_idx)
 			match file.get_extension():
-				"xml":
-					file_list.set_item_icon(item_idx, text_file_icon)
 				"svg":
 					# Setup a clean SVG graphic by using the scaling parameter.
 					var svg_text := FileAccess.get_file_as_string(current_dir.path_join(file))
@@ -283,7 +283,8 @@ func _setup_file_images() -> void:
 					if not is_instance_valid(img) or img.is_empty():
 						file_list.set_item_icon(item_idx, broken_file_icon)
 					else:
-						var svg_texture := DPITexture.create_from_string(svg_text, minf(item_height / img.get_width(), item_height / img.get_height()))
+						var svg_texture := DPITexture.create_from_string(svg_text,
+								minf(file_list.fixed_icon_size.x / img.get_width(), file_list.fixed_icon_size.y / img.get_height()))
 						file_list.set_item_icon(item_idx, svg_texture)
 				_:
 					var img := Image.load_from_file(current_dir.path_join(file))
