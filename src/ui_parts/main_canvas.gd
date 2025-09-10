@@ -51,22 +51,24 @@ func sync_camera_center_in_tab() -> void:
 func sync_camera_zoom_in_tab() -> void:
 	Configs.savedata.get_active_tab().camera_zoom = camera_zoom
 
-func sync_svg_size() -> void:
+func sync_svg_size(center_if_changed := false) -> void:
 	if _current_svg_size != root_element.get_size():
 		_current_svg_size = root_element.get_size()
-		sync_checkerboard()
-		center_frame()
-		queue_redraw()
+		if center_if_changed:
+			sync_checkerboard()
+			center_frame()
+			queue_redraw()
 
 var _current_svg_size: Vector2
 
 func _on_root_element_attribute_changed(attribute_name: String) -> void:
 	if attribute_name in ["width", "height", "viewBox"]:
-		sync_svg_size()
+		sync_svg_size(true)
 
 func _on_parsing_finished(error: SVGParser.ParseError) -> void:
 	if error == SVGParser.ParseError.OK:
 		root_element = State.root_element
+		sync_svg_size()
 		root_element.attribute_changed.connect(_on_root_element_attribute_changed)
 	else:
 		if not is_instance_valid(State.root_element):
@@ -74,7 +76,7 @@ func _on_parsing_finished(error: SVGParser.ParseError) -> void:
 
 func _on_svg_changed(is_edit: bool) -> void:
 	if is_edit:
-		sync_svg_size()
+		sync_svg_size(true)
 	queue_texture_update()
 	handles_manager.queue_update_handles()
 
