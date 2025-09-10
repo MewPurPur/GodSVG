@@ -23,7 +23,6 @@ func get_bounding_box() -> Rect2:
 	var max_x := -INF
 	var max_y := -INF
 	
-	@warning_ignore("integer_division")
 	for idx in list.get_list_size() / 2:
 		var x_coord := list.get_list_element(idx * 2)
 		var y_coord := list.get_list_element(idx * 2 + 1)
@@ -86,7 +85,6 @@ func simplify() -> void:
 	var list := get_attribute_list("points")
 	var new_list_points := PackedFloat64Array()
 	
-	@warning_ignore("integer_division")
 	for idx in list.size() / 2 - 1:
 		var prev_point := Vector2(list[idx * 2 - 2], list[idx * 2 - 2])
 		if not is_equal_approx(prev_point.angle_to_point(

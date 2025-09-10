@@ -20,7 +20,6 @@ func set_pos(new_pos: PackedFloat64Array) -> void:
 
 func sync() -> void:
 	var list := element.get_attribute_list(points_name)
-	@warning_ignore("integer_division")
 	if point_index >= list.size() / 2:
 		# Handle might have been removed.
 		return

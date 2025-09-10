@@ -34,6 +34,10 @@ Configs="*res://src/autoload/Configs.gd"
 State="*res://src/autoload/State.gd"
 HandlerGUI="*res://src/autoload/HandlerGUI.gd"
 
+[debug]
+
+gdscript/warnings/integer_division=0
+
 [display]
 
 window/size/viewport_width=1040

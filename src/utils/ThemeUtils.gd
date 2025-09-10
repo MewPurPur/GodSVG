@@ -17,6 +17,7 @@ static var black_or_white_counter_accent_color: Color
 static var warning_icon_color: Color
 static var info_icon_color: Color
 static var folder_color: Color
+static var text_file_color: Color
 
 static var hover_selected_inspector_frame_inner_color: Color
 static var hover_selected_inspector_frame_title_color: Color
@@ -122,6 +123,7 @@ static func recalculate_colors() -> void:
 	warning_icon_color = Color("fca") if is_theme_dark else Color("96592c")
 	info_icon_color = Color("acf") if is_theme_dark else Color("3a6ab0")
 	folder_color = Color("88b6dd") if is_theme_dark else Color("528fcc")
+	text_file_color = Color("fec") if is_theme_dark else Color("cc9629")
 	
 	hover_selected_inspector_frame_inner_color = Color.from_hsv(0.625, 0.48, 0.27) if ThemeUtils.is_theme_dark else Color.from_hsv(0.625, 0.27, 0.925)
 	hover_selected_inspector_frame_title_color = hover_selected_inspector_frame_inner_color.lerp(max_contrast_color, 0.02)
@@ -859,6 +861,7 @@ static func _setup_checkbutton(theme: Theme) -> void:
 	)
 
 static func _setup_itemlist(theme: Theme) -> void:
+	# TODO Keep track of https://github.com/godotengine/godot/issues/56045
 	theme.add_type("ItemList")
 	theme.set_color("font_color", "ItemList", text_color)
 	theme.set_color("font_hovered_color", "ItemList", highlighted_text_color)
