@@ -240,7 +240,7 @@ func open_dir(dir: String, only_filtering_update := false) -> void:
 			continue
 		
 		var item_idx := file_list.add_item(file, null)
-		if "xml":
+		if file.get_extension() == "xml":
 			file_list.set_item_icon(item_idx, text_file_icon)
 			file_list.set_item_icon_modulate(item_idx, ThemeUtils.text_file_color)
 		file_list.set_item_metadata(item_idx, Actions.new(select_files, sync_to_selection, open_file_context))
@@ -283,8 +283,8 @@ func _setup_file_images() -> void:
 					if not is_instance_valid(img) or img.is_empty():
 						file_list.set_item_icon(item_idx, broken_file_icon)
 					else:
-						var svg_texture := DPITexture.create_from_string(svg_text,
-								minf(file_list.fixed_icon_size.x / img.get_width(), file_list.fixed_icon_size.y / img.get_height()))
+						var icon_size := Vector2(file_list.fixed_icon_size)  # Prevent int division.
+						var svg_texture := DPITexture.create_from_string(svg_text, minf(icon_size.x / img.get_width(), icon_size.y / img.get_height()))
 						file_list.set_item_icon(item_idx, svg_texture)
 				_:
 					var img := Image.load_from_file(current_dir.path_join(file))

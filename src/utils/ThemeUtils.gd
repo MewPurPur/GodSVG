@@ -176,7 +176,7 @@ static func recalculate_colors() -> void:
 	strong_hover_overlay_color = Color(tinted_contrast_color, 0.12)
 	stronger_hover_overlay_color = Color(tinted_contrast_color, 0.16)
 	
-	intermediate_hover_color = intermediate_color.blend(hover_overlay_color if is_theme_dark else strong_hover_overlay_color)
+	intermediate_hover_color = intermediate_color.blend(strong_hover_overlay_color if is_theme_dark else stronger_hover_overlay_color)
 	soft_intermediate_color = intermediate_color.lerp(extreme_theme_color, 0.36 if is_theme_dark else 0.48)
 	soft_intermediate_hover_color = soft_intermediate_color.blend(soft_hover_overlay_color if is_theme_dark else hover_overlay_color)
 	softer_intermediate_color = intermediate_color.lerp(extreme_theme_color, 0.44)
