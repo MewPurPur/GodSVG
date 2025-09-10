@@ -152,6 +152,7 @@ func toggle_show_handles() -> void:
 	handles_manager.update_show_handles()
 
 func center_frame() -> void:
+	print_stack()
 	var available_size := size * ZOOM_RESET_BUFFER
 	var ratio := available_size / root_element.get_size()
 	if ratio.is_finite():
