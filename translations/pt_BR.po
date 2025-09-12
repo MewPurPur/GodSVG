@@ -62,6 +62,10 @@ msgstr "Exportar SVG"
 msgid "Export"
 msgstr "Exportar"
 
+#: src/autoload/State.gd:
+msgid "The last edited state of this tab could not be found."
+msgstr "O último estado editado desta guia não foi encontrado."
+
 #: src/autoload/State.gd: src/ui_parts/good_file_dialog.gd:
 #: src/ui_widgets/alert_dialog.gd: src/utils/FileUtils.gd:
 msgid "Alert!"
@@ -86,10 +90,6 @@ msgstr "Converter Para"
 #: src/autoload/State.gd: src/ui_widgets/transform_popup.gd:
 msgid "Insert After"
 msgstr "Inserir Após"
-
-#: src/autoload/State.gd:
-msgid "The last edited state of this tab could not be found."
-msgstr "O último estado editado desta guia não foi encontrado."
 
 #: src/autoload/State.gd:
 msgid "The tab is bound to the file path {file_path}. Do you want to restore the SVG from this path?"
@@ -263,6 +263,11 @@ msgstr "Tamanho de encaixe"
 msgid "Paste reference image"
 msgstr "Carregar imagem de referência"
 
+#: src/ui_parts/display.gd:
+#, fuzzy
+msgid "Clear reference image"
+msgstr "Carregar imagem de referência"
+
 #: src/ui_parts/donate_menu.gd:
 msgid "Links to donation platforms"
 msgstr "Links para plataforma de doação"
@@ -331,10 +336,6 @@ msgid "View savedata"
 msgstr "Ver dados salvos"
 
 #: src/ui_parts/good_file_dialog.gd:
-msgid "Go to parent folder"
-msgstr "Ir para pasta pai"
-
-#: src/ui_parts/good_file_dialog.gd:
 msgid "Refresh files"
 msgstr "Atualizar arquivos"
 
@@ -346,6 +347,14 @@ msgstr "Alternar a visibilidade de arquivos escondidos"
 msgid "Search files"
 msgstr "Procurar arquivos"
 
+#: src/ui_parts/good_file_dialog.gd: src/utils/TranslationUtils.gd:
+msgid "Undo"
+msgstr "Desfazer"
+
+#: src/ui_parts/good_file_dialog.gd: src/utils/TranslationUtils.gd:
+msgid "Redo"
+msgstr "Refazer"
+
 #: src/ui_parts/good_file_dialog.gd: src/utils/FileUtils.gd:
 msgid "Save"
 msgstr "Salvar"
@@ -353,10 +362,6 @@ msgstr "Salvar"
 #: src/ui_parts/good_file_dialog.gd:
 msgid "Select"
 msgstr "Selecionar"
-
-#: src/ui_parts/good_file_dialog.gd:
-msgid "Path"
-msgstr "Caminho"
 
 #: src/ui_parts/good_file_dialog.gd:
 msgid "Replace"
@@ -389,10 +394,6 @@ msgstr "Copiar caminho"
 #: src/ui_parts/good_file_dialog.gd:
 msgid "A file named \"{file_name}\" already exists. Replacing will overwrite its contents!"
 msgstr "Um arquivo nomeado \"{file_name}\" já existe. Substituir este arquivo irá sobrescrever os seus conteúdos!"
-
-#: src/ui_parts/handles_manager.gd:
-msgid "New shape"
-msgstr "Nova forma"
 
 #: src/ui_parts/import_warning_menu.gd:
 msgid "Syntax error"
@@ -442,10 +443,6 @@ msgstr "Ferramenta"
 #: src/ui_parts/mac_menu.gd: src/ui_widgets/settings_content_shortcuts.gd:
 msgid "View"
 msgstr "Visualizar"
-
-#: src/ui_parts/mac_menu.gd:
-msgid "Snap"
-msgstr "Encaixe"
 
 #: src/ui_parts/settings_menu.gd:
 msgid "Formatting"
@@ -581,6 +578,10 @@ msgstr "Palavras-chave de cor"
 #: src/ui_widgets/good_color_picker.gd:
 msgid "Eyedropper"
 msgstr "Conta-gotas"
+
+#: src/ui_widgets/handles_manager.gd:
+msgid "New shape"
+msgstr "Nova forma"
 
 #: src/ui_widgets/palette_config.gd:
 #, fuzzy
@@ -777,10 +778,6 @@ msgid "Theme preset"
 msgstr "Redefinir zoom"
 
 #: src/ui_widgets/settings_content_generic.gd:
-msgid "Determines the default values of theming-related settings, including the highlighter preset."
-msgstr ""
-
-#: src/ui_widgets/settings_content_generic.gd:
 msgid "Primary theme colors"
 msgstr ""
 
@@ -931,6 +928,14 @@ msgid "Wrap-around panning"
 msgstr "Movimentação envolvente"
 
 #: src/ui_widgets/settings_content_generic.gd:
+msgid "Panning speed"
+msgstr ""
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "Determines how much the view moves for scroll-based panning inputs."
+msgstr ""
+
+#: src/ui_widgets/settings_content_generic.gd:
 msgid "Use CTRL for zooming"
 msgstr "Utilizar CTRL para zoom"
 
@@ -991,6 +996,10 @@ msgstr ""
 
 #: src/ui_widgets/settings_content_generic.gd:
 msgid "When enabled, uses spaces instead of a single tab for indentation."
+msgstr ""
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "Determines the default values of theming-related settings, including the highlighter preset."
 msgstr ""
 
 #: src/ui_widgets/settings_content_generic.gd:
@@ -1195,14 +1204,6 @@ msgid "Show SVG in File Manager"
 msgstr "Mostrar SVG no Explorador de Arquivos"
 
 #: src/utils/TranslationUtils.gd:
-msgid "Undo"
-msgstr "Desfazer"
-
-#: src/utils/TranslationUtils.gd:
-msgid "Redo"
-msgstr "Refazer"
-
-#: src/utils/TranslationUtils.gd:
 msgid "Paste"
 msgstr "Colar"
 
@@ -1288,6 +1289,11 @@ msgstr "Sobrepor imagem de referência"
 
 #: src/utils/TranslationUtils.gd:
 msgid "View debug information"
+msgstr "Visualizar informação de depuração"
+
+#: src/utils/TranslationUtils.gd:
+#, fuzzy
+msgid "View advanced debug information"
 msgstr "Visualizar informação de depuração"
 
 #: src/utils/TranslationUtils.gd:
@@ -1418,6 +1424,15 @@ msgstr "Selecionar um arquivo do tipo {format}"
 #: src/utils/TranslationUtils.gd:
 msgid "Save the {format} file"
 msgstr "Salvar o arquivo do tipo {format}"
+
+#~ msgid "Go to parent folder"
+#~ msgstr "Ir para pasta pai"
+
+#~ msgid "Path"
+#~ msgstr "Caminho"
+
+#~ msgid "Snap"
+#~ msgstr "Encaixe"
 
 #~ msgid "If turned off, the window title remains as \"GodSVG\" without including the current file."
 #~ msgstr "Se desabilitado, o título da janela permanecerá como \"GodSVG\" sem incluir o nome do arquivo aberto."

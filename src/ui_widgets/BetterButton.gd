@@ -1,6 +1,6 @@
+## A regular Button with some helpers for hover + press theming situations and shortcuts.
 @icon("res://godot_only/icons/BetterButton.svg")
 class_name BetterButton extends Button
-## A regular Button with some helpers for hover + press theming situations and shortcuts.
 
 const HIGHLIGHT_TIME = 0.2
 

@@ -62,6 +62,10 @@ msgstr "Exporteer SVG"
 msgid "Export"
 msgstr "Exporteren"
 
+#: src/autoload/State.gd:
+msgid "The last edited state of this tab could not be found."
+msgstr "De laatst aangepaste stand van dit tabblad kon niet gevonden worden."
+
 #: src/autoload/State.gd: src/ui_parts/good_file_dialog.gd:
 #: src/ui_widgets/alert_dialog.gd: src/utils/FileUtils.gd:
 msgid "Alert!"
@@ -86,10 +90,6 @@ msgstr "Omzetten Naar"
 #: src/autoload/State.gd: src/ui_widgets/transform_popup.gd:
 msgid "Insert After"
 msgstr "Erna Invoegen"
-
-#: src/autoload/State.gd:
-msgid "The last edited state of this tab could not be found."
-msgstr "De laatst aangepaste stand van dit tabblad kon niet gevonden worden."
 
 #: src/autoload/State.gd:
 msgid "The tab is bound to the file path {file_path}. Do you want to restore the SVG from this path?"
@@ -261,6 +261,11 @@ msgstr "Maat inknappen"
 msgid "Paste reference image"
 msgstr "Referentiebeeld plakken"
 
+#: src/ui_parts/display.gd:
+#, fuzzy
+msgid "Clear reference image"
+msgstr "Referentiebeeld inladen"
+
 #: src/ui_parts/donate_menu.gd:
 msgid "Links to donation platforms"
 msgstr "Koppelingen naar donatieplatformen"
@@ -329,10 +334,6 @@ msgid "View savedata"
 msgstr "Bekijk opslaggegevens"
 
 #: src/ui_parts/good_file_dialog.gd:
-msgid "Go to parent folder"
-msgstr "Ga naar bovenliggende map"
-
-#: src/ui_parts/good_file_dialog.gd:
 msgid "Refresh files"
 msgstr "Bestanden vernieuwen"
 
@@ -344,6 +345,14 @@ msgstr "De zichtbaarheit van verborgen bestanden omschakelen"
 msgid "Search files"
 msgstr "Bestanden zoeken"
 
+#: src/ui_parts/good_file_dialog.gd: src/utils/TranslationUtils.gd:
+msgid "Undo"
+msgstr "Ongedaan maken"
+
+#: src/ui_parts/good_file_dialog.gd: src/utils/TranslationUtils.gd:
+msgid "Redo"
+msgstr "Opnieuw doen"
+
 #: src/ui_parts/good_file_dialog.gd: src/utils/FileUtils.gd:
 msgid "Save"
 msgstr "Opslaan"
@@ -351,10 +360,6 @@ msgstr "Opslaan"
 #: src/ui_parts/good_file_dialog.gd:
 msgid "Select"
 msgstr "Selecteren"
-
-#: src/ui_parts/good_file_dialog.gd:
-msgid "Path"
-msgstr "Pad"
 
 #: src/ui_parts/good_file_dialog.gd:
 msgid "Replace"
@@ -387,10 +392,6 @@ msgstr "Pad kopiëren"
 #: src/ui_parts/good_file_dialog.gd:
 msgid "A file named \"{file_name}\" already exists. Replacing will overwrite its contents!"
 msgstr "Er bestaat al een bestand genaamt \"{file_name}\". Deze vervangen zal zijn inhoud aanpassen!"
-
-#: src/ui_parts/handles_manager.gd:
-msgid "New shape"
-msgstr "Nieuwe vorm"
 
 #: src/ui_parts/import_warning_menu.gd:
 msgid "Syntax error"
@@ -440,10 +441,6 @@ msgstr "Gereedschap"
 #: src/ui_parts/mac_menu.gd: src/ui_widgets/settings_content_shortcuts.gd:
 msgid "View"
 msgstr "Zicht"
-
-#: src/ui_parts/mac_menu.gd:
-msgid "Snap"
-msgstr "Knappen"
 
 #: src/ui_parts/settings_menu.gd:
 msgid "Formatting"
@@ -578,6 +575,10 @@ msgstr "kleur trefwoorden"
 #: src/ui_widgets/good_color_picker.gd:
 msgid "Eyedropper"
 msgstr "Druppelaar"
+
+#: src/ui_widgets/handles_manager.gd:
+msgid "New shape"
+msgstr "Nieuwe vorm"
 
 #: src/ui_widgets/palette_config.gd:
 msgid "Add new color"
@@ -771,10 +772,6 @@ msgid "Theme preset"
 msgstr "Thema-preset"
 
 #: src/ui_widgets/settings_content_generic.gd:
-msgid "Determines the default values of theming-related settings, including the highlighter preset."
-msgstr "Bepaalt de standaard waardes voor thema-instellingen, inclusief de markering voorinstelling."
-
-#: src/ui_widgets/settings_content_generic.gd:
 msgid "Primary theme colors"
 msgstr "Primaire thema-kleuren"
 
@@ -918,6 +915,14 @@ msgid "Wrap-around panning"
 msgstr "Omwikkeld rondkijken"
 
 #: src/ui_widgets/settings_content_generic.gd:
+msgid "Panning speed"
+msgstr ""
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "Determines how much the view moves for scroll-based panning inputs."
+msgstr ""
+
+#: src/ui_widgets/settings_content_generic.gd:
 msgid "Use CTRL for zooming"
 msgstr "Gebruik CTRL om in te zoomen"
 
@@ -977,6 +982,10 @@ msgstr "Wanneer ingeschakelt, voegt de huidige bestandsnaam voor de \"GodSVG\" v
 #: src/ui_widgets/settings_content_generic.gd:
 msgid "When enabled, uses spaces instead of a single tab for indentation."
 msgstr "Wanneer ingeschakelt, gebruikt spaties in plaats van een tab voor inspringing"
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "Determines the default values of theming-related settings, including the highlighter preset."
+msgstr "Bepaalt de standaard waardes voor thema-instellingen, inclusief de markering voorinstelling."
 
 #: src/ui_widgets/settings_content_generic.gd:
 msgid "Warps the cursor to the opposite side whenever it reaches a viewport boundary while panning."
@@ -1179,14 +1188,6 @@ msgid "Show SVG in File Manager"
 msgstr "Laat SVG zien in Bestandsverkenner"
 
 #: src/utils/TranslationUtils.gd:
-msgid "Undo"
-msgstr "Ongedaan maken"
-
-#: src/utils/TranslationUtils.gd:
-msgid "Redo"
-msgstr "Opnieuw doen"
-
-#: src/utils/TranslationUtils.gd:
 msgid "Paste"
 msgstr "Plakken"
 
@@ -1272,6 +1273,11 @@ msgstr "Referentie afbeelding overlappen"
 
 #: src/utils/TranslationUtils.gd:
 msgid "View debug information"
+msgstr "Bekijk debug informatie"
+
+#: src/utils/TranslationUtils.gd:
+#, fuzzy
+msgid "View advanced debug information"
 msgstr "Bekijk debug informatie"
 
 #: src/utils/TranslationUtils.gd:
@@ -1402,6 +1408,15 @@ msgstr "Kies een {format} bestand"
 #: src/utils/TranslationUtils.gd:
 msgid "Save the {format} file"
 msgstr "Bewaar het {format} bestand"
+
+#~ msgid "Go to parent folder"
+#~ msgstr "Ga naar bovenliggende map"
+
+#~ msgid "Path"
+#~ msgstr "Pad"
+
+#~ msgid "Snap"
+#~ msgstr "Knappen"
 
 #, fuzzy
 #~ msgid "If turned off, the window title remains as \"GodSVG\" without including the current file."

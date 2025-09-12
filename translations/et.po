@@ -62,6 +62,10 @@ msgstr "Ekspordi SVG"
 msgid "Export"
 msgstr "Ekspordi"
 
+#: src/autoload/State.gd:
+msgid "The last edited state of this tab could not be found."
+msgstr "Selle kaardi viimast seisu polnud võimalik leida."
+
 #: src/autoload/State.gd: src/ui_parts/good_file_dialog.gd:
 #: src/ui_widgets/alert_dialog.gd: src/utils/FileUtils.gd:
 msgid "Alert!"
@@ -86,10 +90,6 @@ msgstr "Konverteeri"
 #: src/autoload/State.gd: src/ui_widgets/transform_popup.gd:
 msgid "Insert After"
 msgstr "Sisesta pärast"
-
-#: src/autoload/State.gd:
-msgid "The last edited state of this tab could not be found."
-msgstr "Selle kaardi viimast seisu polnud võimalik leida."
 
 #: src/autoload/State.gd:
 msgid "The tab is bound to the file path {file_path}. Do you want to restore the SVG from this path?"
@@ -262,6 +262,11 @@ msgstr "Joondamise mastaap"
 msgid "Paste reference image"
 msgstr "Kleebi võrdluspilt"
 
+#: src/ui_parts/display.gd:
+#, fuzzy
+msgid "Clear reference image"
+msgstr "Lae võrdluspilt"
+
 #: src/ui_parts/donate_menu.gd:
 msgid "Links to donation platforms"
 msgstr "Annetusplatvormide lingid"
@@ -330,10 +335,6 @@ msgid "View savedata"
 msgstr "Kuva savedata"
 
 #: src/ui_parts/good_file_dialog.gd:
-msgid "Go to parent folder"
-msgstr "Mine taseme võrra üles"
-
-#: src/ui_parts/good_file_dialog.gd:
 msgid "Refresh files"
 msgstr "Värskenda failinimekiri"
 
@@ -345,6 +346,14 @@ msgstr "Lülita peidetud failide kuvamine sisse"
 msgid "Search files"
 msgstr "Otsi faile"
 
+#: src/ui_parts/good_file_dialog.gd: src/utils/TranslationUtils.gd:
+msgid "Undo"
+msgstr "Võta tagasi"
+
+#: src/ui_parts/good_file_dialog.gd: src/utils/TranslationUtils.gd:
+msgid "Redo"
+msgstr "Tee uuesti"
+
 #: src/ui_parts/good_file_dialog.gd: src/utils/FileUtils.gd:
 msgid "Save"
 msgstr "Salvesta"
@@ -352,10 +361,6 @@ msgstr "Salvesta"
 #: src/ui_parts/good_file_dialog.gd:
 msgid "Select"
 msgstr "Vali"
-
-#: src/ui_parts/good_file_dialog.gd:
-msgid "Path"
-msgstr "Asukoht"
 
 #: src/ui_parts/good_file_dialog.gd:
 msgid "Replace"
@@ -388,10 +393,6 @@ msgstr "Kopeeri asukoht"
 #: src/ui_parts/good_file_dialog.gd:
 msgid "A file named \"{file_name}\" already exists. Replacing will overwrite its contents!"
 msgstr "Fail nimega \"{file_name}\" on juba olemas, asendamine kirjutab selle sisu üle!"
-
-#: src/ui_parts/handles_manager.gd:
-msgid "New shape"
-msgstr "Uus kujund"
 
 #: src/ui_parts/import_warning_menu.gd:
 msgid "Syntax error"
@@ -441,10 +442,6 @@ msgstr "Tööriist"
 #: src/ui_parts/mac_menu.gd: src/ui_widgets/settings_content_shortcuts.gd:
 msgid "View"
 msgstr "Vaade"
-
-#: src/ui_parts/mac_menu.gd:
-msgid "Snap"
-msgstr "Joonda"
 
 #: src/ui_parts/settings_menu.gd:
 msgid "Formatting"
@@ -580,6 +577,10 @@ msgstr "Värvi võtmesõnad"
 #: src/ui_widgets/good_color_picker.gd:
 msgid "Eyedropper"
 msgstr "Värvipipett"
+
+#: src/ui_widgets/handles_manager.gd:
+msgid "New shape"
+msgstr "Uus kujund"
 
 #: src/ui_widgets/palette_config.gd:
 #, fuzzy
@@ -776,10 +777,6 @@ msgid "Theme preset"
 msgstr "Taasta suurendus"
 
 #: src/ui_widgets/settings_content_generic.gd:
-msgid "Determines the default values of theming-related settings, including the highlighter preset."
-msgstr ""
-
-#: src/ui_widgets/settings_content_generic.gd:
 msgid "Primary theme colors"
 msgstr ""
 
@@ -930,6 +927,14 @@ msgid "Wrap-around panning"
 msgstr "Takistusteta vaate liigutamine"
 
 #: src/ui_widgets/settings_content_generic.gd:
+msgid "Panning speed"
+msgstr ""
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "Determines how much the view moves for scroll-based panning inputs."
+msgstr ""
+
+#: src/ui_widgets/settings_content_generic.gd:
 msgid "Use CTRL for zooming"
 msgstr "Kasuta CTRL klahvi suurendamiseks"
 
@@ -990,6 +995,10 @@ msgstr ""
 
 #: src/ui_widgets/settings_content_generic.gd:
 msgid "When enabled, uses spaces instead of a single tab for indentation."
+msgstr ""
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "Determines the default values of theming-related settings, including the highlighter preset."
 msgstr ""
 
 #: src/ui_widgets/settings_content_generic.gd:
@@ -1194,14 +1203,6 @@ msgid "Show SVG in File Manager"
 msgstr "Kuva SVG failihalduris"
 
 #: src/utils/TranslationUtils.gd:
-msgid "Undo"
-msgstr "Võta tagasi"
-
-#: src/utils/TranslationUtils.gd:
-msgid "Redo"
-msgstr "Tee uuesti"
-
-#: src/utils/TranslationUtils.gd:
 msgid "Paste"
 msgstr "Kleebi"
 
@@ -1287,6 +1288,11 @@ msgstr "Kata võrdluspildiga üle"
 
 #: src/utils/TranslationUtils.gd:
 msgid "View debug information"
+msgstr "Kuva silumisinformatsioon"
+
+#: src/utils/TranslationUtils.gd:
+#, fuzzy
+msgid "View advanced debug information"
 msgstr "Kuva silumisinformatsioon"
 
 #: src/utils/TranslationUtils.gd:
@@ -1417,6 +1423,15 @@ msgstr "Vali {format} fail"
 #: src/utils/TranslationUtils.gd:
 msgid "Save the {format} file"
 msgstr "Salvesta {format} fail"
+
+#~ msgid "Go to parent folder"
+#~ msgstr "Mine taseme võrra üles"
+
+#~ msgid "Path"
+#~ msgstr "Asukoht"
+
+#~ msgid "Snap"
+#~ msgstr "Joonda"
 
 #~ msgid "If turned off, the window title remains as \"GodSVG\" without including the current file."
 #~ msgstr "Väljalülitamisel jääb akna nimieks \"GodSVG\" sõltumata avatud failist."
