@@ -152,7 +152,6 @@ func toggle_show_handles() -> void:
 	handles_manager.update_show_handles()
 
 func center_frame() -> void:
-	print_stack()
 	var available_size := size * ZOOM_RESET_BUFFER
 	var ratio := available_size / root_element.get_size()
 	if ratio.is_finite():
@@ -207,7 +206,10 @@ func _texture_update() -> void:
 			Rect2(root_element.world_to_canvas(display_rect.position),
 			display_rect.size / root_element.canvas_transform.get_scale()), cached_inner_markup)
 	
-	Utils.set_control_position_fixed(display_texture, display_rect.position)
+	# TODO Necessary workaround to Godot ignoring position changes below a treshold.
+	display_texture.position = Vector2(NAN, NAN)
+	display_texture.position = display_rect.position
+	
 	display_texture.size = display_rect.size
 	display_texture.texture = DPITexture.create_from_string(svg_text, image_zoom)
 

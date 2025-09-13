@@ -1,8 +1,11 @@
-[gd_scene load_steps=9 format=3 uid="uid://bf0tfj1eo5ap"]
+[gd_scene load_steps=12 format=3 uid="uid://bf0tfj1eo5ap"]
 
 [ext_resource type="Script" uid="uid://cdlrqylqsmc22" path="res://src/ui_parts/good_file_dialog.gd" id="1_awdto"]
 [ext_resource type="Script" uid="uid://1hox6gd5pxku" path="res://src/ui_widgets/BetterLineEdit.gd" id="2_52puw"]
-[ext_resource type="Texture2D" uid="uid://rrhdja8l17cn" path="res://assets/icons/FolderUp.svg" id="2_i2mtk"]
+[ext_resource type="Texture2D" uid="uid://40yul4xup585" path="res://assets/icons/UndoMini.svg" id="2_dyt2g"]
+[ext_resource type="Texture2D" uid="uid://bo4xsfjm6wg6v" path="res://assets/icons/RedoMini.svg" id="3_8ufx4"]
+[ext_resource type="PackedScene" uid="uid://byriqsdywhr1k" path="res://src/ui_widgets/directory_path_widget.tscn" id="4_1umq0"]
+[ext_resource type="Texture2D" uid="uid://dr2erka82g6j4" path="res://assets/icons/Edit.svg" id="4_8ufx4"]
 [ext_resource type="Texture2D" uid="uid://cvh3kwbucf2n1" path="res://assets/icons/Reload.svg" id="4_udwbh"]
 [ext_resource type="Texture2D" uid="uid://kkxyv1gyrjgj" path="res://assets/icons/Visuals.svg" id="5_2ggtv"]
 [ext_resource type="Texture2D" uid="uid://d4c7haflm8evm" path="res://assets/icons/Search.svg" id="6_otods"]
@@ -29,19 +32,42 @@ unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 6
 
-[node name="FolderUpButton" type="Button" parent="VBoxContainer/TopBar"]
+[node name="UndoButton" type="Button" parent="VBoxContainer/TopBar"]
 layout_mode = 2
 mouse_default_cursor_shape = 2
 theme_type_variation = &"IconButton"
-icon = ExtResource("2_i2mtk")
+icon = ExtResource("2_dyt2g")
 
-[node name="PathLabel" type="Label" parent="VBoxContainer/TopBar"]
+[node name="RedoButton" type="Button" parent="VBoxContainer/TopBar"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_type_variation = &"IconButton"
+icon = ExtResource("3_8ufx4")
+
+[node name="PathPanel" type="PanelContainer" parent="VBoxContainer/TopBar"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="MainPathBox" type="HBoxContainer" parent="VBoxContainer/TopBar/PathPanel"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="DirectoryPathWidget" parent="VBoxContainer/TopBar/PathPanel/MainPathBox" instance=ExtResource("4_1umq0")]
 layout_mode = 2
 
+[node name="PathEditButton" type="Button" parent="VBoxContainer/TopBar/PathPanel/MainPathBox"]
+layout_mode = 2
+size_flags_vertical = 4
+mouse_default_cursor_shape = 2
+theme_type_variation = &"FlatButton"
+icon = ExtResource("4_8ufx4")
+
 [node name="PathField" type="LineEdit" parent="VBoxContainer/TopBar"]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 script = ExtResource("2_52puw")
+metadata/_custom_type_script = "uid://1hox6gd5pxku"
 
 [node name="RefreshButton" type="Button" parent="VBoxContainer/TopBar"]
 layout_mode = 2

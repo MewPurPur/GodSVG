@@ -62,6 +62,10 @@ msgstr "Експортирай SVG-то"
 msgid "Export"
 msgstr "Експортирай"
 
+#: src/autoload/State.gd:
+msgid "The last edited state of this tab could not be found."
+msgstr "Последното състояние на този раздел не беше намерено."
+
 #: src/autoload/State.gd: src/ui_parts/good_file_dialog.gd:
 #: src/ui_widgets/alert_dialog.gd: src/utils/FileUtils.gd:
 msgid "Alert!"
@@ -86,10 +90,6 @@ msgstr "Превърни в"
 #: src/autoload/State.gd: src/ui_widgets/transform_popup.gd:
 msgid "Insert After"
 msgstr "Вмъкни отпред"
-
-#: src/autoload/State.gd:
-msgid "The last edited state of this tab could not be found."
-msgstr "Последното състояние на този раздел не беше намерено."
 
 #: src/autoload/State.gd:
 msgid "The tab is bound to the file path {file_path}. Do you want to restore the SVG from this path?"
@@ -261,6 +261,10 @@ msgstr "Размер на захващането"
 msgid "Paste reference image"
 msgstr "Постави справочно изображение"
 
+#: src/ui_parts/display.gd:
+msgid "Clear reference image"
+msgstr "Изчисти справочно изображение"
+
 #: src/ui_parts/donate_menu.gd:
 msgid "Links to donation platforms"
 msgstr "Линкове към платформи за дарение"
@@ -329,10 +333,6 @@ msgid "View savedata"
 msgstr "Виж запазените данни"
 
 #: src/ui_parts/good_file_dialog.gd:
-msgid "Go to parent folder"
-msgstr "Отиди в родителската папка"
-
-#: src/ui_parts/good_file_dialog.gd:
 msgid "Refresh files"
 msgstr "Обнови файловете"
 
@@ -344,6 +344,14 @@ msgstr "Превключи видимостта на скритите файло
 msgid "Search files"
 msgstr "Търсене из файловете"
 
+#: src/ui_parts/good_file_dialog.gd: src/utils/TranslationUtils.gd:
+msgid "Undo"
+msgstr "Върни назад"
+
+#: src/ui_parts/good_file_dialog.gd: src/utils/TranslationUtils.gd:
+msgid "Redo"
+msgstr "Върни напред"
+
 #: src/ui_parts/good_file_dialog.gd: src/utils/FileUtils.gd:
 msgid "Save"
 msgstr "Запиши"
@@ -351,10 +359,6 @@ msgstr "Запиши"
 #: src/ui_parts/good_file_dialog.gd:
 msgid "Select"
 msgstr "Избери"
-
-#: src/ui_parts/good_file_dialog.gd:
-msgid "Path"
-msgstr "Пътека"
 
 #: src/ui_parts/good_file_dialog.gd:
 msgid "Replace"
@@ -387,10 +391,6 @@ msgstr "Копирай пътеката"
 #: src/ui_parts/good_file_dialog.gd:
 msgid "A file named \"{file_name}\" already exists. Replacing will overwrite its contents!"
 msgstr "Файл с името \"{file_name}\" вече съществува. Заместването ще пренапише неговото съдържание!"
-
-#: src/ui_parts/handles_manager.gd:
-msgid "New shape"
-msgstr "Нова фигура"
 
 #: src/ui_parts/import_warning_menu.gd:
 msgid "Syntax error"
@@ -440,10 +440,6 @@ msgstr "Инструмент"
 #: src/ui_parts/mac_menu.gd: src/ui_widgets/settings_content_shortcuts.gd:
 msgid "View"
 msgstr "Гледка"
-
-#: src/ui_parts/mac_menu.gd:
-msgid "Snap"
-msgstr "Захващане"
 
 #: src/ui_parts/settings_menu.gd:
 msgid "Formatting"
@@ -578,6 +574,10 @@ msgstr "Ключови цветове"
 #: src/ui_widgets/good_color_picker.gd:
 msgid "Eyedropper"
 msgstr "Пипета"
+
+#: src/ui_widgets/handles_manager.gd:
+msgid "New shape"
+msgstr "Нова фигура"
 
 #: src/ui_widgets/palette_config.gd:
 msgid "Add new color"
@@ -771,10 +771,6 @@ msgid "Theme preset"
 msgstr "Шаблон на тема"
 
 #: src/ui_widgets/settings_content_generic.gd:
-msgid "Determines the default values of theming-related settings, including the highlighter preset."
-msgstr "Определя стойностите по подразбиране на гамовите настройки, включително шаблона на синтаксовото маркиране."
-
-#: src/ui_widgets/settings_content_generic.gd:
 msgid "Primary theme colors"
 msgstr "Основни цветове на темата"
 
@@ -918,6 +914,14 @@ msgid "Wrap-around panning"
 msgstr "Превъртане на курсора"
 
 #: src/ui_widgets/settings_content_generic.gd:
+msgid "Panning speed"
+msgstr "Скорост на панорамиране"
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "Determines how much the view moves for scroll-based panning inputs."
+msgstr "Определя колко бързо гледката се движи при плъзгане с превъртане."
+
+#: src/ui_widgets/settings_content_generic.gd:
 msgid "Use CTRL for zooming"
 msgstr "Използвай CTRL за увеличение"
 
@@ -977,6 +981,10 @@ msgstr "Когато е включено, добавя името на наст�
 #: src/ui_widgets/settings_content_generic.gd:
 msgid "When enabled, uses spaces instead of a single tab for indentation."
 msgstr "Когато е активирано, използва интервали за отстъп вместо едни табулатор."
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "Determines the default values of theming-related settings, including the highlighter preset."
+msgstr "Определя стойностите по подразбиране на гамовите настройки, включително шаблона на синтаксовото маркиране."
 
 #: src/ui_widgets/settings_content_generic.gd:
 msgid "Warps the cursor to the opposite side whenever it reaches a viewport boundary while panning."
@@ -1179,14 +1187,6 @@ msgid "Show SVG in File Manager"
 msgstr "Покажи SVG-то във файловия мениджър"
 
 #: src/utils/TranslationUtils.gd:
-msgid "Undo"
-msgstr "Върни назад"
-
-#: src/utils/TranslationUtils.gd:
-msgid "Redo"
-msgstr "Върни напред"
-
-#: src/utils/TranslationUtils.gd:
 msgid "Paste"
 msgstr "Постави"
 
@@ -1273,6 +1273,10 @@ msgstr "Насложи справочното изображение"
 #: src/utils/TranslationUtils.gd:
 msgid "View debug information"
 msgstr "Покажи дебъг информацията"
+
+#: src/utils/TranslationUtils.gd:
+msgid "View advanced debug information"
+msgstr "Покажи подробна дебъг информация"
 
 #: src/utils/TranslationUtils.gd:
 msgid "Settings"

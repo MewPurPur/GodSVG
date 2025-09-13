@@ -333,10 +333,6 @@ msgid "View savedata"
 msgstr "查看保存的数据"
 
 #: src/ui_parts/good_file_dialog.gd:
-msgid "Go to parent folder"
-msgstr "前往父文件夹"
-
-#: src/ui_parts/good_file_dialog.gd:
 msgid "Refresh files"
 msgstr "刷新文件"
 
@@ -348,6 +344,14 @@ msgstr "切换隐藏文件可见性"
 msgid "Search files"
 msgstr "搜索文件"
 
+#: src/ui_parts/good_file_dialog.gd: src/utils/TranslationUtils.gd:
+msgid "Undo"
+msgstr "撤销"
+
+#: src/ui_parts/good_file_dialog.gd: src/utils/TranslationUtils.gd:
+msgid "Redo"
+msgstr "恢复"
+
 #: src/ui_parts/good_file_dialog.gd: src/utils/FileUtils.gd:
 msgid "Save"
 msgstr "保存"
@@ -355,10 +359,6 @@ msgstr "保存"
 #: src/ui_parts/good_file_dialog.gd:
 msgid "Select"
 msgstr "选择"
-
-#: src/ui_parts/good_file_dialog.gd:
-msgid "Path"
-msgstr "路径"
 
 #: src/ui_parts/good_file_dialog.gd:
 msgid "Replace"
@@ -440,10 +440,6 @@ msgstr "工具"
 #: src/ui_parts/mac_menu.gd: src/ui_widgets/settings_content_shortcuts.gd:
 msgid "View"
 msgstr "视图"
-
-#: src/ui_parts/mac_menu.gd:
-msgid "Snap"
-msgstr "吸附"
 
 #: src/ui_parts/settings_menu.gd:
 msgid "Formatting"
@@ -1192,14 +1188,6 @@ msgid "Show SVG in File Manager"
 msgstr "在文件管理器中显示 SVG"
 
 #: src/utils/TranslationUtils.gd:
-msgid "Undo"
-msgstr "撤销"
-
-#: src/utils/TranslationUtils.gd:
-msgid "Redo"
-msgstr "恢复"
-
-#: src/utils/TranslationUtils.gd:
 msgid "Paste"
 msgstr "粘贴"
 
@@ -1419,6 +1407,15 @@ msgstr "选择 {format} 文件"
 #: src/utils/TranslationUtils.gd:
 msgid "Save the {format} file"
 msgstr "保存 {format} 文件"
+
+#~ msgid "Go to parent folder"
+#~ msgstr "前往父文件夹"
+
+#~ msgid "Path"
+#~ msgstr "路径"
+
+#~ msgid "Snap"
+#~ msgstr "吸附"
 
 #, fuzzy
 #~ msgid "If turned off, the window title remains as \"GodSVG\" without including the current file."

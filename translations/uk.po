@@ -62,6 +62,10 @@ msgstr "Експортувати SVG"
 msgid "Export"
 msgstr "Експортувати"
 
+#: src/autoload/State.gd:
+msgid "The last edited state of this tab could not be found."
+msgstr "Останній редагований стан цієї вкладки не може бути знайдено."
+
 #: src/autoload/State.gd: src/ui_parts/good_file_dialog.gd:
 #: src/ui_widgets/alert_dialog.gd: src/utils/FileUtils.gd:
 msgid "Alert!"
@@ -86,10 +90,6 @@ msgstr "Конвертувати в"
 #: src/autoload/State.gd: src/ui_widgets/transform_popup.gd:
 msgid "Insert After"
 msgstr "Вставити після"
-
-#: src/autoload/State.gd:
-msgid "The last edited state of this tab could not be found."
-msgstr "Останній редагований стан цієї вкладки не може бути знайдено."
 
 #: src/autoload/State.gd:
 msgid "The tab is bound to the file path {file_path}. Do you want to restore the SVG from this path?"
@@ -261,6 +261,11 @@ msgstr "Розмір прилипання"
 msgid "Paste reference image"
 msgstr "Вставити еталонне зображення"
 
+#: src/ui_parts/display.gd:
+#, fuzzy
+msgid "Clear reference image"
+msgstr "Завантажити еталонне зображення"
+
 #: src/ui_parts/donate_menu.gd:
 msgid "Links to donation platforms"
 msgstr "Посилання на платформи для пожертв"
@@ -329,10 +334,6 @@ msgid "View savedata"
 msgstr "Переглянути дані збереження"
 
 #: src/ui_parts/good_file_dialog.gd:
-msgid "Go to parent folder"
-msgstr "Перейти до батьківської теки"
-
-#: src/ui_parts/good_file_dialog.gd:
 msgid "Refresh files"
 msgstr "Оновити файли"
 
@@ -344,6 +345,14 @@ msgstr "Перемикнути видимість прихованих файл�
 msgid "Search files"
 msgstr "Пошук файлів"
 
+#: src/ui_parts/good_file_dialog.gd: src/utils/TranslationUtils.gd:
+msgid "Undo"
+msgstr "Скасувати"
+
+#: src/ui_parts/good_file_dialog.gd: src/utils/TranslationUtils.gd:
+msgid "Redo"
+msgstr "Повернути"
+
 #: src/ui_parts/good_file_dialog.gd: src/utils/FileUtils.gd:
 msgid "Save"
 msgstr "Зберегти"
@@ -351,10 +360,6 @@ msgstr "Зберегти"
 #: src/ui_parts/good_file_dialog.gd:
 msgid "Select"
 msgstr "Обрати"
-
-#: src/ui_parts/good_file_dialog.gd:
-msgid "Path"
-msgstr "Шлях"
 
 #: src/ui_parts/good_file_dialog.gd:
 msgid "Replace"
@@ -387,10 +392,6 @@ msgstr "Скопіювати шлях"
 #: src/ui_parts/good_file_dialog.gd:
 msgid "A file named \"{file_name}\" already exists. Replacing will overwrite its contents!"
 msgstr "Файл з назваою \"{file_name}\" вже існує. Його заміна призведе до перезапису його вмісту!"
-
-#: src/ui_parts/handles_manager.gd:
-msgid "New shape"
-msgstr "Нова форма"
 
 #: src/ui_parts/import_warning_menu.gd:
 msgid "Syntax error"
@@ -440,10 +441,6 @@ msgstr "Інструмент"
 #: src/ui_parts/mac_menu.gd: src/ui_widgets/settings_content_shortcuts.gd:
 msgid "View"
 msgstr "Перегляд"
-
-#: src/ui_parts/mac_menu.gd:
-msgid "Snap"
-msgstr "Прилипання"
 
 #: src/ui_parts/settings_menu.gd:
 msgid "Formatting"
@@ -578,6 +575,10 @@ msgstr "Ключові слова кольорів"
 #: src/ui_widgets/good_color_picker.gd:
 msgid "Eyedropper"
 msgstr "Піпетка"
+
+#: src/ui_widgets/handles_manager.gd:
+msgid "New shape"
+msgstr "Нова форма"
 
 #: src/ui_widgets/palette_config.gd:
 #, fuzzy
@@ -776,10 +777,6 @@ msgid "Theme preset"
 msgstr "Тема додатку"
 
 #: src/ui_widgets/settings_content_generic.gd:
-msgid "Determines the default values of theming-related settings, including the highlighter preset."
-msgstr "Визначає стандартні значення для налаштувань теми, включаючи налаштування підсвітки."
-
-#: src/ui_widgets/settings_content_generic.gd:
 msgid "Primary theme colors"
 msgstr "Головні кольори теми"
 
@@ -923,6 +920,14 @@ msgid "Wrap-around panning"
 msgstr "Захопити курсор при гортанні"
 
 #: src/ui_widgets/settings_content_generic.gd:
+msgid "Panning speed"
+msgstr ""
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "Determines how much the view moves for scroll-based panning inputs."
+msgstr ""
+
+#: src/ui_widgets/settings_content_generic.gd:
 msgid "Use CTRL for zooming"
 msgstr "Використовувати CTRL для масштабування"
 
@@ -982,6 +987,10 @@ msgstr "Коли активовано, додає назву поточного 
 #: src/ui_widgets/settings_content_generic.gd:
 msgid "When enabled, uses spaces instead of a single tab for indentation."
 msgstr "Коли активно, використовує пробіли замість одного tab-у для відступів."
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "Determines the default values of theming-related settings, including the highlighter preset."
+msgstr "Визначає стандартні значення для налаштувань теми, включаючи налаштування підсвітки."
 
 #: src/ui_widgets/settings_content_generic.gd:
 msgid "Warps the cursor to the opposite side whenever it reaches a viewport boundary while panning."
@@ -1184,14 +1193,6 @@ msgid "Show SVG in File Manager"
 msgstr "Показати SVG у файловому менеджері"
 
 #: src/utils/TranslationUtils.gd:
-msgid "Undo"
-msgstr "Скасувати"
-
-#: src/utils/TranslationUtils.gd:
-msgid "Redo"
-msgstr "Повернути"
-
-#: src/utils/TranslationUtils.gd:
 msgid "Paste"
 msgstr "Вставити"
 
@@ -1278,6 +1279,11 @@ msgstr "Накласти еталонне зображення"
 
 #: src/utils/TranslationUtils.gd:
 msgid "View debug information"
+msgstr "Переглянути інформацію про відладку"
+
+#: src/utils/TranslationUtils.gd:
+#, fuzzy
+msgid "View advanced debug information"
 msgstr "Переглянути інформацію про відладку"
 
 #: src/utils/TranslationUtils.gd:
@@ -1408,6 +1414,15 @@ msgstr "Обрати {format} файл"
 #: src/utils/TranslationUtils.gd:
 msgid "Save the {format} file"
 msgstr "Зберегти {format} файл"
+
+#~ msgid "Go to parent folder"
+#~ msgstr "Перейти до батьківської теки"
+
+#~ msgid "Path"
+#~ msgstr "Шлях"
+
+#~ msgid "Snap"
+#~ msgstr "Прилипання"
 
 #~ msgid "If turned off, the window title remains as \"GodSVG\" without including the current file."
 #~ msgstr "Якщо вимкнено - заголовок вікна залишиться як \"GodSVG\", не включаючи назву поточного файлу."

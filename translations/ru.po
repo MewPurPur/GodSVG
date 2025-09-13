@@ -63,6 +63,10 @@ msgstr "Экспортировать SVG"
 msgid "Export"
 msgstr "Экспортовать"
 
+#: src/autoload/State.gd:
+msgid "The last edited state of this tab could not be found."
+msgstr "Последнее редактированное состояние этой вкладки невозможно найти."
+
 #: src/autoload/State.gd: src/ui_parts/good_file_dialog.gd:
 #: src/ui_widgets/alert_dialog.gd: src/utils/FileUtils.gd:
 msgid "Alert!"
@@ -87,10 +91,6 @@ msgstr "Конвертировать в"
 #: src/autoload/State.gd: src/ui_widgets/transform_popup.gd:
 msgid "Insert After"
 msgstr "Вставить после"
-
-#: src/autoload/State.gd:
-msgid "The last edited state of this tab could not be found."
-msgstr "Последнее редактированное состояние этой вкладки невозможно найти."
 
 #: src/autoload/State.gd:
 msgid "The tab is bound to the file path {file_path}. Do you want to restore the SVG from this path?"
@@ -262,6 +262,11 @@ msgstr "Размер привязки"
 msgid "Paste reference image"
 msgstr "Вставить референсое изображение"
 
+#: src/ui_parts/display.gd:
+#, fuzzy
+msgid "Clear reference image"
+msgstr "Загрузить референс"
+
 #: src/ui_parts/donate_menu.gd:
 msgid "Links to donation platforms"
 msgstr "Ссылки на платформы для пожертвований"
@@ -330,10 +335,6 @@ msgid "View savedata"
 msgstr "Просмотреть даные сохранения"
 
 #: src/ui_parts/good_file_dialog.gd:
-msgid "Go to parent folder"
-msgstr "Перейти к родительской папке"
-
-#: src/ui_parts/good_file_dialog.gd:
 msgid "Refresh files"
 msgstr "Обновить файлы"
 
@@ -345,6 +346,14 @@ msgstr "Переключить видимость скрытых файлов"
 msgid "Search files"
 msgstr "Искать файлы"
 
+#: src/ui_parts/good_file_dialog.gd: src/utils/TranslationUtils.gd:
+msgid "Undo"
+msgstr "Отменить"
+
+#: src/ui_parts/good_file_dialog.gd: src/utils/TranslationUtils.gd:
+msgid "Redo"
+msgstr "Вернуть"
+
 #: src/ui_parts/good_file_dialog.gd: src/utils/FileUtils.gd:
 msgid "Save"
 msgstr "Сохранить"
@@ -352,10 +361,6 @@ msgstr "Сохранить"
 #: src/ui_parts/good_file_dialog.gd:
 msgid "Select"
 msgstr "Выбрать"
-
-#: src/ui_parts/good_file_dialog.gd:
-msgid "Path"
-msgstr "Путь"
 
 #: src/ui_parts/good_file_dialog.gd:
 msgid "Replace"
@@ -388,10 +393,6 @@ msgstr "Скопировать путь"
 #: src/ui_parts/good_file_dialog.gd:
 msgid "A file named \"{file_name}\" already exists. Replacing will overwrite its contents!"
 msgstr "Файл с названием \"{file_name}\" уже существует. Его замена перезапишет его содержимое!"
-
-#: src/ui_parts/handles_manager.gd:
-msgid "New shape"
-msgstr "Новая привязка"
 
 #: src/ui_parts/import_warning_menu.gd:
 msgid "Syntax error"
@@ -441,10 +442,6 @@ msgstr "Инструмент"
 #: src/ui_parts/mac_menu.gd: src/ui_widgets/settings_content_shortcuts.gd:
 msgid "View"
 msgstr "Просмотр"
-
-#: src/ui_parts/mac_menu.gd:
-msgid "Snap"
-msgstr "Привязка"
 
 #: src/ui_parts/settings_menu.gd:
 msgid "Formatting"
@@ -579,6 +576,10 @@ msgstr "Ключевые слова цвета"
 #: src/ui_widgets/good_color_picker.gd:
 msgid "Eyedropper"
 msgstr "Пипетка"
+
+#: src/ui_widgets/handles_manager.gd:
+msgid "New shape"
+msgstr "Новая привязка"
 
 #: src/ui_widgets/palette_config.gd:
 #, fuzzy
@@ -773,10 +774,6 @@ msgid "Theme preset"
 msgstr "Пресет темы"
 
 #: src/ui_widgets/settings_content_generic.gd:
-msgid "Determines the default values of theming-related settings, including the highlighter preset."
-msgstr "Определяет стандартные значения связанные с настройками темы, включая пресет подсветки."
-
-#: src/ui_widgets/settings_content_generic.gd:
 msgid "Primary theme colors"
 msgstr "Главные цвета темы"
 
@@ -920,6 +917,14 @@ msgid "Wrap-around panning"
 msgstr "Захват курсора при прокрутке"
 
 #: src/ui_widgets/settings_content_generic.gd:
+msgid "Panning speed"
+msgstr ""
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "Determines how much the view moves for scroll-based panning inputs."
+msgstr ""
+
+#: src/ui_widgets/settings_content_generic.gd:
 msgid "Use CTRL for zooming"
 msgstr "Использовать CTRL для масштабирования"
 
@@ -979,6 +984,10 @@ msgstr "Когда активно, добавит текущий открыты�
 #: src/ui_widgets/settings_content_generic.gd:
 msgid "When enabled, uses spaces instead of a single tab for indentation."
 msgstr "Когда активно, использует пробелы вместо одного tab-а для отступов."
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "Determines the default values of theming-related settings, including the highlighter preset."
+msgstr "Определяет стандартные значения связанные с настройками темы, включая пресет подсветки."
 
 #: src/ui_widgets/settings_content_generic.gd:
 msgid "Warps the cursor to the opposite side whenever it reaches a viewport boundary while panning."
@@ -1181,14 +1190,6 @@ msgid "Show SVG in File Manager"
 msgstr "Показать SVG в файловом менеджере"
 
 #: src/utils/TranslationUtils.gd:
-msgid "Undo"
-msgstr "Отменить"
-
-#: src/utils/TranslationUtils.gd:
-msgid "Redo"
-msgstr "Вернуть"
-
-#: src/utils/TranslationUtils.gd:
 msgid "Paste"
 msgstr "Вставить"
 
@@ -1274,6 +1275,11 @@ msgstr "Наложить референс-изображение"
 
 #: src/utils/TranslationUtils.gd:
 msgid "View debug information"
+msgstr "Просмотреть информацию для отладки"
+
+#: src/utils/TranslationUtils.gd:
+#, fuzzy
+msgid "View advanced debug information"
 msgstr "Просмотреть информацию для отладки"
 
 #: src/utils/TranslationUtils.gd:
@@ -1404,6 +1410,15 @@ msgstr "Выбрать {format} файл"
 #: src/utils/TranslationUtils.gd:
 msgid "Save the {format} file"
 msgstr "Сохранить {format} файл"
+
+#~ msgid "Go to parent folder"
+#~ msgstr "Перейти к родительской папке"
+
+#~ msgid "Path"
+#~ msgstr "Путь"
+
+#~ msgid "Snap"
+#~ msgstr "Привязка"
 
 #~ msgid "If turned off, the window title remains as \"GodSVG\" without including the current file."
 #~ msgstr "Если выключено - заголовок окна будет просто \"GodSVG\", не включая текущий файл."
