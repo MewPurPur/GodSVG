@@ -915,17 +915,8 @@ msgid "Close tabs with middle mouse button"
 msgstr "Registerkarten mit mittlerer Maustaste schließen"
 
 #: src/ui_widgets/settings_content_generic.gd:
-#, fuzzy
-msgid "When enabled, clicking on a tab with the middle mouse button closes it instead of simply focusing it."
-msgstr "Wenn diese Option aktiviert ist, wird die Registerkarte durch Anklicken mit der mittleren Maustaste geschlossen. Wenn diese Option ausgeschaltet ist, wird die Registerkarte stattdessen fokussiert."
-
-#: src/ui_widgets/settings_content_generic.gd:
 msgid "Invert zoom direction"
 msgstr "Zoomrichtung umkehren"
-
-#: src/ui_widgets/settings_content_generic.gd:
-msgid "Swaps the scroll directions for zooming in and zooming out."
-msgstr "Tauscht die Scrollrichtung für das Rein- und Rauszoomen."
 
 #: src/ui_widgets/settings_content_generic.gd:
 msgid "Wrap-around panning"
@@ -936,17 +927,8 @@ msgid "Panning speed"
 msgstr ""
 
 #: src/ui_widgets/settings_content_generic.gd:
-msgid "Determines how much the view moves for scroll-based panning inputs."
-msgstr ""
-
-#: src/ui_widgets/settings_content_generic.gd:
 msgid "Use CTRL for zooming"
 msgstr "Strg-Taste zum Zoomen benutzen"
-
-#: src/ui_widgets/settings_content_generic.gd:
-#, fuzzy
-msgid "When enabled, scrolling pans the view instead of zooming in. To zoom, hold CTRL while scrolling."
-msgstr "Wenn diese Option aktiviert ist, wird die Ansicht durch Scrollen verschoben. Um zu zoomen muss beim Scrollen die STRG-Taste gedrückt werden."
 
 #: src/ui_widgets/settings_content_generic.gd:
 msgid "Display"
@@ -956,26 +938,13 @@ msgstr ""
 msgid "UI scale"
 msgstr "Benutzeroberflächenskalierung"
 
-#: src/ui_widgets/settings_content_generic.gd:
-#, fuzzy
-msgid "Determines the scale factor for the interface."
-msgstr "Verändert den Skalierungsfaktor der Benutzeroberfläche."
-
 #. Stands for "Vertical Synchronization".
 #: src/ui_widgets/settings_content_generic.gd:
 msgid "V-Sync"
 msgstr ""
 
 #: src/ui_widgets/settings_content_generic.gd:
-msgid "Synchronizes graphics rendering with display refresh rate to prevent screen tearing artifacts. May increase input lag slightly."
-msgstr ""
-
-#: src/ui_widgets/settings_content_generic.gd:
 msgid "Maximum FPS"
-msgstr ""
-
-#: src/ui_widgets/settings_content_generic.gd:
-msgid "Determines the maximum number of frames per second."
 msgstr ""
 
 #: src/ui_widgets/settings_content_generic.gd:
@@ -995,7 +964,11 @@ msgid "Sync window title to file name"
 msgstr "Fenstertitel mit Dateinamen synchronisieren"
 
 #: src/ui_widgets/settings_content_generic.gd:
-msgid "When enabled, adds the current file name before the \"GodSVG\" window title."
+msgid "The setting has no effect in the current configuration."
+msgstr ""
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "The setting can't be changed on this platform."
 msgstr ""
 
 #: src/ui_widgets/settings_content_generic.gd:
@@ -1007,8 +980,49 @@ msgid "Determines the default values of theming-related settings, including the 
 msgstr ""
 
 #: src/ui_widgets/settings_content_generic.gd:
+#, fuzzy
+msgid "Determines the base color of GodSVG's interface."
+msgstr "Verändert den Skalierungsfaktor der Benutzeroberfläche."
+
+#: src/ui_widgets/settings_content_generic.gd:
+#, fuzzy
+msgid "Determines the accent color used for highlighted elements in GodSVG's interface."
+msgstr "Verändert den Skalierungsfaktor der Benutzeroberfläche."
+
+#: src/ui_widgets/settings_content_generic.gd:
+#, fuzzy
+msgid "When enabled, clicking on a tab with the middle mouse button closes it instead of simply focusing it."
+msgstr "Wenn diese Option aktiviert ist, wird die Registerkarte durch Anklicken mit der mittleren Maustaste geschlossen. Wenn diese Option ausgeschaltet ist, wird die Registerkarte stattdessen fokussiert."
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "Swaps the scroll directions for zooming in and zooming out."
+msgstr "Tauscht die Scrollrichtung für das Rein- und Rauszoomen."
+
+#: src/ui_widgets/settings_content_generic.gd:
 msgid "Warps the cursor to the opposite side whenever it reaches a viewport boundary while panning."
 msgstr "Teleportiert den Mauszeiger zur gegenüberliegenden Seite, soblald eine Bildschirmgrenze während des Verschiebens erreicht wird."
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "Determines how much the view moves for scroll-based panning inputs."
+msgstr ""
+
+#: src/ui_widgets/settings_content_generic.gd:
+#, fuzzy
+msgid "When enabled, scrolling pans the view instead of zooming in. To zoom, hold CTRL while scrolling."
+msgstr "Wenn diese Option aktiviert ist, wird die Ansicht durch Scrollen verschoben. Um zu zoomen muss beim Scrollen die STRG-Taste gedrückt werden."
+
+#: src/ui_widgets/settings_content_generic.gd:
+#, fuzzy
+msgid "Determines the scale factor for the interface."
+msgstr "Verändert den Skalierungsfaktor der Benutzeroberfläche."
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "Synchronizes graphics rendering with display refresh rate to prevent screen tearing artifacts. May increase input lag slightly."
+msgstr ""
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "Determines the maximum number of frames per second."
+msgstr ""
 
 #: src/ui_widgets/settings_content_generic.gd:
 msgid "Keeps the screen on even after inactivity, so the screensaver does not take over."
@@ -1020,11 +1034,7 @@ msgid "When enabled, uses your operating system's native file dialog instead of 
 msgstr "Wenn diese Option aktiviert ist, wird der Dateidialog des Betriebssystems verwendet. Wenn diese Option deaktiviert ist, wird GodSVG's eingebauter Dateidialog verwendet."
 
 #: src/ui_widgets/settings_content_generic.gd:
-msgid "The setting has no effect in the current configuration."
-msgstr ""
-
-#: src/ui_widgets/settings_content_generic.gd:
-msgid "The setting can't be changed on this platform."
+msgid "When enabled, adds the current file name before the \"GodSVG\" window title."
 msgstr ""
 
 #: src/ui_widgets/settings_content_palettes.gd:

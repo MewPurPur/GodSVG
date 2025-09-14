@@ -915,17 +915,8 @@ msgid "Close tabs with middle mouse button"
 msgstr "Fechar guias com o botão do meio do mouse"
 
 #: src/ui_widgets/settings_content_generic.gd:
-#, fuzzy
-msgid "When enabled, clicking on a tab with the middle mouse button closes it instead of simply focusing it."
-msgstr "Se ligado, clicar em uma guia com o botão do meio do mouse fechará a guia. Se desligado, irá focar na guia."
-
-#: src/ui_widgets/settings_content_generic.gd:
 msgid "Invert zoom direction"
 msgstr "Inverter direção do zoom"
-
-#: src/ui_widgets/settings_content_generic.gd:
-msgid "Swaps the scroll directions for zooming in and zooming out."
-msgstr "Troca as direções de rolagem para aumentar e diminuir o zoom."
 
 #: src/ui_widgets/settings_content_generic.gd:
 msgid "Wrap-around panning"
@@ -936,17 +927,8 @@ msgid "Panning speed"
 msgstr ""
 
 #: src/ui_widgets/settings_content_generic.gd:
-msgid "Determines how much the view moves for scroll-based panning inputs."
-msgstr ""
-
-#: src/ui_widgets/settings_content_generic.gd:
 msgid "Use CTRL for zooming"
 msgstr "Utilizar CTRL para zoom"
-
-#: src/ui_widgets/settings_content_generic.gd:
-#, fuzzy
-msgid "When enabled, scrolling pans the view instead of zooming in. To zoom, hold CTRL while scrolling."
-msgstr "Se habilitado, a rolagem do mouse irá movimentar a tela. Para realizar o zoom, pressione CTRL enquanto rola."
 
 #: src/ui_widgets/settings_content_generic.gd:
 msgid "Display"
@@ -956,26 +938,13 @@ msgstr ""
 msgid "UI scale"
 msgstr "Escala da interface"
 
-#: src/ui_widgets/settings_content_generic.gd:
-#, fuzzy
-msgid "Determines the scale factor for the interface."
-msgstr "Muda o fator de escala da interfaçe."
-
 #. Stands for "Vertical Synchronization".
 #: src/ui_widgets/settings_content_generic.gd:
 msgid "V-Sync"
 msgstr ""
 
 #: src/ui_widgets/settings_content_generic.gd:
-msgid "Synchronizes graphics rendering with display refresh rate to prevent screen tearing artifacts. May increase input lag slightly."
-msgstr ""
-
-#: src/ui_widgets/settings_content_generic.gd:
 msgid "Maximum FPS"
-msgstr ""
-
-#: src/ui_widgets/settings_content_generic.gd:
-msgid "Determines the maximum number of frames per second."
 msgstr ""
 
 #: src/ui_widgets/settings_content_generic.gd:
@@ -995,7 +964,11 @@ msgid "Sync window title to file name"
 msgstr "Sincronizar título de janela com o nome do arquivo"
 
 #: src/ui_widgets/settings_content_generic.gd:
-msgid "When enabled, adds the current file name before the \"GodSVG\" window title."
+msgid "The setting has no effect in the current configuration."
+msgstr ""
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "The setting can't be changed on this platform."
 msgstr ""
 
 #: src/ui_widgets/settings_content_generic.gd:
@@ -1007,8 +980,49 @@ msgid "Determines the default values of theming-related settings, including the 
 msgstr ""
 
 #: src/ui_widgets/settings_content_generic.gd:
+#, fuzzy
+msgid "Determines the base color of GodSVG's interface."
+msgstr "Muda o fator de escala da interfaçe."
+
+#: src/ui_widgets/settings_content_generic.gd:
+#, fuzzy
+msgid "Determines the accent color used for highlighted elements in GodSVG's interface."
+msgstr "Muda o fator de escala da interfaçe."
+
+#: src/ui_widgets/settings_content_generic.gd:
+#, fuzzy
+msgid "When enabled, clicking on a tab with the middle mouse button closes it instead of simply focusing it."
+msgstr "Se ligado, clicar em uma guia com o botão do meio do mouse fechará a guia. Se desligado, irá focar na guia."
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "Swaps the scroll directions for zooming in and zooming out."
+msgstr "Troca as direções de rolagem para aumentar e diminuir o zoom."
+
+#: src/ui_widgets/settings_content_generic.gd:
 msgid "Warps the cursor to the opposite side whenever it reaches a viewport boundary while panning."
 msgstr "Passa o cursor para o lado oposto da tela quando ele atinge uma borda da viewport quando movimentando a visualização."
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "Determines how much the view moves for scroll-based panning inputs."
+msgstr ""
+
+#: src/ui_widgets/settings_content_generic.gd:
+#, fuzzy
+msgid "When enabled, scrolling pans the view instead of zooming in. To zoom, hold CTRL while scrolling."
+msgstr "Se habilitado, a rolagem do mouse irá movimentar a tela. Para realizar o zoom, pressione CTRL enquanto rola."
+
+#: src/ui_widgets/settings_content_generic.gd:
+#, fuzzy
+msgid "Determines the scale factor for the interface."
+msgstr "Muda o fator de escala da interfaçe."
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "Synchronizes graphics rendering with display refresh rate to prevent screen tearing artifacts. May increase input lag slightly."
+msgstr ""
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "Determines the maximum number of frames per second."
+msgstr ""
 
 #: src/ui_widgets/settings_content_generic.gd:
 msgid "Keeps the screen on even after inactivity, so the screensaver does not take over."
@@ -1020,11 +1034,7 @@ msgid "When enabled, uses your operating system's native file dialog instead of 
 msgstr "Se habilitado, usa o diálogo de arquivo nativo do sistema operacional. Se desabilitado, usa o diálogo de arquivo embutido no GodSVG."
 
 #: src/ui_widgets/settings_content_generic.gd:
-msgid "The setting has no effect in the current configuration."
-msgstr ""
-
-#: src/ui_widgets/settings_content_generic.gd:
-msgid "The setting can't be changed on this platform."
+msgid "When enabled, adds the current file name before the \"GodSVG\" window title."
 msgstr ""
 
 #: src/ui_widgets/settings_content_palettes.gd:

@@ -902,15 +902,7 @@ msgid "Close tabs with middle mouse button"
 msgstr ""
 
 #: src/ui_widgets/settings_content_generic.gd:
-msgid "When enabled, clicking on a tab with the middle mouse button closes it instead of simply focusing it."
-msgstr ""
-
-#: src/ui_widgets/settings_content_generic.gd:
 msgid "Invert zoom direction"
-msgstr ""
-
-#: src/ui_widgets/settings_content_generic.gd:
-msgid "Swaps the scroll directions for zooming in and zooming out."
 msgstr ""
 
 #: src/ui_widgets/settings_content_generic.gd:
@@ -922,15 +914,7 @@ msgid "Panning speed"
 msgstr ""
 
 #: src/ui_widgets/settings_content_generic.gd:
-msgid "Determines how much the view moves for scroll-based panning inputs."
-msgstr ""
-
-#: src/ui_widgets/settings_content_generic.gd:
 msgid "Use CTRL for zooming"
-msgstr ""
-
-#: src/ui_widgets/settings_content_generic.gd:
-msgid "When enabled, scrolling pans the view instead of zooming in. To zoom, hold CTRL while scrolling."
 msgstr ""
 
 #: src/ui_widgets/settings_content_generic.gd:
@@ -941,25 +925,13 @@ msgstr ""
 msgid "UI scale"
 msgstr ""
 
-#: src/ui_widgets/settings_content_generic.gd:
-msgid "Determines the scale factor for the interface."
-msgstr ""
-
 #. Stands for "Vertical Synchronization".
 #: src/ui_widgets/settings_content_generic.gd:
 msgid "V-Sync"
 msgstr ""
 
 #: src/ui_widgets/settings_content_generic.gd:
-msgid "Synchronizes graphics rendering with display refresh rate to prevent screen tearing artifacts. May increase input lag slightly."
-msgstr ""
-
-#: src/ui_widgets/settings_content_generic.gd:
 msgid "Maximum FPS"
-msgstr ""
-
-#: src/ui_widgets/settings_content_generic.gd:
-msgid "Determines the maximum number of frames per second."
 msgstr ""
 
 #: src/ui_widgets/settings_content_generic.gd:
@@ -979,7 +951,11 @@ msgid "Sync window title to file name"
 msgstr ""
 
 #: src/ui_widgets/settings_content_generic.gd:
-msgid "When enabled, adds the current file name before the \"GodSVG\" window title."
+msgid "The setting has no effect in the current configuration."
+msgstr ""
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "The setting can't be changed on this platform."
 msgstr ""
 
 #: src/ui_widgets/settings_content_generic.gd:
@@ -991,7 +967,43 @@ msgid "Determines the default values of theming-related settings, including the 
 msgstr ""
 
 #: src/ui_widgets/settings_content_generic.gd:
+msgid "Determines the base color of GodSVG's interface."
+msgstr ""
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "Determines the accent color used for highlighted elements in GodSVG's interface."
+msgstr ""
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "When enabled, clicking on a tab with the middle mouse button closes it instead of simply focusing it."
+msgstr ""
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "Swaps the scroll directions for zooming in and zooming out."
+msgstr ""
+
+#: src/ui_widgets/settings_content_generic.gd:
 msgid "Warps the cursor to the opposite side whenever it reaches a viewport boundary while panning."
+msgstr ""
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "Determines how much the view moves for scroll-based panning inputs."
+msgstr ""
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "When enabled, scrolling pans the view instead of zooming in. To zoom, hold CTRL while scrolling."
+msgstr ""
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "Determines the scale factor for the interface."
+msgstr ""
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "Synchronizes graphics rendering with display refresh rate to prevent screen tearing artifacts. May increase input lag slightly."
+msgstr ""
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "Determines the maximum number of frames per second."
 msgstr ""
 
 #: src/ui_widgets/settings_content_generic.gd:
@@ -1003,11 +1015,7 @@ msgid "When enabled, uses your operating system's native file dialog instead of 
 msgstr ""
 
 #: src/ui_widgets/settings_content_generic.gd:
-msgid "The setting has no effect in the current configuration."
-msgstr ""
-
-#: src/ui_widgets/settings_content_generic.gd:
-msgid "The setting can't be changed on this platform."
+msgid "When enabled, adds the current file name before the \"GodSVG\" window title."
 msgstr ""
 
 #: src/ui_widgets/settings_content_palettes.gd:
