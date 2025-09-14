@@ -579,6 +579,10 @@ msgstr "Пипета"
 msgid "New shape"
 msgstr "Нова фигура"
 
+#: src/ui_widgets/invalid_syntax_warning.gd:
+msgid "The SVG has invalid syntax. Any edit not made through the code editor will reset it."
+msgstr "SVG-то е синтактично грешно. Всяка редакция която не е направена през редактора за код ще го рестартира."
+
 #: src/ui_widgets/palette_config.gd:
 msgid "Add new color"
 msgstr "Добави нов цвят"

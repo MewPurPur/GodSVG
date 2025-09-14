@@ -202,6 +202,11 @@ func update_filtering() -> void:
 	open_dir(current_dir, false, true)
 
 func open_dir(dir: String, add_to_history := true, only_filtering_update := false) -> void:
+	dir_cursor = DirAccess.open(dir)
+	if not is_instance_valid(dir_cursor):
+		# TODO implement a fallback.
+		return
+	
 	if dir != current_dir and search_button.button_pressed:
 		search_button.button_pressed = false
 	
@@ -210,11 +215,6 @@ func open_dir(dir: String, add_to_history := true, only_filtering_update := fals
 		navigation_history.resize(navigation_index)
 		navigation_history.append(dir)
 		update_navigation_buttons()
-	
-	dir_cursor = DirAccess.open(dir)
-	if not is_instance_valid(dir_cursor):
-		# TODO implement a fallback.
-		return
 	
 	file_list.clear()
 	file_list.get_v_scroll_bar().value = 0

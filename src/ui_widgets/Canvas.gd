@@ -101,7 +101,6 @@ func _init() -> void:
 func _enter_tree() -> void:
 	viewport.size_2d_override_stretch = true
 	viewport.render_target_update_mode = SubViewport.UPDATE_ALWAYS
-	viewport.disable_3d = true
 	viewport.gui_snap_controls_to_pixels = false
 	viewport.canvas = self
 	add_child(viewport)

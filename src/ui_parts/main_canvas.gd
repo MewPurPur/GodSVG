@@ -34,7 +34,9 @@ func _ready() -> void:
 	shortcuts.add_shortcut("view_rasterized_svg", toggle_view_rasterized, ShortcutsRegistration.Behavior.PASS_THROUGH_AND_PRESERVE_POPUPS)
 	HandlerGUI.register_shortcuts(self, shortcuts)
 	
-	State.parsing_finished.connect(_on_parsing_finished)
+	State.parsing_finished.connect(react_to_last_parsing)
+	react_to_last_parsing()
+	
 	State.svg_edited.connect(_on_svg_changed.bind(true))
 	State.svg_switched_to_another.connect(_on_svg_changed.bind(false))
 	State.hover_changed.connect(_on_hover_changed)
@@ -65,13 +67,13 @@ func _on_root_element_attribute_changed(attribute_name: String) -> void:
 	if attribute_name in ["width", "height", "viewBox"]:
 		sync_svg_size(true)
 
-func _on_parsing_finished(error: SVGParser.ParseError) -> void:
-	if error == SVGParser.ParseError.OK:
+func react_to_last_parsing() -> void:
+	if State.last_parse_error == SVGParser.ParseError.OK:
 		root_element = State.root_element
 		sync_svg_size()
 		root_element.attribute_changed.connect(_on_root_element_attribute_changed)
 	else:
-		if not is_instance_valid(State.root_element):
+		if State.stable_editor_markup.is_empty():
 			root_element = ElementRoot.new()
 
 func _on_svg_changed(is_edit: bool) -> void:

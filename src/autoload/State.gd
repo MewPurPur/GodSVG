@@ -10,7 +10,7 @@ signal basic_xnode_text_changed
 signal basic_xnode_rendered_text_changed
 signal svg_unknown_change
 
-signal parsing_finished(error_id: SVGParser.ParseError)
+signal parsing_finished
 signal svg_edited
 signal svg_switched_to_another
 signal svg_changed
@@ -19,6 +19,7 @@ signal svg_changed
 # "stable_markup" is the last state without errors, and is what the editor is synced to.
 # These both differ from the TabData svg_text, which is the state as saved to file,
 # which doesn't happen while dragging handles or typing in the code editor for example.
+var last_parse_error: SVGParser.ParseError
 var unstable_markup := ""
 var stable_editor_markup := ""
 var stable_export_markup := ""
@@ -65,11 +66,13 @@ func sync_stable_editor_markup() -> void:
 
 func apply_markup(markup: String, is_edit: bool) -> void:
 	var svg_parse_result := SVGParser.markup_to_root(markup)
-	if svg_parse_result.error == SVGParser.ParseError.OK:
+	last_parse_error = svg_parse_result.error
+	
+	if last_parse_error == SVGParser.ParseError.OK:
 		root_element = svg_parse_result.svg
 		stable_editor_markup = SVGParser.root_to_editor_markup(root_element)
 		stable_export_markup = SVGParser.root_to_export_markup(root_element)
-		parsing_finished.emit(svg_parse_result.error)
+		parsing_finished.emit()
 		
 		root_element.xnodes_added.connect(_on_xnodes_added)
 		root_element.xnodes_deleted.connect(_on_xnodes_deleted)
@@ -88,9 +91,12 @@ func apply_markup(markup: String, is_edit: bool) -> void:
 		(svg_unknown_change if is_edit else svg_switched_to_another).emit()
 	else:
 		unstable_markup = markup
-		parsing_finished.emit(svg_parse_result.error)
 		if stable_editor_markup.is_empty():
+			root_element = ElementRoot.new()
+			parsing_finished.emit()
 			(svg_edited if is_edit else svg_switched_to_another).emit()
+		else:
+			parsing_finished.emit()
 
 func setup_from_tab() -> void:
 	var active_tab := Configs.savedata.get_active_tab()

@@ -582,6 +582,10 @@ msgstr "Pipette"
 msgid "New shape"
 msgstr "Neue Form"
 
+#: src/ui_widgets/invalid_syntax_warning.gd:
+msgid "The SVG has invalid syntax. Any edit not made through the code editor will reset it."
+msgstr ""
+
 #: src/ui_widgets/palette_config.gd:
 #, fuzzy
 msgid "Add new color"

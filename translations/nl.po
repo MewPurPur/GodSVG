@@ -580,6 +580,10 @@ msgstr "Druppelaar"
 msgid "New shape"
 msgstr "Nieuwe vorm"
 
+#: src/ui_widgets/invalid_syntax_warning.gd:
+msgid "The SVG has invalid syntax. Any edit not made through the code editor will reset it."
+msgstr ""
+
 #: src/ui_widgets/palette_config.gd:
 msgid "Add new color"
 msgstr "Voeg nieuwe kleur toe"
