@@ -103,6 +103,8 @@ static var mini_line_edit_normal_border_color: Color
 static var line_edit_inner_color_disabled: Color
 static var line_edit_border_color_disabled: Color
 
+static var text_edit_alternative_inner_color: Color
+
 static var selected_tab_color: Color
 static var selected_tab_border_color: Color
 
@@ -194,8 +196,7 @@ static func recalculate_colors() -> void:
 	basic_panel_inner_color = softer_base_color
 	basic_panel_border_color = base_color.lerp(max_contrast_color, 0.24)
 	basic_panel_border_color.s = minf(basic_panel_border_color.s * 2.0, lerpf(basic_panel_border_color.s, 1.0, 0.2))
-	subtle_panel_border_color = basic_panel_border_color.lerp(basic_panel_inner_color, 0.4)
-	subtle_panel_border_color.s = minf(subtle_panel_border_color.s * 2.0, lerpf(subtle_panel_border_color.s, 1.0, 0.2))
+	subtle_panel_border_color = basic_panel_border_color.lerp(extreme_theme_color, 0.24)
 	
 	caret_color = Color(tinted_contrast_color, 0.875)
 	selection_color = Color(accent_color, 0.375)
@@ -225,11 +226,14 @@ static func recalculate_colors() -> void:
 	
 	line_edit_focus_color = Color(accent_color, 0.4)
 	line_edit_inner_color = desaturated_color.lerp(extreme_theme_color, 0.74)
-	line_edit_normal_border_color = desaturated_color.lerp(extreme_theme_color, 0.42)
+	line_edit_normal_border_color = desaturated_color.lerp(extreme_theme_color, 0.42 if is_theme_dark else 0.35)
 	mini_line_edit_inner_color = desaturated_color.lerp(extreme_theme_color, 0.78)
 	mini_line_edit_normal_border_color = desaturated_color.lerp(max_contrast_color, 0.04)
 	line_edit_inner_color_disabled = desaturated_color.lerp(gray_color, 0.4).lerp(extreme_theme_color, 0.88)
 	line_edit_border_color_disabled = desaturated_color.lerp(gray_color, 0.4).lerp(extreme_theme_color, 0.68)
+	
+	text_edit_alternative_inner_color = base_color.lerp(extreme_theme_color, 0.2)
+	text_edit_alternative_inner_color.s *= 0.6
 	
 	connected_button_inner_color_hover = line_edit_inner_color.blend(hover_overlay_color)
 	connected_button_border_color_hover = line_edit_normal_border_color.blend(strong_hover_overlay_color)
