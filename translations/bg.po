@@ -902,16 +902,8 @@ msgid "Close tabs with middle mouse button"
 msgstr "Затваряне на раздели със средното копче на мишката"
 
 #: src/ui_widgets/settings_content_generic.gd:
-msgid "When enabled, clicking on a tab with the middle mouse button closes it instead of simply focusing it."
-msgstr "Когато е активирано, натискането на раздел със средното копче на мишката затваря раздела вместо просто да го фокусира."
-
-#: src/ui_widgets/settings_content_generic.gd:
 msgid "Invert zoom direction"
 msgstr "Обърни посоката на увеличение"
-
-#: src/ui_widgets/settings_content_generic.gd:
-msgid "Swaps the scroll directions for zooming in and zooming out."
-msgstr "Разменя посоките на влачене за намаляване и увеличаване"
 
 #: src/ui_widgets/settings_content_generic.gd:
 msgid "Wrap-around panning"
@@ -922,16 +914,8 @@ msgid "Panning speed"
 msgstr "Скорост на панорамиране"
 
 #: src/ui_widgets/settings_content_generic.gd:
-msgid "Determines how much the view moves for scroll-based panning inputs."
-msgstr "Определя колко бързо гледката се движи при плъзгане с превъртане."
-
-#: src/ui_widgets/settings_content_generic.gd:
 msgid "Use CTRL for zooming"
 msgstr "Използвай CTRL за увеличение"
-
-#: src/ui_widgets/settings_content_generic.gd:
-msgid "When enabled, scrolling pans the view instead of zooming in. To zoom, hold CTRL while scrolling."
-msgstr "Когато е активирано, влаченето премества гледката. За увеличение, задръж CTRL докато влачиш."
 
 #: src/ui_widgets/settings_content_generic.gd:
 msgid "Display"
@@ -941,26 +925,14 @@ msgstr "Дисплей"
 msgid "UI scale"
 msgstr "Мащаб на интерфейса"
 
-#: src/ui_widgets/settings_content_generic.gd:
-msgid "Determines the scale factor for the interface."
-msgstr "Определя мащаба на интерфейса."
-
 #. Stands for "Vertical Synchronization".
 #: src/ui_widgets/settings_content_generic.gd:
 msgid "V-Sync"
 msgstr "Вертикална синхронизация"
 
 #: src/ui_widgets/settings_content_generic.gd:
-msgid "Synchronizes graphics rendering with display refresh rate to prevent screen tearing artifacts. May increase input lag slightly."
-msgstr "Синхронизира рендирането с честотата на опресняване на дисплея, за да предотврати артефакти от разкъсване на екранното изображение. Може леко да забави входните сигнали."
-
-#: src/ui_widgets/settings_content_generic.gd:
 msgid "Maximum FPS"
 msgstr "Максимални кадри в секунда"
-
-#: src/ui_widgets/settings_content_generic.gd:
-msgid "Determines the maximum number of frames per second."
-msgstr "Определя максималния брой кадри в секунда."
 
 #: src/ui_widgets/settings_content_generic.gd:
 msgid "Keep Screen On"
@@ -979,8 +951,12 @@ msgid "Sync window title to file name"
 msgstr "Синхронизирай името на прозореца с файла"
 
 #: src/ui_widgets/settings_content_generic.gd:
-msgid "When enabled, adds the current file name before the \"GodSVG\" window title."
-msgstr "Когато е включено, добавя името на настоящия файл пред заглавието на прозореца \"GodSVG\"."
+msgid "The setting has no effect in the current configuration."
+msgstr "Настройката няма ефект в текущата конфигурация."
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "The setting can't be changed on this platform."
+msgstr "Настройката не може да бъде променена на тази платформа."
 
 #: src/ui_widgets/settings_content_generic.gd:
 msgid "When enabled, uses spaces instead of a single tab for indentation."
@@ -991,8 +967,44 @@ msgid "Determines the default values of theming-related settings, including the 
 msgstr "Определя стойностите по подразбиране на гамовите настройки, включително шаблона на синтаксовото маркиране."
 
 #: src/ui_widgets/settings_content_generic.gd:
+msgid "Determines the base color of GodSVG's interface."
+msgstr "Определя основния цвят на интерфейса на GodSVG."
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "Determines the accent color used for highlighted elements in GodSVG's interface."
+msgstr "Определя акцентния цвят, използван за подчертаване на елементи в интерфейса на GodSVG."
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "When enabled, clicking on a tab with the middle mouse button closes it instead of simply focusing it."
+msgstr "Когато е активирано, натискането на раздел със средното копче на мишката затваря раздела вместо просто да го фокусира."
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "Swaps the scroll directions for zooming in and zooming out."
+msgstr "Разменя посоките на влачене за намаляване и увеличаване"
+
+#: src/ui_widgets/settings_content_generic.gd:
 msgid "Warps the cursor to the opposite side whenever it reaches a viewport boundary while panning."
 msgstr "Превърта курсора когато той достигне краищата на екрана докато влачи гледката."
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "Determines how much the view moves for scroll-based panning inputs."
+msgstr "Определя колко бързо гледката се движи при плъзгане с превъртане."
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "When enabled, scrolling pans the view instead of zooming in. To zoom, hold CTRL while scrolling."
+msgstr "Когато е активирано, влаченето премества гледката. За увеличение, задръж CTRL докато влачиш."
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "Determines the scale factor for the interface."
+msgstr "Определя мащаба на интерфейса."
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "Synchronizes graphics rendering with display refresh rate to prevent screen tearing artifacts. May increase input lag slightly."
+msgstr "Синхронизира рендирането с честотата на опресняване на дисплея, за да предотврати артефакти от разкъсване на екранното изображение. Може леко да забави входните сигнали."
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "Determines the maximum number of frames per second."
+msgstr "Определя максималния брой кадри в секунда."
 
 #: src/ui_widgets/settings_content_generic.gd:
 msgid "Keeps the screen on even after inactivity, so the screensaver does not take over."
@@ -1003,12 +1015,8 @@ msgid "When enabled, uses your operating system's native file dialog instead of 
 msgstr "Когато е активирано, ще бъде използван файловият мениджър на твоята операционна система вместо вградения файлов мениджър на GodSVG."
 
 #: src/ui_widgets/settings_content_generic.gd:
-msgid "The setting has no effect in the current configuration."
-msgstr "Настройката няма ефект в текущата конфигурация."
-
-#: src/ui_widgets/settings_content_generic.gd:
-msgid "The setting can't be changed on this platform."
-msgstr "Настройката не може да бъде променена на тази платформа."
+msgid "When enabled, adds the current file name before the \"GodSVG\" window title."
+msgstr "Когато е включено, добавя името на настоящия файл пред заглавието на прозореца \"GodSVG\"."
 
 #: src/ui_widgets/settings_content_palettes.gd:
 msgid "New palette"

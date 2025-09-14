@@ -389,8 +389,12 @@ func setup_theming_content() -> void:
 	add_section(Translator.translate("Primary theme colors"))
 	current_setup_setting = "base_color"
 	add_color_edit(Translator.translate("Base color"), false)
+	add_preview(SettingTextPreview.new(Translator.translate(
+			"Determines the base color of GodSVG's interface.")))
 	current_setup_setting = "accent_color"
 	add_color_edit(Translator.translate("Accent color"), false)
+	add_preview(SettingTextPreview.new(Translator.translate(
+			"Determines the accent color used for highlighted elements in GodSVG's interface.")))
 	
 	var basic_svg_text = """<circle cx="6" cy="8" r="4" fill="gold" />"""
 	var basic_svg_text_with_syntax_error = """<circle cx="6" cy="8" ==syntax error"""
@@ -529,15 +533,15 @@ func setup_tab_bar_content() -> void:
 	add_section(Translator.translate("Input"))
 	current_setup_setting = "tab_mmb_close"
 	add_checkbox(Translator.translate("Close tabs with middle mouse button"))
-	add_preview(SettingTextPreview.new(
-			Translator.translate("When enabled, clicking on a tab with the middle mouse button closes it instead of simply focusing it.")))
+	add_preview(SettingTextPreview.new(Translator.translate(
+			"When enabled, clicking on a tab with the middle mouse button closes it instead of simply focusing it.")))
 
 func setup_other_content() -> void:
 	add_section(Translator.translate("Input"))
 	current_setup_setting = "invert_zoom"
 	add_checkbox(Translator.translate("Invert zoom direction"))
-	add_preview(SettingTextPreview.new(
-			Translator.translate("Swaps the scroll directions for zooming in and zooming out.")))
+	add_preview(SettingTextPreview.new(Translator.translate(
+			"Swaps the scroll directions for zooming in and zooming out.")))
 	current_setup_setting = "wraparound_panning"
 	var wraparound_panning := add_checkbox(Translator.translate("Wrap-around panning"))
 	var wraparound_panning_forced_off := not DisplayServer.has_feature(DisplayServer.FEATURE_MOUSE_WARP)
@@ -551,13 +555,13 @@ func setup_other_content() -> void:
 	current_setup_setting = "panning_speed"
 	add_number_dropdown(Translator.translate("Panning speed"), [5, 10, 20, 30, 50], true, false,
 			SaveData.PANNING_SPEED_MIN, SaveData.PANNING_SPEED_MAX)
-	add_preview(SettingTextPreview.new(
-			Translator.translate("Determines how much the view moves for scroll-based panning inputs.")))
+	add_preview(SettingTextPreview.new(Translator.translate(
+			"Determines how much the view moves for scroll-based panning inputs.")))
 	
 	current_setup_setting = "use_ctrl_for_zoom"
 	add_checkbox(Translator.translate("Use CTRL for zooming"))
-	add_preview(SettingTextPreview.new(
-			Translator.translate("When enabled, scrolling pans the view instead of zooming in. To zoom, hold CTRL while scrolling.")))
+	add_preview(SettingTextPreview.new(Translator.translate(
+			"When enabled, scrolling pans the view instead of zooming in. To zoom, hold CTRL while scrolling.")))
 	
 	add_section(Translator.translate("Display"))
 	# Prepare parameters for the UI scale setting.
@@ -601,18 +605,18 @@ func setup_other_content() -> void:
 	
 	current_setup_setting = "ui_scale"
 	add_dropdown(Translator.translate("UI scale"), dropdown_values, dropdown_map)
-	add_preview(SettingTextPreview.new(
-			Translator.translate("Determines the scale factor for the interface.")))
+	add_preview(SettingTextPreview.new(Translator.translate(
+			"Determines the scale factor for the interface.")))
 	
 	current_setup_setting = "vsync"
 	add_checkbox(Translator.translate("V-Sync"))
-	add_preview(SettingTextPreview.new(
-			Translator.translate("Synchronizes graphics rendering with display refresh rate to prevent screen tearing artifacts. May increase input lag slightly.")))
+	add_preview(SettingTextPreview.new(Translator.translate(
+			"Synchronizes graphics rendering with display refresh rate to prevent screen tearing artifacts. May increase input lag slightly.")))
 	
 	current_setup_setting = "max_fps"
 	add_fps_limit_dropdown(Translator.translate("Maximum FPS"))
-	add_preview(SettingTextPreview.new(
-			Translator.translate("Determines the maximum number of frames per second.")))
+	add_preview(SettingTextPreview.new(Translator.translate(
+			"Determines the maximum number of frames per second.")))
 	
 	current_setup_setting = "keep_screen_on"
 	var keep_screen_on := add_checkbox(Translator.translate("Keep Screen On"))
@@ -639,8 +643,8 @@ func setup_other_content() -> void:
 	
 	current_setup_setting = "use_filename_for_window_title"
 	add_checkbox(Translator.translate("Sync window title to file name"))
-	add_preview(SettingTextPreview.new(
-			Translator.translate("When enabled, adds the current file name before the \"GodSVG\" window title.")))
+	add_preview(SettingTextPreview.new(Translator.translate(
+			"When enabled, adds the current file name before the \"GodSVG\" window title.")))
 
 
 func add_section(section_name: String) -> void:
@@ -806,11 +810,9 @@ func emit_preview_changed() -> void:
 			no_effect_warning_label.add_theme_color_override("font_color", Configs.savedata.basic_color_warning)
 			match preview.warning:
 				preview.WarningType.NO_EFFECT_IN_CURRENT_CONFIGURATION:
-					no_effect_warning_label.text = Translator.translate(
-							"The setting has no effect in the current configuration.")
+					no_effect_warning_label.text = Translator.translate("The setting has no effect in the current configuration.")
 				preview.WarningType.NOT_AVAILABLE_ON_PLATFORM:
-					no_effect_warning_label.text = Translator.translate(
-							"The setting can't be changed on this platform.")
+					no_effect_warning_label.text = Translator.translate("The setting can't be changed on this platform.")
 				_:
 					no_effect_warning_label.text = ""
 			while no_effect_warning_label.get_line_count() >= 2:

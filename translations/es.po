@@ -914,17 +914,8 @@ msgid "Close tabs with middle mouse button"
 msgstr "Cerrar pestañas con el botón central del ratón"
 
 #: src/ui_widgets/settings_content_generic.gd:
-#, fuzzy
-msgid "When enabled, clicking on a tab with the middle mouse button closes it instead of simply focusing it."
-msgstr "Si está activado, al hacer clic en una pestaña con el botón central del ratón, esta se cierra. Si está desactivado, se centra en la pestaña."
-
-#: src/ui_widgets/settings_content_generic.gd:
 msgid "Invert zoom direction"
 msgstr "Invertir dirección de zoom"
-
-#: src/ui_widgets/settings_content_generic.gd:
-msgid "Swaps the scroll directions for zooming in and zooming out."
-msgstr "Intercambia las direcciones de desplazamiento para acercar y alejar."
 
 #: src/ui_widgets/settings_content_generic.gd:
 msgid "Wrap-around panning"
@@ -935,17 +926,8 @@ msgid "Panning speed"
 msgstr ""
 
 #: src/ui_widgets/settings_content_generic.gd:
-msgid "Determines how much the view moves for scroll-based panning inputs."
-msgstr ""
-
-#: src/ui_widgets/settings_content_generic.gd:
 msgid "Use CTRL for zooming"
 msgstr "Usar Ctrl para hacer zoom"
-
-#: src/ui_widgets/settings_content_generic.gd:
-#, fuzzy
-msgid "When enabled, scrolling pans the view instead of zooming in. To zoom, hold CTRL while scrolling."
-msgstr "Si está activado, el desplazamiento panorámico permite ver la vista panorámica. Para hacer zoom, mantén presionada la tecla Ctrl mientras te desplazas."
 
 #: src/ui_widgets/settings_content_generic.gd:
 msgid "Display"
@@ -955,28 +937,15 @@ msgstr "Visualización"
 msgid "UI scale"
 msgstr "Escala de la interfaz de usuario"
 
-#: src/ui_widgets/settings_content_generic.gd:
-msgid "Determines the scale factor for the interface."
-msgstr "Determina el factor de escala de la interfaz."
-
 #. Stands for "Vertical Synchronization".
 #: src/ui_widgets/settings_content_generic.gd:
 msgid "V-Sync"
 msgstr ""
 
 #: src/ui_widgets/settings_content_generic.gd:
-msgid "Synchronizes graphics rendering with display refresh rate to prevent screen tearing artifacts. May increase input lag slightly."
-msgstr ""
-
-#: src/ui_widgets/settings_content_generic.gd:
 #, fuzzy
 msgid "Maximum FPS"
 msgstr "FPS máximos personalizados"
-
-#: src/ui_widgets/settings_content_generic.gd:
-#, fuzzy
-msgid "Determines the maximum number of frames per second."
-msgstr "Si la velocidad de fotogramas está limitada, este valor determina la cantidad máxima de fotogramas por segundo."
 
 #: src/ui_widgets/settings_content_generic.gd:
 msgid "Keep Screen On"
@@ -995,7 +964,11 @@ msgid "Sync window title to file name"
 msgstr "Sincronizar título de la ventana con el nombre del archivo"
 
 #: src/ui_widgets/settings_content_generic.gd:
-msgid "When enabled, adds the current file name before the \"GodSVG\" window title."
+msgid "The setting has no effect in the current configuration."
+msgstr ""
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "The setting can't be changed on this platform."
 msgstr ""
 
 #: src/ui_widgets/settings_content_generic.gd:
@@ -1007,8 +980,49 @@ msgid "Determines the default values of theming-related settings, including the 
 msgstr ""
 
 #: src/ui_widgets/settings_content_generic.gd:
+#, fuzzy
+msgid "Determines the base color of GodSVG's interface."
+msgstr "Determina el factor de escala de la interfaz."
+
+#: src/ui_widgets/settings_content_generic.gd:
+#, fuzzy
+msgid "Determines the accent color used for highlighted elements in GodSVG's interface."
+msgstr "Determina el factor de escala de la interfaz."
+
+#: src/ui_widgets/settings_content_generic.gd:
+#, fuzzy
+msgid "When enabled, clicking on a tab with the middle mouse button closes it instead of simply focusing it."
+msgstr "Si está activado, al hacer clic en una pestaña con el botón central del ratón, esta se cierra. Si está desactivado, se centra en la pestaña."
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "Swaps the scroll directions for zooming in and zooming out."
+msgstr "Intercambia las direcciones de desplazamiento para acercar y alejar."
+
+#: src/ui_widgets/settings_content_generic.gd:
 msgid "Warps the cursor to the opposite side whenever it reaches a viewport boundary while panning."
 msgstr "Mueve el cursor hacia el lado opuesto cada vez que alcanza el límite de la ventana gráfica mientras se desplaza."
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "Determines how much the view moves for scroll-based panning inputs."
+msgstr ""
+
+#: src/ui_widgets/settings_content_generic.gd:
+#, fuzzy
+msgid "When enabled, scrolling pans the view instead of zooming in. To zoom, hold CTRL while scrolling."
+msgstr "Si está activado, el desplazamiento panorámico permite ver la vista panorámica. Para hacer zoom, mantén presionada la tecla Ctrl mientras te desplazas."
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "Determines the scale factor for the interface."
+msgstr "Determina el factor de escala de la interfaz."
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "Synchronizes graphics rendering with display refresh rate to prevent screen tearing artifacts. May increase input lag slightly."
+msgstr ""
+
+#: src/ui_widgets/settings_content_generic.gd:
+#, fuzzy
+msgid "Determines the maximum number of frames per second."
+msgstr "Si la velocidad de fotogramas está limitada, este valor determina la cantidad máxima de fotogramas por segundo."
 
 #: src/ui_widgets/settings_content_generic.gd:
 msgid "Keeps the screen on even after inactivity, so the screensaver does not take over."
@@ -1020,11 +1034,7 @@ msgid "When enabled, uses your operating system's native file dialog instead of 
 msgstr "Si está activado, usa el cuadro de diálogo de archivos nativo de tu sistema operativo. Si está desactivado, usa el cuadro de diálogo de archivos integrado de GodSVG."
 
 #: src/ui_widgets/settings_content_generic.gd:
-msgid "The setting has no effect in the current configuration."
-msgstr ""
-
-#: src/ui_widgets/settings_content_generic.gd:
-msgid "The setting can't be changed on this platform."
+msgid "When enabled, adds the current file name before the \"GodSVG\" window title."
 msgstr ""
 
 #: src/ui_widgets/settings_content_palettes.gd:

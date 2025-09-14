@@ -903,16 +903,8 @@ msgid "Close tabs with middle mouse button"
 msgstr "鼠标中键关闭分页"
 
 #: src/ui_widgets/settings_content_generic.gd:
-msgid "When enabled, clicking on a tab with the middle mouse button closes it instead of simply focusing it."
-msgstr "如果启用，滑鼠中键将关闭分页。"
-
-#: src/ui_widgets/settings_content_generic.gd:
 msgid "Invert zoom direction"
 msgstr "反转缩放方向"
-
-#: src/ui_widgets/settings_content_generic.gd:
-msgid "Swaps the scroll directions for zooming in and zooming out."
-msgstr "互換放大和缩小的滚动方向。"
 
 #: src/ui_widgets/settings_content_generic.gd:
 msgid "Wrap-around panning"
@@ -923,16 +915,8 @@ msgid "Panning speed"
 msgstr "平移速度"
 
 #: src/ui_widgets/settings_content_generic.gd:
-msgid "Determines how much the view moves for scroll-based panning inputs."
-msgstr ""
-
-#: src/ui_widgets/settings_content_generic.gd:
 msgid "Use CTRL for zooming"
 msgstr "使用 CTRL 键缩放"
-
-#: src/ui_widgets/settings_content_generic.gd:
-msgid "When enabled, scrolling pans the view instead of zooming in. To zoom, hold CTRL while scrolling."
-msgstr "如果启用，滚动鼠标滚轮将移动视图。按住 CTRL 并滚动滚轮以缩放。"
 
 #: src/ui_widgets/settings_content_generic.gd:
 msgid "Display"
@@ -942,26 +926,14 @@ msgstr "显示"
 msgid "UI scale"
 msgstr "UI 缩放"
 
-#: src/ui_widgets/settings_content_generic.gd:
-msgid "Determines the scale factor for the interface."
-msgstr "改变用户界面的缩放尺寸。"
-
 #. Stands for "Vertical Synchronization".
 #: src/ui_widgets/settings_content_generic.gd:
 msgid "V-Sync"
 msgstr "垂直同步"
 
 #: src/ui_widgets/settings_content_generic.gd:
-msgid "Synchronizes graphics rendering with display refresh rate to prevent screen tearing artifacts. May increase input lag slightly."
-msgstr ""
-
-#: src/ui_widgets/settings_content_generic.gd:
 msgid "Maximum FPS"
 msgstr "最大帧率"
-
-#: src/ui_widgets/settings_content_generic.gd:
-msgid "Determines the maximum number of frames per second."
-msgstr "改变最大帧率。"
 
 #: src/ui_widgets/settings_content_generic.gd:
 msgid "Keep Screen On"
@@ -980,8 +952,12 @@ msgid "Sync window title to file name"
 msgstr "同步窗口标题为文件名"
 
 #: src/ui_widgets/settings_content_generic.gd:
-msgid "When enabled, adds the current file name before the \"GodSVG\" window title."
-msgstr "如果启用，将窗口标题 (GodSVG) 前加入当前文件名。"
+msgid "The setting has no effect in the current configuration."
+msgstr "设置于当前配置下无效。"
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "The setting can't be changed on this platform."
+msgstr "设置于当前平台下无法更改。"
 
 #: src/ui_widgets/settings_content_generic.gd:
 msgid "When enabled, uses spaces instead of a single tab for indentation."
@@ -992,8 +968,46 @@ msgid "Determines the default values of theming-related settings, including the 
 msgstr "改变与主题相关的设置，包括高亮预设。"
 
 #: src/ui_widgets/settings_content_generic.gd:
+#, fuzzy
+msgid "Determines the base color of GodSVG's interface."
+msgstr "改变用户界面的缩放尺寸。"
+
+#: src/ui_widgets/settings_content_generic.gd:
+#, fuzzy
+msgid "Determines the accent color used for highlighted elements in GodSVG's interface."
+msgstr "改变用户界面的缩放尺寸。"
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "When enabled, clicking on a tab with the middle mouse button closes it instead of simply focusing it."
+msgstr "如果启用，滑鼠中键将关闭分页。"
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "Swaps the scroll directions for zooming in and zooming out."
+msgstr "互換放大和缩小的滚动方向。"
+
+#: src/ui_widgets/settings_content_generic.gd:
 msgid "Warps the cursor to the opposite side whenever it reaches a viewport boundary while panning."
 msgstr ""
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "Determines how much the view moves for scroll-based panning inputs."
+msgstr ""
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "When enabled, scrolling pans the view instead of zooming in. To zoom, hold CTRL while scrolling."
+msgstr "如果启用，滚动鼠标滚轮将移动视图。按住 CTRL 并滚动滚轮以缩放。"
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "Determines the scale factor for the interface."
+msgstr "改变用户界面的缩放尺寸。"
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "Synchronizes graphics rendering with display refresh rate to prevent screen tearing artifacts. May increase input lag slightly."
+msgstr ""
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "Determines the maximum number of frames per second."
+msgstr "改变最大帧率。"
 
 #: src/ui_widgets/settings_content_generic.gd:
 msgid "Keeps the screen on even after inactivity, so the screensaver does not take over."
@@ -1004,12 +1018,8 @@ msgid "When enabled, uses your operating system's native file dialog instead of 
 msgstr "如果启用，将使用操作系统自带的文件选择窗口。反之，将使用 GodSVG 内置的文件选择窗口。"
 
 #: src/ui_widgets/settings_content_generic.gd:
-msgid "The setting has no effect in the current configuration."
-msgstr "设置于当前配置下无效。"
-
-#: src/ui_widgets/settings_content_generic.gd:
-msgid "The setting can't be changed on this platform."
-msgstr "设置于当前平台下无法更改。"
+msgid "When enabled, adds the current file name before the \"GodSVG\" window title."
+msgstr "如果启用，将窗口标题 (GodSVG) 前加入当前文件名。"
 
 #: src/ui_widgets/settings_content_palettes.gd:
 msgid "New palette"

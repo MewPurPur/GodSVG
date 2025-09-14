@@ -908,16 +908,8 @@ msgid "Close tabs with middle mouse button"
 msgstr "Закривати вкладки при натисканні середньої кнопки миші"
 
 #: src/ui_widgets/settings_content_generic.gd:
-msgid "When enabled, clicking on a tab with the middle mouse button closes it instead of simply focusing it."
-msgstr "Якщо увімкнено - клацання на вкладку середньою кнопкою миші закриє її, замість того, щоб фокусуватися на ній."
-
-#: src/ui_widgets/settings_content_generic.gd:
 msgid "Invert zoom direction"
 msgstr "Інвертувати напрямок масштабування"
-
-#: src/ui_widgets/settings_content_generic.gd:
-msgid "Swaps the scroll directions for zooming in and zooming out."
-msgstr "Міняє напрям гортання при масштабуванні."
 
 #: src/ui_widgets/settings_content_generic.gd:
 msgid "Wrap-around panning"
@@ -928,16 +920,8 @@ msgid "Panning speed"
 msgstr ""
 
 #: src/ui_widgets/settings_content_generic.gd:
-msgid "Determines how much the view moves for scroll-based panning inputs."
-msgstr ""
-
-#: src/ui_widgets/settings_content_generic.gd:
 msgid "Use CTRL for zooming"
 msgstr "Використовувати CTRL для масштабування"
-
-#: src/ui_widgets/settings_content_generic.gd:
-msgid "When enabled, scrolling pans the view instead of zooming in. To zoom, hold CTRL while scrolling."
-msgstr "Якщо увімкнено - гортання буде рухати вікно перегляду. Щоб масштабувати, затисніть CTRL доки гортаєте."
 
 #: src/ui_widgets/settings_content_generic.gd:
 msgid "Display"
@@ -947,26 +931,14 @@ msgstr "Дисплей"
 msgid "UI scale"
 msgstr "Масштаб інтерфейсу"
 
-#: src/ui_widgets/settings_content_generic.gd:
-msgid "Determines the scale factor for the interface."
-msgstr "Визначає множник масштабу інтерфейсу."
-
 #. Stands for "Vertical Synchronization".
 #: src/ui_widgets/settings_content_generic.gd:
 msgid "V-Sync"
 msgstr "Вертикальна синхроназація"
 
 #: src/ui_widgets/settings_content_generic.gd:
-msgid "Synchronizes graphics rendering with display refresh rate to prevent screen tearing artifacts. May increase input lag slightly."
-msgstr "Синхронізує відображення графіки з частотою відновлення екрану, щоб запобігати артефактам відображення (на кшталт \"розриву\" екрана). Також може збільшити затримку натискань клавіатури або курсору."
-
-#: src/ui_widgets/settings_content_generic.gd:
 msgid "Maximum FPS"
 msgstr "Максимальна кількість кадрів на секунду"
-
-#: src/ui_widgets/settings_content_generic.gd:
-msgid "Determines the maximum number of frames per second."
-msgstr "Визначає максимальну кількість кадрів на секунду."
 
 #: src/ui_widgets/settings_content_generic.gd:
 msgid "Keep Screen On"
@@ -985,8 +957,12 @@ msgid "Sync window title to file name"
 msgstr "Синхронізувати заголовок вікна з назвою поточного файлу"
 
 #: src/ui_widgets/settings_content_generic.gd:
-msgid "When enabled, adds the current file name before the \"GodSVG\" window title."
-msgstr "Коли активовано, додає назву поточного файлу перед \"GodSVG\" у заголовку вікна."
+msgid "The setting has no effect in the current configuration."
+msgstr "Це опція не має ефекту на поточну конфігурацію."
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "The setting can't be changed on this platform."
+msgstr "Ця опція не може бути змінена на поточній платформі."
 
 #: src/ui_widgets/settings_content_generic.gd:
 msgid "When enabled, uses spaces instead of a single tab for indentation."
@@ -997,8 +973,46 @@ msgid "Determines the default values of theming-related settings, including the 
 msgstr "Визначає стандартні значення для налаштувань теми, включаючи налаштування підсвітки."
 
 #: src/ui_widgets/settings_content_generic.gd:
+#, fuzzy
+msgid "Determines the base color of GodSVG's interface."
+msgstr "Визначає множник масштабу інтерфейсу."
+
+#: src/ui_widgets/settings_content_generic.gd:
+#, fuzzy
+msgid "Determines the accent color used for highlighted elements in GodSVG's interface."
+msgstr "Визначає множник масштабу інтерфейсу."
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "When enabled, clicking on a tab with the middle mouse button closes it instead of simply focusing it."
+msgstr "Якщо увімкнено - клацання на вкладку середньою кнопкою миші закриє її, замість того, щоб фокусуватися на ній."
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "Swaps the scroll directions for zooming in and zooming out."
+msgstr "Міняє напрям гортання при масштабуванні."
+
+#: src/ui_widgets/settings_content_generic.gd:
 msgid "Warps the cursor to the opposite side whenever it reaches a viewport boundary while panning."
 msgstr "Курсор буде телепортуватися від одного краю до протилежного при пересуванні вікна перегляду."
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "Determines how much the view moves for scroll-based panning inputs."
+msgstr ""
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "When enabled, scrolling pans the view instead of zooming in. To zoom, hold CTRL while scrolling."
+msgstr "Якщо увімкнено - гортання буде рухати вікно перегляду. Щоб масштабувати, затисніть CTRL доки гортаєте."
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "Determines the scale factor for the interface."
+msgstr "Визначає множник масштабу інтерфейсу."
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "Synchronizes graphics rendering with display refresh rate to prevent screen tearing artifacts. May increase input lag slightly."
+msgstr "Синхронізує відображення графіки з частотою відновлення екрану, щоб запобігати артефактам відображення (на кшталт \"розриву\" екрана). Також може збільшити затримку натискань клавіатури або курсору."
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "Determines the maximum number of frames per second."
+msgstr "Визначає максимальну кількість кадрів на секунду."
 
 #: src/ui_widgets/settings_content_generic.gd:
 msgid "Keeps the screen on even after inactivity, so the screensaver does not take over."
@@ -1009,12 +1023,8 @@ msgid "When enabled, uses your operating system's native file dialog instead of 
 msgstr "Якщо увімкнено, то буде використовувати рідний файловий діалог вашої операційної системи для обирання файлів замість вбудованого."
 
 #: src/ui_widgets/settings_content_generic.gd:
-msgid "The setting has no effect in the current configuration."
-msgstr "Це опція не має ефекту на поточну конфігурацію."
-
-#: src/ui_widgets/settings_content_generic.gd:
-msgid "The setting can't be changed on this platform."
-msgstr "Ця опція не може бути змінена на поточній платформі."
+msgid "When enabled, adds the current file name before the \"GodSVG\" window title."
+msgstr "Коли активовано, додає назву поточного файлу перед \"GodSVG\" у заголовку вікна."
 
 #: src/ui_widgets/settings_content_palettes.gd:
 msgid "New palette"

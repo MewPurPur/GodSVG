@@ -905,16 +905,8 @@ msgid "Close tabs with middle mouse button"
 msgstr "Закрывать вкладки средней клавишей мыши"
 
 #: src/ui_widgets/settings_content_generic.gd:
-msgid "When enabled, clicking on a tab with the middle mouse button closes it instead of simply focusing it."
-msgstr "Если включено - нажатие на вкладку средней кнопкой мыши закроет ее вместо переключения фокуса."
-
-#: src/ui_widgets/settings_content_generic.gd:
 msgid "Invert zoom direction"
 msgstr "Инвертировать направление масштабирования"
-
-#: src/ui_widgets/settings_content_generic.gd:
-msgid "Swaps the scroll directions for zooming in and zooming out."
-msgstr "Поменяет местами направление прокрутки при масштабировании."
 
 #: src/ui_widgets/settings_content_generic.gd:
 msgid "Wrap-around panning"
@@ -925,16 +917,8 @@ msgid "Panning speed"
 msgstr ""
 
 #: src/ui_widgets/settings_content_generic.gd:
-msgid "Determines how much the view moves for scroll-based panning inputs."
-msgstr ""
-
-#: src/ui_widgets/settings_content_generic.gd:
 msgid "Use CTRL for zooming"
 msgstr "Использовать CTRL для масштабирования"
-
-#: src/ui_widgets/settings_content_generic.gd:
-msgid "When enabled, scrolling pans the view instead of zooming in. To zoom, hold CTRL while scrolling."
-msgstr "Если включено - прокрутка будет перемещать окно просмотра. Чтобы масштабировать зажмите CTRL при прокручивании."
 
 #: src/ui_widgets/settings_content_generic.gd:
 msgid "Display"
@@ -944,26 +928,14 @@ msgstr "Отображение"
 msgid "UI scale"
 msgstr "Масштаб интерфейса"
 
-#: src/ui_widgets/settings_content_generic.gd:
-msgid "Determines the scale factor for the interface."
-msgstr "Определяет множитель масштабирования интерфейса."
-
 #. Stands for "Vertical Synchronization".
 #: src/ui_widgets/settings_content_generic.gd:
 msgid "V-Sync"
 msgstr "Вертикальная синхронизация"
 
 #: src/ui_widgets/settings_content_generic.gd:
-msgid "Synchronizes graphics rendering with display refresh rate to prevent screen tearing artifacts. May increase input lag slightly."
-msgstr "Синхронизирует отображение графики с частотой обновления экрана, чтобы избегать артефактам (вроде \"разрыва\" картинки). Может увеличить задержку нажатий кнопок мыши и клавиатуры."
-
-#: src/ui_widgets/settings_content_generic.gd:
 msgid "Maximum FPS"
 msgstr "Максимальное количество кадров в секунду"
-
-#: src/ui_widgets/settings_content_generic.gd:
-msgid "Determines the maximum number of frames per second."
-msgstr "Определяет максимальное количество кадров в секунду."
 
 #: src/ui_widgets/settings_content_generic.gd:
 msgid "Keep Screen On"
@@ -982,8 +954,12 @@ msgid "Sync window title to file name"
 msgstr "Синхронизировать заголовок окна с названием файла"
 
 #: src/ui_widgets/settings_content_generic.gd:
-msgid "When enabled, adds the current file name before the \"GodSVG\" window title."
-msgstr "Когда активно, добавит текущий открытый файл перед \"GodSVG\" в заголовке окна."
+msgid "The setting has no effect in the current configuration."
+msgstr "Эта опция не имеет эффекта на текущую конфигурацию."
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "The setting can't be changed on this platform."
+msgstr "Эту опцию нельзя изменить на текущей платформе."
 
 #: src/ui_widgets/settings_content_generic.gd:
 msgid "When enabled, uses spaces instead of a single tab for indentation."
@@ -994,8 +970,46 @@ msgid "Determines the default values of theming-related settings, including the 
 msgstr "Определяет стандартные значения связанные с настройками темы, включая пресет подсветки."
 
 #: src/ui_widgets/settings_content_generic.gd:
+#, fuzzy
+msgid "Determines the base color of GodSVG's interface."
+msgstr "Определяет множитель масштабирования интерфейса."
+
+#: src/ui_widgets/settings_content_generic.gd:
+#, fuzzy
+msgid "Determines the accent color used for highlighted elements in GodSVG's interface."
+msgstr "Определяет множитель масштабирования интерфейса."
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "When enabled, clicking on a tab with the middle mouse button closes it instead of simply focusing it."
+msgstr "Если включено - нажатие на вкладку средней кнопкой мыши закроет ее вместо переключения фокуса."
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "Swaps the scroll directions for zooming in and zooming out."
+msgstr "Поменяет местами направление прокрутки при масштабировании."
+
+#: src/ui_widgets/settings_content_generic.gd:
 msgid "Warps the cursor to the opposite side whenever it reaches a viewport boundary while panning."
 msgstr "Курсор будет телепортироваться от одного до противоположного края на границе окна просмотра."
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "Determines how much the view moves for scroll-based panning inputs."
+msgstr ""
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "When enabled, scrolling pans the view instead of zooming in. To zoom, hold CTRL while scrolling."
+msgstr "Если включено - прокрутка будет перемещать окно просмотра. Чтобы масштабировать зажмите CTRL при прокручивании."
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "Determines the scale factor for the interface."
+msgstr "Определяет множитель масштабирования интерфейса."
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "Synchronizes graphics rendering with display refresh rate to prevent screen tearing artifacts. May increase input lag slightly."
+msgstr "Синхронизирует отображение графики с частотой обновления экрана, чтобы избегать артефактам (вроде \"разрыва\" картинки). Может увеличить задержку нажатий кнопок мыши и клавиатуры."
+
+#: src/ui_widgets/settings_content_generic.gd:
+msgid "Determines the maximum number of frames per second."
+msgstr "Определяет максимальное количество кадров в секунду."
 
 #: src/ui_widgets/settings_content_generic.gd:
 msgid "Keeps the screen on even after inactivity, so the screensaver does not take over."
@@ -1006,12 +1020,8 @@ msgid "When enabled, uses your operating system's native file dialog instead of 
 msgstr "Если включено, то будет использоваться родной файловый диалог вашей операционной системы для выбора файлов вместо встроенного в GodSVG."
 
 #: src/ui_widgets/settings_content_generic.gd:
-msgid "The setting has no effect in the current configuration."
-msgstr "Эта опция не имеет эффекта на текущую конфигурацию."
-
-#: src/ui_widgets/settings_content_generic.gd:
-msgid "The setting can't be changed on this platform."
-msgstr "Эту опцию нельзя изменить на текущей платформе."
+msgid "When enabled, adds the current file name before the \"GodSVG\" window title."
+msgstr "Когда активно, добавит текущий открытый файл перед \"GodSVG\" в заголовке окна."
 
 #: src/ui_widgets/settings_content_palettes.gd:
 msgid "New palette"
