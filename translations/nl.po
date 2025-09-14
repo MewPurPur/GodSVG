@@ -936,7 +936,8 @@ msgid "Maximum FPS"
 msgstr "Maximum FPS"
 
 #: src/ui_widgets/settings_content_generic.gd:
-msgid "Keep Screen On"
+#, fuzzy
+msgid "Keep screen on"
 msgstr "Scherm Aan Houden"
 
 #: src/ui_widgets/settings_content_generic.gd:
