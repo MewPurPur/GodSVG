@@ -50,7 +50,7 @@ size_flags_horizontal = 3
 
 [node name="MainPathBox" type="HBoxContainer" parent="VBoxContainer/TopBar/PathPanel"]
 layout_mode = 2
-theme_override_constants/separation = 8
+theme_override_constants/separation = 6
 
 [node name="DirectoryPathWidget" parent="VBoxContainer/TopBar/PathPanel/MainPathBox" instance=ExtResource("4_1umq0")]
 layout_mode = 2

@@ -90,19 +90,14 @@ func _draw() -> void:
 	var right_rect := Rect2(half_width, 18, half_width, half_width * 1.25)
 	
 	# Fixed viewport location for now.
-	var stylebox := StyleBoxFlat.new()
-	stylebox.set_corner_radius_all(4)
-	stylebox.bg_color = ThemeUtils.hover_overlay_color
 	
-	var disabled_stylebox := stylebox.duplicate()
-	disabled_stylebox.bg_color = ThemeUtils.context_button_color_disabled
-	disabled_stylebox.draw(ci, right_rect.grow(-BUFFER_SIZE))
+	get_theme_stylebox("disabled", "TranslucentButton").draw(ci, right_rect.grow(-BUFFER_SIZE))
 	var viewport_icon := Utils.get_layout_part_icon(Utils.LayoutPart.VIEWPORT)
 	viewport_icon.draw(ci, right_rect.get_center() - viewport_icon.get_size() / 2, ThemeUtils.tinted_contrast_color)
 	
 	for layout_location in section_areas:
 		var area := section_areas[layout_location].grow(-BUFFER_SIZE)
-		stylebox.draw(ci, area)
+		get_theme_stylebox("normal", "TranslucentButton").draw(ci, area)
 		if proposed_drop_location_pivot == layout_location:
 			var drop_sb := StyleBoxFlat.new()
 			drop_sb.set_corner_radius_all(5)
@@ -127,13 +122,11 @@ func _draw() -> void:
 		var icon := Utils.get_layout_part_icon(layout_part)
 		
 		if is_instance_valid(dragged_data) and dragged_data.layout_part == layout_part:
-			disabled_stylebox.draw(ci, rect)
+			get_theme_stylebox("disabled", "TranslucentButton").draw(ci, rect)
 		elif hovered_part == layout_part:
-			var hover_stylebox := stylebox.duplicate()
-			hover_stylebox.bg_color = ThemeUtils.strong_hover_overlay_color
-			hover_stylebox.draw(ci, rect)
+			get_theme_stylebox("hover", "TranslucentButton").draw(ci, rect)
 		else:
-			stylebox.draw(ci, rect)
+			get_theme_stylebox("normal", "TranslucentButton").draw(ci, rect)
 			if proposed_drop_idx >= 0:
 				if parts_in_proposed_drop.size() > proposed_drop_idx and parts_in_proposed_drop[proposed_drop_idx] == layout_part:
 					var drop_sb := StyleBoxFlat.new()
