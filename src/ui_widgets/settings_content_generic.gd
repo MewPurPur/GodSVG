@@ -81,6 +81,7 @@ func _ready() -> void:
 			var update_category_button_text := func() -> void:
 					btn.text = Translator.translate("Editor formatter") if idx == 0 else Translator.translate("Export formatter")
 			Configs.language_changed.connect(update_category_button_text)
+			btn.tree_exited.connect(Configs.language_changed.disconnect.bind(update_category_button_text))
 			update_category_button_text.call()
 			btn.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 			btn.focus_mode = Control.FOCUS_NONE

@@ -21,8 +21,8 @@ var marked_unsaved := false:
 			status_changed.emit()
 
 var reference_image: Texture2D
-var overlay_reference := false
 var show_reference := true
+var overlay_reference := false
 var undo_redo: UndoRedoRef
 var camera_center := Vector2(NAN, NAN)
 var camera_zoom := -1.0
