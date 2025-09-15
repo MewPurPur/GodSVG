@@ -7,7 +7,7 @@ var reference_image: Texture2D:
 			Configs.savedata.get_active_tab().reference_image = new_value
 			sync_reference_image()
 
-var show_reference := false:
+var show_reference := true:
 	set(new_value):
 		if show_reference != new_value:
 			show_reference = new_value

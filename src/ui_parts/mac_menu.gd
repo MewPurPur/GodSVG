@@ -20,12 +20,6 @@ var tool_idx: int
 
 var view_rid: RID
 var view_idx: int
-var view_show_grid_idx: int
-var view_show_handles_idx: int
-var view_rasterized_svg_idx: int
-var view_show_reference_idx: int
-var view_overlay_reference_idx: int
-var view_show_debug_idx: int
 
 
 func _enter_tree() -> void:
