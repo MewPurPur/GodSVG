@@ -30,16 +30,16 @@ func _ready() -> void:
 	var shortcuts := ShortcutsRegistration.new()
 	shortcuts.add_shortcut("close_tab", func() -> void: FileUtils.close_tabs(Configs.savedata.get_active_tab_index()),
 			ShortcutsRegistration.Behavior.PASS_THROUGH_POPUPS)
-	shortcuts.add_shortcut("close_all_other_tabs", func() -> void: FileUtils.close_tabs(Configs.savedata.get_active_tab_index(), FileUtils.TabCloseMode.ALL_OTHERS),
-			ShortcutsRegistration.Behavior.PASS_THROUGH_POPUPS)
-	shortcuts.add_shortcut("close_tabs_to_left", func() -> void: FileUtils.close_tabs(Configs.savedata.get_active_tab_index(), FileUtils.TabCloseMode.TO_LEFT),
-			ShortcutsRegistration.Behavior.PASS_THROUGH_POPUPS)
-	shortcuts.add_shortcut("close_tabs_to_right", func() -> void: FileUtils.close_tabs(Configs.savedata.get_active_tab_index(), FileUtils.TabCloseMode.TO_RIGHT),
-			ShortcutsRegistration.Behavior.PASS_THROUGH_POPUPS)
-	shortcuts.add_shortcut("close_empty_tabs", func() -> void: FileUtils.close_tabs(Configs.savedata.get_active_tab_index(), FileUtils.TabCloseMode.EMPTY),
-			ShortcutsRegistration.Behavior.PASS_THROUGH_POPUPS)
-	shortcuts.add_shortcut("close_saved_tabs", func() -> void: FileUtils.close_tabs(Configs.savedata.get_active_tab_index(), FileUtils.TabCloseMode.SAVED),
-			ShortcutsRegistration.Behavior.PASS_THROUGH_POPUPS)
+	shortcuts.add_shortcut("close_all_other_tabs", func() -> void: FileUtils.close_tabs(Configs.savedata.get_active_tab_index(),
+			FileUtils.TabCloseMode.ALL_OTHERS), ShortcutsRegistration.Behavior.PASS_THROUGH_POPUPS)
+	shortcuts.add_shortcut("close_tabs_to_left", func() -> void: FileUtils.close_tabs(Configs.savedata.get_active_tab_index(),
+			FileUtils.TabCloseMode.TO_LEFT), ShortcutsRegistration.Behavior.PASS_THROUGH_POPUPS)
+	shortcuts.add_shortcut("close_tabs_to_right", func() -> void: FileUtils.close_tabs(Configs.savedata.get_active_tab_index(),
+			FileUtils.TabCloseMode.TO_RIGHT), ShortcutsRegistration.Behavior.PASS_THROUGH_POPUPS)
+	shortcuts.add_shortcut("close_empty_tabs", func() -> void: FileUtils.close_tabs(Configs.savedata.get_active_tab_index(),
+			FileUtils.TabCloseMode.EMPTY), ShortcutsRegistration.Behavior.PASS_THROUGH_POPUPS)
+	shortcuts.add_shortcut("close_saved_tabs", func() -> void: FileUtils.close_tabs(Configs.savedata.get_active_tab_index(),
+			FileUtils.TabCloseMode.SAVED), ShortcutsRegistration.Behavior.PASS_THROUGH_POPUPS)
 	shortcuts.add_shortcut("new_tab", Configs.savedata.add_empty_tab, ShortcutsRegistration.Behavior.PASS_THROUGH_POPUPS)
 	shortcuts.add_shortcut("select_next_tab",
 			func() -> void: Configs.savedata.set_active_tab_index(posmod(Configs.savedata.get_active_tab_index() + 1, Configs.savedata.get_tab_count())),
