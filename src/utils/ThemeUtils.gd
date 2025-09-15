@@ -122,7 +122,7 @@ static func recalculate_colors() -> void:
 	tinted_contrast_color = Color("#def") if is_theme_dark else Color("061728")
 	gray_color = Color("808080") if is_theme_dark else Color("666")
 	tinted_gray_color = tinted_contrast_color.blend(Color(extreme_theme_color, 0.475))
-	black_or_white_counter_accent_color = Color("#000") if accent_color.get_luminance() > 0.69 else Color("fff")
+	black_or_white_counter_accent_color = Color("#000") if accent_color.get_luminance() > 0.625 else Color("fff")
 	
 	warning_icon_color = Color("fca") if is_theme_dark else Color("96592c")
 	info_icon_color = Color("acf") if is_theme_dark else Color("3a6ab0")

@@ -5,11 +5,24 @@ const LayoutPopupScene = preload("res://src/ui_parts/layout_popup.tscn")
 @onready var more_options: Button = $LeftSide/MoreOptions
 @onready var size_button: Button = $RightSide/SizeButton
 @onready var layout_button: Button = $LeftSide/LayoutButton
+@onready var settings_button: BetterButton = $LeftSide/SettingsButton
+@onready var import_button: BetterButton = $RightSide/ImportButton
+@onready var export_button: BetterButton = $RightSide/ExportButton
 
 func sync_localization() -> void:
 	layout_button.tooltip_text = Translator.translate("Layout")
 
 func _ready() -> void:
+	# The settings button can be called from anywhere, but it's bound to this registration for the highlight.
+	var shortcuts := ShortcutsRegistration.new()
+	shortcuts.add_shortcut("open_settings", HandlerGUI.open_settings, ShortcutsRegistration.Behavior.PASS_THROUGH_POPUPS)
+	shortcuts.add_shortcut("import", FileUtils.open_svg_import_dialog, ShortcutsRegistration.Behavior.PASS_THROUGH_POPUPS)
+	shortcuts.add_shortcut("export", HandlerGUI.open_export, ShortcutsRegistration.Behavior.PASS_THROUGH_POPUPS)
+	HandlerGUI.register_shortcuts(self, shortcuts)
+	settings_button.shortcuts_bind = shortcuts
+	import_button.shortcuts_bind = shortcuts
+	export_button.shortcuts_bind = shortcuts
+	
 	State.svg_changed.connect(update_size_button)
 	update_size_button()
 	Configs.theme_changed.connect(sync_theming)
