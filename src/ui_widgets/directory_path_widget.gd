@@ -58,19 +58,29 @@ func sync_buttons() -> void:
 		var button_content_width: float
 		
 		if processed_path_component.is_empty():
-			button_content_width = font.get_string_size("Computer", HORIZONTAL_ALIGNMENT_CENTER, MAX_BUTTON_WIDTH, font_size).x + ICON_SPACING + computer_icon.get_width()
 			if is_instance_valid(dropdown_button):
 				collapsed_paths.append(processed_path)
 			else:
-				buttons.append(ButtonData.new(Rect2(0, 1, button_content_width + BUTTON_SIDE_MARGIN * 2, size.y - 2), processed_path, "Computer", computer_icon))
+				button_content_width = font.get_string_size("Computer", HORIZONTAL_ALIGNMENT_CENTER, MAX_BUTTON_WIDTH, font_size).x + ICON_SPACING + computer_icon.get_width()
+				if offset + button_content_width + BUTTON_SIDE_MARGIN * 2 + SLASH_SPACING > size.x:
+					button_content_width = font.get_string_size("…", HORIZONTAL_ALIGNMENT_CENTER, MAX_BUTTON_WIDTH, font_size).x
+					dropdown_button = ButtonData.new(Rect2(0, 1, button_content_width + DROPDOWN_BUTTON_SIDE_MARGIN * 2, size.y - 2), "", "…")
+					collapsed_paths.append(processed_path)
+				else:
+					buttons.append(ButtonData.new(Rect2(0, 1, button_content_width + BUTTON_SIDE_MARGIN * 2, size.y - 2), processed_path, "Computer", computer_icon))
 			offset += button_content_width + SLASH_SPACING + BUTTON_SIDE_MARGIN * 2
 			break
 		elif processed_path == Utils.get_home_dir():
-			button_content_width = font.get_string_size("Home", HORIZONTAL_ALIGNMENT_CENTER, MAX_BUTTON_WIDTH, font_size).x + ICON_SPACING + home_icon.get_width()
 			if is_instance_valid(dropdown_button):
 				collapsed_paths.append(processed_path)
 			else:
-				buttons.append(ButtonData.new(Rect2(0, 1, button_content_width + BUTTON_SIDE_MARGIN * 2, size.y - 2), processed_path, "Home", home_icon))
+				button_content_width = font.get_string_size("Home", HORIZONTAL_ALIGNMENT_CENTER, MAX_BUTTON_WIDTH, font_size).x + ICON_SPACING + home_icon.get_width()
+				if offset + button_content_width + BUTTON_SIDE_MARGIN * 2 + SLASH_SPACING > size.x:
+					button_content_width = font.get_string_size("…", HORIZONTAL_ALIGNMENT_CENTER, MAX_BUTTON_WIDTH, font_size).x
+					dropdown_button = ButtonData.new(Rect2(0, 1, button_content_width + DROPDOWN_BUTTON_SIDE_MARGIN * 2, size.y - 2), "", "…")
+					collapsed_paths.append(processed_path)
+				else:
+					buttons.append(ButtonData.new(Rect2(0, 1, button_content_width + BUTTON_SIDE_MARGIN * 2, size.y - 2), processed_path, "Home", home_icon))
 			offset += button_content_width + SLASH_SPACING + BUTTON_SIDE_MARGIN * 2
 			if path != processed_path:
 				break
@@ -79,9 +89,11 @@ func sync_buttons() -> void:
 				collapsed_paths.append(processed_path)
 			else:
 				button_content_width = font.get_string_size(processed_path_component, HORIZONTAL_ALIGNMENT_CENTER, MAX_BUTTON_WIDTH, font_size).x
+				# Check against available width since space for the dropdown button is still needed.
 				if offset + button_content_width + BUTTON_SIDE_MARGIN * 2 + SLASH_SPACING > available_width:
 					button_content_width = font.get_string_size("…", HORIZONTAL_ALIGNMENT_CENTER, MAX_BUTTON_WIDTH, font_size).x
 					dropdown_button = ButtonData.new(Rect2(0, 1, button_content_width + DROPDOWN_BUTTON_SIDE_MARGIN * 2, size.y - 2), "", "…")
+					collapsed_paths.append(processed_path)
 				else:
 					buttons.append(ButtonData.new(Rect2(0, 1, button_content_width + BUTTON_SIDE_MARGIN * 2, size.y - 2), processed_path, processed_path_component))
 					offset += button_content_width + SLASH_SPACING + BUTTON_SIDE_MARGIN * 2
