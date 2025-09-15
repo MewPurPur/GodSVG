@@ -12,6 +12,7 @@ static var max_contrast_color: Color  # White on dark theme, black on light them
 static var extreme_theme_color: Color  # Black on dark theme, white on light theme.
 static var tinted_contrast_color: Color  # Base color used to derive icon colors and other UI elements.
 static var gray_color: Color  # Light gray on dark theme, darker gray on light theme.
+static var tinted_gray_color: Color  # Used for disabled items that'd normally use tinted_contrast_color.
 static var black_or_white_counter_accent_color: Color
 
 static var warning_icon_color: Color
@@ -120,6 +121,7 @@ static func recalculate_colors() -> void:
 	extreme_theme_color = Color("#000") if is_theme_dark else Color("fff")
 	tinted_contrast_color = Color("#def") if is_theme_dark else Color("061728")
 	gray_color = Color("808080") if is_theme_dark else Color("666")
+	tinted_gray_color = tinted_contrast_color.blend(Color(extreme_theme_color, 0.475))
 	black_or_white_counter_accent_color = Color("#000") if accent_color.get_luminance() > 0.69 else Color("fff")
 	
 	warning_icon_color = Color("fca") if is_theme_dark else Color("96592c")
@@ -378,7 +380,7 @@ static func _setup_button(theme: Theme) -> void:
 	theme.set_color("icon_pressed_color", "Button", max_contrast_color)
 	theme.set_color("icon_hover_pressed_color", "Button", max_contrast_color)
 	theme.set_color("icon_focus_color", "Button", max_contrast_color)
-	theme.set_color("icon_disabled_color", "Button", gray_color)
+	theme.set_color("icon_disabled_color", "Button", tinted_gray_color)
 	var button_stylebox := StyleBoxFlat.new()
 	button_stylebox.set_corner_radius_all(5)
 	button_stylebox.set_border_width_all(2)
@@ -641,7 +643,7 @@ static func _setup_button(theme: Theme) -> void:
 	theme.set_color("icon_normal_color", "ContextButton", context_icon_normal_color)
 	theme.set_color("icon_hover_color", "ContextButton", context_icon_hover_color)
 	theme.set_color("icon_pressed_color", "ContextButton", context_icon_pressed_color)
-	theme.set_color("icon_disabled_color", "ContextButton", gray_color)
+	theme.set_color("icon_disabled_color", "ContextButton", tinted_gray_color)
 	
 	var context_button_stylebox := StyleBoxFlat.new()
 	context_button_stylebox.set_corner_radius_all(3)
