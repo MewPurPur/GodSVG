@@ -11,8 +11,5 @@ jobs:
       with:
         fetch-depth: 0
 
-    - name: Install dependencies
-      run: sudo apt-get update -qq && sudo apt-get install -yq --no-install-recommends dos2unix recode
-
     - name: File formatting checks (file_format.sh)
       run: bash ./.github/file_format.sh
