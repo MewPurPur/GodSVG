@@ -345,13 +345,14 @@ msgstr "De zichtbaarheit van verborgen bestanden omschakelen"
 msgid "Search files"
 msgstr "Bestanden zoeken"
 
-#: src/ui_parts/good_file_dialog.gd: src/utils/TranslationUtils.gd:
-msgid "Undo"
-msgstr "Ongedaan maken"
+#: src/ui_parts/good_file_dialog.gd:
+msgid "Go back"
+msgstr ""
 
-#: src/ui_parts/good_file_dialog.gd: src/utils/TranslationUtils.gd:
-msgid "Redo"
-msgstr "Opnieuw doen"
+#: src/ui_parts/good_file_dialog.gd:
+#, fuzzy
+msgid "Go forward"
+msgstr "Scroll vooruit"
 
 #: src/ui_parts/good_file_dialog.gd: src/utils/FileUtils.gd:
 msgid "Save"
@@ -1201,6 +1202,14 @@ msgstr "Laat zien in Bestandsenverkenner"
 #: src/utils/TranslationUtils.gd:
 msgid "Show SVG in File Manager"
 msgstr "Laat SVG zien in Bestandsverkenner"
+
+#: src/utils/TranslationUtils.gd:
+msgid "Undo"
+msgstr "Ongedaan maken"
+
+#: src/utils/TranslationUtils.gd:
+msgid "Redo"
+msgstr "Opnieuw doen"
 
 #: src/utils/TranslationUtils.gd:
 msgid "Paste"

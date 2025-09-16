@@ -346,13 +346,14 @@ msgstr "Versteckte Dateien anzeigen"
 msgid "Search files"
 msgstr "Datei suchen"
 
-#: src/ui_parts/good_file_dialog.gd: src/utils/TranslationUtils.gd:
-msgid "Undo"
-msgstr "Rückgängig"
+#: src/ui_parts/good_file_dialog.gd:
+msgid "Go back"
+msgstr ""
 
-#: src/ui_parts/good_file_dialog.gd: src/utils/TranslationUtils.gd:
-msgid "Redo"
-msgstr "Wiederholen"
+#: src/ui_parts/good_file_dialog.gd:
+#, fuzzy
+msgid "Go forward"
+msgstr "Nach vorne scrollen"
 
 #: src/ui_parts/good_file_dialog.gd: src/utils/FileUtils.gd:
 msgid "Save"
@@ -1216,6 +1217,14 @@ msgstr "Im Dateisystem anzeigen"
 #: src/utils/TranslationUtils.gd:
 msgid "Show SVG in File Manager"
 msgstr "SVG im Dateisystem anzeigen"
+
+#: src/utils/TranslationUtils.gd:
+msgid "Undo"
+msgstr "Rückgängig"
+
+#: src/utils/TranslationUtils.gd:
+msgid "Redo"
+msgstr "Wiederholen"
 
 #: src/utils/TranslationUtils.gd:
 msgid "Paste"

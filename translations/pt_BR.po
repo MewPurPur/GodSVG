@@ -347,13 +347,14 @@ msgstr "Alternar a visibilidade de arquivos escondidos"
 msgid "Search files"
 msgstr "Procurar arquivos"
 
-#: src/ui_parts/good_file_dialog.gd: src/utils/TranslationUtils.gd:
-msgid "Undo"
-msgstr "Desfazer"
+#: src/ui_parts/good_file_dialog.gd:
+msgid "Go back"
+msgstr ""
 
-#: src/ui_parts/good_file_dialog.gd: src/utils/TranslationUtils.gd:
-msgid "Redo"
-msgstr "Refazer"
+#: src/ui_parts/good_file_dialog.gd:
+#, fuzzy
+msgid "Go forward"
+msgstr "Rolar para frente"
 
 #: src/ui_parts/good_file_dialog.gd: src/utils/FileUtils.gd:
 msgid "Save"
@@ -1216,6 +1217,14 @@ msgstr "Mostrar no gerenciador de arquivos"
 #: src/utils/TranslationUtils.gd:
 msgid "Show SVG in File Manager"
 msgstr "Mostrar SVG no Explorador de Arquivos"
+
+#: src/utils/TranslationUtils.gd:
+msgid "Undo"
+msgstr "Desfazer"
+
+#: src/utils/TranslationUtils.gd:
+msgid "Redo"
+msgstr "Refazer"
 
 #: src/utils/TranslationUtils.gd:
 msgid "Paste"

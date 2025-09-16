@@ -63,7 +63,7 @@ class LineConstraint:
 	const valid_next_commands = ["c", "C", "q", "Q", "l", "L", "h", "H", "v", "V"]
 	const next_mode_support = ["c", "C", "s", "S", "q", "Q"]
 	
-	static func constrain( path: AttributePathdata, idx: int, pos: PackedFloat64Array, x_param: String, y_param: String) -> PackedFloat64Array:
+	static func constrain(path: AttributePathdata, idx: int, pos: PackedFloat64Array, x_param: String, y_param: String) -> PackedFloat64Array:
 		var cmd := path.get_command(idx)
 		
 		# Move everything to a local (translated) coordinate system with the new origin at the

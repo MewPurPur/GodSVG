@@ -343,12 +343,12 @@ msgstr ""
 msgid "Search files"
 msgstr ""
 
-#: src/ui_parts/good_file_dialog.gd: src/utils/TranslationUtils.gd:
-msgid "Undo"
+#: src/ui_parts/good_file_dialog.gd:
+msgid "Go back"
 msgstr ""
 
-#: src/ui_parts/good_file_dialog.gd: src/utils/TranslationUtils.gd:
-msgid "Redo"
+#: src/ui_parts/good_file_dialog.gd:
+msgid "Go forward"
 msgstr ""
 
 #: src/ui_parts/good_file_dialog.gd: src/utils/FileUtils.gd:
@@ -1195,6 +1195,14 @@ msgstr ""
 
 #: src/utils/TranslationUtils.gd:
 msgid "Show SVG in File Manager"
+msgstr ""
+
+#: src/utils/TranslationUtils.gd:
+msgid "Undo"
+msgstr ""
+
+#: src/utils/TranslationUtils.gd:
+msgid "Redo"
 msgstr ""
 
 #: src/utils/TranslationUtils.gd:

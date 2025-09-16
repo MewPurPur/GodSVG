@@ -344,13 +344,13 @@ msgstr "Превключи видимостта на скритите файло
 msgid "Search files"
 msgstr "Търсене из файловете"
 
-#: src/ui_parts/good_file_dialog.gd: src/utils/TranslationUtils.gd:
-msgid "Undo"
-msgstr "Върни назад"
+#: src/ui_parts/good_file_dialog.gd:
+msgid "Go back"
+msgstr "Назад"
 
-#: src/ui_parts/good_file_dialog.gd: src/utils/TranslationUtils.gd:
-msgid "Redo"
-msgstr "Върни напред"
+#: src/ui_parts/good_file_dialog.gd:
+msgid "Go forward"
+msgstr "Напред"
 
 #: src/ui_parts/good_file_dialog.gd: src/utils/FileUtils.gd:
 msgid "Save"
@@ -1197,6 +1197,14 @@ msgstr "Покажи във файловия мениджър"
 #: src/utils/TranslationUtils.gd:
 msgid "Show SVG in File Manager"
 msgstr "Покажи SVG-то във файловия мениджър"
+
+#: src/utils/TranslationUtils.gd:
+msgid "Undo"
+msgstr "Върни назад"
+
+#: src/utils/TranslationUtils.gd:
+msgid "Redo"
+msgstr "Върни напред"
 
 #: src/utils/TranslationUtils.gd:
 msgid "Paste"

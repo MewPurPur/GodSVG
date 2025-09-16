@@ -160,8 +160,8 @@ func _ready() -> void:
 	show_hidden_button.tooltip_text = Translator.translate("Toggle the visibility of hidden files")
 	search_button.tooltip_text = Translator.translate("Search files")
 	search_field.placeholder_text = Translator.translate("Search files")
-	undo_button.tooltip_text = Translator.translate("Undo")
-	redo_button.tooltip_text = Translator.translate("Redo")
+	undo_button.tooltip_text = Translator.translate("Go back")
+	redo_button.tooltip_text = Translator.translate("Go forward")
 	
 	if mode == FileMode.SAVE:
 		title_label.text = TranslationUtils.get_file_dialog_save_mode_title_text(extensions[0])

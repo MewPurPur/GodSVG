@@ -346,13 +346,14 @@ msgstr "Alternar visibilidad de archivos ocultos"
 msgid "Search files"
 msgstr "Buscar archivos"
 
-#: src/ui_parts/good_file_dialog.gd: src/utils/TranslationUtils.gd:
-msgid "Undo"
-msgstr "Deshacer"
+#: src/ui_parts/good_file_dialog.gd:
+msgid "Go back"
+msgstr ""
 
-#: src/ui_parts/good_file_dialog.gd: src/utils/TranslationUtils.gd:
-msgid "Redo"
-msgstr "Rehacer"
+#: src/ui_parts/good_file_dialog.gd:
+#, fuzzy
+msgid "Go forward"
+msgstr "Desplazarse hacia adelante"
 
 #: src/ui_parts/good_file_dialog.gd: src/utils/FileUtils.gd:
 msgid "Save"
@@ -1216,6 +1217,14 @@ msgstr "Mostrar en Explorador de Archivos"
 #: src/utils/TranslationUtils.gd:
 msgid "Show SVG in File Manager"
 msgstr "Mostrar SVG en Explorador de Archivos"
+
+#: src/utils/TranslationUtils.gd:
+msgid "Undo"
+msgstr "Deshacer"
+
+#: src/utils/TranslationUtils.gd:
+msgid "Redo"
+msgstr "Rehacer"
 
 #: src/utils/TranslationUtils.gd:
 msgid "Paste"

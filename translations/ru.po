@@ -345,13 +345,14 @@ msgstr "Переключить видимость скрытых файлов"
 msgid "Search files"
 msgstr "Искать файлы"
 
-#: src/ui_parts/good_file_dialog.gd: src/utils/TranslationUtils.gd:
-msgid "Undo"
-msgstr "Отменить"
+#: src/ui_parts/good_file_dialog.gd:
+msgid "Go back"
+msgstr ""
 
-#: src/ui_parts/good_file_dialog.gd: src/utils/TranslationUtils.gd:
-msgid "Redo"
-msgstr "Вернуть"
+#: src/ui_parts/good_file_dialog.gd:
+#, fuzzy
+msgid "Go forward"
+msgstr "Прокрутить вперед"
 
 #: src/ui_parts/good_file_dialog.gd: src/utils/FileUtils.gd:
 msgid "Save"
@@ -1198,6 +1199,14 @@ msgstr "Показать в файловом менеджере"
 #: src/utils/TranslationUtils.gd:
 msgid "Show SVG in File Manager"
 msgstr "Показать SVG в файловом менеджере"
+
+#: src/utils/TranslationUtils.gd:
+msgid "Undo"
+msgstr "Отменить"
+
+#: src/utils/TranslationUtils.gd:
+msgid "Redo"
+msgstr "Вернуть"
 
 #: src/utils/TranslationUtils.gd:
 msgid "Paste"

@@ -344,13 +344,14 @@ msgstr "Lülita peidetud failide kuvamine sisse"
 msgid "Search files"
 msgstr "Otsi faile"
 
-#: src/ui_parts/good_file_dialog.gd: src/utils/TranslationUtils.gd:
-msgid "Undo"
-msgstr "Võta tagasi"
+#: src/ui_parts/good_file_dialog.gd:
+msgid "Go back"
+msgstr ""
 
-#: src/ui_parts/good_file_dialog.gd: src/utils/TranslationUtils.gd:
-msgid "Redo"
-msgstr "Tee uuesti"
+#: src/ui_parts/good_file_dialog.gd:
+#, fuzzy
+msgid "Go forward"
+msgstr "Keri edasi"
 
 #: src/ui_parts/good_file_dialog.gd: src/utils/FileUtils.gd:
 msgid "Save"
@@ -1197,6 +1198,14 @@ msgstr "Kuva failihalduris"
 #: src/utils/TranslationUtils.gd:
 msgid "Show SVG in File Manager"
 msgstr "Kuva SVG failihalduris"
+
+#: src/utils/TranslationUtils.gd:
+msgid "Undo"
+msgstr "Võta tagasi"
+
+#: src/utils/TranslationUtils.gd:
+msgid "Redo"
+msgstr "Tee uuesti"
 
 #: src/utils/TranslationUtils.gd:
 msgid "Paste"

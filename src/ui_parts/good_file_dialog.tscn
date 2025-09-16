@@ -2,8 +2,8 @@
 
 [ext_resource type="Script" uid="uid://cdlrqylqsmc22" path="res://src/ui_parts/good_file_dialog.gd" id="1_awdto"]
 [ext_resource type="Script" uid="uid://1hox6gd5pxku" path="res://src/ui_widgets/BetterLineEdit.gd" id="2_52puw"]
-[ext_resource type="Texture2D" uid="uid://40yul4xup585" path="res://assets/icons/UndoMini.svg" id="2_dyt2g"]
-[ext_resource type="Texture2D" uid="uid://bo4xsfjm6wg6v" path="res://assets/icons/RedoMini.svg" id="3_8ufx4"]
+[ext_resource type="Texture2D" uid="uid://40yul4xup585" path="res://assets/icons/GoBack.svg" id="2_dyt2g"]
+[ext_resource type="Texture2D" uid="uid://bo4xsfjm6wg6v" path="res://assets/icons/GoForward.svg" id="3_8ufx4"]
 [ext_resource type="PackedScene" uid="uid://byriqsdywhr1k" path="res://src/ui_widgets/directory_path_widget.tscn" id="4_1umq0"]
 [ext_resource type="Texture2D" uid="uid://dr2erka82g6j4" path="res://assets/icons/Edit.svg" id="4_8ufx4"]
 [ext_resource type="Texture2D" uid="uid://cvh3kwbucf2n1" path="res://assets/icons/Reload.svg" id="4_udwbh"]

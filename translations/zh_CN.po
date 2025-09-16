@@ -344,13 +344,14 @@ msgstr "切换隐藏文件可见性"
 msgid "Search files"
 msgstr "搜索文件"
 
-#: src/ui_parts/good_file_dialog.gd: src/utils/TranslationUtils.gd:
-msgid "Undo"
-msgstr "撤销"
+#: src/ui_parts/good_file_dialog.gd:
+msgid "Go back"
+msgstr ""
 
-#: src/ui_parts/good_file_dialog.gd: src/utils/TranslationUtils.gd:
-msgid "Redo"
-msgstr "恢复"
+#: src/ui_parts/good_file_dialog.gd:
+#, fuzzy
+msgid "Go forward"
+msgstr "向前滚动"
 
 #: src/ui_parts/good_file_dialog.gd: src/utils/FileUtils.gd:
 msgid "Save"
@@ -1197,6 +1198,14 @@ msgstr "在文件管理器中显示"
 #: src/utils/TranslationUtils.gd:
 msgid "Show SVG in File Manager"
 msgstr "在文件管理器中显示 SVG"
+
+#: src/utils/TranslationUtils.gd:
+msgid "Undo"
+msgstr "撤销"
+
+#: src/utils/TranslationUtils.gd:
+msgid "Redo"
+msgstr "恢复"
 
 #: src/utils/TranslationUtils.gd:
 msgid "Paste"

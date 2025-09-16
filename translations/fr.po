@@ -346,13 +346,14 @@ msgstr "Activer/Désactiver la visibilité des fichiers cachés"
 msgid "Search files"
 msgstr "Rechercher des fichiers"
 
-#: src/ui_parts/good_file_dialog.gd: src/utils/TranslationUtils.gd:
-msgid "Undo"
-msgstr "Annuler"
+#: src/ui_parts/good_file_dialog.gd:
+msgid "Go back"
+msgstr ""
 
-#: src/ui_parts/good_file_dialog.gd: src/utils/TranslationUtils.gd:
-msgid "Redo"
-msgstr "Rétablir"
+#: src/ui_parts/good_file_dialog.gd:
+#, fuzzy
+msgid "Go forward"
+msgstr "Défiler en avant"
 
 #: src/ui_parts/good_file_dialog.gd: src/utils/FileUtils.gd:
 msgid "Save"
@@ -1217,6 +1218,14 @@ msgstr "Afficher dans l'explorateur de fichiers"
 #: src/utils/TranslationUtils.gd:
 msgid "Show SVG in File Manager"
 msgstr "Montrer le SVG dans l'explorateur de fichiers"
+
+#: src/utils/TranslationUtils.gd:
+msgid "Undo"
+msgstr "Annuler"
+
+#: src/utils/TranslationUtils.gd:
+msgid "Redo"
+msgstr "Rétablir"
 
 #: src/utils/TranslationUtils.gd:
 msgid "Paste"
