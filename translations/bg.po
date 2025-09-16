@@ -378,7 +378,7 @@ msgstr "Папка с това име вече съществува."
 
 #: src/ui_parts/good_file_dialog.gd:
 msgid "Failed to create a folder."
-msgstr "Папката не можа да бъде създадена"
+msgstr "Папката не можа да бъде създадена."
 
 #: src/ui_parts/good_file_dialog.gd:
 msgid "Open"
@@ -980,7 +980,7 @@ msgstr "Когато е активирано, натискането на раз
 
 #: src/ui_widgets/settings_content_generic.gd:
 msgid "Swaps the scroll directions for zooming in and zooming out."
-msgstr "Разменя посоките на влачене за намаляване и увеличаване"
+msgstr "Разменя посоките на влачене за намаляване и увеличаване."
 
 #: src/ui_widgets/settings_content_generic.gd:
 msgid "Warps the cursor to the opposite side whenever it reaches a viewport boundary while panning."

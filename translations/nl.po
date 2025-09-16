@@ -797,7 +797,7 @@ msgstr "Markeerder voorinstelling"
 
 #: src/ui_widgets/settings_content_generic.gd:
 msgid "Determines the default values of SVG highlighter settings."
-msgstr "Bepaalt de standaardwaardes van SVG markeerder instellingen"
+msgstr "Bepaalt de standaardwaardes van SVG markeerder instellingen."
 
 #: src/ui_widgets/settings_content_generic.gd:
 msgid "Symbol color"
@@ -962,7 +962,7 @@ msgstr "De instelling kan niet verandert worden op dit platform."
 
 #: src/ui_widgets/settings_content_generic.gd:
 msgid "When enabled, uses spaces instead of a single tab for indentation."
-msgstr "Wanneer ingeschakelt, gebruikt spaties in plaats van een tab voor inspringing"
+msgstr "Wanneer ingeschakelt, gebruikt spaties in plaats van een tab voor inspringing."
 
 #: src/ui_widgets/settings_content_generic.gd:
 msgid "Determines the default values of theming-related settings, including the highlighter preset."
@@ -1116,11 +1116,11 @@ msgstr "Niet opslaan."
 
 #: src/utils/FileUtils.gd:
 msgid "{file_path} is already being edited inside GodSVG."
-msgstr "{file_path} wordt al bewerkt in GodSVG"
+msgstr "{file_path} wordt al bewerkt in GodSVG."
 
 #: src/utils/FileUtils.gd:
 msgid "If you want to revert your edits since the last save, use {reset_svg}."
-msgstr "Als u uw aanpassingen van de vorige opslag wilt ongedaanmaken, gebruik {reset_svg}"
+msgstr "Als u uw aanpassingen van de vorige opslag wilt ongedaanmaken, gebruik {reset_svg}."
 
 #: src/utils/FileUtils.gd:
 msgid "Do you want to save the changes made to {file_name}?"
