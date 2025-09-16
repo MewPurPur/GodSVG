@@ -582,7 +582,7 @@ msgstr "Новая привязка"
 
 #: src/ui_widgets/invalid_syntax_warning.gd:
 msgid "The SVG has invalid syntax. Any edit not made through the code editor will reset it."
-msgstr "Этот файл SVG содержит неподдерживаемый синтакс. Любые изменения, кроме "
+msgstr "Этот файл SVG содержит неподдерживаемый синтакс. Любые изменения, не внесённые через редактор кода, обнулят его."
 
 #: src/ui_widgets/palette_config.gd:
 msgid "Add new color"
@@ -1289,7 +1289,7 @@ msgstr "Просмотреть информацию для отладки"
 
 #: src/utils/TranslationUtils.gd:
 msgid "View advanced debug information"
-msgstr "Просмотреть информацию для отладки."
+msgstr "Просмотреть информацию для отладки"
 
 #: src/utils/TranslationUtils.gd:
 msgid "Settings"
