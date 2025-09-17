@@ -7,7 +7,7 @@ func set_value(new_value: String, save := false) -> void:
 	element.set_attribute(attribute_name, new_value)
 	sync()
 	if save:
-		State.queue_svg_save()
+		State.save_svg()
 
 
 func _ready() -> void:

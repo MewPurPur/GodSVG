@@ -47,7 +47,7 @@ func set_value(new_value: String, save := false) -> void:
 	element.set_attribute(attribute_name, new_value)
 	sync()
 	if save:
-		State.queue_svg_save()
+		State.save_svg()
 
 
 func setup() -> void:
@@ -138,15 +138,15 @@ func sync() -> void:
 
 func update_parameter(new_value: float, property: String, idx: int) -> void:
 	element.get_attribute(attribute_name).set_command_property(idx, property, new_value)
-	State.queue_svg_save()
+	State.save_svg()
 
 func _on_relative_button_pressed() -> void:
 	element.get_attribute(attribute_name).toggle_relative_command(hovered_idx)
-	State.queue_svg_save()
+	State.save_svg()
 
 func _on_add_move_button_pressed() -> void:
 	element.get_attribute(attribute_name).insert_command(0, "M")
-	State.queue_svg_save()
+	State.save_svg()
 
 
 # Path commands editor orchestration.
@@ -240,8 +240,7 @@ func _commands_draw() -> void:
 				stylebox.bg_color = ThemeUtils.soft_pressed_overlay_color
 			elif hovered:
 				stylebox.bg_color = ThemeUtils.soft_hover_overlay_color
-			stylebox.draw(ci, Rect2(Vector2(0, v_offset), Vector2(commands_container.size.x,
-					STRIP_HEIGHT)))
+			stylebox.draw(ci, Rect2(Vector2(0, v_offset), Vector2(commands_container.size.x, STRIP_HEIGHT)))
 		# Draw the child controls. They are going to be drawn, not added as a node unless
 		# the mouse hovers them. This is a hack to significantly improve performance.
 		if i == hovered_idx or i == focused_idx:
@@ -372,8 +371,7 @@ func setup_path_command_controls(idx: int) -> Control:
 	relative_button.mouse_filter = Control.MOUSE_FILTER_PASS
 	relative_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	relative_button.add_theme_font_override("font", ThemeUtils.mono_font)
-	relative_button.theme_type_variation = "PathCommandAbsoluteButton" if is_absolute else\
-			"PathCommandRelativeButton"
+	relative_button.theme_type_variation = "PathCommandAbsoluteButton" if is_absolute else "PathCommandRelativeButton"
 	relative_button.text = cmd_char
 	relative_button.tooltip_text = TranslationUtils.get_path_command_description(cmd_char)
 	container.add_child(relative_button)
@@ -409,14 +407,11 @@ func setup_path_command_controls(idx: int) -> Control:
 			var field_sweep := FlagFieldScene.instantiate()
 			field_large_arc.gui_input.connect(_eat_double_clicks.bind(field_large_arc))
 			field_sweep.gui_input.connect(_eat_double_clicks.bind(field_sweep))
-			fields = [field_rx, field_ry, field_rot, field_large_arc, field_sweep,
-					numfield(idx), numfield(idx)]
+			fields = [field_rx, field_ry, field_rot, field_large_arc, field_sweep, numfield(idx), numfield(idx)]
 			spacings = PackedInt32Array([3, 4, 4, 4, 4, 3])
-			property_names = PackedStringArray(
-					["rx", "ry", "rot", "large_arc_flag", "sweep_flag", "x", "y"])
+			property_names = PackedStringArray(["rx", "ry", "rot", "large_arc_flag", "sweep_flag", "x", "y"])
 		"C":
-			fields = [numfield(idx), numfield(idx), numfield(idx), numfield(idx),
-					numfield(idx), numfield(idx)]
+			fields = [numfield(idx), numfield(idx), numfield(idx), numfield(idx), numfield(idx), numfield(idx)]
 			spacings = PackedInt32Array([3, 4, 3, 4, 3])
 			property_names = PackedStringArray(["x1", "y1", "x2", "y2", "x", "y"])
 		"Q":

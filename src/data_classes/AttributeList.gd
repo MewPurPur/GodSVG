@@ -31,7 +31,7 @@ func set_list_element(idx: int, new_value: float) -> void:
 func get_list_element(idx: int) -> float:
 	return _list[idx] if idx < _list.size() else NAN
 
-func delete_elements(indices: Array[int]) -> void:
+func delete_elements(indices: PackedInt64Array) -> void:
 	if indices.is_empty():
 		return
 	

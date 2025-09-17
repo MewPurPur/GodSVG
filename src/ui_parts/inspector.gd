@@ -48,7 +48,7 @@ func add_element(element_name: String) -> void:
 	else:
 		loc = PackedInt32Array([State.root_element.get_child_count()])
 	State.root_element.add_xnode(new_element, loc)
-	State.queue_svg_save()
+	State.save_svg()
 
 
 func _on_add_button_pressed() -> void:

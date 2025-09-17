@@ -117,7 +117,7 @@ func _gui_input(event: InputEvent) -> void:
 func add_element(element_name: String, element_idx: int) -> void:
 	State.root_element.add_xnode(DB.element_with_setup(element_name, []),
 			PackedInt32Array([element_idx]))
-	State.queue_svg_save()
+	State.save_svg()
 
 
 func get_xnode_editor_rect(xid: PackedInt32Array, inner_index := -1) -> Rect2:

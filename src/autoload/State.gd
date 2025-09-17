@@ -52,7 +52,7 @@ func _on_svg_edited() -> void:
 	stable_export_markup = SVGParser.root_to_export_markup(root_element)
 	svg_edited.emit()
 
-func queue_svg_save() -> void:
+func save_svg() -> void:
 	if stable_export_markup.is_empty():
 		Configs.savedata.get_active_tab().set_svg_text(unstable_markup)
 	else:
@@ -123,11 +123,12 @@ func setup_from_tab() -> void:
 					"The tab is bound to the file path {file_path}. Do you want to restore the SVG from this path?").format({"file_path": user_facing_path}))
 			options_dialog.add_option(Translator.translate("Close tab"), Configs.savedata.remove_active_tab)
 			options_dialog.add_option(Translator.translate("Restore"), FileUtils.reset_svg, true)
+	save_svg()
 
 
 func optimize() -> void:
 	root_element.optimize()
-	queue_svg_save()
+	save_svg()
 
 func get_export_text() -> String:
 	return unstable_markup if stable_export_markup.is_empty() else stable_export_markup
@@ -541,7 +542,7 @@ func respond_to_key_input(path_cmd_char: String) -> void:
 func delete_selected() -> void:
 	if not selected_xids.is_empty():
 		root_element.delete_xnodes(selected_xids)
-		queue_svg_save()
+		save_svg()
 	elif not inner_selections.is_empty() and not semi_selected_xid.is_empty():
 		inner_selections.sort()
 		inner_selections.reverse()
@@ -549,14 +550,14 @@ func delete_selected() -> void:
 		match element_ref.name:
 			"path": element_ref.get_attribute("d").delete_commands(inner_selections)
 			"polygon", "polyline":
-				var indices_to_delete: Array[int] = []
+				var indices_to_delete := PackedInt64Array()
 				for idx in inner_selections:
 					indices_to_delete.append(idx * 2)
 					indices_to_delete.append(idx * 2 + 1)
 				element_ref.get_attribute("points").delete_elements(indices_to_delete)
 		clear_inner_selection()
 		clear_inner_hovered()
-		queue_svg_save()
+		save_svg()
 
 func move_up_selected() -> void:
 	_move_selected(false)
@@ -573,7 +574,7 @@ func _move_selected(down: bool) -> void:
 			return
 		# TODO
 		#xnode.get_attribute("d").move_subpath(inner_selections[0], down)
-	queue_svg_save()
+	save_svg()
 
 func view_in_inspector(xid: PackedInt32Array, inner_index := -1) -> void:
 	if xid.is_empty():
@@ -582,7 +583,7 @@ func view_in_inspector(xid: PackedInt32Array, inner_index := -1) -> void:
 
 func duplicate_selected() -> void:
 	root_element.duplicate_xnodes(selected_xids)
-	queue_svg_save()
+	save_svg()
 
 func insert_path_command_after_selection(new_command: String) -> void:
 	var path_attrib: AttributePathdata = root_element.get_xnode(
@@ -593,7 +594,7 @@ func insert_path_command_after_selection(new_command: String) -> void:
 		return
 	path_attrib.insert_command(last_selection + 1, new_command)
 	normal_select(semi_selected_xid, last_selection + 1)
-	queue_svg_save()
+	save_svg()
 
 func insert_point_after_selection() -> void:
 	var element_ref: Element = root_element.get_xnode(semi_selected_xid)
@@ -601,7 +602,7 @@ func insert_point_after_selection() -> void:
 	element_ref.get_attribute("points").insert_element(last_selection_next * 2, 0.0)
 	element_ref.get_attribute("points").insert_element(last_selection_next * 2, 0.0)
 	normal_select(semi_selected_xid, last_selection_next)
-	queue_svg_save()
+	save_svg()
 
 
 func get_selection_context(popup_method: Callable, context: Utils.LayoutPart) -> ContextPopup:
@@ -760,13 +761,13 @@ func popup_insert_command_after_context(popup_method: Callable) -> void:
 func convert_selected_element_to(element_name: String) -> void:
 	var xid := selected_xids[0]
 	root_element.replace_xnode(xid, root_element.get_xnode(xid).get_replacement(element_name))
-	queue_svg_save()
+	save_svg()
 
 func convert_selected_xnode_to(xnode_type: BasicXNode.NodeType) -> void:
 	var xid := selected_xids[0]
 	root_element.replace_xnode(xid, root_element.get_xnode(xid).get_replacement(xnode_type))
-	queue_svg_save()
+	save_svg()
 
 func convert_selected_command_to(cmd_type: String) -> void:
 	root_element.get_xnode(semi_selected_xid).get_attribute("d").convert_command(inner_selections[0], cmd_type)
-	queue_svg_save()
+	save_svg()
