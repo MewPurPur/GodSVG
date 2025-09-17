@@ -808,7 +808,7 @@ func _unhandled_input(event: InputEvent) -> void:
 							Utils64Bit.get_transform_affine_inverse(dragged_handle.precise_transform),
 							canvas.root_element.world_to_canvas_64_bit(event_pos))
 					dragged_handle.set_pos(new_pos)
-					State.queue_svg_save()
+					State.save_svg()
 					was_handle_moved = false
 				dragged_handle = null
 			elif not is_instance_valid(hovered_handle) and event.is_pressed():
@@ -870,14 +870,14 @@ func _on_handle_added() -> void:
 	if not get_viewport_rect().has_point(get_viewport().get_mouse_position()):
 		if not State.semi_selected_xid.is_empty():
 			canvas.root_element.get_xnode(State.semi_selected_xid).get_attribute("d").sync_after_commands_change()
-			State.queue_svg_save()
+			State.save_svg()
 		return
 	
 	update_handles()
 	var first_inner_selection := State.inner_selections[0]
 	if canvas.root_element.get_xnode(State.semi_selected_xid).get_attribute("d").get_commands()[first_inner_selection].command_char in "Zz":
 		dragged_handle = null
-		State.queue_svg_save()
+		State.save_svg()
 		return
 	
 	for handle in handles:
@@ -906,4 +906,4 @@ func create_element_context(precise_pos: PackedFloat64Array) -> ContextPopup:
 
 func add_shape_at_pos(element_name: String, precise_pos: PackedFloat64Array) -> void:
 	canvas.root_element.add_xnode(DB.element_with_setup(element_name, [precise_pos]), PackedInt32Array([canvas.root_element.get_child_count()]))
-	State.queue_svg_save()
+	State.save_svg()

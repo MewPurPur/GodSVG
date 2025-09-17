@@ -16,4 +16,4 @@ func _can_drop_data(_at_position: Vector2, data: Variant) -> bool:
 func _drop_data(_at_position: Vector2, data: Variant) -> void:
 	if data is Array[PackedInt32Array]:
 		State.root_element.move_xnodes_to(data, State.proposed_drop_xid)
-		State.queue_svg_save()
+		State.save_svg()

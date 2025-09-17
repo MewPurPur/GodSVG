@@ -41,7 +41,7 @@ func _ready() -> void:
 	sync_localization()
 
 func _exit_tree() -> void:
-	State.queue_svg_save()
+	State.save_svg()
 
 func sync_localization() -> void:
 	apply_matrix.tooltip_text = Translator.translate("Apply the matrix")

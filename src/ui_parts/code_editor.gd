@@ -120,7 +120,7 @@ func _on_svg_code_edit_focus_entered() -> void:
 	State.clear_all_selections()
 
 func _on_svg_code_edit_focus_exited() -> void:
-	State.queue_svg_save()
+	State.save_svg()
 	if not State.stable_editor_markup.is_empty():
 		State.apply_markup(State.stable_editor_markup, true)
 

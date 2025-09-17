@@ -16,7 +16,7 @@ static func reset_svg() -> void:
 	var file_path := Configs.savedata.get_active_tab().svg_file_path
 	if FileAccess.file_exists(file_path):
 		State.apply_markup(FileAccess.get_file_as_string(file_path), true)
-		State.queue_svg_save()
+		State.save_svg()
 
 static func apply_svgs_from_paths(paths: PackedStringArray, show_incorrect_extension_errors := true) -> void:
 	_start_file_import_process(paths, _apply_svg, PackedStringArray(["svg"]), show_incorrect_extension_errors)

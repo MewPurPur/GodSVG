@@ -104,7 +104,7 @@ func _on_width_edit_value_changed(new_value: float) -> void:
 		State.root_element.set_attribute("width", new_value)
 	else:
 		State.root_element.set_attribute("width", State.root_element.width)
-	State.queue_svg_save()
+	State.save_svg()
 
 func _on_height_edit_value_changed(new_value: float) -> void:
 	if is_finite(new_value) and State.root_element.get_attribute_num("height") != new_value:
@@ -112,51 +112,51 @@ func _on_height_edit_value_changed(new_value: float) -> void:
 		State.root_element.set_attribute("height", new_value)
 	else:
 		State.root_element.set_attribute("height", State.root_element.height)
-	State.queue_svg_save()
+	State.save_svg()
 
 func _on_viewbox_edit_x_value_changed(new_value: float) -> void:
 	if State.root_element.has_attribute("viewBox"):
 		State.root_element.viewbox.position.x = new_value
 		State.root_element.get_attribute("viewBox").set_list_element(0, new_value)
-		State.queue_svg_save()
+		State.save_svg()
 
 func _on_viewbox_edit_y_value_changed(new_value: float) -> void:
 	if State.root_element.has_attribute("viewBox"):
 		State.root_element.viewbox.position.y = new_value
 		State.root_element.get_attribute("viewBox").set_list_element(1, new_value)
-		State.queue_svg_save()
+		State.save_svg()
 
 func _on_viewbox_edit_w_value_changed(new_value: float) -> void:
 	if State.root_element.has_attribute("viewBox") and State.root_element.get_attribute("viewBox").get_list_element(2) != new_value:
 		State.root_element.viewbox.size.x = new_value
 		State.root_element.get_attribute("viewBox").set_list_element(2, new_value)
-		State.queue_svg_save()
+		State.save_svg()
 
 func _on_viewbox_edit_h_value_changed(new_value: float) -> void:
 	if State.root_element.has_attribute("viewBox") and State.root_element.get_attribute("viewBox").get_list_element(3) != new_value:
 		State.root_element.viewbox.size.y = new_value
 		State.root_element.get_attribute("viewBox").set_list_element(3, new_value)
-		State.queue_svg_save()
+		State.save_svg()
 
 func _on_width_button_toggled(toggled_on: bool) -> void:
 	if toggled_on:
 		State.root_element.set_attribute("width", State.root_element.width)
-		State.queue_svg_save()
+		State.save_svg()
 	else:
 		if State.root_element.get_attribute("viewBox").get_list_size() == 4:
 			State.root_element.set_attribute("width", "")
-			State.queue_svg_save()
+			State.save_svg()
 		else:
 			width_button.set_pressed_no_signal(true)
 
 func _on_height_button_toggled(toggled_on: bool) -> void:
 	if toggled_on:
 		State.root_element.set_attribute("height", State.root_element.height)
-		State.queue_svg_save()
+		State.save_svg()
 	else:
 		if State.root_element.get_attribute("viewBox").get_list_size() == 4:
 			State.root_element.set_attribute("height", "")
-			State.queue_svg_save()
+			State.save_svg()
 		else:
 			height_button.set_pressed_no_signal(true)
 
@@ -164,10 +164,10 @@ func _on_viewbox_button_toggled(toggled_on: bool) -> void:
 	if toggled_on:
 		State.root_element.set_attribute("viewBox",
 				ListParser.rect_to_list(State.root_element.viewbox))
-		State.queue_svg_save()
+		State.save_svg()
 	else:
 		if State.root_element.has_attribute("width") and State.root_element.has_attribute("height"):
 			State.root_element.set_attribute("viewBox", "")
-			State.queue_svg_save()
+			State.save_svg()
 		else:
 			viewbox_button.set_pressed_no_signal(true)
