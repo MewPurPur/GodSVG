@@ -346,12 +346,11 @@ msgstr "搜索文件"
 
 #: src/ui_parts/good_file_dialog.gd:
 msgid "Go back"
-msgstr ""
+msgstr "返回"
 
 #: src/ui_parts/good_file_dialog.gd:
-#, fuzzy
 msgid "Go forward"
-msgstr "向前滚动"
+msgstr "前进"
 
 #: src/ui_parts/good_file_dialog.gd: src/utils/FileUtils.gd:
 msgid "Save"
