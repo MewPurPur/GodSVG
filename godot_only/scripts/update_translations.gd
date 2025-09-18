@@ -90,10 +90,10 @@ func search_directory(dir: String) -> void:
 				for msg in messages:
 					if msg.msgid == msgid:
 						already_exists = true
-						msg.files.append(full_file_name + ":")
+						msg.files.append(full_file_name)
 						break
 				if not already_exists:
-					messages.append(Message.new(msgid, PackedStringArray([full_file_name + ":"])))
+					messages.append(Message.new(msgid, PackedStringArray([full_file_name])))
 
 
 func update_translations() -> void:
