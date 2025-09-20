@@ -252,7 +252,7 @@ static func markup_to_root(markup: String) -> ParseResult:
 static func _find_closure_string_in_utf8_buffer(buffer: PackedByteArray, offset: int) -> int:
 	while true:
 		offset = buffer.find(ord("/"), offset)
-		if offset == -1:
+		if offset == -1 or offset == buffer.size() - 1:
 			return -1
 		elif buffer[offset + 1] == ord(">"):
 			return offset
