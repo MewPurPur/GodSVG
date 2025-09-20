@@ -7,7 +7,7 @@
 [ext_resource type="Script" uid="uid://b04padjc3w1s8" path="res://src/ui_parts/move_to_overlay.gd" id="5_otlmf"]
 
 [node name="Inspector" type="Container"]
-anchors_preset = 9
+anchors_preset = -1
 anchor_bottom = 1.0
 offset_right = 460.0
 grow_vertical = 2
