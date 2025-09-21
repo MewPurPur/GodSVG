@@ -133,9 +133,16 @@ func blink() -> void:
 	RenderingServer.canvas_item_set_visible(_surface, _blonk)
 
 func _on_base_class_focus_entered() -> void:
+	var shortcuts := ShortcutsRegistration.new()
+	shortcuts.add_shortcut("select_all", menu_option.bind(MENU_SELECT_ALL), ShortcutsRegistration.Behavior.NO_PASSTHROUGH)
+	shortcuts.add_shortcut("ui_cancel", release_focus, ShortcutsRegistration.Behavior.NO_PASSTHROUGH)
+	HandlerGUI.register_shortcuts(self, shortcuts)
+	
 	_timer.start(0.6)
 
 func _on_base_class_focus_exited() -> void:
+	HandlerGUI.forget_shortcuts(self, PackedStringArray(["select_all", "ui_cancel"]))
+	
 	_timer.stop()
 	RenderingServer.canvas_item_clear(_surface)
 
@@ -154,17 +161,13 @@ func _draw() -> void:
 
 func _input(event: InputEvent) -> void:
 	if (has_focus() and event is InputEventMouseButton and (event.button_index in [MOUSE_BUTTON_LEFT, MOUSE_BUTTON_RIGHT, MOUSE_BUTTON_MIDDLE]) and\
-	event.is_pressed() and not get_global_rect().has_point(event.position) and HandlerGUI.popup_stack.is_empty()):
+	event.is_pressed() and not get_global_rect().has_point(event.position) and HandlerGUI.is_on_top_menu_and_popup(self)):
 		release_focus()
 
 func _gui_input(event: InputEvent) -> void:
-	if event.is_action_pressed("select_all"):
-		select_all()
-		accept_event()
-		return
-	
 	if event.is_action_pressed("ui_cancel"):
 		release_focus()
+		accept_event()
 		return
 	
 	mouse_filter = Utils.mouse_filter_pass_non_drag_events(event)

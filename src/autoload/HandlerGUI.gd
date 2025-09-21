@@ -78,7 +78,21 @@ func _on_files_dropped(files: PackedStringArray) -> void:
 ## Registers the given set of shortcuts to the given node.
 func register_shortcuts(node: Node, registrations: ShortcutsRegistration) -> void:
 	shortcut_registrations[node] = registrations
-	node.tree_exiting.connect(func() -> void: shortcut_registrations.erase(node))
+	if not node.tree_exiting.is_connected(forget_all_shortcuts):
+		node.tree_exiting.connect(forget_all_shortcuts.bind(node))
+
+## Removes a set of the shortcuts registered to a node.
+func forget_shortcuts(node: Node, shortcuts: PackedStringArray) -> void:
+	if not node in shortcut_registrations:
+		return
+	shortcut_registrations[node].remove_shortcuts(shortcuts)
+	if shortcut_registrations[node].are_registrations_empty():
+		shortcut_registrations.erase(node)
+
+## Removes all shortcuts registered to a node.
+func forget_all_shortcuts(node: Node) -> void:
+	shortcut_registrations.erase(node)
+
 
 ## Adds a new menu to menu_stack which hides the previous one.
 func add_menu(new_menu: Control) -> void:
@@ -246,6 +260,7 @@ func _parse_popup_overlay_event(event: InputEvent) -> void:
 			remove_popup()
 	get_viewport().set_input_as_handled()
 
+
 var last_mouse_click_double := false
 
 func _input(event: InputEvent) -> void:
@@ -259,70 +274,85 @@ func _input(event: InputEvent) -> void:
 			event.double_click = true
 			last_mouse_click_double = false
 	
-	# Prioritize clearing popups over letting controls receive ui_cancel.
-	if ShortcutUtils.is_action_pressed(event, "ui_cancel") and not popup_stack.is_empty():
+	if not (event is InputEventAction or event is InputEventKey):
+		return
+	
+	var focus_owner := get_viewport().gui_get_focus_owner()
+	if is_instance_valid(focus_owner) and not is_on_top_menu_and_popup(focus_owner):
 		get_viewport().set_input_as_handled()
-		remove_popup()
-
+		
+		if ShortcutUtils.is_action_pressed(event, "ui_cancel"):
+			if not popup_stack.is_empty():
+				get_viewport().set_input_as_handled()
+				remove_popup()
+			elif not menu_stack.is_empty():
+				get_viewport().set_input_as_handled()
+				_remove_control()
 
 func _unhandled_input(event: InputEvent) -> void:
 	if not (event is InputEventAction or event is InputEventKey):
 		return
 	
-	if ShortcutUtils.is_action_pressed(event, "ui_cancel") and not menu_stack.is_empty():
-		get_viewport().set_input_as_handled()
-		_remove_control()
-		return
+	var focus_owner := get_viewport().gui_get_focus_owner()
+	if is_instance_valid(focus_owner) and focus_owner in shortcut_registrations:
+		var has_activation := _check_node_for_shortcut_activations(focus_owner, event)
+		if has_activation:
+			return
 	
-	var behavior_priority: Array[ShortcutsRegistration.Behavior] = [
-		ShortcutsRegistration.Behavior.STRICT_NO_PASSTHROUGH,
-		ShortcutsRegistration.Behavior.NO_PASSTHROUGH,
-		ShortcutsRegistration.Behavior.PASS_THROUGH_POPUPS,
-		ShortcutsRegistration.Behavior.PASS_THROUGH_AND_PRESERVE_POPUPS,
-		ShortcutsRegistration.Behavior.PASS_THROUGH_ALL
-	]
-	
-	for behavior in behavior_priority:
+	for behavior in ShortcutsRegistration.BEHAVIOR_PRIORITY:
 		for node in shortcut_registrations:
-			if node is CanvasItem and not node.visible:
+			if node == focus_owner:
 				continue
+			var has_activation := _check_node_for_shortcut_activations(node, event, true, behavior)
+			if has_activation:
+				return
+
+## Returns whether a shortcut for the node has activated.
+func _check_node_for_shortcut_activations(node: Node, event: InputEvent, filter_behaviors := false,
+filtered_behavior := ShortcutsRegistration.Behavior.NO_PASSTHROUGH) -> bool:
+	if node is CanvasItem and not node.visible:
+		return false
+	
+	var registrations := shortcut_registrations[node]
+	for idx in registrations.actions.size():
+		if filter_behaviors and registrations.behaviors[idx] != filtered_behavior:
+			continue
+		
+		var action := registrations.actions[idx]
+		if ShortcutUtils.is_action_pressed(event, action):
+			var should_execute := false
+			var should_clear_popups := false
 			
-			var registrations := shortcut_registrations[node]
-			for idx in registrations.actions.size():
-				if registrations.behaviors[idx] != behavior:
-					continue
-					
-				var action := registrations.actions[idx]
-				if ShortcutUtils.is_action_pressed(event, action):
-					var should_execute := false
-					var should_clear_popups := false
-					
-					match behavior:
-						ShortcutsRegistration.Behavior.PASS_THROUGH_ALL:
-							should_execute = true
-						ShortcutsRegistration.Behavior.PASS_THROUGH_POPUPS:
-							if menu_stack.is_empty() or menu_stack[-1].is_ancestor_of(node):
-								should_execute = true
-								should_clear_popups = true
-						ShortcutsRegistration.Behavior.PASS_THROUGH_AND_PRESERVE_POPUPS:
-							if menu_stack.is_empty() or menu_stack[-1].is_ancestor_of(node):
-								should_execute = true
-						ShortcutsRegistration.Behavior.NO_PASSTHROUGH:
-							if (menu_stack.is_empty() and popup_stack.is_empty()) or (popup_stack.is_empty() and menu_stack[-1].is_ancestor_of(node)) or\
-							(not popup_stack.is_empty() and popup_stack[-1].is_ancestor_of(node)):
-								should_execute = true
-						ShortcutsRegistration.Behavior.STRICT_NO_PASSTHROUGH:
-							if not get_viewport().gui_is_dragging() and ((menu_stack.is_empty() and popup_stack.is_empty()) or (popup_stack.is_empty() and\
-							menu_stack[-1].is_ancestor_of(node)) or (not popup_stack.is_empty() and popup_stack[-1].is_ancestor_of(node))):
-								should_execute = true
-					
-					if should_execute:
-						registrations.activated.emit(action)
-						registrations.callbacks[idx].call()
-						if should_clear_popups:
-							remove_all_popups()
-						get_viewport().set_input_as_handled()
-						return
+			match registrations.behaviors[idx]:
+				ShortcutsRegistration.Behavior.PASS_THROUGH_ALL:
+					should_execute = true
+				ShortcutsRegistration.Behavior.PASS_THROUGH_POPUPS:
+					if menu_stack.is_empty() or menu_stack[-1].is_ancestor_of(node):
+						should_execute = true
+						should_clear_popups = true
+				ShortcutsRegistration.Behavior.PASS_THROUGH_AND_PRESERVE_POPUPS:
+					if menu_stack.is_empty() or menu_stack[-1].is_ancestor_of(node):
+						should_execute = true
+				ShortcutsRegistration.Behavior.NO_PASSTHROUGH:
+					if is_on_top_menu_and_popup(node):
+						should_execute = true
+				ShortcutsRegistration.Behavior.STRICT_NO_PASSTHROUGH:
+					if not get_viewport().gui_is_dragging() and is_on_top_menu_and_popup(node):
+						should_execute = true
+			
+			if should_execute:
+				registrations.activated.emit(action)
+				registrations.callbacks[idx].call()
+				if should_clear_popups:
+					remove_all_popups()
+				get_viewport().set_input_as_handled()
+				return true
+	return false
+
+func is_on_top_menu_and_popup(node: Node) -> bool:
+	return (menu_stack.is_empty() and popup_stack.is_empty()) or\
+			(popup_stack.is_empty() and menu_stack[-1].is_ancestor_of(node)) or\
+			(not popup_stack.is_empty() and popup_stack[-1].is_ancestor_of(node))
 
 
 func get_window_default_size() -> Vector2i:
