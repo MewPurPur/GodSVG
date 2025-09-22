@@ -106,12 +106,12 @@ var last_synced_value := " "  # Invalid initial string.
 
 func sync() -> void:
 	var new_value := element.get_attribute_value(attribute_name)
+	line_edit.text = new_value
+	setup_font(new_value)
 	if last_synced_value == new_value:
 		return
 	last_synced_value = new_value
 	
-	line_edit.text = new_value
-	setup_font(new_value)
 	# A plus button for adding a move command if empty.
 	var cmd_count: int = element.get_attribute(attribute_name).get_command_count()
 	if cmd_count == 0 and not is_instance_valid(add_move_button):
