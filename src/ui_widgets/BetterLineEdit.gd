@@ -36,7 +36,6 @@ func sync_theming() -> void:
 
 var first_click := false
 var text_before_focus := ""
-var popup_level := -1  # Set when focused, as it can't be focused unless it's top level.
 
 func _on_base_class_focus_entered() -> void:
 	# Hack to check if focus entered was from a mouse click.
@@ -45,7 +44,6 @@ func _on_base_class_focus_entered() -> void:
 	else:
 		select_all()
 	text_before_focus = text
-	popup_level = HandlerGUI.popup_stack.size()
 
 func _on_base_class_focus_exited() -> void:
 	first_click = false
@@ -76,9 +74,8 @@ func _input(event: InputEvent) -> void:
 	if not has_focus():
 		return
 	
-	if event is InputEventMouseButton and (event.button_index in [MOUSE_BUTTON_LEFT,
-	MOUSE_BUTTON_RIGHT, MOUSE_BUTTON_MIDDLE]):
-		if event.is_pressed() and not get_global_rect().has_point(event.position) and popup_level == HandlerGUI.popup_stack.size():
+	if event is InputEventMouseButton and (event.button_index in [MOUSE_BUTTON_LEFT, MOUSE_BUTTON_RIGHT, MOUSE_BUTTON_MIDDLE]):
+		if event.is_pressed() and not get_global_rect().has_point(event.position) and HandlerGUI.is_node_on_top_menu_or_popup(self):
 			release_focus()
 		elif event.is_released() and first_click and not has_selection():
 			first_click = false
