@@ -5,6 +5,7 @@ const GlobalActionsScene = preload("res://src/ui_parts/global_actions.tscn")
 const CodeEditorScene = preload("res://src/ui_parts/code_editor.tscn")
 const InspectorScene = preload("res://src/ui_parts/inspector.tscn")
 const ViewportScene = preload("res://src/ui_parts/display.tscn")
+const IconViewScene = preload("res://src/ui_parts/icon_view.tscn")
 
 @onready var panel_container: PanelContainer = $PanelContainer
 
@@ -94,33 +95,36 @@ func update_layout() -> void:
 	
 	var global_actions := GlobalActionsScene.instantiate()
 	left_vbox.add_child(global_actions)
+	var left_vertical_split_container := VSplitContainer.new()
+	left_vertical_split_container.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	left_vertical_split_container.add_theme_constant_override("separation", 10)
+	left_vertical_split_container.split_offset = Configs.savedata.left_vertical_splitter_offset
+	left_vertical_split_container.dragged.connect(_on_left_vertical_splitter_dragged)
 	
-	if not top_left.is_empty() and not bottom_left.is_empty():
-		# Layout parts both on top and on the bottom.
-		var left_vertical_split_container := VSplitContainer.new()
-		left_vertical_split_container.size_flags_vertical = Control.SIZE_EXPAND_FILL
-		left_vertical_split_container.add_theme_constant_override("separation", 10)
-		left_vertical_split_container.split_offset = Configs.savedata.left_vertical_splitter_offset
-		left_vertical_split_container.dragged.connect(_on_left_vertical_splitter_dragged)
-		left_vertical_split_container.add_child(create_layout_node(top_left[0]))
-		left_vertical_split_container.add_child(create_layout_node(bottom_left[0]))
-		left_vbox.add_child(left_vertical_split_container)
-	elif top_left.size() == 2 or bottom_left.size() == 2:
-		# Tabs for the different layout parts.
-		var layout_parts := top_left if bottom_left.is_empty() else bottom_left
-		var vbox := VBoxContainer.new()
-		vbox.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	if not top_left.is_empty():
+		left_vertical_split_container.add_child(_create_part_box(top_left))
+	if not bottom_left.is_empty():
+		left_vertical_split_container.add_child(_create_part_box(bottom_left))
+	
+	left_vbox.add_child(left_vertical_split_container)
+
+func _create_part_box(layout_parts: Array[Utils.LayoutPart]) -> Control:
+	var vbox := VBoxContainer.new()
+	vbox.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	var layout_part_container := LayoutPartContainer.new()
+	layout_part_container.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	
+	var layout_nodes: Dictionary[Utils.LayoutPart, Node] = {}
+	for part in layout_parts:
+		var layout_node := create_layout_node(part)
+		layout_nodes[part] = layout_node
+		layout_node.hide()
+		layout_part_container.add_child(layout_node)
+	
+	if layout_parts.size() > 1:
 		var buttons_hbox := HBoxContainer.new()
 		buttons_hbox.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 		vbox.add_child(buttons_hbox)
-		
-		var layout_nodes: Dictionary[Utils.LayoutPart, Node] = {}
-		for part in layout_parts:
-			var layout_node := create_layout_node(part)
-			layout_nodes[part] = layout_node
-			layout_node.hide()
-			vbox.add_child(layout_node)
-		
 		var btn_group := ButtonGroup.new()
 		for i in layout_parts.size():
 			var part := layout_parts[i]
@@ -146,13 +150,11 @@ func update_layout() -> void:
 			if i == 0:
 				btn.button_pressed = true
 				layout_nodes[part].show()
-		left_vbox.add_child(vbox)
 	else:
-		# Layout parts disabled.
-		if not top_left.is_empty():
-			left_vbox.add_child(create_layout_node(top_left[0]))
-		elif not bottom_left.is_empty():
-			left_vbox.add_child(create_layout_node(bottom_left[0]))
+		layout_nodes[layout_parts[0]].show()
+	
+	vbox.add_child(layout_part_container)
+	return vbox
 
 func _on_horizontal_splitter_dragged(offset: int) -> void:
 	Configs.savedata.horizontal_splitter_offset = offset
@@ -166,4 +168,21 @@ func create_layout_node(layout_part: Utils.LayoutPart) -> Node:
 		Utils.LayoutPart.CODE_EDITOR: return CodeEditorScene.instantiate()
 		Utils.LayoutPart.INSPECTOR: return InspectorScene.instantiate()
 		Utils.LayoutPart.VIEWPORT: return ViewportScene.instantiate()
+		Utils.LayoutPart.ICON_VIEW: return IconViewScene.instantiate()
 		_: return Control.new()
+
+
+class LayoutPartContainer extends Container:
+	func _notification(what: int) -> void:
+		if what == NOTIFICATION_SORT_CHILDREN:
+			var child_rect := Rect2(Vector2.ZERO, size)
+			for child in get_children():
+				if child is Control:
+					fit_child_in_rect(child, child_rect)
+	
+	func _get_minimum_size() -> Vector2:
+		var max_size := Vector2()
+		for child in get_children():
+			if child is Control:
+				max_size = max_size.max(child.get_combined_minimum_size())
+		return max_size
