@@ -154,7 +154,7 @@ func _draw() -> void:
 
 func _input(event: InputEvent) -> void:
 	if (has_focus() and event is InputEventMouseButton and (event.button_index in [MOUSE_BUTTON_LEFT, MOUSE_BUTTON_RIGHT, MOUSE_BUTTON_MIDDLE]) and\
-	event.is_pressed() and not get_global_rect().has_point(event.position) and HandlerGUI.popup_stack.is_empty()):
+	event.is_pressed() and not get_global_rect().has_point(event.position) and HandlerGUI.is_node_on_top_menu_or_popup(self)):
 		release_focus()
 
 func _gui_input(event: InputEvent) -> void:
@@ -165,6 +165,7 @@ func _gui_input(event: InputEvent) -> void:
 	
 	if event.is_action_pressed("ui_cancel"):
 		release_focus()
+		accept_event()
 		return
 	
 	mouse_filter = Utils.mouse_filter_pass_non_drag_events(event)

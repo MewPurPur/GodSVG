@@ -1,9 +1,16 @@
 class_name ShortcutsRegistration extends RefCounted
 
+const BEHAVIOR_PRIORITY: Array[Behavior] = [
+	Behavior.NO_PASSTHROUGH,
+	Behavior.PASS_THROUGH_POPUPS,
+	Behavior.PASS_THROUGH_AND_PRESERVE_POPUPS,
+	Behavior.PASS_THROUGH_ALL,
+]
+
 @warning_ignore("unused_signal")
 signal activated(activated_action: String)
 
-enum Behavior {PASS_THROUGH_ALL, PASS_THROUGH_POPUPS, PASS_THROUGH_AND_PRESERVE_POPUPS, NO_PASSTHROUGH, STRICT_NO_PASSTHROUGH}
+enum Behavior {PASS_THROUGH_ALL, PASS_THROUGH_POPUPS, PASS_THROUGH_AND_PRESERVE_POPUPS, NO_PASSTHROUGH}
 
 # The elements with the same indices from these 3 arrays corresponds to a shortcut registration.
 var actions := PackedStringArray()
