@@ -39,6 +39,7 @@ func setup_font(new_text: String) -> void:
 
 func sync() -> void:
 	text = element.get_attribute_value(attribute_name)
+	setup_font(text)
 
 func _on_pressed() -> void:
 	var transform_popup := TransformPopupScene.instantiate()

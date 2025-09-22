@@ -9,8 +9,8 @@ const BUTTON_WIDTH = 14.0
 
 signal pressed
 signal text_change_canceled
-signal text_changed
-signal text_submitted
+signal text_changed(new_text: String)
+signal text_submitted(new_text: String)
 signal button_gui_input(event: InputEvent)
 
 var _should_stay_active_outside := false
