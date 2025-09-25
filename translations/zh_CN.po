@@ -706,7 +706,8 @@ msgid "Preset"
 msgstr "预设"
 
 #: src/ui_widgets/settings_content_generic.gd
-msgid "Keep comments"
+#, fuzzy
+msgid "Remove comments"
 msgstr "保留注释"
 
 #: src/ui_widgets/settings_content_generic.gd
@@ -792,11 +793,6 @@ msgstr "移除不必要的参数"
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Determines the settings for the default optimizer, used when manually running the \"{optimize}\" action."
 msgstr ""
-
-#: src/ui_widgets/settings_content_generic.gd
-#, fuzzy
-msgid "Remove comments"
-msgstr "保留注释"
 
 #: src/ui_widgets/settings_content_generic.gd
 #, fuzzy
@@ -1488,6 +1484,9 @@ msgstr "选择 {format} 文件"
 #: src/utils/TranslationUtils.gd
 msgid "Save the {format} file"
 msgstr "保存 {format} 文件"
+
+#~ msgid "Keep comments"
+#~ msgstr "保留注释"
 
 #~ msgid "Go to parent folder"
 #~ msgstr "前往父文件夹"

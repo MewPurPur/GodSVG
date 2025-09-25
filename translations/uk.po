@@ -710,7 +710,8 @@ msgid "Preset"
 msgstr "Пресет"
 
 #: src/ui_widgets/settings_content_generic.gd
-msgid "Keep comments"
+#, fuzzy
+msgid "Remove comments"
 msgstr "Зберігати коментарі"
 
 #: src/ui_widgets/settings_content_generic.gd
@@ -799,11 +800,6 @@ msgstr "Видалити необов'язкові параметри"
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Determines the settings for the default optimizer, used when manually running the \"{optimize}\" action."
 msgstr ""
-
-#: src/ui_widgets/settings_content_generic.gd
-#, fuzzy
-msgid "Remove comments"
-msgstr "Зберігати коментарі"
 
 #: src/ui_widgets/settings_content_generic.gd
 #, fuzzy
@@ -1499,6 +1495,9 @@ msgstr "Обрати {format} файл"
 #: src/utils/TranslationUtils.gd
 msgid "Save the {format} file"
 msgstr "Зберегти {format} файл"
+
+#~ msgid "Keep comments"
+#~ msgstr "Зберігати коментарі"
 
 #~ msgid "Go to parent folder"
 #~ msgstr "Перейти до батьківської теки"

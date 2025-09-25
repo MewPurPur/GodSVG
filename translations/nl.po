@@ -708,7 +708,8 @@ msgid "Preset"
 msgstr "Voorinstelling"
 
 #: src/ui_widgets/settings_content_generic.gd
-msgid "Keep comments"
+#, fuzzy
+msgid "Remove comments"
 msgstr "Houdt commentaar bij"
 
 #: src/ui_widgets/settings_content_generic.gd
@@ -794,11 +795,6 @@ msgstr "Verwijder onnodige parameters"
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Determines the settings for the default optimizer, used when manually running the \"{optimize}\" action."
 msgstr ""
-
-#: src/ui_widgets/settings_content_generic.gd
-#, fuzzy
-msgid "Remove comments"
-msgstr "Houdt commentaar bij"
 
 #: src/ui_widgets/settings_content_generic.gd
 #, fuzzy
@@ -1494,6 +1490,9 @@ msgstr "Kies een {format} bestand"
 #: src/utils/TranslationUtils.gd
 msgid "Save the {format} file"
 msgstr "Bewaar het {format} bestand"
+
+#~ msgid "Keep comments"
+#~ msgstr "Houdt commentaar bij"
 
 #~ msgid "Go to parent folder"
 #~ msgstr "Ga naar bovenliggende map"

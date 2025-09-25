@@ -702,7 +702,7 @@ msgid "Preset"
 msgstr ""
 
 #: src/ui_widgets/settings_content_generic.gd
-msgid "Keep comments"
+msgid "Remove comments"
 msgstr ""
 
 #: src/ui_widgets/settings_content_generic.gd
@@ -787,10 +787,6 @@ msgstr ""
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Determines the settings for the default optimizer, used when manually running the \"{optimize}\" action."
-msgstr ""
-
-#: src/ui_widgets/settings_content_generic.gd
-msgid "Remove comments"
 msgstr ""
 
 #: src/ui_widgets/settings_content_generic.gd

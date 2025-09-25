@@ -143,7 +143,7 @@ func setup_formatting_content() -> void:
 	
 	add_section("XML")
 	current_setup_setting = "xml_remove_comments"
-	add_checkbox(Translator.translate("Keep comments"))
+	add_checkbox(Translator.translate("Remove comments"))
 	var xml_remove_comments_root_element := ElementRoot.new()
 	xml_remove_comments_root_element.insert_child(0, BasicXNode.new(BasicXNode.NodeType.COMMENT, " Comment "))
 	var xml_remove_comments_circle_element := ElementCircle.new()
