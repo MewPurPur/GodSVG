@@ -711,7 +711,8 @@ msgid "Preset"
 msgstr "Préréglage"
 
 #: src/ui_widgets/settings_content_generic.gd
-msgid "Keep comments"
+#, fuzzy
+msgid "Remove comments"
 msgstr "Garder les commentaires"
 
 #: src/ui_widgets/settings_content_generic.gd
@@ -797,11 +798,6 @@ msgstr "Retirer les paramètres inutiles"
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Determines the settings for the default optimizer, used when manually running the \"{optimize}\" action."
 msgstr ""
-
-#: src/ui_widgets/settings_content_generic.gd
-#, fuzzy
-msgid "Remove comments"
-msgstr "Garder les commentaires"
 
 #: src/ui_widgets/settings_content_generic.gd
 #, fuzzy
@@ -1510,6 +1506,9 @@ msgstr "Sélectionner un fichier {format}"
 #: src/utils/TranslationUtils.gd
 msgid "Save the {format} file"
 msgstr "Enregistrer le fichier {format}"
+
+#~ msgid "Keep comments"
+#~ msgstr "Garder les commentaires"
 
 #~ msgid "Go to parent folder"
 #~ msgstr "Aller au dossier parent"
