@@ -185,12 +185,12 @@ func replace_xnode(id: PackedInt32Array, new_xnode: XNode) -> void:
 ## Optimizes the SVG text in ways that attribute formatting doesn't allow.
 ## The return value is true if the SVG can be optimized, otherwise false.
 ## If apply_changes is false, you'll only get the return value.
-func optimize(not_applied := false) -> bool:
+func optimize(optimizer: Optimizer, not_applied := false) -> bool:
 	for xnode in get_all_xnode_descendants():
 		if not xnode.is_element():
 			var basic_xnode: BasicXNode = xnode
 			var xids_to_remove: Array[PackedInt32Array] = []
-			if basic_xnode.get_type() == BasicXNode.NodeType.COMMENT:
+			if basic_xnode.get_type() == BasicXNode.NodeType.COMMENT and optimizer.remove_comments:
 				if not_applied:
 					return true
 				xids_to_remove.append(xnode.xid)
@@ -200,33 +200,37 @@ func optimize(not_applied := false) -> bool:
 			continue
 		
 		var element: Element = xnode
-		match element.name:
-			"ellipse":
-				# If possible, turn ellipses into circles.
-				if element.can_replace("circle"):
-					if not_applied:
-						return true
-					replace_xnode(element.xid, element.get_replacement("circle"))
-			"rect":
-				# If possible, turn rounded rects into circles or ellipses.
-				if element.can_replace("circle"):
-					if not_applied:
-						return true
-					replace_xnode(element.xid, element.get_replacement("circle"))
-				elif element.can_replace("ellipse"):
-					if not_applied:
-						return true
-					replace_xnode(element.xid, element.get_replacement("ellipse"))
-				elif element.get_rx() == 0:
-					# If the rectangle is not rounded, turn it into a path.
+		
+		if optimizer.convert_shapes:
+			match element.name:
+				"ellipse":
+					# If possible, turn ellipses into circles.
+					if element.can_replace("circle"):
+						if not_applied:
+							return true
+						replace_xnode(element.xid, element.get_replacement("circle"))
+				"rect":
+					# If possible, turn rounded rects into circles or ellipses.
+					if element.can_replace("circle"):
+						if not_applied:
+							return true
+						replace_xnode(element.xid, element.get_replacement("circle"))
+					elif element.can_replace("ellipse"):
+						if not_applied:
+							return true
+						replace_xnode(element.xid, element.get_replacement("ellipse"))
+					elif element.get_rx() == 0:
+						# If the rectangle is not rounded, turn it into a path.
+						if not_applied:
+							return true
+						replace_xnode(element.xid, element.get_replacement("path"))
+				"polygon", "line", "polyline":
 					if not_applied:
 						return true
 					replace_xnode(element.xid, element.get_replacement("path"))
-			"polygon", "line", "polyline":
-				if not_applied:
-					return true
-				replace_xnode(element.xid, element.get_replacement("path"))
-			"path":
+		
+		if optimizer.simplify_path_parameters:
+			if element.name == "path":
 				# Replace L with H or V when possible.
 				var conversion_indices := PackedInt32Array()
 				var conversion_cmd_chars := PackedStringArray()

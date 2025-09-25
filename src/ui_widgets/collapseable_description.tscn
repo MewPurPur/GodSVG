@@ -1,0 +1,30 @@
+[gd_scene load_steps=2 format=3 uid="uid://cii0useu00gj3"]
+
+[ext_resource type="Script" uid="uid://djwq26clcpsil" path="res://src/ui_widgets/collapseable_description.gd" id="1_d5e1r"]
+
+[node name="CollapseableDescription" type="MarginContainer"]
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 27.0
+grow_horizontal = 2
+size_flags_horizontal = 3
+mouse_filter = 0
+theme_override_constants/margin_bottom = 4
+script = ExtResource("1_d5e1r")
+
+[node name="Panel" type="PanelContainer" parent="."]
+layout_mode = 2
+mouse_filter = 1
+theme_type_variation = &"SubtleFlatPanel"
+
+[node name="MarginContainer" type="MarginContainer" parent="Panel"]
+layout_mode = 2
+theme_override_constants/margin_right = 20
+
+[node name="Label" type="Label" parent="Panel/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/line_spacing = 1
+theme_override_constants/paragraph_spacing = 4
+autowrap_mode = 3

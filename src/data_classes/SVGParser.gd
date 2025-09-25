@@ -85,7 +85,7 @@ static func _xnode_to_markup(xnode: XNode, formatter: Formatter, make_attributes
 		markup = formatter.get_indent_string().repeat(xnode.xid.size())
 	
 	if not xnode.is_element():
-		if (not formatter.xml_keep_comments and xnode.get_type() == BasicXNode.NodeType.COMMENT):
+		if (formatter.xml_remove_comments and xnode.get_type() == BasicXNode.NodeType.COMMENT):
 			return ""
 		
 		match xnode.get_type():
@@ -233,7 +233,7 @@ static func markup_to_root(markup: String) -> ParseResult:
 						break
 			
 			XMLParser.NODE_COMMENT:
-				if Configs.savedata.editor_formatter.xml_keep_comments:
+				if not Configs.savedata.editor_formatter.xml_remove_comments:
 					unclosed_element_stack.back().insert_child(-1, BasicXNode.new(BasicXNode.NodeType.COMMENT, parser.get_node_name()))
 			XMLParser.NODE_TEXT:
 				var real_text := parser.get_node_data().strip_edges()

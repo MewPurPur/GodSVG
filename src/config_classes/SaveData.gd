@@ -196,6 +196,8 @@ func validate() -> void:
 		editor_formatter = Formatter.new(Formatter.Preset.PRETTY)
 	if not is_instance_valid(export_formatter):
 		export_formatter = Formatter.new(Formatter.Preset.COMPACT)
+	if not is_instance_valid(default_optimizer):
+		default_optimizer = Optimizer.new()
 	if _active_tab_index >= _tabs.size() or _active_tab_index < 0:
 		_active_tab_index = _active_tab_index  # Run the setter.
 	
@@ -808,6 +810,14 @@ func set_palettes(new_palettes: Array[Palette]) -> void:
 			export_formatter = new_value
 			emit_changed()
 			export_formatter.changed.connect(emit_changed)
+
+
+@export var default_optimizer: Optimizer = null:
+	set(new_value):
+		if default_optimizer != new_value and is_instance_valid(new_value):
+			default_optimizer = new_value
+			emit_changed()
+			default_optimizer.changed.connect(emit_changed)
 
 
 @export var shortcut_panel_layout := ShortcutPanel.Layout.HORIZONTAL_STRIP:

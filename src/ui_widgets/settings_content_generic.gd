@@ -2,6 +2,7 @@ extends VBoxContainer
 
 const SettingsMenu = preload("res://src/ui_parts/settings_menu.gd")
 
+const CollapseableDescriptionScene = preload("res://src/ui_widgets/collapseable_description.tscn")
 const SettingFrameScene = preload("res://src/ui_widgets/setting_frame.tscn")
 const ProfileFrameScene = preload("res://src/ui_widgets/profile_frame.tscn")
 
@@ -11,9 +12,10 @@ var type: SettingsMenu.TabIndex
 
 var current_setup_setting := ""
 var current_setup_resource_index := 0
+var current_setup_container: VBoxContainer
+
 var setting_container: VBoxContainer
 var previews: Dictionary[String, RefCounted] = {}
-
 
 var current_previewed_setting := ""
 signal preview_changed(node: Control)
@@ -109,9 +111,11 @@ func setup_content() -> void:
 	for child in setting_container.get_children():
 		setting_container.remove_child(child)
 		child.queue_free()
+	current_setup_container = setting_container
 	
 	match type:
 		SettingsMenu.TabIndex.FORMATTING: setup_formatting_content()
+		SettingsMenu.TabIndex.OPTIMIZER: setup_optimizer_content()
 		SettingsMenu.TabIndex.THEMING: setup_theming_content()
 		SettingsMenu.TabIndex.TAB_BAR: setup_tab_bar_content()
 		SettingsMenu.TabIndex.OTHER: setup_other_content()
@@ -120,26 +124,35 @@ func setup_content() -> void:
 func setup_formatting_content() -> void:
 	var current_setup_resource: Formatter = _get_current_setup_resource()
 	
+	var additional_text := "\n" + Translator.translate(
+			"Formatters can change the formatting of the SVG's content and attributes. These changes don't affect the its structure or the structure of more complex attributes, such as pathdata. Formatters can be configured to make the SVG prettier or more compact.")
+	
+	if current_setup_resource == Configs.savedata.editor_formatter:
+		var short_text := Translator.translate("Determines how SVG attributes and content appear in the GodSVG interface.")
+		add_clarification_text(short_text + additional_text, short_text)
+	elif current_setup_resource == Configs.savedata.export_formatter:
+		var short_text := Translator.translate("Determines how SVG attributes and content are formatted when saving the file.")
+		add_clarification_text(short_text + additional_text, short_text)
+	
 	current_setup_setting = "preset"
 	add_profile_picker(Translator.translate("Preset"),
 			current_setup_resource.reset_to_default, Formatter.Preset.size(),
 			Formatter.get_preset_value_text_map(), current_setup_resource.is_everything_default)
-	add_preview(SettingTextPreview.new(
-			Translator.translate("Determines the default values of the formatter configs.")))
+	add_preview(SettingTextPreview.new(Translator.translate(
+			"Determines the default values of the formatter configs.")))
 	
 	add_section("XML")
-	current_setup_setting = "xml_keep_comments"
+	current_setup_setting = "xml_remove_comments"
 	add_checkbox(Translator.translate("Keep comments"))
-	var xml_keep_comments_root_element := ElementRoot.new()
-	xml_keep_comments_root_element.insert_child(0,
-			BasicXNode.new(BasicXNode.NodeType.COMMENT, " Comment "))
-	var xml_keep_comments_circle_element := ElementCircle.new()
-	xml_keep_comments_circle_element.set_attribute("cx", 6)
-	xml_keep_comments_circle_element.set_attribute("cy", 8)
-	xml_keep_comments_circle_element.set_attribute("r", 4)
-	xml_keep_comments_circle_element.set_attribute("fill", "gold")
-	xml_keep_comments_root_element.insert_child(1, xml_keep_comments_circle_element)
-	add_preview(SettingFormatterPreview.new(current_setup_resource, xml_keep_comments_root_element, true))
+	var xml_remove_comments_root_element := ElementRoot.new()
+	xml_remove_comments_root_element.insert_child(0, BasicXNode.new(BasicXNode.NodeType.COMMENT, " Comment "))
+	var xml_remove_comments_circle_element := ElementCircle.new()
+	xml_remove_comments_circle_element.set_attribute("cx", 6)
+	xml_remove_comments_circle_element.set_attribute("cy", 8)
+	xml_remove_comments_circle_element.set_attribute("r", 4)
+	xml_remove_comments_circle_element.set_attribute("fill", "gold")
+	xml_remove_comments_root_element.insert_child(1, xml_remove_comments_circle_element)
+	add_preview(SettingFormatterPreview.new(current_setup_resource, xml_remove_comments_root_element, true))
 	
 	current_setup_setting = "xml_add_trailing_newline"
 	add_checkbox(Translator.translate("Add trailing newline"))
@@ -375,6 +388,80 @@ func setup_formatting_content() -> void:
 	transform_list_remove_unnecessary_params_polygon_element.set_attribute("transform", "scale(2 2) translate(4 0) rotate(30 0 0)")
 	transform_list_remove_unnecessary_params_root_element.insert_child(0, transform_list_remove_unnecessary_params_polygon_element)
 	add_preview(SettingFormatterPreview.new(current_setup_resource, transform_list_remove_unnecessary_params_root_element, true))
+
+func setup_optimizer_content() -> void:
+	var short_text := Translator.translate("Determines the settings for the default optimizer, used when manually running the \"{optimize}\" action.").format(
+			{"optimize": TranslationUtils.get_action_description("optimize")})
+	var additional_text := "\n" + Translator.translate(
+			"Optimizers can change the structure of the SVG and its complex attributes, such as pathdata. These changes reduce the SVG's complexity, usually leading to reductions in file size, but may be destructive and disrupt future editing, compared to optimizing the SVG manually.")
+	add_clarification_text(short_text + additional_text, short_text)
+	
+	add_section("Lossless")
+	
+	current_setup_setting = "remove_comments"
+	var remove_comments_checkbox := add_checkbox(Translator.translate("Remove comments"), false)
+	var remove_comments_root_element := ElementRoot.new()
+	remove_comments_root_element.set_attribute("xmlns", "http://www.w3.org/2000/svg")
+	remove_comments_root_element.set_attribute("width", "16")
+	remove_comments_root_element.set_attribute("height", "16")
+	var remove_comments_circle := ElementCircle.new()
+	remove_comments_circle.set_attribute("stroke", "plum")
+	remove_comments_circle.set_attribute("fill", "olive")
+	remove_comments_circle.set_attribute("cx", "8")
+	remove_comments_circle.set_attribute("cy", "8")
+	remove_comments_circle.set_attribute("r", "6")
+	remove_comments_root_element.insert_child(0, BasicXNode.new(BasicXNode.NodeType.COMMENT, " A comment "))
+	remove_comments_root_element.insert_child(1, remove_comments_circle)
+	remove_comments_checkbox.set_optimizer_info(remove_comments_root_element, Optimizer.new(), Translator.translate("Remove comments"))
+	
+	current_setup_setting = "convert_shapes"
+	var convert_shapes_checkbox := add_checkbox(Translator.translate("Convert shapes"), false)
+	var convert_shapes_root_element := ElementRoot.new()
+	convert_shapes_root_element.set_attribute("xmlns", "http://www.w3.org/2000/svg")
+	convert_shapes_root_element.set_attribute("width", "16")
+	convert_shapes_root_element.set_attribute("height", "16")
+	var convert_shapes_rect := ElementRect.new()
+	convert_shapes_rect.set_attribute("x", "4")
+	convert_shapes_rect.set_attribute("y", "2")
+	convert_shapes_rect.set_attribute("width", "8")
+	convert_shapes_rect.set_attribute("height", "8")
+	convert_shapes_rect.set_attribute("fill", "plum")
+	convert_shapes_root_element.insert_child(0, convert_shapes_rect)
+	var convert_shapes_ellipse := ElementEllipse.new()
+	convert_shapes_ellipse.set_attribute("cx", "7")
+	convert_shapes_ellipse.set_attribute("cy", "5")
+	convert_shapes_ellipse.set_attribute("rx", "4")
+	convert_shapes_ellipse.set_attribute("ry", "4")
+	convert_shapes_ellipse.set_attribute("fill", "olive")
+	convert_shapes_root_element.insert_child(1, convert_shapes_ellipse)
+	var convert_shapes_line := ElementLine.new()
+	convert_shapes_line.set_attribute("x1", "12")
+	convert_shapes_line.set_attribute("y1", "8")
+	convert_shapes_line.set_attribute("x2", "9")
+	convert_shapes_line.set_attribute("y2", "14")
+	convert_shapes_line.set_attribute("stroke", "gold")
+	convert_shapes_root_element.insert_child(2, convert_shapes_line)
+	var convert_shapes_polygon := ElementLine.new()
+	convert_shapes_polygon.set_attribute("points", "2 2 9 14 5 12 5 2")
+	convert_shapes_polygon.set_attribute("stroke", "silver")
+	convert_shapes_root_element.insert_child(3, convert_shapes_polygon)
+	convert_shapes_checkbox.set_optimizer_info(convert_shapes_root_element, Optimizer.new(), Translator.translate(
+			"Convert shapes into ones that can be defined identically, but have a shorter representation, if possible.") +\
+			"\nTemporary note: Currently, paths can't be simplified.")
+	
+	current_setup_setting = "simplify_path_parameters"
+	var simplify_path_params_checkbox := add_checkbox(Translator.translate("Simplify path parameters"), false)
+	var simplify_path_params_root_element := ElementRoot.new()
+	simplify_path_params_root_element.set_attribute("xmlns", "http://www.w3.org/2000/svg")
+	simplify_path_params_root_element.set_attribute("width", "16")
+	simplify_path_params_root_element.set_attribute("height", "16")
+	var simplify_path_params_rect := ElementPath.new()
+	simplify_path_params_rect.set_attribute("fill", "plum")
+	simplify_path_params_rect.set_attribute("d", "M 2 2 L 8 2 L 8 5 A 3 3 -90 0 0 12 10")
+	simplify_path_params_root_element.insert_child(0, simplify_path_params_rect)
+	simplify_path_params_checkbox.set_optimizer_info(simplify_path_params_root_element, Optimizer.new(), Translator.translate(
+			"Convert or simplify path parameters into ones that can be defined identically, but have a shorter representation, if possible.") +\
+			"\nTemporary note: Currently, the only simplifications are converting lines into horizontal or vertical ones, and clearing rotation from circular arcs.")
 
 func setup_theming_content() -> void:
 	var current_setup_resource := Configs.savedata
@@ -648,6 +735,11 @@ func setup_other_content() -> void:
 			"When enabled, adds the current file name before the \"GodSVG\" window title.")))
 
 
+func add_clarification_text(full_text: String, short_text: String) -> void:
+	var clarification := CollapseableDescriptionScene.instantiate()
+	current_setup_container.add_child(clarification)
+	clarification.setup(full_text, short_text)
+
 func add_section(section_name: String) -> void:
 	var vbox := VBoxContainer.new()
 	vbox.add_theme_constant_override("separation", 0)
@@ -659,7 +751,9 @@ func add_section(section_name: String) -> void:
 	var spacer := Control.new()
 	spacer.custom_minimum_size.y = 2
 	vbox.add_child(spacer)
-	setting_container.add_child(vbox)
+	current_setup_container = setting_container
+	current_setup_container.add_child(vbox)
+	current_setup_container = vbox
 
 func add_profile_picker(text: String, application_callback: Callable, profile_count: int,
 value_text_map: Dictionary, disabled_check_callback: Callable) -> void:
@@ -671,12 +765,11 @@ value_text_map: Dictionary, disabled_check_callback: Callable) -> void:
 	frame.value_changed.connect.call_deferred(setup_content)
 	frame.defaults_applied.connect(application_callback)
 	frame.defaults_applied.connect(setup_content)
-	add_frame(frame)
+	current_setup_container.add_child(frame)
 	
 	var resource_permanent_ref := _get_current_setup_resource()
 	resource_permanent_ref.changed_deferred.connect(frame.button_update_disabled)
-	frame.tree_exited.connect(resource_permanent_ref.changed_deferred.disconnect.bind(
-			frame.button_update_disabled), CONNECT_ONE_SHOT)
+	frame.tree_exited.connect(resource_permanent_ref.changed_deferred.disconnect.bind(frame.button_update_disabled), CONNECT_ONE_SHOT)
 
 func add_checkbox(text: String, dim_text := false) -> Control:
 	var frame := SettingFrameScene.instantiate()
@@ -684,7 +777,7 @@ func add_checkbox(text: String, dim_text := false) -> Control:
 	frame.text = text
 	setup_frame(frame)
 	frame.setup_checkbox()
-	add_frame(frame)
+	current_setup_container.add_child(frame)
 	# Some checkboxes need to update the dimness of the text of other settings.
 	# There's no continuous editing with checkboxes, so it's safe to just rebuild
 	# the content for them.
@@ -698,7 +791,7 @@ value_text_map: Dictionary) -> Control:  # Dictionary[Variant, String]
 	frame.text = text
 	setup_frame(frame)
 	frame.setup_dropdown(values, value_text_map)
-	add_frame(frame)
+	current_setup_container.add_child(frame)
 	# Some checkboxes need to update the dimness of the text of other settings.
 	# There's no continuous editing with checkboxes, so it's safe to just rebuild the content for them.
 	frame.value_changed.connect(setup_content)
@@ -711,7 +804,7 @@ restricted := true, min_value := -INF, max_value := INF, dim_text := false) -> C
 	frame.text = text
 	setup_frame(frame)
 	frame.setup_number_dropdown(values, is_integer, restricted, min_value, max_value)
-	add_frame(frame)
+	current_setup_container.add_child(frame)
 	return frame
 
 func add_fps_limit_dropdown(text: String, dim_text := false) -> Control:
@@ -720,7 +813,7 @@ func add_fps_limit_dropdown(text: String, dim_text := false) -> Control:
 	frame.text = text
 	setup_frame(frame)
 	frame.setup_fps_limit_dropdown()
-	add_frame(frame)
+	current_setup_container.add_child(frame)
 	return frame
 
 func add_color_edit(text: String, enable_alpha := true) -> Control:
@@ -728,7 +821,7 @@ func add_color_edit(text: String, enable_alpha := true) -> Control:
 	frame.text = text
 	setup_frame(frame)
 	frame.setup_color(enable_alpha)
-	add_frame(frame)
+	current_setup_container.add_child(frame)
 	return frame
 
 func setup_frame(frame: Control, has_default := true) -> void:
@@ -749,12 +842,6 @@ func setup_frame(frame: Control, has_default := true) -> void:
 			else:
 				HandlerGUI.popups_cleared.connect(remove_preview.bind(bind), CONNECT_ONE_SHOT)
 	)
-
-func add_frame(frame: Control) -> void:
-	if setting_container.get_child_count() > 0:
-		setting_container.get_child(-1).add_child(frame)
-	else:
-		setting_container.add_child(frame)
 
 
 func add_preview(preview: RefCounted) -> void:

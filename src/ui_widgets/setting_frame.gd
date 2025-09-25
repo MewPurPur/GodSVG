@@ -5,6 +5,9 @@ var type := Type.NONE
 
 signal value_changed
 
+const info_icon = preload("res://assets/icons/Info.svg")
+
+const OptimizerSettingInfoScene = preload("res://src/ui_widgets/optimizer_setting_info.tscn")
 const ColorEditScene = preload("res://src/ui_widgets/color_edit.tscn")
 const DropdownScene = preload("res://src/ui_widgets/dropdown.tscn")
 const NumberDropdownScene = preload("res://src/ui_widgets/number_dropdown.tscn")
@@ -25,11 +28,28 @@ var dim_text := false  # For settings that wouldn't have an effect.
 
 var widget: Control
 var panel_width := 0
+var info_button: Button
 
 var is_hovered := false
 
 @onready var reset_button: Button = $ResetButton
 var ci := get_canvas_item()
+
+func set_optimizer_info(example_root: ElementRoot, optimizer: Optimizer, main_text := "") -> void:
+	info_button = Button.new()
+	info_button.icon = info_icon
+	info_button.theme_type_variation = "FlatButton"
+	info_button.mouse_filter = Control.MOUSE_FILTER_PASS
+	info_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+	info_button.focus_mode = Control.FOCUS_NONE
+	add_child(info_button)
+	info_button.pressed.connect(func() -> void:
+		var info := OptimizerSettingInfoScene.instantiate()
+		info.setup(example_root.duplicate(), optimizer, main_text)
+		HandlerGUI.popup_under_rect_center(info, info_button.get_global_rect(), get_viewport())
+	)
+	var margin_size := (size.y - info_button.size.y) / 2.0
+	info_button.position = Vector2(margin_size, margin_size)
 
 func permanent_disable_checkbox(checkbox_state: bool) -> void:
 	disabled = true
@@ -58,8 +78,7 @@ func setup_color(enable_alpha: bool) -> void:
 	panel_width = 114 if enable_alpha else 100
 
 # TODO Typed Dictionary wonkiness
-func setup_dropdown(values: Array[Variant],
-value_text_map: Dictionary) -> void:  # Dictionary[Variant, String]
+func setup_dropdown(values: Array[Variant], value_text_map: Dictionary) -> void:  # Dictionary[Variant, String]
 	widget = DropdownScene.instantiate()
 	widget.values = values
 	widget.restricted = true
@@ -69,8 +88,7 @@ value_text_map: Dictionary) -> void:  # Dictionary[Variant, String]
 	type = Type.DROPDOWN
 	panel_width = 100
 
-func setup_number_dropdown(values: Array[float], is_integer: bool, restricted: bool,
-min_value: float, max_value: float) -> void:
+func setup_number_dropdown(values: Array[float], is_integer: bool, restricted: bool, min_value: float, max_value: float) -> void:
 	widget = NumberDropdownScene.instantiate()
 	widget.values = values
 	widget.is_integer = is_integer
@@ -199,11 +217,15 @@ func _draw() -> void:
 	elif dim_text:
 		color = ThemeUtils.dimmer_text_color
 	
+	var text_pos_x := 4.0
 	var non_panel_width := size.x - panel_width
+	var text_space := non_panel_width - 16
+	if is_instance_valid(info_button):
+		text_pos_x += size.y
+		text_space -= size.y
 	var text_obj := TextLine.new()
 	text_obj.add_string(text, ThemeUtils.regular_font, 13)
-	text_obj.width = non_panel_width - 16
+	text_obj.width = text_space
 	text_obj.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
-	text_obj.draw(ci, Vector2(4, 5), color)
-	get_theme_stylebox("panel", "SubtleFlatPanel").draw(ci, Rect2(non_panel_width - 2, 2,
-			panel_width, size.y - 4))
+	text_obj.draw(ci, Vector2(text_pos_x, 5), color)
+	get_theme_stylebox("panel", "SubtleFlatPanel").draw(ci, Rect2(non_panel_width - 2, 2, panel_width, size.y - 4))

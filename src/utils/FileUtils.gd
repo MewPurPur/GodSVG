@@ -326,7 +326,7 @@ static func _apply_svg(data: Variant, file_path: String, proceed_callback := Cal
 					{"file_path": Utils.simplify_file_path(file_path)})
 		if compare_svg_to_disk_contents(existing_tab_idx) == FileState.DIFFERENT:
 			alert_message += "\n\n" + Translator.translate(
-					"If you want to revert your edits since the last save, use {reset_svg}.").format(
+					"If you want to revert your edits since the last save, use \"{reset_svg}\".").format(
 					{"reset_svg": TranslationUtils.get_action_description("reset_svg")})
 		
 		if is_last_file:

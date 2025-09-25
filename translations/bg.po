@@ -445,6 +445,10 @@ msgstr "Гледка"
 msgid "Formatting"
 msgstr "Форматиране"
 
+#: src/ui_parts/settings_menu.gd
+msgid "Optimizer"
+msgstr "Оптимизатор"
+
 #: src/ui_parts/settings_menu.gd src/ui_widgets/color_field_popup.gd
 msgid "Palettes"
 msgstr "Палети"
@@ -582,6 +586,14 @@ msgstr "Нова фигура"
 msgid "The SVG has invalid syntax. Any edit not made through the code editor will reset it."
 msgstr "SVG-то е синтактично грешно. Всяка редакция която не е направена през редактора за код ще го рестартира."
 
+#: src/ui_widgets/optimizer_setting_info.gd
+msgid "Before"
+msgstr "Преди"
+
+#: src/ui_widgets/optimizer_setting_info.gd
+msgid "After"
+msgstr "След"
+
 #: src/ui_widgets/palette_config.gd
 msgid "Add new color"
 msgstr "Добави нов цвят"
@@ -678,12 +690,16 @@ msgid "Export formatter"
 msgstr "Форматировач за експортиране"
 
 #: src/ui_widgets/settings_content_generic.gd
-msgid "Preset"
-msgstr "Шаблон"
+msgid "Determines how SVG attributes and content appear in the GodSVG interface."
+msgstr "Определя как SVG атрибутите и съдържанието се показват в интерфейса на GodSVG."
 
 #: src/ui_widgets/settings_content_generic.gd
-msgid "Determines the default values of the formatter configs."
-msgstr "Определя стойностите по подразбиране на настройките на форматировача."
+msgid "Determines how SVG attributes and content are formatted when saving the file."
+msgstr "Определя как SVG атрибутите и съдържанието се форматират когато файлът се запазва."
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Preset"
+msgstr "Шаблон"
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Keep comments"
@@ -768,6 +784,22 @@ msgstr "Поредици от трансформации"
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Remove unnecessary parameters"
 msgstr "Премахни ненужните параметри"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Determines the settings for the default optimizer, used when manually running the \"{optimize}\" action."
+msgstr "Определя настройките на оптимизатора по подразбиране, използвани когато ползваш \"{optimize}\""
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Remove comments"
+msgstr "Премахване на коментарите"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Convert shapes"
+msgstr "Превръщане фигури"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Simplify path parameters"
+msgstr "Опростяване на параметрите в пътеки"
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Theme preset"
@@ -958,8 +990,28 @@ msgid "The setting can't be changed on this platform."
 msgstr "Настройката не може да бъде променена на тази платформа."
 
 #: src/ui_widgets/settings_content_generic.gd
+msgid "Formatters can change the formatting of the SVG's content and attributes. These changes don't affect the its structure or the structure of more complex attributes, such as pathdata. Formatters can be configured to make the SVG prettier or more compact."
+msgstr "Форматировачите могат да променят форматирането на съдържанието и атрибутите на SVG. Тези промени не засягат неговата структура или структурата на по-сложните атрибути, като данни за пътеки. Форматировачите могат да бъдат конфигурирани да направят SVG по-красив или по-компактен."
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Determines the default values of the formatter configs."
+msgstr "Определя стойностите по подразбиране на настройките на форматировача."
+
+#: src/ui_widgets/settings_content_generic.gd
 msgid "When enabled, uses spaces instead of a single tab for indentation."
 msgstr "Когато е активирано, използва интервали за отстъп вместо едни табулатор."
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Optimizers can change the structure of the SVG and its complex attributes, such as pathdata. These changes reduce the SVG's complexity, usually leading to reductions in file size, but may be destructive and disrupt future editing, compared to optimizing the SVG manually."
+msgstr "Оптимизаторите могат да променят структурата на SVG и неговите сложни атрибути, като данни за пътеки. Тези промени намаляват сложността на SVG, обикновено водейки до намаляване на размера на файла, но могат да бъдат деструктивни и да нарушат бъдещото редактиране в сравнение с ръчната оптимизация на SVG."
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Convert shapes into ones that can be defined identically, but have a shorter representation, if possible."
+msgstr "Преобразува фигурите в такива, които могат да бъдат дефинирани идентично, но имат по-кратко представяне, ако е възможно."
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Convert or simplify path parameters into ones that can be defined identically, but have a shorter representation, if possible."
+msgstr "Преобразува или опростява параметрите на пътищата в такива, които могат да бъдат дефинирани идентично, но имат по-кратко представяне, ако е възможно."
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Determines the default values of theming-related settings, including the highlighter preset."
@@ -1114,8 +1166,8 @@ msgid "{file_path} is already being edited inside GodSVG."
 msgstr "{file_path} вече се редактира в GodSVG."
 
 #: src/utils/FileUtils.gd
-msgid "If you want to revert your edits since the last save, use {reset_svg}."
-msgstr "Ако искаш да премахнеш промените след последното записване, използвай {reset_svg}."
+msgid "If you want to revert your edits since the last save, use \"{reset_svg}\"."
+msgstr "Ако искаш да премахнеш промените след последното записване, използвай \"{reset_svg}\"."
 
 #: src/utils/FileUtils.gd
 msgid "Do you want to save the changes made to {file_name}?"
@@ -1212,6 +1264,10 @@ msgstr "Постави"
 #: src/utils/TranslationUtils.gd
 msgid "Cut"
 msgstr "Изрежи"
+
+#: src/utils/TranslationUtils.gd
+msgid "Evaluate"
+msgstr "Сметни"
 
 #: src/utils/TranslationUtils.gd
 msgid "Select all"

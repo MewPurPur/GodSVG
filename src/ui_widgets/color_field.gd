@@ -117,12 +117,10 @@ func _draw() -> void:
 			var initial_pts := PackedVector2Array([Vector2(0, 1), Vector2(0, size.y - 1)])
 			for deg in range(90, -1, -15):
 				var rad := deg_to_rad(deg)
-				initial_pts.append(Vector2(BUTTON_WIDTH - 1 - r + r * cos(rad),
-						size.y - 1 - r + r * sin(rad)))
+				initial_pts.append(Vector2(BUTTON_WIDTH - 1 - r + r * cos(rad), size.y - 1 - r + r * sin(rad)))
 			for deg in range(0, -91, -15):
 				var rad := deg_to_rad(deg)
-				initial_pts.append(Vector2(BUTTON_WIDTH - 1 - r + r * cos(rad),
-						r + 1 + r * sin(rad)))
+				initial_pts.append(Vector2(BUTTON_WIDTH - 1 - r + r * cos(rad), r + 1 + r * sin(rad)))
 			for pt in initial_pts:
 				points.append(pt + Vector2(h_offset, 0))
 				colors.append(Color.WHITE)
@@ -134,8 +132,7 @@ func _draw() -> void:
 		var stylebox := StyleBoxFlat.new()
 		stylebox.corner_radius_top_right = r
 		stylebox.corner_radius_bottom_right = r
-		stylebox.bg_color = ColorParser.text_to_color(
-				element.get_attribute_true_color(attribute_name), Color.TRANSPARENT)
+		stylebox.bg_color = ColorParser.text_to_color(element.get_attribute_true_color(attribute_name), Color.TRANSPARENT)
 		stylebox.draw(ci, Rect2(h_offset, 1, BUTTON_WIDTH - 1, size.y - 2))
 	# Draw the button border.
 	if is_instance_valid(temp_button) and temp_button.button_pressed:

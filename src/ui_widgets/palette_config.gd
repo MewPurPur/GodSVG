@@ -223,29 +223,29 @@ func find_palette_index() -> int:
 
 func _on_palette_button_pressed() -> void:
 	var palette_idx := find_palette_index()
-	var separator_idx := 3
 	var btn_arr: Array[Button] = []
 	btn_arr.append(ContextPopup.create_button(Translator.translate("Rename"),
 			popup_edit_name, false, load("res://assets/icons/Rename.svg")))
 	if palette_idx >= 1:
-		separator_idx += 1
 		btn_arr.append(ContextPopup.create_button(Translator.translate("Move Up"),
 				move_up, false, load("res://assets/icons/MoveUp.svg")))
 	if palette_idx < Configs.savedata.get_palette_count() - 1:
-		separator_idx += 1
 		btn_arr.append(ContextPopup.create_button(Translator.translate("Move Down"),
 				move_down, false, load("res://assets/icons/MoveDown.svg")))
 	btn_arr.append(ContextPopup.create_button(Translator.translate("Apply Preset"),
 			open_palette_options, false, load("res://assets/icons/Import.svg")))
 	btn_arr.append(ContextPopup.create_button(Translator.translate("Delete"),
 			delete, false, load("res://assets/icons/Delete.svg")))
+	
+	var separator_arr := PackedInt32Array([btn_arr.size()])
+	
 	btn_arr.append(ContextPopup.create_button(Translator.translate("Copy as XML"),
 			copy_palette.bind(palette_idx), false, load("res://assets/icons/Copy.svg")))
 	btn_arr.append(ContextPopup.create_button(Translator.translate("Save as XML"),
 			save_palette.bind(palette_idx), false, load("res://assets/icons/Export.svg")))
 	
 	var context_popup := ContextPopup.new()
-	context_popup.setup(btn_arr, true, -1, -1, PackedInt32Array([separator_idx]))
+	context_popup.setup(btn_arr, true, -1, -1, separator_arr)
 	HandlerGUI.popup_under_rect_center(context_popup, palette_button.get_global_rect(), get_viewport())
 
 

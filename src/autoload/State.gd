@@ -127,7 +127,7 @@ func setup_from_tab() -> void:
 
 
 func optimize() -> void:
-	root_element.optimize()
+	root_element.optimize(Configs.savedata.default_optimizer)
 	save_svg()
 
 func get_export_text() -> String:

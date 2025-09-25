@@ -447,6 +447,11 @@ msgstr "Перегляд"
 msgid "Formatting"
 msgstr "Форматування"
 
+#: src/ui_parts/settings_menu.gd
+#, fuzzy
+msgid "Optimizer"
+msgstr "Оптимізувати"
+
 #: src/ui_parts/settings_menu.gd src/ui_widgets/color_field_popup.gd
 msgid "Palettes"
 msgstr "Палітри"
@@ -584,6 +589,15 @@ msgstr "Нова форма"
 msgid "The SVG has invalid syntax. Any edit not made through the code editor will reset it."
 msgstr ""
 
+#: src/ui_widgets/optimizer_setting_info.gd
+#, fuzzy
+msgid "Before"
+msgstr "Вставити до"
+
+#: src/ui_widgets/optimizer_setting_info.gd
+msgid "After"
+msgstr ""
+
 #: src/ui_widgets/palette_config.gd
 #, fuzzy
 msgid "Add new color"
@@ -680,14 +694,20 @@ msgstr "Форматер редактору"
 msgid "Export formatter"
 msgstr "Форматер експорту"
 
+#: src/ui_widgets/settings_content_generic.gd
+#, fuzzy
+msgid "Determines how SVG attributes and content appear in the GodSVG interface."
+msgstr "Визначає множник масштабу інтерфейсу."
+
+#: src/ui_widgets/settings_content_generic.gd
+#, fuzzy
+msgid "Determines how SVG attributes and content are formatted when saving the file."
+msgstr "Визначає множник масштабу інтерфейсу."
+
 # не знаю
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Preset"
 msgstr "Пресет"
-
-#: src/ui_widgets/settings_content_generic.gd
-msgid "Determines the default values of the formatter configs."
-msgstr "Визначає стандартні значення конфігурації форматера."
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Keep comments"
@@ -775,6 +795,24 @@ msgstr "Список трансформацій"
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Remove unnecessary parameters"
 msgstr "Видалити необов'язкові параметри"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Determines the settings for the default optimizer, used when manually running the \"{optimize}\" action."
+msgstr ""
+
+#: src/ui_widgets/settings_content_generic.gd
+#, fuzzy
+msgid "Remove comments"
+msgstr "Зберігати коментарі"
+
+#: src/ui_widgets/settings_content_generic.gd
+#, fuzzy
+msgid "Convert shapes"
+msgstr "Конвертувати в"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Simplify path parameters"
+msgstr ""
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Theme preset"
@@ -965,8 +1003,28 @@ msgid "The setting can't be changed on this platform."
 msgstr "Ця опція не може бути змінена на поточній платформі."
 
 #: src/ui_widgets/settings_content_generic.gd
+msgid "Formatters can change the formatting of the SVG's content and attributes. These changes don't affect the its structure or the structure of more complex attributes, such as pathdata. Formatters can be configured to make the SVG prettier or more compact."
+msgstr ""
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Determines the default values of the formatter configs."
+msgstr "Визначає стандартні значення конфігурації форматера."
+
+#: src/ui_widgets/settings_content_generic.gd
 msgid "When enabled, uses spaces instead of a single tab for indentation."
 msgstr "Коли активно, використовує пробіли замість одного tab-у для відступів."
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Optimizers can change the structure of the SVG and its complex attributes, such as pathdata. These changes reduce the SVG's complexity, usually leading to reductions in file size, but may be destructive and disrupt future editing, compared to optimizing the SVG manually."
+msgstr ""
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Convert shapes into ones that can be defined identically, but have a shorter representation, if possible."
+msgstr ""
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Convert or simplify path parameters into ones that can be defined identically, but have a shorter representation, if possible."
+msgstr ""
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Determines the default values of theming-related settings, including the highlighter preset."
@@ -1123,7 +1181,8 @@ msgid "{file_path} is already being edited inside GodSVG."
 msgstr "Файл {file_path} вже редагується в GodSVG."
 
 #: src/utils/FileUtils.gd
-msgid "If you want to revert your edits since the last save, use {reset_svg}."
+#, fuzzy
+msgid "If you want to revert your edits since the last save, use \"{reset_svg}\"."
 msgstr "Якщо ви бажаєте повернути свої зміни з останнього збереження, використовуйте {reset_svg}."
 
 #: src/utils/FileUtils.gd
@@ -1221,6 +1280,10 @@ msgstr "Вставити"
 #: src/utils/TranslationUtils.gd
 msgid "Cut"
 msgstr "Вирізати"
+
+#: src/utils/TranslationUtils.gd
+msgid "Evaluate"
+msgstr ""
 
 #: src/utils/TranslationUtils.gd
 msgid "Select all"
