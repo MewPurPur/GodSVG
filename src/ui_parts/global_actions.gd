@@ -55,24 +55,25 @@ func _on_size_button_pressed() -> void:
 	HandlerGUI.popup_under_rect_center(context_popup, size_button.get_global_rect(), get_viewport())
 
 func _on_more_options_pressed() -> void:
-	var can_show_savedata_folder := DisplayServer.has_feature(
-				DisplayServer.FEATURE_NATIVE_DIALOG_FILE_EXTRA)
 	var buttons_arr: Array[Button] = []
+	var separator_indices := PackedInt32Array()
+	
 	buttons_arr.append(ContextPopup.create_shortcut_button("check_updates"))
 	
-	if can_show_savedata_folder:
-		buttons_arr.append(ContextPopup.create_button(Translator.translate(
-				"View savedata"), open_savedata_folder , false,
-				load("res://assets/icons/OpenFolder.svg")))
+	if DisplayServer.has_feature(DisplayServer.FEATURE_NATIVE_DIALOG_FILE_EXTRA):
+		buttons_arr.append(ContextPopup.create_button(Translator.translate("View savedata"),
+				open_savedata_folder, false, load("res://assets/icons/OpenFolder.svg")))
+	
+	separator_indices.append(buttons_arr.size())
 	
 	var about_btn := ContextPopup.create_shortcut_button("about_info", false, "", load("res://assets/logos/icon.svg"), true)
 	buttons_arr.append(about_btn)
 	buttons_arr.append(ContextPopup.create_shortcut_button("about_donate"))
+	
+	separator_indices.append(buttons_arr.size())
+	
 	buttons_arr.append(ContextPopup.create_shortcut_button("about_repo"))
 	buttons_arr.append(ContextPopup.create_shortcut_button("about_website"))
-	var separator_indices := PackedInt32Array([1, 3])
-	if can_show_savedata_folder:
-		separator_indices = PackedInt32Array([2, 4])
 	
 	var more_popup := ContextPopup.new()
 	more_popup.setup(buttons_arr, true, -1, -1, separator_indices)
@@ -87,7 +88,7 @@ func update_size_button() -> void:
 	var svg_text_size := State.get_export_text().length()
 	size_button.text = String.humanize_size(svg_text_size)
 	size_button.tooltip_text = String.num_uint64(svg_text_size) + " B"
-	if State.root_element.optimize(true):
+	if State.root_element.optimize(Configs.savedata.default_optimizer, true):
 		size_button.disabled = false
 		size_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 		update_size_button_colors()

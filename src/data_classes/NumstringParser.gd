@@ -46,12 +46,12 @@ static func evaluate(text: String) -> float:
 	var expr := Expression.new()
 	var err := expr.parse(text.replace(",", "."))
 	if err == OK:
-		var result: Variant = expr.execute()
+		var result: Variant = expr.execute([], ExpressionScript, false, true)
 		if not expr.has_execute_failed() and typeof(result) in [TYPE_FLOAT, TYPE_INT]:
 			return result
 	err = expr.parse(text)
 	if err == OK:
-		var result: Variant = expr.execute()
+		var result: Variant = expr.execute([], ExpressionScript, false, true)
 		if not expr.has_execute_failed() and typeof(result) in [TYPE_FLOAT, TYPE_INT]:
 			return result
 	return NAN

@@ -34,6 +34,7 @@ const _action_categories_dict: Dictionary[String, Dictionary] = {
 		"move_down": true,
 		"delete": true,
 		"find": true,
+		"evaluate": true,
 	},
 	"view": {
 		"zoom_in": true,
@@ -113,6 +114,8 @@ static func get_action_icon(action: String) -> Texture2D:
 		"about_repo", "about_website": return load("res://assets/icons/Link.svg")
 		"toggle_fullscreen": return load("res://assets/icons/Expand.svg")
 		"load_reference": return load("res://assets/icons/Reference.svg")
+		"select_all": return load("res://assets/icons/SelectAll.svg")
+		"evaluate": return load("res://assets/icons/Evaluate.svg")
 		_: return load("res://assets/icons/Placeholder.svg")
 
 static func get_actions(category: String) -> PackedStringArray:

@@ -63,7 +63,7 @@ func get_setting_default(setting: String) -> Variant:
 		"color_primary_syntax": return PrimaryColorSyntax.THREE_OR_SIX_DIGIT_HEX
 		"color_capital_hex": return false
 		
-		"xml_keep_comments": return preset == Preset.PRETTY
+		"xml_remove_comments": return preset == Preset.COMPACT
 		"xml_shorthand_tags": return ShorthandTags.ALWAYS if preset == Preset.COMPACT else ShorthandTags.ALL_EXCEPT_CONTAINERS
 		"xml_shorthand_tags_space_out_slash": return preset == Preset.PRETTY
 		"xml_pretty_formatting": return preset == Preset.PRETTY
@@ -110,10 +110,10 @@ func _init(new_preset := Preset.COMPACT) -> void:
 			emit_changed()
 
 
-@export var xml_keep_comments := false:
+@export var xml_remove_comments := true:
 	set(new_value):
-		if xml_keep_comments != new_value:
-			xml_keep_comments = new_value
+		if xml_remove_comments != new_value:
+			xml_remove_comments = new_value
 			emit_changed()
 
 @export var xml_add_trailing_newline := false:

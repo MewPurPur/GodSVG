@@ -449,6 +449,11 @@ msgstr "Visualizar"
 msgid "Formatting"
 msgstr "Formatação"
 
+#: src/ui_parts/settings_menu.gd
+#, fuzzy
+msgid "Optimizer"
+msgstr "Otimizar"
+
 #: src/ui_parts/settings_menu.gd src/ui_widgets/color_field_popup.gd
 msgid "Palettes"
 msgstr "Paletas"
@@ -587,6 +592,15 @@ msgstr "Nova forma"
 msgid "The SVG has invalid syntax. Any edit not made through the code editor will reset it."
 msgstr ""
 
+#: src/ui_widgets/optimizer_setting_info.gd
+#, fuzzy
+msgid "Before"
+msgstr "Inserir Antes"
+
+#: src/ui_widgets/optimizer_setting_info.gd
+msgid "After"
+msgstr ""
+
 #: src/ui_widgets/palette_config.gd
 #, fuzzy
 msgid "Add new color"
@@ -684,13 +698,18 @@ msgid "Export formatter"
 msgstr "Formatador de exportação"
 
 #: src/ui_widgets/settings_content_generic.gd
-msgid "Preset"
-msgstr "Predefinição"
+#, fuzzy
+msgid "Determines how SVG attributes and content appear in the GodSVG interface."
+msgstr "Muda o fator de escala da interfaçe."
 
 #: src/ui_widgets/settings_content_generic.gd
 #, fuzzy
-msgid "Determines the default values of the formatter configs."
+msgid "Determines how SVG attributes and content are formatted when saving the file."
 msgstr "Muda o fator de escala da interfaçe."
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Preset"
+msgstr "Predefinição"
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Keep comments"
@@ -775,6 +794,24 @@ msgstr "Transformar listas"
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Remove unnecessary parameters"
 msgstr "Remover parâmetros desnecessários"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Determines the settings for the default optimizer, used when manually running the \"{optimize}\" action."
+msgstr ""
+
+#: src/ui_widgets/settings_content_generic.gd
+#, fuzzy
+msgid "Remove comments"
+msgstr "Manter comentários"
+
+#: src/ui_widgets/settings_content_generic.gd
+#, fuzzy
+msgid "Convert shapes"
+msgstr "Converter Para"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Simplify path parameters"
+msgstr ""
 
 #: src/ui_widgets/settings_content_generic.gd
 #, fuzzy
@@ -972,7 +1009,28 @@ msgid "The setting can't be changed on this platform."
 msgstr ""
 
 #: src/ui_widgets/settings_content_generic.gd
+msgid "Formatters can change the formatting of the SVG's content and attributes. These changes don't affect the its structure or the structure of more complex attributes, such as pathdata. Formatters can be configured to make the SVG prettier or more compact."
+msgstr ""
+
+#: src/ui_widgets/settings_content_generic.gd
+#, fuzzy
+msgid "Determines the default values of the formatter configs."
+msgstr "Muda o fator de escala da interfaçe."
+
+#: src/ui_widgets/settings_content_generic.gd
 msgid "When enabled, uses spaces instead of a single tab for indentation."
+msgstr ""
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Optimizers can change the structure of the SVG and its complex attributes, such as pathdata. These changes reduce the SVG's complexity, usually leading to reductions in file size, but may be destructive and disrupt future editing, compared to optimizing the SVG manually."
+msgstr ""
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Convert shapes into ones that can be defined identically, but have a shorter representation, if possible."
+msgstr ""
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Convert or simplify path parameters into ones that can be defined identically, but have a shorter representation, if possible."
 msgstr ""
 
 #: src/ui_widgets/settings_content_generic.gd
@@ -1134,7 +1192,8 @@ msgid "{file_path} is already being edited inside GodSVG."
 msgstr "{file_path} já está sendo editado dentro do GodSVG."
 
 #: src/utils/FileUtils.gd
-msgid "If you want to revert your edits since the last save, use {reset_svg}."
+#, fuzzy
+msgid "If you want to revert your edits since the last save, use \"{reset_svg}\"."
 msgstr "Se você deseja reverter as suas edições desde o último salvamento, use {reset_svg}."
 
 #: src/utils/FileUtils.gd
@@ -1232,6 +1291,10 @@ msgstr "Colar"
 #: src/utils/TranslationUtils.gd
 msgid "Cut"
 msgstr "Cortar"
+
+#: src/utils/TranslationUtils.gd
+msgid "Evaluate"
+msgstr ""
 
 #: src/utils/TranslationUtils.gd
 msgid "Select all"

@@ -59,10 +59,9 @@ func _on_add_button_pressed() -> void:
 				false, DB.get_element_icon(element_name))
 		btn.add_theme_font_override("font", ThemeUtils.mono_font)
 		btn_array.append(btn)
-	var separator_indices := PackedInt32Array([1, 4, 7])
 	
 	var add_popup := ContextPopup.new()
-	add_popup.setup(btn_array, true, add_button.size.x, -1, separator_indices)
+	add_popup.setup(btn_array, true, add_button.size.x, -1, PackedInt32Array([1, 4, 7]))
 	HandlerGUI.popup_under_rect(add_popup, add_button.get_global_rect(), get_viewport())
 
 

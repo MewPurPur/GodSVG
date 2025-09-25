@@ -158,6 +158,34 @@ func _input(event: InputEvent) -> void:
 		release_focus()
 
 func _gui_input(event: InputEvent) -> void:
+	if event.is_action_pressed("evaluate"):
+		var numstring_evaluation := NumstringParser.evaluate(get_selected_text() if has_selection() else text)
+		if not is_nan(numstring_evaluation):
+			if has_selection():
+				var selection_start_line := get_selection_from_line()
+				var selection_start_column := get_selection_from_column()
+				var selection_end_column := get_selection_to_column()
+				var caret_column_was_at_start := (selection_start_column == get_selection_origin_column() and selection_start_line == get_selection_origin_line())
+				
+				var result := Utils.num_simple(numstring_evaluation, Utils.MAX_NUMERIC_PRECISION)
+				var new_selection_end := selection_start_column + result.length()
+				
+				var line_text := get_line(selection_start_line)
+				begin_complex_operation()
+				delete_selection()
+				set_line(selection_start_line, line_text.left(selection_start_column) + result + line_text.right(-selection_end_column))
+				end_complex_operation()
+				if caret_column_was_at_start:
+					select(selection_start_line, selection_start_column, selection_start_line, new_selection_end)
+				else:
+					select(selection_start_line, new_selection_end, selection_start_line, selection_start_column)
+			else:
+				text = Utils.num_simple(numstring_evaluation, Utils.MAX_NUMERIC_PRECISION)
+				set_caret_line(0)
+				set_caret_column(get_line(0).length())
+		accept_event()
+		return
+	
 	if event.is_action_pressed("select_all"):
 		select_all()
 		accept_event()
@@ -172,36 +200,44 @@ func _gui_input(event: InputEvent) -> void:
 	
 	if event is InputEventMouseMotion and event.button_mask == 0:
 		queue_redraw()
-	elif event is InputEventMouseButton:
-		if event.button_index == MOUSE_BUTTON_RIGHT and event.is_pressed():
-			grab_focus()
-			var btn_arr: Array[Button] = []
-			var separator_arr := PackedInt32Array()
+	elif event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.is_pressed():
+		grab_focus()
+		var btn_arr: Array[Button] = []
+		var separator_arr := PackedInt32Array()
+		
+		var is_text_empty := text.is_empty()
+		
+		if editable:
+			var text_to_evaluate := get_selected_text() if has_selection() else text
+			var selection_evaluation := NumstringParser.evaluate(text_to_evaluate)
+			if not is_nan(selection_evaluation) and Utils.num_simple(selection_evaluation, Utils.MAX_NUMERIC_PRECISION) != text_to_evaluate:
+				btn_arr.append(ContextPopup.create_shortcut_button("evaluate"))
 			
-			var is_text_empty := text.is_empty()
+			if not btn_arr.is_empty():
+				separator_arr.append(btn_arr.size())
 			
-			if editable:
-				btn_arr.append(ContextPopup.create_shortcut_button("ui_undo", not has_undo()))
-				btn_arr.append(ContextPopup.create_shortcut_button("ui_redo", not has_redo()))
-				if DisplayServer.has_feature(DisplayServer.FEATURE_CLIPBOARD):
-					separator_arr = PackedInt32Array([2])
-					btn_arr.append(ContextPopup.create_shortcut_button("ui_cut", is_text_empty))
-					btn_arr.append(ContextPopup.create_shortcut_button("ui_copy", is_text_empty))
-					btn_arr.append(ContextPopup.create_shortcut_button("ui_paste",
-							not Utils.has_clipboard_web_safe()))
-			else:
+			btn_arr.append(ContextPopup.create_shortcut_button("ui_undo", not has_undo()))
+			btn_arr.append(ContextPopup.create_shortcut_button("ui_redo", not has_redo()))
+			if DisplayServer.has_feature(DisplayServer.FEATURE_CLIPBOARD):
+				separator_arr.append(btn_arr.size())
+				btn_arr.append(ContextPopup.create_shortcut_button("ui_cut", is_text_empty))
 				btn_arr.append(ContextPopup.create_shortcut_button("ui_copy", is_text_empty))
-			
-			var context_popup := ContextPopup.new()
-			context_popup.setup(btn_arr, true, -1, -1, separator_arr)
-			var vp := get_viewport()
-			HandlerGUI.popup_under_pos(context_popup, vp.get_mouse_position(), vp)
-			accept_event()
-			var click_pos := get_line_column_at_pos(event.position)
-			if get_selection_at_line_column(click_pos.y, click_pos.x) == -1:
-				deselect()
-				set_caret_line(click_pos.y, false)
-				set_caret_column(click_pos.x, false)
+				btn_arr.append(ContextPopup.create_shortcut_button("ui_paste", not Utils.has_clipboard_web_safe()))
+				btn_arr.append(ContextPopup.create_shortcut_button("select_all", is_text_empty))
+		else:
+			btn_arr.append(ContextPopup.create_shortcut_button("ui_copy", is_text_empty))
+			btn_arr.append(ContextPopup.create_shortcut_button("select_all", is_text_empty))
+		
+		var context_popup := ContextPopup.new()
+		context_popup.setup(btn_arr, true, -1, -1, separator_arr)
+		var vp := get_viewport()
+		HandlerGUI.popup_under_pos(context_popup, vp.get_mouse_position(), vp)
+		accept_event()
+		var click_pos := get_line_column_at_pos(event.position)
+		if get_selection_at_line_column(click_pos.y, click_pos.x) == -1:
+			deselect()
+			set_caret_line(click_pos.y, false)
+			set_caret_column(click_pos.x, false)
 	else:
 		# Set these inputs as handled, so the default UndoRedo doesn't eat them.
 		if ShortcutUtils.is_action_pressed(event, "ui_undo"):

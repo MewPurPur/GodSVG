@@ -47,6 +47,7 @@ static func get_action_description(action_name: String, for_button := false) -> 
 		"ui_copy": return Translator.translate("Copy")
 		"ui_paste": return Translator.translate("Paste")
 		"ui_cut": return Translator.translate("Cut")
+		"evaluate": return Translator.translate("Evaluate")
 		"select_all": return Translator.translate("Select all")
 		"duplicate": return Translator.translate("Duplicate") if for_button else Translator.translate("Duplicate the selection")
 		"delete": return Translator.translate("Delete") if for_button else Translator.translate("Delete the selection")

@@ -448,6 +448,11 @@ msgstr "Affichage"
 msgid "Formatting"
 msgstr "Formatage"
 
+#: src/ui_parts/settings_menu.gd
+#, fuzzy
+msgid "Optimizer"
+msgstr "Optimiser"
+
 #: src/ui_parts/settings_menu.gd src/ui_widgets/color_field_popup.gd
 msgid "Palettes"
 msgstr "Palettes"
@@ -586,6 +591,15 @@ msgstr "Nouvelle forme"
 msgid "The SVG has invalid syntax. Any edit not made through the code editor will reset it."
 msgstr ""
 
+#: src/ui_widgets/optimizer_setting_info.gd
+#, fuzzy
+msgid "Before"
+msgstr "Insérer avant"
+
+#: src/ui_widgets/optimizer_setting_info.gd
+msgid "After"
+msgstr ""
+
 #: src/ui_widgets/palette_config.gd
 #, fuzzy
 msgid "Add new color"
@@ -683,13 +697,18 @@ msgid "Export formatter"
 msgstr "Formatage des fichiers exportés"
 
 #: src/ui_widgets/settings_content_generic.gd
-msgid "Preset"
-msgstr "Préréglage"
+#, fuzzy
+msgid "Determines how SVG attributes and content appear in the GodSVG interface."
+msgstr "Détermine le facteur d'échelle de l'interface."
 
 #: src/ui_widgets/settings_content_generic.gd
 #, fuzzy
-msgid "Determines the default values of the formatter configs."
-msgstr "Si le taux de rafraîchissement est limité, cette valeur déterminera le nombre maximum d'images par seconde."
+msgid "Determines how SVG attributes and content are formatted when saving the file."
+msgstr "Détermine le facteur d'échelle de l'interface."
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Preset"
+msgstr "Préréglage"
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Keep comments"
@@ -774,6 +793,24 @@ msgstr "Transformer les listes"
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Remove unnecessary parameters"
 msgstr "Retirer les paramètres inutiles"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Determines the settings for the default optimizer, used when manually running the \"{optimize}\" action."
+msgstr ""
+
+#: src/ui_widgets/settings_content_generic.gd
+#, fuzzy
+msgid "Remove comments"
+msgstr "Garder les commentaires"
+
+#: src/ui_widgets/settings_content_generic.gd
+#, fuzzy
+msgid "Convert shapes"
+msgstr "Convertir en"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Simplify path parameters"
+msgstr ""
 
 #: src/ui_widgets/settings_content_generic.gd
 #, fuzzy
@@ -973,7 +1010,28 @@ msgid "The setting can't be changed on this platform."
 msgstr ""
 
 #: src/ui_widgets/settings_content_generic.gd
+msgid "Formatters can change the formatting of the SVG's content and attributes. These changes don't affect the its structure or the structure of more complex attributes, such as pathdata. Formatters can be configured to make the SVG prettier or more compact."
+msgstr ""
+
+#: src/ui_widgets/settings_content_generic.gd
+#, fuzzy
+msgid "Determines the default values of the formatter configs."
+msgstr "Si le taux de rafraîchissement est limité, cette valeur déterminera le nombre maximum d'images par seconde."
+
+#: src/ui_widgets/settings_content_generic.gd
 msgid "When enabled, uses spaces instead of a single tab for indentation."
+msgstr ""
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Optimizers can change the structure of the SVG and its complex attributes, such as pathdata. These changes reduce the SVG's complexity, usually leading to reductions in file size, but may be destructive and disrupt future editing, compared to optimizing the SVG manually."
+msgstr ""
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Convert shapes into ones that can be defined identically, but have a shorter representation, if possible."
+msgstr ""
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Convert or simplify path parameters into ones that can be defined identically, but have a shorter representation, if possible."
 msgstr ""
 
 #: src/ui_widgets/settings_content_generic.gd
@@ -1135,7 +1193,8 @@ msgid "{file_path} is already being edited inside GodSVG."
 msgstr "{file_path} est déjà en cours de modification dans GodSVG."
 
 #: src/utils/FileUtils.gd
-msgid "If you want to revert your edits since the last save, use {reset_svg}."
+#, fuzzy
+msgid "If you want to revert your edits since the last save, use \"{reset_svg}\"."
 msgstr "Si vous voulez réinitialiser vos modifications au dernier enregistrement, utilisez {reset_svg}."
 
 #: src/utils/FileUtils.gd
@@ -1233,6 +1292,10 @@ msgstr "Coller"
 #: src/utils/TranslationUtils.gd
 msgid "Cut"
 msgstr "Couper"
+
+#: src/utils/TranslationUtils.gd
+msgid "Evaluate"
+msgstr ""
 
 #: src/utils/TranslationUtils.gd
 msgid "Select all"

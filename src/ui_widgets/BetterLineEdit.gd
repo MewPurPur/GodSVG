@@ -85,6 +85,24 @@ func _input(event: InputEvent) -> void:
 		select_all()
 
 func _gui_input(event: InputEvent) -> void:
+	if event.is_action_pressed("evaluate"):
+		var numstring_evaluation := NumstringParser.evaluate(get_selected_text() if has_selection() else text)
+		if not is_nan(numstring_evaluation):
+			if has_selection():
+				var selection_start := get_selection_from_column()
+				var caret_column_was_at_start := (selection_start == caret_column)
+				var result := Utils.num_simple(numstring_evaluation, Utils.MAX_NUMERIC_PRECISION)
+				var new_selection_end := selection_start + result.length()
+				
+				text = text.left(selection_start) + result + text.right(-get_selection_to_column())
+				select(selection_start, new_selection_end)
+				caret_column = selection_start if caret_column_was_at_start else new_selection_end
+			else:
+				text = Utils.num_simple(numstring_evaluation, Utils.MAX_NUMERIC_PRECISION)
+				caret_column = text.length()
+		accept_event()
+		return
+	
 	if event.is_action_pressed("select_all"):
 		menu_option(MENU_SELECT_ALL)
 		accept_event()
@@ -102,21 +120,30 @@ func _gui_input(event: InputEvent) -> void:
 	elif event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.is_pressed():
 		grab_focus()
 		var btn_arr: Array[Button] = []
-		var separator_arr: Array[int] = []
+		var separator_arr := PackedInt32Array()
 		
 		var is_text_empty := text.is_empty()
 		
 		if editable:
+			var text_to_evaluate := get_selected_text() if has_selection() else text
+			var selection_evaluation := NumstringParser.evaluate(text_to_evaluate)
+			if not is_nan(selection_evaluation) and Utils.num_simple(selection_evaluation, Utils.MAX_NUMERIC_PRECISION) != text_to_evaluate:
+				btn_arr.append(ContextPopup.create_shortcut_button("evaluate"))
+			
+			if not btn_arr.is_empty():
+				separator_arr.append(btn_arr.size())
+			
 			btn_arr.append(ContextPopup.create_shortcut_button("ui_undo", not has_undo()))
 			btn_arr.append(ContextPopup.create_shortcut_button("ui_redo", not has_redo()))
 			if DisplayServer.has_feature(DisplayServer.FEATURE_CLIPBOARD):
-				separator_arr = [2]
+				separator_arr.append(btn_arr.size())
 				btn_arr.append(ContextPopup.create_shortcut_button("ui_cut", is_text_empty))
 				btn_arr.append(ContextPopup.create_shortcut_button("ui_copy", is_text_empty))
-				btn_arr.append(ContextPopup.create_shortcut_button("ui_paste",
-						not Utils.has_clipboard_web_safe()))
+				btn_arr.append(ContextPopup.create_shortcut_button("ui_paste", not Utils.has_clipboard_web_safe()))
+				btn_arr.append(ContextPopup.create_shortcut_button("select_all", is_text_empty))
 		else:
 			btn_arr.append(ContextPopup.create_shortcut_button("ui_copy", is_text_empty))
+			btn_arr.append(ContextPopup.create_shortcut_button("select_all", is_text_empty))
 		
 		var vp := get_viewport()
 		var context_popup := ContextPopup.new()

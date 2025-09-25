@@ -11,11 +11,12 @@ const SettingsContentShortcuts = preload("res://src/ui_widgets/settings_content_
 @onready var close_button: Button = $VBoxContainer/CloseButton
 @onready var preview_panel: PanelContainer = $VBoxContainer/PreviewPanel
 
-enum TabIndex {FORMATTING, PALETTES, SHORTCUTS, THEMING, TAB_BAR, OTHER}
+enum TabIndex {FORMATTING, OPTIMIZER, PALETTES, SHORTCUTS, THEMING, TAB_BAR, OTHER}
 
 func get_tab_localized_name(tab_index: TabIndex) -> String:
 	match tab_index:
 		TabIndex.FORMATTING: return Translator.translate("Formatting")
+		TabIndex.OPTIMIZER: return Translator.translate("Optimizer")
 		TabIndex.PALETTES: return Translator.translate("Palettes")
 		TabIndex.SHORTCUTS: return Translator.translate("Shortcuts")
 		TabIndex.THEMING: return Translator.translate("Theming")
@@ -103,6 +104,12 @@ func setup_content() -> void:
 			var current_content := SettingsContentGeneric.instantiate()
 			current_content.setup([Configs.savedata.editor_formatter,
 					Configs.savedata.export_formatter] as Array[ConfigResource], focused_tab_index)
+			content_container.add_child(current_content)
+			current_content.preview_changed.connect(set_preview)
+		TabIndex.OPTIMIZER:
+			preview_panel.hide()
+			var current_content := SettingsContentGeneric.instantiate()
+			current_content.setup([Configs.savedata.default_optimizer] as Array[ConfigResource], focused_tab_index)
 			content_container.add_child(current_content)
 			current_content.preview_changed.connect(set_preview)
 		TabIndex.PALETTES:
