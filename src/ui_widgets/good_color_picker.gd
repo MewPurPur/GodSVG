@@ -364,7 +364,7 @@ func _on_slider3_text_submitted(new_text: String) -> void:
 
 func _on_slider4_text_submitted(new_text: String) -> void:
 	var new_color := display_color
-	new_color.a = clampf(new_text.to_int() / 100.0, 0.0, 1.0)
+	new_color.a = clampf(new_text.to_int() / 255.0, 0.0, 1.0)
 	register_visual_change(new_color, false)
 	slider4_update()
 
@@ -390,7 +390,7 @@ func slider3_update() -> void:
 	_slider_set_text(fields_arr[3], number)
 
 func slider4_update() -> void:
-	_slider_set_text(fields_arr[4], display_color.a * 100)
+	_slider_set_text(fields_arr[4], display_color.a * 255)
 
 func _slider_set_text(field: BetterLineEdit, number: float) -> void:
 	field.text = String.num_uint64(roundi(number))
