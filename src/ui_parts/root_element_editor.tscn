@@ -34,6 +34,7 @@ theme_type_variation = &"TextButton"
 theme_override_fonts/font = ExtResource("2_fm5sa")
 theme_override_font_sizes/font_size = 12
 toggle_mode = true
+action_mode = 0
 text = "width"
 script = ExtResource("4_7r848")
 
@@ -54,6 +55,7 @@ theme_type_variation = &"TextButton"
 theme_override_fonts/font = ExtResource("2_fm5sa")
 theme_override_font_sizes/font_size = 12
 toggle_mode = true
+action_mode = 0
 text = "height"
 script = ExtResource("4_7r848")
 
@@ -75,6 +77,7 @@ theme_type_variation = &"TextButton"
 theme_override_fonts/font = ExtResource("2_fm5sa")
 theme_override_font_sizes/font_size = 12
 toggle_mode = true
+action_mode = 0
 text = "viewBox"
 script = ExtResource("4_7r848")
 
