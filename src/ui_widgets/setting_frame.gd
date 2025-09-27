@@ -31,6 +31,7 @@ var panel_width := 0
 var info_button: Button
 
 var is_hovered := false
+var tooltip_rect := Rect2(NAN, NAN, NAN, NAN)
 
 @onready var reset_button: Button = $ResetButton
 var ci := get_canvas_item()
@@ -221,7 +222,7 @@ func _draw() -> void:
 	var non_panel_width := size.x - panel_width
 	var text_space := non_panel_width - 16
 	if is_instance_valid(info_button):
-		text_pos_x += size.y
+		text_pos_x += info_button.size.x + (size.y - info_button.size.x) / 2.0
 		text_space -= size.y
 	var text_obj := TextLine.new()
 	text_obj.add_string(text, ThemeUtils.regular_font, 13)
@@ -229,3 +230,13 @@ func _draw() -> void:
 	text_obj.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	text_obj.draw(ci, Vector2(text_pos_x, 5), color)
 	get_theme_stylebox("panel", "SubtleFlatPanel").draw(ci, Rect2(non_panel_width - 2, 2, panel_width, size.y - 4))
+
+	if text_space < ThemeUtils.regular_font.get_string_size(text, HORIZONTAL_ALIGNMENT_LEFT, -1, 13).x:
+		tooltip_rect = Rect2(text_pos_x, 5, text_space, size.y - 10)
+	else:
+		tooltip_rect = Rect2(NAN, NAN, NAN, NAN)
+
+func _get_tooltip(at_position: Vector2) -> String:
+	if tooltip_rect.is_finite() and tooltip_rect.has_point(at_position):
+		return text
+	return ""

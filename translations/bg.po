@@ -451,7 +451,7 @@ msgstr "Оптимизатор"
 
 #: src/ui_parts/settings_menu.gd src/ui_widgets/color_field_popup.gd
 msgid "Palettes"
-msgstr "Палети"
+msgstr "Палитри"
 
 #: src/ui_parts/settings_menu.gd
 msgid "Shortcuts"
@@ -600,15 +600,15 @@ msgstr "Добави нов цвят"
 
 #: src/ui_widgets/palette_config.gd
 msgid "Unnamed palettes won't be shown."
-msgstr "Неименуваните палети няма да бъдат показани."
+msgstr "Неименуваните палитри няма да бъдат показани."
 
 #: src/ui_widgets/palette_config.gd
 msgid "Multiple palettes can't have the same name."
-msgstr "Не може няколко палети да имат едно и също име."
+msgstr "Не може няколко палитри да имат едно и също име."
 
 #: src/ui_widgets/palette_config.gd
 msgid "This palette has identically defined colors."
-msgstr "Тази палета има еднакво определетни цветове."
+msgstr "Тази палитра има еднакво определетни цветове."
 
 #: src/ui_widgets/palette_config.gd
 msgid "Rename"
@@ -1067,11 +1067,11 @@ msgstr "Когато е включено, добавя името на наст�
 
 #: src/ui_widgets/settings_content_palettes.gd
 msgid "New palette"
-msgstr "Добави палета"
+msgstr "Добави палитра"
 
 #: src/ui_widgets/settings_content_palettes.gd
 msgid "New palette from XML"
-msgstr "Добави палета от XML"
+msgstr "Добави палитра от XML"
 
 #: src/ui_widgets/settings_content_palettes.gd
 msgid "Import XML"
