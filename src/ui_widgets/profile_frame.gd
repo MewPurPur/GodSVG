@@ -17,6 +17,7 @@ var ci := get_canvas_item()
 var dropdown: Dropdown
 
 var is_hovered := false
+var tooltip_rect := Rect2(NAN, NAN, NAN, NAN)
 
 @onready var button: Button = $HBoxContainer/Button
 @onready var control: Control = $HBoxContainer/Control
@@ -78,5 +79,20 @@ func _on_mouse_exited() -> void:
 func _draw() -> void:
 	if is_hovered:
 		get_theme_stylebox("hover", "FlatButton").draw(ci, Rect2(Vector2.ZERO, size))
-	ThemeUtils.regular_font.draw_string(ci, Vector2(4, 19), text,
-			HORIZONTAL_ALIGNMENT_LEFT, -1, 13, ThemeUtils.text_color)
+	
+	var text_width := size.x - button.size.x - dropdown.size.x - 16
+	var text_obj := TextLine.new()
+	text_obj.add_string(text, ThemeUtils.regular_font, 13)
+	text_obj.width = text_width
+	text_obj.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+	text_obj.draw(ci, Vector2(4, 5), ThemeUtils.text_color)
+	
+	if text_width < ThemeUtils.regular_font.get_string_size(text, HORIZONTAL_ALIGNMENT_LEFT, -1, 13).x:
+		tooltip_rect = Rect2(4, 5, text_width, size.y - 10)
+	else:
+		tooltip_rect = Rect2(NAN, NAN, NAN, NAN)
+
+func _get_tooltip(at_position: Vector2) -> String:
+	if tooltip_rect.is_finite() and tooltip_rect.has_point(at_position):
+		return text
+	return ""

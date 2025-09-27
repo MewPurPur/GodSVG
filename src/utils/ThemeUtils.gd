@@ -1234,18 +1234,13 @@ static func _setup_textedit(theme: Theme) -> void:
 	theme.set_stylebox("normal", "TextEdit", normal_stylebox)
 	theme.set_stylebox("read_only", "TextEdit", normal_stylebox)
 	
-	var focus_stylebox := StyleBoxFlat.new()
+	var focus_stylebox := normal_stylebox.duplicate()
 	focus_stylebox.draw_center = false
 	focus_stylebox.border_color = line_edit_focus_color
-	focus_stylebox.set_border_width_all(2)
-	focus_stylebox.set_corner_radius_all(5)
 	theme.set_stylebox("focus", "TextEdit", focus_stylebox)
 	
-	var hover_stylebox := StyleBoxFlat.new()
-	hover_stylebox.draw_center = false
+	var hover_stylebox := focus_stylebox.duplicate()
 	hover_stylebox.border_color = strong_hover_overlay_color if is_theme_dark else stronger_hover_overlay_color
-	hover_stylebox.set_border_width_all(2)
-	hover_stylebox.set_corner_radius_all(5)
 	theme.set_stylebox("hover", "TextEdit", hover_stylebox)
 
 static func _setup_tooltip(theme: Theme) -> void:

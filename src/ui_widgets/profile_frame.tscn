@@ -15,6 +15,7 @@ script = ExtResource("1_urnhl")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 layout_mode = 2
+theme_override_constants/separation = 2
 
 [node name="Control" type="Control" parent="HBoxContainer"]
 layout_mode = 2
