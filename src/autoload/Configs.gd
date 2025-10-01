@@ -67,6 +67,7 @@ func _enter_tree() -> void:
 	sync_locale()
 	sync_max_fps()
 	sync_keep_screen_on()
+	sync_fonts()
 	sync_theme()
 
 
@@ -97,3 +98,6 @@ func sync_keep_screen_on() -> void:
 func sync_theme() -> void:
 	ThemeUtils.generate_and_apply_theme()
 	theme_changed.emit()
+
+func sync_fonts() -> void:
+	ThemeUtils.rebuild_fonts()

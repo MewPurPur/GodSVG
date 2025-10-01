@@ -399,20 +399,20 @@ msgid "Syntax error"
 msgstr "Синтаксична помилка"
 
 #: src/ui_parts/import_warning_menu.gd
-msgid "Import Problems"
-msgstr "Проблема з імпортуванням"
-
-#: src/ui_parts/import_warning_menu.gd src/utils/TranslationUtils.gd
-msgid "Import"
-msgstr "Імпортувати"
-
-#: src/ui_parts/import_warning_menu.gd
 msgid "Unrecognized element"
 msgstr "Невідомий елемент"
 
 #: src/ui_parts/import_warning_menu.gd
 msgid "Unrecognized attribute"
 msgstr "Невідомий атрибут"
+
+#: src/ui_parts/import_warning_menu.gd
+msgid "Import Problems"
+msgstr "Проблема з імпортуванням"
+
+#: src/ui_parts/import_warning_menu.gd src/utils/TranslationUtils.gd
+msgid "Import"
+msgstr "Імпортувати"
 
 #: src/ui_parts/inspector.gd
 msgid "Add element"
@@ -568,6 +568,10 @@ msgstr "Шукати колір"
 #: src/ui_widgets/color_field_popup.gd
 msgid "Color Picker"
 msgstr "Кольорова піпетка"
+
+#: src/ui_widgets/file_path_field.gd
+msgid "No file path"
+msgstr ""
 
 #: src/ui_widgets/fps_limit_dropdown.gd src/ui_widgets/setting_frame.gd
 msgid "Unlimited"
@@ -825,6 +829,22 @@ msgstr "Базовий колір"
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Accent color"
 msgstr "Колір акценту"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Fonts"
+msgstr ""
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Main font"
+msgstr ""
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Bold font"
+msgstr ""
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Mono font"
+msgstr ""
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "SVG Text colors"
@@ -1487,6 +1507,11 @@ msgstr "Обрати {format} файли"
 #: src/utils/TranslationUtils.gd
 msgid "Select an image"
 msgstr "Обрати зображення"
+
+#: src/utils/TranslationUtils.gd
+#, fuzzy
+msgid "Select a font"
+msgstr "Обрати усе"
 
 #: src/utils/TranslationUtils.gd
 msgid "Select an {format} file"

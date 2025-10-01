@@ -1,13 +1,12 @@
 [gd_scene load_steps=5 format=3 uid="uid://f5cljfdpe85v"]
 
 [ext_resource type="Script" uid="uid://caecf6gysjqel" path="res://src/ui_widgets/color_field_popup.gd" id="1_xn1jy"]
-[ext_resource type="FontFile" uid="uid://clpf84p1lfwlp" path="res://assets/fonts/Font.ttf" id="2_cds3l"]
+[ext_resource type="FontVariation" uid="uid://bo626nsycqtaj" path="res://assets/fonts/MainFont.tres" id="2_xn1jy"]
 [ext_resource type="Script" uid="uid://1hox6gd5pxku" path="res://src/ui_widgets/BetterLineEdit.gd" id="3_1h7ne"]
 [ext_resource type="PackedScene" uid="uid://b1eig44cov474" path="res://src/ui_widgets/good_color_picker.tscn" id="4_0v7ma"]
 
 [node name="ColorFieldPopup" type="PanelContainer"]
 custom_minimum_size = Vector2(160, 0)
-anchors_preset = -1
 offset_right = 214.0
 offset_bottom = 325.0
 script = ExtResource("1_xn1jy")
@@ -43,7 +42,7 @@ theme_override_constants/margin_right = 12
 [node name="SearchField" type="LineEdit" parent="MainContainer/Content/Palettes/VBoxContainer/SearchBox"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_fonts/font = ExtResource("2_cds3l")
+theme_override_fonts/font = ExtResource("2_xn1jy")
 script = ExtResource("3_1h7ne")
 
 [node name="PalettesContent" type="VBoxContainer" parent="MainContainer/Content/Palettes/VBoxContainer"]

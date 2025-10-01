@@ -12,6 +12,9 @@ var _shortcut_validities: Dictionary[Key, bool] = {}
 # Most settings don't need a default.
 func get_setting_default(setting: String) -> Variant:
 	match setting:
+		"main_font_path": return ""
+		"bold_font_path": return ""
+		"mono_font_path": return ""
 		"base_color":
 			match theme_preset:
 				ThemePreset.DARK: return Color("10101d")
@@ -250,6 +253,30 @@ const CURRENT_VERSION = 1
 			accent_color = new_value
 			emit_changed()
 			external_call(Configs.sync_theme)
+
+
+# Don't check if the value has changed here, even the file path haven't changed the font should still update.
+
+@export var main_font_path := "":
+	set(new_value):
+		if new_value.is_empty() or FileAccess.file_exists(new_value):
+			main_font_path = new_value
+			emit_changed()
+			external_call(Configs.sync_fonts)
+
+@export var bold_font_path := "":
+	set(new_value):
+		if new_value.is_empty() or FileAccess.file_exists(new_value):
+			bold_font_path = new_value
+			emit_changed()
+			external_call(Configs.sync_fonts)
+
+@export var mono_font_path := "":
+	set(new_value):
+		if new_value.is_empty() or FileAccess.file_exists(new_value):
+			mono_font_path = new_value
+			emit_changed()
+			external_call(Configs.sync_fonts)
 
 
 @export var highlighter_preset := HighlighterPreset.DEFAULT_DARK:

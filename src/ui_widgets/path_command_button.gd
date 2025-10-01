@@ -38,12 +38,12 @@ func _draw() -> void:
 	var normal_text := " " + TranslationUtils.get_path_command_description(command_char, true)
 	# Try with font size 13.
 	text_obj.add_string(bold_text, ThemeUtils.bold_font, 13)
-	text_obj.add_string(normal_text, ThemeUtils.regular_font, 13)
+	text_obj.add_string(normal_text, ThemeUtils.main_font, 13)
 	if text_obj.get_line_width() > max_size:
 		# Try with font size 12.
 		text_obj.clear()
 		text_obj.add_string(bold_text, ThemeUtils.bold_font, 12)
-		text_obj.add_string(normal_text, ThemeUtils.regular_font, 12)
+		text_obj.add_string(normal_text, ThemeUtils.main_font, 12)
 		if text_obj.get_line_width() > max_size:
 			custom_minimum_size.x = size.x + 4 + text_obj.get_line_width() - max_size
 	text_obj.draw(get_canvas_item(), Vector2(left_margin + 2, 3), text_color)

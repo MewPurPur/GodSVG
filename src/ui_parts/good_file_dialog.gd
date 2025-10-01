@@ -13,6 +13,7 @@ signal files_selected(paths: PackedStringArray)
 const folder_icon = preload("res://assets/icons/Folder.svg")
 const broken_file_icon = preload("res://assets/icons/FileBroken.svg")
 const text_file_icon = preload("res://assets/icons/TextFile.svg")
+const font_file_icon = preload("res://assets/icons/FontFile.svg")
 
 const system_dirs_to_show: Array[OS.SystemDir] = [OS.SYSTEM_DIR_DESKTOP, OS.SYSTEM_DIR_DOCUMENTS,
 		OS.SYSTEM_DIR_DOWNLOADS, OS.SYSTEM_DIR_MOVIES, OS.SYSTEM_DIR_MUSIC, OS.SYSTEM_DIR_PICTURES]
@@ -264,8 +265,12 @@ func open_dir(dir: String, add_to_history := true, only_filtering_update := fals
 			continue
 		
 		var item_idx := file_list.add_item(file, null)
-		if file.get_extension() == "xml":
+		var file_extension := file.get_extension()
+		if file_extension == "xml":
 			file_list.set_item_icon(item_idx, text_file_icon)
+			file_list.set_item_icon_modulate(item_idx, ThemeUtils.text_file_color)
+		elif file_extension in Utils.DYNAMIC_FONT_FORMATS:
+			file_list.set_item_icon(item_idx, font_file_icon)
 			file_list.set_item_icon_modulate(item_idx, ThemeUtils.text_file_color)
 		file_list.set_item_metadata(item_idx, Actions.new(select_files, sync_to_selection, open_file_context))
 	# If we don't await this stuff, sometimes the item_rect we get is all wrong.

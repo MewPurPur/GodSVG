@@ -488,6 +488,14 @@ func setup_theming_content() -> void:
 	var basic_svg_text_with_syntax_error = """<circle cx="6" cy="8" ==syntax error"""
 	var fancy_svg_text = """<!-- Comment --> <text> Basic text <![CDATA[ < > & " ' ]]> </text>"""
 	
+	add_section(Translator.translate("Fonts"))
+	current_setup_setting = "main_font_path"
+	add_font_file_path_field(Translator.translate("Main font"))
+	current_setup_setting = "bold_font_path"
+	add_font_file_path_field(Translator.translate("Bold font"))
+	current_setup_setting = "mono_font_path"
+	add_font_file_path_field(Translator.translate("Mono font"))
+	
 	add_section(Translator.translate("SVG Text colors"))
 	current_setup_setting = "highlighter_preset"
 	add_profile_picker(Translator.translate("Highlighter preset"),
@@ -821,6 +829,17 @@ func add_color_edit(text: String, enable_alpha := true) -> Control:
 	frame.text = text
 	setup_frame(frame)
 	frame.setup_color(enable_alpha)
+	current_setup_container.add_child(frame)
+	return frame
+
+func add_font_file_path_field(text: String) -> Control:
+	return _add_file_path_field(text, Utils.DYNAMIC_FONT_FORMATS)
+
+func _add_file_path_field(text: String, extensions_list: PackedStringArray) -> Control:
+	var frame := SettingFrameScene.instantiate()
+	frame.text = text
+	setup_frame(frame)
+	frame.setup_file_path(extensions_list)
 	current_setup_container.add_child(frame)
 	return frame
 

@@ -396,19 +396,19 @@ msgid "Syntax error"
 msgstr ""
 
 #: src/ui_parts/import_warning_menu.gd
-msgid "Import Problems"
-msgstr ""
-
-#: src/ui_parts/import_warning_menu.gd src/utils/TranslationUtils.gd
-msgid "Import"
-msgstr ""
-
-#: src/ui_parts/import_warning_menu.gd
 msgid "Unrecognized element"
 msgstr ""
 
 #: src/ui_parts/import_warning_menu.gd
 msgid "Unrecognized attribute"
+msgstr ""
+
+#: src/ui_parts/import_warning_menu.gd
+msgid "Import Problems"
+msgstr ""
+
+#: src/ui_parts/import_warning_menu.gd src/utils/TranslationUtils.gd
+msgid "Import"
 msgstr ""
 
 #: src/ui_parts/inspector.gd
@@ -563,6 +563,10 @@ msgstr ""
 
 #: src/ui_widgets/color_field_popup.gd
 msgid "Color Picker"
+msgstr ""
+
+#: src/ui_widgets/file_path_field.gd
+msgid "No file path"
 msgstr ""
 
 #: src/ui_widgets/fps_limit_dropdown.gd src/ui_widgets/setting_frame.gd
@@ -810,6 +814,22 @@ msgstr ""
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Accent color"
+msgstr ""
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Fonts"
+msgstr ""
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Main font"
+msgstr ""
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Bold font"
+msgstr ""
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Mono font"
 msgstr ""
 
 #: src/ui_widgets/settings_content_generic.gd
@@ -1467,6 +1487,10 @@ msgstr ""
 
 #: src/utils/TranslationUtils.gd
 msgid "Select an image"
+msgstr ""
+
+#: src/utils/TranslationUtils.gd
+msgid "Select a font"
 msgstr ""
 
 #: src/utils/TranslationUtils.gd

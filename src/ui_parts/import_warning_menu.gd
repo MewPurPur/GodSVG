@@ -43,13 +43,33 @@ func _ready() -> void:
 		warnings_label.add_theme_color_override("default_color", Configs.savedata.basic_color_error)
 		warnings_label.text = "[center]%s: %s" % [Translator.translate("Syntax error"), SVGParser.get_parsing_error_string(imported_text_parse_result.error)]
 	else:
-		var svg_warnings := get_svg_warnings(imported_text_parse_result.svg)
-		if svg_warnings.is_empty():
+		var unrecognized_elements := PackedStringArray()
+		var unrecognized_attributes := PackedStringArray()
+		for element in imported_text_parse_result.svg.get_all_element_descendants():
+			if element is ElementUnrecognized:
+				if not element.name in unrecognized_elements:
+					unrecognized_elements.append(element.name)
+			else:
+				for attribute in element.get_all_attributes():
+					if not DB.is_attribute_recognized(element.name, attribute.name) and not attribute.name in unrecognized_attributes:
+						unrecognized_attributes.append(attribute.name)
+		
+		if unrecognized_attributes.is_empty() and unrecognized_elements.is_empty():
 			finish_import()
 		else:
 			warnings_label.add_theme_color_override("default_color", Configs.savedata.basic_color_warning)
-			for warning in svg_warnings:
-				warnings_label.text += warning + "\n"
+			for element in unrecognized_elements:
+				warnings_label.add_text(Translator.translate("Unrecognized element") + ": ")
+				warnings_label.push_mono()
+				warnings_label.add_text(element)
+				warnings_label.pop()
+				warnings_label.newline()
+			for attribute in unrecognized_attributes:
+				warnings_label.add_text(Translator.translate("Unrecognized attribute") + ": ")
+				warnings_label.push_mono()
+				warnings_label.add_text(attribute)
+				warnings_label.pop()
+				warnings_label.newline()
 	ok_button.grab_focus()
 	$VBoxContainer/TitleLabel.text = Translator.translate("Import Problems")
 	ok_button.text = Translator.translate("Import")
@@ -58,22 +78,3 @@ func _ready() -> void:
 
 func set_svg(text: String) -> void:
 	imported_text = text
-
-
-func get_svg_warnings(root_element: ElementRoot) -> PackedStringArray:
-	var unrecognized_elements := PackedStringArray()
-	var unrecognized_attributes := PackedStringArray()
-	for element in root_element.get_all_element_descendants():
-		if element is ElementUnrecognized:
-			if not element.name in unrecognized_elements:
-				unrecognized_elements.append(element.name)
-		else:
-			for attribute in element.get_all_attributes():
-				if not DB.is_attribute_recognized(element.name, attribute.name) and not attribute.name in unrecognized_attributes:
-					unrecognized_attributes.append(attribute.name)
-	var warnings := PackedStringArray()
-	for element in unrecognized_elements:
-		warnings.append("%s: %s" % [Translator.translate("Unrecognized element"), element])
-	for attribute in unrecognized_attributes:
-		warnings.append("%s: %s" % [Translator.translate("Unrecognized attribute"), attribute])
-	return warnings

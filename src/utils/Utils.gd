@@ -1,5 +1,8 @@
 @abstract class_name Utils
 
+const IMAGE_FORMATS: PackedStringArray = ["png", "jpg", "jpeg", "webp", "svg"]
+const DYNAMIC_FONT_FORMATS: PackedStringArray = ["ttf", "otf", "woff", "woff2", "pfb", "pfm"]
+
 const MAX_NUMERIC_PRECISION = 6
 const MAX_ANGLE_PRECISION = 4
 

@@ -177,7 +177,7 @@ func _draw() -> void:
 # Helpers
 
 func _get_font() -> Font:
-	return ThemeUtils.mono_font if use_mono_font else ThemeUtils.regular_font
+	return ThemeUtils.mono_font if use_mono_font else ThemeUtils.main_font
 
 func _get_font_color() -> Color:
 	return get_theme_color("font_color", "LineEdit") if font_color == Color.TRANSPARENT else font_color

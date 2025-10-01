@@ -140,9 +140,10 @@ static func get_file_dialog_select_mode_title_text(multi_select: bool, extension
 	if multi_select:
 		return Translator.translate("Select {format} files").format({"format": _get_extension_readable_name("svg")})
 	else:
-		if extensions.size() > 1:
-			# Multiple formats currently only show up for reference images.
+		if extensions == Utils.IMAGE_FORMATS:
 			return Translator.translate("Select an image")
+		elif extensions == Utils.DYNAMIC_FONT_FORMATS:
+			return Translator.translate("Select a font")
 		else:
 			# "an" because this can currently only show for SVG and XML files.
 			return Translator.translate("Select an {format} file").format({"format": _get_extension_readable_name(extensions[0])})

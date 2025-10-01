@@ -397,20 +397,20 @@ msgid "Syntax error"
 msgstr "语法错误"
 
 #: src/ui_parts/import_warning_menu.gd
-msgid "Import Problems"
-msgstr "导入出错"
-
-#: src/ui_parts/import_warning_menu.gd src/utils/TranslationUtils.gd
-msgid "Import"
-msgstr "导入"
-
-#: src/ui_parts/import_warning_menu.gd
 msgid "Unrecognized element"
 msgstr "未知元素"
 
 #: src/ui_parts/import_warning_menu.gd
 msgid "Unrecognized attribute"
 msgstr "未知属性"
+
+#: src/ui_parts/import_warning_menu.gd
+msgid "Import Problems"
+msgstr "导入出错"
+
+#: src/ui_parts/import_warning_menu.gd src/utils/TranslationUtils.gd
+msgid "Import"
+msgstr "导入"
 
 #: src/ui_parts/inspector.gd
 msgid "Add element"
@@ -566,6 +566,10 @@ msgstr "搜索颜色"
 #: src/ui_widgets/color_field_popup.gd
 msgid "Color Picker"
 msgstr "取色器"
+
+#: src/ui_widgets/file_path_field.gd
+msgid "No file path"
+msgstr ""
 
 #: src/ui_widgets/fps_limit_dropdown.gd src/ui_widgets/setting_frame.gd
 msgid "Unlimited"
@@ -818,6 +822,22 @@ msgstr "基准色"
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Accent color"
 msgstr "强调色"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Fonts"
+msgstr ""
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Main font"
+msgstr ""
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Bold font"
+msgstr ""
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Mono font"
+msgstr ""
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "SVG Text colors"
@@ -1476,6 +1496,11 @@ msgstr "选择 {format} 文件"
 #: src/utils/TranslationUtils.gd
 msgid "Select an image"
 msgstr "选择图像"
+
+#: src/utils/TranslationUtils.gd
+#, fuzzy
+msgid "Select a font"
+msgstr "选择全部"
 
 #: src/utils/TranslationUtils.gd
 msgid "Select an {format} file"

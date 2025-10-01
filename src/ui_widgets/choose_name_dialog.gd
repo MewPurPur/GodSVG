@@ -17,7 +17,7 @@ func _ready() -> void:
 	name_edit.text_changed.connect(adapt_to_text)
 	name_edit.text_change_canceled.connect(queue_free)
 	name_edit.text_submitted.connect(_on_name_edit_text_submitted)
-	name_edit.add_theme_font_override("font", ThemeUtils.regular_font)
+	name_edit.add_theme_font_override("font", ThemeUtils.main_font)
 
 func _on_name_edit_text_submitted(_text: String) -> void:
 	if not action_button.disabled:

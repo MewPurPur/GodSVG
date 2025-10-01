@@ -399,20 +399,20 @@ msgid "Syntax error"
 msgstr "Syntaxfout"
 
 #: src/ui_parts/import_warning_menu.gd
-msgid "Import Problems"
-msgstr "Importproblemen"
-
-#: src/ui_parts/import_warning_menu.gd src/utils/TranslationUtils.gd
-msgid "Import"
-msgstr "Importeren"
-
-#: src/ui_parts/import_warning_menu.gd
 msgid "Unrecognized element"
 msgstr "Onherkende element"
 
 #: src/ui_parts/import_warning_menu.gd
 msgid "Unrecognized attribute"
 msgstr "Onherkende attribuut"
+
+#: src/ui_parts/import_warning_menu.gd
+msgid "Import Problems"
+msgstr "Importproblemen"
+
+#: src/ui_parts/import_warning_menu.gd src/utils/TranslationUtils.gd
+msgid "Import"
+msgstr "Importeren"
 
 #: src/ui_parts/inspector.gd
 msgid "Add element"
@@ -568,6 +568,10 @@ msgstr "Zoekkleur"
 #: src/ui_widgets/color_field_popup.gd
 msgid "Color Picker"
 msgstr "Kleurenplukker"
+
+#: src/ui_widgets/file_path_field.gd
+msgid "No file path"
+msgstr ""
 
 #: src/ui_widgets/fps_limit_dropdown.gd src/ui_widgets/setting_frame.gd
 msgid "Unlimited"
@@ -820,6 +824,22 @@ msgstr "Basiskleur"
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Accent color"
 msgstr "Accentkleur"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Fonts"
+msgstr ""
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Main font"
+msgstr ""
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Bold font"
+msgstr ""
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Mono font"
+msgstr ""
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "SVG Text colors"
@@ -1482,6 +1502,11 @@ msgstr "Kies {format} bestanden"
 #: src/utils/TranslationUtils.gd
 msgid "Select an image"
 msgstr "Kies een afbeedling"
+
+#: src/utils/TranslationUtils.gd
+#, fuzzy
+msgid "Select a font"
+msgstr "Alles selecteren"
 
 #: src/utils/TranslationUtils.gd
 msgid "Select an {format} file"

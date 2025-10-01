@@ -2,13 +2,13 @@
 
 importer="font_data_dynamic"
 type="FontFile"
-uid="uid://depydd16jq777"
-path="res://.godot/imported/FontMono.ttf-c924fdc7809f760b3a747e0cce04fa12.fontdata"
+uid="uid://cdke2b8vyur24"
+path="res://.godot/imported/NotoSans-ExtraBold.woff2-cdd04ff8cd7c29695f4b38f8010d9b59.fontdata"
 
 [deps]
 
-source_file="res://assets/fonts/FontMono.ttf"
-dest_files=["res://.godot/imported/FontMono.ttf-c924fdc7809f760b3a747e0cce04fa12.fontdata"]
+source_file="res://assets/fonts/NotoSans-ExtraBold.woff2"
+dest_files=["res://.godot/imported/NotoSans-ExtraBold.woff2-cdd04ff8cd7c29695f4b38f8010d9b59.fontdata"]
 
 [params]
 
@@ -23,7 +23,7 @@ allow_system_fallback=true
 force_autohinter=false
 modulate_color_glyphs=false
 hinting=1
-subpixel_positioning=1
+subpixel_positioning=4
 keep_rounding_remainders=true
 oversampling=0.0
 Fallbacks=null
