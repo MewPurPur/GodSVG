@@ -102,7 +102,7 @@ func update_tiles() -> void:
 		return
 	var svg_text := SVGParser.root_to_export_markup(State.root_element)
 	for child: Tile in icon_view_tile_container.get_children():
-		child.svg_markup = State.svg_text
+		child.svg_markup = svg_text
 	if selected_tile:
 		texture_rect.texture = selected_tile.texture
 		_update_texture_rect_size()

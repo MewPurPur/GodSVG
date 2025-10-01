@@ -47,7 +47,7 @@ func _ready() -> void:
 func _update_texture() -> void:
 	if not texture_rect:
 		return
-	var tex := SVGTexture.create_from_string(svg_markup)
+	var tex := DPITexture.create_from_string(svg_markup)
 	var tex_size := _get_tex_scale(Vector2i(tex.get_size()))
 	if tex_size <= 0.0:
 		tex_size = 0.01
