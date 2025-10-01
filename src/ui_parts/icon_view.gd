@@ -71,7 +71,7 @@ func _add_new_tile() -> void:
 
 
 func _create_new_tile(new_size: int) -> Tile:
-	var tile := TileScene.instantiate()
+	var tile: Tile = TileScene.instantiate()
 	tile.texture_size = new_size
 	tile.remove_requested.connect(func():
 		if selected_tile == tile:
@@ -85,6 +85,11 @@ func _create_new_tile(new_size: int) -> Tile:
 		texture_rect.texture = tile.texture
 		scaled_preview.show()
 		_update_texture_rect_size()
+	)
+	tile.texture_size_changed.connect(func():
+		if selected_tile == tile:
+			texture_rect.texture = tile.texture
+			_update_texture_rect_size()
 	)
 	tile.texture_changed.connect(func():
 		if selected_tile == tile:
@@ -114,7 +119,6 @@ func _update_texture_rect_size() -> void:
 		return
 	texture_rect.custom_minimum_size = texture_rect.texture.get_size()
 	texture_rect.size_flags_stretch_ratio = float(texture_rect.texture.get_width()) / float(texture_rect.texture.get_height())
-	#texture_rect.custom_minimum_size.x = texture_rect.size.y * float(texture_rect.texture.get_width()) / float(texture_rect.texture.get_height())
 	size_label.text = selected_tile.texture_size_string
 
 

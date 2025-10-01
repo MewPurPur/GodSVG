@@ -24,13 +24,15 @@ var svg_markup: String:
 	set(value):
 		svg_markup = value
 		_update_texture()
+
 var texture_size: int:
 	set(value):
 		texture_size = value
-		if number_edit:
+		if is_instance_valid(number_edit):
 			number_edit.set_value(value, false)
 		_update_texture()
 		texture_size_changed.emit()
+
 var texture_size_string: String
 
 
@@ -47,19 +49,17 @@ func _ready() -> void:
 func _update_texture() -> void:
 	if not texture_rect:
 		return
-	var tex := DPITexture.create_from_string(svg_markup)
-	var tex_size := _get_tex_scale(Vector2i(tex.get_size()))
+	var new_texture := DPITexture.create_from_string(svg_markup)
+	var tex_size := _get_tex_scale(Vector2i(new_texture.get_size()))
 	if tex_size <= 0.0:
 		tex_size = 0.01
-	tex.base_scale = tex_size
-	texture_rect.texture = tex
-	texture = tex
+	new_texture.base_scale = tex_size
+	texture_rect.texture = new_texture
+	texture = new_texture
 	texture_changed.emit()
-	scale_label.text = "(%.1fx)" % tex_size
-	texture_size_string = "%sx%s %s" % [tex.get_width(), tex.get_height(), scale_label.text]
+	scale_label.text = "(%.1f×)" % tex_size
+	texture_size_string = "%s×%s %s" % [new_texture.get_width(), new_texture.get_height(), scale_label.text]
 
 
 func _get_tex_scale(default_size: Vector2i) -> float:
-	var max_dim_size := texture_size as int
-	
-	return max_dim_size / float(default_size[default_size.max_axis_index()])
+	return texture_size / float(default_size[default_size.max_axis_index()])

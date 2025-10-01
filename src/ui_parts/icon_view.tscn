@@ -8,7 +8,6 @@
 [ext_resource type="PackedScene" uid="uid://bujllg1bqlub6" path="res://src/ui_widgets/color_swatch.tscn" id="4_rq20x"]
 
 [node name="IconView" type="Container"]
-anchors_preset = -1
 offset_bottom = 169.0
 size_flags_vertical = 3
 script = ExtResource("1_dyte2")

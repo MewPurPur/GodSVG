@@ -326,11 +326,8 @@ static func _setup_panelcontainer(theme: Theme) -> void:
 	var outlined_panel_stylebox := StyleBoxFlat.new()
 	outlined_panel_stylebox.set_corner_radius_all(2)
 	outlined_panel_stylebox.set_border_width_all(2)
-	outlined_panel_stylebox.set_expand_margin_all(2)
-	outlined_panel_stylebox.content_margin_left = 0.0
-	outlined_panel_stylebox.content_margin_right = 0.0
-	outlined_panel_stylebox.content_margin_top = 0.0
-	outlined_panel_stylebox.content_margin_bottom = 0.0
+	outlined_panel_stylebox.set_expand_margin_all(2.0)
+	outlined_panel_stylebox.set_content_margin_all(0.0)
 	outlined_panel_stylebox.bg_color = Color.TRANSPARENT
 	outlined_panel_stylebox.border_color = overlay_panel_border_color
 	theme.set_stylebox("panel", "OutlinedPanel", outlined_panel_stylebox)

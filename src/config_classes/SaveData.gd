@@ -1140,12 +1140,10 @@ func get_layout_part_index(part: Utils.LayoutPart) -> int:
 		if icon_view_sizes != new_value:
 			var real_sizes: PackedInt64Array
 			for size in new_value:
-				if size <= 0:
-					real_sizes.append(1)
-					continue
-				real_sizes.append(size)
+				real_sizes.append(maxi(size, 1))
 			icon_view_sizes = real_sizes
 			emit_changed()
+
 @export var icon_view_bg_override := Color.TRANSPARENT:
 	set(new_value):
 		if icon_view_bg_override != new_value:
