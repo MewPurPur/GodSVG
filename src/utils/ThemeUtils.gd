@@ -334,6 +334,17 @@ static func _setup_panelcontainer(theme: Theme) -> void:
 	contrast_panel_stylebox.bg_color = contrast_flat_panel_color
 	theme.set_stylebox("panel", "ContrastFlatPanel", contrast_panel_stylebox)
 	
+	theme.add_type("OutlinedPanel")
+	theme.set_type_variation("OutlinedPanel", "PanelContainer")
+	var outlined_panel_stylebox := StyleBoxFlat.new()
+	outlined_panel_stylebox.set_corner_radius_all(2)
+	outlined_panel_stylebox.set_border_width_all(2)
+	outlined_panel_stylebox.set_expand_margin_all(2.0)
+	outlined_panel_stylebox.set_content_margin_all(0.0)
+	outlined_panel_stylebox.bg_color = Color.TRANSPARENT
+	outlined_panel_stylebox.border_color = overlay_panel_border_color
+	theme.set_stylebox("panel", "OutlinedPanel", outlined_panel_stylebox)
+	
 	theme.add_type("OverlayPanel")
 	theme.set_type_variation("OverlayPanel", "PanelContainer")
 	var overlay_stylebox := StyleBoxFlat.new()

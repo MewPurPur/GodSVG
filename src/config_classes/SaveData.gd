@@ -1162,6 +1162,21 @@ func get_layout_part_index(part: Utils.LayoutPart) -> int:
 			left_vertical_splitter_offset = new_value
 			emit_changed()
 
+@export var icon_view_sizes: PackedInt64Array = [16, 24, 32, 48, 64]:
+	set(new_value):
+		if icon_view_sizes != new_value:
+			var real_sizes: PackedInt64Array
+			for size in new_value:
+				real_sizes.append(maxi(size, 1))
+			icon_view_sizes = real_sizes
+			emit_changed()
+
+@export var icon_view_bg_override := Color.TRANSPARENT:
+	set(new_value):
+		if icon_view_bg_override != new_value:
+			icon_view_bg_override = new_value
+			emit_changed()
+
 
 # Utility
 
