@@ -82,12 +82,12 @@ func _draw() -> void:
 	
 	var text_width := size.x - button.size.x - dropdown.size.x - 16
 	var text_obj := TextLine.new()
-	text_obj.add_string(text, ThemeUtils.regular_font, 13)
+	text_obj.add_string(text, ThemeUtils.main_font, 13)
 	text_obj.width = text_width
 	text_obj.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	text_obj.draw(ci, Vector2(4, 5), ThemeUtils.text_color)
 	
-	if text_width < ThemeUtils.regular_font.get_string_size(text, HORIZONTAL_ALIGNMENT_LEFT, -1, 13).x:
+	if text_width < ThemeUtils.main_font.get_string_size(text, HORIZONTAL_ALIGNMENT_LEFT, -1, 13).x:
 		tooltip_rect = Rect2(4, 5, text_width, size.y - 10)
 	else:
 		tooltip_rect = Rect2(NAN, NAN, NAN, NAN)

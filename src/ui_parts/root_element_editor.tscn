@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://bktmk76u7dsu0"]
 
 [ext_resource type="Script" uid="uid://beukt3a23d5ug" path="res://src/ui_parts/root_element_editor.gd" id="1_xgyg0"]
-[ext_resource type="FontFile" uid="uid://depydd16jq777" path="res://assets/fonts/FontMono.ttf" id="2_fm5sa"]
+[ext_resource type="FontVariation" uid="uid://pup5vmxl1t6m" path="res://assets/fonts/MonoFont.tres" id="2_l0alx"]
 [ext_resource type="PackedScene" uid="uid://dad7fkhmsooc6" path="res://src/ui_widgets/number_edit.tscn" id="3_1gu7n"]
 [ext_resource type="Script" uid="uid://ynx3s1jc6bwq" path="res://src/ui_widgets/BetterButton.gd" id="4_7r848"]
 
@@ -31,7 +31,7 @@ layout_mode = 2
 size_flags_horizontal = 4
 focus_mode = 0
 theme_type_variation = &"TextButton"
-theme_override_fonts/font = ExtResource("2_fm5sa")
+theme_override_fonts/font = ExtResource("2_l0alx")
 theme_override_font_sizes/font_size = 12
 toggle_mode = true
 action_mode = 0
@@ -52,7 +52,7 @@ layout_mode = 2
 size_flags_horizontal = 4
 focus_mode = 0
 theme_type_variation = &"TextButton"
-theme_override_fonts/font = ExtResource("2_fm5sa")
+theme_override_fonts/font = ExtResource("2_l0alx")
 theme_override_font_sizes/font_size = 12
 toggle_mode = true
 action_mode = 0
@@ -74,7 +74,7 @@ layout_mode = 2
 size_flags_horizontal = 4
 focus_mode = 0
 theme_type_variation = &"TextButton"
-theme_override_fonts/font = ExtResource("2_fm5sa")
+theme_override_fonts/font = ExtResource("2_l0alx")
 theme_override_font_sizes/font_size = 12
 toggle_mode = true
 action_mode = 0

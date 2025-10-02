@@ -46,7 +46,7 @@ func sync_buttons() -> void:
 	collapsed_paths.clear()
 	dropdown_button = null
 	
-	var font := ThemeUtils.regular_font
+	var font := ThemeUtils.main_font
 	var font_size := get_theme_font_size("font_size", "FlatButton")
 	
 	var available_width := size.x - 20.0
@@ -127,7 +127,7 @@ func sync_buttons() -> void:
 	queue_redraw()
 
 func _draw() -> void:
-	var font := ThemeUtils.regular_font
+	var font := ThemeUtils.main_font
 	var font_size := get_theme_font_size("font_size", "FlatButton")
 	
 	var buttons_to_draw: Array[ButtonData] = buttons.duplicate()

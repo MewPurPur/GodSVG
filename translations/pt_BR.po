@@ -401,20 +401,20 @@ msgid "Syntax error"
 msgstr "Erro de sintaxe"
 
 #: src/ui_parts/import_warning_menu.gd
-msgid "Import Problems"
-msgstr "Problemas de Importação"
-
-#: src/ui_parts/import_warning_menu.gd src/utils/TranslationUtils.gd
-msgid "Import"
-msgstr "Importar"
-
-#: src/ui_parts/import_warning_menu.gd
 msgid "Unrecognized element"
 msgstr "Elemento não reconhecido"
 
 #: src/ui_parts/import_warning_menu.gd
 msgid "Unrecognized attribute"
 msgstr "Atributo não reconhecido"
+
+#: src/ui_parts/import_warning_menu.gd
+msgid "Import Problems"
+msgstr "Problemas de Importação"
+
+#: src/ui_parts/import_warning_menu.gd src/utils/TranslationUtils.gd
+msgid "Import"
+msgstr "Importar"
 
 #: src/ui_parts/inspector.gd
 msgid "Add element"
@@ -571,6 +571,10 @@ msgstr "Procurar cor"
 #: src/ui_widgets/color_field_popup.gd
 msgid "Color Picker"
 msgstr "Seletor de Cores"
+
+#: src/ui_widgets/file_path_field.gd
+msgid "No file path"
+msgstr ""
 
 #: src/ui_widgets/fps_limit_dropdown.gd src/ui_widgets/setting_frame.gd
 msgid "Unlimited"
@@ -827,6 +831,22 @@ msgstr "Cores básicas"
 #, fuzzy
 msgid "Accent color"
 msgstr "Cor de texto"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Fonts"
+msgstr ""
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Main font"
+msgstr ""
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Bold font"
+msgstr ""
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Mono font"
+msgstr ""
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "SVG Text colors"
@@ -1497,6 +1517,11 @@ msgstr "Selecionar arquivos do tipo {format}"
 #: src/utils/TranslationUtils.gd
 msgid "Select an image"
 msgstr "Selecionar uma imagem"
+
+#: src/utils/TranslationUtils.gd
+#, fuzzy
+msgid "Select a font"
+msgstr "Selecionar tudo"
 
 #: src/utils/TranslationUtils.gd
 msgid "Select an {format} file"

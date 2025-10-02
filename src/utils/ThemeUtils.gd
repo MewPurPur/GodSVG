@@ -1,8 +1,8 @@
 @abstract class_name ThemeUtils
 
-const regular_font = preload("res://assets/fonts/Font.ttf")
-const bold_font = preload("res://assets/fonts/FontBold.ttf")
-const mono_font = preload("res://assets/fonts/FontMono.ttf")
+static var main_font: FontVariation = preload("res://assets/fonts/MainFont.tres")
+static var bold_font: FontVariation = preload("res://assets/fonts/BoldFont.tres")
+static var mono_font: FontVariation = preload("res://assets/fonts/MonoFont.tres")
 
 static var base_color: Color
 static var accent_color: Color
@@ -245,10 +245,23 @@ static func recalculate_colors() -> void:
 	selected_tab_color = softer_intermediate_hover_color.lerp(accent_color, 0.2)
 	selected_tab_border_color = accent_color
 
+static func rebuild_fonts() -> void:
+	main_font.base_font = FontFile.new()
+	if not Configs.savedata.main_font_path.is_empty():
+		main_font.base_font.load_dynamic_font(Configs.savedata.main_font_path)
+	
+	bold_font.base_font = FontFile.new()
+	if not Configs.savedata.bold_font_path.is_empty():
+		bold_font.base_font.load_dynamic_font(Configs.savedata.bold_font_path)
+	
+	mono_font.base_font = FontFile.new()
+	if not Configs.savedata.mono_font_path.is_empty():
+		mono_font.base_font.load_dynamic_font(Configs.savedata.mono_font_path)
+
 static func generate_theme() -> Theme:
 	recalculate_colors()
 	var theme := Theme.new()
-	theme.default_font = regular_font
+	theme.default_font = main_font
 	theme.default_font_size = 13
 	_setup_panelcontainer(theme)
 	_setup_button(theme)
@@ -267,7 +280,7 @@ static func generate_theme() -> Theme:
 
 static func generate_and_apply_theme() -> void:
 	var default_theme := ThemeDB.get_default_theme()
-	default_theme.default_font = regular_font
+	default_theme.default_font = main_font
 	default_theme.default_font_size = 13
 	var generated_theme := generate_theme()
 	default_theme.merge_with(generated_theme)
@@ -1149,6 +1162,7 @@ static func _setup_label(theme: Theme) -> void:
 	theme.set_color("default_color", "RichTextLabel", text_color)
 	theme.set_color("selection_color", "RichTextLabel", selection_color)
 	theme.set_font("bold_font", "RichTextLabel", bold_font)
+	theme.set_font("mono_font", "RichTextLabel", mono_font)
 
 static func _setup_tabcontainer(theme: Theme) -> void:
 	theme.add_type("TabContainer")
@@ -1259,7 +1273,7 @@ static func _setup_tooltip(theme: Theme) -> void:
 	theme.add_type("TooltipLabel")
 	theme.set_color("font_color", "TooltipLabel", text_color)
 	theme.set_font_size("font_size", "TooltipLabel", 14)
-	theme.set_font("font", "TooltipLabel", regular_font)
+	theme.set_font("font", "TooltipLabel", main_font)
 
 static func _setup_splitcontainer(theme: Theme) -> void:
 	theme.add_type("SplitContainer")

@@ -397,20 +397,20 @@ msgid "Syntax error"
 msgstr "Синтактична грешка"
 
 #: src/ui_parts/import_warning_menu.gd
-msgid "Import Problems"
-msgstr "Проблеми в импортирането"
-
-#: src/ui_parts/import_warning_menu.gd src/utils/TranslationUtils.gd
-msgid "Import"
-msgstr "Импортирай"
-
-#: src/ui_parts/import_warning_menu.gd
 msgid "Unrecognized element"
 msgstr "Непознат елемент"
 
 #: src/ui_parts/import_warning_menu.gd
 msgid "Unrecognized attribute"
 msgstr "Непознат атрибут"
+
+#: src/ui_parts/import_warning_menu.gd
+msgid "Import Problems"
+msgstr "Проблеми в импортирането"
+
+#: src/ui_parts/import_warning_menu.gd src/utils/TranslationUtils.gd
+msgid "Import"
+msgstr "Импортирай"
 
 #: src/ui_parts/inspector.gd
 msgid "Add element"
@@ -565,6 +565,10 @@ msgstr "Търсене на цвят"
 #: src/ui_widgets/color_field_popup.gd
 msgid "Color Picker"
 msgstr "Цветно колело"
+
+#: src/ui_widgets/file_path_field.gd
+msgid "No file path"
+msgstr "Няма пътека към файл"
 
 #: src/ui_widgets/fps_limit_dropdown.gd src/ui_widgets/setting_frame.gd
 msgid "Unlimited"
@@ -812,6 +816,22 @@ msgstr "Базов цвят"
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Accent color"
 msgstr "Акцентен цвят"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Fonts"
+msgstr "Шрифтове"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Main font"
+msgstr "Основен шрифт"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Bold font"
+msgstr "Удебелен шрифт"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Mono font"
+msgstr "Моноширинен шрифт"
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "SVG Text colors"
@@ -1469,6 +1489,10 @@ msgstr "Избери {format} файлове"
 #: src/utils/TranslationUtils.gd
 msgid "Select an image"
 msgstr "Избери изображение"
+
+#: src/utils/TranslationUtils.gd
+msgid "Select a font"
+msgstr "Избери шрифт"
 
 #: src/utils/TranslationUtils.gd
 msgid "Select an {format} file"

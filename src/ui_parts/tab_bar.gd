@@ -82,7 +82,7 @@ func _draw() -> void:
 			if text_line_width > 0:
 				var text_line := TextLine.new()
 				text_line.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
-				text_line.add_string(current_tab_name, ThemeUtils.regular_font, 13)
+				text_line.add_string(current_tab_name, ThemeUtils.main_font, 13)
 				text_line.width = text_line_width - 2
 				text_line.draw(ci, rect.position + Vector2(4, 3), get_theme_color("font_selected_color", "TabContainer"))
 			
@@ -101,7 +101,7 @@ func _draw() -> void:
 				
 				var text_line := TextLine.new()
 				text_line.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
-				text_line.add_string(current_tab_name, ThemeUtils.regular_font, 13)
+				text_line.add_string(current_tab_name, ThemeUtils.main_font, 13)
 				text_line.width = text_line_width
 				text_line.draw(ci, rect.position + Vector2(4, 3), text_color)
 	
@@ -409,7 +409,7 @@ func _make_custom_tooltip(for_text: String) -> Object:
 	
 	var path := hovered_tab.get_presented_svg_file_path()
 	var label := Label.new()
-	label.add_theme_font_override("font", ThemeUtils.mono_font if is_saved else ThemeUtils.regular_font)
+	label.add_theme_font_override("font", ThemeUtils.mono_font if is_saved else ThemeUtils.main_font)
 	label.add_theme_font_size_override("font_size", 12)
 	label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	label.text = path if is_saved else Translator.translate("This SVG is not bound to a file location yet.")

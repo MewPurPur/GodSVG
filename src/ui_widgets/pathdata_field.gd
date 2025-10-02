@@ -13,8 +13,8 @@ const STRIP_HEIGHT = 22.0
 
 signal focused
 
-const MiniNumberFieldScene = preload("mini_number_field.tscn")
-const FlagFieldScene = preload("flag_field.tscn")
+const MiniNumberFieldScene = preload("res://src/ui_widgets/mini_number_field.tscn")
+const FlagFieldScene = preload("res://src/ui_widgets/flag_field.tscn")
 
 const more_icon = preload("res://assets/icons/SmallMore.svg")
 const plus_icon = preload("res://assets/icons/Plus.svg")
@@ -98,7 +98,7 @@ func _on_line_edit_focus_entered() -> void:
 
 func setup_font(new_text: String) -> void:
 	if new_text.is_empty():
-		line_edit.add_theme_font_override("font", ThemeUtils.regular_font)
+		line_edit.add_theme_font_override("font", ThemeUtils.main_font)
 	else:
 		line_edit.remove_theme_font_override("font")
 

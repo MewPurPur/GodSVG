@@ -146,11 +146,11 @@ func _draw() -> void:
 			
 		icon.draw(ci, rect.get_center() - icon.get_size() / 2.0, ThemeUtils.tinted_contrast_color)
 	
-	ThemeUtils.regular_font.draw_string(ci, Vector2(0, 12),
+	ThemeUtils.main_font.draw_string(ci, Vector2(0, 12),
 			Translator.translate("Layout") + ":", HORIZONTAL_ALIGNMENT_CENTER, size.x,
 			get_theme_font_size("font_size", "Label"), ThemeUtils.text_color)
 	
-	ThemeUtils.regular_font.draw_string(ci, Vector2(0, size.x * 0.625 + 33),
+	ThemeUtils.main_font.draw_string(ci, Vector2(0, size.x * 0.625 + 33),
 			Translator.translate("Excluded") + ":", HORIZONTAL_ALIGNMENT_CENTER, size.x,
 			get_theme_font_size("font_size", "Label"), ThemeUtils.text_color)
 

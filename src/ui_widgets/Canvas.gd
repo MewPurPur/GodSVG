@@ -255,7 +255,7 @@ func _draw() -> void:
 				minor_points.append(Vector2(i * camera_zoom, 0))
 				minor_points.append(Vector2(i * camera_zoom, grid_size.y * camera_zoom))
 				if mark_pixel_lines:
-					ThemeUtils.regular_font.draw_string(grid_numbers_ci,
+					ThemeUtils.main_font.draw_string(grid_numbers_ci,
 							Vector2(i * camera_zoom + 4, 14), String.num_int64(floori(i + snapped_pos.x)),
 							HORIZONTAL_ALIGNMENT_LEFT, -1, 14, axis_line_color)
 		else:
@@ -263,7 +263,7 @@ func _draw() -> void:
 			if int(coord / TICK_DISTANCE) % rate == 0:
 				major_points.append(Vector2(i * camera_zoom, 0))
 				major_points.append(Vector2(i * camera_zoom, grid_size.y * camera_zoom))
-				ThemeUtils.regular_font.draw_string(grid_numbers_ci,
+				ThemeUtils.main_font.draw_string(grid_numbers_ci,
 						Vector2(i * camera_zoom + 4, 14), String.num_int64(coord),
 						HORIZONTAL_ALIGNMENT_LEFT, -1, 14, axis_line_color)
 			elif coord % rate == 0:
@@ -280,7 +280,7 @@ func _draw() -> void:
 				minor_points.append(Vector2(0, i * camera_zoom))
 				minor_points.append(Vector2(grid_size.x * camera_zoom, i * camera_zoom))
 				if mark_pixel_lines:
-					ThemeUtils.regular_font.draw_string(grid_numbers_ci,
+					ThemeUtils.main_font.draw_string(grid_numbers_ci,
 							Vector2(4, i * camera_zoom + 14), String.num_int64(floori(i + snapped_pos.y)),
 							HORIZONTAL_ALIGNMENT_LEFT, -1, 14, axis_line_color)
 		else:
@@ -288,7 +288,7 @@ func _draw() -> void:
 			if int(coord / TICK_DISTANCE) % rate == 0:
 				major_points.append(Vector2(0, i * camera_zoom))
 				major_points.append(Vector2(grid_size.x * camera_zoom, i * camera_zoom))
-				ThemeUtils.regular_font.draw_string(grid_numbers_ci,
+				ThemeUtils.main_font.draw_string(grid_numbers_ci,
 						Vector2(4, i * camera_zoom + 14), String.num_int64(coord),
 						HORIZONTAL_ALIGNMENT_LEFT, -1, 14, axis_line_color)
 			elif coord % rate == 0:

@@ -172,17 +172,17 @@ static func _choose_file_name() -> String:
 
 # No need for completion callback here yet.
 static func open_svg_import_dialog() -> void:
-	_open_import_dialog(PackedStringArray(["svg"]), _apply_svg, true)
+	open_custom_import_dialog(PackedStringArray(["svg"]), _apply_svg, true)
 
 static func open_image_import_dialog(completion_callback: Callable) -> void:
-	_open_import_dialog(PackedStringArray(["png", "jpg", "jpeg", "webp", "svg"]), _finish_reference_load.bind(completion_callback))
+	open_custom_import_dialog(Utils.IMAGE_FORMATS, _finish_reference_load.bind(completion_callback))
 
 static func open_xml_import_dialog(completion_callback: Callable) -> void:
-	_open_import_dialog(PackedStringArray(["xml"]), completion_callback)
+	open_custom_import_dialog(PackedStringArray(["xml"]), completion_callback)
 
 
 # On web, the completion callback can't use the full file path.
-static func _open_import_dialog(extensions: PackedStringArray, completion_callback: Callable, multi_select := false) -> void:
+static func open_custom_import_dialog(extensions: PackedStringArray, completion_callback: Callable, multi_select := false) -> void:
 	OS.request_permissions()
 	var extensions_with_dots := PackedStringArray()
 	for extension in extensions:
@@ -302,14 +302,18 @@ static func _file_import_proceed(file_paths: PackedStringArray, completion_callb
 	
 	# The XML callbacks currently happen to not need the file path.
 	# The SVG callback used currently can popup extra dialogs, so they need the callable.
-	match file_path.get_extension():
-		"svg":
-			if file_paths.is_empty():
-				completion_callback.call(file.get_as_text(), file_path)
-			else:
-				completion_callback.call(file.get_as_text(), file_path, proceed_callback, false)
-		"xml": completion_callback.call(file.get_as_text())
-		_: completion_callback.call(file.get_buffer(file.get_length()), file_path)
+	var file_extension := file_path.get_extension()
+	if file_extension == "svg":
+		if file_paths.is_empty():
+			completion_callback.call(file.get_as_text(), file_path)
+		else:
+			completion_callback.call(file.get_as_text(), file_path, proceed_callback, false)
+	elif file_extension == "xml":
+		completion_callback.call(file.get_as_text())
+	elif file_extension in Utils.DYNAMIC_FONT_FORMATS:
+		completion_callback.call(file_path)
+	else:
+		completion_callback.call(file.get_buffer(file.get_length()), file_path)
 
 
 static func _apply_svg(data: Variant, file_path: String, proceed_callback := Callable(), is_last_file := true) -> void:

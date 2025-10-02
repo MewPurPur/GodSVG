@@ -1,6 +1,9 @@
 extends Control
 
-enum Type {NONE, CHECKBOX, COLOR, DROPDOWN, NUMBER_DROPDOWN}
+const reload_icon = preload("res://assets/icons/Reload.svg")
+const clear_icon = preload("res://assets/icons/Clear.svg")
+
+enum Type {NONE, CHECKBOX, COLOR, DROPDOWN, NUMBER_DROPDOWN, FILE_PATH}
 var type := Type.NONE
 
 signal value_changed
@@ -12,6 +15,7 @@ const ColorEditScene = preload("res://src/ui_widgets/color_edit.tscn")
 const DropdownScene = preload("res://src/ui_widgets/dropdown.tscn")
 const NumberDropdownScene = preload("res://src/ui_widgets/number_dropdown.tscn")
 const FpsLimitDropdownScene = preload("res://src/ui_widgets/fps_limit_dropdown.tscn")
+const FilePathFieldScene = preload("res://src/ui_widgets/file_path_field.tscn")
 
 var getter: Callable
 var setter: Callable
@@ -67,7 +71,7 @@ func setup_checkbox() -> void:
 	widget.button_pressed = getter.call()
 	widget.toggled.connect(_checkbox_modification.unbind(1))
 	type = Type.CHECKBOX
-	panel_width = 76
+	panel_width = 74
 
 func setup_color(enable_alpha: bool) -> void:
 	widget = ColorEditScene.instantiate()
@@ -76,7 +80,16 @@ func setup_color(enable_alpha: bool) -> void:
 	add_child(widget)
 	widget.value_changed.connect(_color_modification.bind(enable_alpha))
 	type = Type.COLOR
-	panel_width = 114 if enable_alpha else 100
+	panel_width = 112 if enable_alpha else 98
+
+func setup_file_path(extensions: PackedStringArray) -> void:
+	widget = FilePathFieldScene.instantiate()
+	widget.extensions = extensions
+	widget.value = getter.call()
+	add_child(widget)
+	widget.value_changed.connect(_text_modification)
+	type = Type.FILE_PATH
+	panel_width = 160
 
 # TODO Typed Dictionary wonkiness
 func setup_dropdown(values: Array[Variant], value_text_map: Dictionary) -> void:  # Dictionary[Variant, String]
@@ -87,7 +100,7 @@ func setup_dropdown(values: Array[Variant], value_text_map: Dictionary) -> void:
 	add_child(widget)
 	widget.value_changed.connect(_dropdown_modification)
 	type = Type.DROPDOWN
-	panel_width = 100
+	panel_width = 101
 
 func setup_number_dropdown(values: Array[float], is_integer: bool, restricted: bool, min_value: float, max_value: float) -> void:
 	widget = NumberDropdownScene.instantiate()
@@ -99,14 +112,14 @@ func setup_number_dropdown(values: Array[float], is_integer: bool, restricted: b
 	add_child(widget)
 	widget.value_changed.connect(_number_dropdown_modification)
 	type = Type.NUMBER_DROPDOWN
-	panel_width = 100
+	panel_width = 101
 
 func setup_fps_limit_dropdown() -> void:
 	widget = FpsLimitDropdownScene.instantiate()
 	add_child(widget)
 	widget.value_changed.connect(_fps_limit_dropdown_modification)
 	type = Type.NUMBER_DROPDOWN
-	panel_width = 100
+	panel_width = 101
 
 func _ready() -> void:
 	widget.size = Vector2(panel_width - 32, 22)
@@ -120,6 +133,10 @@ func _ready() -> void:
 	reset_button.position = Vector2(size.x - 24, 4)
 	reset_button.pressed.connect(_on_reset_button_pressed)
 	update_widgets()
+	if typeof(default) == TYPE_STRING and default.is_empty():
+		reset_button.icon = clear_icon
+	else:
+		reset_button.icon = reload_icon
 
 func _on_resized() -> void:
 	widget.position = Vector2(size.x - panel_width, 3)
@@ -140,6 +157,10 @@ func _color_modification(value: String, enable_alpha: bool) -> void:
 	post_modification()
 
 func _dropdown_modification(value: int) -> void:
+	setter.call(value)
+	post_modification()
+
+func _text_modification(value: String) -> void:
 	setter.call(value)
 	post_modification()
 
@@ -188,7 +209,7 @@ func update_widgets() -> void:
 			var setting_str := setting_value.to_html(show_alpha)
 			widget.value = setting_str
 			reset_button.visible = (not disabled and getter.call().to_html() != default.to_html())
-		Type.DROPDOWN:
+		Type.DROPDOWN, Type.FILE_PATH:
 			widget.set_value(getter.call())
 			reset_button.visible = (not disabled and getter.call() != default)
 		Type.NUMBER_DROPDOWN:
@@ -225,13 +246,13 @@ func _draw() -> void:
 		text_pos_x += info_button.size.x + (size.y - info_button.size.x) / 2.0
 		text_space -= size.y
 	var text_obj := TextLine.new()
-	text_obj.add_string(text, ThemeUtils.regular_font, 13)
+	text_obj.add_string(text, ThemeUtils.main_font, 13)
 	text_obj.width = text_space
 	text_obj.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	text_obj.draw(ci, Vector2(text_pos_x, 5), color)
 	get_theme_stylebox("panel", "SubtleFlatPanel").draw(ci, Rect2(non_panel_width - 2, 2, panel_width, size.y - 4))
 
-	if text_space < ThemeUtils.regular_font.get_string_size(text, HORIZONTAL_ALIGNMENT_LEFT, -1, 13).x:
+	if text_space < ThemeUtils.main_font.get_string_size(text, HORIZONTAL_ALIGNMENT_LEFT, -1, 13).x:
 		tooltip_rect = Rect2(text_pos_x, 5, text_space, size.y - 10)
 	else:
 		tooltip_rect = Rect2(NAN, NAN, NAN, NAN)

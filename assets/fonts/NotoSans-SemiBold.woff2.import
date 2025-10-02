@@ -2,13 +2,13 @@
 
 importer="font_data_dynamic"
 type="FontFile"
-uid="uid://dc0w4sx0h0fui"
-path="res://.godot/imported/FontBold.ttf-5d725167d8320de4282b923e311a7f32.fontdata"
+uid="uid://cp6fwvpgvqucw"
+path="res://.godot/imported/NotoSans-SemiBold.woff2-5466b338debc7f247468a9e5c6464220.fontdata"
 
 [deps]
 
-source_file="res://assets/fonts/FontBold.ttf"
-dest_files=["res://.godot/imported/FontBold.ttf-5d725167d8320de4282b923e311a7f32.fontdata"]
+source_file="res://assets/fonts/NotoSans-SemiBold.woff2"
+dest_files=["res://.godot/imported/NotoSans-SemiBold.woff2-5466b338debc7f247468a9e5c6464220.fontdata"]
 
 [params]
 
@@ -23,7 +23,7 @@ allow_system_fallback=true
 force_autohinter=false
 modulate_color_glyphs=false
 hinting=1
-subpixel_positioning=1
+subpixel_positioning=4
 keep_rounding_remainders=true
 oversampling=0.0
 Fallbacks=null
