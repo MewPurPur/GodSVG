@@ -3,7 +3,6 @@
 [ext_resource type="Script" uid="uid://dtmassdggpkom" path="res://src/ui_parts/layout_configuration.gd" id="2_lmeyv"]
 
 [node name="LayoutPopup" type="PanelContainer"]
-anchors_preset = -1
 offset_right = 40.0
 offset_bottom = 40.0
 
@@ -15,6 +14,6 @@ theme_override_constants/margin_right = 2
 theme_override_constants/margin_bottom = 2
 
 [node name="LayoutConfiguration" type="Control" parent="MarginContainer"]
-custom_minimum_size = Vector2(200, 200)
+custom_minimum_size = Vector2(208, 206)
 layout_mode = 2
 script = ExtResource("2_lmeyv")
