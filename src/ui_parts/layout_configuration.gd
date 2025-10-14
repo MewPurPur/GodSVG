@@ -93,7 +93,7 @@ func _draw() -> void:
 	
 	get_theme_stylebox("disabled", "TranslucentButton").draw(ci, right_rect.grow(-BUFFER_SIZE))
 	var viewport_icon := Utils.get_layout_part_icon(Utils.LayoutPart.VIEWPORT)
-	viewport_icon.draw(ci, right_rect.get_center() - viewport_icon.get_size() / 2, ThemeUtils.tinted_contrast_color)
+	viewport_icon.draw(ci, (right_rect.get_center() - viewport_icon.get_size() / 2).round(), ThemeUtils.tinted_contrast_color)
 	
 	for layout_location in section_areas:
 		var area := section_areas[layout_location].grow(-BUFFER_SIZE)
@@ -144,7 +144,7 @@ func _draw() -> void:
 					drop_sb.border_width_right = 2
 					drop_sb.draw(ci, rect)
 			
-		icon.draw(ci, rect.get_center() - icon.get_size() / 2.0, ThemeUtils.tinted_contrast_color)
+		icon.draw(ci, (rect.get_center() - icon.get_size() / 2.0).round(), ThemeUtils.tinted_contrast_color)
 	
 	ThemeUtils.main_font.draw_string(ci, Vector2(0, 12),
 			Translator.translate("Layout") + ":", HORIZONTAL_ALIGNMENT_CENTER, size.x,

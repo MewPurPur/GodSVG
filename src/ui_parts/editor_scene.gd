@@ -5,7 +5,7 @@ const GlobalActionsScene = preload("res://src/ui_parts/global_actions.tscn")
 const CodeEditorScene = preload("res://src/ui_parts/code_editor.tscn")
 const InspectorScene = preload("res://src/ui_parts/inspector.tscn")
 const ViewportScene = preload("res://src/ui_parts/display.tscn")
-const IconViewScene = preload("res://src/ui_parts/icon_view.tscn")
+const PreviewsScene = preload("res://src/ui_parts/previews.tscn")
 
 @onready var panel_container: PanelContainer = $PanelContainer
 
@@ -133,6 +133,7 @@ func _create_part_box(layout_parts: Array[Utils.LayoutPart]) -> Control:
 			var set_btn_text_func := func() -> void:
 					btn.text = TranslationUtils.get_layout_part_name(part)
 			Configs.language_changed.connect(set_btn_text_func)
+			btn.tree_exited.connect(Configs.language_changed.disconnect.bind(set_btn_text_func))
 			set_btn_text_func.call()
 			# Set up other button properties.
 			btn.toggle_mode = true
@@ -168,7 +169,7 @@ func create_layout_node(layout_part: Utils.LayoutPart) -> Node:
 		Utils.LayoutPart.CODE_EDITOR: return CodeEditorScene.instantiate()
 		Utils.LayoutPart.INSPECTOR: return InspectorScene.instantiate()
 		Utils.LayoutPart.VIEWPORT: return ViewportScene.instantiate()
-		Utils.LayoutPart.ICON_VIEW: return IconViewScene.instantiate()
+		Utils.LayoutPart.PREVIEWS: return PreviewsScene.instantiate()
 		_: return Control.new()
 
 

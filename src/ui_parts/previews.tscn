@@ -1,0 +1,139 @@
+[gd_scene load_steps=7 format=3 uid="uid://ck1u5onyy0cdc"]
+
+[ext_resource type="Script" uid="uid://dpn15qyr7xsds" path="res://src/ui_parts/previews.gd" id="1_uogc6"]
+[ext_resource type="Texture2D" uid="uid://eif2ioi0mw17" path="res://assets/icons/Plus.svg" id="2_pm7dr"]
+[ext_resource type="PackedScene" uid="uid://bujllg1bqlub6" path="res://src/ui_widgets/color_swatch.tscn" id="3_auodr"]
+[ext_resource type="PackedScene" uid="uid://5f8uxavn1or1" path="res://src/ui_widgets/color_edit.tscn" id="4_mkhk3"]
+[ext_resource type="Texture2D" uid="uid://ccbta5q43jobk" path="res://assets/icons/More.svg" id="5_ue2r5"]
+[ext_resource type="Script" uid="uid://bniafq6ma1iln" path="res://src/ui_widgets/ProceduralControl.gd" id="6_6v74c"]
+
+[node name="IconPreiew" type="Container"]
+offset_bottom = 169.0
+size_flags_vertical = 3
+script = ExtResource("1_uogc6")
+border_width = 2
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_left = 5
+corner_radius_bottom_right = 5
+title_margin = 4
+panel_margin = 2
+metadata/_custom_type_script = "uid://ojo0537b6hcy"
+
+[node name="ActionContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="AddNewPreviewButton" type="Button" parent="ActionContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_type_variation = &"IconButton"
+icon = ExtResource("2_pm7dr")
+
+[node name="ColorsContainer" type="HBoxContainer" parent="ActionContainer"]
+layout_mode = 2
+size_flags_horizontal = 6
+
+[node name="TransparentColorSwatch" parent="ActionContainer/ColorsContainer" instance=ExtResource("3_auodr")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="BlackColorSwatch" parent="ActionContainer/ColorsContainer" instance=ExtResource("3_auodr")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="WhiteColorSwatch" parent="ActionContainer/ColorsContainer" instance=ExtResource("3_auodr")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="ColorEdit" parent="ActionContainer/ColorsContainer" instance=ExtResource("4_mkhk3")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+enable_alpha = true
+
+[node name="MoreButton" type="Button" parent="ActionContainer"]
+layout_mode = 2
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_type_variation = &"IconButton"
+icon = ExtResource("5_ue2r5")
+
+[node name="SplitContainer" type="SplitContainer" parent="."]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 80)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 0
+split_offset = 250
+vertical = true
+
+[node name="ScrollContainer" type="ScrollContainer" parent="SplitContainer"]
+custom_minimum_size = Vector2(144, 64)
+layout_mode = 2
+horizontal_scroll_mode = 0
+vertical_scroll_mode = 4
+
+[node name="MarginContainer" type="MarginContainer" parent="SplitContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 2
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_right = 2
+theme_override_constants/margin_bottom = 2
+
+[node name="IconPreviewTiles" type="Control" parent="SplitContainer/ScrollContainer/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("6_6v74c")
+metadata/_custom_type_script = "uid://bniafq6ma1iln"
+
+[node name="PreviewTopPanel" type="PanelContainer" parent="SplitContainer"]
+visible = false
+layout_mode = 2
+
+[node name="ScaledPreview" type="VBoxContainer" parent="SplitContainer/PreviewTopPanel"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="SizeLabelMargins" type="MarginContainer" parent="SplitContainer/PreviewTopPanel/ScaledPreview"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/margin_top = -3
+theme_override_constants/margin_bottom = -2
+
+[node name="SizeLabel" type="Label" parent="SplitContainer/PreviewTopPanel/ScaledPreview/SizeLabelMargins"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+
+[node name="ScaledPreviewPanel" type="PanelContainer" parent="SplitContainer/PreviewTopPanel/ScaledPreview"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+theme_type_variation = &"OutlinedPanel"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="SplitContainer/PreviewTopPanel/ScaledPreview/ScaledPreviewPanel"]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="SplitContainer/PreviewTopPanel/ScaledPreview/ScaledPreviewPanel/ScrollContainer"]
+unique_name_in_owner = true
+texture_filter = 1
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+stretch_mode = 5

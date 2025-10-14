@@ -1162,19 +1162,20 @@ func get_layout_part_index(part: Utils.LayoutPart) -> int:
 			left_vertical_splitter_offset = new_value
 			emit_changed()
 
-@export var icon_view_sizes: PackedInt64Array = [16, 24, 32, 48, 64]:
+const DEFAULT_PREVIEW_SIZES: PackedInt32Array = [16, 24, 32, 48, 64]
+@export var preview_sizes := DEFAULT_PREVIEW_SIZES:
 	set(new_value):
-		if icon_view_sizes != new_value:
-			var real_sizes: PackedInt64Array
+		if preview_sizes != new_value:
+			var real_sizes: PackedInt32Array
 			for size in new_value:
 				real_sizes.append(maxi(size, 1))
-			icon_view_sizes = real_sizes
+			preview_sizes = real_sizes
 			emit_changed()
 
-@export var icon_view_bg_override := Color.TRANSPARENT:
+@export var previews_background := Color.TRANSPARENT:
 	set(new_value):
-		if icon_view_bg_override != new_value:
-			icon_view_bg_override = new_value
+		if previews_background != new_value:
+			previews_background = new_value
 			emit_changed()
 
 

@@ -268,6 +268,6 @@ func optimize(optimizer: Optimizer, not_applied := false) -> bool:
 								return true
 							conversion_indices.append(cmd_idx)
 							conversion_cmd_chars.append("H")
-				pathdata.convert_commands_optimized(conversion_indices, conversion_cmd_chars)
+				pathdata.convert_many_commands(conversion_indices, conversion_cmd_chars)
 	
 	return false

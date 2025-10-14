@@ -48,8 +48,7 @@ func sync_theming() -> void:
 	update_size_button_colors()
 
 func _on_size_button_pressed() -> void:
-	var btn_array: Array[Button] = [
-		ContextPopup.create_shortcut_button("optimize")]
+	var btn_array: Array[Button] = [ContextPopup.create_shortcut_button("optimize")]
 	var context_popup := ContextPopup.new()
 	context_popup.setup(btn_array, true)
 	HandlerGUI.popup_under_rect_center(context_popup, size_button.get_global_rect(), get_viewport())
