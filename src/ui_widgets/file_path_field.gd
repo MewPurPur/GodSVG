@@ -20,6 +20,7 @@ func _ready() -> void:
 	line_edit.text_submitted.connect(_on_text_submitted)
 	line_edit.text_changed.connect(sync_line_edit_font.unbind(1))
 	line_edit.placeholder_text = Translator.translate("No file path")
+	value_changed.connect(sync_line_edit.unbind(1))
 	sync_line_edit()
 
 func sync_line_edit() -> void:

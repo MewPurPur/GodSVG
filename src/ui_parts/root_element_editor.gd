@@ -76,10 +76,10 @@ func update_attributes() -> void:
 func update_editable() -> void:
 	width_edit.set_value(State.root_element.width, false)
 	height_edit.set_value(State.root_element.height, false)
-	viewbox_edit_x.set_value(State.root_element.viewbox.position.x, false)
-	viewbox_edit_y.set_value(State.root_element.viewbox.position.y, false)
-	viewbox_edit_w.set_value(State.root_element.viewbox.size.x, false)
-	viewbox_edit_h.set_value(State.root_element.viewbox.size.y, false)
+	viewbox_edit_x.set_value(State.root_element.precise_viewbox[0], false)
+	viewbox_edit_y.set_value(State.root_element.precise_viewbox[1], false)
+	viewbox_edit_w.set_value(State.root_element.precise_viewbox[2], false)
+	viewbox_edit_h.set_value(State.root_element.precise_viewbox[3], false)
 	
 	var is_width_valid := State.root_element.has_attribute("width")
 	var is_height_valid := State.root_element.has_attribute("height")

@@ -1,5 +1,13 @@
 extends PanelContainer
 
+const UNUSED_MODULE_PATHS: PackedStringArray = ["modules/betsy", "modules/godot_physics_2d",
+	"modules/godot_physics_3d", "modules/jolt_physics", "modules/lightmapper_rd", "thirdparty/brotli",
+	"thirdparty/cvtt", "thirdparty/basis_universal", "thirdparty/d3d12", "thirdparty/etcpak",
+	"thirdparty/graphite", "thirdparty/meshoptimizer", "thirdparty/minimp3", "thirdparty/minizip",
+	"thirdparty/openxr", "thirdparty/tinyexr", "thirdparty/vhacd", "thirdparty/volk",
+	"thirdparty/vulkan", "thirdparty/xatlas"
+]
+
 @onready var close_button: Button = $VBoxContainer/CloseButton
 @onready var translators_vbox: VBoxContainer = %TranslatorsVBox
 @onready var developers_list: PanelGrid = %DevelopersList
@@ -159,17 +167,28 @@ func _on_tab_changed(idx: int) -> void:
 						{
 							"copyright": ["2012, Google Inc."],
 							"license": "OFL-1.1",
-							"files": ["res://visual/fonts/Font.ttf", "res://visual/fonts/FontBold.ttf"]
+							"files": ["res://visual/fonts/NotoSans-SemiBold.woff2", "res://visual/fonts/NotoSans-ExtraBold.woff2"]
 						}
 					]
 				},
+				# Planned
+				#{
+					#"name": "Droid Sans font",
+					#"parts": [
+						#{
+							#"copyright": ["2008, The Android Open Source Project"],
+							#"license": "Apache-2.0",
+							#"files": ["res://visual/fonts/DroidSans.woff2"]
+						#}
+					#]
+				#},
 				{
 					"name": "JetBrains Mono font",
 					"parts": [
 						{
 							"copyright": ["2020, JetBrains s.r.o."],
 							"license": "OFL-1.1",
-							"files": ["res://visual/fonts/FontMono.ttf"]
+							"files": ["res://visual/fonts/JetBrainsMono-Medium.woff2"]
 						}
 					]
 				}
@@ -190,24 +209,15 @@ func _on_tab_changed(idx: int) -> void:
 				vbox.add_child(label)
 				%GodSVGParts.add_child(vbox)
 			
-			# Clean up Godot's copyright info from some stripped modules
-			# to show more relevant components and load the UI faster.
+			# Clean up Godot's copyright info from some stripped modules to show more relevant components and load the UI faster.
 			var used_licenses: PackedStringArray
-			const unused_module_paths: PackedStringArray = ["modules/betsy",
-					"modules/godot_physics_2d", "modules/godot_physics_3d",
-					"modules/jolt_physics", "modules/lightmapper_rd", "thirdparty/brotli",
-					"thirdparty/cvtt", "thirdparty/basis_universal", "thirdparty/d3d12",
-					"thirdparty/etcpak", "thirdparty/graphite", "thirdparty/meshoptimizer",
-					"thirdparty/minimp3", "thirdparty/minizip", "thirdparty/openxr",
-					"thirdparty/tinyexr", "thirdparty/vhacd", "thirdparty/volk",
-					"thirdparty/vulkan", "thirdparty/xatlas"]
 			for copyright_info_idx in range(godot_copyright_info.size() - 1, -1, -1):
 				var copyright_info: Dictionary = godot_copyright_info[copyright_info_idx]
 				for part_idx in range(copyright_info["parts"].size() -1, -1, -1):
 					var part: Dictionary = copyright_info["parts"][part_idx]
 					if part.has("files"):
 						for i in range(part["files"].size() - 1, -1, -1):
-							for module_path in unused_module_paths:
+							for module_path in UNUSED_MODULE_PATHS:
 								if module_path in part["files"][i]:
 									part["files"].remove_at(i)
 									break

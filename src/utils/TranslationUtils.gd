@@ -126,7 +126,7 @@ static func get_layout_part_name(layout_part: Utils.LayoutPart) -> String:
 		Utils.LayoutPart.CODE_EDITOR: return Translator.translate("Code editor")
 		Utils.LayoutPart.INSPECTOR: return Translator.translate("Inspector")
 		Utils.LayoutPart.VIEWPORT: return Translator.translate("Viewport")
-		Utils.LayoutPart.ICON_VIEW: return Translator.translate("Icon preview")
+		Utils.LayoutPart.PREVIEWS: return Translator.translate("Previews")
 		_: return ""
 
 ## Generates an alert text for unsupported file extensions.

@@ -1,4 +1,4 @@
-extends Control
+extends ProceduralControl
 
 const PreviewRectScene = preload("res://src/ui_widgets/preview_rect.tscn")
 
@@ -11,13 +11,11 @@ const DEFAULT_TAB_WIDTH = 140.0
 const MIN_TAB_WIDTH = 70.0
 const CLOSE_BUTTON_MARGIN = 2
 const SCROLL_SPEED = 10.0
-
-var ci := get_canvas_item()
+const BUTTON_SCROLL_INTENSITY = 48.0
 
 var current_scroll := 0.0
 var scrolling_backwards := false
 var scrolling_forwards := false
-var active_controls: Array[Control] = []
 
 # Processing is enabled only when dragging.
 var proposed_drop_idx := -1:
@@ -49,19 +47,55 @@ func _ready() -> void:
 			ShortcutsRegistration.Behavior.PASS_THROUGH_POPUPS)
 	HandlerGUI.register_shortcuts(self, shortcuts)
 	
-	Configs.active_tab_changed.connect(activate)
-	Configs.tabs_changed.connect(activate)
+	Configs.active_tab_changed.connect(sync_buttons)
+	Configs.tabs_changed.connect(sync_buttons)
 	Configs.active_tab_changed.connect(scroll_to_active)
 	Configs.tabs_changed.connect(scroll_to_active)
 	resized.connect(scroll_to_active)
 	Configs.language_changed.connect(queue_redraw)
-	mouse_entered.connect(_on_mouse_entered)
-	mouse_exited.connect(_on_mouse_exited)
+	resized.connect(sync_buttons)
+	mouse_exited.connect(queue_redraw)
 	set_process(false)
+
+
+func sync_buttons() -> void:
+	buttons.clear()
+	
+	var close_rect := get_close_button_rect()
+	if close_rect.has_area():
+		var new_button := ButtonData.create_from_icon(close_rect, func() -> void: FileUtils.close_tabs(Configs.savedata.get_active_tab_index()), close_icon)
+		new_button.use_arrow_cursor = true
+		new_button.theme_color_overrides = {
+			"icon_normal_color": ThemeUtils.tinted_contrast_color,
+			"icon_pressed_color": ThemeUtils.highlighted_text_color,
+		}
+		var hover_sb: StyleBoxFlat = get_theme_stylebox("hover", "FlatButton").duplicate()
+		hover_sb.bg_color = ThemeUtils.strong_hover_overlay_color
+		new_button.theme_stylebox_overrides["hover"] = hover_sb
+		var pressed_sb: StyleBoxFlat = get_theme_stylebox("pressed", "FlatButton").duplicate()
+		pressed_sb.bg_color = ThemeUtils.hover_pressed_overlay_color
+		new_button.theme_stylebox_overrides["pressed"] = pressed_sb
+		buttons.append(new_button)
+	
+	var add_rect := get_add_button_rect()
+	if add_rect.has_area():
+		var new_button := ButtonData.create_from_icon(add_rect, Configs.savedata.add_empty_tab, plus_icon)
+		new_button.use_arrow_cursor = true
+		new_button.theme_color_overrides = {
+			"icon_normal_color": ThemeUtils.tinted_contrast_color,
+			"icon_pressed_color": ThemeUtils.highlighted_text_color,
+		}
+		const CONST_ARR: PackedStringArray = ["hover", "pressed"]
+		for stylebox_theme in CONST_ARR:
+			var sb: StyleBoxFlat = get_theme_stylebox(stylebox_theme, "FlatButton").duplicate()
+			sb.corner_radius_bottom_left = 0
+			sb.corner_radius_bottom_right = 0
+			new_button.theme_stylebox_overrides[stylebox_theme] = sb
+		buttons.append(new_button)
+	queue_redraw()
 
 func _draw() -> void:
 	get_theme_stylebox("tabbar_background", "TabContainer").draw(ci, get_rect())
-	
 	var mouse_pos := get_local_mouse_position()
 	
 	for tab_index in Configs.savedata.get_tab_count():
@@ -85,12 +119,6 @@ func _draw() -> void:
 				text_line.add_string(current_tab_name, ThemeUtils.main_font, 13)
 				text_line.width = text_line_width - 2
 				text_line.draw(ci, rect.position + Vector2(4, 3), get_theme_color("font_selected_color", "TabContainer"))
-			
-			var close_rect := get_close_button_rect()
-			if close_rect.has_area():
-				var close_icon_size := close_icon.get_size()
-				draw_texture_rect(close_icon, Rect2(close_rect.position + (close_rect.size - close_icon_size) / 2.0, close_icon_size),
-						false, ThemeUtils.tinted_contrast_color)
 		else:
 			var is_hovered := rect.has_point(mouse_pos)
 			get_theme_stylebox("tab_hovered" if is_hovered else "tab_unselected", "TabContainer").draw(ci, rect)
@@ -104,9 +132,6 @@ func _draw() -> void:
 				text_line.add_string(current_tab_name, ThemeUtils.main_font, 13)
 				text_line.width = text_line_width
 				text_line.draw(ci, rect.position + Vector2(4, 3), text_color)
-	
-	var add_button_rect := get_add_button_rect()
-	plus_icon.draw(ci, Vector2(add_button_rect.position + (add_button_rect.size - plus_icon.get_size()) / 2.0), ThemeUtils.tinted_contrast_color)
 	
 	var scroll_backwards_rect := get_scroll_backwards_area_rect()
 	if scroll_backwards_rect.has_area():
@@ -138,6 +163,8 @@ func _draw() -> void:
 		draw_texture_rect(scroll_forwards_icon, Rect2(scroll_forwards_rect.position + (scroll_forwards_rect.size - scroll_forwards_icon_size) / 2.0,
 				scroll_forwards_icon_size), false, icon_modulate)
 	
+	super()
+	
 	if proposed_drop_idx != -1:
 		var prev_tab_rect := get_tab_rect(proposed_drop_idx - 1)
 		var x_pos: float
@@ -149,6 +176,7 @@ func _draw() -> void:
 
 
 func _gui_input(event: InputEvent) -> void:
+	super(event)
 	if not event is InputEventMouse:
 		return
 	
@@ -166,8 +194,8 @@ func _gui_input(event: InputEvent) -> void:
 						scroll_to_active()
 					else:
 						# Give time for deferred callbacks that might change the active SVG.
-						# For example, the code editor might get unfocused by you clicking on
-						# a tab, changing the SVG, so this should be deferred.
+						# For example, the code editor might get unfocused by clicking on a tab,
+						# changing the SVG, so this should be deferred.
 						Configs.savedata.set_active_tab_index.call_deferred(hovered_idx)
 				if event.button_index == MOUSE_BUTTON_LEFT:
 					var scroll_backwards_area_rect := get_scroll_backwards_area_rect()
@@ -236,33 +264,21 @@ func _gui_input(event: InputEvent) -> void:
 			scrolling_forwards = false
 			set_process(false)
 
+
 # Autoscroll when the dragged tab is hovered beyond the tabs area.
-func _process(_delta: float) -> void:
+func _process(delta: float) -> void:
 	var mouse_pos := get_local_mouse_position()
 	var scroll_forwards_area_rect := get_scroll_forwards_area_rect()
 	if ((scrolling_forwards and scroll_forwards_area_rect.has_point(mouse_pos)) or\
 	(mouse_pos.x > size.x - size.y - scroll_forwards_area_rect.size.x)) and scroll_forwards_area_rect.has_area():
-		scroll_forwards()
+		scroll_forwards(delta * BUTTON_SCROLL_INTENSITY)
 		return
 	
 	var scroll_backwards_area_rect := get_scroll_backwards_area_rect()
 	if ((scrolling_backwards and scroll_backwards_area_rect.has_point(mouse_pos)) or\
 	(mouse_pos.x < scroll_backwards_area_rect.size.x)) and scroll_backwards_area_rect.has_area():
-		scroll_backwards()
+		scroll_backwards(delta * BUTTON_SCROLL_INTENSITY)
 		return
-
-
-func _on_mouse_entered() -> void:
-	activate()
-
-func _on_mouse_exited() -> void:
-	cleanup()
-
-func cleanup() -> void:
-	for control in active_controls:
-		control.queue_free()
-	active_controls = []
-	queue_redraw()
 
 
 func scroll_backwards(factor := 1.0) -> void:
@@ -283,8 +299,7 @@ func set_scroll(new_value: float) -> void:
 		new_value = clampf(new_value, 0, get_scroll_limit())
 	if current_scroll != new_value:
 		current_scroll = new_value
-		queue_redraw()
-		activate()
+		sync_buttons()
 
 
 func get_tab_rect(idx: int) -> Rect2:
@@ -345,45 +360,11 @@ func get_hovered_index() -> int:
 	return get_tab_index_at(get_local_mouse_position())
 
 
-func activate() -> void:
-	cleanup()
-	
-	var close_rect := get_close_button_rect()
-	if close_rect.has_area():
-		var close_button := Button.new()
-		close_button.theme_type_variation = "FlatButton"
-		close_button.focus_mode = Control.FOCUS_NONE
-		close_button.position = close_rect.position
-		close_button.size = close_rect.size
-		close_button.mouse_filter = Control.MOUSE_FILTER_PASS
-		add_child(close_button)
-		active_controls.append(close_button)
-		close_button.pressed.connect(func() -> void:
-				FileUtils.close_tabs(Configs.savedata.get_active_tab_index())
-		)
-	
-	var add_rect := get_add_button_rect()
-	var add_button := Button.new()
-	add_button.theme_type_variation = "FlatButton"
-	add_button.begin_bulk_theme_override()
-	const CONST_ARR: PackedStringArray = ["hover", "pressed"]
-	for stylebox_theme in CONST_ARR:
-		var sb: StyleBoxFlat = add_button.get_theme_stylebox(stylebox_theme, "FlatButton").duplicate()
-		sb.corner_radius_bottom_left = 0
-		sb.corner_radius_bottom_right = 0
-		add_button.add_theme_stylebox_override(stylebox_theme, sb)
-	add_button.end_bulk_theme_override()
-	add_button.focus_mode = Control.FOCUS_NONE
-	add_button.position = add_rect.position
-	add_button.size = add_rect.size
-	add_button.mouse_filter = Control.MOUSE_FILTER_PASS
-	add_button.tooltip_text = Translator.translate("Create a new tab")
-	add_child(add_button)
-	active_controls.append(add_button)
-	add_button.pressed.connect(Configs.savedata.add_empty_tab)
-
-
 func _get_tooltip(at_position: Vector2) -> String:
+	var add_rect := get_add_button_rect()
+	if add_rect.has_point(at_position):
+		return Translator.translate("Create a new tab")
+	
 	var hovered_tab_idx := get_tab_index_at(at_position)
 	if hovered_tab_idx == -1:
 		var backwards_area_rect := get_scroll_backwards_area_rect()
@@ -409,8 +390,13 @@ func _make_custom_tooltip(for_text: String) -> Object:
 	
 	var path := hovered_tab.get_presented_svg_file_path()
 	var label := Label.new()
-	label.add_theme_font_override("font", ThemeUtils.mono_font if is_saved else ThemeUtils.main_font)
-	label.add_theme_font_size_override("font_size", 12)
+	if is_saved:
+		label.begin_bulk_theme_override()
+		label.add_theme_font_override("font", ThemeUtils.mono_font)
+		label.add_theme_font_size_override("font_size", 12)
+		label.end_bulk_theme_override()
+	else:
+		label.add_theme_font_override("font", ThemeUtils.main_font)
 	label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	label.text = path if is_saved else Translator.translate("This SVG is not bound to a file location yet.")
 	Utils.set_max_text_width(label, 192.0, 4.0)

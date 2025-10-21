@@ -7,13 +7,13 @@ const MAX_NUMERIC_PRECISION = 6
 const MAX_ANGLE_PRECISION = 4
 
 enum InteractionType {NONE = 0, HOVERED = 1, SELECTED = 2, HOVERED_SELECTED = 3}
-enum LayoutPart {NONE, CODE_EDITOR, INSPECTOR, VIEWPORT, ICON_VIEW}
+enum LayoutPart {NONE, CODE_EDITOR, INSPECTOR, VIEWPORT, PREVIEWS}
 
 const _LAYOUT_ICONS: Dictionary[LayoutPart, Texture2D] = {
 	LayoutPart.CODE_EDITOR: preload("res://assets/icons/CodeEditor.svg"),
 	LayoutPart.INSPECTOR: preload("res://assets/icons/Inspector.svg"),
 	LayoutPart.VIEWPORT: preload("res://assets/icons/Viewport.svg"),
-	LayoutPart.ICON_VIEW: preload("res://assets/icons/Scale.svg"),
+	LayoutPart.PREVIEWS: preload("res://assets/icons/Previews.svg"),
 }
 const _LAYOUT_PLACEHOLDER_ICON = preload("res://assets/icons/Placeholder.svg")
 

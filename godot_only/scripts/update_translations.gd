@@ -13,6 +13,7 @@ const COMMENTS_DICT: Dictionary[String, String] = {
 	"Update check failed": "When checking for updates.",
 	"Project Founder and Manager": "If the language has different gendered versions, prefer the most neutral-sounding one, i.e., the one used when you don't know the person's gender. If that's not possible, use feminine.",
 	"V-Sync": "Stands for \"Vertical Synchronization\".",
+	"Previews": "Refers to a part of the layout where icons are previewed at various sizes.",
 	"Dark": "Refers to a theme preset.",
 	"Light": "Refers to a theme preset.",
 	"Black (OLED)": "Refers to a theme preset.",

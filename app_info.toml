@@ -5,11 +5,12 @@ project_founder_and_manager = "MewPurPur"
 # Format: '<Github username>' by default, '<Real name> (<Github username>)' with consent.
 # In order for the list to not be too arbitrary, a minimum of 4 commits is required to be on it (I've made a few exceptions, explained with comments).
 # This file does not strictly reflect copyright ownership for GodSVG. Refer to the Git history to know which contributor wrote which part of the codebase.
-# Refer to https://github.com/MewPurPur/GodSVG/graphs/contributors for a complete list of everyone who has worked on the project.
+# The information may be outdated if Github usernames or real life names have been changed without announcement.
+# Refer to https://github.com/MewPurPur/GodSVG/graphs/contributors for a complete up-to-date list of everyone who has worked on the project.
 authors = [
   "Aaron Franke (aaronfranke)",
   "ajreckof",
-  "aladvs",  # Legacy / No commits, but helped with web exports in the early days.
+  "cadennabors",  # Legacy / No commits, but helped with web exports in the early days.
   "DevPoodle",  # Legacy
   "FlooferLand",
   "ilikefrogs101",  # Legacy
@@ -26,7 +27,9 @@ authors = [
 ]
 
 # Lists of the current and past monthly donors, who will have their generous deed immortalized in GodSVG's "About" menu on each update.
-donors = []
+donors = [
+  "HangLang",
+]
 anonymous_donors = 1
 golden_donors = []
 anonymous_golden_donors = 0
