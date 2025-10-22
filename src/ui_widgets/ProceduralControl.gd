@@ -129,9 +129,10 @@ func _draw() -> void:
 			
 			var text_size := button.text_line.get_size()
 			var icon_size := button.icon.get_size()
-			var icon_pos := Vector2(button.rect.size.x - text_size.x - icon_size.x - h_separation, button.rect.size.y - icon_size.y) / 2.0 + Vector2(0, 1)
+			var icon_pos := button.rect.position + (Vector2(button.rect.size.x - text_size.x - icon_size.x - h_separation,
+					button.rect.size.y - icon_size.y - 2) / 2.0).round() + Vector2(0, 1)
 			button.icon.draw(ci, icon_pos, icon_color)
-			button.text_line.draw(ci, Vector2(icon_pos.x + icon_size.x + h_separation, (button.rect.size.y - text_size.y) / 2.0) + Vector2(0, 1), font_color)
+			button.text_line.draw(ci, Vector2(icon_pos.x + icon_size.x + h_separation, (button.rect.size.y - text_size.y + 1) / 2.0).round(), font_color)
 		elif has_text:
 			var font_color: Color
 			if button.disabled:

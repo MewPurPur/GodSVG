@@ -37,23 +37,27 @@ func sync_buttons() -> void:
 		var processed_path_component := processed_path.get_file()
 		var button_content_width: float
 		
-		var special_first_button_text := ""
-		var special_first_button_icon: DPITexture
+		var special_button_text := ""
+		var special_button_icon: DPITexture
+		var is_first_dir := false
 		if processed_path_component.is_empty():
-			special_first_button_text = "Computer"
-			special_first_button_icon = computer_icon
+			special_button_text = "Computer"
+			special_button_icon = computer_icon
+			is_first_dir = true
 		elif processed_path == Utils.get_home_dir():
-			special_first_button_text = "Home"
-			special_first_button_icon = home_icon
+			special_button_text = "Home"
+			special_button_icon = home_icon
+			if path != processed_path:
+				is_first_dir = true
 		
-		if not special_first_button_text.is_empty():
+		if not special_button_text.is_empty():
 			if is_instance_valid(dropdown_button):
 				collapsed_paths.append(processed_path)
 			else:
 				var text_line := TextLine.new()
 				text_line.width = MAX_BUTTON_WIDTH
-				text_line.add_string(special_first_button_text, font, font_size)
-				button_content_width = text_line.get_line_width() + ICON_SPACING + special_first_button_icon.get_width()
+				text_line.add_string(special_button_text, font, font_size)
+				button_content_width = text_line.get_line_width() + ICON_SPACING + special_button_icon.get_width()
 				if offset + button_content_width + BUTTON_SIDE_MARGIN * 2 + SLASH_SPACING > size.x:
 					text_line.clear()
 					text_line.add_string("…", font, font_size)
@@ -64,7 +68,7 @@ func sync_buttons() -> void:
 					collapsed_paths.append(processed_path)
 				else:
 					var new_button := ButtonData.create_from_icon_and_textline(Rect2(0, 1, button_content_width + BUTTON_SIDE_MARGIN * 2, size.y - 2),
-							directory_selected.emit.bind(processed_path), special_first_button_icon, text_line)
+							directory_selected.emit.bind(processed_path), special_button_icon, text_line)
 					new_button.use_arrow_cursor = true
 					new_button.theme_h_separation_override = ICON_SPACING
 					new_button.theme_color_overrides = {
@@ -80,7 +84,8 @@ func sync_buttons() -> void:
 					new_button.theme_stylebox_overrides = {"disabled": StyleBoxEmpty.new()}
 					buttons.append(new_button)
 			offset += button_content_width + SLASH_SPACING + BUTTON_SIDE_MARGIN * 2
-			break
+			if is_first_dir:
+				break
 		else:
 			if is_instance_valid(dropdown_button):
 				collapsed_paths.append(processed_path)
