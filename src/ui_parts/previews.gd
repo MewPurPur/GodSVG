@@ -59,11 +59,11 @@ class IconPreviewTileData extends RefCounted:
 		
 		if preview_size.x >= bottom_row_size:
 			preview_rect = Rect2(Vector2(TILE_TOP_PADDING, TILE_LEFT_PADDING), preview_size)
-			var half_offset := (preview_size.x - label_size.x - MORE_ICON_SIZE - 1) / 2.0
+			var half_offset := roundf((preview_size.x - label_size.x - MORE_ICON_SIZE - 1) / 2.0)
 			label_rect = Rect2(Vector2(TILE_TOP_PADDING + half_offset, TILE_LEFT_PADDING + preview_size.y + ICON_TEXT_SPACING), label_size - Vector2(1, 0))
 			more_button_rect = Rect2(Vector2(TILE_TOP_PADDING + label_size.x + half_offset, label_rect.position.y + 2), Vector2(MORE_ICON_SIZE, MORE_ICON_SIZE))
 		else:
-			preview_rect = Rect2(Vector2(TILE_TOP_PADDING, TILE_LEFT_PADDING) + Vector2((bottom_row_size - preview_size.x) / 2.0, 0), preview_size)
+			preview_rect = Rect2(Vector2(TILE_TOP_PADDING, TILE_LEFT_PADDING) + Vector2(roundf((bottom_row_size - preview_size.x) / 2.0), 0), preview_size)
 			label_rect = Rect2(Vector2(TILE_TOP_PADDING + 1, TILE_LEFT_PADDING + preview_size.y + ICON_TEXT_SPACING), label_size - Vector2(1, 0))
 			more_button_rect = Rect2(Vector2(TILE_TOP_PADDING + label_size.x, label_rect.position.y + 2), Vector2(MORE_ICON_SIZE, MORE_ICON_SIZE))
 		
@@ -154,7 +154,7 @@ func sync_tile_positions() -> void:
 		if current_x + tile_needed_width > icon_preview_tiles.size.x and index > row_start_index:
 			# Finalize current row by centering horizontally and aligning vertically.
 			var row_width := current_x - TILE_MARGIN
-			var offset_x := (icon_preview_tiles.size.x - row_width) / 2.0
+			var offset_x := roundf((icon_preview_tiles.size.x - row_width) / 2.0)
 			for i in range(row_start_index, index):
 				tiles[i].position.x += offset_x
 				tiles[i].position.y = current_y + (row_height - tiles[i].size.y) / 2.0
