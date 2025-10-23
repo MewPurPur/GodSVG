@@ -1,0 +1,13 @@
+[gd_scene load_steps=2 format=3 uid="uid://bpr5yv7pbv13g"]
+
+[ext_resource type="Script" uid="uid://bvh3i8ytaohao" path="res://src/ui_widgets/dropdown_v_2.gd" id="1_fhxt4"]
+
+[node name="DropdownV2" type="Control"]
+custom_minimum_size = Vector2(144, 22)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 47.0
+offset_bottom = 22.0
+script = ExtResource("1_fhxt4")
+values = ["aofnewuegnwegwegwieugnw", "lmofa"]
+editing_enabled = true

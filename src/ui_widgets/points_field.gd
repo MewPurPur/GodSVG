@@ -22,7 +22,7 @@ var mini_line_edit_stylebox := get_theme_stylebox("normal", "MiniLineEdit")
 var mini_line_edit_font_size := get_theme_font_size("font_size", "MiniLineEdit")
 var mini_line_edit_font_color := get_theme_color("font_color", "MiniLineEdit")
 
-@onready var line_edit: LineEdit = $LineEdit
+@onready var line_edit: BetterLineEdit = $LineEdit
 @onready var points_container: Control = $Points
 
 # Variables around the big optimization.
