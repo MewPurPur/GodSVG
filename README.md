@@ -23,6 +23,8 @@
 
 Download the version you want from [the list of GodSVG releases](https://github.com/MewPurPur/GodSVG/releases). Android versions are currently experimental. For MacOS, you'll have to [disable Gatekeeper](https://disable-gatekeeper.github.io/), as I don't have the time or money to deal with Apple's gatekeeping.
 
+<details><summary>Verifying the APK signature on Android</summary>
+
 To verify the APK signature of the experimental Android build, check if the release APK is signed with the correct certificate by comparing the following fingerprints:
 ```
 SHA1: BC:78:C1:A1:90:B4:5E:5A:13:49:4C:07:22:2E:F5:0B:5D:88:5E:5B
@@ -33,6 +35,7 @@ You can use this command to display the certificate details, including the SHA-1
 ```
 keytool -printcert -jarfile <APK-file>
 ```
+</details>
 
 GodSVG also runs on web - here's a link to the official web editor: https://godsvg.com/editor
 
