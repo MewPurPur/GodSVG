@@ -34,6 +34,10 @@ func sync_line_edit_font() -> void:
 			line_edit.add_theme_font_override("font", ThemeUtils.main_font)
 		else:
 			line_edit.remove_theme_font_override("font")
+			# TODO This should not be needed.
+			line_edit.text += " "
+			await get_tree().process_frame
+			line_edit.text = line_edit.text.left(-1)
 
 func _on_text_submitted(new_text: String) -> void:
 	set_value(new_text.replace("~", Utils.get_home_dir()))

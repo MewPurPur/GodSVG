@@ -4,7 +4,7 @@ const EyedropperPopupScene = preload("res://src/ui_parts/eyedropper_popup.tscn")
 
 const handle_texture = preload("res://assets/icons/BWHandle.svg")
 const slider_arrow = preload("res://assets/icons/SliderArrow.svg")
-const side_slider_arrow = preload("res://assets/icons/SideSliderArrow.svg")
+const side_slider_arrow = preload("res://assets/icons/SliderArrowSide.svg")
 const bg_pattern = preload("res://assets/icons/CheckerboardMini.svg")
 
 var alpha_enabled := false

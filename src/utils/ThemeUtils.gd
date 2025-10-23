@@ -967,8 +967,6 @@ static func _setup_lineedit(theme: Theme) -> void:
 	
 	theme.add_type("LeftConnectedLineEdit")
 	theme.set_type_variation("LeftConnectedLineEdit", "LineEdit")
-	theme.set_font_size("font_size", "LeftConnectedLineEdit", 12)
-	theme.set_font("font", "LeftConnectedLineEdit", mono_font)
 	var left_connected_stylebox := StyleBoxFlat.new()
 	left_connected_stylebox.corner_radius_top_left = 0
 	left_connected_stylebox.corner_radius_bottom_left = 0
@@ -1005,8 +1003,6 @@ static func _setup_lineedit(theme: Theme) -> void:
 	
 	theme.add_type("RightConnectedLineEdit")
 	theme.set_type_variation("RightConnectedLineEdit", "LineEdit")
-	theme.set_font_size("font_size", "RightConnectedLineEdit", 12)
-	theme.set_font("font", "RightConnectedLineEdit", mono_font)
 	var right_connected_stylebox := StyleBoxFlat.new()
 	right_connected_stylebox.corner_radius_top_left = 5
 	right_connected_stylebox.corner_radius_bottom_left = 5

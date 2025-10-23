@@ -38,8 +38,7 @@ func _ready() -> void:
 	var max_width := 0
 	for val in values:
 		max_width = maxi(int(line_edit.get_theme_font("font").get_string_size(str(val),
-				HORIZONTAL_ALIGNMENT_LEFT, -1, line_edit.get_theme_font_size("font_size")).x),
-				max_width)
+				HORIZONTAL_ALIGNMENT_LEFT, -1, line_edit.get_theme_font_size("font_size")).x), max_width)
 	line_edit.size.x = max_width + 4
 
 func _on_line_edit_gui_input(event: InputEvent) -> void:
