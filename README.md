@@ -47,6 +47,51 @@ To report bugs or propose features, look through the open Github issues to see i
 
 For more casual discussion around the tool or contributing to it, find me on [GodSVG's Discord](https://discord.gg/R8pM6vXWTY). All official communities are actively moderated.
 
+### Usage on Nix/NixOS
+
+Run once
+```bash
+nix run github:MewPurPur/GodSVG
+```
+
+Imperative install
+```bash
+nix profile install github:MewPurPur/GodSVG
+```
+
+NixOS config install
+```nix
+# flake.nix
+{
+  inputs = {
+    godsvg = {
+      url = "github:MewPurPur/GodSVG";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+  };
+}
+```
+<small>standard module:</small>
+```nix
+# configuration.nix
+{
+  imports = [
+    inputs.godsvg.nixosModules.default
+  ];
+  programs.godsvg.enable = true;
+}
+```
+<small>home manager module:</small>
+```nix
+# home.nix
+{
+  imports = [
+    inputs.godsvg.homeModules.default
+  ];
+  programs.godsvg.enable = true;
+}
+```
+
 ## How to use it
 
 Documentation for GodSVG is likely eventually going to be built-in. Meanwhile, the basics of using it will be outlined below.
