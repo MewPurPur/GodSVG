@@ -1,0 +1,12 @@
+[gd_scene load_steps=2 format=3 uid="uid://bpr5yv7pbv13g"]
+
+[ext_resource type="Script" uid="uid://bvh3i8ytaohao" path="res://src/ui_widgets/dropdown_basic.gd" id="1_1wr00"]
+
+[node name="DropdownBasic" type="Control"]
+custom_minimum_size = Vector2(48, 22)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 144.0
+offset_bottom = 22.0
+mouse_filter = 1
+script = ExtResource("1_1wr00")

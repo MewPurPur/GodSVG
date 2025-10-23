@@ -597,7 +597,8 @@ msgstr "取色器"
 msgid "No file path"
 msgstr ""
 
-#: src/ui_widgets/fps_limit_dropdown.gd src/ui_widgets/setting_frame.gd
+#: src/ui_widgets/fps_limit_dropdown.gd
+#: src/ui_widgets/settings_content_generic.gd
 msgid "Unlimited"
 msgstr "无限制"
 
@@ -612,6 +613,10 @@ msgstr "吸管工具"
 #: src/ui_widgets/handles_manager.gd
 msgid "New shape"
 msgstr "新形状"
+
+#: src/ui_widgets/id_field.gd
+msgid "No ID"
+msgstr ""
 
 #: src/ui_widgets/invalid_syntax_warning.gd
 msgid "The SVG has invalid syntax. Any edit not made through the code editor will reset it."
@@ -995,6 +1000,10 @@ msgstr "显示"
 msgid "UI scale"
 msgstr "UI 缩放"
 
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Determines the scale factor for the interface."
+msgstr "改变用户界面的缩放尺寸。"
+
 #. Stands for "Vertical Synchronization".
 #: src/ui_widgets/settings_content_generic.gd
 msgid "V-Sync"
@@ -1003,6 +1012,10 @@ msgstr "垂直同步"
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Maximum FPS"
 msgstr "最大帧率"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Determines the maximum number of frames per second."
+msgstr "改变最大帧率。"
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Keep screen on"
@@ -1085,16 +1098,8 @@ msgid "When enabled, scrolling pans the view instead of zooming in. To zoom, hol
 msgstr "如果启用，滚动鼠标滚轮将移动视图。按住 CTRL 并滚动滚轮以缩放。"
 
 #: src/ui_widgets/settings_content_generic.gd
-msgid "Determines the scale factor for the interface."
-msgstr "改变用户界面的缩放尺寸。"
-
-#: src/ui_widgets/settings_content_generic.gd
 msgid "Synchronizes graphics rendering with display refresh rate to prevent screen tearing artifacts. May increase input lag slightly."
 msgstr "同步图形渲染与屏幕刷新率以减少画面撕裂。此将略微增加输入延迟。"
-
-#: src/ui_widgets/settings_content_generic.gd
-msgid "Determines the maximum number of frames per second."
-msgstr "改变最大帧率。"
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Keeps the screen on even after inactivity, so the screensaver does not take over."

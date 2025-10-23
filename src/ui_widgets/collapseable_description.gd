@@ -1,7 +1,7 @@
 extends MarginContainer
 
-const collapsed_arrow = preload("res://assets/icons/SmallLeftArrow.svg")
-const expanded_arrow = preload("res://assets/icons/SmallDownArrow.svg")
+const collapsed_arrow = preload("res://assets/icons/SmallArrowLeft.svg")
+const expanded_arrow = preload("res://assets/icons/SmallArrowDown.svg")
 
 @onready var label: Label = %Label
 @onready var panel: PanelContainer = $Panel

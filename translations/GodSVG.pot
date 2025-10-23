@@ -593,7 +593,8 @@ msgstr ""
 msgid "No file path"
 msgstr ""
 
-#: src/ui_widgets/fps_limit_dropdown.gd src/ui_widgets/setting_frame.gd
+#: src/ui_widgets/fps_limit_dropdown.gd
+#: src/ui_widgets/settings_content_generic.gd
 msgid "Unlimited"
 msgstr ""
 
@@ -607,6 +608,10 @@ msgstr ""
 
 #: src/ui_widgets/handles_manager.gd
 msgid "New shape"
+msgstr ""
+
+#: src/ui_widgets/id_field.gd
+msgid "No ID"
 msgstr ""
 
 #: src/ui_widgets/invalid_syntax_warning.gd
@@ -986,6 +991,10 @@ msgstr ""
 msgid "UI scale"
 msgstr ""
 
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Determines the scale factor for the interface."
+msgstr ""
+
 #. Stands for "Vertical Synchronization".
 #: src/ui_widgets/settings_content_generic.gd
 msgid "V-Sync"
@@ -993,6 +1002,10 @@ msgstr ""
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Maximum FPS"
+msgstr ""
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Determines the maximum number of frames per second."
 msgstr ""
 
 #: src/ui_widgets/settings_content_generic.gd
@@ -1076,15 +1089,7 @@ msgid "When enabled, scrolling pans the view instead of zooming in. To zoom, hol
 msgstr ""
 
 #: src/ui_widgets/settings_content_generic.gd
-msgid "Determines the scale factor for the interface."
-msgstr ""
-
-#: src/ui_widgets/settings_content_generic.gd
 msgid "Synchronizes graphics rendering with display refresh rate to prevent screen tearing artifacts. May increase input lag slightly."
-msgstr ""
-
-#: src/ui_widgets/settings_content_generic.gd
-msgid "Determines the maximum number of frames per second."
 msgstr ""
 
 #: src/ui_widgets/settings_content_generic.gd

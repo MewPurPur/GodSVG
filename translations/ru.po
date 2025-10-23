@@ -599,7 +599,8 @@ msgstr "Цветовая пипетка"
 msgid "No file path"
 msgstr ""
 
-#: src/ui_widgets/fps_limit_dropdown.gd src/ui_widgets/setting_frame.gd
+#: src/ui_widgets/fps_limit_dropdown.gd
+#: src/ui_widgets/settings_content_generic.gd
 msgid "Unlimited"
 msgstr "Без ограничений"
 
@@ -614,6 +615,10 @@ msgstr "Пипетка"
 #: src/ui_widgets/handles_manager.gd
 msgid "New shape"
 msgstr "Новая привязка"
+
+#: src/ui_widgets/id_field.gd
+msgid "No ID"
+msgstr ""
 
 #: src/ui_widgets/invalid_syntax_warning.gd
 msgid "The SVG has invalid syntax. Any edit not made through the code editor will reset it."
@@ -997,6 +1002,10 @@ msgstr "Отображение"
 msgid "UI scale"
 msgstr "Масштаб интерфейса"
 
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Determines the scale factor for the interface."
+msgstr "Определяет множитель масштабирования интерфейса."
+
 #. Stands for "Vertical Synchronization".
 #: src/ui_widgets/settings_content_generic.gd
 msgid "V-Sync"
@@ -1005,6 +1014,10 @@ msgstr "Вертикальная синхронизация"
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Maximum FPS"
 msgstr "Максимальное количество кадров в секунду"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Determines the maximum number of frames per second."
+msgstr "Определяет максимальное количество кадров в секунду."
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Keep screen on"
@@ -1087,16 +1100,8 @@ msgid "When enabled, scrolling pans the view instead of zooming in. To zoom, hol
 msgstr "Если включено - прокрутка будет перемещать окно просмотра. Чтобы масштабировать зажмите CTRL при прокручивании."
 
 #: src/ui_widgets/settings_content_generic.gd
-msgid "Determines the scale factor for the interface."
-msgstr "Определяет множитель масштабирования интерфейса."
-
-#: src/ui_widgets/settings_content_generic.gd
 msgid "Synchronizes graphics rendering with display refresh rate to prevent screen tearing artifacts. May increase input lag slightly."
 msgstr "Синхронизирует отображение графики с частотой обновления экрана, чтобы избегать артефактам (вроде \"разрыва\" картинки). Может увеличить задержку нажатий кнопок мыши и клавиатуры."
-
-#: src/ui_widgets/settings_content_generic.gd
-msgid "Determines the maximum number of frames per second."
-msgstr "Определяет максимальное количество кадров в секунду."
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Keeps the screen on even after inactivity, so the screensaver does not take over."

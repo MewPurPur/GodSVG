@@ -267,6 +267,7 @@ static func generate_theme() -> Theme:
 	_setup_button(theme)
 	_setup_checkbox(theme)
 	_setup_checkbutton(theme)
+	_setup_dropdown(theme)
 	_setup_itemlist(theme)
 	_setup_lineedit(theme)
 	_setup_scrollbar(theme)
@@ -927,6 +928,29 @@ static func _setup_itemlist(theme: Theme) -> void:
 	theme.set_stylebox("hovered_selected", "ItemList", hovered_selected_item_stylebox)
 	theme.set_stylebox("hovered_selected_focus", "ItemList", hovered_selected_item_stylebox)
 
+static func _setup_dropdown(theme: Theme) -> void:
+	theme.add_type("Dropdown")
+	theme.set_type_variation("Dropdown", "Control")
+	theme.set_font_size("font_size", "Dropdown", 12)
+	theme.set_font("font", "Dropdown", main_font)
+	theme.set_color("font_color", "Dropdown", ThemeUtils.editable_text_color)
+	
+	var stylebox := StyleBoxFlat.new()
+	stylebox.set_corner_radius_all(5)
+	stylebox.set_border_width_all(2)
+	stylebox.content_margin_left = 5.0
+	stylebox.content_margin_right = 5.0
+	
+	var normal_stylebox := stylebox.duplicate()
+	normal_stylebox.bg_color = line_edit_inner_color
+	normal_stylebox.border_color = line_edit_normal_border_color
+	theme.set_stylebox("normal", "Dropdown", normal_stylebox)
+	
+	var hover_stylebox := stylebox.duplicate()
+	hover_stylebox.draw_center = false
+	hover_stylebox.border_color = strong_hover_overlay_color if is_theme_dark else stronger_hover_overlay_color
+	theme.set_stylebox("hover", "Dropdown", hover_stylebox)
+
 static func _setup_lineedit(theme: Theme) -> void:
 	theme.add_type("LineEdit")
 	theme.set_color("caret_color", "LineEdit", caret_color)
@@ -967,8 +991,6 @@ static func _setup_lineedit(theme: Theme) -> void:
 	
 	theme.add_type("LeftConnectedLineEdit")
 	theme.set_type_variation("LeftConnectedLineEdit", "LineEdit")
-	theme.set_font_size("font_size", "LeftConnectedLineEdit", 12)
-	theme.set_font("font", "LeftConnectedLineEdit", mono_font)
 	var left_connected_stylebox := StyleBoxFlat.new()
 	left_connected_stylebox.corner_radius_top_left = 0
 	left_connected_stylebox.corner_radius_bottom_left = 0
@@ -1005,8 +1027,6 @@ static func _setup_lineedit(theme: Theme) -> void:
 	
 	theme.add_type("RightConnectedLineEdit")
 	theme.set_type_variation("RightConnectedLineEdit", "LineEdit")
-	theme.set_font_size("font_size", "RightConnectedLineEdit", 12)
-	theme.set_font("font", "RightConnectedLineEdit", mono_font)
 	var right_connected_stylebox := StyleBoxFlat.new()
 	right_connected_stylebox.corner_radius_top_left = 5
 	right_connected_stylebox.corner_radius_bottom_left = 5

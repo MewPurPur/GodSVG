@@ -232,8 +232,8 @@ func setup_formatting_content() -> void:
 			not current_setup_resource.xml_pretty_formatting)))
 	
 	current_setup_setting = "xml_indentation_spaces"
-	add_number_dropdown(Translator.translate("Number of indentation spaces"),
-			[2, 3, 4, 6, 8], true, false, Formatter.INDENTS_MIN, Formatter.INDENTS_MAX,
+	add_numeric_dropdown(Translator.translate("Number of indentation spaces"),
+			PackedFloat64Array([2, 3, 4, 6, 8]), true, Formatter.INDENTS_MIN, Formatter.INDENTS_MAX, NAN, {},
 			not (current_setup_resource.xml_pretty_formatting and current_setup_resource.xml_indentation_use_spaces))
 	if current_setup_resource.xml_pretty_formatting and current_setup_resource.xml_indentation_use_spaces:
 		var xml_indentation_spaces_root_element := ElementRoot.new()
@@ -565,8 +565,8 @@ func setup_theming_content() -> void:
 	
 	add_section(Translator.translate("Handles"))
 	current_setup_setting = "handle_size"
-	add_number_dropdown(Translator.translate("Size"), [0.75, 1.0, 1.25, 1.5, 1.75, 2.0, 2.5, 3.0],
-			false, false, SaveData.HANDLE_SIZE_MIN, SaveData.HANDLE_SIZE_MAX)
+	add_numeric_dropdown(Translator.translate("Size"), PackedFloat64Array([0.75, 1.0, 1.25, 1.5, 1.75, 2.0, 2.5, 3.0]),
+			false, SaveData.HANDLE_SIZE_MIN, SaveData.HANDLE_SIZE_MAX, NAN, {})
 	add_preview(SettingCanvasPreview.new(handle_presentation_root, PackedInt32Array([0, 2]), [PackedInt32Array([0, 1]), PackedInt32Array([0, 2, 1])], false))
 	current_setup_setting = "handle_inner_color"
 	add_color_edit(Translator.translate("Inside color"), false)
@@ -586,20 +586,17 @@ func setup_theming_content() -> void:
 	
 	add_section(Translator.translate("Selection rectangle"))
 	current_setup_setting = "selection_rectangle_speed"
-	add_number_dropdown(Translator.translate("Speed"),
-			[0.0, 10.0, 20.0, 30.0, 50.0, 80.0, 130.0], false, false,
-			-SaveData.MAX_SELECTION_RECTANGLE_SPEED,
-			SaveData.MAX_SELECTION_RECTANGLE_SPEED)
+	add_numeric_dropdown(Translator.translate("Speed"),
+			PackedFloat64Array([0.0, 10.0, 20.0, 30.0, 50.0, 80.0, 130.0]), false,
+			-SaveData.MAX_SELECTION_RECTANGLE_SPEED, SaveData.MAX_SELECTION_RECTANGLE_SPEED)
 	add_preview(SettingCanvasPreview.new(selection_rectangle_presentation_root, PackedInt32Array(), [PackedInt32Array([0])]))
 	current_setup_setting = "selection_rectangle_width"
-	add_number_dropdown(Translator.translate("Width"),
-			[1.0, 2.0, 3.0, 4.0], false, false, 1.0,
-			SaveData.MAX_SELECTION_RECTANGLE_WIDTH)
+	add_numeric_dropdown(Translator.translate("Width"),
+			PackedFloat64Array([1.0, 2.0, 3.0, 4.0]), false, 1.0, SaveData.MAX_SELECTION_RECTANGLE_WIDTH)
 	add_preview(SettingCanvasPreview.new(selection_rectangle_presentation_root, PackedInt32Array(), [PackedInt32Array([0])]))
 	current_setup_setting = "selection_rectangle_dash_length"
-	add_number_dropdown(Translator.translate("Dash length"),
-			[5.0, 10.0, 15.0, 20.0], false, false, 1.0,
-			SaveData.MAX_SELECTION_RECTANGLE_DASH_LENGTH)
+	add_numeric_dropdown(Translator.translate("Dash length"),
+			PackedFloat64Array([5.0, 10.0, 15.0, 20.0]), false, 1.0, SaveData.MAX_SELECTION_RECTANGLE_DASH_LENGTH)
 	add_preview(SettingCanvasPreview.new(selection_rectangle_presentation_root, PackedInt32Array(), [PackedInt32Array([0])]))
 	current_setup_setting = "selection_rectangle_color1"
 	add_color_edit(Translator.translate("Color {index}").format({"index": "1"}))
@@ -649,8 +646,8 @@ func setup_other_content() -> void:
 		wraparound_panning.permanent_disable_checkbox(false)
 	
 	current_setup_setting = "panning_speed"
-	add_number_dropdown(Translator.translate("Panning speed"), [5, 10, 20, 30, 50], true, false,
-			SaveData.PANNING_SPEED_MIN, SaveData.PANNING_SPEED_MAX)
+	add_numeric_dropdown(Translator.translate("Panning speed"), PackedFloat64Array([5, 10, 20, 30, 50]),
+			true, SaveData.PANNING_SPEED_MIN, SaveData.PANNING_SPEED_MAX)
 	add_preview(SettingTextPreview.new(Translator.translate(
 			"Determines how much the view moves for scroll-based panning inputs.")))
 	
@@ -701,8 +698,7 @@ func setup_other_content() -> void:
 	
 	current_setup_setting = "ui_scale"
 	add_dropdown(Translator.translate("UI scale"), dropdown_values, dropdown_map)
-	add_preview(SettingTextPreview.new(Translator.translate(
-			"Determines the scale factor for the interface.")))
+	add_preview(SettingTextPreview.new(Translator.translate("Determines the scale factor for the interface.")))
 	
 	current_setup_setting = "vsync"
 	add_checkbox(Translator.translate("V-Sync"))
@@ -710,9 +706,9 @@ func setup_other_content() -> void:
 			"Synchronizes graphics rendering with display refresh rate to prevent screen tearing artifacts. May increase input lag slightly.")))
 	
 	current_setup_setting = "max_fps"
-	add_fps_limit_dropdown(Translator.translate("Maximum FPS"))
-	add_preview(SettingTextPreview.new(Translator.translate(
-			"Determines the maximum number of frames per second.")))
+	add_numeric_dropdown(Translator.translate("Maximum FPS"), PackedFloat64Array([0, 30, 60, 90, 120, 144, 240, 360]),
+			true, SaveData.MAX_FPS_MIN, SaveData.MAX_FPS_MAX, 0, {0: Translator.translate("Unlimited")})
+	add_preview(SettingTextPreview.new(Translator.translate("Determines the maximum number of frames per second.")))
 	
 	current_setup_setting = "keep_screen_on"
 	var keep_screen_on := add_checkbox(Translator.translate("Keep screen on"))
@@ -793,8 +789,7 @@ func add_checkbox(text: String, dim_text := false) -> Control:
 	return frame
 
 # TODO Typed Dictionary wonkiness
-func add_dropdown(text: String, values: Array[Variant],
-value_text_map: Dictionary) -> Control:  # Dictionary[Variant, String]
+func add_dropdown(text: String, values: Array[Variant], value_text_map := {}) -> Control:  # Dictionary[Variant, String]
 	var frame := SettingFrameScene.instantiate()
 	frame.text = text
 	setup_frame(frame)
@@ -805,22 +800,13 @@ value_text_map: Dictionary) -> Control:  # Dictionary[Variant, String]
 	frame.value_changed.connect(setup_content)
 	return frame
 
-func add_number_dropdown(text: String, values: Array[float], is_integer := false,
-restricted := true, min_value := -INF, max_value := INF, dim_text := false) -> Control:
+func add_numeric_dropdown(text: String, values_for_dropdown: PackedFloat64Array, use_integers := false,
+min_value := -INF, max_value := INF, special_value_exception := NAN, value_text_map: Dictionary[float, String] = {}, dim_text := false) -> Control:
 	var frame := SettingFrameScene.instantiate()
 	frame.dim_text = dim_text
 	frame.text = text
 	setup_frame(frame)
-	frame.setup_number_dropdown(values, is_integer, restricted, min_value, max_value)
-	current_setup_container.add_child(frame)
-	return frame
-
-func add_fps_limit_dropdown(text: String, dim_text := false) -> Control:
-	var frame := SettingFrameScene.instantiate()
-	frame.dim_text = dim_text
-	frame.text = text
-	setup_frame(frame)
-	frame.setup_fps_limit_dropdown()
+	frame.setup_numeric_dropdown(values_for_dropdown, use_integers, min_value, max_value, special_value_exception, value_text_map)
 	current_setup_container.add_child(frame)
 	return frame
 

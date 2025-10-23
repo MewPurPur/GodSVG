@@ -18,8 +18,7 @@ const config_icon = preload("res://assets/icons/Config.svg")
 var drag_offset := Vector2.ZERO
 var drag_texture_rect: TextureRect
 
-# This property is used to ensure that the panel stays in roughly the same position
-# on the window when it resizes.
+# This property is used to ensure that the panel stays in roughly the same position on the window when it resizes.
 var position_window_relative: Vector2
 
 func sync_theming() -> void:
@@ -103,8 +102,7 @@ func update_layout() -> void:
 	
 	var margin_container := MarginContainer.new()
 	margin_container.begin_bulk_theme_override()
-	const CONST_ARR: PackedStringArray = ["margin_left", "margin_right", "margin_top",
-			"margin_bottom"]
+	const CONST_ARR: PackedStringArray = ["margin_left", "margin_right", "margin_top", "margin_bottom"]
 	for theme_type in CONST_ARR:
 		margin_container.add_theme_constant_override(theme_type, 4)
 	margin_container.begin_bulk_theme_override()
@@ -120,6 +118,7 @@ func update_layout() -> void:
 			Layout.HORIZONTAL_TWO_ROWS:
 				buttons_container = GridContainer.new()
 				buttons_container.columns = ceili(SaveData.SHORTCUT_PANEL_MAX_SLOTS / 2.0)
+		buttons_container.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 		
 		for i in range(SaveData.SHORTCUT_PANEL_MAX_SLOTS):
 			var shortcut := Configs.savedata.get_shortcut_panel_slot(i)

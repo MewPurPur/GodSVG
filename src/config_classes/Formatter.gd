@@ -10,23 +10,20 @@ enum PrimaryColorSyntax {THREE_OR_SIX_DIGIT_HEX, SIX_DIGIT_HEX, RGB}
 # Elements that don't make sense without child elements.
 const CONTAINER_ELEMENTS: PackedStringArray = ["svg", "g", "linearGradient", "radialGradient"]
 
-# TODO Typed Dictionary wonkiness  Dictionary[Preset, String]
-static func get_preset_value_text_map() -> Dictionary:
+static func get_preset_value_text_map() -> Dictionary[Preset, String]:
 	return {
 		Preset.COMPACT: Translator.translate("Compact"),
 		Preset.PRETTY: Translator.translate("Pretty"),
 	}
 
-# TODO Typed Dictionary wonkiness  Dictionary[ShorthandTags, String]
-static func get_shorthand_tags_value_text_map() -> Dictionary:
+static func get_shorthand_tags_value_text_map() -> Dictionary[ShorthandTags, String]:
 	return {
 		ShorthandTags.ALWAYS: Translator.translate("Always"),
 		ShorthandTags.ALL_EXCEPT_CONTAINERS: Translator.translate("All except containers"),
 		ShorthandTags.NEVER: Translator.translate("Never"),
 	}
 
-# TODO Typed Dictionary wonkiness  Dictionary[NamedColorUse, String]
-static func get_named_color_use_value_text_map() -> Dictionary:
+static func get_named_color_use_value_text_map() -> Dictionary[NamedColorUse, String]:
 	return {
 		NamedColorUse.ALWAYS: Translator.translate("Always"),
 		NamedColorUse.WHEN_SHORTER_OR_EQUAL: Translator.translate("When shorter or equal"),
@@ -34,16 +31,14 @@ static func get_named_color_use_value_text_map() -> Dictionary:
 		NamedColorUse.NEVER: Translator.translate("Never"),
 	}
 
-# TODO Typed Dictionary wonkiness  Dictionary[PrimaryColorSyntax, String]
-static func get_primary_color_syntax_value_text_map() -> Dictionary:
+static func get_primary_color_syntax_value_text_map() -> Dictionary[PrimaryColorSyntax, String]:
 	return {
 		PrimaryColorSyntax.THREE_OR_SIX_DIGIT_HEX: Translator.translate("3-digit or 6-digit hex"),
 		PrimaryColorSyntax.SIX_DIGIT_HEX: Translator.translate("6-digit hex"),
 		PrimaryColorSyntax.RGB: "RGB",
 	}
 
-# TODO Typed Dictionary wonkiness  Dictionary[Variant, String]
-static func get_enum_value_text_map(property: String) -> Dictionary:
+static func get_enum_value_text_map(property: String) -> Dictionary[Variant, String]:
 	match property:
 		"preset": return get_preset_value_text_map()
 		"xml_shorthand_tags": return get_shorthand_tags_value_text_map()
