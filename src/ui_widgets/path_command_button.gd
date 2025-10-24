@@ -11,6 +11,13 @@ func _ready() -> void:
 	text = ""
 	queue_redraw()
 	pressed.connect(emit_pressed_custom)
+	shortcut = Shortcut.new()
+	var shortcut_event := InputEventKey.new()
+	var shortcut_event_shift := InputEventKey.new()
+	shortcut_event.keycode = OS.find_keycode_from_string(command_char)
+	shortcut_event_shift.keycode = shortcut_event.keycode
+	shortcut_event_shift.shift_pressed = true
+	shortcut.events = [shortcut_event, shortcut_event_shift]
 
 func emit_pressed_custom() -> void:
 	pressed_custom.emit(command_char)
