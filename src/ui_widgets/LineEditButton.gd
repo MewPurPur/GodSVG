@@ -1,6 +1,6 @@
+## An optimized control representing a LineEdit with a button attached to it.
 @icon("res://godot_only/icons/LineEditButton.svg")
 class_name LineEditButton extends Control
-## An optimized control representing a LineEdit with a button attached to it.
 
 # A fake-out is drawn to avoid adding unnecessary nodes.
 # The real controls are only created when necessary, such as when hovered or focused.

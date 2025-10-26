@@ -15,6 +15,7 @@ func set_value(new_value: String, save := false) -> void:
 
 func _ready() -> void:
 	Configs.language_changed.connect(sync_localization)
+	sync_localization()
 	sync()
 	element.attribute_changed.connect(_on_element_attribute_changed)
 	tooltip_text = attribute_name
@@ -24,7 +25,6 @@ func _ready() -> void:
 	text_change_canceled.connect(sync)
 	button_gui_input.connect(_on_button_gui_input)
 	pressed.connect(_on_pressed)
-	sync_localization()
 
 
 func _on_element_attribute_changed(attribute_changed: String) -> void:

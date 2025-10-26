@@ -601,7 +601,8 @@ msgstr "Pipette"
 msgid "No file path"
 msgstr ""
 
-#: src/ui_widgets/fps_limit_dropdown.gd src/ui_widgets/setting_frame.gd
+#: src/ui_widgets/fps_limit_dropdown.gd
+#: src/ui_widgets/settings_content_generic.gd
 msgid "Unlimited"
 msgstr ""
 
@@ -616,6 +617,10 @@ msgstr "Pipette"
 #: src/ui_widgets/handles_manager.gd
 msgid "New shape"
 msgstr "Nouvelle forme"
+
+#: src/ui_widgets/id_field.gd
+msgid "No ID"
+msgstr ""
 
 #: src/ui_widgets/invalid_syntax_warning.gd
 msgid "The SVG has invalid syntax. Any edit not made through the code editor will reset it."
@@ -1008,6 +1013,10 @@ msgstr ""
 msgid "UI scale"
 msgstr "Échelle de l'interface"
 
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Determines the scale factor for the interface."
+msgstr "Détermine le facteur d'échelle de l'interface."
+
 #. Stands for "Vertical Synchronization".
 #: src/ui_widgets/settings_content_generic.gd
 msgid "V-Sync"
@@ -1017,6 +1026,11 @@ msgstr ""
 #, fuzzy
 msgid "Maximum FPS"
 msgstr "Valeur d'IPS maximale personnalisée"
+
+#: src/ui_widgets/settings_content_generic.gd
+#, fuzzy
+msgid "Determines the maximum number of frames per second."
+msgstr "Si le taux de rafraîchissement est limité, cette valeur déterminera le nombre maximum d'images par seconde."
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Keep screen on"
@@ -1104,17 +1118,8 @@ msgid "When enabled, scrolling pans the view instead of zooming in. To zoom, hol
 msgstr "Si activé, défiler fera balayer la vue. Pour zoomer, maintenez CTRL en défilant."
 
 #: src/ui_widgets/settings_content_generic.gd
-msgid "Determines the scale factor for the interface."
-msgstr "Détermine le facteur d'échelle de l'interface."
-
-#: src/ui_widgets/settings_content_generic.gd
 msgid "Synchronizes graphics rendering with display refresh rate to prevent screen tearing artifacts. May increase input lag slightly."
 msgstr ""
-
-#: src/ui_widgets/settings_content_generic.gd
-#, fuzzy
-msgid "Determines the maximum number of frames per second."
-msgstr "Si le taux de rafraîchissement est limité, cette valeur déterminera le nombre maximum d'images par seconde."
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Keeps the screen on even after inactivity, so the screensaver does not take over."

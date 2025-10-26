@@ -594,7 +594,8 @@ msgstr "Цветно колело"
 msgid "No file path"
 msgstr "Няма пътека към файл"
 
-#: src/ui_widgets/fps_limit_dropdown.gd src/ui_widgets/setting_frame.gd
+#: src/ui_widgets/fps_limit_dropdown.gd
+#: src/ui_widgets/settings_content_generic.gd
 msgid "Unlimited"
 msgstr "Неограничено"
 
@@ -609,6 +610,10 @@ msgstr "Пипета"
 #: src/ui_widgets/handles_manager.gd
 msgid "New shape"
 msgstr "Нова фигура"
+
+#: src/ui_widgets/id_field.gd
+msgid "No ID"
+msgstr "Няма ID"
 
 #: src/ui_widgets/invalid_syntax_warning.gd
 msgid "The SVG has invalid syntax. Any edit not made through the code editor will reset it."
@@ -987,6 +992,10 @@ msgstr "Дисплей"
 msgid "UI scale"
 msgstr "Мащаб на интерфейса"
 
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Determines the scale factor for the interface."
+msgstr "Определя мащаба на интерфейса."
+
 #. Stands for "Vertical Synchronization".
 #: src/ui_widgets/settings_content_generic.gd
 msgid "V-Sync"
@@ -995,6 +1004,10 @@ msgstr "Вертикална синхронизация"
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Maximum FPS"
 msgstr "Максимални кадри в секунда"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Determines the maximum number of frames per second."
+msgstr "Определя максималния брой кадри в секунда."
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Keep screen on"
@@ -1077,16 +1090,8 @@ msgid "When enabled, scrolling pans the view instead of zooming in. To zoom, hol
 msgstr "Когато е активирано, влаченето премества гледката. За увеличение, задръж CTRL докато влачиш."
 
 #: src/ui_widgets/settings_content_generic.gd
-msgid "Determines the scale factor for the interface."
-msgstr "Определя мащаба на интерфейса."
-
-#: src/ui_widgets/settings_content_generic.gd
 msgid "Synchronizes graphics rendering with display refresh rate to prevent screen tearing artifacts. May increase input lag slightly."
 msgstr "Синхронизира рендирането с честотата на опресняване на дисплея, за да предотврати артефакти от разкъсване на екранното изображение. Може леко да забави входните сигнали."
-
-#: src/ui_widgets/settings_content_generic.gd
-msgid "Determines the maximum number of frames per second."
-msgstr "Определя максималния брой кадри в секунда."
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Keeps the screen on even after inactivity, so the screensaver does not take over."

@@ -599,7 +599,8 @@ msgstr "Kleurenplukker"
 msgid "No file path"
 msgstr ""
 
-#: src/ui_widgets/fps_limit_dropdown.gd src/ui_widgets/setting_frame.gd
+#: src/ui_widgets/fps_limit_dropdown.gd
+#: src/ui_widgets/settings_content_generic.gd
 msgid "Unlimited"
 msgstr "Onbeperkt"
 
@@ -614,6 +615,10 @@ msgstr "Druppelaar"
 #: src/ui_widgets/handles_manager.gd
 msgid "New shape"
 msgstr "Nieuwe vorm"
+
+#: src/ui_widgets/id_field.gd
+msgid "No ID"
+msgstr ""
 
 #: src/ui_widgets/invalid_syntax_warning.gd
 msgid "The SVG has invalid syntax. Any edit not made through the code editor will reset it."
@@ -997,6 +1002,10 @@ msgstr "Weergave"
 msgid "UI scale"
 msgstr "Gebruiksinterface maat"
 
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Determines the scale factor for the interface."
+msgstr "Bepaalt de maat-factor van de interface."
+
 #. Stands for "Vertical Synchronization".
 #: src/ui_widgets/settings_content_generic.gd
 msgid "V-Sync"
@@ -1005,6 +1014,10 @@ msgstr "V-Sync"
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Maximum FPS"
 msgstr "Maximum FPS"
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Determines the maximum number of frames per second."
+msgstr "Bepaalt de maximum aantal frames per seconde."
 
 #: src/ui_widgets/settings_content_generic.gd
 #, fuzzy
@@ -1090,16 +1103,8 @@ msgid "When enabled, scrolling pans the view instead of zooming in. To zoom, hol
 msgstr "Wanneer ingeschakeld, zal scrollen het weergave verschuiven. Om te zoomen, houd CTRL ingedrukt tijdens het scrollen."
 
 #: src/ui_widgets/settings_content_generic.gd
-msgid "Determines the scale factor for the interface."
-msgstr "Bepaalt de maat-factor van de interface."
-
-#: src/ui_widgets/settings_content_generic.gd
 msgid "Synchronizes graphics rendering with display refresh rate to prevent screen tearing artifacts. May increase input lag slightly."
 msgstr "Synchroniseert grapfische rendering met vernieuwingfrequentie om scherm-scheuring te voorkomen. Kan mogelijk invoer vertraging lichtjes verhogen."
-
-#: src/ui_widgets/settings_content_generic.gd
-msgid "Determines the maximum number of frames per second."
-msgstr "Bepaalt de maximum aantal frames per seconde."
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Keeps the screen on even after inactivity, so the screensaver does not take over."

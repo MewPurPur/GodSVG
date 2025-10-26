@@ -1,12 +1,12 @@
 # This is similar to SettingFrame, but specifically for dropdowns without a default value.
 extends MarginContainer
 
-const Dropdown = preload("res://src/ui_widgets/dropdown.gd")
+const BasicDropdown = preload("res://src/ui_widgets/dropdown_basic.gd")
 
 signal value_changed
 signal defaults_applied
 
-const DropdownScene = preload("res://src/ui_widgets/dropdown.tscn")
+const BasicDropdownScene = preload("res://src/ui_widgets/dropdown_basic.tscn")
 
 var getter: Callable
 var setter: Callable
@@ -14,7 +14,7 @@ var disabled_check_callback: Callable
 var text: String
 
 var ci := get_canvas_item()
-var dropdown: Dropdown
+var dropdown: BasicDropdown
 
 var is_hovered := false
 var tooltip_rect := Rect2(NAN, NAN, NAN, NAN)
@@ -23,7 +23,7 @@ var tooltip_rect := Rect2(NAN, NAN, NAN, NAN)
 @onready var control: Control = $HBoxContainer/Control
 
 func setup_dropdown(values: Array, value_text_map: Dictionary) -> void:
-	dropdown = DropdownScene.instantiate()
+	dropdown = BasicDropdownScene.instantiate()
 	dropdown.values = values
 	dropdown.value_text_map = value_text_map
 
@@ -58,7 +58,7 @@ func button_update_disabled() -> void:
 
 func setup_size() -> void:
 	dropdown.position = Vector2(control.size.x - 102, 1)
-	dropdown.size = Vector2(98, 22)
+	dropdown.size = Vector2(100, 22)
 	queue_redraw()
 
 # value can be String for dropdown or int for enum dropdown.

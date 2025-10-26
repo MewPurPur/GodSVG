@@ -3,7 +3,6 @@ class_name ContextPopup extends PanelContainer
 
 const arrow = preload("res://assets/icons/PopupArrow.svg")
 
-
 static func create_shortcut_button(action: String, disabled := false, custom_text := "", custom_icon: Texture2D = null, no_modulation := false) -> Button:
 	if not InputMap.has_action(action):
 		push_error("Non-existent shortcut was passed.")

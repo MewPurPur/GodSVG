@@ -602,7 +602,8 @@ msgstr "Seletor de Cores"
 msgid "No file path"
 msgstr ""
 
-#: src/ui_widgets/fps_limit_dropdown.gd src/ui_widgets/setting_frame.gd
+#: src/ui_widgets/fps_limit_dropdown.gd
+#: src/ui_widgets/settings_content_generic.gd
 msgid "Unlimited"
 msgstr ""
 
@@ -617,6 +618,10 @@ msgstr "Conta-gotas"
 #: src/ui_widgets/handles_manager.gd
 msgid "New shape"
 msgstr "Nova forma"
+
+#: src/ui_widgets/id_field.gd
+msgid "No ID"
+msgstr ""
 
 #: src/ui_widgets/invalid_syntax_warning.gd
 msgid "The SVG has invalid syntax. Any edit not made through the code editor will reset it."
@@ -1008,6 +1013,11 @@ msgstr ""
 msgid "UI scale"
 msgstr "Escala da interface"
 
+#: src/ui_widgets/settings_content_generic.gd
+#, fuzzy
+msgid "Determines the scale factor for the interface."
+msgstr "Muda o fator de escala da interfaçe."
+
 #. Stands for "Vertical Synchronization".
 #: src/ui_widgets/settings_content_generic.gd
 msgid "V-Sync"
@@ -1015,6 +1025,10 @@ msgstr ""
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Maximum FPS"
+msgstr ""
+
+#: src/ui_widgets/settings_content_generic.gd
+msgid "Determines the maximum number of frames per second."
 msgstr ""
 
 #: src/ui_widgets/settings_content_generic.gd
@@ -1103,16 +1117,7 @@ msgid "When enabled, scrolling pans the view instead of zooming in. To zoom, hol
 msgstr "Se habilitado, a rolagem do mouse irá movimentar a tela. Para realizar o zoom, pressione CTRL enquanto rola."
 
 #: src/ui_widgets/settings_content_generic.gd
-#, fuzzy
-msgid "Determines the scale factor for the interface."
-msgstr "Muda o fator de escala da interfaçe."
-
-#: src/ui_widgets/settings_content_generic.gd
 msgid "Synchronizes graphics rendering with display refresh rate to prevent screen tearing artifacts. May increase input lag slightly."
-msgstr ""
-
-#: src/ui_widgets/settings_content_generic.gd
-msgid "Determines the maximum number of frames per second."
 msgstr ""
 
 #: src/ui_widgets/settings_content_generic.gd

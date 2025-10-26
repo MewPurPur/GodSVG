@@ -100,8 +100,6 @@ func add_dialog(new_dialog: Control) -> void:
 
 # Common logic for add_menu() and add_dialog().
 func _add_control(new_control: Control) -> void:
-	# FIXME subpar workaround to drag & drop not able to be canceled manually.
-	get_tree().root.propagate_notification(NOTIFICATION_DRAG_END)
 	remove_all_popups()
 	
 	var overlay_ref := ColorRect.new()
@@ -113,6 +111,11 @@ func _add_control(new_control: Control) -> void:
 	new_control.set_anchors_and_offsets_preset(Control.PRESET_CENTER)
 	new_control.tree_exiting.connect(_remove_control.bind(overlay_ref))
 	throw_mouse_motion_event()
+	
+	# TODO Right now, I have to force a drag from a control inside the tree,
+	# otherwise the current dragging operation can turn into drag and drop. Wtf Godot?
+	overlay_ref.force_drag(0, null)
+	get_viewport().gui_cancel_drag()
 
 func _remove_control(overlay_ref: ColorRect = null) -> void:
 	# If an overlay_ref is passed but doesn't match, do nothing.
@@ -151,6 +154,12 @@ func add_popup(new_popup: Control, add_shadow := true) -> Control:
 	overlay_ref.gui_input.connect(_parse_popup_overlay_event)
 	popup_stack.append(overlay_ref)
 	get_tree().root.add_child(overlay_ref)
+	
+	# TODO Right now, I have to force a drag from a control inside the tree,
+	# otherwise the current dragging operation can turn into drag and drop. Wtf Godot?
+	overlay_ref.force_drag(0, null)
+	get_viewport().gui_cancel_drag()
+	
 	if add_shadow:
 		var shadow_container := PanelContainer.new()
 		var sb := StyleBoxFlat.new()

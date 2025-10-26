@@ -4,7 +4,7 @@
 [ext_resource type="Script" uid="uid://chk5g6lh7jc14" path="res://src/ui_widgets/HTitledPanel.gd" id="2_07m68"]
 [ext_resource type="PackedScene" uid="uid://xh26qa68xed4" path="res://src/ui_widgets/preview_rect.tscn" id="2_ewk0a"]
 [ext_resource type="Texture2D" uid="uid://v0lqyuvo50yq" path="res://assets/icons/Info.svg" id="2_rk3rd"]
-[ext_resource type="PackedScene" uid="uid://dbu1lvajypafb" path="res://src/ui_widgets/dropdown.tscn" id="5_y6ex0"]
+[ext_resource type="PackedScene" uid="uid://bpr5yv7pbv13g" path="res://src/ui_widgets/dropdown_basic.tscn" id="5_y6ex0"]
 [ext_resource type="PackedScene" uid="uid://dad7fkhmsooc6" path="res://src/ui_widgets/number_edit.tscn" id="6_w1sag"]
 [ext_resource type="Texture2D" uid="uid://ccvjkdd0s7rb4" path="res://assets/icons/Copy.svg" id="7_rt6ij"]
 
@@ -129,9 +129,9 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 12
 
 [node name="Dropdown" parent="MarginContainer/VBoxContainer/TitledPanel/VBoxContainer/CenterContainer/VBoxContainer/FormatHBox" instance=ExtResource("5_y6ex0")]
+custom_minimum_size = Vector2(60, 22)
 layout_mode = 2
-values = ["svg", "png", "jpeg", "webp"]
-aliases = {
+aliases = Dictionary[String, Variant]({
 "JPEG": "jpeg",
 "JPG": "jpg",
 "PNG": "png",
@@ -139,7 +139,7 @@ aliases = {
 "WEBP": "webp",
 "WebP": "webp",
 "jpg": "jpeg"
-}
+})
 editing_enabled = true
 
 [node name="FinalSizeLabel" type="Label" parent="MarginContainer/VBoxContainer/TitledPanel/VBoxContainer/CenterContainer/VBoxContainer"]
