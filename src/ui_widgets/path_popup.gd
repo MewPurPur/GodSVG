@@ -44,3 +44,7 @@ func force_relativity(relative: bool) -> void:
 			command_button.queue_redraw()
 	await get_tree().process_frame
 	reset_size()
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event is InputEventKey and event.is_pressed() and event.keycode == KEY_SHIFT:
+		relative_toggle.button_pressed = not relative_toggle.button_pressed
