@@ -10,17 +10,7 @@ signal pressed_custom(cmd_char: String)
 func _ready() -> void:
 	text = ""
 	queue_redraw()
-	pressed.connect(emit_pressed_custom)
-	shortcut = Shortcut.new()
-	var shortcut_event := InputEventKey.new()
-	var shortcut_event_shift := InputEventKey.new()
-	shortcut_event.keycode = OS.find_keycode_from_string(command_char)
-	shortcut_event_shift.keycode = shortcut_event.keycode
-	shortcut_event_shift.shift_pressed = true
-	shortcut.events = [shortcut_event, shortcut_event_shift]
-
-func emit_pressed_custom() -> void:
-	pressed_custom.emit(command_char)
+	pressed.connect(pressed_custom.emit.bind(command_char))
 
 func set_invalid(new_state := true) -> void:
 	disabled = new_state
@@ -54,3 +44,8 @@ func _draw() -> void:
 		if text_obj.get_line_width() > max_size:
 			custom_minimum_size.x = size.x + 4 + text_obj.get_line_width() - max_size
 	text_obj.draw(get_canvas_item(), Vector2(left_margin + 2, 3), text_color)
+
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event is InputEventKey and event.is_pressed() and event.keycode == OS.find_keycode_from_string(command_char):
+		pressed.emit()
