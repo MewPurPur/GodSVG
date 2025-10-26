@@ -151,8 +151,7 @@ func _order_signals(btn: Button) -> void:
 			btn.pressed.connect(connection.callable, CONNECT_DEFERRED)
 	set_block_signals(true)
 
-func setup(buttons: Array[Button], align_left := false, min_width := -1.0,
-max_height := -1.0, separator_indices := PackedInt32Array()) -> void:
+func setup(buttons: Array[Button], align_left := false, min_width := -1.0, separator_indices := PackedInt32Array()) -> void:
 	var main_container := _common_initial_setup()
 	# Add the buttons.
 	if buttons.is_empty():
@@ -169,7 +168,9 @@ max_height := -1.0, separator_indices := PackedInt32Array()) -> void:
 	await main_container.ready
 	if min_width > 0:
 		custom_minimum_size.x = min_width
-	if max_height > 0 and max_height < get_minimum_size().y:
+	
+	var max_height := get_window().size.y / 2.0 - 16.0
+	if get_minimum_size().y > max_height:
 		custom_minimum_size.y = max_height
 		main_container.get_parent().vertical_scroll_mode = ScrollContainer.SCROLL_MODE_AUTO
 

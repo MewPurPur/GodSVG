@@ -63,6 +63,12 @@ func sync_buttons() -> void:
 					text_line.add_string("…", font, font_size)
 					dropdown_button = ButtonData.create_from_textline(
 							Rect2(0, 1, text_line.get_line_width() + DROPDOWN_BUTTON_SIDE_MARGIN * 2, size.y - 2), _popup_dropdown, text_line)
+					dropdown_button.theme_color_overrides = {
+						"font_color": ThemeUtils.dimmer_text_color,
+						"font_hover_color": ThemeUtils.text_color,
+						"font_pressed_color": ThemeUtils.highlighted_text_color,
+						"font_disabled_color": ThemeUtils.text_color,
+					}
 					dropdown_button.use_arrow_cursor = true
 					buttons.append(dropdown_button)
 					collapsed_paths.append(processed_path)
@@ -100,6 +106,12 @@ func sync_buttons() -> void:
 					text_line.add_string("…", font, font_size)
 					dropdown_button = ButtonData.create_from_textline(
 							Rect2(0, 1, text_line.get_line_width() + DROPDOWN_BUTTON_SIDE_MARGIN * 2, size.y - 2), _popup_dropdown, text_line)
+					dropdown_button.theme_color_overrides = {
+						"font_color": ThemeUtils.dimmer_text_color,
+						"font_hover_color": ThemeUtils.text_color,
+						"font_pressed_color": ThemeUtils.highlighted_text_color,
+						"font_disabled_color": ThemeUtils.text_color,
+					}
 					dropdown_button.use_arrow_cursor = true
 					buttons.append(dropdown_button)
 					collapsed_paths.append(processed_path)
@@ -159,5 +171,5 @@ func _popup_dropdown() -> void:
 			btn_array.append(ContextPopup.create_button(display_name, directory_selected.emit.bind(collapsed_path)))
 	
 	var dropdown_popup := ContextPopup.new()
-	dropdown_popup.setup(btn_array, true, dropdown_button.rect.size.x, -1)
+	dropdown_popup.setup(btn_array, true)
 	HandlerGUI.popup_under_rect_center(dropdown_popup, Rect2(dropdown_button.rect.position + global_position, dropdown_button.rect.size), get_viewport())

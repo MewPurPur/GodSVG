@@ -245,7 +245,7 @@ func _gui_input(event: InputEvent) -> void:
 					btn_arr.append(ContextPopup.create_shortcut_button("open_externally", file_absent))
 					btn_arr.append(ContextPopup.create_shortcut_button("open_in_folder", file_absent))
 				var tab_popup := ContextPopup.new()
-				tab_popup.setup(btn_arr, true, -1, -1, PackedInt32Array([6]))
+				tab_popup.setup(btn_arr, true, -1, PackedInt32Array([6]))
 				
 				if hovered_idx != -1:
 					var tab_global_rect := get_tab_rect(hovered_idx)

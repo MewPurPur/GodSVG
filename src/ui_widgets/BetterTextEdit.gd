@@ -229,7 +229,7 @@ func _gui_input(event: InputEvent) -> void:
 			btn_arr.append(ContextPopup.create_shortcut_button("select_all", is_text_empty))
 		
 		var context_popup := ContextPopup.new()
-		context_popup.setup(btn_arr, true, -1, -1, separator_arr)
+		context_popup.setup(btn_arr, true, -1, separator_arr)
 		var vp := get_viewport()
 		HandlerGUI.popup_under_pos(context_popup, vp.get_mouse_position(), vp)
 		accept_event()
