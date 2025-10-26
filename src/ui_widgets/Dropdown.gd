@@ -49,16 +49,16 @@ func _gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion and event.button_mask == 0:
 		queue_redraw()
 	elif event is InputEventMouseButton and event.is_pressed():
-		if event.button_index == MOUSE_BUTTON_LEFT:
+		if event.button_index == MOUSE_BUTTON_RIGHT and not (_text.is_empty() and not editing_enabled):
+			_enter_edit_mode()
+			accept_event()
+		elif event.button_index in [MOUSE_BUTTON_LEFT, MOUSE_BUTTON_MIDDLE]:
 			focus_entered.emit()
 			var value_picker := ContextPopup.new()
-			value_picker.setup(_get_dropdown_buttons(), align_left, size.x, get_window().size.y / 2.0)
+			value_picker.setup(_get_dropdown_buttons(), align_left, size.x)
 			queue_redraw()
 			accept_event()
 			HandlerGUI.popup_under_rect(value_picker, get_global_rect(), get_viewport())
-		elif event.button_index in [MOUSE_BUTTON_RIGHT, MOUSE_BUTTON_MIDDLE]:
-			_enter_edit_mode()
-			accept_event()
 
 func _enter_edit_mode() -> void:
 	line_edit = BetterLineEdit.new()

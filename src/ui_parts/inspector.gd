@@ -61,7 +61,7 @@ func _on_add_button_pressed() -> void:
 		btn_array.append(btn)
 	
 	var add_popup := ContextPopup.new()
-	add_popup.setup(btn_array, true, add_button.size.x, -1, PackedInt32Array([1, 4, 7]))
+	add_popup.setup(btn_array, true, add_button.size.x, PackedInt32Array([1, 4, 7]))
 	HandlerGUI.popup_under_rect(add_popup, add_button.get_global_rect(), get_viewport())
 
 

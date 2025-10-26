@@ -32,7 +32,7 @@ func _on_file_button_pressed() -> void:
 			not FileAccess.file_exists(Configs.savedata.get_active_tab().svg_file_path)))
 	
 	var context_popup := ContextPopup.new()
-	context_popup.setup(btn_array, true, size.x, -1, PackedInt32Array([2]))
+	context_popup.setup(btn_array, true, size.x, PackedInt32Array([2]))
 	HandlerGUI.popup_under_rect_center(context_popup, get_global_rect(), get_viewport())
 
 func update_file_button() -> void:

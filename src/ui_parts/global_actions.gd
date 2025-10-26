@@ -75,7 +75,7 @@ func _on_more_options_pressed() -> void:
 	buttons_arr.append(ContextPopup.create_shortcut_button("about_website"))
 	
 	var more_popup := ContextPopup.new()
-	more_popup.setup(buttons_arr, true, -1, -1, separator_indices)
+	more_popup.setup(buttons_arr, true, -1, separator_indices)
 	HandlerGUI.popup_under_rect_center(more_popup, more_options.get_global_rect(), get_viewport())
 
 

@@ -245,7 +245,7 @@ func _on_palette_button_pressed() -> void:
 			save_palette.bind(palette_idx), false, load("res://assets/icons/Export.svg")))
 	
 	var context_popup := ContextPopup.new()
-	context_popup.setup(btn_arr, true, -1, -1, separator_arr)
+	context_popup.setup(btn_arr, true, -1, separator_arr)
 	HandlerGUI.popup_under_rect_center(context_popup, palette_button.get_global_rect(), get_viewport())
 
 
