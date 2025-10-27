@@ -125,7 +125,7 @@ func setup_formatting_content() -> void:
 	var current_setup_resource: Formatter = _get_current_setup_resource()
 	
 	var additional_text := "\n" + Translator.translate(
-			"Formatters can change the formatting of the SVG's content and attributes. These changes don't affect the its structure or the structure of more complex attributes, such as pathdata. Formatters can be configured to make the SVG prettier or more compact.")
+			"Formatters can change the formatting of the SVG's content and attributes. These changes don't affect its structure or the structure of more complex attributes, such as pathdata. Formatters can be configured to make the SVG prettier or more compact.")
 	
 	if current_setup_resource == Configs.savedata.editor_formatter:
 		var short_text := Translator.translate("Determines how SVG attributes and content appear in the GodSVG interface.")

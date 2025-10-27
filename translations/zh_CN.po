@@ -594,11 +594,6 @@ msgstr "取色器"
 msgid "No file path"
 msgstr "无文件路经"
 
-#: src/ui_widgets/fps_limit_dropdown.gd
-#: src/ui_widgets/settings_content_generic.gd
-msgid "Unlimited"
-msgstr "无限制"
-
 #: src/ui_widgets/good_color_picker.gd
 msgid "Color keywords"
 msgstr "颜色关键字"
@@ -1006,6 +1001,10 @@ msgid "Maximum FPS"
 msgstr "最大帧率"
 
 #: src/ui_widgets/settings_content_generic.gd
+msgid "Unlimited"
+msgstr "无限制"
+
+#: src/ui_widgets/settings_content_generic.gd
 msgid "Determines the maximum number of frames per second."
 msgstr "改变最大帧率。"
 
@@ -1034,7 +1033,7 @@ msgid "The setting can't be changed on this platform."
 msgstr "设置于当前平台下无法更改。"
 
 #: src/ui_widgets/settings_content_generic.gd
-msgid "Formatters can change the formatting of the SVG's content and attributes. These changes don't affect the its structure or the structure of more complex attributes, such as pathdata. Formatters can be configured to make the SVG prettier or more compact."
+msgid "Formatters can change the formatting of the SVG's content and attributes. These changes don't affect its structure or the structure of more complex attributes, such as pathdata. Formatters can be configured to make the SVG prettier or more compact."
 msgstr "格式化器可更改SVG内容和属性的格式。这些更改不会影响其结构或更复杂属性（如路径数据）的结构。格式化器可配置为使SVG更美观或更紧凑。"
 
 #: src/ui_widgets/settings_content_generic.gd
