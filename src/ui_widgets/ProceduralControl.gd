@@ -202,7 +202,7 @@ func _gui_input(event: InputEvent) -> void:
 					should_update_hover = true
 		
 		if should_update_hover:
-			if event.button_mask == 0:
+			if event.button_mask == 0 and not (event is InputEventMouseButton and event.is_released() and event.button_index != MOUSE_BUTTON_NONE):
 				var found_hovered := false
 				for button in buttons:
 					if button.disabled:
