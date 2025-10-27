@@ -15,6 +15,7 @@ const bottom_spacing = 2
 
 var boxes: Array[Rect2] = []
 var copy_button: Button
+var hovered_email: String
 
 
 func _ready() -> void:
@@ -76,7 +77,9 @@ func _gui_input(event: InputEvent) -> void:
 				var email := item_after_angle_bracket.get_slice(">", 0)
 				var box := boxes[idx]
 				if box.has_point(event.position):
-					if not is_instance_valid(copy_button):
+					if email != hovered_email:
+						if is_instance_valid(copy_button):
+							copy_button.queue_free()
 						copy_button = Button.new()
 						copy_button.theme_type_variation = "FlatButton"
 						copy_button.icon = copy_icon
@@ -93,3 +96,4 @@ func _gui_input(event: InputEvent) -> void:
 func remove_copy_button() -> void:
 	if is_instance_valid(copy_button):
 		copy_button.queue_free()
+		hovered_email = ""
