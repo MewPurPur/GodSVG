@@ -15,7 +15,7 @@ env:
   # Used in the editor config file name (e.g., 4.4, 4.5, but NOT 4.4.1)
   GODOT_FEATURE_VERSION: 4.5
   # Commit hash
-  GODOT_COMMIT_HASH: f62fdbde15035c5576dad93e586201f4d41ef0cb
+  GODOT_COMMIT_HASH: 697f5ffb56c780f9f2528256300aabc5e7032554
   PROJECT_NAME: GodSVG
   # deprecated=no disables deprecated Godot features, which exist for compat and we don't use.
   # vulkan=no, use_volk=no since we use Compatibility Renderer. TODO for 4.5 disable rendering_device too.
@@ -47,7 +47,7 @@ jobs:
         id: cache-template
         uses: actions/cache@v3
         with:
-          key: template-${{ env.PLATFORM }}-${{ env.GODOT_VERSION }}-${{ env.GODOT_RELEASE }}-${{ env.BUILD_OPTIONS }}
+          key: template-${{ env.PLATFORM }}-${{ env.GODOT_VERSION }}-${{ env.GODOT_RELEASE }}-${{ env.BUILD_OPTIONS }}-lmofa
           path: |
             ~/.local/share/godot/export_templates/
 
@@ -72,7 +72,7 @@ jobs:
         name: Checkout specific commit
         run: |
           cd godot
-          git fetch
+          git fetch origin pull/106573/head
           git checkout $GODOT_COMMIT_HASH
 
       - name: Checkout repository
@@ -112,7 +112,7 @@ jobs:
         id: cache-template
         uses: actions/cache@v3
         with:
-          key: template-${{ env.PLATFORM }}-${{ env.GODOT_VERSION }}-${{ env.GODOT_RELEASE }}-${{ env.BUILD_OPTIONS }}
+          key: template-${{ env.PLATFORM }}-${{ env.GODOT_VERSION }}-${{ env.GODOT_RELEASE }}-${{ env.BUILD_OPTIONS }}-lmofa
           path: |
             ~/.local/share/godot/export_templates/
 
@@ -147,7 +147,7 @@ jobs:
         name: Checkout specific commit
         run: |
           cd godot
-          git fetch
+          git fetch origin pull/106573/head
           git checkout $GODOT_COMMIT_HASH
 
       - name: Checkout repository
@@ -187,7 +187,7 @@ jobs:
         id: cache-template
         uses: actions/cache@v3
         with:
-          key: template-${{ env.PLATFORM }}-${{ env.GODOT_VERSION }}-${{ env.GODOT_RELEASE }}-${{ env.BUILD_OPTIONS }}
+          key: template-${{ env.PLATFORM }}-${{ env.GODOT_VERSION }}-${{ env.GODOT_RELEASE }}-${{ env.BUILD_OPTIONS }}-lmofa
           path: |
             /Users/runner/Library/Application Support/Godot/export_templates/
 
@@ -216,7 +216,7 @@ jobs:
         name: Checkout specific commit
         run: |
           cd godot
-          git fetch
+          git fetch origin pull/106573/head
           git checkout $GODOT_COMMIT_HASH
 
       - if: ${{ steps.cache-template.outputs.cache-hit != 'true' }}
@@ -275,7 +275,7 @@ jobs:
         id: cache-template
         uses: actions/cache@v3
         with:
-          key: template-${{ env.PLATFORM }}-${{ env.GODOT_VERSION }}-${{ env.GODOT_RELEASE }}-${{ env.BUILD_OPTIONS }}
+          key: template-${{ env.PLATFORM }}-${{ env.GODOT_VERSION }}-${{ env.GODOT_RELEASE }}-${{ env.BUILD_OPTIONS }}-lmofa
           path: |
             ~/.local/share/godot/export_templates/
 
@@ -310,7 +310,7 @@ jobs:
         name: Checkout specific commit
         run: |
           cd godot
-          git fetch
+          git fetch origin pull/106573/head
           git checkout $GODOT_COMMIT_HASH
 
       - name: Checkout repository
@@ -353,7 +353,7 @@ jobs:
         id: cache-template
         uses: actions/cache@v3
         with:
-          key: template-${{ env.PLATFORM }}-${{ env.GODOT_VERSION }}-${{ env.GODOT_RELEASE }}-${{ env.BUILD_OPTIONS }}
+          key: template-${{ env.PLATFORM }}-${{ env.GODOT_VERSION }}-${{ env.GODOT_RELEASE }}-${{ env.BUILD_OPTIONS }}-lmofa
           path: |
             ~/.local/share/godot/export_templates/
 
@@ -392,7 +392,7 @@ jobs:
         name: Checkout specific commit
         run: |
           cd godot
-          git fetch
+          git fetch origin pull/106573/head
           git checkout $GODOT_COMMIT_HASH
 
       - name: Checkout repository
