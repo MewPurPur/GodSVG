@@ -1314,6 +1314,7 @@ msgstr "Plakken"
 msgid "Cut"
 msgstr "Knippen"
 
+#. Refers to evaluating an expression such as "sin(2*pi/5)".
 #: src/utils/TranslationUtils.gd
 msgid "Evaluate"
 msgstr ""
