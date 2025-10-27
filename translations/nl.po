@@ -599,11 +599,6 @@ msgstr "Kleurenplukker"
 msgid "No file path"
 msgstr ""
 
-#: src/ui_widgets/fps_limit_dropdown.gd
-#: src/ui_widgets/settings_content_generic.gd
-msgid "Unlimited"
-msgstr "Onbeperkt"
-
 #: src/ui_widgets/good_color_picker.gd
 msgid "Color keywords"
 msgstr "kleur trefwoorden"
@@ -1016,6 +1011,10 @@ msgid "Maximum FPS"
 msgstr "Maximum FPS"
 
 #: src/ui_widgets/settings_content_generic.gd
+msgid "Unlimited"
+msgstr "Onbeperkt"
+
+#: src/ui_widgets/settings_content_generic.gd
 msgid "Determines the maximum number of frames per second."
 msgstr "Bepaalt de maximum aantal frames per seconde."
 
@@ -1045,7 +1044,7 @@ msgid "The setting can't be changed on this platform."
 msgstr "De instelling kan niet verandert worden op dit platform."
 
 #: src/ui_widgets/settings_content_generic.gd
-msgid "Formatters can change the formatting of the SVG's content and attributes. These changes don't affect the its structure or the structure of more complex attributes, such as pathdata. Formatters can be configured to make the SVG prettier or more compact."
+msgid "Formatters can change the formatting of the SVG's content and attributes. These changes don't affect its structure or the structure of more complex attributes, such as pathdata. Formatters can be configured to make the SVG prettier or more compact."
 msgstr ""
 
 #: src/ui_widgets/settings_content_generic.gd
