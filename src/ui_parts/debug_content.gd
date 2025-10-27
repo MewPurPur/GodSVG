@@ -32,7 +32,10 @@ func set_debug_visibility(visibility: bool) -> void:
 
 # The strings here are intentionally not localized.
 func update_debug() -> void:
-	var debug_text := ""
+	var debug_text := str(DisplayServer.screen_get_usable_rect(DisplayServer.window_get_current_screen())) + " | " +\
+			str(get_window().get_size_with_decorations()) + " | " +\
+			str(DisplayServer.window_get_current_screen()) + " | " +\
+			str(DisplayServer.screen_get_usable_rect()) + "\n"
 	debug_text += "FPS: %d\n" % Performance.get_monitor(Performance.TIME_FPS)
 	debug_text += "Static Mem: %s\n" % String.humanize_size(int(Performance.get_monitor(Performance.MEMORY_STATIC)))
 	
