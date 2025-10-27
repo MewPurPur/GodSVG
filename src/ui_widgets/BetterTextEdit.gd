@@ -51,6 +51,7 @@ func recalibrate_line_gutter() -> void:
 	_line_gutter_needed_space = int(max_digits * get_theme_font("font").get_char_size(69, get_theme_font_size("font_size")).x) + 12
 	set_gutter_width(0, _line_gutter_needed_space)
 
+# TODO Add RID get_canvas_item() as a first element when #108369 merged.
 func _line_number_draw_callback(line: int, _gutter: int, region: Rect2) -> void:
 	if not Rect2(Vector2.ZERO, size).intersects(region):
 		return

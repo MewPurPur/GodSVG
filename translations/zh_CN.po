@@ -1300,6 +1300,7 @@ msgstr "粘贴"
 msgid "Cut"
 msgstr "剪切"
 
+#. Refers to evaluating an expression such as "sin(2*pi/5)".
 #: src/utils/TranslationUtils.gd
 msgid "Evaluate"
 msgstr "评估"
