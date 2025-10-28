@@ -122,13 +122,14 @@ func _ready() -> void:
 	reset_button.reset_size()
 	if type != Type.NONE:
 		widget.reset_size()
-	reset_button.tooltip_text = Translator.translate("Reset to default")
 	reset_button.position = Vector2(size.x - 24, 4)
 	reset_button.pressed.connect(_on_reset_button_pressed)
 	update_widgets()
 	if typeof(default) == TYPE_STRING and default.is_empty():
+		reset_button.tooltip_text = Translator.translate("Clear")
 		reset_button.icon = clear_icon
 	else:
+		reset_button.tooltip_text = Translator.translate("Reset to default")
 		reset_button.icon = reload_icon
 
 func _on_resized() -> void:
