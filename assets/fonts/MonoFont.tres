@@ -1,6 +1,6 @@
 [gd_resource type="FontVariation" load_steps=2 format=3 uid="uid://pup5vmxl1t6m"]
 
-[ext_resource type="FontFile" uid="uid://c5kkpicj45r00" path="res://assets/fonts/JetBrainsMono-Medium.woff2" id="1_w5v41"]
+[ext_resource type="FontFile" uid="uid://c5kkpicj45r00" path="res://assets/fonts/original/JetBrainsMono-Medium.woff2" id="1_w5v41"]
 
 [resource]
 fallbacks = Array[Font]([ExtResource("1_w5v41")])

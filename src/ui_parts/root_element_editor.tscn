@@ -41,7 +41,6 @@ script = ExtResource("4_7r848")
 [node name="WidthEdit" parent="CenterContainer/Edits/Size/Width" instance=ExtResource("3_1gu7n")]
 custom_minimum_size = Vector2(48, 22)
 layout_mode = 2
-allow_lower = false
 
 [node name="Height" type="VBoxContainer" parent="CenterContainer/Edits/Size"]
 layout_mode = 2
@@ -62,7 +61,6 @@ script = ExtResource("4_7r848")
 [node name="HeightEdit" parent="CenterContainer/Edits/Size/Height" instance=ExtResource("3_1gu7n")]
 custom_minimum_size = Vector2(48, 22)
 layout_mode = 2
-allow_lower = false
 
 [node name="Viewbox" type="VBoxContainer" parent="CenterContainer/Edits"]
 unique_name_in_owner = true
@@ -87,17 +85,17 @@ layout_mode = 2
 [node name="ViewboxEditX" parent="CenterContainer/Edits/Viewbox/Rect" instance=ExtResource("3_1gu7n")]
 custom_minimum_size = Vector2(48, 22)
 layout_mode = 2
+min_value = inf_neg
 
 [node name="ViewboxEditY" parent="CenterContainer/Edits/Viewbox/Rect" instance=ExtResource("3_1gu7n")]
 custom_minimum_size = Vector2(48, 22)
 layout_mode = 2
+min_value = inf_neg
 
 [node name="ViewboxEditW" parent="CenterContainer/Edits/Viewbox/Rect" instance=ExtResource("3_1gu7n")]
 custom_minimum_size = Vector2(48, 22)
 layout_mode = 2
-allow_lower = false
 
 [node name="ViewboxEditH" parent="CenterContainer/Edits/Viewbox/Rect" instance=ExtResource("3_1gu7n")]
 custom_minimum_size = Vector2(48, 22)
 layout_mode = 2
-allow_lower = false

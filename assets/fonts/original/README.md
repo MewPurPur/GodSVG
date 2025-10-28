@@ -1,0 +1,5 @@
+This folder contains:
+- Variations of the Noto Sans font for currently supported languages, specifically the unhinted versions from https://notofonts.github.io/.
+- The JetBrains Mono font was stripped (only keeping ASCII and SVG-specific ligatures).
+
+Every font was converted to woff2 to optimize its size.

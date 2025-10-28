@@ -176,8 +176,6 @@ layout_mode = 2
 min_value = 1.0
 max_value = 100.0
 initial_value = 75.0
-allow_lower = false
-allow_higher = false
 is_float = false
 
 [node name="SizeContainer" type="CenterContainer" parent="MarginContainer/VBoxContainer/TitledPanel/VBoxContainer/CenterContainer/VBoxContainer"]
@@ -209,8 +207,6 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(47, 22)
 layout_mode = 2
 size_flags_vertical = 4
-allow_lower = false
-allow_higher = false
 
 [node name="RightPanel" type="PanelContainer" parent="MarginContainer/VBoxContainer/TitledPanel/VBoxContainer/CenterContainer/VBoxContainer/SizeContainer/HBoxContainer"]
 layout_mode = 2
@@ -232,9 +228,8 @@ theme_override_font_sizes/font_size = 12
 unique_name_in_owner = true
 custom_minimum_size = Vector2(47, 22)
 layout_mode = 2
+min_value = 1.0
 max_value = 16384.0
-allow_lower = false
-allow_higher = false
 is_float = false
 
 [node name="HeightContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/TitledPanel/VBoxContainer/CenterContainer/VBoxContainer/SizeContainer/HBoxContainer/RightPanel/VBoxContainer"]
@@ -250,9 +245,8 @@ theme_override_font_sizes/font_size = 12
 unique_name_in_owner = true
 custom_minimum_size = Vector2(47, 22)
 layout_mode = 2
+min_value = 1.0
 max_value = 16384.0
-allow_lower = false
-allow_higher = false
 is_float = false
 
 [node name="ButtonContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]

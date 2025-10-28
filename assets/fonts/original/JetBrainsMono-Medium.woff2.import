@@ -2,13 +2,13 @@
 
 importer="font_data_dynamic"
 type="FontFile"
-uid="uid://cdke2b8vyur24"
-path="res://.godot/imported/NotoSans-ExtraBold.woff2-cdd04ff8cd7c29695f4b38f8010d9b59.fontdata"
+uid="uid://c5kkpicj45r00"
+path="res://.godot/imported/JetBrainsMono-Medium.woff2-231be972305c0b88aeb0f80573f39a8e.fontdata"
 
 [deps]
 
-source_file="res://assets/fonts/NotoSans-ExtraBold.woff2"
-dest_files=["res://.godot/imported/NotoSans-ExtraBold.woff2-cdd04ff8cd7c29695f4b38f8010d9b59.fontdata"]
+source_file="res://assets/fonts/original/JetBrainsMono-Medium.woff2"
+dest_files=["res://.godot/imported/JetBrainsMono-Medium.woff2-231be972305c0b88aeb0f80573f39a8e.fontdata"]
 
 [params]
 

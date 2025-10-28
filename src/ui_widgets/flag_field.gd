@@ -1,6 +1,8 @@
 # An editor for flags with the value of 0 or 1, not tied to an attribute.
 extends Button
 
+var ci := get_canvas_item()
+
 var hovered := false
 
 signal value_changed(new_value: int)
@@ -20,16 +22,14 @@ func _on_toggled(is_state_pressed: bool) -> void:
 	set_value(1 if is_state_pressed else 0)
 
 func _ready() -> void:
-	value_changed.connect(_on_value_changed)
 	toggled.connect(_on_toggled)
 	mouse_entered.connect(_on_mouse_entered)
 	mouse_exited.connect(_on_mouse_exited)
-	button_pressed = (get_value() == 1)
-	text = String.num_uint64(get_value())
+	value_changed.connect(_on_value_changed)
+	_on_value_changed(get_value())
 
 func _on_value_changed(new_value: int) -> void:
 	button_pressed = (new_value == 1)
-	text = String.num_uint64(new_value)
 
 
 func _on_mouse_entered() -> void:
@@ -48,7 +48,16 @@ func _draw() -> void:
 		hover_stylebox.corner_radius_top_right = 3
 		hover_stylebox.border_width_bottom = 2
 		hover_stylebox.border_color = Color(1, 1, 1, 0.2)
-		draw_style_box(hover_stylebox, Rect2(Vector2.ZERO, size))
+		hover_stylebox.draw(ci, Rect2(Vector2.ZERO, size))
+		if button_pressed:
+			ThemeUtils.mono_font.draw_char(ci, Vector2(5, 14), ord("1"), 14, get_theme_color("font_hover_pressed_color"))
+		else:
+			ThemeUtils.mono_font.draw_char(ci, Vector2(5, 14), ord("0"), 14, get_theme_color("font_hover_color"))
+	else:
+		if button_pressed:
+			ThemeUtils.mono_font.draw_char(ci, Vector2(5, 14), ord("1"), 14, get_theme_color("font_pressed_color"))
+		else:
+			ThemeUtils.mono_font.draw_char(ci, Vector2(5, 14), ord("0"), 14, get_theme_color("font_color"))
 
 
 func _make_custom_tooltip(for_text: String) -> Object:

@@ -8,7 +8,7 @@ extends BetterLineEdit
 			if _value < min_value:
 				set_value(min_value)
 
-@export var max_value := 1.0:
+@export var max_value := INF:
 	set(new_value):
 		if max_value != new_value:
 			max_value = new_value
@@ -16,8 +16,6 @@ extends BetterLineEdit
 				set_value(max_value)
 
 @export var initial_value := 1.0
-@export var allow_lower := true
-@export var allow_higher := true
 @export var is_float := true
 
 signal value_changed(new_value: float)
@@ -28,10 +26,7 @@ func set_value(new_value: float, emit_changed := true) -> void:
 		sync_text()
 		return
 	elif _value != new_value:
-		if not allow_higher and new_value > max_value:
-			new_value = max_value
-		elif not allow_lower and new_value < min_value:
-			new_value = min_value
+		new_value = clampf(new_value, min_value, max_value)
 		if _value != new_value:
 			_value = new_value
 			if emit_changed:

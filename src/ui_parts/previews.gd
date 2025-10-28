@@ -2,6 +2,9 @@ extends VTitledPanel
 
 const ColorSwatch = preload("res://src/ui_widgets/color_swatch.gd")
 const ColorEdit = preload("res://src/ui_widgets/color_edit.gd")
+const NumberEdit = preload("res://src/ui_widgets/number_edit.gd")
+
+const NumberEditScene = preload("res://src/ui_widgets/number_edit.tscn")
 
 const TILE_MARGIN = 2.0
 const TILE_TOP_PADDING = 4.0
@@ -73,7 +76,7 @@ var tiles: Array[IconPreviewTileData] = []
 var hovered_tile_index := -1
 var selected_tile_index := -1
 var edited_tile_index := -1
-var edit_field: BetterLineEdit
+var edit_field: NumberEdit
 
 func _ready() -> void:
 	icon_preview_tiles.draw.connect(_on_preview_tiles_draw)
@@ -267,32 +270,28 @@ func _show_tile_popup_under_more_button(tile: IconPreviewTileData) -> void:
 func _edit_tile_size(tile: IconPreviewTileData) -> void:
 	edited_tile_index = tile.index
 	
-	edit_field = BetterLineEdit.new()
+	edit_field = NumberEditScene.instantiate()
+	edit_field.initial_value = tile.bigger_dimension
+	edit_field.min_value = 1.0
+	edit_field.max_value = 16384.0
+	edit_field.is_float = false
 	icon_preview_tiles.add_child(edit_field)
 	edit_field.text = String.num_uint64(tile.bigger_dimension)
 	edit_field.position = icon_preview_tiles.position + tile.position + tile.label_rect.position - Vector2(3, 4)
 	edit_field.size = tile.label_rect.size
 	edit_field.add_theme_font_override("font", ThemeUtils.main_font)
-	edit_field.text_submitted.connect(_on_edit_field_submitted)
-	edit_field.focus_exited.connect(_cleanup_edit_field)
+	edit_field.focus_exited.connect(edit_field.queue_free)
+	edit_field.value_changed.connect(_on_edit_field_value_changed)
 	edit_field.grab_focus()
 	edit_field.select_all()
 
-func _on_edit_field_submitted(new_text: String) -> void:
-	var new_size := new_text.to_int()
-	if new_size > 0 and new_size != Configs.savedata.preview_sizes[edited_tile_index]:
-		var sizes := Configs.savedata.preview_sizes.duplicate()
-		sizes[edited_tile_index] = new_size
-		Configs.savedata.preview_sizes = sizes
-		if edited_tile_index == selected_tile_index:
-			sync_tiles()
-			_select_tile(edited_tile_index)
-		else:
-			sync_tiles()
-	_cleanup_edit_field()
-
-func _cleanup_edit_field() -> void:
-	edit_field.queue_free()
+func _on_edit_field_value_changed(new_value: float) -> void:
+	var sizes := Configs.savedata.preview_sizes.duplicate()
+	sizes[edited_tile_index] = roundi(new_value)
+	Configs.savedata.preview_sizes = sizes
+	sync_tiles()
+	if edited_tile_index == selected_tile_index:
+		_select_tile(edited_tile_index)
 
 func _delete_tile(tile: IconPreviewTileData) -> void:
 	var sizes := Configs.savedata.preview_sizes.duplicate()

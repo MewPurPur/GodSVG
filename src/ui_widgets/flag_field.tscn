@@ -1,12 +1,6 @@
-[gd_scene load_steps=7 format=3 uid="uid://br8g7w38jguh4"]
+[gd_scene load_steps=5 format=3 uid="uid://br8g7w38jguh4"]
 
-[ext_resource type="FontFile" uid="uid://c5kkpicj45r00" path="res://assets/fonts/JetBrainsMono-Medium.woff2" id="1_1qxum"]
 [ext_resource type="Script" uid="uid://ndfvlxytvcm8" path="res://src/ui_widgets/flag_field.gd" id="2_0bhg4"]
-
-[sub_resource type="FontVariation" id="FontVariation_46ud6"]
-base_font = ExtResource("1_1qxum")
-spacing_top = -1
-spacing_bottom = -1
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_oo47u"]
 content_margin_left = 5.0
@@ -39,12 +33,10 @@ offset_bottom = 18.0
 focus_mode = 0
 mouse_filter = 1
 mouse_default_cursor_shape = 2
-theme_override_colors/font_color = Color(1, 0.84705883, 0.84313726, 1)
-theme_override_colors/font_pressed_color = Color(0.70666665, 1, 0.6, 1)
+theme_override_colors/font_color = Color(1, 0.7490196, 0.7490196, 1)
+theme_override_colors/font_pressed_color = Color(0.7019608, 1, 0.6, 1)
 theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
 theme_override_colors/font_hover_pressed_color = Color(1, 1, 1, 1)
-theme_override_fonts/font = SubResource("FontVariation_46ud6")
-theme_override_font_sizes/font_size = 14
 theme_override_styles/normal = SubResource("StyleBoxFlat_oo47u")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_uepoa")
 theme_override_styles/hover = SubResource("StyleBoxFlat_oo47u")
@@ -52,5 +44,4 @@ theme_override_styles/hover_pressed = SubResource("StyleBoxFlat_uepoa")
 theme_override_styles/disabled = SubResource("StyleBoxEmpty_kfgda")
 toggle_mode = true
 action_mode = 0
-text = "0"
 script = ExtResource("2_0bhg4")

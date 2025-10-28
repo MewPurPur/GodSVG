@@ -167,7 +167,7 @@ func _on_tab_changed(idx: int) -> void:
 						{
 							"copyright": ["2012, Google Inc."],
 							"license": "OFL-1.1",
-							"files": ["res://visual/fonts/NotoSans-SemiBold.woff2", "res://visual/fonts/NotoSans-ExtraBold.woff2"]
+							"files": ["res://visual/fonts/original/NotoSans-SemiBold.woff2", "res://visual/fonts/original/NotoSans-ExtraBold.woff2"]
 						}
 					]
 				},
@@ -178,7 +178,7 @@ func _on_tab_changed(idx: int) -> void:
 						#{
 							#"copyright": ["2008, The Android Open Source Project"],
 							#"license": "Apache-2.0",
-							#"files": ["res://visual/fonts/DroidSans.woff2"]
+							#"files": ["res://visual/fonts/original/DroidSans.woff2"]
 						#}
 					#]
 				#},
@@ -188,7 +188,7 @@ func _on_tab_changed(idx: int) -> void:
 						{
 							"copyright": ["2020, JetBrains s.r.o."],
 							"license": "OFL-1.1",
-							"files": ["res://visual/fonts/JetBrainsMono-Medium.woff2"]
+							"files": ["res://visual/fonts/original/JetBrainsMono-Medium.woff2"]
 						}
 					]
 				}
