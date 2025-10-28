@@ -1303,7 +1303,7 @@ msgstr "剪切"
 #. Refers to evaluating an expression such as "sin(2*pi/5)".
 #: src/utils/TranslationUtils.gd
 msgid "Evaluate"
-msgstr "评估"
+msgstr "求值"
 
 #: src/utils/TranslationUtils.gd
 msgid "Select all"
