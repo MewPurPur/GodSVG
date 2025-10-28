@@ -63,6 +63,7 @@ signal camera_center_changed
 
 var camera_zoom := -1.0:
 	set(new_value):
+		new_value = clampf(new_value, MIN_ZOOM, MAX_ZOOM)
 		if camera_zoom != new_value:
 			camera_zoom = new_value
 			checkerboard.material.set_shader_parameter("uv_scale", nearest_po2(int(camera_zoom * 32.0)) / 32.0)
@@ -154,8 +155,7 @@ func center_frame() -> void:
 	var available_size := size * ZOOM_RESET_BUFFER
 	var ratio := available_size / root_element.get_size()
 	if ratio.is_finite():
-		var new_zoom := nearest_po2(ceili(minf(ratio.x, ratio.y) * 32.0)) / 64.0
-		camera_zoom = new_zoom
+		camera_zoom = nearest_po2(ceili(minf(ratio.x, ratio.y) * 32.0)) / 64.0
 	else:
 		camera_zoom = 1.0
 	
@@ -317,7 +317,7 @@ var limit_bottom_right := Vector2.ZERO
 
 
 func set_zoom(new_zoom: float, offset := Vector2(0.5, 0.5)) -> void:
-	camera_zoom = clampf(new_zoom, MIN_ZOOM, MAX_ZOOM)
+	camera_zoom = new_zoom
 	adjust_view(offset)
 
 # Top left corner.
