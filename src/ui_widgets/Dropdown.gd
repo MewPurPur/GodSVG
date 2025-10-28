@@ -29,9 +29,9 @@ func _draw() -> void:
 	normal_sb.draw(ci, Rect2(Vector2.ZERO, size))
 	if get_viewport().gui_get_hovered_control() == self:
 		get_theme_stylebox("hover").draw(ci, Rect2(Vector2.ZERO, size))
-		arrow_icon.draw(ci, Vector2(size.x - arrow_icon.get_width() - half_spacing, half_spacing))
+		arrow_icon.draw(ci, Vector2(size.x - arrow_icon.get_width() - half_spacing, half_spacing), ThemeUtils.context_icon_hover_color)
 	else:
-		arrow_icon.draw(ci, Vector2(size.x - arrow_icon.get_width() - half_spacing, half_spacing), Color(1, 1, 1, 0.75))
+		arrow_icon.draw(ci, Vector2(size.x - arrow_icon.get_width() - half_spacing, half_spacing), ThemeUtils.context_icon_normal_color)
 	
 	var text_line := TextLine.new()
 	text_line.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS

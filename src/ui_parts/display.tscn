@@ -87,7 +87,6 @@ layout_mode = 2
 theme_type_variation = &"LeftConnectedLineEdit"
 max_length = 20
 min_value = 0.001
-allow_lower = false
 
 [node name="ZoomMenu" parent="ViewportPanel/VBoxContainer/Toolbar/ViewportOptions" instance=ExtResource("8_xtdmn")]
 unique_name_in_owner = true

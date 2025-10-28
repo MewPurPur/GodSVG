@@ -2,13 +2,13 @@
 
 importer="font_data_dynamic"
 type="FontFile"
-uid="uid://c5kkpicj45r00"
-path="res://.godot/imported/JetBrainsMono-Medium.woff2-5423e7ed96d006e8e26895ddb3408df2.fontdata"
+uid="uid://cp6fwvpgvqucw"
+path="res://.godot/imported/NotoSans-SemiBold.woff2-146a883351ad06e51ad735a7586f2309.fontdata"
 
 [deps]
 
-source_file="res://assets/fonts/JetBrainsMono-Medium.woff2"
-dest_files=["res://.godot/imported/JetBrainsMono-Medium.woff2-5423e7ed96d006e8e26895ddb3408df2.fontdata"]
+source_file="res://assets/fonts/original/NotoSans-SemiBold.woff2"
+dest_files=["res://.godot/imported/NotoSans-SemiBold.woff2-146a883351ad06e51ad735a7586f2309.fontdata"]
 
 [params]
 

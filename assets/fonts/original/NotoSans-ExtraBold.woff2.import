@@ -2,13 +2,13 @@
 
 importer="font_data_dynamic"
 type="FontFile"
-uid="uid://cp6fwvpgvqucw"
-path="res://.godot/imported/NotoSans-SemiBold.woff2-5466b338debc7f247468a9e5c6464220.fontdata"
+uid="uid://cdke2b8vyur24"
+path="res://.godot/imported/NotoSans-ExtraBold.woff2-afe5c7a9b5b0881b2a4600b03512ba6b.fontdata"
 
 [deps]
 
-source_file="res://assets/fonts/NotoSans-SemiBold.woff2"
-dest_files=["res://.godot/imported/NotoSans-SemiBold.woff2-5466b338debc7f247468a9e5c6464220.fontdata"]
+source_file="res://assets/fonts/original/NotoSans-ExtraBold.woff2"
+dest_files=["res://.godot/imported/NotoSans-ExtraBold.woff2-afe5c7a9b5b0881b2a4600b03512ba6b.fontdata"]
 
 [params]
 

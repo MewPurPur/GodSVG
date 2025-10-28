@@ -1,6 +1,6 @@
 [gd_resource type="FontVariation" load_steps=2 format=3 uid="uid://o6egawwljhgy"]
 
-[ext_resource type="FontFile" uid="uid://cdke2b8vyur24" path="res://assets/fonts/NotoSans-ExtraBold.woff2" id="1_c6ro6"]
+[ext_resource type="FontFile" uid="uid://cdke2b8vyur24" path="res://assets/fonts/original/NotoSans-ExtraBold.woff2" id="1_c6ro6"]
 
 [resource]
 fallbacks = Array[Font]([ExtResource("1_c6ro6")])
