@@ -87,7 +87,7 @@ func _on_window_mouse_exited() -> void:
 
 func _draw() -> void:
 	var half_width := size.x / 2.0
-	var right_rect := Rect2(half_width, 18, half_width, half_width * 1.25)
+	var right_rect := Rect2(half_width, 20, half_width, half_width * 1.25)
 	
 	# Fixed viewport location for now.
 	
@@ -146,11 +146,11 @@ func _draw() -> void:
 			
 		icon.draw(ci, (rect.get_center() - icon.get_size() / 2.0).round(), ThemeUtils.tinted_contrast_color)
 	
-	ThemeUtils.main_font.draw_string(ci, Vector2(0, 12),
+	ThemeUtils.main_font.draw_string(ci, Vector2(0, 14),
 			Translator.translate("Layout") + ":", HORIZONTAL_ALIGNMENT_CENTER, size.x,
 			get_theme_font_size("font_size", "Label"), ThemeUtils.text_color)
 	
-	ThemeUtils.main_font.draw_string(ci, Vector2(0, size.x * 0.625 + 33),
+	ThemeUtils.main_font.draw_string(ci, Vector2(0, size.x * 0.625 + 35),
 			Translator.translate("Excluded") + ":", HORIZONTAL_ALIGNMENT_CENTER, size.x,
 			get_theme_font_size("font_size", "Label"), ThemeUtils.text_color)
 
@@ -323,7 +323,7 @@ func update_areas() -> void:
 	var included_rect_height := size.x * 0.625
 	var half_width := size.x / 2.0
 	var included_rect_half_height := included_rect_height / 2.0
-	var v_offset := 18.0
+	var v_offset := 19.0
 	
 	section_areas.clear()
 	section_areas[SaveData.LayoutLocation.EXCLUDED] = Rect2(0, v_offset * 2 + included_rect_height + 2, size.x, PART_UI_SIZE + 8)
