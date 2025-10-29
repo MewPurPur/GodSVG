@@ -25,6 +25,7 @@ var proposed_drop_idx := -1:
 			queue_redraw()
 
 func _ready() -> void:
+	super()
 	var shortcuts := ShortcutsRegistration.new()
 	shortcuts.add_shortcut("close_tab", func() -> void: FileUtils.close_tabs(Configs.savedata.get_active_tab_index()),
 			ShortcutsRegistration.Behavior.PASS_THROUGH_POPUPS)
