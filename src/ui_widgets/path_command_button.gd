@@ -10,7 +10,10 @@ signal pressed_custom(cmd_char: String)
 func _ready() -> void:
 	text = ""
 	queue_redraw()
-	pressed.connect(pressed_custom.emit.bind(command_char))
+	pressed.connect(
+		func() -> void:
+			pressed_custom.emit(command_char)
+	)
 
 func set_invalid(new_state := true) -> void:
 	disabled = new_state
