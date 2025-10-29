@@ -722,16 +722,29 @@ func popup_convert_to_context(popup_method: Callable) -> void:
 		command_picker.force_relativity(Utils.is_string_lower(cmd_char))
 		
 		var cmd_char_upper := cmd_char.to_upper()
-		var disabled_commands: PackedStringArray
+		var disabled_commands := PackedStringArray([cmd_char_upper])
 		if selection_idx == 0:
-			disabled_commands = PackedStringArray(["L", "H", "V", "A", "Z", "Q", "T", "C", "S"])
+			var warned_commands := PackedStringArray(["L", "H", "V", "A", "Z", "Q", "T", "C", "S"])
+			warned_commands.erase(cmd_char_upper)
+			command_picker.mark_invalid(warned_commands, disabled_commands)
 		else:
-			disabled_commands = PackedStringArray([cmd_char.to_upper()])
-			if cmd_char_upper != "Z" and path_attrib.get_command_count() > selection_idx + 1 and\
-			path_attrib.get_command(selection_idx + 1).command_char.to_upper() == "Z":
+			var prev_cmd_char_upper := path_attrib.get_command(selection_idx - 1).command_char.to_upper()
+			
+			if cmd_char_upper != "Z" and (prev_cmd_char_upper == "Z" or\
+			(path_attrib.get_command_count() > selection_idx + 1 and\
+			path_attrib.get_command(selection_idx + 1).command_char.to_upper() == "Z")):
 				disabled_commands.append("Z")
+			
+			var warned_commands := PackedStringArray()
+			match prev_cmd_char_upper.to_upper():
+				"M": warned_commands = PackedStringArray(["M", "Z", "S", "T"])
+				"L", "H", "V", "A": warned_commands = PackedStringArray(["S", "T"])
+				"C", "S": warned_commands = PackedStringArray(["T"])
+				"Q", "T": warned_commands = PackedStringArray(["S"])
+			for cmd in disabled_commands:
+				warned_commands.erase(cmd)
+			command_picker.mark_invalid(warned_commands, disabled_commands)
 		
-		command_picker.mark_invalid(PackedStringArray(), disabled_commands)
 		command_picker.path_command_picked.connect(convert_selected_command_to)
 
 func popup_insert_command_after_context(popup_method: Callable) -> void:
@@ -743,8 +756,8 @@ func popup_insert_command_after_context(popup_method: Callable) -> void:
 	popup_method.call(command_picker)
 	command_picker.path_command_picked.connect(insert_path_command_after_selection)
 	# Disable invalid commands. Z is syntactically invalid, so disallow it even harder.
-	var warned_commands: PackedStringArray
-	var disabled_commands: PackedStringArray
+	var warned_commands := PackedStringArray()
+	var disabled_commands := PackedStringArray()
 	# S commands are deliberately warned against in most cases, even though there is some sense in using them without a C or S command before them.
 	# Same for T commands in most cases, even though there is a notion of letting them determine the next shorthand quadratic curve.
 	match cmd_char.to_upper():
