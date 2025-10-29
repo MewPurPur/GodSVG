@@ -45,5 +45,5 @@ func force_relativity(relative: bool) -> void:
 	reset_size()
 
 func _unhandled_input(event: InputEvent) -> void:
-	if event is InputEventKey and event.is_pressed() and event.keycode == KEY_SHIFT:
+	if relative_toggle.visible and event is InputEventKey and event.is_pressed() and event.keycode == KEY_SHIFT:
 		relative_toggle.button_pressed = not relative_toggle.button_pressed
