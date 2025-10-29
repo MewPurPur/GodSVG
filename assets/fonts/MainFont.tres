@@ -1,6 +1,7 @@
-[gd_resource type="FontVariation" load_steps=2 format=3 uid="uid://bo626nsycqtaj"]
+[gd_resource type="FontVariation" load_steps=3 format=3 uid="uid://bo626nsycqtaj"]
 
 [ext_resource type="FontFile" uid="uid://cp6fwvpgvqucw" path="res://assets/fonts/original/NotoSans-SemiBold.woff2" id="1_8wwsk"]
+[ext_resource type="FontFile" uid="uid://jkpbay57t50t" path="res://assets/fonts/original/DroidSansFallback.woff2" id="2_6wxu7"]
 
 [resource]
-fallbacks = Array[Font]([ExtResource("1_8wwsk")])
+fallbacks = Array[Font]([ExtResource("1_8wwsk"), ExtResource("2_6wxu7")])
