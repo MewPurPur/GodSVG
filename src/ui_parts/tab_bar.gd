@@ -54,7 +54,6 @@ func _ready() -> void:
 	resized.connect(scroll_to_active)
 	Configs.language_changed.connect(queue_redraw)
 	resized.connect(sync_buttons)
-	mouse_exited.connect(queue_redraw)
 	set_process(false)
 
 

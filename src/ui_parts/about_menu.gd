@@ -171,17 +171,16 @@ func _on_tab_changed(idx: int) -> void:
 						}
 					]
 				},
-				# Planned
-				#{
-					#"name": "Droid Sans font",
-					#"parts": [
-						#{
-							#"copyright": ["2008, The Android Open Source Project"],
-							#"license": "Apache-2.0",
-							#"files": ["res://visual/fonts/original/DroidSans.woff2"]
-						#}
-					#]
-				#},
+				{
+					"name": "Droid Sans font",
+					"parts": [
+						{
+							"copyright": ["2008, The Android Open Source Project"],
+							"license": "Apache-2.0",
+							"files": ["res://visual/fonts/original/DroidSansFallback.woff2"]
+						}
+					]
+				},
 				{
 					"name": "JetBrains Mono font",
 					"parts": [

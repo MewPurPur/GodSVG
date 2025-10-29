@@ -1,6 +1,7 @@
-[gd_resource type="FontVariation" load_steps=2 format=3 uid="uid://pup5vmxl1t6m"]
+[gd_resource type="FontVariation" load_steps=3 format=3 uid="uid://pup5vmxl1t6m"]
 
 [ext_resource type="FontFile" uid="uid://c5kkpicj45r00" path="res://assets/fonts/original/JetBrainsMono-Medium.woff2" id="1_w5v41"]
+[ext_resource type="FontVariation" uid="uid://bo626nsycqtaj" path="res://assets/fonts/MainFont.tres" id="2_sfh1l"]
 
 [resource]
-fallbacks = Array[Font]([ExtResource("1_w5v41")])
+fallbacks = Array[Font]([ExtResource("1_w5v41"), ExtResource("2_sfh1l")])
