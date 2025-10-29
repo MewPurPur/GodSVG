@@ -930,7 +930,7 @@ msgstr "Velocidade"
 #. Refers to the selection rectangle's animated dashed stroke.
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Dash length"
-msgstr "Tamanho do traçado [VER!!!]"
+msgstr "Tamanho do traçado"
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Color {index}"
