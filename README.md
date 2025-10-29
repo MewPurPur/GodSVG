@@ -17,7 +17,7 @@
 - **Real-time code:** As you manipulate elements in the UI, code is instantly generated and can be edited. Generated code is human-readable, since no metadata is added.
 - **Optimized SVGs:** The generated SVG files are small and efficient, and GodSVG provides various options to assist with optimization.
 
-<img width="1040" height="650" alt="image" src="https://github.com/user-attachments/assets/397be19b-77ee-424f-ad8e-59686424bea9" />
+<img width="1040" height="650" alt="image" src="https://github.com/user-attachments/assets/89079b0f-9bbd-4ea8-9931-86a4f1e8cd55" />
 
 ## Downloads and links
 
