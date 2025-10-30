@@ -74,6 +74,7 @@ func save_to_bound_path() -> void:
 func set_initial_svg_text(new_text: String) -> void:
 	_svg_text = new_text
 	_save_svg_text()
+	undo_redo.clear_history()
 
 func get_svg_text() -> String:
 	return _svg_text
@@ -160,7 +161,6 @@ func _sync() -> void:
 		empty_unsaved = false
 		marked_unsaved = false
 		presented_name = "[ %s ]" % Translator.translate("Unsaved")
-
 
 func activate() -> void:
 	active = true
