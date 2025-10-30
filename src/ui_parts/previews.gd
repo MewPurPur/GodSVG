@@ -6,6 +6,11 @@ const NumberEdit = preload("res://src/ui_widgets/number_edit.gd")
 
 const NumberEditScene = preload("res://src/ui_widgets/number_edit.tscn")
 
+const more_icon = preload("res://assets/icons/SmallMore.svg")
+const edit_icon = preload("res://assets/icons/Edit.svg")
+const delete_icon = preload("res://assets/icons/Delete.svg")
+const plus_icon = preload("res://assets/icons/Plus.svg")
+
 const TILE_MARGIN = 2.0
 const TILE_TOP_PADDING = 4.0
 const TILE_LEFT_PADDING = 4.0
@@ -28,10 +33,6 @@ const MAX_ICON_PREVIEW_SIZE = 128
 @onready var preview_top_panel: PanelContainer = $SplitContainer/PreviewTopPanel
 @onready var more_button: Button = $ActionContainer/MoreButton
 @onready var size_label_margins: MarginContainer = %SizeLabelMargins
-
-const more_icon = preload("res://assets/icons/SmallMore.svg")
-const edit_icon = preload("res://assets/icons/Edit.svg")
-const delete_icon = preload("res://assets/icons/Delete.svg")
 
 class IconPreviewTileData extends RefCounted:
 	var index := -1
@@ -226,13 +227,22 @@ func _on_tiles_gui_input(event: InputEvent) -> void:
 			icon_preview_tiles.queue_redraw()
 	
 	elif event is InputEventMouseButton:
-		if event.is_pressed() and event.button_index in [MOUSE_BUTTON_LEFT, MOUSE_BUTTON_RIGHT, MOUSE_BUTTON_MIDDLE]:
-			_select_tile(hovered_tile_index)
-			if event.button_index == MOUSE_BUTTON_RIGHT:
-				for tile in tiles:
-					if Rect2(tile.position, tile.size).has_point(event.position):
-						_show_tile_popup_at_pos(tile, event.global_position)
-						break
+		if event.is_pressed():
+			if event.button_index in [MOUSE_BUTTON_LEFT, MOUSE_BUTTON_MIDDLE]:
+				_select_tile(hovered_tile_index)
+			elif event.button_index == MOUSE_BUTTON_RIGHT:
+				if hovered_tile_index >= 0:
+					for tile in tiles:
+						if Rect2(tile.position, tile.size).has_point(event.position):
+							_show_tile_popup_at_pos(tile, event.global_position)
+							break
+				else:
+					var btn_array: Array[Button] = []
+					btn_array.append(ContextPopup.create_button(Translator.translate("Add new preview"), _add_new_tile, false, plus_icon))
+					var popup := ContextPopup.new()
+					popup.setup(btn_array, true)
+					var vp := get_viewport()
+					HandlerGUI.popup_under_pos(popup, vp.get_mouse_position(), vp)
 
 
 func _on_tiles_mouse_exited() -> void:
