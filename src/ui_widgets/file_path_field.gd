@@ -23,6 +23,12 @@ func _ready() -> void:
 	value_changed.connect(sync_line_edit.unbind(1))
 	sync_line_edit()
 
+func permanently_disable() -> void:
+	line_edit.editable = false
+	button.disabled = true
+	button.mouse_default_cursor_shape = Control.CURSOR_ARROW
+
+
 func sync_line_edit() -> void:
 	if is_instance_valid(line_edit):
 		line_edit.text = Utils.simplify_file_path(value)

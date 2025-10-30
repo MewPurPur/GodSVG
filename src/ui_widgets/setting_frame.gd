@@ -181,12 +181,19 @@ func update_widgets() -> void:
 			var setting_str := setting_value.to_html(show_alpha)
 			widget.value = setting_str
 			reset_button.visible = (not disabled and getter.call().to_html() != default.to_html())
-		Type.DROPDOWN, Type.FILE_PATH:
+		Type.DROPDOWN:
 			widget.set_value(getter.call())
 			reset_button.visible = (not disabled and getter.call() != default)
 		Type.NUMERIC_DROPDOWN:
 			widget.set_value(getter.call())
 			reset_button.visible = not (disabled or is_equal_approx(getter.call(), default))
+		Type.FILE_PATH:
+			if OS.has_feature("web"):
+				widget.permanently_disable()
+				reset_button.hide()
+			else:
+				widget.set_value(getter.call())
+				reset_button.visible = (not disabled and getter.call() != default)
 	queue_redraw()
 
 func _on_mouse_entered() -> void:

@@ -309,6 +309,7 @@ func _delete_tile(tile: IconPreviewTileData) -> void:
 	if index >= 0:
 		sizes.remove_at(index)
 		Configs.savedata.preview_sizes = sizes
+		selected_tile_index = -1
 		sync_tiles()
 
 func are_tiles_default() -> bool:
