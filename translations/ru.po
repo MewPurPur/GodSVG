@@ -592,7 +592,6 @@ msgid "Color Picker"
 msgstr "Цветовая пипетка"
 
 #: src/ui_widgets/file_path_field.gd
-#, fuzzy
 msgid "No file path"
 msgstr "Нет пути файла"
 
@@ -609,7 +608,6 @@ msgid "New shape"
 msgstr "Новая привязка"
 
 #: src/ui_widgets/id_field.gd
-#, fuzzy
 msgid "No ID"
 msgstr "Отсутствует ID"
 
@@ -618,12 +616,10 @@ msgid "The SVG has invalid syntax. Any edit not made through the code editor wil
 msgstr "Этот файл SVG содержит неподдерживаемый синтакс. Любые изменения, не внесённые через редактор кода, обнулят его."
 
 #: src/ui_widgets/optimizer_setting_info.gd
-#, fuzzy
 msgid "Before"
-msgstr "Вставить до"
+msgstr "Перед"
 
 #: src/ui_widgets/optimizer_setting_info.gd
-#, fuzzy
 msgid "After"
 msgstr "После"
 
@@ -1038,17 +1034,8 @@ msgid "The setting can't be changed on this platform."
 msgstr "Эту опцию нельзя изменить на текущей платформе."
 
 #: src/ui_widgets/settings_content_generic.gd
-<<<<<<< HEAD
-#, fuzzy
 msgid "Formatters can change the formatting of the SVG's content and attributes. These changes don't affect the its structure or the structure of more complex attributes, such as pathdata. Formatters can be configured to make the SVG prettier or more compact."
 msgstr "Форматировщик может изменить форматирование SVG и атрибутов, вроде путей. Эти изменения не влияют на структуру файла или более сложных атрибутов, вроде путей. Форматировщик может быть настроен чтобы сделать SVG красивее или компактнее."
-||||||| fe62d69e
-msgid "Formatters can change the formatting of the SVG's content and attributes. These changes don't affect the its structure or the structure of more complex attributes, such as pathdata. Formatters can be configured to make the SVG prettier or more compact."
-msgstr ""
-=======
-msgid "Formatters can change the formatting of the SVG's content and attributes. These changes don't affect its structure or the structure of more complex attributes, such as pathdata. Formatters can be configured to make the SVG prettier or more compact."
-msgstr ""
->>>>>>> 1fb5b1ae2cd495e9568f158e94ce08936b7b9ad5
 
 #: src/ui_widgets/settings_content_generic.gd
 msgid "Determines the default values of the formatter configs."
@@ -1059,17 +1046,14 @@ msgid "When enabled, uses spaces instead of a single tab for indentation."
 msgstr "Когда активно, использует пробелы вместо одного tab-а для отступов."
 
 #: src/ui_widgets/settings_content_generic.gd
-#, fuzzy
 msgid "Optimizers can change the structure of the SVG and its complex attributes, such as pathdata. These changes reduce the SVG's complexity, usually leading to reductions in file size, but may be destructive and disrupt future editing, compared to optimizing the SVG manually."
 msgstr "Оптимизатор может изменить структуру SVG и сложных атрибутов, вроде путей. Это уменьшает сложность SVG, что позволяет уменьшить размер файла, но может привести к разрушительным изменениям и усложнить последующее редактирование, в сравнении с ручной оптимизацией."
 
 #: src/ui_widgets/settings_content_generic.gd
-#, fuzzy
 msgid "Convert shapes into ones that can be defined identically, but have a shorter representation, if possible."
 msgstr "Конвертировать фигуры в идентичные по форме, но с более кратким описанием, если возможно."
 
 #: src/ui_widgets/settings_content_generic.gd
-#, fuzzy
 msgid "Convert or simplify path parameters into ones that can be defined identically, but have a shorter representation, if possible."
 msgstr "Конвертировать или упростить пути в идентичные по форме, но с более кратким описанием, если возможно."
 
