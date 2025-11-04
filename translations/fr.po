@@ -519,6 +519,11 @@ msgstr "Horizontal avec deux rangées"
 msgid "Configure Shortcut Panel"
 msgstr "Configurer le panneau de raccourcis"
 
+#: src/ui_parts/tab_bar.gd
+#, fuzzy
+msgid "Close multiple"
+msgstr "Fermer l'onglet"
+
 #: src/ui_parts/tab_bar.gd src/utils/TranslationUtils.gd
 msgid "Create a new tab"
 msgstr "Créer un nouvel onglet"
@@ -694,6 +699,11 @@ msgstr ""
 #: src/ui_widgets/profile_frame.gd
 msgid "Apply all of this preset's defaults"
 msgstr ""
+
+#: src/ui_widgets/setting_frame.gd
+#, fuzzy
+msgid "Clear"
+msgstr "Vider le SVG"
 
 #: src/ui_widgets/setting_shortcut.gd
 msgid "Unused"

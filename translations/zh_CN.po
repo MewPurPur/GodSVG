@@ -513,6 +513,11 @@ msgstr "水平两列"
 msgid "Configure Shortcut Panel"
 msgstr "设置捷径面板"
 
+#: src/ui_parts/tab_bar.gd
+#, fuzzy
+msgid "Close multiple"
+msgstr "关闭分页"
+
 #: src/ui_parts/tab_bar.gd src/utils/TranslationUtils.gd
 msgid "Create a new tab"
 msgstr "新建分頁"
@@ -685,6 +690,11 @@ msgstr "应用"
 #: src/ui_widgets/profile_frame.gd
 msgid "Apply all of this preset's defaults"
 msgstr "应用此预设的默认值"
+
+#: src/ui_widgets/setting_frame.gd
+#, fuzzy
+msgid "Clear"
+msgstr "清除全部"
 
 #: src/ui_widgets/setting_shortcut.gd
 msgid "Unused"

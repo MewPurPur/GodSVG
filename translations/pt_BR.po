@@ -514,6 +514,11 @@ msgstr "Horizontal com duas linhas"
 msgid "Configure Shortcut Panel"
 msgstr "Configurar Painel de Atalhos"
 
+#: src/ui_parts/tab_bar.gd
+#, fuzzy
+msgid "Close multiple"
+msgstr "Fechar aba"
+
 #: src/ui_parts/tab_bar.gd src/utils/TranslationUtils.gd
 msgid "Create a new tab"
 msgstr "Criar nova aba"
@@ -686,6 +691,11 @@ msgstr "Aplicar"
 #: src/ui_widgets/profile_frame.gd
 msgid "Apply all of this preset's defaults"
 msgstr "Aplicar todos os padrões dessa pré-definição"
+
+#: src/ui_widgets/setting_frame.gd
+#, fuzzy
+msgid "Clear"
+msgstr "Limpar tudo"
 
 #: src/ui_widgets/setting_shortcut.gd
 msgid "Unused"

@@ -16,11 +16,17 @@ signal popups_cleared
 ## Menus should be added with add_menu(), which hides previous menus, or add_dialog() which doesn't hide previous menus.
 ## Menus are removed by being freed, which automatically removes them from the stack.
 ## This is typically done by tying a cancel button to queue_free, or pressing Esc.
-var menu_stack: Array[ColorRect]
+var menu_stack: Array[ColorRect] = []
 
 ## A stack of the current popups. They are cleared by pressing Esc, clicking outside, or other ways.
 ## Popups are always on top of the menu stack, and changes to the menu stack clear all popups.
-var popup_stack: Array[Control]
+var popup_stack: Array[Control] = []
+
+## A submenu of the current popup. Doesn't block inputs to the current popup.
+## Cleared when pressing Esc. If you click outside both popups, the current popup is cleared too.
+## The source is the control that triggered the submenu, hovering elsewhere in the popup clears the submenu.
+var popup_submenu: Control
+var popup_submenu_source: Control
 
 var shortcut_panel: PanelContainer
 
@@ -188,8 +194,10 @@ func add_popup(new_popup: Control, add_shadow := true) -> Control:
 		return new_popup
 
 func remove_popup(overlay_ref: Control = null) -> void:
+	clear_submenu()
 	if popup_stack.is_empty():
 		return
+	
 	# Refer to remove_menu() for why the logic is like this.
 	if is_instance_valid(overlay_ref) and overlay_ref != popup_stack.back():
 		return
@@ -246,6 +254,48 @@ func popup_under_pos(popup: Control, pos: Vector2, vp: Viewport) -> void:
 	pos += screen_transform.get_origin() / screen_transform.get_scale()
 	top_popup.position = popup_clamp_pos(top_popup, pos, vp)
 
+# Should usually be the global rect of a control.
+func popup_submenu_to_right_or_left_side(submenu: Control, source: Control) -> void:
+	var shadow_container := PanelContainer.new()
+	var sb := StyleBoxFlat.new()
+	sb.bg_color = Color(0, 0, 0, 0.1)
+	sb.shadow_color = Color(0, 0, 0, 0.1)
+	sb.shadow_size = 8
+	if submenu is PanelContainer:
+		var stylebox_wrapped := submenu.get_theme_stylebox("panel")
+		sb.corner_radius_top_left = stylebox_wrapped.corner_radius_top_left
+		sb.corner_radius_bottom_left = stylebox_wrapped.corner_radius_bottom_left
+		sb.corner_radius_top_right = stylebox_wrapped.corner_radius_top_right
+		sb.corner_radius_bottom_right = stylebox_wrapped.corner_radius_bottom_right
+	submenu.resized.connect(shadow_container.reset_size)
+	shadow_container.add_theme_stylebox_override("panel", sb)
+	shadow_container.add_child(submenu)
+	get_tree().root.add_child(shadow_container)
+	shadow_container.reset_size()
+	submenu.tree_exiting.connect(clear_submenu)
+	
+	popup_submenu_source = source
+	popup_submenu = shadow_container
+	
+	var vp := source.get_viewport()
+	var rect := source.get_global_rect()
+	var screen_transform := vp.get_screen_transform()
+	var screen_w := vp.get_visible_rect().size.x
+	var popup_pos := Vector2(rect.position.x, rect.position.y)
+	if rect.position.x + popup_submenu.size.x + popup_submenu.size.x > screen_w:
+		popup_pos.x -= popup_submenu.size.x
+	else:
+		popup_pos.x += rect.size.x
+	popup_pos += screen_transform.get_origin() / screen_transform.get_scale()
+	popup_submenu.position = popup_clamp_pos(popup_submenu, popup_pos, vp)
+
+func clear_submenu() -> void:
+	popup_submenu_source = null
+	if is_instance_valid(popup_submenu):
+		popup_submenu.queue_free()
+	throw_mouse_motion_event()
+
+
 # Helper.
 func popup_clamp_pos(popup: Control, attempt_pos: Vector2, vp: Viewport) -> Vector2:
 	var screen_transform := vp.get_screen_transform()
@@ -290,7 +340,10 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func _react_to_action(event: InputEvent) -> void:
 	if ShortcutUtils.is_action_pressed(event, "ui_cancel"):
-		if not popup_stack.is_empty():
+		if is_instance_valid(popup_submenu):
+			get_viewport().set_input_as_handled()
+			clear_submenu()
+		elif not popup_stack.is_empty():
 			get_viewport().set_input_as_handled()
 			remove_popup()
 		elif not menu_stack.is_empty():

@@ -513,6 +513,10 @@ msgstr "Хоризонтален с два реда"
 msgid "Configure Shortcut Panel"
 msgstr "Настройки на панела с бързи клавиши"
 
+#: src/ui_parts/tab_bar.gd
+msgid "Close multiple"
+msgstr "Затвори няколко"
+
 #: src/ui_parts/tab_bar.gd src/utils/TranslationUtils.gd
 msgid "Create a new tab"
 msgstr "Създай нов раздел"
@@ -685,6 +689,10 @@ msgstr "Приложи"
 #: src/ui_widgets/profile_frame.gd
 msgid "Apply all of this preset's defaults"
 msgstr "Приложи всички настройки по подразбиране на този шаблон"
+
+#: src/ui_widgets/setting_frame.gd
+msgid "Clear"
+msgstr "Изчисти"
 
 #: src/ui_widgets/setting_shortcut.gd
 msgid "Unused"

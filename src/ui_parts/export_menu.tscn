@@ -131,9 +131,10 @@ theme_override_font_sizes/font_size = 12
 [node name="Dropdown" parent="MarginContainer/VBoxContainer/TitledPanel/VBoxContainer/CenterContainer/VBoxContainer/FormatHBox" instance=ExtResource("5_y6ex0")]
 custom_minimum_size = Vector2(60, 22)
 layout_mode = 2
+values = ["svg", "png", "jpeg", "webp"]
 aliases = Dictionary[String, Variant]({
 "JPEG": "jpeg",
-"JPG": "jpg",
+"JPG": "jpeg",
 "PNG": "png",
 "SVG": "svg",
 "WEBP": "webp",

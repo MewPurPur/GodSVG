@@ -518,6 +518,11 @@ msgstr "Horizontaal met twee rijen"
 msgid "Configure Shortcut Panel"
 msgstr "Configureer Snelkoppelingspaneel"
 
+#: src/ui_parts/tab_bar.gd
+#, fuzzy
+msgid "Close multiple"
+msgstr "Tabblad sluiten"
+
 #: src/ui_parts/tab_bar.gd src/utils/TranslationUtils.gd
 msgid "Create a new tab"
 msgstr "Een nieuw tabblad creëren"
@@ -691,6 +696,11 @@ msgstr "Toepassen"
 #: src/ui_widgets/profile_frame.gd
 msgid "Apply all of this preset's defaults"
 msgstr "Pas alle standaardwaardes van deze voorinstelling toe"
+
+#: src/ui_widgets/setting_frame.gd
+#, fuzzy
+msgid "Clear"
+msgstr "SVG ontruimen"
 
 #: src/ui_widgets/setting_shortcut.gd
 msgid "Unused"

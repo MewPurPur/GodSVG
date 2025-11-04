@@ -514,6 +514,11 @@ msgstr "Горизонтальная с двумя колонками"
 msgid "Configure Shortcut Panel"
 msgstr "Настроить в панели сочетаний клавиш"
 
+#: src/ui_parts/tab_bar.gd
+#, fuzzy
+msgid "Close multiple"
+msgstr "Закрыть вкладку"
+
 #: src/ui_parts/tab_bar.gd src/utils/TranslationUtils.gd
 msgid "Create a new tab"
 msgstr "Создать новую вкладку"
@@ -686,6 +691,11 @@ msgstr "Применить"
 #: src/ui_widgets/profile_frame.gd
 msgid "Apply all of this preset's defaults"
 msgstr "Применить все стандартные значения этого пресета"
+
+#: src/ui_widgets/setting_frame.gd
+#, fuzzy
+msgid "Clear"
+msgstr "Очистить все"
 
 #: src/ui_widgets/setting_shortcut.gd
 msgid "Unused"
@@ -1034,7 +1044,8 @@ msgid "The setting can't be changed on this platform."
 msgstr "Эту опцию нельзя изменить на текущей платформе."
 
 #: src/ui_widgets/settings_content_generic.gd
-msgid "Formatters can change the formatting of the SVG's content and attributes. These changes don't affect the its structure or the structure of more complex attributes, such as pathdata. Formatters can be configured to make the SVG prettier or more compact."
+#, fuzzy
+msgid "Formatters can change the formatting of the SVG's content and attributes. These changes don't affect its structure or the structure of more complex attributes, such as pathdata. Formatters can be configured to make the SVG prettier or more compact."
 msgstr "Форматировщик может изменить форматирование SVG и атрибутов, вроде путей. Эти изменения не влияют на структуру файла или более сложных атрибутов, вроде путей. Форматировщик может быть настроен чтобы сделать SVG красивее или компактнее."
 
 #: src/ui_widgets/settings_content_generic.gd

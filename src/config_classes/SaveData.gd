@@ -18,7 +18,7 @@ func get_setting_default(setting: String) -> Variant:
 		"base_color":
 			match theme_preset:
 				ThemePreset.DARK: return Color("10101d")
-				ThemePreset.LIGHT: return Color("e6ecff")
+				ThemePreset.LIGHT: return Color("e6f0ff")
 				ThemePreset.BLACK: return Color("000")
 		"accent_color":
 			match theme_preset:
