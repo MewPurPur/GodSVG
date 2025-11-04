@@ -518,6 +518,11 @@ msgstr "Горизонтальна з двома рядками"
 msgid "Configure Shortcut Panel"
 msgstr "Налаштувати у панелі клавіатурних скорочень"
 
+#: src/ui_parts/tab_bar.gd
+#, fuzzy
+msgid "Close multiple"
+msgstr "Закрити вкладку"
+
 #: src/ui_parts/tab_bar.gd src/utils/TranslationUtils.gd
 msgid "Create a new tab"
 msgstr "Створити нову вкладку"
@@ -692,6 +697,11 @@ msgstr "Застосувати"
 #: src/ui_widgets/profile_frame.gd
 msgid "Apply all of this preset's defaults"
 msgstr "Застосувати стандартні значення цього пресету"
+
+#: src/ui_widgets/setting_frame.gd
+#, fuzzy
+msgid "Clear"
+msgstr "Обрати усе"
 
 #: src/ui_widgets/setting_shortcut.gd
 msgid "Unused"

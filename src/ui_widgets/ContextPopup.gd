@@ -1,6 +1,15 @@
 ## Standard popup for actions with methods for easy setup.
 class_name ContextPopup extends PanelContainer
 
+# For generating submenus.
+class ShortcutButtonWithoutIconConfig:
+	var action: String
+	var disabled := false
+	
+	func _init(new_action: String, new_disabled := false) -> void:
+		action = new_action
+		disabled = new_disabled
+
 const arrow = preload("res://assets/icons/PopupArrow.svg")
 
 static func create_shortcut_button(action: String, disabled := false, custom_text := "", custom_icon: Texture2D = null, no_modulation := false) -> Button:
@@ -39,11 +48,73 @@ static func create_shortcut_button_without_icon(action: String, disabled := fals
 	
 	return btn
 
+# This might require other button configs in the future, the system could be reworked then.
+static func create_arrow_button(text: String, configs: Array[ShortcutButtonWithoutIconConfig]) -> Button:
+	var btn := Button.new()
+	btn.theme_type_variation = "ContextButton"
+	btn.focus_mode = Control.FOCUS_NONE
+	btn.icon_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	btn.icon = arrow
+	btn.text = text
+	btn.begin_bulk_theme_override()
+	btn.add_theme_stylebox_override("pressed", btn.get_theme_stylebox("hover", "ContextButton"))
+	btn.add_theme_color_override("icon_pressed_color", btn.get_theme_color("icon_hover_color", "ContextButton"))
+	btn.end_bulk_theme_override()
+	
+	var enter_timer := Timer.new()
+	enter_timer.wait_time = 0.16
+	enter_timer.one_shot = true
+	btn.add_child(enter_timer)
+	var exit_timer := Timer.new()
+	exit_timer.wait_time = 0.16
+	exit_timer.one_shot = true
+	btn.add_child(exit_timer)
+	
+	btn.mouse_entered.connect(
+		func() -> void:
+			exit_timer.stop()
+			enter_timer.start()
+	)
+	enter_timer.timeout.connect(func() -> void:
+		if HandlerGUI.popup_submenu_source != btn:
+			var popup := btn.get_parent()
+			while is_instance_valid(popup) and not popup is ContextPopup:
+				popup = popup.get_parent()
+			
+			var submenu := ContextPopup.new()
+			var options: Array[Button] = []
+			for config in configs:
+				options.append(ContextPopup.create_shortcut_button_without_icon(config.action, config.disabled))
+			submenu.setup(options, true)
+			HandlerGUI.popup_submenu_to_right_or_left_side(submenu, btn)
+			popup.gui_input.connect(func(event: InputEvent) -> void:
+				if HandlerGUI.popup_submenu_source == btn and event is InputEventMouseMotion:
+					if not enter_timer.is_stopped():
+						enter_timer.stop()
+						return
+					
+					if exit_timer.is_stopped():
+						if Rect2(Vector2.ZERO, popup.size).grow(-2).has_point(event.position):
+							exit_timer.start()
+			)
+	)
+	exit_timer.timeout.connect(
+		func() -> void:
+			var popup := btn.get_parent()
+			while is_instance_valid(popup) and not popup is ContextPopup:
+				popup = popup.get_parent()
+			
+			if Rect2(Vector2.ZERO, popup.size).grow(-2).has_point(popup.get_local_mouse_position()):
+				HandlerGUI.clear_submenu()
+	)
+	return btn
+
 static func create_button(text: String, press_callback: Callable, disabled := false, icon: Texture2D = null, no_modulation := false, dim_text := "") -> Button:
 	# Create main button.
 	var main_button := Button.new()
 	main_button.theme_type_variation = "ContextButton"
 	main_button.focus_mode = Control.FOCUS_NONE
+	main_button.mouse_filter = Control.MOUSE_FILTER_PASS
 	if disabled:
 		main_button.disabled = true
 	else:
@@ -71,7 +142,7 @@ static func create_button(text: String, press_callback: Callable, disabled := fa
 		
 		var shortcut_text_color := ThemeUtils.subtle_text_color
 		if disabled:
-			shortcut_text_color.a *= 0.75
+			shortcut_text_color.a *= 0.5
 		
 		main_button.begin_bulk_theme_override()
 		var CONST_ARR: PackedStringArray = ["normal", "hover", "pressed", "disabled"]
@@ -149,7 +220,6 @@ func _order_signals(btn: Button) -> void:
 		if connection.callable != HandlerGUI.remove_popup:
 			btn.pressed.disconnect(connection.callable)
 			btn.pressed.connect(connection.callable, CONNECT_DEFERRED)
-	set_block_signals(true)
 
 func setup(buttons: Array[Button], align_left := false, min_width := -1.0, separator_indices := PackedInt32Array()) -> void:
 	var main_container := _common_initial_setup()

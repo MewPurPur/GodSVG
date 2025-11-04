@@ -512,6 +512,10 @@ msgstr ""
 msgid "Configure Shortcut Panel"
 msgstr ""
 
+#: src/ui_parts/tab_bar.gd
+msgid "Close multiple"
+msgstr ""
+
 #: src/ui_parts/tab_bar.gd src/utils/TranslationUtils.gd
 msgid "Create a new tab"
 msgstr ""
@@ -683,6 +687,10 @@ msgstr ""
 
 #: src/ui_widgets/profile_frame.gd
 msgid "Apply all of this preset's defaults"
+msgstr ""
+
+#: src/ui_widgets/setting_frame.gd
+msgid "Clear"
 msgstr ""
 
 #: src/ui_widgets/setting_shortcut.gd

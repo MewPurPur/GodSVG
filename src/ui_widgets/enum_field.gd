@@ -22,6 +22,7 @@ func _ready() -> void:
 	if attribute_name in DB.PROPAGATED_ATTRIBUTES:
 		element.ancestor_attribute_changed.connect(_on_element_ancestor_attribute_changed)
 	tooltip_text = attribute_name
+	Configs.theme_changed.connect(check_placeholder_logic)
 	check_placeholder_logic()
 
 func check_placeholder_logic() -> void:

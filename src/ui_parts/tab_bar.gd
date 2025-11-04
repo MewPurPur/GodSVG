@@ -49,11 +49,12 @@ func _ready() -> void:
 	HandlerGUI.register_shortcuts(self, shortcuts)
 	
 	Configs.active_tab_changed.connect(sync_buttons)
-	Configs.tabs_changed.connect(sync_buttons)
 	Configs.active_tab_changed.connect(scroll_to_active)
 	Configs.tabs_changed.connect(scroll_to_active)
 	resized.connect(scroll_to_active)
 	Configs.language_changed.connect(queue_redraw)
+	Configs.theme_changed.connect(sync_buttons)
+	Configs.tabs_changed.connect(sync_buttons)
 	resized.connect(sync_buttons)
 	set_process(false)
 
@@ -235,13 +236,13 @@ func _gui_input(event: InputEvent) -> void:
 							break
 					
 					btn_arr.append(ContextPopup.create_shortcut_button_without_icon("close_tab"))
-					# TODO Unify into "Close multiple tabs"
-					btn_arr.append(ContextPopup.create_shortcut_button_without_icon("close_all_other_tabs", tab_count < 2))
-					btn_arr.append(ContextPopup.create_shortcut_button_without_icon("close_tabs_to_left", hovered_idx == 0))
-					btn_arr.append(ContextPopup.create_shortcut_button_without_icon("close_tabs_to_right", hovered_idx == tab_count - 1))
-					btn_arr.append(ContextPopup.create_shortcut_button_without_icon("close_empty_tabs", not has_empty_tabs))
-					btn_arr.append(ContextPopup.create_shortcut_button_without_icon("close_saved_tabs", not has_saved_tabs))
-					
+					btn_arr.append(ContextPopup.create_arrow_button(Translator.translate("Close multiple"), [
+						ContextPopup.ShortcutButtonWithoutIconConfig.new("close_all_other_tabs", tab_count < 2),
+						ContextPopup.ShortcutButtonWithoutIconConfig.new("close_tabs_to_left", hovered_idx == 0),
+						ContextPopup.ShortcutButtonWithoutIconConfig.new("close_tabs_to_right", hovered_idx == tab_count - 1),
+						ContextPopup.ShortcutButtonWithoutIconConfig.new("close_empty_tabs", not has_empty_tabs),
+						ContextPopup.ShortcutButtonWithoutIconConfig.new("close_saved_tabs", not has_saved_tabs),
+					]))
 					btn_arr.append(ContextPopup.create_shortcut_button("open_externally", file_absent))
 					btn_arr.append(ContextPopup.create_shortcut_button("open_in_folder", file_absent))
 				var tab_popup := ContextPopup.new()

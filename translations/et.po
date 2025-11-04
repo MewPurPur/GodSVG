@@ -513,6 +513,11 @@ msgstr "Horisontaalne riba kahe reaga"
 msgid "Configure Shortcut Panel"
 msgstr "Kiirklahvida seadistamise paneel"
 
+#: src/ui_parts/tab_bar.gd
+#, fuzzy
+msgid "Close multiple"
+msgstr "Sulge vahekaart"
+
 #: src/ui_parts/tab_bar.gd src/utils/TranslationUtils.gd
 msgid "Create a new tab"
 msgstr "Loo uus vahekaart"
@@ -685,6 +690,11 @@ msgstr "Rakenda"
 #: src/ui_widgets/profile_frame.gd
 msgid "Apply all of this preset's defaults"
 msgstr "Rakenda kõik selle eelseadistuse vaikeväärtused"
+
+#: src/ui_widgets/setting_frame.gd
+#, fuzzy
+msgid "Clear"
+msgstr "Eemalda kõik"
 
 #: src/ui_widgets/setting_shortcut.gd
 msgid "Unused"

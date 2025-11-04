@@ -513,6 +513,11 @@ msgstr "Horizontal con dos filas"
 msgid "Configure Shortcut Panel"
 msgstr "Configurar el panel de accesos directos"
 
+#: src/ui_parts/tab_bar.gd
+#, fuzzy
+msgid "Close multiple"
+msgstr "Cerrar pestaña"
+
 #: src/ui_parts/tab_bar.gd src/utils/TranslationUtils.gd
 msgid "Create a new tab"
 msgstr "Crear una nueva pestaña"
@@ -685,6 +690,11 @@ msgstr "Aplicar"
 #: src/ui_widgets/profile_frame.gd
 msgid "Apply all of this preset's defaults"
 msgstr "Aplicar todos los valores predeterminados de este preajuste"
+
+#: src/ui_widgets/setting_frame.gd
+#, fuzzy
+msgid "Clear"
+msgstr "Seleccionar todo"
 
 #: src/ui_widgets/setting_shortcut.gd
 msgid "Unused"
