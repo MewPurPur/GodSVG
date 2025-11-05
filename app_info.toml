@@ -2,7 +2,7 @@ project_founder_and_manager = "MewPurPur"
 
 # A list of people who have made significant contributions to the GodSVG source code. Everyone with 4 commits or more is included.
 # Translators are credited in their dedicated translation files, not here.
-# Format: '<Github username>' by default, '<Real name> (<Github username>)' with consent.
+# Format: '<Github username>' by default, '<Real name or pseudonym> (<Github username>)' with consent.
 # In order for the list to not be too arbitrary, a minimum of 4 commits is required to be on it (I've made a few exceptions, explained with comments).
 # This file does not strictly reflect copyright ownership for GodSVG. Refer to the Git history to know which contributor wrote which part of the codebase.
 # The information may be outdated if Github usernames or real life names have been changed without announcement.
@@ -19,6 +19,7 @@ authors = [
   "MewPurPur",
   "Qainguin",
   "Serem Titus (SeremTitus)",
+  "sockeye-d (fishnpotatoes)",
   "Swarkin",
   "Anish Mishra (syntaxerror247)",
   "thiagola92",  # Legacy
