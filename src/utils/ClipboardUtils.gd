@@ -58,7 +58,7 @@ static func copy_image(export_data: ImageExportData) -> ClipboardError:
 							cmd = ["xclip", "-selection", "clipboard", "-l", "1", "-quiet", "-t", mime_type, "-i", temp_path]
 							exit_code = OS.execute(cmd[0], cmd.slice(1, len(cmd)-1), cmd_output, true)
 						"wl-copy":
-							cmd = ["wl-copy -f -t %s < '%s'" % [mime_type, temp_path]]
+							cmd = ["wl-copy -t %s < '%s'" % [mime_type, temp_path]]
 							var dict := OS.execute_with_pipe("bash", ["-c", "".join(cmd)], false)
 							if dict.is_empty():
 								return ClipboardError.new(ErrorType.FailedExecuting, cmd_output, " ".join(cmd))
