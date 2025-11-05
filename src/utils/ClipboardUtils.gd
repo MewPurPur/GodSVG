@@ -50,13 +50,14 @@ static func copy_image(export_data: ImageExportData) -> ClipboardError:
 			# Trying every available clipboard util
 			var cmd := []
 			var exit_code := -99
-			var temp_path := _save_temp_to_disk(export_data)
 			for util in usable_utils:
 				if OS.execute("which", [util]) == 0:
 					match util:
 						"xclip":
+							var temp_path := _save_temp_to_disk(export_data)
 							cmd = ["xclip", "-selection", "clipboard", "-l", "1", "-quiet", "-t", mime_type, "-i", temp_path]
 							exit_code = OS.execute(cmd[0], cmd.slice(1, len(cmd)-1), cmd_output, true)
+							_clean_temp(temp_path)
 						"wl-copy":
 							var dict := OS.execute_with_pipe("wl-copy", ["-t", mime_type], false)
 							if dict.is_empty():
@@ -68,9 +69,7 @@ static func copy_image(export_data: ImageExportData) -> ClipboardError:
 								OS.delay_msec(10)
 							exit_code = OS.get_process_exit_code(dict.pid)
 					if exit_code == 0:
-						_clean_temp(temp_path)
 						return ClipboardError.new(ErrorType.Ok, cmd_output)
-			_clean_temp(temp_path)
 			if exit_code == -99:
 				return ClipboardError.new(ErrorType.NoClipboardUtil, cmd_output, ", ".join(usable_utils))
 			else:
