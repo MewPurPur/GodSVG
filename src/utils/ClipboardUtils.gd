@@ -58,20 +58,14 @@ static func copy_image(export_data: ImageExportData) -> ClipboardError:
 							cmd = ["xclip", "-selection", "clipboard", "-l", "1", "-quiet", "-t", mime_type, "-i", temp_path]
 							exit_code = OS.execute(cmd[0], cmd.slice(1, len(cmd)-1), cmd_output, true)
 						"wl-copy":
-							cmd = ["wl-copy -t %s < '%s'" % [mime_type, temp_path]]
-							var dict := OS.execute_with_pipe("bash", ["-c", "".join(cmd)], false)
+							var dict := OS.execute_with_pipe("wl-copy", ["-t", mime_type], false)
 							if dict.is_empty():
 								return ClipboardError.new(ErrorType.FailedExecuting, cmd_output, " ".join(cmd))
 							var stdio: FileAccess = dict.stdio
-							cmd_output.append(stdio.get_pascal_string())
+							stdio.store_buffer(export_data.image_to_buffer(export_data.generate_image()))
 							stdio.close()
-							var secs_waited := 0
 							while OS.is_process_running(dict.pid):
-								OS.delay_msec(1000)
-								secs_waited += 1
-								if secs_waited > 2:
-									OS.kill(dict.pid)
-									push_error("Timed out waiting for wl-copy")
+								OS.delay_msec(10)
 							exit_code = OS.get_process_exit_code(dict.pid)
 					if exit_code == 0:
 						_clean_temp(temp_path)
