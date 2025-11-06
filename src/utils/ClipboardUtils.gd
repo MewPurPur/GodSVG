@@ -3,9 +3,9 @@
 
 ## Returns true if this clipboard util is supported on the current platform.
 static func is_supported(format: String) -> bool:
-	if OS.get_name() == "Web" and format not in ["png", "svg"]:
-		return false  # Copying most image formats is not currently supported on web.
-	return OS.get_name() in ["Windows", "Linux", "Web"] or "BSD" in OS.get_name()
+	if OS.get_name() in ["Web", "macOS"] and format not in ["png", "svg"]:
+		return false  # Copying most image formats is not currently supported on web or macOS.
+	return OS.get_name() in ["Windows", "Linux", "Web", "macOS"] or "BSD" in OS.get_name()
 	
 ## Returns an object containing the error information, as well as an "OK" type.
 static func copy_image(export_data: ImageExportData) -> ClipboardError:
@@ -75,12 +75,10 @@ static func copy_image(export_data: ImageExportData) -> ClipboardError:
 			else:
 				return ClipboardError.new(ErrorType.FailedExecuting, cmd_output, " ".join(cmd))
 		"macOS":
-			#_save_temp_to_disk(export_data)
-			#var picture_type := export_data.format.to_upper()
-			#var e := OS.execute("osascript", ["-e", "set the clipboard to (read (POSIX file \"%s\") as %s picture)" % [_get_temp_path(export_data), picture_type]], cmd_output, true)
-			#_clean_temp(export_data)
-			#return ClipboardError.new(ErrorType.FailedExecuting if e == -1 else ErrorType.Ok, cmd_output, "osascript")
-			return ClipboardError.new(ErrorType.UnsupportedPlatform, cmd_output)
+			var temp_path := _save_temp_to_disk(export_data)
+			var e := OS.execute("osascript", ["-e", r'set the clipboard to read file POSIX file \"%s\" as «class %sf»' % [temp_path, export_data.format.to_upper()]], cmd_output, true)
+			_clean_temp(temp_path)
+			return ClipboardError.new(ErrorType.FailedExecuting if e == -1 else ErrorType.Ok, cmd_output, "osascript")
 		"Android":
 			# TODO: Implement "copy to clipboard" util for Android.
 			return ClipboardError.new(ErrorType.UnsupportedPlatform, cmd_output)
