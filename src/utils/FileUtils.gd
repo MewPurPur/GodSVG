@@ -155,7 +155,7 @@ static func _finish_xml_export(file_path: String, xml: String) -> void:
 
 static func _finish_reference_load(data: Variant, file_path: String, final_callback: Callable) -> void:
 	var img := Image.new()
-	match file_path.get_extension().to_lower():
+	match Utils.get_lowercase_extension(file_path):
 		"svg": img.load_svg_from_string(data)
 		"png": img.load_png_from_buffer(data)
 		"jpg", "jpeg": img.load_jpg_from_buffer(data)
@@ -218,7 +218,7 @@ static func _start_file_import_process(file_paths: PackedStringArray, completion
 allowed_extensions: PackedStringArray, show_incorrect_extension_errors := true) -> void:
 	if not show_incorrect_extension_errors:
 		for i in range(file_paths.size() - 1, -1, -1):
-			if not file_paths[i].get_extension() in allowed_extensions:
+			if not Utils.get_lowercase_extension(file_paths[i]) in allowed_extensions:
 				file_paths.remove_at(i)
 		if not file_paths.is_empty():
 			_file_import_proceed(file_paths, completion_callback)
@@ -226,7 +226,7 @@ allowed_extensions: PackedStringArray, show_incorrect_extension_errors := true) 
 	
 	var incorrect_extension_file_paths := PackedStringArray()
 	for i in range(file_paths.size() - 1, -1, -1):
-		if not file_paths[i].get_extension() in allowed_extensions:
+		if not Utils.get_lowercase_extension(file_paths[i]) in allowed_extensions:
 			incorrect_extension_file_paths.append(Utils.simplify_file_path(file_paths[i]))
 			file_paths.remove_at(i)
 	
@@ -302,7 +302,7 @@ static func _file_import_proceed(file_paths: PackedStringArray, completion_callb
 	
 	# The XML callbacks currently happen to not need the file path.
 	# The SVG callback used currently can popup extra dialogs, so they need the callable.
-	var file_extension := file_path.get_extension()
+	var file_extension := Utils.get_lowercase_extension(file_path)
 	if file_extension == "svg":
 		if file_paths.is_empty():
 			completion_callback.call(file.get_as_text(), file_path)
@@ -595,7 +595,7 @@ static func _web_on_files_selected(args: Array) -> void:
 		window.godsvgFileNames[i] = file.name
 		
 		# Read file based on extension.
-		if file.name.get_extension().to_lower() in ["svg", "xml"]:
+		if Utils.get_lowercase_extension(file.name) in ["svg", "xml"]:
 			reader.readAsText(file)
 		else:
 			reader.readAsArrayBuffer(file)
@@ -611,7 +611,7 @@ static func _web_on_file_loaded(args: Array, file_index: int) -> void:
 	var file_name: String = window.godsvgFileNames[file_index]
 	
 	# Store file data based on type.
-	if file_name.get_extension().to_lower() in ["svg", "xml"]:
+	if Utils.get_lowercase_extension(file_name) in ["svg", "xml"]:
 		# For text files, store directly
 		window.godsvgFileDataArray[file_index] = event.target.result
 	else:
