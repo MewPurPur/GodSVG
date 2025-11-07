@@ -260,11 +260,11 @@ func open_dir(dir: String, add_to_history := true, only_filtering_update := fals
 		file_list.set_item_metadata(item_idx, Actions.new(open_dir.bind(dir_path), sync_to_selection, open_dir_context.bind(dir_path)))
 	
 	for file in files:
-		if not file.get_extension() in extensions or (not search_text.is_empty() and not search_text.is_subsequence_ofn(file)):
+		if not Utils.get_lowercase_extension(file) in extensions or (not search_text.is_empty() and not search_text.is_subsequence_ofn(file)):
 			continue
 		
 		var item_idx := file_list.add_item(file, null)
-		var file_extension := file.get_extension()
+		var file_extension := Utils.get_lowercase_extension(file)
 		if file_extension == "xml":
 			file_list.set_item_icon(item_idx, text_file_icon)
 			file_list.set_item_icon_modulate(item_idx, ThemeUtils.text_file_color)
@@ -281,7 +281,7 @@ func sync_file_field() -> void:
 	file_field.text = add_extension_if_missing(get_save_name())
 
 func add_extension_if_missing(file_name: String) -> String:
-	if not file_name.is_empty() and not file_name.get_extension() in extensions and\
+	if not file_name.is_empty() and not Utils.get_lowercase_extension(file_name) in extensions and\
 	extensions.size() >= 1:
 		return file_name + "." + extensions[0]
 	else:
@@ -302,7 +302,7 @@ func _setup_file_images() -> void:
 		var file_rect := file_list.get_item_rect(item_idx)
 		if not is_instance_valid(file_list.get_item_icon(item_idx)) and file_rect.end.y > visible_start and file_rect.position.y < visible_end:
 			var file := file_list.get_item_text(item_idx)
-			match file.get_extension():
+			match Utils.get_lowercase_extension(file):
 				"svg":
 					# Setup a clean SVG graphic by using the scaling parameter.
 					var svg_text := FileAccess.get_file_as_string(current_dir.path_join(file))

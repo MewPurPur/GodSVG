@@ -33,6 +33,9 @@ static func is_string_lower(string: String) -> bool:
 static func get_file_name(string: String) -> String:
 	return string.get_file().trim_suffix("." + string.get_extension())
 
+static func get_lowercase_extension(string: String) -> String:
+	return string.get_extension().to_lower()
+
 ## Method for showing the file path without stuff like "/home/mewpurpur/".
 static func simplify_file_path(file_path: String) -> String:
 	var home_dir := get_home_dir()
