@@ -239,7 +239,7 @@ func setup(buttons: Array[Button], align_left := false, min_width := -1.0, separ
 	if min_width > 0:
 		custom_minimum_size.x = min_width
 	
-	var max_height := get_window().size.y / 2.0 - 16.0
+	var max_height := get_window().size.y / (get_tree().root.content_scale_factor * 2.0) - 16.0 * get_tree().root.content_scale_factor
 	if get_minimum_size().y > max_height:
 		custom_minimum_size.y = max_height
 		main_container.get_parent().vertical_scroll_mode = ScrollContainer.SCROLL_MODE_AUTO
