@@ -21,6 +21,7 @@ var dimensions := Vector2.ZERO
 @onready var height_edit: NumberEdit = %Height
 @onready var size_container: CenterContainer = %SizeContainer
 @onready var lossless_checkbox: CheckBox = %LosslessCheckBox
+@onready var precise_path_mode_dropdown: Dropdown = %PrecisePathModeDropdown
 @onready var quality_edit: NumberEdit = %Quality
 @onready var quality_hbox: HBoxContainer = %QualityHBox
 @onready var cancel_button: Button = %ButtonContainer/CancelButton
@@ -46,6 +47,7 @@ func _ready() -> void:
 	height_edit.value_changed.connect(_on_height_edit_value_changed)
 	quality_edit.value_changed.connect(_on_quality_value_changed)
 	lossless_checkbox.toggled.connect(_on_lossless_check_box_toggled)
+	precise_path_mode_dropdown.value_changed.connect(_on_precise_path_mode_dropdown_toggled)
 	format_dropdown.value_changed.connect(_on_dropdown_value_changed)
 	
 	dimensions = State.root_element.get_size()
@@ -70,7 +72,6 @@ func _ready() -> void:
 		file_title.add_theme_color_override("font_color", ThemeUtils.subtle_text_color)
 		file_title.text = Configs.savedata.get_active_tab().presented_name
 	
-	final_size_label.text = Translator.translate("Size") + ": " + String.humanize_size(State.get_export_text().length())
 	%TitleLabel.text = Translator.translate("Export Configuration")
 	%FormatHBox/Label.text = Translator.translate("Format") + ":"
 	%LosslessCheckBox.text = Translator.translate("Lossless")
@@ -121,6 +122,13 @@ func _on_lossless_check_box_toggled(toggled_on: bool) -> void:
 	undo_redo.add_undo_property(export_data, "lossy", current_lossy)
 	undo_redo.commit_action()
 
+func _on_precise_path_mode_dropdown_toggled(precise_path_mode: PDCImage.PrecisePathMode) -> void:
+	var current_precise_path_mode := export_data.precise_path_mode
+	undo_redo.create_action()
+	undo_redo.add_do_property(export_data, "precise_path_mode", precise_path_mode)
+	undo_redo.add_undo_property(export_data, "precise_path_mode", current_precise_path_mode)
+	undo_redo.commit_action()
+
 func _on_quality_value_changed(new_value: float) -> void:
 	var current_quality := export_data.quality
 	undo_redo.create_action()
@@ -157,12 +165,11 @@ func _dimension_component_change_common_logic(component_index: int, new_value: f
 # Everything gets updated at once when export config changes for simplicity.
 func update() -> void:
 	# Determine which fields are visible.
-	quality_related_container.visible = export_data.format in ["jpg", "jpeg", "webp"]
+	quality_related_container.visible = export_data.format in ["jpg", "jpeg", "webp", "pdc"]
 	quality_hbox.visible = export_data.format in ["jpg", "jpeg"] or export_data.format == "webp" and export_data.lossy
 	lossless_checkbox.visible = (export_data.format == "webp")
 	size_container.visible = export_data.format in ["png", "jpg", "jpeg", "webp"]
-	
-	final_size_label.visible = (export_data.format == "svg")
+	precise_path_mode_dropdown.visible = export_data.format in ["pdc"]
 	
 	var file_name := Utils.get_file_name(Configs.savedata.get_active_tab().svg_file_path)
 	if not file_name.is_empty():
@@ -181,7 +188,18 @@ func update() -> void:
 		# Sync all other widgets, so they are updated on changes from UndoRedo too.
 		quality_edit.set_value(export_data.quality * 100, false)
 		lossless_checkbox.set_pressed_no_signal(not export_data.lossy)
+	
+	final_size_label.visible = export_data.format in ["svg", "pdc"]
+	var export_size: int
+	match export_data.format:
+		"svg":
+			export_size = State.get_export_text().length()
+		"pdc":
+			export_size = texture_preview.last_image_size
+	final_size_label.text = Translator.translate("Size") + ": " + String.humanize_size(export_size)
+	
 	format_dropdown.set_value(export_data.format, false)
+	precise_path_mode_dropdown.set_value(export_data.precise_path_mode, false)
 	
 	info_tooltip.visible = (export_data.format != "svg" and\
 			roundi(export_data.upscale_amount * maxf(dimensions.x, dimensions.y)) > texture_preview.MAX_IMAGE_DIMENSION)
