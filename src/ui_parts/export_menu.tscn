@@ -130,10 +130,11 @@ theme_override_font_sizes/font_size = 12
 [node name="Dropdown" parent="MarginContainer/VBoxContainer/TitledPanel/VBoxContainer/CenterContainer/VBoxContainer/FormatHBox" unique_id=1383013352 instance=ExtResource("5_y6ex0")]
 custom_minimum_size = Vector2(60, 22)
 layout_mode = 2
-values = ["svg", "png", "jpeg", "webp"]
+values = ["svg", "png", "jpeg", "webp", "pdc"]
 aliases = Dictionary[String, Variant]({
 "JPEG": "jpeg",
 "JPG": "jpeg",
+"PDC": "pdc",
 "PNG": "png",
 "SVG": "svg",
 "WEBP": "webp",
@@ -147,7 +148,18 @@ unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
 
-[node name="QualityRelatedContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/TitledPanel/VBoxContainer/CenterContainer/VBoxContainer" unique_id=1408255560]
+[node name="PrecisePathModeDropdown" parent="MarginContainer/VBoxContainer/TitledPanel/VBoxContainer/CenterContainer/VBoxContainer" instance=ExtResource("5_y6ex0")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+values = [0, 1, 2]
+value_text_map = {
+0: "Autodetect",
+1: "Only precise paths",
+2: "Only imprecise paths"
+}
+
+[node name="QualityRelatedContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/TitledPanel/VBoxContainer/CenterContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 12

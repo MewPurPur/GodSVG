@@ -1,0 +1,9 @@
+description=
+icon=assets/logos/icon.png
+name=GodSVG
+tags=project
+
+[version]
+isMono=false
+repo=/godotengine/godot-builds
+tagName=4.5.1-stable
