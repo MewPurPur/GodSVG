@@ -22,9 +22,16 @@ enum PrecisePathMode {
 	ONLY_IMPRECISE_PATHS,
 }
 
+enum PDCLoadingError {
+	OK,
+	UNKNOWN,
+	INVALID_MAGIC_WORD,
+}
+
 var size: Vector2i
-var curve_tolerance: float
+var path_angle_tolerance: float = 10.0
 var precise_path_mode: PrecisePathMode
+var viewbox_transform: Transform2D
 
 var draw_commands: Array[PebbleCommand]
 
@@ -49,7 +56,7 @@ func encode() -> PackedByteArray:
 
 func encode_image() -> PackedByteArray:
 	var buffer: PackedByteArray
-	buffer.resize(6)
+	buffer.resize(8)
 	buffer.encode_u8(0, DRAW_COMMAND_VERSION)
 	# Must be 0 for some reason
 	buffer.encode_u8(1, 0)
@@ -57,18 +64,65 @@ func encode_image() -> PackedByteArray:
 	buffer.encode_s16(2, size.x)
 	buffer.encode_s16(4, size.y)
 	
+	buffer.encode_u16(6, draw_commands.size())
 	for command in draw_commands:
 		buffer.append_array(command.encode())
 	return buffer
 
 
+const _DRAW_TYPE_DISPATCHER: Dictionary[DrawType, Script] = {
+	DrawType.PATH: PebblePathCommand,
+	DrawType.CIRCLE: PebbleCircleCommand,
+	DrawType.PRECISE_PATH: PebblePrecisePathCommand,
+}
+
+
+func load_from_pdc(pdc: PackedByteArray) -> PDCLoadingError:
+	var sp := StreamPeerBuffer.new()
+	sp.data_array = pdc
+	# 4 chars * 1 byte / char = 32 bits
+	if sp.get_u32() != "PDCI".to_ascii_buffer().decode_u32(0):
+		return PDCLoadingError.INVALID_MAGIC_WORD
+	var _buffer_size := sp.get_u32()
+	if sp.get_u8() != DRAW_COMMAND_VERSION:
+		return PDCLoadingError.UNKNOWN
+	if sp.get_u8() != 0:
+		return PDCLoadingError.UNKNOWN
+	size = Vector2i(
+		sp.get_16(),
+		sp.get_16(),
+	)
+	var draw_command_size := sp.get_u16()
+	for i in draw_command_size:
+		var type := sp.get_u8() as DrawType
+		var flags := sp.get_u8() as DrawFlags
+		var stroke_color := sp.get_u8()
+		var stroke_width := sp.get_u8()
+		var fill_color := sp.get_u8()
+		var path_open_or_radius := sp.get_u16()
+		var points_length := sp.get_u16()
+		var cmd: PebbleCommand = _DRAW_TYPE_DISPATCHER[type].new()
+		var starting_cursor := sp.get_position()
+		cmd.decode(sp, points_length, path_open_or_radius)
+		assert(sp.get_position() - starting_cursor == points_length * 4)
+		cmd.stroke_color = stroke_color
+		cmd.stroke_width = stroke_width
+		cmd.fill_color = fill_color
+		cmd.flags = flags
+		add_command(cmd)
+	return PDCLoadingError.OK
+
 func add_command(command: PebbleCommand) -> void:
 	draw_commands.append(command)
 
 
+func add_commands(commands: Array[PebbleCommand]) -> void:
+	draw_commands.append_array(commands)
+
+
 @abstract class PebbleCommand:
 	var stroke_color: int
-	var stroke_width: int
+	var stroke_width: float
 	var fill_color: int
 	var flags: DrawFlags
 
@@ -82,12 +136,12 @@ func add_command(command: PebbleCommand) -> void:
 		# Command stroke color
 		buffer.encode_u8(2, stroke_color)
 		# Command stroke width (unsigned byte)
-		buffer.encode_u8(3, stroke_width)
+		buffer.encode_u8(3, int(stroke_width))
 		buffer.encode_u8(4, fill_color)
 		buffer.encode_u16(5, get_path_open_or_radius())
-		var points := get_points()
-		buffer.encode_u16(7, points.size())
-		buffer.append_array(encode_points(points))
+		var encoded_points := encode_points(get_points())
+		buffer.encode_u16(7, encoded_points.size() / 4)
+		buffer.append_array(encoded_points)
 		return buffer
 	
 	@abstract func get_type() -> DrawType
@@ -109,6 +163,7 @@ func add_command(command: PebbleCommand) -> void:
 		return int(value)
 	
 	@abstract func to_svg() -> Array[Element]
+
 	func _setup_svg_element(element: Element) -> Element:
 		element.set_attribute("stroke-width", stroke_width)
 		var real_stroke_color := PDCImage.from_pebble_color(stroke_color)
@@ -119,7 +174,11 @@ func add_command(command: PebbleCommand) -> void:
 		element.set_attribute("fill", "#" + real_fill_color.to_html(false))
 		if real_fill_color.a < 1.0:
 			element.set_attribute("fill-opacity", real_fill_color.a)
+		element.set_attribute("stroke-linecap", "round")
+		element.set_attribute("stroke-linejoin", "round")
 		return element
+	
+	@abstract func decode(sp: StreamPeer, points_size: int, path_open_or_radius: int) -> void
 
 
 class PebblePathCommand extends PebbleCommand:
@@ -129,18 +188,61 @@ class PebblePathCommand extends PebbleCommand:
 	func get_points() -> PackedVector2Array: return points
 	func get_path_open_or_radius() -> int: return 0b1 if is_path_open else 0b0
 	func to_svg() -> Array[Element]:
+		var rounded_points: PackedVector2Array = points.duplicate()
+		for i in rounded_points.size() - 1:
+			rounded_points[i] = Vector2(
+				_svg_round_value(rounded_points[i].x),
+				_svg_round_value(rounded_points[i].y)
+			)
+		rounded_points = PDCImage.simplify_points(rounded_points)
 		var path := _setup_svg_element(ElementPath.new())
 		var commands: Array[PathCommand]
-		commands.append(PathCommand.MoveCommand.new(points[0].x, points[0].y))
-		for point_index in range(1, points.size()):
-			var point := points[point_index]
+		commands.append(PathCommand.MoveCommand.new(rounded_points[0].x, rounded_points[0].y))
+		for point_index in range(1, rounded_points.size()):
+			var point := rounded_points[point_index]
 			commands.append(
-				PathCommand.LineCommand.new(int(point.x), int(point.y))
+				PathCommand.LineCommand.new(point.x, point.y)
 			)
 		if not is_path_open:
 			commands.append(PathCommand.CloseCommand.new())
 		path.set_attribute("d", commands)
 		return [path]
+	
+	func _svg_round_value(value: float) -> float: return floorf(value)
+	
+	func upgrade() -> PebblePrecisePathCommand:
+		var precise_path := PebblePrecisePathCommand.new()
+		precise_path.points = points
+		precise_path.is_path_open = is_path_open
+		precise_path.stroke_color = stroke_color
+		precise_path.stroke_width = stroke_width
+		precise_path.fill_color = fill_color
+		precise_path.flags = flags
+		return precise_path
+	
+	func encode_points(input_points: PackedVector2Array) -> PackedByteArray:
+		var buf: PackedByteArray
+		for i in input_points.size() - 1:
+			input_points[i] = Vector2(
+				_svg_round_value(input_points[i].x),
+				_svg_round_value(input_points[i].y)
+			)
+		input_points = PDCImage.simplify_points(input_points)
+		# Allocate 4 bytes per point
+		buf.resize(input_points.size() * 4)
+		for point_index in input_points.size():
+			var buf_index := point_index * 4
+			var point := input_points[point_index]
+			buf.encode_s16(buf_index + 0, encode_point(point.x))
+			buf.encode_s16(buf_index + 2, encode_point(point.y))
+		return buf
+	
+	func decode(sp: StreamPeer, points_size: int, path_open_or_radius: int) -> void:
+		is_path_open = path_open_or_radius == 1
+		for point_index in points_size:
+			var x := sp.get_16()
+			var y := sp.get_16()
+			points.append(Vector2(x, y))
 
 
 class PebbleCircleCommand extends PebbleCommand:
@@ -155,30 +257,42 @@ class PebbleCircleCommand extends PebbleCommand:
 		circ.set_attribute("cy", center.y)
 		circ.set_attribute("r", radius)
 		return [circ]
+	
+	func decode(sp: StreamPeer, _points_size: int, path_open_or_radius: int) -> void:
+		radius = path_open_or_radius
+		var x := sp.get_16()
+		var y := sp.get_16()
+		center = Vector2(x, y)
 
 
 class PebblePrecisePathCommand extends PebblePathCommand:
 	func get_type() -> DrawType: return DrawType.PRECISE_PATH
 	func encode_point(value: float) -> int:
 		return int(value * (1 << 3))
-	func to_svg() -> Array[Element]:
-		var path := _setup_svg_element(ElementPath.new())
-		var commands: Array[PathCommand]
-		commands.append(PathCommand.MoveCommand.new(points[0].x, points[0].y))
-		for point_index in range(1, points.size()):
-			var point := points[point_index]
-			commands.append(
-				PathCommand.LineCommand.new(floorf(point.x * (1 << 3)) / (1 << 3), floorf(point.y * (1 << 3)) / (1 << 3))
-			)
-		if not is_path_open:
-			commands.append(PathCommand.CloseCommand.new())
-		path.set_attribute("d", commands)
-		return [path]
+	func _svg_round_value(value: float) -> float: return floorf(value * (1 << 3)) / (1 << 3)
+	
+	func decode(sp: StreamPeer, points_size: int, path_open_or_radius: int) -> void:
+		is_path_open = path_open_or_radius == 1
+		for point_index in points_size:
+			var x := float(sp.get_16()) / (1 << 3)
+			var y := float(sp.get_16()) / (1 << 3)
+			points.append(Vector2(x, y))
+
+
+var path_generator := SVGPathUtils.AngleTolerancePathGenerator.new()
 
 
 func load_from_svg(svg: ElementRoot) -> void:
-	size.x = int(svg.get_attribute_num("width"))
-	size.y = int(svg.get_attribute_num("height"))
+	var size_float := Vector2(svg.get_attribute_num("width"), svg.get_attribute_num("height"))
+	size = Vector2i(size_float)
+	var viewbox := svg.get_attribute_list("viewBox")
+	if viewbox.size() == 4:
+		var viewbox_rect := Rect2(viewbox[0], viewbox[1], viewbox[2], viewbox[3])
+		var scaling_factor := size_float / viewbox_rect.size
+		viewbox_transform = Transform2D(0.0, scaling_factor, 0.0, -viewbox_rect.position * scaling_factor)
+		path_generator.angle_tolerance = path_angle_tolerance
+	else:
+		viewbox_transform = Transform2D.IDENTITY
 	for element in svg.get_all_valid_element_descendants():
 		match element.name:
 			"circle":
@@ -234,31 +348,153 @@ func load_from_svg(svg: ElementRoot) -> void:
 					element.get_precise_transform(),
 					points
 				)
-				var cmd := _setup_cmd(element, (PebblePrecisePathCommand if requires_precise_path(points) else PebblePathCommand).new())
+				var cmd: PebblePathCommand = _setup_cmd(
+					element,
+					(PebblePrecisePathCommand if requires_precise_path(points) else PebblePathCommand).new()
+				)
 				cmd.points = points
 				cmd.is_path_open = element.name == "polyline"
 				add_command(cmd)
 			"path":
-				var polylines: Array[PackedVector2Array]
-				var multilines := PackedVector2Array()
-				SVGPathUtils.get_path_element_points(element, polylines, multilines, curve_tolerance)
-				for points in polylines:
-					var cmd := _setup_cmd(element, (PebblePrecisePathCommand if requires_precise_path(points) else PebblePathCommand).new())
-					cmd.points = points
-					cmd.is_path_open = false
-					add_command(cmd)
-				for multiline_index in multilines.size() / 2:
-					var points: PackedVector2Array = [
-						multilines[multiline_index * 2],
-						multilines[multiline_index * 2 + 1],
-					]
-					var cmd := _setup_cmd(element, (PebblePrecisePathCommand if requires_precise_path(points) else PebblePathCommand).new())
-					cmd.points = points
-					cmd.is_path_open = false
-					add_command(cmd)
+				var commands := _generate_path_commands(element)
+				
+				# All commands are imprecise when they come out of _generate_path_commands,
+				# so upgrade the ones that need it.
+				for command_index in commands.size():
+					if requires_precise_path(commands[command_index].points):
+						commands[command_index] = commands[command_index].upgrade()
+					add_command(commands[command_index])
+
+
+func _generate_path_commands(element: Element) -> Array[PebblePathCommand]:
+	var pathdata: AttributePathdata = element.get_attribute("d")
+	if pathdata.get_command_count() == 0 or not pathdata.get_command(0).command_char in "Mm":
+		return []  # Nothing to draw.
+	var commands: Array[PebblePathCommand]
+	for cmd_idx in pathdata.get_command_count():
+		# Drawing logic.
+		var cmd := pathdata.get_command(cmd_idx)
+		var relative := cmd.relative
+		
+		var end_path := func(is_open: bool) -> void:
+			if commands.size() > 0:
+				if commands[-1] == null:
+					return
+				commands[-1].is_path_open = is_open
+			commands.append(null)
+		
+		var append_points := func(points: PackedVector2Array) -> void:
+			if commands.size() == 0:
+				commands.append(null)
+			if commands[-1] == null:
+				commands[-1] = _setup_cmd(element, PebblePathCommand.new())
+				commands[-1].points.append_array(points)
+			elif commands[-1].points.size() > 0 and points[0] == commands[-1].points[-1]:
+				commands[-1].points.append_array(points.slice(1))
+			else:
+				commands[-1].is_path_open = true
+				commands.append(null)
+				commands[-1] = _setup_cmd(element, PebblePathCommand.new())
+				commands[-1].points.append_array(points)
+		
+		match cmd.command_char.to_upper():
+			"L":
+				# Line contour.
+				var v := Vector2(cmd.x, cmd.y)
+				var end := cmd.get_start_coords() + v if relative else v
+				append_points.call(PackedVector2Array([cmd.get_start_coords(), end]))
+			"H":
+				# Horizontal line contour.
+				var v := Vector2(cmd.x, 0)
+				var end := cmd.get_start_coords() + v if relative else Vector2(v.x, cmd.start_y)
+				append_points.call(PackedVector2Array([cmd.get_start_coords(), end]))
+			"V":
+				# Vertical line contour.
+				var v := Vector2(0, cmd.y)
+				var end := cmd.get_start_coords() + v if relative else Vector2(cmd.start_x, v.y)
+				append_points.call(PackedVector2Array([cmd.get_start_coords(), end]))
+			"C":
+				# Cubic Bezier curve contour.
+				var v := Vector2(cmd.x, cmd.y)
+				var v1 := Vector2(cmd.x1, cmd.y1)
+				var v2 := Vector2(cmd.x2, cmd.y2)
+				var cp1 := cmd.get_start_coords()
+				var cp4 := cp1 + v if relative else v
+				var cp2 := v1 if relative else v1 - cp1
+				var cp3 := v2 - v
+				
+				append_points.call(path_generator.generate_cubic(cp1, cp2, cp3, cp4))
+			"S":
+				# Shorthand cubic Bezier curve contour.
+				if cmd_idx == 0:
+					break
+				
+				var v := Vector2(cmd.x, cmd.y)
+				var v1 := pathdata.get_implied_S_control(cmd_idx)
+				var v2 := Vector2(cmd.x2, cmd.y2)
+				
+				var cp1 := cmd.get_start_coords()
+				var cp4 := cp1 + v if relative else v
+				var cp2 := v1 if relative else v1 - cp1
+				var cp3 := v2 - v
+				
+				append_points.call(path_generator.generate_cubic(cp1, cp2, cp3, cp4))
+			"Q":
+				# Quadratic Bezier curve contour.
+				var v := Vector2(cmd.x, cmd.y)
+				var v1 := Vector2(cmd.x1, cmd.y1)
+				var cp1 := cmd.get_start_coords()
+				var cp2 := cp1 + v1 if relative else v1
+				var cp3 := cp1 + v if relative else v
+				
+				append_points.call(path_generator.generate_quadratic(cp1, cp2, cp3))
+			"T":
+				# Shorthand quadratic Bezier curve contour.
+				var v := Vector2(cmd.x, cmd.y)
+				var v1 := pathdata.get_implied_T_control(cmd_idx)
+				
+				var cp1 := cmd.get_start_coords()
+				var cp2 := v1 + cp1 if relative else v1
+				var cp3 := cp1 + v if relative else v
+				
+				if is_nan(cp2.x) and is_nan(cp2.y):
+					append_points.call(PackedVector2Array([cp1, cp3]))
+				else:
+					append_points.call(path_generator.generate_quadratic(cp1, cp2, cp3))
+			"A":
+				# Elliptical arc contour.
+				var start := cmd.get_start_coords()
+				var v := Vector2(cmd.x, cmd.y)
+				var end := start + v if relative else v
+				var ellipse_points := SVGPathUtils.generate_ellipse(
+					start,
+					end,
+					Vector2(cmd.rx, cmd.ry),
+					deg_to_rad(cmd.rot),
+					cmd.large_arc_flag,
+					cmd.sweep_flag,
+					path_generator,
+				)
+				ellipse_points.reverse()
+				append_points.call(ellipse_points)
+			"Z":
+				end_path.call(false)
+			"M":
+				end_path.call(true)
+	if commands[-1] == null:
+		commands.pop_back()
+	else:
+		commands[-1].is_path_open = true
+	var transform := viewbox_transform * element.get_transform()
+	var stroke_width_scale := Utils.vector2_min_element(transform.get_scale())
+	for command in commands:
+		command.points = transform * command.points
+		command.stroke_width *= stroke_width_scale
+	return commands
 
 
 static var _formatter := Formatter.new(Formatter.Preset.COMPACT)
+
 func to_svg() -> String:
 	var document := ElementRoot.new()
 	document.set_attribute("width", size.x)
@@ -271,7 +507,7 @@ func to_svg() -> String:
 
 static var _path := PebblePathCommand.new()
 
-static func _setup_cmd(element: Element, cmd: PebbleCommand) -> PebbleCommand:
+func _setup_cmd(element: Element, cmd: PebbleCommand) -> PebbleCommand:
 	var fill_color_no_alpha := ColorParser.text_to_color(element.get_attribute_true_color("fill"))
 	cmd.fill_color = to_pebble_color(Color(fill_color_no_alpha, fill_color_no_alpha.a * element.get_attribute_num("fill-opacity")))
 	var stroke_color_no_alpha := ColorParser.text_to_color(element.get_attribute_true_color("stroke"))
@@ -306,3 +542,23 @@ static func from_pebble_color(color: int) -> Color:
 		((color >> 4) & 0b11) / 3.0,
 		((color >> 6) & 0b11) / 3.0,
 	)
+
+
+static func simplify_points(points: PackedVector2Array) -> PackedVector2Array:
+	var new_points: PackedVector2Array
+	for point_index in points.size():
+		if new_points.size() > 0:
+			if point_index - 1 >= 0 and point_index + 1 < points.size() - 1:
+				var colinear_a := new_points[-1]
+				var colinear_b := points[point_index] - colinear_a
+				var colinear_c := points[point_index + 1] - colinear_a
+				var alignment := colinear_b.dot(colinear_c) / sqrt(colinear_b.length_squared() * colinear_c.length_squared())
+				if is_equal_approx(alignment, 1.0):
+					# Skip colinear points.
+					continue
+			if point_index > 0:
+				if new_points[-1].is_equal_approx(points[point_index]):
+					# Skip overlapping points.
+					continue
+		new_points.append(points[point_index])
+	return new_points

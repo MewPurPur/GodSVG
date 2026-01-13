@@ -4,6 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://eif2ioi0mw17" path="res://assets/icons/Plus.svg" id="2_pm7dr"]
 [ext_resource type="PackedScene" uid="uid://bujllg1bqlub6" path="res://src/ui_widgets/color_swatch.tscn" id="3_auodr"]
 [ext_resource type="PackedScene" uid="uid://5f8uxavn1or1" path="res://src/ui_widgets/color_edit.tscn" id="4_mkhk3"]
+[ext_resource type="PackedScene" uid="uid://bpr5yv7pbv13g" path="res://src/ui_widgets/dropdown_basic.tscn" id="5_pm7dr"]
 [ext_resource type="Texture2D" uid="uid://ccbta5q43jobk" path="res://assets/icons/More.svg" id="5_ue2r5"]
 [ext_resource type="Script" uid="uid://bniafq6ma1iln" path="res://src/ui_widgets/ProceduralControl.gd" id="6_6v74c"]
 
@@ -57,6 +58,25 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 4
 enable_alpha = true
+
+[node name="PrecisePathModeContainer" type="HBoxContainer" parent="ActionContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="Label" type="Label" parent="ActionContainer/PrecisePathModeContainer"]
+layout_mode = 2
+
+[node name="PrecisePathModeDropdown" parent="ActionContainer/PrecisePathModeContainer" instance=ExtResource("5_pm7dr")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(96, 22)
+layout_mode = 2
+values = [0, 1, 2]
+value_text_map = {
+0: "Autodetect",
+1: "Always",
+2: "Never"
+}
 
 [node name="MoreButton" type="Button" parent="ActionContainer" unique_id=1528240669]
 layout_mode = 2

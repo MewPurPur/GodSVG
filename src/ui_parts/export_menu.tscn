@@ -143,21 +143,41 @@ aliases = Dictionary[String, Variant]({
 })
 editing_enabled = true
 
-[node name="FinalSizeLabel" type="Label" parent="MarginContainer/VBoxContainer/TitledPanel/VBoxContainer/CenterContainer/VBoxContainer" unique_id=819439799]
+[node name="PDCPathQualityContainer" type="GridContainer" parent="MarginContainer/VBoxContainer/TitledPanel/VBoxContainer/CenterContainer/VBoxContainer" unique_id=819439799]
 unique_name_in_owner = true
+layout_mode = 2
+columns = 2
+
+[node name="PreciseModeLabel" type="Label" parent="MarginContainer/VBoxContainer/TitledPanel/VBoxContainer/CenterContainer/VBoxContainer/PDCPathQualityContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
 
-[node name="PrecisePathModeDropdown" parent="MarginContainer/VBoxContainer/TitledPanel/VBoxContainer/CenterContainer/VBoxContainer" instance=ExtResource("5_y6ex0")]
+[node name="PrecisePathModeDropdown" parent="MarginContainer/VBoxContainer/TitledPanel/VBoxContainer/CenterContainer/VBoxContainer/PDCPathQualityContainer" instance=ExtResource("5_y6ex0")]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(96, 22)
 layout_mode = 2
-size_flags_horizontal = 3
 values = [0, 1, 2]
 value_text_map = {
 0: "Autodetect",
-1: "Only precise paths",
-2: "Only imprecise paths"
+1: "Always",
+2: "Never"
 }
+
+[node name="QualityLabel" type="Label" parent="MarginContainer/VBoxContainer/TitledPanel/VBoxContainer/CenterContainer/VBoxContainer/PDCPathQualityContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/TitledPanel/VBoxContainer/CenterContainer/VBoxContainer/PDCPathQualityContainer"]
+layout_mode = 2
+
+[node name="PathQualityNumberEdit" parent="MarginContainer/VBoxContainer/TitledPanel/VBoxContainer/CenterContainer/VBoxContainer/PDCPathQualityContainer/HBoxContainer" instance=ExtResource("6_w1sag")]
+unique_name_in_owner = true
+layout_mode = 2
+initial_value = 10.0
+
+[node name="SuffixLabel" type="Label" parent="MarginContainer/VBoxContainer/TitledPanel/VBoxContainer/CenterContainer/VBoxContainer/PDCPathQualityContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
 
 [node name="QualityRelatedContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/TitledPanel/VBoxContainer/CenterContainer/VBoxContainer"]
 unique_name_in_owner = true
@@ -259,6 +279,11 @@ layout_mode = 2
 min_value = 1.0
 max_value = 16384.0
 is_float = false
+
+[node name="FinalSizeLabel" type="Label" parent="MarginContainer/VBoxContainer/TitledPanel/VBoxContainer/CenterContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
 
 [node name="ButtonContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=435949939]
 unique_name_in_owner = true

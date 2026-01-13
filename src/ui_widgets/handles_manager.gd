@@ -462,7 +462,7 @@ func _draw() -> void:
 					element,
 					normal_polylines,
 					normal_multiline,
-					1.0,
+					SVGPathUtils.default_path_generator,
 					hovered_polylines,
 					hovered_multiline,
 					selected_polylines,

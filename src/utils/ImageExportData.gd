@@ -35,7 +35,7 @@ var lossy := false:
 			lossy = new_value
 			changed.emit()
 
-var tesselation_tolerance_degrees := 4:
+var tesselation_tolerance_degrees := 10.0:
 	set(new_value):
 		if new_value != tesselation_tolerance_degrees:
 			tesselation_tolerance_degrees = new_value
@@ -58,6 +58,12 @@ func image_to_buffer(image: Image) -> PackedByteArray:
 		"png": return image.save_png_to_buffer()
 		"jpg", "jpeg": return image.save_jpg_to_buffer(quality)
 		"webp": return image.save_webp_to_buffer(lossy, quality)
+		"pdc":
+			var pdc := PDCImage.new()
+			pdc.precise_path_mode = precise_path_mode
+			pdc.path_angle_tolerance = tesselation_tolerance_degrees
+			pdc.load_from_svg(SVGParser.markup_to_root(State.get_export_text()).svg)
+			return pdc.encode()
 		_: return svg_to_buffer()
 
 

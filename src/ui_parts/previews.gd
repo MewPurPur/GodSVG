@@ -28,6 +28,8 @@ const MAX_ICON_PREVIEW_SIZE = 128
 @onready var preview_top_panel: PanelContainer = $SplitContainer/PreviewTopPanel
 @onready var more_button: Button = $ActionContainer/MoreButton
 @onready var size_label_margins: MarginContainer = %SizeLabelMargins
+@onready var precise_path_mode_dropdown: Control = %PrecisePathModeDropdown
+@onready var precise_path_mode_container: HBoxContainer = %PrecisePathModeContainer
 
 class IconPreviewTileData extends RefCounted:
 	var index := -1
@@ -38,7 +40,7 @@ class IconPreviewTileData extends RefCounted:
 	var more_button_rect: Rect2
 	var bigger_dimension: int
 	var label_text: String
-	var preview_texture: DPITexture
+	var preview_texture: Texture2D
 	
 	func _init(new_index: int) -> void:
 		index = new_index
@@ -66,7 +68,16 @@ class IconPreviewTileData extends RefCounted:
 			label_rect = Rect2(Vector2(TILE_TOP_PADDING + 1, TILE_LEFT_PADDING + preview_size.y + ICON_TEXT_SPACING), label_size - Vector2(1, 0))
 			more_button_rect = Rect2(Vector2(TILE_TOP_PADDING + label_size.x, label_rect.position.y + 2), Vector2(MORE_ICON_SIZE, MORE_ICON_SIZE))
 		
-		preview_texture = DPITexture.create_from_string(State.stable_export_markup, multiplier)
+		if Configs.savedata.previews_use_pebble_preview:
+			var svg := SVGParser.markup_to_root(State.stable_export_markup).svg
+			if svg != null:
+				var pdc := PDCImage.new()
+				pdc.precise_path_mode = Configs.savedata.previews_precise_path_mode
+				# Convert the SVG to PDCImage then back to SVG for accurate display
+				pdc.load_from_svg(svg)
+				preview_texture = DPITexture.create_from_string(pdc.to_svg(), multiplier)
+		else:
+			preview_texture = DPITexture.create_from_string(State.stable_export_markup, multiplier)
 
 var tiles: Array[IconPreviewTileData] = []
 var hovered_tile_index := -1
@@ -75,6 +86,7 @@ var edited_tile_index := -1
 var edit_field: NumberEdit
 
 func _ready() -> void:
+	%PrecisePathModeContainer/Label.text = Translator.translate("Precise") + ":"
 	icon_preview_tiles.draw.connect(_on_preview_tiles_draw)
 	icon_preview_tiles.gui_input.connect(_on_tiles_gui_input)
 	icon_preview_tiles.mouse_exited.connect(_on_tiles_mouse_exited)
@@ -109,6 +121,15 @@ func _ready() -> void:
 			sync_tile_positions()
 	)
 	icon_preview_tiles.resized.connect(sync_tile_positions)
+	
+	if Configs.savedata.previews_use_pebble_preview:
+		_toggle_use_pebble_preview()
+		_toggle_use_pebble_preview()
+	else:
+		_toggle_use_pebble_preview()
+	precise_path_mode_dropdown.set_value(Configs.savedata.previews_precise_path_mode, 0)
+	precise_path_mode_dropdown.value_changed.connect(_on_precise_path_mode_dropdown_value_changed)
+	
 	sync_tiles()
 	HandlerGUI.register_focus_sequence(self, [add_new_preview_button,
 			transparent_color_swatch, black_color_swatch, white_color_swatch, color_edit, more_button])
@@ -345,7 +366,16 @@ func _update_preview_background(new_value: String) -> void:
 		scaled_preview_panel.add_theme_stylebox_override("panel", colored_sb)
 
 
+func _toggle_use_pebble_preview() -> void:
+	Configs.savedata.previews_use_pebble_preview = not Configs.savedata.previews_use_pebble_preview
+	precise_path_mode_container.visible = Configs.savedata.previews_use_pebble_preview
+	sync_tiles()
+
+
 func _on_more_button_pressed() -> void:
+	# var checkbox := ContextPopup.create_checkbox(Translator.translate("Preview as PDC"),
+	# 		_toggle_use_pebble_preview, Configs.savedata.previews_use_pebble_preview, false)
+	# checkbox.theme_type_variation = "PebbleCheckBox"
 	var btn_array: Array[ContextButton] = [
 		ContextButton.create_custom(Translator.translate("Reset to default"), reset_tiles,
 				preload("res://assets/icons/Reload.svg"), are_tiles_default()),
@@ -353,5 +383,10 @@ func _on_more_button_pressed() -> void:
 				preload("res://assets/icons/Clear.svg"), Configs.savedata.preview_sizes.is_empty()),
 		ContextButton.create_custom(Translator.translate("Sort"), sort_tiles,
 				preload("res://assets/icons/Sort.svg"), are_tiles_sorted()),
+		# checkbox,
 	]
 	HandlerGUI.popup_under_rect_center(ContextPopup.create(btn_array), more_button.get_global_rect(), get_viewport())
+
+func _on_precise_path_mode_dropdown_value_changed(new_precise_path_mode: PDCImage.PrecisePathMode) -> void:
+	Configs.savedata.previews_precise_path_mode = new_precise_path_mode
+	sync_tiles()
