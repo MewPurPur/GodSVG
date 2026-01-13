@@ -30,23 +30,23 @@ func setup_image(config: ImageExportData) -> void:
 	final_image_config.format = config.format
 	final_image_config.lossy = config.lossy
 	final_image_config.quality = config.quality
+	final_image_config.precise_path_mode = config.precise_path_mode
+	final_image_config.tesselation_tolerance_degrees = config.tesselation_tolerance_degrees
 	var svg_size := State.root_element.get_size()
 	final_image_config.upscale_amount = minf(config.upscale_amount, MAX_IMAGE_DIMENSION / maxf(svg_size.x, svg_size.y))
 	
 	var image := Image.new()
 	var buffer := final_image_config.image_to_buffer(final_image_config.generate_image())
+	last_image_size = buffer.size()
 	match config.format:
 		"png": image.load_png_from_buffer(buffer)
 		"jpg", "jpeg": image.load_jpg_from_buffer(buffer)
 		"webp": image.load_webp_from_buffer(buffer)
 		"pdc":
 			var pdc := PDCImage.new()
-			pdc.precise_path_mode = config.precise_path_mode
-			# Convert the SVG to PDCImage then back to SVG for accurate display
-			pdc.load_from_svg(SVGParser.markup_to_root(buffer.get_string_from_utf8()).svg)
+			pdc.load_from_pdc(buffer)
 			image.load_svg_from_string(pdc.to_svg())
-			print(pdc.to_svg())
-			last_image_size = pdc.encode().size()
+			last_image_size = buffer.size()
 	
 	var factor := minf(size.x / image.get_width(), size.y / image.get_height())
 	var final_width := maxi(int(image.get_width() * factor), 1)

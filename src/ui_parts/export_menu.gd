@@ -22,6 +22,8 @@ var dimensions := Vector2.ZERO
 @onready var size_container: CenterContainer = %SizeContainer
 @onready var lossless_checkbox: CheckBox = %LosslessCheckBox
 @onready var precise_path_mode_dropdown: Dropdown = %PrecisePathModeDropdown
+@onready var path_quality_container: GridContainer = %PDCPathQualityContainer
+@onready var path_quality_edit: NumberEdit = %PathQualityNumberEdit
 @onready var quality_edit: NumberEdit = %Quality
 @onready var quality_hbox: HBoxContainer = %QualityHBox
 @onready var cancel_button: Button = %ButtonContainer/CancelButton
@@ -47,6 +49,7 @@ func _ready() -> void:
 	height_edit.value_changed.connect(_on_height_edit_value_changed)
 	quality_edit.value_changed.connect(_on_quality_value_changed)
 	lossless_checkbox.toggled.connect(_on_lossless_check_box_toggled)
+	path_quality_edit.value_changed.connect(_on_path_quality_value_changed)
 	precise_path_mode_dropdown.value_changed.connect(_on_precise_path_mode_dropdown_toggled)
 	format_dropdown.value_changed.connect(_on_dropdown_value_changed)
 	
@@ -75,6 +78,10 @@ func _ready() -> void:
 	%TitleLabel.text = Translator.translate("Export Configuration")
 	%FormatHBox/Label.text = Translator.translate("Format") + ":"
 	%LosslessCheckBox.text = Translator.translate("Lossless")
+	%PDCPathQualityContainer/PreciseModeLabel.text = Translator.translate("Precise") + ":"
+	%PDCPathQualityContainer/QualityLabel.text = Translator.translate("Tesselation quality") + ":"
+	%PDCPathQualityContainer/HBoxContainer/SuffixLabel.text = Translator.translate("degrees")
+	path_quality_edit.tooltip_text = Translator.translate("The angular tolerance at which to tesselate paths.")
 	%QualityHBox/Label.text = Translator.translate("Quality") + ":"
 	%ScaleContainer/Label.text = Translator.translate("Scale")
 	%WidthContainer/Label.text = Translator.translate("Width") + ":"
@@ -129,6 +136,13 @@ func _on_precise_path_mode_dropdown_toggled(precise_path_mode: PDCImage.PreciseP
 	undo_redo.add_undo_property(export_data, "precise_path_mode", current_precise_path_mode)
 	undo_redo.commit_action()
 
+func _on_path_quality_value_changed(new_value: float) -> void:
+	var current_quality := export_data.tesselation_tolerance_degrees
+	undo_redo.create_action()
+	undo_redo.add_do_property(export_data, "tesselation_tolerance_degrees", new_value)
+	undo_redo.add_undo_property(export_data, "tesselation_tolerance_degrees", current_quality)
+	undo_redo.commit_action()
+
 func _on_quality_value_changed(new_value: float) -> void:
 	var current_quality := export_data.quality
 	undo_redo.create_action()
@@ -165,11 +179,11 @@ func _dimension_component_change_common_logic(component_index: int, new_value: f
 # Everything gets updated at once when export config changes for simplicity.
 func update() -> void:
 	# Determine which fields are visible.
-	quality_related_container.visible = export_data.format in ["jpg", "jpeg", "webp", "pdc"]
+	quality_related_container.visible = export_data.format in ["jpg", "jpeg", "webp"]
+	path_quality_container.visible = export_data.format in ["pdc"]
 	quality_hbox.visible = export_data.format in ["jpg", "jpeg"] or export_data.format == "webp" and export_data.lossy
 	lossless_checkbox.visible = (export_data.format == "webp")
 	size_container.visible = export_data.format in ["png", "jpg", "jpeg", "webp"]
-	precise_path_mode_dropdown.visible = export_data.format in ["pdc"]
 	
 	var file_name := Utils.get_file_name(Configs.savedata.get_active_tab().svg_file_path)
 	if not file_name.is_empty():
@@ -189,7 +203,7 @@ func update() -> void:
 		quality_edit.set_value(export_data.quality * 100, false)
 		lossless_checkbox.set_pressed_no_signal(not export_data.lossy)
 	
-	final_size_label.visible = export_data.format in ["svg", "pdc"]
+	#final_size_label.visible = export_data.format in ["svg", "pdc"]
 	var export_size: int
 	match export_data.format:
 		"svg":
@@ -201,7 +215,7 @@ func update() -> void:
 	format_dropdown.set_value(export_data.format, false)
 	precise_path_mode_dropdown.set_value(export_data.precise_path_mode, false)
 	
-	info_tooltip.visible = (export_data.format != "svg" and\
+	info_tooltip.visible = (export_data.format != "svg" and
 			roundi(export_data.upscale_amount * maxf(dimensions.x, dimensions.y)) > texture_preview.MAX_IMAGE_DIMENSION)
 	
 	clipboard_button.disabled = not ClipboardUtils.is_supported(export_data.format)
