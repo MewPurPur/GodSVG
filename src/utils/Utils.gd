@@ -56,14 +56,14 @@ text_property := "text", font_property := "font", font_size_property := "font_si
 			HORIZONTAL_ALIGNMENT_FILL, -1, control.get_theme_font_size(font_size_property)).x + buffer, max_width)
 
 
-static func get_cubic_bezier_points(cp1: Vector2, cp2: Vector2, cp3: Vector2, cp4: Vector2, tolerance_degrees := 1.0) -> PackedVector2Array:
+static func get_cubic_bezier_points(cp1: Vector2, cp2: Vector2, cp3: Vector2, cp4: Vector2) -> PackedVector2Array:
 	var curve := Curve2D.new()
 	curve.add_point(cp1, Vector2(), cp2)
 	curve.add_point(cp4, cp3)
-	return curve.tessellate(6, tolerance_degrees)
+	return curve.tessellate(6, 1)
 
-static func get_quadratic_bezier_points(cp1: Vector2, cp2: Vector2, cp3: Vector2, tolerance_degrees := 1.0) -> PackedVector2Array:
-	return Utils.get_cubic_bezier_points(cp1, 2/3.0 * (cp2 - cp1), 2/3.0 * (cp2 - cp3), cp3, tolerance_degrees)
+static func get_quadratic_bezier_points(cp1: Vector2, cp2: Vector2, cp3: Vector2) -> PackedVector2Array:
+	return Utils.get_cubic_bezier_points(cp1, 2/3.0 * (cp2 - cp1), 2/3.0 * (cp2 - cp3), cp3)
 
 # Calculate quadratic bezier point coordinate along an axis.
 static func quadratic_bezier_point(p0: float, p1: float, p2: float, t: float) -> float:
@@ -119,3 +119,51 @@ static func has_clipboard_image_web_safe() -> bool:
 	if OS.has_feature("web"):
 		return false
 	return DisplayServer.clipboard_has_image()
+
+
+static func vector2_min_element(vector: Vector2) -> float:
+	return vector[vector.min_axis_index()]
+
+
+static func vector3_min_element(vector: Vector3) -> float:
+	return vector[vector.min_axis_index()]
+
+
+static func vector4_min_element(vector: Vector4) -> float:
+	return vector[vector.min_axis_index()]
+
+
+static func vector2_max_element(vector: Vector2) -> float:
+	return vector[vector.max_axis_index()]
+
+
+static func vector3_max_element(vector: Vector3) -> float:
+	return vector[vector.max_axis_index()]
+
+
+static func vector4_max_element(vector: Vector4) -> float:
+	return vector[vector.max_axis_index()]
+
+
+static func vector2i_min_element(vector: Vector2i) -> int:
+	return vector[vector.min_axis_index()]
+
+
+static func vector3i_min_element(vector: Vector3i) -> int:
+	return vector[vector.min_axis_index()]
+
+
+static func vector4i_min_element(vector: Vector4i) -> int:
+	return vector[vector.min_axis_index()]
+
+
+static func vector2i_max_element(vector: Vector2i) -> int:
+	return vector[vector.max_axis_index()]
+
+
+static func vector3i_max_element(vector: Vector3i) -> int:
+	return vector[vector.max_axis_index()]
+
+
+static func vector4i_max_element(vector: Vector4i) -> int:
+	return vector[vector.max_axis_index()]
