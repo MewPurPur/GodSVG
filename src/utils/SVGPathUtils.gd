@@ -1,11 +1,12 @@
 class_name SVGPathUtils
 
+static var default_path_generator := AngleTolerancePathGenerator.new()
 @warning_ignore("unused_parameter")
 static func get_path_element_points(
 	element: Element,
 	normal_polylines: Array[PackedVector2Array],
 	normal_multiline: PackedVector2Array = [],
-	curve_tolerance_degrees: float = 1.0,
+	path_generator: PathGenerator = default_path_generator,
 	hovered_polylines: Array[PackedVector2Array] = [],
 	hovered_multiline: PackedVector2Array = [],
 	selected_polylines: Array[PackedVector2Array] = [],
@@ -62,7 +63,7 @@ static func get_path_element_points(
 				var cp2 := v1 if relative else v1 - cp1
 				var cp3 := v2 - v
 				
-				points = Utils.get_cubic_bezier_points(cp1, cp2, cp3, cp4, curve_tolerance_degrees)
+				points = path_generator.generate_cubic(cp1, cp2, cp3, cp4)
 				tangent_points.append_array(PackedVector2Array([cp1, cp1 + cp2, cp1 + v2 if relative else v2, cp4]))
 			"S":
 				# Shorthand cubic Bezier curve contour.
@@ -78,7 +79,7 @@ static func get_path_element_points(
 				var cp2 := v1 if relative else v1 - cp1
 				var cp3 := v2 - v
 				
-				points = Utils.get_cubic_bezier_points(cp1, cp2, cp3, cp4, curve_tolerance_degrees)
+				points = path_generator.generate_cubic(cp1, cp2, cp3, cp4)
 				tangent_points.append_array(PackedVector2Array([cp1, cp1 + cp2, cp1 + v2 if relative else v2, cp4]))
 			"Q":
 				# Quadratic Bezier curve contour.
@@ -88,7 +89,7 @@ static func get_path_element_points(
 				var cp2 := cp1 + v1 if relative else v1
 				var cp3 := cp1 + v if relative else v
 				
-				points = Utils.get_quadratic_bezier_points(cp1, cp2, cp3, curve_tolerance_degrees)
+				points = path_generator.generate_quadratic(cp1, cp2, cp3)
 				tangent_points.append_array(PackedVector2Array([cp1, cp2, cp2, cp3]))
 			"T":
 				# Shorthand quadratic Bezier curve contour.
@@ -102,79 +103,22 @@ static func get_path_element_points(
 				if is_nan(cp2.x) and is_nan(cp2.y):
 					points = PackedVector2Array([cp1, cp3])
 				else:
-					points = Utils.get_quadratic_bezier_points(cp1, cp2, cp3, curve_tolerance_degrees)
+					points = path_generator.generate_quadratic(cp1, cp2, cp3)
 					tangent_points.append_array(PackedVector2Array([cp1, cp2, cp2, cp3]))
 			"A":
 				# Elliptical arc contour.
 				var start := cmd.get_start_coords()
 				var v := Vector2(cmd.x, cmd.y)
 				var end := start + v if relative else v
-				# Correct for out-of-range radii.
-				if start == end:
-					continue
-				elif cmd.rx == 0 or cmd.ry == 0:
-					points = PackedVector2Array([start, end])
-				
-				var r := Vector2(cmd.rx, cmd.ry).abs()
-				# Obtain center parametrization.
-				var rot := deg_to_rad(cmd.rot)
-				var cosine := cos(rot)
-				var sine := sin(rot)
-				var half := (start - end) / 2
-				var x1 := half.x * cosine + half.y * sine
-				var y1 := -half.x * sine + half.y * cosine
-				var r2 := Vector2(r.x * r.x, r.y * r.y)
-				var x12 := x1 * x1
-				var y12 := y1 * y1
-				var cr := x12 / r2.x + y12 / r2.y
-				if cr > 1:
-					cr = sqrt(cr)
-					r *= cr
-					r2 = Vector2(r.x * r.x, r.y * r.y)
-				
-				var dq := r2.x * y12 + r2.y * x12
-				var pq := (r2.x * r2.y - dq) / dq
-				var sc := sqrt(maxf(0, pq))
-				if cmd.large_arc_flag == cmd.sweep_flag:
-					sc = -sc
-				
-				var ct := Vector2(r.x * sc * y1 / r.y, -r.y * sc * x1 / r.x)
-				var c := Vector2(ct.x * cosine - ct.y * sine, ct.x * sine + ct.y * cosine) + start.lerp(end, 0.5)
-				var tv := Vector2(x1 - ct.x, y1 - ct.y) / r
-				var theta1 := tv.angle()
-				var delta_theta := fposmod(tv.angle_to(Vector2(-x1 - ct.x, -y1 - ct.y) / r), TAU)
-				if cmd.sweep_flag == 0:
-					theta1 += delta_theta
-					delta_theta = TAU - delta_theta
-				
-				# Now we have a center parametrization (r, c, theta1, delta_theta).
-				# We will approximate the elliptical arc with Bezier curves.
-				# Use the method described in https://www.blog.akhil.cc/ellipse
-				# (but with modifications because it wasn't working fully).
-				var segments := delta_theta * 4/PI
-				var n := floori(segments)
-				var p1 := Utils.E(c, r, cosine, sine, theta1)
-				var e1 := Utils.Et(r, cosine, sine, theta1)
-				var alpha := 0.26511478
-				var t := theta1 + PI/4
-				var cp: Array[PackedVector2Array] = []
-				for _i in n:
-					var p2 := Utils.E(c, r, cosine, sine, t)
-					var e2 := Utils.Et(r, cosine, sine, t)
-					cp.append(PackedVector2Array([p1, alpha * e1, -alpha * e2, p2]))
-					p1 = p2
-					e1 = e2
-					t += PI/4
-				
-				if n != ceili(segments) and not is_equal_approx(n, segments):
-					t = theta1 + delta_theta
-					var p2 := Utils.E(c, r, cosine, sine, t)
-					var e2 := Utils.Et(r, cosine, sine, t)
-					alpha *= fposmod(delta_theta, PI/4) / (PI/4)
-					cp.append(PackedVector2Array([p1, alpha * e1, -alpha * e2, p2]))
-				
-				for p in cp:
-					points += Utils.get_cubic_bezier_points(p[0], p[1], p[2], p[3], curve_tolerance_degrees)
+				points = generate_ellipse(
+					start,
+					end,
+					Vector2(cmd.rx, cmd.ry),
+					deg_to_rad(cmd.rot),
+					cmd.large_arc_flag,
+					cmd.sweep_flag,
+					path_generator,
+				)
 			"Z":
 				# Path closure contour.
 				var prev_M_idx := cmd_idx - 1
@@ -211,3 +155,101 @@ static func get_path_element_points(
 			Utils.InteractionType.HOVERED_SELECTED:
 				hovered_selected_polylines.append(points)
 				hovered_selected_multiline += tangent_points
+
+
+static func generate_ellipse(
+	start: Vector2, end: Vector2, r: Vector2,
+	rot: float,
+	large_arc_flag: bool, sweep_flag: bool,
+	path_generator: PathGenerator = default_path_generator
+) -> PackedVector2Array:
+	var points: PackedVector2Array
+	if start == end:
+		return []
+	elif r.x == 0 or r.y == 0:
+		points = PackedVector2Array([start, end])
+	
+	# Obtain center parametrization.
+	var cosine := cos(rot)
+	var sine := sin(rot)
+	var half := (start - end) / 2
+	var x1 := half.x * cosine + half.y * sine
+	var y1 := -half.x * sine + half.y * cosine
+	var r2 := Vector2(r.x * r.x, r.y * r.y)
+	var x12 := x1 * x1
+	var y12 := y1 * y1
+	var cr := x12 / r2.x + y12 / r2.y
+	if cr > 1:
+		cr = sqrt(cr)
+		r *= cr
+		r2 = Vector2(r.x * r.x, r.y * r.y)
+	
+	var dq := r2.x * y12 + r2.y * x12
+	var pq := (r2.x * r2.y - dq) / dq
+	var sc := sqrt(maxf(0, pq))
+	if large_arc_flag == sweep_flag:
+		sc = -sc
+	
+	var ct := Vector2(r.x * sc * y1 / r.y, -r.y * sc * x1 / r.x)
+	var c := Vector2(ct.x * cosine - ct.y * sine, ct.x * sine + ct.y * cosine) + start.lerp(end, 0.5)
+	var tv := Vector2(x1 - ct.x, y1 - ct.y) / r
+	var theta1 := tv.angle()
+	var delta_theta := fposmod(tv.angle_to(Vector2(-x1 - ct.x, -y1 - ct.y) / r), TAU)
+	if not sweep_flag:
+		theta1 += delta_theta
+		delta_theta = TAU - delta_theta
+	
+	# Now we have a center parametrization (r, c, theta1, delta_theta).
+	# We will approximate the elliptical arc with Bezier curves.
+	# Use the method described in https://www.blog.akhil.cc/ellipse
+	# (but with modifications because it wasn't working fully).
+	var segments := delta_theta * 4/PI
+	var n := floori(segments)
+	var p1 := Utils.E(c, r, cosine, sine, theta1)
+	var e1 := Utils.Et(r, cosine, sine, theta1)
+	var alpha := 0.26511478
+	var t := theta1 + PI/4
+	var cp: Array[PackedVector2Array] = []
+	for _i in n:
+		var p2 := Utils.E(c, r, cosine, sine, t)
+		var e2 := Utils.Et(r, cosine, sine, t)
+		cp.append(PackedVector2Array([p1, alpha * e1, -alpha * e2, p2]))
+		p1 = p2
+		e1 = e2
+		t += PI/4
+	
+	if n != ceili(segments) and not is_equal_approx(n, segments):
+		t = theta1 + delta_theta
+		var p2 := Utils.E(c, r, cosine, sine, t)
+		var e2 := Utils.Et(r, cosine, sine, t)
+		alpha *= fposmod(delta_theta, PI/4) / (PI/4)
+		cp.append(PackedVector2Array([p1, alpha * e1, -alpha * e2, p2]))
+	
+	for point in cp:
+		points += path_generator.generate_cubic(point[0], point[1], point[2], point[3])
+	return points
+
+
+@abstract class PathGenerator:
+	func generate_cubic(cp1: Vector2, cp2: Vector2, cp3: Vector2, cp4: Vector2) -> PackedVector2Array:
+		var curve := Curve2D.new()
+		curve.add_point(cp1, Vector2(), cp2)
+		curve.add_point(cp4, cp3)
+		return generate_curve(curve)
+
+	func generate_quadratic(cp1: Vector2, cp2: Vector2, cp3: Vector2) -> PackedVector2Array:
+		return generate_cubic(cp1, 2/3.0 * (cp2 - cp1), 2/3.0 * (cp2 - cp3), cp3)
+
+	@abstract func generate_curve(from: Curve2D) -> PackedVector2Array
+
+
+class AngleTolerancePathGenerator extends PathGenerator:
+	var angle_tolerance: float = 1.0
+	func generate_curve(from: Curve2D) -> PackedVector2Array:
+		return from.tessellate(6, angle_tolerance)
+
+
+class EvenLengthPathGenerator extends PathGenerator:
+	var length_tolerance: float = 0.5
+	func generate_curve(from: Curve2D) -> PackedVector2Array:
+		return from.tessellate_even_length(6, length_tolerance)
