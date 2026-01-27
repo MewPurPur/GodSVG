@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://ck1u5onyy0cdc"]
+[gd_scene format=3 uid="uid://ck1u5onyy0cdc"]
 
 [ext_resource type="Script" uid="uid://dpn15qyr7xsds" path="res://src/ui_parts/previews.gd" id="1_uogc6"]
 [ext_resource type="Texture2D" uid="uid://eif2ioi0mw17" path="res://assets/icons/Plus.svg" id="2_pm7dr"]
@@ -7,7 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://ccbta5q43jobk" path="res://assets/icons/More.svg" id="5_ue2r5"]
 [ext_resource type="Script" uid="uid://bniafq6ma1iln" path="res://src/ui_widgets/ProceduralControl.gd" id="6_6v74c"]
 
-[node name="IconPreiew" type="Container"]
+[node name="IconPreiew" type="Container" unique_id=813250713]
 offset_bottom = 169.0
 size_flags_vertical = 3
 script = ExtResource("1_uogc6")
@@ -20,11 +20,11 @@ title_margin = 4
 panel_margin = 2
 metadata/_custom_type_script = "uid://ojo0537b6hcy"
 
-[node name="ActionContainer" type="HBoxContainer" parent="."]
+[node name="ActionContainer" type="HBoxContainer" parent="." unique_id=1812445449]
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="AddNewPreviewButton" type="Button" parent="ActionContainer"]
+[node name="AddNewPreviewButton" type="Button" parent="ActionContainer" unique_id=1393167346]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 0
@@ -34,55 +34,56 @@ mouse_default_cursor_shape = 2
 theme_type_variation = &"IconButton"
 icon = ExtResource("2_pm7dr")
 
-[node name="ColorsContainer" type="HBoxContainer" parent="ActionContainer"]
+[node name="ColorsContainer" type="HBoxContainer" parent="ActionContainer" unique_id=1645315072]
 layout_mode = 2
 size_flags_horizontal = 6
 
-[node name="TransparentColorSwatch" parent="ActionContainer/ColorsContainer" instance=ExtResource("3_auodr")]
+[node name="TransparentColorSwatch" parent="ActionContainer/ColorsContainer" unique_id=940556769 instance=ExtResource("3_auodr")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 4
 
-[node name="BlackColorSwatch" parent="ActionContainer/ColorsContainer" instance=ExtResource("3_auodr")]
+[node name="BlackColorSwatch" parent="ActionContainer/ColorsContainer" unique_id=181031709 instance=ExtResource("3_auodr")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 4
 
-[node name="WhiteColorSwatch" parent="ActionContainer/ColorsContainer" instance=ExtResource("3_auodr")]
+[node name="WhiteColorSwatch" parent="ActionContainer/ColorsContainer" unique_id=780192261 instance=ExtResource("3_auodr")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 4
 
-[node name="ColorEdit" parent="ActionContainer/ColorsContainer" instance=ExtResource("4_mkhk3")]
+[node name="ColorEdit" parent="ActionContainer/ColorsContainer" unique_id=382124865 instance=ExtResource("4_mkhk3")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 4
 enable_alpha = true
 
-[node name="MoreButton" type="Button" parent="ActionContainer"]
+[node name="MoreButton" type="Button" parent="ActionContainer" unique_id=1528240669]
 layout_mode = 2
 focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_type_variation = &"IconButton"
 icon = ExtResource("5_ue2r5")
 
-[node name="SplitContainer" type="SplitContainer" parent="."]
+[node name="SplitContainer" type="SplitContainer" parent="." unique_id=1430264023]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 80)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/separation = 0
-split_offset = 250
+split_offsets = PackedInt32Array(250)
 vertical = true
+split_offset = 250
 
-[node name="ScrollContainer" type="ScrollContainer" parent="SplitContainer"]
+[node name="ScrollContainer" type="ScrollContainer" parent="SplitContainer" unique_id=1897301189]
 custom_minimum_size = Vector2(144, 64)
 layout_mode = 2
 horizontal_scroll_mode = 0
 vertical_scroll_mode = 4
 
-[node name="MarginContainer" type="MarginContainer" parent="SplitContainer/ScrollContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="SplitContainer/ScrollContainer" unique_id=1611012842]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -91,7 +92,7 @@ theme_override_constants/margin_top = 2
 theme_override_constants/margin_right = 2
 theme_override_constants/margin_bottom = 2
 
-[node name="IconPreviewTiles" type="Control" parent="SplitContainer/ScrollContainer/MarginContainer"]
+[node name="IconPreviewTiles" type="Control" parent="SplitContainer/ScrollContainer/MarginContainer" unique_id=2146728758]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -99,38 +100,38 @@ size_flags_vertical = 3
 script = ExtResource("6_6v74c")
 metadata/_custom_type_script = "uid://bniafq6ma1iln"
 
-[node name="PreviewTopPanel" type="PanelContainer" parent="SplitContainer"]
+[node name="PreviewTopPanel" type="PanelContainer" parent="SplitContainer" unique_id=919997231]
 visible = false
 layout_mode = 2
 
-[node name="ScaledPreview" type="VBoxContainer" parent="SplitContainer/PreviewTopPanel"]
+[node name="ScaledPreview" type="VBoxContainer" parent="SplitContainer/PreviewTopPanel" unique_id=2024814424]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="SizeLabelMargins" type="MarginContainer" parent="SplitContainer/PreviewTopPanel/ScaledPreview"]
+[node name="SizeLabelMargins" type="MarginContainer" parent="SplitContainer/PreviewTopPanel/ScaledPreview" unique_id=1883748300]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/margin_top = -3
 theme_override_constants/margin_bottom = -2
 
-[node name="SizeLabel" type="Label" parent="SplitContainer/PreviewTopPanel/ScaledPreview/SizeLabelMargins"]
+[node name="SizeLabel" type="Label" parent="SplitContainer/PreviewTopPanel/ScaledPreview/SizeLabelMargins" unique_id=374657090]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 0
 
-[node name="ScaledPreviewPanel" type="PanelContainer" parent="SplitContainer/PreviewTopPanel/ScaledPreview"]
+[node name="ScaledPreviewPanel" type="PanelContainer" parent="SplitContainer/PreviewTopPanel/ScaledPreview" unique_id=226020093]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 theme_type_variation = &"OutlinedPanel"
 
-[node name="ScrollContainer" type="ScrollContainer" parent="SplitContainer/PreviewTopPanel/ScaledPreview/ScaledPreviewPanel"]
+[node name="ScrollContainer" type="ScrollContainer" parent="SplitContainer/PreviewTopPanel/ScaledPreview/ScaledPreviewPanel" unique_id=375177294]
 custom_minimum_size = Vector2(64, 64)
 layout_mode = 2
 
-[node name="TextureRect" type="TextureRect" parent="SplitContainer/PreviewTopPanel/ScaledPreview/ScaledPreviewPanel/ScrollContainer"]
+[node name="TextureRect" type="TextureRect" parent="SplitContainer/PreviewTopPanel/ScaledPreview/ScaledPreviewPanel/ScrollContainer" unique_id=100975222]
 unique_name_in_owner = true
 texture_filter = 1
 layout_mode = 2

@@ -1,4 +1,4 @@
-[gd_scene load_steps=2 format=3 uid="uid://dfvfsput41mnw"]
+[gd_scene format=3 uid="uid://dfvfsput41mnw"]
 
 [ext_resource type="Script" uid="uid://cgtbtlg2nfwvt" path="res://src/ui_widgets/element_frame.gd" id="1_5mc4m"]
 

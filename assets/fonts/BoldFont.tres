@@ -1,4 +1,4 @@
-[gd_resource type="FontVariation" load_steps=4 format=3 uid="uid://o6egawwljhgy"]
+[gd_resource type="FontVariation" format=3 uid="uid://o6egawwljhgy"]
 
 [ext_resource type="FontFile" uid="uid://cdke2b8vyur24" path="res://assets/fonts/original/NotoSans-ExtraBold.woff2" id="1_c6ro6"]
 [ext_resource type="FontFile" uid="uid://jkpbay57t50t" path="res://assets/fonts/original/DroidSansFallback.woff2" id="2_5dil2"]
