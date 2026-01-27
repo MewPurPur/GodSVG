@@ -1,4 +1,4 @@
-## A regular Button with some helpers for hover + press theming situations and shortcuts.
+## A regular Button with some helpers for shortcuts.
 @icon("res://godot_only/icons/BetterButton.svg")
 class_name BetterButton extends Button
 

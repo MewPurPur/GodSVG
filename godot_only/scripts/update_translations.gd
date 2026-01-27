@@ -16,6 +16,7 @@ const COMMENTS_DICT: Dictionary[String, String] = {
 	"Previews": "Refers to a part of the layout where icons are previewed at various sizes.",
 	"Dark": "Refers to a theme preset.",
 	"Light": "Refers to a theme preset.",
+	"Gray": "Refers to a theme preset.",
 	"Black (OLED)": "Refers to a theme preset.",
 	"translation-credits": "Translators (comma-separated): Name or alias, optionally followed by an email in angle brackets <email@example.com>.\nUsed for credits. Adding yourself is optional. New entries go at the end. Don't remove or rearrange existing entries.",
 	"Evaluate": """Refers to evaluating an expression such as "sin(2*pi/5)"."""

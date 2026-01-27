@@ -146,6 +146,11 @@ msgstr "Helder"
 msgid "Black (OLED)"
 msgstr "Zwart (OLED)"
 
+#. Refers to a theme preset.
+#: src/config_classes/SaveData.gd
+msgid "Gray"
+msgstr ""
+
 #: src/config_classes/SaveData.gd
 msgid "Default Dark"
 msgstr "Standaard Donker"

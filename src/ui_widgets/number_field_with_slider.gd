@@ -18,11 +18,8 @@ func set_value(new_value: String, save := false) -> void:
 				sync()
 				return
 			
-			if numeric_value > MAX_VALUE:
-				numeric_value = MAX_VALUE
-			elif numeric_value < MIN_VALUE:
-				numeric_value = MIN_VALUE
-			new_value = element.get_attribute(attribute_name).num_to_text(numeric_value)
+			numeric_value = clampf(numeric_value, MIN_VALUE, MAX_VALUE)
+			new_value = NumberParser.num_to_text(numeric_value, Configs.savedata.editor_formatter)
 	
 	element.set_attribute(attribute_name, new_value)
 	sync()
@@ -30,7 +27,7 @@ func set_value(new_value: String, save := false) -> void:
 		State.save_svg()
 
 func set_num(new_number: float, save := false) -> void:
-	set_value(element.get_attribute(attribute_name).num_to_text(new_number), save)
+	set_value(NumberParser.num_to_text(new_number, Configs.savedata.editor_formatter), save)
 
 func setup_placeholder() -> void:
 	placeholder_text = element.get_default(attribute_name)
@@ -78,9 +75,8 @@ var slider_dragged := false:
 			queue_redraw()
 			if not slider_hovered:
 				get_viewport().update_mouse_cursor_state()
-				# FIXME workaround because "button_pressed" remains true
-				# if you unclick while outside of the area, for some reason.
-				# Couldn't replicate this in a minimal project.
+				# FIXME workaround because "button_pressed" remains true if you unclick while
+				# outside of the area, for some reason. Couldn't replicate this in a minimal project.
 				remove_child(temp_button)
 				add_child(temp_button)
 

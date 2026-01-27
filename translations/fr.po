@@ -147,6 +147,11 @@ msgstr "Hauteur"
 msgid "Black (OLED)"
 msgstr ""
 
+#. Refers to a theme preset.
+#: src/config_classes/SaveData.gd
+msgid "Gray"
+msgstr ""
+
 #: src/config_classes/SaveData.gd
 msgid "Default Dark"
 msgstr ""
