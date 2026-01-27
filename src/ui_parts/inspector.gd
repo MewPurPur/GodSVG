@@ -1,9 +1,10 @@
 extends VTitledPanel
 
 const InvalidSyntaxWarning = preload("res://src/ui_widgets/invalid_syntax_warning.tscn")
+const InspectorContent = preload("res://src/ui_parts/inspector_content.tscn")
 
-@onready var xnodes_container: VBoxContainer = %RootChildren
 @onready var add_button: Button = $ActionContainer/AddButton
+@onready var main_inspector: Control = $MainInspector
 
 var is_unstable := false
 
@@ -31,14 +32,9 @@ func sync_localization() -> void:
 
 
 func full_rebuild() -> void:
-	for node in xnodes_container.get_children():
-		node.queue_free()
-	
-	if is_unstable:
-		xnodes_container.add_child(InvalidSyntaxWarning.instantiate())
-	else:
-		for xnode_editor in XNodeChildrenBuilder.create(State.root_element):
-			xnodes_container.add_child(xnode_editor)
+	for child in main_inspector.get_children():
+		child.queue_free()
+	main_inspector.add_child((InvalidSyntaxWarning if is_unstable else InspectorContent).instantiate())
 
 func add_element(element_name: String) -> void:
 	var new_element := DB.element_with_setup(element_name, [])

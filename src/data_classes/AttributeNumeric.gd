@@ -11,7 +11,7 @@ func _sync() -> void:
 
 func set_num(new_number: float) -> void:
 	_number = new_number
-	super.set_value(num_to_text(new_number))
+	super.set_value(NumberParser.num_to_text(new_number, Configs.savedata.editor_formatter))
 
 func get_num() -> float:
 	return _number
@@ -23,12 +23,9 @@ func is_percentage() -> bool:
 func format(text: String, formatter: Formatter) -> String:
 	var num := text_to_num(text)
 	if text_check_percentage(text):
-		return num_to_text(num * 100.0, formatter) + "%"
+		return NumberParser.num_to_text(num * 100.0, formatter) + "%"
 	else:
-		return num_to_text(num, formatter)
-
-func num_to_text(number: float, formatter := Configs.savedata.editor_formatter) -> String:
-	return NumberParser.num_to_text(number, formatter)
+		return NumberParser.num_to_text(num, formatter)
 
 static func text_to_num(text: String) -> float:
 	text = text.strip_edges(false, true)

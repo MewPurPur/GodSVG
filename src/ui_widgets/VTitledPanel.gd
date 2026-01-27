@@ -1,4 +1,5 @@
 @icon("res://godot_only/icons/VTitledPanel.svg")
+@tool
 class_name VTitledPanel extends TitledPanel
 
 func _get_minimum_size() -> Vector2:

@@ -1,6 +1,7 @@
 # Run with Ctrl+Shift+X.
 # A script intended to test sensitive parts of the codebase.
-# This isn't an invitation to add random tests, please discuss before doing so.
+# This is reserved to things that are easy to test and fairly implementation-agnostic.
+# It isn't an invitation to add random tests, please discuss before doing so.
 @tool
 extends EditorScript
 
@@ -10,7 +11,7 @@ func _run() -> void:
 	pathdata_tests()
 	transform_list_tests()
 	if report.is_empty():
-		print_rich("[rainbow sat=0.4 val=1.0]Success[/rainbow]")
+		print_rich("[rainbow sat=0.4 val=1.0]All tests successful[/rainbow]")
 	else:
 		for report_line in report:
 			print_rich(report_line)
@@ -20,10 +21,9 @@ func add_to_report(test_category: String, test: String, result: String, expected
 
 
 # This test is dependent on specifics of the Formatter and AttributePathdata classes.
-# But its logic would likely not change enough in the future to make the tests obsolete.
-# https://www.w3.org/TR/SVG11/paths.html#PathDataBNF
-# We have a difference in logic where we don't require starting with MoveTo
-# in order to make pathdata easier to edit.
+# But their logic will likely not change enough in the future to make the tests obsolete.
+# SVG specification: https://www.w3.org/TR/SVG11/paths.html#PathDataBNF
+# Our logic is a bit different, as it considers MoveTo at the beginning as valid and doesn't collapse anything.
 # ClosePath are also merged, so you don't end up with invalid syntax after commands are deleted.
 func pathdata_tests() -> void:
 	var spacious_formatter := Formatter.new()
@@ -73,8 +73,8 @@ func pathdata_tests() -> void:
 			add_to_report("Pathdata parser", test, result, tests[test])
 
 # This test is dependent on specifics of the Formatter and AttributeTransformList classes.
-# But its logic would likely not change enough in the future to make the tests obsolete.
-# https://www.w3.org/TR/SVG11/coords.html#TransformAttribute
+# But their logic will likely not change enough in the future to make the tests obsolete.
+# SVG specification: https://www.w3.org/TR/SVG11/coords.html#TransformAttribute
 func transform_list_tests() -> void:
 	var spacious_formatter := Formatter.new()
 	spacious_formatter.transform_list_compress_numbers = false

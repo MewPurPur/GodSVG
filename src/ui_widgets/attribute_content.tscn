@@ -1,0 +1,39 @@
+[gd_scene format=3 uid="uid://btlty3glf3jy"]
+
+[ext_resource type="Script" uid="uid://bc8byrh5pkqo8" path="res://src/ui_widgets/attribute_content.gd" id="1_360bn"]
+[ext_resource type="Texture2D" uid="uid://eif2ioi0mw17" path="res://assets/icons/Plus.svg" id="2_ckvgr"]
+
+[node name="AttributeContent" type="VBoxContainer" unique_id=1694860304]
+offset_right = 40.0
+offset_bottom = 40.0
+size_flags_horizontal = 3
+theme_override_constants/separation = 6
+script = ExtResource("1_360bn")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=707243091]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer" unique_id=1152410098]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_top = -4
+
+[node name="MainAttributesArea" type="HFlowContainer" parent="HBoxContainer/MarginContainer" unique_id=969295621]
+layout_mode = 2
+size_flags_horizontal = 3
+alignment = 1
+
+[node name="SpecialWidgetsArea" type="CenterContainer" parent="HBoxContainer" unique_id=1151874816]
+layout_mode = 2
+
+[node name="OtherAttributesArea" type="VBoxContainer" parent="." unique_id=548409777]
+layout_mode = 2
+theme_override_constants/separation = 2
+
+[node name="NewAttributeButton" type="Button" parent="." unique_id=109657312]
+layout_mode = 2
+size_flags_horizontal = 4
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_type_variation = &"TranslucentButton"
+icon = ExtResource("2_ckvgr")
