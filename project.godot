@@ -8,6 +8,10 @@
 
 config_version=5
 
+[animation]
+
+compatibility/default_parent_skeleton_in_mesh_instance_3d=true
+
 [application]
 
 config/name="GodSVG"
@@ -15,10 +19,10 @@ config/version="1.0-alpha13"
 config/tags=PackedStringArray("project")
 run/main_scene="res://src/ui_parts/editor_scene.tscn"
 config/use_custom_user_dir=true
-config/features=PackedStringArray("4.5")
+config/features=PackedStringArray("4.6")
 run/low_processor_mode=true
 boot_splash/bg_color=Color(0.1065, 0.1181, 0.15, 1)
-boot_splash/fullsize=false
+boot_splash/stretch_mode=0
 boot_splash/image="res://assets/logos/splash.png"
 config/icon="res://assets/logos/icon.png"
 config/macos_native_icon="res://assets/logos/icon.icns"
@@ -60,10 +64,6 @@ text_editor/appearance/guidelines/line_length_guideline_hard_column=160
 import/fbx2gltf/enabled=false
 import/blender/enabled=false
 import/fbx/enabled=false
-
-[gui]
-
-timers/tooltip_delay_sec=0.4
 
 [input]
 

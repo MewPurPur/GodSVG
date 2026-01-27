@@ -299,6 +299,9 @@ func get_config_warnings() -> PackedStringArray:
 				{"element": own_name, "allowed": "[%s]" % ", ".join(DB.get_valid_parents(own_name))}))
 	return warnings
 
+func is_attribute_necessary(attribute_name: String) -> bool:
+	return get_attribute_value(attribute_name) == get_default(attribute_name)
+
 func user_setup(_what = null) -> void:
 	return
 

@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://biloblweeseap"]
+
+[ext_resource type="Script" uid="uid://dp62vf6r5nvue" path="res://src/ui_widgets/element_button.gd" id="1_f1qfc"]
+
+[node name="ElementButton" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 8.0
+offset_bottom = 8.0
+theme_type_variation = &"FlatButton"
+script = ExtResource("1_f1qfc")

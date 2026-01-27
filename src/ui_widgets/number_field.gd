@@ -1,7 +1,6 @@
 # An editor to be tied to a numeric attribute.
 extends BetterLineEdit
 
-var element: Element
 var attribute_name: String:  # May propagate.
 	set(new_value):
 		attribute_name = new_value
@@ -19,52 +18,68 @@ func set_value(new_value: String, save := false) -> void:
 				return
 			
 			numeric_value = maxf(numeric_value, cached_min_value)
-			new_value = element.get_attribute(attribute_name).num_to_text(numeric_value)
-	element.set_attribute(attribute_name, new_value)
+			new_value = NumberParser.num_to_text(numeric_value, Configs.savedata.editor_formatter)
+	State.set_selected_attribute(attribute_name, new_value)
 	sync()
 	if save:
 		State.save_svg()
-
-func setup_placeholder() -> void:
-	placeholder_text = element.get_default(attribute_name)
 
 
 func _ready() -> void:
 	Configs.basic_colors_changed.connect(sync)
 	sync()
-	element.attribute_changed.connect(_on_element_attribute_changed)
-	if attribute_name in DB.PROPAGATED_ATTRIBUTES:
-		element.ancestor_attribute_changed.connect(_on_element_ancestor_attribute_changed)
-	# These default attributes can change when cx and cy change.
-	if element is ElementRadialGradient and attribute_name in ["fx", "fy"]:
-		element.attribute_changed.connect(_on_element_other_attribute_changed)
-	tooltip_text = attribute_name
+	for xid in State.selected_xids:
+		var xnode := State.root_element.get_xnode(xid)
+		if xnode.is_element():
+			xnode.attribute_changed.connect(_on_element_attribute_changed)
 	text_submitted.connect(set_value.bind(true))
 	text_change_canceled.connect(sync)
 	focus_entered.connect(_on_focus_entered)
-	setup_placeholder()
-
+	sync()
 
 func _on_element_attribute_changed(attribute_changed: String) -> void:
 	if attribute_name == attribute_changed:
-		set_value(element.get_attribute_value(attribute_name))
-
-func _on_element_other_attribute_changed(attribute_changed: String) -> void:
-	if (attribute_name == "fx" and attribute_changed == "cx") or (attribute_name == "fy" and attribute_changed == "cy"):
-		setup_placeholder()
-		sync()
-
-func _on_element_ancestor_attribute_changed(attribute_changed: String) -> void:
-	if attribute_name == attribute_changed:
-		setup_placeholder()
 		sync()
 
 func _on_focus_entered() -> void:
 	remove_theme_color_override("font_color")
 
 func sync() -> void:
-	var new_value := element.get_attribute_value(attribute_name)
-	text = new_value
 	remove_theme_color_override("font_color")
-	if new_value == element.get_default(attribute_name):
+	
+	if State.selected_xids.is_empty():
+		return
+	
+	var values := PackedStringArray()
+	var defaults := PackedStringArray()
+	var has_same_values := true
+	var has_same_defaults := true
+	
+	for xid in State.selected_xids:
+		var xnode := State.root_element.get_xnode(xid)
+		if not xnode.is_element():
+			continue
+		
+		var element: Element = xnode
+		var new_value := element.get_attribute_value(attribute_name)
+		var new_default := element.get_default(attribute_name)
+		
+		if not values.is_empty():
+			if has_same_values and not new_value in values:
+				has_same_values = false
+			if has_same_defaults and not new_default in defaults:
+				has_same_defaults = false
+		
+		values.append(new_value)
+		defaults.append(new_default)
+	
+	text = values[0] if has_same_values else ".."
+	placeholder_text = defaults[0] if has_same_defaults else ".."
+	if values == defaults:
 		add_theme_color_override("font_color", Configs.savedata.basic_color_warning)
+	
+	var tooltip_lines := PackedStringArray()
+	for i in values.size():
+		var current_value := values[i] if not values[i].is_empty() else Translator.translate("Unset")
+		tooltip_lines.append(current_value + " (" + Translator.translate("Default") + ": " + defaults[i] + ")")
+	tooltip_text = "\n".join(tooltip_lines)

@@ -1,0 +1,48 @@
+[gd_scene load_steps=2 format=3 uid="uid://d2ek8ll1e6gjm"]
+
+[ext_resource type="Script" uid="uid://lvhkdqxenafn" path="res://src/ui_parts/inspector_content.gd" id="1_ynafe"]
+
+[node name="InspectorContent" type="VSplitContainer"]
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1_ynafe")
+
+[node name="ScrollContainer" type="ScrollContainer" parent="."]
+custom_minimum_size = Vector2(0, 120)
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="HierarchyTree" type="VBoxContainer" parent="ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="DescriptionPanel" type="PanelContainer" parent="VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="AttributeArea" type="PanelContainer" parent="VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+theme_type_variation = &"OutlinedPanel"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer/AttributeArea"]
+custom_minimum_size = Vector2(0, 120)
+layout_mode = 2
+horizontal_scroll_mode = 0
+
+[node name="AttributeContent" type="MarginContainer" parent="VBoxContainer/AttributeArea/ScrollContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5

@@ -4,8 +4,8 @@
 
 [node name="IdField" type="LineEdit"]
 custom_minimum_size = Vector2(54, 22)
-offset_right = 35.8125
-offset_bottom = 21.0
+offset_right = 68.5625
+offset_bottom = 31.0
 size_flags_horizontal = 0
 size_flags_vertical = 0
 script = ExtResource("1_dqgkn")

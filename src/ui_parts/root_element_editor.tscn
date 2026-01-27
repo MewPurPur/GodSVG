@@ -1,32 +1,25 @@
-[gd_scene load_steps=5 format=3 uid="uid://bktmk76u7dsu0"]
+[gd_scene load_steps=4 format=3 uid="uid://bktmk76u7dsu0"]
 
 [ext_resource type="Script" uid="uid://beukt3a23d5ug" path="res://src/ui_parts/root_element_editor.gd" id="1_xgyg0"]
 [ext_resource type="FontVariation" uid="uid://pup5vmxl1t6m" path="res://assets/fonts/MonoFont.tres" id="2_l0alx"]
 [ext_resource type="PackedScene" uid="uid://dad7fkhmsooc6" path="res://src/ui_widgets/number_edit.tscn" id="3_1gu7n"]
-[ext_resource type="Script" uid="uid://ynx3s1jc6bwq" path="res://src/ui_widgets/BetterButton.gd" id="4_7r848"]
 
-[node name="RootElementEditor" type="VBoxContainer"]
-offset_right = 452.0
+[node name="RootElementEditor" type="HBoxContainer"]
+offset_right = 458.0
 offset_bottom = 56.0
+theme_override_constants/separation = 30
 script = ExtResource("1_xgyg0")
 
-[node name="CenterContainer" type="CenterContainer" parent="."]
-layout_mode = 2
-
-[node name="Edits" type="HBoxContainer" parent="CenterContainer"]
-layout_mode = 2
-theme_override_constants/separation = 30
-
-[node name="Size" type="HBoxContainer" parent="CenterContainer/Edits"]
+[node name="Size" type="HBoxContainer" parent="."]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="Width" type="VBoxContainer" parent="CenterContainer/Edits/Size"]
+[node name="Width" type="VBoxContainer" parent="Size"]
 layout_mode = 2
 theme_override_constants/separation = 0
 
-[node name="WidthButton" type="Button" parent="CenterContainer/Edits/Size/Width"]
+[node name="WidthButton" type="Button" parent="Size/Width"]
 layout_mode = 2
 size_flags_horizontal = 4
 focus_mode = 0
@@ -36,17 +29,16 @@ theme_override_font_sizes/font_size = 12
 toggle_mode = true
 action_mode = 0
 text = "width"
-script = ExtResource("4_7r848")
 
-[node name="WidthEdit" parent="CenterContainer/Edits/Size/Width" instance=ExtResource("3_1gu7n")]
+[node name="WidthEdit" parent="Size/Width" instance=ExtResource("3_1gu7n")]
 custom_minimum_size = Vector2(48, 22)
 layout_mode = 2
 
-[node name="Height" type="VBoxContainer" parent="CenterContainer/Edits/Size"]
+[node name="Height" type="VBoxContainer" parent="Size"]
 layout_mode = 2
 theme_override_constants/separation = 0
 
-[node name="HeightButton" type="Button" parent="CenterContainer/Edits/Size/Height"]
+[node name="HeightButton" type="Button" parent="Size/Height"]
 layout_mode = 2
 size_flags_horizontal = 4
 focus_mode = 0
@@ -56,18 +48,17 @@ theme_override_font_sizes/font_size = 12
 toggle_mode = true
 action_mode = 0
 text = "height"
-script = ExtResource("4_7r848")
 
-[node name="HeightEdit" parent="CenterContainer/Edits/Size/Height" instance=ExtResource("3_1gu7n")]
+[node name="HeightEdit" parent="Size/Height" instance=ExtResource("3_1gu7n")]
 custom_minimum_size = Vector2(48, 22)
 layout_mode = 2
 
-[node name="Viewbox" type="VBoxContainer" parent="CenterContainer/Edits"]
+[node name="Viewbox" type="VBoxContainer" parent="."]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 0
 
-[node name="ViewboxButton" type="Button" parent="CenterContainer/Edits/Viewbox"]
+[node name="ViewboxButton" type="Button" parent="Viewbox"]
 layout_mode = 2
 size_flags_horizontal = 4
 focus_mode = 0
@@ -77,25 +68,24 @@ theme_override_font_sizes/font_size = 12
 toggle_mode = true
 action_mode = 0
 text = "viewBox"
-script = ExtResource("4_7r848")
 
-[node name="Rect" type="HBoxContainer" parent="CenterContainer/Edits/Viewbox"]
+[node name="Rect" type="HBoxContainer" parent="Viewbox"]
 layout_mode = 2
 
-[node name="ViewboxEditX" parent="CenterContainer/Edits/Viewbox/Rect" instance=ExtResource("3_1gu7n")]
+[node name="ViewboxEditX" parent="Viewbox/Rect" instance=ExtResource("3_1gu7n")]
 custom_minimum_size = Vector2(48, 22)
 layout_mode = 2
 min_value = inf_neg
 
-[node name="ViewboxEditY" parent="CenterContainer/Edits/Viewbox/Rect" instance=ExtResource("3_1gu7n")]
+[node name="ViewboxEditY" parent="Viewbox/Rect" instance=ExtResource("3_1gu7n")]
 custom_minimum_size = Vector2(48, 22)
 layout_mode = 2
 min_value = inf_neg
 
-[node name="ViewboxEditW" parent="CenterContainer/Edits/Viewbox/Rect" instance=ExtResource("3_1gu7n")]
+[node name="ViewboxEditW" parent="Viewbox/Rect" instance=ExtResource("3_1gu7n")]
 custom_minimum_size = Vector2(48, 22)
 layout_mode = 2
 
-[node name="ViewboxEditH" parent="CenterContainer/Edits/Viewbox/Rect" instance=ExtResource("3_1gu7n")]
+[node name="ViewboxEditH" parent="Viewbox/Rect" instance=ExtResource("3_1gu7n")]
 custom_minimum_size = Vector2(48, 22)
 layout_mode = 2

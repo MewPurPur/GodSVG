@@ -1,22 +1,22 @@
-# An editor to be tied to a numeric attribute.
 extends BetterLineEdit
 
-var element: Element
 const attribute_name = "id"  # Never propagates.
 
 func set_value(new_value: String, save := false) -> void:
-	element.set_attribute(attribute_name, new_value)
+	State.set_selected_attribute(attribute_name, new_value)
 	sync()
 	if save:
 		State.save_svg()
-
 
 func _ready() -> void:
 	Configs.language_changed.connect(sync_localization)
 	sync_localization()
 	Configs.basic_colors_changed.connect(sync)
 	sync()
-	element.attribute_changed.connect(_on_element_attribute_changed)
+	for xid in State.selected_xids:
+		var xnode := State.root_element.get_xnode(xid)
+		if xnode.is_element():
+			xnode.attribute_changed.connect(_on_element_attribute_changed)
 	text_changed.connect(_on_text_changed)
 	setup_font()
 	text_submitted.connect(_on_text_submitted)
@@ -30,7 +30,8 @@ func sync_localization() -> void:
 func setup_font() -> void:
 	if text.is_empty():
 		add_theme_font_override("font", ThemeUtils.main_font)
-
+	else:
+		remove_theme_font_override("font")
 
 func _on_element_attribute_changed(attribute_changed: String) -> void:
 	if attribute_name == attribute_changed:
@@ -54,6 +55,34 @@ func _on_text_changed(new_text: String) -> void:
 	setup_font()
 
 func sync() -> void:
-	text = element.get_attribute_value(attribute_name)
 	remove_theme_color_override("font_color")
+	
+	if State.selected_xids.is_empty():
+		return
+	
+	var values := PackedStringArray()
+	var has_same_values := true
+	
+	for xid in State.selected_xids:
+		var xnode := State.root_element.get_xnode(xid)
+		if not xnode.is_element():
+			continue
+		
+		var element: Element = xnode
+		var new_value := element.get_attribute_value(attribute_name)
+		
+		if not values.is_empty():
+			if has_same_values and new_value != values[0]:
+				has_same_values = false
+		
+		values.append(new_value)
+	
+	text = values[0] if has_same_values else ".."
+	
+	var tooltip_lines := PackedStringArray()
+	for i in values.size():
+		var current_value := values[i] if not values[i].is_empty() else Translator.translate("No ID")
+		tooltip_lines.append(current_value)
+	tooltip_text = "\n".join(tooltip_lines)
+	
 	setup_font()

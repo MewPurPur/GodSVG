@@ -1,25 +1,24 @@
-extends VBoxContainer
+extends HBoxContainer
 
 const NumberEdit = preload("res://src/ui_widgets/number_edit.gd")
 
 # So, about this editor. Width and height don't have default values, so they use NAN and use NumberEdit,
 # rather than NumberField. Viewbox is a fixed size list without a default value, so it uses 4 NumberEdits.
 
-@onready var width_button: BetterButton = %Size/Width/WidthButton
-@onready var height_button: BetterButton = %Size/Height/HeightButton
-@onready var viewbox_button: BetterButton = %Viewbox/ViewboxButton
+@onready var width_button: Button = %Size/Width/WidthButton
+@onready var height_button: Button = %Size/Height/HeightButton
+@onready var viewbox_button: Button = %Viewbox/ViewboxButton
 @onready var width_edit: NumberEdit = %Size/Width/WidthEdit
 @onready var height_edit: NumberEdit = %Size/Height/HeightEdit
 @onready var viewbox_edit_x: NumberEdit = %Viewbox/Rect/ViewboxEditX
 @onready var viewbox_edit_y: NumberEdit = %Viewbox/Rect/ViewboxEditY
 @onready var viewbox_edit_w: NumberEdit = %Viewbox/Rect/ViewboxEditW
 @onready var viewbox_edit_h: NumberEdit = %Viewbox/Rect/ViewboxEditH
-@onready var unknown_container: MarginContainer
 
 func _ready() -> void:
 	State.any_attribute_changed.connect(_on_any_attribute_changed)
-	State.svg_changed.connect(update_attributes)
-	update_attributes()
+	State.svg_changed.connect(update_editable)
+	update_editable()
 	width_edit.value_changed.connect(_on_width_edit_value_changed)
 	height_edit.value_changed.connect(_on_height_edit_value_changed)
 	viewbox_edit_x.value_changed.connect(_on_viewbox_edit_x_value_changed)
@@ -40,37 +39,6 @@ func _ready() -> void:
 func _on_any_attribute_changed(xid: PackedInt32Array) -> void:
 	if xid.is_empty():
 		update_editable()
-
-
-func update_attributes() -> void:
-	# If there are unknown attributes, they would always be on top.
-	if is_instance_valid(unknown_container):
-		for child in unknown_container.get_children():
-			child.queue_free()
-	var has_unrecognized_attributes := false
-	for attribute in State.root_element.get_all_attributes():
-		# TODO separate unrecognized attributes from global defaults.
-		if not attribute.name in ["width", "height", "viewBox", "xmlns"]:
-			if not has_unrecognized_attributes:
-				has_unrecognized_attributes = true
-				if is_instance_valid(unknown_container):
-					unknown_container.queue_free()
-				unknown_container = MarginContainer.new()
-				unknown_container.begin_bulk_theme_override()
-				unknown_container.add_theme_constant_override("margin_left", 4)
-				unknown_container.add_theme_constant_override("margin_right", 4)
-				unknown_container.end_bulk_theme_override()
-				var unknown_container_child := HFlowContainer.new()
-				unknown_container.add_child(unknown_container_child)
-				add_child(unknown_container)
-				move_child(unknown_container, 0)
-			
-			var input_field := AttributeFieldBuilder.create(attribute.name, State.root_element)
-			input_field.focus_entered.connect(State.clear_all_selections)
-			unknown_container.get_child(0).add_child(input_field)
-	if not has_unrecognized_attributes and is_instance_valid(unknown_container):
-		unknown_container.queue_free()
-	update_editable()
 
 
 func update_editable() -> void:

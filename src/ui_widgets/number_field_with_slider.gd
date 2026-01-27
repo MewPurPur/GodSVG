@@ -1,7 +1,6 @@
 # An editor to be tied to a numeric attribute, plus a slider widget.
 extends LineEditButton
 
-var element: Element
 var attribute_name: String  # May propagate.
 
 # Could be made to not be constants if needed.
@@ -18,53 +17,77 @@ func set_value(new_value: String, save := false) -> void:
 				sync()
 				return
 			
-			if numeric_value > MAX_VALUE:
-				numeric_value = MAX_VALUE
-			elif numeric_value < MIN_VALUE:
-				numeric_value = MIN_VALUE
-			new_value = element.get_attribute(attribute_name).num_to_text(numeric_value)
+			numeric_value = clampf(numeric_value, MIN_VALUE, MAX_VALUE)
+			new_value = NumberParser.num_to_text(numeric_value, Configs.savedata.editor_formatter)
 	
-	element.set_attribute(attribute_name, new_value)
+	State.set_selected_attribute(attribute_name, new_value)
 	sync()
 	if save:
 		State.save_svg()
 
 func set_num(new_number: float, save := false) -> void:
-	set_value(element.get_attribute(attribute_name).num_to_text(new_number), save)
-
-func setup_placeholder() -> void:
-	placeholder_text = element.get_default(attribute_name)
+	set_value(NumberParser.num_to_text(new_number, Configs.savedata.editor_formatter), save)
 
 
 func _ready() -> void:
 	Configs.basic_colors_changed.connect(sync)
 	sync()
-	element.attribute_changed.connect(_on_element_attribute_changed)
-	if attribute_name in DB.PROPAGATED_ATTRIBUTES:
-		element.ancestor_attribute_changed.connect(_on_element_ancestor_attribute_changed)
+	for xid in State.selected_xids:
+		var xnode := State.root_element.get_xnode(xid)
+		if xnode.is_element():
+			xnode.attribute_changed.connect(_on_element_attribute_changed)
 	text_submitted.connect(set_value.bind(true))
 	focus_entered.connect(reset_font_color)
 	text_change_canceled.connect(sync)
 	button_gui_input.connect(_on_slider_gui_input)
 	tooltip_text = attribute_name
-	setup_placeholder()
+	sync()
 
 
 func _on_element_attribute_changed(attribute_changed: String) -> void:
 	if attribute_name == attribute_changed:
 		sync()
 
-func _on_element_ancestor_attribute_changed(attribute_changed: String) -> void:
-	if attribute_name == attribute_changed:
-		setup_placeholder()
-		sync()
-
 func sync() -> void:
-	var new_value := element.get_attribute_value(attribute_name)
-	text = new_value
 	reset_font_color()
-	if new_value == element.get_default(attribute_name):
+	
+	if State.selected_xids.is_empty():
+		return
+	
+	var values := PackedStringArray()
+	var defaults := PackedStringArray()
+	var has_same_values := true
+	var has_same_defaults := true
+	
+	for xid in State.selected_xids:
+		var xnode := State.root_element.get_xnode(xid)
+		if not xnode.is_element():
+			continue
+		
+		var element: Element = xnode
+		var new_value := element.get_attribute_value(attribute_name)
+		var new_default := element.get_default(attribute_name)
+		
+		if not values.is_empty():
+			if has_same_values and not new_value in values:
+				has_same_values = false
+			if has_same_defaults and not new_default in defaults:
+				has_same_defaults = false
+		
+		values.append(new_value)
+		defaults.append(new_default)
+	
+	text = values[0] if has_same_values else ".."
+	placeholder_text = defaults[0] if has_same_defaults else ".."
+	if values == defaults:
 		font_color = Configs.savedata.basic_color_warning
+	
+	var tooltip_lines := PackedStringArray()
+	for i in values.size():
+		var current_value := values[i] if not values[i].is_empty() else Translator.translate("Unset")
+		tooltip_lines.append(current_value + " (" + Translator.translate("Default") + ": " + defaults[i] + ")")
+	tooltip_text = "\n".join(tooltip_lines)
+	
 	queue_redraw()
 
 
@@ -78,9 +101,8 @@ var slider_dragged := false:
 			queue_redraw()
 			if not slider_hovered:
 				get_viewport().update_mouse_cursor_state()
-				# FIXME workaround because "button_pressed" remains true
-				# if you unclick while outside of the area, for some reason.
-				# Couldn't replicate this in a minimal project.
+				# FIXME workaround because "button_pressed" remains true if you unclick while
+				# outside of the area, for some reason. Couldn't replicate this in a minimal project.
 				remove_child(temp_button)
 				add_child(temp_button)
 
@@ -98,7 +120,25 @@ func _draw() -> void:
 	stylebox.corner_radius_bottom_right = 5
 	stylebox.bg_color = get_theme_stylebox("normal", "LineEdit").bg_color
 	stylebox.draw(ci, Rect2(size.x - button_width, 1, button_width - 2, size.y - 2))
-	var fill_height := (size.y - 4) * (element.get_attribute_num(attribute_name) - MIN_VALUE) / MAX_VALUE
+	
+	# Calculate fill height based on selected elements
+	if State.selected_xids.is_empty():
+		return
+	
+	var slider_value := 0.0
+	for i in State.selected_xids.size():
+		var xid := State.selected_xids[i]
+		var xnode := State.root_element.get_xnode(xid)
+		if xnode.is_element():
+			var element: Element = xnode
+			var numeric_value := element.get_attribute_num(attribute_name)
+			if i == 0:
+				slider_value = numeric_value
+			elif numeric_value != slider_value:
+				slider_value = 0.0
+				break
+	var fill_height := (size.y - 4) * (slider_value - MIN_VALUE) / MAX_VALUE
+	
 	# Create a stylebox that'll occupy the exact amount of space.
 	var fill_stylebox := StyleBoxFlat.new()
 	fill_stylebox.bg_color = ThemeUtils.tinted_contrast_color
@@ -129,7 +169,8 @@ func _on_slider_gui_input(event: InputEvent) -> void:
 	if not slider_dragged:
 		if Utils.is_event_drag_start(event):
 			slider_dragged = true
-			initial_slider_value = element.get_attribute_value(attribute_name)
+			# Store the initial value (use first element's value or ".." if multiple)
+			initial_slider_value = text
 			set_num(get_slider_value_at_y(event.position.y))
 	else:
 		if Utils.is_event_drag(event):
@@ -137,7 +178,8 @@ func _on_slider_gui_input(event: InputEvent) -> void:
 		elif Utils.is_event_drag_end(event):
 			slider_dragged = false
 			var final_slider_value := get_slider_value_at_y(event.position.y)
-			if initial_slider_value != element.get_attribute(attribute_name).num_to_text(final_slider_value):
+			var final_text := NumberParser.num_to_text(final_slider_value, Configs.savedata.editor_formatter)
+			if initial_slider_value != final_text:
 				set_num(final_slider_value, true)
 
 func _unhandled_input(event: InputEvent) -> void:

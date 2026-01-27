@@ -276,6 +276,7 @@ static func generate_theme() -> Theme:
 	_setup_tabcontainer(theme)
 	_setup_textedit(theme)
 	_setup_tooltip(theme)
+	_setup_tree(theme)
 	_setup_splitcontainer(theme)
 	return theme
 
@@ -962,6 +963,7 @@ static func _setup_lineedit(theme: Theme) -> void:
 	theme.set_color("disabled_selection_color", "LineEdit", disabled_selection_color)
 	theme.set_font_size("font_size", "LineEdit", 12)
 	theme.set_font("font", "LineEdit", mono_font)
+	theme.set_constant("minimum_character_width", "LineEdit", 0)
 	
 	var stylebox := StyleBoxFlat.new()
 	stylebox.set_corner_radius_all(5)
@@ -1305,6 +1307,10 @@ static func _setup_tooltip(theme: Theme) -> void:
 	theme.set_color("font_color", "TooltipLabel", text_color)
 	theme.set_font_size("font_size", "TooltipLabel", 14)
 	theme.set_font("font", "TooltipLabel", main_font)
+
+static func _setup_tree(theme: Theme) -> void:
+	theme.add_type("Tree")
+	theme.set_stylebox("focus", "Tree", StyleBoxEmpty.new())
 
 static func _setup_splitcontainer(theme: Theme) -> void:
 	theme.add_type("SplitContainer")

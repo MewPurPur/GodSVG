@@ -539,6 +539,16 @@ func respond_to_key_input(path_cmd_char: String) -> void:
 
 # Operations on selected elements.
 
+func set_selected_attribute(attribute_name: String, new_value: String) -> void:
+	for xid in selected_xids:
+		if not root_element.get_xnode(xid).is_element():
+			return
+	
+	for xid in selected_xids:
+		var element: Element = root_element.get_xnode(xid)
+		element.set_attribute(attribute_name, new_value)
+
+
 func delete_selected() -> void:
 	if not selected_xids.is_empty():
 		root_element.delete_xnodes(selected_xids)
