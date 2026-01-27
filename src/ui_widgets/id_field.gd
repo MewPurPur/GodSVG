@@ -30,6 +30,8 @@ func sync_localization() -> void:
 func setup_font() -> void:
 	if text.is_empty():
 		add_theme_font_override("font", ThemeUtils.main_font)
+	else:
+		remove_theme_font_override("font")
 
 
 func _on_element_attribute_changed(attribute_changed: String) -> void:

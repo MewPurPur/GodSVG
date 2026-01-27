@@ -1,6 +1,6 @@
 class_name SaveData extends ConfigResource
 
-enum ThemePreset {DARK, LIGHT, BLACK}
+enum ThemePreset {DARK, LIGHT, BLACK, GRAY}
 enum HighlighterPreset {DEFAULT_DARK, DEFAULT_LIGHT}
 
 const GoodColorPicker = preload("res://src/ui_widgets/good_color_picker.gd")
@@ -20,14 +20,16 @@ func get_setting_default(setting: String) -> Variant:
 				ThemePreset.DARK: return Color("10101d")
 				ThemePreset.LIGHT: return Color("e6f0ff")
 				ThemePreset.BLACK: return Color("000")
+				ThemePreset.GRAY: return Color("262626")
 		"accent_color":
 			match theme_preset:
 				ThemePreset.DARK: return Color("69f")
 				ThemePreset.LIGHT: return Color("0053a6")
 				ThemePreset.BLACK: return Color("7c8dbf")
+				ThemePreset.GRAY: return Color("80aaff")
 		"highlighter_preset":
 			match theme_preset:
-				ThemePreset.DARK, ThemePreset.BLACK: return HighlighterPreset.DEFAULT_DARK
+				ThemePreset.DARK, ThemePreset.BLACK, ThemePreset.GRAY: return HighlighterPreset.DEFAULT_DARK
 				ThemePreset.LIGHT: return HighlighterPreset.DEFAULT_LIGHT
 		"highlighting_symbol_color":
 			match highlighter_preset:
@@ -63,22 +65,22 @@ func get_setting_default(setting: String) -> Variant:
 				HighlighterPreset.DEFAULT_LIGHT: return Color("cc0000")
 		"basic_color_valid":
 			match theme_preset:
-				ThemePreset.DARK, ThemePreset.BLACK: return Color("9f9")
+				ThemePreset.DARK, ThemePreset.BLACK, ThemePreset.GRAY: return Color("9f9")
 				ThemePreset.LIGHT: return Color("2b2")
 		"basic_color_error":
 			match theme_preset:
-				ThemePreset.DARK, ThemePreset.BLACK: return Color("f99")
+				ThemePreset.DARK, ThemePreset.BLACK, ThemePreset.GRAY: return Color("f99")
 				ThemePreset.LIGHT: return Color("b22")
 		"basic_color_warning":
 			match theme_preset:
-				ThemePreset.DARK, ThemePreset.BLACK: return Color("ee6")
+				ThemePreset.DARK, ThemePreset.BLACK, ThemePreset.GRAY: return Color("ee6")
 				ThemePreset.LIGHT: return Color("991")
 		"handle_size": return 1.0 if OS.get_name() != "Android" else 2.0
 		"handle_inner_color": return Color("fff")
 		"handle_color": return Color("111")
 		"handle_hovered_color":
 			match theme_preset:
-				ThemePreset.DARK, ThemePreset.BLACK: return Color("aaa")
+				ThemePreset.DARK, ThemePreset.BLACK, ThemePreset.GRAY: return Color("aaa")
 				ThemePreset.LIGHT: return Color("808080")
 		"handle_selected_color": return Color("46f")
 		"handle_hovered_selected_color": return Color("f44")
@@ -92,10 +94,12 @@ func get_setting_default(setting: String) -> Variant:
 				ThemePreset.DARK: return Color("1f2233")
 				ThemePreset.LIGHT: return Color("fff")
 				ThemePreset.BLACK: return Color("000")
+				ThemePreset.GRAY: return Color("404040")
 		"grid_color":
 			match theme_preset:
 				ThemePreset.DARK, ThemePreset.BLACK: return Color("808080")
 				ThemePreset.LIGHT: return Color("666")
+				ThemePreset.GRAY: return Color("999")
 		
 		# Tab bar
 		"tab_mmb_close": return true
@@ -165,6 +169,7 @@ static func get_theme_preset_value_text_map() -> Dictionary:
 		ThemePreset.DARK: Translator.translate("Dark"),
 		ThemePreset.LIGHT: Translator.translate("Light"),
 		ThemePreset.BLACK: Translator.translate("Black (OLED)"),
+		ThemePreset.GRAY: Translator.translate("Gray")
 	}
 
 const HIGHLIGHTING_ITEMS: PackedStringArray = [

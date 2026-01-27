@@ -146,6 +146,11 @@ msgstr "Світла"
 msgid "Black (OLED)"
 msgstr "Темна (OLED)"
 
+#. Refers to a theme preset.
+#: src/config_classes/SaveData.gd
+msgid "Gray"
+msgstr ""
+
 #: src/config_classes/SaveData.gd
 msgid "Default Dark"
 msgstr "Стандартна темна"
