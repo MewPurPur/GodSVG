@@ -236,9 +236,13 @@ static func markup_to_root(markup: String) -> ParseResult:
 				if not Configs.savedata.editor_formatter.xml_remove_comments:
 					unclosed_element_stack.back().insert_child(-1, BasicXNode.new(BasicXNode.NodeType.COMMENT, parser.get_node_name()))
 			XMLParser.NODE_TEXT:
-				var real_text := parser.get_node_data().strip_edges()
-				if not real_text.is_empty():
-					unclosed_element_stack.back().insert_child(-1, BasicXNode.new(BasicXNode.NodeType.TEXT, real_text))
+				var node_offset := parser.get_node_offset()
+				# Trick to read XML text as is, without parsing stuff like "&lt;".
+				if parser.read() == OK:
+					var real_text := buffer.slice(node_offset, parser.get_node_offset()).get_string_from_utf8().strip_edges()
+					parser.seek(node_offset)
+					if not real_text.is_empty():
+						unclosed_element_stack.back().insert_child(-1, BasicXNode.new(BasicXNode.NodeType.TEXT, real_text))
 			XMLParser.NODE_CDATA:
 				unclosed_element_stack.back().insert_child(-1, BasicXNode.new(BasicXNode.NodeType.CDATA, parser.get_node_name()))
 	

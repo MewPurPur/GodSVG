@@ -1,8 +1,8 @@
-[gd_scene load_steps=2 format=3 uid="uid://rsf6f7pytv7u"]
+[gd_scene format=3 uid="uid://rsf6f7pytv7u"]
 
 [ext_resource type="Script" uid="uid://vjqyfycqgf8h" path="res://src/ui_widgets/options_dialog.gd" id="1_shf74"]
 
-[node name="OptionsDialog" type="PanelContainer"]
+[node name="OptionsDialog" type="PanelContainer" unique_id=188953458]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -17,49 +17,49 @@ grow_vertical = 2
 theme_type_variation = &"OverlayPanel"
 script = ExtResource("1_shf74")
 
-[node name="MainContainer" type="VBoxContainer" parent="."]
+[node name="MainContainer" type="VBoxContainer" parent="." unique_id=527878605]
 layout_mode = 2
 theme_override_constants/separation = 12
 
-[node name="TextContainer" type="VBoxContainer" parent="MainContainer"]
+[node name="TextContainer" type="VBoxContainer" parent="MainContainer" unique_id=2004327801]
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="Title" type="Label" parent="MainContainer/TextContainer"]
+[node name="Title" type="Label" parent="MainContainer/TextContainer" unique_id=30042233]
 layout_mode = 2
 theme_type_variation = &"BoldTitleLabel"
 horizontal_alignment = 1
 
-[node name="Label" type="RichTextLabel" parent="MainContainer/TextContainer"]
+[node name="Label" type="RichTextLabel" parent="MainContainer/TextContainer" unique_id=815075759]
 custom_minimum_size = Vector2(320, 0)
 layout_mode = 2
 fit_content = true
 
-[node name="ListPanel" type="PanelContainer" parent="MainContainer/TextContainer"]
+[node name="ListPanel" type="PanelContainer" parent="MainContainer/TextContainer" unique_id=42069545]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 
-[node name="ListScrollContainer" type="ScrollContainer" parent="MainContainer/TextContainer/ListPanel"]
+[node name="ListScrollContainer" type="ScrollContainer" parent="MainContainer/TextContainer/ListPanel" unique_id=531471259]
 custom_minimum_size = Vector2(0, 84)
 layout_mode = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="MainContainer/TextContainer/ListPanel/ListScrollContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="MainContainer/TextContainer/ListPanel/ListScrollContainer" unique_id=1681227298]
 layout_mode = 2
 theme_override_constants/margin_left = 4
 
-[node name="ListLabel" type="Label" parent="MainContainer/TextContainer/ListPanel/ListScrollContainer/MarginContainer"]
+[node name="ListLabel" type="Label" parent="MainContainer/TextContainer/ListPanel/ListScrollContainer/MarginContainer" unique_id=991105160]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="CheckBox" type="CheckBox" parent="MainContainer/TextContainer"]
+[node name="CheckBox" type="CheckBox" parent="MainContainer/TextContainer" unique_id=700704501]
 visible = false
 layout_mode = 2
 focus_mode = 0
 mouse_default_cursor_shape = 2
 action_mode = 0
 
-[node name="OptionsContainer" type="HBoxContainer" parent="MainContainer"]
+[node name="OptionsContainer" type="HBoxContainer" parent="MainContainer" unique_id=970743447]
 layout_mode = 2
 alignment = 1

@@ -139,7 +139,6 @@ func _create_part_box(layout_parts: Array[Utils.LayoutPart]) -> Control:
 			btn.toggle_mode = true
 			btn.icon = Utils.get_layout_part_icon(part)
 			btn.theme_type_variation = "FlatButton"
-			btn.focus_mode = Control.FOCUS_NONE
 			btn.action_mode = BaseButton.ACTION_MODE_BUTTON_PRESS
 			btn.button_group = btn_group
 			for node_part in layout_nodes:

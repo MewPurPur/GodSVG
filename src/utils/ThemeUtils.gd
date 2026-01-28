@@ -892,6 +892,16 @@ static func _setup_checkbutton(theme: Theme) -> void:
 			<circle cx="8" cy="8" r="5.5" fill="#%s" opacity=".6"/>
 		</svg>""" % [gray_color.to_html(false), black_or_white_counter_accent_color.to_html(false)])
 	)
+	var focus_stylebox := StyleBoxFlat.new()
+	focus_stylebox.set_corner_radius_all(5)
+	focus_stylebox.set_border_width_all(2)
+	focus_stylebox.content_margin_bottom = 3.0
+	focus_stylebox.content_margin_top = 3.0
+	focus_stylebox.content_margin_left = 6.0
+	focus_stylebox.content_margin_right = 6.0
+	focus_stylebox.draw_center = false
+	focus_stylebox.border_color = Color(Configs.savedata.accent_color, 0.72)
+	theme.set_stylebox("focus", "CheckButton", focus_stylebox)
 
 static func _setup_itemlist(theme: Theme) -> void:
 	# TODO Keep track of https://github.com/godotengine/godot/issues/56045

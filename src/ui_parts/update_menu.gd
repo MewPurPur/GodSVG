@@ -24,6 +24,8 @@ func _ready() -> void:
 	prereleases_button.text = Translator.translate("Show prereleases")
 	current_version_label.text = Translator.translate("Current Version") + ": " + current_version
 	request()
+	
+	prereleases_button.grab_focus(true)
 
 func request() -> void:
 	retry_button.hide()
