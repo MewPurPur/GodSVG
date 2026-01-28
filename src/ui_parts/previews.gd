@@ -80,7 +80,10 @@ class IconPreviewTileData extends RefCounted:
 				pdc.precise_path_mode = Configs.savedata.previews_precise_path_mode
 				# Convert the SVG to PDCImage then back to SVG for accurate display
 				pdc.load_from_svg(svg)
-				preview_texture = DPITexture.create_from_string(pdc.to_svg(), multiplier)
+				var buffer := pdc.encode()
+				var decoded_pdc := PDCImage.new()
+				decoded_pdc.load_from_pdc(buffer)
+				preview_texture = DPITexture.create_from_string(decoded_pdc.to_svg(), multiplier)
 		else:
 			preview_texture = DPITexture.create_from_string(State.stable_export_markup, multiplier)
 
